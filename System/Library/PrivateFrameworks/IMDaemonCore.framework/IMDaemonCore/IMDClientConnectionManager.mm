@@ -15,24 +15,24 @@
 - (IMDaemonListenerKeyTransparencyProtocol)broadcasterForKeyTransparencyListeners;
 - (IMDaemonListenerRemoteIntentProtocol)broadcasterForRemoteIntentListeners;
 - (IMDaemonListenerSyncedSettingsProtocol)broadcasterForSyncedSettingsListeners;
-- (id)broadcasterForACConferenceListenersSupportingService:(id)a3;
-- (id)broadcasterForAVConferenceListenersSupportingService:(id)a3;
-- (id)broadcasterForBlackholeChatListenersSupportingService:(id)a3;
-- (id)broadcasterForChatCountsListenersWithAdditionalCapabilities:(unint64_t)a3;
-- (id)broadcasterForChatListenersSupportingService:(id)a3;
-- (id)broadcasterForChatListenersUsingBlackholeRegistry:(BOOL)a3;
-- (id)broadcasterForCollaborationListenersSupportingService:(id)a3;
-- (id)broadcasterForListenersSupportingService:(id)a3;
-- (id)broadcasterForNotificationListenersSupportingService:(id)a3;
-- (id)broadcasterForSentMessageListenersSupportingService:(id)a3;
-- (id)broadcasterForVCConferenceListenersSupportingService:(id)a3;
+- (id)broadcasterForACConferenceListenersSupportingService:(id)service;
+- (id)broadcasterForAVConferenceListenersSupportingService:(id)service;
+- (id)broadcasterForBlackholeChatListenersSupportingService:(id)service;
+- (id)broadcasterForChatCountsListenersWithAdditionalCapabilities:(unint64_t)capabilities;
+- (id)broadcasterForChatListenersSupportingService:(id)service;
+- (id)broadcasterForChatListenersUsingBlackholeRegistry:(BOOL)registry;
+- (id)broadcasterForCollaborationListenersSupportingService:(id)service;
+- (id)broadcasterForListenersSupportingService:(id)service;
+- (id)broadcasterForNotificationListenersSupportingService:(id)service;
+- (id)broadcasterForSentMessageListenersSupportingService:(id)service;
+- (id)broadcasterForVCConferenceListenersSupportingService:(id)service;
 @end
 
 @implementation IMDClientConnectionManager
 
 - (IMDaemonListenerCloudSyncProtocol)broadcasterForCloudSyncListeners
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ClientConnectionManager.broadcasterForCloudSyncListeners.getter();
 
   return v3;
@@ -40,16 +40,16 @@
 
 - (IMDaemonListenerAnyProtocol)broadcasterForAllListeners
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ClientConnectionManager.broadcasterForAllListeners.getter();
 
   return v3;
 }
 
-- (id)broadcasterForChatListenersUsingBlackholeRegistry:(BOOL)a3
+- (id)broadcasterForChatListenersUsingBlackholeRegistry:(BOOL)registry
 {
-  v4 = self;
-  v5 = ClientConnectionManager.broadcasterForChatListeners(usingBlackholeRegistry:)(a3);
+  selfCopy = self;
+  v5 = ClientConnectionManager.broadcasterForChatListeners(usingBlackholeRegistry:)(registry);
 
   return v5;
 }
@@ -63,7 +63,7 @@
 
 - (IMDaemonListenerAccountsProtocol)broadcasterForAccountListeners
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ClientConnectionManager.broadcasterForAccountListeners.getter();
 
   return v3;
@@ -71,24 +71,24 @@
 
 - (IMDaemonListenerFileTransfersProtocol)broadcasterForFileTransferListeners
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ClientConnectionManager.broadcasterForFileTransferListeners.getter();
 
   return v3;
 }
 
-- (id)broadcasterForListenersSupportingService:(id)a3
+- (id)broadcasterForListenersSupportingService:(id)service
 {
-  v4 = a3;
-  v5 = self;
-  v6 = ClientConnectionManager.broadcasterForListeners(supporting:)(v4);
+  serviceCopy = service;
+  selfCopy = self;
+  v6 = ClientConnectionManager.broadcasterForListeners(supporting:)(serviceCopy);
 
   return v6;
 }
 
 - (IMDaemonListenerKeyTransparencyProtocol)broadcasterForKeyTransparencyListeners
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ClientConnectionManager.broadcasterForKeyTransparencyListeners.getter();
 
   return v3;
@@ -96,66 +96,66 @@
 
 - (IMDaemonListenerChatProtocol)broadcasterForChatListeners
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ClientConnectionManager.broadcasterForChatListeners.getter();
 
   return v3;
 }
 
-- (id)broadcasterForChatListenersSupportingService:(id)a3
+- (id)broadcasterForChatListenersSupportingService:(id)service
 {
-  v4 = a3;
-  v5 = self;
-  v6 = ClientConnectionManager.broadcasterForChatListeners(supporting:)(v4);
+  serviceCopy = service;
+  selfCopy = self;
+  v6 = ClientConnectionManager.broadcasterForChatListeners(supporting:)(serviceCopy);
 
   return v6;
 }
 
-- (id)broadcasterForSentMessageListenersSupportingService:(id)a3
+- (id)broadcasterForSentMessageListenersSupportingService:(id)service
 {
-  v4 = a3;
-  v5 = self;
-  v6 = ClientConnectionManager.broadcasterForSentMessageListeners(supporting:)(v4);
+  serviceCopy = service;
+  selfCopy = self;
+  v6 = ClientConnectionManager.broadcasterForSentMessageListeners(supporting:)(serviceCopy);
 
   return v6;
 }
 
 - (IMDaemonListenerChatProtocol)broadcasterForBlackholeChatListeners
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ClientConnectionManager.broadcasterForBlackholeChatListeners.getter();
 
   return v3;
 }
 
-- (id)broadcasterForBlackholeChatListenersSupportingService:(id)a3
+- (id)broadcasterForBlackholeChatListenersSupportingService:(id)service
 {
-  v4 = a3;
-  v5 = self;
-  v6 = ClientConnectionManager.broadcasterForBlackholeChatListeners(supporting:)(v4);
+  serviceCopy = service;
+  selfCopy = self;
+  v6 = ClientConnectionManager.broadcasterForBlackholeChatListeners(supporting:)(serviceCopy);
 
   return v6;
 }
 
 - (IMDaemonListenerChatDatabaseProtocol)broadcasterForChatDatabaseListeners
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ClientConnectionManager.broadcasterForChatDatabaseListeners.getter();
 
   return v3;
 }
 
-- (id)broadcasterForChatCountsListenersWithAdditionalCapabilities:(unint64_t)a3
+- (id)broadcasterForChatCountsListenersWithAdditionalCapabilities:(unint64_t)capabilities
 {
-  v4 = self;
-  v5 = ClientConnectionManager.broadcasterForChatCountsListeners(withAdditionalCapabilities:)(a3);
+  selfCopy = self;
+  v5 = ClientConnectionManager.broadcasterForChatCountsListeners(withAdditionalCapabilities:)(capabilities);
 
   return v5;
 }
 
 - (IMDaemonListenerChatCountsProtocol)broadcasterForChatCountsListeners
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ClientConnectionManager.broadcasterForChatCountsListeners.getter();
 
   return v3;
@@ -163,51 +163,51 @@
 
 - (IMDaemonListenerFileProviderProtocol)broadcasterForFileProviderListeners
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ClientConnectionManager.broadcasterForFileProviderListeners.getter();
 
   return v3;
 }
 
-- (id)broadcasterForNotificationListenersSupportingService:(id)a3
+- (id)broadcasterForNotificationListenersSupportingService:(id)service
 {
-  v4 = a3;
-  v5 = self;
-  v6 = ClientConnectionManager.broadcasterForNotificationListeners(supporting:)(v4);
+  serviceCopy = service;
+  selfCopy = self;
+  v6 = ClientConnectionManager.broadcasterForNotificationListeners(supporting:)(serviceCopy);
 
   return v6;
 }
 
-- (id)broadcasterForAVConferenceListenersSupportingService:(id)a3
+- (id)broadcasterForAVConferenceListenersSupportingService:(id)service
 {
-  v4 = a3;
-  v5 = self;
-  v6 = ClientConnectionManager.broadcasterForAVConferenceListeners(supporting:)(v4);
+  serviceCopy = service;
+  selfCopy = self;
+  v6 = ClientConnectionManager.broadcasterForAVConferenceListeners(supporting:)(serviceCopy);
 
   return v6;
 }
 
-- (id)broadcasterForACConferenceListenersSupportingService:(id)a3
+- (id)broadcasterForACConferenceListenersSupportingService:(id)service
 {
-  v4 = a3;
-  v5 = self;
-  v6 = ClientConnectionManager.broadcasterForACConferenceListeners(supporting:)(v4);
+  serviceCopy = service;
+  selfCopy = self;
+  v6 = ClientConnectionManager.broadcasterForACConferenceListeners(supporting:)(serviceCopy);
 
   return v6;
 }
 
-- (id)broadcasterForVCConferenceListenersSupportingService:(id)a3
+- (id)broadcasterForVCConferenceListenersSupportingService:(id)service
 {
-  v4 = a3;
-  v5 = self;
-  v6 = ClientConnectionManager.broadcasterForVCConferenceListeners(supporting:)(v4);
+  serviceCopy = service;
+  selfCopy = self;
+  v6 = ClientConnectionManager.broadcasterForVCConferenceListeners(supporting:)(serviceCopy);
 
   return v6;
 }
 
 - (IMDaemonListenerAVProtocol)broadcasterForAVConferenceListeners
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ClientConnectionManager.broadcasterForAVConferenceListeners.getter();
 
   return v3;
@@ -215,7 +215,7 @@
 
 - (IMDaemonListenerAVProtocol)broadcasterForACConferenceListeners
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ClientConnectionManager.broadcasterForACConferenceListeners.getter();
 
   return v3;
@@ -223,24 +223,24 @@
 
 - (IMDaemonListenerSyncedSettingsProtocol)broadcasterForSyncedSettingsListeners
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ClientConnectionManager.broadcasterForSyncedSettingsListeners.getter();
 
   return v3;
 }
 
-- (id)broadcasterForCollaborationListenersSupportingService:(id)a3
+- (id)broadcasterForCollaborationListenersSupportingService:(id)service
 {
-  v4 = a3;
-  v5 = self;
-  v6 = ClientConnectionManager.broadcasterForCollaborationListeners(supporting:)(v4);
+  serviceCopy = service;
+  selfCopy = self;
+  v6 = ClientConnectionManager.broadcasterForCollaborationListeners(supporting:)(serviceCopy);
 
   return v6;
 }
 
 - (IMDaemonListenerCollaborationProtocol)broadcasterForCollaborationListeners
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ClientConnectionManager.broadcasterForCollaborationListeners.getter();
 
   return v3;
@@ -248,7 +248,7 @@
 
 - (IMDaemonListenerRemoteIntentProtocol)broadcasterForRemoteIntentListeners
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ClientConnectionManager.broadcasterForRemoteIntentListeners.getter();
 
   return v3;

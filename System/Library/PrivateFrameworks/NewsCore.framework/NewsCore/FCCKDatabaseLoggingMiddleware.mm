@@ -1,7 +1,7 @@
 @interface FCCKDatabaseLoggingMiddleware
 - (FCCKDatabaseLoggingMiddleware)init;
 - (_BYTE)initAllowingNilDesiredKeys:(_BYTE *)result;
-- (int64_t)database:(id)a3 willEnqueueOperation:(id)a4 error:(id *)a5;
+- (int64_t)database:(id)database willEnqueueOperation:(id)operation error:(id *)error;
 @end
 
 @implementation FCCKDatabaseLoggingMiddleware
@@ -48,20 +48,20 @@
   return result;
 }
 
-- (int64_t)database:(id)a3 willEnqueueOperation:(id)a4 error:(id *)a5
+- (int64_t)database:(id)database willEnqueueOperation:(id)operation error:(id *)error
 {
   v91[2] = *MEMORY[0x1E69E9840];
-  v55 = a3;
-  v7 = a4;
+  databaseCopy = database;
+  operationCopy = operation;
   objc_opt_class();
-  if (v7 && (objc_opt_isKindOfClass() & 1) != 0)
+  if (operationCopy && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v51 = v7;
+    v51 = operationCopy;
     if (!self || !self->_allowNilDesiredKeys)
     {
-      v8 = [v51 desiredKeys];
+      desiredKeys = [v51 desiredKeys];
 
-      if (!v8 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+      if (!desiredKeys && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         v48 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"No desired keys given for CKQueryOperation: %@", v51];
         *aBlock = 136315906;
@@ -83,7 +83,7 @@
   {
     objc_opt_class();
     v51 = 0;
-    if (!v7)
+    if (!operationCopy)
     {
 LABEL_14:
       v50 = 0;
@@ -96,18 +96,18 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v9 = v7;
+  v9 = operationCopy;
   if (self && self->_allowNilDesiredKeys)
   {
     v50 = v9;
-    v10 = v55;
+    v10 = databaseCopy;
     objc_opt_class();
     goto LABEL_17;
   }
 
   v50 = v9;
-  v45 = [v9 desiredKeys];
-  v46 = v45 == 0;
+  desiredKeys2 = [v9 desiredKeys];
+  v46 = desiredKeys2 == 0;
 
   if (v46 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -124,15 +124,15 @@ LABEL_14:
   }
 
 LABEL_15:
-  v11 = v7;
-  v12 = v55;
+  v11 = operationCopy;
+  v12 = databaseCopy;
   if (!self)
   {
     goto LABEL_81;
   }
 
   objc_opt_class();
-  if (!v7)
+  if (!operationCopy)
   {
     v13 = 0;
     goto LABEL_21;
@@ -141,7 +141,7 @@ LABEL_15:
 LABEL_17:
   if (objc_opt_isKindOfClass())
   {
-    v13 = v7;
+    v13 = operationCopy;
   }
 
   else
@@ -152,11 +152,11 @@ LABEL_17:
 LABEL_21:
   v54 = v13;
   objc_opt_class();
-  if (v7)
+  if (operationCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v14 = v7;
+      v14 = operationCopy;
     }
 
     else
@@ -172,11 +172,11 @@ LABEL_21:
 
   v15 = v14;
   objc_opt_class();
-  if (v7)
+  if (operationCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v16 = v7;
+      v16 = operationCopy;
     }
 
     else
@@ -192,11 +192,11 @@ LABEL_21:
 
   v53 = v16;
   objc_opt_class();
-  if (v7)
+  if (operationCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v17 = v7;
+      v17 = operationCopy;
     }
 
     else
@@ -212,11 +212,11 @@ LABEL_21:
 
   v52 = v17;
   objc_opt_class();
-  if (v7)
+  if (operationCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v18 = v7;
+      v18 = operationCopy;
     }
 
     else
@@ -232,11 +232,11 @@ LABEL_21:
 
   v19 = v18;
   objc_opt_class();
-  if (v7)
+  if (operationCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v20 = v7;
+      v20 = operationCopy;
     }
 
     else
@@ -252,11 +252,11 @@ LABEL_21:
 
   v21 = v20;
   objc_opt_class();
-  if (v7)
+  if (operationCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v22 = v7;
+      v22 = operationCopy;
     }
 
     else
@@ -272,11 +272,11 @@ LABEL_21:
 
   v23 = v22;
   objc_opt_class();
-  if (v7)
+  if (operationCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v24 = v7;
+      v24 = operationCopy;
     }
 
     else
@@ -297,39 +297,39 @@ LABEL_21:
   v84 = &v83;
   v85 = 0x2020000000;
   v86 = 0;
-  v28 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (objc_opt_respondsToSelector())
   {
     v81[0] = MEMORY[0x1E69E9820];
     v81[1] = 3221225472;
     v81[2] = __65__FCCKDatabaseLoggingMiddleware__addLoggersToOperation_database___block_invoke;
     v81[3] = &unk_1E7C3F4C8;
-    v82 = v28;
-    [v7 setRequestCompletedBlock:v81];
+    v82 = array;
+    [operationCopy setRequestCompletedBlock:v81];
   }
 
-  objc_initWeak(&location, v7);
+  objc_initWeak(&location, operationCopy);
   *aBlock = MEMORY[0x1E69E9820];
   *&aBlock[8] = 3221225472;
   *&aBlock[16] = __65__FCCKDatabaseLoggingMiddleware__addLoggersToOperation_database___block_invoke_2;
   *&v88 = &unk_1E7C3F518;
   objc_copyWeak(v91, &location);
   v91[1] = v27;
-  v49 = v28;
+  v49 = array;
   *(&v88 + 1) = v49;
   v90 = &v83;
-  v89 = v55;
+  v89 = databaseCopy;
   v29 = _Block_copy(aBlock);
   if (v54)
   {
     *(v84 + 6) = 1;
-    v30 = [v54 fetchRecordsCompletionBlock];
+    fetchRecordsCompletionBlock = [v54 fetchRecordsCompletionBlock];
     v77[0] = MEMORY[0x1E69E9820];
     v77[1] = 3221225472;
     v77[2] = __65__FCCKDatabaseLoggingMiddleware__addLoggersToOperation_database___block_invoke_29;
     v77[3] = &unk_1E7C3F540;
     v78 = v29;
-    v31 = v30;
+    v31 = fetchRecordsCompletionBlock;
     v79 = v31;
     [v54 setFetchRecordsCompletionBlock:v77];
   }
@@ -337,13 +337,13 @@ LABEL_21:
   if (v15)
   {
     *(v84 + 6) = 2;
-    v32 = [v15 modifyRecordsCompletionBlock];
+    modifyRecordsCompletionBlock = [v15 modifyRecordsCompletionBlock];
     v74[0] = MEMORY[0x1E69E9820];
     v74[1] = 3221225472;
     v74[2] = __65__FCCKDatabaseLoggingMiddleware__addLoggersToOperation_database___block_invoke_2_31;
     v74[3] = &unk_1E7C3F568;
     v75 = v29;
-    v33 = v32;
+    v33 = modifyRecordsCompletionBlock;
     v76 = v33;
     [v15 setModifyRecordsCompletionBlock:v74];
   }
@@ -351,13 +351,13 @@ LABEL_21:
   if (v53)
   {
     *(v84 + 6) = 3;
-    v34 = [v53 fetchRecordZonesCompletionBlock];
+    fetchRecordZonesCompletionBlock = [v53 fetchRecordZonesCompletionBlock];
     v71[0] = MEMORY[0x1E69E9820];
     v71[1] = 3221225472;
     v71[2] = __65__FCCKDatabaseLoggingMiddleware__addLoggersToOperation_database___block_invoke_3_33;
     v71[3] = &unk_1E7C3F540;
     v72 = v29;
-    v35 = v34;
+    v35 = fetchRecordZonesCompletionBlock;
     v73 = v35;
     [v53 setFetchRecordZonesCompletionBlock:v71];
   }
@@ -365,13 +365,13 @@ LABEL_21:
   if (v52)
   {
     *(v84 + 6) = 7;
-    v36 = [v52 fetchRecordZoneChangesCompletionBlock];
+    fetchRecordZoneChangesCompletionBlock = [v52 fetchRecordZoneChangesCompletionBlock];
     v68[0] = MEMORY[0x1E69E9820];
     v68[1] = 3221225472;
     v68[2] = __65__FCCKDatabaseLoggingMiddleware__addLoggersToOperation_database___block_invoke_4;
     v68[3] = &unk_1E7C3F590;
     v69 = v29;
-    v37 = v36;
+    v37 = fetchRecordZoneChangesCompletionBlock;
     v70 = v37;
     [v52 setFetchRecordZoneChangesCompletionBlock:v68];
   }
@@ -379,13 +379,13 @@ LABEL_21:
   if (v19)
   {
     *(v84 + 6) = 4;
-    v38 = [v19 modifyRecordZonesCompletionBlock];
+    modifyRecordZonesCompletionBlock = [v19 modifyRecordZonesCompletionBlock];
     v65[0] = MEMORY[0x1E69E9820];
     v65[1] = 3221225472;
     v65[2] = __65__FCCKDatabaseLoggingMiddleware__addLoggersToOperation_database___block_invoke_5;
     v65[3] = &unk_1E7C3F5B8;
     v66 = v29;
-    v39 = v38;
+    v39 = modifyRecordZonesCompletionBlock;
     v67 = v39;
     [v19 setModifyRecordZonesCompletionBlock:v65];
   }
@@ -393,15 +393,15 @@ LABEL_21:
   if (v21)
   {
     *(v84 + 6) = 8;
-    v40 = [v21 fetchDatabaseChangesCompletionBlock];
-    if (v40)
+    fetchDatabaseChangesCompletionBlock = [v21 fetchDatabaseChangesCompletionBlock];
+    if (fetchDatabaseChangesCompletionBlock)
     {
       v62[0] = MEMORY[0x1E69E9820];
       v62[1] = 3221225472;
       v62[2] = __65__FCCKDatabaseLoggingMiddleware__addLoggersToOperation_database___block_invoke_6;
       v62[3] = &unk_1E7C3F5E0;
       v63 = v29;
-      v64 = v40;
+      v64 = fetchDatabaseChangesCompletionBlock;
       [v21 setFetchDatabaseChangesCompletionBlock:v62];
     }
   }
@@ -409,15 +409,15 @@ LABEL_21:
   if (v23)
   {
     *(v84 + 6) = 5;
-    v41 = [v23 fetchSubscriptionCompletionBlock];
-    if (v41)
+    fetchSubscriptionCompletionBlock = [v23 fetchSubscriptionCompletionBlock];
+    if (fetchSubscriptionCompletionBlock)
     {
       v59[0] = MEMORY[0x1E69E9820];
       v59[1] = 3221225472;
       v59[2] = __65__FCCKDatabaseLoggingMiddleware__addLoggersToOperation_database___block_invoke_7;
       v59[3] = &unk_1E7C3EF48;
       v60 = v29;
-      v61 = v41;
+      v61 = fetchSubscriptionCompletionBlock;
       [v23 setFetchSubscriptionCompletionBlock:v59];
     }
   }
@@ -425,15 +425,15 @@ LABEL_21:
   if (v25)
   {
     *(v84 + 6) = 6;
-    v42 = [v25 modifySubscriptionsCompletionBlock];
-    if (v42)
+    modifySubscriptionsCompletionBlock = [v25 modifySubscriptionsCompletionBlock];
+    if (modifySubscriptionsCompletionBlock)
     {
       v56[0] = MEMORY[0x1E69E9820];
       v56[1] = 3221225472;
       v56[2] = __65__FCCKDatabaseLoggingMiddleware__addLoggersToOperation_database___block_invoke_8;
       v56[3] = &unk_1E7C3F5B8;
       v57 = v29;
-      v58 = v42;
+      v58 = modifySubscriptionsCompletionBlock;
       [v25 setModifySubscriptionsCompletionBlock:v56];
     }
   }

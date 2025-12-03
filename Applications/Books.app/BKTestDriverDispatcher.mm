@@ -1,16 +1,16 @@
 @interface BKTestDriverDispatcher
 + (void)prewarm;
 - (BKTestDriverDispatcher)init;
-- (id)getReceivers:(id)a3;
-- (void)addReceiver:(id)a3 type:(id)a4;
-- (void)async:(id)a3;
+- (id)getReceivers:(id)receivers;
+- (void)addReceiver:(id)receiver type:(id)type;
+- (void)async:(id)async;
 - (void)dealloc;
-- (void)notifyBookController:(id)a3;
-- (void)notifyLibraryController:(id)a3;
-- (void)notifyTHBookControllerChange:(id)a3;
-- (void)onEventType:(id)a3 update:(id)a4 receive:(id)a5;
-- (void)sync:(id)a3;
-- (void)unsubscribe:(id)a3;
+- (void)notifyBookController:(id)controller;
+- (void)notifyLibraryController:(id)controller;
+- (void)notifyTHBookControllerChange:(id)change;
+- (void)onEventType:(id)type update:(id)update receive:(id)receive;
+- (void)sync:(id)sync;
+- (void)unsubscribe:(id)unsubscribe;
 @end
 
 @implementation BKTestDriverDispatcher
@@ -61,136 +61,136 @@
   [(BKTestDriverDispatcher *)&v4 dealloc];
 }
 
-- (id)getReceivers:(id)a3
+- (id)getReceivers:(id)receivers
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_types objectForKey:v4];
+  receiversCopy = receivers;
+  v5 = [(NSMutableDictionary *)self->_types objectForKey:receiversCopy];
   if (!v5)
   {
     v5 = +[NSMutableSet set];
-    [(NSMutableDictionary *)self->_types setObject:v5 forKey:v4];
+    [(NSMutableDictionary *)self->_types setObject:v5 forKey:receiversCopy];
   }
 
   return v5;
 }
 
-- (void)addReceiver:(id)a3 type:(id)a4
+- (void)addReceiver:(id)receiver type:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BKTestDriverDispatcher *)self queue];
+  receiverCopy = receiver;
+  typeCopy = type;
+  queue = [(BKTestDriverDispatcher *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005C848;
   block[3] = &unk_100A03A30;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = typeCopy;
+  v13 = receiverCopy;
+  v9 = receiverCopy;
+  v10 = typeCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)unsubscribe:(id)a3
+- (void)unsubscribe:(id)unsubscribe
 {
-  v4 = a3;
-  v5 = [(BKTestDriverDispatcher *)self queue];
+  unsubscribeCopy = unsubscribe;
+  queue = [(BKTestDriverDispatcher *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005C96C;
   v7[3] = &unk_100A03440;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = unsubscribeCopy;
+  v6 = unsubscribeCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)async:(id)a3
+- (void)async:(id)async
 {
-  v4 = a3;
-  v5 = [(BKTestDriverDispatcher *)self queue];
+  asyncCopy = async;
+  queue = [(BKTestDriverDispatcher *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005CB2C;
   v7[3] = &unk_100A03A58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = asyncCopy;
+  v6 = asyncCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)sync:(id)a3
+- (void)sync:(id)sync
 {
-  v4 = a3;
-  v5 = [(BKTestDriverDispatcher *)self queue];
+  syncCopy = sync;
+  queue = [(BKTestDriverDispatcher *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005CBF4;
   v7[3] = &unk_100A03A58;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = syncCopy;
+  v6 = syncCopy;
+  dispatch_sync(queue, v7);
 }
 
-- (void)onEventType:(id)a3 update:(id)a4 receive:(id)a5
+- (void)onEventType:(id)type update:(id)update receive:(id)receive
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  updateCopy = update;
+  receiveCopy = receive;
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10005CCEC;
   v15[3] = &unk_100A03A80;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v8;
-  v14 = v9;
+  v16 = typeCopy;
+  v17 = updateCopy;
+  v18 = receiveCopy;
+  v12 = receiveCopy;
+  v13 = typeCopy;
+  v14 = updateCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)notifyTHBookControllerChange:(id)a3
+- (void)notifyTHBookControllerChange:(id)change
 {
-  v4 = [a3 object];
-  [(BKTestDriverDispatcher *)self notifyBookController:v4];
+  object = [change object];
+  [(BKTestDriverDispatcher *)self notifyBookController:object];
 }
 
-- (void)notifyBookController:(id)a3
+- (void)notifyBookController:(id)controller
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10005CF34;
   v5[3] = &unk_100A03440;
-  v6 = self;
-  v7 = a3;
+  selfCopy = self;
+  controllerCopy = controller;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10005CF40;
   v4[3] = &unk_100A03AA8;
-  v4[4] = v6;
-  v3 = v7;
-  [(BKTestDriverDispatcher *)v6 onEventType:@"BookController" update:v5 receive:v4];
+  v4[4] = selfCopy;
+  v3 = controllerCopy;
+  [(BKTestDriverDispatcher *)selfCopy onEventType:@"BookController" update:v5 receive:v4];
 }
 
-- (void)notifyLibraryController:(id)a3
+- (void)notifyLibraryController:(id)controller
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10005D080;
   v5[3] = &unk_100A03440;
-  v6 = self;
-  v7 = a3;
+  selfCopy = self;
+  controllerCopy = controller;
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10005D08C;
   v4[3] = &unk_100A03AA8;
-  v4[4] = v6;
-  v3 = v7;
-  [(BKTestDriverDispatcher *)v6 onEventType:@"LibraryController" update:v5 receive:v4];
+  v4[4] = selfCopy;
+  v3 = controllerCopy;
+  [(BKTestDriverDispatcher *)selfCopy onEventType:@"LibraryController" update:v5 receive:v4];
 }
 
 @end

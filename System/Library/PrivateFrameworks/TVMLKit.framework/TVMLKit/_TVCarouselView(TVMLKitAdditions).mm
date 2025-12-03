@@ -7,24 +7,24 @@
 - (id)rowMetricsForExpectedWidth:()TVMLKitAdditions firstItemRowIndex:
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  [a1 tv_padding];
+  [self tv_padding];
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [a1 itemSize];
+  [self itemSize];
   v42 = v13;
-  [a1 tv_focusMargin];
+  [self tv_focusMargin];
   v15 = v14;
-  [a1 tv_focusMargin];
+  [self tv_focusMargin];
   v17 = v16;
-  v18 = [a1 headerView];
+  headerView = [self headerView];
 
   v19 = v42;
-  if (v18)
+  if (headerView)
   {
     v41 = v42;
-    v20 = [a1 headerView];
-    [v20 tv_margin];
+    headerView2 = [self headerView];
+    [headerView2 tv_margin];
     v40 = v21;
     v23 = v22;
     v25 = v24;
@@ -41,12 +41,12 @@
       v28 = a2;
     }
 
-    v29 = [a1 headerView];
-    [v29 tv_sizeThatFits:{v28, 0.0}];
+    headerView3 = [self headerView];
+    [headerView3 tv_sizeThatFits:{v28, 0.0}];
     v31 = v30;
 
-    v32 = [a1 headerView];
-    [v32 tv_alignmentInsetsForExpectedWidth:v28];
+    headerView4 = [self headerView];
+    [headerView4 tv_alignmentInsetsForExpectedWidth:v28];
     v34 = v33;
 
     v19 = vaddq_f64(v41, vdupq_lane_s64(COERCE__INT64(v25 + v8 + v40 + v31), 0));

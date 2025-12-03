@@ -13,9 +13,9 @@
   if (v2)
   {
     v3 = +[NSUUID UUID];
-    v4 = [v3 UUIDString];
+    uUIDString = [v3 UUIDString];
     blockID = v2->_blockID;
-    v2->_blockID = v4;
+    v2->_blockID = uUIDString;
   }
 
   return v2;

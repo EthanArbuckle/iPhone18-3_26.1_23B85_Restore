@@ -1,11 +1,11 @@
 @interface AVOutputDeviceTurnByTurnToken
-- (AVOutputDeviceTurnByTurnToken)initWithEndpoint:(OpaqueFigEndpoint *)a3;
+- (AVOutputDeviceTurnByTurnToken)initWithEndpoint:(OpaqueFigEndpoint *)endpoint;
 - (void)dealloc;
 @end
 
 @implementation AVOutputDeviceTurnByTurnToken
 
-- (AVOutputDeviceTurnByTurnToken)initWithEndpoint:(OpaqueFigEndpoint *)a3
+- (AVOutputDeviceTurnByTurnToken)initWithEndpoint:(OpaqueFigEndpoint *)endpoint
 {
   v12.receiver = self;
   v12.super_class = AVOutputDeviceTurnByTurnToken;
@@ -13,9 +13,9 @@
   v5 = v4;
   if (v4)
   {
-    if (a3)
+    if (endpoint)
     {
-      v6 = CFRetain(a3);
+      v6 = CFRetain(endpoint);
       v5->_endpoint = v6;
       if (v6)
       {

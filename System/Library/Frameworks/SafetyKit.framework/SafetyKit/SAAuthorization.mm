@@ -1,17 +1,17 @@
 @interface SAAuthorization
-+ (BOOL)connectionAuthorizedForAnyEmergency:(id)a3;
-+ (BOOL)connectionAuthorizedForCrashDetection:(id)a3;
++ (BOOL)connectionAuthorizedForAnyEmergency:(id)emergency;
++ (BOOL)connectionAuthorizedForCrashDetection:(id)detection;
 + (BOOL)currentConnectionAuthorizedForAnyEmergency;
 + (BOOL)currentConnectionAuthorizedForCrashDetection;
 + (BOOL)isInFlight;
-+ (BOOL)setAccess:(BOOL)a3 forBundleId:(id)a4;
-+ (BOOL)startAuthorizationForBundleURL:(id)a3 preflightAuthorizationStatus:(int64_t)a4 completionHandler:(id)a5;
++ (BOOL)setAccess:(BOOL)access forBundleId:(id)id;
++ (BOOL)startAuthorizationForBundleURL:(id)l preflightAuthorizationStatus:(int64_t)status completionHandler:(id)handler;
 + (id)SASyncedBundleId;
-+ (id)approvedAppExcludingBundleId:(id)a3;
++ (id)approvedAppExcludingBundleId:(id)id;
 + (id)approvedBundleId;
 + (int64_t)authorizationStatusForCurrentConnection;
-+ (int64_t)authorizationStatusWithTCCPreflightResult:(int)a3;
-+ (void)setThirdPartyBundleId:(id)a3;
++ (int64_t)authorizationStatusWithTCCPreflightResult:(int)result;
++ (void)setThirdPartyBundleId:(id)id;
 + (void)showAuthorizationPrompt;
 @end
 
@@ -20,20 +20,20 @@
 + (BOOL)isInFlight
 {
   v2 = +[SAAuthorizationInFlight sharedInstance];
-  v3 = [v2 isInFlight];
+  isInFlight = [v2 isInFlight];
 
-  return v3;
+  return isInFlight;
 }
 
 + (BOOL)currentConnectionAuthorizedForCrashDetection
 {
-  v2 = [MEMORY[0x277CCAE80] currentConnection];
-  v3 = v2;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  v3 = currentConnection;
   v7 = 0u;
   v8 = 0u;
-  if (v2)
+  if (currentConnection)
   {
-    [v2 auditToken];
+    [currentConnection auditToken];
   }
 
   v6[0] = v7;
@@ -43,13 +43,13 @@
   return v4;
 }
 
-+ (BOOL)connectionAuthorizedForCrashDetection:(id)a3
++ (BOOL)connectionAuthorizedForCrashDetection:(id)detection
 {
   v5 = 0u;
   v6 = 0u;
-  if (a3)
+  if (detection)
   {
-    [a3 auditToken];
+    [detection auditToken];
   }
 
   v4[0] = v5;
@@ -59,13 +59,13 @@
 
 + (BOOL)currentConnectionAuthorizedForAnyEmergency
 {
-  v2 = [MEMORY[0x277CCAE80] currentConnection];
-  v3 = v2;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  v3 = currentConnection;
   v7 = 0u;
   v8 = 0u;
-  if (v2)
+  if (currentConnection)
   {
-    [v2 auditToken];
+    [currentConnection auditToken];
   }
 
   v6[0] = v7;
@@ -75,13 +75,13 @@
   return v4;
 }
 
-+ (BOOL)connectionAuthorizedForAnyEmergency:(id)a3
++ (BOOL)connectionAuthorizedForAnyEmergency:(id)emergency
 {
   v5 = 0u;
   v6 = 0u;
-  if (a3)
+  if (emergency)
   {
-    [a3 auditToken];
+    [emergency auditToken];
   }
 
   v4[0] = v5;
@@ -89,11 +89,11 @@
   return [SAAuthorization auditTokenAuthorizedForAnyEmergency:v4];
 }
 
-+ (int64_t)authorizationStatusWithTCCPreflightResult:(int)a3
++ (int64_t)authorizationStatusWithTCCPreflightResult:(int)result
 {
-  if (a3)
+  if (result)
   {
-    return a3 == 1;
+    return result == 1;
   }
 
   else
@@ -104,11 +104,11 @@
 
 + (int64_t)authorizationStatusForCurrentConnection
 {
-  v2 = [MEMORY[0x277CCAE80] currentConnection];
-  v3 = v2;
-  if (v2)
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  v3 = currentConnection;
+  if (currentConnection)
   {
-    [v2 auditToken];
+    [currentConnection auditToken];
   }
 
   v4 = [SAAuthorization authorizationStatusWithTCCPreflightResult:TCCAccessPreflightWithAuditToken(), 0, 0];
@@ -116,56 +116,56 @@
   return v4;
 }
 
-+ (BOOL)startAuthorizationForBundleURL:(id)a3 preflightAuthorizationStatus:(int64_t)a4 completionHandler:(id)a5
++ (BOOL)startAuthorizationForBundleURL:(id)l preflightAuthorizationStatus:(int64_t)status completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  lCopy = l;
+  handlerCopy = handler;
   v9 = +[SAAuthorizationInFlight sharedInstance];
-  v10 = [v9 isInFlight];
-  if ((v10 & 1) == 0)
+  isInFlight = [v9 isInFlight];
+  if ((isInFlight & 1) == 0)
   {
     [v9 setInFlight:1];
-    [v9 setPreflightAuthorizationStatus:a4];
-    [v9 setCompletionHandler:v8];
-    v11 = [MEMORY[0x277CCA8D8] bundleWithURL:v7];
-    v12 = [v11 bundleIdentifier];
-    [v9 setToBundleId:v12];
+    [v9 setPreflightAuthorizationStatus:status];
+    [v9 setCompletionHandler:handlerCopy];
+    v11 = [MEMORY[0x277CCA8D8] bundleWithURL:lCopy];
+    bundleIdentifier = [v11 bundleIdentifier];
+    [v9 setToBundleId:bundleIdentifier];
 
-    v13 = [v9 toBundleId];
-    v14 = [SAAuthorization approvedAppExcludingBundleId:v13];
+    toBundleId = [v9 toBundleId];
+    v14 = [SAAuthorization approvedAppExcludingBundleId:toBundleId];
     [v9 setFromApp:v14];
 
-    v15 = [v9 fromApp];
-    v16 = [v15 bundleId];
-    [v9 setFromBundleId:v16];
+    fromApp = [v9 fromApp];
+    bundleId = [fromApp bundleId];
+    [v9 setFromBundleId:bundleId];
 
     [objc_opt_class() showAuthorizationPrompt];
   }
 
-  return v10 ^ 1;
+  return isInFlight ^ 1;
 }
 
-+ (id)approvedAppExcludingBundleId:(id)a3
++ (id)approvedAppExcludingBundleId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = +[SABundleManager crashDetectionManager];
-  v5 = [v4 approvedApps];
+  approvedApps = [v4 approvedApps];
 
-  if ([v5 count])
+  if ([approvedApps count])
   {
-    v6 = [v5 firstObject];
-    v7 = v6;
-    if (v6)
+    firstObject = [approvedApps firstObject];
+    v7 = firstObject;
+    if (firstObject)
     {
-      v8 = [v6 bundleId];
-      if ([v8 isEqualToString:v3])
+      bundleId = [firstObject bundleId];
+      if ([bundleId isEqualToString:idCopy])
       {
       }
 
       else
       {
-        v13 = [v7 pairedBundleId];
-        v14 = [v13 isEqualToString:v3];
+        pairedBundleId = [v7 pairedBundleId];
+        v14 = [pairedBundleId isEqualToString:idCopy];
 
         if ((v14 & 1) == 0)
         {
@@ -198,8 +198,8 @@ LABEL_11:
     goto LABEL_15;
   }
 
-  v12 = [v11 bundleId];
-  if ([v12 isEqualToString:v3])
+  bundleId2 = [v11 bundleId];
+  if ([bundleId2 isEqualToString:idCopy])
   {
 
 LABEL_15:
@@ -212,8 +212,8 @@ LABEL_15:
     goto LABEL_18;
   }
 
-  v16 = [v11 pairedBundleId];
-  v17 = [v16 isEqualToString:v3];
+  pairedBundleId2 = [v11 pairedBundleId];
+  v17 = [pairedBundleId2 isEqualToString:idCopy];
 
   if (v17)
   {
@@ -230,16 +230,16 @@ LABEL_19:
 
 + (id)approvedBundleId
 {
-  v2 = [a1 approvedAppExcludingBundleId:0];
-  v3 = [v2 bundleId];
+  v2 = [self approvedAppExcludingBundleId:0];
+  bundleId = [v2 bundleId];
 
-  return v3;
+  return bundleId;
 }
 
 + (void)showAuthorizationPrompt
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_4_0(&dword_23AA4D000, a1, a3, "%s - Asked to display authorization prompt but not currently authorizing.", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_4_0(&dword_23AA4D000, self, a3, "%s - Asked to display authorization prompt but not currently authorizing.", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
@@ -378,20 +378,20 @@ LABEL_19:
 LABEL_20:
 }
 
-+ (BOOL)setAccess:(BOOL)a3 forBundleId:(id)a4
++ (BOOL)setAccess:(BOOL)access forBundleId:(id)id
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:v6];
+  accessCopy = access;
+  idCopy = id;
+  v7 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:idCopy];
 
   if (!v7)
   {
-    if (v4)
+    if (accessCopy)
     {
       v10 = sa_default_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [(SAAuthorization *)v6 setAccess:v10 forBundleId:v11, v12, v13, v14, v15, v16];
+        [(SAAuthorization *)idCopy setAccess:v10 forBundleId:v11, v12, v13, v14, v15, v16];
       }
     }
 
@@ -410,18 +410,18 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if (!v4)
+  if (!accessCopy)
   {
 LABEL_10:
-    v8 = a1;
+    selfCopy2 = self;
     v9 = 0;
     goto LABEL_11;
   }
 
-  v8 = a1;
-  v9 = v6;
+  selfCopy2 = self;
+  v9 = idCopy;
 LABEL_11:
-  [v8 setThirdPartyBundleId:v9];
+  [selfCopy2 setThirdPartyBundleId:v9];
   v17 = 1;
 LABEL_13:
 
@@ -430,34 +430,34 @@ LABEL_13:
 
 + (id)SASyncedBundleId
 {
-  [a1 _synchronizePrefs];
-  v3 = [a1 _copyPrefsValueForKey:@"SAKappaThirdPartyBundleId"];
+  [self _synchronizePrefs];
+  v3 = [self _copyPrefsValueForKey:@"SAKappaThirdPartyBundleId"];
 
   return v3;
 }
 
-+ (void)setThirdPartyBundleId:(id)a3
++ (void)setThirdPartyBundleId:(id)id
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idCopy = id;
   v5 = sa_default_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = idCopy;
     _os_log_impl(&dword_23AA4D000, v5, OS_LOG_TYPE_DEFAULT, "setting third party bundleId: %@", buf, 0xCu);
   }
 
-  v6 = [a1 _copyPrefsValueForKey:@"SAKappaThirdPartyBundleId"];
-  if (([v6 isEqual:v4] & 1) == 0)
+  v6 = [self _copyPrefsValueForKey:@"SAKappaThirdPartyBundleId"];
+  if (([v6 isEqual:idCopy] & 1) == 0)
   {
-    [a1 _setPrefsValue:v4 forKey:@"SAKappaThirdPartyBundleId"];
+    [self _setPrefsValue:idCopy forKey:@"SAKappaThirdPartyBundleId"];
     v7 = dispatch_get_global_queue(2, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __41__SAAuthorization_setThirdPartyBundleId___block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     dispatch_async(v7, block);
   }
 

@@ -1,12 +1,12 @@
 @interface ACProtobufVariableKeyValuePair
-- (ACProtobufVariableKeyValuePair)initWithObjectValue:(id)a3 forKey:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ACProtobufVariableKeyValuePair)initWithObjectValue:(id)value forKey:(id)key;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ACProtobufVariableKeyValuePair
@@ -17,70 +17,70 @@
   v8.receiver = self;
   v8.super_class = ACProtobufVariableKeyValuePair;
   v4 = [(ACProtobufVariableKeyValuePair *)&v8 description];
-  v5 = [(ACProtobufVariableKeyValuePair *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ACProtobufVariableKeyValuePair *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   key = self->_key;
   if (key)
   {
-    [v3 setObject:key forKey:@"key"];
+    [dictionary setObject:key forKey:@"key"];
   }
 
   value = self->_value;
   if (value)
   {
-    v7 = [(ACProtobufVariableValue *)value dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"value"];
+    dictionaryRepresentation = [(ACProtobufVariableValue *)value dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"value"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   key = self->_key;
-  v6 = a3;
+  toCopy = to;
   PBDataWriterWriteStringField();
   value = self->_value;
   PBDataWriterWriteSubmessage();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   key = self->_key;
-  v5 = a3;
-  [v5 setKey:key];
-  [v5 setValue:self->_value];
+  toCopy = to;
+  [toCopy setKey:key];
+  [toCopy setValue:self->_value];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_key copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_key copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(ACProtobufVariableValue *)self->_value copyWithZone:a3];
+  v8 = [(ACProtobufVariableValue *)self->_value copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((key = self->_key, !(key | v4[1])) || -[NSString isEqual:](key, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((key = self->_key, !(key | equalCopy[1])) || -[NSString isEqual:](key, "isEqual:")))
   {
     value = self->_value;
-    if (value | v4[2])
+    if (value | equalCopy[2])
     {
       v7 = [(ACProtobufVariableValue *)value isEqual:?];
     }
@@ -99,18 +99,18 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4[1])
+  fromCopy = from;
+  v7 = fromCopy;
+  if (fromCopy[1])
   {
     [(ACProtobufVariableKeyValuePair *)self setKey:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
   value = self->_value;
-  v6 = v4[2];
+  v6 = fromCopy[2];
   if (value)
   {
     if (v6)
@@ -127,26 +127,26 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (ACProtobufVariableKeyValuePair)initWithObjectValue:(id)a3 forKey:(id)a4
+- (ACProtobufVariableKeyValuePair)initWithObjectValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[ACProtobufVariableValue alloc] initWithObjectValue:v7];
+  keyCopy = key;
+  valueCopy = value;
+  v8 = [[ACProtobufVariableValue alloc] initWithObjectValue:valueCopy];
 
   if (v8 && (v9 = [(ACProtobufVariableKeyValuePair *)self init], (self = v9) != 0))
   {
-    [(ACProtobufVariableKeyValuePair *)v9 setKey:v6];
+    [(ACProtobufVariableKeyValuePair *)v9 setKey:keyCopy];
     [(ACProtobufVariableKeyValuePair *)self setValue:v8];
     self = self;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

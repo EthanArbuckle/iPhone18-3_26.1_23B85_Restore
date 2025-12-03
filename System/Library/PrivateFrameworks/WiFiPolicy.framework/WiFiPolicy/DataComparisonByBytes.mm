@@ -1,19 +1,19 @@
 @interface DataComparisonByBytes
-+ (id)dataComparisonByBytesWithData1:(id)a3 data2:(id)a4 reference:(id)a5;
++ (id)dataComparisonByBytesWithData1:(id)data1 data2:(id)data2 reference:(id)reference;
 @end
 
 @implementation DataComparisonByBytes
 
-+ (id)dataComparisonByBytesWithData1:(id)a3 data2:(id)a4 reference:(id)a5
++ (id)dataComparisonByBytesWithData1:(id)data1 data2:(id)data2 reference:(id)reference
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[a1 alloc] initWithObj1:v8 obj2:v9 reference:v10];
+  data1Copy = data1;
+  data2Copy = data2;
+  referenceCopy = reference;
+  v11 = [[self alloc] initWithObj1:data1Copy obj2:data2Copy reference:referenceCopy];
   if (v11)
   {
-    v12 = [v8 length];
-    v13 = [v9 length];
+    v12 = [data1Copy length];
+    v13 = [data2Copy length];
     if (v12 >= v13)
     {
       v14 = v13;
@@ -29,11 +29,11 @@
       v15 = 0;
       do
       {
-        v16 = [v8 bytes];
-        v17 = [v9 bytes];
-        [v11 incrementTokensWith:*(v16 + v15) == *(v17 + v15)];
-        v18 = *(v16 + v15);
-        v19 = *(v17 + v15);
+        bytes = [data1Copy bytes];
+        bytes2 = [data2Copy bytes];
+        [v11 incrementTokensWith:*(bytes + v15) == *(bytes2 + v15)];
+        v18 = *(bytes + v15);
+        v19 = *(bytes2 + v15);
         v20 = v19 - v18;
         v21 = v18 >= v19;
         v22 = v18 - v19;
@@ -44,8 +44,8 @@
 
         [v11 incrementDistanceWith:v22];
         ++v15;
-        v23 = [v8 length];
-        v24 = [v9 length];
+        v23 = [data1Copy length];
+        v24 = [data2Copy length];
         if (v23 >= v24)
         {
           v25 = v24;

@@ -1,14 +1,14 @@
 @interface HUCameraStorageDurationHeaderItemProvider
-- (HUCameraStorageDurationHeaderItemProvider)initWithCameraProfiles:(id)a3 displayStyle:(unint64_t)a4;
-- (HUCameraStorageDurationHeaderItemProvider)initWithItems:(id)a3;
+- (HUCameraStorageDurationHeaderItemProvider)initWithCameraProfiles:(id)profiles displayStyle:(unint64_t)style;
+- (HUCameraStorageDurationHeaderItemProvider)initWithItems:(id)items;
 - (id)invalidationReasons;
 @end
 
 @implementation HUCameraStorageDurationHeaderItemProvider
 
-- (HUCameraStorageDurationHeaderItemProvider)initWithCameraProfiles:(id)a3 displayStyle:(unint64_t)a4
+- (HUCameraStorageDurationHeaderItemProvider)initWithCameraProfiles:(id)profiles displayStyle:(unint64_t)style
 {
-  v6 = a3;
+  profilesCopy = profiles;
   objc_initWeak(&location, self);
   v7 = objc_alloc(MEMORY[0x277D14B38]);
   v15[0] = MEMORY[0x277D85DD0];
@@ -24,11 +24,11 @@
 
   if (v10)
   {
-    v11 = [v6 copy];
+    v11 = [profilesCopy copy];
     cameraProfiles = v10->_cameraProfiles;
     v10->_cameraProfiles = v11;
 
-    v10->_displayStyle = a4;
+    v10->_displayStyle = style;
   }
 
   objc_destroyWeak(&v16);
@@ -84,11 +84,11 @@ LABEL_10:
   return v11;
 }
 
-- (HUCameraStorageDurationHeaderItemProvider)initWithItems:(id)a3
+- (HUCameraStorageDurationHeaderItemProvider)initWithItems:(id)items
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithCameraProfiles_displayStyle_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUCameraStorageDurationHeaderItemProvider.m" lineNumber:67 description:{@"%s is unavailable; use %@ instead", "-[HUCameraStorageDurationHeaderItemProvider initWithItems:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUCameraStorageDurationHeaderItemProvider.m" lineNumber:67 description:{@"%s is unavailable; use %@ instead", "-[HUCameraStorageDurationHeaderItemProvider initWithItems:]", v6}];
 
   return 0;
 }
@@ -97,8 +97,8 @@ LABEL_10:
 {
   v5.receiver = self;
   v5.super_class = HUCameraStorageDurationHeaderItemProvider;
-  v2 = [(HFItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:*MEMORY[0x277D13B28]];
+  invalidationReasons = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:*MEMORY[0x277D13B28]];
 
   return v3;
 }

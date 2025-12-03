@@ -1,17 +1,17 @@
 @interface CSBenchmarkXPCListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CSBenchmarkXPCListener)init;
 - (void)listen;
 @end
 
 @implementation CSBenchmarkXPCListener
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = CSLogContextFacilityCoreSpeech;
-  if (self->_listener != v6)
+  if (self->_listener != listenerCopy)
   {
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
@@ -200,8 +200,8 @@ LABEL_13:
   v67 = [NSSet setWithArray:v66];
   [v9 setClasses:v67 forSelector:"runNCModelWithConfig:completion:" argumentIndex:0 ofReply:1];
 
-  [v7 setExportedInterface:v9];
-  if (([CSUtils xpcConnection:v7 hasEntitlement:@"corespeech.benchmark.xpc"]& 1) == 0)
+  [connectionCopy setExportedInterface:v9];
+  if (([CSUtils xpcConnection:connectionCopy hasEntitlement:@"corespeech.benchmark.xpc"]& 1) == 0)
   {
     v72 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -211,7 +211,7 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v72, OS_LOG_TYPE_DEFAULT, "%s CSBenchmarkXPCListener does not have entitlement", &buf, 0xCu);
     }
 
-    [v7 invalidate];
+    [connectionCopy invalidate];
     goto LABEL_13;
   }
 
@@ -225,8 +225,8 @@ LABEL_13:
     v68 = *(v74 + 16);
   }
 
-  [v7 setExportedObject:v68];
-  [v7 resume];
+  [connectionCopy setExportedObject:v68];
+  [connectionCopy resume];
   v71 = 1;
 LABEL_14:
 
@@ -236,9 +236,9 @@ LABEL_14:
 - (void)listen
 {
   v3 = +[CSFPreferences sharedPreferences];
-  v4 = [v3 isModelBenchmarkingEnabled];
+  isModelBenchmarkingEnabled = [v3 isModelBenchmarkingEnabled];
 
-  if (v4)
+  if (isModelBenchmarkingEnabled)
   {
     v5 = [[NSXPCListener alloc] initWithMachServiceName:@"com.apple.corespeech.benchmark.xpc"];
     listener = self->_listener;
@@ -259,22 +259,22 @@ LABEL_14:
 - (CSBenchmarkXPCListener)init
 {
   v3 = +[CSFPreferences sharedPreferences];
-  v4 = [v3 isModelBenchmarkingEnabled];
+  isModelBenchmarkingEnabled = [v3 isModelBenchmarkingEnabled];
 
-  if (v4)
+  if (isModelBenchmarkingEnabled)
   {
     v7.receiver = self;
     v7.super_class = CSBenchmarkXPCListener;
     self = [(CSBenchmarkXPCListener *)&v7 init];
-    v5 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

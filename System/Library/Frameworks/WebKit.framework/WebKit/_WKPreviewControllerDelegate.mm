@@ -1,26 +1,26 @@
 @interface _WKPreviewControllerDelegate
-- (CGRect)previewController:(id)a3 frameForPreviewItem:(id)a4 inSourceView:(id *)a5;
-- (_WKPreviewControllerDelegate)initWithSystemPreviewController:(void *)a3;
+- (CGRect)previewController:(id)controller frameForPreviewItem:(id)item inSourceView:(id *)view;
+- (_WKPreviewControllerDelegate)initWithSystemPreviewController:(void *)controller;
 - (id).cxx_construct;
 - (id)presentingViewController;
-- (id)previewController:(id)a3 transitionImageForPreviewItem:(id)a4 contentRect:(CGRect *)a5;
-- (void)previewControllerDidDismiss:(id)a3;
+- (id)previewController:(id)controller transitionImageForPreviewItem:(id)item contentRect:(CGRect *)rect;
+- (void)previewControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation _WKPreviewControllerDelegate
 
-- (_WKPreviewControllerDelegate)initWithSystemPreviewController:(void *)a3
+- (_WKPreviewControllerDelegate)initWithSystemPreviewController:(void *)controller
 {
   v9.receiver = self;
   v9.super_class = _WKPreviewControllerDelegate;
   v5 = [(_WKPreviewControllerDelegate *)&v9 init];
   if (v5)
   {
-    if (a3)
+    if (controller)
     {
-      WTF::WeakPtrFactory<WebPushD::PushServiceConnection,WTF::DefaultWeakPtrImpl>::initializeIfNeeded(a3, a3);
-      v6 = *a3;
-      if (*a3)
+      WTF::WeakPtrFactory<WebPushD::PushServiceConnection,WTF::DefaultWeakPtrImpl>::initializeIfNeeded(controller, controller);
+      v6 = *controller;
+      if (*controller)
       {
         atomic_fetch_add(v6, 1u);
       }
@@ -43,7 +43,7 @@
   return v5;
 }
 
-- (void)previewControllerDidDismiss:(id)a3
+- (void)previewControllerDidDismiss:(id)dismiss
 {
   v13 = *MEMORY[0x1E69E9840];
   m_ptr = self->_previewController.m_impl.m_ptr;
@@ -127,9 +127,9 @@
   return v8;
 }
 
-- (CGRect)previewController:(id)a3 frameForPreviewItem:(id)a4 inSourceView:(id *)a5
+- (CGRect)previewController:(id)controller frameForPreviewItem:(id)item inSourceView:(id *)view
 {
-  v7 = [(_WKPreviewControllerDelegate *)self presentingViewController:a3];
+  v7 = [(_WKPreviewControllerDelegate *)self presentingViewController:controller];
   if (v7 && (m_ptr = self->_previewController.m_impl.m_ptr) != 0 && (v9 = *(m_ptr + 1)) != 0)
   {
     ++*(v9 + 8);
@@ -138,17 +138,17 @@
     {
       v12 = v7;
       CFRetain(*(v11 - 8));
-      v13 = [v12 view];
-      *a5 = v13;
+      view = [v12 view];
+      *view = view;
       if (*(v9 + 120) < 1 || *(v9 + 124) < 1)
       {
-        [v13 frame];
+        [view frame];
         v23 = v22;
-        [*a5 frame];
+        [*view frame];
         v25 = v24;
-        [*a5 frame];
+        [*view frame];
         v27 = v26;
-        [*a5 frame];
+        [*view frame];
         v19 = v23 * 0.5;
         v21 = v25 * 0.5;
         v15 = (v27 - v23 * 0.5) * 0.5;
@@ -198,12 +198,12 @@
   return result;
 }
 
-- (id)previewController:(id)a3 transitionImageForPreviewItem:(id)a4 contentRect:(CGRect *)a5
+- (id)previewController:(id)controller transitionImageForPreviewItem:(id)item contentRect:(CGRect *)rect
 {
   v7 = *(MEMORY[0x1E695F058] + 16);
-  a5->origin = *MEMORY[0x1E695F058];
-  a5->size = v7;
-  v8 = [(_WKPreviewControllerDelegate *)self presentingViewController:a3];
+  rect->origin = *MEMORY[0x1E695F058];
+  rect->size = v7;
+  v8 = [(_WKPreviewControllerDelegate *)self presentingViewController:controller];
   if (v8)
   {
     v9 = v8;
@@ -212,9 +212,9 @@
       [objc_msgSend(v8 view];
       v19 = v18 * 0.5;
       [objc_msgSend(v9 "view")];
-      a5->origin = v25;
-      a5->size.width = v19;
-      a5->size.height = v20 * 0.5;
+      rect->origin = v25;
+      rect->size.width = v19;
+      rect->size.height = v20 * 0.5;
     }
 
     else
@@ -236,9 +236,9 @@
             {
               CFRetain(*(v15 - 8));
               WebKit::WebPageProxy::syncRootViewToScreen((v15 - 16), &self->_linkRect);
-              a5->origin = *MEMORY[0x1E695EFF8];
-              a5->size.width = v16;
-              a5->size.height = v17;
+              rect->origin = *MEMORY[0x1E695EFF8];
+              rect->size.width = v16;
+              rect->size.height = v17;
               CFRelease(*(v15 - 8));
             }
           }

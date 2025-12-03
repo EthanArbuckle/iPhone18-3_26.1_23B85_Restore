@@ -1,26 +1,26 @@
 @interface TransitDirectionsInstructionsStepViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 @end
 
 @implementation TransitDirectionsInstructionsStepViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"TransitDirectionsInstructionsStepView" hasInstanceMethod:@"_detailButtonTapped:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"TransitDirectionsInstructionsStepView" hasInstanceVariable:@"_primaryLabel" withType:"_MKUILabel"];
-  [v3 validateClass:@"TransitDirectionsInstructionsStepView" hasInstanceVariable:@"_secondaryLabel" withType:"MKMultiPartLabel"];
-  [v3 validateClass:@"TransitDirectionsInstructionsStepView" hasInstanceVariable:@"_primaryAccessoryLabel" withType:"_MKUILabel"];
-  [v3 validateClass:@"TransitDirectionsInstructionsStepView" hasInstanceVariable:@"_secondaryAccessoryLabel" withType:"_MKUILabel"];
-  [v3 validateClass:@"TransitDirectionsInstructionsStepView" hasInstanceVariable:@"_tertiaryLabel" withType:"MKMultiPartLabel"];
-  [v3 validateClass:@"TransitDirectionsInstructionsStepView" hasInstanceVariable:@"_platformArtworkImageView" withType:"MKArtworkImageView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"TransitDirectionsInstructionsStepView" hasInstanceMethod:@"_detailButtonTapped:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"TransitDirectionsInstructionsStepView" hasInstanceVariable:@"_primaryLabel" withType:"_MKUILabel"];
+  [validationsCopy validateClass:@"TransitDirectionsInstructionsStepView" hasInstanceVariable:@"_secondaryLabel" withType:"MKMultiPartLabel"];
+  [validationsCopy validateClass:@"TransitDirectionsInstructionsStepView" hasInstanceVariable:@"_primaryAccessoryLabel" withType:"_MKUILabel"];
+  [validationsCopy validateClass:@"TransitDirectionsInstructionsStepView" hasInstanceVariable:@"_secondaryAccessoryLabel" withType:"_MKUILabel"];
+  [validationsCopy validateClass:@"TransitDirectionsInstructionsStepView" hasInstanceVariable:@"_tertiaryLabel" withType:"MKMultiPartLabel"];
+  [validationsCopy validateClass:@"TransitDirectionsInstructionsStepView" hasInstanceVariable:@"_platformArtworkImageView" withType:"MKArtworkImageView"];
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(TransitDirectionsInstructionsStepViewAccessibility *)self accessibilityLabel];
-  v3 = [v2 length] != 0;
+  accessibilityLabel = [(TransitDirectionsInstructionsStepViewAccessibility *)self accessibilityLabel];
+  v3 = [accessibilityLabel length] != 0;
 
   return v3;
 }

@@ -1,16 +1,16 @@
 @interface NUCGImageDepthSourceNode
-- (NUCGImageDepthSourceNode)initWithSourceNode:(id)a3 auxiliaryImageType:(int64_t)a4 auxiliaryImageProperties:(id)a5;
-- (id)_evaluateImageWithSourceOptions:(id)a3 subsampleFactor:(int64_t *)a4 error:(id *)a5;
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6;
+- (NUCGImageDepthSourceNode)initWithSourceNode:(id)node auxiliaryImageType:(int64_t)type auxiliaryImageProperties:(id)properties;
+- (id)_evaluateImageWithSourceOptions:(id)options subsampleFactor:(int64_t *)factor error:(id *)error;
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error;
 @end
 
 @implementation NUCGImageDepthSourceNode
 
-- (id)_evaluateImageWithSourceOptions:(id)a3 subsampleFactor:(int64_t *)a4 error:(id *)a5
+- (id)_evaluateImageWithSourceOptions:(id)options subsampleFactor:(int64_t *)factor error:(id *)error
 {
   v56[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (!a5)
+  optionsCopy = options;
+  if (!error)
   {
     v21 = NUAssertLogger_10628();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -31,8 +31,8 @@
         v35 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v36 = MEMORY[0x1E696AF00];
         v37 = v35;
-        v38 = [v36 callStackSymbols];
-        v39 = [v38 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v36 callStackSymbols];
+        v39 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v35;
         *&buf[12] = 2114;
@@ -43,8 +43,8 @@
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v27;
       _os_log_error_impl(&dword_1C0184000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -53,7 +53,7 @@
     _NUAssertFailHandler("[NUCGImageDepthSourceNode _evaluateImageWithSourceOptions:subsampleFactor:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+CGAuxiliaryImage.m", 76, @"Invalid parameter not satisfying: %s", v40, v41, v42, v43, "error != nil");
   }
 
-  if (!a4)
+  if (!factor)
   {
     v28 = NUAssertLogger_10628();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -74,8 +74,8 @@
         v44 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v45 = MEMORY[0x1E696AF00];
         v46 = v44;
-        v47 = [v45 callStackSymbols];
-        v48 = [v47 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v45 callStackSymbols];
+        v48 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v44;
         *&buf[12] = 2114;
@@ -86,8 +86,8 @@
 
     else if (v32)
     {
-      v33 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v34 = [v33 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v34 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v34;
       _os_log_error_impl(&dword_1C0184000, v31, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -96,28 +96,28 @@
     _NUAssertFailHandler("[NUCGImageDepthSourceNode _evaluateImageWithSourceOptions:subsampleFactor:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+CGAuxiliaryImage.m", 78, @"Invalid parameter not satisfying: %s", v49, v50, v51, v52, "subsampleFactor != NULL");
   }
 
-  v9 = v8;
-  *a4 = 1;
-  v10 = [(NUCGAuxiliaryImageSourceNode *)self _evaluateAuxiliaryImageForType:[(NUCGAuxiliaryImageSourceNode *)self auxiliaryImageType] error:a5];
+  v9 = optionsCopy;
+  *factor = 1;
+  v10 = [(NUCGAuxiliaryImageSourceNode *)self _evaluateAuxiliaryImageForType:[(NUCGAuxiliaryImageSourceNode *)self auxiliaryImageType] error:error];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 underlyingAVDepthData];
-    v13 = v12;
-    if (v12)
+    underlyingAVDepthData = [v10 underlyingAVDepthData];
+    v13 = underlyingAVDepthData;
+    if (underlyingAVDepthData)
     {
-      v14 = [v12 depthDataMap];
-      if (v14)
+      depthDataMap = [underlyingAVDepthData depthDataMap];
+      if (depthDataMap)
       {
         v55[0] = *MEMORY[0x1E695F9A8];
-        v15 = [MEMORY[0x1E695DFB0] null];
+        null = [MEMORY[0x1E695DFB0] null];
         v55[1] = *MEMORY[0x1E695F938];
-        v56[0] = v15;
+        v56[0] = null;
         v56[1] = v13;
         v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v56 forKeys:v55 count:2];
 
-        v17 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:v14 options:v16];
-        v14 = v17;
+        v17 = [MEMORY[0x1E695F658] imageWithCVPixelBuffer:depthDataMap options:v16];
+        depthDataMap = v17;
         if (self->_needsAspectRatioCorrection)
         {
           v18 = *&self->_aspectTransform.c;
@@ -126,45 +126,45 @@
           v54 = *&self->_aspectTransform.tx;
           v19 = [v17 imageByApplyingTransform:buf];
 
-          v14 = v19;
+          depthDataMap = v19;
         }
       }
 
       else
       {
-        *a5 = [NUError unknownError:@"Unable to convert AVDepthData to disparity" object:self];
+        *error = [NUError unknownError:@"Unable to convert AVDepthData to disparity" object:self];
       }
     }
 
     else
     {
-      v14 = 0;
+      depthDataMap = 0;
     }
   }
 
   else
   {
-    v14 = 0;
+    depthDataMap = 0;
   }
 
-  return v14;
+  return depthDataMap;
 }
 
-- (id)resolvedNodeWithCachedInputs:(id)a3 settings:(id)a4 pipelineState:(id)a5 error:(id *)a6
+- (id)resolvedNodeWithCachedInputs:(id)inputs settings:(id)settings pipelineState:(id)state error:(id *)error
 {
   v8.receiver = self;
   v8.super_class = NUCGImageDepthSourceNode;
-  v6 = [(NUCGAuxiliaryImageSourceNode *)&v8 resolvedNodeWithCachedInputs:a3 settings:a4 pipelineState:a5 error:a6];
+  v6 = [(NUCGAuxiliaryImageSourceNode *)&v8 resolvedNodeWithCachedInputs:inputs settings:settings pipelineState:state error:error];
 
   return v6;
 }
 
-- (NUCGImageDepthSourceNode)initWithSourceNode:(id)a3 auxiliaryImageType:(int64_t)a4 auxiliaryImageProperties:(id)a5
+- (NUCGImageDepthSourceNode)initWithSourceNode:(id)node auxiliaryImageType:(int64_t)type auxiliaryImageProperties:(id)properties
 {
   v64 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (!v8)
+  nodeCopy = node;
+  propertiesCopy = properties;
+  if (!nodeCopy)
   {
     v30 = NUAssertLogger_10628();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -185,8 +185,8 @@
         v44 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v45 = MEMORY[0x1E696AF00];
         v46 = v44;
-        v47 = [v45 callStackSymbols];
-        v48 = [v47 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v45 callStackSymbols];
+        v48 = [callStackSymbols componentsJoinedByString:@"\n"];
         LODWORD(v63.a) = 138543618;
         *(&v63.a + 4) = v44;
         WORD2(v63.b) = 2114;
@@ -197,8 +197,8 @@
 
     else if (v34)
     {
-      v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v36 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v36 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       LODWORD(v63.a) = 138543362;
       *(&v63.a + 4) = v36;
       _os_log_error_impl(&dword_1C0184000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v63, 0xCu);
@@ -207,8 +207,8 @@
     _NUAssertFailHandler("[NUCGImageDepthSourceNode initWithSourceNode:auxiliaryImageType:auxiliaryImageProperties:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/NURenderSourceNode+CGAuxiliaryImage.m", 33, @"Invalid parameter not satisfying: %s", v49, v50, v51, v52, "sourceNode != nil");
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = propertiesCopy;
+  if (!propertiesCopy)
   {
     v37 = NUAssertLogger_10628();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -229,8 +229,8 @@
         v53 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v54 = MEMORY[0x1E696AF00];
         v55 = v53;
-        v56 = [v54 callStackSymbols];
-        v57 = [v56 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v54 callStackSymbols];
+        v57 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         LODWORD(v63.a) = 138543618;
         *(&v63.a + 4) = v53;
         WORD2(v63.b) = 2114;
@@ -241,8 +241,8 @@
 
     else if (v41)
     {
-      v42 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v43 = [v42 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v43 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       LODWORD(v63.a) = 138543362;
       *(&v63.a + 4) = v43;
       _os_log_error_impl(&dword_1C0184000, v40, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v63, 0xCu);
@@ -253,11 +253,11 @@
 
   v62.receiver = self;
   v62.super_class = NUCGImageDepthSourceNode;
-  v11 = [(NUCGAuxiliaryImageSourceNode *)&v62 initWithSourceNode:v8 auxiliaryImageType:a4 auxiliaryImageProperties:v9];
+  v11 = [(NUCGAuxiliaryImageSourceNode *)&v62 initWithSourceNode:nodeCopy auxiliaryImageType:type auxiliaryImageProperties:propertiesCopy];
   *(v11 + 33) = [v10 size];
   *(v11 + 34) = v12;
   v13 = v11 + 272;
-  v14 = [v8 pixelSizeWithSourceOptions:MEMORY[0x1E695E0F8]];
+  v14 = [nodeCopy pixelSizeWithSourceOptions:MEMORY[0x1E695E0F8]];
   v16 = *(v11 + 33);
   v17 = *(v11 + 34);
   v18 = v15 * v16 / v14;

@@ -1,14 +1,14 @@
 @interface InCallControlsTitleCell
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 @end
 
 @implementation InCallControlsTitleCell
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  v6.super.isa = InCallControlsTitleCell.preferredLayoutAttributesFitting(_:)(v4).super.isa;
+  attributesCopy = attributes;
+  selfCopy = self;
+  v6.super.isa = InCallControlsTitleCell.preferredLayoutAttributesFitting(_:)(attributesCopy).super.isa;
 
   return v6.super.isa;
 }

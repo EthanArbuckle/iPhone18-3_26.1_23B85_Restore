@@ -1,113 +1,113 @@
 @interface HMDNetworkRouterFirewallRuleManagerBackingStoreMirror
-+ (BOOL)__errorIsNotFound:(id)a3;
++ (BOOL)__errorIsNotFound:(id)found;
 + (id)__certificatesRecordID;
 + (id)__createSignatureVerificationPolicy;
 + (id)__overrideParentModelID;
-+ (id)__publicKeyFromCertificateRecord:(id)a3 dataKey:(id)a4 assetKey:(id)a5;
-+ (id)__recordKeyCertificatePrefix:(id)a3;
++ (id)__publicKeyFromCertificateRecord:(id)record dataKey:(id)key assetKey:(id)assetKey;
++ (id)__recordKeyCertificatePrefix:(id)prefix;
 + (id)logCategory;
-+ (id)publicKeysFromCertificateRecord:(id)a3;
++ (id)publicKeysFromCertificateRecord:(id)record;
 + (unint64_t)__maxSizeForCKRecordSignatureVerificationCertificateChain;
-- (BOOL)__addOverrides:(id)a3 replace:(BOOL)a4 options:(id)a5 activity:(id)a6 error:(id *)a7;
-- (BOOL)__canRecoverFromFetchDatabaseChangesError:(id)a3 fetchInfo:(id)a4;
-- (BOOL)__canRecoverFromVerificationCertificatesError:(id)a3 fetchInfo:(id)a4;
-- (BOOL)__createCloudZonesForFetchInfo:(id)a3 error:(id *)a4;
-- (BOOL)__removeAllLocalRulesWithOptions:(id)a3 activity:(id)a4 error:(id *)a5;
-- (BOOL)__removeAllOverridesWithOptions:(id)a3 activity:(id)a4 error:(id *)a5;
-- (BOOL)__removeOverridesForRecordIDs:(id)a3 options:(id)a4 activity:(id)a5 error:(id *)a6;
-- (BOOL)__removeOverridesForZoneName:(id)a3 options:(id)a4 activity:(id)a5 error:(id *)a6;
-- (BOOL)__removeOverridesForZoneName:(id)a3 recordName:(id)a4 options:(id)a5 activity:(id)a6 error:(id *)a7;
-- (BOOL)__shouldFailCloudRecordFetchError:(id)a3 error:(id)a4;
-- (BOOL)_removeOverridesForZoneName:(id)a3 recordName:(id)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)addOverrides:(id)a3 replace:(BOOL)a4 options:(id)a5 error:(id *)a6;
+- (BOOL)__addOverrides:(id)overrides replace:(BOOL)replace options:(id)options activity:(id)activity error:(id *)error;
+- (BOOL)__canRecoverFromFetchDatabaseChangesError:(id)error fetchInfo:(id)info;
+- (BOOL)__canRecoverFromVerificationCertificatesError:(id)error fetchInfo:(id)info;
+- (BOOL)__createCloudZonesForFetchInfo:(id)info error:(id *)error;
+- (BOOL)__removeAllLocalRulesWithOptions:(id)options activity:(id)activity error:(id *)error;
+- (BOOL)__removeAllOverridesWithOptions:(id)options activity:(id)activity error:(id *)error;
+- (BOOL)__removeOverridesForRecordIDs:(id)ds options:(id)options activity:(id)activity error:(id *)error;
+- (BOOL)__removeOverridesForZoneName:(id)name options:(id)options activity:(id)activity error:(id *)error;
+- (BOOL)__removeOverridesForZoneName:(id)name recordName:(id)recordName options:(id)options activity:(id)activity error:(id *)error;
+- (BOOL)__shouldFailCloudRecordFetchError:(id)error error:(id)a4;
+- (BOOL)_removeOverridesForZoneName:(id)name recordName:(id)recordName options:(id)options error:(id *)error;
+- (BOOL)addOverrides:(id)overrides replace:(BOOL)replace options:(id)options error:(id *)error;
 - (BOOL)isRunning;
 - (BOOL)isShuttingDown;
-- (BOOL)removeAllLocalRulesWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)removeAllOverridesWithOptions:(id)a3 error:(id *)a4;
-- (BOOL)removeOverridesForRecordIDs:(id)a3 options:(id)a4 error:(id *)a5;
-- (BOOL)removeOverridesForZoneName:(id)a3 recordName:(id)a4 options:(id)a5 error:(id *)a6;
-- (HMDNetworkRouterFirewallRuleManagerBackingStoreMirror)initWithLocalDatabase:(id)a3 cloudDatabase:(id)a4 useAnonymousRequests:(BOOL)a5 ownerQueue:(id)a6;
+- (BOOL)removeAllLocalRulesWithOptions:(id)options error:(id *)error;
+- (BOOL)removeAllOverridesWithOptions:(id)options error:(id *)error;
+- (BOOL)removeOverridesForRecordIDs:(id)ds options:(id)options error:(id *)error;
+- (BOOL)removeOverridesForZoneName:(id)name recordName:(id)recordName options:(id)options error:(id *)error;
+- (HMDNetworkRouterFirewallRuleManagerBackingStoreMirror)initWithLocalDatabase:(id)database cloudDatabase:(id)cloudDatabase useAnonymousRequests:(BOOL)requests ownerQueue:(id)queue;
 - (HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorInternalStateModel)internalState;
 - (NAFuture)lastAsyncFuture;
 - (NAFuture)shutdownFuture;
 - (NAFuture)startupFuture;
-- (id)__asyncFutureWithActivity:(id)a3 ignoreErrors:(BOOL)a4 block:(id)a5;
-- (id)__createCloudZoneIDForZoneID:(id)a3;
-- (id)__fetchAllDataForRecordIDs:(id)a3 options:(id)a4 activity:(id)a5 error:(id *)a6;
-- (id)__fetchAllDataForZoneID:(id)a3 options:(id)a4 activity:(id)a5 error:(id *)a6;
-- (id)__fetchAllDataForZoneName:(id)a3 options:(id)a4 activity:(id)a5 error:(id *)a6;
-- (id)__fetchOverridesForRecordIDs:(id)a3 options:(id)a4 activity:(id)a5 error:(id *)a6;
-- (id)__fetchOverridesForZoneName:(id)a3 options:(id)a4 activity:(id)a5 error:(id *)a6;
-- (id)__loadOrCreateInternalStateModelWithLocalZone:(id)a3 activity:(id)a4;
-- (id)__localZonesForRecordIDs:(id)a3 activity:(id)a4 error:(id *)a5;
-- (id)__openLocalZoneForCloudZoneID:(id)a3 error:(id *)a4;
-- (id)_fetchAllDataForZoneName:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)_fetchOverridesForZoneName:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)cloudFetchNeededForRecordIDs:(id)a3 error:(id *)a4;
+- (id)__asyncFutureWithActivity:(id)activity ignoreErrors:(BOOL)errors block:(id)block;
+- (id)__createCloudZoneIDForZoneID:(id)d;
+- (id)__fetchAllDataForRecordIDs:(id)ds options:(id)options activity:(id)activity error:(id *)error;
+- (id)__fetchAllDataForZoneID:(id)d options:(id)options activity:(id)activity error:(id *)error;
+- (id)__fetchAllDataForZoneName:(id)name options:(id)options activity:(id)activity error:(id *)error;
+- (id)__fetchOverridesForRecordIDs:(id)ds options:(id)options activity:(id)activity error:(id *)error;
+- (id)__fetchOverridesForZoneName:(id)name options:(id)options activity:(id)activity error:(id *)error;
+- (id)__loadOrCreateInternalStateModelWithLocalZone:(id)zone activity:(id)activity;
+- (id)__localZonesForRecordIDs:(id)ds activity:(id)activity error:(id *)error;
+- (id)__openLocalZoneForCloudZoneID:(id)d error:(id *)error;
+- (id)_fetchAllDataForZoneName:(id)name options:(id)options error:(id *)error;
+- (id)_fetchOverridesForZoneName:(id)name options:(id)options error:(id *)error;
+- (id)cloudFetchNeededForRecordIDs:(id)ds error:(id *)error;
 - (id)desiredKeys;
 - (id)destroy;
-- (id)fetchAllDataForRecordIDs:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)fetchAllDataForZoneName:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)fetchAllDataWithOptions:(id)a3 error:(id *)a4;
-- (id)fetchOverridesForRecordIDs:(id)a3 options:(id)a4 error:(id *)a5;
+- (id)fetchAllDataForRecordIDs:(id)ds options:(id)options error:(id *)error;
+- (id)fetchAllDataForZoneName:(id)name options:(id)options error:(id *)error;
+- (id)fetchAllDataWithOptions:(id)options error:(id *)error;
+- (id)fetchOverridesForRecordIDs:(id)ds options:(id)options error:(id *)error;
 - (id)flush;
 - (id)shutdown;
-- (id)triggerOutputForOutputRow:(unint64_t)a3 options:(id)a4;
-- (void)__fetchCloudRecordsWithFetchInfo:(id)a3;
-- (void)__fetchDatabaseChangesCompleted:(id)a3 error:(id)a4;
-- (void)__fetchDatabaseChangesWithFetchInfo:(id)a3;
-- (void)__fetchRecordByID:(id)a3;
-- (void)__fetchRecordsByQuery:(id)a3;
-- (void)__fetchVerificationCertificatesCompleted:(id)a3 record:(id)a4 error:(id)a5;
-- (void)__fetchVerificationCertificatesWithFetchInfo:(id)a3;
-- (void)__fetchZoneChangesWithFetchInfo:(id)a3;
-- (void)__performCloudZonePullsWithFetchInfo:(id)a3;
-- (void)__removeDeletedZonesWithFetchInfo:(id)a3;
-- (void)__retryFetchDatabaseChangesWithFetchInfo:(id)a3;
-- (void)__retryFetchVerificationCertificatesWithFetchInfo:(id)a3;
-- (void)__saveInternalStateWithActivity:(id)a3;
-- (void)__shutdownLocalZones:(id)a3 activity:(id)a4;
-- (void)__shutdownWithActivity:(id)a3;
-- (void)__startQueryOperation:(id)a3 operation:(id)a4;
-- (void)__startUpCloudZonesWithFetchInfo:(id)a3;
-- (void)__startupWithLocalZone:(id)a3 activity:(id)a4;
-- (void)__updateChangeTokenWithFetchInfo:(id)a3;
-- (void)_fetchCloudRecordsForZoneID:(id)a3 recordID:(id)a4 options:(id)a5 desiredKeys:(id)a6 completion:(id)a7;
-- (void)fetchCloudChangesForRecordIDs:(id)a3 options:(id)a4 ignoreLastSynchronizedRecords:(BOOL)a5 xpcActivity:(id)a6 completion:(id)a7;
-- (void)fetchCloudRecordIDsForZoneID:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)fetchCloudRecordsForZoneID:(id)a3 recordID:(id)a4 options:(id)a5 completion:(id)a6;
-- (void)fetchVerificationCertificatesRecordWithOperationGroup:(id)a3 completion:(id)a4;
-- (void)setLastAsyncFuture:(id)a3;
-- (void)startUpWithLocalZone:(id)a3;
+- (id)triggerOutputForOutputRow:(unint64_t)row options:(id)options;
+- (void)__fetchCloudRecordsWithFetchInfo:(id)info;
+- (void)__fetchDatabaseChangesCompleted:(id)completed error:(id)error;
+- (void)__fetchDatabaseChangesWithFetchInfo:(id)info;
+- (void)__fetchRecordByID:(id)d;
+- (void)__fetchRecordsByQuery:(id)query;
+- (void)__fetchVerificationCertificatesCompleted:(id)completed record:(id)record error:(id)error;
+- (void)__fetchVerificationCertificatesWithFetchInfo:(id)info;
+- (void)__fetchZoneChangesWithFetchInfo:(id)info;
+- (void)__performCloudZonePullsWithFetchInfo:(id)info;
+- (void)__removeDeletedZonesWithFetchInfo:(id)info;
+- (void)__retryFetchDatabaseChangesWithFetchInfo:(id)info;
+- (void)__retryFetchVerificationCertificatesWithFetchInfo:(id)info;
+- (void)__saveInternalStateWithActivity:(id)activity;
+- (void)__shutdownLocalZones:(id)zones activity:(id)activity;
+- (void)__shutdownWithActivity:(id)activity;
+- (void)__startQueryOperation:(id)operation operation:(id)a4;
+- (void)__startUpCloudZonesWithFetchInfo:(id)info;
+- (void)__startupWithLocalZone:(id)zone activity:(id)activity;
+- (void)__updateChangeTokenWithFetchInfo:(id)info;
+- (void)_fetchCloudRecordsForZoneID:(id)d recordID:(id)iD options:(id)options desiredKeys:(id)keys completion:(id)completion;
+- (void)fetchCloudChangesForRecordIDs:(id)ds options:(id)options ignoreLastSynchronizedRecords:(BOOL)records xpcActivity:(id)activity completion:(id)completion;
+- (void)fetchCloudRecordIDsForZoneID:(id)d options:(id)options completion:(id)completion;
+- (void)fetchCloudRecordsForZoneID:(id)d recordID:(id)iD options:(id)options completion:(id)completion;
+- (void)fetchVerificationCertificatesRecordWithOperationGroup:(id)group completion:(id)completion;
+- (void)setLastAsyncFuture:(id)future;
+- (void)startUpWithLocalZone:(id)zone;
 @end
 
 @implementation HMDNetworkRouterFirewallRuleManagerBackingStoreMirror
 
-- (void)__startQueryOperation:(id)a3 operation:(id)a4
+- (void)__startQueryOperation:(id)operation operation:(id)a4
 {
-  v6 = a3;
+  operationCopy = operation;
   v7 = a4;
-  v8 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v8);
-  [v7 setCallbackQueue:v8];
-  v9 = [v6 operationGroup];
-  [v7 setGroup:v9];
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
+  [v7 setCallbackQueue:workQueue];
+  operationGroup = [operationCopy operationGroup];
+  [v7 setGroup:operationGroup];
 
-  v10 = [v6 desiredKeys];
+  desiredKeys = [operationCopy desiredKeys];
 
-  if (v10)
+  if (desiredKeys)
   {
-    v11 = [v6 desiredKeys];
-    [v7 setDesiredKeys:v11];
+    desiredKeys2 = [operationCopy desiredKeys];
+    [v7 setDesiredKeys:desiredKeys2];
   }
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __108__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchCloudRecords____startQueryOperation_operation___block_invoke;
   v22[3] = &unk_279720828;
-  v12 = v6;
+  v12 = operationCopy;
   v23 = v12;
-  v13 = v8;
+  v13 = workQueue;
   v24 = v13;
   [v7 setRecordFetchedBlock:v22];
   v18[0] = MEMORY[0x277D85DD0];
@@ -116,13 +116,13 @@
   v18[3] = &unk_279720850;
   v19 = v12;
   v20 = v13;
-  v21 = self;
+  selfCopy = self;
   v14 = v13;
   v15 = v12;
   [v7 setQueryCompletionBlock:v18];
-  v16 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self cloudDatabase];
-  v17 = [v16 publicDatabase];
-  [v17 addOperation:v7];
+  cloudDatabase = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self cloudDatabase];
+  publicDatabase = [cloudDatabase publicDatabase];
+  [publicDatabase addOperation:v7];
 }
 
 void __108__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchCloudRecords____startQueryOperation_operation___block_invoke(uint64_t a1, void *a2)
@@ -224,25 +224,25 @@ void __108__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchCloudReco
   [v2 addObject:*(a1 + 48)];
 }
 
-- (void)__fetchRecordsByQuery:(id)a3
+- (void)__fetchRecordsByQuery:(id)query
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  queryCopy = query;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 zoneID];
+  zoneID = [queryCopy zoneID];
 
-  v7 = [v4 activity];
-  v8 = v7;
-  if (v6)
+  activity = [queryCopy activity];
+  v8 = activity;
+  if (zoneID)
   {
-    v9 = [v4 zoneID];
-    v10 = [v9 hmbDescription];
-    [v8 markWithFormat:@"Fetching records from zone %@", v10];
+    zoneID2 = [queryCopy zoneID];
+    hmbDescription = [zoneID2 hmbDescription];
+    [v8 markWithFormat:@"Fetching records from zone %@", hmbDescription];
 
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -250,21 +250,21 @@ void __108__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchCloudReco
     }
 
     v14 = HMFGetLogIdentifier();
-    v15 = [v4 zoneID];
-    v16 = [v15 hmbDescription];
+    zoneID3 = [queryCopy zoneID];
+    hmbDescription2 = [zoneID3 hmbDescription];
     *buf = 138543618;
     v33 = v14;
     v34 = 2112;
-    v35 = v16;
+    v35 = hmbDescription2;
     _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@Fetching records from zone %@", buf, 0x16u);
   }
 
   else
   {
-    [v7 markWithFormat:@"Fetching all records"];
+    [activity markWithFormat:@"Fetching all records"];
 
     v11 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
@@ -279,25 +279,25 @@ void __108__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchCloudReco
 
 LABEL_7:
   objc_autoreleasePoolPop(v11);
-  v18 = [v4 desiredKeys];
+  desiredKeys = [queryCopy desiredKeys];
 
-  if (v18)
+  if (desiredKeys)
   {
-    v19 = [v4 activity];
-    v20 = [v4 desiredKeys];
-    [v19 markWithFormat:@"Only fetching specific fields: %@", v20];
+    activity2 = [queryCopy activity];
+    desiredKeys2 = [queryCopy desiredKeys];
+    [activity2 markWithFormat:@"Only fetching specific fields: %@", desiredKeys2];
 
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy3 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       v24 = HMFGetLogIdentifier();
-      v25 = [v4 desiredKeys];
+      desiredKeys3 = [queryCopy desiredKeys];
       *buf = 138543618;
       v33 = v24;
       v34 = 2112;
-      v35 = v25;
+      v35 = desiredKeys3;
       _os_log_impl(&dword_2531F8000, v23, OS_LOG_TYPE_INFO, "%{public}@Only fetching specific fields: %@", buf, 0x16u);
     }
 
@@ -307,96 +307,96 @@ LABEL_7:
   v26 = [MEMORY[0x277CCAC30] predicateWithValue:1];
   v27 = [objc_alloc(MEMORY[0x277CBC578]) initWithRecordType:@"CD_CloudAccessory" predicate:v26];
   v28 = [objc_alloc(MEMORY[0x277CBC590]) initWithQuery:v27];
-  v29 = [v4 zoneID];
+  zoneID4 = [queryCopy zoneID];
 
-  if (v29)
+  if (zoneID4)
   {
-    v30 = [v4 zoneID];
-    [v28 setZoneID:v30];
+    zoneID5 = [queryCopy zoneID];
+    [v28 setZoneID:zoneID5];
   }
 
-  [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __startQueryOperation:v4 operation:v28];
+  [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __startQueryOperation:queryCopy operation:v28];
 
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__fetchRecordByID:(id)a3
+- (void)__fetchRecordByID:(id)d
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v5);
-  v6 = [v4 activity];
-  v7 = [v4 recordID];
-  v8 = [v7 hmbDescription];
-  [v6 markWithFormat:@"Fetching record: %@", v8];
+  dCopy = d;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
+  activity = [dCopy activity];
+  recordID = [dCopy recordID];
+  hmbDescription = [recordID hmbDescription];
+  [activity markWithFormat:@"Fetching record: %@", hmbDescription];
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v4 recordID];
-    v14 = [v13 hmbDescription];
+    recordID2 = [dCopy recordID];
+    hmbDescription2 = [recordID2 hmbDescription];
     *buf = 138543618;
     v40 = v12;
     v41 = 2112;
-    v42 = v14;
+    v42 = hmbDescription2;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@Fetching record: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
   v15 = objc_alloc(MEMORY[0x277CBC3E0]);
-  v16 = [v4 recordID];
-  v38 = v16;
+  recordID3 = [dCopy recordID];
+  v38 = recordID3;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
   v18 = [v15 initWithRecordIDs:v17];
 
-  [v18 setCallbackQueue:v5];
-  v19 = [v4 operationGroup];
-  [v18 setGroup:v19];
+  [v18 setCallbackQueue:workQueue];
+  operationGroup = [dCopy operationGroup];
+  [v18 setGroup:operationGroup];
 
-  v20 = [v4 desiredKeys];
+  desiredKeys = [dCopy desiredKeys];
 
-  if (v20)
+  if (desiredKeys)
   {
-    v21 = [v4 activity];
-    v22 = [v4 desiredKeys];
-    [v21 markWithFormat:@"Only fetching specific fields: %@", v22];
+    activity2 = [dCopy activity];
+    desiredKeys2 = [dCopy desiredKeys];
+    [activity2 markWithFormat:@"Only fetching specific fields: %@", desiredKeys2];
 
     v23 = objc_autoreleasePoolPush();
-    v24 = v10;
+    v24 = selfCopy;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
       v26 = HMFGetLogIdentifier();
-      v27 = [v4 desiredKeys];
+      desiredKeys3 = [dCopy desiredKeys];
       *buf = 138543618;
       v40 = v26;
       v41 = 2112;
-      v42 = v27;
+      v42 = desiredKeys3;
       _os_log_impl(&dword_2531F8000, v25, OS_LOG_TYPE_INFO, "%{public}@Only fetching specific fields: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v23);
-    v28 = [v4 desiredKeys];
-    [v18 setDesiredKeys:v28];
+    desiredKeys4 = [dCopy desiredKeys];
+    [v18 setDesiredKeys:desiredKeys4];
   }
 
   v34[0] = MEMORY[0x277D85DD0];
   v34[1] = 3221225472;
   v34[2] = __94__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchCloudRecords____fetchRecordByID___block_invoke;
   v34[3] = &unk_279720800;
-  v35 = v4;
-  v36 = v5;
-  v37 = v10;
-  v29 = v5;
-  v30 = v4;
+  v35 = dCopy;
+  v36 = workQueue;
+  v37 = selfCopy;
+  v29 = workQueue;
+  v30 = dCopy;
   [v18 setFetchRecordsCompletionBlock:v34];
-  v31 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v10 cloudDatabase];
-  v32 = [v31 publicDatabase];
-  [v32 addOperation:v18];
+  cloudDatabase = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy cloudDatabase];
+  publicDatabase = [cloudDatabase publicDatabase];
+  [publicDatabase addOperation:v18];
 
   v33 = *MEMORY[0x277D85DE8];
 }
@@ -465,49 +465,49 @@ void __94__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchCloudRecor
   }
 }
 
-- (void)__fetchCloudRecordsWithFetchInfo:(id)a3
+- (void)__fetchCloudRecordsWithFetchInfo:(id)info
 {
-  v6 = a3;
-  v4 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v4);
+  infoCopy = info;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v5 = [v6 recordID];
+  recordID = [infoCopy recordID];
 
-  if (v5)
+  if (recordID)
   {
-    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __fetchRecordByID:v6];
+    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __fetchRecordByID:infoCopy];
   }
 
   else
   {
-    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __fetchRecordsByQuery:v6];
+    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __fetchRecordsByQuery:infoCopy];
   }
 }
 
-- (BOOL)__shouldFailCloudRecordFetchError:(id)a3 error:(id)a4
+- (BOOL)__shouldFailCloudRecordFetchError:(id)error error:(id)a4
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  errorCopy = error;
   v7 = a4;
   if ([v7 hmbIsCKZoneDeletedError])
   {
-    v8 = [v6 activity];
-    v9 = [v6 zoneID];
-    v10 = [v9 hmbDescription];
-    [v8 markWithFormat:@"Zone '%@' does not exist", v10];
+    activity = [errorCopy activity];
+    zoneID = [errorCopy zoneID];
+    hmbDescription = [zoneID hmbDescription];
+    [activity markWithFormat:@"Zone '%@' does not exist", hmbDescription];
 
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = HMFGetLogIdentifier();
-      v15 = [v6 zoneID];
-      v16 = [v15 hmbDescription];
+      zoneID2 = [errorCopy zoneID];
+      hmbDescription2 = [zoneID2 hmbDescription];
       *buf = 138543618;
       *&buf[4] = v14;
       *&buf[12] = 2112;
-      *&buf[14] = v16;
+      *&buf[14] = hmbDescription2;
       _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@Zone '%@' does not exist", buf, 0x16u);
     }
 
@@ -522,23 +522,23 @@ LABEL_4:
   {
     if ([v7 code] == 11)
     {
-      v18 = [v6 activity];
-      v19 = [v6 recordID];
-      v20 = [v19 hmbDescription];
-      [v18 markWithFormat:@"Record '%@' does not exist", v20];
+      activity2 = [errorCopy activity];
+      recordID = [errorCopy recordID];
+      hmbDescription3 = [recordID hmbDescription];
+      [activity2 markWithFormat:@"Record '%@' does not exist", hmbDescription3];
 
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy2 = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v21 = HMFGetLogIdentifier();
-        v22 = [v6 recordID];
-        v23 = [v22 hmbDescription];
+        recordID2 = [errorCopy recordID];
+        hmbDescription4 = [recordID2 hmbDescription];
         *buf = 138543618;
         *&buf[4] = v21;
         *&buf[12] = 2112;
-        *&buf[14] = v23;
+        *&buf[14] = hmbDescription4;
         _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@Record '%@' does not exist", buf, 0x16u);
       }
 
@@ -547,8 +547,8 @@ LABEL_4:
 
     if ([v7 code] == 2)
     {
-      v24 = [v7 userInfo];
-      v25 = [v24 objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
+      userInfo = [v7 userInfo];
+      v25 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBBFB0]];
 
       *buf = 0;
       *&buf[8] = buf;
@@ -558,8 +558,8 @@ LABEL_4:
       v33[1] = 3221225472;
       v33[2] = __116__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchCloudRecords____shouldFailCloudRecordFetchError_error___block_invoke;
       v33[3] = &unk_2797207D8;
-      v34 = v6;
-      v35 = self;
+      v34 = errorCopy;
+      selfCopy3 = self;
       v36 = buf;
       [v25 enumerateKeysAndObjectsUsingBlock:v33];
       v17 = *(*&buf[8] + 24);
@@ -569,11 +569,11 @@ LABEL_4:
     }
   }
 
-  v26 = [v6 activity];
-  [v26 markWithFormat:@"Failed to fetch records: %@", v7];
+  activity3 = [errorCopy activity];
+  [activity3 markWithFormat:@"Failed to fetch records: %@", v7];
 
   v27 = objc_autoreleasePoolPush();
-  v28 = self;
+  selfCopy4 = self;
   v29 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
   {
@@ -650,17 +650,17 @@ void __116__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchCloudReco
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__shutdownWithActivity:(id)a3
+- (void)__shutdownWithActivity:(id)activity
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  activityCopy = activity;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
   if ([(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self isShuttingDown])
   {
-    [v4 markWithFormat:@"Already shutting down"];
+    [activityCopy markWithFormat:@"Already shutting down"];
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -671,23 +671,23 @@ void __116__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchCloudReco
     }
 
     objc_autoreleasePoolPop(v6);
-    v10 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v7 shutdownFuture];
+    shutdownFuture = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy shutdownFuture];
     v36[0] = MEMORY[0x277D85DD0];
     v36[1] = 3221225472;
     v36[2] = __91__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_Lifecycle____shutdownWithActivity___block_invoke;
     v36[3] = &unk_279733BC0;
-    v37 = v4;
-    v11 = v4;
-    v12 = [v10 addCompletionBlock:v36];
+    v37 = activityCopy;
+    v11 = activityCopy;
+    v12 = [shutdownFuture addCompletionBlock:v36];
 
     v13 = v37;
   }
 
   else
   {
-    [v4 markWithFormat:@"Shutting down"];
+    [activityCopy markWithFormat:@"Shutting down"];
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy2 = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -698,17 +698,17 @@ void __116__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchCloudReco
     }
 
     objc_autoreleasePoolPop(v14);
-    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v15 setShuttingDown:1];
-    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v15 setLocalZone:0];
-    v18 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v15 startupPromise];
+    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy2 setShuttingDown:1];
+    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy2 setLocalZone:0];
+    startupPromise = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy2 startupPromise];
     v19 = [MEMORY[0x277CCA9B8] hmErrorWithCode:23];
-    v20 = [v18 finishWithError:v19];
+    v20 = [startupPromise finishWithError:v19];
 
     if (v20)
     {
-      [v4 markWithFormat:@"Shut down before startup completed"];
+      [activityCopy markWithFormat:@"Shut down before startup completed"];
       v21 = objc_autoreleasePoolPush();
-      v22 = v15;
+      v22 = selfCopy2;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
@@ -721,20 +721,20 @@ void __116__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchCloudReco
       objc_autoreleasePoolPop(v21);
     }
 
-    v25 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v15 shutdownPromise];
-    v26 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v15 cloudDatabase];
-    v27 = [v26 shutdown];
+    shutdownPromise = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy2 shutdownPromise];
+    cloudDatabase = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy2 cloudDatabase];
+    shutdown = [cloudDatabase shutdown];
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = __91__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_Lifecycle____shutdownWithActivity___block_invoke_18;
     v31[3] = &unk_279721D38;
-    v32 = v4;
-    v33 = v5;
-    v34 = v15;
-    v35 = v25;
-    v13 = v25;
-    v28 = v4;
-    v29 = [v27 addCompletionBlock:v31];
+    v32 = activityCopy;
+    v33 = workQueue;
+    v34 = selfCopy2;
+    v35 = shutdownPromise;
+    v13 = shutdownPromise;
+    v28 = activityCopy;
+    v29 = [shutdown addCompletionBlock:v31];
   }
 
   v30 = *MEMORY[0x277D85DE8];
@@ -837,19 +837,19 @@ uint64_t __91__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_Lifecycle__
   return result;
 }
 
-- (void)__startupWithLocalZone:(id)a3 activity:(id)a4
+- (void)__startupWithLocalZone:(id)zone activity:(id)activity
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  zoneCopy = zone;
+  activityCopy = activity;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if ([(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self isShuttingDown])
   {
-    [v7 markWithFormat:@"Already shutting down"];
+    [activityCopy markWithFormat:@"Already shutting down"];
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -860,16 +860,16 @@ uint64_t __91__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_Lifecycle__
     }
 
     objc_autoreleasePoolPop(v9);
-    v13 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v10 startupPromise];
+    startupPromise = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy startupPromise];
     v14 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-    [v13 finishWithError:v14];
+    [startupPromise finishWithError:v14];
   }
 
   else
   {
-    [v7 markWithFormat:@"Starting up"];
+    [activityCopy markWithFormat:@"Starting up"];
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
@@ -880,36 +880,36 @@ uint64_t __91__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_Lifecycle__
     }
 
     objc_autoreleasePoolPop(v15);
-    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v16 setLocalZone:v6];
-    v19 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v16 __loadOrCreateInternalStateModelWithLocalZone:v6 activity:v7];
-    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v16 setInternalState:v19];
+    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy2 setLocalZone:zoneCopy];
+    v19 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy2 __loadOrCreateInternalStateModelWithLocalZone:zoneCopy activity:activityCopy];
+    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy2 setInternalState:v19];
 
-    v13 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v16 startupPromise];
-    [v13 finishWithNoResult];
+    startupPromise = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy2 startupPromise];
+    [startupPromise finishWithNoResult];
   }
 
-  [v7 invalidate];
+  [activityCopy invalidate];
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (id)__loadOrCreateInternalStateModelWithLocalZone:(id)a3 activity:(id)a4
+- (id)__loadOrCreateInternalStateModelWithLocalZone:(id)zone activity:(id)activity
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  zoneCopy = zone;
+  activityCopy = activity;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = +[HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorInternalStateModel modelID];
   v28 = 0;
-  v10 = [v6 fetchModelWithModelID:v9 ofType:objc_opt_class() error:&v28];
+  v10 = [zoneCopy fetchModelWithModelID:v9 ofType:objc_opt_class() error:&v28];
   v11 = v28;
   v12 = v11;
   if (v10)
   {
-    [v7 markWithFormat:@"Loaded existing internal state model"];
+    [activityCopy markWithFormat:@"Loaded existing internal state model"];
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -921,16 +921,16 @@ uint64_t __91__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_Lifecycle__
 
     objc_autoreleasePoolPop(v13);
     v17 = objc_autoreleasePoolPush();
-    v18 = v14;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
       v20 = HMFGetLogIdentifier();
-      v21 = [v10 lastSynchronizedRecordIDs];
+      lastSynchronizedRecordIDs = [v10 lastSynchronizedRecordIDs];
       *buf = 138543618;
       v30 = v20;
       v31 = 2112;
-      v32 = v21;
+      v32 = lastSynchronizedRecordIDs;
       _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_DEBUG, "%{public}@Last synchronized recordIDs: %@", buf, 0x16u);
     }
 
@@ -939,9 +939,9 @@ uint64_t __91__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_Lifecycle__
 
   else
   {
-    [v7 markWithFormat:@"Creating new internal state model because existing one was not found: %@", v11];
+    [activityCopy markWithFormat:@"Creating new internal state model because existing one was not found: %@", v11];
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy2 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
@@ -962,24 +962,24 @@ uint64_t __91__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_Lifecycle__
   return v10;
 }
 
-- (void)__retryFetchVerificationCertificatesWithFetchInfo:(id)a3
+- (void)__retryFetchVerificationCertificatesWithFetchInfo:(id)info
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  infoCopy = info;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 activity];
-  [v4 retryIntervalSeconds];
-  [v6 markWithFormat:@"Will retry the fetch in %lu seconds", v7];
+  activity = [infoCopy activity];
+  [infoCopy retryIntervalSeconds];
+  [activity markWithFormat:@"Will retry the fetch in %lu seconds", v7];
 
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = HMFGetLogIdentifier();
-    [v4 retryIntervalSeconds];
+    [infoCopy retryIntervalSeconds];
     *buf = 138543618;
     v22 = v11;
     v23 = 2048;
@@ -988,20 +988,20 @@ uint64_t __91__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_Lifecycle__
   }
 
   objc_autoreleasePoolPop(v8);
-  [v4 retryIntervalSeconds];
+  [infoCopy retryIntervalSeconds];
   v14 = dispatch_time(0, (v13 * 1000000000.0));
-  [v4 setShouldRetry:0];
-  [v4 setRetryCount:{objc_msgSend(v4, "retryCount") + 1}];
-  objc_initWeak(buf, v9);
-  v15 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v9 workQueue];
+  [infoCopy setShouldRetry:0];
+  [infoCopy setRetryCount:{objc_msgSend(infoCopy, "retryCount") + 1}];
+  objc_initWeak(buf, selfCopy);
+  workQueue2 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __138__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchVerificationCertificates____retryFetchVerificationCertificatesWithFetchInfo___block_invoke;
   block[3] = &unk_279732E78;
-  v19 = v4;
-  v16 = v4;
+  v19 = infoCopy;
+  v16 = infoCopy;
   objc_copyWeak(&v20, buf);
-  dispatch_after(v14, v15, block);
+  dispatch_after(v14, workQueue2, block);
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(buf);
@@ -1055,21 +1055,21 @@ void __138__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchVerificat
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)__canRecoverFromVerificationCertificatesError:(id)a3 fetchInfo:(id)a4
+- (BOOL)__canRecoverFromVerificationCertificatesError:(id)error fetchInfo:(id)info
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  errorCopy = error;
+  infoCopy = info;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if ([v6 hmd_isCKError] && (objc_msgSend(v6, "hmd_isNonRecoverableCKError") & 1) == 0 && (objc_msgSend(v6, "hmbCloudKitRetryDelay"), objc_msgSend(v7, "setRetryIntervalSeconds:"), objc_msgSend(v7, "shouldRetry")))
+  if ([errorCopy hmd_isCKError] && (objc_msgSend(errorCopy, "hmd_isNonRecoverableCKError") & 1) == 0 && (objc_msgSend(errorCopy, "hmbCloudKitRetryDelay"), objc_msgSend(infoCopy, "setRetryIntervalSeconds:"), objc_msgSend(infoCopy, "shouldRetry")))
   {
-    v9 = [v7 activity];
-    [v9 markWithFormat:@"Ignoring non-fatal error: %@", v6];
+    activity = [infoCopy activity];
+    [activity markWithFormat:@"Ignoring non-fatal error: %@", errorCopy];
 
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -1077,7 +1077,7 @@ void __138__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchVerificat
       *buf = 138543618;
       v18 = v13;
       v19 = 2112;
-      v20 = v6;
+      v20 = errorCopy;
       _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_INFO, "%{public}@Ignoring non-fatal error: %@", buf, 0x16u);
     }
 
@@ -1094,44 +1094,44 @@ void __138__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchVerificat
   return v14;
 }
 
-- (void)__fetchVerificationCertificatesCompleted:(id)a3 record:(id)a4 error:(id)a5
+- (void)__fetchVerificationCertificatesCompleted:(id)completed record:(id)record error:(id)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v11);
+  completedCopy = completed;
+  recordCopy = record;
+  errorCopy = error;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v9)
+  if (recordCopy)
   {
-    v12 = [objc_opt_class() publicKeysFromCertificateRecord:v9];
+    v12 = [objc_opt_class() publicKeysFromCertificateRecord:recordCopy];
     if ([v12 count])
     {
-      [v8 setSignatureVerificationPublicKeys:v12];
-      [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __fetchZoneChangesWithFetchInfo:v8];
+      [completedCopy setSignatureVerificationPublicKeys:v12];
+      [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __fetchZoneChangesWithFetchInfo:completedCopy];
     }
 
     else
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = self;
+      selfCopy = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v16 = HMFGetLogIdentifier();
-        v17 = [v9 recordID];
-        v18 = [v17 hmbDescription];
+        recordID = [recordCopy recordID];
+        hmbDescription = [recordID hmbDescription];
         v27 = 138543618;
         v28 = v16;
         v29 = 2112;
-        v30 = v18;
+        v30 = hmbDescription;
         _os_log_impl(&dword_2531F8000, v15, OS_LOG_TYPE_ERROR, "%{public}@Failed to get any usable public keys from record: %@", &v27, 0x16u);
       }
 
       objc_autoreleasePoolPop(v13);
       v19 = [MEMORY[0x277CCA9B8] hmErrorWithCode:-1];
-      [v8 finishWithError:v19];
+      [completedCopy finishWithError:v19];
     }
 
 LABEL_14:
@@ -1139,62 +1139,62 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (v10 && ![(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __canRecoverFromVerificationCertificatesError:v10 fetchInfo:v8])
+  if (errorCopy && ![(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __canRecoverFromVerificationCertificatesError:errorCopy fetchInfo:completedCopy])
   {
-    [v8 finishWithError:v10];
+    [completedCopy finishWithError:errorCopy];
     goto LABEL_15;
   }
 
-  if (![v8 shouldRetry])
+  if (![completedCopy shouldRetry])
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy2 = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       v23 = HMFGetLogIdentifier();
-      v24 = [0 recordID];
-      v25 = [v24 hmbDescription];
+      recordID2 = [0 recordID];
+      hmbDescription2 = [recordID2 hmbDescription];
       v27 = 138543618;
       v28 = v23;
       v29 = 2112;
-      v30 = v25;
+      v30 = hmbDescription2;
       _os_log_impl(&dword_2531F8000, v22, OS_LOG_TYPE_ERROR, "%{public}@Fetch returned no verification certificates record: %@", &v27, 0x16u);
     }
 
     objc_autoreleasePoolPop(v20);
     v12 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-    [v8 finishWithError:v12];
+    [completedCopy finishWithError:v12];
     goto LABEL_14;
   }
 
-  [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __retryFetchVerificationCertificatesWithFetchInfo:v8];
+  [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __retryFetchVerificationCertificatesWithFetchInfo:completedCopy];
 LABEL_15:
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__fetchVerificationCertificatesWithFetchInfo:(id)a3
+- (void)__fetchVerificationCertificatesWithFetchInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  infoCopy = info;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   objc_initWeak(&location, self);
-  v6 = [v4 operationGroup];
+  operationGroup = [infoCopy operationGroup];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __133__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchVerificationCertificates____fetchVerificationCertificatesWithFetchInfo___block_invoke;
   v13 = &unk_279727548;
-  v7 = v4;
+  v7 = infoCopy;
   v14 = v7;
-  v15 = self;
+  selfCopy = self;
   objc_copyWeak(&v16, &location);
-  [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self fetchVerificationCertificatesRecordWithOperationGroup:v6 completion:&v10];
+  [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self fetchVerificationCertificatesRecordWithOperationGroup:operationGroup completion:&v10];
 
-  v8 = [v7 operationStartTime];
+  operationStartTime = [v7 operationStartTime];
 
-  if (!v8)
+  if (!operationStartTime)
   {
     v9 = [MEMORY[0x277CBEAA8] now];
     [v7 setOperationStartTime:v9];
@@ -1319,38 +1319,38 @@ LABEL_7:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchVerificationCertificatesRecordWithOperationGroup:(id)a3 completion:(id)a4
+- (void)fetchVerificationCertificatesRecordWithOperationGroup:(id)group completion:(id)completion
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v8);
-  v9 = [objc_opt_class() __certificatesRecordID];
+  groupCopy = group;
+  completionCopy = completion;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
+  __certificatesRecordID = [objc_opt_class() __certificatesRecordID];
   v10 = objc_alloc(MEMORY[0x277CBC3E0]);
-  v22[0] = v9;
+  v22[0] = __certificatesRecordID;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:1];
   v12 = [v10 initWithRecordIDs:v11];
 
-  [v12 setCallbackQueue:v8];
-  if (v6)
+  [v12 setCallbackQueue:workQueue];
+  if (groupCopy)
   {
-    [v12 setGroup:v6];
+    [v12 setGroup:groupCopy];
   }
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __153__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchVerificationCertificates__fetchVerificationCertificatesRecordWithOperationGroup_completion___block_invoke;
   v18[3] = &unk_2797274F8;
-  v19 = v8;
-  v20 = self;
-  v21 = v7;
-  v13 = v7;
-  v14 = v8;
+  v19 = workQueue;
+  selfCopy = self;
+  v21 = completionCopy;
+  v13 = completionCopy;
+  v14 = workQueue;
   [v12 setFetchRecordsCompletionBlock:v18];
-  v15 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self cloudDatabase];
-  v16 = [v15 publicDatabase];
-  [v16 addOperation:v12];
+  cloudDatabase = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self cloudDatabase];
+  publicDatabase = [cloudDatabase publicDatabase];
+  [publicDatabase addOperation:v12];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -1385,17 +1385,17 @@ void __153__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchVerificat
   v10();
 }
 
-+ (id)publicKeysFromCertificateRecord:(id)a3
++ (id)publicKeysFromCertificateRecord:(id)record
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v17 = [MEMORY[0x277CBEB18] arrayWithCapacity:1];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allKeys = [recordCopy allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1406,7 +1406,7 @@ void __153__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchVerificat
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = [objc_opt_class() __recordKeyCertificatePrefix:*(*(&v18 + 1) + 8 * i)];
@@ -1414,7 +1414,7 @@ void __153__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchVerificat
         if (v10)
         {
           v12 = [v10 stringByAppendingString:@"_ckAsset"];
-          v13 = [a1 __publicKeyFromCertificateRecord:v4 dataKey:v11 assetKey:v12];
+          v13 = [self __publicKeyFromCertificateRecord:recordCopy dataKey:v11 assetKey:v12];
           if (v13)
           {
             [v17 addObject:v13];
@@ -1422,7 +1422,7 @@ void __153__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchVerificat
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v7);
@@ -1443,21 +1443,21 @@ void __153__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchVerificat
   return v14;
 }
 
-+ (id)__publicKeyFromCertificateRecord:(id)a3 dataKey:(id)a4 assetKey:(id)a5
++ (id)__publicKeyFromCertificateRecord:(id)record dataKey:(id)key assetKey:(id)assetKey
 {
   v94[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v94[0] = v9;
-  v94[1] = v10;
+  recordCopy = record;
+  keyCopy = key;
+  assetKeyCopy = assetKey;
+  v94[0] = keyCopy;
+  v94[1] = assetKeyCopy;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v94 count:2];
-  v12 = [objc_opt_class() __maxSizeForCKRecordSignatureVerificationCertificateChain];
+  __maxSizeForCKRecordSignatureVerificationCertificateChain = [objc_opt_class() __maxSizeForCKRecordSignatureVerificationCertificateChain];
   v89 = 0;
-  v13 = stringFromCKRecord(v8, v9, v10, v12, &v89);
+  v13 = stringFromCKRecord(recordCopy, keyCopy, assetKeyCopy, __maxSizeForCKRecordSignatureVerificationCertificateChain, &v89);
   v14 = v89;
   v15 = v14;
-  v84 = v8;
+  v84 = recordCopy;
   if (v13)
   {
     v83 = v13;
@@ -1477,7 +1477,7 @@ void __153__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchVerificat
       {
         v20 = v19;
         v21 = *v86;
-        v80 = v9;
+        v80 = keyCopy;
         v78 = v16;
 LABEL_5:
         v22 = 0;
@@ -1499,7 +1499,7 @@ LABEL_5:
           if (!v25)
           {
             v56 = objc_autoreleasePoolPush();
-            v57 = a1;
+            selfCopy = self;
             v58 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v58, OS_LOG_TYPE_ERROR))
             {
@@ -1527,7 +1527,7 @@ LABEL_33:
           if (v20 == ++v22)
           {
             v20 = [v18 countByEnumeratingWithState:&v85 objects:v90 count:16];
-            v9 = v80;
+            keyCopy = v80;
             v16 = v78;
             if (v20)
             {
@@ -1539,7 +1539,7 @@ LABEL_33:
         }
 
         v52 = objc_autoreleasePoolPush();
-        v53 = a1;
+        selfCopy2 = self;
         v54 = HMFGetOSLogHandle();
         v15 = v79;
         if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
@@ -1563,19 +1563,19 @@ LABEL_33:
 
 LABEL_12:
 
-      v27 = [a1 __createSignatureVerificationPolicy];
-      if (v27)
+      __createSignatureVerificationPolicy = [self __createSignatureVerificationPolicy];
+      if (__createSignatureVerificationPolicy)
       {
-        v18 = v27;
-        v81 = v9;
+        v18 = __createSignatureVerificationPolicy;
+        v81 = keyCopy;
         *trust = 0;
-        v28 = SecTrustCreateWithCertificates(v17, v27, trust);
+        v28 = SecTrustCreateWithCertificates(v17, __createSignatureVerificationPolicy, trust);
         v29 = v28;
         v30 = *trust;
         if (!*trust || v28)
         {
           v64 = objc_autoreleasePoolPush();
-          v65 = a1;
+          selfCopy3 = self;
           v66 = HMFGetOSLogHandle();
           v15 = v79;
           if (os_log_type_enabled(v66, OS_LOG_TYPE_ERROR))
@@ -1604,7 +1604,7 @@ LABEL_12:
           v31 = SecTrustEvaluateWithError(v30, trust);
           v32 = *trust;
           context = objc_autoreleasePoolPush();
-          v33 = a1;
+          selfCopy4 = self;
           v34 = HMFGetOSLogHandle();
           v35 = v34;
           v76 = v32;
@@ -1653,7 +1653,7 @@ LABEL_12:
             else
             {
               v74 = objc_autoreleasePoolPush();
-              v69 = v33;
+              v69 = selfCopy4;
               v70 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
               {
@@ -1676,9 +1676,9 @@ LABEL_12:
 
       else
       {
-        v41 = v9;
+        v41 = keyCopy;
         v60 = objc_autoreleasePoolPush();
-        v61 = a1;
+        selfCopy5 = self;
         v62 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
         {
@@ -1702,9 +1702,9 @@ LABEL_49:
 
     else
     {
-      v41 = v9;
+      v41 = keyCopy;
       v48 = objc_autoreleasePoolPush();
-      v49 = a1;
+      selfCopy6 = self;
       v50 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
       {
@@ -1728,11 +1728,11 @@ LABEL_49:
 
   else
   {
-    v41 = v9;
-    v42 = v10;
+    v41 = keyCopy;
+    v42 = assetKeyCopy;
     v43 = v14;
     v44 = objc_autoreleasePoolPush();
-    v45 = a1;
+    selfCopy7 = self;
     v46 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
     {
@@ -1749,7 +1749,7 @@ LABEL_49:
     objc_autoreleasePoolPop(v44);
     v39 = 0;
     v15 = v43;
-    v10 = v42;
+    assetKeyCopy = v42;
     v36 = v84;
   }
 
@@ -1758,20 +1758,20 @@ LABEL_49:
   return v39;
 }
 
-+ (id)__recordKeyCertificatePrefix:(id)a3
++ (id)__recordKeyCertificatePrefix:(id)prefix
 {
-  v3 = a3;
+  prefixCopy = prefix;
   if (__recordKeyCertificatePrefix__onceToken != -1)
   {
     dispatch_once(&__recordKeyCertificatePrefix__onceToken, &__block_literal_global_23_51743);
   }
 
-  v4 = [__recordKeyCertificatePrefix__prefixRegex firstMatchInString:v3 options:0 range:{0, objc_msgSend(v3, "length")}];
+  v4 = [__recordKeyCertificatePrefix__prefixRegex firstMatchInString:prefixCopy options:0 range:{0, objc_msgSend(prefixCopy, "length")}];
   v5 = v4;
   if (v4 && [v4 numberOfRanges] >= 2)
   {
     v7 = [v5 rangeAtIndex:1];
-    v6 = [v3 substringWithRange:{v7, v8}];
+    v6 = [prefixCopy substringWithRange:{v7, v8}];
   }
 
   else
@@ -1826,53 +1826,53 @@ void __110__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchVerificat
     return 0x200000;
   }
 
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorSignatureVerificationCertificateChainMaxSize"];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorSignatureVerificationCertificateChainMaxSize"];
 
-  v4 = [v3 numberValue];
+  numberValue = [v3 numberValue];
 
-  if (v4)
+  if (numberValue)
   {
-    v5 = [v3 numberValue];
-    v6 = [v5 unsignedIntegerValue];
+    numberValue2 = [v3 numberValue];
+    unsignedIntegerValue = [numberValue2 unsignedIntegerValue];
   }
 
   else
   {
-    v6 = 0x200000;
+    unsignedIntegerValue = 0x200000;
   }
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
-- (BOOL)__removeOverridesForZoneName:(id)a3 recordName:(id)a4 options:(id)a5 activity:(id)a6 error:(id *)a7
+- (BOOL)__removeOverridesForZoneName:(id)name recordName:(id)recordName options:(id)options activity:(id)activity error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v16);
+  nameCopy = name;
+  recordNameCopy = recordName;
+  optionsCopy = options;
+  activityCopy = activity;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v12 && v13)
+  if (nameCopy && recordNameCopy)
   {
     v17 = objc_alloc(MEMORY[0x277CBC5F8]);
-    v18 = [v17 initWithZoneName:v12 ownerName:*MEMORY[0x277CBBF28]];
-    v19 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:v13 zoneID:v18];
+    v18 = [v17 initWithZoneName:nameCopy ownerName:*MEMORY[0x277CBBF28]];
+    v19 = [objc_alloc(MEMORY[0x277CBC5D0]) initWithRecordName:recordNameCopy zoneID:v18];
     v20 = [MEMORY[0x277CBEB98] setWithObject:v19];
-    v21 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __removeOverridesForRecordIDs:v20 options:v14 activity:v15 error:a7];
+    v21 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __removeOverridesForRecordIDs:v20 options:optionsCopy activity:activityCopy error:error];
   }
 
   else
   {
-    if (v12)
+    if (nameCopy)
     {
-      v22 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __removeOverridesForZoneName:v12 options:v14 activity:v15 error:a7];
+      v22 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __removeOverridesForZoneName:nameCopy options:optionsCopy activity:activityCopy error:error];
     }
 
     else
     {
-      v22 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __removeAllOverridesWithOptions:v14 activity:v15 error:a7];
+      v22 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __removeAllOverridesWithOptions:optionsCopy activity:activityCopy error:error];
     }
 
     v21 = v22;
@@ -1881,18 +1881,18 @@ void __110__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchVerificat
   return v21;
 }
 
-- (BOOL)__removeOverridesForZoneName:(id)a3 options:(id)a4 activity:(id)a5 error:(id *)a6
+- (BOOL)__removeOverridesForZoneName:(id)name options:(id)options activity:(id)activity error:(id *)error
 {
   v118 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v13);
+  nameCopy = name;
+  optionsCopy = options;
+  activityCopy = activity;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  [v12 markWithFormat:@"Removing overrides for zone '%@'", v10];
+  [activityCopy markWithFormat:@"Removing overrides for zone '%@'", nameCopy];
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -1900,23 +1900,23 @@ void __110__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchVerificat
     *buf = 138543618;
     v110 = v17;
     v111 = 2112;
-    v112 = v10;
+    v112 = nameCopy;
     _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@Removing overrides for zone '%@'", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v14);
   v18 = objc_opt_class();
-  v19 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v15 localZone];
+  localZone = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy localZone];
   v108 = 0;
-  v20 = [v19 fetchModelsOfType:v18 error:&v108];
+  v20 = [localZone fetchModelsOfType:v18 error:&v108];
   v21 = v108;
 
   v98 = v21;
   if (!v20)
   {
-    [v12 markWithFormat:@"Failed to fetch override models: %@", v21];
+    [activityCopy markWithFormat:@"Failed to fetch override models: %@", v21];
     v45 = objc_autoreleasePoolPush();
-    v46 = v15;
+    v46 = selfCopy;
     v47 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
     {
@@ -1932,9 +1932,9 @@ void __110__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchVerificat
 
     objc_autoreleasePoolPop(v45);
     v49 = 0;
-    if (a6)
+    if (error)
     {
-      *a6 = v98;
+      *error = v98;
     }
 
     goto LABEL_62;
@@ -1946,8 +1946,8 @@ void __110__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchVerificat
     goto LABEL_62;
   }
 
-  v22 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v15 localZone];
-  v23 = [v22 createMirrorInputWithError:a6];
+  localZone2 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy localZone];
+  v23 = [localZone2 createMirrorInputWithError:error];
 
   v94 = v23;
   if (!v23)
@@ -1972,13 +1972,13 @@ void __110__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchVerificat
   }
 
   obj = v24;
-  v88 = a6;
-  v89 = v11;
+  errorCopy = error;
+  v89 = optionsCopy;
   v95 = 0;
   v25 = 0;
   v97 = *v105;
-  v91 = v10;
-  v92 = v12;
+  v91 = nameCopy;
+  v92 = activityCopy;
   while (2)
   {
     for (i = 0; i != v96; ++i)
@@ -1988,18 +1988,18 @@ void __110__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchVerificat
         objc_enumerationMutation(obj);
       }
 
-      v27 = [*(*(&v104 + 1) + 8 * i) hmbModelID];
-      v28 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v15 localZone];
+      hmbModelID = [*(*(&v104 + 1) + 8 * i) hmbModelID];
+      localZone3 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy localZone];
       v103 = v25;
-      v99 = v27;
-      v29 = [v28 externalIDForModelID:v27 error:&v103];
+      v99 = hmbModelID;
+      v29 = [localZone3 externalIDForModelID:hmbModelID error:&v103];
       v30 = v103;
 
       if (!v29)
       {
-        [v12 markWithFormat:@"Failed to fetch externalID for modelID %@: %@", v99, v30];
+        [activityCopy markWithFormat:@"Failed to fetch externalID for modelID %@: %@", v99, v30];
         v50 = objc_autoreleasePoolPush();
-        v51 = v15;
+        v51 = selfCopy;
         v52 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
         {
@@ -2017,14 +2017,14 @@ void __110__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchVerificat
         goto LABEL_40;
       }
 
-      v31 = v15;
+      v31 = selfCopy;
       v102 = v30;
       v32 = [MEMORY[0x277CBC5D0] recordIDFromExternalID:v29 error:&v102];
       v33 = v102;
 
       if (!v32)
       {
-        [v12 markWithFormat:@"Failed to convert externalID (%@) to CKRecordID for modelID %@: %@", v29, v99, v33];
+        [activityCopy markWithFormat:@"Failed to convert externalID (%@) to CKRecordID for modelID %@: %@", v29, v99, v33];
         v54 = objc_autoreleasePoolPush();
         v55 = v31;
         v56 = HMFGetOSLogHandle();
@@ -2046,24 +2046,24 @@ void __110__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchVerificat
 LABEL_39:
 
         objc_autoreleasePoolPop(v54);
-        v15 = v31;
+        selfCopy = v31;
 
         v30 = v33;
-        v10 = v91;
+        nameCopy = v91;
 LABEL_40:
 
         v25 = v30;
         goto LABEL_41;
       }
 
-      v34 = [v32 zoneID];
-      v35 = [v34 zoneName];
-      v36 = [v35 isEqualToString:v10];
+      zoneID = [v32 zoneID];
+      zoneName = [zoneID zoneName];
+      v36 = [zoneName isEqualToString:nameCopy];
 
       if (v36)
       {
-        v37 = [v32 hmbDescription];
-        [v12 markWithFormat:@"Removing override for %@", v37];
+        hmbDescription = [v32 hmbDescription];
+        [activityCopy markWithFormat:@"Removing override for %@", hmbDescription];
 
         v38 = objc_autoreleasePoolPush();
         v39 = v31;
@@ -2071,14 +2071,14 @@ LABEL_40:
         if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
         {
           v41 = HMFGetLogIdentifier();
-          v42 = [v32 hmbDescription];
+          hmbDescription2 = [v32 hmbDescription];
           *buf = 138543618;
           v110 = v41;
           v111 = 2112;
-          v112 = v42;
+          v112 = hmbDescription2;
           _os_log_impl(&dword_2531F8000, v40, OS_LOG_TYPE_DEFAULT, "%{public}@Removing override for %@", buf, 0x16u);
 
-          v10 = v91;
+          nameCopy = v91;
         }
 
         objc_autoreleasePoolPop(v38);
@@ -2089,8 +2089,8 @@ LABEL_40:
 
         if ((v44 & 1) == 0)
         {
-          v58 = [v32 hmbDescription];
-          [v92 markWithFormat:@"Failed to remove model %@: %@", v58, v25];
+          hmbDescription3 = [v32 hmbDescription];
+          [v92 markWithFormat:@"Failed to remove model %@: %@", hmbDescription3, v25];
 
           v54 = objc_autoreleasePoolPush();
           v59 = v39;
@@ -2098,23 +2098,23 @@ LABEL_40:
           if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
           {
             v60 = HMFGetLogIdentifier();
-            v61 = [v32 hmbDescription];
+            hmbDescription4 = [v32 hmbDescription];
             *buf = 138543874;
             v110 = v60;
             v111 = 2112;
-            v112 = v61;
+            v112 = hmbDescription4;
             v113 = 2112;
             v114 = v25;
             _os_log_impl(&dword_2531F8000, v56, OS_LOG_TYPE_ERROR, "%{public}@Failed to remove model %@: %@", buf, 0x20u);
           }
 
           v33 = v25;
-          v12 = v92;
+          activityCopy = v92;
           goto LABEL_39;
         }
 
         ++v95;
-        v12 = v92;
+        activityCopy = v92;
       }
 
       else
@@ -2123,7 +2123,7 @@ LABEL_40:
         v43 = v99;
       }
 
-      v15 = v31;
+      selfCopy = v31;
     }
 
     v96 = [obj countByEnumeratingWithState:&v104 objects:v117 count:16];
@@ -2140,22 +2140,22 @@ LABEL_41:
   v49 = v25 == 0;
   if (!v25 && v95)
   {
-    [v12 markWithFormat:@"Committing removal of %lu overrides", v95];
+    [activityCopy markWithFormat:@"Committing removal of %lu overrides", v95];
     v62 = objc_autoreleasePoolPush();
-    v63 = v15;
+    v63 = selfCopy;
     v64 = HMFGetOSLogHandle();
-    v11 = v89;
+    optionsCopy = v89;
     if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
     {
       HMFGetLogIdentifier();
-      v66 = v65 = v12;
+      v66 = v65 = activityCopy;
       *buf = 138543618;
       v110 = v66;
       v111 = 2048;
       v112 = v95;
       _os_log_impl(&dword_2531F8000, v64, OS_LOG_TYPE_DEFAULT, "%{public}@Committing removal of %lu overrides", buf, 0x16u);
 
-      v12 = v65;
+      activityCopy = v65;
     }
 
     objc_autoreleasePoolPop(v62);
@@ -2165,19 +2165,19 @@ LABEL_41:
     v68 = v67;
     if (v49)
     {
-      [v12 markWithFormat:@"Committed removal of overrides successfully"];
+      [activityCopy markWithFormat:@"Committed removal of overrides successfully"];
       v69 = objc_autoreleasePoolPush();
       v70 = v63;
       v71 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v71, OS_LOG_TYPE_INFO))
       {
         HMFGetLogIdentifier();
-        v73 = v72 = v12;
+        v73 = v72 = activityCopy;
         *buf = 138543362;
         v110 = v73;
         _os_log_impl(&dword_2531F8000, v71, OS_LOG_TYPE_INFO, "%{public}@Committed removal of overrides successfully", buf, 0xCu);
 
-        v12 = v72;
+        activityCopy = v72;
       }
 
       objc_autoreleasePoolPop(v69);
@@ -2185,28 +2185,28 @@ LABEL_41:
 
     else
     {
-      [v12 markWithFormat:@"Failed to commit: %@", v67];
+      [activityCopy markWithFormat:@"Failed to commit: %@", v67];
       v80 = objc_autoreleasePoolPush();
       v81 = v63;
       v82 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v82, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
-        v84 = v83 = v12;
+        v84 = v83 = activityCopy;
         *buf = 138543618;
         v110 = v84;
         v111 = 2112;
         v112 = v68;
         _os_log_impl(&dword_2531F8000, v82, OS_LOG_TYPE_ERROR, "%{public}@Failed to commit: %@", buf, 0x16u);
 
-        v12 = v83;
+        activityCopy = v83;
       }
 
       objc_autoreleasePoolPop(v80);
-      if (v88)
+      if (errorCopy)
       {
         v85 = v68;
-        *v88 = v68;
+        *errorCopy = v68;
       }
     }
 
@@ -2214,34 +2214,34 @@ LABEL_41:
     goto LABEL_60;
   }
 
-  a6 = v88;
-  v11 = v89;
+  error = errorCopy;
+  optionsCopy = v89;
   if (!v95)
   {
 LABEL_50:
-    [v12 markWithFormat:@"No matching models found, aborting"];
+    [activityCopy markWithFormat:@"No matching models found, aborting"];
     v74 = objc_autoreleasePoolPush();
-    v75 = v15;
+    v75 = selfCopy;
     v76 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v76, OS_LOG_TYPE_INFO))
     {
       HMFGetLogIdentifier();
-      v78 = v77 = v12;
+      v78 = v77 = activityCopy;
       *buf = 138543362;
       v110 = v78;
       _os_log_impl(&dword_2531F8000, v76, OS_LOG_TYPE_INFO, "%{public}@No matching models found, aborting", buf, 0xCu);
 
-      v12 = v77;
+      activityCopy = v77;
     }
 
     objc_autoreleasePoolPop(v74);
   }
 
   [v94 abort];
-  if (a6)
+  if (error)
   {
     v79 = v25;
-    *a6 = v25;
+    *error = v25;
   }
 
 LABEL_60:
@@ -2254,18 +2254,18 @@ LABEL_62:
   return v49;
 }
 
-- (BOOL)__removeOverridesForRecordIDs:(id)a3 options:(id)a4 activity:(id)a5 error:(id *)a6
+- (BOOL)__removeOverridesForRecordIDs:(id)ds options:(id)options activity:(id)activity error:(id *)error
 {
   v77 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v13);
+  dsCopy = ds;
+  optionsCopy = options;
+  activityCopy = activity;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  [v12 markWithFormat:@"Removing overrides for recordIDs: %@", v10];
+  [activityCopy markWithFormat:@"Removing overrides for recordIDs: %@", dsCopy];
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
@@ -2273,31 +2273,31 @@ LABEL_62:
     *buf = 138543618;
     v71 = v17;
     v72 = 2112;
-    v73 = v10;
+    v73 = dsCopy;
     _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@Removing overrides for recordIDs: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v14);
-  v18 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v15 localZone];
-  v19 = [v18 createMirrorInputWithError:a6];
+  localZone = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy localZone];
+  v19 = [localZone createMirrorInputWithError:error];
 
   v63 = v19;
   if (v19)
   {
-    v59 = a6;
-    v62 = v11;
+    errorCopy = error;
+    v62 = optionsCopy;
     v68 = 0u;
     v69 = 0u;
     v66 = 0u;
     v67 = 0u;
-    v20 = v10;
+    v20 = dsCopy;
     v21 = [v20 countByEnumeratingWithState:&v66 objects:v76 count:16];
     if (v21)
     {
       v22 = v21;
-      v60 = v15;
-      v61 = v12;
-      v58 = v10;
+      v60 = selfCopy;
+      v61 = activityCopy;
+      v58 = dsCopy;
       v23 = 0;
       v24 = *v67;
       while (2)
@@ -2319,21 +2319,21 @@ LABEL_62:
 
           if ((v29 & 1) == 0)
           {
-            v30 = [v27 hmbDescription];
-            [v61 markWithFormat:@"Failed to remove model %@: %@", v30, v23];
+            hmbDescription = [v27 hmbDescription];
+            [v61 markWithFormat:@"Failed to remove model %@: %@", hmbDescription, v23];
 
             v31 = objc_autoreleasePoolPush();
-            v15 = v60;
+            selfCopy = v60;
             v32 = v60;
             v33 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
             {
               v34 = HMFGetLogIdentifier();
-              v35 = [v27 hmbDescription];
+              hmbDescription2 = [v27 hmbDescription];
               *buf = 138543874;
               v71 = v34;
               v72 = 2112;
-              v73 = v35;
+              v73 = hmbDescription2;
               v74 = 2112;
               v75 = v23;
               _os_log_impl(&dword_2531F8000, v33, OS_LOG_TYPE_ERROR, "%{public}@Failed to remove model %@: %@", buf, 0x20u);
@@ -2349,7 +2349,7 @@ LABEL_62:
 
         while (v22 != v25);
         v22 = [v20 countByEnumeratingWithState:&v66 objects:v76 count:16];
-        v15 = v60;
+        selfCopy = v60;
         if (v22)
         {
           continue;
@@ -2360,17 +2360,17 @@ LABEL_62:
 
 LABEL_16:
 
-      v10 = v58;
-      v12 = v61;
+      dsCopy = v58;
+      activityCopy = v61;
       if (v23)
       {
         [v63 abort];
-        v11 = v62;
-        if (v59)
+        optionsCopy = v62;
+        if (errorCopy)
         {
           v36 = v23;
           v37 = 0;
-          *v59 = v23;
+          *errorCopy = v23;
         }
 
         else
@@ -2388,20 +2388,20 @@ LABEL_32:
     {
     }
 
-    [v12 markWithFormat:@"Committing removal of overrides"];
+    [activityCopy markWithFormat:@"Committing removal of overrides"];
     v38 = objc_autoreleasePoolPush();
-    v39 = v15;
+    v39 = selfCopy;
     v40 = HMFGetOSLogHandle();
-    v11 = v62;
+    optionsCopy = v62;
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
       HMFGetLogIdentifier();
-      v42 = v41 = v12;
+      v42 = v41 = activityCopy;
       *buf = 138543362;
       v71 = v42;
       _os_log_impl(&dword_2531F8000, v40, OS_LOG_TYPE_DEFAULT, "%{public}@Committing removal of overrides", buf, 0xCu);
 
-      v12 = v41;
+      activityCopy = v41;
     }
 
     objc_autoreleasePoolPop(v38);
@@ -2411,19 +2411,19 @@ LABEL_32:
     v44 = v43;
     if (v37)
     {
-      [v12 markWithFormat:@"Committed removal of overrides successfully"];
+      [activityCopy markWithFormat:@"Committed removal of overrides successfully"];
       v45 = objc_autoreleasePoolPush();
       v46 = v39;
       v47 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_INFO))
       {
         HMFGetLogIdentifier();
-        v49 = v48 = v12;
+        v49 = v48 = activityCopy;
         *buf = 138543362;
         v71 = v49;
         _os_log_impl(&dword_2531F8000, v47, OS_LOG_TYPE_INFO, "%{public}@Committed removal of overrides successfully", buf, 0xCu);
 
-        v12 = v48;
+        activityCopy = v48;
       }
 
       objc_autoreleasePoolPop(v45);
@@ -2431,28 +2431,28 @@ LABEL_32:
 
     else
     {
-      [v12 markWithFormat:@"Failed to commit: %@", v43];
+      [activityCopy markWithFormat:@"Failed to commit: %@", v43];
       v50 = objc_autoreleasePoolPush();
       v51 = v39;
       v52 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v52, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
-        v54 = v53 = v12;
+        v54 = v53 = activityCopy;
         *buf = 138543618;
         v71 = v54;
         v72 = 2112;
         v73 = v44;
         _os_log_impl(&dword_2531F8000, v52, OS_LOG_TYPE_ERROR, "%{public}@Failed to commit: %@", buf, 0x16u);
 
-        v12 = v53;
+        activityCopy = v53;
       }
 
       objc_autoreleasePoolPop(v50);
-      if (v59)
+      if (errorCopy)
       {
         v55 = v44;
-        *v59 = v44;
+        *errorCopy = v44;
       }
     }
 
@@ -2467,17 +2467,17 @@ LABEL_33:
   return v37;
 }
 
-- (BOOL)__removeAllOverridesWithOptions:(id)a3 activity:(id)a4 error:(id *)a5
+- (BOOL)__removeAllOverridesWithOptions:(id)options activity:(id)activity error:(id *)error
 {
   v37[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  optionsCopy = options;
+  activityCopy = activity;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  [v9 markWithFormat:@"Removing all overrides"];
+  [activityCopy markWithFormat:@"Removing all overrides"];
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -2488,10 +2488,10 @@ LABEL_33:
   }
 
   objc_autoreleasePoolPop(v11);
-  v15 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v12 localZone];
+  localZone = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy localZone];
   v37[0] = objc_opt_class();
   v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:1];
-  v17 = [v15 removeAllModelsOfTypes:v16 options:v8];
+  v17 = [localZone removeAllModelsOfTypes:v16 options:optionsCopy];
 
   v32 = 0;
   v18 = [v17 blockAndWaitForCompletionWithError:&v32];
@@ -2499,9 +2499,9 @@ LABEL_33:
   v20 = v19;
   if (v19)
   {
-    [v9 markWithFormat:@"Failed to remove all previous overrides: %@", v19];
+    [activityCopy markWithFormat:@"Failed to remove all previous overrides: %@", v19];
     v21 = objc_autoreleasePoolPush();
-    v22 = v12;
+    v22 = selfCopy;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -2514,18 +2514,18 @@ LABEL_33:
     }
 
     objc_autoreleasePoolPop(v21);
-    if (a5)
+    if (error)
     {
       v25 = v20;
-      *a5 = v20;
+      *error = v20;
     }
   }
 
   else
   {
-    [v9 markWithFormat:@"Successfully removed all previous overrides"];
+    [activityCopy markWithFormat:@"Successfully removed all previous overrides"];
     v26 = objc_autoreleasePoolPush();
-    v27 = v12;
+    v27 = selfCopy;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
@@ -2542,24 +2542,24 @@ LABEL_33:
   return v20 == 0;
 }
 
-- (BOOL)__addOverrides:(id)a3 replace:(BOOL)a4 options:(id)a5 activity:(id)a6 error:(id *)a7
+- (BOOL)__addOverrides:(id)overrides replace:(BOOL)replace options:(id)options activity:(id)activity error:(id *)error
 {
-  v10 = a4;
+  replaceCopy = replace;
   v56 = *MEMORY[0x277D85DE8];
-  v38 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v14);
+  overridesCopy = overrides;
+  optionsCopy = options;
+  activityCopy = activity;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v10)
+  if (replaceCopy)
   {
-    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __removeAllOverridesWithOptions:v12 activity:v13 error:0];
+    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __removeAllOverridesWithOptions:optionsCopy activity:activityCopy error:0];
   }
 
-  v15 = [objc_opt_class() __overrideParentModelID];
-  v16 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self localZone];
-  v17 = [v16 createMirrorInputWithError:a7];
+  __overrideParentModelID = [objc_opt_class() __overrideParentModelID];
+  localZone = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self localZone];
+  v17 = [localZone createMirrorInputWithError:error];
 
   if (v17)
   {
@@ -2573,21 +2573,21 @@ LABEL_33:
     v40[1] = 3221225472;
     v40[2] = __112__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_Records____addOverrides_replace_options_activity_error___block_invoke;
     v40[3] = &unk_27972A290;
-    v18 = v13;
+    v18 = activityCopy;
     v41 = v18;
-    v42 = self;
+    selfCopy = self;
     v45 = &v46;
-    v43 = v15;
+    v43 = __overrideParentModelID;
     v19 = v17;
     v44 = v19;
-    [v38 enumerateKeysAndObjectsUsingBlock:v40];
+    [overridesCopy enumerateKeysAndObjectsUsingBlock:v40];
     if (v47[5])
     {
       [v19 abort];
       v20 = 0;
-      if (a7)
+      if (error)
       {
-        *a7 = v47[5];
+        *error = v47[5];
       }
     }
 
@@ -2595,7 +2595,7 @@ LABEL_33:
     {
       [v18 markWithFormat:@"Committing overrides"];
       context = objc_autoreleasePoolPush();
-      v21 = self;
+      selfCopy2 = self;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
@@ -2607,14 +2607,14 @@ LABEL_33:
 
       objc_autoreleasePoolPop(context);
       v39 = 0;
-      v20 = [v19 frmSyncCommitWithOptions:v12 error:&v39];
+      v20 = [v19 frmSyncCommitWithOptions:optionsCopy error:&v39];
       v24 = v39;
       contexta = v24;
       if (v20)
       {
         [v18 markWithFormat:@"Committed overrides successfully"];
         v25 = objc_autoreleasePoolPush();
-        v26 = v21;
+        v26 = selfCopy2;
         v27 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
         {
@@ -2631,7 +2631,7 @@ LABEL_33:
       {
         [v18 markWithFormat:@"Failed to commit: %@", v24];
         v29 = objc_autoreleasePoolPush();
-        v30 = v21;
+        v30 = selfCopy2;
         v31 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
         {
@@ -2644,10 +2644,10 @@ LABEL_33:
         }
 
         objc_autoreleasePoolPop(v29);
-        if (a7)
+        if (error)
         {
           v33 = contexta;
-          *a7 = contexta;
+          *error = contexta;
         }
       }
     }
@@ -2749,21 +2749,21 @@ void __112__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_Records____add
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (id)__fetchOverridesForZoneName:(id)a3 options:(id)a4 activity:(id)a5 error:(id *)a6
+- (id)__fetchOverridesForZoneName:(id)name options:(id)options activity:(id)activity error:(id *)error
 {
   v85 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v13);
+  nameCopy = name;
+  optionsCopy = options;
+  activityCopy = activity;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v66 = self;
-  if (v10)
+  selfCopy = self;
+  if (nameCopy)
   {
-    [v12 markWithFormat:@"Fetching overrides for zone '%@'", v10];
+    [activityCopy markWithFormat:@"Fetching overrides for zone '%@'", nameCopy];
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy2 = self;
     v16 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -2774,7 +2774,7 @@ void __112__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_Records____add
     *buf = 138543618;
     v77 = v17;
     v78 = 2112;
-    v79 = v10;
+    v79 = nameCopy;
     v18 = "%{public}@Fetching overrides for zone '%@'";
     v19 = v16;
     v20 = 22;
@@ -2782,9 +2782,9 @@ void __112__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_Records____add
 
   else
   {
-    [v12 markWithFormat:@"Fetching all overrides"];
+    [activityCopy markWithFormat:@"Fetching all overrides"];
     v14 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy3 = self;
     v16 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -2804,9 +2804,9 @@ void __112__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_Records____add
 LABEL_7:
   objc_autoreleasePoolPop(v14);
   v22 = objc_opt_class();
-  v23 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self localZone];
+  localZone = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self localZone];
   v75 = 0;
-  v24 = [v23 fetchModelsOfType:v22 error:&v75];
+  v24 = [localZone fetchModelsOfType:v22 error:&v75];
   v25 = v75;
 
   if (v24)
@@ -2814,10 +2814,10 @@ LABEL_7:
     if ([v24 count])
     {
       v60 = v25;
-      v65 = v12;
-      v62 = v11;
-      v67 = v10;
-      v63 = [MEMORY[0x277CBEB38] dictionary];
+      v65 = activityCopy;
+      v62 = optionsCopy;
+      v67 = nameCopy;
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v71 = 0u;
       v72 = 0u;
       v73 = 0u;
@@ -2825,7 +2825,7 @@ LABEL_7:
       v61 = v24;
       obj = v24;
       v26 = [obj countByEnumeratingWithState:&v71 objects:v84 count:16];
-      v27 = self;
+      selfCopy4 = self;
       if (v26)
       {
         v28 = v26;
@@ -2840,10 +2840,10 @@ LABEL_7:
             }
 
             v30 = *(*(&v71 + 1) + 8 * i);
-            v31 = [v30 hmbModelID];
-            v32 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v27 localZone];
+            hmbModelID = [v30 hmbModelID];
+            localZone2 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy4 localZone];
             v70 = 0;
-            v33 = [v32 externalIDForModelID:v31 error:&v70];
+            v33 = [localZone2 externalIDForModelID:hmbModelID error:&v70];
             v34 = v70;
 
             if (v33)
@@ -2856,23 +2856,23 @@ LABEL_7:
               {
                 if (!v67 || ([v35 zoneID], v37 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v37, "zoneName"), v38 = objc_claimAutoreleasedReturnValue(), v39 = objc_msgSend(v38, "isEqualToString:", v67), v38, v37, v39))
                 {
-                  v40 = [MEMORY[0x277CBEB38] dictionary];
-                  v41 = [v30 networkDeclarationsData];
-                  [v40 setObject:v41 forKeyedSubscript:@"networkDeclarations"];
+                  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+                  networkDeclarationsData = [v30 networkDeclarationsData];
+                  [dictionary2 setObject:networkDeclarationsData forKeyedSubscript:@"networkDeclarations"];
 
-                  v42 = [v30 pairedMetadataData];
-                  [v40 setObject:v42 forKeyedSubscript:@"pairedMetadata"];
+                  pairedMetadataData = [v30 pairedMetadataData];
+                  [dictionary2 setObject:pairedMetadataData forKeyedSubscript:@"pairedMetadata"];
 
-                  v43 = [v40 copy];
-                  [v63 setObject:v43 forKeyedSubscript:v35];
+                  v43 = [dictionary2 copy];
+                  [dictionary setObject:v43 forKeyedSubscript:v35];
                 }
               }
 
               else
               {
-                [v65 markWithFormat:@"Failed to convert externalID (%@) to CKRecordID for modelID %@: %@", v33, v31, v36];
+                [v65 markWithFormat:@"Failed to convert externalID (%@) to CKRecordID for modelID %@: %@", v33, hmbModelID, v36];
                 v48 = objc_autoreleasePoolPush();
-                v49 = v27;
+                v49 = selfCopy4;
                 v50 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
                 {
@@ -2882,7 +2882,7 @@ LABEL_7:
                   v78 = 2112;
                   v79 = v33;
                   v80 = 2112;
-                  v81 = v31;
+                  v81 = hmbModelID;
                   v82 = 2112;
                   v83 = v36;
                   _os_log_impl(&dword_2531F8000, v50, OS_LOG_TYPE_ERROR, "%{public}@Failed to convert externalID (%@) to CKRecordID for modelID %@: %@", buf, 0x2Au);
@@ -2891,14 +2891,14 @@ LABEL_7:
                 objc_autoreleasePoolPop(v48);
               }
 
-              v27 = v66;
+              selfCopy4 = selfCopy;
             }
 
             else
             {
-              [v65 markWithFormat:@"Failed to fetch externalID for modelID %@: %@", v31, v34];
+              [v65 markWithFormat:@"Failed to fetch externalID for modelID %@: %@", hmbModelID, v34];
               v44 = objc_autoreleasePoolPush();
-              v45 = v27;
+              v45 = selfCopy4;
               v46 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
               {
@@ -2906,7 +2906,7 @@ LABEL_7:
                 *buf = 138543874;
                 v77 = v47;
                 v78 = 2112;
-                v79 = v31;
+                v79 = hmbModelID;
                 v80 = 2112;
                 v81 = v34;
                 _os_log_impl(&dword_2531F8000, v46, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch externalID for modelID %@: %@", buf, 0x20u);
@@ -2923,11 +2923,11 @@ LABEL_7:
         while (v28);
       }
 
-      v52 = [v63 copy];
-      v10 = v67;
+      v52 = [dictionary copy];
+      nameCopy = v67;
       v24 = v61;
-      v11 = v62;
-      v12 = v65;
+      optionsCopy = v62;
+      activityCopy = v65;
       v25 = v60;
     }
 
@@ -2939,9 +2939,9 @@ LABEL_7:
 
   else
   {
-    [v12 markWithFormat:@"Failed to fetch override models: %@", v25];
+    [activityCopy markWithFormat:@"Failed to fetch override models: %@", v25];
     v53 = objc_autoreleasePoolPush();
-    v54 = self;
+    selfCopy5 = self;
     v55 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
     {
@@ -2954,11 +2954,11 @@ LABEL_7:
     }
 
     objc_autoreleasePoolPop(v53);
-    if (a6)
+    if (error)
     {
       v57 = v25;
       v52 = 0;
-      *a6 = v25;
+      *error = v25;
     }
 
     else
@@ -2972,27 +2972,27 @@ LABEL_7:
   return v52;
 }
 
-- (id)__fetchOverridesForRecordIDs:(id)a3 options:(id)a4 activity:(id)a5 error:(id *)a6
+- (id)__fetchOverridesForRecordIDs:(id)ds options:(id)options activity:(id)activity error:(id *)error
 {
   v59 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v36 = a4;
-  v42 = a5;
-  v10 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  dsCopy = ds;
+  optionsCopy = options;
+  activityCopy = activity;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v41 = objc_opt_class();
-  v39 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v9, "count")}];
+  v39 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v9;
+  obj = dsCopy;
   v43 = [obj countByEnumeratingWithState:&v46 objects:v58 count:16];
   if (v43)
   {
     v40 = *v47;
-    v37 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v43; ++i)
@@ -3003,46 +3003,46 @@ LABEL_7:
         }
 
         v12 = *(*(&v46 + 1) + 8 * i);
-        v13 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         v14 = [HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel modelIDForRecordID:v12];
-        v15 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self localZone];
+        localZone = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self localZone];
         v45 = 0;
-        v16 = [v15 fetchModelWithModelID:v14 ofType:v41 error:&v45];
+        v16 = [localZone fetchModelWithModelID:v14 ofType:v41 error:&v45];
         v17 = v45;
 
-        v18 = [v12 hmbDescription];
-        v19 = v18;
+        hmbDescription = [v12 hmbDescription];
+        v19 = hmbDescription;
         if (v16)
         {
           v44 = v17;
-          [v42 markWithFormat:@"Model %@ (%@) found in override zone", v14, v18];
+          [activityCopy markWithFormat:@"Model %@ (%@) found in override zone", v14, hmbDescription];
 
           v20 = objc_autoreleasePoolPush();
-          v21 = self;
+          selfCopy2 = self;
           v22 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
           {
             v23 = HMFGetLogIdentifier();
-            v24 = [v12 hmbDescription];
+            hmbDescription2 = [v12 hmbDescription];
             *buf = 138543874;
             v51 = v23;
             v52 = 2112;
             v53 = v14;
             v54 = 2112;
-            v55 = v24;
+            v55 = hmbDescription2;
             _os_log_impl(&dword_2531F8000, v22, OS_LOG_TYPE_DEBUG, "%{public}@Model %@ (%@) found in override zone", buf, 0x20u);
 
-            self = v37;
+            self = selfCopy;
           }
 
           objc_autoreleasePoolPop(v20);
-          v25 = [v16 networkDeclarationsData];
-          [v13 setObject:v25 forKeyedSubscript:@"networkDeclarations"];
+          networkDeclarationsData = [v16 networkDeclarationsData];
+          [dictionary setObject:networkDeclarationsData forKeyedSubscript:@"networkDeclarations"];
 
-          v26 = [v16 pairedMetadataData];
-          [v13 setObject:v26 forKeyedSubscript:@"pairedMetadata"];
+          pairedMetadataData = [v16 pairedMetadataData];
+          [dictionary setObject:pairedMetadataData forKeyedSubscript:@"pairedMetadata"];
 
-          v27 = [v13 copy];
+          v27 = [dictionary copy];
           [v39 setObject:v27 forKeyedSubscript:v12];
 
           v17 = v44;
@@ -3050,26 +3050,26 @@ LABEL_7:
 
         else
         {
-          [v42 markWithFormat:@"No model %@ (%@) found in override zone: %@", v14, v18, v17, v36];
+          [activityCopy markWithFormat:@"No model %@ (%@) found in override zone: %@", v14, hmbDescription, v17, optionsCopy];
 
           v28 = objc_autoreleasePoolPush();
-          v29 = self;
+          selfCopy3 = self;
           v30 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
           {
             v31 = HMFGetLogIdentifier();
-            v32 = [v12 hmbDescription];
+            hmbDescription3 = [v12 hmbDescription];
             *buf = 138544130;
             v51 = v31;
             v52 = 2112;
             v53 = v14;
             v54 = 2112;
-            v55 = v32;
+            v55 = hmbDescription3;
             v56 = 2112;
             v57 = v17;
             _os_log_impl(&dword_2531F8000, v30, OS_LOG_TYPE_DEBUG, "%{public}@No model %@ (%@) found in override zone: %@", buf, 0x2Au);
 
-            self = v37;
+            self = selfCopy;
           }
 
           objc_autoreleasePoolPop(v28);
@@ -3088,22 +3088,22 @@ LABEL_7:
   return v33;
 }
 
-- (BOOL)__removeAllLocalRulesWithOptions:(id)a3 activity:(id)a4 error:(id *)a5
+- (BOOL)__removeAllLocalRulesWithOptions:(id)options activity:(id)activity error:(id *)error
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v9);
+  optionsCopy = options;
+  activityCopy = activity;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v10 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self cloudDatabase];
-  v11 = [v10 publicZoneIDs];
+  cloudDatabase = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self cloudDatabase];
+  publicZoneIDs = [cloudDatabase publicZoneIDs];
 
-  if ([v11 count])
+  if ([publicZoneIDs count])
   {
-    [v8 markWithFormat:@"Removing cloud zones: %@", v11];
+    [activityCopy markWithFormat:@"Removing cloud zones: %@", publicZoneIDs];
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
@@ -3111,19 +3111,19 @@ LABEL_7:
       *buf = 138543618;
       v28 = v15;
       v29 = 2112;
-      v30 = v11;
+      v30 = publicZoneIDs;
       _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_DEFAULT, "%{public}@Removing cloud zones: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v12);
-    v16 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v13 cloudDatabase];
-    v17 = [v11 allObjects];
-    [v16 handleRemovedZoneIDs:v17 userInitiated:1];
+    cloudDatabase2 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy cloudDatabase];
+    allObjects = [publicZoneIDs allObjects];
+    [cloudDatabase2 handleRemovedZoneIDs:allObjects userInitiated:1];
   }
 
-  [v8 markWithFormat:@"Resetting database change token"];
+  [activityCopy markWithFormat:@"Resetting database change token"];
   v18 = objc_autoreleasePoolPush();
-  v19 = self;
+  selfCopy2 = self;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
@@ -3134,34 +3134,34 @@ LABEL_7:
   }
 
   objc_autoreleasePoolPop(v18);
-  v22 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v19 cloudDatabase];
-  v23 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v19 cloudDatabase];
-  v24 = [v23 publicDatabase];
-  [v22 updateServerChangeToken:0 forDatabaseWithScope:{objc_msgSend(v24, "scope")}];
+  cloudDatabase3 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy2 cloudDatabase];
+  cloudDatabase4 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy2 cloudDatabase];
+  publicDatabase = [cloudDatabase4 publicDatabase];
+  [cloudDatabase3 updateServerChangeToken:0 forDatabaseWithScope:{objc_msgSend(publicDatabase, "scope")}];
 
   v25 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (id)__fetchAllDataForZoneName:(id)a3 options:(id)a4 activity:(id)a5 error:(id *)a6
+- (id)__fetchAllDataForZoneName:(id)name options:(id)options activity:(id)activity error:(id *)error
 {
   v70 = *MEMORY[0x277D85DE8];
-  v47 = a3;
-  v50 = a4;
-  v52 = a5;
-  v9 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v9);
+  nameCopy = name;
+  optionsCopy = options;
+  activityCopy = activity;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v47)
+  if (nameCopy)
   {
     v10 = objc_alloc(MEMORY[0x277CBC5F8]);
-    v11 = [v10 initWithZoneName:v47 ownerName:*MEMORY[0x277CBBF28]];
+    v11 = [v10 initWithZoneName:nameCopy ownerName:*MEMORY[0x277CBBF28]];
     v12 = [MEMORY[0x277CBEB98] setWithObject:v11];
 
 LABEL_12:
-    [v52 markWithFormat:@"Fetching models from zones: %@", v12];
+    [activityCopy markWithFormat:@"Fetching models from zones: %@", v12];
     v25 = objc_autoreleasePoolPush();
-    v51 = self;
+    selfCopy = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
@@ -3174,7 +3174,7 @@ LABEL_12:
     }
 
     objc_autoreleasePoolPop(v25);
-    v49 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v56 = 0u;
     v57 = 0u;
     v54 = 0u;
@@ -3195,29 +3195,29 @@ LABEL_12:
 
           v31 = *(*(&v54 + 1) + 8 * i);
           v53 = 0;
-          v32 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v51 __fetchAllDataForZoneID:v31 options:v50 activity:v52 error:&v53];
+          v32 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy __fetchAllDataForZoneID:v31 options:optionsCopy activity:activityCopy error:&v53];
           v33 = v53;
           if (v32)
           {
-            [v49 addEntriesFromDictionary:v32];
+            [dictionary addEntriesFromDictionary:v32];
           }
 
           else
           {
-            v34 = [v31 hmbDescription];
-            [v52 markWithFormat:@"Failed to fetch models for zone %@: %@", v34, v33];
+            hmbDescription = [v31 hmbDescription];
+            [activityCopy markWithFormat:@"Failed to fetch models for zone %@: %@", hmbDescription, v33];
 
             v35 = objc_autoreleasePoolPush();
-            v36 = v51;
+            v36 = selfCopy;
             v37 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
             {
               v38 = HMFGetLogIdentifier();
-              v39 = [v31 hmbDescription];
+              hmbDescription2 = [v31 hmbDescription];
               *buf = 138543874;
               v63 = v38;
               v64 = 2112;
-              v65 = v39;
+              v65 = hmbDescription2;
               v66 = 2112;
               v67 = v33;
               _os_log_impl(&dword_2531F8000, v37, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch models for zone %@: %@", buf, 0x20u);
@@ -3233,27 +3233,27 @@ LABEL_12:
       while (v28);
     }
 
-    v40 = [v49 copy];
+    v40 = [dictionary copy];
     goto LABEL_27;
   }
 
-  v13 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self cloudDatabase];
+  cloudDatabase = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self cloudDatabase];
   v14 = *MEMORY[0x277D17138];
   os_unfair_lock_lock_with_options();
 
-  v15 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self cloudDatabase];
-  v16 = [v15 zoneStateByZoneID];
-  v17 = [v16 allValues];
+  cloudDatabase2 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self cloudDatabase];
+  zoneStateByZoneID = [cloudDatabase2 zoneStateByZoneID];
+  allValues = [zoneStateByZoneID allValues];
 
-  os_unfair_lock_unlock(&v13[v14]);
-  if ([v17 count])
+  os_unfair_lock_unlock(&cloudDatabase[v14]);
+  if ([allValues count])
   {
-    v18 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v17, "count")}];
+    v18 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(allValues, "count")}];
     v60 = 0u;
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    v19 = v17;
+    v19 = allValues;
     v20 = [v19 countByEnumeratingWithState:&v58 objects:v69 count:16];
     if (v20)
     {
@@ -3267,9 +3267,9 @@ LABEL_12:
             objc_enumerationMutation(v19);
           }
 
-          v23 = [*(*(&v58 + 1) + 8 * j) zoneID];
-          v24 = [v23 zoneID];
-          [v18 addObject:v24];
+          zoneID = [*(*(&v58 + 1) + 8 * j) zoneID];
+          v23ZoneID = [zoneID zoneID];
+          [v18 addObject:v23ZoneID];
         }
 
         v20 = [v19 countByEnumeratingWithState:&v58 objects:v69 count:16];
@@ -3282,10 +3282,10 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  obj = v17;
-  [v52 markWithFormat:@"No local zones exist"];
+  obj = allValues;
+  [activityCopy markWithFormat:@"No local zones exist"];
   v43 = objc_autoreleasePoolPush();
-  v44 = self;
+  selfCopy2 = self;
   v45 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v45, OS_LOG_TYPE_DEBUG))
   {
@@ -3304,76 +3304,76 @@ LABEL_27:
   return v40;
 }
 
-- (id)__fetchAllDataForZoneID:(id)a3 options:(id)a4 activity:(id)a5 error:(id *)a6
+- (id)__fetchAllDataForZoneID:(id)d options:(id)options activity:(id)activity error:(id *)error
 {
   v144 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v12);
+  dCopy = d;
+  optionsCopy = options;
+  activityCopy = activity;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v13 = [v9 hmbDescription];
-  v123 = v11;
-  [v11 markWithFormat:@"Fetching all models for zone %@", v13];
+  hmbDescription = [dCopy hmbDescription];
+  v123 = activityCopy;
+  [activityCopy markWithFormat:@"Fetching all models for zone %@", hmbDescription];
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
     HMFGetLogIdentifier();
-    v18 = v17 = v15;
-    v19 = [v9 hmbDescription];
+    v18 = v17 = selfCopy;
+    hmbDescription2 = [dCopy hmbDescription];
     *buf = 138543618;
     v136 = v18;
     v137 = 2112;
-    v138 = v19;
+    v138 = hmbDescription2;
     _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@Fetching all models for zone %@", buf, 0x16u);
 
-    v15 = v17;
+    selfCopy = v17;
   }
 
   objc_autoreleasePoolPop(v14);
-  v20 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v15 __createCloudZoneIDForZoneID:v9];
+  v20 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy __createCloudZoneIDForZoneID:dCopy];
   v134 = 0;
-  v21 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v15 __openLocalZoneForCloudZoneID:v20 error:&v134];
+  v21 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy __openLocalZoneForCloudZoneID:v20 error:&v134];
   v22 = v134;
   if (v21)
   {
     v115 = v20;
-    v122 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v133 = v22;
     v23 = [v21 fetchModelsOfType:objc_opt_class() error:&v133];
     v24 = v133;
 
-    v25 = [v9 hmbDescription];
-    v26 = v25;
+    hmbDescription3 = [dCopy hmbDescription];
+    v26 = hmbDescription3;
     v114 = v23;
     if (v23)
     {
-      v113 = v10;
+      v113 = optionsCopy;
       v124 = v24;
       v27 = v23;
-      [v123 markWithFormat:@"Found models in local zone for %@: %@", v25, v23];
+      [v123 markWithFormat:@"Found models in local zone for %@: %@", hmbDescription3, v23];
 
       v28 = objc_autoreleasePoolPush();
-      v29 = v15;
+      v29 = selfCopy;
       v30 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
       {
         HMFGetLogIdentifier();
-        v32 = v31 = v15;
-        v33 = [v9 hmbDescription];
+        v32 = v31 = selfCopy;
+        hmbDescription4 = [dCopy hmbDescription];
         *buf = 138543874;
         v136 = v32;
         v137 = 2112;
-        v138 = v33;
+        v138 = hmbDescription4;
         v139 = 2112;
         v140 = v27;
         _os_log_impl(&dword_2531F8000, v30, OS_LOG_TYPE_DEBUG, "%{public}@Found models in local zone for %@: %@", buf, 0x20u);
 
-        v15 = v31;
+        selfCopy = v31;
       }
 
       v117 = v29;
@@ -3389,8 +3389,8 @@ LABEL_27:
       {
         v119 = *v130;
         v35 = v124;
-        v111 = v15;
-        v112 = v9;
+        v111 = selfCopy;
+        v112 = dCopy;
         v120 = v21;
         while (2)
         {
@@ -3404,17 +3404,17 @@ LABEL_27:
             }
 
             v38 = *(*(&v129 + 1) + 8 * v36);
-            v39 = [v38 hmbModelID];
+            hmbModelID = [v38 hmbModelID];
             v128 = v35;
-            v40 = [v21 externalIDForModelID:v39 error:&v128];
+            v40 = [v21 externalIDForModelID:hmbModelID error:&v128];
             v41 = v128;
 
             if (!v40)
             {
-              v80 = [v38 hmbModelID];
-              v9 = v112;
-              v81 = [v112 hmbDescription];
-              [v123 markWithFormat:@"Failed to fetch external id for model %@ in %@: %@", v80, v81, v41];
+              hmbModelID2 = [v38 hmbModelID];
+              dCopy = v112;
+              hmbDescription5 = [v112 hmbDescription];
+              [v123 markWithFormat:@"Failed to fetch external id for model %@ in %@: %@", hmbModelID2, hmbDescription5, v41];
 
               v82 = objc_autoreleasePoolPush();
               v83 = v37;
@@ -3422,14 +3422,14 @@ LABEL_27:
               if (os_log_type_enabled(v84, OS_LOG_TYPE_ERROR))
               {
                 v85 = HMFGetLogIdentifier();
-                v86 = [v38 hmbModelID];
-                v87 = [v112 hmbDescription];
+                hmbModelID3 = [v38 hmbModelID];
+                hmbDescription6 = [v112 hmbDescription];
                 *buf = 138544130;
                 v136 = v85;
                 v137 = 2112;
-                v138 = v86;
+                v138 = hmbModelID3;
                 v139 = 2112;
-                v140 = v87;
+                v140 = hmbDescription6;
                 v141 = 2112;
                 v142 = v41;
                 _os_log_impl(&dword_2531F8000, v84, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch external id for model %@ in %@: %@", buf, 0x2Au);
@@ -3437,9 +3437,9 @@ LABEL_27:
 
               objc_autoreleasePoolPop(v82);
               v35 = v41;
-              v10 = v113;
+              optionsCopy = v113;
               v21 = v120;
-              v15 = v111;
+              selfCopy = v111;
               goto LABEL_41;
             }
 
@@ -3449,11 +3449,11 @@ LABEL_27:
 
             if (!v42)
             {
-              v88 = [v38 hmbModelID];
-              v9 = v112;
-              v89 = [v112 hmbDescription];
+              hmbModelID4 = [v38 hmbModelID];
+              dCopy = v112;
+              hmbDescription7 = [v112 hmbDescription];
               v90 = v35;
-              [v123 markWithFormat:@"Failed to convert external id for model %@ in %@: %@", v88, v89, v35];
+              [v123 markWithFormat:@"Failed to convert external id for model %@ in %@: %@", hmbModelID4, hmbDescription7, v35];
 
               v91 = objc_autoreleasePoolPush();
               v92 = v37;
@@ -3462,33 +3462,33 @@ LABEL_27:
               {
                 HMFGetLogIdentifier();
                 v95 = v94 = v40;
-                v96 = [v38 hmbModelID];
-                v97 = [v112 hmbDescription];
+                hmbModelID5 = [v38 hmbModelID];
+                hmbDescription8 = [v112 hmbDescription];
                 *buf = 138544130;
                 v136 = v95;
                 v137 = 2112;
-                v138 = v96;
+                v138 = hmbModelID5;
                 v139 = 2112;
-                v140 = v97;
+                v140 = hmbDescription8;
                 v141 = 2112;
                 v142 = v90;
                 _os_log_impl(&dword_2531F8000, v93, OS_LOG_TYPE_ERROR, "%{public}@Failed to convert external id for model %@ in %@: %@", buf, 0x2Au);
 
-                v9 = v112;
+                dCopy = v112;
                 v40 = v94;
               }
 
               objc_autoreleasePoolPop(v91);
-              v10 = v113;
+              optionsCopy = v113;
               v21 = v120;
-              v15 = v111;
+              selfCopy = v111;
               v35 = v90;
               goto LABEL_41;
             }
 
             v125 = v40;
-            v43 = [v42 hmbDescription];
-            [v123 markWithFormat:@"Fetched model for %@", v43];
+            hmbDescription9 = [v42 hmbDescription];
+            [v123 markWithFormat:@"Fetched model for %@", hmbDescription9];
 
             v44 = objc_autoreleasePoolPush();
             v45 = v37;
@@ -3498,11 +3498,11 @@ LABEL_27:
               HMFGetLogIdentifier();
               v47 = v34;
               v49 = v48 = v35;
-              v50 = [v42 hmbDescription];
+              hmbDescription10 = [v42 hmbDescription];
               *buf = 138543618;
               v136 = v49;
               v137 = 2112;
-              v138 = v50;
+              v138 = hmbDescription10;
               _os_log_impl(&dword_2531F8000, v46, OS_LOG_TYPE_DEBUG, "%{public}@Fetched model for %@", buf, 0x16u);
 
               v35 = v48;
@@ -3511,32 +3511,32 @@ LABEL_27:
             }
 
             objc_autoreleasePoolPop(v44);
-            v51 = [v38 networkDeclarationsData];
+            networkDeclarationsData = [v38 networkDeclarationsData];
 
-            if (v51)
+            if (networkDeclarationsData)
             {
-              v52 = [v38 networkDeclarationsData];
-              [v34 setObject:v52 forKeyedSubscript:@"networkDeclarations"];
+              networkDeclarationsData2 = [v38 networkDeclarationsData];
+              [v34 setObject:networkDeclarationsData2 forKeyedSubscript:@"networkDeclarations"];
             }
 
-            v53 = [v38 pairedMetadataData];
+            pairedMetadataData = [v38 pairedMetadataData];
 
             v21 = v120;
-            if (v53)
+            if (pairedMetadataData)
             {
-              v54 = [v38 pairedMetadataData];
-              [v34 setObject:v54 forKeyedSubscript:@"pairedMetadata"];
+              pairedMetadataData2 = [v38 pairedMetadataData];
+              [v34 setObject:pairedMetadataData2 forKeyedSubscript:@"pairedMetadata"];
             }
 
-            [v122 setObject:v34 forKeyedSubscript:v42];
+            [dictionary setObject:v34 forKeyedSubscript:v42];
 
             ++v36;
           }
 
           while (v121 != v36);
-          v9 = v112;
-          v10 = v113;
-          v15 = v111;
+          dCopy = v112;
+          optionsCopy = v113;
+          selfCopy = v111;
           v121 = [obj countByEnumeratingWithState:&v129 objects:v143 count:16];
           if (v121)
           {
@@ -3550,7 +3550,7 @@ LABEL_27:
       else
       {
         v35 = v124;
-        v10 = v113;
+        optionsCopy = v113;
       }
 
 LABEL_41:
@@ -3558,22 +3558,22 @@ LABEL_41:
 
     else
     {
-      [v123 markWithFormat:@"Failed to fetch models from local zone for %@: %@", v25, v24];
+      [v123 markWithFormat:@"Failed to fetch models from local zone for %@: %@", hmbDescription3, v24];
 
       v66 = objc_autoreleasePoolPush();
-      v67 = v15;
-      v68 = v15;
+      v67 = selfCopy;
+      v68 = selfCopy;
       v69 = HMFGetOSLogHandle();
       v35 = v24;
       if (os_log_type_enabled(v69, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
         v71 = v70 = v24;
-        v72 = [v9 hmbDescription];
+        hmbDescription11 = [dCopy hmbDescription];
         *buf = 138543874;
         v136 = v71;
         v137 = 2112;
-        v138 = v72;
+        v138 = hmbDescription11;
         v139 = 2112;
         v140 = v70;
         _os_log_impl(&dword_2531F8000, v69, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch models from local zone for %@: %@", buf, 0x20u);
@@ -3582,31 +3582,31 @@ LABEL_41:
       }
 
       objc_autoreleasePoolPop(v66);
-      v15 = v67;
+      selfCopy = v67;
     }
 
-    v98 = [v21 shutdown];
+    shutdown = [v21 shutdown];
     v126 = 0;
-    v99 = [v98 blockAndWaitForCompletionWithError:&v126];
+    v99 = [shutdown blockAndWaitForCompletionWithError:&v126];
     v100 = v126;
 
     if (v100)
     {
       v101 = v35;
-      v102 = [v9 hmbDescription];
-      [v123 markWithFormat:@"Failed to shut down local zone for %@: %@", v102, v100];
+      hmbDescription12 = [dCopy hmbDescription];
+      [v123 markWithFormat:@"Failed to shut down local zone for %@: %@", hmbDescription12, v100];
 
       v103 = objc_autoreleasePoolPush();
-      v104 = v15;
+      v104 = selfCopy;
       v105 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v105, OS_LOG_TYPE_ERROR))
       {
         v106 = HMFGetLogIdentifier();
-        v107 = [v9 hmbDescription];
+        hmbDescription13 = [dCopy hmbDescription];
         *buf = 138543874;
         v136 = v106;
         v137 = 2112;
-        v138 = v107;
+        v138 = hmbDescription13;
         v139 = 2112;
         v140 = v100;
         _os_log_impl(&dword_2531F8000, v105, OS_LOG_TYPE_ERROR, "%{public}@Failed to shut down local zone for %@: %@", buf, 0x20u);
@@ -3622,7 +3622,7 @@ LABEL_41:
 
     else if (!v35)
     {
-      v65 = [v122 copy];
+      v65 = [dictionary copy];
 LABEL_52:
 
       v22 = v35;
@@ -3630,11 +3630,11 @@ LABEL_52:
       goto LABEL_53;
     }
 
-    if (a6)
+    if (error)
     {
       v108 = v35;
       v65 = 0;
-      *a6 = v35;
+      *error = v35;
     }
 
     else
@@ -3645,13 +3645,13 @@ LABEL_52:
     goto LABEL_52;
   }
 
-  v55 = v15;
+  v55 = selfCopy;
   v56 = [objc_opt_class() __errorIsNotFound:v22];
-  v57 = [v9 hmbDescription];
-  v58 = v57;
+  hmbDescription14 = [dCopy hmbDescription];
+  v58 = hmbDescription14;
   if (v56)
   {
-    [v123 markWithFormat:@"Local zone does not exist for %@", v57];
+    [v123 markWithFormat:@"Local zone does not exist for %@", hmbDescription14];
 
     v59 = objc_autoreleasePoolPush();
     v60 = v55;
@@ -3659,7 +3659,7 @@ LABEL_52:
     if (os_log_type_enabled(v61, OS_LOG_TYPE_DEBUG))
     {
       v62 = HMFGetLogIdentifier();
-      [v9 hmbDescription];
+      [dCopy hmbDescription];
       v64 = v63 = v20;
       *buf = 138543618;
       v136 = v62;
@@ -3676,7 +3676,7 @@ LABEL_52:
 
   else
   {
-    [v123 markWithFormat:@"Failed to open local zone for %@: %@", v57, v22];
+    [v123 markWithFormat:@"Failed to open local zone for %@: %@", hmbDescription14, v22];
 
     v73 = objc_autoreleasePoolPush();
     v74 = v55;
@@ -3684,7 +3684,7 @@ LABEL_52:
     if (os_log_type_enabled(v75, OS_LOG_TYPE_ERROR))
     {
       v76 = HMFGetLogIdentifier();
-      [v9 hmbDescription];
+      [dCopy hmbDescription];
       v78 = v77 = v20;
       *buf = 138543874;
       v136 = v76;
@@ -3698,11 +3698,11 @@ LABEL_52:
     }
 
     objc_autoreleasePoolPop(v73);
-    if (a6)
+    if (error)
     {
       v79 = v22;
       v65 = 0;
-      *a6 = v22;
+      *error = v22;
     }
 
     else
@@ -3718,34 +3718,34 @@ LABEL_53:
   return v65;
 }
 
-- (id)__fetchAllDataForRecordIDs:(id)a3 options:(id)a4 activity:(id)a5 error:(id *)a6
+- (id)__fetchAllDataForRecordIDs:(id)ds options:(id)options activity:(id)activity error:(id *)error
 {
   v79 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v13);
+  dsCopy = ds;
+  optionsCopy = options;
+  activityCopy = activity;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v57 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __localZonesForRecordIDs:v10 activity:v12 error:a6];
+  v57 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __localZonesForRecordIDs:dsCopy activity:activityCopy error:error];
   if (v57)
   {
-    v54 = v11;
+    v54 = optionsCopy;
     v60 = objc_opt_class();
-    v58 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v10, "count")}];
+    v58 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(dsCopy, "count")}];
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
-    v55 = v10;
-    obj = v10;
+    v55 = dsCopy;
+    obj = dsCopy;
     v14 = v57;
     v63 = [obj countByEnumeratingWithState:&v66 objects:v78 count:16];
     if (v63)
     {
       v61 = *v67;
-      v62 = self;
-      v56 = v12;
+      selfCopy = self;
+      v56 = activityCopy;
       do
       {
         for (i = 0; i != v63; ++i)
@@ -3757,79 +3757,79 @@ LABEL_53:
 
           v16 = *(*(&v66 + 1) + 8 * i);
           v17 = [HMDNetworkRouterFirewallRuleManagerBackingStoreCloudAccessoryModel modelIDForRecordID:v16];
-          v18 = [v16 zoneID];
-          v19 = [v14 objectForKeyedSubscript:v18];
+          zoneID = [v16 zoneID];
+          v19 = [v14 objectForKeyedSubscript:zoneID];
 
           if (v19)
           {
             v65 = 0;
             v20 = [v19 fetchModelWithModelID:v17 ofType:v60 error:&v65];
             v21 = v65;
-            v22 = [v16 hmbDescription];
-            v23 = v22;
+            hmbDescription = [v16 hmbDescription];
+            v23 = hmbDescription;
             v64 = v21;
             if (v20)
             {
-              [v12 markWithFormat:@"Model %@ found for record %@", v17, v22];
+              [activityCopy markWithFormat:@"Model %@ found for record %@", v17, hmbDescription];
 
               v24 = objc_autoreleasePoolPush();
-              v25 = self;
+              selfCopy2 = self;
               v26 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
               {
                 v27 = HMFGetLogIdentifier();
-                v28 = [v16 hmbDescription];
+                hmbDescription2 = [v16 hmbDescription];
                 *buf = 138543874;
                 v71 = v27;
                 v72 = 2112;
                 v73 = v17;
                 v74 = 2112;
-                v75 = v28;
+                v75 = hmbDescription2;
                 _os_log_impl(&dword_2531F8000, v26, OS_LOG_TYPE_DEBUG, "%{public}@Model %@ found for record %@", buf, 0x20u);
 
-                v12 = v56;
+                activityCopy = v56;
                 v14 = v57;
               }
 
               objc_autoreleasePoolPop(v24);
-              v29 = [MEMORY[0x277CBEB38] dictionary];
-              v30 = [v20 networkDeclarationsData];
+              dictionary = [MEMORY[0x277CBEB38] dictionary];
+              networkDeclarationsData = [v20 networkDeclarationsData];
 
-              if (v30)
+              if (networkDeclarationsData)
               {
-                v31 = [v20 networkDeclarationsData];
-                [v29 setObject:v31 forKeyedSubscript:@"networkDeclarations"];
+                networkDeclarationsData2 = [v20 networkDeclarationsData];
+                [dictionary setObject:networkDeclarationsData2 forKeyedSubscript:@"networkDeclarations"];
               }
 
-              v32 = [v20 pairedMetadataData];
+              pairedMetadataData = [v20 pairedMetadataData];
 
-              self = v62;
-              if (v32)
+              self = selfCopy;
+              if (pairedMetadataData)
               {
-                v33 = [v20 pairedMetadataData];
-                [v29 setObject:v33 forKeyedSubscript:@"pairedMetadata"];
+                pairedMetadataData2 = [v20 pairedMetadataData];
+                [dictionary setObject:pairedMetadataData2 forKeyedSubscript:@"pairedMetadata"];
               }
 
-              [v58 setObject:v29 forKeyedSubscript:v16];
+              [v58 setObject:dictionary forKeyedSubscript:v16];
             }
 
             else
             {
-              [v12 markWithFormat:@"No model %@ for record %@ found: %@", v17, v22, v21];
+              [activityCopy markWithFormat:@"No model %@ for record %@ found: %@", v17, hmbDescription, v21];
 
               v40 = objc_autoreleasePoolPush();
-              v41 = self;
+              selfCopy3 = self;
               v42 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
               {
                 v43 = HMFGetLogIdentifier();
-                v44 = [v16 hmbDescription];
+                hmbDescription3 = [v16 hmbDescription];
                 *buf = 138544130;
                 v71 = v43;
                 v72 = 2112;
                 v73 = v17;
                 v74 = 2112;
-                v75 = v44;
+                v75 = hmbDescription3;
                 v76 = 2112;
                 v77 = v64;
                 _os_log_impl(&dword_2531F8000, v42, OS_LOG_TYPE_DEBUG, "%{public}@No model %@ for record %@ found: %@", buf, 0x2Au);
@@ -3838,33 +3838,33 @@ LABEL_53:
               }
 
               objc_autoreleasePoolPop(v40);
-              self = v62;
+              self = selfCopy;
             }
           }
 
           else
           {
-            v34 = [v16 hmbDescription];
-            [v12 markWithFormat:@"No local zone for model %@ for record %@ found", v17, v34];
+            hmbDescription4 = [v16 hmbDescription];
+            [activityCopy markWithFormat:@"No local zone for model %@ for record %@ found", v17, hmbDescription4];
 
             v35 = objc_autoreleasePoolPush();
-            v36 = self;
+            selfCopy4 = self;
             v37 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
             {
               v38 = HMFGetLogIdentifier();
-              v39 = [v16 hmbDescription];
+              hmbDescription5 = [v16 hmbDescription];
               *buf = 138543874;
               v71 = v38;
               v72 = 2112;
               v73 = v17;
               v74 = 2112;
-              v75 = v39;
+              v75 = hmbDescription5;
               _os_log_impl(&dword_2531F8000, v37, OS_LOG_TYPE_DEBUG, "%{public}@No local zone for model %@ for record %@ found", buf, 0x20u);
             }
 
             objc_autoreleasePoolPop(v35);
-            self = v62;
+            self = selfCopy;
           }
         }
 
@@ -3874,19 +3874,19 @@ LABEL_53:
       while (v63);
     }
 
-    v45 = [v14 allValues];
-    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __shutdownLocalZones:v45 activity:v12];
+    allValues = [v14 allValues];
+    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __shutdownLocalZones:allValues activity:activityCopy];
 
     v46 = [v58 copy];
     v47 = v14;
-    v11 = v54;
-    v10 = v55;
+    optionsCopy = v54;
+    dsCopy = v55;
   }
 
   else
   {
     v48 = objc_autoreleasePoolPush();
-    v49 = self;
+    selfCopy5 = self;
     v50 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
     {
@@ -3906,38 +3906,38 @@ LABEL_53:
   return v46;
 }
 
-- (id)__localZonesForRecordIDs:(id)a3 activity:(id)a4 error:(id *)a5
+- (id)__localZonesForRecordIDs:(id)ds activity:(id)activity error:(id *)error
 {
   v66 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v52 = self;
-  v53 = a4;
-  v9 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v9);
+  dsCopy = ds;
+  selfCopy = self;
+  activityCopy = activity;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v10 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v11 = v8;
+  v11 = dsCopy;
   v12 = [v11 countByEnumeratingWithState:&v55 objects:v65 count:16];
   if (!v12)
   {
 
 LABEL_26:
-    v45 = [v10 copy];
+    v45 = [dictionary copy];
     v14 = 0;
     goto LABEL_27;
   }
 
   v13 = v12;
-  v48 = a5;
+  errorCopy = error;
   v14 = 0;
   v15 = *v56;
-  v49 = v10;
+  v49 = dictionary;
   v50 = *v56;
-  v16 = v52;
+  v16 = selfCopy;
   v51 = v11;
   while (2)
   {
@@ -3948,20 +3948,20 @@ LABEL_26:
         objc_enumerationMutation(v11);
       }
 
-      v18 = [*(*(&v55 + 1) + 8 * i) zoneID];
-      v19 = [v10 objectForKeyedSubscript:v18];
+      zoneID = [*(*(&v55 + 1) + 8 * i) zoneID];
+      v19 = [dictionary objectForKeyedSubscript:zoneID];
 
       if (!v19)
       {
-        v20 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v16 __createCloudZoneIDForZoneID:v18];
+        v20 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v16 __createCloudZoneIDForZoneID:zoneID];
         v54 = v14;
         v21 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v16 __openLocalZoneForCloudZoneID:v20 error:&v54];
         v22 = v54;
 
         if (v21)
         {
-          v23 = [v18 hmbDescription];
-          [v53 markWithFormat:@"Opened local zone for %@", v23];
+          hmbDescription = [zoneID hmbDescription];
+          [activityCopy markWithFormat:@"Opened local zone for %@", hmbDescription];
 
           v24 = objc_autoreleasePoolPush();
           v25 = v16;
@@ -3969,30 +3969,30 @@ LABEL_26:
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
           {
             v27 = HMFGetLogIdentifier();
-            v28 = [v18 hmbDescription];
+            hmbDescription2 = [zoneID hmbDescription];
             *buf = 138543618;
             v60 = v27;
             v61 = 2112;
-            v62 = v28;
+            v62 = hmbDescription2;
             _os_log_impl(&dword_2531F8000, v26, OS_LOG_TYPE_DEBUG, "%{public}@Opened local zone for %@", buf, 0x16u);
 
             v15 = v50;
-            v10 = v49;
+            dictionary = v49;
           }
 
           objc_autoreleasePoolPop(v24);
-          [v10 setObject:v21 forKeyedSubscript:v18];
+          [dictionary setObject:v21 forKeyedSubscript:zoneID];
         }
 
         else
         {
           v29 = v16;
           v30 = [objc_opt_class() __errorIsNotFound:v22];
-          v31 = [v18 hmbDescription];
-          v32 = v31;
+          hmbDescription3 = [zoneID hmbDescription];
+          v32 = hmbDescription3;
           if (!v30)
           {
-            [v53 markWithFormat:@"Failed to open local zone for %@: %@", v31, v22];
+            [activityCopy markWithFormat:@"Failed to open local zone for %@: %@", hmbDescription3, v22];
 
             v38 = objc_autoreleasePoolPush();
             v39 = v29;
@@ -4000,26 +4000,26 @@ LABEL_26:
             if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
             {
               v41 = HMFGetLogIdentifier();
-              v42 = [v18 hmbDescription];
+              hmbDescription4 = [zoneID hmbDescription];
               *buf = 138543874;
               v60 = v41;
               v61 = 2112;
-              v62 = v42;
+              v62 = hmbDescription4;
               v63 = 2112;
               v64 = v22;
               _os_log_impl(&dword_2531F8000, v40, OS_LOG_TYPE_ERROR, "%{public}@Failed to open local zone for %@: %@", buf, 0x20u);
 
-              v10 = v49;
+              dictionary = v49;
             }
 
             objc_autoreleasePoolPop(v38);
             v14 = v22;
             v11 = v51;
-            v16 = v52;
+            v16 = selfCopy;
             goto LABEL_22;
           }
 
-          [v53 markWithFormat:@"No local zone for %@, skipping", v31];
+          [activityCopy markWithFormat:@"No local zone for %@, skipping", hmbDescription3];
 
           v33 = objc_autoreleasePoolPush();
           v34 = v29;
@@ -4027,14 +4027,14 @@ LABEL_26:
           if (os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG))
           {
             v36 = HMFGetLogIdentifier();
-            v37 = [v18 hmbDescription];
+            hmbDescription5 = [zoneID hmbDescription];
             *buf = 138543618;
             v60 = v36;
             v61 = 2112;
-            v62 = v37;
+            v62 = hmbDescription5;
             _os_log_impl(&dword_2531F8000, v35, OS_LOG_TYPE_DEBUG, "%{public}@No local zone for %@, skipping", buf, 0x16u);
 
-            v10 = v49;
+            dictionary = v49;
           }
 
           objc_autoreleasePoolPop(v33);
@@ -4044,7 +4044,7 @@ LABEL_26:
 
         v14 = v22;
         v11 = v51;
-        v16 = v52;
+        v16 = selfCopy;
       }
     }
 
@@ -4064,14 +4064,14 @@ LABEL_22:
     goto LABEL_26;
   }
 
-  v43 = [v10 allValues];
-  [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v16 __shutdownLocalZones:v43 activity:v53];
+  allValues = [dictionary allValues];
+  [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v16 __shutdownLocalZones:allValues activity:activityCopy];
 
-  if (v48)
+  if (errorCopy)
   {
     v44 = v14;
     v45 = 0;
-    *v48 = v14;
+    *errorCopy = v14;
   }
 
   else
@@ -4086,22 +4086,22 @@ LABEL_27:
   return v45;
 }
 
-- (void)__shutdownLocalZones:(id)a3 activity:(id)a4
+- (void)__shutdownLocalZones:(id)zones activity:(id)activity
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  zonesCopy = zones;
+  activityCopy = activity;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if ([v6 count])
+  if ([zonesCopy count])
   {
-    v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(zonesCopy, "count")}];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v10 = v6;
+    v10 = zonesCopy;
     v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v11)
     {
@@ -4117,8 +4117,8 @@ LABEL_27:
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v25 + 1) + 8 * v14) shutdown];
-          [v9 addObject:v15];
+          shutdown = [*(*(&v25 + 1) + 8 * v14) shutdown];
+          [v9 addObject:shutdown];
 
           ++v14;
         }
@@ -4131,17 +4131,17 @@ LABEL_27:
     }
 
     v16 = MEMORY[0x277D2C900];
-    v17 = [MEMORY[0x277D2C938] globalAsyncScheduler];
-    v18 = [v16 combineAllFutures:v9 ignoringErrors:1 scheduler:v17];
+    globalAsyncScheduler = [MEMORY[0x277D2C938] globalAsyncScheduler];
+    v18 = [v16 combineAllFutures:v9 ignoringErrors:1 scheduler:globalAsyncScheduler];
 
     v19 = [v18 blockAndWaitForCompletionWithError:0];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __96__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_Records____shutdownLocalZones_activity___block_invoke;
     v21[3] = &unk_27972A268;
-    v22 = v7;
+    v22 = activityCopy;
     v23 = v10;
-    v24 = self;
+    selfCopy = self;
     [v19 hmf_enumerateWithAutoreleasePoolUsingBlock:v21];
   }
 
@@ -4195,46 +4195,46 @@ void __96__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_Records____shut
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)__openLocalZoneForCloudZoneID:(id)a3 error:(id *)a4
+- (id)__openLocalZoneForCloudZoneID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  dCopy = d;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v8 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self localDatabase];
+  localDatabase = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self localDatabase];
   v9 = objc_alloc_init(MEMORY[0x277D17088]);
-  v10 = [v8 openZoneWithZoneID:v6 configuration:v9 error:a4];
+  v10 = [localDatabase openZoneWithZoneID:dCopy configuration:v9 error:error];
 
   [v10 startUp];
 
   return v10;
 }
 
-- (id)__createCloudZoneIDForZoneID:(id)a3
+- (id)__createCloudZoneIDForZoneID:(id)d
 {
   v4 = MEMORY[0x277D17070];
-  v5 = a3;
+  dCopy = d;
   v6 = [v4 alloc];
-  v7 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self cloudDatabase];
-  v8 = [v7 containerID];
-  v9 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self cloudDatabase];
-  v10 = [v9 publicDatabase];
-  v11 = [v6 initWithContainerID:v8 scope:objc_msgSend(v10 zoneID:{"scope"), v5}];
+  cloudDatabase = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self cloudDatabase];
+  containerID = [cloudDatabase containerID];
+  cloudDatabase2 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self cloudDatabase];
+  publicDatabase = [cloudDatabase2 publicDatabase];
+  v11 = [v6 initWithContainerID:containerID scope:objc_msgSend(publicDatabase zoneID:{"scope"), dCopy}];
 
   return v11;
 }
 
-+ (BOOL)__errorIsNotFound:(id)a3
++ (BOOL)__errorIsNotFound:(id)found
 {
-  v3 = a3;
-  if ([v3 isHMFError] && objc_msgSend(v3, "code") == 2)
+  foundCopy = found;
+  if ([foundCopy isHMFError] && objc_msgSend(foundCopy, "code") == 2)
   {
     v4 = 1;
   }
 
-  else if ([v3 isHMError])
+  else if ([foundCopy isHMError])
   {
-    v4 = [v3 code] == 2;
+    v4 = [foundCopy code] == 2;
   }
 
   else
@@ -4266,36 +4266,36 @@ uint64_t __89__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_Records____
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)__updateChangeTokenWithFetchInfo:(id)a3
+- (void)__updateChangeTokenWithFetchInfo:(id)info
 {
   v62 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  infoCopy = info;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 originalDatabaseChangeToken];
-  v7 = [v4 databaseChangeToken];
+  originalDatabaseChangeToken = [infoCopy originalDatabaseChangeToken];
+  databaseChangeToken = [infoCopy databaseChangeToken];
   v8 = HMFEqualObjects();
 
   if (v8)
   {
-    v9 = [v4 activity];
-    v10 = [v4 databaseChangeToken];
-    v11 = [v10 hmbDescription];
-    [v9 markWithFormat:@"Database change token has not been updated: %@", v11];
+    activity = [infoCopy activity];
+    databaseChangeToken2 = [infoCopy databaseChangeToken];
+    hmbDescription = [databaseChangeToken2 hmbDescription];
+    [activity markWithFormat:@"Database change token has not been updated: %@", hmbDescription];
 
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v15 = HMFGetLogIdentifier();
-      v16 = [v4 databaseChangeToken];
-      v17 = [v16 hmbDescription];
+      databaseChangeToken3 = [infoCopy databaseChangeToken];
+      hmbDescription2 = [databaseChangeToken3 hmbDescription];
       *buf = 138543618;
       v59 = v15;
       v60 = 2112;
-      v61 = v17;
+      v61 = hmbDescription2;
       _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_INFO, "%{public}@Database change token has not been updated: %@", buf, 0x16u);
     }
 
@@ -4304,12 +4304,12 @@ uint64_t __89__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_Records____
 
   else
   {
-    v18 = [v4 databaseChangeToken];
+    databaseChangeToken4 = [infoCopy databaseChangeToken];
 
-    if (!v18)
+    if (!databaseChangeToken4)
     {
       v51 = objc_autoreleasePoolPush();
-      v52 = self;
+      selfCopy2 = self;
       v53 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v53, OS_LOG_TYPE_FAULT))
       {
@@ -4325,52 +4325,52 @@ uint64_t __89__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_Records____
       [v56 submitLogEvent:v55];
     }
 
-    v19 = [v4 activity];
-    v20 = [v4 databaseChangeToken];
-    v21 = [v20 hmbDescription];
-    [v19 markWithFormat:@"Updating database change token: %@", v21];
+    activity2 = [infoCopy activity];
+    databaseChangeToken5 = [infoCopy databaseChangeToken];
+    hmbDescription3 = [databaseChangeToken5 hmbDescription];
+    [activity2 markWithFormat:@"Updating database change token: %@", hmbDescription3];
 
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy3 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       v25 = HMFGetLogIdentifier();
-      v26 = [v4 databaseChangeToken];
-      v27 = [v26 hmbDescription];
+      databaseChangeToken6 = [infoCopy databaseChangeToken];
+      hmbDescription4 = [databaseChangeToken6 hmbDescription];
       *buf = 138543618;
       v59 = v25;
       v60 = 2112;
-      v61 = v27;
+      v61 = hmbDescription4;
       _os_log_impl(&dword_2531F8000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@Updating database change token: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v22);
-    v28 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v23 cloudDatabase];
+    cloudDatabase = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy3 cloudDatabase];
     v29 = *MEMORY[0x277D17138];
     os_unfair_lock_lock_with_options();
 
-    v30 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v23 cloudDatabase];
-    v31 = [v30 databaseStateForDatabaseScope:1];
+    cloudDatabase2 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy3 cloudDatabase];
+    v31 = [cloudDatabase2 databaseStateForDatabaseScope:1];
 
-    v32 = [v4 databaseChangeToken];
-    [v31 setServerChangeToken:v32];
+    databaseChangeToken7 = [infoCopy databaseChangeToken];
+    [v31 setServerChangeToken:databaseChangeToken7];
 
-    v33 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v23 cloudDatabase];
-    v34 = [v33 stateZone];
+    cloudDatabase3 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy3 cloudDatabase];
+    stateZone = [cloudDatabase3 stateZone];
     v57 = v31;
     v35 = [MEMORY[0x277CBEA60] arrayWithObjects:&v57 count:1];
-    v36 = [v34 update:v35];
+    v36 = [stateZone update:v35];
 
-    os_unfair_lock_unlock(&v28[v29]);
-    v37 = [v4 activity];
-    v38 = v37;
+    os_unfair_lock_unlock(&cloudDatabase[v29]);
+    activity3 = [infoCopy activity];
+    v38 = activity3;
     if (v36)
     {
-      [v37 markWithFormat:@"Failed to update database state model: %@", v36];
+      [activity3 markWithFormat:@"Failed to update database state model: %@", v36];
 
       v39 = objc_autoreleasePoolPush();
-      v40 = v23;
+      v40 = selfCopy3;
       v41 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
       {
@@ -4385,10 +4385,10 @@ uint64_t __89__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_Records____
 
     else
     {
-      [v37 markWithFormat:@"Updated database change token successfully"];
+      [activity3 markWithFormat:@"Updated database change token successfully"];
 
       v39 = objc_autoreleasePoolPush();
-      v43 = v23;
+      v43 = selfCopy3;
       v41 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
       {
@@ -4402,42 +4402,42 @@ uint64_t __89__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_Records____
     objc_autoreleasePoolPop(v39);
   }
 
-  v45 = [v4 requestedRecordIDs];
-  v46 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self internalState];
-  [v46 setLastSynchronizedRecordIDs:v45];
+  requestedRecordIDs = [infoCopy requestedRecordIDs];
+  internalState = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self internalState];
+  [internalState setLastSynchronizedRecordIDs:requestedRecordIDs];
 
-  v47 = [v4 activity];
-  [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __saveInternalStateWithActivity:v47];
+  activity4 = [infoCopy activity];
+  [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __saveInternalStateWithActivity:activity4];
 
-  v48 = [v4 modifiedRecordIDs];
-  v49 = [v48 copy];
-  [v4 finishWithResult:v49];
+  modifiedRecordIDs = [infoCopy modifiedRecordIDs];
+  v49 = [modifiedRecordIDs copy];
+  [infoCopy finishWithResult:v49];
 
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__removeDeletedZonesWithFetchInfo:(id)a3
+- (void)__removeDeletedZonesWithFetchInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  infoCopy = info;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [MEMORY[0x277CBEB18] array];
-  v7 = [v4 zoneInfoMap];
+  array = [MEMORY[0x277CBEB18] array];
+  zoneInfoMap = [infoCopy zoneInfoMap];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __111__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_RemoveDeletedZones____removeDeletedZonesWithFetchInfo___block_invoke;
   v14 = &unk_27972C180;
-  v15 = self;
-  v16 = v6;
-  v8 = v6;
-  [v7 enumerateKeysAndObjectsUsingBlock:&v11];
+  selfCopy = self;
+  v16 = array;
+  v8 = array;
+  [zoneInfoMap enumerateKeysAndObjectsUsingBlock:&v11];
 
   v9 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self cloudDatabase:v11];
   v10 = [v8 copy];
   [v9 handleRemovedZoneIDs:v10 userInitiated:0];
 
-  [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __updateChangeTokenWithFetchInfo:v4];
+  [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __updateChangeTokenWithFetchInfo:infoCopy];
 }
 
 void __111__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_RemoveDeletedZones____removeDeletedZonesWithFetchInfo___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -4456,19 +4456,19 @@ void __111__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_RemoveDeletedZ
   }
 }
 
-- (void)__saveInternalStateWithActivity:(id)a3
+- (void)__saveInternalStateWithActivity:(id)activity
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  activityCopy = activity;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self internalState];
+  internalState = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self internalState];
 
-  if (!v6)
+  if (!internalState)
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
     {
@@ -4484,9 +4484,9 @@ void __111__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_RemoveDeletedZ
     [v29 submitLogEvent:v28];
   }
 
-  [v4 markWithFormat:@"Saving internal state model"];
+  [activityCopy markWithFormat:@"Saving internal state model"];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy2 = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -4497,30 +4497,30 @@ void __111__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_RemoveDeletedZ
   }
 
   objc_autoreleasePoolPop(v7);
-  v11 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v8 localZone];
-  v12 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v8 internalState];
-  v36[0] = v12;
+  localZone = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy2 localZone];
+  internalState2 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy2 internalState];
+  v36[0] = internalState2;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:1];
-  v14 = [v11 update:v13];
+  v14 = [localZone update:v13];
 
   if (v14)
   {
-    v15 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v8 internalState];
-    v16 = [v15 hmbModelID];
-    [v4 markWithFormat:@"Failed to save internal state model %@: %@", v16, v14];
+    internalState3 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy2 internalState];
+    hmbModelID = [internalState3 hmbModelID];
+    [activityCopy markWithFormat:@"Failed to save internal state model %@: %@", hmbModelID, v14];
 
     v17 = objc_autoreleasePoolPush();
-    v18 = v8;
+    v18 = selfCopy2;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       v20 = HMFGetLogIdentifier();
-      v21 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v18 internalState];
-      v22 = [v21 hmbModelID];
+      internalState4 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v18 internalState];
+      hmbModelID2 = [internalState4 hmbModelID];
       *buf = 138543874;
       v31 = v20;
       v32 = 2112;
-      v33 = v22;
+      v33 = hmbModelID2;
       v34 = 2112;
       v35 = v14;
       _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_ERROR, "%{public}@Failed to save internal state model %@: %@", buf, 0x20u);
@@ -4532,13 +4532,13 @@ void __111__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_RemoveDeletedZ
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_removeOverridesForZoneName:(id)a3 recordName:(id)a4 options:(id)a5 error:(id *)a6
+- (BOOL)_removeOverridesForZoneName:(id)name recordName:(id)recordName options:(id)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v13);
+  nameCopy = name;
+  recordNameCopy = recordName;
+  optionsCopy = options;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v34 = 0;
   v35 = &v34;
@@ -4557,20 +4557,20 @@ void __111__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_RemoveDeletedZ
   v21[3] = &unk_27972D340;
   v21[4] = self;
   v26 = &v34;
-  v15 = v10;
+  v15 = nameCopy;
   v22 = v15;
-  v16 = v11;
+  v16 = recordNameCopy;
   v23 = v16;
-  v17 = v12;
+  v17 = optionsCopy;
   v24 = v17;
   v18 = v14;
   v25 = v18;
   v27 = &v28;
   [v18 performBlock:v21];
   v19 = *(v35 + 24);
-  if (a6 && (v35[3] & 1) == 0)
+  if (error && (v35[3] & 1) == 0)
   {
-    *a6 = v29[5];
+    *error = v29[5];
   }
 
   _Block_object_dispose(&v28, 8);
@@ -4606,34 +4606,34 @@ uint64_t __110__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror__removeOve
   return [*(a1 + 64) invalidate];
 }
 
-- (BOOL)removeOverridesForZoneName:(id)a3 recordName:(id)a4 options:(id)a5 error:(id *)a6
+- (BOOL)removeOverridesForZoneName:(id)name recordName:(id)recordName options:(id)options error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v13);
+  optionsCopy = options;
+  recordNameCopy = recordName;
+  nameCopy = name;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  LOBYTE(a6) = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self _removeOverridesForZoneName:v12 recordName:v11 options:v10 error:a6];
-  return a6;
+  LOBYTE(error) = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self _removeOverridesForZoneName:nameCopy recordName:recordNameCopy options:optionsCopy error:error];
+  return error;
 }
 
-- (BOOL)removeAllOverridesWithOptions:(id)a3 error:(id *)a4
+- (BOOL)removeAllOverridesWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  optionsCopy = options;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  LOBYTE(a4) = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self _removeOverridesForZoneName:0 recordName:0 options:v6 error:a4];
-  return a4;
+  LOBYTE(error) = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self _removeOverridesForZoneName:0 recordName:0 options:optionsCopy error:error];
+  return error;
 }
 
-- (BOOL)removeOverridesForRecordIDs:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)removeOverridesForRecordIDs:(id)ds options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  dsCopy = ds;
+  optionsCopy = options;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v29 = 0;
   v30 = &v29;
@@ -4652,18 +4652,18 @@ uint64_t __110__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror__removeOve
   v17[3] = &unk_27972D2F0;
   v17[4] = self;
   v21 = &v29;
-  v12 = v8;
+  v12 = dsCopy;
   v18 = v12;
-  v13 = v9;
+  v13 = optionsCopy;
   v19 = v13;
   v14 = v11;
   v20 = v14;
   v22 = &v23;
   [v14 performBlock:v17];
   v15 = *(v30 + 24);
-  if (a5 && (v30[3] & 1) == 0)
+  if (error && (v30[3] & 1) == 0)
   {
-    *a5 = v24[5];
+    *error = v24[5];
   }
 
   _Block_object_dispose(&v23, 8);
@@ -4698,12 +4698,12 @@ uint64_t __99__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_removeOverr
   return [*(a1 + 56) invalidate];
 }
 
-- (BOOL)addOverrides:(id)a3 replace:(BOOL)a4 options:(id)a5 error:(id *)a6
+- (BOOL)addOverrides:(id)overrides replace:(BOOL)replace options:(id)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v12);
+  overridesCopy = overrides;
+  optionsCopy = options;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v33 = 0;
   v34 = &v33;
@@ -4722,19 +4722,19 @@ uint64_t __99__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_removeOverr
   v19[3] = &unk_27972D318;
   v14 = v13;
   v20 = v14;
-  v15 = v10;
+  v15 = overridesCopy;
   v21 = v15;
-  v22 = self;
+  selfCopy = self;
   v24 = &v33;
-  v26 = a4;
-  v16 = v11;
+  replaceCopy = replace;
+  v16 = optionsCopy;
   v23 = v16;
   v25 = &v27;
   [v14 performBlock:v19];
   v17 = *(v34 + 24);
-  if (a6 && (v34[3] & 1) == 0)
+  if (error && (v34[3] & 1) == 0)
   {
-    *a6 = v28[5];
+    *error = v28[5];
   }
 
   _Block_object_dispose(&v27, 8);
@@ -4794,12 +4794,12 @@ uint64_t __92__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_addOverride
   return result;
 }
 
-- (id)_fetchOverridesForZoneName:(id)a3 options:(id)a4 error:(id *)a5
+- (id)_fetchOverridesForZoneName:(id)name options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  nameCopy = name;
+  optionsCopy = options;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v32 = 0;
   v33 = &v32;
@@ -4814,8 +4814,8 @@ uint64_t __92__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_addOverride
   v30 = __Block_byref_object_dispose__134915;
   v31 = 0;
   v11 = objc_alloc(MEMORY[0x277D0F770]);
-  v12 = [v9 label];
-  v13 = [v11 initWithName:v12];
+  label = [optionsCopy label];
+  v13 = [v11 initWithName:label];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -4823,9 +4823,9 @@ uint64_t __92__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_addOverride
   v20[3] = &unk_27972D2F0;
   v20[4] = self;
   v24 = &v32;
-  v14 = v8;
+  v14 = nameCopy;
   v21 = v14;
-  v15 = v9;
+  v15 = optionsCopy;
   v22 = v15;
   v16 = v13;
   v23 = v16;
@@ -4837,9 +4837,9 @@ uint64_t __92__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_addOverride
     v18 = v17;
   }
 
-  else if (a5)
+  else if (error)
   {
-    *a5 = v27[5];
+    *error = v27[5];
   }
 
   _Block_object_dispose(&v26, 8);
@@ -4876,13 +4876,13 @@ uint64_t __98__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror__fetchOverr
   return [*(a1 + 56) invalidate];
 }
 
-- (id)fetchOverridesForRecordIDs:(id)a3 options:(id)a4 error:(id *)a5
+- (id)fetchOverridesForRecordIDs:(id)ds options:(id)options error:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  dsCopy = ds;
+  optionsCopy = options;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v39 = 0;
   v40 = &v39;
@@ -4897,8 +4897,8 @@ uint64_t __98__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror__fetchOverr
   v37 = __Block_byref_object_dispose__134915;
   v38 = 0;
   v11 = objc_alloc(MEMORY[0x277D0F770]);
-  v12 = [v9 label];
-  v13 = [v11 initWithName:v12];
+  label = [optionsCopy label];
+  v13 = [v11 initWithName:label];
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
@@ -4906,11 +4906,11 @@ uint64_t __98__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror__fetchOverr
   v26[3] = &unk_27972D2F0;
   v14 = v13;
   v27 = v14;
-  v15 = v8;
+  v15 = dsCopy;
   v28 = v15;
-  v29 = self;
+  selfCopy = self;
   v31 = &v39;
-  v16 = v9;
+  v16 = optionsCopy;
   v30 = v16;
   v32 = &v33;
   [v14 performBlock:v26];
@@ -4922,13 +4922,13 @@ uint64_t __98__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror__fetchOverr
 
   else
   {
-    if (a5)
+    if (error)
     {
-      *a5 = v34[5];
+      *error = v34[5];
     }
 
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
@@ -5014,11 +5014,11 @@ uint64_t __98__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_fetchOverri
   return result;
 }
 
-- (BOOL)removeAllLocalRulesWithOptions:(id)a3 error:(id *)a4
+- (BOOL)removeAllLocalRulesWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  optionsCopy = options;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v27 = 0;
   v28 = &v27;
@@ -5031,8 +5031,8 @@ uint64_t __98__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_fetchOverri
   v25 = __Block_byref_object_dispose__134915;
   v26 = 0;
   v8 = objc_alloc(MEMORY[0x277D0F770]);
-  v9 = [v6 label];
-  v10 = [v8 initWithName:v9];
+  label = [optionsCopy label];
+  v10 = [v8 initWithName:label];
 
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -5040,15 +5040,15 @@ uint64_t __98__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_fetchOverri
   v15[3] = &unk_27972D2C8;
   v11 = v10;
   v16 = v11;
-  v17 = self;
+  selfCopy = self;
   v19 = &v27;
-  v12 = v6;
+  v12 = optionsCopy;
   v18 = v12;
   v20 = &v21;
   [v11 performBlock:v15];
-  if (a4)
+  if (error)
   {
-    *a4 = v22[5];
+    *error = v22[5];
   }
 
   v13 = *(v28 + 24);
@@ -5105,35 +5105,35 @@ uint64_t __94__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_removeAllLo
   return result;
 }
 
-- (id)fetchAllDataForZoneName:(id)a3 options:(id)a4 error:(id *)a5
+- (id)fetchAllDataForZoneName:(id)name options:(id)options error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  optionsCopy = options;
+  nameCopy = name;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v11 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self _fetchAllDataForZoneName:v9 options:v8 error:a5];
+  v11 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self _fetchAllDataForZoneName:nameCopy options:optionsCopy error:error];
 
   return v11;
 }
 
-- (id)fetchAllDataWithOptions:(id)a3 error:(id *)a4
+- (id)fetchAllDataWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  optionsCopy = options;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v8 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self _fetchAllDataForZoneName:0 options:v6 error:a4];
+  v8 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self _fetchAllDataForZoneName:0 options:optionsCopy error:error];
 
   return v8;
 }
 
-- (id)_fetchAllDataForZoneName:(id)a3 options:(id)a4 error:(id *)a5
+- (id)_fetchAllDataForZoneName:(id)name options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  nameCopy = name;
+  optionsCopy = options;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v33 = 0;
   v34 = &v33;
@@ -5148,8 +5148,8 @@ uint64_t __94__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_removeAllLo
   v31 = __Block_byref_object_dispose__134915;
   v32 = 0;
   v11 = objc_alloc(MEMORY[0x277D0F770]);
-  v12 = [v9 label];
-  v13 = [v11 initWithName:v12];
+  label = [optionsCopy label];
+  v13 = [v11 initWithName:label];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -5157,11 +5157,11 @@ uint64_t __94__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_removeAllLo
   v20[3] = &unk_27972D2F0;
   v14 = v13;
   v21 = v14;
-  v15 = v8;
+  v15 = nameCopy;
   v22 = v15;
-  v23 = self;
+  selfCopy = self;
   v25 = &v33;
-  v16 = v9;
+  v16 = optionsCopy;
   v24 = v16;
   v26 = &v27;
   [v14 performBlock:v20];
@@ -5171,9 +5171,9 @@ uint64_t __94__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_removeAllLo
     v18 = v17;
   }
 
-  else if (a5)
+  else if (error)
   {
-    *a5 = v28[5];
+    *error = v28[5];
   }
 
   _Block_object_dispose(&v27, 8);
@@ -5229,13 +5229,13 @@ uint64_t __96__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror__fetchAllDa
   return result;
 }
 
-- (id)fetchAllDataForRecordIDs:(id)a3 options:(id)a4 error:(id *)a5
+- (id)fetchAllDataForRecordIDs:(id)ds options:(id)options error:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  dsCopy = ds;
+  optionsCopy = options;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v39 = 0;
   v40 = &v39;
@@ -5250,8 +5250,8 @@ uint64_t __96__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror__fetchAllDa
   v37 = __Block_byref_object_dispose__134915;
   v38 = 0;
   v11 = objc_alloc(MEMORY[0x277D0F770]);
-  v12 = [v9 label];
-  v13 = [v11 initWithName:v12];
+  label = [optionsCopy label];
+  v13 = [v11 initWithName:label];
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
@@ -5259,11 +5259,11 @@ uint64_t __96__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror__fetchAllDa
   v26[3] = &unk_27972D2F0;
   v14 = v13;
   v27 = v14;
-  v15 = v8;
+  v15 = dsCopy;
   v28 = v15;
-  v29 = self;
+  selfCopy = self;
   v31 = &v39;
-  v16 = v9;
+  v16 = optionsCopy;
   v30 = v16;
   v32 = &v33;
   [v14 performBlock:v26];
@@ -5275,13 +5275,13 @@ uint64_t __96__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror__fetchAllDa
 
   else
   {
-    if (a5)
+    if (error)
     {
-      *a5 = v34[5];
+      *error = v34[5];
     }
 
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
@@ -5367,17 +5367,17 @@ uint64_t __96__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_fetchAllDat
   return result;
 }
 
-- (void)fetchCloudRecordsForZoneID:(id)a3 recordID:(id)a4 options:(id)a5 completion:(id)a6
+- (void)fetchCloudRecordsForZoneID:(id)d recordID:(id)iD options:(id)options completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v14);
+  completionCopy = completion;
+  optionsCopy = options;
+  iDCopy = iD;
+  dCopy = d;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v15 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self desiredKeys];
-  [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self _fetchCloudRecordsForZoneID:v13 recordID:v12 options:v11 desiredKeys:v15 completion:v10];
+  desiredKeys = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self desiredKeys];
+  [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self _fetchCloudRecordsForZoneID:dCopy recordID:iDCopy options:optionsCopy desiredKeys:desiredKeys completion:completionCopy];
 }
 
 - (id)desiredKeys
@@ -5401,21 +5401,21 @@ uint64_t __96__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_fetchAllDat
   return v2;
 }
 
-- (void)fetchCloudRecordIDsForZoneID:(id)a3 options:(id)a4 completion:(id)a5
+- (void)fetchCloudRecordIDsForZoneID:(id)d options:(id)options completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v11);
+  completionCopy = completion;
+  optionsCopy = options;
+  dCopy = d;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __105__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_fetchCloudRecordIDsForZoneID_options_completion___block_invoke;
   v13[3] = &unk_27972D2A0;
-  v14 = v8;
-  v12 = v8;
-  [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self _fetchCloudRecordsForZoneID:v10 recordID:0 options:v9 desiredKeys:MEMORY[0x277CBEBF8] completion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self _fetchCloudRecordsForZoneID:dCopy recordID:0 options:optionsCopy desiredKeys:MEMORY[0x277CBEBF8] completion:v13];
 }
 
 void __105__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_fetchCloudRecordIDsForZoneID_options_completion___block_invoke(uint64_t a1, void *a2)
@@ -5468,36 +5468,36 @@ void __105__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_fetchCloudReco
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchCloudRecordsForZoneID:(id)a3 recordID:(id)a4 options:(id)a5 desiredKeys:(id)a6 completion:(id)a7
+- (void)_fetchCloudRecordsForZoneID:(id)d recordID:(id)iD options:(id)options desiredKeys:(id)keys completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v17);
+  dCopy = d;
+  iDCopy = iD;
+  optionsCopy = options;
+  keysCopy = keys;
+  completionCopy = completion;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v18 = objc_alloc(MEMORY[0x277D0F770]);
-  v19 = [v14 label];
-  v20 = [v18 initWithName:v19];
+  label = [optionsCopy label];
+  v20 = [v18 initWithName:label];
 
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __125__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror__fetchCloudRecordsForZoneID_recordID_options_desiredKeys_completion___block_invoke;
   v27[3] = &unk_279733820;
   v28 = v20;
-  v29 = self;
-  v30 = v14;
-  v31 = v12;
-  v32 = v13;
-  v33 = v15;
-  v34 = v16;
-  v21 = v16;
-  v22 = v15;
-  v23 = v13;
-  v24 = v12;
-  v25 = v14;
+  selfCopy = self;
+  v30 = optionsCopy;
+  v31 = dCopy;
+  v32 = iDCopy;
+  v33 = keysCopy;
+  v34 = completionCopy;
+  v21 = completionCopy;
+  v22 = keysCopy;
+  v23 = iDCopy;
+  v24 = dCopy;
+  v25 = optionsCopy;
   v26 = v20;
   [v26 performBlock:v27];
 }
@@ -5673,34 +5673,34 @@ uint64_t __125__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror__fetchClou
   return result;
 }
 
-- (void)fetchCloudChangesForRecordIDs:(id)a3 options:(id)a4 ignoreLastSynchronizedRecords:(BOOL)a5 xpcActivity:(id)a6 completion:(id)a7
+- (void)fetchCloudChangesForRecordIDs:(id)ds options:(id)options ignoreLastSynchronizedRecords:(BOOL)records xpcActivity:(id)activity completion:(id)completion
 {
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  v15 = a3;
-  v16 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v16);
+  optionsCopy = options;
+  activityCopy = activity;
+  completionCopy = completion;
+  dsCopy = ds;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v17 = [v15 copy];
+  v17 = [dsCopy copy];
   v18 = objc_alloc(MEMORY[0x277D0F770]);
-  v19 = [v12 label];
-  v20 = [v18 initWithName:v19];
+  label = [optionsCopy label];
+  v20 = [v18 initWithName:label];
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __148__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_fetchCloudChangesForRecordIDs_options_ignoreLastSynchronizedRecords_xpcActivity_completion___block_invoke;
   v26[3] = &unk_2797325D0;
   v27 = v20;
-  v28 = self;
-  v33 = a5;
+  selfCopy = self;
+  recordsCopy = records;
   v29 = v17;
-  v30 = v12;
-  v31 = v13;
-  v32 = v14;
-  v21 = v14;
-  v22 = v13;
-  v23 = v12;
+  v30 = optionsCopy;
+  v31 = activityCopy;
+  v32 = completionCopy;
+  v21 = completionCopy;
+  v22 = activityCopy;
+  v23 = optionsCopy;
   v24 = v17;
   v25 = v20;
   [v25 performBlock:v26];
@@ -5999,19 +5999,19 @@ void __148__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_fetchCloudChan
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cloudFetchNeededForRecordIDs:(id)a3 error:(id *)a4
+- (id)cloudFetchNeededForRecordIDs:(id)ds error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  dsCopy = ds;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if ([(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self isRunning])
   {
-    if (v6)
+    if (dsCopy)
     {
-      v8 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self internalState];
-      v9 = [v8 lastSynchronizedRecordIDs];
-      v10 = [v6 isSubsetOfSet:v9] ^ 1;
+      internalState = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self internalState];
+      lastSynchronizedRecordIDs = [internalState lastSynchronizedRecordIDs];
+      v10 = [dsCopy isSubsetOfSet:lastSynchronizedRecordIDs] ^ 1;
     }
 
     else
@@ -6022,10 +6022,10 @@ void __148__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_fetchCloudChan
     v11 = [MEMORY[0x277CCABB0] numberWithInt:v10];
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x277CCA9B8] hmErrorWithCode:23];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -6038,18 +6038,18 @@ void __148__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_fetchCloudChan
 
 - (NAFuture)shutdownFuture
 {
-  v2 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self shutdownPromise];
-  v3 = [v2 future];
+  shutdownPromise = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self shutdownPromise];
+  future = [shutdownPromise future];
 
-  return v3;
+  return future;
 }
 
 - (NAFuture)startupFuture
 {
-  v2 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self startupPromise];
-  v3 = [v2 future];
+  startupPromise = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self startupPromise];
+  future = [startupPromise future];
 
-  return v3;
+  return future;
 }
 
 - (id)shutdown
@@ -6067,7 +6067,7 @@ void __148__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_fetchCloudChan
   v7[3] = &unk_279735BC0;
   v4 = v3;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   [v4 performBlock:v7];
   v5 = v12[5];
@@ -6134,7 +6134,7 @@ void __65__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_shutdown__block
   v7[3] = &unk_279735BC0;
   v4 = v3;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   v10 = &v11;
   [v4 performBlock:v7];
   v5 = v12[5];
@@ -6199,10 +6199,10 @@ void __62__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_flush__block_in
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)triggerOutputForOutputRow:(unint64_t)a3 options:(id)a4
+- (id)triggerOutputForOutputRow:(unint64_t)row options:(id)options
 {
   v4 = MEMORY[0x277D2C900];
-  v5 = [MEMORY[0x277CCA9B8] hmErrorWithCode:{58, a4}];
+  v5 = [MEMORY[0x277CCA9B8] hmErrorWithCode:{58, options}];
   v6 = [v4 futureWithError:v5];
 
   return v6;
@@ -6217,18 +6217,18 @@ void __62__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_flush__block_in
   return v4;
 }
 
-- (void)startUpWithLocalZone:(id)a3
+- (void)startUpWithLocalZone:(id)zone
 {
-  v4 = a3;
+  zoneCopy = zone;
   v5 = [objc_alloc(MEMORY[0x277D0F770]) initWithName:@"Startup"];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __78__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_startUpWithLocalZone___block_invoke;
   v8[3] = &unk_279734960;
   v9 = v5;
-  v10 = self;
-  v11 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v11 = zoneCopy;
+  v6 = zoneCopy;
   v7 = v5;
   [v7 performBlock:v8];
 }
@@ -6279,11 +6279,11 @@ void __78__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_startUpWithLoca
   [v2 performBlock:v4];
 }
 
-- (id)__asyncFutureWithActivity:(id)a3 ignoreErrors:(BOOL)a4 block:(id)a5
+- (id)__asyncFutureWithActivity:(id)activity ignoreErrors:(BOOL)errors block:(id)block
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  errorsCopy = errors;
+  activityCopy = activity;
+  blockCopy = block;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -6296,12 +6296,12 @@ void __78__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_startUpWithLoca
   v19[3] = &unk_2797332C0;
   v22 = &v23;
   v19[4] = self;
-  v10 = v8;
+  v10 = activityCopy;
   v20 = v10;
-  v11 = v9;
+  v11 = blockCopy;
   v21 = v11;
   [v10 performBlock:v19];
-  if (v6)
+  if (errorsCopy)
   {
     v12 = v24[5];
     v17[0] = MEMORY[0x277D85DD0];
@@ -6518,13 +6518,13 @@ void __102__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror___asyncFutureW
 - (HMDNetworkRouterFirewallRuleManagerBackingStoreMirrorInternalStateModel)internalState
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if (![(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self isRunning])
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
@@ -6546,20 +6546,20 @@ void __102__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror___asyncFutureW
   return internalState;
 }
 
-- (void)setLastAsyncFuture:(id)a3
+- (void)setLastAsyncFuture:(id)future
 {
-  v4 = a3;
-  v5 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  futureCopy = future;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   lastAsyncFuture = self->_lastAsyncFuture;
-  self->_lastAsyncFuture = v4;
+  self->_lastAsyncFuture = futureCopy;
 }
 
 - (NAFuture)lastAsyncFuture
 {
-  v3 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   lastAsyncFuture = self->_lastAsyncFuture;
 
@@ -6568,40 +6568,40 @@ void __102__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror___asyncFutureW
 
 - (BOOL)isShuttingDown
 {
-  v3 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   return self->_shuttingDown;
 }
 
 - (BOOL)isRunning
 {
-  v2 = self;
-  v3 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  selfCopy = self;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v2 localZone];
-  LOBYTE(v2) = v4 != 0;
+  localZone = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy localZone];
+  LOBYTE(selfCopy) = localZone != 0;
 
-  return v2;
+  return selfCopy;
 }
 
-- (HMDNetworkRouterFirewallRuleManagerBackingStoreMirror)initWithLocalDatabase:(id)a3 cloudDatabase:(id)a4 useAnonymousRequests:(BOOL)a5 ownerQueue:(id)a6
+- (HMDNetworkRouterFirewallRuleManagerBackingStoreMirror)initWithLocalDatabase:(id)database cloudDatabase:(id)cloudDatabase useAnonymousRequests:(BOOL)requests ownerQueue:(id)queue
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  databaseCopy = database;
+  cloudDatabaseCopy = cloudDatabase;
+  queueCopy = queue;
   v29.receiver = self;
   v29.super_class = HMDNetworkRouterFirewallRuleManagerBackingStoreMirror;
   v14 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)&v29 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_cloudDatabase, a4);
-    objc_storeStrong(&v15->_localDatabase, a3);
-    v15->_useAnonymousRequests = a5;
-    objc_storeStrong(&v15->_workQueue, a6);
-    v16 = [MEMORY[0x277D2C938] schedulerWithDispatchQueue:v13];
+    objc_storeStrong(&v14->_cloudDatabase, cloudDatabase);
+    objc_storeStrong(&v15->_localDatabase, database);
+    v15->_useAnonymousRequests = requests;
+    objc_storeStrong(&v15->_workQueue, queue);
+    v16 = [MEMORY[0x277D2C938] schedulerWithDispatchQueue:queueCopy];
     workQueueScheduler = v15->_workQueueScheduler;
     v15->_workQueueScheduler = v16;
 
@@ -6612,9 +6612,9 @@ void __102__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror___asyncFutureW
     zoneID = v15->_zoneID;
     v15->_zoneID = v19;
 
-    v21 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     lastAsyncFuture = v15->_lastAsyncFuture;
-    v15->_lastAsyncFuture = v21;
+    v15->_lastAsyncFuture = futureWithNoResult;
 
     v23 = objc_opt_new();
     startupPromise = v15->_startupPromise;
@@ -6652,17 +6652,17 @@ uint64_t __68__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_logCategory
   return MEMORY[0x2821F96F8](v1, v2);
 }
 
-- (void)__retryFetchDatabaseChangesWithFetchInfo:(id)a3
+- (void)__retryFetchDatabaseChangesWithFetchInfo:(id)info
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  infoCopy = info;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  [v4 retryIntervalSeconds];
+  [infoCopy retryIntervalSeconds];
   v7 = v6;
   v8 = v6 > 0.0;
-  v9 = [v4 activity];
+  activity = [infoCopy activity];
   if (v8)
   {
     v10 = "retry the fetch";
@@ -6673,16 +6673,16 @@ uint64_t __68__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_logCategory
     v10 = "fetch the next batch of changed zones";
   }
 
-  [v4 retryIntervalSeconds];
-  [v9 markWithFormat:@"Will %s in %lu seconds", v10, v11];
+  [infoCopy retryIntervalSeconds];
+  [activity markWithFormat:@"Will %s in %lu seconds", v10, v11];
 
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v15 = HMFGetLogIdentifier();
-    [v4 retryIntervalSeconds];
+    [infoCopy retryIntervalSeconds];
     *buf = 138543874;
     v27 = v15;
     v28 = 2080;
@@ -6693,21 +6693,21 @@ uint64_t __68__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_logCategory
   }
 
   objc_autoreleasePoolPop(v12);
-  [v4 retryIntervalSeconds];
+  [infoCopy retryIntervalSeconds];
   v18 = dispatch_time(0, (v17 * 1000000000.0));
-  [v4 setShouldRetry:0];
-  [v4 setRetryCount:{objc_msgSend(v4, "retryCount") + 1}];
-  objc_initWeak(buf, v13);
-  v19 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v13 workQueue];
+  [infoCopy setShouldRetry:0];
+  [infoCopy setRetryCount:{objc_msgSend(infoCopy, "retryCount") + 1}];
+  objc_initWeak(buf, selfCopy);
+  workQueue2 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __120__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchDatabaseChanges____retryFetchDatabaseChangesWithFetchInfo___block_invoke;
   block[3] = &unk_27972F5B0;
-  v23 = v4;
-  v20 = v4;
+  v23 = infoCopy;
+  v20 = infoCopy;
   objc_copyWeak(&v24, buf);
   v25 = v7 > 0.0;
-  dispatch_after(v18, v19, block);
+  dispatch_after(v18, workQueue2, block);
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(buf);
@@ -6790,26 +6790,26 @@ void __120__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchDatabaseC
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)__canRecoverFromFetchDatabaseChangesError:(id)a3 fetchInfo:(id)a4
+- (BOOL)__canRecoverFromFetchDatabaseChangesError:(id)error fetchInfo:(id)info
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  errorCopy = error;
+  infoCopy = info;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (![v6 hmd_isCKError] || (objc_msgSend(v6, "hmd_isNonRecoverableCKError") & 1) != 0)
+  if (![errorCopy hmd_isCKError] || (objc_msgSend(errorCopy, "hmd_isNonRecoverableCKError") & 1) != 0)
   {
     goto LABEL_3;
   }
 
-  if ([v6 code] == 21)
+  if ([errorCopy code] == 21)
   {
-    v12 = [v7 activity];
-    [v12 markWithFormat:@"Change token has expired: %@", v6];
+    activity = [infoCopy activity];
+    [activity markWithFormat:@"Change token has expired: %@", errorCopy];
 
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -6817,32 +6817,32 @@ void __120__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchDatabaseC
       *buf = 138543618;
       v23 = v16;
       v24 = 2112;
-      v25 = v6;
+      v25 = errorCopy;
       _os_log_impl(&dword_2531F8000, v15, OS_LOG_TYPE_INFO, "%{public}@Change token has expired: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v13);
-    [v7 setDatabaseChangeToken:0];
+    [infoCopy setDatabaseChangeToken:0];
     v9 = 1;
-    [v7 setShouldRetry:1];
+    [infoCopy setShouldRetry:1];
   }
 
   else
   {
-    [v6 hmbCloudKitRetryDelay];
-    [v7 setRetryIntervalSeconds:?];
-    if (![v7 shouldRetry])
+    [errorCopy hmbCloudKitRetryDelay];
+    [infoCopy setRetryIntervalSeconds:?];
+    if (![infoCopy shouldRetry])
     {
 LABEL_3:
       v9 = 0;
       goto LABEL_4;
     }
 
-    v17 = [v7 activity];
-    [v17 markWithFormat:@"Ignoring non-fatal error: %@", v6];
+    activity2 = [infoCopy activity];
+    [activity2 markWithFormat:@"Ignoring non-fatal error: %@", errorCopy];
 
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
@@ -6850,7 +6850,7 @@ LABEL_3:
       *buf = 138543618;
       v23 = v21;
       v24 = 2112;
-      v25 = v6;
+      v25 = errorCopy;
       _os_log_impl(&dword_2531F8000, v20, OS_LOG_TYPE_INFO, "%{public}@Ignoring non-fatal error: %@", buf, 0x16u);
     }
 
@@ -6864,83 +6864,83 @@ LABEL_4:
   return v9;
 }
 
-- (void)__fetchDatabaseChangesCompleted:(id)a3 error:(id)a4
+- (void)__fetchDatabaseChangesCompleted:(id)completed error:(id)error
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  completedCopy = completed;
+  errorCopy = error;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (v6 && ![(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __canRecoverFromFetchDatabaseChangesError:v6 fetchInfo:v8])
+  if (errorCopy && ![(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __canRecoverFromFetchDatabaseChangesError:errorCopy fetchInfo:completedCopy])
   {
-    [v8 finishWithError:v6];
+    [completedCopy finishWithError:errorCopy];
   }
 
-  else if ([v8 shouldRetry])
+  else if ([completedCopy shouldRetry])
   {
-    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __retryFetchDatabaseChangesWithFetchInfo:v8];
+    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __retryFetchDatabaseChangesWithFetchInfo:completedCopy];
   }
 
-  else if ([v8 zonesHaveChanged])
+  else if ([completedCopy zonesHaveChanged])
   {
-    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __fetchVerificationCertificatesWithFetchInfo:v8];
+    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __fetchVerificationCertificatesWithFetchInfo:completedCopy];
   }
 
-  else if ([v8 zonesWereDeleted])
+  else if ([completedCopy zonesWereDeleted])
   {
-    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __removeDeletedZonesWithFetchInfo:v8];
+    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __removeDeletedZonesWithFetchInfo:completedCopy];
   }
 
   else
   {
-    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __updateChangeTokenWithFetchInfo:v8];
+    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __updateChangeTokenWithFetchInfo:completedCopy];
   }
 }
 
-- (void)__fetchDatabaseChangesWithFetchInfo:(id)a3
+- (void)__fetchDatabaseChangesWithFetchInfo:(id)info
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v5);
-  v6 = [v4 activity];
-  v7 = [v4 databaseChangeToken];
-  v8 = [v7 hmbDescription];
-  [v6 markWithFormat:@"Checking for database changes with change token: %@", v8];
+  infoCopy = info;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
+  activity = [infoCopy activity];
+  databaseChangeToken = [infoCopy databaseChangeToken];
+  hmbDescription = [databaseChangeToken hmbDescription];
+  [activity markWithFormat:@"Checking for database changes with change token: %@", hmbDescription];
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v4 databaseChangeToken];
-    v14 = [v13 hmbDescription];
+    databaseChangeToken2 = [infoCopy databaseChangeToken];
+    hmbDescription2 = [databaseChangeToken2 hmbDescription];
     *buf = 138543618;
     v51 = v12;
     v52 = 2112;
-    v53 = v14;
+    v53 = hmbDescription2;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_DEFAULT, "%{public}@Checking for database changes with change token: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
   v15 = objc_alloc(MEMORY[0x277CBC388]);
-  v16 = [v4 databaseChangeToken];
-  v17 = [v15 initWithPreviousServerChangeToken:v16];
+  databaseChangeToken3 = [infoCopy databaseChangeToken];
+  v17 = [v15 initWithPreviousServerChangeToken:databaseChangeToken3];
 
-  [v17 setCallbackQueue:v5];
-  v18 = [v4 operationGroup];
-  [v17 setGroup:v18];
+  [v17 setCallbackQueue:workQueue];
+  operationGroup = [infoCopy operationGroup];
+  [v17 setGroup:operationGroup];
 
   v46[0] = MEMORY[0x277D85DD0];
   v46[1] = 3221225472;
   v46[2] = __115__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchDatabaseChanges____fetchDatabaseChangesWithFetchInfo___block_invoke;
   v46[3] = &unk_27972F510;
-  v19 = v4;
+  v19 = infoCopy;
   v47 = v19;
-  v20 = v5;
+  v20 = workQueue;
   v48 = v20;
-  v49 = v10;
+  v49 = selfCopy;
   [v17 setRecordZoneWithIDChangedBlock:v46];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
@@ -6950,7 +6950,7 @@ LABEL_4:
   v43 = v21;
   v22 = v20;
   v44 = v22;
-  v45 = v10;
+  v45 = selfCopy;
   v23 = _Block_copy(aBlock);
   [v17 setRecordZoneWithIDWasDeletedBlock:v23];
   [v17 setRecordZoneWithIDWasPurgedBlock:v23];
@@ -6962,9 +6962,9 @@ LABEL_4:
   v39 = v24;
   v25 = v22;
   v40 = v25;
-  v41 = v10;
+  v41 = selfCopy;
   [v17 setChangeTokenUpdatedBlock:v38];
-  objc_initWeak(buf, v10);
+  objc_initWeak(buf, selfCopy);
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __115__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchDatabaseChanges____fetchDatabaseChangesWithFetchInfo___block_invoke_28;
@@ -6973,17 +6973,17 @@ LABEL_4:
   v34 = v26;
   v27 = v25;
   v35 = v27;
-  v36 = v10;
+  v36 = selfCopy;
   objc_copyWeak(&v37, buf);
   [v17 setFetchDatabaseChangesCompletionBlock:v33];
-  v28 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v10 cloudDatabase];
-  v29 = [v28 publicDatabase];
-  [v29 addOperation:v17];
+  cloudDatabase = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy cloudDatabase];
+  publicDatabase = [cloudDatabase publicDatabase];
+  [publicDatabase addOperation:v17];
 
-  v30 = [v26 operationStartTime];
-  LODWORD(v28) = v30 == 0;
+  operationStartTime = [v26 operationStartTime];
+  LODWORD(cloudDatabase) = operationStartTime == 0;
 
-  if (v28)
+  if (cloudDatabase)
   {
     v31 = [MEMORY[0x277CBEAA8] now];
     [v26 setOperationStartTime:v31];
@@ -7352,38 +7352,38 @@ void __115__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchDatabaseC
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__fetchZoneChangesWithFetchInfo:(id)a3
+- (void)__fetchZoneChangesWithFetchInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  infoCopy = info;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v8 = 0;
-  v6 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __createCloudZonesForFetchInfo:v4 error:&v8];
+  v6 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __createCloudZonesForFetchInfo:infoCopy error:&v8];
   v7 = v8;
   if (v6)
   {
-    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __startUpCloudZonesWithFetchInfo:v4];
+    [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self __startUpCloudZonesWithFetchInfo:infoCopy];
   }
 
   else
   {
-    [v4 finishWithError:v7];
+    [infoCopy finishWithError:v7];
   }
 }
 
-- (void)__performCloudZonePullsWithFetchInfo:(id)a3
+- (void)__performCloudZonePullsWithFetchInfo:(id)info
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  infoCopy = info;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 activity];
-  [v6 markWithFormat:@"Starting to pull from cloud zones"];
+  activity = [infoCopy activity];
+  [activity markWithFormat:@"Starting to pull from cloud zones"];
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -7395,30 +7395,30 @@ void __115__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchDatabaseC
 
   objc_autoreleasePoolPop(v7);
   v11 = MEMORY[0x277CBEB18];
-  v12 = [v4 zoneInfoMap];
-  v13 = [v11 arrayWithCapacity:{objc_msgSend(v12, "count")}];
+  zoneInfoMap = [infoCopy zoneInfoMap];
+  v13 = [v11 arrayWithCapacity:{objc_msgSend(zoneInfoMap, "count")}];
 
-  v14 = [v4 zoneInfoMap];
+  zoneInfoMap2 = [infoCopy zoneInfoMap];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __112__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchZoneChanges____performCloudZonePullsWithFetchInfo___block_invoke;
   v38[3] = &unk_279733A20;
-  v38[4] = v8;
-  v15 = v4;
+  v38[4] = selfCopy;
+  v15 = infoCopy;
   v39 = v15;
   v16 = v13;
   v40 = v16;
-  [v14 enumerateKeysAndObjectsUsingBlock:v38];
+  [zoneInfoMap2 enumerateKeysAndObjectsUsingBlock:v38];
 
   v17 = [v16 count];
-  v18 = [v15 activity];
-  v19 = v18;
+  activity2 = [v15 activity];
+  v19 = activity2;
   if (v17)
   {
-    [v18 markWithFormat:@"Waiting for %lu cloud zones to pull", objc_msgSend(v16, "count")];
+    [activity2 markWithFormat:@"Waiting for %lu cloud zones to pull", objc_msgSend(v16, "count")];
 
     v20 = objc_autoreleasePoolPush();
-    v21 = v8;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
@@ -7433,16 +7433,16 @@ void __115__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchDatabaseC
 
     objc_autoreleasePoolPop(v20);
     v25 = MEMORY[0x277D2C900];
-    v26 = [MEMORY[0x277D2C938] globalAsyncScheduler];
-    v27 = [v25 combineAllFutures:v16 ignoringErrors:1 scheduler:v26];
+    globalAsyncScheduler = [MEMORY[0x277D2C938] globalAsyncScheduler];
+    v27 = [v25 combineAllFutures:v16 ignoringErrors:1 scheduler:globalAsyncScheduler];
   }
 
   else
   {
-    [v18 markWithFormat:@"Not waiting for any cloud zones to pull"];
+    [activity2 markWithFormat:@"Not waiting for any cloud zones to pull"];
 
     v28 = objc_autoreleasePoolPush();
-    v29 = v8;
+    v29 = selfCopy;
     v30 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
     {
@@ -7461,7 +7461,7 @@ void __115__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchDatabaseC
   v35[2] = __112__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchZoneChanges____performCloudZonePullsWithFetchInfo___block_invoke_76;
   v35[3] = &unk_279733A70;
   v36 = v15;
-  v37 = v8;
+  v37 = selfCopy;
   v32 = v15;
   v33 = [v27 addSuccessBlock:v35];
 
@@ -7734,18 +7734,18 @@ LABEL_6:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)__startUpCloudZonesWithFetchInfo:(id)a3
+- (void)__startUpCloudZonesWithFetchInfo:(id)info
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  infoCopy = info;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 activity];
-  [v6 markWithFormat:@"Starting up cloud zones"];
+  activity = [infoCopy activity];
+  [activity markWithFormat:@"Starting up cloud zones"];
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -7757,30 +7757,30 @@ LABEL_6:
 
   objc_autoreleasePoolPop(v7);
   v11 = MEMORY[0x277CBEB18];
-  v12 = [v4 zoneInfoMap];
-  v13 = [v11 arrayWithCapacity:{objc_msgSend(v12, "count")}];
+  zoneInfoMap = [infoCopy zoneInfoMap];
+  v13 = [v11 arrayWithCapacity:{objc_msgSend(zoneInfoMap, "count")}];
 
-  v14 = [v4 zoneInfoMap];
+  zoneInfoMap2 = [infoCopy zoneInfoMap];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __108__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchZoneChanges____startUpCloudZonesWithFetchInfo___block_invoke;
   v38[3] = &unk_279733A20;
-  v38[4] = v8;
-  v15 = v4;
+  v38[4] = selfCopy;
+  v15 = infoCopy;
   v39 = v15;
   v16 = v13;
   v40 = v16;
-  [v14 enumerateKeysAndObjectsUsingBlock:v38];
+  [zoneInfoMap2 enumerateKeysAndObjectsUsingBlock:v38];
 
   v17 = [v16 count];
-  v18 = [v15 activity];
-  v19 = v18;
+  activity2 = [v15 activity];
+  v19 = activity2;
   if (v17)
   {
-    [v18 markWithFormat:@"Waiting for %lu cloud zones to start up", objc_msgSend(v16, "count")];
+    [activity2 markWithFormat:@"Waiting for %lu cloud zones to start up", objc_msgSend(v16, "count")];
 
     v20 = objc_autoreleasePoolPush();
-    v21 = v8;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
     {
@@ -7795,16 +7795,16 @@ LABEL_6:
 
     objc_autoreleasePoolPop(v20);
     v25 = MEMORY[0x277D2C900];
-    v26 = [MEMORY[0x277D2C938] globalAsyncScheduler];
-    v27 = [v25 combineAllFutures:v16 ignoringErrors:1 scheduler:v26];
+    globalAsyncScheduler = [MEMORY[0x277D2C938] globalAsyncScheduler];
+    v27 = [v25 combineAllFutures:v16 ignoringErrors:1 scheduler:globalAsyncScheduler];
   }
 
   else
   {
-    [v18 markWithFormat:@"Not waiting for any cloud zones to start up"];
+    [activity2 markWithFormat:@"Not waiting for any cloud zones to start up"];
 
     v28 = objc_autoreleasePoolPush();
-    v29 = v8;
+    v29 = selfCopy;
     v30 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
     {
@@ -7823,7 +7823,7 @@ LABEL_6:
   v35[2] = __108__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchZoneChanges____startUpCloudZonesWithFetchInfo___block_invoke_49;
   v35[3] = &unk_279733A70;
   v36 = v15;
-  v37 = v8;
+  v37 = selfCopy;
   v32 = v15;
   v33 = [v27 addSuccessBlock:v35];
 
@@ -8078,23 +8078,23 @@ void __108__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchZoneChang
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)__createCloudZonesForFetchInfo:(id)a3 error:(id *)a4
+- (BOOL)__createCloudZonesForFetchInfo:(id)info error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
-  dispatch_assert_queue_V2(v7);
+  infoCopy = info;
+  workQueue = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v8 = [v6 zoneInfoMap];
-  v9 = [v8 count];
+  zoneInfoMap = [infoCopy zoneInfoMap];
+  v9 = [zoneInfoMap count];
 
   if (v9)
   {
-    v10 = [v6 activity];
-    [v10 markWithFormat:@"Creating cloud zones"];
+    activity = [infoCopy activity];
+    [activity markWithFormat:@"Creating cloud zones"];
 
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
@@ -8111,29 +8111,29 @@ void __108__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchZoneChang
     v31 = __Block_byref_object_copy__182682;
     v32 = __Block_byref_object_dispose__182683;
     v33 = 0;
-    v15 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v12 cloudDatabase];
+    cloudDatabase = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy cloudDatabase];
     v16 = *MEMORY[0x277D17138];
     os_unfair_lock_lock_with_options();
 
-    v17 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)v12 cloudDatabase];
-    v18 = [v17 databaseStateForDatabaseScope:1];
+    cloudDatabase2 = [(HMDNetworkRouterFirewallRuleManagerBackingStoreMirror *)selfCopy cloudDatabase];
+    v18 = [cloudDatabase2 databaseStateForDatabaseScope:1];
 
-    v19 = [v6 zoneInfoMap];
+    zoneInfoMap2 = [infoCopy zoneInfoMap];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __112__HMDNetworkRouterFirewallRuleManagerBackingStoreMirror_FetchZoneChanges____createCloudZonesForFetchInfo_error___block_invoke;
     v24[3] = &unk_2797339D0;
-    v25 = v6;
-    v26 = v12;
+    v25 = infoCopy;
+    v26 = selfCopy;
     p_buf = &buf;
     v20 = v18;
     v27 = v20;
-    [v19 enumerateKeysAndObjectsUsingBlock:v24];
+    [zoneInfoMap2 enumerateKeysAndObjectsUsingBlock:v24];
 
-    os_unfair_lock_unlock(&v15[v16]);
-    if (a4)
+    os_unfair_lock_unlock(&cloudDatabase[v16]);
+    if (error)
     {
-      *a4 = *(*(&buf + 1) + 40);
+      *error = *(*(&buf + 1) + 40);
     }
 
     v21 = *(*(&buf + 1) + 40) == 0;

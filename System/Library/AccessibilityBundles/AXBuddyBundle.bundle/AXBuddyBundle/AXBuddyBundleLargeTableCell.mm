@@ -1,7 +1,7 @@
 @interface AXBuddyBundleLargeTableCell
-- (AXBuddyBundleLargeTableCell)initWithCoder:(id)a3;
-- (AXBuddyBundleLargeTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (AXBuddyBundleLargeTableCell)initWithCoder:(id)coder;
+- (AXBuddyBundleLargeTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (id)_largeTableCellCommonInit;
 @end
 
@@ -15,31 +15,31 @@
   return self;
 }
 
-- (AXBuddyBundleLargeTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AXBuddyBundleLargeTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = AXBuddyBundleLargeTableCell;
-  v4 = [(AXBuddyBundleTableCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
-  v5 = [(AXBuddyBundleLargeTableCell *)v4 _largeTableCellCommonInit];
+  v4 = [(AXBuddyBundleTableCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
+  _largeTableCellCommonInit = [(AXBuddyBundleLargeTableCell *)v4 _largeTableCellCommonInit];
 
-  return v5;
+  return _largeTableCellCommonInit;
 }
 
-- (AXBuddyBundleLargeTableCell)initWithCoder:(id)a3
+- (AXBuddyBundleLargeTableCell)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AXBuddyBundleLargeTableCell;
-  v3 = [(AXBuddyBundleTableCell *)&v6 initWithCoder:a3];
-  v4 = [(AXBuddyBundleLargeTableCell *)v3 _largeTableCellCommonInit];
+  v3 = [(AXBuddyBundleTableCell *)&v6 initWithCoder:coder];
+  _largeTableCellCommonInit = [(AXBuddyBundleLargeTableCell *)v3 _largeTableCellCommonInit];
 
-  return v4;
+  return _largeTableCellCommonInit;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v12.receiver = self;
   v12.super_class = AXBuddyBundleLargeTableCell;
-  [(AXBuddyBundleLargeTableCell *)&v12 sizeThatFits:a3.width, a3.height];
+  [(AXBuddyBundleLargeTableCell *)&v12 sizeThatFits:fits.width, fits.height];
   v4 = v3;
   v6 = v5;
   v7 = sub_336C();

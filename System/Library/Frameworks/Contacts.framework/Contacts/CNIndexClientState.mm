@@ -1,10 +1,10 @@
 @interface CNIndexClientState
-+ (CNIndexClientState)clientStateWithData:(id)a3 logger:(id)a4;
++ (CNIndexClientState)clientStateWithData:(id)data logger:(id)logger;
 - (CNIndexClientState)init;
-- (CNIndexClientState)initWithCoder:(id)a3;
+- (CNIndexClientState)initWithCoder:(id)coder;
 - (id)data;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNIndexClientState
@@ -29,14 +29,14 @@
   return v3;
 }
 
-+ (CNIndexClientState)clientStateWithData:(id)a3 logger:(id)a4
++ (CNIndexClientState)clientStateWithData:(id)data logger:(id)logger
 {
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  loggerCopy = logger;
   v7 = &unk_1EE585000;
   v8 = objc_alloc_init(CNIndexClientState);
   v13 = 0;
-  v9 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:v5 error:&v13];
+  v9 = [objc_alloc(MEMORY[0x1E696ACD0]) initForReadingFromData:dataCopy error:&v13];
   v10 = v13;
   if (v9)
   {
@@ -46,7 +46,7 @@
 
   else
   {
-    [v6 failedToCreateUnarchiverForClientStateWithError:v10];
+    [loggerCopy failedToCreateUnarchiverForClientStateWithError:v10];
     v11 = 0;
   }
 
@@ -63,9 +63,9 @@
 {
   v3 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
   [(CNIndexClientState *)self encodeWithCoder:v3];
-  v4 = [v3 encodedData];
+  encodedData = [v3 encodedData];
 
-  return v4;
+  return encodedData;
 }
 
 - (id)description
@@ -75,23 +75,23 @@
   v5 = [v3 appendName:@"isFullSyncDone" BOOLValue:self->_isFullSyncDone];
   v6 = [v3 appendName:@"fullSyncOffset" integerValue:self->_fullSyncOffset];
   v7 = [v3 appendName:@"snapshotAnchor" object:self->_snapshotAnchor];
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
-- (CNIndexClientState)initWithCoder:(id)a3
+- (CNIndexClientState)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CNIndexClientState;
   v5 = [(CNIndexClientState *)&v10 init];
   if (v5)
   {
-    v5->_indexVersion = [v4 decodeIntegerForKey:@"1"];
-    v5->_isFullSyncDone = [v4 decodeBoolForKey:@"2"];
-    v5->_fullSyncOffset = [v4 decodeIntegerForKey:@"4"];
-    v6 = -[CNChangeHistoryAnchor initWithSequenceNumber:]([CNChangeHistoryAnchor alloc], "initWithSequenceNumber:", [v4 decodeIntegerForKey:@"5"]);
+    v5->_indexVersion = [coderCopy decodeIntegerForKey:@"1"];
+    v5->_isFullSyncDone = [coderCopy decodeBoolForKey:@"2"];
+    v5->_fullSyncOffset = [coderCopy decodeIntegerForKey:@"4"];
+    v6 = -[CNChangeHistoryAnchor initWithSequenceNumber:]([CNChangeHistoryAnchor alloc], "initWithSequenceNumber:", [coderCopy decodeIntegerForKey:@"5"]);
     snapshotAnchor = v5->_snapshotAnchor;
     v5->_snapshotAnchor = v6;
 
@@ -101,14 +101,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[CNIndexClientState indexVersion](self forKey:{"indexVersion"), @"1"}];
-  [v4 encodeBool:-[CNIndexClientState isFullSyncDone](self forKey:{"isFullSyncDone"), @"2"}];
-  [v4 encodeInteger:-[CNIndexClientState fullSyncOffset](self forKey:{"fullSyncOffset"), @"4"}];
-  v5 = [(CNIndexClientState *)self snapshotAnchor];
-  [v4 encodeInteger:objc_msgSend(v5 forKey:{"sequenceNumber"), @"5"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[CNIndexClientState indexVersion](self forKey:{"indexVersion"), @"1"}];
+  [coderCopy encodeBool:-[CNIndexClientState isFullSyncDone](self forKey:{"isFullSyncDone"), @"2"}];
+  [coderCopy encodeInteger:-[CNIndexClientState fullSyncOffset](self forKey:{"fullSyncOffset"), @"4"}];
+  snapshotAnchor = [(CNIndexClientState *)self snapshotAnchor];
+  [coderCopy encodeInteger:objc_msgSend(snapshotAnchor forKey:{"sequenceNumber"), @"5"}];
 }
 
 @end

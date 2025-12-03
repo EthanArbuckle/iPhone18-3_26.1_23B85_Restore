@@ -2,7 +2,7 @@
 + (id)sharedClient;
 - (ICAppRemovalServiceClient)init;
 - (void)dealloc;
-- (void)removeAppWithReply:(id)a3;
+- (void)removeAppWithReply:(id)reply;
 - (void)resumeConnectionIfNeeded;
 - (void)suspendConnectionIfNeeded;
 @end
@@ -46,16 +46,16 @@
   [(ICAppRemovalServiceClient *)&v3 dealloc];
 }
 
-- (void)removeAppWithReply:(id)a3
+- (void)removeAppWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   [(ICAppRemovalServiceClient *)self resumeConnectionIfNeeded];
   connectionToService = self->_connectionToService;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000A1CC8;
   v11[3] = &unk_100646D78;
-  v6 = v4;
+  v6 = replyCopy;
   v12 = v6;
   v7 = [(NSXPCConnection *)connectionToService remoteObjectProxyWithErrorHandler:v11];
   v9[0] = _NSConcreteStackBlock;
@@ -70,24 +70,24 @@
 
 - (void)resumeConnectionIfNeeded
 {
-  v3 = [(ICAppRemovalServiceClient *)self requestCountQueue];
+  requestCountQueue = [(ICAppRemovalServiceClient *)self requestCountQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000A1EBC;
   block[3] = &unk_100645E30;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(requestCountQueue, block);
 }
 
 - (void)suspendConnectionIfNeeded
 {
-  v3 = [(ICAppRemovalServiceClient *)self requestCountQueue];
+  requestCountQueue = [(ICAppRemovalServiceClient *)self requestCountQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000A2010;
   block[3] = &unk_100645E30;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(requestCountQueue, block);
 }
 
 @end

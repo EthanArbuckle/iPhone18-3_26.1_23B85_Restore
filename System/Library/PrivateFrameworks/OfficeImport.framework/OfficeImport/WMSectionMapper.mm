@@ -1,82 +1,82 @@
 @interface WMSectionMapper
-+ (BOOL)isContentEmpty:(id)a3;
-- (WMSectionMapper)initWithWDSection:(id)a3 breakAtStart:(BOOL)a4 breakAtEnd:(BOOL)a5 parent:(id)a6;
-- (void)MapSectionStyleAt:(id)a3;
-- (void)mapAt:(id)a3 withState:(id)a4;
-- (void)mapFooterAt:(id)a3 withState:(id)a4;
-- (void)mapHeaderAt:(id)a3 withState:(id)a4;
++ (BOOL)isContentEmpty:(id)empty;
+- (WMSectionMapper)initWithWDSection:(id)section breakAtStart:(BOOL)start breakAtEnd:(BOOL)end parent:(id)parent;
+- (void)MapSectionStyleAt:(id)at;
+- (void)mapAt:(id)at withState:(id)state;
+- (void)mapFooterAt:(id)at withState:(id)state;
+- (void)mapHeaderAt:(id)at withState:(id)state;
 @end
 
 @implementation WMSectionMapper
 
-- (WMSectionMapper)initWithWDSection:(id)a3 breakAtStart:(BOOL)a4 breakAtEnd:(BOOL)a5 parent:(id)a6
+- (WMSectionMapper)initWithWDSection:(id)section breakAtStart:(BOOL)start breakAtEnd:(BOOL)end parent:(id)parent
 {
-  v11 = a3;
-  v12 = a6;
+  sectionCopy = section;
+  parentCopy = parent;
   v17.receiver = self;
   v17.super_class = WMSectionMapper;
-  v13 = [(CMMapper *)&v17 initWithParent:v12];
+  v13 = [(CMMapper *)&v17 initWithParent:parentCopy];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->wdSection, a3);
+    objc_storeStrong(&v13->wdSection, section);
     v14->mTopMargin = [(WDSection *)v14->wdSection topMargin];
     v14->mLeftMargin = [(WDSection *)v14->wdSection leftMargin];
-    v14->mBreakAtStart = a4;
-    v14->mBreakAtEnd = a5;
-    v15 = [(WDSection *)v14->wdSection isTitlePageOverridden]&& [(WDSection *)v14->wdSection titlePage];
-    v14->mIsTitlePage = v15;
+    v14->mBreakAtStart = start;
+    v14->mBreakAtEnd = end;
+    titlePage = [(WDSection *)v14->wdSection isTitlePageOverridden]&& [(WDSection *)v14->wdSection titlePage];
+    v14->mIsTitlePage = titlePage;
   }
 
   return v14;
 }
 
-- (void)MapSectionStyleAt:(id)a3
+- (void)MapSectionStyleAt:(id)at
 {
-  v5 = a3;
+  atCopy = at;
   v4 = objc_alloc_init(WMStyle);
-  [(CMMapper *)self addStyleUsingGlobalCacheTo:v5 style:v4];
+  [(CMMapper *)self addStyleUsingGlobalCacheTo:atCopy style:v4];
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v14 = a3;
-  v6 = a4;
+  atCopy = at;
+  stateCopy = state;
   v7 = [OIXMLElement elementWithType:3];
-  [v14 addChild:v7];
+  [atCopy addChild:v7];
   *&v8 = self->mTopMargin;
-  [v6 setTopMargin:v8];
+  [stateCopy setTopMargin:v8];
   *&v9 = self->mLeftMargin;
-  [v6 setLeftMargin:v9];
+  [stateCopy setLeftMargin:v9];
   v10 = [(WDSection *)self->wdSection pageHeight]/ 20.0;
   *&v10 = v10;
-  [v6 setPageHeight:v10];
+  [stateCopy setPageHeight:v10];
   if (!self->mBreakAtStart)
   {
-    v11 = [v6 currentPage];
-    if (v11)
+    currentPage = [stateCopy currentPage];
+    if (currentPage)
     {
-      [v6 setCurrentPage:(v11 - 1)];
+      [stateCopy setCurrentPage:(currentPage - 1)];
     }
   }
 
   [(WMSectionMapper *)self MapSectionStyleAt:v7];
-  v12 = [(WDSection *)self->wdSection text];
-  if ([v12 blockCount])
+  text = [(WDSection *)self->wdSection text];
+  if ([text blockCount])
   {
-    [(WMSectionMapper *)self mapHeaderAt:v7 withState:v6];
-    v13 = [[WMSectionContentMapper alloc] initWithWDText:v12 parent:self];
-    [(WMSectionContentMapper *)v13 mapAt:v7 withState:v6];
-    [(WMSectionMapper *)self mapFooterAt:v7 withState:v6];
+    [(WMSectionMapper *)self mapHeaderAt:v7 withState:stateCopy];
+    v13 = [[WMSectionContentMapper alloc] initWithWDText:text parent:self];
+    [(WMSectionContentMapper *)v13 mapAt:v7 withState:stateCopy];
+    [(WMSectionMapper *)self mapFooterAt:v7 withState:stateCopy];
   }
 }
 
-- (void)mapHeaderAt:(id)a3 withState:(id)a4
+- (void)mapHeaderAt:(id)at withState:(id)state
 {
-  v25 = a3;
-  v6 = a4;
-  v7 = [(WDSection *)self->wdSection firstPageHeader];
-  if ([WMSectionMapper isContentEmpty:v7])
+  atCopy = at;
+  stateCopy = state;
+  firstPageHeader = [(WDSection *)self->wdSection firstPageHeader];
+  if ([WMSectionMapper isContentEmpty:firstPageHeader])
   {
   }
 
@@ -86,13 +86,13 @@
 
     if (mIsTitlePage)
     {
-      v9 = [(WDSection *)self->wdSection firstPageHeader];
+      firstPageHeader2 = [(WDSection *)self->wdSection firstPageHeader];
       goto LABEL_13;
     }
   }
 
-  v10 = [(WDSection *)self->wdSection oddPageHeader];
-  if ([WMSectionMapper isContentEmpty:v10])
+  oddPageHeader = [(WDSection *)self->wdSection oddPageHeader];
+  if ([WMSectionMapper isContentEmpty:oddPageHeader])
   {
   }
 
@@ -102,14 +102,14 @@
 
     if (!v11)
     {
-      v9 = [(WDSection *)self->wdSection oddPageHeader];
-      [v6 setLastHeader:v9];
+      firstPageHeader2 = [(WDSection *)self->wdSection oddPageHeader];
+      [stateCopy setLastHeader:firstPageHeader2];
       goto LABEL_13;
     }
   }
 
-  v12 = [(WDSection *)self->wdSection evenPageHeader];
-  if ([WMSectionMapper isContentEmpty:v12])
+  evenPageHeader = [(WDSection *)self->wdSection evenPageHeader];
+  if ([WMSectionMapper isContentEmpty:evenPageHeader])
   {
 
     goto LABEL_14;
@@ -120,8 +120,8 @@
   if (v13)
   {
 LABEL_14:
-    v9 = [v6 lastHeader];
-    if (!v9)
+    firstPageHeader2 = [stateCopy lastHeader];
+    if (!firstPageHeader2)
     {
       goto LABEL_21;
     }
@@ -129,10 +129,10 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v9 = [(WDSection *)self->wdSection evenPageHeader];
-  [v6 setLastHeader:v9];
+  firstPageHeader2 = [(WDSection *)self->wdSection evenPageHeader];
+  [stateCopy setLastHeader:firstPageHeader2];
 LABEL_13:
-  if (!v9)
+  if (!firstPageHeader2)
   {
     goto LABEL_14;
   }
@@ -141,61 +141,61 @@ LABEL_15:
   if (self->mBreakAtStart)
   {
     v14 = [OIXMLElement elementWithType:3];
-    v15 = [(CMMapper *)self archiver];
-    v16 = [v15 progressiveMappingIsPausedOnPath:0];
+    archiver = [(CMMapper *)self archiver];
+    v16 = [archiver progressiveMappingIsPausedOnPath:0];
 
     if (v16)
     {
-      [v25 addChild:v14];
+      [atCopy addChild:v14];
     }
 
-    v17 = [(CMMapper *)self archiver];
-    [v17 pauseProgressiveMappingOnPath:0];
+    archiver2 = [(CMMapper *)self archiver];
+    [archiver2 pauseProgressiveMappingOnPath:0];
 
     v18 = objc_alloc_init(CMStyle);
     [(CMMapper *)self addStyleUsingGlobalCacheTo:v14 style:v18];
-    [v6 setIsHeaderOrFooter:1];
-    v19 = [[WMSectionContentMapper alloc] initWithWDText:v9 parent:self];
-    [(WMSectionContentMapper *)v19 mapAt:v14 withState:v6];
-    [v6 setIsHeaderOrFooter:0];
-    v20 = [(CMMapper *)self archiver];
-    [v20 restartProgressiveMappingOnPath:0];
+    [stateCopy setIsHeaderOrFooter:1];
+    v19 = [[WMSectionContentMapper alloc] initWithWDText:firstPageHeader2 parent:self];
+    [(WMSectionContentMapper *)v19 mapAt:v14 withState:stateCopy];
+    [stateCopy setIsHeaderOrFooter:0];
+    archiver3 = [(CMMapper *)self archiver];
+    [archiver3 restartProgressiveMappingOnPath:0];
 
     if ((v16 & 1) == 0)
     {
-      v21 = [(CMMapper *)self archiver];
-      [v21 restartProgressiveMappingOnPath:0];
+      archiver4 = [(CMMapper *)self archiver];
+      [archiver4 restartProgressiveMappingOnPath:0];
 
-      v22 = [(CMMapper *)self archiver];
-      [v22 pushCssToPath:0];
+      archiver5 = [(CMMapper *)self archiver];
+      [archiver5 pushCssToPath:0];
 
-      v23 = [(CMMapper *)self archiver];
-      v24 = [v14 XMLString];
-      [v23 pushText:v24 toPath:0];
+      archiver6 = [(CMMapper *)self archiver];
+      xMLString = [v14 XMLString];
+      [archiver6 pushText:xMLString toPath:0];
     }
 
-    [v6 setIsHeaderOrFooter:0];
+    [stateCopy setIsHeaderOrFooter:0];
   }
 
 LABEL_21:
 }
 
-- (void)mapFooterAt:(id)a3 withState:(id)a4
+- (void)mapFooterAt:(id)at withState:(id)state
 {
-  v17 = a3;
-  v6 = a4;
-  v7 = [(WDSection *)self->wdSection firstPageFooter];
-  v8 = [WMSectionMapper isContentEmpty:v7];
+  atCopy = at;
+  stateCopy = state;
+  firstPageFooter = [(WDSection *)self->wdSection firstPageFooter];
+  v8 = [WMSectionMapper isContentEmpty:firstPageFooter];
 
   if (v8)
   {
-    v9 = [(WDSection *)self->wdSection oddPageFooter];
-    v10 = [WMSectionMapper isContentEmpty:v9];
+    oddPageFooter = [(WDSection *)self->wdSection oddPageFooter];
+    v10 = [WMSectionMapper isContentEmpty:oddPageFooter];
 
     if (v10)
     {
-      v11 = [(WDSection *)self->wdSection evenPageFooter];
-      v12 = [WMSectionMapper isContentEmpty:v11];
+      evenPageFooter = [(WDSection *)self->wdSection evenPageFooter];
+      v12 = [WMSectionMapper isContentEmpty:evenPageFooter];
 
       if (v12)
       {
@@ -203,28 +203,28 @@ LABEL_21:
         goto LABEL_11;
       }
 
-      v14 = [(WDSection *)self->wdSection evenPageFooter];
+      evenPageFooter2 = [(WDSection *)self->wdSection evenPageFooter];
     }
 
     else
     {
-      v14 = [(WDSection *)self->wdSection oddPageFooter];
+      evenPageFooter2 = [(WDSection *)self->wdSection oddPageFooter];
     }
   }
 
   else
   {
-    v14 = [(WDSection *)self->wdSection firstPageFooter];
+    evenPageFooter2 = [(WDSection *)self->wdSection firstPageFooter];
   }
 
-  v13 = v14;
-  if (!v14 || ![v14 blockCount])
+  v13 = evenPageFooter2;
+  if (!evenPageFooter2 || ![evenPageFooter2 blockCount])
   {
 LABEL_11:
-    v15 = [v6 lastFooter];
+    lastFooter = [stateCopy lastFooter];
 
-    v13 = v15;
-    if (!v15)
+    v13 = lastFooter;
+    if (!lastFooter)
     {
       goto LABEL_14;
     }
@@ -232,29 +232,29 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  [v6 setLastFooter:v13];
+  [stateCopy setLastFooter:v13];
 LABEL_12:
   if (self->mBreakAtEnd)
   {
-    [v6 setIsHeaderOrFooter:1];
+    [stateCopy setIsHeaderOrFooter:1];
     v16 = [[WMSectionContentMapper alloc] initWithWDText:v13 parent:self];
-    [(WMSectionContentMapper *)v16 mapAt:v17 withState:v6];
-    [v6 setIsHeaderOrFooter:0];
+    [(WMSectionContentMapper *)v16 mapAt:atCopy withState:stateCopy];
+    [stateCopy setIsHeaderOrFooter:0];
   }
 
 LABEL_14:
 }
 
-+ (BOOL)isContentEmpty:(id)a3
++ (BOOL)isContentEmpty:(id)empty
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  emptyCopy = empty;
+  v4 = emptyCopy;
+  if (emptyCopy)
   {
-    v5 = [v3 blockCount];
-    if (v5)
+    blockCount = [emptyCopy blockCount];
+    if (blockCount)
     {
-      for (i = 0; v5 != i; ++i)
+      for (i = 0; blockCount != i; ++i)
       {
         v7 = [v4 blockAt:i];
         if ([v7 blockType])

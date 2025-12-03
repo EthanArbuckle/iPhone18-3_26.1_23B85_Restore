@@ -1,27 +1,27 @@
 @interface STUsage
 + (id)fetchRequest;
-+ (id)fetchRequestMatchingUser:(id)a3 device:(id)a4;
++ (id)fetchRequestMatchingUser:(id)user device:(id)device;
 @end
 
 @implementation STUsage
 
 + (id)fetchRequest
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___STUsage;
   v2 = objc_msgSendSuper2(&v4, sel_fetchRequest);
 
   return v2;
 }
 
-+ (id)fetchRequestMatchingUser:(id)a3 device:(id)a4
++ (id)fetchRequestMatchingUser:(id)user device:(id)device
 {
-  v5 = a4;
-  v6 = a3;
+  deviceCopy = device;
+  userCopy = user;
   v7 = +[STUsage fetchRequest];
-  v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K == %@) AND (%K == %@)", @"user", v6, @"device", v5];
+  deviceCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"(%K == %@) AND (%K == %@)", @"user", userCopy, @"device", deviceCopy];
 
-  [v7 setPredicate:v8];
+  [v7 setPredicate:deviceCopy];
 
   return v7;
 }

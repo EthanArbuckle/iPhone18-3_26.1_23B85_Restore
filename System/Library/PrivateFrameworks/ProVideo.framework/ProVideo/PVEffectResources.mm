@@ -6,10 +6,10 @@
 + (void)cleanupEffectsCache;
 + (void)clearAllCachesAndPools;
 + (void)flushEngine;
-+ (void)setCVTextureCacheMaximumTextureAge:(float)a3;
-+ (void)setInteractiveMode:(BOOL)a3;
++ (void)setCVTextureCacheMaximumTextureAge:(float)age;
++ (void)setInteractiveMode:(BOOL)mode;
 + (void)shutdownEngine;
-+ (void)updateMemoryEnvironment:(int)a3;
++ (void)updateMemoryEnvironment:(int)environment;
 @end
 
 @implementation PVEffectResources
@@ -21,11 +21,11 @@
   +[PVMotionEffect handleCleanupEffectsCache];
 }
 
-+ (void)setInteractiveMode:(BOOL)a3
++ (void)setInteractiveMode:(BOOL)mode
 {
-  v3 = a3;
-  PVRenderManager::INSTANCE(a1, &v4);
-  PVRenderManager::SetInteractiveMode(v4, v3);
+  modeCopy = mode;
+  PVRenderManager::INSTANCE(self, &v4);
+  PVRenderManager::SetInteractiveMode(v4, modeCopy);
   if (v4)
   {
     (*(*v4 + 24))(v4);
@@ -34,7 +34,7 @@
 
 + (BOOL)isInteractiveMode
 {
-  PVRenderManager::INSTANCE(a1, &v4);
+  PVRenderManager::INSTANCE(self, &v4);
   InteractiveMode = PVRenderManager::GetInteractiveMode(v4);
   if (v4)
   {
@@ -44,10 +44,10 @@
   return InteractiveMode;
 }
 
-+ (void)updateMemoryEnvironment:(int)a3
++ (void)updateMemoryEnvironment:(int)environment
 {
-  PVRenderManager::INSTANCE(a1, &v4);
-  PVRenderManager::updateMemoryEnvironment(v4, a3);
+  PVRenderManager::INSTANCE(self, &v4);
+  PVRenderManager::updateMemoryEnvironment(v4, environment);
   if (v4)
   {
     (*(*v4 + 24))(v4);
@@ -56,7 +56,7 @@
 
 + (int)memoryEnvironment
 {
-  PVRenderManager::INSTANCE(a1, &v4);
+  PVRenderManager::INSTANCE(self, &v4);
   MemoryEnvironment = PVRenderManager::GetMemoryEnvironment(v4);
   if (v4)
   {
@@ -66,10 +66,10 @@
   return MemoryEnvironment;
 }
 
-+ (void)setCVTextureCacheMaximumTextureAge:(float)a3
++ (void)setCVTextureCacheMaximumTextureAge:(float)age
 {
-  PVRenderManager::INSTANCE(a1, &v4);
-  PVRenderManager::SetCVTextureCacheMaximumTextureAge(v4, a3);
+  PVRenderManager::INSTANCE(self, &v4);
+  PVRenderManager::SetCVTextureCacheMaximumTextureAge(v4, age);
   if (v4)
   {
     (*(*v4 + 24))(v4);
@@ -78,7 +78,7 @@
 
 + (float)getCVTextureCacheMaxiumumTextureAge
 {
-  PVRenderManager::INSTANCE(a1, &v4);
+  PVRenderManager::INSTANCE(self, &v4);
   CVTextureCacheMaximumTextureAge = PVRenderManager::GetCVTextureCacheMaximumTextureAge(v4);
   if (v4)
   {
@@ -100,7 +100,7 @@
   +[PVEffect handleApplicationDidReceiveMemoryWarning];
   +[PVMotionEffect handleApplicationDidReceiveMemoryWarning];
   +[PVCinematicEffect handleApplicationDidReceiveMemoryWarning];
-  PVRenderManager::INSTANCE([a1 cleanupEffectsCache], &v3);
+  PVRenderManager::INSTANCE([self cleanupEffectsCache], &v3);
   PVRenderManager::FreeTexturePools(v3);
   if (v3)
   {
@@ -110,7 +110,7 @@
 
 + (void)flushEngine
 {
-  PVRenderManager::INSTANCE(a1, &v13);
+  PVRenderManager::INSTANCE(self, &v13);
   if (HGLogger::getLevel("PVSignPost", v3) >= 1)
   {
     kdebug_trace();
@@ -149,7 +149,7 @@
     kdebug_trace();
   }
 
-  [a1 clearAllCachesAndPools];
+  [self clearAllCachesAndPools];
   PVRenderManager::ForceFlushRendererResources(v13);
   if (HGLogger::getLevel("PVSignPost", v10) >= 1)
   {

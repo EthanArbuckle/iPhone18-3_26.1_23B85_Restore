@@ -1,6 +1,6 @@
 @interface _NUFlexRangeChannelProperties
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation _NUFlexRangeChannelProperties
@@ -24,9 +24,9 @@
   return [v3 stringWithFormat:@"[min:%0.3f(%0.3f) max:%0.3f(%0.3f) gamma:%0.3f kA:%g kB:%g]", *&v5, *&v7, *&v9, *&v11, *&v13, *&v15, v16];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [_NUFlexRangeChannelProperties allocWithZone:a3];
+  result = [_NUFlexRangeChannelProperties allocWithZone:zone];
   *(result + 2) = LODWORD(self->_min);
   *(result + 3) = LODWORD(self->_max);
   *(result + 4) = LODWORD(self->_gamma);

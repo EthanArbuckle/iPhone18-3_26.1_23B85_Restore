@@ -1,79 +1,79 @@
 @interface GKAuthenticationWrapperService
-+ (id)authenticationWrapperForService:(id)a3;
-+ (id)serviceForBundleID:(id)a3 player:(id)a4;
-+ (id)serviceForClient:(id)a3 player:(id)a4;
-- (GKAuthenticationWrapperService)initWithClient:(id)a3;
-- (GKAuthenticationWrapperService)initWithService:(id)a3 queue:(id)a4;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)_buildSignatureLookupForProtocol:(id)a3;
-- (void)accountCreated:(id)a3 playerID:(id)a4 authenticationToken:(id)a5 alias:(id)a6 altDSID:(id)a7 finished:(BOOL)a8 handler:(id)a9;
-- (void)accountCreated:(id)a3 playerID:(id)a4 authenticationToken:(id)a5 alias:(id)a6 finished:(BOOL)a7 handler:(id)a8;
-- (void)accountEdited:(id)a3 alias:(id)a4 firstName:(id)a5 lastName:(id)a6 handler:(id)a7;
++ (id)authenticationWrapperForService:(id)service;
++ (id)serviceForBundleID:(id)d player:(id)player;
++ (id)serviceForClient:(id)client player:(id)player;
+- (GKAuthenticationWrapperService)initWithClient:(id)client;
+- (GKAuthenticationWrapperService)initWithService:(id)service queue:(id)queue;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)_buildSignatureLookupForProtocol:(id)protocol;
+- (void)accountCreated:(id)created playerID:(id)d authenticationToken:(id)token alias:(id)alias altDSID:(id)iD finished:(BOOL)finished handler:(id)handler;
+- (void)accountCreated:(id)created playerID:(id)d authenticationToken:(id)token alias:(id)alias finished:(BOOL)finished handler:(id)handler;
+- (void)accountEdited:(id)edited alias:(id)alias firstName:(id)name lastName:(id)lastName handler:(id)handler;
 - (void)assertPrivateProtocol;
 - (void)assertProtocol;
-- (void)authenticatePlayerWithExistingCredentialsWithHandler:(id)a3;
-- (void)authenticatePlayerWithUsername:(id)a3 password:(id)a4 altDSID:(id)a5 isGame:(BOOL)a6 usingFastPath:(BOOL)a7 handler:(id)a8;
-- (void)authenticatePlayerWithUsername:(id)a3 password:(id)a4 handler:(id)a5;
-- (void)authenticatePlayerWithUsername:(id)a3 password:(id)a4 usingFastPath:(BOOL)a5 displayAuthUI:(BOOL)a6 handler:(id)a7;
-- (void)authenticateWithService:(id)a3 username:(id)a4 password:(id)a5 altDSID:(id)a6 isGame:(BOOL)a7 usingFastPath:(BOOL)a8 displayAuthUI:(BOOL)a9 handler:(id)a10;
-- (void)checkActivitySharingRepromptWithCompletion:(id)a3;
+- (void)authenticatePlayerWithExistingCredentialsWithHandler:(id)handler;
+- (void)authenticatePlayerWithUsername:(id)username password:(id)password altDSID:(id)d isGame:(BOOL)game usingFastPath:(BOOL)path handler:(id)handler;
+- (void)authenticatePlayerWithUsername:(id)username password:(id)password handler:(id)handler;
+- (void)authenticatePlayerWithUsername:(id)username password:(id)password usingFastPath:(BOOL)path displayAuthUI:(BOOL)i handler:(id)handler;
+- (void)authenticateWithService:(id)service username:(id)username password:(id)password altDSID:(id)d isGame:(BOOL)game usingFastPath:(BOOL)path displayAuthUI:(BOOL)i handler:(id)self0;
+- (void)checkActivitySharingRepromptWithCompletion:(id)completion;
 - (void)didShowFullscreenSignIn;
 - (void)didShowSignInBanner;
-- (void)fetchItemsForIdentityVerificationSignature:(id)a3;
-- (void)forwardInvocation:(id)a3;
-- (void)generateIdentityVerificationSignatureWithCompletionHandler:(id)a3;
-- (void)getAccountAgeCategoryForPlayerID:(id)a3 withCompletion:(id)a4;
-- (void)getAccountAuthTokenWithHandler:(id)a3;
-- (void)getDevicePushTokenWithHandler:(id)a3;
-- (void)getLastContactsIntegrationConsentVersionDisplayedForSignedInPlayerWithHandler:(id)a3;
-- (void)getLastFriendSuggestionsVersionDisplayedForSignedInPlayerWithHandler:(id)a3;
-- (void)getLastPersonalizationVersionDisplayedForSignedInPlayerWithHandler:(id)a3;
-- (void)getLastPrivacyNoticeVersionDisplayedForSignedInPlayerWithHandler:(id)a3;
-- (void)getLastProfilePrivacyVersionDisplayedForSignedInPlayerWithHandler:(id)a3;
-- (void)getLastWelcomeWhatsNewCopyVersionDisplayedForSignedInPlayerWithHandler:(id)a3;
-- (void)getOnboardingInfoForPlayerID:(id)a3 withCompletion:(id)a4;
-- (void)isAppDistributorThirdParty:(id)a3;
-- (void)isICloudAvailableWithHandler:(id)a3;
-- (void)localPlayerAgeCategoryWithCompletion:(id)a3;
-- (void)notifyClient:(id)a3 playerAuthenticatedFromClient:(id)a4;
+- (void)fetchItemsForIdentityVerificationSignature:(id)signature;
+- (void)forwardInvocation:(id)invocation;
+- (void)generateIdentityVerificationSignatureWithCompletionHandler:(id)handler;
+- (void)getAccountAgeCategoryForPlayerID:(id)d withCompletion:(id)completion;
+- (void)getAccountAuthTokenWithHandler:(id)handler;
+- (void)getDevicePushTokenWithHandler:(id)handler;
+- (void)getLastContactsIntegrationConsentVersionDisplayedForSignedInPlayerWithHandler:(id)handler;
+- (void)getLastFriendSuggestionsVersionDisplayedForSignedInPlayerWithHandler:(id)handler;
+- (void)getLastPersonalizationVersionDisplayedForSignedInPlayerWithHandler:(id)handler;
+- (void)getLastPrivacyNoticeVersionDisplayedForSignedInPlayerWithHandler:(id)handler;
+- (void)getLastProfilePrivacyVersionDisplayedForSignedInPlayerWithHandler:(id)handler;
+- (void)getLastWelcomeWhatsNewCopyVersionDisplayedForSignedInPlayerWithHandler:(id)handler;
+- (void)getOnboardingInfoForPlayerID:(id)d withCompletion:(id)completion;
+- (void)isAppDistributorThirdParty:(id)party;
+- (void)isICloudAvailableWithHandler:(id)handler;
+- (void)localPlayerAgeCategoryWithCompletion:(id)completion;
+- (void)notifyClient:(id)client playerAuthenticatedFromClient:(id)fromClient;
 - (void)notifyWidgetPlayerAuthenticationUpdated;
-- (void)renewCredentialsForAccountWithUsername:(id)a3 ttl:(double)a4 withCompletion:(id)a5;
-- (void)resetCredentialsWithHandler:(id)a3;
-- (void)setActivitySharingRepromptLastTriggerDate:(id)a3;
-- (void)setCrossUseLinkedDSIDForSignedInPlayer:(int64_t)a3;
-- (void)setLastContactsIntegrationConsentVersionDisplayedForSignedInPlayer:(id)a3;
-- (void)setLastFriendSuggestionsVersionDisplayedForSignedInPlayer:(id)a3;
-- (void)setLastGamesCrossUseConsentNoticeVersionDisplayedForSignedInPlayer:(int64_t)a3;
-- (void)setLastGamesPrivacyNoticeVersionDisplayedForSignedInPlayer:(int64_t)a3;
-- (void)setLastPersonalizationVersionDisplayedForSignedInPlayer:(id)a3;
-- (void)setLastPrivacyNoticeVersionDisplayedForSignedInPlayer:(unint64_t)a3;
-- (void)setLastProfilePrivacyVersionDisplayedForSignedInPlayer:(id)a3;
-- (void)setLastWelcomeWhatsNewCopyVersionDisplayedForSignedInPlayer:(unint64_t)a3;
-- (void)setLoginStatus:(unint64_t)a3 handler:(id)a4;
-- (void)setupAccountForParameters:(id)a3 handler:(id)a4;
-- (void)signOutPlayerWithOptOut:(BOOL)a3 handler:(id)a4;
-- (void)validateAccountWithUsername:(id)a3 password:(id)a4 handler:(id)a5;
+- (void)renewCredentialsForAccountWithUsername:(id)username ttl:(double)ttl withCompletion:(id)completion;
+- (void)resetCredentialsWithHandler:(id)handler;
+- (void)setActivitySharingRepromptLastTriggerDate:(id)date;
+- (void)setCrossUseLinkedDSIDForSignedInPlayer:(int64_t)player;
+- (void)setLastContactsIntegrationConsentVersionDisplayedForSignedInPlayer:(id)player;
+- (void)setLastFriendSuggestionsVersionDisplayedForSignedInPlayer:(id)player;
+- (void)setLastGamesCrossUseConsentNoticeVersionDisplayedForSignedInPlayer:(int64_t)player;
+- (void)setLastGamesPrivacyNoticeVersionDisplayedForSignedInPlayer:(int64_t)player;
+- (void)setLastPersonalizationVersionDisplayedForSignedInPlayer:(id)player;
+- (void)setLastPrivacyNoticeVersionDisplayedForSignedInPlayer:(unint64_t)player;
+- (void)setLastProfilePrivacyVersionDisplayedForSignedInPlayer:(id)player;
+- (void)setLastWelcomeWhatsNewCopyVersionDisplayedForSignedInPlayer:(unint64_t)player;
+- (void)setLoginStatus:(unint64_t)status handler:(id)handler;
+- (void)setupAccountForParameters:(id)parameters handler:(id)handler;
+- (void)signOutPlayerWithOptOut:(BOOL)out handler:(id)handler;
+- (void)validateAccountWithUsername:(id)username password:(id)password handler:(id)handler;
 @end
 
 @implementation GKAuthenticationWrapperService
 
-- (GKAuthenticationWrapperService)initWithClient:(id)a3
+- (GKAuthenticationWrapperService)initWithClient:(id)client
 {
   v4 = [NSString stringWithFormat:@"initWithClient: is not the designated initialier for GKAuthenticationWrapperService, use initWithService:queue: instead."];
   v5 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKAuthenticationWrapperService.m"];
-  v6 = [v5 lastPathComponent];
-  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (NO)\n[%s (%s:%d)]", v4, "-[GKAuthenticationWrapperService initWithClient:]", [v6 UTF8String], 31);
+  lastPathComponent = [v5 lastPathComponent];
+  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (NO)\n[%s (%s:%d)]", v4, "-[GKAuthenticationWrapperService initWithClient:]", [lastPathComponent UTF8String], 31);
 
   [NSException raise:@"GameKit Exception" format:@"%@", v7];
   return 0;
 }
 
-- (void)_buildSignatureLookupForProtocol:(id)a3
+- (void)_buildSignatureLookupForProtocol:(id)protocol
 {
-  v4 = a3;
+  protocolCopy = protocol;
   v5 = objc_alloc_init(NSMutableDictionary);
   outCount = 0;
-  v6 = protocol_copyMethodDescriptionList(v4, 1, 1, &outCount);
+  v6 = protocol_copyMethodDescriptionList(protocolCopy, 1, 1, &outCount);
   v7 = v6;
   if (outCount)
   {
@@ -93,7 +93,7 @@
   }
 
   free(v7);
-  v12 = protocol_copyMethodDescriptionList(v4, 0, 1, &outCount);
+  v12 = protocol_copyMethodDescriptionList(protocolCopy, 0, 1, &outCount);
   v13 = v12;
   if (outCount)
   {
@@ -117,22 +117,22 @@
   self->_signatureLookup = v5;
 }
 
-- (GKAuthenticationWrapperService)initWithService:(id)a3 queue:(id)a4
+- (GKAuthenticationWrapperService)initWithService:(id)service queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 transport];
-  v10 = [v7 clientProxy];
-  v11 = [v7 localPlayer];
-  v12 = [v7 credential];
+  serviceCopy = service;
+  queueCopy = queue;
+  transport = [serviceCopy transport];
+  clientProxy = [serviceCopy clientProxy];
+  localPlayer = [serviceCopy localPlayer];
+  credential = [serviceCopy credential];
   v16.receiver = self;
   v16.super_class = GKAuthenticationWrapperService;
-  v13 = [(GKService *)&v16 initWithTransport:v9 forClient:v10 localPlayer:v11 credential:v12];
+  v13 = [(GKService *)&v16 initWithTransport:transport forClient:clientProxy localPlayer:localPlayer credential:credential];
 
   if (v13)
   {
-    objc_storeStrong(&v13->_service, a3);
-    objc_storeStrong(&v13->_authQueue, a4);
+    objc_storeStrong(&v13->_service, service);
+    objc_storeStrong(&v13->_authQueue, queue);
     v14 = [objc_msgSend(objc_opt_class() "interfaceClass")];
     [(GKAuthenticationWrapperService *)v13 _buildSignatureLookupForProtocol:v14];
   }
@@ -140,17 +140,17 @@
   return v13;
 }
 
-+ (id)authenticationWrapperForService:(id)a3
++ (id)authenticationWrapperForService:(id)service
 {
-  v3 = a3;
-  v4 = [v3 clientProxy];
+  serviceCopy = service;
+  clientProxy = [serviceCopy clientProxy];
 
-  if (v4)
+  if (clientProxy)
   {
     v5 = objc_alloc(objc_opt_class());
-    v6 = [v3 clientProxy];
-    v7 = [v6 authQueue];
-    v8 = [v5 initWithService:v3 queue:v7];
+    clientProxy2 = [serviceCopy clientProxy];
+    authQueue = [clientProxy2 authQueue];
+    v8 = [v5 initWithService:serviceCopy queue:authQueue];
   }
 
   else
@@ -161,56 +161,56 @@
   return v8;
 }
 
-+ (id)serviceForClient:(id)a3 player:(id)a4
++ (id)serviceForClient:(id)client player:(id)player
 {
-  v4 = [NSString stringWithFormat:@"serviceForClient: is not a valid factory for GKAuthenticationWrapperService, use authenticationWrapperForService:queue: instead.", a4];
+  player = [NSString stringWithFormat:@"serviceForClient: is not a valid factory for GKAuthenticationWrapperService, use authenticationWrapperForService:queue: instead.", player];
   v5 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKAuthenticationWrapperService.m"];
-  v6 = [v5 lastPathComponent];
-  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (NO)\n[%s (%s:%d)]", v4, "+[GKAuthenticationWrapperService serviceForClient:player:]", [v6 UTF8String], 85);
+  lastPathComponent = [v5 lastPathComponent];
+  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (NO)\n[%s (%s:%d)]", player, "+[GKAuthenticationWrapperService serviceForClient:player:]", [lastPathComponent UTF8String], 85);
 
   [NSException raise:@"GameKit Exception" format:@"%@", v7];
   return 0;
 }
 
-+ (id)serviceForBundleID:(id)a3 player:(id)a4
++ (id)serviceForBundleID:(id)d player:(id)player
 {
-  v4 = [NSString stringWithFormat:@"serviceForBundleID: is not a valid factory for GKAuthenticationWrapperService, use authenticationWrapperForService:queue: instead.", a4];
+  player = [NSString stringWithFormat:@"serviceForBundleID: is not a valid factory for GKAuthenticationWrapperService, use authenticationWrapperForService:queue: instead.", player];
   v5 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKAuthenticationWrapperService.m"];
-  v6 = [v5 lastPathComponent];
-  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (NO)\n[%s (%s:%d)]", v4, "+[GKAuthenticationWrapperService serviceForBundleID:player:]", [v6 UTF8String], 91);
+  lastPathComponent = [v5 lastPathComponent];
+  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (NO)\n[%s (%s:%d)]", player, "+[GKAuthenticationWrapperService serviceForBundleID:player:]", [lastPathComponent UTF8String], 91);
 
   [NSException raise:@"GameKit Exception" format:@"%@", v7];
   return 0;
 }
 
-- (void)isAppDistributorThirdParty:(id)a3
+- (void)isAppDistributorThirdParty:(id)party
 {
-  v4 = a3;
-  v5 = [(GKService *)self clientProxy];
-  v6 = [v5 replyQueue];
+  partyCopy = party;
+  clientProxy = [(GKService *)self clientProxy];
+  replyQueue = [clientProxy replyQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1000F0674;
   v8[3] = &unk_100360EB0;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = partyCopy;
+  v7 = partyCopy;
+  dispatch_async(replyQueue, v8);
 }
 
-- (void)authenticatePlayerWithExistingCredentialsWithHandler:(id)a3
+- (void)authenticatePlayerWithExistingCredentialsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(GKAuthenticationWrapperService *)self assertProtocol];
-  v7 = [(GKService *)self->_service transport];
-  v5 = [(GKService *)self->_service clientProxy];
-  v6 = [(GKService *)GKAccountServicePrivate serviceWithTransport:v7 forClient:v5 localPlayer:0];
-  [(GKAuthenticationWrapperService *)self authenticateWithService:v6 username:0 password:0 handler:v4];
+  transport = [(GKService *)self->_service transport];
+  clientProxy = [(GKService *)self->_service clientProxy];
+  v6 = [(GKService *)GKAccountServicePrivate serviceWithTransport:transport forClient:clientProxy localPlayer:0];
+  [(GKAuthenticationWrapperService *)self authenticateWithService:v6 username:0 password:0 handler:handlerCopy];
 }
 
-- (void)generateIdentityVerificationSignatureWithCompletionHandler:(id)a3
+- (void)generateIdentityVerificationSignatureWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -230,14 +230,14 @@
   v9[2] = sub_1000F08AC;
   v9[3] = &unk_100361270;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(authQueue, v9);
 }
 
-- (void)fetchItemsForIdentityVerificationSignature:(id)a3
+- (void)fetchItemsForIdentityVerificationSignature:(id)signature
 {
-  v4 = a3;
+  signatureCopy = signature;
   if (!os_log_GKGeneral)
   {
     v5 = GKOSLoggers();
@@ -257,8 +257,8 @@
   v9[2] = sub_1000F0AE4;
   v9[3] = &unk_100361270;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = signatureCopy;
+  v8 = signatureCopy;
   dispatch_async(authQueue, v9);
 }
 
@@ -278,10 +278,10 @@
   [(GKService *)service didShowFullscreenSignIn];
 }
 
-- (void)signOutPlayerWithOptOut:(BOOL)a3 handler:(id)a4
+- (void)signOutPlayerWithOptOut:(BOOL)out handler:(id)handler
 {
-  v4 = a3;
-  v6 = a4;
+  outCopy = out;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v7 = GKOSLoggers();
@@ -291,7 +291,7 @@
   if (os_log_type_enabled(os_log_GKTrace, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v19 = v4;
+    v19 = outCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "wrapper signOutPlayerWithOptOut:%lu", buf, 0xCu);
   }
 
@@ -299,8 +299,8 @@
   {
     v9 = [NSString stringWithFormat:@"Wrapped service must conform to the GKAccountServicePrivate protocol!"];
     v10 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKAuthenticationWrapperService.m"];
-    v11 = [v10 lastPathComponent];
-    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ ([_service conformsToProtocol:@protocol(GKAccountService)])\n[%s (%s:%d)]", v9, "-[GKAuthenticationWrapperService signOutPlayerWithOptOut:handler:]", [v11 UTF8String], 159);
+    lastPathComponent = [v10 lastPathComponent];
+    v12 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ ([_service conformsToProtocol:@protocol(GKAccountService)])\n[%s (%s:%d)]", v9, "-[GKAuthenticationWrapperService signOutPlayerWithOptOut:handler:]", [lastPathComponent UTF8String], 159);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v12];
   }
@@ -310,17 +310,17 @@
   block[1] = 3221225472;
   block[2] = sub_1000F0EAC;
   block[3] = &unk_1003660D8;
-  v17 = v4;
+  v17 = outCopy;
   block[4] = self;
-  v16 = v6;
-  v14 = v6;
+  v16 = handlerCopy;
+  v14 = handlerCopy;
   dispatch_barrier_async(authQueue, block);
 }
 
-- (void)setupAccountForParameters:(id)a3 handler:(id)a4
+- (void)setupAccountForParameters:(id)parameters handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -339,18 +339,18 @@
   v12[1] = 3221225472;
   v12[2] = sub_1000F1310;
   v12[3] = &unk_100361CB8;
-  v13 = v7;
-  v11 = v7;
-  [(GKService *)service setupAccountForParameters:v6 handler:v12];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [(GKService *)service setupAccountForParameters:parametersCopy handler:v12];
 }
 
-- (void)authenticateWithService:(id)a3 username:(id)a4 password:(id)a5 altDSID:(id)a6 isGame:(BOOL)a7 usingFastPath:(BOOL)a8 displayAuthUI:(BOOL)a9 handler:(id)a10
+- (void)authenticateWithService:(id)service username:(id)username password:(id)password altDSID:(id)d isGame:(BOOL)game usingFastPath:(BOOL)path displayAuthUI:(BOOL)i handler:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a10;
+  serviceCopy = service;
+  usernameCopy = username;
+  passwordCopy = password;
+  dCopy = d;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v21 = GKOSLoggers();
@@ -363,15 +363,15 @@
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "wrapper authenticateWithService:", buf, 2u);
   }
 
-  v23 = v16;
-  v24 = [(GKService *)v23 credential];
+  v23 = serviceCopy;
+  credential = [(GKService *)v23 credential];
 
   v25 = v23;
-  if (v24)
+  if (credential)
   {
     v26 = [GKAccountServicePrivate alloc];
-    v27 = [(GKService *)self clientProxy];
-    v25 = [(GKService *)v26 initWithoutCredentialWithTransport:0 forClient:v27];
+    clientProxy = [(GKService *)self clientProxy];
+    v25 = [(GKService *)v26 initWithoutCredentialWithTransport:0 forClient:clientProxy];
   }
 
   Current = CFAbsoluteTimeGetCurrent();
@@ -381,230 +381,230 @@
   v35[2] = sub_1000F154C;
   v35[3] = &unk_100366628;
   v36 = v25;
-  v37 = v17;
-  v38 = v18;
-  v39 = v19;
-  v43 = a7;
-  v44 = a8;
-  v40 = self;
-  v41 = v20;
+  v37 = usernameCopy;
+  v38 = passwordCopy;
+  v39 = dCopy;
+  gameCopy = game;
+  pathCopy = path;
+  selfCopy = self;
+  v41 = handlerCopy;
   v42 = Current;
-  v30 = v20;
-  v31 = v19;
-  v32 = v18;
-  v33 = v17;
+  v30 = handlerCopy;
+  v31 = dCopy;
+  v32 = passwordCopy;
+  v33 = usernameCopy;
   v34 = v25;
   dispatch_barrier_async(authQueue, v35);
 }
 
-- (void)authenticatePlayerWithUsername:(id)a3 password:(id)a4 usingFastPath:(BOOL)a5 displayAuthUI:(BOOL)a6 handler:(id)a7
+- (void)authenticatePlayerWithUsername:(id)username password:(id)password usingFastPath:(BOOL)path displayAuthUI:(BOOL)i handler:(id)handler
 {
-  v8 = a5;
-  v12 = a7;
-  v13 = a4;
-  v15 = a3;
+  pathCopy = path;
+  handlerCopy = handler;
+  passwordCopy = password;
+  usernameCopy = username;
   [(GKAuthenticationWrapperService *)self assertPrivateProtocol];
-  LOBYTE(v14) = a6;
-  [(GKAuthenticationWrapperService *)self authenticateWithService:self->_service username:v15 password:v13 altDSID:0 isGame:1 usingFastPath:v8 displayAuthUI:v14 handler:v12];
+  LOBYTE(v14) = i;
+  [(GKAuthenticationWrapperService *)self authenticateWithService:self->_service username:usernameCopy password:passwordCopy altDSID:0 isGame:1 usingFastPath:pathCopy displayAuthUI:v14 handler:handlerCopy];
 }
 
-- (void)authenticatePlayerWithUsername:(id)a3 password:(id)a4 altDSID:(id)a5 isGame:(BOOL)a6 usingFastPath:(BOOL)a7 handler:(id)a8
+- (void)authenticatePlayerWithUsername:(id)username password:(id)password altDSID:(id)d isGame:(BOOL)game usingFastPath:(BOOL)path handler:(id)handler
 {
-  v8 = a7;
-  v9 = a6;
-  v14 = a8;
-  v15 = a5;
-  v16 = a4;
-  v18 = a3;
+  pathCopy = path;
+  gameCopy = game;
+  handlerCopy = handler;
+  dCopy = d;
+  passwordCopy = password;
+  usernameCopy = username;
   [(GKAuthenticationWrapperService *)self assertPrivateProtocol];
   LOBYTE(v17) = 0;
-  [(GKAuthenticationWrapperService *)self authenticateWithService:self->_service username:v18 password:v16 altDSID:v15 isGame:v9 usingFastPath:v8 displayAuthUI:v17 handler:v14];
+  [(GKAuthenticationWrapperService *)self authenticateWithService:self->_service username:usernameCopy password:passwordCopy altDSID:dCopy isGame:gameCopy usingFastPath:pathCopy displayAuthUI:v17 handler:handlerCopy];
 }
 
-- (void)authenticatePlayerWithUsername:(id)a3 password:(id)a4 handler:(id)a5
+- (void)authenticatePlayerWithUsername:(id)username password:(id)password handler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  passwordCopy = password;
+  usernameCopy = username;
   [(GKAuthenticationWrapperService *)self assertPrivateProtocol];
-  [(GKAuthenticationWrapperService *)self authenticateWithService:self->_service username:v10 password:v9 handler:v8];
+  [(GKAuthenticationWrapperService *)self authenticateWithService:self->_service username:usernameCopy password:passwordCopy handler:handlerCopy];
 }
 
-- (void)validateAccountWithUsername:(id)a3 password:(id)a4 handler:(id)a5
+- (void)validateAccountWithUsername:(id)username password:(id)password handler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  passwordCopy = password;
+  usernameCopy = username;
   [(GKAuthenticationWrapperService *)self assertPrivateProtocol];
   service = self->_service;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1000F2048;
   v13[3] = &unk_100361C68;
-  v14 = v8;
-  v12 = v8;
-  [(GKService *)service validateAccountWithUsername:v10 password:v9 handler:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [(GKService *)service validateAccountWithUsername:usernameCopy password:passwordCopy handler:v13];
 }
 
-- (void)getAccountAuthTokenWithHandler:(id)a3
+- (void)getAccountAuthTokenWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(GKAuthenticationWrapperService *)self assertPrivateProtocol];
-  [(GKService *)self->_service getAccountAuthTokenWithHandler:v4];
+  [(GKService *)self->_service getAccountAuthTokenWithHandler:handlerCopy];
 }
 
-- (void)getDevicePushTokenWithHandler:(id)a3
+- (void)getDevicePushTokenWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(GKAuthenticationWrapperService *)self assertPrivateProtocol];
-  [(GKService *)self->_service getDevicePushTokenWithHandler:v4];
+  [(GKService *)self->_service getDevicePushTokenWithHandler:handlerCopy];
 }
 
-- (void)isICloudAvailableWithHandler:(id)a3
+- (void)isICloudAvailableWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(GKAuthenticationWrapperService *)self assertPrivateProtocol];
-  [(GKService *)self->_service isICloudAvailableWithHandler:v4];
+  [(GKService *)self->_service isICloudAvailableWithHandler:handlerCopy];
 }
 
-- (void)notifyClient:(id)a3 playerAuthenticatedFromClient:(id)a4
+- (void)notifyClient:(id)client playerAuthenticatedFromClient:(id)fromClient
 {
-  v6 = a4;
-  v7 = a3;
+  fromClientCopy = fromClient;
+  clientCopy = client;
   [(GKAuthenticationWrapperService *)self assertPrivateProtocol];
-  [(GKService *)self->_service notifyClient:v7 playerAuthenticatedFromClient:v6];
+  [(GKService *)self->_service notifyClient:clientCopy playerAuthenticatedFromClient:fromClientCopy];
 }
 
-- (void)resetCredentialsWithHandler:(id)a3
+- (void)resetCredentialsWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(GKAuthenticationWrapperService *)self assertProtocol];
   v5 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
-  [v5 signOutPlayerWithOptOut:0 handler:v4];
+  [v5 signOutPlayerWithOptOut:0 handler:handlerCopy];
 }
 
-- (void)setLastWelcomeWhatsNewCopyVersionDisplayedForSignedInPlayer:(unint64_t)a3
-{
-  [(GKAuthenticationWrapperService *)self assertProtocol];
-  v5 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
-  [v5 setLastWelcomeWhatsNewCopyVersionDisplayedForSignedInPlayer:a3];
-}
-
-- (void)getLastWelcomeWhatsNewCopyVersionDisplayedForSignedInPlayerWithHandler:(id)a3
-{
-  v4 = a3;
-  [(GKAuthenticationWrapperService *)self assertProtocol];
-  v5 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
-  [v5 getLastWelcomeWhatsNewCopyVersionDisplayedForSignedInPlayerWithHandler:v4];
-}
-
-- (void)setLastPrivacyNoticeVersionDisplayedForSignedInPlayer:(unint64_t)a3
+- (void)setLastWelcomeWhatsNewCopyVersionDisplayedForSignedInPlayer:(unint64_t)player
 {
   [(GKAuthenticationWrapperService *)self assertProtocol];
   v5 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
-  [v5 setLastPrivacyNoticeVersionDisplayedForSignedInPlayer:a3];
+  [v5 setLastWelcomeWhatsNewCopyVersionDisplayedForSignedInPlayer:player];
 }
 
-- (void)setLastGamesPrivacyNoticeVersionDisplayedForSignedInPlayer:(int64_t)a3
+- (void)getLastWelcomeWhatsNewCopyVersionDisplayedForSignedInPlayerWithHandler:(id)handler
 {
-  [(GKAuthenticationWrapperService *)self assertPrivateProtocol];
+  handlerCopy = handler;
+  [(GKAuthenticationWrapperService *)self assertProtocol];
   v5 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
-  [v5 setLastGamesPrivacyNoticeVersionDisplayedForSignedInPlayer:a3];
+  [v5 getLastWelcomeWhatsNewCopyVersionDisplayedForSignedInPlayerWithHandler:handlerCopy];
 }
 
-- (void)setLastGamesCrossUseConsentNoticeVersionDisplayedForSignedInPlayer:(int64_t)a3
+- (void)setLastPrivacyNoticeVersionDisplayedForSignedInPlayer:(unint64_t)player
+{
+  [(GKAuthenticationWrapperService *)self assertProtocol];
+  v5 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
+  [v5 setLastPrivacyNoticeVersionDisplayedForSignedInPlayer:player];
+}
+
+- (void)setLastGamesPrivacyNoticeVersionDisplayedForSignedInPlayer:(int64_t)player
 {
   [(GKAuthenticationWrapperService *)self assertPrivateProtocol];
   v5 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
-  [v5 setLastGamesCrossUseConsentNoticeVersionDisplayedForSignedInPlayer:a3];
+  [v5 setLastGamesPrivacyNoticeVersionDisplayedForSignedInPlayer:player];
 }
 
-- (void)getLastPrivacyNoticeVersionDisplayedForSignedInPlayerWithHandler:(id)a3
+- (void)setLastGamesCrossUseConsentNoticeVersionDisplayedForSignedInPlayer:(int64_t)player
 {
-  v4 = a3;
+  [(GKAuthenticationWrapperService *)self assertPrivateProtocol];
+  v5 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
+  [v5 setLastGamesCrossUseConsentNoticeVersionDisplayedForSignedInPlayer:player];
+}
+
+- (void)getLastPrivacyNoticeVersionDisplayedForSignedInPlayerWithHandler:(id)handler
+{
+  handlerCopy = handler;
   [(GKAuthenticationWrapperService *)self assertProtocol];
   v5 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
-  [v5 getLastPrivacyNoticeVersionDisplayedForSignedInPlayerWithHandler:v4];
+  [v5 getLastPrivacyNoticeVersionDisplayedForSignedInPlayerWithHandler:handlerCopy];
 }
 
-- (void)setLastPersonalizationVersionDisplayedForSignedInPlayer:(id)a3
+- (void)setLastPersonalizationVersionDisplayedForSignedInPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   [(GKAuthenticationWrapperService *)self assertProtocol];
   v5 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
-  [v5 setLastPersonalizationVersionDisplayedForSignedInPlayer:v4];
+  [v5 setLastPersonalizationVersionDisplayedForSignedInPlayer:playerCopy];
 }
 
-- (void)getLastPersonalizationVersionDisplayedForSignedInPlayerWithHandler:(id)a3
+- (void)getLastPersonalizationVersionDisplayedForSignedInPlayerWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(GKAuthenticationWrapperService *)self assertProtocol];
   v5 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
-  [v5 getLastPersonalizationVersionDisplayedForSignedInPlayerWithHandler:v4];
+  [v5 getLastPersonalizationVersionDisplayedForSignedInPlayerWithHandler:handlerCopy];
 }
 
-- (void)setLastFriendSuggestionsVersionDisplayedForSignedInPlayer:(id)a3
+- (void)setLastFriendSuggestionsVersionDisplayedForSignedInPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   [(GKAuthenticationWrapperService *)self assertProtocol];
   v5 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
-  [v5 setLastFriendSuggestionsVersionDisplayedForSignedInPlayer:v4];
+  [v5 setLastFriendSuggestionsVersionDisplayedForSignedInPlayer:playerCopy];
 }
 
-- (void)getLastFriendSuggestionsVersionDisplayedForSignedInPlayerWithHandler:(id)a3
+- (void)getLastFriendSuggestionsVersionDisplayedForSignedInPlayerWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(GKAuthenticationWrapperService *)self assertProtocol];
   v5 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
-  [v5 getLastFriendSuggestionsVersionDisplayedForSignedInPlayerWithHandler:v4];
+  [v5 getLastFriendSuggestionsVersionDisplayedForSignedInPlayerWithHandler:handlerCopy];
 }
 
-- (void)setLastProfilePrivacyVersionDisplayedForSignedInPlayer:(id)a3
+- (void)setLastProfilePrivacyVersionDisplayedForSignedInPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   [(GKAuthenticationWrapperService *)self assertProtocol];
   v5 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
-  [v5 setLastProfilePrivacyVersionDisplayedForSignedInPlayer:v4];
+  [v5 setLastProfilePrivacyVersionDisplayedForSignedInPlayer:playerCopy];
 }
 
-- (void)getLastProfilePrivacyVersionDisplayedForSignedInPlayerWithHandler:(id)a3
+- (void)getLastProfilePrivacyVersionDisplayedForSignedInPlayerWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(GKAuthenticationWrapperService *)self assertProtocol];
   v5 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
-  [v5 getLastProfilePrivacyVersionDisplayedForSignedInPlayerWithHandler:v4];
+  [v5 getLastProfilePrivacyVersionDisplayedForSignedInPlayerWithHandler:handlerCopy];
 }
 
-- (void)setLastContactsIntegrationConsentVersionDisplayedForSignedInPlayer:(id)a3
+- (void)setLastContactsIntegrationConsentVersionDisplayedForSignedInPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   [(GKAuthenticationWrapperService *)self assertProtocol];
   v5 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
-  [v5 setLastContactsIntegrationConsentVersionDisplayedForSignedInPlayer:v4];
+  [v5 setLastContactsIntegrationConsentVersionDisplayedForSignedInPlayer:playerCopy];
 }
 
-- (void)getLastContactsIntegrationConsentVersionDisplayedForSignedInPlayerWithHandler:(id)a3
+- (void)getLastContactsIntegrationConsentVersionDisplayedForSignedInPlayerWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(GKAuthenticationWrapperService *)self assertProtocol];
   v5 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
-  [v5 getLastContactsIntegrationConsentVersionDisplayedForSignedInPlayerWithHandler:v4];
+  [v5 getLastContactsIntegrationConsentVersionDisplayedForSignedInPlayerWithHandler:handlerCopy];
 }
 
-- (void)setCrossUseLinkedDSIDForSignedInPlayer:(int64_t)a3
+- (void)setCrossUseLinkedDSIDForSignedInPlayer:(int64_t)player
 {
   [(GKAuthenticationWrapperService *)self assertProtocol];
   v5 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
-  [v5 setCrossUseLinkedDSIDForSignedInPlayer:a3];
+  [v5 setCrossUseLinkedDSIDForSignedInPlayer:player];
 }
 
-- (void)getOnboardingInfoForPlayerID:(id)a3 withCompletion:(id)a4
+- (void)getOnboardingInfoForPlayerID:(id)d withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   [(GKAuthenticationWrapperService *)self assertPrivateProtocol];
   v8 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
-  [v8 getOnboardingInfoForPlayerID:v7 withCompletion:v6];
+  [v8 getOnboardingInfoForPlayerID:dCopy withCompletion:completionCopy];
 }
 
 - (void)notifyWidgetPlayerAuthenticationUpdated
@@ -614,46 +614,46 @@
   [v3 notifyWidgetPlayerAuthenticationUpdated];
 }
 
-- (void)localPlayerAgeCategoryWithCompletion:(id)a3
+- (void)localPlayerAgeCategoryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(GKAuthenticationWrapperService *)self assertPrivateProtocol];
   v5 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
-  [v5 localPlayerAgeCategoryWithCompletion:v4];
+  [v5 localPlayerAgeCategoryWithCompletion:completionCopy];
 }
 
-- (void)getAccountAgeCategoryForPlayerID:(id)a3 withCompletion:(id)a4
+- (void)getAccountAgeCategoryForPlayerID:(id)d withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  dCopy = d;
   [(GKAuthenticationWrapperService *)self assertPrivateProtocol];
   v8 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
-  [v8 getAccountAgeCategoryForPlayerID:v7 withCompletion:v6];
+  [v8 getAccountAgeCategoryForPlayerID:dCopy withCompletion:completionCopy];
 }
 
-- (void)checkActivitySharingRepromptWithCompletion:(id)a3
+- (void)checkActivitySharingRepromptWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(GKAuthenticationWrapperService *)self assertProtocol];
   v5 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
-  [v5 checkActivitySharingRepromptWithCompletion:v4];
+  [v5 checkActivitySharingRepromptWithCompletion:completionCopy];
 }
 
-- (void)setActivitySharingRepromptLastTriggerDate:(id)a3
+- (void)setActivitySharingRepromptLastTriggerDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   [(GKAuthenticationWrapperService *)self assertProtocol];
   v5 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
-  [v5 setActivitySharingRepromptLastTriggerDate:v4];
+  [v5 setActivitySharingRepromptLastTriggerDate:dateCopy];
 }
 
-- (void)accountCreated:(id)a3 playerID:(id)a4 authenticationToken:(id)a5 alias:(id)a6 finished:(BOOL)a7 handler:(id)a8
+- (void)accountCreated:(id)created playerID:(id)d authenticationToken:(id)token alias:(id)alias finished:(BOOL)finished handler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
+  createdCopy = created;
+  dCopy = d;
+  tokenCopy = token;
+  aliasCopy = alias;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v19 = GKOSLoggers();
@@ -673,28 +673,28 @@
   block[2] = sub_1000F2D3C;
   block[3] = &unk_100366650;
   block[4] = self;
-  v28 = v14;
-  v29 = v15;
-  v30 = v16;
-  v33 = a7;
-  v31 = v17;
-  v32 = v18;
-  v22 = v18;
-  v23 = v17;
-  v24 = v16;
-  v25 = v15;
-  v26 = v14;
+  v28 = createdCopy;
+  v29 = dCopy;
+  v30 = tokenCopy;
+  finishedCopy = finished;
+  v31 = aliasCopy;
+  v32 = handlerCopy;
+  v22 = handlerCopy;
+  v23 = aliasCopy;
+  v24 = tokenCopy;
+  v25 = dCopy;
+  v26 = createdCopy;
   dispatch_barrier_async(authQueue, block);
 }
 
-- (void)accountCreated:(id)a3 playerID:(id)a4 authenticationToken:(id)a5 alias:(id)a6 altDSID:(id)a7 finished:(BOOL)a8 handler:(id)a9
+- (void)accountCreated:(id)created playerID:(id)d authenticationToken:(id)token alias:(id)alias altDSID:(id)iD finished:(BOOL)finished handler:(id)handler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
+  createdCopy = created;
+  dCopy = d;
+  tokenCopy = token;
+  aliasCopy = alias;
+  iDCopy = iD;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v21 = GKOSLoggers();
@@ -714,29 +714,29 @@
   v30[2] = sub_1000F334C;
   v30[3] = &unk_1003666A0;
   v30[4] = self;
-  v31 = v15;
-  v32 = v16;
-  v33 = v17;
-  v34 = v18;
-  v35 = v19;
-  v37 = a8;
-  v36 = v20;
-  v24 = v20;
-  v25 = v19;
-  v26 = v18;
-  v27 = v17;
-  v28 = v16;
-  v29 = v15;
+  v31 = createdCopy;
+  v32 = dCopy;
+  v33 = tokenCopy;
+  v34 = aliasCopy;
+  v35 = iDCopy;
+  finishedCopy = finished;
+  v36 = handlerCopy;
+  v24 = handlerCopy;
+  v25 = iDCopy;
+  v26 = aliasCopy;
+  v27 = tokenCopy;
+  v28 = dCopy;
+  v29 = createdCopy;
   dispatch_barrier_async(authQueue, v30);
 }
 
-- (void)accountEdited:(id)a3 alias:(id)a4 firstName:(id)a5 lastName:(id)a6 handler:(id)a7
+- (void)accountEdited:(id)edited alias:(id)alias firstName:(id)name lastName:(id)lastName handler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  editedCopy = edited;
+  aliasCopy = alias;
+  nameCopy = name;
+  lastNameCopy = lastName;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v17 = GKOSLoggers();
@@ -755,14 +755,14 @@
   v21[1] = 3221225472;
   v21[2] = sub_1000F3910;
   v21[3] = &unk_100360FA0;
-  v22 = v16;
-  v20 = v16;
-  [(GKService *)service accountEdited:v12 alias:v13 firstName:v14 lastName:v15 handler:v21];
+  v22 = handlerCopy;
+  v20 = handlerCopy;
+  [(GKService *)service accountEdited:editedCopy alias:aliasCopy firstName:nameCopy lastName:lastNameCopy handler:v21];
 }
 
-- (void)setLoginStatus:(unint64_t)a3 handler:(id)a4
+- (void)setLoginStatus:(unint64_t)status handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v7 = GKOSLoggers();
@@ -781,38 +781,38 @@
   v11[1] = 3221225472;
   v11[2] = sub_1000F3A44;
   v11[3] = &unk_100361CB8;
-  v12 = v6;
-  v10 = v6;
-  [(GKService *)service setLoginStatus:a3 handler:v11];
+  v12 = handlerCopy;
+  v10 = handlerCopy;
+  [(GKService *)service setLoginStatus:status handler:v11];
 }
 
-- (void)renewCredentialsForAccountWithUsername:(id)a3 ttl:(double)a4 withCompletion:(id)a5
+- (void)renewCredentialsForAccountWithUsername:(id)username ttl:(double)ttl withCompletion:(id)completion
 {
   service = self->_service;
-  v9 = a5;
-  v10 = a3;
+  completionCopy = completion;
+  usernameCopy = username;
   if (([(GKService *)service conformsToProtocol:&OBJC_PROTOCOL___GKAccountServicePrivate]& 1) == 0)
   {
     v11 = [NSString stringWithFormat:@"Wrapped service must conform to the GKAccountService protocol!"];
     v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKAuthenticationWrapperService.m"];
-    v13 = [v12 lastPathComponent];
-    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ ([_service conformsToProtocol:@protocol(GKAccountServicePrivate)])\n[%s (%s:%d)]", v11, "-[GKAuthenticationWrapperService renewCredentialsForAccountWithUsername:ttl:withCompletion:]", [v13 UTF8String], 639);
+    lastPathComponent = [v12 lastPathComponent];
+    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ ([_service conformsToProtocol:@protocol(GKAccountServicePrivate)])\n[%s (%s:%d)]", v11, "-[GKAuthenticationWrapperService renewCredentialsForAccountWithUsername:ttl:withCompletion:]", [lastPathComponent UTF8String], 639);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v14];
   }
 
   v15 = [(GKService *)GKAccountServicePrivate serviceFromService:self];
-  [v15 renewCredentialsForAccountWithUsername:v10 ttl:v9 withCompletion:a4];
+  [v15 renewCredentialsForAccountWithUsername:usernameCopy ttl:completionCopy withCompletion:ttl];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v12.receiver = self;
   v12.super_class = GKAuthenticationWrapperService;
   v5 = [(GKAuthenticationWrapperService *)&v12 methodSignatureForSelector:?];
   if (!v5)
   {
-    v6 = NSStringFromSelector(a3);
+    v6 = NSStringFromSelector(selector);
     v7 = [(NSDictionary *)self->_signatureLookup objectForKeyedSubscript:v6];
     if (!v7)
     {
@@ -831,25 +831,25 @@
   return v5;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
-  if (-[GKService requiresAuthenticationForSelector:](self->_service, "requiresAuthenticationForSelector:", [v4 selector]))
+  invocationCopy = invocation;
+  if (-[GKService requiresAuthenticationForSelector:](self->_service, "requiresAuthenticationForSelector:", [invocationCopy selector]))
   {
-    [v4 retainArguments];
+    [invocationCopy retainArguments];
     authQueue = self->_authQueue;
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1000F3DE8;
     v6[3] = &unk_1003610B8;
     v6[4] = self;
-    v7 = v4;
+    v7 = invocationCopy;
     dispatch_async(authQueue, v6);
   }
 
   else
   {
-    [v4 invokeWithTarget:self->_service];
+    [invocationCopy invokeWithTarget:self->_service];
   }
 }
 
@@ -859,8 +859,8 @@
   {
     v2 = [NSString stringWithFormat:@"Wrapped service must conform to the GKAccountService protocol!"];
     v3 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKAuthenticationWrapperService.m"];
-    v4 = [v3 lastPathComponent];
-    v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ ([_service conformsToProtocol:@protocol(GKAccountService)])\n[%s (%s:%d)]", v2, "-[GKAuthenticationWrapperService assertProtocol]", [v4 UTF8String], 689);
+    lastPathComponent = [v3 lastPathComponent];
+    v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ ([_service conformsToProtocol:@protocol(GKAccountService)])\n[%s (%s:%d)]", v2, "-[GKAuthenticationWrapperService assertProtocol]", [lastPathComponent UTF8String], 689);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v5];
   }
@@ -872,8 +872,8 @@
   {
     v2 = [NSString stringWithFormat:@"Wrapped service must conform to the GKAccountServicePrivate protocol!"];
     v3 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKAuthenticationWrapperService.m"];
-    v4 = [v3 lastPathComponent];
-    v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ ([_service conformsToProtocol:@protocol(GKAccountServicePrivate)])\n[%s (%s:%d)]", v2, "-[GKAuthenticationWrapperService assertPrivateProtocol]", [v4 UTF8String], 693);
+    lastPathComponent = [v3 lastPathComponent];
+    v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ ([_service conformsToProtocol:@protocol(GKAccountServicePrivate)])\n[%s (%s:%d)]", v2, "-[GKAuthenticationWrapperService assertPrivateProtocol]", [lastPathComponent UTF8String], 693);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v5];
   }

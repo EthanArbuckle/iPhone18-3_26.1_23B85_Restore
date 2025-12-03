@@ -1,37 +1,37 @@
 @interface HomeOutlineSectionController
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
 - (BOOL)expanded;
-- (BOOL)isDestinationOfDropCoordinator:(id)a3;
-- (BOOL)isSourceOfDropCoordinator:(id)a3;
-- (HomeOutlineSectionController)initWithConfiguration:(id)a3;
+- (BOOL)isDestinationOfDropCoordinator:(id)coordinator;
+- (BOOL)isSourceOfDropCoordinator:(id)coordinator;
+- (HomeOutlineSectionController)initWithConfiguration:(id)configuration;
 - (HomeOutlineSectionControllerDelegate)delegate;
 - (MapsUIDiffableDataSourceIdentifierCache)identifierCache;
 - (MapsUIDiffableDataSourceOutlineNodeSnapshot)sectionSnapshot;
 - (MapsUIDiffableDataSourceViewModel)sectionHeaderViewModel;
 - (NSSet)selectedIdentifierPaths;
-- (id)_sectionSnapshotByProcessingDeletionsInSectionSnapshot:(id)a3;
-- (id)_snapshotByFilteringDeletionsFromSnapshot:(id)a3;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
-- (id)deletionWithSnapshot:(id)a3;
-- (id)mapItemForDropSession:(id)a3;
+- (id)_sectionSnapshotByProcessingDeletionsInSectionSnapshot:(id)snapshot;
+- (id)_snapshotByFilteringDeletionsFromSnapshot:(id)snapshot;
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point;
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
+- (id)deletionWithSnapshot:(id)snapshot;
+- (id)mapItemForDropSession:(id)session;
 - (void)_loadExpandedIdentifierPaths;
-- (void)_removeDeletions:(id)a3 applySnapshot:(BOOL)a4;
-- (void)_scrubDeletionsWithSectionSnapshot:(id)a3;
+- (void)_removeDeletions:(id)deletions applySnapshot:(BOOL)snapshot;
+- (void)_scrubDeletionsWithSectionSnapshot:(id)snapshot;
 - (void)_storeExpandedIdentifierPaths;
 - (void)_updateDragAndDropPreview;
-- (void)beginDeletions:(id)a3;
-- (void)clearSelectionWithReason:(id)a3;
-- (void)collapseElementAtIdentifierPath:(id)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5;
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4;
-- (void)endFailedDeletions:(id)a3 error:(id)a4;
-- (void)expandElementAtIdentifierPath:(id)a3;
-- (void)homeDataProvidingObjectDidUpdate:(id)a3;
+- (void)beginDeletions:(id)deletions;
+- (void)clearSelectionWithReason:(id)reason;
+- (void)collapseElementAtIdentifierPath:(id)path;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end;
+- (void)endFailedDeletions:(id)deletions error:(id)error;
+- (void)expandElementAtIdentifierPath:(id)path;
+- (void)homeDataProvidingObjectDidUpdate:(id)update;
 - (void)invalidateSectionSnapshot;
-- (void)setActive:(BOOL)a3;
-- (void)toggleElementAtIdentifierPath:(id)a3;
+- (void)setActive:(BOOL)active;
+- (void)toggleElementAtIdentifierPath:(id)path;
 @end
 
 @implementation HomeOutlineSectionController
@@ -43,7 +43,7 @@
   return v2;
 }
 
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end
 {
   dragItem = self->_dragItem;
   self->_dragItem = 0;
@@ -53,17 +53,17 @@
   self->_dragAndDropPreview = 0;
 }
 
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(HomeOutlineSectionController *)self delegate];
-  v10 = [v9 sectionController:self nodeSnapshotAtIndexPath:v8];
+  viewCopy = view;
+  pathCopy = path;
+  delegate = [(HomeOutlineSectionController *)self delegate];
+  v10 = [delegate sectionController:self nodeSnapshotAtIndexPath:pathCopy];
 
-  v11 = [v10 viewModel];
-  if ([v11 conformsToProtocol:&OBJC_PROTOCOL___HomeCellModel])
+  viewModel = [v10 viewModel];
+  if ([viewModel conformsToProtocol:&OBJC_PROTOCOL___HomeCellModel])
   {
-    v12 = v11;
+    v12 = viewModel;
   }
 
   else
@@ -76,14 +76,14 @@
   if (v13 && ([v13 homeDragAndDropObject], (v14 = objc_claimAutoreleasedReturnValue()) != 0) && (v15 = v14, +[DragAndDropMapItem dragAndDropItemWithObject:](DragAndDropMapItem, "dragAndDropItemWithObject:", v14), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "setObserver:", self), v15, v16))
   {
     v17 = [DragAndDropPreview alloc];
-    v18 = [v7 traitCollection];
-    v19 = [(DragAndDropPreview *)v17 initWithDragAndDropMapItem:v16 traitCollection:v18];
+    traitCollection = [viewCopy traitCollection];
+    v19 = [(DragAndDropPreview *)v17 initWithDragAndDropMapItem:v16 traitCollection:traitCollection];
     dragAndDropPreview = self->_dragAndDropPreview;
     self->_dragAndDropPreview = v19;
 
     [(DragAndDropPreview *)self->_dragAndDropPreview setContentUpdateDelegate:self];
-    v21 = [v16 itemProvider];
-    v22 = [[UIDragItem alloc] initWithItemProvider:v21];
+    itemProvider = [v16 itemProvider];
+    v22 = [[UIDragItem alloc] initWithItemProvider:itemProvider];
     dragItem = self->_dragItem;
     self->_dragItem = v22;
 
@@ -102,15 +102,15 @@
   return v25;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemsAtIndexPaths:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemsAtIndexPaths:(id)paths point:(CGPoint)point
 {
-  v7 = a3;
-  v8 = a4;
-  if ([v8 count] == 1)
+  viewCopy = view;
+  pathsCopy = paths;
+  if ([pathsCopy count] == 1)
   {
-    v9 = [v8 firstObject];
-    v10 = [(HomeOutlineSectionController *)self delegate];
-    v11 = [v10 sectionController:self nodeSnapshotAtIndexPath:v9];
+    firstObject = [pathsCopy firstObject];
+    delegate = [(HomeOutlineSectionController *)self delegate];
+    v11 = [delegate sectionController:self nodeSnapshotAtIndexPath:firstObject];
 
     objc_initWeak(&location, self);
     v17[0] = _NSConcreteStackBlock;
@@ -121,8 +121,8 @@
     v12 = v11;
     v18 = v12;
     v13 = objc_retainBlock(v17);
-    v14 = [v12 identifierPath];
-    v15 = [UIContextMenuConfiguration configurationWithIdentifier:v14 previewProvider:0 actionProvider:v13];
+    identifierPath = [v12 identifierPath];
+    v15 = [UIContextMenuConfiguration configurationWithIdentifier:identifierPath previewProvider:0 actionProvider:v13];
 
     objc_destroyWeak(&v19);
     objc_destroyWeak(&location);
@@ -136,55 +136,55 @@
   return v15;
 }
 
-- (void)collectionView:(id)a3 didUpdateFocusInContext:(id)a4 withAnimationCoordinator:(id)a5
+- (void)collectionView:(id)view didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v15 = [a4 nextFocusedIndexPath];
+  nextFocusedIndexPath = [context nextFocusedIndexPath];
   focusedIdentifierPath = self->_focusedIdentifierPath;
   self->_focusedIdentifierPath = 0;
 
-  v7 = v15;
-  if (v15)
+  v7 = nextFocusedIndexPath;
+  if (nextFocusedIndexPath)
   {
-    v8 = [(HomeOutlineSectionController *)self delegate];
-    v9 = [v8 sectionController:self nodeSnapshotAtIndexPath:v15];
+    delegate = [(HomeOutlineSectionController *)self delegate];
+    v9 = [delegate sectionController:self nodeSnapshotAtIndexPath:nextFocusedIndexPath];
 
-    v10 = [v9 identifierPath];
-    v11 = [(HomeOutlineSectionController *)self sectionIdentifierPath];
-    v12 = [v10 hasPrefix:v11];
+    identifierPath = [v9 identifierPath];
+    sectionIdentifierPath = [(HomeOutlineSectionController *)self sectionIdentifierPath];
+    v12 = [identifierPath hasPrefix:sectionIdentifierPath];
 
     if (v12)
     {
-      v13 = [v9 identifierPath];
+      identifierPath2 = [v9 identifierPath];
       v14 = self->_focusedIdentifierPath;
-      self->_focusedIdentifierPath = v13;
+      self->_focusedIdentifierPath = identifierPath2;
     }
 
-    v7 = v15;
+    v7 = nextFocusedIndexPath;
   }
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v19 = a3;
-  v6 = a4;
+  viewCopy = view;
+  pathCopy = path;
   [GEOAPPortal captureUserAction:2007 target:8 value:0];
-  v7 = [(HomeOutlineSectionController *)self delegate];
-  v8 = [v7 sectionController:self nodeSnapshotAtIndexPath:v6];
+  delegate = [(HomeOutlineSectionController *)self delegate];
+  v8 = [delegate sectionController:self nodeSnapshotAtIndexPath:pathCopy];
 
-  v9 = [v8 viewModel];
-  v10 = [v9 conformsToProtocol:&OBJC_PROTOCOL___HomeCellModel];
+  viewModel = [v8 viewModel];
+  v10 = [viewModel conformsToProtocol:&OBJC_PROTOCOL___HomeCellModel];
 
   if (v10)
   {
-    v11 = [v8 viewModel];
-    v12 = [v11 homeActionObject];
+    viewModel2 = [v8 viewModel];
+    homeActionObject = [viewModel2 homeActionObject];
 
-    if (v12)
+    if (homeActionObject)
     {
-      v13 = [(HomeOutlineSectionController *)self configuration];
-      v14 = [v13 homeActionDelegate];
-      v15 = [v11 homeActionObject];
-      [v14 homeItemTapped:v15];
+      configuration = [(HomeOutlineSectionController *)self configuration];
+      homeActionDelegate = [configuration homeActionDelegate];
+      homeActionObject2 = [viewModel2 homeActionObject];
+      [homeActionDelegate homeItemTapped:homeActionObject2];
     }
   }
 
@@ -194,11 +194,11 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [v17 BOOLValue];
+    bOOLValue = [v17 BOOLValue];
 
-    if ((v18 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
-      [v19 deselectItemAtIndexPath:v6 animated:1];
+      [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
     }
   }
 
@@ -207,22 +207,22 @@
   }
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(HomeOutlineSectionController *)self delegate];
-  v7 = [v6 sectionController:self nodeSnapshotAtIndexPath:v5];
+  pathCopy = path;
+  delegate = [(HomeOutlineSectionController *)self delegate];
+  v7 = [delegate sectionController:self nodeSnapshotAtIndexPath:pathCopy];
 
-  v8 = [v7 viewModel];
-  LODWORD(v6) = [v8 conformsToProtocol:&OBJC_PROTOCOL___HomeCellModel];
+  viewModel = [v7 viewModel];
+  LODWORD(delegate) = [viewModel conformsToProtocol:&OBJC_PROTOCOL___HomeCellModel];
 
   v11 = 0;
-  if (v6)
+  if (delegate)
   {
-    v9 = [v7 viewModel];
-    v10 = [v9 homeActionObject];
+    viewModel2 = [v7 viewModel];
+    homeActionObject = [viewModel2 homeActionObject];
 
-    if (v10)
+    if (homeActionObject)
     {
       v11 = 1;
     }
@@ -231,21 +231,21 @@
   return v11;
 }
 
-- (id)mapItemForDropSession:(id)a3
+- (id)mapItemForDropSession:(id)session
 {
-  v3 = a3;
-  v4 = [v3 items];
-  v5 = [v4 count];
+  sessionCopy = session;
+  items = [sessionCopy items];
+  v5 = [items count];
 
   if (v5 == 1)
   {
-    v6 = [v3 items];
-    v7 = [v6 firstObject];
+    items2 = [sessionCopy items];
+    firstObject = [items2 firstObject];
 
-    v8 = [v7 localObject];
-    if ([v8 conformsToProtocol:&OBJC_PROTOCOL___MapsDragMapItemProviding])
+    localObject = [firstObject localObject];
+    if ([localObject conformsToProtocol:&OBJC_PROTOCOL___MapsDragMapItemProviding])
     {
-      v9 = v8;
+      v9 = localObject;
     }
 
     else
@@ -255,38 +255,38 @@
 
     v10 = v9;
 
-    v11 = [v10 draggedMapItem];
+    draggedMapItem = [v10 draggedMapItem];
   }
 
   else
   {
-    v11 = 0;
+    draggedMapItem = 0;
   }
 
-  return v11;
+  return draggedMapItem;
 }
 
-- (BOOL)isDestinationOfDropCoordinator:(id)a3
+- (BOOL)isDestinationOfDropCoordinator:(id)coordinator
 {
-  v4 = [a3 destinationIndexPath];
-  v5 = [(HomeOutlineSectionController *)self delegate];
-  v6 = [v5 sectionController:self nodeSnapshotAtIndexPath:v4];
-  v7 = [v6 identifierPath];
+  destinationIndexPath = [coordinator destinationIndexPath];
+  delegate = [(HomeOutlineSectionController *)self delegate];
+  v6 = [delegate sectionController:self nodeSnapshotAtIndexPath:destinationIndexPath];
+  identifierPath = [v6 identifierPath];
 
-  v8 = [(HomeOutlineSectionController *)self sectionIdentifierPath];
-  LOBYTE(v5) = [v7 hasPrefix:v8];
+  sectionIdentifierPath = [(HomeOutlineSectionController *)self sectionIdentifierPath];
+  LOBYTE(delegate) = [identifierPath hasPrefix:sectionIdentifierPath];
 
-  return v5;
+  return delegate;
 }
 
-- (BOOL)isSourceOfDropCoordinator:(id)a3
+- (BOOL)isSourceOfDropCoordinator:(id)coordinator
 {
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [a3 items];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  items = [coordinator items];
+  v5 = [items countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = v5;
@@ -297,16 +297,16 @@
       {
         if (*v17 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(items);
         }
 
-        v9 = [*(*(&v16 + 1) + 8 * i) sourceIndexPath];
-        v10 = [(HomeOutlineSectionController *)self delegate];
-        v11 = [v10 sectionController:self nodeSnapshotAtIndexPath:v9];
-        v12 = [v11 identifierPath];
+        sourceIndexPath = [*(*(&v16 + 1) + 8 * i) sourceIndexPath];
+        delegate = [(HomeOutlineSectionController *)self delegate];
+        v11 = [delegate sectionController:self nodeSnapshotAtIndexPath:sourceIndexPath];
+        identifierPath = [v11 identifierPath];
 
-        v13 = [(HomeOutlineSectionController *)self sectionIdentifierPath];
-        LOBYTE(v11) = [v12 hasPrefix:v13];
+        sectionIdentifierPath = [(HomeOutlineSectionController *)self sectionIdentifierPath];
+        LOBYTE(v11) = [identifierPath hasPrefix:sectionIdentifierPath];
 
         if (v11)
         {
@@ -315,7 +315,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v6 = [items countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v6)
       {
         continue;
@@ -336,8 +336,8 @@ LABEL_11:
   dragAndDropPreview = self->_dragAndDropPreview;
   if (dragAndDropPreview)
   {
-    v4 = [(DragAndDropPreview *)dragAndDropPreview renderPreviewImage];
-    [v4 dragPreview];
+    renderPreviewImage = [(DragAndDropPreview *)dragAndDropPreview renderPreviewImage];
+    [renderPreviewImage dragPreview];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_1006A8DAC;
@@ -348,28 +348,28 @@ LABEL_11:
   }
 }
 
-- (void)clearSelectionWithReason:(id)a3
+- (void)clearSelectionWithReason:(id)reason
 {
-  v8 = a3;
-  v4 = [(HomeOutlineSectionController *)self selectedIdentifierPaths];
-  v5 = [v4 anyObject];
+  reasonCopy = reason;
+  selectedIdentifierPaths = [(HomeOutlineSectionController *)self selectedIdentifierPaths];
+  anyObject = [selectedIdentifierPaths anyObject];
 
-  if (v5 && [(HomeOutlineSectionController *)self shouldClearSelectionWithReason:v8])
+  if (anyObject && [(HomeOutlineSectionController *)self shouldClearSelectionWithReason:reasonCopy])
   {
-    v6 = [(HomeOutlineSectionController *)self delegate];
-    [v6 sectionController:self deselectItemAtIdentifierPath:v5];
+    delegate = [(HomeOutlineSectionController *)self delegate];
+    [delegate sectionController:self deselectItemAtIdentifierPath:anyObject];
 
-    v7 = [(HomeOutlineSectionController *)self delegate];
-    [v7 sectionController:self setNeedsApplySnapshotAnimated:1];
+    delegate2 = [(HomeOutlineSectionController *)self delegate];
+    [delegate2 sectionController:self setNeedsApplySnapshotAnimated:1];
   }
 }
 
-- (id)_snapshotByFilteringDeletionsFromSnapshot:(id)a3
+- (id)_snapshotByFilteringDeletionsFromSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   deletions = self->_deletions;
-  v6 = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)v4 identifierPath];
-  v7 = [(NSMutableDictionary *)deletions objectForKeyedSubscript:v6];
+  identifierPath = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)snapshotCopy identifierPath];
+  v7 = [(NSMutableDictionary *)deletions objectForKeyedSubscript:identifierPath];
 
   if (v7)
   {
@@ -378,8 +378,8 @@ LABEL_11:
 
   else
   {
-    v9 = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)v4 childSnapshots];
-    v10 = [v9 count];
+    childSnapshots = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)snapshotCopy childSnapshots];
+    v10 = [childSnapshots count];
 
     if (v10)
     {
@@ -387,38 +387,38 @@ LABEL_11:
       v20 = &v19;
       v21 = 0x2020000000;
       v22 = 0;
-      v11 = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)v4 childSnapshots];
+      childSnapshots2 = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)snapshotCopy childSnapshots];
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_1006A9078;
       v18[3] = &unk_101626168;
       v18[4] = self;
       v18[5] = &v19;
-      v12 = sub_100021DB0(v11, v18);
+      v12 = sub_100021DB0(childSnapshots2, v18);
 
       if (*(v20 + 24) == 1)
       {
         v13 = [MapsUIDiffableDataSourceOutlineNodeSnapshot alloc];
-        v14 = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)v4 identifierPath];
-        v15 = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)v4 viewModel];
-        v16 = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)v13 initWithIdentifierPath:v14 viewModel:v15 childSnapshots:v12 expanded:[(MapsUIDiffableDataSourceOutlineNodeSnapshot *)v4 expanded]];
+        identifierPath2 = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)snapshotCopy identifierPath];
+        viewModel = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)snapshotCopy viewModel];
+        v16 = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)v13 initWithIdentifierPath:identifierPath2 viewModel:viewModel childSnapshots:v12 expanded:[(MapsUIDiffableDataSourceOutlineNodeSnapshot *)snapshotCopy expanded]];
 
-        v4 = v16;
+        snapshotCopy = v16;
       }
 
       _Block_object_dispose(&v19, 8);
     }
 
-    v4 = v4;
-    v8 = v4;
+    snapshotCopy = snapshotCopy;
+    v8 = snapshotCopy;
   }
 
   return v8;
 }
 
-- (void)_scrubDeletionsWithSectionSnapshot:(id)a3
+- (void)_scrubDeletionsWithSectionSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   v5 = +[NSMutableArray array];
   v15 = 0u;
   v16 = 0u;
@@ -441,8 +441,8 @@ LABEL_11:
 
         v11 = *(*(&v15 + 1) + 8 * i);
         v12 = [(NSMutableDictionary *)self->_deletions objectForKeyedSubscript:v11];
-        v13 = [v11 identifierPathByRemovingFirstIdentifier];
-        v14 = [v4 nodeSnapshotAtIdentifierPath:v13];
+        identifierPathByRemovingFirstIdentifier = [v11 identifierPathByRemovingFirstIdentifier];
+        v14 = [snapshotCopy nodeSnapshotAtIdentifierPath:identifierPathByRemovingFirstIdentifier];
 
         if (!v14 && ([v12 completed] & 1) == 0)
         {
@@ -467,11 +467,11 @@ LABEL_11:
   }
 }
 
-- (id)_sectionSnapshotByProcessingDeletionsInSectionSnapshot:(id)a3
+- (id)_sectionSnapshotByProcessingDeletionsInSectionSnapshot:(id)snapshot
 {
-  v4 = a3;
-  [(HomeOutlineSectionController *)self _scrubDeletionsWithSectionSnapshot:v4];
-  v5 = [(HomeOutlineSectionController *)self _snapshotByFilteringDeletionsFromSnapshot:v4];
+  snapshotCopy = snapshot;
+  [(HomeOutlineSectionController *)self _scrubDeletionsWithSectionSnapshot:snapshotCopy];
+  v5 = [(HomeOutlineSectionController *)self _snapshotByFilteringDeletionsFromSnapshot:snapshotCopy];
   v6 = v5;
   if (v5)
   {
@@ -480,7 +480,7 @@ LABEL_11:
 
   else
   {
-    v7 = v4;
+    v7 = snapshotCopy;
   }
 
   v8 = v7;
@@ -488,29 +488,29 @@ LABEL_11:
   return v8;
 }
 
-- (id)deletionWithSnapshot:(id)a3
+- (id)deletionWithSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = [(HomeOutlineSectionController *)self delegate];
-  v6 = [v4 identifierPath];
-  v7 = [v5 sectionController:self indexPathForIdentifierPath:v6];
+  snapshotCopy = snapshot;
+  delegate = [(HomeOutlineSectionController *)self delegate];
+  identifierPath = [snapshotCopy identifierPath];
+  v7 = [delegate sectionController:self indexPathForIdentifierPath:identifierPath];
 
   v8 = [HomeDeletion alloc];
-  v9 = [v4 identifierPath];
-  v10 = [(HomeDeletion *)v8 initWithObject:v4 indexPath:v7 identifierPath:v9 contextualActionCompletionHandler:0];
+  identifierPath2 = [snapshotCopy identifierPath];
+  v10 = [(HomeDeletion *)v8 initWithObject:snapshotCopy indexPath:v7 identifierPath:identifierPath2 contextualActionCompletionHandler:0];
 
   return v10;
 }
 
-- (void)_removeDeletions:(id)a3 applySnapshot:(BOOL)a4
+- (void)_removeDeletions:(id)deletions applySnapshot:(BOOL)snapshot
 {
-  v20 = a4;
+  snapshotCopy = snapshot;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v21 objects:v27 count:16];
+  deletionsCopy = deletions;
+  v6 = [deletionsCopy countByEnumeratingWithState:&v21 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -521,7 +521,7 @@ LABEL_11:
       {
         if (*v22 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(deletionsCopy);
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
@@ -534,25 +534,25 @@ LABEL_11:
         }
 
         deletions = self->_deletions;
-        v13 = [v10 identifierPath];
-        v14 = [(NSMutableDictionary *)deletions objectForKeyedSubscript:v13];
+        identifierPath = [v10 identifierPath];
+        v14 = [(NSMutableDictionary *)deletions objectForKeyedSubscript:identifierPath];
 
         if (!v14)
         {
-          v19 = v5;
+          delegate = deletionsCopy;
           goto LABEL_14;
         }
 
         v15 = self->_deletions;
-        v16 = [v10 identifierPath];
-        [(NSMutableDictionary *)v15 setObject:0 forKeyedSubscript:v16];
+        identifierPath2 = [v10 identifierPath];
+        [(NSMutableDictionary *)v15 setObject:0 forKeyedSubscript:identifierPath2];
 
         expandedIdentifierPaths = self->_expandedIdentifierPaths;
-        v18 = [v10 identifierPath];
-        [(NSMutableSet *)expandedIdentifierPaths removeObject:v18];
+        identifierPath3 = [v10 identifierPath];
+        [(NSMutableSet *)expandedIdentifierPaths removeObject:identifierPath3];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v21 objects:v27 count:16];
+      v7 = [deletionsCopy countByEnumeratingWithState:&v21 objects:v27 count:16];
       if (v7)
       {
         continue;
@@ -562,23 +562,23 @@ LABEL_11:
     }
   }
 
-  if (v20)
+  if (snapshotCopy)
   {
-    v19 = [(HomeOutlineSectionController *)self delegate];
-    [v19 sectionController:self setNeedsApplySnapshotAnimated:1];
+    delegate = [(HomeOutlineSectionController *)self delegate];
+    [delegate sectionController:self setNeedsApplySnapshotAnimated:1];
 LABEL_14:
   }
 }
 
-- (void)endFailedDeletions:(id)a3 error:(id)a4
+- (void)endFailedDeletions:(id)deletions error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  deletionsCopy = deletions;
+  errorCopy = error;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v8 = [deletionsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = v8;
@@ -590,31 +590,31 @@ LABEL_14:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(deletionsCopy);
         }
 
-        [*(*(&v12 + 1) + 8 * v11) markAsCompletedWithSuccess:0 error:v7];
+        [*(*(&v12 + 1) + 8 * v11) markAsCompletedWithSuccess:0 error:errorCopy];
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v9 = [deletionsCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v9);
   }
 
-  [(HomeOutlineSectionController *)self _removeDeletions:v6 applySnapshot:1];
+  [(HomeOutlineSectionController *)self _removeDeletions:deletionsCopy applySnapshot:1];
 }
 
-- (void)beginDeletions:(id)a3
+- (void)beginDeletions:(id)deletions
 {
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v23 count:16];
+  deletionsCopy = deletions;
+  v5 = [deletionsCopy countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v5)
   {
     v6 = v5;
@@ -625,7 +625,7 @@ LABEL_14:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(deletionsCopy);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
@@ -638,21 +638,21 @@ LABEL_14:
         }
 
         deletions = self->_deletions;
-        v12 = [v9 identifierPath];
-        v13 = [(NSMutableDictionary *)deletions objectForKeyedSubscript:v12];
+        identifierPath = [v9 identifierPath];
+        v13 = [(NSMutableDictionary *)deletions objectForKeyedSubscript:identifierPath];
 
         if (v13)
         {
-          v16 = v4;
+          delegate = deletionsCopy;
           goto LABEL_13;
         }
 
         v14 = self->_deletions;
-        v15 = [v9 identifierPath];
-        [(NSMutableDictionary *)v14 setObject:v9 forKeyedSubscript:v15];
+        identifierPath2 = [v9 identifierPath];
+        [(NSMutableDictionary *)v14 setObject:v9 forKeyedSubscript:identifierPath2];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v23 count:16];
+      v6 = [deletionsCopy countByEnumeratingWithState:&v17 objects:v23 count:16];
       if (v6)
       {
         continue;
@@ -662,19 +662,19 @@ LABEL_14:
     }
   }
 
-  v16 = [(HomeOutlineSectionController *)self delegate];
-  [v16 sectionController:self setNeedsApplySnapshotAnimated:1];
+  delegate = [(HomeOutlineSectionController *)self delegate];
+  [delegate sectionController:self setNeedsApplySnapshotAnimated:1];
 LABEL_13:
 }
 
-- (void)homeDataProvidingObjectDidUpdate:(id)a3
+- (void)homeDataProvidingObjectDidUpdate:(id)update
 {
-  v5 = a3;
+  updateCopy = update;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  if (self->_active && [v5 active])
+  if (self->_active && [updateCopy active])
   {
-    v4 = [(HomeOutlineSectionController *)self delegate];
-    [v4 sectionController:self setNeedsApplySnapshotAnimated:1];
+    delegate = [(HomeOutlineSectionController *)self delegate];
+    [delegate sectionController:self setNeedsApplySnapshotAnimated:1];
   }
 }
 
@@ -695,63 +695,63 @@ LABEL_13:
 
 - (NSSet)selectedIdentifierPaths
 {
-  v3 = [(HomeOutlineSectionController *)self configuration];
-  v4 = [v3 collectionView];
-  v5 = [v4 indexPathsForSelectedItems];
+  configuration = [(HomeOutlineSectionController *)self configuration];
+  collectionView = [configuration collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1006A9AE0;
   v9[3] = &unk_101657A50;
   v9[4] = self;
-  v6 = sub_100021DB0(v5, v9);
+  v6 = sub_100021DB0(indexPathsForSelectedItems, v9);
   v7 = [NSSet setWithArray:v6];
 
   return v7;
 }
 
-- (void)toggleElementAtIdentifierPath:(id)a3
+- (void)toggleElementAtIdentifierPath:(id)path
 {
   expandedIdentifierPaths = self->_expandedIdentifierPaths;
-  v5 = a3;
+  pathCopy = path;
   if ([(NSMutableSet *)expandedIdentifierPaths containsObject:?])
   {
-    [(HomeOutlineSectionController *)self collapseElementAtIdentifierPath:v5];
+    [(HomeOutlineSectionController *)self collapseElementAtIdentifierPath:pathCopy];
   }
 
   else
   {
-    [(HomeOutlineSectionController *)self expandElementAtIdentifierPath:v5];
+    [(HomeOutlineSectionController *)self expandElementAtIdentifierPath:pathCopy];
   }
 }
 
-- (void)collapseElementAtIdentifierPath:(id)a3
+- (void)collapseElementAtIdentifierPath:(id)path
 {
-  v7 = a3;
-  v4 = [(HomeOutlineSectionController *)self sectionIdentifierPath];
-  v5 = [v7 hasPrefix:v4];
+  pathCopy = path;
+  sectionIdentifierPath = [(HomeOutlineSectionController *)self sectionIdentifierPath];
+  v5 = [pathCopy hasPrefix:sectionIdentifierPath];
 
-  if (v5 && [(NSMutableSet *)self->_expandedIdentifierPaths containsObject:v7])
+  if (v5 && [(NSMutableSet *)self->_expandedIdentifierPaths containsObject:pathCopy])
   {
-    [(NSMutableSet *)self->_expandedIdentifierPaths removeObject:v7];
-    v6 = [(HomeOutlineSectionController *)self delegate];
-    [v6 sectionController:self setNeedsApplySnapshotAnimated:1];
+    [(NSMutableSet *)self->_expandedIdentifierPaths removeObject:pathCopy];
+    delegate = [(HomeOutlineSectionController *)self delegate];
+    [delegate sectionController:self setNeedsApplySnapshotAnimated:1];
 
     [(HomeOutlineSectionController *)self _storeExpandedIdentifierPaths];
   }
 }
 
-- (void)expandElementAtIdentifierPath:(id)a3
+- (void)expandElementAtIdentifierPath:(id)path
 {
-  v7 = a3;
-  v4 = [(HomeOutlineSectionController *)self sectionIdentifierPath];
-  v5 = [v7 hasPrefix:v4];
+  pathCopy = path;
+  sectionIdentifierPath = [(HomeOutlineSectionController *)self sectionIdentifierPath];
+  v5 = [pathCopy hasPrefix:sectionIdentifierPath];
 
-  if (v5 && ([(NSMutableSet *)self->_expandedIdentifierPaths containsObject:v7]& 1) == 0)
+  if (v5 && ([(NSMutableSet *)self->_expandedIdentifierPaths containsObject:pathCopy]& 1) == 0)
   {
-    [(NSMutableSet *)self->_expandedIdentifierPaths addObject:v7];
-    v6 = [(HomeOutlineSectionController *)self delegate];
-    [v6 sectionController:self setNeedsApplySnapshotAnimated:1];
+    [(NSMutableSet *)self->_expandedIdentifierPaths addObject:pathCopy];
+    delegate = [(HomeOutlineSectionController *)self delegate];
+    [delegate sectionController:self setNeedsApplySnapshotAnimated:1];
 
     [(HomeOutlineSectionController *)self _storeExpandedIdentifierPaths];
   }
@@ -760,8 +760,8 @@ LABEL_13:
 - (BOOL)expanded
 {
   expandedIdentifierPaths = self->_expandedIdentifierPaths;
-  v3 = [(HomeOutlineSectionController *)self sectionIdentifierPath];
-  LOBYTE(expandedIdentifierPaths) = [(NSMutableSet *)expandedIdentifierPaths containsObject:v3];
+  sectionIdentifierPath = [(HomeOutlineSectionController *)self sectionIdentifierPath];
+  LOBYTE(expandedIdentifierPaths) = [(NSMutableSet *)expandedIdentifierPaths containsObject:sectionIdentifierPath];
 
   return expandedIdentifierPaths;
 }
@@ -777,11 +777,11 @@ LABEL_13:
     v9[3] = &unk_101626140;
     v9[4] = self;
     v4 = [(NSMutableSet *)expandedIdentifierPaths objectsPassingTest:v9];
-    v5 = [(HomeOutlineSectionController *)self configuration];
-    v6 = [v5 storage];
-    v7 = [(HomeOutlineSectionController *)self configuration];
-    v8 = [v7 sectionIdentifier];
-    [v6 storeExpandedIdentifierPaths:v4 forSection:v8];
+    configuration = [(HomeOutlineSectionController *)self configuration];
+    storage = [configuration storage];
+    configuration2 = [(HomeOutlineSectionController *)self configuration];
+    sectionIdentifier = [configuration2 sectionIdentifier];
+    [storage storeExpandedIdentifierPaths:v4 forSection:sectionIdentifier];
   }
 }
 
@@ -790,11 +790,11 @@ LABEL_13:
   v10 = [NSSet setWithObject:self->_sectionIdentifierPath];
   if ([(HomeOutlineSectionController *)self persistsExpansions])
   {
-    v3 = [(HomeOutlineSectionController *)self configuration];
-    v4 = [v3 storage];
-    v5 = [(HomeOutlineSectionController *)self configuration];
-    v6 = [v5 sectionIdentifier];
-    v7 = [v4 expandedIdentifierPathsInSection:v6 defaultExpandedIdentifierPaths:v10];
+    configuration = [(HomeOutlineSectionController *)self configuration];
+    storage = [configuration storage];
+    configuration2 = [(HomeOutlineSectionController *)self configuration];
+    sectionIdentifier = [configuration2 sectionIdentifier];
+    v7 = [storage expandedIdentifierPathsInSection:sectionIdentifier defaultExpandedIdentifierPaths:v10];
   }
 
   else
@@ -807,18 +807,18 @@ LABEL_13:
   self->_expandedIdentifierPaths = v8;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    v3 = a3;
-    self->_active = a3;
+    activeCopy = active;
+    self->_active = active;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v5 = [(HomeOutlineSectionController *)self dataProviders];
-    v6 = [v5 countByEnumeratingWithState:&v29 objects:v35 count:16];
+    dataProviders = [(HomeOutlineSectionController *)self dataProviders];
+    v6 = [dataProviders countByEnumeratingWithState:&v29 objects:v35 count:16];
     if (v6)
     {
       v7 = v6;
@@ -829,26 +829,26 @@ LABEL_13:
         {
           if (*v30 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(dataProviders);
           }
 
-          [*(*(&v29 + 1) + 8 * i) setActive:v3];
+          [*(*(&v29 + 1) + 8 * i) setActive:activeCopy];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v29 objects:v35 count:16];
+        v7 = [dataProviders countByEnumeratingWithState:&v29 objects:v35 count:16];
       }
 
       while (v7);
     }
 
-    if (v3)
+    if (activeCopy)
     {
       v27 = 0uLL;
       v28 = 0uLL;
       v25 = 0uLL;
       v26 = 0uLL;
-      v10 = [(HomeOutlineSectionController *)self dataProviders];
-      v11 = [v10 countByEnumeratingWithState:&v25 objects:v34 count:16];
+      dataProviders2 = [(HomeOutlineSectionController *)self dataProviders];
+      v11 = [dataProviders2 countByEnumeratingWithState:&v25 objects:v34 count:16];
       if (v11)
       {
         v12 = v11;
@@ -859,14 +859,14 @@ LABEL_13:
           {
             if (*v26 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(dataProviders2);
             }
 
-            v15 = [*(*(&v25 + 1) + 8 * j) observers];
-            [v15 registerObserver:self];
+            observers = [*(*(&v25 + 1) + 8 * j) observers];
+            [observers registerObserver:self];
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v25 objects:v34 count:16];
+          v12 = [dataProviders2 countByEnumeratingWithState:&v25 objects:v34 count:16];
         }
 
         while (v12);
@@ -879,8 +879,8 @@ LABEL_13:
       v24 = 0uLL;
       *(&v21 + 1) = 0;
       v22 = 0uLL;
-      v10 = [(HomeOutlineSectionController *)self dataProviders];
-      v16 = [v10 countByEnumeratingWithState:&v21 objects:v33 count:16];
+      dataProviders2 = [(HomeOutlineSectionController *)self dataProviders];
+      v16 = [dataProviders2 countByEnumeratingWithState:&v21 objects:v33 count:16];
       if (v16)
       {
         v17 = v16;
@@ -891,14 +891,14 @@ LABEL_13:
           {
             if (*v22 != v18)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(dataProviders2);
             }
 
-            v20 = [*(*(&v21 + 1) + 8 * k) observers];
-            [v20 unregisterObserver:self];
+            observers2 = [*(*(&v21 + 1) + 8 * k) observers];
+            [observers2 unregisterObserver:self];
           }
 
-          v17 = [v10 countByEnumeratingWithState:&v21 objects:v33 count:16];
+          v17 = [dataProviders2 countByEnumeratingWithState:&v21 objects:v33 count:16];
         }
 
         while (v17);
@@ -919,10 +919,10 @@ LABEL_13:
   if (!sectionSnapshot)
   {
     v4 = [MapsUIDiffableDataSourceOutlineNodeSnapshot alloc];
-    v5 = [(HomeOutlineSectionController *)self sectionIdentifierPath];
-    v6 = [(HomeOutlineSectionController *)self sectionHeaderViewModel];
-    v7 = [(HomeOutlineSectionController *)self itemSnapshots];
-    v8 = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)v4 initWithIdentifierPath:v5 viewModel:v6 childSnapshots:v7 expanded:[(HomeOutlineSectionController *)self expanded]];
+    sectionIdentifierPath = [(HomeOutlineSectionController *)self sectionIdentifierPath];
+    sectionHeaderViewModel = [(HomeOutlineSectionController *)self sectionHeaderViewModel];
+    itemSnapshots = [(HomeOutlineSectionController *)self itemSnapshots];
+    v8 = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)v4 initWithIdentifierPath:sectionIdentifierPath viewModel:sectionHeaderViewModel childSnapshots:itemSnapshots expanded:[(HomeOutlineSectionController *)self expanded]];
     v9 = self->_sectionSnapshot;
     self->_sectionSnapshot = v8;
 
@@ -939,29 +939,29 @@ LABEL_13:
 
 - (HomeOutlineSectionControllerDelegate)delegate
 {
-  v2 = [(HomeOutlineSectionController *)self configuration];
-  v3 = [v2 delegate];
+  configuration = [(HomeOutlineSectionController *)self configuration];
+  delegate = [configuration delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (HomeOutlineSectionController)initWithConfiguration:(id)a3
+- (HomeOutlineSectionController)initWithConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = HomeOutlineSectionController;
   v6 = [(HomeOutlineSectionController *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_configuration, a3);
+    objc_storeStrong(&v6->_configuration, configuration);
     v8 = +[NSMutableDictionary dictionary];
     deletions = v7->_deletions;
     v7->_deletions = v8;
 
-    v10 = [(HomeOutlineSectionController *)v7 configuration];
-    v11 = [v10 sectionIdentifier];
-    v12 = [IdentifierPath identifierPathWithIdentifier:v11];
+    configuration = [(HomeOutlineSectionController *)v7 configuration];
+    sectionIdentifier = [configuration sectionIdentifier];
+    v12 = [IdentifierPath identifierPathWithIdentifier:sectionIdentifier];
     sectionIdentifierPath = v7->_sectionIdentifierPath;
     v7->_sectionIdentifierPath = v12;
 

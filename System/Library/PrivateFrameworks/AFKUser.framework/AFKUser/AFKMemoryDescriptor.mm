@@ -1,39 +1,39 @@
 @interface AFKMemoryDescriptor
-+ (id)withManager:(id)a3 capacity:(unint64_t)a4;
-+ (id)withManager:(id)a3 capacity:(unint64_t)a4 token:(unint64_t)a5;
-- (AFKMemoryDescriptor)initWithManager:(id)a3 capacity:(unint64_t)a4 buffer:(BOOL)a5;
-- (AFKMemoryDescriptor)initWithManager:(id)a3 capacity:(unint64_t)a4 token:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)withManager:(id)manager capacity:(unint64_t)capacity;
++ (id)withManager:(id)manager capacity:(unint64_t)capacity token:(unint64_t)token;
+- (AFKMemoryDescriptor)initWithManager:(id)manager capacity:(unint64_t)capacity buffer:(BOOL)buffer;
+- (AFKMemoryDescriptor)initWithManager:(id)manager capacity:(unint64_t)capacity token:(unint64_t)token;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)mapDescriptor;
-- (int)assertPower:(BOOL)a3;
+- (int)assertPower:(BOOL)power;
 - (int)assumeControl;
-- (int)readBytes:(void *)a3 size:(unint64_t)a4 fromOffset:(unint64_t)a5;
-- (int)releaseControl:(BOOL)a3;
-- (int)writeBytes:(const void *)a3 size:(unint64_t)a4 toOffset:(unint64_t)a5;
+- (int)readBytes:(void *)bytes size:(unint64_t)size fromOffset:(unint64_t)offset;
+- (int)releaseControl:(BOOL)control;
+- (int)writeBytes:(const void *)bytes size:(unint64_t)size toOffset:(unint64_t)offset;
 - (unint64_t)length;
 - (void)assumeControl;
 - (void)dealloc;
 - (void)mapDescriptor;
-- (void)setLength:(unint64_t)a3;
+- (void)setLength:(unint64_t)length;
 @end
 
 @implementation AFKMemoryDescriptor
 
-+ (id)withManager:(id)a3 capacity:(unint64_t)a4
++ (id)withManager:(id)manager capacity:(unint64_t)capacity
 {
-  v5 = a3;
-  v6 = [[AFKMemoryDescriptor alloc] initWithManager:v5 capacity:a4 buffer:0];
+  managerCopy = manager;
+  v6 = [[AFKMemoryDescriptor alloc] initWithManager:managerCopy capacity:capacity buffer:0];
 
   return v6;
 }
 
-- (AFKMemoryDescriptor)initWithManager:(id)a3 capacity:(unint64_t)a4 buffer:(BOOL)a5
+- (AFKMemoryDescriptor)initWithManager:(id)manager capacity:(unint64_t)capacity buffer:(BOOL)buffer
 {
-  v5 = a5;
+  bufferCopy = buffer;
   input[2] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  input[0] = a4;
-  input[1] = v5;
+  managerCopy = manager;
+  input[0] = capacity;
+  input[1] = bufferCopy;
   outputCnt = 1;
   v19.receiver = self;
   v19.super_class = AFKMemoryDescriptor;
@@ -44,12 +44,12 @@
     goto LABEL_12;
   }
 
-  objc_storeStrong(&v10->_manager, a3);
-  v11->_capacity = a4;
-  v11->_regID = [v9 regID];
+  objc_storeStrong(&v10->_manager, manager);
+  v11->_capacity = capacity;
+  v11->_regID = [managerCopy regID];
   v11->_cachedLength = 0;
-  v12 = [(AFKMemoryDescriptor *)v11 manager];
-  v13 = IOConnectCallScalarMethod([v12 connect], 0, input, 2u, &output, &outputCnt);
+  manager = [(AFKMemoryDescriptor *)v11 manager];
+  v13 = IOConnectCallScalarMethod([manager connect], 0, input, 2u, &output, &outputCnt);
 
   if (v13)
   {
@@ -89,22 +89,22 @@ LABEL_13:
   return v14;
 }
 
-+ (id)withManager:(id)a3 capacity:(unint64_t)a4 token:(unint64_t)a5
++ (id)withManager:(id)manager capacity:(unint64_t)capacity token:(unint64_t)token
 {
-  v7 = a3;
-  v8 = [[AFKMemoryDescriptor alloc] initWithManager:v7 capacity:a4 token:a5];
+  managerCopy = manager;
+  v8 = [[AFKMemoryDescriptor alloc] initWithManager:managerCopy capacity:capacity token:token];
 
   return v8;
 }
 
-- (AFKMemoryDescriptor)initWithManager:(id)a3 capacity:(unint64_t)a4 token:(unint64_t)a5
+- (AFKMemoryDescriptor)initWithManager:(id)manager capacity:(unint64_t)capacity token:(unint64_t)token
 {
-  v9 = a3;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = AFKMemoryDescriptor;
   v10 = [(AFKMemoryDescriptor *)&v14 init];
   v11 = v10;
-  if (v10 && (objc_storeStrong(&v10->_manager, a3), v11->_token = a5, v11->_cachedLength = 0, v11->_capacity = a4, [(AFKMemoryDescriptor *)v11 mapDescriptor]))
+  if (v10 && (objc_storeStrong(&v10->_manager, manager), v11->_token = token, v11->_cachedLength = 0, v11->_capacity = capacity, [(AFKMemoryDescriptor *)v11 mapDescriptor]))
   {
     v12 = v11;
   }
@@ -123,8 +123,8 @@ LABEL_13:
   input[0] = [(AFKMemoryDescriptor *)self token];
   v15 = 0;
   v16 = 0;
-  v3 = [(AFKMemoryDescriptor *)self manager];
-  v4 = IOConnectCallScalarMethod([v3 connect], 1u, input, 1u, 0, 0);
+  manager = [(AFKMemoryDescriptor *)self manager];
+  v4 = IOConnectCallScalarMethod([manager connect], 1u, input, 1u, 0, 0);
 
   if (v4)
   {
@@ -138,9 +138,9 @@ LABEL_13:
     goto LABEL_12;
   }
 
-  v5 = [(AFKMemoryDescriptor *)self manager];
-  v6 = [v5 connect];
-  v7 = MEMORY[0x23EED2FD0](v6, 0, *MEMORY[0x277D85F48], &v16, &v15, 1);
+  manager2 = [(AFKMemoryDescriptor *)self manager];
+  connect = [manager2 connect];
+  v7 = MEMORY[0x23EED2FD0](connect, 0, *MEMORY[0x277D85F48], &v16, &v15, 1);
 
   if (v7)
   {
@@ -161,15 +161,15 @@ LABEL_13:
     v11 = _AFKUserLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      v12 = [(AFKMemoryDescriptor *)self regID];
+      regID = [(AFKMemoryDescriptor *)self regID];
       v13 = v15;
-      v14 = [(AFKMemoryDescriptor *)self capacity];
+      capacity = [(AFKMemoryDescriptor *)self capacity];
       *buf = 134218496;
-      v18 = v12;
+      v18 = regID;
       v19 = 2048;
       v20 = v13;
       v21 = 2048;
-      v22 = v14;
+      v22 = capacity;
       _os_log_error_impl(&dword_23C487000, v11, OS_LOG_TYPE_ERROR, "0x%llx: IOConnectMapMemory size mismatch:0x%zx,0x%zx", buf, 0x20u);
     }
 
@@ -192,18 +192,18 @@ LABEL_5:
   OUTLINED_FUNCTION_1(&dword_23C487000, "0x%llx: kFreeMethod:0x%x", v3, v4);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(AFKMemoryDescriptor *)self manager];
-    v6 = [v4 manager];
-    if ([v5 isEqual:v6])
+    manager = [(AFKMemoryDescriptor *)self manager];
+    manager2 = [equalCopy manager];
+    if ([manager isEqual:manager2])
     {
-      v7 = [(AFKMemoryDescriptor *)self token];
-      v8 = v7 == [v4 token];
+      token = [(AFKMemoryDescriptor *)self token];
+      v8 = token == [equalCopy token];
     }
 
     else
@@ -220,13 +220,13 @@ LABEL_5:
   return v8;
 }
 
-- (void)setLength:(unint64_t)a3
+- (void)setLength:(unint64_t)length
 {
   input[2] = *MEMORY[0x277D85DE8];
   input[0] = [(AFKMemoryDescriptor *)self token];
-  input[1] = a3;
-  v5 = [(AFKMemoryDescriptor *)self manager];
-  v6 = IOConnectCallScalarMethod([v5 connect], 2u, input, 2u, 0, 0);
+  input[1] = length;
+  manager = [(AFKMemoryDescriptor *)self manager];
+  v6 = IOConnectCallScalarMethod([manager connect], 2u, input, 2u, 0, 0);
 
   if (v6)
   {
@@ -240,7 +240,7 @@ LABEL_5:
 
   else
   {
-    self->_cachedLength = a3;
+    self->_cachedLength = length;
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -254,17 +254,17 @@ LABEL_5:
   {
     input[0] = [(AFKMemoryDescriptor *)self token];
     outputCnt = 1;
-    v4 = [(AFKMemoryDescriptor *)self manager];
-    v5 = IOConnectCallScalarMethod([v4 connect], 3u, input, 1u, &output, &outputCnt);
+    manager = [(AFKMemoryDescriptor *)self manager];
+    v5 = IOConnectCallScalarMethod([manager connect], 3u, input, 1u, &output, &outputCnt);
 
     if (v5 || outputCnt != 1)
     {
       v6 = _AFKUserLog();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        v8 = [(AFKMemoryDescriptor *)self regID];
+        regID = [(AFKMemoryDescriptor *)self regID];
         *buf = 134218496;
-        v11 = v8;
+        v11 = regID;
         v12 = 1024;
         v13 = v5;
         v14 = 1024;
@@ -286,14 +286,14 @@ LABEL_5:
   return result;
 }
 
-- (int)assertPower:(BOOL)a3
+- (int)assertPower:(BOOL)power
 {
-  v3 = a3;
+  powerCopy = power;
   input[2] = *MEMORY[0x277D85DE8];
   input[0] = [(AFKMemoryDescriptor *)self token];
-  input[1] = v3;
-  v5 = [(AFKMemoryDescriptor *)self manager];
-  v6 = IOConnectCallScalarMethod([v5 connect], 0xAu, input, 2u, 0, 0);
+  input[1] = powerCopy;
+  manager = [(AFKMemoryDescriptor *)self manager];
+  v6 = IOConnectCallScalarMethod([manager connect], 0xAu, input, 2u, 0, 0);
 
   if (v6)
   {
@@ -313,8 +313,8 @@ LABEL_5:
 {
   input[1] = *MEMORY[0x277D85DE8];
   input[0] = [(AFKMemoryDescriptor *)self token];
-  v3 = [(AFKMemoryDescriptor *)self manager];
-  v4 = IOConnectCallScalarMethod([v3 connect], 4u, input, 1u, 0, 0);
+  manager = [(AFKMemoryDescriptor *)self manager];
+  v4 = IOConnectCallScalarMethod([manager connect], 4u, input, 1u, 0, 0);
 
   if (v4)
   {
@@ -330,14 +330,14 @@ LABEL_5:
   return v4;
 }
 
-- (int)releaseControl:(BOOL)a3
+- (int)releaseControl:(BOOL)control
 {
-  v3 = a3;
+  controlCopy = control;
   input[2] = *MEMORY[0x277D85DE8];
   input[0] = [(AFKMemoryDescriptor *)self token];
-  input[1] = v3;
-  v5 = [(AFKMemoryDescriptor *)self manager];
-  v6 = IOConnectCallScalarMethod([v5 connect], 5u, input, 2u, 0, 0);
+  input[1] = controlCopy;
+  manager = [(AFKMemoryDescriptor *)self manager];
+  v6 = IOConnectCallScalarMethod([manager connect], 5u, input, 2u, 0, 0);
 
   if (v6)
   {
@@ -353,10 +353,10 @@ LABEL_5:
   return v6;
 }
 
-- (int)readBytes:(void *)a3 size:(unint64_t)a4 fromOffset:(unint64_t)a5
+- (int)readBytes:(void *)bytes size:(unint64_t)size fromOffset:(unint64_t)offset
 {
   v9 = -536870206;
-  if (!__CFADD__(a5, a4) && a5 + a4 <= OUTLINED_FUNCTION_4(self, a2))
+  if (!__CFADD__(offset, size) && offset + size <= OUTLINED_FUNCTION_4(self, a2))
   {
     memcpy(v7, ([v8 buffer] + v6), v5);
     return 0;
@@ -365,10 +365,10 @@ LABEL_5:
   return v9;
 }
 
-- (int)writeBytes:(const void *)a3 size:(unint64_t)a4 toOffset:(unint64_t)a5
+- (int)writeBytes:(const void *)bytes size:(unint64_t)size toOffset:(unint64_t)offset
 {
   v9 = -536870206;
-  if (!__CFADD__(a5, a4) && a5 + a4 <= OUTLINED_FUNCTION_4(self, a2))
+  if (!__CFADD__(offset, size) && offset + size <= OUTLINED_FUNCTION_4(self, a2))
   {
     memcpy(([v8 buffer] + v6), v7, v5);
     return 0;

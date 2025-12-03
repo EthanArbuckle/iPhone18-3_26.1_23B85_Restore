@@ -1,8 +1,8 @@
 @interface EMCategorizationSyncManager
-- (EMCategorizationSyncManager)initWithMailboxCategoryCloudStorage:(id)a3 mailboxRepository:(id)a4 accountRepository:(id)a5;
+- (EMCategorizationSyncManager)initWithMailboxCategoryCloudStorage:(id)storage mailboxRepository:(id)repository accountRepository:(id)accountRepository;
 - (id)primaryIcloudMailboxFuture;
-- (void)categoryCloudStorage:(id)a3 didChangeLastSeenDate:(id)a4 lastSeenDisplayDate:(id)a5 forCategoryType:(id)a6 inMailboxWithExternalURL:(id)a7 originator:(unint64_t)a8;
-- (void)categoryRulesController:(id)a3 didReceiveNewOldTimestamps:(id)a4;
+- (void)categoryCloudStorage:(id)storage didChangeLastSeenDate:(id)date lastSeenDisplayDate:(id)displayDate forCategoryType:(id)type inMailboxWithExternalURL:(id)l originator:(unint64_t)originator;
+- (void)categoryRulesController:(id)controller didReceiveNewOldTimestamps:(id)timestamps;
 - (void)loadiCloudMCCKit;
 @end
 
@@ -15,20 +15,20 @@ void ___ef_log_EMCategorizationSyncManager_block_invoke()
   _ef_log_EMCategorizationSyncManager_log = v0;
 }
 
-- (EMCategorizationSyncManager)initWithMailboxCategoryCloudStorage:(id)a3 mailboxRepository:(id)a4 accountRepository:(id)a5
+- (EMCategorizationSyncManager)initWithMailboxCategoryCloudStorage:(id)storage mailboxRepository:(id)repository accountRepository:(id)accountRepository
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storageCopy = storage;
+  repositoryCopy = repository;
+  accountRepositoryCopy = accountRepository;
   v19.receiver = self;
   v19.super_class = EMCategorizationSyncManager;
   v12 = [(EMCategorizationSyncManager *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_mailboxCategoryCloudStorage, a3);
-    objc_storeStrong(&v13->_mailboxRepository, a4);
-    objc_storeStrong(&v13->_accountRepository, a5);
+    objc_storeStrong(&v12->_mailboxCategoryCloudStorage, storage);
+    objc_storeStrong(&v13->_mailboxRepository, repository);
+    objc_storeStrong(&v13->_accountRepository, accountRepository);
     [(EMMailboxCategoryCloudStorage *)v13->_mailboxCategoryCloudStorage addCloudStorageObserver:v13];
     [(EMCategorizationSyncManager *)v13 loadiCloudMCCKit];
     v14 = MEMORY[0x1E699B978];
@@ -88,17 +88,17 @@ void ___ef_log_EMCategorizationSyncManager_block_invoke()
   }
 }
 
-- (void)categoryRulesController:(id)a3 didReceiveNewOldTimestamps:(id)a4
+- (void)categoryRulesController:(id)controller didReceiveNewOldTimestamps:(id)timestamps
 {
-  v5 = a4;
+  timestampsCopy = timestamps;
   v6 = dispatch_get_global_queue(0, 0);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __82__EMCategorizationSyncManager_categoryRulesController_didReceiveNewOldTimestamps___block_invoke;
   v8[3] = &unk_1E826C148;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = timestampsCopy;
+  selfCopy = self;
+  v7 = timestampsCopy;
   dispatch_async(v6, v8);
 }
 
@@ -187,34 +187,34 @@ void __82__EMCategorizationSyncManager_categoryRulesController_didReceiveNewOldT
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)categoryCloudStorage:(id)a3 didChangeLastSeenDate:(id)a4 lastSeenDisplayDate:(id)a5 forCategoryType:(id)a6 inMailboxWithExternalURL:(id)a7 originator:(unint64_t)a8
+- (void)categoryCloudStorage:(id)storage didChangeLastSeenDate:(id)date lastSeenDisplayDate:(id)displayDate forCategoryType:(id)type inMailboxWithExternalURL:(id)l originator:(unint64_t)originator
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  if (a8 == 1)
+  displayDateCopy = displayDate;
+  typeCopy = type;
+  lCopy = l;
+  if (originator == 1)
   {
-    v15 = _ef_log_EMCategorizationSyncManager();
-    if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+    primaryIcloudMailboxFuture = _ef_log_EMCategorizationSyncManager();
+    if (os_log_type_enabled(primaryIcloudMailboxFuture, OS_LOG_TYPE_INFO))
     {
       *buf = 0;
-      _os_log_impl(&dword_1C6655000, v15, OS_LOG_TYPE_INFO, "Received Last Seend date change, ignoring it as the originator is webmail.", buf, 2u);
+      _os_log_impl(&dword_1C6655000, primaryIcloudMailboxFuture, OS_LOG_TYPE_INFO, "Received Last Seend date change, ignoring it as the originator is webmail.", buf, 2u);
     }
   }
 
   else
   {
-    v15 = [(EMCategorizationSyncManager *)self primaryIcloudMailboxFuture];
+    primaryIcloudMailboxFuture = [(EMCategorizationSyncManager *)self primaryIcloudMailboxFuture];
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
     v18 = __146__EMCategorizationSyncManager_categoryCloudStorage_didChangeLastSeenDate_lastSeenDisplayDate_forCategoryType_inMailboxWithExternalURL_originator___block_invoke;
     v19 = &unk_1E826C568;
-    v20 = v14;
-    v21 = self;
-    v22 = v13;
-    v23 = v12;
-    [v15 addSuccessBlock:&v16];
-    [v15 addFailureBlock:&__block_literal_global_30, v16, v17, v18, v19];
+    v20 = lCopy;
+    selfCopy = self;
+    v22 = typeCopy;
+    v23 = displayDateCopy;
+    [primaryIcloudMailboxFuture addSuccessBlock:&v16];
+    [primaryIcloudMailboxFuture addFailureBlock:&__block_literal_global_30, v16, v17, v18, v19];
   }
 }
 
@@ -314,23 +314,23 @@ void __146__EMCategorizationSyncManager_categoryCloudStorage_didChangeLastSeenDa
 
 - (id)primaryIcloudMailboxFuture
 {
-  v3 = [MEMORY[0x1E699B868] promise];
-  v4 = [(EMCategorizationSyncManager *)self accountRepository];
-  v5 = [v4 receivingAccounts];
-  v6 = [v5 ef_firstObjectPassingTest:&__block_literal_global_34];
+  promise = [MEMORY[0x1E699B868] promise];
+  accountRepository = [(EMCategorizationSyncManager *)self accountRepository];
+  receivingAccounts = [accountRepository receivingAccounts];
+  v6 = [receivingAccounts ef_firstObjectPassingTest:&__block_literal_global_34];
 
   if (v6)
   {
     v7 = [EMMailbox predicateForPrimaryMailboxWithAccount:v6];
     v8 = [EMQuery alloc];
     v9 = [(EMQuery *)v8 initWithTargetClass:objc_opt_class() predicate:v7 sortDescriptors:MEMORY[0x1E695E0F0]];
-    v10 = [(EMCategorizationSyncManager *)self mailboxRepository];
+    mailboxRepository = [(EMCategorizationSyncManager *)self mailboxRepository];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __57__EMCategorizationSyncManager_primaryIcloudMailboxFuture__block_invoke_2;
     v15[3] = &unk_1E826C5B0;
-    v16 = v3;
-    [v10 performQuery:v9 completionHandler:v15];
+    v16 = promise;
+    [mailboxRepository performQuery:v9 completionHandler:v15];
   }
 
   else
@@ -343,12 +343,12 @@ void __146__EMCategorizationSyncManager_categoryCloudStorage_didChangeLastSeenDa
     }
 
     v7 = [MEMORY[0x1E696ABC0] em_internalErrorWithReason:@"No primary iCloud account was found." userInfo:0];
-    [v3 finishWithError:v7];
+    [promise finishWithError:v7];
   }
 
-  v12 = [v3 future];
+  future = [promise future];
 
-  return v12;
+  return future;
 }
 
 void __57__EMCategorizationSyncManager_primaryIcloudMailboxFuture__block_invoke_2(uint64_t a1, void *a2, void *a3)

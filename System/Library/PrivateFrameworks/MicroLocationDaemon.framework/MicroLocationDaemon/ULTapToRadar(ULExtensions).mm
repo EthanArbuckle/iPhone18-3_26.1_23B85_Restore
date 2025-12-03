@@ -8,21 +8,21 @@
 + (void)createRadarForMigrationFailure
 {
   v0 = +[ULDefaultsSingleton shared];
-  v1 = [v0 defaultsDictionary];
+  defaultsDictionary = [v0 defaultsDictionary];
 
   v2 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULTTROnMigrationErrorEnabled"];
-  v3 = [v1 objectForKey:v2];
+  v3 = [defaultsDictionary objectForKey:v2];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEC38] BOOLValue];
+    bOOLValue = [MEMORY[0x277CBEC38] BOOLValue];
   }
 
-  v5 = v4;
+  v5 = bOOLValue;
 
   if (v5)
   {
@@ -51,21 +51,21 @@
 {
   v18 = *MEMORY[0x277D85DE8];
   v0 = +[ULDefaultsSingleton shared];
-  v1 = [v0 defaultsDictionary];
+  defaultsDictionary = [v0 defaultsDictionary];
 
   v2 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ULTTROnDatabaseAccessErrorEnabled"];
-  v3 = [v1 objectForKey:v2];
+  v3 = [defaultsDictionary objectForKey:v2];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEC38] BOOLValue];
+    bOOLValue = [MEMORY[0x277CBEC38] BOOLValue];
   }
 
-  v5 = v4;
+  v5 = bOOLValue;
 
   if (v5)
   {

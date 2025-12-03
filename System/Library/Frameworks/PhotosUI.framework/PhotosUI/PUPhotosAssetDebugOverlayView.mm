@@ -1,22 +1,22 @@
 @interface PUPhotosAssetDebugOverlayView
 - (PUPhotosAssetDebugOverlayView)init;
-- (PUPhotosAssetDebugOverlayView)initWithClientIdentifier:(id)a3;
-- (PUPhotosAssetDebugOverlayView)initWithCoder:(id)a3;
-- (PUPhotosAssetDebugOverlayView)initWithFrame:(CGRect)a3;
+- (PUPhotosAssetDebugOverlayView)initWithClientIdentifier:(id)identifier;
+- (PUPhotosAssetDebugOverlayView)initWithCoder:(id)coder;
+- (PUPhotosAssetDebugOverlayView)initWithFrame:(CGRect)frame;
 - (PUPhotosAssetDebugOverlayViewDelegate)delegate;
 - (id)_debugDescription;
 - (id)_hdrImageTextForCurrentlyDisplayedImage;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_configureButtonImageView;
 - (void)_fileRadar;
-- (void)_openURL:(id)a3;
+- (void)_openURL:(id)l;
 - (void)_setupView;
 - (void)_toggleInfoOverlay;
-- (void)_updateImageDynamicRangeOption:(int64_t)a3;
+- (void)_updateImageDynamicRangeOption:(int64_t)option;
 - (void)_updateInfoLabel;
 - (void)_updateInfoOverlayAppearance;
 - (void)_updateOverlayButton;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 - (void)update;
 @end
 
@@ -29,42 +29,42 @@
   return WeakRetained;
 }
 
-- (PUPhotosAssetDebugOverlayView)initWithCoder:(id)a3
+- (PUPhotosAssetDebugOverlayView)initWithCoder:(id)coder
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PUPhotosAssetDebugOverlayView.m" lineNumber:519 description:@"initWithCoder is unavailable"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotosAssetDebugOverlayView.m" lineNumber:519 description:@"initWithCoder is unavailable"];
 
   return 0;
 }
 
-- (PUPhotosAssetDebugOverlayView)initWithFrame:(CGRect)a3
+- (PUPhotosAssetDebugOverlayView)initWithFrame:(CGRect)frame
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PUPhotosAssetDebugOverlayView.m" lineNumber:514 description:@"initWithFrame is unavailable"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotosAssetDebugOverlayView.m" lineNumber:514 description:@"initWithFrame is unavailable"];
 
   return 0;
 }
 
 - (PUPhotosAssetDebugOverlayView)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUPhotosAssetDebugOverlayView.m" lineNumber:509 description:@"init is unavailable"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUPhotosAssetDebugOverlayView.m" lineNumber:509 description:@"init is unavailable"];
 
   return 0;
 }
 
-- (void)_updateImageDynamicRangeOption:(int64_t)a3
+- (void)_updateImageDynamicRangeOption:(int64_t)option
 {
-  v5 = [(PUPhotosAssetDebugOverlayView *)self delegate];
-  [v5 photosAssetDebugOverlayView:self didRequestPreferredImageDynamicRange:a3];
+  delegate = [(PUPhotosAssetDebugOverlayView *)self delegate];
+  [delegate photosAssetDebugOverlayView:self didRequestPreferredImageDynamicRange:option];
 }
 
-- (void)_openURL:(id)a3
+- (void)_openURL:(id)l
 {
   v3 = MEMORY[0x1E6963608];
-  v4 = a3;
-  v5 = [v3 defaultWorkspace];
-  [v5 openURL:v4 configuration:0 completionHandler:0];
+  lCopy = l;
+  defaultWorkspace = [v3 defaultWorkspace];
+  [defaultWorkspace openURL:lCopy configuration:0 completionHandler:0];
 }
 
 - (void)_fileRadar
@@ -80,8 +80,8 @@
   v15[3] = @"Other Bug";
   v14[4] = @"Description";
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PUPhotosAssetDebugOverlayView *)self _debugDescription];
-  v5 = [v3 stringWithFormat:@"Photos Asset View Debug Info:\n%@\n\nPlease attach a screenshot.", v4];
+  _debugDescription = [(PUPhotosAssetDebugOverlayView *)self _debugDescription];
+  v5 = [v3 stringWithFormat:@"Photos Asset View Debug Info:\n%@\n\nPlease attach a screenshot.", _debugDescription];
   v15[4] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:5];
 
@@ -117,8 +117,8 @@ void __43__PUPhotosAssetDebugOverlayView__fileRadar__block_invoke(uint64_t a1, u
 
 - (id)_hdrImageTextForCurrentlyDisplayedImage
 {
-  v3 = [(PUPhotosAssetDebugOverlayView *)self delegate];
-  v4 = [v3 photosAssetDebugOverlayViewCurrentlyDisplayedImage:self];
+  delegate = [(PUPhotosAssetDebugOverlayView *)self delegate];
+  v4 = [delegate photosAssetDebugOverlayViewCurrentlyDisplayedImage:self];
 
   if (v4)
   {
@@ -144,13 +144,13 @@ void __43__PUPhotosAssetDebugOverlayView__fileRadar__block_invoke(uint64_t a1, u
 - (id)_debugDescription
 {
   v34[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PUPhotosAssetDebugOverlayView *)self delegate];
-  v4 = [v3 photosAssetDebugOverlayViewPreferredImageDynamicRange:self];
+  delegate = [(PUPhotosAssetDebugOverlayView *)self delegate];
+  v4 = [delegate photosAssetDebugOverlayViewPreferredImageDynamicRange:self];
 
   v5 = MEMORY[0x1E695DF70];
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [(PUPhotosAssetDebugOverlayView *)self clientIdentifier];
-  v8 = [v6 stringWithFormat:@"Client Identifier: %@", v7];
+  clientIdentifier = [(PUPhotosAssetDebugOverlayView *)self clientIdentifier];
+  v8 = [v6 stringWithFormat:@"Client Identifier: %@", clientIdentifier];
   v34[0] = v8;
   if ((v4 - 1) > 2)
   {
@@ -167,13 +167,13 @@ void __43__PUPhotosAssetDebugOverlayView__fileRadar__block_invoke(uint64_t a1, u
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:2];
   v12 = [v5 arrayWithArray:v11];
 
-  v13 = [(PUPhotosAssetDebugOverlayView *)self delegate];
-  v14 = [v13 photosAssetDebugOverlayViewHasEffectivePreferredImageDynamicRange:self];
+  delegate2 = [(PUPhotosAssetDebugOverlayView *)self delegate];
+  v14 = [delegate2 photosAssetDebugOverlayViewHasEffectivePreferredImageDynamicRange:self];
 
   if (v14)
   {
-    v15 = [(PUPhotosAssetDebugOverlayView *)self delegate];
-    v16 = [v15 photosAssetDebugOverlayViewEffectivePreferredImageDynamicRange:self];
+    delegate3 = [(PUPhotosAssetDebugOverlayView *)self delegate];
+    v16 = [delegate3 photosAssetDebugOverlayViewEffectivePreferredImageDynamicRange:self];
 
     if ((v16 - 1) > 2)
     {
@@ -190,13 +190,13 @@ void __43__PUPhotosAssetDebugOverlayView__fileRadar__block_invoke(uint64_t a1, u
   }
 
   v19 = MEMORY[0x1E696AEC0];
-  v20 = [(PUPhotosAssetDebugOverlayView *)self _hdrImageTextForCurrentlyDisplayedImage];
-  v21 = [v19 stringWithFormat:@"HDR Decoded Image? %@", v20];
+  _hdrImageTextForCurrentlyDisplayedImage = [(PUPhotosAssetDebugOverlayView *)self _hdrImageTextForCurrentlyDisplayedImage];
+  v21 = [v19 stringWithFormat:@"HDR Decoded Image? %@", _hdrImageTextForCurrentlyDisplayedImage];
   v33[0] = v21;
   v22 = MEMORY[0x1E696AEC0];
   v23 = MEMORY[0x1E696AD98];
-  v24 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-  [v24 potentialEDRHeadroom];
+  px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
+  [px_mainScreen potentialEDRHeadroom];
   v26 = v25;
 
   v27 = [v23 numberWithDouble:v26];
@@ -215,8 +215,8 @@ void __43__PUPhotosAssetDebugOverlayView__fileRadar__block_invoke(uint64_t a1, u
 - (void)_updateInfoLabel
 {
   v3 = MEMORY[0x1E696AEC0];
-  v5 = [(PUPhotosAssetDebugOverlayView *)self _debugDescription];
-  v4 = [v3 stringWithFormat:@"[INTERNAL ONLY]\n%@", v5];
+  _debugDescription = [(PUPhotosAssetDebugOverlayView *)self _debugDescription];
+  v4 = [v3 stringWithFormat:@"[INTERNAL ONLY]\n%@", _debugDescription];
   [(UILabel *)self->_infoLabel setText:v4];
 }
 
@@ -229,12 +229,12 @@ void __43__PUPhotosAssetDebugOverlayView__fileRadar__block_invoke(uint64_t a1, u
     infoOverlayView = self->_infoOverlayView;
     self->_infoOverlayView = v3;
 
-    v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    v6 = [v5 colorWithAlphaComponent:0.8];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    v6 = [systemBackgroundColor colorWithAlphaComponent:0.8];
     [(UIView *)self->_infoOverlayView setBackgroundColor:v6];
 
-    v7 = [(UIView *)self->_infoOverlayView layer];
-    [v7 setCornerRadius:8.0];
+    layer = [(UIView *)self->_infoOverlayView layer];
+    [layer setCornerRadius:8.0];
 
     [(UIView *)self->_infoOverlayView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(PUPhotosAssetDebugOverlayView *)self addSubview:self->_infoOverlayView];
@@ -246,38 +246,38 @@ void __43__PUPhotosAssetDebugOverlayView__fileRadar__block_invoke(uint64_t a1, u
 
     [(UIView *)self->_infoOverlayView addSubview:self->_infoLabel];
     v27 = MEMORY[0x1E696ACD8];
-    v37 = [(UIView *)self->_infoOverlayView topAnchor];
-    v36 = [(PUPhotosAssetDebugOverlayView *)self topAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36 constant:10.0];
+    topAnchor = [(UIView *)self->_infoOverlayView topAnchor];
+    topAnchor2 = [(PUPhotosAssetDebugOverlayView *)self topAnchor];
+    v35 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
     v38[0] = v35;
-    v34 = [(UIView *)self->_infoOverlayView leadingAnchor];
-    v33 = [(PUPhotosAssetDebugOverlayView *)self leadingAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33 constant:10.0];
+    leadingAnchor = [(UIView *)self->_infoOverlayView leadingAnchor];
+    leadingAnchor2 = [(PUPhotosAssetDebugOverlayView *)self leadingAnchor];
+    v32 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
     v38[1] = v32;
-    v30 = [(UIView *)self->_infoOverlayView trailingAnchor];
-    v31 = [(PUPhotosAssetDebugOverlayView *)self buttonContainerView];
-    v29 = [v31 leadingAnchor];
-    v28 = [v30 constraintEqualToAnchor:v29 constant:-10.0];
+    trailingAnchor = [(UIView *)self->_infoOverlayView trailingAnchor];
+    buttonContainerView = [(PUPhotosAssetDebugOverlayView *)self buttonContainerView];
+    leadingAnchor3 = [buttonContainerView leadingAnchor];
+    v28 = [trailingAnchor constraintEqualToAnchor:leadingAnchor3 constant:-10.0];
     v38[2] = v28;
-    v26 = [(UIView *)self->_infoOverlayView bottomAnchor];
-    v25 = [(PUPhotosAssetDebugOverlayView *)self bottomAnchor];
-    v24 = [v26 constraintLessThanOrEqualToAnchor:v25 constant:-10.0];
+    bottomAnchor = [(UIView *)self->_infoOverlayView bottomAnchor];
+    bottomAnchor2 = [(PUPhotosAssetDebugOverlayView *)self bottomAnchor];
+    v24 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2 constant:-10.0];
     v38[3] = v24;
-    v23 = [(UILabel *)self->_infoLabel topAnchor];
-    v22 = [(UIView *)self->_infoOverlayView topAnchor];
-    v21 = [v23 constraintEqualToAnchor:v22 constant:10.0];
+    topAnchor3 = [(UILabel *)self->_infoLabel topAnchor];
+    topAnchor4 = [(UIView *)self->_infoOverlayView topAnchor];
+    v21 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:10.0];
     v38[4] = v21;
-    v20 = [(UILabel *)self->_infoLabel leadingAnchor];
-    v19 = [(UIView *)self->_infoOverlayView leadingAnchor];
-    v10 = [v20 constraintEqualToAnchor:v19 constant:10.0];
+    leadingAnchor4 = [(UILabel *)self->_infoLabel leadingAnchor];
+    leadingAnchor5 = [(UIView *)self->_infoOverlayView leadingAnchor];
+    v10 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5 constant:10.0];
     v38[5] = v10;
-    v11 = [(UILabel *)self->_infoLabel trailingAnchor];
-    v12 = [(UIView *)self->_infoOverlayView trailingAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12 constant:-10.0];
+    trailingAnchor2 = [(UILabel *)self->_infoLabel trailingAnchor];
+    trailingAnchor3 = [(UIView *)self->_infoOverlayView trailingAnchor];
+    v13 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-10.0];
     v38[6] = v13;
-    v14 = [(UILabel *)self->_infoLabel bottomAnchor];
-    v15 = [(UIView *)self->_infoOverlayView bottomAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15 constant:-10.0];
+    bottomAnchor3 = [(UILabel *)self->_infoLabel bottomAnchor];
+    bottomAnchor4 = [(UIView *)self->_infoOverlayView bottomAnchor];
+    v16 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4 constant:-10.0];
     v38[7] = v16;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:8];
     [v27 activateConstraints:v17];
@@ -309,24 +309,24 @@ void __43__PUPhotosAssetDebugOverlayView__fileRadar__block_invoke(uint64_t a1, u
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:2];
   v7 = [v5 arrayWithArray:v6];
 
-  v8 = [(PUPhotosAssetDebugOverlayView *)self delegate];
+  delegate = [(PUPhotosAssetDebugOverlayView *)self delegate];
 
   v9 = 0x1E69DC000;
-  if (v8)
+  if (delegate)
   {
     v27 = v7;
     v28 = v3;
-    v10 = [MEMORY[0x1E695DF70] array];
-    v11 = [(PUPhotosAssetDebugOverlayView *)self delegate];
-    v12 = [v11 photosAssetDebugOverlayViewPreferredImageDynamicRange:self];
+    array = [MEMORY[0x1E695DF70] array];
+    delegate2 = [(PUPhotosAssetDebugOverlayView *)self delegate];
+    v12 = [delegate2 photosAssetDebugOverlayViewPreferredImageDynamicRange:self];
 
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
     v30 = __53__PUPhotosAssetDebugOverlayView__updateOverlayButton__block_invoke_3;
     v31 = &unk_1E83F7390;
-    v32 = self;
+    selfCopy = self;
     v34 = v12;
-    v13 = v10;
+    v13 = array;
     v33 = v13;
     v14 = v29;
     v37 = 0u;
@@ -347,14 +347,14 @@ void __43__PUPhotosAssetDebugOverlayView__fileRadar__block_invoke(uint64_t a1, u
             objc_enumerationMutation(&unk_1F4DABA68);
           }
 
-          v19 = [*(*(&v37 + 1) + 8 * i) integerValue];
+          integerValue = [*(*(&v37 + 1) + 8 * i) integerValue];
           v20 = @"Unspecified";
-          if ((v19 - 1) <= 2)
+          if ((integerValue - 1) <= 2)
           {
-            v20 = off_1E83F73D8[v19 - 1];
+            v20 = off_1E83F73D8[integerValue - 1];
           }
 
-          v30(v14, v19, v20);
+          v30(v14, integerValue, v20);
         }
 
         v16 = [&unk_1F4DABA68 countByEnumeratingWithState:&v37 objects:v42 count:16];
@@ -372,14 +372,14 @@ void __43__PUPhotosAssetDebugOverlayView__fileRadar__block_invoke(uint64_t a1, u
   }
 
   v22 = [*(v9 + 3168) menuWithTitle:&stru_1F4DA4820 children:v7];
-  v23 = [(PUPhotosAssetDebugOverlayView *)self overlayButton];
-  [v23 setMenu:v22];
+  overlayButton = [(PUPhotosAssetDebugOverlayView *)self overlayButton];
+  [overlayButton setMenu:v22];
 
-  v24 = [(PUPhotosAssetDebugOverlayView *)self overlayButton];
-  [v24 setShowsMenuAsPrimaryAction:1];
+  overlayButton2 = [(PUPhotosAssetDebugOverlayView *)self overlayButton];
+  [overlayButton2 setShowsMenuAsPrimaryAction:1];
 
-  v25 = [(PUPhotosAssetDebugOverlayView *)self overlayButton];
-  [v25 setTranslatesAutoresizingMaskIntoConstraints:0];
+  overlayButton3 = [(PUPhotosAssetDebugOverlayView *)self overlayButton];
+  [overlayButton3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v26 = *MEMORY[0x1E69E9840];
 }
@@ -399,20 +399,20 @@ void __53__PUPhotosAssetDebugOverlayView__updateOverlayButton__block_invoke_3(ui
 
 - (void)_configureButtonImageView
 {
-  v3 = [MEMORY[0x1E69DC888] systemGrayColor];
-  v4 = [(PUPhotosAssetDebugOverlayView *)self buttonImageView];
-  [v4 setTintColor:v3];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  buttonImageView = [(PUPhotosAssetDebugOverlayView *)self buttonImageView];
+  [buttonImageView setTintColor:systemGrayColor];
 
-  v5 = [(PUPhotosAssetDebugOverlayView *)self buttonImageView];
-  [v5 setClipsToBounds:1];
+  buttonImageView2 = [(PUPhotosAssetDebugOverlayView *)self buttonImageView];
+  [buttonImageView2 setClipsToBounds:1];
 
-  v6 = [(PUPhotosAssetDebugOverlayView *)self buttonImageView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  buttonImageView3 = [(PUPhotosAssetDebugOverlayView *)self buttonImageView];
+  [buttonImageView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -424,11 +424,11 @@ void __53__PUPhotosAssetDebugOverlayView__updateOverlayButton__block_invoke_3(ui
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = PUPhotosAssetDebugOverlayView;
-  v5 = [(PUPhotosAssetDebugOverlayView *)&v7 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(PUPhotosAssetDebugOverlayView *)&v7 hitTest:event withEvent:test.x, test.y];
   if (v5 == self)
   {
 
@@ -448,15 +448,15 @@ void __53__PUPhotosAssetDebugOverlayView__updateOverlayButton__block_invoke_3(ui
 - (void)_setupView
 {
   v55[12] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DC888] clearColor];
-  [(PUPhotosAssetDebugOverlayView *)self setBackgroundColor:v3];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(PUPhotosAssetDebugOverlayView *)self setBackgroundColor:clearColor];
 
   v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(UIView *)v4 setBackgroundColor:v5];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(UIView *)v4 setBackgroundColor:systemBackgroundColor];
 
-  v6 = [(UIView *)v4 layer];
-  [v6 setCornerRadius:8.0];
+  layer = [(UIView *)v4 layer];
+  [layer setCornerRadius:8.0];
 
   [(UIView *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
   buttonContainerView = self->_buttonContainerView;
@@ -465,8 +465,8 @@ void __53__PUPhotosAssetDebugOverlayView__updateOverlayButton__block_invoke_3(ui
   [(PUPhotosAssetDebugOverlayView *)self addSubview:self->_buttonContainerView];
   v8 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"ant.circle.fill"];
   v9 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v8];
-  v10 = [MEMORY[0x1E69DC888] systemGrayColor];
-  [(UIView *)v9 setTintColor:v10];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  [(UIView *)v9 setTintColor:systemGrayColor];
 
   [(UIView *)v9 setClipsToBounds:1];
   buttonImageView = self->_buttonImageView;
@@ -480,58 +480,58 @@ void __53__PUPhotosAssetDebugOverlayView__updateOverlayButton__block_invoke_3(ui
 
   [(PUPhotosAssetDebugOverlayView *)self _updateOverlayButton];
   [(UIView *)self->_buttonContainerView addSubview:self->_overlayButton];
-  v14 = [(UIView *)self->_buttonContainerView widthAnchor];
-  v15 = [(PUPhotosAssetDebugOverlayView *)self widthAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15 multiplier:0.1];
+  widthAnchor = [(UIView *)self->_buttonContainerView widthAnchor];
+  widthAnchor2 = [(PUPhotosAssetDebugOverlayView *)self widthAnchor];
+  v16 = [widthAnchor constraintEqualToAnchor:widthAnchor2 multiplier:0.1];
 
   LODWORD(v17) = 1132068864;
   v49 = v16;
   [v16 setPriority:v17];
   v41 = MEMORY[0x1E696ACD8];
-  v54 = [(UIView *)self->_buttonContainerView topAnchor];
-  v53 = [(PUPhotosAssetDebugOverlayView *)self topAnchor];
-  v52 = [v54 constraintEqualToAnchor:v53 constant:10.0];
+  topAnchor = [(UIView *)self->_buttonContainerView topAnchor];
+  topAnchor2 = [(PUPhotosAssetDebugOverlayView *)self topAnchor];
+  v52 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
   v55[0] = v52;
-  v51 = [(UIView *)self->_buttonContainerView trailingAnchor];
-  v50 = [(PUPhotosAssetDebugOverlayView *)self trailingAnchor];
-  v48 = [v51 constraintEqualToAnchor:v50 constant:-10.0];
+  trailingAnchor = [(UIView *)self->_buttonContainerView trailingAnchor];
+  trailingAnchor2 = [(PUPhotosAssetDebugOverlayView *)self trailingAnchor];
+  v48 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-10.0];
   v55[1] = v48;
-  v47 = [(UIView *)self->_buttonContainerView heightAnchor];
-  v46 = [(UIView *)self->_buttonContainerView widthAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  heightAnchor = [(UIView *)self->_buttonContainerView heightAnchor];
+  widthAnchor3 = [(UIView *)self->_buttonContainerView widthAnchor];
+  v45 = [heightAnchor constraintEqualToAnchor:widthAnchor3];
   v55[2] = v45;
   v55[3] = v16;
-  v44 = [(UIView *)self->_buttonImageView topAnchor];
-  v43 = [(UIView *)self->_buttonContainerView topAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43 constant:10.0];
+  topAnchor3 = [(UIView *)self->_buttonImageView topAnchor];
+  topAnchor4 = [(UIView *)self->_buttonContainerView topAnchor];
+  v42 = [topAnchor3 constraintEqualToAnchor:topAnchor4 constant:10.0];
   v55[4] = v42;
-  v40 = [(UIView *)self->_buttonImageView bottomAnchor];
-  v39 = [(UIView *)self->_buttonContainerView bottomAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39 constant:-10.0];
+  bottomAnchor = [(UIView *)self->_buttonImageView bottomAnchor];
+  bottomAnchor2 = [(UIView *)self->_buttonContainerView bottomAnchor];
+  v38 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-10.0];
   v55[5] = v38;
-  v37 = [(UIView *)self->_buttonImageView leadingAnchor];
-  v36 = [(UIView *)self->_buttonContainerView leadingAnchor];
-  v35 = [v37 constraintEqualToAnchor:v36 constant:10.0];
+  leadingAnchor = [(UIView *)self->_buttonImageView leadingAnchor];
+  leadingAnchor2 = [(UIView *)self->_buttonContainerView leadingAnchor];
+  v35 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
   v55[6] = v35;
-  v34 = [(UIView *)self->_buttonImageView trailingAnchor];
-  v33 = [(UIView *)self->_buttonContainerView trailingAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33 constant:-10.0];
+  trailingAnchor3 = [(UIView *)self->_buttonImageView trailingAnchor];
+  trailingAnchor4 = [(UIView *)self->_buttonContainerView trailingAnchor];
+  v32 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4 constant:-10.0];
   v55[7] = v32;
-  v31 = [(UIButton *)self->_overlayButton topAnchor];
-  v30 = [(UIView *)self->_buttonContainerView topAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  topAnchor5 = [(UIButton *)self->_overlayButton topAnchor];
+  topAnchor6 = [(UIView *)self->_buttonContainerView topAnchor];
+  v29 = [topAnchor5 constraintEqualToAnchor:topAnchor6];
   v55[8] = v29;
-  v18 = [(UIButton *)self->_overlayButton bottomAnchor];
-  v19 = [(UIView *)self->_buttonContainerView bottomAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  bottomAnchor3 = [(UIButton *)self->_overlayButton bottomAnchor];
+  bottomAnchor4 = [(UIView *)self->_buttonContainerView bottomAnchor];
+  v20 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v55[9] = v20;
-  v21 = [(UIButton *)self->_overlayButton leadingAnchor];
-  v22 = [(UIView *)self->_buttonContainerView leadingAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22];
+  leadingAnchor3 = [(UIButton *)self->_overlayButton leadingAnchor];
+  leadingAnchor4 = [(UIView *)self->_buttonContainerView leadingAnchor];
+  v23 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v55[10] = v23;
-  v24 = [(UIButton *)self->_overlayButton trailingAnchor];
-  v25 = [(UIView *)self->_buttonContainerView trailingAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25];
+  trailingAnchor5 = [(UIButton *)self->_overlayButton trailingAnchor];
+  trailingAnchor6 = [(UIView *)self->_buttonContainerView trailingAnchor];
+  v26 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v55[11] = v26;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:12];
   [v41 activateConstraints:v27];
@@ -539,9 +539,9 @@ void __53__PUPhotosAssetDebugOverlayView__updateOverlayButton__block_invoke_3(ui
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (PUPhotosAssetDebugOverlayView)initWithClientIdentifier:(id)a3
+- (PUPhotosAssetDebugOverlayView)initWithClientIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   if (PUPhotosAssetViewShowDebugOverlayView())
   {
     v10.receiver = self;
@@ -550,20 +550,20 @@ void __53__PUPhotosAssetDebugOverlayView__updateOverlayButton__block_invoke_3(ui
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_clientIdentifier, a3);
+      objc_storeStrong(&v6->_clientIdentifier, identifier);
       [(PUPhotosAssetDebugOverlayView *)v7 _setupView];
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

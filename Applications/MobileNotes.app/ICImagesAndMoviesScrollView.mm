@@ -1,44 +1,44 @@
 @interface ICImagesAndMoviesScrollView
-- (BOOL)browseAttachmentsCell:(id)a3 didSelectAttachment:(id)a4;
-- (BOOL)collectionView:(id)a3 canPerformAction:(SEL)a4 forItemAtIndexPath:(id)a5 withSender:(id)a6;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (BOOL)browseAttachmentsCell:(id)cell didSelectAttachment:(id)attachment;
+- (BOOL)collectionView:(id)view canPerformAction:(SEL)action forItemAtIndexPath:(id)path withSender:(id)sender;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (ICBrowseAttachmentsCollectionDelegate)delegate;
-- (ICImagesAndMoviesScrollView)initWithFrame:(CGRect)a3 forAttachmentSection:(signed __int16)a4;
+- (ICImagesAndMoviesScrollView)initWithFrame:(CGRect)frame forAttachmentSection:(signed __int16)section;
 - (NSArray)attachments;
 - (UICollectionViewFlowLayout)collectionViewFlowLayout;
 - (UIViewController)viewController;
-- (id)attachmentPresenter:(id)a3 transitionViewForAttachment:(id)a4;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (id)initForAttachmentSection:(signed __int16)a3;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInCollectionView:(id)a3;
+- (id)attachmentPresenter:(id)presenter transitionViewForAttachment:(id)attachment;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (id)initForAttachmentSection:(signed __int16)section;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInCollectionView:(id)view;
 - (int64_t)scrollDirection;
 - (unint64_t)thumbnailLayout;
-- (void)accountsDidChange:(id)a3;
-- (void)browseAttachmentsCell:(id)a3 shouldInspectAttachment:(id)a4;
-- (void)browseAttachmentsCell:(id)a3 shouldShareAttachment:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)commonInitForAttachmentSection:(signed __int16)a3;
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7;
-- (void)controllerDidChangeContent:(id)a3;
+- (void)accountsDidChange:(id)change;
+- (void)browseAttachmentsCell:(id)cell shouldInspectAttachment:(id)attachment;
+- (void)browseAttachmentsCell:(id)cell shouldShareAttachment:(id)attachment;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)commonInitForAttachmentSection:(signed __int16)section;
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath;
+- (void)controllerDidChangeContent:(id)content;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)notesContextRefreshNotification:(id)a3;
+- (void)notesContextRefreshNotification:(id)notification;
 - (void)recreateFetchedResultsController;
 - (void)registerForTraitChanges;
-- (void)respondToTapGesture:(id)a3;
-- (void)setAttachmentSection:(signed __int16)a3;
+- (void)respondToTapGesture:(id)gesture;
+- (void)setAttachmentSection:(signed __int16)section;
 - (void)setBackground;
-- (void)setScrollDirection:(int64_t)a3;
+- (void)setScrollDirection:(int64_t)direction;
 - (void)updateCollectionViewItemSizeAndFrame;
 @end
 
 @implementation ICImagesAndMoviesScrollView
 
-- (void)commonInitForAttachmentSection:(signed __int16)a3
+- (void)commonInitForAttachmentSection:(signed __int16)section
 {
   v5 = +[UIColor clearColor];
   [(ICImagesAndMoviesScrollView *)self setBackgroundColor:v5];
@@ -50,91 +50,91 @@
   v7 = [v6 initWithFrame:v29 collectionViewLayout:?];
   [(ICImagesAndMoviesScrollView *)self setCollectionView:v7];
 
-  v8 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  [v8 setAutoresizingMask:18];
+  collectionView = [(ICImagesAndMoviesScrollView *)self collectionView];
+  [collectionView setAutoresizingMask:18];
 
-  v9 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  [v9 setDataSource:self];
+  collectionView2 = [(ICImagesAndMoviesScrollView *)self collectionView];
+  [collectionView2 setDataSource:self];
 
-  v10 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  [v10 setDelegate:self];
+  collectionView3 = [(ICImagesAndMoviesScrollView *)self collectionView];
+  [collectionView3 setDelegate:self];
 
-  v11 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  [v11 setShowsHorizontalScrollIndicator:0];
+  collectionView4 = [(ICImagesAndMoviesScrollView *)self collectionView];
+  [collectionView4 setShowsHorizontalScrollIndicator:0];
 
-  v12 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  [v12 setShowsVerticalScrollIndicator:0];
+  collectionView5 = [(ICImagesAndMoviesScrollView *)self collectionView];
+  [collectionView5 setShowsVerticalScrollIndicator:0];
 
   v13 = +[UIColor clearColor];
-  v14 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  [v14 setBackgroundColor:v13];
+  collectionView6 = [(ICImagesAndMoviesScrollView *)self collectionView];
+  [collectionView6 setBackgroundColor:v13];
 
-  v15 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  [v15 setClipsToBounds:0];
+  collectionView7 = [(ICImagesAndMoviesScrollView *)self collectionView];
+  [collectionView7 setClipsToBounds:0];
 
-  v16 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  [v16 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"Image"];
+  collectionView8 = [(ICImagesAndMoviesScrollView *)self collectionView];
+  [collectionView8 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"Image"];
 
-  v17 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  [v17 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"Movie"];
+  collectionView9 = [(ICImagesAndMoviesScrollView *)self collectionView];
+  [collectionView9 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"Movie"];
 
-  v18 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  [v18 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"Drawing"];
+  collectionView10 = [(ICImagesAndMoviesScrollView *)self collectionView];
+  [collectionView10 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"Drawing"];
 
-  v19 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  [(ICImagesAndMoviesScrollView *)self addSubview:v19];
+  collectionView11 = [(ICImagesAndMoviesScrollView *)self collectionView];
+  [(ICImagesAndMoviesScrollView *)self addSubview:collectionView11];
 
   v20 = +[NSMutableArray array];
   [(ICImagesAndMoviesScrollView *)self setChangesFromFetchedResultsController:v20];
 
-  self->_attachmentSection = a3;
+  self->_attachmentSection = section;
   [(ICImagesAndMoviesScrollView *)self recreateFetchedResultsController];
   v21 = +[NSNotificationCenter defaultCenter];
   [v21 addObserver:self selector:"notesContextRefreshNotification:" name:ICNotesContextRefreshNotification object:0];
   [v21 addObserver:self selector:"accountsDidChange:" name:ICAccountsDidChangeNotification object:0];
   v22 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"respondToTapGesture:"];
-  v23 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  [v23 addGestureRecognizer:v22];
+  collectionView12 = [(ICImagesAndMoviesScrollView *)self collectionView];
+  [collectionView12 addGestureRecognizer:v22];
 
   v24 = +[ICBrowseAttachmentsDragAndDropDelegate sharedInstance];
-  v25 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  [v25 setDragDelegate:v24];
+  collectionView13 = [(ICImagesAndMoviesScrollView *)self collectionView];
+  [collectionView13 setDragDelegate:v24];
 
   v26 = [[UIContextMenuInteraction alloc] initWithDelegate:self];
   [(ICImagesAndMoviesScrollView *)self setContextInteraction:v26];
 
-  v27 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  v28 = [(ICImagesAndMoviesScrollView *)self contextInteraction];
-  [v27 addInteraction:v28];
+  collectionView14 = [(ICImagesAndMoviesScrollView *)self collectionView];
+  contextInteraction = [(ICImagesAndMoviesScrollView *)self contextInteraction];
+  [collectionView14 addInteraction:contextInteraction];
 
   [(ICImagesAndMoviesScrollView *)self registerForTraitChanges];
 }
 
-- (id)initForAttachmentSection:(signed __int16)a3
+- (id)initForAttachmentSection:(signed __int16)section
 {
-  v3 = a3;
+  sectionCopy = section;
   v7.receiver = self;
   v7.super_class = ICImagesAndMoviesScrollView;
   v4 = [(ICImagesAndMoviesScrollView *)&v7 init];
   v5 = v4;
   if (v4)
   {
-    [(ICImagesAndMoviesScrollView *)v4 commonInitForAttachmentSection:v3];
+    [(ICImagesAndMoviesScrollView *)v4 commonInitForAttachmentSection:sectionCopy];
   }
 
   return v5;
 }
 
-- (ICImagesAndMoviesScrollView)initWithFrame:(CGRect)a3 forAttachmentSection:(signed __int16)a4
+- (ICImagesAndMoviesScrollView)initWithFrame:(CGRect)frame forAttachmentSection:(signed __int16)section
 {
-  v4 = a4;
+  sectionCopy = section;
   v8.receiver = self;
   v8.super_class = ICImagesAndMoviesScrollView;
-  v5 = [(ICImagesAndMoviesScrollView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(ICImagesAndMoviesScrollView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    [(ICImagesAndMoviesScrollView *)v5 commonInitForAttachmentSection:v4];
+    [(ICImagesAndMoviesScrollView *)v5 commonInitForAttachmentSection:sectionCopy];
   }
 
   return v6;
@@ -162,68 +162,68 @@
 - (void)setBackground
 {
   v4 = +[UIColor ICBackgroundColor];
-  v3 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  [v3 setBackgroundColor:v4];
+  collectionView = [(ICImagesAndMoviesScrollView *)self collectionView];
+  [collectionView setBackgroundColor:v4];
 }
 
-- (void)respondToTapGesture:(id)a3
+- (void)respondToTapGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  [v4 locationInView:v5];
+  gestureCopy = gesture;
+  collectionView = [(ICImagesAndMoviesScrollView *)self collectionView];
+  [gestureCopy locationInView:collectionView];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  v15 = [v10 indexPathForItemAtPoint:{v7, v9}];
+  collectionView2 = [(ICImagesAndMoviesScrollView *)self collectionView];
+  v15 = [collectionView2 indexPathForItemAtPoint:{v7, v9}];
 
   if (v15)
   {
-    v11 = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
-    v12 = [v11 objectAtIndexPath:v15];
+    fetchedResultsController = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
+    v12 = [fetchedResultsController objectAtIndexPath:v15];
 
-    v13 = [(ICImagesAndMoviesScrollView *)self delegate];
-    v14 = [(ICImagesAndMoviesScrollView *)self collectionView];
-    [v13 browseAttachmentsCollectionView:v14 didSelectAttachment:v12 indexPath:0];
+    delegate = [(ICImagesAndMoviesScrollView *)self delegate];
+    collectionView3 = [(ICImagesAndMoviesScrollView *)self collectionView];
+    [delegate browseAttachmentsCollectionView:collectionView3 didSelectAttachment:v12 indexPath:0];
   }
 }
 
-- (int64_t)numberOfSectionsInCollectionView:(id)a3
+- (int64_t)numberOfSectionsInCollectionView:(id)view
 {
-  v3 = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
-  v4 = [v3 sections];
-  v5 = [v4 count];
+  fetchedResultsController = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
+  sections = [fetchedResultsController sections];
+  v5 = [sections count];
 
   return v5;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v5 = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
-  v6 = [v5 sections];
-  v7 = [v6 objectAtIndexedSubscript:a4];
+  fetchedResultsController = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
+  sections = [fetchedResultsController sections];
+  v7 = [sections objectAtIndexedSubscript:section];
 
-  v8 = [v7 numberOfObjects];
-  return v8;
+  numberOfObjects = [v7 numberOfObjects];
+  return numberOfObjects;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
-  v9 = [v8 objectAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  fetchedResultsController = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
+  v9 = [fetchedResultsController objectAtIndexPath:pathCopy];
 
-  v10 = [v9 attachmentType];
-  if (v10 != 3)
+  attachmentType = [v9 attachmentType];
+  if (attachmentType != 3)
   {
-    if (v10 == 9)
+    if (attachmentType == 9)
     {
       v11 = @"Drawing";
       goto LABEL_10;
     }
 
-    if (v10 == 5)
+    if (attachmentType == 5)
     {
       v11 = @"Movie";
       goto LABEL_10;
@@ -238,11 +238,11 @@
 
   v11 = @"Image";
 LABEL_10:
-  v13 = [v6 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v7];
+  v13 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
   [v13 setAttachment:v9];
   [v13 setThumbnailLayout:{-[ICImagesAndMoviesScrollView thumbnailLayout](self, "thumbnailLayout")}];
   objc_opt_class();
-  v14 = [(ICImagesAndMoviesScrollView *)self viewController];
+  viewController = [(ICImagesAndMoviesScrollView *)self viewController];
   v15 = ICDynamicCast();
   [v13 setCollectionController:v15];
 
@@ -252,23 +252,23 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)collectionView:(id)a3 canPerformAction:(SEL)a4 forItemAtIndexPath:(id)a5 withSender:(id)a6
+- (BOOL)collectionView:(id)view canPerformAction:(SEL)action forItemAtIndexPath:(id)path withSender:(id)sender
 {
-  v9 = a6;
-  v10 = [a3 cellForItemAtIndexPath:a5];
-  LOBYTE(a4) = [v10 canPerformAction:a4 withSender:v9];
+  senderCopy = sender;
+  v10 = [view cellForItemAtIndexPath:path];
+  LOBYTE(action) = [v10 canPerformAction:action withSender:senderCopy];
 
-  return a4;
+  return action;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
+  layoutCopy = layout;
+  pathCopy = path;
   if ([(ICImagesAndMoviesScrollView *)self scrollDirection]== 1)
   {
-    v9 = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
-    v10 = [v9 objectAtIndexPath:v8];
+    fetchedResultsController = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
+    v10 = [fetchedResultsController objectAtIndexPath:pathCopy];
 
     [v10 intrinsicContentSize];
     v12 = v11;
@@ -288,7 +288,7 @@ LABEL_10:
 
   else
   {
-    [v7 itemSize];
+    [layoutCopy itemSize];
     v17 = v18;
     v16 = v19;
   }
@@ -300,41 +300,41 @@ LABEL_10:
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   objc_opt_class();
-  v8 = [v7 cellForItemAtIndexPath:v6];
+  v8 = [viewCopy cellForItemAtIndexPath:pathCopy];
 
   v9 = ICDynamicCast();
 
   [v9 openAttachment:self];
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  v8 = [v7 ic_cellAtLocation:{x, y}];
+  y = location.y;
+  x = location.x;
+  collectionView = [(ICImagesAndMoviesScrollView *)self collectionView];
+  v8 = [collectionView ic_cellAtLocation:{x, y}];
 
   if (v8 && [v8 conformsToProtocol:&OBJC_PROTOCOL___ICNotePreviewingActions])
   {
     v9 = v8;
-    v10 = [(ICImagesAndMoviesScrollView *)self ic_viewControllerManager];
-    v11 = [v9 previewActionsForViewControllerManager:v10 fromView:self];
+    ic_viewControllerManager = [(ICImagesAndMoviesScrollView *)self ic_viewControllerManager];
+    v11 = [v9 previewActionsForViewControllerManager:ic_viewControllerManager fromView:self];
 
     objc_opt_class();
     v12 = ICDynamicCast();
     v13 = v12;
     if (v12 && ([v12 attachment], v14 = objc_claimAutoreleasedReturnValue(), v14, v14))
     {
-      v15 = [(ICImagesAndMoviesScrollView *)self ic_viewControllerManager];
-      v16 = [v13 attachment];
-      v27 = v16;
+      ic_viewControllerManager2 = [(ICImagesAndMoviesScrollView *)self ic_viewControllerManager];
+      attachment = [v13 attachment];
+      v27 = attachment;
       v17 = [NSArray arrayWithObjects:&v27 count:1];
-      v18 = [ICAttachmentPresenter previewViewControllerWithViewControllerManager:v15 attachments:v17 startingAtIndex:0 delegate:0 editable:0 isFromAttachmentBrowser:0];
+      v18 = [ICAttachmentPresenter previewViewControllerWithViewControllerManager:ic_viewControllerManager2 attachments:v17 startingAtIndex:0 delegate:0 editable:0 isFromAttachmentBrowser:0];
     }
 
     else
@@ -365,23 +365,23 @@ LABEL_10:
   return v19;
 }
 
-- (id)contextMenuInteraction:(id)a3 configuration:(id)a4 highlightPreviewForItemWithIdentifier:(id)a5
+- (id)contextMenuInteraction:(id)interaction configuration:(id)configuration highlightPreviewForItemWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  v8 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  [v6 locationInView:v8];
+  interactionCopy = interaction;
+  collectionView = [(ICImagesAndMoviesScrollView *)self collectionView];
+  collectionView2 = [(ICImagesAndMoviesScrollView *)self collectionView];
+  [interactionCopy locationInView:collectionView2];
   v10 = v9;
   v12 = v11;
 
-  v13 = [v7 ic_cellAtLocation:{v10, v12}];
+  v13 = [collectionView ic_cellAtLocation:{v10, v12}];
 
   v14 = ICProtocolCast();
-  v15 = [v14 contextMenuInteractionPreview];
-  v16 = v15;
-  if (v15)
+  contextMenuInteractionPreview = [v14 contextMenuInteractionPreview];
+  v16 = contextMenuInteractionPreview;
+  if (contextMenuInteractionPreview)
   {
-    v17 = v15;
+    v17 = contextMenuInteractionPreview;
   }
 
   else
@@ -404,20 +404,20 @@ LABEL_10:
   return v19;
 }
 
-- (void)contextMenuInteraction:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  v10 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  [v8 locationInView:v10];
+  animatorCopy = animator;
+  interactionCopy = interaction;
+  collectionView = [(ICImagesAndMoviesScrollView *)self collectionView];
+  collectionView2 = [(ICImagesAndMoviesScrollView *)self collectionView];
+  [interactionCopy locationInView:collectionView2];
   v12 = v11;
   v14 = v13;
 
-  v15 = [v9 indexPathForItemAtPoint:{v12, v14}];
+  v15 = [collectionView indexPathForItemAtPoint:{v12, v14}];
 
-  v16 = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
-  v17 = [v16 objectAtIndexPath:v15];
+  fetchedResultsController = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
+  v17 = [fetchedResultsController objectAtIndexPath:v15];
 
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
@@ -428,29 +428,29 @@ LABEL_10:
   v22 = v15;
   v18 = v15;
   v19 = v17;
-  [v7 addCompletion:v20];
+  [animatorCopy addCompletion:v20];
 }
 
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath
 {
-  v11 = a7;
-  v12 = a5;
-  v13 = a4;
+  indexPathCopy = indexPath;
+  pathCopy = path;
+  objectCopy = object;
   v15 = objc_alloc_init(ICFetchedResultsControllerChange);
-  [(ICFetchedResultsControllerChange *)v15 setType:a6];
-  [(ICFetchedResultsControllerChange *)v15 setObject:v13];
+  [(ICFetchedResultsControllerChange *)v15 setType:type];
+  [(ICFetchedResultsControllerChange *)v15 setObject:objectCopy];
 
-  [(ICFetchedResultsControllerChange *)v15 setIndexPath:v12];
-  [(ICFetchedResultsControllerChange *)v15 setTheNewIndexPath:v11];
+  [(ICFetchedResultsControllerChange *)v15 setIndexPath:pathCopy];
+  [(ICFetchedResultsControllerChange *)v15 setTheNewIndexPath:indexPathCopy];
 
-  v14 = [(ICImagesAndMoviesScrollView *)self changesFromFetchedResultsController];
-  [v14 addObject:v15];
+  changesFromFetchedResultsController = [(ICImagesAndMoviesScrollView *)self changesFromFetchedResultsController];
+  [changesFromFetchedResultsController addObject:v15];
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
   [(ICImagesAndMoviesScrollView *)self setPerformingBatchUpdatesFromFetchedResultsController:1];
-  v4 = [(ICImagesAndMoviesScrollView *)self collectionView];
+  collectionView = [(ICImagesAndMoviesScrollView *)self collectionView];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000FB260;
@@ -461,10 +461,10 @@ LABEL_10:
   v5[2] = sub_1000FB4DC;
   v5[3] = &unk_1006469F0;
   v5[4] = self;
-  [v4 performBatchUpdates:v6 completion:v5];
+  [collectionView performBatchUpdates:v6 completion:v5];
 }
 
-- (void)notesContextRefreshNotification:(id)a3
+- (void)notesContextRefreshNotification:(id)notification
 {
   if ([(ICImagesAndMoviesScrollView *)self performingBatchUpdatesFromFetchedResultsController])
   {
@@ -474,20 +474,20 @@ LABEL_10:
 
   else
   {
-    v4 = [(ICImagesAndMoviesScrollView *)self collectionView];
-    [v4 reloadData];
+    collectionView = [(ICImagesAndMoviesScrollView *)self collectionView];
+    [collectionView reloadData];
   }
 }
 
-- (void)accountsDidChange:(id)a3
+- (void)accountsDidChange:(id)change
 {
-  v4 = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
-  if (v4)
+  fetchedResultsController = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
+  if (fetchedResultsController)
   {
-    v5 = v4;
-    v6 = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
+    v5 = fetchedResultsController;
+    fetchedResultsController2 = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
     v10 = 0;
-    v7 = [v6 performFetch:&v10];
+    v7 = [fetchedResultsController2 performFetch:&v10];
     v8 = v10;
 
     if ((v7 & 1) == 0)
@@ -508,8 +508,8 @@ LABEL_10:
 
 - (void)recreateFetchedResultsController
 {
-  v3 = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
-  [v3 setDelegate:0];
+  fetchedResultsController = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
+  [fetchedResultsController setDelegate:0];
 
   [(ICImagesAndMoviesScrollView *)self setFetchedResultsController:0];
   v4 = +[ICAttachment newFetchRequestForAttachments];
@@ -523,8 +523,8 @@ LABEL_10:
   v8 = [NSPredicate predicateWithFormat:@"%K.@count > 0", @"previewImages"];
   v29[1] = v8;
   v9 = +[ICNoteContext sharedContext];
-  v10 = [v9 managedObjectContext];
-  v11 = [ICAttachment predicateForAttachmentBrowserWithContext:v10];
+  managedObjectContext = [v9 managedObjectContext];
+  v11 = [ICAttachment predicateForAttachmentBrowserWithContext:managedObjectContext];
   v29[2] = v11;
   v12 = [NSArray arrayWithObjects:v29 count:3];
   v13 = [NSMutableArray arrayWithArray:v12];
@@ -566,13 +566,13 @@ LABEL_10:
   v26 = [v25 fetchedResultsControllerForFetchRequest:v4 sectionNameKeyPath:0];
   [(ICImagesAndMoviesScrollView *)self setFetchedResultsController:v26];
 
-  v27 = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
-  [v27 setDelegate:self];
+  fetchedResultsController2 = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
+  [fetchedResultsController2 setDelegate:self];
 }
 
 - (void)updateCollectionViewItemSizeAndFrame
 {
-  v19 = [(ICImagesAndMoviesScrollView *)self collectionViewFlowLayout];
+  collectionViewFlowLayout = [(ICImagesAndMoviesScrollView *)self collectionViewFlowLayout];
   [(ICImagesAndMoviesScrollView *)self bounds];
   if (v3 > 0.0)
   {
@@ -581,13 +581,13 @@ LABEL_10:
     {
       [(ICImagesAndMoviesScrollView *)self frame];
       Height = CGRectGetHeight(v21);
-      [v19 setItemSize:{Height, Height}];
-      v6 = [(ICImagesAndMoviesScrollView *)self traitCollection];
+      [collectionViewFlowLayout setItemSize:{Height, Height}];
+      traitCollection = [(ICImagesAndMoviesScrollView *)self traitCollection];
       v7 = 4.0;
-      if ([v6 horizontalSizeClass] != 1)
+      if ([traitCollection horizontalSizeClass] != 1)
       {
-        v8 = [(ICImagesAndMoviesScrollView *)self traitCollection];
-        if ([v8 verticalSizeClass] == 1)
+        traitCollection2 = [(ICImagesAndMoviesScrollView *)self traitCollection];
+        if ([traitCollection2 verticalSizeClass] == 1)
         {
           v7 = 4.0;
         }
@@ -598,8 +598,8 @@ LABEL_10:
         }
       }
 
-      [v19 setMinimumInteritemSpacing:v7];
-      [v19 setMinimumLineSpacing:4.0];
+      [collectionViewFlowLayout setMinimumInteritemSpacing:v7];
+      [collectionViewFlowLayout setMinimumLineSpacing:4.0];
       top = UIEdgeInsetsZero.top;
       left = UIEdgeInsetsZero.left;
       bottom = UIEdgeInsetsZero.bottom;
@@ -607,27 +607,27 @@ LABEL_10:
       goto LABEL_19;
     }
 
-    v13 = [(ICImagesAndMoviesScrollView *)self traitCollection];
-    if ([v13 horizontalSizeClass] == 1)
+    traitCollection3 = [(ICImagesAndMoviesScrollView *)self traitCollection];
+    if ([traitCollection3 horizontalSizeClass] == 1)
     {
     }
 
     else
     {
-      v14 = [(ICImagesAndMoviesScrollView *)self traitCollection];
-      v15 = [v14 verticalSizeClass];
+      traitCollection4 = [(ICImagesAndMoviesScrollView *)self traitCollection];
+      verticalSizeClass = [traitCollection4 verticalSizeClass];
 
-      if (v15 != 1)
+      if (verticalSizeClass != 1)
       {
-        [v19 setItemSize:{128.0, 128.0}];
+        [collectionViewFlowLayout setItemSize:{128.0, 128.0}];
         top = 12.0;
-        [v19 setMinimumInteritemSpacing:12.0];
-        [v19 setMinimumLineSpacing:12.0];
+        [collectionViewFlowLayout setMinimumInteritemSpacing:12.0];
+        [collectionViewFlowLayout setMinimumLineSpacing:12.0];
         left = 28.0;
         bottom = 0.0;
         right = 28.0;
 LABEL_19:
-        [v19 setSectionInset:{top, left, bottom, right}];
+        [collectionViewFlowLayout setSectionInset:{top, left, bottom, right}];
         goto LABEL_20;
       }
     }
@@ -645,9 +645,9 @@ LABEL_19:
         }
       }
 
-      [v19 setItemSize:{*(v17 - 1), *(v17 - 1)}];
-      [v19 setMinimumInteritemSpacing:*v17];
-      [v19 setMinimumLineSpacing:v17[1]];
+      [collectionViewFlowLayout setItemSize:{*(v17 - 1), *(v17 - 1)}];
+      [collectionViewFlowLayout setMinimumInteritemSpacing:*v17];
+      [collectionViewFlowLayout setMinimumLineSpacing:v17[1]];
       top = 0.0;
       left = 0.0;
       bottom = 0.0;
@@ -658,9 +658,9 @@ LABEL_19:
     {
 LABEL_16:
       v18 = floor((v4 + -2.0 + -10.0) / 6.0);
-      [v19 setItemSize:{v18, v18}];
-      [v19 setMinimumInteritemSpacing:2.0];
-      [v19 setMinimumLineSpacing:2.0];
+      [collectionViewFlowLayout setItemSize:{v18, v18}];
+      [collectionViewFlowLayout setMinimumInteritemSpacing:2.0];
+      [collectionViewFlowLayout setMinimumLineSpacing:2.0];
       left = 1.0;
       top = 0.0;
       bottom = 0.0;
@@ -691,37 +691,37 @@ LABEL_20:
 
 - (UICollectionViewFlowLayout)collectionViewFlowLayout
 {
-  v2 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  v3 = [v2 collectionViewLayout];
+  collectionView = [(ICImagesAndMoviesScrollView *)self collectionView];
+  collectionViewLayout = [collectionView collectionViewLayout];
 
-  return v3;
+  return collectionViewLayout;
 }
 
-- (void)setAttachmentSection:(signed __int16)a3
+- (void)setAttachmentSection:(signed __int16)section
 {
-  if (self->_attachmentSection != a3)
+  if (self->_attachmentSection != section)
   {
-    self->_attachmentSection = a3;
+    self->_attachmentSection = section;
     [(ICImagesAndMoviesScrollView *)self recreateFetchedResultsController];
-    v5 = [(ICImagesAndMoviesScrollView *)self collectionView];
-    [v5 reloadData];
+    collectionView = [(ICImagesAndMoviesScrollView *)self collectionView];
+    [collectionView reloadData];
   }
 }
 
-- (void)setScrollDirection:(int64_t)a3
+- (void)setScrollDirection:(int64_t)direction
 {
-  v5 = [(ICImagesAndMoviesScrollView *)self collectionViewFlowLayout];
-  [v5 setScrollDirection:a3];
+  collectionViewFlowLayout = [(ICImagesAndMoviesScrollView *)self collectionViewFlowLayout];
+  [collectionViewFlowLayout setScrollDirection:direction];
 
   [(ICImagesAndMoviesScrollView *)self updateCollectionViewItemSizeAndFrame];
 }
 
 - (int64_t)scrollDirection
 {
-  v2 = [(ICImagesAndMoviesScrollView *)self collectionViewFlowLayout];
-  v3 = [v2 scrollDirection];
+  collectionViewFlowLayout = [(ICImagesAndMoviesScrollView *)self collectionViewFlowLayout];
+  scrollDirection = [collectionViewFlowLayout scrollDirection];
 
-  return v3;
+  return scrollDirection;
 }
 
 - (unint64_t)thumbnailLayout
@@ -731,17 +731,17 @@ LABEL_20:
     return 1;
   }
 
-  v4 = [(ICImagesAndMoviesScrollView *)self traitCollection];
-  if ([v4 horizontalSizeClass] == 1)
+  traitCollection = [(ICImagesAndMoviesScrollView *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 1)
   {
 
     return 0;
   }
 
-  v5 = [(ICImagesAndMoviesScrollView *)self traitCollection];
-  v6 = [v5 verticalSizeClass];
+  traitCollection2 = [(ICImagesAndMoviesScrollView *)self traitCollection];
+  verticalSizeClass = [traitCollection2 verticalSizeClass];
 
-  if (v6 == 1)
+  if (verticalSizeClass == 1)
   {
     return 0;
   }
@@ -751,82 +751,82 @@ LABEL_20:
 
 - (NSArray)attachments
 {
-  v2 = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
-  v3 = [v2 fetchedObjects];
+  fetchedResultsController = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
+  fetchedObjects = [fetchedResultsController fetchedObjects];
 
-  return v3;
+  return fetchedObjects;
 }
 
-- (id)attachmentPresenter:(id)a3 transitionViewForAttachment:(id)a4
+- (id)attachmentPresenter:(id)presenter transitionViewForAttachment:(id)attachment
 {
-  v5 = a4;
-  v6 = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
-  v7 = [v6 indexPathForObject:v5];
+  attachmentCopy = attachment;
+  fetchedResultsController = [(ICImagesAndMoviesScrollView *)self fetchedResultsController];
+  v7 = [fetchedResultsController indexPathForObject:attachmentCopy];
 
-  v8 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  v9 = [v8 cellForItemAtIndexPath:v7];
+  collectionView = [(ICImagesAndMoviesScrollView *)self collectionView];
+  v9 = [collectionView cellForItemAtIndexPath:v7];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [(ICImagesAndMoviesScrollView *)v9 thumbnailView];
+    thumbnailView = [(ICImagesAndMoviesScrollView *)v9 thumbnailView];
   }
 
   else
   {
     if (v9)
     {
-      v11 = v9;
+      selfCopy = v9;
     }
 
     else
     {
-      v11 = self;
+      selfCopy = self;
     }
 
-    v10 = v11;
+    thumbnailView = selfCopy;
   }
 
-  v12 = v10;
+  v12 = thumbnailView;
 
   return v12;
 }
 
-- (BOOL)browseAttachmentsCell:(id)a3 didSelectAttachment:(id)a4
+- (BOOL)browseAttachmentsCell:(id)cell didSelectAttachment:(id)attachment
 {
-  v5 = a4;
-  v6 = [(ICImagesAndMoviesScrollView *)self delegate];
+  attachmentCopy = attachment;
+  delegate = [(ICImagesAndMoviesScrollView *)self delegate];
 
-  if (v6)
+  if (delegate)
   {
-    v7 = [(ICImagesAndMoviesScrollView *)self delegate];
-    v8 = [(ICImagesAndMoviesScrollView *)self collectionView];
-    [v7 browseAttachmentsCollectionView:v8 didSelectAttachment:v5 indexPath:0];
+    delegate2 = [(ICImagesAndMoviesScrollView *)self delegate];
+    collectionView = [(ICImagesAndMoviesScrollView *)self collectionView];
+    [delegate2 browseAttachmentsCollectionView:collectionView didSelectAttachment:attachmentCopy indexPath:0];
   }
 
-  return v6 != 0;
+  return delegate != 0;
 }
 
-- (void)browseAttachmentsCell:(id)a3 shouldShareAttachment:(id)a4
+- (void)browseAttachmentsCell:(id)cell shouldShareAttachment:(id)attachment
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(ICImagesAndMoviesScrollView *)self delegate];
-  v8 = [(ICImagesAndMoviesScrollView *)self collectionView];
-  [v9 browseAttachmentsCollectionView:v8 cell:v7 shouldShareAttachment:v6];
+  attachmentCopy = attachment;
+  cellCopy = cell;
+  delegate = [(ICImagesAndMoviesScrollView *)self delegate];
+  collectionView = [(ICImagesAndMoviesScrollView *)self collectionView];
+  [delegate browseAttachmentsCollectionView:collectionView cell:cellCopy shouldShareAttachment:attachmentCopy];
 }
 
-- (void)browseAttachmentsCell:(id)a3 shouldInspectAttachment:(id)a4
+- (void)browseAttachmentsCell:(id)cell shouldInspectAttachment:(id)attachment
 {
-  v9 = a4;
-  v5 = [(ICImagesAndMoviesScrollView *)self delegate];
+  attachmentCopy = attachment;
+  delegate = [(ICImagesAndMoviesScrollView *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(ICImagesAndMoviesScrollView *)self delegate];
-    v8 = [(ICImagesAndMoviesScrollView *)self collectionView];
-    [v7 browseAttachmentsCollectionView:v8 shouldInspectAttachment:v9];
+    delegate2 = [(ICImagesAndMoviesScrollView *)self delegate];
+    collectionView = [(ICImagesAndMoviesScrollView *)self collectionView];
+    [delegate2 browseAttachmentsCollectionView:collectionView shouldInspectAttachment:attachmentCopy];
   }
 }
 

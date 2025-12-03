@@ -1,5 +1,5 @@
 @interface TSDInsertionContext
-+ (id)dragInsertionContextWithPreferredCenter:(CGPoint)a3 required:(BOOL)a4 shouldEndEditing:(BOOL)a5 fromDragToInsertController:(BOOL)a6 insertWillBeDiscarded:(BOOL)a7;
++ (id)dragInsertionContextWithPreferredCenter:(CGPoint)center required:(BOOL)required shouldEndEditing:(BOOL)editing fromDragToInsertController:(BOOL)controller insertWillBeDiscarded:(BOOL)discarded;
 + (id)nonInteractiveFloatingInsertionContext;
 + (id)nonInteractiveInsertionContext;
 - (CGPoint)preferredCenter;
@@ -42,9 +42,9 @@ TSDNonInteractiveFloatingInsertionContext *__61__TSDInsertionContext_nonInteract
   return result;
 }
 
-+ (id)dragInsertionContextWithPreferredCenter:(CGPoint)a3 required:(BOOL)a4 shouldEndEditing:(BOOL)a5 fromDragToInsertController:(BOOL)a6 insertWillBeDiscarded:(BOOL)a7
++ (id)dragInsertionContextWithPreferredCenter:(CGPoint)center required:(BOOL)required shouldEndEditing:(BOOL)editing fromDragToInsertController:(BOOL)controller insertWillBeDiscarded:(BOOL)discarded
 {
-  v7 = [[TSDDragInsertionContext alloc] initWithPreferredCenter:a4 required:a5 shouldEndEditing:a6 fromDragToInsertController:a7 insertWillBeDiscarded:a3.x, a3.y];
+  v7 = [[TSDDragInsertionContext alloc] initWithPreferredCenter:required required:editing shouldEndEditing:controller fromDragToInsertController:discarded insertWillBeDiscarded:center.x, center.y];
 
   return v7;
 }
@@ -59,9 +59,9 @@ TSDNonInteractiveFloatingInsertionContext *__61__TSDInsertionContext_nonInteract
     v3 = objc_opt_class();
     if (v3 == objc_opt_class())
     {
-      v4 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v5 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDInsertionContext init]"];
-      [v4 handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDInsertionContext.m"), 71, @"Cannot instantiate abstract class"}];
+      [currentHandler handleFailureInFunction:v5 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDInsertionContext.m"), 71, @"Cannot instantiate abstract class"}];
 
       return 0;
     }

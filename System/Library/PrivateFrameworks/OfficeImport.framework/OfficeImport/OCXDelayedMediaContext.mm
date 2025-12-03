@@ -1,22 +1,22 @@
 @interface OCXDelayedMediaContext
 - (NSString)description;
-- (OCXDelayedMediaContext)initWithTargetLocation:(id)a3 package:(id)a4;
+- (OCXDelayedMediaContext)initWithTargetLocation:(id)location package:(id)package;
 @end
 
 @implementation OCXDelayedMediaContext
 
-- (OCXDelayedMediaContext)initWithTargetLocation:(id)a3 package:(id)a4
+- (OCXDelayedMediaContext)initWithTargetLocation:(id)location package:(id)package
 {
-  v7 = a3;
-  v8 = a4;
+  locationCopy = location;
+  packageCopy = package;
   v12.receiver = self;
   v12.super_class = OCXDelayedMediaContext;
   v9 = [(OCXDelayedMediaContext *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->mTargetLocation, a3);
-    objc_storeStrong(&v10->mPackage, a4);
+    objc_storeStrong(&v9->mTargetLocation, location);
+    objc_storeStrong(&v10->mPackage, package);
   }
 
   return v10;

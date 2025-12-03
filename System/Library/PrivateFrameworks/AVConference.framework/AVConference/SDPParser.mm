@@ -1,14 +1,14 @@
 @interface SDPParser
 - (BOOL)nextLine;
-- (BOOL)parseMediaLineHeader:(id)a3 mediaType:(int *)a4 supportedPayloads:(id)a5 rtpPort:(int *)a6;
-- (SDPParser)initWithString:(id)a3;
-- (int)stringToMediaType:(id)a3;
+- (BOOL)parseMediaLineHeader:(id)header mediaType:(int *)type supportedPayloads:(id)payloads rtpPort:(int *)port;
+- (SDPParser)initWithString:(id)string;
+- (int)stringToMediaType:(id)type;
 - (void)dealloc;
 @end
 
 @implementation SDPParser
 
-- (SDPParser)initWithString:(id)a3
+- (SDPParser)initWithString:(id)string
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -16,7 +16,7 @@
   v4 = [(SDPParser *)&v7 init];
   if (v4)
   {
-    v5 = [a3 componentsSeparatedByString:@"\r\n"];
+    v5 = [string componentsSeparatedByString:@"\r\n"];
     v4->_lines = v5;
     v4->_lineEnumerator = [(NSArray *)v5 objectEnumerator];
     v4->_fieldNameMap = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{&unk_1F579C720, @"a", &unk_1F579C738, @"i", &unk_1F579C750, @"c", &unk_1F579C768, @"b", &unk_1F579C780, @"k", &unk_1F579C798, @"v", &unk_1F579C7B0, @"m", &unk_1F579C7C8, @"o", &unk_1F579C7E0, @"s", &unk_1F579C7F8, @"u", &unk_1F579C810, @"e", &unk_1F579C828, @"p", &unk_1F579C840, @"t", &unk_1F579C858, @"r", &unk_1F579C870, @"z", 0}];
@@ -35,19 +35,19 @@
   [(SDPParser *)&v3 dealloc];
 }
 
-- (int)stringToMediaType:(id)a3
+- (int)stringToMediaType:(id)type
 {
-  if ([a3 isEqualToString:@"audio"])
+  if ([type isEqualToString:@"audio"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"video"])
+  if ([type isEqualToString:@"video"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"screen"])
+  if ([type isEqualToString:@"screen"])
   {
     return 3;
   }
@@ -57,13 +57,13 @@
 
 - (BOOL)nextLine
 {
-  v3 = [(NSEnumerator *)self->_lineEnumerator nextObject];
-  if (!v3)
+  nextObject = [(NSEnumerator *)self->_lineEnumerator nextObject];
+  if (!nextObject)
   {
     self->_parsingDone = 1;
   }
 
-  v4 = [v3 componentsSeparatedByString:@"="];
+  v4 = [nextObject componentsSeparatedByString:@"="];
   self->_fieldName = [v4 objectAtIndexedSubscript:0];
   if ([v4 count] < 2)
   {
@@ -79,23 +79,23 @@
   v6 = [(NSDictionary *)self->_fieldNameMap objectForKeyedSubscript:self->_fieldName];
   if (v6)
   {
-    v7 = [v6 unsignedCharValue];
+    unsignedCharValue = [v6 unsignedCharValue];
   }
 
   else
   {
-    v7 = 255;
+    unsignedCharValue = 255;
   }
 
-  self->_fieldType = v7;
-  return v7 != 255;
+  self->_fieldType = unsignedCharValue;
+  return unsignedCharValue != 255;
 }
 
-- (BOOL)parseMediaLineHeader:(id)a3 mediaType:(int *)a4 supportedPayloads:(id)a5 rtpPort:(int *)a6
+- (BOOL)parseMediaLineHeader:(id)header mediaType:(int *)type supportedPayloads:(id)payloads rtpPort:(int *)port
 {
   v19 = *MEMORY[0x1E69E9840];
-  v10 = [a3 componentsSeparatedByString:@" "];
-  if (a4 && a5 && a6)
+  v10 = [header componentsSeparatedByString:@" "];
+  if (type && payloads && port)
   {
     v11 = v10;
     if ([v10 count] <= 3)
@@ -107,7 +107,7 @@
     else
     {
       v12 = -[SDPParser stringToMediaType:](self, "stringToMediaType:", [v11 objectAtIndexedSubscript:0]);
-      *a4 = v12;
+      *type = v12;
       if (v12 == -1)
       {
         [SDPParser parseMediaLineHeader:? mediaType:? supportedPayloads:? rtpPort:?];
@@ -117,13 +117,13 @@
       else
       {
         v13 = 1;
-        *a6 = [objc_msgSend(v11 objectAtIndexedSubscript:{1), "intValue"}];
+        *port = [objc_msgSend(v11 objectAtIndexedSubscript:{1), "intValue"}];
         if ([v11 count] >= 4)
         {
           v14 = 3;
           do
           {
-            [a5 addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", objc_msgSend(objc_msgSend(v11, "objectAtIndexedSubscript:", v14++), "intValue"))}];
+            [payloads addObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", objc_msgSend(objc_msgSend(v11, "objectAtIndexedSubscript:", v14++), "intValue"))}];
           }
 
           while (v14 < [v11 count]);

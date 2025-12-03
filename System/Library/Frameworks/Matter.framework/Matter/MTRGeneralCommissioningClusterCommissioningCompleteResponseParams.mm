@@ -1,9 +1,9 @@
 @interface MTRGeneralCommissioningClusterCommissioningCompleteResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTRGeneralCommissioningClusterCommissioningCompleteResponseParams)init;
-- (MTRGeneralCommissioningClusterCommissioningCompleteResponseParams)initWithDecodableStruct:(const void *)a3;
+- (MTRGeneralCommissioningClusterCommissioningCompleteResponseParams)initWithDecodableStruct:(const void *)struct;
 - (MTRGeneralCommissioningClusterCommissioningCompleteResponseParams)initWithResponseValue:(NSDictionary *)responseValue error:(NSError *)error;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,17 +30,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRGeneralCommissioningClusterCommissioningCompleteResponseParams);
-  v5 = [(MTRGeneralCommissioningClusterCommissioningCompleteResponseParams *)self errorCode];
-  [(MTRGeneralCommissioningClusterCommissioningCompleteResponseParams *)v4 setErrorCode:v5];
+  errorCode = [(MTRGeneralCommissioningClusterCommissioningCompleteResponseParams *)self errorCode];
+  [(MTRGeneralCommissioningClusterCommissioningCompleteResponseParams *)v4 setErrorCode:errorCode];
 
-  v6 = [(MTRGeneralCommissioningClusterCommissioningCompleteResponseParams *)self debugText];
-  [(MTRGeneralCommissioningClusterCommissioningCompleteResponseParams *)v4 setDebugText:v6];
+  debugText = [(MTRGeneralCommissioningClusterCommissioningCompleteResponseParams *)self debugText];
+  [(MTRGeneralCommissioningClusterCommissioningCompleteResponseParams *)v4 setDebugText:debugText];
 
-  v7 = [(MTRGeneralCommissioningClusterCommissioningCompleteResponseParams *)self timedInvokeTimeoutMs];
-  [(MTRGeneralCommissioningClusterCommissioningCompleteResponseParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTRGeneralCommissioningClusterCommissioningCompleteResponseParams *)self timedInvokeTimeoutMs];
+  [(MTRGeneralCommissioningClusterCommissioningCompleteResponseParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
   return v4;
 }
@@ -101,7 +101,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTRGeneralCommissioningClusterCommissioningCompleteResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTRGeneralCommissioningClusterCommissioningCompleteResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTRGeneralCommissioningClusterCommissioningCompleteResponseParams;
@@ -109,7 +109,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTRGeneralCommissioningClusterCommissioningCompleteResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTRGeneralCommissioningClusterCommissioningCompleteResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -125,17 +125,17 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*struct];
   [(MTRGeneralCommissioningClusterCommissioningCompleteResponseParams *)self setErrorCode:v5];
 
-  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*(a3 + 1) length:*(a3 + 2) encoding:4];
+  v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithBytes:*(struct + 1) length:*(struct + 2) encoding:4];
   [(MTRGeneralCommissioningClusterCommissioningCompleteResponseParams *)self setDebugText:v6];
 
-  v7 = [(MTRGeneralCommissioningClusterCommissioningCompleteResponseParams *)self debugText];
+  debugText = [(MTRGeneralCommissioningClusterCommissioningCompleteResponseParams *)self debugText];
 
-  if (v7)
+  if (debugText)
   {
     v8 = 0;
   }
@@ -145,7 +145,7 @@ LABEL_6:
     v8 = "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm";
   }
 
-  if (v7)
+  if (debugText)
   {
     v9 = 0;
   }

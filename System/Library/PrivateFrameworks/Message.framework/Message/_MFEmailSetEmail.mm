@@ -1,19 +1,19 @@
 @interface _MFEmailSetEmail
 - (NSString)address;
 - (NSString)commentedAddress;
-- (_MFEmailSetEmail)initWithAddress:(id)a3;
+- (_MFEmailSetEmail)initWithAddress:(id)address;
 - (void)dealloc;
-- (void)setAddress:(id)a3;
+- (void)setAddress:(id)address;
 @end
 
 @implementation _MFEmailSetEmail
 
-- (_MFEmailSetEmail)initWithAddress:(id)a3
+- (_MFEmailSetEmail)initWithAddress:(id)address
 {
   v6.receiver = self;
   v6.super_class = _MFEmailSetEmail;
   v4 = [(_MFEmailSetEmail *)&v6 init];
-  [(_MFEmailSetEmail *)v4 setAddress:a3];
+  [(_MFEmailSetEmail *)v4 setAddress:address];
   if (!v4->_encodedAddress)
   {
 
@@ -30,24 +30,24 @@
   [(_MFEmailSetEmail *)&v3 dealloc];
 }
 
-- (void)setAddress:(id)a3
+- (void)setAddress:(id)address
 {
   self->_encodedAddress = 0;
-  v6 = [a3 mf_copyUncommentedAddress];
-  v5 = [v6 mf_copyIDNAEncodedEmailAddress];
-  if ([objc_alloc(MEMORY[0x1E699B240]) initWithString:v5])
+  mf_copyUncommentedAddress = [address mf_copyUncommentedAddress];
+  mf_copyIDNAEncodedEmailAddress = [mf_copyUncommentedAddress mf_copyIDNAEncodedEmailAddress];
+  if ([objc_alloc(MEMORY[0x1E699B240]) initWithString:mf_copyIDNAEncodedEmailAddress])
   {
-    self->_hash = CFHash([v5 lowercaseString]);
-    self->_encodedAddress = v5;
-    self->_comment = [a3 mf_copyAddressComment];
+    self->_hash = CFHash([mf_copyIDNAEncodedEmailAddress lowercaseString]);
+    self->_encodedAddress = mf_copyIDNAEncodedEmailAddress;
+    self->_comment = [address mf_copyAddressComment];
   }
 }
 
 - (NSString)address
 {
-  v2 = [(NSString *)self->_encodedAddress mf_copyIDNADecodedEmailAddress];
+  mf_copyIDNADecodedEmailAddress = [(NSString *)self->_encodedAddress mf_copyIDNADecodedEmailAddress];
 
-  return v2;
+  return mf_copyIDNADecodedEmailAddress;
 }
 
 - (NSString)commentedAddress

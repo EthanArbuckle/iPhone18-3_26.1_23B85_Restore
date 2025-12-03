@@ -1,33 +1,33 @@
 @interface PKDashboardFooterTextView
-- (CGSize)_layoutWithBounds:(CGRect)a3 templateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKDashboardFooterTextView)initWithFrame:(CGRect)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds templateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKDashboardFooterTextView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)customContentInsets;
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5;
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action;
 - (void)_updateText;
 - (void)createSubviews;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 - (void)resetFonts;
-- (void)setAdditionalView:(id)a3;
-- (void)setBottomInsetType:(unint64_t)a3;
-- (void)setCustomContentInsets:(UIEdgeInsets)a3;
-- (void)setFont:(id)a3;
-- (void)setFooterText:(id)a3;
-- (void)setHorizontalAlignment:(unsigned int)a3;
-- (void)setLinkTextColor:(id)a3;
-- (void)setMaximumLines:(int64_t)a3;
-- (void)setSources:(id)a3;
-- (void)setUseCustomContentInsets:(BOOL)a3;
+- (void)setAdditionalView:(id)view;
+- (void)setBottomInsetType:(unint64_t)type;
+- (void)setCustomContentInsets:(UIEdgeInsets)insets;
+- (void)setFont:(id)font;
+- (void)setFooterText:(id)text;
+- (void)setHorizontalAlignment:(unsigned int)alignment;
+- (void)setLinkTextColor:(id)color;
+- (void)setMaximumLines:(int64_t)lines;
+- (void)setSources:(id)sources;
+- (void)setUseCustomContentInsets:(BOOL)insets;
 @end
 
 @implementation PKDashboardFooterTextView
 
-- (PKDashboardFooterTextView)initWithFrame:(CGRect)a3
+- (PKDashboardFooterTextView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = PKDashboardFooterTextView;
-  v3 = [(PKDashboardCollectionViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -61,7 +61,7 @@
 
   v11 = self->_textView;
   horizontalAlignment = self->_horizontalAlignment;
-  v13 = [(PKDashboardFooterTextView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PKDashboardFooterTextView *)self _shouldReverseLayoutDirection];
   if (horizontalAlignment <= 1)
   {
     if (horizontalAlignment == 1)
@@ -70,7 +70,7 @@
     }
 
 LABEL_7:
-    if (v13)
+    if (_shouldReverseLayoutDirection)
     {
       horizontalAlignment = 2;
     }
@@ -94,7 +94,7 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  if (v13)
+  if (_shouldReverseLayoutDirection)
   {
     horizontalAlignment = 0;
   }
@@ -108,8 +108,8 @@ LABEL_13:
   [(UITextView *)v11 setTextAlignment:horizontalAlignment];
   v14 = *MEMORY[0x1E69B9818];
   [(PKDashboardFooterTextView *)self setAccessibilityIdentifier:*MEMORY[0x1E69B9818]];
-  v15 = [(PKDashboardFooterTextView *)self contentView];
-  [v15 addSubview:self->_textView];
+  contentView = [(PKDashboardFooterTextView *)self contentView];
+  [contentView addSubview:self->_textView];
 
   [(PKDashboardFooterTextView *)self setAccessibilityIdentifier:v14];
 
@@ -128,8 +128,8 @@ LABEL_13:
 
   else
   {
-    v4 = [(PKDashboardFooterTextView *)self _defaultFont];
-    [(UITextView *)textView setFont:v4];
+    _defaultFont = [(PKDashboardFooterTextView *)self _defaultFont];
+    [(UITextView *)textView setFont:_defaultFont];
   }
 }
 
@@ -142,9 +142,9 @@ LABEL_13:
   [(PKDashboardFooterTextView *)self _layoutWithBounds:0 templateLayout:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PKDashboardFooterTextView *)self _layoutWithBounds:1 templateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKDashboardFooterTextView *)self _layoutWithBounds:1 templateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -164,12 +164,12 @@ LABEL_13:
   [(PKDashboardFooterTextView *)self setAdditionalView:0];
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 templateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds templateLayout:(BOOL)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if (self->_useCustomContentInsets)
   {
     p_defaultTextContainerInsets = MEMORY[0x1E69DDCE0];
@@ -184,11 +184,11 @@ LABEL_13:
   v11 = [(NSString *)self->_footerText length];
   if (self->_maximumLines)
   {
-    v12 = [(UITextView *)self->_textView textContainer];
-    [v12 setMaximumNumberOfLines:self->_maximumLines];
+    textContainer = [(UITextView *)self->_textView textContainer];
+    [textContainer setMaximumNumberOfLines:self->_maximumLines];
 
-    v13 = [(UITextView *)self->_textView textContainer];
-    [v13 setLineBreakMode:4];
+    textContainer2 = [(UITextView *)self->_textView textContainer];
+    [textContainer2 setLineBreakMode:4];
   }
 
   if (self->_useCustomContentInsets)
@@ -256,7 +256,7 @@ LABEL_13:
     v41.size.width = v23;
     v41.size.height = v26;
     CGRectDivide(v41, &slice, &remainder, v28, CGRectMinYEdge);
-    if (!a4)
+    if (!layout)
     {
       textView = self->_textView;
       PKContentAlignmentMake();
@@ -276,7 +276,7 @@ LABEL_13:
     [(UIView *)additionalView sizeThatFits:v19, 3.40282347e38];
     v32 = v31;
     CGRectDivide(remainder, &slice, &remainder, v31, CGRectMinYEdge);
-    if (!a4)
+    if (!layout)
     {
       v33 = self->_additionalView;
       PKContentAlignmentMake();
@@ -300,9 +300,9 @@ LABEL_13:
   return result;
 }
 
-- (void)setFooterText:(id)a3
+- (void)setFooterText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   footerText = self->_footerText;
   self->_footerText = v4;
 
@@ -318,92 +318,92 @@ LABEL_13:
   [(PKDashboardFooterTextView *)self setNeedsLayout];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v5 = a3;
+  fontCopy = font;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_font, a3);
+    objc_storeStrong(&self->_font, font);
     [(PKDashboardFooterTextView *)self _updateText];
   }
 }
 
-- (void)setUseCustomContentInsets:(BOOL)a3
+- (void)setUseCustomContentInsets:(BOOL)insets
 {
-  if (self->_useCustomContentInsets != a3)
+  if (self->_useCustomContentInsets != insets)
   {
-    self->_useCustomContentInsets = a3;
+    self->_useCustomContentInsets = insets;
     [(PKDashboardFooterTextView *)self setNeedsLayout];
   }
 }
 
-- (void)setCustomContentInsets:(UIEdgeInsets)a3
+- (void)setCustomContentInsets:(UIEdgeInsets)insets
 {
   if (self->_useCustomContentInsets)
   {
-    v3.f64[0] = a3.top;
-    v3.f64[1] = a3.left;
-    v4.f64[0] = a3.bottom;
-    v4.f64[1] = a3.right;
+    v3.f64[0] = insets.top;
+    v3.f64[1] = insets.left;
+    v4.f64[0] = insets.bottom;
+    v4.f64[1] = insets.right;
     if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_customContentInsets.top), vceqq_f64(v4, *&self->_customContentInsets.bottom)))) & 1) == 0)
     {
-      self->_customContentInsets = a3;
+      self->_customContentInsets = insets;
       [(PKDashboardFooterTextView *)self setNeedsLayout];
     }
   }
 }
 
-- (void)setMaximumLines:(int64_t)a3
+- (void)setMaximumLines:(int64_t)lines
 {
-  if (self->_maximumLines != a3)
+  if (self->_maximumLines != lines)
   {
-    self->_maximumLines = a3;
+    self->_maximumLines = lines;
     [(PKDashboardFooterTextView *)self setNeedsLayout];
   }
 }
 
-- (void)setSources:(id)a3
+- (void)setSources:(id)sources
 {
-  v5 = a3;
+  sourcesCopy = sources;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_sources, a3);
+    objc_storeStrong(&self->_sources, sources);
     [(PKDashboardFooterTextView *)self _updateText];
   }
 }
 
-- (void)setLinkTextColor:(id)a3
+- (void)setLinkTextColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_linkTextColor, a3);
+    objc_storeStrong(&self->_linkTextColor, color);
     [(PKDashboardFooterTextView *)self _updateText];
   }
 }
 
-- (void)setBottomInsetType:(unint64_t)a3
+- (void)setBottomInsetType:(unint64_t)type
 {
-  if (self->_bottomInsetType != a3)
+  if (self->_bottomInsetType != type)
   {
-    self->_bottomInsetType = a3;
+    self->_bottomInsetType = type;
     [(PKDashboardFooterTextView *)self setNeedsLayout];
   }
 }
 
-- (void)setHorizontalAlignment:(unsigned int)a3
+- (void)setHorizontalAlignment:(unsigned int)alignment
 {
-  if (self->_horizontalAlignment == a3)
+  if (self->_horizontalAlignment == alignment)
   {
     return;
   }
 
-  self->_horizontalAlignment = a3;
+  self->_horizontalAlignment = alignment;
   textView = self->_textView;
-  v7 = [(PKDashboardFooterTextView *)self _shouldReverseLayoutDirection];
-  if (a3 <= 1)
+  _shouldReverseLayoutDirection = [(PKDashboardFooterTextView *)self _shouldReverseLayoutDirection];
+  if (alignment <= 1)
   {
-    if (a3 == 1)
+    if (alignment == 1)
     {
       v8 = 1;
       goto LABEL_14;
@@ -412,16 +412,16 @@ LABEL_13:
     goto LABEL_8;
   }
 
-  if (a3 != 2)
+  if (alignment != 2)
   {
-    if (a3 == 3)
+    if (alignment == 3)
     {
       v8 = 3;
       goto LABEL_14;
     }
 
 LABEL_8:
-    if (v7)
+    if (_shouldReverseLayoutDirection)
     {
       v8 = 2;
     }
@@ -434,7 +434,7 @@ LABEL_8:
     goto LABEL_14;
   }
 
-  if (v7)
+  if (_shouldReverseLayoutDirection)
   {
     v8 = 0;
   }
@@ -450,26 +450,26 @@ LABEL_14:
   [(PKDashboardFooterTextView *)self setNeedsLayout];
 }
 
-- (void)setAdditionalView:(id)a3
+- (void)setAdditionalView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   additionalView = self->_additionalView;
-  if (additionalView != v5)
+  if (additionalView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     if (additionalView)
     {
       [(UIView *)additionalView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_additionalView, a3);
+    objc_storeStrong(&self->_additionalView, view);
     if (v7)
     {
       [(PKDashboardFooterTextView *)self addSubview:v7];
     }
 
     [(PKDashboardFooterTextView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
@@ -479,28 +479,28 @@ LABEL_14:
   font = self->_font;
   if (font)
   {
-    v4 = font;
+    _defaultFont = font;
   }
 
   else
   {
-    v4 = [(PKDashboardFooterTextView *)self _defaultFont];
+    _defaultFont = [(PKDashboardFooterTextView *)self _defaultFont];
   }
 
-  v5 = v4;
+  v5 = _defaultFont;
   v6 = [MEMORY[0x1E69DD050] _defaultTextColorForTableViewStyle:1 isSectionHeader:0];
   linkTextColor = self->_linkTextColor;
   if (linkTextColor)
   {
-    v8 = linkTextColor;
+    linkColor = linkTextColor;
   }
 
   else
   {
-    v8 = [MEMORY[0x1E69DC888] linkColor];
+    linkColor = [MEMORY[0x1E69DC888] linkColor];
   }
 
-  v24 = v8;
+  v24 = linkColor;
   v9 = [(NSString *)self->_footerText length];
   v10 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:self->_footerText];
   v23 = *MEMORY[0x1E69DB650];
@@ -530,8 +530,8 @@ LABEL_14:
           objc_enumerationMutation(obj);
         }
 
-        v16 = [*(*(&v26 + 1) + 8 * v15) linkText];
-        v17 = [(NSString *)self->_footerText rangeOfString:v16];
+        linkText = [*(*(&v26 + 1) + 8 * v15) linkText];
+        v17 = [(NSString *)self->_footerText rangeOfString:linkText];
         v19 = v18;
         if ([(PKDashboardFooterTextView *)self _isLinkRangeValid:v17, v18])
         {
@@ -554,15 +554,15 @@ LABEL_14:
   [(PKDashboardFooterTextView *)self setNeedsLayout];
 }
 
-- (id)textView:(id)a3 primaryActionForTextItem:(id)a4 defaultAction:(id)a5
+- (id)textView:(id)view primaryActionForTextItem:(id)item defaultAction:(id)action
 {
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 contentType] == 2 && ((objc_msgSend(v9, "tagIdentifier"), v11 = objc_claimAutoreleasedReturnValue(), v11 == @"com.apple.passkit.footerItemTextTag") || (v12 = v11) != 0 && (v13 = -[__CFString isEqualToString:](v11, "isEqualToString:", @"com.apple.passkit.footerItemTextTag"), v12, v12, (v13 & 1) != 0)))
+  viewCopy = view;
+  itemCopy = item;
+  actionCopy = action;
+  if ([itemCopy contentType] == 2 && ((objc_msgSend(itemCopy, "tagIdentifier"), v11 = objc_claimAutoreleasedReturnValue(), v11 == @"com.apple.passkit.footerItemTextTag") || (v12 = v11) != 0 && (v13 = -[__CFString isEqualToString:](v11, "isEqualToString:", @"com.apple.passkit.footerItemTextTag"), v12, v12, (v13 & 1) != 0)))
   {
-    v30 = v10;
+    v30 = actionCopy;
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
@@ -583,27 +583,27 @@ LABEL_14:
           }
 
           v18 = *(*(&v34 + 1) + 8 * i);
-          v19 = [v18 linkText];
-          v20 = [v8 text];
-          v21 = [v20 rangeOfString:v19];
+          linkText = [v18 linkText];
+          text = [viewCopy text];
+          v21 = [text rangeOfString:linkText];
           v23 = v22;
 
-          v42.location = [v9 range];
+          v42.location = [itemCopy range];
           v42.length = v24;
           v41.location = v21;
           v41.length = v23;
           if (NSIntersectionRange(v41, v42).length)
           {
-            v25 = [v18 action];
-            if (v25)
+            action = [v18 action];
+            if (action)
             {
               v27 = MEMORY[0x1E69DC628];
               v32[0] = MEMORY[0x1E69E9820];
               v32[1] = 3221225472;
               v32[2] = __77__PKDashboardFooterTextView_textView_primaryActionForTextItem_defaultAction___block_invoke;
               v32[3] = &unk_1E8021328;
-              v33 = v25;
-              v28 = v25;
+              v33 = action;
+              v28 = action;
               v26 = [v27 actionWithHandler:v32];
 
               goto LABEL_17;
@@ -623,12 +623,12 @@ LABEL_14:
 
     v26 = 0;
 LABEL_17:
-    v10 = v30;
+    actionCopy = v30;
   }
 
   else
   {
-    v26 = v10;
+    v26 = actionCopy;
   }
 
   return v26;

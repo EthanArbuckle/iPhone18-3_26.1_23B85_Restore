@@ -1,22 +1,22 @@
 @interface NSUUID
-+ (id)hashedUUID:(id)a3;
-+ (id)vm_UUIDv5ForData:(id)a3 namespaceUUID:(id)a4;
-+ (id)vm_UUIDv5ForString:(id)a3;
++ (id)hashedUUID:(id)d;
++ (id)vm_UUIDv5ForData:(id)data namespaceUUID:(id)d;
++ (id)vm_UUIDv5ForString:(id)string;
 @end
 
 @implementation NSUUID
 
-+ (id)vm_UUIDv5ForString:(id)a3
++ (id)vm_UUIDv5ForString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v4 = [a3 dataUsingEncoding:4];
+    v4 = [string dataUsingEncoding:4];
     v5 = [[NSUUID alloc] initWithUUIDString:@"0702F1D1-3498-4A05-A546-B04037E868FF"];
     v6 = v5;
     v7 = 0;
     if (v4 && v5)
     {
-      v7 = [a1 vm_UUIDv5ForData:v4 namespaceUUID:v5];
+      v7 = [self vm_UUIDv5ForData:v4 namespaceUUID:v5];
     }
   }
 
@@ -28,22 +28,22 @@
   return v7;
 }
 
-+ (id)vm_UUIDv5ForData:(id)a3 namespaceUUID:(id)a4
++ (id)vm_UUIDv5ForData:(id)data namespaceUUID:(id)d
 {
   v4 = 0;
-  if (a3 && a4)
+  if (data && d)
   {
     data[0] = 0;
     data[1] = 0;
-    v6 = a3;
-    [a4 getUUIDBytes:data];
+    dataCopy = data;
+    [d getUUIDBytes:data];
     memset(&v10, 0, sizeof(v10));
     CC_SHA1_Init(&v10);
     CC_SHA1_Update(&v10, data, 0x10u);
-    v7 = [v6 bytes];
-    v8 = [v6 length];
+    bytes = [dataCopy bytes];
+    v8 = [dataCopy length];
 
-    CC_SHA1_Update(&v10, v7, v8);
+    CC_SHA1_Update(&v10, bytes, v8);
     CC_SHA1_Final(md, &v10);
     v13 = *md;
     BYTE6(v13) = md[6] & 0xF | 0x50;
@@ -54,9 +54,9 @@
   return v4;
 }
 
-+ (id)hashedUUID:(id)a3
++ (id)hashedUUID:(id)d
 {
-  v3 = [a3 dataUsingEncoding:4];
+  v3 = [d dataUsingEncoding:4];
   v4 = [[NSUUID alloc] initWithUUIDString:@"0702F1D1-3498-4A05-A546-B04037E868FF"];
   data[0] = 0;
   data[1] = 0;

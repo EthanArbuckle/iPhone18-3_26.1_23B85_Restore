@@ -1,15 +1,15 @@
 @interface PLChangeNotification
-+ (id)notificationWithName:(id)a3 object:(id)a4 userInfo:(id)a5;
++ (id)notificationWithName:(id)name object:(id)object userInfo:(id)info;
 @end
 
 @implementation PLChangeNotification
 
-+ (id)notificationWithName:(id)a3 object:(id)a4 userInfo:(id)a5
++ (id)notificationWithName:(id)name object:(id)object userInfo:(id)info
 {
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:a1 file:@"PLChangeNotification.m" lineNumber:24 description:{@"Cannot create a PLChangeNotification via %s", "+[PLChangeNotification notificationWithName:object:userInfo:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PLChangeNotification.m" lineNumber:24 description:{@"Cannot create a PLChangeNotification via %s", "+[PLChangeNotification notificationWithName:object:userInfo:]"}];
 
-  v8 = objc_alloc_init(a1);
+  v8 = objc_alloc_init(self);
 
   return v8;
 }

@@ -1,6 +1,6 @@
 @interface TTRIRemindersListAppLinkButton
-- (_TtC15RemindersUICore30TTRIRemindersListAppLinkButton)initWithCoder:(id)a3;
-- (_TtC15RemindersUICore30TTRIRemindersListAppLinkButton)initWithFrame:(CGRect)a3;
+- (_TtC15RemindersUICore30TTRIRemindersListAppLinkButton)initWithCoder:(id)coder;
+- (_TtC15RemindersUICore30TTRIRemindersListAppLinkButton)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -8,16 +8,16 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_21D5EBD30();
 }
 
-- (_TtC15RemindersUICore30TTRIRemindersListAppLinkButton)initWithFrame:(CGRect)a3
+- (_TtC15RemindersUICore30TTRIRemindersListAppLinkButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore30TTRIRemindersListAppLinkButton_currentOriginalImage) = 0;
   v9 = self + OBJC_IVAR____TtC15RemindersUICore30TTRIRemindersListAppLinkButton_currentImageSize;
@@ -28,7 +28,7 @@
   return [(TTRIExpandedHitTestButton *)&v11 initWithFrame:x, y, width, height];
 }
 
-- (_TtC15RemindersUICore30TTRIRemindersListAppLinkButton)initWithCoder:(id)a3
+- (_TtC15RemindersUICore30TTRIRemindersListAppLinkButton)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC15RemindersUICore30TTRIRemindersListAppLinkButton_currentOriginalImage) = 0;
@@ -37,8 +37,8 @@
   v6[8] = 1;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v7 = a3;
-  v8 = [(TTRIExpandedHitTestButton *)&v10 initWithCoder:v7];
+  coderCopy = coder;
+  v8 = [(TTRIExpandedHitTestButton *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

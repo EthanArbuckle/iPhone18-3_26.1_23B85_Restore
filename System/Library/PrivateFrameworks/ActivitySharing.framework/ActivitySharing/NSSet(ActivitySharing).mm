@@ -15,8 +15,8 @@
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = a1;
-    v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    selfCopy = self;
+    v7 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
       v8 = v7;
@@ -27,7 +27,7 @@
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(selfCopy);
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
@@ -41,7 +41,7 @@
           objc_autoreleasePoolPop(v12);
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v8 = [selfCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
       }
 
       while (v8);
@@ -50,7 +50,7 @@
 
   else
   {
-    v5 = [a1 copy];
+    v5 = [self copy];
   }
 
   v14 = *MEMORY[0x277D85DE8];

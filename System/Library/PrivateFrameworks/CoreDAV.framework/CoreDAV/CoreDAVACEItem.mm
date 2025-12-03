@@ -1,18 +1,18 @@
 @interface CoreDAVACEItem
 + (id)copyParseRules;
-+ (id)privilegeItemWithNameSpace:(id)a3 andName:(id)a4;
-- (CoreDAVACEItem)initWithPrincipal:(id)a3 shouldInvert:(BOOL)a4 action:(int)a5 withPrivileges:(id)a6;
++ (id)privilegeItemWithNameSpace:(id)space andName:(id)name;
+- (CoreDAVACEItem)initWithPrincipal:(id)principal shouldInvert:(BOOL)invert action:(int)action withPrivileges:(id)privileges;
 - (id)description;
-- (void)write:(id)a3;
+- (void)write:(id)write;
 @end
 
 @implementation CoreDAVACEItem
 
-- (CoreDAVACEItem)initWithPrincipal:(id)a3 shouldInvert:(BOOL)a4 action:(int)a5 withPrivileges:(id)a6
+- (CoreDAVACEItem)initWithPrincipal:(id)principal shouldInvert:(BOOL)invert action:(int)action withPrivileges:(id)privileges
 {
-  v8 = a4;
-  v11 = a3;
-  v12 = a6;
+  invertCopy = invert;
+  principalCopy = principal;
+  privilegesCopy = privileges;
   v13 = [(CoreDAVACEItem *)self init];
   v14 = v13;
   if (!v13)
@@ -20,14 +20,14 @@
     goto LABEL_9;
   }
 
-  if (v8)
+  if (invertCopy)
   {
     v15 = [(CoreDAVItem *)[CoreDAVInvertItem alloc] initWithNameSpace:@"DAV:" andName:@"invert"];
     invert = v14->_invert;
     v14->_invert = v15;
 
-    [(CoreDAVInvertItem *)v14->_invert setPrincipal:v11];
-    if (a5)
+    [(CoreDAVInvertItem *)v14->_invert setPrincipal:principalCopy];
+    if (action)
     {
       goto LABEL_4;
     }
@@ -39,14 +39,14 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v13->_principal, a3);
-  if (!a5)
+  objc_storeStrong(&v13->_principal, principal);
+  if (!action)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  if (a5 == 1)
+  if (action == 1)
   {
     v17 = &OBJC_IVAR___CoreDAVACEItem__deny;
     v18 = cdXMLDeny;
@@ -57,7 +57,7 @@ LABEL_8:
     v22 = *(&v14->super.super.isa + v21);
     *(&v14->super.super.isa + v21) = v20;
 
-    v23 = [v12 mutableCopy];
+    v23 = [privilegesCopy mutableCopy];
     [*(&v14->super.super.isa + v21) setPrivileges:v23];
   }
 
@@ -74,37 +74,37 @@ LABEL_9:
   v4 = [(CoreDAVItem *)&v12 description];
   [v3 appendFormat:@"[%@]", v4];
 
-  v5 = [(CoreDAVACEItem *)self principal];
-  [v3 appendFormat:@"\n  Principal: [%@]", v5];
+  principal = [(CoreDAVACEItem *)self principal];
+  [v3 appendFormat:@"\n  Principal: [%@]", principal];
 
-  v6 = [(CoreDAVACEItem *)self invert];
-  [v3 appendFormat:@"\n  Invert: [%@]", v6];
+  invert = [(CoreDAVACEItem *)self invert];
+  [v3 appendFormat:@"\n  Invert: [%@]", invert];
 
-  v7 = [(CoreDAVACEItem *)self grant];
-  [v3 appendFormat:@"\n  Grant: [%@]", v7];
+  grant = [(CoreDAVACEItem *)self grant];
+  [v3 appendFormat:@"\n  Grant: [%@]", grant];
 
-  v8 = [(CoreDAVACEItem *)self deny];
-  [v3 appendFormat:@"\n  Deny: [%@]", v8];
+  deny = [(CoreDAVACEItem *)self deny];
+  [v3 appendFormat:@"\n  Deny: [%@]", deny];
 
-  v9 = [(CoreDAVACEItem *)self protectedItem];
-  [v3 appendFormat:@"\n  Protected: [%@]", v9];
+  protectedItem = [(CoreDAVACEItem *)self protectedItem];
+  [v3 appendFormat:@"\n  Protected: [%@]", protectedItem];
 
-  v10 = [(CoreDAVACEItem *)self inherited];
-  [v3 appendFormat:@"\n  Inherited: [%@]", v10];
+  inherited = [(CoreDAVACEItem *)self inherited];
+  [v3 appendFormat:@"\n  Inherited: [%@]", inherited];
 
   return v3;
 }
 
-- (void)write:(id)a3
+- (void)write:(id)write
 {
-  v12 = a3;
-  v4 = [(CoreDAVItem *)self name];
-  v5 = [(CoreDAVItem *)self nameSpace];
-  [v12 startElement:v4 inNamespace:v5 withAttributeNamesAndValues:0];
+  writeCopy = write;
+  name = [(CoreDAVItem *)self name];
+  nameSpace = [(CoreDAVItem *)self nameSpace];
+  [writeCopy startElement:name inNamespace:nameSpace withAttributeNamesAndValues:0];
 
-  v6 = [(CoreDAVACEItem *)self invert];
+  invert = [(CoreDAVACEItem *)self invert];
 
-  if (v6)
+  if (invert)
   {
     [(CoreDAVACEItem *)self invert];
   }
@@ -114,11 +114,11 @@ LABEL_9:
     [(CoreDAVACEItem *)self principal];
   }
   v7 = ;
-  [v7 write:v12];
+  [v7 write:writeCopy];
 
-  v8 = [(CoreDAVACEItem *)self grant];
+  grant = [(CoreDAVACEItem *)self grant];
 
-  if (v8)
+  if (grant)
   {
     [(CoreDAVACEItem *)self grant];
   }
@@ -128,17 +128,17 @@ LABEL_9:
     [(CoreDAVACEItem *)self deny];
   }
   v9 = ;
-  [v9 write:v12];
+  [v9 write:writeCopy];
 
-  v10 = [(CoreDAVItem *)self name];
-  v11 = [(CoreDAVItem *)self nameSpace];
-  [v12 endElement:v10 inNamespace:v11];
+  name2 = [(CoreDAVItem *)self name];
+  nameSpace2 = [(CoreDAVItem *)self nameSpace];
+  [writeCopy endElement:name2 inNamespace:nameSpace2];
 }
 
 + (id)copyParseRules
 {
   v3 = +[CoreDAVItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -159,22 +159,22 @@ LABEL_9:
     v5 = [v20 initWithObjectsAndKeys:{v21, v19, v18, v15, v17, v16, v14, v6, v13, v7, v8, v9, 0}];
 
     v10 = +[CoreDAVItem parseRuleCache];
-    v11 = NSStringFromClass(a1);
+    v11 = NSStringFromClass(self);
     [v10 setObject:v5 forKey:v11];
   }
 
   return v5;
 }
 
-+ (id)privilegeItemWithNameSpace:(id)a3 andName:(id)a4
++ (id)privilegeItemWithNameSpace:(id)space andName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
+  nameCopy = name;
+  spaceCopy = space;
   v7 = [[CoreDAVItem alloc] initWithNameSpace:@"DAV:" andName:@"privilege"];
-  v8 = [(CoreDAVItem *)v7 extraChildItems];
-  v9 = [[CoreDAVItem alloc] initWithNameSpace:v6 andName:v5];
+  extraChildItems = [(CoreDAVItem *)v7 extraChildItems];
+  v9 = [[CoreDAVItem alloc] initWithNameSpace:spaceCopy andName:nameCopy];
 
-  [v8 addObject:v9];
+  [extraChildItems addObject:v9];
 
   return v7;
 }

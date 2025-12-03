@@ -1,36 +1,36 @@
 @interface MPFrame
-+ (MPFrame)frameWithFrameID:(id)a3;
++ (MPFrame)frameWithFrameID:(id)d;
 - (MPFrame)init;
-- (MPFrame)initWithFrameID:(id)a3;
+- (MPFrame)initWithFrameID:(id)d;
 - (NSString)presetID;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)frameAttributeForKey:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)frameAttributeForKey:(id)key;
 - (id)frameAttributes;
 - (id)parentDocument;
-- (void)copyStruct:(id)a3;
+- (void)copyStruct:(id)struct;
 - (void)dealloc;
-- (void)setFrameAttribute:(id)a3 forKey:(id)a4;
-- (void)setFrameID:(id)a3;
-- (void)setParentSlide:(id)a3;
-- (void)setPresetID:(id)a3;
+- (void)setFrameAttribute:(id)attribute forKey:(id)key;
+- (void)setFrameID:(id)d;
+- (void)setParentSlide:(id)slide;
+- (void)setPresetID:(id)d;
 @end
 
 @implementation MPFrame
 
-+ (MPFrame)frameWithFrameID:(id)a3
++ (MPFrame)frameWithFrameID:(id)d
 {
-  v3 = [[a1 alloc] initWithFrameID:a3];
+  v3 = [[self alloc] initWithFrameID:d];
 
   return v3;
 }
 
-- (MPFrame)initWithFrameID:(id)a3
+- (MPFrame)initWithFrameID:(id)d
 {
   v4 = [(MPFrame *)self init];
   v5 = v4;
   if (v4)
   {
-    [(MPFrameInternal *)v4->_internal setFrameID:a3];
+    [(MPFrameInternal *)v4->_internal setFrameID:d];
     [(MPFrameInternal *)v5->_internal setPresetID:@"Default"];
   }
 
@@ -54,9 +54,9 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 copyStruct:self->_internal];
   return v4;
 }
@@ -70,16 +70,16 @@
   [(MPFrame *)&v3 dealloc];
 }
 
-- (void)setFrameID:(id)a3
+- (void)setFrameID:(id)d
 {
   [(MPFrameInternal *)self->_internal setFrameID:?];
   [(MPFrame *)self setPresetID:@"Default"];
   parentSlide = self->_parentSlide;
   if (parentSlide && [(MPSlide *)parentSlide slide])
   {
-    v6 = [(MPSlide *)self->_parentSlide slide];
+    slide = [(MPSlide *)self->_parentSlide slide];
 
-    [v6 setFrameID:a3];
+    [slide setFrameID:d];
   }
 }
 
@@ -94,7 +94,7 @@
   return result;
 }
 
-- (void)setPresetID:(id)a3
+- (void)setPresetID:(id)d
 {
   [(MPFrameInternal *)self->_internal setPresetID:?];
   [(NSMutableDictionary *)self->_attributes removeObjectForKey:@"frameAttributes"];
@@ -102,10 +102,10 @@
   if (parentSlide && [(MPSlide *)parentSlide slide])
   {
     [-[MPSlide slide](self->_parentSlide "slide")];
-    v6 = [(MPSlide *)self->_parentSlide slide];
+    slide = [(MPSlide *)self->_parentSlide slide];
     v7 = +[NSDictionary dictionary];
 
-    [v6 setFrameAttribute:v7 forKey:@"specificAttributes"];
+    [slide setFrameAttribute:v7 forKey:@"specificAttributes"];
   }
 }
 
@@ -115,74 +115,74 @@
   if (!result)
   {
     v4 = +[MPFrameManager sharedManager];
-    v5 = [(MPFrame *)self frameID];
-    v6 = [(MPFrame *)self presetID];
+    frameID = [(MPFrame *)self frameID];
+    presetID = [(MPFrame *)self presetID];
 
-    return [v4 attributesForFrameID:v5 andPresetID:v6];
+    return [v4 attributesForFrameID:frameID andPresetID:presetID];
   }
 
   return result;
 }
 
-- (id)frameAttributeForKey:(id)a3
+- (id)frameAttributeForKey:(id)key
 {
-  v4 = [(MPFrame *)self frameAttributes];
+  frameAttributes = [(MPFrame *)self frameAttributes];
 
-  return [v4 objectForKey:a3];
+  return [frameAttributes objectForKey:key];
 }
 
-- (void)setFrameAttribute:(id)a3 forKey:(id)a4
+- (void)setFrameAttribute:(id)attribute forKey:(id)key
 {
   attributes = self->_attributes;
   if (!attributes)
   {
     attributes = [objc_msgSend(+[MPFrameManager sharedManager](MPFrameManager "sharedManager")];
     self->_attributes = attributes;
-    if (a3)
+    if (attribute)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    [(NSMutableDictionary *)attributes removeObjectForKey:a4];
+    [(NSMutableDictionary *)attributes removeObjectForKey:key];
     goto LABEL_6;
   }
 
-  if (!a3)
+  if (!attribute)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  [(NSMutableDictionary *)attributes setObject:a3 forKey:a4];
+  [(NSMutableDictionary *)attributes setObject:attribute forKey:key];
 LABEL_6:
   parentSlide = self->_parentSlide;
   if (parentSlide && [(MPSlide *)parentSlide slide])
   {
-    v9 = [(MPSlide *)self->_parentSlide slide];
+    slide = [(MPSlide *)self->_parentSlide slide];
     v10 = self->_attributes;
 
-    [v9 setFrameAttribute:v10 forKey:@"specificAttributes"];
+    [slide setFrameAttribute:v10 forKey:@"specificAttributes"];
   }
 }
 
 - (id)parentDocument
 {
-  v2 = [(MPFrame *)self parentSlide];
+  parentSlide = [(MPFrame *)self parentSlide];
 
-  return [v2 parentDocument];
+  return [parentSlide parentDocument];
 }
 
-- (void)copyStruct:(id)a3
+- (void)copyStruct:(id)struct
 {
-  -[MPFrameInternal setFrameID:](self->_internal, "setFrameID:", [objc_msgSend(a3 "frameID")]);
-  v5 = [objc_msgSend(a3 "presetID")];
+  -[MPFrameInternal setFrameID:](self->_internal, "setFrameID:", [objc_msgSend(struct "frameID")]);
+  v5 = [objc_msgSend(struct "presetID")];
   internal = self->_internal;
 
   [(MPFrameInternal *)internal setPresetID:v5];
 }
 
-- (void)setParentSlide:(id)a3
+- (void)setParentSlide:(id)slide
 {
   parentSlide = self->_parentSlide;
   if (parentSlide)
@@ -191,8 +191,8 @@ LABEL_6:
     [(MPSlide *)parentSlide setFrame:0];
   }
 
-  self->_parentSlide = a3;
-  if (a3 && [a3 slide])
+  self->_parentSlide = slide;
+  if (slide && [slide slide])
   {
     [-[MPSlide slide](self->_parentSlide "slide")];
     [-[MPSlide slide](self->_parentSlide "slide")];
@@ -201,9 +201,9 @@ LABEL_6:
       [-[MPSlide slide](self->_parentSlide "slide")];
     }
 
-    v6 = [a3 sizingMode];
+    sizingMode = [slide sizingMode];
 
-    [(MPFrame *)self setFrameAttribute:v6 forKey:@"sizingMode"];
+    [(MPFrame *)self setFrameAttribute:sizingMode forKey:@"sizingMode"];
   }
 }
 

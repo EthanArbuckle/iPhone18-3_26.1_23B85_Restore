@@ -1,8 +1,8 @@
 @interface JavaLangPackage
 + (void)initialize;
-- (BOOL)isCompatibleWithWithNSString:(id)a3;
-- (BOOL)isSealedWithJavaNetURL:(id)a3;
-- (id)getAnnotationWithIOSClass:(id)a3;
+- (BOOL)isCompatibleWithWithNSString:(id)string;
+- (BOOL)isSealedWithJavaNetURL:(id)l;
+- (id)getAnnotationWithIOSClass:(id)class;
 - (id)getAnnotations;
 - (unint64_t)hash;
 - (void)dealloc;
@@ -10,17 +10,17 @@
 
 @implementation JavaLangPackage
 
-- (id)getAnnotationWithIOSClass:(id)a3
+- (id)getAnnotationWithIOSClass:(id)class
 {
-  v4 = [(JavaLangPackage *)self getAnnotations];
-  if (!v4)
+  getAnnotations = [(JavaLangPackage *)self getAnnotations];
+  if (!getAnnotations)
   {
 LABEL_11:
     JreThrowNullPointerException();
   }
 
-  v5 = (v4 + 6);
-  v6 = &v4[2 * v4[2] + 6];
+  v5 = (getAnnotations + 6);
+  v6 = &getAnnotations[2 * getAnnotations[2] + 6];
   do
   {
     if (v5 >= v6)
@@ -28,7 +28,7 @@ LABEL_11:
       return 0;
     }
 
-    if (!a3)
+    if (!class)
     {
       goto LABEL_11;
     }
@@ -37,7 +37,7 @@ LABEL_11:
     v7 = v8;
   }
 
-  while (![a3 isInstance:v8]);
+  while (![class isInstance:v8]);
   v9 = JavaLangAnnotationAnnotation_class_();
   if (v7 && ([v9 isInstance:v7] & 1) == 0)
   {
@@ -49,8 +49,8 @@ LABEL_11:
 
 - (id)getAnnotations
 {
-  v2 = [(JavaLangPackage *)self getName];
-  v10 = JreStrcat("$$", v3, v4, v5, v6, v7, v8, v9, v2);
+  getName = [(JavaLangPackage *)self getName];
+  v10 = JreStrcat("$$", v3, v4, v5, v6, v7, v8, v9, getName);
   v11 = IOSClass_forName_(v10);
   if (!v11)
   {
@@ -71,9 +71,9 @@ LABEL_11:
   return [(NSString *)name hash];
 }
 
-- (BOOL)isCompatibleWithWithNSString:(id)a3
+- (BOOL)isCompatibleWithWithNSString:(id)string
 {
-  if (!a3 || (v4 = [a3 split:@"\\."], (specVersion = self->specVersion_) == 0) || (v6 = -[NSString split:](specVersion, "split:", @"\\."), !v4) || (v7 = v6) == 0)
+  if (!string || (v4 = [string split:@"\\."], (specVersion = self->specVersion_) == 0) || (v6 = -[NSString split:](specVersion, "split:", @"\\."), !v4) || (v7 = v6) == 0)
   {
     JreThrowNullPointerException();
   }
@@ -122,12 +122,12 @@ LABEL_11:
   return v28;
 }
 
-- (BOOL)isSealedWithJavaNetURL:(id)a3
+- (BOOL)isSealedWithJavaNetURL:(id)l
 {
   sealBase = self->sealBase_;
   if (sealBase)
   {
-    LOBYTE(sealBase) = [(JavaNetURL *)sealBase sameFileWithJavaNetURL:a3];
+    LOBYTE(sealBase) = [(JavaNetURL *)sealBase sameFileWithJavaNetURL:l];
   }
 
   return sealBase;
@@ -142,7 +142,7 @@ LABEL_11:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [IOSObjectArray newArrayWithLength:0 type:JavaLangAnnotationAnnotation_class_()];
     JreStrongAssignAndConsume(&qword_100555340, v2);

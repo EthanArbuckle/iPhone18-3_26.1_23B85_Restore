@@ -1,48 +1,48 @@
 @interface NRAlbertPairingReportData
-+ (id)getStringProperty:(id)a3 fromDevice:(id)a4 store:(id)a5;
-+ (id)stringValue:(id)a3;
-+ (unsigned)_albertPairingModeForDevice:(id)a3;
-- (NRAlbertPairingReportData)initWithDevice:(id)a3 andSecurePropertyStore:(id)a4;
++ (id)getStringProperty:(id)property fromDevice:(id)device store:(id)store;
++ (id)stringValue:(id)value;
++ (unsigned)_albertPairingModeForDevice:(id)device;
+- (NRAlbertPairingReportData)initWithDevice:(id)device andSecurePropertyStore:(id)store;
 - (NSDictionary)xmlDictionary;
-- (void)_initDeviceInfoFromDevice:(id)a3 andSecurePropertyStore:(id)a4;
+- (void)_initDeviceInfoFromDevice:(id)device andSecurePropertyStore:(id)store;
 - (void)_initLocalDeviceInfo;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NRAlbertPairingReportData
 
-- (NRAlbertPairingReportData)initWithDevice:(id)a3 andSecurePropertyStore:(id)a4
+- (NRAlbertPairingReportData)initWithDevice:(id)device andSecurePropertyStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  storeCopy = store;
   v8 = [(NRAlbertPairingReportData *)self init];
   v9 = v8;
   if (v8)
   {
     [(NRAlbertPairingReportData *)v8 _initLocalDeviceInfo];
-    [(NRAlbertPairingReportData *)v9 _initDeviceInfoFromDevice:v6 andSecurePropertyStore:v7];
+    [(NRAlbertPairingReportData *)v9 _initDeviceInfoFromDevice:deviceCopy andSecurePropertyStore:storeCopy];
   }
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   watchUDID = self->_watchUDID;
-  v5 = a3;
-  [v5 encodeObject:watchUDID forKey:@"UniqueDeviceID"];
-  [v5 encodeObject:self->_watchSerial forKey:@"SerialNumber"];
-  [v5 encodeObject:self->_watchVersion forKey:@"SystemVersion"];
-  [v5 encodeObject:self->_watchIMEI forKey:@"InternationalMobileEquipmentIdentity"];
-  [v5 encodeObject:self->_watchMEID forKey:@"MobileEquipmentIdentifier"];
-  [v5 encodeObject:self->_watchIMEI2 forKey:@"InternationalMobileEquipmentIdentity2"];
-  [v5 encodeObject:self->_watchPairedMode forKey:@"pairedMode"];
-  [v5 encodeObject:self->_phoneUDID forKey:@"CompanionUniqueDeviceID"];
-  [v5 encodeObject:self->_phoneSerial forKey:@"CompanionSerialNumber"];
-  [v5 encodeObject:self->_phoneIMEI forKey:@"CompanionInternationalMobileEquipmentIdentity"];
-  [v5 encodeObject:self->_phoneMEID forKey:@"CompanionMobileEquipmentIdentifier"];
-  [v5 encodeObject:self->_phoneIMEI2 forKey:@"CompanionInternationalMobileEquipmentIdentity2"];
-  [v5 encodeObject:self->_phoneVersion forKey:@"CompanionSystemVersion"];
+  coderCopy = coder;
+  [coderCopy encodeObject:watchUDID forKey:@"UniqueDeviceID"];
+  [coderCopy encodeObject:self->_watchSerial forKey:@"SerialNumber"];
+  [coderCopy encodeObject:self->_watchVersion forKey:@"SystemVersion"];
+  [coderCopy encodeObject:self->_watchIMEI forKey:@"InternationalMobileEquipmentIdentity"];
+  [coderCopy encodeObject:self->_watchMEID forKey:@"MobileEquipmentIdentifier"];
+  [coderCopy encodeObject:self->_watchIMEI2 forKey:@"InternationalMobileEquipmentIdentity2"];
+  [coderCopy encodeObject:self->_watchPairedMode forKey:@"pairedMode"];
+  [coderCopy encodeObject:self->_phoneUDID forKey:@"CompanionUniqueDeviceID"];
+  [coderCopy encodeObject:self->_phoneSerial forKey:@"CompanionSerialNumber"];
+  [coderCopy encodeObject:self->_phoneIMEI forKey:@"CompanionInternationalMobileEquipmentIdentity"];
+  [coderCopy encodeObject:self->_phoneMEID forKey:@"CompanionMobileEquipmentIdentifier"];
+  [coderCopy encodeObject:self->_phoneIMEI2 forKey:@"CompanionInternationalMobileEquipmentIdentity2"];
+  [coderCopy encodeObject:self->_phoneVersion forKey:@"CompanionSystemVersion"];
 }
 
 - (NSDictionary)xmlDictionary
@@ -205,13 +205,13 @@
   return v4;
 }
 
-+ (id)stringValue:(id)a3
++ (id)stringValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = valueCopy;
   }
 
   else
@@ -232,16 +232,16 @@
   return v5;
 }
 
-+ (id)getStringProperty:(id)a3 fromDevice:(id)a4 store:(id)a5
++ (id)getStringProperty:(id)property fromDevice:(id)device store:(id)store
 {
-  v7 = a5;
-  v8 = [a4 objectForKeyedSubscript:a3];
-  v9 = [v8 value];
+  storeCopy = store;
+  v8 = [device objectForKeyedSubscript:property];
+  value = [v8 value];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = value;
 LABEL_5:
     v11 = v10;
     goto LABEL_7;
@@ -250,7 +250,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [v7 securePropertyForID:v9];
+    v10 = [storeCopy securePropertyForID:value];
     goto LABEL_5;
   }
 
@@ -269,31 +269,31 @@ LABEL_7:
   return v12;
 }
 
-- (void)_initDeviceInfoFromDevice:(id)a3 andSecurePropertyStore:(id)a4
+- (void)_initDeviceInfoFromDevice:(id)device andSecurePropertyStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_opt_class() getStringProperty:NRDevicePropertyUDID fromDevice:v6 store:v7];
+  deviceCopy = device;
+  storeCopy = store;
+  v8 = [objc_opt_class() getStringProperty:NRDevicePropertyUDID fromDevice:deviceCopy store:storeCopy];
   watchUDID = self->_watchUDID;
   self->_watchUDID = v8;
 
-  v10 = [objc_opt_class() getStringProperty:NRDevicePropertySerialNumber fromDevice:v6 store:v7];
+  v10 = [objc_opt_class() getStringProperty:NRDevicePropertySerialNumber fromDevice:deviceCopy store:storeCopy];
   watchSerial = self->_watchSerial;
   self->_watchSerial = v10;
 
-  v12 = [objc_opt_class() getStringProperty:NRDevicePropertyIMEI fromDevice:v6 store:v7];
+  v12 = [objc_opt_class() getStringProperty:NRDevicePropertyIMEI fromDevice:deviceCopy store:storeCopy];
   watchIMEI = self->_watchIMEI;
   self->_watchIMEI = v12;
 
-  v14 = [objc_opt_class() getStringProperty:NRDevicePropertyMEID fromDevice:v6 store:v7];
+  v14 = [objc_opt_class() getStringProperty:NRDevicePropertyMEID fromDevice:deviceCopy store:storeCopy];
   watchMEID = self->_watchMEID;
   self->_watchMEID = v14;
 
-  v16 = [objc_opt_class() getStringProperty:NRDevicePropertyIMEI2 fromDevice:v6 store:v7];
+  v16 = [objc_opt_class() getStringProperty:NRDevicePropertyIMEI2 fromDevice:deviceCopy store:storeCopy];
   watchIMEI2 = self->_watchIMEI2;
   self->_watchIMEI2 = v16;
 
-  v18 = [objc_opt_class() getStringProperty:NRDevicePropertySystemVersion fromDevice:v6 store:v7];
+  v18 = [objc_opt_class() getStringProperty:NRDevicePropertySystemVersion fromDevice:deviceCopy store:storeCopy];
 
   watchVersion = self->_watchVersion;
   self->_watchVersion = v18;
@@ -303,7 +303,7 @@ LABEL_7:
 
   if (v18)
   {
-    v21 = [[NSNumber alloc] initWithUnsignedInt:{+[NRAlbertPairingReportData _albertPairingModeForDevice:](NRAlbertPairingReportData, "_albertPairingModeForDevice:", v6)}];
+    v21 = [[NSNumber alloc] initWithUnsignedInt:{+[NRAlbertPairingReportData _albertPairingModeForDevice:](NRAlbertPairingReportData, "_albertPairingModeForDevice:", deviceCopy)}];
     watchPairedMode = self->_watchPairedMode;
     self->_watchPairedMode = v21;
   }
@@ -330,33 +330,33 @@ LABEL_7:
 - (void)_initLocalDeviceInfo
 {
   v3 = objc_opt_new();
-  v4 = [v3 properties];
+  properties = [v3 properties];
   v5 = objc_opt_class();
-  v6 = [v4 objectForKeyedSubscript:NRDevicePropertyUDID];
+  v6 = [properties objectForKeyedSubscript:NRDevicePropertyUDID];
   v7 = [v5 stringValue:v6];
   phoneUDID = self->_phoneUDID;
   self->_phoneUDID = v7;
 
   v9 = objc_opt_class();
-  v10 = [v4 objectForKeyedSubscript:NRDevicePropertySerialNumber];
+  v10 = [properties objectForKeyedSubscript:NRDevicePropertySerialNumber];
   v11 = [v9 stringValue:v10];
   phoneSerial = self->_phoneSerial;
   self->_phoneSerial = v11;
 
   v13 = objc_opt_class();
-  v14 = [v4 objectForKeyedSubscript:NRDevicePropertyIMEI];
+  v14 = [properties objectForKeyedSubscript:NRDevicePropertyIMEI];
   v15 = [v13 stringValue:v14];
   phoneIMEI = self->_phoneIMEI;
   self->_phoneIMEI = v15;
 
   v17 = objc_opt_class();
-  v18 = [v4 objectForKeyedSubscript:NRDevicePropertyMEID];
+  v18 = [properties objectForKeyedSubscript:NRDevicePropertyMEID];
   v19 = [v17 stringValue:v18];
   phoneMEID = self->_phoneMEID;
   self->_phoneMEID = v19;
 
   v21 = objc_opt_class();
-  v22 = [v4 objectForKeyedSubscript:NRDevicePropertyIMEI2];
+  v22 = [properties objectForKeyedSubscript:NRDevicePropertyIMEI2];
   v23 = [v21 stringValue:v22];
   phoneIMEI2 = self->_phoneIMEI2;
   self->_phoneIMEI2 = v23;
@@ -385,12 +385,12 @@ LABEL_7:
   }
 }
 
-+ (unsigned)_albertPairingModeForDevice:(id)a3
++ (unsigned)_albertPairingModeForDevice:(id)device
 {
-  v3 = [a3 objectForKeyedSubscript:NRDevicePropertyIsAltAccount];
-  v4 = [v3 value];
+  v3 = [device objectForKeyedSubscript:NRDevicePropertyIsAltAccount];
+  value = [v3 value];
 
-  if (v4 && ([v4 BOOLValue] & 1) != 0)
+  if (value && ([value BOOLValue] & 1) != 0)
   {
     v5 = 2;
   }

@@ -1,69 +1,69 @@
 @interface PKAccountOtherCardNumbersViewController
 - (BOOL)_isVirtualCardSupportedButNotEnabled;
-- (PKAccountOtherCardNumbersViewController)initWithPaymentPass:(id)a3 account:(id)a4 context:(int64_t)a5 localAuthContext:(id)a6 supportsManualFPANEntry:(BOOL)a7 preferDefaultTitle:(BOOL)a8;
-- (PKAccountOtherCardNumbersViewController)initWithPhysicalCard:(id)a3 paymentPass:(id)a4 account:(id)a5 context:(int64_t)a6 localAuthContext:(id)a7 supportsManualFPANEntry:(BOOL)a8 preferDefaultTitle:(BOOL)a9;
+- (PKAccountOtherCardNumbersViewController)initWithPaymentPass:(id)pass account:(id)account context:(int64_t)context localAuthContext:(id)authContext supportsManualFPANEntry:(BOOL)entry preferDefaultTitle:(BOOL)title;
+- (PKAccountOtherCardNumbersViewController)initWithPhysicalCard:(id)card paymentPass:(id)pass account:(id)account context:(int64_t)context localAuthContext:(id)authContext supportsManualFPANEntry:(BOOL)entry preferDefaultTitle:(BOOL)title;
 - (id)_analyticsPageTag;
 - (id)_contentConfigurationForExpiredCardMessage;
-- (id)_groupedFooterWithText:(id)a3 tableView:(id)a4;
-- (id)_localizedStringForKey:(id)a3;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (void)_appendApplePayCardNumberSectionToConfiguration:(id)a3;
-- (void)_appendCardManualEntrySectionToConfiguration:(id)a3;
-- (void)_appendNetworkSectionToConfiguration:(id)a3;
-- (void)_appendPhysicalCardExpiredMessageSectionToConfiguration:(id)a3;
-- (void)_appendPhysicalCardNumberSectionToConfiguration:(id)a3;
-- (void)_appendPinSectionToConfiguration:(id)a3;
-- (void)_appendRemoveCardInformationSectionToConfiguration:(id)a3;
-- (void)_appendSetUpVirtualCardSectionToConfiguration:(id)a3;
+- (id)_groupedFooterWithText:(id)text tableView:(id)view;
+- (id)_localizedStringForKey:(id)key;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (void)_appendApplePayCardNumberSectionToConfiguration:(id)configuration;
+- (void)_appendCardManualEntrySectionToConfiguration:(id)configuration;
+- (void)_appendNetworkSectionToConfiguration:(id)configuration;
+- (void)_appendPhysicalCardExpiredMessageSectionToConfiguration:(id)configuration;
+- (void)_appendPhysicalCardNumberSectionToConfiguration:(id)configuration;
+- (void)_appendPinSectionToConfiguration:(id)configuration;
+- (void)_appendRemoveCardInformationSectionToConfiguration:(id)configuration;
+- (void)_appendSetUpVirtualCardSectionToConfiguration:(id)configuration;
 - (void)_beginReportingIfNecessary;
 - (void)_editButtonPresed;
 - (void)_endReportingIfNecessary;
 - (void)_fetchFPANInformation;
 - (void)_presentReplaceExpiredPhysicalCard;
 - (void)_updateBarButtons;
-- (void)_updateCardNumbersConfigurationAnimated:(BOOL)a3;
+- (void)_updateCardNumbersConfigurationAnimated:(BOOL)animated;
 - (void)_updateSavedCardInformation;
-- (void)addAutoFillCardFinishedWith:(id)a3 credential:(id)a4 viewController:(id)a5;
+- (void)addAutoFillCardFinishedWith:(id)with credential:(id)credential viewController:(id)controller;
 - (void)dealloc;
-- (void)physicalCardsChanged:(id)a3 forAccountIdentifier:(id)a4;
+- (void)physicalCardsChanged:(id)changed forAccountIdentifier:(id)identifier;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)virtualCardEnrollmentViewController:(id)a3 didCompleteWithSuccess:(BOOL)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)virtualCardEnrollmentViewController:(id)controller didCompleteWithSuccess:(BOOL)success;
 @end
 
 @implementation PKAccountOtherCardNumbersViewController
 
-- (PKAccountOtherCardNumbersViewController)initWithPhysicalCard:(id)a3 paymentPass:(id)a4 account:(id)a5 context:(int64_t)a6 localAuthContext:(id)a7 supportsManualFPANEntry:(BOOL)a8 preferDefaultTitle:(BOOL)a9
+- (PKAccountOtherCardNumbersViewController)initWithPhysicalCard:(id)card paymentPass:(id)pass account:(id)account context:(int64_t)context localAuthContext:(id)authContext supportsManualFPANEntry:(BOOL)entry preferDefaultTitle:(BOOL)title
 {
-  v9 = a8;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v29 = a7;
+  entryCopy = entry;
+  cardCopy = card;
+  passCopy = pass;
+  accountCopy = account;
+  authContextCopy = authContext;
   v30.receiver = self;
   v30.super_class = PKAccountOtherCardNumbersViewController;
   v19 = -[PKAccountOtherCardNumbersViewController initWithStyle:](&v30, sel_initWithStyle_, [MEMORY[0x1E69DD020] pkui_groupedStyleWithRoundedCorners:1]);
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_physicalCard, a3);
-    objc_storeStrong(&v20->_paymentPass, a4);
-    objc_storeStrong(&v20->_account, a5);
-    v20->_context = a6;
-    objc_storeStrong(&v20->_laContext, a7);
-    v20->_preferDefaultTitle = a9;
-    v21 = [MEMORY[0x1E69B8400] sharedInstance];
+    objc_storeStrong(&v19->_physicalCard, card);
+    objc_storeStrong(&v20->_paymentPass, pass);
+    objc_storeStrong(&v20->_account, account);
+    v20->_context = context;
+    objc_storeStrong(&v20->_laContext, authContext);
+    v20->_preferDefaultTitle = title;
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
     accountService = v20->_accountService;
-    v20->_accountService = v21;
+    v20->_accountService = mEMORY[0x1E69B8400];
 
     [(PKAccountService *)v20->_accountService registerObserver:v20];
     if ([(PKAccount *)v20->_account feature]== 2)
     {
       v23 = objc_alloc(MEMORY[0x1E695DEE8]);
       v24 = [v23 initWithCalendarIdentifier:*MEMORY[0x1E695D850]];
-      v25 = [(PKAccount *)v20->_account productTimeZone];
-      [v24 setTimeZone:v25];
+      productTimeZone = [(PKAccount *)v20->_account productTimeZone];
+      [v24 setTimeZone:productTimeZone];
 
       v20->_isPhysicalCardExpired = [(PKPhysicalCard *)v20->_physicalCard isExpiredInCalendar:v24];
     }
@@ -77,8 +77,8 @@
     cardManager = v20->_cardManager;
     v20->_cardManager = v26;
 
-    v20->_supportsManualFPANEntry = v9;
-    if (v9)
+    v20->_supportsManualFPANEntry = entryCopy;
+    if (entryCopy)
     {
       [(PKAccountOtherCardNumbersViewController *)v20 _fetchFPANInformation];
     }
@@ -87,35 +87,35 @@
   return v20;
 }
 
-- (PKAccountOtherCardNumbersViewController)initWithPaymentPass:(id)a3 account:(id)a4 context:(int64_t)a5 localAuthContext:(id)a6 supportsManualFPANEntry:(BOOL)a7 preferDefaultTitle:(BOOL)a8
+- (PKAccountOtherCardNumbersViewController)initWithPaymentPass:(id)pass account:(id)account context:(int64_t)context localAuthContext:(id)authContext supportsManualFPANEntry:(BOOL)entry preferDefaultTitle:(BOOL)title
 {
-  v9 = a7;
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
+  entryCopy = entry;
+  passCopy = pass;
+  accountCopy = account;
+  authContextCopy = authContext;
   v25.receiver = self;
   v25.super_class = PKAccountOtherCardNumbersViewController;
   v18 = -[PKAccountOtherCardNumbersViewController initWithStyle:](&v25, sel_initWithStyle_, [MEMORY[0x1E69DD020] pkui_groupedStyleWithRoundedCorners:1]);
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_paymentPass, a3);
-    objc_storeStrong(&v19->_account, a4);
-    v19->_context = a5;
-    objc_storeStrong(&v19->_laContext, a6);
-    v19->_preferDefaultTitle = a8;
+    objc_storeStrong(&v18->_paymentPass, pass);
+    objc_storeStrong(&v19->_account, account);
+    v19->_context = context;
+    objc_storeStrong(&v19->_laContext, authContext);
+    v19->_preferDefaultTitle = title;
     v19->_isPhysicalCardExpired = 0;
-    v20 = [MEMORY[0x1E69B8400] sharedInstance];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
     accountService = v19->_accountService;
-    v19->_accountService = v20;
+    v19->_accountService = mEMORY[0x1E69B8400];
 
     [(PKAccountService *)v19->_accountService registerObserver:v19];
     v22 = objc_alloc_init(MEMORY[0x1E69B8680]);
     cardManager = v19->_cardManager;
     v19->_cardManager = v22;
 
-    v19->_supportsManualFPANEntry = v9;
-    if (v9)
+    v19->_supportsManualFPANEntry = entryCopy;
+    if (entryCopy)
     {
       [(PKAccountOtherCardNumbersViewController *)v19 _fetchFPANInformation];
     }
@@ -139,22 +139,22 @@
   v19.super_class = PKAccountOtherCardNumbersViewController;
   [(PKSettingsTableViewController *)&v19 viewDidLoad];
   [(PKAccountOtherCardNumbersViewController *)self _updateCardNumbersConfigurationAnimated:1];
-  v3 = [(PKAccountOtherCardNumbersViewController *)self navigationItem];
+  navigationItem = [(PKAccountOtherCardNumbersViewController *)self navigationItem];
   v4 = PKLocalizedCardNumbersString(&cfstr_CardNumbersTit.isa);
-  [v3 setTitle:v4];
+  [navigationItem setTitle:v4];
 
   if (!self->_preferDefaultTitle)
   {
-    v5 = [MEMORY[0x1E69B8EF8] sharedService];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
     if (PKVirtualCardEnabledWithWebService() && ![(PKAccount *)self->_account feature])
     {
-      v16 = [(PKPaymentPass *)self->_paymentPass hasActiveVirtualCard];
+      hasActiveVirtualCard = [(PKPaymentPass *)self->_paymentPass hasActiveVirtualCard];
 
-      if (v16)
+      if (hasActiveVirtualCard)
       {
-        v17 = [(PKAccountOtherCardNumbersViewController *)self navigationItem];
+        navigationItem2 = [(PKAccountOtherCardNumbersViewController *)self navigationItem];
         v18 = PKLocalizedCardNumbersString(&cfstr_CardNumbersOth.isa);
-        [v17 setTitle:v18];
+        [navigationItem2 setTitle:v18];
       }
     }
 
@@ -164,14 +164,14 @@
 
     if ([(PKAccount *)self->_account feature]== 2)
     {
-      v6 = [(PKAccountOtherCardNumbersViewController *)self navigationItem];
+      navigationItem3 = [(PKAccountOtherCardNumbersViewController *)self navigationItem];
       v7 = PKLocalizedCardNumbersString(&cfstr_CardNumbersOth.isa);
-      [v6 setTitle:v7];
+      [navigationItem3 setTitle:v7];
     }
   }
 
-  v8 = [(PKAccountOtherCardNumbersViewController *)self tableView];
-  [v8 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"footer"];
+  tableView = [(PKAccountOtherCardNumbersViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"footer"];
 
   if ([(PKAccountOtherCardNumbersViewController *)self _isVirtualCardSupportedButNotEnabled])
   {
@@ -183,32 +183,32 @@
     v12 = *MEMORY[0x1E69BABE8];
     v20[0] = v11;
     v20[1] = v12;
-    v13 = [(PKAccountOtherCardNumbersViewController *)self _analyticsPageTag];
-    v21[1] = v13;
+    _analyticsPageTag = [(PKAccountOtherCardNumbersViewController *)self _analyticsPageTag];
+    v21[1] = _analyticsPageTag;
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:2];
     [v9 subject:v10 sendEvent:v14];
   }
 
-  v15 = [(PKAccountOtherCardNumbersViewController *)self view];
-  [v15 setAccessibilityIdentifier:*MEMORY[0x1E69B9408]];
+  view = [(PKAccountOtherCardNumbersViewController *)self view];
+  [view setAccessibilityIdentifier:*MEMORY[0x1E69B9408]];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKAccountOtherCardNumbersViewController;
-  [(PKAccountOtherCardNumbersViewController *)&v4 viewWillAppear:a3];
+  [(PKAccountOtherCardNumbersViewController *)&v4 viewWillAppear:appear];
   if (!self->_fetchingFPAN)
   {
     [(PKAccountOtherCardNumbersViewController *)self _fetchFPANInformation];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKAccountOtherCardNumbersViewController;
-  [(PKAccountOtherCardNumbersViewController *)&v4 viewWillDisappear:a3];
+  [(PKAccountOtherCardNumbersViewController *)&v4 viewWillDisappear:disappear];
   if ([(PKAccountOtherCardNumbersViewController *)self _isVirtualCardSupportedButNotEnabled])
   {
     [(PKAccountOtherCardNumbersViewController *)self _endReportingIfNecessary];
@@ -217,7 +217,7 @@
 
 - (BOOL)_isVirtualCardSupportedButNotEnabled
 {
-  v3 = [MEMORY[0x1E69B8EF8] sharedService];
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
   if (PKVirtualCardEnabledWithWebService() && [(PKPaymentPass *)self->_paymentPass supportsVirtualCardNumber])
   {
     v4 = [(PKPaymentPass *)self->_paymentPass hasActiveVirtualCard]^ 1;
@@ -268,34 +268,34 @@
   }
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  v6 = a3;
-  if ([(PKSettingsTableViewController *)self indexOfSectionWithIdentifier:@"physicalCardNumber"]== a4)
+  viewCopy = view;
+  if ([(PKSettingsTableViewController *)self indexOfSectionWithIdentifier:@"physicalCardNumber"]== section)
   {
     v7 = @"ACCOUNT_SERVICE_CARD_NUMBERS_OTHER_NUMBERS_TITANIUM_SECONDARY";
 LABEL_5:
     v8 = [(PKAccountOtherCardNumbersViewController *)self _localizedStringForKey:v7];
 LABEL_6:
     v9 = v8;
-    v10 = [(PKAccountOtherCardNumbersViewController *)self _groupedFooterWithText:v8 tableView:v6];
+    v10 = [(PKAccountOtherCardNumbersViewController *)self _groupedFooterWithText:v8 tableView:viewCopy];
 
     goto LABEL_7;
   }
 
-  if ([(PKSettingsTableViewController *)self indexOfSectionWithIdentifier:@"applePayCardNumber"]== a4)
+  if ([(PKSettingsTableViewController *)self indexOfSectionWithIdentifier:@"applePayCardNumber"]== section)
   {
     v7 = @"ACCOUNT_SERVICE_CARD_NUMBERS_OTHER_NUMBERS_APPLE_PAY_SECONDARY";
     goto LABEL_5;
   }
 
-  if ([(PKSettingsTableViewController *)self indexOfSectionWithIdentifier:@"PIN"]== a4)
+  if ([(PKSettingsTableViewController *)self indexOfSectionWithIdentifier:@"PIN"]== section)
   {
     v8 = PKLocalizedPeerPaymentString(&cfstr_PeerPaymentPin.isa);
     goto LABEL_6;
   }
 
-  if ([(PKSettingsTableViewController *)self indexOfSectionWithIdentifier:@"setUpVirtualCard"]== a4)
+  if ([(PKSettingsTableViewController *)self indexOfSectionWithIdentifier:@"setUpVirtualCard"]== section)
   {
     if ([(PKPaymentPass *)self->_paymentPass associatedAccountFeatureIdentifier]== 1)
     {
@@ -310,7 +310,7 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  if ([(PKSettingsTableViewController *)self indexOfSectionWithIdentifier:@"manualCardEntry"]== a4)
+  if ([(PKSettingsTableViewController *)self indexOfSectionWithIdentifier:@"manualCardEntry"]== section)
   {
     v12 = @"FPAN_PHYSICAL_DETAILS_FOOTER_TEXT";
 LABEL_21:
@@ -318,7 +318,7 @@ LABEL_21:
     goto LABEL_6;
   }
 
-  if ([(PKSettingsTableViewController *)self indexOfSectionWithIdentifier:@"removeManualCardEntry"]== a4)
+  if ([(PKSettingsTableViewController *)self indexOfSectionWithIdentifier:@"removeManualCardEntry"]== section)
   {
     v12 = @"FPAN_CARD_DETAILS_DELETE_CARD_BUTTON_FOOTER";
     goto LABEL_21;
@@ -330,16 +330,16 @@ LABEL_7:
   return v10;
 }
 
-- (void)_updateCardNumbersConfigurationAnimated:(BOOL)a3
+- (void)_updateCardNumbersConfigurationAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v16 = objc_alloc_init(PKSettingsTableViewConfiguration);
-  v5 = [MEMORY[0x1E69B8EF8] sharedService];
+  mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
   if (PKVirtualCardEnabledWithWebService())
   {
-    v6 = [(PKPaymentPass *)self->_paymentPass hasActiveVirtualCard];
+    hasActiveVirtualCard = [(PKPaymentPass *)self->_paymentPass hasActiveVirtualCard];
 
-    if ((v6 & 1) == 0 && [(PKPaymentPass *)self->_paymentPass supportsVirtualCardNumber])
+    if ((hasActiveVirtualCard & 1) == 0 && [(PKPaymentPass *)self->_paymentPass supportsVirtualCardNumber])
     {
       [(PKAccountOtherCardNumbersViewController *)self _appendSetUpVirtualCardSectionToConfiguration:v16];
     }
@@ -361,12 +361,12 @@ LABEL_7:
 
   if (!self->_supportsManualFPANEntry && ![(PKAccount *)self->_account feature])
   {
-    v7 = [MEMORY[0x1E69B8EF8] sharedService];
+    mEMORY[0x1E69B8EF8]2 = [MEMORY[0x1E69B8EF8] sharedService];
     if (PKVirtualCardEnabledWithWebService())
     {
-      v8 = [(PKPaymentPass *)self->_paymentPass hasActiveVirtualCard];
+      hasActiveVirtualCard2 = [(PKPaymentPass *)self->_paymentPass hasActiveVirtualCard];
 
-      if ((v8 & 1) == 0)
+      if ((hasActiveVirtualCard2 & 1) == 0)
       {
         [(PKAccountOtherCardNumbersViewController *)self _appendNetworkSectionToConfiguration:v16];
       }
@@ -387,8 +387,8 @@ LABEL_7:
         {
           if ([(PKAccount *)self->_account state]== 1)
           {
-            v9 = [(PKAccount *)self->_account accountIdentifier];
-            v10 = [(PKPhysicalCard *)self->_physicalCard identifier];
+            accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+            identifier = [(PKPhysicalCard *)self->_physicalCard identifier];
             HasDismissedPhysicalCardExpiredCardNumbersMessage = PKAppleCardHasDismissedPhysicalCardExpiredCardNumbersMessage();
 
             if ((HasDismissedPhysicalCardExpiredCardNumbersMessage & 1) == 0)
@@ -422,7 +422,7 @@ LABEL_7:
   v13 = v16;
   if (v16)
   {
-    [(PKSettingsTableViewController *)self applyConfiguration:v16 animated:v3];
+    [(PKSettingsTableViewController *)self applyConfiguration:v16 animated:animatedCopy];
     v13 = v16;
   }
 
@@ -448,15 +448,15 @@ LABEL_7:
       v4 = 2;
     }
 
-    v6 = [v3 initWithBarButtonSystemItem:v4 target:self action:sel__editButtonPresed];
-    v5 = [(PKAccountOtherCardNumbersViewController *)self navigationItem];
-    [v5 setRightBarButtonItem:v6];
+    navigationItem2 = [v3 initWithBarButtonSystemItem:v4 target:self action:sel__editButtonPresed];
+    navigationItem = [(PKAccountOtherCardNumbersViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:navigationItem2];
   }
 
   else
   {
-    v6 = [(PKAccountOtherCardNumbersViewController *)self navigationItem];
-    [v6 setRightBarButtonItem:0];
+    navigationItem2 = [(PKAccountOtherCardNumbersViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:0];
   }
 }
 
@@ -472,10 +472,10 @@ LABEL_7:
   [(PKAccountOtherCardNumbersViewController *)self _updateCardNumbersConfigurationAnimated:1];
 }
 
-- (void)_appendCardManualEntrySectionToConfiguration:(id)a3
+- (void)_appendCardManualEntrySectionToConfiguration:(id)configuration
 {
   v41[5] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [[PKTableViewDiffableDataSourceSection alloc] initWithIdentifier:@"manualCardEntry"];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if (self->_fetchingFPAN)
@@ -492,8 +492,8 @@ LABEL_7:
   {
     v35 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v10 = objc_alloc_init(MEMORY[0x1E69B8E18]);
-    v11 = [(PKMutableAutofillCardCredential *)self->_fpanCardCredential primaryAccountNumber];
-    [v10 setCurrentValue:v11];
+    primaryAccountNumber = [(PKMutableAutofillCardCredential *)self->_fpanCardCredential primaryAccountNumber];
+    [v10 setCurrentValue:primaryAccountNumber];
 
     v12 = [PKFieldTableViewSettingsRow alloc];
     location[1] = MEMORY[0x1E69E9820];
@@ -501,30 +501,30 @@ LABEL_7:
     location[3] = __88__PKAccountOtherCardNumbersViewController__appendCardManualEntrySectionToConfiguration___block_invoke;
     location[4] = &unk_1E8010A10;
     v39 = v10;
-    v40 = self;
+    selfCopy = self;
     v31 = v10;
     v33 = [PKFieldTableViewSettingsRow initWithIdentifier:v12 field:"initWithIdentifier:field:editing:onValueChange:" editing:@"physicalCardNumberItem" onValueChange:?];
     [(PKFieldTableViewSettingsRow *)v33 setRedact:1];
     [v35 addObject:v31];
     v34 = objc_alloc_init(MEMORY[0x1E69B8DF8]);
     [v34 setOptional:1];
-    v13 = [(PKMutableAutofillCardCredential *)self->_fpanCardCredential cardholderName];
-    [v34 setCurrentValue:v13];
+    cardholderName = [(PKMutableAutofillCardCredential *)self->_fpanCardCredential cardholderName];
+    [v34 setCurrentValue:cardholderName];
 
     v30 = [[PKFieldTableViewSettingsRow alloc] initWithIdentifier:@"physicalCardNameItem" field:v34 editing:self->_editing onValueChange:0];
     [v35 addObject:v34];
     v14 = objc_alloc_init(MEMORY[0x1E69B8DE0]);
     [v14 setOptional:1];
-    v15 = [(PKMutableAutofillCardCredential *)self->_fpanCardCredential expirationDate];
-    [v14 setCurrentValue:v15];
+    expirationDate = [(PKMutableAutofillCardCredential *)self->_fpanCardCredential expirationDate];
+    [v14 setCurrentValue:expirationDate];
 
     v32 = [[PKFieldTableViewSettingsRow alloc] initWithIdentifier:@"physicalCardExpirationItem" field:v14 editing:self->_editing onValueChange:0];
     [(PKFieldTableViewSettingsRow *)v32 setRedact:1];
     [v35 addObject:v14];
     v16 = objc_alloc_init(MEMORY[0x1E69B8DF0]);
     [v16 setOptional:1];
-    v17 = [(PKMutableAutofillCardCredential *)self->_fpanCardCredential securityCode];
-    [v16 setCurrentValue:v17];
+    securityCode = [(PKMutableAutofillCardCredential *)self->_fpanCardCredential securityCode];
+    [v16 setCurrentValue:securityCode];
 
     v18 = [[PKFieldTableViewSettingsRow alloc] initWithIdentifier:@"physicalCardCVVItem" field:v16 editing:self->_editing onValueChange:0];
     [(PKFieldTableViewSettingsRow *)v18 setRedact:1];
@@ -534,8 +534,8 @@ LABEL_7:
     v20 = PKLocalizedPaymentString(&cfstr_FpanCardDescri.isa);
     [v19 setLocalizedDisplayName:v20];
 
-    v21 = [(PKFPANCardDescriptor *)self->_fpanCard cardNickname];
-    [v19 setCurrentValue:v21];
+    cardNickname = [(PKFPANCardDescriptor *)self->_fpanCard cardNickname];
+    [v19 setCurrentValue:cardNickname];
 
     v22 = [[PKFieldTableViewSettingsRow alloc] initWithIdentifier:@"physicalCardDescription" field:v19 editing:self->_editing onValueChange:0];
     [(PKFieldTableViewSettingsRow *)v22 setRedact:1];
@@ -574,7 +574,7 @@ LABEL_7:
   }
 
   v29 = [v6 copy];
-  [v4 appendSection:v5 rows:v29];
+  [configurationCopy appendSection:v5 rows:v29];
 }
 
 void __88__PKAccountOtherCardNumbersViewController__appendCardManualEntrySectionToConfiguration___block_invoke(uint64_t a1)
@@ -627,9 +627,9 @@ void __88__PKAccountOtherCardNumbersViewController__appendCardManualEntrySection
   [v10 presentViewController:v11 animated:1 completion:0];
 }
 
-- (void)_appendRemoveCardInformationSectionToConfiguration:(id)a3
+- (void)_appendRemoveCardInformationSectionToConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [[PKTableViewDiffableDataSourceSection alloc] initWithIdentifier:@"removeManualCardEntry"];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   objc_initWeak(&location, self);
@@ -647,7 +647,7 @@ void __88__PKAccountOtherCardNumbersViewController__appendCardManualEntrySection
   [(PKButtonTableViewSettingsRow *)v9 setEnabled:1];
   [v6 addObject:v9];
   v10 = [v6 copy];
-  [v4 appendSection:v5 rows:v10];
+  [configurationCopy appendSection:v5 rows:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -709,13 +709,13 @@ uint64_t __94__PKAccountOtherCardNumbersViewController__appendRemoveCardInformat
   return [v6 _updateCardNumbersConfigurationAnimated:1];
 }
 
-- (void)_appendNetworkSectionToConfiguration:(id)a3
+- (void)_appendNetworkSectionToConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v12 = [[PKTableViewDiffableDataSourceSection alloc] initWithIdentifier:@"network"];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v6 = [(PKPaymentPass *)self->_paymentPass devicePrimaryPaymentApplication];
-  [v6 paymentNetworkIdentifier];
+  devicePrimaryPaymentApplication = [(PKPaymentPass *)self->_paymentPass devicePrimaryPaymentApplication];
+  [devicePrimaryPaymentApplication paymentNetworkIdentifier];
   v7 = PKDisplayablePaymentNetworkNameForPaymentCredentialType();
 
   v8 = [PKKeyValueTableViewSettingsRow alloc];
@@ -724,12 +724,12 @@ uint64_t __94__PKAccountOtherCardNumbersViewController__appendRemoveCardInformat
 
   [v5 addObject:v10];
   v11 = [v5 copy];
-  [v4 appendSection:v12 rows:v11];
+  [configurationCopy appendSection:v12 rows:v11];
 }
 
-- (void)_appendSetUpVirtualCardSectionToConfiguration:(id)a3
+- (void)_appendSetUpVirtualCardSectionToConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [[PKTableViewDiffableDataSourceSection alloc] initWithIdentifier:@"setUpVirtualCard"];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   objc_initWeak(&location, self);
@@ -745,7 +745,7 @@ uint64_t __94__PKAccountOtherCardNumbersViewController__appendRemoveCardInformat
   [(PKButtonTableViewSettingsRow *)v9 setEnabled:1, v11, v12, v13, v14];
   [v6 addObject:v9];
   v10 = [v6 copy];
-  [v4 appendSection:v5 rows:v10];
+  [configurationCopy appendSection:v5 rows:v10];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -778,14 +778,14 @@ void __89__PKAccountOtherCardNumbersViewController__appendSetUpVirtualCardSectio
   }
 }
 
-- (void)_appendPhysicalCardExpiredMessageSectionToConfiguration:(id)a3
+- (void)_appendPhysicalCardExpiredMessageSectionToConfiguration:(id)configuration
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [[PKTableViewDiffableDataSourceSection alloc] initWithIdentifier:@"physicalCardExpiredMessage"];
   v6 = [PKMessageTableViewSettingsRow alloc];
-  v7 = [(PKAccountOtherCardNumbersViewController *)self _contentConfigurationForExpiredCardMessage];
-  v8 = [(PKMessageTableViewSettingsRow *)v6 initWithIdentifier:@"physicalCardExpiredMessage" contentConfiguration:v7];
+  _contentConfigurationForExpiredCardMessage = [(PKAccountOtherCardNumbersViewController *)self _contentConfigurationForExpiredCardMessage];
+  v8 = [(PKMessageTableViewSettingsRow *)v6 initWithIdentifier:@"physicalCardExpiredMessage" contentConfiguration:_contentConfigurationForExpiredCardMessage];
 
   objc_initWeak(&location, self);
   v18[0] = MEMORY[0x1E69E9820];
@@ -808,7 +808,7 @@ void __89__PKAccountOtherCardNumbersViewController__appendSetUpVirtualCardSectio
   v21[0] = v8;
   v21[1] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
-  [v4 appendSection:v5 rows:v12];
+  [configurationCopy appendSection:v5 rows:v12];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&v19);
@@ -843,56 +843,56 @@ void __99__PKAccountOtherCardNumbersViewController__appendPhysicalCardExpiredMes
 
 - (id)_contentConfigurationForExpiredCardMessage
 {
-  v2 = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
+  subtitleCellConfiguration = [MEMORY[0x1E69DCC28] subtitleCellConfiguration];
   v3 = PKLocalizedFeatureString();
-  [v2 setText:v3];
+  [subtitleCellConfiguration setText:v3];
 
-  v4 = [v2 textProperties];
+  textProperties = [subtitleCellConfiguration textProperties];
   v5 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC90], *MEMORY[0x1E69DB958]);
-  [v4 setFont:v5];
+  [textProperties setFont:v5];
 
   v6 = PKLocalizedFeatureString();
-  [v2 setSecondaryText:v6];
+  [subtitleCellConfiguration setSecondaryText:v6];
 
-  v7 = [v2 secondaryTextProperties];
+  secondaryTextProperties = [subtitleCellConfiguration secondaryTextProperties];
   v8 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD80], 0);
-  [v7 setFont:v8];
+  [secondaryTextProperties setFont:v8];
 
-  v9 = [v2 secondaryTextProperties];
-  v10 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v9 setColor:v10];
+  secondaryTextProperties2 = [subtitleCellConfiguration secondaryTextProperties];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [secondaryTextProperties2 setColor:secondaryLabelColor];
 
-  [v2 setTextToSecondaryTextVerticalPadding:5.0];
+  [subtitleCellConfiguration setTextToSecondaryTextVerticalPadding:5.0];
   v11 = PKPassKitUIBundle();
   v12 = [v11 URLForResource:@"MessageAlert" withExtension:@"pdf"];
   v13 = PKUIScreenScale();
   v14 = PKUIImageFromPDF(v12, 42.0, 42.0, v13);
 
-  [v2 setImage:v14];
-  v15 = [v2 imageProperties];
+  [subtitleCellConfiguration setImage:v14];
+  imageProperties = [subtitleCellConfiguration imageProperties];
   v16 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:42.0];
-  [v15 setPreferredSymbolConfiguration:v16];
+  [imageProperties setPreferredSymbolConfiguration:v16];
 
-  [v2 setImageToTextPadding:12.0];
-  v17 = [v2 imageProperties];
-  [v17 setReservedLayoutSize:{42.0, 42.0}];
+  [subtitleCellConfiguration setImageToTextPadding:12.0];
+  imageProperties2 = [subtitleCellConfiguration imageProperties];
+  [imageProperties2 setReservedLayoutSize:{42.0, 42.0}];
 
-  [v2 setDirectionalLayoutMargins:{12.0, 20.0, 12.0, 20.0}];
+  [subtitleCellConfiguration setDirectionalLayoutMargins:{12.0, 20.0, 12.0, 20.0}];
 
-  return v2;
+  return subtitleCellConfiguration;
 }
 
 - (void)_presentReplaceExpiredPhysicalCard
 {
   objc_initWeak(&location, self);
   accountService = self->_accountService;
-  v4 = [(PKAccount *)self->_account accountIdentifier];
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __77__PKAccountOtherCardNumbersViewController__presentReplaceExpiredPhysicalCard__block_invoke;
   v5[3] = &unk_1E8012468;
   objc_copyWeak(&v6, &location);
-  [(PKAccountService *)accountService accountUsersForAccountWithIdentifier:v4 completion:v5];
+  [(PKAccountService *)accountService accountUsersForAccountWithIdentifier:accountIdentifier completion:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -969,25 +969,25 @@ void __77__PKAccountOtherCardNumbersViewController__presentReplaceExpiredPhysica
 LABEL_6:
 }
 
-- (void)_appendPhysicalCardNumberSectionToConfiguration:(id)a3
+- (void)_appendPhysicalCardNumberSectionToConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v22 = [[PKTableViewDiffableDataSourceSection alloc] initWithIdentifier:@"physicalCardNumber"];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   if ([(PKAccount *)self->_account feature]== 2)
   {
     v6 = MEMORY[0x1E696AEC0];
-    v7 = PKPANMask();
+    primaryAccountNumberSuffix = PKPANMask();
     v8 = PKPANMask();
-    v9 = [(PKPhysicalCard *)self->_physicalCard FPANSuffix];
+    fPANSuffix = [(PKPhysicalCard *)self->_physicalCard FPANSuffix];
     v10 = PKMaskedPaymentPAN();
-    v11 = [v6 stringWithFormat:@"%@ %@ %@", v7, v8, v10];
+    v11 = [v6 stringWithFormat:@"%@ %@ %@", primaryAccountNumberSuffix, v8, v10];
     v12 = PKLTRString();
   }
 
   else
   {
-    v7 = [(PKPaymentPass *)self->_paymentPass primaryAccountNumberSuffix];
+    primaryAccountNumberSuffix = [(PKPaymentPass *)self->_paymentPass primaryAccountNumberSuffix];
     v12 = PKMaskedPaymentPAN();
   }
 
@@ -997,17 +997,17 @@ LABEL_6:
 
   [(PKKeyValueTableViewSettingsRow *)v15 setSensitive:1];
   [v5 addObject:v15];
-  v16 = [(PKPhysicalCard *)self->_physicalCard formattedExpiration];
-  if (v16)
+  formattedExpiration = [(PKPhysicalCard *)self->_physicalCard formattedExpiration];
+  if (formattedExpiration)
   {
     v17 = [PKKeyValueTableViewSettingsRow alloc];
     v18 = [(PKAccountOtherCardNumbersViewController *)self _localizedStringForKey:@"ACCOUNT_SERVICE_CARD_NUMBERS_OTHER_NUMBERS_TITANIUM_EXPIRATION_TITLE"];
-    v19 = [(PKKeyValueTableViewSettingsRow *)v17 initWithIdentifier:@"physicalCardExpiration" title:v18 value:v16];
+    v19 = [(PKKeyValueTableViewSettingsRow *)v17 initWithIdentifier:@"physicalCardExpiration" title:v18 value:formattedExpiration];
 
     if (self->_isPhysicalCardExpired)
     {
-      v20 = [MEMORY[0x1E69DC888] systemRedColor];
-      [(PKKeyValueTableViewSettingsRow *)v19 setSecondaryTextColor:v20];
+      systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+      [(PKKeyValueTableViewSettingsRow *)v19 setSecondaryTextColor:systemRedColor];
     }
 
     [v5 addObject:v19];
@@ -1019,18 +1019,18 @@ LABEL_6:
   }
 
   v21 = [v5 copy];
-  [v4 appendSection:v22 rows:v21];
+  [configurationCopy appendSection:v22 rows:v21];
 }
 
-- (void)_appendApplePayCardNumberSectionToConfiguration:(id)a3
+- (void)_appendApplePayCardNumberSectionToConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = [[PKTableViewDiffableDataSourceSection alloc] initWithIdentifier:@"applePayCardNumber"];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v7 = [(PKPaymentPass *)self->_paymentPass devicePaymentApplications];
-  v8 = [v7 allObjects];
+  devicePaymentApplications = [(PKPaymentPass *)self->_paymentPass devicePaymentApplications];
+  allObjects = [devicePaymentApplications allObjects];
 
-  v9 = [(PKPaymentPass *)self->_paymentPass sortedPaymentApplications:v8 ascending:1];
+  v9 = [(PKPaymentPass *)self->_paymentPass sortedPaymentApplications:allObjects ascending:1];
 
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -1043,7 +1043,7 @@ LABEL_6:
   v11 = v9;
   [v11 enumerateObjectsUsingBlock:v13];
   v12 = [v10 copy];
-  [v4 appendSection:v5 rows:v12];
+  [configurationCopy appendSection:v5 rows:v12];
 }
 
 void __91__PKAccountOtherCardNumbersViewController__appendApplePayCardNumberSectionToConfiguration___block_invoke(id *a1, void *a2)
@@ -1086,9 +1086,9 @@ void __91__PKAccountOtherCardNumbersViewController__appendApplePayCardNumberSect
   [a1[6] addObject:v16];
 }
 
-- (void)_appendPinSectionToConfiguration:(id)a3
+- (void)_appendPinSectionToConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v14 = [[PKTableViewDiffableDataSourceSection alloc] initWithIdentifier:@"PIN"];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v6 = [(PKPaymentPass *)self->_paymentPass localizedValueForFieldKey:*MEMORY[0x1E69BBBB0]];
@@ -1111,27 +1111,27 @@ void __91__PKAccountOtherCardNumbersViewController__appendApplePayCardNumberSect
 
   [v5 addObject:v12];
   v13 = [v5 copy];
-  [v4 appendSection:v14 rows:v13];
+  [configurationCopy appendSection:v14 rows:v13];
 }
 
-- (id)_groupedFooterWithText:(id)a3 tableView:(id)a4
+- (id)_groupedFooterWithText:(id)text tableView:(id)view
 {
-  v5 = a3;
-  v6 = [a4 dequeueReusableHeaderFooterViewWithIdentifier:@"footer"];
-  v7 = [MEMORY[0x1E69DCC28] groupedFooterConfiguration];
-  [v7 setText:v5];
+  textCopy = text;
+  v6 = [view dequeueReusableHeaderFooterViewWithIdentifier:@"footer"];
+  groupedFooterConfiguration = [MEMORY[0x1E69DCC28] groupedFooterConfiguration];
+  [groupedFooterConfiguration setText:textCopy];
 
-  [v7 directionalLayoutMargins];
-  [v7 setDirectionalLayoutMargins:?];
-  [v6 setContentConfiguration:v7];
+  [groupedFooterConfiguration directionalLayoutMargins];
+  [groupedFooterConfiguration setDirectionalLayoutMargins:?];
+  [v6 setContentConfiguration:groupedFooterConfiguration];
 
   return v6;
 }
 
-- (id)_localizedStringForKey:(id)a3
+- (id)_localizedStringForKey:(id)key
 {
   account = self->_account;
-  v5 = a3;
+  keyCopy = key;
   if ([(PKAccount *)account feature])
   {
     [(PKAccount *)self->_account feature];
@@ -1140,10 +1140,10 @@ void __91__PKAccountOtherCardNumbersViewController__appendApplePayCardNumberSect
 
   else
   {
-    v7 = -[NSString substringFromIndex:](v5, "substringFromIndex:", [@"ACCOUNT_SERVICE_" length]);
+    v7 = -[NSString substringFromIndex:](keyCopy, "substringFromIndex:", [@"ACCOUNT_SERVICE_" length]);
 
     v6 = PKLocalizedCardNumbersString(v7);
-    v5 = v7;
+    keyCopy = v7;
   }
 
   return v6;
@@ -1154,15 +1154,15 @@ void __91__PKAccountOtherCardNumbersViewController__appendApplePayCardNumberSect
   self->_fetchingFPAN = 1;
   objc_initWeak(&location, self);
   cardManager = self->_cardManager;
-  v4 = [(PKPaymentPass *)self->_paymentPass primaryAccountIdentifier];
-  v5 = [(PKPaymentPass *)self->_paymentPass uniqueID];
-  v6 = [(LAContext *)self->_laContext externalizedContext];
+  primaryAccountIdentifier = [(PKPaymentPass *)self->_paymentPass primaryAccountIdentifier];
+  uniqueID = [(PKPaymentPass *)self->_paymentPass uniqueID];
+  externalizedContext = [(LAContext *)self->_laContext externalizedContext];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__PKAccountOtherCardNumbersViewController__fetchFPANInformation__block_invoke;
   v7[3] = &unk_1E8018088;
   objc_copyWeak(&v8, &location);
-  [(PKAutoFillCardManager *)cardManager fpanCardAndCredentialForPrimaryAccountIdentifier:v4 passUniqueID:v5 authorization:v6 completion:v7];
+  [(PKAutoFillCardManager *)cardManager fpanCardAndCredentialForPrimaryAccountIdentifier:primaryAccountIdentifier passUniqueID:uniqueID authorization:externalizedContext completion:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -1203,11 +1203,11 @@ void __64__PKAccountOtherCardNumbersViewController__fetchFPANInformation__block_
   }
 }
 
-- (void)addAutoFillCardFinishedWith:(id)a3 credential:(id)a4 viewController:(id)a5
+- (void)addAutoFillCardFinishedWith:(id)with credential:(id)credential viewController:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  withCopy = with;
+  credentialCopy = credential;
+  controllerCopy = controller;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -1215,11 +1215,11 @@ void __64__PKAccountOtherCardNumbersViewController__fetchFPANInformation__block_
   aBlock[3] = &unk_1E8011E88;
   objc_copyWeak(&v30, &location);
   aBlock[4] = self;
-  v11 = v8;
+  v11 = withCopy;
   v27 = v11;
-  v12 = v9;
+  v12 = credentialCopy;
   v28 = v12;
-  v13 = v10;
+  v13 = controllerCopy;
   v29 = v13;
   v14 = _Block_copy(aBlock);
   cardManager = self->_cardManager;
@@ -1389,20 +1389,20 @@ void __97__PKAccountOtherCardNumbersViewController_addAutoFillCardFinishedWith_c
 - (void)_updateSavedCardInformation
 {
   v30 = *MEMORY[0x1E69E9840];
-  v3 = [(PKMutableAutofillCardCredential *)self->_fpanCardCredential primaryAccountNumber];
-  v4 = [v3 pk_zString];
+  primaryAccountNumber = [(PKMutableAutofillCardCredential *)self->_fpanCardCredential primaryAccountNumber];
+  pk_zString = [primaryAccountNumber pk_zString];
 
-  v23 = [(PKFPANCardDescriptor *)self->_fpanCard cardNickname];
-  v5 = [(PKMutableAutofillCardCredential *)self->_fpanCardCredential cardholderName];
-  v6 = [(PKMutableAutofillCardCredential *)self->_fpanCardCredential expirationDate];
-  v7 = [(PKMutableAutofillCardCredential *)self->_fpanCardCredential securityCode];
-  v24 = [v7 pk_zString];
+  cardNickname = [(PKFPANCardDescriptor *)self->_fpanCard cardNickname];
+  cardholderName = [(PKMutableAutofillCardCredential *)self->_fpanCardCredential cardholderName];
+  expirationDate = [(PKMutableAutofillCardCredential *)self->_fpanCardCredential expirationDate];
+  securityCode = [(PKMutableAutofillCardCredential *)self->_fpanCardCredential securityCode];
+  pk_zString2 = [securityCode pk_zString];
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v22 = self;
+  selfCopy = self;
   v8 = self->_fields;
   v9 = [(NSArray *)v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
@@ -1422,9 +1422,9 @@ void __97__PKAccountOtherCardNumbersViewController_addAutoFillCardFinishedWith_c
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [v13 currentValue];
-          v15 = v4;
-          v4 = v14;
+          currentValue = [v13 currentValue];
+          v15 = pk_zString;
+          pk_zString = currentValue;
         }
 
         else
@@ -1432,9 +1432,9 @@ void __97__PKAccountOtherCardNumbersViewController_addAutoFillCardFinishedWith_c
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v16 = [v13 currentValue];
-            v15 = v5;
-            v5 = v16;
+            currentValue2 = [v13 currentValue];
+            v15 = cardholderName;
+            cardholderName = currentValue2;
           }
 
           else
@@ -1442,9 +1442,9 @@ void __97__PKAccountOtherCardNumbersViewController_addAutoFillCardFinishedWith_c
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v17 = [v13 currentValue];
-              v15 = v6;
-              v6 = v17;
+              currentValue3 = [v13 currentValue];
+              v15 = expirationDate;
+              expirationDate = currentValue3;
             }
 
             else
@@ -1452,9 +1452,9 @@ void __97__PKAccountOtherCardNumbersViewController_addAutoFillCardFinishedWith_c
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v18 = [v13 currentValue];
-                v15 = v24;
-                v24 = v18;
+                currentValue4 = [v13 currentValue];
+                v15 = pk_zString2;
+                pk_zString2 = currentValue4;
               }
 
               else
@@ -1465,9 +1465,9 @@ void __97__PKAccountOtherCardNumbersViewController_addAutoFillCardFinishedWith_c
                   continue;
                 }
 
-                v19 = [v13 currentValue];
-                v15 = v23;
-                v23 = v19;
+                currentValue5 = [v13 currentValue];
+                v15 = cardNickname;
+                cardNickname = currentValue5;
               }
             }
           }
@@ -1480,14 +1480,14 @@ void __97__PKAccountOtherCardNumbersViewController_addAutoFillCardFinishedWith_c
     while (v10);
   }
 
-  if (v4 && [v4 length])
+  if (pk_zString && [pk_zString length])
   {
-    [(PKFPANCardDescriptor *)v22->_fpanCard setCardNickname:v23];
-    v20 = [objc_alloc(MEMORY[0x1E69B89D0]) initWithCardholderName:v5 pan:v4 expirationDate:v6 securityCode:v24 billingAddress:0];
-    fpanCardCredential = v22->_fpanCardCredential;
-    v22->_fpanCardCredential = v20;
+    [(PKFPANCardDescriptor *)selfCopy->_fpanCard setCardNickname:cardNickname];
+    v20 = [objc_alloc(MEMORY[0x1E69B89D0]) initWithCardholderName:cardholderName pan:pk_zString expirationDate:expirationDate securityCode:pk_zString2 billingAddress:0];
+    fpanCardCredential = selfCopy->_fpanCardCredential;
+    selfCopy->_fpanCardCredential = v20;
 
-    [(PKAutoFillCardManager *)v22->_cardManager updateFPANCardWithDescriptor:v22->_fpanCard credential:v22->_fpanCardCredential completion:&__block_literal_global_463];
+    [(PKAutoFillCardManager *)selfCopy->_cardManager updateFPANCardWithDescriptor:selfCopy->_fpanCard credential:selfCopy->_fpanCardCredential completion:&__block_literal_global_463];
   }
 }
 
@@ -1508,31 +1508,31 @@ void __70__PKAccountOtherCardNumbersViewController__updateSavedCardInformation__
   }
 }
 
-- (void)virtualCardEnrollmentViewController:(id)a3 didCompleteWithSuccess:(BOOL)a4
+- (void)virtualCardEnrollmentViewController:(id)controller didCompleteWithSuccess:(BOOL)success
 {
-  v4 = a4;
+  successCopy = success;
   [(PKAccountOtherCardNumbersViewController *)self dismissViewControllerAnimated:1 completion:0];
-  if (v4)
+  if (successCopy)
   {
-    v7 = [(PKAccountOtherCardNumbersViewController *)self navigationController];
-    v6 = [v7 popViewControllerAnimated:0];
+    navigationController = [(PKAccountOtherCardNumbersViewController *)self navigationController];
+    v6 = [navigationController popViewControllerAnimated:0];
   }
 }
 
-- (void)physicalCardsChanged:(id)a3 forAccountIdentifier:(id)a4
+- (void)physicalCardsChanged:(id)changed forAccountIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __85__PKAccountOtherCardNumbersViewController_physicalCardsChanged_forAccountIdentifier___block_invoke;
   v10[3] = &unk_1E8011828;
   objc_copyWeak(&v13, &location);
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = identifierCopy;
+  v12 = changedCopy;
+  v8 = changedCopy;
+  v9 = identifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v10);
 
   objc_destroyWeak(&v13);

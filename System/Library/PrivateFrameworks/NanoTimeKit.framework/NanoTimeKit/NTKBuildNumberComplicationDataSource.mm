@@ -1,18 +1,18 @@
 @interface NTKBuildNumberComplicationDataSource
-+ (BOOL)acceptsComplicationType:(unint64_t)a3 forDevice:(id)a4;
-- (NTKBuildNumberComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
++ (BOOL)acceptsComplicationType:(unint64_t)type forDevice:(id)device;
+- (NTKBuildNumberComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
 - (id)_currentTimelineEntry;
 - (id)currentSwitcherTemplate;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
 @end
 
 @implementation NTKBuildNumberComplicationDataSource
 
-- (NTKBuildNumberComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (NTKBuildNumberComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
   v9.receiver = self;
   v9.super_class = NTKBuildNumberComplicationDataSource;
-  v5 = [(CLKCComplicationDataSource *)&v9 initWithComplication:a3 family:a4 forDevice:a5];
+  v5 = [(CLKCComplicationDataSource *)&v9 initWithComplication:complication family:family forDevice:device];
   v6 = v5;
   if (v5)
   {
@@ -34,24 +34,24 @@
 
 - (id)currentSwitcherTemplate
 {
-  v2 = [(NTKBuildNumberComplicationDataSource *)self _currentTimelineEntry];
-  v3 = [v2 complicationTemplate];
+  _currentTimelineEntry = [(NTKBuildNumberComplicationDataSource *)self _currentTimelineEntry];
+  complicationTemplate = [_currentTimelineEntry complicationTemplate];
 
-  return v3;
+  return complicationTemplate;
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  v5 = a3;
-  v6 = [(NTKBuildNumberComplicationDataSource *)self _currentTimelineEntry];
-  (*(a3 + 2))(v5, v6);
+  handlerCopy = handler;
+  _currentTimelineEntry = [(NTKBuildNumberComplicationDataSource *)self _currentTimelineEntry];
+  (*(handler + 2))(handlerCopy, _currentTimelineEntry);
 }
 
-+ (BOOL)acceptsComplicationType:(unint64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationType:(unint64_t)type forDevice:(id)device
 {
-  if (a3 == 52)
+  if (type == 52)
   {
-    return NTKInternalBuild(a1, a2, 52, a4);
+    return NTKInternalBuild(self, a2, 52, device);
   }
 
   else

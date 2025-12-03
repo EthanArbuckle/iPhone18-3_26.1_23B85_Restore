@@ -1,16 +1,16 @@
 @interface VUIAccountSettingsButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 @end
 
 @implementation VUIAccountSettingsButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"VUIAccountSettingsButton" isKindOfClass:@"VUIButton"];
-  [v3 validateClass:@"VUIButton" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"VUIAccountSettingsButtonFactory" hasClassMethod:@"handleAccountSettingButtonSelected" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"VUIAccountSettingsButton" isKindOfClass:@"VUIButton"];
+  [validationsCopy validateClass:@"VUIButton" hasInstanceMethod:@"imageView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"VUIAccountSettingsButtonFactory" hasClassMethod:@"handleAccountSettingButtonSelected" withFullSignature:{"v", 0}];
 }
 
 uint64_t __62__VUIAccountSettingsButtonAccessibility_accessibilityActivate__block_invoke()

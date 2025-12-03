@@ -1,14 +1,14 @@
 @interface SmartShortcutPickerBaseViewController
-- (_TtC10WorkflowUI37SmartShortcutPickerBaseViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC10WorkflowUI37SmartShortcutPickerBaseViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (int64_t)preferredUserInterfaceStyle;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation SmartShortcutPickerBaseViewController
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v4 = sub_2749F9284();
   v5 = *(v4 - 8);
@@ -20,33 +20,33 @@
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2747DFBEC();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_2747DFDD4(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_2747DFDD4(change);
 }
 
 - (int64_t)preferredUserInterfaceStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2747E281C();
 
   return v3;
 }
 
-- (_TtC10WorkflowUI37SmartShortcutPickerBaseViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC10WorkflowUI37SmartShortcutPickerBaseViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     _sSo32WFShortcutConcerningReportReasona10WorkflowUIE2idSSvg_0();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   SmartShortcutPickerBaseViewController.init(nibName:bundle:)();
 }
 

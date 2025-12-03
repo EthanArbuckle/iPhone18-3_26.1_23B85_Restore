@@ -1,19 +1,19 @@
 @interface TRIXPCUtils
-+ (BOOL)validateSafeASCIISubsetIdentifier:(id)a3;
++ (BOOL)validateSafeASCIISubsetIdentifier:(id)identifier;
 @end
 
 @implementation TRIXPCUtils
 
-+ (BOOL)validateSafeASCIISubsetIdentifier:(id)a3
++ (BOOL)validateSafeASCIISubsetIdentifier:(id)identifier
 {
   v3 = qword_280ACAE68;
-  v4 = a3;
+  identifierCopy = identifier;
   if (v3 != -1)
   {
     dispatch_once(&qword_280ACAE68, &__block_literal_global_14);
   }
 
-  v5 = [v4 rangeOfCharacterFromSet:_MergedGlobals_12];
+  v5 = [identifierCopy rangeOfCharacterFromSet:_MergedGlobals_12];
 
   return v5 == 0x7FFFFFFFFFFFFFFFLL;
 }

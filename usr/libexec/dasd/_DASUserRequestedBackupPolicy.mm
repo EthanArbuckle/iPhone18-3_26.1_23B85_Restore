@@ -1,10 +1,10 @@
 @interface _DASUserRequestedBackupPolicy
 + (id)policyInstance;
-- (BOOL)appliesToActivity:(id)a3;
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4;
+- (BOOL)appliesToActivity:(id)activity;
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state;
 - (_DASUserRequestedBackupPolicy)init;
 - (id)initializeTriggers;
-- (id)responseForActivity:(id)a3 withState:(id)a4;
+- (id)responseForActivity:(id)activity withState:(id)state;
 @end
 
 @implementation _DASUserRequestedBackupPolicy
@@ -42,9 +42,9 @@
     userRequestedBackup = v3->_userRequestedBackup;
     v3->_userRequestedBackup = v5;
 
-    v7 = [(_DASUserRequestedBackupPolicy *)v3 initializeTriggers];
+    initializeTriggers = [(_DASUserRequestedBackupPolicy *)v3 initializeTriggers];
     triggers = v3->_triggers;
-    v3->_triggers = v7;
+    v3->_triggers = initializeTriggers;
   }
 
   return v3;
@@ -62,38 +62,38 @@
   return v3;
 }
 
-- (BOOL)appliesToActivity:(id)a3
+- (BOOL)appliesToActivity:(id)activity
 {
-  v3 = a3;
-  v4 = [v3 schedulingPriority];
-  if (v4 >= _DASSchedulingPriorityUserInitiated)
+  activityCopy = activity;
+  schedulingPriority = [activityCopy schedulingPriority];
+  if (schedulingPriority >= _DASSchedulingPriorityUserInitiated)
   {
-    v5 = 0;
+    requiresNetwork = 0;
   }
 
-  else if ([v3 userRequestedBackupTask])
+  else if ([activityCopy userRequestedBackupTask])
   {
-    v5 = 1;
+    requiresNetwork = 1;
   }
 
   else
   {
-    v5 = [v3 requiresNetwork];
+    requiresNetwork = [activityCopy requiresNetwork];
   }
 
-  return v5;
+  return requiresNetwork;
 }
 
-- (BOOL)shouldIgnoreTrigger:(id)a3 withState:(id)a4
+- (BOOL)shouldIgnoreTrigger:(id)trigger withState:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v9 = 1;
-  if ([a3 isEqualToString:@"com.apple.das.userRequestedBackup"])
+  if ([trigger isEqualToString:@"com.apple.das.userRequestedBackup"])
   {
-    v7 = [v6 objectForKeyedSubscript:self->_userRequestedBackup];
-    v8 = [v7 BOOLValue];
+    v7 = [stateCopy objectForKeyedSubscript:self->_userRequestedBackup];
+    bOOLValue = [v7 BOOLValue];
 
-    if (v8)
+    if (bOOLValue)
     {
       v9 = 0;
     }
@@ -102,25 +102,25 @@
   return v9;
 }
 
-- (id)responseForActivity:(id)a3 withState:(id)a4
+- (id)responseForActivity:(id)activity withState:(id)state
 {
-  v6 = a3;
-  v7 = [a4 objectForKeyedSubscript:self->_userRequestedBackup];
-  v8 = [v7 BOOLValue];
+  activityCopy = activity;
+  v7 = [state objectForKeyedSubscript:self->_userRequestedBackup];
+  bOOLValue = [v7 BOOLValue];
 
   v9 = +[_DASDaemon sharedInstance];
-  v10 = [v9 backupTaskManager];
+  backupTaskManager = [v9 backupTaskManager];
 
   v11 = [[_DASPolicyResponseRationale alloc] initWithPolicyName:@"User Requested Backup Policy"];
-  v12 = [v6 userRequestedBackupTask];
-  if (v12)
+  userRequestedBackupTask = [activityCopy userRequestedBackupTask];
+  if (userRequestedBackupTask)
   {
-    v13 = [v6 startDate];
-    if (v13)
+    startDate = [activityCopy startDate];
+    if (startDate)
     {
     }
 
-    else if (([v10 activityEligibleForRunning:v6] & 1) == 0)
+    else if (([backupTaskManager activityEligibleForRunning:activityCopy] & 1) == 0)
     {
       v17 = [NSPredicate predicateWithFormat:@"eligibleForRunning == %@", &__kCFBooleanFalse];
       [(_DASPolicyResponseRationale *)v11 addRationaleWithCondition:v17];
@@ -130,18 +130,18 @@
     }
   }
 
-  v14 = [NSNumber numberWithBool:v8];
+  v14 = [NSNumber numberWithBool:bOOLValue];
   v15 = [NSPredicate predicateWithFormat:@"userRequestedBackup == %@", v14];
   [(_DASPolicyResponseRationale *)v11 addRationaleWithCondition:v15];
 
-  if (v8)
+  if (bOOLValue)
   {
-    if (v12)
+    if (userRequestedBackupTask)
     {
       v16 = 67;
     }
 
-    else if ([v6 requiresNetwork])
+    else if ([activityCopy requiresNetwork])
     {
       v16 = 67;
     }
@@ -152,7 +152,7 @@
     }
   }
 
-  else if (v12)
+  else if (userRequestedBackupTask)
   {
     v16 = 33;
   }

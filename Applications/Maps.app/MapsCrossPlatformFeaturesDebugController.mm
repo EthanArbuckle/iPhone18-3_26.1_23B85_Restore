@@ -1,14 +1,14 @@
 @interface MapsCrossPlatformFeaturesDebugController
 - (BOOL)recordsContinuously;
-- (id)_mapsAppStateCreateActivity:(unint64_t)a3;
-- (void)_copyStateWithFidelity:(unint64_t)a3;
-- (void)_mapsAppStateRestoreActivity:(id)a3 withAssumedSourceFidelity:(unint64_t)a4;
-- (void)_pasteStateWithAssumedSourceFidelity:(unint64_t)a3;
+- (id)_mapsAppStateCreateActivity:(unint64_t)activity;
+- (void)_copyStateWithFidelity:(unint64_t)fidelity;
+- (void)_mapsAppStateRestoreActivity:(id)activity withAssumedSourceFidelity:(unint64_t)fidelity;
+- (void)_pasteStateWithAssumedSourceFidelity:(unint64_t)fidelity;
 - (void)_promptForRestart;
 - (void)_record;
 - (void)_requestTerminationForRestart;
 - (void)prepareContent;
-- (void)setRecordsContinuously:(BOOL)a3;
+- (void)setRecordsContinuously:(BOOL)continuously;
 @end
 
 @implementation MapsCrossPlatformFeaturesDebugController
@@ -56,8 +56,8 @@
     v13 = [v7 stringByAppendingPathComponent:@"Activity Description.txt"];
     [v12 writeToFile:v13 atomically:1 encoding:4 error:0];
 
-    v14 = [v11 data];
-    v15 = [v14 base64EncodedStringWithOptions:0];
+    data = [v11 data];
+    v15 = [data base64EncodedStringWithOptions:0];
     v16 = [v7 stringByAppendingPathComponent:@"Base64 Activity Data.txt"];
     [v15 writeToFile:v16 atomically:1 encoding:4 error:0];
 
@@ -65,8 +65,8 @@
     [v17 bounds];
     v19 = v18;
     v21 = v20;
-    v22 = [v17 screen];
-    if (v22)
+    screen = [v17 screen];
+    if (screen)
     {
       [v17 screen];
     }
@@ -101,12 +101,12 @@
   }
 }
 
-- (void)setRecordsContinuously:(BOOL)a3
+- (void)setRecordsContinuously:(BOOL)continuously
 {
-  v3 = a3;
+  continuouslyCopy = continuously;
   WeakRetained = objc_loadWeakRetained(&self->_recordingTimer);
 
-  if (v3)
+  if (continuouslyCopy)
   {
     if (!WeakRetained)
     {
@@ -133,14 +133,14 @@
   return v3;
 }
 
-- (void)_pasteStateWithAssumedSourceFidelity:(unint64_t)a3
+- (void)_pasteStateWithAssumedSourceFidelity:(unint64_t)fidelity
 {
   v5 = +[UIPasteboard generalPasteboard];
-  v10 = [v5 string];
+  string = [v5 string];
 
-  if (v10)
+  if (string)
   {
-    v6 = [[NSData alloc] initWithBase64EncodedString:v10 options:1];
+    v6 = [[NSData alloc] initWithBase64EncodedString:string options:1];
     if (v6)
     {
       v7 = [[MapsActivity alloc] initWithData:v6];
@@ -148,30 +148,30 @@
       if (v7)
       {
         NSLog(@"About to restore the state of the app from activity: %@", v7);
-        [(MapsCrossPlatformFeaturesDebugController *)self _mapsAppStateRestoreActivity:v8 withAssumedSourceFidelity:a3];
+        [(MapsCrossPlatformFeaturesDebugController *)self _mapsAppStateRestoreActivity:v8 withAssumedSourceFidelity:fidelity];
       }
     }
   }
 
-  v9 = [(MapsCrossPlatformFeaturesDebugController *)self presentingViewController];
-  [v9 dismissViewControllerAnimated:0 completion:0];
+  presentingViewController = [(MapsCrossPlatformFeaturesDebugController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:0 completion:0];
 }
 
-- (void)_copyStateWithFidelity:(unint64_t)a3
+- (void)_copyStateWithFidelity:(unint64_t)fidelity
 {
-  v3 = [(MapsCrossPlatformFeaturesDebugController *)self _mapsAppStateCreateActivity:a3];
+  v3 = [(MapsCrossPlatformFeaturesDebugController *)self _mapsAppStateCreateActivity:fidelity];
   if (v3)
   {
     v10 = v3;
     NSLog(@"About to copy the current state of the app: %@", v3);
-    v4 = [v10 data];
-    v5 = [v4 base64EncodedStringWithOptions:0];
-    NSLog(@"The size of the payload is %lu", [v4 length]);
-    v6 = [v10 bzip2CompressedData];
-    v7 = v6;
-    if (v6)
+    data = [v10 data];
+    v5 = [data base64EncodedStringWithOptions:0];
+    NSLog(@"The size of the payload is %lu", [data length]);
+    bzip2CompressedData = [v10 bzip2CompressedData];
+    v7 = bzip2CompressedData;
+    if (bzip2CompressedData)
     {
-      NSLog(@"The size of the Bzip2-compressed payload is %lu", [v6 length]);
+      NSLog(@"The size of the Bzip2-compressed payload is %lu", [bzip2CompressedData length]);
     }
 
     else
@@ -215,17 +215,17 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_mapsAppStateRestoreActivity:(id)a3 withAssumedSourceFidelity:(unint64_t)a4
+- (void)_mapsAppStateRestoreActivity:(id)activity withAssumedSourceFidelity:(unint64_t)fidelity
 {
-  v6 = a3;
-  v7 = [(MapsCrossPlatformFeaturesDebugController *)self _maps_mapsSceneDelegate];
-  [v7 setMapsActivity:v6 assumedSourceFidelity:a4 source:1];
+  activityCopy = activity;
+  _maps_mapsSceneDelegate = [(MapsCrossPlatformFeaturesDebugController *)self _maps_mapsSceneDelegate];
+  [_maps_mapsSceneDelegate setMapsActivity:activityCopy assumedSourceFidelity:fidelity source:1];
 }
 
-- (id)_mapsAppStateCreateActivity:(unint64_t)a3
+- (id)_mapsAppStateCreateActivity:(unint64_t)activity
 {
-  v4 = [(MapsCrossPlatformFeaturesDebugController *)self _maps_mapsSceneDelegate];
-  v5 = [v4 mapsActivityWithFidelity:a3];
+  _maps_mapsSceneDelegate = [(MapsCrossPlatformFeaturesDebugController *)self _maps_mapsSceneDelegate];
+  v5 = [_maps_mapsSceneDelegate mapsActivityWithFidelity:activity];
 
   return v5;
 }

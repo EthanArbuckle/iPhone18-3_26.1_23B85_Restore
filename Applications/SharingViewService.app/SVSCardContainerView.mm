@@ -1,27 +1,27 @@
 @interface SVSCardContainerView
-- (SVSCardContainerView)initWithFrame:(CGRect)a3;
+- (SVSCardContainerView)initWithFrame:(CGRect)frame;
 - (void)_updateCornerRadius;
 - (void)_updateWidthConstraints;
-- (void)activateWithDimmingView:(id)a3 bottomMarginConstraint:(id)a4 dismissHandler:(id)a5;
+- (void)activateWithDimmingView:(id)view bottomMarginConstraint:(id)constraint dismissHandler:(id)handler;
 - (void)awakeFromNib;
-- (void)cancelProxCardDraggingWithCompletion:(id)a3;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setJustBeAContainer:(BOOL)a3;
+- (void)cancelProxCardDraggingWithCompletion:(id)completion;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setJustBeAContainer:(BOOL)container;
 - (void)updateScrollViewTopInset;
 @end
 
 @implementation SVSCardContainerView
 
-- (void)cancelProxCardDraggingWithCompletion:(id)a3
+- (void)cancelProxCardDraggingWithCompletion:(id)completion
 {
   v13 = _NSConcreteStackBlock;
   v14 = 3221225472;
   v15 = sub_10011EE78;
   v16 = &unk_1001959D0;
-  v5 = a3;
-  v17 = self;
-  v18 = v5;
+  completionCopy = completion;
+  selfCopy = self;
+  v18 = completionCopy;
   v6 = objc_retainBlock(&v13);
   if ([(SVSCardContainerScrollView *)self->_flickScrollview isDragging:v13])
   {
@@ -48,8 +48,8 @@
   }
 
   originalContentOffsetY = self->_originalContentOffsetY;
-  v11 = [(SVSCardContainerScrollView *)self->_flickScrollview panGestureRecognizer];
-  [v11 setEnabled:0];
+  panGestureRecognizer = [(SVSCardContainerScrollView *)self->_flickScrollview panGestureRecognizer];
+  [panGestureRecognizer setEnabled:0];
 
   [(SVSCardContainerScrollView *)self->_flickScrollview setContentOffset:1 animated:0.0, originalContentOffsetY];
   if (v6)
@@ -58,12 +58,12 @@
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v12 = a3;
-  [v12 contentOffset];
+  scrollCopy = scroll;
+  [scrollCopy contentOffset];
   [(NSLayoutConstraint *)self->_bottomMarginConstraint setConstant:v4 - self->_originalContentOffsetY + self->_originalBottomConstraintConstant];
-  [v12 contentOffset];
+  [scrollCopy contentOffset];
   v6 = v5;
   originalContentOffsetY = self->_originalContentOffsetY;
   if ([(SVSCardContainerView *)self swipeDismissible])
@@ -82,7 +82,7 @@
     [(UIView *)self->_dimmingView setAlpha:v8];
   }
 
-  [v12 contentOffset];
+  [scrollCopy contentOffset];
   if (v9 == 0.0)
   {
     dismissHandler = self->_dismissHandler;
@@ -95,7 +95,7 @@
   }
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
   dragCancelHandler = self->_dragCancelHandler;
   if (dragCancelHandler)
@@ -108,23 +108,23 @@
   }
 }
 
-- (void)activateWithDimmingView:(id)a3 bottomMarginConstraint:(id)a4 dismissHandler:(id)a5
+- (void)activateWithDimmingView:(id)view bottomMarginConstraint:(id)constraint dismissHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  viewCopy = view;
+  constraintCopy = constraint;
+  handlerCopy = handler;
   v12 = +[UIDevice currentDevice];
-  v13 = [v12 userInterfaceIdiom];
+  userInterfaceIdiom = [v12 userInterfaceIdiom];
 
-  if (v10 && (v13 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if (constraintCopy && (userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
-    objc_storeStrong(&self->_dimmingView, a3);
-    v14 = objc_retainBlock(v11);
+    objc_storeStrong(&self->_dimmingView, view);
+    v14 = objc_retainBlock(handlerCopy);
     dismissHandler = self->_dismissHandler;
     self->_dismissHandler = v14;
 
-    objc_storeStrong(&self->_bottomMarginConstraint, a4);
-    [v10 constant];
+    objc_storeStrong(&self->_bottomMarginConstraint, constraint);
+    [constraintCopy constant];
     self->_originalBottomConstraintConstant = v16;
     objc_initWeak(&location, self);
     v17 = [SVSCardContainerScrollView alloc];
@@ -160,14 +160,14 @@
     [(SVSCardContainerScrollView *)self->_flickScrollview setShowsHorizontalScrollIndicator:0];
     [(SVSCardContainerScrollView *)self->_flickScrollview setUserInteractionEnabled:1];
     [(SVSCardContainerScrollView *)self->_flickScrollview setAlwaysBounceVertical:1];
-    v31 = [(SVSCardContainerScrollView *)self->_flickScrollview panGestureRecognizer];
-    v32 = [v31 view];
-    v33 = [(SVSCardContainerScrollView *)self->_flickScrollview panGestureRecognizer];
-    [v32 removeGestureRecognizer:v33];
+    panGestureRecognizer = [(SVSCardContainerScrollView *)self->_flickScrollview panGestureRecognizer];
+    view = [panGestureRecognizer view];
+    panGestureRecognizer2 = [(SVSCardContainerScrollView *)self->_flickScrollview panGestureRecognizer];
+    [view removeGestureRecognizer:panGestureRecognizer2];
 
-    v34 = [(SVSCardContainerView *)self superview];
-    v35 = [(SVSCardContainerScrollView *)self->_flickScrollview panGestureRecognizer];
-    [v34 addGestureRecognizer:v35];
+    superview = [(SVSCardContainerView *)self superview];
+    panGestureRecognizer3 = [(SVSCardContainerScrollView *)self->_flickScrollview panGestureRecognizer];
+    [superview addGestureRecognizer:panGestureRecognizer3];
 
     [(SVSCardContainerScrollView *)self->_flickScrollview size];
     self->_originalContentOffsetY = v36;
@@ -213,15 +213,15 @@
 
 - (void)_updateWidthConstraints
 {
-  v3 = [(SVSCardContainerView *)self traitCollection];
+  traitCollection = [(SVSCardContainerView *)self traitCollection];
   v4 = [UITraitCollection traitCollectionWithHorizontalSizeClass:1];
-  v5 = [v3 containsTraitsInCollection:v4];
+  v5 = [traitCollection containsTraitsInCollection:v4];
 
   if (v5)
   {
-    v9 = [(SVSCardContainerView *)self constraints];
+    constraints = [(SVSCardContainerView *)self constraints];
     v6 = [NSPredicate predicateWithFormat:@"firstAttribute = %d AND firstItem = %@ AND constant = 400", 7, self];
-    v7 = [v9 filteredArrayUsingPredicate:v6];
+    v7 = [constraints filteredArrayUsingPredicate:v6];
     if ([v7 count] >= 2 && dword_1001BEF18 <= 90 && (dword_1001BEF18 != -1 || _LogCategory_Initialize()))
     {
       v8 = v7;
@@ -234,12 +234,12 @@
 
 - (void)_updateCornerRadius
 {
-  v3 = [(SVSCardContainerView *)self justBeAContainer];
+  justBeAContainer = [(SVSCardContainerView *)self justBeAContainer];
   v4 = 0.0;
-  if ((v3 & 1) == 0)
+  if ((justBeAContainer & 1) == 0)
   {
-    v5 = [(SVSCardContainerView *)self traitCollection];
-    [v5 displayCornerRadius];
+    traitCollection = [(SVSCardContainerView *)self traitCollection];
+    [traitCollection displayCornerRadius];
     v7 = v6 + -6.0;
 
     v4 = fmax(v7, 13.0);
@@ -248,20 +248,20 @@
   [(SVSCardContainerView *)self _setContinuousCornerRadius:v4];
 }
 
-- (void)setJustBeAContainer:(BOOL)a3
+- (void)setJustBeAContainer:(BOOL)container
 {
-  if (self->_justBeAContainer != a3)
+  if (self->_justBeAContainer != container)
   {
-    self->_justBeAContainer = a3;
+    self->_justBeAContainer = container;
     [(SVSCardContainerView *)self _updateCornerRadius];
   }
 }
 
-- (SVSCardContainerView)initWithFrame:(CGRect)a3
+- (SVSCardContainerView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SVSCardContainerView;
-  v3 = [(SVSCardContainerView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SVSCardContainerView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[UIColor systemBackgroundColor];

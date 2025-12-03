@@ -1,17 +1,17 @@
 @interface NSEnergyFormatter
 - (NSEnergyFormatter)init;
-- (NSEnergyFormatter)initWithCoder:(id)a3;
+- (NSEnergyFormatter)initWithCoder:(id)coder;
 - (NSString)stringFromJoules:(double)numberInJoules;
 - (NSString)stringFromValue:(double)value unit:(NSEnergyFormatterUnit)unit;
 - (NSString)unitStringFromJoules:(double)numberInJoules usedUnit:(NSEnergyFormatterUnit *)unitp;
 - (NSString)unitStringFromValue:(double)value unit:(NSEnergyFormatterUnit)unit;
-- (id)attributedStringForObjectValue:(id)a3 withDefaultAttributes:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)stringForObjectValue:(id)a3;
-- (int64_t)targetUnitFromJoules:(double)a3;
+- (id)attributedStringForObjectValue:(id)value withDefaultAttributes:(id)attributes;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)stringForObjectValue:(id)value;
+- (int64_t)targetUnitFromJoules:(double)joules;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)receiveObservedValue:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)receiveObservedValue:(id)value;
 @end
 
 @implementation NSEnergyFormatter
@@ -30,23 +30,23 @@
   return v2;
 }
 
-- (void)receiveObservedValue:(id)a3
+- (void)receiveObservedValue:(id)value
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (a3 && (_NSIsNSNumber() & 1) == 0)
+  if (value && (_NSIsNSNumber() & 1) == 0)
   {
     [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"NSObservationFormatterSupport.m" description:58, @"Invalid parameter not satisfying: %@", @"!value || _NSIsNSNumber(value)"];
   }
 
   v6.receiver = self;
   v6.super_class = NSEnergyFormatter;
-  [(NSEnergyFormatter *)&v6 receiveObservedValue:[(NSEnergyFormatter *)self stringForObjectValue:a3]];
+  [(NSEnergyFormatter *)&v6 receiveObservedValue:[(NSEnergyFormatter *)self stringForObjectValue:value]];
 }
 
-- (int64_t)targetUnitFromJoules:(double)a3
+- (int64_t)targetUnitFromJoules:(double)joules
 {
-  v4 = [(NSNumberFormatter *)[(NSEnergyFormatter *)self numberFormatter] locale];
-  if ([-[NSLocale objectForKey:](v4 objectForKey:{*MEMORY[0x1E695DA08]), "BOOLValue"}])
+  locale = [(NSNumberFormatter *)[(NSEnergyFormatter *)self numberFormatter] locale];
+  if ([-[NSLocale objectForKey:](locale objectForKey:{*MEMORY[0x1E695DA08]), "BOOLValue"}])
   {
     v5 = &metric_units_1;
   }
@@ -64,36 +64,36 @@
   {
     v10 = v9;
     v11 = v5[v8];
-    v12 = 0.0;
+    joulesCopy = 0.0;
     if (v11 > 1792)
     {
       if (v11 == 1793)
       {
-        v12 = a3 / 4.184;
+        joulesCopy = joules / 4.184;
       }
 
       else if (v11 == 1794)
       {
-        v12 = a3 / 4184.0;
+        joulesCopy = joules / 4184.0;
       }
     }
 
     else
     {
-      v12 = a3;
+      joulesCopy = joules;
       if (v11 != 11)
       {
-        v12 = 0.0;
+        joulesCopy = 0.0;
         if (v11 == 14)
         {
-          v12 = a3 / 1000.0;
+          joulesCopy = joules / 1000.0;
         }
       }
     }
 
     v9 = 0;
     v13 = &v6[2 * v8];
-    *v13 = v12;
+    *v13 = joulesCopy;
     *(v13 + 1) = v11;
     v8 = 1;
   }
@@ -308,35 +308,35 @@ LABEL_11:
   return [(NSEnergyFormatter *)self stringFromValue:v5 unit:v6];
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
-  if (!a3 || !_NSIsNSNumber())
+  if (!value || !_NSIsNSNumber())
   {
     return 0;
   }
 
-  [a3 doubleValue];
+  [value doubleValue];
 
   return [(NSEnergyFormatter *)self stringFromJoules:?];
 }
 
-- (id)attributedStringForObjectValue:(id)a3 withDefaultAttributes:(id)a4
+- (id)attributedStringForObjectValue:(id)value withDefaultAttributes:(id)attributes
 {
-  if (!a3 || !_NSIsNSNumber())
+  if (!value || !_NSIsNSNumber())
   {
     return 0;
   }
 
-  [a3 doubleValue];
-  v7 = [[NSAttributedString alloc] initWithString:[(NSEnergyFormatter *)self stringFromJoules:?] attributes:a4];
+  [value doubleValue];
+  v7 = [[NSAttributedString alloc] initWithString:[(NSEnergyFormatter *)self stringFromJoules:?] attributes:attributes];
 
   return v7;
 }
 
-- (NSEnergyFormatter)initWithCoder:(id)a3
+- (NSEnergyFormatter)initWithCoder:(id)coder
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
 
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSEnergyFormatter cannot be decoded by non-keyed archivers" userInfo:0]);
@@ -344,38 +344,38 @@ LABEL_11:
 
   v7.receiver = self;
   v7.super_class = NSEnergyFormatter;
-  v5 = [(NSFormatter *)&v7 initWithCoder:a3];
+  v5 = [(NSFormatter *)&v7 initWithCoder:coder];
   if (v5)
   {
-    v5->_unitFormatter = [[NSUnitFormatter alloc] initWithCoder:a3];
-    v5->_isForFoodEnergyUse = [a3 decodeBoolForKey:@"NS.forFoodEnergyUse"];
+    v5->_unitFormatter = [[NSUnitFormatter alloc] initWithCoder:coder];
+    v5->_isForFoodEnergyUse = [coder decodeBoolForKey:@"NS.forFoodEnergyUse"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"NSEnergyFormatter cannot be encoded by non-keyed archivers" userInfo:0]);
   }
 
   v5.receiver = self;
   v5.super_class = NSEnergyFormatter;
-  [(NSFormatter *)&v5 encodeWithCoder:a3];
-  [(NSUnitFormatter *)self->_unitFormatter encodeWithCoder:a3];
+  [(NSFormatter *)&v5 encodeWithCoder:coder];
+  [(NSUnitFormatter *)self->_unitFormatter encodeWithCoder:coder];
   if (self->_isForFoodEnergyUse)
   {
-    [a3 encodeBool:1 forKey:@"NS.forFoodEnergyUse"];
+    [coder encodeBool:1 forKey:@"NS.forFoodEnergyUse"];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  *(v5 + 8) = [(NSUnitFormatter *)self->_unitFormatter copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  *(v5 + 8) = [(NSUnitFormatter *)self->_unitFormatter copyWithZone:zone];
   *(v5 + 16) = self->_isForFoodEnergyUse;
   return v5;
 }

@@ -1,9 +1,9 @@
 @interface ADPearlColorInFieldCalibrationPipelineParameters
 + (id)defaults;
 - (ADPearlColorInFieldCalibrationPipelineParameters)init;
-- (ADPearlColorInFieldCalibrationPipelineParameters)initWithDeviceName:(id)a3;
-- (DefaultsForFlow)getDefaultsForFlow:(int)a3;
-- (float)getMaxStdForValidResultForFlow:(int)a3;
+- (ADPearlColorInFieldCalibrationPipelineParameters)initWithDeviceName:(id)name;
+- (DefaultsForFlow)getDefaultsForFlow:(int)flow;
+- (float)getMaxStdForValidResultForFlow:(int)flow;
 @end
 
 @implementation ADPearlColorInFieldCalibrationPipelineParameters
@@ -16,15 +16,15 @@
   return v4;
 }
 
-- (ADPearlColorInFieldCalibrationPipelineParameters)initWithDeviceName:(id)a3
+- (ADPearlColorInFieldCalibrationPipelineParameters)initWithDeviceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = ADPearlColorInFieldCalibrationPipelineParameters;
-  v5 = [(ADPipelineParameters *)&v11 initForDevice:v4];
+  v5 = [(ADPipelineParameters *)&v11 initForDevice:nameCopy];
   if (v5)
   {
-    v6 = v4;
+    v6 = nameCopy;
     v7 = 1;
     if (([v6 hasPrefix:@"J7"] & 1) == 0 && (objc_msgSend(v6, "hasPrefix:", @"J8") & 1) == 0)
     {
@@ -67,11 +67,11 @@
   return v5;
 }
 
-- (float)getMaxStdForValidResultForFlow:(int)a3
+- (float)getMaxStdForValidResultForFlow:(int)flow
 {
-  v3 = *&a3;
-  v5 = [objc_opt_class() defaults];
-  [v5 floatForKey:kADDeviceConfigurationKeyPearlColorStdThreshold];
+  v3 = *&flow;
+  defaults = [objc_opt_class() defaults];
+  [defaults floatForKey:kADDeviceConfigurationKeyPearlColorStdThreshold];
   v7.var0 = v6;
 
   v8 = kADDeviceConfigurationKeyPearlColorStdThresholdNoOverride;
@@ -96,16 +96,16 @@
   return v7.var0;
 }
 
-- (DefaultsForFlow)getDefaultsForFlow:(int)a3
+- (DefaultsForFlow)getDefaultsForFlow:(int)flow
 {
-  if (a3 >= 4)
+  if (flow >= 4)
   {
     return 0;
   }
 
   else
   {
-    return (&[ADPearlColorInFieldCalibrationPipelineParameters getDefaultsForFlow:]::defaultPerFlow + 4 * a3);
+    return (&[ADPearlColorInFieldCalibrationPipelineParameters getDefaultsForFlow:]::defaultPerFlow + 4 * flow);
   }
 }
 

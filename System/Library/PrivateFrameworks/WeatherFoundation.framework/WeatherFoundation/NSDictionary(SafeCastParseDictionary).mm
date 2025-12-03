@@ -18,8 +18,8 @@
   v8 = a5;
   if (v7)
   {
-    v9 = [MEMORY[0x277CBEB68] null];
-    v10 = [v7 isEqual:v9];
+    null = [MEMORY[0x277CBEB68] null];
+    v10 = [v7 isEqual:null];
 
     if ((v10 & 1) == 0)
     {
@@ -27,7 +27,7 @@
       if (v11 && ([MEMORY[0x277CBEB68] null], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "isEqual:", v12), v12, (v13 & 1) == 0))
       {
         [v11 floatValue];
-        a1 = v15;
+        self = v15;
       }
 
       else
@@ -41,7 +41,7 @@
     }
   }
 
-  return a1;
+  return self;
 }
 
 + (double)doubleValueFromDictionary:()SafeCastParseDictionary forKey:defaultValue:
@@ -50,8 +50,8 @@
   v8 = a5;
   if (v7)
   {
-    v9 = [MEMORY[0x277CBEB68] null];
-    v10 = [v7 isEqual:v9];
+    null = [MEMORY[0x277CBEB68] null];
+    v10 = [v7 isEqual:null];
 
     if ((v10 & 1) == 0)
     {
@@ -59,7 +59,7 @@
       if (v11 && ([MEMORY[0x277CBEB68] null], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v11, "isEqual:", v12), v12, (v13 & 1) == 0))
       {
         [v11 doubleValue];
-        a1 = v15;
+        self = v15;
       }
 
       else
@@ -73,7 +73,7 @@
     }
   }
 
-  return a1;
+  return self;
 }
 
 + (uint64_t)integerValueFromDictionary:()SafeCastParseDictionary forKey:defaultValue:
@@ -82,8 +82,8 @@
   v8 = a4;
   if (v7)
   {
-    v9 = [MEMORY[0x277CBEB68] null];
-    v10 = [v7 isEqual:v9];
+    null = [MEMORY[0x277CBEB68] null];
+    v10 = [v7 isEqual:null];
 
     if ((v10 & 1) == 0)
     {
@@ -139,7 +139,7 @@
 
 - (id)dictionaryForKey:()SafeCastParseDictionary
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -156,7 +156,7 @@
 
 - (id)arrayForKey:()SafeCastParseDictionary
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -173,7 +173,7 @@
 
 - (id)numberForKey:()SafeCastParseDictionary
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -190,7 +190,7 @@
 
 - (id)stringForKey:()SafeCastParseDictionary
 {
-  v1 = [a1 objectForKeyedSubscript:?];
+  v1 = [self objectForKeyedSubscript:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -207,7 +207,7 @@
 
 - (uint64_t)BOOLForKey:()SafeCastParseDictionary defaultValue:
 {
-  v5 = [a1 numberForKey:?];
+  v5 = [self numberForKey:?];
   v6 = v5;
   if (v5)
   {

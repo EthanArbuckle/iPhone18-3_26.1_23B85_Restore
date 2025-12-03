@@ -1,23 +1,23 @@
 @interface ManagedAppsReportedAppState
 - (_TtC20ManagedAppsInterface27ManagedAppsReportedAppState)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ManagedAppsReportedAppState
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC20ManagedAppsInterface27ManagedAppsReportedAppState_appState);
-  v5 = a3;
-  v6 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v7 = sub_25807FCB8();
-  [v5 encodeObject:v4 forKey:v7];
+  [coderCopy encodeObject:v4 forKey:v7];
 
-  v8 = *(&v6->super.isa + OBJC_IVAR____TtC20ManagedAppsInterface27ManagedAppsReportedAppState_extensionsState);
+  v8 = *(&selfCopy->super.isa + OBJC_IVAR____TtC20ManagedAppsInterface27ManagedAppsReportedAppState_extensionsState);
   type metadata accessor for ManagedAppsReportedStateItem();
   v9 = sub_25807FC88();
   v10 = sub_25807FCB8();
-  [v5 encodeObject:v9 forKey:v10];
+  [coderCopy encodeObject:v9 forKey:v10];
 }
 
 - (_TtC20ManagedAppsInterface27ManagedAppsReportedAppState)init

@@ -44,8 +44,8 @@ uint64_t __45__WAProviderAttributionManager_sharedManager__block_invoke()
 
 - (NSString)providerName
 {
-  v2 = [(WAProviderAttributionManager *)self weatherUserDefaults];
-  v3 = [v2 stringForKey:@"WeatherProviderName"];
+  weatherUserDefaults = [(WAProviderAttributionManager *)self weatherUserDefaults];
+  v3 = [weatherUserDefaults stringForKey:@"WeatherProviderName"];
 
   if (v3)
   {

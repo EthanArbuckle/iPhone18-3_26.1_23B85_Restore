@@ -1,16 +1,16 @@
 @interface PSDeviceManager
 + (PSDeviceManager)sharedInstance;
-- (BOOL)shouldSendContextUpdateNotification:()basic_string<char forServiceState:()std:(std::allocator<char>> *)a3 :char_traits<char>;
+- (BOOL)shouldSendContextUpdateNotification:()basic_string<char forServiceState:()std:(std::allocator<char>> *)std :char_traits<char>;
 - (id).cxx_construct;
 - (id)getAvailableResourceKeys;
-- (id)getAvailableResourceKeysForDevice:(id)a3;
+- (id)getAvailableResourceKeysForDevice:(id)device;
 - (int)startServiceMatching;
-- (unsigned)getServiceForResourceKey:(id)a3;
+- (unsigned)getServiceForResourceKey:(id)key;
 - (void)dealloc;
-- (void)serviceMatched:(unsigned int)a3;
-- (void)serviceTerminated:(unsigned int)a3;
-- (void)set3PRExecutionSession:(id)a3 with3PRTransitionManager:(id)a4;
-- (void)setExecutionSession:(id)a3 withTransitionManager:(id)a4;
+- (void)serviceMatched:(unsigned int)matched;
+- (void)serviceTerminated:(unsigned int)terminated;
+- (void)set3PRExecutionSession:(id)session with3PRTransitionManager:(id)manager;
+- (void)setExecutionSession:(id)session withTransitionManager:(id)manager;
 - (void)setNotificationPort;
 - (void)startServiceMatching;
 @end
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __33__PSDeviceManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[PSDeviceManager sharedInstance]::onceToken != -1)
   {
     dispatch_once(&+[PSDeviceManager sharedInstance]::onceToken, block);
@@ -41,14 +41,14 @@ uint64_t __33__PSDeviceManager_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)setExecutionSession:(id)a3 withTransitionManager:(id)a4
+- (void)setExecutionSession:(id)session withTransitionManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  managerCopy = manager;
   if (self)
   {
-    objc_storeStrong(&self->_executionSession, a3);
-    objc_storeStrong(&self->_transitionManager, a4);
+    objc_storeStrong(&self->_executionSession, session);
+    objc_storeStrong(&self->_transitionManager, manager);
     executionSession3PR = self->_executionSession3PR;
     self->_executionSession3PR = 0;
 
@@ -69,14 +69,14 @@ uint64_t __33__PSDeviceManager_sharedInstance__block_invoke(uint64_t a1)
   }
 }
 
-- (void)set3PRExecutionSession:(id)a3 with3PRTransitionManager:(id)a4
+- (void)set3PRExecutionSession:(id)session with3PRTransitionManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  sessionCopy = session;
+  managerCopy = manager;
   if (self)
   {
-    objc_storeStrong(&self->_executionSession3PR, a3);
-    objc_storeStrong(&self->_transitionManager3PR, a4);
+    objc_storeStrong(&self->_executionSession3PR, session);
+    objc_storeStrong(&self->_transitionManager3PR, manager);
     executionSession = self->_executionSession;
     self->_executionSession = 0;
 
@@ -158,17 +158,17 @@ uint64_t __33__PSDeviceManager_sharedInstance__block_invoke(uint64_t a1)
   return v8;
 }
 
-- (BOOL)shouldSendContextUpdateNotification:()basic_string<char forServiceState:()std:(std::allocator<char>> *)a3 :char_traits<char>
+- (BOOL)shouldSendContextUpdateNotification:()basic_string<char forServiceState:()std:(std::allocator<char>> *)std :char_traits<char>
 {
   v4 = v3;
-  if (*(&a3->var0.var1 + 23) < 0)
+  if (*(&std->var0.var1 + 23) < 0)
   {
-    std::string::__init_copy_ctor_external(&__p, a3->var0.var1.var0, a3->var0.var1.var1);
+    std::string::__init_copy_ctor_external(&__p, std->var0.var1.var0, std->var0.var1.var1);
   }
 
   else
   {
-    __p = *a3;
+    __p = *std;
   }
 
   v6 = std::__hash_table<std::__hash_value_type<std::string,std::unordered_map<std::string,service_support>>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,std::unordered_map<std::string,service_support>>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,std::unordered_map<std::string,service_support>>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,std::unordered_map<std::string,service_support>>>>::find<std::string>(&self->_deviceCapabilities.__table_.__bucket_list_.__ptr_, &__p.__r_.__value_.__l.__data_);
@@ -221,10 +221,10 @@ uint64_t __33__PSDeviceManager_sharedInstance__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (void)serviceMatched:(unsigned int)a3
+- (void)serviceMatched:(unsigned int)matched
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = IOIteratorNext(a3);
+  v5 = IOIteratorNext(matched);
   if (!v5)
   {
     goto LABEL_48;
@@ -266,9 +266,9 @@ uint64_t __33__PSDeviceManager_sharedInstance__block_invoke(uint64_t a1)
     if (*buf == 1935959404)
     {
       v8 = +[PLSSettings currentSettings];
-      v9 = [v8 enableIOHIDLEDsync];
+      enableIOHIDLEDsync = [v8 enableIOHIDLEDsync];
 
-      if ((v9 & 1) == 0)
+      if ((enableIOHIDLEDsync & 1) == 0)
       {
         v26 = __PLSLogSharedInstance();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -298,8 +298,8 @@ uint64_t __33__PSDeviceManager_sharedInstance__block_invoke(uint64_t a1)
     executionSession = self->_executionSession;
     if (executionSession || (executionSession = self->_executionSession3PR) != 0)
     {
-      v16 = [executionSession context];
-      [v16 addResourceStream:v14];
+      context = [executionSession context];
+      [context addResourceStream:v14];
     }
 
     v17 = v11;
@@ -387,7 +387,7 @@ LABEL_29:
     }
 
 LABEL_38:
-    v6 = IOIteratorNext(a3);
+    v6 = IOIteratorNext(matched);
     if (!v6)
     {
       goto LABEL_48;
@@ -406,10 +406,10 @@ LABEL_48:
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)serviceTerminated:(unsigned int)a3
+- (void)serviceTerminated:(unsigned int)terminated
 {
   v49 = *MEMORY[0x277D85DE8];
-  v5 = IOIteratorNext(a3);
+  v5 = IOIteratorNext(terminated);
   if (!v5)
   {
     goto LABEL_40;
@@ -445,9 +445,9 @@ LABEL_48:
     if (*buf == 1935959404)
     {
       v9 = +[PLSSettings currentSettings];
-      v10 = [v9 enableIOHIDLEDsync];
+      enableIOHIDLEDsync = [v9 enableIOHIDLEDsync];
 
-      if ((v10 & 1) == 0)
+      if ((enableIOHIDLEDsync & 1) == 0)
       {
         v25 = __PLSLogSharedInstance();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
@@ -562,7 +562,7 @@ LABEL_19:
     }
 
 LABEL_39:
-    v7 = IOIteratorNext(a3);
+    v7 = IOIteratorNext(terminated);
     if (!v7)
     {
       goto LABEL_40;
@@ -620,9 +620,9 @@ LABEL_40:
   return v3;
 }
 
-- (id)getAvailableResourceKeysForDevice:(id)a3
+- (id)getAvailableResourceKeysForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v20 = [MEMORY[0x277CBEB58] set];
   for (i = self->_availableServices.__table_.__first_node_.__next_; i; i = *i)
   {
@@ -637,8 +637,8 @@ LABEL_40:
     }
 
     v22 = *(i + 10);
-    v6 = [v4 UTF8String];
-    v7 = v6;
+    uTF8String = [deviceCopy UTF8String];
+    v7 = uTF8String;
     v8 = HIBYTE(v21.__r_.__value_.__r.__words[2]);
     if ((v21.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
     {
@@ -660,7 +660,7 @@ LABEL_40:
       size = v21.__r_.__value_.__l.__size_;
     }
 
-    v11 = strlen(v6);
+    v11 = strlen(uTF8String);
     if (v11)
     {
       v12 = v11;
@@ -719,11 +719,11 @@ LABEL_21:
   return v20;
 }
 
-- (unsigned)getServiceForResourceKey:(id)a3
+- (unsigned)getServiceForResourceKey:(id)key
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  std::string::basic_string[abi:ne200100]<0>(__p, [v4 UTF8String]);
+  keyCopy = key;
+  std::string::basic_string[abi:ne200100]<0>(__p, [keyCopy UTF8String]);
   v5 = std::__hash_table<std::__hash_value_type<std::string,std::unordered_map<std::string,service_support>>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,std::unordered_map<std::string,service_support>>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,std::unordered_map<std::string,service_support>>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,std::unordered_map<std::string,service_support>>>>::find<std::string>(&self->_availableServices.__table_.__bucket_list_.__ptr_, __p);
   if (v5)
   {
@@ -736,7 +736,7 @@ LABEL_21:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v13 = v4;
+      v13 = keyCopy;
       _os_log_impl(&dword_25EA3A000, v7, OS_LOG_TYPE_ERROR, "Could not find service for key: %@", buf, 0xCu);
     }
 

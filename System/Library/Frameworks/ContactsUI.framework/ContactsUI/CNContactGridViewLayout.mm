@@ -1,27 +1,27 @@
 @interface CNContactGridViewLayout
-- (id)_animationForReusableView:(id)a3 toLayoutAttributes:(id)a4 type:(unint64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (id)_animationForReusableView:(id)view toLayoutAttributes:(id)attributes type:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 - (void)_updateLayoutMetrics;
-- (void)prepareForCollectionViewUpdates:(id)a3;
-- (void)setSelectedIndexPath:(id)a3;
+- (void)prepareForCollectionViewUpdates:(id)updates;
+- (void)setSelectedIndexPath:(id)path;
 @end
 
 @implementation CNContactGridViewLayout
 
-- (id)_animationForReusableView:(id)a3 toLayoutAttributes:(id)a4 type:(unint64_t)a5
+- (id)_animationForReusableView:(id)view toLayoutAttributes:(id)attributes type:(unint64_t)type
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  attributesCopy = attributes;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __77__CNContactGridViewLayout__animationForReusableView_toLayoutAttributes_type___block_invoke;
   v13[3] = &unk_1E74E5160;
-  v14 = v6;
-  v15 = v7;
-  v8 = v7;
-  v9 = v6;
+  v14 = viewCopy;
+  v15 = attributesCopy;
+  v8 = attributesCopy;
+  v9 = viewCopy;
   v10 = _Block_copy(v13);
   v11 = _Block_copy(v10);
 
@@ -37,38 +37,38 @@ void __77__CNContactGridViewLayout__animationForReusableView_toLayoutAttributes_
   v4[2](v4, 1);
 }
 
-- (void)setSelectedIndexPath:(id)a3
+- (void)setSelectedIndexPath:(id)path
 {
-  v5 = a3;
-  if (self->_selectedIndexPath != v5)
+  pathCopy = path;
+  if (self->_selectedIndexPath != pathCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_selectedIndexPath, a3);
+    v6 = pathCopy;
+    objc_storeStrong(&self->_selectedIndexPath, path);
     [(CNContactGridViewLayout *)self setNeedsUpdateLayout:1];
-    v5 = v6;
+    pathCopy = v6;
   }
 }
 
 - (void)_updateLayoutMetrics
 {
-  v3 = [(CNContactGridViewLayout *)self collectionView];
-  v4 = [v3 _shouldReverseLayoutDirection];
+  collectionView = [(CNContactGridViewLayout *)self collectionView];
+  _shouldReverseLayoutDirection = [collectionView _shouldReverseLayoutDirection];
 
   v5 = 1.0;
-  if (v4)
+  if (_shouldReverseLayoutDirection)
   {
     v5 = -1.0;
   }
 
-  v6 = [(CNContactGridViewLayout *)self numberOfColumns];
-  v7 = [(NSIndexPath *)self->_selectedIndexPath item]% v6;
-  v8 = [(CNContactGridViewLayout *)self collectionView];
-  [v8 frame];
+  numberOfColumns = [(CNContactGridViewLayout *)self numberOfColumns];
+  v7 = [(NSIndexPath *)self->_selectedIndexPath item]% numberOfColumns;
+  collectionView2 = [(CNContactGridViewLayout *)self collectionView];
+  [collectionView2 frame];
   Width = CGRectGetWidth(v97);
 
   [(UICollectionViewFlowLayout *)self itemSize];
-  v11 = v6 - 1;
-  v12 = (Width - v6 * v10) / (v6 - 1);
+  v11 = numberOfColumns - 1;
+  v12 = (Width - numberOfColumns * v10) / (numberOfColumns - 1);
   [(UICollectionViewFlowLayout *)self itemSize];
   v14 = v13;
   selectedIndexPath = self->_selectedIndexPath;
@@ -84,15 +84,15 @@ void __77__CNContactGridViewLayout__animationForReusableView_toLayoutAttributes_
   if (v7 >= v11)
   {
     v25 = 0.0;
-    if ((v4 & 1) == 0)
+    if ((_shouldReverseLayoutDirection & 1) == 0)
     {
-      v26 = [(CNContactGridViewLayout *)self collectionView];
-      [v26 frame];
+      collectionView3 = [(CNContactGridViewLayout *)self collectionView];
+      [collectionView3 frame];
       v25 = CGRectGetWidth(v98);
     }
   }
 
-  else if (v4)
+  else if (_shouldReverseLayoutDirection)
   {
     v25 = CGRectGetMinX(*&v17) - v12;
   }
@@ -102,8 +102,8 @@ void __77__CNContactGridViewLayout__animationForReusableView_toLayoutAttributes_
     v25 = v12 + CGRectGetMaxX(*&v17);
   }
 
-  v27 = [(CNContactGridViewLayout *)self collectionView];
-  v28 = [v27 cellForItemAtIndexPath:self->_selectedIndexPath];
+  collectionView4 = [(CNContactGridViewLayout *)self collectionView];
+  v28 = [collectionView4 cellForItemAtIndexPath:self->_selectedIndexPath];
 
   [v28 maximumActionsWidth];
   v30 = v29;
@@ -115,7 +115,7 @@ void __77__CNContactGridViewLayout__animationForReusableView_toLayoutAttributes_
   v35 = v22;
   v36 = v23;
   v37 = v24;
-  if (v4)
+  if (_shouldReverseLayoutDirection)
   {
     v38 = CGRectGetMinX(*&v34) - v25;
   }
@@ -141,7 +141,7 @@ void __77__CNContactGridViewLayout__animationForReusableView_toLayoutAttributes_
     v42 = v22;
     v43 = v23;
     v44 = v24;
-    if (v4)
+    if (_shouldReverseLayoutDirection)
     {
       MinX = CGRectGetMinX(*&v41);
       [(CNContactGridViewLayout *)self offsetBefore];
@@ -278,12 +278,12 @@ void __77__CNContactGridViewLayout__animationForReusableView_toLayoutAttributes_
 LABEL_30:
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v34.receiver = self;
   v34.super_class = CNContactGridViewLayout;
-  v5 = [(UICollectionViewFlowLayout *)&v34 layoutAttributesForItemAtIndexPath:v4];
+  v5 = [(UICollectionViewFlowLayout *)&v34 layoutAttributesForItemAtIndexPath:pathCopy];
   v6 = [v5 copy];
 
   if (self->_selectedIndexPath)
@@ -295,22 +295,22 @@ LABEL_30:
       [(CNContactGridViewLayout *)self setNeedsUpdateLayout:0];
     }
 
-    v7 = [(NSIndexPath *)self->_selectedIndexPath section];
-    v8 = [v4 section];
-    v9 = [(CNContactGridViewLayout *)self numberOfColumns];
-    v10 = [(NSIndexPath *)self->_selectedIndexPath item];
-    v11 = [v4 item];
-    v12 = [(NSIndexPath *)self->_selectedIndexPath item];
-    v13 = [v4 item];
-    v14 = [(CNContactGridViewLayout *)self collectionView];
-    v32 = [v14 _shouldReverseLayoutDirection];
+    section = [(NSIndexPath *)self->_selectedIndexPath section];
+    section2 = [pathCopy section];
+    numberOfColumns = [(CNContactGridViewLayout *)self numberOfColumns];
+    item = [(NSIndexPath *)self->_selectedIndexPath item];
+    item2 = [pathCopy item];
+    item3 = [(NSIndexPath *)self->_selectedIndexPath item];
+    item4 = [pathCopy item];
+    collectionView = [(CNContactGridViewLayout *)self collectionView];
+    _shouldReverseLayoutDirection = [collectionView _shouldReverseLayoutDirection];
 
-    v15 = v8 == v7;
+    v15 = section2 == section;
     v6 = v33;
-    if (v15 && v13 / v9 == v12 / v9)
+    if (v15 && item4 / numberOfColumns == item3 / numberOfColumns)
     {
-      v16 = v10 % v9;
-      v17 = v11 % v9;
+      v16 = item % numberOfColumns;
+      v17 = item2 % numberOfColumns;
       [v33 frame];
       v19 = v18;
       v21 = v20;
@@ -320,7 +320,7 @@ LABEL_30:
       {
         [(CNContactGridViewLayout *)self offsetBefore];
         v27 = v19 + v26;
-        if (v32)
+        if (_shouldReverseLayoutDirection)
         {
           [(CNContactGridViewLayout *)self selectedItemWidthOffset];
           v27 = v27 - v28;
@@ -352,21 +352,21 @@ LABEL_30:
   return v6;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v30 = *MEMORY[0x1E69E9840];
   v28.receiver = self;
   v28.super_class = CNContactGridViewLayout;
-  v4 = [(UICollectionViewFlowLayout *)&v28 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(UICollectionViewFlowLayout *)&v28 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v5 = v4;
   v6 = v4;
   if (self->_selectedIndexPath)
   {
     v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
-    v23 = [(CNContactGridViewLayout *)self numberOfColumns];
-    v7 = [(NSIndexPath *)self->_selectedIndexPath section];
-    v22 = self;
-    v8 = [(NSIndexPath *)self->_selectedIndexPath item];
+    numberOfColumns = [(CNContactGridViewLayout *)self numberOfColumns];
+    section = [(NSIndexPath *)self->_selectedIndexPath section];
+    selfCopy = self;
+    item = [(NSIndexPath *)self->_selectedIndexPath item];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -378,7 +378,7 @@ LABEL_30:
     {
       v11 = v10;
       v12 = *v25;
-      v13 = v8 / v23;
+      v13 = item / numberOfColumns;
       do
       {
         for (i = 0; i != v11; ++i)
@@ -389,12 +389,12 @@ LABEL_30:
           }
 
           v15 = *(*(&v24 + 1) + 8 * i);
-          v16 = [v15 indexPath];
-          v17 = [v16 section];
-          v18 = [v16 item];
-          if (v17 == v7 && v18 / v23 == v13)
+          indexPath = [v15 indexPath];
+          section2 = [indexPath section];
+          item2 = [indexPath item];
+          if (section2 == section && item2 / numberOfColumns == v13)
           {
-            v19 = [(CNContactGridViewLayout *)v22 layoutAttributesForItemAtIndexPath:v16];
+            v19 = [(CNContactGridViewLayout *)selfCopy layoutAttributesForItemAtIndexPath:indexPath];
 
             v15 = v19;
           }
@@ -414,14 +414,14 @@ LABEL_30:
   return v6;
 }
 
-- (void)prepareForCollectionViewUpdates:(id)a3
+- (void)prepareForCollectionViewUpdates:(id)updates
 {
   v3.receiver = self;
   v3.super_class = CNContactGridViewLayout;
-  [(CNContactGridViewLayout *)&v3 prepareForCollectionViewUpdates:a3];
+  [(CNContactGridViewLayout *)&v3 prepareForCollectionViewUpdates:updates];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [(UICollectionViewFlowLayout *)self sectionInset];

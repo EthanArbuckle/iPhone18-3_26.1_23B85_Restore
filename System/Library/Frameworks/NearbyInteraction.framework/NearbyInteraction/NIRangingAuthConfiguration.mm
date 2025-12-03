@@ -1,30 +1,30 @@
 @interface NIRangingAuthConfiguration
-- (BOOL)isEqual:(id)a3;
-- (NIRangingAuthConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (NIRangingAuthConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionInternal;
-- (id)initAsResponder:(BOOL)a3 macAddress:(id)a4 key:(id)a5;
+- (id)initAsResponder:(BOOL)responder macAddress:(id)address key:(id)key;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NIRangingAuthConfiguration
 
-- (id)initAsResponder:(BOOL)a3 macAddress:(id)a4 key:(id)a5
+- (id)initAsResponder:(BOOL)responder macAddress:(id)address key:(id)key
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v9 = a4;
-  v10 = a5;
+  addressCopy = address;
+  keyCopy = key;
   v20.receiver = self;
   v20.super_class = NIRangingAuthConfiguration;
-  v11 = [(NIConfiguration *)&v20 initInternal];
-  v12 = v11;
-  if (v11)
+  initInternal = [(NIConfiguration *)&v20 initInternal];
+  v12 = initInternal;
+  if (initInternal)
   {
-    *(v11 + 32) = a3;
-    objc_storeStrong(v11 + 6, a4);
-    objc_storeStrong(v12 + 7, a5);
+    *(initInternal + 32) = responder;
+    objc_storeStrong(initInternal + 6, address);
+    objc_storeStrong(v12 + 7, key);
     v21[0] = &unk_1F38D7BF0;
     v13 = v12[6];
     v21[1] = &unk_1F38D7C08;
@@ -41,11 +41,11 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = NIRangingAuthConfiguration;
-  v4 = [(NIConfiguration *)&v12 copyWithZone:a3];
+  v4 = [(NIConfiguration *)&v12 copyWithZone:zone];
   v4[32] = self->_isResponder;
   v5 = [(NIDiscoveryToken *)self->_peerToken copy];
   v6 = *(v4 + 5);
@@ -62,30 +62,30 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = NIRangingAuthConfiguration;
-  [(NIConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeBool:self->_isResponder forKey:@"isResponder"];
-  [v4 encodeObject:self->_macAddress forKey:@"macAddress"];
-  [v4 encodeObject:self->_secureKey forKey:@"secureKey"];
-  [v4 encodeObject:self->_peerToken forKey:@"peerToken"];
+  [(NIConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeBool:self->_isResponder forKey:@"isResponder"];
+  [coderCopy encodeObject:self->_macAddress forKey:@"macAddress"];
+  [coderCopy encodeObject:self->_secureKey forKey:@"secureKey"];
+  [coderCopy encodeObject:self->_peerToken forKey:@"peerToken"];
 }
 
-- (NIRangingAuthConfiguration)initWithCoder:(id)a3
+- (NIRangingAuthConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = NIRangingAuthConfiguration;
-  v5 = [(NIConfiguration *)&v11 initWithCoder:v4];
+  v5 = [(NIConfiguration *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_isResponder = [v4 decodeBoolForKey:@"isResponder"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"macAddress"];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secureKey"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"peerToken"];
+    v5->_isResponder = [coderCopy decodeBoolForKey:@"isResponder"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"macAddress"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secureKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"peerToken"];
     if (v8 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       v9 = 0;
@@ -108,13 +108,13 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5 == self)
     {
@@ -124,17 +124,17 @@
     else
     {
       isResponder = self->_isResponder;
-      v8 = [(NIRangingAuthConfiguration *)v5 isResponder];
-      v9 = [(NIRangingAuthConfiguration *)v6 macAddress];
-      v10 = [v9 isEqualToData:self->_macAddress];
+      isResponder = [(NIRangingAuthConfiguration *)v5 isResponder];
+      macAddress = [(NIRangingAuthConfiguration *)v6 macAddress];
+      v10 = [macAddress isEqualToData:self->_macAddress];
 
-      v11 = [(NIRangingAuthConfiguration *)v6 secureKey];
-      v12 = [v11 isEqualToData:self->_secureKey];
+      secureKey = [(NIRangingAuthConfiguration *)v6 secureKey];
+      v12 = [secureKey isEqualToData:self->_secureKey];
 
       peerToken = v6->_peerToken;
       v14 = (peerToken | self->_peerToken) == 0;
       v15 = [peerToken isEqual:?];
-      if (((isResponder == v8) & v10) == 1)
+      if (((isResponder == isResponder) & v10) == 1)
       {
         v16 = v12 & (v14 | v15);
       }
@@ -167,8 +167,8 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NIRangingAuthConfiguration *)self descriptionInternal];
-  v7 = [v3 stringWithFormat:@"<%@: %@>", v5, v6];
+  descriptionInternal = [(NIRangingAuthConfiguration *)self descriptionInternal];
+  v7 = [v3 stringWithFormat:@"<%@: %@>", v5, descriptionInternal];
 
   return v7;
 }
@@ -186,8 +186,8 @@
     v3 = @"No";
   }
 
-  v4 = [(NIDiscoveryToken *)self->_peerToken descriptionInternal];
-  v5 = [v2 stringWithFormat:@", isResponder: %@, peerToken: %@", v3, v4];
+  descriptionInternal = [(NIDiscoveryToken *)self->_peerToken descriptionInternal];
+  v5 = [v2 stringWithFormat:@", isResponder: %@, peerToken: %@", v3, descriptionInternal];
 
   return v5;
 }

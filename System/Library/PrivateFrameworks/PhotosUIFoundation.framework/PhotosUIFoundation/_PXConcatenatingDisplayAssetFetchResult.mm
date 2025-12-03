@@ -1,31 +1,31 @@
 @interface _PXConcatenatingDisplayAssetFetchResult
-- (BOOL)containsObject:(id)a3;
+- (BOOL)containsObject:(id)object;
 - (NSString)description;
 - (PXDisplayAsset)firstObject;
 - (PXDisplayAsset)lastObject;
-- (_PXConcatenatingDisplayAssetFetchResult)initWithFetchResults:(id)a3;
-- (id)_subFetchResultForIndex:(int64_t)a3 localIndex:(int64_t *)a4;
-- (id)objectAtIndex:(unint64_t)a3;
-- (id)objectsAtIndexes:(id)a3;
-- (id)thumbnailAssetAtIndex:(unint64_t)a3;
-- (unint64_t)cachedCountOfAssetsWithMediaType:(int64_t)a3;
-- (unint64_t)countOfAssetsWithMediaType:(int64_t)a3;
-- (unint64_t)indexOfObject:(id)a3;
+- (_PXConcatenatingDisplayAssetFetchResult)initWithFetchResults:(id)results;
+- (id)_subFetchResultForIndex:(int64_t)index localIndex:(int64_t *)localIndex;
+- (id)objectAtIndex:(unint64_t)index;
+- (id)objectsAtIndexes:(id)indexes;
+- (id)thumbnailAssetAtIndex:(unint64_t)index;
+- (unint64_t)cachedCountOfAssetsWithMediaType:(int64_t)type;
+- (unint64_t)countOfAssetsWithMediaType:(int64_t)type;
+- (unint64_t)indexOfObject:(id)object;
 - (void)dealloc;
 @end
 
 @implementation _PXConcatenatingDisplayAssetFetchResult
 
-- (id)thumbnailAssetAtIndex:(unint64_t)a3
+- (id)thumbnailAssetAtIndex:(unint64_t)index
 {
   v6 = 0;
-  v3 = [(_PXConcatenatingDisplayAssetFetchResult *)self _subFetchResultForIndex:a3 localIndex:&v6];
+  v3 = [(_PXConcatenatingDisplayAssetFetchResult *)self _subFetchResultForIndex:index localIndex:&v6];
   v4 = [v3 objectAtIndex:v6];
 
   return v4;
 }
 
-- (unint64_t)cachedCountOfAssetsWithMediaType:(int64_t)a3
+- (unint64_t)cachedCountOfAssetsWithMediaType:(int64_t)type
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -48,7 +48,7 @@
           objc_enumerationMutation(v4);
         }
 
-        v7 += [*(*(&v11 + 1) + 8 * i) cachedCountOfAssetsWithMediaType:{a3, v11}];
+        v7 += [*(*(&v11 + 1) + 8 * i) cachedCountOfAssetsWithMediaType:{type, v11}];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -65,7 +65,7 @@
   return v7;
 }
 
-- (unint64_t)countOfAssetsWithMediaType:(int64_t)a3
+- (unint64_t)countOfAssetsWithMediaType:(int64_t)type
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -88,7 +88,7 @@
           objc_enumerationMutation(v4);
         }
 
-        v7 += [*(*(&v11 + 1) + 8 * i) countOfAssetsWithMediaType:{a3, v11}];
+        v7 += [*(*(&v11 + 1) + 8 * i) countOfAssetsWithMediaType:{type, v11}];
       }
 
       v6 = [(NSArray *)v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -105,10 +105,10 @@
   return v7;
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  objectCopy = object;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -127,7 +127,7 @@
           objc_enumerationMutation(v5);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) containsObject:{v4, v10}])
+        if ([*(*(&v10 + 1) + 8 * i) containsObject:{objectCopy, v10}])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
@@ -149,9 +149,9 @@ LABEL_11:
   return v6;
 }
 
-- (unint64_t)indexOfObject:(id)a3
+- (unint64_t)indexOfObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = 0x7FFFFFFFFFFFFFFFLL;
   if ([(NSArray *)self->_fetchResults count])
   {
@@ -159,7 +159,7 @@ LABEL_11:
     while (1)
     {
       v7 = [(NSArray *)self->_fetchResults objectAtIndexedSubscript:v6];
-      v8 = [v7 indexOfObject:v4];
+      v8 = [v7 indexOfObject:objectCopy];
       if (v8 != 0x7FFFFFFFFFFFFFFFLL)
       {
         break;
@@ -182,43 +182,43 @@ LABEL_7:
 
 - (PXDisplayAsset)lastObject
 {
-  v2 = [(NSArray *)self->_fetchResults lastObject];
-  v3 = [v2 lastObject];
+  lastObject = [(NSArray *)self->_fetchResults lastObject];
+  v2LastObject = [lastObject lastObject];
 
-  return v3;
+  return v2LastObject;
 }
 
 - (PXDisplayAsset)firstObject
 {
-  v2 = [(NSArray *)self->_fetchResults firstObject];
-  v3 = [v2 firstObject];
+  firstObject = [(NSArray *)self->_fetchResults firstObject];
+  v2FirstObject = [firstObject firstObject];
 
-  return v3;
+  return v2FirstObject;
 }
 
-- (id)objectsAtIndexes:(id)a3
+- (id)objectsAtIndexes:(id)indexes
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+  indexesCopy = indexes;
+  v6 = [[v4 alloc] initWithCapacity:{objc_msgSend(indexesCopy, "count")}];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __60___PXConcatenatingDisplayAssetFetchResult_objectsAtIndexes___block_invoke;
   v13 = &unk_1E7BB85E0;
   v14 = v6;
-  v15 = self;
+  selfCopy = self;
   v7 = v6;
-  [v5 enumerateIndexesUsingBlock:&v10];
+  [indexesCopy enumerateIndexesUsingBlock:&v10];
 
   v8 = [v7 copy];
 
   return v8;
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
   v6 = 0;
-  v3 = [(_PXConcatenatingDisplayAssetFetchResult *)self _subFetchResultForIndex:a3 localIndex:&v6];
+  v3 = [(_PXConcatenatingDisplayAssetFetchResult *)self _subFetchResultForIndex:index localIndex:&v6];
   v4 = [v3 objectAtIndex:v6];
 
   return v4;
@@ -234,7 +234,7 @@ LABEL_7:
   return v6;
 }
 
-- (id)_subFetchResultForIndex:(int64_t)a3 localIndex:(int64_t *)a4
+- (id)_subFetchResultForIndex:(int64_t)index localIndex:(int64_t *)localIndex
 {
   startIndexes = self->_startIndexes;
   subFetchResultsCount = self->_subFetchResultsCount;
@@ -250,7 +250,7 @@ LABEL_7:
     do
     {
       v10 = v8 + (v9 - v8) / 2;
-      if (startIndexes[v10] < a3)
+      if (startIndexes[v10] < index)
       {
         v8 = v10 + 1;
       }
@@ -264,11 +264,11 @@ LABEL_7:
     while (v8 < v9);
   }
 
-  v11 = startIndexes[v8 - (startIndexes[v8] > a3)];
+  v11 = startIndexes[v8 - (startIndexes[v8] > index)];
   result = [(NSArray *)self->_fetchResults objectAtIndexedSubscript:?];
-  if (a4)
+  if (localIndex)
   {
-    *a4 = a3 - v11;
+    *localIndex = index - v11;
   }
 
   return result;
@@ -282,15 +282,15 @@ LABEL_7:
   [(_PXConcatenatingDisplayAssetFetchResult *)&v3 dealloc];
 }
 
-- (_PXConcatenatingDisplayAssetFetchResult)initWithFetchResults:(id)a3
+- (_PXConcatenatingDisplayAssetFetchResult)initWithFetchResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   v13.receiver = self;
   v13.super_class = _PXConcatenatingDisplayAssetFetchResult;
   v5 = [(_PXConcatenatingDisplayAssetFetchResult *)&v13 init];
   if (v5)
   {
-    v6 = PXFilter(v4, &__block_literal_global_5043);
+    v6 = PXFilter(resultsCopy, &__block_literal_global_5043);
     objc_storeStrong(&v5->_fetchResults, v6);
     v7 = malloc_type_malloc(8 * [(NSArray *)v5->_fetchResults count], 0x100004000313F17uLL);
     v5->_startIndexes = v7;

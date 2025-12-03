@@ -1,39 +1,39 @@
 @interface AXMTAccelerationCurve
-- (AXMTAccelerationCurve)initWithAccelerationFactor:(double)a3 inflectionPoint:(double)a4;
-- (CGPoint)mapVector:(CGPoint)a3;
-- (double)mapScalar:(double)a3;
+- (AXMTAccelerationCurve)initWithAccelerationFactor:(double)factor inflectionPoint:(double)point;
+- (CGPoint)mapVector:(CGPoint)vector;
+- (double)mapScalar:(double)scalar;
 @end
 
 @implementation AXMTAccelerationCurve
 
-- (AXMTAccelerationCurve)initWithAccelerationFactor:(double)a3 inflectionPoint:(double)a4
+- (AXMTAccelerationCurve)initWithAccelerationFactor:(double)factor inflectionPoint:(double)point
 {
   v7.receiver = self;
   v7.super_class = AXMTAccelerationCurve;
   result = [(AXMTAccelerationCurve *)&v7 init];
   if (result)
   {
-    result->_accelerationFactor = a3;
-    result->_inflectionPoint = a4;
+    result->_accelerationFactor = factor;
+    result->_inflectionPoint = point;
   }
 
   return result;
 }
 
-- (double)mapScalar:(double)a3
+- (double)mapScalar:(double)scalar
 {
   [(AXMTAccelerationCurve *)self inflectionPoint];
-  v6 = a3 / v5;
+  v6 = scalar / v5;
   [(AXMTAccelerationCurve *)self accelerationFactor];
 
   return pow(v6, v7);
 }
 
-- (CGPoint)mapVector:(CGPoint)a3
+- (CGPoint)mapVector:(CGPoint)vector
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = sqrt(a3.y * a3.y + x * x);
+  y = vector.y;
+  x = vector.x;
+  v5 = sqrt(vector.y * vector.y + x * x);
   [(AXMTAccelerationCurve *)self mapScalar:v5];
   v7 = v6 / v5;
   v8 = 0.0;

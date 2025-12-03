@@ -12,7 +12,7 @@
   v5[2] = __98__UITraitCollection_PosterLegibilityKitAdditions__plk_traitCollectionNotingShouldBeBackdropAware___block_invoke;
   v5[3] = &__block_descriptor_33_e27_v16__0___UIMutableTraits__8l;
   v6 = a3;
-  v3 = [a1 traitCollectionWithTraits:v5];
+  v3 = [self traitCollectionWithTraits:v5];
 
   return v3;
 }
@@ -20,7 +20,7 @@
 - (id)plk_shouldBeBackdropAware
 {
   v2 = objc_opt_self();
-  v3 = [a1 objectForTrait:v2];
+  v3 = [self objectForTrait:v2];
 
   return v3;
 }

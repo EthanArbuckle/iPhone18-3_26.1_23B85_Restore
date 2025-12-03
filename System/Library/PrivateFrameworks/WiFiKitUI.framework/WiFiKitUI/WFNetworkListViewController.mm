@@ -1,7 +1,7 @@
 @interface WFNetworkListViewController
-- (WFNetworkListViewController)initWithCoder:(id)a3;
-- (WFNetworkListViewController)initWithNetworkListDataSource:(id)a3 networkListConfigDataSource:(id)a4;
-- (WFNetworkListViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (WFNetworkListViewController)initWithCoder:(id)coder;
+- (WFNetworkListViewController)initWithNetworkListDataSource:(id)source networkListConfigDataSource:(id)dataSource;
+- (WFNetworkListViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -9,23 +9,23 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_27403CCB8();
 }
 
-- (WFNetworkListViewController)initWithNetworkListDataSource:(id)a3 networkListConfigDataSource:(id)a4
+- (WFNetworkListViewController)initWithNetworkListDataSource:(id)source networkListConfigDataSource:(id)dataSource
 {
   *(&self->super.super.super.isa + OBJC_IVAR___WFNetworkListViewController_hostingController) = 0;
-  *(&self->super.super.super.isa + OBJC_IVAR___WFNetworkListViewController_networkListDataSource) = a3;
-  *(&self->super.super.super.isa + OBJC_IVAR___WFNetworkListViewController_networkConfigDataSource) = a4;
+  *(&self->super.super.super.isa + OBJC_IVAR___WFNetworkListViewController_networkListDataSource) = source;
+  *(&self->super.super.super.isa + OBJC_IVAR___WFNetworkListViewController_networkConfigDataSource) = dataSource;
   v9.receiver = self;
   v9.super_class = type metadata accessor for WFNetworkListViewController();
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  dataSourceCopy = dataSource;
   return [(WFNetworkListViewController *)&v9 initWithNibName:0 bundle:0];
 }
 
-- (WFNetworkListViewController)initWithCoder:(id)a3
+- (WFNetworkListViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR___WFNetworkListViewController_hostingController) = 0;
   result = sub_274051A88();
@@ -33,7 +33,7 @@
   return result;
 }
 
-- (WFNetworkListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WFNetworkListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

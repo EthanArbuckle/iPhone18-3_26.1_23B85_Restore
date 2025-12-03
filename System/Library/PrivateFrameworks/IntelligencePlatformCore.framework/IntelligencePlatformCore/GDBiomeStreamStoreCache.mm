@@ -1,15 +1,15 @@
 @interface GDBiomeStreamStoreCache
-- (GDBiomeStreamStoreCache)initWithStreamLookup:(id)a3;
-- (id)getLibraryStreamWithIdentifier:(id)a3 error:(id *)a4;
+- (GDBiomeStreamStoreCache)initWithStreamLookup:(id)lookup;
+- (id)getLibraryStreamWithIdentifier:(id)identifier error:(id *)error;
 - (void)clearCache;
 @end
 
 @implementation GDBiomeStreamStoreCache
 
-- (id)getLibraryStreamWithIdentifier:(id)a3 error:(id *)a4
+- (id)getLibraryStreamWithIdentifier:(id)identifier error:(id *)error
 {
-  v5 = a3;
-  v6 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   sub_1C4448370();
 
   sub_1C4409678(v9, v9[3]);
@@ -21,13 +21,13 @@
 
 - (void)clearCache
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C446380C();
 }
 
-- (GDBiomeStreamStoreCache)initWithStreamLookup:(id)a3
+- (GDBiomeStreamStoreCache)initWithStreamLookup:(id)lookup
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(lookup);
   v4 = swift_allocObject();
   *(v4 + 16) = v3;
   return sub_1C463F908(sub_1C4448434, v4);

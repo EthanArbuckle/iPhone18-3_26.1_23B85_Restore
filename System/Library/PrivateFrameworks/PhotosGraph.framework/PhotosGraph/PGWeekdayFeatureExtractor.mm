@@ -1,10 +1,10 @@
 @interface PGWeekdayFeatureExtractor
-- (PGWeekdayFeatureExtractor)initWithError:(id *)a3;
+- (PGWeekdayFeatureExtractor)initWithError:(id *)error;
 @end
 
 @implementation PGWeekdayFeatureExtractor
 
-- (PGWeekdayFeatureExtractor)initWithError:(id *)a3
+- (PGWeekdayFeatureExtractor)initWithError:(id *)error
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v10[0] = @"Weekday";

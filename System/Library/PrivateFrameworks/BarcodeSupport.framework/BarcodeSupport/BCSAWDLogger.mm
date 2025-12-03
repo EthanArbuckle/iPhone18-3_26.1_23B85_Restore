@@ -1,39 +1,39 @@
 @interface BCSAWDLogger
-- (id)barcodeDetectedEventForAction:(id)a3;
+- (id)barcodeDetectedEventForAction:(id)action;
 - (int)_awdBarcodeClientType;
-- (int)_awdBarcodeDataTypeFromAction:(id)a3;
-- (int)_awdBarcodeSourceTypeForAction:(id)a3;
-- (int)_awdBarcodeURLTypeFromURLAction:(id)a3;
-- (int)_awdInvalidBarcodeDataTypeFromInvalidData:(id)a3;
-- (void)logBarcodeActivatedEventForAction:(id)a3;
-- (void)logBarcodeDetectedEvent:(id)a3 startTime:(unint64_t)a4;
-- (void)logBarcodeDetectedEventForAction:(id)a3 startTime:(unint64_t)a4;
-- (void)logBarcodePreviewedEventForContentType:(int64_t)a3;
+- (int)_awdBarcodeDataTypeFromAction:(id)action;
+- (int)_awdBarcodeSourceTypeForAction:(id)action;
+- (int)_awdBarcodeURLTypeFromURLAction:(id)action;
+- (int)_awdInvalidBarcodeDataTypeFromInvalidData:(id)data;
+- (void)logBarcodeActivatedEventForAction:(id)action;
+- (void)logBarcodeDetectedEvent:(id)event startTime:(unint64_t)time;
+- (void)logBarcodeDetectedEventForAction:(id)action startTime:(unint64_t)time;
+- (void)logBarcodePreviewedEventForContentType:(int64_t)type;
 @end
 
 @implementation BCSAWDLogger
 
-- (id)barcodeDetectedEventForAction:(id)a3
+- (id)barcodeDetectedEventForAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = objc_alloc_init(AWDBarcodeSupportCodeDetectedEvent);
   [(AWDBarcodeSupportCodeDetectedEvent *)v5 setClientType:[(BCSAWDLogger *)self _awdBarcodeClientType]];
-  [(AWDBarcodeSupportCodeDetectedEvent *)v5 setBarcodeSourceType:[(BCSAWDLogger *)self _awdBarcodeSourceTypeForAction:v4]];
-  [(AWDBarcodeSupportCodeDetectedEvent *)v5 setBarcodeDataType:[(BCSAWDLogger *)self _awdBarcodeDataTypeFromAction:v4]];
-  v6 = [v4 data];
+  [(AWDBarcodeSupportCodeDetectedEvent *)v5 setBarcodeSourceType:[(BCSAWDLogger *)self _awdBarcodeSourceTypeForAction:actionCopy]];
+  [(AWDBarcodeSupportCodeDetectedEvent *)v5 setBarcodeDataType:[(BCSAWDLogger *)self _awdBarcodeDataTypeFromAction:actionCopy]];
+  data = [actionCopy data];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v8 = [v4 data];
-    [(AWDBarcodeSupportCodeDetectedEvent *)v5 setInvalidBarcodeDataType:[(BCSAWDLogger *)self _awdInvalidBarcodeDataTypeFromInvalidData:v8]];
+    data2 = [actionCopy data];
+    [(AWDBarcodeSupportCodeDetectedEvent *)v5 setInvalidBarcodeDataType:[(BCSAWDLogger *)self _awdInvalidBarcodeDataTypeFromInvalidData:data2]];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v4;
+    v9 = actionCopy;
     [(AWDBarcodeSupportCodeDetectedEvent *)v5 setBarcodeURLType:[(BCSAWDLogger *)self _awdBarcodeURLTypeFromURLAction:v9]];
     v10 = [(BCSAWDLogger *)self _awdBarcodePreferredAppLinkOpenStrategyFromURLAction:v9];
 
@@ -43,47 +43,47 @@
   return v5;
 }
 
-- (void)logBarcodeDetectedEvent:(id)a3 startTime:(unint64_t)a4
+- (void)logBarcodeDetectedEvent:(id)event startTime:(unint64_t)time
 {
-  v5 = a3;
-  [v5 setDetectionTimeMs:(clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW) - a4) / 0xF4240];
+  eventCopy = event;
+  [eventCopy setDetectionTimeMs:(clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW) - time) / 0xF4240];
   AWDPostMetric();
-  LODWORD(a4) = [v5 barcodeDataType];
+  LODWORD(time) = [eventCopy barcodeDataType];
   v6 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
-  if (a4)
+  if (time)
   {
     if (v6)
     {
-      [BCSAWDLogger logBarcodeDetectedEvent:v5 startTime:?];
+      [BCSAWDLogger logBarcodeDetectedEvent:eventCopy startTime:?];
     }
   }
 
   else if (v6)
   {
-    [BCSAWDLogger logBarcodeDetectedEvent:v5 startTime:?];
+    [BCSAWDLogger logBarcodeDetectedEvent:eventCopy startTime:?];
   }
 }
 
-- (void)logBarcodeDetectedEventForAction:(id)a3 startTime:(unint64_t)a4
+- (void)logBarcodeDetectedEventForAction:(id)action startTime:(unint64_t)time
 {
-  v6 = [(BCSAWDLogger *)self barcodeDetectedEventForAction:a3];
-  [(BCSAWDLogger *)self logBarcodeDetectedEvent:v6 startTime:a4];
+  v6 = [(BCSAWDLogger *)self barcodeDetectedEventForAction:action];
+  [(BCSAWDLogger *)self logBarcodeDetectedEvent:v6 startTime:time];
 }
 
-- (void)logBarcodeActivatedEventForAction:(id)a3
+- (void)logBarcodeActivatedEventForAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = objc_alloc_init(AWDBarcodeSupportCodeActivatedEvent);
     [(AWDBarcodeSupportCodeActivatedEvent *)v5 setClientType:[(BCSAWDLogger *)self _awdBarcodeClientType]];
-    [(AWDBarcodeSupportCodeActivatedEvent *)v5 setBarcodeSourceType:[(BCSAWDLogger *)self _awdBarcodeSourceTypeForAction:v4]];
-    [(AWDBarcodeSupportCodeActivatedEvent *)v5 setBarcodeDataType:[(BCSAWDLogger *)self _awdBarcodeDataTypeFromAction:v4]];
+    [(AWDBarcodeSupportCodeActivatedEvent *)v5 setBarcodeSourceType:[(BCSAWDLogger *)self _awdBarcodeSourceTypeForAction:actionCopy]];
+    [(AWDBarcodeSupportCodeActivatedEvent *)v5 setBarcodeDataType:[(BCSAWDLogger *)self _awdBarcodeDataTypeFromAction:actionCopy]];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = actionCopy;
       [(AWDBarcodeSupportCodeActivatedEvent *)v5 setBarcodeURLType:[(BCSAWDLogger *)self _awdBarcodeURLTypeFromURLAction:v6]];
       v7 = [(BCSAWDLogger *)self _awdBarcodePreferredAppLinkOpenStrategyFromURLAction:v6];
 
@@ -98,10 +98,10 @@
   }
 }
 
-- (void)logBarcodePreviewedEventForContentType:(int64_t)a3
+- (void)logBarcodePreviewedEventForContentType:(int64_t)type
 {
   v4 = objc_alloc_init(AWDBarcodeSupportCodePreviewedEvent);
-  [(AWDBarcodeSupportCodePreviewedEvent *)v4 setPreviewContentType:a3];
+  [(AWDBarcodeSupportCodePreviewedEvent *)v4 setPreviewContentType:type];
   AWDPostMetric();
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
@@ -109,28 +109,28 @@
   }
 }
 
-- (int)_awdBarcodeDataTypeFromAction:(id)a3
+- (int)_awdBarcodeDataTypeFromAction:(id)action
 {
-  v3 = [a3 data];
-  v4 = [v3 type];
+  data = [action data];
+  type = [data type];
 
-  if (v4 > 0x11)
+  if (type > 0x11)
   {
     return 11;
   }
 
   else
   {
-    return dword_2419D20F8[v4];
+    return dword_2419D20F8[type];
   }
 }
 
 - (int)_awdBarcodeClientType
 {
-  v2 = [MEMORY[0x277CCA8D8] mainBundle];
-  v3 = [v2 bundleIdentifier];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  if ([v3 isEqualToString:@"com.apple.BarcodeSupport.BarcodeNotificationService"])
+  if ([bundleIdentifier isEqualToString:@"com.apple.BarcodeSupport.BarcodeNotificationService"])
   {
     v4 = 1;
   }
@@ -148,9 +148,9 @@
   return v4;
 }
 
-- (int)_awdBarcodeSourceTypeForAction:(id)a3
+- (int)_awdBarcodeSourceTypeForAction:(id)action
 {
-  if (([a3 codeType] & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if (([action codeType] & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     return 2;
   }
@@ -161,16 +161,16 @@
   }
 }
 
-- (int)_awdInvalidBarcodeDataTypeFromInvalidData:(id)a3
+- (int)_awdInvalidBarcodeDataTypeFromInvalidData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 invalidDataType];
+  dataCopy = data;
+  invalidDataType = [dataCopy invalidDataType];
   v5 = 1;
-  if (v4 > 6)
+  if (invalidDataType > 6)
   {
-    if (v4 > 9)
+    if (invalidDataType > 9)
     {
-      if ((v4 - 10) >= 3 && v4 != 15)
+      if ((invalidDataType - 10) >= 3 && invalidDataType != 15)
       {
         goto LABEL_32;
       }
@@ -179,7 +179,7 @@
     }
 
     v6 = 7;
-    if (v4 == 9)
+    if (invalidDataType == 9)
     {
       v9 = 9;
     }
@@ -189,7 +189,7 @@
       v9 = 1;
     }
 
-    if (v4 == 8)
+    if (invalidDataType == 8)
     {
       v7 = 8;
     }
@@ -199,7 +199,7 @@
       v7 = v9;
     }
 
-    v8 = v4 == 7;
+    v8 = invalidDataType == 7;
 LABEL_29:
     if (v8)
     {
@@ -214,10 +214,10 @@ LABEL_29:
     goto LABEL_32;
   }
 
-  if (v4 > 3)
+  if (invalidDataType > 3)
   {
     v6 = 4;
-    if (v4 == 6)
+    if (invalidDataType == 6)
     {
       v10 = 6;
     }
@@ -227,7 +227,7 @@ LABEL_29:
       v10 = 1;
     }
 
-    if (v4 == 5)
+    if (invalidDataType == 5)
     {
       v7 = 5;
     }
@@ -237,14 +237,14 @@ LABEL_29:
       v7 = v10;
     }
 
-    v8 = v4 == 4;
+    v8 = invalidDataType == 4;
     goto LABEL_29;
   }
 
-  if (v4)
+  if (invalidDataType)
   {
     v6 = 2;
-    if (v4 == 3)
+    if (invalidDataType == 3)
     {
       v7 = 3;
     }
@@ -254,14 +254,14 @@ LABEL_29:
       v7 = 1;
     }
 
-    v8 = v4 == 2;
+    v8 = invalidDataType == 2;
     goto LABEL_29;
   }
 
 LABEL_12:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    [BCSAWDLogger _awdInvalidBarcodeDataTypeFromInvalidData:v3];
+    [BCSAWDLogger _awdInvalidBarcodeDataTypeFromInvalidData:dataCopy];
   }
 
   v5 = 0;
@@ -270,17 +270,17 @@ LABEL_32:
   return v5;
 }
 
-- (int)_awdBarcodeURLTypeFromURLAction:(id)a3
+- (int)_awdBarcodeURLTypeFromURLAction:(id)action
 {
-  v3 = [a3 appLinkCount];
-  if (v3 == 1)
+  appLinkCount = [action appLinkCount];
+  if (appLinkCount == 1)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (v3 != 0);
+    return 2 * (appLinkCount != 0);
   }
 }
 

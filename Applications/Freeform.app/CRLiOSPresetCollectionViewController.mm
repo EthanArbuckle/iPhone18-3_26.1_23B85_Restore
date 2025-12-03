@@ -1,58 +1,58 @@
 @interface CRLiOSPresetCollectionViewController
-- (BOOL)isLowContrastWithBackgroundColor:(id)a3;
+- (BOOL)isLowContrastWithBackgroundColor:(id)color;
 - (BOOL)p_shouldUseDarkUI;
 - (BOOL)shouldVerticallyDistributeEvenly;
 - (CRLiOSPresetCollectionContext)context;
-- (CRLiOSPresetCollectionViewController)initWithPresetCollectionType:(unint64_t)a3 delegate:(id)a4;
+- (CRLiOSPresetCollectionViewController)initWithPresetCollectionType:(unint64_t)type delegate:(id)delegate;
 - (CRLiOSPresetCollectionViewControllerDelegate)p_delegate;
 - (UIEdgeInsets)swatchInsets;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 dragPreviewParametersForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view dragPreviewParametersForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
 - (id)p_backgroundColor;
 - (id)p_cellsMissingImages;
 - (id)p_editingCoordinator;
-- (id)p_indexPathsForCells:(id)a3;
-- (unint64_t)p_numberOfItemsInSection:(unint64_t)a3;
+- (id)p_indexPathsForCells:(id)cells;
+- (unint64_t)p_numberOfItemsInSection:(unint64_t)section;
 - (unint64_t)p_numberOfSections;
 - (void)accessibilityFocusFirstVisiblePreset;
 - (void)cancelSwatchRenderingIfNeeded;
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4;
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin;
 - (void)p_clearVisibleCellCache;
 - (void)p_handlePresetsChanged;
-- (void)p_registerNibsInCollectionView:(id)a3 layout:(id)a4 context:(id)a5;
+- (void)p_registerNibsInCollectionView:(id)view layout:(id)layout context:(id)context;
 - (void)p_setupCollectionView;
-- (void)p_setupUIInLabeledCell:(id)a3 atIndexPath:(id)a4 context:(id)a5;
-- (void)presetCollectionViewDidLayoutSubviews:(id)a3;
-- (void)presetCollectionViewLayoutDidHighlightPresetAtIndexPath:(id)a3;
-- (void)presetCollectionViewLayoutDidSelectPresetAtIndexPath:(id)a3;
-- (void)presetCollectionViewLayoutDidUnhighlightPresetAtIndexPath:(id)a3;
+- (void)p_setupUIInLabeledCell:(id)cell atIndexPath:(id)path context:(id)context;
+- (void)presetCollectionViewDidLayoutSubviews:(id)subviews;
+- (void)presetCollectionViewLayoutDidHighlightPresetAtIndexPath:(id)path;
+- (void)presetCollectionViewLayoutDidSelectPresetAtIndexPath:(id)path;
+- (void)presetCollectionViewLayoutDidUnhighlightPresetAtIndexPath:(id)path;
 - (void)reloadData;
 - (void)reloadDataIfNeeded;
 - (void)scrollToBottom;
 - (void)scrollToTop;
 - (void)setPresetsChanged;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CRLiOSPresetCollectionViewController
 
-- (CRLiOSPresetCollectionViewController)initWithPresetCollectionType:(unint64_t)a3 delegate:(id)a4
+- (CRLiOSPresetCollectionViewController)initWithPresetCollectionType:(unint64_t)type delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = CRLiOSPresetCollectionViewController;
   v7 = [(CRLiOSPresetCollectionViewController *)&v20 initWithNibName:0 bundle:0];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_delegate, v6);
-    v8->_presetCollectionType = a3;
-    if (a3)
+    objc_storeWeak(&v7->_delegate, delegateCopy);
+    v8->_presetCollectionType = type;
+    if (type)
     {
       v9 = 0;
       v10 = 0;
@@ -60,14 +60,14 @@
 
     else
     {
-      v11 = [(CRLiOSPresetCollectionViewController *)v8 p_delegate];
-      v12 = [v11 itemCollectionDataSource];
+      p_delegate = [(CRLiOSPresetCollectionViewController *)v8 p_delegate];
+      itemCollectionDataSource = [p_delegate itemCollectionDataSource];
 
-      v13 = [(CRLiOSPresetCollectionViewController *)v8 p_delegate];
-      v14 = [v13 searchResultsCollection];
+      p_delegate2 = [(CRLiOSPresetCollectionViewController *)v8 p_delegate];
+      searchResultsCollection = [p_delegate2 searchResultsCollection];
 
-      v10 = [[CRLiOSShapePresetCollectionViewLayoutProvider alloc] initWithShapeCollectionDataSource:v12 searchResultsCollection:v14];
-      v9 = [[CRLiOSShapePresetProvider alloc] initWithShapeCollectionDataSource:v12 searchResultsCollection:v14];
+      v10 = [[CRLiOSShapePresetCollectionViewLayoutProvider alloc] initWithShapeCollectionDataSource:itemCollectionDataSource searchResultsCollection:searchResultsCollection];
+      v9 = [[CRLiOSShapePresetProvider alloc] initWithShapeCollectionDataSource:itemCollectionDataSource searchResultsCollection:searchResultsCollection];
     }
 
     v15 = [[CRLiOSPresetCollectionViewLayout alloc] initWithPresetCollectionViewLayoutProvider:v10 delegate:v8];
@@ -91,70 +91,70 @@
   [(CRLiOSPresetCollectionViewController *)self p_clearVisibleCellCache];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CRLiOSPresetCollectionViewController;
-  [(CRLiOSPresetCollectionViewController *)&v6 viewWillAppear:a3];
+  [(CRLiOSPresetCollectionViewController *)&v6 viewWillAppear:appear];
   if ([(CRLiOSPresetCollectionViewController *)self p_presetsChanged])
   {
     [(CRLiOSPresetCollectionViewController *)self p_handlePresetsChanged];
   }
 
-  v4 = [(CRLiOSPresetCollectionViewController *)self p_backgroundColor];
-  v5 = [(CRLiOSPresetCollectionViewController *)self p_collectionView];
-  [v5 setBackgroundColor:v4];
+  p_backgroundColor = [(CRLiOSPresetCollectionViewController *)self p_backgroundColor];
+  p_collectionView = [(CRLiOSPresetCollectionViewController *)self p_collectionView];
+  [p_collectionView setBackgroundColor:p_backgroundColor];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CRLiOSPresetCollectionViewController;
-  [(CRLiOSPresetCollectionViewController *)&v5 viewDidAppear:a3];
-  v4 = [(CRLiOSPresetCollectionViewController *)self p_collectionView];
-  [v4 flashScrollIndicators];
+  [(CRLiOSPresetCollectionViewController *)&v5 viewDidAppear:appear];
+  p_collectionView = [(CRLiOSPresetCollectionViewController *)self p_collectionView];
+  [p_collectionView flashScrollIndicators];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = CRLiOSPresetCollectionViewController;
-  [(CRLiOSPresetCollectionViewController *)&v5 viewWillDisappear:a3];
+  [(CRLiOSPresetCollectionViewController *)&v5 viewWillDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CRLiOSPresetCollectionViewController;
-  [(CRLiOSPresetCollectionViewController *)&v4 viewDidDisappear:a3];
+  [(CRLiOSPresetCollectionViewController *)&v4 viewDidDisappear:disappear];
   [(CRLiOSPresetCollectionViewController *)self cancelSwatchRenderingIfNeeded];
 }
 
 - (void)reloadData
 {
   [(CRLiOSPresetCollectionViewController *)self p_clearVisibleCellCache];
-  v3 = [(CRLiOSPresetCollectionViewController *)self p_collectionView];
-  [v3 reloadData];
+  p_collectionView = [(CRLiOSPresetCollectionViewController *)self p_collectionView];
+  [p_collectionView reloadData];
 }
 
 - (void)scrollToTop
 {
-  v2 = [(CRLiOSPresetCollectionViewController *)self p_collectionView];
-  [v2 setContentOffset:{CGPointZero.x, CGPointZero.y}];
+  p_collectionView = [(CRLiOSPresetCollectionViewController *)self p_collectionView];
+  [p_collectionView setContentOffset:{CGPointZero.x, CGPointZero.y}];
 }
 
 - (void)scrollToBottom
 {
   v3 = [(CRLiOSPresetCollectionViewController *)self p_numberOfSections]- 1;
   v4 = [(CRLiOSPresetCollectionViewController *)self p_numberOfItemsInSection:v3];
-  v5 = [(CRLiOSPresetCollectionViewController *)self p_collectionView];
-  [v5 layoutIfNeeded];
+  p_collectionView = [(CRLiOSPresetCollectionViewController *)self p_collectionView];
+  [p_collectionView layoutIfNeeded];
 
-  v7 = [(CRLiOSPresetCollectionViewController *)self p_collectionView];
+  p_collectionView2 = [(CRLiOSPresetCollectionViewController *)self p_collectionView];
   v6 = [NSIndexPath indexPathForItem:v4 - 1 inSection:v3];
-  [v7 scrollToItemAtIndexPath:v6 atScrollPosition:4 animated:0];
+  [p_collectionView2 scrollToItemAtIndexPath:v6 atScrollPosition:4 animated:0];
 }
 
 - (void)accessibilityFocusFirstVisiblePreset
@@ -167,12 +167,12 @@
   CRLAccessibilityPerformBlockOnMainThreadAfterDelay(v2, 0.1);
 }
 
-- (BOOL)isLowContrastWithBackgroundColor:(id)a3
+- (BOOL)isLowContrastWithBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(CRLiOSPresetCollectionViewController *)self p_presetRenderer];
-  v6 = [(CRLiOSPresetCollectionViewController *)self context];
-  v7 = [v5 contextIsLowContrast:v6 forBackgroundColor:v4];
+  colorCopy = color;
+  p_presetRenderer = [(CRLiOSPresetCollectionViewController *)self p_presetRenderer];
+  context = [(CRLiOSPresetCollectionViewController *)self context];
+  v7 = [p_presetRenderer contextIsLowContrast:context forBackgroundColor:colorCopy];
 
   return v7;
 }
@@ -189,14 +189,14 @@
 
 - (void)cancelSwatchRenderingIfNeeded
 {
-  v3 = [(CRLiOSPresetCollectionViewController *)self p_presetRenderer];
-  -[CRLiOSPresetCollectionViewController setP_cancelledSwatchRendering:](self, "setP_cancelledSwatchRendering:", [v3 cancelSwatchRenderingIfNeeded]);
+  p_presetRenderer = [(CRLiOSPresetCollectionViewController *)self p_presetRenderer];
+  -[CRLiOSPresetCollectionViewController setP_cancelledSwatchRendering:](self, "setP_cancelledSwatchRendering:", [p_presetRenderer cancelSwatchRenderingIfNeeded]);
 }
 
 - (UIEdgeInsets)swatchInsets
 {
-  v2 = [(CRLiOSPresetCollectionViewController *)self p_presetRenderer];
-  [v2 swatchInsets];
+  p_presetRenderer = [(CRLiOSPresetCollectionViewController *)self p_presetRenderer];
+  [p_presetRenderer swatchInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -215,86 +215,86 @@
 
 - (BOOL)shouldVerticallyDistributeEvenly
 {
-  v3 = [(CRLiOSPresetCollectionViewController *)self p_layout];
-  v4 = [(CRLiOSPresetCollectionViewController *)self context];
-  v5 = [v3 shouldVerticallyDistributeEvenlyForContext:v4];
+  p_layout = [(CRLiOSPresetCollectionViewController *)self p_layout];
+  context = [(CRLiOSPresetCollectionViewController *)self context];
+  v5 = [p_layout shouldVerticallyDistributeEvenlyForContext:context];
 
   return v5;
 }
 
-- (void)presetCollectionViewDidLayoutSubviews:(id)a3
+- (void)presetCollectionViewDidLayoutSubviews:(id)subviews
 {
-  v5 = [(CRLiOSPresetCollectionViewController *)self p_presetRenderer];
-  v4 = [(CRLiOSPresetCollectionViewController *)self context];
-  [v5 waitOnSwatchRenderingAndDeliverResultsIfNeededInContext:v4];
+  p_presetRenderer = [(CRLiOSPresetCollectionViewController *)self p_presetRenderer];
+  context = [(CRLiOSPresetCollectionViewController *)self context];
+  [p_presetRenderer waitOnSwatchRenderingAndDeliverResultsIfNeededInContext:context];
 }
 
 - (CRLiOSPresetCollectionContext)context
 {
-  v3 = [(CRLiOSPresetCollectionViewController *)self p_delegate];
-  v4 = [v3 contextWithPresetCollectionViewController:self];
+  p_delegate = [(CRLiOSPresetCollectionViewController *)self p_delegate];
+  v4 = [p_delegate contextWithPresetCollectionViewController:self];
 
   return v4;
 }
 
-- (void)presetCollectionViewLayoutDidHighlightPresetAtIndexPath:(id)a3
+- (void)presetCollectionViewLayoutDidHighlightPresetAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CRLiOSPresetCollectionViewController *)self p_collectionView];
-  v6 = [v5 cellForItemAtIndexPath:v4];
+  pathCopy = path;
+  p_collectionView = [(CRLiOSPresetCollectionViewController *)self p_collectionView];
+  v6 = [p_collectionView cellForItemAtIndexPath:pathCopy];
 
   v7 = objc_opt_class();
   v14 = sub_100303920(v6, v7, 1, v8, v9, v10, v11, v12, &OBJC_PROTOCOL___CRLiOSPresetCollectionViewCell);
 
-  v13 = [v14 presetButton];
-  [v13 setHighlighted:1];
+  presetButton = [v14 presetButton];
+  [presetButton setHighlighted:1];
 }
 
-- (void)presetCollectionViewLayoutDidUnhighlightPresetAtIndexPath:(id)a3
+- (void)presetCollectionViewLayoutDidUnhighlightPresetAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(CRLiOSPresetCollectionViewController *)self p_collectionView];
-  v6 = [v5 cellForItemAtIndexPath:v4];
+  pathCopy = path;
+  p_collectionView = [(CRLiOSPresetCollectionViewController *)self p_collectionView];
+  v6 = [p_collectionView cellForItemAtIndexPath:pathCopy];
 
   v7 = objc_opt_class();
   v14 = sub_100303920(v6, v7, 1, v8, v9, v10, v11, v12, &OBJC_PROTOCOL___CRLiOSPresetCollectionViewCell);
 
-  v13 = [v14 presetButton];
-  [v13 setHighlighted:0];
+  presetButton = [v14 presetButton];
+  [presetButton setHighlighted:0];
 }
 
-- (void)presetCollectionViewLayoutDidSelectPresetAtIndexPath:(id)a3
+- (void)presetCollectionViewLayoutDidSelectPresetAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   [(CRLiOSPresetCollectionViewController *)self cancelSwatchRenderingIfNeeded];
-  v5 = [(CRLiOSPresetCollectionViewController *)self p_delegate];
-  [v5 presetCollectionViewController:self didSelectPresetAtIndexPath:v4];
+  p_delegate = [(CRLiOSPresetCollectionViewController *)self p_delegate];
+  [p_delegate presetCollectionViewController:self didSelectPresetAtIndexPath:pathCopy];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CRLiOSPresetCollectionViewController *)self context];
-  v9 = [v6 section];
-  v10 = [(CRLiOSPresetCollectionViewController *)self layout];
-  v11 = [v10 cellReuseIdentifierForSection:v9 context:v8];
+  pathCopy = path;
+  viewCopy = view;
+  context = [(CRLiOSPresetCollectionViewController *)self context];
+  section = [pathCopy section];
+  layout = [(CRLiOSPresetCollectionViewController *)self layout];
+  v11 = [layout cellReuseIdentifierForSection:section context:context];
 
   v52 = v11;
-  v12 = [v7 dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:v6];
+  v12 = [viewCopy dequeueReusableCellWithReuseIdentifier:v11 forIndexPath:pathCopy];
 
   v13 = objc_opt_class();
   v19 = sub_100303920(v12, v13, 1, v14, v15, v16, v17, v18, &OBJC_PROTOCOL___CRLiOSPresetCollectionViewCell);
 
   [v19 setExclusiveTouch:1];
-  v20 = [v19 presetButton];
-  [v20 setHighlighted:0];
+  presetButton = [v19 presetButton];
+  [presetButton setHighlighted:0];
 
-  v21 = [v19 presetButton];
-  v22 = [v21 imageView];
-  [v22 setContentMode:1];
+  presetButton2 = [v19 presetButton];
+  imageView = [presetButton2 imageView];
+  [imageView setContentMode:1];
 
-  v23 = [v19 defaultBackgroundConfiguration];
+  defaultBackgroundConfiguration = [v19 defaultBackgroundConfiguration];
   v24 = +[_TtC8Freeform19CRLFeatureFlagGroup isSolariumEnabled];
   v25 = &unk_101462A38;
   if (!v24)
@@ -302,23 +302,23 @@
     v25 = &unk_101462A30;
   }
 
-  [v23 setCornerRadius:*v25];
-  v51 = v23;
-  [v19 setBackgroundConfiguration:v23];
-  v26 = [v19 contentView];
-  [v26 setUserInteractionEnabled:0];
+  [defaultBackgroundConfiguration setCornerRadius:*v25];
+  v51 = defaultBackgroundConfiguration;
+  [v19 setBackgroundConfiguration:defaultBackgroundConfiguration];
+  contentView = [v19 contentView];
+  [contentView setUserInteractionEnabled:0];
 
-  v50 = [v6 row];
+  v50 = [pathCopy row];
   v27 = objc_opt_class();
   v28 = sub_100014370(v27, v19);
   if (v28)
   {
-    [(CRLiOSPresetCollectionViewController *)self p_setupUIInLabeledCell:v28 atIndexPath:v6 context:v8];
+    [(CRLiOSPresetCollectionViewController *)self p_setupUIInLabeledCell:v28 atIndexPath:pathCopy context:context];
   }
 
   [v19 setIsAccessibilityElement:1];
-  v29 = [(CRLiOSPresetCollectionViewController *)self p_presetRenderer];
-  v30 = [v29 localizedAccessibilityNameForPresetAtIndexPath:v6 context:v8];
+  p_presetRenderer = [(CRLiOSPresetCollectionViewController *)self p_presetRenderer];
+  v30 = [p_presetRenderer localizedAccessibilityNameForPresetAtIndexPath:pathCopy context:context];
   [v19 setAccessibilityLabel:v30];
 
   v31 = [NSMutableArray alloc];
@@ -328,8 +328,8 @@
   v34 = [NSArray arrayWithObjects:&v53 count:1];
   v35 = [v31 initWithArray:v34];
 
-  v36 = [(CRLiOSPresetCollectionViewController *)self context];
-  LOBYTE(v34) = [v36 isSearching];
+  context2 = [(CRLiOSPresetCollectionViewController *)self context];
+  LOBYTE(v34) = [context2 isSearching];
 
   if ((v34 & 1) == 0)
   {
@@ -342,18 +342,18 @@
   [v19 setAccessibilityHint:v39];
 
   [v19 setTag:v50];
-  v40 = [(CRLiOSPresetCollectionViewController *)self layout];
-  [v40 sizeOfPresetInSection:{objc_msgSend(v6, "section")}];
+  layout2 = [(CRLiOSPresetCollectionViewController *)self layout];
+  [layout2 sizeOfPresetInSection:{objc_msgSend(pathCopy, "section")}];
   v42 = v41;
   v44 = v43;
 
-  v45 = [(CRLiOSPresetCollectionViewController *)self p_presetRenderer];
-  v46 = [v19 presetButton];
-  v47 = [(CRLiOSPresetCollectionViewController *)self p_backgroundColor];
-  [v45 renderSwatchInView:v46 withSize:v47 backgroundColor:v6 atIndexPath:v8 context:{v42, v44}];
+  p_presetRenderer2 = [(CRLiOSPresetCollectionViewController *)self p_presetRenderer];
+  presetButton3 = [v19 presetButton];
+  p_backgroundColor = [(CRLiOSPresetCollectionViewController *)self p_backgroundColor];
+  [p_presetRenderer2 renderSwatchInView:presetButton3 withSize:p_backgroundColor backgroundColor:pathCopy atIndexPath:context context:{v42, v44}];
 
-  v48 = [(CRLiOSPresetCollectionViewController *)self p_visibleCells];
-  [v48 addObject:v19];
+  p_visibleCells = [(CRLiOSPresetCollectionViewController *)self p_visibleCells];
+  [p_visibleCells addObject:v19];
 
   return v19;
 }
@@ -369,33 +369,33 @@
 
   else
   {
-    v6 = [(CRLiOSPresetCollectionViewController *)self p_cellsMissingImages];
-    if ([v6 count])
+    p_cellsMissingImages = [(CRLiOSPresetCollectionViewController *)self p_cellsMissingImages];
+    if ([p_cellsMissingImages count])
     {
-      v3 = [(CRLiOSPresetCollectionViewController *)self p_visibleCells];
-      [v3 removeObjectsInArray:v6];
+      p_visibleCells = [(CRLiOSPresetCollectionViewController *)self p_visibleCells];
+      [p_visibleCells removeObjectsInArray:p_cellsMissingImages];
 
-      v4 = [(CRLiOSPresetCollectionViewController *)self p_indexPathsForCells:v6];
-      v5 = [(CRLiOSPresetCollectionViewController *)self p_collectionView];
-      [v5 reloadItemsAtIndexPaths:v4];
+      v4 = [(CRLiOSPresetCollectionViewController *)self p_indexPathsForCells:p_cellsMissingImages];
+      p_collectionView = [(CRLiOSPresetCollectionViewController *)self p_collectionView];
+      [p_collectionView reloadItemsAtIndexPaths:v4];
     }
   }
 }
 
 - (void)p_setupCollectionView
 {
-  v38 = [(CRLiOSPresetCollectionViewController *)self layout];
-  v3 = [[CRLiOSPresetCollectionView alloc] initWithFrame:v38 collectionViewLayout:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
+  layout = [(CRLiOSPresetCollectionViewController *)self layout];
+  v3 = [[CRLiOSPresetCollectionView alloc] initWithFrame:layout collectionViewLayout:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   [(CRLiOSPresetCollectionView *)v3 setDelaysContentTouches:0];
   [(CRLiOSPresetCollectionView *)v3 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(CRLiOSPresetCollectionView *)v3 setDataSource:self];
-  [(CRLiOSPresetCollectionView *)v3 setDelegate:v38];
+  [(CRLiOSPresetCollectionView *)v3 setDelegate:layout];
   [(CRLiOSPresetCollectionView *)v3 setPresetCollectionViewDelegate:self];
-  v4 = [(CRLiOSPresetCollectionViewController *)self context];
-  if ([v38 showsSubpageNavigator])
+  context = [(CRLiOSPresetCollectionViewController *)self context];
+  if ([layout showsSubpageNavigator])
   {
-    v5 = [v38 subpageNavigatorItems];
-    v6 = [v5 count];
+    subpageNavigatorItems = [layout subpageNavigatorItems];
+    v6 = [subpageNavigatorItems count];
 
     if (v6)
     {
@@ -403,20 +403,20 @@
       do
       {
         v8 = [CRLiOSPresetCollectionContext alloc];
-        v9 = [v4 contextType];
-        [v4 contentSize];
+        contextType = [context contextType];
+        [context contentSize];
         v11 = v10;
         v13 = v12;
-        v14 = [v4 editingCoordinator];
-        v15 = [v4 isSearching];
-        v16 = [v4 pageIndex];
-        v17 = [v4 traitCollection];
-        v18 = [(CRLiOSPresetCollectionContext *)v8 initWithContextType:v9 contentSize:v14 editingCoordinator:v15 isSearching:v16 pageIndex:v7 subpageIndex:v17 traitCollection:v11, v13];
+        editingCoordinator = [context editingCoordinator];
+        isSearching = [context isSearching];
+        pageIndex = [context pageIndex];
+        traitCollection = [context traitCollection];
+        v18 = [(CRLiOSPresetCollectionContext *)v8 initWithContextType:contextType contentSize:editingCoordinator editingCoordinator:isSearching isSearching:pageIndex pageIndex:v7 subpageIndex:traitCollection traitCollection:v11, v13];
 
-        [(CRLiOSPresetCollectionViewController *)self p_registerNibsInCollectionView:v3 layout:v38 context:v18];
+        [(CRLiOSPresetCollectionViewController *)self p_registerNibsInCollectionView:v3 layout:layout context:v18];
         ++v7;
-        v19 = [v38 subpageNavigatorItems];
-        v20 = [v19 count];
+        subpageNavigatorItems2 = [layout subpageNavigatorItems];
+        v20 = [subpageNavigatorItems2 count];
       }
 
       while (v7 < v20);
@@ -425,52 +425,52 @@
 
   else
   {
-    [(CRLiOSPresetCollectionViewController *)self p_registerNibsInCollectionView:v3 layout:v38 context:v4];
+    [(CRLiOSPresetCollectionViewController *)self p_registerNibsInCollectionView:v3 layout:layout context:context];
   }
 
-  v21 = [(CRLiOSPresetCollectionViewController *)self p_backgroundColor];
-  [(CRLiOSPresetCollectionView *)v3 setBackgroundColor:v21];
+  p_backgroundColor = [(CRLiOSPresetCollectionViewController *)self p_backgroundColor];
+  [(CRLiOSPresetCollectionView *)v3 setBackgroundColor:p_backgroundColor];
 
   [(CRLiOSPresetCollectionView *)v3 setLayoutMargins:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
   [(CRLiOSPresetCollectionView *)v3 setDragDelegate:self];
-  v22 = [(CRLiOSPresetCollectionViewController *)self view];
-  [v22 addSubview:v3];
-  v23 = [v22 safeAreaLayoutGuide];
-  v24 = [v23 topAnchor];
-  v25 = [(CRLiOSPresetCollectionView *)v3 topAnchor];
-  v26 = [v24 constraintEqualToAnchor:v25];
+  view = [(CRLiOSPresetCollectionViewController *)self view];
+  [view addSubview:v3];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  topAnchor = [safeAreaLayoutGuide topAnchor];
+  topAnchor2 = [(CRLiOSPresetCollectionView *)v3 topAnchor];
+  v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v26 setActive:1];
 
-  v27 = [v22 bottomAnchor];
-  v28 = [(CRLiOSPresetCollectionView *)v3 bottomAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
+  bottomAnchor = [view bottomAnchor];
+  bottomAnchor2 = [(CRLiOSPresetCollectionView *)v3 bottomAnchor];
+  v29 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v29 setActive:1];
 
-  v30 = [v22 safeAreaLayoutGuide];
-  v31 = [v30 leadingAnchor];
-  v32 = [(CRLiOSPresetCollectionView *)v3 leadingAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32];
+  safeAreaLayoutGuide2 = [view safeAreaLayoutGuide];
+  leadingAnchor = [safeAreaLayoutGuide2 leadingAnchor];
+  leadingAnchor2 = [(CRLiOSPresetCollectionView *)v3 leadingAnchor];
+  v33 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v33 setActive:1];
 
-  v34 = [v22 safeAreaLayoutGuide];
-  v35 = [v34 trailingAnchor];
-  v36 = [(CRLiOSPresetCollectionView *)v3 trailingAnchor];
-  v37 = [v35 constraintEqualToAnchor:v36];
+  safeAreaLayoutGuide3 = [view safeAreaLayoutGuide];
+  trailingAnchor = [safeAreaLayoutGuide3 trailingAnchor];
+  trailingAnchor2 = [(CRLiOSPresetCollectionView *)v3 trailingAnchor];
+  v37 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v37 setActive:1];
 
   [(CRLiOSPresetCollectionViewController *)self setP_collectionView:v3];
 }
 
-- (void)p_registerNibsInCollectionView:(id)a3 layout:(id)a4 context:(id)a5
+- (void)p_registerNibsInCollectionView:(id)view layout:(id)layout context:(id)context
 {
-  v6 = a3;
-  v7 = [a4 cellRegistrationDictionary];
+  viewCopy = view;
+  cellRegistrationDictionary = [layout cellRegistrationDictionary];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v7 allKeys];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [cellRegistrationDictionary allKeys];
+  v9 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -481,15 +481,15 @@
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allKeys);
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
-        v14 = [v7 objectForKeyedSubscript:v13];
-        [v6 registerNib:v14 forCellWithReuseIdentifier:v13];
+        v14 = [cellRegistrationDictionary objectForKeyedSubscript:v13];
+        [viewCopy registerNib:v14 forCellWithReuseIdentifier:v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -504,46 +504,46 @@
 
 - (unint64_t)p_numberOfSections
 {
-  v3 = [(CRLiOSPresetCollectionViewController *)self layout];
-  v4 = [(CRLiOSPresetCollectionViewController *)self context];
-  v5 = [v3 numberOfSectionsInCollectionViewForContext:v4];
+  layout = [(CRLiOSPresetCollectionViewController *)self layout];
+  context = [(CRLiOSPresetCollectionViewController *)self context];
+  v5 = [layout numberOfSectionsInCollectionViewForContext:context];
 
   return v5;
 }
 
-- (unint64_t)p_numberOfItemsInSection:(unint64_t)a3
+- (unint64_t)p_numberOfItemsInSection:(unint64_t)section
 {
-  v4 = [(CRLiOSPresetCollectionViewController *)self layout];
-  v5 = [v4 numberOfItemsInSection:a3];
+  layout = [(CRLiOSPresetCollectionViewController *)self layout];
+  v5 = [layout numberOfItemsInSection:section];
 
   return v5;
 }
 
 - (id)p_editingCoordinator
 {
-  v2 = [(CRLiOSPresetCollectionViewController *)self context];
-  v3 = [v2 editingCoordinator];
+  context = [(CRLiOSPresetCollectionViewController *)self context];
+  editingCoordinator = [context editingCoordinator];
 
-  return v3;
+  return editingCoordinator;
 }
 
 - (id)p_backgroundColor
 {
-  v3 = [(CRLiOSPresetCollectionViewController *)self p_delegate];
-  v4 = [v3 backgroundColorForPresetCollectionViewController:self];
+  p_delegate = [(CRLiOSPresetCollectionViewController *)self p_delegate];
+  v4 = [p_delegate backgroundColorForPresetCollectionViewController:self];
 
   return v4;
 }
 
-- (id)p_indexPathsForCells:(id)a3
+- (id)p_indexPathsForCells:(id)cells
 {
-  v4 = a3;
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  cellsCopy = cells;
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [cellsCopy count]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = cellsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -559,8 +559,8 @@
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [(CRLiOSPresetCollectionViewController *)self p_collectionView];
-        v13 = [v12 indexPathForCell:v11];
+        p_collectionView = [(CRLiOSPresetCollectionViewController *)self p_collectionView];
+        v13 = [p_collectionView indexPathForCell:v11];
 
         if (v13)
         {
@@ -579,15 +579,15 @@
 
 - (id)p_cellsMissingImages
 {
-  v3 = [(CRLiOSPresetCollectionViewController *)self p_visibleCells];
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  p_visibleCells = [(CRLiOSPresetCollectionViewController *)self p_visibleCells];
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [p_visibleCells count]);
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [(CRLiOSPresetCollectionViewController *)self p_visibleCells];
-  v6 = [v5 copy];
+  p_visibleCells2 = [(CRLiOSPresetCollectionViewController *)self p_visibleCells];
+  v6 = [p_visibleCells2 copy];
 
   v7 = [v6 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v7)
@@ -609,10 +609,10 @@
         v19 = v18;
         if (v18)
         {
-          v20 = [v18 presetButton];
-          v21 = [v20 crl_isPresetRenderingInvalid];
+          presetButton = [v18 presetButton];
+          crl_isPresetRenderingInvalid = [presetButton crl_isPresetRenderingInvalid];
 
-          if (v21)
+          if (crl_isPresetRenderingInvalid)
           {
             [v4 addObject:v19];
           }
@@ -637,41 +637,41 @@
 
 - (BOOL)p_shouldUseDarkUI
 {
-  v2 = [(CRLiOSPresetCollectionViewController *)self traitCollection];
-  v3 = [v2 crl_isUserInterfaceStyleDark];
+  traitCollection = [(CRLiOSPresetCollectionViewController *)self traitCollection];
+  crl_isUserInterfaceStyleDark = [traitCollection crl_isUserInterfaceStyleDark];
 
-  return v3;
+  return crl_isUserInterfaceStyleDark;
 }
 
-- (void)p_setupUIInLabeledCell:(id)a3 atIndexPath:(id)a4 context:(id)a5
+- (void)p_setupUIInLabeledCell:(id)cell atIndexPath:(id)path context:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v50 = [v10 section];
-  v11 = [v8 label];
-  v12 = [(CRLiOSPresetCollectionViewController *)self p_presetRenderer];
-  v13 = [v12 localizedNameForPresetAtIndexPath:v10 context:v9];
+  cellCopy = cell;
+  contextCopy = context;
+  pathCopy = path;
+  section = [pathCopy section];
+  label = [cellCopy label];
+  p_presetRenderer = [(CRLiOSPresetCollectionViewController *)self p_presetRenderer];
+  v13 = [p_presetRenderer localizedNameForPresetAtIndexPath:pathCopy context:contextCopy];
 
-  v14 = [(CRLiOSPresetCollectionViewController *)self p_presetRenderer];
-  v15 = v9;
-  v16 = [v14 isDefaultLocalizedNameForPresetAtIndexPath:v10 context:v9];
+  p_presetRenderer2 = [(CRLiOSPresetCollectionViewController *)self p_presetRenderer];
+  v15 = contextCopy;
+  v16 = [p_presetRenderer2 isDefaultLocalizedNameForPresetAtIndexPath:pathCopy context:contextCopy];
 
-  [v8 setLabelHasDefaultLocalizedName:v16];
+  [cellCopy setLabelHasDefaultLocalizedName:v16];
   v17 = objc_alloc_init(NSMutableParagraphStyle);
-  [v11 setNumberOfLines:2];
+  [label setNumberOfLines:2];
   LODWORD(v18) = 0.5;
   [v17 setHyphenationFactor:v18];
   [v17 setLineBreakMode:4];
   v19 = [UIFont systemFontOfSize:12.0];
   [v17 setLineSpacing:1.0];
   [v17 setAlignment:1];
-  LODWORD(v14) = [(CRLiOSPresetCollectionViewController *)self p_shouldUseDarkUI];
-  v49 = v8;
-  v20 = [v8 labelHasDefaultLocalizedName];
-  if (v14)
+  LODWORD(p_presetRenderer2) = [(CRLiOSPresetCollectionViewController *)self p_shouldUseDarkUI];
+  v49 = cellCopy;
+  labelHasDefaultLocalizedName = [cellCopy labelHasDefaultLocalizedName];
+  if (p_presetRenderer2)
   {
-    if (v20)
+    if (labelHasDefaultLocalizedName)
     {
       v21 = 0.556862772;
 LABEL_6:
@@ -680,7 +680,7 @@ LABEL_6:
     }
   }
 
-  else if (v20)
+  else if (labelHasDefaultLocalizedName)
   {
     v21 = 0.643137276;
     goto LABEL_6;
@@ -707,7 +707,7 @@ LABEL_8:
     v28 = v17;
     v29 = v27;
     v45 = +[CRLAssertionHandler _atomicIncrementAssertCount];
-    v30 = v11;
+    v30 = label;
     if (qword_101AD5A10 != -1)
     {
       sub_10137F4BC();
@@ -735,45 +735,45 @@ LABEL_8:
     [CRLAssertionHandler handleFailureInFunction:v33 file:v34 lineNumber:476 isFatal:0 description:"invalid nil value for '%{public}s'", "localizedName"];
 
     v26 = &stru_1018BCA28;
-    v11 = v30;
+    label = v30;
     v13 = 0;
     v27 = v29;
     v17 = v28;
     v25 = v46;
   }
 
-  v47 = v11;
+  v47 = label;
   v48 = v27;
   v35 = [[NSAttributedString alloc] initWithString:v26 attributes:v25];
-  [v11 setAttributedText:v35];
-  v36 = [(CRLiOSPresetCollectionViewController *)self p_layout];
-  [v36 additionalHeightForItemInSection:v50 context:v15];
+  [label setAttributedText:v35];
+  p_layout = [(CRLiOSPresetCollectionViewController *)self p_layout];
+  [p_layout additionalHeightForItemInSection:section context:v15];
   v38 = v37 - 30.0;
-  v39 = [v49 labelVerticalSpacingConstraint];
-  [v39 setConstant:v38];
+  labelVerticalSpacingConstraint = [v49 labelVerticalSpacingConstraint];
+  [labelVerticalSpacingConstraint setConstant:v38];
 
-  v40 = [(CRLiOSPresetCollectionViewController *)self p_layout];
-  [v40 horizontalInsetForItemInSection:v50 context:v15];
+  p_layout2 = [(CRLiOSPresetCollectionViewController *)self p_layout];
+  [p_layout2 horizontalInsetForItemInSection:section context:v15];
   v42 = v41;
 
-  v43 = [v49 presetViewLeadingConstraint];
-  [v43 setConstant:v42];
+  presetViewLeadingConstraint = [v49 presetViewLeadingConstraint];
+  [presetViewLeadingConstraint setConstant:v42];
 
-  v44 = [v49 presetViewTrailingConstraint];
-  [v44 setConstant:v42];
+  presetViewTrailingConstraint = [v49 presetViewTrailingConstraint];
+  [presetViewTrailingConstraint setConstant:v42];
 }
 
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [(CRLiOSPresetCollectionViewController *)self p_delegate];
-  v10 = [v9 allowsInsertDrag];
+  viewCopy = view;
+  pathCopy = path;
+  p_delegate = [(CRLiOSPresetCollectionViewController *)self p_delegate];
+  allowsInsertDrag = [p_delegate allowsInsertDrag];
 
-  if (v10)
+  if (allowsInsertDrag)
   {
-    v11 = [(CRLiOSPresetCollectionViewController *)self p_delegate];
-    v12 = [v11 itemsForBeginningDragSessionForPresetCollectionViewController:self forCollectionView:v7 atIndexPath:v8];
+    p_delegate2 = [(CRLiOSPresetCollectionViewController *)self p_delegate];
+    v12 = [p_delegate2 itemsForBeginningDragSessionForPresetCollectionViewController:self forCollectionView:viewCopy atIndexPath:pathCopy];
   }
 
   else
@@ -784,7 +784,7 @@ LABEL_8:
   return v12;
 }
 
-- (id)collectionView:(id)a3 dragPreviewParametersForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view dragPreviewParametersForItemAtIndexPath:(id)path
 {
   v4 = objc_alloc_init(UIDragPreviewParameters);
   v5 = +[UIColor clearColor];
@@ -796,9 +796,9 @@ LABEL_8:
   return v4;
 }
 
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin
 {
-  v4 = [(CRLiOSPresetCollectionViewController *)self presentingViewController:a3];
+  v4 = [(CRLiOSPresetCollectionViewController *)self presentingViewController:view];
   [v4 dismissViewControllerAnimated:1 completion:0];
 }
 

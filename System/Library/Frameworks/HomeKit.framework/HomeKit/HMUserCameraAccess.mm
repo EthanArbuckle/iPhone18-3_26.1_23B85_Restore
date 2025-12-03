@@ -1,15 +1,15 @@
 @interface HMUserCameraAccess
-+ (HMUserCameraAccess)accessWithCoder:(id)a3;
-+ (HMUserCameraAccess)accessWithDict:(id)a3;
-+ (HMUserCameraAccess)accessWithMessage:(id)a3;
-+ (HMUserCameraAccess)accessWithNumber:(id)a3;
-+ (HMUserCameraAccess)accessWithValue:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (HMUserCameraAccess)initWithNumber:(id)a3;
++ (HMUserCameraAccess)accessWithCoder:(id)coder;
++ (HMUserCameraAccess)accessWithDict:(id)dict;
++ (HMUserCameraAccess)accessWithMessage:(id)message;
++ (HMUserCameraAccess)accessWithNumber:(id)number;
++ (HMUserCameraAccess)accessWithValue:(unint64_t)value;
+- (BOOL)isEqual:(id)equal;
+- (HMUserCameraAccess)initWithNumber:(id)number;
 - (NSNumber)number;
 - (id)description;
-- (void)addToCoder:(id)a3;
-- (void)addToPayload:(id)a3;
+- (void)addToCoder:(id)coder;
+- (void)addToPayload:(id)payload;
 @end
 
 @implementation HMUserCameraAccess
@@ -23,10 +23,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -36,7 +36,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -47,8 +47,8 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMUserCameraAccess *)self value];
-      v8 = v7 == [(HMUserCameraAccess *)v6 value];
+      value = [(HMUserCameraAccess *)self value];
+      v8 = value == [(HMUserCameraAccess *)v6 value];
     }
 
     else
@@ -63,88 +63,88 @@
 - (NSNumber)number
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(HMUserCameraAccess *)self value];
+  value = [(HMUserCameraAccess *)self value];
 
-  return [v2 numberWithUnsignedInteger:v3];
+  return [v2 numberWithUnsignedInteger:value];
 }
 
-- (void)addToPayload:(id)a3
+- (void)addToPayload:(id)payload
 {
-  v4 = a3;
-  v5 = [(HMUserCameraAccess *)self number];
-  [v4 setObject:v5 forKeyedSubscript:@"HM.camerasAccessLevelKey"];
+  payloadCopy = payload;
+  number = [(HMUserCameraAccess *)self number];
+  [payloadCopy setObject:number forKeyedSubscript:@"HM.camerasAccessLevelKey"];
 }
 
-- (void)addToCoder:(id)a3
+- (void)addToCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMUserCameraAccess *)self number];
-  [v4 encodeObject:v5 forKey:@"HM.camerasAccessLevelKey"];
+  coderCopy = coder;
+  number = [(HMUserCameraAccess *)self number];
+  [coderCopy encodeObject:number forKey:@"HM.camerasAccessLevelKey"];
 }
 
-- (HMUserCameraAccess)initWithNumber:(id)a3
+- (HMUserCameraAccess)initWithNumber:(id)number
 {
-  v4 = a3;
-  if (v4)
+  numberCopy = number;
+  if (numberCopy)
   {
     v8.receiver = self;
     v8.super_class = HMUserCameraAccess;
     v5 = [(HMUserCameraAccess *)&v8 init];
     if (v5)
     {
-      v5->_value = [v4 unsignedIntegerValue];
+      v5->_value = [numberCopy unsignedIntegerValue];
     }
 
     self = v5;
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-+ (HMUserCameraAccess)accessWithCoder:(id)a3
++ (HMUserCameraAccess)accessWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"HM.camerasAccessLevelKey"];
+  coderCopy = coder;
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.camerasAccessLevelKey"];
 
   v5 = [HMUserCameraAccess accessWithNumber:v4];
 
   return v5;
 }
 
-+ (HMUserCameraAccess)accessWithDict:(id)a3
++ (HMUserCameraAccess)accessWithDict:(id)dict
 {
-  v3 = [a3 hmf_numberForKey:@"HM.camerasAccessLevelKey"];
+  v3 = [dict hmf_numberForKey:@"HM.camerasAccessLevelKey"];
   v4 = [HMUserCameraAccess accessWithNumber:v3];
 
   return v4;
 }
 
-+ (HMUserCameraAccess)accessWithMessage:(id)a3
++ (HMUserCameraAccess)accessWithMessage:(id)message
 {
-  v3 = [a3 numberForKey:@"HM.camerasAccessLevelKey"];
+  v3 = [message numberForKey:@"HM.camerasAccessLevelKey"];
   v4 = [HMUserCameraAccess accessWithNumber:v3];
 
   return v4;
 }
 
-+ (HMUserCameraAccess)accessWithNumber:(id)a3
++ (HMUserCameraAccess)accessWithNumber:(id)number
 {
-  v3 = a3;
-  v4 = [[HMUserCameraAccess alloc] initWithNumber:v3];
+  numberCopy = number;
+  v4 = [[HMUserCameraAccess alloc] initWithNumber:numberCopy];
 
   return v4;
 }
 
-+ (HMUserCameraAccess)accessWithValue:(unint64_t)a3
++ (HMUserCameraAccess)accessWithValue:(unint64_t)value
 {
   v4 = [HMUserCameraAccess alloc];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:value];
   v6 = [(HMUserCameraAccess *)v4 initWithNumber:v5];
 
   return v6;

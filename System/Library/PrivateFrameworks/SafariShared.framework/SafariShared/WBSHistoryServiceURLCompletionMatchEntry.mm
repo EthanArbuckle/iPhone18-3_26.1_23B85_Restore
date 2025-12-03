@@ -1,25 +1,25 @@
 @interface WBSHistoryServiceURLCompletionMatchEntry
 - (NSString)title;
 - (NSString)url;
-- (WBSHistoryServiceURLCompletionMatchEntry)initWithCoder:(id)a3;
-- (WBSHistoryServiceURLCompletionMatchEntry)initWithStreamData:(void *)a3;
-- (WBSHistoryServiceURLCompletionMatchEntry)initWithURLString:(id)a3 title:(id)a4 topSitesScore:(float)a5 visitCountScore:(int64_t)a6;
-- (void)encodeWithCoder:(id)a3;
+- (WBSHistoryServiceURLCompletionMatchEntry)initWithCoder:(id)coder;
+- (WBSHistoryServiceURLCompletionMatchEntry)initWithStreamData:(void *)data;
+- (WBSHistoryServiceURLCompletionMatchEntry)initWithURLString:(id)string title:(id)title topSitesScore:(float)score visitCountScore:(int64_t)countScore;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSHistoryServiceURLCompletionMatchEntry
 
-- (WBSHistoryServiceURLCompletionMatchEntry)initWithURLString:(id)a3 title:(id)a4 topSitesScore:(float)a5 visitCountScore:(int64_t)a6
+- (WBSHistoryServiceURLCompletionMatchEntry)initWithURLString:(id)string title:(id)title topSitesScore:(float)score visitCountScore:(int64_t)countScore
 {
-  v11 = a3;
-  v12 = a4;
+  stringCopy = string;
+  titleCopy = title;
   v22.receiver = self;
   v22.super_class = WBSHistoryServiceURLCompletionMatchEntry;
   v13 = [(WBSHistoryServiceURLCompletionMatchEntry *)&v22 init];
   if (v13)
   {
-    v14 = [(__CFString *)v11 lengthOfBytesUsingEncoding:4];
-    v15 = [(__CFString *)v12 lengthOfBytesUsingEncoding:4];
+    v14 = [(__CFString *)stringCopy lengthOfBytesUsingEncoding:4];
+    v15 = [(__CFString *)titleCopy lengthOfBytesUsingEncoding:4];
     v16 = v14 + v15 + 42;
     v17 = operator new(v16);
     bzero(v17, v16);
@@ -34,29 +34,29 @@
 
     *p_var0 = 5;
     *(p_var0 + 1) = v16;
-    p_var0[6] = a5;
-    *(p_var0 + 4) = a6;
-    if (v11)
+    p_var0[6] = score;
+    *(p_var0 + 4) = countScore;
+    if (stringCopy)
     {
-      CFStringGetCString(v11, v17 + 40, v14 + 1, 0x8000100u);
+      CFStringGetCString(stringCopy, v17 + 40, v14 + 1, 0x8000100u);
       v13->_streamData.__ptr_->var1 = v17 + 40;
     }
 
-    if (v12)
+    if (titleCopy)
     {
-      CFStringGetCString(v12, &v17[v14 + 41], v15 + 1, 0x8000100u);
+      CFStringGetCString(titleCopy, &v17[v14 + 41], v15 + 1, 0x8000100u);
       v13->_streamData.__ptr_->var2 = &v17[v14 + 41];
     }
 
-    objc_storeStrong(&v13->_url, a3);
-    objc_storeStrong(&v13->_title, a4);
+    objc_storeStrong(&v13->_url, string);
+    objc_storeStrong(&v13->_title, title);
     v20 = v13;
   }
 
   return v13;
 }
 
-- (WBSHistoryServiceURLCompletionMatchEntry)initWithStreamData:(void *)a3
+- (WBSHistoryServiceURLCompletionMatchEntry)initWithStreamData:(void *)data
 {
   v10.receiver = self;
   v10.super_class = WBSHistoryServiceURLCompletionMatchEntry;
@@ -64,8 +64,8 @@
   v5 = v4;
   if (v4)
   {
-    v6 = *a3;
-    *a3 = 0;
+    v6 = *data;
+    *data = 0;
     ptr = v4->_streamData.__ptr_;
     v5->_streamData.__ptr_ = v6;
     if (ptr)
@@ -79,33 +79,33 @@
   return v5;
 }
 
-- (WBSHistoryServiceURLCompletionMatchEntry)initWithCoder:(id)a3
+- (WBSHistoryServiceURLCompletionMatchEntry)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-  [v4 decodeDoubleForKey:@"topSitesScore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  [coderCopy decodeDoubleForKey:@"topSitesScore"];
   v8 = v7;
-  v9 = [v4 decodeIntegerForKey:@"visitCountScore"];
+  v9 = [coderCopy decodeIntegerForKey:@"visitCountScore"];
   *&v10 = v8;
   v11 = [(WBSHistoryServiceURLCompletionMatchEntry *)self initWithURLString:v5 title:v6 topSitesScore:v9 visitCountScore:v10];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeInteger:-[WBSHistoryServiceURLCompletionMatchEntry visitCountScore](self forKey:{"visitCountScore"), @"visitCountScore"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[WBSHistoryServiceURLCompletionMatchEntry visitCountScore](self forKey:{"visitCountScore"), @"visitCountScore"}];
   [(WBSHistoryServiceURLCompletionMatchEntry *)self topSitesScore];
-  [v7 encodeDouble:@"topSitesScore" forKey:v4];
+  [coderCopy encodeDouble:@"topSitesScore" forKey:v4];
   v5 = [(WBSHistoryServiceURLCompletionMatchEntry *)self url];
-  [v7 encodeObject:v5 forKey:@"url"];
+  [coderCopy encodeObject:v5 forKey:@"url"];
 
-  v6 = [(WBSHistoryServiceURLCompletionMatchEntry *)self title];
-  if (v6)
+  title = [(WBSHistoryServiceURLCompletionMatchEntry *)self title];
+  if (title)
   {
-    [v7 encodeObject:v6 forKey:@"title"];
+    [coderCopy encodeObject:title forKey:@"title"];
   }
 }
 

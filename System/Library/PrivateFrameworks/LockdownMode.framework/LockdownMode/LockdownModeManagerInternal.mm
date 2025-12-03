@@ -2,10 +2,10 @@
 + (LockdownModeManagerInternal)shared;
 - (BOOL)enabledInAccount;
 - (LockdownModeManagerInternal)init;
-- (void)migrateIfNeededWithCompletion:(id)a3;
-- (void)notifyRestrictionChanged:(id)a3;
+- (void)migrateIfNeededWithCompletion:(id)completion;
+- (void)notifyRestrictionChanged:(id)changed;
 - (void)rebootIfNeeded;
-- (void)setEnabled:(BOOL)a3 options:(id)a4 completion:(id)a5;
+- (void)setEnabled:(BOOL)enabled options:(id)options completion:(id)completion;
 @end
 
 @implementation LockdownModeManagerInternal
@@ -33,50 +33,50 @@
 
 - (BOOL)enabledInAccount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = LockdownModeManager.enabledInAccount.getter();
 
   return v3 & 1;
 }
 
-- (void)setEnabled:(BOOL)a3 options:(id)a4 completion:(id)a5
+- (void)setEnabled:(BOOL)enabled options:(id)options completion:(id)completion
 {
-  v8 = _Block_copy(a5);
-  if (a4)
+  v8 = _Block_copy(completion);
+  if (options)
   {
-    a4 = sub_1DA9BFED8();
+    options = sub_1DA9BFED8();
   }
 
   _Block_copy(v8);
-  v9 = self;
-  sub_1DA9BF828(a3, a4, v9, v8);
+  selfCopy = self;
+  sub_1DA9BF828(enabled, options, selfCopy, v8);
   _Block_release(v8);
   _Block_release(v8);
 }
 
-- (void)notifyRestrictionChanged:(id)a3
+- (void)notifyRestrictionChanged:(id)changed
 {
   v4 = sub_1DA9BFEF8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   LockdownModeManager.notifyRestrictionChanged(_:)(v8);
 }
 
-- (void)migrateIfNeededWithCompletion:(id)a3
+- (void)migrateIfNeededWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   _Block_copy(v4);
-  v5 = self;
-  sub_1DA9BFA40(v5, v4);
+  selfCopy = self;
+  sub_1DA9BFA40(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }
 
 - (void)rebootIfNeeded
 {
-  v5 = self;
+  selfCopy = self;
   v2 = sub_1DA9BD558(sub_1DA9BD660, &block_descriptor_94, &selRef_synchronousRemoteObjectProxyWithErrorHandler_);
   if (v2)
   {

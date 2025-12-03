@@ -1,25 +1,25 @@
 @interface TPSCondition
-+ (id)conditionFromDictionary:(id)a3;
-+ (int64_t)typeFromConditionDictionary:(id)a3;
++ (id)conditionFromDictionary:(id)dictionary;
++ (int64_t)typeFromConditionDictionary:(id)dictionary;
 - (NSString)debugDescription;
-- (TPSCondition)initWithDictionary:(id)a3;
-- (void)getCurrentStateWithCompletion:(id)a3;
-- (void)validateWithCompletion:(id)a3;
-- (void)validateWithValidations:(id)a3 completion:(id)a4;
+- (TPSCondition)initWithDictionary:(id)dictionary;
+- (void)getCurrentStateWithCompletion:(id)completion;
+- (void)validateWithCompletion:(id)completion;
+- (void)validateWithValidations:(id)validations completion:(id)completion;
 @end
 
 @implementation TPSCondition
 
-- (TPSCondition)initWithDictionary:(id)a3
+- (TPSCondition)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = TPSCondition;
   v5 = [(TPSCondition *)&v20 init];
   if (v5)
   {
-    v6 = [v4 TPSSafeStringForKey:@"id"];
+    v6 = [dictionaryCopy TPSSafeStringForKey:@"id"];
     v7 = v6;
     if (v6)
     {
@@ -35,38 +35,38 @@
 
     if ([(NSString *)v5->_identifier isEqualToString:@"unknown"])
     {
-      v9 = [MEMORY[0x277D71778] targeting];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      targeting = [MEMORY[0x277D71778] targeting];
+      if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v23 = v4;
-        _os_log_impl(&dword_232D6F000, v9, OS_LOG_TYPE_DEFAULT, "Missing condition id %@", buf, 0xCu);
+        v23 = dictionaryCopy;
+        _os_log_impl(&dword_232D6F000, targeting, OS_LOG_TYPE_DEFAULT, "Missing condition id %@", buf, 0xCu);
       }
     }
 
-    v5->_type = [objc_opt_class() typeFromConditionDictionary:v4];
-    v10 = [v4 TPSSafeStringForKey:@"joinType"];
+    v5->_type = [objc_opt_class() typeFromConditionDictionary:dictionaryCopy];
+    v10 = [dictionaryCopy TPSSafeStringForKey:@"joinType"];
     if ([v10 isEqualToString:@"AND"])
     {
-      v11 = 0;
+      defaultJoinType = 0;
     }
 
     else if ([v10 isEqualToString:@"OR"])
     {
-      v11 = 1;
+      defaultJoinType = 1;
     }
 
     else
     {
-      v11 = [(TPSCondition *)v5 defaultJoinType];
+      defaultJoinType = [(TPSCondition *)v5 defaultJoinType];
     }
 
-    v5->_joinType = v11;
-    v12 = [v4 TPSSafeStringForKey:@"valueType"];
+    v5->_joinType = defaultJoinType;
+    v12 = [dictionaryCopy TPSSafeStringForKey:@"valueType"];
     valueType = v5->_valueType;
     v5->_valueType = v12;
 
-    v14 = [v4 TPSSafeObjectForKey:@"values"];
+    v14 = [dictionaryCopy TPSSafeObjectForKey:@"values"];
     if (v14)
     {
       objc_opt_class();
@@ -88,49 +88,49 @@
   return v5;
 }
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(TPSCondition *)self targetingValidations];
-  [(TPSCondition *)self validateWithValidations:v5 completion:v4];
+  completionCopy = completion;
+  targetingValidations = [(TPSCondition *)self targetingValidations];
+  [(TPSCondition *)self validateWithValidations:targetingValidations completion:completionCopy];
 }
 
-- (void)validateWithValidations:(id)a3 completion:(id)a4
+- (void)validateWithValidations:(id)validations completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
+  validationsCopy = validations;
+  completionCopy = completion;
+  v9 = completionCopy;
   if (self->_type)
   {
-    objc_storeStrong(&self->_validations, a3);
+    objc_storeStrong(&self->_validations, validations);
     validations = self->_validations;
-    v11 = [(TPSCondition *)self joinType];
-    v12 = [(TPSCondition *)self identifier];
+    joinType = [(TPSCondition *)self joinType];
+    identifier = [(TPSCondition *)self identifier];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __51__TPSCondition_validateWithValidations_completion___block_invoke;
     v13[3] = &unk_2789AFFD8;
     v14 = v9;
-    [TPSTargetingValidator validateConditions:validations joinType:v11 context:v12 cache:0 completionQueue:0 completionHandler:v13];
+    [TPSTargetingValidator validateConditions:validations joinType:joinType context:identifier cache:0 completionQueue:0 completionHandler:v13];
   }
 
   else
   {
-    (*(v8 + 2))(v8, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)getCurrentStateWithCompletion:(id)a3
+- (void)getCurrentStateWithCompletion:(id)completion
 {
   v4 = MEMORY[0x277CBEB68];
-  v5 = a3;
-  v6 = [v4 null];
-  (*(a3 + 2))(v5, v6, 0);
+  completionCopy = completion;
+  null = [v4 null];
+  (*(completion + 2))(completionCopy, null, 0);
 }
 
-+ (int64_t)typeFromConditionDictionary:(id)a3
++ (int64_t)typeFromConditionDictionary:(id)dictionary
 {
-  v3 = [a3 TPSSafeStringForKey:@"type"];
+  v3 = [dictionary TPSSafeStringForKey:@"type"];
   if ([v3 isEqualToString:@"deviceCapability"])
   {
     v4 = 1;
@@ -204,10 +204,10 @@
   return v4;
 }
 
-+ (id)conditionFromDictionary:(id)a3
++ (id)conditionFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  switch([a1 typeFromConditionDictionary:v4])
+  dictionaryCopy = dictionary;
+  switch([self typeFromConditionDictionary:dictionaryCopy])
   {
     case 1:
       v5 = TPSDeviceCapabilityCondition;
@@ -249,17 +249,17 @@
       v5 = TPSAppEntityCondition;
       break;
     default:
-      v6 = [MEMORY[0x277D71778] targeting];
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      targeting = [MEMORY[0x277D71778] targeting];
+      if (os_log_type_enabled(targeting, OS_LOG_TYPE_ERROR))
       {
-        [(TPSCondition *)v4 conditionFromDictionary:v6];
+        [(TPSCondition *)dictionaryCopy conditionFromDictionary:targeting];
       }
 
       v5 = objc_opt_class();
       break;
   }
 
-  v7 = [[v5 alloc] initWithDictionary:v4];
+  v7 = [[v5 alloc] initWithDictionary:dictionaryCopy];
 
   return v7;
 }
@@ -268,7 +268,7 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(TPSCondition *)self identifier];
+  identifier = [(TPSCondition *)self identifier];
   if ([(TPSCondition *)self joinType])
   {
     v6 = @"OR";
@@ -279,9 +279,9 @@
     v6 = @"AND";
   }
 
-  v7 = [(TPSCondition *)self values];
-  v8 = [v7 valueForKey:@"debugDescription"];
-  v9 = [v3 stringWithFormat:@"<%@ %p> [%@] Values(%@): %@ ", v4, self, v5, v6, v8];
+  values = [(TPSCondition *)self values];
+  v8 = [values valueForKey:@"debugDescription"];
+  v9 = [v3 stringWithFormat:@"<%@ %p> [%@] Values(%@): %@ ", v4, self, identifier, v6, v8];
 
   return v9;
 }

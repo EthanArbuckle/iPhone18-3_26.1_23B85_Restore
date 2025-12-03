@@ -1,5 +1,5 @@
 @interface DDDeviceDiscoveryViewSettingsSwift
-+ (void)updateHostingControllerWithHostingController:(id)a3 serviceIdentifier:(id)a4 publicKey:(id)a5 browseDescriptor:(id)a6 browseParameters:(id)a7;
++ (void)updateHostingControllerWithHostingController:(id)controller serviceIdentifier:(id)identifier publicKey:(id)key browseDescriptor:(id)descriptor browseParameters:(id)parameters;
 - (DDDeviceDiscoveryViewSettingsSwift)init;
 @end
 
@@ -12,9 +12,9 @@
   return [(DDDeviceDiscoveryViewSettingsSwift *)&v3 init];
 }
 
-+ (void)updateHostingControllerWithHostingController:(id)a3 serviceIdentifier:(id)a4 publicKey:(id)a5 browseDescriptor:(id)a6 browseParameters:(id)a7
++ (void)updateHostingControllerWithHostingController:(id)controller serviceIdentifier:(id)identifier publicKey:(id)key browseDescriptor:(id)descriptor browseParameters:(id)parameters
 {
-  if (a4)
+  if (identifier)
   {
     v11 = sub_238154CCC();
     v13 = v12;
@@ -26,11 +26,11 @@
     v13 = 0;
   }
 
-  v14 = a3;
-  v15 = a5;
+  controllerCopy = controller;
+  keyCopy = key;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  sub_238102A6C(v14, v11, v13, a5, a6, a7);
+  sub_238102A6C(controllerCopy, v11, v13, key, descriptor, parameters);
 
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();

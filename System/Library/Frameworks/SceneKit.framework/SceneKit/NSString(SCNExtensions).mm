@@ -44,14 +44,14 @@
           objc_enumerationMutation(a3);
         }
 
-        v14 = [*(*(&v44 + 1) + 8 * i) rangeValue];
-        if (v14 < v10)
+        rangeValue = [*(*(&v44 + 1) + 8 * i) rangeValue];
+        if (rangeValue < v10)
         {
           NSLog(&cfstr_ErrorRangesMus.isa);
           return 0;
         }
 
-        v10 = v14 + v15;
+        v10 = rangeValue + v15;
         v11 += v15;
       }
 
@@ -103,13 +103,13 @@
     v19 = 0;
   }
 
-  if (v19 - v11 + [a1 length] <= 0)
+  if (v19 - v11 + [self length] <= 0)
   {
     NSLog(&cfstr_ErrorIncorrect_0.isa);
     return 0;
   }
 
-  v34 = a1;
+  selfCopy = self;
   v22 = [MEMORY[0x277CCAB68] stringWithCapacity:?];
   v36 = 0u;
   v37 = 0u;
@@ -134,17 +134,17 @@
           objc_enumerationMutation(obj);
         }
 
-        v30 = [*(*(&v36 + 1) + 8 * v28) rangeValue];
+        rangeValue2 = [*(*(&v36 + 1) + 8 * v28) rangeValue];
         v32 = v31;
-        v33 = v30 - v26;
-        if (v30 > v26)
+        v33 = rangeValue2 - v26;
+        if (rangeValue2 > v26)
         {
-          [v22 appendString:{objc_msgSend(v34, "substringWithRange:", v26, v33)}];
+          [v22 appendString:{objc_msgSend(selfCopy, "substringWithRange:", v26, v33)}];
         }
 
         v25 = v29 + 1;
         [v22 appendString:{objc_msgSend(a4, "objectAtIndexedSubscript:", v29, v33)}];
-        v26 = v30 + v32;
+        v26 = rangeValue2 + v32;
         ++v28;
         ++v29;
       }
@@ -161,9 +161,9 @@
     v26 = 0;
   }
 
-  if (v26 < [v34 length])
+  if (v26 < [selfCopy length])
   {
-    [v22 appendString:{objc_msgSend(v34, "substringWithRange:", v26, objc_msgSend(v34, "length") - v26)}];
+    [v22 appendString:{objc_msgSend(selfCopy, "substringWithRange:", v26, objc_msgSend(selfCopy, "length") - v26)}];
   }
 
   return [MEMORY[0x277CCACA8] stringWithString:v22];

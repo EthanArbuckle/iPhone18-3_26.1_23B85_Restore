@@ -1,44 +1,44 @@
 @interface WFContentItemFilterAction
-- (BOOL)canHandleInputOfContentClasses:(id)a3 withSupportedClasses:(id)a4;
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4;
+- (BOOL)canHandleInputOfContentClasses:(id)classes withSupportedClasses:(id)supportedClasses;
+- (BOOL)setParameterState:(id)state forKey:(id)key;
 - (WFContentPredicate)contentPredicate;
 - (WFContentQuery)query;
 - (_WFContentSlice)slice;
-- (id)createStateForParameter:(id)a3 fromSerializedRepresentation:(id)a4;
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4;
-- (id)localizedDefaultOutputNameWithContext:(id)a3;
-- (id)localizedDescriptionInputWithContext:(id)a3;
-- (id)localizedDescriptionResultWithContext:(id)a3;
-- (id)localizedDescriptionSummaryWithContext:(id)a3;
-- (id)localizedKeywordsWithContext:(id)a3;
-- (id)localizedNameWithContext:(id)a3;
+- (id)createStateForParameter:(id)parameter fromSerializedRepresentation:(id)representation;
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state;
+- (id)localizedDefaultOutputNameWithContext:(id)context;
+- (id)localizedDescriptionInputWithContext:(id)context;
+- (id)localizedDescriptionResultWithContext:(id)context;
+- (id)localizedDescriptionSummaryWithContext:(id)context;
+- (id)localizedKeywordsWithContext:(id)context;
+- (id)localizedNameWithContext:(id)context;
 - (id)localizedParameterSummaryStringForFilterWithMultipleFilterConditions;
 - (id)localizedParameterSummaryStringForFindWithMultipleFilterConditions;
-- (id)localizedPluralDescriptionWithContext:(id)a3;
+- (id)localizedPluralDescriptionWithContext:(id)context;
 - (id)parameterDefinitions;
-- (id)parameterStateForKey:(id)a3;
+- (id)parameterStateForKey:(id)key;
 - (id)parameterSummary;
-- (id)possibleStatesForEnumeration:(id)a3;
+- (id)possibleStatesForEnumeration:(id)enumeration;
 - (id)sortablePropertyDisplayNames;
 - (id)sortablePropertyNames;
-- (id)swift_rowForContentPropertyName:(id)a3;
+- (id)swift_rowForContentPropertyName:(id)name;
 - (int64_t)tableTemplateCompoundType;
 - (int64_t)tableTemplateRowCount;
 - (unint64_t)mode;
 - (void)initializeParameters;
-- (void)runAsynchronouslyWithInput:(id)a3;
-- (void)runFilterWithInput:(id)a3 query:(id)a4;
-- (void)setTableTemplateCompoundType:(int64_t)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
+- (void)runFilterWithInput:(id)input query:(id)query;
+- (void)setTableTemplateCompoundType:(int64_t)type;
 - (void)updateCompoundParameterVisibility;
-- (void)wasAddedToWorkflow:(id)a3;
-- (void)wasRemovedFromWorkflow:(id)a3;
+- (void)wasAddedToWorkflow:(id)workflow;
+- (void)wasRemovedFromWorkflow:(id)workflow;
 @end
 
 @implementation WFContentItemFilterAction
 
 - (int64_t)tableTemplateRowCount
 {
-  v2 = self;
+  selfCopy = self;
   v3 = WFContentItemFilterAction.tableTemplateRowCount.getter();
 
   return v3;
@@ -46,23 +46,23 @@
 
 - (int64_t)tableTemplateCompoundType
 {
-  v2 = self;
+  selfCopy = self;
   v3 = WFContentItemFilterAction.tableTemplateCompoundType.getter();
 
   return v3;
 }
 
-- (void)setTableTemplateCompoundType:(int64_t)a3
+- (void)setTableTemplateCompoundType:(int64_t)type
 {
-  v4 = self;
-  WFContentItemFilterAction.tableTemplateCompoundType.setter(a3);
+  selfCopy = self;
+  WFContentItemFilterAction.tableTemplateCompoundType.setter(type);
 }
 
-- (id)swift_rowForContentPropertyName:(id)a3
+- (id)swift_rowForContentPropertyName:(id)name
 {
   v4 = sub_1CA94C3A8();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   v9 = WFContentItemFilterAction.row(forContentPropertyName:)(v8);
@@ -72,22 +72,22 @@
 
 - (WFContentPredicate)contentPredicate
 {
-  v2 = self;
+  selfCopy = self;
   v3 = WFContentItemFilterAction.contentPredicate.getter();
 
   return v3;
 }
 
-- (BOOL)canHandleInputOfContentClasses:(id)a3 withSupportedClasses:(id)a4
+- (BOOL)canHandleInputOfContentClasses:(id)classes withSupportedClasses:(id)supportedClasses
 {
   v58 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  classesCopy = classes;
+  supportedClassesCopy = supportedClasses;
   if ([(WFContentItemFilterAction *)self inputRequired])
   {
     v54.receiver = self;
     v54.super_class = WFContentItemFilterAction;
-    v8 = [(WFAction *)&v54 canHandleInputOfContentClasses:v6 withSupportedClasses:v7];
+    v8 = [(WFAction *)&v54 canHandleInputOfContentClasses:classesCopy withSupportedClasses:supportedClassesCopy];
   }
 
   else
@@ -96,13 +96,13 @@
     v53 = 0u;
     v50 = 0u;
     v51 = 0u;
-    v9 = v7;
+    v9 = supportedClassesCopy;
     v36 = [v9 countByEnumeratingWithState:&v50 objects:v57 count:16];
     if (v36)
     {
       v10 = *v51;
-      v40 = v7;
-      v41 = v6;
+      v40 = supportedClassesCopy;
+      v41 = classesCopy;
       v39 = v9;
       v35 = *v51;
       do
@@ -121,7 +121,7 @@
           v47 = 0u;
           v48 = 0u;
           v49 = 0u;
-          v13 = v6;
+          v13 = classesCopy;
           v14 = [v13 countByEnumeratingWithState:&v46 objects:v56 count:16];
           if (v14)
           {
@@ -140,16 +140,16 @@
                 v18 = *(*(&v46 + 1) + 8 * v17);
                 if ([v18 isSubclassOfClass:v12])
                 {
-                  v19 = [(WFAction *)self contentItemClass];
-                  if (v19 != objc_opt_class() || v18 != objc_opt_class() && v18 != objc_opt_class())
+                  contentItemClass = [(WFAction *)self contentItemClass];
+                  if (contentItemClass != objc_opt_class() || v18 != objc_opt_class() && v18 != objc_opt_class())
                   {
                     if ((v20 = [(WFAction *)self contentItemClass], v21 = objc_opt_class(), v22 = [(WFAction *)self contentItemClass], v22 != objc_opt_class()) && v20 != v21 || v18 != objc_opt_class() && v18 != objc_opt_class())
                     {
 LABEL_57:
 
                       v8 = 1;
-                      v7 = v40;
-                      v6 = v41;
+                      supportedClassesCopy = v40;
+                      classesCopy = v41;
                       goto LABEL_58;
                     }
                   }
@@ -157,8 +157,8 @@ LABEL_57:
 
                 else if (v12 == objc_opt_class() && v18 != objc_opt_class() && v18 != objc_opt_class() && v18 != objc_opt_class() && v18 != objc_opt_class() && v18 != objc_opt_class() && v18 != objc_opt_class() && v18 != objc_opt_class() && v18 != objc_opt_class())
                 {
-                  v23 = [(WFAction *)self contentItemClass];
-                  if (v23 != objc_opt_class() || v18 != objc_opt_class() && v18 != objc_opt_class())
+                  contentItemClass2 = [(WFAction *)self contentItemClass];
+                  if (contentItemClass2 != objc_opt_class() || v18 != objc_opt_class() && v18 != objc_opt_class())
                   {
                     if ((v24 = [(WFAction *)self contentItemClass], v25 = objc_opt_class(), v26 = [(WFAction *)self contentItemClass], v26 != objc_opt_class()) && v24 != v25 || v18 != objc_opt_class() && v18 != objc_opt_class())
                     {
@@ -215,8 +215,8 @@ LABEL_57:
           }
 
           v11 = v37 + 1;
-          v7 = v40;
-          v6 = v41;
+          supportedClassesCopy = v40;
+          classesCopy = v41;
           v9 = v39;
           v10 = v35;
         }
@@ -237,18 +237,18 @@ LABEL_58:
   return v8;
 }
 
-- (void)runFilterWithInput:(id)a3 query:(id)a4
+- (void)runFilterWithInput:(id)input query:(id)query
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(WFAction *)self contentItemClass];
-  v9 = [(WFAction *)self contentPermissionRequestor];
+  queryCopy = query;
+  inputCopy = input;
+  contentItemClass = [(WFAction *)self contentItemClass];
+  contentPermissionRequestor = [(WFAction *)self contentPermissionRequestor];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __54__WFContentItemFilterAction_runFilterWithInput_query___block_invoke;
   v10[3] = &unk_1E837E750;
   v10[4] = self;
-  [v7 generateCollectionByEvaluatingQuery:v6 forContentItemClass:v8 permissionRequestor:v9 completionHandler:v10];
+  [inputCopy generateCollectionByEvaluatingQuery:queryCopy forContentItemClass:contentItemClass permissionRequestor:contentPermissionRequestor completionHandler:v10];
 }
 
 void __54__WFContentItemFilterAction_runFilterWithInput_query___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -259,26 +259,26 @@ void __54__WFContentItemFilterAction_runFilterWithInput_query___block_invoke(uin
   [*(a1 + 32) finishRunningWithError:v6];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   if ([(WFContentItemFilterAction *)self mode])
   {
-    v5 = [(WFContentItemFilterAction *)self query];
-    [(WFContentItemFilterAction *)self runFilterWithInput:v4 query:v5];
+    query = [(WFContentItemFilterAction *)self query];
+    [(WFContentItemFilterAction *)self runFilterWithInput:inputCopy query:query];
   }
 
   else
   {
-    v6 = [(WFAction *)self contentItemClass];
-    v7 = [(WFContentItemFilterAction *)self query];
-    v8 = [(WFAction *)self contentPermissionRequestor];
+    contentItemClass = [(WFAction *)self contentItemClass];
+    query2 = [(WFContentItemFilterAction *)self query];
+    contentPermissionRequestor = [(WFAction *)self contentPermissionRequestor];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __56__WFContentItemFilterAction_runAsynchronouslyWithInput___block_invoke;
     v9[3] = &unk_1E837E728;
     v9[4] = self;
-    [(objc_class *)v6 runQuery:v7 withItems:0 permissionRequestor:v8 completionHandler:v9];
+    [(objc_class *)contentItemClass runQuery:query2 withItems:0 permissionRequestor:contentPermissionRequestor completionHandler:v9];
   }
 }
 
@@ -294,13 +294,13 @@ void __56__WFContentItemFilterAction_runAsynchronouslyWithInput___block_invoke(u
 
 - (unint64_t)mode
 {
-  v3 = [(WFContentItemFilterAction *)self inputParameterKey];
-  v4 = [(WFContentItemFilterAction *)self parameterStateForKey:v3];
+  inputParameterKey = [(WFContentItemFilterAction *)self inputParameterKey];
+  v4 = [(WFContentItemFilterAction *)self parameterStateForKey:inputParameterKey];
 
   if ([(objc_class *)[(WFAction *)self contentItemClass] hasLibrary])
   {
-    v5 = [v4 value];
-    v6 = [v5 isEqualToString:@"Library"];
+    value = [v4 value];
+    v6 = [value isEqualToString:@"Library"];
 
     v7 = ~v6 & 1;
   }
@@ -318,14 +318,14 @@ void __56__WFContentItemFilterAction_runAsynchronouslyWithInput___block_invoke(u
   v3 = *MEMORY[0x1E6997040];
   v4 = *(MEMORY[0x1E6997040] + 8);
   v5 = [(WFAction *)self parameterValueForKey:@"WFContentItemLimitNumber" ofClass:objc_opt_class()];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
   v7 = [(WFAction *)self parameterValueForKey:@"WFContentItemLimitEnabled" ofClass:objc_opt_class()];
-  v8 = [v7 BOOLValue];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
-    v9 = v6;
+    v9 = integerValue;
   }
 
   else
@@ -333,7 +333,7 @@ void __56__WFContentItemFilterAction_runAsynchronouslyWithInput___block_invoke(u
     v9 = v4;
   }
 
-  if (v8)
+  if (bOOLValue)
   {
     v10 = 0x7FFFFFFFFFFFFFFFLL;
   }
@@ -357,14 +357,14 @@ void __56__WFContentItemFilterAction_runAsynchronouslyWithInput___block_invoke(u
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E6996DA0] randomSortDescriptor];
+    randomSortDescriptor = [MEMORY[0x1E6996DA0] randomSortDescriptor];
   }
 
   else
   {
-    v7 = [(objc_class *)[(WFAction *)self contentItemClass] allProperties];
+    allProperties = [(objc_class *)[(WFAction *)self contentItemClass] allProperties];
     v8 = [(WFAction *)self parameterValueForKey:@"WFContentItemSortProperty" ofClass:objc_opt_class()];
-    v9 = [v7 objectMatchingKey:@"name" value:v8];
+    v9 = [allProperties objectMatchingKey:@"name" value:v8];
 
     v10 = WFLocalizedContentPropertyPossibleValueMarker(@"Z to A");
     v25[0] = v10;
@@ -383,50 +383,50 @@ void __56__WFContentItemFilterAction_runAsynchronouslyWithInput___block_invoke(u
 
     if (v9)
     {
-      v6 = [MEMORY[0x1E6996DA0] sortDescriptorWithProperty:v9 ascending:v17 ^ 1u comparator:0];
+      randomSortDescriptor = [MEMORY[0x1E6996DA0] sortDescriptorWithProperty:v9 ascending:v17 ^ 1u comparator:0];
     }
 
     else
     {
-      v6 = 0;
+      randomSortDescriptor = 0;
     }
   }
 
-  v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:{v6, 0}];
+  v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:{randomSortDescriptor, 0}];
 
-  v19 = [(WFContentItemFilterAction *)self contentPredicate];
-  v20 = [objc_alloc(MEMORY[0x1E6996D98]) initWithPredicate:v19];
+  contentPredicate = [(WFContentItemFilterAction *)self contentPredicate];
+  v20 = [objc_alloc(MEMORY[0x1E6996D98]) initWithPredicate:contentPredicate];
   [v20 setSortDescriptors:v18];
-  v21 = [(WFContentItemFilterAction *)self slice];
-  [v20 setSlice:{v21, v22}];
+  slice = [(WFContentItemFilterAction *)self slice];
+  [v20 setSlice:{slice, v22}];
 
   v23 = *MEMORY[0x1E69E9840];
 
   return v20;
 }
 
-- (id)enumeration:(id)a3 localizedLabelForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration localizedLabelForPossibleState:(id)state
 {
-  v4 = [a4 value];
-  v5 = WFLocalizedContentPropertyPossibleValue(v4);
+  value = [state value];
+  v5 = WFLocalizedContentPropertyPossibleValue(value);
 
   return v5;
 }
 
-- (id)possibleStatesForEnumeration:(id)a3
+- (id)possibleStatesForEnumeration:(id)enumeration
 {
   v18[2] = *MEMORY[0x1E69E9840];
   v4 = [(WFContentItemFilterAction *)self parameterStateForKey:@"WFContentItemSortProperty"];
-  v5 = [v4 value];
+  value = [v4 value];
 
-  if (!v5)
+  if (!value)
   {
     v9 = 0;
     goto LABEL_10;
   }
 
-  v6 = [(objc_class *)[(WFAction *)self contentItemClass] allProperties];
-  v7 = [v6 objectMatchingKey:@"name" value:v5];
+  allProperties = [(objc_class *)[(WFAction *)self contentItemClass] allProperties];
+  v7 = [allProperties objectMatchingKey:@"name" value:value];
   if (v7)
   {
     v8 = v7;
@@ -440,8 +440,8 @@ LABEL_6:
 
     if (([v8 hasPossibleValues] & 1) == 0)
     {
-      v14 = [v8 propertyClasses];
-      v15 = [v14 if_flatMap:&__block_literal_global_469_67645];
+      propertyClasses = [v8 propertyClasses];
+      v15 = [propertyClasses if_flatMap:&__block_literal_global_469_67645];
 
       v13 = v15;
     }
@@ -451,8 +451,8 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  v10 = [(objc_class *)[(WFAction *)self contentItemClass] allProperties];
-  v8 = [v10 objectMatchingKey:@"displayName" value:v5];
+  allProperties2 = [(objc_class *)[(WFAction *)self contentItemClass] allProperties];
+  v8 = [allProperties2 objectMatchingKey:@"displayName" value:value];
 
   if (v8)
   {
@@ -531,13 +531,13 @@ id __58__WFContentItemFilterAction_possibleStatesForEnumeration___block_invoke(u
 - (id)parameterDefinitions
 {
   v124[6] = *MEMORY[0x1E69E9840];
-  v3 = [(WFContentItemFilterAction *)self sortablePropertyNames];
-  v4 = [(WFContentItemFilterAction *)self sortablePropertyDisplayNames];
-  v5 = [(objc_class *)[(WFAction *)self contentItemClass] localizedTypeDescription];
-  v6 = [(objc_class *)[(WFAction *)self contentItemClass] localizedPluralTypeDescription];
-  v65 = [v5 isEqualToString:v6];
+  sortablePropertyNames = [(WFContentItemFilterAction *)self sortablePropertyNames];
+  sortablePropertyDisplayNames = [(WFContentItemFilterAction *)self sortablePropertyDisplayNames];
+  localizedTypeDescription = [(objc_class *)[(WFAction *)self contentItemClass] localizedTypeDescription];
+  localizedPluralTypeDescription = [(objc_class *)[(WFAction *)self contentItemClass] localizedPluralTypeDescription];
+  v65 = [localizedTypeDescription isEqualToString:localizedPluralTypeDescription];
 
-  v76 = [v3 count] == 0;
+  v76 = [sortablePropertyNames count] == 0;
   v83 = MEMORY[0x1E695DF70];
   v7 = [WFParameterDefinition alloc];
   v122[0] = @"Class";
@@ -550,8 +550,8 @@ id __58__WFContentItemFilterAction_possibleStatesForEnumeration___block_invoke(u
   v93 = NSStringFromClass([(WFAction *)self contentItemClass]);
   v123[2] = v93;
   v122[3] = @"DisallowedVariableTypes";
-  v92 = [(WFContentItemFilterAction *)self disallowedVariableTypesForTableTemplate];
-  v123[3] = v92;
+  disallowedVariableTypesForTableTemplate = [(WFContentItemFilterAction *)self disallowedVariableTypesForTableTemplate];
+  v123[3] = disallowedVariableTypesForTableTemplate;
   v91 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v123 forKeys:v122 count:4];
   v90 = [(WFParameterDefinition *)v7 initWithDictionary:?];
   v124[0] = v90;
@@ -580,14 +580,14 @@ id __58__WFContentItemFilterAction_possibleStatesForEnumeration___block_invoke(u
   v120[6] = @"AlwaysShowsButton";
   v120[7] = @"Items";
   WFLocalizedContentPropertyPossibleValueMarker(@"Random");
-  v82 = v96 = v3;
-  v81 = [v3 arrayByAddingObject:?];
+  v82 = v96 = sortablePropertyNames;
+  v81 = [sortablePropertyNames arrayByAddingObject:?];
   v121[7] = v81;
   v120[8] = @"ItemDisplayNames";
   v80 = WFLocalizedContentPropertyPossibleValueMarker(@"Random");
   WFLocalizedContentPropertyPossibleValue(v80);
-  v79 = v95 = v4;
-  v78 = [v4 arrayByAddingObject:?];
+  v79 = v95 = sortablePropertyDisplayNames;
+  v78 = [sortablePropertyDisplayNames arrayByAddingObject:?];
   v121[8] = v78;
   v120[9] = @"Hidden";
   v77 = [MEMORY[0x1E696AD98] numberWithBool:v76];
@@ -656,16 +656,16 @@ id __58__WFContentItemFilterAction_possibleStatesForEnumeration___block_invoke(u
     v20 = [@"%d Items" stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
     v21 = [v18 stringWithFormat:@"%@ (Pluralization)", v20];
 
-    v22 = WFLocalizedStringResourceWithKey(v21, @"%d Items");
+    countDescription = WFLocalizedStringResourceWithKey(v21, @"%d Items");
   }
 
   else
   {
-    v22 = [(objc_class *)[(WFAction *)self contentItemClass] countDescription];
+    countDescription = [(objc_class *)[(WFAction *)self contentItemClass] countDescription];
   }
 
-  v66 = v22;
-  v113[4] = v22;
+  v66 = countDescription;
+  v113[4] = countDescription;
   v112[5] = @"StepperPrefix";
   v57 = WFLocalizedStringResourceWithKey(@"Get (ContentItemFilter)", @"Get");
   v113[5] = v57;
@@ -693,10 +693,10 @@ id __58__WFContentItemFilterAction_possibleStatesForEnumeration___block_invoke(u
   v108[1] = @"WFCompoundType";
   v107[1] = @"Key";
   v107[2] = @"Items";
-  v51 = [&unk_1F4A9AE70 stringValue];
-  v106[0] = v51;
-  v50 = [&unk_1F4A9AE88 stringValue];
-  v106[1] = v50;
+  stringValue = [&unk_1F4A9AE70 stringValue];
+  v106[0] = stringValue;
+  stringValue2 = [&unk_1F4A9AE88 stringValue];
+  v106[1] = stringValue2;
   v49 = [MEMORY[0x1E695DEC8] arrayWithObjects:v106 count:2];
   v108[2] = v49;
   v107[3] = @"ItemDisplayNames";
@@ -707,21 +707,21 @@ id __58__WFContentItemFilterAction_possibleStatesForEnumeration___block_invoke(u
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v105 count:2];
   v108[3] = v27;
   v107[4] = @"DefaultValue";
-  v28 = [&unk_1F4A9AE70 stringValue];
-  v108[4] = v28;
+  stringValue3 = [&unk_1F4A9AE70 stringValue];
+  v108[4] = stringValue3;
   v107[5] = @"DisallowedVariableTypes";
   v29 = +[WFParameter allInsertableVariableTypes];
-  v30 = [v29 allObjects];
-  v108[5] = v30;
+  allObjects = [v29 allObjects];
+  v108[5] = allObjects;
   v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v108 forKeys:v107 count:6];
   v32 = [(WFParameterDefinition *)v23 initWithDictionary:v31];
   v124[5] = v32;
   v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v124 count:6];
   v84 = [v83 arrayWithArray:v33];
 
-  LODWORD(v30) = [(objc_class *)[(WFAction *)self contentItemClass] hasLibrary];
+  LODWORD(allObjects) = [(objc_class *)[(WFAction *)self contentItemClass] hasLibrary];
   v34 = [WFParameterDefinition alloc];
-  if (v30)
+  if (allObjects)
   {
     v103[0] = @"Class";
     v35 = objc_opt_class();
@@ -789,9 +789,9 @@ id __58__WFContentItemFilterAction_possibleStatesForEnumeration___block_invoke(u
 
 - (id)sortablePropertyDisplayNames
 {
-  v2 = [(objc_class *)[(WFAction *)self contentItemClass] allProperties];
+  allProperties = [(objc_class *)[(WFAction *)self contentItemClass] allProperties];
   v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"sortable = YES"];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [allProperties filteredArrayUsingPredicate:v3];
   v5 = [v4 if_map:&__block_literal_global_67799];
 
   return v5;
@@ -799,24 +799,24 @@ id __58__WFContentItemFilterAction_possibleStatesForEnumeration___block_invoke(u
 
 - (id)sortablePropertyNames
 {
-  v2 = [(objc_class *)[(WFAction *)self contentItemClass] allProperties];
+  allProperties = [(objc_class *)[(WFAction *)self contentItemClass] allProperties];
   v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"sortable = YES"];
-  v4 = [v2 filteredArrayUsingPredicate:v3];
+  v4 = [allProperties filteredArrayUsingPredicate:v3];
   v5 = [v4 valueForKey:@"name"];
 
   return v5;
 }
 
-- (BOOL)setParameterState:(id)a3 forKey:(id)a4
+- (BOOL)setParameterState:(id)state forKey:(id)key
 {
   v32[5] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (![v7 isEqualToString:@"WFCompoundType"] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  stateCopy = state;
+  keyCopy = key;
+  if (![keyCopy isEqualToString:@"WFCompoundType"] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v31.receiver = self;
     v31.super_class = WFContentItemFilterAction;
-    if (![(WFAction *)&v31 setParameterState:v6 forKey:v7])
+    if (![(WFAction *)&v31 setParameterState:stateCopy forKey:keyCopy])
     {
       goto LABEL_8;
     }
@@ -827,15 +827,15 @@ id __58__WFContentItemFilterAction_possibleStatesForEnumeration___block_invoke(u
     block[3] = &unk_1E837FA70;
     block[4] = self;
     dispatch_async(MEMORY[0x1E69E96A0], block);
-    v8 = [(WFContentItemFilterAction *)self parameterStateForKey:@"WFContentItemSortOrder"];
+    value3 = [(WFContentItemFilterAction *)self parameterStateForKey:@"WFContentItemSortOrder"];
     v10 = [(WFContentItemFilterAction *)self parameterStateForKey:@"WFContentItemSortProperty"];
     v11 = [(WFAction *)self parameterForKey:@"WFContentItemSortOrder"];
     v12 = v11;
     if (v10)
     {
-      v13 = [v10 value];
+      value = [v10 value];
       v14 = WFLocalizedContentPropertyPossibleValueMarker(@"Random");
-      [v12 setHidden:{objc_msgSend(v13, "isEqualToString:", v14)}];
+      [v12 setHidden:{objc_msgSend(value, "isEqualToString:", v14)}];
     }
 
     else
@@ -844,10 +844,10 @@ id __58__WFContentItemFilterAction_possibleStatesForEnumeration___block_invoke(u
     }
 
     [v12 reloadPossibleStates];
-    if ([v7 isEqualToString:@"WFContentItemSortProperty"])
+    if ([keyCopy isEqualToString:@"WFContentItemSortProperty"])
     {
-      v16 = [v12 possibleStates];
-      v17 = [v16 containsObject:v8];
+      possibleStates = [v12 possibleStates];
+      v17 = [possibleStates containsObject:value3];
 
       if ((v17 & 1) == 0)
       {
@@ -862,11 +862,11 @@ id __58__WFContentItemFilterAction_possibleStatesForEnumeration___block_invoke(u
         v19 = WFLocalizedContentPropertyPossibleValueMarker(@"Descending");
         v32[4] = v19;
         v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:5];
-        v21 = [v8 value];
-        v26 = [v20 containsObject:v21];
+        value2 = [value3 value];
+        v26 = [v20 containsObject:value2];
 
-        v22 = [v12 possibleStates];
-        v23 = [v22 objectAtIndexedSubscript:v26];
+        possibleStates2 = [v12 possibleStates];
+        v23 = [possibleStates2 objectAtIndexedSubscript:v26];
         [(WFContentItemFilterAction *)self setParameterState:v23 forKey:@"WFContentItemSortOrder"];
       }
     }
@@ -878,11 +878,11 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v8 = [v6 value];
-  v9 = [v8 integerValue];
-  if ([(WFContentItemFilterAction *)self tableTemplateCompoundType]!= v9)
+  value3 = [stateCopy value];
+  integerValue = [value3 integerValue];
+  if ([(WFContentItemFilterAction *)self tableTemplateCompoundType]!= integerValue)
   {
-    [(WFContentItemFilterAction *)self setTableTemplateCompoundType:v9];
+    [(WFContentItemFilterAction *)self setTableTemplateCompoundType:integerValue];
     goto LABEL_15;
   }
 
@@ -894,32 +894,32 @@ LABEL_16:
   return v15;
 }
 
-- (id)parameterStateForKey:(id)a3
+- (id)parameterStateForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"WFCompoundType"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"WFCompoundType"])
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInteger:{-[WFContentItemFilterAction tableTemplateCompoundType](self, "tableTemplateCompoundType")}];
-    v6 = [v5 stringValue];
+    stringValue = [v5 stringValue];
 
-    v7 = [(WFVariableSubstitutableParameterState *)[WFStringSubstitutableState alloc] initWithValue:v6];
+    v7 = [(WFVariableSubstitutableParameterState *)[WFStringSubstitutableState alloc] initWithValue:stringValue];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = WFContentItemFilterAction;
-    v7 = [(WFAction *)&v9 parameterStateForKey:v4];
+    v7 = [(WFAction *)&v9 parameterStateForKey:keyCopy];
   }
 
   return v7;
 }
 
-- (void)wasRemovedFromWorkflow:(id)a3
+- (void)wasRemovedFromWorkflow:(id)workflow
 {
   v5.receiver = self;
   v5.super_class = WFContentItemFilterAction;
-  [(WFAction *)&v5 wasRemovedFromWorkflow:a3];
+  [(WFAction *)&v5 wasRemovedFromWorkflow:workflow];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__WFContentItemFilterAction_wasRemovedFromWorkflow___block_invoke;
@@ -928,11 +928,11 @@ LABEL_16:
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)wasAddedToWorkflow:(id)a3
+- (void)wasAddedToWorkflow:(id)workflow
 {
   v5.receiver = self;
   v5.super_class = WFContentItemFilterAction;
-  [(WFAction *)&v5 wasAddedToWorkflow:a3];
+  [(WFAction *)&v5 wasAddedToWorkflow:workflow];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __48__WFContentItemFilterAction_wasAddedToWorkflow___block_invoke;
@@ -957,9 +957,9 @@ LABEL_16:
   [v4 setDataSource:self];
   if (v3)
   {
-    v5 = [v3 value];
+    value = [v3 value];
     v6 = WFLocalizedContentPropertyPossibleValueMarker(@"Random");
-    [v4 setHidden:{objc_msgSend(v5, "isEqualToString:", v6)}];
+    [v4 setHidden:{objc_msgSend(value, "isEqualToString:", v6)}];
   }
 
   else
@@ -969,8 +969,8 @@ LABEL_16:
 
   if ([(objc_class *)[(WFAction *)self contentItemClass] hasLibrary])
   {
-    v7 = [(WFContentItemFilterAction *)self inputParameterKey];
-    v8 = [(WFAction *)self parameterForKey:v7];
+    inputParameterKey = [(WFContentItemFilterAction *)self inputParameterKey];
+    v8 = [(WFAction *)self parameterForKey:inputParameterKey];
 
     [v8 setContentItemClass:{-[WFAction contentItemClass](self, "contentItemClass")}];
   }
@@ -978,25 +978,25 @@ LABEL_16:
   [(WFContentItemFilterAction *)self updateCompoundParameterVisibility];
 }
 
-- (id)localizedDefaultOutputNameWithContext:(id)a3
+- (id)localizedDefaultOutputNameWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(objc_class *)[(WFAction *)self contentItemClass] localizedPluralFilterDescriptionWithContext:v4];
+  contextCopy = context;
+  v5 = [(objc_class *)[(WFAction *)self contentItemClass] localizedPluralFilterDescriptionWithContext:contextCopy];
 
   return v5;
 }
 
-- (id)localizedKeywordsWithContext:(id)a3
+- (id)localizedKeywordsWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = WFLocalizedStringResourceWithKey(@"filter|sort|find|search|library", @"filter|sort|find|search|library");
-  v6 = [v4 localize:v5];
+  v6 = [contextCopy localize:v5];
   v7 = [v6 componentsSeparatedByString:@"|"];
 
   if ([(objc_class *)[(WFAction *)self contentItemClass] hasLibrary])
   {
     v8 = WFLocalizedStringResourceWithKey(@"get (Find/Filter search keyword)", @"get");
-    v9 = [v4 localize:v8];
+    v9 = [contextCopy localize:v8];
     v10 = [v7 arrayByAddingObject:v9];
 
     v7 = v10;
@@ -1005,10 +1005,10 @@ LABEL_16:
   return v7;
 }
 
-- (id)localizedDescriptionResultWithContext:(id)a3
+- (id)localizedDescriptionResultWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFContentItemFilterAction *)self localizedPluralDescriptionWithContext:v4];
+  contextCopy = context;
+  v5 = [(WFContentItemFilterAction *)self localizedPluralDescriptionWithContext:contextCopy];
   if ([(WFContentItemFilterAction *)self tableTemplateRowCount]< 2)
   {
     v7 = MEMORY[0x1E696AEC0];
@@ -1018,9 +1018,9 @@ LABEL_16:
 
   else
   {
-    v6 = [(WFContentItemFilterAction *)self tableTemplateCompoundType];
+    tableTemplateCompoundType = [(WFContentItemFilterAction *)self tableTemplateCompoundType];
     v7 = MEMORY[0x1E696AEC0];
-    if (v6)
+    if (tableTemplateCompoundType)
     {
       v8 = @"WFContentItemFilterAction - All description result";
       v9 = @"The %@ that match all of the criteria.";
@@ -1034,19 +1034,19 @@ LABEL_16:
   }
 
   v10 = WFLocalizedStringResourceWithKey(v8, v9);
-  v11 = [v4 localize:v10];
+  v11 = [contextCopy localize:v10];
   v12 = [v7 localizedStringWithFormat:v11, v5];
 
   return v12;
 }
 
-- (id)localizedDescriptionInputWithContext:(id)a3
+- (id)localizedDescriptionInputWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFContentItemFilterAction *)self localizedPluralDescriptionWithContext:v4];
-  v6 = [(objc_class *)[(WFAction *)self contentItemClass] hasLibrary];
+  contextCopy = context;
+  v5 = [(WFContentItemFilterAction *)self localizedPluralDescriptionWithContext:contextCopy];
+  hasLibrary = [(objc_class *)[(WFAction *)self contentItemClass] hasLibrary];
   v7 = MEMORY[0x1E696AEC0];
-  if (v6)
+  if (hasLibrary)
   {
     v8 = @"WFContentItemFilterAction - Library description input";
     v9 = @"If provided, the action will search through the %@ passed as input.";
@@ -1059,29 +1059,29 @@ LABEL_16:
   }
 
   v10 = WFLocalizedStringResourceWithKey(v8, v9);
-  v11 = [v4 localize:v10];
+  v11 = [contextCopy localize:v10];
 
   v12 = [v7 localizedStringWithFormat:v11, v5];
 
   return v12;
 }
 
-- (id)localizedDescriptionSummaryWithContext:(id)a3
+- (id)localizedDescriptionSummaryWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFContentItemFilterAction *)self localizedPluralDescriptionWithContext:v4];
-  v6 = [(objc_class *)[(WFAction *)self contentItemClass] hasLibrary];
+  contextCopy = context;
+  v5 = [(WFContentItemFilterAction *)self localizedPluralDescriptionWithContext:contextCopy];
+  hasLibrary = [(objc_class *)[(WFAction *)self contentItemClass] hasLibrary];
   v7 = MEMORY[0x1E696AEC0];
-  if (v6)
+  if (hasLibrary)
   {
     v8 = WFLocalizedStringResourceWithKey(@"WFContentItemFilterAction - Library description summary", @"Searches for the %@ in your library that match the given criteria.");
-    v9 = [v4 localize:v8];
+    v9 = [contextCopy localize:v8];
   }
 
   else
   {
     v8 = WFLocalizedStringResourceWithKey(@"WFContentItemFilterAction - Description summary", @"Given a list of %@, this action returns the %@ that match the given criteria.");
-    v9 = [v4 localize:v8];
+    v9 = [contextCopy localize:v8];
 
     v12 = v5;
   }
@@ -1091,43 +1091,43 @@ LABEL_16:
   return v10;
 }
 
-- (id)localizedPluralDescriptionWithContext:(id)a3
+- (id)localizedPluralDescriptionWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(objc_class *)[(WFAction *)self contentItemClass] localizedPluralFilterDescriptionWithContext:v4];
+  contextCopy = context;
+  v5 = [(objc_class *)[(WFAction *)self contentItemClass] localizedPluralFilterDescriptionWithContext:contextCopy];
 
   if ([(objc_class *)[(WFAction *)self contentItemClass] canLowercaseTypeDescription])
   {
-    v6 = [v5 localizedLowercaseString];
+    localizedLowercaseString = [v5 localizedLowercaseString];
 
-    v5 = v6;
+    v5 = localizedLowercaseString;
   }
 
   return v5;
 }
 
-- (id)createStateForParameter:(id)a3 fromSerializedRepresentation:(id)a4
+- (id)createStateForParameter:(id)parameter fromSerializedRepresentation:(id)representation
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 key];
+  parameterCopy = parameter;
+  representationCopy = representation;
+  v8 = [parameterCopy key];
   v9 = [v8 isEqualToString:@"WFContentItemSortOrder"];
 
   if (v9)
   {
-    v10 = WFLocalizedContentPropertyPossibleValueMarker(v7);
+    v10 = WFLocalizedContentPropertyPossibleValueMarker(representationCopy);
 
     v14.receiver = self;
     v14.super_class = WFContentItemFilterAction;
-    v11 = [(WFAction *)&v14 createStateForParameter:v6 fromSerializedRepresentation:v10];
-    v7 = v10;
+    v11 = [(WFAction *)&v14 createStateForParameter:parameterCopy fromSerializedRepresentation:v10];
+    representationCopy = v10;
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = WFContentItemFilterAction;
-    v11 = [(WFAction *)&v13 createStateForParameter:v6 fromSerializedRepresentation:v7];
+    v11 = [(WFAction *)&v13 createStateForParameter:parameterCopy fromSerializedRepresentation:representationCopy];
   }
 
   return v11;
@@ -1169,8 +1169,8 @@ LABEL_16:
 
 - (id)parameterSummary
 {
-  v3 = [(WFAction *)self workflow];
-  if (v3)
+  workflow = [(WFAction *)self workflow];
+  if (workflow)
   {
     v4 = [(WFContentItemFilterAction *)self tableTemplateRowCount]> 0;
   }
@@ -1182,16 +1182,16 @@ LABEL_16:
 
   if ([(objc_class *)[(WFAction *)self contentItemClass] hasLibrary])
   {
-    v5 = [(WFContentItemFilterAction *)self inputParameterKey];
-    v6 = [(WFContentItemFilterAction *)self parameterStateForKey:v5];
+    inputParameterKey = [(WFContentItemFilterAction *)self inputParameterKey];
+    v6 = [(WFContentItemFilterAction *)self parameterStateForKey:inputParameterKey];
 
-    v7 = [v6 variable];
+    variable = [v6 variable];
 
     if (v4)
     {
       if ([(WFContentItemFilterAction *)self hasMultipleFilterConditions])
       {
-        if (v7)
+        if (variable)
         {
           [(WFContentItemFilterAction *)self localizedParameterSummaryStringForFilterWithMultipleFilterConditions];
         }
@@ -1202,7 +1202,7 @@ LABEL_16:
         }
       }
 
-      else if (v7)
+      else if (variable)
       {
         [(WFContentItemFilterAction *)self localizedParameterSummaryStringForFilterWithFilterConditions];
       }
@@ -1213,7 +1213,7 @@ LABEL_16:
       }
     }
 
-    else if (v7)
+    else if (variable)
     {
       [(WFContentItemFilterAction *)self localizedParameterSummaryStringForFilter];
     }
@@ -1239,15 +1239,15 @@ LABEL_16:
       {
         [(WFContentItemFilterAction *)self localizedParameterSummaryStringForFilterWithFilterConditions];
       }
-      v8 = ;
+      localizedParameterSummaryStringForFilter = ;
     }
 
     else
     {
-      v8 = [(WFContentItemFilterAction *)self localizedParameterSummaryStringForFilter];
+      localizedParameterSummaryStringForFilter = [(WFContentItemFilterAction *)self localizedParameterSummaryStringForFilter];
     }
 
-    v10 = v8;
+    v10 = localizedParameterSummaryStringForFilter;
   }
 
   v11 = [[WFActionParameterSummary alloc] initWithString:v10];
@@ -1255,23 +1255,23 @@ LABEL_16:
   return v11;
 }
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v14.receiver = self;
   v14.super_class = WFContentItemFilterAction;
-  v5 = [(WFAction *)&v14 localizedNameWithContext:v4];
-  v6 = [(WFAction *)self workflow];
-  if (v6)
+  v5 = [(WFAction *)&v14 localizedNameWithContext:contextCopy];
+  workflow = [(WFAction *)self workflow];
+  if (workflow)
   {
-    v7 = v6;
-    v8 = [(WFContentItemFilterAction *)self tableTemplateRowCount];
+    v7 = workflow;
+    tableTemplateRowCount = [(WFContentItemFilterAction *)self tableTemplateRowCount];
 
-    if (v8 >= 1)
+    if (tableTemplateRowCount >= 1)
     {
       v9 = MEMORY[0x1E696AEC0];
       v10 = WFLocalizedStringResourceWithKey(@"%@ Where", @"%@ Where");
-      v11 = [v4 localize:v10];
+      v11 = [contextCopy localize:v10];
       v12 = [v9 localizedStringWithFormat:v11, v5];
 
       v5 = v12;

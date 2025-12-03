@@ -3,22 +3,22 @@
 - (MPSCNNBinaryConvolution)initWithDevice:(id)device;
 - (MPSCNNBinaryConvolution)initWithDevice:(id)device convolutionData:(id)convolutionData outputBiasTerms:(const float *)outputBiasTerms outputScaleTerms:(const float *)outputScaleTerms inputBiasTerms:(const float *)inputBiasTerms inputScaleTerms:(const float *)inputScaleTerms type:(MPSCNNBinaryConvolutionType)type flags:(MPSCNNBinaryConvolutionFlags)flags;
 - (MPSCNNBinaryConvolution)initWithDevice:(id)device convolutionData:(id)convolutionData scaleValue:(float)scaleValue type:(MPSCNNBinaryConvolutionType)type flags:(MPSCNNBinaryConvolutionFlags)flags;
-- (MPSCNNBinaryConvolution)initWithDeviceImpl:(id)a3 convolutionDescriptor:(id)a4 kernelWeights:(const unsigned int *)a5 biasTerms:(const float *)a6 scaleValue:(float)a7 type:(unint64_t)a8 flags:(unint64_t)a9;
-- (MPSCNNBinaryConvolution)initWithDeviceImpl:(id)a3 convolutionDescriptor:(id)a4 kernelWeights:(const unsigned int *)a5 outputBiasTerms:(const float *)a6 outputScaleTerms:(const float *)a7 inputBiasTerms:(const float *)a8 inputScaleTerms:(const float *)a9 type:(unint64_t)a10 flags:(unint64_t)a11;
-- (id)copyBuffer:(id)a3 device:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (MPSCNNBinaryConvolution)initWithDeviceImpl:(id)impl convolutionDescriptor:(id)descriptor kernelWeights:(const unsigned int *)weights biasTerms:(const float *)terms scaleValue:(float)value type:(unint64_t)type flags:(unint64_t)flags;
+- (MPSCNNBinaryConvolution)initWithDeviceImpl:(id)impl convolutionDescriptor:(id)descriptor kernelWeights:(const unsigned int *)weights outputBiasTerms:(const float *)terms outputScaleTerms:(const float *)scaleTerms inputBiasTerms:(const float *)biasTerms inputScaleTerms:(const float *)inputScaleTerms type:(unint64_t)self0 flags:(unint64_t)self1;
+- (id)copyBuffer:(id)buffer device:(id)device;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 sourceOffset:(id *)a6;
-- (void)createBuffersFromkernelWeights:(const unsigned int *)a3 inputBiasTerms:(const float *)a4 inputScaleTerms:(const float *)a5 outputBiasTerms:(const float *)a6 outputScaleTerms:(const float *)a7 useHalfPrecision:(BOOL)a8;
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method sourceOffset:(id *)offset;
+- (void)createBuffersFromkernelWeights:(const unsigned int *)weights inputBiasTerms:(const float *)terms inputScaleTerms:(const float *)scaleTerms outputBiasTerms:(const float *)biasTerms outputScaleTerms:(const float *)outputScaleTerms useHalfPrecision:(BOOL)precision;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSCNNBinaryConvolution
 
-- (void)createBuffersFromkernelWeights:(const unsigned int *)a3 inputBiasTerms:(const float *)a4 inputScaleTerms:(const float *)a5 outputBiasTerms:(const float *)a6 outputScaleTerms:(const float *)a7 useHalfPrecision:(BOOL)a8
+- (void)createBuffersFromkernelWeights:(const unsigned int *)weights inputBiasTerms:(const float *)terms inputScaleTerms:(const float *)scaleTerms outputBiasTerms:(const float *)biasTerms outputScaleTerms:(const float *)outputScaleTerms useHalfPrecision:(BOOL)precision
 {
-  v121 = a8;
+  precisionCopy = precision;
   v12 = *(&self->super.super.super.isa + *MEMORY[0x277CD7350]);
   v13 = v12[2];
   v14 = ((self->_inputFeatureChannels + 31) >> 5) * self->super._kernelWidth * self->super._kernelHeight;
@@ -30,8 +30,8 @@
   self->_weights = v23;
   if (v23)
   {
-    v118 = a6;
-    v31 = a5;
+    biasTermsCopy = biasTerms;
+    scaleTermsCopy = scaleTerms;
     v32 = objc_msgSend_contents(v23, v24, v25, v26, v27, v28, v29, v30);
     if (self->_outputFeatureChannels)
     {
@@ -40,9 +40,9 @@
       v35 = 4 * v14;
       do
       {
-        memcpy((v33 + 4 * self->_filterStride * v34++), a3, v35);
+        memcpy((v33 + 4 * self->_filterStride * v34++), weights, v35);
         outputFeatureChannels = self->_outputFeatureChannels;
-        a3 = (a3 + v35);
+        weights = (weights + v35);
       }
 
       while (v34 < outputFeatureChannels);
@@ -55,11 +55,11 @@
 
     MPSDevice = MPSDevice::GetMPSDevice();
     v38 = 0;
-    v39 = v31;
-    if (v118 && MPSDevice)
+    v39 = scaleTermsCopy;
+    if (biasTermsCopy && MPSDevice)
     {
       v40 = 1;
-      if (!v121)
+      if (!precisionCopy)
       {
         v40 = 2;
       }
@@ -71,14 +71,14 @@
       if (v48)
       {
         v56 = objc_msgSend_contents(v48, v49, v50, v51, v52, v53, v54, v55);
-        if (v121)
+        if (precisionCopy)
         {
           MPSConvertFloatToHalf();
         }
 
         else
         {
-          memcpy(v56, v118, 4 * outputFeatureChannels);
+          memcpy(v56, biasTermsCopy, 4 * outputFeatureChannels);
         }
       }
     }
@@ -87,13 +87,13 @@
     v57 = self->_outputFeatureChannels;
     v58 = MPSDevice::GetMPSDevice();
     v59 = 0;
-    if (a7)
+    if (outputScaleTerms)
     {
-      v60 = a4;
+      termsCopy2 = terms;
       if (v58)
       {
         v61 = 1;
-        if (!v121)
+        if (!precisionCopy)
         {
           v61 = 2;
         }
@@ -105,14 +105,14 @@
         if (v69)
         {
           v77 = objc_msgSend_contents(v69, v70, v71, v72, v73, v74, v75, v76);
-          if (v121)
+          if (precisionCopy)
           {
             MPSConvertFloatToHalf();
           }
 
           else
           {
-            memcpy(v77, a7, 4 * v57);
+            memcpy(v77, outputScaleTerms, 4 * v57);
           }
         }
       }
@@ -120,17 +120,17 @@
 
     else
     {
-      v60 = a4;
+      termsCopy2 = terms;
     }
 
     self->_outputScale = v59;
     inputFeatureChannels = self->_inputFeatureChannels;
     v79 = MPSDevice::GetMPSDevice();
     v80 = 0;
-    if (v60 && v79)
+    if (termsCopy2 && v79)
     {
       v81 = 1;
-      if (!v121)
+      if (!precisionCopy)
       {
         v81 = 2;
       }
@@ -142,14 +142,14 @@
       if (v89)
       {
         v97 = objc_msgSend_contents(v89, v90, v91, v92, v93, v94, v95, v96);
-        if (v121)
+        if (precisionCopy)
         {
           MPSConvertFloatToHalf();
         }
 
         else
         {
-          memcpy(v97, v60, 4 * inputFeatureChannels);
+          memcpy(v97, termsCopy2, 4 * inputFeatureChannels);
         }
       }
     }
@@ -161,7 +161,7 @@
     if (v39 && v99)
     {
       v101 = 1;
-      if (!v121)
+      if (!precisionCopy)
       {
         v101 = 2;
       }
@@ -173,7 +173,7 @@
       if (v109)
       {
         v117 = objc_msgSend_contents(v109, v110, v111, v112, v113, v114, v115, v116);
-        if (v121)
+        if (precisionCopy)
         {
           MPSConvertFloatToHalf();
         }
@@ -201,12 +201,12 @@
   return 0;
 }
 
-- (MPSCNNBinaryConvolution)initWithDeviceImpl:(id)a3 convolutionDescriptor:(id)a4 kernelWeights:(const unsigned int *)a5 biasTerms:(const float *)a6 scaleValue:(float)a7 type:(unint64_t)a8 flags:(unint64_t)a9
+- (MPSCNNBinaryConvolution)initWithDeviceImpl:(id)impl convolutionDescriptor:(id)descriptor kernelWeights:(const unsigned int *)weights biasTerms:(const float *)terms scaleValue:(float)value type:(unint64_t)type flags:(unint64_t)flags
 {
-  result = objc_msgSend_initWithDeviceImpl_convolutionDescriptor_kernelWeights_outputBiasTerms_outputScaleTerms_inputBiasTerms_inputScaleTerms_type_flags_(self, a2, a3, a4, a5, 0, 0, 0, 0, a8, a9);
+  result = objc_msgSend_initWithDeviceImpl_convolutionDescriptor_kernelWeights_outputBiasTerms_outputScaleTerms_inputBiasTerms_inputScaleTerms_type_flags_(self, a2, impl, descriptor, weights, 0, 0, 0, 0, type, flags);
   if (result)
   {
-    result->_outputScaleValue = a7;
+    result->_outputScaleValue = value;
   }
 
   return result;
@@ -232,18 +232,18 @@
   return result;
 }
 
-- (MPSCNNBinaryConvolution)initWithDeviceImpl:(id)a3 convolutionDescriptor:(id)a4 kernelWeights:(const unsigned int *)a5 outputBiasTerms:(const float *)a6 outputScaleTerms:(const float *)a7 inputBiasTerms:(const float *)a8 inputScaleTerms:(const float *)a9 type:(unint64_t)a10 flags:(unint64_t)a11
+- (MPSCNNBinaryConvolution)initWithDeviceImpl:(id)impl convolutionDescriptor:(id)descriptor kernelWeights:(const unsigned int *)weights outputBiasTerms:(const float *)terms outputScaleTerms:(const float *)scaleTerms inputBiasTerms:(const float *)biasTerms inputScaleTerms:(const float *)inputScaleTerms type:(unint64_t)self0 flags:(unint64_t)self1
 {
   v40.receiver = self;
   v40.super_class = MPSCNNBinaryConvolution;
-  result = [(MPSCNNKernel *)&v40 initWithDevice:a3];
+  result = [(MPSCNNKernel *)&v40 initWithDevice:impl];
   if (!result)
   {
     return result;
   }
 
   v24 = result;
-  if (!a5)
+  if (!weights)
   {
     if (MTLReportFailureTypeEnabled())
     {
@@ -253,7 +253,7 @@
     goto LABEL_36;
   }
 
-  v25 = *(a4 + 1);
+  v25 = *(descriptor + 1);
   if (!v25)
   {
     if (MTLReportFailureTypeEnabled())
@@ -264,7 +264,7 @@
     goto LABEL_36;
   }
 
-  v26 = *(a4 + 2);
+  v26 = *(descriptor + 2);
   if (!v26)
   {
     if (MTLReportFailureTypeEnabled())
@@ -275,7 +275,7 @@
     goto LABEL_36;
   }
 
-  if (!*(a4 + 3))
+  if (!*(descriptor + 3))
   {
     if (MTLReportFailureTypeEnabled())
     {
@@ -285,7 +285,7 @@
     goto LABEL_36;
   }
 
-  if (!*(a4 + 4))
+  if (!*(descriptor + 4))
   {
     if (MTLReportFailureTypeEnabled())
     {
@@ -295,7 +295,7 @@
     goto LABEL_36;
   }
 
-  if (!*(a4 + 6))
+  if (!*(descriptor + 6))
   {
     if (MTLReportFailureTypeEnabled())
     {
@@ -305,7 +305,7 @@
     goto LABEL_36;
   }
 
-  if (!*(a4 + 7))
+  if (!*(descriptor + 7))
   {
     if (MTLReportFailureTypeEnabled())
     {
@@ -315,7 +315,7 @@
     goto LABEL_36;
   }
 
-  v27 = *(a4 + 8);
+  v27 = *(descriptor + 8);
   if (v27 != 1)
   {
     if (v27)
@@ -339,18 +339,18 @@ LABEL_36:
 
   result->super._kernelWidth = v25;
   result->super._kernelHeight = v26;
-  result->_inputFeatureChannels = *(a4 + 3);
-  result->_outputFeatureChannels = *(a4 + 4);
-  result->super._strideInPixelsX = *(a4 + 6);
-  result->super._strideInPixelsY = *(a4 + 7);
+  result->_inputFeatureChannels = *(descriptor + 3);
+  result->_outputFeatureChannels = *(descriptor + 4);
+  result->super._strideInPixelsX = *(descriptor + 6);
+  result->super._strideInPixelsY = *(descriptor + 7);
   result->super._checkFlags |= 2u;
-  result->_flags = a11;
-  objc_msgSend_neuronInfo(a4, v17, v18, v19, v20, v21, v22, v23);
+  result->_flags = flags;
+  objc_msgSend_neuronInfo(descriptor, v17, v18, v19, v20, v21, v22, v23);
   *&v24->_neuronInfo.type = v38;
   v24->_neuronInfo.aData = v39;
   v24->super._encode = sub_239D6E498;
   v24->super._encodeData = v24;
-  v24->_convType = a10;
+  v24->_convType = type;
   if (v24->_flags)
   {
     v29 = [MPSCNNPoolingAverage alloc];
@@ -365,7 +365,7 @@ LABEL_36:
   }
 
   v24->_outputScaleValue = 1.0;
-  objc_msgSend_createBuffersFromkernelWeights_inputBiasTerms_inputScaleTerms_outputBiasTerms_outputScaleTerms_useHalfPrecision_(v24, v28, a5, a8, a9, a6, a7, 0);
+  objc_msgSend_createBuffersFromkernelWeights_inputBiasTerms_inputScaleTerms_outputBiasTerms_outputScaleTerms_useHalfPrecision_(v24, v28, weights, biasTerms, inputScaleTerms, terms, scaleTerms, 0);
   if (v24->_weights)
   {
     return v24;
@@ -566,61 +566,61 @@ LABEL_16:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v106.receiver = self;
   v106.super_class = MPSCNNBinaryConvolution;
   [(MPSCNNKernel *)&v106 encodeWithCoder:?];
-  objc_msgSend_encodeBool_forKey_(a3, v5, v4->_fullyConnected, @"kMPSCNNBinaryConvolution._fullyConnected", v6, v7, v8, v9);
-  objc_msgSend_encodeInt64_forKey_(a3, v10, v4->super._kernelWidth, @"kMPSCNNBinaryConvolution._kernelWidth", v11, v12, v13, v14);
-  objc_msgSend_encodeInt64_forKey_(a3, v15, v4->super._kernelHeight, @"kMPSCNNBinaryConvolution._kernelHeight", v16, v17, v18, v19);
-  objc_msgSend_encodeInt64_forKey_(a3, v20, v4->_inputFeatureChannels, @"kMPSCNNBinaryConvolution._inputFeatureChannels", v21, v22, v23, v24);
-  objc_msgSend_encodeInt64_forKey_(a3, v25, v4->_outputFeatureChannels, @"kMPSCNNBinaryConvolution._outputFeatureChannels", v26, v27, v28, v29);
-  objc_msgSend_encodeInt64_forKey_(a3, v30, v4->super._strideInPixelsX, @"kMPSCNNBinaryConvolution._strideInPixelsX", v31, v32, v33, v34);
-  objc_msgSend_encodeInt64_forKey_(a3, v35, v4->super._strideInPixelsY, @"kMPSCNNBinaryConvolution._strideInPixelsY", v36, v37, v38, v39);
-  objc_msgSend_encodeInt64_forKey_(a3, v40, v4->_flags, @"kMPSCNNBinaryConvolution._flags", v41, v42, v43, v44);
-  objc_msgSend_encodeInt64_forKey_(a3, v45, v4->_convType, @"kMPSCNNBinaryConvolution._convType", v46, v47, v48, v49);
-  *&v50 = v4->_outputScaleValue;
-  objc_msgSend_encodeFloat_forKey_(a3, v51, @"kMPSCNNBinaryConvolution._outputScaleValue", v52, v53, v54, v55, v56, v50);
-  outputFeatureChannels = v4->_outputFeatureChannels;
-  v58 = v4->_inputFeatureChannels + 31;
+  objc_msgSend_encodeBool_forKey_(coder, v5, selfCopy->_fullyConnected, @"kMPSCNNBinaryConvolution._fullyConnected", v6, v7, v8, v9);
+  objc_msgSend_encodeInt64_forKey_(coder, v10, selfCopy->super._kernelWidth, @"kMPSCNNBinaryConvolution._kernelWidth", v11, v12, v13, v14);
+  objc_msgSend_encodeInt64_forKey_(coder, v15, selfCopy->super._kernelHeight, @"kMPSCNNBinaryConvolution._kernelHeight", v16, v17, v18, v19);
+  objc_msgSend_encodeInt64_forKey_(coder, v20, selfCopy->_inputFeatureChannels, @"kMPSCNNBinaryConvolution._inputFeatureChannels", v21, v22, v23, v24);
+  objc_msgSend_encodeInt64_forKey_(coder, v25, selfCopy->_outputFeatureChannels, @"kMPSCNNBinaryConvolution._outputFeatureChannels", v26, v27, v28, v29);
+  objc_msgSend_encodeInt64_forKey_(coder, v30, selfCopy->super._strideInPixelsX, @"kMPSCNNBinaryConvolution._strideInPixelsX", v31, v32, v33, v34);
+  objc_msgSend_encodeInt64_forKey_(coder, v35, selfCopy->super._strideInPixelsY, @"kMPSCNNBinaryConvolution._strideInPixelsY", v36, v37, v38, v39);
+  objc_msgSend_encodeInt64_forKey_(coder, v40, selfCopy->_flags, @"kMPSCNNBinaryConvolution._flags", v41, v42, v43, v44);
+  objc_msgSend_encodeInt64_forKey_(coder, v45, selfCopy->_convType, @"kMPSCNNBinaryConvolution._convType", v46, v47, v48, v49);
+  *&v50 = selfCopy->_outputScaleValue;
+  objc_msgSend_encodeFloat_forKey_(coder, v51, @"kMPSCNNBinaryConvolution._outputScaleValue", v52, v53, v54, v55, v56, v50);
+  outputFeatureChannels = selfCopy->_outputFeatureChannels;
+  v58 = selfCopy->_inputFeatureChannels + 31;
   v59 = outputFeatureChannels + 31;
-  sub_239D700A4(a3, v4->_weights, @"kMPSCNNBinaryConvolution._weights", v4->super._kernelHeight * v4->super._kernelWidth * outputFeatureChannels * (v58 >> 5), v60, v61, v62, v63);
-  sub_239D700A4(a3, v4->_inputbias, @"kMPSCNNBinaryConvolution._inputbias", v58 & 0xFFFFFFE0, v64, v65, v66, v67);
-  sub_239D700A4(a3, v4->_inputScale, @"kMPSCNNBinaryConvolution._inputScale", v58 & 0xFFFFFFE0, v68, v69, v70, v71);
-  sub_239D700A4(a3, v4->_outputbias, @"kMPSCNNBinaryConvolution._outputbias", v59 & 0xFFFFFFE0, v72, v73, v74, v75);
-  sub_239D700A4(a3, v4->_outputScale, @"kMPSCNNBinaryConvolution._outputScale", v59 & 0xFFFFFFE0, v76, v77, v78, v79);
-  v4 = (v4 + 344);
-  objc_msgSend_encodeInt64_forKey_(a3, v80, SLODWORD(v4->super.super.super.isa), @"kMPSCNNBinaryConvolution._neuronType", v81, v82, v83, v84);
-  LODWORD(v85) = HIDWORD(v4->super.super.super.isa);
-  objc_msgSend_encodeFloat_forKey_(a3, v86, @"kMPSCNNBinaryConvolution._neuronParamA", v87, v88, v89, v90, v91, v85);
-  LODWORD(v92) = v4->super.super._options;
-  objc_msgSend_encodeFloat_forKey_(a3, v93, @"kMPSCNNBinaryConvolution._neuronParamB", v94, v95, v96, v97, v98, v92);
-  LODWORD(v99) = HIDWORD(v4->super.super._options);
-  objc_msgSend_encodeFloat_forKey_(a3, v100, @"kMPSCNNBinaryConvolution._neuronParamC", v101, v102, v103, v104, v105, v99);
+  sub_239D700A4(coder, selfCopy->_weights, @"kMPSCNNBinaryConvolution._weights", selfCopy->super._kernelHeight * selfCopy->super._kernelWidth * outputFeatureChannels * (v58 >> 5), v60, v61, v62, v63);
+  sub_239D700A4(coder, selfCopy->_inputbias, @"kMPSCNNBinaryConvolution._inputbias", v58 & 0xFFFFFFE0, v64, v65, v66, v67);
+  sub_239D700A4(coder, selfCopy->_inputScale, @"kMPSCNNBinaryConvolution._inputScale", v58 & 0xFFFFFFE0, v68, v69, v70, v71);
+  sub_239D700A4(coder, selfCopy->_outputbias, @"kMPSCNNBinaryConvolution._outputbias", v59 & 0xFFFFFFE0, v72, v73, v74, v75);
+  sub_239D700A4(coder, selfCopy->_outputScale, @"kMPSCNNBinaryConvolution._outputScale", v59 & 0xFFFFFFE0, v76, v77, v78, v79);
+  selfCopy = (selfCopy + 344);
+  objc_msgSend_encodeInt64_forKey_(coder, v80, SLODWORD(selfCopy->super.super.super.isa), @"kMPSCNNBinaryConvolution._neuronType", v81, v82, v83, v84);
+  LODWORD(v85) = HIDWORD(selfCopy->super.super.super.isa);
+  objc_msgSend_encodeFloat_forKey_(coder, v86, @"kMPSCNNBinaryConvolution._neuronParamA", v87, v88, v89, v90, v91, v85);
+  LODWORD(v92) = selfCopy->super.super._options;
+  objc_msgSend_encodeFloat_forKey_(coder, v93, @"kMPSCNNBinaryConvolution._neuronParamB", v94, v95, v96, v97, v98, v92);
+  LODWORD(v99) = HIDWORD(selfCopy->super.super._options);
+  objc_msgSend_encodeFloat_forKey_(coder, v100, @"kMPSCNNBinaryConvolution._neuronParamC", v101, v102, v103, v104, v105, v99);
 }
 
-- (id)copyBuffer:(id)a3 device:(id)a4
+- (id)copyBuffer:(id)buffer device:(id)device
 {
   v8 = *MEMORY[0x277CD7350];
-  if (a4)
+  if (device)
   {
-    v9 = a4;
+    deviceCopy = device;
   }
 
   else
   {
-    v9 = (*(&self->super.super.super.isa + v8))[2];
+    deviceCopy = (*(&self->super.super.super.isa + v8))[2];
   }
 
-  if (!a3)
+  if (!buffer)
   {
     return 0;
   }
 
-  if ((*(&self->super.super.super.isa + v8))[2] == v9)
+  if ((*(&self->super.super.super.isa + v8))[2] == deviceCopy)
   {
 
     return MEMORY[0x2821F9888]();
@@ -628,19 +628,19 @@ LABEL_16:
 
   else
   {
-    v11 = objc_msgSend_length(a3, a2, a3, a4, v4, v5, v6, v7);
+    v11 = objc_msgSend_length(buffer, a2, buffer, device, v4, v5, v6, v7);
     v12 = (*(**(&self->super.super.super.isa + v8) + 24))(*(&self->super.super.super.isa + v8));
     v13 = (*(**(&self->super.super.super.isa + v8) + 40))(*(&self->super.super.super.isa + v8));
-    v19 = objc_msgSend_newBufferWithLength_options_(v9, v14, v11, v13 | (16 * v12), v15, v16, v17, v18);
+    v19 = objc_msgSend_newBufferWithLength_options_(deviceCopy, v14, v11, v13 | (16 * v12), v15, v16, v17, v18);
     v27 = objc_msgSend_contents(v19, v20, v21, v22, v23, v24, v25, v26);
-    v35 = objc_msgSend_contents(a3, v28, v29, v30, v31, v32, v33, v34);
-    v43 = objc_msgSend_length(a3, v36, v37, v38, v39, v40, v41, v42);
+    v35 = objc_msgSend_contents(buffer, v28, v29, v30, v31, v32, v33, v34);
+    v43 = objc_msgSend_length(buffer, v36, v37, v38, v39, v40, v41, v42);
     memcpy(v27, v35, v43);
     return v19;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v41.receiver = self;
   v41.super_class = MPSCNNBinaryConvolution;
@@ -663,13 +663,13 @@ LABEL_16:
     *(result + 38) = result;
     *(result + 440) = self->_fullyConnected;
     v14 = result;
-    *(result + 47) = objc_msgSend_copyBuffer_device_(self, v8, self->_weights, a4, v9, v10, v11, v12);
-    v14[50] = objc_msgSend_copyBuffer_device_(self, v15, self->_inputbias, a4, v16, v17, v18, v19);
-    v14[51] = objc_msgSend_copyBuffer_device_(self, v20, self->_inputScale, a4, v21, v22, v23, v24);
-    v14[48] = objc_msgSend_copyBuffer_device_(self, v25, self->_outputbias, a4, v26, v27, v28, v29);
-    v14[49] = objc_msgSend_copyBuffer_device_(self, v30, self->_outputScale, a4, v31, v32, v33, v34);
+    *(result + 47) = objc_msgSend_copyBuffer_device_(self, v8, self->_weights, device, v9, v10, v11, v12);
+    v14[50] = objc_msgSend_copyBuffer_device_(self, v15, self->_inputbias, device, v16, v17, v18, v19);
+    v14[51] = objc_msgSend_copyBuffer_device_(self, v20, self->_inputScale, device, v21, v22, v23, v24);
+    v14[48] = objc_msgSend_copyBuffer_device_(self, v25, self->_outputbias, device, v26, v27, v28, v29);
+    v14[49] = objc_msgSend_copyBuffer_device_(self, v30, self->_outputScale, device, v31, v32, v33, v34);
     *(v14 + 111) = LODWORD(self->_outputScaleValue);
-    v40 = objc_msgSend_copyWithZone_device_(self->_poolingFilter, v35, a3, a4, v36, v37, v38, v39);
+    v40 = objc_msgSend_copyWithZone_device_(self->_poolingFilter, v35, zone, device, v36, v37, v38, v39);
     result = v14;
     v14[54] = v40;
   }
@@ -698,11 +698,11 @@ LABEL_16:
   return objc_msgSend_stringWithFormat_(v58, v47, @"%@\n\tkernelWidth: %lu\n\tkernelHeight: %lu\n\tstride X: %lu\n\tstride Y: %lu\ninputFeatureChannels: %lu\toutputFeatureChannels: %lu\nNeuronType: %d\noutputBias: %d\toutputScale: %d\tinputBias: %d\tinputScale: %d\nPoolingFilter: %@\nconvType: %lu\tflags: %lu\n", v48, v49, v50, v51, v52, v57, v56, v55, v54, v31, inputFeatureChannels, outputFeatureChannels, type, v34, v35, v36, v37, v46, self->_convType, self->_flags);
 }
 
-- (id)destinationImageDescriptorForSourceImages:(id)a3 sourceStates:(id)a4 paddingMethod:(unint64_t)a5 sourceOffset:(id *)a6
+- (id)destinationImageDescriptorForSourceImages:(id)images sourceStates:(id)states paddingMethod:(unint64_t)method sourceOffset:(id *)offset
 {
   v15.receiver = self;
   v15.super_class = MPSCNNBinaryConvolution;
-  v7 = [(MPSCNNKernel *)&v15 destinationImageDescriptorForSourceImages:a3 sourceStates:a4 paddingMethod:a5 sourceOffset:a6];
+  v7 = [(MPSCNNKernel *)&v15 destinationImageDescriptorForSourceImages:images sourceStates:states paddingMethod:method sourceOffset:offset];
   objc_msgSend_setFeatureChannels_(v7, v8, self->_outputFeatureChannels, v9, v10, v11, v12, v13);
   return v7;
 }

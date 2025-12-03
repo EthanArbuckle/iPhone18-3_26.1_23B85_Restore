@@ -4,9 +4,9 @@
 - (id)delegate;
 - (void)loadView;
 - (void)remoteViewControllerDidCancel;
-- (void)remoteViewControllerDidDeleteVoiceShortcutWithIdentifier:(id)a3;
-- (void)remoteViewControllerDidUpdateVoiceShortcut:(id)a3 error:(id)a4;
-- (void)setChildViewController:(id)a3;
+- (void)remoteViewControllerDidDeleteVoiceShortcutWithIdentifier:(id)identifier;
+- (void)remoteViewControllerDidUpdateVoiceShortcut:(id)shortcut error:(id)error;
+- (void)setChildViewController:(id)controller;
 @end
 
 @implementation INUIEditVoiceShortcutViewController
@@ -20,60 +20,60 @@
 
 - (void)remoteViewControllerDidCancel
 {
-  v3 = [(INUIEditVoiceShortcutViewController *)self delegate];
-  [v3 editVoiceShortcutViewControllerDidCancel:self];
+  delegate = [(INUIEditVoiceShortcutViewController *)self delegate];
+  [delegate editVoiceShortcutViewControllerDidCancel:self];
 }
 
-- (void)remoteViewControllerDidDeleteVoiceShortcutWithIdentifier:(id)a3
+- (void)remoteViewControllerDidDeleteVoiceShortcutWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(INUIEditVoiceShortcutViewController *)self delegate];
-  [v5 editVoiceShortcutViewController:self didDeleteVoiceShortcutWithIdentifier:v4];
+  identifierCopy = identifier;
+  delegate = [(INUIEditVoiceShortcutViewController *)self delegate];
+  [delegate editVoiceShortcutViewController:self didDeleteVoiceShortcutWithIdentifier:identifierCopy];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 postNotificationName:@"com.apple.IntentsUI.INUIEditVoiceShortcutViewController.didDeleteVoiceShortcut" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.IntentsUI.INUIEditVoiceShortcutViewController.didDeleteVoiceShortcut" object:0];
 }
 
-- (void)remoteViewControllerDidUpdateVoiceShortcut:(id)a3 error:(id)a4
+- (void)remoteViewControllerDidUpdateVoiceShortcut:(id)shortcut error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(INUIEditVoiceShortcutViewController *)self delegate];
-  [v8 editVoiceShortcutViewController:self didUpdateVoiceShortcut:v7 error:v6];
+  errorCopy = error;
+  shortcutCopy = shortcut;
+  delegate = [(INUIEditVoiceShortcutViewController *)self delegate];
+  [delegate editVoiceShortcutViewController:self didUpdateVoiceShortcut:shortcutCopy error:errorCopy];
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 postNotificationName:@"com.apple.IntentsUI.INUIEditVoiceShortcutViewController.didUpdateVoiceShortcut" object:v7];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"com.apple.IntentsUI.INUIEditVoiceShortcutViewController.didUpdateVoiceShortcut" object:shortcutCopy];
 }
 
-- (void)setChildViewController:(id)a3
+- (void)setChildViewController:(id)controller
 {
-  v4 = a3;
-  v11 = [(INUIEditVoiceShortcutViewController *)self currentChildViewController];
-  if (v11)
+  controllerCopy = controller;
+  currentChildViewController = [(INUIEditVoiceShortcutViewController *)self currentChildViewController];
+  if (currentChildViewController)
   {
-    [v11 willMoveToParentViewController:0];
-    v5 = [v11 view];
-    [v5 removeFromSuperview];
+    [currentChildViewController willMoveToParentViewController:0];
+    view = [currentChildViewController view];
+    [view removeFromSuperview];
 
-    [v11 removeFromParentViewController];
+    [currentChildViewController removeFromParentViewController];
   }
 
-  [v4 willMoveToParentViewController:self];
-  [(INUIEditVoiceShortcutViewController *)self addChildViewController:v4];
-  v6 = [v4 view];
-  v7 = [(INUIEditVoiceShortcutViewController *)self view];
-  [v7 bounds];
-  [v6 setFrame:?];
+  [controllerCopy willMoveToParentViewController:self];
+  [(INUIEditVoiceShortcutViewController *)self addChildViewController:controllerCopy];
+  view2 = [controllerCopy view];
+  view3 = [(INUIEditVoiceShortcutViewController *)self view];
+  [view3 bounds];
+  [view2 setFrame:?];
 
-  v8 = [v4 view];
-  [v8 setAutoresizingMask:18];
+  view4 = [controllerCopy view];
+  [view4 setAutoresizingMask:18];
 
-  v9 = [(INUIEditVoiceShortcutViewController *)self view];
-  v10 = [v4 view];
-  [v9 addSubview:v10];
+  view5 = [(INUIEditVoiceShortcutViewController *)self view];
+  view6 = [controllerCopy view];
+  [view5 addSubview:view6];
 
-  [v4 didMoveToParentViewController:self];
-  [(INUIEditVoiceShortcutViewController *)self setCurrentChildViewController:v4];
+  [controllerCopy didMoveToParentViewController:self];
+  [(INUIEditVoiceShortcutViewController *)self setCurrentChildViewController:controllerCopy];
 }
 
 - (void)loadView
@@ -167,7 +167,7 @@ void __61__INUIEditVoiceShortcutViewController_initWithVoiceShortcut___block_inv
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     MEMORY[0x282122D80]();

@@ -16,10 +16,10 @@
 - (uint64_t)ams_isPercentEncodedForAllowedCharacters:()AppleMediaServices
 {
   v4 = a3;
-  v5 = [a1 stringByRemovingPercentEncoding];
-  v6 = [v5 stringByAddingPercentEncodingWithAllowedCharacters:v4];
+  stringByRemovingPercentEncoding = [self stringByRemovingPercentEncoding];
+  v6 = [stringByRemovingPercentEncoding stringByAddingPercentEncodingWithAllowedCharacters:v4];
 
-  v7 = [a1 isEqualToString:v6];
+  v7 = [self isEqualToString:v6];
   return v7;
 }
 
@@ -27,9 +27,9 @@
 {
   v16 = a3;
   v8 = a5;
-  if ([a1 length])
+  if ([self length])
   {
-    v9 = [a1 rangeOfString:v16 options:a4 range:{0, objc_msgSend(a1, "length")}];
+    v9 = [self rangeOfString:v16 options:a4 range:{0, objc_msgSend(self, "length")}];
     if (v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v11 = v9;
@@ -46,10 +46,10 @@
         else
         {
           v13 = v11 + v12;
-          v14 = [a1 length] - (v11 + v12);
+          v14 = [self length] - (v11 + v12);
         }
 
-        v11 = [a1 rangeOfString:v16 options:a4 range:{v13, v14}];
+        v11 = [self rangeOfString:v16 options:a4 range:{v13, v14}];
         v12 = v15;
       }
 
@@ -72,9 +72,9 @@
     v5 = &stru_1F071BA78;
   }
 
-  if ([a1 rangeOfString:@"%%appleId%%" options:1] == 0x7FFFFFFFFFFFFFFFLL)
+  if ([self rangeOfString:@"%%appleId%%" options:1] == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = a1;
+    selfCopy = self;
   }
 
   else
@@ -88,34 +88,34 @@
         v8 = +[AMSLogConfig sharedConfig];
       }
 
-      v9 = [v8 OSLogObject];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v8 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v10 = AMSLogKey();
         v12 = 138543362;
         v13 = v10;
-        _os_log_impl(&dword_192869000, v9, OS_LOG_TYPE_ERROR, "NSString+AppleMediaServices: [%{public}@] Failed to determine display username", &v12, 0xCu);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "NSString+AppleMediaServices: [%{public}@] Failed to determine display username", &v12, 0xCu);
       }
 
       v7 = v5;
     }
 
-    v6 = [a1 stringByReplacingOccurrencesOfString:@"%%appleId%%" withString:v7 options:1 range:{0, objc_msgSend(a1, "length")}];
+    selfCopy = [self stringByReplacingOccurrencesOfString:@"%%appleId%%" withString:v7 options:1 range:{0, objc_msgSend(self, "length")}];
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)ams_replacingMarkupUsingAccount:()AppleMediaServices shouldUppercase:
 {
-  v6 = [a3 username];
-  v7 = [a1 ams_replaceAccountPatternWithUsername:v6];
+  username = [a3 username];
+  v7 = [self ams_replaceAccountPatternWithUsername:username];
 
   if (a4)
   {
-    v8 = [v7 localizedUppercaseString];
+    localizedUppercaseString = [v7 localizedUppercaseString];
 
-    v7 = v8;
+    v7 = localizedUppercaseString;
   }
 
   v9 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v7];
@@ -133,7 +133,7 @@
 - (id)ams_sha256HashStringUsingEncoding:()AppleMediaServices error:
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = [a1 dataUsingEncoding:?];
+  v8 = [self dataUsingEncoding:?];
   if (!v8)
   {
     v9 = +[AMSLogConfig sharedConfig];
@@ -142,8 +142,8 @@
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v11 = AMSLogKey();
       v12 = MEMORY[0x1E696AEC0];
@@ -160,14 +160,14 @@
         [v12 stringWithFormat:@"%@: ", v13];
       }
       v15 = ;
-      v16 = AMSHashIfNeeded(a1);
+      v16 = AMSHashIfNeeded(self);
       *buf = 138543874;
       v36 = v15;
       v37 = 2114;
       v38 = v16;
       v39 = 2048;
       v40 = a3;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_ERROR, "%{public}@Unable to convert string to data. string = %{public}@ | encoding = %lu", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Unable to convert string to data. string = %{public}@ | encoding = %lu", buf, 0x20u);
       if (v11)
       {
 
@@ -200,8 +200,8 @@
       v20 = +[AMSLogConfig sharedConfig];
     }
 
-    v21 = [v20 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v20 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v22 = AMSLogKey();
       v23 = MEMORY[0x1E696AEC0];
@@ -218,14 +218,14 @@
         [v23 stringWithFormat:@"%@: ", v24];
       }
       v26 = ;
-      v27 = AMSHashIfNeeded(a1);
+      v27 = AMSHashIfNeeded(self);
       *v29 = 138543874;
       v30 = v26;
       v31 = 2114;
       v32 = v27;
       v33 = 2048;
       v34 = a3;
-      _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_ERROR, "%{public}@Unable to hash data. string = %{public}@ | encoding = %lu", v29, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@Unable to hash data. string = %{public}@ | encoding = %lu", v29, 0x20u);
       if (v22)
       {
 
@@ -251,7 +251,7 @@
 - (id)ams_sha512HashStringUsingEncoding:()AppleMediaServices error:
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = [a1 dataUsingEncoding:?];
+  v8 = [self dataUsingEncoding:?];
   if (!v8)
   {
     v9 = +[AMSLogConfig sharedConfig];
@@ -260,8 +260,8 @@
       v9 = +[AMSLogConfig sharedConfig];
     }
 
-    v10 = [v9 OSLogObject];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v9 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v11 = AMSLogKey();
       v12 = MEMORY[0x1E696AEC0];
@@ -278,14 +278,14 @@
         [v12 stringWithFormat:@"%@: ", v13];
       }
       v15 = ;
-      v16 = AMSHashIfNeeded(a1);
+      v16 = AMSHashIfNeeded(self);
       *buf = 138543874;
       v36 = v15;
       v37 = 2114;
       v38 = v16;
       v39 = 2048;
       v40 = a3;
-      _os_log_impl(&dword_192869000, v10, OS_LOG_TYPE_ERROR, "%{public}@Unable to convert string to data. string = %{public}@ | encoding = %lu", buf, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Unable to convert string to data. string = %{public}@ | encoding = %lu", buf, 0x20u);
       if (v11)
       {
 
@@ -318,8 +318,8 @@
       v20 = +[AMSLogConfig sharedConfig];
     }
 
-    v21 = [v20 OSLogObject];
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [v20 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v22 = AMSLogKey();
       v23 = MEMORY[0x1E696AEC0];
@@ -336,14 +336,14 @@
         [v23 stringWithFormat:@"%@: ", v24];
       }
       v26 = ;
-      v27 = AMSHashIfNeeded(a1);
+      v27 = AMSHashIfNeeded(self);
       *v29 = 138543874;
       v30 = v26;
       v31 = 2114;
       v32 = v27;
       v33 = 2048;
       v34 = a3;
-      _os_log_impl(&dword_192869000, v21, OS_LOG_TYPE_ERROR, "%{public}@Unable to hash data. string = %{public}@ | encoding = %lu", v29, 0x20u);
+      _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@Unable to hash data. string = %{public}@ | encoding = %lu", v29, 0x20u);
       if (v22)
       {
 
@@ -368,7 +368,7 @@
 
 - (id)ams_stringByRemovingCharactersInSet:()AppleMediaServices
 {
-  v1 = [a1 componentsSeparatedByCharactersInSet:?];
+  v1 = [self componentsSeparatedByCharactersInSet:?];
   v2 = [v1 componentsJoinedByString:&stru_1F071BA78];
 
   return v2;
@@ -376,7 +376,7 @@
 
 - (id)ams_dataFromBase64URLEncodedString
 {
-  v1 = [a1 copy];
+  v1 = [self copy];
   if (([v1 length] & 3) != 0 && (v2 = objc_msgSend(v1, "length") & 3) != 0)
   {
     do
@@ -407,22 +407,22 @@
 + (id)_replaceBreakingSpaceMarkupForMutableAttributedString:()AppleMediaServices
 {
   v3 = a3;
-  v4 = [v3 string];
-  v5 = [v4 lowercaseString];
+  string = [v3 string];
+  lowercaseString = [string lowercaseString];
 
-  v6 = [v5 rangeOfString:@"[br/]"];
+  v6 = [lowercaseString rangeOfString:@"[br/]"];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = v6;
     v9 = 0;
     do
     {
-      v10 = v5;
+      v10 = lowercaseString;
       [v3 replaceCharactersInRange:v8 withString:{v7, @"\n"}];
-      v11 = [v3 string];
-      v5 = [v11 lowercaseString];
+      string2 = [v3 string];
+      lowercaseString = [string2 lowercaseString];
 
-      v12 = [v5 rangeOfString:@"[br/]"];
+      v12 = [lowercaseString rangeOfString:@"[br/]"];
       if (v12 == 0x7FFFFFFFFFFFFFFFLL)
       {
         break;
@@ -466,10 +466,10 @@
     v10 = v8;
   }
 
-  v11 = [v5 string];
-  v12 = [v11 lowercaseString];
+  string = [v5 string];
+  lowercaseString = [string lowercaseString];
 
-  if ([v12 rangeOfString:v10] != 0x7FFFFFFFFFFFFFFFLL)
+  if ([lowercaseString rangeOfString:v10] != 0x7FFFFFFFFFFFFFFFLL)
   {
     if (a4)
     {
@@ -490,9 +490,9 @@
     if (v14)
     {
       v15 = v14;
-      v16 = [v12 rangeOfString:v10];
+      v16 = [lowercaseString rangeOfString:v10];
       v18 = v17;
-      v19 = [v12 rangeOfString:v29];
+      v19 = [lowercaseString rangeOfString:v29];
       if (v16 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v21 = v19;
@@ -501,15 +501,15 @@
           v22 = 0;
           do
           {
-            v23 = v12;
+            v23 = lowercaseString;
             [v6 replaceCharactersInRange:v21 withString:{v20, &stru_1F071BA78}];
             [v6 replaceCharactersInRange:v16 withString:{v18, &stru_1F071BA78}];
-            v24 = [v6 string];
-            v12 = [v24 lowercaseString];
+            string2 = [v6 string];
+            lowercaseString = [string2 lowercaseString];
 
-            v16 = [v12 rangeOfString:v10];
+            v16 = [lowercaseString rangeOfString:v10];
             v18 = v25;
-            v26 = [v12 rangeOfString:v29];
+            v26 = [lowercaseString rangeOfString:v29];
             if (v16 == 0x7FFFFFFFFFFFFFFFLL)
             {
               break;

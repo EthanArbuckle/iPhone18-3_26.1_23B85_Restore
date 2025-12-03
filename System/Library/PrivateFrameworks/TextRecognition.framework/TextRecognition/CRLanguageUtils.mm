@@ -1,16 +1,16 @@
 @interface CRLanguageUtils
-+ (_LXLexicon)createDynamicLexicon:(id)a3 forLocale:(id)a4 error:(id *)a5;
-+ (_LXLexicon)createDynamicLexiconForLocale:(id)a3 error:(id *)a4;
++ (_LXLexicon)createDynamicLexicon:(id)lexicon forLocale:(id)locale error:(id *)error;
++ (_LXLexicon)createDynamicLexiconForLocale:(id)locale error:(id *)error;
 @end
 
 @implementation CRLanguageUtils
 
-+ (_LXLexicon)createDynamicLexicon:(id)a3 forLocale:(id)a4 error:(id *)a5
++ (_LXLexicon)createDynamicLexicon:(id)lexicon forLocale:(id)locale error:(id *)error
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  lexiconCopy = lexicon;
   v21 = 0;
-  v8 = [CRLanguageUtils createDynamicLexiconForLocale:a4 error:&v21];
+  v8 = [CRLanguageUtils createDynamicLexiconForLocale:locale error:&v21];
   v9 = v21;
   if (v9)
   {
@@ -22,10 +22,10 @@
       _os_log_impl(&dword_1B40D2000, v10, OS_LOG_TYPE_ERROR, "Unable to create custom lexicon: %@", buf, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v11 = v9;
-      *a5 = v9;
+      *error = v9;
     }
   }
 
@@ -35,7 +35,7 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v12 = v7;
+    v12 = lexiconCopy;
     v13 = [v12 countByEnumeratingWithState:&v17 objects:v22 count:16];
     if (v13)
     {
@@ -65,20 +65,20 @@
   return v8;
 }
 
-+ (_LXLexicon)createDynamicLexiconForLocale:(id)a3 error:(id *)a4
++ (_LXLexicon)createDynamicLexiconForLocale:(id)locale error:(id *)error
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  localeCopy = locale;
   v6 = *MEMORY[0x1E69ABFE8];
   v10[0] = *MEMORY[0x1E69ABFF8];
   v10[1] = v6;
   v11[0] = @"CR-Custom-Lexicon";
-  v11[1] = v5;
+  v11[1] = localeCopy;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:v10 count:2];
   Mutable = LXLexiconCreateMutable();
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return Mutable;

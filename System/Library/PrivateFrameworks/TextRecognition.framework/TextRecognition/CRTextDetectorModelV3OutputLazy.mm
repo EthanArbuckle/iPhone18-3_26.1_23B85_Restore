@@ -1,5 +1,5 @@
 @interface CRTextDetectorModelV3OutputLazy
-- (CRTextDetectorModelV3OutputLazy)initWithVisionCoreNamedObjects:(id)a3 fromFunctionDescriptor:(id)a4;
+- (CRTextDetectorModelV3OutputLazy)initWithVisionCoreNamedObjects:(id)objects fromFunctionDescriptor:(id)descriptor;
 - (id)link_score_horizontal;
 - (id)link_score_vertical;
 - (id)orientation_score;
@@ -11,18 +11,18 @@
 
 @implementation CRTextDetectorModelV3OutputLazy
 
-- (CRTextDetectorModelV3OutputLazy)initWithVisionCoreNamedObjects:(id)a3 fromFunctionDescriptor:(id)a4
+- (CRTextDetectorModelV3OutputLazy)initWithVisionCoreNamedObjects:(id)objects fromFunctionDescriptor:(id)descriptor
 {
-  v7 = a3;
-  v8 = a4;
+  objectsCopy = objects;
+  descriptorCopy = descriptor;
   v12.receiver = self;
   v12.super_class = CRTextDetectorModelV3OutputLazy;
   v9 = [(CRTextDetectorModelV3Output *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_outputObjects, a3);
-    objc_storeStrong(&v10->_functionDescriptor, a4);
+    objc_storeStrong(&v9->_outputObjects, objects);
+    objc_storeStrong(&v10->_functionDescriptor, descriptor);
   }
 
   return v10;

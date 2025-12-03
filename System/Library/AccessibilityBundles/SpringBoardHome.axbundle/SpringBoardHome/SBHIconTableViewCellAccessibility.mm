@@ -1,16 +1,16 @@
 @interface SBHIconTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityDragSourceDescriptors;
 @end
 
 @implementation SBHIconTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBHIconTableViewCell" hasInstanceMethod:@"iconView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHIconTableViewCell" hasInstanceMethod:@"iconNameLabel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBHIconTableViewCell" hasInstanceMethod:@"iconView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHIconTableViewCell" hasInstanceMethod:@"iconNameLabel" withFullSignature:{"@", 0}];
 }
 
 - (CGPoint)accessibilityActivationPoint
@@ -30,9 +30,9 @@
 - (id)accessibilityDragSourceDescriptors
 {
   v2 = [(SBHIconTableViewCellAccessibility *)self safeValueForKey:@"iconView"];
-  v3 = [v2 accessibilityDragSourceDescriptors];
+  accessibilityDragSourceDescriptors = [v2 accessibilityDragSourceDescriptors];
 
-  return v3;
+  return accessibilityDragSourceDescriptors;
 }
 
 @end

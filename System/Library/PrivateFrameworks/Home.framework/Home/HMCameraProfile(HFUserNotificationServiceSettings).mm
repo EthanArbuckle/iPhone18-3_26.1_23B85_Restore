@@ -11,41 +11,41 @@
 
 - (id)_hf_doorbellBulletinNotification
 {
-  v1 = [a1 accessory];
-  v2 = [v1 hf_serviceOfType:*MEMORY[0x277CD0E38]];
-  v3 = [v2 bulletinBoardNotification];
+  accessory = [self accessory];
+  v2 = [accessory hf_serviceOfType:*MEMORY[0x277CD0E38]];
+  bulletinBoardNotification = [v2 bulletinBoardNotification];
 
-  return v3;
+  return bulletinBoardNotification;
 }
 
 - (id)_hf_legacyMotionSensorBulletinNotification
 {
-  v1 = [a1 accessory];
-  v2 = [v1 hf_serviceOfType:*MEMORY[0x277CD0EC0]];
-  v3 = [v2 bulletinBoardNotification];
+  accessory = [self accessory];
+  v2 = [accessory hf_serviceOfType:*MEMORY[0x277CD0EC0]];
+  bulletinBoardNotification = [v2 bulletinBoardNotification];
 
-  return v3;
+  return bulletinBoardNotification;
 }
 
 - (id)_hf_smartDetectionBulletinNotification
 {
-  v1 = [a1 userSettings];
-  v2 = [v1 smartNotificationBulletin];
+  userSettings = [self userSettings];
+  smartNotificationBulletin = [userSettings smartNotificationBulletin];
 
-  return v2;
+  return smartNotificationBulletin;
 }
 
 - (id)hf_bulletinNotifications
 {
   v2 = objc_opt_new();
-  v3 = [a1 _hf_legacyMotionSensorBulletinNotification];
-  [v2 na_safeAddObject:v3];
+  _hf_legacyMotionSensorBulletinNotification = [self _hf_legacyMotionSensorBulletinNotification];
+  [v2 na_safeAddObject:_hf_legacyMotionSensorBulletinNotification];
 
-  v4 = [a1 _hf_smartDetectionBulletinNotification];
-  [v2 na_safeAddObject:v4];
+  _hf_smartDetectionBulletinNotification = [self _hf_smartDetectionBulletinNotification];
+  [v2 na_safeAddObject:_hf_smartDetectionBulletinNotification];
 
-  v5 = [a1 _hf_doorbellBulletinNotification];
-  [v2 na_safeAddObject:v5];
+  _hf_doorbellBulletinNotification = [self _hf_doorbellBulletinNotification];
+  [v2 na_safeAddObject:_hf_doorbellBulletinNotification];
 
   return v2;
 }
@@ -53,8 +53,8 @@
 - (HFUserNotificationServiceSettings)hf_userNotificationSettings
 {
   v2 = [HFUserNotificationServiceSettings alloc];
-  v3 = [a1 hf_bulletinNotifications];
-  v4 = [(HFUserNotificationServiceSettings *)v2 initWithBulletinBoardNotifications:v3];
+  hf_bulletinNotifications = [self hf_bulletinNotifications];
+  v4 = [(HFUserNotificationServiceSettings *)v2 initWithBulletinBoardNotifications:hf_bulletinNotifications];
 
   return v4;
 }
@@ -62,19 +62,19 @@
 - (id)hf_updateUserNotificationSettings:()HFUserNotificationServiceSettings
 {
   v4 = a3;
-  v5 = [a1 hf_userNotificationSettings];
+  hf_userNotificationSettings = [self hf_userNotificationSettings];
 
-  if (v5)
+  if (hf_userNotificationSettings)
   {
-    v6 = [a1 hf_bulletinNotifications];
-    [v4 applySettingsToBulletinBoardNotifications:v6];
+    hf_bulletinNotifications = [self hf_bulletinNotifications];
+    [v4 applySettingsToBulletinBoardNotifications:hf_bulletinNotifications];
   }
 
   else
   {
     v7 = MEMORY[0x277D2C900];
-    v6 = [MEMORY[0x277CCA9B8] hf_errorWithCode:32];
-    [v7 futureWithError:v6];
+    hf_bulletinNotifications = [MEMORY[0x277CCA9B8] hf_errorWithCode:32];
+    [v7 futureWithError:hf_bulletinNotifications];
   }
   v8 = ;
 

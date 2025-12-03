@@ -1,26 +1,26 @@
 @interface FIUIChartBarAccessibilityElement
-+ (id)accessibilityElementsForBarSeries:(id)a3;
++ (id)accessibilityElementsForBarSeries:(id)series;
 - (CGPoint)barPoint;
 - (CGRect)_accessibilityFrameStandardBar;
 - (CGRect)_accessibilityFrameUniform;
 - (CGRect)accessibilityFrame;
-- (FIUIChartBarAccessibilityElement)initWithAccessibilityContainer:(id)a3 barSeries:(id)a4 index:(unint64_t)a5 plotPoint:(id)a6;
+- (FIUIChartBarAccessibilityElement)initWithAccessibilityContainer:(id)container barSeries:(id)series index:(unint64_t)index plotPoint:(id)point;
 - (id)accessibilityLabel;
 - (id)barSeries;
 @end
 
 @implementation FIUIChartBarAccessibilityElement
 
-- (FIUIChartBarAccessibilityElement)initWithAccessibilityContainer:(id)a3 barSeries:(id)a4 index:(unint64_t)a5 plotPoint:(id)a6
+- (FIUIChartBarAccessibilityElement)initWithAccessibilityContainer:(id)container barSeries:(id)series index:(unint64_t)index plotPoint:(id)point
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  containerCopy = container;
+  seriesCopy = series;
+  pointCopy = point;
   v16.receiver = self;
   v16.super_class = FIUIChartBarAccessibilityElement;
-  v13 = [(FIUIChartBarAccessibilityElement *)&v16 initWithAccessibilityContainer:v10];
-  [(FIUIChartBarAccessibilityElement *)v13 setBarSeries:v11];
-  [(FIUIChartBarAccessibilityElement *)v13 setIndex:a5];
+  v13 = [(FIUIChartBarAccessibilityElement *)&v16 initWithAccessibilityContainer:containerCopy];
+  [(FIUIChartBarAccessibilityElement *)v13 setBarSeries:seriesCopy];
+  [(FIUIChartBarAccessibilityElement *)v13 setIndex:index];
   objc_opt_class();
   v14 = __UIAccessibilityCastAsClass();
   [v14 CGPointValue];
@@ -36,7 +36,7 @@
     [FIUIChartBarAccessibilityElement accessibilityFrame];
   }
 
-  v3 = [(FIUIChartBarAccessibilityElement *)self barSeries];
+  barSeries = [(FIUIChartBarAccessibilityElement *)self barSeries];
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
@@ -60,7 +60,7 @@
 {
   [(FIUIChartBarAccessibilityElement *)self barPoint];
   objc_opt_class();
-  v3 = [(FIUIChartBarAccessibilityElement *)self barSeries];
+  barSeries = [(FIUIChartBarAccessibilityElement *)self barSeries];
   v4 = __UIAccessibilityCastAsClass();
 
   [v4 safeDoubleForKey:@"_barWidth"];
@@ -85,7 +85,7 @@
 - (CGRect)_accessibilityFrameStandardBar
 {
   objc_opt_class();
-  v3 = [(FIUIChartBarAccessibilityElement *)self barSeries];
+  barSeries = [(FIUIChartBarAccessibilityElement *)self barSeries];
   v4 = __UIAccessibilityCastAsClass();
 
   [v4 safeDoubleForKey:@"_barWidth"];
@@ -132,16 +132,16 @@
   }
 
   [(FIUIChartBarAccessibilityElement *)self barPoint];
-  v6 = [(FIUIChartBarAccessibilityElement *)self accessibilityDelegate];
+  accessibilityDelegate = [(FIUIChartBarAccessibilityElement *)self accessibilityDelegate];
   UIRoundToViewScale();
   v8 = v7;
 
   v9 = AXClockTimeStringForDate();
   v10 = [AXAttributedString axAttributedStringWithString:v9];
   [v10 setAttribute:kCFBooleanTrue forKey:UIAccessibilityTokenClockTime];
-  v11 = [(FIUIChartBarAccessibilityElement *)self barSeries];
+  barSeries = [(FIUIChartBarAccessibilityElement *)self barSeries];
   v12 = [v3 safeValueForKey:@"yValue"];
-  v15 = [v11 _accessibilityLabelForBarYPoint:v12 withValue:v8];
+  v15 = [barSeries _accessibilityLabelForBarYPoint:v12 withValue:v8];
   v13 = __AXStringForVariables();
 
   return v13;
@@ -156,14 +156,14 @@ void __54__FIUIChartBarAccessibilityElement_accessibilityLabel__block_invoke(uin
   *(v3 + 40) = v2;
 }
 
-+ (id)accessibilityElementsForBarSeries:(id)a3
++ (id)accessibilityElementsForBarSeries:(id)series
 {
-  v3 = a3;
-  objc_initWeak(&location, v3);
+  seriesCopy = series;
+  objc_initWeak(&location, seriesCopy);
   v4 = +[NSMutableArray array];
   v12 = 0;
   objc_opt_class();
-  v5 = [v3 safeValueForKey:@"_plotPoints"];
+  v5 = [seriesCopy safeValueForKey:@"_plotPoints"];
   v6 = __UIAccessibilityCastAsClass();
 
   v9[0] = _NSConcreteStackBlock;

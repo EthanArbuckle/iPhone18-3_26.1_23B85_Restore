@@ -1,52 +1,52 @@
 @interface DEDIDSOutbound
 + (id)archivedClasses;
-+ (id)outboundWithSessionID:(id)a3 withDeviceAtAddress:(id)a4 connection:(id)a5;
++ (id)outboundWithSessionID:(id)d withDeviceAtAddress:(id)address connection:(id)connection;
 - (DEDIDSConnection)connection;
 - (DEDIDSOutbound)init;
-- (void)addSessionData:(id)a3 withFilename:(id)a4 forSession:(id)a5;
-- (void)adoptFiles:(id)a3 forSession:(id)a4;
-- (void)cancelSession:(id)a3;
-- (void)commitSession:(id)a3;
-- (void)compressionProgress:(unint64_t)a3 total:(unint64_t)a4 sessionID:(id)a5;
-- (void)deviceSupportsDiagnosticExtensions:(id)a3 session:(id)a4;
-- (void)didAdoptFilesWithError:(id)a3 forSession:(id)a4;
-- (void)didCancelSession:(id)a3;
-- (void)didCommitSession:(id)a3;
-- (void)didFinishUploadingWithError:(id)a3 sessionID:(id)a4;
-- (void)didGetState:(int64_t)a3 info:(id)a4 sessionID:(id)a5;
-- (void)didLoadTextDataForExtensions:(id)a3 localization:(id)a4 session:(id)a5;
-- (void)finishedDiagnosticWithIdentifier:(id)a3 result:(id)a4 session:(id)a5;
-- (void)getSessionStateWithSession:(id)a3;
-- (void)getSessionStatusWithSession:(id)a3;
-- (void)hasCollected:(id)a3 isCollecting:(id)a4 inSession:(id)a5;
-- (void)hasCollected:(id)a3 isCollecting:(id)a4 withIdentifiers:(id)a5 inSession:(id)a6;
-- (void)listAvailableExtensionsForSession:(id)a3;
-- (void)loadTextDataForExtensions:(id)a3 localization:(id)a4 sessionID:(id)a5;
-- (void)pingSession:(id)a3;
-- (void)pongSession:(id)a3;
-- (void)presentNotificationForSession:(id)a3;
-- (void)removeNotificationForSession:(id)a3;
-- (void)scheduleNotificationForSession:(id)a3;
-- (void)startDiagnosticWithIdentifier:(id)a3 parameters:(id)a4 deferRunUntil:(id)a5 session:(id)a6;
-- (void)startDiagnosticWithIdentifier:(id)a3 parameters:(id)a4 session:(id)a5;
-- (void)syncSessionStatusWithSession:(id)a3;
-- (void)terminateExtension:(id)a3 info:(id)a4 session:(id)a5;
-- (void)unscheduleNotificationForSession:(id)a3;
-- (void)uploadProgress:(unint64_t)a3 total:(unint64_t)a4 sessionID:(id)a5;
+- (void)addSessionData:(id)data withFilename:(id)filename forSession:(id)session;
+- (void)adoptFiles:(id)files forSession:(id)session;
+- (void)cancelSession:(id)session;
+- (void)commitSession:(id)session;
+- (void)compressionProgress:(unint64_t)progress total:(unint64_t)total sessionID:(id)d;
+- (void)deviceSupportsDiagnosticExtensions:(id)extensions session:(id)session;
+- (void)didAdoptFilesWithError:(id)error forSession:(id)session;
+- (void)didCancelSession:(id)session;
+- (void)didCommitSession:(id)session;
+- (void)didFinishUploadingWithError:(id)error sessionID:(id)d;
+- (void)didGetState:(int64_t)state info:(id)info sessionID:(id)d;
+- (void)didLoadTextDataForExtensions:(id)extensions localization:(id)localization session:(id)session;
+- (void)finishedDiagnosticWithIdentifier:(id)identifier result:(id)result session:(id)session;
+- (void)getSessionStateWithSession:(id)session;
+- (void)getSessionStatusWithSession:(id)session;
+- (void)hasCollected:(id)collected isCollecting:(id)collecting inSession:(id)session;
+- (void)hasCollected:(id)collected isCollecting:(id)collecting withIdentifiers:(id)identifiers inSession:(id)session;
+- (void)listAvailableExtensionsForSession:(id)session;
+- (void)loadTextDataForExtensions:(id)extensions localization:(id)localization sessionID:(id)d;
+- (void)pingSession:(id)session;
+- (void)pongSession:(id)session;
+- (void)presentNotificationForSession:(id)session;
+- (void)removeNotificationForSession:(id)session;
+- (void)scheduleNotificationForSession:(id)session;
+- (void)startDiagnosticWithIdentifier:(id)identifier parameters:(id)parameters deferRunUntil:(id)until session:(id)session;
+- (void)startDiagnosticWithIdentifier:(id)identifier parameters:(id)parameters session:(id)session;
+- (void)syncSessionStatusWithSession:(id)session;
+- (void)terminateExtension:(id)extension info:(id)info session:(id)session;
+- (void)unscheduleNotificationForSession:(id)session;
+- (void)uploadProgress:(unint64_t)progress total:(unint64_t)total sessionID:(id)d;
 @end
 
 @implementation DEDIDSOutbound
 
-+ (id)outboundWithSessionID:(id)a3 withDeviceAtAddress:(id)a4 connection:(id)a5
++ (id)outboundWithSessionID:(id)d withDeviceAtAddress:(id)address connection:(id)connection
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  connectionCopy = connection;
+  addressCopy = address;
+  dCopy = d;
   v10 = objc_alloc_init(DEDIDSOutbound);
-  [(DEDIDSOutbound *)v10 setConnection:v7];
+  [(DEDIDSOutbound *)v10 setConnection:connectionCopy];
 
-  [(DEDIDSOutbound *)v10 setDeviceAddress:v8];
-  [(DEDIDSOutbound *)v10 setSessionID:v9];
+  [(DEDIDSOutbound *)v10 setDeviceAddress:addressCopy];
+  [(DEDIDSOutbound *)v10 setSessionID:dCopy];
 
   return v10;
 }
@@ -73,86 +73,86 @@
   return v2;
 }
 
-- (void)pingSession:(id)a3
+- (void)pingSession:(id)session
 {
-  v8 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  if (v8)
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (sessionCopy)
   {
-    [v4 setValue:v8 forKey:@"sessionID"];
+    [dictionary setValue:sessionCopy forKey:@"sessionID"];
   }
 
-  v5 = [(DEDIDSOutbound *)self connection];
-  v6 = [DEDIDSConnection packPayload:v4];
-  v7 = [(DEDIDSOutbound *)self deviceAddress];
-  [v5 sendMessage:10 withData:v6 forIDSDeviceID:v7 isResponse:0];
+  connection = [(DEDIDSOutbound *)self connection];
+  v6 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:10 withData:v6 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)terminateExtension:(id)a3 info:(id)a4 session:(id)a5
+- (void)terminateExtension:(id)extension info:(id)info session:(id)session
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  if (v14 && v9)
+  extensionCopy = extension;
+  infoCopy = info;
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (extensionCopy && sessionCopy)
   {
-    [v10 setValue:v9 forKey:@"sessionID"];
-    [v10 setValue:v14 forKey:@"triggerDE"];
+    [dictionary setValue:sessionCopy forKey:@"sessionID"];
+    [dictionary setValue:extensionCopy forKey:@"triggerDE"];
   }
 
-  if (v8)
+  if (infoCopy)
   {
-    [v10 setValue:v8 forKey:@"triggerDEParams"];
+    [dictionary setValue:infoCopy forKey:@"triggerDEParams"];
   }
 
-  v11 = [(DEDIDSOutbound *)self connection];
-  v12 = [DEDIDSConnection packPayload:v10];
-  v13 = [(DEDIDSOutbound *)self deviceAddress];
-  [v11 sendMessage:12 withData:v12 forIDSDeviceID:v13 isResponse:0];
+  connection = [(DEDIDSOutbound *)self connection];
+  v12 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:12 withData:v12 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)pongSession:(id)a3
+- (void)pongSession:(id)session
 {
-  v8 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  if (v8)
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (sessionCopy)
   {
-    [v4 setValue:v8 forKey:@"sessionID"];
+    [dictionary setValue:sessionCopy forKey:@"sessionID"];
   }
 
-  v5 = [(DEDIDSOutbound *)self connection];
-  v6 = [DEDIDSConnection packPayload:v4];
-  v7 = [(DEDIDSOutbound *)self deviceAddress];
-  [v5 sendMessage:11 withData:v6 forIDSDeviceID:v7 isResponse:0];
+  connection = [(DEDIDSOutbound *)self connection];
+  v6 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:11 withData:v6 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)listAvailableExtensionsForSession:(id)a3
+- (void)listAvailableExtensionsForSession:(id)session
 {
-  v8 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  if (v8)
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (sessionCopy)
   {
-    [v4 setValue:v8 forKey:@"sessionID"];
+    [dictionary setValue:sessionCopy forKey:@"sessionID"];
   }
 
-  v5 = [(DEDIDSOutbound *)self connection];
-  v6 = [DEDIDSConnection packPayload:v4];
-  v7 = [(DEDIDSOutbound *)self deviceAddress];
-  [v5 sendMessage:2 withData:v6 forIDSDeviceID:v7 isResponse:0];
+  connection = [(DEDIDSOutbound *)self connection];
+  v6 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:2 withData:v6 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)deviceSupportsDiagnosticExtensions:(id)a3 session:(id)a4
+- (void)deviceSupportsDiagnosticExtensions:(id)extensions session:(id)session
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB38] dictionary];
-  v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  extensionsCopy = extensions;
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(extensionsCopy, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = v6;
+  v10 = extensionsCopy;
   v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
@@ -168,8 +168,8 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v20 + 1) + 8 * v14) serialize];
-        [v9 addObject:v15];
+        serialize = [*(*(&v20 + 1) + 8 * v14) serialize];
+        [v9 addObject:serialize];
 
         ++v14;
       }
@@ -181,141 +181,141 @@
     while (v12);
   }
 
-  [v8 setValue:v7 forKey:@"sessionID"];
-  [v8 setValue:v9 forKey:@"getDEList"];
-  v16 = [(DEDIDSOutbound *)self connection];
-  v17 = [DEDIDSConnection packPayload:v8];
-  v18 = [(DEDIDSOutbound *)self deviceAddress];
-  [v16 sendMessage:3 withData:v17 forIDSDeviceID:v18 isResponse:0];
+  [dictionary setValue:sessionCopy forKey:@"sessionID"];
+  [dictionary setValue:v9 forKey:@"getDEList"];
+  connection = [(DEDIDSOutbound *)self connection];
+  v17 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:3 withData:v17 forIDSDeviceID:deviceAddress isResponse:0];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startDiagnosticWithIdentifier:(id)a3 parameters:(id)a4 session:(id)a5
+- (void)startDiagnosticWithIdentifier:(id)identifier parameters:(id)parameters session:(id)session
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  if (v14 && v9)
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (identifierCopy && sessionCopy)
   {
-    [v10 setValue:v9 forKey:@"sessionID"];
-    [v10 setValue:v14 forKey:@"triggerDE"];
-    [v10 setValue:v8 forKey:@"triggerDEParams"];
+    [dictionary setValue:sessionCopy forKey:@"sessionID"];
+    [dictionary setValue:identifierCopy forKey:@"triggerDE"];
+    [dictionary setValue:parametersCopy forKey:@"triggerDEParams"];
   }
 
-  v11 = [(DEDIDSOutbound *)self connection];
-  v12 = [DEDIDSConnection packPayload:v10];
-  v13 = [(DEDIDSOutbound *)self deviceAddress];
-  [v11 sendMessage:4 withData:v12 forIDSDeviceID:v13 isResponse:0];
+  connection = [(DEDIDSOutbound *)self connection];
+  v12 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:4 withData:v12 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)startDiagnosticWithIdentifier:(id)a3 parameters:(id)a4 deferRunUntil:(id)a5 session:(id)a6
+- (void)startDiagnosticWithIdentifier:(id)identifier parameters:(id)parameters deferRunUntil:(id)until session:(id)session
 {
-  v17 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [MEMORY[0x277CBEB38] dictionary];
-  if (v17 && v12)
+  identifierCopy = identifier;
+  parametersCopy = parameters;
+  untilCopy = until;
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (identifierCopy && sessionCopy)
   {
-    [v13 setValue:v12 forKey:@"sessionID"];
-    [v13 setValue:v17 forKey:@"triggerDE"];
-    [v13 setValue:v10 forKey:@"triggerDEParams"];
-    [v13 setValue:v11 forKey:@"triggerDERunDate"];
+    [dictionary setValue:sessionCopy forKey:@"sessionID"];
+    [dictionary setValue:identifierCopy forKey:@"triggerDE"];
+    [dictionary setValue:parametersCopy forKey:@"triggerDEParams"];
+    [dictionary setValue:untilCopy forKey:@"triggerDERunDate"];
   }
 
-  v14 = [(DEDIDSOutbound *)self connection];
-  v15 = [DEDIDSConnection packPayload:v13];
-  v16 = [(DEDIDSOutbound *)self deviceAddress];
-  [v14 sendMessage:4 withData:v15 forIDSDeviceID:v16 isResponse:0];
+  connection = [(DEDIDSOutbound *)self connection];
+  v15 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:4 withData:v15 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)finishedDiagnosticWithIdentifier:(id)a3 result:(id)a4 session:(id)a5
+- (void)finishedDiagnosticWithIdentifier:(id)identifier result:(id)result session:(id)session
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  if (v8 && v15 && v9)
+  identifierCopy = identifier;
+  resultCopy = result;
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (resultCopy && identifierCopy && sessionCopy)
   {
-    [v10 setValue:v9 forKey:@"sessionID"];
-    [v10 setValue:v15 forKey:@"triggerDE"];
-    v11 = [v8 serialize];
-    [v10 setValue:v11 forKey:@"finishedDEDGroups"];
+    [dictionary setValue:sessionCopy forKey:@"sessionID"];
+    [dictionary setValue:identifierCopy forKey:@"triggerDE"];
+    serialize = [resultCopy serialize];
+    [dictionary setValue:serialize forKey:@"finishedDEDGroups"];
   }
 
-  v12 = [(DEDIDSOutbound *)self connection];
-  v13 = [DEDIDSConnection packPayload:v10];
-  v14 = [(DEDIDSOutbound *)self deviceAddress];
-  [v12 sendMessage:5 withData:v13 forIDSDeviceID:v14 isResponse:0];
+  connection = [(DEDIDSOutbound *)self connection];
+  v13 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:5 withData:v13 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)getSessionStatusWithSession:(id)a3
+- (void)getSessionStatusWithSession:(id)session
 {
-  v8 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  if (v8)
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (sessionCopy)
   {
-    [v4 setValue:v8 forKey:@"sessionID"];
+    [dictionary setValue:sessionCopy forKey:@"sessionID"];
   }
 
-  v5 = [(DEDIDSOutbound *)self connection];
-  v6 = [DEDIDSConnection packPayload:v4];
-  v7 = [(DEDIDSOutbound *)self deviceAddress];
-  [v5 sendMessage:13 withData:v6 forIDSDeviceID:v7 isResponse:0];
+  connection = [(DEDIDSOutbound *)self connection];
+  v6 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:13 withData:v6 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)getSessionStateWithSession:(id)a3
+- (void)getSessionStateWithSession:(id)session
 {
-  v8 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  if (v8)
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (sessionCopy)
   {
-    [v4 setValue:v8 forKey:@"sessionID"];
+    [dictionary setValue:sessionCopy forKey:@"sessionID"];
   }
 
-  v5 = [(DEDIDSOutbound *)self connection];
-  v6 = [DEDIDSConnection packPayload:v4];
-  v7 = [(DEDIDSOutbound *)self deviceAddress];
-  [v5 sendMessage:24 withData:v6 forIDSDeviceID:v7 isResponse:0];
+  connection = [(DEDIDSOutbound *)self connection];
+  v6 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:24 withData:v6 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)addSessionData:(id)a3 withFilename:(id)a4 forSession:(id)a5
+- (void)addSessionData:(id)data withFilename:(id)filename forSession:(id)session
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  v11 = v10;
-  if (v9)
+  dataCopy = data;
+  filenameCopy = filename;
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v11 = dictionary;
+  if (sessionCopy)
   {
-    [v10 setValue:v9 forKey:@"sessionID"];
-    [v11 setValue:v15 forKey:@"sessionData"];
-    [v11 setValue:v8 forKey:@"sessionDataFilename"];
+    [dictionary setValue:sessionCopy forKey:@"sessionID"];
+    [v11 setValue:dataCopy forKey:@"sessionData"];
+    [v11 setValue:filenameCopy forKey:@"sessionDataFilename"];
   }
 
-  v12 = [(DEDIDSOutbound *)self connection];
+  connection = [(DEDIDSOutbound *)self connection];
   v13 = [DEDIDSConnection packPayload:v11];
-  v14 = [(DEDIDSOutbound *)self deviceAddress];
-  [v12 sendMessage:30 withData:v13 forIDSDeviceID:v14 isResponse:0];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:30 withData:v13 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)didGetState:(int64_t)a3 info:(id)a4 sessionID:(id)a5
+- (void)didGetState:(int64_t)state info:(id)info sessionID:(id)d
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  v11 = v10;
-  if (v9)
+  infoCopy = info;
+  dCopy = d;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v11 = dictionary;
+  if (dCopy)
   {
-    [v10 setObject:v9 forKeyedSubscript:@"sessionID"];
-    v12 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    [dictionary setObject:dCopy forKeyedSubscript:@"sessionID"];
+    v12 = [MEMORY[0x277CCABB0] numberWithInteger:state];
     [v11 setObject:v12 forKeyedSubscript:@"sessionState"];
 
-    if (v8)
+    if (infoCopy)
     {
-      v13 = v8;
+      v13 = infoCopy;
     }
 
     else
@@ -335,318 +335,318 @@
     }
   }
 
-  v15 = [(DEDIDSOutbound *)self connection];
+  connection = [(DEDIDSOutbound *)self connection];
   v16 = [DEDIDSConnection packPayload:v11];
-  v17 = [(DEDIDSOutbound *)self deviceAddress];
-  [v15 sendMessage:25 withData:v16 forIDSDeviceID:v17 isResponse:0];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:25 withData:v16 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)hasCollected:(id)a3 isCollecting:(id)a4 inSession:(id)a5
+- (void)hasCollected:(id)collected isCollecting:(id)collecting inSession:(id)session
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  if (v16 && v9)
+  collectedCopy = collected;
+  collectingCopy = collecting;
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (collectedCopy && sessionCopy)
   {
-    [v10 setObject:v9 forKeyedSubscript:@"sessionID"];
-    v11 = [v8 ded_mapWithBlock:&__block_literal_global_21];
-    [v10 setObject:v11 forKeyedSubscript:@"runningDEs"];
+    [dictionary setObject:sessionCopy forKeyedSubscript:@"sessionID"];
+    v11 = [collectingCopy ded_mapWithBlock:&__block_literal_global_21];
+    [dictionary setObject:v11 forKeyedSubscript:@"runningDEs"];
 
-    v12 = [v16 ded_mapWithBlock:&__block_literal_global_54];
-    [v10 setObject:v12 forKeyedSubscript:@"finishedDEDGroups"];
+    v12 = [collectedCopy ded_mapWithBlock:&__block_literal_global_54];
+    [dictionary setObject:v12 forKeyedSubscript:@"finishedDEDGroups"];
   }
 
-  v13 = [(DEDIDSOutbound *)self connection];
-  v14 = [DEDIDSConnection packPayload:v10];
-  v15 = [(DEDIDSOutbound *)self deviceAddress];
-  [v13 sendMessage:14 withData:v14 forIDSDeviceID:v15 isResponse:0];
+  connection = [(DEDIDSOutbound *)self connection];
+  v14 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:14 withData:v14 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)hasCollected:(id)a3 isCollecting:(id)a4 withIdentifiers:(id)a5 inSession:(id)a6
+- (void)hasCollected:(id)collected isCollecting:(id)collecting withIdentifiers:(id)identifiers inSession:(id)session
 {
-  v20 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [MEMORY[0x277CBEB38] dictionary];
-  if (v20 && v12)
+  collectedCopy = collected;
+  collectingCopy = collecting;
+  identifiersCopy = identifiers;
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (collectedCopy && sessionCopy)
   {
-    [v13 setObject:v12 forKeyedSubscript:@"sessionID"];
-    v14 = [v10 ded_mapWithBlock:&__block_literal_global_56_0];
-    [v13 setObject:v14 forKeyedSubscript:@"runningDEs"];
+    [dictionary setObject:sessionCopy forKeyedSubscript:@"sessionID"];
+    v14 = [collectingCopy ded_mapWithBlock:&__block_literal_global_56_0];
+    [dictionary setObject:v14 forKeyedSubscript:@"runningDEs"];
 
-    v15 = [v20 ded_mapWithBlock:&__block_literal_global_58];
-    [v13 setObject:v15 forKeyedSubscript:@"finishedDEDGroups"];
+    v15 = [collectedCopy ded_mapWithBlock:&__block_literal_global_58];
+    [dictionary setObject:v15 forKeyedSubscript:@"finishedDEDGroups"];
 
-    v16 = [v11 ded_mapWithBlock:&__block_literal_global_60];
-    [v13 setObject:v16 forKeyedSubscript:@"extensionIdentifiers"];
+    v16 = [identifiersCopy ded_mapWithBlock:&__block_literal_global_60];
+    [dictionary setObject:v16 forKeyedSubscript:@"extensionIdentifiers"];
   }
 
-  v17 = [(DEDIDSOutbound *)self connection];
-  v18 = [DEDIDSConnection packPayload:v13];
-  v19 = [(DEDIDSOutbound *)self deviceAddress];
-  [v17 sendMessage:23 withData:v18 forIDSDeviceID:v19 isResponse:0];
+  connection = [(DEDIDSOutbound *)self connection];
+  v18 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:23 withData:v18 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)adoptFiles:(id)a3 forSession:(id)a4
+- (void)adoptFiles:(id)files forSession:(id)session
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
-  v8 = a3;
-  v12 = [v6 dictionary];
-  [v12 setObject:v8 forKeyedSubscript:@"filesForAdopt"];
+  sessionCopy = session;
+  filesCopy = files;
+  dictionary = [v6 dictionary];
+  [dictionary setObject:filesCopy forKeyedSubscript:@"filesForAdopt"];
 
-  [v12 setObject:v7 forKeyedSubscript:@"sessionID"];
-  v9 = [(DEDIDSOutbound *)self connection];
-  v10 = [DEDIDSConnection packPayload:v12];
-  v11 = [(DEDIDSOutbound *)self deviceAddress];
-  [v9 sendMessage:15 withData:v10 forIDSDeviceID:v11 isResponse:0];
+  [dictionary setObject:sessionCopy forKeyedSubscript:@"sessionID"];
+  connection = [(DEDIDSOutbound *)self connection];
+  v10 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:15 withData:v10 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)didAdoptFilesWithError:(id)a3 forSession:(id)a4
+- (void)didAdoptFilesWithError:(id)error forSession:(id)session
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
-  v8 = a3;
-  v12 = [v6 dictionary];
-  [v12 setObject:v8 forKeyedSubscript:@"error"];
+  sessionCopy = session;
+  errorCopy = error;
+  dictionary = [v6 dictionary];
+  [dictionary setObject:errorCopy forKeyedSubscript:@"error"];
 
-  [v12 setObject:v7 forKeyedSubscript:@"sessionID"];
-  v9 = [(DEDIDSOutbound *)self connection];
-  v10 = [DEDIDSConnection packPayload:v12];
-  v11 = [(DEDIDSOutbound *)self deviceAddress];
-  [v9 sendMessage:16 withData:v10 forIDSDeviceID:v11 isResponse:0];
+  [dictionary setObject:sessionCopy forKeyedSubscript:@"sessionID"];
+  connection = [(DEDIDSOutbound *)self connection];
+  v10 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:16 withData:v10 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)compressionProgress:(unint64_t)a3 total:(unint64_t)a4 sessionID:(id)a5
+- (void)compressionProgress:(unint64_t)progress total:(unint64_t)total sessionID:(id)d
 {
   v8 = MEMORY[0x277CBEB38];
-  v9 = a5;
-  v15 = [v8 dictionary];
-  [v15 setObject:v9 forKeyedSubscript:@"sessionID"];
+  dCopy = d;
+  dictionary = [v8 dictionary];
+  [dictionary setObject:dCopy forKeyedSubscript:@"sessionID"];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
-  [v15 setObject:v10 forKeyedSubscript:@"compressedBytes"];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:progress];
+  [dictionary setObject:v10 forKeyedSubscript:@"compressedBytes"];
 
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
-  [v15 setObject:v11 forKeyedSubscript:@"totalBytes"];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:total];
+  [dictionary setObject:v11 forKeyedSubscript:@"totalBytes"];
 
-  v12 = [(DEDIDSOutbound *)self connection];
-  v13 = [DEDIDSConnection packPayload:v15];
-  v14 = [(DEDIDSOutbound *)self deviceAddress];
-  [v12 sendMessage:32 withData:v13 forIDSDeviceID:v14 isResponse:0];
+  connection = [(DEDIDSOutbound *)self connection];
+  v13 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:32 withData:v13 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)uploadProgress:(unint64_t)a3 total:(unint64_t)a4 sessionID:(id)a5
+- (void)uploadProgress:(unint64_t)progress total:(unint64_t)total sessionID:(id)d
 {
   v8 = MEMORY[0x277CBEB38];
-  v9 = a5;
-  v15 = [v8 dictionary];
-  [v15 setObject:v9 forKeyedSubscript:@"sessionID"];
+  dCopy = d;
+  dictionary = [v8 dictionary];
+  [dictionary setObject:dCopy forKeyedSubscript:@"sessionID"];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
-  [v15 setObject:v10 forKeyedSubscript:@"uploadedBytes"];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:progress];
+  [dictionary setObject:v10 forKeyedSubscript:@"uploadedBytes"];
 
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
-  [v15 setObject:v11 forKeyedSubscript:@"totalBytes"];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:total];
+  [dictionary setObject:v11 forKeyedSubscript:@"totalBytes"];
 
-  v12 = [(DEDIDSOutbound *)self connection];
-  v13 = [DEDIDSConnection packPayload:v15];
-  v14 = [(DEDIDSOutbound *)self deviceAddress];
-  [v12 sendMessage:17 withData:v13 forIDSDeviceID:v14 isResponse:0];
+  connection = [(DEDIDSOutbound *)self connection];
+  v13 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:17 withData:v13 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)didFinishUploadingWithError:(id)a3 sessionID:(id)a4
+- (void)didFinishUploadingWithError:(id)error sessionID:(id)d
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
-  v8 = a3;
-  v12 = [v6 dictionary];
-  [v12 setObject:v8 forKeyedSubscript:@"error"];
+  dCopy = d;
+  errorCopy = error;
+  dictionary = [v6 dictionary];
+  [dictionary setObject:errorCopy forKeyedSubscript:@"error"];
 
-  [v12 setObject:v7 forKeyedSubscript:@"sessionID"];
-  v9 = [(DEDIDSOutbound *)self connection];
-  v10 = [DEDIDSConnection packPayload:v12];
-  v11 = [(DEDIDSOutbound *)self deviceAddress];
-  [v9 sendMessage:33 withData:v10 forIDSDeviceID:v11 isResponse:0];
+  [dictionary setObject:dCopy forKeyedSubscript:@"sessionID"];
+  connection = [(DEDIDSOutbound *)self connection];
+  v10 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:33 withData:v10 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)commitSession:(id)a3
+- (void)commitSession:(id)session
 {
-  v8 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  if (v8)
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (sessionCopy)
   {
-    [v4 setValue:v8 forKey:@"sessionID"];
+    [dictionary setValue:sessionCopy forKey:@"sessionID"];
   }
 
-  v5 = [(DEDIDSOutbound *)self connection];
-  v6 = [DEDIDSConnection packPayload:v4];
-  v7 = [(DEDIDSOutbound *)self deviceAddress];
-  [v5 sendMessage:18 withData:v6 forIDSDeviceID:v7 isResponse:0];
+  connection = [(DEDIDSOutbound *)self connection];
+  v6 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:18 withData:v6 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)didCommitSession:(id)a3
+- (void)didCommitSession:(id)session
 {
-  v8 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  if (v8)
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (sessionCopy)
   {
-    [v4 setValue:v8 forKey:@"sessionID"];
+    [dictionary setValue:sessionCopy forKey:@"sessionID"];
   }
 
-  v5 = [(DEDIDSOutbound *)self connection];
-  v6 = [DEDIDSConnection packPayload:v4];
-  v7 = [(DEDIDSOutbound *)self deviceAddress];
-  [v5 sendMessage:19 withData:v6 forIDSDeviceID:v7 isResponse:0];
+  connection = [(DEDIDSOutbound *)self connection];
+  v6 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:19 withData:v6 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)cancelSession:(id)a3
+- (void)cancelSession:(id)session
 {
-  v8 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  if (v8)
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (sessionCopy)
   {
-    [v4 setValue:v8 forKey:@"sessionID"];
+    [dictionary setValue:sessionCopy forKey:@"sessionID"];
   }
 
-  v5 = [(DEDIDSOutbound *)self connection];
-  v6 = [DEDIDSConnection packPayload:v4];
-  v7 = [(DEDIDSOutbound *)self deviceAddress];
-  [v5 sendMessage:20 withData:v6 forIDSDeviceID:v7 isResponse:0];
+  connection = [(DEDIDSOutbound *)self connection];
+  v6 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:20 withData:v6 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)syncSessionStatusWithSession:(id)a3
+- (void)syncSessionStatusWithSession:(id)session
 {
-  v8 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  if (v8)
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (sessionCopy)
   {
-    [v4 setValue:v8 forKey:@"sessionID"];
+    [dictionary setValue:sessionCopy forKey:@"sessionID"];
   }
 
-  v5 = [(DEDIDSOutbound *)self connection];
-  v6 = [DEDIDSConnection packPayload:v4];
-  v7 = [(DEDIDSOutbound *)self deviceAddress];
-  [v5 sendMessage:22 withData:v6 forIDSDeviceID:v7 isResponse:0];
+  connection = [(DEDIDSOutbound *)self connection];
+  v6 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:22 withData:v6 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)didCancelSession:(id)a3
+- (void)didCancelSession:(id)session
 {
-  v8 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  if (v8)
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (sessionCopy)
   {
-    [v4 setValue:v8 forKey:@"sessionID"];
+    [dictionary setValue:sessionCopy forKey:@"sessionID"];
   }
 
-  v5 = [(DEDIDSOutbound *)self connection];
-  v6 = [DEDIDSConnection packPayload:v4];
-  v7 = [(DEDIDSOutbound *)self deviceAddress];
-  [v5 sendMessage:21 withData:v6 forIDSDeviceID:v7 isResponse:0];
+  connection = [(DEDIDSOutbound *)self connection];
+  v6 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:21 withData:v6 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)scheduleNotificationForSession:(id)a3
+- (void)scheduleNotificationForSession:(id)session
 {
-  v8 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  if (v8)
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (sessionCopy)
   {
-    [v4 setValue:v8 forKey:@"sessionID"];
+    [dictionary setValue:sessionCopy forKey:@"sessionID"];
   }
 
-  v5 = [(DEDIDSOutbound *)self connection];
-  v6 = [DEDIDSConnection packPayload:v4];
-  v7 = [(DEDIDSOutbound *)self deviceAddress];
-  [v5 sendMessage:26 withData:v6 forIDSDeviceID:v7 isResponse:0];
+  connection = [(DEDIDSOutbound *)self connection];
+  v6 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:26 withData:v6 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)unscheduleNotificationForSession:(id)a3
+- (void)unscheduleNotificationForSession:(id)session
 {
-  v8 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  if (v8)
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (sessionCopy)
   {
-    [v4 setValue:v8 forKey:@"sessionID"];
+    [dictionary setValue:sessionCopy forKey:@"sessionID"];
   }
 
-  v5 = [(DEDIDSOutbound *)self connection];
-  v6 = [DEDIDSConnection packPayload:v4];
-  v7 = [(DEDIDSOutbound *)self deviceAddress];
-  [v5 sendMessage:27 withData:v6 forIDSDeviceID:v7 isResponse:0];
+  connection = [(DEDIDSOutbound *)self connection];
+  v6 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:27 withData:v6 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)loadTextDataForExtensions:(id)a3 localization:(id)a4 sessionID:(id)a5
+- (void)loadTextDataForExtensions:(id)extensions localization:(id)localization sessionID:(id)d
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  v11 = v10;
-  if (v9)
+  extensionsCopy = extensions;
+  localizationCopy = localization;
+  dCopy = d;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v11 = dictionary;
+  if (dCopy)
   {
-    [v10 setValue:v9 forKey:@"sessionID"];
-    v12 = [v16 ded_flatMapWithBlock:&__block_literal_global_81_0];
+    [dictionary setValue:dCopy forKey:@"sessionID"];
+    v12 = [extensionsCopy ded_flatMapWithBlock:&__block_literal_global_81_0];
     [v11 setValue:v12 forKey:@"extensions"];
-    [v11 setValue:v8 forKey:@"localization"];
+    [v11 setValue:localizationCopy forKey:@"localization"];
   }
 
-  v13 = [(DEDIDSOutbound *)self connection];
+  connection = [(DEDIDSOutbound *)self connection];
   v14 = [DEDIDSConnection packPayload:v11];
-  v15 = [(DEDIDSOutbound *)self deviceAddress];
-  [v13 sendMessage:31 withData:v14 forIDSDeviceID:v15 isResponse:0];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:31 withData:v14 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)didLoadTextDataForExtensions:(id)a3 localization:(id)a4 session:(id)a5
+- (void)didLoadTextDataForExtensions:(id)extensions localization:(id)localization session:(id)session
 {
-  v16 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  v11 = v10;
-  if (v9)
+  extensionsCopy = extensions;
+  localizationCopy = localization;
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v11 = dictionary;
+  if (sessionCopy)
   {
-    [v10 setValue:v9 forKey:@"sessionID"];
-    v12 = [v16 ded_flatMapWithBlock:&__block_literal_global_89];
+    [dictionary setValue:sessionCopy forKey:@"sessionID"];
+    v12 = [extensionsCopy ded_flatMapWithBlock:&__block_literal_global_89];
     [v11 setValue:v12 forKey:@"extensions"];
-    [v11 setValue:v8 forKey:@"localization"];
+    [v11 setValue:localizationCopy forKey:@"localization"];
   }
 
-  v13 = [(DEDIDSOutbound *)self connection];
+  connection = [(DEDIDSOutbound *)self connection];
   v14 = [DEDIDSConnection packPayload:v11];
-  v15 = [(DEDIDSOutbound *)self deviceAddress];
-  [v13 sendMessage:31 withData:v14 forIDSDeviceID:v15 isResponse:1];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:31 withData:v14 forIDSDeviceID:deviceAddress isResponse:1];
 }
 
-- (void)presentNotificationForSession:(id)a3
+- (void)presentNotificationForSession:(id)session
 {
-  v8 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  if (v8)
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (sessionCopy)
   {
-    [v4 setValue:v8 forKey:@"sessionID"];
+    [dictionary setValue:sessionCopy forKey:@"sessionID"];
   }
 
-  v5 = [(DEDIDSOutbound *)self connection];
-  v6 = [DEDIDSConnection packPayload:v4];
-  v7 = [(DEDIDSOutbound *)self deviceAddress];
-  [v5 sendMessage:28 withData:v6 forIDSDeviceID:v7 isResponse:0];
+  connection = [(DEDIDSOutbound *)self connection];
+  v6 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:28 withData:v6 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
-- (void)removeNotificationForSession:(id)a3
+- (void)removeNotificationForSession:(id)session
 {
-  v8 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  if (v8)
+  sessionCopy = session;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (sessionCopy)
   {
-    [v4 setValue:v8 forKey:@"sessionID"];
+    [dictionary setValue:sessionCopy forKey:@"sessionID"];
   }
 
-  v5 = [(DEDIDSOutbound *)self connection];
-  v6 = [DEDIDSConnection packPayload:v4];
-  v7 = [(DEDIDSOutbound *)self deviceAddress];
-  [v5 sendMessage:29 withData:v6 forIDSDeviceID:v7 isResponse:0];
+  connection = [(DEDIDSOutbound *)self connection];
+  v6 = [DEDIDSConnection packPayload:dictionary];
+  deviceAddress = [(DEDIDSOutbound *)self deviceAddress];
+  [connection sendMessage:29 withData:v6 forIDSDeviceID:deviceAddress isResponse:0];
 }
 
 + (id)archivedClasses

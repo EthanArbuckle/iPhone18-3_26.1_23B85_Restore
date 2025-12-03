@@ -7,26 +7,26 @@
 
 - (BOOL)wf_isVeryLight
 {
-  [a1 red];
+  [self red];
   if (v2 < 0.95)
   {
     return 0;
   }
 
-  [a1 green];
+  [self green];
   if (v3 < 0.95)
   {
     return 0;
   }
 
-  [a1 blue];
+  [self blue];
   return v5 >= 0.95;
 }
 
 - (BOOL)wf_isVeryDark
 {
   v2 = 0.0;
-  [a1 getHue:0 saturation:0 value:&v2 alpha:0];
+  [self getHue:0 saturation:0 value:&v2 alpha:0];
   return v2 <= 0.1;
 }
 

@@ -1,5 +1,5 @@
 @interface PLSingleQuery
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)dateValue;
 - (NSDate)secondDateValue;
 - (NSString)secondStringValue;
@@ -8,7 +8,7 @@
 - (PLQueryCircularRegion)secondCircularRegionValue;
 - (double)doubleValue;
 - (double)secondDoubleValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)logDescription;
@@ -16,68 +16,68 @@
 - (int64_t)integerValue;
 - (int64_t)secondIntegerValue;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setCircularRegionValue:(id)a3;
-- (void)setDateValue:(id)a3;
-- (void)setDoubleValue:(double)a3;
-- (void)setHasKey:(BOOL)a3;
-- (void)setHasUnit:(BOOL)a3;
-- (void)setHasValueType:(BOOL)a3;
-- (void)setIntegerValue:(int64_t)a3;
-- (void)setSecondCircularRegionValue:(id)a3;
-- (void)setSecondDateValue:(id)a3;
-- (void)setSecondDoubleValue:(double)a3;
-- (void)setSecondIntegerValue:(int64_t)a3;
-- (void)setSecondStringValue:(id)a3;
-- (void)setStringValue:(id)a3;
-- (void)setValueAndType:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setCircularRegionValue:(id)value;
+- (void)setDateValue:(id)value;
+- (void)setDoubleValue:(double)value;
+- (void)setHasKey:(BOOL)key;
+- (void)setHasUnit:(BOOL)unit;
+- (void)setHasValueType:(BOOL)type;
+- (void)setIntegerValue:(int64_t)value;
+- (void)setSecondCircularRegionValue:(id)value;
+- (void)setSecondDateValue:(id)value;
+- (void)setSecondDoubleValue:(double)value;
+- (void)setSecondIntegerValue:(int64_t)value;
+- (void)setSecondStringValue:(id)value;
+- (void)setStringValue:(id)value;
+- (void)setValueAndType:(id)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLSingleQuery
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 48);
+  fromCopy = from;
+  v5 = *(fromCopy + 48);
   if ((v5 & 2) != 0)
   {
-    self->_key = *(v4 + 6);
+    self->_key = *(fromCopy + 6);
     *&self->_has |= 2u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
   }
 
   if ((v5 & 8) != 0)
   {
-    self->_valueType = *(v4 + 11);
+    self->_valueType = *(fromCopy + 11);
     *&self->_has |= 8u;
   }
 
-  v7 = v4;
-  if (*(v4 + 2))
+  v7 = fromCopy;
+  if (*(fromCopy + 2))
   {
     [(PLSingleQuery *)self setFirstValue:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(PLSingleQuery *)self setSecondValue:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 48);
+  v6 = *(fromCopy + 48);
   if (v6)
   {
-    self->_comparator = *(v4 + 2);
+    self->_comparator = *(fromCopy + 2);
     *&self->_has |= 1u;
-    v6 = *(v4 + 48);
+    v6 = *(fromCopy + 48);
   }
 
   if ((v6 & 4) != 0)
   {
-    self->_unit = *(v4 + 10);
+    self->_unit = *(fromCopy + 10);
     *&self->_has |= 4u;
   }
 }
@@ -132,23 +132,23 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_key != *(v4 + 6))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_key != *(equalCopy + 6))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
 LABEL_25:
     v7 = 0;
@@ -157,25 +157,25 @@ LABEL_25:
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 48) & 8) == 0 || self->_valueType != *(v4 + 11))
+    if ((*(equalCopy + 48) & 8) == 0 || self->_valueType != *(equalCopy + 11))
     {
       goto LABEL_25;
     }
   }
 
-  else if ((*(v4 + 48) & 8) != 0)
+  else if ((*(equalCopy + 48) & 8) != 0)
   {
     goto LABEL_25;
   }
 
   firstValue = self->_firstValue;
-  if (firstValue | *(v4 + 2) && ![(NSData *)firstValue isEqual:?])
+  if (firstValue | *(equalCopy + 2) && ![(NSData *)firstValue isEqual:?])
   {
     goto LABEL_25;
   }
 
   secondValue = self->_secondValue;
-  if (secondValue | *(v4 + 4))
+  if (secondValue | *(equalCopy + 4))
   {
     if (![(NSData *)secondValue isEqual:?])
     {
@@ -185,21 +185,21 @@ LABEL_25:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_comparator != *(v4 + 2))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_comparator != *(equalCopy + 2))
     {
       goto LABEL_25;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
     goto LABEL_25;
   }
 
-  v7 = (*(v4 + 48) & 4) == 0;
+  v7 = (*(equalCopy + 48) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 48) & 4) == 0 || self->_unit != *(v4 + 10))
+    if ((*(equalCopy + 48) & 4) == 0 || self->_unit != *(equalCopy + 10))
     {
       goto LABEL_25;
     }
@@ -212,9 +212,9 @@ LABEL_26:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -230,11 +230,11 @@ LABEL_26:
     *(v5 + 48) |= 8u;
   }
 
-  v8 = [(NSData *)self->_firstValue copyWithZone:a3];
+  v8 = [(NSData *)self->_firstValue copyWithZone:zone];
   v9 = *(v6 + 16);
   *(v6 + 16) = v8;
 
-  v10 = [(NSData *)self->_secondValue copyWithZone:a3];
+  v10 = [(NSData *)self->_secondValue copyWithZone:zone];
   v11 = *(v6 + 32);
   *(v6 + 32) = v10;
 
@@ -255,54 +255,54 @@ LABEL_26:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[6] = self->_key;
-    *(v4 + 48) |= 2u;
+    toCopy[6] = self->_key;
+    *(toCopy + 48) |= 2u;
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
-    v4[11] = self->_valueType;
-    *(v4 + 48) |= 8u;
+    toCopy[11] = self->_valueType;
+    *(toCopy + 48) |= 8u;
   }
 
-  v7 = v4;
+  v7 = toCopy;
   if (self->_firstValue)
   {
-    [v4 setFirstValue:?];
-    v4 = v7;
+    [toCopy setFirstValue:?];
+    toCopy = v7;
   }
 
   if (self->_secondValue)
   {
     [v7 setSecondValue:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if (v6)
   {
-    v4[2] = self->_comparator;
-    *(v4 + 48) |= 1u;
+    toCopy[2] = self->_comparator;
+    *(toCopy + 48) |= 1u;
     v6 = self->_has;
   }
 
   if ((v6 & 4) != 0)
   {
-    v4[10] = self->_unit;
-    *(v4 + 48) |= 4u;
+    toCopy[10] = self->_unit;
+    *(toCopy + 48) |= 4u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -340,12 +340,12 @@ LABEL_26:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithInt:self->_key];
-    [v3 setObject:v5 forKey:@"key"];
+    [dictionary setObject:v5 forKey:@"key"];
 
     has = self->_has;
   }
@@ -353,26 +353,26 @@ LABEL_26:
   if ((has & 8) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithInt:self->_valueType];
-    [v3 setObject:v6 forKey:@"valueType"];
+    [dictionary setObject:v6 forKey:@"valueType"];
   }
 
   firstValue = self->_firstValue;
   if (firstValue)
   {
-    [v3 setObject:firstValue forKey:@"firstValue"];
+    [dictionary setObject:firstValue forKey:@"firstValue"];
   }
 
   secondValue = self->_secondValue;
   if (secondValue)
   {
-    [v3 setObject:secondValue forKey:@"secondValue"];
+    [dictionary setObject:secondValue forKey:@"secondValue"];
   }
 
   v9 = self->_has;
   if (v9)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithInt:self->_comparator];
-    [v3 setObject:v10 forKey:@"comparator"];
+    [dictionary setObject:v10 forKey:@"comparator"];
 
     v9 = self->_has;
   }
@@ -380,10 +380,10 @@ LABEL_26:
   if ((v9 & 4) != 0)
   {
     v11 = [MEMORY[0x1E696AD98] numberWithInt:self->_unit];
-    [v3 setObject:v11 forKey:@"unit"];
+    [dictionary setObject:v11 forKey:@"unit"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -392,15 +392,15 @@ LABEL_26:
   v8.receiver = self;
   v8.super_class = PLSingleQuery;
   v4 = [(PLSingleQuery *)&v8 description];
-  v5 = [(PLSingleQuery *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PLSingleQuery *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasUnit:(BOOL)a3
+- (void)setHasUnit:(BOOL)unit
 {
-  if (a3)
+  if (unit)
   {
     v3 = 4;
   }
@@ -413,9 +413,9 @@ LABEL_26:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasValueType:(BOOL)a3
+- (void)setHasValueType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -428,9 +428,9 @@ LABEL_26:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasKey:(BOOL)a3
+- (void)setHasKey:(BOOL)key
 {
-  if (a3)
+  if (key)
   {
     v3 = 2;
   }
@@ -501,20 +501,20 @@ LABEL_26:
   v13 = v6;
   v26 = v13;
   v14 = MEMORY[0x1AC5925C0](v25);
-  v15 = [(PLSingleQuery *)self firstValue];
+  firstValue = [(PLSingleQuery *)self firstValue];
 
-  if (v15)
+  if (firstValue)
   {
-    v16 = [(PLSingleQuery *)self firstValue];
-    (v14)[2](v14, @"firstValue", v16);
+    firstValue2 = [(PLSingleQuery *)self firstValue];
+    (v14)[2](v14, @"firstValue", firstValue2);
   }
 
-  v17 = [(PLSingleQuery *)self secondValue];
+  secondValue = [(PLSingleQuery *)self secondValue];
 
-  if (v17)
+  if (secondValue)
   {
-    v18 = [(PLSingleQuery *)self secondValue];
-    (v14)[2](v14, @"secondValue", v18);
+    secondValue2 = [(PLSingleQuery *)self secondValue];
+    (v14)[2](v14, @"secondValue", secondValue2);
   }
 
   if ([(PLSingleQuery *)self hasComparator])
@@ -636,9 +636,9 @@ LABEL_18:
 LABEL_19:
 }
 
-- (void)setValueAndType:(id)a3
+- (void)setValueAndType:(id)type
 {
-  number = a3;
+  number = type;
   if (![(PLSingleQuery *)self hasValueType])
   {
     objc_opt_class();
@@ -716,17 +716,17 @@ LABEL_19:
 
 - (int)migratedComparator
 {
-  v3 = [(PLSingleQuery *)self comparator];
+  comparator = [(PLSingleQuery *)self comparator];
   v4 = [(PLSingleQuery *)self key];
   if (v4 > 399)
   {
     if ((v4 - 400) >= 4 && v4 != 550 && v4 != 500)
     {
-      return v3;
+      return comparator;
     }
 
 LABEL_18:
-    v8 = v3 == 2;
+    v8 = comparator == 2;
     v9 = 23;
 LABEL_19:
     if (v8)
@@ -734,14 +734,14 @@ LABEL_19:
       return v9;
     }
 
-    return v3;
+    return comparator;
   }
 
   if (v4 > 300)
   {
     if (v4 != 301 && v4 != 305)
     {
-      return v3;
+      return comparator;
     }
 
     goto LABEL_18;
@@ -749,17 +749,17 @@ LABEL_19:
 
   if ((v4 - 200) >= 2)
   {
-    if (v3 == 2 || v3 == 50)
+    if (comparator == 2 || comparator == 50)
     {
       v12 = 23;
     }
 
     else
     {
-      v12 = v3;
+      v12 = comparator;
     }
 
-    if (v3 == 51)
+    if (comparator == 51)
     {
       v9 = 22;
     }
@@ -773,18 +773,18 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v5 = [(PLSingleQuery *)self valueType];
-  if (v3 == 4)
+  valueType = [(PLSingleQuery *)self valueType];
+  if (comparator == 4)
   {
     v6 = 41;
   }
 
   else
   {
-    v6 = v3;
+    v6 = comparator;
   }
 
-  if (v3 == 5)
+  if (comparator == 5)
   {
     v7 = 40;
   }
@@ -794,26 +794,26 @@ LABEL_19:
     v7 = v6;
   }
 
-  if (v5 == 1)
+  if (valueType == 1)
   {
     return v7;
   }
 
-  return v3;
+  return comparator;
 }
 
-- (void)setSecondCircularRegionValue:(id)a3
+- (void)setSecondCircularRegionValue:(id)value
 {
-  v7 = a3;
-  if (v7)
+  valueCopy = value;
+  if (valueCopy)
   {
     if ([(PLSingleQuery *)self valueType]!= 5)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:308 description:{@"Invalid parameter not satisfying: %@", @"!circularRegionValue || (self.valueType == kPLQueryValueType_isCircularRegion)"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:308 description:{@"Invalid parameter not satisfying: %@", @"!circularRegionValue || (self.valueType == kPLQueryValueType_isCircularRegion)"}];
     }
 
-    v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v7 requiringSecureCoding:1 error:0];
+    v5 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:valueCopy requiringSecureCoding:1 error:0];
   }
 
   else
@@ -826,16 +826,16 @@ LABEL_19:
 
 - (PLQueryCircularRegion)secondCircularRegionValue
 {
-  v4 = [(PLSingleQuery *)self secondValue];
-  if (v4)
+  secondValue = [(PLSingleQuery *)self secondValue];
+  if (secondValue)
   {
     if ([(PLSingleQuery *)self valueType]!= 5)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:301 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isCircularRegion"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:301 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isCircularRegion"}];
     }
 
-    v5 = circularRegionFromData(v4);
+    v5 = circularRegionFromData(secondValue);
   }
 
   else
@@ -846,13 +846,13 @@ LABEL_19:
   return v5;
 }
 
-- (void)setCircularRegionValue:(id)a3
+- (void)setCircularRegionValue:(id)value
 {
-  v5 = a3;
-  v8 = v5;
-  if (v5)
+  valueCopy = value;
+  v8 = valueCopy;
+  if (valueCopy)
   {
-    v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:0];
+    v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:valueCopy requiringSecureCoding:1 error:0];
   }
 
   else
@@ -864,8 +864,8 @@ LABEL_19:
   {
     if ([(PLSingleQuery *)self hasSecondValue])
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:291 description:{@"Invalid parameter not satisfying: %@", @"!self.hasSecondValue"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:291 description:{@"Invalid parameter not satisfying: %@", @"!self.hasSecondValue"}];
     }
 
     [(PLSingleQuery *)self setValueType:5];
@@ -876,16 +876,16 @@ LABEL_19:
 
 - (PLQueryCircularRegion)circularRegionValue
 {
-  v4 = [(PLSingleQuery *)self firstValue];
-  if (v4)
+  firstValue = [(PLSingleQuery *)self firstValue];
+  if (firstValue)
   {
     if ([(PLSingleQuery *)self valueType]!= 5)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:279 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isCircularRegion"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:279 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isCircularRegion"}];
     }
 
-    v5 = circularRegionFromData(v4);
+    v5 = circularRegionFromData(firstValue);
   }
 
   else
@@ -896,18 +896,18 @@ LABEL_19:
   return v5;
 }
 
-- (void)setSecondDateValue:(id)a3
+- (void)setSecondDateValue:(id)value
 {
-  v7 = a3;
-  if (v7)
+  valueCopy = value;
+  if (valueCopy)
   {
     if ([(PLSingleQuery *)self valueType]!= 4)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v6 handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:266 description:{@"Invalid parameter not satisfying: %@", @"!dateValue || (self.valueType == kPLQueryValueType_isDate)"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:266 description:{@"Invalid parameter not satisfying: %@", @"!dateValue || (self.valueType == kPLQueryValueType_isDate)"}];
     }
 
-    v5 = dataFromDate(v7);
+    v5 = dataFromDate(valueCopy);
   }
 
   else
@@ -920,16 +920,16 @@ LABEL_19:
 
 - (NSDate)secondDateValue
 {
-  v4 = [(PLSingleQuery *)self secondValue];
-  if (v4)
+  secondValue = [(PLSingleQuery *)self secondValue];
+  if (secondValue)
   {
     if ([(PLSingleQuery *)self valueType]!= 4)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:259 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isDate"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:259 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isDate"}];
     }
 
-    v5 = dateFromData(v4);
+    v5 = dateFromData(secondValue);
   }
 
   else
@@ -940,13 +940,13 @@ LABEL_19:
   return v5;
 }
 
-- (void)setDateValue:(id)a3
+- (void)setDateValue:(id)value
 {
-  v5 = a3;
-  v8 = v5;
-  if (v5)
+  valueCopy = value;
+  v8 = valueCopy;
+  if (valueCopy)
   {
-    v6 = dataFromDate(v5);
+    v6 = dataFromDate(valueCopy);
   }
 
   else
@@ -958,8 +958,8 @@ LABEL_19:
   {
     if ([(PLSingleQuery *)self hasSecondValue])
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:248 description:{@"Invalid parameter not satisfying: %@", @"!self.hasSecondValue"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:248 description:{@"Invalid parameter not satisfying: %@", @"!self.hasSecondValue"}];
     }
 
     [(PLSingleQuery *)self setValueType:4];
@@ -970,16 +970,16 @@ LABEL_19:
 
 - (NSDate)dateValue
 {
-  v4 = [(PLSingleQuery *)self firstValue];
-  if (v4)
+  firstValue = [(PLSingleQuery *)self firstValue];
+  if (firstValue)
   {
     if ([(PLSingleQuery *)self valueType]!= 4)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:235 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isDate"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:235 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isDate"}];
     }
 
-    v5 = dateFromData(v4);
+    v5 = dateFromData(firstValue);
   }
 
   else
@@ -990,31 +990,31 @@ LABEL_19:
   return v5;
 }
 
-- (void)setSecondStringValue:(id)a3
+- (void)setSecondStringValue:(id)value
 {
-  v7 = a3;
-  if (v7 && [(PLSingleQuery *)self valueType]!= 3)
+  valueCopy = value;
+  if (valueCopy && [(PLSingleQuery *)self valueType]!= 3)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:224 description:{@"Invalid parameter not satisfying: %@", @"!stringValue || (self.valueType == kPLQueryValueType_isString)"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:224 description:{@"Invalid parameter not satisfying: %@", @"!stringValue || (self.valueType == kPLQueryValueType_isString)"}];
   }
 
-  v5 = [v7 dataUsingEncoding:4];
+  v5 = [valueCopy dataUsingEncoding:4];
   [(PLSingleQuery *)self setSecondValue:v5];
 }
 
 - (NSString)secondStringValue
 {
-  v4 = [(PLSingleQuery *)self secondValue];
-  if (v4)
+  secondValue = [(PLSingleQuery *)self secondValue];
+  if (secondValue)
   {
     if ([(PLSingleQuery *)self valueType]!= 3)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:217 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isString"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:217 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isString"}];
     }
 
-    v5 = stringFromData(v4);
+    v5 = stringFromData(secondValue);
   }
 
   else
@@ -1025,15 +1025,15 @@ LABEL_19:
   return v5;
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  v6 = [a3 dataUsingEncoding:4];
+  v6 = [value dataUsingEncoding:4];
   if ([(PLSingleQuery *)self valueType]!= 3)
   {
     if ([(PLSingleQuery *)self hasSecondValue])
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:206 description:{@"Invalid parameter not satisfying: %@", @"!self.hasSecondValue"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:206 description:{@"Invalid parameter not satisfying: %@", @"!self.hasSecondValue"}];
     }
 
     [(PLSingleQuery *)self setValueType:3];
@@ -1044,16 +1044,16 @@ LABEL_19:
 
 - (NSString)stringValue
 {
-  v4 = [(PLSingleQuery *)self firstValue];
-  if (v4)
+  firstValue = [(PLSingleQuery *)self firstValue];
+  if (firstValue)
   {
     if ([(PLSingleQuery *)self valueType]!= 3)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isString"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:196 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isString"}];
     }
 
-    v5 = stringFromData(v4);
+    v5 = stringFromData(firstValue);
   }
 
   else
@@ -1064,31 +1064,31 @@ LABEL_19:
   return v5;
 }
 
-- (void)setSecondIntegerValue:(int64_t)a3
+- (void)setSecondIntegerValue:(int64_t)value
 {
   if ([(PLSingleQuery *)self valueType]!= 1)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:176 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isInteger"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:176 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isInteger"}];
   }
 
-  v7 = dataFromInteger(a3);
+  v7 = dataFromInteger(value);
   [(PLSingleQuery *)self setSecondValue:v7];
 }
 
 - (int64_t)secondIntegerValue
 {
-  v4 = [(PLSingleQuery *)self secondValue];
-  if (v4)
+  secondValue = [(PLSingleQuery *)self secondValue];
+  if (secondValue)
   {
     if ([(PLSingleQuery *)self valueType]!= 1)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:169 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isInteger"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:169 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isInteger"}];
     }
 
     v8 = 0;
-    [v4 getBytes:&v8 length:8];
+    [secondValue getBytes:&v8 length:8];
     v5 = v8;
   }
 
@@ -1100,15 +1100,15 @@ LABEL_19:
   return v5;
 }
 
-- (void)setIntegerValue:(int64_t)a3
+- (void)setIntegerValue:(int64_t)value
 {
-  v6 = dataFromInteger(a3);
+  v6 = dataFromInteger(value);
   if ([(PLSingleQuery *)self valueType]!= 1)
   {
     if ([(PLSingleQuery *)self hasSecondValue])
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"!self.hasSecondValue"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:158 description:{@"Invalid parameter not satisfying: %@", @"!self.hasSecondValue"}];
     }
 
     [(PLSingleQuery *)self setValueType:1];
@@ -1119,17 +1119,17 @@ LABEL_19:
 
 - (int64_t)integerValue
 {
-  v4 = [(PLSingleQuery *)self firstValue];
-  if (v4)
+  firstValue = [(PLSingleQuery *)self firstValue];
+  if (firstValue)
   {
     if ([(PLSingleQuery *)self valueType]!= 1)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:148 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isInteger"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:148 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isInteger"}];
     }
 
     v8 = 0;
-    [v4 getBytes:&v8 length:8];
+    [firstValue getBytes:&v8 length:8];
     v5 = v8;
   }
 
@@ -1141,31 +1141,31 @@ LABEL_19:
   return v5;
 }
 
-- (void)setSecondDoubleValue:(double)a3
+- (void)setSecondDoubleValue:(double)value
 {
   if ([(PLSingleQuery *)self valueType]!= 2)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isDouble"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:137 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isDouble"}];
   }
 
-  v7 = dataFromDouble(a3);
+  v7 = dataFromDouble(value);
   [(PLSingleQuery *)self setSecondValue:v7];
 }
 
 - (double)secondDoubleValue
 {
-  v4 = [(PLSingleQuery *)self secondValue];
-  if (v4)
+  secondValue = [(PLSingleQuery *)self secondValue];
+  if (secondValue)
   {
     if ([(PLSingleQuery *)self valueType]!= 2)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:130 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isDouble"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:130 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isDouble"}];
     }
 
     v8 = 0.0;
-    [v4 getBytes:&v8 length:8];
+    [secondValue getBytes:&v8 length:8];
     v5 = v8;
   }
 
@@ -1177,15 +1177,15 @@ LABEL_19:
   return v5;
 }
 
-- (void)setDoubleValue:(double)a3
+- (void)setDoubleValue:(double)value
 {
-  v6 = dataFromDouble(a3);
+  v6 = dataFromDouble(value);
   if ([(PLSingleQuery *)self valueType]!= 2)
   {
     if ([(PLSingleQuery *)self hasSecondValue])
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"!self.hasSecondValue"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"!self.hasSecondValue"}];
     }
 
     [(PLSingleQuery *)self setValueType:2];
@@ -1196,17 +1196,17 @@ LABEL_19:
 
 - (double)doubleValue
 {
-  v4 = [(PLSingleQuery *)self firstValue];
-  if (v4)
+  firstValue = [(PLSingleQuery *)self firstValue];
+  if (firstValue)
   {
     if ([(PLSingleQuery *)self valueType]!= 2)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isDouble"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PLSingleQuery+Utilities.m" lineNumber:109 description:{@"Invalid parameter not satisfying: %@", @"self.valueType == kPLQueryValueType_isDouble"}];
     }
 
     v8 = 0.0;
-    [v4 getBytes:&v8 length:8];
+    [firstValue getBytes:&v8 length:8];
     v5 = v8;
   }
 

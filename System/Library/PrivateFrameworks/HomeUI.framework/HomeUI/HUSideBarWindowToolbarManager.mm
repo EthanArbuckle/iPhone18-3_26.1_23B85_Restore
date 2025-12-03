@@ -1,34 +1,34 @@
 @interface HUSideBarWindowToolbarManager
 - (BOOL)shouldUseDarkWindowAppearance;
-- (HUSideBarWindowToolbarManager)initWithAppNavigator:(id)a3;
+- (HUSideBarWindowToolbarManager)initWithAppNavigator:(id)navigator;
 - (HUSideBarWindowToolbarManagerDelegate)delegate;
 - (HUWindowTitleProviding)windowTitleProvider;
-- (SEL)actionForToolbarItemIdentifier:(id)a3;
-- (id)accessibilityLabelForToolbarItemIdentifier:(id)a3;
+- (SEL)actionForToolbarItemIdentifier:(id)identifier;
+- (id)accessibilityLabelForToolbarItemIdentifier:(id)identifier;
 - (id)currentHome;
-- (id)editActionDelegateForNavigationBarButton:(id)a3;
-- (id)imageForToolbarItemIdentifier:(id)a3;
+- (id)editActionDelegateForNavigationBarButton:(id)button;
+- (id)imageForToolbarItemIdentifier:(id)identifier;
 - (id)initForTest;
 - (id)itemIdentifiersForToolbar;
-- (id)navigationBarButtonForToolbarItemIdentifier:(id)a3;
-- (id)roomForNavigationBarButton:(id)a3;
-- (id)statusItemsForNavigationBarButton:(id)a3 inHome:(id)a4;
+- (id)navigationBarButtonForToolbarItemIdentifier:(id)identifier;
+- (id)roomForNavigationBarButton:(id)button;
+- (id)statusItemsForNavigationBarButton:(id)button inHome:(id)home;
 - (id)windowTitle;
-- (unint64_t)toolbarItemStyleForToolbarItemIdentifier:(id)a3;
+- (unint64_t)toolbarItemStyleForToolbarItemIdentifier:(id)identifier;
 - (void)_discoverTabBackButton;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)home:(id)a3 didUpdateNameForRoom:(id)a4;
-- (void)homeDidUpdateName:(id)a3;
-- (void)homeManager:(id)a3 didAddHome:(id)a4;
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4;
-- (void)homeManager:(id)a3 didUpdateStateForIncomingInvitations:(id)a4;
-- (void)homeManagerDidUpdateCurrentHome:(id)a3;
-- (void)setDashboardContext:(id)a3;
-- (void)setDashboardStatusItems:(id)a3;
-- (void)setDiscoverTabPosition:(unint64_t)a3;
-- (void)setDiscoverTabStyle:(unint64_t)a3;
-- (void)setTabIdentifier:(id)a3;
-- (void)setViewStyle:(unint64_t)a3;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)home:(id)home didUpdateNameForRoom:(id)room;
+- (void)homeDidUpdateName:(id)name;
+- (void)homeManager:(id)manager didAddHome:(id)home;
+- (void)homeManager:(id)manager didRemoveHome:(id)home;
+- (void)homeManager:(id)manager didUpdateStateForIncomingInvitations:(id)invitations;
+- (void)homeManagerDidUpdateCurrentHome:(id)home;
+- (void)setDashboardContext:(id)context;
+- (void)setDashboardStatusItems:(id)items;
+- (void)setDiscoverTabPosition:(unint64_t)position;
+- (void)setDiscoverTabStyle:(unint64_t)style;
+- (void)setTabIdentifier:(id)identifier;
+- (void)setViewStyle:(unint64_t)style;
 @end
 
 @implementation HUSideBarWindowToolbarManager
@@ -42,20 +42,20 @@
   return v2;
 }
 
-- (HUSideBarWindowToolbarManager)initWithAppNavigator:(id)a3
+- (HUSideBarWindowToolbarManager)initWithAppNavigator:(id)navigator
 {
-  v5 = a3;
+  navigatorCopy = navigator;
   v16.receiver = self;
   v16.super_class = HUSideBarWindowToolbarManager;
   v6 = [(HUSideBarWindowToolbarManager *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appNavigator, a3);
-    v8 = [MEMORY[0x277D14B30] sharedInstance];
-    v9 = [v8 selectedHomeAppTabIdentifier];
+    objc_storeStrong(&v6->_appNavigator, navigator);
+    mEMORY[0x277D14B30] = [MEMORY[0x277D14B30] sharedInstance];
+    selectedHomeAppTabIdentifier = [mEMORY[0x277D14B30] selectedHomeAppTabIdentifier];
     tabIdentifier = v7->_tabIdentifier;
-    v7->_tabIdentifier = v9;
+    v7->_tabIdentifier = selectedHomeAppTabIdentifier;
 
     if (!v7->_tabIdentifier)
     {
@@ -69,11 +69,11 @@
       objc_storeStrong(&v7->_tabIdentifier, *MEMORY[0x277D13938]);
     }
 
-    v12 = [MEMORY[0x277D146E8] sharedDispatcher];
-    [v12 addHomeManagerObserver:v7];
+    mEMORY[0x277D146E8] = [MEMORY[0x277D146E8] sharedDispatcher];
+    [mEMORY[0x277D146E8] addHomeManagerObserver:v7];
 
-    v13 = [MEMORY[0x277D146E8] sharedDispatcher];
-    [v13 addHomeObserver:v7];
+    mEMORY[0x277D146E8]2 = [MEMORY[0x277D146E8] sharedDispatcher];
+    [mEMORY[0x277D146E8]2 addHomeObserver:v7];
 
     objc_storeStrong(&sharedToolbarManager, v7);
   }
@@ -83,106 +83,106 @@
 
 - (id)currentHome
 {
-  v3 = [(HUSideBarWindowToolbarManager *)self tabIdentifier];
-  if ([v3 isEqualToString:*MEMORY[0x277D13938]])
+  tabIdentifier = [(HUSideBarWindowToolbarManager *)self tabIdentifier];
+  if ([tabIdentifier isEqualToString:*MEMORY[0x277D13938]])
   {
 
 LABEL_4:
-    v5 = [(HUSideBarWindowToolbarManager *)self dashboardContext];
+    dashboardContext = [(HUSideBarWindowToolbarManager *)self dashboardContext];
     goto LABEL_6;
   }
 
-  v4 = [MEMORY[0x277D14CE8] isInternalTest];
+  isInternalTest = [MEMORY[0x277D14CE8] isInternalTest];
 
-  if (v4)
+  if (isInternalTest)
   {
     goto LABEL_4;
   }
 
-  v5 = [MEMORY[0x277D146E8] sharedDispatcher];
+  dashboardContext = [MEMORY[0x277D146E8] sharedDispatcher];
 LABEL_6:
-  v6 = v5;
-  v7 = [v5 home];
+  v6 = dashboardContext;
+  home = [dashboardContext home];
 
-  return v7;
+  return home;
 }
 
-- (void)setTabIdentifier:(id)a3
+- (void)setTabIdentifier:(id)identifier
 {
-  v10 = a3;
-  v5 = [(NSString *)self->_tabIdentifier isEqualToString:v10];
-  v6 = v10;
+  identifierCopy = identifier;
+  v5 = [(NSString *)self->_tabIdentifier isEqualToString:identifierCopy];
+  v6 = identifierCopy;
   if (!v5)
   {
-    if (([v10 isEqualToString:*MEMORY[0x277D13938]] & 1) == 0)
+    if (([identifierCopy isEqualToString:*MEMORY[0x277D13938]] & 1) == 0)
     {
       dashboardContext = self->_dashboardContext;
       self->_dashboardContext = 0;
     }
 
-    objc_storeStrong(&self->_tabIdentifier, a3);
-    v8 = [(HUSideBarWindowToolbarManager *)self delegate];
-    [v8 resetToolbar];
+    objc_storeStrong(&self->_tabIdentifier, identifier);
+    delegate = [(HUSideBarWindowToolbarManager *)self delegate];
+    [delegate resetToolbar];
 
-    v9 = [(HUSideBarWindowToolbarManager *)self delegate];
-    [v9 refreshWindowAppearance];
+    delegate2 = [(HUSideBarWindowToolbarManager *)self delegate];
+    [delegate2 refreshWindowAppearance];
 
-    v6 = v10;
+    v6 = identifierCopy;
   }
 }
 
-- (void)setDashboardContext:(id)a3
+- (void)setDashboardContext:(id)context
 {
-  v7 = a3;
+  contextCopy = context;
   if (![(HUDashboardContext *)self->_dashboardContext isEqual:?])
   {
     dashboardStatusItems = self->_dashboardStatusItems;
     self->_dashboardStatusItems = 0;
 
-    objc_storeStrong(&self->_dashboardContext, a3);
-    v6 = [(HUSideBarWindowToolbarManager *)self delegate];
-    [v6 resetToolbar];
+    objc_storeStrong(&self->_dashboardContext, context);
+    delegate = [(HUSideBarWindowToolbarManager *)self delegate];
+    [delegate resetToolbar];
   }
 }
 
-- (void)setDashboardStatusItems:(id)a3
+- (void)setDashboardStatusItems:(id)items
 {
-  v6 = a3;
+  itemsCopy = items;
   if (([(NSArray *)self->_dashboardStatusItems isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_dashboardStatusItems, a3);
-    v5 = [(HUSideBarWindowToolbarManager *)self delegate];
-    [v5 resetToolbar];
+    objc_storeStrong(&self->_dashboardStatusItems, items);
+    delegate = [(HUSideBarWindowToolbarManager *)self delegate];
+    [delegate resetToolbar];
   }
 }
 
-- (void)setDiscoverTabStyle:(unint64_t)a3
+- (void)setDiscoverTabStyle:(unint64_t)style
 {
-  if (self->_discoverTabStyle != a3)
+  if (self->_discoverTabStyle != style)
   {
-    self->_discoverTabStyle = a3;
-    v4 = [(HUSideBarWindowToolbarManager *)self delegate];
-    [v4 resetToolbar];
+    self->_discoverTabStyle = style;
+    delegate = [(HUSideBarWindowToolbarManager *)self delegate];
+    [delegate resetToolbar];
   }
 }
 
-- (void)setDiscoverTabPosition:(unint64_t)a3
+- (void)setDiscoverTabPosition:(unint64_t)position
 {
-  if (self->_discoverTabPosition != a3)
+  if (self->_discoverTabPosition != position)
   {
-    self->_discoverTabPosition = a3;
-    v4 = [(HUSideBarWindowToolbarManager *)self delegate];
-    [v4 resetToolbarTitleStyle];
+    self->_discoverTabPosition = position;
+    delegate = [(HUSideBarWindowToolbarManager *)self delegate];
+    [delegate resetToolbarTitleStyle];
   }
 }
 
-- (void)setViewStyle:(unint64_t)a3
+- (void)setViewStyle:(unint64_t)style
 {
-  if (self->_viewStyle != a3)
+  if (self->_viewStyle != style)
   {
-    self->_viewStyle = a3;
-    v4 = [(HUSideBarWindowToolbarManager *)self delegate];
-    [v4 resetToolbar];
+    self->_viewStyle = style;
+    delegate = [(HUSideBarWindowToolbarManager *)self delegate];
+    [delegate resetToolbar];
   }
 }
 
@@ -194,18 +194,18 @@ LABEL_6:
     goto LABEL_23;
   }
 
-  v4 = [(HUSideBarWindowToolbarManager *)self dashboardContext];
-  v5 = [v4 room];
-  if (v5)
+  dashboardContext = [(HUSideBarWindowToolbarManager *)self dashboardContext];
+  room = [dashboardContext room];
+  if (room)
   {
   }
 
   else
   {
-    v6 = [(HUSideBarWindowToolbarManager *)self dashboardContext];
-    v7 = [v6 overrideDashboardTitle];
+    dashboardContext2 = [(HUSideBarWindowToolbarManager *)self dashboardContext];
+    overrideDashboardTitle = [dashboardContext2 overrideDashboardTitle];
 
-    if (!v7)
+    if (!overrideDashboardTitle)
     {
       goto LABEL_6;
     }
@@ -213,12 +213,12 @@ LABEL_6:
 
   [v3 addObject:@"DashboardTabBackButtonToolbarItemIdentifier"];
 LABEL_6:
-  v8 = [(HUSideBarWindowToolbarManager *)self tabIdentifier];
-  if ([v8 isEqualToString:*MEMORY[0x277D13930]])
+  tabIdentifier = [(HUSideBarWindowToolbarManager *)self tabIdentifier];
+  if ([tabIdentifier isEqualToString:*MEMORY[0x277D13930]])
   {
-    v9 = [(HUSideBarWindowToolbarManager *)self discoverTabStyle];
+    discoverTabStyle = [(HUSideBarWindowToolbarManager *)self discoverTabStyle];
 
-    if (v9 == 2)
+    if (discoverTabStyle == 2)
     {
       [v3 addObject:@"DiscoverTabBackButtonToolbarItemIdentifier"];
     }
@@ -228,28 +228,28 @@ LABEL_6:
   {
   }
 
-  v10 = [(HUSideBarWindowToolbarManager *)self tabIdentifier];
+  tabIdentifier2 = [(HUSideBarWindowToolbarManager *)self tabIdentifier];
   v11 = *MEMORY[0x277D13938];
-  if ([v10 isEqualToString:*MEMORY[0x277D13938]])
+  if ([tabIdentifier2 isEqualToString:*MEMORY[0x277D13938]])
   {
 
     goto LABEL_13;
   }
 
-  v12 = [(HUSideBarWindowToolbarManager *)self tabIdentifier];
-  v13 = [v12 isEqualToString:*MEMORY[0x277D13940]];
+  tabIdentifier3 = [(HUSideBarWindowToolbarManager *)self tabIdentifier];
+  v13 = [tabIdentifier3 isEqualToString:*MEMORY[0x277D13940]];
 
   if (v13)
   {
 LABEL_13:
-    v14 = [(HUSideBarWindowToolbarManager *)self currentHome];
-    if ([v14 hf_currentUserIsAdministrator])
+    currentHome = [(HUSideBarWindowToolbarManager *)self currentHome];
+    if ([currentHome hf_currentUserIsAdministrator])
     {
-      v15 = [(HUSideBarWindowToolbarManager *)self dashboardContext];
-      v16 = [v15 home];
-      v17 = [v16 hf_shouldBlockCurrentUserFromHome];
+      dashboardContext3 = [(HUSideBarWindowToolbarManager *)self dashboardContext];
+      home = [dashboardContext3 home];
+      hf_shouldBlockCurrentUserFromHome = [home hf_shouldBlockCurrentUserFromHome];
 
-      if ((v17 & 1) == 0)
+      if ((hf_shouldBlockCurrentUserFromHome & 1) == 0)
       {
         [v3 addObject:@"AddMenuToolbarItemIdentifier"];
       }
@@ -260,28 +260,28 @@ LABEL_13:
     }
   }
 
-  v18 = [(HUSideBarWindowToolbarManager *)self tabIdentifier];
-  v19 = [v18 isEqualToString:v11];
+  tabIdentifier4 = [(HUSideBarWindowToolbarManager *)self tabIdentifier];
+  v19 = [tabIdentifier4 isEqualToString:v11];
 
   if (!v19)
   {
     goto LABEL_23;
   }
 
-  v20 = [(HUSideBarWindowToolbarManager *)self dashboardContext];
-  v21 = [v20 room];
+  dashboardContext4 = [(HUSideBarWindowToolbarManager *)self dashboardContext];
+  room2 = [dashboardContext4 room];
 
-  if (v21)
+  if (room2)
   {
     v22 = @"RoomMenuToolbarItemIdentifier";
   }
 
   else
   {
-    v23 = [(HUSideBarWindowToolbarManager *)self dashboardContext];
-    v24 = [v23 home];
+    dashboardContext5 = [(HUSideBarWindowToolbarManager *)self dashboardContext];
+    home2 = [dashboardContext5 home];
 
-    if (!v24)
+    if (!home2)
     {
       goto LABEL_23;
     }
@@ -295,15 +295,15 @@ LABEL_23:
   return v3;
 }
 
-- (SEL)actionForToolbarItemIdentifier:(id)a3
+- (SEL)actionForToolbarItemIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"DiscoverTabBackButtonToolbarItemIdentifier"])
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"DiscoverTabBackButtonToolbarItemIdentifier"])
   {
     v4 = sel__discoverTabBackButton;
   }
 
-  else if ([v3 isEqualToString:@"DashboardTabBackButtonToolbarItemIdentifier"])
+  else if ([identifierCopy isEqualToString:@"DashboardTabBackButtonToolbarItemIdentifier"])
   {
     v4 = sel__dashboardTabBackButton;
   }
@@ -316,10 +316,10 @@ LABEL_23:
   return v4;
 }
 
-- (id)imageForToolbarItemIdentifier:(id)a3
+- (id)imageForToolbarItemIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (([v3 isEqualToString:@"DiscoverTabBackButtonToolbarItemIdentifier"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"DashboardTabBackButtonToolbarItemIdentifier"))
+  identifierCopy = identifier;
+  if (([identifierCopy isEqualToString:@"DiscoverTabBackButtonToolbarItemIdentifier"] & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"DashboardTabBackButtonToolbarItemIdentifier"))
   {
     v4 = [MEMORY[0x277D755B8] systemImageNamed:@"chevron.left"];
   }
@@ -332,27 +332,27 @@ LABEL_23:
   return v4;
 }
 
-- (id)navigationBarButtonForToolbarItemIdentifier:(id)a3
+- (id)navigationBarButtonForToolbarItemIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (([v4 isEqualToString:@"HomeMenuToolbarItemIdentifier"] & 1) == 0 && !objc_msgSend(v4, "isEqualToString:", @"RoomMenuToolbarItemIdentifier"))
+  identifierCopy = identifier;
+  if (([identifierCopy isEqualToString:@"HomeMenuToolbarItemIdentifier"] & 1) == 0 && !objc_msgSend(identifierCopy, "isEqualToString:", @"RoomMenuToolbarItemIdentifier"))
   {
-    if (![v4 isEqualToString:@"AddMenuToolbarItemIdentifier"])
+    if (![identifierCopy isEqualToString:@"AddMenuToolbarItemIdentifier"])
     {
-      v13 = [(HUSideBarWindowToolbarManager *)self imageForToolbarItemIdentifier:v4];
-      v14 = [(HUSideBarWindowToolbarManager *)self actionForToolbarItemIdentifier:v4];
+      v13 = [(HUSideBarWindowToolbarManager *)self imageForToolbarItemIdentifier:identifierCopy];
+      v14 = [(HUSideBarWindowToolbarManager *)self actionForToolbarItemIdentifier:identifierCopy];
       if (v14)
       {
-        v15 = self;
+        selfCopy = self;
       }
 
       else
       {
-        v15 = 0;
+        selfCopy = 0;
       }
 
       v16 = MEMORY[0x277D751E0];
-      v17 = v15;
+      v17 = selfCopy;
       v12 = [[v16 alloc] initWithImage:v13 style:0 target:v17 action:v14];
 
       goto LABEL_17;
@@ -362,9 +362,9 @@ LABEL_23:
     goto LABEL_10;
   }
 
-  v5 = [(HUSideBarWindowToolbarManager *)self dashboardContext];
+  dashboardContext = [(HUSideBarWindowToolbarManager *)self dashboardContext];
 
-  if (!v5)
+  if (!dashboardContext)
   {
     v9 = HFLogForCategory();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -380,10 +380,10 @@ LABEL_21:
     goto LABEL_12;
   }
 
-  v6 = [(HUSideBarWindowToolbarManager *)self dashboardContext];
-  v7 = [v6 home];
+  dashboardContext2 = [(HUSideBarWindowToolbarManager *)self dashboardContext];
+  home = [dashboardContext2 home];
 
-  if (v7)
+  if (home)
   {
     v8 = [HUNavigationBarButton homeButtonWithOwner:self];
 LABEL_10:
@@ -410,16 +410,16 @@ LABEL_17:
 
 - (BOOL)shouldUseDarkWindowAppearance
 {
-  v2 = [(HUSideBarWindowToolbarManager *)self tabIdentifier];
-  v3 = [v2 isEqualToString:*MEMORY[0x277D13938]];
+  tabIdentifier = [(HUSideBarWindowToolbarManager *)self tabIdentifier];
+  v3 = [tabIdentifier isEqualToString:*MEMORY[0x277D13938]];
 
   return v3;
 }
 
-- (id)accessibilityLabelForToolbarItemIdentifier:(id)a3
+- (id)accessibilityLabelForToolbarItemIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (([v3 isEqualToString:@"HomeMenuToolbarItemIdentifier"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"RoomMenuToolbarItemIdentifier") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"AddMenuToolbarItemIdentifier") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"DiscoverTabBackButtonToolbarItemIdentifier") & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"DashboardTabBackButtonToolbarItemIdentifier"))
+  identifierCopy = identifier;
+  if (([identifierCopy isEqualToString:@"HomeMenuToolbarItemIdentifier"] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"RoomMenuToolbarItemIdentifier") & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"AddMenuToolbarItemIdentifier") & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"DiscoverTabBackButtonToolbarItemIdentifier") & 1) != 0 || objc_msgSend(identifierCopy, "isEqualToString:", @"DashboardTabBackButtonToolbarItemIdentifier"))
   {
     v4 = HFLocalizedString();
   }
@@ -440,21 +440,21 @@ LABEL_17:
     goto LABEL_9;
   }
 
-  v4 = [(HUSideBarWindowToolbarManager *)self windowTitleProvider];
-  v5 = [(HUSideBarWindowToolbarManager *)self tabIdentifier];
-  v6 = [(HUSideBarWindowToolbarManager *)self dashboardContext];
-  v7 = [v4 windowTitleForTabIdentifier:v5 dashboardContext:v6];
+  windowTitleProvider = [(HUSideBarWindowToolbarManager *)self windowTitleProvider];
+  tabIdentifier = [(HUSideBarWindowToolbarManager *)self tabIdentifier];
+  dashboardContext = [(HUSideBarWindowToolbarManager *)self dashboardContext];
+  v7 = [windowTitleProvider windowTitleForTabIdentifier:tabIdentifier dashboardContext:dashboardContext];
 
-  v8 = [(HUSideBarWindowToolbarManager *)self tabIdentifier];
-  if (![v8 isEqualToString:*MEMORY[0x277D13930]])
+  tabIdentifier2 = [(HUSideBarWindowToolbarManager *)self tabIdentifier];
+  if (![tabIdentifier2 isEqualToString:*MEMORY[0x277D13930]])
   {
 
     goto LABEL_7;
   }
 
-  v9 = [(HUSideBarWindowToolbarManager *)self discoverTabStyle];
+  discoverTabStyle = [(HUSideBarWindowToolbarManager *)self discoverTabStyle];
 
-  if (!v9)
+  if (!discoverTabStyle)
   {
 LABEL_7:
     v3 = v7;
@@ -469,22 +469,22 @@ LABEL_9:
   return v3;
 }
 
-- (unint64_t)toolbarItemStyleForToolbarItemIdentifier:(id)a3
+- (unint64_t)toolbarItemStyleForToolbarItemIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"HomeMenuToolbarItemIdentifier"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"RoomMenuToolbarItemIdentifier"))
+  identifierCopy = identifier;
+  if ([identifierCopy isEqualToString:@"HomeMenuToolbarItemIdentifier"] & 1) != 0 || (objc_msgSend(identifierCopy, "isEqualToString:", @"RoomMenuToolbarItemIdentifier"))
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"DiscoverTabBackButtonToolbarItemIdentifier"])
+  else if ([identifierCopy isEqualToString:@"DiscoverTabBackButtonToolbarItemIdentifier"])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"DashboardTabBackButtonToolbarItemIdentifier"];
+    v4 = [identifierCopy isEqualToString:@"DashboardTabBackButtonToolbarItemIdentifier"];
   }
 
   return v4;
@@ -501,29 +501,29 @@ LABEL_9:
   [v5 setTimingFunction:v3];
 
   [v5 setDelegate:self];
-  v4 = [(HUSideBarWindowToolbarManager *)self delegate];
-  [v4 dismissViewControllerWithAnimation:v5];
+  delegate = [(HUSideBarWindowToolbarManager *)self delegate];
+  [delegate dismissViewControllerWithAnimation:v5];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  if (a4)
+  if (finished)
   {
     [(HUSideBarWindowToolbarManager *)self setDiscoverTabStyle:0];
   }
 }
 
-- (id)roomForNavigationBarButton:(id)a3
+- (id)roomForNavigationBarButton:(id)button
 {
-  v3 = [(HUSideBarWindowToolbarManager *)self dashboardContext];
-  v4 = [v3 room];
+  dashboardContext = [(HUSideBarWindowToolbarManager *)self dashboardContext];
+  room = [dashboardContext room];
 
-  return v4;
+  return room;
 }
 
-- (id)statusItemsForNavigationBarButton:(id)a3 inHome:(id)a4
+- (id)statusItemsForNavigationBarButton:(id)button inHome:(id)home
 {
-  v4 = [(HUSideBarWindowToolbarManager *)self dashboardStatusItems:a3];
+  v4 = [(HUSideBarWindowToolbarManager *)self dashboardStatusItems:button];
   v5 = v4;
   if (v4)
   {
@@ -540,16 +540,16 @@ LABEL_9:
   return v6;
 }
 
-- (id)editActionDelegateForNavigationBarButton:(id)a3
+- (id)editActionDelegateForNavigationBarButton:(id)button
 {
   if (_os_feature_enabled_impl() && _os_feature_enabled_impl())
   {
     objc_opt_class();
-    v4 = [(HUSideBarWindowToolbarManager *)self appNavigator];
-    v5 = [v4 rootViewController];
+    appNavigator = [(HUSideBarWindowToolbarManager *)self appNavigator];
+    rootViewController = [appNavigator rootViewController];
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
+      v6 = rootViewController;
     }
 
     else
@@ -560,17 +560,17 @@ LABEL_9:
     v7 = v6;
 
     objc_opt_class();
-    v8 = [v7 selectedViewController];
+    selectedViewController = [v7 selectedViewController];
   }
 
   else
   {
     objc_opt_class();
-    v9 = [(HUSideBarWindowToolbarManager *)self appNavigator];
-    v10 = [v9 rootViewController];
+    appNavigator2 = [(HUSideBarWindowToolbarManager *)self appNavigator];
+    rootViewController2 = [appNavigator2 rootViewController];
     if (objc_opt_isKindOfClass())
     {
-      v11 = v10;
+      v11 = rootViewController2;
     }
 
     else
@@ -581,10 +581,10 @@ LABEL_9:
     v7 = v11;
 
     objc_opt_class();
-    v8 = [v7 viewControllerForColumn:2];
+    selectedViewController = [v7 viewControllerForColumn:2];
   }
 
-  v12 = v8;
+  v12 = selectedViewController;
 
   if (objc_opt_isKindOfClass())
   {
@@ -601,42 +601,42 @@ LABEL_9:
   return v13;
 }
 
-- (void)homeManager:(id)a3 didAddHome:(id)a4
+- (void)homeManager:(id)manager didAddHome:(id)home
 {
-  v4 = [(HUSideBarWindowToolbarManager *)self delegate:a3];
+  v4 = [(HUSideBarWindowToolbarManager *)self delegate:manager];
   [v4 resetToolbarItemMenuForItemIdentifier:@"HomeMenuToolbarItemIdentifier"];
 }
 
-- (void)homeManager:(id)a3 didRemoveHome:(id)a4
+- (void)homeManager:(id)manager didRemoveHome:(id)home
 {
-  v4 = [(HUSideBarWindowToolbarManager *)self delegate:a3];
+  v4 = [(HUSideBarWindowToolbarManager *)self delegate:manager];
   [v4 resetToolbarItemMenuForItemIdentifier:@"HomeMenuToolbarItemIdentifier"];
 }
 
-- (void)homeManagerDidUpdateCurrentHome:(id)a3
+- (void)homeManagerDidUpdateCurrentHome:(id)home
 {
-  v3 = [(HUSideBarWindowToolbarManager *)self delegate];
-  [v3 resetToolbarItemMenuForItemIdentifier:@"HomeMenuToolbarItemIdentifier"];
+  delegate = [(HUSideBarWindowToolbarManager *)self delegate];
+  [delegate resetToolbarItemMenuForItemIdentifier:@"HomeMenuToolbarItemIdentifier"];
 }
 
-- (void)homeDidUpdateName:(id)a3
+- (void)homeDidUpdateName:(id)name
 {
-  v4 = [(HUSideBarWindowToolbarManager *)self delegate];
+  delegate = [(HUSideBarWindowToolbarManager *)self delegate];
+  [delegate resetToolbarItemMenuForItemIdentifier:@"HomeMenuToolbarItemIdentifier"];
+
+  delegate2 = [(HUSideBarWindowToolbarManager *)self delegate];
+  [delegate2 resetToolbarTitle];
+}
+
+- (void)homeManager:(id)manager didUpdateStateForIncomingInvitations:(id)invitations
+{
+  v4 = [(HUSideBarWindowToolbarManager *)self delegate:manager];
   [v4 resetToolbarItemMenuForItemIdentifier:@"HomeMenuToolbarItemIdentifier"];
-
-  v5 = [(HUSideBarWindowToolbarManager *)self delegate];
-  [v5 resetToolbarTitle];
 }
 
-- (void)homeManager:(id)a3 didUpdateStateForIncomingInvitations:(id)a4
+- (void)home:(id)home didUpdateNameForRoom:(id)room
 {
-  v4 = [(HUSideBarWindowToolbarManager *)self delegate:a3];
-  [v4 resetToolbarItemMenuForItemIdentifier:@"HomeMenuToolbarItemIdentifier"];
-}
-
-- (void)home:(id)a3 didUpdateNameForRoom:(id)a4
-{
-  v4 = [(HUSideBarWindowToolbarManager *)self delegate:a3];
+  v4 = [(HUSideBarWindowToolbarManager *)self delegate:home];
   [v4 resetToolbarTitle];
 }
 

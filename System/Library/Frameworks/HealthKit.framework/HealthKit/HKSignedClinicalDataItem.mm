@@ -1,37 +1,37 @@
 @interface HKSignedClinicalDataItem
-+ (id)itemWithPrimaryConceptCodingCollection:(id)a3 relevantDate:(id)a4 medicalRecordSampleID:(id)a5;
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)itemWithPrimaryConceptCodingCollection:(id)collection relevantDate:(id)date medicalRecordSampleID:(id)d;
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (HKConcept)primaryConcept;
-- (HKSignedClinicalDataItem)initWithCoder:(id)a3;
-- (HKSignedClinicalDataItem)initWithPrimaryConceptCodingCollection:(id)a3 relevantDate:(id)a4 medicalRecordSampleID:(id)a5;
+- (HKSignedClinicalDataItem)initWithCoder:(id)coder;
+- (HKSignedClinicalDataItem)initWithPrimaryConceptCodingCollection:(id)collection relevantDate:(id)date medicalRecordSampleID:(id)d;
 - (NSString)debugDescription;
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4;
+- (id)codingsForKeyPath:(id)path error:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKSignedClinicalDataItem
 
-- (HKSignedClinicalDataItem)initWithPrimaryConceptCodingCollection:(id)a3 relevantDate:(id)a4 medicalRecordSampleID:(id)a5
+- (HKSignedClinicalDataItem)initWithPrimaryConceptCodingCollection:(id)collection relevantDate:(id)date medicalRecordSampleID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  collectionCopy = collection;
+  dateCopy = date;
+  dCopy = d;
   v19.receiver = self;
   v19.super_class = HKSignedClinicalDataItem;
   v11 = [(HKSignedClinicalDataItem *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [collectionCopy copy];
     primaryConceptCodingCollection = v11->_primaryConceptCodingCollection;
     v11->_primaryConceptCodingCollection = v12;
 
-    v14 = [v9 copy];
+    v14 = [dateCopy copy];
     relevantDate = v11->_relevantDate;
     v11->_relevantDate = v14;
 
-    v16 = [v10 copy];
+    v16 = [dCopy copy];
     medicalRecordSampleID = v11->_medicalRecordSampleID;
     v11->_medicalRecordSampleID = v16;
   }
@@ -39,12 +39,12 @@
   return v11;
 }
 
-+ (id)itemWithPrimaryConceptCodingCollection:(id)a3 relevantDate:(id)a4 medicalRecordSampleID:(id)a5
++ (id)itemWithPrimaryConceptCodingCollection:(id)collection relevantDate:(id)date medicalRecordSampleID:(id)d
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithPrimaryConceptCodingCollection:v10 relevantDate:v9 medicalRecordSampleID:v8];
+  dCopy = d;
+  dateCopy = date;
+  collectionCopy = collection;
+  v11 = [[self alloc] initWithPrimaryConceptCodingCollection:collectionCopy relevantDate:dateCopy medicalRecordSampleID:dCopy];
 
   return v11;
 }
@@ -71,10 +71,10 @@
   return v4 ^ [(NSUUID *)self->_medicalRecordSampleID hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(medicalRecordSampleID) = 1;
   }
@@ -84,22 +84,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       primaryConceptCodingCollection = self->_primaryConceptCodingCollection;
-      v7 = [(HKSignedClinicalDataItem *)v5 primaryConceptCodingCollection];
-      if (primaryConceptCodingCollection != v7)
+      primaryConceptCodingCollection = [(HKSignedClinicalDataItem *)v5 primaryConceptCodingCollection];
+      if (primaryConceptCodingCollection != primaryConceptCodingCollection)
       {
-        v8 = [(HKSignedClinicalDataItem *)v5 primaryConceptCodingCollection];
-        if (!v8)
+        primaryConceptCodingCollection2 = [(HKSignedClinicalDataItem *)v5 primaryConceptCodingCollection];
+        if (!primaryConceptCodingCollection2)
         {
           LOBYTE(medicalRecordSampleID) = 0;
           goto LABEL_27;
         }
 
-        v9 = v8;
+        v9 = primaryConceptCodingCollection2;
         v10 = self->_primaryConceptCodingCollection;
-        v11 = [(HKSignedClinicalDataItem *)v5 primaryConceptCodingCollection];
-        if (![(HKMedicalCodingCollection *)v10 isEqual:v11])
+        primaryConceptCodingCollection3 = [(HKSignedClinicalDataItem *)v5 primaryConceptCodingCollection];
+        if (![(HKMedicalCodingCollection *)v10 isEqual:primaryConceptCodingCollection3])
         {
           LOBYTE(medicalRecordSampleID) = 0;
 LABEL_26:
@@ -107,13 +107,13 @@ LABEL_26:
           goto LABEL_27;
         }
 
-        v27 = v11;
+        v27 = primaryConceptCodingCollection3;
         v28 = v9;
       }
 
       relevantDate = self->_relevantDate;
-      v14 = [(HKSignedClinicalDataItem *)v5 relevantDate];
-      if (relevantDate != v14)
+      relevantDate = [(HKSignedClinicalDataItem *)v5 relevantDate];
+      if (relevantDate != relevantDate)
       {
         medicalRecordSampleID = [(HKSignedClinicalDataItem *)v5 relevantDate];
         if (!medicalRecordSampleID)
@@ -122,17 +122,17 @@ LABEL_26:
         }
 
         v15 = self->_relevantDate;
-        v16 = [(HKSignedClinicalDataItem *)v5 relevantDate];
+        relevantDate2 = [(HKSignedClinicalDataItem *)v5 relevantDate];
         v17 = v15;
-        v18 = v16;
-        if (![(NSDate *)v17 isEqualToDate:v16])
+        v18 = relevantDate2;
+        if (![(NSDate *)v17 isEqualToDate:relevantDate2])
         {
 
           LOBYTE(medicalRecordSampleID) = 0;
 LABEL_25:
-          v11 = v27;
+          primaryConceptCodingCollection3 = v27;
           v9 = v28;
-          if (primaryConceptCodingCollection != v7)
+          if (primaryConceptCodingCollection != primaryConceptCodingCollection)
           {
             goto LABEL_26;
           }
@@ -147,19 +147,19 @@ LABEL_27:
       }
 
       medicalRecordSampleID = self->_medicalRecordSampleID;
-      v19 = [(HKSignedClinicalDataItem *)v5 medicalRecordSampleID];
-      LOBYTE(medicalRecordSampleID) = medicalRecordSampleID == v19;
+      medicalRecordSampleID = [(HKSignedClinicalDataItem *)v5 medicalRecordSampleID];
+      LOBYTE(medicalRecordSampleID) = medicalRecordSampleID == medicalRecordSampleID;
       if (!medicalRecordSampleID)
       {
-        v20 = [(HKSignedClinicalDataItem *)v5 medicalRecordSampleID];
-        if (v20)
+        medicalRecordSampleID2 = [(HKSignedClinicalDataItem *)v5 medicalRecordSampleID];
+        if (medicalRecordSampleID2)
         {
-          v21 = v20;
+          v21 = medicalRecordSampleID2;
           medicalRecordSampleID = self->_medicalRecordSampleID;
-          v22 = [(HKSignedClinicalDataItem *)v5 medicalRecordSampleID];
-          LOBYTE(medicalRecordSampleID) = [medicalRecordSampleID isEqual:v22];
+          medicalRecordSampleID3 = [(HKSignedClinicalDataItem *)v5 medicalRecordSampleID];
+          LOBYTE(medicalRecordSampleID) = [medicalRecordSampleID isEqual:medicalRecordSampleID3];
 
-          if (relevantDate != v14)
+          if (relevantDate != relevantDate)
           {
           }
 
@@ -167,7 +167,7 @@ LABEL_27:
         }
       }
 
-      if (relevantDate == v14)
+      if (relevantDate == relevantDate)
       {
 LABEL_22:
 
@@ -175,10 +175,10 @@ LABEL_22:
       }
 
 LABEL_20:
-      v11 = v27;
+      primaryConceptCodingCollection3 = v27;
 
       v9 = v28;
-      if (primaryConceptCodingCollection == v7)
+      if (primaryConceptCodingCollection == primaryConceptCodingCollection)
       {
         goto LABEL_27;
       }
@@ -205,9 +205,9 @@ LABEL_28:
   return v7;
 }
 
-- (HKSignedClinicalDataItem)initWithCoder:(id)a3
+- (HKSignedClinicalDataItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = HKSignedClinicalDataItem;
   v5 = [(HKSignedClinicalDataItem *)&v16 init];
@@ -216,7 +216,7 @@ LABEL_28:
     goto LABEL_5;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrimaryConceptCodingCollection"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrimaryConceptCodingCollection"];
   primaryConceptCodingCollection = v5->_primaryConceptCodingCollection;
   v5->_primaryConceptCodingCollection = v6;
 
@@ -225,11 +225,11 @@ LABEL_28:
     goto LABEL_6;
   }
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PrimaryConcept"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PrimaryConcept"];
   primaryConcept = v5->_primaryConcept;
   v5->_primaryConcept = v8;
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RelevantDate"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RelevantDate"];
   relevantDate = v5->_relevantDate;
   v5->_relevantDate = v10;
 
@@ -238,7 +238,7 @@ LABEL_28:
     goto LABEL_6;
   }
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MedicalRecordSampleID"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MedicalRecordSampleID"];
   medicalRecordSampleID = v5->_medicalRecordSampleID;
   v5->_medicalRecordSampleID = v12;
 
@@ -257,28 +257,28 @@ LABEL_6:
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   primaryConceptCodingCollection = self->_primaryConceptCodingCollection;
-  v5 = a3;
-  [v5 encodeObject:primaryConceptCodingCollection forKey:@"PrimaryConceptCodingCollection"];
-  [v5 encodeObject:self->_primaryConcept forKey:@"PrimaryConcept"];
-  [v5 encodeObject:self->_relevantDate forKey:@"RelevantDate"];
-  [v5 encodeObject:self->_medicalRecordSampleID forKey:@"MedicalRecordSampleID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:primaryConceptCodingCollection forKey:@"PrimaryConceptCodingCollection"];
+  [coderCopy encodeObject:self->_primaryConcept forKey:@"PrimaryConcept"];
+  [coderCopy encodeObject:self->_relevantDate forKey:@"RelevantDate"];
+  [coderCopy encodeObject:self->_medicalRecordSampleID forKey:@"MedicalRecordSampleID"];
 }
 
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error
 {
-  v6 = a4;
-  [HKConceptIndexUtilities assignError:a5 forInvalidKeyPath:v6 inClass:objc_opt_class()];
+  pathCopy = path;
+  [HKConceptIndexUtilities assignError:error forInvalidKeyPath:pathCopy inClass:objc_opt_class()];
 
   return 0;
 }
 
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4
+- (id)codingsForKeyPath:(id)path error:(id *)error
 {
-  v5 = a3;
-  [HKConceptIndexUtilities assignError:a4 forInvalidKeyPath:v5 inClass:objc_opt_class()];
+  pathCopy = path;
+  [HKConceptIndexUtilities assignError:error forInvalidKeyPath:pathCopy inClass:objc_opt_class()];
 
   return 0;
 }

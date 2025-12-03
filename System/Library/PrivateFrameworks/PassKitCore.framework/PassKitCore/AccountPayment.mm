@@ -1,35 +1,35 @@
 @interface AccountPayment
-+ (id)_commonInitWithPayment:(id)a3 accountIdentifier:(id)a4;
-+ (id)_paymentsFromQuery:(id)a3;
-+ (id)_predicateForEventPID:(int64_t)a3;
-+ (id)_predicateForFailedRecurringPaymentsWithAccountIdentifier:(id)a3;
-+ (id)_predicateForScheduledPaymentsWithAccountIdentifier:(id)a3;
-+ (id)_predicateForTransactionServiceIdentifier:(id)a3;
++ (id)_commonInitWithPayment:(id)payment accountIdentifier:(id)identifier;
++ (id)_paymentsFromQuery:(id)query;
++ (id)_predicateForEventPID:(int64_t)d;
++ (id)_predicateForFailedRecurringPaymentsWithAccountIdentifier:(id)identifier;
++ (id)_predicateForScheduledPaymentsWithAccountIdentifier:(id)identifier;
++ (id)_predicateForTransactionServiceIdentifier:(id)identifier;
 + (id)_propertySetterForFundingDetailsName;
 + (id)_propertySettersForAccountPayment;
-+ (id)failedRecurringPaymentsWithAccountIdentifier:(id)a3 inDatabase:(id)a4;
-+ (id)insertPayment:(id)a3 forEventPID:(int64_t)a4 accountIdentifier:(id)a5 inDatabase:(id)a6;
-+ (id)insertScheduledPayment:(id)a3 accountIdentifier:(id)a4 inDatabase:(id)a5;
-+ (id)paymentsForTransactionReferenceIdentifier:(id)a3 inDatabase:(id)a4;
-+ (id)paymentsForTransactionServiceIdentifier:(id)a3 inDatabase:(id)a4;
-+ (id)paymentsWithAccountIdentifier:(id)a3 inDatabase:(id)a4;
-+ (id)paymentsWithEventPID:(int64_t)a3 inDatabase:(id)a4;
-+ (id)scheduledPaymentsWithAccountIdentifier:(id)a3 inDatabase:(id)a4;
-+ (void)deletePaymentWithEventPID:(int64_t)a3 inDatabase:(id)a4;
-+ (void)deleteScheduledPaymentsWithAccountIdentifier:(id)a3 inDatabase:(id)a4;
++ (id)failedRecurringPaymentsWithAccountIdentifier:(id)identifier inDatabase:(id)database;
++ (id)insertPayment:(id)payment forEventPID:(int64_t)d accountIdentifier:(id)identifier inDatabase:(id)database;
++ (id)insertScheduledPayment:(id)payment accountIdentifier:(id)identifier inDatabase:(id)database;
++ (id)paymentsForTransactionReferenceIdentifier:(id)identifier inDatabase:(id)database;
++ (id)paymentsForTransactionServiceIdentifier:(id)identifier inDatabase:(id)database;
++ (id)paymentsWithAccountIdentifier:(id)identifier inDatabase:(id)database;
++ (id)paymentsWithEventPID:(int64_t)d inDatabase:(id)database;
++ (id)scheduledPaymentsWithAccountIdentifier:(id)identifier inDatabase:(id)database;
++ (void)deletePaymentWithEventPID:(int64_t)d inDatabase:(id)database;
++ (void)deleteScheduledPaymentsWithAccountIdentifier:(id)identifier inDatabase:(id)database;
 - (id)currencyAmount;
 - (id)payment;
 @end
 
 @implementation AccountPayment
 
-+ (id)paymentsForTransactionServiceIdentifier:(id)a3 inDatabase:(id)a4
++ (id)paymentsForTransactionServiceIdentifier:(id)identifier inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForTransactionServiceIdentifier:a3];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForTransactionServiceIdentifier:identifier];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
-  v9 = [a1 _paymentsFromQuery:v8];
+  v9 = [self _paymentsFromQuery:v8];
   v10 = [NSSortDescriptor sortDescriptorWithKey:@"paymentDate" ascending:0];
   v15[0] = v10;
   v11 = [NSSortDescriptor sortDescriptorWithKey:@"state" ascending:0];
@@ -41,13 +41,13 @@
   return v13;
 }
 
-+ (id)paymentsForTransactionReferenceIdentifier:(id)a3 inDatabase:(id)a4
++ (id)paymentsForTransactionReferenceIdentifier:(id)identifier inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForTransactionReferenceIdentifier:a3];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForTransactionReferenceIdentifier:identifier];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
-  v9 = [a1 _paymentsFromQuery:v8];
+  v9 = [self _paymentsFromQuery:v8];
   v10 = [NSSortDescriptor sortDescriptorWithKey:@"paymentDate" ascending:0];
   v15[0] = v10;
   v11 = [NSSortDescriptor sortDescriptorWithKey:@"state" ascending:0];
@@ -59,53 +59,53 @@
   return v13;
 }
 
-+ (id)paymentsWithEventPID:(int64_t)a3 inDatabase:(id)a4
++ (id)paymentsWithEventPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForEventPID:a3];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForEventPID:d];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
-  v9 = [a1 _paymentsFromQuery:v8];
+  v9 = [self _paymentsFromQuery:v8];
 
   return v9;
 }
 
-+ (id)paymentsWithAccountIdentifier:(id)a3 inDatabase:(id)a4
++ (id)paymentsWithAccountIdentifier:(id)identifier inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForAccountIdentifier:a3];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForAccountIdentifier:identifier];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
-  v9 = [a1 _paymentsFromQuery:v8];
+  v9 = [self _paymentsFromQuery:v8];
 
   return v9;
 }
 
-+ (id)scheduledPaymentsWithAccountIdentifier:(id)a3 inDatabase:(id)a4
++ (id)scheduledPaymentsWithAccountIdentifier:(id)identifier inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForScheduledPaymentsWithAccountIdentifier:a3];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForScheduledPaymentsWithAccountIdentifier:identifier];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
-  v9 = [a1 _paymentsFromQuery:v8];
+  v9 = [self _paymentsFromQuery:v8];
 
   return v9;
 }
 
-+ (id)failedRecurringPaymentsWithAccountIdentifier:(id)a3 inDatabase:(id)a4
++ (id)failedRecurringPaymentsWithAccountIdentifier:(id)identifier inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForFailedRecurringPaymentsWithAccountIdentifier:a3];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForFailedRecurringPaymentsWithAccountIdentifier:identifier];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
-  v9 = [a1 _paymentsFromQuery:v8];
+  v9 = [self _paymentsFromQuery:v8];
 
   return v9;
 }
 
-+ (id)_paymentsFromQuery:(id)a3
++ (id)_paymentsFromQuery:(id)query
 {
-  v3 = a3;
+  queryCopy = query;
   v4 = objc_alloc_init(NSMutableSet);
   v16 = @"pid";
   v5 = [NSArray arrayWithObjects:&v16 count:1];
@@ -113,10 +113,10 @@
   v11 = 3221225472;
   v12 = sub_1001355F0;
   v13 = &unk_10083CBC0;
-  v14 = v3;
+  v14 = queryCopy;
   v15 = v4;
   v6 = v4;
-  v7 = v3;
+  v7 = queryCopy;
   [v7 enumeratePersistentIDsAndProperties:v5 usingBlock:&v10];
 
   v8 = [v6 copy];
@@ -124,96 +124,96 @@
   return v8;
 }
 
-+ (id)insertPayment:(id)a3 forEventPID:(int64_t)a4 accountIdentifier:(id)a5 inDatabase:(id)a6
++ (id)insertPayment:(id)payment forEventPID:(int64_t)d accountIdentifier:(id)identifier inDatabase:(id)database
 {
-  v10 = a6;
-  v11 = [a1 _commonInitWithPayment:a3 accountIdentifier:a5];
-  v12 = [NSNumber numberWithLongLong:a4];
+  databaseCopy = database;
+  v11 = [self _commonInitWithPayment:payment accountIdentifier:identifier];
+  v12 = [NSNumber numberWithLongLong:d];
   [v11 setObject:v12 forKey:@"a"];
 
-  v13 = [[a1 alloc] initWithPropertyValues:v11 inDatabase:v10];
+  v13 = [[self alloc] initWithPropertyValues:v11 inDatabase:databaseCopy];
 
   return v13;
 }
 
-+ (id)insertScheduledPayment:(id)a3 accountIdentifier:(id)a4 inDatabase:(id)a5
++ (id)insertScheduledPayment:(id)payment accountIdentifier:(id)identifier inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = [a1 _commonInitWithPayment:a3 accountIdentifier:a4];
-  v10 = [[a1 alloc] initWithPropertyValues:v9 inDatabase:v8];
+  databaseCopy = database;
+  v9 = [self _commonInitWithPayment:payment accountIdentifier:identifier];
+  v10 = [[self alloc] initWithPropertyValues:v9 inDatabase:databaseCopy];
 
   return v10;
 }
 
-+ (id)_commonInitWithPayment:(id)a3 accountIdentifier:(id)a4
++ (id)_commonInitWithPayment:(id)payment accountIdentifier:(id)identifier
 {
-  v5 = a3;
-  v6 = a4;
+  paymentCopy = payment;
+  identifierCopy = identifier;
   v7 = +[NSMutableDictionary dictionary];
-  v8 = [v5 identifier];
-  [v7 setObjectOrNull:v8 forKey:@"b"];
+  identifier = [paymentCopy identifier];
+  [v7 setObjectOrNull:identifier forKey:@"b"];
 
-  v9 = [v5 referenceIdentifier];
-  [v7 setObjectOrNull:v9 forKey:@"e"];
+  referenceIdentifier = [paymentCopy referenceIdentifier];
+  [v7 setObjectOrNull:referenceIdentifier forKey:@"e"];
 
-  v10 = [v5 clientReferenceIdentifier];
-  [v7 setObjectOrNull:v10 forKey:@"p"];
+  clientReferenceIdentifier = [paymentCopy clientReferenceIdentifier];
+  [v7 setObjectOrNull:clientReferenceIdentifier forKey:@"p"];
 
-  v11 = [v5 currencyAmount];
-  v12 = [v11 amount];
+  currencyAmount = [paymentCopy currencyAmount];
+  amount = [currencyAmount amount];
   v13 = PKCurrencyDecimalToStorageNumber();
 
   [v7 setObjectOrNull:v13 forKey:@"c"];
-  v14 = [v5 currencyAmount];
-  v15 = [v14 currency];
-  [v7 setObjectOrNull:v15 forKey:@"d"];
+  currencyAmount2 = [paymentCopy currencyAmount];
+  currency = [currencyAmount2 currency];
+  [v7 setObjectOrNull:currency forKey:@"d"];
 
-  v16 = [v5 paymentDate];
+  paymentDate = [paymentCopy paymentDate];
   v17 = _SQLValueForDate();
   [v7 setObjectOrNull:v17 forKey:@"f"];
 
-  v18 = [v5 paymentStatusDate];
+  paymentStatusDate = [paymentCopy paymentStatusDate];
   v19 = _SQLValueForDate();
   [v7 setObjectOrNull:v19 forKey:@"q"];
 
-  [v7 setInteger:objc_msgSend(v5 forKey:{"state"), @"h"}];
-  [v7 setInteger:objc_msgSend(v5 forKey:{"statusCode"), @"k"}];
-  [v7 setBool:objc_msgSend(v5 forKey:{"cancellable"), @"cancellable"}];
-  v20 = [v5 cancellationExpiryDate];
+  [v7 setInteger:objc_msgSend(paymentCopy forKey:{"state"), @"h"}];
+  [v7 setInteger:objc_msgSend(paymentCopy forKey:{"statusCode"), @"k"}];
+  [v7 setBool:objc_msgSend(paymentCopy forKey:{"cancellable"), @"cancellable"}];
+  cancellationExpiryDate = [paymentCopy cancellationExpiryDate];
   v21 = _SQLValueForDate();
   [v7 setObjectOrNull:v21 forKey:@"cancellation_expiry_date"];
 
-  v22 = [v5 expectedCreditReleaseDate];
+  expectedCreditReleaseDate = [paymentCopy expectedCreditReleaseDate];
   v23 = _SQLValueForDate();
   [v7 setObjectOrNull:v23 forKey:@"w"];
 
-  v24 = [v5 fundingSource];
-  v25 = [v24 identifier];
-  [v7 setObjectOrNull:v25 forKey:@"l"];
+  fundingSource = [paymentCopy fundingSource];
+  identifier2 = [fundingSource identifier];
+  [v7 setObjectOrNull:identifier2 forKey:@"l"];
 
-  [v7 setInteger:objc_msgSend(v24 forKey:{"type"), @"m"}];
-  v26 = [v24 accountSuffix];
-  [v7 setObjectOrNull:v26 forKey:@"n"];
+  [v7 setInteger:objc_msgSend(fundingSource forKey:{"type"), @"m"}];
+  accountSuffix = [fundingSource accountSuffix];
+  [v7 setObjectOrNull:accountSuffix forKey:@"n"];
 
-  if ([v24 type] == 1)
+  if ([fundingSource type] == 1)
   {
-    v27 = [v24 fundingDetails];
-    v28 = [v27 name];
-    [v7 setObjectOrNull:v28 forKey:@"v"];
+    fundingDetails = [fundingSource fundingDetails];
+    name = [fundingDetails name];
+    [v7 setObjectOrNull:name forKey:@"v"];
   }
 
-  v29 = [v5 scheduleDetails];
-  [v7 setInteger:objc_msgSend(v29 forKey:{"preset"), @"j"}];
-  [v7 setInteger:objc_msgSend(v29 forKey:{"frequency"), @"i"}];
-  [v7 setInteger:objc_msgSend(v29 forKey:{"scheduledDay"), @"u"}];
-  v30 = [v29 scheduledDate];
+  scheduleDetails = [paymentCopy scheduleDetails];
+  [v7 setInteger:objc_msgSend(scheduleDetails forKey:{"preset"), @"j"}];
+  [v7 setInteger:objc_msgSend(scheduleDetails forKey:{"frequency"), @"i"}];
+  [v7 setInteger:objc_msgSend(scheduleDetails forKey:{"scheduledDay"), @"u"}];
+  scheduledDate = [scheduleDetails scheduledDate];
   v31 = _SQLValueForDate();
   [v7 setObjectOrNull:v31 forKey:@"r"];
 
-  v32 = [v29 paymentTermsIdentifier];
-  [v7 setObjectOrNull:v32 forKey:@"s"];
+  paymentTermsIdentifier = [scheduleDetails paymentTermsIdentifier];
+  [v7 setObjectOrNull:paymentTermsIdentifier forKey:@"s"];
 
-  [v7 setObjectOrNull:v6 forKey:@"t"];
+  [v7 setObjectOrNull:identifierCopy forKey:@"t"];
 
   return v7;
 }
@@ -226,7 +226,7 @@
   [v3 setFundingSource:v4];
   [v3 setScheduleDetails:v5];
   v6 = +[AccountPayment _propertySettersForAccountPayment];
-  v7 = [v6 allKeys];
+  allKeys = [v6 allKeys];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_100135E3C;
@@ -235,20 +235,20 @@
   v23 = v8;
   v9 = v3;
   v24 = v9;
-  v25 = self;
-  [(SQLiteEntity *)self getValuesForProperties:v7 withApplier:v22];
+  selfCopy = self;
+  [(SQLiteEntity *)self getValuesForProperties:allKeys withApplier:v22];
 
-  v10 = [v9 fundingSource];
-  v11 = [v10 type];
+  fundingSource = [v9 fundingSource];
+  type = [fundingSource type];
 
-  if (v11 == 1)
+  if (type == 1)
   {
     v12 = objc_alloc_init(PKAccountPaymentFundingDetailsBankAccount);
-    v13 = [v9 fundingSource];
-    [v13 setFundingDetails:v12];
+    fundingSource2 = [v9 fundingSource];
+    [fundingSource2 setFundingDetails:v12];
 
     v14 = +[AccountPayment _propertySetterForFundingDetailsName];
-    v15 = [v14 allKeys];
+    allKeys2 = [v14 allKeys];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100135EAC;
@@ -256,7 +256,7 @@
     v20 = v14;
     v21 = v9;
     v16 = v14;
-    [(SQLiteEntity *)self getValuesForProperties:v15 withApplier:v19];
+    [(SQLiteEntity *)self getValuesForProperties:allKeys2 withApplier:v19];
   }
 
   v17 = v9;
@@ -290,38 +290,38 @@
   return v8;
 }
 
-+ (void)deletePaymentWithEventPID:(int64_t)a3 inDatabase:(id)a4
++ (void)deletePaymentWithEventPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForEventPID:a3];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForEventPID:d];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
   [v8 deleteAllEntities];
 }
 
-+ (void)deleteScheduledPaymentsWithAccountIdentifier:(id)a3 inDatabase:(id)a4
++ (void)deleteScheduledPaymentsWithAccountIdentifier:(id)identifier inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 _predicateForScheduledPaymentsWithAccountIdentifier:v7];
-  v9 = [a1 _predicateForFailedRecurringPaymentsWithAccountIdentifier:v7];
+  databaseCopy = database;
+  identifierCopy = identifier;
+  v8 = [self _predicateForScheduledPaymentsWithAccountIdentifier:identifierCopy];
+  v9 = [self _predicateForFailedRecurringPaymentsWithAccountIdentifier:identifierCopy];
 
   v13[0] = v8;
   v13[1] = v9;
   v10 = [NSArray arrayWithObjects:v13 count:2];
   v11 = [SQLiteCompoundPredicate predicateMatchingAnyPredicates:v10];
 
-  v12 = [a1 queryWithDatabase:v6 predicate:v11];
+  v12 = [self queryWithDatabase:databaseCopy predicate:v11];
 
   [v12 deleteAllEntities];
 }
 
-+ (id)_predicateForTransactionServiceIdentifier:(id)a3
++ (id)_predicateForTransactionServiceIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [SQLiteComparisonPredicate predicateWithProperty:@"b" equalToValue:v3];
+  identifierCopy = identifier;
+  v4 = [SQLiteComparisonPredicate predicateWithProperty:@"b" equalToValue:identifierCopy];
   v9[0] = v4;
-  v5 = [SQLiteComparisonPredicate predicateWithProperty:@"e" equalToValue:v3];
+  v5 = [SQLiteComparisonPredicate predicateWithProperty:@"e" equalToValue:identifierCopy];
 
   v9[1] = v5;
   v6 = [NSArray arrayWithObjects:v9 count:2];
@@ -330,17 +330,17 @@
   return v7;
 }
 
-+ (id)_predicateForEventPID:(int64_t)a3
++ (id)_predicateForEventPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"a" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)_predicateForScheduledPaymentsWithAccountIdentifier:(id)a3
++ (id)_predicateForScheduledPaymentsWithAccountIdentifier:(id)identifier
 {
-  v3 = [a1 _predicateForAccountIdentifier:a3];
+  v3 = [self _predicateForAccountIdentifier:identifier];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"h" equalToValue:&off_1008A2D38];
   v5 = [SQLiteNullPredicate isNullPredicateWithProperty:@"a"];
   v9[0] = v3;
@@ -352,9 +352,9 @@
   return v7;
 }
 
-+ (id)_predicateForFailedRecurringPaymentsWithAccountIdentifier:(id)a3
++ (id)_predicateForFailedRecurringPaymentsWithAccountIdentifier:(id)identifier
 {
-  v3 = [a1 _predicateForAccountIdentifier:a3];
+  v3 = [self _predicateForAccountIdentifier:identifier];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"h" equalToValue:&off_1008A2D50];
   v5 = [SQLiteContainsPredicate containsPredicateWithProperty:@"i" values:&off_1008A47D0];
   v13[0] = v4;

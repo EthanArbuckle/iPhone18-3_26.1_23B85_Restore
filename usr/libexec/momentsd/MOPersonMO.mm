@@ -1,37 +1,37 @@
 @interface MOPersonMO
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4;
-- (id)clonedObjectWithContext:(id)a3;
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context;
+- (id)clonedObjectWithContext:(id)context;
 @end
 
 @implementation MOPersonMO
 
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[MOPersonMO alloc] initWithContext:v6];
-  v8 = [v5 localIdentifier];
-  [(MOPersonMO *)v7 setIdentifier:v8];
+  objectCopy = object;
+  contextCopy = context;
+  v7 = [[MOPersonMO alloc] initWithContext:contextCopy];
+  localIdentifier = [objectCopy localIdentifier];
+  [(MOPersonMO *)v7 setIdentifier:localIdentifier];
 
-  v9 = [v5 name];
-  [(MOPersonMO *)v7 setName:v9];
+  name = [objectCopy name];
+  [(MOPersonMO *)v7 setName:name];
 
-  v10 = [v5 givenName];
-  [(MOPersonMO *)v7 setGivenName:v10];
+  givenName = [objectCopy givenName];
+  [(MOPersonMO *)v7 setGivenName:givenName];
 
-  v11 = [v5 contactIdentifier];
-  [(MOPersonMO *)v7 setContactIdentifier:v11];
+  contactIdentifier = [objectCopy contactIdentifier];
+  [(MOPersonMO *)v7 setContactIdentifier:contactIdentifier];
 
-  -[MOPersonMO setIsPHPersonTypeImportant:](v7, "setIsPHPersonTypeImportant:", [v5 isPHPersonTypeImportant]);
-  -[MOPersonMO setIsMePerson:](v7, "setIsMePerson:", [v5 isMePerson]);
-  -[MOPersonMO setMePersonIdentified:](v7, "setMePersonIdentified:", [v5 mePersonIdentified]);
+  -[MOPersonMO setIsPHPersonTypeImportant:](v7, "setIsPHPersonTypeImportant:", [objectCopy isPHPersonTypeImportant]);
+  -[MOPersonMO setIsMePerson:](v7, "setIsMePerson:", [objectCopy isMePerson]);
+  -[MOPersonMO setMePersonIdentified:](v7, "setMePersonIdentified:", [objectCopy mePersonIdentified]);
   [(MOPersonMO *)v7 setPersonRelationships:0];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v12 = [v5 personRelationships];
-  v13 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  personRelationships = [objectCopy personRelationships];
+  v13 = [personRelationships countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v13)
   {
     v14 = v13;
@@ -42,35 +42,35 @@
       {
         if (*v21 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(personRelationships);
         }
 
-        v17 = [MOPersonRelationshipMO managedObjectWithObject:*(*(&v20 + 1) + 8 * i) inManagedObjectContext:v6];
+        v17 = [MOPersonRelationshipMO managedObjectWithObject:*(*(&v20 + 1) + 8 * i) inManagedObjectContext:contextCopy];
         [(MOPersonMO *)v7 addPersonRelationshipsObject:v17];
       }
 
-      v14 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v14 = [personRelationships countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v14);
   }
 
-  [v5 significanceScore];
+  [objectCopy significanceScore];
   [(MOPersonMO *)v7 setSignificanceScore:?];
-  [v5 priorityScore];
+  [objectCopy priorityScore];
   [(MOPersonMO *)v7 setPriorityScore:?];
-  -[MOPersonMO setSourceEventAccessType:](v7, "setSourceEventAccessType:", [v5 sourceEventAccessType]);
-  v18 = [v5 sourceEventIdentifier];
-  [(MOPersonMO *)v7 setSourceEventIdentifier:v18];
+  -[MOPersonMO setSourceEventAccessType:](v7, "setSourceEventAccessType:", [objectCopy sourceEventAccessType]);
+  sourceEventIdentifier = [objectCopy sourceEventIdentifier];
+  [(MOPersonMO *)v7 setSourceEventIdentifier:sourceEventIdentifier];
 
   return v7;
 }
 
-- (id)clonedObjectWithContext:(id)a3
+- (id)clonedObjectWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = [[MOPerson alloc] initWithPersonMO:self];
-  v6 = [MOPersonMO managedObjectWithObject:v5 inManagedObjectContext:v4];
+  v6 = [MOPersonMO managedObjectWithObject:v5 inManagedObjectContext:contextCopy];
 
   return v6;
 }

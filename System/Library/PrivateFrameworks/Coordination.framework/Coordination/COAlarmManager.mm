@@ -1,46 +1,46 @@
 @interface COAlarmManager
 - (BOOL)_canDispatchForAssociatedAccessory;
 - (COAlarmManager)init;
-- (COAlarmManager)initWithConnectionProvider:(id)a3;
-- (COAlarmManager)initWithConnectionProvider:(id)a3 distributedTimersClient:(id)a4;
+- (COAlarmManager)initWithConnectionProvider:(id)provider;
+- (COAlarmManager)initWithConnectionProvider:(id)provider distributedTimersClient:(id)client;
 - (NSXPCConnection)lastConnection;
-- (id)_alarmsForAccessory:(id)a3 includingSleepAlarm:(BOOL)a4;
-- (id)_categoryTypeForAlarm:(id)a3;
-- (id)_dispatchOpWithName:(id)a3 forAlarm:(id)a4 distributedTimers:(id)a5 coordination:(id)a6;
-- (id)_remoteInterfaceWithErrorHandler:(id)a3;
-- (id)addAlarm:(id)a3;
-- (id)addObserverForName:(id)a3 queue:(id)a4 usingBlock:(id)a5;
+- (id)_alarmsForAccessory:(id)accessory includingSleepAlarm:(BOOL)alarm;
+- (id)_categoryTypeForAlarm:(id)alarm;
+- (id)_dispatchOpWithName:(id)name forAlarm:(id)alarm distributedTimers:(id)timers coordination:(id)coordination;
+- (id)_remoteInterfaceWithErrorHandler:(id)handler;
+- (id)addAlarm:(id)alarm;
+- (id)addObserverForName:(id)name queue:(id)queue usingBlock:(id)block;
 - (id)alarms;
-- (id)alarmsForAccessories:(id)a3;
-- (id)alarmsForAccessory:(id)a3;
-- (id)alarmsForAccessoryMementos:(id)a3;
-- (id)dismissAlarmWithIdentifier:(id)a3;
-- (id)initForAccessory:(id)a3 withConnectionProvider:(id)a4;
-- (id)removeAlarm:(id)a3;
-- (id)snoozeAlarmWithIdentifier:(id)a3;
-- (id)updateAlarm:(id)a3;
+- (id)alarmsForAccessories:(id)accessories;
+- (id)alarmsForAccessory:(id)accessory;
+- (id)alarmsForAccessoryMementos:(id)mementos;
+- (id)dismissAlarmWithIdentifier:(id)identifier;
+- (id)initForAccessory:(id)accessory withConnectionProvider:(id)provider;
+- (id)removeAlarm:(id)alarm;
+- (id)snoozeAlarmWithIdentifier:(id)identifier;
+- (id)updateAlarm:(id)alarm;
 - (void)_activateDistributedTimersMonitoring;
 - (void)_canDispatchForAssociatedAccessory;
-- (void)_emitNotificationForName:(id)a3 alarm:(id)a4;
-- (void)_handleDTTimerClientEvent:(int64_t)a3 dtTimer:(id)a4;
-- (void)_handleNotification:(id)a3;
+- (void)_emitNotificationForName:(id)name alarm:(id)alarm;
+- (void)_handleDTTimerClientEvent:(int64_t)event dtTimer:(id)timer;
+- (void)_handleNotification:(id)notification;
 - (void)_lostConnectionToService;
-- (void)_registerObserverWithName:(id)a3;
+- (void)_registerObserverWithName:(id)name;
 - (void)_updateCanDispatch;
 - (void)_updateMonitoring;
-- (void)_withLock:(id)a3;
+- (void)_withLock:(id)lock;
 - (void)dealloc;
-- (void)postNotificationName:(id)a3 withUserInfo:(id)a4 callback:(id)a5;
-- (void)removeObserver:(id)a3;
+- (void)postNotificationName:(id)name withUserInfo:(id)info callback:(id)callback;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation COAlarmManager
 
-- (COAlarmManager)initWithConnectionProvider:(id)a3 distributedTimersClient:(id)a4
+- (COAlarmManager)initWithConnectionProvider:(id)provider distributedTimersClient:(id)client
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  clientCopy = client;
   v22.receiver = self;
   v22.super_class = COAlarmManager;
   v9 = [(COAlarmManager *)&v22 init];
@@ -52,10 +52,10 @@
     observers = v10->_observers;
     v10->_observers = v11;
 
-    objc_storeStrong(&v10->_provider, a3);
-    objc_storeStrong(&v10->_dtClient, a4);
-    v13 = [v8 error];
-    v10->_canDispatch = v13 == 0;
+    objc_storeStrong(&v10->_provider, provider);
+    objc_storeStrong(&v10->_dtClient, client);
+    error = [clientCopy error];
+    v10->_canDispatch = error == 0;
 
     v31[0] = 0;
     v31[1] = 0;
@@ -79,7 +79,7 @@
       v27 = 2112;
       v28 = v19;
       v29 = 2048;
-      v30 = v8;
+      v30 = clientCopy;
       _os_log_impl(&dword_244328000, v16, OS_LOG_TYPE_DEFAULT, "%p manager created for %@ with %@ provider [DT: %p]", buf, 0x2Au);
     }
   }
@@ -88,11 +88,11 @@
   return v10;
 }
 
-- (COAlarmManager)initWithConnectionProvider:(id)a3
+- (COAlarmManager)initWithConnectionProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = MakeDTTimerClient(0);
-  v6 = [(COAlarmManager *)self initWithConnectionProvider:v4 distributedTimersClient:v5];
+  v6 = [(COAlarmManager *)self initWithConnectionProvider:providerCopy distributedTimersClient:v5];
 
   return v6;
 }
@@ -105,30 +105,30 @@
   return v4;
 }
 
-- (id)initForAccessory:(id)a3 withConnectionProvider:(id)a4
+- (id)initForAccessory:(id)accessory withConnectionProvider:(id)provider
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 uniqueIdentifier];
-  v10 = MakeDTTimerClient(v9);
+  accessoryCopy = accessory;
+  providerCopy = provider;
+  uniqueIdentifier = [accessoryCopy uniqueIdentifier];
+  v10 = MakeDTTimerClient(uniqueIdentifier);
 
-  v11 = [(COAlarmManager *)self initWithConnectionProvider:v8 distributedTimersClient:v10];
+  v11 = [(COAlarmManager *)self initWithConnectionProvider:providerCopy distributedTimersClient:v10];
   if (v11)
   {
-    objc_storeStrong(&v11->_accessory, a3);
+    objc_storeStrong(&v11->_accessory, accessory);
     v12 = COLogForCategory(0);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(HMAccessory *)v11->_accessory uniqueIdentifier];
+      uniqueIdentifier2 = [(HMAccessory *)v11->_accessory uniqueIdentifier];
       v18 = 134218242;
       v19 = v11;
       v20 = 2112;
-      v21 = v13;
+      v21 = uniqueIdentifier2;
       _os_log_impl(&dword_244328000, v12, OS_LOG_TYPE_DEFAULT, "%p manager set accessory %@", &v18, 0x16u);
     }
 
-    v14 = [[COHomeKitAccessoryMemento alloc] initWithHomeKitAccessory:v7];
+    v14 = [[COHomeKitAccessoryMemento alloc] initWithHomeKitAccessory:accessoryCopy];
     memento = v11->_memento;
     v11->_memento = v14;
   }
@@ -171,47 +171,47 @@ void __25__COAlarmManager_dealloc__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_categoryTypeForAlarm:(id)a3
+- (id)_categoryTypeForAlarm:(id)alarm
 {
-  v4 = a3;
-  v5 = [(COAlarmManager *)self accessory];
-  if (v5)
+  alarmCopy = alarm;
+  accessory = [(COAlarmManager *)self accessory];
+  if (accessory)
   {
-    v6 = [v4 siriContext];
-    v7 = [v6 objectForKey:@"COAlarmSiriContextTargetReferenceKey"];
+    siriContext = [alarmCopy siriContext];
+    v7 = [siriContext objectForKey:@"COAlarmSiriContextTargetReferenceKey"];
 
-    if (v7 && (COAlarmSiriContextTargetReferenceForAccessory(v5), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v7 compare:v8 options:1], v8, v9))
+    if (v7 && (COAlarmSiriContextTargetReferenceForAccessory(accessory), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v7 compare:v8 options:1], v8, v9))
     {
-      v10 = 0;
+      categoryType = 0;
     }
 
     else
     {
-      v11 = [v5 category];
-      v10 = [v11 categoryType];
+      category = [accessory category];
+      categoryType = [category categoryType];
     }
   }
 
   else
   {
-    v10 = 0;
+    categoryType = 0;
   }
 
-  return v10;
+  return categoryType;
 }
 
-- (id)_remoteInterfaceWithErrorHandler:(id)a3
+- (id)_remoteInterfaceWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -225,7 +225,7 @@ void __25__COAlarmManager_dealloc__block_invoke(uint64_t a1)
   v7[4] = self;
   v7[5] = &v8;
   [(COAlarmManager *)self _withLock:v7];
-  v5 = [v9[5] remoteObjectProxyWithErrorHandler:v4];
+  v5 = [v9[5] remoteObjectProxyWithErrorHandler:handlerCopy];
   _Block_object_dispose(&v8, 8);
 
   return v5;
@@ -352,10 +352,10 @@ void __51__COAlarmManager__remoteInterfaceWithErrorHandler___block_invoke_125(ui
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(COAlarmManager *)self observers];
-  v4 = [v3 registeredNames];
+  observers = [(COAlarmManager *)self observers];
+  registeredNames = [observers registeredNames];
 
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v17 count:16];
+  v5 = [registeredNames countByEnumeratingWithState:&v11 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -367,14 +367,14 @@ void __51__COAlarmManager__remoteInterfaceWithErrorHandler___block_invoke_125(ui
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(registeredNames);
         }
 
         [(COAlarmManager *)self _registerObserverWithName:*(*(&v11 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v17 count:16];
+      v6 = [registeredNames countByEnumeratingWithState:&v11 objects:v17 count:16];
     }
 
     while (v6);
@@ -384,7 +384,7 @@ void __51__COAlarmManager__remoteInterfaceWithErrorHandler___block_invoke_125(ui
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_244328000, v9, OS_LOG_TYPE_DEFAULT, "%p posting reset notification", buf, 0xCu);
   }
 
@@ -392,34 +392,34 @@ void __51__COAlarmManager__remoteInterfaceWithErrorHandler___block_invoke_125(ui
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_dispatchOpWithName:(id)a3 forAlarm:(id)a4 distributedTimers:(id)a5 coordination:(id)a6
+- (id)_dispatchOpWithName:(id)name forAlarm:(id)alarm distributedTimers:(id)timers coordination:(id)coordination
 {
   v58 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  alarmCopy = alarm;
+  timersCopy = timers;
+  coordinationCopy = coordination;
   v14 = objc_alloc_init(MEMORY[0x277D2C900]);
   v15 = arc4random();
   v16 = COLogForCategory(0);
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    [v11 alarmID];
-    v17 = v35 = v11;
-    v18 = [(COAlarmManager *)self dtClient];
+    [alarmCopy alarmID];
+    v17 = v35 = alarmCopy;
+    dtClient = [(COAlarmManager *)self dtClient];
     *buf = 134219010;
-    v49 = self;
+    selfCopy = self;
     v50 = 1024;
     v51 = v15;
     v52 = 2114;
-    v53 = v10;
+    v53 = nameCopy;
     v54 = 2114;
     v55 = v17;
     v56 = 2048;
-    v57 = v18;
+    v57 = dtClient;
     _os_log_impl(&dword_244328000, v16, OS_LOG_TYPE_DEFAULT, "%p (%u) %{public}@ alarm %{public}@ [DT: %p]", buf, 0x30u);
 
-    v11 = v35;
+    alarmCopy = v35;
   }
 
   v43[0] = MEMORY[0x277D85DD0];
@@ -427,9 +427,9 @@ void __51__COAlarmManager__remoteInterfaceWithErrorHandler___block_invoke_125(ui
   v43[2] = __78__COAlarmManager__dispatchOpWithName_forAlarm_distributedTimers_coordination___block_invoke;
   v43[3] = &unk_278E129E8;
   v47 = v15;
-  v19 = v10;
+  v19 = nameCopy;
   v44 = v19;
-  v20 = v11;
+  v20 = alarmCopy;
   v45 = v20;
   v21 = v14;
   v46 = v21;
@@ -441,7 +441,7 @@ void __51__COAlarmManager__remoteInterfaceWithErrorHandler___block_invoke_125(ui
   v40[4] = self;
   v23 = v22;
   v41 = v23;
-  v24 = v13;
+  v24 = coordinationCopy;
   v42 = v24;
   v25 = MEMORY[0x245D5F6A0](v40);
   v36[0] = MEMORY[0x277D85DD0];
@@ -454,13 +454,13 @@ void __51__COAlarmManager__remoteInterfaceWithErrorHandler___block_invoke_125(ui
   v27 = v23;
   v38 = v27;
   v28 = MEMORY[0x245D5F6A0](v36);
-  v29 = [(COAlarmManager *)self dtClient];
+  dtClient2 = [(COAlarmManager *)self dtClient];
 
-  if (v29)
+  if (dtClient2)
   {
     v30 = [objc_alloc(MEMORY[0x277D05800]) initWithMTAlarm:v20];
-    v31 = [(COAlarmManager *)self dtClient];
-    v12[2](v12, v31, v30, v28);
+    dtClient3 = [(COAlarmManager *)self dtClient];
+    timersCopy[2](timersCopy, dtClient3, v30, v28);
   }
 
   else
@@ -563,31 +563,31 @@ LABEL_9:
 - (void)_updateCanDispatch
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v3 = [(COAlarmManager *)self dtClient];
-  v4 = [v3 error];
+  dtClient = [(COAlarmManager *)self dtClient];
+  error = [dtClient error];
 
-  if ((v4 == 0) != [(COAlarmManager *)self canDispatch])
+  if ((error == 0) != [(COAlarmManager *)self canDispatch])
   {
-    if ((v4 == 0) != [(COAlarmManager *)self canDispatch])
+    if ((error == 0) != [(COAlarmManager *)self canDispatch])
     {
-      [(COAlarmManager *)self setCanDispatch:v4 == 0];
+      [(COAlarmManager *)self setCanDispatch:error == 0];
     }
 
-    v5 = [(COAlarmManager *)self observers];
-    v6 = [v5 registeredNames];
-    v7 = [v6 containsObject:@"COAlarmManagerCanDispatchDidUpdate"];
+    observers = [(COAlarmManager *)self observers];
+    registeredNames = [observers registeredNames];
+    v7 = [registeredNames containsObject:@"COAlarmManagerCanDispatchDidUpdate"];
 
     if (v7)
     {
-      v8 = [(COAlarmManager *)self accessory];
+      accessory = [(COAlarmManager *)self accessory];
 
-      if (v8)
+      if (accessory)
       {
-        v9 = [(COAlarmManager *)self accessory];
-        v10 = [v9 uniqueIdentifier];
+        accessory2 = [(COAlarmManager *)self accessory];
+        uniqueIdentifier = [accessory2 uniqueIdentifier];
 
         v18 = @"COAccessoryDispatchabilityKey";
-        v16 = v10;
+        v16 = uniqueIdentifier;
         v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[COAlarmManager canDispatch](self, "canDispatch")}];
         v17 = v11;
         v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v17 forKeys:&v16 count:1];
@@ -608,16 +608,16 @@ LABEL_9:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_emitNotificationForName:(id)a3 alarm:(id)a4
+- (void)_emitNotificationForName:(id)name alarm:(id)alarm
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  nameCopy = name;
+  alarmCopy = alarm;
+  v8 = alarmCopy;
+  if (alarmCopy)
   {
     v9 = *MEMORY[0x277D295A0];
-    v21 = v7;
+    v21 = alarmCopy;
     v22 = v9;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v21 count:1];
     v23[0] = v10;
@@ -629,19 +629,19 @@ LABEL_9:
     v11 = 0;
   }
 
-  v12 = [(COAlarmManager *)self observers];
-  v13 = [v12 registeredNames];
-  v14 = [v13 containsObject:v6];
+  observers = [(COAlarmManager *)self observers];
+  registeredNames = [observers registeredNames];
+  v14 = [registeredNames containsObject:nameCopy];
 
   if (v14)
   {
-    v15 = [objc_alloc(MEMORY[0x277CCAB88]) initWithName:v6 object:self userInfo:v11];
+    v15 = [objc_alloc(MEMORY[0x277CCAB88]) initWithName:nameCopy object:self userInfo:v11];
     [(COAlarmManager *)self _handleNotification:v15];
   }
 
-  v16 = [(COAlarmManager *)self observers];
-  v17 = [v16 registeredNames];
-  v18 = [v17 containsObject:@"COAlarmManagerAlarmsChanged"];
+  observers2 = [(COAlarmManager *)self observers];
+  registeredNames2 = [observers2 registeredNames];
+  v18 = [registeredNames2 containsObject:@"COAlarmManagerAlarmsChanged"];
 
   if (v18)
   {
@@ -652,37 +652,37 @@ LABEL_9:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDTTimerClientEvent:(int64_t)a3 dtTimer:(id)a4
+- (void)_handleDTTimerClientEvent:(int64_t)event dtTimer:(id)timer
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  timerCopy = timer;
   v7 = COLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [(COAlarmManager *)self dtMonitoring];
+    dtMonitoring = [(COAlarmManager *)self dtMonitoring];
     v13 = "no";
     *v19 = 134218754;
     *&v19[12] = 2048;
     *&v19[4] = self;
-    if (v12)
+    if (dtMonitoring)
     {
       v13 = "yes";
     }
 
-    *&v19[14] = a3;
+    *&v19[14] = event;
     v20 = 2112;
-    v21 = v6;
+    v21 = timerCopy;
     v22 = 2080;
     v23 = v13;
     _os_log_debug_impl(&dword_244328000, v7, OS_LOG_TYPE_DEBUG, "%p got Distributed Timers event: %ld [%@] (dtMonitoring: %s)", v19, 0x2Au);
   }
 
-  if (a3 != 11)
+  if (event != 11)
   {
-    if (v6)
+    if (timerCopy)
     {
-      v8 = [v6 mtAlarm];
-      if (!v8)
+      mtAlarm = [timerCopy mtAlarm];
+      if (!mtAlarm)
       {
         v9 = COLogForCategory(0);
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -690,33 +690,33 @@ LABEL_9:
           [COAlarmManager _handleDTTimerClientEvent:dtTimer:];
         }
 
-        v8 = 0;
+        mtAlarm = 0;
         goto LABEL_40;
       }
     }
 
     else
     {
-      v8 = 0;
+      mtAlarm = 0;
     }
 
-    if (a3 > 5)
+    if (event > 5)
     {
-      if (a3 > 8)
+      if (event > 8)
       {
-        if (a3 == 9)
+        if (event == 9)
         {
           v11 = @"COAlarmManagerFiringAlarmDismissed";
           goto LABEL_36;
         }
 
-        if (a3 == 10)
+        if (event == 10)
         {
           v11 = @"COAlarmManagerAlarmFired";
           goto LABEL_36;
         }
 
-        if (a3 != 12)
+        if (event != 12)
         {
           goto LABEL_37;
         }
@@ -724,13 +724,13 @@ LABEL_9:
 
       else
       {
-        if (a3 == 6)
+        if (event == 6)
         {
           v11 = @"COAlarmManagerAlarmsUpdated";
           goto LABEL_36;
         }
 
-        if (a3 == 7)
+        if (event == 7)
         {
           v11 = @"COAlarmManagerAlarmsRemoved";
           goto LABEL_36;
@@ -742,9 +742,9 @@ LABEL_9:
 
     else
     {
-      if (a3 <= 2)
+      if (event <= 2)
       {
-        if (a3 < 3)
+        if (event < 3)
         {
           v10 = COLogForCategory(0);
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -752,7 +752,7 @@ LABEL_9:
             *v19 = 134218240;
             *&v19[4] = self;
             *&v19[12] = 2048;
-            *&v19[14] = a3;
+            *&v19[14] = event;
             _os_log_impl(&dword_244328000, v10, OS_LOG_TYPE_DEFAULT, "%p ignored DistributedTimers event %ld", v19, 0x16u);
           }
 
@@ -771,11 +771,11 @@ LABEL_37:
         goto LABEL_39;
       }
 
-      if (a3 == 3)
+      if (event == 3)
       {
-        v14 = [(COAlarmManager *)self observers];
-        v15 = [v14 registeredNames];
-        v16 = [v15 containsObject:@"COAlarmManagerStateReset"];
+        observers = [(COAlarmManager *)self observers];
+        registeredNames = [observers registeredNames];
+        v16 = [registeredNames containsObject:@"COAlarmManagerStateReset"];
 
         if (v16)
         {
@@ -786,7 +786,7 @@ LABEL_37:
         goto LABEL_40;
       }
 
-      if (a3 == 4)
+      if (event == 4)
       {
         [(COAlarmManager *)self _updateCanDispatch];
 LABEL_40:
@@ -798,7 +798,7 @@ LABEL_40:
     }
 
 LABEL_36:
-    [(COAlarmManager *)self _emitNotificationForName:v11 alarm:v8, *v19];
+    [(COAlarmManager *)self _emitNotificationForName:v11 alarm:mtAlarm, *v19];
     goto LABEL_40;
   }
 
@@ -884,29 +884,29 @@ LABEL_6:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_alarmsForAccessory:(id)a3 includingSleepAlarm:(BOOL)a4
+- (id)_alarmsForAccessory:(id)accessory includingSleepAlarm:(BOOL)alarm
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  accessoryCopy = accessory;
   v7 = objc_alloc_init(MEMORY[0x277D2C900]);
   v8 = arc4random();
   v9 = COLogForCategory(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v6 uniqueIdentifier];
-    v11 = [(COAlarmManager *)self dtClient];
+    uniqueIdentifier = [accessoryCopy uniqueIdentifier];
+    dtClient = [(COAlarmManager *)self dtClient];
     v12 = "Y";
     *buf = 134218754;
     v44 = 1024;
-    v43 = self;
-    if (!v11)
+    selfCopy = self;
+    if (!dtClient)
     {
       v12 = "N";
     }
 
     v45 = v8;
     v46 = 2114;
-    v47 = v10;
+    v47 = uniqueIdentifier;
     v48 = 2080;
     v49 = v12;
     _os_log_impl(&dword_244328000, v9, OS_LOG_TYPE_DEFAULT, "%p (%u) retrieving alarms for %{public}@ [DT: %s]", buf, 0x26u);
@@ -924,7 +924,7 @@ LABEL_6:
   v35[1] = 3221225472;
   v35[2] = __58__COAlarmManager__alarmsForAccessory_includingSleepAlarm___block_invoke_140;
   v35[3] = &unk_278E12B18;
-  v38 = a4;
+  alarmCopy = alarm;
   v37 = v8;
   v15 = v13;
   v36 = v15;
@@ -936,16 +936,16 @@ LABEL_6:
   v31[4] = self;
   v17 = v14;
   v33 = v17;
-  v18 = v6;
+  v18 = accessoryCopy;
   v32 = v18;
   v19 = v16;
   v34 = v19;
   v20 = MEMORY[0x245D5F6A0](v31);
-  v21 = [(COAlarmManager *)self dtClient];
+  dtClient2 = [(COAlarmManager *)self dtClient];
 
-  if (v21)
+  if (dtClient2)
   {
-    v22 = [(COAlarmManager *)self dtClient];
+    dtClient3 = [(COAlarmManager *)self dtClient];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __58__COAlarmManager__alarmsForAccessory_includingSleepAlarm___block_invoke_3;
@@ -954,7 +954,7 @@ LABEL_6:
     v27 = v20;
     v28 = v17;
     v29 = v19;
-    [v22 fetchTimersWithCompletionHandler:v26];
+    [dtClient3 fetchTimersWithCompletionHandler:v26];
   }
 
   else
@@ -1077,76 +1077,76 @@ void __58__COAlarmManager__alarmsForAccessory_includingSleepAlarm___block_invoke
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleNotification:(id)a3
+- (void)_handleNotification:(id)notification
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = COLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
-    v7 = [v4 userInfo];
+    name = [notificationCopy name];
+    userInfo = [notificationCopy userInfo];
     v10 = 134218498;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v6;
+    v13 = name;
     v14 = 2112;
-    v15 = v7;
+    v15 = userInfo;
     _os_log_impl(&dword_244328000, v5, OS_LOG_TYPE_DEFAULT, "%p forwarding notification %@: %@", &v10, 0x20u);
   }
 
-  v8 = [(COAlarmManager *)self observers];
-  [v8 postNotification:v4];
+  observers = [(COAlarmManager *)self observers];
+  [observers postNotification:notificationCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postNotificationName:(id)a3 withUserInfo:(id)a4 callback:(id)a5
+- (void)postNotificationName:(id)name withUserInfo:(id)info callback:(id)callback
 {
   v8 = MEMORY[0x277CCAB88];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[v8 alloc] initWithName:v11 object:self userInfo:v10];
+  callbackCopy = callback;
+  infoCopy = info;
+  nameCopy = name;
+  v12 = [[v8 alloc] initWithName:nameCopy object:self userInfo:infoCopy];
 
   [(COAlarmManager *)self _handleNotification:v12];
-  v9[2](v9, 0);
+  callbackCopy[2](callbackCopy, 0);
 }
 
 - (id)alarms
 {
-  v3 = [(COAlarmManager *)self memento];
-  v4 = [(COAlarmManager *)self _alarmsForAccessory:v3 includingSleepAlarm:0];
+  memento = [(COAlarmManager *)self memento];
+  v4 = [(COAlarmManager *)self _alarmsForAccessory:memento includingSleepAlarm:0];
 
   return v4;
 }
 
-- (id)alarmsForAccessory:(id)a3
+- (id)alarmsForAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [[COHomeKitAccessoryMemento alloc] initWithHomeKitAccessory:v4];
+  accessoryCopy = accessory;
+  v5 = [[COHomeKitAccessoryMemento alloc] initWithHomeKitAccessory:accessoryCopy];
 
   v6 = [(COAlarmManager *)self _alarmsForAccessory:v5 includingSleepAlarm:0];
 
   return v6;
 }
 
-- (id)alarmsForAccessories:(id)a3
+- (id)alarmsForAccessories:(id)accessories
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  accessoriesCopy = accessories;
   v5 = objc_alloc_init(MEMORY[0x277D2C900]);
   v6 = arc4random();
   v7 = COLogForCategory(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v4 count];
-    v9 = [(COAlarmManager *)self dtClient];
+    v8 = [accessoriesCopy count];
+    dtClient = [(COAlarmManager *)self dtClient];
     v10 = "Y";
     *buf = 134219010;
     v42 = 1024;
-    v41 = self;
-    if (!v9)
+    selfCopy = self;
+    if (!dtClient)
     {
       v10 = "N";
     }
@@ -1155,7 +1155,7 @@ void __58__COAlarmManager__alarmsForAccessory_includingSleepAlarm___block_invoke
     v44 = 2048;
     v45 = v8;
     v46 = 2114;
-    v47 = v4;
+    v47 = accessoriesCopy;
     v48 = 2080;
     v49 = v10;
     _os_log_impl(&dword_244328000, v7, OS_LOG_TYPE_DEFAULT, "%p (%u) retrieving alarms for %ld:%{public}@ [DT: %s]", buf, 0x30u);
@@ -1184,16 +1184,16 @@ void __58__COAlarmManager__alarmsForAccessory_includingSleepAlarm___block_invoke
   v30[4] = self;
   v15 = v12;
   v32 = v15;
-  v16 = v4;
+  v16 = accessoriesCopy;
   v31 = v16;
   v17 = v14;
   v33 = v17;
   v18 = MEMORY[0x245D5F6A0](v30);
-  v19 = [(COAlarmManager *)self dtClient];
+  dtClient2 = [(COAlarmManager *)self dtClient];
 
-  if (v19)
+  if (dtClient2)
   {
-    v20 = [(COAlarmManager *)self dtClient];
+    dtClient3 = [(COAlarmManager *)self dtClient];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __39__COAlarmManager_alarmsForAccessories___block_invoke_5;
@@ -1203,7 +1203,7 @@ void __58__COAlarmManager__alarmsForAccessory_includingSleepAlarm___block_invoke
     v27 = v15;
     v25 = v16;
     v28 = v17;
-    [v20 fetchTimersWithCompletionHandler:v24];
+    [dtClient3 fetchTimersWithCompletionHandler:v24];
   }
 
   else
@@ -1358,14 +1358,14 @@ void __39__COAlarmManager_alarmsForAccessories___block_invoke_5(uint64_t a1, voi
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)alarmsForAccessoryMementos:(id)a3
+- (id)alarmsForAccessoryMementos:(id)mementos
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  mementosCopy = mementos;
   v5 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v6 = [(COAlarmManager *)self dtClient];
+  dtClient = [(COAlarmManager *)self dtClient];
 
-  if (v6)
+  if (dtClient)
   {
     v7 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3328 userInfo:MEMORY[0x277CBEC10]];
     [v5 finishWithError:v7];
@@ -1377,10 +1377,10 @@ void __39__COAlarmManager_alarmsForAccessories___block_invoke_5(uint64_t a1, voi
     v9 = COLogForCategory(0);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v4 count];
-      v11 = [v4 na_map:&__block_literal_global_161];
+      v10 = [mementosCopy count];
+      v11 = [mementosCopy na_map:&__block_literal_global_161];
       *buf = 134218498;
-      v28 = self;
+      selfCopy = self;
       v29 = 2048;
       v30 = v10;
       v31 = 2112;
@@ -1392,21 +1392,21 @@ void __39__COAlarmManager_alarmsForAccessories___block_invoke_5(uint64_t a1, voi
     v24[1] = 3221225472;
     v24[2] = __45__COAlarmManager_alarmsForAccessoryMementos___block_invoke_162;
     v24[3] = &unk_278E12AA8;
-    v26 = self;
+    selfCopy2 = self;
     v12 = v5;
     v25 = v12;
     v13 = [(COAlarmManager *)self _remoteInterfaceWithErrorHandler:v24];
-    v14 = [(COAlarmManager *)self memento];
-    v15 = [(COAlarmManager *)self instanceID];
+    memento = [(COAlarmManager *)self memento];
+    instanceID = [(COAlarmManager *)self instanceID];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __45__COAlarmManager_alarmsForAccessoryMementos___block_invoke_163;
     v20[3] = &unk_278E12CC0;
-    v23 = self;
-    v21 = v4;
+    selfCopy3 = self;
+    v21 = mementosCopy;
     v16 = v12;
     v22 = v16;
-    [v13 alarmsAsAccessory:v14 asInstance:v15 forAccessories:v21 callback:v20];
+    [v13 alarmsAsAccessory:memento asInstance:instanceID forAccessories:v21 callback:v20];
 
     v17 = v16;
   }
@@ -1491,18 +1491,18 @@ void __45__COAlarmManager_alarmsForAccessoryMementos___block_invoke_165(uint64_t
     [(COAlarmManager *)self _canDispatchForAssociatedAccessory];
   }
 
-  v4 = [(COAlarmManager *)self dtClient];
+  dtClient = [(COAlarmManager *)self dtClient];
 
-  if (!v4)
+  if (!dtClient)
   {
     goto LABEL_9;
   }
 
-  v5 = [MEMORY[0x277D05810] statusFlags];
-  if (v5)
+  statusFlags = [MEMORY[0x277D05810] statusFlags];
+  if (statusFlags)
   {
-    v7 = COLogForCategory(0);
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    accessory = COLogForCategory(0);
+    if (os_log_type_enabled(accessory, OS_LOG_TYPE_ERROR))
     {
       [COAlarmManager _canDispatchForAssociatedAccessory];
     }
@@ -1512,7 +1512,7 @@ void __45__COAlarmManager_alarmsForAccessoryMementos___block_invoke_165(uint64_t
 
   else
   {
-    if ((v5 & 2) == 0)
+    if ((statusFlags & 2) == 0)
     {
       v6 = COLogForCategory(0);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -1521,13 +1521,13 @@ void __45__COAlarmManager_alarmsForAccessoryMementos___block_invoke_165(uint64_t
       }
 
 LABEL_9:
-      v7 = [(COAlarmManager *)self accessory];
-      v8 = [(COAlarmManager *)self instanceID];
+      accessory = [(COAlarmManager *)self accessory];
+      instanceID = [(COAlarmManager *)self instanceID];
       v21 = 0;
       v22 = &v21;
       v23 = 0x2020000000;
-      v24 = (v7 | v8) == 0;
-      if (v7 | v8)
+      v24 = (accessory | instanceID) == 0;
+      if (accessory | instanceID)
       {
         v10 = COLogForCategory(0);
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -1535,8 +1535,8 @@ LABEL_9:
           [COAlarmManager _canDispatchForAssociatedAccessory];
         }
 
-        v11 = [(COAlarmManager *)self provider];
-        v12 = [v11 alarmManagerServiceConnection];
+        provider = [(COAlarmManager *)self provider];
+        alarmManagerServiceConnection = [provider alarmManagerServiceConnection];
 
         v13 = [(COAlarmManager *)self _remoteInterfaceWithErrorHandler:&__block_literal_global_168];
         v20[0] = MEMORY[0x277D85DD0];
@@ -1545,14 +1545,14 @@ LABEL_9:
         v20[3] = &unk_278E12CE8;
         v20[4] = &v21;
         v20[5] = self;
-        v14 = [v12 synchronousRemoteObjectProxyWithErrorHandler:v20];
-        v15 = [(COAlarmManager *)self memento];
+        v14 = [alarmManagerServiceConnection synchronousRemoteObjectProxyWithErrorHandler:v20];
+        memento = [(COAlarmManager *)self memento];
         v19[0] = MEMORY[0x277D85DD0];
         v19[1] = 3221225472;
         v19[2] = __52__COAlarmManager__canDispatchForAssociatedAccessory__block_invoke_169;
         v19[3] = &unk_278E12D10;
         v19[4] = &v21;
-        [v14 canDispatchAsAccessory:v15 asInstance:v8 reply:v19];
+        [v14 canDispatchAsAccessory:memento asInstance:instanceID reply:v19];
 
         v9 = *(v22 + 24);
       }
@@ -1567,12 +1567,12 @@ LABEL_9:
       goto LABEL_20;
     }
 
-    v16 = [(COAlarmManager *)self dtClient];
-    v17 = [v16 error];
-    v9 = v17 == 0;
+    dtClient2 = [(COAlarmManager *)self dtClient];
+    error = [dtClient2 error];
+    v9 = error == 0;
 
-    v7 = COLogForCategory(0);
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
+    accessory = COLogForCategory(0);
+    if (os_log_type_enabled(accessory, OS_LOG_TYPE_DEBUG))
     {
       [COAlarmManager _canDispatchForAssociatedAccessory];
     }
@@ -1595,16 +1595,16 @@ void __52__COAlarmManager__canDispatchForAssociatedAccessory__block_invoke_2(uin
   *(*(*(a1 + 32) + 8) + 24) = 0;
 }
 
-- (id)addAlarm:(id)a3
+- (id)addAlarm:(id)alarm
 {
-  v4 = a3;
+  alarmCopy = alarm;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __27__COAlarmManager_addAlarm___block_invoke_2;
   v8[3] = &unk_278E12D58;
-  v9 = v4;
-  v10 = self;
-  v5 = v4;
+  v9 = alarmCopy;
+  selfCopy = self;
+  v5 = alarmCopy;
   v6 = [(COAlarmManager *)self _dispatchOpWithName:@"add" forAlarm:v5 distributedTimers:&__block_literal_global_176 coordination:v8];
 
   return v6;
@@ -1621,16 +1621,16 @@ void __27__COAlarmManager_addAlarm___block_invoke_2(uint64_t a1, void *a2, void 
   [v8 addAlarm:v5 asAccessory:v10 asInstance:v9 withCallback:v7];
 }
 
-- (id)updateAlarm:(id)a3
+- (id)updateAlarm:(id)alarm
 {
-  v4 = a3;
+  alarmCopy = alarm;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __30__COAlarmManager_updateAlarm___block_invoke_2;
   v8[3] = &unk_278E12D58;
-  v9 = v4;
-  v10 = self;
-  v5 = v4;
+  v9 = alarmCopy;
+  selfCopy = self;
+  v5 = alarmCopy;
   v6 = [(COAlarmManager *)self _dispatchOpWithName:@"update" forAlarm:v5 distributedTimers:&__block_literal_global_182 coordination:v8];
 
   return v6;
@@ -1647,16 +1647,16 @@ void __30__COAlarmManager_updateAlarm___block_invoke_2(uint64_t a1, void *a2, vo
   [v8 updateAlarm:v5 asAccessory:v10 asInstance:v9 withCallback:v7];
 }
 
-- (id)removeAlarm:(id)a3
+- (id)removeAlarm:(id)alarm
 {
-  v4 = a3;
+  alarmCopy = alarm;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __30__COAlarmManager_removeAlarm___block_invoke_2;
   v8[3] = &unk_278E12D58;
-  v9 = v4;
-  v10 = self;
-  v5 = v4;
+  v9 = alarmCopy;
+  selfCopy = self;
+  v5 = alarmCopy;
   v6 = [(COAlarmManager *)self _dispatchOpWithName:@"remove" forAlarm:v5 distributedTimers:&__block_literal_global_187 coordination:v8];
 
   return v6;
@@ -1673,18 +1673,18 @@ void __30__COAlarmManager_removeAlarm___block_invoke_2(uint64_t a1, void *a2, vo
   [v8 removeAlarm:v5 asAccessory:v10 asInstance:v9 withCallback:v7];
 }
 
-- (id)snoozeAlarmWithIdentifier:(id)a3
+- (id)snoozeAlarmWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v4];
+  identifierCopy = identifier;
+  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:identifierCopy];
   v6 = [objc_alloc(MEMORY[0x277D296D0]) initWithIdentifier:v5];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __44__COAlarmManager_snoozeAlarmWithIdentifier___block_invoke_2;
   v10[3] = &unk_278E12D58;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
+  v11 = identifierCopy;
+  selfCopy = self;
+  v7 = identifierCopy;
   v8 = [(COAlarmManager *)self _dispatchOpWithName:@"snooze" forAlarm:v6 distributedTimers:&__block_literal_global_192 coordination:v10];
 
   return v8;
@@ -1701,18 +1701,18 @@ void __44__COAlarmManager_snoozeAlarmWithIdentifier___block_invoke_2(uint64_t a1
   [v8 snoozeAlarmWithIdentifier:v5 asAccessory:v10 asInstance:v9 withCallback:v7];
 }
 
-- (id)dismissAlarmWithIdentifier:(id)a3
+- (id)dismissAlarmWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v4];
+  identifierCopy = identifier;
+  v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:identifierCopy];
   v6 = [objc_alloc(MEMORY[0x277D296D0]) initWithIdentifier:v5];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __45__COAlarmManager_dismissAlarmWithIdentifier___block_invoke_2;
   v10[3] = &unk_278E12D58;
-  v11 = v4;
-  v12 = self;
-  v7 = v4;
+  v11 = identifierCopy;
+  selfCopy = self;
+  v7 = identifierCopy;
   v8 = [(COAlarmManager *)self _dispatchOpWithName:@"dismiss" forAlarm:v6 distributedTimers:&__block_literal_global_197 coordination:v10];
 
   return v8;
@@ -1729,25 +1729,25 @@ void __45__COAlarmManager_dismissAlarmWithIdentifier___block_invoke_2(uint64_t a
   [v8 dismissAlarmWithIdentifier:v5 asAccessory:v10 asInstance:v9 withCallback:v7];
 }
 
-- (id)addObserverForName:(id)a3 queue:(id)a4 usingBlock:(id)a5
+- (id)addObserverForName:(id)name queue:(id)queue usingBlock:(id)block
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  nameCopy = name;
+  blockCopy = block;
+  queueCopy = queue;
   v11 = COLogForCategory(0);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 134218242;
-    v22 = self;
+    selfCopy2 = self;
     v23 = 2112;
-    v24 = v8;
+    v24 = nameCopy;
     _os_log_impl(&dword_244328000, v11, OS_LOG_TYPE_DEFAULT, "%p adding alarm observer for %@", &v21, 0x16u);
   }
 
-  v12 = [(COAlarmManager *)self observers];
-  v13 = [v12 registeredNames];
-  v14 = [v12 addObserverForName:v8 observable:self queue:v10 usingBlock:v9];
+  observers = [(COAlarmManager *)self observers];
+  registeredNames = [observers registeredNames];
+  v14 = [observers addObserverForName:nameCopy observable:self queue:queueCopy usingBlock:blockCopy];
 
   [(COAlarmManager *)self _activateDistributedTimersMonitoring];
   if (![(COAlarmManager *)self dtMonitoring])
@@ -1756,13 +1756,13 @@ void __45__COAlarmManager_dismissAlarmWithIdentifier___block_invoke_2(uint64_t a
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 134218242;
-      v22 = self;
+      selfCopy2 = self;
       v23 = 2112;
-      v24 = v8;
+      v24 = nameCopy;
       _os_log_impl(&dword_244328000, v15, OS_LOG_TYPE_DEFAULT, "%p using Coordination for observer %@", &v21, 0x16u);
     }
 
-    v16 = [v13 containsObject:v8];
+    v16 = [registeredNames containsObject:nameCopy];
     v17 = COLogForCategory(0);
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG);
     if (v16)
@@ -1780,7 +1780,7 @@ void __45__COAlarmManager_dismissAlarmWithIdentifier___block_invoke_2(uint64_t a
         [COAlarmManager addObserverForName:queue:usingBlock:];
       }
 
-      [(COAlarmManager *)self _registerObserverWithName:v8];
+      [(COAlarmManager *)self _registerObserverWithName:nameCopy];
     }
   }
 
@@ -1789,25 +1789,25 @@ void __45__COAlarmManager_dismissAlarmWithIdentifier___block_invoke_2(uint64_t a
   return v14;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  observerCopy = observer;
   v5 = COLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&dword_244328000, v5, OS_LOG_TYPE_DEFAULT, "%p removing alarm observer...", buf, 0xCu);
   }
 
-  v6 = [(COAlarmManager *)self observers];
-  [v6 removeObserver:v4];
+  observers = [(COAlarmManager *)self observers];
+  [observers removeObserver:observerCopy];
   if (![(COAlarmManager *)self dtMonitoring])
   {
-    v7 = [v4 name];
-    v8 = [v6 registeredNames];
-    v9 = [v8 containsObject:v7];
+    name = [observerCopy name];
+    registeredNames = [observers registeredNames];
+    v9 = [registeredNames containsObject:name];
 
     if ((v9 & 1) == 0)
     {
@@ -1823,15 +1823,15 @@ void __45__COAlarmManager_dismissAlarmWithIdentifier___block_invoke_2(uint64_t a
       v18[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
       v18[4] = self;
       v11 = [(COAlarmManager *)self _remoteInterfaceWithErrorHandler:v18];
-      v12 = [(COAlarmManager *)self memento];
-      v13 = [(COAlarmManager *)self instanceID];
+      memento = [(COAlarmManager *)self memento];
+      instanceID = [(COAlarmManager *)self instanceID];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __33__COAlarmManager_removeObserver___block_invoke_198;
       v15[3] = &unk_278E12AA8;
-      v17 = self;
-      v16 = v7;
-      [v11 removeObserverForNotificationName:v16 asAccessory:v12 asInstance:v13 withCallback:v15];
+      selfCopy2 = self;
+      v16 = name;
+      [v11 removeObserverForNotificationName:v16 asAccessory:memento asInstance:instanceID withCallback:v15];
     }
   }
 
@@ -1876,25 +1876,25 @@ void __33__COAlarmManager_removeObserver___block_invoke_198(uint64_t a1, void *a
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerObserverWithName:(id)a3
+- (void)_registerObserverWithName:(id)name
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = COLogForCategory(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v22 = self;
+    selfCopy = self;
     v23 = 2112;
-    v24 = v4;
+    v24 = nameCopy;
     _os_log_impl(&dword_244328000, v5, OS_LOG_TYPE_DEFAULT, "%p registering observer with service for %@", buf, 0x16u);
   }
 
-  v6 = [(COAlarmManager *)self accessory];
-  if (v6)
+  accessory = [(COAlarmManager *)self accessory];
+  if (accessory)
   {
     v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    v8 = _COAssociatedAccessories(v6);
+    v8 = _COAssociatedAccessories(accessory);
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __44__COAlarmManager__registerObserverWithName___block_invoke;
@@ -1915,16 +1915,16 @@ void __33__COAlarmManager_removeObserver___block_invoke_198(uint64_t a1, void *a
   v18[3] = &__block_descriptor_40_e17_v16__0__NSError_8l;
   v18[4] = self;
   v10 = [(COAlarmManager *)self _remoteInterfaceWithErrorHandler:v18];
-  v11 = [(COAlarmManager *)self memento];
-  v12 = [(COAlarmManager *)self instanceID];
+  memento = [(COAlarmManager *)self memento];
+  instanceID = [(COAlarmManager *)self instanceID];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __44__COAlarmManager__registerObserverWithName___block_invoke_201;
   v15[3] = &unk_278E12AA8;
-  v16 = v4;
-  v17 = self;
-  v13 = v4;
-  [v10 addObserverForNotificationName:v13 asAccessory:v11 asInstance:v12 constraints:v9 withCallback:v15];
+  v16 = nameCopy;
+  selfCopy2 = self;
+  v13 = nameCopy;
+  [v10 addObserverForNotificationName:v13 asAccessory:memento asInstance:instanceID constraints:v9 withCallback:v15];
 
   v14 = *MEMORY[0x277D85DE8];
 }

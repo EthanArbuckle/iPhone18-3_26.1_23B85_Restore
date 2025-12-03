@@ -1,22 +1,22 @@
 @interface WFPersonNameComponentsParameterState
-+ (id)serializedRepresentationFromValue:(id)a3;
++ (id)serializedRepresentationFromValue:(id)value;
 @end
 
 @implementation WFPersonNameComponentsParameterState
 
-+ (id)serializedRepresentationFromValue:(id)a3
++ (id)serializedRepresentationFromValue:(id)value
 {
-  v5 = a3;
+  valueCopy = value;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"WFPersonNameComponentsParameterState.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[NSPersonNameComponents class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFPersonNameComponentsParameterState.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"[value isKindOfClass:[NSPersonNameComponents class]]"}];
   }
 
-  v6 = [v5 serializedRepresentation];
+  serializedRepresentation = [valueCopy serializedRepresentation];
 
-  return v6;
+  return serializedRepresentation;
 }
 
 @end

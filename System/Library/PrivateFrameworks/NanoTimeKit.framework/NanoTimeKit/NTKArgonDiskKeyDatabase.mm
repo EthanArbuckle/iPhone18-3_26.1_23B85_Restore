@@ -1,14 +1,14 @@
 @interface NTKArgonDiskKeyDatabase
-- (NTKArgonDiskKeyDatabase)initWithSearchPathDomains:(unint64_t)a3;
+- (NTKArgonDiskKeyDatabase)initWithSearchPathDomains:(unint64_t)domains;
 - (id)keyDescriptorEnumerator;
-- (id)keyDescriptorForFileName:(id)a3;
+- (id)keyDescriptorForFileName:(id)name;
 - (void)_locked_rebuildCache;
 - (void)clearCaches;
 @end
 
 @implementation NTKArgonDiskKeyDatabase
 
-- (NTKArgonDiskKeyDatabase)initWithSearchPathDomains:(unint64_t)a3
+- (NTKArgonDiskKeyDatabase)initWithSearchPathDomains:(unint64_t)domains
 {
   v22 = *MEMORY[0x277D85DE8];
   v20.receiver = self;
@@ -16,7 +16,7 @@
   v4 = [(NTKArgonDiskKeyDatabase *)&v20 init];
   if (v4)
   {
-    v5 = NTKFaceSupportUnencryptedBundleSearchPathsForDomains(a3);
+    v5 = NTKFaceSupportUnencryptedBundleSearchPathsForDomains(domains);
     v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
     v16 = 0u;
     v17 = 0u;
@@ -71,16 +71,16 @@
     knownKeyDescriptors = self->_knownKeyDescriptors;
   }
 
-  v4 = [(NSSet *)knownKeyDescriptors objectEnumerator];
+  objectEnumerator = [(NSSet *)knownKeyDescriptors objectEnumerator];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v4;
+  return objectEnumerator;
 }
 
-- (id)keyDescriptorForFileName:(id)a3
+- (id)keyDescriptorForFileName:(id)name
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   os_unfair_lock_lock(&self->_lock);
   knownKeyDescriptors = self->_knownKeyDescriptors;
   if (!knownKeyDescriptors)
@@ -108,8 +108,8 @@
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 fileName];
-        v12 = [v11 isEqualToString:v4];
+        fileName = [v10 fileName];
+        v12 = [fileName isEqualToString:nameCopy];
 
         if (v12)
         {
@@ -153,7 +153,7 @@ LABEL_13:
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v27 = self;
+  selfCopy = self;
   obj = self->_searchPaths;
   v30 = [(NSArray *)obj countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v30)
@@ -171,10 +171,10 @@ LABEL_13:
         }
 
         v32 = v4;
-        v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:{*(*(&v39 + 1) + 8 * v4), v27}];
-        v6 = [MEMORY[0x277CCAA00] defaultManager];
+        v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:{*(*(&v39 + 1) + 8 * v4), selfCopy}];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
         v31 = v5;
-        v7 = [v6 enumeratorAtURL:v5 includingPropertiesForKeys:0 options:2 errorHandler:0];
+        v7 = [defaultManager enumeratorAtURL:v5 includingPropertiesForKeys:0 options:2 errorHandler:0];
 
         v37 = 0u;
         v38 = 0u;
@@ -196,9 +196,9 @@ LABEL_13:
               }
 
               v13 = *(*(&v35 + 1) + 8 * i);
-              v14 = [v13 lastPathComponent];
-              v15 = [v14 pathExtension];
-              v16 = [v15 isEqualToString:@"bundle"];
+              lastPathComponent = [v13 lastPathComponent];
+              pathExtension = [lastPathComponent pathExtension];
+              v16 = [pathExtension isEqualToString:@"bundle"];
 
               if (v16)
               {
@@ -263,8 +263,8 @@ LABEL_13:
   }
 
   v25 = [v33 copy];
-  knownKeyDescriptors = v27->_knownKeyDescriptors;
-  v27->_knownKeyDescriptors = v25;
+  knownKeyDescriptors = selfCopy->_knownKeyDescriptors;
+  selfCopy->_knownKeyDescriptors = v25;
 }
 
 @end

@@ -22,8 +22,8 @@
     v7 = BPSTextColor();
     [(UILabel *)v5 setTextColor:v7];
 
-    v8 = [(NMBUIContentHeaderView *)self _contentStackView];
-    [v8 insertArrangedSubview:v5 atIndex:0];
+    _contentStackView = [(NMBUIContentHeaderView *)self _contentStackView];
+    [_contentStackView insertArrangedSubview:v5 atIndex:0];
 
     v9 = self->_textLabel;
     self->_textLabel = v5;
@@ -50,12 +50,12 @@
     [(UILabel *)v5 setTextColor:v7];
 
     [(UILabel *)v5 setNumberOfLines:0];
-    v8 = [(NMBUIContentHeaderView *)self _contentStackView];
-    v9 = [(NMBUIContentHeaderView *)self _contentStackView];
-    v10 = [v9 arrangedSubviews];
-    v11 = [v10 count];
+    _contentStackView = [(NMBUIContentHeaderView *)self _contentStackView];
+    _contentStackView2 = [(NMBUIContentHeaderView *)self _contentStackView];
+    arrangedSubviews = [_contentStackView2 arrangedSubviews];
+    v11 = [arrangedSubviews count];
 
-    [v8 insertArrangedSubview:v5 atIndex:v11 != 0];
+    [_contentStackView insertArrangedSubview:v5 atIndex:v11 != 0];
     v12 = self->_detailTextLabel;
     self->_detailTextLabel = v5;
 
@@ -77,10 +77,10 @@
     v6 = BPSProgressBarTrackTintColor();
     [(UIProgressView *)v4 setTrackTintColor:v6];
 
-    v7 = [(NMBUIContentHeaderView *)self _contentStackView];
-    v8 = [(NMBUIContentHeaderView *)self _contentStackView];
-    v9 = [v8 arrangedSubviews];
-    v10 = [v9 count];
+    _contentStackView = [(NMBUIContentHeaderView *)self _contentStackView];
+    _contentStackView2 = [(NMBUIContentHeaderView *)self _contentStackView];
+    arrangedSubviews = [_contentStackView2 arrangedSubviews];
+    v10 = [arrangedSubviews count];
 
     if (v10 >= 2)
     {
@@ -92,12 +92,12 @@
       v11 = v10;
     }
 
-    [v7 insertArrangedSubview:v4 atIndex:v11];
+    [_contentStackView insertArrangedSubview:v4 atIndex:v11];
 
     if (self->_detailTextLabel)
     {
-      v12 = [(NMBUIContentHeaderView *)self _contentStackView];
-      [v12 setCustomSpacing:self->_detailTextLabel afterView:12.0];
+      _contentStackView3 = [(NMBUIContentHeaderView *)self _contentStackView];
+      [_contentStackView3 setCustomSpacing:self->_detailTextLabel afterView:12.0];
     }
 
     v13 = self->_progressView;
@@ -125,25 +125,25 @@
 
     [(UIStackView *)v7 setTranslatesAutoresizingMaskIntoConstraints:0];
     v19 = MEMORY[0x277CCAAD0];
-    v25 = [(UIStackView *)v7 leadingAnchor];
-    v26 = [(NMBUIContentHeaderView *)self layoutMarginsGuide];
-    v24 = [v26 leadingAnchor];
-    v23 = [v25 constraintEqualToAnchor:v24 constant:16.0];
+    leadingAnchor = [(UIStackView *)v7 leadingAnchor];
+    layoutMarginsGuide = [(NMBUIContentHeaderView *)self layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v23 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     v27[0] = v23;
-    v21 = [(UIStackView *)v7 trailingAnchor];
-    v22 = [(NMBUIContentHeaderView *)self layoutMarginsGuide];
-    v20 = [v22 trailingAnchor];
-    v18 = [v21 constraintEqualToAnchor:v20 constant:-16.0];
+    trailingAnchor = [(UIStackView *)v7 trailingAnchor];
+    layoutMarginsGuide2 = [(NMBUIContentHeaderView *)self layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
     v27[1] = v18;
-    v16 = [(UIStackView *)v7 topAnchor];
-    v17 = [(NMBUIContentHeaderView *)self layoutMarginsGuide];
-    v8 = [v17 topAnchor];
-    v9 = [v16 constraintEqualToAnchor:v8 constant:34.0];
+    topAnchor = [(UIStackView *)v7 topAnchor];
+    layoutMarginsGuide3 = [(NMBUIContentHeaderView *)self layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide3 topAnchor];
+    v9 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:34.0];
     v27[2] = v9;
-    v10 = [(UIStackView *)v7 bottomAnchor];
-    v11 = [(NMBUIContentHeaderView *)self layoutMarginsGuide];
-    v12 = [v11 bottomAnchor];
-    v13 = [v10 constraintEqualToAnchor:v12 constant:-34.0];
+    bottomAnchor = [(UIStackView *)v7 bottomAnchor];
+    layoutMarginsGuide4 = [(NMBUIContentHeaderView *)self layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide4 bottomAnchor];
+    v13 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-34.0];
     v27[3] = v13;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:4];
     [v19 activateConstraints:v14];

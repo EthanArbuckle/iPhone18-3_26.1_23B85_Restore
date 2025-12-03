@@ -1,9 +1,9 @@
 @interface MCRemoveProfileViewController
 - (BOOL)_hasYorktownWatch;
-- (BOOL)profileViewControllerShouldDisplayPoll:(id)a3;
-- (MCRemoveProfileViewController)initWithProfile:(id)a3;
+- (BOOL)profileViewControllerShouldDisplayPoll:(id)poll;
+- (MCRemoveProfileViewController)initWithProfile:(id)profile;
 - (id)_mdmProfileRemovalAlertBody;
-- (void)_didFinishEnteringPINWithCompletion:(id)a3;
+- (void)_didFinishEnteringPINWithCompletion:(id)completion;
 - (void)_leaveProvisionalRemoteManagementAndErase;
 - (void)_performReEnroll;
 - (void)_performReEnrollAfterPINVerification;
@@ -13,20 +13,20 @@
 - (void)_showRemovalWarningAfterPINVerification;
 - (void)_showRemovalWarningAlert;
 - (void)_showWrongRemovalPasswordAlert;
-- (void)didAcceptEnteredPIN:(id)a3;
+- (void)didAcceptEnteredPIN:(id)n;
 - (void)didCancelEnteringPIN;
 - (void)profileRemovalDidFinish;
-- (void)profileViewControllerDidSelectPoll:(id)a3;
-- (void)profileViewControllerDidSelectRemoveProfile:(id)a3;
-- (void)profileViewControllerDidSelectUpdateProfile:(id)a3;
-- (void)updateTitleForProfileInstallationState:(int)a3;
+- (void)profileViewControllerDidSelectPoll:(id)poll;
+- (void)profileViewControllerDidSelectRemoveProfile:(id)profile;
+- (void)profileViewControllerDidSelectUpdateProfile:(id)profile;
+- (void)updateTitleForProfileInstallationState:(int)state;
 @end
 
 @implementation MCRemoveProfileViewController
 
-- (MCRemoveProfileViewController)initWithProfile:(id)a3
+- (MCRemoveProfileViewController)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v5 = +[MCUIWatchManager shared];
   v6 = 0x277D03278;
   if (v5)
@@ -39,7 +39,7 @@
 
   v12.receiver = self;
   v12.super_class = MCRemoveProfileViewController;
-  v9 = [(MCInstallProfileViewController *)&v12 initWithProfile:v4 viewMode:2 profileUIDataProvider:v8];
+  v9 = [(MCInstallProfileViewController *)&v12 initWithProfile:profileCopy viewMode:2 profileUIDataProvider:v8];
 
   if (v9)
   {
@@ -54,16 +54,16 @@
   return v9;
 }
 
-- (void)updateTitleForProfileInstallationState:(int)a3
+- (void)updateTitleForProfileInstallationState:(int)state
 {
-  if (a3 == 9)
+  if (state == 9)
   {
     v4 = @"BLOB_JUST_UPDATED_TITLE";
   }
 
   else
   {
-    if (a3 != 1)
+    if (state != 1)
     {
       return;
     }
@@ -72,11 +72,11 @@
   }
 
   v6 = MCUILocalizedString(v4);
-  v5 = [(MCRemoveProfileViewController *)self navigationItem];
-  [v5 setTitle:v6];
+  navigationItem = [(MCRemoveProfileViewController *)self navigationItem];
+  [navigationItem setTitle:v6];
 }
 
-- (void)profileViewControllerDidSelectRemoveProfile:(id)a3
+- (void)profileViewControllerDidSelectRemoveProfile:(id)profile
 {
   if ([(DMCProfileUIDataProvider *)self->_profileUIDataProvider isPasscodeSet])
   {
@@ -91,12 +91,12 @@
   }
 }
 
-- (void)profileViewControllerDidSelectUpdateProfile:(id)a3
+- (void)profileViewControllerDidSelectUpdateProfile:(id)profile
 {
-  v4 = [(MCInstallProfileViewController *)self profile];
-  v5 = [v4 isManagedByProfileService];
+  profile = [(MCInstallProfileViewController *)self profile];
+  isManagedByProfileService = [profile isManagedByProfileService];
 
-  if (v5)
+  if (isManagedByProfileService)
   {
 
     [(MCRemoveProfileViewController *)self _performReEnroll];
@@ -109,23 +109,23 @@
   }
 }
 
-- (BOOL)profileViewControllerShouldDisplayPoll:(id)a3
+- (BOOL)profileViewControllerShouldDisplayPoll:(id)poll
 {
-  v3 = [(MCInstallProfileViewController *)self profile];
-  v4 = [v3 isHRNProfile];
+  profile = [(MCInstallProfileViewController *)self profile];
+  isHRNProfile = [profile isHRNProfile];
 
-  return v4;
+  return isHRNProfile;
 }
 
-- (void)profileViewControllerDidSelectPoll:(id)a3
+- (void)profileViewControllerDidSelectPoll:(id)poll
 {
-  v3 = [(MCInstallProfileViewController *)self profile];
-  v4 = [v3 isHRNProfile];
+  profile = [(MCInstallProfileViewController *)self profile];
+  isHRNProfile = [profile isHRNProfile];
 
-  if (v4)
+  if (isHRNProfile)
   {
-    v5 = [MEMORY[0x277D24638] sharedClient];
-    [v5 simulatePushWithCompletion:&__block_literal_global_1];
+    mEMORY[0x277D24638] = [MEMORY[0x277D24638] sharedClient];
+    [mEMORY[0x277D24638] simulatePushWithCompletion:&__block_literal_global_1];
   }
 
   else
@@ -147,12 +147,12 @@ void __68__MCRemoveProfileViewController_profileViewControllerDidSelectPoll___bl
   }
 }
 
-- (void)didAcceptEnteredPIN:(id)a3
+- (void)didAcceptEnteredPIN:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   if (![(MCInstallProfileViewController *)self installHasFailed]&& [(MCRemoveProfileViewController *)self profileWantsToReEnroll])
   {
-    [(MCInstallProfileViewController *)self setPin:v4];
+    [(MCInstallProfileViewController *)self setPin:nCopy];
   }
 
   objc_initWeak(&location, self);
@@ -228,19 +228,19 @@ void __53__MCRemoveProfileViewController_didAcceptEnteredPIN___block_invoke_3(ui
   [(MCRemoveProfileViewController *)self _didFinishEnteringPINWithCompletion:0];
 }
 
-- (void)_didFinishEnteringPINWithCompletion:(id)a3
+- (void)_didFinishEnteringPINWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MCRemoveProfileViewController *)self navigationController];
-  [v5 dismissViewControllerAnimated:1 completion:v4];
+  completionCopy = completion;
+  navigationController = [(MCRemoveProfileViewController *)self navigationController];
+  [navigationController dismissViewControllerAnimated:1 completion:completionCopy];
 }
 
 - (void)_showRemovalWarningAfterPINVerification
 {
-  v3 = [(MCInstallProfileViewController *)self profileViewController];
-  v4 = [v3 isProvisionalMDMProfile];
+  profileViewController = [(MCInstallProfileViewController *)self profileViewController];
+  isProvisionalMDMProfile = [profileViewController isProvisionalMDMProfile];
 
-  if (v4)
+  if (isProvisionalMDMProfile)
   {
     if ([(DMCProfileUIDataProvider *)self->_profileUIDataProvider isProvisionallyEnrolled])
     {
@@ -282,14 +282,14 @@ void __53__MCRemoveProfileViewController_didAcceptEnteredPIN___block_invoke_3(ui
 - (void)_performReEnrollAfterPINVerification
 {
   [(MCInstallProfileViewController *)self setQuestionsAlreadyAsked:1];
-  v3 = [(MCInstallProfileViewController *)self profile];
-  [(MCRemoveProfileViewController *)self setUpdatingProfile:v3];
+  profile = [(MCInstallProfileViewController *)self profile];
+  [(MCRemoveProfileViewController *)self setUpdatingProfile:profile];
 
   [(MCInstallProfileViewController *)self showProgressIndicator];
   profileUIDataProvider = self->_profileUIDataProvider;
-  v6 = [(MCInstallProfileViewController *)self profile];
-  v5 = [v6 identifier];
-  [(DMCProfileUIDataProvider *)profileUIDataProvider updateProfileWithIdentifier:v5 interactionDelegate:self];
+  profile2 = [(MCInstallProfileViewController *)self profile];
+  identifier = [profile2 identifier];
+  [(DMCProfileUIDataProvider *)profileUIDataProvider updateProfileWithIdentifier:identifier interactionDelegate:self];
 }
 
 - (void)profileRemovalDidFinish
@@ -297,10 +297,10 @@ void __53__MCRemoveProfileViewController_didAcceptEnteredPIN___block_invoke_3(ui
   v5.receiver = self;
   v5.super_class = MCRemoveProfileViewController;
   [(MCInstallProfileViewController *)&v5 profileRemovalDidFinish];
-  v3 = [(MCInstallProfileViewController *)self profile];
-  v4 = [v3 needsReboot];
+  profile = [(MCInstallProfileViewController *)self profile];
+  needsReboot = [profile needsReboot];
 
-  if (v4)
+  if (needsReboot)
   {
     [MEMORY[0x277D75110] MCUIShowRebootAlertFromViewController:self];
   }
@@ -453,11 +453,11 @@ uint64_t __74__MCRemoveProfileViewController__leaveProvisionalRemoteManagementAn
 
 - (void)_showRemovalWarningAlert
 {
-  v3 = [(MCInstallProfileViewController *)self profile];
-  if ([v3 isLocked])
+  profile = [(MCInstallProfileViewController *)self profile];
+  if ([profile isLocked])
   {
-    v4 = [v3 removalPasscode];
-    v5 = v4 != 0;
+    removalPasscode = [profile removalPasscode];
+    v5 = removalPasscode != 0;
   }
 
   else
@@ -466,10 +466,10 @@ uint64_t __74__MCRemoveProfileViewController__leaveProvisionalRemoteManagementAn
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 isMDMProfile])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [profile isMDMProfile])
   {
     v6 = MCUILocalizedString(@"MOBILE_DEVICE_MANAGEMENT_REMOVE_TITLE");
-    v7 = [(MCRemoveProfileViewController *)self _mdmProfileRemovalAlertBody];
+    _mdmProfileRemovalAlertBody = [(MCRemoveProfileViewController *)self _mdmProfileRemovalAlertBody];
   }
 
   else
@@ -486,11 +486,11 @@ uint64_t __74__MCRemoveProfileViewController__leaveProvisionalRemoteManagementAn
       v8 = @"PROFILE_REMOVE_WARNING";
     }
 
-    v7 = MCUILocalizedStringByDevice(v8);
+    _mdmProfileRemovalAlertBody = MCUILocalizedStringByDevice(v8);
   }
 
-  v9 = v7;
-  v10 = [MEMORY[0x277D75110] alertControllerWithTitle:v6 message:v7 preferredStyle:1];
+  v9 = _mdmProfileRemovalAlertBody;
+  v10 = [MEMORY[0x277D75110] alertControllerWithTitle:v6 message:_mdmProfileRemovalAlertBody preferredStyle:1];
   v11 = MCUILocalizedString(@"CANCEL");
   [v10 MCUIAddCancelActionWithTitle:v11];
 
@@ -519,14 +519,14 @@ uint64_t __74__MCRemoveProfileViewController__leaveProvisionalRemoteManagementAn
   }
 
   v15 = [(MCInstallProfileViewController *)self profileViewController:v20];
-  v16 = [v15 removeButton];
+  removeButton = [v15 removeButton];
 
-  if (v16)
+  if (removeButton)
   {
-    v17 = [(MCInstallProfileViewController *)self profileViewController];
-    v18 = [v17 removeButton];
-    v19 = [v10 popoverPresentationController];
-    [v19 setSourceItem:v18];
+    profileViewController = [(MCInstallProfileViewController *)self profileViewController];
+    removeButton2 = [profileViewController removeButton];
+    popoverPresentationController = [v10 popoverPresentationController];
+    [popoverPresentationController setSourceItem:removeButton2];
   }
 
   [(MCRemoveProfileViewController *)self dmc_presentAlert:v10 completion:0];
@@ -597,33 +597,33 @@ void __57__MCRemoveProfileViewController__showRemovalWarningAlert__block_invoke_
 
 - (id)_mdmProfileRemovalAlertBody
 {
-  v3 = [(MCRemoveProfileViewController *)self profileUIDataProvider];
-  v4 = [v3 managedAppsUninstalledOnMDMRemoval];
+  profileUIDataProvider = [(MCRemoveProfileViewController *)self profileUIDataProvider];
+  managedAppsUninstalledOnMDMRemoval = [profileUIDataProvider managedAppsUninstalledOnMDMRemoval];
 
-  if (!v4)
+  if (!managedAppsUninstalledOnMDMRemoval)
   {
     goto LABEL_7;
   }
 
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D03220]];
-  v6 = [v5 unsignedIntValue];
+  v5 = [managedAppsUninstalledOnMDMRemoval objectForKeyedSubscript:*MEMORY[0x277D03220]];
+  unsignedIntValue = [v5 unsignedIntValue];
 
-  if (!v6)
+  if (!unsignedIntValue)
   {
     goto LABEL_7;
   }
 
-  if (v6 == 1)
+  if (unsignedIntValue == 1)
   {
     v7 = MEMORY[0x277CCACA8];
     v8 = MCUILocalizedStringByDevice(@"MOBILE_DEVICE_MANAGEMENT_REMOVE_WARNING_SINGULAR_APP_%@");
-    v9 = [v4 objectForKeyedSubscript:*MEMORY[0x277D03228]];
+    v9 = [managedAppsUninstalledOnMDMRemoval objectForKeyedSubscript:*MEMORY[0x277D03228]];
     v10 = [v7 stringWithFormat:v8, v9];
   }
 
   else
   {
-    v11 = v6;
+    v11 = unsignedIntValue;
     v12 = MEMORY[0x277CCACA8];
     v8 = MCUILocalizedStringByDevice(@"MOBILE_DEVICE_MANAGEMENT_REMOVE_WARNING_MULTIPLE_APPS_%ld");
     v10 = [v12 stringWithFormat:v8, v11];
@@ -652,13 +652,13 @@ LABEL_7:
 
 - (BOOL)_hasYorktownWatch
 {
-  v3 = [(MCRemoveProfileViewController *)self cachedHasYorktownWatch];
-  if (v3 == 2)
+  cachedHasYorktownWatch = [(MCRemoveProfileViewController *)self cachedHasYorktownWatch];
+  if (cachedHasYorktownWatch == 2)
   {
     return 0;
   }
 
-  if (v3)
+  if (cachedHasYorktownWatch)
   {
     return 1;
   }

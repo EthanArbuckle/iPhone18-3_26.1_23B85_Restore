@@ -1,55 +1,55 @@
 @interface SCRCMathExpression
-+ (Class)_classForExpressionType:(id)a3;
-+ (id)mathExpressionWithDictionary:(id)a3;
-+ (void)setPathToSegmentOrderingPlist:(id)a3;
++ (Class)_classForExpressionType:(id)type;
++ (id)mathExpressionWithDictionary:(id)dictionary;
++ (void)setPathToSegmentOrderingPlist:(id)plist;
 - (NSArray)siblings;
-- (SCRCMathExpression)initWithDictionary:(id)a3;
+- (SCRCMathExpression)initWithDictionary:(id)dictionary;
 - (SCRCMathExpression)parent;
 - (id)_scrcBundle;
-- (id)arrayWithoutNilsFromFirstChild:(id)a3 secondChild:(id)a4 thirdChild:(id)a5;
+- (id)arrayWithoutNilsFromFirstChild:(id)child secondChild:(id)secondChild thirdChild:(id)thirdChild;
 - (id)dollarCodeDescription;
 - (id)fenceDelimiters;
-- (id)latexDescriptionForChildrenJoinedByString:(id)a3;
-- (id)latexDescriptionInMathMode:(BOOL)a3;
-- (id)latexIdentifierForFenceOperator:(id)a3 isClosingOperator:(BOOL)a4;
-- (id)latexIdentifierForIdentifier:(id)a3;
-- (id)localizedAttributedStringForKey:(id)a3 treePosition:(id)a4;
-- (id)localizedSegmentOrderingForKey:(id)a3;
-- (id)localizedStringForKey:(id)a3;
-- (id)localizedStringForNumber:(id)a3;
-- (id)speakableSegments:(id)a3 withLocalizablePrefix:(id)a4 localizableSuffix:(id)a5;
-- (id)speakableSegments:(id)a3 withPrefix:(id)a4 suffix:(id)a5;
-- (id)speakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4;
-- (id)speakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4 treePosition:(id)a5;
-- (id)speakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4 treePosition:(id)a5 localizablePrefix:(id)a6 localizableSuffix:(id)a7;
-- (id)speakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4 treePosition:(id)a5 prefix:(id)a6 suffix:(id)a7;
+- (id)latexDescriptionForChildrenJoinedByString:(id)string;
+- (id)latexDescriptionInMathMode:(BOOL)mode;
+- (id)latexIdentifierForFenceOperator:(id)operator isClosingOperator:(BOOL)closingOperator;
+- (id)latexIdentifierForIdentifier:(id)identifier;
+- (id)localizedAttributedStringForKey:(id)key treePosition:(id)position;
+- (id)localizedSegmentOrderingForKey:(id)key;
+- (id)localizedStringForKey:(id)key;
+- (id)localizedStringForNumber:(id)number;
+- (id)speakableSegments:(id)segments withLocalizablePrefix:(id)prefix localizableSuffix:(id)suffix;
+- (id)speakableSegments:(id)segments withPrefix:(id)prefix suffix:(id)suffix;
+- (id)speakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth;
+- (id)speakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth treePosition:(id)position;
+- (id)speakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth treePosition:(id)position localizablePrefix:(id)prefix localizableSuffix:(id)suffix;
+- (id)speakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth treePosition:(id)position prefix:(id)prefix suffix:(id)suffix;
 - (id)speakableSummary;
 - (unint64_t)maximumDepth;
 - (unint64_t)maximumFractionLevelOfSubExpressions;
 - (unint64_t)numberOfTables;
-- (void)_applyTreePositionOfOriginalSegment:(id)a3 toPrefixedOrSuffixedSegment:(id)a4;
+- (void)_applyTreePositionOfOriginalSegment:(id)segment toPrefixedOrSuffixedSegment:(id)suffixedSegment;
 @end
 
 @implementation SCRCMathExpression
 
-+ (id)mathExpressionWithDictionary:(id)a3
++ (id)mathExpressionWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"AXMType"];
-  v6 = [objc_alloc(objc_msgSend(a1 _classForExpressionType:{v5)), "initWithDictionary:", v4}];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"AXMType"];
+  v6 = [objc_alloc(objc_msgSend(self _classForExpressionType:{v5)), "initWithDictionary:", dictionaryCopy}];
 
   return v6;
 }
 
-- (SCRCMathExpression)initWithDictionary:(id)a3
+- (SCRCMathExpression)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = SCRCMathExpression;
   v5 = [(SCRCMathExpression *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:@"AXMIsNumberOverride"];
+    v6 = [dictionaryCopy objectForKey:@"AXMIsNumberOverride"];
     v7 = v6;
     if (v6)
     {
@@ -76,14 +76,14 @@
   result = self->_cachedMaximumDepth;
   if (!result)
   {
-    v4 = [(SCRCMathExpression *)self subExpressions];
-    if ([v4 count])
+    subExpressions = [(SCRCMathExpression *)self subExpressions];
+    if ([subExpressions count])
     {
       v15 = 0u;
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v5 = v4;
+      v5 = subExpressions;
       v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
@@ -100,10 +100,10 @@
               objc_enumerationMutation(v5);
             }
 
-            v11 = [*(*(&v13 + 1) + 8 * v10) maximumDepth];
-            if (v11 > v8)
+            maximumDepth = [*(*(&v13 + 1) + 8 * v10) maximumDepth];
+            if (maximumDepth > v8)
             {
-              v8 = v11;
+              v8 = maximumDepth;
             }
 
             ++v10;
@@ -136,24 +136,24 @@
   return result;
 }
 
-- (id)speakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4
+- (id)speakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth
 {
   v7 = [MEMORY[0x277CCAA70] indexPathWithIndex:0];
-  v8 = [(SCRCMathExpression *)self speakableSegmentsWithSpeakingStyle:a3 upToDepth:a4 treePosition:v7];
+  v8 = [(SCRCMathExpression *)self speakableSegmentsWithSpeakingStyle:style upToDepth:depth treePosition:v7];
 
   return v8;
 }
 
-- (id)speakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4 treePosition:(id)a5
+- (id)speakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth treePosition:(id)position
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = [(SCRCMathExpression *)self speakableDescriptionWithSpeakingStyle:a3];
+  positionCopy = position;
+  v8 = [(SCRCMathExpression *)self speakableDescriptionWithSpeakingStyle:style];
   v9 = v8;
   if (v8)
   {
     v10 = [v8 mutableCopy];
-    [v10 addAttribute:@"kSCRCMathStringAttributeTreePosition" value:v7 range:{0, objc_msgSend(v10, "length")}];
+    [v10 addAttribute:@"kSCRCMathStringAttributeTreePosition" value:positionCopy range:{0, objc_msgSend(v10, "length")}];
     v13[0] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
   }
@@ -168,11 +168,11 @@
 
 - (id)speakableSummary
 {
-  v3 = [(SCRCMathExpression *)self numberOfTables];
-  v4 = v3;
-  if (v3)
+  numberOfTables = [(SCRCMathExpression *)self numberOfTables];
+  v4 = numberOfTables;
+  if (numberOfTables)
   {
-    if (v3 == 1)
+    if (numberOfTables == 1)
     {
       v5 = @"table.summary.single.formatter";
     }
@@ -189,15 +189,15 @@
   return v4;
 }
 
-- (id)latexDescriptionInMathMode:(BOOL)a3
+- (id)latexDescriptionInMathMode:(BOOL)mode
 {
-  v4 = [(SCRCMathExpression *)self latexMathModeDescription];
-  v5 = v4;
-  if (!a3)
+  latexMathModeDescription = [(SCRCMathExpression *)self latexMathModeDescription];
+  v5 = latexMathModeDescription;
+  if (!mode)
   {
-    v6 = [v4 stringWithMathIndicators];
+    stringWithMathIndicators = [latexMathModeDescription stringWithMathIndicators];
 
-    v5 = v6;
+    v5 = stringWithMathIndicators;
   }
 
   return v5;
@@ -210,8 +210,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(SCRCMathExpression *)self subExpressions];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  subExpressions = [(SCRCMathExpression *)self subExpressions];
+  v3 = [subExpressions countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -223,13 +223,13 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subExpressions);
         }
 
         v5 += [*(*(&v9 + 1) + 8 * i) numberOfTables];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [subExpressions countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -262,25 +262,25 @@ uint64_t __33__SCRCMathExpression__scrcBundle__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)localizedStringForKey:(id)a3
+- (id)localizedStringForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(SCRCMathExpression *)self _scrcBundle];
-  v6 = [v5 localizedStringForKey:v4 value:&stru_287632E30 table:@"MathExpressionStrings"];
+  keyCopy = key;
+  _scrcBundle = [(SCRCMathExpression *)self _scrcBundle];
+  v6 = [_scrcBundle localizedStringForKey:keyCopy value:&stru_287632E30 table:@"MathExpressionStrings"];
 
   return v6;
 }
 
-- (id)localizedAttributedStringForKey:(id)a3 treePosition:(id)a4
+- (id)localizedAttributedStringForKey:(id)key treePosition:(id)position
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  keyCopy = key;
+  positionCopy = position;
+  v8 = positionCopy;
+  if (positionCopy)
   {
     v14 = @"kSCRCMathStringAttributeTreePosition";
-    v15[0] = v7;
+    v15[0] = positionCopy;
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
   }
 
@@ -290,22 +290,22 @@ uint64_t __33__SCRCMathExpression__scrcBundle__block_invoke()
   }
 
   v10 = objc_alloc(MEMORY[0x277CCA898]);
-  v11 = [(SCRCMathExpression *)self localizedStringForKey:v6];
+  v11 = [(SCRCMathExpression *)self localizedStringForKey:keyCopy];
   v12 = [v10 initWithString:v11 attributes:v9];
 
   return v12;
 }
 
-- (id)localizedStringForNumber:(id)a3
+- (id)localizedStringForNumber:(id)number
 {
   v3 = localizedStringForNumber__onceToken;
-  v4 = a3;
+  numberCopy = number;
   if (v3 != -1)
   {
     [SCRCMathExpression localizedStringForNumber:];
   }
 
-  v5 = [localizedStringForNumber__NumberFormatter stringFromNumber:v4];
+  v5 = [localizedStringForNumber__NumberFormatter stringFromNumber:numberCopy];
 
   return v5;
 }
@@ -317,9 +317,9 @@ uint64_t __47__SCRCMathExpression_localizedStringForNumber___block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)localizedSegmentOrderingForKey:(id)a3
+- (id)localizedSegmentOrderingForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__SCRCMathExpression_localizedSegmentOrderingForKey___block_invoke;
@@ -341,7 +341,7 @@ uint64_t __47__SCRCMathExpression_localizedStringForNumber___block_invoke()
   }
 
   v6 = v5;
-  v7 = [v5 objectForKey:v4];
+  v7 = [v5 objectForKey:keyCopy];
 
   return v7;
 }
@@ -358,106 +358,106 @@ void __53__SCRCMathExpression_localizedSegmentOrderingForKey___block_invoke(uint
 
 - (NSArray)siblings
 {
-  v2 = [(SCRCMathExpression *)self parent];
-  v3 = [v2 children];
+  parent = [(SCRCMathExpression *)self parent];
+  children = [parent children];
 
-  return v3;
+  return children;
 }
 
-- (id)arrayWithoutNilsFromFirstChild:(id)a3 secondChild:(id)a4 thirdChild:(id)a5
+- (id)arrayWithoutNilsFromFirstChild:(id)child secondChild:(id)secondChild thirdChild:(id)thirdChild
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  childCopy = child;
+  secondChildCopy = secondChild;
+  thirdChildCopy = thirdChild;
   v10 = [MEMORY[0x277CBEB18] arrayWithCapacity:3];
   v11 = v10;
-  if (v7)
+  if (childCopy)
   {
-    [v10 addObject:v7];
+    [v10 addObject:childCopy];
   }
 
-  if (v8)
+  if (secondChildCopy)
   {
-    [v11 addObject:v8];
+    [v11 addObject:secondChildCopy];
   }
 
-  if (v9)
+  if (thirdChildCopy)
   {
-    [v11 addObject:v9];
+    [v11 addObject:thirdChildCopy];
   }
 
   return v11;
 }
 
-- (void)_applyTreePositionOfOriginalSegment:(id)a3 toPrefixedOrSuffixedSegment:(id)a4
+- (void)_applyTreePositionOfOriginalSegment:(id)segment toPrefixedOrSuffixedSegment:(id)suffixedSegment
 {
-  v7 = a3;
-  v5 = a4;
-  if ([v7 length])
+  segmentCopy = segment;
+  suffixedSegmentCopy = suffixedSegment;
+  if ([segmentCopy length])
   {
-    v6 = [v7 attribute:@"kSCRCMathStringAttributeTreePosition" atIndex:0 effectiveRange:0];
+    v6 = [segmentCopy attribute:@"kSCRCMathStringAttributeTreePosition" atIndex:0 effectiveRange:0];
     if (v6)
     {
-      [v5 addAttribute:@"kSCRCMathStringAttributeTreePosition" value:v6 range:{0, objc_msgSend(v5, "length")}];
+      [suffixedSegmentCopy addAttribute:@"kSCRCMathStringAttributeTreePosition" value:v6 range:{0, objc_msgSend(suffixedSegmentCopy, "length")}];
     }
   }
 }
 
-- (id)speakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4 treePosition:(id)a5 localizablePrefix:(id)a6 localizableSuffix:(id)a7
+- (id)speakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth treePosition:(id)position localizablePrefix:(id)prefix localizableSuffix:(id)suffix
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = [(SCRCMathExpression *)self localizedAttributedStringForKey:a6];
-  v15 = [(SCRCMathExpression *)self localizedAttributedStringForKey:v12];
+  suffixCopy = suffix;
+  positionCopy = position;
+  v14 = [(SCRCMathExpression *)self localizedAttributedStringForKey:prefix];
+  v15 = [(SCRCMathExpression *)self localizedAttributedStringForKey:suffixCopy];
 
-  v16 = [(SCRCMathExpression *)self speakableSegmentsWithSpeakingStyle:a3 upToDepth:a4 treePosition:v13 prefix:v14 suffix:v15];
+  v16 = [(SCRCMathExpression *)self speakableSegmentsWithSpeakingStyle:style upToDepth:depth treePosition:positionCopy prefix:v14 suffix:v15];
 
   return v16;
 }
 
-- (id)speakableSegmentsWithSpeakingStyle:(int64_t)a3 upToDepth:(unint64_t)a4 treePosition:(id)a5 prefix:(id)a6 suffix:(id)a7
+- (id)speakableSegmentsWithSpeakingStyle:(int64_t)style upToDepth:(unint64_t)depth treePosition:(id)position prefix:(id)prefix suffix:(id)suffix
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = [(SCRCMathExpression *)self speakableSegmentsWithSpeakingStyle:a3 upToDepth:a4 treePosition:a5];
-  v15 = [(SCRCMathExpression *)self speakableSegments:v14 withPrefix:v13 suffix:v12];
+  suffixCopy = suffix;
+  prefixCopy = prefix;
+  v14 = [(SCRCMathExpression *)self speakableSegmentsWithSpeakingStyle:style upToDepth:depth treePosition:position];
+  v15 = [(SCRCMathExpression *)self speakableSegments:v14 withPrefix:prefixCopy suffix:suffixCopy];
 
   return v15;
 }
 
-- (id)speakableSegments:(id)a3 withLocalizablePrefix:(id)a4 localizableSuffix:(id)a5
+- (id)speakableSegments:(id)segments withLocalizablePrefix:(id)prefix localizableSuffix:(id)suffix
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(SCRCMathExpression *)self localizedAttributedStringForKey:a4];
-  v11 = [(SCRCMathExpression *)self localizedAttributedStringForKey:v8];
+  suffixCopy = suffix;
+  segmentsCopy = segments;
+  v10 = [(SCRCMathExpression *)self localizedAttributedStringForKey:prefix];
+  v11 = [(SCRCMathExpression *)self localizedAttributedStringForKey:suffixCopy];
 
-  v12 = [(SCRCMathExpression *)self speakableSegments:v9 withPrefix:v10 suffix:v11];
+  v12 = [(SCRCMathExpression *)self speakableSegments:segmentsCopy withPrefix:v10 suffix:v11];
 
   return v12;
 }
 
-- (id)speakableSegments:(id)a3 withPrefix:(id)a4 suffix:(id)a5
+- (id)speakableSegments:(id)segments withPrefix:(id)prefix suffix:(id)suffix
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 mutableCopy];
+  prefixCopy = prefix;
+  suffixCopy = suffix;
+  v10 = [segments mutableCopy];
   if ([v10 count])
   {
-    if ([v8 length])
+    if ([prefixCopy length])
     {
       v11 = [v10 objectAtIndex:0];
-      v12 = [MEMORY[0x277CCAB48] scrcStringWithFormat:@"%@%@", v8, v11];
+      v12 = [MEMORY[0x277CCAB48] scrcStringWithFormat:@"%@%@", prefixCopy, v11];
       [(SCRCMathExpression *)self _applyTreePositionOfOriginalSegment:v11 toPrefixedOrSuffixedSegment:v12];
       [v10 replaceObjectAtIndex:0 withObject:v12];
     }
 
-    if ([v9 length])
+    if ([suffixCopy length])
     {
-      v13 = [v10 lastObject];
-      v14 = [MEMORY[0x277CCAB48] scrcStringWithFormat:@"%@%@", v13, v9];
-      [(SCRCMathExpression *)self _applyTreePositionOfOriginalSegment:v13 toPrefixedOrSuffixedSegment:v14];
-      [v10 replaceObjectAtIndex:objc_msgSend(v10 withObject:{"count") - 1, v14}];
+      lastObject = [v10 lastObject];
+      suffixCopy = [MEMORY[0x277CCAB48] scrcStringWithFormat:@"%@%@", lastObject, suffixCopy];
+      [(SCRCMathExpression *)self _applyTreePositionOfOriginalSegment:lastObject toPrefixedOrSuffixedSegment:suffixCopy];
+      [v10 replaceObjectAtIndex:objc_msgSend(v10 withObject:{"count") - 1, suffixCopy}];
     }
   }
 
@@ -471,12 +471,12 @@ void __53__SCRCMathExpression_localizedSegmentOrderingForKey___block_invoke(uint
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(SCRCMathExpression *)self subExpressions];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  subExpressions = [(SCRCMathExpression *)self subExpressions];
+  v3 = [subExpressions countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
-    v5 = 0;
+    fractionLevel = 0;
     v6 = *v11;
     do
     {
@@ -484,17 +484,17 @@ void __53__SCRCMathExpression_localizedSegmentOrderingForKey___block_invoke(uint
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(subExpressions);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
-        if ([v8 fractionLevel] > v5)
+        if ([v8 fractionLevel] > fractionLevel)
         {
-          v5 = [v8 fractionLevel];
+          fractionLevel = [v8 fractionLevel];
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [subExpressions countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -502,10 +502,10 @@ void __53__SCRCMathExpression_localizedSegmentOrderingForKey___block_invoke(uint
 
   else
   {
-    v5 = 0;
+    fractionLevel = 0;
   }
 
-  return v5;
+  return fractionLevel;
 }
 
 - (id)fenceDelimiters
@@ -527,18 +527,18 @@ uint64_t __37__SCRCMathExpression_fenceDelimiters__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)latexIdentifierForIdentifier:(id)a3
+- (id)latexIdentifierForIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (latexIdentifierForIdentifier__onceToken != -1)
   {
     [SCRCMathExpression latexIdentifierForIdentifier:];
   }
 
-  v4 = [latexIdentifierForIdentifier___IdentifierLookupTable objectForKey:v3];
+  v4 = [latexIdentifierForIdentifier___IdentifierLookupTable objectForKey:identifierCopy];
   if (!v4)
   {
-    v4 = v3;
+    v4 = identifierCopy;
   }
 
   return v4;
@@ -550,17 +550,17 @@ void __51__SCRCMathExpression_latexIdentifierForIdentifier___block_invoke()
   latexIdentifierForIdentifier___IdentifierLookupTable = &unk_28763AB18;
 }
 
-- (id)latexIdentifierForFenceOperator:(id)a3 isClosingOperator:(BOOL)a4
+- (id)latexIdentifierForFenceOperator:(id)operator isClosingOperator:(BOOL)closingOperator
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SCRCMathExpression *)self fenceDelimiters];
-  if ([v7 containsObject:v6])
+  closingOperatorCopy = closingOperator;
+  operatorCopy = operator;
+  fenceDelimiters = [(SCRCMathExpression *)self fenceDelimiters];
+  if ([fenceDelimiters containsObject:operatorCopy])
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [(SCRCMathExpression *)self latexIdentifierForIdentifier:v6];
+    v9 = [(SCRCMathExpression *)self latexIdentifierForIdentifier:operatorCopy];
     v10 = v9;
-    if (v4)
+    if (closingOperatorCopy)
     {
       [v8 stringWithFormat:@"\\right%@", v9];
     }
@@ -574,23 +574,23 @@ void __51__SCRCMathExpression_latexIdentifierForIdentifier___block_invoke()
 
   else
   {
-    v11 = [(SCRCMathExpression *)self latexIdentifierForIdentifier:v6];
+    v11 = [(SCRCMathExpression *)self latexIdentifierForIdentifier:operatorCopy];
   }
 
   return v11;
 }
 
-- (id)latexDescriptionForChildrenJoinedByString:(id)a3
+- (id)latexDescriptionForChildrenJoinedByString:(id)string
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SCRCMathExpression *)self children];
-  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  stringCopy = string;
+  children = [(SCRCMathExpression *)self children];
+  v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(children, "count")}];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = v5;
+  v7 = children;
   v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
@@ -618,15 +618,15 @@ void __51__SCRCMathExpression_latexIdentifierForIdentifier___block_invoke()
     while (v9);
   }
 
-  v13 = [v6 componentsJoinedByString:v4];
+  v13 = [v6 componentsJoinedByString:stringCopy];
 
   return v13;
 }
 
-+ (Class)_classForExpressionType:(id)a3
++ (Class)_classForExpressionType:(id)type
 {
-  v3 = a3;
-  if (([v3 isEqualToString:@"Row"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"Identifier") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"Operator") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"SubSuperScript") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"Space") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"Text") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"Fraction") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"UnderOver") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"RootOperation") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"TableCell") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"TableRow") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"Table") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"Fenced") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"LongDivision") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"Number") & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"Multiscript"))
+  typeCopy = type;
+  if (([typeCopy isEqualToString:@"Row"] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"Identifier") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"Operator") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"SubSuperScript") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"Space") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"Text") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"Fraction") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"UnderOver") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"RootOperation") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"TableCell") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"TableRow") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"Table") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"Fenced") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"LongDivision") & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", @"Number") & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", @"Multiscript"))
   {
     v4 = objc_opt_class();
   }
@@ -648,14 +648,14 @@ void __51__SCRCMathExpression_latexIdentifierForIdentifier___block_invoke()
   return WeakRetained;
 }
 
-+ (void)setPathToSegmentOrderingPlist:(id)a3
++ (void)setPathToSegmentOrderingPlist:(id)plist
 {
-  v4 = a3;
-  if (_PathToSegmentOrderingPlist != v4)
+  plistCopy = plist;
+  if (_PathToSegmentOrderingPlist != plistCopy)
   {
-    v5 = v4;
-    objc_storeStrong(&_PathToSegmentOrderingPlist, a3);
-    v4 = v5;
+    v5 = plistCopy;
+    objc_storeStrong(&_PathToSegmentOrderingPlist, plist);
+    plistCopy = v5;
   }
 }
 

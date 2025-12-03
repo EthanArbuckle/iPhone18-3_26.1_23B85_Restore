@@ -11,15 +11,15 @@
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 mutableCopy];
+    dictionary = [v5 mutableCopy];
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v8 = v7;
+  v8 = dictionary;
   switch(a3)
   {
     case -5836:
@@ -161,15 +161,15 @@
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 mutableCopy];
+    dictionary = [v5 mutableCopy];
   }
 
   else
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v8 = v7;
+  v8 = dictionary;
   if ((a3 + 3821) > 0x14)
   {
     v9 = @"SCSTREAM_ERROR_UNKNOWN";

@@ -18,7 +18,7 @@
 
 - (void)updateVisualStyling
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A224DBEC();
 }
 

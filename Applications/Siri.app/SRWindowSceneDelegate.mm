@@ -1,45 +1,45 @@
 @interface SRWindowSceneDelegate
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidBecomeActive:(id)a3;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)sceneDidEnterBackground:(id)a3;
-- (void)sceneWillEnterForeground:(id)a3;
-- (void)sceneWillResignActive:(id)a3;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidBecomeActive:(id)active;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)sceneDidEnterBackground:(id)background;
+- (void)sceneWillEnterForeground:(id)foreground;
+- (void)sceneWillResignActive:(id)active;
 @end
 
 @implementation SRWindowSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
   v10 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 136315650;
     v20 = "[SRWindowSceneDelegate scene:willConnectToSession:options:]";
     v21 = 2112;
-    v22 = v9;
+    v22 = optionsCopy;
     v23 = 2112;
-    v24 = v7;
+    v24 = sceneCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s Options: %@, scene: %@", &v19, 0x20u);
   }
 
-  v11 = [v7 _FBSScene];
-  v12 = [v11 settings];
+  _FBSScene = [sceneCopy _FBSScene];
+  settings = [_FBSScene settings];
 
-  v13 = [v12 interfaceOrientation];
+  interfaceOrientation = [settings interfaceOrientation];
   v14 = +[SRApplication sharedApplication];
-  [v14 setFrontMostAppOrientation:v13];
+  [v14 setFrontMostAppOrientation:interfaceOrientation];
 
   v15 = +[UIApplication sharedApplication];
-  v16 = [v15 delegate];
+  delegate = [v15 delegate];
 
-  v17 = [v16 appWindow];
-  [v17 _setWindowInterfaceOrientation:v13];
-  [v16 setCurrentScene:v7];
-  if (!v17)
+  appWindow = [delegate appWindow];
+  [appWindow _setWindowInterfaceOrientation:interfaceOrientation];
+  [delegate setCurrentScene:sceneCopy];
+  if (!appWindow)
   {
     v18 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
@@ -48,103 +48,103 @@
     }
   }
 
-  [v17 setWindowScene:v7];
-  [v17 makeKeyWindow];
-  [v17 setHidden:0];
-  [v16 invalidateKeyboardWindowIfNeeded];
+  [appWindow setWindowScene:sceneCopy];
+  [appWindow makeKeyWindow];
+  [appWindow setHidden:0];
+  [delegate invalidateKeyboardWindowIfNeeded];
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
-  v3 = a3;
+  disconnectCopy = disconnect;
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[SRWindowSceneDelegate sceneDidDisconnect:]";
     v10 = 2112;
-    v11 = v3;
+    v11 = disconnectCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s Scene: %@", &v8, 0x16u);
   }
 
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 delegate];
+  delegate = [v5 delegate];
 
-  v7 = [v6 appWindow];
-  [v6 setCurrentScene:0];
-  [v6 tearDownViews];
-  [v7 setHidden:1];
-  [v7 setWindowScene:0];
+  appWindow = [delegate appWindow];
+  [delegate setCurrentScene:0];
+  [delegate tearDownViews];
+  [appWindow setHidden:1];
+  [appWindow setWindowScene:0];
 }
 
-- (void)sceneDidBecomeActive:(id)a3
+- (void)sceneDidBecomeActive:(id)active
 {
-  v3 = a3;
+  activeCopy = active;
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[SRWindowSceneDelegate sceneDidBecomeActive:]";
     v9 = 2112;
-    v10 = v3;
+    v10 = activeCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s Scene: %@", &v7, 0x16u);
   }
 
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 delegate];
+  delegate = [v5 delegate];
 
-  [v6 didBecomeActiveHandler];
+  [delegate didBecomeActiveHandler];
 }
 
-- (void)sceneWillResignActive:(id)a3
+- (void)sceneWillResignActive:(id)active
 {
-  v3 = a3;
+  activeCopy = active;
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[SRWindowSceneDelegate sceneWillResignActive:]";
     v9 = 2112;
-    v10 = v3;
+    v10 = activeCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s Scene: %@", &v7, 0x16u);
   }
 
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 delegate];
+  delegate = [v5 delegate];
 
-  [v6 willResignActiveHandler];
+  [delegate willResignActiveHandler];
 }
 
-- (void)sceneWillEnterForeground:(id)a3
+- (void)sceneWillEnterForeground:(id)foreground
 {
-  v3 = a3;
+  foregroundCopy = foreground;
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[SRWindowSceneDelegate sceneWillEnterForeground:]";
     v9 = 2112;
-    v10 = v3;
+    v10 = foregroundCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s Scene: %@", &v7, 0x16u);
   }
 
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 delegate];
+  delegate = [v5 delegate];
 
-  [v6 willEnterForegroundHandler];
-  [v6 setUpViews];
+  [delegate willEnterForegroundHandler];
+  [delegate setUpViews];
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v3 = a3;
+  backgroundCopy = background;
   v4 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136315394;
     v6 = "[SRWindowSceneDelegate sceneDidEnterBackground:]";
     v7 = 2112;
-    v8 = v3;
+    v8 = backgroundCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s Scene: %@", &v5, 0x16u);
   }
 }

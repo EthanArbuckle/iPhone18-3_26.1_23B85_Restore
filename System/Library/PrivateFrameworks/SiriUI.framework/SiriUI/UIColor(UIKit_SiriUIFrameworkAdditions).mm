@@ -27,8 +27,8 @@
 
 + (id)siriui_highlightColor
 {
-  v0 = [MEMORY[0x277D75348] labelColor];
-  v1 = [v0 colorWithAlphaComponent:0.1];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v1 = [labelColor colorWithAlphaComponent:0.1];
 
   return v1;
 }
@@ -37,12 +37,12 @@
 {
   if (SiriUIIsWhitePlatterSnippetBackgroundEnabledForAllSnippets())
   {
-    [a1 siriui_platterMaskingHighlightColor];
+    [self siriui_platterMaskingHighlightColor];
   }
 
   else
   {
-    [a1 colorWithWhite:1.0 alpha:0.2];
+    [self colorWithWhite:1.0 alpha:0.2];
   }
   v2 = ;
 
@@ -51,8 +51,8 @@
 
 + (id)siriui_platterMaskingHighlightColor
 {
-  v0 = [MEMORY[0x277D75348] labelColor];
-  v1 = [v0 colorWithAlphaComponent:0.2];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v1 = [labelColor colorWithAlphaComponent:0.2];
 
   return v1;
 }
@@ -61,12 +61,12 @@
 {
   if (SiriUIIsWhitePlatterSnippetBackgroundEnabledForAllSnippets())
   {
-    [a1 siriui_platterKeylineColor];
+    [self siriui_platterKeylineColor];
   }
 
   else
   {
-    [a1 siriui_lightKeylineColor];
+    [self siriui_lightKeylineColor];
   }
   v2 = ;
 
@@ -75,8 +75,8 @@
 
 + (id)siriui_platterKeylineColor
 {
-  v0 = [MEMORY[0x277D75348] labelColor];
-  v1 = [v0 colorWithAlphaComponent:0.18];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v1 = [labelColor colorWithAlphaComponent:0.18];
 
   return v1;
 }
@@ -85,7 +85,7 @@
 {
   if (SiriUIIsWhitePlatterSnippetBackgroundEnabledForAllSnippets())
   {
-    [a1 siriui_platterMaskingColor];
+    [self siriui_platterMaskingColor];
   }
 
   else
@@ -119,13 +119,13 @@
     v3 = 0.2;
   }
 
-  return [a1 colorWithWhite:1.0 alpha:v3];
+  return [self colorWithWhite:1.0 alpha:v3];
 }
 
 + (id)siriui_platterMaskingColor
 {
-  v0 = [MEMORY[0x277D75348] labelColor];
-  v1 = [v0 colorWithAlphaComponent:0.6];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v1 = [labelColor colorWithAlphaComponent:0.6];
 
   return v1;
 }
@@ -134,7 +134,7 @@
 {
   if (SiriUIIsWhitePlatterSnippetBackgroundEnabledForAllSnippets())
   {
-    [a1 siriui_platterGlyphColor];
+    [self siriui_platterGlyphColor];
   }
 
   else
@@ -150,7 +150,7 @@
 {
   if (SiriUIIsWhitePlatterSnippetBackgroundEnabledForAllSnippets())
   {
-    [a1 siriui_platterTextColor];
+    [self siriui_platterTextColor];
   }
 
   else
@@ -166,7 +166,7 @@
 {
   if (SiriUIIsWhitePlatterSnippetBackgroundEnabledForAllSnippets())
   {
-    [a1 siriui_platterLinkTextColor];
+    [self siriui_platterLinkTextColor];
   }
 
   else
@@ -180,8 +180,8 @@
 
 + (id)siriui_platterLinkTextColor
 {
-  v0 = [MEMORY[0x277D75348] labelColor];
-  v1 = [v0 colorWithAlphaComponent:0.55];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v1 = [labelColor colorWithAlphaComponent:0.55];
 
   return v1;
 }
@@ -190,7 +190,7 @@
 {
   if (SiriUIIsWhitePlatterSnippetBackgroundEnabledForAllSnippets())
   {
-    [a1 siriui_platterSemiTransparentTextColor];
+    [self siriui_platterSemiTransparentTextColor];
   }
 
   else
@@ -204,8 +204,8 @@
 
 + (id)siriui_platterSemiTransparentTextColor
 {
-  v0 = [MEMORY[0x277D75348] labelColor];
-  v1 = [v0 colorWithAlphaComponent:0.5];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v1 = [labelColor colorWithAlphaComponent:0.5];
 
   return v1;
 }
@@ -214,12 +214,12 @@
 {
   if (SiriUIIsWhitePlatterSnippetBackgroundEnabledForAllSnippets())
   {
-    [a1 siriui_platterTextHighlightColor];
+    [self siriui_platterTextHighlightColor];
   }
 
   else
   {
-    [a1 siriui_lightTextHighlightColor];
+    [self siriui_lightTextHighlightColor];
   }
   v2 = ;
 
@@ -270,7 +270,7 @@
 {
   if (SiriUIIsWhitePlatterSnippetBackgroundEnabledForAllSnippets())
   {
-    [a1 siriui_platterInsertionPointColor];
+    [self siriui_platterInsertionPointColor];
   }
 
   else
@@ -284,8 +284,8 @@
 
 + (id)siriui_platterInsertionPointColor
 {
-  v0 = [MEMORY[0x277D75348] labelColor];
-  v1 = [v0 colorWithAlphaComponent:0.5];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v1 = [labelColor colorWithAlphaComponent:0.5];
 
   return v1;
 }
@@ -297,11 +297,11 @@
   v5 = [v3 redValue] / 255.0;
   v6 = [v3 greenValue] / 255.0;
   v7 = [v3 blueValue] / 255.0;
-  v8 = [v3 alpha];
-  if (v8)
+  alpha = [v3 alpha];
+  if (alpha)
   {
-    v9 = [v3 alpha];
-    [v9 floatValue];
+    alpha2 = [v3 alpha];
+    [alpha2 floatValue];
     v11 = [v4 colorWithRed:v5 green:v6 blue:v7 alpha:v10];
   }
 

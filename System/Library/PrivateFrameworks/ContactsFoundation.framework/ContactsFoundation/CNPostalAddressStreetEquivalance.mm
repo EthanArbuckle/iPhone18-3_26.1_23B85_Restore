@@ -1,18 +1,18 @@
 @interface CNPostalAddressStreetEquivalance
-+ (BOOL)isStreetAddress:(id)a3 equivalentToStreetAddress:(id)a4;
++ (BOOL)isStreetAddress:(id)address equivalentToStreetAddress:(id)streetAddress;
 + (id)_normalizationMap;
 + (id)normalizationMap;
-+ (id)normalizeAddress:(id)a3;
-+ (id)normalizeComponent:(id)a3;
++ (id)normalizeAddress:(id)address;
++ (id)normalizeComponent:(id)component;
 @end
 
 @implementation CNPostalAddressStreetEquivalance
 
-+ (BOOL)isStreetAddress:(id)a3 equivalentToStreetAddress:(id)a4
++ (BOOL)isStreetAddress:(id)address equivalentToStreetAddress:(id)streetAddress
 {
-  v6 = a4;
-  v7 = [a1 normalizeAddress:a3];
-  v8 = [a1 normalizeAddress:v6];
+  streetAddressCopy = streetAddress;
+  v7 = [self normalizeAddress:address];
+  v8 = [self normalizeAddress:streetAddressCopy];
 
   if (v7)
   {
@@ -39,29 +39,29 @@
   return v11;
 }
 
-+ (id)normalizeAddress:(id)a3
++ (id)normalizeAddress:(id)address
 {
-  v4 = [a1 prepareStringForNormalization:a3];
-  v5 = [v4 _cn_tokens];
+  v4 = [self prepareStringForNormalization:address];
+  _cn_tokens = [v4 _cn_tokens];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __53__CNPostalAddressStreetEquivalance_normalizeAddress___block_invoke;
   v9[3] = &__block_descriptor_40_e28___NSString_16__0__NSString_8l;
-  v9[4] = a1;
-  v6 = [v5 _cn_map:v9];
+  v9[4] = self;
+  v6 = [_cn_tokens _cn_map:v9];
   v7 = [v6 componentsJoinedByString:@" "];
 
   return v7;
 }
 
-+ (id)normalizeComponent:(id)a3
++ (id)normalizeComponent:(id)component
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
-  v6 = [v4 _cn_stringByDeletingCharactersInSet:v5];
+  componentCopy = component;
+  punctuationCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+  v6 = [componentCopy _cn_stringByDeletingCharactersInSet:punctuationCharacterSet];
 
-  v7 = [a1 normalizationMap];
-  v8 = [v7 objectForKey:v6];
+  normalizationMap = [self normalizationMap];
+  v8 = [normalizationMap objectForKey:v6];
 
   if (v8)
   {
@@ -70,7 +70,7 @@
 
   else
   {
-    v9 = v4;
+    v9 = componentCopy;
   }
 
   v10 = v9;
@@ -94,7 +94,7 @@
   block[1] = 3221225472;
   block[2] = __52__CNPostalAddressStreetEquivalance_normalizationMap__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (normalizationMap_cn_once_token_0 != -1)
   {
     dispatch_once(&normalizationMap_cn_once_token_0, block);

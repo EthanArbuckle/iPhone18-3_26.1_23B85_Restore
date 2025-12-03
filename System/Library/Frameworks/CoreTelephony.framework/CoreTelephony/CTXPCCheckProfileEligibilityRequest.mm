@@ -1,20 +1,20 @@
 @interface CTXPCCheckProfileEligibilityRequest
 + (id)allowedClassesForArguments;
-- (CTXPCCheckProfileEligibilityRequest)initWithSmdpURL:(id)a3 metadata:(id)a4;
+- (CTXPCCheckProfileEligibilityRequest)initWithSmdpURL:(id)l metadata:(id)metadata;
 - (id)metadata;
 - (id)smdpUrl;
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4;
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler;
 @end
 
 @implementation CTXPCCheckProfileEligibilityRequest
 
-- (CTXPCCheckProfileEligibilityRequest)initWithSmdpURL:(id)a3 metadata:(id)a4
+- (CTXPCCheckProfileEligibilityRequest)initWithSmdpURL:(id)l metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  metadataCopy = metadata;
   v8 = objc_opt_new();
-  [v8 setObject:v6 forKeyedSubscript:@"urlString"];
-  [v8 setObject:v7 forKeyedSubscript:@"metadata"];
+  [v8 setObject:lCopy forKeyedSubscript:@"urlString"];
+  [v8 setObject:metadataCopy forKeyedSubscript:@"metadata"];
   v11.receiver = self;
   v11.super_class = CTXPCCheckProfileEligibilityRequest;
   v9 = [(CTXPCMessage *)&v11 initWithNamedArguments:v8];
@@ -22,19 +22,19 @@
   return v9;
 }
 
-- (void)performRequestWithHandler:(id)a3 completionHandler:(id)a4
+- (void)performRequestWithHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CTXPCCheckProfileEligibilityRequest *)self smdpUrl];
-  v9 = [(CTXPCCheckProfileEligibilityRequest *)self metadata];
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  smdpUrl = [(CTXPCCheckProfileEligibilityRequest *)self smdpUrl];
+  metadata = [(CTXPCCheckProfileEligibilityRequest *)self metadata];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __83__CTXPCCheckProfileEligibilityRequest_performRequestWithHandler_completionHandler___block_invoke;
   v11[3] = &unk_1E6A460B8;
-  v10 = v7;
+  v10 = completionHandlerCopy;
   v12 = v10;
-  [v6 checkProfileEligibility:v8 metadata:v9 completion:v11];
+  [handlerCopy checkProfileEligibility:smdpUrl metadata:metadata completion:v11];
 }
 
 void __83__CTXPCCheckProfileEligibilityRequest_performRequestWithHandler_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -47,7 +47,7 @@ void __83__CTXPCCheckProfileEligibilityRequest_performRequestWithHandler_complet
 
 + (id)allowedClassesForArguments
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CTXPCCheckProfileEligibilityRequest;
   v2 = objc_msgSendSuper2(&v5, sel_allowedClassesForArguments);
   v3 = [v2 setByAddingObject:objc_opt_class()];
@@ -57,8 +57,8 @@ void __83__CTXPCCheckProfileEligibilityRequest_performRequestWithHandler_complet
 
 - (id)smdpUrl
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"urlString"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"urlString"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -75,8 +75,8 @@ void __83__CTXPCCheckProfileEligibilityRequest_performRequestWithHandler_complet
 
 - (id)metadata
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKeyedSubscript:@"metadata"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKeyedSubscript:@"metadata"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {

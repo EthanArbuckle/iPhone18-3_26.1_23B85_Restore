@@ -1,14 +1,14 @@
 @interface _UIIntrinsicContentSizeInvalidationForwardingWrapperView
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3;
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view;
 @end
 
 @implementation _UIIntrinsicContentSizeInvalidationForwardingWrapperView
 
-- (void)_intrinsicContentSizeInvalidatedForChildView:(id)a3
+- (void)_intrinsicContentSizeInvalidatedForChildView:(id)view
 {
-  v4 = a3;
-  v5 = [(UIView *)self superview];
-  [v5 _intrinsicContentSizeInvalidatedForChildView:v4];
+  viewCopy = view;
+  superview = [(UIView *)self superview];
+  [superview _intrinsicContentSizeInvalidatedForChildView:viewCopy];
 }
 
 @end

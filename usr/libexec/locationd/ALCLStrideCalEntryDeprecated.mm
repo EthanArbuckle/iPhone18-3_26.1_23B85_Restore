@@ -1,21 +1,21 @@
 @interface ALCLStrideCalEntryDeprecated
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRecordId:(BOOL)a3;
-- (void)setHasRegularEntry:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRecordId:(BOOL)id;
+- (void)setHasRegularEntry:(BOOL)entry;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ALCLStrideCalEntryDeprecated
 
-- (void)setHasRecordId:(BOOL)a3
+- (void)setHasRecordId:(BOOL)id
 {
-  if (a3)
+  if (id)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasRegularEntry:(BOOL)a3
+- (void)setHasRegularEntry:(BOOL)entry
 {
-  if (a3)
+  if (entry)
   {
     v3 = 4;
   }
@@ -77,7 +77,7 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if ((*&self->_has & 2) != 0)
   {
@@ -102,18 +102,18 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if ((*&self->_has & 2) != 0)
   {
-    *(a3 + 11) = self->_recordId;
-    *(a3 + 52) |= 2u;
+    *(to + 11) = self->_recordId;
+    *(to + 52) |= 2u;
   }
 
-  *(a3 + 10) = self->_pacebin;
-  *(a3 + 1) = *&self->_kvalue;
-  *(a3 + 2) = *&self->_kvalueTrack;
-  *(a3 + 3) = *&self->_score;
+  *(to + 10) = self->_pacebin;
+  *(to + 1) = *&self->_kvalue;
+  *(to + 2) = *&self->_kvalueTrack;
+  *(to + 3) = *&self->_score;
   if ((*&self->_has & 1) == 0)
   {
     if ((*&self->_has & 4) == 0)
@@ -122,22 +122,22 @@
     }
 
 LABEL_7:
-    *(a3 + 48) = self->_regularEntry;
-    *(a3 + 52) |= 4u;
+    *(to + 48) = self->_regularEntry;
+    *(to + 52) |= 4u;
     return;
   }
 
-  *(a3 + 4) = *&self->_timestamp;
-  *(a3 + 52) |= 1u;
+  *(to + 4) = *&self->_timestamp;
+  *(to + 52) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
     goto LABEL_7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if ((*&self->_has & 2) != 0)
   {
     *(result + 11) = self->_recordId;
@@ -165,46 +165,46 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 52) & 2) == 0 || self->_recordId != *(a3 + 11))
+      if ((*(equal + 52) & 2) == 0 || self->_recordId != *(equal + 11))
       {
         goto LABEL_18;
       }
     }
 
-    else if ((*(a3 + 52) & 2) != 0)
+    else if ((*(equal + 52) & 2) != 0)
     {
       goto LABEL_18;
     }
 
-    if (self->_pacebin != *(a3 + 10) || self->_kvalue != *(a3 + 1) || self->_kvalueTrack != *(a3 + 2) || self->_score != *(a3 + 3))
+    if (self->_pacebin != *(equal + 10) || self->_kvalue != *(equal + 1) || self->_kvalueTrack != *(equal + 2) || self->_score != *(equal + 3))
     {
       goto LABEL_18;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 52) & 1) == 0 || self->_timestamp != *(a3 + 4))
+      if ((*(equal + 52) & 1) == 0 || self->_timestamp != *(equal + 4))
       {
         goto LABEL_18;
       }
     }
 
-    else if (*(a3 + 52))
+    else if (*(equal + 52))
     {
       goto LABEL_18;
     }
 
-    LOBYTE(v5) = (*(a3 + 52) & 4) == 0;
+    LOBYTE(v5) = (*(equal + 52) & 4) == 0;
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 52) & 4) == 0)
+      if ((*(equal + 52) & 4) == 0)
       {
 LABEL_18:
         LOBYTE(v5) = 0;
@@ -213,13 +213,13 @@ LABEL_18:
 
       if (self->_regularEntry)
       {
-        if ((*(a3 + 48) & 1) == 0)
+        if ((*(equal + 48) & 1) == 0)
         {
           goto LABEL_18;
         }
       }
 
-      else if (*(a3 + 48))
+      else if (*(equal + 48))
       {
         goto LABEL_18;
       }
@@ -367,34 +367,34 @@ LABEL_33:
   return (2654435761 * self->_pacebin) ^ v5 ^ v14 ^ v20 ^ v27 ^ v28 ^ v30;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if ((*(a3 + 52) & 2) != 0)
+  if ((*(from + 52) & 2) != 0)
   {
-    self->_recordId = *(a3 + 11);
+    self->_recordId = *(from + 11);
     *&self->_has |= 2u;
   }
 
-  self->_pacebin = *(a3 + 10);
-  self->_kvalue = *(a3 + 1);
-  self->_kvalueTrack = *(a3 + 2);
-  self->_score = *(a3 + 3);
-  if ((*(a3 + 52) & 1) == 0)
+  self->_pacebin = *(from + 10);
+  self->_kvalue = *(from + 1);
+  self->_kvalueTrack = *(from + 2);
+  self->_score = *(from + 3);
+  if ((*(from + 52) & 1) == 0)
   {
-    if ((*(a3 + 52) & 4) == 0)
+    if ((*(from + 52) & 4) == 0)
     {
       return;
     }
 
 LABEL_7:
-    self->_regularEntry = *(a3 + 48);
+    self->_regularEntry = *(from + 48);
     *&self->_has |= 4u;
     return;
   }
 
-  self->_timestamp = *(a3 + 4);
+  self->_timestamp = *(from + 4);
   *&self->_has |= 1u;
-  if ((*(a3 + 52) & 4) != 0)
+  if ((*(from + 52) & 4) != 0)
   {
     goto LABEL_7;
   }

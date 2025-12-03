@@ -10,8 +10,8 @@
 
 - (id)hkmc_menstruationProjections
 {
-  v1 = [a1 menstruationPredictions];
-  v2 = [v1 hk_map:&__block_literal_global_0];
+  menstruationPredictions = [self menstruationPredictions];
+  v2 = [menstruationPredictions hk_map:&__block_literal_global_0];
 
   return v2;
 }
@@ -19,7 +19,7 @@
 - (id)hkmc_fertileWindowProjectionsWithOverridePredictionPrimarySource:()HKMenstrualCycles currentDayIndex:
 {
   v6 = a3;
-  v7 = [a1 fertilityPredictions];
+  fertilityPredictions = [self fertilityPredictions];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __133__HAMenstrualAlgorithmsAnalysis_HKMenstrualCycles__hkmc_fertileWindowProjectionsWithOverridePredictionPrimarySource_currentDayIndex___block_invoke;
@@ -27,44 +27,44 @@
   v12 = v6;
   v13 = a4;
   v8 = v6;
-  v9 = [v7 hk_map:v11];
+  v9 = [fertilityPredictions hk_map:v11];
 
   return v9;
 }
 
 - (id)hkmc_statistics
 {
-  v1 = [a1 stats];
-  v2 = [v1 hkmc_statistics];
+  stats = [self stats];
+  hkmc_statistics = [stats hkmc_statistics];
 
-  return v2;
+  return hkmc_statistics;
 }
 
 - (id)hkmc_deviations
 {
-  v2 = [a1 deviationAnalysis];
+  deviationAnalysis = [self deviationAnalysis];
 
-  if (v2)
+  if (deviationAnalysis)
   {
     v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v4 = [a1 deviationAnalysis];
-    v5 = [v4 prolongedBleeding];
-    v6 = [v5 hkmc_deviationOfType:0];
+    deviationAnalysis2 = [self deviationAnalysis];
+    prolongedBleeding = [deviationAnalysis2 prolongedBleeding];
+    v6 = [prolongedBleeding hkmc_deviationOfType:0];
     [v3 hk_addNonNilObject:v6];
 
-    v7 = [a1 deviationAnalysis];
-    v8 = [v7 spotting];
-    v9 = [v8 hkmc_deviationOfType:1];
+    deviationAnalysis3 = [self deviationAnalysis];
+    spotting = [deviationAnalysis3 spotting];
+    v9 = [spotting hkmc_deviationOfType:1];
     [v3 hk_addNonNilObject:v9];
 
-    v10 = [a1 deviationAnalysis];
-    v11 = [v10 irregularBleeding];
-    v12 = [v11 hkmc_deviationOfType:2];
+    deviationAnalysis4 = [self deviationAnalysis];
+    irregularBleeding = [deviationAnalysis4 irregularBleeding];
+    v12 = [irregularBleeding hkmc_deviationOfType:2];
     [v3 hk_addNonNilObject:v12];
 
-    v13 = [a1 deviationAnalysis];
-    v14 = [v13 infrequentBleeding];
-    v15 = [v14 hkmc_deviationOfType:3];
+    deviationAnalysis5 = [self deviationAnalysis];
+    infrequentBleeding = [deviationAnalysis5 infrequentBleeding];
+    v15 = [infrequentBleeding hkmc_deviationOfType:3];
     [v3 hk_addNonNilObject:v15];
 
     v16 = [v3 copy];
@@ -83,15 +83,15 @@
   v2 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
   v4 = MEMORY[0x277CCABB0];
-  v5 = [a1 menstruationPredictions];
-  v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
+  menstruationPredictions = [self menstruationPredictions];
+  v6 = [v4 numberWithUnsignedInteger:{objc_msgSend(menstruationPredictions, "count")}];
   v7 = MEMORY[0x277CCABB0];
-  v8 = [a1 fertilityPredictions];
-  v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
-  v10 = [a1 stats];
-  v11 = [v10 hkmc_description];
-  v12 = [a1 hkmc_deviations];
-  v13 = [v2 stringWithFormat:@"<%@:%p %@ menstruation predictions, %@ fertility predictions, stats: %@, deviations: %@>", v3, a1, v6, v9, v11, v12];
+  fertilityPredictions = [self fertilityPredictions];
+  v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(fertilityPredictions, "count")}];
+  stats = [self stats];
+  hkmc_description = [stats hkmc_description];
+  hkmc_deviations = [self hkmc_deviations];
+  v13 = [v2 stringWithFormat:@"<%@:%p %@ menstruation predictions, %@ fertility predictions, stats: %@, deviations: %@>", v3, self, v6, v9, hkmc_description, hkmc_deviations];
 
   return v13;
 }

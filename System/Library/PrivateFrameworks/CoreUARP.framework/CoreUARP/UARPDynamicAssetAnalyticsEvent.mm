@@ -2,7 +2,7 @@
 + (id)tag;
 - (BOOL)decomposeUARP;
 - (UARPDynamicAssetAnalyticsEvent)init;
-- (UARPDynamicAssetAnalyticsEvent)initWithURL:(id)a3;
+- (UARPDynamicAssetAnalyticsEvent)initWithURL:(id)l;
 - (id)description;
 - (void)send;
 @end
@@ -16,15 +16,15 @@
   return 0;
 }
 
-- (UARPDynamicAssetAnalyticsEvent)initWithURL:(id)a3
+- (UARPDynamicAssetAnalyticsEvent)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = UARPDynamicAssetAnalyticsEvent;
   v5 = [(UARPDynamicAssetAnalyticsEvent *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     url = v5->_url;
     v5->_url = v6;
 
@@ -92,8 +92,8 @@ LABEL_28:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v5 = [(UARPSuperBinaryAsset *)self->_asset payloads];
-  v6 = [v5 countByEnumeratingWithState:&v26 objects:v32 count:16];
+  payloads = [(UARPSuperBinaryAsset *)self->_asset payloads];
+  v6 = [payloads countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (!v6)
   {
     goto LABEL_19;
@@ -110,17 +110,17 @@ LABEL_28:
     {
       if (*v27 != v9)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(payloads);
       }
 
       v12 = *(*(&v26 + 1) + 8 * i);
-      v13 = [(NSMutableArray *)v12 tlvs];
-      v14 = [UARPSuperBinaryAssetTLV findTLVWithType:1483412481 tlvs:v13];
+      tlvs = [(NSMutableArray *)v12 tlvs];
+      v14 = [UARPSuperBinaryAssetTLV findTLVWithType:1483412481 tlvs:tlvs];
 
       if (v14)
       {
-        v15 = [v14 valueAsNumber];
-        if (!v15)
+        valueAsNumber = [v14 valueAsNumber];
+        if (!valueAsNumber)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
@@ -130,8 +130,8 @@ LABEL_28:
           goto LABEL_27;
         }
 
-        v16 = v15;
-        if ([v15 unsignedIntegerValue])
+        v16 = valueAsNumber;
+        if ([valueAsNumber unsignedIntegerValue])
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
           {
@@ -170,7 +170,7 @@ LABEL_27:
       [(NSMutableArray *)self->_events addObject:v20];
     }
 
-    v8 = [v5 countByEnumeratingWithState:&v26 objects:v32 count:16];
+    v8 = [payloads countByEnumeratingWithState:&v26 objects:v32 count:16];
     if (v8)
     {
       continue;
@@ -220,12 +220,12 @@ LABEL_29:
 
         v17 = v3;
         v4 = *(*(&v23 + 1) + 8 * v3);
-        v5 = [v4 allKeys];
+        allKeys = [v4 allKeys];
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v6 = [v5 countByEnumeratingWithState:&v19 objects:v31 count:16];
+        v6 = [allKeys countByEnumeratingWithState:&v19 objects:v31 count:16];
         if (v6)
         {
           v7 = v6;
@@ -236,7 +236,7 @@ LABEL_29:
             {
               if (*v20 != v8)
               {
-                objc_enumerationMutation(v5);
+                objc_enumerationMutation(allKeys);
               }
 
               v10 = *(*(&v19 + 1) + 8 * i);
@@ -255,7 +255,7 @@ LABEL_29:
               AnalyticsSendEventLazy();
             }
 
-            v7 = [v5 countByEnumeratingWithState:&v19 objects:v31 count:16];
+            v7 = [allKeys countByEnumeratingWithState:&v19 objects:v31 count:16];
           }
 
           while (v7);

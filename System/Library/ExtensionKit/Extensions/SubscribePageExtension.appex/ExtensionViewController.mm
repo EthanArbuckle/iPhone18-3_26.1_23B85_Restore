@@ -1,16 +1,16 @@
 @interface ExtensionViewController
-- (ExtensionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)setupWithParameters:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (ExtensionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)setupWithParameters:(id)parameters;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation ExtensionViewController
 
-- (ExtensionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ExtensionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_100753094();
     v7 = v6;
@@ -22,8 +22,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_1004B6B98(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_1004B6B98(v5, v7, bundle);
 }
 
 - (void)viewDidLoad
@@ -32,12 +32,12 @@
   v6.super_class = swift_getObjectType();
   v2 = v6.receiver;
   [(ExtensionViewController *)&v6 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [objc_opt_self() clearColor];
-    [v4 setBackgroundColor:v5];
+    v4 = view;
+    clearColor = [objc_opt_self() clearColor];
+    [v4 setBackgroundColor:clearColor];
   }
 
   else
@@ -46,30 +46,30 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(ExtensionViewController *)&v5 viewDidAppear:v3];
+  [(ExtensionViewController *)&v5 viewDidAppear:appearCopy];
   sub_10074E584();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(ExtensionViewController *)&v5 viewWillAppear:v3];
+  [(ExtensionViewController *)&v5 viewWillAppear:appearCopy];
   sub_1004B712C();
 }
 
-- (void)setupWithParameters:(id)a3
+- (void)setupWithParameters:(id)parameters
 {
   v4 = sub_100752F44();
-  v5 = self;
+  selfCopy = self;
   sub_1004B72A8(v4);
 }
 

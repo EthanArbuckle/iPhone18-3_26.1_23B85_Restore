@@ -1,13 +1,13 @@
 @interface VoiceBankingDiagnosticsExtension
 - (VoiceBankingDiagnosticsExtension)init;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation VoiceBankingDiagnosticsExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  if (a3)
+  if (parameters)
   {
     v4 = sub_100015C74();
   }
@@ -17,7 +17,7 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   v6 = _s23VoiceBankingDiagnostics0abC9ExtensionC11attachments13forParametersSayypGSgSDys11AnyHashableVypGSg_tF_0(v4);
 
   if (v6)

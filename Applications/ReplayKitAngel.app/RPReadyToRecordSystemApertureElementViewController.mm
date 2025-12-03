@@ -4,7 +4,7 @@
 - (NSString)elementIdentifier;
 - (NSURL)launchURL;
 - (UIColor)keyColor;
-- (_TtC14ReplayKitAngel50RPReadyToRecordSystemApertureElementViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC14ReplayKitAngel50RPReadyToRecordSystemApertureElementViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (double)preferredHeightForBottomSafeArea;
 - (int64_t)activeLayoutMode;
 - (int64_t)contentRole;
@@ -12,18 +12,18 @@
 - (int64_t)preferredLayoutMode;
 - (unint64_t)presentationBehaviors;
 - (unint64_t)statusBarStyleOverridesToSuppress;
-- (void)customViewTapped:(id)a3;
-- (void)setActiveLayoutMode:(int64_t)a3;
-- (void)setAssociatedAppBundleIdentifier:(id)a3;
-- (void)setContentRole:(int64_t)a3;
-- (void)setLaunchURL:(id)a3;
-- (void)setMaximumLayoutMode:(int64_t)a3;
-- (void)setPreferredHeightForBottomSafeArea:(double)a3;
-- (void)setPreferredLayoutMode:(int64_t)a3;
-- (void)setPresentationBehaviors:(unint64_t)a3;
-- (void)setStatusBarStyleOverridesToSuppress:(unint64_t)a3;
+- (void)customViewTapped:(id)tapped;
+- (void)setActiveLayoutMode:(int64_t)mode;
+- (void)setAssociatedAppBundleIdentifier:(id)identifier;
+- (void)setContentRole:(int64_t)role;
+- (void)setLaunchURL:(id)l;
+- (void)setMaximumLayoutMode:(int64_t)mode;
+- (void)setPreferredHeightForBottomSafeArea:(double)area;
+- (void)setPreferredLayoutMode:(int64_t)mode;
+- (void)setPresentationBehaviors:(unint64_t)behaviors;
+- (void)setStatusBarStyleOverridesToSuppress:(unint64_t)suppress;
 - (void)viewDidLoad;
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3;
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation RPReadyToRecordSystemApertureElementViewController
@@ -35,11 +35,11 @@
   return *(self + v3);
 }
 
-- (void)setActiveLayoutMode:(int64_t)a3
+- (void)setActiveLayoutMode:(int64_t)mode
 {
   v5 = OBJC_IVAR____TtC14ReplayKitAngel50RPReadyToRecordSystemApertureElementViewController_activeLayoutMode;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = mode;
 }
 
 - (int64_t)contentRole
@@ -49,11 +49,11 @@
   return *(self + v3);
 }
 
-- (void)setContentRole:(int64_t)a3
+- (void)setContentRole:(int64_t)role
 {
   v5 = OBJC_IVAR____TtC14ReplayKitAngel50RPReadyToRecordSystemApertureElementViewController_contentRole;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = role;
 }
 
 - (int64_t)preferredLayoutMode
@@ -63,11 +63,11 @@
   return *(self + v3);
 }
 
-- (void)setPreferredLayoutMode:(int64_t)a3
+- (void)setPreferredLayoutMode:(int64_t)mode
 {
   v5 = OBJC_IVAR____TtC14ReplayKitAngel50RPReadyToRecordSystemApertureElementViewController_preferredLayoutMode;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = mode;
 }
 
 - (int64_t)maximumLayoutMode
@@ -77,11 +77,11 @@
   return *(self + v3);
 }
 
-- (void)setMaximumLayoutMode:(int64_t)a3
+- (void)setMaximumLayoutMode:(int64_t)mode
 {
   v5 = OBJC_IVAR____TtC14ReplayKitAngel50RPReadyToRecordSystemApertureElementViewController_maximumLayoutMode;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = mode;
 }
 
 - (unint64_t)statusBarStyleOverridesToSuppress
@@ -91,11 +91,11 @@
   return *(self + v3);
 }
 
-- (void)setStatusBarStyleOverridesToSuppress:(unint64_t)a3
+- (void)setStatusBarStyleOverridesToSuppress:(unint64_t)suppress
 {
   v5 = OBJC_IVAR____TtC14ReplayKitAngel50RPReadyToRecordSystemApertureElementViewController_statusBarStyleOverridesToSuppress;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = suppress;
 }
 
 - (NSSet)backgroundActivitiesToSuppress
@@ -115,11 +115,11 @@
   return *(self + v3);
 }
 
-- (void)setPreferredHeightForBottomSafeArea:(double)a3
+- (void)setPreferredHeightForBottomSafeArea:(double)area
 {
   v5 = OBJC_IVAR____TtC14ReplayKitAngel50RPReadyToRecordSystemApertureElementViewController_preferredHeightForBottomSafeArea;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = area;
 }
 
 - (unint64_t)presentationBehaviors
@@ -129,11 +129,11 @@
   return *(self + v3);
 }
 
-- (void)setPresentationBehaviors:(unint64_t)a3
+- (void)setPresentationBehaviors:(unint64_t)behaviors
 {
   v5 = OBJC_IVAR____TtC14ReplayKitAngel50RPReadyToRecordSystemApertureElementViewController_presentationBehaviors;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = behaviors;
 }
 
 - (NSString)elementIdentifier
@@ -169,9 +169,9 @@
   return v4;
 }
 
-- (void)setAssociatedAppBundleIdentifier:(id)a3
+- (void)setAssociatedAppBundleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -214,13 +214,13 @@
   return v11;
 }
 
-- (void)setLaunchURL:(id)a3
+- (void)setLaunchURL:(id)l
 {
   v5 = sub_10000B62C(&qword_100068DF0, qword_100047E90);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v13 - v7;
-  if (a3)
+  if (l)
   {
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = type metadata accessor for URL();
@@ -235,33 +235,33 @@
 
   v11 = OBJC_IVAR____TtC14ReplayKitAngel50RPReadyToRecordSystemApertureElementViewController_launchURL;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   sub_1000298BC(v8, self + v11);
   swift_endAccess();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10003B4D4();
 }
 
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_10003C914(a3);
+  selfCopy = self;
+  sub_10003C914(coordinator);
   swift_unknownObjectRelease();
 }
 
-- (void)customViewTapped:(id)a3
+- (void)customViewTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = self;
+  tappedCopy = tapped;
+  selfCopy = self;
   sub_100040ED8();
 }
 
-- (_TtC14ReplayKitAngel50RPReadyToRecordSystemApertureElementViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14ReplayKitAngel50RPReadyToRecordSystemApertureElementViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

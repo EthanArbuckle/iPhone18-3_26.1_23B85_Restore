@@ -1,16 +1,16 @@
 @interface ICUserIdentityProperties
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToIdentityProperties:(id)a3;
-- (ICUserIdentityProperties)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToIdentityProperties:(id)properties;
+- (ICUserIdentityProperties)initWithCoder:(id)coder;
 - (NSString)carrierBundleDeviceIdentifier;
 - (NSString)firstName;
 - (NSString)iCloudPersonID;
 - (NSString)lastName;
 - (NSString)storefrontIdentifier;
 - (NSString)username;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICUserIdentityProperties
@@ -28,110 +28,110 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   alternateDSID = self->_alternateDSID;
-  v5 = a3;
-  [v5 encodeObject:alternateDSID forKey:@"altDSID"];
-  [v5 encodeObject:self->_carrierBundleDeviceIdentifier forKey:@"carrierDeviceID"];
-  [v5 encodeBool:self->_cloudBackupEnabled forKey:@"cloudBackup"];
-  [v5 encodeBool:self->_delegated forKey:@"delegated"];
-  [v5 encodeObject:self->_delegateToken forKey:@"delegateToken"];
-  [v5 encodeObject:self->_dsid forKey:@"dsid"];
-  [v5 encodeObject:self->_firstName forKey:@"firstName"];
-  [v5 encodeObject:self->_iCloudPersonID forKey:@"iCloudPersonID"];
-  [v5 encodeObject:self->_lastName forKey:@"lastName"];
-  [v5 encodeBool:self->_managedAppleID forKey:@"isManaged"];
-  [v5 encodeBool:self->_sandboxed forKey:@"sandboxed"];
-  [v5 encodeObject:self->_storefrontIdentifier forKey:@"storefront"];
-  [v5 encodeBool:self->_subscriptionStatusEnabled forKey:@"subscriptionStatusEnabled"];
-  [v5 encodeObject:self->_username forKey:@"username"];
-  [v5 encodeObject:self->_mergeToCloudLibraryPreference forKey:@"mergeToCloudLibraryPreference"];
-  [v5 encodeObject:self->_homeUserIdentifiers forKey:@"homeUserIdentifiers"];
-  [v5 encodeObject:self->_cloudLibraryStateReason forKey:@"cloudLibraryStateReason"];
-  [v5 encodeObject:self->_privateListeningEnabled forKey:@"privateListeningEnabled"];
-  [v5 encodeBool:self->_activeLocker forKey:@"activeLocker"];
-  [v5 encodeBool:self->_active forKey:@"active"];
-  [v5 encodeObject:self->_privateListeningEnabledForHomeUsers forKey:@"privateListeningEnabledForHomeUsers"];
-  [v5 encodeObject:self->_privacyAcknowledgementVersions forKey:@"privacyAcknowledgementVersions"];
-  [v5 encodeBool:self->_u18MinorAccount forKey:@"u18MinorAccount"];
+  coderCopy = coder;
+  [coderCopy encodeObject:alternateDSID forKey:@"altDSID"];
+  [coderCopy encodeObject:self->_carrierBundleDeviceIdentifier forKey:@"carrierDeviceID"];
+  [coderCopy encodeBool:self->_cloudBackupEnabled forKey:@"cloudBackup"];
+  [coderCopy encodeBool:self->_delegated forKey:@"delegated"];
+  [coderCopy encodeObject:self->_delegateToken forKey:@"delegateToken"];
+  [coderCopy encodeObject:self->_dsid forKey:@"dsid"];
+  [coderCopy encodeObject:self->_firstName forKey:@"firstName"];
+  [coderCopy encodeObject:self->_iCloudPersonID forKey:@"iCloudPersonID"];
+  [coderCopy encodeObject:self->_lastName forKey:@"lastName"];
+  [coderCopy encodeBool:self->_managedAppleID forKey:@"isManaged"];
+  [coderCopy encodeBool:self->_sandboxed forKey:@"sandboxed"];
+  [coderCopy encodeObject:self->_storefrontIdentifier forKey:@"storefront"];
+  [coderCopy encodeBool:self->_subscriptionStatusEnabled forKey:@"subscriptionStatusEnabled"];
+  [coderCopy encodeObject:self->_username forKey:@"username"];
+  [coderCopy encodeObject:self->_mergeToCloudLibraryPreference forKey:@"mergeToCloudLibraryPreference"];
+  [coderCopy encodeObject:self->_homeUserIdentifiers forKey:@"homeUserIdentifiers"];
+  [coderCopy encodeObject:self->_cloudLibraryStateReason forKey:@"cloudLibraryStateReason"];
+  [coderCopy encodeObject:self->_privateListeningEnabled forKey:@"privateListeningEnabled"];
+  [coderCopy encodeBool:self->_activeLocker forKey:@"activeLocker"];
+  [coderCopy encodeBool:self->_active forKey:@"active"];
+  [coderCopy encodeObject:self->_privateListeningEnabledForHomeUsers forKey:@"privateListeningEnabledForHomeUsers"];
+  [coderCopy encodeObject:self->_privacyAcknowledgementVersions forKey:@"privacyAcknowledgementVersions"];
+  [coderCopy encodeBool:self->_u18MinorAccount forKey:@"u18MinorAccount"];
 }
 
-- (ICUserIdentityProperties)initWithCoder:(id)a3
+- (ICUserIdentityProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v48.receiver = self;
   v48.super_class = ICUserIdentityProperties;
   v5 = [(ICUserIdentityProperties *)&v48 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"altDSID"];
     alternateDSID = v5->_alternateDSID;
     v5->_alternateDSID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"carrierDeviceID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"carrierDeviceID"];
     carrierBundleDeviceIdentifier = v5->_carrierBundleDeviceIdentifier;
     v5->_carrierBundleDeviceIdentifier = v8;
 
-    v5->_cloudBackupEnabled = [v4 decodeBoolForKey:@"cloudBackup"];
-    v5->_delegated = [v4 decodeBoolForKey:@"delegated"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"delegateToken"];
+    v5->_cloudBackupEnabled = [coderCopy decodeBoolForKey:@"cloudBackup"];
+    v5->_delegated = [coderCopy decodeBoolForKey:@"delegated"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"delegateToken"];
     delegateToken = v5->_delegateToken;
     v5->_delegateToken = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dsid"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dsid"];
     dsid = v5->_dsid;
     v5->_dsid = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firstName"];
     firstName = v5->_firstName;
     v5->_firstName = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iCloudPersonID"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iCloudPersonID"];
     iCloudPersonID = v5->_iCloudPersonID;
     v5->_iCloudPersonID = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastName"];
     lastName = v5->_lastName;
     v5->_lastName = v18;
 
-    v5->_managedAppleID = [v4 decodeBoolForKey:@"isManaged"];
-    v5->_sandboxed = [v4 decodeBoolForKey:@"sandboxed"];
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"storefront"];
+    v5->_managedAppleID = [coderCopy decodeBoolForKey:@"isManaged"];
+    v5->_sandboxed = [coderCopy decodeBoolForKey:@"sandboxed"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"storefront"];
     storefrontIdentifier = v5->_storefrontIdentifier;
     v5->_storefrontIdentifier = v20;
 
-    v5->_subscriptionStatusEnabled = [v4 decodeBoolForKey:@"subscriptionStatusEnabled"];
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"username"];
+    v5->_subscriptionStatusEnabled = [coderCopy decodeBoolForKey:@"subscriptionStatusEnabled"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"username"];
     username = v5->_username;
     v5->_username = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mergeToCloudLibraryPreference"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mergeToCloudLibraryPreference"];
     mergeToCloudLibraryPreference = v5->_mergeToCloudLibraryPreference;
     v5->_mergeToCloudLibraryPreference = v24;
 
     v26 = MEMORY[0x1E695DFD8];
     v27 = objc_opt_class();
     v28 = [v26 setWithObjects:{v27, objc_opt_class(), 0}];
-    v29 = [v4 decodeObjectOfClasses:v28 forKey:@"homeUserIdentifiers"];
+    v29 = [coderCopy decodeObjectOfClasses:v28 forKey:@"homeUserIdentifiers"];
     homeUserIdentifiers = v5->_homeUserIdentifiers;
     v5->_homeUserIdentifiers = v29;
 
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cloudLibraryStateReason"];
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cloudLibraryStateReason"];
     cloudLibraryStateReason = v5->_cloudLibraryStateReason;
     v5->_cloudLibraryStateReason = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"privateListeningEnabled"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"privateListeningEnabled"];
     privateListeningEnabled = v5->_privateListeningEnabled;
     v5->_privateListeningEnabled = v33;
 
-    v5->_activeLocker = [v4 decodeBoolForKey:@"activeLocker"];
-    v5->_active = [v4 decodeBoolForKey:@"active"];
+    v5->_activeLocker = [coderCopy decodeBoolForKey:@"activeLocker"];
+    v5->_active = [coderCopy decodeBoolForKey:@"active"];
     v35 = MEMORY[0x1E695DFD8];
     v36 = objc_opt_class();
     v37 = objc_opt_class();
     v38 = [v35 setWithObjects:{v36, v37, objc_opt_class(), 0}];
-    v39 = [v4 decodeObjectOfClasses:v38 forKey:@"privateListeningEnabledForHomeUsers"];
+    v39 = [coderCopy decodeObjectOfClasses:v38 forKey:@"privateListeningEnabledForHomeUsers"];
     privateListeningEnabledForHomeUsers = v5->_privateListeningEnabledForHomeUsers;
     v5->_privateListeningEnabledForHomeUsers = v39;
 
@@ -139,17 +139,17 @@
     v42 = objc_opt_class();
     v43 = objc_opt_class();
     v44 = [v41 setWithObjects:{v42, v43, objc_opt_class(), 0}];
-    v45 = [v4 decodeObjectOfClasses:v44 forKey:@"privacyAcknowledgementVersions"];
+    v45 = [coderCopy decodeObjectOfClasses:v44 forKey:@"privacyAcknowledgementVersions"];
     privacyAcknowledgementVersions = v5->_privacyAcknowledgementVersions;
     v5->_privacyAcknowledgementVersions = v45;
 
-    v5->_u18MinorAccount = [v4 decodeBoolForKey:@"u18MinorAccount"];
+    v5->_u18MinorAccount = [coderCopy decodeBoolForKey:@"u18MinorAccount"];
   }
 
   return v5;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
   v6 = objc_opt_class();
@@ -163,16 +163,16 @@
     v7 = v6;
   }
 
-  v8 = [objc_msgSend(v7 allocWithZone:{a3), "init"}];
+  v8 = [objc_msgSend(v7 allocWithZone:{zone), "init"}];
   if (v8)
   {
-    __CopyHelper(self, v8, a3);
+    __CopyHelper(self, v8, zone);
   }
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
   if ([v4 isSubclassOfClass:objc_opt_class()])
@@ -180,7 +180,7 @@
     v5 = [[ICUserIdentityProperties allocWithZone:?]];
     if (v5)
     {
-      __CopyHelper(self, v5, a3);
+      __CopyHelper(self, v5, zone);
     }
 
     return v5;
@@ -193,32 +193,32 @@
   }
 }
 
-- (BOOL)isEqualToIdentityProperties:(id)a3
+- (BOOL)isEqualToIdentityProperties:(id)properties
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  propertiesCopy = properties;
+  v5 = propertiesCopy;
+  if (!propertiesCopy)
   {
     goto LABEL_65;
   }
 
-  if (self == v4)
+  if (self == propertiesCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    v6 = [(ICUserIdentityProperties *)self alternateDSID];
-    v7 = [(ICUserIdentityProperties *)v5 alternateDSID];
-    v8 = v7;
-    if (v6 == v7)
+    alternateDSID = [(ICUserIdentityProperties *)self alternateDSID];
+    alternateDSID2 = [(ICUserIdentityProperties *)v5 alternateDSID];
+    v8 = alternateDSID2;
+    if (alternateDSID == alternateDSID2)
     {
     }
 
     else
     {
-      v9 = [v6 isEqual:v7];
+      v9 = [alternateDSID isEqual:alternateDSID2];
 
       if ((v9 & 1) == 0)
       {
@@ -226,16 +226,16 @@
       }
     }
 
-    v11 = [(ICUserIdentityProperties *)self carrierBundleDeviceIdentifier];
-    v12 = [(ICUserIdentityProperties *)v5 carrierBundleDeviceIdentifier];
-    v13 = v12;
-    if (v11 == v12)
+    carrierBundleDeviceIdentifier = [(ICUserIdentityProperties *)self carrierBundleDeviceIdentifier];
+    carrierBundleDeviceIdentifier2 = [(ICUserIdentityProperties *)v5 carrierBundleDeviceIdentifier];
+    v13 = carrierBundleDeviceIdentifier2;
+    if (carrierBundleDeviceIdentifier == carrierBundleDeviceIdentifier2)
     {
     }
 
     else
     {
-      v14 = [v11 isEqual:v12];
+      v14 = [carrierBundleDeviceIdentifier isEqual:carrierBundleDeviceIdentifier2];
 
       if ((v14 & 1) == 0)
       {
@@ -243,16 +243,16 @@
       }
     }
 
-    v15 = [(ICUserIdentityProperties *)self DSID];
-    v16 = [(ICUserIdentityProperties *)v5 DSID];
-    v17 = v16;
-    if (v15 == v16)
+    dSID = [(ICUserIdentityProperties *)self DSID];
+    dSID2 = [(ICUserIdentityProperties *)v5 DSID];
+    v17 = dSID2;
+    if (dSID == dSID2)
     {
     }
 
     else
     {
-      v18 = [v15 isEqual:v16];
+      v18 = [dSID isEqual:dSID2];
 
       if ((v18 & 1) == 0)
       {
@@ -260,16 +260,16 @@
       }
     }
 
-    v19 = [(ICUserIdentityProperties *)self firstName];
-    v20 = [(ICUserIdentityProperties *)v5 firstName];
-    v21 = v20;
-    if (v19 == v20)
+    firstName = [(ICUserIdentityProperties *)self firstName];
+    firstName2 = [(ICUserIdentityProperties *)v5 firstName];
+    v21 = firstName2;
+    if (firstName == firstName2)
     {
     }
 
     else
     {
-      v22 = [v19 isEqual:v20];
+      v22 = [firstName isEqual:firstName2];
 
       if ((v22 & 1) == 0)
       {
@@ -277,16 +277,16 @@
       }
     }
 
-    v23 = [(ICUserIdentityProperties *)self lastName];
-    v24 = [(ICUserIdentityProperties *)v5 lastName];
-    v25 = v24;
-    if (v23 == v24)
+    lastName = [(ICUserIdentityProperties *)self lastName];
+    lastName2 = [(ICUserIdentityProperties *)v5 lastName];
+    v25 = lastName2;
+    if (lastName == lastName2)
     {
     }
 
     else
     {
-      v26 = [v23 isEqual:v24];
+      v26 = [lastName isEqual:lastName2];
 
       if ((v26 & 1) == 0)
       {
@@ -294,28 +294,28 @@
       }
     }
 
-    v27 = [(ICUserIdentityProperties *)self isManagedAppleID];
-    if (v27 != [(ICUserIdentityProperties *)v5 isManagedAppleID])
+    isManagedAppleID = [(ICUserIdentityProperties *)self isManagedAppleID];
+    if (isManagedAppleID != [(ICUserIdentityProperties *)v5 isManagedAppleID])
     {
       goto LABEL_65;
     }
 
-    v28 = [(ICUserIdentityProperties *)self isSandboxed];
-    if (v28 != [(ICUserIdentityProperties *)v5 isSandboxed])
+    isSandboxed = [(ICUserIdentityProperties *)self isSandboxed];
+    if (isSandboxed != [(ICUserIdentityProperties *)v5 isSandboxed])
     {
       goto LABEL_65;
     }
 
-    v29 = [(ICUserIdentityProperties *)self storefrontIdentifier];
-    v30 = [(ICUserIdentityProperties *)v5 storefrontIdentifier];
-    v31 = v30;
-    if (v29 == v30)
+    storefrontIdentifier = [(ICUserIdentityProperties *)self storefrontIdentifier];
+    storefrontIdentifier2 = [(ICUserIdentityProperties *)v5 storefrontIdentifier];
+    v31 = storefrontIdentifier2;
+    if (storefrontIdentifier == storefrontIdentifier2)
     {
     }
 
     else
     {
-      v32 = [v29 isEqual:v30];
+      v32 = [storefrontIdentifier isEqual:storefrontIdentifier2];
 
       if ((v32 & 1) == 0)
       {
@@ -323,22 +323,22 @@
       }
     }
 
-    v33 = [(ICUserIdentityProperties *)self isSubscriptionStatusEnabled];
-    if (v33 != [(ICUserIdentityProperties *)v5 isSubscriptionStatusEnabled])
+    isSubscriptionStatusEnabled = [(ICUserIdentityProperties *)self isSubscriptionStatusEnabled];
+    if (isSubscriptionStatusEnabled != [(ICUserIdentityProperties *)v5 isSubscriptionStatusEnabled])
     {
       goto LABEL_65;
     }
 
-    v34 = [(ICUserIdentityProperties *)self username];
-    v35 = [(ICUserIdentityProperties *)v5 username];
-    v36 = v35;
-    if (v34 == v35)
+    username = [(ICUserIdentityProperties *)self username];
+    username2 = [(ICUserIdentityProperties *)v5 username];
+    v36 = username2;
+    if (username == username2)
     {
     }
 
     else
     {
-      v37 = [v34 isEqual:v35];
+      v37 = [username isEqual:username2];
 
       if ((v37 & 1) == 0)
       {
@@ -346,16 +346,16 @@
       }
     }
 
-    v38 = [(ICUserIdentityProperties *)self mergeToCloudLibraryPreference];
-    v39 = [(ICUserIdentityProperties *)v5 mergeToCloudLibraryPreference];
-    v40 = v39;
-    if (v38 == v39)
+    mergeToCloudLibraryPreference = [(ICUserIdentityProperties *)self mergeToCloudLibraryPreference];
+    mergeToCloudLibraryPreference2 = [(ICUserIdentityProperties *)v5 mergeToCloudLibraryPreference];
+    v40 = mergeToCloudLibraryPreference2;
+    if (mergeToCloudLibraryPreference == mergeToCloudLibraryPreference2)
     {
     }
 
     else
     {
-      v41 = [v38 isEqual:v39];
+      v41 = [mergeToCloudLibraryPreference isEqual:mergeToCloudLibraryPreference2];
 
       if ((v41 & 1) == 0)
       {
@@ -363,16 +363,16 @@
       }
     }
 
-    v42 = [(ICUserIdentityProperties *)self homeUserIdentifiers];
-    v43 = [(ICUserIdentityProperties *)v5 homeUserIdentifiers];
-    v44 = v43;
-    if (v42 == v43)
+    homeUserIdentifiers = [(ICUserIdentityProperties *)self homeUserIdentifiers];
+    homeUserIdentifiers2 = [(ICUserIdentityProperties *)v5 homeUserIdentifiers];
+    v44 = homeUserIdentifiers2;
+    if (homeUserIdentifiers == homeUserIdentifiers2)
     {
     }
 
     else
     {
-      v45 = [v42 isEqual:v43];
+      v45 = [homeUserIdentifiers isEqual:homeUserIdentifiers2];
 
       if ((v45 & 1) == 0)
       {
@@ -380,16 +380,16 @@
       }
     }
 
-    v46 = [(ICUserIdentityProperties *)self cloudLibraryStateReason];
-    v47 = [(ICUserIdentityProperties *)v5 cloudLibraryStateReason];
-    v48 = v47;
-    if (v46 == v47)
+    cloudLibraryStateReason = [(ICUserIdentityProperties *)self cloudLibraryStateReason];
+    cloudLibraryStateReason2 = [(ICUserIdentityProperties *)v5 cloudLibraryStateReason];
+    v48 = cloudLibraryStateReason2;
+    if (cloudLibraryStateReason == cloudLibraryStateReason2)
     {
     }
 
     else
     {
-      v49 = [v46 isEqual:v47];
+      v49 = [cloudLibraryStateReason isEqual:cloudLibraryStateReason2];
 
       if ((v49 & 1) == 0)
       {
@@ -397,16 +397,16 @@
       }
     }
 
-    v50 = [(ICUserIdentityProperties *)self privateListeningEnabled];
-    v51 = [(ICUserIdentityProperties *)v5 privateListeningEnabled];
-    v52 = v51;
-    if (v50 == v51)
+    privateListeningEnabled = [(ICUserIdentityProperties *)self privateListeningEnabled];
+    privateListeningEnabled2 = [(ICUserIdentityProperties *)v5 privateListeningEnabled];
+    v52 = privateListeningEnabled2;
+    if (privateListeningEnabled == privateListeningEnabled2)
     {
     }
 
     else
     {
-      v53 = [v50 isEqual:v51];
+      v53 = [privateListeningEnabled isEqual:privateListeningEnabled2];
 
       if ((v53 & 1) == 0)
       {
@@ -414,28 +414,28 @@
       }
     }
 
-    v54 = [(ICUserIdentityProperties *)self isActiveLocker];
-    if (v54 != [(ICUserIdentityProperties *)v5 isActiveLocker])
+    isActiveLocker = [(ICUserIdentityProperties *)self isActiveLocker];
+    if (isActiveLocker != [(ICUserIdentityProperties *)v5 isActiveLocker])
     {
       goto LABEL_65;
     }
 
-    v55 = [(ICUserIdentityProperties *)self isActive];
-    if (v55 != [(ICUserIdentityProperties *)v5 isActive])
+    isActive = [(ICUserIdentityProperties *)self isActive];
+    if (isActive != [(ICUserIdentityProperties *)v5 isActive])
     {
       goto LABEL_65;
     }
 
-    v56 = [(ICUserIdentityProperties *)self privateListeningEnabledForHomeUsers];
-    v57 = [(ICUserIdentityProperties *)v5 privateListeningEnabledForHomeUsers];
-    v58 = v57;
-    if (v56 == v57)
+    privateListeningEnabledForHomeUsers = [(ICUserIdentityProperties *)self privateListeningEnabledForHomeUsers];
+    privateListeningEnabledForHomeUsers2 = [(ICUserIdentityProperties *)v5 privateListeningEnabledForHomeUsers];
+    v58 = privateListeningEnabledForHomeUsers2;
+    if (privateListeningEnabledForHomeUsers == privateListeningEnabledForHomeUsers2)
     {
     }
 
     else
     {
-      v59 = [v56 isEqual:v57];
+      v59 = [privateListeningEnabledForHomeUsers isEqual:privateListeningEnabledForHomeUsers2];
 
       if ((v59 & 1) == 0)
       {
@@ -443,22 +443,22 @@
       }
     }
 
-    v60 = [(ICUserIdentityProperties *)self isCloudBackupEnabled];
-    if (v60 != [(ICUserIdentityProperties *)v5 isCloudBackupEnabled])
+    isCloudBackupEnabled = [(ICUserIdentityProperties *)self isCloudBackupEnabled];
+    if (isCloudBackupEnabled != [(ICUserIdentityProperties *)v5 isCloudBackupEnabled])
     {
       goto LABEL_65;
     }
 
-    v61 = [(ICUserIdentityProperties *)self iCloudPersonID];
-    v62 = [(ICUserIdentityProperties *)v5 iCloudPersonID];
-    v63 = v62;
-    if (v61 == v62)
+    iCloudPersonID = [(ICUserIdentityProperties *)self iCloudPersonID];
+    iCloudPersonID2 = [(ICUserIdentityProperties *)v5 iCloudPersonID];
+    v63 = iCloudPersonID2;
+    if (iCloudPersonID == iCloudPersonID2)
     {
     }
 
     else
     {
-      v64 = [v61 isEqual:v62];
+      v64 = [iCloudPersonID isEqual:iCloudPersonID2];
 
       if ((v64 & 1) == 0)
       {
@@ -466,24 +466,24 @@
       }
     }
 
-    v65 = [(ICUserIdentityProperties *)self isDelegated];
-    if (v65 != [(ICUserIdentityProperties *)v5 isDelegated])
+    isDelegated = [(ICUserIdentityProperties *)self isDelegated];
+    if (isDelegated != [(ICUserIdentityProperties *)v5 isDelegated])
     {
 LABEL_65:
       v10 = 0;
       goto LABEL_66;
     }
 
-    v66 = [(ICUserIdentityProperties *)self delegateToken];
-    v67 = [(ICUserIdentityProperties *)v5 delegateToken];
-    v68 = v67;
-    if (v66 == v67)
+    delegateToken = [(ICUserIdentityProperties *)self delegateToken];
+    delegateToken2 = [(ICUserIdentityProperties *)v5 delegateToken];
+    v68 = delegateToken2;
+    if (delegateToken == delegateToken2)
     {
     }
 
     else
     {
-      v69 = [v66 isEqual:v67];
+      v69 = [delegateToken isEqual:delegateToken2];
 
       if ((v69 & 1) == 0)
       {
@@ -491,16 +491,16 @@ LABEL_65:
       }
     }
 
-    v71 = [(ICUserIdentityProperties *)self privacyAcknowledgementVersions];
-    v72 = [(ICUserIdentityProperties *)v5 privacyAcknowledgementVersions];
-    if (v71 == v72)
+    privacyAcknowledgementVersions = [(ICUserIdentityProperties *)self privacyAcknowledgementVersions];
+    privacyAcknowledgementVersions2 = [(ICUserIdentityProperties *)v5 privacyAcknowledgementVersions];
+    if (privacyAcknowledgementVersions == privacyAcknowledgementVersions2)
     {
       v10 = 1;
     }
 
     else
     {
-      v10 = [v71 isEqual:v72];
+      v10 = [privacyAcknowledgementVersions isEqual:privacyAcknowledgementVersions2];
     }
   }
 
@@ -509,10 +509,10 @@ LABEL_66:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -520,7 +520,7 @@ LABEL_66:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ICUserIdentityProperties *)self isEqualToIdentityProperties:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(ICUserIdentityProperties *)self isEqualToIdentityProperties:equalCopy];
   }
 
   return v5;

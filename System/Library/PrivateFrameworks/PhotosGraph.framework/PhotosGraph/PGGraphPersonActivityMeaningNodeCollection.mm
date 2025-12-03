@@ -1,11 +1,11 @@
 @interface PGGraphPersonActivityMeaningNodeCollection
-+ (id)personActivityMeaningNodesForActivityLabel:(id)a3 inGraph:(id)a4;
-+ (id)personActivityMeaningNodesForActivityLabel:(id)a3 personLocalIdentifiers:(id)a4 inGraph:(id)a5;
-+ (id)personActivityMeaningNodesForActivityLabels:(id)a3 inGraph:(id)a4;
++ (id)personActivityMeaningNodesForActivityLabel:(id)label inGraph:(id)graph;
++ (id)personActivityMeaningNodesForActivityLabel:(id)label personLocalIdentifiers:(id)identifiers inGraph:(id)graph;
++ (id)personActivityMeaningNodesForActivityLabels:(id)labels inGraph:(id)graph;
 - (PGGraphMomentNodeCollection)momentNodes;
 - (PGGraphPersonNodeCollection)personNodes;
 - (id)personLocalIdentifiers;
-- (id)subsetWithActivityLabels:(id)a3;
+- (id)subsetWithActivityLabels:(id)labels;
 @end
 
 @implementation PGGraphPersonActivityMeaningNodeCollection
@@ -46,46 +46,46 @@
   return v3;
 }
 
-- (id)subsetWithActivityLabels:(id)a3
+- (id)subsetWithActivityLabels:(id)labels
 {
-  v4 = [PGGraphPersonActivityMeaningNode filterWithActivityLabels:a3];
-  v5 = [v4 relation];
-  v6 = [(MANodeCollection *)PGGraphPersonActivityMeaningNodeCollection nodesRelatedToNodes:self withRelation:v5];
+  v4 = [PGGraphPersonActivityMeaningNode filterWithActivityLabels:labels];
+  relation = [v4 relation];
+  v6 = [(MANodeCollection *)PGGraphPersonActivityMeaningNodeCollection nodesRelatedToNodes:self withRelation:relation];
 
   return v6;
 }
 
-+ (id)personActivityMeaningNodesForActivityLabels:(id)a3 inGraph:(id)a4
++ (id)personActivityMeaningNodesForActivityLabels:(id)labels inGraph:(id)graph
 {
   v5 = MEMORY[0x277D22C78];
-  v6 = a4;
-  v7 = a3;
+  graphCopy = graph;
+  labelsCopy = labels;
   v8 = [v5 alloc];
-  v9 = [v8 initWithLabels:v7 domain:701 properties:MEMORY[0x277CBEC10]];
+  v9 = [v8 initWithLabels:labelsCopy domain:701 properties:MEMORY[0x277CBEC10]];
 
-  v10 = [(MANodeCollection *)PGGraphPersonActivityMeaningNodeCollection nodesMatchingFilter:v9 inGraph:v6];
+  v10 = [(MANodeCollection *)PGGraphPersonActivityMeaningNodeCollection nodesMatchingFilter:v9 inGraph:graphCopy];
 
   return v10;
 }
 
-+ (id)personActivityMeaningNodesForActivityLabel:(id)a3 inGraph:(id)a4
++ (id)personActivityMeaningNodesForActivityLabel:(id)label inGraph:(id)graph
 {
   v5 = MEMORY[0x277D22C78];
-  v6 = a4;
-  v7 = a3;
+  graphCopy = graph;
+  labelCopy = label;
   v8 = [v5 alloc];
-  v9 = [v8 initWithLabel:v7 domain:701 properties:MEMORY[0x277CBEC10]];
+  v9 = [v8 initWithLabel:labelCopy domain:701 properties:MEMORY[0x277CBEC10]];
 
-  v10 = [(MANodeCollection *)PGGraphPersonActivityMeaningNodeCollection nodesMatchingFilter:v9 inGraph:v6];
+  v10 = [(MANodeCollection *)PGGraphPersonActivityMeaningNodeCollection nodesMatchingFilter:v9 inGraph:graphCopy];
 
   return v10;
 }
 
-+ (id)personActivityMeaningNodesForActivityLabel:(id)a3 personLocalIdentifiers:(id)a4 inGraph:(id)a5
++ (id)personActivityMeaningNodesForActivityLabel:(id)label personLocalIdentifiers:(id)identifiers inGraph:(id)graph
 {
-  v7 = a5;
-  v8 = [PGGraphPersonActivityMeaningNode filterWithPersonLocalIdentifiers:a4 label:a3];
-  v9 = [(MANodeCollection *)PGGraphPersonActivityMeaningNodeCollection nodesMatchingFilter:v8 inGraph:v7];
+  graphCopy = graph;
+  v8 = [PGGraphPersonActivityMeaningNode filterWithPersonLocalIdentifiers:identifiers label:label];
+  v9 = [(MANodeCollection *)PGGraphPersonActivityMeaningNodeCollection nodesMatchingFilter:v8 inGraph:graphCopy];
 
   return v9;
 }

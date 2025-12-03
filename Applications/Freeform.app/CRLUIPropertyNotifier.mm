@@ -1,11 +1,11 @@
 @interface CRLUIPropertyNotifier
 - (_TtC8Freeform21CRLUIPropertyNotifier)init;
-- (_TtC8Freeform21CRLUIPropertyNotifier)initWithParent:(id)a3;
+- (_TtC8Freeform21CRLUIPropertyNotifier)initWithParent:(id)parent;
 @end
 
 @implementation CRLUIPropertyNotifier
 
-- (_TtC8Freeform21CRLUIPropertyNotifier)initWithParent:(id)a3
+- (_TtC8Freeform21CRLUIPropertyNotifier)initWithParent:(id)parent
 {
   ObjectType = swift_getObjectType();
   *(&self->super.isa + OBJC_IVAR____TtC8Freeform21CRLUIPropertyNotifier_propertyStateUpdateCount) = 0;

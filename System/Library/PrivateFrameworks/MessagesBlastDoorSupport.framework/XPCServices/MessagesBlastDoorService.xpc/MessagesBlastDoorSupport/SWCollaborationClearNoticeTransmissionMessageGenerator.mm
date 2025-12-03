@@ -1,12 +1,12 @@
 @interface SWCollaborationClearNoticeTransmissionMessageGenerator
-+ (id)initWithData:(id)a3;
++ (id)initWithData:(id)data;
 @end
 
 @implementation SWCollaborationClearNoticeTransmissionMessageGenerator
 
-+ (id)initWithData:(id)a3
++ (id)initWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2050000000;
@@ -25,7 +25,7 @@
 
   v5 = v4;
   _Block_object_dispose(&v9, 8);
-  v6 = [[v4 alloc] initWithData:v3];
+  v6 = [[v4 alloc] initWithData:dataCopy];
 
   return v6;
 }

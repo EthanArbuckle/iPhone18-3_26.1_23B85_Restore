@@ -1,16 +1,16 @@
 @interface SCNDisplayLink
 - (BOOL)isPaused;
-- (BOOL)setPaused:(BOOL)a3 nextFrameTimeHint:(double)a4 lastUpdate:(double)a5;
-- (SCNDisplayLink)initWithQueue:(id)a3 screen:(id)a4 policy:(unint64_t)a5 block:(id)a6;
+- (BOOL)setPaused:(BOOL)paused nextFrameTimeHint:(double)hint lastUpdate:(double)update;
+- (SCNDisplayLink)initWithQueue:(id)queue screen:(id)screen policy:(unint64_t)policy block:(id)block;
 - (void)_caDisplayLinkCallback;
-- (void)_callbackWithTime:(double)a3;
+- (void)_callbackWithTime:(double)time;
 - (void)_displayLinkCallbackReturningImmediately;
-- (void)_displayLinkCallbackWaitingOnFrameCompletionWithTime:(uint64_t)a1;
+- (void)_displayLinkCallbackWaitingOnFrameCompletionWithTime:(uint64_t)time;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setAdaptativeFrameRate:(id)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)setPreferredFrameRate:(float)a3;
+- (void)setAdaptativeFrameRate:(id)rate;
+- (void)setPaused:(BOOL)paused;
+- (void)setPreferredFrameRate:(float)rate;
 @end
 
 @implementation SCNDisplayLink
@@ -23,7 +23,7 @@
   return paused;
 }
 
-- (SCNDisplayLink)initWithQueue:(id)a3 screen:(id)a4 policy:(unint64_t)a5 block:(id)a6
+- (SCNDisplayLink)initWithQueue:(id)queue screen:(id)screen policy:(unint64_t)policy block:(id)block
 {
   v21.receiver = self;
   v21.super_class = SCNDisplayLink;
@@ -33,29 +33,29 @@
   {
     v10->_preferredFrameRate = 0.0;
     v10->_paused = 1;
-    v10->_queue = a3;
-    dispatch_retain(a3);
+    v10->_queue = queue;
+    dispatch_retain(queue);
     atomic_store(0, &v11->_queuedFrameCount);
-    v11->_block = [a6 copy];
+    v11->_block = [block copy];
     v11->_lastFrameTime = 0.0;
     v11->_runningLock = objc_alloc_init(SCNRecursiveLock);
-    if (a4)
+    if (screen)
     {
-      v12 = a4;
+      screenCopy = screen;
     }
 
     else
     {
-      v12 = MEMORY[0x277CD9E48];
+      screenCopy = MEMORY[0x277CD9E48];
     }
 
-    v13 = [v12 displayLinkWithTarget:v11 selector:sel__caDisplayLinkCallback];
+    v13 = [screenCopy displayLinkWithTarget:v11 selector:sel__caDisplayLinkCallback];
     v11->_caDisplayLink = v13;
     [(CADisplayLink *)v13 setPaused:1];
     caDisplayLink = v11->_caDisplayLink;
-    v15 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [(CADisplayLink *)caDisplayLink addToRunLoop:v15 forMode:*MEMORY[0x277CBE738]];
-    if (a5 == 1)
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [(CADisplayLink *)caDisplayLink addToRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE738]];
+    if (policy == 1)
     {
       v11->_coalescingSource = dispatch_source_create(MEMORY[0x277D85CE0], 0, 0, v11->_queue);
       objc_initWeak(&location, v11);
@@ -111,37 +111,37 @@ void __52__SCNDisplayLink_initWithQueue_screen_policy_block___block_invoke(uint6
   [(SCNDisplayLink *)&v5 dealloc];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   objc_sync_enter(self);
-  if ([(SCNDisplayLink *)self isPaused]!= v3)
+  if ([(SCNDisplayLink *)self isPaused]!= pausedCopy)
   {
-    self->_paused = v3;
-    if (v3)
+    self->_paused = pausedCopy;
+    if (pausedCopy)
     {
       self->_lastFrameTime = 0.0;
     }
 
-    [(CADisplayLink *)self->_caDisplayLink setPaused:v3];
+    [(CADisplayLink *)self->_caDisplayLink setPaused:pausedCopy];
   }
 
   objc_sync_exit(self);
 }
 
-- (BOOL)setPaused:(BOOL)a3 nextFrameTimeHint:(double)a4 lastUpdate:(double)a5
+- (BOOL)setPaused:(BOOL)paused nextFrameTimeHint:(double)hint lastUpdate:(double)update
 {
-  v7 = a3;
+  pausedCopy = paused;
   v9 = CACurrentMediaTime();
-  v10 = v9 - a5 > 0.25 && a4 - v9 > 0.25;
-  v11 = v7 && v10;
+  v10 = v9 - update > 0.25 && hint - v9 > 0.25;
+  v11 = pausedCopy && v10;
   if (v11 == 1)
   {
     [(SCNDisplayLink *)self setPaused:1];
-    if (a4 != INFINITY)
+    if (hint != INFINITY)
     {
       v12 = CACurrentMediaTime();
-      v13 = dispatch_time(0, ((a4 - v12 + -0.01) * 1000000000.0));
+      v13 = dispatch_time(0, ((hint - v12 + -0.01) * 1000000000.0));
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __57__SCNDisplayLink_setPaused_nextFrameTimeHint_lastUpdate___block_invoke;
@@ -172,31 +172,31 @@ uint64_t __57__SCNDisplayLink_setPaused_nextFrameTimeHint_lastUpdate___block_inv
   return result;
 }
 
-- (void)setAdaptativeFrameRate:(id)a3
+- (void)setAdaptativeFrameRate:(id)rate
 {
   adaptativeFrameDuration = self->_adaptativeFrameDuration;
-  if (adaptativeFrameDuration != a3)
+  if (adaptativeFrameDuration != rate)
   {
 
-    self->_adaptativeFrameDuration = [a3 copy];
+    self->_adaptativeFrameDuration = [rate copy];
   }
 }
 
-- (void)setPreferredFrameRate:(float)a3
+- (void)setPreferredFrameRate:(float)rate
 {
-  if (self->_preferredFrameRate != a3)
+  if (self->_preferredFrameRate != rate)
   {
-    self->_preferredFrameRate = a3;
-    [(CADisplayLink *)self->_caDisplayLink setPreferredFramesPerSecond:a3];
+    self->_preferredFrameRate = rate;
+    [(CADisplayLink *)self->_caDisplayLink setPreferredFramesPerSecond:rate];
   }
 }
 
-- (void)_callbackWithTime:(double)a3
+- (void)_callbackWithTime:(double)time
 {
   if (self->_coalescingSource)
   {
     kdebug_trace();
-    atomic_store(*&a3, &self->_lastDisplayLinkTime);
+    atomic_store(*&time, &self->_lastDisplayLinkTime);
     coalescingSource = self->_coalescingSource;
 
     dispatch_source_merge_data(coalescingSource, 1uLL);
@@ -205,7 +205,7 @@ uint64_t __57__SCNDisplayLink_setPaused_nextFrameTimeHint_lastUpdate___block_inv
   else
   {
 
-    [(SCNDisplayLink *)self _displayLinkCallbackWaitingOnFrameCompletionWithTime:a3];
+    [(SCNDisplayLink *)self _displayLinkCallbackWaitingOnFrameCompletionWithTime:time];
   }
 }
 
@@ -247,19 +247,19 @@ uint64_t __71__SCNDisplayLink__displayLinkCallbackWaitingOnFrameCompletionWithTi
 
 - (void)_displayLinkCallbackReturningImmediately
 {
-  if (a1 && ([a1 isPaused] & 1) == 0 && (objc_msgSend(a1, "_isInvalidated") & 1) == 0)
+  if (self && ([self isPaused] & 1) == 0 && (objc_msgSend(self, "_isInvalidated") & 1) == 0)
   {
     OUTLINED_FUNCTION_0_12();
     if (v3 != v4)
     {
       v5 = objc_autoreleasePoolPush();
-      if (([a1 isPaused] & 1) == 0 && (*(a1 + 57) & 1) == 0)
+      if (([self isPaused] & 1) == 0 && (*(self + 57) & 1) == 0)
       {
-        v6 = COERCE_DOUBLE(atomic_load((a1 + 16)));
-        (*(*(a1 + 32) + 16))(v6);
+        v6 = COERCE_DOUBLE(atomic_load((self + 16)));
+        (*(*(self + 32) + 16))(v6);
       }
 
-      atomic_fetch_add((a1 + 88), 0xFFFFFFFF);
+      atomic_fetch_add((self + 88), 0xFFFFFFFF);
 
       objc_autoreleasePoolPop(v5);
     }
@@ -271,25 +271,25 @@ uint64_t __71__SCNDisplayLink__displayLinkCallbackWaitingOnFrameCompletionWithTi
   }
 }
 
-- (void)_displayLinkCallbackWaitingOnFrameCompletionWithTime:(uint64_t)a1
+- (void)_displayLinkCallbackWaitingOnFrameCompletionWithTime:(uint64_t)time
 {
-  if (a1)
+  if (time)
   {
-    v4 = a1;
-    [*(a1 + 80) lock];
+    timeCopy = time;
+    [*(time + 80) lock];
     kdebug_trace();
-    if (([a1 isPaused] & 1) == 0 && (objc_msgSend(a1, "_isInvalidated") & 1) == 0)
+    if (([time isPaused] & 1) == 0 && (objc_msgSend(time, "_isInvalidated") & 1) == 0)
     {
       OUTLINED_FUNCTION_0_12();
       if (v6 != v7)
       {
         v8 = objc_autoreleasePoolPush();
-        v9 = *(a1 + 48);
+        v9 = *(time + 48);
         v10[0] = MEMORY[0x277D85DD0];
         v10[1] = 3221225472;
         v10[2] = __71__SCNDisplayLink__displayLinkCallbackWaitingOnFrameCompletionWithTime___block_invoke;
         v10[3] = &unk_2782FFC18;
-        v10[4] = a1;
+        v10[4] = time;
         *&v10[5] = a2;
         dispatch_sync(v9, v10);
         objc_autoreleasePoolPop(v8);
@@ -301,7 +301,7 @@ uint64_t __71__SCNDisplayLink__displayLinkCallbackWaitingOnFrameCompletionWithTi
       }
     }
 
-    [*(a1 + 80) unlock];
+    [*(time + 80) unlock];
   }
 }
 

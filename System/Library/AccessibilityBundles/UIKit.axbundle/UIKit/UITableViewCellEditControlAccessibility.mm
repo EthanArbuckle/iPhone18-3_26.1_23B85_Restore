@@ -1,5 +1,5 @@
 @interface UITableViewCellEditControlAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityElementsHidden;
 - (BOOL)canBecomeFocused;
 - (BOOL)isAccessibilityElement;
@@ -13,14 +13,14 @@
 
 @implementation UITableViewCellEditControlAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = @"UITableViewCellEditControl";
   [location[0] validateClass:? isKindOfClass:?];
   [location[0] validateClass:@"UITableViewCellEditControl" hasInstanceMethod:@"isRotated" withFullSignature:{"B", 0}];
@@ -41,36 +41,36 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
-  v9 = [(UITableViewCellEditControlAccessibility *)self isAccessibilityUserDefinedElement];
-  *&v2 = MEMORY[0x29EDC9740](v9).n128_u64[0];
-  if (v9)
+  isAccessibilityUserDefinedElement = [(UITableViewCellEditControlAccessibility *)self isAccessibilityUserDefinedElement];
+  *&v2 = MEMORY[0x29EDC9740](isAccessibilityUserDefinedElement).n128_u64[0];
+  if (isAccessibilityUserDefinedElement)
   {
-    v8 = [(UITableViewCellEditControlAccessibility *)v12 isAccessibilityUserDefinedElement];
-    v13 = [v8 BOOLValue] & 1;
-    MEMORY[0x29EDC9740](v8);
+    isAccessibilityUserDefinedElement2 = [(UITableViewCellEditControlAccessibility *)selfCopy isAccessibilityUserDefinedElement];
+    v13 = [isAccessibilityUserDefinedElement2 BOOLValue] & 1;
+    MEMORY[0x29EDC9740](isAccessibilityUserDefinedElement2);
   }
 
   else
   {
-    location[0] = [(UITableViewCellEditControlAccessibility *)v12 _accessibilityViewAncestorIsKindOf:objc_opt_class()];
+    location[0] = [(UITableViewCellEditControlAccessibility *)selfCopy _accessibilityViewAncestorIsKindOf:objc_opt_class()];
     v6 = [location[0] safeValueForKey:@"editingStyle"];
-    v7 = [v6 intValue];
+    intValue = [v6 intValue];
     MEMORY[0x29EDC9740](v6);
     v10 = AXRequestingClient();
     if (v10 == 3 || v10 == 4)
     {
-      v13 = (v7 - 1) > 2;
+      v13 = (intValue - 1) > 2;
     }
 
     else
     {
       v5 = 1;
-      if (v7 != 3)
+      if (intValue != 3)
       {
         v4 = 0;
-        if (v7 == 2)
+        if (intValue == 2)
         {
           v4 = [location[0] _accessibilityBoolValueForKey:@"accessibilityShouldNotBeAnElementIfInsertEditStyle"];
         }
@@ -89,26 +89,26 @@
 
 - (id)accessibilityValue
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UITableViewCellEditControlAccessibility *)self _accessibilityViewAncestorIsKindOf:objc_opt_class()];
   v8 = [location[0] safeValueForKey:@"editingStyle"];
-  v9 = [v8 intValue];
+  intValue = [v8 intValue];
   *&v2 = MEMORY[0x29EDC9740](v8).n128_u64[0];
-  v14 = v9;
-  if (v9 == 3)
+  v14 = intValue;
+  if (intValue == 3)
   {
-    v6 = [(UITableViewCellEditControlAccessibility *)v16 safeValueForKey:@"isHighlighted", v2];
+    v6 = [(UITableViewCellEditControlAccessibility *)selfCopy safeValueForKey:@"isHighlighted", v2];
     v12 = 0;
-    v7 = 1;
+    bOOLValue = 1;
     if (([v6 BOOLValue] & 1) == 0)
     {
-      v13 = [(UITableViewCellEditControlAccessibility *)v16 safeValueForKey:@"isSelected"];
+      v13 = [(UITableViewCellEditControlAccessibility *)selfCopy safeValueForKey:@"isSelected"];
       v12 = 1;
-      v7 = [v13 BOOLValue];
+      bOOLValue = [v13 BOOLValue];
     }
 
-    if (v7)
+    if (bOOLValue)
     {
       v3 = @"1";
     }
@@ -118,7 +118,7 @@
       v3 = @"0";
     }
 
-    v17 = MEMORY[0x29EDC9748](v3);
+    accessibilityValue = MEMORY[0x29EDC9748](v3);
     if (v12)
     {
       MEMORY[0x29EDC9740](v13);
@@ -130,32 +130,32 @@
 
   else
   {
-    v10.receiver = v16;
+    v10.receiver = selfCopy;
     v10.super_class = UITableViewCellEditControlAccessibility;
-    v17 = [(UITableViewCellEditControlAccessibility *)&v10 accessibilityValue];
+    accessibilityValue = [(UITableViewCellEditControlAccessibility *)&v10 accessibilityValue];
     v11 = 1;
   }
 
   objc_storeStrong(location, 0);
-  v4 = v17;
+  v4 = accessibilityValue;
 
   return v4;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   v11.receiver = self;
   v11.super_class = UITableViewCellEditControlAccessibility;
   v12 = [(UITableViewCellEditControlAccessibility *)&v11 accessibilityTraits]| *MEMORY[0x29EDC7F70];
-  location = [(UITableViewCellEditControlAccessibility *)v14 _accessibilityViewAncestorIsKindOf:objc_opt_class()];
+  location = [(UITableViewCellEditControlAccessibility *)selfCopy _accessibilityViewAncestorIsKindOf:objc_opt_class()];
   v6 = [location safeValueForKey:@"editingStyle"];
-  v7 = [v6 intValue];
+  intValue = [v6 intValue];
   *&v2 = MEMORY[0x29EDC9740](v6).n128_u64[0];
-  if (v7)
+  if (intValue)
   {
-    if (v7 == 1)
+    if (intValue == 1)
     {
       if (!_UIAccessibilityClientServedInternalControls())
       {
@@ -163,18 +163,18 @@
       }
     }
 
-    else if (v7 == 3)
+    else if (intValue == 3)
     {
       v12 |= *MEMORY[0x29EDC7FE8];
     }
   }
 
   v8 = 0;
-  if (v7 == 3 || (v5 = 0, !v7))
+  if (intValue == 3 || (bOOLValue = 0, !intValue))
   {
-    v9 = [(UITableViewCellEditControlAccessibility *)v14 safeValueForKey:@"isEnabled", v2];
+    v9 = [(UITableViewCellEditControlAccessibility *)selfCopy safeValueForKey:@"isEnabled", v2];
     v8 = 1;
-    v5 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
   }
 
   if (v8)
@@ -182,7 +182,7 @@
     MEMORY[0x29EDC9740](v9);
   }
 
-  if (v5)
+  if (bOOLValue)
   {
     v12 &= ~*MEMORY[0x29EDC7FA8];
   }
@@ -194,39 +194,39 @@
 
 - (id)accessibilityLabel
 {
-  v21 = self;
+  selfCopy = self;
   v20[1] = a2;
-  v14 = [(UITableViewCellEditControlAccessibility *)self accessibilityUserDefinedLabel];
-  *&v2 = MEMORY[0x29EDC9740](v14).n128_u64[0];
-  if (v14)
+  accessibilityUserDefinedLabel = [(UITableViewCellEditControlAccessibility *)self accessibilityUserDefinedLabel];
+  *&v2 = MEMORY[0x29EDC9740](accessibilityUserDefinedLabel).n128_u64[0];
+  if (accessibilityUserDefinedLabel)
   {
-    v22 = [(UITableViewCellEditControlAccessibility *)v21 accessibilityUserDefinedLabel];
+    accessibilityUserDefinedLabel2 = [(UITableViewCellEditControlAccessibility *)selfCopy accessibilityUserDefinedLabel];
   }
 
   else
   {
-    v20[0] = [(UITableViewCellEditControlAccessibility *)v21 _accessibilityViewAncestorIsKindOf:objc_opt_class()];
+    v20[0] = [(UITableViewCellEditControlAccessibility *)selfCopy _accessibilityViewAncestorIsKindOf:objc_opt_class()];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v12 = [v20[0] safeValueForKey:@"editingStyle"];
-      v13 = [v12 integerValue];
+      integerValue = [v12 integerValue];
       *&v3 = MEMORY[0x29EDC9740](v12).n128_u64[0];
-      v18 = v13;
-      if (v13 == 1)
+      v18 = integerValue;
+      if (integerValue == 1)
       {
         location = [v20[0] safeValueForKey:{@"_accessibilityTextElementText", v3}];
         if ([location length])
         {
           v10 = MEMORY[0x29EDBA0F8];
           v11 = accessibilityLocalizedString(@"remove.control.text.with.label");
-          v22 = [v10 stringWithFormat:location];
+          accessibilityUserDefinedLabel2 = [v10 stringWithFormat:location];
           MEMORY[0x29EDC9740](v11);
         }
 
         else
         {
-          v22 = accessibilityLocalizedString(@"remove.control.text");
+          accessibilityUserDefinedLabel2 = accessibilityLocalizedString(@"remove.control.text");
         }
 
         v19 = 1;
@@ -240,13 +240,13 @@
         {
           v8 = MEMORY[0x29EDBA0F8];
           v9 = accessibilityLocalizedString(@"insert.control.text.with.label");
-          v22 = [v8 stringWithFormat:v16];
+          accessibilityUserDefinedLabel2 = [v8 stringWithFormat:v16];
           MEMORY[0x29EDC9740](v9);
         }
 
         else
         {
-          v22 = accessibilityLocalizedString(@"insert.control.text");
+          accessibilityUserDefinedLabel2 = accessibilityLocalizedString(@"insert.control.text");
         }
 
         v19 = 1;
@@ -260,13 +260,13 @@
         {
           v6 = MEMORY[0x29EDBA0F8];
           v7 = accessibilityLocalizedString(@"select.control.text.with.label");
-          v22 = [v6 stringWithFormat:v15];
+          accessibilityUserDefinedLabel2 = [v6 stringWithFormat:v15];
           MEMORY[0x29EDC9740](v7);
         }
 
         else
         {
-          v22 = accessibilityLocalizedString(@"select.control.text");
+          accessibilityUserDefinedLabel2 = accessibilityLocalizedString(@"select.control.text");
         }
 
         v19 = 1;
@@ -275,21 +275,21 @@
 
       else
       {
-        v22 = 0;
+        accessibilityUserDefinedLabel2 = 0;
         v19 = 1;
       }
     }
 
     else
     {
-      v22 = 0;
+      accessibilityUserDefinedLabel2 = 0;
       v19 = 1;
     }
 
     objc_storeStrong(v20, 0);
   }
 
-  v4 = v22;
+  v4 = accessibilityUserDefinedLabel2;
 
   return v4;
 }
@@ -303,9 +303,9 @@
   if (objc_opt_isKindOfClass())
   {
     v4 = [location[0] safeValueForKey:@"editingStyle"];
-    v5 = [v4 integerValue];
+    integerValue = [v4 integerValue];
     MEMORY[0x29EDC9740](v4);
-    if (v5 == 1)
+    if (integerValue == 1)
     {
       v7 = accessibilityLocalizedString(@"remove.control.hint");
     }
@@ -329,13 +329,13 @@
 
 - (BOOL)canBecomeFocused
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v5 = 0;
   v3 = 0;
   if (([(UITableViewCellEditControlAccessibility *)self _accessibilityIsFKARunningForFocusItem]& 1) != 0)
   {
-    v6 = [(UITableViewCellEditControlAccessibility *)v8 safeValueForKey:@"_currentImage"];
+    v6 = [(UITableViewCellEditControlAccessibility *)selfCopy safeValueForKey:@"_currentImage"];
     v5 = 1;
     v3 = v6 == 0;
   }
@@ -350,7 +350,7 @@
     return 0;
   }
 
-  v4.receiver = v8;
+  v4.receiver = selfCopy;
   v4.super_class = UITableViewCellEditControlAccessibility;
   return [(UITableViewCellEditControlAccessibility *)&v4 canBecomeFocused];
 }

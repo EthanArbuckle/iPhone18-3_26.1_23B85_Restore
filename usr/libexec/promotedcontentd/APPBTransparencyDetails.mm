@@ -1,12 +1,12 @@
 @interface APPBTransparencyDetails
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBTransparencyDetails
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = APPBTransparencyDetails;
   v3 = [(APPBTransparencyDetails *)&v7 description];
-  v4 = [(APPBTransparencyDetails *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBTransparencyDetails *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -53,93 +53,93 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_transparencyDetailsUnavailableMessage)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_transparencyRendererPayload)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_transparencyRendererURL)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_targetingExpressionId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_transparencyDetailsUnavailableMessage)
   {
-    [v4 setTransparencyDetailsUnavailableMessage:?];
-    v4 = v5;
+    [toCopy setTransparencyDetailsUnavailableMessage:?];
+    toCopy = v5;
   }
 
   if (self->_transparencyRendererPayload)
   {
     [v5 setTransparencyRendererPayload:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_transparencyRendererURL)
   {
     [v5 setTransparencyRendererURL:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_targetingExpressionId)
   {
     [v5 setTargetingExpressionId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_transparencyDetailsUnavailableMessage copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_transparencyDetailsUnavailableMessage copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_transparencyRendererPayload copyWithZone:a3];
+  v8 = [(NSString *)self->_transparencyRendererPayload copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_transparencyRendererURL copyWithZone:a3];
+  v10 = [(NSString *)self->_transparencyRendererURL copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
-  v12 = [(NSString *)self->_targetingExpressionId copyWithZone:a3];
+  v12 = [(NSString *)self->_targetingExpressionId copyWithZone:zone];
   v13 = v5[1];
   v5[1] = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((transparencyDetailsUnavailableMessage = self->_transparencyDetailsUnavailableMessage, !(transparencyDetailsUnavailableMessage | v4[2])) || -[NSString isEqual:](transparencyDetailsUnavailableMessage, "isEqual:")) && ((transparencyRendererPayload = self->_transparencyRendererPayload, !(transparencyRendererPayload | v4[3])) || -[NSString isEqual:](transparencyRendererPayload, "isEqual:")) && ((transparencyRendererURL = self->_transparencyRendererURL, !(transparencyRendererURL | v4[4])) || -[NSString isEqual:](transparencyRendererURL, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((transparencyDetailsUnavailableMessage = self->_transparencyDetailsUnavailableMessage, !(transparencyDetailsUnavailableMessage | equalCopy[2])) || -[NSString isEqual:](transparencyDetailsUnavailableMessage, "isEqual:")) && ((transparencyRendererPayload = self->_transparencyRendererPayload, !(transparencyRendererPayload | equalCopy[3])) || -[NSString isEqual:](transparencyRendererPayload, "isEqual:")) && ((transparencyRendererURL = self->_transparencyRendererURL, !(transparencyRendererURL | equalCopy[4])) || -[NSString isEqual:](transparencyRendererURL, "isEqual:")))
   {
     targetingExpressionId = self->_targetingExpressionId;
-    if (targetingExpressionId | v4[1])
+    if (targetingExpressionId | equalCopy[1])
     {
       v9 = [(NSString *)targetingExpressionId isEqual:?];
     }
@@ -166,25 +166,25 @@
   return v4 ^ v5 ^ [(NSString *)self->_targetingExpressionId hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[2])
+  fromCopy = from;
+  if (fromCopy[2])
   {
     [(APPBTransparencyDetails *)self setTransparencyDetailsUnavailableMessage:?];
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(APPBTransparencyDetails *)self setTransparencyRendererPayload:?];
   }
 
-  if (v4[4])
+  if (fromCopy[4])
   {
     [(APPBTransparencyDetails *)self setTransparencyRendererURL:?];
   }
 
-  if (v4[1])
+  if (fromCopy[1])
   {
     [(APPBTransparencyDetails *)self setTargetingExpressionId:?];
   }

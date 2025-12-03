@@ -1,16 +1,16 @@
 @interface PLAssetAdjustmentOptions
 + (id)assetAdjustmentOptionsForApplyingResourcesFromCPL;
-+ (id)assetAdjustmentOptionsForCinematicCaptureIngestWithMainFileMetadata:(id)a3;
-+ (id)assetAdjustmentOptionsForImageWriterWithEditedRenderURL:(id)a3 async:(BOOL)a4 fullSizeRenderSize:(CGSize)a5 mainFileMetadata:(id)a6;
-+ (id)assetAdjustmentOptionsForPortraitImportWithMainFileMetadata:(id)a3;
++ (id)assetAdjustmentOptionsForCinematicCaptureIngestWithMainFileMetadata:(id)metadata;
++ (id)assetAdjustmentOptionsForImageWriterWithEditedRenderURL:(id)l async:(BOOL)async fullSizeRenderSize:(CGSize)size mainFileMetadata:(id)metadata;
++ (id)assetAdjustmentOptionsForPortraitImportWithMainFileMetadata:(id)metadata;
 + (id)assetAdjustmentOptionsForRevertingToOriginal;
-+ (id)assetAdjustmentOptionsForSLMAdjustmentsWithMainFileMetadata:(id)a3;
++ (id)assetAdjustmentOptionsForSLMAdjustmentsWithMainFileMetadata:(id)metadata;
 - (BOOL)shouldOverwriteFullSizeRenderSize;
 - (CGSize)fullSizeRenderSize;
 - (PLAssetAdjustmentOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)_setPropertiesOnCopy:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)_setPropertiesOnCopy:(id)copy;
 @end
 
 @implementation PLAssetAdjustmentOptions
@@ -24,20 +24,20 @@
   return result;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PLMutableAssetAdjustmentOptions);
   [(PLAssetAdjustmentOptions *)self _setPropertiesOnCopy:v4];
   return v4;
 }
 
-+ (id)assetAdjustmentOptionsForCinematicCaptureIngestWithMainFileMetadata:(id)a3
++ (id)assetAdjustmentOptionsForCinematicCaptureIngestWithMainFileMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  metadataCopy = metadata;
+  v5 = objc_alloc_init(self);
   *(v5 + 24) = *MEMORY[0x1E695F060];
   v6 = *(v5 + 6);
-  *(v5 + 6) = v4;
+  *(v5 + 6) = metadataCopy;
 
   v5[11] = 0;
   *(v5 + 4) = 257;
@@ -47,19 +47,19 @@
 
 + (id)assetAdjustmentOptionsForApplyingResourcesFromCPL
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   *(v2 + 11) = 257;
 
   return v2;
 }
 
-+ (id)assetAdjustmentOptionsForPortraitImportWithMainFileMetadata:(id)a3
++ (id)assetAdjustmentOptionsForPortraitImportWithMainFileMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  metadataCopy = metadata;
+  v5 = objc_alloc_init(self);
   v5[9] = 1;
   v6 = *(v5 + 6);
-  *(v5 + 6) = v4;
+  *(v5 + 6) = metadataCopy;
 
   v5[10] = 1;
   *(v5 + 2) = 1;
@@ -67,25 +67,25 @@
   return v5;
 }
 
-+ (id)assetAdjustmentOptionsForImageWriterWithEditedRenderURL:(id)a3 async:(BOOL)a4 fullSizeRenderSize:(CGSize)a5 mainFileMetadata:(id)a6
++ (id)assetAdjustmentOptionsForImageWriterWithEditedRenderURL:(id)l async:(BOOL)async fullSizeRenderSize:(CGSize)size mainFileMetadata:(id)metadata
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a4;
-  v11 = a3;
-  v12 = a6;
-  v13 = objc_alloc_init(a1);
+  height = size.height;
+  width = size.width;
+  asyncCopy = async;
+  lCopy = l;
+  metadataCopy = metadata;
+  v13 = objc_alloc_init(self);
   v14 = *(v13 + 7);
-  *(v13 + 7) = v11;
-  v15 = v11;
+  *(v13 + 7) = lCopy;
+  v15 = lCopy;
 
   v13[3] = width;
   v13[4] = height;
   v16 = *(v13 + 6);
-  *(v13 + 6) = v12;
+  *(v13 + 6) = metadataCopy;
 
   *(v13 + 11) = 1;
-  if (v9)
+  if (asyncCopy)
   {
     *(v13 + 8) = 1;
     v17 = 9;
@@ -101,80 +101,80 @@
   return v13;
 }
 
-+ (id)assetAdjustmentOptionsForSLMAdjustmentsWithMainFileMetadata:(id)a3
++ (id)assetAdjustmentOptionsForSLMAdjustmentsWithMainFileMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
+  metadataCopy = metadata;
+  v5 = objc_alloc_init(self);
   v5[5] = 257;
   *(v5 + 12) = 1;
   v6 = *(v5 + 6);
-  *(v5 + 6) = v4;
+  *(v5 + 6) = metadataCopy;
 
   return v5;
 }
 
 + (id)assetAdjustmentOptionsForRevertingToOriginal
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   v2[5] = 257;
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PLAssetAdjustmentOptions);
   [(PLAssetAdjustmentOptions *)self _setPropertiesOnCopy:v4];
   return v4;
 }
 
-- (void)_setPropertiesOnCopy:(id)a3
+- (void)_setPropertiesOnCopy:(id)copy
 {
-  v4 = a3;
-  v4[8] = [(PLAssetAdjustmentOptions *)self isSubstandardRender];
-  v4[9] = [(PLAssetAdjustmentOptions *)self isDeferred];
-  v4[10] = [(PLAssetAdjustmentOptions *)self shouldUpdateAttributes];
-  v4[11] = [(PLAssetAdjustmentOptions *)self shouldGenerateThumbnails];
-  v4[12] = [(PLAssetAdjustmentOptions *)self shouldCheckForLegacyCameraAutoAdjustment];
-  v4[13] = [(PLAssetAdjustmentOptions *)self skipCheckCameraAutoAdjustment];
-  v4[14] = [(PLAssetAdjustmentOptions *)self skipCheckCameraAutoAdjustment];
-  *(v4 + 2) = [(PLAssetAdjustmentOptions *)self fileIngestionType];
+  copyCopy = copy;
+  copyCopy[8] = [(PLAssetAdjustmentOptions *)self isSubstandardRender];
+  copyCopy[9] = [(PLAssetAdjustmentOptions *)self isDeferred];
+  copyCopy[10] = [(PLAssetAdjustmentOptions *)self shouldUpdateAttributes];
+  copyCopy[11] = [(PLAssetAdjustmentOptions *)self shouldGenerateThumbnails];
+  copyCopy[12] = [(PLAssetAdjustmentOptions *)self shouldCheckForLegacyCameraAutoAdjustment];
+  copyCopy[13] = [(PLAssetAdjustmentOptions *)self skipCheckCameraAutoAdjustment];
+  copyCopy[14] = [(PLAssetAdjustmentOptions *)self skipCheckCameraAutoAdjustment];
+  *(copyCopy + 2) = [(PLAssetAdjustmentOptions *)self fileIngestionType];
   [(PLAssetAdjustmentOptions *)self fullSizeRenderSize];
-  *(v4 + 3) = v5;
-  *(v4 + 4) = v6;
+  *(copyCopy + 3) = v5;
+  *(copyCopy + 4) = v6;
   [(PLAssetAdjustmentOptions *)self fullSizeRenderDuration];
-  *(v4 + 5) = v7;
-  v8 = [(PLAssetAdjustmentOptions *)self mainFileMetadata];
-  v9 = *(v4 + 6);
-  *(v4 + 6) = v8;
+  *(copyCopy + 5) = v7;
+  mainFileMetadata = [(PLAssetAdjustmentOptions *)self mainFileMetadata];
+  v9 = *(copyCopy + 6);
+  *(copyCopy + 6) = mainFileMetadata;
 
-  v10 = [(PLAssetAdjustmentOptions *)self renderedContentURL];
-  v11 = *(v4 + 7);
-  *(v4 + 7) = v10;
+  renderedContentURL = [(PLAssetAdjustmentOptions *)self renderedContentURL];
+  v11 = *(copyCopy + 7);
+  *(copyCopy + 7) = renderedContentURL;
 
-  v12 = [(PLAssetAdjustmentOptions *)self penultimateRenderedJPEGData];
-  v13 = *(v4 + 8);
-  *(v4 + 8) = v12;
+  penultimateRenderedJPEGData = [(PLAssetAdjustmentOptions *)self penultimateRenderedJPEGData];
+  v13 = *(copyCopy + 8);
+  *(copyCopy + 8) = penultimateRenderedJPEGData;
 
-  v14 = [(PLAssetAdjustmentOptions *)self penultimateRenderedVideoContentURL];
-  v15 = *(v4 + 9);
-  *(v4 + 9) = v14;
+  penultimateRenderedVideoContentURL = [(PLAssetAdjustmentOptions *)self penultimateRenderedVideoContentURL];
+  v15 = *(copyCopy + 9);
+  *(copyCopy + 9) = penultimateRenderedVideoContentURL;
 
-  v16 = [(PLAssetAdjustmentOptions *)self renderedVideoComplementContentURL];
-  v17 = *(v4 + 10);
-  *(v4 + 10) = v16;
+  renderedVideoComplementContentURL = [(PLAssetAdjustmentOptions *)self renderedVideoComplementContentURL];
+  v17 = *(copyCopy + 10);
+  *(copyCopy + 10) = renderedVideoComplementContentURL;
 
-  v18 = [(PLAssetAdjustmentOptions *)self penultimateRenderedVideoComplementContentURL];
-  v19 = *(v4 + 11);
-  *(v4 + 11) = v18;
+  penultimateRenderedVideoComplementContentURL = [(PLAssetAdjustmentOptions *)self penultimateRenderedVideoComplementContentURL];
+  v19 = *(copyCopy + 11);
+  *(copyCopy + 11) = penultimateRenderedVideoComplementContentURL;
 
-  v20 = [(PLAssetAdjustmentOptions *)self renderedVideoPosterContentURL];
-  v21 = *(v4 + 12);
-  *(v4 + 12) = v20;
+  renderedVideoPosterContentURL = [(PLAssetAdjustmentOptions *)self renderedVideoPosterContentURL];
+  v21 = *(copyCopy + 12);
+  *(copyCopy + 12) = renderedVideoPosterContentURL;
 
-  v22 = [(PLAssetAdjustmentOptions *)self adjustmentSecondaryDataURL];
-  v23 = *(v4 + 13);
-  *(v4 + 13) = v22;
+  adjustmentSecondaryDataURL = [(PLAssetAdjustmentOptions *)self adjustmentSecondaryDataURL];
+  v23 = *(copyCopy + 13);
+  *(copyCopy + 13) = adjustmentSecondaryDataURL;
 }
 
 - (BOOL)shouldOverwriteFullSizeRenderSize

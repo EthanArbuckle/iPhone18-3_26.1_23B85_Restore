@@ -1,16 +1,16 @@
 @interface WKInterfaceController
 + (CGRect)screenBounds;
 + (double)screenScale;
-+ (void)_insertPageControllersAtIndexes:(id)a3 withNames:(id)a4 contexts:(id)a5;
-+ (void)_removePageControllersAtIndexes:(id)a3;
-+ (void)reloadRootControllersWithNames:(id)a3 contexts:(id)a4;
++ (void)_insertPageControllersAtIndexes:(id)indexes withNames:(id)names contexts:(id)contexts;
++ (void)_removePageControllersAtIndexes:(id)indexes;
++ (void)reloadRootControllersWithNames:(id)names contexts:(id)contexts;
 - (CGRect)contentFrame;
 - (WKInterfaceController)init;
-- (void)_handleActionWithIdentifier:(id)a3 forNotification:(id)a4 remoteNotification:(id)a5 localNotification:(id)a6;
-- (void)addMenuItemWithImage:(id)a3 title:(id)a4 action:(SEL)a5;
-- (void)addMenuItemWithImageNamed:(id)a3 title:(id)a4 action:(SEL)a5;
-- (void)addMenuItemWithItemIcon:(int64_t)a3 title:(id)a4 action:(SEL)a5;
-- (void)animateWithDuration:(double)a3 animations:(id)a4;
+- (void)_handleActionWithIdentifier:(id)identifier forNotification:(id)notification remoteNotification:(id)remoteNotification localNotification:(id)localNotification;
+- (void)addMenuItemWithImage:(id)image title:(id)title action:(SEL)action;
+- (void)addMenuItemWithImageNamed:(id)named title:(id)title action:(SEL)action;
+- (void)addMenuItemWithItemIcon:(int64_t)icon title:(id)title action:(SEL)action;
+- (void)animateWithDuration:(double)duration animations:(id)animations;
 - (void)becomeCurrentPage;
 - (void)clearAllMenuItems;
 - (void)didRegisterWithRemoteInterface;
@@ -20,15 +20,15 @@
 - (void)invalidateUserActivity;
 - (void)popController;
 - (void)popToRootController;
-- (void)presentAddPassesControllerWithPasses:(id)a3 completion:(id)a4;
-- (void)presentControllerWithName:(id)a3 context:(id)a4;
-- (void)presentControllerWithNames:(id)a3 contexts:(id)a4;
-- (void)presentTextInputControllerWithSuggestions:(id)a3 allowedInputMode:(int64_t)a4 completion:(id)a5;
-- (void)presentTextInputControllerWithSuggestionsForLanguage:(id)a3 allowedInputMode:(int64_t)a4 completion:(id)a5;
-- (void)pushControllerWithName:(id)a3 context:(id)a4;
-- (void)setTitle:(id)a3;
-- (void)updateUserActivity:(id)a3 userInfo:(id)a4;
-- (void)updateUserActivity:(id)a3 userInfo:(id)a4 webpageURL:(id)a5;
+- (void)presentAddPassesControllerWithPasses:(id)passes completion:(id)completion;
+- (void)presentControllerWithName:(id)name context:(id)context;
+- (void)presentControllerWithNames:(id)names contexts:(id)contexts;
+- (void)presentTextInputControllerWithSuggestions:(id)suggestions allowedInputMode:(int64_t)mode completion:(id)completion;
+- (void)presentTextInputControllerWithSuggestionsForLanguage:(id)language allowedInputMode:(int64_t)mode completion:(id)completion;
+- (void)pushControllerWithName:(id)name context:(id)context;
+- (void)setTitle:(id)title;
+- (void)updateUserActivity:(id)activity userInfo:(id)info;
+- (void)updateUserActivity:(id)activity userInfo:(id)info webpageURL:(id)l;
 @end
 
 @implementation WKInterfaceController
@@ -70,19 +70,19 @@
   [(WKInterfaceController *)v2 setViewControllerID:__viewControllerID];
   [(WKInterfaceController *)v2 setContentFrame:__contentFrame, *&qword_27E131AB8, unk_27E131AC0];
   [(WKInterfaceController *)v2 setProperties:__properties];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [(WKInterfaceController *)v2 setGestureRecognizers:v3];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [(WKInterfaceController *)v2 setGestureRecognizers:dictionary];
 
   if (init_onceToken != -1)
   {
     [WKInterfaceController init];
   }
 
-  v4 = [MEMORY[0x277CBEB18] array];
-  [(WKInterfaceController *)v2 setUninstalledGestureIDs:v4];
+  array = [MEMORY[0x277CBEB18] array];
+  [(WKInterfaceController *)v2 setUninstalledGestureIDs:array];
 
-  v5 = [MEMORY[0x277CBEB18] array];
-  [(WKInterfaceController *)v2 setPendingGestureInstallationFinishedBlocks:v5];
+  array2 = [MEMORY[0x277CBEB18] array];
+  [(WKInterfaceController *)v2 setPendingGestureInstallationFinishedBlocks:array2];
 
   v6 = [SPRemoteInterface controller:v2 setupProperties:__properties viewControllerID:__viewControllerID tableIndex:0x7FFFFFFFFFFFFFFFLL rowIndex:0x7FFFFFFFFFFFFFFFLL classForType:_WKInterfaceObjectClassWithType];
   [(WKInterfaceController *)v2 setTopLevelObjects:v6];
@@ -105,8 +105,8 @@ uint64_t __29__WKInterfaceController_init__block_invoke()
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(WKInterfaceController *)self topLevelObjects];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  topLevelObjects = [(WKInterfaceController *)self topLevelObjects];
+  v3 = [topLevelObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -118,14 +118,14 @@ uint64_t __29__WKInterfaceController_init__block_invoke()
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(topLevelObjects);
         }
 
         [*(*(&v8 + 1) + 8 * v6++) didRegisterWithRemoteInterface];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [topLevelObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);
@@ -134,13 +134,13 @@ uint64_t __29__WKInterfaceController_init__block_invoke()
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleActionWithIdentifier:(id)a3 forNotification:(id)a4 remoteNotification:(id)a5 localNotification:(id)a6
+- (void)_handleActionWithIdentifier:(id)identifier forNotification:(id)notification remoteNotification:(id)remoteNotification localNotification:(id)localNotification
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  notificationCopy = notification;
+  remoteNotificationCopy = remoteNotification;
+  localNotificationCopy = localNotification;
   v14 = objc_opt_class();
   if (spUtils_subclassForObjectOverridesSelectorFromSuperclass(self, sel_handleActionWithIdentifier_forNotification_, v14))
   {
@@ -152,16 +152,16 @@ uint64_t __29__WKInterfaceController_init__block_invoke()
       v25 = 1024;
       v26 = 276;
       v27 = 2114;
-      v28 = self;
+      selfCopy5 = self;
       v29 = 2114;
-      v30 = v10;
+      v30 = identifierCopy;
       _os_log_impl(&dword_23B338000, v15, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: Calling handleActionWithIdentifier:forNotification: on %{public}@ with identifier %{public}@", &v23, 0x26u);
     }
 
-    [(WKInterfaceController *)self handleActionWithIdentifier:v10 forNotification:v11];
+    [(WKInterfaceController *)self handleActionWithIdentifier:identifierCopy forNotification:notificationCopy];
   }
 
-  else if (v13)
+  else if (localNotificationCopy)
   {
     v16 = wk_default_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -171,20 +171,20 @@ uint64_t __29__WKInterfaceController_init__block_invoke()
       v25 = 1024;
       v26 = 283;
       v27 = 2114;
-      v28 = self;
+      selfCopy5 = self;
       v29 = 2114;
-      v30 = v10;
+      v30 = identifierCopy;
       _os_log_impl(&dword_23B338000, v16, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: Calling handleActionWithIdentifier:forLocalNotification: on %{public}@ with identifier %{public}@", &v23, 0x26u);
     }
 
-    [(WKInterfaceController *)self handleActionWithIdentifier:v10 forLocalNotification:v13];
+    [(WKInterfaceController *)self handleActionWithIdentifier:identifierCopy forLocalNotification:localNotificationCopy];
   }
 
   else
   {
     v17 = wk_default_log();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
-    if (v12)
+    if (remoteNotificationCopy)
     {
       if (v18)
       {
@@ -193,15 +193,15 @@ uint64_t __29__WKInterfaceController_init__block_invoke()
         v25 = 1024;
         v26 = 286;
         v27 = 2114;
-        v28 = self;
+        selfCopy5 = self;
         v29 = 2114;
-        v30 = v10;
+        v30 = identifierCopy;
         _os_log_impl(&dword_23B338000, v17, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: Calling handleActionWithIdentifier:forRemoteNotification: on %{public}@ with identifier %{public}@", &v23, 0x26u);
       }
 
-      v19 = self;
-      v20 = v10;
-      v21 = v12;
+      selfCopy6 = self;
+      v20 = identifierCopy;
+      v21 = remoteNotificationCopy;
     }
 
     else
@@ -213,33 +213,33 @@ uint64_t __29__WKInterfaceController_init__block_invoke()
         v25 = 1024;
         v26 = 289;
         v27 = 2114;
-        v28 = self;
+        selfCopy5 = self;
         v29 = 2114;
-        v30 = v10;
+        v30 = identifierCopy;
         _os_log_impl(&dword_23B338000, v17, OS_LOG_TYPE_DEFAULT, "%{public}s:%d: Calling handleActionWithIdentifier:forRemoteNotification: on %{public}@ with identifier %{public}@", &v23, 0x26u);
       }
 
       v21 = MEMORY[0x277CBEC10];
-      v19 = self;
-      v20 = v10;
+      selfCopy6 = self;
+      v20 = identifierCopy;
     }
 
-    [(WKInterfaceController *)v19 handleActionWithIdentifier:v20 forRemoteNotification:v21];
+    [(WKInterfaceController *)selfCopy6 handleActionWithIdentifier:v20 forRemoteNotification:v21];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __34__WKInterfaceController_setTitle___block_invoke;
   v8[3] = &unk_278B7E2F0;
   v8[4] = self;
-  v9 = v4;
-  v5 = v4;
+  v9 = titleCopy;
+  v5 = titleCopy;
   v6 = MEMORY[0x23EE9A9D0](v8);
   if (isRunningOnMainQueue())
   {
@@ -265,19 +265,19 @@ void __34__WKInterfaceController_setTitle___block_invoke(uint64_t a1)
   [SPRemoteInterface setController:v3 key:@"#title" property:&stru_284DFE9D8 value:v2];
 }
 
-- (void)pushControllerWithName:(id)a3 context:(id)a4
+- (void)pushControllerWithName:(id)name context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  contextCopy = context;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __56__WKInterfaceController_pushControllerWithName_context___block_invoke;
   v12[3] = &unk_278B7E278;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = nameCopy;
+  v14 = contextCopy;
+  v8 = contextCopy;
+  v9 = nameCopy;
   v10 = MEMORY[0x23EE9A9D0](v12);
   if (isRunningOnMainQueue())
   {
@@ -321,18 +321,18 @@ void __56__WKInterfaceController_pushControllerWithName_context___block_invoke(u
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)reloadRootControllersWithNames:(id)a3 contexts:(id)a4
++ (void)reloadRootControllersWithNames:(id)names contexts:(id)contexts
 {
-  v5 = a3;
-  v6 = a4;
+  namesCopy = names;
+  contextsCopy = contexts;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __65__WKInterfaceController_reloadRootControllersWithNames_contexts___block_invoke;
   v11[3] = &unk_278B7E2F0;
-  v12 = v5;
-  v13 = v6;
-  v7 = v6;
-  v8 = v5;
+  v12 = namesCopy;
+  v13 = contextsCopy;
+  v7 = contextsCopy;
+  v8 = namesCopy;
   v9 = MEMORY[0x23EE9A9D0](v11);
   if (isRunningOnMainQueue())
   {
@@ -370,22 +370,22 @@ void __65__WKInterfaceController_reloadRootControllersWithNames_contexts___block
   }
 }
 
-+ (void)_insertPageControllersAtIndexes:(id)a3 withNames:(id)a4 contexts:(id)a5
++ (void)_insertPageControllersAtIndexes:(id)indexes withNames:(id)names contexts:(id)contexts
 {
-  v11 = a3;
-  v7 = a4;
-  v8 = a5;
-  if ([v7 count])
+  indexesCopy = indexes;
+  namesCopy = names;
+  contextsCopy = contexts;
+  if ([namesCopy count])
   {
-    v9 = [v11 copy];
-    v10 = [v7 copy];
-    [SPRemoteInterface insertPageControllerAtIndexes:v9 withNames:v10 contexts:v8];
+    v9 = [indexesCopy copy];
+    v10 = [namesCopy copy];
+    [SPRemoteInterface insertPageControllerAtIndexes:v9 withNames:v10 contexts:contextsCopy];
   }
 }
 
-+ (void)_removePageControllersAtIndexes:(id)a3
++ (void)_removePageControllersAtIndexes:(id)indexes
 {
-  v3 = [a3 copy];
+  v3 = [indexes copy];
   [SPRemoteInterface removePageControllerAtIndexes:v3];
 }
 
@@ -398,19 +398,19 @@ void __65__WKInterfaceController_reloadRootControllersWithNames_contexts___block
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentControllerWithName:(id)a3 context:(id)a4
+- (void)presentControllerWithName:(id)name context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  contextCopy = context;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __59__WKInterfaceController_presentControllerWithName_context___block_invoke;
   v12[3] = &unk_278B7E278;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = nameCopy;
+  v14 = contextCopy;
+  v8 = contextCopy;
+  v9 = nameCopy;
   v10 = MEMORY[0x23EE9A9D0](v12);
   if (isRunningOnMainQueue())
   {
@@ -436,19 +436,19 @@ void __59__WKInterfaceController_presentControllerWithName_context___block_invok
   [SPRemoteInterface controller:v2 presentInterfaceController:v3 context:*(a1 + 48)];
 }
 
-- (void)presentControllerWithNames:(id)a3 contexts:(id)a4
+- (void)presentControllerWithNames:(id)names contexts:(id)contexts
 {
-  v6 = a3;
-  v7 = a4;
+  namesCopy = names;
+  contextsCopy = contexts;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __61__WKInterfaceController_presentControllerWithNames_contexts___block_invoke;
   v12[3] = &unk_278B7E278;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = namesCopy;
+  v14 = contextsCopy;
+  v8 = contextsCopy;
+  v9 = namesCopy;
   v10 = MEMORY[0x23EE9A9D0](v12);
   if (isRunningOnMainQueue())
   {
@@ -484,20 +484,20 @@ void __61__WKInterfaceController_presentControllerWithNames_contexts___block_inv
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentTextInputControllerWithSuggestions:(id)a3 allowedInputMode:(int64_t)a4 completion:(id)a5
+- (void)presentTextInputControllerWithSuggestions:(id)suggestions allowedInputMode:(int64_t)mode completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  suggestionsCopy = suggestions;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __95__WKInterfaceController_presentTextInputControllerWithSuggestions_allowedInputMode_completion___block_invoke;
   v14[3] = &unk_278B7F338;
   v14[4] = self;
-  v15 = v8;
-  v16 = v9;
-  v17 = a4;
-  v10 = v8;
-  v11 = v9;
+  v15 = suggestionsCopy;
+  v16 = completionCopy;
+  modeCopy = mode;
+  v10 = suggestionsCopy;
+  v11 = completionCopy;
   v12 = MEMORY[0x23EE9A9D0](v14);
   if (isRunningOnMainQueue())
   {
@@ -536,20 +536,20 @@ void __95__WKInterfaceController_presentTextInputControllerWithSuggestions_allow
   }
 }
 
-- (void)presentTextInputControllerWithSuggestionsForLanguage:(id)a3 allowedInputMode:(int64_t)a4 completion:(id)a5
+- (void)presentTextInputControllerWithSuggestionsForLanguage:(id)language allowedInputMode:(int64_t)mode completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  languageCopy = language;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __106__WKInterfaceController_presentTextInputControllerWithSuggestionsForLanguage_allowedInputMode_completion___block_invoke;
   v14[3] = &unk_278B7F360;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = a4;
-  v10 = v8;
-  v11 = v9;
+  v15 = completionCopy;
+  v16 = languageCopy;
+  modeCopy = mode;
+  v10 = languageCopy;
+  v11 = completionCopy;
   v12 = MEMORY[0x23EE9A9D0](v14);
   if (isRunningOnMainQueue())
   {
@@ -597,19 +597,19 @@ void __106__WKInterfaceController_presentTextInputControllerWithSuggestionsForLa
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentAddPassesControllerWithPasses:(id)a3 completion:(id)a4
+- (void)presentAddPassesControllerWithPasses:(id)passes completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  passesCopy = passes;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __73__WKInterfaceController_presentAddPassesControllerWithPasses_completion___block_invoke;
   v12[3] = &unk_278B7F1F0;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = passesCopy;
+  v14 = completionCopy;
+  v8 = completionCopy;
+  v9 = passesCopy;
   v10 = MEMORY[0x23EE9A9D0](v12);
   if (isRunningOnMainQueue())
   {
@@ -637,19 +637,19 @@ void __106__WKInterfaceController_presentTextInputControllerWithSuggestionsForLa
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)animateWithDuration:(double)a3 animations:(id)a4
+- (void)animateWithDuration:(double)duration animations:(id)animations
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  animationsCopy = animations;
+  v7 = animationsCopy;
+  if (animationsCopy)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __56__WKInterfaceController_animateWithDuration_animations___block_invoke;
     block[3] = &unk_278B7F388;
     block[4] = self;
-    v10 = a3;
-    v9 = v6;
+    durationCopy = duration;
+    v9 = animationsCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 }
@@ -665,20 +665,20 @@ void __56__WKInterfaceController_animateWithDuration_animations___block_invoke(u
   [SPRemoteInterface setController:v4 key:@"#animateCommit" property:&stru_284DFE9D8 value:0];
 }
 
-- (void)addMenuItemWithImage:(id)a3 title:(id)a4 action:(SEL)a5
+- (void)addMenuItemWithImage:(id)image title:(id)title action:(SEL)action
 {
-  v8 = a3;
-  v9 = a4;
+  imageCopy = image;
+  titleCopy = title;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __59__WKInterfaceController_addMenuItemWithImage_title_action___block_invoke;
   v14[3] = &unk_278B7F3B0;
-  v15 = v8;
-  v16 = v9;
-  v17 = self;
-  v18 = a5;
-  v10 = v9;
-  v11 = v8;
+  v15 = imageCopy;
+  v16 = titleCopy;
+  selfCopy = self;
+  actionCopy = action;
+  v10 = titleCopy;
+  v11 = imageCopy;
   v12 = MEMORY[0x23EE9A9D0](v14);
   if (isRunningOnMainQueue())
   {
@@ -724,20 +724,20 @@ void __59__WKInterfaceController_addMenuItemWithImage_title_action___block_invok
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addMenuItemWithImageNamed:(id)a3 title:(id)a4 action:(SEL)a5
+- (void)addMenuItemWithImageNamed:(id)named title:(id)title action:(SEL)action
 {
-  v8 = a3;
-  v9 = a4;
+  namedCopy = named;
+  titleCopy = title;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __64__WKInterfaceController_addMenuItemWithImageNamed_title_action___block_invoke;
   v14[3] = &unk_278B7F3B0;
-  v15 = v8;
-  v16 = v9;
-  v17 = self;
-  v18 = a5;
-  v10 = v9;
-  v11 = v8;
+  v15 = namedCopy;
+  v16 = titleCopy;
+  selfCopy = self;
+  actionCopy = action;
+  v10 = titleCopy;
+  v11 = namedCopy;
   v12 = MEMORY[0x23EE9A9D0](v14);
   if (isRunningOnMainQueue())
   {
@@ -784,18 +784,18 @@ void __64__WKInterfaceController_addMenuItemWithImageNamed_title_action___block_
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addMenuItemWithItemIcon:(int64_t)a3 title:(id)a4 action:(SEL)a5
+- (void)addMenuItemWithItemIcon:(int64_t)icon title:(id)title action:(SEL)action
 {
-  v8 = a4;
+  titleCopy = title;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __62__WKInterfaceController_addMenuItemWithItemIcon_title_action___block_invoke;
   v12[3] = &unk_278B7E368;
-  v13 = v8;
-  v14 = self;
-  v15 = a5;
-  v16 = a3;
-  v9 = v8;
+  v13 = titleCopy;
+  selfCopy = self;
+  actionCopy = action;
+  iconCopy = icon;
+  v9 = titleCopy;
   v10 = MEMORY[0x23EE9A9D0](v12);
   if (isRunningOnMainQueue())
   {
@@ -867,19 +867,19 @@ void __42__WKInterfaceController_clearAllMenuItems__block_invoke(uint64_t a1)
   [SPRemoteInterface setController:v1 key:@"#item" property:&stru_284DFE9D8 value:0];
 }
 
-- (void)updateUserActivity:(id)a3 userInfo:(id)a4
+- (void)updateUserActivity:(id)activity userInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  infoCopy = info;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __53__WKInterfaceController_updateUserActivity_userInfo___block_invoke;
   v12[3] = &unk_278B7E278;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v8 = v7;
-  v9 = v6;
+  v13 = activityCopy;
+  v14 = infoCopy;
+  v8 = infoCopy;
+  v9 = activityCopy;
   v10 = MEMORY[0x23EE9A9D0](v12);
   if (isRunningOnMainQueue())
   {
@@ -912,22 +912,22 @@ void __53__WKInterfaceController_updateUserActivity_userInfo___block_invoke(uint
   [v3 updateUserActivity:v4 userInfo:v5 webpageURL:0];
 }
 
-- (void)updateUserActivity:(id)a3 userInfo:(id)a4 webpageURL:(id)a5
+- (void)updateUserActivity:(id)activity userInfo:(id)info webpageURL:(id)l
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  activityCopy = activity;
+  infoCopy = info;
+  lCopy = l;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __64__WKInterfaceController_updateUserActivity_userInfo_webpageURL___block_invoke;
   v16[3] = &unk_278B7E2C8;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v20 = self;
-  v11 = v10;
-  v12 = v9;
-  v13 = v8;
+  v17 = activityCopy;
+  v18 = infoCopy;
+  v19 = lCopy;
+  selfCopy = self;
+  v11 = lCopy;
+  v12 = infoCopy;
+  v13 = activityCopy;
   v14 = MEMORY[0x23EE9A9D0](v16);
   if (isRunningOnMainQueue())
   {

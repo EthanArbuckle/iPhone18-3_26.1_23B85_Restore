@@ -1,6 +1,6 @@
 @interface PXStoryDefaultAutoEditDecisionListsProducerFactory
-- (PXStoryDefaultAutoEditDecisionListsProducerFactory)initWithStoryConfiguration:(id)a3;
-- (id)autoEditDecisionListsProducerForAssetCollection:(id)a3 displayAssets:(id)a4 movieHighlights:(id)a5 chapterCollection:(id)a6 targetOverallDurationInfo:(id *)a7;
+- (PXStoryDefaultAutoEditDecisionListsProducerFactory)initWithStoryConfiguration:(id)configuration;
+- (id)autoEditDecisionListsProducerForAssetCollection:(id)collection displayAssets:(id)assets movieHighlights:(id)highlights chapterCollection:(id)chapterCollection targetOverallDurationInfo:(id *)info;
 - (id)fallbackAutoEditDecisionListsProducer;
 @end
 
@@ -14,8 +14,8 @@
   memset(&v35, 0, sizeof(v35));
   [(PFStoryAutoEditConfiguration *)self->_configuration outroDurationForSongPace:2];
   CMTimeMakeWithSeconds(&v35, v5, 600);
-  v6 = [(PXStoryDefaultAutoEditDecisionListsProducerFactory *)self storyConfiguration];
-  v7 = [v6 disableNUp];
+  storyConfiguration = [(PXStoryDefaultAutoEditDecisionListsProducerFactory *)self storyConfiguration];
+  disableNUp = [storyConfiguration disableNUp];
 
   v8 = [PXStoryConcreteAutoEditDecisionList alloc];
   v23 = *(MEMORY[0x1E69C0DB8] + 48);
@@ -29,7 +29,7 @@
   v30 = *MEMORY[0x1E69C0DB8];
   v31 = v21;
   v29 = v35;
-  v9 = [(PXStoryConcreteAutoEditDecisionList *)v8 initWithColorGradeCategory:0 song:0 clipCatalog:0 constrainedOverallDurationInfo:&v30 outroDuration:&v29 allowsNUp:v7 ^ 1u];
+  v9 = [(PXStoryConcreteAutoEditDecisionList *)v8 initWithColorGradeCategory:0 song:0 clipCatalog:0 constrainedOverallDurationInfo:&v30 outroDuration:&v29 allowsNUp:disableNUp ^ 1u];
   [v4 addObject:v9];
 
   v27 = 0u;
@@ -59,7 +59,7 @@
         v30 = v20;
         v31 = v21;
         v29 = v35;
-        v17 = [(PXStoryConcreteAutoEditDecisionList *)v16 initWithColorGradeCategory:v15 song:0 clipCatalog:0 constrainedOverallDurationInfo:&v30 outroDuration:&v29 allowsNUp:v7 ^ 1u];
+        v17 = [(PXStoryConcreteAutoEditDecisionList *)v16 initWithColorGradeCategory:v15 song:0 clipCatalog:0 constrainedOverallDurationInfo:&v30 outroDuration:&v29 allowsNUp:disableNUp ^ 1u];
         [v4 addObject:v17];
       }
 
@@ -74,37 +74,37 @@
   return v18;
 }
 
-- (id)autoEditDecisionListsProducerForAssetCollection:(id)a3 displayAssets:(id)a4 movieHighlights:(id)a5 chapterCollection:(id)a6 targetOverallDurationInfo:(id *)a7
+- (id)autoEditDecisionListsProducerForAssetCollection:(id)collection displayAssets:(id)assets movieHighlights:(id)highlights chapterCollection:(id)chapterCollection targetOverallDurationInfo:(id *)info
 {
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  chapterCollectionCopy = chapterCollection;
+  highlightsCopy = highlights;
+  assetsCopy = assets;
+  collectionCopy = collection;
   v16 = [PXStorySongsAutoEditDecisionListsProducer alloc];
   configuration = self->_configuration;
-  v18 = [(PXStoryDefaultAutoEditDecisionListsProducerFactory *)self storyConfiguration];
-  v19 = *&a7->var1.var1.var3;
-  v23[2] = *&a7->var1.var1.var0;
+  storyConfiguration = [(PXStoryDefaultAutoEditDecisionListsProducerFactory *)self storyConfiguration];
+  v19 = *&info->var1.var1.var3;
+  v23[2] = *&info->var1.var1.var0;
   v23[3] = v19;
-  v23[4] = *&a7->var1.var2.var1;
-  v20 = *&a7->var1.var0.var1;
-  v23[0] = *&a7->var0;
+  v23[4] = *&info->var1.var2.var1;
+  v20 = *&info->var1.var0.var1;
+  v23[0] = *&info->var0;
   v23[1] = v20;
-  v21 = [(PXStorySongsAutoEditDecisionListsProducer *)v16 initWithAssetCollection:v15 displayAssets:v14 movieHighlights:v13 chapterCollection:v12 targetOverallDurationInfo:v23 configuration:configuration storyConfiguration:v18];
+  v21 = [(PXStorySongsAutoEditDecisionListsProducer *)v16 initWithAssetCollection:collectionCopy displayAssets:assetsCopy movieHighlights:highlightsCopy chapterCollection:chapterCollectionCopy targetOverallDurationInfo:v23 configuration:configuration storyConfiguration:storyConfiguration];
 
   return v21;
 }
 
-- (PXStoryDefaultAutoEditDecisionListsProducerFactory)initWithStoryConfiguration:(id)a3
+- (PXStoryDefaultAutoEditDecisionListsProducerFactory)initWithStoryConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = PXStoryDefaultAutoEditDecisionListsProducerFactory;
   v6 = [(PXStoryDefaultAutoEditDecisionListsProducerFactory *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_storyConfiguration, a3);
+    objc_storeStrong(&v6->_storyConfiguration, configuration);
     v8 = +[PXStoryAutoEditConfigurationFactory autoEditConfiguration];
     configuration = v7->_configuration;
     v7->_configuration = v8;

@@ -1,10 +1,10 @@
 @interface BWLearnedNRProcessorController
 + (void)initialize;
-- (BWLearnedNRProcessorController)initWithConfiguration:(id)a3;
-- (id)inputInferenceVideoFormatForAttachedMediaKey:(id)a3;
-- (int)enqueueInputForProcessing:(id)a3 delegate:(id)a4;
-- (int)prepareWithPixelBufferPoolProvider:(id)a3;
-- (uint64_t)_addInferenceType:(uint64_t)a3 outputVideoRequirements:;
+- (BWLearnedNRProcessorController)initWithConfiguration:(id)configuration;
+- (id)inputInferenceVideoFormatForAttachedMediaKey:(id)key;
+- (int)enqueueInputForProcessing:(id)processing delegate:(id)delegate;
+- (int)prepareWithPixelBufferPoolProvider:(id)provider;
+- (uint64_t)_addInferenceType:(uint64_t)type outputVideoRequirements:;
 - (uint64_t)_attachedMediaKeyForOutputFormat:(uint64_t)result;
 - (uint64_t)_configureInference;
 - (uint64_t)_inputFormat;
@@ -20,14 +20,14 @@
 - (uint64_t)_updateStateIfNeeded;
 - (void)cancelProcessing;
 - (void)dealloc;
-- (void)input:(id)a3 setInputFrame:(opaqueCMSampleBuffer *)a4;
+- (void)input:(id)input setInputFrame:(opaqueCMSampleBuffer *)frame;
 @end
 
 @implementation BWLearnedNRProcessorController
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -36,16 +36,16 @@
   }
 }
 
-- (BWLearnedNRProcessorController)initWithConfiguration:(id)a3
+- (BWLearnedNRProcessorController)initWithConfiguration:(id)configuration
 {
   v9.receiver = self;
   v9.super_class = BWLearnedNRProcessorController;
   v4 = [(BWLearnedNRProcessorController *)&v9 init];
   if (v4)
   {
-    if ([objc_msgSend(a3 "sensorConfigurationsByPortType")])
+    if ([objc_msgSend(configuration "sensorConfigurationsByPortType")])
     {
-      v4->_configuration = a3;
+      v4->_configuration = configuration;
       v6 = [[FigStateMachine alloc] initWithLabel:@"BWLearnedNRController state machine" stateCount:4 initialState:1 owner:v4];
       [(FigStateMachine *)v6 setPerformsAtomicStateTransitions:0];
       [(FigStateMachine *)v6 setLabel:@"Idle" forState:1];
@@ -60,9 +60,9 @@
       v4->_requestQueue = objc_alloc_init(MEMORY[0x1E695DF70]);
       v4->_inferenceConfigurationByInferenceType = objc_alloc_init(MEMORY[0x1E695DF90]);
       v7 = objc_autoreleasePoolPush();
-      v8 = [(BWLearnedNRProcessorController *)v4 _configureInference];
+      _configureInference = [(BWLearnedNRProcessorController *)v4 _configureInference];
       objc_autoreleasePoolPop(v7);
-      if (!v8)
+      if (!_configureInference)
       {
         return v4;
       }
@@ -94,9 +94,9 @@
   [(BWLearnedNRProcessorController *)self _serviceNextRequest];
 }
 
-- (id)inputInferenceVideoFormatForAttachedMediaKey:(id)a3
+- (id)inputInferenceVideoFormatForAttachedMediaKey:(id)key
 {
-  if (![a3 isEqualToString:@"PrimaryFormat"])
+  if (![key isEqualToString:@"PrimaryFormat"])
   {
     return 0;
   }
@@ -123,58 +123,58 @@
     return result;
   }
 
-  v4 = [(BWLearnedNRProcessorController *)v2 _inputFormat];
-  v33 = [(BWLearnedNRProcessorController *)v2 _quadraInputFormat];
-  v34 = [(BWLearnedNRProcessorController *)v2 _quadraZoomBasedInputFormat];
-  v5 = [(BWLearnedNRProcessorController *)v2 _landscapeCropInputFormat];
-  v36 = [(BWLearnedNRProcessorController *)v2 _portraitCropInputFormat];
-  v35 = [(BWLearnedNRProcessorController *)v2 _squareCropInputFormat];
-  v32 = [(BWLearnedNRProcessorController *)v2 _quadraUltraHighResolutionInputFormat];
+  _inputFormat = [(BWLearnedNRProcessorController *)v2 _inputFormat];
+  _quadraInputFormat = [(BWLearnedNRProcessorController *)v2 _quadraInputFormat];
+  _quadraZoomBasedInputFormat = [(BWLearnedNRProcessorController *)v2 _quadraZoomBasedInputFormat];
+  _landscapeCropInputFormat = [(BWLearnedNRProcessorController *)v2 _landscapeCropInputFormat];
+  _portraitCropInputFormat = [(BWLearnedNRProcessorController *)v2 _portraitCropInputFormat];
+  _squareCropInputFormat = [(BWLearnedNRProcessorController *)v2 _squareCropInputFormat];
+  _quadraUltraHighResolutionInputFormat = [(BWLearnedNRProcessorController *)v2 _quadraUltraHighResolutionInputFormat];
   [OUTLINED_FUNCTION_12_44() outputFormat];
   v6 = OUTLINED_FUNCTION_10_29();
   [BWLearnedNRProcessorController _attachedMediaKeyForOutputFormat:v6];
-  v7 = [OUTLINED_FUNCTION_11_47() outputFormat];
-  v8 = lnrpc_inferenceVideoRequirementForVideoFormat(v1, v7);
+  outputFormat = [OUTLINED_FUNCTION_11_47() outputFormat];
+  v8 = lnrpc_inferenceVideoRequirementForVideoFormat(v1, outputFormat);
   [OUTLINED_FUNCTION_12_44() zoomBasedOutputFormat];
   v9 = OUTLINED_FUNCTION_10_29();
   [BWLearnedNRProcessorController _attachedMediaKeyForOutputFormat:v9];
-  v10 = [OUTLINED_FUNCTION_11_47() zoomBasedOutputFormat];
-  v31 = lnrpc_inferenceVideoRequirementForVideoFormat(v1, v10);
+  zoomBasedOutputFormat = [OUTLINED_FUNCTION_11_47() zoomBasedOutputFormat];
+  v31 = lnrpc_inferenceVideoRequirementForVideoFormat(v1, zoomBasedOutputFormat);
   [OUTLINED_FUNCTION_12_44() landscapeCropOutputFormat];
   v11 = OUTLINED_FUNCTION_10_29();
   [BWLearnedNRProcessorController _attachedMediaKeyForOutputFormat:v11];
-  v12 = [OUTLINED_FUNCTION_11_47() landscapeCropOutputFormat];
-  lnrpc_inferenceVideoRequirementForVideoFormat(v1, v12);
+  landscapeCropOutputFormat = [OUTLINED_FUNCTION_11_47() landscapeCropOutputFormat];
+  lnrpc_inferenceVideoRequirementForVideoFormat(v1, landscapeCropOutputFormat);
   [OUTLINED_FUNCTION_11_47() portraitCropOutputFormat];
   v13 = OUTLINED_FUNCTION_10_29();
   v14 = [BWLearnedNRProcessorController _attachedMediaKeyForOutputFormat:v13];
-  v15 = [OUTLINED_FUNCTION_12_44() portraitCropOutputFormat];
-  v16 = lnrpc_inferenceVideoRequirementForVideoFormat(v14, v15);
+  portraitCropOutputFormat = [OUTLINED_FUNCTION_12_44() portraitCropOutputFormat];
+  v16 = lnrpc_inferenceVideoRequirementForVideoFormat(v14, portraitCropOutputFormat);
   [OUTLINED_FUNCTION_12_44() squareCropOutputFormat];
   v17 = OUTLINED_FUNCTION_10_29();
   v18 = [BWLearnedNRProcessorController _attachedMediaKeyForOutputFormat:v17];
-  v19 = [OUTLINED_FUNCTION_12_44() squareCropOutputFormat];
-  v20 = lnrpc_inferenceVideoRequirementForVideoFormat(v18, v19);
+  squareCropOutputFormat = [OUTLINED_FUNCTION_12_44() squareCropOutputFormat];
+  v20 = lnrpc_inferenceVideoRequirementForVideoFormat(v18, squareCropOutputFormat);
   [OUTLINED_FUNCTION_12_44() ultraHighResolutionOutputFormat];
   v21 = OUTLINED_FUNCTION_10_29();
   v22 = [BWLearnedNRProcessorController _attachedMediaKeyForOutputFormat:v21];
-  v23 = [OUTLINED_FUNCTION_12_44() ultraHighResolutionOutputFormat];
-  v24 = lnrpc_inferenceVideoRequirementForVideoFormat(v22, v23);
-  if (v4 || v5 || v36 || v35)
+  ultraHighResolutionOutputFormat = [OUTLINED_FUNCTION_12_44() ultraHighResolutionOutputFormat];
+  v24 = lnrpc_inferenceVideoRequirementForVideoFormat(v22, ultraHighResolutionOutputFormat);
+  if (_inputFormat || _landscapeCropInputFormat || _portraitCropInputFormat || _squareCropInputFormat)
   {
-    v25 = [MEMORY[0x1E695DF70] array];
-    v26 = v25;
-    if (v4)
+    array = [MEMORY[0x1E695DF70] array];
+    v26 = array;
+    if (_inputFormat)
     {
       if (!v8)
       {
         goto LABEL_36;
       }
 
-      [v25 addObject:v8];
+      [array addObject:v8];
     }
 
-    if (v5)
+    if (_landscapeCropInputFormat)
     {
       if (!v1)
       {
@@ -184,7 +184,7 @@
       [v26 addObject:v1];
     }
 
-    if (v36)
+    if (_portraitCropInputFormat)
     {
       if (!v16)
       {
@@ -194,7 +194,7 @@
       [v26 addObject:v16];
     }
 
-    if (v35)
+    if (_squareCropInputFormat)
     {
       if (!v20)
       {
@@ -211,21 +211,21 @@
     }
   }
 
-  if (v33 || v34 || v32)
+  if (_quadraInputFormat || _quadraZoomBasedInputFormat || _quadraUltraHighResolutionInputFormat)
   {
-    v27 = [MEMORY[0x1E695DF70] array];
-    v28 = v27;
-    if (v33)
+    array2 = [MEMORY[0x1E695DF70] array];
+    v28 = array2;
+    if (_quadraInputFormat)
     {
       if (!v8)
       {
         goto LABEL_36;
       }
 
-      [v27 addObject:v8];
+      [array2 addObject:v8];
     }
 
-    if (v34)
+    if (_quadraZoomBasedInputFormat)
     {
       if (!v31)
       {
@@ -235,7 +235,7 @@
       [v28 addObject:?];
     }
 
-    if (!v32)
+    if (!_quadraUltraHighResolutionInputFormat)
     {
       goto LABEL_32;
     }
@@ -261,9 +261,9 @@ LABEL_36:
 
 LABEL_33:
   v29 = *(v2 + 104);
-  v30 = [(BWLearnedNRProcessorController *)v2 _primaryInputFormat];
+  _primaryInputFormat = [(BWLearnedNRProcessorController *)v2 _primaryInputFormat];
 
-  return [v29 prepareForInputVideoFormat:v30 attachedMediaKey:@"PrimaryFormat"];
+  return [v29 prepareForInputVideoFormat:_primaryInputFormat attachedMediaKey:@"PrimaryFormat"];
 }
 
 - (uint64_t)_attachedMediaKeyForOutputFormat:(uint64_t)result
@@ -277,32 +277,32 @@ LABEL_33:
 
     else
     {
-      v1 = [OUTLINED_FUNCTION_20_25() zoomBasedOutputFormat];
-      if (OUTLINED_FUNCTION_19_31(v1))
+      zoomBasedOutputFormat = [OUTLINED_FUNCTION_20_25() zoomBasedOutputFormat];
+      if (OUTLINED_FUNCTION_19_31(zoomBasedOutputFormat))
       {
         return 0x1F219ED30;
       }
 
       else
       {
-        v2 = [OUTLINED_FUNCTION_20_25() landscapeCropOutputFormat];
-        if (OUTLINED_FUNCTION_19_31(v2))
+        landscapeCropOutputFormat = [OUTLINED_FUNCTION_20_25() landscapeCropOutputFormat];
+        if (OUTLINED_FUNCTION_19_31(landscapeCropOutputFormat))
         {
           return 0x1F219ED50;
         }
 
         else
         {
-          v3 = [OUTLINED_FUNCTION_20_25() portraitCropOutputFormat];
-          if (OUTLINED_FUNCTION_19_31(v3))
+          portraitCropOutputFormat = [OUTLINED_FUNCTION_20_25() portraitCropOutputFormat];
+          if (OUTLINED_FUNCTION_19_31(portraitCropOutputFormat))
           {
             return 0x1F219ED70;
           }
 
           else
           {
-            v4 = [OUTLINED_FUNCTION_20_25() squareCropOutputFormat];
-            if (OUTLINED_FUNCTION_19_31(v4))
+            squareCropOutputFormat = [OUTLINED_FUNCTION_20_25() squareCropOutputFormat];
+            if (OUTLINED_FUNCTION_19_31(squareCropOutputFormat))
             {
               return 0x1F219ED90;
             }
@@ -320,15 +320,15 @@ LABEL_33:
   return result;
 }
 
-- (uint64_t)_addInferenceType:(uint64_t)a3 outputVideoRequirements:
+- (uint64_t)_addInferenceType:(uint64_t)type outputVideoRequirements:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v5 = -[BWLearnedNRInferenceConfiguration initWithMetalCommandQueue:sensorConfigurationsByPortType:inferenceType:outputVideoRequirements:]([BWLearnedNRInferenceConfiguration alloc], "initWithMetalCommandQueue:sensorConfigurationsByPortType:inferenceType:outputVideoRequirements:", [a1[8] metalCommandQueue], objc_msgSend(a1[8], "sensorConfigurationsByPortType"), a2, a3);
-  v6 = [a1[13] addInferenceOfType:a2 version:BWInferenceVersionMakeMajor(1) & 0xFFFFFFFFFFFFLL configuration:v5];
+  v5 = -[BWLearnedNRInferenceConfiguration initWithMetalCommandQueue:sensorConfigurationsByPortType:inferenceType:outputVideoRequirements:]([BWLearnedNRInferenceConfiguration alloc], "initWithMetalCommandQueue:sensorConfigurationsByPortType:inferenceType:outputVideoRequirements:", [self[8] metalCommandQueue], objc_msgSend(self[8], "sensorConfigurationsByPortType"), a2, type);
+  v6 = [self[13] addInferenceOfType:a2 version:BWInferenceVersionMakeMajor(1) & 0xFFFFFFFFFFFFLL configuration:v5];
   if (v6)
   {
     FigDebugAssert3();
@@ -336,7 +336,7 @@ LABEL_33:
 
   else
   {
-    [a1[14] setObject:v5 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", a2)}];
+    [self[14] setObject:v5 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInt:", a2)}];
   }
 
   return v6;
@@ -456,9 +456,9 @@ LABEL_33:
   return result;
 }
 
-- (int)prepareWithPixelBufferPoolProvider:(id)a3
+- (int)prepareWithPixelBufferPoolProvider:(id)provider
 {
-  result = [(BWInferenceEngine *)self->_inferenceEngine prepareForInferenceWithFormatProvider:self pixelBufferPoolProvider:a3];
+  result = [(BWInferenceEngine *)self->_inferenceEngine prepareForInferenceWithFormatProvider:self pixelBufferPoolProvider:provider];
   if (!result)
   {
     self->_inferenceEnginePrepared = 1;
@@ -467,14 +467,14 @@ LABEL_33:
   return result;
 }
 
-- (int)enqueueInputForProcessing:(id)a3 delegate:(id)a4
+- (int)enqueueInputForProcessing:(id)processing delegate:(id)delegate
 {
   if (![(BWInferenceEngine *)self->_inferenceEngine isConfiguredForInference]|| !self->_inferenceEnginePrepared)
   {
     return -12780;
   }
 
-  v7 = [[BWLearnedNRRequest alloc] initWithInput:a3 delegate:a4];
+  v7 = [[BWLearnedNRRequest alloc] initWithInput:processing delegate:delegate];
   [(NSMutableArray *)self->_requestQueue addObject:v7];
 
   if ([(FigStateMachine *)self->_stateMachine currentState]== 1)
@@ -490,16 +490,16 @@ LABEL_33:
   if (result)
   {
     v1 = result;
-    v2 = [*(result + 88) delegate];
-    v3 = [*(v1 + 88) input];
+    delegate = [*(result + 88) delegate];
+    input = [*(v1 + 88) input];
     v4 = [*(v1 + 88) err];
 
     *(v1 + 88) = 0;
-    [v2 processorController:v1 didFinishProcessingInput:v3 err:v4];
+    [delegate processorController:v1 didFinishProcessingInput:input err:v4];
 
-    v5 = [*(v1 + 80) firstObject];
-    *(v1 + 88) = v5;
-    if (v5)
+    firstObject = [*(v1 + 80) firstObject];
+    *(v1 + 88) = firstObject;
+    if (firstObject)
     {
       [*(v1 + 80) removeObjectAtIndex:0];
       [objc_msgSend(*(v1 + 88) "input")];
@@ -517,15 +517,15 @@ LABEL_33:
   {
     v1 = result;
     v2 = *(result + 88);
-    v3 = [*(result + 72) currentState];
+    currentState = [*(result + 72) currentState];
     if (v2)
     {
-      if (v3 == 2)
+      if (currentState == 2)
       {
         v4 = 4;
       }
 
-      else if (v3 == 4)
+      else if (currentState == 4)
       {
         v4 = [*(v2 + 8) inputFrame] ? 8 : 4;
       }
@@ -768,9 +768,9 @@ LABEL_37:
   v112 = 170;
   v113 = 171;
 LABEL_38:
-  v121 = [v111 width];
-  v122 = [v111 height];
-  if (v121 != Width || v122 != Height)
+  width = [v111 width];
+  height = [v111 height];
+  if (width != Width || height != Height)
   {
     v2 = &OBJC_IVAR___BWAudioSourceNode__keepAudioSessionActiveOnStop;
 LABEL_77:
@@ -779,9 +779,9 @@ LABEL_77:
     goto LABEL_57;
   }
 
-  v124 = [v111 pixelFormat];
+  pixelFormat = [v111 pixelFormat];
   v2 = &OBJC_IVAR___BWAudioSourceNode__keepAudioSessionActiveOnStop;
-  if (v124 != CVPixelBufferGetPixelFormatType(v7))
+  if (pixelFormat != CVPixelBufferGetPixelFormatType(v7))
   {
     goto LABEL_77;
   }
@@ -871,24 +871,24 @@ LABEL_57:
   }
 
   v156 = [OUTLINED_FUNCTION_13_37() err];
-  v157 = [OUTLINED_FUNCTION_13_37() delegate];
-  v158 = [OUTLINED_FUNCTION_13_37() input];
-  v159 = v158;
+  delegate = [OUTLINED_FUNCTION_13_37() delegate];
+  input = [OUTLINED_FUNCTION_13_37() input];
+  v159 = input;
   if (v156)
   {
-    v165 = [v158 inputFrame];
-    v166 = [OUTLINED_FUNCTION_13_37() input];
+    inputFrame = [input inputFrame];
+    input2 = [OUTLINED_FUNCTION_13_37() input];
     v160 = [OUTLINED_FUNCTION_13_37() err];
-    v161 = v157;
+    v161 = delegate;
     v162 = v1;
-    v163 = v165;
-    v164 = v166;
+    v163 = inputFrame;
+    v164 = input2;
   }
 
   else
   {
     v160 = [OUTLINED_FUNCTION_13_37() err];
-    v161 = v157;
+    v161 = delegate;
     v162 = v1;
     v163 = v130;
     v164 = v159;
@@ -903,9 +903,9 @@ LABEL_57:
   return [(BWLearnedNRProcessorController *)v1 _updateStateIfNeeded];
 }
 
-- (void)input:(id)a3 setInputFrame:(opaqueCMSampleBuffer *)a4
+- (void)input:(id)input setInputFrame:(opaqueCMSampleBuffer *)frame
 {
-  [(BWLearnedNRRequest *)self->_currentRequest input:a3];
+  [(BWLearnedNRRequest *)self->_currentRequest input:input];
 
   [(BWLearnedNRProcessorController *)self _updateStateIfNeeded];
 }

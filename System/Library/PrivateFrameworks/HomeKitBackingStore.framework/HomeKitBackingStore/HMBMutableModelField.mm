@@ -1,36 +1,36 @@
 @interface HMBMutableModelField
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HMBMutableModelField
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[HMBModelField allocWithZone:?], "initWithClass:", [(HMBModelField *)self classObj]];
   [(HMBModelField *)v4 setOptional:[(HMBModelField *)self isOptional]];
   [(HMBModelField *)v4 setLoggingVisibility:[(HMBModelField *)self loggingVisibility]];
-  v5 = [(HMBModelField *)self defaultValue];
-  [(HMBModelField *)v4 setDefaultValue:v5];
+  defaultValue = [(HMBModelField *)self defaultValue];
+  [(HMBModelField *)v4 setDefaultValue:defaultValue];
 
-  v6 = [(HMBModelField *)self readonlyVersion];
-  [(HMBModelField *)v4 setReadonlyVersion:v6];
+  readonlyVersion = [(HMBModelField *)self readonlyVersion];
+  [(HMBModelField *)v4 setReadonlyVersion:readonlyVersion];
 
-  v7 = [(HMBModelField *)self unavailableVersion];
-  [(HMBModelField *)v4 setUnavailableVersion:v7];
+  unavailableVersion = [(HMBModelField *)self unavailableVersion];
+  [(HMBModelField *)v4 setUnavailableVersion:unavailableVersion];
 
-  v8 = [(HMBModelField *)self externalRecordField];
-  [(HMBModelField *)v4 setExternalRecordField:v8];
+  externalRecordField = [(HMBModelField *)self externalRecordField];
+  [(HMBModelField *)v4 setExternalRecordField:externalRecordField];
 
   [(HMBModelField *)v4 setConformsToHMBModelNativeCKWrapper:[(HMBModelField *)self conformsToHMBModelNativeCKWrapper]];
   [(HMBModelField *)v4 setExcludeFromCloudStorage:[(HMBModelField *)self excludeFromCloudStorage]];
-  v9 = [(HMBModelField *)self encodeBlock];
-  [(HMBModelField *)v4 setEncodeBlock:v9];
+  encodeBlock = [(HMBModelField *)self encodeBlock];
+  [(HMBModelField *)v4 setEncodeBlock:encodeBlock];
 
-  v10 = [(HMBModelField *)self decodeBlock];
-  [(HMBModelField *)v4 setDecodeBlock:v10];
+  decodeBlock = [(HMBModelField *)self decodeBlock];
+  [(HMBModelField *)v4 setDecodeBlock:decodeBlock];
 
-  v11 = [(HMBModelField *)self descriptionBlock];
-  [(HMBModelField *)v4 setDescriptionBlock:v11];
+  descriptionBlock = [(HMBModelField *)self descriptionBlock];
+  [(HMBModelField *)v4 setDescriptionBlock:descriptionBlock];
 
   return v4;
 }

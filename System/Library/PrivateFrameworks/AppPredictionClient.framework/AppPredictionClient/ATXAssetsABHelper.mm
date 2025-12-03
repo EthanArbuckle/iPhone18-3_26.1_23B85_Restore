@@ -1,22 +1,22 @@
 @interface ATXAssetsABHelper
-+ (BOOL)isDefaultGroupIdentifier:(id)a3;
++ (BOOL)isDefaultGroupIdentifier:(id)identifier;
 + (id)decDeviceId;
-+ (unint64_t)cachedSaltedIndex:(unint64_t)a3;
-+ (unint64_t)saltedIndex:(unint64_t)a3;
++ (unint64_t)cachedSaltedIndex:(unint64_t)index;
++ (unint64_t)saltedIndex:(unint64_t)index;
 + (unsigned)indexForDevice;
 + (void)initialize;
-+ (void)setIndexProviderForDevice:(id)a3;
-+ (void)setStaticIndexForDevice:(unsigned __int8)a3;
-- (ATXAssetsABHelper)initWithAssetContents:(id)a3;
-- (ATXAssetsABHelper)initWithAssetContents:(id)a3 specifiedABGroup:(id)a4 indexForDevice:(unsigned __int8)a5;
-- (ATXAssetsABHelper)initWithAssetsForResource:(id)a3 ofType:(id)a4 specifiedABGroup:(id)a5;
++ (void)setIndexProviderForDevice:(id)device;
++ (void)setStaticIndexForDevice:(unsigned __int8)device;
+- (ATXAssetsABHelper)initWithAssetContents:(id)contents;
+- (ATXAssetsABHelper)initWithAssetContents:(id)contents specifiedABGroup:(id)group indexForDevice:(unsigned __int8)device;
+- (ATXAssetsABHelper)initWithAssetsForResource:(id)resource ofType:(id)type specifiedABGroup:(id)group;
 @end
 
 @implementation ATXAssetsABHelper
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     +[ATXAssetsABHelper setDefaultDeviceIndexPolicy];
@@ -40,21 +40,21 @@
   return v2;
 }
 
-- (ATXAssetsABHelper)initWithAssetContents:(id)a3
+- (ATXAssetsABHelper)initWithAssetContents:(id)contents
 {
-  v4 = a3;
-  v5 = [(ATXAssetsABHelper *)self initWithAssetContents:v4 indexForDevice:+[ATXAssetsABHelper indexForDevice]];
+  contentsCopy = contents;
+  v5 = [(ATXAssetsABHelper *)self initWithAssetContents:contentsCopy indexForDevice:+[ATXAssetsABHelper indexForDevice]];
 
   return v5;
 }
 
-- (ATXAssetsABHelper)initWithAssetContents:(id)a3 specifiedABGroup:(id)a4 indexForDevice:(unsigned __int8)a5
+- (ATXAssetsABHelper)initWithAssetContents:(id)contents specifiedABGroup:(id)group indexForDevice:(unsigned __int8)device
 {
-  v5 = a5;
-  v7 = a3;
+  deviceCopy = device;
+  contentsCopy = contents;
   v75 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  contentsCopy2 = contents;
+  groupCopy = group;
   v67.receiver = self;
   v67.super_class = ATXAssetsABHelper;
   v11 = [(ATXAssetsABHelper *)&v67 init];
@@ -64,18 +64,18 @@
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v12 = v9;
+    v12 = contentsCopy2;
     v13 = [v12 countByEnumeratingWithState:&v63 objects:v74 count:16];
     v59 = v12;
     if (v13)
     {
       v14 = v13;
-      v55 = v7;
-      v56 = v9;
+      v55 = contentsCopy;
+      v56 = contentsCopy2;
       v15 = 0;
       v62 = 0;
       v16 = *v64;
-      v57 = v5;
+      v57 = deviceCopy;
       v17 = MEMORY[0x1E69E9C10];
       v18 = v12;
       v58 = v11;
@@ -89,7 +89,7 @@ LABEL_4:
         }
 
         v20 = *(*(&v63 + 1) + 8 * v19);
-        if (v10 && [v10 isEqualToString:*(*(&v63 + 1) + 8 * v19)])
+        if (groupCopy && [groupCopy isEqualToString:*(*(&v63 + 1) + 8 * v19)])
         {
           v21 = v20;
 
@@ -108,8 +108,8 @@ LABEL_4:
         {
           if (v62)
           {
-            v22 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v22 handleFailureInMethod:a2 object:v11 file:@"ATXAssetsABHelper.m" lineNumber:99 description:{@"Detected more than one Default* ABGroup. Second was %@", v20}];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler handleFailureInMethod:a2 object:v11 file:@"ATXAssetsABHelper.m" lineNumber:99 description:{@"Detected more than one Default* ABGroup. Second was %@", v20}];
 
             if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
             {
@@ -189,14 +189,14 @@ LABEL_36:
           goto LABEL_40;
         }
 
-        v43 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v11 = v58;
-        [v43 handleFailureInMethod:a2 object:v58 file:@"ATXAssetsABHelper.m" lineNumber:138 description:{@"ABGroup %@ contains no supported activation criteria: %@", v20, v24}];
+        [currentHandler2 handleFailureInMethod:a2 object:v58 file:@"ATXAssetsABHelper.m" lineNumber:138 description:{@"ABGroup %@ contains no supported activation criteria: %@", v20, v24}];
 
         v42 = 0;
 LABEL_40:
 
-        if (v10)
+        if (groupCopy)
         {
           v15 = v60;
           goto LABEL_29;
@@ -208,8 +208,8 @@ LABEL_40:
           v45 = v62;
           v48 = v20;
 
-          v7 = v55;
-          v9 = v56;
+          contentsCopy = v55;
+          contentsCopy2 = v56;
           v15 = v60;
           if (v48)
           {
@@ -235,7 +235,7 @@ LABEL_30:
             goto LABEL_4;
           }
 
-          if (v10)
+          if (groupCopy)
           {
             v45 = v62;
             if (v15)
@@ -246,18 +246,18 @@ LABEL_30:
               v11->_abGroupContents = v46;
 
               v48 = 0;
-              v9 = v56;
+              contentsCopy2 = v56;
               goto LABEL_66;
             }
 
-            v7 = v55;
-            v9 = v56;
+            contentsCopy = v55;
+            contentsCopy2 = v56;
             goto LABEL_53;
           }
 
           v45 = v62;
-          v7 = v55;
-          v9 = v56;
+          contentsCopy = v55;
+          contentsCopy2 = v56;
           if (v62)
           {
             goto LABEL_56;
@@ -273,9 +273,9 @@ LABEL_30:
 
       v31 = [v26 objectForKeyedSubscript:@"SaltedIndexCriterion"];
       v32 = [v31 objectForKeyedSubscript:@"salt"];
-      v33 = [v32 unsignedIntegerValue];
+      unsignedIntegerValue = [v32 unsignedIntegerValue];
 
-      v34 = v33;
+      v34 = unsignedIntegerValue;
       v18 = v59;
       v35 = [ATXAssetsABHelper cachedSaltedIndex:v34];
       v36 = v35 < v30.location || v35 - v30.location >= v30.length;
@@ -284,7 +284,7 @@ LABEL_30:
 
     v45 = 0;
     v15 = 0;
-    if (!v10)
+    if (!groupCopy)
     {
       goto LABEL_63;
     }
@@ -292,7 +292,7 @@ LABEL_30:
 LABEL_53:
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
     {
-      [ATXAssetsABHelper initWithAssetContents:v10 specifiedABGroup:? indexForDevice:?];
+      [ATXAssetsABHelper initWithAssetContents:groupCopy specifiedABGroup:? indexForDevice:?];
     }
 
     v15 = 0;
@@ -333,7 +333,7 @@ LABEL_63:
       v52 = v11->_groupIdentifier;
       v11->_groupIdentifier = 0;
 
-      objc_storeStrong(&v11->_abGroupContents, v7);
+      objc_storeStrong(&v11->_abGroupContents, contentsCopy);
       v45 = 0;
       v48 = 0;
     }
@@ -345,30 +345,30 @@ LABEL_66:
   return v11;
 }
 
-- (ATXAssetsABHelper)initWithAssetsForResource:(id)a3 ofType:(id)a4 specifiedABGroup:(id)a5
+- (ATXAssetsABHelper)initWithAssetsForResource:(id)resource ofType:(id)type specifiedABGroup:(id)group
 {
-  v8 = a5;
-  v9 = [ATXAssets2 rawDictionaryForResource:a3 ofType:a4];
+  groupCopy = group;
+  v9 = [ATXAssets2 rawDictionaryForResource:resource ofType:type];
   if (v9)
   {
-    self = [(ATXAssetsABHelper *)self initWithAssetContents:v9 specifiedABGroup:v8 indexForDevice:+[ATXAssetsABHelper indexForDevice]];
-    v10 = self;
+    self = [(ATXAssetsABHelper *)self initWithAssetContents:v9 specifiedABGroup:groupCopy indexForDevice:+[ATXAssetsABHelper indexForDevice]];
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-+ (unint64_t)cachedSaltedIndex:(unint64_t)a3
++ (unint64_t)cachedSaltedIndex:(unint64_t)index
 {
   result = cachedSaltedIndex__index;
   if (cachedSaltedIndex__index >= 0x3E8)
   {
-    cachedSaltedIndex__index = [ATXAssetsABHelper saltedIndex:a3];
+    cachedSaltedIndex__index = [ATXAssetsABHelper saltedIndex:index];
     v4 = [ATXAggregateKeys keyWithSubkey:@"ab.salted_index"];
     [ATXAssetsAggregateLogger logKey:v4 replaceScalarValueWith:cachedSaltedIndex__index];
 
@@ -378,7 +378,7 @@ LABEL_66:
   return result;
 }
 
-+ (unint64_t)saltedIndex:(unint64_t)a3
++ (unint64_t)saltedIndex:(unint64_t)index
 {
   v4 = +[ATXAssetsABHelper decDeviceId];
   v5 = v4;
@@ -393,7 +393,7 @@ LABEL_66:
     do
     {
       v9 = v8;
-      v10 = 0xFF51AFD7ED558CCDLL * (*v6 ^ a3 ^ ((*v6 ^ a3) >> 33));
+      v10 = 0xFF51AFD7ED558CCDLL * (*v6 ^ index ^ ((*v6 ^ index) >> 33));
       v7 += (0xC4CEB9FE1A85EC53 * (v10 ^ (v10 >> 33))) ^ ((0xC4CEB9FE1A85EC53 * (v10 ^ (v10 >> 33))) >> 33);
       v6 = &v14;
       v8 = 0;
@@ -411,13 +411,13 @@ LABEL_66:
   return v11;
 }
 
-+ (void)setStaticIndexForDevice:(unsigned __int8)a3
++ (void)setStaticIndexForDevice:(unsigned __int8)device
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __45__ATXAssetsABHelper_setStaticIndexForDevice___block_invoke;
   v3[3] = &__block_descriptor_33_e5_C8__0l;
-  v4 = a3;
+  deviceCopy = device;
   [ATXAssetsABHelper setIndexProviderForDevice:v3];
 }
 
@@ -426,17 +426,17 @@ LABEL_66:
   v2 = _deviceId;
   if (!_deviceId)
   {
-    v3 = [MEMORY[0x1E696AE30] processInfo];
-    v4 = [v3 processName];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    processName = [processInfo processName];
 
-    if ([v4 isEqualToString:@"duetexpertd"])
+    if ([processName isEqualToString:@"duetexpertd"])
     {
-      v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v6 = [v5 objectForKey:@"com.apple.proactive.abGroupDeviceId"];
+      standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+      v6 = [standardUserDefaults objectForKey:@"com.apple.proactive.abGroupDeviceId"];
 
       if (v6)
       {
-        [v5 removeObjectForKey:@"com.apple.proactive.abGroupDeviceId"];
+        [standardUserDefaults removeObjectForKey:@"com.apple.proactive.abGroupDeviceId"];
       }
     }
 
@@ -444,20 +444,20 @@ LABEL_66:
     v8 = [ATXAssetsPaths decDirectoryFile:@"com.apple.proactive.abGroupDeviceId"];
     v9 = [v7 initWithBasePath:v8];
 
-    v10 = [v9 UUID];
-    v11 = v10;
-    if (v10)
+    uUID = [v9 UUID];
+    v11 = uUID;
+    if (uUID)
     {
-      v12 = v10;
+      uUID2 = uUID;
     }
 
     else
     {
-      v12 = [MEMORY[0x1E696AFB0] UUID];
+      uUID2 = [MEMORY[0x1E696AFB0] UUID];
     }
 
     v13 = _deviceId;
-    _deviceId = v12;
+    _deviceId = uUID2;
 
     v2 = _deviceId;
   }
@@ -465,15 +465,15 @@ LABEL_66:
   return v2;
 }
 
-+ (BOOL)isDefaultGroupIdentifier:(id)a3
++ (BOOL)isDefaultGroupIdentifier:(id)identifier
 {
-  if (!a3)
+  if (!identifier)
   {
     return 1;
   }
 
-  v3 = [a3 lowercaseString];
-  v4 = [v3 hasPrefix:@"default"];
+  lowercaseString = [identifier lowercaseString];
+  v4 = [lowercaseString hasPrefix:@"default"];
 
   return v4;
 }
@@ -513,11 +513,11 @@ uint64_t __48__ATXAssetsABHelper_setDefaultDeviceIndexPolicy__block_invoke()
   return v3;
 }
 
-+ (void)setIndexProviderForDevice:(id)a3
++ (void)setIndexProviderForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   pthread_mutex_lock(&getIndexForDeviceLock);
-  v4 = MEMORY[0x1BFB5BA40](v3);
+  v4 = MEMORY[0x1BFB5BA40](deviceCopy);
 
   v5 = getIndexForDevice;
   getIndexForDevice = v4;

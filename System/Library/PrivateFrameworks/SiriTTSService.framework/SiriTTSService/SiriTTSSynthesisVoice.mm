@@ -1,16 +1,16 @@
 @interface SiriTTSSynthesisVoice
-+ (int)voiceEnumForName:(id)a3;
-- (SiriTTSSynthesisVoice)initWithLanguage:(id)a3 name:(id)a4;
++ (int)voiceEnumForName:(id)name;
+- (SiriTTSSynthesisVoice)initWithLanguage:(id)language name:(id)name;
 - (int64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SiriTTSSynthesisVoice
 
-- (SiriTTSSynthesisVoice)initWithLanguage:(id)a3 name:(id)a4
+- (SiriTTSSynthesisVoice)initWithLanguage:(id)language name:(id)name
 {
   sub_1B1C2CB58();
-  if (a4)
+  if (name)
   {
     sub_1B1C2CB58();
   }
@@ -18,22 +18,22 @@
   return SynthesisVoice.init(language:name:)();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
+  coderCopy = coder;
+  selfCopy = self;
   sub_1B1A9D444();
 }
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1B1B1476C();
 
   return v3;
 }
 
-+ (int)voiceEnumForName:(id)a3
++ (int)voiceEnumForName:(id)name
 {
   v3 = sub_1B1C2CB58();
   v4 = static SynthesisVoice.voiceEnum(forName:)(v3);

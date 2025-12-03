@@ -1,15 +1,15 @@
 @interface HealthRecordsSupportedStateChangeListener
 - (_TtC15HealthRecordsUI41HealthRecordsSupportedStateChangeListener)init;
-- (void)healthRecordsStore:(id)a3 healthRecordsSupportedDidChangeTo:(BOOL)a4;
+- (void)healthRecordsStore:(id)store healthRecordsSupportedDidChangeTo:(BOOL)to;
 @end
 
 @implementation HealthRecordsSupportedStateChangeListener
 
-- (void)healthRecordsStore:(id)a3 healthRecordsSupportedDidChangeTo:(BOOL)a4
+- (void)healthRecordsStore:(id)store healthRecordsSupportedDidChangeTo:(BOOL)to
 {
-  v6 = a3;
-  v7 = self;
-  sub_1D12D6D20(v6, a4);
+  storeCopy = store;
+  selfCopy = self;
+  sub_1D12D6D20(storeCopy, to);
 }
 
 - (_TtC15HealthRecordsUI41HealthRecordsSupportedStateChangeListener)init

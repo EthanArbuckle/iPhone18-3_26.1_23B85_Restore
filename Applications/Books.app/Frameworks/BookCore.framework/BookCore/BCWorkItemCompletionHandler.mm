@@ -1,19 +1,19 @@
 @interface BCWorkItemCompletionHandler
-+ (id)newCompletionHandlerWithWorkItem:(id)a3 onQueue:(id)a4;
++ (id)newCompletionHandlerWithWorkItem:(id)item onQueue:(id)queue;
 - (void)dealloc;
 - (void)workComplete;
 @end
 
 @implementation BCWorkItemCompletionHandler
 
-+ (id)newCompletionHandlerWithWorkItem:(id)a3 onQueue:(id)a4
++ (id)newCompletionHandlerWithWorkItem:(id)item onQueue:(id)queue
 {
-  v5 = a4;
-  v6 = a3;
+  queueCopy = queue;
+  itemCopy = item;
   v7 = objc_alloc_init(BCWorkItemCompletionHandler);
-  [(BCWorkItemCompletionHandler *)v7 setWorkQueue:v5];
+  [(BCWorkItemCompletionHandler *)v7 setWorkQueue:queueCopy];
 
-  [(BCWorkItemCompletionHandler *)v7 setWorkItem:v6];
+  [(BCWorkItemCompletionHandler *)v7 setWorkItem:itemCopy];
   return v7;
 }
 
@@ -39,8 +39,8 @@
 {
   if ([(BCWorkItemCompletionHandler *)self completionCount])
   {
-    v3 = BCImageCacheLog();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
+    workQueue = BCImageCacheLog();
+    if (os_log_type_enabled(workQueue, OS_LOG_TYPE_ERROR))
     {
       sub_1E7058();
     }
@@ -48,9 +48,9 @@
 
   else
   {
-    v3 = [(BCWorkItemCompletionHandler *)self workQueue];
-    v4 = [(BCWorkItemCompletionHandler *)self workItem];
-    [v3 workComplete:v4];
+    workQueue = [(BCWorkItemCompletionHandler *)self workQueue];
+    workItem = [(BCWorkItemCompletionHandler *)self workItem];
+    [workQueue workComplete:workItem];
   }
 
   [(BCWorkItemCompletionHandler *)self setCompletionCount:[(BCWorkItemCompletionHandler *)self completionCount]+ 1];

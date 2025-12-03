@@ -1,34 +1,34 @@
 @interface PCParkedCarLocationPredictor
-+ (BOOL)isCarLocation:(id)a3 awayFromHomeLocations:(id)a4;
-+ (BOOL)isUserCloseToCarWithDistance:(double)a3;
-+ (id)createParkedCarLocationPredictionWithCar:(id)a3 probability:(double)a4 distanceFromUser:(double)a5 candidateVisits:(id)a6 currentTime:(double)a7;
-+ (id)createPredictedContextDateIntervalAtTime:(double)a3 fromCandidateVisits:(id)a4 distanceFromUser:(double)a5;
-+ (void)predictParkedCarLocation:(id)a3 locationHistory:(id)a4 locationsOfInterest:(id)a5 candidateVisits:(id)a6 atTime:(double)a7 locations:(id *)a8;
++ (BOOL)isCarLocation:(id)location awayFromHomeLocations:(id)locations;
++ (BOOL)isUserCloseToCarWithDistance:(double)distance;
++ (id)createParkedCarLocationPredictionWithCar:(id)car probability:(double)probability distanceFromUser:(double)user candidateVisits:(id)visits currentTime:(double)time;
++ (id)createPredictedContextDateIntervalAtTime:(double)time fromCandidateVisits:(id)visits distanceFromUser:(double)user;
++ (void)predictParkedCarLocation:(id)location locationHistory:(id)history locationsOfInterest:(id)interest candidateVisits:(id)visits atTime:(double)time locations:(id *)locations;
 @end
 
 @implementation PCParkedCarLocationPredictor
 
-+ (void)predictParkedCarLocation:(id)a3 locationHistory:(id)a4 locationsOfInterest:(id)a5 candidateVisits:(id)a6 atTime:(double)a7 locations:(id *)a8
++ (void)predictParkedCarLocation:(id)location locationHistory:(id)history locationsOfInterest:(id)interest candidateVisits:(id)visits atTime:(double)time locations:(id *)locations
 {
   v156 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  *a8 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v14 && ([v14 hasLocation] & 1) != 0)
+  locationCopy = location;
+  historyCopy = history;
+  interestCopy = interest;
+  visitsCopy = visits;
+  *locations = objc_alloc_init(MEMORY[0x1E695DF70]);
+  if (locationCopy && ([locationCopy hasLocation] & 1) != 0)
   {
-    v106 = a1;
-    v18 = [PCLocationUtils currentLocationWithLocationHistory:v15 currentTime:a7];
+    selfCopy = self;
+    v18 = [PCLocationUtils currentLocationWithLocationHistory:historyCopy currentTime:time];
     if (v18)
     {
-      v107 = a8;
+      locationsCopy = locations;
       v19 = [PCLatLon alloc];
-      v20 = [v14 location];
-      [v20 locationLatitudeDeg];
+      location = [locationCopy location];
+      [location locationLatitudeDeg];
       v22 = v21;
-      v23 = [v14 location];
-      [v23 locationLongitudeDeg];
+      location2 = [locationCopy location];
+      [location2 locationLongitudeDeg];
       v25 = [(PCLatLon *)v19 initWithLatitude:v22 longitude:v24];
 
       [v18 distanceTo:v25];
@@ -51,17 +51,17 @@
 
         v104 = v25;
         v105 = v18;
-        v115 = v17;
-        v123 = v15;
+        v115 = visitsCopy;
+        v123 = historyCopy;
 
         v60 = _plc_log_get_normal_handle(PCLogCategoryParkedCarPredictor);
         if (os_log_type_enabled(v60, OS_LOG_TYPE_DEFAULT))
         {
-          v61 = [v14 location];
-          [v61 locationLatitudeDeg];
+          location3 = [locationCopy location];
+          [location3 locationLatitudeDeg];
           v63 = v62;
-          v64 = [v14 location];
-          [v64 locationLongitudeDeg];
+          location4 = [locationCopy location];
+          [location4 locationLongitudeDeg];
           *buf = 134545921;
           v147 = v63;
           v148 = 2053;
@@ -69,17 +69,17 @@
           _os_log_impl(&dword_1CEE74000, v60, OS_LOG_TYPE_DEFAULT, "parked car location, lat, %{sensitive}.2f, lon, %{sensitive}.2f", buf, 0x16u);
         }
 
-        v111 = v14;
+        v111 = locationCopy;
 
-        v66 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v129 = 0u;
         v130 = 0u;
         v131 = 0u;
         v132 = 0u;
-        v119 = v16;
-        v67 = v16;
+        v119 = interestCopy;
+        v67 = interestCopy;
         v68 = [v67 countByEnumeratingWithState:&v129 objects:v152 count:16];
-        obj = v66;
+        obj = array;
         if (v68)
         {
           v69 = v68;
@@ -97,25 +97,25 @@
               if ([v72 placeType] == 1)
               {
                 v73 = [PCLatLon alloc];
-                v74 = [v72 location];
-                [v74 locationLatitudeDeg];
+                location5 = [v72 location];
+                [location5 locationLatitudeDeg];
                 v76 = v75;
-                v77 = [v72 location];
-                [v77 locationLongitudeDeg];
+                location6 = [v72 location];
+                [location6 locationLongitudeDeg];
                 v79 = [(PCLatLon *)v73 initWithLatitude:v76 longitude:v78];
-                [v66 addObject:v79];
+                [array addObject:v79];
 
                 v80 = _plc_log_get_normal_handle(PCLogCategoryParkedCarPredictor);
                 if (os_log_type_enabled(v80, OS_LOG_TYPE_DEFAULT))
                 {
-                  v81 = [v72 location];
-                  [v81 locationLatitudeDeg];
+                  location7 = [v72 location];
+                  [location7 locationLatitudeDeg];
                   v83 = v82;
-                  v84 = [v72 location];
-                  [v84 locationLongitudeDeg];
+                  location8 = [v72 location];
+                  [location8 locationLongitudeDeg];
                   v86 = v85;
-                  v87 = [v72 loiIdentifier];
-                  v88 = [PCAlgorithmsCommonUtils uuidStringFromData:v87];
+                  loiIdentifier = [v72 loiIdentifier];
+                  v88 = [PCAlgorithmsCommonUtils uuidStringFromData:loiIdentifier];
                   *buf = 134546179;
                   v147 = v83;
                   v148 = 2053;
@@ -124,7 +124,7 @@
                   v151 = v88;
                   _os_log_impl(&dword_1CEE74000, v80, OS_LOG_TYPE_DEFAULT, "home location added, lat, %{sensitive}.2f, lon, %{sensitive}.2f, ID, %{sensitive}@", buf, 0x20u);
 
-                  v66 = obj;
+                  array = obj;
                 }
               }
             }
@@ -135,10 +135,10 @@
           while (v69);
         }
 
-        if ([v106 isUserCloseToCarWithDistance:v27])
+        if ([selfCopy isUserCloseToCarWithDistance:v27])
         {
           v25 = v104;
-          if ([v106 isCarLocation:v104 awayFromHomeLocations:v66])
+          if ([selfCopy isCarLocation:v104 awayFromHomeLocations:array])
           {
             v89 = 0.8;
           }
@@ -148,15 +148,15 @@
             v89 = 0.1;
           }
 
-          v14 = v111;
-          v17 = v115;
+          locationCopy = v111;
+          visitsCopy = v115;
         }
 
         else
         {
           v89 = 0.01;
-          v14 = v111;
-          v17 = v115;
+          locationCopy = v111;
+          visitsCopy = v115;
           v25 = v104;
         }
 
@@ -168,11 +168,11 @@
           _os_log_impl(&dword_1CEE74000, v91, OS_LOG_TYPE_DEFAULT, "probability will be, %f", buf, 0xCu);
         }
 
-        v92 = [PCParkedCarLocationPredictor createParkedCarLocationPredictionWithCar:v14 probability:v17 distanceFromUser:v89 candidateVisits:v27 currentTime:a7];
-        [*v107 addObject:v92];
+        v92 = [PCParkedCarLocationPredictor createParkedCarLocationPredictionWithCar:locationCopy probability:visitsCopy distanceFromUser:v89 candidateVisits:v27 currentTime:time];
+        [*locationsCopy addObject:v92];
         v93 = _plc_log_get_normal_handle(PCLogCategoryParkedCarPredictor);
-        v16 = v119;
-        v15 = v123;
+        interestCopy = v119;
+        historyCopy = v123;
         v18 = v105;
         if (os_log_type_enabled(v93, OS_LOG_TYPE_DEFAULT))
         {
@@ -180,12 +180,12 @@
           _os_log_impl(&dword_1CEE74000, v93, OS_LOG_TYPE_DEFAULT, "Predicting parked car location..", buf, 2u);
         }
 
-        if (*v107 && [*v107 count])
+        if (*locationsCopy && [*locationsCopy count])
         {
           v94 = _plc_log_get_normal_handle(PCLogCategoryParkedCarPredictor);
           if (os_log_type_enabled(v94, OS_LOG_TYPE_INFO))
           {
-            v95 = [*v107 count];
+            v95 = [*locationsCopy count];
             *buf = 134217984;
             v147 = v95;
             _os_log_impl(&dword_1CEE74000, v94, OS_LOG_TYPE_INFO, "--- Location Predictions (%lu) ---", buf, 0xCu);
@@ -195,7 +195,7 @@
           v128 = 0u;
           v125 = 0u;
           v126 = 0u;
-          v96 = *v107;
+          v96 = *locationsCopy;
           v97 = [v96 countByEnumeratingWithState:&v125 objects:v145 count:16];
           if (v97)
           {
@@ -210,12 +210,12 @@
                   objc_enumerationMutation(v96);
                 }
 
-                v101 = [PCLoggingUtils formattedStringForLocationPrediction:*(*(&v125 + 1) + 8 * j), v104];
+                v104 = [PCLoggingUtils formattedStringForLocationPrediction:*(*(&v125 + 1) + 8 * j), v104];
                 v102 = _plc_log_get_normal_handle(PCLogCategoryParkedCarPredictor);
                 if (os_log_type_enabled(v102, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138739971;
-                  v147 = v101;
+                  v147 = v104;
                   _os_log_impl(&dword_1CEE74000, v102, OS_LOG_TYPE_INFO, "Location Prediction: %{sensitive}@", buf, 0xCu);
                 }
               }
@@ -224,10 +224,10 @@
             }
 
             while (v98);
-            v14 = v111;
-            v17 = v115;
-            v16 = v119;
-            v15 = v123;
+            locationCopy = v111;
+            visitsCopy = v115;
+            interestCopy = v119;
+            historyCopy = v123;
             v25 = v104;
             v18 = v105;
           }
@@ -253,16 +253,16 @@
           _os_log_impl(&dword_1CEE74000, v28, OS_LOG_TYPE_DEFAULT, "%s, car very far, no prediction", buf, 0xCu);
         }
 
-        if (*v107 && [*v107 count])
+        if (*locationsCopy && [*locationsCopy count])
         {
-          v108 = v14;
-          v112 = v17;
-          v116 = v16;
-          v120 = v15;
+          v108 = locationCopy;
+          v112 = visitsCopy;
+          v116 = interestCopy;
+          v120 = historyCopy;
           v30 = _plc_log_get_normal_handle(PCLogCategoryParkedCarPredictor);
           if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
           {
-            v31 = [*v107 count];
+            v31 = [*locationsCopy count];
             *buf = 134217984;
             v147 = v31;
             _os_log_impl(&dword_1CEE74000, v30, OS_LOG_TYPE_INFO, "--- Location Predictions (%lu) ---", buf, 0xCu);
@@ -272,7 +272,7 @@
           v136 = 0u;
           v133 = 0u;
           v134 = 0u;
-          v32 = *v107;
+          v32 = *locationsCopy;
           v33 = [v32 countByEnumeratingWithState:&v133 objects:v153 count:16];
           obj = v32;
           if (v33)
@@ -302,10 +302,10 @@
             }
 
             while (v34);
-            v16 = v116;
-            v15 = v120;
-            v14 = v108;
-            v17 = v112;
+            interestCopy = v116;
+            historyCopy = v120;
+            locationCopy = v108;
+            visitsCopy = v112;
           }
         }
 
@@ -332,15 +332,15 @@
         _os_log_impl(&dword_1CEE74000, v48, OS_LOG_TYPE_DEFAULT, "%s, user location not available, no prediction", buf, 0xCu);
       }
 
-      if (*a8 && [*a8 count])
+      if (*locations && [*locations count])
       {
-        v114 = v17;
-        v118 = v16;
-        v122 = v15;
+        v114 = visitsCopy;
+        v118 = interestCopy;
+        v122 = historyCopy;
         v49 = _plc_log_get_normal_handle(PCLogCategoryParkedCarPredictor);
         if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
         {
-          v50 = [*a8 count];
+          v50 = [*locations count];
           *buf = 134217984;
           v147 = v50;
           _os_log_impl(&dword_1CEE74000, v49, OS_LOG_TYPE_INFO, "--- Location Predictions (%lu) ---", buf, 0xCu);
@@ -350,12 +350,12 @@
         v140 = 0u;
         v137 = 0u;
         v138 = 0u;
-        v25 = *a8;
+        v25 = *locations;
         v51 = [v25 countByEnumeratingWithState:&v137 objects:v154 count:16];
         if (v51)
         {
           v52 = v51;
-          v110 = v14;
+          v110 = locationCopy;
           v53 = *v138;
           do
           {
@@ -380,10 +380,10 @@
           }
 
           while (v52);
-          v16 = v118;
-          v15 = v122;
-          v14 = v110;
-          v17 = v114;
+          interestCopy = v118;
+          historyCopy = v122;
+          locationCopy = v110;
+          visitsCopy = v114;
         }
       }
 
@@ -409,15 +409,15 @@
       _os_log_impl(&dword_1CEE74000, v39, OS_LOG_TYPE_DEFAULT, "%s, parked car not found, no prediction", buf, 0xCu);
     }
 
-    if (*a8 && [*a8 count])
+    if (*locations && [*locations count])
     {
-      v113 = v17;
-      v117 = v16;
-      v121 = v15;
+      v113 = visitsCopy;
+      v117 = interestCopy;
+      v121 = historyCopy;
       v40 = _plc_log_get_normal_handle(PCLogCategoryParkedCarPredictor);
       if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
       {
-        v41 = [*a8 count];
+        v41 = [*locations count];
         *buf = 134217984;
         v147 = v41;
         _os_log_impl(&dword_1CEE74000, v40, OS_LOG_TYPE_INFO, "--- Location Predictions (%lu) ---", buf, 0xCu);
@@ -427,12 +427,12 @@
       v144 = 0u;
       v141 = 0u;
       v142 = 0u;
-      v18 = *a8;
+      v18 = *locations;
       v42 = [v18 countByEnumeratingWithState:&v141 objects:v155 count:16];
       if (v42)
       {
         v43 = v42;
-        v109 = v14;
+        v109 = locationCopy;
         v44 = *v142;
         do
         {
@@ -457,10 +457,10 @@
         }
 
         while (v43);
-        v16 = v117;
-        v15 = v121;
-        v14 = v109;
-        v17 = v113;
+        interestCopy = v117;
+        historyCopy = v121;
+        locationCopy = v109;
+        visitsCopy = v113;
       }
     }
 
@@ -478,19 +478,19 @@
   v103 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)isCarLocation:(id)a3 awayFromHomeLocations:(id)a4
++ (BOOL)isCarLocation:(id)location awayFromHomeLocations:(id)locations
 {
   v26 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v6 count])
+  locationCopy = location;
+  locationsCopy = locations;
+  if ([locationsCopy count])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v18 = v6;
-    v7 = v6;
+    v18 = locationsCopy;
+    v7 = locationsCopy;
     v8 = [v7 countByEnumeratingWithState:&v19 objects:v25 count:16];
     if (v8)
     {
@@ -506,7 +506,7 @@
             objc_enumerationMutation(v7);
           }
 
-          [v5 distanceTo:*(*(&v19 + 1) + 8 * i)];
+          [locationCopy distanceTo:*(*(&v19 + 1) + 8 * i)];
           v14 = v13;
           v15 = _plc_log_get_normal_handle(PCLogCategoryParkedCarPredictor);
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -530,7 +530,7 @@
       v11 = 1;
     }
 
-    v6 = v18;
+    locationsCopy = v18;
   }
 
   else
@@ -542,48 +542,48 @@
   return v11;
 }
 
-+ (BOOL)isUserCloseToCarWithDistance:(double)a3
++ (BOOL)isUserCloseToCarWithDistance:(double)distance
 {
   v9 = *MEMORY[0x1E69E9840];
   v4 = _plc_log_get_normal_handle(PCLogCategoryParkedCarPredictor);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134217984;
-    v8 = a3;
+    distanceCopy = distance;
     _os_log_impl(&dword_1CEE74000, v4, OS_LOG_TYPE_DEFAULT, "user distance from car, %f", &v7, 0xCu);
   }
 
-  result = a3 < 800.0;
+  result = distance < 800.0;
   v6 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-+ (id)createParkedCarLocationPredictionWithCar:(id)a3 probability:(double)a4 distanceFromUser:(double)a5 candidateVisits:(id)a6 currentTime:(double)a7
++ (id)createParkedCarLocationPredictionWithCar:(id)car probability:(double)probability distanceFromUser:(double)user candidateVisits:(id)visits currentTime:(double)time
 {
   v34[1] = *MEMORY[0x1E69E9840];
-  v11 = a6;
-  v12 = a3;
+  visitsCopy = visits;
+  carCopy = car;
   v13 = objc_alloc_init(PCPPredictedContextLocation);
   v14 = objc_alloc_init(PCPLocationOfInterest);
   [(PCPPredictedContextLocation *)v13 setLocationOfInterest:v14];
 
-  v15 = [MEMORY[0x1E696AFB0] UUID];
-  v16 = [PCAlgorithmsCommonUtils dataFromUUID:v15];
-  v17 = [(PCPPredictedContextLocation *)v13 locationOfInterest];
-  [v17 setLoiIdentifier:v16];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v16 = [PCAlgorithmsCommonUtils dataFromUUID:uUID];
+  locationOfInterest = [(PCPPredictedContextLocation *)v13 locationOfInterest];
+  [locationOfInterest setLoiIdentifier:v16];
 
-  v18 = [v12 location];
-  v19 = [(PCPPredictedContextLocation *)v13 locationOfInterest];
-  [v19 setLocation:v18];
+  location = [carCopy location];
+  locationOfInterest2 = [(PCPPredictedContextLocation *)v13 locationOfInterest];
+  [locationOfInterest2 setLocation:location];
 
   v20 = objc_alloc_init(PCPPredictedContext);
   [(PCPPredictedContextLocation *)v13 setPredictedContext:v20];
 
-  v21 = [(PCPPredictedContextLocation *)v13 predictedContext];
-  [v21 setProbability:a4];
+  predictedContext = [(PCPPredictedContextLocation *)v13 predictedContext];
+  [predictedContext setProbability:probability];
 
-  v22 = [(PCPPredictedContextLocation *)v13 predictedContext];
-  [v22 setContextType:1];
+  predictedContext2 = [(PCPPredictedContextLocation *)v13 predictedContext];
+  [predictedContext2 setContextType:1];
 
   v23 = objc_alloc_init(PCPSource);
   v24 = objc_opt_class();
@@ -591,29 +591,29 @@
   [(PCPSource *)v23 setIdentifier:v25];
 
   v26 = objc_alloc_init(PCPPredictedContextSource);
-  [(PCPPredictedContextSource *)v26 setParkedCar:v12];
+  [(PCPPredictedContextSource *)v26 setParkedCar:carCopy];
 
   [(PCPSource *)v23 setPredictedContextSource:v26];
   v34[0] = v23;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:1];
   v28 = [v27 mutableCopy];
-  v29 = [(PCPPredictedContextLocation *)v13 predictedContext];
-  [v29 setSources:v28];
+  predictedContext3 = [(PCPPredictedContextLocation *)v13 predictedContext];
+  [predictedContext3 setSources:v28];
 
-  v30 = [PCParkedCarLocationPredictor createPredictedContextDateIntervalAtTime:v11 fromCandidateVisits:a7 distanceFromUser:a5];
+  v30 = [PCParkedCarLocationPredictor createPredictedContextDateIntervalAtTime:visitsCopy fromCandidateVisits:time distanceFromUser:user];
 
-  v31 = [(PCPPredictedContextLocation *)v13 predictedContext];
-  [v31 setDateInterval:v30];
+  predictedContext4 = [(PCPPredictedContextLocation *)v13 predictedContext];
+  [predictedContext4 setDateInterval:v30];
 
   v32 = *MEMORY[0x1E69E9840];
 
   return v13;
 }
 
-+ (id)createPredictedContextDateIntervalAtTime:(double)a3 fromCandidateVisits:(id)a4 distanceFromUser:(double)a5
++ (id)createPredictedContextDateIntervalAtTime:(double)time fromCandidateVisits:(id)visits distanceFromUser:(double)user
 {
   v61 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  visitsCopy = visits;
   v8 = objc_alloc_init(PCPPredictedContextDateInterval);
   v9 = objc_alloc_init(PCPPredictedContextDate);
   [(PCPPredictedContextDateInterval *)v8 setStartDate:v9];
@@ -621,14 +621,14 @@
   v10 = objc_alloc_init(PCPPredictedContextDate);
   [(PCPPredictedContextDateInterval *)v8 setEndDate:v10];
 
-  v11 = a5 / 1.56;
-  if ([v7 count])
+  v11 = user / 1.56;
+  if ([visitsCopy count])
   {
     v58 = 0u;
     v59 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v12 = v7;
+    v12 = visitsCopy;
     v13 = [v12 countByEnumeratingWithState:&v56 objects:v60 count:16];
     if (v13)
     {
@@ -647,32 +647,32 @@
           }
 
           v20 = *(*(&v56 + 1) + 8 * i);
-          v21 = [v20 predictedContext];
-          v22 = [v21 dateInterval];
-          v23 = [v22 endDate];
-          [v23 date];
+          predictedContext = [v20 predictedContext];
+          dateInterval = [predictedContext dateInterval];
+          endDate = [dateInterval endDate];
+          [endDate date];
           v25 = v24;
 
-          if (v25 > a3)
+          if (v25 > time)
           {
-            v26 = [v20 predictedContext];
-            v27 = [v26 dateInterval];
-            v28 = [v27 endDate];
-            [v28 date];
-            v30 = v29 - a3;
+            predictedContext2 = [v20 predictedContext];
+            dateInterval2 = [predictedContext2 dateInterval];
+            endDate2 = [dateInterval2 endDate];
+            [endDate2 date];
+            v30 = v29 - time;
 
             if (v30 < v18)
             {
-              v31 = [v20 predictedContext];
-              v32 = [v31 dateInterval];
-              v33 = [v32 endDate];
-              [v33 date];
+              predictedContext3 = [v20 predictedContext];
+              dateInterval3 = [predictedContext3 dateInterval];
+              endDate3 = [dateInterval3 endDate];
+              [endDate3 date];
               v16 = v34;
 
-              v35 = [v20 predictedContext];
-              v36 = [v35 dateInterval];
-              v37 = [v36 endDate];
-              [v37 confidenceInterval];
+              predictedContext4 = [v20 predictedContext];
+              dateInterval4 = [predictedContext4 dateInterval];
+              endDate4 = [dateInterval4 endDate];
+              [endDate4 confidenceInterval];
               v17 = v38;
 
               v18 = v30;
@@ -692,43 +692,43 @@
       v17 = 1.79769313e308;
     }
 
-    v48 = [(PCPPredictedContextDateInterval *)v8 startDate];
-    [v48 setDate:v11 + v16];
+    startDate = [(PCPPredictedContextDateInterval *)v8 startDate];
+    [startDate setDate:v11 + v16];
 
-    v49 = [(PCPPredictedContextDateInterval *)v8 startDate];
-    [v49 date];
+    startDate2 = [(PCPPredictedContextDateInterval *)v8 startDate];
+    [startDate2 date];
     v51 = v50 + 300.0;
-    v52 = [(PCPPredictedContextDateInterval *)v8 endDate];
-    [v52 setDate:v51];
+    endDate5 = [(PCPPredictedContextDateInterval *)v8 endDate];
+    [endDate5 setDate:v51];
 
-    v53 = [(PCPPredictedContextDateInterval *)v8 startDate];
-    [v53 setConfidenceInterval:v17];
+    startDate3 = [(PCPPredictedContextDateInterval *)v8 startDate];
+    [startDate3 setConfidenceInterval:v17];
 
-    v45 = [(PCPPredictedContextDateInterval *)v8 endDate];
-    v46 = v45;
+    endDate6 = [(PCPPredictedContextDateInterval *)v8 endDate];
+    v46 = endDate6;
     v47 = v17;
   }
 
   else
   {
-    v39 = [(PCPPredictedContextDateInterval *)v8 startDate];
-    [v39 setDate:v11 + a3];
+    startDate4 = [(PCPPredictedContextDateInterval *)v8 startDate];
+    [startDate4 setDate:v11 + time];
 
-    v40 = [(PCPPredictedContextDateInterval *)v8 startDate];
-    [v40 date];
+    startDate5 = [(PCPPredictedContextDateInterval *)v8 startDate];
+    [startDate5 date];
     v42 = v41 + 300.0;
-    v43 = [(PCPPredictedContextDateInterval *)v8 endDate];
-    [v43 setDate:v42];
+    endDate7 = [(PCPPredictedContextDateInterval *)v8 endDate];
+    [endDate7 setDate:v42];
 
-    v44 = [(PCPPredictedContextDateInterval *)v8 startDate];
-    [v44 setConfidenceInterval:3600.0];
+    startDate6 = [(PCPPredictedContextDateInterval *)v8 startDate];
+    [startDate6 setConfidenceInterval:3600.0];
 
-    v45 = [(PCPPredictedContextDateInterval *)v8 endDate];
-    v46 = v45;
+    endDate6 = [(PCPPredictedContextDateInterval *)v8 endDate];
+    v46 = endDate6;
     v47 = 3600.0;
   }
 
-  [v45 setConfidenceInterval:{v47, v56}];
+  [endDate6 setConfidenceInterval:{v47, v56}];
 
   v54 = *MEMORY[0x1E69E9840];
 

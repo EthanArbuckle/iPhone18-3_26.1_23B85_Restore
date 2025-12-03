@@ -1,8 +1,8 @@
 @interface CBDMainController
 - (CBDMainController)init;
-- (void)didConnectDeviceConnection:(id)a3;
-- (void)didDisconnectDeviceConnection:(id)a3;
-- (void)didReceiveRemoteXPCMessage:(id)a3 completion:(id)a4;
+- (void)didConnectDeviceConnection:(id)connection;
+- (void)didDisconnectDeviceConnection:(id)connection;
+- (void)didReceiveRemoteXPCMessage:(id)message completion:(id)completion;
 - (void)invalidate;
 - (void)start;
 @end
@@ -60,8 +60,8 @@
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v25 + 1) + 8 * v20) expectedRemoteMessageClasses];
-          [v15 unionSet:v21];
+          expectedRemoteMessageClasses = [*(*(&v25 + 1) + 8 * v20) expectedRemoteMessageClasses];
+          [v15 unionSet:expectedRemoteMessageClasses];
 
           v20 = v20 + 1;
         }
@@ -92,14 +92,14 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "CBDMainController: start", v7, 2u);
   }
 
-  v4 = [(CBDMainController *)self localXPCServer];
-  [v4 resume];
+  localXPCServer = [(CBDMainController *)self localXPCServer];
+  [localXPCServer resume];
 
-  v5 = [(CBDMainController *)self discovery];
-  [v5 resume];
+  discovery = [(CBDMainController *)self discovery];
+  [discovery resume];
 
-  v6 = [(CBDMainController *)self remoteXPCServer];
-  [v6 resume];
+  remoteXPCServer = [(CBDMainController *)self remoteXPCServer];
+  [remoteXPCServer resume];
 }
 
 - (void)invalidate
@@ -111,53 +111,53 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "CBDMainController: invalidate", v7, 2u);
   }
 
-  v4 = [(CBDMainController *)self localXPCServer];
-  [v4 invalidate];
+  localXPCServer = [(CBDMainController *)self localXPCServer];
+  [localXPCServer invalidate];
 
-  v5 = [(CBDMainController *)self discovery];
-  [v5 invalidate];
+  discovery = [(CBDMainController *)self discovery];
+  [discovery invalidate];
 
-  v6 = [(CBDMainController *)self remoteXPCServer];
-  [v6 invalidate];
+  remoteXPCServer = [(CBDMainController *)self remoteXPCServer];
+  [remoteXPCServer invalidate];
 }
 
-- (void)didConnectDeviceConnection:(id)a3
+- (void)didConnectDeviceConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(CBDMainController *)self hostDeviceSerialQueue];
+  connectionCopy = connection;
+  hostDeviceSerialQueue = [(CBDMainController *)self hostDeviceSerialQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100005F8C;
   v7[3] = &unk_100010618;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = connectionCopy;
+  selfCopy = self;
+  v6 = connectionCopy;
+  dispatch_async(hostDeviceSerialQueue, v7);
 }
 
-- (void)didDisconnectDeviceConnection:(id)a3
+- (void)didDisconnectDeviceConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(CBDMainController *)self hostDeviceSerialQueue];
+  connectionCopy = connection;
+  hostDeviceSerialQueue = [(CBDMainController *)self hostDeviceSerialQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100006168;
   v7[3] = &unk_100010618;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = connectionCopy;
+  selfCopy = self;
+  v6 = connectionCopy;
+  dispatch_async(hostDeviceSerialQueue, v7);
 }
 
-- (void)didReceiveRemoteXPCMessage:(id)a3 completion:(id)a4
+- (void)didReceiveRemoteXPCMessage:(id)message completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  completionCopy = completion;
   v8 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v6;
+    v24 = messageCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "didReceiveRemoteXPCMessage: %@", buf, 0xCu);
   }
 
@@ -165,8 +165,8 @@
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [(CBDMainController *)self messageHandlers];
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  messageHandlers = [(CBDMainController *)self messageHandlers];
+  v10 = [messageHandlers countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -177,22 +177,22 @@
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(messageHandlers);
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [v14 expectedRemoteMessageClasses];
-        v16 = [v15 containsObject:objc_opt_class()];
+        expectedRemoteMessageClasses = [v14 expectedRemoteMessageClasses];
+        v16 = [expectedRemoteMessageClasses containsObject:objc_opt_class()];
 
         if (v16)
         {
-          [v14 handleRemoteMessage:v6 completion:v7];
+          [v14 handleRemoteMessage:messageCopy completion:completionCopy];
 
           goto LABEL_15;
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [messageHandlers countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v11)
       {
         continue;
@@ -206,11 +206,11 @@
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v24 = v6;
+    v24 = messageCopy;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Error: no handler for %@", buf, 0xCu);
   }
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_15:
 }
 

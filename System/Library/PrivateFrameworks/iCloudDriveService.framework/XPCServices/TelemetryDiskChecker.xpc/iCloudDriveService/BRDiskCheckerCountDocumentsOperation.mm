@@ -1,31 +1,31 @@
 @interface BRDiskCheckerCountDocumentsOperation
-- (BRDiskCheckerCountDocumentsOperation)initWithFileURL:(id)a3;
-- (unsigned)_getRecursiveChildItemCountAtURL:(id)a3 keysToFetch:(id)a4 filteringPredicate:(id)a5 outError:(id *)a6;
+- (BRDiskCheckerCountDocumentsOperation)initWithFileURL:(id)l;
+- (unsigned)_getRecursiveChildItemCountAtURL:(id)l keysToFetch:(id)fetch filteringPredicate:(id)predicate outError:(id *)error;
 - (void)main;
 @end
 
 @implementation BRDiskCheckerCountDocumentsOperation
 
-- (BRDiskCheckerCountDocumentsOperation)initWithFileURL:(id)a3
+- (BRDiskCheckerCountDocumentsOperation)initWithFileURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = BRDiskCheckerCountDocumentsOperation;
   v6 = [(BRDiskCheckerCountDocumentsOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rootURL, a3);
+    objc_storeStrong(&v6->_rootURL, l);
   }
 
   return v7;
 }
 
-- (unsigned)_getRecursiveChildItemCountAtURL:(id)a3 keysToFetch:(id)a4 filteringPredicate:(id)a5 outError:(id *)a6
+- (unsigned)_getRecursiveChildItemCountAtURL:(id)l keysToFetch:(id)fetch filteringPredicate:(id)predicate outError:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v55 = a5;
+  lCopy = l;
+  fetchCopy = fetch;
+  predicateCopy = predicate;
   v69 = 0;
   v70 = &v69;
   v71 = 0x3032000000;
@@ -37,15 +37,15 @@
   v64 = 3221225472;
   v65 = sub_100006EEC;
   v66 = &unk_100010560;
-  v67 = v9;
+  v67 = lCopy;
   v68 = &v69;
   v52 = v67;
   v53 = v11;
-  v57 = v10;
+  v57 = fetchCopy;
   v12 = [v11 enumeratorAtURL:? includingPropertiesForKeys:? options:? errorHandler:?];
-  if (a6)
+  if (error)
   {
-    *a6 = v70[5];
+    *error = v70[5];
   }
 
   v61 = 0u;
@@ -82,10 +82,10 @@
         v20 = brc_default_log();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
-          v21 = [v16 path];
-          v22 = [v21 fp_obfuscatedPath];
+          path = [v16 path];
+          fp_obfuscatedPath = [path fp_obfuscatedPath];
           *buf = 138412802;
-          v76 = v22;
+          v76 = fp_obfuscatedPath;
           v77 = 2112;
           v78 = v18;
           v79 = 2112;
@@ -100,10 +100,10 @@
         v24 = brc_default_log();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
         {
-          v42 = [v16 path];
-          v43 = [v42 fp_obfuscatedPath];
+          path2 = [v16 path];
+          fp_obfuscatedPath2 = [path2 fp_obfuscatedPath];
           *buf = 138412546;
-          v76 = v43;
+          v76 = fp_obfuscatedPath2;
           v77 = 2112;
           v78 = v23;
           _os_log_debug_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEBUG, "[DEBUG] not counting item at url %@ because it's excluded from sync%@", buf, 0x16u);
@@ -114,9 +114,9 @@
         {
 LABEL_32:
           v36 = [v17 objectForKeyedSubscript:NSURLIsPackageKey];
-          v37 = [v36 BOOLValue];
+          bOOLValue = [v36 BOOLValue];
 
-          if ((v37 & 1) == 0)
+          if ((bOOLValue & 1) == 0)
           {
             goto LABEL_34;
           }
@@ -140,10 +140,10 @@ LABEL_33:
         v29 = brc_default_log();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
         {
-          v44 = [v16 path];
-          v45 = [v44 fp_obfuscatedPath];
+          path3 = [v16 path];
+          fp_obfuscatedPath3 = [path3 fp_obfuscatedPath];
           *buf = 138412546;
-          v76 = v45;
+          v76 = fp_obfuscatedPath3;
           v77 = 2112;
           v78 = v28;
           _os_log_debug_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEBUG, "[DEBUG] not counting item at url %@ because it is shared to me%@", buf, 0x16u);
@@ -173,18 +173,18 @@ LABEL_25:
       }
 
       v38 = [v17 objectForKeyedSubscript:NSURLIsSymbolicLinkKey];
-      v39 = [v38 BOOLValue];
+      bOOLValue2 = [v38 BOOLValue];
 
-      if ((v39 & 1) == 0)
+      if ((bOOLValue2 & 1) == 0)
       {
         v40 = brc_bread_crumbs();
         v41 = brc_default_log();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
         {
-          v48 = [v16 path];
-          v49 = [v48 fp_obfuscatedPath];
+          path4 = [v16 path];
+          fp_obfuscatedPath4 = [path4 fp_obfuscatedPath];
           *buf = 138412546;
-          v76 = v49;
+          v76 = fp_obfuscatedPath4;
           v77 = 2112;
           v78 = v40;
           _os_log_debug_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEBUG, "[DEBUG] not counting item at url %@ because it's not a file, package, or symlink%@", buf, 0x16u);
@@ -194,7 +194,7 @@ LABEL_25:
       }
 
 LABEL_26:
-      if (v55 && (v55[2](v55, v16) & 1) == 0)
+      if (predicateCopy && (predicateCopy[2](predicateCopy, v16) & 1) == 0)
       {
         goto LABEL_33;
       }
@@ -203,20 +203,20 @@ LABEL_26:
       v33 = brc_default_log();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
       {
-        v46 = [v16 path];
-        v47 = [v46 fp_obfuscatedPath];
+        path5 = [v16 path];
+        fp_obfuscatedPath5 = [path5 fp_obfuscatedPath];
         *buf = 138412546;
-        v76 = v47;
+        v76 = fp_obfuscatedPath5;
         v77 = 2112;
         v78 = v32;
         _os_log_debug_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEBUG, "[DEBUG] counting item at url %@%@", buf, 0x16u);
       }
 
       v34 = [v17 objectForKeyedSubscript:NSURLIsPackageKey];
-      v35 = [v34 BOOLValue];
+      bOOLValue3 = [v34 BOOLValue];
 
       ++v54;
-      if (v35)
+      if (bOOLValue3)
       {
         goto LABEL_33;
       }
@@ -252,10 +252,10 @@ LABEL_43:
     v8 = brc_default_log();
     if (os_log_type_enabled(v8, 0x90u))
     {
-      v16 = [(NSURL *)v3 path];
-      v17 = [v16 fp_obfuscatedPath];
+      path = [(NSURL *)v3 path];
+      fp_obfuscatedPath = [path fp_obfuscatedPath];
       *buf = 138412802;
-      v22 = v17;
+      v22 = fp_obfuscatedPath;
       v23 = 2112;
       v24 = v6;
       v25 = 2112;
@@ -264,10 +264,10 @@ LABEL_43:
     }
   }
 
-  v9 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
   v10 = [NSMutableArray arrayWithObjects:NSURLIsPackageKey, NSURLIsRegularFileKey, NSURLIsSymbolicLinkKey, 0];
   v11 = v10;
-  if ((v9 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     [v10 addObject:NSURLUbiquitousSharedItemCurrentUserRoleKey];
   }

@@ -8,7 +8,7 @@
 + (id)valueWithHangulJamoTransformationData:()HangulJamo
 {
   v5 = a3;
-  v3 = [a1 valueWithBytes:&v5 objCType:"{?=ii}"];
+  v3 = [self valueWithBytes:&v5 objCType:"{?=ii}"];
 
   return v3;
 }
@@ -16,7 +16,7 @@
 - (uint64_t)hangulJamoTransformationDataValue
 {
   v2 = 0;
-  [a1 getValue:&v2];
+  [self getValue:&v2];
   return v2;
 }
 

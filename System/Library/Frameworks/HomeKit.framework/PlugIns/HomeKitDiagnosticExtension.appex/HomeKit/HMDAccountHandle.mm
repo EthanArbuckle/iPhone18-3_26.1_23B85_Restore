@@ -1,12 +1,12 @@
 @interface HMDAccountHandle
-+ (id)accountHandleForDestination:(id)a3;
++ (id)accountHandleForDestination:(id)destination;
 + (id)logCategory;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CKUserIdentityLookupInfo)cloudKitLookupInfo;
 - (CNContact)contact;
 - (HMDAccountHandle)init;
-- (HMDAccountHandle)initWithCoder:(id)a3;
-- (HMDAccountHandle)initWithURI:(id)a3 local:(BOOL)a4;
+- (HMDAccountHandle)initWithCoder:(id)coder;
+- (HMDAccountHandle)initWithURI:(id)i local:(BOOL)local;
 - (NSString)remoteDestinationString;
 - (NSString)value;
 - (id)attributeDescriptions;
@@ -14,51 +14,51 @@
 - (id)shortDescription;
 - (int64_t)type;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDAccountHandle
 
 - (id)logIdentifier
 {
-  v2 = [(HMDAccountHandle *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMDAccountHandle *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (NSString)remoteDestinationString
 {
   v2 = [(HMDAccountHandle *)self URI];
-  v3 = [v2 prefixedURI];
+  prefixedURI = [v2 prefixedURI];
 
-  return v3;
+  return prefixedURI;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = [(HMDAccountHandle *)self URI];
-  [v5 encodeObject:v4 forKey:@"HMD.URI"];
+  [coderCopy encodeObject:v4 forKey:@"HMD.URI"];
 
-  [v5 encodeBool:-[HMDAccountHandle isLocal](self forKey:{"isLocal"), @"HMD.local"}];
-  if ([v5 hmd_isForLocalStore])
+  [coderCopy encodeBool:-[HMDAccountHandle isLocal](self forKey:{"isLocal"), @"HMD.local"}];
+  if ([coderCopy hmd_isForLocalStore])
   {
-    [v5 encodeBool:-[HMDAccountHandle isLocallyTracked](self forKey:{"isLocallyTracked"), @"HMD.locallyTracked"}];
+    [coderCopy encodeBool:-[HMDAccountHandle isLocallyTracked](self forKey:{"isLocallyTracked"), @"HMD.locallyTracked"}];
   }
 }
 
-- (HMDAccountHandle)initWithCoder:(id)a3
+- (HMDAccountHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMD.URI"];
-  v6 = -[HMDAccountHandle initWithURI:local:](self, "initWithURI:local:", v5, [v4 decodeBoolForKey:@"HMD.local"]);
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMD.URI"];
+  v6 = -[HMDAccountHandle initWithURI:local:](self, "initWithURI:local:", v5, [coderCopy decodeBoolForKey:@"HMD.local"]);
   if (v6)
   {
-    v6->_locallyTracked = [v4 decodeBoolForKey:@"HMD.locallyTracked"];
-    if ([v4 containsValueForKey:@"HMD.modelParentIdentifier"])
+    v6->_locallyTracked = [coderCopy decodeBoolForKey:@"HMD.locallyTracked"];
+    if ([coderCopy containsValueForKey:@"HMD.modelParentIdentifier"])
     {
-      v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMD.modelParentIdentifier"];
+      v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMD.modelParentIdentifier"];
       modelParentIdentifier = v6->_modelParentIdentifier;
       v6->_modelParentIdentifier = v7;
     }
@@ -90,19 +90,19 @@
 - (int64_t)type
 {
   v3 = [(HMDAccountHandle *)self URI];
-  v4 = [v3 unprefixedURI];
-  v5 = [v4 _appearsToBeEmail];
+  unprefixedURI = [v3 unprefixedURI];
+  _appearsToBeEmail = [unprefixedURI _appearsToBeEmail];
 
-  if (v5)
+  if (_appearsToBeEmail)
   {
     return 1;
   }
 
   v7 = [(HMDAccountHandle *)self URI];
-  v8 = [v7 unprefixedURI];
-  v9 = [v8 _appearsToBePhoneNumber];
+  unprefixedURI2 = [v7 unprefixedURI];
+  _appearsToBePhoneNumber = [unprefixedURI2 _appearsToBePhoneNumber];
 
-  if (v9)
+  if (_appearsToBePhoneNumber)
   {
     return 2;
   }
@@ -116,19 +116,19 @@
 - (id)attributeDescriptions
 {
   v3 = [HMFAttributeDescription alloc];
-  v4 = [(HMDAccountHandle *)self identifier];
-  v5 = [v4 UUIDString];
-  v6 = [v3 initWithName:@"ID" value:v5];
+  identifier = [(HMDAccountHandle *)self identifier];
+  uUIDString = [identifier UUIDString];
+  v6 = [v3 initWithName:@"ID" value:uUIDString];
   v21[0] = v6;
   v7 = [HMFAttributeDescription alloc];
-  v8 = [(HMDAccountHandle *)self type];
+  type = [(HMDAccountHandle *)self type];
   v9 = @"Unknown";
-  if (v8 == 2)
+  if (type == 2)
   {
     v9 = @"Phone";
   }
 
-  if (v8 == 1)
+  if (type == 1)
   {
     v10 = @"Email";
   }
@@ -146,9 +146,9 @@
   v14 = [v12 initWithName:@"LC" value:v13];
   v21[2] = v14;
   v15 = [HMFAttributeDescription alloc];
-  v16 = [(HMDAccountHandle *)self value];
+  value = [(HMDAccountHandle *)self value];
   v17 = +[HMDAccountHandleFormatter defaultFormatter];
-  v18 = [v15 initWithName:@"VA" value:v16 options:0 formatter:v17];
+  v18 = [v15 initWithName:@"VA" value:value options:0 formatter:v17];
   v21[3] = v18;
   v19 = [NSArray arrayWithObjects:v21 count:4];
 
@@ -157,18 +157,18 @@
 
 - (id)shortDescription
 {
-  v3 = [objc_opt_class() shortDescription];
-  v4 = [(HMDAccountHandle *)self identifier];
-  v5 = [v4 UUIDString];
-  v6 = [NSString stringWithFormat:@"%@ %@", v3, v5];
+  shortDescription = [objc_opt_class() shortDescription];
+  identifier = [(HMDAccountHandle *)self identifier];
+  uUIDString = [identifier UUIDString];
+  v6 = [NSString stringWithFormat:@"%@ %@", shortDescription, uUIDString];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -178,7 +178,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -214,15 +214,15 @@
 - (NSString)value
 {
   v2 = [(HMDAccountHandle *)self URI];
-  v3 = [v2 unprefixedURI];
+  unprefixedURI = [v2 unprefixedURI];
 
-  return v3;
+  return unprefixedURI;
 }
 
-- (HMDAccountHandle)initWithURI:(id)a3 local:(BOOL)a4
+- (HMDAccountHandle)initWithURI:(id)i local:(BOOL)local
 {
-  v6 = a3;
-  if (v6)
+  iCopy = i;
+  if (iCopy)
   {
     v20.receiver = self;
     v20.super_class = HMDAccountHandle;
@@ -230,7 +230,7 @@
     if (v7)
     {
       v8 = qword_10003B238;
-      v9 = v6;
+      v9 = iCopy;
       if (v8 != -1)
       {
         dispatch_once(&qword_10003B238, &stru_100030B18);
@@ -238,9 +238,9 @@
 
       v10 = [NSUUID alloc];
       v11 = qword_10003B230;
-      v12 = [v9 prefixedURI];
+      prefixedURI = [v9 prefixedURI];
 
-      v13 = [v12 dataUsingEncoding:4];
+      v13 = [prefixedURI dataUsingEncoding:4];
       v14 = [v10 initWithNamespace:v11 data:v13];
 
       identifier = v7->_identifier;
@@ -250,19 +250,19 @@
       URI = v7->_URI;
       v7->_URI = v16;
 
-      v7->_local = a4;
+      v7->_local = local;
     }
 
     self = v7;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 - (HMDAccountHandle)init
@@ -287,7 +287,7 @@
   return v3;
 }
 
-+ (id)accountHandleForDestination:(id)a3
++ (id)accountHandleForDestination:(id)destination
 {
   v3 = IDSCopyAddressDestinationForDestination();
   if (v3)

@@ -1,21 +1,21 @@
 @interface GKBaseComposeHeaderField
 - (CGRect)valueFrame;
-- (GKBaseComposeHeaderField)initWithFrame:(CGRect)a3;
+- (GKBaseComposeHeaderField)initWithFrame:(CGRect)frame;
 - (NSString)nameText;
 - (SEL)actionWhenTouched;
-- (void)addConstraintsForValueView:(id)a3;
-- (void)setActionWhenTouched:(SEL)a3;
-- (void)setNameText:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)addConstraintsForValueView:(id)view;
+- (void)setActionWhenTouched:(SEL)touched;
+- (void)setNameText:(id)text;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation GKBaseComposeHeaderField
 
-- (GKBaseComposeHeaderField)initWithFrame:(CGRect)a3
+- (GKBaseComposeHeaderField)initWithFrame:(CGRect)frame
 {
   v17.receiver = self;
   v17.super_class = GKBaseComposeHeaderField;
-  v3 = [(GKBaseComposeHeaderField *)&v17 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GKBaseComposeHeaderField *)&v17 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -56,17 +56,17 @@
   return v4;
 }
 
-- (void)addConstraintsForValueView:(id)a3
+- (void)addConstraintsForValueView:(id)view
 {
   v13[5] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAAD0];
   nameLabel = self->_nameLabel;
-  v6 = a3;
-  v7 = [v4 constraintWithItem:v6 attribute:12 relatedBy:0 toItem:nameLabel attribute:12 multiplier:1.0 constant:0.0];
-  v8 = [MEMORY[0x277CCAAD0] constraintWithItem:self attribute:4 relatedBy:0 toItem:v6 attribute:11 multiplier:1.0 constant:16.0];
-  v9 = [MEMORY[0x277CCAAD0] constraintWithItem:v6 attribute:5 relatedBy:0 toItem:self->_nameLabel attribute:6 multiplier:1.0 constant:6.0];
-  v10 = [MEMORY[0x277CCAAD0] constraintWithItem:v6 attribute:6 relatedBy:0 toItem:self attribute:18 multiplier:1.0 constant:0.0];
-  v11 = [MEMORY[0x277CCAAD0] constraintWithItem:v6 attribute:8 relatedBy:1 toItem:self->_nameLabel attribute:8 multiplier:1.0 constant:0.0];
+  viewCopy = view;
+  v7 = [v4 constraintWithItem:viewCopy attribute:12 relatedBy:0 toItem:nameLabel attribute:12 multiplier:1.0 constant:0.0];
+  v8 = [MEMORY[0x277CCAAD0] constraintWithItem:self attribute:4 relatedBy:0 toItem:viewCopy attribute:11 multiplier:1.0 constant:16.0];
+  v9 = [MEMORY[0x277CCAAD0] constraintWithItem:viewCopy attribute:5 relatedBy:0 toItem:self->_nameLabel attribute:6 multiplier:1.0 constant:6.0];
+  v10 = [MEMORY[0x277CCAAD0] constraintWithItem:viewCopy attribute:6 relatedBy:0 toItem:self attribute:18 multiplier:1.0 constant:0.0];
+  v11 = [MEMORY[0x277CCAAD0] constraintWithItem:viewCopy attribute:8 relatedBy:1 toItem:self->_nameLabel attribute:8 multiplier:1.0 constant:0.0];
 
   v13[0] = v7;
   v13[1] = v8;
@@ -79,23 +79,23 @@
 
 - (NSString)nameText
 {
-  v2 = [(GKBaseComposeHeaderField *)self nameLabel];
-  v3 = [v2 attributedText];
-  v4 = [v3 string];
+  nameLabel = [(GKBaseComposeHeaderField *)self nameLabel];
+  attributedText = [nameLabel attributedText];
+  string = [attributedText string];
 
-  return v4;
+  return string;
 }
 
-- (void)setNameText:(id)a3
+- (void)setNameText:(id)text
 {
   v4 = MEMORY[0x277D0C8B0];
-  v5 = a3;
-  v6 = [v4 textStyle];
-  v7 = [v6 composeFields];
+  textCopy = text;
+  textStyle = [v4 textStyle];
+  composeFields = [textStyle composeFields];
 
-  v11 = [v7 alignment:4 lineBreakMode:4];
+  v11 = [composeFields alignment:4 lineBreakMode:4];
 
-  v8 = [v5 _gkAttributedStringByApplyingStyle:v11];
+  v8 = [textCopy _gkAttributedStringByApplyingStyle:v11];
 
   v9 = [v8 length];
   nameLabel = self->_nameLabel;
@@ -125,14 +125,14 @@
   return result;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v10 = a3;
-  v6 = a4;
+  beganCopy = began;
+  eventCopy = event;
   if (self->_actionWhenTouched)
   {
-    v7 = [MEMORY[0x277D75128] sharedApplication];
-    v8 = v7;
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    v8 = mEMORY[0x277D75128];
     if (self->_actionWhenTouched)
     {
       actionWhenTouched = self->_actionWhenTouched;
@@ -143,7 +143,7 @@
       actionWhenTouched = 0;
     }
 
-    [v7 _gkSendAction:actionWhenTouched viaResponder:self withObject:self];
+    [mEMORY[0x277D75128] _gkSendAction:actionWhenTouched viaResponder:self withObject:self];
   }
 }
 
@@ -160,19 +160,19 @@
   }
 }
 
-- (void)setActionWhenTouched:(SEL)a3
+- (void)setActionWhenTouched:(SEL)touched
 {
-  if (a3)
+  if (touched)
   {
-    v3 = a3;
+    touchedCopy = touched;
   }
 
   else
   {
-    v3 = 0;
+    touchedCopy = 0;
   }
 
-  self->_actionWhenTouched = v3;
+  self->_actionWhenTouched = touchedCopy;
 }
 
 @end

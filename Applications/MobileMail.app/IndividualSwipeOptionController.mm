@@ -1,10 +1,10 @@
 @interface IndividualSwipeOptionController
 + (id)swipeActionsAndTitles;
-- (BOOL)_canSelectOptionAtIndex:(unint64_t)a3;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)_canSelectOptionAtIndex:(unint64_t)index;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (id)itemsFromParent;
-- (void)listItemSelected:(id)a3;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)listItemSelected:(id)selected;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -16,7 +16,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000BD4E4;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DCF38 != -1)
   {
     dispatch_once(&qword_1006DCF38, block);
@@ -29,24 +29,24 @@
 
 - (void)viewDidLoad
 {
-  v3 = [(IndividualSwipeOptionController *)self specifier];
-  v4 = [v3 performGetter];
+  specifier = [(IndividualSwipeOptionController *)self specifier];
+  performGetter = [specifier performGetter];
 
-  self->_showArchiveFooter = [v4 isEqualToString:SwipeActionAlternateDestructiveAction];
+  self->_showArchiveFooter = [performGetter isEqualToString:SwipeActionAlternateDestructiveAction];
   v5.receiver = self;
   v5.super_class = IndividualSwipeOptionController;
   [(IndividualSwipeOptionController *)&v5 viewDidLoad];
 }
 
-- (void)listItemSelected:(id)a3
+- (void)listItemSelected:(id)selected
 {
-  v4 = a3;
+  selectedCopy = selected;
   v8.receiver = self;
   v8.super_class = IndividualSwipeOptionController;
-  [(IndividualSwipeOptionController *)&v8 listItemSelected:v4];
-  v5 = [(IndividualSwipeOptionController *)self specifier];
-  v6 = [v5 values];
-  v7 = [v6 objectAtIndex:{objc_msgSend(v4, "row")}];
+  [(IndividualSwipeOptionController *)&v8 listItemSelected:selectedCopy];
+  specifier = [(IndividualSwipeOptionController *)self specifier];
+  values = [specifier values];
+  v7 = [values objectAtIndex:{objc_msgSend(selectedCopy, "row")}];
 
   self->_showArchiveFooter = [v7 isEqualToString:SwipeActionAlternateDestructiveAction];
   [(IndividualSwipeOptionController *)self reloadSpecifiers];
@@ -56,23 +56,23 @@
 {
   v18.receiver = self;
   v18.super_class = IndividualSwipeOptionController;
-  v3 = [(IndividualSwipeOptionController *)&v18 itemsFromParent];
-  v4 = [NSMutableArray arrayWithArray:v3];
+  itemsFromParent = [(IndividualSwipeOptionController *)&v18 itemsFromParent];
+  v4 = [NSMutableArray arrayWithArray:itemsFromParent];
 
   if (self->_showArchiveFooter)
   {
-    v5 = [v4 firstObject];
+    firstObject = [v4 firstObject];
     v6 = [NSBundle bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"SWIPE_OPTIONS_ARCHIVE_INFO" value:&stru_100662A88 table:@"Preferences"];
-    [v5 setProperty:v7 forKey:PSFooterTextGroupKey];
+    [firstObject setProperty:v7 forKey:PSFooterTextGroupKey];
   }
 
-  v8 = [(IndividualSwipeOptionController *)self specifier];
-  v9 = [v8 propertyForKey:@"kLocalizedSwipeDirection"];
-  v10 = [v9 integerValue];
+  specifier = [(IndividualSwipeOptionController *)self specifier];
+  v9 = [specifier propertyForKey:@"kLocalizedSwipeDirection"];
+  integerValue = [v9 integerValue];
 
   v11 = [NSBundle bundleForClass:objc_opt_class()];
-  if (v10 == 1)
+  if (integerValue == 1)
   {
     [v11 localizedStringForKey:@"SWIPE_DIRECTION_LEFT" value:&stru_100662A88 table:@"Preferences"];
   }
@@ -94,13 +94,13 @@
   return v4;
 }
 
-- (BOOL)_canSelectOptionAtIndex:(unint64_t)a3
+- (BOOL)_canSelectOptionAtIndex:(unint64_t)index
 {
-  v5 = [(IndividualSwipeOptionController *)self specifier];
-  v6 = [v5 propertyForKey:@"kSwipeDirection"];
-  v7 = [v6 integerValue];
+  specifier = [(IndividualSwipeOptionController *)self specifier];
+  v6 = [specifier propertyForKey:@"kSwipeDirection"];
+  integerValue = [v6 integerValue];
 
-  if (v7 == 1)
+  if (integerValue == 1)
   {
     sub_10024BB48(1);
   }
@@ -117,9 +117,9 @@
 
   else
   {
-    v10 = [(IndividualSwipeOptionController *)self specifier];
-    v11 = [v10 values];
-    v12 = [v11 objectAtIndex:a3];
+    specifier2 = [(IndividualSwipeOptionController *)self specifier];
+    values = [specifier2 values];
+    v12 = [values objectAtIndex:index];
 
     v9 = [v12 isEqualToString:v8] ^ 1;
   }
@@ -127,28 +127,28 @@
   return v9;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  LOBYTE(self) = -[IndividualSwipeOptionController _canSelectOptionAtIndex:](self, "_canSelectOptionAtIndex:", [v5 row]);
+  pathCopy = path;
+  LOBYTE(self) = -[IndividualSwipeOptionController _canSelectOptionAtIndex:](self, "_canSelectOptionAtIndex:", [pathCopy row]);
 
   return self;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v21 = a4;
-  v7 = [a5 row];
+  cellCopy = cell;
+  v7 = [path row];
   v8 = [(IndividualSwipeOptionController *)self _canSelectOptionAtIndex:v7];
-  [v21 setUserInteractionEnabled:v8];
+  [cellCopy setUserInteractionEnabled:v8];
   if (!v8)
   {
-    v9 = [(IndividualSwipeOptionController *)self specifier];
-    v10 = [v9 propertyForKey:@"kLocalizedSwipeDirection"];
-    v11 = [v10 integerValue];
+    specifier = [(IndividualSwipeOptionController *)self specifier];
+    v10 = [specifier propertyForKey:@"kLocalizedSwipeDirection"];
+    integerValue = [v10 integerValue];
 
     v12 = [NSBundle bundleForClass:objc_opt_class()];
-    if (v11 == 1)
+    if (integerValue == 1)
     {
       [v12 localizedStringForKey:@"SWIPE_RIGHT" value:&stru_100662A88 table:@"Preferences"];
     }
@@ -159,19 +159,19 @@
     }
     v13 = ;
 
-    v14 = [(IndividualSwipeOptionController *)self specifier];
-    v15 = [v14 values];
-    v16 = [v15 objectAtIndex:v7];
+    specifier2 = [(IndividualSwipeOptionController *)self specifier];
+    values = [specifier2 values];
+    v16 = [values objectAtIndex:v7];
 
     v17 = +[IndividualSwipeOptionController swipeActionsAndTitles];
     v18 = [v17 objectForKey:v16];
 
-    v19 = [v21 defaultContentConfiguration];
-    [v19 setText:v18];
+    defaultContentConfiguration = [cellCopy defaultContentConfiguration];
+    [defaultContentConfiguration setText:v18];
     v20 = [NSString localizedStringWithFormat:@"(%@)", v13];
-    [v19 setSecondaryText:v20];
+    [defaultContentConfiguration setSecondaryText:v20];
 
-    [v21 setContentConfiguration:v19];
+    [cellCopy setContentConfiguration:defaultContentConfiguration];
   }
 }
 

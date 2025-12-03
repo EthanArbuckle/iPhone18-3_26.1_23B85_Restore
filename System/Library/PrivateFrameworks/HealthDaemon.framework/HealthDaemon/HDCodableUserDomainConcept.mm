@@ -1,29 +1,29 @@
 @interface HDCodableUserDomainConcept
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addCodings:(id)a3;
-- (void)addLinks:(id)a3;
-- (void)addLocalizedStringProperties:(id)a3;
-- (void)addNamedQuantities:(id)a3;
-- (void)addProperties:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDeleted:(BOOL)a3;
-- (void)setHasMajorVersion:(BOOL)a3;
-- (void)setHasMinorVersion:(BOOL)a3;
-- (void)setHasModificationDate:(BOOL)a3;
-- (void)setHasPatchVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addCodings:(id)codings;
+- (void)addLinks:(id)links;
+- (void)addLocalizedStringProperties:(id)properties;
+- (void)addNamedQuantities:(id)quantities;
+- (void)addProperties:(id)properties;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDeleted:(BOOL)deleted;
+- (void)setHasMajorVersion:(BOOL)version;
+- (void)setHasMinorVersion:(BOOL)version;
+- (void)setHasModificationDate:(BOOL)date;
+- (void)setHasPatchVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableUserDomainConcept
 
-- (void)setHasModificationDate:(BOOL)a3
+- (void)setHasModificationDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 2;
   }
@@ -36,9 +36,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasDeleted:(BOOL)a3
+- (void)setHasDeleted:(BOOL)deleted
 {
-  if (a3)
+  if (deleted)
   {
     v3 = 32;
   }
@@ -51,9 +51,9 @@
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasMajorVersion:(BOOL)a3
+- (void)setHasMajorVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -66,9 +66,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMinorVersion:(BOOL)a3
+- (void)setHasMinorVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 8;
   }
@@ -81,9 +81,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasPatchVersion:(BOOL)a3
+- (void)setHasPatchVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 16;
   }
@@ -96,94 +96,94 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)addCodings:(id)a3
+- (void)addCodings:(id)codings
 {
-  v4 = a3;
+  codingsCopy = codings;
   codings = self->_codings;
-  v8 = v4;
+  v8 = codingsCopy;
   if (!codings)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_codings;
     self->_codings = v6;
 
-    v4 = v8;
+    codingsCopy = v8;
     codings = self->_codings;
   }
 
-  [(NSMutableArray *)codings addObject:v4];
+  [(NSMutableArray *)codings addObject:codingsCopy];
 }
 
-- (void)addLinks:(id)a3
+- (void)addLinks:(id)links
 {
-  v4 = a3;
+  linksCopy = links;
   links = self->_links;
-  v8 = v4;
+  v8 = linksCopy;
   if (!links)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_links;
     self->_links = v6;
 
-    v4 = v8;
+    linksCopy = v8;
     links = self->_links;
   }
 
-  [(NSMutableArray *)links addObject:v4];
+  [(NSMutableArray *)links addObject:linksCopy];
 }
 
-- (void)addProperties:(id)a3
+- (void)addProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   properties = self->_properties;
-  v8 = v4;
+  v8 = propertiesCopy;
   if (!properties)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_properties;
     self->_properties = v6;
 
-    v4 = v8;
+    propertiesCopy = v8;
     properties = self->_properties;
   }
 
-  [(NSMutableArray *)properties addObject:v4];
+  [(NSMutableArray *)properties addObject:propertiesCopy];
 }
 
-- (void)addLocalizedStringProperties:(id)a3
+- (void)addLocalizedStringProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   localizedStringProperties = self->_localizedStringProperties;
-  v8 = v4;
+  v8 = propertiesCopy;
   if (!localizedStringProperties)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_localizedStringProperties;
     self->_localizedStringProperties = v6;
 
-    v4 = v8;
+    propertiesCopy = v8;
     localizedStringProperties = self->_localizedStringProperties;
   }
 
-  [(NSMutableArray *)localizedStringProperties addObject:v4];
+  [(NSMutableArray *)localizedStringProperties addObject:propertiesCopy];
 }
 
-- (void)addNamedQuantities:(id)a3
+- (void)addNamedQuantities:(id)quantities
 {
-  v4 = a3;
+  quantitiesCopy = quantities;
   namedQuantities = self->_namedQuantities;
-  v8 = v4;
+  v8 = quantitiesCopy;
   if (!namedQuantities)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_namedQuantities;
     self->_namedQuantities = v6;
 
-    v4 = v8;
+    quantitiesCopy = v8;
     namedQuantities = self->_namedQuantities;
   }
 
-  [(NSMutableArray *)namedQuantities addObject:v4];
+  [(NSMutableArray *)namedQuantities addObject:quantitiesCopy];
 }
 
 - (id)description
@@ -192,8 +192,8 @@
   v8.receiver = self;
   v8.super_class = HDCodableUserDomainConcept;
   v4 = [(HDCodableUserDomainConcept *)&v8 description];
-  v5 = [(HDCodableUserDomainConcept *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableUserDomainConcept *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -201,19 +201,19 @@
 - (id)dictionaryRepresentation
 {
   v85 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   uuid = self->_uuid;
   if (uuid)
   {
-    [v3 setObject:uuid forKey:@"uuid"];
+    [dictionary setObject:uuid forKey:@"uuid"];
   }
 
   identifier = self->_identifier;
   if (identifier)
   {
-    v7 = [(HDCodableUserDomainConceptTypeIdentifier *)identifier dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"identifier"];
+    dictionaryRepresentation = [(HDCodableUserDomainConceptTypeIdentifier *)identifier dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"identifier"];
   }
 
   has = self->_has;
@@ -320,8 +320,8 @@ LABEL_15:
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v76 + 1) + 8 * i) dictionaryRepresentation];
-          [v14 addObject:v20];
+          dictionaryRepresentation2 = [*(*(&v76 + 1) + 8 * i) dictionaryRepresentation];
+          [v14 addObject:dictionaryRepresentation2];
         }
 
         v17 = [(NSMutableArray *)v15 countByEnumeratingWithState:&v76 objects:v84 count:16];
@@ -355,8 +355,8 @@ LABEL_15:
             objc_enumerationMutation(v22);
           }
 
-          v27 = [*(*(&v72 + 1) + 8 * j) dictionaryRepresentation];
-          [v21 addObject:v27];
+          dictionaryRepresentation3 = [*(*(&v72 + 1) + 8 * j) dictionaryRepresentation];
+          [v21 addObject:dictionaryRepresentation3];
         }
 
         v24 = [(NSMutableArray *)v22 countByEnumeratingWithState:&v72 objects:v83 count:16];
@@ -390,8 +390,8 @@ LABEL_15:
             objc_enumerationMutation(v29);
           }
 
-          v34 = [*(*(&v68 + 1) + 8 * k) dictionaryRepresentation];
-          [v28 addObject:v34];
+          dictionaryRepresentation4 = [*(*(&v68 + 1) + 8 * k) dictionaryRepresentation];
+          [v28 addObject:dictionaryRepresentation4];
         }
 
         v31 = [(NSMutableArray *)v29 countByEnumeratingWithState:&v68 objects:v82 count:16];
@@ -425,8 +425,8 @@ LABEL_15:
             objc_enumerationMutation(v36);
           }
 
-          v41 = [*(*(&v64 + 1) + 8 * m) dictionaryRepresentation];
-          [v35 addObject:v41];
+          dictionaryRepresentation5 = [*(*(&v64 + 1) + 8 * m) dictionaryRepresentation];
+          [v35 addObject:dictionaryRepresentation5];
         }
 
         v38 = [(NSMutableArray *)v36 countByEnumeratingWithState:&v64 objects:v81 count:16];
@@ -441,8 +441,8 @@ LABEL_15:
   ontologyLocalizedEducationContent = self->_ontologyLocalizedEducationContent;
   if (ontologyLocalizedEducationContent)
   {
-    v43 = [(HDCodableOntologyLocalizedEducationContent *)ontologyLocalizedEducationContent dictionaryRepresentation];
-    [v4 setObject:v43 forKey:@"ontologyLocalizedEducationContent"];
+    dictionaryRepresentation6 = [(HDCodableOntologyLocalizedEducationContent *)ontologyLocalizedEducationContent dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation6 forKey:@"ontologyLocalizedEducationContent"];
   }
 
   if ([(NSMutableArray *)self->_namedQuantities count])
@@ -467,8 +467,8 @@ LABEL_15:
             objc_enumerationMutation(v45);
           }
 
-          v50 = [*(*(&v60 + 1) + 8 * n) dictionaryRepresentation];
-          [v44 addObject:v50];
+          dictionaryRepresentation7 = [*(*(&v60 + 1) + 8 * n) dictionaryRepresentation];
+          [v44 addObject:dictionaryRepresentation7];
         }
 
         v47 = [(NSMutableArray *)v45 countByEnumeratingWithState:&v60 objects:v80 count:16];
@@ -483,8 +483,8 @@ LABEL_15:
   syncIdentity = self->_syncIdentity;
   if (syncIdentity)
   {
-    v52 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
-    [v4 setObject:v52 forKey:@"syncIdentity"];
+    dictionaryRepresentation8 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation8 forKey:@"syncIdentity"];
   }
 
   typeData = self->_typeData;
@@ -498,10 +498,10 @@ LABEL_15:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v69 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_uuid)
   {
     PBDataWriterWriteDataField();
@@ -751,27 +751,27 @@ LABEL_15:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v28 = v4;
+  toCopy = to;
+  v28 = toCopy;
   if (self->_uuid)
   {
-    [v4 setUuid:?];
-    v4 = v28;
+    [toCopy setUuid:?];
+    toCopy = v28;
   }
 
   if (self->_identifier)
   {
     [v28 setIdentifier:?];
-    v4 = v28;
+    toCopy = v28;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_creationDate;
-    *(v4 + 140) |= 1u;
+    *(toCopy + 1) = *&self->_creationDate;
+    *(toCopy + 140) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -790,27 +790,27 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  *(v4 + 2) = *&self->_modificationDate;
-  *(v4 + 140) |= 2u;
+  *(toCopy + 2) = *&self->_modificationDate;
+  *(toCopy + 140) |= 2u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_8:
-    *(v4 + 136) = self->_deleted;
-    *(v4 + 140) |= 0x20u;
+    *(toCopy + 136) = self->_deleted;
+    *(toCopy + 140) |= 0x20u;
   }
 
 LABEL_9:
   if (self->_build)
   {
     [v28 setBuild:?];
-    v4 = v28;
+    toCopy = v28;
   }
 
   v6 = self->_has;
   if ((v6 & 4) != 0)
   {
-    *(v4 + 18) = self->_majorVersion;
-    *(v4 + 140) |= 4u;
+    *(toCopy + 18) = self->_majorVersion;
+    *(toCopy + 140) |= 4u;
     v6 = self->_has;
     if ((v6 & 8) == 0)
     {
@@ -829,13 +829,13 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  *(v4 + 19) = self->_minorVersion;
-  *(v4 + 140) |= 8u;
+  *(toCopy + 19) = self->_minorVersion;
+  *(toCopy + 140) |= 8u;
   if ((*&self->_has & 0x10) != 0)
   {
 LABEL_14:
-    *(v4 + 24) = self->_patchVersion;
-    *(v4 + 140) |= 0x10u;
+    *(toCopy + 24) = self->_patchVersion;
+    *(toCopy + 140) |= 0x10u;
   }
 
 LABEL_15:
@@ -847,10 +847,10 @@ LABEL_15:
   if ([(HDCodableUserDomainConcept *)self codingsCount])
   {
     [v28 clearCodings];
-    v7 = [(HDCodableUserDomainConcept *)self codingsCount];
-    if (v7)
+    codingsCount = [(HDCodableUserDomainConcept *)self codingsCount];
+    if (codingsCount)
     {
-      v8 = v7;
+      v8 = codingsCount;
       for (i = 0; i != v8; ++i)
       {
         v10 = [(HDCodableUserDomainConcept *)self codingsAtIndex:i];
@@ -862,10 +862,10 @@ LABEL_15:
   if ([(HDCodableUserDomainConcept *)self linksCount])
   {
     [v28 clearLinks];
-    v11 = [(HDCodableUserDomainConcept *)self linksCount];
-    if (v11)
+    linksCount = [(HDCodableUserDomainConcept *)self linksCount];
+    if (linksCount)
     {
-      v12 = v11;
+      v12 = linksCount;
       for (j = 0; j != v12; ++j)
       {
         v14 = [(HDCodableUserDomainConcept *)self linksAtIndex:j];
@@ -877,10 +877,10 @@ LABEL_15:
   if ([(HDCodableUserDomainConcept *)self propertiesCount])
   {
     [v28 clearProperties];
-    v15 = [(HDCodableUserDomainConcept *)self propertiesCount];
-    if (v15)
+    propertiesCount = [(HDCodableUserDomainConcept *)self propertiesCount];
+    if (propertiesCount)
     {
-      v16 = v15;
+      v16 = propertiesCount;
       for (k = 0; k != v16; ++k)
       {
         v18 = [(HDCodableUserDomainConcept *)self propertiesAtIndex:k];
@@ -892,10 +892,10 @@ LABEL_15:
   if ([(HDCodableUserDomainConcept *)self localizedStringPropertiesCount])
   {
     [v28 clearLocalizedStringProperties];
-    v19 = [(HDCodableUserDomainConcept *)self localizedStringPropertiesCount];
-    if (v19)
+    localizedStringPropertiesCount = [(HDCodableUserDomainConcept *)self localizedStringPropertiesCount];
+    if (localizedStringPropertiesCount)
     {
-      v20 = v19;
+      v20 = localizedStringPropertiesCount;
       for (m = 0; m != v20; ++m)
       {
         v22 = [(HDCodableUserDomainConcept *)self localizedStringPropertiesAtIndex:m];
@@ -912,10 +912,10 @@ LABEL_15:
   if ([(HDCodableUserDomainConcept *)self namedQuantitiesCount])
   {
     [v28 clearNamedQuantities];
-    v23 = [(HDCodableUserDomainConcept *)self namedQuantitiesCount];
-    if (v23)
+    namedQuantitiesCount = [(HDCodableUserDomainConcept *)self namedQuantitiesCount];
+    if (namedQuantitiesCount)
     {
-      v24 = v23;
+      v24 = namedQuantitiesCount;
       for (n = 0; n != v24; ++n)
       {
         v26 = [(HDCodableUserDomainConcept *)self namedQuantitiesAtIndex:n];
@@ -937,15 +937,15 @@ LABEL_15:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v79 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_uuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_uuid copyWithZone:zone];
   v7 = *(v5 + 128);
   *(v5 + 128) = v6;
 
-  v8 = [(HDCodableUserDomainConceptTypeIdentifier *)self->_identifier copyWithZone:a3];
+  v8 = [(HDCodableUserDomainConceptTypeIdentifier *)self->_identifier copyWithZone:zone];
   v9 = *(v5 + 40);
   *(v5 + 40) = v8;
 
@@ -982,7 +982,7 @@ LABEL_4:
   }
 
 LABEL_5:
-  v11 = [(NSString *)self->_build copyWithZone:a3];
+  v11 = [(NSString *)self->_build copyWithZone:zone];
   v12 = *(v5 + 24);
   *(v5 + 24) = v11;
 
@@ -1019,7 +1019,7 @@ LABEL_8:
   }
 
 LABEL_9:
-  v14 = [(NSData *)self->_linksData copyWithZone:a3];
+  v14 = [(NSData *)self->_linksData copyWithZone:zone];
   v15 = *(v5 + 56);
   *(v5 + 56) = v14;
 
@@ -1042,7 +1042,7 @@ LABEL_9:
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v70 + 1) + 8 * i) copyWithZone:a3];
+        v21 = [*(*(&v70 + 1) + 8 * i) copyWithZone:zone];
         [v5 addCodings:v21];
       }
 
@@ -1071,7 +1071,7 @@ LABEL_9:
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v66 + 1) + 8 * j) copyWithZone:a3];
+        v27 = [*(*(&v66 + 1) + 8 * j) copyWithZone:zone];
         [v5 addLinks:v27];
       }
 
@@ -1100,7 +1100,7 @@ LABEL_9:
           objc_enumerationMutation(v28);
         }
 
-        v33 = [*(*(&v62 + 1) + 8 * k) copyWithZone:a3];
+        v33 = [*(*(&v62 + 1) + 8 * k) copyWithZone:zone];
         [v5 addProperties:v33];
       }
 
@@ -1129,7 +1129,7 @@ LABEL_9:
           objc_enumerationMutation(v34);
         }
 
-        v39 = [*(*(&v58 + 1) + 8 * m) copyWithZone:a3];
+        v39 = [*(*(&v58 + 1) + 8 * m) copyWithZone:zone];
         [v5 addLocalizedStringProperties:v39];
       }
 
@@ -1139,7 +1139,7 @@ LABEL_9:
     while (v36);
   }
 
-  v40 = [(HDCodableOntologyLocalizedEducationContent *)self->_ontologyLocalizedEducationContent copyWithZone:a3];
+  v40 = [(HDCodableOntologyLocalizedEducationContent *)self->_ontologyLocalizedEducationContent copyWithZone:zone];
   v41 = *(v5 + 88);
   *(v5 + 88) = v40;
 
@@ -1162,7 +1162,7 @@ LABEL_9:
           objc_enumerationMutation(v42);
         }
 
-        v47 = [*(*(&v54 + 1) + 8 * n) copyWithZone:{a3, v54}];
+        v47 = [*(*(&v54 + 1) + 8 * n) copyWithZone:{zone, v54}];
         [v5 addNamedQuantities:v47];
       }
 
@@ -1172,11 +1172,11 @@ LABEL_9:
     while (v44);
   }
 
-  v48 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:a3];
+  v48 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:zone];
   v49 = *(v5 + 112);
   *(v5 + 112) = v48;
 
-  v50 = [(NSData *)self->_typeData copyWithZone:a3];
+  v50 = [(NSData *)self->_typeData copyWithZone:zone];
   v51 = *(v5 + 120);
   *(v5 + 120) = v50;
 
@@ -1184,16 +1184,16 @@ LABEL_9:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_60;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 16))
+  if (uuid | *(equalCopy + 16))
   {
     if (![(NSData *)uuid isEqual:?])
     {
@@ -1202,7 +1202,7 @@ LABEL_9:
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 5))
+  if (identifier | *(equalCopy + 5))
   {
     if (![(HDCodableUserDomainConceptTypeIdentifier *)identifier isEqual:?])
     {
@@ -1211,62 +1211,62 @@ LABEL_9:
   }
 
   has = self->_has;
-  v8 = *(v4 + 140);
+  v8 = *(equalCopy + 140);
   if (has)
   {
-    if ((*(v4 + 140) & 1) == 0 || self->_creationDate != *(v4 + 1))
+    if ((*(equalCopy + 140) & 1) == 0 || self->_creationDate != *(equalCopy + 1))
     {
       goto LABEL_60;
     }
   }
 
-  else if (*(v4 + 140))
+  else if (*(equalCopy + 140))
   {
     goto LABEL_60;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 140) & 2) == 0 || self->_modificationDate != *(v4 + 2))
+    if ((*(equalCopy + 140) & 2) == 0 || self->_modificationDate != *(equalCopy + 2))
     {
       goto LABEL_60;
     }
   }
 
-  else if ((*(v4 + 140) & 2) != 0)
+  else if ((*(equalCopy + 140) & 2) != 0)
   {
     goto LABEL_60;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 140) & 0x20) == 0)
+    if ((*(equalCopy + 140) & 0x20) == 0)
     {
       goto LABEL_60;
     }
 
-    v10 = *(v4 + 136);
+    v10 = *(equalCopy + 136);
     if (self->_deleted)
     {
-      if ((*(v4 + 136) & 1) == 0)
+      if ((*(equalCopy + 136) & 1) == 0)
       {
         goto LABEL_60;
       }
     }
 
-    else if (*(v4 + 136))
+    else if (*(equalCopy + 136))
     {
       goto LABEL_60;
     }
   }
 
-  else if ((*(v4 + 140) & 0x20) != 0)
+  else if ((*(equalCopy + 140) & 0x20) != 0)
   {
     goto LABEL_60;
   }
 
   build = self->_build;
-  if (!(build | *(v4 + 3)))
+  if (!(build | *(equalCopy + 3)))
   {
     goto LABEL_21;
   }
@@ -1279,11 +1279,11 @@ LABEL_60:
   }
 
   has = self->_has;
-  v8 = *(v4 + 140);
+  v8 = *(equalCopy + 140);
 LABEL_21:
   if ((has & 4) != 0)
   {
-    if ((v8 & 4) == 0 || self->_majorVersion != *(v4 + 18))
+    if ((v8 & 4) == 0 || self->_majorVersion != *(equalCopy + 18))
     {
       goto LABEL_60;
     }
@@ -1296,7 +1296,7 @@ LABEL_21:
 
   if ((has & 8) != 0)
   {
-    if ((v8 & 8) == 0 || self->_minorVersion != *(v4 + 19))
+    if ((v8 & 8) == 0 || self->_minorVersion != *(equalCopy + 19))
     {
       goto LABEL_60;
     }
@@ -1309,7 +1309,7 @@ LABEL_21:
 
   if ((has & 0x10) != 0)
   {
-    if ((v8 & 0x10) == 0 || self->_patchVersion != *(v4 + 24))
+    if ((v8 & 0x10) == 0 || self->_patchVersion != *(equalCopy + 24))
     {
       goto LABEL_60;
     }
@@ -1321,13 +1321,13 @@ LABEL_21:
   }
 
   linksData = self->_linksData;
-  if (linksData | *(v4 + 7) && ![(NSData *)linksData isEqual:?])
+  if (linksData | *(equalCopy + 7) && ![(NSData *)linksData isEqual:?])
   {
     goto LABEL_60;
   }
 
   codings = self->_codings;
-  if (codings | *(v4 + 4))
+  if (codings | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)codings isEqual:?])
     {
@@ -1336,7 +1336,7 @@ LABEL_21:
   }
 
   links = self->_links;
-  if (links | *(v4 + 6))
+  if (links | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)links isEqual:?])
     {
@@ -1345,7 +1345,7 @@ LABEL_21:
   }
 
   properties = self->_properties;
-  if (properties | *(v4 + 13))
+  if (properties | *(equalCopy + 13))
   {
     if (![(NSMutableArray *)properties isEqual:?])
     {
@@ -1354,7 +1354,7 @@ LABEL_21:
   }
 
   localizedStringProperties = self->_localizedStringProperties;
-  if (localizedStringProperties | *(v4 + 8))
+  if (localizedStringProperties | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)localizedStringProperties isEqual:?])
     {
@@ -1363,7 +1363,7 @@ LABEL_21:
   }
 
   ontologyLocalizedEducationContent = self->_ontologyLocalizedEducationContent;
-  if (ontologyLocalizedEducationContent | *(v4 + 11))
+  if (ontologyLocalizedEducationContent | *(equalCopy + 11))
   {
     if (![(HDCodableOntologyLocalizedEducationContent *)ontologyLocalizedEducationContent isEqual:?])
     {
@@ -1372,7 +1372,7 @@ LABEL_21:
   }
 
   namedQuantities = self->_namedQuantities;
-  if (namedQuantities | *(v4 + 10))
+  if (namedQuantities | *(equalCopy + 10))
   {
     if (![(NSMutableArray *)namedQuantities isEqual:?])
     {
@@ -1381,7 +1381,7 @@ LABEL_21:
   }
 
   syncIdentity = self->_syncIdentity;
-  if (syncIdentity | *(v4 + 14))
+  if (syncIdentity | *(equalCopy + 14))
   {
     if (![(HDCodableSyncIdentity *)syncIdentity isEqual:?])
     {
@@ -1390,7 +1390,7 @@ LABEL_21:
   }
 
   typeData = self->_typeData;
-  if (typeData | *(v4 + 15))
+  if (typeData | *(equalCopy + 15))
   {
     v20 = [(NSData *)typeData isEqual:?];
   }
@@ -1535,17 +1535,17 @@ LABEL_27:
   return v26 ^ v28 ^ [(NSData *)self->_typeData hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 16))
+  fromCopy = from;
+  if (*(fromCopy + 16))
   {
     [(HDCodableUserDomainConcept *)self setUuid:?];
   }
 
   identifier = self->_identifier;
-  v6 = *(v4 + 5);
+  v6 = *(fromCopy + 5);
   if (identifier)
   {
     if (v6)
@@ -1559,12 +1559,12 @@ LABEL_27:
     [(HDCodableUserDomainConcept *)self setIdentifier:?];
   }
 
-  v7 = *(v4 + 140);
+  v7 = *(fromCopy + 140);
   if (v7)
   {
-    self->_creationDate = *(v4 + 1);
+    self->_creationDate = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v7 = *(v4 + 140);
+    v7 = *(fromCopy + 140);
     if ((v7 & 2) == 0)
     {
 LABEL_10:
@@ -1577,32 +1577,32 @@ LABEL_10:
     }
   }
 
-  else if ((*(v4 + 140) & 2) == 0)
+  else if ((*(fromCopy + 140) & 2) == 0)
   {
     goto LABEL_10;
   }
 
-  self->_modificationDate = *(v4 + 2);
+  self->_modificationDate = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if ((*(v4 + 140) & 0x20) != 0)
+  if ((*(fromCopy + 140) & 0x20) != 0)
   {
 LABEL_11:
-    self->_deleted = *(v4 + 136);
+    self->_deleted = *(fromCopy + 136);
     *&self->_has |= 0x20u;
   }
 
 LABEL_12:
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(HDCodableUserDomainConcept *)self setBuild:?];
   }
 
-  v8 = *(v4 + 140);
+  v8 = *(fromCopy + 140);
   if ((v8 & 4) != 0)
   {
-    self->_majorVersion = *(v4 + 18);
+    self->_majorVersion = *(fromCopy + 18);
     *&self->_has |= 4u;
-    v8 = *(v4 + 140);
+    v8 = *(fromCopy + 140);
     if ((v8 & 8) == 0)
     {
 LABEL_16:
@@ -1615,22 +1615,22 @@ LABEL_16:
     }
   }
 
-  else if ((*(v4 + 140) & 8) == 0)
+  else if ((*(fromCopy + 140) & 8) == 0)
   {
     goto LABEL_16;
   }
 
-  self->_minorVersion = *(v4 + 19);
+  self->_minorVersion = *(fromCopy + 19);
   *&self->_has |= 8u;
-  if ((*(v4 + 140) & 0x10) != 0)
+  if ((*(fromCopy + 140) & 0x10) != 0)
   {
 LABEL_17:
-    self->_patchVersion = *(v4 + 24);
+    self->_patchVersion = *(fromCopy + 24);
     *&self->_has |= 0x10u;
   }
 
 LABEL_18:
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(HDCodableUserDomainConcept *)self setLinksData:?];
   }
@@ -1639,7 +1639,7 @@ LABEL_18:
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v9 = *(v4 + 4);
+  v9 = *(fromCopy + 4);
   v10 = [v9 countByEnumeratingWithState:&v55 objects:v63 count:16];
   if (v10)
   {
@@ -1667,7 +1667,7 @@ LABEL_18:
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v14 = *(v4 + 6);
+  v14 = *(fromCopy + 6);
   v15 = [v14 countByEnumeratingWithState:&v51 objects:v62 count:16];
   if (v15)
   {
@@ -1695,7 +1695,7 @@ LABEL_18:
   v50 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v19 = *(v4 + 13);
+  v19 = *(fromCopy + 13);
   v20 = [v19 countByEnumeratingWithState:&v47 objects:v61 count:16];
   if (v20)
   {
@@ -1723,7 +1723,7 @@ LABEL_18:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v24 = *(v4 + 8);
+  v24 = *(fromCopy + 8);
   v25 = [v24 countByEnumeratingWithState:&v43 objects:v60 count:16];
   if (v25)
   {
@@ -1748,7 +1748,7 @@ LABEL_18:
   }
 
   ontologyLocalizedEducationContent = self->_ontologyLocalizedEducationContent;
-  v30 = *(v4 + 11);
+  v30 = *(fromCopy + 11);
   if (ontologyLocalizedEducationContent)
   {
     if (v30)
@@ -1766,7 +1766,7 @@ LABEL_18:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v31 = *(v4 + 10);
+  v31 = *(fromCopy + 10);
   v32 = [v31 countByEnumeratingWithState:&v39 objects:v59 count:16];
   if (v32)
   {
@@ -1791,7 +1791,7 @@ LABEL_18:
   }
 
   syncIdentity = self->_syncIdentity;
-  v37 = *(v4 + 14);
+  v37 = *(fromCopy + 14);
   if (syncIdentity)
   {
     if (v37)
@@ -1805,7 +1805,7 @@ LABEL_18:
     [(HDCodableUserDomainConcept *)self setSyncIdentity:?];
   }
 
-  if (*(v4 + 15))
+  if (*(fromCopy + 15))
   {
     [(HDCodableUserDomainConcept *)self setTypeData:?];
   }

@@ -1,15 +1,15 @@
 @interface TMLAspectsRegistration
-+ (id)keyForClassNamed:(id)a3 signalName:(id)a4 advice:(int)a5;
-+ (id)keyForProtocolNamed:(id)a3 signalName:(id)a4 advice:(int)a5;
-+ (id)keysForObject:(id)a3 withMetaObjects:(id)a4 signalName:(id)a5 advice:(int)a6;
++ (id)keyForClassNamed:(id)named signalName:(id)name advice:(int)advice;
++ (id)keyForProtocolNamed:(id)named signalName:(id)name advice:(int)advice;
++ (id)keysForObject:(id)object withMetaObjects:(id)objects signalName:(id)name advice:(int)advice;
 + (id)shared;
 - (TMLAspectsRegistration)init;
-- (id)aspectsForObject:(id)a3 signalName:(id)a4 advice:(int)a5;
-- (id)aspectsWithKeys:(id)a3;
-- (id)storageForKey:(id)a3 createIfMissing:(BOOL)a4;
-- (id)strongAspectsFromArray:(id)a3;
-- (void)registerAspect:(id)a3 withKey:(id)a4;
-- (void)unregisterAspect:(id)a3 withKey:(id)a4;
+- (id)aspectsForObject:(id)object signalName:(id)name advice:(int)advice;
+- (id)aspectsWithKeys:(id)keys;
+- (id)storageForKey:(id)key createIfMissing:(BOOL)missing;
+- (id)strongAspectsFromArray:(id)array;
+- (void)registerAspect:(id)aspect withKey:(id)key;
+- (void)unregisterAspect:(id)aspect withKey:(id)key;
 @end
 
 @implementation TMLAspectsRegistration
@@ -41,11 +41,11 @@
   return v3;
 }
 
-- (id)storageForKey:(id)a3 createIfMissing:(BOOL)a4
+- (id)storageForKey:(id)key createIfMissing:(BOOL)missing
 {
-  v4 = a4;
-  v6 = a3;
-  v10 = objc_msgSend_objectForKey_(self->_registeredAspects, v7, v8, v6);
+  missingCopy = missing;
+  keyCopy = key;
+  v10 = objc_msgSend_objectForKey_(self->_registeredAspects, v7, v8, keyCopy);
   if (v10)
   {
     v12 = 1;
@@ -53,33 +53,33 @@
 
   else
   {
-    v12 = !v4;
+    v12 = !missingCopy;
   }
 
   if (!v12)
   {
     v10 = objc_msgSend_arrayWithCapacity_(MEMORY[0x277CBEB18], v9, v11, 3);
-    objc_msgSend_setObject_forKey_(self->_registeredAspects, v13, v14, v10, v6);
+    objc_msgSend_setObject_forKey_(self->_registeredAspects, v13, v14, v10, keyCopy);
   }
 
   return v10;
 }
 
-- (void)registerAspect:(id)a3 withKey:(id)a4
+- (void)registerAspect:(id)aspect withKey:(id)key
 {
-  v6 = a3;
-  v14 = objc_msgSend_storageForKey_createIfMissing_(self, v7, v8, a4, 1);
-  v11 = objc_msgSend_weakReferenceWithObject_(TMLWeakReferenceObject, v9, v10, v6);
+  aspectCopy = aspect;
+  v14 = objc_msgSend_storageForKey_createIfMissing_(self, v7, v8, key, 1);
+  v11 = objc_msgSend_weakReferenceWithObject_(TMLWeakReferenceObject, v9, v10, aspectCopy);
 
   objc_msgSend_addObject_(v14, v12, v13, v11);
 }
 
-- (void)unregisterAspect:(id)a3 withKey:(id)a4
+- (void)unregisterAspect:(id)aspect withKey:(id)key
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_storageForKey_createIfMissing_(self, v8, v9, v7, 0);
+  aspectCopy = aspect;
+  keyCopy = key;
+  v10 = objc_msgSend_storageForKey_createIfMissing_(self, v8, v9, keyCopy, 0);
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -91,7 +91,7 @@
   }
 
   v15 = v12;
-  v25 = self;
+  selfCopy = self;
   v16 = 0;
   v17 = *v27;
   do
@@ -108,7 +108,7 @@
       v23 = v20;
       if (v20)
       {
-        v24 = v20 == v6;
+        v24 = v20 == aspectCopy;
       }
 
       else
@@ -131,26 +131,26 @@
   }
 
   while (v15);
-  self = v25;
+  self = selfCopy;
   if (v16)
   {
-    objc_msgSend_setObject_forKey_(v25->_registeredAspects, v13, v14, v16, v7);
+    objc_msgSend_setObject_forKey_(selfCopy->_registeredAspects, v13, v14, v16, keyCopy);
   }
 
   else
   {
 LABEL_17:
-    objc_msgSend_removeObjectForKey_(self->_registeredAspects, v13, v14, v7);
+    objc_msgSend_removeObjectForKey_(self->_registeredAspects, v13, v14, keyCopy);
   }
 }
 
-- (id)strongAspectsFromArray:(id)a3
+- (id)strongAspectsFromArray:(id)array
 {
-  v3 = a3;
-  if (objc_msgSend_count(v3, v4, v5))
+  arrayCopy = array;
+  if (objc_msgSend_count(arrayCopy, v4, v5))
   {
     v8 = MEMORY[0x277CBEB18];
-    v9 = objc_msgSend_count(v3, v6, v7);
+    v9 = objc_msgSend_count(arrayCopy, v6, v7);
     v12 = objc_msgSend_arrayWithCapacity_(v8, v10, v11, v9);
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
@@ -158,27 +158,27 @@ LABEL_17:
     v20[3] = &unk_279DC5758;
     v21 = v12;
     v13 = v12;
-    objc_msgSend_enumerateObjectsUsingBlock_(v3, v14, v15, v20);
+    objc_msgSend_enumerateObjectsUsingBlock_(arrayCopy, v14, v15, v20);
     v18 = objc_msgSend_arrayWithArray_(MEMORY[0x277CBEA60], v16, v17, v13);
   }
 
   else
   {
-    v18 = v3;
+    v18 = arrayCopy;
   }
 
   return v18;
 }
 
-- (id)aspectsWithKeys:(id)a3
+- (id)aspectsWithKeys:(id)keys
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keysCopy = keys;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, 0.0, &v22, v26, 16);
+  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(keysCopy, v5, 0.0, &v22, v26, 16);
   if (v6)
   {
     v9 = v6;
@@ -190,7 +190,7 @@ LABEL_17:
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keysCopy);
         }
 
         v13 = objc_msgSend_aspectsWithKey_(self, v7, v8, *(*(&v22 + 1) + 8 * i));
@@ -205,7 +205,7 @@ LABEL_17:
         }
       }
 
-      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v7, v8, &v22, v26, 16);
+      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(keysCopy, v7, v8, &v22, v26, 16);
     }
 
     while (v9);
@@ -229,15 +229,15 @@ LABEL_17:
   return v20;
 }
 
-- (id)aspectsForObject:(id)a3 signalName:(id)a4 advice:(int)a5
+- (id)aspectsForObject:(id)object signalName:(id)name advice:(int)advice
 {
-  v5 = *&a5;
-  v8 = a3;
-  v9 = a4;
+  v5 = *&advice;
+  objectCopy = object;
+  nameCopy = name;
   if (objc_msgSend_count(self->_registeredAspects, v10, v11))
   {
-    v14 = objc_msgSend_metaObjects(v8, v12, v13);
-    v17 = objc_msgSend_keysForObject_withMetaObjects_signalName_advice_(TMLAspectsRegistration, v15, v16, v8, v14, v9, v5);
+    v14 = objc_msgSend_metaObjects(objectCopy, v12, v13);
+    v17 = objc_msgSend_keysForObject_withMetaObjects_signalName_advice_(TMLAspectsRegistration, v15, v16, objectCopy, v14, nameCopy, v5);
     v20 = objc_msgSend_aspectsWithKeys_(self, v18, v19, v17);
   }
 
@@ -249,19 +249,19 @@ LABEL_17:
   return v20;
 }
 
-+ (id)keyForProtocolNamed:(id)a3 signalName:(id)a4 advice:(int)a5
++ (id)keyForProtocolNamed:(id)named signalName:(id)name advice:(int)advice
 {
   v7 = MEMORY[0x277CCAB68];
-  v8 = a4;
-  v9 = a3;
+  nameCopy = name;
+  namedCopy = named;
   v12 = objc_msgSend_stringWithString_(v7, v10, v11, @"P");
-  objc_msgSend_appendString_(v12, v13, v14, v9);
+  objc_msgSend_appendString_(v12, v13, v14, namedCopy);
 
   objc_msgSend_appendString_(v12, v15, v16, @".");
-  objc_msgSend_appendString_(v12, v17, v18, v8);
+  objc_msgSend_appendString_(v12, v17, v18, nameCopy);
 
   objc_msgSend_appendString_(v12, v19, v20, @":");
-  if (a5)
+  if (advice)
   {
     objc_msgSend_appendString_(v12, v21, v22, @"A");
   }
@@ -276,19 +276,19 @@ LABEL_17:
   return v25;
 }
 
-+ (id)keyForClassNamed:(id)a3 signalName:(id)a4 advice:(int)a5
++ (id)keyForClassNamed:(id)named signalName:(id)name advice:(int)advice
 {
   v7 = MEMORY[0x277CCAB68];
-  v8 = a4;
-  v9 = a3;
+  nameCopy = name;
+  namedCopy = named;
   v12 = objc_msgSend_stringWithString_(v7, v10, v11, @"C");
-  objc_msgSend_appendString_(v12, v13, v14, v9);
+  objc_msgSend_appendString_(v12, v13, v14, namedCopy);
 
   objc_msgSend_appendString_(v12, v15, v16, @".");
-  objc_msgSend_appendString_(v12, v17, v18, v8);
+  objc_msgSend_appendString_(v12, v17, v18, nameCopy);
 
   objc_msgSend_appendString_(v12, v19, v20, @":");
-  if (a5)
+  if (advice)
   {
     objc_msgSend_appendString_(v12, v21, v22, @"A");
   }
@@ -303,23 +303,23 @@ LABEL_17:
   return v25;
 }
 
-+ (id)keysForObject:(id)a3 withMetaObjects:(id)a4 signalName:(id)a5 advice:(int)a6
++ (id)keysForObject:(id)object withMetaObjects:(id)objects signalName:(id)name advice:(int)advice
 {
-  v6 = *&a6;
+  v6 = *&advice;
   v81 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  objectCopy = object;
+  objectsCopy = objects;
+  nameCopy = name;
   v14 = objc_msgSend_orderedSetWithCapacity_(MEMORY[0x277CBEB40], v12, v13, 4);
   v15 = 0x282042000uLL;
-  v18 = objc_msgSend_keyForClassNamed_signalName_advice_(TMLAspectsRegistration, v16, v17, @"*", v11, v6);
+  v18 = objc_msgSend_keyForClassNamed_signalName_advice_(TMLAspectsRegistration, v16, v17, @"*", nameCopy, v6);
   objc_msgSend_addObject_(v14, v19, v20, v18);
 
   v77 = 0u;
   v78 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v21 = v10;
+  v21 = objectsCopy;
   v70 = objc_msgSend_countByEnumeratingWithState_objects_count_(v21, v22, v23, &v75, v80, 16);
   if (!v70)
   {
@@ -327,13 +327,13 @@ LABEL_17:
 LABEL_20:
     v57 = objc_opt_class();
     v58 = NSStringFromClass(v57);
-    v61 = objc_msgSend_keyForClassNamed_signalName_advice_((v15 + 3656), v59, v60, v58, v11, v6);
+    v61 = objc_msgSend_keyForClassNamed_signalName_advice_((v15 + 3656), v59, v60, v58, nameCopy, v6);
     objc_msgSend_addObject_(v14, v62, v63, v61);
 
     goto LABEL_21;
   }
 
-  v66 = v9;
+  v66 = objectCopy;
   obj = v21;
   v68 = 0;
   v69 = *v76;
@@ -353,7 +353,7 @@ LABEL_20:
       {
         v30 = objc_opt_class();
         v33 = objc_msgSend_type(v27, v31, v32);
-        v36 = objc_msgSend_keyForClassNamed_signalName_advice_(v30, v34, v35, v33, v11, v6);
+        v36 = objc_msgSend_keyForClassNamed_signalName_advice_(v30, v34, v35, v33, nameCopy, v6);
         objc_msgSend_addObject_(v14, v37, v38, v36);
 
         v68 = 1;
@@ -380,7 +380,7 @@ LABEL_20:
 
             v46 = *(*(&v71 + 1) + 8 * j);
             v47 = objc_opt_class();
-            v50 = objc_msgSend_keyForProtocolNamed_signalName_advice_(v47, v48, v49, v46, v11, v6);
+            v50 = objc_msgSend_keyForProtocolNamed_signalName_advice_(v47, v48, v49, v46, nameCopy, v6);
             objc_msgSend_addObject_(v14, v51, v52, v50);
           }
 
@@ -397,7 +397,7 @@ LABEL_20:
 
   while (v70);
 
-  v9 = v66;
+  objectCopy = v66;
   v15 = 0x282042000;
   if ((v68 & 1) == 0)
   {

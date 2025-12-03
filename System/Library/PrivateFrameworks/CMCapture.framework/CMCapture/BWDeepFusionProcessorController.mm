@@ -1,10 +1,10 @@
 @interface BWDeepFusionProcessorController
 + (void)initialize;
-- (BWDeepFusionProcessorController)initWithConfiguration:(id)a3;
+- (BWDeepFusionProcessorController)initWithConfiguration:(id)configuration;
 - (id)_serviceNextRequest;
 - (id)externalMemoryDescriptor;
-- (id)processorGetInferenceResults:(id)a3 inferenceInputBufferType:(int)a4;
-- (int)enqueueInputForProcessing:(id)a3 delegate:(id)a4;
+- (id)processorGetInferenceResults:(id)results inferenceInputBufferType:(int)type;
+- (int)enqueueInputForProcessing:(id)processing delegate:(id)delegate;
 - (uint64_t)_addSemanticStylePropertiesIfAvailable;
 - (uint64_t)_loadSetupAndPrepareDeepFusionProcessor;
 - (uint64_t)_processOnlyApplyingSemanticStyle;
@@ -15,22 +15,22 @@
 - (uint64_t)_setupProcessorForOnlyApplyingSemanticStyle;
 - (uint64_t)_updateStateIfNeeded;
 - (void)_process;
-- (void)_propagateDemosaicedRawPixelBufferToOutputSampleBufferIfNeeded:(uint64_t)a1;
-- (void)_propagateGainMapToOutputSampleBufferIfNeeded:(uint64_t)a1;
-- (void)addInferencesForInput:(id)a3;
-- (void)beginProcessingCachedBuffersForInput:(id)a3;
+- (void)_propagateDemosaicedRawPixelBufferToOutputSampleBufferIfNeeded:(uint64_t)needed;
+- (void)_propagateGainMapToOutputSampleBufferIfNeeded:(uint64_t)needed;
+- (void)addInferencesForInput:(id)input;
+- (void)beginProcessingCachedBuffersForInput:(id)input;
 - (void)cancelProcessing;
 - (void)dealloc;
-- (void)input:(id)a3 addInputBuffer:(id)a4;
-- (void)processor:(id)a3 didSelectFusionMode:(int)a4;
-- (void)processor:(id)a3 outputReadyWithBufferType:(int)a4 outputPixelBuffer:(__CVBuffer *)a5 outputMetadata:(id)a6 error:(int)a7;
+- (void)input:(id)input addInputBuffer:(id)buffer;
+- (void)processor:(id)processor didSelectFusionMode:(int)mode;
+- (void)processor:(id)processor outputReadyWithBufferType:(int)type outputPixelBuffer:(__CVBuffer *)buffer outputMetadata:(id)metadata error:(int)error;
 @end
 
 @implementation BWDeepFusionProcessorController
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -39,32 +39,32 @@
   }
 }
 
-- (BWDeepFusionProcessorController)initWithConfiguration:(id)a3
+- (BWDeepFusionProcessorController)initWithConfiguration:(id)configuration
 {
   v11.receiver = self;
   v11.super_class = BWDeepFusionProcessorController;
   v4 = [(BWDeepFusionProcessorController *)&v11 init];
   if (v4)
   {
-    if ([objc_msgSend(a3 "sensorConfigurationsByPortType")])
+    if ([objc_msgSend(configuration "sensorConfigurationsByPortType")])
     {
-      v6 = [a3 maxInputDimensions];
-      if (v6 < 1 || v6 <= 0)
+      maxInputDimensions = [configuration maxInputDimensions];
+      if (maxInputDimensions < 1 || maxInputDimensions <= 0)
       {
         [BWDeepFusionProcessorController initWithConfiguration:];
       }
 
       else
       {
-        v7 = [a3 maxOutputDimensions];
-        if (v7 < 1 || v7 <= 0)
+        maxOutputDimensions = [configuration maxOutputDimensions];
+        if (maxOutputDimensions < 1 || maxOutputDimensions <= 0)
         {
           [BWDeepFusionProcessorController initWithConfiguration:];
         }
 
         else
         {
-          v4->_configuration = a3;
+          v4->_configuration = configuration;
           v4->_requestQueue = objc_alloc_init(MEMORY[0x1E695DF70]);
           v8 = [[FigStateMachine alloc] initWithLabel:@"BWDeepFusionProcessorController state machine" stateCount:[FigStateMachine indexForState:?], 1, v4];
           [(FigStateMachine *)v8 setPerformsAtomicStateTransitions:0];
@@ -154,11 +154,11 @@
   [(BWStillImageProcessorController *)&v10 dealloc];
 }
 
-- (int)enqueueInputForProcessing:(id)a3 delegate:(id)a4
+- (int)enqueueInputForProcessing:(id)processing delegate:(id)delegate
 {
-  if (-[NSSet containsObject:](self->_supportedPortTypes, "containsObject:", [a3 portType]))
+  if (-[NSSet containsObject:](self->_supportedPortTypes, "containsObject:", [processing portType]))
   {
-    [(BWDeepFusionProcessorController *)a3 enqueueInputForProcessing:a4 delegate:&self->super.super.isa, &v11];
+    [(BWDeepFusionProcessorController *)processing enqueueInputForProcessing:delegate delegate:&self->super.super.isa, &v11];
     return v11;
   }
 
@@ -168,7 +168,7 @@
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
     os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
     fig_log_call_emit_and_clean_up_after_send_and_compose();
-    [a3 portType];
+    [processing portType];
     v10 = _os_log_send_and_compose_impl();
     FigCapturePleaseFileRadar(FrameworkRadarComponent, v10, 0, 0, "/Library/Caches/com.apple.xbs/Sources/CameraCapture/CMCapture/Sources/Graph/Nodes/BWDeepFusionProcessorController.m", 701, @"LastShownDate:BWDeepFusionProcessorController.m:701", @"LastShownBuild:BWDeepFusionProcessorController.m:701", 0);
     free(v10);
@@ -184,10 +184,10 @@
   return [(IBPDeepFusionProcessor *)deepFusionProcessor externalMemoryDescriptorForConfiguration:v3];
 }
 
-- (id)processorGetInferenceResults:(id)a3 inferenceInputBufferType:(int)a4
+- (id)processorGetInferenceResults:(id)results inferenceInputBufferType:(int)type
 {
   v6 = NSClassFromString(&cfstr_Deepfusioninfe.isa);
-  if (a4 == 11)
+  if (type == 11)
   {
     v7 = 36;
   }
@@ -239,7 +239,7 @@
     }
   }
 
-  v16 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -263,7 +263,7 @@
         v22 = [v8 inferenceBufferForAttachedMediaKey:*(*(&v28 + 1) + 8 * v21)];
         if (v22)
         {
-          [v16 addObject:v22];
+          [array addObject:v22];
         }
 
         ++v21;
@@ -276,9 +276,9 @@
     while (v19);
   }
 
-  if ([v16 count])
+  if ([array count])
   {
-    [v9 setLowResPersonInstanceMasks:v16];
+    [v9 setLowResPersonInstanceMasks:array];
     [v9 setLowResPersonInstanceConfidences:{objc_msgSend(v8, "inferenceForAttachmentKey:", 0x1F219E990)}];
     [v9 setLowResPersonInstanceBoundingBoxes:{objc_msgSend(v8, "inferenceForAttachmentKey:", 0x1F219E9B0)}];
   }
@@ -305,42 +305,42 @@
   return v9;
 }
 
-- (void)processor:(id)a3 didSelectFusionMode:(int)a4
+- (void)processor:(id)processor didSelectFusionMode:(int)mode
 {
-  if (a4 == 2)
+  if (mode == 2)
   {
     v5 = 2;
   }
 
   else
   {
-    v5 = a4 == 1;
+    v5 = mode == 1;
   }
 
-  v6 = [(BWDeepFusionProcessorRequest *)self->_currentRequest delegate];
-  v7 = [(BWDeepFusionProcessorRequest *)self->_currentRequest input];
+  delegate = [(BWDeepFusionProcessorRequest *)self->_currentRequest delegate];
+  input = [(BWDeepFusionProcessorRequest *)self->_currentRequest input];
 
-  [(BWDeepFusionProcessorControllerDelegate *)v6 processorController:self didSelectFusionMode:v5 processorInput:v7];
+  [(BWDeepFusionProcessorControllerDelegate *)delegate processorController:self didSelectFusionMode:v5 processorInput:input];
 }
 
 - (uint64_t)_loadSetupAndPrepareDeepFusionProcessor
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = a1;
-  if (*(a1 + 96))
+  selfCopy = self;
+  if (*(self + 96))
   {
     return 0;
   }
 
-  v27 = [MEMORY[0x1E695DF90] dictionary];
-  v2 = [MEMORY[0x1E695DF90] dictionary];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v32 = [MEMORY[0x1E695DF90] dictionary];
-  v33 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary4 = [MEMORY[0x1E695DF90] dictionary];
+  v33 = dictionary3;
   [OUTLINED_FUNCTION_8_6() setObject:? forKeyedSubscript:?];
   v31 = [MEMORY[0x1E695DFA8] set];
   v39 = 0u;
@@ -354,21 +354,21 @@
   {
     v28 = 0;
 LABEL_27:
-    if (![v2 count])
+    if (![dictionary2 count])
     {
       OUTLINED_FUNCTION_0();
       FigDebugAssert3();
     }
 
-    [v27 setObject:v2 forKeyedSubscript:*off_1E798A9D0];
+    [dictionary setObject:dictionary2 forKeyedSubscript:*off_1E798A9D0];
     v18 = &OBJC_IVAR___BWFigVideoCaptureDevice__deviceMotionActivityDetector;
-    if ([v32 count])
+    if ([dictionary4 count])
     {
-      [v27 setObject:v32 forKeyedSubscript:*off_1E798A970];
+      [dictionary setObject:dictionary4 forKeyedSubscript:*off_1E798A970];
     }
 
-    *(v1 + 72) = [objc_alloc(MEMORY[0x1E695DFD8]) initWithSet:v31];
-    v19 = BWLoadProcessorBundle(v28, *(v1 + 88));
+    *(selfCopy + 72) = [objc_alloc(MEMORY[0x1E695DFD8]) initWithSet:v31];
+    v19 = BWLoadProcessorBundle(v28, *(selfCopy + 88));
     if (!v19)
     {
       OUTLINED_FUNCTION_0();
@@ -378,27 +378,27 @@ LABEL_27:
 
     v20 = v19;
     v21 = [v19 classNamed:@"DeepFusionOutput"];
-    *(v1 + 104) = v21;
+    *(selfCopy + 104) = v21;
     if (!v21)
     {
       goto LABEL_44;
     }
 
     v22 = [objc_alloc(MEMORY[0x1E6991778]) initWithbundle:v20 andOptionalCommandQueue:{objc_msgSend(OUTLINED_FUNCTION_7_77(), "metalCommandQueue")}];
-    *(v1 + 96) = [objc_alloc(objc_msgSend(v20 classNamed:{@"DeepFusionProcessor", "initWithContext:", v22}];
+    *(selfCopy + 96) = [objc_alloc(objc_msgSend(v20 classNamed:{@"DeepFusionProcessor", "initWithContext:", v22}];
 
-    if (!*(v1 + 96))
+    if (!*(selfCopy + 96))
     {
       goto LABEL_44;
     }
 
     if ([OUTLINED_FUNCTION_7_77() quadraSupportEnabled])
     {
-      [v27 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*off_1E798D1F8];
+      [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*off_1E798D1F8];
     }
 
-    [v27 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", -[FigCaptureCameraParameters deviceGeneration](+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters, "sharedInstance"), "deviceGeneration")), *off_1E798D1E0}];
-    v23 = [*(v1 + 96) setupWithOptions:v27];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", -[FigCaptureCameraParameters deviceGeneration](+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters, "sharedInstance"), "deviceGeneration")), *off_1E798D1E0}];
+    v23 = [*(selfCopy + 96) setupWithOptions:dictionary];
     if (v23)
     {
       v17 = v23;
@@ -418,7 +418,7 @@ LABEL_27:
       [OUTLINED_FUNCTION_4() setWidth:?];
       [v25 setHeight:{objc_msgSend(OUTLINED_FUNCTION_7_77(), "maxOutputDimensions") >> 32}];
       [v25 setCmiResourceEnabled:{objc_msgSend(OUTLINED_FUNCTION_7_77(), "cmiResourceEnabled")}];
-      v17 = [*(v1 + 96) prepareToProcess:0 prepareDescriptor:v25];
+      v17 = [*(selfCopy + 96) prepareToProcess:0 prepareDescriptor:v25];
       if (!v17)
       {
         return v17;
@@ -433,14 +433,14 @@ LABEL_44:
 
 LABEL_41:
 
-    *(v1 + v18[610]) = 0;
+    *(selfCopy + v18[610]) = 0;
     return v17;
   }
 
   v28 = 0;
   v5 = @"DeepFusionParameters";
   v34 = *v40;
-  v30 = v1;
+  v30 = selfCopy;
 LABEL_5:
   v6 = 0;
   while (1)
@@ -458,41 +458,41 @@ LABEL_5:
     }
 
     v9 = v8;
-    v10 = v2;
+    v10 = dictionary2;
     v11 = v4;
     [v33 setObject:objc_msgSend(v7 forKeyedSubscript:{"sensorIDString"), objc_msgSend(v7, "portType")}];
-    v12 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary5 = [MEMORY[0x1E695DF90] dictionary];
     v13 = v5;
-    [v12 setObject:v9 forKeyedSubscript:v5];
+    [dictionary5 setObject:v9 forKeyedSubscript:v5];
     [objc_msgSend(v7 "sensorIDDictionary")];
     [OUTLINED_FUNCTION_37_0() setObject:? forKeyedSubscript:?];
     [objc_msgSend(v7 "sensorIDDictionary")];
     [OUTLINED_FUNCTION_37_0() setObject:? forKeyedSubscript:?];
     v14 = v11;
-    v15 = [*(v1 + v11[605]) stillImageFusionScheme];
-    if (v15 - 4 < 2)
+    stillImageFusionScheme = [*(selfCopy + v11[605]) stillImageFusionScheme];
+    if (stillImageFusionScheme - 4 < 2)
     {
-      *(v1 + 88) = [+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters nrfVersion];
-      if (!*(v1 + 88))
+      *(selfCopy + 88) = [+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters nrfVersion];
+      if (!*(selfCopy + 88))
       {
         OUTLINED_FUNCTION_0();
         FigDebugAssert3();
         v17 = 4294954510;
         v18 = &OBJC_IVAR___BWFigVideoCaptureDevice__deviceMotionActivityDetector;
-        v1 = v30;
+        selfCopy = v30;
         goto LABEL_41;
       }
 
       [objc_msgSend(objc_msgSend(v7 "sensorIDDictionary")];
       [OUTLINED_FUNCTION_37_0() setObject:? forKeyedSubscript:?];
       v28 = @"NRF";
-      v2 = v10;
+      dictionary2 = v10;
       goto LABEL_18;
     }
 
-    if (v15 == 3)
+    if (stillImageFusionScheme == 3)
     {
-      v2 = v10;
+      dictionary2 = v10;
       if ([objc_msgSend(v7 "sensorIDDictionary")])
       {
         [OUTLINED_FUNCTION_37_0() setObject:? forKeyedSubscript:?];
@@ -502,25 +502,25 @@ LABEL_5:
       goto LABEL_18;
     }
 
-    v2 = v10;
-    if (v15 < 3)
+    dictionary2 = v10;
+    if (stillImageFusionScheme < 3)
     {
       break;
     }
 
 LABEL_18:
-    v1 = v30;
+    selfCopy = v30;
     if ([objc_msgSend(v7 "sensorIDDictionary")])
     {
       [OUTLINED_FUNCTION_37_0() setObject:? forKeyedSubscript:?];
     }
 
-    v36 = [v7 sensorIDString];
-    v37 = v12;
-    [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
-    [v2 setObject:@"SoftISPTuning" forKeyedSubscript:{objc_msgSend(OUTLINED_FUNCTION_111(), "portType")}];
+    sensorIDString = [v7 sensorIDString];
+    v37 = dictionary5;
+    [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&sensorIDString count:1];
+    [dictionary2 setObject:@"SoftISPTuning" forKeyedSubscript:{objc_msgSend(OUTLINED_FUNCTION_111(), "portType")}];
     [v7 cameraInfo];
-    [v32 setObject:@"SoftISPTuning" forKeyedSubscript:{objc_msgSend(OUTLINED_FUNCTION_111(), "portType")}];
+    [dictionary4 setObject:@"SoftISPTuning" forKeyedSubscript:{objc_msgSend(OUTLINED_FUNCTION_111(), "portType")}];
     [v31 addObject:{objc_msgSend(v7, "portType")}];
     v4 = v14;
     v5 = v13;
@@ -540,7 +540,7 @@ LABEL_21:
   v16 = FigSignalErrorAtGM();
   v17 = v16;
   v18 = &OBJC_IVAR___BWFigVideoCaptureDevice__deviceMotionActivityDetector;
-  v1 = v30;
+  selfCopy = v30;
   if (v16)
   {
     goto LABEL_41;
@@ -568,19 +568,19 @@ LABEL_21:
   return result;
 }
 
-- (void)input:(id)a3 addInputBuffer:(id)a4
+- (void)input:(id)input addInputBuffer:(id)buffer
 {
-  if ([(BWDeepFusionProcessorRequest *)self->_currentRequest input]== a3 && ![(BWDeepFusionProcessorRequest *)self->_currentRequest cacheBuffers]&& ![(BWDeepFusionProcessorInput *)[(BWDeepFusionProcessorRequest *)self->_currentRequest input] onlyApplyingSemanticStyle])
+  if ([(BWDeepFusionProcessorRequest *)self->_currentRequest input]== input && ![(BWDeepFusionProcessorRequest *)self->_currentRequest cacheBuffers]&& ![(BWDeepFusionProcessorInput *)[(BWDeepFusionProcessorRequest *)self->_currentRequest input] onlyApplyingSemanticStyle])
   {
     [(BWDeepFusionProcessorRequest *)self->_currentRequest delegate];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(BWDeepFusionProcessorRequest *)self->_currentRequest delegate];
-      [a4 buffer];
-      -[BWDeepFusionProcessorControllerDelegate processorController:willAddBuffer:metadata:bufferType:processorInput:](v8, "processorController:willAddBuffer:metadata:bufferType:processorInput:", self, v4, [OUTLINED_FUNCTION_352() metadata], objc_msgSend(a4, "type"), a3);
+      delegate = [(BWDeepFusionProcessorRequest *)self->_currentRequest delegate];
+      [buffer buffer];
+      -[BWDeepFusionProcessorControllerDelegate processorController:willAddBuffer:metadata:bufferType:processorInput:](delegate, "processorController:willAddBuffer:metadata:bufferType:processorInput:", self, v4, [OUTLINED_FUNCTION_352() metadata], objc_msgSend(buffer, "type"), input);
     }
 
-    dfp_addBuffer(self->_deepFusionProcessor, self->_currentRequest, a4);
+    dfp_addBuffer(self->_deepFusionProcessor, self->_currentRequest, buffer);
   }
 
   [(BWDeepFusionProcessorController *)self _updateStateIfNeeded];
@@ -595,10 +595,10 @@ LABEL_21:
 
   v1 = result;
   v2 = *(result + 176);
-  v3 = [*(result + 80) currentState];
+  currentState = [*(result + 80) currentState];
   if (v2)
   {
-    if (v3 == 2 || v3 == 4)
+    if (currentState == 2 || currentState == 4)
     {
       if ([v2 cacheBuffers])
       {
@@ -611,7 +611,7 @@ LABEL_21:
       }
     }
 
-    else if (v3 == 8)
+    else if (currentState == 8)
     {
       if (![(BWDeepFusionProcessorRequest *)v2 receivedAllBuffers])
       {
@@ -674,9 +674,9 @@ LABEL_11:
   return result;
 }
 
-- (void)addInferencesForInput:(id)a3
+- (void)addInferencesForInput:(id)input
 {
-  if (-[BWDeepFusionProcessorRequest input](self->_currentRequest, "input") == a3 && !-[BWDeepFusionProcessorRequest cacheBuffers](self->_currentRequest, "cacheBuffers") && ([a3 processInferenceInputImage] & 1) == 0)
+  if (-[BWDeepFusionProcessorRequest input](self->_currentRequest, "input") == input && !-[BWDeepFusionProcessorRequest cacheBuffers](self->_currentRequest, "cacheBuffers") && ([input processInferenceInputImage] & 1) == 0)
   {
     [(IBPDeepFusionProcessor *)self->_deepFusionProcessor addInferenceResults:OUTLINED_FUNCTION_26_23() inferenceInputType:10];
   }
@@ -684,9 +684,9 @@ LABEL_11:
   [(BWDeepFusionProcessorController *)self _updateStateIfNeeded];
 }
 
-- (void)beginProcessingCachedBuffersForInput:(id)a3
+- (void)beginProcessingCachedBuffersForInput:(id)input
 {
-  if ([(BWDeepFusionProcessorRequest *)self->_currentRequest input]== a3)
+  if ([(BWDeepFusionProcessorRequest *)self->_currentRequest input]== input)
   {
     [(BWDeepFusionProcessorRequest *)self->_currentRequest setCacheBuffers:0];
   }
@@ -713,21 +713,21 @@ LABEL_11:
   if (result)
   {
     v1 = result;
-    v2 = [result[22] delegate];
-    v3 = [v1[22] input];
+    delegate = [result[22] delegate];
+    input = [v1[22] input];
     v4 = [v1[22] err];
 
     v1[22] = 0;
-    [v2 processorController:v1 didFinishProcessingInput:v3 err:v4];
+    [delegate processorController:v1 didFinishProcessingInput:input err:v4];
 
     result = [v1[21] firstObject];
     v1[22] = result;
     if (result)
     {
       [v1[21] removeObjectAtIndex:0];
-      v5 = [v1[22] input];
+      input2 = [v1[22] input];
 
-      return [v5 setDelegate:v1];
+      return [input2 setDelegate:v1];
     }
   }
 
@@ -749,7 +749,7 @@ LABEL_11:
   }
 
   v5 = v4;
-  v6 = [OUTLINED_FUNCTION_1_126() output];
+  output = [OUTLINED_FUNCTION_1_126() output];
   [OUTLINED_FUNCTION_1_126() setOutput:v5];
 
   if ([objc_msgSend(v3 "processingSettings")])
@@ -832,7 +832,7 @@ LABEL_11:
       CFRelease(v22);
     }
 
-    v23 = v6;
+    v23 = output;
     v24 = [objc_msgSend(v3 "captureStreamSettings")];
     v25 = v24;
     if ((v24 & 0x10) != 0)
@@ -958,22 +958,22 @@ LABEL_79:
     }
 
     v35 = objc_alloc_init(NSClassFromString(&cfstr_Deepfusionprep.isa));
-    v36 = [*(v1 + 64) maxOutputDimensions];
+    maxOutputDimensions = [*(v1 + 64) maxOutputDimensions];
     if (!Width || !v11)
     {
       if ([objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_1_126() "input")])
       {
         v37 = [objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_1_126() "input")];
         v38 = BWAspectRatioValueFromAspectRatio(v37);
-        v39 = FigCaptureMetadataUtilitiesEnforceAspectRatioWithStillImageDimensions(v36, v38);
+        v39 = FigCaptureMetadataUtilitiesEnforceAspectRatioWithStillImageDimensions(maxOutputDimensions, v38);
         v11 = HIDWORD(v39);
         Width = v39;
       }
 
       else
       {
-        v11 = HIDWORD(v36);
-        Width = v36;
+        v11 = HIDWORD(maxOutputDimensions);
+        Width = maxOutputDimensions;
       }
     }
 
@@ -1005,14 +1005,14 @@ LABEL_79:
             [OUTLINED_FUNCTION_1_126() delegate];
             if (objc_opt_respondsToSelector())
             {
-              v45 = [OUTLINED_FUNCTION_1_126() delegate];
+              delegate = [OUTLINED_FUNCTION_1_126() delegate];
               v46 = v2;
-              v47 = [v44 buffer];
-              v48 = [v44 metadata];
-              v49 = [v44 type];
-              v50 = v47;
+              buffer = [v44 buffer];
+              metadata = [v44 metadata];
+              type = [v44 type];
+              v50 = buffer;
               v2 = v46;
-              [v45 processorController:v1 willAddBuffer:v50 metadata:v48 bufferType:v49 processorInput:v52];
+              [delegate processorController:v1 willAddBuffer:v50 metadata:metadata bufferType:type processorInput:v52];
             }
 
             v51 = OUTLINED_FUNCTION_5_86();
@@ -1078,8 +1078,8 @@ LABEL_80:
   if (result)
   {
     v2 = result;
-    v3 = [OUTLINED_FUNCTION_19_34(result) input];
-    if (v3 && *(v3 + 88) == 1)
+    input = [OUTLINED_FUNCTION_19_34(result) input];
+    if (input && *(input + 88) == 1)
     {
       if (!OUTLINED_FUNCTION_26_23())
       {
@@ -1110,12 +1110,12 @@ LABEL_80:
 
 - (void)_process
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v2 = OUTLINED_FUNCTION_35_20(a1);
+  v2 = OUTLINED_FUNCTION_35_20(self);
   v69 = 0;
   if ([objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_1_126() "input")] == 13)
   {
@@ -1156,9 +1156,9 @@ LABEL_80:
     else
     {
       v8 = [objc_msgSend(objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_31_21() "inputBuffers")];
-      v9 = [OUTLINED_FUNCTION_352() buffer];
-      Width = CVPixelBufferGetWidth(v9);
-      v5 = Width | (CVPixelBufferGetHeight(v9) << 32);
+      buffer = [OUTLINED_FUNCTION_352() buffer];
+      Width = CVPixelBufferGetWidth(buffer);
+      v5 = Width | (CVPixelBufferGetHeight(buffer) << 32);
     }
   }
 
@@ -1282,8 +1282,8 @@ LABEL_12:
     v53 = v18;
     v54 = v3;
     v56 = v14;
-    v24 = [OUTLINED_FUNCTION_1_126() delegate];
-    v25 = [v24 processorController:v1 newInferencesForProcessorInput:{objc_msgSend(OUTLINED_FUNCTION_1_126(), "input")}];
+    delegate = [OUTLINED_FUNCTION_1_126() delegate];
+    v25 = [delegate processorController:v1 newInferencesForProcessorInput:{objc_msgSend(OUTLINED_FUNCTION_1_126(), "input")}];
     v63 = 0u;
     v64 = 0u;
     v65 = 0u;
@@ -1429,10 +1429,10 @@ LABEL_67:
       CMSetAttachment(v69, @"StillImageProcessingFlags", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v49 | 0x40000u], 1u);
     }
 
-    v50 = [OUTLINED_FUNCTION_1_126() delegate];
+    delegate2 = [OUTLINED_FUNCTION_1_126() delegate];
     v51 = v69;
-    v52 = [OUTLINED_FUNCTION_1_126() input];
-    [v50 processorController:v1 didFinishProcessingSampleBuffer:v51 type:v3 processorInput:v52 err:{objc_msgSend(OUTLINED_FUNCTION_1_126(), "err")}];
+    input = [OUTLINED_FUNCTION_1_126() input];
+    [delegate2 processorController:v1 didFinishProcessingSampleBuffer:v51 type:v3 processorInput:input err:{objc_msgSend(OUTLINED_FUNCTION_1_126(), "err")}];
   }
 
 LABEL_70:
@@ -1460,12 +1460,12 @@ LABEL_70:
 {
   if (result)
   {
-    v2 = [*(result + 176) input];
-    [objc_msgSend(v2 "inputBuffers")];
-    v3 = [OUTLINED_FUNCTION_31_21() inputBuffers];
+    input = [*(result + 176) input];
+    [objc_msgSend(input "inputBuffers")];
+    inputBuffers = [OUTLINED_FUNCTION_31_21() inputBuffers];
     if (v1 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      result = [v3 indexOfObjectPassingTest:&__block_literal_global_320];
+      result = [inputBuffers indexOfObjectPassingTest:&__block_literal_global_320];
       if (result == 0x7FFFFFFFFFFFFFFFLL)
       {
         return result;
@@ -1476,7 +1476,7 @@ LABEL_70:
 
     else
     {
-      result = [objc_msgSend(v3 objectAtIndexedSubscript:{v1), "metadata"}];
+      result = [objc_msgSend(inputBuffers objectAtIndexedSubscript:{v1), "metadata"}];
     }
 
     v4 = result;
@@ -1506,7 +1506,7 @@ LABEL_70:
 
       else
       {
-        [objc_msgSend(v2 "inputBuffers")];
+        [objc_msgSend(input "inputBuffers")];
         OUTLINED_FUNCTION_79();
         if (v16)
         {
@@ -1537,7 +1537,7 @@ LABEL_15:
           return [v29 setObject:v28 forKeyedSubscript:v27];
         }
 
-        v14 = [objc_msgSend(objc_msgSend(v2 "inputBuffers")];
+        v14 = [objc_msgSend(objc_msgSend(input "inputBuffers")];
       }
 
       [objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_3_103() "output")];
@@ -1548,22 +1548,22 @@ LABEL_15:
   return result;
 }
 
-- (void)_propagateGainMapToOutputSampleBufferIfNeeded:(uint64_t)a1
+- (void)_propagateGainMapToOutputSampleBufferIfNeeded:(uint64_t)needed
 {
-  if (!a1)
+  if (!needed)
   {
     return;
   }
 
-  v5 = [OUTLINED_FUNCTION_19_34(a1) input];
-  v6 = [*(a1 + *(v2 + 2476)) output];
-  if ([v6 gainMapOutputPixelBuffer])
+  input = [OUTLINED_FUNCTION_19_34(needed) input];
+  output = [*(needed + *(v2 + 2476)) output];
+  if ([output gainMapOutputPixelBuffer])
   {
-    v7 = [v6 gainMapOutputPixelBuffer];
+    gainMapOutputPixelBuffer = [output gainMapOutputPixelBuffer];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v6 gainMapOutputMetadata];
-      if (!v7)
+      gainMapOutputMetadata = [output gainMapOutputMetadata];
+      if (!gainMapOutputPixelBuffer)
       {
         return;
       }
@@ -1579,42 +1579,42 @@ LABEL_15:
       return;
     }
 
-    [objc_msgSend(v5 "inputBuffers")];
+    [objc_msgSend(input "inputBuffers")];
     OUTLINED_FUNCTION_79();
     if (v10)
     {
       return;
     }
 
-    v7 = [objc_msgSend(objc_msgSend(v5 "inputBuffers")];
+    gainMapOutputPixelBuffer = [objc_msgSend(objc_msgSend(input "inputBuffers")];
   }
 
-  v8 = 0;
-  if (!v7)
+  gainMapOutputMetadata = 0;
+  if (!gainMapOutputPixelBuffer)
   {
     return;
   }
 
 LABEL_10:
-  if (!v8)
+  if (!gainMapOutputMetadata)
   {
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    gainMapOutputMetadata = [MEMORY[0x1E695DF90] dictionary];
   }
 
-  [v8 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", -[FigCaptureCameraParameters gainMapVersion](+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters, "sharedInstance"), "gainMapVersion")), *off_1E798A688}];
+  [gainMapOutputMetadata setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithInt:", -[FigCaptureCameraParameters gainMapVersion](+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters, "sharedInstance"), "gainMapVersion")), *off_1E798A688}];
   v11 = MEMORY[0x1E696AD98];
-  [*(a1 + 64) gainMapMainImageDownscalingFactor];
-  [v8 setObject:objc_msgSend(v11 forKeyedSubscript:{"numberWithFloat:"), *off_1E798A788}];
+  [*(needed + 64) gainMapMainImageDownscalingFactor];
+  [gainMapOutputMetadata setObject:objc_msgSend(v11 forKeyedSubscript:{"numberWithFloat:"), *off_1E798A788}];
 
-  BWSampleBufferSetAttachedMediaFromPixelBuffer(a2, 0x1F217BF50, v7, (a1 + 160), v8, 0, 1);
+  BWSampleBufferSetAttachedMediaFromPixelBuffer(a2, 0x1F217BF50, gainMapOutputPixelBuffer, (needed + 160), gainMapOutputMetadata, 0, 1);
 }
 
-- (void)_propagateDemosaicedRawPixelBufferToOutputSampleBufferIfNeeded:(uint64_t)a1
+- (void)_propagateDemosaicedRawPixelBufferToOutputSampleBufferIfNeeded:(uint64_t)needed
 {
-  if (a1)
+  if (needed)
   {
     target = 0;
-    v4 = [objc_msgSend(*(a1 + 176) "output")];
+    v4 = [objc_msgSend(*(needed + 176) "output")];
     v5 = [objc_msgSend(OUTLINED_FUNCTION_23_26() "output")];
     if (![objc_msgSend(objc_msgSend(OUTLINED_FUNCTION_23_26() "input")])
     {
@@ -1643,7 +1643,7 @@ LABEL_16:
       [v6 addEntriesFromDictionary:v5];
     }
 
-    if (BWCMSampleBufferCreateCopyWithNewPixelBuffer(a2, v4, (a1 + 136), &target))
+    if (BWCMSampleBufferCreateCopyWithNewPixelBuffer(a2, v4, (needed + 136), &target))
     {
       goto LABEL_16;
     }
@@ -1657,7 +1657,7 @@ LABEL_16:
       CVPixelBufferGetWidth(v4);
       v12 = OUTLINED_FUNCTION_111();
       Height = CVPixelBufferGetHeight(v12);
-      v14 = BWCreateDNGDictionaryWithUpdatedToneCurvesIfNeeded(v11, a1 | (Height << 32), v6);
+      v14 = BWCreateDNGDictionaryWithUpdatedToneCurvesIfNeeded(v11, needed | (Height << 32), v6);
       if (!v14)
       {
         goto LABEL_15;
@@ -1667,14 +1667,14 @@ LABEL_16:
     else
     {
       v15 = [v8 objectForKeyedSubscript:*off_1E798B540];
-      v16 = [objc_msgSend(*(a1 + 64) "rawColorCalibrationsByPortType")];
+      v16 = [objc_msgSend(*(needed + 64) "rawColorCalibrationsByPortType")];
       if (!v16)
       {
         goto LABEL_16;
       }
 
       v17 = v16;
-      v18 = [objc_msgSend(objc_msgSend(*(a1 + 64) "sensorConfigurationsByPortType")];
+      v18 = [objc_msgSend(objc_msgSend(*(needed + 64) "sensorConfigurationsByPortType")];
       if (!v18)
       {
         goto LABEL_16;
@@ -1687,7 +1687,7 @@ LABEL_16:
       CVPixelBufferGetWidth(v4);
       v23 = OUTLINED_FUNCTION_111();
       v24 = CVPixelBufferGetHeight(v23);
-      v14 = BWCreateDemosaicedRawDNGDictionary(a1 | (v24 << 32), PixelFormatType, v6, v17, v19, v22);
+      v14 = BWCreateDemosaicedRawDNGDictionary(needed | (v24 << 32), PixelFormatType, v6, v17, v19, v22);
       if (!v14)
       {
         goto LABEL_16;
@@ -1710,14 +1710,14 @@ LABEL_15:
   if (result)
   {
     v4 = result;
-    v5 = [OUTLINED_FUNCTION_19_34(result) output];
+    output = [OUTLINED_FUNCTION_19_34(result) output];
     result = [objc_msgSend(*(v4 + *(v2 + 2476)) "input")];
     if (result)
     {
-      v6 = [v5 linearOutputMIWBAppliedPixelBuffer];
-      v7 = [v5 linearOutputMIWBAppliedMetadata];
+      linearOutputMIWBAppliedPixelBuffer = [output linearOutputMIWBAppliedPixelBuffer];
+      linearOutputMIWBAppliedMetadata = [output linearOutputMIWBAppliedMetadata];
 
-      return BWSampleBufferSetAttachedMediaFromPixelBuffer(a2, 0x1F21AAF50, v6, (v4 + 144), v7, 0, 0);
+      return BWSampleBufferSetAttachedMediaFromPixelBuffer(a2, 0x1F21AAF50, linearOutputMIWBAppliedPixelBuffer, (v4 + 144), linearOutputMIWBAppliedMetadata, 0, 0);
     }
   }
 
@@ -1743,9 +1743,9 @@ LABEL_15:
   [OUTLINED_FUNCTION_1_126() delegate];
   [OUTLINED_FUNCTION_1_126() input];
   [v3 type];
-  v4 = [OUTLINED_FUNCTION_352() buffer];
-  CVPixelBufferGetWidth(v4);
-  CVPixelBufferGetHeight(v4);
+  buffer = [OUTLINED_FUNCTION_352() buffer];
+  CVPixelBufferGetWidth(buffer);
+  CVPixelBufferGetHeight(buffer);
   v5 = [OUTLINED_FUNCTION_17_36() processorController:? newOutputPixelBufferForProcessorInput:? type:? dimensions:?];
   if (!v5)
   {
@@ -1769,12 +1769,12 @@ LABEL_15:
     v9 = OUTLINED_FUNCTION_16_42();
     if (OUTLINED_FUNCTION_14_24(v9))
     {
-      v10 = v4;
+      v10 = buffer;
     }
 
     else
     {
-      v10 = v4 & 0xFFFFFFFE;
+      v10 = buffer & 0xFFFFFFFE;
     }
 
     if (v10)
@@ -1787,10 +1787,10 @@ LABEL_15:
     OUTLINED_FUNCTION_1_4();
     fig_log_call_emit_and_clean_up_after_send_and_compose();
     CFRelease(v6);
-    v13 = [v3 buffer];
-    if (v13)
+    buffer2 = [v3 buffer];
+    if (buffer2)
     {
-      v6 = CFRetain(v13);
+      v6 = CFRetain(buffer2);
     }
 
     else
@@ -1799,10 +1799,10 @@ LABEL_15:
     }
 
 LABEL_20:
-    v14 = [OUTLINED_FUNCTION_1_126() input];
-    if (v14)
+    input = [OUTLINED_FUNCTION_1_126() input];
+    if (input)
     {
-      [v14 evZeroReferenceFramePTS];
+      [input evZeroReferenceFramePTS];
     }
 
     else
@@ -1822,10 +1822,10 @@ LABEL_20:
         CMSetAttachments(v16, v17, 1u);
       }
 
-      v18 = [OUTLINED_FUNCTION_1_126() delegate];
+      delegate = [OUTLINED_FUNCTION_1_126() delegate];
       v19 = v25;
-      v20 = [OUTLINED_FUNCTION_1_126() input];
-      [v18 processorController:v2 didFinishProcessingSampleBuffer:v19 type:13 processorInput:v20 err:{objc_msgSend(OUTLINED_FUNCTION_1_126(), "err")}];
+      input2 = [OUTLINED_FUNCTION_1_126() input];
+      [delegate processorController:v2 didFinishProcessingSampleBuffer:v19 type:13 processorInput:input2 err:{objc_msgSend(OUTLINED_FUNCTION_1_126(), "err")}];
       if (!v6)
       {
         goto LABEL_28;
@@ -1847,12 +1847,12 @@ LABEL_20:
   v11 = OUTLINED_FUNCTION_16_42();
   if (OUTLINED_FUNCTION_14_24(v11))
   {
-    v12 = v4;
+    v12 = buffer;
   }
 
   else
   {
-    v12 = v4 & 0xFFFFFFFE;
+    v12 = buffer & 0xFFFFFFFE;
   }
 
   if (v12)
@@ -1875,36 +1875,36 @@ LABEL_28:
   result = [OUTLINED_FUNCTION_1_126() err];
   if (result)
   {
-    v21 = [OUTLINED_FUNCTION_1_126() delegate];
-    v22 = [v3 type];
-    v23 = [OUTLINED_FUNCTION_1_126() input];
-    return [v21 processorController:v2 didFinishProcessingSampleBuffer:0 type:v22 processorInput:v23 err:{objc_msgSend(OUTLINED_FUNCTION_1_126(), "err")}];
+    delegate2 = [OUTLINED_FUNCTION_1_126() delegate];
+    type = [v3 type];
+    input3 = [OUTLINED_FUNCTION_1_126() input];
+    return [delegate2 processorController:v2 didFinishProcessingSampleBuffer:0 type:type processorInput:input3 err:{objc_msgSend(OUTLINED_FUNCTION_1_126(), "err")}];
   }
 
   return result;
 }
 
-- (void)processor:(id)a3 outputReadyWithBufferType:(int)a4 outputPixelBuffer:(__CVBuffer *)a5 outputMetadata:(id)a6 error:(int)a7
+- (void)processor:(id)processor outputReadyWithBufferType:(int)type outputPixelBuffer:(__CVBuffer *)buffer outputMetadata:(id)metadata error:(int)error
 {
-  if ((a4 & 0xFFFFFFFE) != 0xA)
+  if ((type & 0xFFFFFFFE) != 0xA)
   {
     return;
   }
 
   v37 = v7;
   v38 = v8;
-  v11 = a5;
+  bufferCopy = buffer;
   v36 = 0;
-  v14 = [(BWDeepFusionProcessorRequest *)self->_currentRequest input];
-  if (a4 == 10)
+  input = [(BWDeepFusionProcessorRequest *)self->_currentRequest input];
+  if (type == 10)
   {
-    v15 = [(BWDeepFusionProcessorInput *)v14 evZeroReferenceFrameAttachments];
+    evZeroReferenceFrameAttachments = [(BWDeepFusionProcessorInput *)input evZeroReferenceFrameAttachments];
     memset(&v34, 0, sizeof(v34));
-    v16 = [(BWDeepFusionProcessorRequest *)self->_currentRequest input];
-    if (v16)
+    input2 = [(BWDeepFusionProcessorRequest *)self->_currentRequest input];
+    if (input2)
     {
-      [(BWDeepFusionProcessorInput *)v16 evZeroReferenceFramePTS];
-      if (a7)
+      [(BWDeepFusionProcessorInput *)input2 evZeroReferenceFramePTS];
+      if (error)
       {
         return;
       }
@@ -1913,18 +1913,18 @@ LABEL_28:
     else
     {
       memset(&v34, 0, sizeof(v34));
-      if (a7)
+      if (error)
       {
         return;
       }
     }
 
-    if (v15 && (v34.flags & 1) != 0 && !OUTLINED_FUNCTION_9_64(128, v31, v32, v33, *&v34.value, v34.epoch))
+    if (evZeroReferenceFrameAttachments && (v34.flags & 1) != 0 && !OUTLINED_FUNCTION_9_64(128, v31, v32, v33, *&v34.value, v34.epoch))
     {
-      CMSetAttachments(v36, v15, 1u);
+      CMSetAttachments(v36, evZeroReferenceFrameAttachments, 1u);
       v25 = *off_1E798A3C8;
       v26 = [CMGetAttachment(v36 *off_1E798A3C8];
-      [v26 addEntriesFromDictionary:a6];
+      [v26 addEntriesFromDictionary:metadata];
       CMSetAttachment(v36, v25, v26, 1u);
 
 LABEL_16:
@@ -1942,19 +1942,19 @@ LABEL_16:
     return;
   }
 
-  [(NSArray *)[(BWDeepFusionProcessorInput *)v14 inputBuffers] indexOfObjectPassingTest:&__block_literal_global_331];
+  [(NSArray *)[(BWDeepFusionProcessorInput *)input inputBuffers] indexOfObjectPassingTest:&__block_literal_global_331];
   OUTLINED_FUNCTION_79();
   if (v18)
   {
     v27 = OUTLINED_FUNCTION_11_52();
     if (OUTLINED_FUNCTION_157(v27))
     {
-      v28 = v11;
+      v28 = bufferCopy;
     }
 
     else
     {
-      v28 = v11 & 0xFFFFFFFE;
+      v28 = bufferCopy & 0xFFFFFFFE;
     }
 
     if (!v28)
@@ -1978,12 +1978,12 @@ LABEL_29:
     v29 = OUTLINED_FUNCTION_11_52();
     if (OUTLINED_FUNCTION_157(v29))
     {
-      v30 = v11;
+      v30 = bufferCopy;
     }
 
     else
     {
-      v30 = v11 & 0xFFFFFFFE;
+      v30 = bufferCopy & 0xFFFFFFFE;
     }
 
     if (!v30)
@@ -1999,7 +1999,7 @@ LABEL_29:
   if ((v34.flags & 1) != 0 && !OUTLINED_FUNCTION_9_64(128, v31, v32, v33, *&v34.value, v34.epoch))
   {
     v20 = [objc_msgSend(v19 "metadata")];
-    [v20 addEntriesFromDictionary:a6];
+    [v20 addEntriesFromDictionary:metadata];
     CMSetAttachment(v36, *off_1E798A3C8, v20, 1u);
 
     [(BWStillImageProcessorControllerInput *)[(BWDeepFusionProcessorRequest *)self->_currentRequest input] stillImageSettings];

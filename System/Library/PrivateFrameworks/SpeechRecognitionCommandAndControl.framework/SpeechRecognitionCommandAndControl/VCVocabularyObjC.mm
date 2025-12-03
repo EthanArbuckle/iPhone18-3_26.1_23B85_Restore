@@ -1,18 +1,18 @@
 @interface VCVocabularyObjC
-+ (int64_t)exportTo:(id)a3 localeIdentifier:(id)a4 error:(id *)a5;
-+ (int64_t)importFrom:(id)a3 error:(id *)a4;
-+ (void)addVocabularyEntryWithString:(id)a3;
-+ (void)addVocabularyEntryWithString:(id)a3 pronunciations:(id)a4;
++ (int64_t)exportTo:(id)to localeIdentifier:(id)identifier error:(id *)error;
++ (int64_t)importFrom:(id)from error:(id *)error;
++ (void)addVocabularyEntryWithString:(id)string;
++ (void)addVocabularyEntryWithString:(id)string pronunciations:(id)pronunciations;
 + (void)deleteAllVocabularyForActiveLocale;
-+ (void)removePronunciationsFromText:(id)a3;
-+ (void)removeVocabularyEntryWithText:(id)a3 localeIdentifier:(id)a4;
-+ (void)setPronunciations:(id)a3 forText:(id)a4;
++ (void)removePronunciationsFromText:(id)text;
++ (void)removeVocabularyEntryWithText:(id)text localeIdentifier:(id)identifier;
++ (void)setPronunciations:(id)pronunciations forText:(id)text;
 - (VCVocabularyObjC)init;
 @end
 
 @implementation VCVocabularyObjC
 
-+ (int64_t)importFrom:(id)a3 error:(id *)a4
++ (int64_t)importFrom:(id)from error:(id *)error
 {
   v4 = type metadata accessor for URL();
   v5 = *(v4 - 8);
@@ -24,14 +24,14 @@
   return v8;
 }
 
-+ (int64_t)exportTo:(id)a3 localeIdentifier:(id)a4 error:(id *)a5
++ (int64_t)exportTo:(id)to localeIdentifier:(id)identifier error:(id *)error
 {
   v6 = type metadata accessor for URL();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -42,7 +42,7 @@
   return v10;
 }
 
-+ (void)addVocabularyEntryWithString:(id)a3
++ (void)addVocabularyEntryWithString:(id)string
 {
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation6LocaleVSgMd);
   MEMORY[0x28223BE20](v3 - 8);
@@ -57,7 +57,7 @@
   outlined destroy of Locale?(v5);
 }
 
-+ (void)addVocabularyEntryWithString:(id)a3 pronunciations:(id)a4
++ (void)addVocabularyEntryWithString:(id)string pronunciations:(id)pronunciations
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation6LocaleVSgMd);
   MEMORY[0x28223BE20](v4 - 8);
@@ -73,7 +73,7 @@
   outlined destroy of Locale?(v6);
 }
 
-+ (void)removeVocabularyEntryWithText:(id)a3 localeIdentifier:(id)a4
++ (void)removeVocabularyEntryWithText:(id)text localeIdentifier:(id)identifier
 {
   v4 = type metadata accessor for Locale();
   v5 = *(v4 - 8);
@@ -112,7 +112,7 @@
   (*(v3 + 8))(v5, v2);
 }
 
-+ (void)setPronunciations:(id)a3 forText:(id)a4
++ (void)setPronunciations:(id)pronunciations forText:(id)text
 {
   v4 = type metadata accessor for Locale();
   v5 = *(v4 - 8);
@@ -130,7 +130,7 @@
   (*(v5 + 8))(v7, v4);
 }
 
-+ (void)removePronunciationsFromText:(id)a3
++ (void)removePronunciationsFromText:(id)text
 {
   v3 = type metadata accessor for Locale();
   v4 = *(v3 - 8);

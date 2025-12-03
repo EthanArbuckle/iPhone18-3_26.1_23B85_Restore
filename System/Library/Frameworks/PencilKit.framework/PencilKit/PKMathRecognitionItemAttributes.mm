@@ -1,21 +1,21 @@
 @interface PKMathRecognitionItemAttributes
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PKMathRecognitionItemAttributes
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PKMathRecognitionItemAttributes);
-  v5 = [(PKMathRecognitionItemAttributes *)self tokens];
-  [(PKMathRecognitionItemAttributes *)v4 setTokens:v5];
+  tokens = [(PKMathRecognitionItemAttributes *)self tokens];
+  [(PKMathRecognitionItemAttributes *)v4 setTokens:tokens];
 
   [(PKMathRecognitionItemAttributes *)v4 setExpressionFeatures:[(PKMathRecognitionItemAttributes *)self expressionFeatures]];
-  v6 = [(PKMathRecognitionItemAttributes *)self graphableVariables];
-  [(PKMathRecognitionItemAttributes *)v4 setGraphableVariables:v6];
+  graphableVariables = [(PKMathRecognitionItemAttributes *)self graphableVariables];
+  [(PKMathRecognitionItemAttributes *)v4 setGraphableVariables:graphableVariables];
 
-  v7 = [(PKMathRecognitionItemAttributes *)self graphableVariables3D];
-  [(PKMathRecognitionItemAttributes *)v4 setGraphableVariables3D:v7];
+  graphableVariables3D = [(PKMathRecognitionItemAttributes *)self graphableVariables3D];
+  [(PKMathRecognitionItemAttributes *)v4 setGraphableVariables3D:graphableVariables3D];
 
   return v4;
 }

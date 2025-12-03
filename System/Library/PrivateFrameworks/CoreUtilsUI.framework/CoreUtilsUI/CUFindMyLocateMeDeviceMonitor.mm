@@ -1,12 +1,12 @@
 @interface CUFindMyLocateMeDeviceMonitor
 + (BOOL)supported;
 - (CUFindMyLocateMeDeviceMonitor)init;
-- (CUFindMyLocateMeDeviceMonitor)initWithDispatchQueue:(id)a3;
+- (CUFindMyLocateMeDeviceMonitor)initWithDispatchQueue:(id)queue;
 - (id)meDeviceUpdatedHandler;
 - (void)activate;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setMeDeviceUpdatedHandler:(id)a3;
+- (void)setMeDeviceUpdatedHandler:(id)handler;
 @end
 
 @implementation CUFindMyLocateMeDeviceMonitor
@@ -35,9 +35,9 @@
   return v4;
 }
 
-- (void)setMeDeviceUpdatedHandler:(id)a3
+- (void)setMeDeviceUpdatedHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -56,7 +56,7 @@
   v8 = v6[1];
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_247C09AA8(v7);
 }
 
@@ -75,7 +75,7 @@
   return !v2 && MEMORY[0x277D09490] != 0 && MEMORY[0x277D09470] != 0 && MEMORY[0x277D09488] != 0;
 }
 
-- (CUFindMyLocateMeDeviceMonitor)initWithDispatchQueue:(id)a3
+- (CUFindMyLocateMeDeviceMonitor)initWithDispatchQueue:(id)queue
 {
   *(self + OBJC_IVAR___CUFindMyLocateMeDeviceMonitor__monitorTask) = 0;
   v3 = (self + OBJC_IVAR___CUFindMyLocateMeDeviceMonitor_meDeviceUpdatedHandler);
@@ -83,31 +83,31 @@
   v3[1] = 0;
   *(self + OBJC_IVAR___CUFindMyLocateMeDeviceMonitor__firstUnlockStarted) = 0;
   *(self + OBJC_IVAR___CUFindMyLocateMeDeviceMonitor__systemMonitor) = 0;
-  *(self + OBJC_IVAR___CUFindMyLocateMeDeviceMonitor__dispatchQueue) = a3;
+  *(self + OBJC_IVAR___CUFindMyLocateMeDeviceMonitor__dispatchQueue) = queue;
   v6.receiver = self;
   v6.super_class = CUFindMyLocateMeDeviceMonitor;
-  v4 = a3;
+  queueCopy = queue;
   return [(CUFindMyLocateMeDeviceMonitor *)&v6 init];
 }
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_247C09B84();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = CUFindMyLocateMeDeviceMonitor;
   [(CUFindMyLocateMeDeviceMonitor *)&v3 dealloc];
 }
 
 - (void)activate
 {
-  v2 = self;
+  selfCopy = self;
   sub_247C0DC40(&unk_2859D1438, sub_247C09EF8, &block_descriptor);
 }
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_247C0DC40(&unk_2859D1488, sub_247C0DED4, &block_descriptor_6);
 }
 

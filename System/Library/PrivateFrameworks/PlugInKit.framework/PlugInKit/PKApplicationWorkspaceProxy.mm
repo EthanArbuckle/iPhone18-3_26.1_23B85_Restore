@@ -1,12 +1,12 @@
 @interface PKApplicationWorkspaceProxy
 + (id)defaultWorkspace;
-- (BOOL)registerPlugin:(id)a3;
-- (BOOL)unregisterPlugin:(id)a3;
+- (BOOL)registerPlugin:(id)plugin;
+- (BOOL)unregisterPlugin:(id)plugin;
 - (PKApplicationWorkspaceProxy)init;
 - (id)installedPlugins;
-- (id)pluginsMatchingQuery:(id)a3 applyFilter:(id)a4;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (id)pluginsMatchingQuery:(id)query applyFilter:(id)filter;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation PKApplicationWorkspaceProxy
@@ -30,9 +30,9 @@
   v2 = [(PKApplicationWorkspaceProxy *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E6963608] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
     lsObject = v2->_lsObject;
-    v2->_lsObject = v3;
+    v2->_lsObject = defaultWorkspace;
   }
 
   return v2;
@@ -40,53 +40,53 @@
 
 - (id)installedPlugins
 {
-  v2 = [(PKApplicationWorkspaceProxy *)self lsObject];
-  v3 = [v2 installedPlugins];
+  lsObject = [(PKApplicationWorkspaceProxy *)self lsObject];
+  installedPlugins = [lsObject installedPlugins];
 
-  return v3;
+  return installedPlugins;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v6 = a3;
+  observerCopy = observer;
   v4 = objc_autoreleasePoolPush();
-  v5 = [(PKApplicationWorkspaceProxy *)self lsObject];
-  [v5 addObserver:v6];
+  lsObject = [(PKApplicationWorkspaceProxy *)self lsObject];
+  [lsObject addObserver:observerCopy];
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PKApplicationWorkspaceProxy *)self lsObject];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  lsObject = [(PKApplicationWorkspaceProxy *)self lsObject];
+  [lsObject removeObserver:observerCopy];
 }
 
-- (id)pluginsMatchingQuery:(id)a3 applyFilter:(id)a4
+- (id)pluginsMatchingQuery:(id)query applyFilter:(id)filter
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKApplicationWorkspaceProxy *)self lsObject];
-  v9 = [v8 pluginsMatchingQuery:v7 applyFilter:v6];
+  filterCopy = filter;
+  queryCopy = query;
+  lsObject = [(PKApplicationWorkspaceProxy *)self lsObject];
+  v9 = [lsObject pluginsMatchingQuery:queryCopy applyFilter:filterCopy];
 
   return v9;
 }
 
-- (BOOL)registerPlugin:(id)a3
+- (BOOL)registerPlugin:(id)plugin
 {
-  v4 = a3;
-  v5 = [(PKApplicationWorkspaceProxy *)self lsObject];
-  v6 = [v5 registerPlugin:v4];
+  pluginCopy = plugin;
+  lsObject = [(PKApplicationWorkspaceProxy *)self lsObject];
+  v6 = [lsObject registerPlugin:pluginCopy];
 
   return v6;
 }
 
-- (BOOL)unregisterPlugin:(id)a3
+- (BOOL)unregisterPlugin:(id)plugin
 {
-  v4 = a3;
-  v5 = [(PKApplicationWorkspaceProxy *)self lsObject];
-  v6 = [v5 unregisterPlugin:v4];
+  pluginCopy = plugin;
+  lsObject = [(PKApplicationWorkspaceProxy *)self lsObject];
+  v6 = [lsObject unregisterPlugin:pluginCopy];
 
   return v6;
 }

@@ -1,7 +1,7 @@
 @interface DASContextSitchingInfo
-+ (id)infoWithContextInfoToArchive:(id)a3;
-- (id)_initWithContextInfoToArchiveMap:(id)a3;
-- (id)archiveOfContext:(id)a3;
++ (id)infoWithContextInfoToArchive:(id)archive;
+- (id)_initWithContextInfoToArchiveMap:(id)map;
+- (id)archiveOfContext:(id)context;
 - (id)description;
 @end
 
@@ -17,15 +17,15 @@
   v12 = v11 = self;
   v3 = v12;
   v4 = [v3 modifyBody:&v7];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (id)archiveOfContext:(id)a3
+- (id)archiveOfContext:(id)context
 {
-  v4 = a3;
-  if (!v4)
+  contextCopy = context;
+  if (!contextCopy)
   {
     v8 = [NSString stringWithFormat:@"Invalid condition not satisfying: %@", @"contextInfo"];
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -48,16 +48,16 @@
     JUMPOUT(0x100001E88);
   }
 
-  v5 = v4;
-  v6 = [(NSDictionary *)self->_contextInfoToArchiveMap objectForKey:v4];
+  v5 = contextCopy;
+  v6 = [(NSDictionary *)self->_contextInfoToArchiveMap objectForKey:contextCopy];
 
   return v6;
 }
 
-- (id)_initWithContextInfoToArchiveMap:(id)a3
+- (id)_initWithContextInfoToArchiveMap:(id)map
 {
-  v5 = a3;
-  if (!v5)
+  mapCopy = map;
+  if (!mapCopy)
   {
     v23 = [NSString stringWithFormat:@"Invalid condition not satisfying: %@", @"contextInfoToArchive"];
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -70,7 +70,7 @@
       v37 = 2114;
       v38 = v26;
       v39 = 2048;
-      v40 = self;
+      selfCopy = self;
       v41 = 2114;
       v42 = @"DASParsing.m";
       v43 = 1024;
@@ -86,8 +86,8 @@
     JUMPOUT(0x1000021D8);
   }
 
-  v6 = v5;
-  v7 = [v5 count];
+  v6 = mapCopy;
+  v7 = [mapCopy count];
   v8 = [NSMutableDictionary dictionaryWithCapacity:v7];
   v9 = [NSMutableDictionary dictionaryWithCapacity:v7];
   +[NSMutableSet set];
@@ -99,14 +99,14 @@
   v11 = v6;
   v30 = v11;
   v34 = a2;
-  v12 = self;
-  v31 = v12;
+  selfCopy2 = self;
+  v31 = selfCopy2;
   v13 = v8;
   v32 = v13;
   v14 = v9;
   v33 = v14;
   [v11 enumerateKeysAndObjectsUsingBlock:v28];
-  v27.receiver = v12;
+  v27.receiver = selfCopy2;
   v27.super_class = DASContextSitchingInfo;
   v15 = [(DASContextSitchingInfo *)&v27 init];
   if (v15)
@@ -127,10 +127,10 @@
   return v15;
 }
 
-+ (id)infoWithContextInfoToArchive:(id)a3
++ (id)infoWithContextInfoToArchive:(id)archive
 {
-  v3 = a3;
-  v4 = [[DASContextSitchingInfo alloc] _initWithContextInfoToArchiveMap:v3];
+  archiveCopy = archive;
+  v4 = [[DASContextSitchingInfo alloc] _initWithContextInfoToArchiveMap:archiveCopy];
 
   return v4;
 }

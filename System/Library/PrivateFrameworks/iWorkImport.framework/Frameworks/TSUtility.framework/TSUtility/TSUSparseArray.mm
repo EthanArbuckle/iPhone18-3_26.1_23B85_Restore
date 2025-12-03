@@ -1,19 +1,19 @@
 @interface TSUSparseArray
 + (id)array;
-- (BOOL)hasObjectForKey:(unint64_t)a3;
+- (BOOL)hasObjectForKey:(unint64_t)key;
 - (NSIndexSet)populatedKeys;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)objectForKey:(unint64_t)a3;
+- (id)objectForKey:(unint64_t)key;
 - (unint64_t)maxIndexForCurrentDepth;
 - (unint64_t)maxKey;
 - (unint64_t)minKey;
-- (void)addObjectsFromArray:(id)a3;
+- (void)addObjectsFromArray:(id)array;
 - (void)clear;
 - (void)dealloc;
-- (void)foreach:(id)a3;
+- (void)foreach:(id)foreach;
 - (void)increaseDepth;
-- (void)setObject:(id)a3 forKey:(unint64_t)a4;
+- (void)setObject:(id)object forKey:(unint64_t)key;
 @end
 
 @implementation TSUSparseArray
@@ -81,10 +81,10 @@
   return ~(-1 << v3);
 }
 
-- (id)objectForKey:(unint64_t)a3
+- (id)objectForKey:(unint64_t)key
 {
   depth = self->_depth;
-  if (!depth || (v4 = a3, [(TSUSparseArray *)self maxIndexForCurrentDepth]< a3))
+  if (!depth || (v4 = key, [(TSUSparseArray *)self maxIndexForCurrentDepth]< key))
   {
     v6 = 0;
     goto LABEL_16;
@@ -163,12 +163,12 @@ LABEL_16:
   operator new();
 }
 
-- (void)setObject:(id)a3 forKey:(unint64_t)a4
+- (void)setObject:(id)object forKey:(unint64_t)key
 {
-  v6 = a3;
+  objectCopy = object;
   while (1)
   {
-    if ([(TSUSparseArray *)self maxIndexForCurrentDepth]>= a4)
+    if ([(TSUSparseArray *)self maxIndexForCurrentDepth]>= key)
     {
       depth = self->_depth;
       if (depth)
@@ -189,8 +189,8 @@ LABEL_16:
     v11 = self->_depth;
     do
     {
-      v9[v10] = a4;
-      a4 >>= 8;
+      v9[v10] = key;
+      key >>= 8;
       --v10;
       --v11;
     }
@@ -229,7 +229,7 @@ LABEL_16:
 
   while (v14 < v13);
 LABEL_17:
-  self->_nonNilCount += sub_2770C2368(topPage, v6, *(__p[0] + v13));
+  self->_nonNilCount += sub_2770C2368(topPage, objectCopy, *(__p[0] + v13));
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -237,33 +237,33 @@ LABEL_17:
   }
 }
 
-- (BOOL)hasObjectForKey:(unint64_t)a3
+- (BOOL)hasObjectForKey:(unint64_t)key
 {
-  v3 = [(TSUSparseArray *)self objectForKey:a3];
+  v3 = [(TSUSparseArray *)self objectForKey:key];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)foreach:(id)a3
+- (void)foreach:(id)foreach
 {
-  v4 = a3;
+  foreachCopy = foreach;
   topPage = self->_topPage;
   if (topPage)
   {
     v6 = 0;
-    (*(topPage->var0 + 5))(topPage, v4, 0, &v6);
+    (*(topPage->var0 + 5))(topPage, foreachCopy, 0, &v6);
   }
 }
 
-- (void)addObjectsFromArray:(id)a3
+- (void)addObjectsFromArray:(id)array
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = sub_2770C24EC;
   v3[3] = &unk_27A7029A8;
   v3[4] = self;
-  [a3 foreach:v3];
+  [array foreach:v3];
 }
 
 - (void)clear
@@ -322,7 +322,7 @@ LABEL_17:
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   *(v4 + 24) = self->_depth;

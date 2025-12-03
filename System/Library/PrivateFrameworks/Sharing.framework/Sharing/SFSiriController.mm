@@ -8,20 +8,20 @@
 + (BOOL)isSiriAllowedWhileLocked;
 + (BOOL)isSiriEnabled;
 + (int64_t)announceCallsState;
-+ (void)setAnnounceCallsState:(int64_t)a3;
-+ (void)setAnnounceMessagesEnabled:(BOOL)a3;
-+ (void)setHasUserSeenAnnounceCallsOptOutScreen:(BOOL)a3;
-+ (void)setHasUserSeenAnnounceMessagesOptOutScreen:(BOOL)a3;
++ (void)setAnnounceCallsState:(int64_t)state;
++ (void)setAnnounceMessagesEnabled:(BOOL)enabled;
++ (void)setHasUserSeenAnnounceCallsOptOutScreen:(BOOL)screen;
++ (void)setHasUserSeenAnnounceMessagesOptOutScreen:(BOOL)screen;
 @end
 
 @implementation SFSiriController
 
 + (BOOL)isSiriEnabled
 {
-  v2 = [getAFPreferencesClass() sharedPreferences];
-  v3 = [v2 assistantIsEnabled];
+  sharedPreferences = [getAFPreferencesClass() sharedPreferences];
+  assistantIsEnabled = [sharedPreferences assistantIsEnabled];
 
-  return v3;
+  return assistantIsEnabled;
 }
 
 + (BOOL)isHeySiriEnabled
@@ -46,48 +46,48 @@
 
   v3 = v2;
   _Block_object_dispose(&v9, 8);
-  v4 = [v2 sharedPreferences];
-  v5 = [getAFPreferencesClass() sharedPreferences];
-  if ([v5 assistantIsEnabled])
+  sharedPreferences = [v2 sharedPreferences];
+  sharedPreferences2 = [getAFPreferencesClass() sharedPreferences];
+  if ([sharedPreferences2 assistantIsEnabled])
   {
-    v6 = [v4 voiceTriggerEnabled];
+    voiceTriggerEnabled = [sharedPreferences voiceTriggerEnabled];
   }
 
   else
   {
-    v6 = 0;
+    voiceTriggerEnabled = 0;
   }
 
-  return v6;
+  return voiceTriggerEnabled;
 }
 
 + (BOOL)isSiriAllowedWhileLocked
 {
-  v2 = [getAFPreferencesClass() sharedPreferences];
-  v3 = [v2 disableAssistantWhilePasscodeLocked];
+  sharedPreferences = [getAFPreferencesClass() sharedPreferences];
+  disableAssistantWhilePasscodeLocked = [sharedPreferences disableAssistantWhilePasscodeLocked];
 
-  return v3 ^ 1;
+  return disableAssistantWhilePasscodeLocked ^ 1;
 }
 
 + (BOOL)isCurrentLocaleSupported
 {
-  v2 = [getAFPreferencesClass() sharedPreferences];
-  v3 = [v2 isCurrentLocaleNativelySupported];
+  sharedPreferences = [getAFPreferencesClass() sharedPreferences];
+  isCurrentLocaleNativelySupported = [sharedPreferences isCurrentLocaleNativelySupported];
 
-  return v3;
+  return isCurrentLocaleNativelySupported;
 }
 
-+ (void)setHasUserSeenAnnounceMessagesOptOutScreen:(BOOL)a3
++ (void)setHasUserSeenAnnounceMessagesOptOutScreen:(BOOL)screen
 {
-  if (a3)
+  if (screen)
   {
     [SFDefaults setSiriNotificationsPrompted:3];
   }
 }
 
-+ (void)setHasUserSeenAnnounceCallsOptOutScreen:(BOOL)a3
++ (void)setHasUserSeenAnnounceCallsOptOutScreen:(BOOL)screen
 {
-  if (a3)
+  if (screen)
   {
     [SFDefaults setSiriNotificationsPrompted:4];
   }
@@ -95,20 +95,20 @@
 
 + (BOOL)isAnnounceMessagesEnabled
 {
-  v2 = [getUNNotificationSettingsCenterClass() currentNotificationSettingsCenter];
-  v3 = [v2 notificationSystemSettings];
-  v4 = [v3 announcementSetting] == 2;
+  currentNotificationSettingsCenter = [getUNNotificationSettingsCenterClass() currentNotificationSettingsCenter];
+  notificationSystemSettings = [currentNotificationSettingsCenter notificationSystemSettings];
+  v4 = [notificationSystemSettings announcementSetting] == 2;
 
   return v4;
 }
 
-+ (void)setAnnounceMessagesEnabled:(BOOL)a3
++ (void)setAnnounceMessagesEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [getUNNotificationSettingsCenterClass() currentNotificationSettingsCenter];
-  v5 = [v4 notificationSystemSettings];
-  v6 = v5;
-  if (v3)
+  enabledCopy = enabled;
+  currentNotificationSettingsCenter = [getUNNotificationSettingsCenterClass() currentNotificationSettingsCenter];
+  notificationSystemSettings = [currentNotificationSettingsCenter notificationSystemSettings];
+  v6 = notificationSystemSettings;
+  if (enabledCopy)
   {
     v7 = 2;
   }
@@ -118,7 +118,7 @@
     v7 = 1;
   }
 
-  if ([v5 announcementSetting] != v7)
+  if ([notificationSystemSettings announcementSetting] != v7)
   {
     v12 = 0;
     v13 = &v12;
@@ -141,18 +141,18 @@
     v10 = objc_alloc_init(v8);
     [v10 setAnnouncementSetting:v7];
     [v10 setShowPreviewsSetting:{objc_msgSend(v6, "showPreviewsSetting")}];
-    [v4 setNotificationSystemSettings:v10];
+    [currentNotificationSettingsCenter setNotificationSystemSettings:v10];
   }
 }
 
 + (BOOL)isAnnounceMessagesSupported
 {
-  v2 = [getUNNotificationSettingsCenterClass() currentNotificationSettingsCenter];
-  v3 = [v2 notificationSystemSettings];
-  v4 = v3;
-  if (v3)
+  currentNotificationSettingsCenter = [getUNNotificationSettingsCenterClass() currentNotificationSettingsCenter];
+  notificationSystemSettings = [currentNotificationSettingsCenter notificationSystemSettings];
+  v4 = notificationSystemSettings;
+  if (notificationSystemSettings)
   {
-    v5 = [v3 announcementSetting] != 0;
+    v5 = [notificationSystemSettings announcementSetting] != 0;
   }
 
   else
@@ -165,21 +165,21 @@
 
 + (BOOL)isAnnounceEnabledForHeadphones
 {
-  v2 = [getUNNotificationSettingsCenterClass() currentNotificationSettingsCenter];
-  v3 = [v2 notificationSystemSettings];
-  v4 = [v3 announcementHeadphonesSetting];
+  currentNotificationSettingsCenter = [getUNNotificationSettingsCenterClass() currentNotificationSettingsCenter];
+  notificationSystemSettings = [currentNotificationSettingsCenter notificationSystemSettings];
+  announcementHeadphonesSetting = [notificationSystemSettings announcementHeadphonesSetting];
 
-  return v4 == 2;
+  return announcementHeadphonesSetting == 2;
 }
 
 + (BOOL)isAnnounceSupported
 {
-  v2 = [getUNNotificationSettingsCenterClass() currentNotificationSettingsCenter];
-  v3 = [v2 notificationSystemSettings];
-  v4 = v3;
-  if (v3)
+  currentNotificationSettingsCenter = [getUNNotificationSettingsCenterClass() currentNotificationSettingsCenter];
+  notificationSystemSettings = [currentNotificationSettingsCenter notificationSystemSettings];
+  v4 = notificationSystemSettings;
+  if (notificationSystemSettings)
   {
-    v5 = [v3 announcementSetting] != 0;
+    v5 = [notificationSystemSettings announcementSetting] != 0;
   }
 
   else
@@ -193,30 +193,30 @@
 + (int64_t)announceCallsState
 {
   v2 = objc_alloc_init(getTUUserConfigurationClass());
-  v3 = [v2 announceCalls];
-  if (v3 >= 4)
+  announceCalls = [v2 announceCalls];
+  if (announceCalls >= 4)
   {
     if (gLogCategory_SFSiriController <= 90 && (gLogCategory_SFSiriController != -1 || _LogCategory_Initialize()))
     {
       +[SFSiriController announceCallsState];
     }
 
-    v3 = 0;
+    announceCalls = 0;
   }
 
-  return v3;
+  return announceCalls;
 }
 
-+ (void)setAnnounceCallsState:(int64_t)a3
++ (void)setAnnounceCallsState:(int64_t)state
 {
   v4 = objc_alloc_init(getTUUserConfigurationClass());
-  v5 = a3;
+  stateCopy = state;
   v6 = v4;
-  if (a3 >= 4)
+  if (state >= 4)
   {
     if (gLogCategory_SFSiriController > 90)
     {
-      v5 = 0;
+      stateCopy = 0;
     }
 
     else
@@ -226,15 +226,15 @@
         +[SFSiriController setAnnounceCallsState:];
       }
 
-      v5 = 0;
+      stateCopy = 0;
       v4 = v6;
     }
   }
 
-  [v4 setAnnounceCalls:v5];
+  [v4 setAnnounceCalls:stateCopy];
   if (gLogCategory_SFSiriController <= 30 && (gLogCategory_SFSiriController != -1 || _LogCategory_Initialize()))
   {
-    [SFSiriController setAnnounceCallsState:a3];
+    [SFSiriController setAnnounceCallsState:state];
   }
 }
 

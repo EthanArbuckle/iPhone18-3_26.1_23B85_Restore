@@ -7,16 +7,16 @@
 
 - (uint64_t)addZoneRowID:()BRCZoneRowID
 {
-  v4 = [a3 unsignedLongValue];
+  unsignedLongValue = [a3 unsignedLongValue];
 
-  return [a1 addIndex:v4];
+  return [self addIndex:unsignedLongValue];
 }
 
 - (uint64_t)removeZoneRowID:()BRCZoneRowID
 {
-  v4 = [a3 unsignedLongValue];
+  unsignedLongValue = [a3 unsignedLongValue];
 
-  return [a1 removeIndex:v4];
+  return [self removeIndex:unsignedLongValue];
 }
 
 @end

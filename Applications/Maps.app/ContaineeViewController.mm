@@ -6,35 +6,35 @@
 - (ContaineeViewControllerDelegate)containeeDelegate;
 - (MacMenuPresentationController)macMenuPresentationController;
 - (double)headerHeight;
-- (double)heightForLayout:(unint64_t)a3;
+- (double)heightForLayout:(unint64_t)layout;
 - (double)topSpaceForScrollPocket;
 - (id)keyCommands;
 - (id)macPopoverPresentationController;
 - (int64_t)preferredUserInterfaceStyle;
-- (void)_maps_setShowActionBar:(BOOL)a3;
+- (void)_maps_setShowActionBar:(BOOL)bar;
 - (void)_updateActionBarVisibility;
 - (void)_updateBlurCornerRadius;
-- (void)_updateHeaderPocketInteraction:(id)a3;
+- (void)_updateHeaderPocketInteraction:(id)interaction;
 - (void)_updateScrollInsets;
-- (void)applyAlphaToContent:(double)a3;
-- (void)didChangeContainerStyle:(unint64_t)a3;
-- (void)didChangeLayout:(unint64_t)a3;
+- (void)applyAlphaToContent:(double)content;
+- (void)didChangeContainerStyle:(unint64_t)style;
+- (void)didChangeLayout:(unint64_t)layout;
 - (void)didDismissByGesture;
 - (void)didInvalidateVisibleFrameByGesture;
-- (void)handleDismissAction:(id)a3;
+- (void)handleDismissAction:(id)action;
 - (void)loadView;
-- (void)setCardColor:(id)a3;
-- (void)setContentScrollView:(id)a3 forEdge:(unint64_t)a4;
+- (void)setCardColor:(id)color;
+- (void)setContentScrollView:(id)view forEdge:(unint64_t)edge;
 - (void)setNeedsUserInterfaceAppearanceUpdate;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willBecomeCurrent:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willBecomeCurrent:(BOOL)current;
 - (void)willDismissByGesture;
-- (void)willResignCurrent:(BOOL)a3;
+- (void)willResignCurrent:(BOOL)current;
 @end
 
 @implementation ContaineeViewController
@@ -56,40 +56,40 @@
 
 - (int64_t)preferredUserInterfaceStyle
 {
-  v2 = [(ContaineeViewController *)self cardPresentationController];
-  v3 = [v2 containerViewController];
-  v4 = [v3 preferredUserInterfaceStyle];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containerViewController = [cardPresentationController containerViewController];
+  preferredUserInterfaceStyle = [containerViewController preferredUserInterfaceStyle];
 
-  return v4;
+  return preferredUserInterfaceStyle;
 }
 
 - (double)headerHeight
 {
-  v3 = [(ContaineeViewController *)self headerView];
+  headerView = [(ContaineeViewController *)self headerView];
 
-  if (v3)
+  if (headerView)
   {
-    v4 = [(ContaineeViewController *)self forceCurrentWidthForHeaderHeightCalculations];
-    v5 = [(ContaineeViewController *)self headerView];
-    v6 = v5;
-    if (v4)
+    forceCurrentWidthForHeaderHeightCalculations = [(ContaineeViewController *)self forceCurrentWidthForHeaderHeightCalculations];
+    headerView2 = [(ContaineeViewController *)self headerView];
+    v6 = headerView2;
+    if (forceCurrentWidthForHeaderHeightCalculations)
     {
-      v7 = [(ContaineeViewController *)self view];
-      [v7 bounds];
+      view = [(ContaineeViewController *)self view];
+      [view bounds];
       [v6 _maps_compressedSizeForWidth:0 withBlock:CGRectGetWidth(v14)];
       v9 = v8;
     }
 
     else
     {
-      [v5 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
+      [headerView2 systemLayoutSizeFittingSize:{UILayoutFittingCompressedSize.width, UILayoutFittingCompressedSize.height}];
       v9 = v10;
     }
 
     if (v9 == 0.0)
     {
-      v11 = [(ContaineeViewController *)self headerView];
-      [v11 intrinsicContentSize];
+      headerView3 = [(ContaineeViewController *)self headerView];
+      [headerView3 intrinsicContentSize];
       v9 = v12;
     }
   }
@@ -107,18 +107,18 @@
   v102.receiver = self;
   v102.super_class = ContaineeViewController;
   [(ContaineeViewController *)&v102 viewDidLoad];
-  v3 = [(ContaineeViewController *)self view];
-  [v3 setLayoutMargins:{0.0, 16.0, 0.0, 16.0}];
+  view = [(ContaineeViewController *)self view];
+  [view setLayoutMargins:{0.0, 16.0, 0.0, 16.0}];
 
-  v4 = [(ContaineeViewController *)self view];
-  [v4 setPreservesSuperviewLayoutMargins:0];
+  view2 = [(ContaineeViewController *)self view];
+  [view2 setPreservesSuperviewLayoutMargins:0];
 
   [(ContaineeViewController *)self setViewRespectsSystemMinimumLayoutMargins:0];
   if ([objc_opt_class() wantsDefaultHeaderContentViews])
   {
     v5 = +[UIColor clearColor];
-    v6 = [(ContaineeViewController *)self view];
-    [v6 setBackgroundColor:v5];
+    view3 = [(ContaineeViewController *)self view];
+    [view3 setBackgroundColor:v5];
 
     v7 = [UIView alloc];
     y = CGRectZero.origin.y;
@@ -129,15 +129,15 @@
     self->_defaultContentView = v11;
 
     [(UIView *)self->_defaultContentView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v13 = [(UIView *)self->_defaultContentView layer];
-    [v13 setAllowsGroupOpacity:0];
+    layer = [(UIView *)self->_defaultContentView layer];
+    [layer setAllowsGroupOpacity:0];
 
     v14 = +[UIColor clearColor];
     [(UIView *)self->_defaultContentView setBackgroundColor:v14];
 
     [(UIView *)self->_defaultContentView setPreservesSuperviewLayoutMargins:1];
-    v15 = [(ContaineeViewController *)self view];
-    [v15 addSubview:self->_defaultContentView];
+    view4 = [(ContaineeViewController *)self view];
+    [view4 addSubview:self->_defaultContentView];
 
     v16 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     defaultHeaderView = self->_defaultHeaderView;
@@ -148,8 +148,8 @@
     [(UIView *)self->_defaultHeaderView setBackgroundColor:v18];
 
     [(UIView *)self->_defaultHeaderView setPreservesSuperviewLayoutMargins:1];
-    v19 = [(ContaineeViewController *)self view];
-    [v19 addSubview:self->_defaultHeaderView];
+    view5 = [(ContaineeViewController *)self view];
+    [view5 addSubview:self->_defaultHeaderView];
 
     v20 = [[MKViewWithHairline alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
     homeIndicatorSafeAreaView = self->_homeIndicatorSafeAreaView;
@@ -162,158 +162,158 @@
     [(MKViewWithHairline *)self->_homeIndicatorSafeAreaView setBackgroundColor:v22];
 
     [(MKViewWithHairline *)self->_homeIndicatorSafeAreaView setPreservesSuperviewLayoutMargins:1];
-    v23 = [(ContaineeViewController *)self view];
-    [v23 addSubview:self->_homeIndicatorSafeAreaView];
+    view6 = [(ContaineeViewController *)self view];
+    [view6 addSubview:self->_homeIndicatorSafeAreaView];
 
     v24 = objc_alloc_init(NSMutableArray);
-    v25 = [(MKViewWithHairline *)self->_homeIndicatorSafeAreaView heightAnchor];
-    v26 = [v25 constraintEqualToConstant:0.0];
+    heightAnchor = [(MKViewWithHairline *)self->_homeIndicatorSafeAreaView heightAnchor];
+    v26 = [heightAnchor constraintEqualToConstant:0.0];
     homeIndicatorSafeAreaHeightConstraint = self->_homeIndicatorSafeAreaHeightConstraint;
     self->_homeIndicatorSafeAreaHeightConstraint = v26;
 
     [v24 addObject:self->_homeIndicatorSafeAreaHeightConstraint];
     if ([objc_opt_class() wantsScrollPocketForDefaultHeader] && _UISolariumEnabled())
     {
-      v74 = [(UIView *)self->_defaultHeaderView leadingAnchor];
-      v76 = [(ContaineeViewController *)self view];
-      v75 = [v76 leadingAnchor];
-      v101 = [v74 constraintEqualToAnchor:v75];
-      v104[0] = v101;
-      v28 = [(UIView *)self->_defaultHeaderView trailingAnchor];
-      v99 = [(ContaineeViewController *)self view];
-      [v99 trailingAnchor];
-      v98 = v100 = v28;
-      v97 = [v28 constraintEqualToAnchor:?];
-      v104[1] = v97;
-      v29 = [(UIView *)self->_defaultHeaderView topAnchor];
-      v95 = [(ContaineeViewController *)self view];
-      v73 = [v95 topAnchor];
-      v96 = v29;
-      v94 = [v29 constraintEqualToAnchor:v73];
-      v104[2] = v94;
-      v30 = [(UIView *)self->_defaultHeaderView bottomAnchor];
-      v92 = [(UIView *)self->_defaultContentView bottomAnchor];
-      v93 = v30;
-      v91 = [v30 constraintLessThanOrEqualToAnchor:?];
+      leadingAnchor = [(UIView *)self->_defaultHeaderView leadingAnchor];
+      view7 = [(ContaineeViewController *)self view];
+      leadingAnchor2 = [view7 leadingAnchor];
+      view17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
+      v104[0] = view17;
+      trailingAnchor = [(UIView *)self->_defaultHeaderView trailingAnchor];
+      view8 = [(ContaineeViewController *)self view];
+      [view8 trailingAnchor];
+      v98 = leadingAnchor7 = trailingAnchor;
+      view18 = [trailingAnchor constraintEqualToAnchor:?];
+      v104[1] = view18;
+      topAnchor = [(UIView *)self->_defaultHeaderView topAnchor];
+      view9 = [(ContaineeViewController *)self view];
+      topAnchor2 = [view9 topAnchor];
+      v96 = topAnchor;
+      view19 = [topAnchor constraintEqualToAnchor:topAnchor2];
+      v104[2] = view19;
+      bottomAnchor = [(UIView *)self->_defaultHeaderView bottomAnchor];
+      bottomAnchor2 = [(UIView *)self->_defaultContentView bottomAnchor];
+      topAnchor7 = bottomAnchor;
+      v91 = [bottomAnchor constraintLessThanOrEqualToAnchor:?];
       v104[3] = v91;
-      v31 = [(UIView *)self->_defaultContentView leadingAnchor];
-      v89 = [(ContaineeViewController *)self view];
-      [v89 leadingAnchor];
-      v88 = v90 = v31;
-      v87 = [v31 constraintEqualToAnchor:?];
+      leadingAnchor3 = [(UIView *)self->_defaultContentView leadingAnchor];
+      view10 = [(ContaineeViewController *)self view];
+      [view10 leadingAnchor];
+      v88 = view20 = leadingAnchor3;
+      v87 = [leadingAnchor3 constraintEqualToAnchor:?];
       v104[4] = v87;
-      v32 = [(UIView *)self->_defaultContentView trailingAnchor];
-      v85 = [(ContaineeViewController *)self view];
-      [v85 trailingAnchor];
-      v84 = v86 = v32;
-      v83 = [v32 constraintEqualToAnchor:?];
+      trailingAnchor2 = [(UIView *)self->_defaultContentView trailingAnchor];
+      view11 = [(ContaineeViewController *)self view];
+      [view11 trailingAnchor];
+      v84 = view21 = trailingAnchor2;
+      v83 = [trailingAnchor2 constraintEqualToAnchor:?];
       v104[5] = v83;
-      v33 = [(UIView *)self->_defaultContentView topAnchor];
-      v81 = [(ContaineeViewController *)self view];
-      [v81 topAnchor];
-      v80 = v82 = v33;
-      v79 = [v33 constraintEqualToAnchor:?];
-      v104[6] = v79;
-      v34 = [(UIView *)self->_defaultContentView bottomAnchor];
-      v77 = [(MKViewWithHairline *)self->_homeIndicatorSafeAreaView topAnchor];
-      v78 = v34;
-      v72 = [v34 constraintEqualToAnchor:?];
+      topAnchor3 = [(UIView *)self->_defaultContentView topAnchor];
+      view12 = [(ContaineeViewController *)self view];
+      [view12 topAnchor];
+      v80 = topAnchor8 = topAnchor3;
+      view22 = [topAnchor3 constraintEqualToAnchor:?];
+      v104[6] = view22;
+      bottomAnchor3 = [(UIView *)self->_defaultContentView bottomAnchor];
+      topAnchor4 = [(MKViewWithHairline *)self->_homeIndicatorSafeAreaView topAnchor];
+      v78 = bottomAnchor3;
+      v72 = [bottomAnchor3 constraintEqualToAnchor:?];
       v104[7] = v72;
-      v35 = [(MKViewWithHairline *)self->_homeIndicatorSafeAreaView leadingAnchor];
-      v36 = [(ContaineeViewController *)self view];
-      v37 = [v36 leadingAnchor];
-      v38 = [v35 constraintEqualToAnchor:v37];
+      leadingAnchor4 = [(MKViewWithHairline *)self->_homeIndicatorSafeAreaView leadingAnchor];
+      view13 = [(ContaineeViewController *)self view];
+      leadingAnchor5 = [view13 leadingAnchor];
+      v38 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
       v104[8] = v38;
-      v70 = [(MKViewWithHairline *)self->_homeIndicatorSafeAreaView trailingAnchor];
-      v71 = [(ContaineeViewController *)self view];
-      v69 = [v71 trailingAnchor];
-      v68 = [v70 constraintEqualToAnchor:v69];
+      trailingAnchor3 = [(MKViewWithHairline *)self->_homeIndicatorSafeAreaView trailingAnchor];
+      view14 = [(ContaineeViewController *)self view];
+      trailingAnchor4 = [view14 trailingAnchor];
+      v68 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
       v104[9] = v68;
-      v39 = [(MKViewWithHairline *)self->_homeIndicatorSafeAreaView bottomAnchor];
-      v40 = [(ContaineeViewController *)self view];
-      v41 = [v40 bottomAnchor];
-      v42 = [v39 constraintEqualToAnchor:v41];
+      bottomAnchor4 = [(MKViewWithHairline *)self->_homeIndicatorSafeAreaView bottomAnchor];
+      view15 = [(ContaineeViewController *)self view];
+      bottomAnchor5 = [view15 bottomAnchor];
+      v42 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
       v104[10] = v42;
       [NSArray arrayWithObjects:v104 count:11];
       v44 = v43 = v24;
       [v43 addObjectsFromArray:v44];
 
       v24 = v43;
-      v45 = v74;
+      v45 = leadingAnchor;
 
-      v46 = v73;
-      v47 = v72;
+      topAnchor6 = topAnchor2;
+      trailingAnchor7 = v72;
 
-      v48 = v76;
-      v49 = v75;
+      v48 = view7;
+      leadingAnchor6 = leadingAnchor2;
     }
 
     else
     {
       [objc_opt_class() contentViewTopConstraintPriority];
       v51 = v50;
-      v52 = [(UIView *)self->_defaultHeaderView bottomAnchor];
-      v53 = [(UIView *)self->_defaultContentView topAnchor];
-      v45 = [v52 constraintEqualToAnchor:v53];
+      bottomAnchor6 = [(UIView *)self->_defaultHeaderView bottomAnchor];
+      topAnchor5 = [(UIView *)self->_defaultContentView topAnchor];
+      v45 = [bottomAnchor6 constraintEqualToAnchor:topAnchor5];
 
       LODWORD(v54) = v51;
       [v45 setPriority:v54];
       [objc_opt_class() contentViewBottomConstraintPriority];
       v56 = v55;
-      v57 = [(MKViewWithHairline *)self->_homeIndicatorSafeAreaView bottomAnchor];
-      v58 = [(ContaineeViewController *)self view];
-      v59 = [v58 bottomAnchor];
-      v60 = [v57 constraintEqualToAnchor:v59];
+      bottomAnchor7 = [(MKViewWithHairline *)self->_homeIndicatorSafeAreaView bottomAnchor];
+      view16 = [(ContaineeViewController *)self view];
+      bottomAnchor8 = [view16 bottomAnchor];
+      v60 = [bottomAnchor7 constraintEqualToAnchor:bottomAnchor8];
 
       LODWORD(v61) = v56;
       [v60 setPriority:v61];
-      v49 = [(UIView *)self->_defaultHeaderView leadingAnchor];
-      v101 = [(ContaineeViewController *)self view];
-      v100 = [v101 leadingAnchor];
-      v99 = [v49 constraintEqualToAnchor:?];
-      v103[0] = v99;
-      v62 = [(UIView *)self->_defaultHeaderView trailingAnchor];
-      v97 = [(ContaineeViewController *)self view];
-      [v97 trailingAnchor];
-      v96 = v98 = v62;
-      v95 = [v62 constraintEqualToAnchor:?];
-      v103[1] = v95;
-      v46 = [(UIView *)self->_defaultHeaderView topAnchor];
-      v94 = [(ContaineeViewController *)self view];
-      v93 = [v94 topAnchor];
-      v92 = [v46 constraintEqualToAnchor:?];
-      v103[2] = v92;
+      leadingAnchor6 = [(UIView *)self->_defaultHeaderView leadingAnchor];
+      view17 = [(ContaineeViewController *)self view];
+      leadingAnchor7 = [view17 leadingAnchor];
+      view8 = [leadingAnchor6 constraintEqualToAnchor:?];
+      v103[0] = view8;
+      trailingAnchor5 = [(UIView *)self->_defaultHeaderView trailingAnchor];
+      view18 = [(ContaineeViewController *)self view];
+      [view18 trailingAnchor];
+      v96 = v98 = trailingAnchor5;
+      view9 = [trailingAnchor5 constraintEqualToAnchor:?];
+      v103[1] = view9;
+      topAnchor6 = [(UIView *)self->_defaultHeaderView topAnchor];
+      view19 = [(ContaineeViewController *)self view];
+      topAnchor7 = [view19 topAnchor];
+      bottomAnchor2 = [topAnchor6 constraintEqualToAnchor:?];
+      v103[2] = bottomAnchor2;
       v103[3] = v45;
-      v63 = [(UIView *)self->_defaultContentView leadingAnchor];
-      v90 = [(ContaineeViewController *)self view];
-      [v90 leadingAnchor];
-      v89 = v91 = v63;
-      v88 = [v63 constraintEqualToAnchor:?];
+      leadingAnchor8 = [(UIView *)self->_defaultContentView leadingAnchor];
+      view20 = [(ContaineeViewController *)self view];
+      [view20 leadingAnchor];
+      view10 = v91 = leadingAnchor8;
+      v88 = [leadingAnchor8 constraintEqualToAnchor:?];
       v103[4] = v88;
-      v64 = [(UIView *)self->_defaultContentView trailingAnchor];
-      v86 = [(ContaineeViewController *)self view];
-      [v86 trailingAnchor];
-      v85 = v87 = v64;
-      v84 = [v64 constraintEqualToAnchor:?];
+      trailingAnchor6 = [(UIView *)self->_defaultContentView trailingAnchor];
+      view21 = [(ContaineeViewController *)self view];
+      [view21 trailingAnchor];
+      view11 = v87 = trailingAnchor6;
+      v84 = [trailingAnchor6 constraintEqualToAnchor:?];
       v103[5] = v84;
-      v65 = [(UIView *)self->_defaultContentView bottomAnchor];
-      v82 = [(MKViewWithHairline *)self->_homeIndicatorSafeAreaView topAnchor];
-      v83 = v65;
-      v81 = [v65 constraintEqualToAnchor:?];
-      v103[6] = v81;
-      v66 = [(MKViewWithHairline *)self->_homeIndicatorSafeAreaView leadingAnchor];
-      v79 = [(ContaineeViewController *)self view];
-      [v79 leadingAnchor];
-      v78 = v80 = v66;
-      v77 = [v66 constraintEqualToAnchor:?];
-      v103[7] = v77;
-      v47 = [(MKViewWithHairline *)self->_homeIndicatorSafeAreaView trailingAnchor];
-      v67 = self;
+      bottomAnchor9 = [(UIView *)self->_defaultContentView bottomAnchor];
+      topAnchor8 = [(MKViewWithHairline *)self->_homeIndicatorSafeAreaView topAnchor];
+      v83 = bottomAnchor9;
+      view12 = [bottomAnchor9 constraintEqualToAnchor:?];
+      v103[6] = view12;
+      leadingAnchor9 = [(MKViewWithHairline *)self->_homeIndicatorSafeAreaView leadingAnchor];
+      view22 = [(ContaineeViewController *)self view];
+      [view22 leadingAnchor];
+      v78 = v80 = leadingAnchor9;
+      topAnchor4 = [leadingAnchor9 constraintEqualToAnchor:?];
+      v103[7] = topAnchor4;
+      trailingAnchor7 = [(MKViewWithHairline *)self->_homeIndicatorSafeAreaView trailingAnchor];
+      selfCopy = self;
       v48 = v60;
-      v35 = [(ContaineeViewController *)v67 view];
-      v36 = [v35 trailingAnchor];
-      v37 = [v47 constraintEqualToAnchor:v36];
-      v103[8] = v37;
+      leadingAnchor4 = [(ContaineeViewController *)selfCopy view];
+      view13 = [leadingAnchor4 trailingAnchor];
+      leadingAnchor5 = [trailingAnchor7 constraintEqualToAnchor:view13];
+      v103[8] = leadingAnchor5;
       v103[9] = v48;
       v38 = [NSArray arrayWithObjects:v103 count:10];
       [v24 addObjectsFromArray:v38];
@@ -339,11 +339,11 @@
   }
 }
 
-- (void)_maps_setShowActionBar:(BOOL)a3
+- (void)_maps_setShowActionBar:(BOOL)bar
 {
   v4 = type metadata accessor for UITraitOverrides();
   __chkstk_darwin(v4);
-  v5 = self;
+  selfCopy = self;
   UIViewController.traitOverrides.getter();
   UIMutableTraits.shouldShowActionBar.setter();
   UIViewController.traitOverrides.setter();
@@ -358,8 +358,8 @@
 
 - (void)_updateActionBarVisibility
 {
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  v4 = [v3 containeeLayout] != 1;
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  v4 = [cardPresentationController containeeLayout] != 1;
 
   [(ContaineeViewController *)self _maps_setShowActionBar:v4];
 }
@@ -403,22 +403,22 @@
   return v3;
 }
 
-- (void)didChangeContainerStyle:(unint64_t)a3
+- (void)didChangeContainerStyle:(unint64_t)style
 {
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  [v4 updateGrabber];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController updateGrabber];
 
   [(ContaineeViewController *)self _updateBlurCornerRadius];
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  [v5 updateDimmingBehavior];
+  cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController2 updateDimmingBehavior];
 
   [(ContaineeViewController *)self _updateActionBarVisibility];
-  v6 = [(ContaineeViewController *)self cardPresentationController];
-  [v6 grabberSafeAreaHeight];
+  cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController3 grabberSafeAreaHeight];
   [(NSLayoutConstraint *)self->_homeIndicatorSafeAreaHeightConstraint setConstant:?];
 }
 
-- (void)didChangeLayout:(unint64_t)a3
+- (void)didChangeLayout:(unint64_t)layout
 {
   [(ContaineeViewController *)self _updateActionBarVisibility];
   v4 = +[NSNotificationCenter defaultCenter];
@@ -427,13 +427,13 @@
 
 - (void)didDismissByGesture
 {
-  v3 = [(ContaineeViewController *)self containeeDelegate];
+  containeeDelegate = [(ContaineeViewController *)self containeeDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(ContaineeViewController *)self containeeDelegate];
-    [v5 containeeViewControllerDidDismissExternally:self];
+    containeeDelegate2 = [(ContaineeViewController *)self containeeDelegate];
+    [containeeDelegate2 containeeViewControllerDidDismissExternally:self];
   }
 }
 
@@ -441,8 +441,8 @@
 {
   if ([objc_opt_class() shouldDismissKeyboardOnSwipe])
   {
-    v3 = [(ContaineeViewController *)self view];
-    [v3 endEditing:1];
+    view = [(ContaineeViewController *)self view];
+    [view endEditing:1];
   }
 }
 
@@ -450,34 +450,34 @@
 {
   if ([objc_opt_class() shouldDismissKeyboardOnSwipeToDismiss])
   {
-    v3 = [(ContaineeViewController *)self view];
-    [v3 endEditing:1];
+    view = [(ContaineeViewController *)self view];
+    [view endEditing:1];
   }
 }
 
-- (void)willBecomeCurrent:(BOOL)a3
+- (void)willBecomeCurrent:(BOOL)current
 {
   if (sub_10000FA08(self) == 5)
   {
-    v4 = [(ContaineeViewController *)self view];
-    [v4 _setSafeAreaInsetsFrozen:1];
+    view = [(ContaineeViewController *)self view];
+    [view _setSafeAreaInsetsFrozen:1];
   }
 }
 
-- (void)willResignCurrent:(BOOL)a3
+- (void)willResignCurrent:(BOOL)current
 {
   if (sub_10000FA08(self) == 5)
   {
-    v4 = [(ContaineeViewController *)self view];
-    [v4 _setSafeAreaInsetsFrozen:1];
+    view = [(ContaineeViewController *)self view];
+    [view _setSafeAreaInsetsFrozen:1];
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v6.receiver = self;
   v6.super_class = ContaineeViewController;
-  [(ContaineeViewController *)&v6 viewIsAppearing:a3];
+  [(ContaineeViewController *)&v6 viewIsAppearing:appearing];
   if ([(ContaineeViewController *)self wantsScrollPocket])
   {
     v4 = [(ContaineeViewController *)self contentScrollViewForEdge:1];
@@ -489,14 +489,14 @@
   }
 }
 
-- (void)_updateHeaderPocketInteraction:(id)a3
+- (void)_updateHeaderPocketInteraction:(id)interaction
 {
-  v4 = a3;
+  interactionCopy = interaction;
   headerPocketInteraction = self->_headerPocketInteraction;
-  v10 = v4;
+  v10 = interactionCopy;
   if (headerPocketInteraction)
   {
-    [(UIScrollEdgeElementContainerInteraction *)headerPocketInteraction setScrollView:v4];
+    [(UIScrollEdgeElementContainerInteraction *)headerPocketInteraction setScrollView:interactionCopy];
   }
 
   else
@@ -509,55 +509,55 @@
     [(UIScrollEdgeElementContainerInteraction *)self->_headerPocketInteraction setEdge:1];
   }
 
-  v8 = [(UIScrollEdgeElementContainerInteraction *)self->_headerPocketInteraction view];
+  view = [(UIScrollEdgeElementContainerInteraction *)self->_headerPocketInteraction view];
 
-  if (!v8)
+  if (!view)
   {
-    v9 = [(ContaineeViewController *)self scrollPocketHeaderView];
-    [v9 addInteraction:self->_headerPocketInteraction];
+    scrollPocketHeaderView = [(ContaineeViewController *)self scrollPocketHeaderView];
+    [scrollPocketHeaderView addInteraction:self->_headerPocketInteraction];
   }
 }
 
-- (void)setContentScrollView:(id)a3 forEdge:(unint64_t)a4
+- (void)setContentScrollView:(id)view forEdge:(unint64_t)edge
 {
-  v6 = a3;
-  v7 = [(ContaineeViewController *)self contentScrollViewForEdge:a4];
+  viewCopy = view;
+  v7 = [(ContaineeViewController *)self contentScrollViewForEdge:edge];
   v8.receiver = self;
   v8.super_class = ContaineeViewController;
-  [(ContaineeViewController *)&v8 setContentScrollView:v6 forEdge:a4];
-  if ([(ContaineeViewController *)self wantsScrollPocket]&& v7 != v6)
+  [(ContaineeViewController *)&v8 setContentScrollView:viewCopy forEdge:edge];
+  if ([(ContaineeViewController *)self wantsScrollPocket]&& v7 != viewCopy)
   {
-    [(ContaineeViewController *)self _updateHeaderPocketInteraction:v6];
+    [(ContaineeViewController *)self _updateHeaderPocketInteraction:viewCopy];
     [(ContaineeViewController *)self _updateScrollInsets];
-    [v6 _mapsui_scrollToTopAnimated:0];
+    [viewCopy _mapsui_scrollToTopAnimated:0];
   }
 }
 
-- (void)handleDismissAction:(id)a3
+- (void)handleDismissAction:(id)action
 {
-  v4 = a3;
-  v5 = [(ContaineeViewController *)self containeeDelegate];
-  [v5 containeeViewControllerGoToPreviousState:self withSender:v4];
+  actionCopy = action;
+  containeeDelegate = [(ContaineeViewController *)self containeeDelegate];
+  [containeeDelegate containeeViewControllerGoToPreviousState:self withSender:actionCopy];
 }
 
-- (void)applyAlphaToContent:(double)a3
+- (void)applyAlphaToContent:(double)content
 {
-  v4 = [(ContaineeViewController *)self contentView];
-  [v4 setAlpha:a3];
+  contentView = [(ContaineeViewController *)self contentView];
+  [contentView setAlpha:content];
 }
 
-- (double)heightForLayout:(unint64_t)a3
+- (double)heightForLayout:(unint64_t)layout
 {
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  v6 = [v5 takesAvailableHeight];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  takesAvailableHeight = [cardPresentationController takesAvailableHeight];
 
-  if (v6)
+  if (takesAvailableHeight)
   {
-    if (a3 - 3 <= 2)
+    if (layout - 3 <= 2)
     {
 LABEL_5:
-      v8 = [(ContaineeViewController *)self cardPresentationController];
-      [v8 availableHeight];
+      cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController2 availableHeight];
       v7 = v9;
 
       return v7;
@@ -570,18 +570,18 @@ LABEL_5:
     }
   }
 
-  if (a3 - 3 < 3)
+  if (layout - 3 < 3)
   {
     goto LABEL_5;
   }
 
-  if (a3 != 2)
+  if (layout != 2)
   {
     v7 = -1.0;
-    if (a3 == 1)
+    if (layout == 1)
     {
-      v11 = [(ContaineeViewController *)self cardPresentationController];
-      [v11 bottomSafeOffset];
+      cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+      [cardPresentationController3 bottomSafeOffset];
       v13 = v12;
       [(ContaineeViewController *)self headerHeight];
       v7 = v14 + v13;
@@ -594,14 +594,14 @@ LABEL_5:
   return result;
 }
 
-- (void)setCardColor:(id)a3
+- (void)setCardColor:(id)color
 {
-  v5 = a3;
-  objc_storeStrong(&self->_cardColor, a3);
+  colorCopy = color;
+  objc_storeStrong(&self->_cardColor, color);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(UIVisualEffectView *)self->_effectView setCustomBackgroundColor:v5];
+    [(UIVisualEffectView *)self->_effectView setCustomBackgroundColor:colorCopy];
   }
 }
 
@@ -610,21 +610,21 @@ LABEL_5:
   v5.receiver = self;
   v5.super_class = ContaineeViewController;
   [(ContaineeViewController *)&v5 setNeedsUserInterfaceAppearanceUpdate];
-  v3 = [(ContaineeViewController *)self preferredUserInterfaceStyle];
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  [v4 setPreferredUserInterfaceStyle:v3];
+  preferredUserInterfaceStyle = [(ContaineeViewController *)self preferredUserInterfaceStyle];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController setPreferredUserInterfaceStyle:preferredUserInterfaceStyle];
 }
 
 - (BOOL)wantsScrollPocket
 {
-  v2 = [objc_opt_class() wantsScrollPocketForDefaultHeader];
-  if (v2)
+  wantsScrollPocketForDefaultHeader = [objc_opt_class() wantsScrollPocketForDefaultHeader];
+  if (wantsScrollPocketForDefaultHeader)
   {
 
-    LOBYTE(v2) = _UISolariumEnabled();
+    LOBYTE(wantsScrollPocketForDefaultHeader) = _UISolariumEnabled();
   }
 
-  return v2;
+  return wantsScrollPocketForDefaultHeader;
 }
 
 - (double)topSpaceForScrollPocket
@@ -639,22 +639,22 @@ LABEL_5:
   v8.receiver = self;
   v8.super_class = ContaineeViewController;
   [(ContaineeViewController *)&v8 viewDidLayoutSubviews];
-  v3 = [(ContaineeViewController *)self view];
-  [v3 bounds];
+  view = [(ContaineeViewController *)self view];
+  [view bounds];
   [(UIVisualEffectView *)self->_effectView setFrame:?];
 
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  v5 = [v4 usingSheetPresentation];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  usingSheetPresentation = [cardPresentationController usingSheetPresentation];
 
-  if (v5)
+  if (usingSheetPresentation)
   {
-    v6 = [(ContaineeViewController *)self cardPresentationController];
-    [v6 sheetContentSize];
+    cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+    [cardPresentationController2 sheetContentSize];
     [(ContaineeViewController *)self setPreferredContentSize:?];
   }
 
-  v7 = [(ContaineeViewController *)self cardPresentationController];
-  [v7 contentAlpha];
+  cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController3 contentAlpha];
   [(ContaineeViewController *)self applyAlphaToContent:?];
 
   [(ContaineeViewController *)self _updateScrollInsets];
@@ -674,10 +674,10 @@ LABEL_5:
 
 - (void)_updateBlurCornerRadius
 {
-  v3 = [(ContaineeViewController *)self cardPresentationController];
-  v4 = [v3 containerStyle];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  containerStyle = [cardPresentationController containerStyle];
 
-  if (v4 == 6)
+  if (containerStyle == 6)
   {
     v5 = 15;
   }
@@ -693,48 +693,48 @@ LABEL_5:
   [(UIVisualEffectView *)effectView _setCornerRadius:1 continuous:v5 maskedCorners:?];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = ContaineeViewController;
-  [(ContaineeViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  self->_retainedLayout = [v4 containeeLayout];
+  [(ContaineeViewController *)&v5 viewWillDisappear:disappear];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  self->_retainedLayout = [cardPresentationController containeeLayout];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v11.receiver = self;
   v11.super_class = ContaineeViewController;
-  [(ContaineeViewController *)&v11 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(ContaineeViewController *)self cardPresentationController];
-  v9 = [v8 usingSheetPresentation];
+  [(ContaineeViewController *)&v11 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  usingSheetPresentation = [cardPresentationController usingSheetPresentation];
 
-  if (v9)
+  if (usingSheetPresentation)
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100CE8FFC;
     v10[3] = &unk_101661710;
     v10[4] = self;
-    [v7 animateAlongsideTransition:v10 completion:0];
+    [coordinatorCopy animateAlongsideTransition:v10 completion:0];
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v18.receiver = self;
   v18.super_class = ContaineeViewController;
-  [(ContaineeViewController *)&v18 viewWillAppear:a3];
-  v4 = [(ContaineeViewController *)self cardPresentationController];
-  [v4 grabberSafeAreaHeight];
+  [(ContaineeViewController *)&v18 viewWillAppear:appear];
+  cardPresentationController = [(ContaineeViewController *)self cardPresentationController];
+  [cardPresentationController grabberSafeAreaHeight];
   [(NSLayoutConstraint *)self->_homeIndicatorSafeAreaHeightConstraint setConstant:?];
 
-  v5 = [(ContaineeViewController *)self cardPresentationController];
-  v6 = [v5 usingSheetPresentation];
+  cardPresentationController2 = [(ContaineeViewController *)self cardPresentationController];
+  usingSheetPresentation = [cardPresentationController2 usingSheetPresentation];
 
   if (qword_10195DF00 != -1)
   {
@@ -743,45 +743,45 @@ LABEL_5:
 
   if (byte_10195DF08 == 1)
   {
-    v7 = [(ContaineeViewController *)self cardPresentationController];
-    v8 = [v7 wantsFullscreen];
+    cardPresentationController3 = [(ContaineeViewController *)self cardPresentationController];
+    wantsFullscreen = [cardPresentationController3 wantsFullscreen];
   }
 
   else
   {
-    v8 = 0;
+    wantsFullscreen = 0;
   }
 
-  if (!self->_hasInsertedBackground && ((v6 | v8) & 1) != 0)
+  if (!self->_hasInsertedBackground && ((usingSheetPresentation | wantsFullscreen) & 1) != 0)
   {
     if (_UISolariumEnabled())
     {
       if (+[UIView _maps_sheetsNeedGlassBackground])
       {
-        v9 = [(ContaineeViewController *)self view];
-        [v9 _maps_applyGlassBackground];
+        view = [(ContaineeViewController *)self view];
+        [view _maps_applyGlassBackground];
       }
     }
 
     else
     {
-      v10 = [(ContaineeViewController *)self cardPresentationController];
-      v11 = +[MapsTheme visualEffectViewAllowingBlur:](MapsTheme, "visualEffectViewAllowingBlur:", [v10 blurInCardView]);
+      cardPresentationController4 = [(ContaineeViewController *)self cardPresentationController];
+      v11 = +[MapsTheme visualEffectViewAllowingBlur:](MapsTheme, "visualEffectViewAllowingBlur:", [cardPresentationController4 blurInCardView]);
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v12 = v11;
-        v13 = [(ContaineeViewController *)self cardPresentationController];
-        v14 = [v13 cardColor];
-        [(UIVisualEffectView *)v12 setCustomBackgroundColor:v14];
+        cardPresentationController5 = [(ContaineeViewController *)self cardPresentationController];
+        cardColor = [cardPresentationController5 cardColor];
+        [(UIVisualEffectView *)v12 setCustomBackgroundColor:cardColor];
       }
 
-      v15 = [(ContaineeViewController *)self view];
-      [v15 addSubview:v11];
+      view2 = [(ContaineeViewController *)self view];
+      [view2 addSubview:v11];
 
-      v16 = [(ContaineeViewController *)self view];
-      [v16 sendSubviewToBack:v11];
+      view3 = [(ContaineeViewController *)self view];
+      [view3 sendSubviewToBack:v11];
 
       effectView = self->_effectView;
       self->_effectView = v11;

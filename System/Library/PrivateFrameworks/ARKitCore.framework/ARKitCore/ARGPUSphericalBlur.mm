@@ -1,6 +1,6 @@
 @interface ARGPUSphericalBlur
 - (ARGPUSphericalBlur)init;
-- (id)blurCubemapTexture:(float32x4_t)a3 roughness:(float32x4_t)a4 rotation:(uint64_t)a5;
+- (id)blurCubemapTexture:(float32x4_t)texture roughness:(float32x4_t)roughness rotation:(uint64_t)rotation;
 @end
 
 @implementation ARGPUSphericalBlur
@@ -12,13 +12,13 @@
   v28.super_class = ARGPUSphericalBlur;
   v2 = [(ARGPUSphericalBlur *)&v28 init];
   v3 = +[ARSharedGPUDevice sharedInstance];
-  v4 = [v3 device];
+  device = [v3 device];
   device = v2->_device;
-  v2->_device = v4;
+  v2->_device = device;
 
-  v6 = [(MTLDevice *)v2->_device newCommandQueue];
+  newCommandQueue = [(MTLDevice *)v2->_device newCommandQueue];
   commandQueue = v2->_commandQueue;
-  v2->_commandQueue = v6;
+  v2->_commandQueue = newCommandQueue;
 
   [(MTLCommandQueue *)v2->_commandQueue setLabel:@"com.apple.arkit.gpusphericalblur.queue"];
   v2->_gpuFamilyAtleast4 = [(MTLDevice *)v2->_device supportsFamily:1004];
@@ -94,24 +94,24 @@ LABEL_12:
   return v2;
 }
 
-- (id)blurCubemapTexture:(float32x4_t)a3 roughness:(float32x4_t)a4 rotation:(uint64_t)a5
+- (id)blurCubemapTexture:(float32x4_t)texture roughness:(float32x4_t)roughness rotation:(uint64_t)rotation
 {
-  v31 = a3;
-  v32 = a4;
+  textureCopy = texture;
+  roughnessCopy = roughness;
   v30 = a2;
   v40 = *MEMORY[0x1E69E9840];
   v9 = a6;
   v10 = a7;
   v11 = [MEMORY[0x1E69741C0] textureCubeDescriptorWithPixelFormat:objc_msgSend(v9 size:"pixelFormat") mipmapped:objc_msgSend(v9, "width"), 1];
   [v11 setUsage:23];
-  v12 = [*(a1 + 8) newTextureWithDescriptor:v11];
+  v12 = [*(self + 8) newTextureWithDescriptor:v11];
   [v12 setLabel:@"com.apple.arkit.gpusphericalblur.target"];
-  v13 = [*(a1 + 16) commandBuffer];
-  v14 = [v13 computeCommandEncoder];
-  [v14 setLabel:@"com.apple.arkit.gpusphericalblur.cubemapblur"];
-  [v14 setComputePipelineState:*(a1 + 24)];
-  [v14 setTexture:v9 atIndex:0];
-  [v14 setTexture:v10 atIndex:1];
+  commandBuffer = [*(self + 16) commandBuffer];
+  computeCommandEncoder = [commandBuffer computeCommandEncoder];
+  [computeCommandEncoder setLabel:@"com.apple.arkit.gpusphericalblur.cubemapblur"];
+  [computeCommandEncoder setComputePipelineState:*(self + 24)];
+  [computeCommandEncoder setTexture:v9 atIndex:0];
+  [computeCommandEncoder setTexture:v10 atIndex:1];
   v15 = 0;
   v34 = xmmword_1C25C8910;
   v35 = xmmword_1C25C8BC0;
@@ -121,7 +121,7 @@ LABEL_12:
   v39 = 0u;
   do
   {
-    *(&v37 + v15) = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v30, COERCE_FLOAT(*(&v34 + v15))), v31, *(&v34 + v15), 1), v32, *(&v34 + v15), 2);
+    *(&v37 + v15) = vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v30, COERCE_FLOAT(*(&v34 + v15))), textureCopy, *(&v34 + v15), 1), roughnessCopy, *(&v34 + v15), 2);
     v15 += 16;
   }
 
@@ -146,10 +146,10 @@ LABEL_12:
   v33[2] = v38;
   v33[5] = DWORD2(v39);
   v33[4] = v39;
-  [v14 setBytes:v33 length:48 atIndex:0];
-  if (*(a1 + 32) == 1)
+  [computeCommandEncoder setBytes:v33 length:48 atIndex:0];
+  if (*(self + 32) == 1)
   {
-    [v14 setTexture:v12 atIndex:2];
+    [computeCommandEncoder setTexture:v12 atIndex:2];
   }
 
   else
@@ -160,7 +160,7 @@ LABEL_12:
     v37 = 0u;
     do
     {
-      v18 = [v12 newTextureViewWithPixelFormat:objc_msgSend(v9 textureType:"pixelFormat" levels:*&v30 slices:*&v31, *&v32), 2, 0, 1, v17, 1];
+      v18 = [v12 newTextureViewWithPixelFormat:objc_msgSend(v9 textureType:"pixelFormat" levels:*&v30 slices:*&textureCopy, *&roughnessCopy), 2, 0, 1, v17, 1];
       v19 = *(&v37 + v17);
       *(&v37 + v17) = v18;
 
@@ -168,41 +168,41 @@ LABEL_12:
     }
 
     while (v17 != 6);
-    [v14 setTextures:&v37 withRange:{2, 6}];
+    [computeCommandEncoder setTextures:&v37 withRange:{2, 6}];
     for (i = 40; i != -8; i -= 8)
     {
     }
   }
 
-  v21 = [*(a1 + 24) threadExecutionWidth];
-  v22 = [v9 width];
-  if (v21 >= v22)
+  threadExecutionWidth = [*(self + 24) threadExecutionWidth];
+  width = [v9 width];
+  if (threadExecutionWidth >= width)
   {
-    v21 = v22;
+    threadExecutionWidth = width;
   }
 
-  v23 = [*(a1 + 24) maxTotalThreadsPerThreadgroup];
-  v24 = v21;
+  maxTotalThreadsPerThreadgroup = [*(self + 24) maxTotalThreadsPerThreadgroup];
+  v24 = threadExecutionWidth;
   do
   {
     v25 = v24;
-    v26 = v24 * v21;
+    v26 = v24 * threadExecutionWidth;
     v24 >>= 1;
   }
 
-  while (v26 > v23);
-  v27 = (v21 + [v9 width] - 1) / v21;
-  v28 = [v9 height];
+  while (v26 > maxTotalThreadsPerThreadgroup);
+  v27 = (threadExecutionWidth + [v9 width] - 1) / threadExecutionWidth;
+  height = [v9 height];
   *&v37 = v27;
-  *(&v37 + 1) = (v25 + v28 - 1) / v25;
+  *(&v37 + 1) = (v25 + height - 1) / v25;
   *&v38 = 6;
-  *&v34 = v21;
+  *&v34 = threadExecutionWidth;
   *(&v34 + 1) = v25;
   *&v35 = 1;
-  [v14 dispatchThreadgroups:&v37 threadsPerThreadgroup:&v34];
-  [v14 endEncoding];
-  [v13 commit];
-  [v13 waitUntilCompleted];
+  [computeCommandEncoder dispatchThreadgroups:&v37 threadsPerThreadgroup:&v34];
+  [computeCommandEncoder endEncoding];
+  [commandBuffer commit];
+  [commandBuffer waitUntilCompleted];
 
   return v12;
 }

@@ -1,21 +1,21 @@
 @interface ResettableCalendarDateDisplayCell
 - (void)didTapClear;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation ResettableCalendarDateDisplayCell
 
 - (void)didTapClear
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BA072C54();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1BA073D4C(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1BA073D4C(change);
 }
 
 @end

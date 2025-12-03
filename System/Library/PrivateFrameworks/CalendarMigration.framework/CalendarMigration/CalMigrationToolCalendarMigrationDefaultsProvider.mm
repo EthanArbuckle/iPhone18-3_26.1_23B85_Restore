@@ -1,173 +1,173 @@
 @interface CalMigrationToolCalendarMigrationDefaultsProvider
 - (BOOL)isHolidayCalendarEnabled;
-- (BOOL)needsMigrationCleanupWithDestinationDirectory:(id)a3;
+- (BOOL)needsMigrationCleanupWithDestinationDirectory:(id)directory;
 - (BOOL)shouldBackupBeforeMigration;
 - (BOOL)shouldDeleteMigratedData;
-- (BOOL)shouldPerformMigrationWithDestinationDirectory:(id)a3;
-- (CalMigrationToolCalendarMigrationDefaultsProvider)initWithToolOptions:(id)a3 defaultProvider:(id)a4;
+- (BOOL)shouldPerformMigrationWithDestinationDirectory:(id)directory;
+- (CalMigrationToolCalendarMigrationDefaultsProvider)initWithToolOptions:(id)options defaultProvider:(id)provider;
 - (NSString)defaultCalendarUUID;
 - (void)clearLegacyDefaults;
 - (void)migrateLegacyDefaults;
-- (void)recordMigrationDidBeginWithDestinationDirectory:(id)a3;
-- (void)recordMigrationDidEndWithReason:(unint64_t)a3;
-- (void)setDefaultAllDayAlarmOffset:(id)a3;
-- (void)setDefaultCalendarUUID:(id)a3;
-- (void)setDefaultTimedAlarmOffset:(id)a3;
+- (void)recordMigrationDidBeginWithDestinationDirectory:(id)directory;
+- (void)recordMigrationDidEndWithReason:(unint64_t)reason;
+- (void)setDefaultAllDayAlarmOffset:(id)offset;
+- (void)setDefaultCalendarUUID:(id)d;
+- (void)setDefaultTimedAlarmOffset:(id)offset;
 @end
 
 @implementation CalMigrationToolCalendarMigrationDefaultsProvider
 
-- (CalMigrationToolCalendarMigrationDefaultsProvider)initWithToolOptions:(id)a3 defaultProvider:(id)a4
+- (CalMigrationToolCalendarMigrationDefaultsProvider)initWithToolOptions:(id)options defaultProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  optionsCopy = options;
+  providerCopy = provider;
   v12.receiver = self;
   v12.super_class = CalMigrationToolCalendarMigrationDefaultsProvider;
   v9 = [(CalMigrationToolCalendarMigrationDefaultsProvider *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_toolOptions, a3);
-    objc_storeStrong(&v10->_defaultProvider, a4);
+    objc_storeStrong(&v9->_toolOptions, options);
+    objc_storeStrong(&v10->_defaultProvider, provider);
   }
 
   return v10;
 }
 
-- (BOOL)shouldPerformMigrationWithDestinationDirectory:(id)a3
+- (BOOL)shouldPerformMigrationWithDestinationDirectory:(id)directory
 {
-  v4 = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self toolOptions];
-  v5 = [v4 performCalendarMigration];
+  toolOptions = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self toolOptions];
+  performCalendarMigration = [toolOptions performCalendarMigration];
 
-  if (v5 == 1)
+  if (performCalendarMigration == 1)
   {
     return 1;
   }
 
-  if (v5 != -1)
+  if (performCalendarMigration != -1)
   {
     return 0;
   }
 
-  v6 = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
-  v7 = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self toolOptions];
-  v8 = [v7 destinationDirectory];
-  v9 = [v6 shouldPerformMigrationWithDestinationDirectory:v8];
+  defaultProvider = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
+  toolOptions2 = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self toolOptions];
+  destinationDirectory = [toolOptions2 destinationDirectory];
+  v9 = [defaultProvider shouldPerformMigrationWithDestinationDirectory:destinationDirectory];
 
   return v9;
 }
 
 - (BOOL)shouldBackupBeforeMigration
 {
-  v3 = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self toolOptions];
-  v4 = [v3 backupBeforeCalendarMigration];
+  toolOptions = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self toolOptions];
+  backupBeforeCalendarMigration = [toolOptions backupBeforeCalendarMigration];
 
-  if (v4 == 1)
+  if (backupBeforeCalendarMigration == 1)
   {
     return 1;
   }
 
-  if (v4 != -1)
+  if (backupBeforeCalendarMigration != -1)
   {
     return 0;
   }
 
-  v5 = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
-  v6 = [v5 shouldBackupBeforeMigration];
+  defaultProvider = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
+  shouldBackupBeforeMigration = [defaultProvider shouldBackupBeforeMigration];
 
-  return v6;
+  return shouldBackupBeforeMigration;
 }
 
 - (BOOL)shouldDeleteMigratedData
 {
-  v3 = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self toolOptions];
-  v4 = [v3 deleteMigratedData];
+  toolOptions = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self toolOptions];
+  deleteMigratedData = [toolOptions deleteMigratedData];
 
-  if (v4 == 1)
+  if (deleteMigratedData == 1)
   {
     return 1;
   }
 
-  if (v4 != -1)
+  if (deleteMigratedData != -1)
   {
     return 0;
   }
 
-  v5 = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
-  v6 = [v5 shouldDeleteMigratedData];
+  defaultProvider = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
+  shouldDeleteMigratedData = [defaultProvider shouldDeleteMigratedData];
 
-  return v6;
+  return shouldDeleteMigratedData;
 }
 
-- (BOOL)needsMigrationCleanupWithDestinationDirectory:(id)a3
+- (BOOL)needsMigrationCleanupWithDestinationDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
-  v6 = [v5 needsMigrationCleanupWithDestinationDirectory:v4];
+  directoryCopy = directory;
+  defaultProvider = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
+  v6 = [defaultProvider needsMigrationCleanupWithDestinationDirectory:directoryCopy];
 
   return v6;
 }
 
 - (BOOL)isHolidayCalendarEnabled
 {
-  v2 = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
-  v3 = [v2 isHolidayCalendarEnabled];
+  defaultProvider = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
+  isHolidayCalendarEnabled = [defaultProvider isHolidayCalendarEnabled];
 
-  return v3;
+  return isHolidayCalendarEnabled;
 }
 
 - (void)migrateLegacyDefaults
 {
-  v2 = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
-  [v2 migrateLegacyDefaults];
+  defaultProvider = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
+  [defaultProvider migrateLegacyDefaults];
 }
 
 - (void)clearLegacyDefaults
 {
-  v2 = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
-  [v2 clearLegacyDefaults];
+  defaultProvider = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
+  [defaultProvider clearLegacyDefaults];
 }
 
-- (void)recordMigrationDidBeginWithDestinationDirectory:(id)a3
+- (void)recordMigrationDidBeginWithDestinationDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
-  [v5 recordMigrationDidBeginWithDestinationDirectory:v4];
+  directoryCopy = directory;
+  defaultProvider = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
+  [defaultProvider recordMigrationDidBeginWithDestinationDirectory:directoryCopy];
 }
 
-- (void)recordMigrationDidEndWithReason:(unint64_t)a3
+- (void)recordMigrationDidEndWithReason:(unint64_t)reason
 {
-  v4 = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
-  [v4 recordMigrationDidEndWithReason:a3];
+  defaultProvider = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
+  [defaultProvider recordMigrationDidEndWithReason:reason];
 }
 
-- (void)setDefaultTimedAlarmOffset:(id)a3
+- (void)setDefaultTimedAlarmOffset:(id)offset
 {
-  v4 = a3;
-  v5 = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
-  [v5 setDefaultTimedAlarmOffset:v4];
+  offsetCopy = offset;
+  defaultProvider = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
+  [defaultProvider setDefaultTimedAlarmOffset:offsetCopy];
 }
 
-- (void)setDefaultAllDayAlarmOffset:(id)a3
+- (void)setDefaultAllDayAlarmOffset:(id)offset
 {
-  v4 = a3;
-  v5 = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
-  [v5 setDefaultAllDayAlarmOffset:v4];
+  offsetCopy = offset;
+  defaultProvider = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
+  [defaultProvider setDefaultAllDayAlarmOffset:offsetCopy];
 }
 
 - (NSString)defaultCalendarUUID
 {
-  v2 = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
-  v3 = [v2 defaultCalendarUUID];
+  defaultProvider = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
+  defaultCalendarUUID = [defaultProvider defaultCalendarUUID];
 
-  return v3;
+  return defaultCalendarUUID;
 }
 
-- (void)setDefaultCalendarUUID:(id)a3
+- (void)setDefaultCalendarUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
-  [v5 setDefaultCalendarUUID:v4];
+  dCopy = d;
+  defaultProvider = [(CalMigrationToolCalendarMigrationDefaultsProvider *)self defaultProvider];
+  [defaultProvider setDefaultCalendarUUID:dCopy];
 }
 
 @end

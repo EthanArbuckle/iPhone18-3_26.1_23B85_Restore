@@ -6,20 +6,20 @@
 
 - (BOOL)ob_isFormSheet
 {
-  v2 = [a1 navigationController];
+  navigationController = [self navigationController];
 
-  if (v2)
+  if (navigationController)
   {
-    v3 = [a1 navigationController];
-    v4 = [v3 modalPresentationStyle];
+    navigationController2 = [self navigationController];
+    modalPresentationStyle = [navigationController2 modalPresentationStyle];
   }
 
   else
   {
-    v4 = [a1 modalPresentationStyle];
+    modalPresentationStyle = [self modalPresentationStyle];
   }
 
-  return v4 == 2;
+  return modalPresentationStyle == 2;
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface DNDGetFocusStateIntentHandler
-- (void)handleGetFocusState:(id)a3 completion:(id)a4;
+- (void)handleGetFocusState:(id)state completion:(id)completion;
 @end
 
 @implementation DNDGetFocusStateIntentHandler
 
-- (void)handleGetFocusState:(id)a3 completion:(id)a4
+- (void)handleGetFocusState:(id)state completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   v7 = DNDIntentLog;
   if (os_log_type_enabled(DNDIntentLog, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v44 = v5;
+    v44 = stateCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Handling intent: %{public}@", buf, 0xCu);
   }
 
-  v8 = [v5 focus];
+  focus = [stateCopy focus];
   v9 = [DNDModeSelectionService serviceForClientIdentifier:@"com.apple.DoNotDisturb.Intents"];
   v41 = 0;
   v10 = [v9 availableModesWithError:&v41];
@@ -31,13 +31,13 @@
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Error getting available modes: %@", buf, 0xCu);
     }
 
-    sub_10000118C(v6, 5, 2);
+    sub_10000118C(completionCopy, 5, 2);
   }
 
   else
   {
-    v34 = v6;
-    v35 = v5;
+    v34 = completionCopy;
+    v35 = stateCopy;
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
@@ -58,9 +58,9 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v37 + 1) + 8 * i) modeIdentifier];
-          v19 = [v8 identifier];
-          v20 = [v18 isEqualToString:v19];
+          modeIdentifier = [*(*(&v37 + 1) + 8 * i) modeIdentifier];
+          identifier = [focus identifier];
+          v20 = [modeIdentifier isEqualToString:identifier];
 
           if (v20)
           {
@@ -78,25 +78,25 @@
                 _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Error while getting assertion mode: %@.", buf, 0xCu);
               }
 
-              v6 = v34;
+              completionCopy = v34;
               sub_10000118C(v34, 5, 2);
-              v5 = v35;
+              stateCopy = v35;
               v10 = v33;
             }
 
             else
             {
               v32 = v22;
-              v25 = [v22 details];
-              v26 = [v25 modeIdentifier];
-              v27 = [v8 identifier];
-              v28 = [v26 isEqualToString:v27];
+              details = [v22 details];
+              modeIdentifier2 = [details modeIdentifier];
+              identifier2 = [focus identifier];
+              v28 = [modeIdentifier2 isEqualToString:identifier2];
 
               v29 = DNDIntentLog;
               v30 = os_log_type_enabled(DNDIntentLog, OS_LOG_TYPE_DEFAULT);
               if (v28)
               {
-                v6 = v34;
+                completionCopy = v34;
                 if (v30)
                 {
                   *buf = 0;
@@ -108,7 +108,7 @@
 
               else
               {
-                v6 = v34;
+                completionCopy = v34;
                 if (v30)
                 {
                   *buf = 0;
@@ -122,10 +122,10 @@
                 }
               }
 
-              v5 = v35;
+              stateCopy = v35;
               v22 = v32;
               v10 = v33;
-              sub_10000118C(v6, 4, v31);
+              sub_10000118C(completionCopy, 4, v31);
             }
 
             goto LABEL_31;
@@ -149,9 +149,9 @@
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Requested mode is not configured.", buf, 2u);
     }
 
-    v6 = v34;
+    completionCopy = v34;
     sub_10000118C(v34, 100, 2);
-    v5 = v35;
+    stateCopy = v35;
     v10 = v33;
   }
 

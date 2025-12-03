@@ -1,42 +1,42 @@
 @interface SBApplicationSignatureVersionRepairAlertItem
-- (SBApplicationSignatureVersionRepairAlertItem)initWithApplication:(id)a3;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (SBApplicationSignatureVersionRepairAlertItem)initWithApplication:(id)application;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 @end
 
 @implementation SBApplicationSignatureVersionRepairAlertItem
 
-- (SBApplicationSignatureVersionRepairAlertItem)initWithApplication:(id)a3
+- (SBApplicationSignatureVersionRepairAlertItem)initWithApplication:(id)application
 {
-  v5 = a3;
+  applicationCopy = application;
   v9.receiver = self;
   v9.super_class = SBApplicationSignatureVersionRepairAlertItem;
   v6 = [(SBAlertItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_application, a3);
+    objc_storeStrong(&v6->_application, application);
   }
 
   return v7;
 }
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v5 = [(SBAlertItem *)self alertController:a3];
+  v5 = [(SBAlertItem *)self alertController:configure];
   v6 = MEMORY[0x277CCACA8];
-  v7 = [MEMORY[0x277CCA8D8] mainBundle];
-  v8 = [v7 localizedStringForKey:@"SIGNATURE_VERSION_UNSUPPORTED_REPAIR_TITLE" value:&stru_283094718 table:@"SpringBoard"];
-  v9 = [(SBApplication *)self->_application displayName];
-  v10 = [v6 stringWithFormat:v8, v9];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v8 = [mainBundle localizedStringForKey:@"SIGNATURE_VERSION_UNSUPPORTED_REPAIR_TITLE" value:&stru_283094718 table:@"SpringBoard"];
+  displayName = [(SBApplication *)self->_application displayName];
+  v10 = [v6 stringWithFormat:v8, displayName];
   [v5 setTitle:v10];
 
-  v11 = [MEMORY[0x277CCA8D8] mainBundle];
-  v12 = [v11 localizedStringForKey:@"SIGNATURE_VERSION_UNSUPPORTED_REPAIR_BODY" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v12 = [mainBundle2 localizedStringForKey:@"SIGNATURE_VERSION_UNSUPPORTED_REPAIR_BODY" value:&stru_283094718 table:@"SpringBoard"];
   [v5 setMessage:v12];
 
   v13 = MEMORY[0x277D750F8];
-  v14 = [MEMORY[0x277CCA8D8] mainBundle];
-  v15 = [v14 localizedStringForKey:@"SIGNATURE_VERSION_UNSUPPORTED_REPAIR_ACKNOWLEDGE" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+  v15 = [mainBundle3 localizedStringForKey:@"SIGNATURE_VERSION_UNSUPPORTED_REPAIR_ACKNOWLEDGE" value:&stru_283094718 table:@"SpringBoard"];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __84__SBApplicationSignatureVersionRepairAlertItem_configure_requirePasscodeForActions___block_invoke;
@@ -46,8 +46,8 @@
 
   [v5 addAction:v16];
   v17 = MEMORY[0x277D750F8];
-  v18 = [MEMORY[0x277CCA8D8] mainBundle];
-  v19 = [v18 localizedStringForKey:@"SIGNATURE_VERSION_UNSUPPORTED_REPAIR_CANCEL" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+  v19 = [mainBundle4 localizedStringForKey:@"SIGNATURE_VERSION_UNSUPPORTED_REPAIR_CANCEL" value:&stru_283094718 table:@"SpringBoard"];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __84__SBApplicationSignatureVersionRepairAlertItem_configure_requirePasscodeForActions___block_invoke_29;

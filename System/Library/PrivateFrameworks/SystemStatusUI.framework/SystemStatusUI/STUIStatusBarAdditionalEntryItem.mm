@@ -1,54 +1,54 @@
 @interface STUIStatusBarAdditionalEntryItem
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)existingEntryForIdentifier:(id)a3;
-- (id)lazyViewForIdentifier:(id)a3 entry:(id)a4;
-- (id)viewForIdentifier:(id)a3;
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)existingEntryForIdentifier:(id)identifier;
+- (id)lazyViewForIdentifier:(id)identifier entry:(id)entry;
+- (id)viewForIdentifier:(id)identifier;
 - (void)_create_itemViews;
 - (void)itemViews;
 @end
 
 @implementation STUIStatusBarAdditionalEntryItem
 
-- (BOOL)canEnableDisplayItem:(id)a3 fromData:(id)a4
+- (BOOL)canEnableDisplayItem:(id)item fromData:(id)data
 {
-  v5 = a3;
-  v6 = [a4 additionalEntries];
-  v7 = [v6 dictionary];
+  itemCopy = item;
+  additionalEntries = [data additionalEntries];
+  dictionary = [additionalEntries dictionary];
 
-  if (v7)
+  if (dictionary)
   {
-    v8 = [v5 identifier];
-    v9 = [v8 string];
-    v10 = [v7 objectForKeyedSubscript:v9];
+    identifier = [itemCopy identifier];
+    string = [identifier string];
+    v10 = [dictionary objectForKeyedSubscript:string];
 
-    v11 = [v10 isEnabled];
+    isEnabled = [v10 isEnabled];
   }
 
   else
   {
-    v11 = 0;
+    isEnabled = 0;
   }
 
-  return v11;
+  return isEnabled;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v36.receiver = self;
   v36.super_class = STUIStatusBarAdditionalEntryItem;
-  v8 = [(STUIStatusBarItem *)&v36 applyUpdate:v6 toDisplayItem:v7];
-  if ([v6 dataChanged])
+  v8 = [(STUIStatusBarItem *)&v36 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  if ([updateCopy dataChanged])
   {
-    v9 = [v7 identifier];
-    v10 = [v9 string];
+    identifier = [itemCopy identifier];
+    string = [identifier string];
 
-    v11 = [v6 data];
-    v12 = [v11 additionalEntries];
-    v13 = [v12 dictionary];
-    v14 = [v13 objectForKeyedSubscript:v10];
+    data = [updateCopy data];
+    additionalEntries = [data additionalEntries];
+    dictionary = [additionalEntries dictionary];
+    v14 = [dictionary objectForKeyedSubscript:string];
 
     if (![v14 isEnabled])
     {
@@ -57,37 +57,37 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v15 = [(STUIStatusBarAdditionalEntryItem *)self lazyViewForIdentifier:v10 entry:v14];
+    v15 = [(STUIStatusBarAdditionalEntryItem *)self lazyViewForIdentifier:string entry:v14];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v35 = v15;
-      v16 = v15;
+      stringValue2 = v15;
       v17 = v14;
       v18 = MEMORY[0x277D755B8];
-      v19 = [v17 imageName];
-      v20 = [v18 _systemImageNamed:v19];
+      imageName = [v17 imageName];
+      v20 = [v18 _systemImageNamed:imageName];
 
-      [v16 setImage:v20];
-      v21 = [v17 stringValue];
-      [v16 setText:v21];
+      [stringValue2 setImage:v20];
+      stringValue = [v17 stringValue];
+      [stringValue2 setText:stringValue];
 
 LABEL_7:
-      v24 = [v17 BOOLValue];
-      v25 = [v6 styleAttributes];
-      v26 = v25;
-      if (v24)
+      bOOLValue = [v17 BOOLValue];
+      styleAttributes = [updateCopy styleAttributes];
+      v26 = styleAttributes;
+      if (bOOLValue)
       {
-        [v25 imageTintColor];
+        [styleAttributes imageTintColor];
       }
 
       else
       {
-        [v25 imageDimmedTintColor];
+        [styleAttributes imageDimmedTintColor];
       }
       v27 = ;
 
-      [v16 setTintColor:v27];
+      [stringValue2 setTintColor:v27];
       v15 = v35;
       goto LABEL_11;
     }
@@ -96,13 +96,13 @@ LABEL_7:
     if (objc_opt_isKindOfClass())
     {
       v35 = v15;
-      v16 = v15;
+      stringValue2 = v15;
       v17 = v14;
       v22 = MEMORY[0x277D755B8];
-      v23 = [v17 imageName];
-      v20 = [v22 _systemImageNamed:v23];
+      imageName2 = [v17 imageName];
+      v20 = [v22 _systemImageNamed:imageName2];
 
-      [v16 setImage:v20];
+      [stringValue2 setImage:v20];
       goto LABEL_7;
     }
 
@@ -111,12 +111,12 @@ LABEL_7:
     {
       v29 = MEMORY[0x277D755B8];
       v30 = v15;
-      v31 = [v14 imageName];
-      v32 = [v29 _systemImageNamed:v31];
+      imageName3 = [v14 imageName];
+      v32 = [v29 _systemImageNamed:imageName3];
       [v30 setImage:v32];
 
-      v16 = [v14 stringValue];
-      [v30 setText:v16];
+      stringValue2 = [v14 stringValue];
+      [v30 setText:stringValue2];
 
 LABEL_11:
       goto LABEL_12;
@@ -126,8 +126,8 @@ LABEL_11:
     if (objc_opt_isKindOfClass())
     {
       v33 = MEMORY[0x277D755B8];
-      v16 = [v14 imageName];
-      v34 = [v33 _systemImageNamed:v16];
+      stringValue2 = [v14 imageName];
+      v34 = [v33 _systemImageNamed:stringValue2];
       [v15 setImage:v34];
     }
 
@@ -136,13 +136,13 @@ LABEL_11:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = [v14 stringValue];
-        [v15 setText:v16];
+        stringValue2 = [v14 stringValue];
+        [v15 setText:stringValue2];
         goto LABEL_11;
       }
 
-      v16 = [(STUIStatusBarItem *)self statusBar];
-      v34 = [v16 viewForAdditionalEntryWithIdentifier:v10];
+      stringValue2 = [(STUIStatusBarItem *)self statusBar];
+      v34 = [stringValue2 viewForAdditionalEntryWithIdentifier:string];
       [v15 setView:v34];
     }
 
@@ -154,35 +154,35 @@ LABEL_13:
   return v8;
 }
 
-- (id)existingEntryForIdentifier:(id)a3
+- (id)existingEntryForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(STUIStatusBarItem *)self statusBar];
-  v6 = [v5 currentData];
-  v7 = [v6 additionalEntries];
-  v8 = [v7 dictionary];
-  v9 = [v8 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  statusBar = [(STUIStatusBarItem *)self statusBar];
+  currentData = [statusBar currentData];
+  additionalEntries = [currentData additionalEntries];
+  dictionary = [additionalEntries dictionary];
+  v9 = [dictionary objectForKeyedSubscript:identifierCopy];
 
   return v9;
 }
 
 - (void)itemViews
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[5];
+    selfCopy = self;
+    v3 = self[5];
     if (!v3)
     {
-      [a1 _create_itemViews];
-      v3 = v2[5];
+      [self _create_itemViews];
+      v3 = selfCopy[5];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)_create_itemViews
@@ -194,12 +194,12 @@ LABEL_13:
   MEMORY[0x2821F96F8](v3, itemViews);
 }
 
-- (id)lazyViewForIdentifier:(id)a3 entry:(id)a4
+- (id)lazyViewForIdentifier:(id)identifier entry:(id)entry
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(STUIStatusBarAdditionalEntryItem *)self itemViews];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  identifierCopy = identifier;
+  entryCopy = entry;
+  itemViews = [(STUIStatusBarAdditionalEntryItem *)self itemViews];
+  v9 = [itemViews objectForKeyedSubscript:identifierCopy];
 
   if (!v9)
   {
@@ -231,21 +231,21 @@ LABEL_13:
 
     v11 = objc_alloc(*v10);
     v9 = [v11 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-    v12 = [(STUIStatusBarAdditionalEntryItem *)self itemViews];
-    [v12 setObject:v9 forKeyedSubscript:v6];
+    itemViews2 = [(STUIStatusBarAdditionalEntryItem *)self itemViews];
+    [itemViews2 setObject:v9 forKeyedSubscript:identifierCopy];
   }
 
   return v9;
 }
 
-- (id)viewForIdentifier:(id)a3
+- (id)viewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [v4 string];
-  v6 = [v4 string];
+  identifierCopy = identifier;
+  string = [identifierCopy string];
+  string2 = [identifierCopy string];
 
-  v7 = [(STUIStatusBarAdditionalEntryItem *)self existingEntryForIdentifier:v6];
-  v8 = [(STUIStatusBarAdditionalEntryItem *)self lazyViewForIdentifier:v5 entry:v7];
+  v7 = [(STUIStatusBarAdditionalEntryItem *)self existingEntryForIdentifier:string2];
+  v8 = [(STUIStatusBarAdditionalEntryItem *)self lazyViewForIdentifier:string entry:v7];
 
   return v8;
 }

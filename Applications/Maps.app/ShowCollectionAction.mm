@@ -1,19 +1,19 @@
 @interface ShowCollectionAction
-- (ShowCollectionAction)initWithCollectionStorage:(id)a3;
+- (ShowCollectionAction)initWithCollectionStorage:(id)storage;
 @end
 
 @implementation ShowCollectionAction
 
-- (ShowCollectionAction)initWithCollectionStorage:(id)a3
+- (ShowCollectionAction)initWithCollectionStorage:(id)storage
 {
-  v5 = a3;
+  storageCopy = storage;
   v9.receiver = self;
   v9.super_class = ShowCollectionAction;
   v6 = [(ShowCollectionAction *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_collectionStorage, a3);
+    objc_storeStrong(&v6->_collectionStorage, storage);
   }
 
   return v7;

@@ -1,10 +1,10 @@
 @interface ContextMenuController
-- (void)handleRequestNotificationWithNotification:(id)a3;
+- (void)handleRequestNotificationWithNotification:(id)notification;
 @end
 
 @implementation ContextMenuController
 
-- (void)handleRequestNotificationWithNotification:(id)a3
+- (void)handleRequestNotificationWithNotification:(id)notification
 {
   sub_1E41FDF34();
   OUTLINED_FUNCTION_0_10();

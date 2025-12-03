@@ -1,15 +1,15 @@
 @interface WFConfiguratorRunRequest
-- (WFConfiguratorRunRequest)initWithInputStrings:(id)a3 presentationMode:(unint64_t)a4;
+- (WFConfiguratorRunRequest)initWithInputStrings:(id)strings presentationMode:(unint64_t)mode;
 @end
 
 @implementation WFConfiguratorRunRequest
 
-- (WFConfiguratorRunRequest)initWithInputStrings:(id)a3 presentationMode:(unint64_t)a4
+- (WFConfiguratorRunRequest)initWithInputStrings:(id)strings presentationMode:(unint64_t)mode
 {
-  v6 = a3;
-  if ([v6 count])
+  stringsCopy = strings;
+  if ([stringsCopy count])
   {
-    v7 = [v6 if_compactMap:&__block_literal_global_5218];
+    v7 = [stringsCopy if_compactMap:&__block_literal_global_5218];
     v14 = 0;
     v15 = &v14;
     v16 = 0x2050000000;
@@ -36,7 +36,7 @@
     v10 = 0;
   }
 
-  v11 = [(WFWorkflowRunRequest *)self initWithInput:v10 presentationMode:a4];
+  v11 = [(WFWorkflowRunRequest *)self initWithInput:v10 presentationMode:mode];
 
   return v11;
 }

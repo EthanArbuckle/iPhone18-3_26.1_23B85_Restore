@@ -1,23 +1,23 @@
 @interface TRIParsedFactorPackSet
-+ (id)setWithIdent:(id)a3 packs:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSet:(id)a3;
-- (TRIParsedFactorPackSet)initWithIdent:(id)a3 packs:(id)a4;
-- (id)copyWithReplacementIdent:(id)a3;
-- (id)copyWithReplacementPacks:(id)a3;
++ (id)setWithIdent:(id)ident packs:(id)packs;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSet:(id)set;
+- (TRIParsedFactorPackSet)initWithIdent:(id)ident packs:(id)packs;
+- (id)copyWithReplacementIdent:(id)ident;
+- (id)copyWithReplacementPacks:(id)packs;
 - (id)description;
 @end
 
 @implementation TRIParsedFactorPackSet
 
-- (TRIParsedFactorPackSet)initWithIdent:(id)a3 packs:(id)a4
+- (TRIParsedFactorPackSet)initWithIdent:(id)ident packs:(id)packs
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  identCopy = ident;
+  packsCopy = packs;
+  v10 = packsCopy;
+  if (identCopy)
   {
-    if (v9)
+    if (packsCopy)
     {
       goto LABEL_3;
     }
@@ -25,8 +25,8 @@
 
   else
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1622 description:{@"Invalid parameter not satisfying: %@", @"ident != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1622 description:{@"Invalid parameter not satisfying: %@", @"ident != nil"}];
 
     if (v10)
     {
@@ -34,8 +34,8 @@
     }
   }
 
-  v15 = [MEMORY[0x277CCA890] currentHandler];
-  [v15 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1623 description:{@"Invalid parameter not satisfying: %@", @"packs != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIServerTupleTypes.m" lineNumber:1623 description:{@"Invalid parameter not satisfying: %@", @"packs != nil"}];
 
 LABEL_3:
   v16.receiver = self;
@@ -44,50 +44,50 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_ident, a3);
-    objc_storeStrong(&v12->_packs, a4);
+    objc_storeStrong(&v11->_ident, ident);
+    objc_storeStrong(&v12->_packs, packs);
   }
 
   return v12;
 }
 
-+ (id)setWithIdent:(id)a3 packs:(id)a4
++ (id)setWithIdent:(id)ident packs:(id)packs
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithIdent:v7 packs:v6];
+  packsCopy = packs;
+  identCopy = ident;
+  v8 = [[self alloc] initWithIdent:identCopy packs:packsCopy];
 
   return v8;
 }
 
-- (id)copyWithReplacementIdent:(id)a3
+- (id)copyWithReplacementIdent:(id)ident
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithIdent:v4 packs:self->_packs];
+  identCopy = ident;
+  v5 = [objc_alloc(objc_opt_class()) initWithIdent:identCopy packs:self->_packs];
 
   return v5;
 }
 
-- (id)copyWithReplacementPacks:(id)a3
+- (id)copyWithReplacementPacks:(id)packs
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithIdent:self->_ident packs:v4];
+  packsCopy = packs;
+  v5 = [objc_alloc(objc_opt_class()) initWithIdent:self->_ident packs:packsCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToSet:(id)a3
+- (BOOL)isEqualToSet:(id)set
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  setCopy = set;
+  v5 = setCopy;
+  if (!setCopy)
   {
     goto LABEL_8;
   }
 
   v6 = self->_ident == 0;
-  v7 = [v4 ident];
-  v8 = v7 != 0;
+  ident = [setCopy ident];
+  v8 = ident != 0;
 
   if (v6 == v8)
   {
@@ -97,8 +97,8 @@ LABEL_3:
   ident = self->_ident;
   if (ident)
   {
-    v10 = [v5 ident];
-    v11 = [(TRIFactorPackSetId *)ident isEqual:v10];
+    ident2 = [v5 ident];
+    v11 = [(TRIFactorPackSetId *)ident isEqual:ident2];
 
     if (!v11)
     {
@@ -107,8 +107,8 @@ LABEL_3:
   }
 
   v12 = self->_packs == 0;
-  v13 = [v5 packs];
-  v14 = v13 != 0;
+  packs = [v5 packs];
+  v14 = packs != 0;
 
   if (v12 == v14)
   {
@@ -121,8 +121,8 @@ LABEL_8:
     packs = self->_packs;
     if (packs)
     {
-      v16 = [v5 packs];
-      v17 = [(NSArray *)packs isEqual:v16];
+      packs2 = [v5 packs];
+      v17 = [(NSArray *)packs isEqual:packs2];
     }
 
     else
@@ -134,18 +134,18 @@ LABEL_8:
   return v17 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIParsedFactorPackSet *)self isEqualToSet:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIParsedFactorPackSet *)self isEqualToSet:v5];
   }
 
   return v6;

@@ -56,48 +56,48 @@
 + (id)vcp_defaultPhotoLibrary
 {
   v0 = +[VCPDefaultPhotoLibraryManager sharedManager];
-  v1 = [v0 defaultPhotoLibrary];
+  defaultPhotoLibrary = [v0 defaultPhotoLibrary];
 
-  return v1;
+  return defaultPhotoLibrary;
 }
 
 - (id)vcp_visionCacheStorageDirectoryURL
 {
   v30 = *MEMORY[0x1E69E9840];
-  v1 = a1;
-  objc_sync_enter(v1);
-  v2 = [MEMORY[0x1E696AE30] processInfo];
-  v3 = [v2 processName];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
 
-  if ([v3 isEqualToString:@"mediaanalysisd"])
+  if ([processName isEqualToString:@"mediaanalysisd"])
   {
     v23 = 0;
-    v4 = [v1 urlForApplicationDataFolderIdentifier:2 error:&v23];
+    v4 = [selfCopy urlForApplicationDataFolderIdentifier:2 error:&v23];
     v5 = v23;
     if (v4)
     {
       if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
       {
-        v6 = [v1 photoLibraryURL];
+        photoLibraryURL = [selfCopy photoLibraryURL];
         *buf = 138412546;
         v25 = v4;
         v26 = 2112;
-        v27 = v6;
+        v27 = photoLibraryURL;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "Retrieving VisionCache directory URL %@ for %@", buf, 0x16u);
       }
 
-      v7 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
       v22 = v5;
-      v8 = [v7 createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:0 error:&v22];
+      v8 = [defaultManager createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:0 error:&v22];
       v9 = v22;
 
       if ((v8 & 1) == 0 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v10 = [v1 photoLibraryURL];
+        photoLibraryURL2 = [selfCopy photoLibraryURL];
         *buf = 138412802;
         v25 = v4;
         v26 = 2112;
-        v27 = v10;
+        v27 = photoLibraryURL2;
         v28 = 2112;
         v29 = v9;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to create VisionCache directory (%@) for %@ - %@", buf, 0x20u);
@@ -108,9 +108,9 @@
     {
       if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v17 = [v1 photoLibraryURL];
+        photoLibraryURL3 = [selfCopy photoLibraryURL];
         *buf = 138412546;
-        v25 = v17;
+        v25 = photoLibraryURL3;
         v26 = 2112;
         v27 = v5;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Invalid VisionCache directory for %@ - %@", buf, 0x16u);
@@ -120,18 +120,18 @@
     }
   }
 
-  else if ([v3 isEqualToString:@"mediaanalysisd-service"])
+  else if ([processName isEqualToString:@"mediaanalysisd-service"])
   {
-    if ([v1 isSystemPhotoLibrary])
+    if ([selfCopy isSystemPhotoLibrary])
     {
       v21 = 0;
-      v4 = [v1 urlForApplicationDataFolderIdentifier:2 error:&v21];
+      v4 = [selfCopy urlForApplicationDataFolderIdentifier:2 error:&v21];
       v11 = v21;
       if (!v4 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        v12 = [v1 photoLibraryURL];
+        photoLibraryURL4 = [selfCopy photoLibraryURL];
         *buf = 138412546;
-        v25 = v12;
+        v25 = photoLibraryURL4;
         v26 = 2112;
         v27 = v11;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Invalid VisionCache directory for %@ - %@", buf, 0x16u);
@@ -140,49 +140,49 @@
 
     else
     {
-      v18 = [v1 photoLibraryURL];
-      v4 = [v18 URLByAppendingPathComponent:@"private/com.apple.mediaanalysisd/caches/vision"];
+      photoLibraryURL5 = [selfCopy photoLibraryURL];
+      v4 = [photoLibraryURL5 URLByAppendingPathComponent:@"private/com.apple.mediaanalysisd/caches/vision"];
     }
   }
 
   else
   {
-    v13 = [MEMORY[0x1E69AE3E0] service];
-    v14 = [v1 photoLibraryURL];
+    service = [MEMORY[0x1E69AE3E0] service];
+    photoLibraryURL6 = [selfCopy photoLibraryURL];
     v20 = 0;
-    v4 = [v13 requestApplicationDataFolderIdentifierVisionServiceWithPhotosLibraryURL:v14 error:&v20];
+    v4 = [service requestApplicationDataFolderIdentifierVisionServiceWithPhotosLibraryURL:photoLibraryURL6 error:&v20];
     v15 = v20;
 
     if (!v4 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
-      v16 = [v1 photoLibraryURL];
+      photoLibraryURL7 = [selfCopy photoLibraryURL];
       *buf = 138412546;
-      v25 = v16;
+      v25 = photoLibraryURL7;
       v26 = 2112;
       v27 = v15;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Failed to query VisionCache storage %@ - %@", buf, 0x16u);
     }
   }
 
-  objc_sync_exit(v1);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (__CFString)vcp_mediaAnalysisDirectory
 {
-  v2 = [a1 photoLibraryURL];
-  if (v2)
+  photoLibraryURL = [self photoLibraryURL];
+  if (photoLibraryURL)
   {
-    if ([a1 isSystemPhotoLibrary])
+    if ([self isSystemPhotoLibrary])
     {
       v3 = @"/var/mobile/Media/MediaAnalysis";
     }
 
     else
     {
-      v4 = [v2 path];
-      v3 = [v4 stringByAppendingPathComponent:@"private/com.apple.mediaanalysisd/MediaAnalysis"];
+      path = [photoLibraryURL path];
+      v3 = [path stringByAppendingPathComponent:@"private/com.apple.mediaanalysisd/MediaAnalysis"];
     }
   }
 
@@ -196,27 +196,27 @@
 
 + (id)vcp_defaultURL
 {
-  v0 = [objc_opt_class() vcp_defaultPhotoLibrary];
-  v1 = [v0 photoLibraryURL];
+  vcp_defaultPhotoLibrary = [objc_opt_class() vcp_defaultPhotoLibrary];
+  photoLibraryURL = [vcp_defaultPhotoLibrary photoLibraryURL];
 
-  return v1;
+  return photoLibraryURL;
 }
 
 + (id)vcp_defaultMediaAnalysisDatabaseFilepath
 {
-  v0 = [objc_opt_class() vcp_defaultPhotoLibrary];
-  v1 = [v0 vcp_mediaAnalysisDatabaseFilepath];
+  vcp_defaultPhotoLibrary = [objc_opt_class() vcp_defaultPhotoLibrary];
+  vcp_mediaAnalysisDatabaseFilepath = [vcp_defaultPhotoLibrary vcp_mediaAnalysisDatabaseFilepath];
 
-  return v1;
+  return vcp_mediaAnalysisDatabaseFilepath;
 }
 
 + (uint64_t)mad_isProcessingNeededOnAsset:()MediaAnalysis forTaskID:
 {
   v5 = a3;
-  v6 = [v5 mad_isShared];
+  mad_isShared = [v5 mad_isShared];
   if (a4 == 2)
   {
-    v7 = v6;
+    v7 = mad_isShared;
   }
 
   else
@@ -239,11 +239,11 @@
 
 - (id)vcp_mediaAnalysisDatabaseFilepath
 {
-  v1 = [a1 vcp_mediaAnalysisDirectory];
-  v2 = v1;
-  if (v1)
+  vcp_mediaAnalysisDirectory = [self vcp_mediaAnalysisDirectory];
+  v2 = vcp_mediaAnalysisDirectory;
+  if (vcp_mediaAnalysisDirectory)
   {
-    v3 = [v1 stringByAppendingPathComponent:@"mediaanalysis.db"];
+    v3 = [vcp_mediaAnalysisDirectory stringByAppendingPathComponent:@"mediaanalysis.db"];
   }
 
   else
@@ -256,11 +256,11 @@
 
 - (id)mad_restoreDirectory
 {
-  v1 = [a1 vcp_mediaAnalysisDirectory];
-  v2 = v1;
-  if (v1)
+  vcp_mediaAnalysisDirectory = [self vcp_mediaAnalysisDirectory];
+  v2 = vcp_mediaAnalysisDirectory;
+  if (vcp_mediaAnalysisDirectory)
   {
-    v3 = [v1 stringByAppendingPathComponent:@".restore"];
+    v3 = [vcp_mediaAnalysisDirectory stringByAppendingPathComponent:@".restore"];
   }
 
   else
@@ -273,11 +273,11 @@
 
 - (id)mad_restoreStatusFilepath
 {
-  v1 = [a1 mad_restoreDirectory];
-  v2 = v1;
-  if (v1)
+  mad_restoreDirectory = [self mad_restoreDirectory];
+  v2 = mad_restoreDirectory;
+  if (mad_restoreDirectory)
   {
-    v3 = [v1 stringByAppendingPathComponent:@"restore_status.plist"];
+    v3 = [mad_restoreDirectory stringByAppendingPathComponent:@"restore_status.plist"];
   }
 
   else
@@ -290,11 +290,11 @@
 
 - (id)mad_migrationDirectory
 {
-  v1 = [a1 vcp_mediaAnalysisDirectory];
-  v2 = v1;
-  if (v1)
+  vcp_mediaAnalysisDirectory = [self vcp_mediaAnalysisDirectory];
+  v2 = vcp_mediaAnalysisDirectory;
+  if (vcp_mediaAnalysisDirectory)
   {
-    v3 = [v1 stringByAppendingPathComponent:@".migration"];
+    v3 = [vcp_mediaAnalysisDirectory stringByAppendingPathComponent:@".migration"];
   }
 
   else
@@ -307,11 +307,11 @@
 
 - (id)mad_migrationStatusFilepath
 {
-  v1 = [a1 mad_migrationDirectory];
-  v2 = v1;
-  if (v1)
+  mad_migrationDirectory = [self mad_migrationDirectory];
+  v2 = mad_migrationDirectory;
+  if (mad_migrationDirectory)
   {
-    v3 = [v1 stringByAppendingPathComponent:@"migration_status.plist"];
+    v3 = [mad_migrationDirectory stringByAppendingPathComponent:@"migration_status.plist"];
   }
 
   else
@@ -324,7 +324,7 @@
 
 - (BOOL)vcp_anyAssetsForTaskID:()MediaAnalysis
 {
-  v3 = [MEMORY[0x1E6978628] vcp_fetchOptionsForLibrary:a1 forTaskID:a3];
+  v3 = [MEMORY[0x1E6978628] vcp_fetchOptionsForLibrary:self forTaskID:a3];
   [v3 setShouldPrefetchCount:1];
   [v3 setFetchLimit:1];
   v4 = [MEMORY[0x1E6978628] fetchAssetsWithOptions:v3];
@@ -354,7 +354,7 @@
   v10 = PHMediaProcessingTaskIDForVCPTaskID(a3);
   v13 = 0;
   *&v11 = v7;
-  return [a1 countOfAllAssetsForMediaProcessingTaskID:v10 priority:a4 sceneConfidenceThreshold:&v13 error:v11];
+  return [self countOfAllAssetsForMediaProcessingTaskID:v10 priority:a4 sceneConfidenceThreshold:&v13 error:v11];
 }
 
 - (uint64_t)vcp_processedAssetCountForTaskID:()MediaAnalysis withPriority:
@@ -362,7 +362,7 @@
   v7 = 0.0;
   if (a3 == 16)
   {
-    v9 = [a1 vcp_pecFailureVersionAssetCountWithPriority:a4];
+    v9 = [self vcp_pecFailureVersionAssetCountWithPriority:a4];
   }
 
   else if (a3 == 10)
@@ -384,10 +384,10 @@
   }
 
   v11 = PHMediaProcessingTaskIDForVCPTaskID(a3);
-  v12 = [MEMORY[0x1E69788E8] mad_sharedVersionProviderWithPhotoLibrary:a1];
+  v12 = [MEMORY[0x1E69788E8] mad_sharedVersionProviderWithPhotoLibrary:self];
   v16 = 0;
   *&v13 = v7;
-  v14 = [a1 countOfProcessedAssetsForMediaProcessingTaskID:v11 priority:a4 algorithmVersion:v12 sceneConfidenceThreshold:&v16 error:v13] - v9;
+  v14 = [self countOfProcessedAssetsForMediaProcessingTaskID:v11 priority:a4 algorithmVersion:v12 sceneConfidenceThreshold:&v16 error:v13] - v9;
 
   return v14;
 }
@@ -398,14 +398,14 @@
   [v5 setVaAnalysisVersion:VCPPhotosPECProcessingVersion_Failures];
   [MEMORY[0x1E6978628] mad_sceneConfidenceThresholdForTask:16];
   v8 = 0;
-  v6 = [a1 countOfProcessedAssetsForMediaProcessingTaskID:16 priority:a3 algorithmVersion:v5 sceneConfidenceThreshold:&v8 error:?];
+  v6 = [self countOfProcessedAssetsForMediaProcessingTaskID:16 priority:a3 algorithmVersion:v5 sceneConfidenceThreshold:&v8 error:?];
 
   return v6;
 }
 
 - (uint64_t)vcp_assetCountWithMediaType:()MediaAnalysis forTaskID:
 {
-  v4 = [MEMORY[0x1E6978628] vcp_fetchOptionsForLibrary:a1 forTaskID:?];
+  v4 = [MEMORY[0x1E6978628] vcp_fetchOptionsForLibrary:self forTaskID:?];
   [v4 setShouldPrefetchCount:1];
   v5 = [MEMORY[0x1E6978628] fetchAssetsWithMediaType:a3 options:v4];
   v6 = [v5 count];
@@ -417,7 +417,7 @@
 {
   v16[2] = *MEMORY[0x1E69E9840];
   v6 = a3;
-  v7 = [a1 fetchOptionsForMediaProcessingTaskID:PHMediaProcessingTaskIDForVCPTaskID(a4) priority:0 algorithmVersion:0 sceneConfidenceThreshold:0 processed:0 exactVersionMatch:0 error:0.0];
+  v7 = [self fetchOptionsForMediaProcessingTaskID:PHMediaProcessingTaskIDForVCPTaskID(a4) priority:0 algorithmVersion:0 sceneConfidenceThreshold:0 processed:0 exactVersionMatch:0 error:0.0];
   [v7 setShouldPrefetchCount:1];
   if (a4 == 16 || a4 == 12)
   {
@@ -439,12 +439,12 @@
   }
 
 LABEL_7:
-  v9 = [v7 internalPredicate];
-  v10 = v9;
-  if (v9)
+  internalPredicate = [v7 internalPredicate];
+  v10 = internalPredicate;
+  if (internalPredicate)
   {
     v16[0] = v6;
-    v16[1] = v9;
+    v16[1] = internalPredicate;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
     v12 = [MEMORY[0x1E696AB28] andPredicateWithSubpredicates:v11];
     [v7 setInternalPredicate:v12];
@@ -467,7 +467,7 @@ LABEL_7:
   [MEMORY[0x1E6978628] mad_sceneConfidenceThresholdForTask:a6];
   v18 = v17;
   v33 = 0;
-  v32 = [a1 countOfAllAssetsForMediaProcessingTaskID:a7 priority:a8 sceneConfidenceThreshold:&v33 error:?];
+  v32 = [self countOfAllAssetsForMediaProcessingTaskID:a7 priority:a8 sceneConfidenceThreshold:&v33 error:?];
   v19 = v33;
   if (v19)
   {
@@ -491,13 +491,13 @@ LABEL_7:
 
   else
   {
-    v30 = [MEMORY[0x1E69788E8] mad_sharedVersionProviderWithPhotoLibrary:a1];
+    v30 = [MEMORY[0x1E69788E8] mad_sharedVersionProviderWithPhotoLibrary:self];
     LODWORD(v22) = v18;
-    v31 = [a1 countOfProcessedAssetsForMediaProcessingTaskID:a7 priority:a8 algorithmVersion:v22 sceneConfidenceThreshold:? error:?];
+    v31 = [self countOfProcessedAssetsForMediaProcessingTaskID:a7 priority:a8 algorithmVersion:v22 sceneConfidenceThreshold:? error:?];
     v20 = 0;
     if (a6 == 16)
     {
-      v31 -= [a1 vcp_pecFailureVersionAssetCountWithPriority:a8];
+      v31 -= [self vcp_pecFailureVersionAssetCountWithPriority:a8];
     }
 
     v21 = v20 == 0;
@@ -588,67 +588,67 @@ LABEL_7:
 
 - (uint64_t)vcp_isCPLSyncComplete
 {
-  v2 = [a1 cplStatus];
-  v3 = [v2 lastSuccessfulSyncDate];
-  if (v3)
+  cplStatus = [self cplStatus];
+  lastSuccessfulSyncDate = [cplStatus lastSuccessfulSyncDate];
+  if (lastSuccessfulSyncDate)
   {
-    v4 = 1;
+    isExceedingQuota = 1;
   }
 
   else
   {
-    v5 = [a1 cplStatus];
-    v4 = [v5 isExceedingQuota];
+    cplStatus2 = [self cplStatus];
+    isExceedingQuota = [cplStatus2 isExceedingQuota];
   }
 
-  return v4;
+  return isExceedingQuota;
 }
 
 - (uint64_t)vcp_isCPLDownloadComplete
 {
-  v2 = [a1 cplStatus];
-  v3 = [v2 lastCompletePrefetchDate];
-  if (v3)
+  cplStatus = [self cplStatus];
+  lastCompletePrefetchDate = [cplStatus lastCompletePrefetchDate];
+  if (lastCompletePrefetchDate)
   {
-    v4 = 1;
+    isExceedingQuota = 1;
   }
 
   else
   {
-    v5 = [a1 cplStatus];
-    v4 = [v5 isExceedingQuota];
+    cplStatus2 = [self cplStatus];
+    isExceedingQuota = [cplStatus2 isExceedingQuota];
   }
 
-  return v4;
+  return isExceedingQuota;
 }
 
 - (uint64_t)vcp_supportsCloudLibraryResourceDownload
 {
-  if ([a1 isCloudPhotoLibraryEnabled])
+  if ([self isCloudPhotoLibraryEnabled])
   {
     return 1;
   }
 
-  return [a1 vcp_isSyndicationLibrary];
+  return [self vcp_isSyndicationLibrary];
 }
 
 - (uint64_t)vcp_allowsCloudLibraryResourceDownload
 {
-  if (![a1 vcp_supportsCloudLibraryResourceDownload])
+  if (![self vcp_supportsCloudLibraryResourceDownload])
   {
     return 0;
   }
 
   v1 = +[VCPInternetReachability sharedInstance];
-  v2 = [v1 hasWifiOrEthernetConnection];
+  hasWifiOrEthernetConnection = [v1 hasWifiOrEthernetConnection];
 
-  return v2;
+  return hasWifiOrEthernetConnection;
 }
 
 - (uint64_t)vcp_libraryScale
 {
-  v2 = [a1 vcp_assetCountWithMediaType:1 forTaskID:1];
-  v3 = [a1 vcp_assetCountWithMediaType:2 forTaskID:1];
+  v2 = [self vcp_assetCountWithMediaType:1 forTaskID:1];
+  v3 = [self vcp_assetCountWithMediaType:2 forTaskID:1];
   if (v3 >= 0x7D0 || v2 >= 0x7D0)
   {
     v5 = 3;
@@ -673,13 +673,13 @@ LABEL_7:
 - (__CFString)vcp_libraryScaleShortDescription
 {
   v6 = *MEMORY[0x1E69E9840];
-  v1 = [a1 vcp_libraryScale];
-  if ((v1 - 1) < 3)
+  vcp_libraryScale = [self vcp_libraryScale];
+  if ((vcp_libraryScale - 1) < 3)
   {
-    return off_1E834D988[v1 - 1];
+    return off_1E834D988[vcp_libraryScale - 1];
   }
 
-  v3 = v1;
+  v3 = vcp_libraryScale;
   if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v4 = 134217984;
@@ -696,19 +696,19 @@ LABEL_7:
   v6 = a3;
   v14[0] = v6;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
-  v8 = [a1 cloudIdentifierMappingsForLocalIdentifiers:v7];
+  v8 = [self cloudIdentifierMappingsForLocalIdentifiers:v7];
 
   v9 = [v8 objectForKeyedSubscript:v6];
-  v10 = [v9 cloudIdentifier];
-  v11 = [v10 stringValue];
+  cloudIdentifier = [v9 cloudIdentifier];
+  stringValue = [cloudIdentifier stringValue];
 
-  if (a4 && !v11)
+  if (a4 && !stringValue)
   {
-    v12 = [v9 error];
-    *a4 = [v12 copy];
+    error = [v9 error];
+    *a4 = [error copy];
   }
 
-  return v11;
+  return stringValue;
 }
 
 - (id)mad_localIdentifierForCloudIdentifier:()MediaAnalysis error:
@@ -718,15 +718,15 @@ LABEL_7:
   v7 = [objc_alloc(MEMORY[0x1E6978730]) initWithStringValue:v6];
   v15[0] = v7;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v9 = [a1 localIdentifierMappingsForCloudIdentifiers:v8];
+  v9 = [self localIdentifierMappingsForCloudIdentifiers:v8];
 
   v10 = [v9 objectForKeyedSubscript:v7];
-  v11 = [v10 localIdentifier];
-  v12 = v11;
-  if (a4 && !v11)
+  localIdentifier = [v10 localIdentifier];
+  v12 = localIdentifier;
+  if (a4 && !localIdentifier)
   {
-    v13 = [v10 error];
-    *a4 = [v13 copy];
+    error = [v10 error];
+    *a4 = [error copy];
   }
 
   return v12;
@@ -739,9 +739,9 @@ LABEL_7:
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 adjustmentVersion];
+    adjustmentVersion = [v6 adjustmentVersion];
 
-    if (v8)
+    if (adjustmentVersion)
     {
       v9 = [MEMORY[0x1E6978640] changeRequestForAsset:v7];
       if (a3 <= 9)
@@ -765,8 +765,8 @@ LABEL_7:
         if (a3 == 2)
         {
           v17 = VCPPhotosSceneProcessingVersionInternal();
-          v18 = [v7 adjustmentVersion];
-          [v9 setSceneClassifications:0 ofType:0 version:v17 timestamp:v18];
+          adjustmentVersion2 = [v7 adjustmentVersion];
+          [v9 setSceneClassifications:0 ofType:0 version:v17 timestamp:adjustmentVersion2];
 
           if (+[VCPVideoCNNAnalyzer isMUBackboneEnabled])
           {
@@ -781,9 +781,9 @@ LABEL_7:
           goto LABEL_26;
         }
 
-        [v9 setFaceAnalysisVersion:{objc_msgSend(a1, "mad_faceProcessingInternalVersion")}];
-        v14 = [v7 faceAdjustmentVersion];
-        [v9 setFaceAdjustmentVersion:v14];
+        [v9 setFaceAnalysisVersion:{objc_msgSend(self, "mad_faceProcessingInternalVersion")}];
+        faceAdjustmentVersion = [v7 faceAdjustmentVersion];
+        [v9 setFaceAdjustmentVersion:faceAdjustmentVersion];
       }
 
       else if (a3 > 15)
@@ -809,8 +809,8 @@ LABEL_7:
           goto LABEL_26;
         }
 
-        v14 = [v7 adjustmentVersion];
-        [v9 setSceneClassifications:0 ofType:5 version:5 timestamp:v14];
+        faceAdjustmentVersion = [v7 adjustmentVersion];
+        [v9 setSceneClassifications:0 ofType:5 version:5 timestamp:faceAdjustmentVersion];
       }
 
       else
@@ -820,8 +820,8 @@ LABEL_7:
           if (a3 == 12)
           {
             v10 = VCPPhotosVisualSearchAlgorithmVersion();
-            v11 = [v7 adjustmentVersion];
-            [v9 setVisualSearchData:0 algorithmVersion:v10 adjustmentVersion:v11];
+            adjustmentVersion3 = [v7 adjustmentVersion];
+            [v9 setVisualSearchData:0 algorithmVersion:v10 adjustmentVersion:adjustmentVersion3];
 
             [v9 setStickerConfidenceScore:1 stickerAlgorithmVersion:0.0];
 LABEL_32:
@@ -833,11 +833,11 @@ LABEL_26:
           if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
           {
             v15 = objc_opt_class();
-            v16 = [v7 localIdentifier];
+            localIdentifier = [v7 localIdentifier];
             v19 = 138412802;
             v20 = v15;
             v21 = 2112;
-            v22 = v16;
+            v22 = localIdentifier;
             v23 = 2048;
             v24 = a3;
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "[%@][%@] Unsupported taskID %lu", &v19, 0x20u);
@@ -846,8 +846,8 @@ LABEL_26:
           goto LABEL_32;
         }
 
-        v14 = [v7 adjustmentVersion];
-        [v9 setCharacterRecognitionData:0 machineReadableCodeData:0 algorithmVersion:8 adjustmentVersion:v14];
+        faceAdjustmentVersion = [v7 adjustmentVersion];
+        [v9 setCharacterRecognitionData:0 machineReadableCodeData:0 algorithmVersion:8 adjustmentVersion:faceAdjustmentVersion];
       }
 
       goto LABEL_32;
@@ -855,9 +855,9 @@ LABEL_26:
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
-      v12 = [v7 localIdentifier];
-      v13 = [v7 creationDate];
-      [(PHPhotoLibrary(MediaAnalysis) *)v12 _mad_markAsProcessedByTask:v13 forAsset:&v19];
+      localIdentifier2 = [v7 localIdentifier];
+      creationDate = [v7 creationDate];
+      [(PHPhotoLibrary(MediaAnalysis) *)localIdentifier2 _mad_markAsProcessedByTask:creationDate forAsset:&v19];
     }
   }
 
@@ -890,10 +890,10 @@ LABEL_33:
   v23[3] = &unk_1E834D7D0;
   v13 = v10;
   v24 = v13;
-  v25 = a1;
+  selfCopy = self;
   v26 = a3;
   v22 = 0;
-  v14 = [a1 mad_performChangesAndWait:v23 activity:a3 cancelBlock:v11 extendTimeoutBlock:v12 error:&v22];
+  v14 = [self mad_performChangesAndWait:v23 activity:a3 cancelBlock:v11 extendTimeoutBlock:v12 error:&v22];
   v15 = v22;
   if (v14)
   {
@@ -991,7 +991,7 @@ LABEL_11:
   v70 = buf;
   v19 = v17;
   v68 = v19;
-  [a1 performChanges:v71 completionHandler:{v66, v56}];
+  [self performChanges:v71 completionHandler:{v66, v56}];
   v20 = MEMORY[0x1E69E9C10];
   while (1)
   {
@@ -1120,18 +1120,18 @@ LABEL_45:
   v65 = -1;
   if (+[MADManagedKeyValueStore isMACDReadEnabled])
   {
-    v36 = [a1 mad_fetchRequest];
-    [v36 fetchAssetCountForTaskID:a4 totalAssets:&v65 processedAssets:&v64];
+    mad_fetchRequest = [self mad_fetchRequest];
+    [mad_fetchRequest fetchAssetCountForTaskID:a4 totalAssets:&v65 processedAssets:&v64];
 
-    v37 = [a1 mad_fetchRequest];
-    v38 = [v37 dataStoreValueForKey:@"OSVersionUpdateTimestamp"];
+    mad_fetchRequest2 = [self mad_fetchRequest];
+    v38 = [mad_fetchRequest2 dataStoreValueForKey:@"OSVersionUpdateTimestamp"];
   }
 
   else
   {
-    v37 = [VCPDatabaseReader databaseForPhotoLibrary:a1];
-    [v37 countAssetsForTaskID:a4 totalAssets:&v65 processedAssets:&v64];
-    v38 = [v37 valueForKey:@"OSVersionUpdateTimestamp"];
+    mad_fetchRequest2 = [VCPDatabaseReader databaseForPhotoLibrary:self];
+    [mad_fetchRequest2 countAssetsForTaskID:a4 totalAssets:&v65 processedAssets:&v64];
+    v38 = [mad_fetchRequest2 valueForKey:@"OSVersionUpdateTimestamp"];
   }
 
   v39 = v38;
@@ -1139,9 +1139,9 @@ LABEL_45:
   if (v39)
   {
     v40 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceReferenceDate:v39];
-    v41 = [MEMORY[0x1E695DEE8] currentCalendar];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
     v42 = [MEMORY[0x1E695DF00] now];
-    v43 = [v41 components:16 fromDate:v40 toDate:v42 options:0];
+    v43 = [currentCalendar components:16 fromDate:v40 toDate:v42 options:0];
     v44 = [v43 day];
   }
 
@@ -1156,15 +1156,15 @@ LABEL_45:
   {
     v47 = VCPTaskIDDescription(a4);
     v48 = v47;
-    v49 = [v47 UTF8String];
+    uTF8String = [v47 UTF8String];
     v50 = qos_class_self();
     v51 = VCPMAQoSDescription(v50);
     v52 = v51;
-    v53 = [v51 UTF8String];
+    uTF8String2 = [v51 UTF8String];
     *v86 = 136446978;
-    v87 = *&v49;
+    v87 = *&uTF8String;
     v88 = 2082;
-    v89 = v53;
+    v89 = uTF8String2;
     v90 = 2050;
     v91 = v65;
     v92 = 2050;
@@ -1207,14 +1207,14 @@ LABEL_45:
   v42 = dispatch_semaphore_create(0);
   [MEMORY[0x1E6978628] mad_sceneConfidenceThresholdForTask:a3];
   v12 = v11;
-  v41 = [MEMORY[0x1E69788E8] mad_sharedVersionProviderWithPhotoLibrary:a1];
+  v41 = [MEMORY[0x1E69788E8] mad_sharedVersionProviderWithPhotoLibrary:self];
   v49 = [MEMORY[0x1E695DF00] now];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __108__PHPhotoLibrary_MediaAnalysis__mad_countOfUnprocessedAssetsForTaskID_cancelBlock_extendTimeoutBlock_error___block_invoke_2;
   block[3] = &unk_1E834D968;
   v53 = &v57;
-  block[4] = a1;
+  block[4] = self;
   v55 = a3;
   v56 = v12;
   v45 = v41;
@@ -1234,14 +1234,14 @@ LABEL_45:
 
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      v16 = a1;
+      selfCopy = self;
       v17 = objc_opt_class();
       *buf = 138412290;
       v71 = v17;
       v18 = v17;
       _os_log_impl(&dword_1C9B70000, v14, OS_LOG_TYPE_DEBUG, "[%@][mad_countOfUnprocessedAssetsForTaskID] Waiting ...", buf, 0xCu);
 
-      a1 = v16;
+      self = selfCopy;
     }
 
     if (v10[2](v10))
@@ -1364,7 +1364,7 @@ LABEL_32:
   v3 = a3;
   v12 = *MEMORY[0x1E69E9840];
   v7 = 0;
-  v4 = [a1 fetchOptionsForMediaProcessingTaskID:PHMediaProcessingTaskIDForVCPTaskID(a3) priority:0 algorithmVersion:0 sceneConfidenceThreshold:0 processed:0 exactVersionMatch:&v7 error:0.0];
+  v4 = [self fetchOptionsForMediaProcessingTaskID:PHMediaProcessingTaskIDForVCPTaskID(a3) priority:0 algorithmVersion:0 sceneConfidenceThreshold:0 processed:0 exactVersionMatch:&v7 error:0.0];
   v5 = v7;
   if (v5 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -1380,20 +1380,20 @@ LABEL_32:
 
 - (id)_analysisPreferencesURL
 {
-  v1 = [a1 vcp_visionCacheStorageDirectoryURL];
-  v2 = [v1 URLByAppendingPathComponent:@"PhotoAnalysisServicePreferences.plist"];
+  vcp_visionCacheStorageDirectoryURL = [self vcp_visionCacheStorageDirectoryURL];
+  v2 = [vcp_visionCacheStorageDirectoryURL URLByAppendingPathComponent:@"PhotoAnalysisServicePreferences.plist"];
 
   return v2;
 }
 
 - (id)vcp_analysisPreferences
 {
-  v2 = [a1 _analysisPreferencesURL];
-  v3 = a1;
-  objc_sync_enter(v3);
-  if (v2)
+  _analysisPreferencesURL = [self _analysisPreferencesURL];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (_analysisPreferencesURL)
   {
-    v4 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v2];
+    v4 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:_analysisPreferencesURL];
   }
 
   else
@@ -1401,7 +1401,7 @@ LABEL_32:
     v4 = 0;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
@@ -1411,44 +1411,44 @@ LABEL_32:
   v23 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v7 = a4;
-  v8 = [a1 _analysisPreferencesURL];
-  if (v8)
+  _analysisPreferencesURL = [self _analysisPreferencesURL];
+  if (_analysisPreferencesURL)
   {
-    v9 = a1;
-    objc_sync_enter(v9);
-    v10 = [v9 vcp_analysisPreferences];
-    v11 = [MEMORY[0x1E695DF90] dictionary];
-    if ([v10 count])
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    vcp_analysisPreferences = [selfCopy vcp_analysisPreferences];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    if ([vcp_analysisPreferences count])
     {
-      [v11 addEntriesFromDictionary:v10];
+      [dictionary addEntriesFromDictionary:vcp_analysisPreferences];
     }
 
     if ([v6 count])
     {
-      [v11 addEntriesFromDictionary:v6];
+      [dictionary addEntriesFromDictionary:v6];
     }
 
     if ([v7 count])
     {
-      [v11 removeObjectsForKeys:v7];
+      [dictionary removeObjectsForKeys:v7];
     }
 
-    if (([v11 isEqual:v10] & 1) == 0)
+    if (([dictionary isEqual:vcp_analysisPreferences] & 1) == 0)
     {
       v18 = 0;
-      v12 = [MEMORY[0x1E696AE40] dataWithPropertyList:v11 format:100 options:0 error:&v18];
+      v12 = [MEMORY[0x1E696AE40] dataWithPropertyList:dictionary format:100 options:0 error:&v18];
       v13 = v18;
       v14 = v13;
       if (v12)
       {
         v17 = v13;
-        v15 = [v12 writeToURL:v8 options:1073741825 error:&v17];
+        v15 = [v12 writeToURL:_analysisPreferencesURL options:1073741825 error:&v17];
         v16 = v17;
 
         if ((v15 & 1) == 0 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v20 = v9;
+          v20 = selfCopy;
           v21 = 2112;
           v22 = v16;
           _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to write library analysis preferences for %@: %@", buf, 0x16u);
@@ -1460,14 +1460,14 @@ LABEL_32:
       else if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v20 = v9;
+        v20 = selfCopy;
         v21 = 2112;
         v22 = v14;
         _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to serialize library analysis preferences for %@: %@", buf, 0x16u);
       }
     }
 
-    objc_sync_exit(v9);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -1484,14 +1484,14 @@ LABEL_32:
       v13 = v7;
       v14[0] = v6;
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-      [a1 _updateAnalysisPreferencesWithEntries:v9 keysToRemove:0];
+      [self _updateAnalysisPreferencesWithEntries:v9 keysToRemove:0];
     }
 
     else
     {
       v12 = v7;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v12 count:1];
-      [a1 _updateAnalysisPreferencesWithEntries:0 keysToRemove:v10];
+      [self _updateAnalysisPreferencesWithEntries:0 keysToRemove:v10];
     }
   }
 
@@ -1505,32 +1505,32 @@ LABEL_32:
 - (id)vcp_vipModelFilepathForVIPType:()MediaAnalysis
 {
   v15 = *MEMORY[0x1E69E9840];
-  if ([a1 vcp_isSyndicationLibrary])
+  if ([self vcp_isSyndicationLibrary])
   {
-    v5 = [MEMORY[0x1E69789B0] vcp_defaultPhotoLibrary];
-    v6 = [v5 vcp_visionCacheStorageDirectoryURL];
-    v7 = [v6 absoluteURL];
+    vcp_defaultPhotoLibrary = [MEMORY[0x1E69789B0] vcp_defaultPhotoLibrary];
+    vcp_visionCacheStorageDirectoryURL = [vcp_defaultPhotoLibrary vcp_visionCacheStorageDirectoryURL];
+    absoluteURL = [vcp_visionCacheStorageDirectoryURL absoluteURL];
   }
 
   else
   {
-    v5 = [a1 vcp_visionCacheStorageDirectoryURL];
-    v7 = [v5 absoluteURL];
+    vcp_defaultPhotoLibrary = [self vcp_visionCacheStorageDirectoryURL];
+    absoluteURL = [vcp_defaultPhotoLibrary absoluteURL];
   }
 
   if (a3 == 1)
   {
-    v8 = [v7 path];
+    path = [absoluteURL path];
     v9 = +[VCPFaceIDModel petVIPModelFileName];
-    v10 = [v8 stringByAppendingPathComponent:v9];
+    v10 = [path stringByAppendingPathComponent:v9];
     goto LABEL_8;
   }
 
   if (!a3)
   {
-    v8 = [v7 path];
+    path = [absoluteURL path];
     v9 = +[VCPFaceIDModel personVIPModelFileName];
-    v10 = [v8 stringByAppendingPathComponent:v9];
+    v10 = [path stringByAppendingPathComponent:v9];
 LABEL_8:
     v11 = v10;
 
@@ -1553,29 +1553,29 @@ LABEL_13:
 - (id)vcp_vipModelLastGenerationDateForVIPType:()MediaAnalysis
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = [a1 vcp_analysisPreferences];
-  v5 = v4;
+  vcp_analysisPreferences = [self vcp_analysisPreferences];
+  v5 = vcp_analysisPreferences;
   if (a3 == 1)
   {
-    v6 = [v4 objectForKeyedSubscript:@"PetIDModelLastGenerationKey"];
+    v6 = [vcp_analysisPreferences objectForKeyedSubscript:@"PetIDModelLastGenerationKey"];
     if (!v6)
     {
 LABEL_11:
-      v7 = [MEMORY[0x1E695DF00] distantPast];
+      distantPast = [MEMORY[0x1E695DF00] distantPast];
       goto LABEL_12;
     }
 
 LABEL_6:
-    v7 = v6;
+    distantPast = v6;
 LABEL_12:
-    v8 = v7;
+    v8 = distantPast;
 
     goto LABEL_13;
   }
 
   if (!a3)
   {
-    v6 = [v4 objectForKeyedSubscript:@"FaceIDModelLastGenerationKey"];
+    v6 = [vcp_analysisPreferences objectForKeyedSubscript:@"FaceIDModelLastGenerationKey"];
     if (!v6)
     {
       goto LABEL_11;
@@ -1599,41 +1599,41 @@ LABEL_13:
 
 - (id)vcp_faceAnalysisStateFilepath
 {
-  v1 = [a1 vcp_visionCacheStorageDirectoryURL];
-  v2 = [v1 absoluteURL];
+  vcp_visionCacheStorageDirectoryURL = [self vcp_visionCacheStorageDirectoryURL];
+  absoluteURL = [vcp_visionCacheStorageDirectoryURL absoluteURL];
 
-  v3 = [v2 path];
-  v4 = [v3 stringByAppendingPathComponent:@"faceWorkerState.plist"];
+  path = [absoluteURL path];
+  v4 = [path stringByAppendingPathComponent:@"faceWorkerState.plist"];
 
   return v4;
 }
 
 - (uint64_t)mad_faceProcessingInternalVersion
 {
-  v1 = [VCPFaceProcessingVersionManager sharedManagerForPhotoLibrary:a1];
-  v2 = [v1 currentProcessingVersion];
+  v1 = [VCPFaceProcessingVersionManager sharedManagerForPhotoLibrary:self];
+  currentProcessingVersion = [v1 currentProcessingVersion];
 
-  return v2;
+  return currentProcessingVersion;
 }
 
 - (id)mad_unclusteredFacesFetchOptions
 {
   v11[4] = *MEMORY[0x1E69E9840];
-  v2 = [a1 librarySpecificFetchOptions];
-  [v2 setIncludeNonvisibleFaces:1];
-  [v2 setIncludeTorsoAndFaceDetectionData:1];
-  [v2 setIncludeOnlyFacesWithFaceprints:1];
-  [v2 setIncludedDetectionTypes:&unk_1F49BEA40];
-  v3 = [a1 mad_faceProcessingInternalVersion];
+  librarySpecificFetchOptions = [self librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludeNonvisibleFaces:1];
+  [librarySpecificFetchOptions setIncludeTorsoAndFaceDetectionData:1];
+  [librarySpecificFetchOptions setIncludeOnlyFacesWithFaceprints:1];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_1F49BEA40];
+  mad_faceProcessingInternalVersion = [self mad_faceProcessingInternalVersion];
   v4 = _os_feature_enabled_impl();
-  if (v3 >= 14)
+  if (mad_faceProcessingInternalVersion >= 14)
   {
     LODWORD(v5) = 14;
   }
 
   else
   {
-    LODWORD(v5) = v3;
+    LODWORD(v5) = mad_faceProcessingInternalVersion;
   }
 
   if (v4)
@@ -1643,15 +1643,15 @@ LABEL_13:
 
   else
   {
-    v5 = v3;
+    v5 = mad_faceProcessingInternalVersion;
   }
 
   v6 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(faceAlgorithmVersion >= %d) AND (vuObservationID = 0) AND (((hidden = 0) AND (manual = 0) AND ((trainingType = %d) OR (trainingType = nil))) OR ((trainingType = %d) OR (trainingType = %d) OR (trainingType = %d)))", v5, 0, 1, 2, 5];
-  [v2 setInternalPredicate:v6];
+  [librarySpecificFetchOptions setInternalPredicate:v6];
 
   if ([objc_opt_class() mad_clusterVideoFaces])
   {
-    [v2 setIncludeMediaAnalysisProcessingRangeTypes:3];
+    [librarySpecificFetchOptions setIncludeMediaAnalysisProcessingRangeTypes:3];
   }
 
   v7 = *MEMORY[0x1E6978D70];
@@ -1661,52 +1661,52 @@ LABEL_13:
   v11[2] = *MEMORY[0x1E6978D68];
   v11[3] = v8;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v11 count:4];
-  [v2 setFetchPropertySets:v9];
+  [librarySpecificFetchOptions setFetchPropertySets:v9];
 
-  return v2;
+  return librarySpecificFetchOptions;
 }
 
 - (id)mad_clusteredFacesFetchOptions
 {
-  v2 = [a1 librarySpecificFetchOptions];
-  [v2 setIncludeNonvisibleFaces:1];
-  [v2 setIncludeTorsoAndFaceDetectionData:1];
-  [v2 setIncludeOnlyFacesWithFaceprints:1];
-  [v2 setIncludedDetectionTypes:&unk_1F49BEA58];
-  v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(faceAlgorithmVersion = %d) AND (vuObservationID != 0) AND (((hidden = 0) AND (manual = 0) AND ((trainingType = %d) OR (trainingType = nil))) OR ((trainingType = %d) OR (trainingType = %d) OR (trainingType = %d)))", objc_msgSend(a1, "mad_faceProcessingInternalVersion"), 0, 1, 2, 5];
-  [v2 setInternalPredicate:v3];
+  librarySpecificFetchOptions = [self librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludeNonvisibleFaces:1];
+  [librarySpecificFetchOptions setIncludeTorsoAndFaceDetectionData:1];
+  [librarySpecificFetchOptions setIncludeOnlyFacesWithFaceprints:1];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_1F49BEA58];
+  v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(faceAlgorithmVersion = %d) AND (vuObservationID != 0) AND (((hidden = 0) AND (manual = 0) AND ((trainingType = %d) OR (trainingType = nil))) OR ((trainingType = %d) OR (trainingType = %d) OR (trainingType = %d)))", objc_msgSend(self, "mad_faceProcessingInternalVersion"), 0, 1, 2, 5];
+  [librarySpecificFetchOptions setInternalPredicate:v3];
 
   if ([objc_opt_class() mad_clusterVideoFaces])
   {
-    [v2 setIncludeMediaAnalysisProcessingRangeTypes:3];
+    [librarySpecificFetchOptions setIncludeMediaAnalysisProcessingRangeTypes:3];
   }
 
-  return v2;
+  return librarySpecificFetchOptions;
 }
 
 - (id)mad_clusteredAndUnidentifiedFacesFetchOptions
 {
-  v2 = [a1 librarySpecificFetchOptions];
-  [v2 setIncludeNonvisibleFaces:1];
-  [v2 setIncludeTorsoAndFaceDetectionData:1];
-  [v2 setIncludeOnlyFacesWithFaceprints:1];
-  [v2 setIncludedDetectionTypes:&unk_1F49BEA70];
-  v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(faceAlgorithmVersion = %d) AND (vuObservationID != 0) AND (((hidden = 0) AND (manual = 0) AND ((trainingType = %d) OR (trainingType = nil))) OR ((trainingType = %d) OR (trainingType = %d) OR (trainingType = %d))) AND (personForFace = nil AND personForTorso = nil AND personForTemporalDetectedFaces = nil)", objc_msgSend(a1, "mad_faceProcessingInternalVersion"), 0, 1, 2, 5];
-  [v2 setInternalPredicate:v3];
+  librarySpecificFetchOptions = [self librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludeNonvisibleFaces:1];
+  [librarySpecificFetchOptions setIncludeTorsoAndFaceDetectionData:1];
+  [librarySpecificFetchOptions setIncludeOnlyFacesWithFaceprints:1];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_1F49BEA70];
+  v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"(faceAlgorithmVersion = %d) AND (vuObservationID != 0) AND (((hidden = 0) AND (manual = 0) AND ((trainingType = %d) OR (trainingType = nil))) OR ((trainingType = %d) OR (trainingType = %d) OR (trainingType = %d))) AND (personForFace = nil AND personForTorso = nil AND personForTemporalDetectedFaces = nil)", objc_msgSend(self, "mad_faceProcessingInternalVersion"), 0, 1, 2, 5];
+  [librarySpecificFetchOptions setInternalPredicate:v3];
 
   if ([objc_opt_class() mad_clusterVideoFaces])
   {
-    [v2 setIncludeMediaAnalysisProcessingRangeTypes:3];
+    [librarySpecificFetchOptions setIncludeMediaAnalysisProcessingRangeTypes:3];
   }
 
-  return v2;
+  return librarySpecificFetchOptions;
 }
 
 - (uint64_t)mad_countOfUnclusteredFaces
 {
-  v1 = [a1 mad_unclusteredFacesFetchOptions];
-  [v1 setShouldPrefetchCount:1];
-  v2 = [MEMORY[0x1E69787D0] fetchFacesWithOptions:v1];
+  mad_unclusteredFacesFetchOptions = [self mad_unclusteredFacesFetchOptions];
+  [mad_unclusteredFacesFetchOptions setShouldPrefetchCount:1];
+  v2 = [MEMORY[0x1E69787D0] fetchFacesWithOptions:mad_unclusteredFacesFetchOptions];
   v3 = [v2 count];
 
   return v3;
@@ -1714,27 +1714,27 @@ LABEL_13:
 
 - (id)mad_allFacesFetchOptions
 {
-  v1 = [a1 librarySpecificFetchOptions];
-  [v1 setIncludeNonvisibleFaces:1];
-  [v1 setIncludeTorsoAndFaceDetectionData:1];
-  [v1 setIncludedDetectionTypes:&unk_1F49BEA88];
+  librarySpecificFetchOptions = [self librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setIncludeNonvisibleFaces:1];
+  [librarySpecificFetchOptions setIncludeTorsoAndFaceDetectionData:1];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_1F49BEA88];
   if ([objc_opt_class() mad_clusterVideoFaces])
   {
-    [v1 setIncludeMediaAnalysisProcessingRangeTypes:3];
+    [librarySpecificFetchOptions setIncludeMediaAnalysisProcessingRangeTypes:3];
   }
 
-  return v1;
+  return librarySpecificFetchOptions;
 }
 
 - (id)mad_allPersonsFetchOptions
 {
-  v1 = [a1 librarySpecificFetchOptions];
-  [v1 setMinimumUnverifiedFaceCount:0];
-  [v1 setMinimumVerifiedFaceCount:0];
-  [v1 setIncludeTorsoOnlyPerson:1];
-  [v1 setIncludedDetectionTypes:&unk_1F49BEAA0];
+  librarySpecificFetchOptions = [self librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setMinimumUnverifiedFaceCount:0];
+  [librarySpecificFetchOptions setMinimumVerifiedFaceCount:0];
+  [librarySpecificFetchOptions setIncludeTorsoOnlyPerson:1];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_1F49BEAA0];
 
-  return v1;
+  return librarySpecificFetchOptions;
 }
 
 - (id)mad_allPersonsFetchOptionsWithDetectionTypes:()MediaAnalysis andVerifiedTypes:
@@ -1742,10 +1742,10 @@ LABEL_13:
   v24 = *MEMORY[0x1E69E9840];
   v6 = a3;
   v18 = a4;
-  v7 = [a1 librarySpecificFetchOptions];
-  [v7 setMinimumUnverifiedFaceCount:0];
-  [v7 setMinimumVerifiedFaceCount:0];
-  [v7 setIncludeTorsoOnlyPerson:1];
+  librarySpecificFetchOptions = [self librarySpecificFetchOptions];
+  [librarySpecificFetchOptions setMinimumUnverifiedFaceCount:0];
+  [librarySpecificFetchOptions setMinimumVerifiedFaceCount:0];
+  [librarySpecificFetchOptions setIncludeTorsoOnlyPerson:1];
   if (v6)
   {
     v8 = v6;
@@ -1756,10 +1756,10 @@ LABEL_13:
     v8 = &unk_1F49BEAB8;
   }
 
-  [v7 setIncludedDetectionTypes:v8];
+  [librarySpecificFetchOptions setIncludedDetectionTypes:v8];
   if (v18)
   {
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
@@ -1779,7 +1779,7 @@ LABEL_13:
           }
 
           v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"verifiedType = %@", *(*(&v19 + 1) + 8 * i)];
-          [v9 addObject:v14];
+          [array addObject:v14];
         }
 
         v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -1788,12 +1788,12 @@ LABEL_13:
       while (v11);
     }
 
-    v15 = [v9 componentsJoinedByString:@" OR "];
+    v15 = [array componentsJoinedByString:@" OR "];
     v16 = [MEMORY[0x1E696AE18] predicateWithFormat:v15];
-    [v7 setPredicate:v16];
+    [librarySpecificFetchOptions setPredicate:v16];
   }
 
-  return v7;
+  return librarySpecificFetchOptions;
 }
 
 - (uint64_t)vcp_requiresProcessingForTask:()MediaAnalysis
@@ -1840,7 +1840,7 @@ LABEL_10:
 
 - (uint64_t)vcp_requiredFaceLibraryProcessingSubTasks
 {
-  if ([a1 vcp_isSyndicationLibrary])
+  if ([self vcp_isSyndicationLibrary])
   {
     return 51;
   }
@@ -1853,12 +1853,12 @@ LABEL_10:
 
 - (__CFString)vcp_description
 {
-  if ([a1 isSystemPhotoLibrary])
+  if ([self isSystemPhotoLibrary])
   {
     return @"SPL";
   }
 
-  if ([a1 wellKnownPhotoLibraryIdentifier] == 3)
+  if ([self wellKnownPhotoLibraryIdentifier] == 3)
   {
     return @"SyndPL";
   }
@@ -1868,7 +1868,7 @@ LABEL_10:
 
 - (uint64_t)vcp_requiresDownloadForTask:()MediaAnalysis
 {
-  if (a3 == 3 && _os_feature_enabled_impl() && [a1 mad_pauseFCPeopleFurtherProcessing])
+  if (a3 == 3 && _os_feature_enabled_impl() && [self mad_pauseFCPeopleFurtherProcessing])
   {
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
@@ -1881,14 +1881,14 @@ LABEL_10:
 
   else
   {
-    v6 = [a1 vcp_supportsCloudLibraryResourceDownload];
+    vcp_supportsCloudLibraryResourceDownload = [self vcp_supportsCloudLibraryResourceDownload];
     v5 = 0x40Au >> a3;
     if (a3 > 0xA)
     {
       LOBYTE(v5) = 0;
     }
 
-    if (!v6)
+    if (!vcp_supportsCloudLibraryResourceDownload)
     {
       LOBYTE(v5) = 0;
     }

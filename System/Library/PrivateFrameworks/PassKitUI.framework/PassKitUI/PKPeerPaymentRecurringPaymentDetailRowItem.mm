@@ -1,24 +1,24 @@
 @interface PKPeerPaymentRecurringPaymentDetailRowItem
-- (BOOL)isEqual:(id)a3;
-- (PKPeerPaymentRecurringPaymentDetailRowItem)initWithIdentifier:(id)a3 isEditable:(BOOL)a4 titleColor:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (PKPeerPaymentRecurringPaymentDetailRowItem)initWithIdentifier:(id)identifier isEditable:(BOOL)editable titleColor:(id)color;
 - (unint64_t)hash;
 @end
 
 @implementation PKPeerPaymentRecurringPaymentDetailRowItem
 
-- (PKPeerPaymentRecurringPaymentDetailRowItem)initWithIdentifier:(id)a3 isEditable:(BOOL)a4 titleColor:(id)a5
+- (PKPeerPaymentRecurringPaymentDetailRowItem)initWithIdentifier:(id)identifier isEditable:(BOOL)editable titleColor:(id)color
 {
-  v9 = a3;
-  v10 = a5;
+  identifierCopy = identifier;
+  colorCopy = color;
   v14.receiver = self;
   v14.super_class = PKPeerPaymentRecurringPaymentDetailRowItem;
   v11 = [(PKPeerPaymentRecurringPaymentDetailRowItem *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_identifier, a3);
-    v12->_isEditable = a4;
-    objc_storeStrong(&v12->_titleColor, a5);
+    objc_storeStrong(&v11->_identifier, identifier);
+    v12->_isEditable = editable;
+    objc_storeStrong(&v12->_titleColor, color);
   }
 
   return v12;
@@ -26,25 +26,25 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_identifier];
-  [v3 safelyAddObject:self->_titleColor];
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_identifier];
+  [array safelyAddObject:self->_titleColor];
   PKCombinedHash();
   v4 = PKIntegerHash();
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     if (PKEqualObjects() && self->_isEditable == v6[8])

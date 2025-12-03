@@ -1,27 +1,27 @@
 @interface PRSWallpaperPublisher
 - (PRSWallpaperPublisher)init;
 - (PRSWallpaperPublisherDelegate)delegate;
-- (id)_lock_buildActivePosterObserverUpdatesForClient:(id)a3 updatedRoles:(id)a4 clientSpecificSuggestionsToPosterUUID:(id)a5;
-- (id)_lock_buildPosterCollectionUpdatesForClient:(id)a3 role:(id)a4 updatedPosterCollection:(id)a5;
-- (id)_lock_descriptionIfInvalidPaths:(const void *)a3;
-- (void)_initializeClient:(id)a3;
-- (void)_initializeClient:(id)a3 withKnownIdentities:(id)a4 knownRoles:(id)a5 knownCollection:(id)a6;
+- (id)_lock_buildActivePosterObserverUpdatesForClient:(id)client updatedRoles:(id)roles clientSpecificSuggestionsToPosterUUID:(id)d;
+- (id)_lock_buildPosterCollectionUpdatesForClient:(id)client role:(id)role updatedPosterCollection:(id)collection;
+- (id)_lock_descriptionIfInvalidPaths:(const void *)paths;
+- (void)_initializeClient:(id)client;
+- (void)_initializeClient:(id)client withKnownIdentities:(id)identities knownRoles:(id)roles knownCollection:(id)collection;
 - (void)_lock_activateClientsIfNeeded;
-- (void)_lock_issuePosterCollectionUpdate:(id)a3;
-- (void)_lock_issueUpdateForRoles:(id)a3 suggestionsToPosterUUID:(id)a4;
-- (void)_lock_noteChanged:(unint64_t)a3;
-- (void)_lock_noteSnapshotUpdateForPath:(id)a3 snapshotType:(id)a4;
-- (void)_lock_sendStateToClient:(id)a3;
-- (void)initializePosterCollectionForRoles:(id)a3;
-- (void)initializeRoles:(id)a3 suggestions:(id)a4;
-- (void)initializeWithPaths:(const void *)a3 recentlyChanged:(unint64_t)a4;
-- (void)issuePosterCollectionUpdate:(id)a3;
-- (void)issueUpdateForRoles:(id)a3 suggestions:(id)a4;
-- (void)issueUpdateForSuggestions:(id)a3;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)noteSnapshotUpdateForPath:(id)a3 snapshotType:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)updatePaths:(const void *)a3;
+- (void)_lock_issuePosterCollectionUpdate:(id)update;
+- (void)_lock_issueUpdateForRoles:(id)roles suggestionsToPosterUUID:(id)d;
+- (void)_lock_noteChanged:(unint64_t)changed;
+- (void)_lock_noteSnapshotUpdateForPath:(id)path snapshotType:(id)type;
+- (void)_lock_sendStateToClient:(id)client;
+- (void)initializePosterCollectionForRoles:(id)roles;
+- (void)initializeRoles:(id)roles suggestions:(id)suggestions;
+- (void)initializeWithPaths:(const void *)paths recentlyChanged:(unint64_t)changed;
+- (void)issuePosterCollectionUpdate:(id)update;
+- (void)issueUpdateForRoles:(id)roles suggestions:(id)suggestions;
+- (void)issueUpdateForSuggestions:(id)suggestions;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)noteSnapshotUpdateForPath:(id)path snapshotType:(id)type;
+- (void)setDelegate:(id)delegate;
+- (void)updatePaths:(const void *)paths;
 @end
 
 @implementation PRSWallpaperPublisher
@@ -90,17 +90,17 @@ void __29__PRSWallpaperPublisher_init__block_invoke(uint64_t a1, void *a2)
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_lock);
   lock_delegate = self->_lock_delegate;
-  self->_lock_delegate = v4;
+  self->_lock_delegate = delegateCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_lock_descriptionIfInvalidPaths:(const void *)a3
+- (id)_lock_descriptionIfInvalidPaths:(const void *)paths
 {
   os_unfair_lock_assert_owner(&self->_lock);
   v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:4];
@@ -108,18 +108,18 @@ void __29__PRSWallpaperPublisher_init__block_invoke(uint64_t a1, void *a2)
   v7 = 0;
   do
   {
-    v8 = a3[v6];
+    v8 = paths[v6];
     if (!v8)
     {
       break;
     }
 
-    v9 = [v8 identity];
-    v10 = [v9 posterUUID];
+    identity = [v8 identity];
+    posterUUID = [identity posterUUID];
 
-    v11 = [v5 objectForKey:v10];
+    v11 = [v5 objectForKey:posterUUID];
     v12 = v11;
-    v13 = a3[v6];
+    v13 = paths[v6];
     if (v11)
     {
       if (v11 != v13)
@@ -131,7 +131,7 @@ void __29__PRSWallpaperPublisher_init__block_invoke(uint64_t a1, void *a2)
 
     else
     {
-      [v5 setObject:v13 forKey:v10];
+      [v5 setObject:v13 forKey:posterUUID];
     }
 
     v7 = v6++ > 2;
@@ -145,19 +145,19 @@ void __29__PRSWallpaperPublisher_init__block_invoke(uint64_t a1, void *a2)
     v16 = lock_paths[v14];
     if (v16)
     {
-      v17 = [(PFServerPosterPath *)v16 identity];
-      v18 = [v17 posterUUID];
+      identity2 = [(PFServerPosterPath *)v16 identity];
+      posterUUID2 = [identity2 posterUUID];
 
-      v19 = [v5 objectForKey:v18];
+      v19 = [v5 objectForKey:posterUUID2];
       v20 = v19;
       if (v19)
       {
         if (v19 != lock_paths[v14])
         {
-          v21 = [(PFServerPosterPath *)v19 identity];
+          identity3 = [(PFServerPosterPath *)v19 identity];
           [(PFServerPosterPath *)lock_paths[v14] identity];
           v23 = v22 = v5;
-          v24 = [v21 isNewerVersionOfIdentity:v23];
+          v24 = [identity3 isNewerVersionOfIdentity:v23];
 
           v5 = v22;
           if (!v24)
@@ -184,17 +184,17 @@ LABEL_18:
   v25 = [MEMORY[0x1E696AD60] stringWithString:@"received invalid paths: {"];
   for (i = 0; i != 4; ++i)
   {
-    v27 = a3[i];
+    v27 = paths[i];
     v28 = PRSWallpaperObserverLocationsFromIndex(i);
     v29 = PRSWallpaperObserverLocationsDescription(v28);
     if (v27)
     {
-      v30 = a3[i];
+      v30 = paths[i];
       v31 = objc_opt_class();
       v32 = NSStringFromClass(v31);
-      v33 = a3[i];
-      v34 = [v33 identity];
-      [v25 appendFormat:@"\n %i-%@: <%@:%p %@>", i, v29, v32, v33, v34];
+      v33 = paths[i];
+      identity4 = [v33 identity];
+      [v25 appendFormat:@"\n %i-%@: <%@:%p %@>", i, v29, v32, v33, identity4];
     }
 
     else
@@ -217,8 +217,8 @@ LABEL_18:
       v41 = objc_opt_class();
       v42 = NSStringFromClass(v41);
       v43 = lock_paths[j];
-      v44 = [(PFServerPosterPath *)v43 identity];
-      [v25 appendFormat:@"\n %i-%@: <%@:%p %@>", j, v39, v42, v43, v44];
+      identity5 = [(PFServerPosterPath *)v43 identity];
+      [v25 appendFormat:@"\n %i-%@: <%@:%p %@>", j, v39, v42, v43, identity5];
     }
 
     else
@@ -236,15 +236,15 @@ LABEL_29:
   return v25;
 }
 
-- (void)initializeWithPaths:(const void *)a3 recentlyChanged:(unint64_t)a4
+- (void)initializeWithPaths:(const void *)paths recentlyChanged:(unint64_t)changed
 {
-  if (!a3)
+  if (!paths)
   {
     [PRSWallpaperPublisher initializeWithPaths:a2 recentlyChanged:?];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(PRSWallpaperPublisher *)self _lock_descriptionIfInvalidPaths:a3];
+  v7 = [(PRSWallpaperPublisher *)self _lock_descriptionIfInvalidPaths:paths];
   if (v7)
   {
     v9 = v7;
@@ -265,25 +265,25 @@ LABEL_29:
     [(PRSWallpaperPublisher *)self _lock_activateClientsIfNeeded];
     for (i = 0; i != 4; ++i)
     {
-      objc_storeStrong(&self->_lock_paths[i], a3[i]);
+      objc_storeStrong(&self->_lock_paths[i], paths[i]);
     }
 
-    [(PRSWallpaperPublisher *)self _lock_noteChanged:a4];
+    [(PRSWallpaperPublisher *)self _lock_noteChanged:changed];
 
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)initializeRoles:(id)a3 suggestions:(id)a4
+- (void)initializeRoles:(id)roles suggestions:(id)suggestions
 {
-  v9 = a3;
-  v7 = a4;
-  if (!v9)
+  rolesCopy = roles;
+  suggestionsCopy = suggestions;
+  if (!rolesCopy)
   {
     [PRSWallpaperPublisher initializeRoles:a2 suggestions:?];
   }
 
-  if (!v7)
+  if (!suggestionsCopy)
   {
     [PRSWallpaperPublisher initializeRoles:a2 suggestions:?];
   }
@@ -294,19 +294,19 @@ LABEL_29:
   lock_posterUUIDToSuggestionDescriptorPaths = self->_lock_posterUUIDToSuggestionDescriptorPaths;
   self->_lock_posterUUIDToSuggestionDescriptorPaths = MEMORY[0x1E695E0F8];
 
-  [(PRSWallpaperPublisher *)self _lock_issueUpdateForRoles:v9 suggestionsToPosterUUID:v7];
+  [(PRSWallpaperPublisher *)self _lock_issueUpdateForRoles:rolesCopy suggestionsToPosterUUID:suggestionsCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)updatePaths:(const void *)a3
+- (void)updatePaths:(const void *)paths
 {
-  if (!a3)
+  if (!paths)
   {
     [PRSWallpaperPublisher updatePaths:a2];
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(PRSWallpaperPublisher *)self _lock_descriptionIfInvalidPaths:a3];
+  v5 = [(PRSWallpaperPublisher *)self _lock_descriptionIfInvalidPaths:paths];
   if (v5)
   {
     v9 = v5;
@@ -345,10 +345,10 @@ LABEL_19:
   lock_paths = self->_lock_paths;
   do
   {
-    if (*lock_paths != a3[v6])
+    if (*lock_paths != paths[v6])
     {
       v7 |= PRSWallpaperObserverLocationsFromIndex(v6);
-      objc_storeStrong(lock_paths, a3[v6]);
+      objc_storeStrong(lock_paths, paths[v6]);
     }
 
     ++v6;
@@ -364,51 +364,51 @@ LABEL_19:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)issueUpdateForRoles:(id)a3 suggestions:(id)a4
+- (void)issueUpdateForRoles:(id)roles suggestions:(id)suggestions
 {
-  v6 = a4;
-  v7 = a3;
+  suggestionsCopy = suggestions;
+  rolesCopy = roles;
   os_unfair_lock_lock(&self->_lock);
   [(PRSWallpaperPublisher *)self _lock_activateClientsIfNeeded];
-  [(PRSWallpaperPublisher *)self _lock_issueUpdateForRoles:v7 suggestionsToPosterUUID:v6];
+  [(PRSWallpaperPublisher *)self _lock_issueUpdateForRoles:rolesCopy suggestionsToPosterUUID:suggestionsCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)issueUpdateForSuggestions:(id)a3
+- (void)issueUpdateForSuggestions:(id)suggestions
 {
-  v4 = a3;
+  suggestionsCopy = suggestions;
   os_unfair_lock_lock(&self->_lock);
   [(PRSWallpaperPublisher *)self _lock_activateClientsIfNeeded];
-  [(PRSWallpaperPublisher *)self _lock_issueUpdateForRoles:self->_lock_roleToPath suggestionsToPosterUUID:v4];
+  [(PRSWallpaperPublisher *)self _lock_issueUpdateForRoles:self->_lock_roleToPath suggestionsToPosterUUID:suggestionsCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)noteSnapshotUpdateForPath:(id)a3 snapshotType:(id)a4
+- (void)noteSnapshotUpdateForPath:(id)path snapshotType:(id)type
 {
-  v8 = a3;
-  v7 = a4;
-  if (!v8)
+  pathCopy = path;
+  typeCopy = type;
+  if (!pathCopy)
   {
     [PRSWallpaperPublisher noteSnapshotUpdateForPath:a2 snapshotType:?];
   }
 
   os_unfair_lock_lock(&self->_lock);
   [(PRSWallpaperPublisher *)self _lock_activateClientsIfNeeded];
-  [(PRSWallpaperPublisher *)self _lock_noteSnapshotUpdateForPath:v8 snapshotType:v7];
+  [(PRSWallpaperPublisher *)self _lock_noteSnapshotUpdateForPath:pathCopy snapshotType:typeCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)initializePosterCollectionForRoles:(id)a3
+- (void)initializePosterCollectionForRoles:(id)roles
 {
-  v5 = a3;
-  if (!v5)
+  rolesCopy = roles;
+  if (!rolesCopy)
   {
     [PRSWallpaperPublisher initializePosterCollectionForRoles:a2];
   }
 
-  v6 = v5;
+  v6 = rolesCopy;
   os_unfair_lock_lock(&self->_lock);
   [(PRSWallpaperPublisher *)self _lock_activateClientsIfNeeded];
   [(NSMutableDictionary *)self->_lock_roleToPosterCollections removeAllObjects];
@@ -416,60 +416,60 @@ LABEL_19:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)issuePosterCollectionUpdate:(id)a3
+- (void)issuePosterCollectionUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   os_unfair_lock_lock(&self->_lock);
   [(PRSWallpaperPublisher *)self _lock_activateClientsIfNeeded];
-  [(PRSWallpaperPublisher *)self _lock_issuePosterCollectionUpdate:v4];
+  [(PRSWallpaperPublisher *)self _lock_issuePosterCollectionUpdate:updateCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v54 = *MEMORY[0x1E69E9840];
-  v40 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 remoteProcess];
-  if ([v10 hasEntitlement:@"com.apple.posterboardservices.data-store.accessSwitcherConfiguration"])
+  listenerCopy = listener;
+  connectionCopy = connection;
+  contextCopy = context;
+  remoteProcess = [connectionCopy remoteProcess];
+  if ([remoteProcess hasEntitlement:@"com.apple.posterboardservices.data-store.accessSwitcherConfiguration"])
   {
     objc_initWeak(&location, self);
     v11 = objc_opt_class();
     v39 = NSStringFromClass(v11);
     v12 = objc_opt_new();
     objc_storeWeak((v12 + 8), self);
-    objc_storeStrong((v12 + 16), a4);
-    *(v12 + 113) = [v9 decodeBoolForKey:@"needsSandboxExtensions"];
-    *(v12 + 104) = [v9 decodeUInt64ForKey:@"observedLocations"] & 0xF;
-    *(v12 + 114) = [v9 decodeBoolForKey:@"snapshotObservation"];
+    objc_storeStrong((v12 + 16), connection);
+    *(v12 + 113) = [contextCopy decodeBoolForKey:@"needsSandboxExtensions"];
+    *(v12 + 104) = [contextCopy decodeUInt64ForKey:@"observedLocations"] & 0xF;
+    *(v12 + 114) = [contextCopy decodeBoolForKey:@"snapshotObservation"];
     *(v12 + 115) = *(v12 + 104) != 0;
-    v13 = [v9 decodeBoolForKey:@"collectionObserving"];
+    v13 = [contextCopy decodeBoolForKey:@"collectionObserving"];
     *(v12 + 153) = v13;
     if (v13)
     {
-      *(v12 + 152) = [v9 decodeBoolForKey:@"collectionObservingNeedsSandboxExtensions"];
+      *(v12 + 152) = [contextCopy decodeBoolForKey:@"collectionObservingNeedsSandboxExtensions"];
       v14 = objc_opt_self();
-      v15 = [v9 decodeObjectOfClass:v14 forKey:@"collectionObservingRole"];
+      v15 = [contextCopy decodeObjectOfClass:v14 forKey:@"collectionObservingRole"];
       v16 = *(v12 + 144);
       *(v12 + 144) = v15;
     }
 
-    v17 = [v9 decodeBoolForKey:@"roleObservation"];
+    v17 = [contextCopy decodeBoolForKey:@"roleObservation"];
     *(v12 + 129) = v17;
     if (v17)
     {
-      *(v12 + 128) = [v9 decodeBoolForKey:@"observedRolesNeedSandboxExtensions"];
+      *(v12 + 128) = [contextCopy decodeBoolForKey:@"observedRolesNeedSandboxExtensions"];
       v18 = objc_opt_self();
       v19 = objc_opt_self();
-      v20 = [v9 decodeCollectionOfClass:v18 containingClass:v19 forKey:@"observedRoles"];
+      v20 = [contextCopy decodeCollectionOfClass:v18 containingClass:v19 forKey:@"observedRoles"];
       v21 = *(v12 + 120);
       *(v12 + 120) = v20;
     }
 
-    v22 = [v9 decodeStringForKey:@"explanation"];
-    v23 = __clientDescription(v10, v22, v8, *(v12 + 104));
+    v22 = [contextCopy decodeStringForKey:@"explanation"];
+    v23 = __clientDescription(remoteProcess, v22, connectionCopy, *(v12 + 104));
     v24 = *(v12 + 32);
     *(v12 + 32) = v23;
 
@@ -485,17 +485,17 @@ LABEL_19:
       objc_copyWeak(&v46, &location);
       v26 = v39;
       v43 = v26;
-      v44 = self;
+      selfCopy = self;
       v27 = v38;
       v45 = v27;
-      [v8 configureConnection:v41];
+      [connectionCopy configureConnection:v41];
       v28 = PRSLogObserver();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543874;
         v49 = v26;
         v50 = 2048;
-        v51 = self;
+        selfCopy4 = self;
         v52 = 2114;
         v53 = v27;
         _os_log_impl(&dword_1C26FF000, v28, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> client %{public}@ connected", buf, 0x20u);
@@ -505,10 +505,10 @@ LABEL_19:
       [(NSMutableSet *)self->_lock_clients addObject:v25];
       if (self->_lock_activated)
       {
-        [v8 activate];
-        v29 = [v8 remoteTarget];
+        [connectionCopy activate];
+        remoteTarget = [connectionCopy remoteTarget];
         v30 = v25[3];
-        v25[3] = v29;
+        v25[3] = remoteTarget;
       }
 
       v31 = self->_lock_delegate;
@@ -526,13 +526,13 @@ LABEL_19:
         *buf = 138543874;
         v49 = v39;
         v50 = 2048;
-        v51 = self;
+        selfCopy4 = self;
         v52 = 2114;
         v53 = v38;
         _os_log_impl(&dword_1C26FF000, v37, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> rejecting client %{public}@ that doesn't want to observe anything", buf, 0x20u);
       }
 
-      [v8 invalidate];
+      [connectionCopy invalidate];
     }
 
     objc_destroyWeak(&location);
@@ -545,17 +545,17 @@ LABEL_19:
     {
       v33 = objc_opt_class();
       v34 = NSStringFromClass(v33);
-      v35 = __clientDescription(v10, @"?", v8, 0);
+      v35 = __clientDescription(remoteProcess, @"?", connectionCopy, 0);
       *buf = 138543874;
       v49 = v34;
       v50 = 2048;
-      v51 = self;
+      selfCopy4 = self;
       v52 = 2114;
       v53 = v35;
       _os_log_impl(&dword_1C26FF000, v32, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> rejecting client %{public}@ that isn't entitled", buf, 0x20u);
     }
 
-    [v8 invalidate];
+    [connectionCopy invalidate];
   }
 
   v36 = *MEMORY[0x1E69E9840];
@@ -617,31 +617,31 @@ void __67__PRSWallpaperPublisher_listener_didReceiveConnection_withContext___blo
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_initializeClient:(id)a3 withKnownIdentities:(id)a4 knownRoles:(id)a5 knownCollection:(id)a6
+- (void)_initializeClient:(id)client withKnownIdentities:(id)identities knownRoles:(id)roles knownCollection:(id)collection
 {
   v130 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  clientCopy = client;
+  identitiesCopy = identities;
+  rolesCopy = roles;
+  collectionCopy = collection;
   os_unfair_lock_lock(&self->_lock);
-  if (![(NSMutableSet *)self->_lock_clients containsObject:v10])
+  if (![(NSMutableSet *)self->_lock_clients containsObject:clientCopy])
   {
     goto LABEL_90;
   }
 
-  v99 = v10;
-  v100 = self;
-  v94 = v11;
-  v95 = v13;
-  v93 = v12;
-  if (*(v10 + 115) == 1)
+  v99 = clientCopy;
+  selfCopy = self;
+  v94 = identitiesCopy;
+  v95 = collectionCopy;
+  v93 = rolesCopy;
+  if (*(clientCopy + 115) == 1)
   {
     v117 = 0u;
     v118 = 0u;
     v115 = 0u;
     v116 = 0u;
-    obj = v11;
+    obj = identitiesCopy;
     v14 = [obj countByEnumeratingWithState:&v115 objects:v129 count:16];
     if (v14)
     {
@@ -657,8 +657,8 @@ void __67__PRSWallpaperPublisher_listener_didReceiveConnection_withContext___blo
           }
 
           v18 = *(*(&v115 + 1) + 8 * i);
-          v19 = [v18 identity];
-          if (v19)
+          identity = [v18 identity];
+          if (identity)
           {
             v20 = v99[13] & [v18 locations];
             if (v20)
@@ -667,8 +667,8 @@ void __67__PRSWallpaperPublisher_listener_didReceiveConnection_withContext___blo
               v109[1] = 3221225472;
               v110 = __90__PRSWallpaperPublisher__initializeClient_withKnownIdentities_knownRoles_knownCollection___block_invoke;
               v111 = &unk_1E818D370;
-              v112 = v19;
-              v113 = self;
+              v112 = identity;
+              selfCopy2 = self;
               v114 = v99;
               v21 = v109;
               v22 = 0;
@@ -699,7 +699,7 @@ void __67__PRSWallpaperPublisher_listener_didReceiveConnection_withContext___blo
 
               while (v24 > 0);
 
-              self = v100;
+              self = selfCopy;
             }
           }
         }
@@ -712,10 +712,10 @@ void __67__PRSWallpaperPublisher_listener_didReceiveConnection_withContext___blo
 
     BSAbsoluteMachTimeNow();
     lock_changeVersions = self->_lock_changeVersions;
-    v10 = v99;
+    clientCopy = v99;
     v27 = v99 + 9;
     v28 = 4;
-    v11 = v94;
+    identitiesCopy = v94;
     do
     {
       v29 = *(lock_changeVersions - 8) + 1.0;
@@ -727,13 +727,13 @@ void __67__PRSWallpaperPublisher_listener_didReceiveConnection_withContext___blo
     while (v28);
   }
 
-  if (*(v10 + 129) == 1 && [v12 count])
+  if (*(clientCopy + 129) == 1 && [rolesCopy count])
   {
     v107 = 0u;
     v108 = 0u;
     v105 = 0u;
     v106 = 0u;
-    v31 = v12;
+    v31 = rolesCopy;
     v32 = [v31 countByEnumeratingWithState:&v105 objects:v128 count:16];
     if (v32)
     {
@@ -750,15 +750,15 @@ void __67__PRSWallpaperPublisher_listener_didReceiveConnection_withContext___blo
           }
 
           v36 = *(*(&v105 + 1) + 8 * j);
-          v37 = [v36 role];
-          v38 = [(NSMutableDictionary *)self->_lock_roleToPath objectForKey:v37];
-          v39 = [v38 serverIdentity];
-          v40 = [v39 posterUUID];
+          role = [v36 role];
+          v38 = [(NSMutableDictionary *)self->_lock_roleToPath objectForKey:role];
+          serverIdentity = [v38 serverIdentity];
+          posterUUID = [serverIdentity posterUUID];
 
-          if (v40)
+          if (posterUUID)
           {
-            v41 = [v36 suggestionDescriptors];
-            v42 = [(NSDictionary *)self->_lock_posterUUIDToSuggestionDescriptorPaths objectForKey:v40];
+            suggestionDescriptors = [v36 suggestionDescriptors];
+            v42 = [(NSDictionary *)self->_lock_posterUUIDToSuggestionDescriptorPaths objectForKey:posterUUID];
             if ((BSEqualArrays() & 1) == 0)
             {
               if (!v96)
@@ -769,14 +769,14 @@ void __67__PRSWallpaperPublisher_listener_didReceiveConnection_withContext___blo
               if ([v42 count])
               {
                 v43 = [v42 copy];
-                [v96 setObject:v43 forKeyedSubscript:v40];
+                [v96 setObject:v43 forKeyedSubscript:posterUUID];
 
-                self = v100;
+                self = selfCopy;
               }
 
               else
               {
-                [v96 removeObjectForKey:v40];
+                [v96 removeObjectForKey:posterUUID];
               }
             }
           }
@@ -793,10 +793,10 @@ void __67__PRSWallpaperPublisher_listener_didReceiveConnection_withContext___blo
       v96 = 0;
     }
 
-    v12 = v93;
-    v11 = v94;
-    v13 = v95;
-    v10 = v99;
+    rolesCopy = v93;
+    identitiesCopy = v94;
+    collectionCopy = v95;
+    clientCopy = v99;
   }
 
   else
@@ -804,15 +804,15 @@ void __67__PRSWallpaperPublisher_listener_didReceiveConnection_withContext___blo
     v96 = 0;
   }
 
-  if (*(v10 + 129) == 1)
+  if (*(clientCopy + 129) == 1)
   {
-    if ([v12 count])
+    if ([rolesCopy count])
     {
       v103 = 0u;
       v104 = 0u;
       v101 = 0u;
       v102 = 0u;
-      v44 = v12;
+      v44 = rolesCopy;
       v45 = [v44 countByEnumeratingWithState:&v101 objects:v127 count:16];
       if (v45)
       {
@@ -829,16 +829,16 @@ void __67__PRSWallpaperPublisher_listener_didReceiveConnection_withContext___blo
             }
 
             v49 = *(*(&v101 + 1) + 8 * k);
-            v50 = [v49 role];
-            v51 = [v49 activePath];
-            v52 = [(NSMutableDictionary *)self->_lock_roleToPath objectForKey:v50];
-            v53 = [v51 identity];
-            v54 = [v52 identity];
-            v55 = [v53 isEqual:v54];
+            role2 = [v49 role];
+            activePath = [v49 activePath];
+            v52 = [(NSMutableDictionary *)self->_lock_roleToPath objectForKey:role2];
+            identity2 = [activePath identity];
+            identity3 = [v52 identity];
+            v55 = [identity2 isEqual:identity3];
 
             if (v55)
             {
-              self = v100;
+              self = selfCopy;
             }
 
             else
@@ -849,10 +849,10 @@ void __67__PRSWallpaperPublisher_listener_didReceiveConnection_withContext___blo
                 v56 = objc_opt_new();
               }
 
-              self = v100;
-              v57 = [(NSMutableDictionary *)v100->_lock_roleToPath objectForKey:v50];
+              self = selfCopy;
+              v57 = [(NSMutableDictionary *)selfCopy->_lock_roleToPath objectForKey:role2];
               obja = v56;
-              [v56 setObject:v57 forKeyedSubscript:v50];
+              [v56 setObject:v57 forKeyedSubscript:role2];
             }
           }
 
@@ -867,10 +867,10 @@ void __67__PRSWallpaperPublisher_listener_didReceiveConnection_withContext___blo
         obja = 0;
       }
 
-      v10 = v99;
-      v12 = v93;
-      v11 = v94;
-      v13 = v95;
+      clientCopy = v99;
+      rolesCopy = v93;
+      identitiesCopy = v94;
+      collectionCopy = v95;
     }
 
     else
@@ -884,44 +884,44 @@ void __67__PRSWallpaperPublisher_listener_didReceiveConnection_withContext___blo
     obja = 0;
   }
 
-  if (*(v10 + 153) != 1)
+  if (*(clientCopy + 153) != 1)
   {
     goto LABEL_71;
   }
 
-  if (!v13)
+  if (!collectionCopy)
   {
-    v61 = [(NSMutableDictionary *)self->_lock_roleToPosterCollections objectForKeyedSubscript:*(v10 + 18)];
+    v61 = [(NSMutableDictionary *)self->_lock_roleToPosterCollections objectForKeyedSubscript:*(clientCopy + 18)];
     goto LABEL_66;
   }
 
-  v58 = [v13 posterCollection];
-  v59 = [v58 count];
-  v60 = [*(v10 + 17) count];
+  posterCollection = [collectionCopy posterCollection];
+  v59 = [posterCollection count];
+  v60 = [*(clientCopy + 17) count];
 
   if (v59 != v60)
   {
-    if ([*(v10 + 17) count])
+    if ([*(clientCopy + 17) count])
     {
       v63 = 0;
       do
       {
-        v64 = [*(v10 + 17) objectAtIndexedSubscript:v63];
-        v65 = [v13 posterCollection];
-        v66 = [v65 objectAtIndex:v63];
+        v64 = [*(clientCopy + 17) objectAtIndexedSubscript:v63];
+        posterCollection2 = [collectionCopy posterCollection];
+        v66 = [posterCollection2 objectAtIndex:v63];
 
-        v67 = [v64 serverIdentity];
-        v68 = [v66 serverIdentity];
-        v69 = [v67 isEqual:v68];
+        serverIdentity2 = [v64 serverIdentity];
+        serverIdentity3 = [v66 serverIdentity];
+        v69 = [serverIdentity2 isEqual:serverIdentity3];
 
-        self = v100;
+        self = selfCopy;
         if ((v69 & 1) == 0)
         {
           goto LABEL_64;
         }
       }
 
-      while (++v63 < [*(v10 + 17) count]);
+      while (++v63 < [*(clientCopy + 17) count]);
     }
 
 LABEL_71:
@@ -930,17 +930,17 @@ LABEL_71:
   }
 
 LABEL_64:
-  v61 = *(v10 + 17);
+  v61 = *(clientCopy + 17);
 LABEL_66:
   v62 = v61;
 LABEL_72:
-  *(v10 + 112) = 1;
-  if (*(v10 + 115) == 1)
+  *(clientCopy + 112) = 1;
+  if (*(clientCopy + 115) == 1)
   {
-    [(PRSWallpaperPublisher *)self _lock_sendStateToClient:v10];
+    [(PRSWallpaperPublisher *)self _lock_sendStateToClient:clientCopy];
   }
 
-  if (*(v10 + 129) == 1)
+  if (*(clientCopy + 129) == 1)
   {
     if ([obja count] || objc_msgSend(v96, "count"))
     {
@@ -949,24 +949,24 @@ LABEL_72:
       {
         v71 = objc_opt_class();
         v72 = NSStringFromClass(v71);
-        v73 = v10;
-        v74 = *(v10 + 4);
-        v75 = [obja allKeys];
+        v73 = clientCopy;
+        v74 = *(clientCopy + 4);
+        allKeys = [obja allKeys];
         *buf = 138544130;
         v120 = v72;
         v121 = 2048;
-        v122 = v100;
+        selfCopy5 = selfCopy;
         v123 = 2114;
         v124 = v74;
-        v10 = v73;
-        self = v100;
+        clientCopy = v73;
+        self = selfCopy;
         v125 = 2114;
-        v126 = v75;
+        v126 = allKeys;
         _os_log_impl(&dword_1C26FF000, v70, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> issuing initial update to client %{public}@; data was stale for roles %{public}@", buf, 0x2Au);
       }
 
-      v76 = *(v10 + 3);
-      v77 = [(PRSWallpaperPublisher *)self _lock_buildActivePosterObserverUpdatesForClient:v10 updatedRoles:obja clientSpecificSuggestionsToPosterUUID:v96];
+      v76 = *(clientCopy + 3);
+      v77 = [(PRSWallpaperPublisher *)self _lock_buildActivePosterObserverUpdatesForClient:clientCopy updatedRoles:obja clientSpecificSuggestionsToPosterUUID:v96];
       [v76 notifyRoleActivePosterUpdates:v77];
     }
 
@@ -977,11 +977,11 @@ LABEL_72:
       {
         v90 = objc_opt_class();
         v91 = NSStringFromClass(v90);
-        v92 = *(v10 + 4);
+        v92 = *(clientCopy + 4);
         *buf = 138543874;
         v120 = v91;
         v121 = 2048;
-        v122 = self;
+        selfCopy5 = self;
         v123 = 2114;
         v124 = v92;
         _os_log_impl(&dword_1C26FF000, v77, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> bailing on initial update to client %{public}@; data was up-to-date", buf, 0x20u);
@@ -989,7 +989,7 @@ LABEL_72:
     }
   }
 
-  if (*(v10 + 153) == 1)
+  if (*(clientCopy + 153) == 1)
   {
     v78 = [v62 count];
     v79 = PRSLogObserver();
@@ -1000,12 +1000,12 @@ LABEL_72:
       {
         v81 = objc_opt_class();
         v82 = NSStringFromClass(v81);
-        v83 = *(v10 + 4);
-        v84 = *(v10 + 18);
+        v83 = *(clientCopy + 4);
+        v84 = *(clientCopy + 18);
         *buf = 138544130;
         v120 = v82;
         v121 = 2048;
-        v122 = self;
+        selfCopy5 = self;
         v123 = 2114;
         v124 = v83;
         v125 = 2114;
@@ -1013,8 +1013,8 @@ LABEL_72:
         _os_log_impl(&dword_1C26FF000, v79, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> issuing initial update to client %{public}@; data was stale for poster collection role %{public}@", buf, 0x2Au);
       }
 
-      v85 = *(v10 + 3);
-      v79 = [(PRSWallpaperPublisher *)self _lock_buildPosterCollectionUpdatesForClient:v10 role:*(v10 + 18) updatedPosterCollection:v62];
+      v85 = *(clientCopy + 3);
+      v79 = [(PRSWallpaperPublisher *)self _lock_buildPosterCollectionUpdatesForClient:clientCopy role:*(clientCopy + 18) updatedPosterCollection:v62];
       [v85 notifyRolePosterCollectionUpdates:v79];
     }
 
@@ -1022,20 +1022,20 @@ LABEL_72:
     {
       v86 = objc_opt_class();
       v87 = NSStringFromClass(v86);
-      v88 = *(v10 + 4);
+      v88 = *(clientCopy + 4);
       *buf = 138543874;
       v120 = v87;
       v121 = 2048;
-      v122 = self;
+      selfCopy5 = self;
       v123 = 2114;
       v124 = v88;
       _os_log_impl(&dword_1C26FF000, v79, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> bailing on initial update to client %{public}@ for known poster collection; data was up-to-date", buf, 0x20u);
     }
 
-    v13 = v95;
+    collectionCopy = v95;
   }
 
-  [*(v10 + 3) notifyInitialUpdatesComplete];
+  [*(clientCopy + 3) notifyInitialUpdatesComplete];
 
 LABEL_90:
   os_unfair_lock_unlock(&self->_lock);
@@ -1059,24 +1059,24 @@ void __90__PRSWallpaperPublisher__initializeClient_withKnownIdentities_knownRole
   }
 }
 
-- (void)_initializeClient:(id)a3
+- (void)_initializeClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_lock);
-  if ([(NSMutableSet *)self->_lock_clients containsObject:v4])
+  if ([(NSMutableSet *)self->_lock_clients containsObject:clientCopy])
   {
-    v4[112] = 1;
+    clientCopy[112] = 1;
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_lock_sendStateToClient:(id)a3
+- (void)_lock_sendStateToClient:(id)client
 {
   v69 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  clientCopy = client;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (v5[115] != 1)
+  if (clientCopy[115] != 1)
   {
     [PRSWallpaperPublisher _lock_sendStateToClient:a2];
   }
@@ -1088,14 +1088,14 @@ void __90__PRSWallpaperPublisher__initializeClient_withKnownIdentities_knownRole
   do
   {
     v9 = PRSWallpaperObserverLocationsFromIndex(v6);
-    if ((v9 & ~*(v5 + 13)) != 0)
+    if ((v9 & ~*(clientCopy + 13)) != 0)
     {
       goto LABEL_8;
     }
 
     v10 = &self->super.isa + v6;
     v11 = v10[9];
-    v12 = &v5[8 * v6];
+    v12 = &clientCopy[8 * v6];
     if (v11 == v12[9])
     {
       if (v12[5] == v10[5])
@@ -1134,7 +1134,7 @@ LABEL_8:
     memset(v68, 0, 32);
     do
     {
-      v14 = *&v5[v13 + 40];
+      v14 = *&clientCopy[v13 + 40];
       if (v14)
       {
         objc_storeStrong(&v68[v51++], v14);
@@ -1152,7 +1152,7 @@ LABEL_8:
     v42 = v7;
     obj = v7;
     v15 = v45;
-    v16 = (v5 + 40);
+    v16 = (clientCopy + 40);
     v50 = [obj countByEnumeratingWithState:&v53 objects:v67 count:16];
     if (v50)
     {
@@ -1174,7 +1174,7 @@ LABEL_8:
           do
           {
             v22 = PRSWallpaperObserverLocationsFromIndex(v18);
-            if ((v22 & ~*(v5 + 13)) == 0 && self->_lock_paths[v18] == v20)
+            if ((v22 & ~*(clientCopy + 13)) == 0 && self->_lock_paths[v18] == v20)
             {
               v19 |= v22;
               objc_storeStrong(v21, v20);
@@ -1189,12 +1189,12 @@ LABEL_8:
           {
 LABEL_31:
             v25 = objc_opt_new();
-            if (v5[113] == 1)
+            if (clientCopy[113] == 1)
             {
-              v26 = [*(v5 + 2) remoteProcess];
-              v27 = [v26 auditToken];
-              v28 = v27;
-              if (v27 && ([v27 isInvalid] & 1) == 0)
+              remoteProcess = [*(clientCopy + 2) remoteProcess];
+              auditToken = [remoteProcess auditToken];
+              v28 = auditToken;
+              if (auditToken && ([auditToken isInvalid] & 1) == 0)
               {
                 v52 = 0;
                 v30 = [(PFServerPosterPath *)v20 extendContentsReadAccessToAuditToken:v28 error:&v52];
@@ -1211,14 +1211,14 @@ LABEL_31:
                   {
                     v34 = objc_opt_class();
                     v44 = NSStringFromClass(v34);
-                    v43 = [(PFServerPosterPath *)v20 identity];
-                    v35 = *(v5 + 4);
+                    identity = [(PFServerPosterPath *)v20 identity];
+                    v35 = *(clientCopy + 4);
                     *buf = 138544386;
                     v58 = v44;
                     v59 = 2048;
-                    v60 = self;
+                    selfCopy2 = self;
                     v61 = 2114;
-                    v62 = v43;
+                    v62 = identity;
                     v63 = 2114;
                     v64 = v35;
                     v65 = 2114;
@@ -1227,9 +1227,9 @@ LABEL_31:
                   }
                 }
 
-                v32 = [v25 path];
+                path = [v25 path];
 
-                if (!v32)
+                if (!path)
                 {
                   [v25 setPath:v20];
                 }
@@ -1242,13 +1242,13 @@ LABEL_31:
                 [v25 setPath:v20];
               }
 
-              v16 = (v5 + 40);
+              v16 = (clientCopy + 40);
             }
 
             [v25 setChanged:v19 & v15];
-            v33 = [v25 path];
+            path2 = [v25 path];
 
-            if (!v33)
+            if (!path2)
             {
               [v25 setPath:v20];
             }
@@ -1268,8 +1268,8 @@ LABEL_31:
             }
 
             v25 = objc_opt_new();
-            v29 = [(PFServerPosterPath *)v20 identity];
-            [v25 setIdentity:v29];
+            identity2 = [(PFServerPosterPath *)v20 identity];
+            [v25 setIdentity:identity2];
           }
 
           [v25 setLocations:v19];
@@ -1290,11 +1290,11 @@ LABEL_31:
     {
       v37 = objc_opt_class();
       v38 = NSStringFromClass(v37);
-      v39 = *(v5 + 4);
+      v39 = *(clientCopy + 4);
       *buf = 138544130;
       v58 = v38;
       v59 = 2048;
-      v60 = self;
+      selfCopy2 = self;
       v61 = 2114;
       v62 = v39;
       v63 = 2114;
@@ -1302,7 +1302,7 @@ LABEL_31:
       _os_log_impl(&dword_1C26FF000, v36, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> notifying client %{public}@ of updates=%{public}@", buf, 0x2Au);
     }
 
-    [*(v5 + 3) notifyWallpaperUpdates:v49];
+    [*(clientCopy + 3) notifyWallpaperUpdates:v49];
     v40 = 3;
     v7 = v42;
     do
@@ -1315,11 +1315,11 @@ LABEL_31:
   v41 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_lock_noteChanged:(unint64_t)a3
+- (void)_lock_noteChanged:(unint64_t)changed
 {
   v22 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->_lock);
-  if (a3)
+  if (changed)
   {
     BSAbsoluteMachTimeNow();
     v6 = v5;
@@ -1327,7 +1327,7 @@ LABEL_31:
     v8 = -4;
     do
     {
-      if ((PRSWallpaperObserverLocationsFromIndex((v8 + 4)) & ~a3) == 0)
+      if ((PRSWallpaperObserverLocationsFromIndex((v8 + 4)) & ~changed) == 0)
       {
         ++*lock_changeVersions;
         *(lock_changeVersions - 8) = v6;
@@ -1378,11 +1378,11 @@ LABEL_31:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_lock_noteSnapshotUpdateForPath:(id)a3 snapshotType:(id)a4
+- (void)_lock_noteSnapshotUpdateForPath:(id)path snapshotType:(id)type
 {
   v36 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  v20 = a4;
+  pathCopy = path;
+  typeCopy = type;
   os_unfair_lock_assert_owner(&self->_lock);
   v24 = 0u;
   v25 = 0u;
@@ -1409,7 +1409,7 @@ LABEL_31:
         {
           if (!v9)
           {
-            v9 = [[PRSWallpaperObserverSnapshotUpdate alloc] initWithPath:v21 snapshotType:v20];
+            v9 = [[PRSWallpaperObserverSnapshotUpdate alloc] initWithPath:pathCopy snapshotType:typeCopy];
           }
 
           v13 = PRSLogObserver();
@@ -1421,7 +1421,7 @@ LABEL_31:
             *buf = 138544130;
             v28 = v15;
             v29 = 2048;
-            v30 = self;
+            selfCopy = self;
             v31 = 2114;
             v32 = v16;
             v33 = 2114;
@@ -1450,26 +1450,26 @@ LABEL_31:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_lock_issueUpdateForRoles:(id)a3 suggestionsToPosterUUID:(id)a4
+- (void)_lock_issueUpdateForRoles:(id)roles suggestionsToPosterUUID:(id)d
 {
   v113 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v68 = a4;
+  rolesCopy = roles;
+  dCopy = d;
   os_unfair_lock_assert_owner(&self->_lock);
-  v75 = self;
+  selfCopy = self;
   if (!self->_lock_activated)
   {
     v64 = MEMORY[0x1E696AEC0];
     v65 = objc_opt_class();
     v66 = NSStringFromClass(v65);
-    v67 = [v64 stringWithFormat:@"<%@:%p> received multi-update before role activation", v66, v75];
+    selfCopy = [v64 stringWithFormat:@"<%@:%p> received multi-update before role activation", v66, selfCopy];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       [PRSWallpaperPublisher _lock_issueUpdateForRoles:suggestionsToPosterUUID:];
     }
 
-    [v67 UTF8String];
+    [selfCopy UTF8String];
     _bs_set_crash_log_message();
     __break(0);
     JUMPOUT(0x1C271FF20);
@@ -1480,9 +1480,9 @@ LABEL_31:
   v97 = 0u;
   v98 = 0u;
   v99 = 0u;
-  v7 = [v6 keyEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v96 objects:v112 count:16];
-  v74 = v6;
+  keyEnumerator = [rolesCopy keyEnumerator];
+  v8 = [keyEnumerator countByEnumeratingWithState:&v96 objects:v112 count:16];
+  v74 = rolesCopy;
   if (v8)
   {
     v9 = v8;
@@ -1493,26 +1493,26 @@ LABEL_31:
       {
         if (*v97 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v12 = *(*(&v96 + 1) + 8 * i);
-        v13 = [v6 objectForKeyedSubscript:v12];
-        v14 = [(NSMutableDictionary *)v75->_lock_roleToPath objectForKeyedSubscript:v12];
-        v15 = [v14 serverIdentity];
-        v16 = [v13 serverIdentity];
-        v17 = [v15 isEqual:v16];
+        v13 = [rolesCopy objectForKeyedSubscript:v12];
+        v14 = [(NSMutableDictionary *)selfCopy->_lock_roleToPath objectForKeyedSubscript:v12];
+        serverIdentity = [v14 serverIdentity];
+        serverIdentity2 = [v13 serverIdentity];
+        v17 = [serverIdentity isEqual:serverIdentity2];
 
         if ((v17 & 1) == 0)
         {
-          [(NSMutableDictionary *)v75->_lock_roleToPath setObject:v13 forKeyedSubscript:v12];
+          [(NSMutableDictionary *)selfCopy->_lock_roleToPath setObject:v13 forKeyedSubscript:v12];
           [v76 setObject:v13 forKey:v12];
         }
 
-        v6 = v74;
+        rolesCopy = v74;
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v96 objects:v112 count:16];
+      v9 = [keyEnumerator countByEnumeratingWithState:&v96 objects:v112 count:16];
     }
 
     while (v9);
@@ -1523,9 +1523,9 @@ LABEL_31:
   v93 = 0u;
   v94 = 0u;
   v95 = 0u;
-  v18 = [(NSMutableDictionary *)v75->_lock_roleToPath objectEnumerator];
-  v19 = [v18 countByEnumeratingWithState:&v92 objects:v111 count:16];
-  v20 = v68;
+  objectEnumerator = [(NSMutableDictionary *)selfCopy->_lock_roleToPath objectEnumerator];
+  v19 = [objectEnumerator countByEnumeratingWithState:&v92 objects:v111 count:16];
+  v20 = dCopy;
   if (v19)
   {
     v21 = v19;
@@ -1536,28 +1536,28 @@ LABEL_31:
       {
         if (*v93 != v22)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v24 = *(*(&v92 + 1) + 8 * j);
-        v25 = [v24 serverIdentity];
-        v26 = [v25 posterUUID];
+        serverIdentity3 = [v24 serverIdentity];
+        posterUUID = [serverIdentity3 posterUUID];
 
-        [v78 setObject:v24 forKeyedSubscript:v26];
+        [v78 setObject:v24 forKeyedSubscript:posterUUID];
       }
 
-      v21 = [v18 countByEnumeratingWithState:&v92 objects:v111 count:16];
+      v21 = [objectEnumerator countByEnumeratingWithState:&v92 objects:v111 count:16];
     }
 
     while (v21);
   }
 
-  v73 = [(NSDictionary *)v75->_lock_posterUUIDToSuggestionDescriptorPaths isEqual:v68];
+  v73 = [(NSDictionary *)selfCopy->_lock_posterUUIDToSuggestionDescriptorPaths isEqual:dCopy];
   if ((v73 & 1) == 0)
   {
-    v27 = [v68 copy];
-    lock_posterUUIDToSuggestionDescriptorPaths = v75->_lock_posterUUIDToSuggestionDescriptorPaths;
-    v75->_lock_posterUUIDToSuggestionDescriptorPaths = v27;
+    v27 = [dCopy copy];
+    lock_posterUUIDToSuggestionDescriptorPaths = selfCopy->_lock_posterUUIDToSuggestionDescriptorPaths;
+    selfCopy->_lock_posterUUIDToSuggestionDescriptorPaths = v27;
   }
 
   v77 = objc_opt_new();
@@ -1566,8 +1566,8 @@ LABEL_31:
   v90 = 0u;
   v91 = 0u;
   v29 = v78;
-  v30 = [v78 keyEnumerator];
-  v31 = [v30 countByEnumeratingWithState:&v88 objects:v110 count:16];
+  keyEnumerator2 = [v78 keyEnumerator];
+  v31 = [keyEnumerator2 countByEnumeratingWithState:&v88 objects:v110 count:16];
   if (v31)
   {
     v32 = v31;
@@ -1578,27 +1578,27 @@ LABEL_31:
       {
         if (*v89 != v33)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(keyEnumerator2);
         }
 
         v35 = *(*(&v88 + 1) + 8 * k);
         v36 = [v78 objectForKeyedSubscript:v35];
-        v37 = [v68 objectForKeyedSubscript:v35];
+        v37 = [dCopy objectForKeyedSubscript:v35];
         if (v37)
         {
           [v77 setObject:v37 forKeyedSubscript:v35];
         }
 
-        v38 = [v36 role];
-        v39 = [v76 objectForKey:v38];
+        role = [v36 role];
+        v39 = [v76 objectForKey:role];
 
         if (!v39)
         {
-          [v76 setObject:v36 forKey:v38];
+          [v76 setObject:v36 forKey:role];
         }
       }
 
-      v32 = [v30 countByEnumeratingWithState:&v88 objects:v110 count:16];
+      v32 = [keyEnumerator2 countByEnumeratingWithState:&v88 objects:v110 count:16];
     }
 
     while (v32);
@@ -1610,7 +1610,7 @@ LABEL_31:
     v87 = 0u;
     v84 = 0u;
     v85 = 0u;
-    obj = v75->_lock_clients;
+    obj = selfCopy->_lock_clients;
     v40 = [(NSMutableSet *)obj countByEnumeratingWithState:&v84 objects:v109 count:16];
     if (v40)
     {
@@ -1642,8 +1642,8 @@ LABEL_31:
             v81 = 0u;
             v82 = 0u;
             v83 = 0u;
-            v79 = [v77 keyEnumerator];
-            v46 = [v79 countByEnumeratingWithState:&v80 objects:v108 count:16];
+            keyEnumerator3 = [v77 keyEnumerator];
+            v46 = [keyEnumerator3 countByEnumeratingWithState:&v80 objects:v108 count:16];
             if (v46)
             {
               v47 = v46;
@@ -1654,13 +1654,13 @@ LABEL_31:
                 {
                   if (*v81 != v48)
                   {
-                    objc_enumerationMutation(v79);
+                    objc_enumerationMutation(keyEnumerator3);
                   }
 
                   v50 = *(*(&v80 + 1) + 8 * m);
                   v51 = [v29 objectForKey:v50];
-                  v52 = [v51 role];
-                  if ([*(v44 + 120) containsObject:v52])
+                  role2 = [v51 role];
+                  if ([*(v44 + 120) containsObject:role2])
                   {
                     v53 = [v77 objectForKey:v50];
                     v54 = v45;
@@ -1680,19 +1680,19 @@ LABEL_31:
                   }
                 }
 
-                v47 = [v79 countByEnumeratingWithState:&v80 objects:v108 count:16];
+                v47 = [keyEnumerator3 countByEnumeratingWithState:&v80 objects:v108 count:16];
               }
 
               while (v47);
             }
 
-            v20 = v68;
+            v20 = dCopy;
             v41 = v69;
             v42 = v71;
             v43 = v72;
           }
 
-          v58 = [(PRSWallpaperPublisher *)v75 _lock_buildActivePosterObserverUpdatesForClient:v44 updatedRoles:v76 clientSpecificSuggestionsToPosterUUID:v45];
+          v58 = [(PRSWallpaperPublisher *)selfCopy _lock_buildActivePosterObserverUpdatesForClient:v44 updatedRoles:v76 clientSpecificSuggestionsToPosterUUID:v45];
           if ([v58 count])
           {
             v59 = PRSLogObserver();
@@ -1704,7 +1704,7 @@ LABEL_31:
               *buf = 138544130;
               v101 = v61;
               v102 = 2048;
-              v103 = v75;
+              v103 = selfCopy;
               v104 = 2114;
               v105 = v62;
               v106 = 2114;
@@ -1731,15 +1731,15 @@ LABEL_31:
   v63 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_lock_buildActivePosterObserverUpdatesForClient:(id)a3 updatedRoles:(id)a4 clientSpecificSuggestionsToPosterUUID:(id)a5
+- (id)_lock_buildActivePosterObserverUpdatesForClient:(id)client updatedRoles:(id)roles clientSpecificSuggestionsToPosterUUID:(id)d
 {
   v72 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v42 = self;
+  clientCopy = client;
+  rolesCopy = roles;
+  dCopy = d;
+  selfCopy = self;
   os_unfair_lock_assert_owner(&self->_lock);
-  if (*(v8 + 112) != 1 || *(v8 + 129) != 1)
+  if (*(clientCopy + 112) != 1 || *(clientCopy + 129) != 1)
   {
     v14 = 0;
     goto LABEL_30;
@@ -1749,7 +1749,7 @@ LABEL_31:
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = [v9 keyEnumerator];
+  obj = [rolesCopy keyEnumerator];
   v11 = [obj countByEnumeratingWithState:&v55 objects:v71 count:16];
   if (!v11)
   {
@@ -1762,8 +1762,8 @@ LABEL_31:
   v15 = *v56;
   *&v12 = 138544642;
   v38 = v12;
-  v41 = v9;
-  v45 = v10;
+  v41 = rolesCopy;
+  v45 = dCopy;
   v46 = *v56;
   do
   {
@@ -1777,20 +1777,20 @@ LABEL_31:
       }
 
       v17 = *(*(&v55 + 1) + 8 * v16);
-      if ([*(v8 + 15) containsObject:{v17, v38}])
+      if ([*(clientCopy + 15) containsObject:{v17, v38}])
       {
         v18 = v14;
-        v19 = [v9 objectForKeyedSubscript:v17];
-        v20 = [v19 serverIdentity];
-        v21 = [v20 posterUUID];
-        v22 = [v10 objectForKey:v21];
+        v19 = [rolesCopy objectForKeyedSubscript:v17];
+        serverIdentity = [v19 serverIdentity];
+        posterUUID = [serverIdentity posterUUID];
+        v22 = [dCopy objectForKey:posterUUID];
 
-        if (*(v8 + 128) == 1)
+        if (*(clientCopy + 128) == 1)
         {
-          v23 = [*(v8 + 2) remoteProcess];
-          v24 = [v23 auditToken];
-          v25 = v24;
-          if (v24 && ([v24 isInvalid] & 1) == 0)
+          remoteProcess = [*(clientCopy + 2) remoteProcess];
+          auditToken = [remoteProcess auditToken];
+          v25 = auditToken;
+          if (auditToken && ([auditToken isInvalid] & 1) == 0)
           {
             v54 = 0;
             v29 = [v19 extendContentsReadAccessToAuditToken:v25 error:&v54];
@@ -1810,14 +1810,14 @@ LABEL_31:
               {
                 v34 = objc_opt_class();
                 v40 = NSStringFromClass(v34);
-                v39 = [v19 identity];
-                v35 = *(v8 + 4);
+                identity = [v19 identity];
+                v35 = *(clientCopy + 4);
                 *buf = v38;
                 v60 = v40;
                 v61 = 2048;
-                v62 = v42;
+                v62 = selfCopy;
                 v63 = 2114;
-                v64 = v39;
+                v64 = identity;
                 v65 = 2114;
                 v66 = v17;
                 v67 = 2114;
@@ -1833,14 +1833,14 @@ LABEL_31:
             v49[2] = __124__PRSWallpaperPublisher__lock_buildActivePosterObserverUpdatesForClient_updatedRoles_clientSpecificSuggestionsToPosterUUID___block_invoke;
             v49[3] = &unk_1E818D398;
             v50 = v25;
-            v51 = v42;
+            v51 = selfCopy;
             v52 = v17;
-            v53 = v8;
+            v53 = clientCopy;
             v32 = [v22 bs_mapNoNulls:v49];
 
             v22 = v32;
 LABEL_19:
-            v9 = v41;
+            rolesCopy = v41;
           }
 
           else
@@ -1850,11 +1850,11 @@ LABEL_19:
             {
               v27 = objc_opt_class();
               v43 = NSStringFromClass(v27);
-              v28 = *(v8 + 4);
+              v28 = *(clientCopy + 4);
               *buf = 138544386;
               v60 = v43;
               v61 = 2048;
-              v62 = v42;
+              v62 = selfCopy;
               v63 = 2114;
               v64 = v17;
               v65 = 2114;
@@ -1867,7 +1867,7 @@ LABEL_19:
             }
           }
 
-          v10 = v45;
+          dCopy = v45;
         }
 
         v14 = v18;
@@ -1945,12 +1945,12 @@ void *__124__PRSWallpaperPublisher__lock_buildActivePosterObserverUpdatesForClie
   return v7;
 }
 
-- (void)_lock_issuePosterCollectionUpdate:(id)a3
+- (void)_lock_issuePosterCollectionUpdate:(id)update
 {
   v63 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  updateCopy = update;
   os_unfair_lock_assert_owner(&self->_lock);
-  v43 = self;
+  selfCopy = self;
   if (!self->_lock_activated)
   {
     v34 = MEMORY[0x1E696AEC0];
@@ -1974,8 +1974,8 @@ void *__124__PRSWallpaperPublisher__lock_buildActivePosterObserverUpdatesForClie
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  obj = [v4 keyEnumerator];
-  v41 = v4;
+  obj = [updateCopy keyEnumerator];
+  v41 = updateCopy;
   v42 = [obj countByEnumeratingWithState:&v49 objects:v62 count:16];
   if (v42)
   {
@@ -1990,8 +1990,8 @@ void *__124__PRSWallpaperPublisher__lock_buildActivePosterObserverUpdatesForClie
         }
 
         v6 = *(*(&v49 + 1) + 8 * i);
-        v7 = [(NSMutableDictionary *)v43->_lock_roleToPosterCollections objectForKeyedSubscript:v6];
-        v8 = [v4 objectForKeyedSubscript:v6];
+        v7 = [(NSMutableDictionary *)selfCopy->_lock_roleToPosterCollections objectForKeyedSubscript:v6];
+        v8 = [updateCopy objectForKeyedSubscript:v6];
         v9 = [v7 count];
         if (v9 == [v8 count])
         {
@@ -2005,9 +2005,9 @@ void *__124__PRSWallpaperPublisher__lock_buildActivePosterObserverUpdatesForClie
           {
             v11 = [v7 objectAtIndexedSubscript:v10];
             v12 = [v8 objectAtIndexedSubscript:v10];
-            v13 = [v11 serverIdentity];
-            v14 = [v12 serverIdentity];
-            v15 = [v13 isEqual:v14];
+            serverIdentity = [v11 serverIdentity];
+            serverIdentity2 = [v12 serverIdentity];
+            v15 = [serverIdentity isEqual:serverIdentity2];
 
             if ((v15 & 1) == 0)
             {
@@ -2025,7 +2025,7 @@ void *__124__PRSWallpaperPublisher__lock_buildActivePosterObserverUpdatesForClie
         [v39 setObject:v16 forKeyedSubscript:v6];
 
 LABEL_14:
-        v4 = v41;
+        updateCopy = v41;
       }
 
       v42 = [obj countByEnumeratingWithState:&v49 objects:v62 count:16];
@@ -2041,13 +2041,13 @@ LABEL_14:
     v48[1] = 3221225472;
     v48[2] = __59__PRSWallpaperPublisher__lock_issuePosterCollectionUpdate___block_invoke;
     v48[3] = &unk_1E818D3C0;
-    v48[4] = v43;
+    v48[4] = selfCopy;
     [v39 enumerateKeysAndObjectsUsingBlock:v48];
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v18 = v43->_lock_clients;
+    v18 = selfCopy->_lock_clients;
     v19 = [(NSMutableSet *)v18 countByEnumeratingWithState:&v44 objects:v61 count:16];
     v20 = v39;
     if (v19)
@@ -2070,7 +2070,7 @@ LABEL_14:
           if (v26)
           {
             v27 = [v20 objectForKeyedSubscript:v25];
-            v28 = [(PRSWallpaperPublisher *)v43 _lock_buildPosterCollectionUpdatesForClient:v24 role:v25 updatedPosterCollection:v27];
+            v28 = [(PRSWallpaperPublisher *)selfCopy _lock_buildPosterCollectionUpdatesForClient:v24 role:v25 updatedPosterCollection:v27];
 
             if ([v28 count])
             {
@@ -2083,7 +2083,7 @@ LABEL_14:
                 *buf = 138544130;
                 v54 = v31;
                 v55 = 2048;
-                v56 = v43;
+                v56 = selfCopy;
                 v20 = v39;
                 v57 = 2114;
                 v58 = v32;
@@ -2104,33 +2104,33 @@ LABEL_14:
     }
 
     v17 = v20;
-    v4 = v41;
+    updateCopy = v41;
   }
 
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_lock_buildPosterCollectionUpdatesForClient:(id)a3 role:(id)a4 updatedPosterCollection:(id)a5
+- (id)_lock_buildPosterCollectionUpdatesForClient:(id)client role:(id)role updatedPosterCollection:(id)collection
 {
   v56 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v36 = self;
+  clientCopy = client;
+  roleCopy = role;
+  collectionCopy = collection;
+  selfCopy = self;
   os_unfair_lock_assert_owner(&self->_lock);
-  v11 = [v8[2] remoteProcess];
-  v12 = [v11 auditToken];
-  if (*(v8 + 112) == 1 && *(v8 + 153) == 1)
+  remoteProcess = [clientCopy[2] remoteProcess];
+  auditToken = [remoteProcess auditToken];
+  if (*(clientCopy + 112) == 1 && *(clientCopy + 153) == 1)
   {
-    v31 = v11;
-    v33 = v9;
+    v31 = remoteProcess;
+    v33 = roleCopy;
     v13 = objc_opt_new();
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v32 = v10;
-    v14 = v10;
+    v32 = collectionCopy;
+    v14 = collectionCopy;
     v15 = [v14 countByEnumeratingWithState:&v38 objects:v55 count:16];
     if (!v15)
     {
@@ -2150,11 +2150,11 @@ LABEL_14:
         }
 
         v19 = *(*(&v38 + 1) + 8 * v18);
-        v20 = *(v8 + 152) != 1 || v12 == 0;
-        if (!v20 && ([v12 isInvalid] & 1) == 0)
+        v20 = *(clientCopy + 152) != 1 || auditToken == 0;
+        if (!v20 && ([auditToken isInvalid] & 1) == 0)
         {
           v37 = 0;
-          v21 = [v19 extendContentsReadAccessToAuditToken:v12 error:&v37];
+          v21 = [v19 extendContentsReadAccessToAuditToken:auditToken error:&v37];
           v22 = v37;
           v23 = v22;
           if (v21)
@@ -2168,20 +2168,20 @@ LABEL_14:
           {
             v25 = objc_opt_class();
             v35 = NSStringFromClass(v25);
-            v34 = [v19 identity];
-            v26 = v8[4];
+            identity = [v19 identity];
+            v26 = clientCopy[4];
             *buf = 138544642;
             v44 = v35;
             v45 = 2048;
-            v46 = v36;
+            v46 = selfCopy;
             v47 = 2114;
-            v48 = v34;
+            v48 = identity;
             v49 = 2114;
             v50 = v33;
             v51 = 2114;
             v52 = v26;
             v53 = 2114;
-            v54 = v12;
+            v54 = auditToken;
             _os_log_error_impl(&dword_1C26FF000, v24, OS_LOG_TYPE_ERROR, "<%{public}@:%p> failed to prepare role update of %{public}@/%{public}@ for client %{public}@ due to bad auditToken %{public}@", buf, 0x3Eu);
           }
         }
@@ -2199,13 +2199,13 @@ LABEL_19:
       {
 LABEL_21:
 
-        v9 = v33;
+        roleCopy = v33;
         v27 = [[PRSPosterRoleCollectionObserverUpdate alloc] initWithRole:v33 posterCollection:v13];
         v42 = v27;
         v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v42 count:1];
 
-        v11 = v31;
-        v10 = v32;
+        remoteProcess = v31;
+        collectionCopy = v32;
         goto LABEL_23;
       }
     }
@@ -2234,7 +2234,7 @@ LABEL_23:
       *buf = 138543874;
       v26 = v5;
       v27 = 2048;
-      v28 = self;
+      selfCopy2 = self;
       v29 = 2048;
       v30 = v6;
       _os_log_impl(&dword_1C26FF000, v3, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Activating %lu clients", buf, 0x20u);
@@ -2272,16 +2272,16 @@ LABEL_23:
               *buf = 138543874;
               v26 = v15;
               v27 = 2048;
-              v28 = self;
+              selfCopy2 = self;
               v29 = 2112;
               v30 = v16;
               _os_log_impl(&dword_1C26FF000, v13, OS_LOG_TYPE_DEFAULT, "<%{public}@:%p> Activating client that connected earlier: %@", buf, 0x20u);
             }
 
             [*(v12 + 16) activate];
-            v17 = [*(v12 + 16) remoteTarget];
+            remoteTarget = [*(v12 + 16) remoteTarget];
             v18 = *(v12 + 24);
-            *(v12 + 24) = v17;
+            *(v12 + 24) = remoteTarget;
           }
         }
 

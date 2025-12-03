@@ -1,6 +1,6 @@
 @interface SSLogFileOptions
 - (SSLogFileOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
@@ -26,11 +26,11 @@
   [(SSLogFileOptions *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5[1] = [(NSString *)self->_directoryPath copyWithZone:a3];
-  v5[2] = [(NSString *)self->_fileName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v5[1] = [(NSString *)self->_directoryPath copyWithZone:zone];
+  v5[2] = [(NSString *)self->_fileName copyWithZone:zone];
   v5[3] = self->_maxNumberOfLogFiles;
   v5[4] = self->_maxSizeInBytes;
   return v5;

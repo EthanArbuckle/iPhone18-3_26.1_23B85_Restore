@@ -1,27 +1,27 @@
 @interface LaunchTransitionController
-+ (id)controllerForTransitioningBetweenMessagesController:(id)a3 andLaunchController:(id)a4;
++ (id)controllerForTransitioningBetweenMessagesController:(id)controller andLaunchController:(id)launchController;
 - (LaunchViewController)launchController;
 - (MessagesViewController)messagesController;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
-- (void)performAnimatedTransitionByFadingSplash:(id)a3;
-- (void)performAnimatedTransitionByMovingVideo:(id)a3;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
+- (void)performAnimatedTransitionByFadingSplash:(id)splash;
+- (void)performAnimatedTransitionByMovingVideo:(id)video;
 @end
 
 @implementation LaunchTransitionController
 
-+ (id)controllerForTransitioningBetweenMessagesController:(id)a3 andLaunchController:(id)a4
++ (id)controllerForTransitioningBetweenMessagesController:(id)controller andLaunchController:(id)launchController
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = objc_alloc_init(a1);
-  [v8 setMessagesController:v7];
+  launchControllerCopy = launchController;
+  controllerCopy = controller;
+  v8 = objc_alloc_init(self);
+  [v8 setMessagesController:controllerCopy];
 
-  [v8 setLaunchController:v6];
+  [v8 setLaunchController:launchControllerCopy];
 
   return v8;
 }
 
-- (void)performAnimatedTransitionByFadingSplash:(id)a3
+- (void)performAnimatedTransitionByFadingSplash:(id)splash
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
@@ -32,67 +32,67 @@
   v4[1] = 3221225472;
   v4[2] = sub_10001BCD0;
   v4[3] = &unk_100034878;
-  v5 = a3;
-  v3 = v5;
+  splashCopy = splash;
+  v3 = splashCopy;
   [UIView animateWithDuration:v6 animations:v4 completion:0.2];
 }
 
-- (void)performAnimatedTransitionByMovingVideo:(id)a3
+- (void)performAnimatedTransitionByMovingVideo:(id)video
 {
-  v115 = a3;
-  v137 = self;
-  v4 = [(LaunchTransitionController *)self launchController];
-  v138 = [v4 view];
-  v117 = v4;
-  v114 = [v4 videoController];
-  v5 = [v114 view];
-  [v4 detachVideoController];
-  v116 = [(LaunchTransitionController *)self messagesController];
-  v6 = [v116 view];
-  v7 = [v116 paddleView];
-  [v7 setAutomaticallyStartsPlaying:0];
-  v8 = [v6 superview];
-  v113 = [v7 superview];
+  videoCopy = video;
+  selfCopy = self;
+  launchController = [(LaunchTransitionController *)self launchController];
+  view = [launchController view];
+  v117 = launchController;
+  videoController = [launchController videoController];
+  view2 = [videoController view];
+  [launchController detachVideoController];
+  messagesController = [(LaunchTransitionController *)self messagesController];
+  view3 = [messagesController view];
+  paddleView = [messagesController paddleView];
+  [paddleView setAutomaticallyStartsPlaying:0];
+  superview = [view3 superview];
+  superview2 = [paddleView superview];
   v9 = [UIView alloc];
-  [v8 bounds];
+  [superview bounds];
   v10 = [v9 initWithFrame:?];
   [v10 setUserInteractionEnabled:0];
-  [v8 addSubview:v10];
+  [superview addSubview:v10];
   v11 = [UIView alloc];
   [v10 bounds];
   v12 = [v11 initWithFrame:?];
   [v10 addSubview:v12];
-  [v7 center];
+  [paddleView center];
   v14 = v13;
   v16 = v15;
-  v17 = [v7 superview];
-  [v12 convertPoint:v17 fromView:{v14, v16}];
+  superview3 = [paddleView superview];
+  [v12 convertPoint:superview3 fromView:{v14, v16}];
   v19 = v18;
   v21 = v20;
 
-  [v5 center];
+  [view2 center];
   v23 = v22;
   v25 = v24;
-  v26 = [v5 superview];
-  [v10 convertPoint:v26 fromView:{v23, v25}];
+  superview4 = [view2 superview];
+  [v10 convertPoint:superview4 fromView:{v23, v25}];
   v28 = v27;
   v30 = v29;
 
-  v132 = v6;
-  [v12 addSubview:v6];
-  [v12 addSubview:v7];
-  [v10 addSubview:v138];
-  [v10 addSubview:v5];
-  [v5 setCenter:{v28, v30}];
-  v112 = v7;
-  [v7 setCenter:{v19, v21}];
-  [v5 frame];
+  v132 = view3;
+  [v12 addSubview:view3];
+  [v12 addSubview:paddleView];
+  [v10 addSubview:view];
+  [v10 addSubview:view2];
+  [view2 setCenter:{v28, v30}];
+  v112 = paddleView;
+  [paddleView setCenter:{v19, v21}];
+  [view2 frame];
   v32 = v31;
   v34 = v33;
   v36 = v35;
   v125 = v37;
   v140 = v12;
-  [v7 frameForVideoInCoordinateSpace:v12];
+  [paddleView frameForVideoInCoordinateSpace:v12];
   height = v165.size.height;
   rect = v165.size.width;
   memset(&v164, 0, sizeof(v164));
@@ -155,17 +155,17 @@
   *&v154.m11 = *&v155.a;
   *&v154.m13 = *&v155.c;
   *&v154.m21 = *&v155.tx;
-  [v6 setTransform:&v154];
-  [v5 bounds];
+  [view3 setTransform:&v154];
+  [view2 bounds];
   v51 = CGRectGetWidth(v173);
-  [v5 bounds];
+  [view2 bounds];
   v52 = CGRectGetHeight(v174);
   if (v51 < v52)
   {
     v52 = v51;
   }
 
-  [v5 _setContinuousCornerRadius:v52 / 5.0];
+  [view2 _setContinuousCornerRadius:v52 / 5.0];
   v53 = [CABasicAnimation animationWithKeyPath:@"transform"];
   v54 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
   [v53 setTimingFunction:v54];
@@ -198,13 +198,13 @@
   v57 = [NSValue valueWithCATransform3D:&v154];
   [v53 setToValue:v57];
 
-  v109 = v5;
-  v58 = [v5 layer];
-  [v58 addAnimation:v53 forKey:@"expand-transform"];
+  v109 = view2;
+  layer = [view2 layer];
+  [layer addAnimation:v53 forKey:@"expand-transform"];
 
-  v59 = [v138 layer];
+  layer2 = [view layer];
   v134 = v53;
-  [v59 addAnimation:v53 forKey:@"expand-transform"];
+  [layer2 addAnimation:v53 forKey:@"expand-transform"];
 
   v60 = [CABasicAnimation animationWithKeyPath:@"transform"];
   v61 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
@@ -215,9 +215,9 @@
   [v60 setBeginTime:0.2275];
   v62 = v55;
   [v60 setBeginTimeMode:v55];
-  v63 = [v53 toValue];
+  toValue = [v53 toValue];
   recta = v60;
-  [v60 setFromValue:v63];
+  [v60 setFromValue:toValue];
 
   a = v164;
   b = v163;
@@ -225,8 +225,8 @@
   v64 = [NSValue valueWithCATransform3D:&v154];
   [v60 setToValue:v64];
 
-  v65 = [v5 layer];
-  [v65 addAnimation:v60 forKey:@"move-transform"];
+  layer3 = [view2 layer];
+  [layer3 addAnimation:v60 forKey:@"move-transform"];
 
   v66 = [CABasicAnimation animationWithKeyPath:@"transform"];
   v67 = [CAMediaTimingFunction functionWithName:?];
@@ -236,8 +236,8 @@
   [v66 setDuration:0.2275];
   [v66 setBeginTime:0.2275];
   [v66 setBeginTimeMode:v62];
-  v68 = [v132 layer];
-  v69 = [v68 valueForKeyPath:@"transform"];
+  layer4 = [v132 layer];
+  v69 = [layer4 valueForKeyPath:@"transform"];
   v111 = v66;
   [v66 setFromValue:v69];
 
@@ -252,8 +252,8 @@
   v70 = [NSValue valueWithCATransform3D:&v154];
   [v66 setToValue:v70];
 
-  v71 = [v132 layer];
-  [v71 addAnimation:v66 forKey:@"blend-transform"];
+  layer5 = [v132 layer];
+  [layer5 addAnimation:v66 forKey:@"blend-transform"];
 
   v72 = [CABasicAnimation animationWithKeyPath:@"transform"];
   v73 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
@@ -263,9 +263,9 @@
   [v72 setDuration:0.2275];
   [v72 setBeginTime:0.2275];
   [v72 setBeginTimeMode:v62];
-  v74 = [v53 toValue];
+  toValue2 = [v53 toValue];
   v110 = v72;
-  [v72 setFromValue:v74];
+  [v72 setFromValue:toValue2];
 
   *&v154.m31 = v127;
   *&v154.m33 = v126;
@@ -278,8 +278,8 @@
   v75 = [NSValue valueWithCATransform3D:&v154];
   [v72 setToValue:v75];
 
-  v76 = [v138 layer];
-  [v76 addAnimation:v72 forKey:@"blend-transform"];
+  layer6 = [view layer];
+  [layer6 addAnimation:v72 forKey:@"blend-transform"];
 
   v77 = [CABasicAnimation animationWithKeyPath:@"opacity"];
   v78 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
@@ -289,8 +289,8 @@
   [v77 setDuration:0.2275];
   [v77 setBeginTime:0.2275];
   [v77 setBeginTimeMode:v62];
-  v79 = [v140 layer];
-  v80 = [v79 valueForKeyPath:@"opacity"];
+  layer7 = [v140 layer];
+  v80 = [layer7 valueForKeyPath:@"opacity"];
   *&v127 = v77;
   [v77 setFromValue:v80];
 
@@ -298,8 +298,8 @@
   v82 = [NSNumber numberWithFloat:v81];
   [v77 setToValue:v82];
 
-  v83 = [v140 layer];
-  [v83 addAnimation:v77 forKey:@"blend-opacity"];
+  layer8 = [v140 layer];
+  [layer8 addAnimation:v77 forKey:@"blend-opacity"];
 
   v84 = [CABasicAnimation animationWithKeyPath:@"opacity"];
   v85 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
@@ -309,16 +309,16 @@
   [v84 setDuration:0.2275];
   [v84 setBeginTime:0.2275];
   [v84 setBeginTimeMode:v62];
-  v86 = [v138 layer];
-  v87 = [v86 valueForKeyPath:@"opacity"];
+  layer9 = [view layer];
+  v87 = [layer9 valueForKeyPath:@"opacity"];
   [v84 setFromValue:v87];
 
   v88 = [NSNumber numberWithFloat:0.0];
   *&v126 = v84;
   [v84 setToValue:v88];
 
-  v89 = [v138 layer];
-  [v89 addAnimation:v84 forKey:@"blend-opacity"];
+  layer10 = [view layer];
+  [layer10 addAnimation:v84 forKey:@"blend-opacity"];
 
   v90 = [CABasicAnimation animationWithKeyPath:@"transform"];
   v91 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut];
@@ -328,8 +328,8 @@
   [v90 setDuration:0.13];
   [v90 setBeginTime:0.39];
   [v90 setBeginTimeMode:v62];
-  v92 = [recta toValue];
-  [v90 setFromValue:v92];
+  toValue3 = [recta toValue];
+  [v90 setFromValue:toValue3];
 
   *&a.m12 = v161;
   *&a.m14 = v162;
@@ -345,8 +345,8 @@
   v93 = [NSValue valueWithCATransform3D:&v154];
   [v90 setToValue:v93];
 
-  v94 = [v109 layer];
-  [v94 addAnimation:v90 forKey:@"bounce-down-transform"];
+  layer11 = [v109 layer];
+  [layer11 addAnimation:v90 forKey:@"bounce-down-transform"];
 
   v95 = [CABasicAnimation animationWithKeyPath:@"transform"];
   v96 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseIn];
@@ -356,8 +356,8 @@
   [v95 setDuration:0.13];
   [v95 setBeginTime:0.52];
   [v95 setBeginTimeMode:v62];
-  v97 = [v90 fromValue];
-  [v95 setFromValue:v97];
+  fromValue = [v90 fromValue];
+  [v95 setFromValue:fromValue];
 
   a = v164;
   b = v163;
@@ -365,15 +365,15 @@
   v98 = [NSValue valueWithCATransform3D:&v154];
   [v95 setToValue:v98];
 
-  v99 = [WeakCAAnimationDelegate weakAnimationDelegate:v137];
+  v99 = [WeakCAAnimationDelegate weakAnimationDelegate:selfCopy];
   [v95 setDelegate:v99];
 
   [v95 setRemovedOnCompletion:0];
-  v100 = [v109 layer];
-  [v100 addAnimation:v95 forKey:@"bounce-up-transform"];
+  layer12 = [v109 layer];
+  [layer12 addAnimation:v95 forKey:@"bounce-up-transform"];
 
   [v140 setAlpha:1.0];
-  [v138 setAlpha:0.0];
+  [view setAlpha:0.0];
   v101 = *&CGAffineTransformIdentity.c;
   *&v154.m11 = *&CGAffineTransformIdentity.a;
   *&v154.m13 = v101;
@@ -383,32 +383,32 @@
   v141[1] = 3221225472;
   v141[2] = sub_10001CD28;
   v141[3] = &unk_100034F00;
-  v142 = v113;
+  v142 = superview2;
   v143 = v112;
   v144 = v109;
-  v145 = v114;
-  v146 = v8;
+  v145 = videoController;
+  v146 = superview;
   v147 = v132;
-  v148 = v138;
+  v148 = view;
   v149 = v10;
-  v150 = v137;
-  v151 = v115;
-  v131 = v115;
+  v150 = selfCopy;
+  v151 = videoCopy;
+  v131 = videoCopy;
   v129 = v10;
-  v102 = v138;
+  v102 = view;
   v139 = v132;
-  v103 = v8;
-  v104 = v114;
+  v103 = superview;
+  v104 = videoController;
   v105 = v109;
   v106 = v112;
-  v107 = v113;
+  v107 = superview2;
   v108 = objc_retainBlock(v141);
-  [(LaunchTransitionController *)v137 setTransitionCompletionBlock:v108];
+  [(LaunchTransitionController *)selfCopy setTransitionCompletionBlock:v108];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v5 = [(LaunchTransitionController *)self transitionCompletionBlock:a3];
+  v5 = [(LaunchTransitionController *)self transitionCompletionBlock:stop];
   if (v5)
   {
     v6 = v5;

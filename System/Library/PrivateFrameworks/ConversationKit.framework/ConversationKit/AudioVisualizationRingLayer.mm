@@ -1,14 +1,14 @@
 @interface AudioVisualizationRingLayer
 - (CGRect)bounds;
-- (_TtC15ConversationKit27AudioVisualizationRingLayer)initWithLayer:(id)a3;
+- (_TtC15ConversationKit27AudioVisualizationRingLayer)initWithLayer:(id)layer;
 - (float)opacity;
-- (void)setBounds:(CGRect)a3;
-- (void)setOpacity:(float)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setOpacity:(float)opacity;
 @end
 
 @implementation AudioVisualizationRingLayer
 
-- (_TtC15ConversationKit27AudioVisualizationRingLayer)initWithLayer:(id)a3
+- (_TtC15ConversationKit27AudioVisualizationRingLayer)initWithLayer:(id)layer
 {
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();
@@ -18,21 +18,21 @@
 
 - (float)opacity
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AudioVisualizationRingLayer.opacity.getter();
 
   return v3;
 }
 
-- (void)setOpacity:(float)a3
+- (void)setOpacity:(float)opacity
 {
-  v4 = self;
-  AudioVisualizationRingLayer.opacity.setter(a3);
+  selfCopy = self;
+  AudioVisualizationRingLayer.opacity.setter(opacity);
 }
 
 - (CGRect)bounds
 {
-  v2 = self;
+  selfCopy = self;
   AudioVisualizationRingLayer.bounds.getter();
   v4 = v3;
   v6 = v5;
@@ -50,13 +50,13 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  selfCopy = self;
   AudioVisualizationRingLayer.bounds.setter(x, y, width, height);
 }
 

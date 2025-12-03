@@ -1,9 +1,9 @@
 @interface _UISystemReferenceAngleMultiplexer
 + (_UISystemReferenceAngleMultiplexer)sharedMultiplexer;
 - (_UISystemReferenceAngleMultiplexer)init;
-- (double)_systemReferenceAngleForContextID:(unsigned int)a3;
-- (unint64_t)_systemReferenceAngleModeForContextID:(unsigned int)a3;
-- (void)systemReferenceAngleDidChange:(double)a3 mode:(unint64_t)a4 forWindows:(id)a5;
+- (double)_systemReferenceAngleForContextID:(unsigned int)d;
+- (unint64_t)_systemReferenceAngleModeForContextID:(unsigned int)d;
+- (void)systemReferenceAngleDidChange:(double)change mode:(unint64_t)mode forWindows:(id)windows;
 @end
 
 @implementation _UISystemReferenceAngleMultiplexer
@@ -33,17 +33,17 @@
   return v2;
 }
 
-- (void)systemReferenceAngleDidChange:(double)a3 mode:(unint64_t)a4 forWindows:(id)a5
+- (void)systemReferenceAngleDidChange:(double)change mode:(unint64_t)mode forWindows:(id)windows
 {
   v26[3] = *MEMORY[0x1E69E9840];
-  v7 = [a5 bs_compactMap:&__block_literal_global_3_9];
+  v7 = [windows bs_compactMap:&__block_literal_global_3_9];
   if ([v7 count])
   {
     v25[0] = *MEMORY[0x1E69DED28];
-    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
+    v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:mode];
     v26[0] = v8;
     v25[1] = *MEMORY[0x1E69DED20];
-    v9 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+    v9 = [MEMORY[0x1E696AD98] numberWithDouble:change];
     v26[1] = v9;
     v25[2] = *MEMORY[0x1E69DED10];
     v10 = [MEMORY[0x1E695DFD8] setWithArray:v7];
@@ -59,7 +59,7 @@
         v16 = v15;
         v17 = _UISStringForSystemReferenceAngleMode();
         v19 = 134218498;
-        v20 = a3;
+        changeCopy2 = change;
         v21 = 2112;
         v22 = v17;
         v23 = 2048;
@@ -68,8 +68,8 @@
       }
     }
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 postNotificationName:*MEMORY[0x1E69DED18] object:0 userInfo:v11];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:*MEMORY[0x1E69DED18] object:0 userInfo:v11];
     goto LABEL_4;
   }
 
@@ -80,18 +80,18 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       v11 = v18;
-      v13 = _UISStringForSystemReferenceAngleMode();
+      defaultCenter = _UISStringForSystemReferenceAngleMode();
       v19 = 134218242;
-      v20 = a3;
+      changeCopy2 = change;
       v21 = 2112;
-      v22 = v13;
+      v22 = defaultCenter;
       _os_log_impl(&dword_188A29000, v11, OS_LOG_TYPE_ERROR, "System reference angle changed but there are no affected contexts. Ignoring. angle=%.0f; mode=%@", &v19, 0x16u);
 LABEL_4:
     }
   }
 }
 
-- (double)_systemReferenceAngleForContextID:(unsigned int)a3
+- (double)_systemReferenceAngleForContextID:(unsigned int)d
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = [UIWindow _windowWithContextId:?];
@@ -107,7 +107,7 @@ LABEL_4:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         v16 = 67109376;
-        v17 = a3;
+        dCopy2 = d;
         v18 = 2048;
         v19 = v7;
         v10 = "System reference angle requested for contextID %i -> %.0f";
@@ -129,7 +129,7 @@ LABEL_9:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v16 = 67109120;
-        v17 = a3;
+        dCopy2 = d;
         v10 = "System reference angle requested for an unknown contextID (%i). Returning 0.";
         v11 = v15;
         v12 = 8;
@@ -141,14 +141,14 @@ LABEL_9:
   return v7;
 }
 
-- (unint64_t)_systemReferenceAngleModeForContextID:(unsigned int)a3
+- (unint64_t)_systemReferenceAngleModeForContextID:(unsigned int)d
 {
   v19 = *MEMORY[0x1E69E9840];
   v4 = [UIWindow _windowWithContextId:?];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 _systemReferenceAngleMode];
+    _systemReferenceAngleMode = [v4 _systemReferenceAngleMode];
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("SystemReferenceAngle", &qword_1ED49FD88);
     if (*CategoryCachedImpl)
     {
@@ -158,14 +158,14 @@ LABEL_9:
         v12 = v11;
         v13 = _UISStringForSystemReferenceAngleMode();
         v15 = 67109378;
-        v16 = a3;
+        dCopy2 = d;
         v17 = 2112;
         v18 = v13;
         _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_ERROR, "System reference angle mode requested for contextID %i -> %@", &v15, 0x12u);
       }
     }
 
-    v8 = v6;
+    v8 = _systemReferenceAngleMode;
   }
 
   else
@@ -177,7 +177,7 @@ LABEL_9:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         v15 = 67109120;
-        v16 = a3;
+        dCopy2 = d;
         _os_log_impl(&dword_188A29000, v14, OS_LOG_TYPE_ERROR, "System reference angle mode requested for an unknown contextID (%i). Returning unknown.", &v15, 8u);
       }
     }

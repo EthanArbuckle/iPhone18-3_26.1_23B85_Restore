@@ -1,19 +1,19 @@
 @interface CHAchievementsSectionHeaderView
-+ (CGSize)preferredSizeForSectionName:(id)a3;
++ (CGSize)preferredSizeForSectionName:(id)name;
 + (id)headerFont;
-- (CHAchievementsSectionHeaderView)initWithFrame:(CGRect)a3;
-- (void)configureWithSectionName:(id)a3;
-- (void)setHidesKeyLine:(BOOL)a3;
+- (CHAchievementsSectionHeaderView)initWithFrame:(CGRect)frame;
+- (void)configureWithSectionName:(id)name;
+- (void)setHidesKeyLine:(BOOL)line;
 - (void)setupLabelFont;
 @end
 
 @implementation CHAchievementsSectionHeaderView
 
-- (CHAchievementsSectionHeaderView)initWithFrame:(CGRect)a3
+- (CHAchievementsSectionHeaderView)initWithFrame:(CGRect)frame
 {
   v32.receiver = self;
   v32.super_class = CHAchievementsSectionHeaderView;
-  v3 = [(CHAchievementsSectionHeaderView *)&v32 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CHAchievementsSectionHeaderView *)&v32 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UIView);
@@ -25,28 +25,28 @@
 
     [(UIView *)v3->_keyLineView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(CHAchievementsSectionHeaderView *)v3 addSubview:v3->_keyLineView];
-    v7 = [(UIView *)v3->_keyLineView topAnchor];
-    v8 = [(CHAchievementsSectionHeaderView *)v3 topAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8 constant:0.0];
+    topAnchor = [(UIView *)v3->_keyLineView topAnchor];
+    topAnchor2 = [(CHAchievementsSectionHeaderView *)v3 topAnchor];
+    v9 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     [v9 setActive:1];
 
-    v10 = [(UIView *)v3->_keyLineView widthAnchor];
-    v11 = [(CHAchievementsSectionHeaderView *)v3 widthAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    widthAnchor = [(UIView *)v3->_keyLineView widthAnchor];
+    widthAnchor2 = [(CHAchievementsSectionHeaderView *)v3 widthAnchor];
+    v12 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     [v12 setActive:1];
 
-    v13 = [(UIView *)v3->_keyLineView heightAnchor];
+    heightAnchor = [(UIView *)v3->_keyLineView heightAnchor];
     if (qword_1008F99C8 != -1)
     {
       sub_10069C100();
     }
 
-    v14 = [v13 constraintEqualToConstant:*&qword_1008F99C0];
+    v14 = [heightAnchor constraintEqualToConstant:*&qword_1008F99C0];
     [v14 setActive:1];
 
-    v15 = [(UIView *)v3->_keyLineView leadingAnchor];
-    v16 = [(CHAchievementsSectionHeaderView *)v3 leadingAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16 constant:16.0];
+    leadingAnchor = [(UIView *)v3->_keyLineView leadingAnchor];
+    leadingAnchor2 = [(CHAchievementsSectionHeaderView *)v3 leadingAnchor];
+    v17 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
     keyLineLeadingConstraint = v3->_keyLineLeadingConstraint;
     v3->_keyLineLeadingConstraint = v17;
 
@@ -63,17 +63,17 @@
     [(UILabel *)v3->_label setLineBreakMode:0];
     [(CHAchievementsSectionHeaderView *)v3 addSubview:v3->_label];
     [(CHAchievementsSectionHeaderView *)v3 setupLabelFont];
-    v22 = [(UILabel *)v3->_label leadingAnchor];
-    v23 = [(CHAchievementsSectionHeaderView *)v3 leadingAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23 constant:16.0];
+    leadingAnchor3 = [(UILabel *)v3->_label leadingAnchor];
+    leadingAnchor4 = [(CHAchievementsSectionHeaderView *)v3 leadingAnchor];
+    v24 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
     labelLeadingConstraint = v3->_labelLeadingConstraint;
     v3->_labelLeadingConstraint = v24;
 
     [(NSLayoutConstraint *)v3->_labelLeadingConstraint setActive:1];
-    v26 = [(UILabel *)v3->_label widthAnchor];
+    widthAnchor3 = [(UILabel *)v3->_label widthAnchor];
     v27 = +[UIScreen mainScreen];
     [v27 bounds];
-    v28 = [v26 constraintEqualToConstant:CGRectGetWidth(v33) - 16.0];
+    v28 = [widthAnchor3 constraintEqualToConstant:CGRectGetWidth(v33) - 16.0];
     labelTrailingConstraint = v3->_labelTrailingConstraint;
     v3->_labelTrailingConstraint = v28;
 
@@ -85,12 +85,12 @@
   return v3;
 }
 
-- (void)setHidesKeyLine:(BOOL)a3
+- (void)setHidesKeyLine:(BOOL)line
 {
-  v3 = a3;
-  self->_hidesKeyLine = a3;
-  v4 = [(CHAchievementsSectionHeaderView *)self keyLineView];
-  [v4 setHidden:v3];
+  lineCopy = line;
+  self->_hidesKeyLine = line;
+  keyLineView = [(CHAchievementsSectionHeaderView *)self keyLineView];
+  [keyLineView setHidden:lineCopy];
 }
 
 - (void)setupLabelFont
@@ -98,37 +98,37 @@
   v14 = +[CHAchievementsSectionHeaderView _headerConfiguration];
   [v14 directionalLayoutMargins];
   [(CHAchievementsSectionHeaderView *)self setDirectionalLayoutMargins:?];
-  v3 = [v14 textProperties];
-  v4 = [v3 font];
-  v5 = [(CHAchievementsSectionHeaderView *)self label];
-  [v5 setFont:v4];
+  textProperties = [v14 textProperties];
+  font = [textProperties font];
+  label = [(CHAchievementsSectionHeaderView *)self label];
+  [label setFont:font];
 
-  v6 = [(CHAchievementsSectionHeaderView *)self labelBaselineConstraint];
-  [v6 setActive:0];
+  labelBaselineConstraint = [(CHAchievementsSectionHeaderView *)self labelBaselineConstraint];
+  [labelBaselineConstraint setActive:0];
 
-  v7 = [(CHAchievementsSectionHeaderView *)self label];
-  v8 = [v7 firstBaselineAnchor];
-  v9 = [(CHAchievementsSectionHeaderView *)self topAnchor];
-  v10 = [(CHAchievementsSectionHeaderView *)self label];
-  v11 = [v10 font];
-  [v11 _scaledValueForValue:30.0];
-  v12 = [v8 constraintEqualToAnchor:v9 constant:?];
+  label2 = [(CHAchievementsSectionHeaderView *)self label];
+  firstBaselineAnchor = [label2 firstBaselineAnchor];
+  topAnchor = [(CHAchievementsSectionHeaderView *)self topAnchor];
+  label3 = [(CHAchievementsSectionHeaderView *)self label];
+  font2 = [label3 font];
+  [font2 _scaledValueForValue:30.0];
+  v12 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
   [(CHAchievementsSectionHeaderView *)self setLabelBaselineConstraint:v12];
 
-  v13 = [(CHAchievementsSectionHeaderView *)self labelBaselineConstraint];
-  [v13 setActive:1];
+  labelBaselineConstraint2 = [(CHAchievementsSectionHeaderView *)self labelBaselineConstraint];
+  [labelBaselineConstraint2 setActive:1];
 }
 
-+ (CGSize)preferredSizeForSectionName:(id)a3
++ (CGSize)preferredSizeForSectionName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_alloc_init(UILabel);
   v5 = +[CHAchievementsSectionHeaderView headerFont];
   [v4 setFont:v5];
 
   [v4 setNumberOfLines:0];
   [v4 setLineBreakMode:0];
-  [v4 setText:v3];
+  [v4 setText:nameCopy];
 
   v6 = +[UIScreen mainScreen];
   [v6 bounds];
@@ -147,17 +147,17 @@
 + (id)headerFont
 {
   v2 = +[CHAchievementsSectionHeaderView _headerConfiguration];
-  v3 = [v2 textProperties];
-  v4 = [v3 font];
+  textProperties = [v2 textProperties];
+  font = [textProperties font];
 
-  return v4;
+  return font;
 }
 
-- (void)configureWithSectionName:(id)a3
+- (void)configureWithSectionName:(id)name
 {
-  v4 = a3;
-  v5 = [(CHAchievementsSectionHeaderView *)self label];
-  [v5 setText:v4];
+  nameCopy = name;
+  label = [(CHAchievementsSectionHeaderView *)self label];
+  [label setText:nameCopy];
 }
 
 @end

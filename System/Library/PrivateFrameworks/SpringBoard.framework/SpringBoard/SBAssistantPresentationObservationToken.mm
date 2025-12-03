@@ -1,25 +1,25 @@
 @interface SBAssistantPresentationObservationToken
-- (SBAssistantPresentationObservationToken)initWithAssistantController:(id)a3 scene:(id)a4;
+- (SBAssistantPresentationObservationToken)initWithAssistantController:(id)controller scene:(id)scene;
 - (int64_t)state;
-- (void)assistantDidAppear:(id)a3 windowScene:(id)a4;
-- (void)assistantDidDisappear:(id)a3 windowScene:(id)a4;
-- (void)assistantWillAppear:(id)a3 windowScene:(id)a4;
-- (void)assistantWillDisappear:(id)a3 windowScene:(id)a4;
+- (void)assistantDidAppear:(id)appear windowScene:(id)scene;
+- (void)assistantDidDisappear:(id)disappear windowScene:(id)scene;
+- (void)assistantWillAppear:(id)appear windowScene:(id)scene;
+- (void)assistantWillDisappear:(id)disappear windowScene:(id)scene;
 - (void)dealloc;
 @end
 
 @implementation SBAssistantPresentationObservationToken
 
-- (SBAssistantPresentationObservationToken)initWithAssistantController:(id)a3 scene:(id)a4
+- (SBAssistantPresentationObservationToken)initWithAssistantController:(id)controller scene:(id)scene
 {
-  v7 = a3;
+  controllerCopy = controller;
   v11.receiver = self;
   v11.super_class = SBAssistantPresentationObservationToken;
-  v8 = [(SBPresentationObservationToken *)&v11 initWithScene:a4];
+  v8 = [(SBPresentationObservationToken *)&v11 initWithScene:scene];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_assistantController, a3);
+    objc_storeStrong(&v8->_assistantController, controller);
     [(SBAssistantController *)v9->_assistantController addObserver:v9];
   }
 
@@ -36,14 +36,14 @@
 
 - (int64_t)state
 {
-  v3 = [(SBAssistantController *)self->_assistantController isVisible];
-  v4 = [(SBPresentationObservationToken *)self windowScene];
-  if (v4)
+  isVisible = [(SBAssistantController *)self->_assistantController isVisible];
+  windowScene = [(SBPresentationObservationToken *)self windowScene];
+  if (windowScene)
   {
-    v3 = [(SBAssistantController *)self->_assistantController isVisibleInWindowScene:v4];
+    isVisible = [(SBAssistantController *)self->_assistantController isVisibleInWindowScene:windowScene];
   }
 
-  if (v3)
+  if (isVisible)
   {
     v5 = 3;
   }
@@ -56,55 +56,55 @@
   return v5;
 }
 
-- (void)assistantWillAppear:(id)a3 windowScene:(id)a4
+- (void)assistantWillAppear:(id)appear windowScene:(id)scene
 {
-  v5 = a4;
-  v7 = [(SBPresentationObservationToken *)self windowScene];
+  sceneCopy = scene;
+  windowScene = [(SBPresentationObservationToken *)self windowScene];
 
-  v6 = v7;
-  if (!v7 || v7 == v5)
+  v6 = windowScene;
+  if (!windowScene || windowScene == sceneCopy)
   {
     [(SBPresentationObservationToken *)self willPresent];
-    v6 = v7;
+    v6 = windowScene;
   }
 }
 
-- (void)assistantDidAppear:(id)a3 windowScene:(id)a4
+- (void)assistantDidAppear:(id)appear windowScene:(id)scene
 {
-  v5 = a4;
-  v7 = [(SBPresentationObservationToken *)self windowScene];
+  sceneCopy = scene;
+  windowScene = [(SBPresentationObservationToken *)self windowScene];
 
-  v6 = v7;
-  if (!v7 || v7 == v5)
+  v6 = windowScene;
+  if (!windowScene || windowScene == sceneCopy)
   {
     [(SBPresentationObservationToken *)self didPresent];
-    v6 = v7;
+    v6 = windowScene;
   }
 }
 
-- (void)assistantWillDisappear:(id)a3 windowScene:(id)a4
+- (void)assistantWillDisappear:(id)disappear windowScene:(id)scene
 {
-  v5 = a4;
-  v7 = [(SBPresentationObservationToken *)self windowScene];
+  sceneCopy = scene;
+  windowScene = [(SBPresentationObservationToken *)self windowScene];
 
-  v6 = v7;
-  if (!v7 || v7 == v5)
+  v6 = windowScene;
+  if (!windowScene || windowScene == sceneCopy)
   {
     [(SBPresentationObservationToken *)self willDismiss];
-    v6 = v7;
+    v6 = windowScene;
   }
 }
 
-- (void)assistantDidDisappear:(id)a3 windowScene:(id)a4
+- (void)assistantDidDisappear:(id)disappear windowScene:(id)scene
 {
-  v5 = a4;
-  v7 = [(SBPresentationObservationToken *)self windowScene];
+  sceneCopy = scene;
+  windowScene = [(SBPresentationObservationToken *)self windowScene];
 
-  v6 = v7;
-  if (!v7 || v7 == v5)
+  v6 = windowScene;
+  if (!windowScene || windowScene == sceneCopy)
   {
     [(SBPresentationObservationToken *)self didDismiss];
-    v6 = v7;
+    v6 = windowScene;
   }
 }
 

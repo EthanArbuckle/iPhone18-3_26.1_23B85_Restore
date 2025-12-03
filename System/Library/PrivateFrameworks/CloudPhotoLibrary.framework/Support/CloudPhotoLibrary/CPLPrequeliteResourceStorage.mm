@@ -1,26 +1,26 @@
 @interface CPLPrequeliteResourceStorage
-- (BOOL)_refreshLargestResourceSizeWithError:(id *)a3;
+- (BOOL)_refreshLargestResourceSizeWithError:(id *)error;
 - (BOOL)initializeStorage;
-- (BOOL)openWithError:(id *)a3;
-- (BOOL)releaseIdentity:(id)a3 lastReference:(BOOL *)a4 isTrackedOriginal:(BOOL)a5 error:(id *)a6;
-- (BOOL)resetWithError:(id *)a3;
-- (BOOL)retainIdentity:(id)a3 isTrackedOriginal:(BOOL)a4 error:(id *)a5;
-- (BOOL)upgradeStorageToVersion:(int64_t)a3;
-- (CPLPrequeliteResourceStorage)initWithAbstractObject:(id)a3;
+- (BOOL)openWithError:(id *)error;
+- (BOOL)releaseIdentity:(id)identity lastReference:(BOOL *)reference isTrackedOriginal:(BOOL)original error:(id *)error;
+- (BOOL)resetWithError:(id *)error;
+- (BOOL)retainIdentity:(id)identity isTrackedOriginal:(BOOL)original error:(id *)error;
+- (BOOL)upgradeStorageToVersion:(int64_t)version;
+- (CPLPrequeliteResourceStorage)initWithAbstractObject:(id)object;
 - (id)status;
-- (unint64_t)retainCountForIdentity:(id)a3;
+- (unint64_t)retainCountForIdentity:(id)identity;
 - (unint64_t)totalOriginalResourceSize;
 - (unint64_t)totalResourceSize;
-- (void)enumerateIdentitiesWithBlock:(id)a3;
+- (void)enumerateIdentitiesWithBlock:(id)block;
 @end
 
 @implementation CPLPrequeliteResourceStorage
 
-- (CPLPrequeliteResourceStorage)initWithAbstractObject:(id)a3
+- (CPLPrequeliteResourceStorage)initWithAbstractObject:(id)object
 {
   v14.receiver = self;
   v14.super_class = CPLPrequeliteResourceStorage;
-  v3 = [(CPLPrequeliteStorage *)&v14 initWithAbstractObject:a3];
+  v3 = [(CPLPrequeliteStorage *)&v14 initWithAbstractObject:object];
   if (v3)
   {
     v4 = +[CPLPrequeliteType integerType];
@@ -46,25 +46,25 @@
 {
   v5.receiver = self;
   v5.super_class = CPLPrequeliteResourceStorage;
-  v3 = [(CPLPrequeliteStorage *)&v5 initializeStorage];
-  if (v3)
+  initializeStorage = [(CPLPrequeliteStorage *)&v5 initializeStorage];
+  if (initializeStorage)
   {
-    v3 = [(CPLPrequeliteStorage *)self createMainTableWithDefinition:@"identifierForStorage TEXT UNIQUE NOT NULL error:retainCount INTEGER NOT NULL, size INTEGER, CHECK(retainCount > 0)", 0];
-    if (v3)
+    initializeStorage = [(CPLPrequeliteStorage *)self createMainTableWithDefinition:@"identifierForStorage TEXT UNIQUE NOT NULL error:retainCount INTEGER NOT NULL, size INTEGER, CHECK(retainCount > 0)", 0];
+    if (initializeStorage)
     {
-      v3 = [(CPLPrequeliteStorage *)self createVariable:*(&self->super._shouldUpgradeSchema + 1) defaultValue:&off_10028F148 error:0];
-      if (v3)
+      initializeStorage = [(CPLPrequeliteStorage *)self createVariable:*(&self->super._shouldUpgradeSchema + 1) defaultValue:&off_10028F148 error:0];
+      if (initializeStorage)
       {
-        v3 = [(CPLPrequeliteStorage *)self createVariable:*(&self->_totalSizeVar + 4) defaultValue:&off_10028F148 error:0];
-        if (v3)
+        initializeStorage = [(CPLPrequeliteStorage *)self createVariable:*(&self->_totalSizeVar + 4) defaultValue:&off_10028F148 error:0];
+        if (initializeStorage)
         {
-          v3 = [(CPLPrequeliteStorage *)self createVariable:*(&self->_totalOriginalSizeVar + 4) defaultValue:&off_10028F148 error:0];
-          if (v3)
+          initializeStorage = [(CPLPrequeliteStorage *)self createVariable:*(&self->_totalOriginalSizeVar + 4) defaultValue:&off_10028F148 error:0];
+          if (initializeStorage)
           {
-            v3 = [(CPLPrequeliteStorage *)self createIndexOnColumn:@"identifierForStorage" error:0];
-            if (v3)
+            initializeStorage = [(CPLPrequeliteStorage *)self createIndexOnColumn:@"identifierForStorage" error:0];
+            if (initializeStorage)
             {
-              LOBYTE(v3) = [(CPLPrequeliteStorage *)self createIndexWithName:@"size" withDefinition:@"size DESC" condition:@"size IS NOT NULL" unique:0 error:0];
+              LOBYTE(initializeStorage) = [(CPLPrequeliteStorage *)self createIndexWithName:@"size" withDefinition:@"size DESC" condition:@"size IS NOT NULL" unique:0 error:0];
             }
           }
         }
@@ -72,25 +72,25 @@
     }
   }
 
-  return v3;
+  return initializeStorage;
 }
 
-- (BOOL)upgradeStorageToVersion:(int64_t)a3
+- (BOOL)upgradeStorageToVersion:(int64_t)version
 {
   v14.receiver = self;
   v14.super_class = CPLPrequeliteResourceStorage;
   v5 = [(CPLPrequeliteStorage *)&v14 upgradeStorageToVersion:?];
   if (v5)
   {
-    if (a3 != 91)
+    if (version != 91)
     {
-      if (a3 != 25)
+      if (version != 25)
       {
-        if (a3 == 20)
+        if (version == 20)
         {
-          v6 = [(CPLPrequeliteStorage *)self pqStore];
-          v7 = [(CPLPrequeliteStorage *)self mainTable];
-          v8 = [v6 tableCountOfRecords:v7];
+          pqStore = [(CPLPrequeliteStorage *)self pqStore];
+          mainTable = [(CPLPrequeliteStorage *)self mainTable];
+          v8 = [pqStore tableCountOfRecords:mainTable];
 
           if (v8)
           {
@@ -120,11 +120,11 @@ LABEL_14:
     v5 = [(CPLPrequeliteStorage *)self createVariable:*(&self->_totalOriginalSizeVar + 4) defaultValue:&off_10028F148 error:0];
     if (v5)
     {
-      v9 = [(CPLPrequeliteStorage *)self pqStore];
-      v10 = [v9 pqlConnection];
+      pqStore2 = [(CPLPrequeliteStorage *)self pqStore];
+      pqlConnection = [pqStore2 pqlConnection];
 
-      v11 = [(CPLPrequeliteStorage *)self mainTable];
-      v12 = [v10 execute:{@"ALTER TABLE %@ ADD COLUMN size INTEGER DEFAULT NULL", v11}];
+      mainTable2 = [(CPLPrequeliteStorage *)self mainTable];
+      v12 = [pqlConnection execute:{@"ALTER TABLE %@ ADD COLUMN size INTEGER DEFAULT NULL", mainTable2}];
 
       if (v12)
       {
@@ -141,18 +141,18 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)openWithError:(id *)a3
+- (BOOL)openWithError:(id *)error
 {
   v12.receiver = self;
   v12.super_class = CPLPrequeliteResourceStorage;
-  v4 = [(CPLPrequeliteStorage *)&v12 openWithError:a3];
+  v4 = [(CPLPrequeliteStorage *)&v12 openWithError:error];
   if (v4)
   {
-    v5 = [(CPLPrequeliteResourceStorage *)self abstractObject];
-    v6 = [v5 engineStore];
+    abstractObject = [(CPLPrequeliteResourceStorage *)self abstractObject];
+    engineStore = [abstractObject engineStore];
 
     v7 = [NSNumber numberWithUnsignedLongLong:[(CPLPrequeliteResourceStorage *)self totalResourceSize]];
-    [v6 predictSyncSessionValue:v7 ofType:CPLSyncSessionPredictionTypeUploadResourceSize];
+    [engineStore predictSyncSessionValue:v7 ofType:CPLSyncSessionPredictionTypeUploadResourceSize];
 
     v8 = [(CPLPrequeliteStorage *)self valueForVariable:*(&self->_totalOriginalSizeVar + 4)];
     v9 = v8;
@@ -166,37 +166,37 @@ LABEL_14:
       v10 = &off_10028F148;
     }
 
-    [v6 predictSyncSessionValue:v10 ofType:CPLSyncSessionPredictionTypeLargestResourceSize];
+    [engineStore predictSyncSessionValue:v10 ofType:CPLSyncSessionPredictionTypeLargestResourceSize];
   }
 
   return v4;
 }
 
-- (BOOL)retainIdentity:(id)a3 isTrackedOriginal:(BOOL)a4 error:(id *)a5
+- (BOOL)retainIdentity:(id)identity isTrackedOriginal:(BOOL)original error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [(CPLPrequeliteStorage *)self pqStore];
-  v10 = [v9 pqlConnection];
+  originalCopy = original;
+  identityCopy = identity;
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v11 = [v8 identityForStorage];
-  v12 = [v8 fileSize];
-  if (v12 <= +[CPLResource largeResourceSizeThreshold])
+  identityForStorage = [identityCopy identityForStorage];
+  fileSize = [identityCopy fileSize];
+  if (fileSize <= +[CPLResource largeResourceSizeThreshold])
   {
     v13 = 0;
   }
 
   else
   {
-    v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 fileSize]);
+    v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [identityCopy fileSize]);
   }
 
-  v14 = [(CPLPrequeliteStorage *)self mainTable];
-  v15 = [v10 cplExecute:{@"INSERT OR IGNORE INTO %@ VALUES (%@, 1, %@)", v14, v11, v13}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v15 = [pqlConnection cplExecute:{@"INSERT OR IGNORE INTO %@ VALUES (%@, 1, %@)", mainTable, identityForStorage, v13}];
 
   if (!v15)
   {
-    if (!a5)
+    if (!error)
     {
       LOBYTE(v17) = 0;
       goto LABEL_12;
@@ -205,26 +205,26 @@ LABEL_14:
     goto LABEL_10;
   }
 
-  if (![v10 changes])
+  if (![pqlConnection changes])
   {
-    v16 = [(CPLPrequeliteStorage *)self mainTable];
-    LOBYTE(v17) = [v10 cplExecute:{@"UPDATE %@ SET retainCount = retainCount + 1 WHERE identifierForStorage = %@", v16, v11}];
+    mainTable2 = [(CPLPrequeliteStorage *)self mainTable];
+    LOBYTE(v17) = [pqlConnection cplExecute:{@"UPDATE %@ SET retainCount = retainCount + 1 WHERE identifierForStorage = %@", mainTable2, identityForStorage}];
 
-    if (!a5 || (v17 & 1) != 0)
+    if (!error || (v17 & 1) != 0)
     {
       goto LABEL_12;
     }
 
 LABEL_10:
-    [v10 lastCPLError];
-    *a5 = LOBYTE(v17) = 0;
+    [pqlConnection lastCPLError];
+    *error = LOBYTE(v17) = 0;
     goto LABEL_12;
   }
 
-  v17 = sub_1001C1294(self, [v8 fileSize], a5);
-  if (v17 && v6)
+  v17 = sub_1001C1294(self, [identityCopy fileSize], error);
+  if (v17 && originalCopy)
   {
-    LOBYTE(v17) = sub_1001C1324(self, [v8 fileSize]);
+    LOBYTE(v17) = sub_1001C1324(self, [identityCopy fileSize]);
   }
 
 LABEL_12:
@@ -232,33 +232,33 @@ LABEL_12:
   return v17;
 }
 
-- (BOOL)releaseIdentity:(id)a3 lastReference:(BOOL *)a4 isTrackedOriginal:(BOOL)a5 error:(id *)a6
+- (BOOL)releaseIdentity:(id)identity lastReference:(BOOL *)reference isTrackedOriginal:(BOOL)original error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = [(CPLPrequeliteStorage *)self pqStore];
-  v12 = [v11 pqlConnection];
+  originalCopy = original;
+  identityCopy = identity;
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v13 = [v10 identityForStorage];
-  v14 = [(CPLPrequeliteStorage *)self mainTable];
-  v15 = [v12 cplExecute:{@"UPDATE OR IGNORE %@ SET retainCount = retainCount - 1 WHERE identifierForStorage = %@", v14, v13}];
+  identityForStorage = [identityCopy identityForStorage];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v15 = [pqlConnection cplExecute:{@"UPDATE OR IGNORE %@ SET retainCount = retainCount - 1 WHERE identifierForStorage = %@", mainTable, identityForStorage}];
 
   if (!v15)
   {
     goto LABEL_5;
   }
 
-  if (![v12 changes])
+  if (![pqlConnection changes])
   {
-    v17 = [(CPLPrequeliteStorage *)self mainTable];
-    v18 = [v12 cplExecute:{@"DELETE FROM %@ WHERE identifierForStorage = %@", v17, v13}];
+    mainTable2 = [(CPLPrequeliteStorage *)self mainTable];
+    v18 = [pqlConnection cplExecute:{@"DELETE FROM %@ WHERE identifierForStorage = %@", mainTable2, identityForStorage}];
 
     if (v18)
     {
-      v19 = sub_1001C1394(self, [v10 fileSize], a6);
-      if (v7 && v19)
+      v19 = sub_1001C1394(self, [identityCopy fileSize], error);
+      if (originalCopy && v19)
       {
-        if ((sub_1001C1620(self, [v10 fileSize]) & 1) == 0)
+        if ((sub_1001C1620(self, [identityCopy fileSize]) & 1) == 0)
         {
           goto LABEL_12;
         }
@@ -270,15 +270,15 @@ LABEL_12:
       }
 
       v16 = 1;
-      *a4 = 1;
+      *reference = 1;
       goto LABEL_13;
     }
 
 LABEL_5:
-    if (a6)
+    if (error)
     {
-      [v12 lastCPLError];
-      *a6 = v16 = 0;
+      [pqlConnection lastCPLError];
+      *error = v16 = 0;
       goto LABEL_13;
     }
 
@@ -287,44 +287,44 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  *a4 = 0;
+  *reference = 0;
   v16 = 1;
 LABEL_13:
 
   return v16;
 }
 
-- (unint64_t)retainCountForIdentity:(id)a3
+- (unint64_t)retainCountForIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [(CPLPrequeliteStorage *)self pqStore];
-  v6 = [v5 pqlConnection];
+  identityCopy = identity;
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v7 = [v4 identityForStorage];
+  identityForStorage = [identityCopy identityForStorage];
 
   v8 = objc_opt_class();
-  v9 = [(CPLPrequeliteStorage *)self mainTable];
-  v10 = [v6 cplFetchObjectOfClass:v8 sql:{@"SELECT retainCount FROM %@ WHERE identifierForStorage = %@", v9, v7}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v10 = [pqlConnection cplFetchObjectOfClass:v8 sql:{@"SELECT retainCount FROM %@ WHERE identifierForStorage = %@", mainTable, identityForStorage}];
 
-  v11 = [v10 unsignedIntegerValue];
-  return v11;
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
+  return unsignedIntegerValue;
 }
 
-- (BOOL)_refreshLargestResourceSizeWithError:(id *)a3
+- (BOOL)_refreshLargestResourceSizeWithError:(id *)error
 {
-  v5 = [(CPLPrequeliteStorage *)self pqStore];
-  v6 = [v5 pqlConnection];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
   v7 = objc_opt_class();
-  v8 = [(CPLPrequeliteStorage *)self mainTable];
-  v9 = [v6 fetchObjectOfClass:v7 sql:{@"SELECT MAX(size) FROM %@ WHERE size IS NOT NULL", v8}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v9 = [pqlConnection fetchObjectOfClass:v7 sql:{@"SELECT MAX(size) FROM %@ WHERE size IS NOT NULL", mainTable}];
 
-  v10 = [(CPLPrequeliteStorage *)self setValue:v9 forVariable:*(&self->_totalOriginalSizeVar + 4) error:a3];
+  v10 = [(CPLPrequeliteStorage *)self setValue:v9 forVariable:*(&self->_totalOriginalSizeVar + 4) error:error];
   if (v10)
   {
-    v11 = [(CPLPrequeliteResourceStorage *)self abstractObject];
-    v12 = [v11 engineStore];
-    v13 = v12;
+    abstractObject = [(CPLPrequeliteResourceStorage *)self abstractObject];
+    engineStore = [abstractObject engineStore];
+    v13 = engineStore;
     if (v9)
     {
       v14 = v9;
@@ -335,7 +335,7 @@ LABEL_13:
       v14 = &off_10028F148;
     }
 
-    [v12 predictSyncSessionValue:v14 ofType:CPLSyncSessionPredictionTypeLargestResourceSize];
+    [engineStore predictSyncSessionValue:v14 ofType:CPLSyncSessionPredictionTypeLargestResourceSize];
   }
 
   return v10;
@@ -344,36 +344,36 @@ LABEL_13:
 - (unint64_t)totalResourceSize
 {
   v2 = [(CPLPrequeliteStorage *)self valueForVariable:*(&self->super._shouldUpgradeSchema + 1)];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)totalOriginalResourceSize
 {
   v2 = [(CPLPrequeliteStorage *)self valueForVariable:*(&self->_totalSizeVar + 4)];
-  v3 = [v2 unsignedLongLongValue];
+  unsignedLongLongValue = [v2 unsignedLongLongValue];
 
-  return v3;
+  return unsignedLongLongValue;
 }
 
-- (BOOL)resetWithError:(id *)a3
+- (BOOL)resetWithError:(id *)error
 {
-  v5 = [(CPLPrequeliteStorage *)self pqStore];
-  v6 = [v5 pqlConnection];
-  v7 = [(CPLPrequeliteStorage *)self mainTable];
-  v8 = [v6 cplExecute:{@"DELETE FROM %@", v7}];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v8 = [pqlConnection cplExecute:{@"DELETE FROM %@", mainTable}];
 
   if (v8)
   {
-    sub_1001C1CD0(self, a3);
+    sub_1001C1CD0(self, error);
   }
 
-  else if (a3)
+  else if (error)
   {
-    v9 = [(CPLPrequeliteStorage *)self pqStore];
-    v10 = [v9 pqlConnection];
-    *a3 = [v10 lastError];
+    pqStore2 = [(CPLPrequeliteStorage *)self pqStore];
+    pqlConnection2 = [pqStore2 pqlConnection];
+    *error = [pqlConnection2 lastError];
   }
 
   return v8;
@@ -381,14 +381,14 @@ LABEL_13:
 
 - (id)status
 {
-  v3 = [(CPLPrequeliteStorage *)self pqStore];
-  v4 = [(CPLPrequeliteStorage *)self mainTable];
-  v5 = [v3 tableCountOfRecords:v4];
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v5 = [pqStore tableCountOfRecords:mainTable];
 
-  v6 = [(CPLPrequeliteResourceStorage *)self totalResourceSize];
-  if (v5 | v6)
+  totalResourceSize = [(CPLPrequeliteResourceStorage *)self totalResourceSize];
+  if (v5 | totalResourceSize)
   {
-    v7 = [NSByteCountFormatter stringFromByteCount:v6 countStyle:1];
+    v7 = [NSByteCountFormatter stringFromByteCount:totalResourceSize countStyle:1];
     v8 = [NSString stringWithFormat:@"%lu cached resources - %@", v5, v7];
   }
 
@@ -400,18 +400,18 @@ LABEL_13:
   return v8;
 }
 
-- (void)enumerateIdentitiesWithBlock:(id)a3
+- (void)enumerateIdentitiesWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CPLPrequeliteStorage *)self pqStore];
-  v6 = [v5 pqlConnection];
+  blockCopy = block;
+  pqStore = [(CPLPrequeliteStorage *)self pqStore];
+  pqlConnection = [pqStore pqlConnection];
 
-  v7 = [(CPLPrequeliteStorage *)self mainTable];
-  v8 = [v6 cplFetch:{@"SELECT identifierForStorage FROM %@", v7}];
+  mainTable = [(CPLPrequeliteStorage *)self mainTable];
+  v8 = [pqlConnection cplFetch:{@"SELECT identifierForStorage FROM %@", mainTable}];
 
   if (v8)
   {
-    v18 = v6;
+    v18 = pqlConnection;
     [v8 enumerateObjectsOfClass:objc_opt_class()];
     v23 = 0;
     v19 = 0u;
@@ -436,7 +436,7 @@ LABEL_13:
           v15 = [CPLResourceIdentity identityFromStoredIdentity:v14];
           if (v15)
           {
-            v4[2](v4, v15, &v23);
+            blockCopy[2](blockCopy, v15, &v23);
             if (v23)
             {
               [v9 close];
@@ -465,7 +465,7 @@ LABEL_13:
 
 LABEL_20:
 
-    v6 = v18;
+    pqlConnection = v18;
     goto LABEL_21;
   }
 
@@ -474,9 +474,9 @@ LABEL_20:
     v9 = sub_10016A144();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v17 = [v6 lastCPLError];
+      lastCPLError = [pqlConnection lastCPLError];
       *buf = 138412290;
-      v25 = v17;
+      v25 = lastCPLError;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Can't get an enumerator for retained identifies: %@", buf, 0xCu);
     }
 

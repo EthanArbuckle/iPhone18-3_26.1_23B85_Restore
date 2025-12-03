@@ -1,5 +1,5 @@
 @interface TIInputManagerHandwriting_ja
-- (id)handleKeyboardInput:(id)a3;
+- (id)handleKeyboardInput:(id)input;
 - (void)initImplementation;
 @end
 
@@ -9,24 +9,24 @@
 {
   v5.receiver = self;
   v5.super_class = TIInputManagerHandwriting_ja;
-  v3 = [(TIInputManagerHandwriting *)&v5 initImplementation];
+  initImplementation = [(TIInputManagerHandwriting *)&v5 initImplementation];
   [(TIInputManagerHandwriting *)self updateAddressBook];
   [(TIInputManagerHandwriting *)self updateUserWordEntries];
-  return v3;
+  return initImplementation;
 }
 
-- (id)handleKeyboardInput:(id)a3
+- (id)handleKeyboardInput:(id)input
 {
-  v4 = a3;
-  v5 = [(TIInputManagerHandwriting_ja *)self keyboardState];
-  if ([v5 shouldOutputFullwidthSpace])
+  inputCopy = input;
+  keyboardState = [(TIInputManagerHandwriting_ja *)self keyboardState];
+  if ([keyboardState shouldOutputFullwidthSpace])
   {
-    v6 = [v4 string];
-    v7 = [v6 isEqualToString:@" "];
+    string = [inputCopy string];
+    v7 = [string isEqualToString:@" "];
 
     if (v7)
     {
-      [v4 setString:@"　"];
+      [inputCopy setString:@"　"];
     }
   }
 
@@ -36,7 +36,7 @@
 
   v10.receiver = self;
   v10.super_class = TIInputManagerHandwriting_ja;
-  v8 = [(TIKeyboardInputManagerBase *)&v10 handleKeyboardInput:v4];
+  v8 = [(TIKeyboardInputManagerBase *)&v10 handleKeyboardInput:inputCopy];
 
   return v8;
 }

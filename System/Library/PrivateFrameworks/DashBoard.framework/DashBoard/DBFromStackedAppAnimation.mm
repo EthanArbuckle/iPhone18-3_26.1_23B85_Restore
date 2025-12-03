@@ -1,13 +1,13 @@
 @interface DBFromStackedAppAnimation
-+ (id)animationWithSettings:(id)a3;
-- (void)startAnimationWithCompletion:(id)a3;
++ (id)animationWithSettings:(id)settings;
+- (void)startAnimationWithCompletion:(id)completion;
 @end
 
 @implementation DBFromStackedAppAnimation
 
-+ (id)animationWithSettings:(id)a3
++ (id)animationWithSettings:(id)settings
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(settings);
   v4 = [objc_allocWithZone(type metadata accessor for DBFromStackedAppAnimationSettings()) init];
   v3[2](v3, v4);
   _Block_release(v3);
@@ -17,9 +17,9 @@
   return v6;
 }
 
-- (void)startAnimationWithCompletion:(id)a3
+- (void)startAnimationWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -34,7 +34,7 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   DBFromStackedAppAnimation.startAnimation(completion:)(v7, v6);
   sub_248167864(v7);
 }

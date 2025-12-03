@@ -1,11 +1,11 @@
 @interface TVRCRapportDeviceQuery
-- (BOOL)_shouldReportDevice:(id)a3;
+- (BOOL)_shouldReportDevice:(id)device;
 - (TVRCRapportDeviceQuery)init;
 - (TVRCServiceDeviceQueryDelegate)delegate;
-- (void)_deviceFound:(id)a3;
-- (void)_deviceLost:(id)a3;
-- (void)_disconnectAndRemoveDevice:(id)a3;
-- (void)_mdmConfigChanged:(id)a3;
+- (void)_deviceFound:(id)found;
+- (void)_deviceLost:(id)lost;
+- (void)_disconnectAndRemoveDevice:(id)device;
+- (void)_mdmConfigChanged:(id)changed;
 - (void)_removeAllDevices;
 - (void)dealloc;
 - (void)start;
@@ -23,7 +23,7 @@
     *buf = 136315394;
     v8 = "[TVRCRapportDeviceQuery dealloc]";
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_26CF7F000, v3, OS_LOG_TYPE_DEFAULT, "%s %@", buf, 0x16u);
   }
 
@@ -225,8 +225,8 @@ void __30__TVRCRapportDeviceQuery_init__block_invoke_60()
   [(RPCompanionLinkClient *)v11 setInvalidationHandler:v14];
   [(RPCompanionLinkClient *)self->_companionLinkClient setInterruptionHandler:&__block_literal_global_76];
   [(RPCompanionLinkClient *)self->_companionLinkClient activateWithCompletion:&__block_literal_global_80];
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 addObserver:self selector:sel__mdmConfigChanged_ name:@"TVRXManagedConfigManagerTVRemoteAllowedTVAdded" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__mdmConfigChanged_ name:@"TVRXManagedConfigManagerTVRemoteAllowedTVAdded" object:0];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&v17);
@@ -636,14 +636,14 @@ void __31__TVRCRapportDeviceQuery_start__block_invoke_77(uint64_t a1, void *a2)
   companionLinkClient = self->_companionLinkClient;
   self->_companionLinkClient = 0;
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 removeObserver:self name:@"TVRXManagedConfigManagerTVRemoteAllowedTVAdded" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"TVRXManagedConfigManagerTVRemoteAllowedTVAdded" object:0];
 }
 
-- (void)_deviceFound:(id)a3
+- (void)_deviceFound:(id)found
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  foundCopy = found;
   v5 = _TVRCRapportQueryLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -658,8 +658,8 @@ void __31__TVRCRapportDeviceQuery_start__block_invoke_77(uint64_t a1, void *a2)
   activity_block[2] = __39__TVRCRapportDeviceQuery__deviceFound___block_invoke;
   activity_block[3] = &unk_279D83098;
   activity_block[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = foundCopy;
+  v6 = foundCopy;
   objc_copyWeak(&v10, buf);
   _os_activity_initiate(&dword_26CF7F000, "RPCompanionLinkDevice device discovered", OS_ACTIVITY_FLAG_DETACHED, activity_block);
   objc_destroyWeak(&v10);
@@ -720,10 +720,10 @@ void __39__TVRCRapportDeviceQuery__deviceFound___block_invoke_86(uint64_t a1)
   }
 }
 
-- (void)_deviceLost:(id)a3
+- (void)_deviceLost:(id)lost
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lostCopy = lost;
   v5 = _TVRCRapportQueryLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -737,9 +737,9 @@ void __39__TVRCRapportDeviceQuery__deviceFound___block_invoke_86(uint64_t a1)
   activity_block[1] = 3221225472;
   activity_block[2] = __38__TVRCRapportDeviceQuery__deviceLost___block_invoke;
   activity_block[3] = &unk_279D83098;
-  v9 = v4;
-  v10 = self;
-  v6 = v4;
+  v9 = lostCopy;
+  selfCopy = self;
+  v6 = lostCopy;
   objc_copyWeak(&v11, buf);
   _os_activity_initiate(&dword_26CF7F000, "RPCompanionLinkDevice device lost", OS_ACTIVITY_FLAG_DETACHED, activity_block);
   objc_destroyWeak(&v11);
@@ -889,9 +889,9 @@ void __38__TVRCRapportDeviceQuery__deviceLost___block_invoke_89(uint64_t a1)
   block[3] = &unk_279D826E8;
   objc_copyWeak(&v8, buf);
   dispatch_async(MEMORY[0x277D85CD0], block);
-  v4 = [(TVRCRapportDeviceQuery *)self deviceManager];
-  v5 = [v4 deviceImplMap];
-  [v5 removeAllObjects];
+  deviceManager = [(TVRCRapportDeviceQuery *)self deviceManager];
+  deviceImplMap = [deviceManager deviceImplMap];
+  [deviceImplMap removeAllObjects];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(buf);
@@ -950,14 +950,14 @@ void __43__TVRCRapportDeviceQuery__removeAllDevices__block_invoke(uint64_t a1)
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_shouldReportDevice:(id)a3
+- (BOOL)_shouldReportDevice:(id)device
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 model];
-  v5 = [v4 containsString:@"AppleTV"];
+  deviceCopy = device;
+  model = [deviceCopy model];
+  v5 = [model containsString:@"AppleTV"];
 
-  v6 = [v3 statusFlags] & 0x800;
+  v6 = [deviceCopy statusFlags] & 0x800;
   if (!v5 || !v6)
   {
     v11 = _TVRCRapportQueryLog();
@@ -968,7 +968,7 @@ void __43__TVRCRapportDeviceQuery__removeAllDevices__block_invoke(uint64_t a1)
       *&v15[4] = 1024;
       *&v15[6] = v6 >> 11;
       v16 = 2112;
-      v17 = v3;
+      v17 = deviceCopy;
       _os_log_debug_impl(&dword_26CF7F000, v11, OS_LOG_TYPE_DEBUG, "Device will not be shown because isAppleTV=%d, supportsRemote=%d for device:%@", &v14, 0x18u);
     }
 
@@ -976,8 +976,8 @@ void __43__TVRCRapportDeviceQuery__removeAllDevices__block_invoke(uint64_t a1)
   }
 
   v7 = +[TVRXManagedConfigManager sharedInstance];
-  v8 = [v3 name];
-  v9 = [v7 allowedDeviceWithName:v8];
+  name = [deviceCopy name];
+  v9 = [v7 allowedDeviceWithName:name];
 
   if ((v9 & 1) == 0)
   {
@@ -985,7 +985,7 @@ void __43__TVRCRapportDeviceQuery__removeAllDevices__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138543362;
-      *v15 = v3;
+      *v15 = deviceCopy;
       _os_log_impl(&dword_26CF7F000, v11, OS_LOG_TYPE_DEFAULT, "Device will not be shown because it's now allowed by MDM! %{public}@", &v14, 0xCu);
     }
 
@@ -1002,25 +1002,25 @@ LABEL_10:
   return v10;
 }
 
-- (void)_disconnectAndRemoveDevice:(id)a3
+- (void)_disconnectAndRemoveDevice:(id)device
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 deviceWrapper];
+  deviceCopy = device;
+  deviceWrapper = [deviceCopy deviceWrapper];
 
-  if (v5)
+  if (deviceWrapper)
   {
-    v6 = [(TVRCRapportDeviceQuery *)self deviceManager];
-    v7 = [v4 deviceWrapper];
-    v8 = [v7 device];
-    [v6 removeDeviceImplForLinkDevice:v8];
+    deviceManager = [(TVRCRapportDeviceQuery *)self deviceManager];
+    deviceWrapper2 = [deviceCopy deviceWrapper];
+    device = [deviceWrapper2 device];
+    [deviceManager removeDeviceImplForLinkDevice:device];
 
     v9 = _TVRCRapportQueryLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v4 deviceWrapper];
+      deviceWrapper3 = [deviceCopy deviceWrapper];
       *buf = 138543362;
-      v16 = v10;
+      v16 = deviceWrapper3;
       _os_log_impl(&dword_26CF7F000, v9, OS_LOG_TYPE_DEFAULT, "Telling device to disconnect, device=%{public}@", buf, 0xCu);
     }
 
@@ -1030,7 +1030,7 @@ LABEL_10:
     v12[2] = __53__TVRCRapportDeviceQuery__disconnectAndRemoveDevice___block_invoke;
     v12[3] = &unk_279D82FD0;
     objc_copyWeak(&v14, buf);
-    v13 = v4;
+    v13 = deviceCopy;
     dispatch_async(MEMORY[0x277D85CD0], v12);
 
     objc_destroyWeak(&v14);
@@ -1053,7 +1053,7 @@ void __53__TVRCRapportDeviceQuery__disconnectAndRemoveDevice___block_invoke(uint
   }
 }
 
-- (void)_mdmConfigChanged:(id)a3
+- (void)_mdmConfigChanged:(id)changed
 {
   v25 = *MEMORY[0x277D85DE8];
   v4 = _TVRCRapportQueryLog();
@@ -1064,19 +1064,19 @@ void __53__TVRCRapportDeviceQuery__disconnectAndRemoveDevice___block_invoke(uint
   }
 
   v5 = +[TVRXManagedConfigManager sharedInstance];
-  v6 = [v5 isManagedConfigProfileInstalled];
+  isManagedConfigProfileInstalled = [v5 isManagedConfigProfileInstalled];
 
-  if (v6)
+  if (isManagedConfigProfileInstalled)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v7 = [(TVRCRapportDeviceQuery *)self deviceManager];
-    v8 = [v7 deviceImplMap];
-    v9 = [v8 allValues];
+    deviceManager = [(TVRCRapportDeviceQuery *)self deviceManager];
+    deviceImplMap = [deviceManager deviceImplMap];
+    allValues = [deviceImplMap allValues];
 
-    v10 = [v9 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    v10 = [allValues countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1087,13 +1087,13 @@ void __53__TVRCRapportDeviceQuery__disconnectAndRemoveDevice___block_invoke(uint
         {
           if (*v20 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allValues);
           }
 
           v14 = *(*(&v19 + 1) + 8 * i);
-          v15 = [v14 deviceWrapper];
-          v16 = [v15 device];
-          v17 = [(TVRCRapportDeviceQuery *)self _shouldReportDevice:v16];
+          deviceWrapper = [v14 deviceWrapper];
+          device = [deviceWrapper device];
+          v17 = [(TVRCRapportDeviceQuery *)self _shouldReportDevice:device];
 
           if (!v17)
           {
@@ -1101,7 +1101,7 @@ void __53__TVRCRapportDeviceQuery__disconnectAndRemoveDevice___block_invoke(uint
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v11 = [allValues countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v11);

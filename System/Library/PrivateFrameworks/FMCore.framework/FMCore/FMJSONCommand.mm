@@ -38,53 +38,53 @@
 {
   v9.receiver = self;
   v9.super_class = FMJSONCommand;
-  v3 = [(FMCommandBase *)&v9 headers];
-  v4 = [(FMJSONCommand *)self _requestBodyDict];
-  if (v4)
+  headers = [(FMCommandBase *)&v9 headers];
+  _requestBodyDict = [(FMJSONCommand *)self _requestBodyDict];
+  if (_requestBodyDict)
   {
-    [(FMJSONCommand *)self set_requestBodyDict:v4];
+    [(FMJSONCommand *)self set_requestBodyDict:_requestBodyDict];
   }
 
   else
   {
-    v5 = [(FMJSONCommand *)self jsonBodyDictionary];
-    [(FMJSONCommand *)self set_requestBodyDict:v5];
+    jsonBodyDictionary = [(FMJSONCommand *)self jsonBodyDictionary];
+    [(FMJSONCommand *)self set_requestBodyDict:jsonBodyDictionary];
   }
 
-  v6 = [(FMJSONCommand *)self _requestBodyDict];
-  v7 = [v6 count];
+  _requestBodyDict2 = [(FMJSONCommand *)self _requestBodyDict];
+  v7 = [_requestBodyDict2 count];
 
   if (v7)
   {
-    [v3 setObject:@"application/json; charset=utf-8" forKeyedSubscript:@"Content-Type"];
+    [headers setObject:@"application/json; charset=utf-8" forKeyedSubscript:@"Content-Type"];
   }
 
-  return v3;
+  return headers;
 }
 
 - (id)body
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEA90] data];
-  v4 = [(FMJSONCommand *)self _requestBodyDict];
-  v5 = v4;
-  if (v4)
+  data = [MEMORY[0x277CBEA90] data];
+  _requestBodyDict = [(FMJSONCommand *)self _requestBodyDict];
+  v5 = _requestBodyDict;
+  if (_requestBodyDict)
   {
-    v6 = v4;
+    jsonBodyDictionary = _requestBodyDict;
   }
 
   else
   {
-    v6 = [(FMJSONCommand *)self jsonBodyDictionary];
+    jsonBodyDictionary = [(FMJSONCommand *)self jsonBodyDictionary];
   }
 
-  v7 = v6;
+  v7 = jsonBodyDictionary;
 
   v8 = LogCategory_NetworkingVerbose();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 134218242;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v7;
     _os_log_impl(&dword_24A2EE000, v8, OS_LOG_TYPE_INFO, "[%p] request_body: %@", buf, 0x16u);
@@ -107,12 +107,12 @@
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE658] format:{@"[%@] JSON Creation error: %@", self, v10}];
     }
 
-    v3 = v9;
+    data = v9;
   }
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return data;
 }
 
 - (NSDictionary)jsonResponseDictionary
@@ -123,14 +123,14 @@
   v10 = __Block_byref_object_copy__3;
   v11 = __Block_byref_object_dispose__3;
   v12 = MEMORY[0x277CBEC10];
-  v3 = [(FMJSONCommand *)self responseQueue];
+  responseQueue = [(FMJSONCommand *)self responseQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__FMJSONCommand_jsonResponseDictionary__block_invoke;
   v6[3] = &unk_278FD9A20;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(responseQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -223,17 +223,17 @@ LABEL_16:
 
 - (NSDictionary)serverAlertInfo
 {
-  v2 = [(FMJSONCommand *)self jsonResponseDictionary];
-  v3 = [v2 objectForKeyedSubscript:@"alert"];
-  v4 = [v3 fm_nullToNil];
+  jsonResponseDictionary = [(FMJSONCommand *)self jsonResponseDictionary];
+  v3 = [jsonResponseDictionary objectForKeyedSubscript:@"alert"];
+  fm_nullToNil = [v3 fm_nullToNil];
 
-  return v4;
+  return fm_nullToNil;
 }
 
 - (void)body
 {
   *v4 = 138412546;
-  *&v4[4] = a1;
+  *&v4[4] = self;
   *&v4[12] = 2112;
   *&v4[14] = a2;
   OUTLINED_FUNCTION_0_1(&dword_24A2EE000, a2, a3, "[%@] JSON Creation error: %@", *v4, *&v4[8], *&v4[16], *MEMORY[0x277D85DE8]);

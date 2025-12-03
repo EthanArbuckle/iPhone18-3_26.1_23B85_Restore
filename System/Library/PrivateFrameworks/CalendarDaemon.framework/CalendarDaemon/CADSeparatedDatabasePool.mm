@@ -1,25 +1,25 @@
 @interface CADSeparatedDatabasePool
-- (CADSeparatedDatabasePool)initWithConfig:(id)a3 databaseID:(int)a4;
-- (void)_returnConnectionToPool:(id)a3;
-- (void)purgeConnectionsLastUsedPriorTo:(unint64_t)a3 stats:(id *)a4;
+- (CADSeparatedDatabasePool)initWithConfig:(id)config databaseID:(int)d;
+- (void)_returnConnectionToPool:(id)pool;
+- (void)purgeConnectionsLastUsedPriorTo:(unint64_t)to stats:(id *)stats;
 @end
 
 @implementation CADSeparatedDatabasePool
 
-- (CADSeparatedDatabasePool)initWithConfig:(id)a3 databaseID:(int)a4
+- (CADSeparatedDatabasePool)initWithConfig:(id)config databaseID:(int)d
 {
-  v7 = a3;
+  configCopy = config;
   v18.receiver = self;
   v18.super_class = CADSeparatedDatabasePool;
   v8 = [(CADSeparatedDatabasePool *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_config, a3);
-    v10 = [v7 directoryURL];
-    v11 = [v10 path];
+    objc_storeStrong(&v8->_config, config);
+    directoryURL = [configCopy directoryURL];
+    path = [directoryURL path];
     databasePath = v9->_databasePath;
-    v9->_databasePath = v11;
+    v9->_databasePath = path;
 
     if (![(NSString *)v9->_databasePath hasSuffix:@"/"])
     {
@@ -28,7 +28,7 @@
       v9->_databasePath = v13;
     }
 
-    v9->_databaseID = a4;
+    v9->_databaseID = d;
     v15 = objc_opt_new();
     connections = v9->_connections;
     v9->_connections = v15;
@@ -37,14 +37,14 @@
   return v9;
 }
 
-- (void)_returnConnectionToPool:(id)a3
+- (void)_returnConnectionToPool:(id)pool
 {
-  v4 = a3;
-  [v4 setLastUsedTimestamp:CalApproximateContinuousTime()];
-  [(NSMutableArray *)self->_connections addObject:v4];
+  poolCopy = pool;
+  [poolCopy setLastUsedTimestamp:CalApproximateContinuousTime()];
+  [(NSMutableArray *)self->_connections addObject:poolCopy];
 }
 
-- (void)purgeConnectionsLastUsedPriorTo:(unint64_t)a3 stats:(id *)a4
+- (void)purgeConnectionsLastUsedPriorTo:(unint64_t)to stats:(id *)stats
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
@@ -72,17 +72,17 @@
         objc_enumerationMutation(v7);
       }
 
-      v14 = [*(*(&v17 + 1) + 8 * i) lastUsedTimestamp];
-      if (v14 >= a3)
+      lastUsedTimestamp = [*(*(&v17 + 1) + 8 * i) lastUsedTimestamp];
+      if (lastUsedTimestamp >= to)
       {
-        ++a4->var1;
-        var2 = a4->var2;
-        if (var2 >= v14)
+        ++stats->var1;
+        var2 = stats->var2;
+        if (var2 >= lastUsedTimestamp)
         {
-          var2 = v14;
+          var2 = lastUsedTimestamp;
         }
 
-        a4->var2 = var2;
+        stats->var2 = var2;
       }
 
       else
@@ -93,7 +93,7 @@
         }
 
         [v11 addIndex:v10];
-        ++a4->var0;
+        ++stats->var0;
       }
 
       ++v10;

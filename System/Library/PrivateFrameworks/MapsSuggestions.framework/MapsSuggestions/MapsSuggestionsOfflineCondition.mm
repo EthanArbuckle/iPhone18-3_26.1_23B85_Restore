@@ -14,10 +14,10 @@
 
 - (BOOL)isTrue
 {
-  v2 = [MEMORY[0x1E69A22E8] shared];
-  v3 = [v2 isUsingOffline];
+  mEMORY[0x1E69A22E8] = [MEMORY[0x1E69A22E8] shared];
+  isUsingOffline = [mEMORY[0x1E69A22E8] isUsingOffline];
 
-  return v3;
+  return isUsingOffline;
 }
 
 @end

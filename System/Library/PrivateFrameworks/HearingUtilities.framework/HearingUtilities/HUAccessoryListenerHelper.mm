@@ -1,15 +1,15 @@
 @interface HUAccessoryListenerHelper
-- (HUAccessoryListenerHelper)initWithListenerAddress:(id)a3 andDelegate:(id)a4;
-- (void)addKey:(id)a3;
+- (HUAccessoryListenerHelper)initWithListenerAddress:(id)address andDelegate:(id)delegate;
+- (void)addKey:(id)key;
 - (void)dealloc;
 @end
 
 @implementation HUAccessoryListenerHelper
 
-- (HUAccessoryListenerHelper)initWithListenerAddress:(id)a3 andDelegate:(id)a4
+- (HUAccessoryListenerHelper)initWithListenerAddress:(id)address andDelegate:(id)delegate
 {
-  objc_initWeak(&location, a3);
-  v6 = a4;
+  objc_initWeak(&location, address);
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = HUAccessoryListenerHelper;
   v7 = [(HUAccessoryListenerHelper *)&v10 init];
@@ -18,29 +18,29 @@
     v8 = objc_loadWeakRetained(&location);
     objc_storeWeak(&v7->_listenerAddress, v8);
 
-    objc_storeWeak(&v7->_delegate, v6);
+    objc_storeWeak(&v7->_delegate, delegateCopy);
   }
 
   objc_destroyWeak(&location);
   return v7;
 }
 
-- (void)addKey:(id)a3
+- (void)addKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   keys = self->_keys;
-  v8 = v4;
+  v8 = keyCopy;
   if (!keys)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_keys;
     self->_keys = v6;
 
-    v4 = v8;
+    keyCopy = v8;
     keys = self->_keys;
   }
 
-  [(NSMutableArray *)keys addObject:v4];
+  [(NSMutableArray *)keys addObject:keyCopy];
 }
 
 - (void)dealloc

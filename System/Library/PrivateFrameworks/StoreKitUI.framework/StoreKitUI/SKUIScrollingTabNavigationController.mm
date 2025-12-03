@@ -1,23 +1,23 @@
 @interface SKUIScrollingTabNavigationController
 - (BOOL)isShowingNavigationStackRootContent;
 - (SKUINavigationStackObserver)navigationStackObserver;
-- (SKUIScrollingTabNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (double)_scrollViewBottomContentInsetForViewController:(id)a3;
+- (SKUIScrollingTabNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (double)_scrollViewBottomContentInsetForViewController:(id)controller;
 - (void)_observedNavigationStackDidChange;
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)popToNavigationStackRootContentAnimated:(BOOL)a3 withBehavior:(int64_t)a4;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)didShowViewController:(id)controller animated:(BOOL)animated;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)popToNavigationStackRootContentAnimated:(BOOL)animated withBehavior:(int64_t)behavior;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)scrollingTabBarBottomInsetAdjustmentDidChange;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation SKUIScrollingTabNavigationController
 
-- (SKUIScrollingTabNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (SKUIScrollingTabNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  bundleCopy = bundle;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIScrollingTabNavigationController initWithNibName:bundle:];
@@ -25,7 +25,7 @@
 
   v10.receiver = self;
   v10.super_class = SKUIScrollingTabNavigationController;
-  v8 = [(SUNavigationController *)&v10 initWithNibName:v6 bundle:v7];
+  v8 = [(SUNavigationController *)&v10 initWithNibName:nameCopy bundle:bundleCopy];
   if (v8)
   {
     [(SKUIScrollingTabNavigationController *)v8 setNavigationBarClass:objc_opt_class()];
@@ -34,20 +34,20 @@
   return v8;
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __81__SKUIScrollingTabNavigationController_dismissViewControllerAnimated_completion___block_invoke;
   v9[3] = &unk_2781F9B48;
   v9[4] = self;
-  v10 = v6;
+  v10 = completionCopy;
   v8.receiver = self;
   v8.super_class = SKUIScrollingTabNavigationController;
-  v7 = v6;
-  [(SKUIScrollingTabNavigationController *)&v8 dismissViewControllerAnimated:v4 completion:v9];
+  v7 = completionCopy;
+  [(SKUIScrollingTabNavigationController *)&v8 dismissViewControllerAnimated:animatedCopy completion:v9];
 }
 
 uint64_t __81__SKUIScrollingTabNavigationController_dismissViewControllerAnimated_completion___block_invoke(uint64_t a1)
@@ -63,45 +63,45 @@ uint64_t __81__SKUIScrollingTabNavigationController_dismissViewControllerAnimate
   return [v3 _observedNavigationStackDidChange];
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
   v6.receiver = self;
   v6.super_class = SKUIScrollingTabNavigationController;
-  [(SKUIScrollingTabNavigationController *)&v6 presentViewController:a3 animated:a4 completion:a5];
+  [(SKUIScrollingTabNavigationController *)&v6 presentViewController:controller animated:animated completion:completion];
   [(SKUIScrollingTabNavigationController *)self _observedNavigationStackDidChange];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SKUIScrollingTabNavigationController;
-  [(SKUIScrollingTabNavigationController *)&v4 viewDidAppear:a3];
+  [(SKUIScrollingTabNavigationController *)&v4 viewDidAppear:appear];
   [(SKUIScrollingTabNavigationController *)self _observedNavigationStackDidChange];
 }
 
-- (void)didShowViewController:(id)a3 animated:(BOOL)a4
+- (void)didShowViewController:(id)controller animated:(BOOL)animated
 {
   v5.receiver = self;
   v5.super_class = SKUIScrollingTabNavigationController;
-  [(SKUINavigationController *)&v5 didShowViewController:a3 animated:a4];
+  [(SKUINavigationController *)&v5 didShowViewController:controller animated:animated];
   [(SKUIScrollingTabNavigationController *)self _observedNavigationStackDidChange];
 }
 
-- (double)_scrollViewBottomContentInsetForViewController:(id)a3
+- (double)_scrollViewBottomContentInsetForViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(UIViewController *)self scrollingTabBarController];
-  v6 = v5;
-  if (v5)
+  controllerCopy = controller;
+  scrollingTabBarController = [(UIViewController *)self scrollingTabBarController];
+  v6 = scrollingTabBarController;
+  if (scrollingTabBarController)
   {
-    [v5 contentViewControllerBottomInsetAdjustment];
+    [scrollingTabBarController contentViewControllerBottomInsetAdjustment];
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SKUIScrollingTabNavigationController;
-    [(SKUIScrollingTabNavigationController *)&v10 _scrollViewBottomContentInsetForViewController:v4];
+    [(SKUIScrollingTabNavigationController *)&v10 _scrollViewBottomContentInsetForViewController:controllerCopy];
   }
 
   v8 = v7;
@@ -111,35 +111,35 @@ uint64_t __81__SKUIScrollingTabNavigationController_dismissViewControllerAnimate
 
 - (BOOL)isShowingNavigationStackRootContent
 {
-  v3 = [(SKUIScrollingTabNavigationController *)self viewControllers];
-  v4 = [v3 count];
+  viewControllers = [(SKUIScrollingTabNavigationController *)self viewControllers];
+  v4 = [viewControllers count];
 
   if (v4 > 1)
   {
     return 0;
   }
 
-  v5 = [(SKUIScrollingTabNavigationController *)self presentedViewController];
-  v6 = v5 == 0;
+  presentedViewController = [(SKUIScrollingTabNavigationController *)self presentedViewController];
+  v6 = presentedViewController == 0;
 
   return v6;
 }
 
-- (void)popToNavigationStackRootContentAnimated:(BOOL)a3 withBehavior:(int64_t)a4
+- (void)popToNavigationStackRootContentAnimated:(BOOL)animated withBehavior:(int64_t)behavior
 {
-  v5 = a3;
-  v7 = [(SKUIScrollingTabNavigationController *)self presentedViewController];
-  v8 = v7;
-  if (!v7)
+  animatedCopy = animated;
+  presentedViewController = [(SKUIScrollingTabNavigationController *)self presentedViewController];
+  v8 = presentedViewController;
+  if (!presentedViewController)
   {
-    v10 = self;
-    v11 = v5;
+    selfCopy3 = self;
+    v11 = animatedCopy;
     goto LABEL_13;
   }
 
-  if (a4 == 1)
+  if (behavior == 1)
   {
-    if (v5)
+    if (animatedCopy)
     {
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
@@ -147,30 +147,30 @@ uint64_t __81__SKUIScrollingTabNavigationController_dismissViewControllerAnimate
       v16[3] = &unk_2781F80F0;
       v16[4] = self;
       v12 = v16;
-      v13 = self;
+      selfCopy4 = self;
       v14 = 1;
 LABEL_11:
-      [(SKUIScrollingTabNavigationController *)v13 dismissViewControllerAnimated:v14 completion:v12];
+      [(SKUIScrollingTabNavigationController *)selfCopy4 dismissViewControllerAnimated:v14 completion:v12];
       goto LABEL_14;
     }
 
     [(SKUIScrollingTabNavigationController *)self dismissViewControllerAnimated:0 completion:0];
-    v10 = self;
+    selfCopy3 = self;
     v11 = 0;
 LABEL_13:
-    v15 = [(SKUINavigationController *)v10 popToRootViewControllerAnimated:v11];
+    v15 = [(SKUINavigationController *)selfCopy3 popToRootViewControllerAnimated:v11];
     goto LABEL_14;
   }
 
-  if (a4)
+  if (behavior)
   {
     goto LABEL_14;
   }
 
-  if (![v7 conformsToProtocol:&unk_282993DA8])
+  if (![presentedViewController conformsToProtocol:&unk_282993DA8])
   {
-    v13 = self;
-    v14 = v5;
+    selfCopy4 = self;
+    v14 = animatedCopy;
     v12 = 0;
     goto LABEL_11;
   }
@@ -178,12 +178,12 @@ LABEL_13:
   v9 = v8;
   if ([v9 isShowingNavigationStackRootContent])
   {
-    [(SKUIScrollingTabNavigationController *)self dismissViewControllerAnimated:v5 completion:0];
+    [(SKUIScrollingTabNavigationController *)self dismissViewControllerAnimated:animatedCopy completion:0];
   }
 
   else
   {
-    [v9 popToNavigationStackRootContentAnimated:v5 withBehavior:0];
+    [v9 popToNavigationStackRootContentAnimated:animatedCopy withBehavior:0];
   }
 
 LABEL_14:
@@ -193,21 +193,21 @@ LABEL_14:
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(SKUIScrollingTabNavigationController *)self topViewController];
-    [(SKUIScrollingTabNavigationController *)self _computeAndApplyScrollContentInsetDeltaForViewController:v3];
+    topViewController = [(SKUIScrollingTabNavigationController *)self topViewController];
+    [(SKUIScrollingTabNavigationController *)self _computeAndApplyScrollContentInsetDeltaForViewController:topViewController];
   }
 
   if ([(SKUIScrollingTabNavigationController *)self isViewLoaded])
   {
-    v4 = [(SKUIScrollingTabNavigationController *)self view];
-    [v4 setNeedsLayout];
+    view = [(SKUIScrollingTabNavigationController *)self view];
+    [view setNeedsLayout];
   }
 }
 
 - (void)_observedNavigationStackDidChange
 {
-  v3 = [(SKUIScrollingTabNavigationController *)self navigationStackObserver];
-  [v3 observedNavigationStackDidChange:self];
+  navigationStackObserver = [(SKUIScrollingTabNavigationController *)self navigationStackObserver];
+  [navigationStackObserver observedNavigationStackDidChange:self];
 }
 
 - (SKUINavigationStackObserver)navigationStackObserver

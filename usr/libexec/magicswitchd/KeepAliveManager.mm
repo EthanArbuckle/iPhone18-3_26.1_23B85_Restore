@@ -33,12 +33,12 @@
       goto LABEL_7;
     }
 
-    v8 = [v7 domain];
-    if ([v8 isEqualToString:NSCocoaErrorDomain])
+    domain = [v7 domain];
+    if ([domain isEqualToString:NSCocoaErrorDomain])
     {
-      v9 = [v7 code];
+      code = [v7 code];
 
-      if (v9 == 516)
+      if (code == 516)
       {
 LABEL_7:
         qword_1000213F0 = 2;
@@ -91,12 +91,12 @@ LABEL_14:
       goto LABEL_7;
     }
 
-    v7 = [v6 domain];
-    if ([v7 isEqualToString:NSCocoaErrorDomain])
+    domain = [v6 domain];
+    if ([domain isEqualToString:NSCocoaErrorDomain])
     {
-      v8 = [v6 code];
+      code = [v6 code];
 
-      if (v8 == 4)
+      if (code == 4)
       {
 LABEL_7:
         qword_1000213F0 = 1;

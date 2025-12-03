@@ -1,7 +1,7 @@
 @interface SUBannerCellConfiguration
-+ (double)rowHeightForContext:(id)a3 representedObject:(id)a4;
++ (double)rowHeightForContext:(id)context representedObject:(id)object;
 + (id)copyDefaultContext;
-- (CGSize)_imageSizeForLayoutSize:(CGSize)a3;
+- (CGSize)_imageSizeForLayoutSize:(CGSize)size;
 - (id)copyImageDataProvider;
 - (void)reloadAfterArtworkLoad;
 - (void)reloadImages;
@@ -38,11 +38,11 @@
   return v2;
 }
 
-+ (double)rowHeightForContext:(id)a3 representedObject:(id)a4
++ (double)rowHeightForContext:(id)context representedObject:(id)object
 {
-  v4 = [a3 tableViewStyle];
+  tableViewStyle = [context tableViewStyle];
   result = 101.0;
-  if (v4 == 1)
+  if (tableViewStyle == 1)
   {
     return 84.0;
   }
@@ -141,12 +141,12 @@
   }
 }
 
-- (CGSize)_imageSizeForLayoutSize:(CGSize)a3
+- (CGSize)_imageSizeForLayoutSize:(CGSize)size
 {
-  v3 = a3.width + -6.0;
-  v4 = [self->super.super.super.super._context tableViewStyle];
+  v3 = size.width + -6.0;
+  tableViewStyle = [self->super.super.super.super._context tableViewStyle];
   v5 = v3 + -20.0;
-  if (v4)
+  if (tableViewStyle)
   {
     v5 = v3;
   }

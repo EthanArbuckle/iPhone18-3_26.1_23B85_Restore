@@ -1,32 +1,32 @@
 @interface IDSPseudonymProperties
-- (BOOL)hasBeenExpiredForAtLeast:(double)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPseudonymProperties:(id)a3;
-- (BOOL)willBeExpiredIn:(double)a3;
-- (IDSPseudonymProperties)initWithCoder:(id)a3;
-- (IDSPseudonymProperties)initWithDictionaryRepresentation:(id)a3;
-- (IDSPseudonymProperties)initWithFeatureID:(id)a3 scopeID:(id)a4 expiryEpoch:(double)a5 allowedServices:(id)a6;
+- (BOOL)hasBeenExpiredForAtLeast:(double)least;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPseudonymProperties:(id)properties;
+- (BOOL)willBeExpiredIn:(double)in;
+- (IDSPseudonymProperties)initWithCoder:(id)coder;
+- (IDSPseudonymProperties)initWithDictionaryRepresentation:(id)representation;
+- (IDSPseudonymProperties)initWithFeatureID:(id)d scopeID:(id)iD expiryEpoch:(double)epoch allowedServices:(id)services;
 - (NSDictionary)dictionaryRepresentation;
 - (id)description;
-- (id)withUpdatedAllowedServices:(id)a3;
-- (id)withUpdatedExpiryEpoch:(double)a3;
+- (id)withUpdatedAllowedServices:(id)services;
+- (id)withUpdatedExpiryEpoch:(double)epoch;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSPseudonymProperties
 
-- (IDSPseudonymProperties)initWithFeatureID:(id)a3 scopeID:(id)a4 expiryEpoch:(double)a5 allowedServices:(id)a6
+- (IDSPseudonymProperties)initWithFeatureID:(id)d scopeID:(id)iD expiryEpoch:(double)epoch allowedServices:(id)services
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (!v10)
+  dCopy = d;
+  iDCopy = iD;
+  servicesCopy = services;
+  if (!dCopy)
   {
     sub_1A7E205EC();
   }
 
-  if (![v12 count])
+  if (![servicesCopy count])
   {
     sub_1A7E20660();
   }
@@ -36,16 +36,16 @@
   v13 = [(IDSPseudonymProperties *)&v21 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [dCopy copy];
     featureID = v13->_featureID;
     v13->_featureID = v14;
 
-    v16 = [v11 copy];
+    v16 = [iDCopy copy];
     scopeID = v13->_scopeID;
     v13->_scopeID = v16;
 
-    v13->_expiryEpoch = a5;
-    v18 = [v12 copy];
+    v13->_expiryEpoch = epoch;
+    v18 = [servicesCopy copy];
     allowedServices = v13->_allowedServices;
     v13->_allowedServices = v18;
   }
@@ -53,17 +53,17 @@
   return v13;
 }
 
-- (id)withUpdatedExpiryEpoch:(double)a3
+- (id)withUpdatedExpiryEpoch:(double)epoch
 {
-  v3 = [[IDSPseudonymProperties alloc] initWithFeatureID:self->_featureID scopeID:self->_scopeID expiryEpoch:self->_allowedServices allowedServices:a3];
+  v3 = [[IDSPseudonymProperties alloc] initWithFeatureID:self->_featureID scopeID:self->_scopeID expiryEpoch:self->_allowedServices allowedServices:epoch];
 
   return v3;
 }
 
-- (id)withUpdatedAllowedServices:(id)a3
+- (id)withUpdatedAllowedServices:(id)services
 {
-  v4 = a3;
-  v5 = [[IDSPseudonymProperties alloc] initWithFeatureID:self->_featureID scopeID:self->_scopeID expiryEpoch:v4 allowedServices:self->_expiryEpoch];
+  servicesCopy = services;
+  v5 = [[IDSPseudonymProperties alloc] initWithFeatureID:self->_featureID scopeID:self->_scopeID expiryEpoch:servicesCopy allowedServices:self->_expiryEpoch];
 
   return v5;
 }
@@ -76,56 +76,56 @@
   v13 = *&self->_featureID;
   allowedServices = self->_allowedServices;
   expiryEpoch = self->_expiryEpoch;
-  v8 = [(IDSPseudonymProperties *)self expirationDate];
-  v9 = [MEMORY[0x1E695DF58] currentLocale];
-  v10 = [v8 descriptionWithLocale:v9];
+  expirationDate = [(IDSPseudonymProperties *)self expirationDate];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v10 = [expirationDate descriptionWithLocale:currentLocale];
   v11 = [v3 stringWithFormat:@"<%@: %p featureID: %@, scopeID: %@, allowedServices: %@, expiryEpoch: %fll, expirationDate: %@>", v5, self, v13, allowedServices, *&expiryEpoch, v10];
 
   return v11;
 }
 
-- (BOOL)hasBeenExpiredForAtLeast:(double)a3
+- (BOOL)hasBeenExpiredForAtLeast:(double)least
 {
-  v4 = [(IDSPseudonymProperties *)self expirationDate];
-  [v4 timeIntervalSinceNow];
-  v6 = v5 < -a3;
+  expirationDate = [(IDSPseudonymProperties *)self expirationDate];
+  [expirationDate timeIntervalSinceNow];
+  v6 = v5 < -least;
 
   return v6;
 }
 
-- (BOOL)willBeExpiredIn:(double)a3
+- (BOOL)willBeExpiredIn:(double)in
 {
-  v4 = [(IDSPseudonymProperties *)self expirationDate];
-  [v4 timeIntervalSinceNow];
-  v6 = v5 < a3;
+  expirationDate = [(IDSPseudonymProperties *)self expirationDate];
+  [expirationDate timeIntervalSinceNow];
+  v6 = v5 < in;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSPseudonymProperties *)self isEqualToPseudonymProperties:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSPseudonymProperties *)self isEqualToPseudonymProperties:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToPseudonymProperties:(id)a3
+- (BOOL)isEqualToPseudonymProperties:(id)properties
 {
-  v4 = a3;
-  if (self != v4)
+  propertiesCopy = properties;
+  if (self != propertiesCopy)
   {
-    v5 = [(IDSPseudonymProperties *)self featureID];
-    v6 = [(IDSPseudonymProperties *)v4 featureID];
-    if (![v5 isEqualToString:v6])
+    featureID = [(IDSPseudonymProperties *)self featureID];
+    featureID2 = [(IDSPseudonymProperties *)propertiesCopy featureID];
+    if (![featureID isEqualToString:featureID2])
     {
       goto LABEL_6;
     }
 
     [(IDSPseudonymProperties *)self expiryEpoch];
     v8 = v7;
-    [(IDSPseudonymProperties *)v4 expiryEpoch];
+    [(IDSPseudonymProperties *)propertiesCopy expiryEpoch];
     v10 = v8 - v9;
     if (v10 < 0.0)
     {
@@ -141,11 +141,11 @@ LABEL_23:
       goto LABEL_24;
     }
 
-    v12 = [(IDSPseudonymProperties *)self allowedServices];
-    v13 = [v12 __imSetFromArray];
-    v14 = [(IDSPseudonymProperties *)v4 allowedServices];
-    v15 = [v14 __imSetFromArray];
-    if (![v13 isEqualToSet:v15])
+    allowedServices = [(IDSPseudonymProperties *)self allowedServices];
+    __imSetFromArray = [allowedServices __imSetFromArray];
+    allowedServices2 = [(IDSPseudonymProperties *)propertiesCopy allowedServices];
+    __imSetFromArray2 = [allowedServices2 __imSetFromArray];
+    if (![__imSetFromArray isEqualToSet:__imSetFromArray2])
     {
       v11 = 0;
 LABEL_22:
@@ -153,13 +153,13 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v16 = [(IDSPseudonymProperties *)self scopeID];
-    if (!v16)
+    scopeID = [(IDSPseudonymProperties *)self scopeID];
+    if (!scopeID)
     {
-      v25 = [(IDSPseudonymProperties *)v4 scopeID];
-      if (!v25)
+      scopeID2 = [(IDSPseudonymProperties *)propertiesCopy scopeID];
+      if (!scopeID2)
       {
-        v25 = 0;
+        scopeID2 = 0;
         v11 = 1;
 LABEL_20:
 
@@ -167,20 +167,20 @@ LABEL_20:
       }
     }
 
-    v17 = [(IDSPseudonymProperties *)self scopeID];
-    if (v17)
+    scopeID3 = [(IDSPseudonymProperties *)self scopeID];
+    if (scopeID3)
     {
-      v18 = v17;
-      v19 = [(IDSPseudonymProperties *)v4 scopeID];
-      if (v19)
+      v18 = scopeID3;
+      scopeID4 = [(IDSPseudonymProperties *)propertiesCopy scopeID];
+      if (scopeID4)
       {
-        v23 = v19;
-        v22 = [(IDSPseudonymProperties *)self scopeID];
-        [(IDSPseudonymProperties *)v4 scopeID];
-        v20 = v24 = v16;
-        v11 = [v22 isEqualToString:v20];
+        v23 = scopeID4;
+        scopeID5 = [(IDSPseudonymProperties *)self scopeID];
+        [(IDSPseudonymProperties *)propertiesCopy scopeID];
+        v20 = v24 = scopeID;
+        v11 = [scopeID5 isEqualToString:v20];
 
-        v16 = v24;
+        scopeID = v24;
         if (!v24)
         {
           goto LABEL_20;
@@ -193,7 +193,7 @@ LABEL_21:
     }
 
     v11 = 0;
-    if (!v16)
+    if (!scopeID)
     {
       goto LABEL_20;
     }
@@ -209,84 +209,84 @@ LABEL_24:
 
 - (unint64_t)hash
 {
-  v3 = [(IDSPseudonymProperties *)self featureID];
-  v4 = [v3 hash] + 31;
+  featureID = [(IDSPseudonymProperties *)self featureID];
+  v4 = [featureID hash] + 31;
 
-  v5 = [(IDSPseudonymProperties *)self scopeID];
+  scopeID = [(IDSPseudonymProperties *)self scopeID];
 
-  if (v5)
+  if (scopeID)
   {
-    v6 = [(IDSPseudonymProperties *)self scopeID];
-    v4 = [v6 hash] - v4 + 32 * v4;
+    scopeID2 = [(IDSPseudonymProperties *)self scopeID];
+    v4 = [scopeID2 hash] - v4 + 32 * v4;
   }
 
-  v7 = [(IDSPseudonymProperties *)self allowedServices];
-  v8 = [v7 __imSetFromArray];
-  v9 = [v8 hash] - v4 + 32 * v4;
+  allowedServices = [(IDSPseudonymProperties *)self allowedServices];
+  __imSetFromArray = [allowedServices __imSetFromArray];
+  v9 = [__imSetFromArray hash] - v4 + 32 * v4;
 
   [(IDSPseudonymProperties *)self expiryEpoch];
   return (v10 + (31 * v9));
 }
 
-- (IDSPseudonymProperties)initWithDictionaryRepresentation:(id)a3
+- (IDSPseudonymProperties)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 _stringForKey:@"f"];
-  v6 = [v4 _stringForKey:@"s"];
-  v7 = [v4 _numberForKey:@"p"];
+  representationCopy = representation;
+  v5 = [representationCopy _stringForKey:@"f"];
+  v6 = [representationCopy _stringForKey:@"s"];
+  v7 = [representationCopy _numberForKey:@"p"];
   [v7 doubleValue];
   v9 = v8;
 
-  v10 = [v4 _arrayForKey:@"a"];
+  v10 = [representationCopy _arrayForKey:@"a"];
 
   if (v5 && [v10 count])
   {
     self = [(IDSPseudonymProperties *)self initWithFeatureID:v5 scopeID:v6 expiryEpoch:v10 allowedServices:v9];
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (IDSPseudonymProperties)initWithCoder:(id)a3
+- (IDSPseudonymProperties)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"f"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"s"];
-  [v4 decodeDoubleForKey:@"p"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"f"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"s"];
+  [coderCopy decodeDoubleForKey:@"p"];
   v8 = v7;
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v12 = [v4 decodeObjectOfClasses:v11 forKey:@"a"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"a"];
 
   if (v5 && [v12 count])
   {
     self = [(IDSPseudonymProperties *)self initWithFeatureID:v5 scopeID:v6 expiryEpoch:v12 allowedServices:v8];
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   featureID = self->_featureID;
-  v5 = a3;
-  [v5 encodeObject:featureID forKey:@"f"];
-  [v5 encodeObject:self->_scopeID forKey:@"s"];
-  [v5 encodeDouble:@"p" forKey:self->_expiryEpoch];
-  [v5 encodeObject:self->_allowedServices forKey:@"a"];
+  coderCopy = coder;
+  [coderCopy encodeObject:featureID forKey:@"f"];
+  [coderCopy encodeObject:self->_scopeID forKey:@"s"];
+  [coderCopy encodeDouble:@"p" forKey:self->_expiryEpoch];
+  [coderCopy encodeObject:self->_allowedServices forKey:@"a"];
 }
 
 - (NSDictionary)dictionaryRepresentation

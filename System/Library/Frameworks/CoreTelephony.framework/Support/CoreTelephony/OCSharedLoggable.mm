@@ -1,10 +1,10 @@
 @interface OCSharedLoggable
-- (OCSharedLoggable)initWithName:(const char *)a3 qosClass:(unsigned int)a4 logContext:(OsLogContext)a5;
-- (OCSharedLoggable)initWithQueue:(queue)a3 logContext:(OsLogContext)a4;
+- (OCSharedLoggable)initWithName:(const char *)name qosClass:(unsigned int)class logContext:(OsLogContext)context;
+- (OCSharedLoggable)initWithQueue:(queue)queue logContext:(OsLogContext)context;
 - (OsLogContext)getLogContext;
 - (id).cxx_construct;
 - (queue)getQueue;
-- (void)setQueue:(queue)a3;
+- (void)setQueue:(queue)queue;
 @end
 
 @implementation OCSharedLoggable
@@ -37,7 +37,7 @@
   return fObj;
 }
 
-- (OCSharedLoggable)initWithQueue:(queue)a3 logContext:(OsLogContext)a4
+- (OCSharedLoggable)initWithQueue:(queue)queue logContext:(OsLogContext)context
 {
   v10.receiver = self;
   v10.super_class = OCSharedLoggable;
@@ -45,8 +45,8 @@
   v6 = v5;
   if (v5)
   {
-    v7 = *a3.fObj.fObj;
-    *a3.fObj.fObj = 0;
+    v7 = *queue.fObj.fObj;
+    *queue.fObj.fObj = 0;
     fObj = v5->_queue.fObj.fObj;
     v6->_queue.fObj.fObj = v7;
     if (fObj)
@@ -60,11 +60,11 @@
   return v6;
 }
 
-- (OCSharedLoggable)initWithName:(const char *)a3 qosClass:(unsigned int)a4 logContext:(OsLogContext)a5
+- (OCSharedLoggable)initWithName:(const char *)name qosClass:(unsigned int)class logContext:(OsLogContext)context
 {
-  domain = a5.domain;
-  v8 = dispatch_queue_attr_make_with_qos_class(0, a4, 0);
-  object = dispatch_queue_create(a3, v8);
+  domain = context.domain;
+  v8 = dispatch_queue_attr_make_with_qos_class(0, class, 0);
+  object = dispatch_queue_create(name, v8);
   ctu::OsLogContext::OsLogContext(v11, domain);
   v9 = [(OCSharedLoggable *)self initWithQueue:&object logContext:v11];
   ctu::OsLogContext::~OsLogContext(v11);
@@ -76,12 +76,12 @@
   return v9;
 }
 
-- (void)setQueue:(queue)a3
+- (void)setQueue:(queue)queue
 {
-  v4 = *a3.fObj.fObj;
-  if (*a3.fObj.fObj)
+  v4 = *queue.fObj.fObj;
+  if (*queue.fObj.fObj)
   {
-    dispatch_retain(*a3.fObj.fObj);
+    dispatch_retain(*queue.fObj.fObj);
   }
 
   fObj = self->_queue.fObj.fObj;

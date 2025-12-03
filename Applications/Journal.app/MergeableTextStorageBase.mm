@@ -1,8 +1,8 @@
 @interface MergeableTextStorageBase
-- (id)attribute:(id)a3 atIndex:(unint64_t)a4 effectiveRange:(_NSRange *)a5;
-- (id)attribute:(id)a3 atIndex:(unint64_t)a4 longestEffectiveRange:(_NSRange *)a5 inRange:(_NSRange)a6;
-- (id)attributesAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)attributesAtIndex:(unint64_t)a3 longestEffectiveRange:(_NSRange *)a4 inRange:(_NSRange)a5;
+- (id)attribute:(id)attribute atIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)attribute:(id)attribute atIndex:(unint64_t)index longestEffectiveRange:(_NSRange *)range inRange:(_NSRange)inRange;
+- (id)attributesAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)attributesAtIndex:(unint64_t)index longestEffectiveRange:(_NSRange *)range inRange:(_NSRange)inRange;
 - (id)string;
 - (unint64_t)length;
 @end
@@ -11,54 +11,54 @@
 
 - (id)string
 {
-  v2 = [(MergeableTextStorageBase *)self mutableAttributedString];
-  v3 = [v2 string];
+  mutableAttributedString = [(MergeableTextStorageBase *)self mutableAttributedString];
+  string = [mutableAttributedString string];
 
-  return v3;
+  return string;
 }
 
 - (unint64_t)length
 {
-  v2 = [(MergeableTextStorageBase *)self mutableAttributedString];
-  v3 = [v2 length];
+  mutableAttributedString = [(MergeableTextStorageBase *)self mutableAttributedString];
+  v3 = [mutableAttributedString length];
 
   return v3;
 }
 
-- (id)attributesAtIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)attributesAtIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v6 = [(MergeableTextStorageBase *)self mutableAttributedString];
-  v7 = [v6 attributesAtIndex:a3 effectiveRange:a4];
+  mutableAttributedString = [(MergeableTextStorageBase *)self mutableAttributedString];
+  v7 = [mutableAttributedString attributesAtIndex:index effectiveRange:range];
 
   return v7;
 }
 
-- (id)attributesAtIndex:(unint64_t)a3 longestEffectiveRange:(_NSRange *)a4 inRange:(_NSRange)a5
+- (id)attributesAtIndex:(unint64_t)index longestEffectiveRange:(_NSRange *)range inRange:(_NSRange)inRange
 {
-  length = a5.length;
-  location = a5.location;
-  v9 = [(MergeableTextStorageBase *)self mutableAttributedString];
-  v10 = [v9 attributesAtIndex:a3 longestEffectiveRange:a4 inRange:{location, length}];
+  length = inRange.length;
+  location = inRange.location;
+  mutableAttributedString = [(MergeableTextStorageBase *)self mutableAttributedString];
+  v10 = [mutableAttributedString attributesAtIndex:index longestEffectiveRange:range inRange:{location, length}];
 
   return v10;
 }
 
-- (id)attribute:(id)a3 atIndex:(unint64_t)a4 effectiveRange:(_NSRange *)a5
+- (id)attribute:(id)attribute atIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
-  v8 = a3;
-  v9 = [(MergeableTextStorageBase *)self mutableAttributedString];
-  v10 = [v9 attribute:v8 atIndex:a4 effectiveRange:a5];
+  attributeCopy = attribute;
+  mutableAttributedString = [(MergeableTextStorageBase *)self mutableAttributedString];
+  v10 = [mutableAttributedString attribute:attributeCopy atIndex:index effectiveRange:range];
 
   return v10;
 }
 
-- (id)attribute:(id)a3 atIndex:(unint64_t)a4 longestEffectiveRange:(_NSRange *)a5 inRange:(_NSRange)a6
+- (id)attribute:(id)attribute atIndex:(unint64_t)index longestEffectiveRange:(_NSRange *)range inRange:(_NSRange)inRange
 {
-  length = a6.length;
-  location = a6.location;
-  v11 = a3;
-  v12 = [(MergeableTextStorageBase *)self mutableAttributedString];
-  v13 = [v12 attribute:v11 atIndex:a4 longestEffectiveRange:a5 inRange:{location, length}];
+  length = inRange.length;
+  location = inRange.location;
+  attributeCopy = attribute;
+  mutableAttributedString = [(MergeableTextStorageBase *)self mutableAttributedString];
+  v13 = [mutableAttributedString attribute:attributeCopy atIndex:index longestEffectiveRange:range inRange:{location, length}];
 
   return v13;
 }

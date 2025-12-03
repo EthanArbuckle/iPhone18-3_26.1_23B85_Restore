@@ -1,7 +1,7 @@
 @interface PXStoryChromeButtonConfiguration
 - (BOOL)hasBadgeImageContent;
 - (BOOL)hasPrimaryImageContent;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)transform;
 - (CGPoint)offset;
 - (CGSize)badgePadding;
@@ -11,11 +11,11 @@
 - (UIEdgeInsets)hitTestEdgeOutsets;
 - (UIEdgeInsets)pointerShapeInsets;
 - (double)preferredSystemImagePointSize;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)target;
 - (int64_t)preferredSystemImageWeight;
 - (unint64_t)hash;
-- (void)setTransform:(CGAffineTransform *)a3;
+- (void)setTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation PXStoryChromeButtonConfiguration
@@ -33,11 +33,11 @@
   return result;
 }
 
-- (void)setTransform:(CGAffineTransform *)a3
+- (void)setTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_transform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_transform.c = *&transform->c;
   *&self->_transform.tx = v4;
   *&self->_transform.a = v3;
 }
@@ -114,17 +114,17 @@
   preferredSystemImagePointSize = self->_preferredSystemImagePointSize;
   if (preferredSystemImagePointSize == *off_1E7722088)
   {
-    v4 = [(PXStoryChromeButtonConfiguration *)self backgroundStyle];
-    v5 = [(PXStoryChromeButtonConfiguration *)self spec];
-    v6 = v5;
-    if (v4)
+    backgroundStyle = [(PXStoryChromeButtonConfiguration *)self backgroundStyle];
+    spec = [(PXStoryChromeButtonConfiguration *)self spec];
+    v6 = spec;
+    if (backgroundStyle)
     {
-      [v5 systemImageSizeWithBackground];
+      [spec systemImageSizeWithBackground];
     }
 
     else
     {
-      [v5 systemImageSizeWithoutBackground];
+      [spec systemImageSizeWithoutBackground];
     }
 
     preferredSystemImagePointSize = v7;
@@ -138,20 +138,20 @@
   preferredSystemImageWeight = self->_preferredSystemImageWeight;
   if (preferredSystemImageWeight == *off_1E7722090)
   {
-    v4 = [(PXStoryChromeButtonConfiguration *)self backgroundStyle];
-    v5 = [(PXStoryChromeButtonConfiguration *)self spec];
-    v6 = v5;
-    if (v4)
+    backgroundStyle = [(PXStoryChromeButtonConfiguration *)self backgroundStyle];
+    spec = [(PXStoryChromeButtonConfiguration *)self spec];
+    v6 = spec;
+    if (backgroundStyle)
     {
-      v7 = [v5 systemImageWeightWithBackground];
+      systemImageWeightWithBackground = [spec systemImageWeightWithBackground];
     }
 
     else
     {
-      v7 = [v5 systemImageWeightWithoutBackground];
+      systemImageWeightWithBackground = [spec systemImageWeightWithoutBackground];
     }
 
-    preferredSystemImageWeight = v7;
+    preferredSystemImageWeight = systemImageWeightWithBackground;
   }
 
   return preferredSystemImageWeight;
@@ -159,33 +159,33 @@
 
 - (BOOL)hasBadgeImageContent
 {
-  v2 = [(PXStoryChromeButtonConfiguration *)self badgeSystemImageName];
-  v3 = v2 != 0;
+  badgeSystemImageName = [(PXStoryChromeButtonConfiguration *)self badgeSystemImageName];
+  v3 = badgeSystemImageName != 0;
 
   return v3;
 }
 
 - (BOOL)hasPrimaryImageContent
 {
-  v3 = [(PXStoryChromeButtonConfiguration *)self displayAsset];
-  if (v3)
+  displayAsset = [(PXStoryChromeButtonConfiguration *)self displayAsset];
+  if (displayAsset)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(PXStoryChromeButtonConfiguration *)self systemImageName];
-    v4 = v5 != 0;
+    systemImageName = [(PXStoryChromeButtonConfiguration *)self systemImageName];
+    v4 = systemImageName != 0;
   }
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -195,34 +195,34 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXStoryChromeButtonConfiguration *)self target];
-      v7 = [(PXStoryChromeButtonConfiguration *)v5 target];
-      if (v6 == v7 && (v8 = [(PXStoryChromeButtonConfiguration *)self action], v8 == [(PXStoryChromeButtonConfiguration *)v5 action]))
+      v5 = equalCopy;
+      target = [(PXStoryChromeButtonConfiguration *)self target];
+      target2 = [(PXStoryChromeButtonConfiguration *)v5 target];
+      if (target == target2 && (v8 = [(PXStoryChromeButtonConfiguration *)self action], v8 == [(PXStoryChromeButtonConfiguration *)v5 action]))
       {
-        v11 = [(PXStoryChromeButtonConfiguration *)self menu];
-        v12 = [(PXStoryChromeButtonConfiguration *)v5 menu];
-        if (v11 == v12 || [v11 isEqual:v12])
+        menu = [(PXStoryChromeButtonConfiguration *)self menu];
+        menu2 = [(PXStoryChromeButtonConfiguration *)v5 menu];
+        if (menu == menu2 || [menu isEqual:menu2])
         {
-          v13 = [(PXStoryChromeButtonConfiguration *)self systemImageName];
-          v14 = [(PXStoryChromeButtonConfiguration *)v5 systemImageName];
-          if (v13 == v14 || [v13 isEqualToString:v14])
+          systemImageName = [(PXStoryChromeButtonConfiguration *)self systemImageName];
+          systemImageName2 = [(PXStoryChromeButtonConfiguration *)v5 systemImageName];
+          if (systemImageName == systemImageName2 || [systemImageName isEqualToString:systemImageName2])
           {
-            v23 = v13;
-            v15 = [(PXStoryChromeButtonConfiguration *)self label];
-            v16 = [(PXStoryChromeButtonConfiguration *)v5 label];
-            v24 = v15;
-            if (v15 == v16 || (v17 = v16, v18 = [v15 isEqualToString:v16], v16 = v17, v18))
+            v23 = systemImageName;
+            label = [(PXStoryChromeButtonConfiguration *)self label];
+            label2 = [(PXStoryChromeButtonConfiguration *)v5 label];
+            v24 = label;
+            if (label == label2 || (v17 = label2, v18 = [label isEqualToString:label2], label2 = v17, v18))
             {
-              v19 = v16;
-              v20 = [(PXStoryChromeButtonConfiguration *)self backgroundStyle];
-              if (v20 == [(PXStoryChromeButtonConfiguration *)v5 backgroundStyle])
+              v19 = label2;
+              backgroundStyle = [(PXStoryChromeButtonConfiguration *)self backgroundStyle];
+              if (backgroundStyle == [(PXStoryChromeButtonConfiguration *)v5 backgroundStyle])
               {
-                v21 = [(PXStoryChromeButtonConfiguration *)self backgroundExtendsUnderLabel];
-                if (v21 == [(PXStoryChromeButtonConfiguration *)v5 backgroundExtendsUnderLabel])
+                backgroundExtendsUnderLabel = [(PXStoryChromeButtonConfiguration *)self backgroundExtendsUnderLabel];
+                if (backgroundExtendsUnderLabel == [(PXStoryChromeButtonConfiguration *)v5 backgroundExtendsUnderLabel])
                 {
-                  v22 = [(PXStoryChromeButtonConfiguration *)self preferredSystemImageWeight];
-                  if (v22 == [(PXStoryChromeButtonConfiguration *)v5 preferredSystemImageWeight])
+                  preferredSystemImageWeight = [(PXStoryChromeButtonConfiguration *)self preferredSystemImageWeight];
+                  if (preferredSystemImageWeight == [(PXStoryChromeButtonConfiguration *)v5 preferredSystemImageWeight])
                   {
                     [(PXStoryChromeButtonConfiguration *)self preferredSystemImagePointSize];
                     [(PXStoryChromeButtonConfiguration *)v5 preferredSystemImagePointSize];
@@ -232,7 +232,7 @@
               }
 
               v9 = 0;
-              v16 = v19;
+              label2 = v19;
             }
 
             else
@@ -240,7 +240,7 @@
               v9 = 0;
             }
 
-            v13 = v23;
+            systemImageName = v23;
           }
 
           else
@@ -272,27 +272,27 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PXStoryChromeButtonConfiguration *)self backgroundStyle];
-  v4 = [(PXStoryChromeButtonConfiguration *)self systemImageName];
-  v5 = v3 ^ (4 * [v4 hash]);
+  backgroundStyle = [(PXStoryChromeButtonConfiguration *)self backgroundStyle];
+  systemImageName = [(PXStoryChromeButtonConfiguration *)self systemImageName];
+  v5 = backgroundStyle ^ (4 * [systemImageName hash]);
 
-  v6 = [(PXStoryChromeButtonConfiguration *)self spec];
-  v7 = v5 ^ (8 * [v6 hash]);
+  spec = [(PXStoryChromeButtonConfiguration *)self spec];
+  v7 = v5 ^ (8 * [spec hash]);
 
   v8 = v7 ^ (16 * [(PXStoryChromeButtonConfiguration *)self pointerShape]);
-  v9 = [(PXStoryChromeButtonConfiguration *)self symbolTransition];
-  v10 = v8 ^ (32 * [v9 hash]);
+  symbolTransition = [(PXStoryChromeButtonConfiguration *)self symbolTransition];
+  v10 = v8 ^ (32 * [symbolTransition hash]);
 
-  v11 = [(PXStoryChromeButtonConfiguration *)self displayAsset];
-  v12 = [v11 hash];
+  displayAsset = [(PXStoryChromeButtonConfiguration *)self displayAsset];
+  v12 = [displayAsset hash];
 
-  v13 = [(PXStoryChromeButtonConfiguration *)self badgeSystemImageName];
-  v14 = v12 ^ [v13 hash];
+  badgeSystemImageName = [(PXStoryChromeButtonConfiguration *)self badgeSystemImageName];
+  v14 = v12 ^ [badgeSystemImageName hash];
 
   return v10 ^ v14 ^ [(PXStoryChromeButtonConfiguration *)self systemImageStyle];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   WeakRetained = objc_loadWeakRetained(&self->_target);

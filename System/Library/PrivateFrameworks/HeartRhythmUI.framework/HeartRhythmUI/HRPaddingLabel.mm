@@ -1,18 +1,18 @@
 @interface HRPaddingLabel
 - (CGSize)intrinsicContentSize;
-- (HRPaddingLabel)initWithFrame:(CGRect)a3;
+- (HRPaddingLabel)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)padding;
-- (void)drawTextInRect:(CGRect)a3;
-- (void)setBounds:(CGRect)a3;
+- (void)drawTextInRect:(CGRect)rect;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation HRPaddingLabel
 
-- (HRPaddingLabel)initWithFrame:(CGRect)a3
+- (HRPaddingLabel)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = HRPaddingLabel;
-  v3 = [(HRPaddingLabel *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HRPaddingLabel *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -22,11 +22,11 @@
   return v4;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v9.receiver = self;
   v9.super_class = HRPaddingLabel;
-  [(HRPaddingLabel *)&v9 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(HRPaddingLabel *)&v9 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(HRPaddingLabel *)self bounds];
   v5 = v4;
   [(HRPaddingLabel *)self padding];
@@ -35,12 +35,12 @@
   [(HRPaddingLabel *)self setPreferredMaxLayoutWidth:v7 - v8];
 }
 
-- (void)drawTextInRect:(CGRect)a3
+- (void)drawTextInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(HRPaddingLabel *)self padding];
   v12.receiver = self;
   v12.super_class = HRPaddingLabel;

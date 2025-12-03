@@ -1,9 +1,9 @@
 @interface _OSInactivityPredictorBackupBasedModel
 + (id)predictor;
-- (BOOL)showsSignificantInactivity:(id)a3;
+- (BOOL)showsSignificantInactivity:(id)inactivity;
 - (_OSInactivityPredictorBackupBasedModel)init;
-- (double)computeInactivityHoursFromBackupForDate:(id)a3;
-- (id)longInactivityPredictionResultAtDate:(id)a3 withTimeSinceInactive:(double)a4 withOptions:(int64_t)a5 withError:(id *)a6;
+- (double)computeInactivityHoursFromBackupForDate:(id)date;
+- (id)longInactivityPredictionResultAtDate:(id)date withTimeSinceInactive:(double)inactive withOptions:(int64_t)options withError:(id *)error;
 - (void)updateTrialParameters;
 @end
 
@@ -40,9 +40,9 @@
     [(_OSInactivityPredictor *)v2 setConfidenceThresholdRelaxed:0.4];
     [(_OSInactivityPredictor *)v2 setRequireEnoughHistory:0];
     v9 = objc_alloc_init(_OSInactivityPredictionBackupManager);
-    v10 = [(_OSInactivityPredictionBackupManager *)v9 hydrateBackup];
+    hydrateBackup = [(_OSInactivityPredictionBackupManager *)v9 hydrateBackup];
     hourToEntry = v2->_hourToEntry;
-    v2->_hourToEntry = v10;
+    v2->_hourToEntry = hydrateBackup;
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(&location);
@@ -81,13 +81,13 @@
   self->_maxPredictionDurationHours = v9;
 }
 
-- (BOOL)showsSignificantInactivity:(id)a3
+- (BOOL)showsSignificantInactivity:(id)inactivity
 {
-  v4 = a3;
+  inactivityCopy = inactivity;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v4 pctLong];
+    [inactivityCopy pctLong];
     v6 = v5;
 
     if (v6 > self->_pctLongThreshold)
@@ -98,7 +98,7 @@
 
   else
   {
-    [v4 count];
+    [inactivityCopy count];
 
     numLongThreshold = self->_numLongThreshold;
   }
@@ -106,9 +106,9 @@
   return 0;
 }
 
-- (id)longInactivityPredictionResultAtDate:(id)a3 withTimeSinceInactive:(double)a4 withOptions:(int64_t)a5 withError:(id *)a6
+- (id)longInactivityPredictionResultAtDate:(id)date withTimeSinceInactive:(double)inactive withOptions:(int64_t)options withError:(id *)error
 {
-  [(_OSInactivityPredictorBackupBasedModel *)self computeInactivityHoursFromBackupForDate:a3, a5, a6, a4];
+  [(_OSInactivityPredictorBackupBasedModel *)self computeInactivityHoursFromBackupForDate:date, options, error, inactive];
   if (v7 >= self->_maxPredictionDurationHours)
   {
     maxPredictionDurationHours = self->_maxPredictionDurationHours;
@@ -144,13 +144,13 @@
   return v16;
 }
 
-- (double)computeInactivityHoursFromBackupForDate:(id)a3
+- (double)computeInactivityHoursFromBackupForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   if ([(NSDictionary *)self->_hourToEntry count])
   {
     v5 = +[NSCalendar currentCalendar];
-    v6 = [v5 components:60 fromDate:v4];
+    v6 = [v5 components:60 fromDate:dateCopy];
     v7 = [v5 dateFromComponents:v6];
     *&buf = 0;
     *(&buf + 1) = &buf;

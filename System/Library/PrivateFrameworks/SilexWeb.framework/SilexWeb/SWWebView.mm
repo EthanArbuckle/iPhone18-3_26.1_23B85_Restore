@@ -1,45 +1,45 @@
 @interface SWWebView
 - (id)_textInputTraits;
-- (void)setShortcutsBarWithLeadingGroups:(id)a3 trailingGroups:(id)a4;
+- (void)setShortcutsBarWithLeadingGroups:(id)groups trailingGroups:(id)trailingGroups;
 @end
 
 @implementation SWWebView
 
-- (void)setShortcutsBarWithLeadingGroups:(id)a3 trailingGroups:(id)a4
+- (void)setShortcutsBarWithLeadingGroups:(id)groups trailingGroups:(id)trailingGroups
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SWWebView *)self inputAssistantItem];
-  [v8 setLeadingBarButtonGroups:v7];
+  trailingGroupsCopy = trailingGroups;
+  groupsCopy = groups;
+  inputAssistantItem = [(SWWebView *)self inputAssistantItem];
+  [inputAssistantItem setLeadingBarButtonGroups:groupsCopy];
 
-  v9 = [(SWWebView *)self inputAssistantItem];
-  [v9 setTrailingBarButtonGroups:v6];
+  inputAssistantItem2 = [(SWWebView *)self inputAssistantItem];
+  [inputAssistantItem2 setTrailingBarButtonGroups:trailingGroupsCopy];
 }
 
 - (id)_textInputTraits
 {
   v11.receiver = self;
   v11.super_class = SWWebView;
-  v3 = [(SWWebView *)&v11 _textInputTraits];
-  v4 = [(SWWebView *)self overridenTraits];
-  [v3 overrideWithTraits:v4];
+  _textInputTraits = [(SWWebView *)&v11 _textInputTraits];
+  overridenTraits = [(SWWebView *)self overridenTraits];
+  [_textInputTraits overrideWithTraits:overridenTraits];
 
-  v5 = [(SWWebView *)self overridenTraits];
-  [v3 overrideWithPrivateTraits:v5];
+  overridenTraits2 = [(SWWebView *)self overridenTraits];
+  [_textInputTraits overrideWithPrivateTraits:overridenTraits2];
 
-  v6 = [(SWWebView *)self overridenTraits];
-  [v3 setForceDisableDictation:{objc_msgSend(v6, "forceDisableDictation")}];
+  overridenTraits3 = [(SWWebView *)self overridenTraits];
+  [_textInputTraits setForceDisableDictation:{objc_msgSend(overridenTraits3, "forceDisableDictation")}];
 
-  v7 = [MEMORY[0x1E69DC938] currentDevice];
-  v8 = [v7 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (!v8)
+  if (!userInterfaceIdiom)
   {
-    v9 = [(SWWebView *)self overridenTraits];
-    [v3 setHidePrediction:{objc_msgSend(v9, "hidePrediction")}];
+    overridenTraits4 = [(SWWebView *)self overridenTraits];
+    [_textInputTraits setHidePrediction:{objc_msgSend(overridenTraits4, "hidePrediction")}];
   }
 
-  return v3;
+  return _textInputTraits;
 }
 
 @end

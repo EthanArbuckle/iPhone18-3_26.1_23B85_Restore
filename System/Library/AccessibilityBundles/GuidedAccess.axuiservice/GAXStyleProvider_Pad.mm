@@ -1,12 +1,12 @@
 @interface GAXStyleProvider_Pad
-- (UIEdgeInsets)hostedApplicationScaledFrameEdgeInsetsForInterfaceOrientation:(int64_t)a3;
+- (UIEdgeInsets)hostedApplicationScaledFrameEdgeInsetsForInterfaceOrientation:(int64_t)orientation;
 @end
 
 @implementation GAXStyleProvider_Pad
 
-- (UIEdgeInsets)hostedApplicationScaledFrameEdgeInsetsForInterfaceOrientation:(int64_t)a3
+- (UIEdgeInsets)hostedApplicationScaledFrameEdgeInsetsForInterfaceOrientation:(int64_t)orientation
 {
-  if ((a3 - 1) >= 2)
+  if ((orientation - 1) >= 2)
   {
     v3 = 52.0;
   }

@@ -1,21 +1,21 @@
 @interface NDOUtilities
-+ (id)dateWithEpochNumber:(id)a3;
-+ (unsigned)daysFromDate:(id)a3;
++ (id)dateWithEpochNumber:(id)number;
++ (unsigned)daysFromDate:(id)date;
 @end
 
 @implementation NDOUtilities
 
-+ (id)dateWithEpochNumber:(id)a3
++ (id)dateWithEpochNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 unsignedIntegerValue];
-    v5 = v4 / 0x3E8;
-    if (v4 <= 0x2540BE400)
+    unsignedIntegerValue = [numberCopy unsignedIntegerValue];
+    v5 = unsignedIntegerValue / 0x3E8;
+    if (unsignedIntegerValue <= 0x2540BE400)
     {
-      v5 = v4;
+      v5 = unsignedIntegerValue;
     }
 
     v6 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v5];
@@ -29,12 +29,12 @@
   return v6;
 }
 
-+ (unsigned)daysFromDate:(id)a3
++ (unsigned)daysFromDate:(id)date
 {
   v3 = MEMORY[0x277CBEBD0];
-  v4 = a3;
-  v5 = [v3 standardUserDefaults];
-  v6 = [v5 objectForKey:@"OneDayInterval"];
+  dateCopy = date;
+  standardUserDefaults = [v3 standardUserDefaults];
+  v6 = [standardUserDefaults objectForKey:@"OneDayInterval"];
   [v6 doubleValue];
   v8 = v7;
 
@@ -48,7 +48,7 @@
     v9 = v8;
   }
 
-  [v4 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   v11 = v10;
 
   return vcvtpd_u64_f64(v11 / v9);

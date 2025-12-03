@@ -1,12 +1,12 @@
 @interface _HDUserDefaultRemovedJournalEntry
-+ (void)applyEntries:(id)a3 withProfile:(id)a4;
-- (_HDUserDefaultRemovedJournalEntry)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
++ (void)applyEntries:(id)entries withProfile:(id)profile;
+- (_HDUserDefaultRemovedJournalEntry)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HDUserDefaultRemovedJournalEntry
 
-+ (void)applyEntries:(id)a3 withProfile:(id)a4
++ (void)applyEntries:(id)entries withProfile:(id)profile
 {
   v10 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -23,14 +23,14 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (_HDUserDefaultRemovedJournalEntry)initWithCoder:(id)a3
+- (_HDUserDefaultRemovedJournalEntry)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _HDUserDefaultRemovedJournalEntry;
-  return [(HDJournalEntry *)&v4 initWithCoder:a3];
+  return [(HDJournalEntry *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();

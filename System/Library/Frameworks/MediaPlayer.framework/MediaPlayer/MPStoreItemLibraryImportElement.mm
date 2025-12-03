@@ -1,20 +1,20 @@
 @interface MPStoreItemLibraryImportElement
-- (MPStoreItemLibraryImportElement)initWithStoreItemID:(int64_t)a3 additionalTrackMetadata:(id)a4;
+- (MPStoreItemLibraryImportElement)initWithStoreItemID:(int64_t)d additionalTrackMetadata:(id)metadata;
 @end
 
 @implementation MPStoreItemLibraryImportElement
 
-- (MPStoreItemLibraryImportElement)initWithStoreItemID:(int64_t)a3 additionalTrackMetadata:(id)a4
+- (MPStoreItemLibraryImportElement)initWithStoreItemID:(int64_t)d additionalTrackMetadata:(id)metadata
 {
-  v6 = a4;
+  metadataCopy = metadata;
   v12.receiver = self;
   v12.super_class = MPStoreItemLibraryImportElement;
   v7 = [(MPStoreItemLibraryImportElement *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_storeItemID = a3;
-    v9 = [v6 copy];
+    v7->_storeItemID = d;
+    v9 = [metadataCopy copy];
     additionalTrackMetadata = v8->_additionalTrackMetadata;
     v8->_additionalTrackMetadata = v9;
   }

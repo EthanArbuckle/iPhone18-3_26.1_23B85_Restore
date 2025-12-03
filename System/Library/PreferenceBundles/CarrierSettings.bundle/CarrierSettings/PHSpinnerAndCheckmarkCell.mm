@@ -1,22 +1,22 @@
 @interface PHSpinnerAndCheckmarkCell
 - (void)_addSpinner;
 - (void)_removeSpinner;
-- (void)setLoading:(BOOL)a3;
+- (void)setLoading:(BOOL)loading;
 @end
 
 @implementation PHSpinnerAndCheckmarkCell
 
-- (void)setLoading:(BOOL)a3
+- (void)setLoading:(BOOL)loading
 {
   v3 = *(self + 1216);
-  if ((v3 & 1) == a3)
+  if ((v3 & 1) == loading)
   {
     return;
   }
 
-  v5 = v3 & 0xFE | a3;
+  v5 = v3 & 0xFE | loading;
   *(self + 1216) = v5;
-  if (a3)
+  if (loading)
   {
     spinner = self->_spinner;
     if (!spinner || ([(UIActivityIndicatorView *)spinner superview], v7 = objc_claimAutoreleasedReturnValue(), v7, v7 != self))
@@ -49,9 +49,9 @@
     spinner = self->_spinner;
   }
 
-  v6 = [(PHSpinnerAndCheckmarkCell *)self accessoryView];
+  accessoryView = [(PHSpinnerAndCheckmarkCell *)self accessoryView];
 
-  if (spinner != v6)
+  if (spinner != accessoryView)
   {
     [(UIActivityIndicatorView *)self->_spinner startAnimating];
     v7 = self->_spinner;
@@ -63,9 +63,9 @@
 - (void)_removeSpinner
 {
   spinner = self->_spinner;
-  v4 = [(PHSpinnerAndCheckmarkCell *)self accessoryView];
+  accessoryView = [(PHSpinnerAndCheckmarkCell *)self accessoryView];
 
-  if (spinner == v4)
+  if (spinner == accessoryView)
   {
     [(UIActivityIndicatorView *)self->_spinner stopAnimating];
 

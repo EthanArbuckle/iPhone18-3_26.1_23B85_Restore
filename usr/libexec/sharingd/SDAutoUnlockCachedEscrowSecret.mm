@@ -1,21 +1,21 @@
 @interface SDAutoUnlockCachedEscrowSecret
 - (BOOL)isValid;
-- (SDAutoUnlockCachedEscrowSecret)initWithEscrowSecret:(id)a3;
+- (SDAutoUnlockCachedEscrowSecret)initWithEscrowSecret:(id)secret;
 - (id)getEscrowSecretCopyIfValid;
 @end
 
 @implementation SDAutoUnlockCachedEscrowSecret
 
-- (SDAutoUnlockCachedEscrowSecret)initWithEscrowSecret:(id)a3
+- (SDAutoUnlockCachedEscrowSecret)initWithEscrowSecret:(id)secret
 {
-  v4 = a3;
+  secretCopy = secret;
   v13.receiver = self;
   v13.super_class = SDAutoUnlockCachedEscrowSecret;
   v5 = [(SDAutoUnlockCachedEscrowSecret *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    [(SDAutoUnlockCachedEscrowSecret *)v5 setEscrowSecret:v4];
+    [(SDAutoUnlockCachedEscrowSecret *)v5 setEscrowSecret:secretCopy];
     v7 = +[NSDate now];
     v8 = [v7 dateByAddingTimeInterval:3600.0];
     [(SDAutoUnlockCachedEscrowSecret *)v6 setExpireDate:v8];
@@ -34,14 +34,14 @@
 
 - (BOOL)isValid
 {
-  v3 = [(SDAutoUnlockCachedEscrowSecret *)self escrowSecret];
-  if (v3)
+  escrowSecret = [(SDAutoUnlockCachedEscrowSecret *)self escrowSecret];
+  if (escrowSecret)
   {
-    v4 = [(SDAutoUnlockCachedEscrowSecret *)self expireDate];
+    expireDate = [(SDAutoUnlockCachedEscrowSecret *)self expireDate];
     v5 = +[NSDate date];
-    v6 = [v4 laterDate:v5];
-    v7 = [(SDAutoUnlockCachedEscrowSecret *)self expireDate];
-    v8 = v6 == v7;
+    v6 = [expireDate laterDate:v5];
+    expireDate2 = [(SDAutoUnlockCachedEscrowSecret *)self expireDate];
+    v8 = v6 == expireDate2;
   }
 
   else
@@ -54,12 +54,12 @@
 
 - (id)getEscrowSecretCopyIfValid
 {
-  v3 = [(SDAutoUnlockCachedEscrowSecret *)self escrowSecret];
-  v4 = [v3 copy];
+  escrowSecret = [(SDAutoUnlockCachedEscrowSecret *)self escrowSecret];
+  v4 = [escrowSecret copy];
 
-  v5 = [(SDAutoUnlockCachedEscrowSecret *)self isValid];
+  isValid = [(SDAutoUnlockCachedEscrowSecret *)self isValid];
   v6 = 0;
-  if (v5 && v4)
+  if (isValid && v4)
   {
     v6 = v4;
   }

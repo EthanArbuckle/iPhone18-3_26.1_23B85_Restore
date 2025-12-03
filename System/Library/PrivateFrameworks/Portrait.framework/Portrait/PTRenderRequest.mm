@@ -2,8 +2,8 @@
 - ($3CC19D079FD0B010EE84973AA846B91B)scissorRect;
 - (CGSize)totalSensorCropRectSize;
 - (PTRenderRequest)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setScissorRect:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setScissorRect:(id *)rect;
 @end
 
 @implementation PTRenderRequest
@@ -33,7 +33,7 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   [v4 setRenderState:self->_renderState];
@@ -82,10 +82,10 @@
   return self;
 }
 
-- (void)setScissorRect:(id *)a3
+- (void)setScissorRect:(id *)rect
 {
-  v3 = *&a3->var2;
-  *&self->_scissorRect.x = *&a3->var0;
+  v3 = *&rect->var2;
+  *&self->_scissorRect.x = *&rect->var0;
   *&self->_scissorRect.width = v3;
 }
 

@@ -1,61 +1,61 @@
 @interface PHAssetPhotosOneUpProperties
 + (id)propertiesToFetch;
 - (NSString)addressString;
-- (PHAssetPhotosOneUpProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5;
+- (PHAssetPhotosOneUpProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched;
 - (id)_locationInfo;
-- (id)localizedGeoDescriptionIsHome:(BOOL *)a3;
-- (id)placeNamesForLocalizedDetailedDescriptionIsHome:(BOOL *)a3;
+- (id)localizedGeoDescriptionIsHome:(BOOL *)home;
+- (id)placeNamesForLocalizedDetailedDescriptionIsHome:(BOOL *)home;
 @end
 
 @implementation PHAssetPhotosOneUpProperties
 
-- (id)placeNamesForLocalizedDetailedDescriptionIsHome:(BOOL *)a3
+- (id)placeNamesForLocalizedDetailedDescriptionIsHome:(BOOL *)home
 {
-  v4 = [(PHAssetPhotosOneUpProperties *)self _locationInfo];
-  v5 = v4;
-  if (v4)
+  _locationInfo = [(PHAssetPhotosOneUpProperties *)self _locationInfo];
+  v5 = _locationInfo;
+  if (_locationInfo)
   {
-    if (a3)
+    if (home)
     {
-      *a3 = [v4 isHome];
+      *home = [_locationInfo isHome];
     }
 
-    v6 = [v5 placeNamesForLocalizedDetailedDescription];
+    placeNamesForLocalizedDetailedDescription = [v5 placeNamesForLocalizedDetailedDescription];
   }
 
   else
   {
-    v6 = 0;
+    placeNamesForLocalizedDetailedDescription = 0;
   }
 
-  return v6;
+  return placeNamesForLocalizedDetailedDescription;
 }
 
-- (id)localizedGeoDescriptionIsHome:(BOOL *)a3
+- (id)localizedGeoDescriptionIsHome:(BOOL *)home
 {
-  v5 = [(PHAssetPhotosOneUpProperties *)self _locationInfo];
-  v6 = v5;
-  if (v5)
+  _locationInfo = [(PHAssetPhotosOneUpProperties *)self _locationInfo];
+  v6 = _locationInfo;
+  if (_locationInfo)
   {
-    if (a3)
+    if (home)
     {
-      *a3 = [v5 isHome];
+      *home = [_locationInfo isHome];
     }
 
-    v7 = ph_objc_getAssociatedObject(self, @"localizedGeoDescriptionCacheKey");
-    if (!v7)
+    localizedDescription = ph_objc_getAssociatedObject(self, @"localizedGeoDescriptionCacheKey");
+    if (!localizedDescription)
     {
-      v7 = [v6 localizedDescription];
-      v8 = ph_objc_setAssociatedObjectIfNotSet(self, @"localizedGeoDescriptionCacheKey", v7);
+      localizedDescription = [v6 localizedDescription];
+      v8 = ph_objc_setAssociatedObjectIfNotSet(self, @"localizedGeoDescriptionCacheKey", localizedDescription);
     }
   }
 
   else
   {
-    v7 = 0;
+    localizedDescription = 0;
   }
 
-  return v7;
+  return localizedDescription;
 }
 
 - (id)_locationInfo
@@ -65,8 +65,8 @@
   {
     if (self->_reverseLocationDataIsValid)
     {
-      v4 = [(PHAssetPhotosOneUpProperties *)self reverseLocationData];
-      v3 = [MEMORY[0x1E69BE770] infoFromPlistData:v4];
+      reverseLocationData = [(PHAssetPhotosOneUpProperties *)self reverseLocationData];
+      v3 = [MEMORY[0x1E69BE770] infoFromPlistData:reverseLocationData];
       v5 = ph_objc_setAssociatedObjectIfNotSet(self, @"locationInfoCacheKey", v3);
     }
 
@@ -83,25 +83,25 @@
 
 - (NSString)addressString
 {
-  v2 = [(PHAssetPhotosOneUpProperties *)self _locationInfo];
-  v3 = [v2 addressString];
+  _locationInfo = [(PHAssetPhotosOneUpProperties *)self _locationInfo];
+  addressString = [_locationInfo addressString];
 
-  return v3;
+  return addressString;
 }
 
-- (PHAssetPhotosOneUpProperties)initWithFetchDictionary:(id)a3 asset:(id)a4 prefetched:(BOOL)a5
+- (PHAssetPhotosOneUpProperties)initWithFetchDictionary:(id)dictionary asset:(id)asset prefetched:(BOOL)prefetched
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  prefetchedCopy = prefetched;
+  dictionaryCopy = dictionary;
+  assetCopy = asset;
   v24.receiver = self;
   v24.super_class = PHAssetPhotosOneUpProperties;
   v10 = [(PHAssetPhotosOneUpProperties *)&v24 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->super._asset, v9);
-    if (v5)
+    objc_storeWeak(&v10->super._asset, assetCopy);
+    if (prefetchedCopy)
     {
       v12 = @"additionalAttributes.reverseLocationDataIsValid";
     }
@@ -111,7 +111,7 @@
       v12 = @"reverseLocationDataIsValid";
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       v13 = @"additionalAttributes.reverseLocationData";
     }
@@ -121,7 +121,7 @@
       v13 = @"reverseLocationData";
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       v14 = @"additionalAttributes.shiftedLocationIsValid";
     }
@@ -131,7 +131,7 @@
       v14 = @"shiftedLocationIsValid";
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       v15 = @"additionalAttributes.variationSuggestionStates";
     }
@@ -141,7 +141,7 @@
       v15 = @"variationSuggestionStates";
     }
 
-    if (v5)
+    if (prefetchedCopy)
     {
       v16 = @"additionalAttributes.viewPresentation";
     }
@@ -151,20 +151,20 @@
       v16 = @"viewPresentation";
     }
 
-    v17 = [v8 objectForKeyedSubscript:v12];
+    v17 = [dictionaryCopy objectForKeyedSubscript:v12];
     v11->_reverseLocationDataIsValid = [v17 BOOLValue];
 
-    v18 = [v8 objectForKeyedSubscript:v13];
+    v18 = [dictionaryCopy objectForKeyedSubscript:v13];
     reverseLocationData = v11->_reverseLocationData;
     v11->_reverseLocationData = v18;
 
-    v20 = [v8 objectForKeyedSubscript:v14];
+    v20 = [dictionaryCopy objectForKeyedSubscript:v14];
     v11->_shiftedLocationIsValid = [v20 BOOLValue];
 
-    v21 = [v8 objectForKeyedSubscript:v15];
+    v21 = [dictionaryCopy objectForKeyedSubscript:v15];
     v11->_variationSuggestionStates = [v21 unsignedLongLongValue];
 
-    v22 = [v8 objectForKeyedSubscript:v16];
+    v22 = [dictionaryCopy objectForKeyedSubscript:v16];
     v11->_viewPresentation = [v22 unsignedLongLongValue];
   }
 

@@ -6,7 +6,7 @@
 
 - (uint64_t)mru_surface
 {
-  result = [a1 surface];
+  result = [self surface];
   if ((result - 1) >= 0xB)
   {
     return 0;

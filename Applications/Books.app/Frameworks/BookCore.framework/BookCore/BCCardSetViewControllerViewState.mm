@@ -1,20 +1,20 @@
 @interface BCCardSetViewControllerViewState
-- (BCCardSetViewControllerViewState)initWithIsExpanded:(BOOL)a3 viewSize:(CGSize)a4;
+- (BCCardSetViewControllerViewState)initWithIsExpanded:(BOOL)expanded viewSize:(CGSize)size;
 - (CGSize)viewSize;
 @end
 
 @implementation BCCardSetViewControllerViewState
 
-- (BCCardSetViewControllerViewState)initWithIsExpanded:(BOOL)a3 viewSize:(CGSize)a4
+- (BCCardSetViewControllerViewState)initWithIsExpanded:(BOOL)expanded viewSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v8.receiver = self;
   v8.super_class = BCCardSetViewControllerViewState;
   result = [(BCCardSetViewControllerViewState *)&v8 init];
   if (result)
   {
-    result->_isExpanded = a3;
+    result->_isExpanded = expanded;
     result->_viewSize.width = width;
     result->_viewSize.height = height;
   }

@@ -1,20 +1,20 @@
 @interface ASTHomeActionListController
 - (ASTHomeActionListController)init;
 - (ASTHomeActionListControllerDelegate)delegate;
-- (BOOL)isTimeoutSection:(int64_t)a3;
-- (id)_timeoutValue:(id)a3;
-- (id)adjustedASTIndexPath:(id)a3;
+- (BOOL)isTimeoutSection:(int64_t)section;
+- (id)_timeoutValue:(id)value;
+- (id)adjustedASTIndexPath:(id)path;
 - (id)prependedSystemIcons;
 - (id)specifiers;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (unint64_t)homeActionType;
 - (void)dealloc;
 - (void)loadView;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ASTHomeActionListController
@@ -22,25 +22,25 @@
 - (id)prependedSystemIcons
 {
   v3 = [NSMutableArray arrayWithObject:@"__NONE__"];
-  v4 = [(ASTHomeActionListController *)self homeActionType];
+  homeActionType = [(ASTHomeActionListController *)self homeActionType];
   v5 = &AXAssistiveTouchIconTypeOpenMenu;
-  if (v4 == 1)
+  if (homeActionType == 1)
   {
     v8 = &AXAssistiveTouchIconTypePassThroughToApp;
     goto LABEL_6;
   }
 
-  if (v4 != 5)
+  if (homeActionType != 5)
   {
     goto LABEL_8;
   }
 
   [v3 addObject:AXAssistiveTouchIconTypeMousePrimaryClick];
   v6 = +[AXSettings sharedInstance];
-  v7 = [v6 laserEnabled];
+  laserEnabled = [v6 laserEnabled];
 
   v8 = &AXAssistiveTouchIconTypeOpenMenu;
-  if (v7)
+  if (laserEnabled)
   {
     v5 = &AXAssistiveTouchIconTypeMouseSecondaryClick;
 LABEL_6:
@@ -56,21 +56,21 @@ LABEL_8:
 
 - (unint64_t)homeActionType
 {
-  v2 = [(ASTHomeActionListController *)self specifier];
-  v3 = [v2 propertyForKey:@"HomeAction"];
-  v4 = [v3 unsignedIntegerValue];
+  specifier = [(ASTHomeActionListController *)self specifier];
+  v3 = [specifier propertyForKey:@"HomeAction"];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (id)_timeoutValue:(id)a3
+- (id)_timeoutValue:(id)value
 {
   v4 = +[AXSettings sharedInstance];
   if ([(ASTHomeActionListController *)self homeActionType]== &dword_0 + 2)
   {
-    v5 = [v4 assistiveTouchDoubleTapAction];
+    assistiveTouchDoubleTapAction = [v4 assistiveTouchDoubleTapAction];
 
-    if (v5)
+    if (assistiveTouchDoubleTapAction)
     {
       [v4 assistiveTouchDoubleTapActionTimeout];
 LABEL_7:
@@ -81,9 +81,9 @@ LABEL_7:
 
   if ([(ASTHomeActionListController *)self homeActionType]== &dword_0 + 3)
   {
-    v6 = [v4 assistiveTouchLongPressAction];
+    assistiveTouchLongPressAction = [v4 assistiveTouchLongPressAction];
 
-    if (v6)
+    if (assistiveTouchLongPressAction)
     {
       [v4 assistiveTouchLongPressActionDuration];
       goto LABEL_7;
@@ -200,11 +200,11 @@ LABEL_8:
   if ([(ASTHomeActionListController *)self homeActionType]== &dword_4 + 2 || [(ASTHomeActionListController *)self homeActionType]== &dword_4 + 3 || [(ASTHomeActionListController *)self homeActionType]== &dword_8 || [(ASTHomeActionListController *)self homeActionType]== &dword_8 + 1)
   {
     v15 = +[AXSettings sharedInstance];
-    v31 = [v15 assistiveTouchHeadTrackingEnabled];
+    assistiveTouchHeadTrackingEnabled = [v15 assistiveTouchHeadTrackingEnabled];
 
-    v16 = [(ASTHomeActionListController *)self motionTrackingInputManager];
-    v17 = [v16 compatibleInputs];
-    v18 = [NSMutableArray arrayWithArray:v17];
+    motionTrackingInputManager = [(ASTHomeActionListController *)self motionTrackingInputManager];
+    compatibleInputs = [motionTrackingInputManager compatibleInputs];
+    v18 = [NSMutableArray arrayWithArray:compatibleInputs];
 
     v36 = 0u;
     v37 = 0u;
@@ -250,7 +250,7 @@ LABEL_8:
     v27 = 0;
 LABEL_31:
 
-    if (v31)
+    if (assistiveTouchHeadTrackingEnabled)
     {
       [(AssistiveTouchCustomizeBaseActionPickerController *)self setPrependHeadTrackingIcons:1];
     }
@@ -262,8 +262,8 @@ LABEL_31:
   }
 
   [(AssistiveTouchCustomizeBaseActionPickerController *)self reloadASTDataSource];
-  v28 = [(AssistiveTouchCustomizeBaseActionPickerController *)self iconSpecifiers];
-  [v33 addObjectsFromArray:v28];
+  iconSpecifiers = [(AssistiveTouchCustomizeBaseActionPickerController *)self iconSpecifiers];
+  [v33 addObjectsFromArray:iconSpecifiers];
 
   v29 = *&self->super.AXUISettingsBaseListController_opaque[v32];
   *&self->super.AXUISettingsBaseListController_opaque[v32] = v33;
@@ -305,7 +305,7 @@ void __41__ASTHomeActionListController_specifiers__block_invoke_3(uint64_t a1)
   v4 = v3;
   v7 = v4;
   objc_copyWeak(&v9, &location);
-  v8 = self;
+  selfCopy = self;
   [(AssistiveTouchCustomizeBaseActionPickerController *)self setIconFilter:v6];
   v5.receiver = self;
   v5.super_class = ASTHomeActionListController;
@@ -351,43 +351,43 @@ LABEL_15:
   return v4;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(ASTHomeActionListController *)self delegate];
+  appearCopy = appear;
+  delegate = [(ASTHomeActionListController *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(ASTHomeActionListController *)self delegate];
-    v7 = [v6 getCurrentActionForHomeActionListController:self];
+    delegate2 = [(ASTHomeActionListController *)self delegate];
+    v7 = [delegate2 getCurrentActionForHomeActionListController:self];
     [(AssistiveTouchCustomizeBaseActionPickerController *)self setSelectedPopoverIcon:v7];
   }
 
-  v8 = [(ASTHomeActionListController *)self motionTrackingInputManager];
-  [v8 setDelegate:self];
+  motionTrackingInputManager = [(ASTHomeActionListController *)self motionTrackingInputManager];
+  [motionTrackingInputManager setDelegate:self];
 
-  v9 = [(ASTHomeActionListController *)self motionTrackingInputManager];
-  [v9 startMonitoring];
+  motionTrackingInputManager2 = [(ASTHomeActionListController *)self motionTrackingInputManager];
+  [motionTrackingInputManager2 startMonitoring];
 
   v10.receiver = self;
   v10.super_class = ASTHomeActionListController;
-  [(ASTHomeActionListController *)&v10 viewWillAppear:v3];
+  [(ASTHomeActionListController *)&v10 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(ASTHomeActionListController *)self motionTrackingInputManager];
-  [v5 stopMonitoring];
+  disappearCopy = disappear;
+  motionTrackingInputManager = [(ASTHomeActionListController *)self motionTrackingInputManager];
+  [motionTrackingInputManager stopMonitoring];
 
   v6.receiver = self;
   v6.super_class = ASTHomeActionListController;
-  [(ASTHomeActionListController *)&v6 viewWillDisappear:v3];
+  [(ASTHomeActionListController *)&v6 viewWillDisappear:disappearCopy];
 }
 
-- (BOOL)isTimeoutSection:(int64_t)a3
+- (BOOL)isTimeoutSection:(int64_t)section
 {
-  if (a3)
+  if (section)
   {
     return 0;
   }
@@ -398,17 +398,17 @@ LABEL_15:
   }
 }
 
-- (id)adjustedASTIndexPath:(id)a3
+- (id)adjustedASTIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if ([(ASTHomeActionListController *)self _supportsTimeout])
   {
-    v5 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [v4 row], -[ASTHomeActionListController adjustedASTSection:](self, "adjustedASTSection:", objc_msgSend(v4, "section")));
+    v5 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", [pathCopy row], -[ASTHomeActionListController adjustedASTSection:](self, "adjustedASTSection:", objc_msgSend(pathCopy, "section")));
   }
 
   else
   {
-    v5 = v4;
+    v5 = pathCopy;
   }
 
   v6 = v5;
@@ -416,63 +416,63 @@ LABEL_15:
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = ASTHomeActionListController;
-  [(ASTHomeActionListController *)&v12 tableView:v6 didSelectRowAtIndexPath:v7];
-  if (!-[ASTHomeActionListController isTimeoutSection:](self, "isTimeoutSection:", [v7 section]))
+  [(ASTHomeActionListController *)&v12 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  if (!-[ASTHomeActionListController isTimeoutSection:](self, "isTimeoutSection:", [pathCopy section]))
   {
-    v8 = [(ASTHomeActionListController *)self adjustedASTIndexPath:v7];
-    [(AssistiveTouchCustomizeBaseActionPickerController *)self astTableView:v6 didSelectRowAtIndexPath:v8];
-    v9 = [(AssistiveTouchCustomizeBaseActionPickerController *)self selectedPopoverIcon];
-    v10 = [(ASTHomeActionListController *)self delegate];
+    v8 = [(ASTHomeActionListController *)self adjustedASTIndexPath:pathCopy];
+    [(AssistiveTouchCustomizeBaseActionPickerController *)self astTableView:viewCopy didSelectRowAtIndexPath:v8];
+    selectedPopoverIcon = [(AssistiveTouchCustomizeBaseActionPickerController *)self selectedPopoverIcon];
+    delegate = [(ASTHomeActionListController *)self delegate];
 
-    if (v10)
+    if (delegate)
     {
-      v11 = [(ASTHomeActionListController *)self delegate];
-      [v11 homeActionListController:self selectedAction:v9];
+      delegate2 = [(ASTHomeActionListController *)self delegate];
+      [delegate2 homeActionListController:self selectedAction:selectedPopoverIcon];
     }
   }
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!-[ASTHomeActionListController isTimeoutSection:](self, "isTimeoutSection:", [v9 section]))
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
+  if (!-[ASTHomeActionListController isTimeoutSection:](self, "isTimeoutSection:", [pathCopy section]))
   {
-    v10 = [(ASTHomeActionListController *)self adjustedASTIndexPath:v9];
-    [(AssistiveTouchCustomizeBaseActionPickerController *)self astTableView:v11 willDisplayCell:v8 forRowAtIndexPath:v10];
+    v10 = [(ASTHomeActionListController *)self adjustedASTIndexPath:pathCopy];
+    [(AssistiveTouchCustomizeBaseActionPickerController *)self astTableView:viewCopy willDisplayCell:cellCopy forRowAtIndexPath:v10];
   }
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if ([(ASTHomeActionListController *)self isTimeoutSection:a4])
+  if ([(ASTHomeActionListController *)self isTimeoutSection:section])
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = [(AssistiveTouchCustomizeBaseActionPickerController *)self astTitleForSection:[(ASTHomeActionListController *)self adjustedASTSection:a4]];
+    v6 = [(AssistiveTouchCustomizeBaseActionPickerController *)self astTitleForSection:[(ASTHomeActionListController *)self adjustedASTSection:section]];
   }
 
   return v6;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if ([(ASTHomeActionListController *)self isTimeoutSection:a4])
+  if ([(ASTHomeActionListController *)self isTimeoutSection:section])
   {
     return 1;
   }
 
-  v7 = [(ASTHomeActionListController *)self adjustedASTSection:a4];
+  v7 = [(ASTHomeActionListController *)self adjustedASTSection:section];
 
   return [(AssistiveTouchCustomizeBaseActionPickerController *)self astNumberOfRowsInSection:v7];
 }

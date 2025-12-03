@@ -1,29 +1,29 @@
 @interface PUIStyleSerialization
-+ (id)dataForStyle:(id)a3 error:(id *)a4;
-+ (id)styleForData:(id)a3 error:(id *)a4;
++ (id)dataForStyle:(id)style error:(id *)error;
++ (id)styleForData:(id)data error:(id *)error;
 @end
 
 @implementation PUIStyleSerialization
 
-+ (id)dataForStyle:(id)a3 error:(id *)a4
++ (id)dataForStyle:(id)style error:(id *)error
 {
-  v5 = a3;
+  styleCopy = style;
   v13 = 0;
-  v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v13];
+  v6 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:styleCopy requiringSecureCoding:1 error:&v13];
   v7 = v13;
   v8 = v7;
   if (v7)
   {
-    if (a4)
+    if (error)
     {
       v9 = v7;
-      *a4 = v8;
+      *error = v8;
     }
 
     v10 = PUILogCommon();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      [(PUIStyleSerialization *)v5 dataForStyle:v8 error:v10];
+      [(PUIStyleSerialization *)styleCopy dataForStyle:v8 error:v10];
     }
 
     v11 = 0;
@@ -37,12 +37,12 @@
   return v11;
 }
 
-+ (id)styleForData:(id)a3 error:(id *)a4
++ (id)styleForData:(id)data error:(id *)error
 {
   v16[5] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E696ACD0];
   v6 = MEMORY[0x1E695DFD8];
-  v7 = a3;
+  dataCopy = data;
   v16[0] = objc_opt_class();
   v16[1] = objc_opt_class();
   v16[2] = objc_opt_class();
@@ -51,7 +51,7 @@
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:5];
   v9 = [v6 setWithArray:v8];
   v15 = 0;
-  v10 = [v5 _strictlyUnarchivedObjectOfClasses:v9 fromData:v7 error:&v15];
+  v10 = [v5 _strictlyUnarchivedObjectOfClasses:v9 fromData:dataCopy error:&v15];
 
   v11 = v15;
   if (!v10)
@@ -63,10 +63,10 @@
     }
   }
 
-  if (a4 && v11)
+  if (error && v11)
   {
     v13 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
   return v10;

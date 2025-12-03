@@ -1,45 +1,45 @@
 @interface KNAnimParameterSavedParameter
-- (KNAnimParameterSavedParameter)initWithCoder:(id)a3;
-- (id)p_bezierPathFromSavedPathElements:(id)a3;
-- (id)p_savedPathFromPath:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (KNAnimParameterSavedParameter)initWithCoder:(id)coder;
+- (id)p_bezierPathFromSavedPathElements:(id)elements;
+- (id)p_savedPathFromPath:(id)path;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KNAnimParameterSavedParameter
 
-- (KNAnimParameterSavedParameter)initWithCoder:(id)a3
+- (KNAnimParameterSavedParameter)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = KNAnimParameterSavedParameter;
   v5 = [(KNAnimParameterSavedParameter *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nm"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nm"];
     v7 = [v6 copy];
     name = v5->_name;
     v5->_name = v7;
 
-    v5->_type = [v4 decodeIntegerForKey:@"tp"];
-    [v4 decodeDoubleForKey:@"dblValue"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"tp"];
+    [coderCopy decodeDoubleForKey:@"dblValue"];
     v5->_doubleValue = v9;
-    [v4 decodeDoubleForKey:@"max"];
+    [coderCopy decodeDoubleForKey:@"max"];
     v5->_maxValue = v10;
-    [v4 decodeDoubleForKey:@"min"];
+    [coderCopy decodeDoubleForKey:@"min"];
     v5->_minValue = v11;
-    v5->_hasMaxValue = [v4 decodeBoolForKey:@"hmax"];
-    v5->_hasMinValue = [v4 decodeBoolForKey:@"hmin"];
+    v5->_hasMaxValue = [coderCopy decodeBoolForKey:@"hmax"];
+    v5->_hasMinValue = [coderCopy decodeBoolForKey:@"hmin"];
     v12 = objc_opt_class();
     v13 = [NSSet setWithObjects:v12, objc_opt_class(), 0];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"svdPth"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"svdPth"];
 
     v15 = [(KNAnimParameterSavedParameter *)v5 p_bezierPathFromSavedPathElements:v14];
     pathValue = v5->_pathValue;
     v5->_pathValue = v15;
 
-    v5->_removed = [v4 decodeBoolForKey:@"removed"];
-    v5->_debugOnly = [v4 decodeBoolForKey:@"dbg"];
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"desc"];
+    v5->_removed = [coderCopy decodeBoolForKey:@"removed"];
+    v5->_debugOnly = [coderCopy decodeBoolForKey:@"dbg"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"desc"];
     v18 = [v17 copy];
     parameterDescription = v5->_parameterDescription;
     v5->_parameterDescription = v18;
@@ -48,43 +48,43 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(KNAnimParameterSavedParameter *)self name];
-  [v4 encodeObject:v5 forKey:@"nm"];
+  coderCopy = coder;
+  name = [(KNAnimParameterSavedParameter *)self name];
+  [coderCopy encodeObject:name forKey:@"nm"];
 
-  [v4 encodeInteger:-[KNAnimParameterSavedParameter type](self forKey:{"type"), @"tp"}];
+  [coderCopy encodeInteger:-[KNAnimParameterSavedParameter type](self forKey:{"type"), @"tp"}];
   [(KNAnimParameterSavedParameter *)self doubleValue];
-  [v4 encodeDouble:@"dblValue" forKey:?];
+  [coderCopy encodeDouble:@"dblValue" forKey:?];
   [(KNAnimParameterSavedParameter *)self maxValue];
-  [v4 encodeDouble:@"max" forKey:?];
+  [coderCopy encodeDouble:@"max" forKey:?];
   [(KNAnimParameterSavedParameter *)self minValue];
-  [v4 encodeDouble:@"min" forKey:?];
-  [v4 encodeBool:-[KNAnimParameterSavedParameter hasMaxValue](self forKey:{"hasMaxValue"), @"hmax"}];
-  [v4 encodeBool:-[KNAnimParameterSavedParameter hasMinValue](self forKey:{"hasMinValue"), @"hmin"}];
-  v6 = [(KNAnimParameterSavedParameter *)self pathValue];
-  v7 = [(KNAnimParameterSavedParameter *)self p_savedPathFromPath:v6];
-  [v4 encodeObject:v7 forKey:@"svdPth"];
+  [coderCopy encodeDouble:@"min" forKey:?];
+  [coderCopy encodeBool:-[KNAnimParameterSavedParameter hasMaxValue](self forKey:{"hasMaxValue"), @"hmax"}];
+  [coderCopy encodeBool:-[KNAnimParameterSavedParameter hasMinValue](self forKey:{"hasMinValue"), @"hmin"}];
+  pathValue = [(KNAnimParameterSavedParameter *)self pathValue];
+  v7 = [(KNAnimParameterSavedParameter *)self p_savedPathFromPath:pathValue];
+  [coderCopy encodeObject:v7 forKey:@"svdPth"];
 
-  [v4 encodeBool:-[KNAnimParameterSavedParameter removed](self forKey:{"removed"), @"removed"}];
-  [v4 encodeBool:-[KNAnimParameterSavedParameter debugOnly](self forKey:{"debugOnly"), @"dbg"}];
-  v8 = [(KNAnimParameterSavedParameter *)self parameterDescription];
-  [v4 encodeObject:v8 forKey:@"desc"];
+  [coderCopy encodeBool:-[KNAnimParameterSavedParameter removed](self forKey:{"removed"), @"removed"}];
+  [coderCopy encodeBool:-[KNAnimParameterSavedParameter debugOnly](self forKey:{"debugOnly"), @"dbg"}];
+  parameterDescription = [(KNAnimParameterSavedParameter *)self parameterDescription];
+  [coderCopy encodeObject:parameterDescription forKey:@"desc"];
 }
 
-- (id)p_savedPathFromPath:(id)a3
+- (id)p_savedPathFromPath:(id)path
 {
-  v3 = a3;
-  if (v3)
+  pathCopy = path;
+  if (pathCopy)
   {
     v4 = +[NSMutableArray array];
-    if ([v3 elementCount] >= 1)
+    if ([pathCopy elementCount] >= 1)
     {
       v5 = 0;
       while (1)
       {
-        v6 = [v3 elementAtIndex:v5 associatedPoints:&v11];
+        v6 = [pathCopy elementAtIndex:v5 associatedPoints:&v11];
         v7 = objc_alloc_init(KNAnimParameterGroupSavedPathElement);
         v8 = v7;
         if (v6 > 1)
@@ -121,7 +121,7 @@ LABEL_12:
 LABEL_14:
         [v4 addObject:v8];
 
-        if (++v5 >= [v3 elementCount])
+        if (++v5 >= [pathCopy elementCount])
         {
           goto LABEL_17;
         }
@@ -142,17 +142,17 @@ LABEL_17:
   return v4;
 }
 
-- (id)p_bezierPathFromSavedPathElements:(id)a3
+- (id)p_bezierPathFromSavedPathElements:(id)elements
 {
-  v3 = a3;
-  if (v3)
+  elementsCopy = elements;
+  if (elementsCopy)
   {
     v4 = objc_alloc_init(TSDBezierPath);
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v5 = v3;
+    v5 = elementsCopy;
     v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v6)
     {
@@ -168,10 +168,10 @@ LABEL_17:
           }
 
           v10 = *(*(&v23 + 1) + 8 * i);
-          v11 = [v10 elementType];
-          if (v11 > 1)
+          elementType = [v10 elementType];
+          if (elementType > 1)
           {
-            if (v11 == &dword_0 + 2)
+            if (elementType == &dword_0 + 2)
             {
               [v10 toPoint];
               v13 = v12;
@@ -183,15 +183,15 @@ LABEL_17:
               [v4 curveToPoint:v13 controlPoint1:v15 controlPoint2:{v17, v19, v20, v21}];
             }
 
-            else if (v11 == &dword_0 + 3)
+            else if (elementType == &dword_0 + 3)
             {
               [v4 closePath];
             }
           }
 
-          else if (v11)
+          else if (elementType)
           {
-            if (v11 == &dword_0 + 1)
+            if (elementType == &dword_0 + 1)
             {
               [v10 toPoint];
               [v4 lineToPoint:?];

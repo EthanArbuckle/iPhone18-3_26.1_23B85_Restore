@@ -3,7 +3,7 @@
 - (int)b;
 - (int)g;
 - (int)r;
-- (void)setA:(double)a3;
+- (void)setA:(double)a;
 @end
 
 @implementation RWIProtocolDOMRGBAColor
@@ -29,11 +29,11 @@
   return [(RWIProtocolJSONObject *)&v3 integerForKey:@"b"];
 }
 
-- (void)setA:(double)a3
+- (void)setA:(double)a
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolDOMRGBAColor;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"a" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"a" forKey:a];
 }
 
 - (double)a

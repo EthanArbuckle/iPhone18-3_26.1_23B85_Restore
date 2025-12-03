@@ -1,34 +1,34 @@
 @interface LACDTOLocationProviderKVSAdapter
-- (LACDTOLocationProviderKVSAdapter)initWithKVStore:(id)a3;
-- (void)checkIsInFamiliarLocationWithCompletion:(id)a3;
+- (LACDTOLocationProviderKVSAdapter)initWithKVStore:(id)store;
+- (void)checkIsInFamiliarLocationWithCompletion:(id)completion;
 @end
 
 @implementation LACDTOLocationProviderKVSAdapter
 
-- (LACDTOLocationProviderKVSAdapter)initWithKVStore:(id)a3
+- (LACDTOLocationProviderKVSAdapter)initWithKVStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = LACDTOLocationProviderKVSAdapter;
   v6 = [(LACDTOLocationProviderKVSAdapter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_kvStore, a3);
+    objc_storeStrong(&v6->_kvStore, store);
   }
 
   return v7;
 }
 
-- (void)checkIsInFamiliarLocationWithCompletion:(id)a3
+- (void)checkIsInFamiliarLocationWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = LACLogDTOLostMode();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B0233000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ will start query", buf, 0xCu);
   }
 
@@ -40,7 +40,7 @@
   v10[2] = __76__LACDTOLocationProviderKVSAdapter_checkIsInFamiliarLocationWithCompletion___block_invoke_2;
   v10[3] = &unk_1E7A959C0;
   objc_copyWeak(&v12, buf);
-  v8 = v4;
+  v8 = completionCopy;
   v11 = v8;
   [(LACDTOKVStore *)kvStore processReadRequest:v7 completion:v10];
 

@@ -1,15 +1,15 @@
 @interface AuthenticationManager
 + (id)sharedInstance;
 - (AuthenticationManager)init;
-- (BOOL)canStartAuthenticationWithPolicy:(int64_t)a3 options:(id)a4;
-- (id)findMechanismForEvent:(int64_t)a3 mustBeRunning:(BOOL)a4 plugin:(id)a5;
-- (void)_clearAuthentication:(id)a3;
-- (void)_handleCompletionOfAuthentication:(id)a3 result:(id)a4 error:(id)a5;
-- (void)_runAuthentication:(id)a3;
+- (BOOL)canStartAuthenticationWithPolicy:(int64_t)policy options:(id)options;
+- (id)findMechanismForEvent:(int64_t)event mustBeRunning:(BOOL)running plugin:(id)plugin;
+- (void)_clearAuthentication:(id)authentication;
+- (void)_handleCompletionOfAuthentication:(id)authentication result:(id)result error:(id)error;
+- (void)_runAuthentication:(id)authentication;
 - (void)_runIdleBlocksNow;
-- (void)authenticateForPolicy:(int64_t)a3 constraintData:(id)a4 internalInfo:(id)a5 uiDelegate:(id)a6 originator:(id)a7 request:(id)a8 mechanism:(id)a9 reply:(id)a10;
-- (void)cancelWithError:(id)a3 originatorId:(unint64_t)a4 reply:(id)a5;
-- (void)runWhenIdle:(id)a3;
+- (void)authenticateForPolicy:(int64_t)policy constraintData:(id)data internalInfo:(id)info uiDelegate:(id)delegate originator:(id)originator request:(id)request mechanism:(id)mechanism reply:(id)self0;
+- (void)cancelWithError:(id)error originatorId:(unint64_t)id reply:(id)reply;
+- (void)runWhenIdle:(id)idle;
 @end
 
 @implementation AuthenticationManager
@@ -48,30 +48,30 @@ uint64_t __39__AuthenticationManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (BOOL)canStartAuthenticationWithPolicy:(int64_t)a3 options:(id)a4
+- (BOOL)canStartAuthenticationWithPolicy:(int64_t)policy options:(id)options
 {
   if (!self->_runningAuthentication)
   {
     return 1;
   }
 
-  v5 = AuthenticationPriorityForPolicy(a3, a4);
-  v6 = [(AuthenticationInProgress *)self->_runningAuthentication policy];
-  v7 = [(AuthenticationInProgress *)self->_runningAuthentication options];
-  v8 = v5 >= AuthenticationPriorityForPolicy(v6, v7);
+  v5 = AuthenticationPriorityForPolicy(policy, options);
+  policy = [(AuthenticationInProgress *)self->_runningAuthentication policy];
+  options = [(AuthenticationInProgress *)self->_runningAuthentication options];
+  v8 = v5 >= AuthenticationPriorityForPolicy(policy, options);
 
   return v8;
 }
 
-- (void)authenticateForPolicy:(int64_t)a3 constraintData:(id)a4 internalInfo:(id)a5 uiDelegate:(id)a6 originator:(id)a7 request:(id)a8 mechanism:(id)a9 reply:(id)a10
+- (void)authenticateForPolicy:(int64_t)policy constraintData:(id)data internalInfo:(id)info uiDelegate:(id)delegate originator:(id)originator request:(id)request mechanism:(id)mechanism reply:(id)self0
 {
-  v40 = a5;
-  v15 = a10;
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = [[AuthenticationInProgress alloc] initWithMechanism:v16 policy:a3 uiDelegate:v19 originator:v18 request:v17 internalInfo:v40 reply:v15];
+  infoCopy = info;
+  replyCopy = reply;
+  mechanismCopy = mechanism;
+  requestCopy = request;
+  originatorCopy = originator;
+  delegateCopy = delegate;
+  v20 = [[AuthenticationInProgress alloc] initWithMechanism:mechanismCopy policy:policy uiDelegate:delegateCopy originator:originatorCopy request:requestCopy internalInfo:infoCopy reply:replyCopy];
 
   if ([(AuthenticationInProgress *)self->_runningAuthentication shouldEnqueueAuthentication:v20])
   {
@@ -79,8 +79,8 @@ uint64_t __39__AuthenticationManager_sharedInstance__block_invoke()
     goto LABEL_15;
   }
 
-  v21 = [v40 objectForKeyedSubscript:@"Options"];
-  if ([(AuthenticationManager *)self canStartAuthenticationWithPolicy:a3 options:v21])
+  v21 = [infoCopy objectForKeyedSubscript:@"Options"];
+  if ([(AuthenticationManager *)self canStartAuthenticationWithPolicy:policy options:v21])
   {
     v22 = 0;
   }
@@ -89,9 +89,9 @@ uint64_t __39__AuthenticationManager_sharedInstance__block_invoke()
   {
     v22 = [(AuthenticationInProgress *)self->_runningAuthentication description];
     v23 = [v21 objectForKeyedSubscript:&unk_284B7A8B0];
-    v24 = [v23 BOOLValue];
+    bOOLValue = [v23 BOOLValue];
 
-    if ((v24 & 1) == 0)
+    if ((bOOLValue & 1) == 0)
     {
       v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"Higher priority authentication already running: %@", v22];
       v30 = [(AuthenticationManager *)self _cancelationErrorWithDescription:v25 cancelledByHigherPriority:1];
@@ -99,30 +99,30 @@ uint64_t __39__AuthenticationManager_sharedInstance__block_invoke()
     }
   }
 
-  v25 = [v40 objectForKeyedSubscript:@"InteractiveError"];
+  v25 = [infoCopy objectForKeyedSubscript:@"InteractiveError"];
   if (!v25)
   {
     v26 = [v21 objectForKeyedSubscript:&unk_284B7A8B0];
-    v27 = [v26 BOOLValue];
+    bOOLValue2 = [v26 BOOLValue];
     v25 = @"User interaction is required.";
-    v28 = v27 ? @"User interaction is required." : 0;
+    v28 = bOOLValue2 ? @"User interaction is required." : 0;
     v29 = v28;
 
-    if (!v27)
+    if (!bOOLValue2)
     {
       objc_storeStrong(&self->_pendingAuthentication, v20);
       if ([(AuthenticationInProgress *)self->_runningAuthentication isRunning])
       {
-        v32 = [(AuthenticationInProgress *)self->_runningAuthentication policy];
-        v33 = [(AuthenticationInProgress *)self->_runningAuthentication options];
-        v34 = AuthenticationPriorityForPolicy(v32, v33);
-        v35 = [(AuthenticationInProgress *)v20 policy];
-        v36 = [(AuthenticationInProgress *)v20 options];
-        v37 = v34 < AuthenticationPriorityForPolicy(v35, v36);
+        policy = [(AuthenticationInProgress *)self->_runningAuthentication policy];
+        options = [(AuthenticationInProgress *)self->_runningAuthentication options];
+        v34 = AuthenticationPriorityForPolicy(policy, options);
+        policy2 = [(AuthenticationInProgress *)v20 policy];
+        options2 = [(AuthenticationInProgress *)v20 options];
+        v37 = v34 < AuthenticationPriorityForPolicy(policy2, options2);
 
-        v38 = [(AuthenticationInProgress *)self->_runningAuthentication mechanism];
+        mechanism = [(AuthenticationInProgress *)self->_runningAuthentication mechanism];
         v39 = [(AuthenticationManager *)self _cancelationErrorWithDescription:@"Canceled by another authentication." cancelledByHigherPriority:v37];
-        [v38 finishRunWithResult:0 error:v39];
+        [mechanism finishRunWithResult:0 error:v39];
       }
 
       [(AuthenticationManager *)self _runAuthentication:v20];
@@ -133,30 +133,30 @@ uint64_t __39__AuthenticationManager_sharedInstance__block_invoke()
   v30 = [MEMORY[0x277CD47F0] errorWithCode:-1004 message:v25];
 LABEL_13:
   v31 = v30;
-  v15[2](v15, 0, v30);
+  replyCopy[2](replyCopy, 0, v30);
 
 LABEL_14:
 LABEL_15:
 }
 
-- (void)_runAuthentication:(id)a3
+- (void)_runAuthentication:(id)authentication
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  authenticationCopy = authentication;
   v6 = LA_LOG_AuthenticationManager();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     runningAuthentication = self->_runningAuthentication;
     *buf = 138543618;
-    v24 = v5;
+    v24 = authenticationCopy;
     v25 = 2114;
     v26 = runningAuthentication;
     _os_log_impl(&dword_238BBF000, v6, OS_LOG_TYPE_DEFAULT, "Started: %{public}@, replaced: %{public}@", buf, 0x16u);
   }
 
-  if (self->_pendingAuthentication == v5)
+  if (self->_pendingAuthentication == authenticationCopy)
   {
-    objc_storeStrong(&self->_runningAuthentication, a3);
+    objc_storeStrong(&self->_runningAuthentication, authentication);
     pendingAuthentication = self->_pendingAuthentication;
     self->_pendingAuthentication = 0;
 
@@ -167,7 +167,7 @@ LABEL_15:
     v20[2] = __44__AuthenticationManager__runAuthentication___block_invoke;
     v20[3] = &unk_278A64670;
     objc_copyWeak(&v22, buf);
-    v21 = v5;
+    v21 = authenticationCopy;
     [(AuthenticationInProgress *)v18 runWithCompletionHandler:v20];
 
     objc_destroyWeak(&v22);
@@ -181,7 +181,7 @@ LABEL_15:
     {
       v9 = self->_pendingAuthentication;
       *buf = 138543618;
-      v24 = v5;
+      v24 = authenticationCopy;
       v25 = 2114;
       v26 = v9;
       _os_log_impl(&dword_238BBF000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ was canceled while pending, replaced by %{public}@.", buf, 0x16u);
@@ -189,12 +189,12 @@ LABEL_15:
 
     if (self->_pendingAuthentication)
     {
-      v10 = [(AuthenticationInProgress *)v5 policy];
-      v11 = [(AuthenticationInProgress *)v5 options];
-      v12 = AuthenticationPriorityForPolicy(v10, v11);
-      v13 = [(AuthenticationInProgress *)self->_pendingAuthentication policy];
-      v14 = [(AuthenticationInProgress *)self->_pendingAuthentication options];
-      v15 = v12 < AuthenticationPriorityForPolicy(v13, v14);
+      policy = [(AuthenticationInProgress *)authenticationCopy policy];
+      options = [(AuthenticationInProgress *)authenticationCopy options];
+      v12 = AuthenticationPriorityForPolicy(policy, options);
+      policy2 = [(AuthenticationInProgress *)self->_pendingAuthentication policy];
+      options2 = [(AuthenticationInProgress *)self->_pendingAuthentication options];
+      v15 = v12 < AuthenticationPriorityForPolicy(policy2, options2);
 
       [(AuthenticationManager *)self _cancelationErrorWithDescription:@"Canceled by another authentication." cancelledByHigherPriority:v15];
     }
@@ -204,7 +204,7 @@ LABEL_15:
       [(AuthenticationManager *)self _invalidationError];
     }
     v16 = ;
-    [(AuthenticationInProgress *)v5 cancelWithError:v16];
+    [(AuthenticationInProgress *)authenticationCopy cancelWithError:v16];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -222,11 +222,11 @@ void __44__AuthenticationManager__runAuthentication___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)_handleCompletionOfAuthentication:(id)a3 result:(id)a4 error:(id)a5
+- (void)_handleCompletionOfAuthentication:(id)authentication result:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  authenticationCopy = authentication;
+  resultCopy = result;
+  errorCopy = error;
   v11 = LA_LOG_AuthenticationManager();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -242,11 +242,11 @@ void __44__AuthenticationManager__runAuthentication___block_invoke(uint64_t a1, 
     v12[2](v12);
   }
 
-  v14 = [(AuthenticationInProgress *)self->_runningAuthentication enqueuedAuthentication];
-  v15 = v14;
-  if (v14)
+  enqueuedAuthentication = [(AuthenticationInProgress *)self->_runningAuthentication enqueuedAuthentication];
+  v15 = enqueuedAuthentication;
+  if (enqueuedAuthentication)
   {
-    v16 = [v14 shouldDequeueAndRunAfterAuthentication:self->_runningAuthentication result:v9 error:v10];
+    v16 = [enqueuedAuthentication shouldDequeueAndRunAfterAuthentication:self->_runningAuthentication result:resultCopy error:errorCopy];
     if (!v16)
     {
       objc_storeStrong(&self->_pendingAuthentication, v15);
@@ -259,15 +259,15 @@ void __44__AuthenticationManager__runAuthentication___block_invoke(uint64_t a1, 
   }
 
   objc_initWeak(&location, self);
-  v18 = [MEMORY[0x277CD47C8] sharedInstance];
-  v19 = [v18 serverQueue];
+  mEMORY[0x277CD47C8] = [MEMORY[0x277CD47C8] sharedInstance];
+  serverQueue = [mEMORY[0x277CD47C8] serverQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__AuthenticationManager__handleCompletionOfAuthentication_result_error___block_invoke;
   block[3] = &unk_278A64698;
   objc_copyWeak(&v22, &location);
-  v21 = v8;
-  dispatch_async(v19, block);
+  v21 = authenticationCopy;
+  dispatch_async(serverQueue, block);
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(&location);
@@ -285,10 +285,10 @@ void __72__AuthenticationManager__handleCompletionOfAuthentication_result_error_
   }
 }
 
-- (void)_clearAuthentication:(id)a3
+- (void)_clearAuthentication:(id)authentication
 {
   v10 = *MEMORY[0x277D85DE8];
-  if (self->_runningAuthentication == a3)
+  if (self->_runningAuthentication == authentication)
   {
     v4 = LA_LOG_AuthenticationManager();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -308,21 +308,21 @@ void __72__AuthenticationManager__handleCompletionOfAuthentication_result_error_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelWithError:(id)a3 originatorId:(unint64_t)a4 reply:(id)a5
+- (void)cancelWithError:(id)error originatorId:(unint64_t)id reply:(id)reply
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  errorCopy = error;
+  replyCopy = reply;
   runningAuthentication = self->_runningAuthentication;
-  if (runningAuthentication && [(AuthenticationInProgress *)runningAuthentication originatorId]== a4)
+  if (runningAuthentication && [(AuthenticationInProgress *)runningAuthentication originatorId]== id)
   {
     v11 = self->_runningAuthentication;
     if (!v11)
     {
 LABEL_15:
-      if (v9)
+      if (replyCopy)
       {
-        v9[2](v9);
+        replyCopy[2](replyCopy);
       }
 
       v11 = 0;
@@ -338,7 +338,7 @@ LABEL_15:
       goto LABEL_15;
     }
 
-    if ([(AuthenticationInProgress *)pendingAuthentication originatorId]!= a4)
+    if ([(AuthenticationInProgress *)pendingAuthentication originatorId]!= id)
     {
       goto LABEL_15;
     }
@@ -366,31 +366,31 @@ LABEL_15:
       v15 = "pending";
     }
 
-    v16 = [(AuthenticationInProgress *)v11 mechanism];
+    mechanism = [(AuthenticationInProgress *)v11 mechanism];
     v20 = 136446722;
     v21 = v15;
     v22 = 2114;
     v23 = v11;
     v24 = 2114;
-    v25 = v16;
+    v25 = mechanism;
     _os_log_impl(&dword_238BBF000, v14, OS_LOG_TYPE_DEFAULT, "canceling %{public}s authentication: %{public}@ mechanism: %{public}@", &v20, 0x20u);
   }
 
   if ([(AuthenticationInProgress *)v11 isRunning])
   {
-    v17 = MEMORY[0x23EE740C0](v9);
+    v17 = MEMORY[0x23EE740C0](replyCopy);
     completionHandler = self->_completionHandler;
     self->_completionHandler = v17;
 
-    [(AuthenticationInProgress *)v11 cancelWithError:v8];
+    [(AuthenticationInProgress *)v11 cancelWithError:errorCopy];
   }
 
   else
   {
-    [(AuthenticationInProgress *)v11 cancelWithError:v8];
-    if (v9)
+    [(AuthenticationInProgress *)v11 cancelWithError:errorCopy];
+    if (replyCopy)
     {
-      v9[2](v9);
+      replyCopy[2](replyCopy);
     }
   }
 
@@ -399,10 +399,10 @@ LABEL_18:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runWhenIdle:(id)a3
+- (void)runWhenIdle:(id)idle
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  idleCopy = idle;
   v5 = LA_LOG_AuthenticationManager();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -413,20 +413,20 @@ LABEL_18:
   }
 
   idleBlocks = self->_idleBlocks;
-  v8 = MEMORY[0x23EE740C0](v4);
+  v8 = MEMORY[0x23EE740C0](idleCopy);
   [(NSMutableArray *)idleBlocks addObject:v8];
 
   if (!self->_runningAuthentication)
   {
     objc_initWeak(&buf, self);
-    v9 = [MEMORY[0x277CD47C8] sharedInstance];
-    v10 = [v9 serverQueue];
+    mEMORY[0x277CD47C8] = [MEMORY[0x277CD47C8] sharedInstance];
+    serverQueue = [mEMORY[0x277CD47C8] serverQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __37__AuthenticationManager_runWhenIdle___block_invoke;
     block[3] = &unk_278A64600;
     objc_copyWeak(&v13, &buf);
-    dispatch_async(v10, block);
+    dispatch_async(serverQueue, block);
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(&buf);
@@ -467,7 +467,7 @@ void __37__AuthenticationManager_runWhenIdle___block_invoke(uint64_t a1)
       v12 = 2114;
       v13 = v5;
       v14 = 2112;
-      v15 = self;
+      selfCopy = self;
       _os_log_impl(&dword_238BBF000, v4, OS_LOG_TYPE_DEFAULT, "%s %{public}@ block(s) in queue on %@", buf, 0x20u);
     }
 
@@ -481,14 +481,14 @@ void __37__AuthenticationManager_runWhenIdle___block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)findMechanismForEvent:(int64_t)a3 mustBeRunning:(BOOL)a4 plugin:(id)a5
+- (id)findMechanismForEvent:(int64_t)event mustBeRunning:(BOOL)running plugin:(id)plugin
 {
-  v5 = a4;
+  runningCopy = running;
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = [(AuthenticationManager *)self runningAuthentication];
-  v10 = [v9 mechanism];
-  v11 = [v10 findMechanismWithEventIdentifier:a3];
+  pluginCopy = plugin;
+  runningAuthentication = [(AuthenticationManager *)self runningAuthentication];
+  mechanism = [runningAuthentication mechanism];
+  v11 = [mechanism findMechanismWithEventIdentifier:event];
 
   if (!v11)
   {
@@ -496,14 +496,14 @@ void __37__AuthenticationManager_runWhenIdle___block_invoke(uint64_t a1)
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 67109120;
-      LODWORD(v20) = a3;
+      LODWORD(v20) = event;
       _os_log_impl(&dword_238BBF000, v14, OS_LOG_TYPE_DEFAULT, "No mechanism found for event %d", &v19, 8u);
     }
 
     goto LABEL_17;
   }
 
-  if (v5 && ([v11 isRunning] & 1) == 0)
+  if (runningCopy && ([v11 isRunning] & 1) == 0)
   {
     v13 = LA_LOG_AuthenticationManager();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -516,16 +516,16 @@ void __37__AuthenticationManager_runWhenIdle___block_invoke(uint64_t a1)
     goto LABEL_16;
   }
 
-  if (v8)
+  if (pluginCopy)
   {
-    v12 = [v11 cachedExternalizationDelegate];
+    cachedExternalizationDelegate = [v11 cachedExternalizationDelegate];
 
-    if (v12 != v8)
+    if (cachedExternalizationDelegate != pluginCopy)
     {
       v13 = LA_LOG_AuthenticationManager();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        [AuthenticationManager findMechanismForEvent:v11 mustBeRunning:v8 plugin:v13];
+        [AuthenticationManager findMechanismForEvent:v11 mustBeRunning:pluginCopy plugin:v13];
       }
 
 LABEL_16:

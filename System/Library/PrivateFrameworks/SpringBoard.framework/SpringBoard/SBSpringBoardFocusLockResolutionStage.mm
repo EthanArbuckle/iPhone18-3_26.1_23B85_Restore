@@ -1,37 +1,37 @@
 @interface SBSpringBoardFocusLockResolutionStage
 - (SBKeyboardFocusResolutionStageSceneProviding)sceneProvider;
 - (SBSpringBoardFocusLockResolutionStageDelegate)delegate;
-- (void)resolveKeyboardFocusPolicy:(id)a3 context:(id)a4 stop:(BOOL *)a5;
+- (void)resolveKeyboardFocusPolicy:(id)policy context:(id)context stop:(BOOL *)stop;
 @end
 
 @implementation SBSpringBoardFocusLockResolutionStage
 
-- (void)resolveKeyboardFocusPolicy:(id)a3 context:(id)a4 stop:(BOOL *)a5
+- (void)resolveKeyboardFocusPolicy:(id)policy context:(id)context stop:(BOOL *)stop
 {
   v44 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  policyCopy = policy;
+  contextCopy = context;
   WeakRetained = objc_loadWeakRetained(&self->_sceneProvider);
   v10 = objc_loadWeakRetained(&self->_delegate);
-  v11 = [v7 auditHistory];
-  [v11 addItemWithFormat:@"-- SBSpringBoardFocusLockResolutionStage --"];
+  auditHistory = [policyCopy auditHistory];
+  [auditHistory addItemWithFormat:@"-- SBSpringBoardFocusLockResolutionStage --"];
 
-  v12 = [v10 springBoardFocusLockReasons];
-  if ([v12 count])
+  springBoardFocusLockReasons = [v10 springBoardFocusLockReasons];
+  if ([springBoardFocusLockReasons count])
   {
-    v13 = [v7 auditHistory];
-    [v13 addItemWithFormat:@"focus lock found"];
+    auditHistory2 = [policyCopy auditHistory];
+    [auditHistory2 addItemWithFormat:@"focus lock found"];
 
-    v14 = [v8 zStackResolver];
-    v15 = [v14 settingsOfParticipantWithIdentifier:29];
-    v39 = v12;
+    zStackResolver = [contextCopy zStackResolver];
+    v15 = [zStackResolver settingsOfParticipantWithIdentifier:29];
+    v39 = springBoardFocusLockReasons;
     if ([v15 allowsKeyboardArbiterToDetermineFocusTarget])
     {
-      v16 = SBLogKeyboardFocus();
-      if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+      springBoardSceneFocusTarget = SBLogKeyboardFocus();
+      if (os_log_type_enabled(springBoardSceneFocusTarget, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_21ED4E000, v16, OS_LOG_TYPE_DEFAULT, "policy: focus lock -- allow KA to set target", buf, 2u);
+        _os_log_impl(&dword_21ED4E000, springBoardSceneFocusTarget, OS_LOG_TYPE_DEFAULT, "policy: focus lock -- allow KA to set target", buf, 2u);
       }
 
       v17 = 1;
@@ -39,21 +39,21 @@
 
     else
     {
-      v16 = [WeakRetained springBoardSceneFocusTarget];
-      [v7 setKeyboardFocusTarget:v16];
-      v18 = [v7 auditHistory];
-      [v18 addItemWithFormat:@"SB target %@", v16];
+      springBoardSceneFocusTarget = [WeakRetained springBoardSceneFocusTarget];
+      [policyCopy setKeyboardFocusTarget:springBoardSceneFocusTarget];
+      auditHistory3 = [policyCopy auditHistory];
+      [auditHistory3 addItemWithFormat:@"SB target %@", springBoardSceneFocusTarget];
 
-      v19 = [v7 keyboardFocusTarget];
-      if (v19)
+      keyboardFocusTarget = [policyCopy keyboardFocusTarget];
+      if (keyboardFocusTarget)
       {
-        v20 = v19;
+        v20 = keyboardFocusTarget;
         v21 = v10;
-        v22 = v8;
-        v23 = v14;
+        v22 = contextCopy;
+        v23 = zStackResolver;
         v38 = WeakRetained;
-        v24 = [WeakRetained springBoardSceneFocusTarget];
-        v25 = [v7 keyboardFocusTarget];
+        springBoardSceneFocusTarget2 = [WeakRetained springBoardSceneFocusTarget];
+        keyboardFocusTarget2 = [policyCopy keyboardFocusTarget];
         v26 = BSEqualObjects();
 
         if (v26)
@@ -64,16 +64,16 @@
         else
         {
           v27 = 1;
-          [v7 setShouldSuppressRemoteDeferring:1];
-          v28 = [v7 auditHistory];
-          [v28 addItemWithFormat:@"remote deferring suppresssd"];
+          [policyCopy setShouldSuppressRemoteDeferring:1];
+          auditHistory4 = [policyCopy auditHistory];
+          [auditHistory4 addItemWithFormat:@"remote deferring suppresssd"];
         }
 
-        v14 = v23;
-        v8 = v22;
+        zStackResolver = v23;
+        contextCopy = v22;
         v10 = v21;
         WeakRetained = v38;
-        v12 = v39;
+        springBoardFocusLockReasons = v39;
       }
 
       else
@@ -85,7 +85,7 @@
       if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v41 = v16;
+        v41 = springBoardSceneFocusTarget;
         v42 = 1024;
         v43 = v27;
         _os_log_impl(&dword_21ED4E000, v29, OS_LOG_TYPE_DEFAULT, "policy: focus lock -- sbTarget:%{public}@ suppressRemoteDeferring:%{BOOL}u", buf, 0x12u);
@@ -94,31 +94,31 @@
       v17 = 0;
     }
 
-    [v7 setSuppressCameraButtonDeferringToApplications:{objc_msgSend(v15, "allowCameraButtonDeferringWhileFocusLocked") ^ 1}];
-    v30 = [v15 overrideKeyboardFocusTarget];
-    if (v30)
+    [policyCopy setSuppressCameraButtonDeferringToApplications:{objc_msgSend(v15, "allowCameraButtonDeferringWhileFocusLocked") ^ 1}];
+    overrideKeyboardFocusTarget = [v15 overrideKeyboardFocusTarget];
+    if (overrideKeyboardFocusTarget)
     {
       v31 = v10;
-      v32 = v8;
-      v33 = v14;
+      v32 = contextCopy;
+      v33 = zStackResolver;
       v34 = WeakRetained;
-      [v7 setKeyboardFocusTarget:v30];
-      v35 = [v7 auditHistory];
-      [v35 addItemWithFormat:@"overrideTarget:%@", v30];
+      [policyCopy setKeyboardFocusTarget:overrideKeyboardFocusTarget];
+      auditHistory5 = [policyCopy auditHistory];
+      [auditHistory5 addItemWithFormat:@"overrideTarget:%@", overrideKeyboardFocusTarget];
 
       v36 = SBLogKeyboardFocus();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v41 = v30;
+        v41 = overrideKeyboardFocusTarget;
         _os_log_impl(&dword_21ED4E000, v36, OS_LOG_TYPE_DEFAULT, "policy: using override target: %{public}@", buf, 0xCu);
       }
 
       WeakRetained = v34;
-      v14 = v33;
-      v8 = v32;
+      zStackResolver = v33;
+      contextCopy = v32;
       v10 = v31;
-      v12 = v39;
+      springBoardFocusLockReasons = v39;
     }
   }
 
@@ -127,9 +127,9 @@
     v17 = 1;
   }
 
-  [v7 setAdvicePolicy:v17];
-  v37 = [v7 auditHistory];
-  [v37 addItemWithFormat:@"outcome:%@", v7];
+  [policyCopy setAdvicePolicy:v17];
+  auditHistory6 = [policyCopy auditHistory];
+  [auditHistory6 addItemWithFormat:@"outcome:%@", policyCopy];
 }
 
 - (SBKeyboardFocusResolutionStageSceneProviding)sceneProvider

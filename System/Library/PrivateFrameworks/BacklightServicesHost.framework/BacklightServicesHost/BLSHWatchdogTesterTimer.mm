@@ -1,18 +1,18 @@
 @interface BLSHWatchdogTesterTimer
-- (BLSHWatchdogTesterTimer)initWithExplanation:(id)a3;
+- (BLSHWatchdogTesterTimer)initWithExplanation:(id)explanation;
 @end
 
 @implementation BLSHWatchdogTesterTimer
 
-- (BLSHWatchdogTesterTimer)initWithExplanation:(id)a3
+- (BLSHWatchdogTesterTimer)initWithExplanation:(id)explanation
 {
-  v4 = a3;
+  explanationCopy = explanation;
   v9.receiver = self;
   v9.super_class = BLSHWatchdogTesterTimer;
   v5 = [(BLSHWatchdogTesterTimer *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [explanationCopy copy];
     explanation = v5->_explanation;
     v5->_explanation = v6;
   }

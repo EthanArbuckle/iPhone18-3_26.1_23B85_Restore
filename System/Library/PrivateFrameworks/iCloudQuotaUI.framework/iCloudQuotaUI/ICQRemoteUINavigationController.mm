@@ -1,22 +1,22 @@
 @interface ICQRemoteUINavigationController
-- (ICQRemoteUINavigationController)initWithRootViewController:(id)a3;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (ICQRemoteUINavigationController)initWithRootViewController:(id)controller;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation ICQRemoteUINavigationController
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = ICQRemoteUINavigationController;
-  [(ICQRemoteUINavigationController *)&v7 viewDidDisappear:a3];
+  [(ICQRemoteUINavigationController *)&v7 viewDidDisappear:disappear];
   if ([(ICQRemoteUINavigationController *)self shouldSignalDelegateOnDismiss])
   {
-    v4 = [(ICQRemoteUINavigationController *)self delegate];
-    if ([v4 conformsToProtocol:&unk_28847C890])
+    delegate = [(ICQRemoteUINavigationController *)self delegate];
+    if ([delegate conformsToProtocol:&unk_28847C890])
     {
-      v5 = [(ICQRemoteUINavigationController *)self delegate];
+      delegate2 = [(ICQRemoteUINavigationController *)self delegate];
       v6 = objc_opt_respondsToSelector();
 
       if ((v6 & 1) == 0)
@@ -24,17 +24,17 @@
         return;
       }
 
-      v4 = [(ICQRemoteUINavigationController *)self delegate];
-      [v4 remoteUIControllerDidDismiss:0];
+      delegate = [(ICQRemoteUINavigationController *)self delegate];
+      [delegate remoteUIControllerDidDismiss:0];
     }
   }
 }
 
-- (ICQRemoteUINavigationController)initWithRootViewController:(id)a3
+- (ICQRemoteUINavigationController)initWithRootViewController:(id)controller
 {
   v4.receiver = self;
   v4.super_class = ICQRemoteUINavigationController;
-  result = [(ICQRemoteUINavigationController *)&v4 initWithRootViewController:a3];
+  result = [(ICQRemoteUINavigationController *)&v4 initWithRootViewController:controller];
   if (result)
   {
     result->_shouldSignalDelegateOnDismiss = 1;
@@ -43,9 +43,9 @@
   return result;
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = +[ICQUIExtensionKitHelpers isExtensionKitProcess];
   v8 = _ICQGetLogSystem();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
@@ -80,9 +80,9 @@
     block[1] = 3221225472;
     block[2] = __76__ICQRemoteUINavigationController_dismissViewControllerAnimated_completion___block_invoke;
     block[3] = &unk_27A65AD00;
-    v13 = a3;
+    animatedCopy = animated;
     block[4] = self;
-    v12 = v6;
+    v12 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
     v10 = v12;
   }

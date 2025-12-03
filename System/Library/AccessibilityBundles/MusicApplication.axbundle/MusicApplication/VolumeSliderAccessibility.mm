@@ -1,18 +1,18 @@
 @interface VolumeSliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)canBecomeFocused;
 - (id)accessibilityValue;
-- (void)_accessibilityIncreaseVolume:(BOOL)a3;
+- (void)_accessibilityIncreaseVolume:(BOOL)volume;
 @end
 
 @implementation VolumeSliderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MusicApplication.VolumeSlider" hasInstanceMethod:@"accessibilityUpdateWithVolume:" withFullSignature:{"v", "f", 0}];
-  [v3 validateClass:@"MusicApplication.VolumeSlider" hasSwiftField:@"volumeController" withSwiftType:"MPVolumeController"];
-  [v3 validateClass:@"MPVolumeController" hasInstanceMethod:@"volumeValue" withFullSignature:{"f", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MusicApplication.VolumeSlider" hasInstanceMethod:@"accessibilityUpdateWithVolume:" withFullSignature:{"v", "f", 0}];
+  [validationsCopy validateClass:@"MusicApplication.VolumeSlider" hasSwiftField:@"volumeController" withSwiftType:"MPVolumeController"];
+  [validationsCopy validateClass:@"MPVolumeController" hasInstanceMethod:@"volumeValue" withFullSignature:{"f", 0}];
 }
 
 - (id)accessibilityValue
@@ -24,7 +24,7 @@
   return v3;
 }
 
-- (void)_accessibilityIncreaseVolume:(BOOL)a3
+- (void)_accessibilityIncreaseVolume:(BOOL)volume
 {
   v3 = [(VolumeSliderAccessibility *)self safeSwiftValueForKey:@"volumeController"];
   [v3 safeFloatForKey:@"volumeValue"];
@@ -35,8 +35,8 @@
 {
   v5.receiver = self;
   v5.super_class = VolumeSliderAccessibility;
-  v3 = [(VolumeSliderAccessibility *)&v5 canBecomeFocused];
-  return ([(VolumeSliderAccessibility *)self _accessibilityIsFKARunningForFocusItem]| v3) & 1;
+  canBecomeFocused = [(VolumeSliderAccessibility *)&v5 canBecomeFocused];
+  return ([(VolumeSliderAccessibility *)self _accessibilityIsFKARunningForFocusItem]| canBecomeFocused) & 1;
 }
 
 @end

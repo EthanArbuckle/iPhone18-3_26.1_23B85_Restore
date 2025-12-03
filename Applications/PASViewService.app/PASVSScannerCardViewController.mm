@@ -1,5 +1,5 @@
 @interface PASVSScannerCardViewController
-- (_TtC14PASViewService30PASVSScannerCardViewController)initWithScannerEngine:(id)a3;
+- (_TtC14PASViewService30PASVSScannerCardViewController)initWithScannerEngine:(id)engine;
 - (void)viewDidLoad;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000E8FC();
 }
 
-- (_TtC14PASViewService30PASVSScannerCardViewController)initWithScannerEngine:(id)a3
+- (_TtC14PASViewService30PASVSScannerCardViewController)initWithScannerEngine:(id)engine
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

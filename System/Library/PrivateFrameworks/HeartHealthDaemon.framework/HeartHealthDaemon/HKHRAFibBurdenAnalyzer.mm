@@ -1,54 +1,54 @@
 @interface HKHRAFibBurdenAnalyzer
-- (HKHRAFibBurdenAnalyzer)initWithClassificationRetriever:(id)a3 burdenDeterminer:(id)a4 tachogramClassifierFactory:(id)a5 majorityTimeZoneDeterminer:(id)a6 calendarCache:(id)a7 dateGenerator:(id)a8;
-- (HKHRAFibBurdenAnalyzer)initWithProfile:(id)a3;
-- (id)_generateDayOfWeekHistogramWithTachogramClassifier:(id)a3 error:(id *)a4;
-- (id)_generateTimeOfDayHistogramWithTachogramClassifier:(id)a3 error:(id *)a4;
-- (id)_julianDayToTimeZoneMappingForPastSixWeeksWithError:(id *)a3;
-- (id)_logDayNameForWeekday:(int64_t)a3;
-- (id)generateSevenDayBurdenWithRange:(id)a3 breadcrumbManager:(id)a4 error:(id *)a5;
-- (id)generateSixWeekBurdenHistogramsWithError:(id *)a3;
+- (HKHRAFibBurdenAnalyzer)initWithClassificationRetriever:(id)retriever burdenDeterminer:(id)determiner tachogramClassifierFactory:(id)factory majorityTimeZoneDeterminer:(id)zoneDeterminer calendarCache:(id)cache dateGenerator:(id)generator;
+- (HKHRAFibBurdenAnalyzer)initWithProfile:(id)profile;
+- (id)_generateDayOfWeekHistogramWithTachogramClassifier:(id)classifier error:(id *)error;
+- (id)_generateTimeOfDayHistogramWithTachogramClassifier:(id)classifier error:(id *)error;
+- (id)_julianDayToTimeZoneMappingForPastSixWeeksWithError:(id *)error;
+- (id)_logDayNameForWeekday:(int64_t)weekday;
+- (id)generateSevenDayBurdenWithRange:(id)range breadcrumbManager:(id)manager error:(id *)error;
+- (id)generateSixWeekBurdenHistogramsWithError:(id *)error;
 @end
 
 @implementation HKHRAFibBurdenAnalyzer
 
-- (HKHRAFibBurdenAnalyzer)initWithProfile:(id)a3
+- (HKHRAFibBurdenAnalyzer)initWithProfile:(id)profile
 {
   v4 = MEMORY[0x277CCCFE8];
-  v5 = a3;
+  profileCopy = profile;
   v6 = [v4 alloc];
   v7 = HKHRAFibBurdenLogForCategory();
-  v8 = [v6 initWithLoggingCategory:v7 healthDataSource:v5];
+  v8 = [v6 initWithLoggingCategory:v7 healthDataSource:profileCopy];
 
   v9 = [[BerylliumBurdenDeterminer alloc] initWithAnalyticsEventSubmissionManager:v8];
   v10 = objc_alloc_init(MEMORY[0x277CCD0A0]);
-  v11 = [[HKHRAFibBurdenTachogramClassificationsRetriever alloc] initWithProfile:v5 calendarCache:v10];
+  v11 = [[HKHRAFibBurdenTachogramClassificationsRetriever alloc] initWithProfile:profileCopy calendarCache:v10];
   v12 = objc_alloc_init(HKHRAFibBurdenTachogramClassifierFactory);
-  v13 = [[HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer alloc] initWithProfile:v5 calendarCache:v10];
+  v13 = [[HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer alloc] initWithProfile:profileCopy calendarCache:v10];
 
   v14 = [(HKHRAFibBurdenAnalyzer *)self initWithClassificationRetriever:v11 burdenDeterminer:v9 tachogramClassifierFactory:v12 majorityTimeZoneDeterminer:v13 calendarCache:v10 dateGenerator:&__block_literal_global];
   return v14;
 }
 
-- (HKHRAFibBurdenAnalyzer)initWithClassificationRetriever:(id)a3 burdenDeterminer:(id)a4 tachogramClassifierFactory:(id)a5 majorityTimeZoneDeterminer:(id)a6 calendarCache:(id)a7 dateGenerator:(id)a8
+- (HKHRAFibBurdenAnalyzer)initWithClassificationRetriever:(id)retriever burdenDeterminer:(id)determiner tachogramClassifierFactory:(id)factory majorityTimeZoneDeterminer:(id)zoneDeterminer calendarCache:(id)cache dateGenerator:(id)generator
 {
-  v25 = a3;
-  v24 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  retrieverCopy = retriever;
+  determinerCopy = determiner;
+  factoryCopy = factory;
+  zoneDeterminerCopy = zoneDeterminer;
+  cacheCopy = cache;
+  generatorCopy = generator;
   v26.receiver = self;
   v26.super_class = HKHRAFibBurdenAnalyzer;
   v19 = [(HKHRAFibBurdenAnalyzer *)&v26 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_classificationRetriever, a3);
-    objc_storeStrong(&v20->_burdenDeterminer, a4);
-    objc_storeStrong(&v20->_tachogramClassifierFactory, a5);
-    objc_storeStrong(&v20->_majorityTimeZoneDeterminer, a6);
-    objc_storeStrong(&v20->_calendarCache, a7);
-    v21 = MEMORY[0x22AACDB50](v18);
+    objc_storeStrong(&v19->_classificationRetriever, retriever);
+    objc_storeStrong(&v20->_burdenDeterminer, determiner);
+    objc_storeStrong(&v20->_tachogramClassifierFactory, factory);
+    objc_storeStrong(&v20->_majorityTimeZoneDeterminer, zoneDeterminer);
+    objc_storeStrong(&v20->_calendarCache, cache);
+    v21 = MEMORY[0x22AACDB50](generatorCopy);
     dateGenerator = v20->_dateGenerator;
     v20->_dateGenerator = v21;
   }
@@ -56,20 +56,20 @@
   return v20;
 }
 
-- (id)generateSevenDayBurdenWithRange:(id)a3 breadcrumbManager:(id)a4 error:(id *)a5
+- (id)generateSevenDayBurdenWithRange:(id)range breadcrumbManager:(id)manager error:(id *)error
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
-  v9 = a4;
-  v10 = [(HKHRAFibBurdenTachogramClassifierFactory *)self->_tachogramClassifierFactory createTachogramClassifier];
+  var1 = range.var1;
+  var0 = range.var0;
+  managerCopy = manager;
+  createTachogramClassifier = [(HKHRAFibBurdenTachogramClassifierFactory *)self->_tachogramClassifierFactory createTachogramClassifier];
   classificationRetriever = self->_classificationRetriever;
   v20 = 0;
-  v12 = [(HKHRAFibBurdenTachogramClassificationsRetriever *)classificationRetriever tachogramClassificationsDayIndexRange:var0 tachogramClassifier:var1 error:v10, &v20];
+  v12 = [(HKHRAFibBurdenTachogramClassificationsRetriever *)classificationRetriever tachogramClassificationsDayIndexRange:var0 tachogramClassifier:var1 error:createTachogramClassifier, &v20];
   v13 = v20;
   if (v12)
   {
-    [v9 dropBreadcrumb:4];
-    v14 = [(HKHRAFibBurdenDeterminer *)self->_burdenDeterminer burdenForTachogramClassifications:v12 calculationType:0 calculationTypeContext:0 error:a5];
+    [managerCopy dropBreadcrumb:4];
+    v14 = [(HKHRAFibBurdenDeterminer *)self->_burdenDeterminer burdenForTachogramClassifications:v12 calculationType:0 calculationTypeContext:0 error:error];
     if (v14)
     {
       goto LABEL_12;
@@ -90,10 +90,10 @@
     v17 = v13;
     if (v17)
     {
-      if (a5)
+      if (error)
       {
         v18 = v17;
-        *a5 = v17;
+        *error = v17;
       }
 
       else
@@ -106,19 +106,19 @@
     v15 = @"Error classifying tachograms";
   }
 
-  [v9 dropAnalysisResultBreadcrumbWithContext:v15];
+  [managerCopy dropAnalysisResultBreadcrumbWithContext:v15];
 LABEL_12:
 
   return v14;
 }
 
-- (id)generateSixWeekBurdenHistogramsWithError:(id *)a3
+- (id)generateSixWeekBurdenHistogramsWithError:(id *)error
 {
-  v5 = [(HKHRAFibBurdenTachogramClassifierFactory *)self->_tachogramClassifierFactory createTachogramClassifier];
-  v6 = [(HKHRAFibBurdenAnalyzer *)self _generateDayOfWeekHistogramWithTachogramClassifier:v5 error:a3];
+  createTachogramClassifier = [(HKHRAFibBurdenTachogramClassifierFactory *)self->_tachogramClassifierFactory createTachogramClassifier];
+  v6 = [(HKHRAFibBurdenAnalyzer *)self _generateDayOfWeekHistogramWithTachogramClassifier:createTachogramClassifier error:error];
   if (v6)
   {
-    v7 = [(HKHRAFibBurdenAnalyzer *)self _generateTimeOfDayHistogramWithTachogramClassifier:v5 error:a3];
+    v7 = [(HKHRAFibBurdenAnalyzer *)self _generateTimeOfDayHistogramWithTachogramClassifier:createTachogramClassifier error:error];
     if (v7)
     {
       v8 = [objc_alloc(MEMORY[0x277D12F48]) initWithDayOfWeekHistogram:v6 timeOfDayHistogram:v7];
@@ -138,10 +138,10 @@ LABEL_12:
   return v8;
 }
 
-- (id)_generateDayOfWeekHistogramWithTachogramClassifier:(id)a3 error:(id *)a4
+- (id)_generateDayOfWeekHistogramWithTachogramClassifier:(id)classifier error:(id *)error
 {
   v49 = *MEMORY[0x277D85DE8];
-  v37 = a3;
+  classifierCopy = classifier;
   v6 = HKHRAFibBurdenDayOfWeekHistogramOverride();
   if (v6)
   {
@@ -150,7 +150,7 @@ LABEL_12:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v44 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_229486000, v7, OS_LOG_TYPE_DEFAULT, "[%@] Using override for day of week histogram", buf, 0xCu);
     }
 
@@ -158,7 +158,7 @@ LABEL_12:
     goto LABEL_47;
   }
 
-  v32 = a4;
+  errorCopy = error;
   v9 = 0;
   v33 = 0;
   v34 = 0;
@@ -172,7 +172,7 @@ LABEL_12:
     v11 = objc_autoreleasePoolPush();
     classificationRetriever = self->_classificationRetriever;
     v42 = v9;
-    v13 = [(HKHRAFibBurdenTachogramClassificationsRetriever *)classificationRetriever tachogramClassificationsForLastSixWeeksOfWeekday:i tachogramClassifier:v37 error:&v42];
+    v13 = [(HKHRAFibBurdenTachogramClassificationsRetriever *)classificationRetriever tachogramClassificationsForLastSixWeeksOfWeekday:i tachogramClassifier:classifierCopy error:&v42];
     v14 = v42;
 
     if (!v13)
@@ -183,7 +183,7 @@ LABEL_12:
       {
         v30 = [(HKHRAFibBurdenAnalyzer *)self _logDayNameForWeekday:i];
         *buf = 138412802;
-        v44 = self;
+        selfCopy3 = self;
         v45 = 2112;
         v46 = v30;
         v47 = 2112;
@@ -217,7 +217,7 @@ LABEL_35:
       {
         v31 = [(HKHRAFibBurdenAnalyzer *)self _logDayNameForWeekday:i];
         *buf = 138412802;
-        v44 = self;
+        selfCopy3 = self;
         v45 = 2112;
         v46 = v31;
         v47 = 2112;
@@ -317,11 +317,11 @@ LABEL_25:
 LABEL_27:
     v24 = v33;
     v23 = v34;
-    if (v32)
+    if (errorCopy)
     {
       v25 = v9;
       v8 = 0;
-      *v32 = v9;
+      *errorCopy = v9;
     }
 
     else
@@ -361,10 +361,10 @@ LABEL_47:
   return v8;
 }
 
-- (id)_generateTimeOfDayHistogramWithTachogramClassifier:(id)a3 error:(id *)a4
+- (id)_generateTimeOfDayHistogramWithTachogramClassifier:(id)classifier error:(id *)error
 {
   v74 = *MEMORY[0x277D85DE8];
-  v56 = a3;
+  classifierCopy = classifier;
   v6 = HKHRAFibBurdenTimeOfDayHistogramOverride();
   if (!v6)
   {
@@ -377,7 +377,7 @@ LABEL_47:
     {
       v61 = 0;
       v62 = v10;
-      v54 = a4;
+      errorCopy = error;
       v12 = 0;
       v13 = 0;
       v59 = 0;
@@ -391,7 +391,7 @@ LABEL_47:
         v16 = v14 + 4;
         classificationRetriever = self->_classificationRetriever;
         v64 = v62;
-        v18 = [(HKHRAFibBurdenTachogramClassificationsRetriever *)classificationRetriever tachogramClassificationsForLastSixWeeksOfHoursFrom:v14 to:v14 + 4 julianDayToMajorityTimeZone:v55 tachogramClassifier:v56 error:&v64];
+        v18 = [(HKHRAFibBurdenTachogramClassificationsRetriever *)classificationRetriever tachogramClassificationsForLastSixWeeksOfHoursFrom:v14 to:v14 + 4 julianDayToMajorityTimeZone:v55 tachogramClassifier:classifierCopy error:&v64];
         v19 = v64;
 
         if (!v18)
@@ -401,7 +401,7 @@ LABEL_47:
 
         v20 = v14;
         v21 = v13;
-        v22 = self;
+        selfCopy = self;
         burdenDeterminer = self->_burdenDeterminer;
         v24 = [MEMORY[0x277CCABB0] numberWithInteger:v20];
         v63 = v19;
@@ -412,11 +412,11 @@ LABEL_47:
         {
           _HKInitializeLogging();
           v43 = HKHRAFibBurdenLogForCategory();
-          self = v22;
+          self = selfCopy;
           if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
           {
             *buf = 138413058;
-            v67 = v22;
+            selfCopy3 = selfCopy;
             v68 = 2048;
             v69 = v20;
             v70 = 2048;
@@ -566,7 +566,7 @@ LABEL_47:
 
         objc_autoreleasePoolPop(v15);
         ++v12;
-        self = v22;
+        self = selfCopy;
         v14 = v16;
         if ((v16 - 4) >= 0x14)
         {
@@ -579,7 +579,7 @@ LABEL_47:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 138413058;
-        v67 = self;
+        selfCopy3 = self;
         v68 = 2048;
         v69 = v14;
         v70 = 2048;
@@ -599,11 +599,11 @@ LABEL_58:
       {
         v46 = v57;
         v45 = v58;
-        if (v54)
+        if (errorCopy)
         {
           v47 = v62;
           v8 = 0;
-          *v54 = v62;
+          *errorCopy = v62;
         }
 
         else
@@ -658,11 +658,11 @@ LABEL_58:
     v13 = v11;
     if (v13)
     {
-      if (a4)
+      if (error)
       {
         v42 = v13;
         v8 = 0;
-        *a4 = v13;
+        *error = v13;
 LABEL_76:
         v44 = v13;
 LABEL_77:
@@ -682,7 +682,7 @@ LABEL_77:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v67 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_229486000, v7, OS_LOG_TYPE_DEFAULT, "[%@] Using override for time of day histogram", buf, 0xCu);
   }
 
@@ -694,30 +694,30 @@ LABEL_78:
   return v8;
 }
 
-- (id)_julianDayToTimeZoneMappingForPastSixWeeksWithError:(id *)a3
+- (id)_julianDayToTimeZoneMappingForPastSixWeeksWithError:(id *)error
 {
-  v5 = [(HKCalendarCache *)self->_calendarCache currentCalendar];
+  currentCalendar = [(HKCalendarCache *)self->_calendarCache currentCalendar];
   v6 = (*(self->_dateGenerator + 2))();
-  v7 = [v5 startOfDayForDate:v6];
+  v7 = [currentCalendar startOfDayForDate:v6];
 
-  v8 = [(HKCalendarCache *)self->_calendarCache currentCalendar];
-  v9 = [v7 hk_dayIndexWithCalendar:v8];
+  currentCalendar2 = [(HKCalendarCache *)self->_calendarCache currentCalendar];
+  v9 = [v7 hk_dayIndexWithCalendar:currentCalendar2];
 
-  v10 = [(HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer *)self->_majorityTimeZoneDeterminer determineJulianDayToMajorityTimeZoneForRange:v9 - 42 error:42, a3];
+  error = [(HKHRAFibBurdenJulianDayMajorityTimeZoneDeterminer *)self->_majorityTimeZoneDeterminer determineJulianDayToMajorityTimeZoneForRange:v9 - 42 error:42, error];
 
-  return v10;
+  return error;
 }
 
-- (id)_logDayNameForWeekday:(int64_t)a3
+- (id)_logDayNameForWeekday:(int64_t)weekday
 {
-  if ((a3 - 1) > 6)
+  if ((weekday - 1) > 6)
   {
     return @"Unknownday";
   }
 
   else
   {
-    return off_27865F988[a3 - 1];
+    return off_27865F988[weekday - 1];
   }
 }
 

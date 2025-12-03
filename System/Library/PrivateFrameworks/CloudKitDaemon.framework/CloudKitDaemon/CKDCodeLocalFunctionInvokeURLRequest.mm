@@ -1,49 +1,49 @@
 @interface CKDCodeLocalFunctionInvokeURLRequest
 - (BOOL)requestGETPreAuth;
-- (CKDCodeLocalFunctionInvokeURLRequest)initWithOperation:(id)a3 serviceName:(id)a4 functionName:(id)a5 serializedParameters:(id)a6 resolvedBaseURL:(id)a7;
+- (CKDCodeLocalFunctionInvokeURLRequest)initWithOperation:(id)operation serviceName:(id)name functionName:(id)functionName serializedParameters:(id)parameters resolvedBaseURL:(id)l;
 - (id)additionalHeaderValues;
 - (id)requestBodyStream;
-- (id)requestDidParseProtobufObject:(id)a3;
+- (id)requestDidParseProtobufObject:(id)object;
 - (int64_t)databaseScope;
 - (int64_t)partitionType;
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3;
-- (void)requestDidParseNodeFailure:(id)a3;
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder;
+- (void)requestDidParseNodeFailure:(id)failure;
 @end
 
 @implementation CKDCodeLocalFunctionInvokeURLRequest
 
-- (CKDCodeLocalFunctionInvokeURLRequest)initWithOperation:(id)a3 serviceName:(id)a4 functionName:(id)a5 serializedParameters:(id)a6 resolvedBaseURL:(id)a7
+- (CKDCodeLocalFunctionInvokeURLRequest)initWithOperation:(id)operation serviceName:(id)name functionName:(id)functionName serializedParameters:(id)parameters resolvedBaseURL:(id)l
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  nameCopy = name;
+  functionNameCopy = functionName;
+  parametersCopy = parameters;
+  lCopy = l;
   v20.receiver = self;
   v20.super_class = CKDCodeLocalFunctionInvokeURLRequest;
-  v17 = [(CKDURLRequest *)&v20 initWithOperation:a3];
+  v17 = [(CKDURLRequest *)&v20 initWithOperation:operation];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_serviceName, a4);
-    objc_storeStrong(&v18->_functionName, a5);
-    objc_storeStrong(&v18->_serializedParameters, a6);
-    objc_storeStrong(&v18->_resolvedBaseURL, a7);
+    objc_storeStrong(&v17->_serviceName, name);
+    objc_storeStrong(&v18->_functionName, functionName);
+    objc_storeStrong(&v18->_serializedParameters, parameters);
+    objc_storeStrong(&v18->_resolvedBaseURL, l);
   }
 
   return v18;
 }
 
-- (void)fillOutEquivalencyPropertiesBuilder:(id)a3
+- (void)fillOutEquivalencyPropertiesBuilder:(id)builder
 {
   v13.receiver = self;
   v13.super_class = CKDCodeLocalFunctionInvokeURLRequest;
-  v4 = a3;
-  [(CKDURLRequest *)&v13 fillOutEquivalencyPropertiesBuilder:v4];
+  builderCopy = builder;
+  [(CKDURLRequest *)&v13 fillOutEquivalencyPropertiesBuilder:builderCopy];
   v7 = objc_msgSend_serviceName(self, v5, v6, v13.receiver, v13.super_class);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v8, v7, @"serviceName");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v8, v7, @"serviceName");
 
   v11 = objc_msgSend_functionName(self, v9, v10);
-  objc_msgSend_setObject_forKeyedSubscript_(v4, v12, v11, @"functionName");
+  objc_msgSend_setObject_forKeyedSubscript_(builderCopy, v12, v11, @"functionName");
 }
 
 - (BOOL)requestGETPreAuth
@@ -75,17 +75,17 @@
 
   if (objc_msgSend_enqueuedOnContainerService(v7, v8, v9))
   {
-    v10 = 1;
+    databaseScope = 1;
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = CKDCodeLocalFunctionInvokeURLRequest;
-    v10 = [(CKDURLRequest *)&v12 databaseScope];
+    databaseScope = [(CKDURLRequest *)&v12 databaseScope];
   }
 
-  return v10;
+  return databaseScope;
 }
 
 - (id)additionalHeaderValues
@@ -206,25 +206,25 @@ LABEL_14:
   return v85;
 }
 
-- (id)requestDidParseProtobufObject:(id)a3
+- (id)requestDidParseProtobufObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v7 = objc_msgSend_serializedResultsCallback(self, v5, v6);
 
   if (v7)
   {
     v10 = objc_msgSend_serializedResultsCallback(self, v8, v9);
-    v13 = objc_msgSend_serializedResult(v4, v11, v12);
-    v16 = objc_msgSend_error(v4, v14, v15);
+    v13 = objc_msgSend_serializedResult(objectCopy, v11, v12);
+    v16 = objc_msgSend_error(objectCopy, v14, v15);
     (v10)[2](v10, v13, v16);
   }
 
   return 0;
 }
 
-- (void)requestDidParseNodeFailure:(id)a3
+- (void)requestDidParseNodeFailure:(id)failure
 {
-  v4 = objc_msgSend_serializedResultsCallback(self, a2, a3);
+  v4 = objc_msgSend_serializedResultsCallback(self, a2, failure);
 
   if (v4)
   {

@@ -2,36 +2,36 @@
 + (BOOL)isEnabled;
 + (BOOL)shouldModelDisplayPowerFromSMC;
 + (BOOL)supportsSMC;
-+ (id)parsePMUEvents:(unint64_t)a3;
++ (id)parsePMUEvents:(unint64_t)events;
 + (void)load;
-+ (void)reportPMUEventsToCA:(id)a3;
++ (void)reportPMUEventsToCA:(id)a;
 - (BOOL)accumSupported;
 - (BOOL)anyVirtualTemperatureAboveThreshold;
 - (BOOL)isThermalMitigationAboveThreshold;
 - (BOOL)isThermalPressureFanNoiseAboveThreshold;
-- (BOOL)writeSMCKey:(id)a3 withValue:(unint64_t)a4;
+- (BOOL)writeSMCKey:(id)key withValue:(unint64_t)value;
 - (PLSMCMetricsAgent)init;
-- (const)isKeyOSAccumSupported:(id)a3;
+- (const)isKeyOSAccumSupported:(id)supported;
 - (id)getAllKeys;
 - (id)getAllowedAccumulatedKeys;
 - (id)getAllowedInstantKeys;
-- (id)getAllowedKeys:(id)a3;
+- (id)getAllowedKeys:(id)keys;
 - (id)getAllowedPowerDeliveryKeys;
-- (id)getOSAccumListFrom:(id)a3;
+- (id)getOSAccumListFrom:(id)from;
 - (id)getTVKeys;
-- (id)getValueFromAccumSample:(id)a3 lastSample:(id)a4;
-- (id)handleNonNumericKeys:(unsigned int)a3 keyInfo:(id *)a4;
-- (id)handleNumericKeys:(unsigned int)a3 keyInfo:(id *)a4 keyName:(id)a5 ret:(char)a6;
-- (id)readAccumSMCKey:(id)a3 toOutput:(id *)a4;
-- (id)readSMCKey:(id)a3;
-- (id)sampleAccumulatedKeys:(id)a3;
+- (id)getValueFromAccumSample:(id)sample lastSample:(id)lastSample;
+- (id)handleNonNumericKeys:(unsigned int)keys keyInfo:(id *)info;
+- (id)handleNumericKeys:(unsigned int)keys keyInfo:(id *)info keyName:(id)name ret:(char)ret;
+- (id)readAccumSMCKey:(id)key toOutput:(id *)output;
+- (id)readSMCKey:(id)key;
+- (id)sampleAccumulatedKeys:(id)keys;
 - (void)dealloc;
 - (void)handleSleepWakeStateChange;
 - (void)initOSMetrics;
 - (void)initOperatorDependancies;
 - (void)log;
 - (void)logAccumlatedLookUpTable;
-- (void)logAccumulatedKeysToPL:(BOOL)a3 ToCA:(BOOL)a4;
+- (void)logAccumulatedKeysToPL:(BOOL)l ToCA:(BOOL)a;
 - (void)logDisplayPower;
 - (void)logEventPointInstantKeys;
 - (void)logPowerDeliveryKeys;
@@ -77,9 +77,9 @@ uint64_t __45__PLSMCMetricsAgent_initOperatorDependancies__block_invoke_2(uint64
     v6[0] = 67109632;
     v6[1] = v5;
     v7 = 1024;
-    v8 = [(PLSMCMetricsAgent *)self loggingThreshold];
+    loggingThreshold = [(PLSMCMetricsAgent *)self loggingThreshold];
     v9 = 1024;
-    v10 = [(PLSMCMetricsAgent *)self loggingCounter];
+    loggingCounter = [(PLSMCMetricsAgent *)self loggingCounter];
     _os_log_debug_impl(&dword_21A4C6000, v3, OS_LOG_TYPE_DEBUG, "Monitoring timer callback (interval %ds, threshold %d, count %d)", v6, 0x14u);
   }
 
@@ -111,8 +111,8 @@ uint64_t __45__PLSMCMetricsAgent_initOperatorDependancies__block_invoke_2(uint64
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(PLSMCMetricsAgent *)self getTVKeys];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  getTVKeys = [(PLSMCMetricsAgent *)self getTVKeys];
+  v4 = [getTVKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -123,7 +123,7 @@ uint64_t __45__PLSMCMetricsAgent_initOperatorDependancies__block_invoke_2(uint64
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(getTVKeys);
         }
 
         v8 = *(*(&v15 + 1) + 8 * i);
@@ -144,7 +144,7 @@ uint64_t __45__PLSMCMetricsAgent_initOperatorDependancies__block_invoke_2(uint64
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [getTVKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v5)
       {
         continue;
@@ -210,18 +210,18 @@ LABEL_14:
 - (void)logEventPointInstantKeys
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
   loggedInstantKeysArray = self->_loggedInstantKeysArray;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __45__PLSMCMetricsAgent_logEventPointInstantKeys__block_invoke;
   v11[3] = &unk_278259CE0;
   v11[4] = self;
-  v6 = v3;
+  v6 = dictionary;
   v12 = v6;
-  v13 = v4;
-  v7 = v4;
+  v13 = dictionary2;
+  v7 = dictionary2;
   [(NSArray *)loggedInstantKeysArray enumerateObjectsUsingBlock:v11];
   v8 = PLLogSMCMetrics();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
@@ -231,8 +231,8 @@ LABEL_14:
     _os_log_debug_impl(&dword_21A4C6000, v8, OS_LOG_TYPE_DEBUG, "Logging SMC Payload: %@", buf, 0xCu);
   }
 
-  v9 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [v7 setObject:v9 forKeyedSubscript:@"timestamp"];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [v7 setObject:monotonicDate forKeyedSubscript:@"timestamp"];
 
   [MEMORY[0x277D3F258] postNotificationName:@"ThermalEntryNotification" object:self userInfo:v7];
   [(PLOperator *)self logForSubsystem:@"SMC" category:@"InstantKeyValues" data:v6];
@@ -267,7 +267,7 @@ void __45__PLSMCMetricsAgent_logEventPointInstantKeys__block_invoke(uint64_t a1,
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLSMCMetricsAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -299,30 +299,30 @@ void __45__PLSMCMetricsAgent_logEventPointInstantKeys__block_invoke(uint64_t a1,
     lastDisplayAccumlatedSample = v3->_lastDisplayAccumlatedSample;
     v3->_lastDisplayAccumlatedSample = 0;
 
-    v10 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     loggedInstantKeysArray = v3->_loggedInstantKeysArray;
-    v3->_loggedInstantKeysArray = v10;
+    v3->_loggedInstantKeysArray = array;
 
-    v12 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     accumGaugeArray = v3->_accumGaugeArray;
-    v3->_accumGaugeArray = v12;
+    v3->_accumGaugeArray = array2;
 
-    v14 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     instantGaugeArray = v3->_instantGaugeArray;
-    v3->_instantGaugeArray = v14;
+    v3->_instantGaugeArray = array3;
 
-    v16 = [MEMORY[0x277CBEA60] array];
+    array4 = [MEMORY[0x277CBEA60] array];
     loggedAccumulatedKeysArray = v3->_loggedAccumulatedKeysArray;
-    v3->_loggedAccumulatedKeysArray = v16;
+    v3->_loggedAccumulatedKeysArray = array4;
 
-    v18 = [MEMORY[0x277CBEA60] array];
+    array5 = [MEMORY[0x277CBEA60] array];
     loggedPowerDeliveryKeysArray = v3->_loggedPowerDeliveryKeysArray;
-    v3->_loggedPowerDeliveryKeysArray = v18;
+    v3->_loggedPowerDeliveryKeysArray = array5;
 
     v3->_smcConnection = SMCOpenConnectionWithDefaultService();
-    v20 = [MEMORY[0x277CBEAA8] monotonicDate];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
     lastDisplayAccumulatedSampleEndDate = v3->_lastDisplayAccumulatedSampleEndDate;
-    v3->_lastDisplayAccumulatedSampleEndDate = v20;
+    v3->_lastDisplayAccumulatedSampleEndDate = monotonicDate;
   }
 
   return v3;
@@ -368,9 +368,9 @@ LABEL_7:
 - (void)initOperatorDependancies
 {
   v59 = *MEMORY[0x277D85DE8];
-  v3 = [(PLSMCMetricsAgent *)self getAllKeys];
+  getAllKeys = [(PLSMCMetricsAgent *)self getAllKeys];
   availableKeys = self->_availableKeys;
-  self->_availableKeys = v3;
+  self->_availableKeys = getAllKeys;
 
   v5 = PLLogSMCMetrics();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -384,67 +384,67 @@ LABEL_7:
     _os_log_debug_impl(&dword_21A4C6000, v5, OS_LOG_TYPE_DEBUG, "List of all SMC Keys (count %d): %@", &location, 0x12u);
   }
 
-  v6 = [(PLSMCMetricsAgent *)self getAllowedInstantKeys];
-  [v6 intersectSet:self->_availableKeys];
+  getAllowedInstantKeys = [(PLSMCMetricsAgent *)self getAllowedInstantKeys];
+  [getAllowedInstantKeys intersectSet:self->_availableKeys];
 
-  v7 = [(PLSMCMetricsAgent *)self getAllowedInstantKeys];
-  v8 = [v7 allObjects];
+  getAllowedInstantKeys2 = [(PLSMCMetricsAgent *)self getAllowedInstantKeys];
+  allObjects = [getAllowedInstantKeys2 allObjects];
   loggedInstantKeysArray = self->_loggedInstantKeysArray;
-  self->_loggedInstantKeysArray = v8;
+  self->_loggedInstantKeysArray = allObjects;
 
   v10 = PLLogSMCMetrics();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
-    v41 = [(PLSMCMetricsAgent *)self loggedInstantKeysArray];
-    v42 = [v41 count];
-    v43 = [(PLSMCMetricsAgent *)self loggedInstantKeysArray];
+    loggedInstantKeysArray = [(PLSMCMetricsAgent *)self loggedInstantKeysArray];
+    v42 = [loggedInstantKeysArray count];
+    loggedInstantKeysArray2 = [(PLSMCMetricsAgent *)self loggedInstantKeysArray];
     LODWORD(location) = 67109378;
     HIDWORD(location) = v42;
     v57 = 2112;
-    v58 = v43;
+    v58 = loggedInstantKeysArray2;
     _os_log_debug_impl(&dword_21A4C6000, v10, OS_LOG_TYPE_DEBUG, "List of collected instant SMC keys (count %d): %@", &location, 0x12u);
   }
 
-  v11 = [(PLSMCMetricsAgent *)self getAllowedAccumulatedKeys];
-  [v11 intersectSet:self->_availableKeys];
+  getAllowedAccumulatedKeys = [(PLSMCMetricsAgent *)self getAllowedAccumulatedKeys];
+  [getAllowedAccumulatedKeys intersectSet:self->_availableKeys];
 
-  v12 = [(PLSMCMetricsAgent *)self getAllowedAccumulatedKeys];
-  v13 = [v12 allObjects];
-  v14 = [(PLSMCMetricsAgent *)self getOSAccumListFrom:v13];
+  getAllowedAccumulatedKeys2 = [(PLSMCMetricsAgent *)self getAllowedAccumulatedKeys];
+  allObjects2 = [getAllowedAccumulatedKeys2 allObjects];
+  v14 = [(PLSMCMetricsAgent *)self getOSAccumListFrom:allObjects2];
   loggedAccumulatedKeysArray = self->_loggedAccumulatedKeysArray;
   self->_loggedAccumulatedKeysArray = v14;
 
   v16 = PLLogSMCMetrics();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    v44 = [(PLSMCMetricsAgent *)self loggedAccumulatedKeysArray];
-    v45 = [v44 count];
-    v46 = [(PLSMCMetricsAgent *)self loggedAccumulatedKeysArray];
+    loggedAccumulatedKeysArray = [(PLSMCMetricsAgent *)self loggedAccumulatedKeysArray];
+    v45 = [loggedAccumulatedKeysArray count];
+    loggedAccumulatedKeysArray2 = [(PLSMCMetricsAgent *)self loggedAccumulatedKeysArray];
     LODWORD(location) = 67109378;
     HIDWORD(location) = v45;
     v57 = 2112;
-    v58 = v46;
+    v58 = loggedAccumulatedKeysArray2;
     _os_log_debug_impl(&dword_21A4C6000, v16, OS_LOG_TYPE_DEBUG, "List of collected accumulated keys (count %d): %@", &location, 0x12u);
   }
 
-  v17 = [(PLSMCMetricsAgent *)self getAllowedPowerDeliveryKeys];
-  [v17 intersectsSet:self->_availableKeys];
+  getAllowedPowerDeliveryKeys = [(PLSMCMetricsAgent *)self getAllowedPowerDeliveryKeys];
+  [getAllowedPowerDeliveryKeys intersectsSet:self->_availableKeys];
 
-  v18 = [(PLSMCMetricsAgent *)self getAllowedPowerDeliveryKeys];
-  v19 = [v18 allObjects];
+  getAllowedPowerDeliveryKeys2 = [(PLSMCMetricsAgent *)self getAllowedPowerDeliveryKeys];
+  allObjects3 = [getAllowedPowerDeliveryKeys2 allObjects];
   loggedPowerDeliveryKeysArray = self->_loggedPowerDeliveryKeysArray;
-  self->_loggedPowerDeliveryKeysArray = v19;
+  self->_loggedPowerDeliveryKeysArray = allObjects3;
 
   v21 = PLLogSMCMetrics();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
   {
-    v47 = [(PLSMCMetricsAgent *)self getAllowedPowerDeliveryKeys];
-    v48 = [v47 count];
-    v49 = [(PLSMCMetricsAgent *)self getAllowedPowerDeliveryKeys];
+    getAllowedPowerDeliveryKeys3 = [(PLSMCMetricsAgent *)self getAllowedPowerDeliveryKeys];
+    v48 = [getAllowedPowerDeliveryKeys3 count];
+    getAllowedPowerDeliveryKeys4 = [(PLSMCMetricsAgent *)self getAllowedPowerDeliveryKeys];
     LODWORD(location) = 67109378;
     HIDWORD(location) = v48;
     v57 = 2112;
-    v58 = v49;
+    v58 = getAllowedPowerDeliveryKeys4;
     _os_log_debug_impl(&dword_21A4C6000, v21, OS_LOG_TYPE_DEBUG, "List of collected power delivery SMC keys (count %d): %@", &location, 0x12u);
   }
 
@@ -475,16 +475,16 @@ LABEL_7:
   {
     [(PLSMCMetricsAgent *)self logAccumlatedLookUpTable];
     objc_initWeak(&location, self);
-    v28 = [MEMORY[0x277D3F220] sharedInstance];
-    [(PLSMCMetricsAgent *)self setStateTracker:v28];
+    mEMORY[0x277D3F220] = [MEMORY[0x277D3F220] sharedInstance];
+    [(PLSMCMetricsAgent *)self setStateTracker:mEMORY[0x277D3F220]];
 
-    v29 = [(PLSMCMetricsAgent *)self stateTracker];
+    stateTracker = [(PLSMCMetricsAgent *)self stateTracker];
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
     v52[2] = __45__PLSMCMetricsAgent_initOperatorDependancies__block_invoke_54;
     v52[3] = &unk_278259C18;
     objc_copyWeak(&v53, &location);
-    [v29 registerForStates:57 withOperator:self withBlock:v52];
+    [stateTracker registerForStates:57 withOperator:self withBlock:v52];
 
     if (+[PLSMCMetricsAgent shouldModelDisplayPowerFromSMC])
     {
@@ -505,15 +505,15 @@ LABEL_7:
   }
 
   v33 = objc_alloc(MEMORY[0x277D3F250]);
-  v34 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   monitorCadence = self->_monitorCadence;
-  v36 = [(PLOperator *)self workQueue];
+  workQueue = [(PLOperator *)self workQueue];
   v50[0] = MEMORY[0x277D85DD0];
   v50[1] = 3221225472;
   v50[2] = __45__PLSMCMetricsAgent_initOperatorDependancies__block_invoke_3;
   v50[3] = &unk_278259C40;
   v50[4] = self;
-  v37 = [v33 initWithFireDate:v34 withInterval:1 withTolerance:0 repeats:v36 withUserInfo:v50 withQueue:monitorCadence withBlock:0.0];
+  v37 = [v33 initWithFireDate:date withInterval:1 withTolerance:0 repeats:workQueue withUserInfo:v50 withQueue:monitorCadence withBlock:0.0];
   [(PLSMCMetricsAgent *)self setMonitorTimer:v37];
 
   v38 = *MEMORY[0x277D85DE8];
@@ -543,8 +543,8 @@ uint64_t __45__PLSMCMetricsAgent_initOperatorDependancies__block_invoke_3(uint64
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v4 = [(PLSMCMetricsAgent *)self loggedInstantKeysArray];
-    v5 = [v4 countByEnumeratingWithState:&v23 objects:v28 count:16];
+    loggedInstantKeysArray = [(PLSMCMetricsAgent *)self loggedInstantKeysArray];
+    v5 = [loggedInstantKeysArray countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v5)
     {
       v6 = v5;
@@ -556,18 +556,18 @@ uint64_t __45__PLSMCMetricsAgent_initOperatorDependancies__block_invoke_3(uint64
         {
           if (*v24 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(loggedInstantKeysArray);
           }
 
           v9 = [MEMORY[0x277D3F200] createGauge:v3 withLabel:*(*(&v23 + 1) + 8 * v8)];
-          v10 = [(PLSMCMetricsAgent *)self instantGaugeArray];
-          [v10 addObject:v9];
+          instantGaugeArray = [(PLSMCMetricsAgent *)self instantGaugeArray];
+          [instantGaugeArray addObject:v9];
 
           ++v8;
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        v6 = [loggedInstantKeysArray countByEnumeratingWithState:&v23 objects:v28 count:16];
       }
 
       while (v6);
@@ -577,8 +577,8 @@ uint64_t __45__PLSMCMetricsAgent_initOperatorDependancies__block_invoke_3(uint64
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = [(PLSMCMetricsAgent *)self loggedAccumulatedKeysArray];
-    v12 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
+    loggedAccumulatedKeysArray = [(PLSMCMetricsAgent *)self loggedAccumulatedKeysArray];
+    v12 = [loggedAccumulatedKeysArray countByEnumeratingWithState:&v19 objects:v27 count:16];
     if (v12)
     {
       v13 = v12;
@@ -590,18 +590,18 @@ uint64_t __45__PLSMCMetricsAgent_initOperatorDependancies__block_invoke_3(uint64
         {
           if (*v20 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(loggedAccumulatedKeysArray);
           }
 
           v16 = [MEMORY[0x277D3F200] createGauge:v3 withLabel:*(*(&v19 + 1) + 8 * v15)];
-          v17 = [(PLSMCMetricsAgent *)self accumGaugeArray];
-          [v17 addObject:v16];
+          accumGaugeArray = [(PLSMCMetricsAgent *)self accumGaugeArray];
+          [accumGaugeArray addObject:v16];
 
           ++v15;
         }
 
         while (v13 != v15);
-        v13 = [v11 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        v13 = [loggedAccumulatedKeysArray countByEnumeratingWithState:&v19 objects:v27 count:16];
       }
 
       while (v13);
@@ -655,17 +655,17 @@ void __38__PLSMCMetricsAgent_logSMCLookUpTable__block_invoke(uint64_t a1, void *
 {
   v3 = objc_autoreleasePoolPush();
   stateTracker = self->_stateTracker;
-  v5 = [MEMORY[0x277CBEAA8] monotonicDate];
-  v6 = [(PLStateTrackingComposition *)stateTracker getState:1 beforeDate:v5];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  v6 = [(PLStateTrackingComposition *)stateTracker getState:1 beforeDate:monotonicDate];
 
   v7 = self->_stateTracker;
-  v8 = [MEMORY[0x277CBEAA8] monotonicDate];
-  v9 = [(PLStateTrackingComposition *)v7 getState:8 beforeDate:v8];
+  monotonicDate2 = [MEMORY[0x277CBEAA8] monotonicDate];
+  v9 = [(PLStateTrackingComposition *)v7 getState:8 beforeDate:monotonicDate2];
 
   v10 = self->_stateTracker;
-  v11 = [MEMORY[0x277CBEAA8] monotonicDate];
-  v12 = [(PLStateTrackingComposition *)v10 getState:64 beforeDate:v11];
-  v13 = [v12 BOOLValue];
+  monotonicDate3 = [MEMORY[0x277CBEAA8] monotonicDate];
+  v12 = [(PLStateTrackingComposition *)v10 getState:64 beforeDate:monotonicDate3];
+  bOOLValue = [v12 BOOLValue];
 
   v14 = PLLogSMCMetrics();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
@@ -675,7 +675,7 @@ void __38__PLSMCMetricsAgent_logSMCLookUpTable__block_invoke(uint64_t a1, void *
   }
 
   v15 = MEMORY[0x277CBEB38];
-  v16 = [MEMORY[0x277CCABB0] numberWithBool:v13 ^ 1u];
+  v16 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue ^ 1u];
   v17 = [v15 dictionaryWithObjectsAndKeys:{v6, @"Plugged", v9, @"Wake", v16, @"Active", 0}];
 
   loggedInstantKeysArray = self->_loggedInstantKeysArray;
@@ -755,7 +755,7 @@ void __50__PLSMCMetricsAgent_logThermalKeysToCoreAnalytics__block_invoke(uint64_
     v10 = v3;
     do
     {
-      v5 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       if ([(PLSMCMetricsAgent *)self writeSMCKey:@"SATR" withValue:v4 - 240])
       {
         loggedPowerDeliveryKeysArray = self->_loggedPowerDeliveryKeysArray;
@@ -764,7 +764,7 @@ void __50__PLSMCMetricsAgent_logThermalKeysToCoreAnalytics__block_invoke(uint64_
         v11[2] = __41__PLSMCMetricsAgent_logPowerDeliveryKeys__block_invoke;
         v11[3] = &unk_278259D08;
         v11[4] = self;
-        v12 = v5;
+        v12 = dictionary;
         v13 = v4 + 16;
         [(NSArray *)loggedPowerDeliveryKeysArray enumerateObjectsUsingBlock:v11];
         if (![(PLSMCMetricsAgent *)self writeSMCKey:@"SATR" withValue:v4])
@@ -828,35 +828,35 @@ void __41__PLSMCMetricsAgent_logPowerDeliveryKeys__block_invoke(uint64_t a1, voi
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logAccumulatedKeysToPL:(BOOL)a3 ToCA:(BOOL)a4
+- (void)logAccumulatedKeysToPL:(BOOL)l ToCA:(BOOL)a
 {
-  v4 = a4;
-  v5 = a3;
+  aCopy = a;
+  lCopy = l;
   v38 = *MEMORY[0x277D85DE8];
   v7 = objc_autoreleasePoolPush();
   v8 = [(PLSMCMetricsAgent *)self sampleAccumulatedKeys:self->_loggedAccumulatedKeysArray];
-  v9 = [(PLSMCMetricsAgent *)self lastAccumlatedSample];
-  v10 = [(PLSMCMetricsAgent *)self getValueFromAccumSample:v8 lastSample:v9];
+  lastAccumlatedSample = [(PLSMCMetricsAgent *)self lastAccumlatedSample];
+  v10 = [(PLSMCMetricsAgent *)self getValueFromAccumSample:v8 lastSample:lastAccumlatedSample];
 
   if (v10)
   {
-    v30 = v4;
-    v11 = [MEMORY[0x277CBEB38] dictionary];
-    v12 = [MEMORY[0x277CBEAA8] monotonicDate];
-    [v11 setObject:v12 forKeyedSubscript:@"timestampEnd"];
+    v30 = aCopy;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+    [dictionary setObject:monotonicDate forKeyedSubscript:@"timestampEnd"];
 
     v13 = [MEMORY[0x277CCABB0] numberWithDouble:self->_cycleCountInterval];
-    [v11 setObject:v13 forKeyedSubscript:@"CycleCountDiff"];
+    [dictionary setObject:v13 forKeyedSubscript:@"CycleCountDiff"];
 
     if (self->_cycleCountInterval <= 0.0)
     {
-      v15 = [v11 objectForKeyedSubscript:@"timestampEnd"];
+      v15 = [dictionary objectForKeyedSubscript:@"timestampEnd"];
     }
 
     else
     {
-      v14 = [MEMORY[0x277CBEAA8] monotonicDate];
-      v15 = [v14 dateByAddingTimeInterval:-self->_cycleCountInterval];
+      monotonicDate2 = [MEMORY[0x277CBEAA8] monotonicDate];
+      v15 = [monotonicDate2 dateByAddingTimeInterval:-self->_cycleCountInterval];
     }
 
     loggedAccumulatedKeysArray = self->_loggedAccumulatedKeysArray;
@@ -866,9 +866,9 @@ void __41__PLSMCMetricsAgent_logPowerDeliveryKeys__block_invoke(uint64_t a1, voi
     v32[3] = &unk_278259CE0;
     v17 = v10;
     v33 = v17;
-    v18 = v11;
+    v18 = dictionary;
     v34 = v18;
-    v35 = self;
+    selfCopy = self;
     [(NSArray *)loggedAccumulatedKeysArray enumerateObjectsUsingBlock:v32];
     v19 = PLLogSMCMetrics();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -879,12 +879,12 @@ void __41__PLSMCMetricsAgent_logPowerDeliveryKeys__block_invoke(uint64_t a1, voi
     }
 
     v20 = v15;
-    if (v5)
+    if (lCopy)
     {
       [(PLOperator *)self logForSubsystem:@"SMC" category:@"AccumulatedKeyValues" data:v18 date:v15];
       [v17 setObject:v15 forKeyedSubscript:@"timestamp"];
-      v21 = [MEMORY[0x277CBEAA8] monotonicDate];
-      [v17 setObject:v21 forKeyedSubscript:@"timestampEnd"];
+      monotonicDate3 = [MEMORY[0x277CBEAA8] monotonicDate];
+      [v17 setObject:monotonicDate3 forKeyedSubscript:@"timestampEnd"];
 
       [MEMORY[0x277D3F258] postNotificationName:@"PowerEntryNotification" object:self userInfo:v17];
       self->_cycleCountInterval = 0.0;
@@ -894,12 +894,12 @@ void __41__PLSMCMetricsAgent_logPowerDeliveryKeys__block_invoke(uint64_t a1, voi
     if (v30)
     {
       stateTracker = self->_stateTracker;
-      v23 = [MEMORY[0x277CBEAA8] monotonicDate];
-      v24 = [(PLStateTrackingComposition *)stateTracker getState:1 beforeDate:v23];
+      monotonicDate4 = [MEMORY[0x277CBEAA8] monotonicDate];
+      v24 = [(PLStateTrackingComposition *)stateTracker getState:1 beforeDate:monotonicDate4];
 
       v25 = self->_stateTracker;
-      v26 = [MEMORY[0x277CBEAA8] monotonicDate];
-      v27 = [(PLStateTrackingComposition *)v25 getState:8 beforeDate:v26];
+      monotonicDate5 = [MEMORY[0x277CBEAA8] monotonicDate];
+      v27 = [(PLStateTrackingComposition *)v25 getState:8 beforeDate:monotonicDate5];
 
       if (v24 && v27)
       {
@@ -1002,8 +1002,8 @@ void __45__PLSMCMetricsAgent_logAccumlatedLookUpTable__block_invoke(uint64_t a1,
   v3 = [(PLSMCMetricsAgent *)self sampleAccumulatedKeys:&unk_282C13F80];
   if (v3)
   {
-    v4 = [(PLSMCMetricsAgent *)self lastDisplayAccumlatedSample];
-    v5 = [(PLSMCMetricsAgent *)self getValueFromAccumSample:v3 lastSample:v4];
+    lastDisplayAccumlatedSample = [(PLSMCMetricsAgent *)self lastDisplayAccumlatedSample];
+    v5 = [(PLSMCMetricsAgent *)self getValueFromAccumSample:v3 lastSample:lastDisplayAccumlatedSample];
 
     if (v5)
     {
@@ -1015,14 +1015,14 @@ void __45__PLSMCMetricsAgent_logAccumlatedLookUpTable__block_invoke(uint64_t a1,
       [v9 doubleValue];
       v11 = (v8 + v10) * 1000.0;
 
-      v12 = [(PLSMCMetricsAgent *)self lastDisplayAccumulatedSampleEndDate];
-      v13 = [MEMORY[0x277D3F0C0] sharedInstance];
-      v14 = [MEMORY[0x277CBEAA8] monotonicDate];
-      [v13 createPowerEventIntervalWithRootNodeID:56 withPower:v12 withStartDate:v14 withEndDate:v11];
+      lastDisplayAccumulatedSampleEndDate = [(PLSMCMetricsAgent *)self lastDisplayAccumulatedSampleEndDate];
+      mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+      monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+      [mEMORY[0x277D3F0C0] createPowerEventIntervalWithRootNodeID:56 withPower:lastDisplayAccumulatedSampleEndDate withStartDate:monotonicDate withEndDate:v11];
 
       [(PLSMCMetricsAgent *)self setLastDisplayAccumlatedSample:v3];
-      v15 = [MEMORY[0x277CBEAA8] monotonicDate];
-      [(PLSMCMetricsAgent *)self setLastDisplayAccumulatedSampleEndDate:v15];
+      monotonicDate2 = [MEMORY[0x277CBEAA8] monotonicDate];
+      [(PLSMCMetricsAgent *)self setLastDisplayAccumulatedSampleEndDate:monotonicDate2];
     }
   }
 
@@ -1037,11 +1037,11 @@ void __45__PLSMCMetricsAgent_logAccumlatedLookUpTable__block_invoke(uint64_t a1,
   }
 }
 
-- (id)getValueFromAccumSample:(id)a3 lastSample:(id)a4
+- (id)getValueFromAccumSample:(id)sample lastSample:(id)lastSample
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  sampleCopy = sample;
+  lastSampleCopy = lastSample;
+  if (sampleCopy)
   {
     v22 = 0;
     v23 = &v22;
@@ -1057,11 +1057,11 @@ void __45__PLSMCMetricsAgent_logAccumlatedLookUpTable__block_invoke(uint64_t a1,
     v14[1] = 3221225472;
     v14[2] = __56__PLSMCMetricsAgent_getValueFromAccumSample_lastSample___block_invoke;
     v14[3] = &unk_278259D30;
-    v8 = v7;
+    v8 = lastSampleCopy;
     v15 = v8;
     v16 = &v22;
     v17 = &v18;
-    [v6 enumerateKeysAndObjectsUsingBlock:v14];
+    [sampleCopy enumerateKeysAndObjectsUsingBlock:v14];
     if ([v23[5] count] && ((v9 = v19, v10 = v19[3], !v8) || v10 > 1.0))
     {
       self->_cycleCountInterval = v10;
@@ -1168,19 +1168,19 @@ LABEL_19:
   objc_autoreleasePoolPop(v8);
 }
 
-- (id)sampleAccumulatedKeys:(id)a3
+- (id)sampleAccumulatedKeys:(id)keys
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
-  v6 = [v4 dictionary];
+  keysCopy = keys;
+  dictionary = [v4 dictionary];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __43__PLSMCMetricsAgent_sampleAccumulatedKeys___block_invoke;
   v11[3] = &unk_278259C90;
   v11[4] = self;
-  v7 = v6;
+  v7 = dictionary;
   v12 = v7;
-  [v5 enumerateObjectsUsingBlock:v11];
+  [keysCopy enumerateObjectsUsingBlock:v11];
 
   v8 = v12;
   v9 = v7;
@@ -1221,14 +1221,14 @@ void __43__PLSMCMetricsAgent_sampleAccumulatedKeys___block_invoke(uint64_t a1, v
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)readAccumSMCKey:(id)a3 toOutput:(id *)a4
+- (id)readAccumSMCKey:(id)key toOutput:(id *)output
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  keyCopy = key;
   v7 = objc_autoreleasePoolPush();
-  [v6 UTF8String];
+  [keyCopy UTF8String];
   v8 = SMCMakeUInt32Key();
-  if (![(PLSMCMetricsAgent *)self isKeyOSAccumSupported:v6])
+  if (![(PLSMCMetricsAgent *)self isKeyOSAccumSupported:keyCopy])
   {
     v9 = PLLogSMCMetrics();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1262,7 +1262,7 @@ LABEL_16:
     goto LABEL_6;
   }
 
-  var1 = a4->var1;
+  var1 = output->var1;
   if (!var1)
   {
     v9 = PLLogSMCMetrics();
@@ -1283,12 +1283,12 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v13 = [PLSMCAccumOutputObject objectWithChannelValue:var1 cycleCount:a4->var2 variant:a4->var0];
+  v13 = [PLSMCAccumOutputObject objectWithChannelValue:var1 cycleCount:output->var2 variant:output->var0];
   v9 = PLLogSMCMetrics();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v17 = 138412290;
-    v18 = v6;
+    v18 = keyCopy;
     _os_log_debug_impl(&dword_21A4C6000, v9, OS_LOG_TYPE_DEBUG, "Accumulated key: %@", &v17, 0xCu);
   }
 
@@ -1300,12 +1300,12 @@ LABEL_7:
   return v13;
 }
 
-- (const)isKeyOSAccumSupported:(id)a3
+- (const)isKeyOSAccumSupported:(id)supported
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  supportedCopy = supported;
   v5 = objc_autoreleasePoolPush();
-  if (v4 && ([v4 UTF8String], SMCMakeUInt32Key()) && (-[PLSMCMetricsAgent smcConnection](self, "smcConnection"), !SMCGetKeyInfo()))
+  if (supportedCopy && ([supportedCopy UTF8String], SMCMakeUInt32Key()) && (-[PLSMCMetricsAgent smcConnection](self, "smcConnection"), !SMCGetKeyInfo()))
   {
     [(PLSMCMetricsAgent *)self smcConnection];
     ChannelInfoForKey = SMCAccumGetChannelInfoForKey();
@@ -1351,9 +1351,9 @@ uint64_t __35__PLSMCMetricsAgent_accumSupported__block_invoke(uint64_t a1)
   if ([(PLStateTrackingComposition *)self->_stateTracker stateChanged:32])
   {
     v3 = [(PLStateTrackingComposition *)self->_stateTracker getLastState:32];
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
 
-    if (v4)
+    if (bOOLValue)
     {
       [(PLSMCMetricsAgent *)self logAccumulatedKeysToPL:1 ToCA:1];
     }
@@ -1364,9 +1364,9 @@ uint64_t __35__PLSMCMetricsAgent_accumSupported__block_invoke(uint64_t a1)
     lastDisplayAccumlatedSample = self->_lastDisplayAccumlatedSample;
     self->_lastDisplayAccumlatedSample = 0;
 
-    v6 = [MEMORY[0x277CBEAA8] monotonicDate];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
     lastDisplayAccumulatedSampleEndDate = self->_lastDisplayAccumulatedSampleEndDate;
-    self->_lastDisplayAccumulatedSampleEndDate = v6;
+    self->_lastDisplayAccumulatedSampleEndDate = monotonicDate;
 
     [(PLSMCMetricsAgent *)self logDisplayPower];
   }
@@ -1385,10 +1385,10 @@ uint64_t __35__PLSMCMetricsAgent_accumSupported__block_invoke(uint64_t a1)
   [(PLAgent *)&v3 dealloc];
 }
 
-- (id)handleNumericKeys:(unsigned int)a3 keyInfo:(id *)a4 keyName:(id)a5 ret:(char)a6
+- (id)handleNumericKeys:(unsigned int)keys keyInfo:(id *)info keyName:(id)name ret:(char)ret
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  nameCopy = name;
   [(PLSMCMetricsAgent *)self smcConnection];
   v9 = SMCReadKeyAsNumericWithKnownKeyInfo();
   if (v9)
@@ -1412,7 +1412,7 @@ LABEL_26:
     goto LABEL_3;
   }
 
-  var0 = a4->var2.var0.var0;
+  var0 = info->var2.var0.var0;
   if (var0)
   {
     if (var0 == 2 || var0 == 1)
@@ -1431,7 +1431,7 @@ LABEL_18:
       goto LABEL_4;
     }
 
-    v28 = a4->var2.var0.var0;
+    v28 = info->var2.var0.var0;
     *buf = 67109120;
     v34 = v28;
     v29 = "Unknown numeric SMC type: %d";
@@ -1442,9 +1442,9 @@ LABEL_39:
     goto LABEL_18;
   }
 
-  if (!a4->var2.var0.var1)
+  if (!info->var2.var0.var1)
   {
-    var1 = a4->var1;
+    var1 = info->var1;
     if ((var1 & 4) == 0)
     {
       if ((var1 & 0x80) == 0)
@@ -1452,7 +1452,7 @@ LABEL_39:
         goto LABEL_4;
       }
 
-      var3 = a4->var3;
+      var3 = info->var3;
       if (var3 > 3)
       {
         if (var3 == 4)
@@ -1492,18 +1492,18 @@ LABEL_49:
       }
 
 LABEL_46:
-      v32 = a4->var3;
+      v32 = info->var3;
       *buf = 67109378;
       v34 = v32;
       v35 = 2112;
-      v36 = v8;
+      v36 = nameCopy;
       v29 = "Unsupported key size %d for SMC key %@.";
       v30 = v21;
       v31 = 18;
       goto LABEL_39;
     }
 
-    v25 = a4->var3;
+    v25 = info->var3;
     if (v25 > 3)
     {
       if (v25 == 4)
@@ -1574,10 +1574,10 @@ LABEL_10:
   return v12;
 }
 
-- (id)handleNonNumericKeys:(unsigned int)a3 keyInfo:(id *)a4
+- (id)handleNonNumericKeys:(unsigned int)keys keyInfo:(id *)info
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (!strcmp(&a4->var2, "ioft"))
+  if (!strcmp(&info->var2, "ioft"))
   {
     *buf = 0;
     [(PLSMCMetricsAgent *)self smcConnection];
@@ -1610,13 +1610,13 @@ LABEL_19:
 
   else
   {
-    if (strcmp(&a4->var2, "flag"))
+    if (strcmp(&info->var2, "flag"))
     {
-      if (!strcmp(&a4->var2, "hex_"))
+      if (!strcmp(&info->var2, "hex_"))
       {
         *buf = 0;
         [(PLSMCMetricsAgent *)self smcConnection];
-        var3 = a4->var3;
+        var3 = info->var3;
         if (!SMCReadKey())
         {
           v7 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:*buf];
@@ -1654,12 +1654,12 @@ LABEL_13:
   return v7;
 }
 
-- (id)readSMCKey:(id)a3
+- (id)readSMCKey:(id)key
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  keyCopy = key;
+  v5 = keyCopy;
+  if (!keyCopy)
   {
     v12 = PLLogSMCMetrics();
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -1679,7 +1679,7 @@ LABEL_18:
     goto LABEL_10;
   }
 
-  [v4 UTF8String];
+  [keyCopy UTF8String];
   v6 = SMCMakeUInt32Key();
   if (!v6)
   {
@@ -1738,12 +1738,12 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)writeSMCKey:(id)a3 withValue:(unint64_t)a4
+- (BOOL)writeSMCKey:(id)key withValue:(unint64_t)value
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  keyCopy = key;
+  v7 = keyCopy;
+  if (!keyCopy)
   {
     v13 = PLLogSMCMetrics();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1762,7 +1762,7 @@ LABEL_16:
     goto LABEL_9;
   }
 
-  [v6 UTF8String];
+  [keyCopy UTF8String];
   v8 = SMCMakeUInt32Key();
   if (!v8)
   {
@@ -1834,7 +1834,7 @@ LABEL_14:
     *buf = 138412546;
     *v25 = v7;
     *&v25[8] = 2048;
-    v26 = a4;
+    valueCopy = value;
     _os_log_debug_impl(&dword_21A4C6000, v23, OS_LOG_TYPE_DEBUG, "%@: %llu", buf, 0x16u);
   }
 
@@ -1888,20 +1888,20 @@ void __31__PLSMCMetricsAgent_getAllKeys__block_invoke(uint64_t a1)
   while (v6 != -4);
 }
 
-- (id)getAllowedKeys:(id)a3
+- (id)getAllowedKeys:(id)keys
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  keysCopy = keys;
   v4 = [MEMORY[0x277CBEB58] set];
   v5 = getAllowedKeys__keyList;
   getAllowedKeys__keyList = v4;
 
-  v6 = [MEMORY[0x277D3F258] getAllowblocklist];
+  getAllowblocklist = [MEMORY[0x277D3F258] getAllowblocklist];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v7 = [v6 objectForKeyedSubscript:{v3, 0}];
+  v7 = [getAllowblocklist objectForKeyedSubscript:{keysCopy, 0}];
   v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v8)
   {
@@ -1921,7 +1921,7 @@ void __31__PLSMCMetricsAgent_getAllKeys__block_invoke(uint64_t a1)
         v13 = objc_autoreleasePoolPush();
         if (v12)
         {
-          if ([v3 isEqualToString:@"PLSMCAgent_EventBackward_PowerAccumulatedKeys"])
+          if ([keysCopy isEqualToString:@"PLSMCAgent_EventBackward_PowerAccumulatedKeys"])
           {
             v14 = [v12 substringToIndex:4];
             [getAllowedKeys__keyList addObject:v14];
@@ -2069,17 +2069,17 @@ uint64_t __48__PLSMCMetricsAgent_getAllowedPowerDeliveryKeys__block_invoke(uint6
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)getOSAccumListFrom:(id)a3
+- (id)getOSAccumListFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __40__PLSMCMetricsAgent_getOSAccumListFrom___block_invoke;
   v10[3] = &unk_278259658;
-  v11 = v4;
-  v12 = self;
+  v11 = fromCopy;
+  selfCopy = self;
   v5 = qword_2811F3DA8;
-  v6 = v4;
+  v6 = fromCopy;
   if (v5 != -1)
   {
     dispatch_once(&qword_2811F3DA8, v10);
@@ -2187,9 +2187,9 @@ uint64_t __32__PLSMCMetricsAgent_supportsSMC__block_invoke()
   return result;
 }
 
-+ (id)parsePMUEvents:(unint64_t)a3
++ (id)parsePMUEvents:(unint64_t)events
 {
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([&unk_282C13F98 count])
   {
     v5 = 0;
@@ -2197,8 +2197,8 @@ uint64_t __32__PLSMCMetricsAgent_supportsSMC__block_invoke()
     do
     {
       v7 = [&unk_282C13F98 objectAtIndexedSubscript:v6];
-      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:(a3 >> v5)];
-      [v4 setObject:v8 forKeyedSubscript:v7];
+      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:(events >> v5)];
+      [dictionary setObject:v8 forKeyedSubscript:v7];
 
       ++v6;
       v5 += 8;
@@ -2207,14 +2207,14 @@ uint64_t __32__PLSMCMetricsAgent_supportsSMC__block_invoke()
     while (v6 < [&unk_282C13F98 count]);
   }
 
-  return v4;
+  return dictionary;
 }
 
-+ (void)reportPMUEventsToCA:(id)a3
++ (void)reportPMUEventsToCA:(id)a
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (![v3 unsignedLongLongValue])
+  aCopy = a;
+  if (![aCopy unsignedLongLongValue])
   {
     if (byte_2811F3D33)
     {
@@ -2227,15 +2227,15 @@ uint64_t __32__PLSMCMetricsAgent_supportsSMC__block_invoke()
     }
   }
 
-  v4 = [v3 unsignedLongLongValue];
-  v5 = [PLSMCMetricsAgent parsePMUEvents:v4];
+  unsignedLongLongValue = [aCopy unsignedLongLongValue];
+  v5 = [PLSMCMetricsAgent parsePMUEvents:unsignedLongLongValue];
   if (v5)
   {
     v6 = PLLogSMCMetrics();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 134218242;
-      v10 = v4;
+      v10 = unsignedLongLongValue;
       v11 = 2112;
       v12 = v5;
       _os_log_impl(&dword_21A4C6000, v6, OS_LOG_TYPE_INFO, "PMU events: %llu -> %@", buf, 0x16u);

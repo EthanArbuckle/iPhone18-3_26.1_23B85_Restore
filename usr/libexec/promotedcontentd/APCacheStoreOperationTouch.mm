@@ -1,23 +1,23 @@
 @interface APCacheStoreOperationTouch
 - (APCacheStore)cacheStore;
-- (APCacheStoreOperationTouch)initWithCacheStore:(id)a3 key:(id)a4 timestamp:(id)a5;
+- (APCacheStoreOperationTouch)initWithCacheStore:(id)store key:(id)key timestamp:(id)timestamp;
 - (BOOL)execute;
 @end
 
 @implementation APCacheStoreOperationTouch
 
-- (APCacheStoreOperationTouch)initWithCacheStore:(id)a3 key:(id)a4 timestamp:(id)a5
+- (APCacheStoreOperationTouch)initWithCacheStore:(id)store key:(id)key timestamp:(id)timestamp
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  storeCopy = store;
+  keyCopy = key;
+  timestampCopy = timestamp;
   v11 = [(APCacheStoreOperationTouch *)self init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_cacheStore, v8);
-    objc_storeStrong(&v12->_key, a4);
-    objc_storeStrong(&v12->_timestamp, a5);
+    objc_storeWeak(&v11->_cacheStore, storeCopy);
+    objc_storeStrong(&v12->_key, key);
+    objc_storeStrong(&v12->_timestamp, timestamp);
   }
 
   return v12;
@@ -25,17 +25,17 @@
 
 - (BOOL)execute
 {
-  v3 = [(APCacheStoreOperationTouch *)self cacheStore];
-  v4 = [v3 memoryCache];
+  cacheStore = [(APCacheStoreOperationTouch *)self cacheStore];
+  memoryCache = [cacheStore memoryCache];
   v5 = [(APCacheStoreOperationTouch *)self key];
-  v6 = [v4 objectForKey:v5];
+  v6 = [memoryCache objectForKey:v5];
 
-  v7 = [(APCacheStoreOperationTouch *)self cacheStore];
-  v8 = [v7 fileStorage];
-  v9 = [(APCacheStoreOperationTouch *)self timestamp];
+  cacheStore2 = [(APCacheStoreOperationTouch *)self cacheStore];
+  fileStorage = [cacheStore2 fileStorage];
+  timestamp = [(APCacheStoreOperationTouch *)self timestamp];
   v10 = [(APCacheStoreOperationTouch *)self key];
   v17 = 0;
-  v11 = [v8 setLastModifiedDate:v9 toFile:v10 error:&v17];
+  v11 = [fileStorage setLastModifiedDate:timestamp toFile:v10 error:&v17];
   v12 = v17;
 
   if (v12)

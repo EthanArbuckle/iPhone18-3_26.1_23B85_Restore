@@ -1,12 +1,12 @@
 @interface PostEspressoShaders
-- (PostEspressoShaders)initWithMetal:(id)a3 networkVersion:(int)a4;
+- (PostEspressoShaders)initWithMetal:(id)metal networkVersion:(int)version;
 @end
 
 @implementation PostEspressoShaders
 
-- (PostEspressoShaders)initWithMetal:(id)a3 networkVersion:(int)a4
+- (PostEspressoShaders)initWithMetal:(id)metal networkVersion:(int)version
 {
-  v6 = a3;
+  metalCopy = metal;
   v47.receiver = self;
   v47.super_class = PostEspressoShaders;
   v7 = [(PostEspressoShaders *)&v47 init];
@@ -24,7 +24,7 @@
         objc_msgSend_setConstantValue_type_atIndex_(v11, v14, &v46, 53, 0);
         v46 = ((v13 + 4) & 2) != 0;
         objc_msgSend_setConstantValue_type_atIndex_(v11, v15, &v46, 53, 1);
-        v17 = objc_msgSend_computePipelineStateFor_constants_(v6, v16, @"applyEspressoOutput", v11);
+        v17 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v16, @"applyEspressoOutput", v11);
         v18 = *(kernelDeghostAndDenoise - 6);
         *(kernelDeghostAndDenoise - 6) = v17;
 
@@ -34,7 +34,7 @@
           goto LABEL_19;
         }
 
-        v20 = objc_msgSend_computePipelineStateFor_constants_(v6, v19, @"deghostAndDenoise", v11);
+        v20 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v19, @"deghostAndDenoise", v11);
         v21 = *kernelDeghostAndDenoise;
         *kernelDeghostAndDenoise = v20;
 
@@ -48,40 +48,40 @@
       }
 
       while (!__CFADD__(v13++, 1));
-      v23 = objc_msgSend_computePipelineStateFor_constants_(v6, v8, @"applyEspressoOutputLumaOnly", 0);
+      v23 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v8, @"applyEspressoOutputLumaOnly", 0);
       kernelApplyEspressoOutputLumaOnly = v7->_kernelApplyEspressoOutputLumaOnly;
       v7->_kernelApplyEspressoOutputLumaOnly = v23;
 
       if (v7->_kernelApplyEspressoOutputLumaOnly)
       {
-        v26 = objc_msgSend_computePipelineStateFor_constants_(v6, v25, @"convert444To420", 0);
+        v26 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v25, @"convert444To420", 0);
         kernelConvert444to420 = v7->_kernelConvert444to420;
         v7->_kernelConvert444to420 = v26;
 
         if (v7->_kernelConvert444to420)
         {
-          v29 = objc_msgSend_computePipelineStateFor_constants_(v6, v28, @"computeTextureness", 0);
+          v29 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v28, @"computeTextureness", 0);
           kernelComputeTextureness = v7->_kernelComputeTextureness;
           v7->_kernelComputeTextureness = v29;
 
           if (v7->_kernelComputeTextureness)
           {
-            v32 = objc_msgSend_computePipelineStateFor_constants_(v6, v31, @"computeAMBNRDenoiseBoostMap", 0);
+            v32 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v31, @"computeAMBNRDenoiseBoostMap", 0);
             kernelComputeDenoiseBoostMap = v7->_kernelComputeDenoiseBoostMap;
             v7->_kernelComputeDenoiseBoostMap = v32;
 
             if (v7->_kernelComputeDenoiseBoostMap)
             {
               objc_msgSend_reset(v11, v34, v35, v36);
-              v46 = a4 == 2;
+              v46 = version == 2;
               objc_msgSend_setConstantValue_type_atIndex_(v11, v37, &v46, 53, 1);
-              v39 = objc_msgSend_computePipelineStateFor_constants_(v6, v38, @"addPreviousLevel", v11);
+              v39 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v38, @"addPreviousLevel", v11);
               kernelAddPreviousLevel = v7->_kernelAddPreviousLevel;
               v7->_kernelAddPreviousLevel = v39;
 
               if (v7->_kernelAddPreviousLevel)
               {
-                v42 = objc_msgSend_computePipelineStateFor_constants_(v6, v41, @"collapseWeightsOnTileStage1", v11);
+                v42 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v41, @"collapseWeightsOnTileStage1", v11);
                 kernelCollapseWeightsOnTileStage1 = v7->_kernelCollapseWeightsOnTileStage1;
                 v7->_kernelCollapseWeightsOnTileStage1 = v42;
 

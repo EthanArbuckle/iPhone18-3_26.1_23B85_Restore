@@ -1,21 +1,21 @@
 @interface IMPlayerChapterInfo
 - ($377CF2390FDF0262336A0B78E33E12FE)assetTimeRange;
 - ($377CF2390FDF0262336A0B78E33E12FE)mediaTimeRange;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (UIImage)artwork;
 - (id)description;
 - (unint64_t)hash;
-- (void)setArtworkData:(id)a3;
-- (void)setAssetTimeRange:(id *)a3;
-- (void)setMediaTimeRange:(id *)a3;
+- (void)setArtworkData:(id)data;
+- (void)setAssetTimeRange:(id *)range;
+- (void)setMediaTimeRange:(id *)range;
 @end
 
 @implementation IMPlayerChapterInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -25,12 +25,12 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(IMPlayerChapterInfo *)self title];
-      if (v6)
+      v5 = equalCopy;
+      title = [(IMPlayerChapterInfo *)self title];
+      if (title)
       {
-        v7 = [(IMPlayerChapterInfo *)v5 title];
-        v8 = v7 != 0;
+        title2 = [(IMPlayerChapterInfo *)v5 title];
+        v8 = title2 != 0;
       }
 
       else
@@ -38,13 +38,13 @@
         v8 = 0;
       }
 
-      v10 = [(IMPlayerChapterInfo *)self externalURL];
-      if (v10)
+      externalURL = [(IMPlayerChapterInfo *)self externalURL];
+      if (externalURL)
       {
-        v11 = v10;
-        v12 = [(IMPlayerChapterInfo *)v5 externalURL];
+        v11 = externalURL;
+        externalURL2 = [(IMPlayerChapterInfo *)v5 externalURL];
 
-        if (v12)
+        if (externalURL2)
         {
           v13 = v8;
         }
@@ -56,13 +56,13 @@
 
         if (v13)
         {
-          v14 = [(IMPlayerChapterInfo *)self title];
-          v15 = [(IMPlayerChapterInfo *)v5 title];
-          if ([v14 isEqualToString:v15])
+          title3 = [(IMPlayerChapterInfo *)self title];
+          title4 = [(IMPlayerChapterInfo *)v5 title];
+          if ([title3 isEqualToString:title4])
           {
-            v16 = [(IMPlayerChapterInfo *)self externalURL];
-            v17 = [(IMPlayerChapterInfo *)v5 externalURL];
-            v9 = [v16 isEqual:v17];
+            externalURL3 = [(IMPlayerChapterInfo *)self externalURL];
+            externalURL4 = [(IMPlayerChapterInfo *)v5 externalURL];
+            v9 = [externalURL3 isEqual:externalURL4];
           }
 
           else
@@ -78,11 +78,11 @@
           goto LABEL_18;
         }
 
-        if (v12)
+        if (externalURL2)
         {
-          v14 = [(IMPlayerChapterInfo *)self externalURL];
-          v15 = [(IMPlayerChapterInfo *)v5 externalURL];
-          v18 = [v14 isEqual:v15];
+          title3 = [(IMPlayerChapterInfo *)self externalURL];
+          title4 = [(IMPlayerChapterInfo *)v5 externalURL];
+          v18 = [title3 isEqual:title4];
           goto LABEL_22;
         }
       }
@@ -90,9 +90,9 @@
       else if (v8)
       {
 LABEL_18:
-        v14 = [(IMPlayerChapterInfo *)self title];
-        v15 = [(IMPlayerChapterInfo *)v5 title];
-        v18 = [v14 isEqualToString:v15];
+        title3 = [(IMPlayerChapterInfo *)self title];
+        title4 = [(IMPlayerChapterInfo *)v5 title];
+        v18 = [title3 isEqualToString:title4];
 LABEL_22:
         v9 = v18;
 LABEL_23:
@@ -115,60 +115,60 @@ LABEL_26:
 
 - (unint64_t)hash
 {
-  v3 = [(IMPlayerChapterInfo *)self title];
-  if (v3)
+  title = [(IMPlayerChapterInfo *)self title];
+  if (title)
   {
-    v4 = [(IMPlayerChapterInfo *)self externalURL];
+    externalURL = [(IMPlayerChapterInfo *)self externalURL];
 
-    if (v4)
+    if (externalURL)
     {
-      v5 = [(IMPlayerChapterInfo *)self title];
-      v6 = [v5 hash];
-      v7 = [(IMPlayerChapterInfo *)self externalURL];
-      v3 = ([v7 hash] ^ v6);
+      title2 = [(IMPlayerChapterInfo *)self title];
+      v6 = [title2 hash];
+      externalURL2 = [(IMPlayerChapterInfo *)self externalURL];
+      title = ([externalURL2 hash] ^ v6);
     }
 
     else
     {
-      v3 = 0;
+      title = 0;
     }
   }
 
-  v8 = [(IMPlayerChapterInfo *)self title];
+  title3 = [(IMPlayerChapterInfo *)self title];
 
-  if (v8)
+  if (title3)
   {
-    v9 = [(IMPlayerChapterInfo *)self title];
+    title4 = [(IMPlayerChapterInfo *)self title];
 LABEL_11:
-    v12 = v9;
-    v3 = [v9 hash];
+    v12 = title4;
+    title = [title4 hash];
 
-    return v3;
+    return title;
   }
 
-  v10 = [(IMPlayerChapterInfo *)self externalURL];
+  externalURL3 = [(IMPlayerChapterInfo *)self externalURL];
 
-  if (v10)
+  if (externalURL3)
   {
-    v9 = [(IMPlayerChapterInfo *)self externalURL];
+    title4 = [(IMPlayerChapterInfo *)self externalURL];
     goto LABEL_11;
   }
 
-  v11 = [(IMPlayerChapterInfo *)self artwork];
+  artwork = [(IMPlayerChapterInfo *)self artwork];
 
-  if (v11)
+  if (artwork)
   {
-    v9 = [(IMPlayerChapterInfo *)self artwork];
+    title4 = [(IMPlayerChapterInfo *)self artwork];
     goto LABEL_11;
   }
 
-  return v3;
+  return title;
 }
 
-- (void)setArtworkData:(id)a3
+- (void)setArtworkData:(id)data
 {
-  objc_storeStrong(&self->_artworkData, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_artworkData, data);
+  dataCopy = data;
   artwork = self->_artwork;
   self->_artwork = 0;
 }
@@ -183,13 +183,13 @@ LABEL_11:
 
   else
   {
-    v5 = [(IMPlayerChapterInfo *)self artworkData];
+    artworkData = [(IMPlayerChapterInfo *)self artworkData];
 
-    if (v5)
+    if (artworkData)
     {
       v6 = MEMORY[0x277D755B8];
-      v7 = [(IMPlayerChapterInfo *)self artworkData];
-      v8 = [v6 imageWithData:v7];
+      artworkData2 = [(IMPlayerChapterInfo *)self artworkData];
+      v8 = [v6 imageWithData:artworkData2];
 
       [v8 size];
       if (v10 > 600.0 || v9 > 600.0)
@@ -243,11 +243,11 @@ LABEL_11:
 
       if (os_feature_enabled_red_sun())
       {
-        v24 = [v8 imageByPreparingForDisplay];
-        v25 = v24;
-        if (v24)
+        imageByPreparingForDisplay = [v8 imageByPreparingForDisplay];
+        v25 = imageByPreparingForDisplay;
+        if (imageByPreparingForDisplay)
         {
-          v26 = v24;
+          v26 = imageByPreparingForDisplay;
         }
 
         else
@@ -284,8 +284,8 @@ LABEL_11:
   v3 = MEMORY[0x277CCACA8];
   v4 = off_2782BE170[[(IMPlayerChapterInfo *)self type]];
   v5 = qword_2782BE180[[(IMPlayerChapterInfo *)self metadataType]];
-  v6 = [(IMPlayerChapterInfo *)self title];
-  v7 = [(IMPlayerChapterInfo *)self externalURL];
+  title = [(IMPlayerChapterInfo *)self title];
+  externalURL = [(IMPlayerChapterInfo *)self externalURL];
   [(IMPlayerChapterInfo *)self time];
   v9 = v8;
   [(IMPlayerChapterInfo *)self duration];
@@ -294,7 +294,7 @@ LABEL_11:
   v12 = CMTimeRangeCopyDescription(0, &range);
   [(IMPlayerChapterInfo *)self assetTimeRange];
   v13 = CMTimeRangeCopyDescription(0, &range);
-  v14 = [v3 stringWithFormat:@"<%p> type=%s metadata_type=%s title=%@ url=%@ time=%f duration=%f mediaTimeRange=%@ assetTimeRange=%@", self, v4, v5, v6, v7, v9, v11, v12, v13];
+  v14 = [v3 stringWithFormat:@"<%p> type=%s metadata_type=%s title=%@ url=%@ time=%f duration=%f mediaTimeRange=%@ assetTimeRange=%@", self, v4, v5, title, externalURL, v9, v11, v12, v13];
 
   return v14;
 }
@@ -308,11 +308,11 @@ LABEL_11:
   return self;
 }
 
-- (void)setMediaTimeRange:(id *)a3
+- (void)setMediaTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var1.var1;
-  *&self->_mediaTimeRange.start.epoch = *&a3->var0.var3;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var1.var1;
+  *&self->_mediaTimeRange.start.epoch = *&range->var0.var3;
   *&self->_mediaTimeRange.duration.timescale = v4;
   *&self->_mediaTimeRange.start.value = v3;
 }
@@ -326,11 +326,11 @@ LABEL_11:
   return self;
 }
 
-- (void)setAssetTimeRange:(id *)a3
+- (void)setAssetTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var1.var1;
-  *&self->_assetTimeRange.start.epoch = *&a3->var0.var3;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var1.var1;
+  *&self->_assetTimeRange.start.epoch = *&range->var0.var3;
   *&self->_assetTimeRange.duration.timescale = v4;
   *&self->_assetTimeRange.start.value = v3;
 }

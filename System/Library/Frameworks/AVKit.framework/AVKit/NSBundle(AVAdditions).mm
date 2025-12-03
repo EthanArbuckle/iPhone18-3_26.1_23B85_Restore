@@ -11,25 +11,25 @@
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 pathExtension];
-    if ([v6 length])
+    pathExtension = [v4 pathExtension];
+    if ([pathExtension length])
     {
-      v7 = [v5 stringByDeletingPathExtension];
+      stringByDeletingPathExtension = [v5 stringByDeletingPathExtension];
 
-      v5 = v7;
+      v5 = stringByDeletingPathExtension;
     }
 
-    v8 = [a1 URLForResource:v5 withExtension:v6];
+    v8 = [self URLForResource:v5 withExtension:pathExtension];
     if (!v8)
     {
-      if ([v6 length])
+      if ([pathExtension length])
       {
         v8 = 0;
       }
 
       else
       {
-        v8 = [a1 URLForResource:v5 withExtension:@"mov"];
+        v8 = [self URLForResource:v5 withExtension:@"mov"];
       }
     }
 

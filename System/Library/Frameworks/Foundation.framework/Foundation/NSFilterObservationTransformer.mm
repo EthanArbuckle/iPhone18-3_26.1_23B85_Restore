@@ -1,31 +1,31 @@
 @interface NSFilterObservationTransformer
-+ (id)filterWithBlock:(id)a3;
-- (NSFilterObservationTransformer)initWithBlock:(id)a3;
-- (void)_receiveBox:(id)a3;
++ (id)filterWithBlock:(id)block;
+- (NSFilterObservationTransformer)initWithBlock:(id)block;
+- (void)_receiveBox:(id)box;
 - (void)dealloc;
 @end
 
 @implementation NSFilterObservationTransformer
 
-+ (id)filterWithBlock:(id)a3
++ (id)filterWithBlock:(id)block
 {
-  v3 = [[a1 alloc] initWithBlock:a3];
+  v3 = [[self alloc] initWithBlock:block];
 
   return v3;
 }
 
-- (void)_receiveBox:(id)a3
+- (void)_receiveBox:(id)box
 {
   v6 = *MEMORY[0x1E69E9840];
-  if (*(a3 + 6) != 1 || (*(self->_predicate + 2))())
+  if (*(box + 6) != 1 || (*(self->_predicate + 2))())
   {
     v5.receiver = self;
     v5.super_class = NSFilterObservationTransformer;
-    [(NSFilterObservationTransformer *)&v5 _receiveBox:a3];
+    [(NSFilterObservationTransformer *)&v5 _receiveBox:box];
   }
 }
 
-- (NSFilterObservationTransformer)initWithBlock:(id)a3
+- (NSFilterObservationTransformer)initWithBlock:(id)block
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -33,7 +33,7 @@
   v4 = [(NSFilterObservationTransformer *)&v6 init];
   if (v4)
   {
-    v4->_predicate = [a3 copy];
+    v4->_predicate = [block copy];
   }
 
   return v4;

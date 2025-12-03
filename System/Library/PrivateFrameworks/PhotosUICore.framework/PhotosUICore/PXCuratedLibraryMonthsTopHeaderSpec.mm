@@ -1,15 +1,15 @@
 @interface PXCuratedLibraryMonthsTopHeaderSpec
-- (PXCuratedLibraryMonthsTopHeaderSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 variant:(int64_t)a5;
-- (UIEdgeInsets)adjustedContentPadding:(UIEdgeInsets)a3;
+- (PXCuratedLibraryMonthsTopHeaderSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options variant:(int64_t)variant;
+- (UIEdgeInsets)adjustedContentPadding:(UIEdgeInsets)padding;
 @end
 
 @implementation PXCuratedLibraryMonthsTopHeaderSpec
 
-- (UIEdgeInsets)adjustedContentPadding:(UIEdgeInsets)a3
+- (UIEdgeInsets)adjustedContentPadding:(UIEdgeInsets)padding
 {
   v18.receiver = self;
   v18.super_class = PXCuratedLibraryMonthsTopHeaderSpec;
-  [(PXCuratedLibrarySectionHeaderLayoutSpec *)&v18 adjustedContentPadding:a3.top, a3.left, a3.bottom, a3.right];
+  [(PXCuratedLibrarySectionHeaderLayoutSpec *)&v18 adjustedContentPadding:padding.top, padding.left, padding.bottom, padding.right];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -23,9 +23,9 @@
 
     else
     {
-      v13 = [(PXCuratedLibraryMonthsTopHeaderSpec *)self layoutOrientation];
+      layoutOrientation = [(PXCuratedLibraryMonthsTopHeaderSpec *)self layoutOrientation];
 
-      if (v13 == 1)
+      if (layoutOrientation == 1)
       {
         v11 = v11 + 14.0;
       }
@@ -43,16 +43,16 @@
   return result;
 }
 
-- (PXCuratedLibraryMonthsTopHeaderSpec)initWithExtendedTraitCollection:(id)a3 options:(unint64_t)a4 variant:(int64_t)a5
+- (PXCuratedLibraryMonthsTopHeaderSpec)initWithExtendedTraitCollection:(id)collection options:(unint64_t)options variant:(int64_t)variant
 {
   v9.receiver = self;
   v9.super_class = PXCuratedLibraryMonthsTopHeaderSpec;
-  v6 = [(PXCuratedLibrarySectionHeaderLayoutSpec *)&v9 initWithExtendedTraitCollection:a3 options:a4 variant:?];
+  v6 = [(PXCuratedLibrarySectionHeaderLayoutSpec *)&v9 initWithExtendedTraitCollection:collection options:options variant:?];
   v7 = v6;
   if (v6)
   {
     [(PXCuratedLibrarySectionHeaderLayoutSpec *)v6 setIsFloating:1];
-    [(PXCuratedLibrarySectionHeaderLayoutSpec *)v7 setEllipsisButtonSpecialTreatment:a5 != 0];
+    [(PXCuratedLibrarySectionHeaderLayoutSpec *)v7 setEllipsisButtonSpecialTreatment:variant != 0];
     [(PXCuratedLibrarySectionHeaderLayoutSpec *)v7 curatedLibraryEdgeToEdgeContentDefaultPadding];
     [(PXCuratedLibrarySectionHeaderLayoutSpec *)v7 setPadding:?];
     [(PXCuratedLibrarySectionHeaderLayoutSpec *)v7 padding];

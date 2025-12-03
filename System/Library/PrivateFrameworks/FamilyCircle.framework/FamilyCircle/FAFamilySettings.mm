@@ -1,27 +1,27 @@
 @interface FAFamilySettings
 - (BOOL)isAccountSignedIn;
-- (void)_launchPrefsUsingDaemonWithOptions:(id)a3;
-- (void)familySetupPrompterDidFinish:(id)a3;
-- (void)launchiCloudFamilySettingsWithOptions:(id)a3;
+- (void)_launchPrefsUsingDaemonWithOptions:(id)options;
+- (void)familySetupPrompterDidFinish:(id)finish;
+- (void)launchiCloudFamilySettingsWithOptions:(id)options;
 @end
 
 @implementation FAFamilySettings
 
 - (BOOL)isAccountSignedIn
 {
-  v2 = [MEMORY[0x1E6959A48] defaultStore];
-  v3 = [v2 aa_primaryAppleAccount];
-  v4 = v3 != 0;
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+  v4 = aa_primaryAppleAccount != 0;
 
   return v4;
 }
 
-- (void)launchiCloudFamilySettingsWithOptions:(id)a3
+- (void)launchiCloudFamilySettingsWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E6959A48] defaultStore];
-  v6 = [v5 aa_primaryAppleAccount];
-  if (v6)
+  optionsCopy = options;
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
+  if (aa_primaryAppleAccount)
   {
     v7 = objc_alloc_init(FAFetchFamilyCircleRequest);
     [(FAFetchFamilyCircleRequest *)v7 setDoNotFetchFromServer:1];
@@ -30,13 +30,13 @@
     v8[2] = __58__FAFamilySettings_launchiCloudFamilySettingsWithOptions___block_invoke;
     v8[3] = &unk_1E7CA5098;
     v8[4] = self;
-    v9 = v4;
+    v9 = optionsCopy;
     [(FAFetchFamilyCircleRequest *)v7 startRequestWithCompletionHandler:v8];
   }
 
   else
   {
-    [(FAFamilySettings *)self _launchPrefsUsingDaemonWithOptions:v4];
+    [(FAFamilySettings *)self _launchPrefsUsingDaemonWithOptions:optionsCopy];
   }
 }
 
@@ -88,11 +88,11 @@ void __58__FAFamilySettings_launchiCloudFamilySettingsWithOptions___block_invoke
   }
 }
 
-- (void)_launchPrefsUsingDaemonWithOptions:(id)a3
+- (void)_launchPrefsUsingDaemonWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = [(FAFamilyCircleRequest *)self serviceRemoteObjectWithErrorHandler:&__block_literal_global_9];
-  [v5 launchICloudFamilySettingsWithOptions:v4];
+  [v5 launchICloudFamilySettingsWithOptions:optionsCopy];
 }
 
 void __55__FAFamilySettings__launchPrefsUsingDaemonWithOptions___block_invoke(uint64_t a1, void *a2)
@@ -110,7 +110,7 @@ void __55__FAFamilySettings__launchPrefsUsingDaemonWithOptions___block_invoke(ui
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)familySetupPrompterDidFinish:(id)a3
+- (void)familySetupPrompterDidFinish:(id)finish
 {
   retainedSelf = self->_retainedSelf;
   self->_retainedSelf = 0;

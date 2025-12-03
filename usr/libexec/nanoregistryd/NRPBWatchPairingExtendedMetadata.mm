@@ -1,10 +1,10 @@
 @interface NRPBWatchPairingExtendedMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NRPBWatchPairingExtendedMetadata
@@ -14,8 +14,8 @@
   v7.receiver = self;
   v7.super_class = NRPBWatchPairingExtendedMetadata;
   v3 = [(NRPBWatchPairingExtendedMetadata *)&v7 description];
-  v4 = [(NRPBWatchPairingExtendedMetadata *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NRPBWatchPairingExtendedMetadata *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -117,14 +117,14 @@ LABEL_10:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v12 = v4;
+  toCopy = to;
+  v12 = toCopy;
   if (self->_productType)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   has = self->_has;
@@ -132,7 +132,7 @@ LABEL_10:
   {
     chipID = self->_chipID;
     PBDataWriterWriteInt32Field();
-    v4 = v12;
+    toCopy = v12;
     has = self->_has;
     if ((has & 0x10) == 0)
     {
@@ -153,7 +153,7 @@ LABEL_5:
 
   postFailsafeObliteration = self->_postFailsafeObliteration;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -169,7 +169,7 @@ LABEL_6:
 LABEL_15:
   pairingVersion = self->_pairingVersion;
   PBDataWriterWriteInt64Field();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -185,7 +185,7 @@ LABEL_7:
 LABEL_16:
   supportsTokyoBayAquaLine = self->_supportsTokyoBayAquaLine;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -201,22 +201,22 @@ LABEL_8:
 LABEL_17:
   isCellularEnabled = self->_isCellularEnabled;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_9:
     encodedSystemVersion = self->_encodedSystemVersion;
     PBDataWriterWriteUint32Field();
-    v4 = v12;
+    toCopy = v12;
   }
 
 LABEL_10:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_productType copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_productType copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
@@ -300,16 +300,16 @@ LABEL_7:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_41;
   }
 
   productType = self->_productType;
-  if (productType | *(v4 + 3))
+  if (productType | *(equalCopy + 3))
   {
     if (![(NSString *)productType isEqual:?])
     {
@@ -319,87 +319,87 @@ LABEL_7:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_chipID != *(v4 + 4))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_chipID != *(equalCopy + 4))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_41;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 36) & 0x10) == 0)
+    if ((*(equalCopy + 36) & 0x10) == 0)
     {
       goto LABEL_41;
     }
 
-    v6 = *(v4 + 33);
+    v6 = *(equalCopy + 33);
     if (self->_postFailsafeObliteration)
     {
-      if ((*(v4 + 33) & 1) == 0)
+      if ((*(equalCopy + 33) & 1) == 0)
       {
         goto LABEL_41;
       }
     }
 
-    else if (*(v4 + 33))
+    else if (*(equalCopy + 33))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 36) & 0x10) != 0)
+  else if ((*(equalCopy + 36) & 0x10) != 0)
   {
     goto LABEL_41;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_pairingVersion != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_pairingVersion != *(equalCopy + 1))
     {
       goto LABEL_41;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_41;
   }
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 36) & 0x20) == 0)
+    if ((*(equalCopy + 36) & 0x20) == 0)
     {
       goto LABEL_41;
     }
 
-    v8 = *(v4 + 34);
+    v8 = *(equalCopy + 34);
     if (self->_supportsTokyoBayAquaLine)
     {
-      if ((*(v4 + 34) & 1) == 0)
+      if ((*(equalCopy + 34) & 1) == 0)
       {
         goto LABEL_41;
       }
     }
 
-    else if (*(v4 + 34))
+    else if (*(equalCopy + 34))
     {
       goto LABEL_41;
     }
   }
 
-  else if ((*(v4 + 36) & 0x20) != 0)
+  else if ((*(equalCopy + 36) & 0x20) != 0)
   {
     goto LABEL_41;
   }
 
   if ((*&self->_has & 8) == 0)
   {
-    if ((*(v4 + 36) & 8) == 0)
+    if ((*(equalCopy + 36) & 8) == 0)
     {
       goto LABEL_24;
     }
@@ -409,30 +409,30 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  if ((*(v4 + 36) & 8) == 0)
+  if ((*(equalCopy + 36) & 8) == 0)
   {
     goto LABEL_41;
   }
 
-  v9 = *(v4 + 32);
+  v9 = *(equalCopy + 32);
   if (self->_isCellularEnabled)
   {
-    if ((*(v4 + 32) & 1) == 0)
+    if ((*(equalCopy + 32) & 1) == 0)
     {
       goto LABEL_41;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_41;
   }
 
 LABEL_24:
-  v7 = (*(v4 + 36) & 4) == 0;
+  v7 = (*(equalCopy + 36) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_encodedSystemVersion != *(v4 + 5))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_encodedSystemVersion != *(equalCopy + 5))
     {
       goto LABEL_41;
     }

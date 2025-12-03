@@ -8,7 +8,7 @@
 - (id)nf_sha1
 {
   v7 = *MEMORY[0x277D85DE8];
-  v1 = [a1 dataUsingEncoding:4];
+  v1 = [self dataUsingEncoding:4];
   CC_SHA1([v1 bytes], objc_msgSend(v1, "length"), md);
   v2 = [MEMORY[0x277CCAB68] stringWithCapacity:40];
   for (i = 0; i != 20; ++i)
@@ -23,14 +23,14 @@
 
 - (id)nf_stringByReversingString
 {
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = [MEMORY[0x277CCAB68] stringWithCapacity:v2];
   if (v2)
   {
     v4 = v2 - 1;
     do
     {
-      v5 = [a1 characterAtIndex:v4];
+      v5 = [self characterAtIndex:v4];
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%c", v5];
       [v3 appendString:v6];
 

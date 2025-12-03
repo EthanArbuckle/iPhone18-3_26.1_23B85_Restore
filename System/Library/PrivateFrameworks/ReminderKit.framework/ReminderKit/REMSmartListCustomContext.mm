@@ -2,25 +2,25 @@
 - (NSString)name;
 - (REMColor)color;
 - (REMListBadge)badge;
-- (REMSmartListCustomContext)initWithSmartList:(id)a3 account:(id)a4 parentList:(id)a5;
+- (REMSmartListCustomContext)initWithSmartList:(id)list account:(id)account parentList:(id)parentList;
 @end
 
 @implementation REMSmartListCustomContext
 
-- (REMSmartListCustomContext)initWithSmartList:(id)a3 account:(id)a4 parentList:(id)a5
+- (REMSmartListCustomContext)initWithSmartList:(id)list account:(id)account parentList:(id)parentList
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  listCopy = list;
+  accountCopy = account;
+  parentListCopy = parentList;
   v15.receiver = self;
   v15.super_class = REMSmartListCustomContext;
   v12 = [(REMSmartListCustomContext *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_smartlist, a3);
-    objc_storeStrong(&v13->_account, a4);
-    objc_storeStrong(&v13->_parentList, a5);
+    objc_storeStrong(&v12->_smartlist, list);
+    objc_storeStrong(&v13->_account, account);
+    objc_storeStrong(&v13->_parentList, parentList);
   }
 
   return v13;
@@ -28,28 +28,28 @@
 
 - (NSString)name
 {
-  v2 = [(REMSmartListCustomContext *)self smartlist];
-  v3 = [v2 name];
+  smartlist = [(REMSmartListCustomContext *)self smartlist];
+  name = [smartlist name];
 
-  return v3;
+  return name;
 }
 
 - (REMColor)color
 {
-  v2 = [(REMSmartListCustomContext *)self smartlist];
-  v3 = [v2 color];
+  smartlist = [(REMSmartListCustomContext *)self smartlist];
+  color = [smartlist color];
 
-  return v3;
+  return color;
 }
 
 - (REMListBadge)badge
 {
-  v2 = [(REMSmartListCustomContext *)self smartlist];
-  v3 = [v2 badgeEmblem];
+  smartlist = [(REMSmartListCustomContext *)self smartlist];
+  badgeEmblem = [smartlist badgeEmblem];
 
-  if (v3)
+  if (badgeEmblem)
   {
-    v4 = [[REMListBadge alloc] initWithRawValue:v3];
+    v4 = [[REMListBadge alloc] initWithRawValue:badgeEmblem];
   }
 
   else

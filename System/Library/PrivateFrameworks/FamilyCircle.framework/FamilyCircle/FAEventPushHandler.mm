@@ -1,8 +1,8 @@
 @interface FAEventPushHandler
-- (BOOL)shouldProcess:(id)a3;
+- (BOOL)shouldProcess:(id)process;
 - (FAEventPushHandler)init;
-- (void)_deliverNotificationWithResponse:(id)a3 payload:(id)a4;
-- (void)process:(id)a3;
+- (void)_deliverNotificationWithResponse:(id)response payload:(id)payload;
+- (void)process:(id)process;
 @end
 
 @implementation FAEventPushHandler
@@ -27,18 +27,18 @@
   return v2;
 }
 
-- (BOOL)shouldProcess:(id)a3
+- (BOOL)shouldProcess:(id)process
 {
   events = self->_events;
-  v4 = [a3 event];
-  LOBYTE(events) = [(NSSet *)events containsObject:v4];
+  event = [process event];
+  LOBYTE(events) = [(NSSet *)events containsObject:event];
 
   return events;
 }
 
-- (void)process:(id)a3
+- (void)process:(id)process
 {
-  v4 = a3;
+  processCopy = process;
   v5 = _FALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -51,19 +51,19 @@
   v8[1] = 3221225472;
   v8[2] = sub_10001DF24;
   v8[3] = &unk_1000A72E0;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = processCopy;
+  selfCopy = self;
+  v7 = processCopy;
   dispatch_async(networkingQueue, v8);
 }
 
-- (void)_deliverNotificationWithResponse:(id)a3 payload:(id)a4
+- (void)_deliverNotificationWithResponse:(id)response payload:(id)payload
 {
-  v4 = [FANotificationBuilder buildNotificationWithResponse:a3 payload:a4];
+  v4 = [FANotificationBuilder buildNotificationWithResponse:response payload:payload];
   if (v4)
   {
     v5 = +[FAPushHelperService sharedInstance];
-    v6 = [v5 familyNotifier];
+    familyNotifier = [v5 familyNotifier];
 
     v7 = _FALogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -71,11 +71,11 @@
       v8 = 138412546;
       v9 = v4;
       v10 = 2112;
-      v11 = v6;
+      v11 = familyNotifier;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Dispatching new FAFamilyNotification %@ to notifier %@", &v8, 0x16u);
     }
 
-    [v6 deliverNotification:v4];
+    [familyNotifier deliverNotification:v4];
   }
 }
 

@@ -1,29 +1,29 @@
 @interface CHWorkoutRouteMapGenerator
 - (CHWorkoutRouteMapGenerator)init;
-- (CHWorkoutRouteMapGenerator)initWithPathRendererClass:(Class)a3;
-- (void)setLocationReadings:(id)a3;
-- (void)setMapSize:(CGSize)a3;
-- (void)setMapSnapshotter:(id)a3;
-- (void)snapshotWithSize:(CGSize)a3 lineWidth:(double)a4 traitCollection:(id)a5 insets:(UIEdgeInsets)a6 completion:(id)a7;
+- (CHWorkoutRouteMapGenerator)initWithPathRendererClass:(Class)class;
+- (void)setLocationReadings:(id)readings;
+- (void)setMapSize:(CGSize)size;
+- (void)setMapSnapshotter:(id)snapshotter;
+- (void)snapshotWithSize:(CGSize)size lineWidth:(double)width traitCollection:(id)collection insets:(UIEdgeInsets)insets completion:(id)completion;
 @end
 
 @implementation CHWorkoutRouteMapGenerator
 
-- (void)setLocationReadings:(id)a3
+- (void)setLocationReadings:(id)readings
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CHWorkoutRouteMapGenerator_locationReadings);
-  *(&self->super.isa + OBJC_IVAR___CHWorkoutRouteMapGenerator_locationReadings) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___CHWorkoutRouteMapGenerator_locationReadings) = readings;
+  readingsCopy = readings;
 }
 
-- (void)setMapSnapshotter:(id)a3
+- (void)setMapSnapshotter:(id)snapshotter
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CHWorkoutRouteMapGenerator_mapSnapshotter);
-  *(&self->super.isa + OBJC_IVAR___CHWorkoutRouteMapGenerator_mapSnapshotter) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___CHWorkoutRouteMapGenerator_mapSnapshotter) = snapshotter;
+  snapshotterCopy = snapshotter;
 }
 
-- (CHWorkoutRouteMapGenerator)initWithPathRendererClass:(Class)a3
+- (CHWorkoutRouteMapGenerator)initWithPathRendererClass:(Class)class
 {
   ObjCClassMetadata = swift_getObjCClassMetadata();
   *(&self->super.isa + OBJC_IVAR___CHWorkoutRouteMapGenerator_isForDive) = 0;
@@ -40,26 +40,26 @@
   return [(CHWorkoutRouteMapGenerator *)&v7 init];
 }
 
-- (void)setMapSize:(CGSize)a3
+- (void)setMapSize:(CGSize)size
 {
   v3 = (self + OBJC_IVAR___CHWorkoutRouteMapGenerator_mapSize);
-  *v3 = a3;
+  *v3 = size;
   LOBYTE(v3[1].width) = 0;
 }
 
-- (void)snapshotWithSize:(CGSize)a3 lineWidth:(double)a4 traitCollection:(id)a5 insets:(UIEdgeInsets)a6 completion:(id)a7
+- (void)snapshotWithSize:(CGSize)size lineWidth:(double)width traitCollection:(id)collection insets:(UIEdgeInsets)insets completion:(id)completion
 {
-  right = a6.right;
-  bottom = a6.bottom;
-  left = a6.left;
-  top = a6.top;
-  height = a3.height;
-  width = a3.width;
-  v16 = _Block_copy(a7);
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = size.height;
+  width = size.width;
+  v16 = _Block_copy(completion);
   _Block_copy(v16);
-  v17 = a5;
-  v18 = self;
-  sub_1005D9F98(v17, v18, v16, width, height, a4, top, left, bottom, right);
+  collectionCopy = collection;
+  selfCopy = self;
+  sub_1005D9F98(collectionCopy, selfCopy, v16, width, height, width, top, left, bottom, right);
   _Block_release(v16);
   _Block_release(v16);
 }

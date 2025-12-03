@@ -1,43 +1,43 @@
 @interface TIProactiveQuickTypeManagerMock
 - (TIProactiveQuickTypeManagerMock)init;
-- (id)generateAndRenderProactiveSuggestionsWithTriggers:(id)a3 withKeyboardState:(id)a4 withAdditionalPredictions:(id)a5 withSecureCandidateRenderer:(id)a6 withRenderTraits:(id)a7 withInput:(id)a8 withRecipient:(id)a9 withApplication:(id)a10 withLocale:(id)a11 isContinuousPath:(BOOL)a12 withAvailableApps:(id)a13 logBlock:(id)a14;
-- (void)generateAndRenderProactiveSuggestionsForInput:(id)a3 withKeyboardState:(id)a4 withAdditionalPredictions:(id)a5 withSecureCandidateRenderer:(id)a6 withRenderTraits:(id)a7 withInput:(id)a8 withRecipient:(id)a9 withApplication:(id)a10 withLocale:(id)a11 nextInputWillInsertAutospace:(BOOL)a12 withIsResponseDenyListed:(BOOL)a13 withShouldDisableAutoCaps:(BOOL)a14 withAvailableApps:(id)a15 logBlock:(id)a16 async:(BOOL)a17 completion:(id)a18;
-- (void)generateAndRenderProactiveSuggestionsWithTriggers:(id)a3 withKeyboardState:(id)a4 withAdditionalPredictions:(id)a5 withSecureCandidateRenderer:(id)a6 withRenderTraits:(id)a7 withInput:(id)a8 withRecipient:(id)a9 withApplication:(id)a10 withLocale:(id)a11 isContinuousPath:(BOOL)a12 withAvailableApps:(id)a13 logBlock:(id)a14 async:(BOOL)a15 completion:(id)a16;
+- (id)generateAndRenderProactiveSuggestionsWithTriggers:(id)triggers withKeyboardState:(id)state withAdditionalPredictions:(id)predictions withSecureCandidateRenderer:(id)renderer withRenderTraits:(id)traits withInput:(id)input withRecipient:(id)recipient withApplication:(id)self0 withLocale:(id)self1 isContinuousPath:(BOOL)self2 withAvailableApps:(id)self3 logBlock:(id)self4;
+- (void)generateAndRenderProactiveSuggestionsForInput:(id)input withKeyboardState:(id)state withAdditionalPredictions:(id)predictions withSecureCandidateRenderer:(id)renderer withRenderTraits:(id)traits withInput:(id)withInput withRecipient:(id)recipient withApplication:(id)self0 withLocale:(id)self1 nextInputWillInsertAutospace:(BOOL)self2 withIsResponseDenyListed:(BOOL)self3 withShouldDisableAutoCaps:(BOOL)self4 withAvailableApps:(id)self5 logBlock:(id)self6 async:(BOOL)self7 completion:(id)self8;
+- (void)generateAndRenderProactiveSuggestionsWithTriggers:(id)triggers withKeyboardState:(id)state withAdditionalPredictions:(id)predictions withSecureCandidateRenderer:(id)renderer withRenderTraits:(id)traits withInput:(id)input withRecipient:(id)recipient withApplication:(id)self0 withLocale:(id)self1 isContinuousPath:(BOOL)self2 withAvailableApps:(id)self3 logBlock:(id)self4 async:(BOOL)self5 completion:(id)self6;
 @end
 
 @implementation TIProactiveQuickTypeManagerMock
 
-- (void)generateAndRenderProactiveSuggestionsForInput:(id)a3 withKeyboardState:(id)a4 withAdditionalPredictions:(id)a5 withSecureCandidateRenderer:(id)a6 withRenderTraits:(id)a7 withInput:(id)a8 withRecipient:(id)a9 withApplication:(id)a10 withLocale:(id)a11 nextInputWillInsertAutospace:(BOOL)a12 withIsResponseDenyListed:(BOOL)a13 withShouldDisableAutoCaps:(BOOL)a14 withAvailableApps:(id)a15 logBlock:(id)a16 async:(BOOL)a17 completion:(id)a18
+- (void)generateAndRenderProactiveSuggestionsForInput:(id)input withKeyboardState:(id)state withAdditionalPredictions:(id)predictions withSecureCandidateRenderer:(id)renderer withRenderTraits:(id)traits withInput:(id)withInput withRecipient:(id)recipient withApplication:(id)self0 withLocale:(id)self1 nextInputWillInsertAutospace:(BOOL)self2 withIsResponseDenyListed:(BOOL)self3 withShouldDisableAutoCaps:(BOOL)self4 withAvailableApps:(id)self5 logBlock:(id)self6 async:(BOOL)self7 completion:(id)self8
 {
-  v19 = a18;
+  completionCopy = completion;
   v20 = MEMORY[0x277CBEAC0];
-  v21 = a8;
+  withInputCopy = withInput;
   v22 = [v20 dictionaryWithObjects:&unk_287ED4AD8 forKeys:&unk_287ED4AF0];
-  v23 = [MEMORY[0x277CCA900] newlineCharacterSet];
-  v24 = [v21 componentsSeparatedByCharactersInSet:v23];
+  newlineCharacterSet = [MEMORY[0x277CCA900] newlineCharacterSet];
+  v24 = [withInputCopy componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
-  v28 = [v24 lastObject];
+  lastObject = [v24 lastObject];
 
-  v25 = [v22 objectForKey:v28];
+  v25 = [v22 objectForKey:lastObject];
   if (v25)
   {
     v26 = [MEMORY[0x277D6F3D8] secureCandidateForInput:v25 slotID:100];
-    v27 = [MEMORY[0x277CBEB18] array];
-    [v27 addObject:v26];
+    array = [MEMORY[0x277CBEB18] array];
+    [array addObject:v26];
   }
 
   else
   {
-    v27 = 0;
+    array = 0;
   }
 
-  v19[2](v19, v27);
+  completionCopy[2](completionCopy, array);
 }
 
-- (void)generateAndRenderProactiveSuggestionsWithTriggers:(id)a3 withKeyboardState:(id)a4 withAdditionalPredictions:(id)a5 withSecureCandidateRenderer:(id)a6 withRenderTraits:(id)a7 withInput:(id)a8 withRecipient:(id)a9 withApplication:(id)a10 withLocale:(id)a11 isContinuousPath:(BOOL)a12 withAvailableApps:(id)a13 logBlock:(id)a14 async:(BOOL)a15 completion:(id)a16
+- (void)generateAndRenderProactiveSuggestionsWithTriggers:(id)triggers withKeyboardState:(id)state withAdditionalPredictions:(id)predictions withSecureCandidateRenderer:(id)renderer withRenderTraits:(id)traits withInput:(id)input withRecipient:(id)recipient withApplication:(id)self0 withLocale:(id)self1 isContinuousPath:(BOOL)self2 withAvailableApps:(id)self3 logBlock:(id)self4 async:(BOOL)self5 completion:(id)self6
 {
-  v21 = a16;
-  v17 = [a3 count];
+  completionCopy = completion;
+  v17 = [triggers count];
   if (v17)
   {
     v18 = v17;
@@ -58,22 +58,22 @@
     v19 = 0;
   }
 
-  v21[2](v21, v19);
+  completionCopy[2](completionCopy, v19);
 }
 
-- (id)generateAndRenderProactiveSuggestionsWithTriggers:(id)a3 withKeyboardState:(id)a4 withAdditionalPredictions:(id)a5 withSecureCandidateRenderer:(id)a6 withRenderTraits:(id)a7 withInput:(id)a8 withRecipient:(id)a9 withApplication:(id)a10 withLocale:(id)a11 isContinuousPath:(BOOL)a12 withAvailableApps:(id)a13 logBlock:(id)a14
+- (id)generateAndRenderProactiveSuggestionsWithTriggers:(id)triggers withKeyboardState:(id)state withAdditionalPredictions:(id)predictions withSecureCandidateRenderer:(id)renderer withRenderTraits:(id)traits withInput:(id)input withRecipient:(id)recipient withApplication:(id)self0 withLocale:(id)self1 isContinuousPath:(BOOL)self2 withAvailableApps:(id)self3 logBlock:(id)self4
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v33 = a6;
-  v22 = a7;
-  v32 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
-  v26 = a13;
-  v27 = a14;
+  triggersCopy = triggers;
+  stateCopy = state;
+  predictionsCopy = predictions;
+  rendererCopy = renderer;
+  traitsCopy = traits;
+  inputCopy = input;
+  recipientCopy = recipient;
+  applicationCopy = application;
+  localeCopy = locale;
+  appsCopy = apps;
+  blockCopy = block;
   v37 = 0;
   v38 = &v37;
   v39 = 0x3032000000;
@@ -86,9 +86,9 @@
   v36[3] = &unk_279DA10D8;
   v36[4] = &v37;
   LOBYTE(v31) = 0;
-  LOBYTE(v30) = a12;
-  v34 = v20;
-  [(TIProactiveQuickTypeManagerMock *)self generateAndRenderProactiveSuggestionsWithTriggers:v19 withKeyboardState:v20 withAdditionalPredictions:v21 withSecureCandidateRenderer:v33 withRenderTraits:v22 withInput:v32 withRecipient:v23 withApplication:v24 withLocale:v25 isContinuousPath:v30 withAvailableApps:v26 logBlock:v27 async:v31 completion:v36];
+  LOBYTE(v30) = path;
+  v34 = stateCopy;
+  [(TIProactiveQuickTypeManagerMock *)self generateAndRenderProactiveSuggestionsWithTriggers:triggersCopy withKeyboardState:stateCopy withAdditionalPredictions:predictionsCopy withSecureCandidateRenderer:rendererCopy withRenderTraits:traitsCopy withInput:inputCopy withRecipient:recipientCopy withApplication:applicationCopy withLocale:localeCopy isContinuousPath:v30 withAvailableApps:appsCopy logBlock:blockCopy async:v31 completion:v36];
   v28 = v38[5];
   _Block_object_dispose(&v37, 8);
 
@@ -102,9 +102,9 @@
   v2 = [(TIProactiveQuickTypeManagerMock *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     metrics = v2->_metrics;
-    v2->_metrics = v3;
+    v2->_metrics = dictionary;
   }
 
   return v2;

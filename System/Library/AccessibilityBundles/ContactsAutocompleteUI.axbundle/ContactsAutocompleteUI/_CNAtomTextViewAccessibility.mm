@@ -1,8 +1,8 @@
 @interface _CNAtomTextViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityUseInactiveTextViewValueForParent:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityUseInactiveTextViewValueForParent:(id)parent;
 - (CGPoint)accessibilityActivationPoint;
-- (CGRect)_accessibilityBoundsForRange:(_NSRange)a3;
+- (CGRect)_accessibilityBoundsForRange:(_NSRange)range;
 - (_NSRange)_accessibilitySelectedTextRange;
 - (id)accessibilityAttributedValue;
 - (id)accessibilityLabel;
@@ -12,50 +12,50 @@
 
 @implementation _CNAtomTextViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CNComposeRecipientTextView" hasInstanceMethod:@"_isTextViewCollapsed" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CNComposeRecipientTextView" hasInstanceVariable:@"_inactiveTextView" withType:"UITextView"];
-  [v3 validateClass:@"CNComposeRecipientTextView"];
-  [v3 validateClass:@"_CNAtomTextView" isKindOfClass:@"UITextView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CNComposeRecipientTextView" hasInstanceMethod:@"_isTextViewCollapsed" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CNComposeRecipientTextView" hasInstanceVariable:@"_inactiveTextView" withType:"UITextView"];
+  [validationsCopy validateClass:@"CNComposeRecipientTextView"];
+  [validationsCopy validateClass:@"_CNAtomTextView" isKindOfClass:@"UITextView"];
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(_CNAtomTextViewAccessibility *)self accessibilityUserDefinedLabel];
+  accessibilityUserDefinedLabel = [(_CNAtomTextViewAccessibility *)self accessibilityUserDefinedLabel];
 
-  if (v3)
+  if (accessibilityUserDefinedLabel)
   {
-    v4 = [(_CNAtomTextViewAccessibility *)self accessibilityUserDefinedLabel];
+    accessibilityUserDefinedLabel2 = [(_CNAtomTextViewAccessibility *)self accessibilityUserDefinedLabel];
     goto LABEL_15;
   }
 
-  v4 = [MEMORY[0x29EDBA050] string];
-  v5 = [(_CNAtomTextViewAccessibility *)self accessibilityIdentifier];
-  if ([v5 isEqualToString:@"toField"])
+  accessibilityUserDefinedLabel2 = [MEMORY[0x29EDBA050] string];
+  accessibilityIdentifier = [(_CNAtomTextViewAccessibility *)self accessibilityIdentifier];
+  if ([accessibilityIdentifier isEqualToString:@"toField"])
   {
     v6 = @"to.text";
 LABEL_11:
     v7 = accessibilityLocalizedString(v6);
-    [v4 appendString:v7];
+    [accessibilityUserDefinedLabel2 appendString:v7];
 
     goto LABEL_12;
   }
 
-  if ([v5 isEqualToString:@"subjectField"])
+  if ([accessibilityIdentifier isEqualToString:@"subjectField"])
   {
     v6 = @"subject.text";
     goto LABEL_11;
   }
 
-  if ([v5 isEqualToString:@"ccField"])
+  if ([accessibilityIdentifier isEqualToString:@"ccField"])
   {
     v6 = @"cc.text";
     goto LABEL_11;
   }
 
-  if ([v5 isEqualToString:@"bccField"])
+  if ([accessibilityIdentifier isEqualToString:@"bccField"])
   {
     v6 = @"bcc.text";
     goto LABEL_11;
@@ -64,21 +64,21 @@ LABEL_11:
 LABEL_12:
   v10.receiver = self;
   v10.super_class = _CNAtomTextViewAccessibility;
-  v8 = [(_CNAtomTextViewAccessibility *)&v10 accessibilityLabel];
-  if (v8)
+  accessibilityLabel = [(_CNAtomTextViewAccessibility *)&v10 accessibilityLabel];
+  if (accessibilityLabel)
   {
-    [v4 appendString:v8];
+    [accessibilityUserDefinedLabel2 appendString:accessibilityLabel];
   }
 
 LABEL_15:
 
-  return v4;
+  return accessibilityUserDefinedLabel2;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v3 = [(_CNAtomTextViewAccessibility *)self accessibilityTraits];
-  if ((*MEMORY[0x29EDC7528] & v3) != 0)
+  accessibilityTraits = [(_CNAtomTextViewAccessibility *)self accessibilityTraits];
+  if ((*MEMORY[0x29EDC7528] & accessibilityTraits) != 0)
   {
     v7.receiver = self;
     v7.super_class = _CNAtomTextViewAccessibility;
@@ -87,9 +87,9 @@ LABEL_15:
 
   else
   {
-    v6 = [(_CNAtomTextViewAccessibility *)self accessibilityFrame];
+    accessibilityFrame = [(_CNAtomTextViewAccessibility *)self accessibilityFrame];
 
-    MEMORY[0x2A1C5ECC8](v6);
+    MEMORY[0x2A1C5ECC8](accessibilityFrame);
   }
 
   result.y = v5;
@@ -103,17 +103,17 @@ LABEL_15:
   if ([(_CNAtomTextViewAccessibility *)self _accessibilityUseInactiveTextViewValueForParent:v3])
   {
     v4 = [v3 safeValueForKey:@"_inactiveTextView"];
-    v5 = [v4 accessibilityValue];
+    accessibilityValue = [v4 accessibilityValue];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = _CNAtomTextViewAccessibility;
-    v5 = [(_CNAtomTextViewAccessibility *)&v7 accessibilityValue];
+    accessibilityValue = [(_CNAtomTextViewAccessibility *)&v7 accessibilityValue];
   }
 
-  return v5;
+  return accessibilityValue;
 }
 
 - (id)accessibilityAttributedValue
@@ -122,22 +122,22 @@ LABEL_15:
   if ([(_CNAtomTextViewAccessibility *)self _accessibilityUseInactiveTextViewValueForParent:v3])
   {
     v4 = [v3 safeValueForKey:@"_inactiveTextView"];
-    v5 = [v4 accessibilityAttributedValue];
+    accessibilityAttributedValue = [v4 accessibilityAttributedValue];
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = _CNAtomTextViewAccessibility;
-    v5 = [(_CNAtomTextViewAccessibility *)&v15 accessibilityAttributedValue];
+    accessibilityAttributedValue = [(_CNAtomTextViewAccessibility *)&v15 accessibilityAttributedValue];
     if (AXDoesRequestingClientDeserveAutomation())
     {
-      v6 = [v5 mutableCopy];
+      v6 = [accessibilityAttributedValue mutableCopy];
       v14[0] = 0;
       v14[1] = v14;
       v14[2] = 0x2020000000;
       v14[3] = 0;
-      v7 = [v5 length];
+      v7 = [accessibilityAttributedValue length];
       v11[0] = MEMORY[0x29EDCA5F8];
       v11[1] = 3221225472;
       v11[2] = __60___CNAtomTextViewAccessibility_accessibilityAttributedValue__block_invoke;
@@ -145,25 +145,25 @@ LABEL_15:
       v8 = v6;
       v12 = v8;
       v13 = v14;
-      [v5 enumerateAttributesInRange:0 options:v7 usingBlock:{0, v11}];
+      [accessibilityAttributedValue enumerateAttributesInRange:0 options:v7 usingBlock:{0, v11}];
       v9 = v8;
 
       _Block_object_dispose(v14, 8);
-      v5 = v9;
+      accessibilityAttributedValue = v9;
     }
   }
 
-  return v5;
+  return accessibilityAttributedValue;
 }
 
-- (BOOL)_accessibilityUseInactiveTextViewValueForParent:(id)a3
+- (BOOL)_accessibilityUseInactiveTextViewValueForParent:(id)parent
 {
-  v4 = a3;
-  v5 = [(_CNAtomTextViewAccessibility *)self accessibilityTraits];
+  parentCopy = parent;
+  accessibilityTraits = [(_CNAtomTextViewAccessibility *)self accessibilityTraits];
   v6 = *MEMORY[0x29EDBDAF8];
-  v7 = [v4 safeBoolForKey:@"_isTextViewCollapsed"];
+  v7 = [parentCopy safeBoolForKey:@"_isTextViewCollapsed"];
 
-  if ((v6 & ~v5) != 0)
+  if ((v6 & ~accessibilityTraits) != 0)
   {
     return v7;
   }
@@ -189,7 +189,7 @@ LABEL_15:
   if ([(_CNAtomTextViewAccessibility *)self _accessibilityUseInactiveTextViewValueForParent:v3])
   {
     v4 = [v3 safeValueForKey:@"_inactiveTextView"];
-    v5 = [v4 _accessibilitySelectedTextRange];
+    _accessibilitySelectedTextRange = [v4 _accessibilitySelectedTextRange];
     v7 = v6;
   }
 
@@ -197,21 +197,21 @@ LABEL_15:
   {
     v11.receiver = self;
     v11.super_class = _CNAtomTextViewAccessibility;
-    v5 = [(_CNAtomTextViewAccessibility *)&v11 _accessibilitySelectedTextRange];
+    _accessibilitySelectedTextRange = [(_CNAtomTextViewAccessibility *)&v11 _accessibilitySelectedTextRange];
     v7 = v8;
   }
 
-  v9 = v5;
+  v9 = _accessibilitySelectedTextRange;
   v10 = v7;
   result.length = v10;
   result.location = v9;
   return result;
 }
 
-- (CGRect)_accessibilityBoundsForRange:(_NSRange)a3
+- (CGRect)_accessibilityBoundsForRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v6 = [(_CNAtomTextViewAccessibility *)self _accessibilityViewAncestorIsKindOf:NSClassFromString(&cfstr_Cncomposerecip_5.isa)];
   if ([(_CNAtomTextViewAccessibility *)self _accessibilityUseInactiveTextViewValueForParent:v6])
   {

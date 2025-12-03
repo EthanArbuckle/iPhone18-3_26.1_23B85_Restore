@@ -1,11 +1,11 @@
 @interface ATXFakeCoreAnalyticsLogger
-+ (BOOL)hasReceivedEventWithMetricName:(id)a3 partialDictionary:(id)a4;
++ (BOOL)hasReceivedEventWithMetricName:(id)name partialDictionary:(id)dictionary;
 + (id)sharedInstance;
 + (void)resetEvents;
 - (ATXFakeCoreAnalyticsLogger)init;
-- (BOOL)hasReceivedEventWithMetricName:(id)a3 partialDictionary:(id)a4;
-- (BOOL)partialDictionaryMatches:(id)a3 eventDictionary:(id)a4;
-- (void)sendEventWithMetricName:(id)a3 eventDictionary:(id)a4;
+- (BOOL)hasReceivedEventWithMetricName:(id)name partialDictionary:(id)dictionary;
+- (BOOL)partialDictionaryMatches:(id)matches eventDictionary:(id)dictionary;
+- (void)sendEventWithMetricName:(id)name eventDictionary:(id)dictionary;
 @end
 
 @implementation ATXFakeCoreAnalyticsLogger
@@ -49,26 +49,26 @@ void __44__ATXFakeCoreAnalyticsLogger_sharedInstance__block_invoke()
 
 + (void)resetEvents
 {
-  v2 = [a1 sharedInstance];
-  [v2 resetEvents];
+  sharedInstance = [self sharedInstance];
+  [sharedInstance resetEvents];
 }
 
-- (void)sendEventWithMetricName:(id)a3 eventDictionary:(id)a4
+- (void)sendEventWithMetricName:(id)name eventDictionary:(id)dictionary
 {
-  v5 = [MEMORY[0x277D42648] tupleWithFirst:a3 second:a4];
+  v5 = [MEMORY[0x277D42648] tupleWithFirst:name second:dictionary];
   [(NSMutableArray *)self->_loggedEvents addObject:v5];
 }
 
-- (BOOL)partialDictionaryMatches:(id)a3 eventDictionary:(id)a4
+- (BOOL)partialDictionaryMatches:(id)matches eventDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  matchesCopy = matches;
+  dictionaryCopy = dictionary;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = v5;
+  v7 = matchesCopy;
   v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v8)
   {
@@ -85,7 +85,7 @@ void __44__ATXFakeCoreAnalyticsLogger_sharedInstance__block_invoke()
 
         v12 = *(*(&v20 + 1) + 8 * i);
         v13 = [v7 objectForKeyedSubscript:{v12, v20}];
-        v14 = [v6 objectForKeyedSubscript:v12];
+        v14 = [dictionaryCopy objectForKeyedSubscript:v12];
         v15 = v14;
         if (v13)
         {
@@ -127,11 +127,11 @@ LABEL_16:
   return v17;
 }
 
-- (BOOL)hasReceivedEventWithMetricName:(id)a3 partialDictionary:(id)a4
+- (BOOL)hasReceivedEventWithMetricName:(id)name partialDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  dictionaryCopy = dictionary;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
@@ -152,11 +152,11 @@ LABEL_16:
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v13 first];
-        if ([v6 isEqualToString:v14])
+        first = [v13 first];
+        if ([nameCopy isEqualToString:first])
         {
-          v15 = [v13 second];
-          v16 = [(ATXFakeCoreAnalyticsLogger *)self partialDictionaryMatches:v7 eventDictionary:v15];
+          second = [v13 second];
+          v16 = [(ATXFakeCoreAnalyticsLogger *)self partialDictionaryMatches:dictionaryCopy eventDictionary:second];
 
           if (v16)
           {
@@ -183,12 +183,12 @@ LABEL_13:
   return v17;
 }
 
-+ (BOOL)hasReceivedEventWithMetricName:(id)a3 partialDictionary:(id)a4
++ (BOOL)hasReceivedEventWithMetricName:(id)name partialDictionary:(id)dictionary
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 sharedInstance];
-  v9 = [v8 hasReceivedEventWithMetricName:v7 partialDictionary:v6];
+  dictionaryCopy = dictionary;
+  nameCopy = name;
+  sharedInstance = [self sharedInstance];
+  v9 = [sharedInstance hasReceivedEventWithMetricName:nameCopy partialDictionary:dictionaryCopy];
 
   return v9;
 }

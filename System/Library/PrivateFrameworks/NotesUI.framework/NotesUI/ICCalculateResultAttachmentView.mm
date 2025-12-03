@@ -10,10 +10,10 @@
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(ICCalculateResultAttachmentView *)self calculateResultTextAttachment];
-  v5 = [v4 expression];
+  calculateResultTextAttachment = [(ICCalculateResultAttachmentView *)self calculateResultTextAttachment];
+  expression = [calculateResultTextAttachment expression];
 
-  if (v5 && [v5 length])
+  if (expression && [expression length])
   {
     v6 = objc_alloc(MEMORY[0x1E696AAB0]);
     v7 = __ICLocalizedFrameworkString_impl(@"Expression", @"Expression", 0, 1);
@@ -22,7 +22,7 @@
     v13 = *MEMORY[0x1E69DD950];
     v14[0] = MEMORY[0x1E695E118];
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-    v10 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v5 attributes:v9];
+    v10 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:expression attributes:v9];
     v11 = [MEMORY[0x1E6959558] customContentWithAttributedLabel:v8 attributedValue:v10];
     [v3 addObject:v11];
   }
@@ -33,11 +33,11 @@
 - (id)axValue
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = [(ICCalculateResultAttachmentView *)self calculateResultTextAttachment];
-  v4 = [v3 attachment];
-  v5 = [v4 isValidCalculateAttachment];
+  calculateResultTextAttachment = [(ICCalculateResultAttachmentView *)self calculateResultTextAttachment];
+  attachment = [calculateResultTextAttachment attachment];
+  isValidCalculateAttachment = [attachment isValidCalculateAttachment];
 
-  if (v5)
+  if (isValidCalculateAttachment)
   {
     v6 = 0;
   }
@@ -50,12 +50,12 @@
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
     v10 = [v7 arrayWithArray:v9];
 
-    v11 = [(ICCalculateResultAttachmentView *)self calculateResultTextAttachment];
-    v12 = [v11 localizedError];
+    calculateResultTextAttachment2 = [(ICCalculateResultAttachmentView *)self calculateResultTextAttachment];
+    localizedError = [calculateResultTextAttachment2 localizedError];
 
-    if ([v12 length])
+    if ([localizedError length])
     {
-      [v10 addObject:v12];
+      [v10 addObject:localizedError];
     }
 
     v6 = [v10 componentsJoinedByString:{@", "}];
@@ -67,7 +67,7 @@
 - (id)calculateResultTextAttachment
 {
   objc_opt_class();
-  v3 = [(ICInlineAttachmentView *)self textAttachment];
+  textAttachment = [(ICInlineAttachmentView *)self textAttachment];
   v4 = ICDynamicCast();
 
   return v4;

@@ -1,9 +1,9 @@
 @interface HDClinicalGatewaySyncEntity
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7;
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error;
 + (id)_syncObjectsGenerationPredicate;
-+ (id)decodeSyncObjectWithData:(id)a3;
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6;
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7;
++ (id)decodeSyncObjectWithData:(id)data;
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error;
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error;
 @end
 
 @implementation HDClinicalGatewaySyncEntity
@@ -20,34 +20,34 @@
   return v5;
 }
 
-+ (BOOL)generateSyncObjectsForSession:(id)a3 syncAnchorRange:(HDSyncAnchorRange)a4 profile:(id)a5 messageHandler:(id)a6 error:(id *)a7
++ (BOOL)generateSyncObjectsForSession:(id)session syncAnchorRange:(HDSyncAnchorRange)range profile:(id)profile messageHandler:(id)handler error:(id *)error
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v13 = a3;
-  v14 = a5;
-  v26 = a6;
+  var1 = range.var1;
+  var0 = range.var0;
+  sessionCopy = session;
+  profileCopy = profile;
+  handlerCopy = handler;
   v15 = objc_alloc_init(NSMutableArray);
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
   v38 = -1;
-  v16 = [v14 database];
+  database = [profileCopy database];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_5619C;
   v27[3] = &unk_1068F0;
-  v32 = a1;
-  v17 = v13;
+  selfCopy = self;
+  v17 = sessionCopy;
   v33 = var0;
   v34 = var1;
   v28 = v17;
   v31 = &v35;
-  v18 = v14;
+  v18 = profileCopy;
   v29 = v18;
   v19 = v15;
   v30 = v19;
-  v20 = [HDClinicalGatewayEntity performReadTransactionWithHealthDatabase:v16 error:a7 block:v27];
+  v20 = [HDClinicalGatewayEntity performReadTransactionWithHealthDatabase:database error:error block:v27];
 
   _HKInitializeLogging();
   v21 = HKLogHealthRecords;
@@ -58,7 +58,7 @@
     {
       v25 = [v19 count];
       *buf = 138544130;
-      v40 = a1;
+      selfCopy2 = self;
       v41 = 2114;
       v42 = v18;
       v43 = 2050;
@@ -71,7 +71,7 @@
 
   if (v20)
   {
-    v23 = [v26 sendCodableChange:v19 resultAnchor:v36[3] sequence:0 done:1 error:a7];
+    v23 = [handlerCopy sendCodableChange:v19 resultAnchor:v36[3] sequence:0 done:1 error:error];
   }
 
   else
@@ -83,49 +83,49 @@
   return v23;
 }
 
-+ (int64_t)nextSyncAnchorWithSession:(id)a3 startSyncAnchor:(int64_t)a4 profile:(id)a5 error:(id *)a6
++ (int64_t)nextSyncAnchorWithSession:(id)session startSyncAnchor:(int64_t)anchor profile:(id)profile error:(id *)error
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [a1 _syncObjectsGenerationPredicate];
-  v13 = [v10 database];
+  profileCopy = profile;
+  sessionCopy = session;
+  _syncObjectsGenerationPredicate = [self _syncObjectsGenerationPredicate];
+  database = [profileCopy database];
 
-  v14 = [HDClinicalGatewayEntity nextSyncAnchorWithStartAnchor:a4 predicate:v12 session:v11 healthDatabase:v13 error:a6];
+  v14 = [HDClinicalGatewayEntity nextSyncAnchorWithStartAnchor:anchor predicate:_syncObjectsGenerationPredicate session:sessionCopy healthDatabase:database error:error];
   return v14;
 }
 
-+ (id)decodeSyncObjectWithData:(id)a3
++ (id)decodeSyncObjectWithData:(id)data
 {
-  v3 = a3;
-  v4 = [[HDCodableClinicalGateway alloc] initWithData:v3];
+  dataCopy = data;
+  v4 = [[HDCodableClinicalGateway alloc] initWithData:dataCopy];
 
   return v4;
 }
 
-+ (int64_t)receiveSyncObjects:(id)a3 version:(id)a4 syncStore:(id)a5 profile:(id)a6 error:(id *)a7
++ (int64_t)receiveSyncObjects:(id)objects version:(id)version syncStore:(id)store profile:(id)profile error:(id *)error
 {
-  v12 = a3;
-  v13 = a5;
+  objectsCopy = objects;
+  storeCopy = store;
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_566F0;
   v22[3] = &unk_1079D0;
-  v24 = a1;
+  selfCopy = self;
   v25 = a2;
-  v14 = a6;
-  v23 = v14;
-  v15 = [v12 hk_filter:v22];
+  profileCopy = profile;
+  v23 = profileCopy;
+  v15 = [objectsCopy hk_filter:v22];
   _HKInitializeLogging();
   v16 = HKLogHealthRecords;
   if (os_log_type_enabled(HKLogHealthRecords, OS_LOG_TYPE_DEBUG))
   {
     v19 = v16;
-    v20 = [v12 count];
+    v20 = [objectsCopy count];
     v21 = [v15 count];
     *buf = 138544130;
-    v27 = a1;
+    selfCopy2 = self;
     v28 = 2114;
-    v29 = v14;
+    v29 = profileCopy;
     v30 = 2050;
     v31 = v20;
     v32 = 2050;
@@ -133,7 +133,7 @@
     _os_log_debug_impl(&dword_0, v19, OS_LOG_TYPE_DEBUG, "%{public}@ %{public}@ received %{public}lu sync objects, will upsert %{public}lu", buf, 0x2Au);
   }
 
-  v17 = +[HDClinicalGatewayEntity _insertCodableGateways:syncProvenance:profile:error:](HDClinicalGatewayEntity, "_insertCodableGateways:syncProvenance:profile:error:", v15, [v13 syncProvenance], v14, a7);
+  v17 = +[HDClinicalGatewayEntity _insertCodableGateways:syncProvenance:profile:error:](HDClinicalGatewayEntity, "_insertCodableGateways:syncProvenance:profile:error:", v15, [storeCopy syncProvenance], profileCopy, error);
 
   return v17 ^ 1;
 }

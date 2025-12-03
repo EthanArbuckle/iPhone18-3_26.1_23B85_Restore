@@ -1,16 +1,16 @@
 @interface MFPhonePath
 - (CGPoint)currentPoint;
 - (MFPhonePath)init;
-- (MFPhonePath)initWithPath:(id)a3 state:(int)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MFPhonePath)initWithPath:(id)path state:(int)state;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int)abort;
 - (int)begin;
 - (int)closeFigure;
 - (int)end;
-- (int)fill:(id)a3;
+- (int)fill:(id)fill;
 - (int)flatten;
-- (int)stroke:(id)a3;
-- (void)appendBezierPath:(id)a3 dc:(id)a4;
+- (int)stroke:(id)stroke;
+- (void)appendBezierPath:(id)path dc:(id)dc;
 @end
 
 @implementation MFPhonePath
@@ -78,23 +78,23 @@
   return 0;
 }
 
-- (MFPhonePath)initWithPath:(id)a3 state:(int)a4
+- (MFPhonePath)initWithPath:(id)path state:(int)state
 {
-  v7 = a3;
+  pathCopy = path;
   v11.receiver = self;
   v11.super_class = MFPhonePath;
   v8 = [(MFPhonePath *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->m_path, a3);
-    v9->m_state = a4;
+    objc_storeStrong(&v8->m_path, path);
+    v9->m_state = state;
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [(OITSUBezierPath *)self->m_path copyWithZone:?];
   v6 = [[MFPhonePath allocWithZone:?]state:"initWithPath:state:", v5, self->m_state];
@@ -119,18 +119,18 @@
   return 0;
 }
 
-- (int)stroke:(id)a3
+- (int)stroke:(id)stroke
 {
-  v4 = a3;
-  v5 = v4;
+  strokeCopy = stroke;
+  v5 = strokeCopy;
   if (self->m_state == 2)
   {
     memset(&v13, 0, sizeof(v13));
-    v6 = [v4 getCurrentTransform];
-    v7 = v6;
-    if (v6)
+    getCurrentTransform = [strokeCopy getCurrentTransform];
+    v7 = getCurrentTransform;
+    if (getCurrentTransform)
     {
-      [v6 getTransformMatrix];
+      [getCurrentTransform getTransformMatrix];
     }
 
     else
@@ -143,8 +143,8 @@
     v9 = [(OITSUBezierPath *)self->m_path copy];
     v12 = v13;
     [v9 transformUsingAffineTransform:&v12];
-    v10 = [v5 getPen];
-    [v10 strokePath:v5 in_path:v9];
+    getPen = [v5 getPen];
+    [getPen strokePath:v5 in_path:v9];
 
     v8 = 0;
   }
@@ -157,18 +157,18 @@
   return v8;
 }
 
-- (int)fill:(id)a3
+- (int)fill:(id)fill
 {
-  v4 = a3;
-  v5 = v4;
+  fillCopy = fill;
+  v5 = fillCopy;
   if (self->m_state == 2)
   {
     memset(&v13, 0, sizeof(v13));
-    v6 = [v4 getCurrentTransform];
-    v7 = v6;
-    if (v6)
+    getCurrentTransform = [fillCopy getCurrentTransform];
+    v7 = getCurrentTransform;
+    if (getCurrentTransform)
     {
-      [v6 getTransformMatrix];
+      [getCurrentTransform getTransformMatrix];
     }
 
     else
@@ -181,8 +181,8 @@
     v9 = [(OITSUBezierPath *)self->m_path copy];
     v12 = v13;
     [v9 transformUsingAffineTransform:&v12];
-    v10 = [v5 getBrush];
-    [v10 fillPath:v5 in_path:v9];
+    getBrush = [v5 getBrush];
+    [getBrush fillPath:v5 in_path:v9];
 
     v8 = 0;
   }
@@ -195,20 +195,20 @@
   return v8;
 }
 
-- (void)appendBezierPath:(id)a3 dc:(id)a4
+- (void)appendBezierPath:(id)path dc:(id)dc
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  dcCopy = dc;
   if ([(MFPhonePath *)self isOpen])
   {
     v13 = 0u;
     v14 = 0u;
     v12 = 0u;
-    v8 = [v7 getCurrentTransform];
-    v9 = v8;
-    if (v8)
+    getCurrentTransform = [dcCopy getCurrentTransform];
+    v9 = getCurrentTransform;
+    if (getCurrentTransform)
     {
-      [v8 getTransformMatrix];
+      [getCurrentTransform getTransformMatrix];
     }
 
     else
@@ -218,7 +218,7 @@
       v12 = 0u;
     }
 
-    v10 = [v6 copy];
+    v10 = [pathCopy copy];
     v11[0] = v12;
     v11[1] = v13;
     v11[2] = v14;

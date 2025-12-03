@@ -1,8 +1,8 @@
 @interface _UIDynamicFocusGroupMap
 - (_UIDynamicFocusGroupMap)init;
-- (_UIDynamicFocusGroupMap)initWithBackingFocusGroupMap:(id)a3;
-- (_UIDynamicFocusGroupMap)initWithCoordinateSpace:(id)a3;
-- (id)focusGroupIdentifierForItem:(id)a3;
+- (_UIDynamicFocusGroupMap)initWithBackingFocusGroupMap:(id)map;
+- (_UIDynamicFocusGroupMap)initWithCoordinateSpace:(id)space;
+- (id)focusGroupIdentifierForItem:(id)item;
 @end
 
 @implementation _UIDynamicFocusGroupMap
@@ -18,16 +18,16 @@
   return 0;
 }
 
-- (_UIDynamicFocusGroupMap)initWithCoordinateSpace:(id)a3
+- (_UIDynamicFocusGroupMap)initWithCoordinateSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   v10.receiver = self;
   v10.super_class = _UIDynamicFocusGroupMap;
   v5 = [(_UIDynamicFocusGroupMap *)&v10 init];
   if (v5)
   {
     v6 = [_UIFocusGroupMap alloc];
-    v7 = [(_UIFocusGroupMap *)v6 initWithItems:MEMORY[0x1E695E0F0] coordinateSpace:v4];
+    v7 = [(_UIFocusGroupMap *)v6 initWithItems:MEMORY[0x1E695E0F0] coordinateSpace:spaceCopy];
     impl = v5->_impl;
     v5->_impl = v7;
   }
@@ -35,15 +35,15 @@
   return v5;
 }
 
-- (_UIDynamicFocusGroupMap)initWithBackingFocusGroupMap:(id)a3
+- (_UIDynamicFocusGroupMap)initWithBackingFocusGroupMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v9.receiver = self;
   v9.super_class = _UIDynamicFocusGroupMap;
   v5 = [(_UIDynamicFocusGroupMap *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [mapCopy copy];
     impl = v5->_impl;
     v5->_impl = v6;
   }
@@ -51,18 +51,18 @@
   return v5;
 }
 
-- (id)focusGroupIdentifierForItem:(id)a3
+- (id)focusGroupIdentifierForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(_UIFocusGroupMap *)self->_impl focusGroupForItem:v4];
+  itemCopy = item;
+  v5 = [(_UIFocusGroupMap *)self->_impl focusGroupForItem:itemCopy];
   if (!v5)
   {
-    v5 = [(_UIFocusGroupMap *)self->_impl _indexEnvironment:v4];
+    v5 = [(_UIFocusGroupMap *)self->_impl _indexEnvironment:itemCopy];
   }
 
-  v6 = [v5 identifier];
+  identifier = [v5 identifier];
 
-  return v6;
+  return identifier;
 }
 
 @end

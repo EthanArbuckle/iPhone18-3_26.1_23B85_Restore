@@ -1,6 +1,6 @@
 @interface CRLTilingLayer
 - (BOOL)crl_tilingSafeHasContents;
-- (BOOL)p_updateTileSizeWithLayerSize:(CGSize)a3;
+- (BOOL)p_updateTileSizeWithLayerSize:(CGSize)size;
 - (CRLTilingLayer)init;
 - (id)p_deferredTileBlocksForCurrentThread;
 - (id)p_nonTileAndContentLayers;
@@ -8,19 +8,19 @@
 - (id)p_tileLayers;
 - (void)crl_cancelLayoutForTilingLayers;
 - (void)crl_setNeedsLayoutForTilingLayers;
-- (void)crl_tilingSafeSetSublayers:(id)a3;
+- (void)crl_tilingSafeSetSublayers:(id)sublayers;
 - (void)display;
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4;
-- (void)i_drawRect:(CGRect)a3 inContext:(CGContext *)a4 inBackground:(BOOL)a5;
-- (void)i_drawTile:(id)a3 inContext:(CGContext *)a4;
+- (void)drawLayer:(id)layer inContext:(CGContext *)context;
+- (void)i_drawRect:(CGRect)rect inContext:(CGContext *)context inBackground:(BOOL)background;
+- (void)i_drawTile:(id)tile inContext:(CGContext *)context;
 - (void)layoutSublayers;
-- (void)setContents:(id)a3;
-- (void)setContentsScale:(double)a3;
-- (void)setForceTiled:(BOOL)a3;
-- (void)setNeedsDisplayInRect:(CGRect)a3;
+- (void)setContents:(id)contents;
+- (void)setContentsScale:(double)scale;
+- (void)setForceTiled:(BOOL)tiled;
+- (void)setNeedsDisplayInRect:(CGRect)rect;
 - (void)setNeedsLayout;
-- (void)setTileContents:(id)a3;
-- (void)setTilingMode:(int64_t)a3;
+- (void)setTileContents:(id)contents;
+- (void)setTilingMode:(int64_t)mode;
 @end
 
 @implementation CRLTilingLayer
@@ -53,20 +53,20 @@
   return v3;
 }
 
-- (void)setContentsScale:(double)a3
+- (void)setContentsScale:(double)scale
 {
   [(CRLTilingLayer *)self contentsScale];
-  if (v5 != a3)
+  if (v5 != scale)
   {
-    self->_tileSize.width = 640.0 / a3;
-    self->_tileSize.height = 640.0 / a3;
+    self->_tileSize.width = 640.0 / scale;
+    self->_tileSize.height = 640.0 / scale;
     [(CRLTilingLayer *)self setNeedsLayout];
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(CRLTilingLayer *)self p_tileLayers];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    p_tileLayers = [(CRLTilingLayer *)self p_tileLayers];
+    v7 = [p_tileLayers countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -78,15 +78,15 @@
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(p_tileLayers);
           }
 
-          [*(*(&v12 + 1) + 8 * v10) setContentsScale:a3];
+          [*(*(&v12 + 1) + 8 * v10) setContentsScale:scale];
           v10 = v10 + 1;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [p_tileLayers countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -95,14 +95,14 @@
 
   v11.receiver = self;
   v11.super_class = CRLTilingLayer;
-  [(CRLTilingLayer *)&v11 setContentsScale:a3];
+  [(CRLTilingLayer *)&v11 setContentsScale:scale];
 }
 
-- (void)setContents:(id)a3
+- (void)setContents:(id)contents
 {
   v5.receiver = self;
   v5.super_class = CRLTilingLayer;
-  [(CRLTilingLayer *)&v5 setContents:a3];
+  [(CRLTilingLayer *)&v5 setContents:contents];
   flags = self->_flags;
   *&self->_flags = flags | 2;
   if (flags)
@@ -111,16 +111,16 @@
   }
 }
 
-- (void)setTileContents:(id)a3
+- (void)setTileContents:(id)contents
 {
-  v4 = a3;
+  contentsCopy = contents;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if (!v4 || (isKindOfClass & 1) != 0)
+  if (!contentsCopy || (isKindOfClass & 1) != 0)
   {
-    if (v4)
+    if (contentsCopy)
     {
-      [v4 setZPosition:-10000.0];
+      [contentsCopy setZPosition:-10000.0];
     }
 
     [(CRLTilingLayer *)&v7 setContents:0, v6.receiver, v6.super_class, self, CRLTilingLayer];
@@ -128,7 +128,7 @@
 
   else
   {
-    [(CRLTilingLayer *)&v6 setContents:v4, self, CRLTilingLayer, v7.receiver, v7.super_class];
+    [(CRLTilingLayer *)&v6 setContents:contentsCopy, self, CRLTilingLayer, v7.receiver, v7.super_class];
   }
 }
 
@@ -136,9 +136,9 @@
 {
   if (*&self->_flags)
   {
-    v3 = [(CRLTilingLayer *)self contents];
+    contents = [(CRLTilingLayer *)self contents];
 
-    if (v3)
+    if (contents)
     {
       v5.receiver = self;
       v5.super_class = CRLTilingLayer;
@@ -154,12 +154,12 @@
   }
 }
 
-- (void)setNeedsDisplayInRect:(CGRect)a3
+- (void)setNeedsDisplayInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if ((*&self->_flags & 2) != 0)
   {
     *&self->_flags &= ~2u;
@@ -173,13 +173,13 @@
   v32.receiver = self;
   v32.super_class = CRLTilingLayer;
   [(CRLTilingLayer *)&v32 setNeedsDisplayInRect:x, y, width, height];
-  v9 = [(CRLTilingLayer *)self p_deferredTileBlocksForCurrentThread];
+  p_deferredTileBlocksForCurrentThread = [(CRLTilingLayer *)self p_deferredTileBlocksForCurrentThread];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v10 = [(CRLTilingLayer *)self p_tileLayers];
-  v11 = [v10 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  p_tileLayers = [(CRLTilingLayer *)self p_tileLayers];
+  v11 = [p_tileLayers countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v11)
   {
     v12 = v11;
@@ -190,7 +190,7 @@
       {
         if (*v29 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(p_tileLayers);
         }
 
         v15 = *(*(&v28 + 1) + 8 * i);
@@ -217,17 +217,17 @@
           v27[8] = v23;
           v24 = [v27 copy];
           v25 = objc_retainBlock(v24);
-          [v9 addObject:v25];
+          [p_deferredTileBlocksForCurrentThread addObject:v25];
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v12 = [p_tileLayers countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v12);
   }
 
-  if ([v9 count])
+  if ([p_deferredTileBlocksForCurrentThread count])
   {
     v26.receiver = self;
     v26.super_class = CRLTilingLayer;
@@ -261,12 +261,12 @@
 
 - (void)layoutSublayers
 {
-  v3 = [(CRLTilingLayer *)self p_deferredTileBlocksForCurrentThread];
+  p_deferredTileBlocksForCurrentThread = [(CRLTilingLayer *)self p_deferredTileBlocksForCurrentThread];
   v108 = 0u;
   v109 = 0u;
   v110 = 0u;
   v111 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v108 objects:v113 count:16];
+  v4 = [p_deferredTileBlocksForCurrentThread countByEnumeratingWithState:&v108 objects:v113 count:16];
   if (v4)
   {
     v5 = v4;
@@ -277,27 +277,27 @@
       {
         if (*v109 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(p_deferredTileBlocksForCurrentThread);
         }
 
         (*(*(*(&v108 + 1) + 8 * i) + 16))();
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v108 objects:v113 count:16];
+      v5 = [p_deferredTileBlocksForCurrentThread countByEnumeratingWithState:&v108 objects:v113 count:16];
     }
 
     while (v5);
   }
 
-  [v3 removeAllObjects];
+  [p_deferredTileBlocksForCurrentThread removeAllObjects];
   if ((*&self->_flags & 8) != 0)
   {
-    v8 = [(CRLTilingLayer *)self delegate];
-    v9 = self;
+    delegate = [(CRLTilingLayer *)self delegate];
+    selfCopy = self;
     if (objc_opt_respondsToSelector())
     {
-      v10 = [(CRLTilingLayer *)self delegate];
-      v11 = [v10 shouldLayoutTilingLayer:self];
+      delegate2 = [(CRLTilingLayer *)self delegate];
+      v11 = [delegate2 shouldLayoutTilingLayer:self];
 
       if (!v11)
       {
@@ -309,25 +309,25 @@
     {
     }
 
-    v107.receiver = v9;
+    v107.receiver = selfCopy;
     v107.super_class = CRLTilingLayer;
     [(CRLTilingLayer *)&v107 layoutSublayers];
-    [(CRLTilingLayer *)v9 bounds];
+    [(CRLTilingLayer *)selfCopy bounds];
     v13 = v12;
     v15 = v14;
     v92 = v16;
     v93 = v17;
-    v18 = [(CRLTilingLayer *)v9 superlayer];
+    superlayer = [(CRLTilingLayer *)selfCopy superlayer];
 
-    if (v18)
+    if (superlayer)
     {
-      v19 = [(CRLTilingLayer *)v9 delegate];
+      delegate3 = [(CRLTilingLayer *)selfCopy delegate];
       v20 = objc_opt_respondsToSelector();
 
       if (v20)
       {
-        v21 = [(CRLTilingLayer *)v9 delegate];
-        [v21 visibleBoundsForTilingLayer:v9];
+        delegate4 = [(CRLTilingLayer *)selfCopy delegate];
+        [delegate4 visibleBoundsForTilingLayer:selfCopy];
         x = v22;
         y = v24;
         width = v26;
@@ -336,11 +336,11 @@
 
       else
       {
-        v30 = v9;
-        v31 = [(CRLTilingLayer *)v30 superlayer];
+        v30 = selfCopy;
+        superlayer2 = [(CRLTilingLayer *)v30 superlayer];
         v32 = v93 > 0.0;
         v33 = v92 > 0.0;
-        if (v31 && v93 > 0.0 && v92 > 0.0)
+        if (superlayer2 && v93 > 0.0 && v92 > 0.0)
         {
           x = v13;
           y = v15;
@@ -349,14 +349,14 @@
           v34 = v30;
           do
           {
-            [v31 convertRect:v34 fromLayer:{x, y, width, height}];
+            [superlayer2 convertRect:v34 fromLayer:{x, y, width, height}];
             x = v35;
             y = v36;
             width = v37;
             height = v38;
-            if ([v31 masksToBounds])
+            if ([superlayer2 masksToBounds])
             {
-              [v31 bounds];
+              [superlayer2 bounds];
               v121.origin.x = v39;
               v121.origin.y = v40;
               v121.size.width = v41;
@@ -372,13 +372,13 @@
               height = v115.size.height;
             }
 
-            v43 = v31;
+            v43 = superlayer2;
 
-            v31 = [(CRLTilingLayer *)v43 superlayer];
+            superlayer2 = [(CRLTilingLayer *)v43 superlayer];
 
             v32 = height > 0.0;
             v33 = width > 0.0;
-            if (!v31)
+            if (!superlayer2)
             {
               break;
             }
@@ -435,12 +435,12 @@
     v49 = v117.origin.y;
     v50 = v117.size.width;
     v51 = v117.size.height;
-    v52 = [(CRLTilingLayer *)v9 p_updateTileSizeWithLayerSize:v92, v93];
-    p_width = &v9->_tileSize.width;
+    v52 = [(CRLTilingLayer *)selfCopy p_updateTileSizeWithLayerSize:v92, v93];
+    p_width = &selfCopy->_tileSize.width;
     v53.f64[0] = v92;
     v53.f64[1] = v93;
-    flags = v9->_flags;
-    v55 = vcvtq_u64_f64(vrndpq_f64(vdivq_f64(v53, v9->_tileSize)));
+    flags = selfCopy->_flags;
+    v55 = vcvtq_u64_f64(vrndpq_f64(vdivq_f64(v53, selfCopy->_tileSize)));
     v56 = v55;
     if (v55.i64[0] > 1uLL || v55.i64[1] > 1uLL)
     {
@@ -453,15 +453,15 @@
     }
 
     v59 = *&flags & 0xF6 | v58;
-    *&v9->_flags = v59;
+    *&selfCopy->_flags = v59;
     v90 = v55;
     v89 = v52;
     if ((*&flags & 2) != 0)
     {
-      v61 = [(CRLTilingLayer *)v9 p_tileLayers];
-      v60 = [v61 count] != 0;
+      p_tileLayers = [(CRLTilingLayer *)selfCopy p_tileLayers];
+      v60 = [p_tileLayers count] != 0;
 
-      v59 = v9->_flags;
+      v59 = selfCopy->_flags;
     }
 
     else
@@ -470,9 +470,9 @@
     }
 
     v62 = *&flags & 1;
-    p_lastVisibleBounds = &v9->_lastVisibleBounds;
-    v64 = sub_10011EE4C(v48, v49, v50, v51, v9->_lastVisibleBounds.origin.x, v9->_lastVisibleBounds.origin.y, v9->_lastVisibleBounds.size.width, v9->_lastVisibleBounds.size.height);
-    v65 = v9;
+    p_lastVisibleBounds = &selfCopy->_lastVisibleBounds;
+    v64 = sub_10011EE4C(v48, v49, v50, v51, selfCopy->_lastVisibleBounds.origin.x, selfCopy->_lastVisibleBounds.origin.y, selfCopy->_lastVisibleBounds.size.width, selfCopy->_lastVisibleBounds.size.height);
+    v65 = selfCopy;
     v66 = v59 & 1;
     if (!v64 || v62 != v66 || v60 | !sub_10011ECC8(v65[9], v65[10], v92, v93))
     {
@@ -553,8 +553,8 @@
       v103 = 0u;
       v104 = 0u;
       v105 = 0u;
-      v79 = [v91 p_tileLayers];
-      v80 = [v79 countByEnumeratingWithState:&v102 objects:v112 count:16];
+      p_tileLayers2 = [v91 p_tileLayers];
+      v80 = [p_tileLayers2 countByEnumeratingWithState:&v102 objects:v112 count:16];
       if (v80)
       {
         v81 = v80;
@@ -566,12 +566,12 @@
           {
             if (*v103 != v82)
             {
-              objc_enumerationMutation(v79);
+              objc_enumerationMutation(p_tileLayers2);
             }
 
             v85 = *(*(&v102 + 1) + 8 * j);
-            v86 = [v85 index];
-            if ((v83 & 1) != 0 || (v87 = v86, ([v68 containsIndex:v86] & 1) == 0))
+            index = [v85 index];
+            if ((v83 & 1) != 0 || (v87 = index, ([v68 containsIndex:index] & 1) == 0))
             {
               [v78 addObject:v85];
             }
@@ -583,7 +583,7 @@
             }
           }
 
-          v81 = [v79 countByEnumeratingWithState:&v102 objects:v112 count:16];
+          v81 = [p_tileLayers2 countByEnumeratingWithState:&v102 objects:v112 count:16];
         }
 
         while (v81);
@@ -609,20 +609,20 @@
 LABEL_71:
 }
 
-- (void)drawLayer:(id)a3 inContext:(CGContext *)a4
+- (void)drawLayer:(id)layer inContext:(CGContext *)context
 {
-  v5 = a3;
-  v6 = [v5 superlayer];
+  layerCopy = layer;
+  superlayer = [layerCopy superlayer];
   v7 = objc_opt_class();
   v8 = objc_opt_class();
 
-  v9 = [v5 superlayer];
-  v10 = v9;
+  superlayer2 = [layerCopy superlayer];
+  v10 = superlayer2;
   if (v7 == v8)
   {
-    v14 = [(CRLTilingLayer *)v9 superlayer];
+    v9Superlayer = [(CRLTilingLayer *)superlayer2 superlayer];
 
-    if (v14 != self)
+    if (v9Superlayer != self)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -651,8 +651,8 @@ LABEL_71:
       [CRLAssertionHandler handleFailureInFunction:v16 file:v17 lineNumber:379 isFatal:0 description:"This tiling layer is not responsible for the layer asking to be drawn"];
     }
 
-    v18 = [v5 superlayer];
-    [v18 frame];
+    superlayer3 = [layerCopy superlayer];
+    [superlayer3 frame];
     [(CRLTilingLayer *)self setNeedsDisplayInRect:?];
   }
 
@@ -692,11 +692,11 @@ LABEL_71:
   }
 }
 
-- (void)setTilingMode:(int64_t)a3
+- (void)setTilingMode:(int64_t)mode
 {
-  if (self->_tilingMode != a3)
+  if (self->_tilingMode != mode)
   {
-    self->_tilingMode = a3;
+    self->_tilingMode = mode;
     if ((*&self->_flags & 2) == 0)
     {
       size = CGRectNull.size;
@@ -710,9 +710,9 @@ LABEL_71:
   }
 }
 
-- (void)setForceTiled:(BOOL)a3
+- (void)setForceTiled:(BOOL)tiled
 {
-  if (a3)
+  if (tiled)
   {
     v3 = 4;
   }
@@ -725,16 +725,16 @@ LABEL_71:
   *&self->_flags = *&self->_flags & 0xFB | v3;
 }
 
-- (void)crl_tilingSafeSetSublayers:(id)a3
+- (void)crl_tilingSafeSetSublayers:(id)sublayers
 {
-  v8 = a3;
-  v4 = [(CRLTilingLayer *)self p_nonTileAndContentLayers];
-  v5 = [v8 isEqualToArray:v4];
+  sublayersCopy = sublayers;
+  p_nonTileAndContentLayers = [(CRLTilingLayer *)self p_nonTileAndContentLayers];
+  v5 = [sublayersCopy isEqualToArray:p_nonTileAndContentLayers];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(CRLTilingLayer *)self p_tileAndContentLayers];
-    v7 = [v6 arrayByAddingObjectsFromArray:v8];
+    p_tileAndContentLayers = [(CRLTilingLayer *)self p_tileAndContentLayers];
+    v7 = [p_tileAndContentLayers arrayByAddingObjectsFromArray:sublayersCopy];
     [(CRLTilingLayer *)self setSublayers:v7];
   }
 }
@@ -743,8 +743,8 @@ LABEL_71:
 {
   if (*&self->_flags)
   {
-    v3 = [(CRLTilingLayer *)self p_tileLayers];
-    v2 = [v3 count] != 0;
+    p_tileLayers = [(CRLTilingLayer *)self p_tileLayers];
+    v2 = [p_tileLayers count] != 0;
   }
 
   else
@@ -757,9 +757,9 @@ LABEL_71:
   return v2;
 }
 
-- (void)i_drawTile:(id)a3 inContext:(CGContext *)a4
+- (void)i_drawTile:(id)tile inContext:(CGContext *)context
 {
-  v6 = a3;
+  tileCopy = tile;
   if (CGRectIsNull(self->_lastVisibleBounds))
   {
     v7 = +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -781,11 +781,11 @@ LABEL_71:
       v19 = 1024;
       v20 = 435;
       v21 = 2048;
-      v22 = self;
+      selfCopy = self;
       v23 = 2048;
-      v24 = v6;
+      v24 = tileCopy;
       v25 = 2048;
-      v26 = [v6 index];
+      index = [tileCopy index];
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d Shouldn't be drawing tiles for an hidden layer %p, tile %p index %ld", buf, 0x40u);
     }
 
@@ -802,35 +802,35 @@ LABEL_71:
 
     v10 = [NSString stringWithUTF8String:"[CRLTilingLayer i_drawTile:inContext:]"];
     v11 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLTilingLayer.m"];
-    +[CRLAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](CRLAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v10, v11, 435, 0, "Shouldn't be drawing tiles for an hidden layer %p, tile %p index %ld", self, v6, [v6 index]);
+    +[CRLAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](CRLAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v10, v11, 435, 0, "Shouldn't be drawing tiles for an hidden layer %p, tile %p index %ld", self, tileCopy, [tileCopy index]);
   }
 
-  [v6 frame];
-  [(CRLTilingLayer *)self i_drawRect:a4 inContext:0 inBackground:?];
+  [tileCopy frame];
+  [(CRLTilingLayer *)self i_drawRect:context inContext:0 inBackground:?];
 }
 
-- (void)i_drawRect:(CGRect)a3 inContext:(CGContext *)a4 inBackground:(BOOL)a5
+- (void)i_drawRect:(CGRect)rect inContext:(CGContext *)context inBackground:(BOOL)background
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  CGContextSaveGState(a4);
-  CGContextTranslateCTM(a4, -x, -y);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  CGContextSaveGState(context);
+  CGContextTranslateCTM(context, -x, -y);
   v12.origin.x = x;
   v12.origin.y = y;
   v12.size.width = width;
   v12.size.height = height;
-  CGContextClipToRect(a4, v12);
-  [(CRLTilingLayer *)self drawInContext:a4];
+  CGContextClipToRect(context, v12);
+  [(CRLTilingLayer *)self drawInContext:context];
 
-  CGContextRestoreGState(a4);
+  CGContextRestoreGState(context);
 }
 
-- (BOOL)p_updateTileSizeWithLayerSize:(CGSize)a3
+- (BOOL)p_updateTileSizeWithLayerSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(CRLTilingLayer *)self contentsScale];
   v7 = 2048.0 / v6;
   v8 = 640.0 / v6;
@@ -962,8 +962,8 @@ LABEL_38:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(CRLTilingLayer *)self sublayers];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  sublayers = [(CRLTilingLayer *)self sublayers];
+  v5 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -974,7 +974,7 @@ LABEL_38:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sublayers);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -984,7 +984,7 @@ LABEL_38:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1001,8 +1001,8 @@ LABEL_38:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(CRLTilingLayer *)self sublayers];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  sublayers = [(CRLTilingLayer *)self sublayers];
+  v5 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1013,7 +1013,7 @@ LABEL_38:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sublayers);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -1023,7 +1023,7 @@ LABEL_38:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1040,8 +1040,8 @@ LABEL_38:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(CRLTilingLayer *)self sublayers];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  sublayers = [(CRLTilingLayer *)self sublayers];
+  v5 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1052,7 +1052,7 @@ LABEL_38:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(sublayers);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -1067,7 +1067,7 @@ LABEL_38:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [sublayers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);

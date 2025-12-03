@@ -1,33 +1,33 @@
 @interface PKPaymentAuthorizationRemoteAlertViewController
 - (BOOL)_shouldSupportLandscapeOrientation;
-- (BOOL)presentCoordinatorForContext:(id)a3;
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4;
+- (BOOL)presentCoordinatorForContext:(id)context;
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size;
 - (id)presentationCoordinators;
 - (int)_preferredStatusBarVisibility;
 - (int64_t)_currentInterfaceOrientation;
-- (unint64_t)_maskForOrientation:(int64_t)a3;
+- (unint64_t)_maskForOrientation:(int64_t)orientation;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_dismissCoordinators;
 - (void)_invalidateCoordinators;
 - (void)_lockInterfaceOrientationIfNeeded;
 - (void)configureAppearance;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)configureWithHostContext:(id)a3;
-- (void)configureWithUserInfo:(id)a3 dismissalHandler:(id)a4 completion:(id)a5;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)configureWithHostContext:(id)context;
+- (void)configureWithUserInfo:(id)info dismissalHandler:(id)handler completion:(id)completion;
 - (void)dealloc;
 - (void)didInvalidateForRemoteAlert;
-- (void)dismissWithReason:(unint64_t)a3 completion:(id)a4;
-- (void)handleButtonActions:(id)a3;
-- (void)noteActivatedWithPresentationMode:(int64_t)a3;
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentationCoordinatorDidInvalidate:(id)a3;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
+- (void)dismissWithReason:(unint64_t)reason completion:(id)completion;
+- (void)handleButtonActions:(id)actions;
+- (void)noteActivatedWithPresentationMode:(int64_t)mode;
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)presentationCoordinatorDidInvalidate:(id)invalidate;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
 - (void)requestSecondaryViewController;
 - (void)setBlocksInput;
 - (void)updateStatusBarVisibility;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PKPaymentAuthorizationRemoteAlertViewController
@@ -68,24 +68,24 @@ void __75__PKPaymentAuthorizationRemoteAlertViewController_presentationCoordinat
   v5.receiver = self;
   v5.super_class = PKPaymentAuthorizationRemoteAlertViewController;
   [(PKPaymentAuthorizationRemoteAlertViewController *)&v5 viewDidLoad];
-  v3 = [(PKPaymentAuthorizationRemoteAlertViewController *)self view];
-  v4 = [v3 layer];
-  [v4 setHitTestsAsOpaque:self->_blocksInput];
+  view = [(PKPaymentAuthorizationRemoteAlertViewController *)self view];
+  layer = [view layer];
+  [layer setHitTestsAsOpaque:self->_blocksInput];
 }
 
 - (void)setBlocksInput
 {
   self->_blocksInput = 1;
-  v4 = [(PKPaymentAuthorizationRemoteAlertViewController *)self viewIfLoaded];
-  v3 = [v4 layer];
-  [v3 setHitTestsAsOpaque:self->_blocksInput];
+  viewIfLoaded = [(PKPaymentAuthorizationRemoteAlertViewController *)self viewIfLoaded];
+  layer = [viewIfLoaded layer];
+  [layer setHitTestsAsOpaque:self->_blocksInput];
 }
 
-- (void)presentationCoordinatorDidInvalidate:(id)a3
+- (void)presentationCoordinatorDidInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v10 = v4;
-  if (self->_mainCoordinator == v4)
+  invalidateCopy = invalidate;
+  v10 = invalidateCopy;
+  if (self->_mainCoordinator == invalidateCopy)
   {
     [(NSMutableArray *)self->_mutableCoordinators removeObjectIdenticalTo:?];
     mainCoordinator = self->_mainCoordinator;
@@ -96,7 +96,7 @@ void __75__PKPaymentAuthorizationRemoteAlertViewController_presentationCoordinat
 
   else
   {
-    if (self->_nestedSheetCoordinator != v4)
+    if (self->_nestedSheetCoordinator != invalidateCopy)
     {
       goto LABEL_6;
     }
@@ -106,12 +106,12 @@ void __75__PKPaymentAuthorizationRemoteAlertViewController_presentationCoordinat
     self->_nestedSheetCoordinator = 0;
   }
 
-  v4 = v10;
+  invalidateCopy = v10;
 LABEL_6:
   if (!self->_mainCoordinator)
   {
-    v7 = [(PKPaymentAuthorizationRemoteAlertViewController *)self _remoteViewControllerProxy];
-    [v7 invalidate];
+    _remoteViewControllerProxy = [(PKPaymentAuthorizationRemoteAlertViewController *)self _remoteViewControllerProxy];
+    [_remoteViewControllerProxy invalidate];
     [(PKPaymentAuthorizationRemoteAlertViewController *)self dismissViewControllerAnimated:0 completion:0];
     dismissalHandler = self->_dismissalHandler;
     if (dismissalHandler)
@@ -121,27 +121,27 @@ LABEL_6:
       self->_dismissalHandler = 0;
     }
 
-    v4 = v10;
+    invalidateCopy = v10;
   }
 }
 
-- (CGSize)sizeForChildContentContainer:(id)a3 withParentContainerSize:(CGSize)a4
+- (CGSize)sizeForChildContentContainer:(id)container withParentContainerSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = [(PKPaymentAuthorizationRemoteAlertViewController *)self presentedViewController];
-  v9 = v8;
-  if (v8)
+  height = size.height;
+  width = size.width;
+  containerCopy = container;
+  presentedViewController = [(PKPaymentAuthorizationRemoteAlertViewController *)self presentedViewController];
+  v9 = presentedViewController;
+  if (presentedViewController)
   {
-    [v8 sizeForChildContentContainer:v7 withParentContainerSize:{width, height}];
+    [presentedViewController sizeForChildContentContainer:containerCopy withParentContainerSize:{width, height}];
   }
 
   else
   {
     v16.receiver = self;
     v16.super_class = PKPaymentAuthorizationRemoteAlertViewController;
-    [(PKPaymentAuthorizationRemoteAlertViewController *)&v16 sizeForChildContentContainer:v7 withParentContainerSize:width, height];
+    [(PKPaymentAuthorizationRemoteAlertViewController *)&v16 sizeForChildContentContainer:containerCopy withParentContainerSize:width, height];
   }
 
   v12 = v10;
@@ -154,22 +154,22 @@ LABEL_6:
   return result;
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentAuthorizationRemoteAlertViewController;
-  [(PKPaymentAuthorizationRemoteAlertViewController *)&v4 viewWillDisappear:a3];
+  [(PKPaymentAuthorizationRemoteAlertViewController *)&v4 viewWillDisappear:disappear];
   if (self->_isPrimaryAlert)
   {
     [(PKPaymentAuthorizationRemoteAlertViewController *)self _dismissCoordinators];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentAuthorizationRemoteAlertViewController;
-  [(PKPaymentAuthorizationRemoteAlertViewController *)&v4 viewDidDisappear:a3];
+  [(PKPaymentAuthorizationRemoteAlertViewController *)&v4 viewDidDisappear:disappear];
   if ([(NSString *)self->_analyticsSubject length])
   {
     [MEMORY[0x1E69B8540] endSubjectReporting:self->_analyticsSubject];
@@ -194,27 +194,27 @@ LABEL_6:
   return [(PKPaymentAuthorizationRemoteAlertViewController *)self _maskForOrientation:interfaceOrientationLock];
 }
 
-- (void)dismissWithReason:(unint64_t)a3 completion:(id)a4
+- (void)dismissWithReason:(unint64_t)reason completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   if (self->_mainCoordinator)
   {
-    v6 = v5;
+    v6 = completionCopy;
     [(PKPaymentAuthorizationRemoteAlertViewController *)self _dismissCoordinators];
   }
 
   else
   {
-    if (!v5)
+    if (!completionCopy)
     {
       goto LABEL_6;
     }
 
-    v6 = v5;
-    v5[2]();
+    v6 = completionCopy;
+    completionCopy[2]();
   }
 
-  v5 = v6;
+  completionCopy = v6;
 LABEL_6:
 }
 
@@ -262,30 +262,30 @@ LABEL_6:
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 userInfo];
-  [(PKPaymentAuthorizationRemoteAlertViewController *)self configureWithUserInfo:v7 dismissalHandler:0 completion:v6];
+  completionCopy = completion;
+  userInfo = [context userInfo];
+  [(PKPaymentAuthorizationRemoteAlertViewController *)self configureWithUserInfo:userInfo dismissalHandler:0 completion:completionCopy];
 }
 
-- (void)configureWithUserInfo:(id)a3 dismissalHandler:(id)a4 completion:(id)a5
+- (void)configureWithUserInfo:(id)info dismissalHandler:(id)handler completion:(id)completion
 {
-  v21 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [(PKPaymentAuthorizationRemoteAlertViewController *)self presentationCoordinators];
+  infoCopy = info;
+  completionCopy = completion;
+  handlerCopy = handler;
+  presentationCoordinators = [(PKPaymentAuthorizationRemoteAlertViewController *)self presentationCoordinators];
   mutableCoordinators = self->_mutableCoordinators;
-  self->_mutableCoordinators = v10;
+  self->_mutableCoordinators = presentationCoordinators;
 
   self->_interfaceOrientationLock = 0;
   [(PKPaymentAuthorizationRemoteAlertViewController *)self configureAppearance];
-  if ([v21 count])
+  if ([infoCopy count])
   {
     self->_hasUserInfo = 1;
     v12 = MEMORY[0x1E696ACD0];
     v13 = objc_opt_class();
-    v14 = [v21 objectForKey:@"context"];
+    v14 = [infoCopy objectForKey:@"context"];
     v15 = [v12 unarchivedObjectOfClass:v13 fromData:v14 error:0];
 
     [(PKPaymentAuthorizationRemoteAlertViewController *)self configureWithHostContext:v15];
@@ -297,28 +297,28 @@ LABEL_6:
 
   else
   {
-    v17 = [(NSMutableArray *)self->_mutableCoordinators lastObject];
+    lastObject = [(NSMutableArray *)self->_mutableCoordinators lastObject];
     mainCoordinator = self->_mainCoordinator;
-    self->_mainCoordinator = v17;
+    self->_mainCoordinator = lastObject;
 
     [(PKPaymentAuthorizationRemoteAlertViewController *)self setNeedsUpdateOfSupportedInterfaceOrientations];
   }
 
-  v19 = _Block_copy(v9);
+  v19 = _Block_copy(handlerCopy);
 
   dismissalHandler = self->_dismissalHandler;
   self->_dismissalHandler = v19;
 
-  if (v8)
+  if (completionCopy)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (BOOL)presentCoordinatorForContext:(id)a3
+- (BOOL)presentCoordinatorForContext:(id)context
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contextCopy = context;
   v5 = 1048;
   v6 = [(NSMutableArray *)self->_mutableCoordinators copy];
   v39 = 0u;
@@ -335,7 +335,7 @@ LABEL_6:
 
   v9 = v8;
   v34 = 1048;
-  v35 = self;
+  selfCopy = self;
   v36 = 0;
   v10 = *v40;
   do
@@ -350,19 +350,19 @@ LABEL_6:
       }
 
       v12 = *(*(&v39 + 1) + 8 * v11);
-      v13 = [v12 context];
-      v14 = [v13 request];
-      v15 = [v4 request];
+      context = [v12 context];
+      request = [context request];
+      request2 = [contextCopy request];
       if (PKEqualObjects())
       {
         v16 = v10;
         v17 = v7;
-        v18 = [v12 context];
-        v19 = [v18 identifier];
-        v20 = v4;
-        v21 = [v4 identifier];
-        v22 = v19;
-        v23 = v21;
+        context2 = [v12 context];
+        identifier = [context2 identifier];
+        v20 = contextCopy;
+        identifier2 = [contextCopy identifier];
+        v22 = identifier;
+        v23 = identifier2;
         v24 = v23;
         if (v22 == v23)
         {
@@ -391,7 +391,7 @@ LABEL_14:
         }
 
         v7 = v17;
-        v4 = v20;
+        contextCopy = v20;
         v10 = v16;
         v9 = v37;
       }
@@ -406,7 +406,7 @@ LABEL_14:
   while (v9);
 
   v5 = v34;
-  self = v35;
+  self = selfCopy;
   if (v36)
   {
     v27 = 1;
@@ -428,14 +428,14 @@ LABEL_21:
 
   else
   {
-    v29 = [[PKPaymentAuthorizationPresentationCoordinator alloc] initWithContext:v4 delegate:self];
+    v29 = [[PKPaymentAuthorizationPresentationCoordinator alloc] initWithContext:contextCopy delegate:self];
     [*(&self->super.super.super.super.isa + v5) addObject:v29];
     if (self->_mainCoordinator)
     {
       objc_storeStrong(&self->_nestedSheetCoordinator, v29);
-      v30 = [(PKPaymentAuthorizationPresentationCoordinator *)self->_mainCoordinator primaryPresentingViewController];
-      v31 = [v30 pkui_frontMostViewController];
-      [(PKPaymentAuthorizationPresentationCoordinator *)v29 updatePrimaryPresentingViewController:v31 isInitialPresentation:0];
+      primaryPresentingViewController = [(PKPaymentAuthorizationPresentationCoordinator *)self->_mainCoordinator primaryPresentingViewController];
+      pkui_frontMostViewController = [primaryPresentingViewController pkui_frontMostViewController];
+      [(PKPaymentAuthorizationPresentationCoordinator *)v29 updatePrimaryPresentingViewController:pkui_frontMostViewController isInitialPresentation:0];
 
       v32 = PKLogFacilityTypeGetObject();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -459,10 +459,10 @@ LABEL_30:
 
 - (void)configureAppearance
 {
-  v3 = [(PKPaymentAuthorizationRemoteAlertViewController *)self _remoteViewControllerProxy];
-  [v3 setAllowsBanners:1];
-  [v3 setAllowsSiri:0];
-  [v3 setAllowsAlertItems:1];
+  _remoteViewControllerProxy = [(PKPaymentAuthorizationRemoteAlertViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setAllowsBanners:1];
+  [_remoteViewControllerProxy setAllowsSiri:0];
+  [_remoteViewControllerProxy setAllowsAlertItems:1];
   if (PKUserInterfaceIdiomSupportsLargeLayouts())
   {
     v2 = 0;
@@ -473,34 +473,34 @@ LABEL_30:
     v2 = PKLandscapePaymentSheetEnabled() ^ 1;
   }
 
-  [v3 setLaunchingInterfaceOrientation:v2];
+  [_remoteViewControllerProxy setLaunchingInterfaceOrientation:v2];
   if (PKPaymentAuthorizationControllerShouldPreventRotation())
   {
-    [v3 setOrientationChangedEventsEnabled:0];
+    [_remoteViewControllerProxy setOrientationChangedEventsEnabled:0];
   }
 
-  [v3 setDesiredHardwareButtonEvents:16];
-  [v3 setSwipeDismissalStyle:0];
-  [v3 setDismissalAnimationStyle:1];
-  [v3 setWallpaperStyle:1 withDuration:0.0];
+  [_remoteViewControllerProxy setDesiredHardwareButtonEvents:16];
+  [_remoteViewControllerProxy setSwipeDismissalStyle:0];
+  [_remoteViewControllerProxy setDismissalAnimationStyle:1];
+  [_remoteViewControllerProxy setWallpaperStyle:1 withDuration:0.0];
 }
 
-- (void)configureWithHostContext:(id)a3
+- (void)configureWithHostContext:(id)context
 {
-  v10 = a3;
-  v4 = [v10 analyticsSubject];
+  contextCopy = context;
+  analyticsSubject = [contextCopy analyticsSubject];
   analyticsSubject = self->_analyticsSubject;
-  self->_analyticsSubject = v4;
+  self->_analyticsSubject = analyticsSubject;
 
   v6 = [(NSString *)self->_analyticsSubject length];
-  v7 = v10;
+  v7 = contextCopy;
   if (v6)
   {
-    v8 = [v10 analyticsArchivedSessionToken];
+    analyticsArchivedSessionToken = [contextCopy analyticsArchivedSessionToken];
     v9 = self->_analyticsSubject;
-    if (v8)
+    if (analyticsArchivedSessionToken)
     {
-      [MEMORY[0x1E69B8540] beginSubjectReporting:v9 withArchivedParent:v8];
+      [MEMORY[0x1E69B8540] beginSubjectReporting:v9 withArchivedParent:analyticsArchivedSessionToken];
     }
 
     else
@@ -508,19 +508,19 @@ LABEL_30:
       [MEMORY[0x1E69B8540] beginSubjectReporting:v9];
     }
 
-    v7 = v10;
+    v7 = contextCopy;
   }
 }
 
-- (void)noteActivatedWithPresentationMode:(int64_t)a3
+- (void)noteActivatedWithPresentationMode:(int64_t)mode
 {
-  if ((a3 - 2) < 2)
+  if ((mode - 2) < 2)
   {
     self->_isPrimaryAlert = 1;
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!mode)
   {
     hasUserInfo = self->_hasUserInfo;
     self->_isPrimaryAlert = hasUserInfo;
@@ -532,7 +532,7 @@ LABEL_30:
     goto LABEL_7;
   }
 
-  if (a3 == 1)
+  if (mode == 1)
   {
     self->_isPrimaryAlert = 1;
     self->_shouldRequestSecondaryAlert = 1;
@@ -554,26 +554,26 @@ LABEL_11:
 
 - (int)_preferredStatusBarVisibility
 {
-  v2 = [(PKPaymentAuthorizationRemoteAlertViewController *)self presentedViewController];
-  v3 = v2;
-  if (v2)
+  presentedViewController = [(PKPaymentAuthorizationRemoteAlertViewController *)self presentedViewController];
+  v3 = presentedViewController;
+  if (presentedViewController)
   {
-    v4 = [v2 _preferredStatusBarVisibility];
+    _preferredStatusBarVisibility = [presentedViewController _preferredStatusBarVisibility];
   }
 
   else
   {
-    v4 = 1;
+    _preferredStatusBarVisibility = 1;
   }
 
-  return v4;
+  return _preferredStatusBarVisibility;
 }
 
-- (void)presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
   v6.receiver = self;
   v6.super_class = PKPaymentAuthorizationRemoteAlertViewController;
-  [(PKPaymentAuthorizationRemoteAlertViewController *)&v6 presentViewController:a3 animated:a4 completion:a5];
+  [(PKPaymentAuthorizationRemoteAlertViewController *)&v6 presentViewController:controller animated:animated completion:completion];
   [(PKPaymentAuthorizationRemoteAlertViewController *)self updateStatusBarVisibility];
 }
 
@@ -587,16 +587,16 @@ LABEL_11:
   [MEMORY[0x1E69DD250] animateWithDuration:v2 animations:0.0];
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __71__PKPaymentAuthorizationRemoteAlertViewController_handleButtonActions___block_invoke;
   v6[3] = &unk_1E8010A10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = actionsCopy;
+  v5 = actionsCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -665,13 +665,13 @@ void __71__PKPaymentAuthorizationRemoteAlertViewController_handleButtonActions__
   }
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
   secondaryTargetAlertHandle = self->_secondaryTargetAlertHandle;
   self->_secondaryTargetAlertHandle = 0;
 
-  v6 = [(NSMutableArray *)self->_mutableCoordinators lastObject];
-  [v6 updateSecondaryPresentingViewController:0];
+  lastObject = [(NSMutableArray *)self->_mutableCoordinators lastObject];
+  [lastObject updateSecondaryPresentingViewController:0];
 }
 
 - (BOOL)_shouldSupportLandscapeOrientation
@@ -681,20 +681,20 @@ void __71__PKPaymentAuthorizationRemoteAlertViewController_handleButtonActions__
     return 0;
   }
 
-  v3 = [(PKPaymentAuthorizationPresentationCoordinator *)self->_mainCoordinator context];
-  v4 = [v3 request];
+  context = [(PKPaymentAuthorizationPresentationCoordinator *)self->_mainCoordinator context];
+  request = [context request];
 
-  if (v4)
+  if (request)
   {
-    v5 = [v4 _shouldSupportLandscapeOrientation];
+    _shouldSupportLandscapeOrientation = [request _shouldSupportLandscapeOrientation];
   }
 
   else
   {
-    v5 = 0;
+    _shouldSupportLandscapeOrientation = 0;
   }
 
-  return v5;
+  return _shouldSupportLandscapeOrientation;
 }
 
 - (void)_lockInterfaceOrientationIfNeeded
@@ -704,10 +704,10 @@ void __71__PKPaymentAuthorizationRemoteAlertViewController_handleButtonActions__
   {
     if ([(PKPaymentAuthorizationRemoteAlertViewController *)self _shouldSupportLandscapeOrientation])
     {
-      v3 = [(PKPaymentAuthorizationRemoteAlertViewController *)self _currentInterfaceOrientation];
-      if (v3)
+      _currentInterfaceOrientation = [(PKPaymentAuthorizationRemoteAlertViewController *)self _currentInterfaceOrientation];
+      if (_currentInterfaceOrientation)
       {
-        v4 = v3;
+        v4 = _currentInterfaceOrientation;
         v5 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
         {
@@ -724,33 +724,33 @@ void __71__PKPaymentAuthorizationRemoteAlertViewController_handleButtonActions__
 
 - (int64_t)_currentInterfaceOrientation
 {
-  v2 = [(PKPaymentAuthorizationRemoteAlertViewController *)self view];
-  v3 = [v2 window];
-  v4 = [v3 windowScene];
+  view = [(PKPaymentAuthorizationRemoteAlertViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  if (v4)
+  if (windowScene)
   {
-    v5 = [v4 interfaceOrientation];
+    interfaceOrientation = [windowScene interfaceOrientation];
   }
 
   else
   {
-    v5 = 0;
+    interfaceOrientation = 0;
   }
 
-  return v5;
+  return interfaceOrientation;
 }
 
-- (unint64_t)_maskForOrientation:(int64_t)a3
+- (unint64_t)_maskForOrientation:(int64_t)orientation
 {
-  if ((a3 - 1) > 3)
+  if ((orientation - 1) > 3)
   {
     return 26;
   }
 
   else
   {
-    return qword_1BE117220[a3 - 1];
+    return qword_1BE117220[orientation - 1];
   }
 }
 

@@ -1,9 +1,9 @@
 @interface ASTDwellAutorevertActionController
 - (ASTDwellAutorevertActionController)init;
-- (id)dwellControlAutorevertEnabled:(id)a3;
+- (id)dwellControlAutorevertEnabled:(id)enabled;
 - (id)specifiers;
-- (void)setDwellControlAutorevertEnabled:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setDwellControlAutorevertEnabled:(id)enabled specifier:(id)specifier;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation ASTDwellAutorevertActionController
@@ -75,11 +75,11 @@ void __42__ASTDwellAutorevertActionController_init__block_invoke(uint64_t a1)
     v18 = v5;
     [v5 addObject:v17];
     v19 = +[AXSettings sharedInstance];
-    v20 = [v19 assistiveTouchMouseDwellControlAutorevertAction];
+    assistiveTouchMouseDwellControlAutorevertAction = [v19 assistiveTouchMouseDwellControlAutorevertAction];
 
-    v21 = [v20 isEqualToString:v12];
+    v21 = [assistiveTouchMouseDwellControlAutorevertAction isEqualToString:v12];
     v22 = v14;
-    if ((v21 & 1) != 0 || (v23 = [v20 isEqualToString:v15], v22 = v17, v23))
+    if ((v21 & 1) != 0 || (v23 = [assistiveTouchMouseDwellControlAutorevertAction isEqualToString:v15], v22 = v17, v23))
     {
       [v11 setProperty:v22 forKey:PSRadioGroupCheckedSpecifierKey];
     }
@@ -93,15 +93,15 @@ void __42__ASTDwellAutorevertActionController_init__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v14.receiver = self;
   v14.super_class = ASTDwellAutorevertActionController;
-  v6 = a4;
-  [(ASTDwellAutorevertActionController *)&v14 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [v6 section];
+  pathCopy = path;
+  [(ASTDwellAutorevertActionController *)&v14 tableView:view didSelectRowAtIndexPath:pathCopy];
+  section = [pathCopy section];
 
-  v8 = [(ASTDwellAutorevertActionController *)self specifierAtIndex:[(ASTDwellAutorevertActionController *)self indexOfGroup:v7]];
+  v8 = [(ASTDwellAutorevertActionController *)self specifierAtIndex:[(ASTDwellAutorevertActionController *)self indexOfGroup:section]];
   v9 = [v8 propertyForKey:PSIDKey];
   v10 = [v9 isEqualToString:@"AutorevertActionGroupID"];
 
@@ -119,7 +119,7 @@ void __42__ASTDwellAutorevertActionController_init__block_invoke(uint64_t a1)
   }
 }
 
-- (id)dwellControlAutorevertEnabled:(id)a3
+- (id)dwellControlAutorevertEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 assistiveTouchMouseDwellControlAutorevertEnabled]);
@@ -127,11 +127,11 @@ void __42__ASTDwellAutorevertActionController_init__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setDwellControlAutorevertEnabled:(id)a3 specifier:(id)a4
+- (void)setDwellControlAutorevertEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setAssistiveTouchMouseDwellControlAutorevertEnabled:v4];
+  [v5 setAssistiveTouchMouseDwellControlAutorevertEnabled:bOOLValue];
 }
 
 @end

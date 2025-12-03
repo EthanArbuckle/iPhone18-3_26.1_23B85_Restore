@@ -1,15 +1,15 @@
 @interface TSWPTopicNumberHintLevelData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 @end
 
 @implementation TSWPTopicNumberHintLevelData
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v26) = 1;
   }
@@ -19,7 +19,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v8 = objc_msgSend_number(self, v6, v7);
       if (v8 == objc_msgSend_number(v5, v9, v10) && (v13 = objc_msgSend_labelType(self, v11, v12), v13 == objc_msgSend_labelType(v5, v14, v15)) && (v18 = objc_msgSend_numberType(self, v16, v17), v18 == objc_msgSend_numberType(v5, v19, v20)))
       {
@@ -42,7 +42,7 @@
   return v26;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_opt_new();
   *(result + 4) = self->_numberType;

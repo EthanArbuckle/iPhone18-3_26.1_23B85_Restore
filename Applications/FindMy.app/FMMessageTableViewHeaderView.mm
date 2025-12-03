@@ -1,5 +1,5 @@
 @interface FMMessageTableViewHeaderView
-- (_TtC6FindMy28FMMessageTableViewHeaderView)initWithReuseIdentifier:(id)a3;
+- (_TtC6FindMy28FMMessageTableViewHeaderView)initWithReuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 @end
 
@@ -7,13 +7,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100424D20();
 }
 
-- (_TtC6FindMy28FMMessageTableViewHeaderView)initWithReuseIdentifier:(id)a3
+- (_TtC6FindMy28FMMessageTableViewHeaderView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   }

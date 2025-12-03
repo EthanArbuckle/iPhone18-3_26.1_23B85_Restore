@@ -1,12 +1,12 @@
 @interface PreviewController.Coordinator
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4;
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3;
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index;
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller;
 - (void)dismiss;
 @end
 
 @implementation PreviewController.Coordinator
 
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller
 {
   sub_23875ED50();
   sub_23875ED40();
@@ -19,7 +19,7 @@
   return 1;
 }
 
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index
 {
   sub_23875ED50();
   sub_23875ED40();

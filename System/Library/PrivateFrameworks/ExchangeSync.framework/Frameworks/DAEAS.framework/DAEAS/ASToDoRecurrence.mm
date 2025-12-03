@@ -6,17 +6,17 @@
 + (BOOL)parsingWithSubItems;
 + (id)asParseRules;
 - (ASToDo)parentToDo;
-- (ASToDoRecurrence)initWithCalRecurrence:(void *)a3 parentToDo:(id)a4;
-- (ASToDoRecurrence)initWithCoder:(id)a3;
-- (ASToDoRecurrence)initWithParentToDo:(id)a3;
-- (id)_transformedUntilDateForActiveSync:(id)a3;
-- (id)_untilDateForCalFrameworkWithParentStartDate:(id)a3;
-- (void)appendActiveSyncDataForTask:(id)a3 toWBXMLData:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8;
-- (void)saveToCalendarWithParentASToDo:(id)a3 existingRecord:(void *)a4 shouldMergeProperties:(BOOL)a5 outMergeDidChooseLocalProperties:(BOOL *)a6 account:(id)a7;
-- (void)setStartTimeString:(id)a3;
-- (void)setUntilString:(id)a3;
+- (ASToDoRecurrence)initWithCalRecurrence:(void *)recurrence parentToDo:(id)do;
+- (ASToDoRecurrence)initWithCoder:(id)coder;
+- (ASToDoRecurrence)initWithParentToDo:(id)do;
+- (id)_transformedUntilDateForActiveSync:(id)sync;
+- (id)_untilDateForCalFrameworkWithParentStartDate:(id)date;
+- (void)appendActiveSyncDataForTask:(id)task toWBXMLData:(id)data;
+- (void)encodeWithCoder:(id)coder;
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account;
+- (void)saveToCalendarWithParentASToDo:(id)do existingRecord:(void *)record shouldMergeProperties:(BOOL)properties outMergeDidChooseLocalProperties:(BOOL *)localProperties account:(id)account;
+- (void)setStartTimeString:(id)string;
+- (void)setUntilString:(id)string;
 @end
 
 @implementation ASToDoRecurrence
@@ -30,7 +30,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64D60];
+    v2 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_9 = v2;
     acceptsTopLevelLeaves___haveChecked_9 = 1;
   }
@@ -47,7 +47,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5E660];
+    v2 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_9 = v2;
     parsingLeafNode___haveChecked_9 = 1;
   }
@@ -64,7 +64,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D64A10];
+    v2 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_9 = v2;
     parsingWithSubItems___haveChecked_9 = 1;
   }
@@ -81,7 +81,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v2 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_9 = v2;
     frontingBasicTypes___haveChecked_9 = 1;
   }
@@ -98,7 +98,7 @@
 
   else
   {
-    v2 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v2 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_9 = v2;
     notifyOfUnknownTokens___haveChecked_9 = 1;
   }
@@ -106,42 +106,42 @@
   return v2 & 1;
 }
 
-- (ASToDoRecurrence)initWithParentToDo:(id)a3
+- (ASToDoRecurrence)initWithParentToDo:(id)do
 {
-  v4 = a3;
+  doCopy = do;
   v8.receiver = self;
   v8.super_class = ASToDoRecurrence;
   v5 = [(ASItem *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ASToDoRecurrence *)v5 setParentToDo:v4];
+    [(ASToDoRecurrence *)v5 setParentToDo:doCopy];
   }
 
   return v6;
 }
 
-- (ASToDoRecurrence)initWithCalRecurrence:(void *)a3 parentToDo:(id)a4
+- (ASToDoRecurrence)initWithCalRecurrence:(void *)recurrence parentToDo:(id)do
 {
-  v6 = a4;
-  v7 = [(ASToDoRecurrence *)self initWithParentToDo:v6];
+  doCopy = do;
+  v7 = [(ASToDoRecurrence *)self initWithParentToDo:doCopy];
   if (v7)
   {
-    v8 = [v6 startTime];
-    if (!v8)
+    startTime = [doCopy startTime];
+    if (!startTime)
     {
-      v8 = [v6 dueDate];
-      if (!v8)
+      startTime = [doCopy dueDate];
+      if (!startTime)
       {
-        v8 = [MEMORY[0x277CBEAA8] date];
+        startTime = [MEMORY[0x277CBEAA8] date];
       }
     }
 
-    v9 = v8;
+    v9 = startTime;
     v10 = [MEMORY[0x277CBEBB0] gmt];
     v11 = [v9 dateWithCalendarFormat:0 timeZone:v10];
 
-    if ([(ASRecurrence *)v7 _loadAttributesFromCalRecurrence:a3 parentStartDate:v11 parentItem:v6 useFloatingTimeForAllDayEvents:0])
+    if ([(ASRecurrence *)v7 _loadAttributesFromCalRecurrence:recurrence parentStartDate:v11 parentItem:doCopy useFloatingTimeForAllDayEvents:0])
     {
       [(ASToDoRecurrence *)v7 setStartTime:v9];
     }
@@ -156,7 +156,7 @@
   return v7;
 }
 
-- (void)saveToCalendarWithParentASToDo:(id)a3 existingRecord:(void *)a4 shouldMergeProperties:(BOOL)a5 outMergeDidChooseLocalProperties:(BOOL *)a6 account:(id)a7
+- (void)saveToCalendarWithParentASToDo:(id)do existingRecord:(void *)record shouldMergeProperties:(BOOL)properties outMergeDidChooseLocalProperties:(BOOL *)localProperties account:(id)account
 {
   v7 = DALoggingwithCategory();
   v8 = *(MEMORY[0x277D03988] + 3);
@@ -170,7 +170,7 @@
 + (id)asParseRules
 {
   v3 = +[ASItem parseRuleCache];
-  v4 = NSStringFromClass(a1);
+  v4 = NSStringFromClass(self);
   v5 = [v3 objectForKey:v4];
 
   if (!v5)
@@ -207,40 +207,40 @@
     v5 = [v21 dictionaryWithObjectsAndKeys:{v37, v36, v35, v34, v33, v32, v30, v31, v29, v28, v26, v27, v20, v25, v19, v18, v24, v23, v22, v16, v15, v17, v14, v6, v7, v8, v9, v10, 0}];
 
     v11 = +[ASItem parseRuleCache];
-    v12 = NSStringFromClass(a1);
+    v12 = NSStringFromClass(self);
     [v11 setObject:v5 forKey:v12];
   }
 
   return v5;
 }
 
-- (void)parseASParseContext:(id)a3 root:(id)a4 parent:(id)a5 callbackDict:(id)a6 streamCallbackDict:(id)a7 account:(id)a8
+- (void)parseASParseContext:(id)context root:(id)root parent:(id)parent callbackDict:(id)dict streamCallbackDict:(id)callbackDict account:(id)account
 {
   v30 = *MEMORY[0x277D85DE8];
-  v15 = a5;
+  parentCopy = parent;
   v27.receiver = self;
   v27.super_class = ASToDoRecurrence;
-  [(ASRecurrence *)&v27 parseASParseContext:a3 root:a4 parent:v15 callbackDict:a6 streamCallbackDict:a7 account:a8];
+  [(ASRecurrence *)&v27 parseASParseContext:context root:root parent:parentCopy callbackDict:dict streamCallbackDict:callbackDict account:account];
   parsingState = self->super.super._parsingState;
-  v17 = v15;
+  v17 = parentCopy;
   if (parsingState >= 2)
   {
     if (parsingState == 3 || parsingState == 4)
     {
       self->super.super._parsingState = parsingState;
-      v17 = v15;
+      v17 = parentCopy;
     }
 
     else
     {
-      if (v15)
+      if (parentCopy)
       {
-        v17 = v15;
+        v17 = parentCopy;
         do
         {
-          v18 = [(ASToDoRecurrence *)self parentToDo];
+          parentToDo = [(ASToDoRecurrence *)self parentToDo];
 
-          if (v18)
+          if (parentToDo)
           {
             break;
           }
@@ -251,12 +251,12 @@
             [(ASToDoRecurrence *)self setParentToDo:v17];
           }
 
-          v19 = [v17 parent];
+          parent = [v17 parent];
 
-          v17 = v19;
+          v17 = parent;
         }
 
-        while (v19);
+        while (parent);
       }
 
       else
@@ -264,25 +264,25 @@
         v17 = 0;
       }
 
-      v20 = [(ASToDoRecurrence *)self parentToDo];
+      parentToDo2 = [(ASToDoRecurrence *)self parentToDo];
 
-      if (!v20)
+      if (!parentToDo2)
       {
         [ASToDoRecurrence parseASParseContext:a2 root:self parent:? callbackDict:? streamCallbackDict:? account:?];
       }
 
-      v21 = [(ASRecurrence *)self interval];
+      interval = [(ASRecurrence *)self interval];
 
-      if (!v21)
+      if (!interval)
       {
         v22 = DALoggingwithCategory();
         v23 = *(MEMORY[0x277D03988] + 3);
         if (os_log_type_enabled(v22, v23))
         {
-          v24 = [(ASRecurrence *)self type];
-          v25 = [v24 intValue];
+          type = [(ASRecurrence *)self type];
+          intValue = [type intValue];
           *buf = 67109120;
-          v29 = v25;
+          v29 = intValue;
           _os_log_impl(&dword_24A0AC000, v22, v23, "A recurrence with type %d didn't have an interval set, but we're being lenient, and assuming an interval of 1", buf, 8u);
         }
 
@@ -294,212 +294,212 @@
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)appendActiveSyncDataForTask:(id)a3 toWBXMLData:(id)a4
+- (void)appendActiveSyncDataForTask:(id)task toWBXMLData:(id)data
 {
-  v41 = a3;
-  v6 = a4;
-  [v6 openTag:15];
-  v7 = [(ASRecurrence *)self type];
-  v8 = v7;
-  if (v7)
+  taskCopy = task;
+  dataCopy = data;
+  [dataCopy openTag:15];
+  type = [(ASRecurrence *)self type];
+  v8 = type;
+  if (type)
   {
-    [v6 appendTag:16 withIntContent:{objc_msgSend(v7, "intValue")}];
+    [dataCopy appendTag:16 withIntContent:{objc_msgSend(type, "intValue")}];
   }
 
-  v9 = [(ASToDoRecurrence *)self startTime];
-  v10 = v9;
-  if (v9)
+  startTime = [(ASToDoRecurrence *)self startTime];
+  v10 = startTime;
+  if (startTime)
   {
-    v11 = [v9 activeSyncString];
-    [v6 appendTag:17 withStringContent:v11];
+    activeSyncString = [startTime activeSyncString];
+    [dataCopy appendTag:17 withStringContent:activeSyncString];
   }
 
-  v12 = [(ASRecurrence *)self until];
-  v13 = v12;
-  if (v12)
+  until = [(ASRecurrence *)self until];
+  v13 = until;
+  if (until)
   {
-    v14 = [v12 activeSyncString];
-    [v6 appendTag:18 withStringContent:v14];
+    activeSyncString2 = [until activeSyncString];
+    [dataCopy appendTag:18 withStringContent:activeSyncString2];
   }
 
-  v15 = [(ASRecurrence *)self occurrences];
-  v16 = v15;
-  if (v15)
+  occurrences = [(ASRecurrence *)self occurrences];
+  v16 = occurrences;
+  if (occurrences)
   {
-    [v6 appendTag:19 withIntContent:{objc_msgSend(v15, "intValue")}];
+    [dataCopy appendTag:19 withIntContent:{objc_msgSend(occurrences, "intValue")}];
   }
 
-  v17 = [(ASRecurrence *)self interval];
-  v18 = v17;
-  if (v17)
+  interval = [(ASRecurrence *)self interval];
+  v18 = interval;
+  if (interval)
   {
-    [v6 appendTag:20 withIntContent:{objc_msgSend(v17, "intValue")}];
+    [dataCopy appendTag:20 withIntContent:{objc_msgSend(interval, "intValue")}];
   }
 
-  v19 = [(ASRecurrence *)self dayOfWeek];
-  v20 = v19;
-  if (v19)
+  dayOfWeek = [(ASRecurrence *)self dayOfWeek];
+  v20 = dayOfWeek;
+  if (dayOfWeek)
   {
-    [v6 appendTag:22 withIntContent:{objc_msgSend(v19, "intValue")}];
+    [dataCopy appendTag:22 withIntContent:{objc_msgSend(dayOfWeek, "intValue")}];
   }
 
-  v21 = [(ASRecurrence *)self dayOfMonth];
-  v22 = v21;
-  if (v21)
+  dayOfMonth = [(ASRecurrence *)self dayOfMonth];
+  v22 = dayOfMonth;
+  if (dayOfMonth)
   {
-    [v6 appendTag:21 withIntContent:{objc_msgSend(v21, "intValue")}];
+    [dataCopy appendTag:21 withIntContent:{objc_msgSend(dayOfMonth, "intValue")}];
   }
 
-  v23 = [(ASRecurrence *)self weekOfMonth];
-  v24 = v23;
-  if (v23)
+  weekOfMonth = [(ASRecurrence *)self weekOfMonth];
+  v24 = weekOfMonth;
+  if (weekOfMonth)
   {
-    [v6 appendTag:23 withIntContent:{objc_msgSend(v23, "intValue")}];
+    [dataCopy appendTag:23 withIntContent:{objc_msgSend(weekOfMonth, "intValue")}];
   }
 
-  v25 = [(ASRecurrence *)self monthOfYear];
-  v26 = v25;
-  if (v25)
+  monthOfYear = [(ASRecurrence *)self monthOfYear];
+  v26 = monthOfYear;
+  if (monthOfYear)
   {
-    [v6 appendTag:24 withIntContent:{objc_msgSend(v25, "intValue")}];
+    [dataCopy appendTag:24 withIntContent:{objc_msgSend(monthOfYear, "intValue")}];
   }
 
-  v27 = [(ASToDoRecurrence *)self regenerate];
-  v28 = v27;
-  if (v27)
+  regenerate = [(ASToDoRecurrence *)self regenerate];
+  v28 = regenerate;
+  if (regenerate)
   {
-    [v6 appendTag:25 withIntContent:{objc_msgSend(v27, "intValue")}];
+    [dataCopy appendTag:25 withIntContent:{objc_msgSend(regenerate, "intValue")}];
   }
 
-  v29 = [(ASToDoRecurrence *)self deadOccur];
-  v30 = v29;
-  if (v29)
+  deadOccur = [(ASToDoRecurrence *)self deadOccur];
+  v30 = deadOccur;
+  if (deadOccur)
   {
-    [v6 appendTag:26 withIntContent:{objc_msgSend(v29, "intValue")}];
+    [dataCopy appendTag:26 withIntContent:{objc_msgSend(deadOccur, "intValue")}];
   }
 
-  v31 = [v41 taskManager];
-  v32 = [v31 protocol];
-  v33 = [v32 sendCalendarInfoInRecurrence];
+  taskManager = [taskCopy taskManager];
+  protocol = [taskManager protocol];
+  sendCalendarInfoInRecurrence = [protocol sendCalendarInfoInRecurrence];
 
-  if (v33)
+  if (sendCalendarInfoInRecurrence)
   {
-    v34 = [(ASRecurrence *)self calendarType];
-    v35 = v34;
-    if (v34)
+    calendarType = [(ASRecurrence *)self calendarType];
+    v35 = calendarType;
+    if (calendarType)
     {
-      [v6 appendTag:36 withIntContent:{objc_msgSend(v34, "intValue")}];
+      [dataCopy appendTag:36 withIntContent:{objc_msgSend(calendarType, "intValue")}];
     }
   }
 
-  v36 = [v41 taskManager];
-  v37 = [v36 protocol];
-  v38 = [v37 sendFirstDayOfWeekInRecurrence];
+  taskManager2 = [taskCopy taskManager];
+  protocol2 = [taskManager2 protocol];
+  sendFirstDayOfWeekInRecurrence = [protocol2 sendFirstDayOfWeekInRecurrence];
 
-  if (v38)
+  if (sendFirstDayOfWeekInRecurrence)
   {
-    v39 = [(ASRecurrence *)self firstDayOfWeek];
-    v40 = v39;
-    if (v39)
+    firstDayOfWeek = [(ASRecurrence *)self firstDayOfWeek];
+    v40 = firstDayOfWeek;
+    if (firstDayOfWeek)
     {
-      [v6 appendTag:38 withIntContent:{objc_msgSend(v39, "intValue")}];
+      [dataCopy appendTag:38 withIntContent:{objc_msgSend(firstDayOfWeek, "intValue")}];
     }
   }
 
-  [v6 closeTag:15];
+  [dataCopy closeTag:15];
 }
 
-- (void)setStartTimeString:(id)a3
+- (void)setStartTimeString:(id)string
 {
-  v4 = [MEMORY[0x277CBEAA8] dateWithActiveSyncString:a3];
+  v4 = [MEMORY[0x277CBEAA8] dateWithActiveSyncString:string];
   [(ASToDoRecurrence *)self setStartTime:v4];
 }
 
-- (void)setUntilString:(id)a3
+- (void)setUntilString:(id)string
 {
-  v4 = [MEMORY[0x277CBEAA8] dateWithActiveSyncString:a3];
+  v4 = [MEMORY[0x277CBEAA8] dateWithActiveSyncString:string];
   [(ASRecurrence *)self setUntil:v4];
 }
 
-- (id)_untilDateForCalFrameworkWithParentStartDate:(id)a3
+- (id)_untilDateForCalFrameworkWithParentStartDate:(id)date
 {
-  v4 = [(ASToDoRecurrence *)self parentToDo];
-  v5 = [v4 dueDateTimeZone];
+  parentToDo = [(ASToDoRecurrence *)self parentToDo];
+  dueDateTimeZone = [parentToDo dueDateTimeZone];
 
-  v6 = [(ASRecurrence *)self until];
+  until = [(ASRecurrence *)self until];
   v7 = [MEMORY[0x277CBEBB0] gmt];
-  v8 = [v6 dateWithCalendarFormat:0 timeZone:v7];
+  v8 = [until dateWithCalendarFormat:0 timeZone:v7];
 
-  v9 = [v8 gmtDateToDateInTimeZone:v5];
-  v10 = [objc_alloc(MEMORY[0x277CCA8F8]) initWithYear:objc_msgSend(v9 month:"yearOfCommonEra") day:objc_msgSend(v9 hour:"monthOfYear") minute:objc_msgSend(v9 second:"dayOfMonth") timeZone:{23, 59, 59, v5}];
+  v9 = [v8 gmtDateToDateInTimeZone:dueDateTimeZone];
+  v10 = [objc_alloc(MEMORY[0x277CCA8F8]) initWithYear:objc_msgSend(v9 month:"yearOfCommonEra") day:objc_msgSend(v9 hour:"monthOfYear") minute:objc_msgSend(v9 second:"dayOfMonth") timeZone:{23, 59, 59, dueDateTimeZone}];
 
   return v10;
 }
 
-- (id)_transformedUntilDateForActiveSync:(id)a3
+- (id)_transformedUntilDateForActiveSync:(id)sync
 {
-  v4 = a3;
-  v5 = [(ASToDoRecurrence *)self parentToDo];
-  v6 = [v5 dueDateTimeZone];
+  syncCopy = sync;
+  parentToDo = [(ASToDoRecurrence *)self parentToDo];
+  dueDateTimeZone = [parentToDo dueDateTimeZone];
 
-  v7 = [v4 dateWithCalendarFormat:0 timeZone:v6];
+  v7 = [syncCopy dateWithCalendarFormat:0 timeZone:dueDateTimeZone];
 
-  v8 = [v7 tzDateToDateInGMT:v6];
+  v8 = [v7 tzDateToDateInGMT:dueDateTimeZone];
   v9 = objc_alloc(MEMORY[0x277CCA8F8]);
-  v10 = [v8 yearOfCommonEra];
-  v11 = [v8 monthOfYear];
-  v12 = [v8 dayOfMonth];
+  yearOfCommonEra = [v8 yearOfCommonEra];
+  monthOfYear = [v8 monthOfYear];
+  dayOfMonth = [v8 dayOfMonth];
   v13 = [MEMORY[0x277CBEBB0] gmt];
-  v14 = [v9 initWithYear:v10 month:v11 day:v12 hour:0 minute:0 second:0 timeZone:v13];
+  v14 = [v9 initWithYear:yearOfCommonEra month:monthOfYear day:dayOfMonth hour:0 minute:0 second:0 timeZone:v13];
 
   return v14;
 }
 
-- (ASToDoRecurrence)initWithCoder:(id)a3
+- (ASToDoRecurrence)initWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = ASToDoRecurrence;
-  v6 = [(ASRecurrence *)&v11 initWithCoder:v5];
+  v6 = [(ASRecurrence *)&v11 initWithCoder:coderCopy];
   if (v6)
   {
-    if (([v5 allowsKeyedCoding] & 1) == 0)
+    if (([coderCopy allowsKeyedCoding] & 1) == 0)
     {
       [(ASToDoRecurrence *)a2 initWithCoder:v6];
     }
 
-    v7 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"startTime"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startTime"];
     [(ASToDoRecurrence *)v6 setStartTime:v7];
 
-    v8 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"regenerate"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"regenerate"];
     [(ASToDoRecurrence *)v6 setRegenerate:v8];
 
-    v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"deadOccur"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deadOccur"];
     [(ASToDoRecurrence *)v6 setDeadOccur:v9];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  if (([v5 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [(ASToDoRecurrence *)a2 encodeWithCoder:?];
   }
 
   v9.receiver = self;
   v9.super_class = ASToDoRecurrence;
-  [(ASRecurrence *)&v9 encodeWithCoder:v5];
-  v6 = [(ASToDoRecurrence *)self startTime];
-  [v5 encodeObject:v6 forKey:@"startTime"];
+  [(ASRecurrence *)&v9 encodeWithCoder:coderCopy];
+  startTime = [(ASToDoRecurrence *)self startTime];
+  [coderCopy encodeObject:startTime forKey:@"startTime"];
 
-  v7 = [(ASToDoRecurrence *)self regenerate];
-  [v5 encodeObject:v7 forKey:@"regenerate"];
+  regenerate = [(ASToDoRecurrence *)self regenerate];
+  [coderCopy encodeObject:regenerate forKey:@"regenerate"];
 
-  v8 = [(ASToDoRecurrence *)self deadOccur];
-  [v5 encodeObject:v8 forKey:@"deadOccur"];
+  deadOccur = [(ASToDoRecurrence *)self deadOccur];
+  [coderCopy encodeObject:deadOccur forKey:@"deadOccur"];
 }
 
 - (ASToDo)parentToDo

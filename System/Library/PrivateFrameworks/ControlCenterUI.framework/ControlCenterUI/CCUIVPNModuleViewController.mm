@@ -9,8 +9,8 @@
 - (void)startObservingStateChangesIfNecessary;
 - (void)stopObservingStateChangesIfNecessary;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CCUIVPNModuleViewController
@@ -35,9 +35,9 @@
   v18.receiver = self;
   v18.super_class = CCUIVPNModuleViewController;
   [(CCUIButtonModuleViewController *)&v18 viewDidLoad];
-  v3 = [(CCUIVPNModuleViewController *)self _glyphImage];
-  v4 = [MEMORY[0x277D75348] systemBlueColor];
-  v5 = [objc_alloc(MEMORY[0x277CFC9B0]) initWithGlyphImage:v3 highlightColor:v4 useLightStyle:1];
+  _glyphImage = [(CCUIVPNModuleViewController *)self _glyphImage];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  v5 = [objc_alloc(MEMORY[0x277CFC9B0]) initWithGlyphImage:_glyphImage highlightColor:systemBlueColor useLightStyle:1];
   [v5 setUseAutomaticSymbolColors:1];
   v6 = [objc_alloc(MEMORY[0x277D75B80]) initWithTarget:self action:sel__glyphViewForExpandedConnectivityModuleTapped];
   [v5 addGestureRecognizer:v6];
@@ -45,7 +45,7 @@
   self->_glyphViewForExpandedConnectivityModule = v5;
   v8 = v5;
 
-  [(CCUIButtonModuleViewController *)self setGlyphImage:v3];
+  [(CCUIButtonModuleViewController *)self setGlyphImage:_glyphImage];
   v9 = objc_alloc_init(MEMORY[0x277CFC978]);
   [v9 setCustomGlyphView:v8];
   templateViewForExpandedConnectivityModule = self->_templateViewForExpandedConnectivityModule;
@@ -58,7 +58,7 @@
   [(CCUIButtonModuleViewController *)self setTitle:v13];
   [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule setTitle:v13];
   [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule setDelegate:self];
-  v14 = [objc_alloc(MEMORY[0x277CFC9B0]) initWithGlyphImage:v3 highlightColor:v4 useLightStyle:1];
+  v14 = [objc_alloc(MEMORY[0x277CFC9B0]) initWithGlyphImage:_glyphImage highlightColor:systemBlueColor useLightStyle:1];
   [v14 setUseIndependentAlpha:1];
   [v14 setDynamicLayoutEnabled:1];
   [v14 setUseAutomaticSymbolColors:1];
@@ -67,25 +67,25 @@
   self->_buttonViewForCollapsedConnectivityModule = v14;
   v16 = v14;
 
-  v17 = [MEMORY[0x277D75348] systemBlueColor];
+  systemBlueColor2 = [MEMORY[0x277D75348] systemBlueColor];
 
-  [(CCUIButtonModuleViewController *)self setSelectedGlyphColor:v17];
+  [(CCUIButtonModuleViewController *)self setSelectedGlyphColor:systemBlueColor2];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CCUIVPNModuleViewController;
-  [(CCUIVPNModuleViewController *)&v4 viewWillAppear:a3];
+  [(CCUIVPNModuleViewController *)&v4 viewWillAppear:appear];
   [(CCUIVPNModuleViewController *)self startObservingStateChangesIfNecessary];
   [(CCUIVPNModuleViewController *)self _updateState];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CCUIVPNModuleViewController;
-  [(CCUIVPNModuleViewController *)&v4 viewWillDisappear:a3];
+  [(CCUIVPNModuleViewController *)&v4 viewWillDisappear:disappear];
   [(CCUIVPNModuleViewController *)self stopObservingStateChangesIfNecessary];
 }
 
@@ -93,8 +93,8 @@
 {
   if (!self->_observingStateChanges)
   {
-    v3 = [(CCUIVPNModuleViewController *)self connectivityManager];
-    [v3 addVPNViewControllerObservingStateChanges:self];
+    connectivityManager = [(CCUIVPNModuleViewController *)self connectivityManager];
+    [connectivityManager addVPNViewControllerObservingStateChanges:self];
     self->_observingStateChanges = 1;
   }
 }
@@ -103,24 +103,24 @@
 {
   if (self->_observingStateChanges)
   {
-    v3 = [(CCUIVPNModuleViewController *)self connectivityManager];
-    [v3 removeVPNViewControllerObservingStateChanges:self];
+    connectivityManager = [(CCUIVPNModuleViewController *)self connectivityManager];
+    [connectivityManager removeVPNViewControllerObservingStateChanges:self];
     self->_observingStateChanges = 0;
   }
 }
 
 - (BOOL)providesTemplateViewDelegateForExpandedConnectivityModule
 {
-  v2 = [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule delegate];
-  v3 = v2 != 0;
+  delegate = [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule delegate];
+  v3 = delegate != 0;
 
   return v3;
 }
 
 - (id)_glyphImage
 {
-  v3 = [(CCUIButtonModuleViewController *)self contentMetrics];
-  v4 = [v3 symbolConfiguration];
+  contentMetrics = [(CCUIButtonModuleViewController *)self contentMetrics];
+  symbolConfiguration = [contentMetrics symbolConfiguration];
   if ([(CCUIButtonModuleViewController *)self contentRenderingMode]== 1)
   {
     v5 = 2;
@@ -132,48 +132,48 @@
   }
 
   v6 = [MEMORY[0x277D755D0] configurationWithScale:v5];
-  v7 = [v4 configurationByApplyingConfiguration:v6];
+  v7 = [symbolConfiguration configurationByApplyingConfiguration:v6];
 
   v8 = [MEMORY[0x277D755B8] _systemImageNamed:@"network.connected.to.line.below.fill" withConfiguration:v7];
-  v9 = [v8 imageFlippedForRightToLeftLayoutDirection];
+  imageFlippedForRightToLeftLayoutDirection = [v8 imageFlippedForRightToLeftLayoutDirection];
 
-  return v9;
+  return imageFlippedForRightToLeftLayoutDirection;
 }
 
 - (void)_updateGlyphImages
 {
-  v5 = [(CCUIVPNModuleViewController *)self _glyphImage];
-  [(CCUIButtonModuleViewController *)self setGlyphImage:v5];
-  v3 = [(CCUIVPNModuleViewController *)self buttonViewForCollapsedConnectivityModule];
-  [v3 setGlyphImage:v5];
-  v4 = [(CCUIVPNModuleViewController *)self glyphViewForExpandedConnectivityModule];
-  [v4 setGlyphImage:v5];
+  _glyphImage = [(CCUIVPNModuleViewController *)self _glyphImage];
+  [(CCUIButtonModuleViewController *)self setGlyphImage:_glyphImage];
+  buttonViewForCollapsedConnectivityModule = [(CCUIVPNModuleViewController *)self buttonViewForCollapsedConnectivityModule];
+  [buttonViewForCollapsedConnectivityModule setGlyphImage:_glyphImage];
+  glyphViewForExpandedConnectivityModule = [(CCUIVPNModuleViewController *)self glyphViewForExpandedConnectivityModule];
+  [glyphViewForExpandedConnectivityModule setGlyphImage:_glyphImage];
 }
 
 - (void)_toggleState
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_21E9F5000, a2, OS_LOG_TYPE_ERROR, "[VPN] Error togging VPN: %{public}@", &v2, 0xCu);
 }
 
 - (void)_updateState
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(CCUIVPNModuleViewController *)self connectivityManager];
-  v4 = [v3 vpnConnectivityManager];
-  v5 = [v4 visibilityStyle];
-  v6 = [v4 connectivityState];
-  v7 = v6;
-  if (v6 > 5)
+  connectivityManager = [(CCUIVPNModuleViewController *)self connectivityManager];
+  vpnConnectivityManager = [connectivityManager vpnConnectivityManager];
+  visibilityStyle = [vpnConnectivityManager visibilityStyle];
+  connectivityState = [vpnConnectivityManager connectivityState];
+  v7 = connectivityState;
+  if (connectivityState > 5)
   {
     v10 = 0;
   }
 
   else
   {
-    v8 = off_278382488[v6];
+    v8 = off_278382488[connectivityState];
     v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:v8 value:&stru_28301B138 table:@"ControlCenterUI+SystemModules"];
   }
@@ -182,9 +182,9 @@
   [(CCUIButtonModuleViewController *)self setSelectedValueText:v10];
   [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule setSubtitle:v10];
   [(CCUIVPNModuleViewController *)self _updateGlyphImages];
-  [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule setEnabled:v5 != 0];
-  [(CCUIRoundButton *)self->_buttonViewForCollapsedConnectivityModule setEnabled:v5 != 0];
-  [(CCUIRoundButton *)self->_glyphViewForExpandedConnectivityModule setEnabled:v5 != 0];
+  [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule setEnabled:visibilityStyle != 0];
+  [(CCUIRoundButton *)self->_buttonViewForCollapsedConnectivityModule setEnabled:visibilityStyle != 0];
+  [(CCUIRoundButton *)self->_glyphViewForExpandedConnectivityModule setEnabled:visibilityStyle != 0];
   v12 = v7 == 2 || v7 == 5;
   [(CCUIControlTemplateView *)self->_templateViewForExpandedConnectivityModule setSelected:0];
   [(CCUIRoundButton *)self->_buttonViewForCollapsedConnectivityModule setSelected:v12];
@@ -195,7 +195,7 @@
   {
     v14 = MEMORY[0x277CCABB0];
     v15 = v13;
-    v16 = [v14 numberWithBool:v5 == 0];
+    v16 = [v14 numberWithBool:visibilityStyle == 0];
     v17 = [MEMORY[0x277CCABB0] numberWithBool:v12];
     v18 = 138543874;
     v19 = v10;

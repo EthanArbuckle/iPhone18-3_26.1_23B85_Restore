@@ -1,8 +1,8 @@
 @interface SUReflectionImageModifier
-- (CGRect)imageFrameForImage:(id)a3 currentFrame:(CGRect)a4 finalSize:(CGSize)a5;
-- (CGSize)finalSizeForSize:(CGSize)a3 originalSize:(CGSize)a4;
+- (CGRect)imageFrameForImage:(id)image currentFrame:(CGRect)frame finalSize:(CGSize)size;
+- (CGSize)finalSizeForSize:(CGSize)size originalSize:(CGSize)originalSize;
 - (void)dealloc;
-- (void)drawAfterImageForContext:(CGContext *)a3 imageFrame:(CGRect)a4 finalSize:(CGSize)a5;
+- (void)drawAfterImageForContext:(CGContext *)context imageFrame:(CGRect)frame finalSize:(CGSize)size;
 @end
 
 @implementation SUReflectionImageModifier
@@ -15,11 +15,11 @@
   [(SUReflectionImageModifier *)&v3 dealloc];
 }
 
-- (CGSize)finalSizeForSize:(CGSize)a3 originalSize:(CGSize)a4
+- (CGSize)finalSizeForSize:(CGSize)size originalSize:(CGSize)originalSize
 {
-  height = a4.height;
-  width = a3.width;
-  [(SUReflectionImageModifier *)self reflectionHeight:a3.width];
+  height = originalSize.height;
+  width = size.width;
+  [(SUReflectionImageModifier *)self reflectionHeight:size.width];
   v7 = height + v6;
   v8 = width;
   result.height = v7;
@@ -27,12 +27,12 @@
   return result;
 }
 
-- (CGRect)imageFrameForImage:(id)a3 currentFrame:(CGRect)a4 finalSize:(CGSize)a5
+- (CGRect)imageFrameForImage:(id)image currentFrame:(CGRect)frame finalSize:(CGSize)size
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  x = a4.origin.x;
-  [(SUReflectionImageModifier *)self reflectionHeight:a3];
+  height = frame.size.height;
+  width = frame.size.width;
+  x = frame.origin.x;
+  [(SUReflectionImageModifier *)self reflectionHeight:image];
   v9 = v8;
   v10 = x;
   v11 = width;
@@ -44,12 +44,12 @@
   return result;
 }
 
-- (void)drawAfterImageForContext:(CGContext *)a3 imageFrame:(CGRect)a4 finalSize:(CGSize)a5
+- (void)drawAfterImageForContext:(CGContext *)context imageFrame:(CGRect)frame finalSize:(CGSize)size
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  x = a4.origin.x;
-  Image = CGBitmapContextCreateImage(a3);
+  height = frame.size.height;
+  width = frame.size.width;
+  x = frame.origin.x;
+  Image = CGBitmapContextCreateImage(context);
   if (Image)
   {
     v11 = Image;
@@ -66,21 +66,21 @@
     if (v15)
     {
       v16 = v15;
-      CGContextSaveGState(a3);
-      CGContextTranslateCTM(a3, 0.0, v13);
-      CGContextScaleCTM(a3, 1.0, -1.0);
+      CGContextSaveGState(context);
+      CGContextTranslateCTM(context, 0.0, v13);
+      CGContextScaleCTM(context, 1.0, -1.0);
       v20.origin.x = 0.0;
       v20.origin.y = 0.0;
       v20.size.width = width;
       v20.size.height = v13;
-      CGContextDrawImage(a3, v20, v16);
+      CGContextDrawImage(context, v20, v16);
       if (self->_gradient)
       {
         CGContextSetCompositeOperation();
-        [(UIGradient *)self->_gradient fillRect:a3 inContext:0.0, 0.0, width, v13];
+        [(UIGradient *)self->_gradient fillRect:context inContext:0.0, 0.0, width, v13];
       }
 
-      CGContextRestoreGState(a3);
+      CGContextRestoreGState(context);
       CGImageRelease(v16);
     }
 

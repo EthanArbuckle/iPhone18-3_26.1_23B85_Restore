@@ -1,13 +1,13 @@
 @interface _UIOverlayWindowScene
-- (_UIOverlayWindowScene)initWithSession:(id)a3 connectionOptions:(id)a4;
+- (_UIOverlayWindowScene)initWithSession:(id)session connectionOptions:(id)options;
 @end
 
 @implementation _UIOverlayWindowScene
 
-- (_UIOverlayWindowScene)initWithSession:(id)a3 connectionOptions:(id)a4
+- (_UIOverlayWindowScene)initWithSession:(id)session connectionOptions:(id)options
 {
-  v6 = a4;
-  v7 = a3;
+  optionsCopy = options;
+  sessionCopy = session;
   v8 = UIOLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -18,7 +18,7 @@
 
   v11.receiver = self;
   v11.super_class = _UIOverlayWindowScene;
-  v9 = [(_UIOverlayWindowScene *)&v11 initWithSession:v7 connectionOptions:v6];
+  v9 = [(_UIOverlayWindowScene *)&v11 initWithSession:sessionCopy connectionOptions:optionsCopy];
 
   if (v9)
   {

@@ -1,24 +1,24 @@
 @interface SagaUploadPlaylistArtworkOperation
-- (SagaUploadPlaylistArtworkOperation)initWithClientIdentity:(id)a3 playlistPersistentID:(int64_t)a4;
-- (SagaUploadPlaylistArtworkOperation)initWithCoder:(id)a3;
-- (SagaUploadPlaylistArtworkOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 playlistPersistentID:(int64_t)a5;
-- (id)_bodyDataWithAdditionalBodyFields:(id)a3;
-- (id)_requestWithURL:(id)a3 URLBagKey:(id)a4 timeoutInterval:(double)a5 additionalBodyFields:(id)a6;
-- (id)_responseBodyForRequest:(id)a3 retryTimeout:(double)a4 debugName:(id)a5;
-- (id)_standardBodyDictionaryWithAdditionalFields:(id)a3;
-- (void)_downloadRequestsFromURL:(id)a3 uploadResponsesURL:(id)a4;
+- (SagaUploadPlaylistArtworkOperation)initWithClientIdentity:(id)identity playlistPersistentID:(int64_t)d;
+- (SagaUploadPlaylistArtworkOperation)initWithCoder:(id)coder;
+- (SagaUploadPlaylistArtworkOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity playlistPersistentID:(int64_t)d;
+- (id)_bodyDataWithAdditionalBodyFields:(id)fields;
+- (id)_requestWithURL:(id)l URLBagKey:(id)key timeoutInterval:(double)interval additionalBodyFields:(id)fields;
+- (id)_responseBodyForRequest:(id)request retryTimeout:(double)timeout debugName:(id)name;
+- (id)_standardBodyDictionaryWithAdditionalFields:(id)fields;
+- (void)_downloadRequestsFromURL:(id)l uploadResponsesURL:(id)rL;
 - (void)_initiateArtworkUpload;
-- (void)_uploadArtworkAssetWithInfo:(id)a3 completionHandler:(id)a4;
-- (void)_uploadArtworkAssetWithInfo:(id)a3 uploadResponsesURL:(id)a4 uploadResponseData:(id)a5 postUploadBackOffDelay:(unsigned int)a6 followupDownloadRequestsURL:(id)a7;
-- (void)encodeWithCoder:(id)a3;
+- (void)_uploadArtworkAssetWithInfo:(id)info completionHandler:(id)handler;
+- (void)_uploadArtworkAssetWithInfo:(id)info uploadResponsesURL:(id)l uploadResponseData:(id)data postUploadBackOffDelay:(unsigned int)delay followupDownloadRequestsURL:(id)rL;
+- (void)encodeWithCoder:(id)coder;
 - (void)main;
 @end
 
 @implementation SagaUploadPlaylistArtworkOperation
 
-- (id)_bodyDataWithAdditionalBodyFields:(id)a3
+- (id)_bodyDataWithAdditionalBodyFields:(id)fields
 {
-  v3 = [(SagaUploadPlaylistArtworkOperation *)self _standardBodyDictionaryWithAdditionalFields:a3];
+  v3 = [(SagaUploadPlaylistArtworkOperation *)self _standardBodyDictionaryWithAdditionalFields:fields];
   v4 = [NSPropertyListSerialization dataWithPropertyList:v3 format:100 options:0 error:0];
   if ([v4 length])
   {
@@ -35,15 +35,15 @@
     v11 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [v10 path];
+      path = [v10 path];
       *buf = 138543362;
-      v17 = v12;
+      v17 = path;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "Compressing items to upload to path: %{public}@", buf, 0xCu);
     }
 
     MSVGzipCompressFile();
-    v13 = [v9 path];
-    unlink([v13 UTF8String]);
+    path2 = [v9 path];
+    unlink([path2 UTF8String]);
 
     v14 = [[NSData alloc] initWithContentsOfURL:v10 options:1 error:0];
   }
@@ -56,16 +56,16 @@
   return v14;
 }
 
-- (id)_requestWithURL:(id)a3 URLBagKey:(id)a4 timeoutInterval:(double)a5 additionalBodyFields:(id)a6
+- (id)_requestWithURL:(id)l URLBagKey:(id)key timeoutInterval:(double)interval additionalBodyFields:(id)fields
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  lCopy = l;
+  keyCopy = key;
+  fieldsCopy = fields;
   v13 = [ICStoreRequestContext alloc];
-  v14 = [(CloudLibraryOperation *)self userIdentity];
-  v15 = [v13 initWithIdentity:v14];
+  userIdentity = [(CloudLibraryOperation *)self userIdentity];
+  v15 = [v13 initWithIdentity:userIdentity];
 
-  if (!v10 && v11)
+  if (!lCopy && keyCopy)
   {
     v36 = 0;
     v37 = &v36;
@@ -92,10 +92,10 @@
     [v17 getBagForRequestContext:v15 withCompletionHandler:v26];
 
     dispatch_semaphore_wait(v18, 0xFFFFFFFFFFFFFFFFLL);
-    v19 = [v31[5] stringForBagKey:v11];
+    v19 = [v31[5] stringForBagKey:keyCopy];
     if (v19)
     {
-      v10 = [NSURL URLWithString:v19];
+      lCopy = [NSURL URLWithString:v19];
     }
 
     else
@@ -105,25 +105,25 @@
       {
         v21 = v37[5];
         *buf = 138543618;
-        v43 = v11;
+        v43 = keyCopy;
         v44 = 2114;
         v45 = v21;
         _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "failed to fetch bag key '%{public}@. err=%{public}@", buf, 0x16u);
       }
 
-      v10 = 0;
+      lCopy = 0;
     }
 
     _Block_object_dispose(&v30, 8);
     _Block_object_dispose(&v36, 8);
   }
 
-  if (v10)
+  if (lCopy)
   {
-    v22 = [NSMutableURLRequest requestWithURL:v10];
+    v22 = [NSMutableURLRequest requestWithURL:lCopy];
     [v22 setHTTPMethod:@"POST"];
-    [v22 setTimeoutInterval:a5];
-    v23 = [(SagaUploadPlaylistArtworkOperation *)self _bodyDataWithAdditionalBodyFields:v12];
+    [v22 setTimeoutInterval:interval];
+    v23 = [(SagaUploadPlaylistArtworkOperation *)self _bodyDataWithAdditionalBodyFields:fieldsCopy];
     if (v23)
     {
       [v22 setValue:@"application/x-apple-plist" forHTTPHeaderField:@"Content-Type"];
@@ -143,12 +143,12 @@
   return v24;
 }
 
-- (id)_standardBodyDictionaryWithAdditionalFields:(id)a3
+- (id)_standardBodyDictionaryWithAdditionalFields:(id)fields
 {
-  v3 = a3;
-  if ([v3 count])
+  fieldsCopy = fields;
+  if ([fieldsCopy count])
   {
-    v4 = [v3 mutableCopy];
+    v4 = [fieldsCopy mutableCopy];
   }
 
   else
@@ -163,10 +163,10 @@
   return v5;
 }
 
-- (id)_responseBodyForRequest:(id)a3 retryTimeout:(double)a4 debugName:(id)a5
+- (id)_responseBodyForRequest:(id)request retryTimeout:(double)timeout debugName:(id)name
 {
-  v7 = a3;
-  v8 = a5;
+  requestCopy = request;
+  nameCopy = name;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -184,7 +184,7 @@
     [v10 timeIntervalSinceDate:v9];
     v12 = v11;
 
-    if (v12 >= a4)
+    if (v12 >= timeout)
     {
       break;
     }
@@ -195,13 +195,13 @@
     v18[1] = 3221225472;
     v18[2] = sub_1000FBA14;
     v18[3] = &unk_1001DE2F8;
-    v19 = v8;
+    v19 = nameCopy;
     v21 = &v24;
     v22 = &v28;
-    v23 = a4;
+    timeoutCopy = timeout;
     v15 = v13;
     v20 = v15;
-    [v14 enqueueDataRequest:v7 withCompletionHandler:v18];
+    [v14 enqueueDataRequest:requestCopy withCompletionHandler:v18];
 
     dispatch_semaphore_wait(v15, 0xFFFFFFFFFFFFFFFFLL);
   }
@@ -215,17 +215,17 @@
   return v16;
 }
 
-- (void)_uploadArtworkAssetWithInfo:(id)a3 completionHandler:(id)a4
+- (void)_uploadArtworkAssetWithInfo:(id)info completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [a3 objectForKey:@"operations"];
+  handlerCopy = handler;
+  v7 = [info objectForKey:@"operations"];
   if (_NSIsNSArray() && [v7 count])
   {
     v8 = [v7 objectAtIndex:0];
     if (_NSIsNSDictionary())
     {
-      v49 = v6;
-      v50 = self;
+      v49 = handlerCopy;
+      selfCopy = self;
       v48 = v7;
       v46 = [v8 objectForKey:@"endpoint"];
       v9 = [NSURL URLWithString:?];
@@ -317,8 +317,8 @@
       [v26 setAllowsCellularAccess:{objc_msgSend(v27, "isCellularDataRestrictedForMusic") ^ 1}];
 
       v28 = [NSURLSession sessionWithConfiguration:v26];
-      v29 = [(SagaUploadPlaylistArtworkOperation *)v50 assetURL];
-      v30 = [NSData dataWithContentsOfURL:v29 options:1 error:0];
+      assetURL = [(SagaUploadPlaylistArtworkOperation *)selfCopy assetURL];
+      v30 = [NSData dataWithContentsOfURL:assetURL options:1 error:0];
 
       v31 = v47;
       v32 = [v47 objectForKey:@"content"];
@@ -327,30 +327,30 @@
 
       if (v34)
       {
-        v6 = v49;
+        handlerCopy = v49;
       }
 
       else
       {
         v37 = [v32 objectForKey:@"offset"];
         v38 = [v32 objectForKey:@"length"];
-        v39 = [v37 longLongValue];
-        v40 = [v38 longLongValue];
-        if (v39 || v40 != [(SagaUploadPlaylistArtworkOperation *)v50 assetFileSize])
+        longLongValue = [v37 longLongValue];
+        longLongValue2 = [v38 longLongValue];
+        if (longLongValue || longLongValue2 != [(SagaUploadPlaylistArtworkOperation *)selfCopy assetFileSize])
         {
-          v41 = [v30 subdataWithRange:{v39, v40}];
+          v41 = [v30 subdataWithRange:{longLongValue, longLongValue2}];
 
           v30 = v41;
         }
 
-        v6 = v49;
+        handlerCopy = v49;
       }
 
       v53[0] = _NSConcreteStackBlock;
       v53[1] = 3221225472;
       v53[2] = sub_1000FC4EC;
       v53[3] = &unk_1001DE2D0;
-      v54 = v6;
+      v54 = handlerCopy;
       v42 = [v28 msv_uploadTaskWithRequest:v51 fromData:v30 completionHandler:v53];
       ct_green_tea_logger_create();
       v43 = getCTGreenTeaOsLogHandle();
@@ -381,25 +381,25 @@
   v60 = @"Not enough information to upload artwork asset.";
   v31 = [NSDictionary dictionaryWithObjects:&v60 forKeys:&v59 count:1];
   v36 = [NSError ic_cloudClientErrorWithCode:2014 userInfo:v31];
-  (*(v6 + 2))(v6, 0, v36);
+  (*(handlerCopy + 2))(handlerCopy, 0, v36);
 LABEL_29:
 }
 
-- (void)_uploadArtworkAssetWithInfo:(id)a3 uploadResponsesURL:(id)a4 uploadResponseData:(id)a5 postUploadBackOffDelay:(unsigned int)a6 followupDownloadRequestsURL:(id)a7
+- (void)_uploadArtworkAssetWithInfo:(id)info uploadResponsesURL:(id)l uploadResponseData:(id)data postUploadBackOffDelay:(unsigned int)delay followupDownloadRequestsURL:(id)rL
 {
-  v12 = a3;
-  v54 = a4;
-  v56 = a5;
-  v55 = a7;
-  LODWORD(a5) = [(SagaUploadPlaylistArtworkOperation *)self isCancelled];
+  infoCopy = info;
+  lCopy = l;
+  dataCopy = data;
+  rLCopy = rL;
+  LODWORD(data) = [(SagaUploadPlaylistArtworkOperation *)self isCancelled];
   v13 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-  if (!a5)
+  if (!data)
   {
     if (v14)
     {
       LODWORD(buf) = 138543362;
-      *(&buf + 4) = v12;
+      *(&buf + 4) = infoCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Uploading artwork asset using info: %{public}@", &buf, 0xCu);
     }
 
@@ -424,7 +424,7 @@ LABEL_29:
     v60 = &v61;
     v16 = v15;
     v58 = v16;
-    [(SagaUploadPlaylistArtworkOperation *)self _uploadArtworkAssetWithInfo:v12 completionHandler:v57];
+    [(SagaUploadPlaylistArtworkOperation *)self _uploadArtworkAssetWithInfo:infoCopy completionHandler:v57];
     dispatch_semaphore_wait(v16, 0xFFFFFFFFFFFFFFFFLL);
     if (v62[5])
     {
@@ -448,50 +448,50 @@ LABEL_29:
     }
 
     v53 = *(*(&buf + 1) + 40);
-    v21 = [v53 statusCode];
-    if ((v21 & 0xFFFFFFFFFFFFFFFELL) == 0xC8)
+    statusCode = [v53 statusCode];
+    if ((statusCode & 0xFFFFFFFFFFFFFFFELL) == 0xC8)
     {
-      if (a6)
+      if (delay)
       {
         v22 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
         if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
         {
           *v83 = 67109120;
-          LODWORD(v84) = a6;
+          LODWORD(v84) = delay;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Backing off before sending uploadResponsesRequest for %u ms", v83, 8u);
         }
 
-        usleep(1000 * a6);
+        usleep(1000 * delay);
       }
 
-      v20 = [v12 objectForKey:@"token"];
+      v20 = [infoCopy objectForKey:@"token"];
       v79[0] = @"dsid";
-      v51 = [(SagaUploadPlaylistArtworkOperation *)self dsid];
-      v80[0] = v51;
+      dsid = [(SagaUploadPlaylistArtworkOperation *)self dsid];
+      v80[0] = dsid;
       v79[1] = @"cuid";
-      v49 = [(SagaUploadPlaylistArtworkOperation *)self cuid];
-      v80[1] = v49;
+      cuid = [(SagaUploadPlaylistArtworkOperation *)self cuid];
+      v80[1] = cuid;
       v79[2] = @"troveid";
-      v48 = [(SagaUploadPlaylistArtworkOperation *)self troveID];
-      v80[2] = v48;
+      troveID = [(SagaUploadPlaylistArtworkOperation *)self troveID];
+      v80[2] = troveID;
       v79[3] = @"payload";
       v76[0] = @"cloud-id";
-      v47 = [(SagaUploadPlaylistArtworkOperation *)self containerCloudID];
+      containerCloudID = [(SagaUploadPlaylistArtworkOperation *)self containerCloudID];
       v76[1] = @"actions";
-      v77[0] = v47;
+      v77[0] = containerCloudID;
       v74[0] = @"upload-playlist";
       v73[0] = @"action";
       v73[1] = @"assets";
       v71 = @"artwork";
       v69 = @"response-code";
-      v46 = [NSString stringWithFormat:@"%ld", v21];
+      v46 = [NSString stringWithFormat:@"%ld", statusCode];
       v70 = v46;
       v23 = [NSDictionary dictionaryWithObjects:&v70 forKeys:&v69 count:1];
       v72 = v23;
       v24 = [NSDictionary dictionaryWithObjects:&v72 forKeys:&v71 count:1];
       v73[2] = @"response-data";
       v74[1] = v24;
-      v74[2] = v56;
+      v74[2] = dataCopy;
       v25 = [NSDictionary dictionaryWithObjects:v74 forKeys:v73 count:3];
       v75 = v25;
       v26 = [NSArray arrayWithObjects:&v75 count:1];
@@ -502,7 +502,7 @@ LABEL_29:
       v80[3] = v28;
       v45 = [NSDictionary dictionaryWithObjects:v80 forKeys:v79 count:4];
 
-      v29 = [(SagaUploadPlaylistArtworkOperation *)self _requestWithURL:v54 URLBagKey:0 timeoutInterval:v45 additionalBodyFields:60.0];
+      v29 = [(SagaUploadPlaylistArtworkOperation *)self _requestWithURL:lCopy URLBagKey:0 timeoutInterval:v45 additionalBodyFields:60.0];
       v52 = [(SagaUploadPlaylistArtworkOperation *)self _responseBodyForRequest:v29 retryTimeout:@"upload responses (report work item responses)" debugName:180.0];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -511,19 +511,19 @@ LABEL_29:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v31 = [v30 unsignedIntValue];
+          unsignedIntValue = [v30 unsignedIntValue];
 
-          if (v31)
+          if (unsignedIntValue)
           {
             v32 = sub_10010275C();
             if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
             {
               *v83 = 67109120;
-              LODWORD(v84) = v31;
+              LODWORD(v84) = unsignedIntValue;
               _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Backing off before sending second downloadRequestsRequest for %u ms", v83, 8u);
             }
 
-            usleep(1000 * v31);
+            usleep(1000 * unsignedIntValue);
           }
         }
 
@@ -533,30 +533,30 @@ LABEL_29:
       }
 
       v67[0] = @"dsid";
-      v35 = [(SagaUploadPlaylistArtworkOperation *)self dsid];
-      v68[0] = v35;
+      dsid2 = [(SagaUploadPlaylistArtworkOperation *)self dsid];
+      v68[0] = dsid2;
       v67[1] = @"cuid";
-      v36 = [(SagaUploadPlaylistArtworkOperation *)self cuid];
-      v68[1] = v36;
+      cuid2 = [(SagaUploadPlaylistArtworkOperation *)self cuid];
+      v68[1] = cuid2;
       v67[2] = @"troveid";
-      v37 = [(SagaUploadPlaylistArtworkOperation *)self troveID];
-      v68[2] = v37;
+      troveID2 = [(SagaUploadPlaylistArtworkOperation *)self troveID];
+      v68[2] = troveID2;
       v50 = [NSDictionary dictionaryWithObjects:v68 forKeys:v67 count:3];
 
-      v38 = [(SagaUploadPlaylistArtworkOperation *)self _requestWithURL:v55 URLBagKey:0 timeoutInterval:v50 additionalBodyFields:60.0];
+      v38 = [(SagaUploadPlaylistArtworkOperation *)self _requestWithURL:rLCopy URLBagKey:0 timeoutInterval:v50 additionalBodyFields:60.0];
       v39 = [(SagaUploadPlaylistArtworkOperation *)self _responseBodyForRequest:v38 retryTimeout:@"download requests phase 2 (fetch work items)" debugName:180.0];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
         v40 = [v39 objectForKey:@"all-work-completed"];
-        v41 = [v40 BOOLValue];
+        bOOLValue = [v40 BOOLValue];
 
-        if (v41)
+        if (bOOLValue)
         {
           [(CloudLibraryOperation *)self setStatus:1];
-          v42 = [(CloudLibraryOperation *)self musicLibrary];
-          v43 = [(SagaUploadPlaylistArtworkOperation *)self userArtworkToken];
-          [v42 migrateExistingArtworkToken:v43 newArtworkToken:v20 newSourceType:200];
+          musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+          userArtworkToken = [(SagaUploadPlaylistArtworkOperation *)self userArtworkToken];
+          [musicLibrary migrateExistingArtworkToken:userArtworkToken newArtworkToken:v20 newSourceType:200];
 
 LABEL_41:
 LABEL_44:
@@ -588,8 +588,8 @@ LABEL_44:
       }
 
       [(CloudLibraryOperation *)self setStatus:2];
-      v42 = [NSError ic_cloudClientErrorWithCode:2014 userInfo:0];
-      [(CloudLibraryOperation *)self setError:v42];
+      musicLibrary = [NSError ic_cloudClientErrorWithCode:2014 userInfo:0];
+      [(CloudLibraryOperation *)self setError:musicLibrary];
       goto LABEL_41;
     }
 
@@ -597,13 +597,13 @@ LABEL_44:
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
       *v83 = 134217984;
-      v84 = v21;
+      v84 = statusCode;
       _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_ERROR, "Received http %ld response when uploading artwork asset.", v83, 0xCu);
     }
 
-    if (v21 > 399)
+    if (statusCode > 399)
     {
-      if (v21 == 404 || v21 == 400)
+      if (statusCode == 404 || statusCode == 400)
       {
         v34 = 3;
 LABEL_43:
@@ -617,7 +617,7 @@ LABEL_43:
     else
     {
       v34 = 1;
-      if (v21 == 200 || v21 == 204)
+      if (statusCode == 200 || statusCode == 204)
       {
         goto LABEL_43;
       }
@@ -637,24 +637,24 @@ LABEL_43:
 LABEL_45:
 }
 
-- (void)_downloadRequestsFromURL:(id)a3 uploadResponsesURL:(id)a4
+- (void)_downloadRequestsFromURL:(id)l uploadResponsesURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   if (![(SagaUploadPlaylistArtworkOperation *)self isCancelled])
   {
     v42[0] = @"dsid";
-    v9 = [(SagaUploadPlaylistArtworkOperation *)self dsid];
-    v43[0] = v9;
+    dsid = [(SagaUploadPlaylistArtworkOperation *)self dsid];
+    v43[0] = dsid;
     v42[1] = @"cuid";
-    v10 = [(SagaUploadPlaylistArtworkOperation *)self cuid];
-    v43[1] = v10;
+    cuid = [(SagaUploadPlaylistArtworkOperation *)self cuid];
+    v43[1] = cuid;
     v42[2] = @"troveid";
-    v11 = [(SagaUploadPlaylistArtworkOperation *)self troveID];
-    v43[2] = v11;
+    troveID = [(SagaUploadPlaylistArtworkOperation *)self troveID];
+    v43[2] = troveID;
     v12 = [NSDictionary dictionaryWithObjects:v43 forKeys:v42 count:3];
 
-    v13 = [(SagaUploadPlaylistArtworkOperation *)self _requestWithURL:v6 URLBagKey:0 timeoutInterval:v12 additionalBodyFields:60.0];
+    v13 = [(SagaUploadPlaylistArtworkOperation *)self _requestWithURL:lCopy URLBagKey:0 timeoutInterval:v12 additionalBodyFields:60.0];
     v14 = [(SagaUploadPlaylistArtworkOperation *)self _responseBodyForRequest:v13 retryTimeout:@"download requests phase 1 (fetch work items)" debugName:180.0];
     v15 = 0;
     v16 = 0;
@@ -666,12 +666,12 @@ LABEL_45:
     v17 = [v14 objectForKey:@"back-off-delay-in-ms"];
     if (_NSIsNSNumber())
     {
-      v39 = [v17 unsignedIntValue];
+      unsignedIntValue = [v17 unsignedIntValue];
     }
 
     else
     {
-      v39 = 0;
+      unsignedIntValue = 0;
     }
 
     v18 = [v14 objectForKey:@"payload"];
@@ -683,7 +683,7 @@ LABEL_31:
 
       if (v15 && v16)
       {
-        [(SagaUploadPlaylistArtworkOperation *)self _uploadArtworkAssetWithInfo:v15 uploadResponsesURL:v7 uploadResponseData:v16 postUploadBackOffDelay:v39 followupDownloadRequestsURL:v6];
+        [(SagaUploadPlaylistArtworkOperation *)self _uploadArtworkAssetWithInfo:v15 uploadResponsesURL:rLCopy uploadResponseData:v16 postUploadBackOffDelay:unsignedIntValue followupDownloadRequestsURL:lCopy];
 LABEL_37:
 
         goto LABEL_38;
@@ -728,8 +728,8 @@ LABEL_29:
       goto LABEL_30;
     }
 
-    v21 = [(SagaUploadPlaylistArtworkOperation *)self containerCloudID];
-    v22 = [v20 isEqualToNumber:v21];
+    containerCloudID = [(SagaUploadPlaylistArtworkOperation *)self containerCloudID];
+    v22 = [v20 isEqualToNumber:containerCloudID];
 
     if (v22)
     {
@@ -796,7 +796,7 @@ LABEL_29:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
       {
         *buf = 134217984;
-        v41 = [v20 unsignedLongLongValue];
+        unsignedLongLongValue = [v20 unsignedLongLongValue];
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "Received cloudID that does not match the one we initiated the asset upload for: %llu", buf, 0xCu);
       }
     }
@@ -849,7 +849,7 @@ LABEL_38:
     v6[3] = "";
     v6[4] = 4256;
     CC_SHA256_Init(v7);
-    v4 = [(SagaUploadPlaylistArtworkOperation *)self assetURL];
+    assetURL = [(SagaUploadPlaylistArtworkOperation *)self assetURL];
     v5 = MSVHasherDigestDataBlocksFromURL();
 
     _Block_object_dispose(v6, 8);
@@ -861,31 +861,31 @@ LABEL_38:
 {
   if (![(SagaUploadPlaylistArtworkOperation *)self isCancelled])
   {
-    v3 = [(CloudLibraryOperation *)self musicLibrary];
-    v4 = [(CloudLibraryOperation *)self clientIdentity];
-    [v3 setClientIdentity:v4];
+    musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+    clientIdentity = [(CloudLibraryOperation *)self clientIdentity];
+    [musicLibrary setClientIdentity:clientIdentity];
 
     playlistPersistentID = self->_playlistPersistentID;
-    v6 = [(CloudLibraryOperation *)self musicLibrary];
-    v7 = [ML3Container newWithPersistentID:playlistPersistentID inLibrary:v6];
+    musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
+    v7 = [ML3Container newWithPersistentID:playlistPersistentID inLibrary:musicLibrary2];
 
     if ([v7 existsInLibrary])
     {
       v8 = [v7 valueForProperty:ML3ContainerPropertyStoreCloudID];
       [(SagaUploadPlaylistArtworkOperation *)self setContainerCloudID:v8];
 
-      v9 = [(SagaUploadPlaylistArtworkOperation *)self containerCloudID];
-      v10 = [v9 unsignedIntValue];
+      containerCloudID = [(SagaUploadPlaylistArtworkOperation *)self containerCloudID];
+      unsignedIntValue = [containerCloudID unsignedIntValue];
 
-      if (v10)
+      if (unsignedIntValue)
       {
-        v11 = [[ML3ArtworkTokenSet alloc] initWithEntity:v7 artworkType:5];
-        v12 = [v11 artworkTokenForSource:100];
+        musicLibrary11 = [[ML3ArtworkTokenSet alloc] initWithEntity:v7 artworkType:5];
+        v12 = [musicLibrary11 artworkTokenForSource:100];
         [(SagaUploadPlaylistArtworkOperation *)self setUserArtworkToken:v12];
 
-        v13 = [(SagaUploadPlaylistArtworkOperation *)self userArtworkToken];
+        userArtworkToken = [(SagaUploadPlaylistArtworkOperation *)self userArtworkToken];
 
-        if (!v13)
+        if (!userArtworkToken)
         {
           v41 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
           if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
@@ -897,42 +897,42 @@ LABEL_38:
           }
 
           [(CloudLibraryOperation *)self setStatus:1];
-          v17 = [(CloudLibraryOperation *)self musicLibrary];
+          musicLibrary3 = [(CloudLibraryOperation *)self musicLibrary];
           v19 = MSVTCCIdentityForCurrentProcess();
-          [v17 setClientIdentity:v19];
+          [musicLibrary3 setClientIdentity:v19];
           goto LABEL_30;
         }
 
         v14 = [ML3Artwork alloc];
-        v15 = [(SagaUploadPlaylistArtworkOperation *)self userArtworkToken];
-        v16 = [(CloudLibraryOperation *)self musicLibrary];
-        v17 = [v14 initWithToken:v15 artworkType:5 musicLibrary:v16];
+        userArtworkToken2 = [(SagaUploadPlaylistArtworkOperation *)self userArtworkToken];
+        musicLibrary4 = [(CloudLibraryOperation *)self musicLibrary];
+        musicLibrary3 = [v14 initWithToken:userArtworkToken2 artworkType:5 musicLibrary:musicLibrary4];
 
-        v18 = [v17 originalFileURL];
-        [(SagaUploadPlaylistArtworkOperation *)self setAssetURL:v18];
+        originalFileURL = [musicLibrary3 originalFileURL];
+        [(SagaUploadPlaylistArtworkOperation *)self setAssetURL:originalFileURL];
 
         v19 = +[NSFileManager defaultManager];
-        v20 = [(SagaUploadPlaylistArtworkOperation *)self assetURL];
-        v21 = [v20 path];
-        v22 = [v19 fileExistsAtPath:v21];
+        assetURL = [(SagaUploadPlaylistArtworkOperation *)self assetURL];
+        path = [assetURL path];
+        v22 = [v19 fileExistsAtPath:path];
 
         if (v22)
         {
-          v23 = [(SagaUploadPlaylistArtworkOperation *)self assetURL];
-          v24 = [v23 path];
-          v25 = [v19 attributesOfItemAtPath:v24 error:0];
+          assetURL2 = [(SagaUploadPlaylistArtworkOperation *)self assetURL];
+          path2 = [assetURL2 path];
+          v25 = [v19 attributesOfItemAtPath:path2 error:0];
           -[SagaUploadPlaylistArtworkOperation setAssetFileSize:](self, "setAssetFileSize:", [v25 fileSize]);
 
           if ([(SagaUploadPlaylistArtworkOperation *)self assetFileSize])
           {
-            v26 = [(CloudLibraryOperation *)self musicLibrary];
-            v27 = [v26 sagaAccountID];
-            [(SagaUploadPlaylistArtworkOperation *)self setDsid:v27];
+            musicLibrary5 = [(CloudLibraryOperation *)self musicLibrary];
+            sagaAccountID = [musicLibrary5 sagaAccountID];
+            [(SagaUploadPlaylistArtworkOperation *)self setDsid:sagaAccountID];
 
-            v28 = [(SagaUploadPlaylistArtworkOperation *)self dsid];
-            v29 = [v28 longLongValue];
+            dsid = [(SagaUploadPlaylistArtworkOperation *)self dsid];
+            longLongValue = [dsid longLongValue];
 
-            if (!v29)
+            if (!longLongValue)
             {
               v43 = sub_10010275C();
               if (os_log_type_enabled(v43, OS_LOG_TYPE_FAULT))
@@ -944,28 +944,28 @@ LABEL_38:
               goto LABEL_28;
             }
 
-            v30 = [(CloudLibraryOperation *)self musicLibrary];
-            v31 = [v30 sagaCloudLibraryCUID];
-            [(SagaUploadPlaylistArtworkOperation *)self setCuid:v31];
+            musicLibrary6 = [(CloudLibraryOperation *)self musicLibrary];
+            sagaCloudLibraryCUID = [musicLibrary6 sagaCloudLibraryCUID];
+            [(SagaUploadPlaylistArtworkOperation *)self setCuid:sagaCloudLibraryCUID];
 
-            v32 = [(CloudLibraryOperation *)self musicLibrary];
-            v33 = [v32 sagaCloudLibraryTroveID];
-            [(SagaUploadPlaylistArtworkOperation *)self setTroveID:v33];
+            musicLibrary7 = [(CloudLibraryOperation *)self musicLibrary];
+            sagaCloudLibraryTroveID = [musicLibrary7 sagaCloudLibraryTroveID];
+            [(SagaUploadPlaylistArtworkOperation *)self setTroveID:sagaCloudLibraryTroveID];
 
-            v34 = [(SagaUploadPlaylistArtworkOperation *)self cuid];
-            if ([v34 length])
+            cuid = [(SagaUploadPlaylistArtworkOperation *)self cuid];
+            if ([cuid length])
             {
-              v35 = [(SagaUploadPlaylistArtworkOperation *)self troveID];
-              v36 = [v35 length];
+              troveID = [(SagaUploadPlaylistArtworkOperation *)self troveID];
+              v36 = [troveID length];
 
               if (v36)
               {
 LABEL_37:
-                v56 = [(SagaUploadPlaylistArtworkOperation *)self cuid];
-                if ([v56 length])
+                cuid2 = [(SagaUploadPlaylistArtworkOperation *)self cuid];
+                if ([cuid2 length])
                 {
-                  v57 = [(SagaUploadPlaylistArtworkOperation *)self troveID];
-                  v58 = [v57 length];
+                  troveID2 = [(SagaUploadPlaylistArtworkOperation *)self troveID];
+                  v58 = [troveID2 length];
 
                   if (v58)
                   {
@@ -981,12 +981,12 @@ LABEL_37:
                 v43 = sub_10010275C();
                 if (os_log_type_enabled(v43, OS_LOG_TYPE_FAULT))
                 {
-                  v59 = [(SagaUploadPlaylistArtworkOperation *)self cuid];
-                  v60 = [(SagaUploadPlaylistArtworkOperation *)self troveID];
+                  cuid3 = [(SagaUploadPlaylistArtworkOperation *)self cuid];
+                  troveID3 = [(SagaUploadPlaylistArtworkOperation *)self troveID];
                   *v61 = 138543618;
-                  *&v61[4] = v59;
+                  *&v61[4] = cuid3;
                   *&v61[12] = 2114;
-                  *&v61[14] = v60;
+                  *&v61[14] = troveID3;
                   _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_FAULT, "SagaUploadPlaylistArtworkOperation failed -- Missing one required parameter: CUID (%{public}@) / TroveID (%{public}@)", v61, 0x16u);
                 }
 
@@ -997,9 +997,9 @@ LABEL_28:
                 [(CloudLibraryOperation *)self setError:v47];
 
 LABEL_29:
-                v48 = [(CloudLibraryOperation *)self musicLibrary];
+                musicLibrary8 = [(CloudLibraryOperation *)self musicLibrary];
                 v49 = MSVTCCIdentityForCurrentProcess();
-                [v48 setClientIdentity:v49];
+                [musicLibrary8 setClientIdentity:v49];
 
 LABEL_30:
                 goto LABEL_31;
@@ -1010,18 +1010,18 @@ LABEL_30:
             {
             }
 
-            v50 = [(CloudLibraryOperation *)self configuration];
-            v51 = sub_1000E54B0(v50, 0, 0);
+            configuration = [(CloudLibraryOperation *)self configuration];
+            v51 = sub_1000E54B0(configuration, 0, 0);
 
             if (v51)
             {
-              v52 = [(CloudLibraryOperation *)self musicLibrary];
-              v53 = [v52 sagaCloudLibraryCUID];
-              [(SagaUploadPlaylistArtworkOperation *)self setCuid:v53];
+              musicLibrary9 = [(CloudLibraryOperation *)self musicLibrary];
+              sagaCloudLibraryCUID2 = [musicLibrary9 sagaCloudLibraryCUID];
+              [(SagaUploadPlaylistArtworkOperation *)self setCuid:sagaCloudLibraryCUID2];
 
-              v54 = [(CloudLibraryOperation *)self musicLibrary];
-              v55 = [v54 sagaCloudLibraryTroveID];
-              [(SagaUploadPlaylistArtworkOperation *)self setTroveID:v55];
+              musicLibrary10 = [(CloudLibraryOperation *)self musicLibrary];
+              sagaCloudLibraryTroveID2 = [musicLibrary10 sagaCloudLibraryTroveID];
+              [(SagaUploadPlaylistArtworkOperation *)self setTroveID:sagaCloudLibraryTroveID2];
             }
 
             goto LABEL_37;
@@ -1033,10 +1033,10 @@ LABEL_30:
             goto LABEL_28;
           }
 
-          v44 = [(SagaUploadPlaylistArtworkOperation *)self assetURL];
-          v45 = [v44 path];
+          assetURL3 = [(SagaUploadPlaylistArtworkOperation *)self assetURL];
+          path3 = [assetURL3 path];
           *v61 = 138543362;
-          *&v61[4] = v45;
+          *&v61[4] = path3;
           v46 = "SagaUploadPlaylistArtworkOperation failed -- Artwork is zero bytes at: %{public}@";
         }
 
@@ -1048,10 +1048,10 @@ LABEL_30:
             goto LABEL_28;
           }
 
-          v44 = [(SagaUploadPlaylistArtworkOperation *)self assetURL];
-          v45 = [v44 path];
+          assetURL3 = [(SagaUploadPlaylistArtworkOperation *)self assetURL];
+          path3 = [assetURL3 path];
           *v61 = 138543362;
-          *&v61[4] = v45;
+          *&v61[4] = path3;
           v46 = "SagaUploadPlaylistArtworkOperation failed -- No artwork exists at: %{public}@";
         }
 
@@ -1086,9 +1086,9 @@ LABEL_18:
     }
 
     [(CloudLibraryOperation *)self setStatus:1];
-    v11 = [(CloudLibraryOperation *)self musicLibrary];
-    v17 = MSVTCCIdentityForCurrentProcess();
-    [v11 setClientIdentity:v17];
+    musicLibrary11 = [(CloudLibraryOperation *)self musicLibrary];
+    musicLibrary3 = MSVTCCIdentityForCurrentProcess();
+    [musicLibrary11 setClientIdentity:musicLibrary3];
 LABEL_31:
 
     return;
@@ -1097,47 +1097,47 @@ LABEL_31:
   [(CloudLibraryOperation *)self setStatus:4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SagaUploadPlaylistArtworkOperation;
-  v4 = a3;
-  [(CloudLibraryOperation *)&v5 encodeWithCoder:v4];
-  [v4 encodeInt64:self->_playlistPersistentID forKey:{@"SagaUploadPlaylistArtworkOperationPlaylistPersistentIDKey", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CloudLibraryOperation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInt64:self->_playlistPersistentID forKey:{@"SagaUploadPlaylistArtworkOperationPlaylistPersistentIDKey", v5.receiver, v5.super_class}];
 }
 
-- (SagaUploadPlaylistArtworkOperation)initWithCoder:(id)a3
+- (SagaUploadPlaylistArtworkOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = SagaUploadPlaylistArtworkOperation;
-  v5 = [(CloudLibraryOperation *)&v7 initWithCoder:v4];
+  v5 = [(CloudLibraryOperation *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_playlistPersistentID = [v4 decodeInt64ForKey:@"SagaUploadPlaylistArtworkOperationPlaylistPersistentIDKey"];
+    v5->_playlistPersistentID = [coderCopy decodeInt64ForKey:@"SagaUploadPlaylistArtworkOperationPlaylistPersistentIDKey"];
   }
 
   return v5;
 }
 
-- (SagaUploadPlaylistArtworkOperation)initWithConfiguration:(id)a3 clientIdentity:(id)a4 playlistPersistentID:(int64_t)a5
+- (SagaUploadPlaylistArtworkOperation)initWithConfiguration:(id)configuration clientIdentity:(id)identity playlistPersistentID:(int64_t)d
 {
   v7.receiver = self;
   v7.super_class = SagaUploadPlaylistArtworkOperation;
-  result = [(CloudLibraryOperation *)&v7 initWithConfiguration:a3 clientIdentity:a4];
+  result = [(CloudLibraryOperation *)&v7 initWithConfiguration:configuration clientIdentity:identity];
   if (result)
   {
-    result->_playlistPersistentID = a5;
+    result->_playlistPersistentID = d;
   }
 
   return result;
 }
 
-- (SagaUploadPlaylistArtworkOperation)initWithClientIdentity:(id)a3 playlistPersistentID:(int64_t)a4
+- (SagaUploadPlaylistArtworkOperation)initWithClientIdentity:(id)identity playlistPersistentID:(int64_t)d
 {
-  v6 = a3;
+  identityCopy = identity;
   v7 = objc_opt_new();
-  v8 = [(SagaUploadPlaylistArtworkOperation *)self initWithConfiguration:v7 clientIdentity:v6 playlistPersistentID:a4];
+  v8 = [(SagaUploadPlaylistArtworkOperation *)self initWithConfiguration:v7 clientIdentity:identityCopy playlistPersistentID:d];
 
   return v8;
 }

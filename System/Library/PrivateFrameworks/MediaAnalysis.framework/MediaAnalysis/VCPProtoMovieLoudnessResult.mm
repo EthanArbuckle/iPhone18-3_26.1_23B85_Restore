@@ -1,24 +1,24 @@
 @interface VCPProtoMovieLoudnessResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoMovieLoudnessResult
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   memset(&v13, 0, sizeof(v13));
-  CMTimeRangeMakeFromDictionary(&v13, v3);
-  v4 = [(__CFDictionary *)v3 objectForKeyedSubscript:@"attributes"];
+  CMTimeRangeMakeFromDictionary(&v13, dictionaryCopy);
+  v4 = [(__CFDictionary *)dictionaryCopy objectForKeyedSubscript:@"attributes"];
   v5 = [v4 objectForKeyedSubscript:@"energyValues"];
   v6 = [v4 objectForKeyedSubscript:@"peakValues"];
   v7 = v6;
@@ -54,11 +54,11 @@
 - (id)exportToLegacyDictionary
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v3 = [(VCPProtoMovieLoudnessResult *)self timeRange];
-  v4 = v3;
-  if (v3)
+  timeRange = [(VCPProtoMovieLoudnessResult *)self timeRange];
+  v4 = timeRange;
+  if (timeRange)
   {
-    [v3 timeRangeValue];
+    [timeRange timeRangeValue];
   }
 
   else
@@ -92,52 +92,52 @@
   v8.receiver = self;
   v8.super_class = VCPProtoMovieLoudnessResult;
   v4 = [(VCPProtoMovieLoudnessResult *)&v8 description];
-  v5 = [(VCPProtoMovieLoudnessResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoMovieLoudnessResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   timeRange = self->_timeRange;
   if (timeRange)
   {
-    v5 = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"timeRange"];
+    dictionaryRepresentation = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"timeRange"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_energy];
-  [v3 setObject:v6 forKey:@"energy"];
+  [dictionary setObject:v6 forKey:@"energy"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_peak];
-  [v3 setObject:v7 forKey:@"peak"];
+  [dictionary setObject:v7 forKey:@"peak"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteSubmessage();
   PBDataWriterWriteDoubleField();
   PBDataWriterWriteDoubleField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   timeRange = self->_timeRange;
-  v5 = a3;
-  [v5 setTimeRange:timeRange];
-  v5[1] = self->_energy;
-  v5[2] = self->_peak;
+  toCopy = to;
+  [toCopy setTimeRange:timeRange];
+  toCopy[1] = self->_energy;
+  toCopy[2] = self->_peak;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -146,10 +146,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v6 = [v4 isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | *(v4 + 3))) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && self->_energy == *(v4 + 1) && self->_peak == *(v4 + 2);
+  equalCopy = equal;
+  v6 = [equalCopy isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | *(equalCopy + 3))) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && self->_energy == *(equalCopy + 1) && self->_peak == *(equalCopy + 2);
 
   return v6;
 }
@@ -210,11 +210,11 @@
   return v15 ^ v3 ^ v21;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   timeRange = self->_timeRange;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (timeRange)
   {
     if (!v6)
@@ -222,7 +222,7 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(VCPProtoTimeRange *)timeRange mergeFrom:?];
   }
 
@@ -233,14 +233,14 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(VCPProtoMovieLoudnessResult *)self setTimeRange:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  self->_energy = *(v4 + 1);
-  self->_peak = *(v4 + 2);
+  self->_energy = *(fromCopy + 1);
+  self->_peak = *(fromCopy + 2);
 }
 
 @end

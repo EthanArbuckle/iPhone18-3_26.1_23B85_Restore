@@ -1,16 +1,16 @@
 @interface EmbeddedTrackpadHIDEventProcessor
-- (BOOL)shouldDispatchEvent:(id)a3;
-- (id)handleHIDEvent:(id)a3;
-- (void)copyPhaseFrom:(id)a3 to:(id)a4;
+- (BOOL)shouldDispatchEvent:(id)event;
+- (id)handleHIDEvent:(id)event;
+- (void)copyPhaseFrom:(id)from to:(id)to;
 @end
 
 @implementation EmbeddedTrackpadHIDEventProcessor
 
-- (id)handleHIDEvent:(id)a3
+- (id)handleHIDEvent:(id)event
 {
-  v77 = a3;
+  eventCopy = event;
   v4 = objc_opt_new();
-  if ([v77 type] != 11)
+  if ([eventCopy type] != 11)
   {
     v6 = MTLoggingPlugin();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -22,14 +22,14 @@
       *&buf[22] = 2080;
       *&buf[24] = "[EmbeddedTrackpadHIDEventProcessor handleHIDEvent:]";
       *&buf[32] = 1024;
-      *&buf[34] = [v77 type];
+      *&buf[34] = [eventCopy type];
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_ERROR, "[HID] [MT] %s%s%s Unexpected event type: %u Eating it.", buf, 0x26u);
     }
 
     goto LABEL_12;
   }
 
-  if ([v77 integerValueForField:720918] != &dword_0 + 1)
+  if ([eventCopy integerValueForField:720918] != &dword_0 + 1)
   {
     v6 = MTLoggingPlugin();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -46,9 +46,9 @@
     goto LABEL_12;
   }
 
-  v5 = [v77 parent];
+  parent = [eventCopy parent];
 
-  if (v5)
+  if (parent)
   {
     v6 = MTLoggingPlugin();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -72,9 +72,9 @@ LABEL_12:
   v74 = [HIDEvent pointerEvent:mach_absolute_time() x:[(TrackpadHIDEventProcessor *)self previousButtonState] y:0 z:0.0 buttonMask:0.0 options:0.0];
   if (v74)
   {
-    v75 = v77;
-    v9 = [v75 children];
-    v10 = [v9 copy];
+    v75 = eventCopy;
+    children = [v75 children];
+    v10 = [children copy];
 
     v84 = 0u;
     v85 = 0u;
@@ -140,15 +140,15 @@ LABEL_12:
               }
 
 LABEL_89:
-              v55 = [v16 children];
-              v56 = [v55 count] == 0;
+              children2 = [v16 children];
+              v56 = [children2 count] == 0;
 
               if (!v56)
               {
                 v57 = MTLoggingPlugin();
                 if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
                 {
-                  v58 = [v16 type];
+                  type = [v16 type];
                   *buf = 136315906;
                   *&buf[4] = "[Error] ";
                   *&buf[12] = 2080;
@@ -156,7 +156,7 @@ LABEL_89:
                   *&buf[22] = 2080;
                   *&buf[24] = "[EmbeddedTrackpadHIDEventProcessor handleHIDEvent:]";
                   *&buf[32] = 1024;
-                  *&buf[34] = v58;
+                  *&buf[34] = type;
                   _os_log_impl(&dword_0, v57, OS_LOG_TYPE_ERROR, "[HID] [MT] %s%s%s Unexpected grandchild events inside event type: %u. Eating them", buf, 0x26u);
                 }
               }
@@ -285,12 +285,12 @@ LABEL_88:
                 v38 = v37;
                 [v16 doubleValueForField:393218];
                 v40 = v39;
-                v41 = [v16 options];
+                options = [v16 options];
                 v42 = v36;
                 v43 = v40;
                 v44 = v43;
                 v45 = v38;
-                v46 = [(TrackpadHIDEventProcessor *)self createScrollEventWithDeltaX:v41 deltaY:v42 deltaZ:v45 options:v44];
+                v46 = [(TrackpadHIDEventProcessor *)self createScrollEventWithDeltaX:options deltaY:v42 deltaZ:v45 options:v44];
                 if (!v46)
                 {
                   memset(buf, 170, 0x400uLL);
@@ -523,7 +523,7 @@ LABEL_66:
                     goto LABEL_88;
                   }
 
-                  v60 = [v16 type];
+                  type2 = [v16 type];
                   *buf = 136315906;
                   *&buf[4] = "[Error] ";
                   *&buf[12] = 2080;
@@ -531,7 +531,7 @@ LABEL_66:
                   *&buf[22] = 2080;
                   *&buf[24] = "[EmbeddedTrackpadHIDEventProcessor handleHIDEvent:]";
                   *&buf[32] = 1024;
-                  *&buf[34] = v60;
+                  *&buf[34] = type2;
                   v25 = v20;
                   v26 = OS_LOG_TYPE_ERROR;
                   v27 = "[HID] [MT] %s%s%s Unexpected child event type: %u. Eating it";
@@ -707,11 +707,11 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)shouldDispatchEvent:(id)a3
+- (BOOL)shouldDispatchEvent:(id)event
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 type] == 17 && (objc_msgSend(v5, "parent"), v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
+  eventCopy = event;
+  v5 = eventCopy;
+  if (eventCopy && [eventCopy type] == 17 && (objc_msgSend(v5, "parent"), v6 = objc_claimAutoreleasedReturnValue(), v6, !v6))
   {
     [v5 doubleValueForField:1114112];
     v10 = v9;
@@ -727,8 +727,8 @@ LABEL_13:
         v24 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v14 = [v5 children];
-        v7 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        children = [v5 children];
+        v7 = [children countByEnumeratingWithState:&v21 objects:v25 count:16];
         if (v7)
         {
           v15 = *v22;
@@ -738,7 +738,7 @@ LABEL_13:
             {
               if (*v22 != v15)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(children);
               }
 
               v17 = *(*(&v21 + 1) + 8 * i);
@@ -765,7 +765,7 @@ LABEL_20:
               }
             }
 
-            v7 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+            v7 = [children countByEnumeratingWithState:&v21 objects:v25 count:16];
             if (v7)
             {
               continue;
@@ -788,10 +788,10 @@ LABEL_21:
   return v7;
 }
 
-- (void)copyPhaseFrom:(id)a3 to:(id)a4
+- (void)copyPhaseFrom:(id)from to:(id)to
 {
-  v6 = a3;
-  v5 = a4;
+  fromCopy = from;
+  toCopy = to;
   IOHIDEventGetPhase();
   IOHIDEventSetPhase();
 }

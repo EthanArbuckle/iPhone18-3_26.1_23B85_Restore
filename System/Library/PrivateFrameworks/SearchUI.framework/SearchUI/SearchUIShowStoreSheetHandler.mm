@@ -1,20 +1,20 @@
 @interface SearchUIShowStoreSheetHandler
-+ (id)fallbackCommandForRowModel:(id)a3 environment:(id)a4;
-- (id)createViewControllerForCommand:(id)a3 environment:(id)a4;
++ (id)fallbackCommandForRowModel:(id)model environment:(id)environment;
+- (id)createViewControllerForCommand:(id)command environment:(id)environment;
 @end
 
 @implementation SearchUIShowStoreSheetHandler
 
-+ (id)fallbackCommandForRowModel:(id)a3 environment:(id)a4
++ (id)fallbackCommandForRowModel:(id)model environment:(id)environment
 {
-  v4 = [a3 identifyingResult];
-  v5 = [v4 storeIdentifier];
-  v6 = [v4 action];
-  v7 = v6;
-  if (v5 && (!v6 || [v6 requiresLocalMedia]) && objc_msgSend(v4, "type") == 1)
+  identifyingResult = [model identifyingResult];
+  storeIdentifier = [identifyingResult storeIdentifier];
+  action = [identifyingResult action];
+  v7 = action;
+  if (storeIdentifier && (!action || [action requiresLocalMedia]) && objc_msgSend(identifyingResult, "type") == 1)
   {
     v8 = objc_opt_new();
-    [v8 setStoreIdentifier:v5];
+    [v8 setStoreIdentifier:storeIdentifier];
   }
 
   else
@@ -25,17 +25,17 @@
   return v8;
 }
 
-- (id)createViewControllerForCommand:(id)a3 environment:(id)a4
+- (id)createViewControllerForCommand:(id)command environment:(id)environment
 {
-  v6 = a4;
-  v7 = a3;
+  environmentCopy = environment;
+  commandCopy = command;
   v8 = [SearchUIStoreViewController alloc];
-  v9 = [v7 storeIdentifier];
+  storeIdentifier = [commandCopy storeIdentifier];
 
-  v10 = [v6 feedbackDelegate];
+  feedbackDelegate = [environmentCopy feedbackDelegate];
 
-  v11 = [(SearchUICommandHandler *)self rowModel];
-  v12 = -[SearchUIStoreViewController initWithIdentifier:feedbackListener:queryId:](v8, "initWithIdentifier:feedbackListener:queryId:", v9, v10, [v11 queryId]);
+  rowModel = [(SearchUICommandHandler *)self rowModel];
+  v12 = -[SearchUIStoreViewController initWithIdentifier:feedbackListener:queryId:](v8, "initWithIdentifier:feedbackListener:queryId:", storeIdentifier, feedbackDelegate, [rowModel queryId]);
 
   return v12;
 }

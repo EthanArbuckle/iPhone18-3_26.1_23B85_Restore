@@ -1,10 +1,10 @@
 @interface IDSCapabilitiesChecker
-- (void)handleLookupManagerDidChangeNotification:(id)a3;
+- (void)handleLookupManagerDidChangeNotification:(id)notification;
 @end
 
 @implementation IDSCapabilitiesChecker
 
-- (void)handleLookupManagerDidChangeNotification:(id)a3
+- (void)handleLookupManagerDidChangeNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);

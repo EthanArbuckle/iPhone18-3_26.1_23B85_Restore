@@ -1,27 +1,27 @@
 @interface HUCCRemoteDashboardViewController
-+ (id)requestViewControllerWithConnectionHandler:(id)a3;
++ (id)requestViewControllerWithConnectionHandler:(id)handler;
 - (HUCCRemoteDashboardDelegate)delegate;
 - (void)authorizeIfLocked;
 - (void)requestDismissal;
-- (void)viewServiceDidTerminateWithError:(id)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
 @end
 
 @implementation HUCCRemoteDashboardViewController
 
-+ (id)requestViewControllerWithConnectionHandler:(id)a3
++ (id)requestViewControllerWithConnectionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = objc_opt_class();
-  v6 = objc_msgSend_requestViewController_fromServiceWithBundleIdentifier_connectionHandler_(v4, v5, @"HCSRemoteViewController", @"com.apple.Home.HomeControlService", v3);
+  v6 = objc_msgSend_requestViewController_fromServiceWithBundleIdentifier_connectionHandler_(v4, v5, @"HCSRemoteViewController", @"com.apple.Home.HomeControlService", handlerCopy);
 
   return v6;
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v8 = objc_msgSend_delegate(self, v5, v6);
-  objc_msgSend_remoteDashboard_viewServiceDidTerminateWithError_(v8, v7, self, v4);
+  objc_msgSend_remoteDashboard_viewServiceDidTerminateWithError_(v8, v7, self, errorCopy);
 }
 
 - (void)authorizeIfLocked

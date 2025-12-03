@@ -6,10 +6,10 @@
 
 - (id)mb_applicationType
 {
-  v2 = [(LSApplicationRecord *)self compatibilityObject];
-  v3 = [v2 applicationType];
+  compatibilityObject = [(LSApplicationRecord *)self compatibilityObject];
+  applicationType = [compatibilityObject applicationType];
 
-  return v3;
+  return applicationType;
 }
 
 @end

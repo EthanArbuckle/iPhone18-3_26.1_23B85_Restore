@@ -1,28 +1,28 @@
 @interface VCPProtoLivePhotoFrameInstruction
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (float)homographyParamAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (float)homographyParamAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoLivePhotoFrameInstruction
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v4 = objc_alloc_init(VCPProtoLivePhotoFrameInstruction);
-    v5 = [v3 objectForKeyedSubscript:@"homography"];
+    v5 = [dictionaryCopy objectForKeyedSubscript:@"homography"];
     memset(&v11, 0, sizeof(v11));
-    v6 = [v3 objectForKeyedSubscript:@"rawTime"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"rawTime"];
     CMTimeMakeFromDictionary(&v11, v6);
 
     if ([v5 count] >= 8 && objc_msgSend(v5, "count") <= 9)
@@ -57,28 +57,28 @@
 
 - (id)exportToLegacyDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  array = [MEMORY[0x1E695DF70] array];
   for (i = 0; [(VCPProtoLivePhotoFrameInstruction *)self homographyParamsCount]> i; ++i)
   {
     v6 = MEMORY[0x1E696AD98];
     [(VCPProtoLivePhotoFrameInstruction *)self homographyParamAtIndex:i];
     v7 = [v6 numberWithFloat:?];
-    [v4 addObject:v7];
+    [array addObject:v7];
   }
 
-  [v4 addObject:&unk_1F49BB0C8];
+  [array addObject:&unk_1F49BB0C8];
   memset(&v10, 0, sizeof(v10));
   CMTimeMake(&v10, [(VCPProtoLivePhotoFrameInstruction *)self timeValue], [(VCPProtoLivePhotoFrameInstruction *)self timeScale]);
   v10.epoch = [(VCPProtoLivePhotoFrameInstruction *)self epoch];
   v10.flags = [(VCPProtoLivePhotoFrameInstruction *)self flags];
   time = v10;
   v8 = CMTimeCopyAsDictionary(&time, 0);
-  [v3 setObject:v8 forKeyedSubscript:@"rawTime"];
+  [dictionary setObject:v8 forKeyedSubscript:@"rawTime"];
 
-  [v3 setObject:v4 forKeyedSubscript:@"homography"];
+  [dictionary setObject:array forKeyedSubscript:@"homography"];
 
-  return v3;
+  return dictionary;
 }
 
 - (void)dealloc
@@ -89,20 +89,20 @@
   [(VCPProtoLivePhotoFrameInstruction *)&v3 dealloc];
 }
 
-- (float)homographyParamAtIndex:(unint64_t)a3
+- (float)homographyParamAtIndex:(unint64_t)index
 {
   p_homographyParams = &self->_homographyParams;
   count = self->_homographyParams.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_homographyParams->list[a3];
+  return p_homographyParams->list[index];
 }
 
 - (id)description
@@ -111,36 +111,36 @@
   v8.receiver = self;
   v8.super_class = VCPProtoLivePhotoFrameInstruction;
   v4 = [(VCPProtoLivePhotoFrameInstruction *)&v8 description];
-  v5 = [(VCPProtoLivePhotoFrameInstruction *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoLivePhotoFrameInstruction *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_timeValue];
-  [v3 setObject:v4 forKey:@"timeValue"];
+  [dictionary setObject:v4 forKey:@"timeValue"];
 
   v5 = PBRepeatedFloatNSArray();
-  [v3 setObject:v5 forKey:@"homographyParam"];
+  [dictionary setObject:v5 forKey:@"homographyParam"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithInt:self->_timeScale];
-  [v3 setObject:v6 forKey:@"timeScale"];
+  [dictionary setObject:v6 forKey:@"timeScale"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithLongLong:self->_epoch];
-  [v3 setObject:v7 forKey:@"epoch"];
+  [dictionary setObject:v7 forKey:@"epoch"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithInt:self->_flags];
-  [v3 setObject:v8 forKey:@"flags"];
+  [dictionary setObject:v8 forKey:@"flags"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   PBDataWriterWriteInt64Field();
   if (self->_homographyParams.count)
   {
@@ -159,33 +159,33 @@
   PBDataWriterWriteInt32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v7 = a3;
-  v7[5] = self->_timeValue;
+  toCopy = to;
+  toCopy[5] = self->_timeValue;
   if ([(VCPProtoLivePhotoFrameInstruction *)self homographyParamsCount])
   {
-    [v7 clearHomographyParams];
-    v4 = [(VCPProtoLivePhotoFrameInstruction *)self homographyParamsCount];
-    if (v4)
+    [toCopy clearHomographyParams];
+    homographyParamsCount = [(VCPProtoLivePhotoFrameInstruction *)self homographyParamsCount];
+    if (homographyParamsCount)
     {
-      v5 = v4;
+      v5 = homographyParamsCount;
       for (i = 0; i != v5; ++i)
       {
         [(VCPProtoLivePhotoFrameInstruction *)self homographyParamAtIndex:i];
-        [v7 addHomographyParam:?];
+        [toCopy addHomographyParam:?];
       }
     }
   }
 
-  *(v7 + 13) = self->_timeScale;
-  v7[4] = self->_epoch;
-  *(v7 + 12) = self->_flags;
+  *(toCopy + 13) = self->_timeScale;
+  toCopy[4] = self->_epoch;
+  *(toCopy + 12) = self->_flags;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v4 + 40) = self->_timeValue;
   PBRepeatedFloatCopy();
   *(v4 + 52) = self->_timeScale;
@@ -194,23 +194,23 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()] && self->_timeValue == *(v4 + 5) && PBRepeatedFloatIsEqual() && self->_timeScale == *(v4 + 13) && self->_epoch == *(v4 + 4) && self->_flags == *(v4 + 12);
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()] && self->_timeValue == *(equalCopy + 5) && PBRepeatedFloatIsEqual() && self->_timeScale == *(equalCopy + 13) && self->_epoch == *(equalCopy + 4) && self->_flags == *(equalCopy + 12);
 
   return v5;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_timeValue = v4[5];
-  v8 = v4;
-  v5 = [v4 homographyParamsCount];
-  if (v5)
+  fromCopy = from;
+  self->_timeValue = fromCopy[5];
+  v8 = fromCopy;
+  homographyParamsCount = [fromCopy homographyParamsCount];
+  if (homographyParamsCount)
   {
-    v6 = v5;
+    v6 = homographyParamsCount;
     for (i = 0; i != v6; ++i)
     {
       [v8 homographyParamAtIndex:i];

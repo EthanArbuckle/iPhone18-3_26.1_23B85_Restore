@@ -1,9 +1,9 @@
 @interface SteelRoseTrialClient
-- (BOOL)processSteelRoseUpdateAtPath:(id)a3;
+- (BOOL)processSteelRoseUpdateAtPath:(id)path;
 - (SteelRoseTrialClient)init;
 - (void)handleNewTrialFactors;
-- (void)logOutcomeInternal:(const char *)a3;
-- (void)sendMessage:(unint64_t)a3;
+- (void)logOutcomeInternal:(const char *)internal;
+- (void)sendMessage:(unint64_t)message;
 @end
 
 @implementation SteelRoseTrialClient
@@ -17,7 +17,7 @@
   if (self->_trialClient)
   {
     self->_inTestCohort = 0;
-    v5 = self;
+    selfCopy = self;
   }
 
   else
@@ -29,30 +29,30 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Creating trial client failed", v8, 2u);
     }
 
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)logOutcomeInternal:(const char *)a3
+- (void)logOutcomeInternal:(const char *)internal
 {
   v5 = +[OSASystemConfiguration sharedInstance];
-  v6 = [v5 appleInternal];
+  appleInternal = [v5 appleInternal];
 
-  if (v6 && self->_inTestCohort)
+  if (appleInternal && self->_inTestCohort)
   {
     v14[1] = &v15;
-    v7 = [NSString stringWithUTF8String:a3];
+    v7 = [NSString stringWithUTF8String:internal];
     v8 = [[NSString alloc] initWithFormat:v7 arguments:&v15];
     v9 = +[OSASystemConfiguration sharedInstance];
-    v10 = [v9 pathDiagnostics];
-    v11 = [v10 stringByAppendingPathComponent:@"osatool_steelrose_outcome"];
+    pathDiagnostics = [v9 pathDiagnostics];
+    v11 = [pathDiagnostics stringByAppendingPathComponent:@"osatool_steelrose_outcome"];
 
     v14[0] = 0;
-    LOBYTE(v10) = [v8 writeToFile:v11 atomically:0 encoding:4 error:v14];
+    LOBYTE(pathDiagnostics) = [v8 writeToFile:v11 atomically:0 encoding:4 error:v14];
     v12 = v14[0];
-    if ((v10 & 1) == 0)
+    if ((pathDiagnostics & 1) == 0)
     {
       v13 = sub_10000A8AC();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -79,8 +79,8 @@
     goto LABEL_12;
   }
 
-  v5 = [v3 fileValue];
-  if (!v5)
+  fileValue = [v3 fileValue];
+  if (!fileValue)
   {
     v13 = sub_10000A8AC();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -94,22 +94,22 @@ LABEL_12:
     goto LABEL_16;
   }
 
-  v6 = v5;
-  v7 = [v5 hasPath];
+  v6 = fileValue;
+  hasPath = [fileValue hasPath];
   v8 = sub_10000A8AC();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (hasPath)
   {
     if (v9)
     {
-      v10 = [v6 path];
+      path = [v6 path];
       v14 = 138412290;
-      v15 = v10;
+      v15 = path;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "asset path: %@", &v14, 0xCu);
     }
 
-    v11 = [v6 path];
-    v12 = [(SteelRoseTrialClient *)self processSteelRoseUpdateAtPath:v11];
+    path2 = [v6 path];
+    v12 = [(SteelRoseTrialClient *)self processSteelRoseUpdateAtPath:path2];
 
     if ((v12 & 1) == 0)
     {
@@ -129,7 +129,7 @@ LABEL_12:
 LABEL_16:
 }
 
-- (void)sendMessage:(unint64_t)a3
+- (void)sendMessage:(unint64_t)message
 {
   v5 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.osanalytics"];
   v6 = [v5 BOOLForKey:@"UATSteelRoseServer"];
@@ -147,8 +147,8 @@ LABEL_16:
   v10 = [NSURL URLWithString:v9];
   v11 = [NSMutableURLRequest requestWithURL:v10];
   [v11 setHTTPMethod:@"POST"];
-  v12 = [NSString stringWithFormat:@"cohort=%lu", a3];
-  v13 = [v12 dataUsingEncoding:4];
+  message = [NSString stringWithFormat:@"cohort=%lu", message];
+  v13 = [message dataUsingEncoding:4];
   [v11 setTimeoutInterval:120.0];
   [v11 setHTTPBody:v13];
   v14 = +[NSURLSessionConfiguration ephemeralSessionConfiguration];
@@ -163,15 +163,15 @@ LABEL_16:
   [v16 resume];
 }
 
-- (BOOL)processSteelRoseUpdateAtPath:(id)a3
+- (BOOL)processSteelRoseUpdateAtPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v50 = 0;
   v5 = +[OSASystemConfiguration sharedInstance];
-  v6 = [v5 appleInternal];
+  appleInternal = [v5 appleInternal];
 
   v7 = +[NSFileManager defaultManager];
-  v8 = [v7 fileExistsAtPath:v4 isDirectory:&v50];
+  v8 = [v7 fileExistsAtPath:pathCopy isDirectory:&v50];
 
   if ((v8 & 1) == 0)
   {
@@ -187,7 +187,7 @@ LABEL_16:
   if (v50 != 1)
   {
     v49 = 0;
-    v11 = [NSString stringWithContentsOfFile:v4 encoding:4 error:&v49];
+    v11 = [NSString stringWithContentsOfFile:pathCopy encoding:4 error:&v49];
     v9 = v49;
     if (v9)
     {
@@ -206,8 +206,8 @@ LABEL_16:
 
     if (!v12)
     {
-      v15 = sub_10000A8AC();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      crashReporterKey = sub_10000A8AC();
+      if (os_log_type_enabled(crashReporterKey, OS_LOG_TYPE_ERROR))
       {
         sub_100015834();
       }
@@ -216,14 +216,14 @@ LABEL_16:
     }
 
     v14 = [v12 count];
-    if (v6)
+    if (appleInternal)
     {
       if (v14 <= 1)
       {
-        v15 = sub_10000A8AC();
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+        crashReporterKey = sub_10000A8AC();
+        if (os_log_type_enabled(crashReporterKey, OS_LOG_TYPE_ERROR))
         {
-          sub_1000157AC(v12, v15);
+          sub_1000157AC(v12, crashReporterKey);
         }
 
         goto LABEL_56;
@@ -237,10 +237,10 @@ LABEL_16:
     {
       if (v14 <= 0x19)
       {
-        v15 = sub_10000A8AC();
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+        crashReporterKey = sub_10000A8AC();
+        if (os_log_type_enabled(crashReporterKey, OS_LOG_TYPE_ERROR))
         {
-          sub_10001562C(v12, v15);
+          sub_10001562C(v12, crashReporterKey);
         }
 
         goto LABEL_56;
@@ -251,12 +251,12 @@ LABEL_16:
     }
 
     v17 = [v12 objectAtIndexedSubscript:0];
-    v18 = [v17 intValue];
+    intValue = [v17 intValue];
 
-    if (!v18 || v16 < v18)
+    if (!intValue || v16 < intValue)
     {
-      v15 = sub_10000A8AC();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      crashReporterKey = sub_10000A8AC();
+      if (os_log_type_enabled(crashReporterKey, OS_LOG_TYPE_ERROR))
       {
         sub_10001573C();
       }
@@ -266,8 +266,8 @@ LABEL_16:
       goto LABEL_57;
     }
 
-    v40 = v18;
-    if (v18 == 256)
+    v40 = intValue;
+    if (intValue == 256)
     {
       v19 = sub_10000A8AC();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -280,11 +280,11 @@ LABEL_16:
     }
 
     v20 = +[OSASystemConfiguration sharedInstance];
-    v15 = [v20 crashReporterKey];
+    crashReporterKey = [v20 crashReporterKey];
 
-    if (v15)
+    if (crashReporterKey)
     {
-      if ([v15 length]!= 40)
+      if ([crashReporterKey length]!= 40)
       {
         v21 = sub_10000A8AC();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -293,14 +293,14 @@ LABEL_16:
         }
       }
 
-      v39 = v15;
-      v22 = [v15 UTF8String];
+      v39 = crashReporterKey;
+      uTF8String = [crashReporterKey UTF8String];
       strcpy(data, "STEEL_ROSE");
       memset(&buf, 0, sizeof(buf));
       CC_SHA256_Init(&buf);
       CC_SHA256_Update(&buf, data, 0xAu);
-      v23 = strlen(v22);
-      CC_SHA256_Update(&buf, v22, v23);
+      v23 = strlen(uTF8String);
+      CC_SHA256_Update(&buf, uTF8String, v23);
       CC_SHA256_Final(md, &buf);
       v24 = [(SteelRoseTrialClient *)self hexStringForSHA256Digest:md];
       v44 = 0u;
@@ -315,7 +315,7 @@ LABEL_16:
         v27 = *v45;
         if (v40 == 256)
         {
-          v28 = v6;
+          v28 = appleInternal;
         }
 
         else
@@ -382,7 +382,7 @@ LABEL_64:
         }
 
 LABEL_65:
-        v15 = v39;
+        crashReporterKey = v39;
         v11 = v41;
 
         [(SteelRoseTrialClient *)self sendMessage:v40];
@@ -394,7 +394,7 @@ LABEL_47:
 
       [(SteelRoseTrialClient *)self logOutcomeInternal:"Success (no match)"];
       v32 = sub_10000A8AC();
-      v15 = v39;
+      crashReporterKey = v39;
       if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
       {
         *v43 = 0;

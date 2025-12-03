@@ -1,10 +1,10 @@
 @interface TSPCryptoComponentWriteChannel
-- (BOOL)_finalizeBlockForClosing:(BOOL)a3;
+- (BOOL)_finalizeBlockForClosing:(BOOL)closing;
 - (BOOL)_initializeBlock;
 - (BOOL)_resetBuffer;
 - (TSPCryptoComponentWriteChannel)init;
-- (TSPCryptoComponentWriteChannel)initWithWriteChannel:(id)a3 encryptionInfo:(id)a4 bufferSize:(unint64_t)a5;
-- (void)_writeData:(id)a3 isDecryptedData:(BOOL)a4;
+- (TSPCryptoComponentWriteChannel)initWithWriteChannel:(id)channel encryptionInfo:(id)info bufferSize:(unint64_t)size;
+- (void)_writeData:(id)data isDecryptedData:(BOOL)decryptedData;
 - (void)close;
 - (void)dealloc;
 @end
@@ -27,17 +27,17 @@
   objc_exception_throw(v13);
 }
 
-- (TSPCryptoComponentWriteChannel)initWithWriteChannel:(id)a3 encryptionInfo:(id)a4 bufferSize:(unint64_t)a5
+- (TSPCryptoComponentWriteChannel)initWithWriteChannel:(id)channel encryptionInfo:(id)info bufferSize:(unint64_t)size
 {
-  v9 = a3;
-  v10 = a4;
+  channelCopy = channel;
+  infoCopy = info;
   v51.receiver = self;
   v51.super_class = TSPCryptoComponentWriteChannel;
   v12 = [(TSPCryptoComponentWriteChannel *)&v51 init];
   v13 = v12;
   if (v12)
   {
-    if (!v9)
+    if (!channelCopy)
     {
       v14 = MEMORY[0x277D81150];
       v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSPCryptoComponentWriteChannel initWithWriteChannel:encryptionInfo:bufferSize:]");
@@ -47,8 +47,8 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20);
     }
 
-    objc_storeStrong(&v12->_writeChannel, a3);
-    if (!v10)
+    objc_storeStrong(&v12->_writeChannel, channel);
+    if (!infoCopy)
     {
       v22 = MEMORY[0x277D81150];
       v23 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v21, "[TSPCryptoComponentWriteChannel initWithWriteChannel:encryptionInfo:bufferSize:]");
@@ -58,15 +58,15 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28);
     }
 
-    objc_storeStrong(&v12->_encryptionInfo, a4);
+    objc_storeStrong(&v12->_encryptionInfo, info);
     objc_msgSend_reset(v12->_encryptionInfo, v29, v30);
-    v33 = 144;
-    if (a5 > 0x90)
+    sizeCopy = 144;
+    if (size > 0x90)
     {
-      v33 = a5;
+      sizeCopy = size;
     }
 
-    v12->_bufferSize = v33;
+    v12->_bufferSize = sizeCopy;
     v34 = objc_msgSend_processInfo(MEMORY[0x277CCAC38], v31, v32);
     v37 = objc_msgSend_physicalMemory(v34, v35, v36);
 
@@ -278,15 +278,15 @@ LABEL_9:
   [(TSPCryptoComponentWriteChannel *)&v5 dealloc];
 }
 
-- (void)_writeData:(id)a3 isDecryptedData:(BOOL)a4
+- (void)_writeData:(id)data isDecryptedData:(BOOL)decryptedData
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = sub_276AFDEE4;
   v4[3] = &unk_27A6E7670;
   v4[4] = self;
-  v5 = a4;
-  dispatch_data_apply(a3, v4);
+  decryptedDataCopy = decryptedData;
+  dispatch_data_apply(data, v4);
 }
 
 - (void)close
@@ -304,7 +304,7 @@ LABEL_9:
   objc_sync_exit(obj);
 }
 
-- (BOOL)_finalizeBlockForClosing:(BOOL)a3
+- (BOOL)_finalizeBlockForClosing:(BOOL)closing
 {
   if (!self->_writeChannel)
   {
@@ -421,7 +421,7 @@ LABEL_17:
     objc_msgSend_incrementDecodedLengthBy_(self->_encryptionInfo, v40, self->_decryptedBlockLength);
   }
 
-  if (!a3)
+  if (!closing)
   {
     encryptionInfo = self->_encryptionInfo;
     encodedBlockLength = self->_encodedBlockLength;

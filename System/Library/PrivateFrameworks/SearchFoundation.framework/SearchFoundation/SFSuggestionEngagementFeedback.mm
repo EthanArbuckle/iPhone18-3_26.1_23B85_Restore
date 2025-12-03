@@ -1,42 +1,42 @@
 @interface SFSuggestionEngagementFeedback
-- (SFSuggestionEngagementFeedback)initWithCoder:(id)a3;
-- (SFSuggestionEngagementFeedback)initWithSuggestion:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SFSuggestionEngagementFeedback)initWithCoder:(id)coder;
+- (SFSuggestionEngagementFeedback)initWithSuggestion:(id)suggestion;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFSuggestionEngagementFeedback
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFSuggestionEngagementFeedback;
-  v4 = [(SFFeedback *)&v8 copyWithZone:a3];
-  v5 = [(SFSuggestionEngagementFeedback *)self suggestion];
-  v6 = [v5 copy];
+  v4 = [(SFFeedback *)&v8 copyWithZone:zone];
+  suggestion = [(SFSuggestionEngagementFeedback *)self suggestion];
+  v6 = [suggestion copy];
   [v4 setSuggestion:v6];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SFSuggestionEngagementFeedback;
-  v4 = a3;
-  [(SFFeedback *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_suggestion forKey:{@"_suggestion", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(SFFeedback *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_suggestion forKey:{@"_suggestion", v5.receiver, v5.super_class}];
 }
 
-- (SFSuggestionEngagementFeedback)initWithCoder:(id)a3
+- (SFSuggestionEngagementFeedback)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SFSuggestionEngagementFeedback;
-  v5 = [(SFFeedback *)&v9 initWithCoder:v4];
+  v5 = [(SFFeedback *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_suggestion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_suggestion"];
     suggestion = v5->_suggestion;
     v5->_suggestion = v6;
   }
@@ -44,16 +44,16 @@
   return v5;
 }
 
-- (SFSuggestionEngagementFeedback)initWithSuggestion:(id)a3
+- (SFSuggestionEngagementFeedback)initWithSuggestion:(id)suggestion
 {
-  v5 = a3;
+  suggestionCopy = suggestion;
   v9.receiver = self;
   v9.super_class = SFSuggestionEngagementFeedback;
   v6 = [(SFFeedback *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_suggestion, a3);
+    objc_storeStrong(&v6->_suggestion, suggestion);
   }
 
   return v7;

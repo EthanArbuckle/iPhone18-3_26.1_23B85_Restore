@@ -1,15 +1,15 @@
 @interface ICLockedNotesFilterTypeSelection
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ICLockedNotesFilterTypeSelection
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ICLockedNotesFilterTypeSelection allocWithZone:a3];
-  v5 = [(ICInclusionFilterTypeSelection *)self inclusionType];
+  v4 = [ICLockedNotesFilterTypeSelection allocWithZone:zone];
+  inclusionType = [(ICInclusionFilterTypeSelection *)self inclusionType];
 
-  return [(ICInclusionFilterTypeSelection *)v4 initWithInclusionType:v5];
+  return [(ICInclusionFilterTypeSelection *)v4 initWithInclusionType:inclusionType];
 }
 
 @end

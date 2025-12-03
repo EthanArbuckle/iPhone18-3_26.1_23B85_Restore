@@ -1,13 +1,13 @@
 @interface PXPhotosGridMessagesBodyLayoutProvider
-- (CGSize)itemsLayout:(id)a3 marginForItem:(int64_t)a4;
-- (PXPhotosGridMessagesBodyLayoutProvider)initWithViewModel:(id)a3;
+- (CGSize)itemsLayout:(id)layout marginForItem:(int64_t)item;
+- (PXPhotosGridMessagesBodyLayoutProvider)initWithViewModel:(id)model;
 - (PXPhotosSectionBodyLayoutProviderInvalidationDelegate)invalidationDelegate;
-- (double)itemsLayout:(id)a3 aspectRatioForItem:(int64_t)a4;
-- (id)createSectionBodyLayoutForSectionedLayout:(id)a3 dataSource:(id)a4 sectionIndexPath:(PXSimpleIndexPath *)a5 spec:(id)a6 outWantsDecoration:(BOOL *)a7;
-- (int64_t)itemsLayout:(id)a3 itemForObjectReference:(id)a4 options:(unint64_t)a5;
-- (void)configureSectionBodyLayout:(id)a3 inAssetSectionLayout:(id)a4 forSectionedLayout:(id)a5;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)sectionedLayout:(id)a3 bodyLayout:(id)a4 didChangeDataSource:(id)a5 sectionIndexPath:(PXSimpleIndexPath *)a6 hasSectionChanges:(BOOL)a7;
+- (double)itemsLayout:(id)layout aspectRatioForItem:(int64_t)item;
+- (id)createSectionBodyLayoutForSectionedLayout:(id)layout dataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path spec:(id)spec outWantsDecoration:(BOOL *)decoration;
+- (int64_t)itemsLayout:(id)layout itemForObjectReference:(id)reference options:(unint64_t)options;
+- (void)configureSectionBodyLayout:(id)layout inAssetSectionLayout:(id)sectionLayout forSectionedLayout:(id)sectionedLayout;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)sectionedLayout:(id)layout bodyLayout:(id)bodyLayout didChangeDataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path hasSectionChanges:(BOOL)changes;
 @end
 
 @implementation PXPhotosGridMessagesBodyLayoutProvider
@@ -19,53 +19,53 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (SpecManagerObservationContext_69095 != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (SpecManagerObservationContext_69095 != context)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXPhotosGridMessagesBodyLayoutProvider.m" lineNumber:150 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridMessagesBodyLayoutProvider.m" lineNumber:150 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  if (v6)
+  if (changeCopy)
   {
-    v12 = v9;
-    v10 = [(PXPhotosGridMessagesBodyLayoutProvider *)self invalidationDelegate];
-    [v10 photosSectionBodyLayoutInvalidateConfiguredLayouts:self];
+    v12 = observableCopy;
+    invalidationDelegate = [(PXPhotosGridMessagesBodyLayoutProvider *)self invalidationDelegate];
+    [invalidationDelegate photosSectionBodyLayoutInvalidateConfiguredLayouts:self];
 
-    v9 = v12;
+    observableCopy = v12;
   }
 }
 
-- (int64_t)itemsLayout:(id)a3 itemForObjectReference:(id)a4 options:(unint64_t)a5
+- (int64_t)itemsLayout:(id)layout itemForObjectReference:(id)reference options:(unint64_t)options
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
+  optionsCopy = options;
+  layoutCopy = layout;
+  referenceCopy = reference;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     goto LABEL_6;
   }
 
-  v9 = v8;
+  v9 = referenceCopy;
   if (!v9)
   {
     goto LABEL_6;
   }
 
   v10 = v9;
-  if ((v5 & 1) == 0)
+  if ((optionsCopy & 1) == 0)
   {
     goto LABEL_8;
   }
 
-  v11 = [v7 dataSource];
-  v12 = [v11 objectReferenceNearestToObjectReference:v10 inSection:{objc_msgSend(v7, "section")}];
+  dataSource = [layoutCopy dataSource];
+  v12 = [dataSource objectReferenceNearestToObjectReference:v10 inSection:{objc_msgSend(layoutCopy, "section")}];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -86,11 +86,11 @@ LABEL_6:
 LABEL_9:
   v17 = 0u;
   v18 = 0u;
-  v14 = [v7 dataSource];
-  v15 = v14;
-  if (v14)
+  dataSource2 = [layoutCopy dataSource];
+  v15 = dataSource2;
+  if (dataSource2)
   {
-    [v14 indexPathForAssetReference:v12];
+    [dataSource2 indexPathForAssetReference:v12];
   }
 
   else
@@ -102,7 +102,7 @@ LABEL_9:
   v13 = 0x7FFFFFFFFFFFFFFFLL;
   if (v17 != *off_1E7721F68 && v18 != 0x7FFFFFFFFFFFFFFFLL && *(&v18 + 1) == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (*(&v17 + 1) == [v7 section])
+    if (*(&v17 + 1) == [layoutCopy section])
     {
       v13 = v18;
     }
@@ -117,22 +117,22 @@ LABEL_19:
   return v13;
 }
 
-- (CGSize)itemsLayout:(id)a3 marginForItem:(int64_t)a4
+- (CGSize)itemsLayout:(id)layout marginForItem:(int64_t)item
 {
-  v5 = a3;
-  v6 = [v5 assetForItemIndex:a4];
+  layoutCopy = layout;
+  v6 = [layoutCopy assetForItemIndex:item];
   [v6 aspectRatio];
   v8 = v7;
-  v9 = [v5 spec];
+  spec = [layoutCopy spec];
 
   if (v8 > 1.01 || v8 < 0.99)
   {
-    [v9 itemInternalMargin];
+    [spec itemInternalMargin];
   }
 
   else
   {
-    [v9 itemInternalSquareMargin];
+    [spec itemInternalSquareMargin];
   }
 
   v12 = v10;
@@ -145,9 +145,9 @@ LABEL_19:
   return result;
 }
 
-- (double)itemsLayout:(id)a3 aspectRatioForItem:(int64_t)a4
+- (double)itemsLayout:(id)layout aspectRatioForItem:(int64_t)item
 {
-  v4 = [a3 assetForItemIndex:a4];
+  v4 = [layout assetForItemIndex:item];
   [v4 aspectRatio];
   v6 = 1.0;
   if (v5 < 0.99)
@@ -168,85 +168,85 @@ LABEL_19:
   return v7;
 }
 
-- (id)createSectionBodyLayoutForSectionedLayout:(id)a3 dataSource:(id)a4 sectionIndexPath:(PXSimpleIndexPath *)a5 spec:(id)a6 outWantsDecoration:(BOOL *)a7
+- (id)createSectionBodyLayoutForSectionedLayout:(id)layout dataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path spec:(id)spec outWantsDecoration:(BOOL *)decoration
 {
-  v10 = a4;
+  sourceCopy = source;
   v11 = objc_alloc_init(PXPhotosGridMessagesBodyLayout);
-  -[PXGItemsLayout setNumberOfItems:](v11, "setNumberOfItems:", [v10 numberOfItemsInSection:a5->section]);
-  [(PXPhotosGridMessagesBodyLayout *)v11 setDataSource:v10 section:a5->section];
+  -[PXGItemsLayout setNumberOfItems:](v11, "setNumberOfItems:", [sourceCopy numberOfItemsInSection:path->section]);
+  [(PXPhotosGridMessagesBodyLayout *)v11 setDataSource:sourceCopy section:path->section];
 
   [(PXGItemsLayout *)v11 setDelegate:self];
-  *a7 = 0;
-  v12 = [(PXPhotosGridMessagesBodyLayout *)v11 assetDecorationSource];
-  v13 = [(PXPhotosGridMessagesBodyLayoutProvider *)self tapbackStatusManager];
-  [v12 setTapbackStatusManager:v13];
+  *decoration = 0;
+  assetDecorationSource = [(PXPhotosGridMessagesBodyLayout *)v11 assetDecorationSource];
+  tapbackStatusManager = [(PXPhotosGridMessagesBodyLayoutProvider *)self tapbackStatusManager];
+  [assetDecorationSource setTapbackStatusManager:tapbackStatusManager];
 
-  v14 = [(PXPhotosGridMessagesBodyLayoutProvider *)self assetImportStatusManager];
-  [v12 setAssetImportStatusManager:v14];
+  assetImportStatusManager = [(PXPhotosGridMessagesBodyLayoutProvider *)self assetImportStatusManager];
+  [assetDecorationSource setAssetImportStatusManager:assetImportStatusManager];
 
-  [v12 setInterItemSpacingThresholdForExteriorFocusRingSelection:0];
+  [assetDecorationSource setInterItemSpacingThresholdForExteriorFocusRingSelection:0];
   v15 = [(PXGDecoratingLayout *)[_PXMessagesGridDecoratingLayout alloc] initWithDecoratedLayout:v11];
   [(PXGDecoratingLayout *)v15 setActiveDecorations:&unk_1F1910450];
-  [(PXGDecoratingLayout *)v15 setDecorationSource:v12];
+  [(PXGDecoratingLayout *)v15 setDecorationSource:assetDecorationSource];
   [(PXGDecoratingLayout *)v15 setContentSource:v11];
 
   return v15;
 }
 
-- (void)configureSectionBodyLayout:(id)a3 inAssetSectionLayout:(id)a4 forSectionedLayout:(id)a5
+- (void)configureSectionBodyLayout:(id)layout inAssetSectionLayout:(id)sectionLayout forSectionedLayout:(id)sectionedLayout
 {
-  v7 = a4;
-  v16 = [a3 decoratedLayout];
-  v8 = [v7 selectionSnapshot];
-  v9 = [v16 assetDecorationSource];
-  [v9 setSelectionSnapshot:v8];
+  sectionLayoutCopy = sectionLayout;
+  decoratedLayout = [layout decoratedLayout];
+  selectionSnapshot = [sectionLayoutCopy selectionSnapshot];
+  assetDecorationSource = [decoratedLayout assetDecorationSource];
+  [assetDecorationSource setSelectionSnapshot:selectionSnapshot];
 
-  v10 = [v7 isSelecting];
-  v11 = [v16 assetDecorationSource];
-  [v11 setIsInSelectMode:v10];
+  isSelecting = [sectionLayoutCopy isSelecting];
+  assetDecorationSource2 = [decoratedLayout assetDecorationSource];
+  [assetDecorationSource2 setIsInSelectMode:isSelecting];
 
-  v12 = [v7 tapbackStatusManager];
+  tapbackStatusManager = [sectionLayoutCopy tapbackStatusManager];
 
-  v13 = [v16 assetDecorationSource];
-  [v13 setTapbackStatusManager:v12];
+  assetDecorationSource3 = [decoratedLayout assetDecorationSource];
+  [assetDecorationSource3 setTapbackStatusManager:tapbackStatusManager];
 
-  v14 = [(PXPhotosGridMessagesBodyLayoutProvider *)self specManager];
-  v15 = [v14 spec];
-  [v16 setSpec:v15];
+  specManager = [(PXPhotosGridMessagesBodyLayoutProvider *)self specManager];
+  spec = [specManager spec];
+  [decoratedLayout setSpec:spec];
 }
 
-- (void)sectionedLayout:(id)a3 bodyLayout:(id)a4 didChangeDataSource:(id)a5 sectionIndexPath:(PXSimpleIndexPath *)a6 hasSectionChanges:(BOOL)a7
+- (void)sectionedLayout:(id)layout bodyLayout:(id)bodyLayout didChangeDataSource:(id)source sectionIndexPath:(PXSimpleIndexPath *)path hasSectionChanges:(BOOL)changes
 {
-  v9 = a5;
-  v10 = [a4 decoratedLayout];
-  [v10 setDataSource:v9 section:a6->section];
+  sourceCopy = source;
+  decoratedLayout = [bodyLayout decoratedLayout];
+  [decoratedLayout setDataSource:sourceCopy section:path->section];
 }
 
-- (PXPhotosGridMessagesBodyLayoutProvider)initWithViewModel:(id)a3
+- (PXPhotosGridMessagesBodyLayoutProvider)initWithViewModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v17.receiver = self;
   v17.super_class = PXPhotosGridMessagesBodyLayoutProvider;
   v5 = [(PXPhotosGridMessagesBodyLayoutProvider *)&v17 init];
   if (v5)
   {
     v6 = [PXPhotosGridMessagesLayoutSpecManager alloc];
-    v7 = [v4 specManager];
-    v8 = [v7 extendedTraitCollection];
-    v9 = [(PXFeatureSpecManager *)v6 initWithExtendedTraitCollection:v8];
+    specManager = [modelCopy specManager];
+    extendedTraitCollection = [specManager extendedTraitCollection];
+    v9 = [(PXFeatureSpecManager *)v6 initWithExtendedTraitCollection:extendedTraitCollection];
 
     specManager = v5->_specManager;
     v5->_specManager = v9;
     v11 = v9;
 
     [(PXPhotosGridMessagesLayoutSpecManager *)v5->_specManager registerChangeObserver:v5 context:SpecManagerObservationContext_69095];
-    v12 = [v4 tapbackStatusManager];
+    tapbackStatusManager = [modelCopy tapbackStatusManager];
     tapbackStatusManager = v5->_tapbackStatusManager;
-    v5->_tapbackStatusManager = v12;
+    v5->_tapbackStatusManager = tapbackStatusManager;
 
-    v14 = [v4 assetImportStatusManager];
+    assetImportStatusManager = [modelCopy assetImportStatusManager];
     assetImportStatusManager = v5->_assetImportStatusManager;
-    v5->_assetImportStatusManager = v14;
+    v5->_assetImportStatusManager = assetImportStatusManager;
   }
 
   return v5;

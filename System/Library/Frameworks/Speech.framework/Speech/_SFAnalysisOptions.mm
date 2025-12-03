@@ -1,74 +1,74 @@
 @interface _SFAnalysisOptions
-- (_SFAnalysisOptions)initWithCoder:(id)a3;
-- (_SFAnalysisOptions)initWithPriority:(int64_t)a3 aneContext:(id)a4 cpuContext:(id)a5 gpuContext:(id)a6 keepANEModelLoaded:(BOOL)a7;
-- (void)encodeWithCoder:(id)a3;
+- (_SFAnalysisOptions)initWithCoder:(id)coder;
+- (_SFAnalysisOptions)initWithPriority:(int64_t)priority aneContext:(id)context cpuContext:(id)cpuContext gpuContext:(id)gpuContext keepANEModelLoaded:(BOOL)loaded;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _SFAnalysisOptions
 
-- (_SFAnalysisOptions)initWithCoder:(id)a3
+- (_SFAnalysisOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = _SFAnalysisOptions;
   v5 = [(_SFAnalysisOptions *)&v13 init];
   if (v5)
   {
-    v5->_priority = [v4 decodeIntegerForKey:@"_priority"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_aneContext"];
+    v5->_priority = [coderCopy decodeIntegerForKey:@"_priority"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_aneContext"];
     aneContext = v5->_aneContext;
     v5->_aneContext = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_cpuContext"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_cpuContext"];
     cpuContext = v5->_cpuContext;
     v5->_cpuContext = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_gpuContext"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_gpuContext"];
     gpuContext = v5->_gpuContext;
     v5->_gpuContext = v10;
 
-    v5->_keepANEModelLoaded = [v4 decodeBoolForKey:@"_keepANEModelLoaded"];
+    v5->_keepANEModelLoaded = [coderCopy decodeBoolForKey:@"_keepANEModelLoaded"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   priority = self->_priority;
-  v5 = a3;
-  [v5 encodeInteger:priority forKey:@"_priority"];
-  [v5 encodeObject:self->_aneContext forKey:@"_aneContext"];
-  [v5 encodeObject:self->_cpuContext forKey:@"_cpuContext"];
-  [v5 encodeObject:self->_gpuContext forKey:@"_gpuContext"];
-  [v5 encodeBool:self->_keepANEModelLoaded forKey:@"_keepANEModelLoaded"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:priority forKey:@"_priority"];
+  [coderCopy encodeObject:self->_aneContext forKey:@"_aneContext"];
+  [coderCopy encodeObject:self->_cpuContext forKey:@"_cpuContext"];
+  [coderCopy encodeObject:self->_gpuContext forKey:@"_gpuContext"];
+  [coderCopy encodeBool:self->_keepANEModelLoaded forKey:@"_keepANEModelLoaded"];
 }
 
-- (_SFAnalysisOptions)initWithPriority:(int64_t)a3 aneContext:(id)a4 cpuContext:(id)a5 gpuContext:(id)a6 keepANEModelLoaded:(BOOL)a7
+- (_SFAnalysisOptions)initWithPriority:(int64_t)priority aneContext:(id)context cpuContext:(id)cpuContext gpuContext:(id)gpuContext keepANEModelLoaded:(BOOL)loaded
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  contextCopy = context;
+  cpuContextCopy = cpuContext;
+  gpuContextCopy = gpuContext;
   v24.receiver = self;
   v24.super_class = _SFAnalysisOptions;
   v15 = [(_SFAnalysisOptions *)&v24 init];
   v16 = v15;
   if (v15)
   {
-    v15->_priority = a3;
-    v17 = [v12 copy];
+    v15->_priority = priority;
+    v17 = [contextCopy copy];
     aneContext = v16->_aneContext;
     v16->_aneContext = v17;
 
-    v19 = [v13 copy];
+    v19 = [cpuContextCopy copy];
     cpuContext = v16->_cpuContext;
     v16->_cpuContext = v19;
 
-    v21 = [v14 copy];
+    v21 = [gpuContextCopy copy];
     gpuContext = v16->_gpuContext;
     v16->_gpuContext = v21;
 
-    v16->_keepANEModelLoaded = a7;
+    v16->_keepANEModelLoaded = loaded;
   }
 
   return v16;

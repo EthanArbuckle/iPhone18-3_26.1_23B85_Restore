@@ -1,57 +1,57 @@
 @interface ACHMonthlyChallengeTemplateDataProvider
 - (ACHAchievementStoring)achievementStore;
-- (ACHMonthlyChallengeTemplateDataProvider)initWithHealthStore:(id)a3 earnedInstanceStore:(id)a4 templateStore:(id)a5 activitySummaryIterator:(id)a6;
-- (BOOL)hasMinimumActiveDaysWithError:(id *)a3;
-- (BOOL)isDate:(id)a3 betweenStartDate:(id)a4 andEndDate:(id)a5;
-- (BOOL)isWheelchairUserWithError:(id *)a3;
+- (ACHMonthlyChallengeTemplateDataProvider)initWithHealthStore:(id)store earnedInstanceStore:(id)instanceStore templateStore:(id)templateStore activitySummaryIterator:(id)iterator;
+- (BOOL)hasMinimumActiveDaysWithError:(id *)error;
+- (BOOL)isDate:(id)date betweenStartDate:(id)startDate andEndDate:(id)endDate;
+- (BOOL)isWheelchairUserWithError:(id *)error;
 - (NSCalendar)currentCalendar;
 - (NSDate)currentDate;
 - (id)existingMonthlyChallengeTemplates;
-- (int64_t)currentActivityMoveModeWithError:(id *)a3;
-- (int64_t)numberOfEarnedInstancesOfTemplateWithUniqueName:(id)a3 inDateComponentInterval:(id)a4 withCalendar:(id)a5 error:(id *)a6;
-- (unint64_t)currentExperienceTypeWithError:(id *)a3;
-- (unint64_t)monthlyChallengeTypeForMonth:(id)a3;
-- (void)setMoveModeOverride:(int64_t)a3;
+- (int64_t)currentActivityMoveModeWithError:(id *)error;
+- (int64_t)numberOfEarnedInstancesOfTemplateWithUniqueName:(id)name inDateComponentInterval:(id)interval withCalendar:(id)calendar error:(id *)error;
+- (unint64_t)currentExperienceTypeWithError:(id *)error;
+- (unint64_t)monthlyChallengeTypeForMonth:(id)month;
+- (void)setMoveModeOverride:(int64_t)override;
 @end
 
 @implementation ACHMonthlyChallengeTemplateDataProvider
 
-- (ACHMonthlyChallengeTemplateDataProvider)initWithHealthStore:(id)a3 earnedInstanceStore:(id)a4 templateStore:(id)a5 activitySummaryIterator:(id)a6
+- (ACHMonthlyChallengeTemplateDataProvider)initWithHealthStore:(id)store earnedInstanceStore:(id)instanceStore templateStore:(id)templateStore activitySummaryIterator:(id)iterator
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  storeCopy = store;
+  instanceStoreCopy = instanceStore;
+  templateStoreCopy = templateStore;
+  iteratorCopy = iterator;
   v22.receiver = self;
   v22.super_class = ACHMonthlyChallengeTemplateDataProvider;
   v15 = [(ACHMonthlyChallengeTemplateDataProvider *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_healthStore, a3);
-    objc_storeStrong(&v16->_earnedInstanceStore, a4);
-    objc_storeStrong(&v16->_templateStore, a5);
-    v17 = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithLocalTimeZone];
+    objc_storeStrong(&v15->_healthStore, store);
+    objc_storeStrong(&v16->_earnedInstanceStore, instanceStore);
+    objc_storeStrong(&v16->_templateStore, templateStore);
+    hk_gregorianCalendarWithLocalTimeZone = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithLocalTimeZone];
     currentCalendar = v16->_currentCalendar;
-    v16->_currentCalendar = v17;
+    v16->_currentCalendar = hk_gregorianCalendarWithLocalTimeZone;
 
-    v19 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     currentDate = v16->_currentDate;
-    v16->_currentDate = v19;
+    v16->_currentDate = date;
 
-    objc_storeStrong(&v16->_activitySummaryIterator, a6);
+    objc_storeStrong(&v16->_activitySummaryIterator, iterator);
   }
 
   return v16;
 }
 
-- (int64_t)numberOfEarnedInstancesOfTemplateWithUniqueName:(id)a3 inDateComponentInterval:(id)a4 withCalendar:(id)a5 error:(id *)a6
+- (int64_t)numberOfEarnedInstancesOfTemplateWithUniqueName:(id)name inDateComponentInterval:(id)interval withCalendar:(id)calendar error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(ACHMonthlyChallengeTemplateDataProvider *)self earnedInstanceStore];
-  v14 = [v13 countOfEarnedInstancesForTemplateUniqueName:v12 inDateComponentInterval:v11 withCalendar:v10 error:a6];
+  calendarCopy = calendar;
+  intervalCopy = interval;
+  nameCopy = name;
+  earnedInstanceStore = [(ACHMonthlyChallengeTemplateDataProvider *)self earnedInstanceStore];
+  v14 = [earnedInstanceStore countOfEarnedInstancesForTemplateUniqueName:nameCopy inDateComponentInterval:intervalCopy withCalendar:calendarCopy error:error];
 
   return v14;
 }
@@ -60,14 +60,14 @@
 {
   v20 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v4 = [(ACHMonthlyChallengeTemplateDataProvider *)self templateStore];
-  v5 = [v4 allTemplates];
+  templateStore = [(ACHMonthlyChallengeTemplateDataProvider *)self templateStore];
+  allTemplates = [templateStore allTemplates];
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v5;
+  v6 = allTemplates;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -101,37 +101,37 @@
   return v12;
 }
 
-- (unint64_t)monthlyChallengeTypeForMonth:(id)a3
+- (unint64_t)monthlyChallengeTypeForMonth:(id)month
 {
-  v4 = a3;
-  v5 = [(ACHMonthlyChallengeTemplateDataProvider *)self existingMonthlyChallengeTemplates];
+  monthCopy = month;
+  existingMonthlyChallengeTemplates = [(ACHMonthlyChallengeTemplateDataProvider *)self existingMonthlyChallengeTemplates];
   v6 = MEMORY[0x277CCACA8];
-  v7 = [v4 year];
-  v8 = [v4 month];
+  year = [monthCopy year];
+  month = [monthCopy month];
 
-  v9 = [v6 stringWithFormat:@"%04ld_%02ld", v7, v8];
-  v10 = [v5 allObjects];
+  v9 = [v6 stringWithFormat:@"%04ld_%02ld", year, month];
+  allObjects = [existingMonthlyChallengeTemplates allObjects];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __72__ACHMonthlyChallengeTemplateDataProvider_monthlyChallengeTypeForMonth___block_invoke;
   v17[3] = &unk_278491B98;
   v18 = v9;
   v11 = v9;
-  v12 = [v10 hk_firstObjectPassingTest:v17];
+  v12 = [allObjects hk_firstObjectPassingTest:v17];
 
   if (v12)
   {
-    v13 = [v12 uniqueName];
+    uniqueName = [v12 uniqueName];
     v14 = ACHMonthlyChallengeTypeFromTemplateUniqueName();
   }
 
   else
   {
-    v13 = ACHLogMonthlyChallenges();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    uniqueName = ACHLogMonthlyChallenges();
+    if (os_log_type_enabled(uniqueName, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_221DDC000, v13, OS_LOG_TYPE_DEFAULT, "No monthly challenge created last month", buf, 2u);
+      _os_log_impl(&dword_221DDC000, uniqueName, OS_LOG_TYPE_DEFAULT, "No monthly challenge created last month", buf, 2u);
     }
 
     v14 = 0;
@@ -148,13 +148,13 @@ uint64_t __72__ACHMonthlyChallengeTemplateDataProvider_monthlyChallengeTypeForMo
   return v4;
 }
 
-- (BOOL)isDate:(id)a3 betweenStartDate:(id)a4 andEndDate:(id)a5
+- (BOOL)isDate:(id)date betweenStartDate:(id)startDate andEndDate:(id)endDate
 {
-  v7 = a3;
-  v8 = a5;
-  if ([v7 hk_isAfterOrEqualToDate:a4])
+  dateCopy = date;
+  endDateCopy = endDate;
+  if ([dateCopy hk_isAfterOrEqualToDate:startDate])
   {
-    v9 = [v7 hk_isBeforeOrEqualToDate:v8];
+    v9 = [dateCopy hk_isBeforeOrEqualToDate:endDateCopy];
   }
 
   else
@@ -165,19 +165,19 @@ uint64_t __72__ACHMonthlyChallengeTemplateDataProvider_monthlyChallengeTypeForMo
   return v9;
 }
 
-- (BOOL)hasMinimumActiveDaysWithError:(id *)a3
+- (BOOL)hasMinimumActiveDaysWithError:(id *)error
 {
-  v5 = [(ACHMonthlyChallengeTemplateDataProvider *)self currentCalendar];
-  v6 = [(ACHMonthlyChallengeTemplateDataProvider *)self currentDate];
-  v7 = [v5 hk_dateByAddingDays:-35 toDate:v6];
+  currentCalendar = [(ACHMonthlyChallengeTemplateDataProvider *)self currentCalendar];
+  currentDate = [(ACHMonthlyChallengeTemplateDataProvider *)self currentDate];
+  v7 = [currentCalendar hk_dateByAddingDays:-35 toDate:currentDate];
 
-  v8 = [(ACHMonthlyChallengeTemplateDataProvider *)self currentCalendar];
+  currentCalendar2 = [(ACHMonthlyChallengeTemplateDataProvider *)self currentCalendar];
   v9 = *MEMORY[0x277CE8B28];
-  v10 = [v8 components:*MEMORY[0x277CE8B28] fromDate:v7];
+  v10 = [currentCalendar2 components:*MEMORY[0x277CE8B28] fromDate:v7];
 
-  v11 = [(ACHMonthlyChallengeTemplateDataProvider *)self currentCalendar];
-  v12 = [(ACHMonthlyChallengeTemplateDataProvider *)self currentDate];
-  v13 = [v11 components:v9 fromDate:v12];
+  currentCalendar3 = [(ACHMonthlyChallengeTemplateDataProvider *)self currentCalendar];
+  currentDate2 = [(ACHMonthlyChallengeTemplateDataProvider *)self currentDate];
+  v13 = [currentCalendar3 components:v9 fromDate:currentDate2];
 
   v14 = [objc_alloc(MEMORY[0x277CE8D30]) initWithStartDateComponents:v10 endDateComponents:v13];
   v29 = 0;
@@ -190,7 +190,7 @@ uint64_t __72__ACHMonthlyChallengeTemplateDataProvider_monthlyChallengeTypeForMo
   v26 = __Block_byref_object_copy__16;
   v27 = __Block_byref_object_dispose__16;
   v28 = 0;
-  v15 = [(ACHMonthlyChallengeTemplateDataProvider *)self activitySummaryIterator];
+  activitySummaryIterator = [(ACHMonthlyChallengeTemplateDataProvider *)self activitySummaryIterator];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __73__ACHMonthlyChallengeTemplateDataProvider_hasMinimumActiveDaysWithError___block_invoke;
@@ -201,16 +201,16 @@ uint64_t __72__ACHMonthlyChallengeTemplateDataProvider_monthlyChallengeTypeForMo
   v21[2] = __73__ACHMonthlyChallengeTemplateDataProvider_hasMinimumActiveDaysWithError___block_invoke_2;
   v21[3] = &unk_278490958;
   v21[4] = &v23;
-  [v15 enumerateActivitySummariesForDateComponentInterval:v14 handler:v22 errorHandler:v21];
+  [activitySummaryIterator enumerateActivitySummariesForDateComponentInterval:v14 handler:v22 errorHandler:v21];
 
   v16 = v24[5];
   v17 = v16;
   if (v16)
   {
-    if (a3)
+    if (error)
     {
       v18 = v16;
-      *a3 = v17;
+      *error = v17;
     }
 
     else
@@ -258,10 +258,10 @@ void __73__ACHMonthlyChallengeTemplateDataProvider_hasMinimumActiveDaysWithError
   }
 }
 
-- (BOOL)isWheelchairUserWithError:(id *)a3
+- (BOOL)isWheelchairUserWithError:(id *)error
 {
-  v4 = [(ACHMonthlyChallengeTemplateDataProvider *)self healthStore];
-  v5 = [v4 wheelchairUseWithError:a3];
+  healthStore = [(ACHMonthlyChallengeTemplateDataProvider *)self healthStore];
+  v5 = [healthStore wheelchairUseWithError:error];
 
   if (v5)
   {
@@ -276,7 +276,7 @@ void __73__ACHMonthlyChallengeTemplateDataProvider_hasMinimumActiveDaysWithError
   return v6;
 }
 
-- (int64_t)currentActivityMoveModeWithError:(id *)a3
+- (int64_t)currentActivityMoveModeWithError:(id *)error
 {
   moveModeOverride = self->_moveModeOverride;
   if (moveModeOverride)
@@ -284,31 +284,31 @@ void __73__ACHMonthlyChallengeTemplateDataProvider_hasMinimumActiveDaysWithError
     return [(NSNumber *)moveModeOverride intValue];
   }
 
-  v7 = [(ACHMonthlyChallengeTemplateDataProvider *)self healthStore];
-  v8 = [v7 activityMoveModeWithError:a3];
+  healthStore = [(ACHMonthlyChallengeTemplateDataProvider *)self healthStore];
+  v8 = [healthStore activityMoveModeWithError:error];
 
   if (v8)
   {
-    v5 = [v8 activityMoveMode];
+    activityMoveMode = [v8 activityMoveMode];
   }
 
   else
   {
-    v5 = 1;
+    activityMoveMode = 1;
   }
 
-  return v5;
+  return activityMoveMode;
 }
 
-- (unint64_t)currentExperienceTypeWithError:(id *)a3
+- (unint64_t)currentExperienceTypeWithError:(id *)error
 {
-  v5 = [(ACHMonthlyChallengeTemplateDataProvider *)self healthStore];
-  v6 = [v5 dateOfBirthComponentsWithError:a3];
+  healthStore = [(ACHMonthlyChallengeTemplateDataProvider *)self healthStore];
+  v6 = [healthStore dateOfBirthComponentsWithError:error];
 
   if (v6)
   {
-    v7 = [(ACHMonthlyChallengeTemplateDataProvider *)self currentCalendar];
-    v8 = [(ACHMonthlyChallengeTemplateDataProvider *)self currentDate];
+    currentCalendar = [(ACHMonthlyChallengeTemplateDataProvider *)self currentCalendar];
+    currentDate = [(ACHMonthlyChallengeTemplateDataProvider *)self currentDate];
     v9 = FIExperienceTypeForBirthDateComponentsWithCurrentDateAndCalendar();
   }
 
@@ -320,9 +320,9 @@ void __73__ACHMonthlyChallengeTemplateDataProvider_hasMinimumActiveDaysWithError
   return v9;
 }
 
-- (void)setMoveModeOverride:(int64_t)a3
+- (void)setMoveModeOverride:(int64_t)override
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:override];
   moveModeOverride = self->_moveModeOverride;
   self->_moveModeOverride = v4;
 
@@ -334,15 +334,15 @@ void __73__ACHMonthlyChallengeTemplateDataProvider_hasMinimumActiveDaysWithError
   currentDateOverride = self->_currentDateOverride;
   if (currentDateOverride)
   {
-    v3 = currentDateOverride;
+    date = currentDateOverride;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
-  return v3;
+  return date;
 }
 
 - (NSCalendar)currentCalendar
@@ -350,15 +350,15 @@ void __73__ACHMonthlyChallengeTemplateDataProvider_hasMinimumActiveDaysWithError
   currentCalendarOverride = self->_currentCalendarOverride;
   if (currentCalendarOverride)
   {
-    v3 = currentCalendarOverride;
+    hk_gregorianCalendarWithLocalTimeZone = currentCalendarOverride;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithLocalTimeZone];
+    hk_gregorianCalendarWithLocalTimeZone = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithLocalTimeZone];
   }
 
-  return v3;
+  return hk_gregorianCalendarWithLocalTimeZone;
 }
 
 - (ACHAchievementStoring)achievementStore

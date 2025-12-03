@@ -1,6 +1,6 @@
 @interface SBUIControllerAccessibility
 - (BOOL)_accessibilityIsAppSwitcherVisible;
-- (void)updateBatteryState:(id)a3;
+- (void)updateBatteryState:(id)state;
 @end
 
 @implementation SBUIControllerAccessibility
@@ -14,22 +14,22 @@
   return v4;
 }
 
-- (void)updateBatteryState:(id)a3
+- (void)updateBatteryState:(id)state
 {
-  v4 = a3;
+  stateCopy = state;
   v5 = [(SBUIControllerAccessibility *)self safeValueForKey:@"batteryCapacityAsPercentage"];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
   v12.receiver = self;
   v12.super_class = SBUIControllerAccessibility;
-  [(SBUIControllerAccessibility *)&v12 updateBatteryState:v4];
+  [(SBUIControllerAccessibility *)&v12 updateBatteryState:stateCopy];
 
   v7 = [(SBUIControllerAccessibility *)self safeValueForKey:@"batteryCapacityAsPercentage"];
-  v8 = [v7 integerValue];
+  integerValue2 = [v7 integerValue];
 
-  if (v6 > 20 == v8 < 21)
+  if (integerValue > 20 == integerValue2 < 21)
   {
-    v9 = v8 < 21;
+    v9 = integerValue2 < 21;
     v10 = *MEMORY[0x29EDC7480];
     v11 = [MEMORY[0x29EDBA070] numberWithBool:v9];
     UIAccessibilityPostNotification(v10, v11);

@@ -1,38 +1,38 @@
 @interface BLSHCriticalAssertTester
-- (BLSHCriticalAssertTester)initWithNotificationName:(id)a3;
-- (void)_triggerTestCriticalAssert:(id)a3;
+- (BLSHCriticalAssertTester)initWithNotificationName:(id)name;
+- (void)_triggerTestCriticalAssert:(id)assert;
 @end
 
 @implementation BLSHCriticalAssertTester
 
-- (BLSHCriticalAssertTester)initWithNotificationName:(id)a3
+- (BLSHCriticalAssertTester)initWithNotificationName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v8.receiver = self;
   v8.super_class = BLSHCriticalAssertTester;
   v5 = [(BLSHCriticalAssertTester *)&v8 init];
   if (v5)
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    CFNotificationCenterAddObserver(DarwinNotifyCenter, v5, _triggerTestCriticalAssert, v4, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
+    CFNotificationCenterAddObserver(DarwinNotifyCenter, v5, _triggerTestCriticalAssert, nameCopy, 0, CFNotificationSuspensionBehaviorDeliverImmediately);
   }
 
   return v5;
 }
 
-- (void)_triggerTestCriticalAssert:(id)a3
+- (void)_triggerTestCriticalAssert:(id)assert
 {
-  v5 = a3;
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"Test Critical Assert did fail: %@", v5];
-  BLSHRecordCriticalAssertFailure(v6, 1, 0);
+  assertCopy = assert;
+  assertCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Test Critical Assert did fail: %@", assertCopy];
+  BLSHRecordCriticalAssertFailure(assertCopy, 1, 0);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __55__BLSHCriticalAssertTester__triggerTestCriticalAssert___block_invoke;
   v10[3] = &unk_27841E510;
-  v12 = self;
+  selfCopy = self;
   v13 = a2;
-  v11 = v5;
-  v7 = v5;
+  v11 = assertCopy;
+  v7 = assertCopy;
   v8 = MEMORY[0x223D70730](v10);
   if (BLSHIsUnitTestRunning())
   {

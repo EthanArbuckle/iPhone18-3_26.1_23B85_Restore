@@ -1,10 +1,10 @@
 @interface EpisodeRemovalManagingMock
-- (void)removeEpisodesWith:(id)a3;
+- (void)removeEpisodesWith:(id)with;
 @end
 
 @implementation EpisodeRemovalManagingMock
 
-- (void)removeEpisodesWith:(id)a3
+- (void)removeEpisodesWith:(id)with
 {
   v4 = sub_1D91785FC();
   v5 = *self->removeEpisodesHandler;

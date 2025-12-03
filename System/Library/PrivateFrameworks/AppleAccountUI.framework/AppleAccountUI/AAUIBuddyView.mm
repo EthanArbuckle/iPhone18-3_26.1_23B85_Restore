@@ -1,15 +1,15 @@
 @interface AAUIBuddyView
-- (AAUIBuddyView)initWithCoder:(id)a3;
-- (AAUIBuddyView)initWithFrame:(CGRect)a3;
+- (AAUIBuddyView)initWithCoder:(id)coder;
+- (AAUIBuddyView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation AAUIBuddyView
 
-- (AAUIBuddyView)initWithFrame:(CGRect)a3
+- (AAUIBuddyView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = AAUIBuddyView;
-  v3 = [(AAUIBuddyView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AAUIBuddyView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -19,11 +19,11 @@
   return v4;
 }
 
-- (AAUIBuddyView)initWithCoder:(id)a3
+- (AAUIBuddyView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = AAUIBuddyView;
-  v3 = [(AAUIBuddyView *)&v6 initWithCoder:a3];
+  v3 = [(AAUIBuddyView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

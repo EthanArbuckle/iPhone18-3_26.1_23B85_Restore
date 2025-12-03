@@ -1,7 +1,7 @@
 @interface CSFPreferences
 + (id)sharedPreferences;
 - (BOOL)_isAdaptiveSiriVolumeDisabled;
-- (BOOL)_isDirectory:(id)a3;
+- (BOOL)_isDirectory:(id)directory;
 - (BOOL)_storeModeEnabled;
 - (BOOL)audioInjectionEnabled;
 - (BOOL)bundleAudioInjectionEnabled;
@@ -10,7 +10,7 @@
 - (BOOL)bypassTrialAssets;
 - (BOOL)checkAOPConfigurationWatchDog;
 - (BOOL)companionSyncVoiceTriggerUtterancesEnabled;
-- (BOOL)enableBenchmarkService:(BOOL)a3;
+- (BOOL)enableBenchmarkService:(BOOL)service;
 - (BOOL)exclaveAudioInjectionEnabled;
 - (BOOL)fileLoggingIsEnabled;
 - (BOOL)firstPassDebuggingEnabled;
@@ -21,7 +21,7 @@
 - (BOOL)forceSetRePromptRequired;
 - (BOOL)forceVoiceTriggerAOPMode;
 - (BOOL)forceVoiceTriggerAPMode;
-- (BOOL)getBooleanAccessorySettingValueForKey:(id)a3 forAccessory:(id)a4;
+- (BOOL)getBooleanAccessorySettingValueForKey:(id)key forAccessory:(id)accessory;
 - (BOOL)isAdBlockerAudioLoggingEnabled;
 - (BOOL)isAdaptiveSiriVolumePermanentOffsetEnabled;
 - (BOOL)isAdaptiveSiriVolumeTemporaryIntentValid;
@@ -73,9 +73,9 @@
 - (BOOL)useSpeexForAudioInjection;
 - (BOOL)useVoiceIsolationDictation;
 - (BOOL)voiceTriggerEnabled;
-- (double)getMediaPlaybackInterruptedTime:(id)a3;
+- (double)getMediaPlaybackInterruptedTime:(id)time;
 - (double)remoteVoiceTriggerDelayTime;
-- (double)remoteVoiceTriggerEndpointTimeoutWithDefault:(double)a3;
+- (double)remoteVoiceTriggerEndpointTimeoutWithDefault:(double)default;
 - (float)adaptiveSiriVolumePermanentOffset;
 - (float)getAttendingTimeoutConfig;
 - (float)nearlyMutedPlaybackVolumeLevel;
@@ -101,12 +101,12 @@
 - (id)getLegacyOnDeviceCompilationCacheDirectory;
 - (id)getOnDeviceCompilationCacheDirectory;
 - (id)getOnDeviceCompilationCacheDirectoryForBenchmark;
-- (id)getRPIAssistantAudioSamplingDateSubDirectory:(id)a3;
+- (id)getRPIAssistantAudioSamplingDateSubDirectory:(id)directory;
 - (id)getRPIAssistantAudioSamplingDirectory;
-- (id)getSSVLogFilePathWithSessionIdentifier:(id)a3;
+- (id)getSSVLogFilePathWithSessionIdentifier:(id)identifier;
 - (id)getStartOfSpeechAudioLogFilePath;
-- (id)interstitialAbsoluteDirForLevel:(int64_t)a3;
-- (id)interstitialRelativeDirForLevel:(int64_t)a3;
+- (id)interstitialAbsoluteDirForLevel:(int64_t)level;
+- (id)interstitialRelativeDirForLevel:(int64_t)level;
 - (id)languageCodeDarwin;
 - (id)mhLogDirectory;
 - (id)myriadHashDirectory;
@@ -127,34 +127,34 @@
 - (unint64_t)maxNumLoggingFiles;
 - (unint64_t)overridingFrameSkipRate;
 - (unint64_t)speakerIdScoreReportingType;
-- (void)_clearAccessorySettingForKeys:(id)a3 forAccessory:(id)a4;
-- (void)_updatePreferenceSettingsForAccessory:(id)a3 settingsUpdateBlock:(id)a4;
-- (void)clearAlarmPlayingStatusOnAccessory:(id)a3;
-- (void)clearMediaPlaybackInterruptedTimeOnAccessory:(id)a3;
-- (void)clearMediaPlayingStatusOnAccessory:(id)a3;
-- (void)clearMyriadSettingsOnAccessory:(id)a3;
-- (void)clearTimerPlayingStatusOnAccessory:(id)a3;
-- (void)disableAdaptiveSiriVolume:(id)a3;
-- (void)enableAttentiveSiriAPI:(id)a3;
-- (void)enableEndpointEnhancedLogging:(id)a3;
-- (void)getASVUserIntent:(id)a3;
-- (void)setASVUserIntent:(id)a3;
-- (void)setAudioInjectionFilePath:(id)a3;
-- (void)setEnrollmentIdForVoiceProfileiCloudMetrics:(id)a3 on:(id)a4;
-- (void)setFakeHearstModelPath:(id)a3;
-- (void)setFileLoggingIsEnabled:(BOOL)a3;
-- (void)setFileLoggingLevel:(id)a3;
-- (void)setHearstFirstPassModelVersion:(id)a3;
-- (void)setHearstSecondPassModelVersion:(id)a3;
-- (void)setIdleUserPreventSleepAssertionAcquitionDate:(id)a3;
-- (void)setJarvisTriggerMode:(int64_t)a3;
-- (void)setPowerLoggingCurrentAssetConfigVersion:(id)a3;
-- (void)setPowerLoggingCurrentLanguage:(id)a3;
-- (void)setRemoteDarwinEverConnectedWithNotifyKey:(const char *)a3;
-- (void)setSiriLanguageCodeDarwin:(id)a3;
+- (void)_clearAccessorySettingForKeys:(id)keys forAccessory:(id)accessory;
+- (void)_updatePreferenceSettingsForAccessory:(id)accessory settingsUpdateBlock:(id)block;
+- (void)clearAlarmPlayingStatusOnAccessory:(id)accessory;
+- (void)clearMediaPlaybackInterruptedTimeOnAccessory:(id)accessory;
+- (void)clearMediaPlayingStatusOnAccessory:(id)accessory;
+- (void)clearMyriadSettingsOnAccessory:(id)accessory;
+- (void)clearTimerPlayingStatusOnAccessory:(id)accessory;
+- (void)disableAdaptiveSiriVolume:(id)volume;
+- (void)enableAttentiveSiriAPI:(id)i;
+- (void)enableEndpointEnhancedLogging:(id)logging;
+- (void)getASVUserIntent:(id)intent;
+- (void)setASVUserIntent:(id)intent;
+- (void)setAudioInjectionFilePath:(id)path;
+- (void)setEnrollmentIdForVoiceProfileiCloudMetrics:(id)metrics on:(id)on;
+- (void)setFakeHearstModelPath:(id)path;
+- (void)setFileLoggingIsEnabled:(BOOL)enabled;
+- (void)setFileLoggingLevel:(id)level;
+- (void)setHearstFirstPassModelVersion:(id)version;
+- (void)setHearstSecondPassModelVersion:(id)version;
+- (void)setIdleUserPreventSleepAssertionAcquitionDate:(id)date;
+- (void)setJarvisTriggerMode:(int64_t)mode;
+- (void)setPowerLoggingCurrentAssetConfigVersion:(id)version;
+- (void)setPowerLoggingCurrentLanguage:(id)language;
+- (void)setRemoteDarwinEverConnectedWithNotifyKey:(const char *)key;
+- (void)setSiriLanguageCodeDarwin:(id)darwin;
 - (void)setVoiceTriggerEverUsed;
-- (void)voiceTriggerRePromptFinishedWithDate:(id)a3;
-- (void)whiteListMultiPhraseLocale:(id)a3;
+- (void)voiceTriggerRePromptFinishedWithDate:(id)date;
+- (void)whiteListMultiPhraseLocale:(id)locale;
 @end
 
 @implementation CSFPreferences
@@ -208,20 +208,20 @@
 
 - (id)getOnDeviceCompilationCacheDirectory
 {
-  v2 = [(CSFPreferences *)self _getCoreSpeechGroupContainerPath];
-  v3 = [v2 stringByAppendingPathComponent:@"Caches/onDeviceCompilationCaches/"];
+  _getCoreSpeechGroupContainerPath = [(CSFPreferences *)self _getCoreSpeechGroupContainerPath];
+  v3 = [_getCoreSpeechGroupContainerPath stringByAppendingPathComponent:@"Caches/onDeviceCompilationCaches/"];
 
   return v3;
 }
 
 - (id)_getCoreSpeechGroupContainerPath
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  v3 = [v2 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.CoreSpeech"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v3 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.CoreSpeech"];
 
-  v4 = [v3 path];
+  path = [v3 path];
 
-  return v4;
+  return path;
 }
 
 - (BOOL)bypassTrialAssets
@@ -237,8 +237,8 @@
 - (BOOL)isBargeInSupportEnabled
 {
   v11 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E698D1B8] sharedPreferences];
-  v3 = [v2 isSiriAccessibilityBargeInEnabled];
+  mEMORY[0x1E698D1B8] = [MEMORY[0x1E698D1B8] sharedPreferences];
+  isSiriAccessibilityBargeInEnabled = [mEMORY[0x1E698D1B8] isSiriAccessibilityBargeInEnabled];
 
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -246,12 +246,12 @@
     v7 = 136315394;
     v8 = "[CSFPreferences isBargeInSupportEnabled]";
     v9 = 1024;
-    v10 = v3;
+    v10 = isSiriAccessibilityBargeInEnabled;
     _os_log_impl(&dword_1DDA4B000, v4, OS_LOG_TYPE_DEFAULT, "%s isBargeInEnabled:%u", &v7, 0x12u);
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v3;
+  return isSiriAccessibilityBargeInEnabled;
 }
 
 - (BOOL)isEndpointEnhancedLoggingEnabled
@@ -270,15 +270,15 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 void __51__CSFPreferences_programmableAudioInjectionEnabled__block_invoke()
@@ -370,16 +370,16 @@ void __46__CSFPreferences_exclaveAudioInjectionEnabled__block_invoke()
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
     [(CSFPreferences *)self _storeModeEnabled];
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 void __48__CSFPreferences_nearlyMutedPlaybackVolumeLevel__block_invoke()
@@ -435,15 +435,15 @@ void __48__CSFPreferences_nearlyMutedPlaybackVolumeLevel__block_invoke()
   v2 = CFPreferencesCopyAppValue(@"AOPConfigurationWatchDog", @"com.apple.voicetrigger");
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)useExclaveFastStart
@@ -587,9 +587,9 @@ void __45__CSFPreferences_isSpeechStudyLoggingEnabled__block_invoke()
   return v3;
 }
 
-- (void)voiceTriggerRePromptFinishedWithDate:(id)a3
+- (void)voiceTriggerRePromptFinishedWithDate:(id)date
 {
-  _CSNotBackedupPreferencesSetValueForKey(a3, @"Log when user was RePrompted ");
+  _CSNotBackedupPreferencesSetValueForKey(date, @"Log when user was RePrompted ");
 
   CFPreferencesAppSynchronize(@"com.apple.voicetrigger.notbackedup");
 }
@@ -708,30 +708,30 @@ void __41__CSFPreferences_overridingFrameSkipRate__block_invoke()
   return v3;
 }
 
-- (void)setPowerLoggingCurrentLanguage:(id)a3
+- (void)setPowerLoggingCurrentLanguage:(id)language
 {
-  _CSNotBackedupPreferencesSetValueForKey(a3, @"Power Logging Current Language");
+  _CSNotBackedupPreferencesSetValueForKey(language, @"Power Logging Current Language");
 
   CFPreferencesAppSynchronize(@"com.apple.voicetrigger");
 }
 
-- (void)whiteListMultiPhraseLocale:(id)a3
+- (void)whiteListMultiPhraseLocale:(id)locale
 {
-  v4 = a3;
-  if (v4)
+  localeCopy = locale;
+  if (localeCopy)
   {
-    v7 = v4;
-    v5 = [(CSFPreferences *)self whiteListedMultiPhraseLocales];
+    v7 = localeCopy;
+    whiteListedMultiPhraseLocales = [(CSFPreferences *)self whiteListedMultiPhraseLocales];
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (v5 && [v5 count])
+    if (whiteListedMultiPhraseLocales && [whiteListedMultiPhraseLocales count])
     {
-      [v6 addObjectsFromArray:v5];
+      [v6 addObjectsFromArray:whiteListedMultiPhraseLocales];
     }
 
     [v6 addObject:v7];
     _CSNotBackedupPreferencesSetValueForKey(v6, @"Whitelisted Multiphrase Locales");
 
-    v4 = v7;
+    localeCopy = v7;
   }
 }
 
@@ -767,9 +767,9 @@ void __41__CSFPreferences_overridingFrameSkipRate__block_invoke()
   return v3;
 }
 
-- (void)setPowerLoggingCurrentAssetConfigVersion:(id)a3
+- (void)setPowerLoggingCurrentAssetConfigVersion:(id)version
 {
-  _CSNotBackedupPreferencesSetValueForKey(a3, @"Power Logging Current Asset Config Version");
+  _CSNotBackedupPreferencesSetValueForKey(version, @"Power Logging Current Asset Config Version");
 
   CFPreferencesAppSynchronize(@"com.apple.voicetrigger");
 }
@@ -938,26 +938,26 @@ uint64_t __43__CSFPreferences_forceRePromptVoiceTrigger__block_invoke()
   return v6;
 }
 
-- (void)setEnrollmentIdForVoiceProfileiCloudMetrics:(id)a3 on:(id)a4
+- (void)setEnrollmentIdForVoiceProfileiCloudMetrics:(id)metrics on:(id)on
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  metricsCopy = metrics;
+  onCopy = on;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315650;
     v10 = "[CSFPreferences setEnrollmentIdForVoiceProfileiCloudMetrics:on:]";
     v11 = 2112;
-    v12 = v5;
+    v12 = metricsCopy;
     v13 = 2112;
-    v14 = v6;
+    v14 = onCopy;
     _os_log_impl(&dword_1DDA4B000, v7, OS_LOG_TYPE_DEFAULT, "%s Setting enrollmentId %@ on %@... ", &v9, 0x20u);
   }
 
   CFPreferencesAppSynchronize(@"com.apple.voicetrigger.notbackedup");
-  _CSNotBackedupPreferencesSetValueForKey(v5, @"EnrollmentId Voice Profile iCloud Enrollment");
-  _CSNotBackedupPreferencesSetValueForKey(v6, @"Creation Date of EnrollmentId used in Voice Profile iCloud Enrollment");
+  _CSNotBackedupPreferencesSetValueForKey(metricsCopy, @"EnrollmentId Voice Profile iCloud Enrollment");
+  _CSNotBackedupPreferencesSetValueForKey(onCopy, @"Creation Date of EnrollmentId used in Voice Profile iCloud Enrollment");
   CFPreferencesAppSynchronize(@"com.apple.voicetrigger.notbackedup");
 
   v8 = *MEMORY[0x1E69E9840];
@@ -1099,15 +1099,15 @@ void __46__CSFPreferences_bypassSpeakerIdForMitigation__block_invoke()
   v2 = CFPreferencesCopyAppValue(@"Force Fail Exclave Asset Mapping", @"com.apple.voicetrigger.notbackedup");
   if (v2 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)overwritingVoiceTriggerMLock
@@ -1180,12 +1180,12 @@ void __50__CSFPreferences_shouldOverwriteVoiceTriggerMLock__block_invoke()
     v3 = v2;
     if (v2)
     {
-      v4 = [v2 BOOLValue];
+      bOOLValue = [v2 BOOLValue];
     }
 
     else
     {
-      v4 = 0;
+      bOOLValue = 0;
     }
   }
 
@@ -1199,11 +1199,11 @@ void __50__CSFPreferences_shouldOverwriteVoiceTriggerMLock__block_invoke()
       _os_log_error_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_ERROR, "%s Called in unexpected platform!", &v8, 0xCu);
     }
 
-    v4 = 0;
+    bOOLValue = 0;
   }
 
   v6 = *MEMORY[0x1E69E9840];
-  return v4;
+  return bOOLValue;
 }
 
 void __35__CSFPreferences_bypassTrialAssets__block_invoke()
@@ -1521,9 +1521,9 @@ void __50__CSFPreferences_isEndpointEnhancedLoggingEnabled__block_invoke()
   }
 }
 
-- (void)enableEndpointEnhancedLogging:(id)a3
+- (void)enableEndpointEnhancedLogging:(id)logging
 {
-  _CSPreferencesSetValueForKeyFromRoot(a3, @"Endpoint Enhanced Logging");
+  _CSPreferencesSetValueForKeyFromRoot(logging, @"Endpoint Enhanced Logging");
 
   CFPreferencesAppSynchronize(@"com.apple.voicetrigger");
 }
@@ -1557,9 +1557,9 @@ void __43__CSFPreferences_isAttentiveSiriAPIEnabled__block_invoke()
   }
 }
 
-- (void)enableAttentiveSiriAPI:(id)a3
+- (void)enableAttentiveSiriAPI:(id)i
 {
-  _CSPreferencesSetValueForKeyFromRoot(a3, @"Attentive Siri API");
+  _CSPreferencesSetValueForKeyFromRoot(i, @"Attentive Siri API");
 
   CFPreferencesAppSynchronize(@"com.apple.voicetrigger");
 }
@@ -1681,20 +1681,20 @@ void __38__CSFPreferences_isP2PTransferEnabled__block_invoke()
   return v3;
 }
 
-- (void)setIdleUserPreventSleepAssertionAcquitionDate:(id)a3
+- (void)setIdleUserPreventSleepAssertionAcquitionDate:(id)date
 {
-  _CSNotBackedupPreferencesSetValueForKey(a3, @"Idle User Prevent Sleep Assertion Acquition Time");
+  _CSNotBackedupPreferencesSetValueForKey(date, @"Idle User Prevent Sleep Assertion Acquition Time");
 
   CFPreferencesAppSynchronize(@"com.apple.voicetrigger.notbackedup");
 }
 
-- (void)setRemoteDarwinEverConnectedWithNotifyKey:(const char *)a3
+- (void)setRemoteDarwinEverConnectedWithNotifyKey:(const char *)key
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__CSFPreferences_setRemoteDarwinEverConnectedWithNotifyKey___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a3;
+  block[4] = key;
   if (setRemoteDarwinEverConnectedWithNotifyKey__onceToken != -1)
   {
     dispatch_once(&setRemoteDarwinEverConnectedWithNotifyKey__onceToken, block);
@@ -1740,13 +1740,13 @@ uint64_t __60__CSFPreferences_setRemoteDarwinEverConnectedWithNotifyKey___block_
   return v4;
 }
 
-- (void)setSiriLanguageCodeDarwin:(id)a3
+- (void)setSiriLanguageCodeDarwin:(id)darwin
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  darwinCopy = darwin;
   if (+[CSUtils isDarwinOS])
   {
-    _CSPreferencesSetValueForKey(v3, @"Siri Language Code Darwin");
+    _CSPreferencesSetValueForKey(darwinCopy, @"Siri Language Code Darwin");
     CFPreferencesAppSynchronize(@"com.apple.voicetrigger");
   }
 
@@ -1764,43 +1764,43 @@ uint64_t __60__CSFPreferences_setRemoteDarwinEverConnectedWithNotifyKey___block_
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)getASVUserIntent:(id)a3
+- (void)getASVUserIntent:(id)intent
 {
   v58 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  intentCopy = intent;
   v4 = CFPreferencesCopyAppValue(@"Adaptive Siri Volume State Intent Type", @"com.apple.voicetrigger");
   v5 = v4;
   if (v4)
   {
-    [v3 setUserIntentType:{objc_msgSend(v4, "unsignedLongLongValue")}];
+    [intentCopy setUserIntentType:{objc_msgSend(v4, "unsignedLongLongValue")}];
     v6 = CFPreferencesCopyAppValue(@"Adaptive Siri Volume State Intent Time", @"com.apple.voicetrigger");
     v7 = v6;
     if (v6)
     {
-      [v3 setUserIntentTime:{objc_msgSend(v6, "longLongValue")}];
+      [intentCopy setUserIntentTime:{objc_msgSend(v6, "longLongValue")}];
       v8 = CFPreferencesCopyAppValue(@"Adaptive Siri Volume State Intent Volume", @"com.apple.voicetrigger");
       v9 = v8;
       if (v8)
       {
         [v8 floatValue];
-        [v3 setUserIntentVolume:?];
+        [intentCopy setUserIntentVolume:?];
         v10 = CFPreferencesCopyAppValue(@"Adaptive Siri Volume State Latest Volume Time", @"com.apple.voicetrigger");
         v11 = v10;
         if (v10)
         {
-          [v3 setLatestVolumeTime:{objc_msgSend(v10, "longLongValue")}];
+          [intentCopy setLatestVolumeTime:{objc_msgSend(v10, "longLongValue")}];
           v12 = CFPreferencesCopyAppValue(@"Adaptive Siri Volume State Latest Volume", @"com.apple.voicetrigger");
           v13 = v12;
           if (v12)
           {
             [v12 floatValue];
-            [v3 setLatestVolume:?];
+            [intentCopy setLatestVolume:?];
             v14 = CFPreferencesCopyAppValue(@"Adaptive Siri Volume State Permanent Offset Enabled", @"com.apple.voicetrigger");
             v15 = v14;
             if (v14)
             {
-              v16 = [v14 BOOLValue];
-              v17 = v3;
+              bOOLValue = [v14 BOOLValue];
+              v17 = intentCopy;
             }
 
             else
@@ -1813,11 +1813,11 @@ uint64_t __60__CSFPreferences_setRemoteDarwinEverConnectedWithNotifyKey___block_
                 _os_log_impl(&dword_1DDA4B000, v23, OS_LOG_TYPE_DEFAULT, "%s Adaptive Siri Volume failed to load permanent offset status. Defaulting to no permanent volume offset", buf, 0xCu);
               }
 
-              v17 = v3;
-              v16 = 0;
+              v17 = intentCopy;
+              bOOLValue = 0;
             }
 
-            [v17 setPermanentOffsetIsEnabled:v16];
+            [v17 setPermanentOffsetIsEnabled:bOOLValue];
             v24 = CFPreferencesCopyAppValue(@"Adaptive Siri Volume State Permanent Offset Factor", @"com.apple.voicetrigger");
             v25 = v24;
             if (v24)
@@ -1839,35 +1839,35 @@ uint64_t __60__CSFPreferences_setRemoteDarwinEverConnectedWithNotifyKey___block_
             }
 
             *&v26 = v27;
-            [v3 setPermanentOffsetFactor:v26];
+            [intentCopy setPermanentOffsetFactor:v26];
             v29 = CSLogContextFacilityCoreSpeech;
             if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
             {
               log = v29;
-              v40 = [v3 userIntentType];
-              v39 = [v3 userIntentTime];
-              [v3 userIntentVolume];
+              userIntentType = [intentCopy userIntentType];
+              userIntentTime = [intentCopy userIntentTime];
+              [intentCopy userIntentVolume];
               v31 = v30;
-              v32 = [v3 latestVolumeTime];
-              [v3 latestVolume];
+              latestVolumeTime = [intentCopy latestVolumeTime];
+              [intentCopy latestVolume];
               v34 = v33;
               v35 = v15;
-              v36 = [v3 permanentOffsetIsEnabled];
-              [v3 permanentOffsetFactor];
+              permanentOffsetIsEnabled = [intentCopy permanentOffsetIsEnabled];
+              [intentCopy permanentOffsetFactor];
               *buf = 136316930;
               v43 = "[CSFPreferences getASVUserIntent:]";
               v44 = 2050;
-              v45 = v40;
+              v45 = userIntentType;
               v46 = 2050;
-              v47 = v39;
+              v47 = userIntentTime;
               v48 = 2050;
               v49 = v31;
               v50 = 2050;
-              v51 = v32;
+              v51 = latestVolumeTime;
               v52 = 2050;
               v53 = v34;
               v54 = 1026;
-              v55 = v36;
+              v55 = permanentOffsetIsEnabled;
               v15 = v35;
               v56 = 2050;
               v57 = v37;
@@ -1885,7 +1885,7 @@ uint64_t __60__CSFPreferences_setRemoteDarwinEverConnectedWithNotifyKey___block_
               _os_log_impl(&dword_1DDA4B000, v22, OS_LOG_TYPE_DEFAULT, "%s Adaptive Siri Volume failed to latest volume. Ignoring intent", buf, 0xCu);
             }
 
-            [v3 setUserIntentTime:0x8000000000000000];
+            [intentCopy setUserIntentTime:0x8000000000000000];
           }
         }
 
@@ -1899,7 +1899,7 @@ uint64_t __60__CSFPreferences_setRemoteDarwinEverConnectedWithNotifyKey___block_
             _os_log_impl(&dword_1DDA4B000, v21, OS_LOG_TYPE_DEFAULT, "%s Adaptive Siri Volume failed to load latest volume time. Ignoring intent", buf, 0xCu);
           }
 
-          [v3 setUserIntentTime:0x8000000000000000];
+          [intentCopy setUserIntentTime:0x8000000000000000];
         }
       }
 
@@ -1913,7 +1913,7 @@ uint64_t __60__CSFPreferences_setRemoteDarwinEverConnectedWithNotifyKey___block_
           _os_log_impl(&dword_1DDA4B000, v20, OS_LOG_TYPE_DEFAULT, "%s Adaptive Siri Volume failed to load user intent volume. Ignoring intent", buf, 0xCu);
         }
 
-        [v3 setUserIntentTime:0x8000000000000000];
+        [intentCopy setUserIntentTime:0x8000000000000000];
       }
     }
 
@@ -1927,7 +1927,7 @@ uint64_t __60__CSFPreferences_setRemoteDarwinEverConnectedWithNotifyKey___block_
         _os_log_impl(&dword_1DDA4B000, v19, OS_LOG_TYPE_DEFAULT, "%s Adaptive Siri Volume failed to load user intent time. Ignoring intent", buf, 0xCu);
       }
 
-      [v3 setUserIntentTime:0x8000000000000000];
+      [intentCopy setUserIntentTime:0x8000000000000000];
     }
   }
 
@@ -1941,33 +1941,33 @@ uint64_t __60__CSFPreferences_setRemoteDarwinEverConnectedWithNotifyKey___block_
       _os_log_impl(&dword_1DDA4B000, v18, OS_LOG_TYPE_DEFAULT, "%s Adaptive Siri Volume failed to load user intent type. Ignoring intent", buf, 0xCu);
     }
 
-    [v3 setUserIntentTime:0x8000000000000000];
+    [intentCopy setUserIntentTime:0x8000000000000000];
   }
 
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setASVUserIntent:(id)a3
+- (void)setASVUserIntent:(id)intent
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = a3;
-  v17 = [v3 numberWithUnsignedLongLong:{objc_msgSend(v4, "userIntentType")}];
-  v5 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v4, "userIntentTime")}];
+  intentCopy = intent;
+  v17 = [v3 numberWithUnsignedLongLong:{objc_msgSend(intentCopy, "userIntentType")}];
+  v5 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(intentCopy, "userIntentTime")}];
   v6 = MEMORY[0x1E696AD98];
-  [v4 userIntentVolume];
+  [intentCopy userIntentVolume];
   v7 = [v6 numberWithFloat:?];
-  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v4, "latestVolumeTime")}];
+  v8 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(intentCopy, "latestVolumeTime")}];
   v9 = MEMORY[0x1E696AD98];
-  [v4 latestVolume];
+  [intentCopy latestVolume];
   v10 = [v9 numberWithFloat:?];
-  v11 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v4, "permanentOffsetIsEnabled")}];
+  v11 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(intentCopy, "permanentOffsetIsEnabled")}];
   v12 = MEMORY[0x1E696AD98];
-  [v4 permanentOffsetFactor];
+  [intentCopy permanentOffsetFactor];
   v13 = [v12 numberWithFloat:?];
   v14 = MEMORY[0x1E696AD98];
-  v15 = [v4 userIntentValidForSeconds];
+  userIntentValidForSeconds = [intentCopy userIntentValidForSeconds];
 
-  v16 = [v14 numberWithUnsignedLongLong:v15];
+  v16 = [v14 numberWithUnsignedLongLong:userIntentValidForSeconds];
   _CSPreferencesSetValueForKey(v17, @"Adaptive Siri Volume State Intent Type");
   _CSPreferencesSetValueForKey(v5, @"Adaptive Siri Volume State Intent Time");
   _CSPreferencesSetValueForKey(v7, @"Adaptive Siri Volume State Intent Volume");
@@ -2172,9 +2172,9 @@ uint64_t __43__CSFPreferences_bypassPersonalizedHeySiri__block_invoke()
   }
 
   v3 = v2;
-  v4 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)companionSyncVoiceTriggerUtterancesEnabled
@@ -2206,17 +2206,17 @@ uint64_t __43__CSFPreferences_bypassPersonalizedHeySiri__block_invoke()
   }
 
   v3 = v2;
-  v4 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setFakeHearstModelPath:(id)a3
+- (void)setFakeHearstModelPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   if (CSIsInternalBuild_onceToken == -1)
   {
-    if (!v3)
+    if (!pathCopy)
     {
       goto LABEL_5;
     }
@@ -2224,9 +2224,9 @@ uint64_t __43__CSFPreferences_bypassPersonalizedHeySiri__block_invoke()
 
   else
   {
-    v5 = v3;
+    v5 = pathCopy;
     dispatch_once(&CSIsInternalBuild_onceToken, &__block_literal_global_53);
-    v3 = v5;
+    pathCopy = v5;
     if (!v5)
     {
       goto LABEL_5;
@@ -2235,10 +2235,10 @@ uint64_t __43__CSFPreferences_bypassPersonalizedHeySiri__block_invoke()
 
   if (CSIsInternalBuild_isInternal)
   {
-    v4 = v3;
-    _CSPreferencesSetValueForKeyFromRoot(v3, @"Hearst Fake Model Path");
+    v4 = pathCopy;
+    _CSPreferencesSetValueForKeyFromRoot(pathCopy, @"Hearst Fake Model Path");
     CFPreferencesAppSynchronize(@"com.apple.voicetrigger");
-    v3 = v4;
+    pathCopy = v4;
   }
 
 LABEL_5:
@@ -2273,13 +2273,13 @@ LABEL_5:
   return v3;
 }
 
-- (void)setHearstSecondPassModelVersion:(id)a3
+- (void)setHearstSecondPassModelVersion:(id)version
 {
-  v3 = a3;
-  v4 = v3;
+  versionCopy = version;
+  v4 = versionCopy;
   if (CSIsInternalBuild_onceToken != -1)
   {
-    v6 = v3;
+    v6 = versionCopy;
     dispatch_once(&CSIsInternalBuild_onceToken, &__block_literal_global_53);
     v4 = v6;
   }
@@ -2288,20 +2288,20 @@ LABEL_5:
   {
     v5 = v4;
     CFPreferencesSetValue(@"Hearst Second Pass Model Version", v4, @"com.apple.voicetrigger.notbackedup", @"mobile", *MEMORY[0x1E695E898]);
-    v3 = CFPreferencesAppSynchronize(@"com.apple.voicetrigger.notbackedup");
+    versionCopy = CFPreferencesAppSynchronize(@"com.apple.voicetrigger.notbackedup");
     v4 = v5;
   }
 
-  MEMORY[0x1EEE66BB8](v3, v4);
+  MEMORY[0x1EEE66BB8](versionCopy, v4);
 }
 
-- (void)setHearstFirstPassModelVersion:(id)a3
+- (void)setHearstFirstPassModelVersion:(id)version
 {
-  v3 = a3;
-  v4 = v3;
+  versionCopy = version;
+  v4 = versionCopy;
   if (CSIsInternalBuild_onceToken != -1)
   {
-    v6 = v3;
+    v6 = versionCopy;
     dispatch_once(&CSIsInternalBuild_onceToken, &__block_literal_global_53);
     v4 = v6;
   }
@@ -2310,11 +2310,11 @@ LABEL_5:
   {
     v5 = v4;
     CFPreferencesSetValue(@"Hearst First Pass Model Version", v4, @"com.apple.voicetrigger.notbackedup", @"mobile", *MEMORY[0x1E695E898]);
-    v3 = CFPreferencesAppSynchronize(@"com.apple.voicetrigger.notbackedup");
+    versionCopy = CFPreferencesAppSynchronize(@"com.apple.voicetrigger.notbackedup");
     v4 = v5;
   }
 
-  MEMORY[0x1EEE66BB8](v3, v4);
+  MEMORY[0x1EEE66BB8](versionCopy, v4);
 }
 
 - (float)overwritingRemoteVADScore
@@ -2406,15 +2406,15 @@ void __48__CSFPreferences_useSiriActivationSPIForHomePod__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 50;
+    integerValue = 50;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (unint64_t)maxNumLoggingFiles
@@ -2423,15 +2423,15 @@ void __48__CSFPreferences_useSiriActivationSPIForHomePod__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 5;
+    integerValue = 5;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (int)adaptiveSiriVolumeRecentIntent
@@ -2440,15 +2440,15 @@ void __48__CSFPreferences_useSiriActivationSPIForHomePod__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 0;
+    integerValue = 0;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (float)adaptiveSiriVolumePermanentOffset
@@ -2475,15 +2475,15 @@ void __48__CSFPreferences_useSiriActivationSPIForHomePod__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isAdaptiveSiriVolumeTemporaryIntentValid
@@ -2504,13 +2504,13 @@ void __48__CSFPreferences_useSiriActivationSPIForHomePod__block_invoke()
   v11 = 0;
   if (!v5)
   {
-    v6 = [v2 longLongValue];
-    v7 = [v4 unsignedLongLongValue];
-    v8 = [MEMORY[0x1E695DF00] date];
-    [v8 timeIntervalSince1970];
-    v10 = (v9 - v6);
+    longLongValue = [v2 longLongValue];
+    unsignedLongLongValue = [v4 unsignedLongLongValue];
+    date = [MEMORY[0x1E695DF00] date];
+    [date timeIntervalSince1970];
+    v10 = (v9 - longLongValue);
 
-    if (v7 > v10)
+    if (unsignedLongLongValue > v10)
     {
       v11 = 1;
     }
@@ -2577,9 +2577,9 @@ void __59__CSFPreferences_smartSiriVolumeContextAwareLoggingEnabled__block_invok
   }
 
   v3 = v2;
-  v4 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (unint64_t)speakerIdScoreReportingType
@@ -2651,9 +2651,9 @@ void __45__CSFPreferences_speakerIdScoreReportingType__block_invoke(uint64_t a1)
   }
 
   v3 = v2;
-  v4 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)audioInjectionFilePath
@@ -2755,10 +2755,10 @@ void __40__CSFPreferences_audioInjectionFilePath__block_invoke(uint64_t a1, void
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAudioInjectionFilePath:(id)a3
+- (void)setAudioInjectionFilePath:(id)path
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pathCopy = path;
   if (CSIsInternalBuild_onceToken != -1)
   {
     dispatch_once(&CSIsInternalBuild_onceToken, &__block_literal_global_53);
@@ -2766,7 +2766,7 @@ void __40__CSFPreferences_audioInjectionFilePath__block_invoke(uint64_t a1, void
 
   if (CSIsInternalBuild_isInternal)
   {
-    _CSPreferencesSetValueForKey(v3, @"Audio Injection File Path");
+    _CSPreferencesSetValueForKey(pathCopy, @"Audio Injection File Path");
     CFPreferencesAppSynchronize(@"com.apple.voicetrigger");
   }
 
@@ -2883,7 +2883,7 @@ void __39__CSFPreferences_audioInjectionEnabled__block_invoke()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)enableBenchmarkService:(BOOL)a3
+- (BOOL)enableBenchmarkService:(BOOL)service
 {
   v13 = *MEMORY[0x1E69E9840];
   if (CSIsInternalBuild_onceToken != -1)
@@ -2902,7 +2902,7 @@ void __39__CSFPreferences_audioInjectionEnabled__block_invoke()
     v8[2] = __41__CSFPreferences_enableBenchmarkService___block_invoke;
     v8[3] = &unk_1E865B3B0;
     v8[4] = &buf;
-    v9 = a3;
+    serviceCopy = service;
     if (enableBenchmarkService__onceToken != -1)
     {
       dispatch_once(&enableBenchmarkService__onceToken, v8);
@@ -2978,34 +2978,34 @@ void __42__CSFPreferences_myriadFileLoggingEnabled__block_invoke()
   }
 }
 
-- (id)interstitialAbsoluteDirForLevel:(int64_t)a3
+- (id)interstitialAbsoluteDirForLevel:(int64_t)level
 {
-  v5 = [(CSFPreferences *)self baseDir];
-  v6 = [(CSFPreferences *)self interstitialRelativeDirForLevel:a3];
-  v7 = [v5 stringByAppendingPathComponent:v6];
+  baseDir = [(CSFPreferences *)self baseDir];
+  v6 = [(CSFPreferences *)self interstitialRelativeDirForLevel:level];
+  v7 = [baseDir stringByAppendingPathComponent:v6];
 
   return v7;
 }
 
-- (id)interstitialRelativeDirForLevel:(int64_t)a3
+- (id)interstitialRelativeDirForLevel:(int64_t)level
 {
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u", a3];
-  v4 = [@"VoiceTrigger/interstitial" stringByAppendingPathComponent:v3];
+  level = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u", level];
+  v4 = [@"VoiceTrigger/interstitial" stringByAppendingPathComponent:level];
 
   return v4;
 }
 
-- (double)remoteVoiceTriggerEndpointTimeoutWithDefault:(double)a3
+- (double)remoteVoiceTriggerEndpointTimeoutWithDefault:(double)default
 {
   v4 = CFPreferencesCopyAppValue(@"Remote VoiceTrigger Endpoint Timeout", @"com.apple.voicetrigger");
   v5 = v4;
   if (v4)
   {
     [v4 floatValue];
-    a3 = v6;
+    default = v6;
   }
 
-  return a3;
+  return default;
 }
 
 - (double)remoteVoiceTriggerDelayTime
@@ -3026,13 +3026,13 @@ void __42__CSFPreferences_myriadFileLoggingEnabled__block_invoke()
   return v5;
 }
 
-- (BOOL)_isDirectory:(id)a3
+- (BOOL)_isDirectory:(id)directory
 {
   v7 = 0;
   v3 = MEMORY[0x1E696AC08];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  [v5 fileExistsAtPath:v4 isDirectory:&v7];
+  directoryCopy = directory;
+  defaultManager = [v3 defaultManager];
+  [defaultManager fileExistsAtPath:directoryCopy isDirectory:&v7];
 
   return v7;
 }
@@ -3040,11 +3040,11 @@ void __42__CSFPreferences_myriadFileLoggingEnabled__block_invoke()
 - (id)getStartOfSpeechAudioLogFilePath
 {
   v27 = *MEMORY[0x1E69E9840];
-  v2 = [(CSFPreferences *)self baseDir];
-  v3 = [v2 stringByAppendingPathComponent:@"Logs/CrashReporter/CoreSpeech/sos/"];
+  baseDir = [(CSFPreferences *)self baseDir];
+  v3 = [baseDir stringByAppendingPathComponent:@"Logs/CrashReporter/CoreSpeech/sos/"];
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3 isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:v3 isDirectory:0];
 
   if (v5)
   {
@@ -3053,9 +3053,9 @@ void __42__CSFPreferences_myriadFileLoggingEnabled__block_invoke()
 
   else
   {
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v20 = 0;
-    v8 = [v7 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v20];
+    v8 = [defaultManager2 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v20];
     v6 = v20;
 
     if ((v8 & 1) == 0)
@@ -3064,13 +3064,13 @@ void __42__CSFPreferences_myriadFileLoggingEnabled__block_invoke()
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
       {
         v18 = v9;
-        v19 = [v6 localizedDescription];
+        localizedDescription = [v6 localizedDescription];
         *buf = 136315650;
         v22 = "[CSFPreferences getStartOfSpeechAudioLogFilePath]";
         v23 = 2114;
         v24 = v3;
         v25 = 2114;
-        v26 = v19;
+        v26 = localizedDescription;
         _os_log_error_impl(&dword_1DDA4B000, v18, OS_LOG_TYPE_ERROR, "%s Couldn't create SoS log directory at path %{public}@ %{public}@", buf, 0x20u);
       }
 
@@ -3080,8 +3080,8 @@ void __42__CSFPreferences_myriadFileLoggingEnabled__block_invoke()
 
   v10 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v10 setDateFormat:@"yyyyMMdd_HHmmss.SSS"];
-  v11 = [MEMORY[0x1E695DF00] date];
-  v12 = [v10 stringFromDate:v11];
+  date = [MEMORY[0x1E695DF00] date];
+  v12 = [v10 stringFromDate:date];
 
   v13 = &stru_1F58FE330;
   if (v12)
@@ -3097,7 +3097,7 @@ void __42__CSFPreferences_myriadFileLoggingEnabled__block_invoke()
   return v15;
 }
 
-- (void)clearMyriadSettingsOnAccessory:(id)a3
+- (void)clearMyriadSettingsOnAccessory:(id)accessory
 {
   v8[4] = *MEMORY[0x1E69E9840];
   v8[0] = @"Accessory Media Playback Interrupted Time";
@@ -3105,64 +3105,64 @@ void __42__CSFPreferences_myriadFileLoggingEnabled__block_invoke()
   v8[2] = @"Accessory Alarm Playback Status";
   v8[3] = @"Accessory Timer Playback Status";
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  accessoryCopy = accessory;
   v6 = [v4 arrayWithObjects:v8 count:4];
-  [(CSFPreferences *)self _clearAccessorySettingForKeys:v6 forAccessory:v5];
+  [(CSFPreferences *)self _clearAccessorySettingForKeys:v6 forAccessory:accessoryCopy];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clearTimerPlayingStatusOnAccessory:(id)a3
+- (void)clearTimerPlayingStatusOnAccessory:(id)accessory
 {
   v9 = *MEMORY[0x1E69E9840];
   v8 = @"Accessory Timer Playback Status";
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  accessoryCopy = accessory;
   v6 = [v4 arrayWithObjects:&v8 count:1];
-  [(CSFPreferences *)self _clearAccessorySettingForKeys:v6 forAccessory:v5, v8, v9];
+  [(CSFPreferences *)self _clearAccessorySettingForKeys:v6 forAccessory:accessoryCopy, v8, v9];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clearAlarmPlayingStatusOnAccessory:(id)a3
+- (void)clearAlarmPlayingStatusOnAccessory:(id)accessory
 {
   v9 = *MEMORY[0x1E69E9840];
   v8 = @"Accessory Alarm Playback Status";
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  accessoryCopy = accessory;
   v6 = [v4 arrayWithObjects:&v8 count:1];
-  [(CSFPreferences *)self _clearAccessorySettingForKeys:v6 forAccessory:v5, v8, v9];
+  [(CSFPreferences *)self _clearAccessorySettingForKeys:v6 forAccessory:accessoryCopy, v8, v9];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clearMediaPlayingStatusOnAccessory:(id)a3
+- (void)clearMediaPlayingStatusOnAccessory:(id)accessory
 {
   v9 = *MEMORY[0x1E69E9840];
   v8 = @"Accessory Media Playback Status";
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  accessoryCopy = accessory;
   v6 = [v4 arrayWithObjects:&v8 count:1];
-  [(CSFPreferences *)self _clearAccessorySettingForKeys:v6 forAccessory:v5, v8, v9];
+  [(CSFPreferences *)self _clearAccessorySettingForKeys:v6 forAccessory:accessoryCopy, v8, v9];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clearMediaPlaybackInterruptedTimeOnAccessory:(id)a3
+- (void)clearMediaPlaybackInterruptedTimeOnAccessory:(id)accessory
 {
   v9 = *MEMORY[0x1E69E9840];
   v8 = @"Accessory Media Playback Interrupted Time";
   v4 = MEMORY[0x1E695DEC8];
-  v5 = a3;
+  accessoryCopy = accessory;
   v6 = [v4 arrayWithObjects:&v8 count:1];
-  [(CSFPreferences *)self _clearAccessorySettingForKeys:v6 forAccessory:v5, v8, v9];
+  [(CSFPreferences *)self _clearAccessorySettingForKeys:v6 forAccessory:accessoryCopy, v8, v9];
 
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (double)getMediaPlaybackInterruptedTime:(id)a3
+- (double)getMediaPlaybackInterruptedTime:(id)time
 {
-  v3 = a3;
+  timeCopy = time;
   v4 = CFPreferencesCopyAppValue(@"RemoraDevices", @"com.apple.voicetrigger");
   v5 = 0.0;
   if (v4)
@@ -3170,9 +3170,9 @@ void __42__CSFPreferences_myriadFileLoggingEnabled__block_invoke()
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (v3)
+      if (timeCopy)
       {
-        v6 = [v4 objectForKey:v3];
+        v6 = [v4 objectForKey:timeCopy];
         if (v6)
         {
           objc_opt_class();
@@ -3205,11 +3205,11 @@ void __42__CSFPreferences_myriadFileLoggingEnabled__block_invoke()
   return v5;
 }
 
-- (void)_clearAccessorySettingForKeys:(id)a3 forAccessory:(id)a4
+- (void)_clearAccessorySettingForKeys:(id)keys forAccessory:(id)accessory
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  keysCopy = keys;
+  accessoryCopy = accessory;
   v7 = CFPreferencesCopyAppValue(@"RemoraDevices", @"com.apple.voicetrigger");
   if (v7)
   {
@@ -3219,9 +3219,9 @@ void __42__CSFPreferences_myriadFileLoggingEnabled__block_invoke()
     {
       v9 = [v8 mutableCopy];
 
-      if (v6)
+      if (accessoryCopy)
       {
-        v10 = [v9 objectForKey:v6];
+        v10 = [v9 objectForKey:accessoryCopy];
         if (v10)
         {
           objc_opt_class();
@@ -3232,7 +3232,7 @@ void __42__CSFPreferences_myriadFileLoggingEnabled__block_invoke()
             v19 = 0u;
             v20 = 0u;
             v21 = 0u;
-            v12 = v5;
+            v12 = keysCopy;
             v13 = [v12 countByEnumeratingWithState:&v18 objects:v22 count:16];
             if (v13)
             {
@@ -3258,7 +3258,7 @@ void __42__CSFPreferences_myriadFileLoggingEnabled__block_invoke()
               while (v14);
             }
 
-            [v9 setObject:v11 forKey:v6];
+            [v9 setObject:v11 forKey:accessoryCopy];
             _CSPreferencesSetValueForKey(v9, @"RemoraDevices");
           }
         }
@@ -3279,34 +3279,34 @@ void __42__CSFPreferences_myriadFileLoggingEnabled__block_invoke()
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)getBooleanAccessorySettingValueForKey:(id)a3 forAccessory:(id)a4
+- (BOOL)getBooleanAccessorySettingValueForKey:(id)key forAccessory:(id)accessory
 {
-  v5 = a3;
-  v6 = a4;
+  keyCopy = key;
+  accessoryCopy = accessory;
   v7 = CFPreferencesCopyAppValue(@"RemoraDevices", @"com.apple.voicetrigger");
   if (v7)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (v6)
+      if (accessoryCopy)
       {
-        v8 = [v7 objectForKey:v6];
+        v8 = [v7 objectForKey:accessoryCopy];
         if (v8)
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v9 = [v8 objectForKey:v5];
+            v9 = [v8 objectForKey:keyCopy];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v10 = [v9 BOOLValue];
+              bOOLValue = [v9 BOOLValue];
             }
 
             else
             {
-              v10 = 0;
+              bOOLValue = 0;
             }
 
             goto LABEL_14;
@@ -3316,26 +3316,26 @@ void __42__CSFPreferences_myriadFileLoggingEnabled__block_invoke()
 
       else
       {
-        v8 = CFPreferencesCopyAppValue(v5, @"com.apple.voicetrigger");
+        v8 = CFPreferencesCopyAppValue(keyCopy, @"com.apple.voicetrigger");
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v8 BOOLValue];
+          bOOLValue = [v8 BOOLValue];
 LABEL_14:
 
           goto LABEL_15;
         }
       }
 
-      v10 = 0;
+      bOOLValue = 0;
       goto LABEL_14;
     }
   }
 
-  v10 = 0;
+  bOOLValue = 0;
 LABEL_15:
 
-  return v10;
+  return bOOLValue;
 }
 
 id __98__CSFPreferences_setMediaPlayingSettingForAccessory_isMediaPlaying_isInterrupted_interruptedTime___block_invoke(uint64_t a1, void *a2)
@@ -3384,10 +3384,10 @@ id __70__CSFPreferences_setBooleanAccessorySettingValue_forKey_forAccessory___bl
   return v5;
 }
 
-- (void)_updatePreferenceSettingsForAccessory:(id)a3 settingsUpdateBlock:(id)a4
+- (void)_updatePreferenceSettingsForAccessory:(id)accessory settingsUpdateBlock:(id)block
 {
-  v13 = a3;
-  v5 = a4;
+  accessoryCopy = accessory;
+  blockCopy = block;
   v6 = CFPreferencesCopyAppValue(@"RemoraDevices", @"com.apple.voicetrigger");
   if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -3401,7 +3401,7 @@ id __70__CSFPreferences_setBooleanAccessorySettingValue_forKey_forAccessory___bl
 
   v8 = v7;
 
-  if (v13)
+  if (accessoryCopy)
   {
     v9 = [v8 objectForKey:?];
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -3415,10 +3415,10 @@ id __70__CSFPreferences_setBooleanAccessorySettingValue_forKey_forAccessory___bl
     }
 
     v11 = v10;
-    v12 = v5[2](v5, v10);
+    v12 = blockCopy[2](blockCopy, v10);
     if (v12)
     {
-      [v8 setObject:v12 forKey:v13];
+      [v8 setObject:v12 forKey:accessoryCopy];
       _CSPreferencesSetValueForKey(v8, @"RemoraDevices");
     }
   }
@@ -3571,15 +3571,15 @@ void __46__CSFPreferences_forceHearstHijackEligibility__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (int64_t)getJarvisTriggerMode
@@ -3588,23 +3588,23 @@ void __46__CSFPreferences_forceHearstHijackEligibility__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v4 = 2;
+    integerValue = 2;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setJarvisTriggerMode:(int64_t)a3
+- (void)setJarvisTriggerMode:(int64_t)mode
 {
   v4 = 5;
   while (1)
   {
-    v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v5 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
     _CSPreferencesSetValueForKey(v5, @"Jarvis Trigger Mode");
 
     CFPreferencesAppSynchronize(@"com.apple.voicetrigger");
@@ -3612,7 +3612,7 @@ void __46__CSFPreferences_forceHearstHijackEligibility__block_invoke()
     v7 = v6;
     if (v6)
     {
-      if ([v6 integerValue] == a3)
+      if ([v6 integerValue] == mode)
       {
         break;
       }
@@ -3646,15 +3646,15 @@ LABEL_7:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)personalizedSiriEnrollmentAudioLoggingEnabledFromRoot
@@ -3767,38 +3767,38 @@ void __55__CSFPreferences_speakerRecognitionAudioLoggingEnabled__block_invoke()
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (id)myriadHashFilePath
 {
-  v2 = [(CSFPreferences *)self myriadHashDirectory];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
-  v4 = [v3 fileExistsAtPath:v2];
+  myriadHashDirectory = [(CSFPreferences *)self myriadHashDirectory];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v4 = [defaultManager fileExistsAtPath:myriadHashDirectory];
 
   if ((v4 & 1) == 0)
   {
-    v5 = [MEMORY[0x1E696AC08] defaultManager];
-    [v5 createDirectoryAtPath:v2 withIntermediateDirectories:1 attributes:0 error:0];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager2 createDirectoryAtPath:myriadHashDirectory withIntermediateDirectories:1 attributes:0 error:0];
   }
 
-  v6 = [v2 stringByAppendingPathComponent:@"siriBC"];
+  v6 = [myriadHashDirectory stringByAppendingPathComponent:@"siriBC"];
 
   return v6;
 }
 
 - (id)myriadHashDirectory
 {
-  v2 = [(CSFPreferences *)self baseDir];
-  v3 = [v2 stringByAppendingPathComponent:@"VoiceTrigger"];
+  baseDir = [(CSFPreferences *)self baseDir];
+  v3 = [baseDir stringByAppendingPathComponent:@"VoiceTrigger"];
 
   return v3;
 }
@@ -3806,12 +3806,12 @@ void __55__CSFPreferences_speakerRecognitionAudioLoggingEnabled__block_invoke()
 - (id)assistantAudioFileLogDirectory
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [(CSFPreferences *)self assistantLogDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"SpeechLogs"];
+  assistantLogDirectory = [(CSFPreferences *)self assistantLogDirectory];
+  v3 = [assistantLogDirectory stringByAppendingPathComponent:@"SpeechLogs"];
 
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v10 = 0;
-  v5 = [v4 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v10];
+  v5 = [defaultManager createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:&v10];
   v6 = v10;
 
   if ((v5 & 1) == 0)
@@ -3836,29 +3836,29 @@ void __55__CSFPreferences_speakerRecognitionAudioLoggingEnabled__block_invoke()
 
 - (id)assistantLogDirectory
 {
-  v2 = [(CSFPreferences *)self baseDir];
-  v3 = [v2 stringByAppendingPathComponent:@"/Logs/CrashReporter/Assistant/"];
+  baseDir = [(CSFPreferences *)self baseDir];
+  v3 = [baseDir stringByAppendingPathComponent:@"/Logs/CrashReporter/Assistant/"];
 
   return v3;
 }
 
 - (id)trialBaseAssetDirectory
 {
-  v2 = [(CSFPreferences *)self baseDir];
-  v3 = [v2 stringByAppendingPathComponent:@"VoiceTrigger/TrialAssetData"];
+  baseDir = [(CSFPreferences *)self baseDir];
+  v3 = [baseDir stringByAppendingPathComponent:@"VoiceTrigger/TrialAssetData"];
 
   return v3;
 }
 
-- (id)getSSVLogFilePathWithSessionIdentifier:(id)a3
+- (id)getSSVLogFilePathWithSessionIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CSFPreferences *)self baseDir];
-  v6 = [v5 stringByAppendingPathComponent:@"Logs/CrashReporter/Assistant/smartSiriVolumeContextAwareLogs/"];
+  identifierCopy = identifier;
+  baseDir = [(CSFPreferences *)self baseDir];
+  v6 = [baseDir stringByAppendingPathComponent:@"Logs/CrashReporter/Assistant/smartSiriVolumeContextAwareLogs/"];
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [v7 fileExistsAtPath:v6 isDirectory:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v8 = [defaultManager fileExistsAtPath:v6 isDirectory:0];
 
   if (v8)
   {
@@ -3867,9 +3867,9 @@ void __55__CSFPreferences_speakerRecognitionAudioLoggingEnabled__block_invoke()
 
   else
   {
-    v10 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
     v18 = 0;
-    v11 = [v10 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v18];
+    v11 = [defaultManager2 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v18];
     v9 = v18;
 
     if ((v11 & 1) == 0)
@@ -3878,13 +3878,13 @@ void __55__CSFPreferences_speakerRecognitionAudioLoggingEnabled__block_invoke()
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
       {
         v16 = v12;
-        v17 = [v9 localizedDescription];
+        localizedDescription = [v9 localizedDescription];
         *buf = 136315650;
         v20 = "[CSFPreferences getSSVLogFilePathWithSessionIdentifier:]";
         v21 = 2114;
         v22 = v6;
         v23 = 2114;
-        v24 = v17;
+        v24 = localizedDescription;
         _os_log_error_impl(&dword_1DDA4B000, v16, OS_LOG_TYPE_ERROR, "%s Couldn't create SSV log directory at path %{public}@ %{public}@", buf, 0x20u);
       }
 
@@ -3892,62 +3892,62 @@ void __55__CSFPreferences_speakerRecognitionAudioLoggingEnabled__block_invoke()
     }
   }
 
-  v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/SSV_%@.json", v6, v4];
+  identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/SSV_%@.json", v6, identifierCopy];
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v13;
+  return identifierCopy;
 }
 
 - (id)ssvLogDirectory
 {
-  v2 = [(CSFPreferences *)self baseDir];
-  v3 = [v2 stringByAppendingPathComponent:@"/Logs/CrashReporter/Assistant/smartSiriVolumeContextAwareLogs/"];
+  baseDir = [(CSFPreferences *)self baseDir];
+  v3 = [baseDir stringByAppendingPathComponent:@"/Logs/CrashReporter/Assistant/smartSiriVolumeContextAwareLogs/"];
 
   return v3;
 }
 
 - (id)remoteGradingDataDirectory
 {
-  v2 = [(CSFPreferences *)self remoteP2pLogDirectory];
-  v3 = [v2 stringByAppendingPathComponent:@"RemoteGradingData/"];
+  remoteP2pLogDirectory = [(CSFPreferences *)self remoteP2pLogDirectory];
+  v3 = [remoteP2pLogDirectory stringByAppendingPathComponent:@"RemoteGradingData/"];
 
   return v3;
 }
 
 - (id)remoteP2pLogDirectory
 {
-  v2 = [(CSFPreferences *)self baseDir];
-  v3 = [v2 stringByAppendingPathComponent:@"VoiceTrigger/RemoteP2PLogs/"];
+  baseDir = [(CSFPreferences *)self baseDir];
+  v3 = [baseDir stringByAppendingPathComponent:@"VoiceTrigger/RemoteP2PLogs/"];
 
   return v3;
 }
 
 - (id)mhLogDirectory
 {
-  v2 = [(CSFPreferences *)self baseDir];
-  v3 = [v2 stringByAppendingPathComponent:@"/Logs/CrashReporter/Assistant/MHLog/"];
+  baseDir = [(CSFPreferences *)self baseDir];
+  v3 = [baseDir stringByAppendingPathComponent:@"/Logs/CrashReporter/Assistant/MHLog/"];
 
   return v3;
 }
 
-- (id)getRPIAssistantAudioSamplingDateSubDirectory:(id)a3
+- (id)getRPIAssistantAudioSamplingDateSubDirectory:(id)directory
 {
-  v4 = a3;
+  directoryCopy = directory;
   v5 = +[CSUtils defaultDateFormatter];
-  v6 = [v5 stringFromDate:v4];
+  v6 = [v5 stringFromDate:directoryCopy];
 
-  v7 = [(CSFPreferences *)self getRPIAssistantAudioSamplingDirectory];
-  v8 = [v7 stringByAppendingPathComponent:v6];
+  getRPIAssistantAudioSamplingDirectory = [(CSFPreferences *)self getRPIAssistantAudioSamplingDirectory];
+  v8 = [getRPIAssistantAudioSamplingDirectory stringByAppendingPathComponent:v6];
 
   return v8;
 }
 
 - (id)getRPIAssistantAudioSamplingDirectory
 {
-  v2 = [(CSFPreferences *)self baseDir];
-  v3 = [MEMORY[0x1E698D0E0] sampledSubDirectoryPath];
-  v4 = [v2 stringByAppendingPathComponent:v3];
+  baseDir = [(CSFPreferences *)self baseDir];
+  sampledSubDirectoryPath = [MEMORY[0x1E698D0E0] sampledSubDirectoryPath];
+  v4 = [baseDir stringByAppendingPathComponent:sampledSubDirectoryPath];
 
   v5 = [v4 stringByAppendingPathComponent:@"RPIAssistantSampledAudio"];
 
@@ -3956,16 +3956,16 @@ void __55__CSFPreferences_speakerRecognitionAudioLoggingEnabled__block_invoke()
 
 - (id)getOnDeviceCompilationCacheDirectoryForBenchmark
 {
-  v2 = [(CSFPreferences *)self _getCoreSpeechGroupContainerPath];
-  v3 = [v2 stringByAppendingPathComponent:@"Caches/benchmarkTempOnDeviceCompilationCaches/Siri/"];
+  _getCoreSpeechGroupContainerPath = [(CSFPreferences *)self _getCoreSpeechGroupContainerPath];
+  v3 = [_getCoreSpeechGroupContainerPath stringByAppendingPathComponent:@"Caches/benchmarkTempOnDeviceCompilationCaches/Siri/"];
 
   return v3;
 }
 
 - (id)getLegacyOnDeviceCompilationCacheDirectory
 {
-  v2 = [(CSFPreferences *)self baseDir];
-  v3 = [v2 stringByAppendingPathComponent:@"Caches/CoreSpeech/"];
+  baseDir = [(CSFPreferences *)self baseDir];
+  v3 = [baseDir stringByAppendingPathComponent:@"Caches/CoreSpeech/"];
 
   return v3;
 }
@@ -4032,9 +4032,9 @@ void __47__CSFPreferences_voiceTriggerAudioLogDirectory__block_invoke(uint64_t a
   return v2;
 }
 
-- (void)setFileLoggingLevel:(id)a3
+- (void)setFileLoggingLevel:(id)level
 {
-  _CSPreferencesSetValueForKey(a3, @"File Logging Level");
+  _CSPreferencesSetValueForKey(level, @"File Logging Level");
 
   CFPreferencesAppSynchronize(@"com.apple.voicetrigger");
 }
@@ -4059,9 +4059,9 @@ void __47__CSFPreferences_voiceTriggerAudioLogDirectory__block_invoke(uint64_t a
   return v2;
 }
 
-- (void)disableAdaptiveSiriVolume:(id)a3
+- (void)disableAdaptiveSiriVolume:(id)volume
 {
-  _CSPreferencesSetValueForKey(a3, @"Adaptive Siri Volume Disabled");
+  _CSPreferencesSetValueForKey(volume, @"Adaptive Siri Volume Disabled");
 
   CFPreferencesAppSynchronize(@"com.apple.voicetrigger");
 }
@@ -4093,15 +4093,15 @@ LABEL_7:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)fileLoggingIsEnabled
@@ -4127,15 +4127,15 @@ LABEL_7:
   }
 
 LABEL_7:
-  v3 = [(CSFPreferences *)self fileLoggingLevel];
-  v4 = [v3 intValue] > 0;
+  fileLoggingLevel = [(CSFPreferences *)self fileLoggingLevel];
+  v4 = [fileLoggingLevel intValue] > 0;
 
   return v4;
 }
 
-- (void)setFileLoggingIsEnabled:(BOOL)a3
+- (void)setFileLoggingIsEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = &unk_1F5916A00;
   }
@@ -4155,16 +4155,16 @@ LABEL_7:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
     CFRelease(v3);
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (float)getAttendingTimeoutConfig
@@ -4230,15 +4230,15 @@ LABEL_7:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isDeferredAsrResultsEnabled
@@ -4350,13 +4350,13 @@ void __33__CSFPreferences_isGazeMandatory__block_invoke()
 
   if (CSIsInternalBuild_isInternal == 1)
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
 LABEL_6:
-    v3 = 1;
+    bOOLValue = 1;
   }
 
   v4 = CSLogContextFacilityCoreSpeech;
@@ -4365,12 +4365,12 @@ LABEL_6:
     v7 = 136315394;
     v8 = "[CSFPreferences isGazeSimlModelEnabled]";
     v9 = 1024;
-    v10 = v3;
+    v10 = bOOLValue;
     _os_log_impl(&dword_1DDA4B000, v4, OS_LOG_TYPE_DEFAULT, "%s enabled:%u", &v7, 0x12u);
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isAttentiveSiriAudioLoggingEnabled

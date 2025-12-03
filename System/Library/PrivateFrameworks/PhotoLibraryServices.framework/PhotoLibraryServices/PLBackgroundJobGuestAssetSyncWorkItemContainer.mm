@@ -1,17 +1,17 @@
 @interface PLBackgroundJobGuestAssetSyncWorkItemContainer
 + (id)initialSyncWorkItem;
 + (id)libraryOrPreferencesChangedWorkItem;
-+ (id)persistedJobWorkItemWithObjectID:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)persistedJobWorkItemWithObjectID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PLBackgroundJobGuestAssetSyncWorkItemContainer
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_opt_class() libraryOrPreferencesChangedWorkItem];
+  libraryOrPreferencesChangedWorkItem = [objc_opt_class() libraryOrPreferencesChangedWorkItem];
 
-  if (v3 == self)
+  if (libraryOrPreferencesChangedWorkItem == self)
   {
 
     return self;
@@ -20,9 +20,9 @@
   else
   {
     v4 = objc_alloc_init(PLBackgroundJobGuestAssetSyncWorkItemContainer);
-    v5 = [(PLBackgroundJobGuestAssetSyncWorkItemContainer *)self objectID];
+    objectID = [(PLBackgroundJobGuestAssetSyncWorkItemContainer *)self objectID];
     objectID = v4->_objectID;
-    v4->_objectID = v5;
+    v4->_objectID = objectID;
 
     v4->_type = [(PLBackgroundJobGuestAssetSyncWorkItemContainer *)self type];
     return v4;
@@ -45,12 +45,12 @@
   return v2;
 }
 
-+ (id)persistedJobWorkItemWithObjectID:(id)a3
++ (id)persistedJobWorkItemWithObjectID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(PLBackgroundJobGuestAssetSyncWorkItemContainer);
   objectID = v4->_objectID;
-  v4->_objectID = v3;
+  v4->_objectID = dCopy;
   v4->_type = 2;
 
   return v4;

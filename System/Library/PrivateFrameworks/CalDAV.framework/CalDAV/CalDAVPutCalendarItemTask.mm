@@ -11,8 +11,8 @@
   v8.receiver = self;
   v8.super_class = CalDAVPutCalendarItemTask;
   v4 = [(CoreDAVPutTask *)&v8 description];
-  v5 = [(CalDAVPutCalendarItemTask *)self previousScheduleTag];
-  v6 = [v3 stringWithFormat:@"[%@], previousScheduleTag: [%@]", v4, v5];
+  previousScheduleTag = [(CalDAVPutCalendarItemTask *)self previousScheduleTag];
+  v6 = [v3 stringWithFormat:@"[%@], previousScheduleTag: [%@]", v4, previousScheduleTag];
 
   return v6;
 }
@@ -21,16 +21,16 @@
 {
   v7.receiver = self;
   v7.super_class = CalDAVPutCalendarItemTask;
-  v3 = [(CoreDAVPostOrPutTask *)&v7 additionalHeaderValues];
+  additionalHeaderValues = [(CoreDAVPostOrPutTask *)&v7 additionalHeaderValues];
   if (![(CoreDAVPostOrPutTask *)self forceToServer])
   {
-    v4 = [(CalDAVPutCalendarItemTask *)self previousScheduleTag];
-    v5 = [CalDAVUtils headersFromHeaders:v3 replacingPreconditionsWithScheduleTag:v4];
+    previousScheduleTag = [(CalDAVPutCalendarItemTask *)self previousScheduleTag];
+    v5 = [CalDAVUtils headersFromHeaders:additionalHeaderValues replacingPreconditionsWithScheduleTag:previousScheduleTag];
 
-    v3 = v5;
+    additionalHeaderValues = v5;
   }
 
-  return v3;
+  return additionalHeaderValues;
 }
 
 @end

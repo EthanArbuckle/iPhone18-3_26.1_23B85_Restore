@@ -1,32 +1,32 @@
 @interface VisionCoreE5RTProgramLibrary
-+ (BOOL)isProgramLibraryAtURL:(id)a3;
-+ (id)compileFromURL:(id)a3 options:(id)a4 error:(id *)a5;
-+ (id)compileModelSource:(id)a3 options:(id)a4 error:(id *)a5;
-+ (id)programLibraryForURL:(id)a3 error:(id *)a4;
++ (BOOL)isProgramLibraryAtURL:(id)l;
++ (id)compileFromURL:(id)l options:(id)options error:(id *)error;
++ (id)compileModelSource:(id)source options:(id)options error:(id *)error;
++ (id)programLibraryForURL:(id)l error:(id *)error;
 - (NSArray)functionNames;
 - (NSDictionary)buildInfo;
 - (NSDictionary)segmentationAnalytics;
 - (NSString)name;
-- (id)_initWithURL:(id)a3 compilationOptions:(id)a4 ownedProgramLibraryHandle:(e5rt_program_library *)a5;
-- (id)functionNamed:(id)a3 error:(id *)a4;
-- (id)metadataForFunctionNamed:(id)a3 error:(id *)a4;
+- (id)_initWithURL:(id)l compilationOptions:(id)options ownedProgramLibraryHandle:(e5rt_program_library *)handle;
+- (id)functionNamed:(id)named error:(id *)error;
+- (id)metadataForFunctionNamed:(id)named error:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation VisionCoreE5RTProgramLibrary
 
-- (id)functionNamed:(id)a3 error:(id *)a4
+- (id)functionNamed:(id)named error:(id *)error
 {
-  v6 = a3;
+  namedCopy = named;
   v12 = 0;
-  [v6 UTF8String];
+  [namedCopy UTF8String];
   v7 = e5rt_program_library_retain_program_function();
   if (v7)
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:v7];
-      *a4 = v8 = 0;
+      *error = v8 = 0;
     }
 
     else
@@ -37,16 +37,16 @@
 
   else
   {
-    v9 = [[VisionCoreE5RTFunction alloc] initWithProgramLibrary:self name:v6 ownedFunctionHandle:&v12];
+    v9 = [[VisionCoreE5RTFunction alloc] initWithProgramLibrary:self name:namedCopy ownedFunctionHandle:&v12];
     v8 = v9;
     if (v9)
     {
       v10 = v9;
     }
 
-    else if (a4)
+    else if (error)
     {
-      *a4 = [MEMORY[0x1E696ABC0] VisionCoreErrorForMemoryAllocationFailureWithLocalizedDescription:@"could not create program function"];
+      *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForMemoryAllocationFailureWithLocalizedDescription:@"could not create program function"];
     }
 
     if (v12)
@@ -58,14 +58,14 @@
   return v8;
 }
 
-- (id)metadataForFunctionNamed:(id)a3 error:(id *)a4
+- (id)metadataForFunctionNamed:(id)named error:(id *)error
 {
-  v5 = a3;
-  [v5 UTF8String];
+  namedCopy = named;
+  [namedCopy UTF8String];
   function_metadata = e5rt_program_library_get_function_metadata();
-  if (function_metadata && a4)
+  if (function_metadata && error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:function_metadata];
+    *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:function_metadata];
   }
 
   return 0;
@@ -110,14 +110,14 @@
     for (i = [v4 lastPathComponent];
     {
 
-      v6 = [i pathExtension];
-      v4 = v6;
-      if (!v6 || ([v6 isEqualToString:@"bundle"] & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"net") & 1) == 0 && !objc_msgSend(v4, "isEqualToString:", @"espresso"))
+      pathExtension = [i pathExtension];
+      v4 = pathExtension;
+      if (!pathExtension || ([pathExtension isEqualToString:@"bundle"] & 1) == 0 && (objc_msgSend(v4, "isEqualToString:", @"net") & 1) == 0 && !objc_msgSend(v4, "isEqualToString:", @"espresso"))
       {
         break;
       }
 
-      v7 = [i stringByDeletingPathExtension];
+      stringByDeletingPathExtension = [i stringByDeletingPathExtension];
     }
 
     v8 = [i copy];
@@ -142,34 +142,34 @@
   [(VisionCoreE5RTProgramLibrary *)&v3 dealloc];
 }
 
-- (id)_initWithURL:(id)a3 compilationOptions:(id)a4 ownedProgramLibraryHandle:(e5rt_program_library *)a5
+- (id)_initWithURL:(id)l compilationOptions:(id)options ownedProgramLibraryHandle:(e5rt_program_library *)handle
 {
-  v9 = a3;
-  v10 = a4;
+  lCopy = l;
+  optionsCopy = options;
   v16.receiver = self;
   v16.super_class = VisionCoreE5RTProgramLibrary;
   v11 = [(VisionCoreE5RTProgramLibrary *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_modelURL, a3);
-    v13 = [v10 copy];
+    objc_storeStrong(&v11->_modelURL, l);
+    v13 = [optionsCopy copy];
     compilationOptions = v12->_compilationOptions;
     v12->_compilationOptions = v13;
 
-    v12->_programLibraryHandle = *a5;
-    *a5 = 0;
+    v12->_programLibraryHandle = *handle;
+    *handle = 0;
   }
 
   return v12;
 }
 
-+ (id)compileModelSource:(id)a3 options:(id)a4 error:(id *)a5
++ (id)compileModelSource:(id)source options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 E5ModelFileURL];
-  if (![v10 VisionCoreE5RTPathAndReturnError:a5])
+  sourceCopy = source;
+  optionsCopy = options;
+  e5ModelFileURL = [sourceCopy E5ModelFileURL];
+  if (![e5ModelFileURL VisionCoreE5RTPathAndReturnError:error])
   {
 LABEL_5:
     v12 = 0;
@@ -180,10 +180,10 @@ LABEL_5:
   v11 = e5rt_e5_compiler_create();
   if (v11)
   {
-    if (a5)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:v11];
-      *a5 = v12 = 0;
+      *error = v12 = 0;
       goto LABEL_20;
     }
 
@@ -191,16 +191,16 @@ LABEL_5:
   }
 
   v18[0] = 0;
-  if ([v9 createE5RTCompilerOptions:v18 error:a5])
+  if ([optionsCopy createE5RTCompilerOptions:v18 error:error])
   {
     v17 = 0;
     v13 = e5rt_e5_compiler_compile();
     if (v13)
     {
-      if (a5)
+      if (error)
       {
         [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:v13];
-        *a5 = v12 = 0;
+        *error = v12 = 0;
       }
 
       else
@@ -211,16 +211,16 @@ LABEL_5:
 
     else
     {
-      v14 = [[a1 alloc] _initWithURL:v10 compilationOptions:v9 ownedProgramLibraryHandle:&v17];
+      v14 = [[self alloc] _initWithURL:e5ModelFileURL compilationOptions:optionsCopy ownedProgramLibraryHandle:&v17];
       v12 = v14;
       if (v14)
       {
         v15 = v14;
       }
 
-      else if (a5)
+      else if (error)
       {
-        *a5 = [MEMORY[0x1E696ABC0] VisionCoreErrorForMemoryAllocationFailureWithLocalizedDescription:@"could not create program library"];
+        *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForMemoryAllocationFailureWithLocalizedDescription:@"could not create program library"];
       }
 
       if (v17)
@@ -243,13 +243,13 @@ LABEL_20:
   return v12;
 }
 
-+ (id)compileFromURL:(id)a3 options:(id)a4 error:(id *)a5
++ (id)compileFromURL:(id)l options:(id)options error:(id *)error
 {
-  v8 = a4;
-  v9 = [VisionCoreE5RTModelSource modelSourceFromURL:a3 error:a5];
+  optionsCopy = options;
+  v9 = [VisionCoreE5RTModelSource modelSourceFromURL:l error:error];
   if (v9)
   {
-    v10 = [a1 compileModelSource:v9 options:v8 error:a5];
+    v10 = [self compileModelSource:v9 options:optionsCopy error:error];
   }
 
   else
@@ -260,10 +260,10 @@ LABEL_20:
   return v10;
 }
 
-+ (id)programLibraryForURL:(id)a3 error:(id *)a4
++ (id)programLibraryForURL:(id)l error:(id *)error
 {
-  v6 = a3;
-  if (![v6 VisionCoreE5RTPathAndReturnError:a4])
+  lCopy = l;
+  if (![lCopy VisionCoreE5RTPathAndReturnError:error])
   {
 LABEL_5:
     v8 = 0;
@@ -274,26 +274,26 @@ LABEL_5:
   v7 = e5rt_program_library_create();
   if (v7)
   {
-    if (a4)
+    if (error)
     {
       [MEMORY[0x1E696ABC0] VisionCoreErrorForE5RTLastErrorMessageAndCode:v7];
-      *a4 = v8 = 0;
+      *error = v8 = 0;
       goto LABEL_12;
     }
 
     goto LABEL_5;
   }
 
-  v9 = [[a1 alloc] _initWithURL:v6 compilationOptions:0 ownedProgramLibraryHandle:&v12];
+  v9 = [[self alloc] _initWithURL:lCopy compilationOptions:0 ownedProgramLibraryHandle:&v12];
   v8 = v9;
   if (v9)
   {
     v10 = v9;
   }
 
-  else if (a4)
+  else if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] VisionCoreErrorForMemoryAllocationFailureWithLocalizedDescription:@"could not create program library"];
+    *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForMemoryAllocationFailureWithLocalizedDescription:@"could not create program library"];
   }
 
   if (v12)
@@ -306,10 +306,10 @@ LABEL_12:
   return v8;
 }
 
-+ (BOOL)isProgramLibraryAtURL:(id)a3
++ (BOOL)isProgramLibraryAtURL:(id)l
 {
   v4 = objc_autoreleasePoolPush();
-  if ([a3 VisionCoreE5RTPathAndReturnError:0])
+  if ([l VisionCoreE5RTPathAndReturnError:0])
   {
     v5 = e5rt_program_library_create();
     v6 = v5 == 0;

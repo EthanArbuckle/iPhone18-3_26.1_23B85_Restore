@@ -1,20 +1,20 @@
 @interface UIAccessibilityLinkSubelement
 - (CGRect)accessibilityFrame;
 - (_NSRange)range;
-- (id)textRangeForTextView:(id)a3;
+- (id)textRangeForTextView:(id)view;
 @end
 
 @implementation UIAccessibilityLinkSubelement
 
-- (id)textRangeForTextView:(id)a3
+- (id)textRangeForTextView:(id)view
 {
-  v4 = a3;
-  v5 = [v4 beginningOfDocument];
-  v6 = [v4 positionFromPosition:v5 offset:{-[UIAccessibilityLinkSubelement range](self, "range")}];
-  v7 = [(UIAccessibilityLinkSubelement *)self range];
+  viewCopy = view;
+  beginningOfDocument = [viewCopy beginningOfDocument];
+  v6 = [viewCopy positionFromPosition:beginningOfDocument offset:{-[UIAccessibilityLinkSubelement range](self, "range")}];
+  range = [(UIAccessibilityLinkSubelement *)self range];
   [(UIAccessibilityLinkSubelement *)self range];
-  v9 = [v4 positionFromPosition:v5 offset:v8 + v7];
-  v10 = [v4 textRangeFromPosition:v6 toPosition:v9];
+  v9 = [viewCopy positionFromPosition:beginningOfDocument offset:v8 + range];
+  v10 = [viewCopy textRangeFromPosition:v6 toPosition:v9];
 
   return v10;
 }
@@ -25,29 +25,29 @@
   v4 = v3;
   if (!v3)
   {
-    v12 = [(UIAccessibilityLinkSubelement *)self accessibilityContainer];
+    accessibilityContainer = [(UIAccessibilityLinkSubelement *)self accessibilityContainer];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v14 = [(UIAccessibilityLinkSubelement *)self accessibilityContainer];
-      v15 = [v14 hitTest:0 withEvent:{0.0, 0.0}];
+      accessibilityContainer2 = [(UIAccessibilityLinkSubelement *)self accessibilityContainer];
+      v15 = [accessibilityContainer2 hitTest:0 withEvent:{0.0, 0.0}];
 
-      v16 = [(UIAccessibilityLinkSubelement *)self accessibilityContainer];
-      v17 = [(UIAccessibilityLinkSubelement *)self textRangeForTextView:v16];
-      [(UIView *)v16 firstRectForRange:v17];
-      v23 = UIAccessibilityConvertFrameToScreenCoordinates(v22, v16);
+      accessibilityContainer3 = [(UIAccessibilityLinkSubelement *)self accessibilityContainer];
+      accessibilityContainer4 = [(UIAccessibilityLinkSubelement *)self textRangeForTextView:accessibilityContainer3];
+      [(UIView *)accessibilityContainer3 firstRectForRange:accessibilityContainer4];
+      v23 = UIAccessibilityConvertFrameToScreenCoordinates(v22, accessibilityContainer3);
     }
 
     else
     {
-      v16 = [(UIAccessibilityElement *)self accessibilityDelegate];
-      if (v16)
+      accessibilityContainer3 = [(UIAccessibilityElement *)self accessibilityDelegate];
+      if (accessibilityContainer3)
       {
         if (objc_opt_respondsToSelector())
         {
-          [(UIView *)v16 accessibilityFrame:self];
+          [(UIView *)accessibilityContainer3 accessibilityFrame:self];
           x = v24.origin.x;
           y = v24.origin.y;
           width = v24.size.width;
@@ -59,8 +59,8 @@
         }
       }
 
-      v17 = [(UIAccessibilityLinkSubelement *)self accessibilityContainer];
-      [v17 accessibilityFrame];
+      accessibilityContainer4 = [(UIAccessibilityLinkSubelement *)self accessibilityContainer];
+      [accessibilityContainer4 accessibilityFrame];
     }
 
     x = v23.origin.x;

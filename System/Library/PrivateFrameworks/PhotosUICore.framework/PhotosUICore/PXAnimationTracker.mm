@@ -1,28 +1,28 @@
 @interface PXAnimationTracker
-+ (void)_scrollAnimationOccurred:(int64_t)a3 isBegin:(BOOL)a4;
-+ (void)_transitionAnimationOccurred:(int64_t)a3 fromOrigin:(int64_t)a4 transitionObject:(id)a5 isBegin:(BOOL)a6;
-+ (void)_transitionPreparationOccurred:(int64_t)a3 fromOrigin:(int64_t)a4 transitionObject:(id)a5 isBegin:(BOOL)a6;
-+ (void)transitionAnimationDidBegin:(int64_t)a3 fromOrigin:(int64_t)a4 transitionObject:(id)a5;
++ (void)_scrollAnimationOccurred:(int64_t)occurred isBegin:(BOOL)begin;
++ (void)_transitionAnimationOccurred:(int64_t)occurred fromOrigin:(int64_t)origin transitionObject:(id)object isBegin:(BOOL)begin;
++ (void)_transitionPreparationOccurred:(int64_t)occurred fromOrigin:(int64_t)origin transitionObject:(id)object isBegin:(BOOL)begin;
++ (void)transitionAnimationDidBegin:(int64_t)begin fromOrigin:(int64_t)origin transitionObject:(id)object;
 @end
 
 @implementation PXAnimationTracker
 
-+ (void)_transitionAnimationOccurred:(int64_t)a3 fromOrigin:(int64_t)a4 transitionObject:(id)a5 isBegin:(BOOL)a6
++ (void)_transitionAnimationOccurred:(int64_t)occurred fromOrigin:(int64_t)origin transitionObject:(id)object isBegin:(BOOL)begin
 {
-  v6 = a6;
-  v9 = a5;
-  switch(a4)
+  beginCopy = begin;
+  objectCopy = object;
+  switch(origin)
   {
     case 0:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v159 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v159, v9);
+          v12 = os_signpost_id_make_with_pointer(v159, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -42,13 +42,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v86 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v86, v9);
+          v12 = os_signpost_id_make_with_pointer(v86, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -71,13 +71,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v158 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v158, v9);
+          v12 = os_signpost_id_make_with_pointer(v158, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -97,13 +97,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v11 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v11, v9);
+          v12 = os_signpost_id_make_with_pointer(v11, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -126,15 +126,15 @@
 
       goto LABEL_1411;
     case 1:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v155 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v155, v9);
+          v12 = os_signpost_id_make_with_pointer(v155, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -154,13 +154,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v84 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v84, v9);
+          v12 = os_signpost_id_make_with_pointer(v84, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -183,13 +183,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v154 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v154, v9);
+          v12 = os_signpost_id_make_with_pointer(v154, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -209,13 +209,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v41 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v41, v9);
+          v12 = os_signpost_id_make_with_pointer(v41, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -238,15 +238,15 @@
 
       goto LABEL_1411;
     case 2:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v153 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v153, v9);
+          v12 = os_signpost_id_make_with_pointer(v153, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -266,13 +266,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v83 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v83, v9);
+          v12 = os_signpost_id_make_with_pointer(v83, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -295,13 +295,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v152 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v152, v9);
+          v12 = os_signpost_id_make_with_pointer(v152, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -321,13 +321,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v40 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v40, v9);
+          v12 = os_signpost_id_make_with_pointer(v40, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -350,15 +350,15 @@
 
       goto LABEL_1411;
     case 3:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v173 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v173, v9);
+          v21 = os_signpost_id_make_with_pointer(v173, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -378,13 +378,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v93 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v93, v9);
+          v12 = os_signpost_id_make_with_pointer(v93, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -407,13 +407,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v172 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v172, v9);
+          v12 = os_signpost_id_make_with_pointer(v172, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -433,13 +433,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v49 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v49, v9);
+          v21 = os_signpost_id_make_with_pointer(v49, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -462,15 +462,15 @@
 
       goto LABEL_1411;
     case 4:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v147 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v147, v9);
+          v21 = os_signpost_id_make_with_pointer(v147, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -490,13 +490,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v80 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v80, v9);
+          v21 = os_signpost_id_make_with_pointer(v80, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -519,13 +519,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v146 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v146, v9);
+          v21 = os_signpost_id_make_with_pointer(v146, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -545,13 +545,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v37 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v37, v9);
+          v21 = os_signpost_id_make_with_pointer(v37, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -574,15 +574,15 @@
 
       goto LABEL_1411;
     case 5:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v169 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v169, v9);
+          v21 = os_signpost_id_make_with_pointer(v169, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -602,13 +602,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v91 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v91, v9);
+          v21 = os_signpost_id_make_with_pointer(v91, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -631,13 +631,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v168 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v168, v9);
+          v21 = os_signpost_id_make_with_pointer(v168, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -657,13 +657,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v47 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v47, v9);
+          v21 = os_signpost_id_make_with_pointer(v47, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -686,15 +686,15 @@
 
       goto LABEL_1411;
     case 6:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v143 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v143, v9);
+          v21 = os_signpost_id_make_with_pointer(v143, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -714,13 +714,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v78 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v78, v9);
+          v21 = os_signpost_id_make_with_pointer(v78, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -743,13 +743,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v142 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v142, v9);
+          v21 = os_signpost_id_make_with_pointer(v142, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -769,13 +769,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v35 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v35, v9);
+          v21 = os_signpost_id_make_with_pointer(v35, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -798,15 +798,15 @@
 
       goto LABEL_1411;
     case 7:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v145 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v145, v9);
+          v21 = os_signpost_id_make_with_pointer(v145, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -826,13 +826,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v79 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v79, v9);
+          v21 = os_signpost_id_make_with_pointer(v79, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -855,13 +855,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v144 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v144, v9);
+          v21 = os_signpost_id_make_with_pointer(v144, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -881,13 +881,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v36 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v36, v9);
+          v21 = os_signpost_id_make_with_pointer(v36, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -910,15 +910,15 @@
 
       goto LABEL_1411;
     case 8:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v161 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v161, v9);
+          v21 = os_signpost_id_make_with_pointer(v161, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -938,13 +938,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v87 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v87, v9);
+          v21 = os_signpost_id_make_with_pointer(v87, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -967,13 +967,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v160 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v160, v9);
+          v21 = os_signpost_id_make_with_pointer(v160, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -993,13 +993,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v43 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v43, v9);
+          v21 = os_signpost_id_make_with_pointer(v43, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1022,15 +1022,15 @@
 
       goto LABEL_1411;
     case 9:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v157 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v157, v9);
+          v21 = os_signpost_id_make_with_pointer(v157, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1050,13 +1050,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v85 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v85, v9);
+          v21 = os_signpost_id_make_with_pointer(v85, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1079,13 +1079,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v156 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v156, v9);
+          v21 = os_signpost_id_make_with_pointer(v156, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1105,13 +1105,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v42 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v42, v9);
+          v21 = os_signpost_id_make_with_pointer(v42, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1134,15 +1134,15 @@
 
       goto LABEL_1411;
     case 10:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v179 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v179, v9);
+          v21 = os_signpost_id_make_with_pointer(v179, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1162,13 +1162,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v96 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v96, v9);
+          v21 = os_signpost_id_make_with_pointer(v96, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1191,13 +1191,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v178 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v178, v9);
+          v21 = os_signpost_id_make_with_pointer(v178, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1217,13 +1217,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v52 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v52, v9);
+          v21 = os_signpost_id_make_with_pointer(v52, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1246,15 +1246,15 @@
 
       goto LABEL_1411;
     case 11:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v133 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v133, v9);
+          v21 = os_signpost_id_make_with_pointer(v133, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1274,13 +1274,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v73 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v73, v9);
+          v21 = os_signpost_id_make_with_pointer(v73, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1303,13 +1303,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v132 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v132, v9);
+          v21 = os_signpost_id_make_with_pointer(v132, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1329,13 +1329,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v30 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v30, v9);
+          v21 = os_signpost_id_make_with_pointer(v30, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1358,15 +1358,15 @@
 
       goto LABEL_1411;
     case 12:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v129 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v129, v9);
+          v21 = os_signpost_id_make_with_pointer(v129, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1386,13 +1386,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v71 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v71, v9);
+          v21 = os_signpost_id_make_with_pointer(v71, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1415,13 +1415,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v128 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v128, v9);
+          v21 = os_signpost_id_make_with_pointer(v128, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1441,13 +1441,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v28 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v28, v9);
+          v21 = os_signpost_id_make_with_pointer(v28, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1470,15 +1470,15 @@
 
       goto LABEL_1411;
     case 13:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v183 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v183, v9);
+          v21 = os_signpost_id_make_with_pointer(v183, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1498,13 +1498,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v98 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v98, v9);
+          v21 = os_signpost_id_make_with_pointer(v98, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1527,13 +1527,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v182 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v182, v9);
+          v21 = os_signpost_id_make_with_pointer(v182, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1553,13 +1553,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v54 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v54, v9);
+          v21 = os_signpost_id_make_with_pointer(v54, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1582,15 +1582,15 @@
 
       goto LABEL_1411;
     case 14:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v163 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v163, v9);
+          v21 = os_signpost_id_make_with_pointer(v163, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1610,13 +1610,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v88 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v88, v9);
+          v21 = os_signpost_id_make_with_pointer(v88, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1639,13 +1639,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v162 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v162, v9);
+          v21 = os_signpost_id_make_with_pointer(v162, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1665,13 +1665,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v44 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v44, v9);
+          v21 = os_signpost_id_make_with_pointer(v44, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1694,15 +1694,15 @@
 
       goto LABEL_1411;
     case 15:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v165 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v165, v9);
+          v21 = os_signpost_id_make_with_pointer(v165, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1722,13 +1722,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v89 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v89, v9);
+          v21 = os_signpost_id_make_with_pointer(v89, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1751,13 +1751,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v164 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v164, v9);
+          v21 = os_signpost_id_make_with_pointer(v164, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1777,13 +1777,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v45 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v45, v9);
+          v21 = os_signpost_id_make_with_pointer(v45, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1806,15 +1806,15 @@
 
       goto LABEL_1411;
     case 16:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v181 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v181, v9);
+          v21 = os_signpost_id_make_with_pointer(v181, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1834,13 +1834,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v97 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v97, v9);
+          v21 = os_signpost_id_make_with_pointer(v97, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1863,13 +1863,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v180 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v180, v9);
+          v21 = os_signpost_id_make_with_pointer(v180, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1889,13 +1889,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v53 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v53, v9);
+          v21 = os_signpost_id_make_with_pointer(v53, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1918,15 +1918,15 @@
 
       goto LABEL_1411;
     case 17:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v175 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v175, v9);
+          v21 = os_signpost_id_make_with_pointer(v175, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1946,13 +1946,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v94 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v94, v9);
+          v21 = os_signpost_id_make_with_pointer(v94, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -1975,13 +1975,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v174 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v174, v9);
+          v21 = os_signpost_id_make_with_pointer(v174, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2001,13 +2001,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v50 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v50, v9);
+          v21 = os_signpost_id_make_with_pointer(v50, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2030,15 +2030,15 @@
 
       goto LABEL_1411;
     case 18:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v117 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v117, v9);
+          v21 = os_signpost_id_make_with_pointer(v117, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2058,13 +2058,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v65 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v65, v9);
+          v21 = os_signpost_id_make_with_pointer(v65, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2087,13 +2087,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v116 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v116, v9);
+          v21 = os_signpost_id_make_with_pointer(v116, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2113,13 +2113,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v20 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v20, v9);
+          v21 = os_signpost_id_make_with_pointer(v20, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2142,15 +2142,15 @@
 
       goto LABEL_1411;
     case 19:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v137 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v137, v9);
+          v21 = os_signpost_id_make_with_pointer(v137, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2170,13 +2170,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v75 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v75, v9);
+          v21 = os_signpost_id_make_with_pointer(v75, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2199,13 +2199,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v136 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v136, v9);
+          v21 = os_signpost_id_make_with_pointer(v136, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2225,13 +2225,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v32 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v32, v9);
+          v21 = os_signpost_id_make_with_pointer(v32, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2254,15 +2254,15 @@
 
       goto LABEL_1411;
     case 20:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v187 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v187, v9);
+          v12 = os_signpost_id_make_with_pointer(v187, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2282,13 +2282,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v99 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v99, v9);
+          v21 = os_signpost_id_make_with_pointer(v99, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2311,13 +2311,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v186 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v186, v9);
+          v12 = os_signpost_id_make_with_pointer(v186, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2337,13 +2337,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v55 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v55, v9);
+          v12 = os_signpost_id_make_with_pointer(v55, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2366,15 +2366,15 @@
 
       goto LABEL_1411;
     case 21:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v119 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v119, v9);
+          v12 = os_signpost_id_make_with_pointer(v119, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2394,13 +2394,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v66 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v66, v9);
+          v12 = os_signpost_id_make_with_pointer(v66, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2423,13 +2423,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v118 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v118, v9);
+          v12 = os_signpost_id_make_with_pointer(v118, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2449,13 +2449,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v23 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v23, v9);
+          v12 = os_signpost_id_make_with_pointer(v23, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2478,15 +2478,15 @@
 
       goto LABEL_1411;
     case 22:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v135 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v135, v9);
+          v12 = os_signpost_id_make_with_pointer(v135, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2506,13 +2506,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v74 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v74, v9);
+          v12 = os_signpost_id_make_with_pointer(v74, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2535,13 +2535,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v134 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v134, v9);
+          v12 = os_signpost_id_make_with_pointer(v134, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2561,13 +2561,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v31 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v31, v9);
+          v12 = os_signpost_id_make_with_pointer(v31, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2590,15 +2590,15 @@
 
       goto LABEL_1411;
     case 23:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v123 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v123, v9);
+          v12 = os_signpost_id_make_with_pointer(v123, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2618,13 +2618,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v68 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v68, v9);
+          v12 = os_signpost_id_make_with_pointer(v68, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2647,13 +2647,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v122 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v122, v9);
+          v12 = os_signpost_id_make_with_pointer(v122, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2673,13 +2673,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v25 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v25, v9);
+          v12 = os_signpost_id_make_with_pointer(v25, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2702,15 +2702,15 @@
 
       goto LABEL_1411;
     case 24:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v149 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v149, v9);
+          v12 = os_signpost_id_make_with_pointer(v149, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2730,13 +2730,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v81 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v81, v9);
+          v12 = os_signpost_id_make_with_pointer(v81, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2759,13 +2759,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v148 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v148, v9);
+          v12 = os_signpost_id_make_with_pointer(v148, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2785,13 +2785,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v38 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v38, v9);
+          v12 = os_signpost_id_make_with_pointer(v38, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2814,15 +2814,15 @@
 
       goto LABEL_1411;
     case 25:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v121 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v121, v9);
+          v12 = os_signpost_id_make_with_pointer(v121, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2842,13 +2842,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v67 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v67, v9);
+          v12 = os_signpost_id_make_with_pointer(v67, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2871,13 +2871,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v120 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v120, v9);
+          v12 = os_signpost_id_make_with_pointer(v120, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2897,13 +2897,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v24 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v24, v9);
+          v12 = os_signpost_id_make_with_pointer(v24, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2926,15 +2926,15 @@
 
       goto LABEL_1411;
     case 26:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v191 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v191, v9);
+          v12 = os_signpost_id_make_with_pointer(v191, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2954,13 +2954,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v101 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v101, v9);
+          v12 = os_signpost_id_make_with_pointer(v101, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -2983,13 +2983,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v190 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v190, v9);
+          v12 = os_signpost_id_make_with_pointer(v190, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3009,13 +3009,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v57 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v57, v9);
+          v12 = os_signpost_id_make_with_pointer(v57, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3038,15 +3038,15 @@
 
       goto LABEL_1411;
     case 27:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v189 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v189, v9);
+          v12 = os_signpost_id_make_with_pointer(v189, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3066,13 +3066,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v100 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v100, v9);
+          v12 = os_signpost_id_make_with_pointer(v100, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3095,13 +3095,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v188 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v188, v9);
+          v12 = os_signpost_id_make_with_pointer(v188, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3121,13 +3121,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v56 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v56, v9);
+          v12 = os_signpost_id_make_with_pointer(v56, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3150,15 +3150,15 @@
 
       goto LABEL_1411;
     case 28:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v127 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v127, v9);
+          v12 = os_signpost_id_make_with_pointer(v127, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3178,13 +3178,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v70 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v70, v9);
+          v12 = os_signpost_id_make_with_pointer(v70, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3207,13 +3207,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v126 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v126, v9);
+          v12 = os_signpost_id_make_with_pointer(v126, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3233,13 +3233,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v27 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v27, v9);
+          v12 = os_signpost_id_make_with_pointer(v27, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3262,15 +3262,15 @@
 
       goto LABEL_1411;
     case 29:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v139 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v139, v9);
+          v12 = os_signpost_id_make_with_pointer(v139, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3290,13 +3290,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v76 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v76, v9);
+          v12 = os_signpost_id_make_with_pointer(v76, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3319,13 +3319,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v138 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v138, v9);
+          v12 = os_signpost_id_make_with_pointer(v138, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3345,13 +3345,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v33 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v33, v9);
+          v12 = os_signpost_id_make_with_pointer(v33, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3374,15 +3374,15 @@
 
       goto LABEL_1411;
     case 30:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v167 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v167, v9);
+          v12 = os_signpost_id_make_with_pointer(v167, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3402,13 +3402,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v90 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v90, v9);
+          v12 = os_signpost_id_make_with_pointer(v90, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3431,13 +3431,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v166 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v166, v9);
+          v12 = os_signpost_id_make_with_pointer(v166, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3457,13 +3457,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v46 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v46, v9);
+          v12 = os_signpost_id_make_with_pointer(v46, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3486,15 +3486,15 @@
 
       goto LABEL_1411;
     case 31:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v141 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v141, v9);
+          v12 = os_signpost_id_make_with_pointer(v141, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3514,13 +3514,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v77 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v77, v9);
+          v12 = os_signpost_id_make_with_pointer(v77, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3543,13 +3543,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v140 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v140, v9);
+          v12 = os_signpost_id_make_with_pointer(v140, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3569,13 +3569,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v34 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v34, v9);
+          v12 = os_signpost_id_make_with_pointer(v34, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3598,15 +3598,15 @@
 
       goto LABEL_1411;
     case 37:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v195 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v195, v9);
+          v12 = os_signpost_id_make_with_pointer(v195, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3626,13 +3626,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v103 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v103, v9);
+          v12 = os_signpost_id_make_with_pointer(v103, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3655,13 +3655,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v194 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v194, v9);
+          v12 = os_signpost_id_make_with_pointer(v194, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3681,13 +3681,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v59 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v59, v9);
+          v12 = os_signpost_id_make_with_pointer(v59, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3710,15 +3710,15 @@
 
       goto LABEL_1411;
     case 38:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v125 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v125, v9);
+          v12 = os_signpost_id_make_with_pointer(v125, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3738,13 +3738,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v69 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v69, v9);
+          v12 = os_signpost_id_make_with_pointer(v69, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3767,13 +3767,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v124 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v124, v9);
+          v12 = os_signpost_id_make_with_pointer(v124, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3793,13 +3793,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v26 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v26, v9);
+          v12 = os_signpost_id_make_with_pointer(v26, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3822,15 +3822,15 @@
 
       goto LABEL_1411;
     case 39:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v177 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v177, v9);
+          v12 = os_signpost_id_make_with_pointer(v177, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3850,13 +3850,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v95 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v95, v9);
+          v12 = os_signpost_id_make_with_pointer(v95, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3879,13 +3879,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v176 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v176, v9);
+          v12 = os_signpost_id_make_with_pointer(v176, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3905,13 +3905,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v51 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v51, v9);
+          v12 = os_signpost_id_make_with_pointer(v51, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3934,15 +3934,15 @@
 
       goto LABEL_1411;
     case 40:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v193 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v193, v9);
+          v12 = os_signpost_id_make_with_pointer(v193, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3962,13 +3962,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v102 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v102, v9);
+          v12 = os_signpost_id_make_with_pointer(v102, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -3991,13 +3991,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v192 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v192, v9);
+          v12 = os_signpost_id_make_with_pointer(v192, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -4017,13 +4017,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v58 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v58, v9);
+          v12 = os_signpost_id_make_with_pointer(v58, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -4046,15 +4046,15 @@
 
       goto LABEL_1411;
     case 41:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v115 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v115, v9);
+          v12 = os_signpost_id_make_with_pointer(v115, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -4074,13 +4074,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v64 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v64, v9);
+          v12 = os_signpost_id_make_with_pointer(v64, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -4103,13 +4103,13 @@
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v114 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v114, v9);
+          v12 = os_signpost_id_make_with_pointer(v114, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -4129,13 +4129,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v19 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v19, v9);
+          v12 = os_signpost_id_make_with_pointer(v19, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -4158,15 +4158,15 @@
 
       goto LABEL_1411;
     case 42:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v171 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v171, v9);
+          v12 = os_signpost_id_make_with_pointer(v171, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -4186,13 +4186,13 @@
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v92 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v92, v9);
+          v12 = os_signpost_id_make_with_pointer(v92, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -4217,13 +4217,13 @@ LABEL_1410:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v170 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v170, v9);
+          v12 = os_signpost_id_make_with_pointer(v170, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -4243,13 +4243,13 @@ LABEL_1410:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v48 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v48, v9);
+          v12 = os_signpost_id_make_with_pointer(v48, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -4284,20 +4284,20 @@ LABEL_1411:
 
       return;
     case 43:
-      if (a3 <= 2)
+      if (occurred <= 2)
       {
-        if (a3 != 1)
+        if (occurred != 1)
         {
-          if (a3 != 2)
+          if (occurred != 2)
           {
             goto LABEL_1411;
           }
 
           v14 = PLAnimationTelemetryGetLog();
           v15 = PLAnimationTelemetryGetLog();
-          v16 = os_signpost_id_make_with_pointer(v15, v9);
+          v16 = os_signpost_id_make_with_pointer(v15, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
             {
@@ -4319,9 +4319,9 @@ LABEL_1411:
 
         v104 = PLAnimationTelemetryGetLog();
         v105 = PLAnimationTelemetryGetLog();
-        v106 = os_signpost_id_make_with_pointer(v105, v9);
+        v106 = os_signpost_id_make_with_pointer(v105, objectCopy);
 
-        if (v6)
+        if (beginCopy)
         {
           if (v106 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v104))
           {
@@ -4341,18 +4341,18 @@ LABEL_1411:
         goto LABEL_919;
       }
 
-      if (a3 != 3)
+      if (occurred != 3)
       {
-        if (a3 != 4)
+        if (occurred != 4)
         {
           goto LABEL_1411;
         }
 
         v60 = PLAnimationTelemetryGetLog();
         v61 = PLAnimationTelemetryGetLog();
-        v62 = os_signpost_id_make_with_pointer(v61, v9);
+        v62 = os_signpost_id_make_with_pointer(v61, objectCopy);
 
-        if (v6)
+        if (beginCopy)
         {
           if (v62 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v60))
           {
@@ -4374,9 +4374,9 @@ LABEL_1411:
 
       v108 = PLAnimationTelemetryGetLog();
       v109 = PLAnimationTelemetryGetLog();
-      v110 = os_signpost_id_make_with_pointer(v109, v9);
+      v110 = os_signpost_id_make_with_pointer(v109, objectCopy);
 
-      if (v6)
+      if (beginCopy)
       {
         if (v110 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v108))
         {
@@ -4395,16 +4395,16 @@ LABEL_1411:
 
       goto LABEL_926;
     case 44:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
-          if (v6)
+          if (beginCopy)
           {
 LABEL_569:
             v10 = PLAnimationTelemetryGetLog();
             v111 = PLAnimationTelemetryGetLog();
-            v18 = os_signpost_id_make_with_pointer(v111, v9);
+            v18 = os_signpost_id_make_with_pointer(v111, objectCopy);
 
             if (v18 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
             {
@@ -4419,7 +4419,7 @@ LABEL_569:
 LABEL_926:
           v10 = PLAnimationTelemetryGetLog();
           v199 = PLAnimationTelemetryGetLog();
-          v18 = os_signpost_id_make_with_pointer(v199, v9);
+          v18 = os_signpost_id_make_with_pointer(v199, objectCopy);
 
           if (v18 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
           {
@@ -4432,17 +4432,17 @@ LABEL_926:
 
         else
         {
-          if (a3 != 4)
+          if (occurred != 4)
           {
             goto LABEL_1411;
           }
 
-          if (v6)
+          if (beginCopy)
           {
 LABEL_309:
             v10 = PLAnimationTelemetryGetLog();
             v63 = PLAnimationTelemetryGetLog();
-            v18 = os_signpost_id_make_with_pointer(v63, v9);
+            v18 = os_signpost_id_make_with_pointer(v63, objectCopy);
 
             if (v18 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
             {
@@ -4457,7 +4457,7 @@ LABEL_309:
 LABEL_906:
           v10 = PLAnimationTelemetryGetLog();
           v197 = PLAnimationTelemetryGetLog();
-          v18 = os_signpost_id_make_with_pointer(v197, v9);
+          v18 = os_signpost_id_make_with_pointer(v197, objectCopy);
 
           if (v18 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
           {
@@ -4471,19 +4471,19 @@ LABEL_906:
 
       else
       {
-        if (a3 != 1)
+        if (occurred != 1)
         {
-          if (a3 != 2)
+          if (occurred != 2)
           {
             goto LABEL_1411;
           }
 
-          if (!v6)
+          if (!beginCopy)
           {
 LABEL_899:
             v10 = PLAnimationTelemetryGetLog();
             v196 = PLAnimationTelemetryGetLog();
-            v18 = os_signpost_id_make_with_pointer(v196, v9);
+            v18 = os_signpost_id_make_with_pointer(v196, objectCopy);
 
             if (v18 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
             {
@@ -4498,7 +4498,7 @@ LABEL_899:
 LABEL_22:
           v10 = PLAnimationTelemetryGetLog();
           v17 = PLAnimationTelemetryGetLog();
-          v18 = os_signpost_id_make_with_pointer(v17, v9);
+          v18 = os_signpost_id_make_with_pointer(v17, objectCopy);
 
           if (v18 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
           {
@@ -4513,12 +4513,12 @@ LABEL_572:
           goto LABEL_930;
         }
 
-        if (v6)
+        if (beginCopy)
         {
 LABEL_561:
           v10 = PLAnimationTelemetryGetLog();
           v107 = PLAnimationTelemetryGetLog();
-          v18 = os_signpost_id_make_with_pointer(v107, v9);
+          v18 = os_signpost_id_make_with_pointer(v107, objectCopy);
 
           if (v18 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
           {
@@ -4533,7 +4533,7 @@ LABEL_561:
 LABEL_919:
         v10 = PLAnimationTelemetryGetLog();
         v198 = PLAnimationTelemetryGetLog();
-        v18 = os_signpost_id_make_with_pointer(v198, v9);
+        v18 = os_signpost_id_make_with_pointer(v198, objectCopy);
 
         if (v18 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
         {
@@ -4553,15 +4553,15 @@ LABEL_1409:
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v112, v113, v200, v13, " enableTelemetry=YES  isAnimation=YES ", v201, 2u);
       goto LABEL_1410;
     case 45:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v131 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v131, v9);
+          v21 = os_signpost_id_make_with_pointer(v131, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -4581,16 +4581,16 @@ LABEL_1409:
 
         else
         {
-          if (a3 != 4)
+          if (occurred != 4)
           {
             goto LABEL_1411;
           }
 
           v10 = PLAnimationTelemetryGetLog();
           v72 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v72, v9);
+          v21 = os_signpost_id_make_with_pointer(v72, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -4609,13 +4609,13 @@ LABEL_1409:
         }
       }
 
-      else if (a3 == 1)
+      else if (occurred == 1)
       {
         v10 = PLAnimationTelemetryGetLog();
         v130 = PLAnimationTelemetryGetLog();
-        v21 = os_signpost_id_make_with_pointer(v130, v9);
+        v21 = os_signpost_id_make_with_pointer(v130, objectCopy);
 
-        if (v6)
+        if (beginCopy)
         {
           if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
           {
@@ -4635,16 +4635,16 @@ LABEL_1409:
 
       else
       {
-        if (a3 != 2)
+        if (occurred != 2)
         {
           goto LABEL_1411;
         }
 
         v10 = PLAnimationTelemetryGetLog();
         v29 = PLAnimationTelemetryGetLog();
-        v21 = os_signpost_id_make_with_pointer(v29, v9);
+        v21 = os_signpost_id_make_with_pointer(v29, objectCopy);
 
-        if (v6)
+        if (beginCopy)
         {
           if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
           {
@@ -4664,15 +4664,15 @@ LABEL_1409:
 
       goto LABEL_1410;
     case 46:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v151 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v151, v9);
+          v21 = os_signpost_id_make_with_pointer(v151, objectCopy);
 
-          if (!v6)
+          if (!beginCopy)
           {
             if (v21 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
             {
@@ -4695,16 +4695,16 @@ LABEL_1409:
 
         else
         {
-          if (a3 != 4)
+          if (occurred != 4)
           {
             goto LABEL_1411;
           }
 
           v10 = PLAnimationTelemetryGetLog();
           v82 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v82, v9);
+          v21 = os_signpost_id_make_with_pointer(v82, objectCopy);
 
-          if (!v6)
+          if (!beginCopy)
           {
             if (v21 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
             {
@@ -4728,18 +4728,18 @@ LABEL_1409:
 
       else
       {
-        if (a3 != 1)
+        if (occurred != 1)
         {
-          if (a3 != 2)
+          if (occurred != 2)
           {
             goto LABEL_1411;
           }
 
           v10 = PLAnimationTelemetryGetLog();
           v39 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v39, v9);
+          v21 = os_signpost_id_make_with_pointer(v39, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
             {
@@ -4766,9 +4766,9 @@ LABEL_1351:
 
         v10 = PLAnimationTelemetryGetLog();
         v150 = PLAnimationTelemetryGetLog();
-        v21 = os_signpost_id_make_with_pointer(v150, v9);
+        v21 = os_signpost_id_make_with_pointer(v150, objectCopy);
 
-        if (!v6)
+        if (!beginCopy)
         {
           if (v21 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
           {
@@ -4800,29 +4800,29 @@ LABEL_1352:
   }
 }
 
-+ (void)transitionAnimationDidBegin:(int64_t)a3 fromOrigin:(int64_t)a4 transitionObject:(id)a5
++ (void)transitionAnimationDidBegin:(int64_t)begin fromOrigin:(int64_t)origin transitionObject:(id)object
 {
-  v8 = a5;
-  [a1 _transitionPreparationOccurred:a3 fromOrigin:a4 transitionObject:v8 isBegin:0];
-  [a1 _transitionAnimationOccurred:a3 fromOrigin:a4 transitionObject:v8 isBegin:1];
+  objectCopy = object;
+  [self _transitionPreparationOccurred:begin fromOrigin:origin transitionObject:objectCopy isBegin:0];
+  [self _transitionAnimationOccurred:begin fromOrigin:origin transitionObject:objectCopy isBegin:1];
 }
 
-+ (void)_transitionPreparationOccurred:(int64_t)a3 fromOrigin:(int64_t)a4 transitionObject:(id)a5 isBegin:(BOOL)a6
++ (void)_transitionPreparationOccurred:(int64_t)occurred fromOrigin:(int64_t)origin transitionObject:(id)object isBegin:(BOOL)begin
 {
-  v6 = a6;
-  v9 = a5;
-  switch(a4)
+  beginCopy = begin;
+  objectCopy = object;
+  switch(origin)
   {
     case 0:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v159 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v159, v9);
+          v12 = os_signpost_id_make_with_pointer(v159, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -4842,13 +4842,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v86 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v86, v9);
+          v12 = os_signpost_id_make_with_pointer(v86, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -4871,13 +4871,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v158 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v158, v9);
+          v12 = os_signpost_id_make_with_pointer(v158, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -4897,13 +4897,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v11 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v11, v9);
+          v12 = os_signpost_id_make_with_pointer(v11, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -4926,15 +4926,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 1:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v155 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v155, v9);
+          v12 = os_signpost_id_make_with_pointer(v155, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -4954,13 +4954,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v84 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v84, v9);
+          v12 = os_signpost_id_make_with_pointer(v84, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -4983,13 +4983,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v154 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v154, v9);
+          v12 = os_signpost_id_make_with_pointer(v154, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5009,13 +5009,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v41 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v41, v9);
+          v12 = os_signpost_id_make_with_pointer(v41, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5038,15 +5038,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 2:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v153 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v153, v9);
+          v12 = os_signpost_id_make_with_pointer(v153, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5066,13 +5066,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v83 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v83, v9);
+          v12 = os_signpost_id_make_with_pointer(v83, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5095,13 +5095,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v152 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v152, v9);
+          v12 = os_signpost_id_make_with_pointer(v152, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5121,13 +5121,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v40 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v40, v9);
+          v12 = os_signpost_id_make_with_pointer(v40, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5150,15 +5150,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 3:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v173 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v173, v9);
+          v21 = os_signpost_id_make_with_pointer(v173, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5178,13 +5178,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v93 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v93, v9);
+          v12 = os_signpost_id_make_with_pointer(v93, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5207,13 +5207,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v172 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v172, v9);
+          v12 = os_signpost_id_make_with_pointer(v172, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5233,13 +5233,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v49 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v49, v9);
+          v21 = os_signpost_id_make_with_pointer(v49, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5262,15 +5262,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 4:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v147 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v147, v9);
+          v21 = os_signpost_id_make_with_pointer(v147, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5290,13 +5290,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v80 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v80, v9);
+          v21 = os_signpost_id_make_with_pointer(v80, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5319,13 +5319,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v146 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v146, v9);
+          v21 = os_signpost_id_make_with_pointer(v146, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5345,13 +5345,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v37 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v37, v9);
+          v21 = os_signpost_id_make_with_pointer(v37, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5374,15 +5374,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 5:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v169 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v169, v9);
+          v21 = os_signpost_id_make_with_pointer(v169, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5402,13 +5402,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v91 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v91, v9);
+          v21 = os_signpost_id_make_with_pointer(v91, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5431,13 +5431,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v168 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v168, v9);
+          v21 = os_signpost_id_make_with_pointer(v168, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5457,13 +5457,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v47 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v47, v9);
+          v21 = os_signpost_id_make_with_pointer(v47, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5486,15 +5486,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 6:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v143 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v143, v9);
+          v21 = os_signpost_id_make_with_pointer(v143, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5514,13 +5514,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v78 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v78, v9);
+          v21 = os_signpost_id_make_with_pointer(v78, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5543,13 +5543,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v142 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v142, v9);
+          v21 = os_signpost_id_make_with_pointer(v142, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5569,13 +5569,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v35 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v35, v9);
+          v21 = os_signpost_id_make_with_pointer(v35, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5598,15 +5598,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 7:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v145 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v145, v9);
+          v21 = os_signpost_id_make_with_pointer(v145, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5626,13 +5626,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v79 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v79, v9);
+          v21 = os_signpost_id_make_with_pointer(v79, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5655,13 +5655,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v144 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v144, v9);
+          v21 = os_signpost_id_make_with_pointer(v144, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5681,13 +5681,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v36 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v36, v9);
+          v21 = os_signpost_id_make_with_pointer(v36, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5710,15 +5710,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 8:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v161 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v161, v9);
+          v21 = os_signpost_id_make_with_pointer(v161, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5738,13 +5738,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v87 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v87, v9);
+          v21 = os_signpost_id_make_with_pointer(v87, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5767,13 +5767,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v160 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v160, v9);
+          v21 = os_signpost_id_make_with_pointer(v160, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5793,13 +5793,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v43 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v43, v9);
+          v21 = os_signpost_id_make_with_pointer(v43, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5822,15 +5822,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 9:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v157 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v157, v9);
+          v21 = os_signpost_id_make_with_pointer(v157, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5850,13 +5850,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v85 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v85, v9);
+          v21 = os_signpost_id_make_with_pointer(v85, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5879,13 +5879,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v156 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v156, v9);
+          v21 = os_signpost_id_make_with_pointer(v156, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5905,13 +5905,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v42 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v42, v9);
+          v21 = os_signpost_id_make_with_pointer(v42, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5934,15 +5934,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 10:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v179 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v179, v9);
+          v21 = os_signpost_id_make_with_pointer(v179, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5962,13 +5962,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v96 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v96, v9);
+          v21 = os_signpost_id_make_with_pointer(v96, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -5991,13 +5991,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v178 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v178, v9);
+          v21 = os_signpost_id_make_with_pointer(v178, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6017,13 +6017,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v52 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v52, v9);
+          v21 = os_signpost_id_make_with_pointer(v52, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6046,15 +6046,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 11:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v133 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v133, v9);
+          v21 = os_signpost_id_make_with_pointer(v133, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6074,13 +6074,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v73 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v73, v9);
+          v21 = os_signpost_id_make_with_pointer(v73, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6103,13 +6103,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v132 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v132, v9);
+          v21 = os_signpost_id_make_with_pointer(v132, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6129,13 +6129,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v30 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v30, v9);
+          v21 = os_signpost_id_make_with_pointer(v30, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6158,15 +6158,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 12:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v129 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v129, v9);
+          v21 = os_signpost_id_make_with_pointer(v129, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6186,13 +6186,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v71 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v71, v9);
+          v21 = os_signpost_id_make_with_pointer(v71, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6215,13 +6215,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v128 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v128, v9);
+          v21 = os_signpost_id_make_with_pointer(v128, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6241,13 +6241,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v28 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v28, v9);
+          v21 = os_signpost_id_make_with_pointer(v28, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6270,15 +6270,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 13:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v183 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v183, v9);
+          v21 = os_signpost_id_make_with_pointer(v183, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6298,13 +6298,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v98 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v98, v9);
+          v21 = os_signpost_id_make_with_pointer(v98, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6327,13 +6327,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v182 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v182, v9);
+          v21 = os_signpost_id_make_with_pointer(v182, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6353,13 +6353,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v54 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v54, v9);
+          v21 = os_signpost_id_make_with_pointer(v54, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6382,15 +6382,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 14:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v163 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v163, v9);
+          v21 = os_signpost_id_make_with_pointer(v163, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6410,13 +6410,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v88 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v88, v9);
+          v21 = os_signpost_id_make_with_pointer(v88, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6439,13 +6439,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v162 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v162, v9);
+          v21 = os_signpost_id_make_with_pointer(v162, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6465,13 +6465,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v44 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v44, v9);
+          v21 = os_signpost_id_make_with_pointer(v44, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6494,15 +6494,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 15:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v165 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v165, v9);
+          v21 = os_signpost_id_make_with_pointer(v165, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6522,13 +6522,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v89 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v89, v9);
+          v21 = os_signpost_id_make_with_pointer(v89, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6551,13 +6551,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v164 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v164, v9);
+          v21 = os_signpost_id_make_with_pointer(v164, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6577,13 +6577,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v45 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v45, v9);
+          v21 = os_signpost_id_make_with_pointer(v45, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6606,15 +6606,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 16:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v181 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v181, v9);
+          v21 = os_signpost_id_make_with_pointer(v181, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6634,13 +6634,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v97 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v97, v9);
+          v21 = os_signpost_id_make_with_pointer(v97, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6663,13 +6663,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v180 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v180, v9);
+          v21 = os_signpost_id_make_with_pointer(v180, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6689,13 +6689,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v53 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v53, v9);
+          v21 = os_signpost_id_make_with_pointer(v53, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6718,15 +6718,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 17:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v175 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v175, v9);
+          v21 = os_signpost_id_make_with_pointer(v175, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6746,13 +6746,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v94 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v94, v9);
+          v21 = os_signpost_id_make_with_pointer(v94, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6775,13 +6775,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v174 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v174, v9);
+          v21 = os_signpost_id_make_with_pointer(v174, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6801,13 +6801,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v50 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v50, v9);
+          v21 = os_signpost_id_make_with_pointer(v50, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6830,15 +6830,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 18:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v117 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v117, v9);
+          v21 = os_signpost_id_make_with_pointer(v117, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6858,13 +6858,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v65 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v65, v9);
+          v21 = os_signpost_id_make_with_pointer(v65, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6887,13 +6887,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v116 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v116, v9);
+          v21 = os_signpost_id_make_with_pointer(v116, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6913,13 +6913,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v20 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v20, v9);
+          v21 = os_signpost_id_make_with_pointer(v20, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6942,15 +6942,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 19:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v137 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v137, v9);
+          v21 = os_signpost_id_make_with_pointer(v137, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6970,13 +6970,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v75 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v75, v9);
+          v21 = os_signpost_id_make_with_pointer(v75, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -6999,13 +6999,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v136 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v136, v9);
+          v21 = os_signpost_id_make_with_pointer(v136, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7025,13 +7025,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v32 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v32, v9);
+          v21 = os_signpost_id_make_with_pointer(v32, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7054,15 +7054,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 20:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v187 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v187, v9);
+          v12 = os_signpost_id_make_with_pointer(v187, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7082,13 +7082,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v99 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v99, v9);
+          v21 = os_signpost_id_make_with_pointer(v99, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7111,13 +7111,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v186 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v186, v9);
+          v12 = os_signpost_id_make_with_pointer(v186, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7137,13 +7137,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v55 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v55, v9);
+          v12 = os_signpost_id_make_with_pointer(v55, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7166,15 +7166,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 21:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v119 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v119, v9);
+          v12 = os_signpost_id_make_with_pointer(v119, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7194,13 +7194,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v66 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v66, v9);
+          v12 = os_signpost_id_make_with_pointer(v66, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7223,13 +7223,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v118 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v118, v9);
+          v12 = os_signpost_id_make_with_pointer(v118, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7249,13 +7249,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v23 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v23, v9);
+          v12 = os_signpost_id_make_with_pointer(v23, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7278,15 +7278,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 22:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v135 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v135, v9);
+          v12 = os_signpost_id_make_with_pointer(v135, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7306,13 +7306,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v74 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v74, v9);
+          v12 = os_signpost_id_make_with_pointer(v74, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7335,13 +7335,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v134 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v134, v9);
+          v12 = os_signpost_id_make_with_pointer(v134, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7361,13 +7361,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v31 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v31, v9);
+          v12 = os_signpost_id_make_with_pointer(v31, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7390,15 +7390,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 23:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v123 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v123, v9);
+          v12 = os_signpost_id_make_with_pointer(v123, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7418,13 +7418,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v68 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v68, v9);
+          v12 = os_signpost_id_make_with_pointer(v68, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7447,13 +7447,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v122 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v122, v9);
+          v12 = os_signpost_id_make_with_pointer(v122, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7473,13 +7473,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v25 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v25, v9);
+          v12 = os_signpost_id_make_with_pointer(v25, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7502,15 +7502,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 24:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v149 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v149, v9);
+          v12 = os_signpost_id_make_with_pointer(v149, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7530,13 +7530,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v81 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v81, v9);
+          v12 = os_signpost_id_make_with_pointer(v81, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7559,13 +7559,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v148 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v148, v9);
+          v12 = os_signpost_id_make_with_pointer(v148, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7585,13 +7585,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v38 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v38, v9);
+          v12 = os_signpost_id_make_with_pointer(v38, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7614,15 +7614,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 25:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v121 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v121, v9);
+          v12 = os_signpost_id_make_with_pointer(v121, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7642,13 +7642,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v67 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v67, v9);
+          v12 = os_signpost_id_make_with_pointer(v67, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7671,13 +7671,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v120 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v120, v9);
+          v12 = os_signpost_id_make_with_pointer(v120, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7697,13 +7697,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v24 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v24, v9);
+          v12 = os_signpost_id_make_with_pointer(v24, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7726,15 +7726,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 26:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v191 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v191, v9);
+          v12 = os_signpost_id_make_with_pointer(v191, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7754,13 +7754,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v101 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v101, v9);
+          v12 = os_signpost_id_make_with_pointer(v101, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7783,13 +7783,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v190 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v190, v9);
+          v12 = os_signpost_id_make_with_pointer(v190, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7809,13 +7809,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v57 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v57, v9);
+          v12 = os_signpost_id_make_with_pointer(v57, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7838,15 +7838,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 27:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v189 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v189, v9);
+          v12 = os_signpost_id_make_with_pointer(v189, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7866,13 +7866,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v100 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v100, v9);
+          v12 = os_signpost_id_make_with_pointer(v100, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7895,13 +7895,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v188 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v188, v9);
+          v12 = os_signpost_id_make_with_pointer(v188, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7921,13 +7921,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v56 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v56, v9);
+          v12 = os_signpost_id_make_with_pointer(v56, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7950,15 +7950,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 28:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v127 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v127, v9);
+          v12 = os_signpost_id_make_with_pointer(v127, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -7978,13 +7978,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v70 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v70, v9);
+          v12 = os_signpost_id_make_with_pointer(v70, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8007,13 +8007,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v126 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v126, v9);
+          v12 = os_signpost_id_make_with_pointer(v126, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8033,13 +8033,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v27 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v27, v9);
+          v12 = os_signpost_id_make_with_pointer(v27, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8062,15 +8062,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 29:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v139 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v139, v9);
+          v12 = os_signpost_id_make_with_pointer(v139, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8090,13 +8090,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v76 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v76, v9);
+          v12 = os_signpost_id_make_with_pointer(v76, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8119,13 +8119,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v138 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v138, v9);
+          v12 = os_signpost_id_make_with_pointer(v138, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8145,13 +8145,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v33 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v33, v9);
+          v12 = os_signpost_id_make_with_pointer(v33, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8174,15 +8174,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 30:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v167 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v167, v9);
+          v12 = os_signpost_id_make_with_pointer(v167, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8202,13 +8202,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v90 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v90, v9);
+          v12 = os_signpost_id_make_with_pointer(v90, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8231,13 +8231,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v166 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v166, v9);
+          v12 = os_signpost_id_make_with_pointer(v166, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8257,13 +8257,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v46 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v46, v9);
+          v12 = os_signpost_id_make_with_pointer(v46, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8286,15 +8286,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 31:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v141 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v141, v9);
+          v12 = os_signpost_id_make_with_pointer(v141, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8314,13 +8314,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v77 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v77, v9);
+          v12 = os_signpost_id_make_with_pointer(v77, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8343,13 +8343,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v140 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v140, v9);
+          v12 = os_signpost_id_make_with_pointer(v140, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8369,13 +8369,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v34 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v34, v9);
+          v12 = os_signpost_id_make_with_pointer(v34, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8398,15 +8398,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 37:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v195 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v195, v9);
+          v12 = os_signpost_id_make_with_pointer(v195, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8426,13 +8426,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v103 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v103, v9);
+          v12 = os_signpost_id_make_with_pointer(v103, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8455,13 +8455,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v194 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v194, v9);
+          v12 = os_signpost_id_make_with_pointer(v194, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8481,13 +8481,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v59 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v59, v9);
+          v12 = os_signpost_id_make_with_pointer(v59, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8510,15 +8510,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 38:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v125 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v125, v9);
+          v12 = os_signpost_id_make_with_pointer(v125, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8538,13 +8538,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v69 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v69, v9);
+          v12 = os_signpost_id_make_with_pointer(v69, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8567,13 +8567,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v124 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v124, v9);
+          v12 = os_signpost_id_make_with_pointer(v124, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8593,13 +8593,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v26 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v26, v9);
+          v12 = os_signpost_id_make_with_pointer(v26, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8622,15 +8622,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 39:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v177 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v177, v9);
+          v12 = os_signpost_id_make_with_pointer(v177, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8650,13 +8650,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v95 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v95, v9);
+          v12 = os_signpost_id_make_with_pointer(v95, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8679,13 +8679,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v176 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v176, v9);
+          v12 = os_signpost_id_make_with_pointer(v176, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8705,13 +8705,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v51 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v51, v9);
+          v12 = os_signpost_id_make_with_pointer(v51, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8734,15 +8734,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 40:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v193 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v193, v9);
+          v12 = os_signpost_id_make_with_pointer(v193, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8762,13 +8762,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v102 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v102, v9);
+          v12 = os_signpost_id_make_with_pointer(v102, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8791,13 +8791,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v192 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v192, v9);
+          v12 = os_signpost_id_make_with_pointer(v192, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8817,13 +8817,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v58 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v58, v9);
+          v12 = os_signpost_id_make_with_pointer(v58, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8846,15 +8846,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 41:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v115 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v115, v9);
+          v12 = os_signpost_id_make_with_pointer(v115, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8874,13 +8874,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v64 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v64, v9);
+          v12 = os_signpost_id_make_with_pointer(v64, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8903,13 +8903,13 @@ LABEL_1352:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v114 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v114, v9);
+          v12 = os_signpost_id_make_with_pointer(v114, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8929,13 +8929,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v19 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v19, v9);
+          v12 = os_signpost_id_make_with_pointer(v19, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8958,15 +8958,15 @@ LABEL_1352:
 
       goto LABEL_1411;
     case 42:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v171 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v171, v9);
+          v12 = os_signpost_id_make_with_pointer(v171, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -8986,13 +8986,13 @@ LABEL_1352:
           goto LABEL_1410;
         }
 
-        if (a3 == 4)
+        if (occurred == 4)
         {
           v10 = PLAnimationTelemetryGetLog();
           v92 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v92, v9);
+          v12 = os_signpost_id_make_with_pointer(v92, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -9017,13 +9017,13 @@ LABEL_1410:
 
       else
       {
-        if (a3 == 1)
+        if (occurred == 1)
         {
           v10 = PLAnimationTelemetryGetLog();
           v170 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v170, v9);
+          v12 = os_signpost_id_make_with_pointer(v170, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -9043,13 +9043,13 @@ LABEL_1410:
           goto LABEL_1410;
         }
 
-        if (a3 == 2)
+        if (occurred == 2)
         {
           v10 = PLAnimationTelemetryGetLog();
           v48 = PLAnimationTelemetryGetLog();
-          v12 = os_signpost_id_make_with_pointer(v48, v9);
+          v12 = os_signpost_id_make_with_pointer(v48, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -9084,20 +9084,20 @@ LABEL_1411:
 
       return;
     case 43:
-      if (a3 <= 2)
+      if (occurred <= 2)
       {
-        if (a3 != 1)
+        if (occurred != 1)
         {
-          if (a3 != 2)
+          if (occurred != 2)
           {
             goto LABEL_1411;
           }
 
           v14 = PLAnimationTelemetryGetLog();
           v15 = PLAnimationTelemetryGetLog();
-          v16 = os_signpost_id_make_with_pointer(v15, v9);
+          v16 = os_signpost_id_make_with_pointer(v15, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v16 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v14))
             {
@@ -9119,9 +9119,9 @@ LABEL_1411:
 
         v104 = PLAnimationTelemetryGetLog();
         v105 = PLAnimationTelemetryGetLog();
-        v106 = os_signpost_id_make_with_pointer(v105, v9);
+        v106 = os_signpost_id_make_with_pointer(v105, objectCopy);
 
-        if (v6)
+        if (beginCopy)
         {
           if (v106 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v104))
           {
@@ -9141,18 +9141,18 @@ LABEL_1411:
         goto LABEL_919;
       }
 
-      if (a3 != 3)
+      if (occurred != 3)
       {
-        if (a3 != 4)
+        if (occurred != 4)
         {
           goto LABEL_1411;
         }
 
         v60 = PLAnimationTelemetryGetLog();
         v61 = PLAnimationTelemetryGetLog();
-        v62 = os_signpost_id_make_with_pointer(v61, v9);
+        v62 = os_signpost_id_make_with_pointer(v61, objectCopy);
 
-        if (v6)
+        if (beginCopy)
         {
           if (v62 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v60))
           {
@@ -9174,9 +9174,9 @@ LABEL_1411:
 
       v108 = PLAnimationTelemetryGetLog();
       v109 = PLAnimationTelemetryGetLog();
-      v110 = os_signpost_id_make_with_pointer(v109, v9);
+      v110 = os_signpost_id_make_with_pointer(v109, objectCopy);
 
-      if (v6)
+      if (beginCopy)
       {
         if (v110 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v108))
         {
@@ -9195,16 +9195,16 @@ LABEL_1411:
 
       goto LABEL_926;
     case 44:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
-          if (v6)
+          if (beginCopy)
           {
 LABEL_569:
             v10 = PLAnimationTelemetryGetLog();
             v111 = PLAnimationTelemetryGetLog();
-            v18 = os_signpost_id_make_with_pointer(v111, v9);
+            v18 = os_signpost_id_make_with_pointer(v111, objectCopy);
 
             if (v18 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
             {
@@ -9219,7 +9219,7 @@ LABEL_569:
 LABEL_926:
           v10 = PLAnimationTelemetryGetLog();
           v199 = PLAnimationTelemetryGetLog();
-          v18 = os_signpost_id_make_with_pointer(v199, v9);
+          v18 = os_signpost_id_make_with_pointer(v199, objectCopy);
 
           if (v18 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
           {
@@ -9232,17 +9232,17 @@ LABEL_926:
 
         else
         {
-          if (a3 != 4)
+          if (occurred != 4)
           {
             goto LABEL_1411;
           }
 
-          if (v6)
+          if (beginCopy)
           {
 LABEL_309:
             v10 = PLAnimationTelemetryGetLog();
             v63 = PLAnimationTelemetryGetLog();
-            v18 = os_signpost_id_make_with_pointer(v63, v9);
+            v18 = os_signpost_id_make_with_pointer(v63, objectCopy);
 
             if (v18 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
             {
@@ -9257,7 +9257,7 @@ LABEL_309:
 LABEL_906:
           v10 = PLAnimationTelemetryGetLog();
           v197 = PLAnimationTelemetryGetLog();
-          v18 = os_signpost_id_make_with_pointer(v197, v9);
+          v18 = os_signpost_id_make_with_pointer(v197, objectCopy);
 
           if (v18 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
           {
@@ -9271,19 +9271,19 @@ LABEL_906:
 
       else
       {
-        if (a3 != 1)
+        if (occurred != 1)
         {
-          if (a3 != 2)
+          if (occurred != 2)
           {
             goto LABEL_1411;
           }
 
-          if (!v6)
+          if (!beginCopy)
           {
 LABEL_899:
             v10 = PLAnimationTelemetryGetLog();
             v196 = PLAnimationTelemetryGetLog();
-            v18 = os_signpost_id_make_with_pointer(v196, v9);
+            v18 = os_signpost_id_make_with_pointer(v196, objectCopy);
 
             if (v18 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
             {
@@ -9298,7 +9298,7 @@ LABEL_899:
 LABEL_22:
           v10 = PLAnimationTelemetryGetLog();
           v17 = PLAnimationTelemetryGetLog();
-          v18 = os_signpost_id_make_with_pointer(v17, v9);
+          v18 = os_signpost_id_make_with_pointer(v17, objectCopy);
 
           if (v18 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
           {
@@ -9313,12 +9313,12 @@ LABEL_572:
           goto LABEL_930;
         }
 
-        if (v6)
+        if (beginCopy)
         {
 LABEL_561:
           v10 = PLAnimationTelemetryGetLog();
           v107 = PLAnimationTelemetryGetLog();
-          v18 = os_signpost_id_make_with_pointer(v107, v9);
+          v18 = os_signpost_id_make_with_pointer(v107, objectCopy);
 
           if (v18 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
           {
@@ -9333,7 +9333,7 @@ LABEL_561:
 LABEL_919:
         v10 = PLAnimationTelemetryGetLog();
         v198 = PLAnimationTelemetryGetLog();
-        v18 = os_signpost_id_make_with_pointer(v198, v9);
+        v18 = os_signpost_id_make_with_pointer(v198, objectCopy);
 
         if (v18 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
         {
@@ -9353,15 +9353,15 @@ LABEL_1409:
       _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v112, v113, v200, v13, " enableTelemetry=YES ", v201, 2u);
       goto LABEL_1410;
     case 45:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v131 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v131, v9);
+          v21 = os_signpost_id_make_with_pointer(v131, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -9381,16 +9381,16 @@ LABEL_1409:
 
         else
         {
-          if (a3 != 4)
+          if (occurred != 4)
           {
             goto LABEL_1411;
           }
 
           v10 = PLAnimationTelemetryGetLog();
           v72 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v72, v9);
+          v21 = os_signpost_id_make_with_pointer(v72, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
             {
@@ -9409,13 +9409,13 @@ LABEL_1409:
         }
       }
 
-      else if (a3 == 1)
+      else if (occurred == 1)
       {
         v10 = PLAnimationTelemetryGetLog();
         v130 = PLAnimationTelemetryGetLog();
-        v21 = os_signpost_id_make_with_pointer(v130, v9);
+        v21 = os_signpost_id_make_with_pointer(v130, objectCopy);
 
-        if (v6)
+        if (beginCopy)
         {
           if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
           {
@@ -9435,16 +9435,16 @@ LABEL_1409:
 
       else
       {
-        if (a3 != 2)
+        if (occurred != 2)
         {
           goto LABEL_1411;
         }
 
         v10 = PLAnimationTelemetryGetLog();
         v29 = PLAnimationTelemetryGetLog();
-        v21 = os_signpost_id_make_with_pointer(v29, v9);
+        v21 = os_signpost_id_make_with_pointer(v29, objectCopy);
 
-        if (v6)
+        if (beginCopy)
         {
           if (v21 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v10))
           {
@@ -9464,15 +9464,15 @@ LABEL_1409:
 
       goto LABEL_1410;
     case 46:
-      if (a3 > 2)
+      if (occurred > 2)
       {
-        if (a3 == 3)
+        if (occurred == 3)
         {
           v10 = PLAnimationTelemetryGetLog();
           v151 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v151, v9);
+          v21 = os_signpost_id_make_with_pointer(v151, objectCopy);
 
-          if (!v6)
+          if (!beginCopy)
           {
             if (v21 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
             {
@@ -9495,16 +9495,16 @@ LABEL_1409:
 
         else
         {
-          if (a3 != 4)
+          if (occurred != 4)
           {
             goto LABEL_1411;
           }
 
           v10 = PLAnimationTelemetryGetLog();
           v82 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v82, v9);
+          v21 = os_signpost_id_make_with_pointer(v82, objectCopy);
 
-          if (!v6)
+          if (!beginCopy)
           {
             if (v21 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
             {
@@ -9528,18 +9528,18 @@ LABEL_1409:
 
       else
       {
-        if (a3 != 1)
+        if (occurred != 1)
         {
-          if (a3 != 2)
+          if (occurred != 2)
           {
             goto LABEL_1411;
           }
 
           v10 = PLAnimationTelemetryGetLog();
           v39 = PLAnimationTelemetryGetLog();
-          v21 = os_signpost_id_make_with_pointer(v39, v9);
+          v21 = os_signpost_id_make_with_pointer(v39, objectCopy);
 
-          if (v6)
+          if (beginCopy)
           {
             if (v21 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
             {
@@ -9566,9 +9566,9 @@ LABEL_1351:
 
         v10 = PLAnimationTelemetryGetLog();
         v150 = PLAnimationTelemetryGetLog();
-        v21 = os_signpost_id_make_with_pointer(v150, v9);
+        v21 = os_signpost_id_make_with_pointer(v150, objectCopy);
 
-        if (!v6)
+        if (!beginCopy)
         {
           if (v21 - 1 > 0xFFFFFFFFFFFFFFFDLL || !os_signpost_enabled(v10))
           {
@@ -9600,14 +9600,14 @@ LABEL_1352:
   }
 }
 
-+ (void)_scrollAnimationOccurred:(int64_t)a3 isBegin:(BOOL)a4
++ (void)_scrollAnimationOccurred:(int64_t)occurred isBegin:(BOOL)begin
 {
-  v4 = a4;
-  if (a3 == 3)
+  beginCopy = begin;
+  if (occurred == 3)
   {
     v5 = PLAnimationTelemetryGetLog();
     v10 = os_signpost_enabled(v5);
-    if (v4)
+    if (beginCopy)
     {
       if (v10)
       {
@@ -9631,16 +9631,16 @@ LABEL_1352:
     goto LABEL_20;
   }
 
-  if (a3 != 2)
+  if (occurred != 2)
   {
-    if (a3 != 1)
+    if (occurred != 1)
     {
       return;
     }
 
     v5 = PLAnimationTelemetryGetLog();
     v6 = os_signpost_enabled(v5);
-    if (v4)
+    if (beginCopy)
     {
       if (v6)
       {
@@ -9674,7 +9674,7 @@ LABEL_20:
 
   v5 = PLAnimationTelemetryGetLog();
   v9 = os_signpost_enabled(v5);
-  if (!v4)
+  if (!beginCopy)
   {
     if (!v9)
     {

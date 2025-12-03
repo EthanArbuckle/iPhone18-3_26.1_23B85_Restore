@@ -1,79 +1,79 @@
 @interface MBSnapshotIntegrityVerifier
-+ (id)_differencesBetweenCloudMetadata:(id)a3 localMetadata:(id)a4 domain:(id)a5 path:(id)a6 isBackup:(BOOL)a7;
-- (BOOL)_checkForCancellation:(id *)a3;
-- (id)_fetchMetadataFromDiskForPath:(id)a3 modifiedDate:(int64_t *)a4 metadata:(id *)a5;
-- (id)_fetchMetadataFromFetchedFileList:(id)a3 relativePath:(id)a4 metadata:(id *)a5;
-- (id)_initWithDelegate:(id)a3;
-- (void)_logFailureAndAppendToAttemptSummary:(id)a3;
++ (id)_differencesBetweenCloudMetadata:(id)metadata localMetadata:(id)localMetadata domain:(id)domain path:(id)path isBackup:(BOOL)backup;
+- (BOOL)_checkForCancellation:(id *)cancellation;
+- (id)_fetchMetadataFromDiskForPath:(id)path modifiedDate:(int64_t *)date metadata:(id *)metadata;
+- (id)_fetchMetadataFromFetchedFileList:(id)list relativePath:(id)path metadata:(id *)metadata;
+- (id)_initWithDelegate:(id)delegate;
+- (void)_logFailureAndAppendToAttemptSummary:(id)summary;
 @end
 
 @implementation MBSnapshotIntegrityVerifier
 
-- (id)_initWithDelegate:(id)a3
+- (id)_initWithDelegate:(id)delegate
 {
-  v5 = a3;
-  if (!v5)
+  delegateCopy = delegate;
+  if (!delegateCopy)
   {
     __assert_rtn("[MBSnapshotIntegrityVerifier _initWithDelegate:]", "MBSnapshotIntegrityVerifier.m", 890, "delegate");
   }
 
-  v6 = v5;
+  v6 = delegateCopy;
   v10.receiver = self;
   v10.super_class = MBSnapshotIntegrityVerifier;
   v7 = [(MBSnapshotIntegrityVerifier *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_delegate, a3);
+    objc_storeStrong(&v7->_delegate, delegate);
   }
 
   return v8;
 }
 
-- (BOOL)_checkForCancellation:(id *)a3
+- (BOOL)_checkForCancellation:(id *)cancellation
 {
-  if (!a3)
+  if (!cancellation)
   {
     __assert_rtn("[MBSnapshotIntegrityVerifier _checkForCancellation:]", "MBSnapshotIntegrityVerifier.m", 900, "error");
   }
 
-  v4 = [(MBSnapshotIntegrityVerifier *)self delegate];
-  v5 = [v4 shouldCancelVerification];
+  delegate = [(MBSnapshotIntegrityVerifier *)self delegate];
+  shouldCancelVerification = [delegate shouldCancelVerification];
 
-  if (v5)
+  if (shouldCancelVerification)
   {
-    *a3 = [objc_opt_class() _cancellationError];
+    *cancellation = [objc_opt_class() _cancellationError];
   }
 
-  return v5 ^ 1;
+  return shouldCancelVerification ^ 1;
 }
 
-- (void)_logFailureAndAppendToAttemptSummary:(id)a3
+- (void)_logFailureAndAppendToAttemptSummary:(id)summary
 {
-  v4 = a3;
+  summaryCopy = summary;
   v5 = MBGetDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = summaryCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_FAULT, "=verifier= %@", buf, 0xCu);
     _MBLog();
   }
 
-  v6 = [(MBSnapshotIntegrityVerifier *)self attemptSummary];
-  [v6 trackSnapshotVerificationFailure:v4];
+  attemptSummary = [(MBSnapshotIntegrityVerifier *)self attemptSummary];
+  [attemptSummary trackSnapshotVerificationFailure:summaryCopy];
 }
 
-- (id)_fetchMetadataFromFetchedFileList:(id)a3 relativePath:(id)a4 metadata:(id *)a5
+- (id)_fetchMetadataFromFetchedFileList:(id)list relativePath:(id)path metadata:(id *)metadata
 {
-  v8 = a3;
-  v9 = a4;
+  listCopy = list;
+  pathCopy = path;
   v21 = 0;
-  v10 = [v8 fileMetadataForPath:v9 fetchXattrs:1 error:&v21];
+  v10 = [listCopy fileMetadataForPath:pathCopy fetchXattrs:1 error:&v21];
   v11 = v21;
   v12 = v10;
   v13 = 0;
-  *a5 = v10;
+  *metadata = v10;
   if (!v10)
   {
     if (v11)
@@ -81,14 +81,14 @@
       v14 = MBGetDefaultLog();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v15 = [v8 path];
+        path = [listCopy path];
         *buf = 138412546;
-        v23 = v15;
+        v23 = path;
         v24 = 2112;
         v25 = v11;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "=verifier= Failed to fetch metadata from fetched file list %@: %@", buf, 0x16u);
 
-        v20 = [v8 path];
+        path2 = [listCopy path];
         _MBLog();
       }
 
@@ -97,22 +97,22 @@
 
     else
     {
-      v16 = [v8 domainName];
-      v17 = [NSString stringWithFormat:@"Fetched file list for %@ does not contain metadata for file at path %@", v16, v9];
-      [(MBSnapshotIntegrityVerifier *)self _logFailureAndAppendToAttemptSummary:v17];
+      domainName = [listCopy domainName];
+      pathCopy = [NSString stringWithFormat:@"Fetched file list for %@ does not contain metadata for file at path %@", domainName, pathCopy];
+      [(MBSnapshotIntegrityVerifier *)self _logFailureAndAppendToAttemptSummary:pathCopy];
 
-      v18 = [v8 domainName];
-      v13 = [MBError errorWithCode:500 path:v9 format:@"Fetched file list for %@ does not contain metadata for file", v18];
+      domainName2 = [listCopy domainName];
+      v13 = [MBError errorWithCode:500 path:pathCopy format:@"Fetched file list for %@ does not contain metadata for file", domainName2];
     }
   }
 
   return v13;
 }
 
-- (id)_fetchMetadataFromDiskForPath:(id)a3 modifiedDate:(int64_t *)a4 metadata:(id *)a5
+- (id)_fetchMetadataFromDiskForPath:(id)path modifiedDate:(int64_t *)date metadata:(id *)metadata
 {
-  v8 = a3;
-  v9 = [(MBErrorInjector *)self->_errorInjector errorIfMatches:v8];
+  pathCopy = path;
+  v9 = [(MBErrorInjector *)self->_errorInjector errorIfMatches:pathCopy];
   if (v9)
   {
     v10 = v9;
@@ -122,10 +122,10 @@
   else
   {
     v16 = 0;
-    v12 = [MBFileMetadata fileMetadataExcludingAssetForPath:v8 modifiedDate:a4 error:&v16];
+    v12 = [MBFileMetadata fileMetadataExcludingAssetForPath:pathCopy modifiedDate:date error:&v16];
     v11 = v16;
     v13 = v12;
-    *a5 = v12;
+    *metadata = v12;
     if (v12)
     {
       v10 = 0;
@@ -133,37 +133,37 @@
 
     else
     {
-      v14 = [NSString stringWithFormat:@"Failed to fetch local metadata %@: %@", v8, v11];
+      v14 = [NSString stringWithFormat:@"Failed to fetch local metadata %@: %@", pathCopy, v11];
       [(MBSnapshotIntegrityVerifier *)self _logFailureAndAppendToAttemptSummary:v14];
 
-      v10 = [MBError errorWithCode:500 error:v11 path:v8 format:@"Failed to fetch local metadata"];
+      v10 = [MBError errorWithCode:500 error:v11 path:pathCopy format:@"Failed to fetch local metadata"];
     }
   }
 
   return v10;
 }
 
-+ (id)_differencesBetweenCloudMetadata:(id)a3 localMetadata:(id)a4 domain:(id)a5 path:(id)a6 isBackup:(BOOL)a7
++ (id)_differencesBetweenCloudMetadata:(id)metadata localMetadata:(id)localMetadata domain:(id)domain path:(id)path isBackup:(BOOL)backup
 {
-  v7 = a7;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  backupCopy = backup;
+  metadataCopy = metadata;
+  localMetadataCopy = localMetadata;
+  domainCopy = domain;
+  pathCopy = path;
   v152 = 0;
   v150 = 0u;
   v151 = 0u;
   v148 = 0u;
   v149 = 0u;
-  [v12 getNode:&v148];
+  [localMetadataCopy getNode:&v148];
   v147 = 0;
   v145 = 0u;
   v146 = 0u;
   v143 = 0u;
   v144 = 0u;
-  [v11 getNode:&v143];
-  v82 = v7;
-  if (v7)
+  [metadataCopy getNode:&v143];
+  v82 = backupCopy;
+  if (backupCopy)
   {
     v15 = 1;
 LABEL_14:
@@ -200,17 +200,17 @@ LABEL_14:
     goto LABEL_21;
   }
 
-  v16 = [v13 adjustNodeOwnershipAndPermissionsForDataMigratorPlugIn:&v143 path:v14];
-  v17 = [v11 assetMetadata];
-  if ([v17 compressionMethod])
+  v16 = [domainCopy adjustNodeOwnershipAndPermissionsForDataMigratorPlugIn:&v143 path:pathCopy];
+  assetMetadata = [metadataCopy assetMetadata];
+  if ([assetMetadata compressionMethod])
   {
     v15 = 0;
   }
 
   else
   {
-    v18 = [v11 assetMetadata];
-    v15 = [v18 assetType] != 3;
+    assetMetadata2 = [metadataCopy assetMetadata];
+    v15 = [assetMetadata2 assetType] != 3;
   }
 
   if ((v16 & 1) == 0)
@@ -223,7 +223,7 @@ LABEL_14:
   v138 = 0u;
   v135 = 0u;
   v136 = 0u;
-  [v11 getNode:&v135];
+  [metadataCopy getNode:&v135];
   v19 = 0;
   if (WORD2(v147) != WORD2(v152))
   {
@@ -397,20 +397,20 @@ LABEL_52:
   }
 
 LABEL_53:
-  v37 = [v11 linkTarget];
-  v81 = v13;
-  if (!v37 || (v38 = v37, [v12 linkTarget], v39 = objc_claimAutoreleasedReturnValue(), v39, v38, !v39))
+  linkTarget = [metadataCopy linkTarget];
+  v81 = domainCopy;
+  if (!linkTarget || (v38 = linkTarget, [localMetadataCopy linkTarget], v39 = objc_claimAutoreleasedReturnValue(), v39, v38, !v39))
   {
-    v46 = [v11 linkTarget];
-    if (v46)
+    linkTarget2 = [metadataCopy linkTarget];
+    if (linkTarget2)
     {
     }
 
     else
     {
-      v47 = [v12 linkTarget];
+      linkTarget3 = [localMetadataCopy linkTarget];
 
-      if (!v47)
+      if (!linkTarget3)
       {
         goto LABEL_62;
       }
@@ -423,9 +423,9 @@ LABEL_53:
     goto LABEL_61;
   }
 
-  v40 = [v11 linkTarget];
-  v41 = [v12 linkTarget];
-  v42 = [v40 isEqualToString:v41];
+  linkTarget4 = [metadataCopy linkTarget];
+  linkTarget5 = [localMetadataCopy linkTarget];
+  v42 = [linkTarget4 isEqualToString:linkTarget5];
 
   if ((v42 & 1) == 0)
   {
@@ -441,11 +441,11 @@ LABEL_61:
   }
 
 LABEL_62:
-  v80 = v14;
-  v49 = [v11 xattrs];
-  v50 = [v12 xattrs];
-  v51 = v49;
-  v52 = v50;
+  v80 = pathCopy;
+  xattrs = [metadataCopy xattrs];
+  xattrs2 = [localMetadataCopy xattrs];
+  v51 = xattrs;
+  v52 = xattrs2;
   if ([v51 count] || objc_msgSend(v52, "count"))
   {
     if (v51)
@@ -487,7 +487,7 @@ LABEL_62:
       v59 = [v56 count];
       v60 = [v57 count];
       v79 = v59 != v60;
-      v61 = v11;
+      v61 = metadataCopy;
       if (v59 != v60)
       {
         v62 = v57;
@@ -505,7 +505,7 @@ LABEL_62:
         v54 = v65;
       }
 
-      v11 = v61;
+      metadataCopy = v61;
     }
 
     if ([v54 isEqualToDictionary:v56])
@@ -515,16 +515,16 @@ LABEL_62:
 
     else
     {
-      v67 = [v54 allKeys];
-      [v67 sortedArrayUsingSelector:"compare:"];
-      v68 = v78 = v12;
+      allKeys = [v54 allKeys];
+      [allKeys sortedArrayUsingSelector:"compare:"];
+      v68 = v78 = localMetadataCopy;
       v69 = [v68 componentsJoinedByString:{@", "}];
 
-      v70 = [v56 allKeys];
-      v71 = [v70 sortedArrayUsingSelector:"compare:"];
+      allKeys2 = [v56 allKeys];
+      v71 = [allKeys2 sortedArrayUsingSelector:"compare:"];
       v72 = [v71 componentsJoinedByString:{@", "}];
 
-      v12 = v78;
+      localMetadataCopy = v78;
       v66 = [NSString stringWithFormat:@"xattrs (local: %@) vs (cloud: %@)", v72, v69];
     }
   }

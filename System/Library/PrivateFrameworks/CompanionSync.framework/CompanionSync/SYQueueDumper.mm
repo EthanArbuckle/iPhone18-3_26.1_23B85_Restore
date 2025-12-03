@@ -1,12 +1,12 @@
 @interface SYQueueDumper
-+ (void)registerQueue:(id)a3;
++ (void)registerQueue:(id)queue;
 @end
 
 @implementation SYQueueDumper
 
-+ (void)registerQueue:(id)a3
++ (void)registerQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   if (registerQueue__onceToken != -1)
   {
     +[SYQueueDumper registerQueue:];
@@ -17,8 +17,8 @@
   block[1] = 3221225472;
   block[2] = __31__SYQueueDumper_registerQueue___block_invoke_3;
   block[3] = &unk_1E86C9FB0;
-  v7 = v3;
-  v5 = v3;
+  v7 = queueCopy;
+  v5 = queueCopy;
   dispatch_sync(v4, block);
 }
 

@@ -1,27 +1,27 @@
 @interface CCWalletPassContent
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3;
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCWalletPassContent)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCWalletPassContent)initWithPassUniqueIdentifier:(id)a3 eventContent:(id)a4 error:(id *)a5;
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCWalletPassContent)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCWalletPassContent)initWithPassUniqueIdentifier:(id)identifier eventContent:(id)content error:(id *)error;
 - (CCWalletPassEventContent)eventContent;
 - (NSString)passUniqueIdentifier;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCWalletPassContent
 
-- (CCWalletPassContent)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCWalletPassContent)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v17[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"passUniqueIdentifier"];
-    v10 = [v6 objectForKeyedSubscript:@"eventContent"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"passUniqueIdentifier"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"eventContent"];
     if (v10)
     {
       v11 = v10;
@@ -43,7 +43,7 @@
       v12 = 0;
     }
 
-    v15 = [[CCWalletPassContent alloc] initWithPassUniqueIdentifier:v9 eventContent:v12 error:a4];
+    v15 = [[CCWalletPassContent alloc] initWithPassUniqueIdentifier:v9 eventContent:v12 error:error];
     v11 = v12;
 LABEL_10:
 
@@ -62,15 +62,15 @@ LABEL_11:
   v3 = objc_opt_new();
   if (self->_passUniqueIdentifier)
   {
-    v4 = [(CCWalletPassContent *)self passUniqueIdentifier];
-    [v3 setObject:v4 forKeyedSubscript:@"passUniqueIdentifier"];
+    passUniqueIdentifier = [(CCWalletPassContent *)self passUniqueIdentifier];
+    [v3 setObject:passUniqueIdentifier forKeyedSubscript:@"passUniqueIdentifier"];
   }
 
   if (self->_eventContent)
   {
-    v5 = [(CCWalletPassContent *)self eventContent];
-    v6 = [v5 jsonDictionary];
-    [v3 setObject:v6 forKeyedSubscript:@"eventContent"];
+    eventContent = [(CCWalletPassContent *)self eventContent];
+    jsonDictionary = [eventContent jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"eventContent"];
   }
 
   v7 = [v3 copy];
@@ -78,19 +78,19 @@ LABEL_11:
   return v7;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v7 = a3;
+  blockCopy = block;
   if (self->_passUniqueIdentifier)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:46121 stringValue:self->_passUniqueIdentifier];
-    v7[2](v7, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_eventContent)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:46122 subMessageValue:self->_eventContent];
-    v7[2](v7, v6);
+    blockCopy[2](blockCopy, v6);
   }
 }
 
@@ -108,10 +108,10 @@ LABEL_11:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -260,15 +260,15 @@ LABEL_36:
   return v33;
 }
 
-- (CCWalletPassContent)initWithPassUniqueIdentifier:(id)a3 eventContent:(id)a4 error:(id *)a5
+- (CCWalletPassContent)initWithPassUniqueIdentifier:(id)identifier eventContent:(id)content error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  contentCopy = content;
   v10 = objc_opt_new();
-  if (!v8)
+  if (!identifierCopy)
   {
     v12 = 0;
-    if (!v9)
+    if (!contentCopy)
     {
       goto LABEL_8;
     }
@@ -282,12 +282,12 @@ LABEL_6:
     if (!IsInstanceOfExpectedClass)
     {
       CCSetError();
-      v17 = 0;
+      selfCopy = 0;
       v12 = v14;
       goto LABEL_11;
     }
 
-    v15 = [v9 data];
+    data = [contentCopy data];
     CCPBDataWriterWriteDataField();
 
     v12 = v14;
@@ -300,36 +300,36 @@ LABEL_6:
   if (!v11)
   {
     CCSetError();
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_11;
   }
 
   CCPBDataWriterWriteStringField();
-  if (v9)
+  if (contentCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_8:
-  v16 = [v10 immutableData];
-  self = [(CCItemMessage *)self initWithData:v16 error:a5];
+  immutableData = [v10 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v17 = self;
+  selfCopy = self;
 LABEL_11:
 
-  return v17;
+  return selfCopy;
 }
 
-+ (id)descriptionForTypeIdentifier:(unsigned __int16)a3
++ (id)descriptionForTypeIdentifier:(unsigned __int16)identifier
 {
-  if ((a3 + 19416) > 0xCu)
+  if ((identifier + 19416) > 0xCu)
   {
     return 0;
   }
 
   else
   {
-    return off_1E73E7B88[(a3 + 19416)];
+    return off_1E73E7B88[(identifier + 19416)];
   }
 }
 

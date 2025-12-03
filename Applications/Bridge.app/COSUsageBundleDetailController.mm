@@ -1,7 +1,7 @@
 @interface COSUsageBundleDetailController
 - (id)appBundle;
-- (id)appSize:(id)a3;
-- (id)docsAndData:(id)a3;
+- (id)appSize:(id)size;
+- (id)docsAndData:(id)data;
 - (id)specifiers;
 - (void)confirmDeletion;
 - (void)delete;
@@ -11,26 +11,26 @@
 
 - (id)appBundle
 {
-  v2 = [(COSUsageBundleDetailController *)self specifier];
-  v3 = [v2 userInfo];
+  specifier = [(COSUsageBundleDetailController *)self specifier];
+  userInfo = [specifier userInfo];
 
-  return v3;
+  return userInfo;
 }
 
-- (id)appSize:(id)a3
+- (id)appSize:(id)size
 {
-  v3 = [(COSUsageBundleDetailController *)self appBundle];
-  v4 = [v3 size];
+  appBundle = [(COSUsageBundleDetailController *)self appBundle];
+  v4 = [appBundle size];
   *&v5 = [v4 fixed];
   v6 = [COSUsageController prettyUsageString:v5];
 
   return v6;
 }
 
-- (id)docsAndData:(id)a3
+- (id)docsAndData:(id)data
 {
-  v3 = [(COSUsageBundleDetailController *)self appBundle];
-  v4 = [v3 size];
+  appBundle = [(COSUsageBundleDetailController *)self appBundle];
+  v4 = [appBundle size];
   *&v5 = [v4 docsAndData];
   v6 = [COSUsageController prettyUsageString:v5];
 
@@ -40,13 +40,13 @@
 - (id)specifiers
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(COSUsageBundleDetailController *)self appBundle];
-  v5 = [COSUsageBundleHeaderTableCell specifierForAppBundle:v4];
+  appBundle = [(COSUsageBundleDetailController *)self appBundle];
+  v5 = [COSUsageBundleHeaderTableCell specifierForAppBundle:appBundle];
   [v3 addObject:v5];
-  v6 = [v4 size];
-  v7 = [v6 fixed];
+  v6 = [appBundle size];
+  fixed = [v6 fixed];
 
-  if (v7 >= 1)
+  if (fixed >= 1)
   {
     v8 = +[NSBundle mainBundle];
     v9 = [v8 localizedStringForKey:@"APP_SIZE" value:&stru_10026E598 table:@"Usage"];
@@ -60,8 +60,8 @@
   v13 = [PSSpecifier preferenceSpecifierNamed:v12 target:self set:0 get:"docsAndData:" detail:0 cell:4 edit:0];
 
   [v3 addObject:v13];
-  v14 = [v4 bundleIdentifier];
-  LODWORD(v12) = [v14 isEqualToString:@"com.apple.NanoSettings"];
+  bundleIdentifier = [appBundle bundleIdentifier];
+  LODWORD(v12) = [bundleIdentifier isEqualToString:@"com.apple.NanoSettings"];
 
   if (v12)
   {
@@ -80,9 +80,9 @@
   *&self->BPSListController_opaque[OBJC_IVAR___PSListController__specifiers] = v3;
   v21 = v3;
 
-  v22 = [(COSUsageBundleDetailController *)self navigationItem];
-  v23 = [v4 name];
-  [v22 setTitle:v23];
+  navigationItem = [(COSUsageBundleDetailController *)self navigationItem];
+  name = [appBundle name];
+  [navigationItem setTitle:name];
 
   v24 = *&self->BPSListController_opaque[v19];
   v25 = v24;
@@ -92,9 +92,9 @@
 
 - (void)confirmDeletion
 {
-  v3 = [(COSUsageBundleDetailController *)self appBundle];
-  v4 = [v3 bundleIdentifier];
-  v5 = [v4 isEqualToString:@"com.apple.NanoSettings"];
+  appBundle = [(COSUsageBundleDetailController *)self appBundle];
+  bundleIdentifier = [appBundle bundleIdentifier];
+  v5 = [bundleIdentifier isEqualToString:@"com.apple.NanoSettings"];
 
   if (!v5)
   {
@@ -104,8 +104,8 @@
   v6 = +[NSBundle mainBundle];
   v17 = [v6 localizedStringForKey:@"DELETE_UPDATE_CONFIRMATION_DESCRIPTION" value:&stru_10026E598 table:@"Usage"];
 
-  v7 = [v3 name];
-  v16 = [NSString stringWithFormat:v17, v7];
+  name = [appBundle name];
+  v16 = [NSString stringWithFormat:v17, name];
 
   v8 = objc_alloc_init(PSConfirmationSpecifier);
   v18[0] = PSConfirmationTitleKey;
@@ -133,33 +133,33 @@
 
 - (void)delete
 {
-  v3 = [(COSUsageBundleDetailController *)self appBundle];
-  v4 = [(COSUsageBundleDetailController *)self specifier];
-  v5 = [v4 target];
+  appBundle = [(COSUsageBundleDetailController *)self appBundle];
+  specifier = [(COSUsageBundleDetailController *)self specifier];
+  target = [specifier target];
 
-  v6 = [(COSUsageBundleDetailController *)self view];
-  v7 = [v6 window];
-  [v7 setUserInteractionEnabled:0];
+  view = [(COSUsageBundleDetailController *)self view];
+  window = [view window];
+  [window setUserInteractionEnabled:0];
 
   v8 = +[PSNavBarSpinnerManager sharedSpinnerManager];
-  v9 = [(COSUsageBundleDetailController *)self navigationItem];
-  [v8 startAnimatingInNavItem:v9 forIdentifier:@"softwareUpdateDeletion"];
+  navigationItem = [(COSUsageBundleDetailController *)self navigationItem];
+  [v8 startAnimatingInNavItem:navigationItem forIdentifier:@"softwareUpdateDeletion"];
 
   v10 = sub_10000DB38();
-  v11 = [v5 nssManager];
-  v12 = [v3 bundleIdentifier];
+  nssManager = [target nssManager];
+  bundleIdentifier = [appBundle bundleIdentifier];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000A0B10;
   v16[3] = &unk_10026A7A0;
   v16[4] = self;
-  v17 = v3;
+  v17 = appBundle;
   v18 = v10;
-  v19 = v5;
-  v13 = v5;
+  v19 = target;
+  v13 = target;
   v14 = v10;
-  v15 = v3;
-  [v11 purgeUsageBundleWithId:v12 completionHandler:v16];
+  v15 = appBundle;
+  [nssManager purgeUsageBundleWithId:bundleIdentifier completionHandler:v16];
 }
 
 @end

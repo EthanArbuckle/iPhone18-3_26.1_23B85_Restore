@@ -4,26 +4,26 @@
 + (BOOL)isInDevelopmentEnvironment;
 + (CLSEndpointConnection)sharedInstance;
 + (NSString)classKitEnvironment;
-+ (id)instanceForEndpoint:(id)a3;
++ (id)instanceForEndpoint:(id)endpoint;
 - (BOOL)isBorked;
 - (CLSEndpointConnection)init;
-- (CLSEndpointConnection)initWithEndpoint:(id)a3;
-- (id)server:(id)a3;
+- (CLSEndpointConnection)initWithEndpoint:(id)endpoint;
+- (id)server:(id)server;
 - (id)serverConnection;
-- (id)syncServer:(id)a3;
+- (id)syncServer:(id)server;
 - (void)_registerForDarwinNotifications;
-- (void)_updateBundleIdentifier:(id)a3 forConnection:(id)a4 completion:(id)a5;
+- (void)_updateBundleIdentifier:(id)identifier forConnection:(id)connection completion:(id)completion;
 - (void)accountChanged;
-- (void)addBarrierBlock:(id)a3;
+- (void)addBarrierBlock:(id)block;
 - (void)connect;
-- (void)connectionBorked:(id)a3;
-- (void)connectionInterrupted:(id)a3;
+- (void)connectionBorked:(id)borked;
+- (void)connectionInterrupted:(id)interrupted;
 - (void)dealloc;
-- (void)deleteAppWithBundleIdentifier:(id)a3 completion:(id)a4;
+- (void)deleteAppWithBundleIdentifier:(id)identifier completion:(id)completion;
 - (void)devModeChanged;
 - (void)invalidate;
-- (void)listAppsWithCompletion:(id)a3;
-- (void)setOverrideBundleIdentifier:(id)a3 completion:(id)a4;
+- (void)listAppsWithCompletion:(id)completion;
+- (void)setOverrideBundleIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation CLSEndpointConnection
@@ -34,7 +34,7 @@
   block[1] = 3221225472;
   block[2] = sub_236FDC094;
   block[3] = &unk_278A17960;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280B2A590 != -1)
   {
     dispatch_once(&qword_280B2A590, block);
@@ -45,18 +45,18 @@
   return v2;
 }
 
-+ (id)instanceForEndpoint:(id)a3
++ (id)instanceForEndpoint:(id)endpoint
 {
-  v6 = a3;
-  if (v6)
+  endpointCopy = endpoint;
+  if (endpointCopy)
   {
-    v7 = [a1 alloc];
-    v9 = objc_msgSend_initWithEndpoint_(v7, v8, v6);
+    v7 = [self alloc];
+    v9 = objc_msgSend_initWithEndpoint_(v7, v8, endpointCopy);
   }
 
   else
   {
-    v9 = objc_msgSend_sharedInstance(a1, v4, v5);
+    v9 = objc_msgSend_sharedInstance(self, v4, v5);
   }
 
   v10 = v9;
@@ -78,9 +78,9 @@
   objc_exception_throw(v11);
 }
 
-- (CLSEndpointConnection)initWithEndpoint:(id)a3
+- (CLSEndpointConnection)initWithEndpoint:(id)endpoint
 {
-  v5 = a3;
+  endpointCopy = endpoint;
   v11.receiver = self;
   v11.super_class = CLSEndpointConnection;
   v6 = [(CLSEndpointConnection *)&v11 init];
@@ -88,7 +88,7 @@
   if (v6)
   {
     v6->_lock = 0;
-    objc_storeStrong(&v6->_endpoint, a3);
+    objc_storeStrong(&v6->_endpoint, endpoint);
     objc_msgSend__registerForDarwinNotifications(v7, v8, v9);
   }
 
@@ -256,15 +256,15 @@ LABEL_23:
   return v38;
 }
 
-- (void)connectionInterrupted:(id)a3
+- (void)connectionInterrupted:(id)interrupted
 {
-  if (a3)
+  if (interrupted)
   {
-    v4 = a3;
+    interruptedCopy = interrupted;
     objc_msgSend_lock(self, v5, v6);
     serverConnection = self->_serverConnection;
 
-    if (serverConnection == v4)
+    if (serverConnection == interruptedCopy)
     {
       if (qword_280B2A720 != -1)
       {
@@ -290,12 +290,12 @@ LABEL_23:
   }
 }
 
-- (void)connectionBorked:(id)a3
+- (void)connectionBorked:(id)borked
 {
-  v4 = a3;
-  if (v4)
+  borkedCopy = borked;
+  if (borkedCopy)
   {
-    v9 = v4;
+    v9 = borkedCopy;
     objc_msgSend_lock(self, v5, v6);
     if (self->_serverConnection == v9)
     {
@@ -304,7 +304,7 @@ LABEL_23:
     }
 
     objc_msgSend_unlock(self, v7, v8);
-    v4 = v9;
+    borkedCopy = v9;
   }
 }
 
@@ -330,14 +330,14 @@ LABEL_23:
 
 + (BOOL)isInDevelopmentEnvironment
 {
-  v6 = objc_msgSend_classKitEnvironment(a1, a2, v2);
+  v6 = objc_msgSend_classKitEnvironment(self, a2, v2);
   if (v6 | @"development")
   {
-    v9 = objc_msgSend_classKitEnvironment(a1, v4, v5);
+    v9 = objc_msgSend_classKitEnvironment(self, v4, v5);
     isEqualToString = 0;
     if (v9 && @"development")
     {
-      v11 = objc_msgSend_classKitEnvironment(a1, v7, v8);
+      v11 = objc_msgSend_classKitEnvironment(self, v7, v8);
       isEqualToString = objc_msgSend_isEqualToString_(v11, v12, @"development");
     }
   }
@@ -352,12 +352,12 @@ LABEL_23:
 
 + (BOOL)isClassKitEnabled
 {
-  if (objc_msgSend_isInDevelopmentEnvironment(a1, a2, v2))
+  if (objc_msgSend_isInDevelopmentEnvironment(self, a2, v2))
   {
     return 1;
   }
 
-  return MEMORY[0x2821F9670](a1, sel_isAllowedToMakeXPCCalls, v4);
+  return MEMORY[0x2821F9670](self, sel_isAllowedToMakeXPCCalls, v4);
 }
 
 + (BOOL)isAllowedToMakeXPCCalls
@@ -368,14 +368,14 @@ LABEL_23:
   return v6 ^ 1;
 }
 
-- (id)syncServer:(id)a3
+- (id)syncServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = sub_236FDD35C;
   v23[3] = &unk_278A17BC0;
-  v5 = v4;
+  v5 = serverCopy;
   v24 = v5;
   v6 = MEMORY[0x2383C3E80](v23);
   v17 = 0;
@@ -404,14 +404,14 @@ LABEL_23:
   return v12;
 }
 
-- (id)server:(id)a3
+- (id)server:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = sub_236FDD6A4;
   v23[3] = &unk_278A17BC0;
-  v5 = v4;
+  v5 = serverCopy;
   v24 = v5;
   v6 = MEMORY[0x2383C3E80](v23);
   v17 = 0;
@@ -440,27 +440,27 @@ LABEL_23:
   return v12;
 }
 
-- (void)listAppsWithCompletion:(id)a3
+- (void)listAppsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_236FDD8B8;
   v9[3] = &unk_278A17BC0;
-  v10 = v4;
-  v5 = v4;
+  v10 = completionCopy;
+  v5 = completionCopy;
   v7 = objc_msgSend_server_(self, v6, v9);
   objc_msgSend_remote_listAppsWithCompletion_(v7, v8, v5);
 }
 
-- (void)setOverrideBundleIdentifier:(id)a3 completion:(id)a4
+- (void)setOverrideBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v19 = a3;
-  v6 = a4;
-  v8 = v19;
-  v9 = v6;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v8 = identifierCopy;
+  v9 = completionCopy;
   overrideBundleIdentifier = self->_overrideBundleIdentifier;
-  if (!(v19 | overrideBundleIdentifier) || v19 && overrideBundleIdentifier && (isEqualToString = objc_msgSend_isEqualToString_(overrideBundleIdentifier, v19, v19), v8 = v19, isEqualToString))
+  if (!(identifierCopy | overrideBundleIdentifier) || identifierCopy && overrideBundleIdentifier && (isEqualToString = objc_msgSend_isEqualToString_(overrideBundleIdentifier, identifierCopy, identifierCopy), v8 = identifierCopy, isEqualToString))
   {
     v9[2](v9, 1, 0);
   }
@@ -477,38 +477,38 @@ LABEL_23:
   }
 }
 
-- (void)_updateBundleIdentifier:(id)a3 forConnection:(id)a4 completion:(id)a5
+- (void)_updateBundleIdentifier:(id)identifier forConnection:(id)connection completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = sub_236FDDAD4;
   v16[3] = &unk_278A17BC0;
-  v8 = v7;
+  v8 = completionCopy;
   v17 = v8;
-  v9 = a3;
-  v11 = objc_msgSend_remoteObjectProxyWithErrorHandler_(a4, v10, v16);
+  identifierCopy = identifier;
+  v11 = objc_msgSend_remoteObjectProxyWithErrorHandler_(connection, v10, v16);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = sub_236FDDAEC;
   v14[3] = &unk_278A18AB8;
   v15 = v8;
   v12 = v8;
-  objc_msgSend_remote_setOverrideBundleIdentifier_completion_(v11, v13, v9, v14);
+  objc_msgSend_remote_setOverrideBundleIdentifier_completion_(v11, v13, identifierCopy, v14);
 }
 
-- (void)deleteAppWithBundleIdentifier:(id)a3 completion:(id)a4
+- (void)deleteAppWithBundleIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_236FDDC8C;
   v12[3] = &unk_278A17BC0;
-  v13 = v6;
-  v7 = v6;
-  v8 = a3;
+  v13 = completionCopy;
+  v7 = completionCopy;
+  identifierCopy = identifier;
   v10 = objc_msgSend_server_(self, v9, v12);
-  objc_msgSend_remote_deleteAppWithBundleIdentifier_completion_(v10, v11, v8, v7);
+  objc_msgSend_remote_deleteAppWithBundleIdentifier_completion_(v10, v11, identifierCopy, v7);
 }
 
 - (void)connect
@@ -516,18 +516,18 @@ LABEL_23:
   v3 = objc_msgSend_serverConnection(self, a2, v2);
 }
 
-- (void)addBarrierBlock:(id)a3
+- (void)addBarrierBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_msgSend_lock(self, v5, v6);
   if (objc_msgSend_isBorked(self, v7, v8))
   {
-    v4[2](v4);
+    blockCopy[2](blockCopy);
   }
 
   else
   {
-    objc_msgSend_addBarrierBlock_(self->_serverConnection, v9, v4);
+    objc_msgSend_addBarrierBlock_(self->_serverConnection, v9, blockCopy);
   }
 
   objc_msgSend_unlock(self, v10, v11);

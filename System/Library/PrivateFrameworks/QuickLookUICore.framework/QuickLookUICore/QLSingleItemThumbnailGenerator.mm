@@ -1,28 +1,28 @@
 @interface QLSingleItemThumbnailGenerator
 - (QLItem)item;
 - (QLItemThumbnailGenerator)thumbnailGenerator;
-- (QLSingleItemThumbnailGenerator)initWithCoder:(id)a3;
-- (QLSingleItemThumbnailGenerator)initWithItem:(id)a3;
-- (id)genericIconWithSize:(CGSize)a3;
-- (void)_generateUncachedThumbnailWithSize:(CGSize)a3 contentMode:(unint64_t)a4 thumbnailVersion:(id)a5 completionBlock:(id)a6;
-- (void)_handleThumbnailGenerationFinishedWithThumbnailRepresentation:(id)a3 size:(CGSize)a4 version:(id)a5 clientCompletionBlock:(id)a6;
-- (void)_thumbnailVersionForItem:(id)a3 completionBlock:(id)a4;
-- (void)encodeWithCoder:(id)a3;
-- (void)generateThumbnailWithSize:(CGSize)a3 contentMode:(unint64_t)a4 completionBlock:(id)a5;
+- (QLSingleItemThumbnailGenerator)initWithCoder:(id)coder;
+- (QLSingleItemThumbnailGenerator)initWithItem:(id)item;
+- (id)genericIconWithSize:(CGSize)size;
+- (void)_generateUncachedThumbnailWithSize:(CGSize)size contentMode:(unint64_t)mode thumbnailVersion:(id)version completionBlock:(id)block;
+- (void)_handleThumbnailGenerationFinishedWithThumbnailRepresentation:(id)representation size:(CGSize)size version:(id)version clientCompletionBlock:(id)block;
+- (void)_thumbnailVersionForItem:(id)item completionBlock:(id)block;
+- (void)encodeWithCoder:(id)coder;
+- (void)generateThumbnailWithSize:(CGSize)size contentMode:(unint64_t)mode completionBlock:(id)block;
 @end
 
 @implementation QLSingleItemThumbnailGenerator
 
-- (QLSingleItemThumbnailGenerator)initWithItem:(id)a3
+- (QLSingleItemThumbnailGenerator)initWithItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = QLSingleItemThumbnailGenerator;
   v5 = [(QLSingleItemThumbnailGenerator *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_item, v4);
+    objc_storeWeak(&v5->_item, itemCopy);
     v7 = v6;
   }
 
@@ -34,8 +34,8 @@
   thumbnailGenerator = self->_thumbnailGenerator;
   if (!thumbnailGenerator)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (!self->_thumbnailGenerator)
     {
       v5 = objc_opt_new();
@@ -43,7 +43,7 @@
       self->_thumbnailGenerator = v5;
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     thumbnailGenerator = self->_thumbnailGenerator;
   }
@@ -53,49 +53,49 @@
   return v7;
 }
 
-- (void)_thumbnailVersionForItem:(id)a3 completionBlock:(id)a4
+- (void)_thumbnailVersionForItem:(id)item completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 fpItem];
-  v9 = [v6 editedFileURL];
+  itemCopy = item;
+  blockCopy = block;
+  fpItem = [itemCopy fpItem];
+  editedFileURL = [itemCopy editedFileURL];
 
-  if (v9)
+  if (editedFileURL)
   {
     v10 = objc_alloc(MEMORY[0x277CDAB10]);
-    v11 = [v6 editedFileURL];
-    v12 = [v10 initWithFileURL:v11 automaticallyGenerated:1];
+    editedFileURL2 = [itemCopy editedFileURL];
+    fetcher = [v10 initWithFileURL:editedFileURL2 automaticallyGenerated:1];
 
 LABEL_5:
-    v7[2](v7, v12);
+    blockCopy[2](blockCopy, fetcher);
     goto LABEL_6;
   }
 
-  if (v8)
+  if (fpItem)
   {
-    v12 = [objc_alloc(MEMORY[0x277CDAB10]) initWithFPItem:v8 automaticallyGenerated:1];
+    fetcher = [objc_alloc(MEMORY[0x277CDAB10]) initWithFPItem:fpItem automaticallyGenerated:1];
     goto LABEL_5;
   }
 
-  v12 = [v6 fetcher];
-  v13 = [v12 urlForThumbnail];
-  if (v13)
+  fetcher = [itemCopy fetcher];
+  urlForThumbnail = [fetcher urlForThumbnail];
+  if (urlForThumbnail)
   {
-    v14 = [objc_alloc(MEMORY[0x277CDAB10]) initWithFileURL:v13 automaticallyGenerated:1];
-    v7[2](v7, v14);
+    v14 = [objc_alloc(MEMORY[0x277CDAB10]) initWithFileURL:urlForThumbnail automaticallyGenerated:1];
+    blockCopy[2](blockCopy, v14);
   }
 
   else
   {
-    v15 = [(QLSingleItemThumbnailGenerator *)self thumbnailGenerator];
-    v16 = [v15 fetcherClassesForPreviewItem:v6];
+    thumbnailGenerator = [(QLSingleItemThumbnailGenerator *)self thumbnailGenerator];
+    v16 = [thumbnailGenerator fetcherClassesForPreviewItem:itemCopy];
     v17 = objc_opt_new();
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __75__QLSingleItemThumbnailGenerator__thumbnailVersionForItem_completionBlock___block_invoke;
     v18[3] = &unk_279AE0F50;
-    v19 = v7;
-    [v12 fetchContentWithAllowedOutputClasses:v16 inQueue:v17 updateBlock:0 completionBlock:v18];
+    v19 = blockCopy;
+    [fetcher fetchContentWithAllowedOutputClasses:v16 inQueue:v17 updateBlock:0 completionBlock:v18];
   }
 
 LABEL_6:
@@ -192,34 +192,34 @@ LABEL_22:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateThumbnailWithSize:(CGSize)a3 contentMode:(unint64_t)a4 completionBlock:(id)a5
+- (void)generateThumbnailWithSize:(CGSize)size contentMode:(unint64_t)mode completionBlock:(id)block
 {
-  height = a3.height;
-  width = a3.width;
-  v9 = a5;
-  if (v9)
+  height = size.height;
+  width = size.width;
+  blockCopy = block;
+  if (blockCopy)
   {
     v10 = self->_version;
     v11 = self->_thumbnailRepresentation;
     WeakRetained = objc_loadWeakRetained(&self->_item);
-    v13 = self;
-    objc_sync_enter(v13);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __88__QLSingleItemThumbnailGenerator_generateThumbnailWithSize_contentMode_completionBlock___block_invoke;
     v16[3] = &unk_279AE1698;
-    v16[4] = v13;
+    v16[4] = selfCopy;
     v20 = width;
     v21 = height;
     v14 = v11;
     v17 = v14;
     v15 = v10;
     v18 = v15;
-    v19 = v9;
-    v22 = a4;
-    [(QLSingleItemThumbnailGenerator *)v13 _thumbnailVersionForItem:WeakRetained completionBlock:v16];
+    v19 = blockCopy;
+    modeCopy = mode;
+    [(QLSingleItemThumbnailGenerator *)selfCopy _thumbnailVersionForItem:WeakRetained completionBlock:v16];
 
-    objc_sync_exit(v13);
+    objc_sync_exit(selfCopy);
   }
 }
 
@@ -252,12 +252,12 @@ void __88__QLSingleItemThumbnailGenerator_generateThumbnailWithSize_contentMode_
   }
 }
 
-- (void)_generateUncachedThumbnailWithSize:(CGSize)a3 contentMode:(unint64_t)a4 thumbnailVersion:(id)a5 completionBlock:(id)a6
+- (void)_generateUncachedThumbnailWithSize:(CGSize)size contentMode:(unint64_t)mode thumbnailVersion:(id)version completionBlock:(id)block
 {
-  height = a3.height;
-  width = a3.width;
-  v11 = a5;
-  v12 = a6;
+  height = size.height;
+  width = size.width;
+  versionCopy = version;
+  blockCopy = block;
   if (width >= height)
   {
     v13 = height;
@@ -268,7 +268,7 @@ void __88__QLSingleItemThumbnailGenerator_generateThumbnailWithSize_contentMode_
     v13 = width;
   }
 
-  if (a4 == 2)
+  if (mode == 2)
   {
     v14 = v13;
   }
@@ -278,10 +278,10 @@ void __88__QLSingleItemThumbnailGenerator_generateThumbnailWithSize_contentMode_
     v14 = 0.0;
   }
 
-  v15 = [(QLSingleItemThumbnailGenerator *)self thumbnailGenerator];
+  thumbnailGenerator = [(QLSingleItemThumbnailGenerator *)self thumbnailGenerator];
   WeakRetained = objc_loadWeakRetained(&self->_item);
-  v17 = [MEMORY[0x277D759A0] mainScreen];
-  [v17 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v19 = v18;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
@@ -290,26 +290,26 @@ void __88__QLSingleItemThumbnailGenerator_generateThumbnailWithSize_contentMode_
   v25 = width;
   v26 = height;
   v22[4] = self;
-  v23 = v11;
-  v24 = v12;
-  v20 = v12;
-  v21 = v11;
-  [v15 generateThumbnailRepresentationForItem:WeakRetained ofSize:v22 minimumSize:width scale:height completionBlock:{v14, v19}];
+  v23 = versionCopy;
+  v24 = blockCopy;
+  v20 = blockCopy;
+  v21 = versionCopy;
+  [thumbnailGenerator generateThumbnailRepresentationForItem:WeakRetained ofSize:v22 minimumSize:width scale:height completionBlock:{v14, v19}];
 }
 
-- (id)genericIconWithSize:(CGSize)a3
+- (id)genericIconWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   WeakRetained = objc_loadWeakRetained(&self->_item);
-  v7 = [WeakRetained previewItemType];
+  previewItemType = [WeakRetained previewItemType];
 
-  if (v7 != 14)
+  if (previewItemType != 14)
   {
     v19 = objc_alloc(MEMORY[0x277D1B1A8]);
     v20 = objc_loadWeakRetained(&self->_item);
-    v21 = [v20 previewItemContentType];
-    v13 = [v19 initWithType:v21];
+    previewItemContentType = [v20 previewItemContentType];
+    v13 = [v19 initWithType:previewItemContentType];
 
     if (width == QLCGSizeFromQLItemThumbnailSize(0) && height == v22)
     {
@@ -340,21 +340,21 @@ void __88__QLSingleItemThumbnailGenerator_generateThumbnailWithSize_contentMode_
     v29 = v28;
     v31 = v30;
     [v26 scale];
-    v14 = [v27 initWithSize:v29 scale:{v31, v32}];
+    searchableItemApplicationBundleIdentifier = [v27 initWithSize:v29 scale:{v31, v32}];
 
-    [v14 setShape:0];
-    v15 = [v13 imageForDescriptor:v14];
-    if ([v15 placeholder])
+    [searchableItemApplicationBundleIdentifier setShape:0];
+    mainScreen = [v13 imageForDescriptor:searchableItemApplicationBundleIdentifier];
+    if ([mainScreen placeholder])
     {
-      v33 = [v13 prepareImageForDescriptor:v14];
+      v33 = [v13 prepareImageForDescriptor:searchableItemApplicationBundleIdentifier];
 
-      v15 = v33;
+      mainScreen = v33;
     }
 
     v34 = MEMORY[0x277D755B8];
-    v35 = [v15 CGImage];
-    [v14 scale];
-    v36 = [v34 imageWithCGImage:v35 scale:0 orientation:?];
+    cGImage = [mainScreen CGImage];
+    [searchableItemApplicationBundleIdentifier scale];
+    v36 = [v34 imageWithCGImage:cGImage scale:0 orientation:?];
 LABEL_21:
     v11 = v36;
 
@@ -366,11 +366,11 @@ LABEL_22:
   {
     v37 = MEMORY[0x277D755B8];
     v13 = objc_loadWeakRetained(&self->_item);
-    v14 = [v13 searchableItemApplicationBundleIdentifier];
-    v15 = [MEMORY[0x277D759A0] mainScreen];
-    [v15 scale];
+    searchableItemApplicationBundleIdentifier = [v13 searchableItemApplicationBundleIdentifier];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v16 = v37;
-    v17 = v14;
+    v17 = searchableItemApplicationBundleIdentifier;
     v18 = 13;
     goto LABEL_20;
   }
@@ -380,11 +380,11 @@ LABEL_22:
   {
     v12 = MEMORY[0x277D755B8];
     v13 = objc_loadWeakRetained(&self->_item);
-    v14 = [v13 searchableItemApplicationBundleIdentifier];
-    v15 = [MEMORY[0x277D759A0] mainScreen];
-    [v15 scale];
+    searchableItemApplicationBundleIdentifier = [v13 searchableItemApplicationBundleIdentifier];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v16 = v12;
-    v17 = v14;
+    v17 = searchableItemApplicationBundleIdentifier;
     v18 = 12;
 LABEL_20:
     v36 = [v16 _applicationIconImageForBundleIdentifier:v17 format:v18 scale:?];
@@ -396,62 +396,62 @@ LABEL_23:
   return v11;
 }
 
-- (void)_handleThumbnailGenerationFinishedWithThumbnailRepresentation:(id)a3 size:(CGSize)a4 version:(id)a5 clientCompletionBlock:(id)a6
+- (void)_handleThumbnailGenerationFinishedWithThumbnailRepresentation:(id)representation size:(CGSize)size version:(id)version clientCompletionBlock:(id)block
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
-  v12 = a5;
-  v19 = a6;
-  v13 = [(QLThumbnailRepresentation *)v11 UIImage];
-  v14 = [(QLThumbnailRepresentation *)v11 type]!= QLThumbnailRepresentationTypeIcon;
-  if (!v13)
+  height = size.height;
+  width = size.width;
+  representationCopy = representation;
+  versionCopy = version;
+  blockCopy = block;
+  uIImage = [(QLThumbnailRepresentation *)representationCopy UIImage];
+  v14 = [(QLThumbnailRepresentation *)representationCopy type]!= QLThumbnailRepresentationTypeIcon;
+  if (!uIImage)
   {
-    v13 = [(QLSingleItemThumbnailGenerator *)self genericIconWithSize:width, height];
+    uIImage = [(QLSingleItemThumbnailGenerator *)self genericIconWithSize:width, height];
     v14 = 0;
   }
 
-  v15 = self;
-  objc_sync_enter(v15);
-  v15->_thumbnailSize.width = width;
-  v15->_thumbnailSize.height = height;
-  thumbnailRepresentation = v15->_thumbnailRepresentation;
-  v15->_thumbnailRepresentation = v11;
-  v17 = v11;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_thumbnailSize.width = width;
+  selfCopy->_thumbnailSize.height = height;
+  thumbnailRepresentation = selfCopy->_thumbnailRepresentation;
+  selfCopy->_thumbnailRepresentation = representationCopy;
+  v17 = representationCopy;
 
-  version = v15->_version;
-  v15->_version = v12;
+  version = selfCopy->_version;
+  selfCopy->_version = versionCopy;
 
-  v15->_isRepresentative = v14;
-  objc_sync_exit(v15);
+  selfCopy->_isRepresentative = v14;
+  objc_sync_exit(selfCopy);
 
-  if (v19)
+  if (blockCopy)
   {
-    v19[2](v19, v13, v14);
+    blockCopy[2](blockCopy, uIImage, v14);
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   WeakRetained = objc_loadWeakRetained(&self->_item);
 
   if (WeakRetained)
   {
     v5 = objc_loadWeakRetained(&self->_item);
-    [v6 encodeObject:v5 forKey:@"generatorItem"];
+    [coderCopy encodeObject:v5 forKey:@"generatorItem"];
   }
 }
 
-- (QLSingleItemThumbnailGenerator)initWithCoder:(id)a3
+- (QLSingleItemThumbnailGenerator)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = QLSingleItemThumbnailGenerator;
   v5 = [(QLSingleItemThumbnailGenerator *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"generatorItem"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"generatorItem"];
     objc_storeWeak(&v5->_item, v6);
 
     v7 = v5;

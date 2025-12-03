@@ -1,7 +1,7 @@
 @interface PAEKeyerPreprocess
-- (BOOL)addAdvancedParametersWithParamAPI:(id)a3 paramFlags:(unsigned int)a4;
-- (BOOL)doPreprocessKeyerFootageWithParamAPI:(id)a3 withInfo:(id *)a4 linearInput:(BOOL)a5 scaleX:(float)a6 scaleY:(float)a7 width:(float)a8 height:(float)a9 fixDVResult:(void *)a10 degrainResult:(void *)a11 outputNode:(void *)a12;
-- (BOOL)findGrainRegionWithInfo:(id *)a3 coordX:(int *)a4 coordY:(int *)a5 width:(int)a6 height:(int)a7 minGreenHueAngle:(float)a8 maxGreenHueAngle:(float)a9 greenChroma:(float)a10 minBlueHueAngle:(float)a11 maxBlueHueAngle:(float)a12 blueChroma:(float)a13;
+- (BOOL)addAdvancedParametersWithParamAPI:(id)i paramFlags:(unsigned int)flags;
+- (BOOL)doPreprocessKeyerFootageWithParamAPI:(id)i withInfo:(id *)info linearInput:(BOOL)input scaleX:(float)x scaleY:(float)y width:(float)width height:(float)height fixDVResult:(void *)self0 degrainResult:(void *)self1 outputNode:(void *)self2;
+- (BOOL)findGrainRegionWithInfo:(id *)info coordX:(int *)x coordY:(int *)y width:(int)width height:(int)height minGreenHueAngle:(float)angle maxGreenHueAngle:(float)hueAngle greenChroma:(float)self0 minBlueHueAngle:(float)self1 maxBlueHueAngle:(float)self2 blueChroma:(float)self3;
 - (void)dealloc;
 @end
 
@@ -14,20 +14,20 @@
   [(PAEKeyerPreprocess *)&v2 dealloc];
 }
 
-- (BOOL)addAdvancedParametersWithParamAPI:(id)a3 paramFlags:(unsigned int)a4
+- (BOOL)addAdvancedParametersWithParamAPI:(id)i paramFlags:(unsigned int)flags
 {
-  if (a3)
+  if (i)
   {
-    [a3 addToggleButtonWithName:objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8] parmId:"bundleForClass:" defaultValue:objc_opt_class()) parmFlags:{"localizedStringForKey:value:table:", @"Keyer::FixVideo", @"Fix Video", 0), 68, 1, a4 | 0x221}];
+    [i addToggleButtonWithName:objc_msgSend(objc_msgSend(MEMORY[0x277CCA8D8] parmId:"bundleForClass:" defaultValue:objc_opt_class()) parmFlags:{"localizedStringForKey:value:table:", @"Keyer::FixVideo", @"Fix Video", 0), 68, 1, flags | 0x221}];
   }
 
   return 1;
 }
 
-- (BOOL)findGrainRegionWithInfo:(id *)a3 coordX:(int *)a4 coordY:(int *)a5 width:(int)a6 height:(int)a7 minGreenHueAngle:(float)a8 maxGreenHueAngle:(float)a9 greenChroma:(float)a10 minBlueHueAngle:(float)a11 maxBlueHueAngle:(float)a12 blueChroma:(float)a13
+- (BOOL)findGrainRegionWithInfo:(id *)info coordX:(int *)x coordY:(int *)y width:(int)width height:(int)height minGreenHueAngle:(float)angle maxGreenHueAngle:(float)hueAngle greenChroma:(float)self0 minBlueHueAngle:(float)self1 maxBlueHueAngle:(float)self2 blueChroma:(float)self3
 {
-  *a5 = 0;
-  *a4 = 0;
+  *y = 0;
+  *x = 0;
   v13 = HGObject::operator new(0x210uLL);
   HGXForm::HGXForm(v13);
   v14 = HGObject::operator new(0x90uLL);
@@ -38,20 +38,20 @@
   HGColorMatrix::HGColorMatrix(v15);
 }
 
-- (BOOL)doPreprocessKeyerFootageWithParamAPI:(id)a3 withInfo:(id *)a4 linearInput:(BOOL)a5 scaleX:(float)a6 scaleY:(float)a7 width:(float)a8 height:(float)a9 fixDVResult:(void *)a10 degrainResult:(void *)a11 outputNode:(void *)a12
+- (BOOL)doPreprocessKeyerFootageWithParamAPI:(id)i withInfo:(id *)info linearInput:(BOOL)input scaleX:(float)x scaleY:(float)y width:(float)width height:(float)height fixDVResult:(void *)self0 degrainResult:(void *)self1 outputNode:(void *)self2
 {
-  v16 = a5;
+  inputCopy = input;
   v27 = *MEMORY[0x277D85DE8];
   v24 = 0;
-  [a3 getBoolValue:&v24 fromParm:68 atFxTime:{a4->var0.var1, a10, a11}];
+  [i getBoolValue:&v24 fromParm:68 atFxTime:{info->var0.var1, result, degrainResult}];
   if (v24 == 1)
   {
-    desiredRGBToYCbCrMatrix(self->_apiManager, v26, a4->var0.var1);
-    desiredYCbCrToRGBMatrix(self->_apiManager, v25, a4->var0.var1);
+    desiredRGBToYCbCrMatrix(self->_apiManager, v26, info->var0.var1);
+    desiredYCbCrToRGBMatrix(self->_apiManager, v25, info->var0.var1);
     v19 = HGObject::operator new(0x240uLL);
-    HFixDV::HFixDV(v19, a6, a7);
+    HFixDV::HFixDV(v19, x, y);
     v20 = 0.45455;
-    if (!v16)
+    if (!inputCopy)
     {
       v20 = 1.0;
     }
@@ -61,30 +61,30 @@
     *(v19 + 208) = 257;
     HFixDV::setRGBToYCbCrMatrix(v19, v26);
     HFixDV::setYCbCrToRGBMatrix(v19, v25);
-    (*(*v19 + 120))(v19, 0, *a12);
-    v21 = *a12;
-    if (*a12 != v19)
+    (*(*v19 + 120))(v19, 0, *node);
+    v21 = *node;
+    if (*node != v19)
     {
       if (v21)
       {
         (*(*v21 + 24))(v21);
       }
 
-      *a12 = v19;
+      *node = v19;
       (*(*v19 + 16))(v19);
-      v21 = *a12;
+      v21 = *node;
     }
 
-    v22 = *a10;
-    if (*a10 != v21)
+    v22 = *result;
+    if (*result != v21)
     {
       if (v22)
       {
-        (*(*v22 + 24))(*a10);
-        v21 = *a12;
+        (*(*v22 + 24))(*result);
+        v21 = *node;
       }
 
-      *a10 = v21;
+      *result = v21;
       if (v21)
       {
         (*(*v21 + 16))(v21);

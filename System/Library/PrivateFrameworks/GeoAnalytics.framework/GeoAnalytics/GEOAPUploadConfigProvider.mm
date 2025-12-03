@@ -8,36 +8,36 @@
 
 - (BOOL)simulateFileWriteError
 {
-  v2 = [(GEOAPUploadConfigProvider *)self internalInstall];
-  if (v2)
+  internalInstall = [(GEOAPUploadConfigProvider *)self internalInstall];
+  if (internalInstall)
   {
     v3 = GeoAnalyticsConfig__debug_simulateFileWriteError[1];
 
-    LOBYTE(v2) = GEOConfigGetBOOL();
+    LOBYTE(internalInstall) = GEOConfigGetBOOL();
   }
 
-  return v2;
+  return internalInstall;
 }
 
 - (BOOL)simulateNoURLs
 {
-  v2 = [(GEOAPUploadConfigProvider *)self internalInstall];
-  if (v2)
+  internalInstall = [(GEOAPUploadConfigProvider *)self internalInstall];
+  if (internalInstall)
   {
     v3 = GeoAnalyticsConfig__debug_simulateNoURLs[1];
 
-    LOBYTE(v2) = GEOConfigGetBOOL();
+    LOBYTE(internalInstall) = GEOConfigGetBOOL();
   }
 
-  return v2;
+  return internalInstall;
 }
 
 - (BOOL)internalInstall
 {
   v2 = +[GEOPlatform sharedPlatform];
-  v3 = [v2 isInternalInstall];
+  isInternalInstall = [v2 isInternalInstall];
 
-  return v3;
+  return isInternalInstall;
 }
 
 @end

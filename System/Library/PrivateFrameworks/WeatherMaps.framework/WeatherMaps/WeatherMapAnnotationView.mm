@@ -1,17 +1,17 @@
 @interface WeatherMapAnnotationView
 - (CGPoint)accessibilityActivationPoint;
 - (CGRect)accessibilityFrame;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)accessibilityLabel;
 - (NSString)accessibilityValue;
 - (UIBezierPath)accessibilityPath;
-- (_TtC11WeatherMaps24WeatherMapAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
+- (_TtC11WeatherMaps24WeatherMapAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
 - (id)_balloonContentView;
 - (id)_balloonStrokeColor;
 - (unint64_t)accessibilityTraits;
 - (void)layoutSubviews;
-- (void)setAccessibilityPath:(id)a3;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)setAccessibilityPath:(id)path;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 @end
 
 @implementation WeatherMapAnnotationView
@@ -23,9 +23,9 @@
   return v0;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_220F86FB4();
   v6 = v5;
 
@@ -38,14 +38,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_220F8709C();
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v6 = self;
-  sub_220F87274(a3, a4);
+  selfCopy = self;
+  sub_220F87274(selected, animated);
 }
 
 - (NSString)accessibilityLabel
@@ -66,7 +66,7 @@
 
 - (NSString)accessibilityValue
 {
-  v2 = self;
+  selfCopy = self;
   sub_220F874E0();
   v4 = v3;
 
@@ -85,7 +85,7 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_220F8767C();
 
   return v3;
@@ -93,7 +93,7 @@
 
 - (CGRect)accessibilityFrame
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_220F87754();
   v5 = v4;
   v7 = v6;
@@ -112,21 +112,21 @@
 
 - (UIBezierPath)accessibilityPath
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_220F8784C();
 
   return v3;
 }
 
-- (void)setAccessibilityPath:(id)a3
+- (void)setAccessibilityPath:(id)path
 {
-  v5 = a3;
-  v6 = self;
+  pathCopy = path;
+  selfCopy = self;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_220F87980();
   v5 = v4;
 
@@ -137,9 +137,9 @@
   return result;
 }
 
-- (_TtC11WeatherMaps24WeatherMapAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (_TtC11WeatherMaps24WeatherMapAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_220FC2700();
   }
@@ -150,7 +150,7 @@
 
 - (id)_balloonContentView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_220F87C8C();
 
   return v3;

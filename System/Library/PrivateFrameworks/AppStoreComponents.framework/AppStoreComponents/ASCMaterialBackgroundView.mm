@@ -1,23 +1,23 @@
 @interface ASCMaterialBackgroundView
-- (ASCMaterialBackgroundView)initWithCoder:(id)a3;
-- (ASCMaterialBackgroundView)initWithFrame:(CGRect)a3;
+- (ASCMaterialBackgroundView)initWithCoder:(id)coder;
+- (ASCMaterialBackgroundView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3;
+- (void)setImage:(id)image;
 @end
 
 @implementation ASCMaterialBackgroundView
 
-- (ASCMaterialBackgroundView)initWithFrame:(CGRect)a3
+- (ASCMaterialBackgroundView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = ASCMaterialBackgroundView;
-  v3 = [(ASCMaterialBackgroundView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(ASCMaterialBackgroundView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(ASCMaterialBackgroundView *)v3 setLayoutMargins:*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)];
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(ASCMaterialBackgroundView *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(ASCMaterialBackgroundView *)v4 setBackgroundColor:clearColor];
 
     v6 = [MEMORY[0x277D75210] effectWithStyle:9];
     v7 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:v6];
@@ -38,18 +38,18 @@
   return v4;
 }
 
-- (ASCMaterialBackgroundView)initWithCoder:(id)a3
+- (ASCMaterialBackgroundView)initWithCoder:(id)coder
 {
   [(ASCMaterialBackgroundView *)self doesNotRecognizeSelector:a2];
 
   return 0;
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
-  v5 = [(ASCMaterialBackgroundView *)self imageView];
-  [v5 setImage:v4];
+  imageCopy = image;
+  imageView = [(ASCMaterialBackgroundView *)self imageView];
+  [imageView setImage:imageCopy];
 }
 
 - (void)layoutSubviews
@@ -62,11 +62,11 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(ASCMaterialBackgroundView *)self visualEffectView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  visualEffectView = [(ASCMaterialBackgroundView *)self visualEffectView];
+  [visualEffectView setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(ASCMaterialBackgroundView *)self imageView];
-  [v12 setFrame:{v4, v6, v8, v10}];
+  imageView = [(ASCMaterialBackgroundView *)self imageView];
+  [imageView setFrame:{v4, v6, v8, v10}];
 }
 
 @end

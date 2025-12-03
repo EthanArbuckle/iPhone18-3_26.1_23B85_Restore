@@ -5,7 +5,7 @@
 - (id)iCloudACAccount;
 - (id)initSingleton;
 - (void)dealloc;
-- (void)iCloudAccountChanged:(id)a3;
+- (void)iCloudAccountChanged:(id)changed;
 - (void)syncFMFAccountInfo;
 @end
 
@@ -78,11 +78,11 @@
 
 - (void)syncFMFAccountInfo
 {
-  v2 = [(AppleAccountManager *)self iCloudACAccount];
-  v3 = v2;
-  if (v2)
+  iCloudACAccount = [(AppleAccountManager *)self iCloudACAccount];
+  v3 = iCloudACAccount;
+  if (iCloudACAccount)
   {
-    if ([v2 isProvisionedForDataclass:@"com.apple.Dataclass.ShareLocation"])
+    if ([iCloudACAccount isProvisionedForDataclass:@"com.apple.Dataclass.ShareLocation"])
     {
       v4 = +[AccountManager sharedInstance];
       v5 = [v4 allAccountsOfType:objc_opt_class()];
@@ -93,9 +93,9 @@
         v7 = v6;
         if (v6)
         {
-          v8 = [v6 dsid];
-          v9 = [v3 aa_personID];
-          v10 = [v8 isEqualToString:v9];
+          dsid = [v6 dsid];
+          aa_personID = [v3 aa_personID];
+          v10 = [dsid isEqualToString:aa_personID];
 
           if (v10)
           {
@@ -151,30 +151,30 @@ LABEL_16:
 
 - (id)iCloudACAccount
 {
-  v2 = [(AppleAccountManager *)self accountStore];
-  v3 = [v2 aa_primaryAppleAccount];
+  accountStore = [(AppleAccountManager *)self accountStore];
+  aa_primaryAppleAccount = [accountStore aa_primaryAppleAccount];
 
-  return v3;
+  return aa_primaryAppleAccount;
 }
 
 - (id)fmfACAccount
 {
-  v3 = [(AppleAccountManager *)self iCloudACAccount];
-  if ([v3 isProvisionedForDataclass:@"com.apple.Dataclass.ShareLocation"])
+  iCloudACAccount = [(AppleAccountManager *)self iCloudACAccount];
+  if ([iCloudACAccount isProvisionedForDataclass:@"com.apple.Dataclass.ShareLocation"])
   {
-    v4 = [(AppleAccountManager *)self iCloudACAccount];
-    v5 = [v4 aa_fmfAccount];
+    iCloudACAccount2 = [(AppleAccountManager *)self iCloudACAccount];
+    aa_fmfAccount = [iCloudACAccount2 aa_fmfAccount];
   }
 
   else
   {
-    v5 = 0;
+    aa_fmfAccount = 0;
   }
 
-  return v5;
+  return aa_fmfAccount;
 }
 
-- (void)iCloudAccountChanged:(id)a3
+- (void)iCloudAccountChanged:(id)changed
 {
   v3 = sub_100002830();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))

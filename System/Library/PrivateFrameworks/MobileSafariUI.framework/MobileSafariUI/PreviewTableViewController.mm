@@ -1,28 +1,28 @@
 @interface PreviewTableViewController
 - (LinkPreviewProvider)linkPreviewProvider;
 - (PreviewTableViewControllerDelegate)previewDelegate;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)tableView:(id)a3 previewForDismissingContextMenuWithConfiguration:(id)a4;
-- (id)tableView:(id)a3 previewForHighlightingContextMenuWithConfiguration:(id)a4;
-- (void)tableView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)viewWillDisappear:(BOOL)a3;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
+- (id)tableView:(id)view previewForDismissingContextMenuWithConfiguration:(id)configuration;
+- (id)tableView:(id)view previewForHighlightingContextMenuWithConfiguration:(id)configuration;
+- (void)tableView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PreviewTableViewController
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = PreviewTableViewController;
-  [(PreviewTableViewController *)&v5 viewWillDisappear:a3];
-  v4 = [(PreviewTableViewController *)self tableView];
-  [(UITableView *)v4 safari_dismissContextMenu];
+  [(PreviewTableViewController *)&v5 viewWillDisappear:disappear];
+  tableView = [(PreviewTableViewController *)self tableView];
+  [(UITableView *)tableView safari_dismissContextMenu];
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  pathCopy = path;
   objc_initWeak(&location, self);
   v9 = MEMORY[0x277D753B0];
   v17[0] = MEMORY[0x277D85DD0];
@@ -30,7 +30,7 @@
   v17[2] = __88__PreviewTableViewController_tableView_contextMenuConfigurationForRowAtIndexPath_point___block_invoke;
   v17[3] = &unk_2781D8498;
   objc_copyWeak(&v19, &location);
-  v10 = v8;
+  v10 = pathCopy;
   v18 = v10;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
@@ -87,36 +87,36 @@ id __88__PreviewTableViewController_tableView_contextMenuConfigurationForRowAtIn
   return v5;
 }
 
-- (id)tableView:(id)a3 previewForHighlightingContextMenuWithConfiguration:(id)a4
+- (id)tableView:(id)view previewForHighlightingContextMenuWithConfiguration:(id)configuration
 {
-  v5 = a3;
-  v6 = [a4 identifier];
-  v7 = [v5 cellForRowAtIndexPath:v6];
+  viewCopy = view;
+  identifier = [configuration identifier];
+  v7 = [viewCopy cellForRowAtIndexPath:identifier];
 
   v8 = [objc_alloc(MEMORY[0x277D75B90]) initWithView:v7];
 
   return v8;
 }
 
-- (void)tableView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)tableView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v10 setPreferredCommitStyle:1];
-  v11 = [v10 previewViewController];
+  viewCopy = view;
+  configurationCopy = configuration;
+  animatorCopy = animator;
+  [animatorCopy setPreferredCommitStyle:1];
+  previewViewController = [animatorCopy previewViewController];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __98__PreviewTableViewController_tableView_willPerformPreviewActionForMenuWithConfiguration_animator___block_invoke;
   v15[3] = &unk_2781D5A50;
-  v16 = v8;
-  v17 = v11;
-  v18 = self;
-  v19 = v9;
-  v12 = v9;
-  v13 = v11;
-  v14 = v8;
-  [v10 addAnimations:v15];
+  v16 = viewCopy;
+  v17 = previewViewController;
+  selfCopy = self;
+  v19 = configurationCopy;
+  v12 = configurationCopy;
+  v13 = previewViewController;
+  v14 = viewCopy;
+  [animatorCopy addAnimations:v15];
 }
 
 void __98__PreviewTableViewController_tableView_willPerformPreviewActionForMenuWithConfiguration_animator___block_invoke(uint64_t a1)
@@ -143,7 +143,7 @@ void __98__PreviewTableViewController_tableView_willPerformPreviewActionForMenuW
 LABEL_6:
 }
 
-- (id)tableView:(id)a3 previewForDismissingContextMenuWithConfiguration:(id)a4
+- (id)tableView:(id)view previewForDismissingContextMenuWithConfiguration:(id)configuration
 {
   WeakRetained = objc_loadWeakRetained(&self->_linkPreviewProvider);
   [WeakRetained linkPreviewProviderWillDismissPreview];

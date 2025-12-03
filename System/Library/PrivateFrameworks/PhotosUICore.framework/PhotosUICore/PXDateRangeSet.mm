@@ -1,12 +1,12 @@
 @interface PXDateRangeSet
 + (id)dateRangeSet;
-+ (id)dateRangeSetWithDateRange:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)dateRangeSetWithDateRange:(id)range;
+- (BOOL)isEqual:(id)equal;
 - (PXDateRangeSet)init;
-- (PXDateRangeSet)initWithDateRange:(id)a3;
+- (PXDateRangeSet)initWithDateRange:(id)range;
 - (id)dateRanges;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (int64_t)count;
 @end
 
@@ -18,24 +18,24 @@
   v8.receiver = self;
   v8.super_class = PXDateRangeSet;
   v4 = [(PXDateRangeSet *)&v8 description];
-  v5 = [(PXDateRangeSet *)self _dateRanges];
-  v6 = [v3 stringWithFormat:@"<%@ dateRanges=%@>", v4, v5];
+  _dateRanges = [(PXDateRangeSet *)self _dateRanges];
+  v6 = [v3 stringWithFormat:@"<%@ dateRanges=%@>", v4, _dateRanges];
 
   return v6;
 }
 
 - (id)dateRanges
 {
-  v2 = [(PXDateRangeSet *)self _dateRanges];
-  v3 = [v2 copy];
+  _dateRanges = [(PXDateRangeSet *)self _dateRanges];
+  v3 = [_dateRanges copy];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     goto LABEL_5;
   }
@@ -48,7 +48,7 @@
   }
 
   dateRanges = self->__dateRanges;
-  if (dateRanges == v4->__dateRanges)
+  if (dateRanges == equalCopy->__dateRanges)
   {
 LABEL_5:
     v6 = 1;
@@ -66,17 +66,17 @@ LABEL_7:
 
 - (int64_t)count
 {
-  v2 = [(PXDateRangeSet *)self _dateRanges];
-  v3 = [v2 count];
+  _dateRanges = [(PXDateRangeSet *)self _dateRanges];
+  v3 = [_dateRanges count];
 
   return v3;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PXMutableDateRangeSet);
-  v5 = [(PXDateRangeSet *)self _dateRanges];
-  v6 = [v5 mutableCopy];
+  _dateRanges = [(PXDateRangeSet *)self _dateRanges];
+  v6 = [_dateRanges mutableCopy];
   [(PXDateRangeSet *)v4 set_dateRanges:v6];
 
   return v4;
@@ -84,28 +84,28 @@ LABEL_7:
 
 + (id)dateRangeSet
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (id)dateRangeSetWithDateRange:(id)a3
++ (id)dateRangeSetWithDateRange:(id)range
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithDateRange:v3];
+  rangeCopy = range;
+  v4 = [objc_alloc(objc_opt_class()) initWithDateRange:rangeCopy];
 
   return v4;
 }
 
-- (PXDateRangeSet)initWithDateRange:(id)a3
+- (PXDateRangeSet)initWithDateRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   v9.receiver = self;
   v9.super_class = PXDateRangeSet;
   v5 = [(PXDateRangeSet *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v4, 0}];
+    v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{rangeCopy, 0}];
     dateRanges = v5->__dateRanges;
     v5->__dateRanges = v6;
   }

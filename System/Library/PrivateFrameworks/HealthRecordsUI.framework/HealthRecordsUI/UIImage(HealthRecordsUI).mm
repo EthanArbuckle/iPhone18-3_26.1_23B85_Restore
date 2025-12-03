@@ -7,24 +7,24 @@
 - (id)hr_imageWithWhiteBackground:()HealthRecordsUI
 {
   v2 = objc_autoreleasePoolPush();
-  v3 = [a1 CGImage];
+  cGImage = [self CGImage];
   memset(&srcTop, 0, sizeof(srcTop));
-  [a1 size];
+  [self size];
   v5 = v4;
-  [a1 scale];
+  [self scale];
   v7 = v6;
-  [a1 size];
+  [self size];
   v9 = v8;
-  [a1 scale];
+  [self scale];
   v11 = v10;
   v32 = 0u;
   v33 = 0u;
   v31 = 0x2000000008;
   DWORD2(v32) = 4;
-  v12 = [MEMORY[0x1E69DC888] whiteColor];
-  Components = CGColorGetComponents([v12 CGColor]);
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  Components = CGColorGetComponents([whiteColor CGColor]);
 
-  if (MEMORY[0x1D38884D0](&srcTop, &v31, Components, v3, 0))
+  if (MEMORY[0x1D38884D0](&srcTop, &v31, Components, cGImage, 0))
   {
     free(srcTop.data);
     v14 = 0;

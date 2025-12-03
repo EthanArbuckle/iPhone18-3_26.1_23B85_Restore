@@ -8,9 +8,9 @@
 + (id)bm_allowedClassesForSecureCodingBMBookmark
 {
   v0 = +[BMBookmarkClasses sharedInstance];
-  v1 = [v0 allowedClassesForSecureCodingBMBookmark];
+  allowedClassesForSecureCodingBMBookmark = [v0 allowedClassesForSecureCodingBMBookmark];
 
-  return v1;
+  return allowedClassesForSecureCodingBMBookmark;
 }
 
 + (void)bm_allowClassesForSecureCodingBMBookmark:()BMBookmark

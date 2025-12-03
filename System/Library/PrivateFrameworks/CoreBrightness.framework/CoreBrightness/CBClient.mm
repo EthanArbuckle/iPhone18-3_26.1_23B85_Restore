@@ -7,27 +7,27 @@
 
 - (CBClient)init
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
   v8.receiver = self;
   v8.super_class = CBClient;
-  v10 = [(CBClient *)&v8 init];
-  if (!v10)
+  selfCopy = [(CBClient *)&v8 init];
+  if (!selfCopy)
   {
-    return v10;
+    return selfCopy;
   }
 
   v2 = objc_alloc_init(BrightnessSystemClient);
-  v10->bsc = v2;
-  if (v10->bsc)
+  selfCopy->bsc = v2;
+  if (selfCopy->bsc)
   {
     v3 = [CBBlueLightClient alloc];
-    v4 = [(CBBlueLightClient *)v3 initWithClientObj:v10->bsc];
-    v10->_blueLightClient = v4;
+    v4 = [(CBBlueLightClient *)v3 initWithClientObj:selfCopy->bsc];
+    selfCopy->_blueLightClient = v4;
     v5 = [CBAdaptationClient alloc];
-    v6 = [(CBAdaptationClient *)v5 initWithClientObj:v10->bsc];
-    v10->_adaptationClient = v6;
-    return v10;
+    v6 = [(CBAdaptationClient *)v5 initWithClientObj:selfCopy->bsc];
+    selfCopy->_adaptationClient = v6;
+    return selfCopy;
   }
 
   return 0;
@@ -35,25 +35,25 @@
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   if (self->_blueLightClient)
   {
-    MEMORY[0x1E69E5920](v4->_blueLightClient);
+    MEMORY[0x1E69E5920](selfCopy->_blueLightClient);
   }
 
-  if (v4->_adaptationClient)
+  if (selfCopy->_adaptationClient)
   {
-    MEMORY[0x1E69E5920](v4->_adaptationClient);
+    MEMORY[0x1E69E5920](selfCopy->_adaptationClient);
   }
 
-  if (v4->bsc)
+  if (selfCopy->bsc)
   {
-    [(BrightnessSystemClient *)v4->bsc registerNotificationBlock:0 forProperties:?];
-    MEMORY[0x1E69E5920](v4->bsc);
+    [(BrightnessSystemClient *)selfCopy->bsc registerNotificationBlock:0 forProperties:?];
+    MEMORY[0x1E69E5920](selfCopy->bsc);
   }
 
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = CBClient;
   [(CBClient *)&v2 dealloc];
 }

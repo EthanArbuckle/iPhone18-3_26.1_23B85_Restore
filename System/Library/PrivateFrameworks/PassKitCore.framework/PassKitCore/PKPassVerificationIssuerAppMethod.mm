@@ -1,20 +1,20 @@
 @interface PKPassVerificationIssuerAppMethod
-- (PKPassVerificationIssuerAppMethod)initWithCoder:(id)a3;
-- (PKPassVerificationIssuerAppMethod)initWithDictionary:(id)a3;
-- (id)_initWithChannel:(id)a3;
+- (PKPassVerificationIssuerAppMethod)initWithCoder:(id)coder;
+- (PKPassVerificationIssuerAppMethod)initWithDictionary:(id)dictionary;
+- (id)_initWithChannel:(id)channel;
 - (id)legacyChannelRepresentation;
 - (id)typeDescription;
-- (void)_appendDescription:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_appendDescription:(id)description;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassVerificationIssuerAppMethod
 
-- (PKPassVerificationIssuerAppMethod)initWithDictionary:(id)a3
+- (PKPassVerificationIssuerAppMethod)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 PKArrayContaining:objc_opt_class() forKey:@"appIdentifiers"];
-  v6 = [v4 PKURLForKey:@"appLaunchURL"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"appIdentifiers"];
+  v6 = [dictionaryCopy PKURLForKey:@"appLaunchURL"];
   if (!v5 || ([v5 count] ? (v7 = v6 == 0) : (v7 = 1), v7))
   {
 
@@ -25,13 +25,13 @@
   {
     v13.receiver = self;
     v13.super_class = PKPassVerificationIssuerAppMethod;
-    v9 = [(PKPassVerificationMethod *)&v13 _initWithType:3 dictionary:v4];
+    v9 = [(PKPassVerificationMethod *)&v13 _initWithType:3 dictionary:dictionaryCopy];
     v8 = v9;
     if (v9)
     {
       objc_storeStrong(v9 + 5, v5);
       objc_storeStrong(&v8->_appLaunchURL, v6);
-      v10 = [v4 PKStringForKey:@"appName"];
+      v10 = [dictionaryCopy PKStringForKey:@"appName"];
       appName = v8->_appName;
       v8->_appName = v10;
     }
@@ -40,17 +40,17 @@
   return v8;
 }
 
-- (id)_initWithChannel:(id)a3
+- (id)_initWithChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   v9.receiver = self;
   v9.super_class = PKPassVerificationIssuerAppMethod;
-  v5 = [(PKPassVerificationMethod *)&v9 _initWithType:3 channel:v4];
+  v5 = [(PKPassVerificationMethod *)&v9 _initWithType:3 channel:channelCopy];
   if (v5)
   {
-    v6 = [v4 contactPoint];
+    contactPoint = [channelCopy contactPoint];
     v7 = v5[7];
-    v5[7] = v6;
+    v5[7] = contactPoint;
   }
 
   return v5;
@@ -58,22 +58,22 @@
 
 - (id)legacyChannelRepresentation
 {
-  v3 = [(PKPassVerificationMethod *)self _legacyChannelRepresentation];
-  [v3 setType:5];
-  [v3 setContactPoint:self->_appName];
-  v4 = [(NSArray *)self->_appIdentifiers firstObject];
-  [v3 setSourceAddress:v4];
+  _legacyChannelRepresentation = [(PKPassVerificationMethod *)self _legacyChannelRepresentation];
+  [_legacyChannelRepresentation setType:5];
+  [_legacyChannelRepresentation setContactPoint:self->_appName];
+  firstObject = [(NSArray *)self->_appIdentifiers firstObject];
+  [_legacyChannelRepresentation setSourceAddress:firstObject];
 
-  return v3;
+  return _legacyChannelRepresentation;
 }
 
 - (id)typeDescription
 {
-  v3 = [(PKPassVerificationMethod *)self organizationName];
-  if (v3)
+  organizationName = [(PKPassVerificationMethod *)self organizationName];
+  if (organizationName)
   {
-    v4 = [(PKPassVerificationMethod *)self organizationName];
-    v5 = PKLocalizedPaymentString(&cfstr_VerificationCh_4.isa, &stru_1F2281668.isa, v4);
+    organizationName2 = [(PKPassVerificationMethod *)self organizationName];
+    v5 = PKLocalizedPaymentString(&cfstr_VerificationCh_4.isa, &stru_1F2281668.isa, organizationName2);
   }
 
   else
@@ -84,26 +84,26 @@
   return v5;
 }
 
-- (PKPassVerificationIssuerAppMethod)initWithCoder:(id)a3
+- (PKPassVerificationIssuerAppMethod)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = PKPassVerificationIssuerAppMethod;
-  v5 = [(PKPassVerificationMethod *)&v16 initWithCoder:v4];
+  v5 = [(PKPassVerificationMethod *)&v16 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"appIdentifiers"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"appIdentifiers"];
     appIdentifiers = v5->_appIdentifiers;
     v5->_appIdentifiers = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appLaunchURL"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appLaunchURL"];
     appLaunchURL = v5->_appLaunchURL;
     v5->_appLaunchURL = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appName"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appName"];
     appName = v5->_appName;
     v5->_appName = v13;
   }
@@ -111,26 +111,26 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPassVerificationIssuerAppMethod;
-  v4 = a3;
-  [(PKPassVerificationMethod *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_appIdentifiers forKey:{@"appIdentifiers", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_appLaunchURL forKey:@"appLaunchURL"];
-  [v4 encodeObject:self->_appName forKey:@"appName"];
+  coderCopy = coder;
+  [(PKPassVerificationMethod *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_appIdentifiers forKey:{@"appIdentifiers", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_appLaunchURL forKey:@"appLaunchURL"];
+  [coderCopy encodeObject:self->_appName forKey:@"appName"];
 }
 
-- (void)_appendDescription:(id)a3
+- (void)_appendDescription:(id)description
 {
   v5.receiver = self;
   v5.super_class = PKPassVerificationIssuerAppMethod;
-  v4 = a3;
-  [(PKPassVerificationMethod *)&v5 _appendDescription:v4];
-  [v4 appendFormat:@"appIdentifiers: '%@'; ", self->_appIdentifiers];
-  [v4 appendFormat:@"appLaunchURL: '%@'; ", self->_appLaunchURL];
-  [v4 appendFormat:@"appName: '%@'; ", self->_appName];
+  descriptionCopy = description;
+  [(PKPassVerificationMethod *)&v5 _appendDescription:descriptionCopy];
+  [descriptionCopy appendFormat:@"appIdentifiers: '%@'; ", self->_appIdentifiers];
+  [descriptionCopy appendFormat:@"appLaunchURL: '%@'; ", self->_appLaunchURL];
+  [descriptionCopy appendFormat:@"appName: '%@'; ", self->_appName];
 }
 
 @end

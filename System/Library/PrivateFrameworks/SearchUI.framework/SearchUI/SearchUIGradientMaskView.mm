@@ -14,36 +14,36 @@
   {
     if ([MEMORY[0x1E69D91A8] isLTR])
     {
-      v3 = [MEMORY[0x1E69DC888] whiteColor];
-      v15 = [v3 CGColor];
-      v4 = [MEMORY[0x1E69DC888] clearColor];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      cGColor = [whiteColor CGColor];
+      clearColor = [MEMORY[0x1E69DC888] clearColor];
       v5 = 0.5;
       v6 = 1.0;
-      v7 = &v15;
+      v7 = &cGColor;
       v8 = 0.9;
     }
 
     else
     {
-      v3 = [MEMORY[0x1E69DC888] clearColor];
-      v16[0] = [v3 CGColor];
-      v4 = [MEMORY[0x1E69DC888] whiteColor];
+      whiteColor = [MEMORY[0x1E69DC888] clearColor];
+      v16[0] = [whiteColor CGColor];
+      clearColor = [MEMORY[0x1E69DC888] whiteColor];
       v5 = 0.5;
       v8 = 0.0;
       v7 = v16;
       v6 = 0.1;
     }
 
-    v7[1] = [v4 CGColor];
+    v7[1] = [clearColor CGColor];
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:2];
-    v10 = [(SearchUIGradientMaskView *)v2 layer];
-    [v10 setColors:v9];
+    layer = [(SearchUIGradientMaskView *)v2 layer];
+    [layer setColors:v9];
 
-    v11 = [(SearchUIGradientMaskView *)v2 layer];
-    [v11 setStartPoint:{v8, v5}];
+    layer2 = [(SearchUIGradientMaskView *)v2 layer];
+    [layer2 setStartPoint:{v8, v5}];
 
-    v12 = [(SearchUIGradientMaskView *)v2 layer];
-    [v12 setEndPoint:{v6, v5}];
+    layer3 = [(SearchUIGradientMaskView *)v2 layer];
+    [layer3 setEndPoint:{v6, v5}];
   }
 
   return v2;

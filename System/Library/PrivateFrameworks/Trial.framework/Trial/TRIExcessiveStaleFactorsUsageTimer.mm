@@ -1,13 +1,13 @@
 @interface TRIExcessiveStaleFactorsUsageTimer
-- (TRIExcessiveStaleFactorsUsageTimer)initWithNamespaceName:(id)a3 delayTimeInSeconds:(double)a4 block:(id)a5;
+- (TRIExcessiveStaleFactorsUsageTimer)initWithNamespaceName:(id)name delayTimeInSeconds:(double)seconds block:(id)block;
 @end
 
 @implementation TRIExcessiveStaleFactorsUsageTimer
 
-- (TRIExcessiveStaleFactorsUsageTimer)initWithNamespaceName:(id)a3 delayTimeInSeconds:(double)a4 block:(id)a5
+- (TRIExcessiveStaleFactorsUsageTimer)initWithNamespaceName:(id)name delayTimeInSeconds:(double)seconds block:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  nameCopy = name;
+  blockCopy = block;
   v26.receiver = self;
   v26.super_class = TRIExcessiveStaleFactorsUsageTimer;
   v10 = [(TRIExcessiveStaleFactorsUsageTimer *)&v26 init];
@@ -17,13 +17,13 @@
     v12 = dispatch_get_global_queue(9, 0);
     v13 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v12);
 
-    dispatch_source_set_timer(v13, [MEMORY[0x277D425A0] dispatchTimeWithSecondsFromNow:a4], 0xFFFFFFFFFFFFFFFFLL, 1000000000 * rint(a4 / 1440.0));
+    dispatch_source_set_timer(v13, [MEMORY[0x277D425A0] dispatchTimeWithSecondsFromNow:seconds], 0xFFFFFFFFFFFFFFFFLL, 1000000000 * rint(seconds / 1440.0));
     v20 = MEMORY[0x277D85DD0];
     v21 = 3221225472;
     v22 = __85__TRIExcessiveStaleFactorsUsageTimer_initWithNamespaceName_delayTimeInSeconds_block___block_invoke;
     v23 = &unk_27885E308;
-    v25 = v9;
-    v24 = v8;
+    v25 = blockCopy;
+    v24 = nameCopy;
     dispatch_source_set_event_handler(v13, &v20);
     v14 = v11[1];
     v11[1] = v13;

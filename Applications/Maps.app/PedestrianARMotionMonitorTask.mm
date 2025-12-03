@@ -7,7 +7,7 @@
 - (CMMotionManager)motionManager;
 - (NSString)currentRouteID;
 - (PedestrianARCoordination)coordinator;
-- (PedestrianARMotionMonitorTask)initWithPlatformController:(id)a3 stateManager:(id)a4 usageTracker:(id)a5;
+- (PedestrianARMotionMonitorTask)initWithPlatformController:(id)controller stateManager:(id)manager usageTracker:(id)tracker;
 - (id)_topContext;
 - (id)containerViewController;
 - (int64_t)interfaceOrientation;
@@ -15,38 +15,38 @@
 - (void)_startIfNecessary;
 - (void)_startMonitoringDeviceMotionChanges;
 - (void)_stop;
-- (void)applicationDidBecomeActiveNotification:(id)a3;
-- (void)applicationDidEnterBackgroundNotification:(id)a3;
+- (void)applicationDidBecomeActiveNotification:(id)notification;
+- (void)applicationDidEnterBackgroundNotification:(id)notification;
 - (void)dealloc;
-- (void)pedestrianARViewControllerDidAppearNotification:(id)a3;
-- (void)pedestrianARViewControllerDidDisappearNotification:(id)a3;
-- (void)session:(id)a3 didUpdateFrame:(id)a4;
-- (void)stateManager:(id)a3 didChangeState:(BOOL)a4;
-- (void)updateVisibilityWithCurrentPitch:(double)a3 currentRoll:(double)a4;
+- (void)pedestrianARViewControllerDidAppearNotification:(id)notification;
+- (void)pedestrianARViewControllerDidDisappearNotification:(id)notification;
+- (void)session:(id)session didUpdateFrame:(id)frame;
+- (void)stateManager:(id)manager didChangeState:(BOOL)state;
+- (void)updateVisibilityWithCurrentPitch:(double)pitch currentRoll:(double)roll;
 @end
 
 @implementation PedestrianARMotionMonitorTask
 
 - (void)_stop
 {
-  v3 = [(PedestrianARMotionMonitorTask *)self session];
-  [v3 _removeObserver:self];
+  session = [(PedestrianARMotionMonitorTask *)self session];
+  [session _removeObserver:self];
 
-  v4 = [(PedestrianARMotionMonitorTask *)self motionManager];
-  v5 = [v4 isDeviceMotionActive];
+  motionManager = [(PedestrianARMotionMonitorTask *)self motionManager];
+  isDeviceMotionActive = [motionManager isDeviceMotionActive];
 
-  if (v5)
+  if (isDeviceMotionActive)
   {
     v6 = sub_100076A84();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v8 = 134349056;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Ending device motion updates", &v8, 0xCu);
     }
 
-    v7 = [(PedestrianARMotionMonitorTask *)self motionManager];
-    [v7 stopDeviceMotionUpdates];
+    motionManager2 = [(PedestrianARMotionMonitorTask *)self motionManager];
+    [motionManager2 stopDeviceMotionUpdates];
   }
 
   [(PedestrianARMotionMonitorTask *)self setForegroundRestartTimer:0];
@@ -61,7 +61,7 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v20 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Creating CMMotionManager", buf, 0xCu);
     }
 
@@ -75,7 +75,7 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       *buf = 134349312;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2048;
       v22 = v8;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] Configuring motion manager with update interval: %f", buf, 0x16u);
@@ -83,12 +83,12 @@
 
     [(CMMotionManager *)self->_motionManager setDeviceMotionUpdateInterval:v8];
     v10 = +[NSBundle mainBundle];
-    v11 = [v10 bundleIdentifier];
-    v12 = [NSString stringWithFormat:@"%@.%@.deviceMotionUpdatesQueue.%p", v11, objc_opt_class(), self];
+    bundleIdentifier = [v10 bundleIdentifier];
+    v12 = [NSString stringWithFormat:@"%@.%@.deviceMotionUpdatesQueue.%p", bundleIdentifier, objc_opt_class(), self];
 
-    v13 = [v12 UTF8String];
+    uTF8String = [v12 UTF8String];
     v14 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v15 = dispatch_queue_create(v13, v14);
+    v15 = dispatch_queue_create(uTF8String, v14);
 
     v16 = objc_opt_new();
     deviceMotionUpdatesQueue = self->_deviceMotionUpdatesQueue;
@@ -101,7 +101,7 @@
   return motionManager;
 }
 
-- (void)pedestrianARViewControllerDidDisappearNotification:(id)a3
+- (void)pedestrianARViewControllerDidDisappearNotification:(id)notification
 {
   if (![(PedestrianARMotionMonitorTask *)self waitingToExit])
   {
@@ -109,7 +109,7 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v8 = 134349056;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Detected Pedestrian AR disappeared via button press; suppressing raise to start", &v8, 0xCu);
     }
 
@@ -118,16 +118,16 @@
   }
 
   [(PedestrianARMotionMonitorTask *)self setWaitingToExit:0];
-  v5 = [(PedestrianARMotionMonitorTask *)self stateManager];
-  v6 = [v5 shouldShowPedestrianAR];
+  stateManager = [(PedestrianARMotionMonitorTask *)self stateManager];
+  shouldShowPedestrianAR = [stateManager shouldShowPedestrianAR];
 
-  if ((v6 & 1) == 0)
+  if ((shouldShowPedestrianAR & 1) == 0)
   {
     v7 = sub_100076A84();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v8 = 134349056;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Pedestrian AR disappeared and the feature is no longer available; stopping motion updates", &v8, 0xCu);
     }
 
@@ -135,7 +135,7 @@
   }
 }
 
-- (void)pedestrianARViewControllerDidAppearNotification:(id)a3
+- (void)pedestrianARViewControllerDidAppearNotification:(id)notification
 {
   if (![(PedestrianARMotionMonitorTask *)self waitingToStart])
   {
@@ -143,7 +143,7 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       v5 = 134349056;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] Detected Pedestrian AR appeared via button press; suppressing lower to exit", &v5, 0xCu);
     }
 
@@ -154,9 +154,9 @@
   [(PedestrianARMotionMonitorTask *)self setWaitingToStart:0];
 }
 
-- (void)applicationDidBecomeActiveNotification:(id)a3
+- (void)applicationDidBecomeActiveNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -168,7 +168,7 @@
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 136316418;
-        v16 = "[PedestrianARMotionMonitorTask applicationDidBecomeActiveNotification:]";
+        selfCopy = "[PedestrianARMotionMonitorTask applicationDidBecomeActiveNotification:]";
         v17 = 2080;
         v18 = "PedestrianARMotionMonitorTask.m";
         v19 = 1024;
@@ -189,7 +189,7 @@
         {
           v12 = +[NSThread callStackSymbols];
           *buf = 138412290;
-          v16 = v12;
+          selfCopy = v12;
           _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
       }
@@ -200,7 +200,7 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] App foregrounded; will re-start motion updates soon", buf, 0xCu);
   }
 
@@ -217,9 +217,9 @@
   objc_destroyWeak(buf);
 }
 
-- (void)applicationDidEnterBackgroundNotification:(id)a3
+- (void)applicationDidEnterBackgroundNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -231,7 +231,7 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         v12 = 136316418;
-        v13 = "[PedestrianARMotionMonitorTask applicationDidEnterBackgroundNotification:]";
+        selfCopy = "[PedestrianARMotionMonitorTask applicationDidEnterBackgroundNotification:]";
         v14 = 2080;
         v15 = "PedestrianARMotionMonitorTask.m";
         v16 = 1024;
@@ -252,7 +252,7 @@
         {
           v11 = +[NSThread callStackSymbols];
           v12 = 138412290;
-          v13 = v11;
+          selfCopy = v11;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%@", &v12, 0xCu);
         }
       }
@@ -263,24 +263,24 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v12 = 134349056;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] App backgrounded", &v12, 0xCu);
   }
 
   [(PedestrianARMotionMonitorTask *)self _stop];
 }
 
-- (void)stateManager:(id)a3 didChangeState:(BOOL)a4
+- (void)stateManager:(id)manager didChangeState:(BOOL)state
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  stateCopy = state;
+  managerCopy = manager;
+  if (stateCopy)
   {
     v7 = sub_100076A84();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v17 = 134349056;
-      v18 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Pedestrian AR became available; starting motion updates", &v17, 0xCu);
     }
 
@@ -288,16 +288,16 @@
     goto LABEL_20;
   }
 
-  v8 = [(PedestrianARMotionMonitorTask *)self coordinator];
-  if ([v8 isPedestrianARActive])
+  coordinator = [(PedestrianARMotionMonitorTask *)self coordinator];
+  if ([coordinator isPedestrianARActive])
   {
 
 LABEL_8:
     v10 = sub_100076A84();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [(PedestrianARMotionMonitorTask *)self coordinator];
-      if ([v11 isPedestrianARActive])
+      coordinator2 = [(PedestrianARMotionMonitorTask *)self coordinator];
+      if ([coordinator2 isPedestrianARActive])
       {
         v12 = @"YES";
       }
@@ -320,7 +320,7 @@ LABEL_8:
 
       v15 = v14;
       v17 = 134349570;
-      v18 = self;
+      selfCopy3 = self;
       v19 = 2112;
       v20 = v13;
       v21 = 2112;
@@ -331,9 +331,9 @@ LABEL_8:
     goto LABEL_20;
   }
 
-  v9 = [(PedestrianARMotionMonitorTask *)self waitingToStart];
+  waitingToStart = [(PedestrianARMotionMonitorTask *)self waitingToStart];
 
-  if (v9)
+  if (waitingToStart)
   {
     goto LABEL_8;
   }
@@ -342,7 +342,7 @@ LABEL_8:
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
     v17 = 134349056;
-    v18 = self;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "[%{public}p] Pedestrian AR became unavailable and is not currently active nor becoming active; stopping motion updates", &v17, 0xCu);
   }
 
@@ -350,24 +350,24 @@ LABEL_8:
 LABEL_20:
 }
 
-- (void)session:(id)a3 didUpdateFrame:(id)a4
+- (void)session:(id)session didUpdateFrame:(id)frame
 {
-  v5 = a4;
+  frameCopy = frame;
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100BC09DC;
   block[3] = &unk_101661340;
   objc_copyWeak(&v9, &location);
-  v8 = v5;
-  v6 = v5;
+  v8 = frameCopy;
+  v6 = frameCopy;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)updateVisibilityWithCurrentPitch:(double)a3 currentRoll:(double)a4
+- (void)updateVisibilityWithCurrentPitch:(double)pitch currentRoll:(double)roll
 {
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v8 = dispatch_queue_get_label(0);
@@ -380,9 +380,9 @@ LABEL_20:
       if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
       {
         v40 = 136316418;
-        v41 = "[PedestrianARMotionMonitorTask updateVisibilityWithCurrentPitch:currentRoll:]";
+        selfCopy4 = "[PedestrianARMotionMonitorTask updateVisibilityWithCurrentPitch:currentRoll:]";
         v42 = 2080;
-        v43 = COERCE_DOUBLE("PedestrianARMotionMonitorTask.m");
+        pitchCopy = COERCE_DOUBLE("PedestrianARMotionMonitorTask.m");
         v44 = 1024;
         *v45 = 426;
         *&v45[4] = 2080;
@@ -401,7 +401,7 @@ LABEL_20:
         {
           v39 = +[NSThread callStackSymbols];
           v40 = 138412290;
-          v41 = v39;
+          selfCopy4 = v39;
           _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "%@", &v40, 0xCu);
         }
       }
@@ -422,19 +422,19 @@ LABEL_20:
     }
 
     v12 = v11;
-    v13 = [(PedestrianARMotionMonitorTask *)self pitchValues];
-    v14 = [v13 lastObject];
-    [v14 doubleValue];
+    pitchValues = [(PedestrianARMotionMonitorTask *)self pitchValues];
+    lastObject = [pitchValues lastObject];
+    [lastObject doubleValue];
     v16 = v15;
-    v17 = [(PedestrianARMotionMonitorTask *)self rollValues];
-    v18 = [v17 lastObject];
-    [v18 doubleValue];
+    rollValues = [(PedestrianARMotionMonitorTask *)self rollValues];
+    lastObject2 = [rollValues lastObject];
+    [lastObject2 doubleValue];
     v40 = 134350338;
-    v41 = self;
+    selfCopy4 = self;
     v42 = 2048;
-    v43 = a3;
+    pitchCopy = pitch;
     v44 = 2048;
-    *v45 = a4;
+    *v45 = roll;
     *&v45[8] = 2112;
     *&v45[10] = v11;
     *&v45[18] = 2048;
@@ -444,32 +444,32 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "[%{public}p] Updating visibility with pitch: %f, roll: %f, fromCoreMotion: %@, previous device pitch: %f, previous device roll: %f", &v40, 0x3Eu);
   }
 
-  v20 = [(PedestrianARMotionMonitorTask *)self pitchValues];
-  v21 = [NSNumber numberWithDouble:a3];
-  [v20 push:v21];
+  pitchValues2 = [(PedestrianARMotionMonitorTask *)self pitchValues];
+  v21 = [NSNumber numberWithDouble:pitch];
+  [pitchValues2 push:v21];
 
-  v22 = [(PedestrianARMotionMonitorTask *)self rollValues];
-  v23 = [NSNumber numberWithDouble:a4];
-  [v22 push:v23];
+  rollValues2 = [(PedestrianARMotionMonitorTask *)self rollValues];
+  v23 = [NSNumber numberWithDouble:roll];
+  [rollValues2 push:v23];
 
-  v24 = [(PedestrianARMotionMonitorTask *)self _shouldShowPedestrianAR];
-  v25 = [(PedestrianARMotionMonitorTask *)self coordinator];
-  v26 = [v25 isPedestrianARActive];
+  _shouldShowPedestrianAR = [(PedestrianARMotionMonitorTask *)self _shouldShowPedestrianAR];
+  coordinator = [(PedestrianARMotionMonitorTask *)self coordinator];
+  isPedestrianARActive = [coordinator isPedestrianARActive];
 
-  if (!v24 || (v26 & 1) != 0)
+  if (!_shouldShowPedestrianAR || (isPedestrianARActive & 1) != 0)
   {
-    v32 = v24 | ~v26;
+    v32 = _shouldShowPedestrianAR | ~isPedestrianARActive;
     v33 = sub_100076A84();
     v34 = os_log_type_enabled(v33, OS_LOG_TYPE_INFO);
     if (v32)
     {
       if (v34)
       {
-        v35 = [(PedestrianARMotionMonitorTask *)self _topContext];
+        _topContext = [(PedestrianARMotionMonitorTask *)self _topContext];
         v40 = 134349314;
-        v41 = self;
+        selfCopy4 = self;
         v42 = 2112;
-        v43 = *&v35;
+        pitchCopy = *&_topContext;
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "[%{public}p] Not raising nor lowering. Current top context: %@", &v40, 0x16u);
       }
     }
@@ -479,13 +479,13 @@ LABEL_20:
       if (v34)
       {
         v40 = 134349056;
-        v41 = self;
+        selfCopy4 = self;
         _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "[%{public}p] Lowering to exit pedestrian AR", &v40, 0xCu);
       }
 
       [(PedestrianARMotionMonitorTask *)self setWaitingToExit:1];
-      v36 = [(PedestrianARMotionMonitorTask *)self coordinator];
-      [v36 exitPedestrianAR];
+      coordinator2 = [(PedestrianARMotionMonitorTask *)self coordinator];
+      [coordinator2 exitPedestrianAR];
     }
   }
 
@@ -495,16 +495,16 @@ LABEL_20:
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
       v40 = 134349056;
-      v41 = self;
+      selfCopy4 = self;
       _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "[%{public}p] Raising to enter pedestrian AR", &v40, 0xCu);
     }
 
     [(PedestrianARMotionMonitorTask *)self setWaitingToStart:1];
-    v28 = [(PedestrianARMotionMonitorTask *)self coordinator];
-    [v28 enterPedestrianAR];
+    coordinator3 = [(PedestrianARMotionMonitorTask *)self coordinator];
+    [coordinator3 enterPedestrianAR];
 
-    v29 = [(PedestrianARMotionMonitorTask *)self platformController];
-    v30 = [v29 currentSession];
+    platformController = [(PedestrianARMotionMonitorTask *)self platformController];
+    currentSession = [platformController currentSession];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -561,13 +561,13 @@ LABEL_20:
     }
   }
 
-  v6 = [(PedestrianARMotionMonitorTask *)self _isDeviceAngleAboveTopBound];
-  v7 = [(PedestrianARMotionMonitorTask *)self _isDeviceAngleBelowBottomBound];
+  _isDeviceAngleAboveTopBound = [(PedestrianARMotionMonitorTask *)self _isDeviceAngleAboveTopBound];
+  _isDeviceAngleBelowBottomBound = [(PedestrianARMotionMonitorTask *)self _isDeviceAngleBelowBottomBound];
   v8 = sub_100076A84();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [(PedestrianARMotionMonitorTask *)self interfaceOrientation];
-    if (v9 >= 5)
+    interfaceOrientation = [(PedestrianARMotionMonitorTask *)self interfaceOrientation];
+    if (interfaceOrientation >= 5)
     {
       v11 = sub_10006D178();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -598,12 +598,12 @@ LABEL_20:
 
     else
     {
-      v10 = *(&off_10164CA50 + v9);
+      v10 = *(&off_10164CA50 + interfaceOrientation);
     }
 
     *v48 = 134349826;
     *&v48[4] = self;
-    if (v6)
+    if (_isDeviceAngleAboveTopBound)
     {
       v14 = @"YES";
     }
@@ -615,7 +615,7 @@ LABEL_20:
 
     *&v48[14] = v10;
     *&v48[12] = 2112;
-    if (v7)
+    if (_isDeviceAngleBelowBottomBound)
     {
       v15 = @"YES";
     }
@@ -634,7 +634,7 @@ LABEL_20:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] interface orientation: %@, isAboveTopBound: %@, isBelowBottomBound: %@", v48, 0x2Au);
   }
 
-  if (v6)
+  if (_isDeviceAngleAboveTopBound)
   {
     [(PedestrianARMotionMonitorTask *)self setSuppressLowerToExit:0];
     v18 = +[NSUserDefaults standardUserDefaults];
@@ -672,10 +672,10 @@ LABEL_41:
       goto LABEL_42;
     }
 
-    v24 = [(PedestrianARMotionMonitorTask *)self coordinator];
-    v25 = [v24 isTeachableMomentCardActive];
+    coordinator = [(PedestrianARMotionMonitorTask *)self coordinator];
+    isTeachableMomentCardActive = [coordinator isTeachableMomentCardActive];
 
-    if (v25)
+    if (isTeachableMomentCardActive)
     {
       v20 = sub_100076A84();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
@@ -693,10 +693,10 @@ LABEL_54:
 
     else
     {
-      v32 = [(PedestrianARMotionMonitorTask *)self coordinator];
-      v33 = [v32 isWeatherPopoverActive];
+      coordinator2 = [(PedestrianARMotionMonitorTask *)self coordinator];
+      isWeatherPopoverActive = [coordinator2 isWeatherPopoverActive];
 
-      if (v33)
+      if (isWeatherPopoverActive)
       {
         v20 = sub_100798A3C();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
@@ -710,19 +710,19 @@ LABEL_54:
 
       else
       {
-        v36 = [(PedestrianARMotionMonitorTask *)self containerViewController];
-        v37 = [v36 isVLFCrowdsourcingPermissionCardActive];
+        containerViewController = [(PedestrianARMotionMonitorTask *)self containerViewController];
+        isVLFCrowdsourcingPermissionCardActive = [containerViewController isVLFCrowdsourcingPermissionCardActive];
 
-        if (!v37)
+        if (!isVLFCrowdsourcingPermissionCardActive)
         {
           v38 = +[PedestrianARSessionUsageTracker sharedInstance];
-          v39 = [v38 hasAREverLocalized];
+          hasAREverLocalized = [v38 hasAREverLocalized];
 
-          if (v39)
+          if (hasAREverLocalized)
           {
-            v40 = [(PedestrianARMotionMonitorTask *)self usageTracker];
-            v41 = [(PedestrianARMotionMonitorTask *)self currentRouteID];
-            v42 = [v40 hasAREverLocalizedForRoute:v41];
+            usageTracker = [(PedestrianARMotionMonitorTask *)self usageTracker];
+            currentRouteID = [(PedestrianARMotionMonitorTask *)self currentRouteID];
+            v42 = [usageTracker hasAREverLocalizedForRoute:currentRouteID];
 
             if (v42)
             {
@@ -750,13 +750,13 @@ LABEL_54:
                   {
                     *v48 = 134349056;
                     *&v48[4] = self;
-                    v27 = 1;
+                    isPedestrianARActive = 1;
                     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "[%{public}p] Allowing raise to start", v48, 0xCu);
                   }
 
                   else
                   {
-                    v27 = 1;
+                    isPedestrianARActive = 1;
                   }
 
                   goto LABEL_44;
@@ -816,11 +816,11 @@ LABEL_54:
       }
     }
 
-    v27 = 0;
+    isPedestrianARActive = 0;
     goto LABEL_44;
   }
 
-  if (v7)
+  if (_isDeviceAngleBelowBottomBound)
   {
     [(PedestrianARMotionMonitorTask *)self setSuppressRaiseToStart:0];
     v22 = +[NSUserDefaults standardUserDefaults];
@@ -830,10 +830,10 @@ LABEL_54:
     {
       if (![(PedestrianARMotionMonitorTask *)self suppressLowerToExit])
       {
-        v29 = [(PedestrianARMotionMonitorTask *)self coordinator];
-        v30 = [v29 isPedestrianARShowingFailureView];
+        coordinator3 = [(PedestrianARMotionMonitorTask *)self coordinator];
+        isPedestrianARShowingFailureView = [coordinator3 isPedestrianARShowingFailureView];
 
-        if (!v30)
+        if (!isPedestrianARShowingFailureView)
         {
           return 0;
         }
@@ -876,10 +876,10 @@ LABEL_54:
 
 LABEL_43:
   v20 = [(PedestrianARMotionMonitorTask *)self coordinator:*v48];
-  v27 = [v20 isPedestrianARActive];
+  isPedestrianARActive = [v20 isPedestrianARActive];
 LABEL_44:
 
-  return v27;
+  return isPedestrianARActive;
 }
 
 - (void)_startMonitoringDeviceMotionChanges
@@ -888,20 +888,20 @@ LABEL_44:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v20 = self;
+    selfCopy3 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Will start monitoring device motion updates", buf, 0xCu);
   }
 
-  v4 = [(PedestrianARMotionMonitorTask *)self motionManager];
-  v5 = [v4 isDeviceMotionAvailable];
+  motionManager = [(PedestrianARMotionMonitorTask *)self motionManager];
+  isDeviceMotionAvailable = [motionManager isDeviceMotionAvailable];
 
-  if ((v5 & 1) == 0)
+  if ((isDeviceMotionAvailable & 1) == 0)
   {
     v12 = sub_10006D178();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315650;
-      v20 = "[PedestrianARMotionMonitorTask _startMonitoringDeviceMotionChanges]";
+      selfCopy3 = "[PedestrianARMotionMonitorTask _startMonitoringDeviceMotionChanges]";
       v21 = 2080;
       v22 = "PedestrianARMotionMonitorTask.m";
       v23 = 1024;
@@ -916,7 +916,7 @@ LABEL_44:
       {
         v14 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v20 = v14;
+        selfCopy3 = v14;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
@@ -925,23 +925,23 @@ LABEL_44:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 134349056;
-      v20 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "[%{public}p] Device motion updates are not available on this device", buf, 0xCu);
     }
 
     goto LABEL_13;
   }
 
-  v6 = [(PedestrianARMotionMonitorTask *)self motionManager];
-  v7 = [v6 isDeviceMotionActive];
+  motionManager2 = [(PedestrianARMotionMonitorTask *)self motionManager];
+  isDeviceMotionActive = [motionManager2 isDeviceMotionActive];
 
-  if (v7)
+  if (isDeviceMotionActive)
   {
     v8 = sub_10006D178();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315650;
-      v20 = "[PedestrianARMotionMonitorTask _startMonitoringDeviceMotionChanges]";
+      selfCopy3 = "[PedestrianARMotionMonitorTask _startMonitoringDeviceMotionChanges]";
       v21 = 2080;
       v22 = "PedestrianARMotionMonitorTask.m";
       v23 = 1024;
@@ -956,7 +956,7 @@ LABEL_44:
       {
         v10 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v20 = v10;
+        selfCopy3 = v10;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
@@ -965,7 +965,7 @@ LABEL_44:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 134349056;
-      v20 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "[%{public}p] Already monitoring device motion changes; cannot start again", buf, 0xCu);
     }
 
@@ -975,14 +975,14 @@ LABEL_13:
   }
 
   objc_initWeak(buf, self);
-  v15 = [(PedestrianARMotionMonitorTask *)self motionManager];
-  v16 = [(PedestrianARMotionMonitorTask *)self deviceMotionUpdatesQueue];
+  motionManager3 = [(PedestrianARMotionMonitorTask *)self motionManager];
+  deviceMotionUpdatesQueue = [(PedestrianARMotionMonitorTask *)self deviceMotionUpdatesQueue];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100BC1CDC;
   v17[3] = &unk_101655538;
   objc_copyWeak(&v18, buf);
-  [v15 startDeviceMotionUpdatesToQueue:v16 withHandler:v17];
+  [motionManager3 startDeviceMotionUpdatesToQueue:deviceMotionUpdatesQueue withHandler:v17];
 
   objc_destroyWeak(&v18);
   objc_destroyWeak(buf);
@@ -992,19 +992,19 @@ LABEL_13:
 {
   if ([(PedestrianARMotionMonitorTask *)self isARSessionReplayingFromRecording])
   {
-    v3 = [(PedestrianARMotionMonitorTask *)self pitchValues];
-    v4 = v3;
+    pitchValues = [(PedestrianARMotionMonitorTask *)self pitchValues];
+    v4 = pitchValues;
     v5 = &stru_10164C9B0;
   }
 
   else
   {
-    v6 = [(PedestrianARMotionMonitorTask *)self interfaceOrientation];
-    if ((v6 - 1) > 1)
+    interfaceOrientation = [(PedestrianARMotionMonitorTask *)self interfaceOrientation];
+    if ((interfaceOrientation - 1) > 1)
     {
-      v7 = v6;
-      v3 = [(PedestrianARMotionMonitorTask *)self rollValues];
-      v4 = v3;
+      v7 = interfaceOrientation;
+      pitchValues = [(PedestrianARMotionMonitorTask *)self rollValues];
+      v4 = pitchValues;
       if (v7 == 4)
       {
         v5 = &stru_10164C9F0;
@@ -1018,13 +1018,13 @@ LABEL_13:
 
     else
     {
-      v3 = [(PedestrianARMotionMonitorTask *)self pitchValues];
-      v4 = v3;
+      pitchValues = [(PedestrianARMotionMonitorTask *)self pitchValues];
+      v4 = pitchValues;
       v5 = &stru_10164C9D0;
     }
   }
 
-  v8 = sub_1006F7930(v3, v5);
+  v8 = sub_1006F7930(pitchValues, v5);
 
   return v8;
 }
@@ -1033,19 +1033,19 @@ LABEL_13:
 {
   if ([(PedestrianARMotionMonitorTask *)self isARSessionReplayingFromRecording])
   {
-    v3 = [(PedestrianARMotionMonitorTask *)self pitchValues];
-    v4 = v3;
+    pitchValues = [(PedestrianARMotionMonitorTask *)self pitchValues];
+    v4 = pitchValues;
     v5 = &stru_10164C930;
   }
 
   else
   {
-    v6 = [(PedestrianARMotionMonitorTask *)self interfaceOrientation];
-    if ((v6 - 1) > 1)
+    interfaceOrientation = [(PedestrianARMotionMonitorTask *)self interfaceOrientation];
+    if ((interfaceOrientation - 1) > 1)
     {
-      v7 = v6;
-      v3 = [(PedestrianARMotionMonitorTask *)self rollValues];
-      v4 = v3;
+      v7 = interfaceOrientation;
+      pitchValues = [(PedestrianARMotionMonitorTask *)self rollValues];
+      v4 = pitchValues;
       if (v7 == 4)
       {
         v5 = &stru_10164C970;
@@ -1059,38 +1059,38 @@ LABEL_13:
 
     else
     {
-      v3 = [(PedestrianARMotionMonitorTask *)self pitchValues];
-      v4 = v3;
+      pitchValues = [(PedestrianARMotionMonitorTask *)self pitchValues];
+      v4 = pitchValues;
       v5 = &stru_10164C950;
     }
   }
 
-  v8 = sub_1006F7930(v3, v5);
+  v8 = sub_1006F7930(pitchValues, v5);
 
   return v8;
 }
 
 - (int64_t)interfaceOrientation
 {
-  v2 = [(PedestrianARMotionMonitorTask *)self platformController];
-  v3 = [v2 chromeViewController];
-  v4 = [v3 view];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
-  v7 = [v6 interfaceOrientation];
+  platformController = [(PedestrianARMotionMonitorTask *)self platformController];
+  chromeViewController = [platformController chromeViewController];
+  view = [chromeViewController view];
+  window = [view window];
+  windowScene = [window windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  return v7;
+  return interfaceOrientation;
 }
 
 - (NSString)currentRouteID
 {
-  v3 = [(PedestrianARMotionMonitorTask *)self platformController];
-  v4 = [v3 currentSession];
+  platformController = [(PedestrianARMotionMonitorTask *)self platformController];
+  currentSession = [platformController currentSession];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = currentSession;
   }
 
   else
@@ -1100,13 +1100,13 @@ LABEL_13:
 
   v6 = v5;
 
-  v7 = [(PedestrianARMotionMonitorTask *)self platformController];
-  v8 = [v7 currentSession];
+  platformController2 = [(PedestrianARMotionMonitorTask *)self platformController];
+  currentSession2 = [platformController2 currentSession];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v8;
+    v9 = currentSession2;
   }
 
   else
@@ -1120,10 +1120,10 @@ LABEL_13:
   {
     v11 = v6;
 LABEL_11:
-    v12 = [v11 currentRouteCollection];
-    v13 = [v12 currentRoute];
-    v14 = [v13 uniqueRouteID];
-    v15 = [v14 UUIDString];
+    currentRouteCollection = [v11 currentRouteCollection];
+    currentRoute = [currentRouteCollection currentRoute];
+    uniqueRouteID = [currentRoute uniqueRouteID];
+    uUIDString = [uniqueRouteID UUIDString];
 
     goto LABEL_12;
   }
@@ -1158,53 +1158,53 @@ LABEL_11:
     }
   }
 
-  v15 = 0;
+  uUIDString = 0;
 LABEL_12:
 
-  return v15;
+  return uUIDString;
 }
 
 - (id)containerViewController
 {
-  v3 = [(PedestrianARMotionMonitorTask *)self isNavRunning];
-  v4 = [(PedestrianARMotionMonitorTask *)self platformController];
-  v5 = [v4 iosBasedChromeViewController];
-  v6 = [v5 appCoordinator];
-  v7 = v6;
-  if (v3)
+  isNavRunning = [(PedestrianARMotionMonitorTask *)self isNavRunning];
+  platformController = [(PedestrianARMotionMonitorTask *)self platformController];
+  iosBasedChromeViewController = [platformController iosBasedChromeViewController];
+  appCoordinator = [iosBasedChromeViewController appCoordinator];
+  v7 = appCoordinator;
+  if (isNavRunning)
   {
-    v8 = [v6 navModeController];
-    [v8 navActionCoordinator];
+    navModeController = [appCoordinator navModeController];
+    [navModeController navActionCoordinator];
   }
 
   else
   {
-    v8 = [v6 baseModeController];
-    [v8 actionCoordinator];
+    navModeController = [appCoordinator baseModeController];
+    [navModeController actionCoordinator];
   }
   v9 = ;
-  v10 = [v9 containerViewController];
+  containerViewController = [v9 containerViewController];
 
-  return v10;
+  return containerViewController;
 }
 
 - (PedestrianARCoordination)coordinator
 {
-  v3 = [(PedestrianARMotionMonitorTask *)self isNavRunning];
-  v4 = [(PedestrianARMotionMonitorTask *)self platformController];
-  v5 = [v4 iosBasedChromeViewController];
-  v6 = [v5 appCoordinator];
-  v7 = v6;
-  if (v3)
+  isNavRunning = [(PedestrianARMotionMonitorTask *)self isNavRunning];
+  platformController = [(PedestrianARMotionMonitorTask *)self platformController];
+  iosBasedChromeViewController = [platformController iosBasedChromeViewController];
+  appCoordinator = [iosBasedChromeViewController appCoordinator];
+  v7 = appCoordinator;
+  if (isNavRunning)
   {
-    v8 = [v6 navModeController];
-    [v8 navActionCoordinator];
+    navModeController = [appCoordinator navModeController];
+    [navModeController navActionCoordinator];
   }
 
   else
   {
-    v8 = [v6 baseModeController];
-    [v8 actionCoordinator];
+    navModeController = [appCoordinator baseModeController];
+    [navModeController actionCoordinator];
   }
   v9 = ;
 
@@ -1213,13 +1213,13 @@ LABEL_12:
 
 - (BOOL)isNavRunning
 {
-  v2 = [(PedestrianARMotionMonitorTask *)self platformController];
-  v3 = [v2 currentSession];
+  platformController = [(PedestrianARMotionMonitorTask *)self platformController];
+  currentSession = [platformController currentSession];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = currentSession;
   }
 
   else
@@ -1235,8 +1235,8 @@ LABEL_12:
 
 - (BOOL)isARSessionReplayingFromRecording
 {
-  v2 = [(PedestrianARMotionMonitorTask *)self session];
-  v3 = [v2 configuration];
+  session = [(PedestrianARMotionMonitorTask *)self session];
+  configuration = [session configuration];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1245,11 +1245,11 @@ LABEL_12:
 
 - (id)_topContext
 {
-  v2 = [(PedestrianARMotionMonitorTask *)self platformController];
-  v3 = [v2 iosBasedChromeViewController];
-  v4 = [v3 topContext];
+  platformController = [(PedestrianARMotionMonitorTask *)self platformController];
+  iosBasedChromeViewController = [platformController iosBasedChromeViewController];
+  topContext = [iosBasedChromeViewController topContext];
 
-  return v4;
+  return topContext;
 }
 
 - (void)_start
@@ -1258,7 +1258,7 @@ LABEL_12:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v9 = 134349056;
-    v10 = self;
+    selfCopy4 = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Will start monitoring motion changes", &v9, 0xCu);
   }
 
@@ -1268,29 +1268,29 @@ LABEL_12:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       v9 = 134349056;
-      v10 = self;
+      selfCopy4 = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "[%{public}p] ARSession is being replayed from a trace; observing ARKit for motion updates", &v9, 0xCu);
     }
 
-    v5 = [(PedestrianARMotionMonitorTask *)self session];
-    [v5 _addObserver:self];
+    session = [(PedestrianARMotionMonitorTask *)self session];
+    [session _addObserver:self];
 LABEL_7:
 
     return;
   }
 
-  v6 = [(PedestrianARMotionMonitorTask *)self motionManager];
-  v7 = [v6 isDeviceMotionActive];
+  motionManager = [(PedestrianARMotionMonitorTask *)self motionManager];
+  isDeviceMotionActive = [motionManager isDeviceMotionActive];
 
-  v5 = sub_100076A84();
-  v8 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
-  if (v7)
+  session = sub_100076A84();
+  v8 = os_log_type_enabled(session, OS_LOG_TYPE_DEBUG);
+  if (isDeviceMotionActive)
   {
     if (v8)
     {
       v9 = 134349056;
-      v10 = self;
-      _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] We're already monitoring device motion updates; ignoring", &v9, 0xCu);
+      selfCopy4 = self;
+      _os_log_impl(&_mh_execute_header, session, OS_LOG_TYPE_DEBUG, "[%{public}p] We're already monitoring device motion updates; ignoring", &v9, 0xCu);
     }
 
     goto LABEL_7;
@@ -1299,8 +1299,8 @@ LABEL_7:
   if (v8)
   {
     v9 = 134349056;
-    v10 = self;
-    _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] ARSession is not being replayed from a trace; observing CoreMotion for motion updates", &v9, 0xCu);
+    selfCopy4 = self;
+    _os_log_impl(&_mh_execute_header, session, OS_LOG_TYPE_DEBUG, "[%{public}p] ARSession is not being replayed from a trace; observing CoreMotion for motion updates", &v9, 0xCu);
   }
 
   [(PedestrianARMotionMonitorTask *)self _startMonitoringDeviceMotionChanges];
@@ -1308,10 +1308,10 @@ LABEL_7:
 
 - (void)_startIfNecessary
 {
-  v3 = [(PedestrianARMotionMonitorTask *)self stateManager];
-  v4 = [v3 shouldShowPedestrianAR];
+  stateManager = [(PedestrianARMotionMonitorTask *)self stateManager];
+  shouldShowPedestrianAR = [stateManager shouldShowPedestrianAR];
 
-  if ((v4 & 1) == 0)
+  if ((shouldShowPedestrianAR & 1) == 0)
   {
     v5 = sub_100076A84();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -1322,7 +1322,7 @@ LABEL_10:
     }
 
     v7 = 134349056;
-    v8 = self;
+    selfCopy2 = self;
     v6 = "[%{public}p] Pedestrian AR should not be shown; will not start";
 LABEL_9:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, v6, &v7, 0xCu);
@@ -1338,7 +1338,7 @@ LABEL_9:
     }
 
     v7 = 134349056;
-    v8 = self;
+    selfCopy2 = self;
     v6 = "[%{public}p] Application is not foreground; will not start";
     goto LABEL_9;
   }
@@ -1352,7 +1352,7 @@ LABEL_9:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Deallocing", buf, 0xCu);
   }
 
@@ -1362,12 +1362,12 @@ LABEL_9:
   [(PedestrianARMotionMonitorTask *)&v4 dealloc];
 }
 
-- (PedestrianARMotionMonitorTask)initWithPlatformController:(id)a3 stateManager:(id)a4 usageTracker:(id)a5
+- (PedestrianARMotionMonitorTask)initWithPlatformController:(id)controller stateManager:(id)manager usageTracker:(id)tracker
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  controllerCopy = controller;
+  managerCopy = manager;
+  trackerCopy = tracker;
+  if (!controllerCopy)
   {
     v28 = sub_10006D178();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -1396,7 +1396,7 @@ LABEL_9:
     }
   }
 
-  if (!v10)
+  if (!managerCopy)
   {
     v31 = sub_10006D178();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -1425,7 +1425,7 @@ LABEL_9:
     }
   }
 
-  if (!v11)
+  if (!trackerCopy)
   {
     v34 = sub_10006D178();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -1468,14 +1468,14 @@ LABEL_9:
     }
 
     v14 = +[MapsARSessionManager sharedManager];
-    v15 = [v14 session];
+    session = [v14 session];
     session = v12->_session;
-    v12->_session = v15;
+    v12->_session = session;
 
-    objc_storeStrong(&v12->_platformController, a3);
-    objc_storeStrong(&v12->_stateManager, a4);
+    objc_storeStrong(&v12->_platformController, controller);
+    objc_storeStrong(&v12->_stateManager, manager);
     [(PedestrianARSessionStateManager *)v12->_stateManager addObserver:v12];
-    objc_storeStrong(&v12->_usageTracker, a5);
+    objc_storeStrong(&v12->_usageTracker, tracker);
     UInteger = GEOConfigGetUInteger();
     v18 = sub_100076A84();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))

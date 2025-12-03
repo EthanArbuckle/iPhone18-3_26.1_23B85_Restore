@@ -1,20 +1,20 @@
 @interface BCSCircularEffectView
-- (BCSCircularEffectView)initWithFrame:(CGRect)a3;
+- (BCSCircularEffectView)initWithFrame:(CGRect)frame;
 - (void)_buildRings;
 - (void)animateCenterGlyphAndRings;
-- (void)animateRingsRotationWithCompletion:(id)a3;
-- (void)animationDidStart:(id)a3;
-- (void)prepareCenterGlyphWithImage:(id)a3;
+- (void)animateRingsRotationWithCompletion:(id)completion;
+- (void)animationDidStart:(id)start;
+- (void)prepareCenterGlyphWithImage:(id)image;
 - (void)revealCenterGlyphAndRings;
 @end
 
 @implementation BCSCircularEffectView
 
-- (BCSCircularEffectView)initWithFrame:(CGRect)a3
+- (BCSCircularEffectView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = BCSCircularEffectView;
-  v3 = [(BCSCircularEffectView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BCSCircularEffectView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -28,14 +28,14 @@
 - (void)_buildRings
 {
   v50 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   circles = self->_circles;
-  self->_circles = v3;
+  self->_circles = array;
 
   [(BCSCircularEffectView *)self bounds];
   v5 = CGRectGetWidth(v55) / 200.0;
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v8 = v7;
 
   v9 = 0.0;
@@ -54,26 +54,26 @@
   v11 = *MEMORY[0x277CDA310];
   do
   {
-    v12 = [MEMORY[0x277CD9ED0] layer];
+    layer = [MEMORY[0x277CD9ED0] layer];
     [(BCSCircularEffectView *)self bounds];
-    [v12 setBounds:?];
+    [layer setBounds:?];
     [(BCSCircularEffectView *)self bounds];
     MidX = CGRectGetMidX(v56);
     [(BCSCircularEffectView *)self bounds];
-    [v12 setPosition:{MidX, CGRectGetMidY(v57)}];
-    v14 = [(BCSCircularEffectView *)self layer];
-    [v14 addSublayer:v12];
+    [layer setPosition:{MidX, CGRectGetMidY(v57)}];
+    layer2 = [(BCSCircularEffectView *)self layer];
+    [layer2 addSublayer:layer];
 
-    v15 = [MEMORY[0x277CD9ED0] layer];
-    [(NSMutableArray *)self->_circles addObject:v15];
+    layer3 = [MEMORY[0x277CD9ED0] layer];
+    [(NSMutableArray *)self->_circles addObject:layer3];
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Ring-%1lu", v10];
     v17 = [MEMORY[0x277D755B8] imageNamed:v16 inBundle:v50];
-    v18 = [v17 CGImage];
+    cGImage = [v17 CGImage];
 
-    v19 = CGImageGetWidth(v18) / v8;
-    [v15 setContents:v18];
-    [v15 setContentsScale:v8];
-    [v15 setBounds:{0.0, 0.0, v19, v19}];
+    v19 = CGImageGetWidth(cGImage) / v8;
+    [layer3 setContents:cGImage];
+    [layer3 setContentsScale:v8];
+    [layer3 setBounds:{0.0, 0.0, v19, v19}];
     *&v53.m31 = v49;
     *&v53.m33 = v48;
     *&v53.m41 = v47;
@@ -84,12 +84,12 @@
     *&v53.m23 = v42;
     CATransform3DScale(&v54, &v53, 0.35, 0.35, 1.0);
     v53 = v54;
-    [v15 setTransform:&v53];
+    [layer3 setTransform:&v53];
     [(BCSCircularEffectView *)self bounds];
     v20 = CGRectGetMidX(v58);
     [(BCSCircularEffectView *)self bounds];
-    [v15 setPosition:{v20, CGRectGetMidY(v59)}];
-    [v12 addSublayer:v15];
+    [layer3 setPosition:{v20, CGRectGetMidY(v59)}];
+    [layer addSublayer:layer3];
     *&v53.m11 = v41;
     *&v53.m13 = v40;
     *&v53.m21 = v39;
@@ -97,9 +97,9 @@
     *&v53.m11 = *&v52.a;
     *&v53.m13 = *&v52.c;
     *&v53.m21 = *&v52.tx;
-    [v12 setAffineTransform:&v53];
-    v21 = [MEMORY[0x277CD9ED0] layer];
-    v22 = v21;
+    [layer setAffineTransform:&v53];
+    layer4 = [MEMORY[0x277CD9ED0] layer];
+    v22 = layer4;
     if (v10 == 5)
     {
       v23 = v19 * 0.85;
@@ -110,13 +110,13 @@
       v23 = v9;
     }
 
-    [v21 setBounds:{0.0, 0.0, v23, v23}];
+    [layer4 setBounds:{0.0, 0.0, v23, v23}];
     [(BCSCircularEffectView *)self bounds];
     v24 = CGRectGetMidX(v60);
     [(BCSCircularEffectView *)self bounds];
     [v22 setPosition:{v24, CGRectGetMidY(v61)}];
-    v25 = [MEMORY[0x277D75348] whiteColor];
-    [v22 setBackgroundColor:{objc_msgSend(v25, "CGColor")}];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [v22 setBackgroundColor:{objc_msgSend(whiteColor, "CGColor")}];
 
     v62.origin.x = 0.0;
     v62.origin.y = 0.0;
@@ -126,41 +126,41 @@
     v26 = [MEMORY[0x277CD9EA0] filterWithType:v11];
     [v22 setCompositingFilter:v26];
 
-    [v12 addSublayer:v22];
+    [layer addSublayer:v22];
     v9 = v19;
     --v10;
   }
 
   while (v10);
-  v27 = [MEMORY[0x277CD9ED0] layer];
+  layer5 = [MEMORY[0x277CD9ED0] layer];
   centerRing = self->_centerRing;
-  self->_centerRing = v27;
+  self->_centerRing = layer5;
 
   v29 = [MEMORY[0x277D755B8] imageNamed:@"Center-Glyph" inBundle:v50];
-  v30 = [v29 CGImage];
+  cGImage2 = [v29 CGImage];
 
-  v31 = v5 * CGImageGetWidth(v30) / v8;
+  v31 = v5 * CGImageGetWidth(cGImage2) / v8;
   [(CALayer *)self->_centerRing setBounds:0.0, 0.0, v31, v31];
   [(CALayer *)self->_centerRing setCornerRadius:v31 * 0.5];
   [(BCSCircularEffectView *)self bounds];
   v32 = CGRectGetMidX(v63);
   [(BCSCircularEffectView *)self bounds];
   [(CALayer *)self->_centerRing setPosition:v32, CGRectGetMidY(v64)];
-  v33 = [MEMORY[0x277D75348] whiteColor];
-  -[CALayer setBackgroundColor:](self->_centerRing, "setBackgroundColor:", [v33 CGColor]);
+  whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+  -[CALayer setBackgroundColor:](self->_centerRing, "setBackgroundColor:", [whiteColor2 CGColor]);
 
-  v34 = [(BCSCircularEffectView *)self layer];
-  [v34 addSublayer:self->_centerRing];
+  layer6 = [(BCSCircularEffectView *)self layer];
+  [layer6 addSublayer:self->_centerRing];
 
-  v35 = [MEMORY[0x277CD9ED0] layer];
-  [(CALayer *)v35 setContents:v30];
-  [(CALayer *)v35 setContentsScale:v8];
-  [(CALayer *)v35 setBounds:0.0, 0.0, v31, v31];
-  [(CALayer *)v35 setPosition:v31 * 0.5, v31 * 0.5];
-  [(CALayer *)self->_centerRing addSublayer:v35];
+  layer7 = [MEMORY[0x277CD9ED0] layer];
+  [(CALayer *)layer7 setContents:cGImage2];
+  [(CALayer *)layer7 setContentsScale:v8];
+  [(CALayer *)layer7 setBounds:0.0, 0.0, v31, v31];
+  [(CALayer *)layer7 setPosition:v31 * 0.5, v31 * 0.5];
+  [(CALayer *)self->_centerRing addSublayer:layer7];
   glyphLayer = self->_glyphLayer;
-  self->_glyphLayer = v35;
-  v37 = v35;
+  self->_glyphLayer = layer7;
+  v37 = layer7;
 
   CGAffineTransformMakeScale(&v51, 0.0, 0.0);
   v38 = self->_centerRing;
@@ -170,14 +170,14 @@
   [(CALayer *)v38 setAffineTransform:&v53];
 }
 
-- (void)prepareCenterGlyphWithImage:(id)a3
+- (void)prepareCenterGlyphWithImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   if (!self->_centerRingScaleAnimationStarted)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_centerGlyphImage, a3);
-    v5 = v6;
+    v6 = imageCopy;
+    objc_storeStrong(&self->_centerGlyphImage, image);
+    imageCopy = v6;
   }
 }
 
@@ -230,10 +230,10 @@
   [(CALayer *)self->_centerRing addAnimation:v11 forKey:@"tranform.scale"];
 }
 
-- (void)animateRingsRotationWithCompletion:(id)a3
+- (void)animateRingsRotationWithCompletion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v17[0] = xmmword_241A06650;
   v17[1] = xmmword_241A06650;
   v18 = 0xC03E000000000000;
@@ -243,7 +243,7 @@
   v15[1] = 3221225472;
   v15[2] = __60__BCSCircularEffectView_animateRingsRotationWithCompletion___block_invoke;
   v15[3] = &unk_278D02498;
-  v14 = v4;
+  v14 = completionCopy;
   v16 = v14;
   [v5 setCompletionBlock:v15];
   if ([(NSMutableArray *)self->_circles count])
@@ -323,13 +323,13 @@
   [(CALayer *)centerRing setAffineTransform:&v15];
 }
 
-- (void)animationDidStart:(id)a3
+- (void)animationDidStart:(id)start
 {
   centerRing = self->_centerRing;
-  v5 = a3;
+  startCopy = start;
   v6 = [(CALayer *)centerRing animationForKey:@"tranform.scale"];
 
-  if (v6 == v5)
+  if (v6 == startCopy)
   {
     self->_centerRingScaleAnimationStarted = 1;
     if (self->_centerGlyphImage)

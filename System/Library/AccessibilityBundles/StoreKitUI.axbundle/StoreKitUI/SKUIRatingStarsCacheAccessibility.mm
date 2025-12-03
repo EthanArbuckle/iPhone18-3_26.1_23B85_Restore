@@ -1,10 +1,10 @@
 @interface SKUIRatingStarsCacheAccessibility
-- (id)ratingStarsImageForRating:(double)a3;
+- (id)ratingStarsImageForRating:(double)rating;
 @end
 
 @implementation SKUIRatingStarsCacheAccessibility
 
-- (id)ratingStarsImageForRating:(double)a3
+- (id)ratingStarsImageForRating:(double)rating
 {
   v6.receiver = self;
   v6.super_class = SKUIRatingStarsCacheAccessibility;

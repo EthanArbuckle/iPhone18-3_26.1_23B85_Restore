@@ -1,14 +1,14 @@
 @interface CSVoiceTriggerXPCService
 + (id)sharedService;
 - (CSVoiceTriggerXPCService)init;
-- (id)_createXPCClientConnectionIfNeeded:(id)a3;
+- (id)_createXPCClientConnectionIfNeeded:(id)needed;
 - (id)fetchVoiceTriggerDailyStats;
 - (void)_teardownXPCClientIfNeeded;
-- (void)enableVoiceTrigger:(BOOL)a3 withAssertion:(id)a4 xpcClient:(id)a5;
-- (void)notifyVoiceTriggeredSiriSessionCancelledWithXpcClient:(id)a3;
-- (void)setPhraseSpotterBypassing:(BOOL)a3 timeout:(double)a4 xpcClient:(id)a5;
-- (void)setRaiseToSpeakBypassing:(BOOL)a3 timeout:(double)a4 xpcClient:(id)a5;
-- (void)voiceTriggerXPCClient:(id)a3 didDisconnect:(BOOL)a4;
+- (void)enableVoiceTrigger:(BOOL)trigger withAssertion:(id)assertion xpcClient:(id)client;
+- (void)notifyVoiceTriggeredSiriSessionCancelledWithXpcClient:(id)client;
+- (void)setPhraseSpotterBypassing:(BOOL)bypassing timeout:(double)timeout xpcClient:(id)client;
+- (void)setRaiseToSpeakBypassing:(BOOL)bypassing timeout:(double)timeout xpcClient:(id)client;
+- (void)voiceTriggerXPCClient:(id)client didDisconnect:(BOOL)disconnect;
 @end
 
 @implementation CSVoiceTriggerXPCService
@@ -49,7 +49,7 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)voiceTriggerXPCClient:(id)a3 didDisconnect:(BOOL)a4
+- (void)voiceTriggerXPCClient:(id)client didDisconnect:(BOOL)disconnect
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -76,14 +76,14 @@ uint64_t __64__CSVoiceTriggerXPCService_voiceTriggerXPCClient_didDisconnect___bl
   return result;
 }
 
-- (id)_createXPCClientConnectionIfNeeded:(id)a3
+- (id)_createXPCClientConnectionIfNeeded:(id)needed
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  neededCopy = needed;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4)
+  if (neededCopy)
   {
-    v5 = v4;
+    v5 = neededCopy;
 LABEL_3:
     v6 = v5;
     goto LABEL_14;
@@ -172,17 +172,17 @@ void __55__CSVoiceTriggerXPCService_fetchVoiceTriggerDailyStats__block_invoke(ui
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyVoiceTriggeredSiriSessionCancelledWithXpcClient:(id)a3
+- (void)notifyVoiceTriggeredSiriSessionCancelledWithXpcClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __82__CSVoiceTriggerXPCService_notifyVoiceTriggeredSiriSessionCancelledWithXpcClient___block_invoke;
   v7[3] = &unk_2784C6FA8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clientCopy;
+  v6 = clientCopy;
   dispatch_async(queue, v7);
 }
 
@@ -203,19 +203,19 @@ void __82__CSVoiceTriggerXPCService_notifyVoiceTriggeredSiriSessionCancelledWith
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setRaiseToSpeakBypassing:(BOOL)a3 timeout:(double)a4 xpcClient:(id)a5
+- (void)setRaiseToSpeakBypassing:(BOOL)bypassing timeout:(double)timeout xpcClient:(id)client
 {
-  v8 = a5;
+  clientCopy = client;
   queue = self->_queue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __71__CSVoiceTriggerXPCService_setRaiseToSpeakBypassing_timeout_xpcClient___block_invoke;
   v11[3] = &unk_2784C4B88;
-  v14 = a3;
-  v13 = a4;
+  bypassingCopy = bypassing;
+  timeoutCopy = timeout;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
+  v12 = clientCopy;
+  v10 = clientCopy;
   dispatch_async(queue, v11);
 }
 
@@ -247,19 +247,19 @@ void __71__CSVoiceTriggerXPCService_setRaiseToSpeakBypassing_timeout_xpcClient__
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPhraseSpotterBypassing:(BOOL)a3 timeout:(double)a4 xpcClient:(id)a5
+- (void)setPhraseSpotterBypassing:(BOOL)bypassing timeout:(double)timeout xpcClient:(id)client
 {
-  v8 = a5;
+  clientCopy = client;
   queue = self->_queue;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __72__CSVoiceTriggerXPCService_setPhraseSpotterBypassing_timeout_xpcClient___block_invoke;
   v11[3] = &unk_2784C4B88;
   v11[4] = self;
-  v12 = v8;
-  v14 = a3;
-  v13 = a4;
-  v10 = v8;
+  v12 = clientCopy;
+  bypassingCopy = bypassing;
+  timeoutCopy = timeout;
+  v10 = clientCopy;
   dispatch_async(queue, v11);
 }
 
@@ -280,21 +280,21 @@ void __72__CSVoiceTriggerXPCService_setPhraseSpotterBypassing_timeout_xpcClient_
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableVoiceTrigger:(BOOL)a3 withAssertion:(id)a4 xpcClient:(id)a5
+- (void)enableVoiceTrigger:(BOOL)trigger withAssertion:(id)assertion xpcClient:(id)client
 {
-  v8 = a4;
-  v9 = a5;
+  assertionCopy = assertion;
+  clientCopy = client;
   queue = self->_queue;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __71__CSVoiceTriggerXPCService_enableVoiceTrigger_withAssertion_xpcClient___block_invoke;
   v13[3] = &unk_2784C6F80;
   v13[4] = self;
-  v14 = v9;
-  v16 = a3;
-  v15 = v8;
-  v11 = v8;
-  v12 = v9;
+  v14 = clientCopy;
+  triggerCopy = trigger;
+  v15 = assertionCopy;
+  v11 = assertionCopy;
+  v12 = clientCopy;
   dispatch_async(queue, v13);
 }
 

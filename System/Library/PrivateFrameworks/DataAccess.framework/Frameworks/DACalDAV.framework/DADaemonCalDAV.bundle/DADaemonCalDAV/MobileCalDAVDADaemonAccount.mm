@@ -1,88 +1,88 @@
 @interface MobileCalDAVDADaemonAccount
 - (BOOL)isDisabled;
-- (MobileCalDAVDADaemonAccount)initWithBackingAccountInfo:(id)a3;
-- (id)_startOfficeHoursRequestWithConsumer:(id)a3 error:(id *)a4 startRequestBlock:(id)a5;
-- (id)beginDownloadingAttachmentWithUUID:(id)a3 consumer:(id)a4;
-- (id)childAccountWithIdentifier:(id)a3;
-- (id)childAccountsWithAccountTypeIdentifier:(id)a3;
-- (id)createChildAccountWithAccountTypeIdentifier:(id)a3;
-- (id)performCalendarDirectorySearchForTerms:(id)a3 recordTypes:(id)a4 resultLimit:(unint64_t)a5 consumer:(id)a6;
-- (id)reportShareRequestAsJunkForCalendar:(id)a3 consumer:(id)a4;
-- (id)requestCalendarAvailabilityForStartDate:(id)a3 endDate:(id)a4 ignoredEventID:(id)a5 addresses:(id)a6 consumer:(id)a7;
-- (id)requestGrantedDelegatesListWithConsumer:(id)a3;
-- (id)respondToShareRequestForCalendar:(id)a3 withResponse:(int64_t)a4 consumer:(id)a5;
-- (id)setOfficeHours:(id)a3 withConsumer:(id)a4 error:(id *)a5;
+- (MobileCalDAVDADaemonAccount)initWithBackingAccountInfo:(id)info;
+- (id)_startOfficeHoursRequestWithConsumer:(id)consumer error:(id *)error startRequestBlock:(id)block;
+- (id)beginDownloadingAttachmentWithUUID:(id)d consumer:(id)consumer;
+- (id)childAccountWithIdentifier:(id)identifier;
+- (id)childAccountsWithAccountTypeIdentifier:(id)identifier;
+- (id)createChildAccountWithAccountTypeIdentifier:(id)identifier;
+- (id)performCalendarDirectorySearchForTerms:(id)terms recordTypes:(id)types resultLimit:(unint64_t)limit consumer:(id)consumer;
+- (id)reportShareRequestAsJunkForCalendar:(id)calendar consumer:(id)consumer;
+- (id)requestCalendarAvailabilityForStartDate:(id)date endDate:(id)endDate ignoredEventID:(id)d addresses:(id)addresses consumer:(id)consumer;
+- (id)requestGrantedDelegatesListWithConsumer:(id)consumer;
+- (id)respondToShareRequestForCalendar:(id)calendar withResponse:(int64_t)response consumer:(id)consumer;
+- (id)setOfficeHours:(id)hours withConsumer:(id)consumer error:(id *)error;
 - (id)stateString;
-- (id)updateGrantedDelegatePermission:(id)a3 consumer:(id)a4;
-- (void)calendarAvailabilityRequestIsGoingAway:(id)a3;
-- (void)calendarDirectorySearchIsGoingAway:(id)a3;
+- (id)updateGrantedDelegatePermission:(id)permission consumer:(id)consumer;
+- (void)calendarAvailabilityRequestIsGoingAway:(id)away;
+- (void)calendarDirectorySearchIsGoingAway:(id)away;
 - (void)cancelAllCalendarAvailabilityRequests;
 - (void)cancelAllCalendarDirectorySearches;
 - (void)cancelAllGrantedDelegatesListRequests;
 - (void)cancelAllGroupExpansions;
 - (void)cancelAllSharingRequests;
 - (void)cancelAllUpdateGrantedDelegatePermissionRequests;
-- (void)cancelCalendarAvailabilityRequestWithID:(id)a3;
-- (void)cancelCalendarDirectorySearchWithID:(id)a3;
-- (void)cancelDownloadingInstance:(id)a3 error:(id)a4;
-- (void)cancelGrantedDelegatesListRequestWithID:(id)a3;
-- (void)cancelOfficeHoursRequestWithID:(id)a3;
-- (void)cancelShareResponseInstance:(id)a3 error:(id)a4;
-- (void)cancelUpdateGrantedDelegatePermissionRequestWithID:(id)a3;
+- (void)cancelCalendarAvailabilityRequestWithID:(id)d;
+- (void)cancelCalendarDirectorySearchWithID:(id)d;
+- (void)cancelDownloadingInstance:(id)instance error:(id)error;
+- (void)cancelGrantedDelegatesListRequestWithID:(id)d;
+- (void)cancelOfficeHoursRequestWithID:(id)d;
+- (void)cancelShareResponseInstance:(id)instance error:(id)error;
+- (void)cancelUpdateGrantedDelegatePermissionRequestWithID:(id)d;
 - (void)dealloc;
-- (void)grantedDelegatesListRequestIsGoingAway:(id)a3;
-- (void)officeHoursRequestWithIDFinished:(id)a3;
-- (void)performGroupExpansionForPrincipalPath:(id)a3 consumer:(id)a4;
-- (void)removeAccount:(id)a3;
-- (void)updateGrantedDelegatePermissionRequestIsGoingAway:(id)a3;
+- (void)grantedDelegatesListRequestIsGoingAway:(id)away;
+- (void)officeHoursRequestWithIDFinished:(id)finished;
+- (void)performGroupExpansionForPrincipalPath:(id)path consumer:(id)consumer;
+- (void)removeAccount:(id)account;
+- (void)updateGrantedDelegatePermissionRequestIsGoingAway:(id)away;
 @end
 
 @implementation MobileCalDAVDADaemonAccount
 
-- (id)requestGrantedDelegatesListWithConsumer:(id)a3
+- (id)requestGrantedDelegatesListWithConsumer:(id)consumer
 {
-  v4 = a3;
-  v5 = [[MobileCalDAVGrantedDelegatesListRequest alloc] initWithConsumer:v4 account:self];
-  v6 = [(MobileCalDAVGrantedDelegatesListRequest *)v5 requestID];
-  v7 = [(MobileCalDAVDADaemonAccount *)self grantedDelegatesListRequests];
-  objc_sync_enter(v7);
-  v8 = [(MobileCalDAVDADaemonAccount *)self grantedDelegatesListRequests];
-  [v8 setObject:v5 forKeyedSubscript:v6];
+  consumerCopy = consumer;
+  v5 = [[MobileCalDAVGrantedDelegatesListRequest alloc] initWithConsumer:consumerCopy account:self];
+  requestID = [(MobileCalDAVGrantedDelegatesListRequest *)v5 requestID];
+  grantedDelegatesListRequests = [(MobileCalDAVDADaemonAccount *)self grantedDelegatesListRequests];
+  objc_sync_enter(grantedDelegatesListRequests);
+  grantedDelegatesListRequests2 = [(MobileCalDAVDADaemonAccount *)self grantedDelegatesListRequests];
+  [grantedDelegatesListRequests2 setObject:v5 forKeyedSubscript:requestID];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(grantedDelegatesListRequests);
   [(MobileCalDAVGrantedDelegatesListRequest *)v5 performRequest];
 
-  return v6;
+  return requestID;
 }
 
-- (void)cancelGrantedDelegatesListRequestWithID:(id)a3
+- (void)cancelGrantedDelegatesListRequestWithID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v8 = v4;
-    v5 = [(MobileCalDAVDADaemonAccount *)self grantedDelegatesListRequests];
-    objc_sync_enter(v5);
-    v6 = [(MobileCalDAVDADaemonAccount *)self grantedDelegatesListRequests];
-    v7 = [v6 objectForKey:v8];
+    v8 = dCopy;
+    grantedDelegatesListRequests = [(MobileCalDAVDADaemonAccount *)self grantedDelegatesListRequests];
+    objc_sync_enter(grantedDelegatesListRequests);
+    grantedDelegatesListRequests2 = [(MobileCalDAVDADaemonAccount *)self grantedDelegatesListRequests];
+    v7 = [grantedDelegatesListRequests2 objectForKey:v8];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(grantedDelegatesListRequests);
     [v7 cancel];
 
-    v4 = v8;
+    dCopy = v8;
   }
 }
 
 - (void)cancelAllGrantedDelegatesListRequests
 {
-  v3 = [(MobileCalDAVDADaemonAccount *)self grantedDelegatesListRequests];
-  objc_sync_enter(v3);
+  grantedDelegatesListRequests = [(MobileCalDAVDADaemonAccount *)self grantedDelegatesListRequests];
+  objc_sync_enter(grantedDelegatesListRequests);
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(MobileCalDAVDADaemonAccount *)self grantedDelegatesListRequests];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  grantedDelegatesListRequests2 = [(MobileCalDAVDADaemonAccount *)self grantedDelegatesListRequests];
+  v5 = [grantedDelegatesListRequests2 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -93,7 +93,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(grantedDelegatesListRequests2);
         }
 
         [*(*(&v9 + 1) + 8 * v7) cancel];
@@ -101,87 +101,87 @@
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [grantedDelegatesListRequests2 countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(MobileCalDAVDADaemonAccount *)self grantedDelegatesListRequests];
-  [v8 removeAllObjects];
+  grantedDelegatesListRequests3 = [(MobileCalDAVDADaemonAccount *)self grantedDelegatesListRequests];
+  [grantedDelegatesListRequests3 removeAllObjects];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(grantedDelegatesListRequests);
 }
 
-- (void)grantedDelegatesListRequestIsGoingAway:(id)a3
+- (void)grantedDelegatesListRequestIsGoingAway:(id)away
 {
-  v4 = a3;
+  awayCopy = away;
   v5 = dataaccess_get_global_queue();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = nullsub_1;
   block[3] = &unk_28790;
-  v6 = v4;
+  v6 = awayCopy;
   v11 = v6;
   dispatch_async(v5, block);
 
-  v7 = [(MobileCalDAVDADaemonAccount *)self grantedDelegatesListRequests];
-  objc_sync_enter(v7);
-  v8 = [v6 requestID];
-  v9 = [(MobileCalDAVDADaemonAccount *)self grantedDelegatesListRequests];
-  [v9 removeObjectForKey:v8];
+  grantedDelegatesListRequests = [(MobileCalDAVDADaemonAccount *)self grantedDelegatesListRequests];
+  objc_sync_enter(grantedDelegatesListRequests);
+  requestID = [v6 requestID];
+  grantedDelegatesListRequests2 = [(MobileCalDAVDADaemonAccount *)self grantedDelegatesListRequests];
+  [grantedDelegatesListRequests2 removeObjectForKey:requestID];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(grantedDelegatesListRequests);
 }
 
-- (id)requestCalendarAvailabilityForStartDate:(id)a3 endDate:(id)a4 ignoredEventID:(id)a5 addresses:(id)a6 consumer:(id)a7
+- (id)requestCalendarAvailabilityForStartDate:(id)date endDate:(id)endDate ignoredEventID:(id)d addresses:(id)addresses consumer:(id)consumer
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [[MobileCalDAVCalendarAvailabilityRequest alloc] initWithStartDate:v12 endDate:v13 ignoredEventID:v14 addresses:v15 consumer:v16 account:self];
-  v18 = [(MobileCalDAVCalendarAvailabilityRequest *)v17 requestID];
-  v19 = [(MobileCalDAVDADaemonAccount *)self calendarAvailabilityRequests];
-  objc_sync_enter(v19);
-  v20 = [(MobileCalDAVDADaemonAccount *)self calendarAvailabilityRequests];
-  [v20 setObject:v17 forKeyedSubscript:v18];
+  dateCopy = date;
+  endDateCopy = endDate;
+  dCopy = d;
+  addressesCopy = addresses;
+  consumerCopy = consumer;
+  v17 = [[MobileCalDAVCalendarAvailabilityRequest alloc] initWithStartDate:dateCopy endDate:endDateCopy ignoredEventID:dCopy addresses:addressesCopy consumer:consumerCopy account:self];
+  requestID = [(MobileCalDAVCalendarAvailabilityRequest *)v17 requestID];
+  calendarAvailabilityRequests = [(MobileCalDAVDADaemonAccount *)self calendarAvailabilityRequests];
+  objc_sync_enter(calendarAvailabilityRequests);
+  calendarAvailabilityRequests2 = [(MobileCalDAVDADaemonAccount *)self calendarAvailabilityRequests];
+  [calendarAvailabilityRequests2 setObject:v17 forKeyedSubscript:requestID];
 
-  objc_sync_exit(v19);
+  objc_sync_exit(calendarAvailabilityRequests);
   [(MobileCalDAVCalendarAvailabilityRequest *)v17 performRequest];
 
-  return v18;
+  return requestID;
 }
 
-- (void)cancelCalendarAvailabilityRequestWithID:(id)a3
+- (void)cancelCalendarAvailabilityRequestWithID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v8 = v4;
-    v5 = [(MobileCalDAVDADaemonAccount *)self calendarAvailabilityRequests];
-    objc_sync_enter(v5);
-    v6 = [(MobileCalDAVDADaemonAccount *)self calendarAvailabilityRequests];
-    v7 = [v6 objectForKey:v8];
+    v8 = dCopy;
+    calendarAvailabilityRequests = [(MobileCalDAVDADaemonAccount *)self calendarAvailabilityRequests];
+    objc_sync_enter(calendarAvailabilityRequests);
+    calendarAvailabilityRequests2 = [(MobileCalDAVDADaemonAccount *)self calendarAvailabilityRequests];
+    v7 = [calendarAvailabilityRequests2 objectForKey:v8];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(calendarAvailabilityRequests);
     [v7 cancel];
 
-    v4 = v8;
+    dCopy = v8;
   }
 }
 
 - (void)cancelAllCalendarAvailabilityRequests
 {
-  v3 = [(MobileCalDAVDADaemonAccount *)self calendarAvailabilityRequests];
-  objc_sync_enter(v3);
+  calendarAvailabilityRequests = [(MobileCalDAVDADaemonAccount *)self calendarAvailabilityRequests];
+  objc_sync_enter(calendarAvailabilityRequests);
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(MobileCalDAVDADaemonAccount *)self calendarAvailabilityRequests];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  calendarAvailabilityRequests2 = [(MobileCalDAVDADaemonAccount *)self calendarAvailabilityRequests];
+  v5 = [calendarAvailabilityRequests2 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -192,7 +192,7 @@
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(calendarAvailabilityRequests2);
         }
 
         [*(*(&v9 + 1) + 8 * v7) cancel];
@@ -200,44 +200,44 @@
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [calendarAvailabilityRequests2 countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(MobileCalDAVDADaemonAccount *)self calendarAvailabilityRequests];
-  [v8 removeAllObjects];
+  calendarAvailabilityRequests3 = [(MobileCalDAVDADaemonAccount *)self calendarAvailabilityRequests];
+  [calendarAvailabilityRequests3 removeAllObjects];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(calendarAvailabilityRequests);
 }
 
-- (void)calendarAvailabilityRequestIsGoingAway:(id)a3
+- (void)calendarAvailabilityRequestIsGoingAway:(id)away
 {
-  v4 = a3;
+  awayCopy = away;
   v5 = dataaccess_get_global_queue();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_384C;
   block[3] = &unk_28790;
-  v6 = v4;
+  v6 = awayCopy;
   v11 = v6;
   dispatch_async(v5, block);
 
-  v7 = [(MobileCalDAVDADaemonAccount *)self calendarAvailabilityRequests];
-  objc_sync_enter(v7);
-  v8 = [v6 requestID];
-  v9 = [(MobileCalDAVDADaemonAccount *)self calendarAvailabilityRequests];
-  [v9 removeObjectForKey:v8];
+  calendarAvailabilityRequests = [(MobileCalDAVDADaemonAccount *)self calendarAvailabilityRequests];
+  objc_sync_enter(calendarAvailabilityRequests);
+  requestID = [v6 requestID];
+  calendarAvailabilityRequests2 = [(MobileCalDAVDADaemonAccount *)self calendarAvailabilityRequests];
+  [calendarAvailabilityRequests2 removeObjectForKey:requestID];
 
-  objc_sync_exit(v7);
+  objc_sync_exit(calendarAvailabilityRequests);
 }
 
-- (MobileCalDAVDADaemonAccount)initWithBackingAccountInfo:(id)a3
+- (MobileCalDAVDADaemonAccount)initWithBackingAccountInfo:(id)info
 {
   v19.receiver = self;
   v19.super_class = MobileCalDAVDADaemonAccount;
-  v3 = [(MobileCalDAVDADaemonAccount *)&v19 initWithBackingAccountInfo:a3];
+  v3 = [(MobileCalDAVDADaemonAccount *)&v19 initWithBackingAccountInfo:info];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -279,15 +279,15 @@
   if (os_log_type_enabled(v3, v4))
   {
     *buf = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v3, v4, "MobileCalDAVDADaemonAccount %p going away", buf, 0xCu);
   }
 
   [(MobileCalDAVDADaemonAccount *)self cancelAllCalendarDirectorySearches];
   [(MobileCalDAVDADaemonAccount *)self cancelAllGroupExpansions];
   [(MobileCalDAVDADaemonAccount *)self cancelAllCalendarAvailabilityRequests];
-  v5 = [(MobileCalDAVDADaemonAccount *)self mobileCalDAVAccount];
-  [v5 cancelAllAttachmentDownloads];
+  mobileCalDAVAccount = [(MobileCalDAVDADaemonAccount *)self mobileCalDAVAccount];
+  [mobileCalDAVAccount cancelAllAttachmentDownloads];
 
   [(MobileCalDAVDADaemonAccount *)self cancelAllSharingRequests];
   [(MobileCalDAVDADaemonAccount *)self cancelAllGrantedDelegatesListRequests];
@@ -297,20 +297,20 @@
   [(MobileCalDAVDADaemonAccount *)&v6 dealloc];
 }
 
-- (id)childAccountsWithAccountTypeIdentifier:(id)a3
+- (id)childAccountsWithAccountTypeIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(MobileCalDAVDADaemonAccount *)self backingAccountInfo];
-  v6 = [v5 childAccountsWithAccountTypeIdentifier:v4];
+  identifierCopy = identifier;
+  backingAccountInfo = [(MobileCalDAVDADaemonAccount *)self backingAccountInfo];
+  v6 = [backingAccountInfo childAccountsWithAccountTypeIdentifier:identifierCopy];
 
   return v6;
 }
 
-- (id)childAccountWithIdentifier:(id)a3
+- (id)childAccountWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[DADAgentManager sharedManager];
-  v6 = [v5 accountWithAccountID:v4];
+  v6 = [v5 accountWithAccountID:identifierCopy];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -318,12 +318,12 @@
     goto LABEL_4;
   }
 
-  v7 = [v6 backingAccountInfo];
-  v8 = [v7 parentAccount];
-  v9 = [v8 identifier];
-  v10 = [(MobileCalDAVDADaemonAccount *)self backingAccountInfo];
-  v11 = [v10 identifier];
-  v12 = [v9 isEqualToString:v11];
+  backingAccountInfo = [v6 backingAccountInfo];
+  parentAccount = [backingAccountInfo parentAccount];
+  identifier = [parentAccount identifier];
+  backingAccountInfo2 = [(MobileCalDAVDADaemonAccount *)self backingAccountInfo];
+  identifier2 = [backingAccountInfo2 identifier];
+  v12 = [identifier isEqualToString:identifier2];
 
   if (v12)
   {
@@ -339,36 +339,36 @@ LABEL_4:
   return v13;
 }
 
-- (id)createChildAccountWithAccountTypeIdentifier:(id)a3
+- (id)createChildAccountWithAccountTypeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = sharedDAAccountStore();
   v6 = [ACAccount alloc];
-  v7 = [v5 accountTypeWithAccountTypeIdentifier:v4];
+  v7 = [v5 accountTypeWithAccountTypeIdentifier:identifierCopy];
 
   v8 = [v6 initWithAccountType:v7];
   [v8 setActive:1];
-  v9 = [(MobileCalDAVDADaemonAccount *)self backingAccountInfo];
-  [v8 setParentAccount:v9];
+  backingAccountInfo = [(MobileCalDAVDADaemonAccount *)self backingAccountInfo];
+  [v8 setParentAccount:backingAccountInfo];
 
   [v8 setAuthenticationType:kAccountAuthenticationTypeParent];
   v10 = [objc_alloc(objc_opt_class()) initWithBackingAccountInfo:v8];
-  v11 = [(MobileCalDAVDADaemonAccount *)self host];
-  [v10 setHost:v11];
+  host = [(MobileCalDAVDADaemonAccount *)self host];
+  [v10 setHost:host];
 
   return v10;
 }
 
-- (void)removeAccount:(id)a3
+- (void)removeAccount:(id)account
 {
-  v5 = a3;
+  accountCopy = account;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     sub_15DBC(a2, self);
   }
 
-  v6 = v5;
+  v6 = accountCopy;
   v7 = sharedDAAccountStore();
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -386,20 +386,20 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v3 = [(MobileCalDAVDADaemonAccount *)self taskManager];
+  taskManager = [(MobileCalDAVDADaemonAccount *)self taskManager];
 
   v4 = +[DABabysitter sharedBabysitter];
-  v5 = [(MobileCalDAVDADaemonAccount *)self mobileCalDAVAccount];
-  v6 = [v4 accountShouldContinue:v5];
+  mobileCalDAVAccount = [(MobileCalDAVDADaemonAccount *)self mobileCalDAVAccount];
+  v6 = [v4 accountShouldContinue:mobileCalDAVAccount];
 
-  if (v3)
+  if (taskManager)
   {
     goto LABEL_5;
   }
 
   if (v6)
   {
-    v7 = 0;
+    stateString = 0;
   }
 
   else
@@ -407,10 +407,10 @@ LABEL_4:
 LABEL_5:
     v9.receiver = self;
     v9.super_class = MobileCalDAVDADaemonAccount;
-    v7 = [(MobileCalDAVDADaemonAccount *)&v9 stateString];
+    stateString = [(MobileCalDAVDADaemonAccount *)&v9 stateString];
   }
 
-  return v7;
+  return stateString;
 }
 
 - (BOOL)isDisabled
@@ -419,8 +419,8 @@ LABEL_5:
   v10.super_class = MobileCalDAVDADaemonAccount;
   if (![(MobileCalDAVDADaemonAccount *)&v10 isDisabled])
   {
-    v3 = [(MobileCalDAVDADaemonAccount *)self backingAccountInfo];
-    v4 = [v3 isEnabledForDataclass:ACAccountDataclassCalendars];
+    backingAccountInfo = [(MobileCalDAVDADaemonAccount *)self backingAccountInfo];
+    v4 = [backingAccountInfo isEnabledForDataclass:ACAccountDataclassCalendars];
 
     if (v4)
     {
@@ -431,10 +431,10 @@ LABEL_5:
     v7 = _CPLog_to_os_log_type[6];
     if (os_log_type_enabled(v6, v7))
     {
-      v8 = [(MobileCalDAVDADaemonAccount *)self backingAccountInfo];
-      v9 = [v8 identifier];
+      backingAccountInfo2 = [(MobileCalDAVDADaemonAccount *)self backingAccountInfo];
+      identifier = [backingAccountInfo2 identifier];
       *buf = 138543362;
-      v12 = v9;
+      v12 = identifier;
       _os_log_impl(&dword_0, v6, v7, "Account %{public}@ is disabled because it is not enabled for the calendar data class", buf, 0xCu);
     }
   }
@@ -442,70 +442,70 @@ LABEL_5:
   return 1;
 }
 
-- (id)beginDownloadingAttachmentWithUUID:(id)a3 consumer:(id)a4
+- (id)beginDownloadingAttachmentWithUUID:(id)d consumer:(id)consumer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MobileCalDAVDADaemonAccount *)self mobileCalDAVAccount];
-  v9 = [v8 beginDownloadingAttachmentWithUUID:v7 consumer:v6];
+  consumerCopy = consumer;
+  dCopy = d;
+  mobileCalDAVAccount = [(MobileCalDAVDADaemonAccount *)self mobileCalDAVAccount];
+  v9 = [mobileCalDAVAccount beginDownloadingAttachmentWithUUID:dCopy consumer:consumerCopy];
 
   return v9;
 }
 
-- (void)cancelDownloadingInstance:(id)a3 error:(id)a4
+- (void)cancelDownloadingInstance:(id)instance error:(id)error
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MobileCalDAVDADaemonAccount *)self mobileCalDAVAccount];
-  [v8 cancelDownloadingInstance:v7 error:v6];
+  errorCopy = error;
+  instanceCopy = instance;
+  mobileCalDAVAccount = [(MobileCalDAVDADaemonAccount *)self mobileCalDAVAccount];
+  [mobileCalDAVAccount cancelDownloadingInstance:instanceCopy error:errorCopy];
 }
 
-- (id)performCalendarDirectorySearchForTerms:(id)a3 recordTypes:(id)a4 resultLimit:(unint64_t)a5 consumer:(id)a6
+- (id)performCalendarDirectorySearchForTerms:(id)terms recordTypes:(id)types resultLimit:(unint64_t)limit consumer:(id)consumer
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v13 = [[MobileCalDAVDirectorySearch alloc] initWithTerms:v10 recordTypes:v11 resultLimit:a5 consumer:v12 account:self];
-  v14 = [(MobileCalDAVDirectorySearch *)v13 searchID];
-  v15 = [(MobileCalDAVDADaemonAccount *)self directorySearches];
-  objc_sync_enter(v15);
-  v16 = [(MobileCalDAVDADaemonAccount *)self directorySearches];
-  [v16 setObject:v13 forKeyedSubscript:v14];
+  termsCopy = terms;
+  typesCopy = types;
+  consumerCopy = consumer;
+  v13 = [[MobileCalDAVDirectorySearch alloc] initWithTerms:termsCopy recordTypes:typesCopy resultLimit:limit consumer:consumerCopy account:self];
+  searchID = [(MobileCalDAVDirectorySearch *)v13 searchID];
+  directorySearches = [(MobileCalDAVDADaemonAccount *)self directorySearches];
+  objc_sync_enter(directorySearches);
+  directorySearches2 = [(MobileCalDAVDADaemonAccount *)self directorySearches];
+  [directorySearches2 setObject:v13 forKeyedSubscript:searchID];
 
-  objc_sync_exit(v15);
+  objc_sync_exit(directorySearches);
   [(MobileCalDAVDirectorySearch *)v13 performSearch];
 
-  return v14;
+  return searchID;
 }
 
-- (void)cancelCalendarDirectorySearchWithID:(id)a3
+- (void)cancelCalendarDirectorySearchWithID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v8 = v4;
-    v5 = [(MobileCalDAVDADaemonAccount *)self directorySearches];
-    objc_sync_enter(v5);
-    v6 = [(MobileCalDAVDADaemonAccount *)self directorySearches];
-    v7 = [v6 objectForKey:v8];
+    v8 = dCopy;
+    directorySearches = [(MobileCalDAVDADaemonAccount *)self directorySearches];
+    objc_sync_enter(directorySearches);
+    directorySearches2 = [(MobileCalDAVDADaemonAccount *)self directorySearches];
+    v7 = [directorySearches2 objectForKey:v8];
 
-    objc_sync_exit(v5);
+    objc_sync_exit(directorySearches);
     [v7 cancel];
 
-    v4 = v8;
+    dCopy = v8;
   }
 }
 
 - (void)cancelAllCalendarDirectorySearches
 {
-  v3 = [(MobileCalDAVDADaemonAccount *)self directorySearches];
-  objc_sync_enter(v3);
+  directorySearches = [(MobileCalDAVDADaemonAccount *)self directorySearches];
+  objc_sync_enter(directorySearches);
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(MobileCalDAVDADaemonAccount *)self directorySearches];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  directorySearches2 = [(MobileCalDAVDADaemonAccount *)self directorySearches];
+  v5 = [directorySearches2 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -516,7 +516,7 @@ LABEL_5:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(directorySearches2);
         }
 
         [*(*(&v9 + 1) + 8 * v7) cancel];
@@ -524,109 +524,109 @@ LABEL_5:
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [directorySearches2 countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(MobileCalDAVDADaemonAccount *)self directorySearches];
-  [v8 removeAllObjects];
+  directorySearches3 = [(MobileCalDAVDADaemonAccount *)self directorySearches];
+  [directorySearches3 removeAllObjects];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(directorySearches);
 }
 
-- (void)calendarDirectorySearchIsGoingAway:(id)a3
+- (void)calendarDirectorySearchIsGoingAway:(id)away
 {
-  v4 = a3;
+  awayCopy = away;
   v5 = dataaccess_get_global_queue();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_C19C;
   block[3] = &unk_28790;
-  v6 = v4;
+  v6 = awayCopy;
   v11 = v6;
   dispatch_async(v5, block);
 
-  v7 = [v6 searchID];
-  v8 = [(MobileCalDAVDADaemonAccount *)self directorySearches];
-  objc_sync_enter(v8);
-  v9 = [(MobileCalDAVDADaemonAccount *)self directorySearches];
-  [v9 removeObjectForKey:v7];
+  searchID = [v6 searchID];
+  directorySearches = [(MobileCalDAVDADaemonAccount *)self directorySearches];
+  objc_sync_enter(directorySearches);
+  directorySearches2 = [(MobileCalDAVDADaemonAccount *)self directorySearches];
+  [directorySearches2 removeObjectForKey:searchID];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(directorySearches);
 }
 
-- (id)setOfficeHours:(id)a3 withConsumer:(id)a4 error:(id *)a5
+- (id)setOfficeHours:(id)hours withConsumer:(id)consumer error:(id *)error
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_C338;
   v11[3] = &unk_289E0;
-  v12 = a3;
-  v8 = v12;
-  v9 = [(MobileCalDAVDADaemonAccount *)self _startOfficeHoursRequestWithConsumer:a4 error:a5 startRequestBlock:v11];
+  hoursCopy = hours;
+  v8 = hoursCopy;
+  v9 = [(MobileCalDAVDADaemonAccount *)self _startOfficeHoursRequestWithConsumer:consumer error:error startRequestBlock:v11];
 
   return v9;
 }
 
-- (id)_startOfficeHoursRequestWithConsumer:(id)a3 error:(id *)a4 startRequestBlock:(id)a5
+- (id)_startOfficeHoursRequestWithConsumer:(id)consumer error:(id *)error startRequestBlock:(id)block
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = [[DACalDAVOfficeHoursRequest alloc] initWithAccount:self consumer:v8];
+  blockCopy = block;
+  consumerCopy = consumer;
+  v9 = [[DACalDAVOfficeHoursRequest alloc] initWithAccount:self consumer:consumerCopy];
 
-  v7[2](v7, v9);
-  v10 = [(MobileCalDAVDADaemonAccount *)self officeHoursRequests];
-  v11 = [(DACalDAVOfficeHoursRequest *)v9 requestID];
-  [v10 setObject:v9 forKeyedSubscript:v11];
+  blockCopy[2](blockCopy, v9);
+  officeHoursRequests = [(MobileCalDAVDADaemonAccount *)self officeHoursRequests];
+  requestID = [(DACalDAVOfficeHoursRequest *)v9 requestID];
+  [officeHoursRequests setObject:v9 forKeyedSubscript:requestID];
 
-  v12 = [(DACalDAVOfficeHoursRequest *)v9 requestID];
+  requestID2 = [(DACalDAVOfficeHoursRequest *)v9 requestID];
 
-  return v12;
+  return requestID2;
 }
 
-- (void)cancelOfficeHoursRequestWithID:(id)a3
+- (void)cancelOfficeHoursRequestWithID:(id)d
 {
-  v4 = a3;
-  v5 = [(MobileCalDAVDADaemonAccount *)self officeHoursRequests];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  officeHoursRequests = [(MobileCalDAVDADaemonAccount *)self officeHoursRequests];
+  v6 = [officeHoursRequests objectForKeyedSubscript:dCopy];
 
   [v6 cancel];
-  [(MobileCalDAVDADaemonAccount *)self officeHoursRequestWithIDFinished:v4];
+  [(MobileCalDAVDADaemonAccount *)self officeHoursRequestWithIDFinished:dCopy];
 }
 
-- (void)officeHoursRequestWithIDFinished:(id)a3
+- (void)officeHoursRequestWithIDFinished:(id)finished
 {
-  v4 = a3;
-  v5 = [(MobileCalDAVDADaemonAccount *)self officeHoursRequests];
-  [v5 removeObjectForKey:v4];
+  finishedCopy = finished;
+  officeHoursRequests = [(MobileCalDAVDADaemonAccount *)self officeHoursRequests];
+  [officeHoursRequests removeObjectForKey:finishedCopy];
 }
 
-- (void)performGroupExpansionForPrincipalPath:(id)a3 consumer:(id)a4
+- (void)performGroupExpansionForPrincipalPath:(id)path consumer:(id)consumer
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [[MobileCalDAVGroupExpansion alloc] initWithPrincipalPath:v10 consumer:v6 account:self];
-  v8 = [(MobileCalDAVDADaemonAccount *)self groupExpansions];
-  objc_sync_enter(v8);
-  v9 = [(MobileCalDAVDADaemonAccount *)self groupExpansions];
-  [v9 addObject:v7];
+  pathCopy = path;
+  consumerCopy = consumer;
+  v7 = [[MobileCalDAVGroupExpansion alloc] initWithPrincipalPath:pathCopy consumer:consumerCopy account:self];
+  groupExpansions = [(MobileCalDAVDADaemonAccount *)self groupExpansions];
+  objc_sync_enter(groupExpansions);
+  groupExpansions2 = [(MobileCalDAVDADaemonAccount *)self groupExpansions];
+  [groupExpansions2 addObject:v7];
 
-  objc_sync_exit(v8);
+  objc_sync_exit(groupExpansions);
   [(MobileCalDAVGroupExpansion *)v7 perform];
 }
 
 - (void)cancelAllGroupExpansions
 {
-  v3 = [(MobileCalDAVDADaemonAccount *)self groupExpansions];
-  objc_sync_enter(v3);
+  groupExpansions = [(MobileCalDAVDADaemonAccount *)self groupExpansions];
+  objc_sync_enter(groupExpansions);
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(MobileCalDAVDADaemonAccount *)self groupExpansions];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  groupExpansions2 = [(MobileCalDAVDADaemonAccount *)self groupExpansions];
+  v5 = [groupExpansions2 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -637,7 +637,7 @@ LABEL_5:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(groupExpansions2);
         }
 
         [*(*(&v9 + 1) + 8 * v7) cancel];
@@ -645,26 +645,26 @@ LABEL_5:
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [groupExpansions2 countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(MobileCalDAVDADaemonAccount *)self groupExpansions];
-  [v8 removeAllObjects];
+  groupExpansions3 = [(MobileCalDAVDADaemonAccount *)self groupExpansions];
+  [groupExpansions3 removeAllObjects];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(groupExpansions);
 }
 
-- (id)respondToShareRequestForCalendar:(id)a3 withResponse:(int64_t)a4 consumer:(id)a5
+- (id)respondToShareRequestForCalendar:(id)calendar withResponse:(int64_t)response consumer:(id)consumer
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  calendarCopy = calendar;
+  consumerCopy = consumer;
+  v10 = consumerCopy;
+  if (calendarCopy)
   {
-    if (v9)
+    if (consumerCopy)
     {
       goto LABEL_3;
     }
@@ -681,25 +681,25 @@ LABEL_5:
 
   sub_16288();
 LABEL_3:
-  v11 = [MobileCalDAVSharingResponse responseWithCalendarID:v8 consumer:v10 account:self];
-  v12 = [(MobileCalDAVDADaemonAccount *)self shareResponses];
-  v13 = [v11 responseID];
-  [v12 setObject:v11 forKeyedSubscript:v13];
+  v11 = [MobileCalDAVSharingResponse responseWithCalendarID:calendarCopy consumer:v10 account:self];
+  shareResponses = [(MobileCalDAVDADaemonAccount *)self shareResponses];
+  responseID = [v11 responseID];
+  [shareResponses setObject:v11 forKeyedSubscript:responseID];
 
-  [v11 respondToSharingRequestWithResponse:a4];
-  v14 = [v11 responseID];
+  [v11 respondToSharingRequestWithResponse:response];
+  responseID2 = [v11 responseID];
 
-  return v14;
+  return responseID2;
 }
 
-- (id)reportShareRequestAsJunkForCalendar:(id)a3 consumer:(id)a4
+- (id)reportShareRequestAsJunkForCalendar:(id)calendar consumer:(id)consumer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  calendarCopy = calendar;
+  consumerCopy = consumer;
+  v8 = consumerCopy;
+  if (calendarCopy)
   {
-    if (v7)
+    if (consumerCopy)
     {
       goto LABEL_3;
     }
@@ -716,46 +716,46 @@ LABEL_3:
 
   sub_16360();
 LABEL_3:
-  v9 = [MobileCalDAVSharingResponse responseWithCalendarID:v6 consumer:v8 account:self];
-  v10 = [(MobileCalDAVDADaemonAccount *)self shareResponses];
-  v11 = [v9 responseID];
-  [v10 setObject:v9 forKeyedSubscript:v11];
+  v9 = [MobileCalDAVSharingResponse responseWithCalendarID:calendarCopy consumer:v8 account:self];
+  shareResponses = [(MobileCalDAVDADaemonAccount *)self shareResponses];
+  responseID = [v9 responseID];
+  [shareResponses setObject:v9 forKeyedSubscript:responseID];
 
   [v9 reportAsJunk];
-  v12 = [v9 responseID];
+  responseID2 = [v9 responseID];
 
-  return v12;
+  return responseID2;
 }
 
-- (void)cancelShareResponseInstance:(id)a3 error:(id)a4
+- (void)cancelShareResponseInstance:(id)instance error:(id)error
 {
-  v8 = a3;
-  if (!v8)
+  instanceCopy = instance;
+  if (!instanceCopy)
   {
     sub_163CC();
   }
 
-  v5 = [(MobileCalDAVDADaemonAccount *)self shareResponses];
-  v6 = [v5 objectForKeyedSubscript:v8];
+  shareResponses = [(MobileCalDAVDADaemonAccount *)self shareResponses];
+  v6 = [shareResponses objectForKeyedSubscript:instanceCopy];
 
   [v6 cancel];
-  v7 = [(MobileCalDAVDADaemonAccount *)self shareResponses];
-  [v7 removeObjectForKey:v8];
+  shareResponses2 = [(MobileCalDAVDADaemonAccount *)self shareResponses];
+  [shareResponses2 removeObjectForKey:instanceCopy];
 }
 
 - (void)cancelAllSharingRequests
 {
-  v3 = [(MobileCalDAVDADaemonAccount *)self shareResponses];
-  objc_sync_enter(v3);
+  shareResponses = [(MobileCalDAVDADaemonAccount *)self shareResponses];
+  objc_sync_enter(shareResponses);
   v4 = [NSError errorWithDomain:DAErrorDomain code:-1 userInfo:0];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(MobileCalDAVDADaemonAccount *)self shareResponses];
-  v6 = [v5 allValues];
+  shareResponses2 = [(MobileCalDAVDADaemonAccount *)self shareResponses];
+  allValues = [shareResponses2 allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = *v14;
@@ -765,64 +765,64 @@ LABEL_3:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 consumer];
-        [v11 shareResponseFinishedWithError:v4];
+        consumer = [v10 consumer];
+        [consumer shareResponseFinishedWithError:v4];
 
         [v10 cancel];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
   }
 
-  v12 = [(MobileCalDAVDADaemonAccount *)self shareResponses];
-  [v12 removeAllObjects];
+  shareResponses3 = [(MobileCalDAVDADaemonAccount *)self shareResponses];
+  [shareResponses3 removeAllObjects];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(shareResponses);
 }
 
-- (id)updateGrantedDelegatePermission:(id)a3 consumer:(id)a4
+- (id)updateGrantedDelegatePermission:(id)permission consumer:(id)consumer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[MobileCalDAVUpdateGrantedDelegatePermissionRequest alloc] initWithGrantedDelegate:v6 consumer:v7 account:self];
-  v9 = [(MobileCalDAVUpdateGrantedDelegatePermissionRequest *)v8 requestID];
-  v10 = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
-  objc_sync_enter(v10);
-  v11 = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
-  [v11 addObject:v8];
+  permissionCopy = permission;
+  consumerCopy = consumer;
+  v8 = [[MobileCalDAVUpdateGrantedDelegatePermissionRequest alloc] initWithGrantedDelegate:permissionCopy consumer:consumerCopy account:self];
+  requestID = [(MobileCalDAVUpdateGrantedDelegatePermissionRequest *)v8 requestID];
+  updateGrantedDelegatePermissionRequests = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
+  objc_sync_enter(updateGrantedDelegatePermissionRequests);
+  updateGrantedDelegatePermissionRequests2 = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
+  [updateGrantedDelegatePermissionRequests2 addObject:v8];
 
-  v12 = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
-  v13 = [v12 count];
+  updateGrantedDelegatePermissionRequests3 = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
+  v13 = [updateGrantedDelegatePermissionRequests3 count];
 
-  objc_sync_exit(v10);
+  objc_sync_exit(updateGrantedDelegatePermissionRequests);
   if (v13 == &dword_0 + 1)
   {
     [(MobileCalDAVUpdateGrantedDelegatePermissionRequest *)v8 performRequest];
   }
 
-  return v9;
+  return requestID;
 }
 
-- (void)cancelUpdateGrantedDelegatePermissionRequestWithID:(id)a3
+- (void)cancelUpdateGrantedDelegatePermissionRequestWithID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
-    v5 = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
-    objc_sync_enter(v5);
+    updateGrantedDelegatePermissionRequests = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
+    objc_sync_enter(updateGrantedDelegatePermissionRequests);
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    updateGrantedDelegatePermissionRequests2 = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
+    v7 = [updateGrantedDelegatePermissionRequests2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = *v14;
@@ -832,12 +832,12 @@ LABEL_3:
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(updateGrantedDelegatePermissionRequests2);
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
-          v11 = [v10 requestID];
-          v12 = [v4 isEqualToString:v11];
+          requestID = [v10 requestID];
+          v12 = [dCopy isEqualToString:requestID];
 
           if (v12)
           {
@@ -846,7 +846,7 @@ LABEL_3:
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [updateGrantedDelegatePermissionRequests2 countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v7)
         {
           continue;
@@ -858,21 +858,21 @@ LABEL_3:
 
 LABEL_12:
 
-    objc_sync_exit(v5);
+    objc_sync_exit(updateGrantedDelegatePermissionRequests);
     [v7 cancel];
   }
 }
 
 - (void)cancelAllUpdateGrantedDelegatePermissionRequests
 {
-  v3 = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
-  objc_sync_enter(v3);
+  updateGrantedDelegatePermissionRequests = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
+  objc_sync_enter(updateGrantedDelegatePermissionRequests);
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  updateGrantedDelegatePermissionRequests2 = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
+  v5 = [updateGrantedDelegatePermissionRequests2 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -883,7 +883,7 @@ LABEL_12:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(updateGrantedDelegatePermissionRequests2);
         }
 
         [*(*(&v9 + 1) + 8 * v7) cancel];
@@ -891,54 +891,54 @@ LABEL_12:
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [updateGrantedDelegatePermissionRequests2 countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 
-  v8 = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
-  [v8 removeAllObjects];
+  updateGrantedDelegatePermissionRequests3 = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
+  [updateGrantedDelegatePermissionRequests3 removeAllObjects];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(updateGrantedDelegatePermissionRequests);
 }
 
-- (void)updateGrantedDelegatePermissionRequestIsGoingAway:(id)a3
+- (void)updateGrantedDelegatePermissionRequestIsGoingAway:(id)away
 {
-  v4 = a3;
+  awayCopy = away;
   v5 = dataaccess_get_global_queue();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = nullsub_2;
   block[3] = &unk_28790;
-  v6 = v4;
+  v6 = awayCopy;
   v14 = v6;
   dispatch_async(v5, block);
 
-  v7 = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
-  objc_sync_enter(v7);
-  v8 = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
-  [v8 removeObject:v6];
+  updateGrantedDelegatePermissionRequests = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
+  objc_sync_enter(updateGrantedDelegatePermissionRequests);
+  updateGrantedDelegatePermissionRequests2 = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
+  [updateGrantedDelegatePermissionRequests2 removeObject:v6];
 
-  v9 = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
-  v10 = [v9 count];
+  updateGrantedDelegatePermissionRequests3 = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
+  v10 = [updateGrantedDelegatePermissionRequests3 count];
 
   if (v10)
   {
-    v11 = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
-    v12 = [v11 firstObject];
+    updateGrantedDelegatePermissionRequests4 = [(MobileCalDAVDADaemonAccount *)self updateGrantedDelegatePermissionRequests];
+    firstObject = [updateGrantedDelegatePermissionRequests4 firstObject];
   }
 
   else
   {
-    v12 = 0;
+    firstObject = 0;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(updateGrantedDelegatePermissionRequests);
 
-  if (v12)
+  if (firstObject)
   {
-    [v12 performRequest];
+    [firstObject performRequest];
   }
 }
 

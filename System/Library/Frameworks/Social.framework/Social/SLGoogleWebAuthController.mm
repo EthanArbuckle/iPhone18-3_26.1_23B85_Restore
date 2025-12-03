@@ -1,36 +1,36 @@
 @interface SLGoogleWebAuthController
-- (SLGoogleWebAuthController)initWithAccount:(id)a3 accountStore:(id)a4 presentationBlock:(id)a5;
-- (SLGoogleWebAuthController)initWithAccountDescription:(id)a3 presentationBlock:(id)a4;
-- (SLGoogleWebAuthController)initWithNibName:(id)a3 bundle:(id)a4;
-- (SLGoogleWebAuthController)initWithYouTubeUsername:(id)a3 accountDescription:(id)a4 presentationBlock:(id)a5;
+- (SLGoogleWebAuthController)initWithAccount:(id)account accountStore:(id)store presentationBlock:(id)block;
+- (SLGoogleWebAuthController)initWithAccountDescription:(id)description presentationBlock:(id)block;
+- (SLGoogleWebAuthController)initWithNibName:(id)name bundle:(id)bundle;
+- (SLGoogleWebAuthController)initWithYouTubeUsername:(id)username accountDescription:(id)description presentationBlock:(id)block;
 @end
 
 @implementation SLGoogleWebAuthController
 
-- (SLGoogleWebAuthController)initWithAccountDescription:(id)a3 presentationBlock:(id)a4
+- (SLGoogleWebAuthController)initWithAccountDescription:(id)description presentationBlock:(id)block
 {
-  [(SLGoogleWebAuthController *)self doesNotRecognizeSelector:a2, a4];
+  [(SLGoogleWebAuthController *)self doesNotRecognizeSelector:a2, block];
 
   return 0;
 }
 
-- (SLGoogleWebAuthController)initWithAccount:(id)a3 accountStore:(id)a4 presentationBlock:(id)a5
+- (SLGoogleWebAuthController)initWithAccount:(id)account accountStore:(id)store presentationBlock:(id)block
 {
-  [(SLGoogleWebAuthController *)self doesNotRecognizeSelector:a2, a4, a5];
+  [(SLGoogleWebAuthController *)self doesNotRecognizeSelector:a2, store, block];
 
   return 0;
 }
 
-- (SLGoogleWebAuthController)initWithYouTubeUsername:(id)a3 accountDescription:(id)a4 presentationBlock:(id)a5
+- (SLGoogleWebAuthController)initWithYouTubeUsername:(id)username accountDescription:(id)description presentationBlock:(id)block
 {
-  [(SLGoogleWebAuthController *)self doesNotRecognizeSelector:a2, a4, a5];
+  [(SLGoogleWebAuthController *)self doesNotRecognizeSelector:a2, description, block];
 
   return 0;
 }
 
-- (SLGoogleWebAuthController)initWithNibName:(id)a3 bundle:(id)a4
+- (SLGoogleWebAuthController)initWithNibName:(id)name bundle:(id)bundle
 {
-  [(SLGoogleWebAuthController *)self doesNotRecognizeSelector:a2, a4];
+  [(SLGoogleWebAuthController *)self doesNotRecognizeSelector:a2, bundle];
 
   return 0;
 }

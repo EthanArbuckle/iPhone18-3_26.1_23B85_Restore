@@ -1,40 +1,40 @@
 @interface MTRecipeMaterialSettings
-- (MTRecipeMaterialSettings)initWithRecipeName:(id)a3 andDescription:(id)a4 descendantDescriptions:(id)a5 bundle:(id)a6;
+- (MTRecipeMaterialSettings)initWithRecipeName:(id)name andDescription:(id)description descendantDescriptions:(id)descriptions bundle:(id)bundle;
 - (NSString)description;
 - (id)_newVisualStyleSet;
 - (id)_platformColorsStyleSetName;
 - (id)_visualStyleSetDescription;
-- (id)styleNameForCategory:(id)a3;
+- (id)styleNameForCategory:(id)category;
 @end
 
 @implementation MTRecipeMaterialSettings
 
-- (MTRecipeMaterialSettings)initWithRecipeName:(id)a3 andDescription:(id)a4 descendantDescriptions:(id)a5 bundle:(id)a6
+- (MTRecipeMaterialSettings)initWithRecipeName:(id)name andDescription:(id)description descendantDescriptions:(id)descriptions bundle:(id)bundle
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  descriptionCopy = description;
+  descriptionsCopy = descriptions;
+  bundleCopy = bundle;
   v26.receiver = self;
   v26.super_class = MTRecipeMaterialSettings;
   v14 = [(MTRecipeMaterialSettings *)&v26 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [nameCopy copy];
     recipeName = v14->_recipeName;
     v14->_recipeName = v15;
 
-    v17 = [v11 objectForKey:@"materialSettingsVersion"];
+    v17 = [descriptionCopy objectForKey:@"materialSettingsVersion"];
     v14->_materialSettingsVersion = [v17 integerValue];
 
-    v18 = [v11 objectForKey:@"styles"];
+    v18 = [descriptionCopy objectForKey:@"styles"];
     styles = v14->_styles;
     v14->_styles = v18;
 
     v20 = [MTTintingFilteringMaterialSettings alloc];
-    v21 = [v11 objectForKey:@"baseMaterial"];
-    v22 = [v12 valueForKey:@"baseMaterial"];
-    v23 = [(MTTintingFilteringMaterialSettings *)v20 initWithMaterialDescription:v21 andDescendantDescriptions:v22 bundle:v13];
+    v21 = [descriptionCopy objectForKey:@"baseMaterial"];
+    v22 = [descriptionsCopy valueForKey:@"baseMaterial"];
+    v23 = [(MTTintingFilteringMaterialSettings *)v20 initWithMaterialDescription:v21 andDescendantDescriptions:v22 bundle:bundleCopy];
     baseMaterialSettings = v14->_baseMaterialSettings;
     v14->_baseMaterialSettings = v23;
   }
@@ -42,9 +42,9 @@
   return v14;
 }
 
-- (id)styleNameForCategory:(id)a3
+- (id)styleNameForCategory:(id)category
 {
-  if (@"platformColor" == a3)
+  if (@"platformColor" == category)
   {
     [(MTRecipeMaterialSettings *)self _platformColorsStyleSetName];
   }
@@ -61,8 +61,8 @@
 - (id)_visualStyleSetDescription
 {
   v65[2] = *MEMORY[0x1E69E9840];
-  v2 = [(MTRecipeMaterialSettings *)self baseMaterialSettings];
-  if (!_CanGenerateVisualStylingDescriptionFromConfigurationSettings(v2))
+  baseMaterialSettings = [(MTRecipeMaterialSettings *)self baseMaterialSettings];
+  if (!_CanGenerateVisualStylingDescriptionFromConfigurationSettings(baseMaterialSettings))
   {
     v14 = 0;
 LABEL_24:
@@ -82,13 +82,13 @@ LABEL_24:
   v55[3] = &unk_1E80BDBE0;
   v55[4] = &v56;
   v3 = MEMORY[0x1BFB5AC50](v55);
-  v4 = [v2 tintColorDescription];
+  tintColorDescription = [baseMaterialSettings tintColorDescription];
 
-  if (v4)
+  if (tintColorDescription)
   {
     v5 = v3[2](v3);
-    v6 = [v2 tintColorDescription];
-    [v5 setObject:v6 forKey:@"tinting"];
+    tintColorDescription2 = [baseMaterialSettings tintColorDescription];
+    [v5 setObject:tintColorDescription2 forKey:@"tinting"];
   }
 
   v30 = *(MEMORY[0x1E6979280] + 48);
@@ -99,13 +99,13 @@ LABEL_24:
   v50 = *MEMORY[0x1E6979280];
   v51 = v27;
   v7 = MEMORY[0x1E696AD98];
-  [v2 saturation];
+  [baseMaterialSettings saturation];
   v8 = [v7 numberWithDouble:?];
   v9 = [v8 mt_isIdentityValueForMaterialSettingsProperty:@"saturation"];
 
   if ((v9 & 1) == 0)
   {
-    [v2 saturation];
+    [baseMaterialSettings saturation];
     CAColorMatrixMakeSaturation();
     v37 = v32;
     v38 = v31;
@@ -121,13 +121,13 @@ LABEL_24:
   }
 
   v10 = MEMORY[0x1E696AD98];
-  [v2 brightness];
+  [baseMaterialSettings brightness];
   v11 = [v10 numberWithDouble:?];
   v12 = [v11 mt_isIdentityValueForMaterialSettingsProperty:@"brightness"];
 
   if ((v12 & 1) == 0)
   {
-    [v2 brightness];
+    [baseMaterialSettings brightness];
     CAColorMatrixMakeBrightness();
     v37 = v52;
     v38 = v53;
@@ -143,9 +143,9 @@ LABEL_24:
   }
 
   v13 = MEMORY[0x1E696B098];
-  if (v2)
+  if (baseMaterialSettings)
   {
-    [v2 colorMatrix];
+    [baseMaterialSettings colorMatrix];
   }
 
   else
@@ -158,9 +158,9 @@ LABEL_24:
 
   if ((v16 & 1) == 0)
   {
-    if (v2)
+    if (baseMaterialSettings)
     {
-      [v2 colorMatrix];
+      [baseMaterialSettings colorMatrix];
     }
 
     else
@@ -256,14 +256,14 @@ id __54__MTRecipeMaterialSettings__visualStyleSetDescription__block_invoke(uint6
 
 - (id)_newVisualStyleSet
 {
-  v3 = [(MTRecipeMaterialSettings *)self _visualStyleSetDescription];
-  if (v3)
+  _visualStyleSetDescription = [(MTRecipeMaterialSettings *)self _visualStyleSetDescription];
+  if (_visualStyleSetDescription)
   {
     v4 = [MTVisualStyleSet alloc];
     v5 = objc_opt_class();
-    v6 = [(MTRecipeMaterialSettings *)self recipeName];
-    v7 = [v5 styleSetNameForStyleSetFromRecipeWithName:v6];
-    v8 = [(MTVisualStyleSet *)v4 initWithName:v7 visualStyleSetDescription:v3 andDescendantDescriptions:0];
+    recipeName = [(MTRecipeMaterialSettings *)self recipeName];
+    v7 = [v5 styleSetNameForStyleSetFromRecipeWithName:recipeName];
+    v8 = [(MTVisualStyleSet *)v4 initWithName:v7 visualStyleSetDescription:_visualStyleSetDescription andDescendantDescriptions:0];
   }
 
   else
@@ -294,11 +294,11 @@ id __54__MTRecipeMaterialSettings__visualStyleSetDescription__block_invoke(uint6
   v4 = objc_opt_class();
   materialSettingsVersion = self->_materialSettingsVersion;
   v6 = [v3 stringWithFormat:@"<%@: %p recipeName: %@; materialSettingsVersion: %ld; styles: %@", v4, self, self->_recipeName, materialSettingsVersion, self->_styles];;
-  v7 = [(MTRecipeMaterialSettings *)self baseMaterialSettings];
-  v8 = v7;
-  if (v7)
+  baseMaterialSettings = [(MTRecipeMaterialSettings *)self baseMaterialSettings];
+  v8 = baseMaterialSettings;
+  if (baseMaterialSettings)
   {
-    [v6 appendFormat:@"; baseMaterialSettings: %@", v7];
+    [v6 appendFormat:@"; baseMaterialSettings: %@", baseMaterialSettings];
   }
 
   [v6 appendString:@">"];

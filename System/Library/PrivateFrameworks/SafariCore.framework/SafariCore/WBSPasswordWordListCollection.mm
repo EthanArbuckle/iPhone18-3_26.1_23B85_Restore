@@ -2,9 +2,9 @@
 + (id)commonPasscodeWordListCollection;
 + (id)commonPasswordWordListCollection;
 - (WBSPasswordWordListCollection)init;
-- (id)entriesForString:(id)a3;
-- (void)addWordList:(id)a3;
-- (void)enumerateEntriesForString:(id)a3 withBlock:(id)a4;
+- (id)entriesForString:(id)string;
+- (void)addWordList:(id)list;
+- (void)enumerateEntriesForString:(id)string withBlock:(id)block;
 @end
 
 @implementation WBSPasswordWordListCollection
@@ -26,25 +26,25 @@
   return v2;
 }
 
-- (void)addWordList:(id)a3
+- (void)addWordList:(id)list
 {
   wordListsByIdentifiers = self->_wordListsByIdentifiers;
-  v4 = a3;
-  v5 = [v4 identifier];
-  [(NSMutableDictionary *)wordListsByIdentifiers setObject:v4 forKeyedSubscript:v5];
+  listCopy = list;
+  identifier = [listCopy identifier];
+  [(NSMutableDictionary *)wordListsByIdentifiers setObject:listCopy forKeyedSubscript:identifier];
 }
 
-- (void)enumerateEntriesForString:(id)a3 withBlock:(id)a4
+- (void)enumerateEntriesForString:(id)string withBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  blockCopy = block;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(NSMutableDictionary *)self->_wordListsByIdentifiers allValues];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allValues = [(NSMutableDictionary *)self->_wordListsByIdentifiers allValues];
+  v9 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -56,14 +56,14 @@
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allValues);
         }
 
-        [*(*(&v14 + 1) + 8 * v12++) enumerateEntriesForString:v6 withBlock:v7];
+        [*(*(&v14 + 1) + 8 * v12++) enumerateEntriesForString:stringCopy withBlock:blockCopy];
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [allValues countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
@@ -72,10 +72,10 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)entriesForString:(id)a3
+- (id)entriesForString:(id)string
 {
   v4 = MEMORY[0x1E695DFA8];
-  v5 = a3;
+  stringCopy = string;
   v6 = objc_alloc_init(v4);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -83,7 +83,7 @@
   v9[3] = &unk_1E7CF3BB8;
   v7 = v6;
   v10 = v7;
-  [(WBSPasswordWordListCollection *)self enumerateEntriesForString:v5 withBlock:v9];
+  [(WBSPasswordWordListCollection *)self enumerateEntriesForString:stringCopy withBlock:v9];
 
   return v7;
 }
@@ -97,8 +97,8 @@
     [(WBSPasswordWordListCollection *)v2 addWordList:v3];
   }
 
-  v4 = [MEMORY[0x1E696AAE8] safari_safariCoreBundle];
-  v5 = [v4 URLForResource:@"WBSCommonPasswords" withExtension:@"plist"];
+  safari_safariCoreBundle = [MEMORY[0x1E696AAE8] safari_safariCoreBundle];
+  v5 = [safari_safariCoreBundle URLForResource:@"WBSCommonPasswords" withExtension:@"plist"];
 
   v6 = [MEMORY[0x1E695DF20] dictionaryWithContentsOfURL:v5];
   v7 = [v6 safari_arrayForKey:@"CommonPasswords"];

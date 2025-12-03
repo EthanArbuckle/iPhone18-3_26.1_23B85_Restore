@@ -1,22 +1,22 @@
 @interface TSWPTextReplacement
-- (TSWPTextReplacement)initWithSelection:(id)a3 string:(id)a4;
+- (TSWPTextReplacement)initWithSelection:(id)selection string:(id)string;
 - (_NSRange)insertedRange;
 - (int64_t)delta;
 - (void)dealloc;
-- (void)performWithStorage:(id)a3 delta:(int64_t)a4 undoTransaction:(TSWPStorageTransaction *)a5 replaceBlock:(id)a6;
+- (void)performWithStorage:(id)storage delta:(int64_t)delta undoTransaction:(TSWPStorageTransaction *)transaction replaceBlock:(id)block;
 @end
 
 @implementation TSWPTextReplacement
 
-- (TSWPTextReplacement)initWithSelection:(id)a3 string:(id)a4
+- (TSWPTextReplacement)initWithSelection:(id)selection string:(id)string
 {
   v8.receiver = self;
   v8.super_class = TSWPTextReplacement;
   v6 = [(TSWPTextReplacement *)&v8 init];
   if (v6)
   {
-    v6->_selection = a3;
-    v6->_string = a4;
+    v6->_selection = selection;
+    v6->_string = string;
   }
 
   return v6;
@@ -29,22 +29,22 @@
   [(TSWPTextReplacement *)&v3 dealloc];
 }
 
-- (void)performWithStorage:(id)a3 delta:(int64_t)a4 undoTransaction:(TSWPStorageTransaction *)a5 replaceBlock:(id)a6
+- (void)performWithStorage:(id)storage delta:(int64_t)delta undoTransaction:(TSWPStorageTransaction *)transaction replaceBlock:(id)block
 {
   selection = self->_selection;
-  if (a4)
+  if (delta)
   {
-    v12 = [(TSWPSelection *)self->_selection range];
+    range = [(TSWPSelection *)self->_selection range];
     [(TSWPSelection *)self->_selection range];
-    selection = [(TSWPSelection *)selection copyWithNewRange:v12 + a4, v13];
+    selection = [(TSWPSelection *)selection copyWithNewRange:range + delta, v13];
 
     self->_selection = selection;
   }
 
-  (*(a6 + 2))(a6, selection, self->_string);
-  v15 = [(TSWPTextReplacement *)self insertedRange];
+  (*(block + 2))(block, selection, self->_string);
+  insertedRange = [(TSWPTextReplacement *)self insertedRange];
 
-  [a3 p_handleChangeSplittingForInsertedRange:v15 changeSession:v14 undoTransaction:{0, a5}];
+  [storage p_handleChangeSplittingForInsertedRange:insertedRange changeSession:v14 undoTransaction:{0, transaction}];
 }
 
 - (int64_t)delta
@@ -56,9 +56,9 @@
 
 - (_NSRange)insertedRange
 {
-  v3 = [(TSWPSelection *)self->_selection range];
+  range = [(TSWPSelection *)self->_selection range];
   v4 = [(NSString *)self->_string length];
-  v5 = v3;
+  v5 = range;
   result.length = v4;
   result.location = v5;
   return result;

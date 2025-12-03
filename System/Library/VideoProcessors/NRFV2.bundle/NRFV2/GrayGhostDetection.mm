@@ -1,15 +1,15 @@
 @interface GrayGhostDetection
-+ (int)prewarmShaders:(id)a3;
-- (GrayGhostDetection)initWithMetalContext:(id)a3;
++ (int)prewarmShaders:(id)shaders;
+- (GrayGhostDetection)initWithMetalContext:(id)context;
 - (float)getGrayGhostResultSync;
-- (int)runGrayGhostDetection:(id)a3 ev0Bands:(id)a4 evmProperties:(const frameProperties_t *)a5 ev0Properties:(const frameProperties_t *)a6 hasChromaBias:(BOOL)a7 atBand:(int)a8 params:(const GrayGhostParams *)a9;
+- (int)runGrayGhostDetection:(id)detection ev0Bands:(id)bands evmProperties:(const frameProperties_t *)properties ev0Properties:(const frameProperties_t *)ev0Properties hasChromaBias:(BOOL)bias atBand:(int)band params:(const GrayGhostParams *)params;
 @end
 
 @implementation GrayGhostDetection
 
-- (GrayGhostDetection)initWithMetalContext:(id)a3
+- (GrayGhostDetection)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v30.receiver = self;
   v30.super_class = GrayGhostDetection;
   v6 = [(GrayGhostDetection *)&v30 init];
@@ -19,7 +19,7 @@
     goto LABEL_5;
   }
 
-  objc_storeStrong(&v6->_metal, a3);
+  objc_storeStrong(&v6->_metal, context);
   v11 = objc_msgSend_sharedInstance(GrayGhostDetectionShared, v8, v9, v10);
   v14 = objc_msgSend_getShaders_(v11, v12, v7[1], v13);
   v15 = v7[2];
@@ -61,11 +61,11 @@ LABEL_6:
   return v28;
 }
 
-+ (int)prewarmShaders:(id)a3
++ (int)prewarmShaders:(id)shaders
 {
-  v3 = a3;
+  shadersCopy = shaders;
   v4 = [GrayGhostDetectionShaders alloc];
-  v7 = objc_msgSend_initWithMetal_(v4, v5, v3, v6);
+  v7 = objc_msgSend_initWithMetal_(v4, v5, shadersCopy, v6);
 
   if (v7)
   {
@@ -80,10 +80,10 @@ LABEL_6:
   return v8;
 }
 
-- (int)runGrayGhostDetection:(id)a3 ev0Bands:(id)a4 evmProperties:(const frameProperties_t *)a5 ev0Properties:(const frameProperties_t *)a6 hasChromaBias:(BOOL)a7 atBand:(int)a8 params:(const GrayGhostParams *)a9
+- (int)runGrayGhostDetection:(id)detection ev0Bands:(id)bands evmProperties:(const frameProperties_t *)properties ev0Properties:(const frameProperties_t *)ev0Properties hasChromaBias:(BOOL)bias atBand:(int)band params:(const GrayGhostParams *)params
 {
-  v14 = a3;
-  v18 = a4;
+  detectionCopy = detection;
+  bandsCopy = bands;
   if (self->_pendingResultCommandBuffer)
   {
     sub_29589D010(v102);
@@ -93,7 +93,7 @@ LABEL_17:
   }
 
   *objc_msgSend_contents(self->_grayGhostCountBuffer, v15, v16, v17) = 0;
-  if (!a9)
+  if (!params)
   {
     sub_29589D430(v102);
     goto LABEL_17;
@@ -117,32 +117,32 @@ LABEL_17:
 
   v33 = v30;
   objc_msgSend_setComputePipelineState_(v30, v31, self->_shaders->_computeGrayGhostCount, v32);
-  if (!a5->meta.isEVMFrame)
+  if (!properties->meta.isEVMFrame)
   {
     sub_29589D0AC(v33, v26, v102);
     goto LABEL_17;
   }
 
-  if (a6->meta.isEVMFrame)
+  if (ev0Properties->meta.isEVMFrame)
   {
     sub_29589D224(v33, v26, v102);
     goto LABEL_17;
   }
 
-  if (!a8)
+  if (!band)
   {
     sub_29589D168(v33, v26, v102);
     goto LABEL_17;
   }
 
   v96 = v26;
-  v34 = v14[a8 + 42];
-  v93 = a7;
-  v35 = v14[a8 + 62];
-  v98 = v18;
-  v36 = v18[a8 + 42];
-  v97 = v14;
-  v37 = v98[a8 + 62];
+  v34 = detectionCopy[band + 42];
+  biasCopy = bias;
+  v35 = detectionCopy[band + 62];
+  v98 = bandsCopy;
+  v36 = bandsCopy[band + 42];
+  v97 = detectionCopy;
+  v37 = v98[band + 62];
   v38 = v36;
   v94 = v35;
   v95 = v34;
@@ -150,7 +150,7 @@ LABEL_17:
   objc_msgSend_setTexture_atIndex_(v33, v40, v94, 1);
   objc_msgSend_setTexture_atIndex_(v33, v41, v38, 2);
   objc_msgSend_setTexture_atIndex_(v33, v42, v37, 3);
-  v43 = sub_295820728(&a5->meta.exposureParams, &a6->meta.exposureParams, a5);
+  v43 = sub_295820728(&properties->meta.exposureParams, &ev0Properties->meta.exposureParams, properties);
   v47 = objc_msgSend_width(v37, v44, v45, v46);
   v51 = objc_msgSend_width(v37, v48, v49, v50);
   v55 = objc_msgSend_height(v37, v52, v53, v54);
@@ -159,15 +159,15 @@ LABEL_17:
   v60.i64[1] = v59;
   v61.i64[0] = v47;
   v61.i64[1] = v51;
-  v62 = *&a5[1].meta.exposureParams.luxLevel;
-  v103[0] = *&a5[1].meta.exposureParams.conversion_gain;
+  v62 = *&properties[1].meta.exposureParams.luxLevel;
+  v103[0] = *&properties[1].meta.exposureParams.conversion_gain;
   v103[1] = v62;
   v63 = vcvtq_u32_f32(vmulq_f32(vcvt_hight_f32_f64(vcvt_f32_f64(vcvtq_f64_u64(v61)), vcvtq_f64_u64(v60)), xmmword_2959D5F10));
-  v64 = *&a6[1].meta.exposureParams.conversion_gain;
-  v65 = *&a6[1].meta.exposureParams.luxLevel;
-  v103[2] = *&a5[1].meta.exposureParams.CCT;
+  v64 = *&ev0Properties[1].meta.exposureParams.conversion_gain;
+  v65 = *&ev0Properties[1].meta.exposureParams.luxLevel;
+  v103[2] = *&properties[1].meta.exposureParams.CCT;
   v103[3] = v64;
-  v66 = *&a6[1].meta.exposureParams.CCT;
+  v66 = *&ev0Properties[1].meta.exposureParams.CCT;
   v103[4] = v65;
   v103[5] = v66;
   v104 = 0u;
@@ -175,8 +175,8 @@ LABEL_17:
   *&v104 = v43;
   v106 = xmmword_2959D5F20;
   v107 = 0u;
-  LOBYTE(v107) = v93;
-  *(&v107 + 4) = *a9;
+  LOBYTE(v107) = biasCopy;
+  *(&v107 + 4) = *params;
   objc_msgSend_setBytes_length_atIndex_(v33, v67, v103, 160, 0);
   objc_msgSend_setBuffer_offset_atIndex_(v33, v68, self->_grayGhostCountBuffer, 0, 1);
   v102[0] = (objc_msgSend_width(v37, v69, v70, v71) + 7) >> 3;
@@ -194,8 +194,8 @@ LABEL_17:
   v87 = objc_msgSend_width(v38, v84, v85, v86);
   self->_totalPixels = objc_msgSend_height(v38, v88, v89, v90) * v87;
 
-  v14 = v97;
-  v18 = v98;
+  detectionCopy = v97;
+  bandsCopy = v98;
 
   v91 = 0;
 LABEL_9:

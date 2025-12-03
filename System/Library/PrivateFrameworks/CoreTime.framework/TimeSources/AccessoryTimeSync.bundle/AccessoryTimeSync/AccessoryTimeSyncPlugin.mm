@@ -1,17 +1,17 @@
 @interface AccessoryTimeSyncPlugin
-- (AccessoryTimeSyncPlugin)initWithClock:(id)a3 daemonCore:(id)a4;
+- (AccessoryTimeSyncPlugin)initWithClock:(id)clock daemonCore:(id)core;
 - (BOOL)_connectToServer;
-- (BOOL)_sendTimeWithUncertainty:(double)a3;
+- (BOOL)_sendTimeWithUncertainty:(double)uncertainty;
 - (BOOL)attemptConnect;
 - (TMDaemonCore)daemonCore;
 - (void)_addNotificationObservers;
 - (void)_getTimeFromAccessory;
 - (void)_sendClientArrivedToServer;
-- (void)_setSystemTime:(id)a3;
+- (void)_setSystemTime:(id)time;
 - (void)dealloc;
-- (void)didSetTime:(double)a3 withUncertainty:(double)a4 fromSource:(id)a5 lastInput:(id)a6;
-- (void)sendXPCMessage:(id)a3;
-- (void)setSyncState:(int)a3;
+- (void)didSetTime:(double)time withUncertainty:(double)uncertainty fromSource:(id)source lastInput:(id)input;
+- (void)sendXPCMessage:(id)message;
+- (void)setSyncState:(int)state;
 @end
 
 @implementation AccessoryTimeSyncPlugin
@@ -23,10 +23,10 @@
   return WeakRetained;
 }
 
-- (AccessoryTimeSyncPlugin)initWithClock:(id)a3 daemonCore:(id)a4
+- (AccessoryTimeSyncPlugin)initWithClock:(id)clock daemonCore:(id)core
 {
-  v7 = a3;
-  v8 = a4;
+  clockCopy = clock;
+  coreCopy = core;
   v28.receiver = self;
   v28.super_class = AccessoryTimeSyncPlugin;
   v9 = [(AccessoryTimeSyncPlugin *)&v28 init];
@@ -38,15 +38,15 @@
       _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "in init", buf, 2u);
     }
 
-    objc_storeWeak(v9 + 5, v8);
-    objc_storeStrong(v9 + 6, a3);
+    objc_storeWeak(v9 + 5, coreCopy);
+    objc_storeStrong(v9 + 6, clock);
     v10 = *(v9 + 1);
     *(v9 + 1) = 0;
 
     [v9 _addNotificationObservers];
     WeakRetained = objc_loadWeakRetained(v9 + 5);
-    v12 = [WeakRetained workloop];
-    v13 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v12);
+    workloop = [WeakRetained workloop];
+    v13 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, workloop);
     v14 = *(v9 + 2);
     *(v9 + 2) = v13;
 
@@ -61,8 +61,8 @@
     dispatch_source_set_event_handler(v15, handler);
     dispatch_activate(*(v9 + 2));
     v17 = objc_loadWeakRetained(v9 + 5);
-    v18 = [v17 workloop];
-    v19 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v18);
+    workloop2 = [v17 workloop];
+    v19 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, workloop2);
     v20 = v16[3];
     v16[3] = v19;
 
@@ -129,19 +129,19 @@ id __52__AccessoryTimeSyncPlugin_initWithClock_daemonCore___block_invoke_6(uint6
   CFNotificationCenterAddObserver(v5, self, handleNotification, @"com.apple.coreaccessories.AcctoolTestSendTime", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
-- (void)_setSystemTime:(id)a3
+- (void)_setSystemTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   WeakRetained = objc_loadWeakRetained(&self->_daemonCore);
-  v6 = [WeakRetained workloop];
-  dispatch_assert_queue_V2(v6);
+  workloop = [WeakRetained workloop];
+  dispatch_assert_queue_V2(workloop);
 
   if ([(AccessoryTimeSyncPlugin *)self syncState])
   {
     [(AccessoryTimeSyncPlugin *)self setSyncState:2];
-    v7 = [(TMMonotonicClock *)self->_clock machTime];
+    machTime = [(TMMonotonicClock *)self->_clock machTime];
     v8 = malloc_type_calloc(1uLL, 0x30uLL, 0x1000040EED21634uLL);
-    bytes = xpc_data_get_bytes(v4, v8, 0, 0x30uLL);
+    bytes = xpc_data_get_bytes(timeCopy, v8, 0, 0x30uLL);
     *&v10 = 0xAAAAAAAAAAAAAAAALL;
     *(&v10 + 1) = 0xAAAAAAAAAAAAAAAALL;
     v32[1] = v10;
@@ -199,7 +199,7 @@ id __52__AccessoryTimeSyncPlugin_initWithClock_daemonCore___block_invoke_6(uint6
       objc_initWeak(location, self);
       clock = self->_clock;
       v17 = objc_loadWeakRetained(&self->_daemonCore);
-      v18 = [v17 workloop];
+      workloop2 = [v17 workloop];
       v19[0] = _NSConcreteStackBlock;
       v19[1] = 3221225472;
       v19[2] = __42__AccessoryTimeSyncPlugin__setSystemTime___block_invoke_12;
@@ -211,7 +211,7 @@ id __52__AccessoryTimeSyncPlugin_initWithClock_daemonCore___block_invoke_6(uint6
       v21 = *buf;
       v22 = v35;
       v19[4] = self;
-      [(TMMonotonicClock *)clock montonicTimeForMachTime:v7 toQueue:v18 withCompletionHandler:v19];
+      [(TMMonotonicClock *)clock montonicTimeForMachTime:machTime toQueue:workloop2 withCompletionHandler:v19];
 
       objc_destroyWeak(&v20);
       objc_destroyWeak(location);
@@ -376,16 +376,16 @@ id __42__AccessoryTimeSyncPlugin__setSystemTime___block_invoke_16(uint64_t a1)
   return v15;
 }
 
-- (BOOL)_sendTimeWithUncertainty:(double)a3
+- (BOOL)_sendTimeWithUncertainty:(double)uncertainty
 {
   WeakRetained = objc_loadWeakRetained(&self->_daemonCore);
-  v6 = [WeakRetained workloop];
-  dispatch_assert_queue_V2(v6);
+  workloop = [WeakRetained workloop];
+  dispatch_assert_queue_V2(workloop);
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    *&buf[4] = a3;
+    *&buf[4] = uncertainty;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "AccessoryTimeSyncPlugin in _sendTimeWithUncertainty:%lf", buf, 0xCu);
   }
 
@@ -395,7 +395,7 @@ id __42__AccessoryTimeSyncPlugin__setSystemTime___block_invoke_16(uint64_t a1)
   v25 = v7;
   *buf = v7;
   v8 = sntp_timestamp_gettime();
-  create_sntp_time_payload(v8, buf, a3);
+  create_sntp_time_payload(v8, buf, uncertainty);
   *&v9 = 0xAAAAAAAAAAAAAAAALL;
   *(&v9 + 1) = 0xAAAAAAAAAAAAAAAALL;
   v18 = v9;
@@ -476,8 +476,8 @@ id __52__AccessoryTimeSyncPlugin__sendTimeWithUncertainty___block_invoke(uint64_
 - (void)_getTimeFromAccessory
 {
   WeakRetained = objc_loadWeakRetained(&self->_daemonCore);
-  v4 = [WeakRetained workloop];
-  dispatch_assert_queue_V2(v4);
+  workloop = [WeakRetained workloop];
+  dispatch_assert_queue_V2(workloop);
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -489,9 +489,9 @@ id __52__AccessoryTimeSyncPlugin__sendTimeWithUncertainty___block_invoke(uint64_
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(AccessoryTimeSyncPlugin *)self syncState];
+      syncState = [(AccessoryTimeSyncPlugin *)self syncState];
       *buf = 67109120;
-      *&buf[4] = v5;
+      *&buf[4] = syncState;
       _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "_getTimeFromAccessory called in sync state: %d, ignoring", buf, 8u);
     }
   }
@@ -579,9 +579,9 @@ void __48__AccessoryTimeSyncPlugin__getTimeFromAccessory__block_invoke(uint64_t 
   return result;
 }
 
-- (void)sendXPCMessage:(id)a3
+- (void)sendXPCMessage:(id)message
 {
-  message = a3;
+  message = message;
   if (!self->isConnectionActive || (serverConnection = self->_serverConnection) == 0)
   {
     if (![(AccessoryTimeSyncPlugin *)self attemptConnect])
@@ -620,15 +620,15 @@ LABEL_4:
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_daemonCore);
-    v8 = [WeakRetained workloop];
-    if (!v8)
+    workloop = [WeakRetained workloop];
+    if (!workloop)
     {
       [AccessoryTimeSyncPlugin _connectToServer];
     }
 
     v9 = objc_loadWeakRetained(&self->_daemonCore);
-    v10 = [v9 workloop];
-    mach_service = xpc_connection_create_mach_service("com.apple.timed.accessory-timesync", v10, 0);
+    workloop2 = [v9 workloop];
+    mach_service = xpc_connection_create_mach_service("com.apple.timed.accessory-timesync", workloop2, 0);
     v12 = self->_serverConnection;
     self->_serverConnection = mach_service;
 
@@ -755,25 +755,25 @@ LABEL_5:
 LABEL_18:
 }
 
-- (void)didSetTime:(double)a3 withUncertainty:(double)a4 fromSource:(id)a5 lastInput:(id)a6
+- (void)didSetTime:(double)time withUncertainty:(double)uncertainty fromSource:(id)source lastInput:(id)input
 {
-  v10 = a5;
-  v11 = a6;
+  sourceCopy = source;
+  inputCopy = input;
   objc_initWeak(&location, self);
   WeakRetained = objc_loadWeakRetained(&self->_daemonCore);
-  v13 = [WeakRetained workloop];
+  workloop = [WeakRetained workloop];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = __75__AccessoryTimeSyncPlugin_didSetTime_withUncertainty_fromSource_lastInput___block_invoke;
   v16[3] = &unk_C5F0;
   objc_copyWeak(v19, &location);
-  v19[1] = *&a3;
-  v19[2] = *&a4;
-  v17 = v10;
-  v18 = v11;
-  v14 = v11;
-  v15 = v10;
-  dispatch_async(v13, v16);
+  v19[1] = *&time;
+  v19[2] = *&uncertainty;
+  v17 = sourceCopy;
+  v18 = inputCopy;
+  v14 = inputCopy;
+  v15 = sourceCopy;
+  dispatch_async(workloop, v16);
 
   objc_destroyWeak(v19);
   objc_destroyWeak(&location);
@@ -978,11 +978,11 @@ LABEL_37:
 LABEL_11:
 }
 
-- (void)setSyncState:(int)a3
+- (void)setSyncState:(int)state
 {
   WeakRetained = objc_loadWeakRetained(&self->_daemonCore);
-  v6 = [WeakRetained workloop];
-  dispatch_assert_queue_V2(v6);
+  workloop = [WeakRetained workloop];
+  dispatch_assert_queue_V2(workloop);
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -990,12 +990,12 @@ LABEL_11:
     v13[0] = 67109376;
     v13[1] = syncState;
     v14 = 1024;
-    v15 = a3;
+    stateCopy = state;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "cmd,syncStateTransition,old,%d,new,%d", v13, 0xEu);
   }
 
   v8 = self->_syncState;
-  if (a3 && !v8)
+  if (state && !v8)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
@@ -1009,11 +1009,11 @@ LABEL_11:
     v12 = 25000000;
 LABEL_15:
     dispatch_source_set_timer(syncStateTimer, v9, v11, v12);
-    self->_syncState = a3;
+    self->_syncState = state;
     return;
   }
 
-  if (!a3 && v8 || a3 == 2 && v8 == 1)
+  if (!state && v8 || state == 2 && v8 == 1)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {

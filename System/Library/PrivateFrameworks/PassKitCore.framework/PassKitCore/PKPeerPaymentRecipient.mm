@@ -1,59 +1,59 @@
 @interface PKPeerPaymentRecipient
-+ (PKPeerPaymentRecipient)recipientWithDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PKPeerPaymentRecipient)initWithCoder:(id)a3;
-- (PKPeerPaymentRecipient)initWithDictionary:(id)a3;
++ (PKPeerPaymentRecipient)recipientWithDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (PKPeerPaymentRecipient)initWithCoder:(id)coder;
+- (PKPeerPaymentRecipient)initWithDictionary:(id)dictionary;
 - (id)cacheableCopy;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAddress:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAddress:(id)address;
 @end
 
 @implementation PKPeerPaymentRecipient
 
-+ (PKPeerPaymentRecipient)recipientWithDictionary:(id)a3
++ (PKPeerPaymentRecipient)recipientWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDictionary:v4];
+  dictionaryCopy = dictionary;
+  v5 = [[self alloc] initWithDictionary:dictionaryCopy];
 
   return v5;
 }
 
-- (PKPeerPaymentRecipient)initWithDictionary:(id)a3
+- (PKPeerPaymentRecipient)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v29.receiver = self;
   v29.super_class = PKPeerPaymentRecipient;
   v5 = [(PKPeerPaymentRecipient *)&v29 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"recipientStatus"];
+    v6 = [dictionaryCopy PKStringForKey:@"recipientStatus"];
     v5->_status = PKPeerPaymentRecipientStatusFromString(v6);
 
-    v7 = [v4 PKStringForKey:@"recipientStatusReason"];
+    v7 = [dictionaryCopy PKStringForKey:@"recipientStatusReason"];
     v5->_statusReason = PKPeerPaymentRecipientStatusReasonFromString(v7);
 
-    v8 = [v4 PKStringForKey:@"recipientIdentifier"];
+    v8 = [dictionaryCopy PKStringForKey:@"recipientIdentifier"];
     v9 = [v8 copy];
     identifier = v5->_identifier;
     v5->_identifier = v9;
 
-    v11 = [v4 PKStringForKey:@"receiveMethod"];
+    v11 = [dictionaryCopy PKStringForKey:@"receiveMethod"];
     v5->_receiveMethod = [@"iMessage" isEqualToString:v11];
 
-    v12 = [v4 PKStringForKey:@"receiveCurrency"];
+    v12 = [dictionaryCopy PKStringForKey:@"receiveCurrency"];
     v13 = [v12 copy];
     receiveCurrency = v5->_receiveCurrency;
     v5->_receiveCurrency = v13;
 
-    v15 = [v4 PKStringForKey:@"recipientAddress"];
+    v15 = [dictionaryCopy PKStringForKey:@"recipientAddress"];
     v16 = [v15 copy];
     idsQualifiedNormalizedAddress = v5->_idsQualifiedNormalizedAddress;
     v5->_idsQualifiedNormalizedAddress = v16;
 
-    v18 = [v4 PKStringForKey:@"minimumReceiveAmount"];
+    v18 = [dictionaryCopy PKStringForKey:@"minimumReceiveAmount"];
     v19 = v18;
     if (v18)
     {
@@ -63,7 +63,7 @@
     minimumReceiveAmount = v5->_minimumReceiveAmount;
     v5->_minimumReceiveAmount = v18;
 
-    v21 = [v4 PKStringForKey:@"maximumReceiveAmount"];
+    v21 = [dictionaryCopy PKStringForKey:@"maximumReceiveAmount"];
     v22 = v21;
     if (v21)
     {
@@ -73,7 +73,7 @@
     maximumReceiveAmount = v5->_maximumReceiveAmount;
     v5->_maximumReceiveAmount = v21;
 
-    v24 = [v4 PKNumberForKey:@"allowsFormalPaymentRequests"];
+    v24 = [dictionaryCopy PKNumberForKey:@"allowsFormalPaymentRequests"];
     v25 = v24;
     if (!v24)
     {
@@ -82,7 +82,7 @@
 
     v5->_allowsFormalPaymentRequests = [v24 BOOLValue];
 
-    v26 = [v4 PKDateForKey:@"cacheUntil"];
+    v26 = [dictionaryCopy PKDateForKey:@"cacheUntil"];
     cacheUntil = v5->_cacheUntil;
     v5->_cacheUntil = v26;
   }
@@ -90,46 +90,46 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 24) = self->_status;
   *(v5 + 32) = self->_statusReason;
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
   *(v5 + 40) = self->_receiveMethod;
-  v8 = [(NSString *)self->_receiveCurrency copyWithZone:a3];
+  v8 = [(NSString *)self->_receiveCurrency copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
-  v10 = [(NSDecimalNumber *)self->_minimumReceiveAmount copyWithZone:a3];
+  v10 = [(NSDecimalNumber *)self->_minimumReceiveAmount copyWithZone:zone];
   v11 = *(v5 + 56);
   *(v5 + 56) = v10;
 
-  v12 = [(NSDecimalNumber *)self->_maximumReceiveAmount copyWithZone:a3];
+  v12 = [(NSDecimalNumber *)self->_maximumReceiveAmount copyWithZone:zone];
   v13 = *(v5 + 64);
   *(v5 + 64) = v12;
 
   *(v5 + 8) = self->_allowsFormalPaymentRequests;
-  v14 = [(NSDate *)self->_cacheUntil copyWithZone:a3];
+  v14 = [(NSDate *)self->_cacheUntil copyWithZone:zone];
   v15 = *(v5 + 72);
   *(v5 + 72) = v14;
 
-  v16 = [(NSString *)self->_conversationAddress copyWithZone:a3];
+  v16 = [(NSString *)self->_conversationAddress copyWithZone:zone];
   v17 = *(v5 + 80);
   *(v5 + 80) = v16;
 
-  v18 = [(NSString *)self->_normalizedAddress copyWithZone:a3];
+  v18 = [(NSString *)self->_normalizedAddress copyWithZone:zone];
   v19 = *(v5 + 88);
   *(v5 + 88) = v18;
 
-  v20 = [(NSString *)self->_idsQualifiedNormalizedAddress copyWithZone:a3];
+  v20 = [(NSString *)self->_idsQualifiedNormalizedAddress copyWithZone:zone];
   v21 = *(v5 + 96);
   *(v5 + 96) = v20;
 
-  v22 = [(NSString *)self->_displayName copyWithZone:a3];
+  v22 = [(NSString *)self->_displayName copyWithZone:zone];
   v23 = *(v5 + 104);
   *(v5 + 104) = v22;
 
@@ -144,55 +144,55 @@
   return v2;
 }
 
-- (PKPeerPaymentRecipient)initWithCoder:(id)a3
+- (PKPeerPaymentRecipient)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = PKPeerPaymentRecipient;
   v5 = [(PKPeerPaymentRecipient *)&v27 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recipientStatus"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recipientStatus"];
     v5->_status = PKPeerPaymentRecipientStatusFromString(v6);
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recipientStatusReason"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recipientStatusReason"];
     v5->_statusReason = PKPeerPaymentRecipientStatusReasonFromString(v7);
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recipientIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recipientIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v8;
 
-    v5->_receiveMethod = [v4 decodeIntegerForKey:@"receiveMethod"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"receiveCurrency"];
+    v5->_receiveMethod = [coderCopy decodeIntegerForKey:@"receiveMethod"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"receiveCurrency"];
     receiveCurrency = v5->_receiveCurrency;
     v5->_receiveCurrency = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"minimumReceiveAmount"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"minimumReceiveAmount"];
     minimumReceiveAmount = v5->_minimumReceiveAmount;
     v5->_minimumReceiveAmount = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maximumReceiveAmount"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maximumReceiveAmount"];
     maximumReceiveAmount = v5->_maximumReceiveAmount;
     v5->_maximumReceiveAmount = v14;
 
-    v5->_allowsFormalPaymentRequests = [v4 decodeBoolForKey:@"allowsFormalPaymentRequests"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cacheUntil"];
+    v5->_allowsFormalPaymentRequests = [coderCopy decodeBoolForKey:@"allowsFormalPaymentRequests"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cacheUntil"];
     cacheUntil = v5->_cacheUntil;
     v5->_cacheUntil = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"conversationAddress"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"conversationAddress"];
     conversationAddress = v5->_conversationAddress;
     v5->_conversationAddress = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"normalizedAddress"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"normalizedAddress"];
     normalizedAddress = v5->_normalizedAddress;
     v5->_normalizedAddress = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recipientAddress"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recipientAddress"];
     idsQualifiedNormalizedAddress = v5->_idsQualifiedNormalizedAddress;
     v5->_idsQualifiedNormalizedAddress = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     displayName = v5->_displayName;
     v5->_displayName = v24;
   }
@@ -200,11 +200,11 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v11 = a3;
-  [v11 encodeObject:identifier forKey:@"recipientIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"recipientIdentifier"];
   status = self->_status;
   v6 = @"unknown";
   if (status == 2)
@@ -222,7 +222,7 @@
     v7 = v6;
   }
 
-  [v11 encodeObject:v7 forKey:@"recipientStatus"];
+  [coderCopy encodeObject:v7 forKey:@"recipientStatus"];
   statusReason = self->_statusReason;
   v9 = @"none";
   if (statusReason == 2)
@@ -240,32 +240,32 @@
     v10 = v9;
   }
 
-  [v11 encodeObject:v10 forKey:@"recipientStatusReason"];
-  [v11 encodeInteger:self->_receiveMethod forKey:@"receiveMethod"];
-  [v11 encodeObject:self->_receiveCurrency forKey:@"receiveCurrency"];
-  [v11 encodeObject:self->_minimumReceiveAmount forKey:@"minimumReceiveAmount"];
-  [v11 encodeObject:self->_maximumReceiveAmount forKey:@"maximumReceiveAmount"];
-  [v11 encodeBool:self->_allowsFormalPaymentRequests forKey:@"allowsFormalPaymentRequests"];
-  [v11 encodeObject:self->_cacheUntil forKey:@"cacheUntil"];
-  [v11 encodeObject:self->_conversationAddress forKey:@"conversationAddress"];
-  [v11 encodeObject:self->_normalizedAddress forKey:@"normalizedAddress"];
-  [v11 encodeObject:self->_idsQualifiedNormalizedAddress forKey:@"recipientAddress"];
-  [v11 encodeObject:self->_displayName forKey:@"displayName"];
+  [coderCopy encodeObject:v10 forKey:@"recipientStatusReason"];
+  [coderCopy encodeInteger:self->_receiveMethod forKey:@"receiveMethod"];
+  [coderCopy encodeObject:self->_receiveCurrency forKey:@"receiveCurrency"];
+  [coderCopy encodeObject:self->_minimumReceiveAmount forKey:@"minimumReceiveAmount"];
+  [coderCopy encodeObject:self->_maximumReceiveAmount forKey:@"maximumReceiveAmount"];
+  [coderCopy encodeBool:self->_allowsFormalPaymentRequests forKey:@"allowsFormalPaymentRequests"];
+  [coderCopy encodeObject:self->_cacheUntil forKey:@"cacheUntil"];
+  [coderCopy encodeObject:self->_conversationAddress forKey:@"conversationAddress"];
+  [coderCopy encodeObject:self->_normalizedAddress forKey:@"normalizedAddress"];
+  [coderCopy encodeObject:self->_idsQualifiedNormalizedAddress forKey:@"recipientAddress"];
+  [coderCopy encodeObject:self->_displayName forKey:@"displayName"];
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_identifier];
-  [v3 safelyAddObject:self->_receiveCurrency];
-  [v3 safelyAddObject:self->_minimumReceiveAmount];
-  [v3 safelyAddObject:self->_maximumReceiveAmount];
-  [v3 safelyAddObject:self->_cacheUntil];
-  [v3 safelyAddObject:self->_conversationAddress];
-  [v3 safelyAddObject:self->_normalizedAddress];
-  [v3 safelyAddObject:self->_idsQualifiedNormalizedAddress];
-  [v3 safelyAddObject:self->_displayName];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_identifier];
+  [array safelyAddObject:self->_receiveCurrency];
+  [array safelyAddObject:self->_minimumReceiveAmount];
+  [array safelyAddObject:self->_maximumReceiveAmount];
+  [array safelyAddObject:self->_cacheUntil];
+  [array safelyAddObject:self->_conversationAddress];
+  [array safelyAddObject:self->_normalizedAddress];
+  [array safelyAddObject:self->_idsQualifiedNormalizedAddress];
+  [array safelyAddObject:self->_displayName];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_status - v4 + 32 * v4;
   v6 = self->_statusReason - v5 + 32 * v5;
   v7 = self->_receiveMethod - v6 + 32 * v6;
@@ -274,9 +274,9 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -284,7 +284,7 @@
   }
 
   identifier = self->_identifier;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (identifier && v6)
   {
     if (([(NSString *)identifier isEqual:?]& 1) == 0)
@@ -299,7 +299,7 @@
   }
 
   receiveCurrency = self->_receiveCurrency;
-  v8 = v4[6];
+  v8 = equalCopy[6];
   if (receiveCurrency && v8)
   {
     if (([(NSString *)receiveCurrency isEqual:?]& 1) == 0)
@@ -314,7 +314,7 @@
   }
 
   minimumReceiveAmount = self->_minimumReceiveAmount;
-  v10 = v4[7];
+  v10 = equalCopy[7];
   if (minimumReceiveAmount && v10)
   {
     if (([(NSDecimalNumber *)minimumReceiveAmount isEqual:?]& 1) == 0)
@@ -329,7 +329,7 @@
   }
 
   maximumReceiveAmount = self->_maximumReceiveAmount;
-  v12 = v4[8];
+  v12 = equalCopy[8];
   if (maximumReceiveAmount && v12)
   {
     if (([(NSDecimalNumber *)maximumReceiveAmount isEqual:?]& 1) == 0)
@@ -344,7 +344,7 @@
   }
 
   cacheUntil = self->_cacheUntil;
-  v14 = v4[9];
+  v14 = equalCopy[9];
   if (cacheUntil && v14)
   {
     if (([(NSDate *)cacheUntil isEqual:?]& 1) == 0)
@@ -359,7 +359,7 @@
   }
 
   conversationAddress = self->_conversationAddress;
-  v16 = v4[10];
+  v16 = equalCopy[10];
   if (conversationAddress && v16)
   {
     if (([(NSString *)conversationAddress isEqual:?]& 1) == 0)
@@ -374,7 +374,7 @@
   }
 
   normalizedAddress = self->_normalizedAddress;
-  v18 = v4[11];
+  v18 = equalCopy[11];
   if (normalizedAddress && v18)
   {
     if (([(NSString *)normalizedAddress isEqual:?]& 1) == 0)
@@ -389,7 +389,7 @@
   }
 
   idsQualifiedNormalizedAddress = self->_idsQualifiedNormalizedAddress;
-  v20 = v4[12];
+  v20 = equalCopy[12];
   if (idsQualifiedNormalizedAddress && v20)
   {
     if (([(NSString *)idsQualifiedNormalizedAddress isEqual:?]& 1) == 0)
@@ -404,7 +404,7 @@
   }
 
   displayName = self->_displayName;
-  v22 = v4[13];
+  v22 = equalCopy[13];
   if (!displayName || !v22)
   {
     if (displayName == v22)
@@ -423,12 +423,12 @@ LABEL_51:
   }
 
 LABEL_47:
-  if (self->_status != v4[3] || self->_statusReason != v4[4] || self->_receiveMethod != v4[5])
+  if (self->_status != equalCopy[3] || self->_statusReason != equalCopy[4] || self->_receiveMethod != equalCopy[5])
   {
     goto LABEL_51;
   }
 
-  v23 = self->_allowsFormalPaymentRequests == *(v4 + 8);
+  v23 = self->_allowsFormalPaymentRequests == *(equalCopy + 8);
 LABEL_52:
 
   return v23;
@@ -501,11 +501,11 @@ LABEL_52:
   return v3;
 }
 
-- (void)setAddress:(id)a3
+- (void)setAddress:(id)address
 {
-  v4 = a3;
+  addressCopy = address;
   conversationAddress = self->_conversationAddress;
-  v6 = v4;
+  v6 = addressCopy;
   v10 = v6;
   if (conversationAddress == v6)
   {

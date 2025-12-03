@@ -1,39 +1,39 @@
 @interface SXActionComponentViewPostProcessor
-- (SXActionComponentViewPostProcessor)initWithActionProvider:(id)a3 interactionHandlerFactory:(id)a4 interactionHandlerManager:(id)a5;
-- (void)processComponent:(id)a3 view:(id)a4;
+- (SXActionComponentViewPostProcessor)initWithActionProvider:(id)provider interactionHandlerFactory:(id)factory interactionHandlerManager:(id)manager;
+- (void)processComponent:(id)component view:(id)view;
 @end
 
 @implementation SXActionComponentViewPostProcessor
 
-- (SXActionComponentViewPostProcessor)initWithActionProvider:(id)a3 interactionHandlerFactory:(id)a4 interactionHandlerManager:(id)a5
+- (SXActionComponentViewPostProcessor)initWithActionProvider:(id)provider interactionHandlerFactory:(id)factory interactionHandlerManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  factoryCopy = factory;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = SXActionComponentViewPostProcessor;
   v12 = [(SXActionComponentViewPostProcessor *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_actionProvider, a3);
-    objc_storeStrong(&v13->_factory, a4);
-    objc_storeStrong(&v13->_interactionHandlerManager, a5);
+    objc_storeStrong(&v12->_actionProvider, provider);
+    objc_storeStrong(&v13->_factory, factory);
+    objc_storeStrong(&v13->_interactionHandlerManager, manager);
   }
 
   return v13;
 }
 
-- (void)processComponent:(id)a3 view:(id)a4
+- (void)processComponent:(id)component view:(id)view
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  viewCopy = view;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [a3 additions];
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  additions = [component additions];
+  v8 = [additions countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -44,27 +44,27 @@
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(additions);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
         if ([v12 range] == 0x7FFFFFFFFFFFFFFFLL)
         {
-          v13 = [(SXActionComponentViewPostProcessor *)self actionProvider];
-          v14 = [v13 actionForAddition:v12];
+          actionProvider = [(SXActionComponentViewPostProcessor *)self actionProvider];
+          v14 = [actionProvider actionForAddition:v12];
 
           if (v14)
           {
-            v15 = [(SXActionComponentViewPostProcessor *)self factory];
-            v16 = [v15 interactionHandlerForAction:v14];
+            factory = [(SXActionComponentViewPostProcessor *)self factory];
+            v16 = [factory interactionHandlerForAction:v14];
 
-            v17 = [(SXActionComponentViewPostProcessor *)self interactionHandlerManager];
-            [v17 addInteractionHandler:v16 componentView:v6 types:10];
+            interactionHandlerManager = [(SXActionComponentViewPostProcessor *)self interactionHandlerManager];
+            [interactionHandlerManager addInteractionHandler:v16 componentView:viewCopy types:10];
           }
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [additions countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);

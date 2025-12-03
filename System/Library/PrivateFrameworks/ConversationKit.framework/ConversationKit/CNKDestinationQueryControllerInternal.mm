@@ -1,9 +1,9 @@
 @interface CNKDestinationQueryControllerInternal
 - (CNKDestinationQueryControllerDelegate)delegate;
 - (void)handleIDSStatusChanged;
-- (void)queryAddresses:(id)a3;
+- (void)queryAddresses:(id)addresses;
 - (void)reset;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation CNKDestinationQueryControllerInternal
@@ -15,29 +15,29 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   DestinationQueryController.delegate.setter();
 }
 
 - (void)handleIDSStatusChanged
 {
-  v2 = self;
+  selfCopy = self;
   DestinationQueryController.handleIDSStatusChanged()();
 }
 
 - (void)reset
 {
-  v2 = self;
+  selfCopy = self;
   DestinationQueryController.reset()();
 }
 
-- (void)queryAddresses:(id)a3
+- (void)queryAddresses:(id)addresses
 {
   v4 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   DestinationQueryController.queryAddresses(_:)(v4);
 }
 

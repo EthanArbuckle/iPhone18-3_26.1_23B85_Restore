@@ -1,13 +1,13 @@
 @interface ICAttributedStringRippler
-+ (BOOL)canAnimateString:(id)a3;
-- (BOOL)finishedForTimeIndex:(unint64_t)a3;
-- (ICAttributedStringRippler)initWithAttributedString:(id)a3 animatedRange:(_NSRange)a4;
++ (BOOL)canAnimateString:(id)string;
+- (BOOL)finishedForTimeIndex:(unint64_t)index;
+- (ICAttributedStringRippler)initWithAttributedString:(id)string animatedRange:(_NSRange)range;
 - (_NSRange)animatedRange;
-- (double)currentScaleForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5;
-- (id)attributedStringForTimeIndex:(unint64_t)a3;
-- (id)currentColorForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5;
-- (id)currentShadowColorForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5;
-- (unint64_t)currentIndexForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5 isFinished:(BOOL *)a6;
+- (double)currentScaleForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex;
+- (id)attributedStringForTimeIndex:(unint64_t)index;
+- (id)currentColorForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex;
+- (id)currentShadowColorForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex;
+- (unint64_t)currentIndexForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex isFinished:(BOOL *)finished;
 - (unint64_t)currentTimeIndex;
 - (unint64_t)finishedTimeIndex;
 - (void)generateValues;
@@ -16,28 +16,28 @@
 
 @implementation ICAttributedStringRippler
 
-- (ICAttributedStringRippler)initWithAttributedString:(id)a3 animatedRange:(_NSRange)a4
+- (ICAttributedStringRippler)initWithAttributedString:(id)string animatedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v7 = a3;
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
   v13.receiver = self;
   v13.super_class = ICAttributedStringRippler;
   v8 = [(ICAttributedStringRippler *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    [(ICAttributedStringRippler *)v8 setString:v7];
+    [(ICAttributedStringRippler *)v8 setString:stringCopy];
     [(ICAttributedStringRippler *)v9 setAnimatedRange:location, length];
     [(ICAttributedStringRippler *)v9 setPreFrames:0];
     [(ICAttributedStringRippler *)v9 setAnimateFrames:60];
     [(ICAttributedStringRippler *)v9 setPostFrames:10];
     [(ICAttributedStringRippler *)v9 setDelayFrames:3];
-    v10 = [v7 attribute:*MEMORY[0x1E69DB648] atIndex:0 effectiveRange:0];
+    v10 = [stringCopy attribute:*MEMORY[0x1E69DB648] atIndex:0 effectiveRange:0];
     [(ICAttributedStringRippler *)v9 setInitialFont:v10];
 
-    v11 = [(ICAttributedStringRippler *)v9 initialFont];
-    [v11 pointSize];
+    initialFont = [(ICAttributedStringRippler *)v9 initialFont];
+    [initialFont pointSize];
     [(ICAttributedStringRippler *)v9 setInitialFontSize:?];
 
     [(ICAttributedStringRippler *)v9 generateValues];
@@ -47,13 +47,13 @@
   return v9;
 }
 
-+ (BOOL)canAnimateString:(id)a3
++ (BOOL)canAnimateString:(id)string
 {
   v3 = MEMORY[0x1E696AB08];
-  v4 = a3;
-  v5 = [v3 ic_animatableTokenCharacterSet];
-  v6 = [v5 invertedSet];
-  v7 = [v4 rangeOfCharacterFromSet:v6];
+  stringCopy = string;
+  ic_animatableTokenCharacterSet = [v3 ic_animatableTokenCharacterSet];
+  invertedSet = [ic_animatableTokenCharacterSet invertedSet];
+  v7 = [stringCopy rangeOfCharacterFromSet:invertedSet];
 
   return v7 == 0x7FFFFFFFFFFFFFFFLL;
 }
@@ -61,41 +61,41 @@
 - (void)generateValues
 {
   v77 = *MEMORY[0x1E69E9840];
-  v66 = [MEMORY[0x1E695DF70] array];
-  v65 = [MEMORY[0x1E695DF70] array];
-  v64 = [MEMORY[0x1E695DF70] array];
-  v3 = [(ICAttributedStringRippler *)self preFrames];
-  v4 = [(ICAttributedStringRippler *)self animateFrames]+ v3;
-  v5 = [(ICAttributedStringRippler *)self postFrames];
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
+  preFrames = [(ICAttributedStringRippler *)self preFrames];
+  v4 = [(ICAttributedStringRippler *)self animateFrames]+ preFrames;
+  postFrames = [(ICAttributedStringRippler *)self postFrames];
   v60 = &v60;
-  v67 = v4 + v5;
-  v6 = 8 * (v4 + v5);
-  v7 = MEMORY[0x1EEE9AC00](v5);
+  v67 = v4 + postFrames;
+  v6 = 8 * (v4 + postFrames);
+  v7 = MEMORY[0x1EEE9AC00](postFrames);
   v8 = &v60 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   v9 = MEMORY[0x1EEE9AC00](v7);
   v11 = &v60 - v10;
   MEMORY[0x1EEE9AC00](v9);
   v13 = &v60 - v12;
   v14 = MEMORY[0x1E695DF70];
-  v15 = [(ICAttributedStringRippler *)self string];
-  v16 = [v14 arrayWithCapacity:{objc_msgSend(v15, "length")}];
+  string = [(ICAttributedStringRippler *)self string];
+  v16 = [v14 arrayWithCapacity:{objc_msgSend(string, "length")}];
 
-  v17 = [(ICAttributedStringRippler *)self animatedRange];
-  v18 = [(ICAttributedStringRippler *)self animatedRange];
-  if (v17 < v18 + v19)
+  animatedRange = [(ICAttributedStringRippler *)self animatedRange];
+  animatedRange2 = [(ICAttributedStringRippler *)self animatedRange];
+  if (animatedRange < animatedRange2 + v19)
   {
     v20 = *MEMORY[0x1E69DB650];
     do
     {
-      v21 = [(ICAttributedStringRippler *)self string];
-      v22 = [v21 attribute:v20 atIndex:v17 effectiveRange:0];
+      string2 = [(ICAttributedStringRippler *)self string];
+      v22 = [string2 attribute:v20 atIndex:animatedRange effectiveRange:0];
 
       [v16 addObject:v22];
-      ++v17;
-      v23 = [(ICAttributedStringRippler *)self animatedRange];
+      ++animatedRange;
+      animatedRange3 = [(ICAttributedStringRippler *)self animatedRange];
     }
 
-    while (v17 < v23 + v24);
+    while (animatedRange < animatedRange3 + v24);
   }
 
   if (v67)
@@ -106,30 +106,30 @@
   }
 
   v63 = v16;
-  v25 = [(ICAttributedStringRippler *)self preFrames];
-  v26 = [(ICAttributedStringRippler *)self preFrames];
-  if (v25 < [(ICAttributedStringRippler *)self animateFrames]+ v26)
+  preFrames2 = [(ICAttributedStringRippler *)self preFrames];
+  preFrames3 = [(ICAttributedStringRippler *)self preFrames];
+  if (preFrames2 < [(ICAttributedStringRippler *)self animateFrames]+ preFrames3)
   {
     do
     {
-      v27 = (v25 - [(ICAttributedStringRippler *)self preFrames]);
+      v27 = (preFrames2 - [(ICAttributedStringRippler *)self preFrames]);
       v28 = v27 / [(ICAttributedStringRippler *)self animateFrames];
       v29 = exp(v28 * -4.0);
       v30 = __sincos_stret(v28 * 13.6);
       v31 = 1.0 - v29 * (v30.__cosval + v30.__sinval * 0.3);
-      *&v13[8 * v25] = v31;
-      *&v8[8 * v25] = v31;
-      *&v11[8 * v25++] = v29 * 0.3 * v30.__sinval + 1.0;
-      v32 = [(ICAttributedStringRippler *)self preFrames];
+      *&v13[8 * preFrames2] = v31;
+      *&v8[8 * preFrames2] = v31;
+      *&v11[8 * preFrames2++] = v29 * 0.3 * v30.__sinval + 1.0;
+      preFrames4 = [(ICAttributedStringRippler *)self preFrames];
     }
 
-    while (v25 < [(ICAttributedStringRippler *)self animateFrames]+ v32);
+    while (preFrames2 < [(ICAttributedStringRippler *)self animateFrames]+ preFrames4);
   }
 
-  v33 = [(ICAttributedStringRippler *)self preFrames];
-  v34 = [(ICAttributedStringRippler *)self animateFrames]+ v33;
-  v35 = [(ICAttributedStringRippler *)self preFrames];
-  v36 = [(ICAttributedStringRippler *)self animateFrames]+ v35;
+  preFrames5 = [(ICAttributedStringRippler *)self preFrames];
+  v34 = [(ICAttributedStringRippler *)self animateFrames]+ preFrames5;
+  preFrames6 = [(ICAttributedStringRippler *)self preFrames];
+  v36 = [(ICAttributedStringRippler *)self animateFrames]+ preFrames6;
   if (v34 < v36 + [(ICAttributedStringRippler *)self postFrames])
   {
     do
@@ -137,22 +137,22 @@
       *&v8[8 * v34] = 0x3FF0000000000000;
       *&v13[8 * v34] = 0x3FF0000000000000;
       *&v11[8 * v34++] = 0x3FF0000000000000;
-      v37 = [(ICAttributedStringRippler *)self preFrames];
-      v38 = [(ICAttributedStringRippler *)self animateFrames]+ v37;
+      preFrames7 = [(ICAttributedStringRippler *)self preFrames];
+      v38 = [(ICAttributedStringRippler *)self animateFrames]+ preFrames7;
     }
 
     while (v34 < v38 + [(ICAttributedStringRippler *)self postFrames]);
   }
 
   v62 = v11;
-  v61 = self;
+  selfCopy = self;
   if (v67)
   {
     v39 = v13;
     for (i = 0; i != v67; ++i)
     {
-      v41 = [MEMORY[0x1E695DF70] array];
-      v42 = [MEMORY[0x1E695DF70] array];
+      array4 = [MEMORY[0x1E695DF70] array];
+      array5 = [MEMORY[0x1E695DF70] array];
       v72 = 0u;
       v73 = 0u;
       v74 = 0u;
@@ -182,10 +182,10 @@
             v50 = v48 * v70;
             v51 = v48 * v69;
             v52 = [MEMORY[0x1E69DC888] colorWithRed:v48 * v71 green:v48 * v70 blue:v48 * v69 alpha:1.0];
-            [v41 addObject:v52];
+            [array4 addObject:v52];
 
             v53 = [MEMORY[0x1E69DC888] colorWithRed:v49 green:v50 blue:v51 alpha:*&v39[8 * i]];
-            [v42 addObject:v53];
+            [array5 addObject:v53];
           }
 
           v44 = [v68 countByEnumeratingWithState:&v72 objects:v76 count:16];
@@ -194,21 +194,21 @@
         while (v44);
       }
 
-      [v66 addObject:v41];
-      [v65 addObject:v42];
+      [array addObject:array4];
+      [array2 addObject:array5];
       v54 = [MEMORY[0x1E696AD98] numberWithDouble:*&v62[8 * i]];
-      [v64 addObject:v54];
+      [array3 addObject:v54];
     }
   }
 
-  v55 = v61;
-  v56 = v66;
-  [(ICAttributedStringRippler *)v61 setColors:v66];
-  v57 = v65;
-  [(ICAttributedStringRippler *)v55 setShadowColors:v65];
+  v55 = selfCopy;
+  v56 = array;
+  [(ICAttributedStringRippler *)selfCopy setColors:array];
+  v57 = array2;
+  [(ICAttributedStringRippler *)v55 setShadowColors:array2];
   v58 = v55;
-  v59 = v64;
-  [(ICAttributedStringRippler *)v58 setScales:v64];
+  v59 = array3;
+  [(ICAttributedStringRippler *)v58 setScales:array3];
 }
 
 - (void)start
@@ -228,36 +228,36 @@
 
 - (unint64_t)finishedTimeIndex
 {
-  v3 = [(ICAttributedStringRippler *)self preFrames];
-  v4 = [(ICAttributedStringRippler *)self animateFrames]+ v3;
+  preFrames = [(ICAttributedStringRippler *)self preFrames];
+  v4 = [(ICAttributedStringRippler *)self animateFrames]+ preFrames;
   return v4 + [(ICAttributedStringRippler *)self postFrames];
 }
 
-- (unint64_t)currentIndexForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5 isFinished:(BOOL *)a6
+- (unint64_t)currentIndexForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex isFinished:(BOOL *)finished
 {
-  v11 = [(ICAttributedStringRippler *)self preFrames];
-  v12 = [(ICAttributedStringRippler *)self animateFrames]+ v11;
+  preFrames = [(ICAttributedStringRippler *)self preFrames];
+  v12 = [(ICAttributedStringRippler *)self animateFrames]+ preFrames;
   v13 = v12 + [(ICAttributedStringRippler *)self postFrames];
-  v14 = a5 % (2 * (v13 + [(ICAttributedStringRippler *)self delayFrames]* a4));
-  v15 = a3 + 1;
-  if (v14 >= [(ICAttributedStringRippler *)self delayFrames]* (a3 + 1) && v14 < v13 + [(ICAttributedStringRippler *)self delayFrames]* v15)
+  v14 = timeIndex % (2 * (v13 + [(ICAttributedStringRippler *)self delayFrames]* glyphs));
+  v15 = index + 1;
+  if (v14 >= [(ICAttributedStringRippler *)self delayFrames]* (index + 1) && v14 < v13 + [(ICAttributedStringRippler *)self delayFrames]* v15)
   {
-    v16 = [(ICAttributedStringRippler *)self delayFrames];
+    delayFrames = [(ICAttributedStringRippler *)self delayFrames];
     v17 = 0;
-    result = v14 - v16 * v15;
-    if (!a6)
+    result = v14 - delayFrames * v15;
+    if (!finished)
     {
       return result;
     }
 
 LABEL_9:
-    *a6 = v17;
+    *finished = v17;
     return result;
   }
 
-  v19 = [(ICAttributedStringRippler *)self delayFrames];
-  v17 = v14 >= v19 * v15;
-  if (v14 < v19 * v15)
+  delayFrames2 = [(ICAttributedStringRippler *)self delayFrames];
+  v17 = v14 >= delayFrames2 * v15;
+  if (v14 < delayFrames2 * v15)
   {
     result = 0;
   }
@@ -267,7 +267,7 @@ LABEL_9:
     result = v13 - 1;
   }
 
-  if (a6)
+  if (finished)
   {
     goto LABEL_9;
   }
@@ -275,60 +275,60 @@ LABEL_9:
   return result;
 }
 
-- (id)currentColorForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5
+- (id)currentColorForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex
 {
-  v9 = [(ICAttributedStringRippler *)self colors];
-  v10 = [v9 objectAtIndex:{-[ICAttributedStringRippler currentIndexForGlyphIndex:numberOfGlyphs:timeIndex:isFinished:](self, "currentIndexForGlyphIndex:numberOfGlyphs:timeIndex:isFinished:", a3, a4, a5, 0)}];
-  v11 = [v10 objectAtIndex:a3];
+  colors = [(ICAttributedStringRippler *)self colors];
+  v10 = [colors objectAtIndex:{-[ICAttributedStringRippler currentIndexForGlyphIndex:numberOfGlyphs:timeIndex:isFinished:](self, "currentIndexForGlyphIndex:numberOfGlyphs:timeIndex:isFinished:", index, glyphs, timeIndex, 0)}];
+  v11 = [v10 objectAtIndex:index];
 
   return v11;
 }
 
-- (id)currentShadowColorForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5
+- (id)currentShadowColorForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex
 {
-  v9 = [(ICAttributedStringRippler *)self shadowColors];
-  v10 = [v9 objectAtIndex:{-[ICAttributedStringRippler currentIndexForGlyphIndex:numberOfGlyphs:timeIndex:isFinished:](self, "currentIndexForGlyphIndex:numberOfGlyphs:timeIndex:isFinished:", a3, a4, a5, 0)}];
-  v11 = [v10 objectAtIndex:a3];
+  shadowColors = [(ICAttributedStringRippler *)self shadowColors];
+  v10 = [shadowColors objectAtIndex:{-[ICAttributedStringRippler currentIndexForGlyphIndex:numberOfGlyphs:timeIndex:isFinished:](self, "currentIndexForGlyphIndex:numberOfGlyphs:timeIndex:isFinished:", index, glyphs, timeIndex, 0)}];
+  v11 = [v10 objectAtIndex:index];
 
   return v11;
 }
 
-- (double)currentScaleForGlyphIndex:(unint64_t)a3 numberOfGlyphs:(unint64_t)a4 timeIndex:(unint64_t)a5
+- (double)currentScaleForGlyphIndex:(unint64_t)index numberOfGlyphs:(unint64_t)glyphs timeIndex:(unint64_t)timeIndex
 {
   if ([(ICAttributedStringRippler *)self reduceMotion])
   {
     return 1.0;
   }
 
-  v10 = [(ICAttributedStringRippler *)self scales];
-  v11 = [v10 objectAtIndex:{-[ICAttributedStringRippler currentIndexForGlyphIndex:numberOfGlyphs:timeIndex:isFinished:](self, "currentIndexForGlyphIndex:numberOfGlyphs:timeIndex:isFinished:", a3, a4, a5, 0)}];
+  scales = [(ICAttributedStringRippler *)self scales];
+  v11 = [scales objectAtIndex:{-[ICAttributedStringRippler currentIndexForGlyphIndex:numberOfGlyphs:timeIndex:isFinished:](self, "currentIndexForGlyphIndex:numberOfGlyphs:timeIndex:isFinished:", index, glyphs, timeIndex, 0)}];
   [v11 doubleValue];
   v13 = v12;
 
   return v13;
 }
 
-- (id)attributedStringForTimeIndex:(unint64_t)a3
+- (id)attributedStringForTimeIndex:(unint64_t)index
 {
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__42;
   v17 = __Block_byref_object_dispose__42;
-  v5 = [(ICAttributedStringRippler *)self string];
-  v18 = [v5 mutableCopy];
+  string = [(ICAttributedStringRippler *)self string];
+  v18 = [string mutableCopy];
 
-  v6 = [(ICAttributedStringRippler *)self string];
-  v7 = [v6 string];
-  v8 = [(ICAttributedStringRippler *)self animatedRange];
+  string2 = [(ICAttributedStringRippler *)self string];
+  v6String = [string2 string];
+  animatedRange = [(ICAttributedStringRippler *)self animatedRange];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __58__ICAttributedStringRippler_attributedStringForTimeIndex___block_invoke;
   v12[3] = &unk_1E846BBB0;
   v12[4] = self;
   v12[5] = &v13;
-  v12[6] = a3;
-  [v7 enumerateSubstringsInRange:v8 options:v9 usingBlock:{2, v12}];
+  v12[6] = index;
+  [v6String enumerateSubstringsInRange:animatedRange options:v9 usingBlock:{2, v12}];
 
   v10 = [v14[5] copy];
   _Block_object_dispose(&v13, 8);
@@ -360,13 +360,13 @@ void __58__ICAttributedStringRippler_attributedStringForTimeIndex___block_invoke
   [*(*(*(a1 + 40) + 8) + 40) setAttributes:v20 range:{a3, a4}];
 }
 
-- (BOOL)finishedForTimeIndex:(unint64_t)a3
+- (BOOL)finishedForTimeIndex:(unint64_t)index
 {
   v10 = 0;
-  v5 = [(ICAttributedStringRippler *)self animatedRange];
+  animatedRange = [(ICAttributedStringRippler *)self animatedRange];
   v7 = v6;
   [(ICAttributedStringRippler *)self animatedRange];
-  [(ICAttributedStringRippler *)self currentIndexForGlyphIndex:v5 + v7 numberOfGlyphs:v8 timeIndex:a3 isFinished:&v10];
+  [(ICAttributedStringRippler *)self currentIndexForGlyphIndex:animatedRange + v7 numberOfGlyphs:v8 timeIndex:index isFinished:&v10];
   return v10;
 }
 

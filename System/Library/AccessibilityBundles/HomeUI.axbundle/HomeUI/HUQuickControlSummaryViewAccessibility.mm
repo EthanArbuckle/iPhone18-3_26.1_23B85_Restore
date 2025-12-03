@@ -1,42 +1,42 @@
 @interface HUQuickControlSummaryViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
-- (void)setPrimaryText:(id)a3;
-- (void)setSecondaryText:(id)a3;
+- (void)setPrimaryText:(id)text;
+- (void)setSecondaryText:(id)text;
 @end
 
 @implementation HUQuickControlSummaryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUQuickControlSummaryView" hasInstanceMethod:@"primaryLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlSummaryView" hasInstanceMethod:@"secondaryLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlSummaryView" hasInstanceMethod:@"iconView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlSummaryView" hasInstanceMethod:@"setPrimaryText:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HUQuickControlSummaryView" hasInstanceMethod:@"setSecondaryText:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"HUIconView" hasInstanceMethod:@"iconDescriptor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlSummaryView" hasInstanceMethod:@"primaryText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlSummaryView" hasInstanceMethod:@"secondaryText" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUQuickControlSummaryView" hasInstanceMethod:@"primaryLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlSummaryView" hasInstanceMethod:@"secondaryLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlSummaryView" hasInstanceMethod:@"iconView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlSummaryView" hasInstanceMethod:@"setPrimaryText:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlSummaryView" hasInstanceMethod:@"setSecondaryText:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"HUIconView" hasInstanceMethod:@"iconDescriptor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlSummaryView" hasInstanceMethod:@"primaryText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlSummaryView" hasInstanceMethod:@"secondaryText" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(HUQuickControlSummaryViewAccessibility *)self safeValueForKey:@"iconView"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
   v5 = [(HUQuickControlSummaryViewAccessibility *)self safeValueForKey:@"primaryLabel"];
-  v6 = [v5 accessibilityLabel];
+  accessibilityLabel2 = [v5 accessibilityLabel];
 
-  v7 = [v4 lowercaseString];
-  v8 = [v6 lowercaseString];
-  v9 = [v7 isEqualToString:v8];
+  lowercaseString = [accessibilityLabel lowercaseString];
+  lowercaseString2 = [accessibilityLabel2 lowercaseString];
+  v9 = [lowercaseString isEqualToString:lowercaseString2];
 
   if (v9)
   {
-    v10 = v4;
+    v10 = accessibilityLabel;
   }
 
   else
@@ -52,9 +52,9 @@
 - (id)accessibilityValue
 {
   v2 = [(HUQuickControlSummaryViewAccessibility *)self safeValueForKey:@"secondaryLabel"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (unint64_t)accessibilityTraits
@@ -64,11 +64,11 @@
   return *MEMORY[0x29EDC7F80] | [(HUQuickControlSummaryViewAccessibility *)&v3 accessibilityTraits];
 }
 
-- (void)setPrimaryText:(id)a3
+- (void)setPrimaryText:(id)text
 {
   v9.receiver = self;
   v9.super_class = HUQuickControlSummaryViewAccessibility;
-  [(HUQuickControlSummaryViewAccessibility *)&v9 setPrimaryText:a3];
+  [(HUQuickControlSummaryViewAccessibility *)&v9 setPrimaryText:text];
   v4 = MEMORY[0x29EDBA0F8];
   v5 = [(HUQuickControlSummaryViewAccessibility *)self safeValueForKeyPath:@"iconView.iconDescriptor.identifier"];
   v6 = [(HUQuickControlSummaryViewAccessibility *)self safeValueForKeyPath:@"primaryText"];
@@ -77,11 +77,11 @@
   [(HUQuickControlSummaryViewAccessibility *)self setAccessibilityIdentifier:v8];
 }
 
-- (void)setSecondaryText:(id)a3
+- (void)setSecondaryText:(id)text
 {
   v9.receiver = self;
   v9.super_class = HUQuickControlSummaryViewAccessibility;
-  [(HUQuickControlSummaryViewAccessibility *)&v9 setSecondaryText:a3];
+  [(HUQuickControlSummaryViewAccessibility *)&v9 setSecondaryText:text];
   v4 = MEMORY[0x29EDBA0F8];
   v5 = [(HUQuickControlSummaryViewAccessibility *)self safeValueForKeyPath:@"iconView.iconDescriptor.identifier"];
   v6 = [(HUQuickControlSummaryViewAccessibility *)self safeValueForKeyPath:@"primaryText"];

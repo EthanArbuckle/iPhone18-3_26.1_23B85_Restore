@@ -19,7 +19,7 @@
 - (NSDictionary)SDKDictionary
 {
   v2 = *&self->inner[OBJC_IVAR____TtCE19ExtensionFoundationCSo30_EXAppExtensionPointEnumerator14ExtensionPoint_inner + 8];
-  v3 = self;
+  selfCopy = self;
   specialized _dictionaryUpCast<A, B, C, D>(_:)(v2);
 
   v4.super.isa = Dictionary._bridgeToObjectiveC()().super.isa;

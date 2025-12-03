@@ -1,25 +1,25 @@
 @interface PDFKitPopupView
 - (CGRect)_popoverControllerSourceRect;
-- (PDFKitPopupView)initWithParentAnnotation:(id)a3 owningPageView:(id)a4 owningPDFView:(id)a5;
+- (PDFKitPopupView)initWithParentAnnotation:(id)annotation owningPageView:(id)view owningPDFView:(id)fView;
 - (void)_presentPopupView_iOS;
-- (void)_presentViewController:(id)a3;
+- (void)_presentViewController:(id)controller;
 - (void)_removeControlForAnnotation;
 - (void)_setupPopupView;
 - (void)_updateParentContents;
-- (void)popoverPresentationController:(id)a3 willRepositionPopoverToRect:(CGRect *)a4 inView:(id *)a5;
-- (void)popoverPresentationControllerDidDismissPopover:(id)a3;
-- (void)prepareForPopoverPresentation:(id)a3;
+- (void)popoverPresentationController:(id)controller willRepositionPopoverToRect:(CGRect *)rect inView:(id *)view;
+- (void)popoverPresentationControllerDidDismissPopover:(id)popover;
+- (void)prepareForPopoverPresentation:(id)presentation;
 - (void)removeFromSuperview;
-- (void)textViewDidChange:(id)a3;
+- (void)textViewDidChange:(id)change;
 @end
 
 @implementation PDFKitPopupView
 
-- (PDFKitPopupView)initWithParentAnnotation:(id)a3 owningPageView:(id)a4 owningPDFView:(id)a5
+- (PDFKitPopupView)initWithParentAnnotation:(id)annotation owningPageView:(id)view owningPDFView:(id)fView
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  annotationCopy = annotation;
+  viewCopy = view;
+  fViewCopy = fView;
   v20.receiver = self;
   v20.super_class = PDFKitPopupView;
   v11 = [(PDFKitPopupView *)&v20 init];
@@ -29,17 +29,17 @@
     v13 = v11->_private;
     v11->_private = v12;
 
-    objc_storeWeak(&v11->_private->parentAnnotation, v8);
-    objc_storeWeak(&v11->_private->pageView, v9);
-    objc_storeWeak(&v11->_private->view, v10);
+    objc_storeWeak(&v11->_private->parentAnnotation, annotationCopy);
+    objc_storeWeak(&v11->_private->pageView, viewCopy);
+    objc_storeWeak(&v11->_private->view, fViewCopy);
     v14 = v11->_private;
     popupTextViewUndoManager = v14->popupTextViewUndoManager;
     v14->popupTextViewUndoManager = 0;
 
-    v16 = [v8 contents];
+    contents = [annotationCopy contents];
     v17 = v11->_private;
     contents = v17->contents;
-    v17->contents = v16;
+    v17->contents = contents;
 
     v11->_private->deviceIsiPhone = PDFKitDeviceIsiPhone();
     v11->_private->deviceIsiPad = PDFKitDeviceIsiPad();
@@ -53,45 +53,45 @@
 - (void)_setupPopupView
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->parentAnnotation);
-  v3 = [WeakRetained contents];
+  contents = [WeakRetained contents];
   if ([WeakRetained isMarkupAnnotationSubtype])
   {
     v4 = +[PDFAnnotation PDFTextColors];
-    v5 = [WeakRetained markupStyle];
+    markupStyle = [WeakRetained markupStyle];
     v6 = v4;
 LABEL_3:
-    v7 = [v6 objectAtIndex:v5];
+    color2 = [v6 objectAtIndex:markupStyle];
 
     goto LABEL_7;
   }
 
-  v8 = [WeakRetained color];
-  if (v8)
+  color = [WeakRetained color];
+  if (color)
   {
-    v7 = v8;
+    color2 = color;
   }
 
   else
   {
-    v9 = [WeakRetained popup];
-    v7 = [v9 color];
+    popup = [WeakRetained popup];
+    color2 = [popup color];
 
-    if (!v7)
+    if (!color2)
     {
       v6 = +[PDFAnnotation PDFTextColors];
       v4 = v6;
-      v5 = 0;
+      markupStyle = 0;
       goto LABEL_3;
     }
   }
 
 LABEL_7:
   v10 = +[PDFAnnotation PDFTextColors];
-  v11 = [v10 indexOfObject:v7];
+  v11 = [v10 indexOfObject:color2];
 
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v12 = +[PDFAnnotationDrawing createLigtherColor:withIntensity:](PDFAnnotationDrawing, "createLigtherColor:withIntensity:", [v7 CGColor], 0.05);
+    v12 = +[PDFAnnotationDrawing createLigtherColor:withIntensity:](PDFAnnotationDrawing, "createLigtherColor:withIntensity:", [color2 CGColor], 0.05);
   }
 
   else
@@ -106,27 +106,27 @@ LABEL_7:
   v15->popupTextView = v14;
 
   [(UITextView *)self->_private->popupTextView setDelegate:self];
-  if (v3)
+  if (contents)
   {
-    [(UITextView *)self->_private->popupTextView setText:v3];
+    [(UITextView *)self->_private->popupTextView setText:contents];
   }
 
   v17 = self->_private;
   if (v17->deviceIsiPhone)
   {
-    v18 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(PDFKitPopupView *)self setBackgroundColor:v18];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(PDFKitPopupView *)self setBackgroundColor:systemBackgroundColor];
 
     [(PDFKitPopupView *)self addSubview:self->_private->popupTextView];
   }
 
   else if (v17->deviceIsiPad)
   {
-    [(UITextView *)v17->popupTextView setBackgroundColor:v7];
+    [(UITextView *)v17->popupTextView setBackgroundColor:color2];
     [(UITextView *)self->_private->popupTextView setTextContainerInset:14.0, 14.0, 14.0, 14.0];
     v19 = self->_private->popupTextView;
-    v20 = [MEMORY[0x1E69DC888] blackColor];
-    [(UITextView *)v19 setTextColor:v20];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(UITextView *)v19 setTextColor:blackColor];
   }
 }
 
@@ -139,55 +139,55 @@ LABEL_7:
     v4 = objc_alloc_init(MEMORY[0x1E69DD258]);
     PDFSizeMake([(UIViewController *)v4 setModalPresentationStyle:7], 300.0, 180.0);
     [(UIViewController *)v4 setPreferredContentSize:?];
-    v5 = [(UITextView *)self->_private->popupTextView backgroundColor];
-    v6 = [(UIViewController *)v4 view];
-    [v6 setBackgroundColor:v5];
+    backgroundColor = [(UITextView *)self->_private->popupTextView backgroundColor];
+    view = [(UIViewController *)v4 view];
+    [view setBackgroundColor:backgroundColor];
 
     v7 = self->_private;
     popupController = v7->popupController;
     v7->popupController = v4;
     v9 = v4;
 
-    v10 = [(UIViewController *)v9 popoverPresentationController];
-    [v10 setDelegate:self];
+    popoverPresentationController = [(UIViewController *)v9 popoverPresentationController];
+    [popoverPresentationController setDelegate:self];
     WeakRetained = objc_loadWeakRetained(&self->_private->view);
-    [v10 setSourceView:WeakRetained];
+    [popoverPresentationController setSourceView:WeakRetained];
 
     [(PDFKitPopupView *)self _popoverControllerSourceRect];
-    v83 = v10;
-    [v10 setSourceRect:?];
-    [v10 setPermittedArrowDirections:15];
-    v12 = [(UIViewController *)v9 view];
-    [v12 addSubview:self->_private->popupTextView];
+    v83 = popoverPresentationController;
+    [popoverPresentationController setSourceRect:?];
+    [popoverPresentationController setPermittedArrowDirections:15];
+    view2 = [(UIViewController *)v9 view];
+    [view2 addSubview:self->_private->popupTextView];
 
-    v13 = [(UIViewController *)v9 view];
-    [v13 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view3 = [(UIViewController *)v9 view];
+    [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
     [(UITextView *)self->_private->popupTextView setTranslatesAutoresizingMaskIntoConstraints:0];
     v65 = MEMORY[0x1E696ACD8];
-    v79 = [(UITextView *)self->_private->popupTextView leadingAnchor];
-    v81 = [(UIViewController *)v9 view];
-    v77 = [v81 safeAreaLayoutGuide];
-    v75 = [v77 leadingAnchor];
-    v73 = [v79 constraintEqualToAnchor:v75 constant:0.0];
+    leadingAnchor = [(UITextView *)self->_private->popupTextView leadingAnchor];
+    view4 = [(UIViewController *)v9 view];
+    safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+    leadingAnchor2 = [safeAreaLayoutGuide leadingAnchor];
+    v73 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
     v87[0] = v73;
-    v69 = [(UITextView *)self->_private->popupTextView trailingAnchor];
-    v71 = [(UIViewController *)v9 view];
-    v67 = [v71 safeAreaLayoutGuide];
-    v63 = [v67 trailingAnchor];
-    v61 = [v69 constraintEqualToAnchor:v63 constant:0.0];
+    trailingAnchor = [(UITextView *)self->_private->popupTextView trailingAnchor];
+    view5 = [(UIViewController *)v9 view];
+    safeAreaLayoutGuide2 = [view5 safeAreaLayoutGuide];
+    trailingAnchor2 = [safeAreaLayoutGuide2 trailingAnchor];
+    v61 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
     v87[1] = v61;
-    v57 = [(UITextView *)self->_private->popupTextView topAnchor];
-    v59 = [(UIViewController *)v9 view];
-    v55 = [v59 safeAreaLayoutGuide];
-    v14 = [v55 topAnchor];
-    v15 = [v57 constraintEqualToAnchor:v14 constant:0.0];
+    topAnchor = [(UITextView *)self->_private->popupTextView topAnchor];
+    view6 = [(UIViewController *)v9 view];
+    safeAreaLayoutGuide3 = [view6 safeAreaLayoutGuide];
+    topAnchor2 = [safeAreaLayoutGuide3 topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
     v87[2] = v15;
-    v16 = [(UITextView *)self->_private->popupTextView bottomAnchor];
-    v17 = [(UIViewController *)v9 view];
-    v18 = [v17 safeAreaLayoutGuide];
-    v19 = [v18 bottomAnchor];
-    v20 = [v16 constraintEqualToAnchor:v19 constant:0.0];
+    bottomAnchor = [(UITextView *)self->_private->popupTextView bottomAnchor];
+    view7 = [(UIViewController *)v9 view];
+    safeAreaLayoutGuide4 = [view7 safeAreaLayoutGuide];
+    bottomAnchor2 = [safeAreaLayoutGuide4 bottomAnchor];
+    v20 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
     v87[3] = v20;
     v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v87 count:4];
     [v65 activateConstraints:v21];
@@ -204,55 +204,55 @@ LABEL_7:
     }
 
     v22 = objc_alloc_init(MEMORY[0x1E69DD258]);
-    v24 = [v22 view];
-    [v24 addSubview:self];
+    view8 = [v22 view];
+    [view8 addSubview:self];
 
     [(PDFKitPopupView *)self setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UITextView *)self->_private->popupTextView setTranslatesAutoresizingMaskIntoConstraints:0];
     v54 = MEMORY[0x1E696ACD8];
-    v84 = [(PDFKitPopupView *)self leadingAnchor];
-    v85 = [v22 view];
-    v82 = [v85 leadingAnchor];
-    v80 = [v84 constraintEqualToAnchor:v82];
+    leadingAnchor3 = [(PDFKitPopupView *)self leadingAnchor];
+    view9 = [v22 view];
+    leadingAnchor4 = [view9 leadingAnchor];
+    v80 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v86[0] = v80;
-    v76 = [(PDFKitPopupView *)self trailingAnchor];
-    v78 = [v22 view];
-    v74 = [v78 trailingAnchor];
-    v72 = [v76 constraintEqualToAnchor:v74];
+    trailingAnchor3 = [(PDFKitPopupView *)self trailingAnchor];
+    view10 = [v22 view];
+    trailingAnchor4 = [view10 trailingAnchor];
+    v72 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v86[1] = v72;
-    v68 = [(PDFKitPopupView *)self topAnchor];
-    v70 = [v22 view];
-    v66 = [v70 topAnchor];
-    v64 = [v68 constraintEqualToAnchor:v66];
+    topAnchor3 = [(PDFKitPopupView *)self topAnchor];
+    view11 = [v22 view];
+    topAnchor4 = [view11 topAnchor];
+    v64 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v86[2] = v64;
-    v60 = [(PDFKitPopupView *)self bottomAnchor];
-    v62 = [v22 view];
-    v58 = [v62 bottomAnchor];
-    v56 = [v60 constraintEqualToAnchor:v58];
+    bottomAnchor3 = [(PDFKitPopupView *)self bottomAnchor];
+    view12 = [v22 view];
+    bottomAnchor4 = [view12 bottomAnchor];
+    v56 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
     v86[3] = v56;
-    v52 = [(UITextView *)self->_private->popupTextView leadingAnchor];
-    v53 = [v22 view];
-    v51 = [v53 safeAreaLayoutGuide];
-    v50 = [v51 leadingAnchor];
-    v49 = [v52 constraintEqualToAnchor:v50 constant:8.0];
+    leadingAnchor5 = [(UITextView *)self->_private->popupTextView leadingAnchor];
+    view13 = [v22 view];
+    safeAreaLayoutGuide5 = [view13 safeAreaLayoutGuide];
+    leadingAnchor6 = [safeAreaLayoutGuide5 leadingAnchor];
+    v49 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:8.0];
     v86[4] = v49;
-    v47 = [(UITextView *)self->_private->popupTextView trailingAnchor];
-    v48 = [v22 view];
-    v46 = [v48 safeAreaLayoutGuide];
-    v45 = [v46 trailingAnchor];
-    v44 = [v47 constraintEqualToAnchor:v45 constant:8.0];
+    trailingAnchor5 = [(UITextView *)self->_private->popupTextView trailingAnchor];
+    view14 = [v22 view];
+    safeAreaLayoutGuide6 = [view14 safeAreaLayoutGuide];
+    trailingAnchor6 = [safeAreaLayoutGuide6 trailingAnchor];
+    v44 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:8.0];
     v86[5] = v44;
-    v42 = [(UITextView *)self->_private->popupTextView topAnchor];
-    v43 = [v22 view];
-    v41 = [v43 safeAreaLayoutGuide];
-    v40 = [v41 topAnchor];
-    v25 = [v42 constraintEqualToAnchor:v40 constant:8.0];
+    topAnchor5 = [(UITextView *)self->_private->popupTextView topAnchor];
+    view15 = [v22 view];
+    safeAreaLayoutGuide7 = [view15 safeAreaLayoutGuide];
+    topAnchor6 = [safeAreaLayoutGuide7 topAnchor];
+    v25 = [topAnchor5 constraintEqualToAnchor:topAnchor6 constant:8.0];
     v86[6] = v25;
-    v26 = [(UITextView *)self->_private->popupTextView bottomAnchor];
-    v27 = [v22 view];
-    v28 = [v27 safeAreaLayoutGuide];
-    v29 = [v28 bottomAnchor];
-    v30 = [v26 constraintEqualToAnchor:v29 constant:8.0];
+    bottomAnchor5 = [(UITextView *)self->_private->popupTextView bottomAnchor];
+    view16 = [v22 view];
+    safeAreaLayoutGuide8 = [view16 safeAreaLayoutGuide];
+    bottomAnchor6 = [safeAreaLayoutGuide8 bottomAnchor];
+    v30 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:8.0];
     v86[7] = v30;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v86 count:8];
     [v54 activateConstraints:v31];
@@ -261,8 +261,8 @@ LABEL_7:
     v33 = PDFKitLocalizedString(@"Done");
     v23 = [v32 initWithTitle:v33 style:0 target:self action:sel_doneButton_];
 
-    v34 = [v22 navigationItem];
-    [v34 setRightBarButtonItem:v23];
+    navigationItem = [v22 navigationItem];
+    [navigationItem setRightBarButtonItem:v23];
 
     v35 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v22];
     v36 = self->_private;
@@ -276,8 +276,8 @@ LABEL_7:
   [(PDFKitPopupView *)self _presentViewController:v9];
 
 LABEL_6:
-  v38 = [(UITextView *)self->_private->popupTextView text];
-  v39 = [v38 length];
+  text = [(UITextView *)self->_private->popupTextView text];
+  v39 = [text length];
 
   if (!v39)
   {
@@ -285,15 +285,15 @@ LABEL_6:
   }
 }
 
-- (void)_presentViewController:(id)a3
+- (void)_presentViewController:(id)controller
 {
-  v6 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_private->view);
-  v5 = [WeakRetained parentViewController];
+  parentViewController = [WeakRetained parentViewController];
 
-  if (v5)
+  if (parentViewController)
   {
-    [v5 presentViewController:v6 animated:1 completion:0];
+    [parentViewController presentViewController:controllerCopy animated:1 completion:0];
   }
 }
 
@@ -382,14 +382,14 @@ LABEL_12:
   return result;
 }
 
-- (void)prepareForPopoverPresentation:(id)a3
+- (void)prepareForPopoverPresentation:(id)presentation
 {
   WeakRetained = objc_loadWeakRetained(&self->_private->view);
-  v4 = [WeakRetained findFirstResponder];
-  objc_storeWeak(&self->_private->savedFirstResponder, v4);
+  findFirstResponder = [WeakRetained findFirstResponder];
+  objc_storeWeak(&self->_private->savedFirstResponder, findFirstResponder);
 }
 
-- (void)popoverPresentationControllerDidDismissPopover:(id)a3
+- (void)popoverPresentationControllerDidDismissPopover:(id)popover
 {
   [(PDFKitPopupView *)self _removeControlForAnnotation];
   WeakRetained = objc_loadWeakRetained(&self->_private->savedFirstResponder);
@@ -401,9 +401,9 @@ LABEL_12:
   }
 }
 
-- (void)popoverPresentationController:(id)a3 willRepositionPopoverToRect:(CGRect *)a4 inView:(id *)a5
+- (void)popoverPresentationController:(id)controller willRepositionPopoverToRect:(CGRect *)rect inView:(id *)view
 {
-  [(PDFKitPopupView *)self _popoverControllerSourceRect:a3];
+  [(PDFKitPopupView *)self _popoverControllerSourceRect:controller];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -412,12 +412,12 @@ LABEL_12:
   v14.origin.y = v8;
   v14.size.width = v10;
   v14.size.height = v12;
-  if (!PDFRectEqualToRect(*a4, v14))
+  if (!PDFRectEqualToRect(*rect, v14))
   {
-    a4->origin.x = v7;
-    a4->origin.y = v9;
-    a4->size.width = v11;
-    a4->size.height = v13;
+    rect->origin.x = v7;
+    rect->origin.y = v9;
+    rect->size.width = v11;
+    rect->size.height = v13;
   }
 }
 
@@ -464,14 +464,14 @@ LABEL_12:
   [WeakRetained setContents:self->_private->contents withUndo:1];
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = [(UITextView *)self->_private->popupTextView text];
+  text = [(UITextView *)self->_private->popupTextView text];
   v5 = self->_private;
   contents = v5->contents;
-  v5->contents = v4;
+  v5->contents = text;
 
-  MEMORY[0x1EEE66BB8](v4, contents);
+  MEMORY[0x1EEE66BB8](text, contents);
 }
 
 @end

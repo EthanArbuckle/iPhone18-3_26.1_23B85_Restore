@@ -6,21 +6,21 @@
 - (CGSize)size;
 - (PXDisplayVelocity)velocity;
 - (PXPinchTracker)init;
-- (PXPinchTracker)initWithCenter:(CGPoint)a3 size:(CGSize)a4 transform:(CGAffineTransform *)a5;
-- (void)_setCenter:(CGPoint)a3;
-- (void)_setScale:(double)a3;
-- (void)_setScaleDirection:(int64_t)a3;
-- (void)_setSize:(CGSize)a3;
-- (void)_setTransform:(CGAffineTransform *)a3;
-- (void)_setVelocity:(PXDisplayVelocity)a3;
-- (void)_transformPinchLocation1:(CGPoint)a3 location2:(CGPoint)a4 intoCenter:(CGPoint *)a5 distance:(double *)a6 angle:(double *)a7;
+- (PXPinchTracker)initWithCenter:(CGPoint)center size:(CGSize)size transform:(CGAffineTransform *)transform;
+- (void)_setCenter:(CGPoint)center;
+- (void)_setScale:(double)scale;
+- (void)_setScaleDirection:(int64_t)direction;
+- (void)_setSize:(CGSize)size;
+- (void)_setTransform:(CGAffineTransform *)transform;
+- (void)_setVelocity:(PXDisplayVelocity)velocity;
+- (void)_transformPinchLocation1:(CGPoint)location1 location2:(CGPoint)location2 intoCenter:(CGPoint *)center distance:(double *)distance angle:(double *)angle;
 - (void)_updateGeometryIfNeeded;
 - (void)_updateIfNeeded;
 - (void)_updateInitialValuesIfNeeded;
 - (void)didPerformChanges;
-- (void)performChanges:(id)a3;
-- (void)setPinchLocation1:(CGPoint)a3;
-- (void)setPinchLocation2:(CGPoint)a3;
+- (void)performChanges:(id)changes;
+- (void)setPinchLocation1:(CGPoint)location1;
+- (void)setPinchLocation2:(CGPoint)location2;
 @end
 
 @implementation PXPinchTracker
@@ -389,19 +389,19 @@ void __41__PXPinchTracker__updateGeometryIfNeeded__block_invoke_5(uint64_t a1, v
     [(PXPinchTracker *)self _updateGeometryIfNeeded];
     if ([(PXPinchTracker *)self _needsUpdate])
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:a2 object:self file:@"PXPinchTracker.m" lineNumber:210 description:@"update still needed after update pass"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPinchTracker.m" lineNumber:210 description:@"update still needed after update pass"];
     }
   }
 }
 
-- (void)setPinchLocation2:(CGPoint)a3
+- (void)setPinchLocation2:(CGPoint)location2
 {
   x = self->_pinchLocation2.x;
   y = self->_pinchLocation2.y;
-  if (a3.x != x || a3.y != y)
+  if (location2.x != x || location2.y != y)
   {
-    self->_pinchLocation2 = a3;
+    self->_pinchLocation2 = location2;
     if (x == INFINITY && y == INFINITY)
     {
       [(PXPinchTracker *)self _invalidateInitialValues];
@@ -411,13 +411,13 @@ void __41__PXPinchTracker__updateGeometryIfNeeded__block_invoke_5(uint64_t a1, v
   }
 }
 
-- (void)setPinchLocation1:(CGPoint)a3
+- (void)setPinchLocation1:(CGPoint)location1
 {
   x = self->_pinchLocation1.x;
   y = self->_pinchLocation1.y;
-  if (a3.x != x || a3.y != y)
+  if (location1.x != x || location1.y != y)
   {
-    self->_pinchLocation1 = a3;
+    self->_pinchLocation1 = location1;
     if (x == INFINITY && y == INFINITY)
     {
       [(PXPinchTracker *)self _invalidateInitialValues];
@@ -435,115 +435,115 @@ void __41__PXPinchTracker__updateGeometryIfNeeded__block_invoke_5(uint64_t a1, v
   [(PXPinchTracker *)self _updateIfNeeded];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXPinchTracker;
-  [(PXObservable *)&v3 performChanges:a3];
+  [(PXObservable *)&v3 performChanges:changes];
 }
 
-- (void)_transformPinchLocation1:(CGPoint)a3 location2:(CGPoint)a4 intoCenter:(CGPoint *)a5 distance:(double *)a6 angle:(double *)a7
+- (void)_transformPinchLocation1:(CGPoint)location1 location2:(CGPoint)location2 intoCenter:(CGPoint *)center distance:(double *)distance angle:(double *)angle
 {
-  y = a3.y;
-  x = a3.x;
-  v12 = a4.x - a3.x;
-  v13 = a4.y - a3.y;
-  v14 = hypot(a4.x - a3.x, a4.y - a3.y);
+  y = location1.y;
+  x = location1.x;
+  v12 = location2.x - location1.x;
+  v13 = location2.y - location1.y;
+  v14 = hypot(location2.x - location1.x, location2.y - location1.y);
   v15 = atan2(v13, v12);
-  if (a5)
+  if (center)
   {
-    a5->x = x + v12 * 0.5;
-    a5->y = y + v13 * 0.5;
+    center->x = x + v12 * 0.5;
+    center->y = y + v13 * 0.5;
   }
 
-  if (a6)
+  if (distance)
   {
-    *a6 = v14;
+    *distance = v14;
   }
 
-  if (a7)
+  if (angle)
   {
-    *a7 = v15;
+    *angle = v15;
   }
 }
 
-- (void)_setScaleDirection:(int64_t)a3
+- (void)_setScaleDirection:(int64_t)direction
 {
-  if (self->_scaleDirection != a3)
+  if (self->_scaleDirection != direction)
   {
-    self->_scaleDirection = a3;
+    self->_scaleDirection = direction;
     [(PXObservable *)self signalChange:32];
   }
 }
 
-- (void)_setScale:(double)a3
+- (void)_setScale:(double)scale
 {
-  if (self->_scale != a3)
+  if (self->_scale != scale)
   {
-    self->_scale = a3;
+    self->_scale = scale;
     [(PXObservable *)self signalChange:16];
   }
 }
 
-- (void)_setVelocity:(PXDisplayVelocity)a3
+- (void)_setVelocity:(PXDisplayVelocity)velocity
 {
-  v3.f64[0] = a3.x;
-  v3.f64[1] = a3.y;
-  v4.f64[0] = a3.scale;
-  v4.f64[1] = a3.rotation;
+  v3.f64[0] = velocity.x;
+  v3.f64[1] = velocity.y;
+  v4.f64[0] = velocity.scale;
+  v4.f64[1] = velocity.rotation;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_velocity.x), vceqq_f64(v4, *&self->_velocity.scale)))) & 1) == 0)
   {
-    self->_velocity = a3;
+    self->_velocity = velocity;
     [(PXObservable *)self signalChange:8];
   }
 }
 
-- (void)_setTransform:(CGAffineTransform *)a3
+- (void)_setTransform:(CGAffineTransform *)transform
 {
   p_transform = &self->_transform;
-  v6 = *&a3->c;
-  *&t1.a = *&a3->a;
+  v6 = *&transform->c;
+  *&t1.a = *&transform->a;
   *&t1.c = v6;
-  *&t1.tx = *&a3->tx;
+  *&t1.tx = *&transform->tx;
   v7 = *&self->_transform.c;
   *&v10.a = *&self->_transform.a;
   *&v10.c = v7;
   *&v10.tx = *&self->_transform.tx;
   if (!CGAffineTransformEqualToTransform(&t1, &v10))
   {
-    v8 = *&a3->a;
-    v9 = *&a3->tx;
-    *&p_transform->c = *&a3->c;
+    v8 = *&transform->a;
+    v9 = *&transform->tx;
+    *&p_transform->c = *&transform->c;
     *&p_transform->tx = v9;
     *&p_transform->a = v8;
     [(PXObservable *)self signalChange:4];
   }
 }
 
-- (void)_setSize:(CGSize)a3
+- (void)_setSize:(CGSize)size
 {
-  if (a3.width != self->_size.width || a3.height != self->_size.height)
+  if (size.width != self->_size.width || size.height != self->_size.height)
   {
-    self->_size = a3;
+    self->_size = size;
     [(PXObservable *)self signalChange:2];
   }
 }
 
-- (void)_setCenter:(CGPoint)a3
+- (void)_setCenter:(CGPoint)center
 {
-  if (a3.x != self->_center.x || a3.y != self->_center.y)
+  if (center.x != self->_center.x || center.y != self->_center.y)
   {
-    self->_center = a3;
+    self->_center = center;
     [(PXObservable *)self signalChange:1];
   }
 }
 
-- (PXPinchTracker)initWithCenter:(CGPoint)a3 size:(CGSize)a4 transform:(CGAffineTransform *)a5
+- (PXPinchTracker)initWithCenter:(CGPoint)center size:(CGSize)size transform:(CGAffineTransform *)transform
 {
-  height = a4.height;
-  width = a4.width;
-  y = a3.y;
-  x = a3.x;
+  height = size.height;
+  width = size.width;
+  y = center.y;
+  x = center.x;
   v23.receiver = self;
   v23.super_class = PXPinchTracker;
   v10 = [(PXObservable *)&v23 init];
@@ -554,9 +554,9 @@ void __41__PXPinchTracker__updateGeometryIfNeeded__block_invoke_5(uint64_t a1, v
     *(v10 + 52) = y;
     *(v10 + 53) = width;
     *(v10 + 54) = height;
-    v12 = *&a5->a;
-    v13 = *&a5->tx;
-    *(v10 + 488) = *&a5->c;
+    v12 = *&transform->a;
+    v13 = *&transform->tx;
+    *(v10 + 488) = *&transform->c;
     *(v10 + 504) = v13;
     *(v10 + 472) = v12;
     *(v10 + 376) = PXPointNull;

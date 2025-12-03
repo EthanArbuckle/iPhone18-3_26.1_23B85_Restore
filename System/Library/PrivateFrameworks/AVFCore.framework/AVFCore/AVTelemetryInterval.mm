@@ -1,5 +1,5 @@
 @interface AVTelemetryInterval
-- (id)initAndStartWith:(unint64_t)a3;
+- (id)initAndStartWith:(unint64_t)with;
 - (void)end;
 @end
 
@@ -23,7 +23,7 @@
   [v7 incrementBucketCount:apiCodeStore executionTime:v6];
 }
 
-- (id)initAndStartWith:(unint64_t)a3
+- (id)initAndStartWith:(unint64_t)with
 {
   v7.receiver = self;
   v7.super_class = AVTelemetryInterval;
@@ -31,7 +31,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->apiCodeStore = a3;
+    v4->apiCodeStore = with;
     v4->startTime = mach_absolute_time();
   }
 

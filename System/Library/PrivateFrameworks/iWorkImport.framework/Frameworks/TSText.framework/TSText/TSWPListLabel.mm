@@ -1,64 +1,64 @@
 @interface TSWPListLabel
-- (BOOL)isEqualToListLabel:(id)a3;
+- (BOOL)isEqualToListLabel:(id)label;
 - (CGSize)naturalImageSize;
 - (CGSize)size;
-- (TSWPListLabel)initWithType:(unint64_t)a3 imageProvider:(id)a4 size:(CGSize)a5 baselineOffset:(double)a6;
-- (TSWPListLabel)initWithType:(unint64_t)a3 labelString:(id)a4 textLine:(__CTLine *)a5 listNumber:(unint64_t)a6 isTateChuYoko:(BOOL)a7 baselineOffset:(double)a8;
+- (TSWPListLabel)initWithType:(unint64_t)type imageProvider:(id)provider size:(CGSize)size baselineOffset:(double)offset;
+- (TSWPListLabel)initWithType:(unint64_t)type labelString:(id)string textLine:(__CTLine *)line listNumber:(unint64_t)number isTateChuYoko:(BOOL)yoko baselineOffset:(double)offset;
 - (__CTFont)labelFont;
 - (void)dealloc;
 @end
 
 @implementation TSWPListLabel
 
-- (TSWPListLabel)initWithType:(unint64_t)a3 imageProvider:(id)a4 size:(CGSize)a5 baselineOffset:(double)a6
+- (TSWPListLabel)initWithType:(unint64_t)type imageProvider:(id)provider size:(CGSize)size baselineOffset:(double)offset
 {
-  height = a5.height;
-  width = a5.width;
-  v12 = a4;
+  height = size.height;
+  width = size.width;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = TSWPListLabel;
   v13 = [(TSWPListLabel *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    v13->_labelType = a3;
-    objc_storeStrong(&v13->_imageProvider, a4);
+    v13->_labelType = type;
+    objc_storeStrong(&v13->_imageProvider, provider);
     v14->_size.width = width;
     v14->_size.height = height;
-    v14->_baselineOffset = a6;
+    v14->_baselineOffset = offset;
   }
 
   return v14;
 }
 
-- (TSWPListLabel)initWithType:(unint64_t)a3 labelString:(id)a4 textLine:(__CTLine *)a5 listNumber:(unint64_t)a6 isTateChuYoko:(BOOL)a7 baselineOffset:(double)a8
+- (TSWPListLabel)initWithType:(unint64_t)type labelString:(id)string textLine:(__CTLine *)line listNumber:(unint64_t)number isTateChuYoko:(BOOL)yoko baselineOffset:(double)offset
 {
-  v9 = a7;
-  v15 = a4;
+  yokoCopy = yoko;
+  stringCopy = string;
   v22.receiver = self;
   v22.super_class = TSWPListLabel;
   v16 = [(TSWPListLabel *)&v22 init];
   v17 = v16;
   if (v16)
   {
-    v16->_labelType = a3;
-    objc_storeStrong(&v16->_labelString, a4);
-    v17->_textLine = a5;
-    CFRetain(a5);
-    v17->_listNumber = a6;
+    v16->_labelType = type;
+    objc_storeStrong(&v16->_labelString, string);
+    v17->_textLine = line;
+    CFRetain(line);
+    v17->_listNumber = number;
     leading = 0.0;
     TypographicBounds = CTLineGetTypographicBounds(v17->_textLine, &v17->_ascent, &v17->_descent, &leading);
     v19 = v17->_ascent + v17->_descent;
     v17->_size.width = TypographicBounds;
     v17->_size.height = v19;
-    v17->_isLabelTateChuYoko = v9;
-    if (v9)
+    v17->_isLabelTateChuYoko = yokoCopy;
+    if (yokoCopy)
     {
       v17->_size.width = v19 + leading;
       v17->_size.height = TypographicBounds;
     }
 
-    v17->_baselineOffset = a8;
+    v17->_baselineOffset = offset;
   }
 
   return v17;
@@ -77,17 +77,17 @@
   [(TSWPListLabel *)&v4 dealloc];
 }
 
-- (BOOL)isEqualToListLabel:(id)a3
+- (BOOL)isEqualToListLabel:(id)label
 {
-  v4 = a3;
-  v7 = v4;
-  if (!v4)
+  labelCopy = label;
+  v7 = labelCopy;
+  if (!labelCopy)
   {
     goto LABEL_31;
   }
 
-  v8 = self->_size.width == v4[13] && self->_size.height == v4[14];
-  if (!v8 || self->_baselineOffset != v4[3] || self->_labelType != *(v4 + 2) || self->_labelIndent != v4[5] || self->_isLabelTateChuYoko != *(v4 + 9) || self->_listNumber != *(v4 + 11))
+  v8 = self->_size.width == labelCopy[13] && self->_size.height == labelCopy[14];
+  if (!v8 || self->_baselineOffset != labelCopy[3] || self->_labelType != *(labelCopy + 2) || self->_labelIndent != labelCopy[5] || self->_isLabelTateChuYoko != *(labelCopy + 9) || self->_listNumber != *(labelCopy + 11))
   {
     goto LABEL_31;
   }

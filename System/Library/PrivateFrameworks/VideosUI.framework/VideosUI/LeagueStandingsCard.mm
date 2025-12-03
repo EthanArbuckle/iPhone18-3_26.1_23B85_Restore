@@ -1,5 +1,5 @@
 @interface LeagueStandingsCard
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 - (void)contentSizeCategoryDidChange;
 @end
 
@@ -7,16 +7,16 @@
 
 - (void)contentSizeCategoryDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E37BA748();
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
   OUTLINED_FUNCTION_5_16();
   v6 = v5;
   v7 = OUTLINED_FUNCTION_6_12();
-  v9 = sub_1E37BADAC(a4, v7, v8);
+  v9 = sub_1E37BADAC(only, v7, v8);
   v11 = v10;
 
   v12 = v9;

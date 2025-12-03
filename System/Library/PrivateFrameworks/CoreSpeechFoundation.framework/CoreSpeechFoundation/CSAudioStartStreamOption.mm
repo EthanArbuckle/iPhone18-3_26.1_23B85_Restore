@@ -1,17 +1,17 @@
 @interface CSAudioStartStreamOption
 + (id)noAlertOption;
-+ (int64_t)avvcAlertOverrideType:(int64_t)a3;
-- (CSAudioStartStreamOption)initWithXPCObject:(id)a3;
++ (int64_t)avvcAlertOverrideType:(int64_t)type;
+- (CSAudioStartStreamOption)initWithXPCObject:(id)object;
 - (NSString)localizedDescription;
 - (OS_xpc_object)xpcObject;
 - (id)avvcAlertBehavior;
-- (id)avvcStartRecordSettingsWithAudioStreamHandleId:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initTandemWithOption:(id)a3;
-- (id)initTandemWithTandemAttachConfig:(id)a3 primaryStreamOption:(id)a4;
-- (int64_t)_alertBehaviorTypeFromAVVCOverrideType:(int64_t)a3;
-- (void)adjustStartRecordingHostTime:(unint64_t)a3;
-- (void)setAVVCAlertBehavior:(id)a3;
+- (id)avvcStartRecordSettingsWithAudioStreamHandleId:(unint64_t)id;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initTandemWithOption:(id)option;
+- (id)initTandemWithTandemAttachConfig:(id)config primaryStreamOption:(id)option;
+- (int64_t)_alertBehaviorTypeFromAVVCOverrideType:(int64_t)type;
+- (void)adjustStartRecordingHostTime:(unint64_t)time;
+- (void)setAVVCAlertBehavior:(id)behavior;
 @end
 
 @implementation CSAudioStartStreamOption
@@ -132,52 +132,52 @@
 
 - (id)avvcAlertBehavior
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [CSAudioStartStreamOption avvcAlertOverrideType:[(CSAudioStartStreamOption *)self startAlertBehavior]];
   v5 = [CSAudioStartStreamOption avvcAlertOverrideType:[(CSAudioStartStreamOption *)self stopAlertBehavior]];
   v6 = [CSAudioStartStreamOption avvcAlertOverrideType:[(CSAudioStartStreamOption *)self errorAlertBehavior]];
   if ([(CSAudioStartStreamOption *)self startAlertBehavior]!= -1)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
-    [v3 setObject:v7 forKey:&unk_1F5916898];
+    [dictionary setObject:v7 forKey:&unk_1F5916898];
   }
 
   if ([(CSAudioStartStreamOption *)self stopAlertBehavior]!= -1)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithInteger:v5];
-    [v3 setObject:v8 forKey:&unk_1F59168B0];
+    [dictionary setObject:v8 forKey:&unk_1F59168B0];
   }
 
   if ([(CSAudioStartStreamOption *)self errorAlertBehavior]!= -1)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithInteger:v6];
-    [v3 setObject:v9 forKey:&unk_1F59168C8];
+    [dictionary setObject:v9 forKey:&unk_1F59168C8];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)adjustStartRecordingHostTime:(unint64_t)a3
+- (void)adjustStartRecordingHostTime:(unint64_t)time
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E6958498] hostTimeForSeconds:10.0];
-  if (v5 >= a3)
+  if (v5 >= time)
   {
-    v6 = a3;
+    timeCopy = time;
   }
 
   else
   {
-    v6 = v5;
+    timeCopy = v5;
     v7 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 136315650;
       v15 = "[CSAudioStartStreamOption(AVVC) adjustStartRecordingHostTime:]";
       v16 = 2050;
-      v17 = a3;
+      timeCopy2 = time;
       v18 = 2050;
-      v19 = v6;
+      v19 = timeCopy;
       _os_log_impl(&dword_1DDA4B000, v7, OS_LOG_TYPE_DEFAULT, "%s received hostTimeAdjustment of %{public}llu, instead using max of %{public}llu.", &v14, 0x20u);
     }
 
@@ -185,50 +185,50 @@
     [v8 submitAudioIssueReport:@"audioStartStreamOptionStartHostTimeAdjustmentExceededMax"];
   }
 
-  v9 = [(CSAudioStartStreamOption *)self startRecordingHostTime];
-  if (!v9)
+  startRecordingHostTime = [(CSAudioStartStreamOption *)self startRecordingHostTime];
+  if (!startRecordingHostTime)
   {
-    v9 = mach_absolute_time();
+    startRecordingHostTime = mach_absolute_time();
   }
 
-  [(CSAudioStartStreamOption *)self setStartRecordingHostTime:v9 + v6];
+  [(CSAudioStartStreamOption *)self setStartRecordingHostTime:startRecordingHostTime + timeCopy];
   v10 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v11 = v10;
-    v12 = [(CSAudioStartStreamOption *)self startRecordingHostTime];
+    startRecordingHostTime2 = [(CSAudioStartStreamOption *)self startRecordingHostTime];
     v14 = 136315650;
     v15 = "[CSAudioStartStreamOption(AVVC) adjustStartRecordingHostTime:]";
     v16 = 2050;
-    v17 = v9;
+    timeCopy2 = startRecordingHostTime;
     v18 = 2050;
-    v19 = v12;
+    v19 = startRecordingHostTime2;
     _os_log_impl(&dword_1DDA4B000, v11, OS_LOG_TYPE_DEFAULT, "%s Start Recording Host Time: adjustment %{public}llu -> %{public}llu", &v14, 0x20u);
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)_alertBehaviorTypeFromAVVCOverrideType:(int64_t)a3
+- (int64_t)_alertBehaviorTypeFromAVVCOverrideType:(int64_t)type
 {
-  if (a3 >= 5)
+  if (type >= 5)
   {
     return -1;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-- (void)setAVVCAlertBehavior:(id)a3
+- (void)setAVVCAlertBehavior:(id)behavior
 {
-  v4 = a3;
-  v14 = v4;
-  if (v4)
+  behaviorCopy = behavior;
+  v14 = behaviorCopy;
+  if (behaviorCopy)
   {
-    v5 = [v4 objectForKeyedSubscript:&unk_1F5916898];
+    v5 = [behaviorCopy objectForKeyedSubscript:&unk_1F5916898];
 
     if (v5)
     {
@@ -280,10 +280,10 @@
   [(CSAudioStartStreamOption *)self setErrorAlertBehavior:v8];
 }
 
-- (id)avvcStartRecordSettingsWithAudioStreamHandleId:(unint64_t)a3
+- (id)avvcStartRecordSettingsWithAudioStreamHandleId:(unint64_t)id
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = [objc_alloc(MEMORY[0x1E6958570]) initWithStreamID:a3 atStartHostTime:{-[CSAudioStartStreamOption startRecordingHostTime](self, "startRecordingHostTime")}];
+  v4 = [objc_alloc(MEMORY[0x1E6958570]) initWithStreamID:id atStartHostTime:{-[CSAudioStartStreamOption startRecordingHostTime](self, "startRecordingHostTime")}];
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -291,15 +291,15 @@
     v17 = 136315394;
     v18 = "[CSAudioStartStreamOption(AVVC) avvcStartRecordSettingsWithAudioStreamHandleId:]";
     v19 = 2050;
-    v20 = [(CSAudioStartStreamOption *)self startRecordingHostTime];
+    startRecordingHostTime = [(CSAudioStartStreamOption *)self startRecordingHostTime];
     _os_log_impl(&dword_1DDA4B000, v6, OS_LOG_TYPE_DEFAULT, "%s Start Recording Host Time = %{public}llu", &v17, 0x16u);
   }
 
-  v7 = [(CSAudioStartStreamOption *)self avvcAlertBehavior];
-  v8 = v7;
-  if (v7)
+  avvcAlertBehavior = [(CSAudioStartStreamOption *)self avvcAlertBehavior];
+  v8 = avvcAlertBehavior;
+  if (avvcAlertBehavior)
   {
-    v9 = [v7 objectForKeyedSubscript:&unk_1F5916898];
+    v9 = [avvcAlertBehavior objectForKeyedSubscript:&unk_1F5916898];
 
     if (v9)
     {
@@ -331,20 +331,20 @@
   return v4;
 }
 
-+ (int64_t)avvcAlertOverrideType:(int64_t)a3
++ (int64_t)avvcAlertOverrideType:(int64_t)type
 {
-  if ((a3 - 1) >= 4)
+  if ((type - 1) >= 4)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CSAudioStartStreamOption);
   [(CSAudioStartStreamOption *)v4 setRequestHistoricalAudioDataWithHostTime:self->_requestHistoricalAudioDataWithHostTime];
@@ -435,35 +435,35 @@
   return v3;
 }
 
-- (CSAudioStartStreamOption)initWithXPCObject:(id)a3
+- (CSAudioStartStreamOption)initWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v13.receiver = self;
   v13.super_class = CSAudioStartStreamOption;
   v5 = [(CSAudioStartStreamOption *)&v13 init];
   if (v5)
   {
-    v5->_requestHistoricalAudioDataWithHostTime = xpc_dictionary_get_BOOL(v4, "requestHistoricalAudioDataWithHostTime");
-    v5->_requestHistoricalAudioDataSampleCount = xpc_dictionary_get_BOOL(v4, "requestHistoricalAudioDataSampleCount");
-    v5->_startRecordingHostTime = xpc_dictionary_get_uint64(v4, "startRecordingHostTime");
-    v5->_startRecordingSampleCount = xpc_dictionary_get_uint64(v4, "startRecordingSampleCount");
-    v5->_useOpportunisticZLL = xpc_dictionary_get_BOOL(v4, "useOpportunisticZLL");
-    v5->_startAlertBehavior = xpc_dictionary_get_int64(v4, "startAlertBehavior");
-    v5->_stopAlertBehavior = xpc_dictionary_get_int64(v4, "stopAlertBehavior");
-    v5->_errorAlertBehavior = xpc_dictionary_get_int64(v4, "errorAlertBehavior");
-    v5->_skipAlertBehavior = xpc_dictionary_get_BOOL(v4, "skipAlertBehavior");
-    v5->_requireSingleChannelLookup = xpc_dictionary_get_BOOL(v4, "requireSingleChannelLookup");
-    v5->_selectedChannel = xpc_dictionary_get_uint64(v4, "selectedChannel");
-    v5->_estimatedStartHostTime = xpc_dictionary_get_uint64(v4, "estimatedStartHostTime");
-    v5->_disableEndpointer = xpc_dictionary_get_BOOL(v4, "disableEndpointer");
-    v5->_disableLocalSpeechRecognizer = xpc_dictionary_get_BOOL(v4, "disableLocalSpeechRecognizer");
-    v5->_disablePrewarmLocalAsrAtStartRecording = xpc_dictionary_get_BOOL(v4, "disablePrewarmLocalSpeechRecognizer");
-    v5->_disableBoostForDoAP = xpc_dictionary_get_BOOL(v4, "disableBoostForDoAP");
-    v5->_allowRecordWhileBeep = xpc_dictionary_get_BOOL(v4, "allowRecordWhileBeep");
-    v5->_disableRCSelection = xpc_dictionary_get_BOOL(v4, "disableRCSelection");
-    v5->_potentiallyNeedsCarPlayLatencyCorrection = xpc_dictionary_get_BOOL(v4, "potentiallyNeedsCarPlayLatencyCorrection");
-    v5->_enforceAutomaticEndpointing = xpc_dictionary_get_BOOL(v4, "enforceAutomaticEndpointing");
-    string = xpc_dictionary_get_string(v4, "requestMHUUID");
+    v5->_requestHistoricalAudioDataWithHostTime = xpc_dictionary_get_BOOL(objectCopy, "requestHistoricalAudioDataWithHostTime");
+    v5->_requestHistoricalAudioDataSampleCount = xpc_dictionary_get_BOOL(objectCopy, "requestHistoricalAudioDataSampleCount");
+    v5->_startRecordingHostTime = xpc_dictionary_get_uint64(objectCopy, "startRecordingHostTime");
+    v5->_startRecordingSampleCount = xpc_dictionary_get_uint64(objectCopy, "startRecordingSampleCount");
+    v5->_useOpportunisticZLL = xpc_dictionary_get_BOOL(objectCopy, "useOpportunisticZLL");
+    v5->_startAlertBehavior = xpc_dictionary_get_int64(objectCopy, "startAlertBehavior");
+    v5->_stopAlertBehavior = xpc_dictionary_get_int64(objectCopy, "stopAlertBehavior");
+    v5->_errorAlertBehavior = xpc_dictionary_get_int64(objectCopy, "errorAlertBehavior");
+    v5->_skipAlertBehavior = xpc_dictionary_get_BOOL(objectCopy, "skipAlertBehavior");
+    v5->_requireSingleChannelLookup = xpc_dictionary_get_BOOL(objectCopy, "requireSingleChannelLookup");
+    v5->_selectedChannel = xpc_dictionary_get_uint64(objectCopy, "selectedChannel");
+    v5->_estimatedStartHostTime = xpc_dictionary_get_uint64(objectCopy, "estimatedStartHostTime");
+    v5->_disableEndpointer = xpc_dictionary_get_BOOL(objectCopy, "disableEndpointer");
+    v5->_disableLocalSpeechRecognizer = xpc_dictionary_get_BOOL(objectCopy, "disableLocalSpeechRecognizer");
+    v5->_disablePrewarmLocalAsrAtStartRecording = xpc_dictionary_get_BOOL(objectCopy, "disablePrewarmLocalSpeechRecognizer");
+    v5->_disableBoostForDoAP = xpc_dictionary_get_BOOL(objectCopy, "disableBoostForDoAP");
+    v5->_allowRecordWhileBeep = xpc_dictionary_get_BOOL(objectCopy, "allowRecordWhileBeep");
+    v5->_disableRCSelection = xpc_dictionary_get_BOOL(objectCopy, "disableRCSelection");
+    v5->_potentiallyNeedsCarPlayLatencyCorrection = xpc_dictionary_get_BOOL(objectCopy, "potentiallyNeedsCarPlayLatencyCorrection");
+    v5->_enforceAutomaticEndpointing = xpc_dictionary_get_BOOL(objectCopy, "enforceAutomaticEndpointing");
+    string = xpc_dictionary_get_string(objectCopy, "requestMHUUID");
     if (string)
     {
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:string];
@@ -471,7 +471,7 @@
       v5->_requestMHUUID = v7;
     }
 
-    v9 = xpc_dictionary_get_string(v4, "siriSessionUUID");
+    v9 = xpc_dictionary_get_string(objectCopy, "siriSessionUUID");
     if (v9)
     {
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v9];
@@ -483,14 +483,14 @@
   return v5;
 }
 
-- (id)initTandemWithTandemAttachConfig:(id)a3 primaryStreamOption:(id)a4
+- (id)initTandemWithTandemAttachConfig:(id)config primaryStreamOption:(id)option
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[CSAudioStartStreamOption alloc] initTandemWithOption:v6];
+  optionCopy = option;
+  configCopy = config;
+  v8 = [[CSAudioStartStreamOption alloc] initTandemWithOption:optionCopy];
 
-  v9 = [v7 allowMultiChannel];
-  if (v9)
+  allowMultiChannel = [configCopy allowMultiChannel];
+  if (allowMultiChannel)
   {
     [v8 setRequireSingleChannelLookup:0];
   }
@@ -498,20 +498,20 @@
   return v8;
 }
 
-- (id)initTandemWithOption:(id)a3
+- (id)initTandemWithOption:(id)option
 {
-  v4 = a3;
+  optionCopy = option;
   v5 = +[CSAudioStartStreamOption noAlertOption];
-  [v5 setRequestHistoricalAudioDataSampleCount:{objc_msgSend(v4, "requestHistoricalAudioDataSampleCount")}];
-  [v5 setRequestHistoricalAudioDataWithHostTime:{objc_msgSend(v4, "requestHistoricalAudioDataWithHostTime")}];
-  [v5 setStartRecordingHostTime:{objc_msgSend(v4, "startRecordingHostTime")}];
-  [v5 setStartRecordingSampleCount:{objc_msgSend(v4, "startRecordingSampleCount")}];
-  [v5 setUseOpportunisticZLL:{objc_msgSend(v4, "useOpportunisticZLL")}];
-  [v5 setRequireSingleChannelLookup:{objc_msgSend(v4, "requireSingleChannelLookup")}];
-  [v5 setSelectedChannel:{objc_msgSend(v4, "selectedChannel")}];
-  v6 = [v4 disableBoostForDoAP];
+  [v5 setRequestHistoricalAudioDataSampleCount:{objc_msgSend(optionCopy, "requestHistoricalAudioDataSampleCount")}];
+  [v5 setRequestHistoricalAudioDataWithHostTime:{objc_msgSend(optionCopy, "requestHistoricalAudioDataWithHostTime")}];
+  [v5 setStartRecordingHostTime:{objc_msgSend(optionCopy, "startRecordingHostTime")}];
+  [v5 setStartRecordingSampleCount:{objc_msgSend(optionCopy, "startRecordingSampleCount")}];
+  [v5 setUseOpportunisticZLL:{objc_msgSend(optionCopy, "useOpportunisticZLL")}];
+  [v5 setRequireSingleChannelLookup:{objc_msgSend(optionCopy, "requireSingleChannelLookup")}];
+  [v5 setSelectedChannel:{objc_msgSend(optionCopy, "selectedChannel")}];
+  disableBoostForDoAP = [optionCopy disableBoostForDoAP];
 
-  [v5 setDisableBoostForDoAP:v6];
+  [v5 setDisableBoostForDoAP:disableBoostForDoAP];
   return v5;
 }
 

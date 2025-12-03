@@ -1,103 +1,103 @@
 @interface REMRemindersDataView
-+ (id)remindersFromAccountStorages:(id)a3 listStorages:(id)a4 reminderStorages:(id)a5 store:(id)a6 requestedReminderIDs:(id)a7;
-+ (id)remindersFromAccountStorages:(id)a3 listStorages:(id)a4 reminderStorages:(id)a5 store:(id)a6 requestedStringIdentifiers:(id)a7 identifierSelector:(SEL)a8;
-+ (id)remindersFromAccountStorages:(id)a3 listStorages:(id)a4 reminderStorages:(id)a5 store:(id)a6 showMarkedForDeleteObjects:(BOOL)a7;
-- (REMRemindersDataView)initWithStore:(id)a3;
-- (id)fetchAllRemindersWithExternalIdentifier:(id)a3 error:(id *)a4;
-- (id)fetchReminderWithDACalendarItemUniqueIdentifier:(id)a3 inList:(id)a4 error:(id *)a5;
-- (id)fetchReminderWithExternalIdentifier:(id)a3 inList:(id)a4 error:(id *)a5;
-- (id)fetchReminderWithObjectID:(id)a3 fetchOptions:(id)a4 error:(id *)a5;
-- (id)fetchRemindersCountWithParentReminderID:(id)a3 error:(id *)a4;
-- (id)fetchRemindersIncludingUnsupportedWithObjectIDs:(id)a3 error:(id *)a4;
-- (id)fetchRemindersMatchingPredicateDescriptor:(id)a3 sortDescriptors:(id)a4 options:(id)a5 error:(id *)a6;
-- (id)fetchRemindersWithDACalendarItemUniqueIdentifiers:(id)a3 inList:(id)a4 error:(id *)a5;
-- (id)fetchRemindersWithExternalIdentifiers:(id)a3 inList:(id)a4 error:(id *)a5;
-- (id)fetchRemindersWithObjectIDs:(id)a3 fetchOptions:(id)a4 error:(id *)a5;
-- (id)fetchRemindersWithParentReminderID:(id)a3 accountID:(id)a4 subtaskFetchOption:(int64_t)a5 reminderFetchOptions:(id)a6 error:(id *)a7;
-- (id)fetchRemindersWithParentReminderIDs:(id)a3 error:(id *)a4;
-- (id)fetchSubtasksOfParentReminder:(id)a3 subtaskFetchOption:(int64_t)a4 reminderFetchOptions:(id)a5 error:(id *)a6;
-- (id)fetchSubtasksOfParentReminderChangeItem:(id)a3 subtaskFetchOption:(int64_t)a4 reminderFetchOptions:(id)a5 error:(id *)a6;
++ (id)remindersFromAccountStorages:(id)storages listStorages:(id)listStorages reminderStorages:(id)reminderStorages store:(id)store requestedReminderIDs:(id)ds;
++ (id)remindersFromAccountStorages:(id)storages listStorages:(id)listStorages reminderStorages:(id)reminderStorages store:(id)store requestedStringIdentifiers:(id)identifiers identifierSelector:(SEL)selector;
++ (id)remindersFromAccountStorages:(id)storages listStorages:(id)listStorages reminderStorages:(id)reminderStorages store:(id)store showMarkedForDeleteObjects:(BOOL)objects;
+- (REMRemindersDataView)initWithStore:(id)store;
+- (id)fetchAllRemindersWithExternalIdentifier:(id)identifier error:(id *)error;
+- (id)fetchReminderWithDACalendarItemUniqueIdentifier:(id)identifier inList:(id)list error:(id *)error;
+- (id)fetchReminderWithExternalIdentifier:(id)identifier inList:(id)list error:(id *)error;
+- (id)fetchReminderWithObjectID:(id)d fetchOptions:(id)options error:(id *)error;
+- (id)fetchRemindersCountWithParentReminderID:(id)d error:(id *)error;
+- (id)fetchRemindersIncludingUnsupportedWithObjectIDs:(id)ds error:(id *)error;
+- (id)fetchRemindersMatchingPredicateDescriptor:(id)descriptor sortDescriptors:(id)descriptors options:(id)options error:(id *)error;
+- (id)fetchRemindersWithDACalendarItemUniqueIdentifiers:(id)identifiers inList:(id)list error:(id *)error;
+- (id)fetchRemindersWithExternalIdentifiers:(id)identifiers inList:(id)list error:(id *)error;
+- (id)fetchRemindersWithObjectIDs:(id)ds fetchOptions:(id)options error:(id *)error;
+- (id)fetchRemindersWithParentReminderID:(id)d accountID:(id)iD subtaskFetchOption:(int64_t)option reminderFetchOptions:(id)options error:(id *)error;
+- (id)fetchRemindersWithParentReminderIDs:(id)ds error:(id *)error;
+- (id)fetchSubtasksOfParentReminder:(id)reminder subtaskFetchOption:(int64_t)option reminderFetchOptions:(id)options error:(id *)error;
+- (id)fetchSubtasksOfParentReminderChangeItem:(id)item subtaskFetchOption:(int64_t)option reminderFetchOptions:(id)options error:(id *)error;
 @end
 
 @implementation REMRemindersDataView
 
-- (REMRemindersDataView)initWithStore:(id)a3
+- (REMRemindersDataView)initWithStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = REMRemindersDataView;
   v6 = [(REMRemindersDataView *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_store, a3);
+    objc_storeStrong(&v6->_store, store);
   }
 
   return v7;
 }
 
-- (id)fetchRemindersWithParentReminderID:(id)a3 accountID:(id)a4 subtaskFetchOption:(int64_t)a5 reminderFetchOptions:(id)a6 error:(id *)a7
+- (id)fetchRemindersWithParentReminderID:(id)d accountID:(id)iD subtaskFetchOption:(int64_t)option reminderFetchOptions:(id)options error:(id *)error
 {
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[REMRemindersDataViewInvocation_fetchByParentReminderID alloc] initWithParentReminderID:v14 accountID:v13 subtaskFetchOption:a5 reminderFetchOptions:v12];
+  optionsCopy = options;
+  iDCopy = iD;
+  dCopy = d;
+  v15 = [[REMRemindersDataViewInvocation_fetchByParentReminderID alloc] initWithParentReminderID:dCopy accountID:iDCopy subtaskFetchOption:option reminderFetchOptions:optionsCopy];
 
-  v16 = [(REMRemindersDataView *)self store];
-  v17 = [v16 resultFromPerformingInvocation:v15 error:a7];
+  store = [(REMRemindersDataView *)self store];
+  v17 = [store resultFromPerformingInvocation:v15 error:error];
 
   v18 = objc_opt_class();
   v19 = REMDynamicCast(v18, v17);
-  v20 = [v19 accountStorages];
-  v21 = [v19 listStorages];
-  v22 = [v19 reminderStorages];
-  v23 = [(REMRemindersDataView *)self store];
-  v24 = [v19 objectIDs];
-  v25 = [REMRemindersDataView remindersFromAccountStorages:v20 listStorages:v21 reminderStorages:v22 store:v23 requestedReminderIDs:v24];
+  accountStorages = [v19 accountStorages];
+  listStorages = [v19 listStorages];
+  reminderStorages = [v19 reminderStorages];
+  store2 = [(REMRemindersDataView *)self store];
+  objectIDs = [v19 objectIDs];
+  v25 = [REMRemindersDataView remindersFromAccountStorages:accountStorages listStorages:listStorages reminderStorages:reminderStorages store:store2 requestedReminderIDs:objectIDs];
 
   return v25;
 }
 
-- (id)fetchSubtasksOfParentReminder:(id)a3 subtaskFetchOption:(int64_t)a4 reminderFetchOptions:(id)a5 error:(id *)a6
+- (id)fetchSubtasksOfParentReminder:(id)reminder subtaskFetchOption:(int64_t)option reminderFetchOptions:(id)options error:(id *)error
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [v11 objectID];
-  v13 = [v11 accountID];
+  optionsCopy = options;
+  reminderCopy = reminder;
+  objectID = [reminderCopy objectID];
+  accountID = [reminderCopy accountID];
 
-  v14 = [(REMRemindersDataView *)self fetchRemindersWithParentReminderID:v12 accountID:v13 subtaskFetchOption:a4 reminderFetchOptions:v10 error:a6];
+  v14 = [(REMRemindersDataView *)self fetchRemindersWithParentReminderID:objectID accountID:accountID subtaskFetchOption:option reminderFetchOptions:optionsCopy error:error];
 
   return v14;
 }
 
-- (id)fetchSubtasksOfParentReminderChangeItem:(id)a3 subtaskFetchOption:(int64_t)a4 reminderFetchOptions:(id)a5 error:(id *)a6
+- (id)fetchSubtasksOfParentReminderChangeItem:(id)item subtaskFetchOption:(int64_t)option reminderFetchOptions:(id)options error:(id *)error
 {
-  v10 = a5;
-  v11 = a3;
-  v12 = [v11 objectID];
-  v13 = [v11 accountID];
+  optionsCopy = options;
+  itemCopy = item;
+  objectID = [itemCopy objectID];
+  accountID = [itemCopy accountID];
 
-  v14 = [(REMRemindersDataView *)self fetchRemindersWithParentReminderID:v12 accountID:v13 subtaskFetchOption:a4 reminderFetchOptions:v10 error:a6];
+  v14 = [(REMRemindersDataView *)self fetchRemindersWithParentReminderID:objectID accountID:accountID subtaskFetchOption:option reminderFetchOptions:optionsCopy error:error];
 
   return v14;
 }
 
-- (id)fetchReminderWithObjectID:(id)a3 fetchOptions:(id)a4 error:(id *)a5
+- (id)fetchReminderWithObjectID:(id)d fetchOptions:(id)options error:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v19[0] = v8;
+  dCopy = d;
+  v19[0] = dCopy;
   v9 = MEMORY[0x1E695DEC8];
-  v10 = a4;
+  optionsCopy = options;
   v11 = [v9 arrayWithObjects:v19 count:1];
-  v12 = [(REMRemindersDataView *)self fetchRemindersWithObjectIDs:v11 fetchOptions:v10 error:a5];
+  v12 = [(REMRemindersDataView *)self fetchRemindersWithObjectIDs:v11 fetchOptions:optionsCopy error:error];
 
   if (!v12)
   {
     goto LABEL_7;
   }
 
-  v13 = [v12 objectForKeyedSubscript:v8];
+  v13 = [v12 objectForKeyedSubscript:dCopy];
   if (v13)
   {
     goto LABEL_8;
@@ -107,14 +107,14 @@
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138543362;
-    v18 = v8;
+    v18 = dCopy;
     _os_log_impl(&dword_19A0DB000, v14, OS_LOG_TYPE_DEFAULT, "REMRemindersDataView: Requested to fetch non-existent reminder {objectID: %{public}@}", &v17, 0xCu);
   }
 
-  if (a5)
+  if (error)
   {
-    [REMError noSuchObjectErrorWithObjectID:v8];
-    *a5 = v13 = 0;
+    [REMError noSuchObjectErrorWithObjectID:dCopy];
+    *error = v13 = 0;
   }
 
   else
@@ -130,37 +130,37 @@ LABEL_8:
   return v13;
 }
 
-- (id)fetchRemindersWithObjectIDs:(id)a3 fetchOptions:(id)a4 error:(id *)a5
+- (id)fetchRemindersWithObjectIDs:(id)ds fetchOptions:(id)options error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count])
+  dsCopy = ds;
+  optionsCopy = options;
+  if ([dsCopy count])
   {
-    v10 = [v9 includeConcealed];
-    v11 = [[REMRemindersDataViewInvocation_fetchByObjectID alloc] initWithObjectIDs:v8 fetchOptions:v9];
-    v12 = [(REMRemindersDataView *)self store];
+    includeConcealed = [optionsCopy includeConcealed];
+    v11 = [[REMRemindersDataViewInvocation_fetchByObjectID alloc] initWithObjectIDs:dsCopy fetchOptions:optionsCopy];
+    store = [(REMRemindersDataView *)self store];
     v34 = v11;
-    v13 = [v12 resultFromPerformingInvocation:v11 error:a5];
+    v13 = [store resultFromPerformingInvocation:v11 error:error];
 
     v14 = objc_opt_class();
     v15 = REMDynamicCast(v14, v13);
-    v16 = [v15 accountStorages];
-    v17 = [v15 listStorages];
-    v18 = [v15 reminderStorages];
-    v19 = [(REMRemindersDataView *)self store];
-    v20 = [REMRemindersDataView remindersFromAccountStorages:v16 listStorages:v17 reminderStorages:v18 store:v19 showMarkedForDeleteObjects:v10];
+    accountStorages = [v15 accountStorages];
+    listStorages = [v15 listStorages];
+    reminderStorages = [v15 reminderStorages];
+    store2 = [(REMRemindersDataView *)self store];
+    v20 = [REMRemindersDataView remindersFromAccountStorages:accountStorages listStorages:listStorages reminderStorages:reminderStorages store:store2 showMarkedForDeleteObjects:includeConcealed];
 
     if (v20)
     {
       v32 = v13;
-      v33 = v9;
-      v21 = [MEMORY[0x1E695DF90] dictionary];
+      v33 = optionsCopy;
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v35 = 0u;
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
-      v22 = v8;
+      v22 = dsCopy;
       v23 = [v22 countByEnumeratingWithState:&v35 objects:v39 count:16];
       if (v23)
       {
@@ -179,8 +179,8 @@ LABEL_8:
             v28 = v27;
             if (v27)
             {
-              v29 = [v27 objectID];
-              [v21 setObject:v28 forKeyedSubscript:v29];
+              objectID = [v27 objectID];
+              [dictionary setObject:v28 forKeyedSubscript:objectID];
             }
           }
 
@@ -191,82 +191,82 @@ LABEL_8:
       }
 
       v13 = v32;
-      v9 = v33;
+      optionsCopy = v33;
     }
 
     else
     {
-      v21 = 0;
+      dictionary = 0;
     }
   }
 
   else
   {
-    v21 = MEMORY[0x1E695E0F8];
+    dictionary = MEMORY[0x1E695E0F8];
   }
 
   v30 = *MEMORY[0x1E69E9840];
 
-  return v21;
+  return dictionary;
 }
 
-- (id)fetchRemindersIncludingUnsupportedWithObjectIDs:(id)a3 error:(id *)a4
+- (id)fetchRemindersIncludingUnsupportedWithObjectIDs:(id)ds error:(id *)error
 {
-  v6 = a3;
+  dsCopy = ds;
   v7 = +[REMReminderFetchOptions fetchOptionsIncludingConcealed];
-  v8 = [(REMRemindersDataView *)self fetchRemindersWithObjectIDs:v6 fetchOptions:v7 error:a4];
+  v8 = [(REMRemindersDataView *)self fetchRemindersWithObjectIDs:dsCopy fetchOptions:v7 error:error];
 
   return v8;
 }
 
-- (id)fetchRemindersMatchingPredicateDescriptor:(id)a3 sortDescriptors:(id)a4 options:(id)a5 error:(id *)a6
+- (id)fetchRemindersMatchingPredicateDescriptor:(id)descriptor sortDescriptors:(id)descriptors options:(id)options error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[REMRemindersDataViewInvocation_fetchByPredicateDescriptor alloc] initWithPredicateDescriptor:v12 sortDescriptors:v11 options:v10];
+  optionsCopy = options;
+  descriptorsCopy = descriptors;
+  descriptorCopy = descriptor;
+  v13 = [[REMRemindersDataViewInvocation_fetchByPredicateDescriptor alloc] initWithPredicateDescriptor:descriptorCopy sortDescriptors:descriptorsCopy options:optionsCopy];
 
-  v14 = [(REMRemindersDataView *)self store];
-  v15 = [v14 resultFromPerformingInvocation:v13 error:a6];
+  store = [(REMRemindersDataView *)self store];
+  v15 = [store resultFromPerformingInvocation:v13 error:error];
 
   v16 = objc_opt_class();
   v17 = REMDynamicCast(v16, v15);
-  v18 = [v17 accountStorages];
-  v19 = [v17 listStorages];
-  v20 = [v17 reminderStorages];
-  v21 = [(REMRemindersDataView *)self store];
-  v22 = [v17 objectIDs];
-  v23 = [REMRemindersDataView remindersFromAccountStorages:v18 listStorages:v19 reminderStorages:v20 store:v21 requestedReminderIDs:v22];
+  accountStorages = [v17 accountStorages];
+  listStorages = [v17 listStorages];
+  reminderStorages = [v17 reminderStorages];
+  store2 = [(REMRemindersDataView *)self store];
+  objectIDs = [v17 objectIDs];
+  v23 = [REMRemindersDataView remindersFromAccountStorages:accountStorages listStorages:listStorages reminderStorages:reminderStorages store:store2 requestedReminderIDs:objectIDs];
 
   return v23;
 }
 
-- (id)fetchRemindersWithParentReminderIDs:(id)a3 error:(id *)a4
+- (id)fetchRemindersWithParentReminderIDs:(id)ds error:(id *)error
 {
-  v6 = a3;
-  v7 = [[REMRemindersDataViewInvocation_fetchByParentReminderIDs alloc] initWithParentReminderIDs:v6];
+  dsCopy = ds;
+  v7 = [[REMRemindersDataViewInvocation_fetchByParentReminderIDs alloc] initWithParentReminderIDs:dsCopy];
 
-  v8 = [(REMRemindersDataView *)self store];
-  v9 = [v8 resultFromPerformingInvocation:v7 error:a4];
+  store = [(REMRemindersDataView *)self store];
+  v9 = [store resultFromPerformingInvocation:v7 error:error];
 
   v10 = objc_opt_class();
   v11 = REMDynamicCast(v10, v9);
-  v12 = [v11 accountStorages];
-  v13 = [v11 listStorages];
-  v14 = [v11 reminderStorages];
-  v15 = [(REMRemindersDataView *)self store];
-  v16 = [v11 objectIDs];
-  v17 = [REMRemindersDataView remindersFromAccountStorages:v12 listStorages:v13 reminderStorages:v14 store:v15 requestedReminderIDs:v16];
+  accountStorages = [v11 accountStorages];
+  listStorages = [v11 listStorages];
+  reminderStorages = [v11 reminderStorages];
+  store2 = [(REMRemindersDataView *)self store];
+  objectIDs = [v11 objectIDs];
+  v17 = [REMRemindersDataView remindersFromAccountStorages:accountStorages listStorages:listStorages reminderStorages:reminderStorages store:store2 requestedReminderIDs:objectIDs];
 
   return v17;
 }
 
-- (id)fetchRemindersCountWithParentReminderID:(id)a3 error:(id *)a4
+- (id)fetchRemindersCountWithParentReminderID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = [[REMRemindersDataViewInvocation_fetchRemindersCountByParentReminderID alloc] initWithParentReminderID:v6];
-  v8 = [(REMRemindersDataView *)self store];
-  v9 = [v8 resultFromPerformingInvocation:v7 error:a4];
+  dCopy = d;
+  v7 = [[REMRemindersDataViewInvocation_fetchRemindersCountByParentReminderID alloc] initWithParentReminderID:dCopy];
+  store = [(REMRemindersDataView *)self store];
+  v9 = [store resultFromPerformingInvocation:v7 error:error];
 
   v10 = objc_opt_class();
   v11 = [v9 storedPropertyForKey:@"RemindersCount"];
@@ -277,34 +277,34 @@ LABEL_8:
     v14 = +[REMLogStore read];
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      [REMRemindersDataView fetchRemindersCountWithParentReminderID:v6 error:v14];
+      [REMRemindersDataView fetchRemindersCountWithParentReminderID:dCopy error:v14];
     }
 
-    if (a4 && !*a4)
+    if (error && !*error)
     {
-      *a4 = +[REMError unexpectedError];
+      *error = +[REMError unexpectedError];
     }
   }
 
   return v12;
 }
 
-- (id)fetchReminderWithExternalIdentifier:(id)a3 inList:(id)a4 error:(id *)a5
+- (id)fetchReminderWithExternalIdentifier:(id)identifier inList:(id)list error:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = v8;
-  if (!v8)
+  identifierCopy = identifier;
+  v9 = identifierCopy;
+  if (!identifierCopy)
   {
     v14 = 0;
     goto LABEL_11;
   }
 
-  v20[0] = v8;
+  v20[0] = identifierCopy;
   v10 = MEMORY[0x1E695DEC8];
-  v11 = a4;
+  listCopy = list;
   v12 = [v10 arrayWithObjects:v20 count:1];
-  v13 = [(REMRemindersDataView *)self fetchRemindersWithExternalIdentifiers:v12 inList:v11 error:a5];
+  v13 = [(REMRemindersDataView *)self fetchRemindersWithExternalIdentifiers:v12 inList:listCopy error:error];
 
   if (!v13)
   {
@@ -322,10 +322,10 @@ LABEL_8:
       _os_log_impl(&dword_19A0DB000, v15, OS_LOG_TYPE_DEFAULT, "Requested non-existent reminder {externalIdentifier: %@}", &v18, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       [REMError noSuchObjectErrorWithExternalIdentifier:v9];
-      *a5 = v14 = 0;
+      *error = v14 = 0;
       goto LABEL_10;
     }
 
@@ -341,26 +341,26 @@ LABEL_11:
   return v14;
 }
 
-- (id)fetchRemindersWithExternalIdentifiers:(id)a3 inList:(id)a4 error:(id *)a5
+- (id)fetchRemindersWithExternalIdentifiers:(id)identifiers inList:(id)list error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  identifiersCopy = identifiers;
+  listCopy = list;
   v10 = [REMRemindersDataViewInvocation_fetchByExternalIdentifier alloc];
-  v34 = v9;
-  v11 = [v9 objectID];
-  v12 = [(REMRemindersDataViewInvocation_fetchByExternalIdentifier *)v10 initWithExternalIdentifiers:v8 listObjectID:v11];
+  v34 = listCopy;
+  objectID = [listCopy objectID];
+  v12 = [(REMRemindersDataViewInvocation_fetchByExternalIdentifier *)v10 initWithExternalIdentifiers:identifiersCopy listObjectID:objectID];
 
-  v13 = [(REMRemindersDataView *)self store];
-  v14 = [v13 resultFromPerformingInvocation:v12 error:a5];
+  store = [(REMRemindersDataView *)self store];
+  v14 = [store resultFromPerformingInvocation:v12 error:error];
 
   v15 = objc_opt_class();
   v16 = REMDynamicCast(v15, v14);
-  v17 = [v16 accountStorages];
-  v18 = [v16 listStorages];
-  v19 = [v16 reminderStorages];
-  v20 = [(REMRemindersDataView *)self store];
-  v21 = [REMRemindersDataView remindersFromAccountStorages:v17 listStorages:v18 reminderStorages:v19 store:v20 requestedStringIdentifiers:v8 identifierSelector:sel_externalIdentifier];
+  accountStorages = [v16 accountStorages];
+  listStorages = [v16 listStorages];
+  reminderStorages = [v16 reminderStorages];
+  store2 = [(REMRemindersDataView *)self store];
+  v21 = [REMRemindersDataView remindersFromAccountStorages:accountStorages listStorages:listStorages reminderStorages:reminderStorages store:store2 requestedStringIdentifiers:identifiersCopy identifierSelector:sel_externalIdentifier];
 
   if (v21)
   {
@@ -387,8 +387,8 @@ LABEL_11:
           }
 
           v28 = *(*(&v35 + 1) + 8 * i);
-          v29 = [v28 externalIdentifier];
-          [v22 setObject:v28 forKeyedSubscript:v29];
+          externalIdentifier = [v28 externalIdentifier];
+          [v22 setObject:v28 forKeyedSubscript:externalIdentifier];
         }
 
         v25 = [v23 countByEnumeratingWithState:&v35 objects:v39 count:16];
@@ -411,30 +411,30 @@ LABEL_11:
   return v22;
 }
 
-- (id)fetchAllRemindersWithExternalIdentifier:(id)a3 error:(id *)a4
+- (id)fetchAllRemindersWithExternalIdentifier:(id)identifier error:(id *)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = [REMRemindersDataViewInvocation_fetchByExternalIdentifier alloc];
-  v28[0] = v6;
+  v28[0] = identifierCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
   v9 = [(REMRemindersDataViewInvocation_fetchByExternalIdentifier *)v7 initWithExternalIdentifiers:v8 listObjectID:0];
 
-  v10 = [(REMRemindersDataView *)self store];
-  v25 = a4;
-  v11 = [v10 resultFromPerformingInvocation:v9 error:a4];
+  store = [(REMRemindersDataView *)self store];
+  errorCopy = error;
+  v11 = [store resultFromPerformingInvocation:v9 error:error];
 
   v12 = objc_opt_class();
   v13 = REMDynamicCast(v12, v11);
-  v14 = [v13 accountStorages];
-  v15 = [v13 listStorages];
-  v16 = [v13 reminderStorages];
-  v17 = [(REMRemindersDataView *)self store];
-  v18 = [REMRemindersDataView remindersFromAccountStorages:v14 listStorages:v15 reminderStorages:v16 store:v17];
+  accountStorages = [v13 accountStorages];
+  listStorages = [v13 listStorages];
+  reminderStorages = [v13 reminderStorages];
+  store2 = [(REMRemindersDataView *)self store];
+  v18 = [REMRemindersDataView remindersFromAccountStorages:accountStorages listStorages:listStorages reminderStorages:reminderStorages store:store2];
 
-  v19 = [v18 allValues];
-  v20 = v19;
-  if (v19 && [v19 count])
+  allValues = [v18 allValues];
+  v20 = allValues;
+  if (allValues && [allValues count])
   {
     v21 = v20;
   }
@@ -445,14 +445,14 @@ LABEL_11:
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v27 = v6;
+      v27 = identifierCopy;
       _os_log_impl(&dword_19A0DB000, v22, OS_LOG_TYPE_DEFAULT, "REMRemindersDataView: Requested to fetch non-existent reminders {externalIdentifier: %{public}@}", buf, 0xCu);
     }
 
-    if (v25)
+    if (errorCopy)
     {
-      [REMError noSuchObjectErrorWithExternalIdentifier:v6];
-      *v25 = v21 = 0;
+      [REMError noSuchObjectErrorWithExternalIdentifier:identifierCopy];
+      *errorCopy = v21 = 0;
     }
 
     else
@@ -466,22 +466,22 @@ LABEL_11:
   return v21;
 }
 
-- (id)fetchReminderWithDACalendarItemUniqueIdentifier:(id)a3 inList:(id)a4 error:(id *)a5
+- (id)fetchReminderWithDACalendarItemUniqueIdentifier:(id)identifier inList:(id)list error:(id *)error
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v19[0] = v8;
+  identifierCopy = identifier;
+  v19[0] = identifierCopy;
   v9 = MEMORY[0x1E695DEC8];
-  v10 = a4;
+  listCopy = list;
   v11 = [v9 arrayWithObjects:v19 count:1];
-  v12 = [(REMRemindersDataView *)self fetchRemindersWithDACalendarItemUniqueIdentifiers:v11 inList:v10 error:a5];
+  v12 = [(REMRemindersDataView *)self fetchRemindersWithDACalendarItemUniqueIdentifiers:v11 inList:listCopy error:error];
 
   if (!v12)
   {
     goto LABEL_7;
   }
 
-  v13 = [v12 objectForKeyedSubscript:v8];
+  v13 = [v12 objectForKeyedSubscript:identifierCopy];
   if (v13)
   {
     goto LABEL_8;
@@ -491,14 +491,14 @@ LABEL_11:
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 138543362;
-    v18 = v8;
+    v18 = identifierCopy;
     _os_log_impl(&dword_19A0DB000, v14, OS_LOG_TYPE_DEFAULT, "REMRemindersDataView: Requested to fetch non-existent reminder {daCalendarItemUniqueIdentifier: %{public}@}", &v17, 0xCu);
   }
 
-  if (a5)
+  if (error)
   {
-    [REMError noSuchObjectErrorWithDACalendarItemUniqueIdentifier:v8];
-    *a5 = v13 = 0;
+    [REMError noSuchObjectErrorWithDACalendarItemUniqueIdentifier:identifierCopy];
+    *error = v13 = 0;
   }
 
   else
@@ -514,26 +514,26 @@ LABEL_8:
   return v13;
 }
 
-- (id)fetchRemindersWithDACalendarItemUniqueIdentifiers:(id)a3 inList:(id)a4 error:(id *)a5
+- (id)fetchRemindersWithDACalendarItemUniqueIdentifiers:(id)identifiers inList:(id)list error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  identifiersCopy = identifiers;
+  listCopy = list;
   v10 = [REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier alloc];
-  v34 = v9;
-  v11 = [v9 objectID];
-  v12 = [(REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier *)v10 initWithDACalendarItemUniqueIdentifiers:v8 listObjectID:v11];
+  v34 = listCopy;
+  objectID = [listCopy objectID];
+  v12 = [(REMRemindersDataViewInvocation_fetchByDACalendarItemUniqueIdentifier *)v10 initWithDACalendarItemUniqueIdentifiers:identifiersCopy listObjectID:objectID];
 
-  v13 = [(REMRemindersDataView *)self store];
-  v14 = [v13 resultFromPerformingInvocation:v12 error:a5];
+  store = [(REMRemindersDataView *)self store];
+  v14 = [store resultFromPerformingInvocation:v12 error:error];
 
   v15 = objc_opt_class();
   v16 = REMDynamicCast(v15, v14);
-  v17 = [v16 accountStorages];
-  v18 = [v16 listStorages];
-  v19 = [v16 reminderStorages];
-  v20 = [(REMRemindersDataView *)self store];
-  v21 = [REMRemindersDataView remindersFromAccountStorages:v17 listStorages:v18 reminderStorages:v19 store:v20 requestedStringIdentifiers:v8 identifierSelector:sel_daCalendarItemUniqueIdentifier];
+  accountStorages = [v16 accountStorages];
+  listStorages = [v16 listStorages];
+  reminderStorages = [v16 reminderStorages];
+  store2 = [(REMRemindersDataView *)self store];
+  v21 = [REMRemindersDataView remindersFromAccountStorages:accountStorages listStorages:listStorages reminderStorages:reminderStorages store:store2 requestedStringIdentifiers:identifiersCopy identifierSelector:sel_daCalendarItemUniqueIdentifier];
 
   if (v21)
   {
@@ -560,8 +560,8 @@ LABEL_8:
           }
 
           v28 = *(*(&v35 + 1) + 8 * i);
-          v29 = [v28 daCalendarItemUniqueIdentifier];
-          [v22 setObject:v28 forKeyedSubscript:v29];
+          daCalendarItemUniqueIdentifier = [v28 daCalendarItemUniqueIdentifier];
+          [v22 setObject:v28 forKeyedSubscript:daCalendarItemUniqueIdentifier];
         }
 
         v25 = [v23 countByEnumeratingWithState:&v35 objects:v39 count:16];
@@ -584,19 +584,19 @@ LABEL_8:
   return v22;
 }
 
-+ (id)remindersFromAccountStorages:(id)a3 listStorages:(id)a4 reminderStorages:(id)a5 store:(id)a6 requestedReminderIDs:(id)a7
++ (id)remindersFromAccountStorages:(id)storages listStorages:(id)listStorages reminderStorages:(id)reminderStorages store:(id)store requestedReminderIDs:(id)ds
 {
   v28 = *MEMORY[0x1E69E9840];
-  v12 = a7;
-  v13 = [a1 remindersFromAccountStorages:a3 listStorages:a4 reminderStorages:a5 store:a6];
+  dsCopy = ds;
+  v13 = [self remindersFromAccountStorages:storages listStorages:listStorages reminderStorages:reminderStorages store:store];
   if (v13)
   {
-    v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v12, "count")}];
+    v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(dsCopy, "count")}];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v15 = v12;
+    v15 = dsCopy;
     v16 = [v15 countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v16)
     {
@@ -635,22 +635,22 @@ LABEL_8:
   return v14;
 }
 
-+ (id)remindersFromAccountStorages:(id)a3 listStorages:(id)a4 reminderStorages:(id)a5 store:(id)a6 requestedStringIdentifiers:(id)a7 identifierSelector:(SEL)a8
++ (id)remindersFromAccountStorages:(id)storages listStorages:(id)listStorages reminderStorages:(id)reminderStorages store:(id)store requestedStringIdentifiers:(id)identifiers identifierSelector:(SEL)selector
 {
   v47 = *MEMORY[0x1E69E9840];
-  v14 = a7;
-  v15 = [a1 remindersFromAccountStorages:a3 listStorages:a4 reminderStorages:a5 store:a6];
+  identifiersCopy = identifiers;
+  v15 = [self remindersFromAccountStorages:storages listStorages:listStorages reminderStorages:reminderStorages store:store];
   v16 = v15;
   if (v15)
   {
-    v36 = v14;
-    v17 = [v15 allValues];
-    v18 = [MEMORY[0x1E695DF90] dictionary];
+    v36 = identifiersCopy;
+    allValues = [v15 allValues];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v41 = 0u;
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v19 = v17;
+    v19 = allValues;
     v20 = [v19 countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v20)
     {
@@ -666,12 +666,12 @@ LABEL_8:
           }
 
           v24 = *(*(&v41 + 1) + 8 * i);
-          v25 = NSStringFromSelector(a8);
+          v25 = NSStringFromSelector(selector);
           v26 = [v24 valueForKey:v25];
 
           if (v26)
           {
-            [v18 setObject:v24 forKeyedSubscript:v26];
+            [dictionary setObject:v24 forKeyedSubscript:v26];
           }
         }
 
@@ -681,7 +681,7 @@ LABEL_8:
       while (v21);
     }
 
-    v14 = v36;
+    identifiersCopy = v36;
     v27 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v36, "count")}];
     v37 = 0u;
     v38 = 0u;
@@ -702,7 +702,7 @@ LABEL_8:
             objc_enumerationMutation(v28);
           }
 
-          v33 = [v18 objectForKeyedSubscript:*(*(&v37 + 1) + 8 * j)];
+          v33 = [dictionary objectForKeyedSubscript:*(*(&v37 + 1) + 8 * j)];
           if (v33)
           {
             [v27 addObject:v33];
@@ -726,29 +726,29 @@ LABEL_8:
   return v27;
 }
 
-+ (id)remindersFromAccountStorages:(id)a3 listStorages:(id)a4 reminderStorages:(id)a5 store:(id)a6 showMarkedForDeleteObjects:(BOOL)a7
++ (id)remindersFromAccountStorages:(id)storages listStorages:(id)listStorages reminderStorages:(id)reminderStorages store:(id)store showMarkedForDeleteObjects:(BOOL)objects
 {
-  v44 = a7;
+  objectsCopy = objects;
   v60 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v11)
+  listStoragesCopy = listStorages;
+  reminderStoragesCopy = reminderStorages;
+  storeCopy = store;
+  if (!reminderStoragesCopy)
   {
     v13 = 0;
     goto LABEL_29;
   }
 
-  v43 = [REMAccountsDataView accountsFromAccountStorages:a3 store:v12];
-  v40 = v10;
+  v43 = [REMAccountsDataView accountsFromAccountStorages:storages store:storeCopy];
+  v40 = listStoragesCopy;
   v45 = [REMListsDataView listsFromAccounts:"listsFromAccounts:listStorages:store:" listStorages:? store:?];
-  v13 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v11, "count")}];
+  v13 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(reminderStoragesCopy, "count")}];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v39 = v11;
-  v14 = v11;
+  v39 = reminderStoragesCopy;
+  v14 = reminderStoragesCopy;
   v15 = [v14 countByEnumeratingWithState:&v50 objects:v59 count:16];
   if (!v15)
   {
@@ -767,47 +767,47 @@ LABEL_8:
       }
 
       v19 = *(*(&v50 + 1) + 8 * i);
-      v20 = [v19 listID];
+      listID = [v19 listID];
 
-      if (v20)
+      if (listID)
       {
-        v21 = [v19 listID];
-        v22 = [v45 objectForKeyedSubscript:v21];
+        listID2 = [v19 listID];
+        v22 = [v45 objectForKeyedSubscript:listID2];
 
-        v23 = [[REMReminder alloc] initWithStore:v12 list:v22 storage:v19];
+        v23 = [[REMReminder alloc] initWithStore:storeCopy list:v22 storage:v19];
       }
 
       else
       {
-        if (!v44)
+        if (!objectsCopy)
         {
           continue;
         }
 
-        v24 = [v19 accountID];
-        v22 = [v43 objectForKeyedSubscript:v24];
+        accountID = [v19 accountID];
+        v22 = [v43 objectForKeyedSubscript:accountID];
 
         if (!v22)
         {
           v25 = +[REMLogStore read];
           if (os_log_type_enabled(v25, OS_LOG_TYPE_FAULT))
           {
-            v42 = [v19 objectID];
-            v41 = [v19 accountID];
+            objectID = [v19 objectID];
+            accountID2 = [v19 accountID];
             *buf = 138543618;
-            v56 = v42;
+            v56 = objectID;
             v57 = 2114;
-            v58 = v41;
+            v58 = accountID2;
             _os_log_fault_impl(&dword_19A0DB000, v25, OS_LOG_TYPE_FAULT, "REMRemindersDataView: Could not map an account for the fetched reminder {reminderID: %{public}@, accountID: %{public}@}", buf, 0x16u);
           }
         }
 
-        v23 = [[REMReminder alloc] initWithStore:v12 account:v22 storage:v19];
+        v23 = [[REMReminder alloc] initWithStore:storeCopy account:v22 storage:v19];
       }
 
       v26 = v23;
-      v27 = [(REMReminder *)v23 objectID];
-      [v13 setObject:v26 forKeyedSubscript:v27];
+      objectID2 = [(REMReminder *)v23 objectID];
+      [v13 setObject:v26 forKeyedSubscript:objectID2];
     }
 
     v16 = [v14 countByEnumeratingWithState:&v50 objects:v59 count:16];
@@ -820,8 +820,8 @@ LABEL_18:
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v28 = [v13 allValues];
-  v29 = [v28 countByEnumeratingWithState:&v46 objects:v54 count:16];
+  allValues = [v13 allValues];
+  v29 = [allValues countByEnumeratingWithState:&v46 objects:v54 count:16];
   if (v29)
   {
     v30 = v29;
@@ -832,27 +832,27 @@ LABEL_18:
       {
         if (*v47 != v31)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(allValues);
         }
 
         v33 = *(*(&v46 + 1) + 8 * j);
-        v34 = [v33 storage];
-        v35 = [v34 parentReminderID];
-        if (v35)
+        storage = [v33 storage];
+        parentReminderID = [storage parentReminderID];
+        if (parentReminderID)
         {
-          v36 = [v13 objectForKeyedSubscript:v35];
+          v36 = [v13 objectForKeyedSubscript:parentReminderID];
           [v33 setParentReminder:v36];
         }
       }
 
-      v30 = [v28 countByEnumeratingWithState:&v46 objects:v54 count:16];
+      v30 = [allValues countByEnumeratingWithState:&v46 objects:v54 count:16];
     }
 
     while (v30);
   }
 
-  v11 = v39;
-  v10 = v40;
+  reminderStoragesCopy = v39;
+  listStoragesCopy = v40;
 LABEL_29:
 
   v37 = *MEMORY[0x1E69E9840];

@@ -1,20 +1,20 @@
 @interface LAContextProvider
-- (LAContextProvider)initWithTargetUIDRef:(id)a3;
+- (LAContextProvider)initWithTargetUIDRef:(id)ref;
 - (id)createContext;
 @end
 
 @implementation LAContextProvider
 
-- (LAContextProvider)initWithTargetUIDRef:(id)a3
+- (LAContextProvider)initWithTargetUIDRef:(id)ref
 {
-  v5 = a3;
+  refCopy = ref;
   v9.receiver = self;
   v9.super_class = LAContextProvider;
   v6 = [(LAContextProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_uidRef, a3);
+    objc_storeStrong(&v6->_uidRef, ref);
   }
 
   return v7;
@@ -25,8 +25,8 @@
   uidRef = self->_uidRef;
   if (uidRef)
   {
-    v5 = [(NSNumber *)uidRef intValue];
-    v3 = [[LAContext alloc] initWithExternalizedContext:0 userSession:&v5];
+    intValue = [(NSNumber *)uidRef intValue];
+    v3 = [[LAContext alloc] initWithExternalizedContext:0 userSession:&intValue];
   }
 
   else

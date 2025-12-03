@@ -7,20 +7,20 @@
 - (uint64_t)comparePriorityWithMessageEntry:()Utilities
 {
   v4 = a3;
-  v5 = [a1 applicationMessage];
-  v6 = [v5 priority];
+  applicationMessage = [self applicationMessage];
+  priority = [applicationMessage priority];
 
-  v7 = [v4 applicationMessage];
+  applicationMessage2 = [v4 applicationMessage];
 
-  v8 = [v7 priority];
-  if (v6 > v8)
+  priority2 = [applicationMessage2 priority];
+  if (priority > priority2)
   {
     return -1;
   }
 
   else
   {
-    return v6 < v8;
+    return priority < priority2;
   }
 }
 

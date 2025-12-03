@@ -8,11 +8,11 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MSVLyricsAgent *)self type];
-  v6 = [(MSVLyricsAgent *)self name];
-  v7 = [(MSVLyricsXMLElement *)self identifier];
-  v8 = [(MSVLyricsAgent *)self artistID];
-  v9 = [v3 stringWithFormat:@"<%@ %p> type: %@, name: %@, identifier: %@, artistID: %@", v4, self, v5, v6, v7, v8];
+  type = [(MSVLyricsAgent *)self type];
+  name = [(MSVLyricsAgent *)self name];
+  identifier = [(MSVLyricsXMLElement *)self identifier];
+  artistID = [(MSVLyricsAgent *)self artistID];
+  v9 = [v3 stringWithFormat:@"<%@ %p> type: %@, name: %@, identifier: %@, artistID: %@", v4, self, type, name, identifier, artistID];
 
   return v9;
 }

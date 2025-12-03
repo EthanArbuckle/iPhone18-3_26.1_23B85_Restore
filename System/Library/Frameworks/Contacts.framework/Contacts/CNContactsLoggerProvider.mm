@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = __43__CNContactsLoggerProvider_defaultProvider__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultProvider_cn_once_token_0 != -1)
   {
     dispatch_once(&defaultProvider_cn_once_token_0, block);

@@ -1,52 +1,52 @@
 @interface RWIProtocolNetworkDomainEventDispatcher
-- (RWIProtocolNetworkDomainEventDispatcher)initWithController:(AugmentableInspectorController *)a3;
-- (void)loadingFailedWithRequestId:(id)a3 timestamp:(double)a4 errorText:(id)a5 canceled:(BOOL *)a6;
-- (void)loadingFinishedWithRequestId:(id)a3 timestamp:(double)a4 sourceMapURL:(id *)a5 metrics:(id *)a6;
-- (void)requestInterceptedWithRequestId:(id)a3 request:(id)a4;
-- (void)requestServedFromMemoryCacheWithRequestId:(id)a3 frameId:(id)a4 loaderId:(id)a5 documentURL:(id)a6 timestamp:(double)a7 initiator:(id)a8 resource:(id)a9;
-- (void)requestWillBeSentWithRequestId:(id)a3 frameId:(id)a4 loaderId:(id)a5 documentURL:(id)a6 request:(id)a7 timestamp:(double)a8 walltime:(double)a9 initiator:(id)a10 redirectResponse:(id *)a11 type:(int64_t *)a12 targetId:(id *)a13;
-- (void)responseInterceptedWithRequestId:(id)a3 response:(id)a4;
-- (void)responseReceivedWithRequestId:(id)a3 frameId:(id)a4 loaderId:(id)a5 timestamp:(double)a6 type:(int64_t)a7 response:(id)a8;
-- (void)webSocketClosedWithRequestId:(id)a3 timestamp:(double)a4;
-- (void)webSocketCreatedWithRequestId:(id)a3 url:(id)a4;
-- (void)webSocketFrameErrorWithRequestId:(id)a3 timestamp:(double)a4 errorMessage:(id)a5;
-- (void)webSocketFrameReceivedWithRequestId:(id)a3 timestamp:(double)a4 response:(id)a5;
-- (void)webSocketFrameSentWithRequestId:(id)a3 timestamp:(double)a4 response:(id)a5;
-- (void)webSocketHandshakeResponseReceivedWithRequestId:(id)a3 timestamp:(double)a4 response:(id)a5;
-- (void)webSocketWillSendHandshakeRequestWithRequestId:(id)a3 timestamp:(double)a4 walltime:(double)a5 request:(id)a6;
+- (RWIProtocolNetworkDomainEventDispatcher)initWithController:(AugmentableInspectorController *)controller;
+- (void)loadingFailedWithRequestId:(id)id timestamp:(double)timestamp errorText:(id)text canceled:(BOOL *)canceled;
+- (void)loadingFinishedWithRequestId:(id)id timestamp:(double)timestamp sourceMapURL:(id *)l metrics:(id *)metrics;
+- (void)requestInterceptedWithRequestId:(id)id request:(id)request;
+- (void)requestServedFromMemoryCacheWithRequestId:(id)id frameId:(id)frameId loaderId:(id)loaderId documentURL:(id)l timestamp:(double)timestamp initiator:(id)initiator resource:(id)resource;
+- (void)requestWillBeSentWithRequestId:(id)id frameId:(id)frameId loaderId:(id)loaderId documentURL:(id)l request:(id)request timestamp:(double)timestamp walltime:(double)walltime initiator:(id)self0 redirectResponse:(id *)self1 type:(int64_t *)self2 targetId:(id *)self3;
+- (void)responseInterceptedWithRequestId:(id)id response:(id)response;
+- (void)responseReceivedWithRequestId:(id)id frameId:(id)frameId loaderId:(id)loaderId timestamp:(double)timestamp type:(int64_t)type response:(id)response;
+- (void)webSocketClosedWithRequestId:(id)id timestamp:(double)timestamp;
+- (void)webSocketCreatedWithRequestId:(id)id url:(id)url;
+- (void)webSocketFrameErrorWithRequestId:(id)id timestamp:(double)timestamp errorMessage:(id)message;
+- (void)webSocketFrameReceivedWithRequestId:(id)id timestamp:(double)timestamp response:(id)response;
+- (void)webSocketFrameSentWithRequestId:(id)id timestamp:(double)timestamp response:(id)response;
+- (void)webSocketHandshakeResponseReceivedWithRequestId:(id)id timestamp:(double)timestamp response:(id)response;
+- (void)webSocketWillSendHandshakeRequestWithRequestId:(id)id timestamp:(double)timestamp walltime:(double)walltime request:(id)request;
 @end
 
 @implementation RWIProtocolNetworkDomainEventDispatcher
 
-- (RWIProtocolNetworkDomainEventDispatcher)initWithController:(AugmentableInspectorController *)a3
+- (RWIProtocolNetworkDomainEventDispatcher)initWithController:(AugmentableInspectorController *)controller
 {
   v5.receiver = self;
   v5.super_class = RWIProtocolNetworkDomainEventDispatcher;
   result = [(RWIProtocolNetworkDomainEventDispatcher *)&v5 init];
   if (result)
   {
-    result->_controller = a3;
+    result->_controller = controller;
   }
 
   return result;
 }
 
-- (void)requestWillBeSentWithRequestId:(id)a3 frameId:(id)a4 loaderId:(id)a5 documentURL:(id)a6 request:(id)a7 timestamp:(double)a8 walltime:(double)a9 initiator:(id)a10 redirectResponse:(id *)a11 type:(int64_t *)a12 targetId:(id *)a13
+- (void)requestWillBeSentWithRequestId:(id)id frameId:(id)frameId loaderId:(id)loaderId documentURL:(id)l request:(id)request timestamp:(double)timestamp walltime:(double)walltime initiator:(id)self0 redirectResponse:(id *)self1 type:(int64_t *)self2 targetId:(id *)self3
 {
   v21 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v22 = v21;
-  if (a3)
+  if (id)
   {
-    if (a4)
+    if (frameId)
     {
 LABEL_3:
-      if (!a5)
+      if (!loaderId)
       {
         goto LABEL_4;
       }
 
 LABEL_8:
-      if (a6)
+      if (l)
       {
         goto LABEL_10;
       }
@@ -58,43 +58,43 @@ LABEL_8:
   else
   {
     v21 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"requestId"}];
-    if (a4)
+    if (frameId)
     {
       goto LABEL_3;
     }
   }
 
   v21 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"frameId"}];
-  if (a5)
+  if (loaderId)
   {
     goto LABEL_8;
   }
 
 LABEL_4:
   v21 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"loaderId"}];
-  if (!a6)
+  if (!l)
   {
 LABEL_9:
     v21 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"documentURL"}];
   }
 
 LABEL_10:
-  if (!a7)
+  if (!request)
   {
     v21 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"request"}];
   }
 
-  if (!a10)
+  if (!initiator)
   {
     v21 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"initiator"}];
   }
 
-  if (a11 && !*a11)
+  if (response && !*response)
   {
     v21 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"optional parameter '%@' cannot be nil", @"redirectResponse"}];
   }
 
-  if (a13 && !*a13)
+  if (targetId && !*targetId)
   {
     v21 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"optional parameter '%@' cannot be nil", @"targetId"}];
   }
@@ -111,33 +111,33 @@ LABEL_10:
   v25 = v88;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v86 = v90[0];
-  MEMORY[0x2743DB520](&v85, a3);
+  MEMORY[0x2743DB520](&v85, id);
   WTF::JSONImpl::ObjectBase::setString(v25, &v86, &v85);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v85);
   v26 = v88;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v86 = v90[0];
-  MEMORY[0x2743DB520](&v84, a4);
+  MEMORY[0x2743DB520](&v84, frameId);
   WTF::JSONImpl::ObjectBase::setString(v26, &v86, &v84);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v84);
   v27 = v88;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v86 = v90[0];
-  MEMORY[0x2743DB520](&v83, a5);
+  MEMORY[0x2743DB520](&v83, loaderId);
   WTF::JSONImpl::ObjectBase::setString(v27, &v86, &v83);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v83);
   v28 = v88;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v86 = v90[0];
-  MEMORY[0x2743DB520](&v82, a6);
+  MEMORY[0x2743DB520](&v82, l);
   WTF::JSONImpl::ObjectBase::setString(v28, &v86, &v82);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v82);
   v29 = v88;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v86 = v90[0];
-  if (a7)
+  if (request)
   {
-    [a7 toJSONObject];
+    [request toJSONObject];
     v30 = v80;
   }
 
@@ -204,19 +204,19 @@ LABEL_10:
   v39 = v88;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v86 = v90[0];
-  WTF::JSONImpl::ObjectBase::setDouble(v39, &v86, a8);
+  WTF::JSONImpl::ObjectBase::setDouble(v39, &v86, timestamp);
   Inspector::ObjCInspectorCSSBackendDispatcher::setLayoutContextTypeChangedMode(&v86);
   v40 = v88;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v86 = v90[0];
-  WTF::JSONImpl::ObjectBase::setDouble(v40, &v86, a9);
+  WTF::JSONImpl::ObjectBase::setDouble(v40, &v86, walltime);
   Inspector::ObjCInspectorCSSBackendDispatcher::setLayoutContextTypeChangedMode(&v86);
   v41 = v88;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v86 = v90[0];
-  if (a10)
+  if (initiator)
   {
-    [a10 toJSONObject];
+    [initiator toJSONObject];
     v42 = v80;
   }
 
@@ -280,14 +280,14 @@ LABEL_10:
     WTF::StringImpl::destroy(v50, v43);
   }
 
-  if (a11)
+  if (response)
   {
     v51 = v88;
     WTF::StringImpl::createWithoutCopyingNonEmpty();
     v86 = v90[0];
-    if (*a11)
+    if (*response)
     {
-      [*a11 toJSONObject];
+      [*response toJSONObject];
       v52 = v80;
     }
 
@@ -352,12 +352,12 @@ LABEL_10:
     }
   }
 
-  if (a12)
+  if (type)
   {
     v61 = v88;
     WTF::StringImpl::createWithoutCopyingNonEmpty();
     v86 = v90[0];
-    v62 = *a12;
+    v62 = *type;
     Inspector::toProtocolString();
     if (v79)
     {
@@ -380,12 +380,12 @@ LABEL_10:
     [RWIProtocolConsoleDomainEventDispatcher messagesClearedWithReason:?];
   }
 
-  if (a13)
+  if (targetId)
   {
     v64 = v88;
     WTF::StringImpl::createWithoutCopyingNonEmpty();
     v78 = v90[0];
-    MEMORY[0x2743DB520](&v77, *a13);
+    MEMORY[0x2743DB520](&v77, *targetId);
     WTF::JSONImpl::ObjectBase::setString(v64, &v78, &v77);
     ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v77);
   }
@@ -439,23 +439,23 @@ LABEL_10:
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v90];
 }
 
-- (void)responseReceivedWithRequestId:(id)a3 frameId:(id)a4 loaderId:(id)a5 timestamp:(double)a6 type:(int64_t)a7 response:(id)a8
+- (void)responseReceivedWithRequestId:(id)id frameId:(id)frameId loaderId:(id)loaderId timestamp:(double)timestamp type:(int64_t)type response:(id)response
 {
   v13 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v14 = v13;
   v15 = MEMORY[0x277CBE660];
-  if (a3)
+  if (id)
   {
-    if (a4)
+    if (frameId)
     {
 LABEL_3:
-      if (!a5)
+      if (!loaderId)
       {
         goto LABEL_4;
       }
 
 LABEL_8:
-      if (a8)
+      if (response)
       {
         goto LABEL_10;
       }
@@ -467,21 +467,21 @@ LABEL_8:
   else
   {
     v13 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"requestId"}];
-    if (a4)
+    if (frameId)
     {
       goto LABEL_3;
     }
   }
 
   v13 = [MEMORY[0x277CBEAD8] raise:*v15 format:{@"required parameter '%@' cannot be nil", @"frameId"}];
-  if (a5)
+  if (loaderId)
   {
     goto LABEL_8;
   }
 
 LABEL_4:
   v13 = [MEMORY[0x277CBEAD8] raise:*v15 format:{@"required parameter '%@' cannot be nil", @"loaderId"}];
-  if (!a8)
+  if (!response)
   {
 LABEL_9:
     v13 = [MEMORY[0x277CBEAD8] raise:*v15 format:{@"required parameter '%@' cannot be nil", @"response"}];
@@ -500,25 +500,25 @@ LABEL_10:
   v18 = v53;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v51 = v55[0];
-  MEMORY[0x2743DB520](&v50, a3);
+  MEMORY[0x2743DB520](&v50, id);
   WTF::JSONImpl::ObjectBase::setString(v18, &v51, &v50);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v50);
   v19 = v53;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v51 = v55[0];
-  MEMORY[0x2743DB520](&v49, a4);
+  MEMORY[0x2743DB520](&v49, frameId);
   WTF::JSONImpl::ObjectBase::setString(v19, &v51, &v49);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v49);
   v20 = v53;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v51 = v55[0];
-  MEMORY[0x2743DB520](&v48, a5);
+  MEMORY[0x2743DB520](&v48, loaderId);
   WTF::JSONImpl::ObjectBase::setString(v20, &v51, &v48);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v48);
   v21 = v53;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v51 = v55[0];
-  WTF::JSONImpl::ObjectBase::setDouble(v21, &v51, a6);
+  WTF::JSONImpl::ObjectBase::setDouble(v21, &v51, timestamp);
   Inspector::ObjCInspectorCSSBackendDispatcher::setLayoutContextTypeChangedMode(&v51);
   v22 = v53;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
@@ -546,9 +546,9 @@ LABEL_10:
   v24 = v53;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v51 = v55[0];
-  if (a8)
+  if (response)
   {
-    [a8 toJSONObject];
+    [response toJSONObject];
     v25 = v43;
   }
 
@@ -645,21 +645,21 @@ LABEL_10:
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v55];
 }
 
-- (void)loadingFinishedWithRequestId:(id)a3 timestamp:(double)a4 sourceMapURL:(id *)a5 metrics:(id *)a6
+- (void)loadingFinishedWithRequestId:(id)id timestamp:(double)timestamp sourceMapURL:(id *)l metrics:(id *)metrics
 {
   v10 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v11 = v10;
-  if (!a3)
+  if (!id)
   {
     v10 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"requestId"}];
   }
 
-  if (a5 && !*a5)
+  if (l && !*l)
   {
     v10 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"optional parameter '%@' cannot be nil", @"sourceMapURL"}];
   }
 
-  if (a6 && !*a6)
+  if (metrics && !*metrics)
   {
     v10 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"optional parameter '%@' cannot be nil", @"metrics"}];
   }
@@ -676,13 +676,13 @@ LABEL_10:
   v14 = v44;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v42 = v46[0];
-  MEMORY[0x2743DB520](&v41, a3);
+  MEMORY[0x2743DB520](&v41, id);
   WTF::JSONImpl::ObjectBase::setString(v14, &v42, &v41);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v41);
   v15 = v44;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v42 = v46[0];
-  WTF::JSONImpl::ObjectBase::setDouble(v15, &v42, a4);
+  WTF::JSONImpl::ObjectBase::setDouble(v15, &v42, timestamp);
   v17 = v42;
   v42 = 0;
   if (v17 && atomic_fetch_add_explicit(v17, 0xFFFFFFFE, memory_order_relaxed) == 2)
@@ -690,24 +690,24 @@ LABEL_10:
     WTF::StringImpl::destroy(v17, v16);
   }
 
-  if (a5)
+  if (l)
   {
     v18 = v44;
     WTF::StringImpl::createWithoutCopyingNonEmpty();
     v42 = v46[0];
-    MEMORY[0x2743DB520](&v40, *a5);
+    MEMORY[0x2743DB520](&v40, *l);
     WTF::JSONImpl::ObjectBase::setString(v18, &v42, &v40);
     ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v40);
   }
 
-  if (a6)
+  if (metrics)
   {
     v19 = v44;
     WTF::StringImpl::createWithoutCopyingNonEmpty();
     v39 = v46[0];
-    if (*a6)
+    if (*metrics)
     {
-      [*a6 toJSONObject];
+      [*metrics toJSONObject];
       v20 = v37;
     }
 
@@ -805,17 +805,17 @@ LABEL_10:
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v46];
 }
 
-- (void)loadingFailedWithRequestId:(id)a3 timestamp:(double)a4 errorText:(id)a5 canceled:(BOOL *)a6
+- (void)loadingFailedWithRequestId:(id)id timestamp:(double)timestamp errorText:(id)text canceled:(BOOL *)canceled
 {
   v10 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v11 = v10;
   v12 = MEMORY[0x277CBE660];
-  if (!a3)
+  if (!id)
   {
     v10 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"requestId"}];
   }
 
-  if (!a5)
+  if (!text)
   {
     v10 = [MEMORY[0x277CBEAD8] raise:*v12 format:{@"required parameter '%@' cannot be nil", @"errorText"}];
   }
@@ -832,25 +832,25 @@ LABEL_10:
   v15 = v35;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v33 = v37[0];
-  MEMORY[0x2743DB520](&v32, a3);
+  MEMORY[0x2743DB520](&v32, id);
   WTF::JSONImpl::ObjectBase::setString(v15, &v33, &v32);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v32);
   v16 = v35;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v33 = v37[0];
-  WTF::JSONImpl::ObjectBase::setDouble(v16, &v33, a4);
+  WTF::JSONImpl::ObjectBase::setDouble(v16, &v33, timestamp);
   Inspector::ObjCInspectorCSSBackendDispatcher::setLayoutContextTypeChangedMode(&v33);
   v17 = v35;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v33 = v37[0];
-  MEMORY[0x2743DB520](&v31, a5);
+  MEMORY[0x2743DB520](&v31, text);
   WTF::JSONImpl::ObjectBase::setString(v17, &v33, &v31);
   if (![RWIProtocolNetworkDomainEventDispatcher loadingFailedWithRequestId:? timestamp:? errorText:? canceled:?])
   {
     v18 = v35;
     WTF::StringImpl::createWithoutCopyingNonEmpty();
     v30 = v37[0];
-    WTF::JSONImpl::ObjectBase::setBoolean(v18, &v30, *a6);
+    WTF::JSONImpl::ObjectBase::setBoolean(v18, &v30, *canceled);
     Inspector::ObjCInspectorCSSBackendDispatcher::setLayoutContextTypeChangedMode(&v30);
   }
 
@@ -903,17 +903,17 @@ LABEL_10:
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v37];
 }
 
-- (void)requestServedFromMemoryCacheWithRequestId:(id)a3 frameId:(id)a4 loaderId:(id)a5 documentURL:(id)a6 timestamp:(double)a7 initiator:(id)a8 resource:(id)a9
+- (void)requestServedFromMemoryCacheWithRequestId:(id)id frameId:(id)frameId loaderId:(id)loaderId documentURL:(id)l timestamp:(double)timestamp initiator:(id)initiator resource:(id)resource
 {
   v16 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v17 = v16;
   v18 = MEMORY[0x277CBE660];
-  if (a3)
+  if (id)
   {
-    if (a4)
+    if (frameId)
     {
 LABEL_3:
-      if (!a5)
+      if (!loaderId)
       {
         goto LABEL_4;
       }
@@ -925,18 +925,18 @@ LABEL_3:
   else
   {
     v16 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"requestId"}];
-    if (a4)
+    if (frameId)
     {
       goto LABEL_3;
     }
   }
 
   v16 = [MEMORY[0x277CBEAD8] raise:*v18 format:{@"required parameter '%@' cannot be nil", @"frameId"}];
-  if (!a5)
+  if (!loaderId)
   {
 LABEL_4:
     v16 = [MEMORY[0x277CBEAD8] raise:*v18 format:{@"required parameter '%@' cannot be nil", @"loaderId"}];
-    if (a6)
+    if (l)
     {
       goto LABEL_5;
     }
@@ -945,16 +945,16 @@ LABEL_4:
   }
 
 LABEL_10:
-  if (a6)
+  if (l)
   {
 LABEL_5:
-    if (!a8)
+    if (!initiator)
     {
       goto LABEL_6;
     }
 
 LABEL_12:
-    if (a9)
+    if (resource)
     {
       goto LABEL_14;
     }
@@ -964,14 +964,14 @@ LABEL_12:
 
 LABEL_11:
   v16 = [MEMORY[0x277CBEAD8] raise:*v18 format:{@"required parameter '%@' cannot be nil", @"documentURL"}];
-  if (a8)
+  if (initiator)
   {
     goto LABEL_12;
   }
 
 LABEL_6:
   v16 = [MEMORY[0x277CBEAD8] raise:*v18 format:{@"required parameter '%@' cannot be nil", @"initiator"}];
-  if (!a9)
+  if (!resource)
   {
 LABEL_13:
     v16 = [MEMORY[0x277CBEAD8] raise:*v18 format:{@"required parameter '%@' cannot be nil", @"resource"}];
@@ -990,38 +990,38 @@ LABEL_14:
   v21 = v60;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v58 = v62[0];
-  MEMORY[0x2743DB520](&v57, a3);
+  MEMORY[0x2743DB520](&v57, id);
   WTF::JSONImpl::ObjectBase::setString(v21, &v58, &v57);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v57);
   v22 = v60;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v58 = v62[0];
-  MEMORY[0x2743DB520](&v56, a4);
+  MEMORY[0x2743DB520](&v56, frameId);
   WTF::JSONImpl::ObjectBase::setString(v22, &v58, &v56);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v56);
   v23 = v60;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v58 = v62[0];
-  MEMORY[0x2743DB520](&v55, a5);
+  MEMORY[0x2743DB520](&v55, loaderId);
   WTF::JSONImpl::ObjectBase::setString(v23, &v58, &v55);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v55);
   v24 = v60;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v58 = v62[0];
-  MEMORY[0x2743DB520](&v54, a6);
+  MEMORY[0x2743DB520](&v54, l);
   WTF::JSONImpl::ObjectBase::setString(v24, &v58, &v54);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v54);
   v25 = v60;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v58 = v62[0];
-  WTF::JSONImpl::ObjectBase::setDouble(v25, &v58, a7);
+  WTF::JSONImpl::ObjectBase::setDouble(v25, &v58, timestamp);
   Inspector::ObjCInspectorCSSBackendDispatcher::setLayoutContextTypeChangedMode(&v58);
   v26 = v60;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v58 = v62[0];
-  if (a8)
+  if (initiator)
   {
-    [a8 toJSONObject];
+    [initiator toJSONObject];
     v27 = v52;
   }
 
@@ -1072,9 +1072,9 @@ LABEL_14:
   v35 = v60;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v58 = v62[0];
-  if (a9)
+  if (resource)
   {
-    [a9 toJSONObject];
+    [resource toJSONObject];
   }
 
   v53 = 0;
@@ -1165,17 +1165,17 @@ LABEL_14:
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v62];
 }
 
-- (void)requestInterceptedWithRequestId:(id)a3 request:(id)a4
+- (void)requestInterceptedWithRequestId:(id)id request:(id)request
 {
   v6 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v7 = v6;
   v8 = MEMORY[0x277CBE660];
-  if (!a3)
+  if (!id)
   {
     v6 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"requestId"}];
   }
 
-  if (!a4)
+  if (!request)
   {
     v6 = [MEMORY[0x277CBEAD8] raise:*v8 format:{@"required parameter '%@' cannot be nil", @"request"}];
   }
@@ -1192,15 +1192,15 @@ LABEL_14:
   v11 = v35;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v33 = v37[0];
-  MEMORY[0x2743DB520](&v32, a3);
+  MEMORY[0x2743DB520](&v32, id);
   WTF::JSONImpl::ObjectBase::setString(v11, &v33, &v32);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v32);
   v12 = v35;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v33 = v37[0];
-  if (a4)
+  if (request)
   {
-    [a4 toJSONObject];
+    [request toJSONObject];
     v13 = v30;
   }
 
@@ -1297,17 +1297,17 @@ LABEL_14:
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v37];
 }
 
-- (void)responseInterceptedWithRequestId:(id)a3 response:(id)a4
+- (void)responseInterceptedWithRequestId:(id)id response:(id)response
 {
   v6 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v7 = v6;
   v8 = MEMORY[0x277CBE660];
-  if (!a3)
+  if (!id)
   {
     v6 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"requestId"}];
   }
 
-  if (!a4)
+  if (!response)
   {
     v6 = [MEMORY[0x277CBEAD8] raise:*v8 format:{@"required parameter '%@' cannot be nil", @"response"}];
   }
@@ -1324,15 +1324,15 @@ LABEL_14:
   v11 = v35;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v33 = v37[0];
-  MEMORY[0x2743DB520](&v32, a3);
+  MEMORY[0x2743DB520](&v32, id);
   WTF::JSONImpl::ObjectBase::setString(v11, &v33, &v32);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v32);
   v12 = v35;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v33 = v37[0];
-  if (a4)
+  if (response)
   {
-    [a4 toJSONObject];
+    [response toJSONObject];
     v13 = v30;
   }
 
@@ -1429,17 +1429,17 @@ LABEL_14:
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v37];
 }
 
-- (void)webSocketWillSendHandshakeRequestWithRequestId:(id)a3 timestamp:(double)a4 walltime:(double)a5 request:(id)a6
+- (void)webSocketWillSendHandshakeRequestWithRequestId:(id)id timestamp:(double)timestamp walltime:(double)walltime request:(id)request
 {
   v10 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v11 = v10;
   v12 = MEMORY[0x277CBE660];
-  if (!a3)
+  if (!id)
   {
     v10 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"requestId"}];
   }
 
-  if (!a6)
+  if (!request)
   {
     v10 = [MEMORY[0x277CBEAD8] raise:*v12 format:{@"required parameter '%@' cannot be nil", @"request"}];
   }
@@ -1456,25 +1456,25 @@ LABEL_14:
   v15 = v41;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v39 = v43[0];
-  MEMORY[0x2743DB520](&v38, a3);
+  MEMORY[0x2743DB520](&v38, id);
   WTF::JSONImpl::ObjectBase::setString(v15, &v39, &v38);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v38);
   v16 = v41;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v39 = v43[0];
-  WTF::JSONImpl::ObjectBase::setDouble(v16, &v39, a4);
+  WTF::JSONImpl::ObjectBase::setDouble(v16, &v39, timestamp);
   Inspector::ObjCInspectorCSSBackendDispatcher::setLayoutContextTypeChangedMode(&v39);
   v17 = v41;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v39 = v43[0];
-  WTF::JSONImpl::ObjectBase::setDouble(v17, &v39, a5);
+  WTF::JSONImpl::ObjectBase::setDouble(v17, &v39, walltime);
   Inspector::ObjCInspectorCSSBackendDispatcher::setLayoutContextTypeChangedMode(&v39);
   v18 = v41;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v39 = v43[0];
-  if (a6)
+  if (request)
   {
-    [a6 toJSONObject];
+    [request toJSONObject];
     v19 = v36;
   }
 
@@ -1571,17 +1571,17 @@ LABEL_14:
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v43];
 }
 
-- (void)webSocketHandshakeResponseReceivedWithRequestId:(id)a3 timestamp:(double)a4 response:(id)a5
+- (void)webSocketHandshakeResponseReceivedWithRequestId:(id)id timestamp:(double)timestamp response:(id)response
 {
   v8 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v9 = v8;
   v10 = MEMORY[0x277CBE660];
-  if (!a3)
+  if (!id)
   {
     v8 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"requestId"}];
   }
 
-  if (!a5)
+  if (!response)
   {
     v8 = [MEMORY[0x277CBEAD8] raise:*v10 format:{@"required parameter '%@' cannot be nil", @"response"}];
   }
@@ -1598,20 +1598,20 @@ LABEL_14:
   v13 = v38;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v36 = v40[0];
-  MEMORY[0x2743DB520](&v35, a3);
+  MEMORY[0x2743DB520](&v35, id);
   WTF::JSONImpl::ObjectBase::setString(v13, &v36, &v35);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v35);
   v14 = v38;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v36 = v40[0];
-  WTF::JSONImpl::ObjectBase::setDouble(v14, &v36, a4);
+  WTF::JSONImpl::ObjectBase::setDouble(v14, &v36, timestamp);
   Inspector::ObjCInspectorCSSBackendDispatcher::setLayoutContextTypeChangedMode(&v36);
   v15 = v38;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v36 = v40[0];
-  if (a5)
+  if (response)
   {
-    [a5 toJSONObject];
+    [response toJSONObject];
     v16 = v33;
   }
 
@@ -1708,17 +1708,17 @@ LABEL_14:
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v40];
 }
 
-- (void)webSocketCreatedWithRequestId:(id)a3 url:(id)a4
+- (void)webSocketCreatedWithRequestId:(id)id url:(id)url
 {
   v6 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v7 = v6;
   v8 = MEMORY[0x277CBE660];
-  if (!a3)
+  if (!id)
   {
     v6 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"requestId"}];
   }
 
-  if (!a4)
+  if (!url)
   {
     v6 = [MEMORY[0x277CBEAD8] raise:*v8 format:{@"required parameter '%@' cannot be nil", @"url"}];
   }
@@ -1735,13 +1735,13 @@ LABEL_14:
   v11 = v27;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v25 = v29[0];
-  MEMORY[0x2743DB520](&v24, a3);
+  MEMORY[0x2743DB520](&v24, id);
   WTF::JSONImpl::ObjectBase::setString(v11, &v25, &v24);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v24);
   v12 = v27;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v25 = v29[0];
-  MEMORY[0x2743DB520](&v23, a4);
+  MEMORY[0x2743DB520](&v23, url);
   WTF::JSONImpl::ObjectBase::setString(v12, &v25, &v23);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v23);
   v13 = v28;
@@ -1793,11 +1793,11 @@ LABEL_14:
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v29];
 }
 
-- (void)webSocketClosedWithRequestId:(id)a3 timestamp:(double)a4
+- (void)webSocketClosedWithRequestId:(id)id timestamp:(double)timestamp
 {
   v6 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v7 = v6;
-  if (!a3)
+  if (!id)
   {
     v6 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"requestId"}];
   }
@@ -1814,13 +1814,13 @@ LABEL_14:
   v10 = v25;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v23 = v27[0];
-  MEMORY[0x2743DB520](&v22, a3);
+  MEMORY[0x2743DB520](&v22, id);
   WTF::JSONImpl::ObjectBase::setString(v10, &v23, &v22);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v22);
   v11 = v25;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v23 = v27[0];
-  WTF::JSONImpl::ObjectBase::setDouble(v11, &v23, a4);
+  WTF::JSONImpl::ObjectBase::setDouble(v11, &v23, timestamp);
   Inspector::ObjCInspectorCSSBackendDispatcher::setLayoutContextTypeChangedMode(&v23);
   v12 = v26;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
@@ -1871,17 +1871,17 @@ LABEL_14:
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v27];
 }
 
-- (void)webSocketFrameReceivedWithRequestId:(id)a3 timestamp:(double)a4 response:(id)a5
+- (void)webSocketFrameReceivedWithRequestId:(id)id timestamp:(double)timestamp response:(id)response
 {
   v8 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v9 = v8;
   v10 = MEMORY[0x277CBE660];
-  if (!a3)
+  if (!id)
   {
     v8 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"requestId"}];
   }
 
-  if (!a5)
+  if (!response)
   {
     v8 = [MEMORY[0x277CBEAD8] raise:*v10 format:{@"required parameter '%@' cannot be nil", @"response"}];
   }
@@ -1898,20 +1898,20 @@ LABEL_14:
   v13 = v38;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v36 = v40[0];
-  MEMORY[0x2743DB520](&v35, a3);
+  MEMORY[0x2743DB520](&v35, id);
   WTF::JSONImpl::ObjectBase::setString(v13, &v36, &v35);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v35);
   v14 = v38;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v36 = v40[0];
-  WTF::JSONImpl::ObjectBase::setDouble(v14, &v36, a4);
+  WTF::JSONImpl::ObjectBase::setDouble(v14, &v36, timestamp);
   Inspector::ObjCInspectorCSSBackendDispatcher::setLayoutContextTypeChangedMode(&v36);
   v15 = v38;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v36 = v40[0];
-  if (a5)
+  if (response)
   {
-    [a5 toJSONObject];
+    [response toJSONObject];
     v16 = v33;
   }
 
@@ -2008,17 +2008,17 @@ LABEL_14:
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v40];
 }
 
-- (void)webSocketFrameErrorWithRequestId:(id)a3 timestamp:(double)a4 errorMessage:(id)a5
+- (void)webSocketFrameErrorWithRequestId:(id)id timestamp:(double)timestamp errorMessage:(id)message
 {
   v8 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v9 = v8;
   v10 = MEMORY[0x277CBE660];
-  if (!a3)
+  if (!id)
   {
     v8 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"requestId"}];
   }
 
-  if (!a5)
+  if (!message)
   {
     v8 = [MEMORY[0x277CBEAD8] raise:*v10 format:{@"required parameter '%@' cannot be nil", @"errorMessage"}];
   }
@@ -2035,18 +2035,18 @@ LABEL_14:
   v13 = v30;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v28 = v32[0];
-  MEMORY[0x2743DB520](&v27, a3);
+  MEMORY[0x2743DB520](&v27, id);
   WTF::JSONImpl::ObjectBase::setString(v13, &v28, &v27);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v27);
   v14 = v30;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v28 = v32[0];
-  WTF::JSONImpl::ObjectBase::setDouble(v14, &v28, a4);
+  WTF::JSONImpl::ObjectBase::setDouble(v14, &v28, timestamp);
   Inspector::ObjCInspectorCSSBackendDispatcher::setLayoutContextTypeChangedMode(&v28);
   v15 = v30;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v28 = v32[0];
-  MEMORY[0x2743DB520](&v26, a5);
+  MEMORY[0x2743DB520](&v26, message);
   WTF::JSONImpl::ObjectBase::setString(v15, &v28, &v26);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v26);
   v16 = v31;
@@ -2098,17 +2098,17 @@ LABEL_14:
   [RWIProtocolCSSDomainEventDispatcher styleSheetChangedWithStyleSheetId:v32];
 }
 
-- (void)webSocketFrameSentWithRequestId:(id)a3 timestamp:(double)a4 response:(id)a5
+- (void)webSocketFrameSentWithRequestId:(id)id timestamp:(double)timestamp response:(id)response
 {
   v8 = (*(self->_controller->var0 + 4))(self->_controller, a2);
   v9 = v8;
   v10 = MEMORY[0x277CBE660];
-  if (!a3)
+  if (!id)
   {
     v8 = [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required parameter '%@' cannot be nil", @"requestId"}];
   }
 
-  if (!a5)
+  if (!response)
   {
     v8 = [MEMORY[0x277CBEAD8] raise:*v10 format:{@"required parameter '%@' cannot be nil", @"response"}];
   }
@@ -2125,20 +2125,20 @@ LABEL_14:
   v13 = v38;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v36 = v40[0];
-  MEMORY[0x2743DB520](&v35, a3);
+  MEMORY[0x2743DB520](&v35, id);
   WTF::JSONImpl::ObjectBase::setString(v13, &v36, &v35);
   ___ZN9Inspector33ObjCInspectorCSSBackendDispatcher17getStyleSheetTextElRKN3WTF6StringE_block_invoke_2_cold_1(&v35);
   v14 = v38;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v36 = v40[0];
-  WTF::JSONImpl::ObjectBase::setDouble(v14, &v36, a4);
+  WTF::JSONImpl::ObjectBase::setDouble(v14, &v36, timestamp);
   Inspector::ObjCInspectorCSSBackendDispatcher::setLayoutContextTypeChangedMode(&v36);
   v15 = v38;
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   v36 = v40[0];
-  if (a5)
+  if (response)
   {
-    [a5 toJSONObject];
+    [response toJSONObject];
     v16 = v33;
   }
 

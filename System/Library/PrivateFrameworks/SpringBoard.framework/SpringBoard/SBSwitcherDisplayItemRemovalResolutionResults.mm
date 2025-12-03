@@ -1,17 +1,17 @@
 @interface SBSwitcherDisplayItemRemovalResolutionResults
-- (void)setActions:(id)a3 forDisplayItem:(id)a4;
+- (void)setActions:(id)actions forDisplayItem:(id)item;
 @end
 
 @implementation SBSwitcherDisplayItemRemovalResolutionResults
 
-- (void)setActions:(id)a3 forDisplayItem:(id)a4
+- (void)setActions:(id)actions forDisplayItem:(id)item
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = v13;
-  v8 = v6;
+  actionsCopy = actions;
+  itemCopy = item;
+  v7 = actionsCopy;
+  v8 = itemCopy;
   displayItemToActions = self->_displayItemToActions;
-  if (v13)
+  if (actionsCopy)
   {
     if (!displayItemToActions)
     {
@@ -19,7 +19,7 @@
       v11 = self->_displayItemToActions;
       self->_displayItemToActions = v10;
 
-      v7 = v13;
+      v7 = actionsCopy;
       displayItemToActions = self->_displayItemToActions;
     }
 

@@ -45,12 +45,12 @@ LABEL_5:
 
 - (uint64_t)tps_encryptedIdentityType
 {
-  if ([a1 isEqualToString:*MEMORY[0x277CC3A00]])
+  if ([self isEqualToString:*MEMORY[0x277CC3A00]])
   {
     return 1;
   }
 
-  if ([a1 isEqualToString:*MEMORY[0x277CC3A08]])
+  if ([self isEqualToString:*MEMORY[0x277CC3A08]])
   {
     return 2;
   }

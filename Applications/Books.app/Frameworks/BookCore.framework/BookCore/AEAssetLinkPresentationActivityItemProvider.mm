@@ -1,19 +1,19 @@
 @interface AEAssetLinkPresentationActivityItemProvider
-- (AEAssetLinkPresentationActivityItemProvider)initWithDelegate:(id)a3 propertySource:(id)a4;
+- (AEAssetLinkPresentationActivityItemProvider)initWithDelegate:(id)delegate propertySource:(id)source;
 - (id)_generateLinkMetaData;
 @end
 
 @implementation AEAssetLinkPresentationActivityItemProvider
 
-- (AEAssetLinkPresentationActivityItemProvider)initWithDelegate:(id)a3 propertySource:(id)a4
+- (AEAssetLinkPresentationActivityItemProvider)initWithDelegate:(id)delegate propertySource:(id)source
 {
-  v5 = a4;
+  sourceCopy = source;
   v10.receiver = self;
   v10.super_class = AEAssetLinkPresentationActivityItemProvider;
   v6 = [(AEAssetLinkPresentationActivityItemProvider *)&v10 init];
   if (v6)
   {
-    v7 = [[AEAssetActivityPropertyProvider alloc] initWithPropertySource:v5];
+    v7 = [[AEAssetActivityPropertyProvider alloc] initWithPropertySource:sourceCopy];
     propertyProvider = v6->_propertyProvider;
     v6->_propertyProvider = v7;
   }
@@ -24,17 +24,17 @@
 - (id)_generateLinkMetaData
 {
   v3 = objc_alloc_init(LPLinkMetadata);
-  v4 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
-  v5 = [v4 storeURL];
+  propertyProvider = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
+  storeURL = [propertyProvider storeURL];
 
-  [v3 setURL:v5];
-  [v3 setOriginalURL:v5];
-  v6 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
-  v7 = [v6 previewAssetCoverItemProvider];
+  [v3 setURL:storeURL];
+  [v3 setOriginalURL:storeURL];
+  propertyProvider2 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
+  previewAssetCoverItemProvider = [propertyProvider2 previewAssetCoverItemProvider];
 
-  if (v7)
+  if (previewAssetCoverItemProvider)
   {
-    v8 = [[LPImage alloc] initWithItemProvider:v7 properties:0 placeholderImage:0];
+    v8 = [[LPImage alloc] initWithItemProvider:previewAssetCoverItemProvider properties:0 placeholderImage:0];
     if (!v8)
     {
       goto LABEL_28;
@@ -42,59 +42,59 @@
 
 LABEL_11:
     v12 = +[BUAccountsProvider sharedProvider];
-    v13 = [v12 activeStoreAccount];
-    v14 = [v13 ams_storefront];
+    activeStoreAccount = [v12 activeStoreAccount];
+    ams_storefront = [activeStoreAccount ams_storefront];
 
-    v15 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
-    v16 = [v15 assetType];
+    propertyProvider3 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
+    assetType = [propertyProvider3 assetType];
 
-    if (v16 != 1 && v16 != 4)
+    if (assetType != 1 && assetType != 4)
     {
-      if (v16 == 6)
+      if (assetType == 6)
       {
         v20 = objc_alloc_init(LPiTunesMediaAudioBookMetadata);
-        v21 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
-        v22 = [v21 title];
-        [v20 setName:v22];
+        propertyProvider4 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
+        title = [propertyProvider4 title];
+        [v20 setName:title];
 
-        v23 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
-        v24 = [v23 author];
-        [v20 setAuthor:v24];
+        propertyProvider5 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
+        author = [propertyProvider5 author];
+        [v20 setAuthor:author];
 
         [v20 setArtwork:v8];
-        v25 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
-        LODWORD(v24) = [v25 isStoreAsset];
+        propertyProvider6 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
+        LODWORD(author) = [propertyProvider6 isStoreAsset];
 
-        if (v24)
+        if (author)
         {
-          [v20 setStoreFrontIdentifier:v14];
-          v26 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
-          v27 = [v26 storeID];
-          [v20 setStoreIdentifier:v27];
+          [v20 setStoreFrontIdentifier:ams_storefront];
+          propertyProvider7 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
+          storeID = [propertyProvider7 storeID];
+          [v20 setStoreIdentifier:storeID];
 LABEL_20:
         }
       }
 
       else
       {
-        if ((v16 & 0xFFFFFFFFFFFFFFFELL) != 2)
+        if ((assetType & 0xFFFFFFFFFFFFFFFELL) != 2)
         {
           BCReportAssertionFailureWithMessage("/Library/Caches/com.apple.xbs/Sources/Alder/frameworks/BookCore/BookCore/AssetsEngine/AEServices/Sharing/Private/AEAssetActivityItemProviderSource.m", 984, "[AEAssetLinkPresentationActivityItemProvider _generateLinkMetaData]", "NO", @"Trying to show link preview for unsupported asset type", v17, v18, v19, v45);
           goto LABEL_27;
         }
 
         v20 = objc_alloc_init(LPFileMetadata);
-        v37 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
-        v38 = [v37 title];
-        [v20 setName:v38];
+        propertyProvider8 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
+        title2 = [propertyProvider8 title];
+        [v20 setName:title2];
 
-        v39 = BCAssetUTIForContentType(v16);
+        v39 = BCAssetUTIForContentType(assetType);
         [v20 setType:v39];
 
-        v40 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
-        v41 = [v40 bookURL];
+        propertyProvider9 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
+        bookURL = [propertyProvider9 bookURL];
         v46 = 0;
-        v42 = [v41 bu_fileAllocatedSizeWithError:&v46];
+        v42 = [bookURL bu_fileAllocatedSizeWithError:&v46];
         v43 = v46;
 
         if (!v43 && v42)
@@ -113,46 +113,46 @@ LABEL_27:
     }
 
     v20 = objc_alloc_init(LPiTunesMediaBookMetadata);
-    v28 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
-    v29 = [v28 title];
-    [v20 setName:v29];
+    propertyProvider10 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
+    title3 = [propertyProvider10 title];
+    [v20 setName:title3];
 
-    v30 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
-    v31 = [v30 author];
-    [v20 setAuthor:v31];
+    propertyProvider11 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
+    author2 = [propertyProvider11 author];
+    [v20 setAuthor:author2];
 
     [v20 setArtwork:v8];
-    v32 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
-    LODWORD(v31) = [v32 isStoreAsset];
+    propertyProvider12 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
+    LODWORD(author2) = [propertyProvider12 isStoreAsset];
 
-    if (v31)
+    if (author2)
     {
-      [v20 setStoreFrontIdentifier:v14];
-      v33 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
-      v34 = [v33 storeID];
-      [v20 setStoreIdentifier:v34];
+      [v20 setStoreFrontIdentifier:ams_storefront];
+      propertyProvider13 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
+      storeID2 = [propertyProvider13 storeID];
+      [v20 setStoreIdentifier:storeID2];
     }
 
-    v35 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
-    v36 = [v35 readingDirection];
+    propertyProvider14 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
+    readingDirection = [propertyProvider14 readingDirection];
 
-    if (!v36)
+    if (!readingDirection)
     {
       goto LABEL_26;
     }
 
-    v26 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
-    v27 = [v26 readingDirection];
-    [v20 setHasSpineOnRight:{objc_msgSend(v27, "isEqualToString:", @"rtl"}];
+    propertyProvider7 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
+    storeID = [propertyProvider7 readingDirection];
+    [v20 setHasSpineOnRight:{objc_msgSend(storeID, "isEqualToString:", @"rtl"}];
     goto LABEL_20;
   }
 
-  v9 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
-  v10 = [v9 assetCover];
+  propertyProvider15 = [(AEAssetLinkPresentationActivityItemProvider *)self propertyProvider];
+  assetCover = [propertyProvider15 assetCover];
 
-  if (v10)
+  if (assetCover)
   {
-    v11 = UIImagePNGRepresentation(v10);
+    v11 = UIImagePNGRepresentation(assetCover);
     if (v11)
     {
       v8 = [[LPImage alloc] initWithData:v11 MIMEType:@"image/png"];

@@ -1,24 +1,24 @@
 @interface SFSpeechRecognitionMetadata
 - (NSString)description;
-- (SFSpeechRecognitionMetadata)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (SFSpeechRecognitionMetadata)initWithCoder:(id)a3;
-- (id)_initWithSpeechStartTimestamp:(double)a3 speechDuration:(double)a4 voiceAnalytics:(id)a5 speakingRate:(double)a6 averagePauseDuration:(double)a7;
-- (void)encodeWithCoder:(id)a3;
+- (SFSpeechRecognitionMetadata)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (SFSpeechRecognitionMetadata)initWithCoder:(id)coder;
+- (id)_initWithSpeechStartTimestamp:(double)timestamp speechDuration:(double)duration voiceAnalytics:(id)analytics speakingRate:(double)rate averagePauseDuration:(double)pauseDuration;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFSpeechRecognitionMetadata
 
-- (SFSpeechRecognitionMetadata)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (SFSpeechRecognitionMetadata)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  v6 = a3;
-  if ([v6 length])
+  representationCopy = representation;
+  if ([representationCopy length])
   {
     v13.receiver = self;
     v13.super_class = SFSpeechRecognitionMetadata;
     v7 = [(SFSpeechRecognitionMetadata *)&v13 init];
     if (v7)
     {
-      v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:0];
+      v8 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:representationCopy error:0];
       v9 = v8;
       if (v8)
       {
@@ -29,31 +29,31 @@
     }
 
     self = v7;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (id)_initWithSpeechStartTimestamp:(double)a3 speechDuration:(double)a4 voiceAnalytics:(id)a5 speakingRate:(double)a6 averagePauseDuration:(double)a7
+- (id)_initWithSpeechStartTimestamp:(double)timestamp speechDuration:(double)duration voiceAnalytics:(id)analytics speakingRate:(double)rate averagePauseDuration:(double)pauseDuration
 {
-  v12 = a5;
+  analyticsCopy = analytics;
   v18.receiver = self;
   v18.super_class = SFSpeechRecognitionMetadata;
   v13 = [(SFSpeechRecognitionMetadata *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    v13->_speakingRate = a6;
-    v13->_averagePauseDuration = a7;
-    v13->_speechStartTimestamp = a3;
-    v13->_speechDuration = a4;
-    v15 = [v12 copy];
+    v13->_speakingRate = rate;
+    v13->_averagePauseDuration = pauseDuration;
+    v13->_speechStartTimestamp = timestamp;
+    v13->_speechDuration = duration;
+    v15 = [analyticsCopy copy];
     voiceAnalytics = v14->_voiceAnalytics;
     v14->_voiceAnalytics = v15;
   }
@@ -75,25 +75,25 @@
   return v8;
 }
 
-- (SFSpeechRecognitionMetadata)initWithCoder:(id)a3
+- (SFSpeechRecognitionMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = SFSpeechRecognitionMetadata;
   v5 = [(SFSpeechRecognitionMetadata *)&v14 init];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"_speakingRate"];
+    [coderCopy decodeDoubleForKey:@"_speakingRate"];
     v5->_speakingRate = v6;
-    [v4 decodeDoubleForKey:@"_averagePauseDuration"];
+    [coderCopy decodeDoubleForKey:@"_averagePauseDuration"];
     v5->_averagePauseDuration = v7;
-    [v4 decodeDoubleForKey:@"_speechStartTimestamp"];
+    [coderCopy decodeDoubleForKey:@"_speechStartTimestamp"];
     v5->_speechStartTimestamp = v8;
-    [v4 decodeDoubleForKey:@"_speechDuration"];
+    [coderCopy decodeDoubleForKey:@"_speechDuration"];
     v5->_speechDuration = v9;
-    [v4 decodeDoubleForKey:@"_averagePauseDuration"];
+    [coderCopy decodeDoubleForKey:@"_averagePauseDuration"];
     v5->_averagePauseDuration = v10;
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_voiceAnalytics"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_voiceAnalytics"];
     voiceAnalytics = v5->_voiceAnalytics;
     v5->_voiceAnalytics = v11;
   }
@@ -101,15 +101,15 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   speakingRate = self->_speakingRate;
-  v5 = a3;
-  [v5 encodeDouble:@"_speakingRate" forKey:speakingRate];
-  [v5 encodeDouble:@"_averagePauseDuration" forKey:self->_averagePauseDuration];
-  [v5 encodeDouble:@"_speechStartTimestamp" forKey:self->_speechStartTimestamp];
-  [v5 encodeDouble:@"_speechDuration" forKey:self->_speechDuration];
-  [v5 encodeObject:self->_voiceAnalytics forKey:@"_voiceAnalytics"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"_speakingRate" forKey:speakingRate];
+  [coderCopy encodeDouble:@"_averagePauseDuration" forKey:self->_averagePauseDuration];
+  [coderCopy encodeDouble:@"_speechStartTimestamp" forKey:self->_speechStartTimestamp];
+  [coderCopy encodeDouble:@"_speechDuration" forKey:self->_speechDuration];
+  [coderCopy encodeObject:self->_voiceAnalytics forKey:@"_voiceAnalytics"];
 }
 
 @end

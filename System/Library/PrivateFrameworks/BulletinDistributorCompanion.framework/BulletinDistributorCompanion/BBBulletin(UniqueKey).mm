@@ -6,9 +6,9 @@
 
 - (id)blt_uniqueKey
 {
-  v2 = [a1 sectionID];
-  v3 = [a1 publisherMatchID];
-  v4 = [BLTBBBulletinKey bulletinKeyWithSectionID:v2 publisherMatchID:v3];
+  sectionID = [self sectionID];
+  publisherMatchID = [self publisherMatchID];
+  v4 = [BLTBBBulletinKey bulletinKeyWithSectionID:sectionID publisherMatchID:publisherMatchID];
 
   return v4;
 }

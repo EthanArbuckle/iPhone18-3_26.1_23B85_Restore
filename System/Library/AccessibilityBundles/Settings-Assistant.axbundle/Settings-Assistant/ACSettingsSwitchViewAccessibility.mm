@@ -9,9 +9,9 @@
 - (id)accessibilityLabel
 {
   v2 = [(ACSettingsSwitchViewAccessibility *)self safeValueForKey:@"title"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue

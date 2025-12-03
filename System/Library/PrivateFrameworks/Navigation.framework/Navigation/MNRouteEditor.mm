@@ -1,43 +1,43 @@
 @interface MNRouteEditor
-+ (id)convertToNavigableRoute:(id)a3 finishedHandler:(id)a4;
-+ (void)_addressForRoute:(id)a3 traits:(id)a4 handler:(id)a5;
-+ (void)_convertAnchorPointsToWaypoints:(id)a3 routeEditorRequest:(id)a4 finishedHandler:(id)a5;
-+ (void)_fetchWaypointsFromRouteGeometry:(id)a3 routeEditorRequest:(id)a4 finishedHandler:(id)a5;
-+ (void)_handleWaypointStepFinishedWithOrigin:(id)a3 destination:(id)a4 address:(id)a5 error:(id)a6 finishedHandler:(id)a7;
-+ (void)_requestFinalizedRouteWithWaypoints:(id)a3 address:(id)a4 routeEditorRequest:(id)a5 finishedHandler:(id)a6;
-+ (void)_waypointForAnchorPoint:(id)a3 traits:(id)a4 clientAttributes:(id)a5 handler:(id)a6;
-- (BOOL)_checkAnchorPointCount:(unint64_t)a3 action:(unint64_t)a4 finishedHandler:(id)a5;
++ (id)convertToNavigableRoute:(id)route finishedHandler:(id)handler;
++ (void)_addressForRoute:(id)route traits:(id)traits handler:(id)handler;
++ (void)_convertAnchorPointsToWaypoints:(id)waypoints routeEditorRequest:(id)request finishedHandler:(id)handler;
++ (void)_fetchWaypointsFromRouteGeometry:(id)geometry routeEditorRequest:(id)request finishedHandler:(id)handler;
++ (void)_handleWaypointStepFinishedWithOrigin:(id)origin destination:(id)destination address:(id)address error:(id)error finishedHandler:(id)handler;
++ (void)_requestFinalizedRouteWithWaypoints:(id)waypoints address:(id)address routeEditorRequest:(id)request finishedHandler:(id)handler;
++ (void)_waypointForAnchorPoint:(id)point traits:(id)traits clientAttributes:(id)attributes handler:(id)handler;
+- (BOOL)_checkAnchorPointCount:(unint64_t)count action:(unint64_t)action finishedHandler:(id)handler;
 - (MNRouteEditor)init;
-- (MNRouteEditor)initWithTraceRecordingEnabled:(BOOL)a3;
+- (MNRouteEditor)initWithTraceRecordingEnabled:(BOOL)enabled;
 - (MNTraceRecorder)_traceRecorder;
-- (id)requestRouteGeometry:(id)a3 finishedHandler:(id)a4;
-- (void)_requestRouteGeometry:(id)a3 finishedHandler:(id)a4;
-- (void)_validateAnchorPoints:(id)a3 finishedHandler:(id)a4;
-- (void)_validateCountrySupportedForAnchorPoint:(id)a3 finishedHandler:(id)a4;
-- (void)_validateRoadProximityForAnchorPoint:(id)a3 finishedHandler:(id)a4;
+- (id)requestRouteGeometry:(id)geometry finishedHandler:(id)handler;
+- (void)_requestRouteGeometry:(id)geometry finishedHandler:(id)handler;
+- (void)_validateAnchorPoints:(id)points finishedHandler:(id)handler;
+- (void)_validateCountrySupportedForAnchorPoint:(id)point finishedHandler:(id)handler;
+- (void)_validateRoadProximityForAnchorPoint:(id)point finishedHandler:(id)handler;
 - (void)dealloc;
 - (void)endSession;
-- (void)validateAnchorPoint:(id)a3 handler:(id)a4;
+- (void)validateAnchorPoint:(id)point handler:(id)handler;
 @end
 
 @implementation MNRouteEditor
 
-- (void)_requestRouteGeometry:(id)a3 finishedHandler:(id)a4
+- (void)_requestRouteGeometry:(id)geometry finishedHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 routeAttributes];
+  geometryCopy = geometry;
+  handlerCopy = handler;
+  routeAttributes = [geometryCopy routeAttributes];
   v8 = objc_opt_new();
   [v8 setCallbackQueue:MEMORY[0x1E69E96A0]];
   [v8 setRequestType:2];
-  v9 = [v5 anchorPoints];
-  [v8 setAnchorPoints:v9];
+  anchorPoints = [geometryCopy anchorPoints];
+  [v8 setAnchorPoints:anchorPoints];
 
-  [v8 setTransportType:{objc_msgSend(v7, "mainTransportType")}];
+  [v8 setTransportType:{objc_msgSend(routeAttributes, "mainTransportType")}];
   [v8 setMaxRouteCount:1];
-  [v8 setRouteAttributes:v7];
-  v10 = [v5 currentRoute];
-  [v8 setCurrentRoute:v10];
+  [v8 setRouteAttributes:routeAttributes];
+  currentRoute = [geometryCopy currentRoute];
+  [v8 setCurrentRoute:currentRoute];
 
   v18[0] = 0;
   v18[1] = v18;
@@ -51,16 +51,16 @@
   v17[3] = &unk_1E8429FF8;
   v17[4] = v18;
   [v8 setRequestCallback:v17];
-  v11 = [MEMORY[0x1E69A1D18] sharedService];
+  mEMORY[0x1E69A1D18] = [MEMORY[0x1E69A1D18] sharedService];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __55__MNRouteEditor__requestRouteGeometry_finishedHandler___block_invoke_2;
   v14[3] = &unk_1E842A020;
   v16 = v18;
-  v12 = v6;
+  v12 = handlerCopy;
   v15 = v12;
-  v13 = [v11 requestRoutes:v8 handler:v14];
-  [v5 setDirectionsServiceRequest:v13];
+  v13 = [mEMORY[0x1E69A1D18] requestRoutes:v8 handler:v14];
+  [geometryCopy setDirectionsServiceRequest:v13];
 
   _Block_object_dispose(v18, 8);
 }
@@ -81,11 +81,11 @@ void __55__MNRouteEditor__requestRouteGeometry_finishedHandler___block_invoke_2(
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)_validateAnchorPoints:(id)a3 finishedHandler:(id)a4
+- (void)_validateAnchorPoints:(id)points finishedHandler:(id)handler
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  pointsCopy = points;
+  handlerCopy = handler;
   v8 = dispatch_group_create();
   v27[0] = 0;
   v27[1] = v27;
@@ -97,9 +97,9 @@ void __55__MNRouteEditor__requestRouteGeometry_finishedHandler___block_invoke_2(
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = [v6 newAnchorPoints];
+  obj = [pointsCopy newAnchorPoints];
   v9 = [obj countByEnumeratingWithState:&v23 objects:v29 count:16];
-  v15 = v7;
+  v15 = handlerCopy;
   if (v9)
   {
     v10 = *v24;
@@ -166,17 +166,17 @@ void __55__MNRouteEditor__validateAnchorPoints_finishedHandler___block_invoke_2(
   (*(*(a1 + 32) + 16))(*(a1 + 32), v2, *(*(*(a1 + 40) + 8) + 40) == 0);
 }
 
-- (BOOL)_checkAnchorPointCount:(unint64_t)a3 action:(unint64_t)a4 finishedHandler:(id)a5
+- (BOOL)_checkAnchorPointCount:(unint64_t)count action:(unint64_t)action finishedHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   UInteger = GEOConfigGetUInteger();
   v9 = 2 * UInteger - 1;
-  if (a4 != 102)
+  if (action != 102)
   {
     v9 = UInteger;
   }
 
-  if (a4 == 103)
+  if (action == 103)
   {
     v10 = UInteger + 1;
   }
@@ -186,22 +186,22 @@ void __55__MNRouteEditor__validateAnchorPoints_finishedHandler___block_invoke_2(
     v10 = v9;
   }
 
-  if (v10 < a3)
+  if (v10 < count)
   {
     v11 = [objc_alloc(MEMORY[0x1E69A1CF0]) initWithSingleProblemType:21];
     v12 = [MEMORY[0x1E696ABC0] _geo_errorWithDirectionsError:v11];
-    v7[2](v7, 0, v12, v11);
+    handlerCopy[2](handlerCopy, 0, v12, v11);
   }
 
-  return v10 >= a3;
+  return v10 >= count;
 }
 
-- (id)requestRouteGeometry:(id)a3 finishedHandler:(id)a4
+- (id)requestRouteGeometry:(id)geometry finishedHandler:(id)handler
 {
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  geometryCopy = geometry;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
@@ -215,26 +215,26 @@ void __55__MNRouteEditor__validateAnchorPoints_finishedHandler___block_invoke_2(
   v8 = MNGetMNRouteEditorLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 anchorPoints];
+    anchorPoints = [geometryCopy anchorPoints];
     *buf = 67109120;
-    v51 = [v9 count];
+    v51 = [anchorPoints count];
     _os_log_impl(&dword_1D311E000, v8, OS_LOG_TYPE_DEFAULT, "Requesting route geometry with %d anchor points.", buf, 8u);
   }
 
-  v10 = [v6 anchorPoints];
-  v11 = [v10 count];
+  anchorPoints2 = [geometryCopy anchorPoints];
+  v11 = [anchorPoints2 count];
 
   if (v11 > 1)
   {
-    if (([v6 action] == 1001 || objc_msgSend(v6, "action") == 1002) && (objc_msgSend(v6, "undoRedoRouteData"), v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
+    if (([geometryCopy action] == 1001 || objc_msgSend(geometryCopy, "action") == 1002) && (objc_msgSend(geometryCopy, "undoRedoRouteData"), v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
     {
       v14 = 1;
     }
 
     else
     {
-      v15 = [v6 anchorPoints];
-      v16 = -[MNRouteEditor _checkAnchorPointCount:action:finishedHandler:](self, "_checkAnchorPointCount:action:finishedHandler:", [v15 count], objc_msgSend(v6, "action"), v7);
+      anchorPoints3 = [geometryCopy anchorPoints];
+      v16 = -[MNRouteEditor _checkAnchorPointCount:action:finishedHandler:](self, "_checkAnchorPointCount:action:finishedHandler:", [anchorPoints3 count], objc_msgSend(geometryCopy, "action"), handlerCopy);
 
       if (!v16)
       {
@@ -245,7 +245,7 @@ void __55__MNRouteEditor__validateAnchorPoints_finishedHandler___block_invoke_2(
     }
 
     v17 = objc_opt_new();
-    v18 = [(MNRouteEditor *)self _traceRecorder];
+    _traceRecorder = [(MNRouteEditor *)self _traceRecorder];
     v19 = [MEMORY[0x1E695DF00] now];
     v20 = [MNSequence alloc];
     global_queue = geo_get_global_queue();
@@ -259,7 +259,7 @@ void __55__MNRouteEditor__validateAnchorPoints_finishedHandler___block_invoke_2(
       v47[3] = &unk_1E8429E68;
       v23 = &v48;
       v48 = v17;
-      v49 = v6;
+      v49 = geometryCopy;
       [(MNSequence *)v22 addStep:v47];
       v24 = v49;
     }
@@ -274,7 +274,7 @@ void __55__MNRouteEditor__validateAnchorPoints_finishedHandler___block_invoke_2(
       v25 = v17;
       v45[0] = v25;
       v45[1] = self;
-      v26 = v6;
+      v26 = geometryCopy;
       v46 = v26;
       [(MNSequence *)v22 addStep:v44];
       v40[0] = MEMORY[0x1E69E9820];
@@ -282,7 +282,7 @@ void __55__MNRouteEditor__validateAnchorPoints_finishedHandler___block_invoke_2(
       v40[2] = __54__MNRouteEditor_requestRouteGeometry_finishedHandler___block_invoke_3;
       v40[3] = &unk_1E8429F58;
       v41 = v25;
-      v42 = self;
+      selfCopy = self;
       v43 = v26;
       [(MNSequence *)v22 addStep:v40];
 
@@ -295,12 +295,12 @@ void __55__MNRouteEditor__validateAnchorPoints_finishedHandler___block_invoke_2(
     v34[3] = &unk_1E8429F80;
     v27 = v17;
     v35 = v27;
-    v36 = v18;
-    v37 = v6;
+    v36 = _traceRecorder;
+    v37 = geometryCopy;
     v38 = v19;
-    v39 = v7;
+    v39 = handlerCopy;
     v28 = v19;
-    v29 = v18;
+    v29 = _traceRecorder;
     [(MNSequence *)v22 setSequenceFinalizeHandler:v34];
     [(MNSequence *)v22 start];
     v30 = v39;
@@ -310,7 +310,7 @@ void __55__MNRouteEditor__validateAnchorPoints_finishedHandler___block_invoke_2(
   }
 
   v12 = [MEMORY[0x1E696ABC0] _navigation_errorWithCode:2 debugDescription:@"MNRouteEditorRequest needs at least two anchor points." underlyingError:0];
-  (*(v7 + 2))(v7, 0, v12, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, v12, 0);
 
 LABEL_18:
   v31 = 0;
@@ -428,11 +428,11 @@ LABEL_8:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_validateRoadProximityForAnchorPoint:(id)a3 finishedHandler:(id)a4
+- (void)_validateRoadProximityForAnchorPoint:(id)point finishedHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 coordinate];
+  pointCopy = point;
+  handlerCopy = handler;
+  [pointCopy coordinate];
   v9 = v8;
   v11 = v10;
   v22[0] = 0;
@@ -451,11 +451,11 @@ LABEL_8:
   v17[2] = __70__MNRouteEditor__validateRoadProximityForAnchorPoint_finishedHandler___block_invoke_2;
   v17[3] = &unk_1E8429F08;
   v20 = v22;
-  v14 = v6;
+  v14 = pointCopy;
   v18 = v14;
-  v15 = v7;
+  v15 = handlerCopy;
   v19 = v15;
-  v16 = [(GEOMapFeatureAccess *)mapFeatureAccess findRoadsNear:v21 radius:v17 handler:v9 completionHandler:v11, maxDistanceFromRoads];
+  maxDistanceFromRoads = [(GEOMapFeatureAccess *)mapFeatureAccess findRoadsNear:v21 radius:v17 handler:v9 completionHandler:v11, maxDistanceFromRoads];
 
   _Block_object_dispose(v22, 8);
 }
@@ -485,13 +485,13 @@ void __70__MNRouteEditor__validateRoadProximityForAnchorPoint_finishedHandler___
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_validateCountrySupportedForAnchorPoint:(id)a3 finishedHandler:(id)a4
+- (void)_validateCountrySupportedForAnchorPoint:(id)point finishedHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = MEMORY[0x1E69A1E70];
-  v7 = a3;
+  pointCopy = point;
   v8 = [v6 alloc];
-  [v7 locationCoordinate];
+  [pointCopy locationCoordinate];
   v10 = v9;
   v12 = v11;
 
@@ -501,8 +501,8 @@ void __70__MNRouteEditor__validateRoadProximityForAnchorPoint_finishedHandler___
   v16[1] = 3221225472;
   v16[2] = __73__MNRouteEditor__validateCountrySupportedForAnchorPoint_finishedHandler___block_invoke;
   v16[3] = &unk_1E8429EB8;
-  v17 = v5;
-  v15 = v5;
+  v17 = handlerCopy;
+  v15 = handlerCopy;
   [v14 customRouteCreationSupportedForLocation:v13 queue:MEMORY[0x1E69E96A0] handler:v16];
 }
 
@@ -537,11 +537,11 @@ void __73__MNRouteEditor__validateCountrySupportedForAnchorPoint_finishedHandler
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)validateAnchorPoint:(id)a3 handler:(id)a4
+- (void)validateAnchorPoint:(id)point handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  pointCopy = point;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v8 = [MNSequence alloc];
     global_queue = geo_get_global_queue();
@@ -552,7 +552,7 @@ void __73__MNRouteEditor__validateCountrySupportedForAnchorPoint_finishedHandler
     v16[2] = __45__MNRouteEditor_validateAnchorPoint_handler___block_invoke;
     v16[3] = &unk_1E8429E68;
     v16[4] = self;
-    v11 = v6;
+    v11 = pointCopy;
     v17 = v11;
     [(MNSequence *)v10 addStep:v16];
     v14[0] = MEMORY[0x1E69E9820];
@@ -566,7 +566,7 @@ void __73__MNRouteEditor__validateCountrySupportedForAnchorPoint_finishedHandler
     v12[1] = 3221225472;
     v12[2] = __45__MNRouteEditor_validateAnchorPoint_handler___block_invoke_3;
     v12[3] = &unk_1E8429E90;
-    v13 = v7;
+    v13 = handlerCopy;
     [(MNSequence *)v10 setSequenceFinalizeHandler:v12];
     [(MNSequence *)v10 start];
   }
@@ -612,11 +612,11 @@ void __45__MNRouteEditor_validateAnchorPoint_handler___block_invoke_4(uint64_t a
       [(MNTraceRecorder *)self->_traceRecorder setRecordingStartDate:self->_sessionStartDate];
       v7 = objc_opt_new();
       [v7 setDateFormat:@"yyyy-MM-dd-HHmmss"];
-      v8 = [MEMORY[0x1E695DFE8] localTimeZone];
-      [v7 setTimeZone:v8];
+      localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+      [v7 setTimeZone:localTimeZone];
 
-      v9 = [(MNTraceRecorder *)self->_traceRecorder recordingStartDate];
-      v10 = [v7 stringFromDate:v9];
+      recordingStartDate = [(MNTraceRecorder *)self->_traceRecorder recordingStartDate];
+      v10 = [v7 stringFromDate:recordingStartDate];
 
       v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"RouteCreation_%@", v10];
       v12 = +[MNFilePaths customRouteCreationTraceExtension];
@@ -651,13 +651,13 @@ void __45__MNRouteEditor_validateAnchorPoint_handler___block_invoke_4(uint64_t a
   [(MNRouteEditor *)&v3 dealloc];
 }
 
-- (MNRouteEditor)initWithTraceRecordingEnabled:(BOOL)a3
+- (MNRouteEditor)initWithTraceRecordingEnabled:(BOOL)enabled
 {
   v4 = [(MNRouteEditor *)self init];
   v5 = v4;
   if (v4)
   {
-    v4->_isTraceRecordingEnabled = a3;
+    v4->_isTraceRecordingEnabled = enabled;
     v6 = [MEMORY[0x1E695DF00] now];
     sessionStartDate = v5->_sessionStartDate;
     v5->_sessionStartDate = v6;
@@ -692,13 +692,13 @@ void __45__MNRouteEditor_validateAnchorPoint_handler___block_invoke_4(uint64_t a
   return v2;
 }
 
-+ (void)_requestFinalizedRouteWithWaypoints:(id)a3 address:(id)a4 routeEditorRequest:(id)a5 finishedHandler:(id)a6
++ (void)_requestFinalizedRouteWithWaypoints:(id)waypoints address:(id)address routeEditorRequest:(id)request finishedHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v12)
+  waypointsCopy = waypoints;
+  addressCopy = address;
+  requestCopy = request;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
@@ -713,8 +713,8 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v13 = v12;
-  if ([v9 count] != 2)
+  v13 = handlerCopy;
+  if ([waypointsCopy count] != 2)
   {
     if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
@@ -727,9 +727,9 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v14 = [v11 currentRoute];
-  v15 = [v11 routeAttributes];
-  if (!v14)
+  currentRoute = [requestCopy currentRoute];
+  routeAttributes = [requestCopy routeAttributes];
+  if (!currentRoute)
   {
     if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
@@ -742,8 +742,8 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v16 = v15;
-  if (!v15)
+  v16 = routeAttributes;
+  if (!routeAttributes)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
@@ -761,16 +761,16 @@ LABEL_17:
   v17 = objc_alloc_init(MEMORY[0x1E69A1D30]);
   [v17 setCallbackQueue:MEMORY[0x1E69E96A0]];
   [v17 setRequestType:3];
-  [v17 setWaypoints:v9];
-  [v17 setTransportType:{objc_msgSend(v14, "transportType")}];
+  [v17 setWaypoints:waypointsCopy];
+  [v17 setTransportType:{objc_msgSend(currentRoute, "transportType")}];
   [v17 setMaxRouteCount:1];
   [v17 setRouteAttributes:v16];
-  v18 = [v11 commonOptions];
-  [v17 setCommonOptions:v18];
+  commonOptions = [requestCopy commonOptions];
+  [v17 setCommonOptions:commonOptions];
 
-  [v17 setCurrentRoute:v14];
-  v19 = [v11 traits];
-  [v17 setTraits:v19];
+  [v17 setCurrentRoute:currentRoute];
+  traits = [requestCopy traits];
+  [v17 setTraits:traits];
 
   v20 = MNGetMNRouteEditorLog();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -779,14 +779,14 @@ LABEL_17:
     _os_log_impl(&dword_1D311E000, v20, OS_LOG_TYPE_DEFAULT, "convertToNavigableRoute: Getting finalized route.", buf, 2u);
   }
 
-  v21 = [MEMORY[0x1E69A1D18] sharedService];
+  mEMORY[0x1E69A1D18] = [MEMORY[0x1E69A1D18] sharedService];
   v26[0] = MEMORY[0x1E69E9820];
   v26[1] = 3221225472;
   v26[2] = __96__MNRouteEditor__requestFinalizedRouteWithWaypoints_address_routeEditorRequest_finishedHandler___block_invoke;
   v26[3] = &unk_1E842EF50;
   v27 = v13;
   v22 = v13;
-  v23 = [v21 requestRoutes:v17 handler:v26];
+  v23 = [mEMORY[0x1E69A1D18] requestRoutes:v17 handler:v26];
 }
 
 void __96__MNRouteEditor__requestFinalizedRouteWithWaypoints_address_routeEditorRequest_finishedHandler___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -839,18 +839,18 @@ LABEL_11:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_handleWaypointStepFinishedWithOrigin:(id)a3 destination:(id)a4 address:(id)a5 error:(id)a6 finishedHandler:(id)a7
++ (void)_handleWaypointStepFinishedWithOrigin:(id)origin destination:(id)destination address:(id)address error:(id)error finishedHandler:(id)handler
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  originCopy = origin;
+  destinationCopy = destination;
+  addressCopy = address;
+  errorCopy = error;
+  handlerCopy = handler;
   v16 = objc_opt_new();
   v17 = MNGetMNRouteEditorLog();
   v18 = v17;
-  if (v11 && v12)
+  if (originCopy && destinationCopy)
   {
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
@@ -858,12 +858,12 @@ LABEL_11:
       _os_log_impl(&dword_1D311E000, v18, OS_LOG_TYPE_DEFAULT, "convertToNavigableRoute: Successfully got waypoints.", &v23, 2u);
     }
 
-    v25[0] = v11;
-    v25[1] = v12;
+    v25[0] = originCopy;
+    v25[1] = destinationCopy;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
     [v16 setWaypoints:v19];
 
-    if (v13)
+    if (addressCopy)
     {
       v20 = MNGetMNRouteEditorLog();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -872,7 +872,7 @@ LABEL_11:
         _os_log_impl(&dword_1D311E000, v20, OS_LOG_TYPE_DEFAULT, "convertToNavigableRoute: Successfully got address.", &v23, 2u);
       }
 
-      [v16 setAddress:v13];
+      [v16 setAddress:addressCopy];
     }
   }
 
@@ -881,11 +881,11 @@ LABEL_11:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       v23 = 138412290;
-      v24 = v14;
+      v24 = errorCopy;
       _os_log_impl(&dword_1D311E000, v18, OS_LOG_TYPE_ERROR, "convertToNavigableRoute: Error getting origin or destination: %@", &v23, 0xCu);
     }
 
-    if (!v14)
+    if (!errorCopy)
     {
       v21 = MNGetMNRouteEditorLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
@@ -894,26 +894,26 @@ LABEL_11:
         _os_log_impl(&dword_1D311E000, v21, OS_LOG_TYPE_FAULT, "Unable to resolve waypoints and no error was found.", &v23, 2u);
       }
 
-      v14 = [MEMORY[0x1E696ABC0] _navigation_errorWithCode:3];
+      errorCopy = [MEMORY[0x1E696ABC0] _navigation_errorWithCode:3];
     }
 
-    [v16 setStepError:v14];
+    [v16 setStepError:errorCopy];
   }
 
-  v15[2](v15, v16, 1);
+  handlerCopy[2](handlerCopy, v16, 1);
 
   v22 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_convertAnchorPointsToWaypoints:(id)a3 routeEditorRequest:(id)a4 finishedHandler:(id)a5
++ (void)_convertAnchorPointsToWaypoints:(id)waypoints routeEditorRequest:(id)request finishedHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  waypointsCopy = waypoints;
+  requestCopy = request;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v11 = v10;
-    if ([v8 count] > 1)
+    v11 = handlerCopy;
+    if ([waypointsCopy count] > 1)
     {
       v12 = dispatch_group_create();
       *buf = 0;
@@ -941,25 +941,25 @@ LABEL_11:
       v50[4] = __Block_byref_object_dispose_;
       v51 = 0;
       dispatch_group_enter(v12);
-      v13 = [v8 firstObject];
-      v14 = [v9 traits];
-      v15 = [v9 clientAttributes];
+      firstObject = [waypointsCopy firstObject];
+      traits = [requestCopy traits];
+      clientAttributes = [requestCopy clientAttributes];
       v45[0] = MEMORY[0x1E69E9820];
       v45[1] = 3221225472;
       v45[2] = __84__MNRouteEditor__convertAnchorPointsToWaypoints_routeEditorRequest_finishedHandler___block_invoke;
       v45[3] = &unk_1E842A160;
       v48 = buf;
-      v16 = v8;
+      v16 = waypointsCopy;
       v46 = v16;
       v49 = v50;
       v17 = v12;
       v47 = v17;
-      [a1 _waypointForAnchorPoint:v13 traits:v14 clientAttributes:v15 handler:v45];
+      [self _waypointForAnchorPoint:firstObject traits:traits clientAttributes:clientAttributes handler:v45];
 
       dispatch_group_enter(v17);
-      v18 = [v16 lastObject];
-      v19 = [v9 traits];
-      v20 = [v9 clientAttributes];
+      lastObject = [v16 lastObject];
+      traits2 = [requestCopy traits];
+      clientAttributes2 = [requestCopy clientAttributes];
       v40[0] = MEMORY[0x1E69E9820];
       v40[1] = 3221225472;
       v40[2] = __84__MNRouteEditor__convertAnchorPointsToWaypoints_routeEditorRequest_finishedHandler___block_invoke_152;
@@ -970,11 +970,11 @@ LABEL_11:
       v44 = v50;
       v22 = v17;
       v42 = v22;
-      [a1 _waypointForAnchorPoint:v18 traits:v19 clientAttributes:v20 handler:v40];
+      [self _waypointForAnchorPoint:lastObject traits:traits2 clientAttributes:clientAttributes2 handler:v40];
 
       dispatch_group_enter(v22);
-      v23 = [v9 currentRoute];
-      v24 = [v9 traits];
+      currentRoute = [requestCopy currentRoute];
+      traits3 = [requestCopy traits];
       v36[0] = MEMORY[0x1E69E9820];
       v36[1] = 3221225472;
       v36[2] = __84__MNRouteEditor__convertAnchorPointsToWaypoints_routeEditorRequest_finishedHandler___block_invoke_153;
@@ -983,7 +983,7 @@ LABEL_11:
       v39 = v50;
       v25 = v22;
       v37 = v25;
-      [a1 _addressForRoute:v23 traits:v24 handler:v36];
+      [self _addressForRoute:currentRoute traits:traits3 handler:v36];
 
       global_queue = geo_get_global_queue();
       v30[0] = MEMORY[0x1E69E9820];
@@ -1175,14 +1175,14 @@ LABEL_11:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_fetchWaypointsFromRouteGeometry:(id)a3 routeEditorRequest:(id)a4 finishedHandler:(id)a5
++ (void)_fetchWaypointsFromRouteGeometry:(id)geometry routeEditorRequest:(id)request finishedHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  geometryCopy = geometry;
+  requestCopy = request;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v31 = v10;
+    v31 = handlerCopy;
     v11 = dispatch_group_create();
     *buf = 0;
     v59 = buf;
@@ -1210,10 +1210,10 @@ LABEL_11:
     v53 = 0;
     dispatch_group_enter(v11);
     v12 = objc_alloc(MEMORY[0x1E69A1E70]);
-    [v8 pointAt:0];
+    [geometryCopy pointAt:0];
     v13 = [v12 initWithGEOCoordinate:?];
     v14 = MEMORY[0x1E69A1CC8];
-    v15 = [v9 traits];
+    traits = [requestCopy traits];
     v47[0] = MEMORY[0x1E69E9820];
     v47[1] = 3221225472;
     v47[2] = __85__MNRouteEditor__fetchWaypointsFromRouteGeometry_routeEditorRequest_finishedHandler___block_invoke;
@@ -1224,14 +1224,14 @@ LABEL_11:
     v51 = v52;
     v17 = v11;
     v49 = v17;
-    v18 = [v14 composedWaypointForLocation:v16 mapItem:0 traits:v15 completionHandler:v47 networkActivityHandler:0];
+    v18 = [v14 composedWaypointForLocation:v16 mapItem:0 traits:traits completionHandler:v47 networkActivityHandler:0];
 
     dispatch_group_enter(v17);
     v19 = objc_alloc(MEMORY[0x1E69A1E70]);
-    [v8 pointAt:{objc_msgSend(v8, "pointCount") - 1}];
+    [geometryCopy pointAt:{objc_msgSend(geometryCopy, "pointCount") - 1}];
     v20 = [v19 initWithGEOCoordinate:?];
     v21 = MEMORY[0x1E69A1CC8];
-    v22 = [v9 traits];
+    traits2 = [requestCopy traits];
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
     v42[2] = __85__MNRouteEditor__fetchWaypointsFromRouteGeometry_routeEditorRequest_finishedHandler___block_invoke_149;
@@ -1242,11 +1242,11 @@ LABEL_11:
     v46 = v52;
     v24 = v17;
     v44 = v24;
-    v25 = [v21 composedWaypointForLocation:v23 mapItem:0 traits:v22 completionHandler:v42 networkActivityHandler:0];
+    v25 = [v21 composedWaypointForLocation:v23 mapItem:0 traits:traits2 completionHandler:v42 networkActivityHandler:0];
 
     dispatch_group_enter(v24);
-    v26 = [v9 currentRoute];
-    v27 = [v9 traits];
+    currentRoute = [requestCopy currentRoute];
+    traits3 = [requestCopy traits];
     v38[0] = MEMORY[0x1E69E9820];
     v38[1] = 3221225472;
     v38[2] = __85__MNRouteEditor__fetchWaypointsFromRouteGeometry_routeEditorRequest_finishedHandler___block_invoke_150;
@@ -1255,7 +1255,7 @@ LABEL_11:
     v41 = v52;
     v28 = v24;
     v39 = v28;
-    [a1 _addressForRoute:v26 traits:v27 handler:v38];
+    [self _addressForRoute:currentRoute traits:traits3 handler:v38];
 
     global_queue = geo_get_global_queue();
     block[0] = MEMORY[0x1E69E9820];
@@ -1448,13 +1448,13 @@ LABEL_11:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_addressForRoute:(id)a3 traits:(id)a4 handler:(id)a5
++ (void)_addressForRoute:(id)route traits:(id)traits handler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v9)
+  routeCopy = route;
+  traitsCopy = traits;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
@@ -1465,28 +1465,28 @@ LABEL_11:
     __break(1u);
   }
 
-  v10 = v9;
-  v11 = [MEMORY[0x1E69A22E8] sharedNoCreate];
-  if (!v11)
+  v10 = handlerCopy;
+  mEMORY[0x1E69A22E8] = [MEMORY[0x1E69A22E8] sharedNoCreate];
+  if (!mEMORY[0x1E69A22E8])
   {
     goto LABEL_12;
   }
 
-  v12 = v11;
-  v13 = [MEMORY[0x1E69A22E8] sharedNoCreate];
-  v14 = [v13 state];
-  if (v14 < 2)
+  v12 = mEMORY[0x1E69A22E8];
+  mEMORY[0x1E69A22E8]2 = [MEMORY[0x1E69A22E8] sharedNoCreate];
+  state = [mEMORY[0x1E69A22E8]2 state];
+  if (state < 2)
   {
 LABEL_11:
 
 LABEL_12:
-    [v7 distance];
-    [v7 pointAtRouteCoordinate:{objc_msgSend(v7, "routeCoordinateForDistanceAfterStart:", v17 * 0.5)}];
+    [routeCopy distance];
+    [routeCopy pointAtRouteCoordinate:{objc_msgSend(routeCopy, "routeCoordinateForDistanceAfterStart:", v17 * 0.5)}];
     v19 = v18;
     v21 = v20;
     v23 = v22;
-    v24 = [MEMORY[0x1E69A2208] sharedService];
-    v25 = [v24 ticketForReverseGeocodeCoordinate:0 shiftLocationsIfNeeded:v8 traits:{v19, v21}];
+    mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+    v25 = [mEMORY[0x1E69A2208] ticketForReverseGeocodeCoordinate:0 shiftLocationsIfNeeded:traitsCopy traits:{v19, v21}];
     v27[0] = MEMORY[0x1E69E9820];
     v27[1] = 3221225472;
     v27[2] = __49__MNRouteEditor__addressForRoute_traits_handler___block_invoke;
@@ -1502,12 +1502,12 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if (v14 != 2)
+  if (state != 2)
   {
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
       *buf = 67109120;
-      v35 = v14;
+      v35 = state;
       _os_log_fault_impl(&dword_1D311E000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "Requesting route geometry with %d anchor points.", buf, 8u);
     }
 
@@ -1557,35 +1557,35 @@ void __49__MNRouteEditor__addressForRoute_traits_handler___block_invoke(void *a1
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)_waypointForAnchorPoint:(id)a3 traits:(id)a4 clientAttributes:(id)a5 handler:(id)a6
++ (void)_waypointForAnchorPoint:(id)point traits:(id)traits clientAttributes:(id)attributes handler:(id)handler
 {
   v51 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v12)
+  pointCopy = point;
+  traitsCopy = traits;
+  attributesCopy = attributes;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     goto LABEL_24;
   }
 
-  v13 = [v9 geoLocation];
-  v14 = [v9 mapItemIdentifier];
-  v15 = [v14 isValid];
+  geoLocation = [pointCopy geoLocation];
+  mapItemIdentifier = [pointCopy mapItemIdentifier];
+  isValid = [mapItemIdentifier isValid];
 
-  v16 = [MEMORY[0x1E69A22E8] sharedNoCreate];
-  if (v16)
+  mEMORY[0x1E69A22E8] = [MEMORY[0x1E69A22E8] sharedNoCreate];
+  if (mEMORY[0x1E69A22E8])
   {
-    v17 = v16;
-    v18 = [MEMORY[0x1E69A22E8] sharedNoCreate];
-    v19 = [v18 state];
-    if (v19 >= 2)
+    mapItemIdentifier2 = mEMORY[0x1E69A22E8];
+    mEMORY[0x1E69A22E8]2 = [MEMORY[0x1E69A22E8] sharedNoCreate];
+    state = [mEMORY[0x1E69A22E8]2 state];
+    if (state >= 2)
     {
-      if (v19 == 2)
+      if (state == 2)
       {
 
-        v17 = [v9 mapItemIdentifier];
-        v15 = [v17 isValidForOfflineUse];
+        mapItemIdentifier2 = [pointCopy mapItemIdentifier];
+        isValid = [mapItemIdentifier2 isValidForOfflineUse];
 LABEL_10:
 
         goto LABEL_11;
@@ -1594,7 +1594,7 @@ LABEL_10:
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
       {
         *buf = 67109120;
-        LODWORD(v50) = v19;
+        LODWORD(v50) = state;
         _os_log_fault_impl(&dword_1D311E000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT, "Requesting route geometry with %d anchor points.", buf, 8u);
       }
     }
@@ -1603,18 +1603,18 @@ LABEL_10:
   }
 
 LABEL_11:
-  if (([v9 isCoordinate] & 1) != 0 || !v15)
+  if (([pointCopy isCoordinate] & 1) != 0 || !isValid)
   {
-    v28 = [v9 isCurrentLocation];
+    isCurrentLocation = [pointCopy isCurrentLocation];
     v29 = MNGetMNRouteEditorLog();
     v30 = os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT);
-    if (v28)
+    if (isCurrentLocation)
     {
       if (v30)
       {
-        v31 = [v9 loggingDescription];
+        loggingDescription = [pointCopy loggingDescription];
         *buf = 138412290;
-        v50 = v31;
+        v50 = loggingDescription;
         _os_log_impl(&dword_1D311E000, v29, OS_LOG_TYPE_DEFAULT, "Creating waypoint from current location for anchor point %@.", buf, 0xCu);
       }
 
@@ -1624,19 +1624,19 @@ LABEL_11:
       v41[2] = __73__MNRouteEditor__waypointForAnchorPoint_traits_clientAttributes_handler___block_invoke_146;
       v41[3] = &unk_1E842A0E8;
       v25 = &v42;
-      v42 = v9;
+      v42 = pointCopy;
       v26 = &v43;
-      v43 = v12;
-      v33 = [v32 composedWaypointForCurrentLocation:v13 traits:v10 completionHandler:v41 networkActivityHandler:0];
+      v43 = handlerCopy;
+      v33 = [v32 composedWaypointForCurrentLocation:geoLocation traits:traitsCopy completionHandler:v41 networkActivityHandler:0];
     }
 
     else
     {
       if (v30)
       {
-        v34 = [v9 loggingDescription];
+        loggingDescription2 = [pointCopy loggingDescription];
         *buf = 138412290;
-        v50 = v34;
+        v50 = loggingDescription2;
         _os_log_impl(&dword_1D311E000, v29, OS_LOG_TYPE_DEFAULT, "Creating waypoint from location for anchor point %@.", buf, 0xCu);
       }
 
@@ -1646,10 +1646,10 @@ LABEL_11:
       v38[2] = __73__MNRouteEditor__waypointForAnchorPoint_traits_clientAttributes_handler___block_invoke_147;
       v38[3] = &unk_1E842A0E8;
       v25 = &v39;
-      v39 = v9;
+      v39 = pointCopy;
       v26 = &v40;
-      v40 = v12;
-      v36 = [v35 composedWaypointForLocation:v13 mapItem:0 traits:v10 completionHandler:v38 networkActivityHandler:0];
+      v40 = handlerCopy;
+      v36 = [v35 composedWaypointForLocation:geoLocation mapItem:0 traits:traitsCopy completionHandler:v38 networkActivityHandler:0];
     }
   }
 
@@ -1658,25 +1658,25 @@ LABEL_11:
     v21 = MNGetMNRouteEditorLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v9 loggingDescription];
+      loggingDescription3 = [pointCopy loggingDescription];
       *buf = 138412290;
-      v50 = v22;
+      v50 = loggingDescription3;
       _os_log_impl(&dword_1D311E000, v21, OS_LOG_TYPE_DEFAULT, "Creating waypoint from identifier for anchor point %@.", buf, 0xCu);
     }
 
     v23 = MEMORY[0x1E69A1CC8];
-    v24 = [v9 mapItemIdentifier];
+    mapItemIdentifier3 = [pointCopy mapItemIdentifier];
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
     v44[2] = __73__MNRouteEditor__waypointForAnchorPoint_traits_clientAttributes_handler___block_invoke;
     v44[3] = &unk_1E842A110;
     v25 = &v45;
-    v45 = v9;
+    v45 = pointCopy;
     v26 = &v48;
-    v48 = v12;
-    v46 = v13;
-    v47 = v10;
-    v27 = [v23 composedWaypointForIdentifier:v24 traits:v47 clientAttributes:v11 completionHandler:v44 networkActivityHandler:0];
+    v48 = handlerCopy;
+    v46 = geoLocation;
+    v47 = traitsCopy;
+    v27 = [v23 composedWaypointForIdentifier:mapItemIdentifier3 traits:v47 clientAttributes:attributesCopy completionHandler:v44 networkActivityHandler:0];
   }
 
 LABEL_24:
@@ -1843,18 +1843,18 @@ void __73__MNRouteEditor__waypointForAnchorPoint_traits_clientAttributes_handler
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)convertToNavigableRoute:(id)a3 finishedHandler:(id)a4
++ (id)convertToNavigableRoute:(id)route finishedHandler:(id)handler
 {
   v63 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  routeCopy = route;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v8 = [v6 currentRoute];
-    if (!v8)
+    currentRoute = [routeCopy currentRoute];
+    if (!currentRoute)
     {
       v12 = [MEMORY[0x1E696ABC0] _navigation_errorWithCode:2 debugDescription:@"MNRouteEditorRequest.currentRoute is missing." underlyingError:0];
-      (*(v7 + 2))(v7, 0, v12, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, v12, 0);
 
 LABEL_10:
       v13 = 0;
@@ -1866,13 +1866,13 @@ LABEL_25:
     v9 = MNGetMNRouteEditorLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [v8 uniqueRouteID];
+      uniqueRouteID = [currentRoute uniqueRouteID];
       *buf = 138412290;
-      v62 = v10;
+      v62 = uniqueRouteID;
       _os_log_impl(&dword_1D311E000, v9, OS_LOG_TYPE_DEFAULT, "Converting route to navigable route. RouteID: %@", buf, 0xCu);
     }
 
-    if ([v8 isNavigable])
+    if ([currentRoute isNavigable])
     {
       v11 = MNGetMNRouteEditorLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1881,14 +1881,14 @@ LABEL_25:
         _os_log_impl(&dword_1D311E000, v11, OS_LOG_TYPE_DEFAULT, "convertToNavigableRoute: Passed in route is already navigable.", buf, 2u);
       }
 
-      (*(v7 + 2))(v7, v8, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, currentRoute, 0, 0);
       goto LABEL_10;
     }
 
-    v14 = [v6 routeAttributes];
-    v15 = [v14 supportsDirections];
+    routeAttributes = [routeCopy routeAttributes];
+    supportsDirections = [routeAttributes supportsDirections];
 
-    if ((v15 & 1) == 0)
+    if ((supportsDirections & 1) == 0)
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
       {
@@ -1897,34 +1897,34 @@ LABEL_25:
       }
 
       v44 = MEMORY[0x1E69A2500];
-      v45 = [v6 routeAttributes];
-      v46 = [v44 defaultRouteAttributesForTransportType:{objc_msgSend(v45, "mainTransportType")}];
-      [v6 setRouteAttributes:v46];
+      routeAttributes2 = [routeCopy routeAttributes];
+      v46 = [v44 defaultRouteAttributesForTransportType:{objc_msgSend(routeAttributes2, "mainTransportType")}];
+      [routeCopy setRouteAttributes:v46];
     }
 
     v16 = MEMORY[0x1E69A2500];
-    v17 = [v6 routeAttributes];
-    v18 = [v16 defaultRouteAttributesForTransportType:{objc_msgSend(v17, "mainTransportType")}];
-    [v6 setRouteAttributes:v18];
+    routeAttributes3 = [routeCopy routeAttributes];
+    v18 = [v16 defaultRouteAttributesForTransportType:{objc_msgSend(routeAttributes3, "mainTransportType")}];
+    [routeCopy setRouteAttributes:v18];
 
-    v19 = [v6 routeAttributes];
-    LOBYTE(v17) = [v19 supportsDirections];
+    routeAttributes4 = [routeCopy routeAttributes];
+    LOBYTE(routeAttributes3) = [routeAttributes4 supportsDirections];
 
-    if (v17)
+    if (routeAttributes3)
     {
       v20 = objc_opt_new();
       global_queue = geo_get_global_queue();
       v22 = [[MNSequence alloc] initWithQueue:global_queue];
-      v23 = [v6 waypoints];
-      v24 = [v23 count];
+      waypoints = [routeCopy waypoints];
+      v24 = [waypoints count];
 
       if (v24 == 2)
       {
         v25 = MNGetMNRouteEditorLog();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
-          v26 = [v6 waypoints];
-          v27 = [v26 count];
+          waypoints2 = [routeCopy waypoints];
+          v27 = [waypoints2 count];
           *buf = 67109120;
           LODWORD(v62) = v27;
           _os_log_impl(&dword_1D311E000, v25, OS_LOG_TYPE_DEFAULT, "Converting to navigable route using %d waypoints.", buf, 8u);
@@ -1938,8 +1938,8 @@ LABEL_25:
 
       else
       {
-        v30 = [v8 anchorPoints];
-        v31 = [v30 count];
+        anchorPoints = [currentRoute anchorPoints];
+        v31 = [anchorPoints count];
 
         v32 = MNGetMNRouteEditorLog();
         v33 = os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT);
@@ -1961,8 +1961,8 @@ LABEL_25:
         {
           if (v33)
           {
-            v34 = [v8 anchorPoints];
-            v35 = [v34 count];
+            anchorPoints2 = [currentRoute anchorPoints];
+            v35 = [anchorPoints2 count];
             *buf = 67109120;
             LODWORD(v62) = v35;
             _os_log_impl(&dword_1D311E000, v32, OS_LOG_TYPE_DEFAULT, "Converting to navigable route using %d anchor points.", buf, 8u);
@@ -1979,9 +1979,9 @@ LABEL_25:
       v28[3] = &unk_1E842A070;
       v36 = v20;
       v28[4] = v36;
-      v28[7] = a1;
-      v28[5] = v8;
-      v37 = v6;
+      v28[7] = self;
+      v28[5] = currentRoute;
+      v37 = routeCopy;
       v28[6] = v37;
       [(MNSequence *)v22 addStep:v28];
 
@@ -1991,9 +1991,9 @@ LABEL_25:
       v53[3] = &unk_1E842A098;
       v38 = v36;
       v54 = v38;
-      v57 = a1;
+      selfCopy = self;
       v55 = v37;
-      v39 = v7;
+      v39 = handlerCopy;
       v56 = v39;
       [(MNSequence *)v22 addStep:v53];
       v47 = MEMORY[0x1E69E9820];

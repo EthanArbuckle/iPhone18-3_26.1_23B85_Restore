@@ -1,7 +1,7 @@
 @interface AXVoiceOverMediaDescriptionsController
 - (id)specifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation AXVoiceOverMediaDescriptionsController
@@ -58,49 +58,49 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v13 = a4;
-  v7 = a5;
+  cellCopy = cell;
+  pathCopy = path;
   v8 = +[AXSettings sharedInstance];
-  v9 = [v8 voiceOverDescribedMedia];
+  voiceOverDescribedMedia = [v8 voiceOverDescribedMedia];
 
-  v10 = [v13 specifier];
-  v11 = [v10 propertyForKey:@"AXSVoiceOverMediaDescriptions"];
-  v12 = [v11 integerValue];
+  specifier = [cellCopy specifier];
+  v11 = [specifier propertyForKey:@"AXSVoiceOverMediaDescriptions"];
+  integerValue = [v11 integerValue];
 
-  if (v12 == v9)
+  if (integerValue == voiceOverDescribedMedia)
   {
-    self->_oldSelectionIndex = [v7 row];
+    self->_oldSelectionIndex = [pathCopy row];
   }
 
-  [v13 setChecked:v12 == v9];
+  [cellCopy setChecked:integerValue == voiceOverDescribedMedia];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v17.receiver = self;
   v17.super_class = AXVoiceOverMediaDescriptionsController;
-  [(AXVoiceOverMediaDescriptionsController *)&v17 tableView:v6 didSelectRowAtIndexPath:v7];
-  v8 = [(AXVoiceOverMediaDescriptionsController *)self specifierForIndexPath:v7];
+  [(AXVoiceOverMediaDescriptionsController *)&v17 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  v8 = [(AXVoiceOverMediaDescriptionsController *)self specifierForIndexPath:pathCopy];
   v9 = [v8 propertyForKey:@"AXSVoiceOverMediaDescriptions"];
-  v10 = [v9 integerValue];
+  integerValue = [v9 integerValue];
   v11 = +[AXSettings sharedInstance];
-  [v11 setVoiceOverDescribedMedia:v10];
+  [v11 setVoiceOverDescribedMedia:integerValue];
 
   oldSelectionIndex = self->_oldSelectionIndex;
-  v13 = [v7 row];
+  v13 = [pathCopy row];
   self->_oldSelectionIndex = v13;
   if (v13 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v14 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", oldSelectionIndex, [v7 section]);
-    v15 = [v6 cellForRowAtIndexPath:v14];
+    v14 = +[NSIndexPath indexPathForRow:inSection:](NSIndexPath, "indexPathForRow:inSection:", oldSelectionIndex, [pathCopy section]);
+    v15 = [viewCopy cellForRowAtIndexPath:v14];
     [v15 setChecked:0];
   }
 
-  v16 = [v6 cellForRowAtIndexPath:v7];
+  v16 = [viewCopy cellForRowAtIndexPath:pathCopy];
   [v16 setChecked:1];
 }
 

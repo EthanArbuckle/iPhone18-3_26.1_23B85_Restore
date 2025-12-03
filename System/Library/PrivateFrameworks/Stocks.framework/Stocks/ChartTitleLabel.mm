@@ -1,13 +1,13 @@
 @interface ChartTitleLabel
 - (ChartTitleLabel)init;
-- (void)_stockWillBeRemoved:(id)a3;
+- (void)_stockWillBeRemoved:(id)removed;
 - (void)layoutSubviews;
 - (void)prepareStringsForDeferredStockIfNeeded;
-- (void)prepareStringsWithStock:(id)a3 width:(double)a4;
-- (void)setBackgroundColor:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setLabelsHidden:(BOOL)a3;
-- (void)setOpaque:(BOOL)a3;
+- (void)prepareStringsWithStock:(id)stock width:(double)width;
+- (void)setBackgroundColor:(id)color;
+- (void)setFrame:(CGRect)frame;
+- (void)setLabelsHidden:(BOOL)hidden;
+- (void)setOpaque:(BOOL)opaque;
 @end
 
 @implementation ChartTitleLabel
@@ -29,20 +29,20 @@
     v2->_rightView = v5;
 
     [(ChartTitleLabel *)v2 addSubview:v5];
-    v7 = [(ChartTitleLabel *)v2 layer];
-    [v7 setNeedsLayoutOnGeometryChange:0];
+    layer = [(ChartTitleLabel *)v2 layer];
+    [layer setNeedsLayoutOnGeometryChange:0];
   }
 
   return v2;
 }
 
-- (void)setLabelsHidden:(BOOL)a3
+- (void)setLabelsHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   [(LabelSequenceView *)self->_leftView setHidden:?];
   rightView = self->_rightView;
 
-  [(LabelSequenceView *)rightView setHidden:v3];
+  [(LabelSequenceView *)rightView setHidden:hiddenCopy];
 }
 
 - (void)layoutSubviews
@@ -92,37 +92,37 @@
   }
 }
 
-- (void)prepareStringsWithStock:(id)a3 width:(double)a4
+- (void)prepareStringsWithStock:(id)stock width:(double)width
 {
   v111 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (self->_stock != v7)
+  stockCopy = stock;
+  if (self->_stock != stockCopy)
   {
-    v8 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v8 removeObserver:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self];
     deferredStock = self->_deferredStock;
     self->_deferredStock = 0;
 
-    objc_storeStrong(&self->_stock, a3);
+    objc_storeStrong(&self->_stock, stock);
     if (self->_stock)
     {
-      v96 = v8;
-      [v8 addObserver:self selector:sel__stockWillBeRemoved_ name:StockWillBeRemovedNotification[0] object:0];
-      v98 = [(Stock *)v7 changeIsNegative];
-      v10 = [(Stock *)v7 price];
-      [v10 floatValue];
+      v96 = defaultCenter;
+      [defaultCenter addObserver:self selector:sel__stockWillBeRemoved_ name:StockWillBeRemovedNotification[0] object:0];
+      changeIsNegative = [(Stock *)stockCopy changeIsNegative];
+      price = [(Stock *)stockCopy price];
+      [price floatValue];
       v12 = v11;
 
       v13 = &stru_287C73C90;
       v14 = &stru_287C73C90;
-      v15 = &stru_287C73C90;
+      formattedPrice = &stru_287C73C90;
       if (v12 > 0.0)
       {
-        v15 = [(Stock *)v7 formattedPrice];
-        v16 = [(Stock *)v7 formattedChangePercent:0];
-        v17 = [(Stock *)v7 formattedChangePercent:1];
+        formattedPrice = [(Stock *)stockCopy formattedPrice];
+        v16 = [(Stock *)stockCopy formattedChangePercent:0];
+        v17 = [(Stock *)stockCopy formattedChangePercent:1];
         v18 = @"+";
-        if (v98)
+        if (changeIsNegative)
         {
           v18 = @"-";
         }
@@ -134,13 +134,13 @@
       }
 
       v21 = MEMORY[0x277CBEA60];
-      v22 = [(Stock *)v7 symbol];
-      v97 = v7;
-      v23 = [(Stock *)v7 companyName];
-      v24 = v23;
-      if (v23)
+      symbol = [(Stock *)stockCopy symbol];
+      v97 = stockCopy;
+      companyName = [(Stock *)stockCopy companyName];
+      v24 = companyName;
+      if (companyName)
       {
-        v25 = v23;
+        v25 = companyName;
       }
 
       else
@@ -150,17 +150,17 @@
 
       v93 = v13;
       v94 = v14;
-      v95 = v15;
-      v26 = [v21 arrayWithObjects:{v22, v25, v15, v14, v13, 0}];
+      v95 = formattedPrice;
+      v26 = [v21 arrayWithObjects:{symbol, v25, formattedPrice, v14, v13, 0}];
 
       v27 = +[StocksStyle sharedStyle];
       v28 = [v27 lightFontOfSize:22.0];
 
-      v99 = self;
-      self->_width = a4;
-      v29 = a4 + -15.0;
-      v30 = [MEMORY[0x277D74248] defaultParagraphStyle];
-      v31 = [v30 mutableCopy];
+      selfCopy = self;
+      self->_width = width;
+      v29 = width + -15.0;
+      defaultParagraphStyle = [MEMORY[0x277D74248] defaultParagraphStyle];
+      v31 = [defaultParagraphStyle mutableCopy];
 
       v101 = v31;
       [v31 setLineBreakMode:5];
@@ -293,8 +293,8 @@
       }
 
       v65 = [v26 objectAtIndex:0];
-      v66 = [MEMORY[0x277D75348] whiteColor];
-      v67 = [StringDrawingInfo stringDrawingInfoWithString:v65 color:v66 font:v46 size:v106];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
+      v67 = [StringDrawingInfo stringDrawingInfoWithString:v65 color:whiteColor font:v46 size:v106];
 
       v68 = [v26 objectAtIndex:1];
       v69 = [MEMORY[0x277D75348] colorWithWhite:0.8 alpha:1.0];
@@ -308,11 +308,11 @@
       v72 = [StringDrawingInfo stringDrawingInfoWithString:v68 color:v69 font:v71 size:v107];
 
       v73 = [MEMORY[0x277CBEA60] arrayWithObjects:{v67, v72, 0}];
-      [(LabelSequenceView *)v99->_leftView setStringDrawingInfoValues:v73];
+      [(LabelSequenceView *)selfCopy->_leftView setStringDrawingInfoValues:v73];
 
       v74 = +[StocksStyle sharedStyle];
       v75 = v74;
-      if (v98)
+      if (changeIsNegative)
       {
         [v74 lossColor];
       }
@@ -334,26 +334,26 @@
       v83 = [StringDrawingInfo stringDrawingInfoWithString:v82 color:v76 font:v46 size:v110];
 
       v84 = [MEMORY[0x277CBEA60] arrayWithObjects:{v79, v81, v83, 0}];
-      [(LabelSequenceView *)v99->_rightView setStringDrawingInfoValues:v84];
+      [(LabelSequenceView *)selfCopy->_rightView setStringDrawingInfoValues:v84];
 
-      leftView = v99->_leftView;
+      leftView = selfCopy->_leftView;
       v86 = *MEMORY[0x277CBF348];
       v87 = *(MEMORY[0x277CBF348] + 8);
       [(LabelSequenceView *)leftView requiredSize];
       v89 = v88;
-      [(ChartTitleLabel *)v99 bounds];
+      [(ChartTitleLabel *)selfCopy bounds];
       [(LabelSequenceView *)leftView setFrame:v86, v87, v89];
-      rightView = v99->_rightView;
+      rightView = selfCopy->_rightView;
       [(LabelSequenceView *)rightView requiredSize];
       v92 = v91;
-      [(ChartTitleLabel *)v99 bounds];
+      [(ChartTitleLabel *)selfCopy bounds];
       [(LabelSequenceView *)rightView setFrame:v86, v87, v92];
-      [(LabelSequenceView *)v99->_leftView setNeedsDisplay];
-      [(LabelSequenceView *)v99->_rightView setNeedsDisplay];
-      [(ChartTitleLabel *)v99 layoutSubviews];
+      [(LabelSequenceView *)selfCopy->_leftView setNeedsDisplay];
+      [(LabelSequenceView *)selfCopy->_rightView setNeedsDisplay];
+      [(ChartTitleLabel *)selfCopy layoutSubviews];
 
-      v8 = v96;
-      v7 = v97;
+      defaultCenter = v96;
+      stockCopy = v97;
     }
   }
 }
@@ -366,34 +366,34 @@
   }
 }
 
-- (void)_stockWillBeRemoved:(id)a3
+- (void)_stockWillBeRemoved:(id)removed
 {
-  v4 = [a3 object];
+  object = [removed object];
   stock = self->_stock;
-  if (stock == v4)
+  if (stock == object)
   {
     self->_stock = 0;
-    v7 = v4;
+    v7 = object;
 
-    v4 = v7;
+    object = v7;
   }
 
   deferredStock = self->_deferredStock;
-  if (deferredStock == v4)
+  if (deferredStock == object)
   {
     self->_deferredStock = 0;
-    v8 = v4;
+    v8 = object;
 
-    v4 = v8;
+    object = v8;
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(ChartTitleLabel *)self frame];
   v9 = v8;
   v11 = v10;
@@ -406,24 +406,24 @@
   }
 }
 
-- (void)setOpaque:(BOOL)a3
+- (void)setOpaque:(BOOL)opaque
 {
-  v3 = a3;
+  opaqueCopy = opaque;
   v5.receiver = self;
   v5.super_class = ChartTitleLabel;
   [(ChartTitleLabel *)&v5 setOpaque:?];
-  [(LabelSequenceView *)self->_leftView setOpaque:v3];
-  [(LabelSequenceView *)self->_rightView setOpaque:v3];
+  [(LabelSequenceView *)self->_leftView setOpaque:opaqueCopy];
+  [(LabelSequenceView *)self->_rightView setOpaque:opaqueCopy];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   v5.receiver = self;
   v5.super_class = ChartTitleLabel;
-  v4 = a3;
-  [(ChartTitleLabel *)&v5 setBackgroundColor:v4];
-  [(LabelSequenceView *)self->_leftView setBackgroundColor:v4, v5.receiver, v5.super_class];
-  [(LabelSequenceView *)self->_rightView setBackgroundColor:v4];
+  colorCopy = color;
+  [(ChartTitleLabel *)&v5 setBackgroundColor:colorCopy];
+  [(LabelSequenceView *)self->_leftView setBackgroundColor:colorCopy, v5.receiver, v5.super_class];
+  [(LabelSequenceView *)self->_rightView setBackgroundColor:colorCopy];
 }
 
 @end

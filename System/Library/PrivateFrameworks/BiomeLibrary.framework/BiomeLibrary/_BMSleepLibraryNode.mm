@@ -5,26 +5,26 @@
 + (id)configurationForSession;
 + (id)storeConfigurationForScheduleState;
 + (id)storeConfigurationForSession;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMSleepLibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"ScheduleState"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"ScheduleState"])
   {
-    v5 = [a1 ScheduleState];
+    scheduleState = [self ScheduleState];
 LABEL_5:
-    v6 = v5;
+    v6 = scheduleState;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"Session"])
+  if ([nameCopy isEqualToString:@"Session"])
   {
-    v5 = [a1 Session];
+    scheduleState = [self Session];
     goto LABEL_5;
   }
 
@@ -50,13 +50,13 @@ LABEL_7:
 
 + (id)configurationForSession
 {
-  v3 = [a1 storeConfigurationForSession];
-  v4 = [a1 syncPolicyForSession];
+  storeConfigurationForSession = [self storeConfigurationForSession];
+  syncPolicyForSession = [self syncPolicyForSession];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"4A3059F6-531F-41BE-A640-843E5DBB400B"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Sleep.Session" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.healthlited" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Sleep.Session" eventClass:objc_opt_class() storeConfig:storeConfigurationForSession syncPolicy:syncPolicyForSession legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.healthlited" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -71,13 +71,13 @@ LABEL_7:
 
 + (id)configurationForScheduleState
 {
-  v3 = [a1 storeConfigurationForScheduleState];
-  v4 = [a1 syncPolicyForScheduleState];
+  storeConfigurationForScheduleState = [self storeConfigurationForScheduleState];
+  syncPolicyForScheduleState = [self syncPolicyForScheduleState];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"38B60F4C-BF3C-419C-9917-4E906A95240F"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Sleep.ScheduleState" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"Sleep.ScheduleState" eventClass:objc_opt_class() storeConfig:storeConfigurationForScheduleState syncPolicy:syncPolicyForScheduleState legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -93,7 +93,7 @@ LABEL_7:
 + (id)Session
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForSession];
+  configurationForSession = [self configurationForSession];
   v3 = +[BMSleepSession columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -105,7 +105,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Sleep.Session" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Sleep.Session" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Sleep.Session" schema:v9 configuration:configurationForSession];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -115,7 +115,7 @@ LABEL_7:
 + (id)ScheduleState
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForScheduleState];
+  configurationForScheduleState = [self configurationForScheduleState];
   v3 = +[BMSleepScheduleState columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -127,7 +127,7 @@ LABEL_7:
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"Sleep.ScheduleState" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Sleep.ScheduleState" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"Sleep.ScheduleState" schema:v9 configuration:configurationForScheduleState];
 
   v11 = *MEMORY[0x1E69E9840];
 

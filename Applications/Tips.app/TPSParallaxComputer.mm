@@ -1,19 +1,19 @@
 @interface TPSParallaxComputer
-- (CGPoint)contentParallaxOffsetForViewFrame:(CGRect)a3 visibleRect:(CGRect)a4;
+- (CGPoint)contentParallaxOffsetForViewFrame:(CGRect)frame visibleRect:(CGRect)rect;
 @end
 
 @implementation TPSParallaxComputer
 
-- (CGPoint)contentParallaxOffsetForViewFrame:(CGRect)a3 visibleRect:(CGRect)a4
+- (CGPoint)contentParallaxOffsetForViewFrame:(CGRect)frame visibleRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
   if (!UIAccessibilityIsReduceMotionEnabled())
   {
     v32.origin.x = v11;
@@ -32,10 +32,10 @@
       v30[3] = &unk_1000A32D8;
       v30[4] = self;
       v13 = objc_retainBlock(v30);
-      v14 = [(TPSParallaxComputer *)self axis];
-      v15 = v14;
+      axis = [(TPSParallaxComputer *)self axis];
+      v15 = axis;
       v29 = height;
-      if (v14)
+      if (axis)
       {
         v37.origin.x = v11;
         v37.origin.y = v10;
@@ -68,7 +68,7 @@
       else
       {
         v16 = CGPointZero.x;
-        if ((v14 & 2) != 0)
+        if ((axis & 2) != 0)
         {
 LABEL_5:
           v33.origin.x = v11;

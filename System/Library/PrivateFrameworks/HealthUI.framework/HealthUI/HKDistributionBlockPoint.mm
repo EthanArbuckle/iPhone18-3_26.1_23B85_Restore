@@ -1,102 +1,102 @@
 @interface HKDistributionBlockPoint
 - (CGPoint)maxPoint;
 - (CGPoint)minPoint;
-- (HKDistributionBlockPoint)initWithChartPoint:(id)a3 xAxisTransform:(id)a4 yAxisTransform:(id)a5 gapZeroCount:(int64_t)a6;
-- (HKDistributionBlockPoint)initWithTransform:(CGAffineTransform *)a3 blockPoint:(id)a4;
+- (HKDistributionBlockPoint)initWithChartPoint:(id)point xAxisTransform:(id)transform yAxisTransform:(id)axisTransform gapZeroCount:(int64_t)count;
+- (HKDistributionBlockPoint)initWithTransform:(CGAffineTransform *)transform blockPoint:(id)point;
 - (NSString)description;
-- (id)_applyTransformToSegments:(id)a3 transform:(CGAffineTransform *)a4;
-- (id)_quickDate:(id)a3;
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4;
+- (id)_applyTransformToSegments:(id)segments transform:(CGAffineTransform *)transform;
+- (id)_quickDate:(id)date;
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale;
 @end
 
 @implementation HKDistributionBlockPoint
 
-- (HKDistributionBlockPoint)initWithChartPoint:(id)a3 xAxisTransform:(id)a4 yAxisTransform:(id)a5 gapZeroCount:(int64_t)a6
+- (HKDistributionBlockPoint)initWithChartPoint:(id)point xAxisTransform:(id)transform yAxisTransform:(id)axisTransform gapZeroCount:(int64_t)count
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pointCopy = point;
+  transformCopy = transform;
+  axisTransformCopy = axisTransform;
   v28.receiver = self;
   v28.super_class = HKDistributionBlockPoint;
   v13 = [(HKDistributionBlockPoint *)&v28 init];
   if (v13)
   {
-    v14 = [v10 xValueAsGenericType];
-    [v11 coordinateForValue:v14];
+    xValueAsGenericType = [pointCopy xValueAsGenericType];
+    [transformCopy coordinateForValue:xValueAsGenericType];
     v16 = v15;
-    v17 = [v10 minYValue];
-    [v12 coordinateForValue:v17];
+    minYValue = [pointCopy minYValue];
+    [axisTransformCopy coordinateForValue:minYValue];
     v19 = v18;
 
-    v20 = [v10 maxYValue];
-    [v12 coordinateForValue:v20];
+    maxYValue = [pointCopy maxYValue];
+    [axisTransformCopy coordinateForValue:maxYValue];
     v22 = v21;
 
     v13->_minPoint.x = v16;
     v13->_minPoint.y = v19;
     v13->_maxPoint.x = v16;
     v13->_maxPoint.y = v22;
-    v23 = [HKQuantityDistributionSeries transformedSegmentsFromChartPoint:v10 forX:a6 minY:v16 maxY:v19 zeroCountForGap:v22];
+    v23 = [HKQuantityDistributionSeries transformedSegmentsFromChartPoint:pointCopy forX:count minY:v16 maxY:v19 zeroCountForGap:v22];
     distributionSegments = v13->_distributionSegments;
     v13->_distributionSegments = v23;
 
-    v25 = [v10 userInfo];
+    userInfo = [pointCopy userInfo];
     userInfo = v13->_userInfo;
-    v13->_userInfo = v25;
+    v13->_userInfo = userInfo;
   }
 
   return v13;
 }
 
-- (HKDistributionBlockPoint)initWithTransform:(CGAffineTransform *)a3 blockPoint:(id)a4
+- (HKDistributionBlockPoint)initWithTransform:(CGAffineTransform *)transform blockPoint:(id)point
 {
-  v6 = a4;
+  pointCopy = point;
   v20.receiver = self;
   v20.super_class = HKDistributionBlockPoint;
   v7 = [(HKDistributionBlockPoint *)&v20 init];
   if (v7)
   {
-    [v6 minPoint];
-    *(v7 + 24) = vaddq_f64(*&a3->tx, vmlaq_n_f64(vmulq_n_f64(*&a3->c, v8), *&a3->a, v9));
-    [v6 maxPoint];
-    *(v7 + 40) = vaddq_f64(*&a3->tx, vmlaq_n_f64(vmulq_n_f64(*&a3->c, v10), *&a3->a, v11));
-    v12 = [v6 distributionSegments];
-    v13 = *&a3->c;
-    v19[0] = *&a3->a;
+    [pointCopy minPoint];
+    *(v7 + 24) = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, v8), *&transform->a, v9));
+    [pointCopy maxPoint];
+    *(v7 + 40) = vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, v10), *&transform->a, v11));
+    distributionSegments = [pointCopy distributionSegments];
+    v13 = *&transform->c;
+    v19[0] = *&transform->a;
     v19[1] = v13;
-    v19[2] = *&a3->tx;
-    v14 = [v7 _applyTransformToSegments:v12 transform:v19];
+    v19[2] = *&transform->tx;
+    v14 = [v7 _applyTransformToSegments:distributionSegments transform:v19];
     v15 = *(v7 + 1);
     *(v7 + 1) = v14;
 
-    v16 = [v6 userInfo];
+    userInfo = [pointCopy userInfo];
     v17 = *(v7 + 2);
-    *(v7 + 2) = v16;
+    *(v7 + 2) = userInfo;
   }
 
   return v7;
 }
 
-- (id)copyWithTransform:(CGAffineTransform *)a3 roundToViewScale:(BOOL)a4
+- (id)copyWithTransform:(CGAffineTransform *)transform roundToViewScale:(BOOL)scale
 {
   v6 = [HKDistributionBlockPoint alloc];
-  v7 = *&a3->c;
-  v9[0] = *&a3->a;
+  v7 = *&transform->c;
+  v9[0] = *&transform->a;
   v9[1] = v7;
-  v9[2] = *&a3->tx;
+  v9[2] = *&transform->tx;
   return [(HKDistributionBlockPoint *)v6 initWithTransform:v9 blockPoint:self];
 }
 
-- (id)_quickDate:(id)a3
+- (id)_quickDate:(id)date
 {
   v3 = MEMORY[0x1E696AB78];
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_alloc_init(v3);
   [v5 setDateFormat:@"MM/dd/YYYY-HH:mm:ss"];
-  v6 = [MEMORY[0x1E695DFE8] localTimeZone];
-  [v5 setTimeZone:v6];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  [v5 setTimeZone:localTimeZone];
 
-  v7 = [v5 stringFromDate:v4];
+  v7 = [v5 stringFromDate:dateCopy];
 
   return v7;
 }
@@ -143,16 +143,16 @@
   return v13;
 }
 
-- (id)_applyTransformToSegments:(id)a3 transform:(CGAffineTransform *)a4
+- (id)_applyTransformToSegments:(id)segments transform:(CGAffineTransform *)transform
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  segmentsCopy = segments;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v5;
+  v7 = segmentsCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -168,7 +168,7 @@
         }
 
         [*(*(&v16 + 1) + 8 * i) CGPointValue];
-        v14 = [MEMORY[0x1E696B098] valueWithCGPoint:{vaddq_f64(*&a4->tx, vmlaq_n_f64(vmulq_n_f64(*&a4->c, v12), *&a4->a, v13))}];
+        v14 = [MEMORY[0x1E696B098] valueWithCGPoint:{vaddq_f64(*&transform->tx, vmlaq_n_f64(vmulq_n_f64(*&transform->c, v12), *&transform->a, v13))}];
         [v6 addObject:v14];
       }
 

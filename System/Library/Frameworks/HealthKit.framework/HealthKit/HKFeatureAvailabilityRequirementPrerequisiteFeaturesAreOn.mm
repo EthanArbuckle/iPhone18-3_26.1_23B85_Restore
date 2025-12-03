@@ -1,25 +1,25 @@
 @interface HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn
-- (BOOL)isEqual:(id)a3;
-- (HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn)initWithCoder:(id)a3;
-- (HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn)initWithPrerequisiteFeatureSettings:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn)initWithCoder:(id)coder;
+- (HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn)initWithPrerequisiteFeatureSettings:(id)settings;
 - (NSString)requirementDescription;
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4;
-- (void)registerObserver:(id)a3 forDataSource:(id)a4;
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4;
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error;
+- (void)registerObserver:(id)observer forDataSource:(id)source;
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source;
 @end
 
 @implementation HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn
 
-- (HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn)initWithPrerequisiteFeatureSettings:(id)a3
+- (HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn)initWithPrerequisiteFeatureSettings:(id)settings
 {
-  v5 = a3;
+  settingsCopy = settings;
   v9.receiver = self;
   v9.super_class = HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn;
   v6 = [(HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_prerequisiteFeatureSettings, a3);
+    objc_storeStrong(&v6->_prerequisiteFeatureSettings, settings);
   }
 
   return v7;
@@ -30,17 +30,17 @@
   if ([(NSArray *)self->_prerequisiteFeatureSettings count]== 1)
   {
     v3 = MEMORY[0x1E696AEC0];
-    v4 = [(NSArray *)self->_prerequisiteFeatureSettings firstObject];
-    v5 = [v4 featureIdentifier];
-    [v3 stringWithFormat:@"%@ must be on", v5];
+    firstObject = [(NSArray *)self->_prerequisiteFeatureSettings firstObject];
+    featureIdentifier = [firstObject featureIdentifier];
+    [v3 stringWithFormat:@"%@ must be on", featureIdentifier];
   }
 
   else
   {
-    v4 = [(NSArray *)self->_prerequisiteFeatureSettings hk_map:&__block_literal_global_48];
+    firstObject = [(NSArray *)self->_prerequisiteFeatureSettings hk_map:&__block_literal_global_48];
     v6 = MEMORY[0x1E696AEC0];
-    v5 = [v4 componentsJoinedByString:{@", "}];
-    [v6 stringWithFormat:@"%@ must all be on", v5];
+    featureIdentifier = [firstObject componentsJoinedByString:{@", "}];
+    [v6 stringWithFormat:@"%@ must all be on", featureIdentifier];
   }
   v7 = ;
 
@@ -55,10 +55,10 @@ id __81__HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn_requiredEntit
   return v3;
 }
 
-- (id)isSatisfiedWithDataSource:(id)a3 error:(id *)a4
+- (id)isSatisfiedWithDataSource:(id)source error:(id *)error
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  sourceCopy = source;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -79,11 +79,11 @@ id __81__HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn_requiredEntit
         }
 
         v11 = *(*(&v22 + 1) + 8 * i);
-        v12 = [v11 featureIdentifier];
-        v13 = [v6 onboardingRecordForFeatureWithIdentifier:v12 error:a4];
+        featureIdentifier = [v11 featureIdentifier];
+        v13 = [sourceCopy onboardingRecordForFeatureWithIdentifier:featureIdentifier error:error];
 
-        v14 = [v13 featureSettings];
-        if (v14)
+        featureSettings = [v13 featureSettings];
+        if (featureSettings)
         {
         }
 
@@ -92,9 +92,9 @@ id __81__HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn_requiredEntit
           goto LABEL_17;
         }
 
-        v15 = [v13 featureSettings];
-        v16 = [v11 settingsOnKey];
-        v17 = [v15 numberForKey:v16];
+        featureSettings2 = [v13 featureSettings];
+        settingsOnKey = [v11 settingsOnKey];
+        v17 = [featureSettings2 numberForKey:settingsOnKey];
 
         if (v17)
         {
@@ -131,12 +131,12 @@ LABEL_18:
   return v18;
 }
 
-- (void)registerObserver:(id)a3 forDataSource:(id)a4
+- (void)registerObserver:(id)observer forDataSource:(id)source
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  objc_initWeak(&location, v7);
+  observerCopy = observer;
+  sourceCopy = source;
+  objc_initWeak(&location, sourceCopy);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __92__HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn_registerObserver_forDataSource___block_invoke;
@@ -164,14 +164,14 @@ LABEL_18:
         }
 
         v12 = *(*(&v19 + 1) + 8 * v11);
-        v13 = [v7 featureAvailabilityProvidingDataSource];
-        v14 = [v12 featureIdentifier];
+        featureAvailabilityProvidingDataSource = [sourceCopy featureAvailabilityProvidingDataSource];
+        featureIdentifier = [v12 featureIdentifier];
         v17[0] = MEMORY[0x1E69E9820];
         v17[1] = 3221225472;
         v17[2] = __92__HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn_registerObserver_forDataSource___block_invoke_18;
         v17[3] = &unk_1E737DBD0;
         v18 = v8;
-        [v13 registerObserver:v6 forKey:v14 newValueHandler:v17];
+        [featureAvailabilityProvidingDataSource registerObserver:observerCopy forKey:featureIdentifier newValueHandler:v17];
 
         ++v11;
       }
@@ -217,11 +217,11 @@ void __92__HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn_registerObs
   }
 }
 
-- (void)unregisterObserver:(id)a3 fromDataSource:(id)a4
+- (void)unregisterObserver:(id)observer fromDataSource:(id)source
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  sourceCopy = source;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -243,9 +243,9 @@ void __92__HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn_registerObs
         }
 
         v13 = *(*(&v17 + 1) + 8 * v12);
-        v14 = [v7 featureAvailabilityProvidingDataSource];
-        v15 = [v13 featureIdentifier];
-        [v14 unregisterObserver:v6 forKey:v15];
+        featureAvailabilityProvidingDataSource = [sourceCopy featureAvailabilityProvidingDataSource];
+        featureIdentifier = [v13 featureIdentifier];
+        [featureAvailabilityProvidingDataSource unregisterObserver:observerCopy forKey:featureIdentifier];
 
         ++v12;
       }
@@ -260,13 +260,13 @@ void __92__HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn_registerObs
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NSArray *)self->_prerequisiteFeatureSettings isEqual:v4[1]];
+    v5 = [(NSArray *)self->_prerequisiteFeatureSettings isEqual:equalCopy[1]];
   }
 
   else
@@ -277,13 +277,13 @@ void __92__HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn_registerObs
   return v5;
 }
 
-- (HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn)initWithCoder:(id)a3
+- (HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"prerequisiteFeatureSettings"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"prerequisiteFeatureSettings"];
 
   v9 = [(HKFeatureAvailabilityRequirementPrerequisiteFeaturesAreOn *)self initWithPrerequisiteFeatureSettings:v8];
   return v9;

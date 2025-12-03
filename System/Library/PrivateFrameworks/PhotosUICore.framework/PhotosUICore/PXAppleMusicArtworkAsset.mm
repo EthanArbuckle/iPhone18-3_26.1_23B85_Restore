@@ -1,11 +1,11 @@
 @interface PXAppleMusicArtworkAsset
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)acceptableCropRect;
 - (CGRect)faceAreaRect;
 - (CGRect)preferredCropRect;
 - (NSString)uuid;
 - (PXAppleMusicArtworkAsset)init;
-- (PXAppleMusicArtworkAsset)initWithMusicAsset:(id)a3;
+- (PXAppleMusicArtworkAsset)initWithMusicAsset:(id)asset;
 @end
 
 @implementation PXAppleMusicArtworkAsset
@@ -49,15 +49,15 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 musicAsset];
-    v6 = [(PXAppleMusicArtworkAsset *)self musicAsset];
-    v7 = [v5 isEqual:v6];
+    musicAsset = [equalCopy musicAsset];
+    musicAsset2 = [(PXAppleMusicArtworkAsset *)self musicAsset];
+    v7 = [musicAsset isEqual:musicAsset2];
   }
 
   else
@@ -70,30 +70,30 @@
 
 - (NSString)uuid
 {
-  v2 = [(PXAppleMusicArtworkAsset *)self musicAsset];
-  v3 = [v2 identifier];
+  musicAsset = [(PXAppleMusicArtworkAsset *)self musicAsset];
+  identifier = [musicAsset identifier];
 
-  return v3;
+  return identifier;
 }
 
 - (PXAppleMusicArtworkAsset)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXAppleMusicArtworkAsset.m" lineNumber:26 description:{@"%s is not available as initializer", "-[PXAppleMusicArtworkAsset init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAppleMusicArtworkAsset.m" lineNumber:26 description:{@"%s is not available as initializer", "-[PXAppleMusicArtworkAsset init]"}];
 
   abort();
 }
 
-- (PXAppleMusicArtworkAsset)initWithMusicAsset:(id)a3
+- (PXAppleMusicArtworkAsset)initWithMusicAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v9.receiver = self;
   v9.super_class = PXAppleMusicArtworkAsset;
   v6 = [(PXAppleMusicArtworkAsset *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_musicAsset, a3);
+    objc_storeStrong(&v6->_musicAsset, asset);
   }
 
   return v7;

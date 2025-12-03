@@ -1,7 +1,7 @@
 @interface BCCardStackTransitionCoverMoveAnimationItem
 - (CGAffineTransform)coverToTransform;
 - (CGPoint)coverToCenter;
-- (void)setCoverToTransform:(CGAffineTransform *)a3;
+- (void)setCoverToTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation BCCardStackTransitionCoverMoveAnimationItem
@@ -24,11 +24,11 @@
   return self;
 }
 
-- (void)setCoverToTransform:(CGAffineTransform *)a3
+- (void)setCoverToTransform:(CGAffineTransform *)transform
 {
-  v4 = *&a3->c;
-  v3 = *&a3->tx;
-  *&self->_coverToTransform.a = *&a3->a;
+  v4 = *&transform->c;
+  v3 = *&transform->tx;
+  *&self->_coverToTransform.a = *&transform->a;
   *&self->_coverToTransform.c = v4;
   *&self->_coverToTransform.tx = v3;
 }

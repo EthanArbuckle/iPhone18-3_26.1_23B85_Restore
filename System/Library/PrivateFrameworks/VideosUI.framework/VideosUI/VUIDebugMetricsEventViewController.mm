@@ -1,26 +1,26 @@
 @interface VUIDebugMetricsEventViewController
-- (VUIDebugMetricsEventViewController)initWithEvent:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (VUIDebugMetricsEventViewController)initWithEvent:(id)event;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)performValidation;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation VUIDebugMetricsEventViewController
 
-- (VUIDebugMetricsEventViewController)initWithEvent:(id)a3
+- (VUIDebugMetricsEventViewController)initWithEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v9.receiver = self;
   v9.super_class = VUIDebugMetricsEventViewController;
   v6 = [(VUIDebugMetricsEventViewController *)&v9 initWithStyle:1];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_event, a3);
+    objc_storeStrong(&v6->_event, event);
   }
 
   return v7;
@@ -31,74 +31,74 @@
   v10.receiver = self;
   v10.super_class = VUIDebugMetricsEventViewController;
   [(VUIDebugMetricsEventViewController *)&v10 viewDidLoad];
-  v3 = [(VUIDebugMetricsEventViewController *)self event];
-  v4 = [v3 eventType];
+  event = [(VUIDebugMetricsEventViewController *)self event];
+  eventType = [event eventType];
 
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"eventType: %@", v4];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"eventType: %@", eventType];
   [(VUIDebugMetricsEventViewController *)self setTitle:v5];
 
   v6 = [objc_alloc(MEMORY[0x1E69DC708]) initWithTitle:@"Validate" style:0 target:self action:sel_performValidation];
-  v7 = [(VUIDebugMetricsEventViewController *)self navigationItem];
-  [v7 setLargeTitleDisplayMode:2];
+  navigationItem = [(VUIDebugMetricsEventViewController *)self navigationItem];
+  [navigationItem setLargeTitleDisplayMode:2];
 
-  v8 = [(VUIDebugMetricsEventViewController *)self navigationItem];
-  [v8 setRightBarButtonItem:v6];
+  navigationItem2 = [(VUIDebugMetricsEventViewController *)self navigationItem];
+  [navigationItem2 setRightBarButtonItem:v6];
 
-  v9 = [(VUIDebugMetricsEventViewController *)self tableView];
-  [v9 registerClass:objc_opt_class() forCellReuseIdentifier:@"VUIDebugMetricsEventCellReuseIdentifier"];
+  tableView = [(VUIDebugMetricsEventViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"VUIDebugMetricsEventCellReuseIdentifier"];
 }
 
 - (void)performValidation
 {
   v3 = [VUIDebugMetricsEventValidatorTableViewController alloc];
-  v4 = [(VUIDebugMetricsEvent *)self->_event rawEvent];
-  v6 = [(VUIDebugMetricsEventValidatorTableViewController *)v3 initWithEvent:v4];
+  rawEvent = [(VUIDebugMetricsEvent *)self->_event rawEvent];
+  v6 = [(VUIDebugMetricsEventValidatorTableViewController *)v3 initWithEvent:rawEvent];
 
-  v5 = [(VUIDebugMetricsEventViewController *)self navigationController];
-  [v5 pushViewController:v6 animated:1];
+  navigationController = [(VUIDebugMetricsEventViewController *)self navigationController];
+  [navigationController pushViewController:v6 animated:1];
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(VUIDebugMetricsEvent *)self->_event eventData];
-  v4 = [v3 count];
+  eventData = [(VUIDebugMetricsEvent *)self->_event eventData];
+  v4 = [eventData count];
 
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(VUIDebugMetricsEvent *)self->_event eventData];
-  v6 = [v5 objectAtIndex:a4];
+  eventData = [(VUIDebugMetricsEvent *)self->_event eventData];
+  v6 = [eventData objectAtIndex:section];
   v7 = [v6 valueForKey:@"keys"];
   v8 = [v7 count];
 
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   event = self->_event;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(VUIDebugMetricsEvent *)event eventData];
-  v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v7, "section")}];
+  pathCopy = path;
+  viewCopy = view;
+  eventData = [(VUIDebugMetricsEvent *)event eventData];
+  v10 = [eventData objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
   v11 = [v10 valueForKey:@"keys"];
-  v12 = [v11 objectAtIndex:{objc_msgSend(v7, "row")}];
+  v12 = [v11 objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
   v13 = [(VUIDebugMetricsEvent *)self->_event objectForKeyedSubscript:v12];
-  v14 = [v8 dequeueReusableCellWithIdentifier:@"VUIDebugMetricsEventCellReuseIdentifier" forIndexPath:v7];
+  v14 = [viewCopy dequeueReusableCellWithIdentifier:@"VUIDebugMetricsEventCellReuseIdentifier" forIndexPath:pathCopy];
 
   v15 = [v14 initWithStyle:1 reuseIdentifier:@"VUIDebugMetricsEventCellReuseIdentifier"];
   objc_opt_class();
-  LOBYTE(v8) = objc_opt_isKindOfClass();
-  v16 = [v15 textLabel];
-  [v16 setText:v12];
+  LOBYTE(viewCopy) = objc_opt_isKindOfClass();
+  textLabel = [v15 textLabel];
+  [textLabel setText:v12];
 
-  if (v8)
+  if (viewCopy)
   {
-    v17 = [v15 detailTextLabel];
-    [v17 setText:v13];
+    detailTextLabel = [v15 detailTextLabel];
+    [detailTextLabel setText:v13];
 
     [v15 setAccessoryType:0];
     [v15 setSelectionStyle:0];
@@ -110,8 +110,8 @@
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v19 = [v13 description];
-    v20 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v21 = [v19 componentsSeparatedByCharactersInSet:v20];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v21 = [v19 componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     v22 = [v21 componentsJoinedByString:&stru_1F5DB25C0];
 
@@ -145,8 +145,8 @@ LABEL_13:
   if (v22)
   {
 LABEL_14:
-    v23 = [v15 detailTextLabel];
-    [v23 setText:v22];
+    detailTextLabel2 = [v15 detailTextLabel];
+    [detailTextLabel2 setText:v22];
 
     if (v18)
     {
@@ -164,23 +164,23 @@ LABEL_18:
   return v15;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(VUIDebugMetricsEvent *)self->_event eventData];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  eventData = [(VUIDebugMetricsEvent *)self->_event eventData];
+  v6 = [eventData objectAtIndexedSubscript:section];
   v7 = [v6 valueForKey:@"header"];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   event = self->_event;
-  v6 = a4;
-  v7 = [(VUIDebugMetricsEvent *)event eventData];
-  v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
+  pathCopy = path;
+  eventData = [(VUIDebugMetricsEvent *)event eventData];
+  v8 = [eventData objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
   v9 = [v8 valueForKey:@"keys"];
-  v10 = [v6 row];
+  v10 = [pathCopy row];
 
   v14 = [v9 objectAtIndex:v10];
 

@@ -1,16 +1,16 @@
 @interface AccountStateChangeListener
 - (_TtC15HealthRecordsUI26AccountStateChangeListener)init;
-- (void)clinicalAccountStore:(id)a3 accountDidChange:(id)a4 changeType:(int64_t)a5;
+- (void)clinicalAccountStore:(id)store accountDidChange:(id)change changeType:(int64_t)type;
 @end
 
 @implementation AccountStateChangeListener
 
-- (void)clinicalAccountStore:(id)a3 accountDidChange:(id)a4 changeType:(int64_t)a5
+- (void)clinicalAccountStore:(id)store accountDidChange:(id)change changeType:(int64_t)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  sub_1D123CE50(v8, v9, a5);
+  storeCopy = store;
+  changeCopy = change;
+  selfCopy = self;
+  sub_1D123CE50(storeCopy, changeCopy, type);
 }
 
 - (_TtC15HealthRecordsUI26AccountStateChangeListener)init

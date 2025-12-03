@@ -1,12 +1,12 @@
 @interface AXPhoenixEventMonitor
 - (AXPhoenixEventMonitor)init;
-- (void)_startMonitoringWithQueue:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)enumerateObservers:(id)a3;
-- (void)enumerateObserversInQueue:(id)a3;
-- (void)notifyObserver:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)enumerateObservers:(id)observers;
+- (void)enumerateObserversInQueue:(id)queue;
+- (void)notifyObserver:(id)observer;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation AXPhoenixEventMonitor
@@ -22,9 +22,9 @@
   if (v10)
   {
     v4 = v10;
-    v5 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     [(AXPhoenixEventMonitor *)v4 setObservers:?];
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](weakObjectsHashTable);
     v6 = v10;
     v7 = dispatch_queue_create("AXPhoenixEventMonitor queue", 0);
     [(AXPhoenixEventMonitor *)v6 setQueue:?];
@@ -38,28 +38,28 @@
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(AXPhoenixEventMonitor *)self _stopMonitoring];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = AXPhoenixEventMonitor;
   [(AXPhoenixEventMonitor *)&v2 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = [(AXPhoenixEventMonitor *)v12 queue];
+  objc_storeStrong(location, observer);
+  queue = [(AXPhoenixEventMonitor *)selfCopy queue];
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __37__AXPhoenixEventMonitor_addObserver___block_invoke;
   v8 = &unk_279A205C8;
   v9 = MEMORY[0x277D82BE0](location[0]);
-  v10 = MEMORY[0x277D82BE0](v12);
+  v10 = MEMORY[0x277D82BE0](selfCopy);
   dispatch_sync(queue, &v4);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(&v10, 0);
@@ -91,20 +91,20 @@ uint64_t __37__AXPhoenixEventMonitor_addObserver___block_invoke(uint64_t result)
   return result;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = [(AXPhoenixEventMonitor *)v12 queue];
+  objc_storeStrong(location, observer);
+  queue = [(AXPhoenixEventMonitor *)selfCopy queue];
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __40__AXPhoenixEventMonitor_removeObserver___block_invoke;
   v8 = &unk_279A205C8;
   v9 = MEMORY[0x277D82BE0](location[0]);
-  v10 = MEMORY[0x277D82BE0](v12);
+  v10 = MEMORY[0x277D82BE0](selfCopy);
   dispatch_sync(queue, &v4);
   MEMORY[0x277D82BD8](queue);
   objc_storeStrong(&v10, 0);
@@ -133,33 +133,33 @@ uint64_t __40__AXPhoenixEventMonitor_removeObserver___block_invoke(uint64_t resu
   return result;
 }
 
-- (void)notifyObserver:(id)a3
+- (void)notifyObserver:(id)observer
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, observer);
   if (objc_opt_respondsToSelector())
   {
-    [location[0] phoenixEventMonitorDidReceiveEvent:v4];
+    [location[0] phoenixEventMonitorDidReceiveEvent:selfCopy];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)enumerateObserversInQueue:(id)a3
+- (void)enumerateObserversInQueue:(id)queue
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  queue = [(AXPhoenixEventMonitor *)v12 queue];
+  objc_storeStrong(location, queue);
+  queue = [(AXPhoenixEventMonitor *)selfCopy queue];
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __51__AXPhoenixEventMonitor_enumerateObserversInQueue___block_invoke;
   v8 = &unk_279A205F0;
-  v9 = MEMORY[0x277D82BE0](v12);
+  v9 = MEMORY[0x277D82BE0](selfCopy);
   v10 = MEMORY[0x277D82BE0](location[0]);
   dispatch_async(queue, &v4);
   MEMORY[0x277D82BD8](queue);
@@ -168,18 +168,18 @@ uint64_t __40__AXPhoenixEventMonitor_removeObserver___block_invoke(uint64_t resu
   objc_storeStrong(location, 0);
 }
 
-- (void)enumerateObservers:(id)a3
+- (void)enumerateObservers:(id)observers
 {
   v15 = *MEMORY[0x277D85DE8];
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = [(AXPhoenixEventMonitor *)v13 queue];
-  dispatch_assert_queue_V2(v7);
-  MEMORY[0x277D82BD8](v7);
+  objc_storeStrong(location, observers);
+  queue = [(AXPhoenixEventMonitor *)selfCopy queue];
+  dispatch_assert_queue_V2(queue);
+  MEMORY[0x277D82BD8](queue);
   memset(__b, 0, sizeof(__b));
-  obj = [(AXPhoenixEventMonitor *)v13 observers];
+  obj = [(AXPhoenixEventMonitor *)selfCopy observers];
   v9 = [(NSHashTable *)obj countByEnumeratingWithState:__b objects:v14 count:16];
   if (v9)
   {
@@ -218,12 +218,12 @@ uint64_t __40__AXPhoenixEventMonitor_removeObserver___block_invoke(uint64_t resu
   *MEMORY[0x277D85DE8];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, queue);
   objc_storeStrong(location, 0);
 }
 

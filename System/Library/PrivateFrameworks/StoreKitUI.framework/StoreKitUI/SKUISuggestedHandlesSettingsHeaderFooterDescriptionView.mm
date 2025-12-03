@@ -1,18 +1,18 @@
 @interface SKUISuggestedHandlesSettingsHeaderFooterDescriptionView
-+ (BOOL)prefetchResourcesForSettingsHeaderFooterDescription:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingsHeaderFooterDescription:(id)a4 context:(id)a5;
-+ (id)_helpLabelWithDescription:(id)a3 forWidth:(double)a4;
-+ (void)requestLayoutForSettingsHeaderFooterDescription:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
-- (void)_buttonAction:(id)a3;
++ (BOOL)prefetchResourcesForSettingsHeaderFooterDescription:(id)description reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)description context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width settingsHeaderFooterDescription:(id)description context:(id)context;
++ (id)_helpLabelWithDescription:(id)description forWidth:(double)width;
++ (void)requestLayoutForSettingsHeaderFooterDescription:(id)description width:(double)width context:(id)context;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
+- (void)_buttonAction:(id)action;
 - (void)layoutSubviews;
-- (void)reloadWithSettingsHeaderFooterDescription:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithSettingsHeaderFooterDescription:(id)description width:(double)width context:(id)context;
 @end
 
 @implementation SKUISuggestedHandlesSettingsHeaderFooterDescriptionView
 
-+ (BOOL)prefetchResourcesForSettingsHeaderFooterDescription:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForSettingsHeaderFooterDescription:(id)description reason:(int64_t)reason context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -29,7 +29,7 @@
   return 0;
 }
 
-+ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForSettingsHeaderFooterDescription:(id)description context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -50,7 +50,7 @@
   return result;
 }
 
-+ (void)requestLayoutForSettingsHeaderFooterDescription:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForSettingsHeaderFooterDescription:(id)description width:(double)width context:(id)context
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {
@@ -62,9 +62,9 @@
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingsHeaderFooterDescription:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width settingsHeaderFooterDescription:(id)description context:(id)context
 {
-  v7 = a4;
+  descriptionCopy = description;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -77,9 +77,9 @@
     }
   }
 
-  v16 = v7;
-  v17 = [v16 suggestedHandles];
-  v18 = [v17 count];
+  v16 = descriptionCopy;
+  suggestedHandles = [v16 suggestedHandles];
+  v18 = [suggestedHandles count];
 
   v19 = *MEMORY[0x277D769E0];
   v20 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769E0]];
@@ -88,23 +88,23 @@
   v23 = [MEMORY[0x277D74300] preferredFontForTextStyle:v19];
   [v23 _scaledValueForValue:22.0];
   v25 = v24;
-  v26 = [a1 _helpLabelWithDescription:v16 forWidth:a3];
+  v26 = [self _helpLabelWithDescription:v16 forWidth:width];
 
   [v26 _firstLineBaselineFrameOriginY];
   v28 = v25 - v27;
   [v26 _lastLineBaselineFrameOriginY];
   v30 = v28 + v29 + v22 * v18;
 
-  v31 = a3;
+  widthCopy = width;
   v32 = v30;
   result.height = v32;
-  result.width = v31;
+  result.width = widthCopy;
   return result;
 }
 
-- (void)reloadWithSettingsHeaderFooterDescription:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithSettingsHeaderFooterDescription:(id)description width:(double)width context:(id)context
 {
-  v7 = a3;
+  descriptionCopy = description;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -118,10 +118,10 @@
   }
 
   description = self->_description;
-  self->_description = v7;
-  v17 = v7;
+  self->_description = descriptionCopy;
+  v17 = descriptionCopy;
 
-  v18 = [objc_opt_class() _helpLabelWithDescription:self->_description forWidth:a4];
+  v18 = [objc_opt_class() _helpLabelWithDescription:self->_description forWidth:width];
   label = self->_label;
   self->_label = v18;
 
@@ -131,15 +131,15 @@
   self->_buttons = v20;
 
   v22 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769E0]];
-  v23 = [(SKUISuggestedHandlesSettingsHeaderFooterDescription *)self->_description suggestedHandles];
+  suggestedHandles = [(SKUISuggestedHandlesSettingsHeaderFooterDescription *)self->_description suggestedHandles];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __115__SKUISuggestedHandlesSettingsHeaderFooterDescriptionView_reloadWithSettingsHeaderFooterDescription_width_context___block_invoke;
   v25[3] = &unk_2781F82D0;
   v26 = v22;
-  v27 = self;
+  selfCopy = self;
   v24 = v22;
-  [v23 enumerateObjectsUsingBlock:v25];
+  [suggestedHandles enumerateObjectsUsingBlock:v25];
 }
 
 void __115__SKUISuggestedHandlesSettingsHeaderFooterDescriptionView_reloadWithSettingsHeaderFooterDescription_width_context___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -165,7 +165,7 @@ void __115__SKUISuggestedHandlesSettingsHeaderFooterDescriptionView_reloadWithSe
   [*(a1 + 40) addSubview:v11];
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -259,30 +259,30 @@ void __73__SKUISuggestedHandlesSettingsHeaderFooterDescriptionView_layoutSubview
   [v3 setFrame:{*(a1 + 88), *(*(*(a1 + 32) + 8) + 24) - v5, v6, v7}];
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
-  v4 = [a3 tag];
+  v4 = [action tag];
   description = self->_description;
 
   [(SKUISuggestedHandlesSettingsHeaderFooterDescription *)description selectedHandleAtIndex:v4];
 }
 
-+ (id)_helpLabelWithDescription:(id)a3 forWidth:(double)a4
++ (id)_helpLabelWithDescription:(id)description forWidth:(double)width
 {
   v5 = MEMORY[0x277D756B8];
-  v6 = a3;
+  descriptionCopy = description;
   v7 = objc_alloc_init(v5);
-  v8 = [v6 helpText];
+  helpText = [descriptionCopy helpText];
 
-  [v7 setText:v8];
+  [v7 setText:helpText];
   [v7 setNumberOfLines:0];
   v9 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769E0]];
   [v7 setFont:v9];
-  v10 = [MEMORY[0x277D75348] systemGrayColor];
-  [v7 setColor:v10];
+  systemGrayColor = [MEMORY[0x277D75348] systemGrayColor];
+  [v7 setColor:systemGrayColor];
 
-  [v7 sizeThatFits:{a4, 1.0}];
-  [v7 setFrame:{0.0, 0.0, a4, v11}];
+  [v7 sizeThatFits:{width, 1.0}];
+  [v7 setFrame:{0.0, 0.0, width, v11}];
 
   return v7;
 }

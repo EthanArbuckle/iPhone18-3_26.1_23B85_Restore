@@ -1,23 +1,23 @@
 @interface PPScoreDict
 - (NSSet)featureNames;
-- (PPScoreDict)initWithScoreInputSet:(id)a3;
-- (float)scalarValueForIndex:(unint64_t)a3;
+- (PPScoreDict)initWithScoreInputSet:(id)set;
+- (float)scalarValueForIndex:(unint64_t)index;
 - (id).cxx_construct;
 - (id)arrayValueDictionary;
-- (id)arrayValueForIndex:(unint64_t)a3;
+- (id)arrayValueForIndex:(unint64_t)index;
 - (id)description;
-- (id)featureValueForName:(id)a3;
-- (id)initWithScalarValueCount:(uint64_t)a3 arrayValueCount:(uint64_t)a4 objectCount:(void *)a5 scoreInputSet:;
+- (id)featureValueForName:(id)name;
+- (id)initWithScalarValueCount:(uint64_t)count arrayValueCount:(uint64_t)valueCount objectCount:(void *)objectCount scoreInputSet:;
 - (id)objectDictionary;
-- (id)objectForIndex:(unint64_t)a3;
+- (id)objectForIndex:(unint64_t)index;
 - (id)scalarValueDictionary;
-- (shared_ptr<std::vector<float>>)arraySharedPtrForIndex:(unint64_t)a3;
+- (shared_ptr<std::vector<float>>)arraySharedPtrForIndex:(unint64_t)index;
 - (unint64_t)arrayValueCount;
 - (unint64_t)objectCount;
 - (unint64_t)scalarValueCount;
-- (void)setArraySharedPtr:(shared_ptr<std:(unint64_t)a4 :vector<float>>)a3 forIndex:;
-- (void)setObject:(id)a3 forIndex:(unint64_t)a4;
-- (void)setScalarValue:(float)a3 forIndex:(unint64_t)a4;
+- (void)setArraySharedPtr:(shared_ptr<std:(unint64_t)ptr :vector<float>>)a3 forIndex:;
+- (void)setObject:(id)object forIndex:(unint64_t)index;
+- (void)setScalarValue:(float)value forIndex:(unint64_t)index;
 @end
 
 @implementation PPScoreDict
@@ -35,10 +35,10 @@
   if (self->_scoreInputSet)
   {
     v3 = objc_alloc(MEMORY[0x277CCACA8]);
-    v4 = [(PPScoreDict *)self scalarValueDictionary];
-    v5 = [(PPScoreDict *)self arrayValueDictionary];
-    v6 = [(PPScoreDict *)self objectDictionary];
-    v7 = [v3 initWithFormat:@"PPScoreDict: %@\n%@\n%@\n", v4, v5, v6];
+    scalarValueDictionary = [(PPScoreDict *)self scalarValueDictionary];
+    arrayValueDictionary = [(PPScoreDict *)self arrayValueDictionary];
+    objectDictionary = [(PPScoreDict *)self objectDictionary];
+    v7 = [v3 initWithFormat:@"PPScoreDict: %@\n%@\n%@\n", scalarValueDictionary, arrayValueDictionary, objectDictionary];
   }
 
   else
@@ -48,8 +48,8 @@
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [(PPScoreDict *)self featureNames];
-    v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    featureNames = [(PPScoreDict *)self featureNames];
+    v10 = [featureNames countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
       v11 = *v18;
@@ -59,7 +59,7 @@
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(featureNames);
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
@@ -67,7 +67,7 @@
           [v8 setObject:v14 forKeyedSubscript:v13];
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [featureNames countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
@@ -137,12 +137,12 @@
   return v8;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
   v67 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   context = objc_autoreleasePoolPush();
-  v5 = [v4 componentsSeparatedByString:@"_"];
+  v5 = [nameCopy componentsSeparatedByString:@"_"];
   if ([v5 count] <= 1)
   {
     v6 = pp_default_log_handle();
@@ -156,12 +156,12 @@
   }
 
   v8 = [v5 objectAtIndexedSubscript:1];
-  v9 = [v8 integerValue];
+  integerValue = [v8 integerValue];
 
-  if ([v4 hasPrefix:@"scalar_"])
+  if ([nameCopy hasPrefix:@"scalar_"])
   {
     v10 = MEMORY[0x277CCABB0];
-    [(PPScoreDict *)self scalarValueForIndex:v9];
+    [(PPScoreDict *)self scalarValueForIndex:integerValue];
     v11 = [v10 numberWithFloat:?];
     v12 = [PPCoreMLUtils multiArrayFeatureValueForNumber:v11];
 LABEL_11:
@@ -170,9 +170,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v4 hasPrefix:@"array_"])
+  if ([nameCopy hasPrefix:@"array_"])
   {
-    v13 = [(PPScoreDict *)self arrayValueForIndex:v9];
+    v13 = [(PPScoreDict *)self arrayValueForIndex:integerValue];
     v11 = [PPCoreMLUtils multiArrayForArray:v13];
 
     if (v11)
@@ -186,12 +186,12 @@ LABEL_5:
     goto LABEL_12;
   }
 
-  if (![v4 hasPrefix:@"object_"])
+  if (![nameCopy hasPrefix:@"object_"])
   {
     goto LABEL_5;
   }
 
-  v49 = [(PPScoreDict *)self objectForIndex:v9];
+  v49 = [(PPScoreDict *)self objectForIndex:integerValue];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -249,7 +249,7 @@ LABEL_5:
 
           v62 = v39;
           v63 = 2112;
-          v64 = v4;
+          v64 = nameCopy;
           v65 = 2112;
           v66 = v41;
           _os_log_error_impl(&dword_23224A000, v25, OS_LOG_TYPE_ERROR, "Failed to log %@ value for %@: %@", buf, 0x20u);
@@ -291,7 +291,7 @@ LABEL_5:
 
           v62 = v43;
           v63 = 2112;
-          v64 = v4;
+          v64 = nameCopy;
           v65 = 2112;
           v66 = v45;
           _os_log_error_impl(&dword_23224A000, v29, OS_LOG_TYPE_ERROR, "Failed to log %@ value for %@: %@", buf, 0x20u);
@@ -311,7 +311,7 @@ LABEL_5:
         if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v62 = v4;
+          v62 = nameCopy;
           _os_log_error_impl(&dword_23224A000, v30, OS_LOG_TYPE_ERROR, "Encountered nil or empty NSString for %@", buf, 0xCu);
         }
 
@@ -351,7 +351,7 @@ LABEL_5:
           *buf = 138412546;
           v62 = v33;
           v63 = 2112;
-          v64 = v4;
+          v64 = nameCopy;
           _os_log_error_impl(&dword_23224A000, v16, OS_LOG_TYPE_ERROR, "Unrecognized object type of %@ in feature %@", buf, 0x16u);
         }
 
@@ -379,7 +379,7 @@ LABEL_5:
     *buf = 138412802;
     v62 = v47;
     v63 = 2112;
-    v64 = v4;
+    v64 = nameCopy;
     v65 = 2112;
     v66 = &stru_284759D38;
     _os_log_error_impl(&dword_23224A000, v30, OS_LOG_TYPE_ERROR, "Failed to log %@ value for %@: %@", buf, 0x20u);
@@ -410,7 +410,7 @@ LABEL_20:
 
       v62 = v35;
       v63 = 2112;
-      v64 = v4;
+      v64 = nameCopy;
       v65 = 2112;
       v66 = v37;
       _os_log_error_impl(&dword_23224A000, v17, OS_LOG_TYPE_ERROR, "Failed to log %@ value for %@: %@", buf, 0x20u);
@@ -503,16 +503,16 @@ void __35__PPScoreDict_featureValueForName___block_invoke(uint64_t a1, uint64_t 
   }
 }
 
-- (void)setObject:(id)a3 forIndex:(unint64_t)a4
+- (void)setObject:(id)object forIndex:(unint64_t)index
 {
-  v6 = a3;
-  v8 = v6;
-  if (!v6)
+  objectCopy = object;
+  v8 = objectCopy;
+  if (!objectCopy)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    objectCopy = [MEMORY[0x277CBEB68] null];
   }
 
-  [(NSMutableArray *)self->_objectStorage setObject:v6 atIndexedSubscript:a4];
+  [(NSMutableArray *)self->_objectStorage setObject:objectCopy atIndexedSubscript:index];
   v7 = v8;
   if (!v8)
   {
@@ -521,12 +521,12 @@ void __35__PPScoreDict_featureValueForName___block_invoke(uint64_t a1, uint64_t 
   }
 }
 
-- (id)objectForIndex:(unint64_t)a3
+- (id)objectForIndex:(unint64_t)index
 {
-  v3 = [(NSMutableArray *)self->_objectStorage objectAtIndexedSubscript:a3];
-  v4 = [MEMORY[0x277CBEB68] null];
+  v3 = [(NSMutableArray *)self->_objectStorage objectAtIndexedSubscript:index];
+  null = [MEMORY[0x277CBEB68] null];
 
-  if (v3 == v4)
+  if (v3 == null)
   {
     v5 = 0;
   }
@@ -539,7 +539,7 @@ void __35__PPScoreDict_featureValueForName___block_invoke(uint64_t a1, uint64_t 
   return v5;
 }
 
-- (void)setArraySharedPtr:(shared_ptr<std:(unint64_t)a4 :vector<float>>)a3 forIndex:
+- (void)setArraySharedPtr:(shared_ptr<std:(unint64_t)ptr :vector<float>>)a3 forIndex:
 {
   v5 = *self->_arrayValueStorage.__ptr_;
   if (a3.var1 >= ((*(self->_arrayValueStorage.__ptr_ + 1) - v5) >> 4))
@@ -565,15 +565,15 @@ void __35__PPScoreDict_featureValueForName___block_invoke(uint64_t a1, uint64_t 
   }
 }
 
-- (shared_ptr<std::vector<float>>)arraySharedPtrForIndex:(unint64_t)a3
+- (shared_ptr<std::vector<float>>)arraySharedPtrForIndex:(unint64_t)index
 {
   v4 = *self->_arrayValueStorage.__ptr_;
-  if (a3 >= (*(self->_arrayValueStorage.__ptr_ + 1) - v4) >> 4)
+  if (index >= (*(self->_arrayValueStorage.__ptr_ + 1) - v4) >> 4)
   {
     std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
   }
 
-  v5 = *(v4 + 16 * a3);
+  v5 = *(v4 + 16 * index);
   *v3 = v5;
   if (*(&v5 + 1))
   {
@@ -585,15 +585,15 @@ void __35__PPScoreDict_featureValueForName___block_invoke(uint64_t a1, uint64_t 
   return result;
 }
 
-- (id)arrayValueForIndex:(unint64_t)a3
+- (id)arrayValueForIndex:(unint64_t)index
 {
   v3 = *self->_arrayValueStorage.__ptr_;
-  if (a3 >= (*(self->_arrayValueStorage.__ptr_ + 1) - v3) >> 4)
+  if (index >= (*(self->_arrayValueStorage.__ptr_ + 1) - v3) >> 4)
   {
     std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
   }
 
-  v4 = v3 + 16 * a3;
+  v4 = v3 + 16 * index;
   v6 = *v4;
   v5 = *(v4 + 8);
   if (v5)
@@ -628,45 +628,45 @@ void __35__PPScoreDict_featureValueForName___block_invoke(uint64_t a1, uint64_t 
   return v12;
 }
 
-- (void)setScalarValue:(float)a3 forIndex:(unint64_t)a4
+- (void)setScalarValue:(float)value forIndex:(unint64_t)index
 {
   v4 = *self->_scalarValueStorage.__ptr_;
-  if (a4 >= (*(self->_scalarValueStorage.__ptr_ + 1) - v4) >> 2)
+  if (index >= (*(self->_scalarValueStorage.__ptr_ + 1) - v4) >> 2)
   {
     std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
   }
 
-  *(v4 + 4 * a4) = a3;
+  *(v4 + 4 * index) = value;
 }
 
-- (float)scalarValueForIndex:(unint64_t)a3
+- (float)scalarValueForIndex:(unint64_t)index
 {
   v3 = *self->_scalarValueStorage.__ptr_;
-  if (a3 >= (*(self->_scalarValueStorage.__ptr_ + 1) - v3) >> 2)
+  if (index >= (*(self->_scalarValueStorage.__ptr_ + 1) - v3) >> 2)
   {
     std::vector<std::vector<std::unordered_set<PPSubscoreIdentifier>>>::__throw_out_of_range[abi:ne200100]();
   }
 
-  return *(v3 + 4 * a3);
+  return *(v3 + 4 * index);
 }
 
-- (PPScoreDict)initWithScoreInputSet:(id)a3
+- (PPScoreDict)initWithScoreInputSet:(id)set
 {
-  v4 = a3;
-  v5 = -[PPScoreDict initWithScalarValueCount:arrayValueCount:objectCount:scoreInputSet:](self, [v4 scalarScoreIndexUpperBound] - objc_msgSend(v4, "minScalarScoreIndex"), objc_msgSend(v4, "arrayScoreIndexUpperBound") - objc_msgSend(v4, "minArrayScoreIndex"), objc_msgSend(v4, "objectScoreIndexUpperBound") - objc_msgSend(v4, "minObjectScoreIndex"), v4);
+  setCopy = set;
+  v5 = -[PPScoreDict initWithScalarValueCount:arrayValueCount:objectCount:scoreInputSet:](self, [setCopy scalarScoreIndexUpperBound] - objc_msgSend(setCopy, "minScalarScoreIndex"), objc_msgSend(setCopy, "arrayScoreIndexUpperBound") - objc_msgSend(setCopy, "minArrayScoreIndex"), objc_msgSend(setCopy, "objectScoreIndexUpperBound") - objc_msgSend(setCopy, "minObjectScoreIndex"), setCopy);
 
   return v5;
 }
 
-- (id)initWithScalarValueCount:(uint64_t)a3 arrayValueCount:(uint64_t)a4 objectCount:(void *)a5 scoreInputSet:
+- (id)initWithScalarValueCount:(uint64_t)count arrayValueCount:(uint64_t)valueCount objectCount:(void *)objectCount scoreInputSet:
 {
-  v10 = a5;
-  if (a1)
+  objectCountCopy = objectCount;
+  if (self)
   {
-    v19.receiver = a1;
+    v19.receiver = self;
     v19.super_class = PPScoreDict;
     v11 = objc_msgSendSuper2(&v19, sel_init);
-    a1 = v11;
+    self = v11;
     if (v11)
     {
       if (a2)
@@ -675,47 +675,47 @@ void __35__PPScoreDict_featureValueForName___block_invoke(uint64_t a1, uint64_t 
       }
 
       v16 = v11[2];
-      *(a1 + 2) = 0;
+      *(self + 2) = 0;
       if (v16)
       {
         std::default_delete<std::vector<float>>::operator()[abi:ne200100](v16);
       }
 
-      if (a3)
+      if (count)
       {
         operator new();
       }
 
-      std::unique_ptr<std::vector<std::shared_ptr<std::vector<float>>>>::reset[abi:ne200100](a1 + 3, 0);
-      if (a4)
+      std::unique_ptr<std::vector<std::shared_ptr<std::vector<float>>>>::reset[abi:ne200100](self + 3, 0);
+      if (valueCount)
       {
-        v12 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a4];
-        v13 = *(a1 + 4);
-        *(a1 + 4) = v12;
+        v12 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:valueCount];
+        v13 = *(self + 4);
+        *(self + 4) = v12;
 
         do
         {
-          v14 = *(a1 + 4);
-          v15 = [MEMORY[0x277CBEB68] null];
-          [v14 addObject:v15];
+          v14 = *(self + 4);
+          null = [MEMORY[0x277CBEB68] null];
+          [v14 addObject:null];
 
-          --a4;
+          --valueCount;
         }
 
-        while (a4);
+        while (valueCount);
       }
 
       else
       {
-        v17 = *(a1 + 4);
-        *(a1 + 4) = 0;
+        v17 = *(self + 4);
+        *(self + 4) = 0;
       }
 
-      objc_storeStrong(a1 + 1, a5);
+      objc_storeStrong(self + 1, objectCount);
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

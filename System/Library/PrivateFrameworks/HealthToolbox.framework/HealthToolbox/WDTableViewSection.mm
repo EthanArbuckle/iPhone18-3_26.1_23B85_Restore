@@ -1,21 +1,21 @@
 @interface WDTableViewSection
-- (WDTableViewSection)initWithDelegate:(id)a3 atSection:(unint64_t)a4;
+- (WDTableViewSection)initWithDelegate:(id)delegate atSection:(unint64_t)section;
 - (WDTableViewSectionDelegate)delegate;
 @end
 
 @implementation WDTableViewSection
 
-- (WDTableViewSection)initWithDelegate:(id)a3 atSection:(unint64_t)a4
+- (WDTableViewSection)initWithDelegate:(id)delegate atSection:(unint64_t)section
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = WDTableViewSection;
   v7 = [(WDTableViewSection *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    v7->_section = a4;
-    objc_storeWeak(&v7->_delegate, v6);
+    v7->_section = section;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     v9 = v8;
   }
 

@@ -1,33 +1,33 @@
 @interface CSDSuperboxProviderDelegate
-- (void)provider:(id)a3 performAnswerCallAction:(id)a4;
-- (void)provider:(id)a3 performStartCallAction:(id)a4;
-- (void)provider:(void *)a3 performSetMutedCallAction:(void *)a4;
+- (void)provider:(id)provider performAnswerCallAction:(id)action;
+- (void)provider:(id)provider performStartCallAction:(id)action;
+- (void)provider:(void *)provider performSetMutedCallAction:(void *)action;
 @end
 
 @implementation CSDSuperboxProviderDelegate
 
-- (void)provider:(void *)a3 performSetMutedCallAction:(void *)a4
+- (void)provider:(void *)provider performSetMutedCallAction:(void *)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a1;
-  sub_1003E3774(v8, v7);
+  providerCopy = provider;
+  actionCopy = action;
+  selfCopy = self;
+  sub_1003E3774(selfCopy, actionCopy);
 }
 
-- (void)provider:(id)a3 performStartCallAction:(id)a4
+- (void)provider:(id)provider performStartCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1003E2788(v8, v7);
+  providerCopy = provider;
+  actionCopy = action;
+  selfCopy = self;
+  sub_1003E2788(selfCopy, actionCopy);
 }
 
-- (void)provider:(id)a3 performAnswerCallAction:(id)a4
+- (void)provider:(id)provider performAnswerCallAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1003E34F0(v8, v7);
+  providerCopy = provider;
+  actionCopy = action;
+  selfCopy = self;
+  sub_1003E34F0(selfCopy, actionCopy);
 }
 
 @end

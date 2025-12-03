@@ -1,27 +1,27 @@
 @interface TUIFeedBehaviors
-+ (TUIFeedBehaviors)feedBehaviorsWithDictionary:(id)a3;
-- (TUIFeedBehaviors)initWithDictionary:(id)a3;
++ (TUIFeedBehaviors)feedBehaviorsWithDictionary:(id)dictionary;
+- (TUIFeedBehaviors)initWithDictionary:(id)dictionary;
 @end
 
 @implementation TUIFeedBehaviors
 
-+ (TUIFeedBehaviors)feedBehaviorsWithDictionary:(id)a3
++ (TUIFeedBehaviors)feedBehaviorsWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [[TUIFeedBehaviors alloc] initWithDictionary:v3];
+  dictionaryCopy = dictionary;
+  v4 = [[TUIFeedBehaviors alloc] initWithDictionary:dictionaryCopy];
 
   return v4;
 }
 
-- (TUIFeedBehaviors)initWithDictionary:(id)a3
+- (TUIFeedBehaviors)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = TUIFeedBehaviors;
   v5 = [(TUIFeedBehaviors *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     behaviors = v5->_behaviors;
     v5->_behaviors = v6;
   }

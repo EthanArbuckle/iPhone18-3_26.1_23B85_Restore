@@ -6,7 +6,7 @@
 
 - (id)cdp_sanitizedCopy
 {
-  v1 = [a1 mutableCopy];
+  v1 = [self mutableCopy];
   [v1 removeObjectForKey:*MEMORY[0x1E698DB58]];
   v2 = [v1 copy];
 

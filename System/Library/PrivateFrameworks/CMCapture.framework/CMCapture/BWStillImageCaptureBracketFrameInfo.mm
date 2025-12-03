@@ -1,54 +1,54 @@
 @interface BWStillImageCaptureBracketFrameInfo
-+ (id)infoWithBracketedCaptureSequenceNumber:(int)a3 mainFlags:(unint64_t)a4 sifrFlags:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
-- (BWStillImageCaptureBracketFrameInfo)initWithBracketedCaptureSequenceNumber:(int)a3 mainFlags:(unint64_t)a4 sifrFlags:(unint64_t)a5;
-- (BWStillImageCaptureBracketFrameInfo)initWithCoder:(id)a3;
++ (id)infoWithBracketedCaptureSequenceNumber:(int)number mainFlags:(unint64_t)flags sifrFlags:(unint64_t)sifrFlags;
+- (BOOL)isEqual:(id)equal;
+- (BWStillImageCaptureBracketFrameInfo)initWithBracketedCaptureSequenceNumber:(int)number mainFlags:(unint64_t)flags sifrFlags:(unint64_t)sifrFlags;
+- (BWStillImageCaptureBracketFrameInfo)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BWStillImageCaptureBracketFrameInfo
 
-- (BWStillImageCaptureBracketFrameInfo)initWithBracketedCaptureSequenceNumber:(int)a3 mainFlags:(unint64_t)a4 sifrFlags:(unint64_t)a5
+- (BWStillImageCaptureBracketFrameInfo)initWithBracketedCaptureSequenceNumber:(int)number mainFlags:(unint64_t)flags sifrFlags:(unint64_t)sifrFlags
 {
   v7.receiver = self;
   v7.super_class = BWStillImageCaptureBracketFrameInfo;
-  result = [(BWStillImageCaptureFrameInfo *)&v7 initWithMainFlags:a4 sifrFlags:a5];
+  result = [(BWStillImageCaptureFrameInfo *)&v7 initWithMainFlags:flags sifrFlags:sifrFlags];
   if (result)
   {
-    result->_bracketedCaptureSequenceNumber = a3;
+    result->_bracketedCaptureSequenceNumber = number;
   }
 
   return result;
 }
 
-+ (id)infoWithBracketedCaptureSequenceNumber:(int)a3 mainFlags:(unint64_t)a4 sifrFlags:(unint64_t)a5
++ (id)infoWithBracketedCaptureSequenceNumber:(int)number mainFlags:(unint64_t)flags sifrFlags:(unint64_t)sifrFlags
 {
-  v5 = [[a1 alloc] initWithBracketedCaptureSequenceNumber:*&a3 mainFlags:a4 sifrFlags:a5];
+  v5 = [[self alloc] initWithBracketedCaptureSequenceNumber:*&number mainFlags:flags sifrFlags:sifrFlags];
 
   return v5;
 }
 
-- (BWStillImageCaptureBracketFrameInfo)initWithCoder:(id)a3
+- (BWStillImageCaptureBracketFrameInfo)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = BWStillImageCaptureBracketFrameInfo;
   v4 = [(BWStillImageCaptureFrameInfo *)&v6 initWithCoder:?];
   if (v4)
   {
-    v4->_bracketedCaptureSequenceNumber = [a3 decodeInt32ForKey:@"bracketedCaptureSequenceNumber"];
+    v4->_bracketedCaptureSequenceNumber = [coder decodeInt32ForKey:@"bracketedCaptureSequenceNumber"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = BWStillImageCaptureBracketFrameInfo;
   [(BWStillImageCaptureFrameInfo *)&v5 encodeWithCoder:?];
-  [a3 encodeInt32:self->_bracketedCaptureSequenceNumber forKey:@"bracketedCaptureSequenceNumber"];
+  [coder encodeInt32:self->_bracketedCaptureSequenceNumber forKey:@"bracketedCaptureSequenceNumber"];
 }
 
 - (id)description
@@ -56,18 +56,18 @@
   bracketedCaptureSequenceNumber = self->_bracketedCaptureSequenceNumber;
   if (bracketedCaptureSequenceNumber < 1)
   {
-    v4 = @"PB";
+    bracketedCaptureSequenceNumber = @"PB";
   }
 
   else
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"B%.2d", bracketedCaptureSequenceNumber];
+    bracketedCaptureSequenceNumber = [MEMORY[0x1E696AEC0] stringWithFormat:@"B%.2d", bracketedCaptureSequenceNumber];
   }
 
   v5 = MEMORY[0x1E696AEC0];
   v6 = objc_opt_class();
   v7 = BWStillImageCaptureFrameFlagsToShortString([(BWStillImageCaptureFrameInfo *)self mainFlags]);
-  return [v5 stringWithFormat:@"<%@ %p>: %@ main:%@ sifr:%@", v6, self, v4, v7, BWStillImageCaptureFrameFlagsToShortString(-[BWStillImageCaptureFrameInfo sifrFlags](self, "sifrFlags"))];
+  return [v5 stringWithFormat:@"<%@ %p>: %@ main:%@ sifr:%@", v6, self, bracketedCaptureSequenceNumber, v7, BWStillImageCaptureFrameFlagsToShortString(-[BWStillImageCaptureFrameInfo sifrFlags](self, "sifrFlags"))];
 }
 
 - (unint64_t)hash
@@ -77,9 +77,9 @@
   return [(BWStillImageCaptureFrameInfo *)&v3 hash]^ self->_bracketedCaptureSequenceNumber;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v7) = 1;
   }
@@ -93,11 +93,11 @@
     {
       v10.receiver = self;
       v10.super_class = BWStillImageCaptureBracketFrameInfo;
-      v7 = [(BWStillImageCaptureFrameInfo *)&v10 isEqual:a3];
+      v7 = [(BWStillImageCaptureFrameInfo *)&v10 isEqual:equal];
       if (v7)
       {
         bracketedCaptureSequenceNumber = self->_bracketedCaptureSequenceNumber;
-        LOBYTE(v7) = bracketedCaptureSequenceNumber == [a3 bracketedCaptureSequenceNumber];
+        LOBYTE(v7) = bracketedCaptureSequenceNumber == [equal bracketedCaptureSequenceNumber];
       }
     }
 

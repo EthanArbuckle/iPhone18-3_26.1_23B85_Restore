@@ -1,21 +1,21 @@
 @interface MPCMutablePlaybackRequestEnvironment
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)setClientIdentifier:(id)a3;
-- (void)setClientVersion:(id)a3;
-- (void)setDelegationProperties:(id)a3;
-- (void)setRequestingBundleIdentifier:(id)a3;
-- (void)setRequestingBundleVersion:(id)a3;
-- (void)setUserIdentity:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)setClientIdentifier:(id)identifier;
+- (void)setClientVersion:(id)version;
+- (void)setDelegationProperties:(id)properties;
+- (void)setRequestingBundleIdentifier:(id)identifier;
+- (void)setRequestingBundleVersion:(id)version;
+- (void)setUserIdentity:(id)identity;
 @end
 
 @implementation MPCMutablePlaybackRequestEnvironment
 
-- (void)setUserIdentity:(id)a3
+- (void)setUserIdentity:(id)identity
 {
-  if (self->super._userIdentity != a3)
+  if (self->super._userIdentity != identity)
   {
-    v5 = [a3 copy];
+    v5 = [identity copy];
     userIdentity = self->super._userIdentity;
     self->super._userIdentity = v5;
 
@@ -23,11 +23,11 @@
   }
 }
 
-- (void)setRequestingBundleVersion:(id)a3
+- (void)setRequestingBundleVersion:(id)version
 {
-  if (self->super._requestingBundleVersion != a3)
+  if (self->super._requestingBundleVersion != version)
   {
-    v5 = [a3 copy];
+    v5 = [version copy];
     requestingBundleVersion = self->super._requestingBundleVersion;
     self->super._requestingBundleVersion = v5;
 
@@ -35,11 +35,11 @@
   }
 }
 
-- (void)setRequestingBundleIdentifier:(id)a3
+- (void)setRequestingBundleIdentifier:(id)identifier
 {
-  if (self->super._requestingBundleIdentifier != a3)
+  if (self->super._requestingBundleIdentifier != identifier)
   {
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     requestingBundleIdentifier = self->super._requestingBundleIdentifier;
     self->super._requestingBundleIdentifier = v5;
 
@@ -47,11 +47,11 @@
   }
 }
 
-- (void)setDelegationProperties:(id)a3
+- (void)setDelegationProperties:(id)properties
 {
-  if (self->super._delegationProperties != a3)
+  if (self->super._delegationProperties != properties)
   {
-    v5 = [a3 copy];
+    v5 = [properties copy];
     delegationProperties = self->super._delegationProperties;
     self->super._delegationProperties = v5;
 
@@ -59,11 +59,11 @@
   }
 }
 
-- (void)setClientVersion:(id)a3
+- (void)setClientVersion:(id)version
 {
-  if (self->super._clientVersion != a3)
+  if (self->super._clientVersion != version)
   {
-    v5 = [a3 copy];
+    v5 = [version copy];
     clientVersion = self->super._clientVersion;
     self->super._clientVersion = v5;
 
@@ -71,11 +71,11 @@
   }
 }
 
-- (void)setClientIdentifier:(id)a3
+- (void)setClientIdentifier:(id)identifier
 {
-  if (self->super._clientIdentifier != a3)
+  if (self->super._clientIdentifier != identifier)
   {
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     clientIdentifier = self->super._clientIdentifier;
     self->super._clientIdentifier = v5;
 
@@ -83,14 +83,14 @@
   }
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 
   return [(MPCPlaybackRequestEnvironment *)self _copyWithPlaybackRequestEnvironmentClass:v4];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_class();
 

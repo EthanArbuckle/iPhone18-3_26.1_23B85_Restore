@@ -1,67 +1,67 @@
 @interface PNPPlatterShadowView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (CGSize)shadowOffset;
 - (UIBezierPath)shadowPath;
 - (UIColor)shadowColor;
 - (double)shadowOpacity;
 - (double)shadowRadius;
-- (void)setShadowColor:(id)a3;
-- (void)setShadowOffset:(CGSize)a3;
-- (void)setShadowOpacity:(double)a3;
-- (void)setShadowPath:(id)a3;
-- (void)setShadowRadius:(double)a3;
+- (void)setShadowColor:(id)color;
+- (void)setShadowOffset:(CGSize)offset;
+- (void)setShadowOpacity:(double)opacity;
+- (void)setShadowPath:(id)path;
+- (void)setShadowRadius:(double)radius;
 @end
 
 @implementation PNPPlatterShadowView
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7.receiver = self;
   v7.super_class = PNPPlatterShadowView;
-  if ([(PNPPlatterShadowView *)&v7 _shouldAnimatePropertyWithKey:v4])
+  if ([(PNPPlatterShadowView *)&v7 _shouldAnimatePropertyWithKey:keyCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 containsString:@"shadow"];
+    v5 = [keyCopy containsString:@"shadow"];
   }
 
   return v5;
 }
 
-- (void)setShadowColor:(id)a3
+- (void)setShadowColor:(id)color
 {
-  v4 = a3;
-  v6 = [(PNPPlatterShadowView *)self layer];
-  v5 = [v4 CGColor];
+  colorCopy = color;
+  layer = [(PNPPlatterShadowView *)self layer];
+  cGColor = [colorCopy CGColor];
 
-  [v6 setShadowColor:v5];
+  [layer setShadowColor:cGColor];
 }
 
 - (UIColor)shadowColor
 {
   v2 = MEMORY[0x277D75348];
-  v3 = [(PNPPlatterShadowView *)self layer];
-  v4 = [v2 colorWithCGColor:{objc_msgSend(v3, "shadowColor")}];
+  layer = [(PNPPlatterShadowView *)self layer];
+  v4 = [v2 colorWithCGColor:{objc_msgSend(layer, "shadowColor")}];
 
   return v4;
 }
 
-- (void)setShadowOffset:(CGSize)a3
+- (void)setShadowOffset:(CGSize)offset
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(PNPPlatterShadowView *)self layer];
-  [v5 setShadowOffset:{width, height}];
+  height = offset.height;
+  width = offset.width;
+  layer = [(PNPPlatterShadowView *)self layer];
+  [layer setShadowOffset:{width, height}];
 }
 
 - (CGSize)shadowOffset
 {
-  v2 = [(PNPPlatterShadowView *)self layer];
-  [v2 shadowOffset];
+  layer = [(PNPPlatterShadowView *)self layer];
+  [layer shadowOffset];
   v4 = v3;
   v6 = v5;
 
@@ -72,51 +72,51 @@
   return result;
 }
 
-- (void)setShadowOpacity:(double)a3
+- (void)setShadowOpacity:(double)opacity
 {
-  v5 = [(PNPPlatterShadowView *)self layer];
-  *&v4 = a3;
-  [v5 setShadowOpacity:v4];
+  layer = [(PNPPlatterShadowView *)self layer];
+  *&v4 = opacity;
+  [layer setShadowOpacity:v4];
 }
 
 - (double)shadowOpacity
 {
-  v2 = [(PNPPlatterShadowView *)self layer];
-  [v2 shadowOpacity];
+  layer = [(PNPPlatterShadowView *)self layer];
+  [layer shadowOpacity];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setShadowRadius:(double)a3
+- (void)setShadowRadius:(double)radius
 {
-  v4 = [(PNPPlatterShadowView *)self layer];
-  [v4 setShadowRadius:a3];
+  layer = [(PNPPlatterShadowView *)self layer];
+  [layer setShadowRadius:radius];
 }
 
 - (double)shadowRadius
 {
-  v2 = [(PNPPlatterShadowView *)self layer];
-  [v2 shadowRadius];
+  layer = [(PNPPlatterShadowView *)self layer];
+  [layer shadowRadius];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setShadowPath:(id)a3
+- (void)setShadowPath:(id)path
 {
-  v4 = a3;
-  v6 = [(PNPPlatterShadowView *)self layer];
-  v5 = [v4 CGPath];
+  pathCopy = path;
+  layer = [(PNPPlatterShadowView *)self layer];
+  cGPath = [pathCopy CGPath];
 
-  [v6 setShadowPath:v5];
+  [layer setShadowPath:cGPath];
 }
 
 - (UIBezierPath)shadowPath
 {
   v2 = MEMORY[0x277D75208];
-  v3 = [(PNPPlatterShadowView *)self layer];
-  v4 = [v2 bezierPathWithCGPath:{objc_msgSend(v3, "shadowPath")}];
+  layer = [(PNPPlatterShadowView *)self layer];
+  v4 = [v2 bezierPathWithCGPath:{objc_msgSend(layer, "shadowPath")}];
 
   return v4;
 }

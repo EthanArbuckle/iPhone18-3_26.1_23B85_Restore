@@ -1,13 +1,13 @@
 @interface PHCollectionListAncestryContext
-- (PHCollectionListAncestryContext)initWithCollectionLists:(id)a3;
-- (id)folderForID:(id)a3;
+- (PHCollectionListAncestryContext)initWithCollectionLists:(id)lists;
+- (id)folderForID:(id)d;
 @end
 
 @implementation PHCollectionListAncestryContext
 
-- (id)folderForID:(id)a3
+- (id)folderForID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = [(NSMutableDictionary *)self->_collectionListsByOID objectForKeyedSubscript:?];
   }
@@ -20,17 +20,17 @@
   return v4;
 }
 
-- (PHCollectionListAncestryContext)initWithCollectionLists:(id)a3
+- (PHCollectionListAncestryContext)initWithCollectionLists:(id)lists
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  listsCopy = lists;
   v22.receiver = self;
   v22.super_class = PHCollectionListAncestryContext;
   v6 = [(PHCollectionListAncestryContext *)&v22 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_allCollectionLists, a3);
+    objc_storeStrong(&v6->_allCollectionLists, lists);
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
     collectionListsByOID = v7->_collectionListsByOID;
     v7->_collectionListsByOID = v8;
@@ -55,10 +55,10 @@
           }
 
           v15 = *(*(&v18 + 1) + 8 * i);
-          v16 = [v15 objectID];
-          if (v16)
+          objectID = [v15 objectID];
+          if (objectID)
           {
-            [(NSMutableDictionary *)v7->_collectionListsByOID setObject:v15 forKeyedSubscript:v16];
+            [(NSMutableDictionary *)v7->_collectionListsByOID setObject:v15 forKeyedSubscript:objectID];
           }
         }
 

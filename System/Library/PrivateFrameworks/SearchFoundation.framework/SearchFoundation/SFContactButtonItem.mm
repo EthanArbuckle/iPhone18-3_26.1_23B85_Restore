@@ -1,45 +1,45 @@
 @interface SFContactButtonItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFContactButtonItem)initWithCoder:(id)a3;
-- (SFContactButtonItem)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFContactButtonItem)initWithCoder:(id)coder;
+- (SFContactButtonItem)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFContactButtonItem
 
-- (SFContactButtonItem)initWithProtobuf:(id)a3
+- (SFContactButtonItem)initWithProtobuf:(id)protobuf
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v26.receiver = self;
   v26.super_class = SFContactButtonItem;
   v5 = [(SFContactButtonItem *)&v26 init];
   if (v5)
   {
-    v6 = [v4 contactIdentifier];
+    contactIdentifier = [protobufCopy contactIdentifier];
 
-    if (v6)
+    if (contactIdentifier)
     {
-      v7 = [v4 contactIdentifier];
-      [(SFContactButtonItem *)v5 setContactIdentifier:v7];
+      contactIdentifier2 = [protobufCopy contactIdentifier];
+      [(SFContactButtonItem *)v5 setContactIdentifier:contactIdentifier2];
     }
 
-    v8 = [v4 person];
+    person = [protobufCopy person];
 
-    if (v8)
+    if (person)
     {
       v9 = [SFPerson alloc];
-      v10 = [v4 person];
-      v11 = [(SFPerson *)v9 initWithProtobuf:v10];
+      person2 = [protobufCopy person];
+      v11 = [(SFPerson *)v9 initWithProtobuf:person2];
       [(SFContactButtonItem *)v5 setPerson:v11];
     }
 
-    v12 = [v4 actionTypesToShows];
-    if (v12)
+    actionTypesToShows = [protobufCopy actionTypesToShows];
+    if (actionTypesToShows)
     {
       v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -53,8 +53,8 @@
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v14 = [v4 actionTypesToShows];
-    v15 = [v14 countByEnumeratingWithState:&v22 objects:v27 count:16];
+    actionTypesToShows2 = [protobufCopy actionTypesToShows];
+    v15 = [actionTypesToShows2 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v15)
     {
       v16 = v15;
@@ -65,7 +65,7 @@
         {
           if (*v23 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(actionTypesToShows2);
           }
 
           if (*(*(&v22 + 1) + 8 * i))
@@ -74,16 +74,16 @@
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v22 objects:v27 count:16];
+        v16 = [actionTypesToShows2 countByEnumeratingWithState:&v22 objects:v27 count:16];
       }
 
       while (v16);
     }
 
     [(SFContactButtonItem *)v5 setActionTypesToShow:v13];
-    if ([v4 uniqueId])
+    if ([protobufCopy uniqueId])
     {
-      -[SFButtonItem setUniqueId:](v5, "setUniqueId:", [v4 uniqueId]);
+      -[SFButtonItem setUniqueId:](v5, "setUniqueId:", [protobufCopy uniqueId]);
     }
 
     v19 = v5;
@@ -98,37 +98,37 @@
   v12.receiver = self;
   v12.super_class = SFContactButtonItem;
   v3 = [(SFButtonItem *)&v12 hash];
-  v4 = [(SFContactButtonItem *)self contactIdentifier];
-  v5 = [v4 hash];
-  v6 = [(SFContactButtonItem *)self person];
-  v7 = v5 ^ [v6 hash];
-  v8 = [(SFContactButtonItem *)self actionTypesToShow];
-  v9 = v7 ^ [v8 hash];
+  contactIdentifier = [(SFContactButtonItem *)self contactIdentifier];
+  v5 = [contactIdentifier hash];
+  person = [(SFContactButtonItem *)self person];
+  v7 = v5 ^ [person hash];
+  actionTypesToShow = [(SFContactButtonItem *)self actionTypesToShow];
+  v9 = v7 ^ [actionTypesToShow hash];
   v10 = v9 ^ [(SFButtonItem *)self uniqueId];
 
   return v10 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFContactButtonItem *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFContactButtonItem *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v34.receiver = self;
       v34.super_class = SFContactButtonItem;
-      if ([(SFButtonItem *)&v34 isEqual:v5])
+      if ([(SFButtonItem *)&v34 isEqual:equalCopy])
       {
-        v6 = v5;
-        v7 = [(SFContactButtonItem *)self contactIdentifier];
-        v8 = [(SFContactButtonItem *)v6 contactIdentifier];
-        if ((v7 != 0) == (v8 == 0))
+        v6 = equalCopy;
+        contactIdentifier = [(SFContactButtonItem *)self contactIdentifier];
+        contactIdentifier2 = [(SFContactButtonItem *)v6 contactIdentifier];
+        if ((contactIdentifier != 0) == (contactIdentifier2 == 0))
         {
           v11 = 0;
 LABEL_34:
@@ -136,63 +136,63 @@ LABEL_34:
           goto LABEL_35;
         }
 
-        v9 = [(SFContactButtonItem *)self contactIdentifier];
-        if (v9)
+        contactIdentifier3 = [(SFContactButtonItem *)self contactIdentifier];
+        if (contactIdentifier3)
         {
-          v10 = [(SFContactButtonItem *)self contactIdentifier];
-          v3 = [(SFContactButtonItem *)v6 contactIdentifier];
-          if (![v10 isEqual:v3])
+          contactIdentifier4 = [(SFContactButtonItem *)self contactIdentifier];
+          contactIdentifier5 = [(SFContactButtonItem *)v6 contactIdentifier];
+          if (![contactIdentifier4 isEqual:contactIdentifier5])
           {
             v11 = 0;
             goto LABEL_32;
           }
 
-          v33 = v10;
+          v33 = contactIdentifier4;
         }
 
-        v12 = [(SFContactButtonItem *)self person];
-        v13 = [(SFContactButtonItem *)v6 person];
-        v14 = v13;
-        if ((v12 != 0) == (v13 == 0))
+        person = [(SFContactButtonItem *)self person];
+        person2 = [(SFContactButtonItem *)v6 person];
+        v14 = person2;
+        if ((person != 0) == (person2 == 0))
         {
 
           v11 = 0;
           goto LABEL_31;
         }
 
-        v15 = [(SFContactButtonItem *)self person];
-        if (v15)
+        person3 = [(SFContactButtonItem *)self person];
+        if (person3)
         {
-          v27 = v12;
-          v16 = [(SFContactButtonItem *)self person];
-          v29 = [(SFContactButtonItem *)v6 person];
-          v30 = v16;
-          if (![v16 isEqual:?])
+          v27 = person;
+          person4 = [(SFContactButtonItem *)self person];
+          person5 = [(SFContactButtonItem *)v6 person];
+          v30 = person4;
+          if (![person4 isEqual:?])
           {
             v11 = 0;
-            v12 = v27;
+            person = v27;
             goto LABEL_29;
           }
 
-          v31 = v15;
-          v32 = v3;
-          v12 = v27;
+          v31 = person3;
+          v32 = contactIdentifier5;
+          person = v27;
         }
 
         else
         {
           v31 = 0;
-          v32 = v3;
+          v32 = contactIdentifier5;
         }
 
-        v17 = [(SFContactButtonItem *)self actionTypesToShow];
-        v18 = [(SFContactButtonItem *)v6 actionTypesToShow];
-        if ((v17 != 0) == (v18 == 0))
+        actionTypesToShow = [(SFContactButtonItem *)self actionTypesToShow];
+        actionTypesToShow2 = [(SFContactButtonItem *)v6 actionTypesToShow];
+        if ((actionTypesToShow != 0) == (actionTypesToShow2 == 0))
         {
 
           v11 = 0;
-          v15 = v31;
-          v3 = v32;
+          person3 = v31;
+          contactIdentifier5 = v32;
           if (!v31)
           {
             goto LABEL_30;
@@ -201,17 +201,17 @@ LABEL_34:
           goto LABEL_29;
         }
 
-        v25 = v18;
-        v26 = v17;
+        v25 = actionTypesToShow2;
+        v26 = actionTypesToShow;
         [(SFContactButtonItem *)self actionTypesToShow];
-        v28 = v15 = v31;
+        v28 = person3 = v31;
         if (v28)
         {
-          v19 = [(SFContactButtonItem *)self actionTypesToShow];
-          v23 = [(SFContactButtonItem *)v6 actionTypesToShow];
-          v24 = v19;
-          v20 = [v19 isEqual:?];
-          v3 = v32;
+          actionTypesToShow3 = [(SFContactButtonItem *)self actionTypesToShow];
+          actionTypesToShow4 = [(SFContactButtonItem *)v6 actionTypesToShow];
+          v24 = actionTypesToShow3;
+          v20 = [actionTypesToShow3 isEqual:?];
+          contactIdentifier5 = v32;
           if (!v20)
           {
             v11 = 0;
@@ -223,8 +223,8 @@ LABEL_28:
 LABEL_30:
 
 LABEL_31:
-              v10 = v33;
-              if (!v9)
+              contactIdentifier4 = v33;
+              if (!contactIdentifier3)
               {
 LABEL_33:
 
@@ -244,11 +244,11 @@ LABEL_29:
 
         else
         {
-          v3 = v32;
+          contactIdentifier5 = v32;
         }
 
-        v21 = [(SFButtonItem *)self uniqueId];
-        v11 = v21 == [(SFButtonItem *)v6 uniqueId];
+        uniqueId = [(SFButtonItem *)self uniqueId];
+        v11 = uniqueId == [(SFButtonItem *)v6 uniqueId];
         if (!v28)
         {
           goto LABEL_28;
@@ -266,21 +266,21 @@ LABEL_35:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = SFContactButtonItem;
-  v4 = [(SFButtonItem *)&v12 copyWithZone:a3];
-  v5 = [(SFContactButtonItem *)self contactIdentifier];
-  v6 = [v5 copy];
+  v4 = [(SFButtonItem *)&v12 copyWithZone:zone];
+  contactIdentifier = [(SFContactButtonItem *)self contactIdentifier];
+  v6 = [contactIdentifier copy];
   [v4 setContactIdentifier:v6];
 
-  v7 = [(SFContactButtonItem *)self person];
-  v8 = [v7 copy];
+  person = [(SFContactButtonItem *)self person];
+  v8 = [person copy];
   [v4 setPerson:v8];
 
-  v9 = [(SFContactButtonItem *)self actionTypesToShow];
-  v10 = [v9 copy];
+  actionTypesToShow = [(SFContactButtonItem *)self actionTypesToShow];
+  v10 = [actionTypesToShow copy];
   [v4 setActionTypesToShow:v10];
 
   [v4 setUniqueId:{-[SFButtonItem uniqueId](self, "uniqueId")}];
@@ -290,31 +290,31 @@ LABEL_35:
 - (NSData)jsonData
 {
   v2 = [[_SFPBContactButtonItem alloc] initWithFacade:self];
-  v3 = [(_SFPBContactButtonItem *)v2 jsonData];
+  jsonData = [(_SFPBContactButtonItem *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBContactButtonItem alloc] initWithFacade:self];
-  v3 = [(_SFPBContactButtonItem *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBContactButtonItem *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBContactButtonItem alloc] initWithFacade:self];
-  v5 = [(_SFPBContactButtonItem *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBContactButtonItem *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFContactButtonItem)initWithCoder:(id)a3
+- (SFContactButtonItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBContactButtonItem alloc] initWithData:v5];
   v7 = [(SFContactButtonItem *)self initWithProtobuf:v6];

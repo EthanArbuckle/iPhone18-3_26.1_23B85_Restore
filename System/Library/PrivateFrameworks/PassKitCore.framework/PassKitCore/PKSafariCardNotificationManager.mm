@@ -1,7 +1,7 @@
 @interface PKSafariCardNotificationManager
 - (PKSafariCardNotificationManager)init;
-- (void)_eligibleToCheckWithCompletion:(id)a3;
-- (void)userDidPerformAction:(int64_t)a3 withCard:(id)a4;
+- (void)_eligibleToCheckWithCompletion:(id)completion;
+- (void)userDidPerformAction:(int64_t)action withCard:(id)card;
 @end
 
 @implementation PKSafariCardNotificationManager
@@ -21,10 +21,10 @@
   return v2;
 }
 
-- (void)userDidPerformAction:(int64_t)a3 withCard:(id)a4
+- (void)userDidPerformAction:(int64_t)action withCard:(id)card
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  cardCopy = card;
   v8 = PKLogFacilityTypeGetObject(7uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -32,7 +32,7 @@
     *buf = 138412546;
     v15 = v9;
     v16 = 2048;
-    v17 = a3;
+    actionCopy = action;
     _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "%@ called with action %ld", buf, 0x16u);
   }
 
@@ -40,9 +40,9 @@
   v11[1] = 3221225472;
   v11[2] = __65__PKSafariCardNotificationManager_userDidPerformAction_withCard___block_invoke;
   v11[3] = &unk_1E79D59F8;
-  v12 = v7;
-  v13 = self;
-  v10 = v7;
+  v12 = cardCopy;
+  selfCopy = self;
+  v10 = cardCopy;
   [(PKSafariCardNotificationManager *)self _eligibleToCheckWithCompletion:v11];
 }
 
@@ -121,10 +121,10 @@ void __65__PKSafariCardNotificationManager_userDidPerformAction_withCard___block
   }
 }
 
-- (void)_eligibleToCheckWithCompletion:(id)a3
+- (void)_eligibleToCheckWithCompletion:(id)completion
 {
-  v3 = a3;
-  if (v3)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v4 = PKCurrentPassbookState();
     v5 = PKLogFacilityTypeGetObject(7uLL);
@@ -137,7 +137,7 @@ void __65__PKSafariCardNotificationManager_userDidPerformAction_withCard___block
         _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Safari Import Eligibility: Wallet has been deleted.", v9, 2u);
       }
 
-      v3[2](v3, 0);
+      completionCopy[2](completionCopy, 0);
     }
 
     else
@@ -148,7 +148,7 @@ void __65__PKSafariCardNotificationManager_userDidPerformAction_withCard___block
         _os_log_impl(&dword_1AD337000, v5, OS_LOG_TYPE_DEFAULT, "Safari Import Eligibility: All checks have passed.", v8, 2u);
       }
 
-      v3[2](v3, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 

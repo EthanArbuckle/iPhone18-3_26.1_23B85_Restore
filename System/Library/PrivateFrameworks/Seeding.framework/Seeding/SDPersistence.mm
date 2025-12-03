@@ -1,20 +1,20 @@
 @interface SDPersistence
 + (id)betaEnrollmentTokensFromOldLocation;
 + (id)containerURL;
-+ (id)loadMDMConfigurationWithError:(id *)a3;
-+ (id)persistenceDirectory:(BOOL)a3;
-+ (id)saveMDMConfiguration:(id)a3;
++ (id)loadMDMConfigurationWithError:(id *)error;
++ (id)persistenceDirectory:(BOOL)directory;
++ (id)saveMDMConfiguration:(id)configuration;
 + (void)containerURL;
 + (void)deleteBetaEnrollmentTokensFromOldLocations;
-+ (void)saveBetaEnrollmentTokens:(id)a3;
++ (void)saveBetaEnrollmentTokens:(id)tokens;
 @end
 
 @implementation SDPersistence
 
-+ (void)saveBetaEnrollmentTokens:(id)a3
++ (void)saveBetaEnrollmentTokens:(id)tokens
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tokensCopy = tokens;
   v5 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -23,9 +23,9 @@
     _os_log_impl(&dword_22E41E000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}s", &v9, 0xCu);
   }
 
-  v6 = [SDMDMConfiguration defaultConfigurationForSetupAssistantFlowWithTokens:v4];
+  v6 = [SDMDMConfiguration defaultConfigurationForSetupAssistantFlowWithTokens:tokensCopy];
 
-  v7 = [a1 saveMDMConfiguration:v6];
+  v7 = [self saveMDMConfiguration:v6];
   v8 = *MEMORY[0x277D85DE8];
 }
 
@@ -56,10 +56,10 @@
   return v6;
 }
 
-+ (id)saveMDMConfiguration:(id)a3
++ (id)saveMDMConfiguration:(id)configuration
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  configurationCopy = configuration;
   v5 = +[SDSeedingLogging betaHandle];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -68,12 +68,12 @@
     _os_log_impl(&dword_22E41E000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}s", buf, 0xCu);
   }
 
-  [a1 deleteBetaEnrollmentTokensFromOldLocations];
-  v6 = [a1 persistenceDirectory:1];
+  [self deleteBetaEnrollmentTokensFromOldLocations];
+  v6 = [self persistenceDirectory:1];
   if (v6)
   {
     v20 = 0;
-    v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v20];
+    v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:configurationCopy requiringSecureCoding:1 error:&v20];
     v8 = v20;
     if (v8)
     {
@@ -89,9 +89,9 @@
     else
     {
       v11 = [v6 URLByAppendingPathComponent:@"MDMConfiguration.plist"];
-      v12 = [v11 path];
+      path = [v11 path];
       v19 = 0;
-      [v7 writeToFile:v12 options:1 error:&v19];
+      [v7 writeToFile:path options:1 error:&v19];
       v10 = v19;
 
       v13 = +[SDSeedingLogging betaHandle];
@@ -110,9 +110,9 @@
       {
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [v11 path];
+          path2 = [v11 path];
           *buf = 138543362;
-          v22 = v16;
+          v22 = path2;
           _os_log_impl(&dword_22E41E000, v14, OS_LOG_TYPE_DEFAULT, "Saved [%{public}@]", buf, 0xCu);
         }
       }
@@ -129,42 +129,42 @@
   return v10;
 }
 
-+ (id)loadMDMConfigurationWithError:(id *)a3
++ (id)loadMDMConfigurationWithError:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
-  v5 = [a1 betaEnrollmentTokensFromOldLocation];
-  if ([v5 count])
+  betaEnrollmentTokensFromOldLocation = [self betaEnrollmentTokensFromOldLocation];
+  if ([betaEnrollmentTokensFromOldLocation count])
   {
     v6 = +[SDSeedingLogging betaHandle];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v40 = v5;
+      v40 = betaEnrollmentTokensFromOldLocation;
       _os_log_impl(&dword_22E41E000, v6, OS_LOG_TYPE_DEFAULT, "Migrating beta enrollment tokens from old path with token: [%{public}@]", buf, 0xCu);
     }
 
-    v7 = [SDMDMConfiguration defaultConfigurationForSetupAssistantFlowWithTokens:v5];
-    v8 = [a1 saveMDMConfiguration:v7];
-    [a1 deleteBetaEnrollmentTokensFromOldLocations];
+    v7 = [SDMDMConfiguration defaultConfigurationForSetupAssistantFlowWithTokens:betaEnrollmentTokensFromOldLocation];
+    v8 = [self saveMDMConfiguration:v7];
+    [self deleteBetaEnrollmentTokensFromOldLocations];
   }
 
   else
   {
-    v9 = [a1 persistenceDirectory:1];
+    v9 = [self persistenceDirectory:1];
     v10 = v9;
     if (v9)
     {
       v11 = [v9 URLByAppendingPathComponent:@"MDMConfiguration.plist"];
-      v12 = [MEMORY[0x277CCAA00] defaultManager];
-      v13 = [v11 path];
-      v14 = [v12 fileExistsAtPath:v13];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      path = [v11 path];
+      v14 = [defaultManager fileExistsAtPath:path];
 
       if (v14)
       {
         v15 = MEMORY[0x277CBEA90];
-        v16 = [v11 path];
+        path2 = [v11 path];
         v38 = 0;
-        v17 = [v15 dataWithContentsOfFile:v16 options:0 error:&v38];
+        v17 = [v15 dataWithContentsOfFile:path2 options:0 error:&v38];
         v18 = v38;
 
         if (v18)
@@ -175,10 +175,10 @@
             +[SDPersistence loadMDMConfigurationWithError:];
           }
 
-          if (a3)
+          if (error)
           {
             SDGenericError();
-            *a3 = v7 = 0;
+            *error = v7 = 0;
           }
 
           else
@@ -200,10 +200,10 @@
               [(SDPersistence *)v22 loadMDMConfigurationWithError:v23];
             }
 
-            if (a3)
+            if (error)
             {
               SDGenericError();
-              *a3 = v7 = 0;
+              *error = v7 = 0;
             }
 
             else
@@ -226,7 +226,7 @@
               v25 = [MEMORY[0x277CBEAA8] now];
               [v21 setConfigurationDate:v25];
 
-              v26 = [a1 saveMDMConfiguration:v21];
+              v26 = [self saveMDMConfiguration:v21];
               if (v26)
               {
                 v27 = +[SDSeedingLogging betaHandle];
@@ -240,26 +240,26 @@
             v28 = +[SDSeedingLogging betaHandle];
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
             {
-              v29 = [v21 policy];
-              if (v29 > 3)
+              policy = [v21 policy];
+              if (policy > 3)
               {
                 v30 = "Unknown";
               }
 
               else
               {
-                v30 = off_2787CC228[v29];
+                v30 = off_2787CC228[policy];
               }
 
-              v36 = [v21 tokens];
-              v31 = [v36 count];
-              v32 = [v21 configurationDate];
+              tokens = [v21 tokens];
+              v31 = [tokens count];
+              configurationDate = [v21 configurationDate];
               *buf = 136446722;
               v40 = v35;
               v41 = 2048;
               v42 = v31;
               v43 = 2114;
-              v44 = v32;
+              v44 = configurationDate;
               _os_log_impl(&dword_22E41E000, v28, OS_LOG_TYPE_DEFAULT, "Loaded MDM configuration: [%{public}s] with [%lu] tokens. Config date [%{public}@]", buf, 0x20u);
             }
 
@@ -290,10 +290,10 @@
         _os_log_impl(&dword_22E41E000, v20, OS_LOG_TYPE_DEFAULT, "could not load MDM Configuration ", buf, 2u);
       }
 
-      if (a3)
+      if (error)
       {
         SDGenericError();
-        *a3 = v7 = 0;
+        *error = v7 = 0;
       }
 
       else
@@ -314,11 +314,11 @@
   [v2 removeObjectForKey:@"BetaEnrollmentTokens"];
 }
 
-+ (id)persistenceDirectory:(BOOL)a3
++ (id)persistenceDirectory:(BOOL)directory
 {
-  v3 = a3;
-  v4 = [a1 containerURL];
-  if (!v4)
+  directoryCopy = directory;
+  containerURL = [self containerURL];
+  if (!containerURL)
   {
     v6 = +[SDSeedingLogging betaHandle];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -329,11 +329,11 @@
     goto LABEL_12;
   }
 
-  if (v3)
+  if (directoryCopy)
   {
-    v5 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v13 = 0;
-    [v5 createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:0 error:&v13];
+    [defaultManager createDirectoryAtURL:containerURL withIntermediateDirectories:1 attributes:0 error:&v13];
     v6 = v13;
 
     if (v6)
@@ -354,7 +354,7 @@ LABEL_12:
   v11[1] = 3221225472;
   v11[2] = __38__SDPersistence_persistenceDirectory___block_invoke;
   v11[3] = &unk_2787CB588;
-  v8 = v4;
+  v8 = containerURL;
   v12 = v8;
   if (persistenceDirectory__onceToken != -1)
   {
@@ -385,8 +385,8 @@ void __38__SDPersistence_persistenceDirectory___block_invoke(uint64_t a1)
 
 + (id)containerURL
 {
-  v2 = [MEMORY[0x277CCAA00] defaultManager];
-  v3 = [v2 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.seeding"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v3 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.seeding"];
 
   if (!v3)
   {

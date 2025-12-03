@@ -1,8 +1,8 @@
 @interface ICIndexerStateHandler
 + (id)stateDictionary;
-+ (void)logMethodCall:(unint64_t)a3;
++ (void)logMethodCall:(unint64_t)call;
 + (void)registerStateHandler;
-+ (void)setStateDictionary:(id)a3;
++ (void)setStateDictionary:(id)dictionary;
 @end
 
 @implementation ICIndexerStateHandler
@@ -13,7 +13,7 @@
   v2[1] = 3221225472;
   v2[2] = __45__ICIndexerStateHandler_registerStateHandler__block_invoke;
   v2[3] = &__block_descriptor_40_e19___NSDictionary_8__0l;
-  v2[4] = a1;
+  v2[4] = self;
   [ICStateHandler addStateHandlerWithName:"Notes Indexer" sysdiagnoseOnly:1 stateBlock:v2];
 }
 
@@ -37,21 +37,21 @@
   return v5;
 }
 
-+ (void)setStateDictionary:(id)a3
++ (void)setStateDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = +[ICAppGroupDefaults sharedAppGroupDefaults];
-  [v4 setObject:v3 forKey:@"kICIndexerStateUserDefaultsKey"];
+  [v4 setObject:dictionaryCopy forKey:@"kICIndexerStateUserDefaultsKey"];
 }
 
-+ (void)logMethodCall:(unint64_t)a3
++ (void)logMethodCall:(unint64_t)call
 {
-  v16 = [MEMORY[0x1E695DF00] date];
-  v5 = [a1 stateDictionary];
-  v6 = [v5 mutableCopy];
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", a3];
+  date = [MEMORY[0x1E695DF00] date];
+  stateDictionary = [self stateDictionary];
+  v6 = [stateDictionary mutableCopy];
+  call = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", call];
   v8 = MEMORY[0x1E695DF70];
-  v9 = [v6 objectForKeyedSubscript:v7];
+  v9 = [v6 objectForKeyedSubscript:call];
   v10 = v9;
   if (v9)
   {
@@ -76,13 +76,13 @@
   }
 
   v13 = MEMORY[0x1E696AD98];
-  [v16 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   v14 = [v13 numberWithDouble:?];
   [v12 addObject:v14];
 
-  [v6 setObject:v12 forKeyedSubscript:v7];
+  [v6 setObject:v12 forKeyedSubscript:call];
   v15 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v6];
-  [a1 setStateDictionary:v15];
+  [self setStateDictionary:v15];
 }
 
 @end

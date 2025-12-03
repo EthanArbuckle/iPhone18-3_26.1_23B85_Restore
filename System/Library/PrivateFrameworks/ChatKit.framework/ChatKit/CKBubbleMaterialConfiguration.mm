@@ -1,18 +1,18 @@
 @interface CKBubbleMaterialConfiguration
-+ (id)colorConfigurationWithCGColor:(CGColor *)a3;
++ (id)colorConfigurationWithCGColor:(CGColor *)color;
 - (_TtC7ChatKit29CKBubbleMaterialConfiguration)init;
-- (id)resolvedWithTraitCollection:(id)a3 onBackgroundWithAverageLuminance:(double)a4;
+- (id)resolvedWithTraitCollection:(id)collection onBackgroundWithAverageLuminance:(double)luminance;
 @end
 
 @implementation CKBubbleMaterialConfiguration
 
-+ (id)colorConfigurationWithCGColor:(CGColor *)a3
++ (id)colorConfigurationWithCGColor:(CGColor *)color
 {
   v4 = sub_190D56BB0();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v13 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v8 = a3;
+  colorCopy = color;
   sub_190D56B20();
   v9 = type metadata accessor for CKBubbleMaterialConfiguration();
   v10 = objc_allocWithZone(v9);
@@ -26,10 +26,10 @@
   return v11;
 }
 
-- (id)resolvedWithTraitCollection:(id)a3 onBackgroundWithAverageLuminance:(double)a4
+- (id)resolvedWithTraitCollection:(id)collection onBackgroundWithAverageLuminance:(double)luminance
 {
-  v5 = a3;
-  v6 = self;
+  collectionCopy = collection;
+  selfCopy = self;
   v7 = sub_190CF2524();
 
   return v7;

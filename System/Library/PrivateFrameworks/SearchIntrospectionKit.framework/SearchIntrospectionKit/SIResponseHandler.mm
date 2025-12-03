@@ -1,14 +1,14 @@
 @interface SIResponseHandler
-+ (void)handleSpotlightResponse:(id)a3 forQuery:(id)a4;
++ (void)handleSpotlightResponse:(id)response forQuery:(id)query;
 - (SIResponseHandler)init;
 @end
 
 @implementation SIResponseHandler
 
-+ (void)handleSpotlightResponse:(id)a3 forQuery:(id)a4
++ (void)handleSpotlightResponse:(id)response forQuery:(id)query
 {
-  v5 = a3;
-  v6 = a4;
+  responseCopy = response;
+  queryCopy = query;
   v7 = sub_264E89854();
   v9 = v8;
 

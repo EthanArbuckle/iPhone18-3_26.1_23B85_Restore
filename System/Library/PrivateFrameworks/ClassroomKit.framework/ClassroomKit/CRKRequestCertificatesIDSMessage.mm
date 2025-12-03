@@ -1,33 +1,33 @@
 @interface CRKRequestCertificatesIDSMessage
-+ (id)instanceWithDictionary:(id)a3;
-+ (id)messageWithControlGroupIdentifier:(id)a3 destinationDeviceIdentifier:(id)a4 sourceRole:(int64_t)a5 destinationRole:(int64_t)a6 requesterCertificate:(id)a7;
-- (CRKRequestCertificatesIDSMessage)initWithRequestIdentifier:(id)a3 controlGroupIdentifier:(id)a4 destinationDeviceIdentifier:(id)a5 sourceRole:(int64_t)a6 destinationRole:(int64_t)a7 requesterCertificate:(id)a8;
++ (id)instanceWithDictionary:(id)dictionary;
++ (id)messageWithControlGroupIdentifier:(id)identifier destinationDeviceIdentifier:(id)deviceIdentifier sourceRole:(int64_t)role destinationRole:(int64_t)destinationRole requesterCertificate:(id)certificate;
+- (CRKRequestCertificatesIDSMessage)initWithRequestIdentifier:(id)identifier controlGroupIdentifier:(id)groupIdentifier destinationDeviceIdentifier:(id)deviceIdentifier sourceRole:(int64_t)role destinationRole:(int64_t)destinationRole requesterCertificate:(id)certificate;
 - (NSDictionary)dictionaryValue;
 @end
 
 @implementation CRKRequestCertificatesIDSMessage
 
-- (CRKRequestCertificatesIDSMessage)initWithRequestIdentifier:(id)a3 controlGroupIdentifier:(id)a4 destinationDeviceIdentifier:(id)a5 sourceRole:(int64_t)a6 destinationRole:(int64_t)a7 requesterCertificate:(id)a8
+- (CRKRequestCertificatesIDSMessage)initWithRequestIdentifier:(id)identifier controlGroupIdentifier:(id)groupIdentifier destinationDeviceIdentifier:(id)deviceIdentifier sourceRole:(int64_t)role destinationRole:(int64_t)destinationRole requesterCertificate:(id)certificate
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
+  identifierCopy = identifier;
+  groupIdentifierCopy = groupIdentifier;
+  deviceIdentifierCopy = deviceIdentifier;
+  certificateCopy = certificate;
   v26.receiver = self;
   v26.super_class = CRKRequestCertificatesIDSMessage;
   v19 = [(CRKRequestCertificatesIDSMessage *)&v26 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_requestIdentifier, a3);
-    objc_storeStrong(&v20->_controlGroupIdentifier, a4);
-    v21 = [v17 copy];
+    objc_storeStrong(&v19->_requestIdentifier, identifier);
+    objc_storeStrong(&v20->_controlGroupIdentifier, groupIdentifier);
+    v21 = [deviceIdentifierCopy copy];
     destinationDeviceIdentifier = v20->_destinationDeviceIdentifier;
     v20->_destinationDeviceIdentifier = v21;
 
-    v20->_sourceRole = a6;
-    v20->_destinationRole = a7;
-    v23 = [v18 copy];
+    v20->_sourceRole = role;
+    v20->_destinationRole = destinationRole;
+    v23 = [certificateCopy copy];
     requesterCertificate = v20->_requesterCertificate;
     v20->_requesterCertificate = v23;
   }
@@ -35,14 +35,14 @@
   return v20;
 }
 
-+ (id)messageWithControlGroupIdentifier:(id)a3 destinationDeviceIdentifier:(id)a4 sourceRole:(int64_t)a5 destinationRole:(int64_t)a6 requesterCertificate:(id)a7
++ (id)messageWithControlGroupIdentifier:(id)identifier destinationDeviceIdentifier:(id)deviceIdentifier sourceRole:(int64_t)role destinationRole:(int64_t)destinationRole requesterCertificate:(id)certificate
 {
   v12 = MEMORY[0x277CCAD78];
-  v13 = a7;
-  v14 = a4;
-  v15 = a3;
-  v16 = [v12 UUID];
-  v17 = [[a1 alloc] initWithRequestIdentifier:v16 controlGroupIdentifier:v15 destinationDeviceIdentifier:v14 sourceRole:a5 destinationRole:a6 requesterCertificate:v13];
+  certificateCopy = certificate;
+  deviceIdentifierCopy = deviceIdentifier;
+  identifierCopy = identifier;
+  uUID = [v12 UUID];
+  v17 = [[self alloc] initWithRequestIdentifier:uUID controlGroupIdentifier:identifierCopy destinationDeviceIdentifier:deviceIdentifierCopy sourceRole:role destinationRole:destinationRole requesterCertificate:certificateCopy];
 
   return v17;
 }
@@ -51,16 +51,16 @@
 {
   v17[5] = *MEMORY[0x277D85DE8];
   v16[0] = @"RequestIdentifier";
-  v3 = [(CRKRequestCertificatesIDSMessage *)self requestIdentifier];
-  v4 = [v3 UUIDString];
-  v17[0] = v4;
+  requestIdentifier = [(CRKRequestCertificatesIDSMessage *)self requestIdentifier];
+  uUIDString = [requestIdentifier UUIDString];
+  v17[0] = uUIDString;
   v16[1] = @"ControlGroupIdentifier";
-  v5 = [(CRKRequestCertificatesIDSMessage *)self controlGroupIdentifier];
-  v6 = [v5 stringValue];
-  v17[1] = v6;
+  controlGroupIdentifier = [(CRKRequestCertificatesIDSMessage *)self controlGroupIdentifier];
+  stringValue = [controlGroupIdentifier stringValue];
+  v17[1] = stringValue;
   v16[2] = @"DestinationDeviceIdentifier";
-  v7 = [(CRKRequestCertificatesIDSMessage *)self destinationDeviceIdentifier];
-  v17[2] = v7;
+  destinationDeviceIdentifier = [(CRKRequestCertificatesIDSMessage *)self destinationDeviceIdentifier];
+  v17[2] = destinationDeviceIdentifier;
   v16[3] = @"SourceRole";
   v8 = [MEMORY[0x277CCABB0] numberWithInteger:{-[CRKRequestCertificatesIDSMessage sourceRole](self, "sourceRole")}];
   v17[3] = v8;
@@ -70,12 +70,12 @@
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:5];
   v11 = [v10 mutableCopy];
 
-  v12 = [(CRKRequestCertificatesIDSMessage *)self requesterCertificate];
+  requesterCertificate = [(CRKRequestCertificatesIDSMessage *)self requesterCertificate];
 
-  if (v12)
+  if (requesterCertificate)
   {
-    v13 = [(CRKRequestCertificatesIDSMessage *)self requesterCertificate];
-    [v11 setObject:v13 forKeyedSubscript:@"RequesterCertificate"];
+    requesterCertificate2 = [(CRKRequestCertificatesIDSMessage *)self requesterCertificate];
+    [v11 setObject:requesterCertificate2 forKeyedSubscript:@"RequesterCertificate"];
   }
 
   v14 = [v11 copy];
@@ -83,10 +83,10 @@
   return v14;
 }
 
-+ (id)instanceWithDictionary:(id)a3
++ (id)instanceWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"RequestIdentifier"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"RequestIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -100,7 +100,7 @@
 
   v7 = v6;
 
-  v8 = [v4 objectForKeyedSubscript:@"ControlGroupIdentifier"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"ControlGroupIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -114,7 +114,7 @@
 
   v10 = v9;
 
-  v11 = [v4 objectForKeyedSubscript:@"DestinationDeviceIdentifier"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"DestinationDeviceIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -128,7 +128,7 @@
 
   v13 = v12;
 
-  v14 = [v4 objectForKeyedSubscript:@"SourceRole"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"SourceRole"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -142,7 +142,7 @@
 
   v16 = v15;
 
-  v17 = [v4 objectForKeyedSubscript:@"DestinationRole"];
+  v17 = [dictionaryCopy objectForKeyedSubscript:@"DestinationRole"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -156,7 +156,7 @@
 
   v19 = v18;
 
-  v20 = [v4 objectForKeyedSubscript:@"RequesterCertificate"];
+  v20 = [dictionaryCopy objectForKeyedSubscript:@"RequesterCertificate"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -174,16 +174,16 @@
   v23 = 0;
   if (v7 && v10 && v13 && v16 && v19)
   {
-    v29 = a1;
+    selfCopy = self;
     v30 = v7;
     v24 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v7];
     v25 = [objc_alloc(MEMORY[0x277D04C00]) initWithString:v10];
-    v26 = [v16 integerValue];
-    v27 = [v19 integerValue];
+    integerValue = [v16 integerValue];
+    integerValue2 = [v19 integerValue];
     v23 = 0;
-    if (v24 && v25 && v26 <= 1 && v27 <= 1)
+    if (v24 && v25 && integerValue <= 1 && integerValue2 <= 1)
     {
-      v23 = [[v29 alloc] initWithRequestIdentifier:v24 controlGroupIdentifier:v25 destinationDeviceIdentifier:v13 sourceRole:v26 destinationRole:v27 requesterCertificate:v22];
+      v23 = [[selfCopy alloc] initWithRequestIdentifier:v24 controlGroupIdentifier:v25 destinationDeviceIdentifier:v13 sourceRole:integerValue destinationRole:integerValue2 requesterCertificate:v22];
     }
 
     v7 = v30;

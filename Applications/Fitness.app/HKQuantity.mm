@@ -1,14 +1,14 @@
 @interface HKQuantity
-+ (id)ch_quantityWithBeatsPerMinute:(double)a3;
++ (id)ch_quantityWithBeatsPerMinute:(double)minute;
 - (double)ch_beatsPerMinute;
 @end
 
 @implementation HKQuantity
 
-+ (id)ch_quantityWithBeatsPerMinute:(double)a3
++ (id)ch_quantityWithBeatsPerMinute:(double)minute
 {
   v4 = +[HKUnit _countPerMinuteUnit];
-  v5 = [HKQuantity quantityWithUnit:v4 doubleValue:a3];
+  v5 = [HKQuantity quantityWithUnit:v4 doubleValue:minute];
 
   return v5;
 }

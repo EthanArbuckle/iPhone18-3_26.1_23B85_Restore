@@ -1,20 +1,20 @@
 @interface HDClinicalAccount
-- (BOOL)_scopesAreOutdated:(id)a3;
+- (BOOL)_scopesAreOutdated:(id)outdated;
 - (BOOL)canDetectUnmergeFromPatientResource;
-- (BOOL)credentialHasOutdatedScopes:(id)a3;
+- (BOOL)credentialHasOutdatedScopes:(id)scopes;
 - (BOOL)currentCredentialHasOutdatedScopes;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)shouldPerformBackgroundFetchWithNowDate:(id)a3;
-- (BOOL)shouldPerformFetchWithNowDate:(id)a3;
-- (BOOL)shouldPerformFullFetchWithNowDate:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)shouldPerformBackgroundFetchWithNowDate:(id)date;
+- (BOOL)shouldPerformFetchWithNowDate:(id)date;
+- (BOOL)shouldPerformFullFetchWithNowDate:(id)date;
 - (HDClinicalAccount)init;
-- (HDClinicalAccount)initWithIdentifier:(id)a3 userEnabled:(BOOL)a4 credentialState:(int64_t)a5 creationDate:(id)a6 lastFetchDate:(id)a7 lastFullFetchDate:(id)a8 lastFailedFetchDate:(id)a9 failedFetchAttemptsCount:(id)a10 lastExtractedRowID:(id)a11 lastSubmittedRowID:(id)a12 lastExtractedRulesVersion:(id)a13 clinicalSharingStatus:(id)a14 credential:(id)a15 patientHash:(id)a16 gateway:(id)a17 signedClinicalDataIssuer:(id)a18;
+- (HDClinicalAccount)initWithIdentifier:(id)identifier userEnabled:(BOOL)enabled credentialState:(int64_t)state creationDate:(id)date lastFetchDate:(id)fetchDate lastFullFetchDate:(id)fullFetchDate lastFailedFetchDate:(id)failedFetchDate failedFetchAttemptsCount:(id)self0 lastExtractedRowID:(id)self1 lastSubmittedRowID:(id)self2 lastExtractedRulesVersion:(id)self3 clinicalSharingStatus:(id)self4 credential:(id)self5 patientHash:(id)self6 gateway:(id)self7 signedClinicalDataIssuer:(id)self8;
 - (HKClinicalAccount)hkAccount;
 - (HKClinicalAccountProvenance)hkClinicalAccountProvenance;
 - (double)_secondsBlockedIfLastAttemptFailed;
 - (double)_secondsFetchIsBlocked;
 - (double)_secondsFullFetchIsBlocked;
-- (id)_minuteOverrideForUserDefaultsKey:(id)a3;
+- (id)_minuteOverrideForUserDefaultsKey:(id)key;
 - (id)currentCredentialScopeSet;
 - (id)description;
 - (int64_t)hkState;
@@ -30,56 +30,56 @@
   return 0;
 }
 
-- (HDClinicalAccount)initWithIdentifier:(id)a3 userEnabled:(BOOL)a4 credentialState:(int64_t)a5 creationDate:(id)a6 lastFetchDate:(id)a7 lastFullFetchDate:(id)a8 lastFailedFetchDate:(id)a9 failedFetchAttemptsCount:(id)a10 lastExtractedRowID:(id)a11 lastSubmittedRowID:(id)a12 lastExtractedRulesVersion:(id)a13 clinicalSharingStatus:(id)a14 credential:(id)a15 patientHash:(id)a16 gateway:(id)a17 signedClinicalDataIssuer:(id)a18
+- (HDClinicalAccount)initWithIdentifier:(id)identifier userEnabled:(BOOL)enabled credentialState:(int64_t)state creationDate:(id)date lastFetchDate:(id)fetchDate lastFullFetchDate:(id)fullFetchDate lastFailedFetchDate:(id)failedFetchDate failedFetchAttemptsCount:(id)self0 lastExtractedRowID:(id)self1 lastSubmittedRowID:(id)self2 lastExtractedRulesVersion:(id)self3 clinicalSharingStatus:(id)self4 credential:(id)self5 patientHash:(id)self6 gateway:(id)self7 signedClinicalDataIssuer:(id)self8
 {
-  v74 = a3;
-  v75 = a6;
-  v77 = a7;
-  v21 = a8;
-  v76 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
-  v26 = a14;
-  v27 = a15;
-  v28 = a16;
-  v73 = a17;
-  v29 = a18;
+  identifierCopy = identifier;
+  dateCopy = date;
+  fetchDateCopy = fetchDate;
+  fullFetchDateCopy = fullFetchDate;
+  failedFetchDateCopy = failedFetchDate;
+  countCopy = count;
+  dCopy = d;
+  iDCopy = iD;
+  versionCopy = version;
+  statusCopy = status;
+  credentialCopy = credential;
+  hashCopy = hash;
+  gatewayCopy = gateway;
+  issuerCopy = issuer;
   v78.receiver = self;
   v78.super_class = HDClinicalAccount;
   v30 = [(HDClinicalAccount *)&v78 init];
   if (v30)
   {
-    v70 = v29;
-    v72 = v28;
-    v31 = [v74 copy];
+    v70 = issuerCopy;
+    v72 = hashCopy;
+    v31 = [identifierCopy copy];
     identifier = v30->_identifier;
     v30->_identifier = v31;
 
-    v30->_userEnabled = a4;
-    v30->_credentialState = a5;
-    v33 = [v27 patientID];
-    if (v33)
+    v30->_userEnabled = enabled;
+    v30->_credentialState = state;
+    patientID = [credentialCopy patientID];
+    if (patientID)
     {
-      v34 = [v27 patientID];
-      v35 = v27;
-      v36 = v34;
+      patientID2 = [credentialCopy patientID];
+      v35 = credentialCopy;
+      v36 = patientID2;
       v37 = v35;
-      v38 = [HDFHIRCredential patientHashForPatientID:v34];
+      v38 = [HDFHIRCredential patientHashForPatientID:patientID2];
       patientHash = v30->_patientHash;
       v30->_patientHash = v38;
     }
 
     else
     {
-      v40 = v28;
-      v37 = v27;
+      v40 = hashCopy;
+      v37 = credentialCopy;
       v36 = v30->_patientHash;
       v30->_patientHash = v40;
     }
 
-    v41 = [v75 copy];
+    v41 = [dateCopy copy];
     creationDate = v30->_creationDate;
     v30->_creationDate = v41;
 
@@ -88,27 +88,27 @@
     lastFetchDate = v30->_lastFetchDate;
     v30->_lastFetchDate = v44;
 
-    v46 = [v21 copy];
+    v46 = [fullFetchDateCopy copy];
     lastFullFetchDate = v30->_lastFullFetchDate;
     v30->_lastFullFetchDate = v46;
 
-    v48 = [v76 copy];
+    v48 = [failedFetchDateCopy copy];
     lastFailedFetchDate = v30->_lastFailedFetchDate;
     v30->_lastFailedFetchDate = v48;
 
-    v50 = [v22 copy];
+    v50 = [countCopy copy];
     failedFetchAttemptsCount = v30->_failedFetchAttemptsCount;
     v30->_failedFetchAttemptsCount = v50;
 
-    v52 = [v23 copy];
+    v52 = [dCopy copy];
     lastExtractedRowID = v30->_lastExtractedRowID;
     v30->_lastExtractedRowID = v52;
 
-    v54 = [v25 copy];
+    v54 = [versionCopy copy];
     lastExtractedRulesVersion = v30->_lastExtractedRulesVersion;
     v30->_lastExtractedRulesVersion = v54;
 
-    v56 = [v24 copy];
+    v56 = [iDCopy copy];
     lastSubmittedRowID = v30->_lastSubmittedRowID;
     v30->_lastSubmittedRowID = v56;
 
@@ -116,13 +116,13 @@
     credential = v30->_credential;
     v30->_credential = v58;
 
-    v60 = [v73 copy];
+    v60 = [gatewayCopy copy];
     gateway = v30->_gateway;
     v30->_gateway = v60;
 
-    v29 = v70;
-    v27 = v37;
-    if ((v73 != 0) != (v70 == 0))
+    issuerCopy = v70;
+    credentialCopy = v37;
+    if ((gatewayCopy != 0) != (v70 == 0))
     {
       sub_A7BD8();
     }
@@ -131,11 +131,11 @@
     signedClinicalDataIssuer = v30->_signedClinicalDataIssuer;
     v30->_signedClinicalDataIssuer = v62;
 
-    v64 = [v26 copy];
+    v64 = [statusCopy copy];
     clinicalSharingStatus = v30->_clinicalSharingStatus;
     v30->_clinicalSharingStatus = v64;
 
-    v28 = v72;
+    hashCopy = v72;
   }
 
   return v30;
@@ -145,22 +145,22 @@
 {
   v3 = [NSString alloc];
   v4 = objc_opt_class();
-  v5 = [(HDClinicalAccount *)self identifier];
-  v6 = [v5 UUIDString];
-  v7 = [v3 initWithFormat:@"<%@:%p; identifier:%@; credentialState: %ld>", v4, self, v6, -[HDClinicalAccount credentialState](self, "credentialState")];
+  identifier = [(HDClinicalAccount *)self identifier];
+  uUIDString = [identifier UUIDString];
+  v7 = [v3 initWithFormat:@"<%@:%p; identifier:%@; credentialState: %ld>", v4, self, uUIDString, -[HDClinicalAccount credentialState](self, "credentialState")];
 
   return v7;
 }
 
-- (BOOL)shouldPerformBackgroundFetchWithNowDate:(id)a3
+- (BOOL)shouldPerformBackgroundFetchWithNowDate:(id)date
 {
-  v4 = a3;
-  if (!v4)
+  dateCopy = date;
+  if (!dateCopy)
   {
     sub_A7C48();
   }
 
-  v5 = [v4 dateByAddingTimeInterval:-302400.0];
+  v5 = [dateCopy dateByAddingTimeInterval:-302400.0];
   lastFetchDate = self->_lastFetchDate;
   if (lastFetchDate)
   {
@@ -173,23 +173,23 @@
   }
 
   v8 = v7;
-  v9 = [[NSDateInterval alloc] initWithStartDate:v5 endDate:v4];
+  v9 = [[NSDateInterval alloc] initWithStartDate:v5 endDate:dateCopy];
   v10 = [v9 containsDate:v8];
 
   return v10 ^ 1;
 }
 
-- (BOOL)shouldPerformFetchWithNowDate:(id)a3
+- (BOOL)shouldPerformFetchWithNowDate:(id)date
 {
-  v4 = a3;
-  if (!v4)
+  dateCopy = date;
+  if (!dateCopy)
   {
     sub_A7CBC();
   }
 
   if ([(HDClinicalAccount *)self _lastFetchAttemptFailed])
   {
-    [(NSDate *)self->_lastFailedFetchDate timeIntervalSinceDate:v4];
+    [(NSDate *)self->_lastFailedFetchDate timeIntervalSinceDate:dateCopy];
     v6 = v5;
     [(HDClinicalAccount *)self _secondsFetchIsBlocked];
     v8 = v6 < -v7;
@@ -222,7 +222,7 @@
 
     v14 = v13;
     v15 = HKDateMax();
-    [v15 timeIntervalSinceDate:v4];
+    [v15 timeIntervalSinceDate:dateCopy];
     v17 = v16;
     [(HDClinicalAccount *)self _secondsFetchIsBlocked];
     v8 = v17 < -v18;
@@ -231,10 +231,10 @@
   return v8;
 }
 
-- (BOOL)shouldPerformFullFetchWithNowDate:(id)a3
+- (BOOL)shouldPerformFullFetchWithNowDate:(id)date
 {
-  v4 = a3;
-  if (!v4)
+  dateCopy = date;
+  if (!dateCopy)
   {
     sub_A7D30();
   }
@@ -242,7 +242,7 @@
   lastFullFetchDate = self->_lastFullFetchDate;
   if (lastFullFetchDate)
   {
-    [(NSDate *)lastFullFetchDate timeIntervalSinceDate:v4];
+    [(NSDate *)lastFullFetchDate timeIntervalSinceDate:dateCopy];
     v7 = v6;
     [(HDClinicalAccount *)self _secondsFullFetchIsBlocked];
     if (v7 >= -v8)
@@ -252,7 +252,7 @@
 
     else if ([(HDClinicalAccount *)self _lastFetchAttemptFailed])
     {
-      [(NSDate *)self->_lastFailedFetchDate timeIntervalSinceDate:v4];
+      [(NSDate *)self->_lastFailedFetchDate timeIntervalSinceDate:dateCopy];
       v10 = v9;
       [(HDClinicalAccount *)self _secondsBlockedIfLastAttemptFailed];
       v12 = v11;
@@ -273,7 +273,7 @@
 
   else
   {
-    v14 = [(HDClinicalAccount *)self shouldPerformFetchWithNowDate:v4];
+    v14 = [(HDClinicalAccount *)self shouldPerformFetchWithNowDate:dateCopy];
   }
 
   return v14;
@@ -310,10 +310,10 @@
         _os_log_impl(&dword_0, v7, OS_LOG_TYPE_INFO, "%{public}@ the fetch block time has been overriden. Current override %@ minutes", v11, 0x16u);
       }
 
-      v9 = [v5 unsignedIntegerValue];
-      if (v4 >= (60 * v9))
+      unsignedIntegerValue = [v5 unsignedIntegerValue];
+      if (v4 >= (60 * unsignedIntegerValue))
       {
-        v4 = (60 * v9);
+        v4 = (60 * unsignedIntegerValue);
       }
     }
   }
@@ -333,15 +333,15 @@
     return 86400.0;
   }
 
-  v3 = [(NSNumber *)self->_failedFetchAttemptsCount unsignedIntegerValue];
-  if (v3 <= 1)
+  unsignedIntegerValue = [(NSNumber *)self->_failedFetchAttemptsCount unsignedIntegerValue];
+  if (unsignedIntegerValue <= 1)
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = v3;
+    v4 = unsignedIntegerValue;
   }
 
   return pow(v4, 3.0) * 600.0;
@@ -370,10 +370,10 @@
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_INFO, "%{public}@ the full fetch block time has been overriden. Current override %@ minutes", v10, 0x16u);
     }
 
-    v7 = [v3 unsignedIntegerValue];
-    if ((60 * v7) <= 2592000.0)
+    unsignedIntegerValue = [v3 unsignedIntegerValue];
+    if ((60 * unsignedIntegerValue) <= 2592000.0)
     {
-      v8 = (60 * v7);
+      v8 = (60 * unsignedIntegerValue);
     }
 
     else
@@ -390,11 +390,11 @@
   return v8;
 }
 
-- (id)_minuteOverrideForUserDefaultsKey:(id)a3
+- (id)_minuteOverrideForUserDefaultsKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[NSUserDefaults standardUserDefaults];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:keyCopy];
 
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -411,25 +411,25 @@
 
 - (BOOL)canDetectUnmergeFromPatientResource
 {
-  v2 = [(HDClinicalAccount *)self gateway];
-  v3 = [v2 FHIRVersion];
-  v4 = [v3 majorVersion] > 3;
+  gateway = [(HDClinicalAccount *)self gateway];
+  fHIRVersion = [gateway FHIRVersion];
+  v4 = [fHIRVersion majorVersion] > 3;
 
   return v4;
 }
 
-- (BOOL)_scopesAreOutdated:(id)a3
+- (BOOL)_scopesAreOutdated:(id)outdated
 {
-  v4 = a3;
-  v5 = [(HDClinicalAccount *)self gateway];
+  outdatedCopy = outdated;
+  gateway = [(HDClinicalAccount *)self gateway];
   v12 = 0;
-  v6 = [v5 authScopeWithError:&v12];
+  v6 = [gateway authScopeWithError:&v12];
   v7 = v12;
 
   if (v6)
   {
     v8 = [HKOAuth2ScopeSet scopesFromScopeString:v6];
-    v9 = [v4 isMissingScopesFrom:v8];
+    v9 = [outdatedCopy isMissingScopesFrom:v8];
   }
 
   else
@@ -447,10 +447,10 @@
   return v9;
 }
 
-- (BOOL)credentialHasOutdatedScopes:(id)a3
+- (BOOL)credentialHasOutdatedScopes:(id)scopes
 {
-  v4 = [a3 requestedScopeString];
-  v5 = [HKOAuth2ScopeSet scopeSetWithScopeString:v4];
+  requestedScopeString = [scopes requestedScopeString];
+  v5 = [HKOAuth2ScopeSet scopeSetWithScopeString:requestedScopeString];
   LOBYTE(self) = [(HDClinicalAccount *)self _scopesAreOutdated:v5];
 
   return self;
@@ -458,10 +458,10 @@
 
 - (BOOL)currentCredentialHasOutdatedScopes
 {
-  v3 = [(HDClinicalAccount *)self credential];
-  if (v3)
+  credential = [(HDClinicalAccount *)self credential];
+  if (credential)
   {
-    v4 = [(HDClinicalAccount *)self credentialHasOutdatedScopes:v3];
+    v4 = [(HDClinicalAccount *)self credentialHasOutdatedScopes:credential];
   }
 
   else
@@ -481,14 +481,14 @@
 
 - (id)currentCredentialScopeSet
 {
-  v2 = [(HDClinicalAccount *)self credential];
-  v3 = v2;
-  if (v2)
+  credential = [(HDClinicalAccount *)self credential];
+  v3 = credential;
+  if (credential)
   {
-    v4 = [v2 scopes];
-    if (v4)
+    scopes = [credential scopes];
+    if (scopes)
     {
-      v5 = [HKOAuth2ScopeSet scopeSetWithScopes:v4];
+      v5 = [HKOAuth2ScopeSet scopeSetWithScopes:scopes];
     }
 
     else
@@ -505,13 +505,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  v6 = v5;
-  if (self != v5)
+  equalCopy = equal;
+  v6 = equalCopy;
+  if (self != equalCopy)
   {
-    v7 = v5;
+    v7 = equalCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -522,12 +522,12 @@ LABEL_98:
     }
 
     identifier = self->_identifier;
-    v9 = [(HDClinicalAccount *)v7 identifier];
+    identifier = [(HDClinicalAccount *)v7 identifier];
     v93 = identifier;
-    if (identifier != v9)
+    if (identifier != identifier)
     {
-      v10 = [(HDClinicalAccount *)v7 identifier];
-      if (!v10)
+      identifier2 = [(HDClinicalAccount *)v7 identifier];
+      if (!identifier2)
       {
         v88 = 0;
         memset(v95, 0, 40);
@@ -546,9 +546,9 @@ LABEL_98:
         goto LABEL_17;
       }
 
-      v88 = v10;
+      v88 = identifier2;
       userEnabled = self->_identifier;
-      v86 = [(HDClinicalAccount *)v7 identifier];
+      identifier3 = [(HDClinicalAccount *)v7 identifier];
       if (![userEnabled isEqual:?])
       {
         v94 = 0;
@@ -570,7 +570,7 @@ LABEL_98:
     }
 
     userEnabled = self->_userEnabled;
-    HIDWORD(v92[5]) = identifier != v9;
+    HIDWORD(v92[5]) = identifier != identifier;
     if (userEnabled != [(HDClinicalAccount *)v7 isUserEnabled]|| (userEnabled = self->_credentialState, userEnabled != [(HDClinicalAccount *)v7 credentialState]))
     {
       v94 = 0;
@@ -590,12 +590,12 @@ LABEL_98:
     }
 
     userEnabled = self->_creationDate;
-    v85 = [(HDClinicalAccount *)v7 creationDate];
-    v18 = userEnabled != v85;
-    if (userEnabled != v85)
+    creationDate = [(HDClinicalAccount *)v7 creationDate];
+    v18 = userEnabled != creationDate;
+    if (userEnabled != creationDate)
     {
-      v19 = [(HDClinicalAccount *)v7 creationDate];
-      if (!v19)
+      creationDate2 = [(HDClinicalAccount *)v7 creationDate];
+      if (!creationDate2)
       {
         v84 = 0;
         v94 = 0;
@@ -616,9 +616,9 @@ LABEL_98:
         goto LABEL_17;
       }
 
-      v84 = v19;
+      v84 = creationDate2;
       userEnabled = self->_creationDate;
-      v82 = [(HDClinicalAccount *)v7 creationDate];
+      creationDate3 = [(HDClinicalAccount *)v7 creationDate];
       if (![userEnabled isEqual:?])
       {
         *(&v92[4] + 4) = 0x100000000;
@@ -642,13 +642,13 @@ LABEL_98:
     }
 
     userEnabled = self->_lastFetchDate;
-    v83 = [(HDClinicalAccount *)v7 lastFetchDate];
-    DWORD1(v95[2]) = userEnabled != v83;
+    lastFetchDate = [(HDClinicalAccount *)v7 lastFetchDate];
+    DWORD1(v95[2]) = userEnabled != lastFetchDate;
     LODWORD(v95[0]) = v18;
-    if (userEnabled != v83)
+    if (userEnabled != lastFetchDate)
     {
-      v28 = [(HDClinicalAccount *)v7 lastFetchDate];
-      if (!v28)
+      lastFetchDate2 = [(HDClinicalAccount *)v7 lastFetchDate];
+      if (!lastFetchDate2)
       {
         v87 = 0;
         memset(v95 + 4, 0, 32);
@@ -670,9 +670,9 @@ LABEL_98:
         goto LABEL_17;
       }
 
-      v87 = v28;
+      v87 = lastFetchDate2;
       userEnabled = self->_lastFetchDate;
-      v80 = [(HDClinicalAccount *)v7 lastFetchDate];
+      lastFetchDate3 = [(HDClinicalAccount *)v7 lastFetchDate];
       if (![userEnabled isEqual:?])
       {
         memset(v95 + 4, 0, 32);
@@ -697,12 +697,12 @@ LABEL_98:
     }
 
     userEnabled = self->_lastFullFetchDate;
-    v81 = [(HDClinicalAccount *)v7 lastFullFetchDate];
-    v29 = userEnabled != v81;
-    if (userEnabled != v81)
+    lastFullFetchDate = [(HDClinicalAccount *)v7 lastFullFetchDate];
+    v29 = userEnabled != lastFullFetchDate;
+    if (userEnabled != lastFullFetchDate)
     {
-      v30 = [(HDClinicalAccount *)v7 lastFullFetchDate];
-      if (!v30)
+      lastFullFetchDate2 = [(HDClinicalAccount *)v7 lastFullFetchDate];
+      if (!lastFullFetchDate2)
       {
         v79 = 0;
         v94 = 0;
@@ -725,9 +725,9 @@ LABEL_98:
         goto LABEL_17;
       }
 
-      v79 = v30;
+      v79 = lastFullFetchDate2;
       userEnabled = self->_lastFullFetchDate;
-      v77 = [(HDClinicalAccount *)v7 lastFullFetchDate];
+      lastFullFetchDate3 = [(HDClinicalAccount *)v7 lastFullFetchDate];
       if (![userEnabled isEqual:?])
       {
         v92[0] = 0;
@@ -754,13 +754,13 @@ LABEL_98:
     }
 
     userEnabled = self->_lastFailedFetchDate;
-    v78 = [(HDClinicalAccount *)v7 lastFailedFetchDate];
-    LODWORD(v95[2]) = userEnabled != v78;
+    lastFailedFetchDate = [(HDClinicalAccount *)v7 lastFailedFetchDate];
+    LODWORD(v95[2]) = userEnabled != lastFailedFetchDate;
     DWORD1(v95[0]) = v29;
-    if (userEnabled != v78)
+    if (userEnabled != lastFailedFetchDate)
     {
-      v31 = [(HDClinicalAccount *)v7 lastFailedFetchDate];
-      if (!v31)
+      lastFailedFetchDate2 = [(HDClinicalAccount *)v7 lastFailedFetchDate];
+      if (!lastFailedFetchDate2)
       {
         v76 = 0;
         v92[0] = 0;
@@ -786,9 +786,9 @@ LABEL_98:
         goto LABEL_17;
       }
 
-      v76 = v31;
+      v76 = lastFailedFetchDate2;
       userEnabled = self->_lastFailedFetchDate;
-      v74 = [(HDClinicalAccount *)v7 lastFailedFetchDate];
+      lastFailedFetchDate3 = [(HDClinicalAccount *)v7 lastFailedFetchDate];
       if (![userEnabled isEqual:?])
       {
         v94 = 0;
@@ -816,12 +816,12 @@ LABEL_98:
     }
 
     userEnabled = self->_failedFetchAttemptsCount;
-    v75 = [(HDClinicalAccount *)v7 failedFetchAttemptsCount];
-    v33 = userEnabled != v75;
-    if (userEnabled != v75)
+    failedFetchAttemptsCount = [(HDClinicalAccount *)v7 failedFetchAttemptsCount];
+    v33 = userEnabled != failedFetchAttemptsCount;
+    if (userEnabled != failedFetchAttemptsCount)
     {
-      v34 = [(HDClinicalAccount *)v7 failedFetchAttemptsCount];
-      if (!v34)
+      failedFetchAttemptsCount2 = [(HDClinicalAccount *)v7 failedFetchAttemptsCount];
+      if (!failedFetchAttemptsCount2)
       {
         v73 = 0;
         v92[0] = 0;
@@ -846,9 +846,9 @@ LABEL_98:
         goto LABEL_17;
       }
 
-      v73 = v34;
+      v73 = failedFetchAttemptsCount2;
       userEnabled = self->_failedFetchAttemptsCount;
-      v71 = [(HDClinicalAccount *)v7 failedFetchAttemptsCount];
+      failedFetchAttemptsCount3 = [(HDClinicalAccount *)v7 failedFetchAttemptsCount];
       if (![userEnabled isEqual:?])
       {
         v90 = 0;
@@ -877,13 +877,13 @@ LABEL_98:
     }
 
     userEnabled = self->_lastExtractedRowID;
-    v72 = [(HDClinicalAccount *)v7 lastExtractedRowID];
-    HIDWORD(v95[1]) = userEnabled != v72;
+    lastExtractedRowID = [(HDClinicalAccount *)v7 lastExtractedRowID];
+    HIDWORD(v95[1]) = userEnabled != lastExtractedRowID;
     HIDWORD(v94) = v33;
-    if (userEnabled != v72)
+    if (userEnabled != lastExtractedRowID)
     {
-      v37 = [(HDClinicalAccount *)v7 lastExtractedRowID];
-      if (!v37)
+      lastExtractedRowID2 = [(HDClinicalAccount *)v7 lastExtractedRowID];
+      if (!lastExtractedRowID2)
       {
         v70 = 0;
         v90 = 0;
@@ -911,9 +911,9 @@ LABEL_98:
         goto LABEL_17;
       }
 
-      v70 = v37;
+      v70 = lastExtractedRowID2;
       userEnabled = self->_lastExtractedRowID;
-      v68 = [(HDClinicalAccount *)v7 lastExtractedRowID];
+      lastExtractedRowID3 = [(HDClinicalAccount *)v7 lastExtractedRowID];
       if (![userEnabled isEqual:?])
       {
         v92[0] = 0;
@@ -943,12 +943,12 @@ LABEL_98:
     }
 
     userEnabled = self->_lastSubmittedRowID;
-    v69 = [(HDClinicalAccount *)v7 lastSubmittedRowID];
-    DWORD2(v95[1]) = userEnabled != v69;
-    if (userEnabled != v69)
+    lastSubmittedRowID = [(HDClinicalAccount *)v7 lastSubmittedRowID];
+    DWORD2(v95[1]) = userEnabled != lastSubmittedRowID;
+    if (userEnabled != lastSubmittedRowID)
     {
-      v40 = [(HDClinicalAccount *)v7 lastSubmittedRowID];
-      if (!v40)
+      lastSubmittedRowID2 = [(HDClinicalAccount *)v7 lastSubmittedRowID];
+      if (!lastSubmittedRowID2)
       {
         v67 = 0;
         *&v91[8] = 0;
@@ -978,9 +978,9 @@ LABEL_98:
         goto LABEL_17;
       }
 
-      v67 = v40;
+      v67 = lastSubmittedRowID2;
       userEnabled = self->_lastSubmittedRowID;
-      v65 = [(HDClinicalAccount *)v7 lastSubmittedRowID];
+      lastSubmittedRowID3 = [(HDClinicalAccount *)v7 lastSubmittedRowID];
       if (![userEnabled isEqual:?])
       {
         *&v91[8] = 0;
@@ -1013,13 +1013,13 @@ LABEL_98:
     }
 
     userEnabled = self->_lastExtractedRulesVersion;
-    v43 = [(HDClinicalAccount *)v7 lastExtractedRulesVersion];
-    DWORD1(v95[1]) = userEnabled != v43;
-    v66 = v43;
-    if (userEnabled != v43)
+    lastExtractedRulesVersion = [(HDClinicalAccount *)v7 lastExtractedRulesVersion];
+    DWORD1(v95[1]) = userEnabled != lastExtractedRulesVersion;
+    v66 = lastExtractedRulesVersion;
+    if (userEnabled != lastExtractedRulesVersion)
     {
-      v44 = [(HDClinicalAccount *)v7 lastExtractedRulesVersion];
-      if (!v44)
+      lastExtractedRulesVersion2 = [(HDClinicalAccount *)v7 lastExtractedRulesVersion];
+      if (!lastExtractedRulesVersion2)
       {
         v64 = 0;
         v47 = v33;
@@ -1051,9 +1051,9 @@ LABEL_98:
         goto LABEL_17;
       }
 
-      v64 = v44;
+      v64 = lastExtractedRulesVersion2;
       userEnabled = self->_lastExtractedRulesVersion;
-      v61 = [(HDClinicalAccount *)v7 lastExtractedRulesVersion];
+      lastExtractedRulesVersion3 = [(HDClinicalAccount *)v7 lastExtractedRulesVersion];
       if (![userEnabled isEqual:?])
       {
         *&v91[4] = 0;
@@ -1086,15 +1086,15 @@ LABEL_98:
     }
 
     userEnabled = self->_credential;
-    v46 = [(HDClinicalAccount *)v7 credential];
-    LODWORD(v95[1]) = userEnabled != v46;
-    v63 = v46;
-    if (userEnabled != v46)
+    credential = [(HDClinicalAccount *)v7 credential];
+    LODWORD(v95[1]) = userEnabled != credential;
+    v63 = credential;
+    if (userEnabled != credential)
     {
-      v62 = [(HDClinicalAccount *)v7 credential];
-      if (!v62)
+      credential2 = [(HDClinicalAccount *)v7 credential];
+      if (!credential2)
       {
-        v62 = 0;
+        credential2 = 0;
         *&v91[8] = 0x100000000;
         *(&v95[0] + 1) = 0;
         LODWORD(v90) = 0;
@@ -1122,7 +1122,7 @@ LABEL_98:
       }
 
       userEnabled = self->_credential;
-      v58 = [(HDClinicalAccount *)v7 credential];
+      credential3 = [(HDClinicalAccount *)v7 credential];
       if (![userEnabled isEqual:?])
       {
         *&v91[8] = 0x100000000;
@@ -1154,14 +1154,14 @@ LABEL_98:
     }
 
     userEnabled = self->_patientHash;
-    v60 = [(HDClinicalAccount *)v7 patientHash];
-    HIDWORD(v95[0]) = userEnabled != v60;
-    if (userEnabled != v60)
+    patientHash = [(HDClinicalAccount *)v7 patientHash];
+    HIDWORD(v95[0]) = userEnabled != patientHash;
+    if (userEnabled != patientHash)
     {
-      v59 = [(HDClinicalAccount *)v7 patientHash];
-      if (!v59)
+      patientHash2 = [(HDClinicalAccount *)v7 patientHash];
+      if (!patientHash2)
       {
-        v59 = 0;
+        patientHash2 = 0;
         LODWORD(v90) = 0;
         v92[0] = 0x100000000;
         *(&v95[0] + 1) = 0x100000000;
@@ -1189,7 +1189,7 @@ LABEL_98:
       }
 
       userEnabled = self->_patientHash;
-      v55 = [(HDClinicalAccount *)v7 patientHash];
+      patientHash3 = [(HDClinicalAccount *)v7 patientHash];
       if (![userEnabled isEqualToString:?])
       {
         v92[0] = 0x100000000;
@@ -1220,14 +1220,14 @@ LABEL_98:
     }
 
     userEnabled = self->_gateway;
-    v57 = [(HDClinicalAccount *)v7 gateway];
-    DWORD2(v95[0]) = userEnabled != v57;
-    if (userEnabled != v57)
+    gateway = [(HDClinicalAccount *)v7 gateway];
+    DWORD2(v95[0]) = userEnabled != gateway;
+    if (userEnabled != gateway)
     {
-      v56 = [(HDClinicalAccount *)v7 gateway];
-      if (!v56)
+      gateway2 = [(HDClinicalAccount *)v7 gateway];
+      if (!gateway2)
       {
-        v56 = 0;
+        gateway2 = 0;
         *v91 = 0x100000000;
         v12 = 0;
         LODWORD(v94) = 0;
@@ -1254,7 +1254,7 @@ LABEL_98:
       }
 
       userEnabled = self->_gateway;
-      v52 = [(HDClinicalAccount *)v7 gateway];
+      gateway3 = [(HDClinicalAccount *)v7 gateway];
       if (![userEnabled isEqual:?])
       {
         v12 = 0;
@@ -1284,14 +1284,14 @@ LABEL_98:
     }
 
     userEnabled = self->_signedClinicalDataIssuer;
-    v54 = [(HDClinicalAccount *)v7 signedClinicalDataIssuer];
-    LODWORD(v94) = userEnabled != v54;
-    if (userEnabled != v54)
+    signedClinicalDataIssuer = [(HDClinicalAccount *)v7 signedClinicalDataIssuer];
+    LODWORD(v94) = userEnabled != signedClinicalDataIssuer;
+    if (userEnabled != signedClinicalDataIssuer)
     {
-      v53 = [(HDClinicalAccount *)v7 signedClinicalDataIssuer];
-      if (!v53)
+      signedClinicalDataIssuer2 = [(HDClinicalAccount *)v7 signedClinicalDataIssuer];
+      if (!signedClinicalDataIssuer2)
       {
-        v53 = 0;
+        signedClinicalDataIssuer2 = 0;
         v13 = 0;
         v14 = 0;
         v15 = 0;
@@ -1318,7 +1318,7 @@ LABEL_98:
       }
 
       userEnabled = self->_signedClinicalDataIssuer;
-      v49 = [(HDClinicalAccount *)v7 signedClinicalDataIssuer];
+      signedClinicalDataIssuer3 = [(HDClinicalAccount *)v7 signedClinicalDataIssuer];
       if (![userEnabled isEqual:?])
       {
         v14 = 0;
@@ -1348,8 +1348,8 @@ LABEL_98:
     }
 
     userEnabled = self->_clinicalSharingStatus;
-    v51 = [(HDClinicalAccount *)v7 clinicalSharingStatus];
-    if (userEnabled == v51)
+    clinicalSharingStatus = [(HDClinicalAccount *)v7 clinicalSharingStatus];
+    if (userEnabled == clinicalSharingStatus)
     {
       v15 = 0;
       v16 = 0;
@@ -1376,8 +1376,8 @@ LABEL_98:
 
     else
     {
-      v50 = [(HDClinicalAccount *)v7 clinicalSharingStatus];
-      if (v50)
+      clinicalSharingStatus2 = [(HDClinicalAccount *)v7 clinicalSharingStatus];
+      if (clinicalSharingStatus2)
       {
         clinicalSharingStatus = self->_clinicalSharingStatus;
         userEnabled = [(HDClinicalAccount *)v7 clinicalSharingStatus];
@@ -1406,7 +1406,7 @@ LABEL_98:
 
       else
       {
-        v50 = 0;
+        clinicalSharingStatus2 = 0;
         v16 = 0;
         v17 = 0;
         *(&v92[4] + 4) = 0x100000001;
@@ -1434,7 +1434,7 @@ LABEL_98:
 LABEL_17:
     if (v16)
     {
-      v20 = v9;
+      v20 = identifier;
       v21 = v13;
       v22 = v12;
       v23 = v11;
@@ -1446,7 +1446,7 @@ LABEL_17:
       v11 = v23;
       v12 = v22;
       v13 = v21;
-      v9 = v20;
+      identifier = v20;
       if (!v26)
       {
         goto LABEL_19;
@@ -1607,7 +1607,7 @@ LABEL_21:
         {
         }
 
-        if (v93 != v9)
+        if (v93 != identifier)
         {
         }
 
@@ -1642,13 +1642,13 @@ LABEL_99:
 
 - (HKClinicalAccountProvenance)hkClinicalAccountProvenance
 {
-  v3 = [(HDClinicalAccount *)self gateway];
+  gateway = [(HDClinicalAccount *)self gateway];
 
-  if (v3)
+  if (gateway)
   {
     v4 = [HKClinicalGateway alloc];
-    v5 = [(HDClinicalAccount *)self gateway];
-    v6 = [v4 initWithDaemonClinicalGateway:v5];
+    gateway2 = [(HDClinicalAccount *)self gateway];
+    v6 = [v4 initWithDaemonClinicalGateway:gateway2];
 
     v7 = [[HKClinicalAccountProvenance alloc] initWithGateway:v6];
 LABEL_3:
@@ -1657,9 +1657,9 @@ LABEL_3:
     goto LABEL_6;
   }
 
-  v9 = [(HDClinicalAccount *)self signedClinicalDataIssuer];
+  signedClinicalDataIssuer = [(HDClinicalAccount *)self signedClinicalDataIssuer];
 
-  if (!v9)
+  if (!signedClinicalDataIssuer)
   {
     _HKInitializeLogging();
     v13 = HKLogHealthRecords;
@@ -1674,8 +1674,8 @@ LABEL_3:
   }
 
   v10 = [HKClinicalAccountProvenance alloc];
-  v11 = [(HDClinicalAccount *)self signedClinicalDataIssuer];
-  v8 = [v10 initWithSignedClinicalDataIssuer:v11];
+  signedClinicalDataIssuer2 = [(HDClinicalAccount *)self signedClinicalDataIssuer];
+  v8 = [v10 initWithSignedClinicalDataIssuer:signedClinicalDataIssuer2];
 
 LABEL_6:
 
@@ -1684,15 +1684,15 @@ LABEL_6:
 
 - (int64_t)hkState
 {
-  v3 = [(HDClinicalAccount *)self gateway];
-  v4 = [v3 lastReportedStatus];
+  gateway = [(HDClinicalAccount *)self gateway];
+  lastReportedStatus = [gateway lastReportedStatus];
 
-  if (v4 == &dword_0 + 2)
+  if (lastReportedStatus == &dword_0 + 2)
   {
     return 4;
   }
 
-  if (v4 == &dword_0 + 3)
+  if (lastReportedStatus == &dword_0 + 3)
   {
     return 5;
   }
@@ -1707,9 +1707,9 @@ LABEL_6:
     return 3;
   }
 
-  v6 = [(HDClinicalAccount *)self credential];
+  credential = [(HDClinicalAccount *)self credential];
 
-  if (!v6)
+  if (!credential)
   {
     return 0;
   }

@@ -1,10 +1,10 @@
 @interface XDCAppMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation XDCAppMetadata
@@ -14,8 +14,8 @@
   v7.receiver = self;
   v7.super_class = XDCAppMetadata;
   v3 = [(XDCAppMetadata *)&v7 description];
-  v4 = [(XDCAppMetadata *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(XDCAppMetadata *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -264,9 +264,9 @@ LABEL_50:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 0x10) != 0)
   {
     PBDataWriterWriteInt32Field();
@@ -490,9 +490,9 @@ LABEL_55:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 0x10) != 0)
   {
@@ -500,15 +500,15 @@ LABEL_55:
     *(v5 + 104) |= 0x10u;
   }
 
-  v7 = [(NSString *)self->_altDSID copyWithZone:a3];
+  v7 = [(NSString *)self->_altDSID copyWithZone:zone];
   v8 = *(v6 + 40);
   *(v6 + 40) = v7;
 
-  v9 = [(NSString *)self->_appleID copyWithZone:a3];
+  v9 = [(NSString *)self->_appleID copyWithZone:zone];
   v10 = *(v6 + 48);
   *(v6 + 48) = v9;
 
-  v11 = [(NSString *)self->_bundleID copyWithZone:a3];
+  v11 = [(NSString *)self->_bundleID copyWithZone:zone];
   v12 = *(v6 + 72);
   *(v6 + 72) = v11;
 
@@ -518,7 +518,7 @@ LABEL_55:
     *(v6 + 208) |= 1u;
   }
 
-  v13 = [(NSString *)self->_externalIDString copyWithZone:a3];
+  v13 = [(NSString *)self->_externalIDString copyWithZone:zone];
   v14 = *(v6 + 88);
   *(v6 + 88) = v13;
 
@@ -555,11 +555,11 @@ LABEL_8:
   }
 
 LABEL_9:
-  v16 = [(NSString *)self->_redownloadParams copyWithZone:a3];
+  v16 = [(NSString *)self->_redownloadParams copyWithZone:zone];
   v17 = *(v6 + 152);
   *(v6 + 152) = v16;
 
-  v18 = [(NSString *)self->_artworkURLString copyWithZone:a3];
+  v18 = [(NSString *)self->_artworkURLString copyWithZone:zone];
   v19 = *(v6 + 56);
   *(v6 + 56) = v18;
 
@@ -569,7 +569,7 @@ LABEL_9:
     *(v6 + 208) |= 0x20u;
   }
 
-  v20 = [(NSString *)self->_itemName copyWithZone:a3];
+  v20 = [(NSString *)self->_itemName copyWithZone:zone];
   v21 = *(v6 + 96);
   *(v6 + 96) = v20;
 
@@ -579,31 +579,31 @@ LABEL_9:
     *(v6 + 208) |= 0x400u;
   }
 
-  v22 = [(NSString *)self->_messagesArtworkURLString copyWithZone:a3];
+  v22 = [(NSString *)self->_messagesArtworkURLString copyWithZone:zone];
   v23 = *(v6 + 112);
   *(v6 + 112) = v22;
 
-  v24 = [(NSData *)self->_packageDPInfo copyWithZone:a3];
+  v24 = [(NSData *)self->_packageDPInfo copyWithZone:zone];
   v25 = *(v6 + 120);
   *(v6 + 120) = v24;
 
-  v26 = [(NSData *)self->_packageSINF copyWithZone:a3];
+  v26 = [(NSData *)self->_packageSINF copyWithZone:zone];
   v27 = *(v6 + 128);
   *(v6 + 128) = v26;
 
-  v28 = [(NSString *)self->_packageURLString copyWithZone:a3];
+  v28 = [(NSString *)self->_packageURLString copyWithZone:zone];
   v29 = *(v6 + 136);
   *(v6 + 136) = v28;
 
-  v30 = [(NSString *)self->_storeCohort copyWithZone:a3];
+  v30 = [(NSString *)self->_storeCohort copyWithZone:zone];
   v31 = *(v6 + 160);
   *(v6 + 160) = v30;
 
-  v32 = [(NSString *)self->_storeFront copyWithZone:a3];
+  v32 = [(NSString *)self->_storeFront copyWithZone:zone];
   v33 = *(v6 + 168);
   *(v6 + 168) = v32;
 
-  v34 = [(NSString *)self->_vendorName copyWithZone:a3];
+  v34 = [(NSString *)self->_vendorName copyWithZone:zone];
   v35 = *(v6 + 192);
   *(v6 + 192) = v34;
 
@@ -626,7 +626,7 @@ LABEL_9:
           objc_enumerationMutation(v36);
         }
 
-        v41 = [*(*(&v52 + 1) + 8 * i) copyWithZone:{a3, v52}];
+        v41 = [*(*(&v52 + 1) + 8 * i) copyWithZone:{zone, v52}];
         sub_1002FAD58(v6, v41);
       }
 
@@ -636,7 +636,7 @@ LABEL_9:
     while (v38);
   }
 
-  v42 = [(NSString *)self->_variantID copyWithZone:a3];
+  v42 = [(NSString *)self->_variantID copyWithZone:zone];
   v43 = *(v6 + 184);
   *(v6 + 184) = v42;
 
@@ -688,11 +688,11 @@ LABEL_24:
   }
 
 LABEL_25:
-  v45 = [(NSString *)self->_bundleVersion copyWithZone:a3, v52];
+  v45 = [(NSString *)self->_bundleVersion copyWithZone:zone, v52];
   v46 = *(v6 + 80);
   *(v6 + 80) = v45;
 
-  v47 = [(NSString *)self->_manifestURLString copyWithZone:a3];
+  v47 = [(NSString *)self->_manifestURLString copyWithZone:zone];
   v48 = *(v6 + 104);
   *(v6 + 104) = v47;
 
@@ -702,7 +702,7 @@ LABEL_25:
     *(v6 + 208) |= 0x1000u;
   }
 
-  v49 = [(NSString *)self->_betaBuildGroupID copyWithZone:a3];
+  v49 = [(NSString *)self->_betaBuildGroupID copyWithZone:zone];
   v50 = *(v6 + 64);
   *(v6 + 64) = v49;
 
@@ -715,18 +715,18 @@ LABEL_25:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_91;
   }
 
-  v5 = *(v4 + 104);
+  v5 = *(equalCopy + 104);
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((v5 & 0x10) == 0 || self->_type != *(v4 + 44))
+    if ((v5 & 0x10) == 0 || self->_type != *(equalCopy + 44))
     {
       goto LABEL_91;
     }
@@ -738,13 +738,13 @@ LABEL_25:
   }
 
   altDSID = self->_altDSID;
-  if (altDSID | *(v4 + 5) && ![(NSString *)altDSID isEqual:?])
+  if (altDSID | *(equalCopy + 5) && ![(NSString *)altDSID isEqual:?])
   {
     goto LABEL_91;
   }
 
   appleID = self->_appleID;
-  if (appleID | *(v4 + 6))
+  if (appleID | *(equalCopy + 6))
   {
     if (![(NSString *)appleID isEqual:?])
     {
@@ -753,7 +753,7 @@ LABEL_25:
   }
 
   bundleID = self->_bundleID;
-  if (bundleID | *(v4 + 9))
+  if (bundleID | *(equalCopy + 9))
   {
     if (![(NSString *)bundleID isEqual:?])
     {
@@ -762,10 +762,10 @@ LABEL_25:
   }
 
   has = self->_has;
-  v10 = *(v4 + 104);
+  v10 = *(equalCopy + 104);
   if (has)
   {
-    if ((v10 & 1) == 0 || self->_downloaderID != *(v4 + 1))
+    if ((v10 & 1) == 0 || self->_downloaderID != *(equalCopy + 1))
     {
       goto LABEL_91;
     }
@@ -777,7 +777,7 @@ LABEL_25:
   }
 
   externalIDString = self->_externalIDString;
-  if (externalIDString | *(v4 + 11))
+  if (externalIDString | *(equalCopy + 11))
   {
     if (![(NSString *)externalIDString isEqual:?])
     {
@@ -785,12 +785,12 @@ LABEL_25:
     }
 
     has = self->_has;
-    v10 = *(v4 + 104);
+    v10 = *(equalCopy + 104);
   }
 
   if ((has & 2) != 0)
   {
-    if ((v10 & 2) == 0 || self->_externalVersionID != *(v4 + 2))
+    if ((v10 & 2) == 0 || self->_externalVersionID != *(equalCopy + 2))
     {
       goto LABEL_91;
     }
@@ -803,7 +803,7 @@ LABEL_25:
 
   if ((has & 4) != 0)
   {
-    if ((v10 & 4) == 0 || self->_itemID != *(v4 + 3))
+    if ((v10 & 4) == 0 || self->_itemID != *(equalCopy + 3))
     {
       goto LABEL_91;
     }
@@ -816,7 +816,7 @@ LABEL_25:
 
   if ((has & 8) != 0)
   {
-    if ((v10 & 8) == 0 || self->_purchaserID != *(v4 + 4))
+    if ((v10 & 8) == 0 || self->_purchaserID != *(equalCopy + 4))
     {
       goto LABEL_91;
     }
@@ -828,13 +828,13 @@ LABEL_25:
   }
 
   redownloadParams = self->_redownloadParams;
-  if (redownloadParams | *(v4 + 19) && ![(NSString *)redownloadParams isEqual:?])
+  if (redownloadParams | *(equalCopy + 19) && ![(NSString *)redownloadParams isEqual:?])
   {
     goto LABEL_91;
   }
 
   artworkURLString = self->_artworkURLString;
-  if (artworkURLString | *(v4 + 7))
+  if (artworkURLString | *(equalCopy + 7))
   {
     if (![(NSString *)artworkURLString isEqual:?])
     {
@@ -843,7 +843,7 @@ LABEL_25:
   }
 
   v14 = self->_has;
-  v15 = *(v4 + 104);
+  v15 = *(equalCopy + 104);
   if ((v14 & 0x20) != 0)
   {
     if ((v15 & 0x20) == 0)
@@ -853,13 +853,13 @@ LABEL_25:
 
     if (self->_containsMessagesExtension)
     {
-      if ((*(v4 + 200) & 1) == 0)
+      if ((*(equalCopy + 200) & 1) == 0)
       {
         goto LABEL_91;
       }
     }
 
-    else if (*(v4 + 200))
+    else if (*(equalCopy + 200))
     {
       goto LABEL_91;
     }
@@ -871,7 +871,7 @@ LABEL_25:
   }
 
   itemName = self->_itemName;
-  if (itemName | *(v4 + 12))
+  if (itemName | *(equalCopy + 12))
   {
     if (![(NSString *)itemName isEqual:?])
     {
@@ -879,7 +879,7 @@ LABEL_25:
     }
 
     v14 = self->_has;
-    v15 = *(v4 + 104);
+    v15 = *(equalCopy + 104);
   }
 
   if ((v14 & 0x400) != 0)
@@ -891,13 +891,13 @@ LABEL_25:
 
     if (self->_launchProhibited)
     {
-      if ((*(v4 + 205) & 1) == 0)
+      if ((*(equalCopy + 205) & 1) == 0)
       {
         goto LABEL_91;
       }
     }
 
-    else if (*(v4 + 205))
+    else if (*(equalCopy + 205))
     {
       goto LABEL_91;
     }
@@ -909,13 +909,13 @@ LABEL_25:
   }
 
   messagesArtworkURLString = self->_messagesArtworkURLString;
-  if (messagesArtworkURLString | *(v4 + 14) && ![(NSString *)messagesArtworkURLString isEqual:?])
+  if (messagesArtworkURLString | *(equalCopy + 14) && ![(NSString *)messagesArtworkURLString isEqual:?])
   {
     goto LABEL_91;
   }
 
   packageDPInfo = self->_packageDPInfo;
-  if (packageDPInfo | *(v4 + 15))
+  if (packageDPInfo | *(equalCopy + 15))
   {
     if (![(NSData *)packageDPInfo isEqual:?])
     {
@@ -924,7 +924,7 @@ LABEL_25:
   }
 
   packageSINF = self->_packageSINF;
-  if (packageSINF | *(v4 + 16))
+  if (packageSINF | *(equalCopy + 16))
   {
     if (![(NSData *)packageSINF isEqual:?])
     {
@@ -933,7 +933,7 @@ LABEL_25:
   }
 
   packageURLString = self->_packageURLString;
-  if (packageURLString | *(v4 + 17))
+  if (packageURLString | *(equalCopy + 17))
   {
     if (![(NSString *)packageURLString isEqual:?])
     {
@@ -942,7 +942,7 @@ LABEL_25:
   }
 
   storeCohort = self->_storeCohort;
-  if (storeCohort | *(v4 + 20))
+  if (storeCohort | *(equalCopy + 20))
   {
     if (![(NSString *)storeCohort isEqual:?])
     {
@@ -951,7 +951,7 @@ LABEL_25:
   }
 
   storeFront = self->_storeFront;
-  if (storeFront | *(v4 + 21))
+  if (storeFront | *(equalCopy + 21))
   {
     if (![(NSString *)storeFront isEqual:?])
     {
@@ -960,7 +960,7 @@ LABEL_25:
   }
 
   vendorName = self->_vendorName;
-  if (vendorName | *(v4 + 24))
+  if (vendorName | *(equalCopy + 24))
   {
     if (![(NSString *)vendorName isEqual:?])
     {
@@ -969,7 +969,7 @@ LABEL_25:
   }
 
   provisioningProfiles = self->_provisioningProfiles;
-  if (provisioningProfiles | *(v4 + 18))
+  if (provisioningProfiles | *(equalCopy + 18))
   {
     if (![(NSMutableArray *)provisioningProfiles isEqual:?])
     {
@@ -978,7 +978,7 @@ LABEL_25:
   }
 
   variantID = self->_variantID;
-  if (variantID | *(v4 + 23))
+  if (variantID | *(equalCopy + 23))
   {
     if (![(NSString *)variantID isEqual:?])
     {
@@ -987,29 +987,29 @@ LABEL_25:
   }
 
   v26 = self->_has;
-  v27 = *(v4 + 104);
+  v27 = *(equalCopy + 104);
   if ((v26 & 0x800) != 0)
   {
-    if ((*(v4 + 104) & 0x800) == 0)
+    if ((*(equalCopy + 104) & 0x800) == 0)
     {
       goto LABEL_91;
     }
 
     if (self->_skipIfInstalled)
     {
-      if ((*(v4 + 206) & 1) == 0)
+      if ((*(equalCopy + 206) & 1) == 0)
       {
         goto LABEL_91;
       }
     }
 
-    else if (*(v4 + 206))
+    else if (*(equalCopy + 206))
     {
       goto LABEL_91;
     }
   }
 
-  else if ((*(v4 + 104) & 0x800) != 0)
+  else if ((*(equalCopy + 104) & 0x800) != 0)
   {
     goto LABEL_91;
   }
@@ -1023,13 +1023,13 @@ LABEL_25:
 
     if (self->_isBeta)
     {
-      if ((*(v4 + 201) & 1) == 0)
+      if ((*(equalCopy + 201) & 1) == 0)
       {
         goto LABEL_91;
       }
     }
 
-    else if (*(v4 + 201))
+    else if (*(equalCopy + 201))
     {
       goto LABEL_91;
     }
@@ -1042,26 +1042,26 @@ LABEL_25:
 
   if ((*&self->_has & 0x100) != 0)
   {
-    if ((*(v4 + 104) & 0x100) == 0)
+    if ((*(equalCopy + 104) & 0x100) == 0)
     {
       goto LABEL_91;
     }
 
     if (self->_isSystemApp)
     {
-      if ((*(v4 + 203) & 1) == 0)
+      if ((*(equalCopy + 203) & 1) == 0)
       {
         goto LABEL_91;
       }
     }
 
-    else if (*(v4 + 203))
+    else if (*(equalCopy + 203))
     {
       goto LABEL_91;
     }
   }
 
-  else if ((*(v4 + 104) & 0x100) != 0)
+  else if ((*(equalCopy + 104) & 0x100) != 0)
   {
     goto LABEL_91;
   }
@@ -1075,13 +1075,13 @@ LABEL_25:
 
     if (self->_isStoreApp)
     {
-      if ((*(v4 + 202) & 1) == 0)
+      if ((*(equalCopy + 202) & 1) == 0)
       {
         goto LABEL_91;
       }
     }
 
-    else if (*(v4 + 202))
+    else if (*(equalCopy + 202))
     {
       goto LABEL_91;
     }
@@ -1093,13 +1093,13 @@ LABEL_25:
   }
 
   bundleVersion = self->_bundleVersion;
-  if (bundleVersion | *(v4 + 10) && ![(NSString *)bundleVersion isEqual:?])
+  if (bundleVersion | *(equalCopy + 10) && ![(NSString *)bundleVersion isEqual:?])
   {
     goto LABEL_91;
   }
 
   manifestURLString = self->_manifestURLString;
-  if (manifestURLString | *(v4 + 13))
+  if (manifestURLString | *(equalCopy + 13))
   {
     if (![(NSString *)manifestURLString isEqual:?])
     {
@@ -1108,35 +1108,35 @@ LABEL_25:
   }
 
   v30 = self->_has;
-  v31 = *(v4 + 104);
+  v31 = *(equalCopy + 104);
   if ((v30 & 0x1000) != 0)
   {
-    if ((*(v4 + 104) & 0x1000) == 0)
+    if ((*(equalCopy + 104) & 0x1000) == 0)
     {
       goto LABEL_91;
     }
 
     if (self->_suppressDialogs)
     {
-      if ((*(v4 + 207) & 1) == 0)
+      if ((*(equalCopy + 207) & 1) == 0)
       {
         goto LABEL_91;
       }
     }
 
-    else if (*(v4 + 207))
+    else if (*(equalCopy + 207))
     {
       goto LABEL_91;
     }
   }
 
-  else if ((*(v4 + 104) & 0x1000) != 0)
+  else if ((*(equalCopy + 104) & 0x1000) != 0)
   {
     goto LABEL_91;
   }
 
   betaBuildGroupID = self->_betaBuildGroupID;
-  if (betaBuildGroupID | *(v4 + 8))
+  if (betaBuildGroupID | *(equalCopy + 8))
   {
     if (![(NSString *)betaBuildGroupID isEqual:?])
     {
@@ -1144,7 +1144,7 @@ LABEL_25:
     }
 
     v30 = self->_has;
-    v31 = *(v4 + 104);
+    v31 = *(equalCopy + 104);
   }
 
   if ((v30 & 0x200) == 0)
@@ -1157,13 +1157,13 @@ LABEL_25:
   {
     if (self->_isUserInitiated)
     {
-      if (*(v4 + 204))
+      if (*(equalCopy + 204))
       {
         goto LABEL_132;
       }
     }
 
-    else if (!*(v4 + 204))
+    else if (!*(equalCopy + 204))
     {
 LABEL_132:
       v32 = 1;

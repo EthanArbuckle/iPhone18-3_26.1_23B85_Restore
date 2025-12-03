@@ -1,9 +1,9 @@
 @interface AACustodianRecoveryRequestContext
 - (AACustodianRecoveryRequestContext)init;
-- (AACustodianRecoveryRequestContext)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AACustodianRecoveryRequestContext)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AACustodianRecoveryRequestContext
@@ -15,81 +15,81 @@
   v2 = [(AACustodianRecoveryRequestContext *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AFB0] UUID];
-    v4 = [v3 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     telemetryFlowID = v2->_telemetryFlowID;
-    v2->_telemetryFlowID = v4;
+    v2->_telemetryFlowID = uUIDString;
   }
 
   return v2;
 }
 
-- (AACustodianRecoveryRequestContext)initWithCoder:(id)a3
+- (AACustodianRecoveryRequestContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = AACustodianRecoveryRequestContext;
   v5 = [(AACustodianRecoveryRequestContext *)&v23 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_ownerAppleID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_ownerAppleID"];
     ownerAppleID = v5->_ownerAppleID;
     v5->_ownerAppleID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_recoverySessionID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_recoverySessionID"];
     recoverySessionID = v5->_recoverySessionID;
     v5->_recoverySessionID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_code"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_code"];
     recoveryCode = v5->_recoveryCode;
     v5->_recoveryCode = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_custodianUUID"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_custodianUUID"];
     custodianUUID = v5->_custodianUUID;
     v5->_custodianUUID = v12;
 
-    v5->_CLIMode = [v4 decodeBoolForKey:@"_cliMode"];
-    v5->_dataOnlyRecovery = [v4 decodeBoolForKey:@"_dataOnlyRecovery"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_custodianRecoveryToken"];
+    v5->_CLIMode = [coderCopy decodeBoolForKey:@"_cliMode"];
+    v5->_dataOnlyRecovery = [coderCopy decodeBoolForKey:@"_dataOnlyRecovery"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_custodianRecoveryToken"];
     custodianRecoveryToken = v5->_custodianRecoveryToken;
     v5->_custodianRecoveryToken = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_recordBuildVersion"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_recordBuildVersion"];
     recordBuildVersion = v5->_recordBuildVersion;
     v5->_recordBuildVersion = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_telemetryFlowID"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_telemetryFlowID"];
     telemetryFlowID = v5->_telemetryFlowID;
     v5->_telemetryFlowID = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_altDSID"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_altDSID"];
     altDSID = v5->_altDSID;
     v5->_altDSID = v20;
 
-    v5->_isAccountRecovery = [v4 decodeBoolForKey:@"_isAccountRecovery"];
+    v5->_isAccountRecovery = [coderCopy decodeBoolForKey:@"_isAccountRecovery"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   ownerAppleID = self->_ownerAppleID;
-  v5 = a3;
-  [v5 encodeObject:ownerAppleID forKey:@"_ownerAppleID"];
-  [v5 encodeObject:self->_recoverySessionID forKey:@"_recoverySessionID"];
-  [v5 encodeObject:self->_recoveryCode forKey:@"_code"];
-  [v5 encodeObject:self->_custodianUUID forKey:@"_custodianUUID"];
-  [v5 encodeBool:self->_CLIMode forKey:@"_cliMode"];
-  [v5 encodeBool:self->_dataOnlyRecovery forKey:@"_dataOnlyRecovery"];
-  [v5 encodeObject:self->_custodianRecoveryToken forKey:@"_custodianRecoveryToken"];
-  [v5 encodeObject:self->_recordBuildVersion forKey:@"_recordBuildVersion"];
-  [v5 encodeObject:self->_telemetryFlowID forKey:@"_telemetryFlowID"];
-  [v5 encodeObject:self->_altDSID forKey:@"_altDSID"];
-  [v5 encodeBool:self->_isAccountRecovery forKey:@"_isAccountRecovery"];
+  coderCopy = coder;
+  [coderCopy encodeObject:ownerAppleID forKey:@"_ownerAppleID"];
+  [coderCopy encodeObject:self->_recoverySessionID forKey:@"_recoverySessionID"];
+  [coderCopy encodeObject:self->_recoveryCode forKey:@"_code"];
+  [coderCopy encodeObject:self->_custodianUUID forKey:@"_custodianUUID"];
+  [coderCopy encodeBool:self->_CLIMode forKey:@"_cliMode"];
+  [coderCopy encodeBool:self->_dataOnlyRecovery forKey:@"_dataOnlyRecovery"];
+  [coderCopy encodeObject:self->_custodianRecoveryToken forKey:@"_custodianRecoveryToken"];
+  [coderCopy encodeObject:self->_recordBuildVersion forKey:@"_recordBuildVersion"];
+  [coderCopy encodeObject:self->_telemetryFlowID forKey:@"_telemetryFlowID"];
+  [coderCopy encodeObject:self->_altDSID forKey:@"_altDSID"];
+  [coderCopy encodeBool:self->_isAccountRecovery forKey:@"_isAccountRecovery"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[AACustodianRecoveryRequestContext allocWithZone:?]];
   v5 = [(NSString *)self->_ownerAppleID copy];

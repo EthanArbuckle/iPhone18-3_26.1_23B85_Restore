@@ -1,27 +1,27 @@
 @interface MultiAppFallbackGradientView
-- (_TtC22SubscribePageExtension28MultiAppFallbackGradientView)initWithFrame:(CGRect)a3;
+- (_TtC22SubscribePageExtension28MultiAppFallbackGradientView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation MultiAppFallbackGradientView
 
-- (_TtC22SubscribePageExtension28MultiAppFallbackGradientView)initWithFrame:(CGRect)a3
+- (_TtC22SubscribePageExtension28MultiAppFallbackGradientView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = OBJC_IVAR____TtC22SubscribePageExtension28MultiAppFallbackGradientView_overlayGradientView;
   *(&self->super.super.super.super.isa + v9) = [objc_allocWithZone(type metadata accessor for GradientView()) init];
   v14.receiver = self;
   v14.super_class = ObjectType;
-  v10 = [(MultiCornerGradientView *)&v14 initWithFrame:x, y, width, height];
+  height = [(MultiCornerGradientView *)&v14 initWithFrame:x, y, width, height];
   v11 = sub_100713DB4();
-  v12 = *(&v10->super.super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension28MultiAppFallbackGradientView_overlayGradientView);
-  *(&v10->super.super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension28MultiAppFallbackGradientView_overlayGradientView) = v11;
+  v12 = *(&height->super.super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension28MultiAppFallbackGradientView_overlayGradientView);
+  *(&height->super.super.super.super.isa + OBJC_IVAR____TtC22SubscribePageExtension28MultiAppFallbackGradientView_overlayGradientView) = v11;
 
-  return v10;
+  return height;
 }
 
 - (void)layoutSubviews

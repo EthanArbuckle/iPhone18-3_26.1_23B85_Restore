@@ -1,36 +1,36 @@
 @interface PRRenderingServiceClient
-- (PRRenderingServiceClient)initWithEndpoint:(id)a3;
+- (PRRenderingServiceClient)initWithEndpoint:(id)endpoint;
 - (PRRenderingServiceClientDelegate)delegate;
 - (void)_sendAcknowledgment;
 - (void)dealloc;
 - (void)deviceMotionEventGenerationDidStop;
 - (void)deviceMotionEventGenerationWillStart;
 - (void)invalidate;
-- (void)sendMotionEvent:(id)a3;
+- (void)sendMotionEvent:(id)event;
 @end
 
 @implementation PRRenderingServiceClient
 
-- (PRRenderingServiceClient)initWithEndpoint:(id)a3
+- (PRRenderingServiceClient)initWithEndpoint:(id)endpoint
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  endpointCopy = endpoint;
   v19.receiver = self;
   v19.super_class = PRRenderingServiceClient;
   v6 = [(PRRenderingServiceClient *)&v19 init];
   v7 = v6;
-  if (v5 && v6)
+  if (endpointCopy && v6)
   {
     v8 = BSDispatchQueueCreateWithQualityOfService();
     connectionQueue = v7->_connectionQueue;
     v7->_connectionQueue = v8;
 
-    v10 = [MEMORY[0x1E698F490] connectionWithEndpoint:v5];
+    v10 = [MEMORY[0x1E698F490] connectionWithEndpoint:endpointCopy];
     connection = v7->_connection;
     v7->_connection = v10;
 
     v7->_pid = getpid();
-    objc_storeStrong(&v7->_endpoint, a3);
+    objc_storeStrong(&v7->_endpoint, endpoint);
     v12 = v7->_connection;
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
@@ -107,14 +107,14 @@ void __45__PRRenderingServiceClient_initWithEndpoint___block_invoke_3()
 
 - (void)dealloc
 {
-  v1 = [*(a1 + 40) debugDescription];
+  v1 = [*(self + 40) debugDescription];
   OUTLINED_FUNCTION_0_6();
   OUTLINED_FUNCTION_1_3(&dword_1A8AA7000, v2, v3, "PRRenderingServiceClient: Dealloc endpoint: %@, pid: %d", v4, v5, v6, v7, v8);
 }
 
 - (void)invalidate
 {
-  v1 = [*(a1 + 40) debugDescription];
+  v1 = [*(self + 40) debugDescription];
   OUTLINED_FUNCTION_0_6();
   OUTLINED_FUNCTION_1_3(&dword_1A8AA7000, v2, v3, "PRRenderingServiceClient: Connection invalidated with endpoint: %@, pid: %d", v4, v5, v6, v7, v8);
 }
@@ -122,24 +122,24 @@ void __45__PRRenderingServiceClient_initWithEndpoint___block_invoke_3()
 - (void)deviceMotionEventGenerationWillStart
 {
   self->_motionEventsReceivedSinceLastAck = 0;
-  v2 = [(PRRenderingServiceClient *)self delegate];
-  [v2 deviceMotionEventGenerationWillStart];
+  delegate = [(PRRenderingServiceClient *)self delegate];
+  [delegate deviceMotionEventGenerationWillStart];
 }
 
 - (void)deviceMotionEventGenerationDidStop
 {
   self->_motionEventsReceivedSinceLastAck = 0;
-  v2 = [(PRRenderingServiceClient *)self delegate];
-  [v2 deviceMotionEventGenerationDidStop];
+  delegate = [(PRRenderingServiceClient *)self delegate];
+  [delegate deviceMotionEventGenerationDidStop];
 }
 
-- (void)sendMotionEvent:(id)a3
+- (void)sendMotionEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(PRRenderingServiceClient *)self delegate];
-  if (v4)
+  eventCopy = event;
+  delegate = [(PRRenderingServiceClient *)self delegate];
+  if (eventCopy)
   {
-    [v4 rotation];
+    [eventCopy rotation];
   }
 
   else
@@ -147,7 +147,7 @@ void __45__PRRenderingServiceClient_initWithEndpoint___block_invoke_3()
     memset(v7, 0, sizeof(v7));
   }
 
-  [v5 serverDidUpdateMotionWithRotation:v7];
+  [delegate serverDidUpdateMotionWithRotation:v7];
 
   v6 = self->_motionEventsReceivedSinceLastAck + 1;
   self->_motionEventsReceivedSinceLastAck = v6;
@@ -161,7 +161,7 @@ void __45__PRRenderingServiceClient_initWithEndpoint___block_invoke_3()
 - (void)_sendAcknowledgment
 {
   v4 = *MEMORY[0x1E69E9840];
-  v2 = *(a1 + 24);
+  v2 = *(self + 24);
   v3[0] = 67109120;
   v3[1] = v2;
   _os_log_debug_impl(&dword_1A8AA7000, a2, OS_LOG_TYPE_DEBUG, "PRRenderingServiceClient: Sent motion events ack, pid: %d", v3, 8u);

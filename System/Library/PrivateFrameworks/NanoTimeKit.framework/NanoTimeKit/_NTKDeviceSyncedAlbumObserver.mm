@@ -1,28 +1,28 @@
 @interface _NTKDeviceSyncedAlbumObserver
-- (_NTKDeviceSyncedAlbumObserver)initWithDevice:(id)a3;
+- (_NTKDeviceSyncedAlbumObserver)initWithDevice:(id)device;
 - (void)_startObserving;
 - (void)_stopObserving;
-- (void)addObserver:(id)a3;
-- (void)collectionTargetLibraryDidUpdate:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)collectionTargetLibraryDidUpdate:(id)update;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation _NTKDeviceSyncedAlbumObserver
 
-- (_NTKDeviceSyncedAlbumObserver)initWithDevice:(id)a3
+- (_NTKDeviceSyncedAlbumObserver)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v12.receiver = self;
   v12.super_class = _NTKDeviceSyncedAlbumObserver;
   v6 = [(_NTKDeviceSyncedAlbumObserver *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
-    v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    objc_storeStrong(&v6->_device, device);
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v7->_observers;
-    v7->_observers = v8;
+    v7->_observers = weakObjectsHashTable;
 
     v7->_lock._os_unfair_lock_opaque = 0;
     syncedAlbumName = v7->_syncedAlbumName;
@@ -40,24 +40,24 @@
   [(_NTKDeviceSyncedAlbumObserver *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  if (![(NSHashTable *)self->_observers containsObject:v4])
+  if (![(NSHashTable *)self->_observers containsObject:observerCopy])
   {
-    [(NSHashTable *)self->_observers addObject:v4];
+    [(NSHashTable *)self->_observers addObject:observerCopy];
     [(_NTKDeviceSyncedAlbumObserver *)self _startObserving];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   [(_NTKDeviceSyncedAlbumObserver *)self _stopObserving];
 
@@ -66,8 +66,8 @@
 
 - (void)_startObserving
 {
-  v10 = [(NSHashTable *)self->_observers allObjects];
-  if (![v10 count])
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  if (![allObjects count])
   {
     goto LABEL_5;
   }
@@ -84,25 +84,25 @@
   self->_library = v4;
 
   [(NPTOCollectionTargetLibrary *)self->_library addObserver:self];
-  v6 = [(NPTOCollectionTargetLibrary *)self->_library assetCollections];
-  v10 = [v6 anyObject];
+  assetCollections = [(NPTOCollectionTargetLibrary *)self->_library assetCollections];
+  allObjects = [assetCollections anyObject];
 
-  v7 = v10;
-  if (v10)
+  v7 = allObjects;
+  if (allObjects)
   {
-    v8 = _NTKTrueAlbumNameForAssetCollection(v10);
+    v8 = _NTKTrueAlbumNameForAssetCollection(allObjects);
     syncedAlbumName = self->_syncedAlbumName;
     self->_syncedAlbumName = v8;
 
 LABEL_5:
-    v7 = v10;
+    v7 = allObjects;
   }
 }
 
 - (void)_stopObserving
 {
-  v3 = [(NSHashTable *)self->_observers allObjects];
-  v4 = [v3 count];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v4 = [allObjects count];
 
   if (!v4)
   {
@@ -115,30 +115,30 @@ LABEL_5:
   }
 }
 
-- (void)collectionTargetLibraryDidUpdate:(id)a3
+- (void)collectionTargetLibraryDidUpdate:(id)update
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   os_unfair_lock_lock(&self->_lock);
   library = self->_library;
-  if (library == v4)
+  if (library == updateCopy)
   {
-    v6 = [(NPTOCollectionTargetLibrary *)library assetCollections];
-    v7 = [v6 anyObject];
+    assetCollections = [(NPTOCollectionTargetLibrary *)library assetCollections];
+    anyObject = [assetCollections anyObject];
 
     syncedAlbumName = self->_syncedAlbumName;
     self->_syncedAlbumName = 0;
 
-    if (v7)
+    if (anyObject)
     {
-      v9 = _NTKTrueAlbumNameForAssetCollection(v7);
+      v9 = _NTKTrueAlbumNameForAssetCollection(anyObject);
       v10 = self->_syncedAlbumName;
       self->_syncedAlbumName = v9;
     }
 
     v11 = MEMORY[0x277CBEA60];
-    v12 = [(NSHashTable *)self->_observers allObjects];
-    v13 = [v11 arrayWithArray:v12];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v13 = [v11 arrayWithArray:allObjects];
 
     os_unfair_lock_unlock(&self->_lock);
     v21 = 0u;

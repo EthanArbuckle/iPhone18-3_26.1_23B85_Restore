@@ -1,11 +1,11 @@
 @interface OSAXPCServices
-+ (BOOL)handleDREOptInRequestWithParams:(id)a3 fromConnection:(id)a4 forReply:(id)a5;
-+ (BOOL)handleDefaultsRequestWithParams:(id)a3 forReply:(id)a4;
-+ (void)handleStabilityMonitorRequest:(id)a3 fromConnection:(id)a4 forReply:(id)a5;
-- (BOOL)generateCrackShotWithParams:(id)a3;
-- (BOOL)generateStackShotWithParams:(id)a3;
-- (BOOL)generateSystemMemoryResetWithParams:(id)a3;
-- (BOOL)serviceRequest:(id)a3 forOperation:(unint64_t)a4 fromConnection:(id)a5 forReply:(id)a6;
++ (BOOL)handleDREOptInRequestWithParams:(id)params fromConnection:(id)connection forReply:(id)reply;
++ (BOOL)handleDefaultsRequestWithParams:(id)params forReply:(id)reply;
++ (void)handleStabilityMonitorRequest:(id)request fromConnection:(id)connection forReply:(id)reply;
+- (BOOL)generateCrackShotWithParams:(id)params;
+- (BOOL)generateStackShotWithParams:(id)params;
+- (BOOL)generateSystemMemoryResetWithParams:(id)params;
+- (BOOL)serviceRequest:(id)request forOperation:(unint64_t)operation fromConnection:(id)connection forReply:(id)reply;
 - (OSAXPCServices)init;
 - (void)dealloc;
 @end
@@ -71,20 +71,20 @@
   [(OSAXPCServices *)&v4 dealloc];
 }
 
-- (BOOL)serviceRequest:(id)a3 forOperation:(unint64_t)a4 fromConnection:(id)a5 forReply:(id)a6
+- (BOOL)serviceRequest:(id)request forOperation:(unint64_t)operation fromConnection:(id)connection forReply:(id)reply
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  requestCopy = request;
+  connectionCopy = connection;
+  replyCopy = reply;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 0;
-  if (a4 > 6)
+  if (operation > 6)
   {
-    if (a4 <= 8)
+    if (operation <= 8)
     {
-      if (a4 == 7)
+      if (operation == 7)
       {
         v14 = xpc_connection_copy_entitlement_value();
         v15 = v14;
@@ -96,8 +96,8 @@
           block[2] = sub_100010960;
           block[3] = &unk_1000253F8;
           v29 = &v30;
-          v27 = v10;
-          v28 = v12;
+          v27 = requestCopy;
+          v28 = replyCopy;
           dispatch_sync(defaultsQueue, block);
         }
 
@@ -106,7 +106,7 @@
           v24 = &_os_log_default;
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
           {
-            pid = xpc_connection_get_pid(v11);
+            pid = xpc_connection_get_pid(connectionCopy);
             sub_10001607C(buf, pid);
           }
 
@@ -116,22 +116,22 @@
 
       else
       {
-        [OSAXPCServices handleStabilityMonitorRequest:v10 fromConnection:v11 forReply:v12];
+        [OSAXPCServices handleStabilityMonitorRequest:requestCopy fromConnection:connectionCopy forReply:replyCopy];
       }
 
       goto LABEL_30;
     }
 
-    switch(a4)
+    switch(operation)
     {
       case 9uLL:
-        v13 = [OSALogHelper handleLogCleanupRequest:v10 fromConnection:v11 forReply:v12];
+        v13 = [OSALogHelper handleLogCleanupRequest:requestCopy fromConnection:connectionCopy forReply:replyCopy];
         goto LABEL_29;
       case 0xAuLL:
-        v13 = [OSALogHelper overrideMountPathWithXPCRequest:v10 fromConnection:v11];
+        v13 = [OSALogHelper overrideMountPathWithXPCRequest:requestCopy fromConnection:connectionCopy];
         goto LABEL_29;
       case 0xBuLL:
-        v13 = [OSAXPCServices handleDREOptInRequestWithParams:v10 fromConnection:v11 forReply:v12];
+        v13 = [OSAXPCServices handleDREOptInRequestWithParams:requestCopy fromConnection:connectionCopy forReply:replyCopy];
         goto LABEL_29;
     }
 
@@ -144,39 +144,39 @@ LABEL_31:
     goto LABEL_30;
   }
 
-  if (a4 <= 3)
+  if (operation <= 3)
   {
-    if (a4 == 2)
+    if (operation == 2)
     {
-      v13 = [(OSAXPCServices *)self generateStackShotWithParams:v10];
+      v13 = [(OSAXPCServices *)self generateStackShotWithParams:requestCopy];
       goto LABEL_29;
     }
 
-    if (a4 == 3)
+    if (operation == 3)
     {
-      v13 = [(OSAXPCServices *)self generateCrackShotWithParams:v10];
+      v13 = [(OSAXPCServices *)self generateCrackShotWithParams:requestCopy];
       goto LABEL_29;
     }
 
     goto LABEL_31;
   }
 
-  if (a4 == 4)
+  if (operation == 4)
   {
-    v13 = [(OSAXPCServices *)self generateSystemMemoryResetWithParams:v10];
+    v13 = [(OSAXPCServices *)self generateSystemMemoryResetWithParams:requestCopy];
     goto LABEL_29;
   }
 
-  if (a4 != 5)
+  if (operation != 5)
   {
-    v13 = [OSALogHelper createForSubmissionWithXPCRequest:v10 fromConnection:v11 forReply:v12];
+    v13 = [OSALogHelper createForSubmissionWithXPCRequest:requestCopy fromConnection:connectionCopy forReply:replyCopy];
 LABEL_29:
     *(v31 + 24) = v13;
     goto LABEL_30;
   }
 
-  string = xpc_dictionary_get_string(v10, "log_countkey");
-  v18 = xpc_dictionary_get_string(v10, "log_filepath");
+  string = xpc_dictionary_get_string(requestCopy, "log_countkey");
+  v18 = xpc_dictionary_get_string(requestCopy, "log_filepath");
   if (v18)
   {
     v19 = [NSString stringWithUTF8String:v18];
@@ -203,13 +203,13 @@ LABEL_30:
   return v22 & 1;
 }
 
-+ (BOOL)handleDefaultsRequestWithParams:(id)a3 forReply:(id)a4
++ (BOOL)handleDefaultsRequestWithParams:(id)params forReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
-  string = xpc_dictionary_get_string(v5, "defaults_key");
+  paramsCopy = params;
+  replyCopy = reply;
+  string = xpc_dictionary_get_string(paramsCopy, "defaults_key");
   v8 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.osanalytics.internal"];
-  uint64 = xpc_dictionary_get_uint64(v5, "defaults_operation");
+  uint64 = xpc_dictionary_get_uint64(paramsCopy, "defaults_operation");
   v10 = uint64;
   if (uint64 > 1)
   {
@@ -219,17 +219,17 @@ LABEL_30:
       {
         if (uint64 == 4)
         {
-          v11 = xpc_dictionary_get_remote_connection(v6);
+          v11 = xpc_dictionary_get_remote_connection(replyCopy);
           v12 = xpc_connection_copy_entitlement_value();
           v13 = v12;
           if (v12 && xpc_get_type(v12) == &_xpc_type_BOOL && xpc_BOOL_get_value(v13))
           {
-            v14 = [v8 dictionaryRepresentation];
-            v15 = v14;
-            if (v6 && v14)
+            dictionaryRepresentation = [v8 dictionaryRepresentation];
+            v15 = dictionaryRepresentation;
+            if (replyCopy && dictionaryRepresentation)
             {
               v16 = ns2xpc();
-              xpc_dictionary_set_value(v6, "defaults_value", v16);
+              xpc_dictionary_set_value(replyCopy, "defaults_value", v16);
             }
 
             v10 = 1;
@@ -254,7 +254,7 @@ LABEL_43:
         goto LABEL_31;
       }
 
-      v18 = xpc_dictionary_get_value(v5, "defaults_value");
+      v18 = xpc_dictionary_get_value(paramsCopy, "defaults_value");
       if (v18)
       {
         v22 = xpc2ns();
@@ -291,7 +291,7 @@ LABEL_47:
     }
 
     v10 = 0;
-    if (!v6 || !string)
+    if (!replyCopy || !string)
     {
       goto LABEL_49;
     }
@@ -329,7 +329,7 @@ LABEL_39:
     v10 = v28 != 0;
     if (v28)
     {
-      xpc_dictionary_set_value(v6, "defaults_value", v28);
+      xpc_dictionary_set_value(replyCopy, "defaults_value", v28);
     }
 
     goto LABEL_42;
@@ -349,7 +349,7 @@ LABEL_31:
       goto LABEL_49;
     }
 
-    v17 = xpc_dictionary_get_value(v5, "defaults_value");
+    v17 = xpc_dictionary_get_value(paramsCopy, "defaults_value");
     v18 = v17;
     v10 = 0;
     if (string && v17)
@@ -374,12 +374,12 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  if (v6 && string)
+  if (replyCopy && string)
   {
     v26 = [NSString stringWithUTF8String:string];
     v27 = [v8 BOOLForKey:v26];
 
-    xpc_dictionary_set_BOOL(v6, "defaults_value", v27);
+    xpc_dictionary_set_BOOL(replyCopy, "defaults_value", v27);
     v10 = 1;
   }
 
@@ -388,17 +388,17 @@ LABEL_49:
   return v10;
 }
 
-+ (BOOL)handleDREOptInRequestWithParams:(id)a3 fromConnection:(id)a4 forReply:(id)a5
++ (BOOL)handleDREOptInRequestWithParams:(id)params fromConnection:(id)connection forReply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  paramsCopy = params;
+  connectionCopy = connection;
+  replyCopy = reply;
   v10 = +[OSASystemConfiguration sharedInstance];
-  v11 = [v10 isInDeviceRecoveryEnvironment];
+  isInDeviceRecoveryEnvironment = [v10 isInDeviceRecoveryEnvironment];
 
-  if (v11)
+  if (isInDeviceRecoveryEnvironment)
   {
-    uint64 = xpc_dictionary_get_uint64(v7, "dre_optIn_operation");
+    uint64 = xpc_dictionary_get_uint64(paramsCopy, "dre_optIn_operation");
     v13 = +[NSFileManager defaultManager];
     v14 = container_system_group_path_for_identifier();
     if (v14)
@@ -419,14 +419,14 @@ LABEL_49:
             {
               if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
               {
-                sub_1000163B4(v8);
+                sub_1000163B4(connectionCopy);
               }
 
               v22 = 0;
               goto LABEL_32;
             }
 
-            v20 = xpc_dictionary_get_value(v7, "dre_optInValue");
+            v20 = xpc_dictionary_get_value(paramsCopy, "dre_optInValue");
             v21 = v20;
             if (!v20 || xpc_get_type(v20) != &_xpc_type_BOOL)
             {
@@ -489,24 +489,24 @@ LABEL_32:
           }
         }
 
-        else if (v9)
+        else if (replyCopy)
         {
           if ([v13 fileExistsAtPath:v17])
           {
             v24 = [NSDictionary dictionaryWithContentsOfFile:v17];
             v25 = [v24 objectForKeyedSubscript:@"dreOptIn"];
-            v26 = [v25 BOOLValue];
+            bOOLValue = [v25 BOOLValue];
           }
 
           else
           {
-            v26 = 0;
+            bOOLValue = 0;
           }
 
-          xpc_dictionary_set_BOOL(v9, "dre_optInValue", v26);
+          xpc_dictionary_set_BOOL(replyCopy, "dre_optInValue", bOOLValue);
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
           {
-            sub_100016434(v26);
+            sub_100016434(bOOLValue);
           }
 
           v22 = 1;
@@ -544,30 +544,30 @@ LABEL_22:
   return v22;
 }
 
-+ (void)handleStabilityMonitorRequest:(id)a3 fromConnection:(id)a4 forReply:(id)a5
++ (void)handleStabilityMonitorRequest:(id)request fromConnection:(id)connection forReply:(id)reply
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  requestCopy = request;
+  connectionCopy = connection;
+  replyCopy = reply;
   v10 = xpc_connection_copy_entitlement_value();
   v11 = v10;
   if (v10 && xpc_get_type(v10) == &_xpc_type_BOOL && xpc_BOOL_get_value(v11))
   {
-    v12 = xpc_dictionary_get_value(v7, "stability_parameters");
+    v12 = xpc_dictionary_get_value(requestCopy, "stability_parameters");
     if (v12)
     {
       v13 = xpc2ns();
       if (v13)
       {
         v14 = v13;
-        v15 = xpc_dictionary_get_value(v7, "stability_bundleID");
+        v15 = xpc_dictionary_get_value(requestCopy, "stability_bundleID");
         if (!v15)
         {
           [OSAStabilityMonitor evaluateStabilityWithParameters:v14];
-          if (v9)
+          if (replyCopy)
           {
-            xpc_dictionary_set_BOOL(v9, "result", 1);
-            xpc_connection_send_message(v8, v9);
+            xpc_dictionary_set_BOOL(replyCopy, "result", 1);
+            xpc_connection_send_message(connectionCopy, replyCopy);
           }
 
           v23 = 0;
@@ -579,7 +579,7 @@ LABEL_22:
         if (string_ptr)
         {
           v18 = string_ptr;
-          v19 = xpc_dictionary_get_value(v7, "stability_coalitionName");
+          v19 = xpc_dictionary_get_value(requestCopy, "stability_coalitionName");
           v28 = v19;
           if (v19)
           {
@@ -605,15 +605,15 @@ LABEL_31:
             v21 = 0;
           }
 
-          if (v9)
+          if (replyCopy)
           {
             v24 = [NSString stringWithUTF8String:v18];
             v29[0] = _NSConcreteStackBlock;
             v29[1] = 3221225472;
             v29[2] = sub_100011658;
             v29[3] = &unk_100025460;
-            v30 = v9;
-            v31 = v8;
+            v30 = replyCopy;
+            v31 = connectionCopy;
             [OSAStabilityMonitor evaluateStabilityOfBundleID:v24 coalitionName:v21 parameters:v14 completionHandler:v29];
 
             v23 = 0;
@@ -653,7 +653,7 @@ LABEL_34:
     }
 
 LABEL_35:
-    v26 = xpc_copy_description(v7);
+    v26 = xpc_copy_description(requestCopy);
     v27 = OSAStabilityMonitorLogDomain();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
@@ -672,40 +672,40 @@ LABEL_35:
   v12 = OSAStabilityMonitorLogDomain();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    sub_1000165F8(v8, v12);
+    sub_1000165F8(connectionCopy, v12);
   }
 
   v22 = 1;
   v23 = "Client is not entitled to run the stability monitor";
 LABEL_15:
 
-  if (v9 && v22)
+  if (replyCopy && v22)
   {
-    xpc_dictionary_set_BOOL(v9, "result", 0);
+    xpc_dictionary_set_BOOL(replyCopy, "result", 0);
     if (v23)
     {
-      xpc_dictionary_set_string(v9, "error_desc", v23);
+      xpc_dictionary_set_string(replyCopy, "error_desc", v23);
     }
 
-    xpc_connection_send_message(v8, v9);
+    xpc_connection_send_message(connectionCopy, replyCopy);
   }
 }
 
-- (BOOL)generateStackShotWithParams:(id)a3
+- (BOOL)generateStackShotWithParams:(id)params
 {
-  v3 = a3;
+  paramsCopy = params;
   if (qword_10002A460 != -1)
   {
     sub_100016684();
   }
 
-  string = xpc_dictionary_get_string(v3, "reason");
-  v5 = xpc_dictionary_get_string(v3, "caller");
-  uint64 = xpc_dictionary_get_uint64(v3, "exception_code");
+  string = xpc_dictionary_get_string(paramsCopy, "reason");
+  v5 = xpc_dictionary_get_string(paramsCopy, "caller");
+  uint64 = xpc_dictionary_get_uint64(paramsCopy, "exception_code");
   v51 = uint64;
-  v7 = xpc_dictionary_get_uint64(v3, "PID");
-  v8 = xpc_dictionary_get_uint64(v3, "flags");
-  xdict = xpc_dictionary_get_value(v3, "additional_payload");
+  v7 = xpc_dictionary_get_uint64(paramsCopy, "PID");
+  v8 = xpc_dictionary_get_uint64(paramsCopy, "flags");
+  xdict = xpc_dictionary_get_value(paramsCopy, "additional_payload");
   ++dword_10002A480;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
@@ -760,23 +760,23 @@ LABEL_20:
       v20 = v19;
       if (v19)
       {
-        v47 = [v19 name];
+        name = [v19 name];
       }
 
       else
       {
-        v47 = 0;
+        name = 0;
       }
     }
 
     else
     {
-      v47 = 0;
+      name = 0;
     }
 
     v22 = +[OSASystemConfiguration sharedInstance];
-    v23 = [NSString stringWithFormat:@"stackshot_%llx", uint64];
-    v24 = [v22 getTaskingKey:v23];
+    uint64 = [NSString stringWithFormat:@"stackshot_%llx", uint64];
+    v24 = [v22 getTaskingKey:uint64];
 
     v25 = +[NSSet set];
     v26 = +[OSASystemConfiguration sharedInstance];
@@ -791,12 +791,12 @@ LABEL_41:
       if (string)
       {
         v33 = [NSString stringWithUTF8String:string];
-        v28 = [v32 initForPid:v7 process:v47 withReason:v33 exceptionCode:&v51 exceptionCodeCount:1 stackshotFlags:v8];
+        v28 = [v32 initForPid:v7 process:name withReason:v33 exceptionCode:&v51 exceptionCodeCount:1 stackshotFlags:v8];
       }
 
       else
       {
-        v28 = [v31 initForPid:v7 process:v47 withReason:@"(null)" exceptionCode:&v51 exceptionCodeCount:1 stackshotFlags:v8];
+        v28 = [v31 initForPid:v7 process:name withReason:@"(null)" exceptionCode:&v51 exceptionCodeCount:1 stackshotFlags:v8];
       }
 
       clock_gettime_nsec_np(_CLOCK_UPTIME_RAW);
@@ -853,9 +853,9 @@ LABEL_49:
 
     if (v24 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v27 = [v24 BOOLValue];
+      bOOLValue = [v24 BOOLValue];
 
-      if (v27)
+      if (bOOLValue)
       {
         goto LABEL_41;
       }
@@ -922,7 +922,7 @@ LABEL_49:
       }
 
       [NSString stringWithFormat:@"Stackshot wedged (originally requested by %@). Found by %s (ignored %d others)", v11, v14, dword_10002A478];
-      v3 = [objc_claimAutoreleasedReturnValue() UTF8String];
+      paramsCopy = [objc_claimAutoreleasedReturnValue() UTF8String];
       +[OSASystemConfiguration sharedInstance];
       [objc_claimAutoreleasedReturnValue() appleInternal];
       abort_with_reason();
@@ -937,15 +937,15 @@ LABEL_50:
   return v21;
 }
 
-- (BOOL)generateCrackShotWithParams:(id)a3
+- (BOOL)generateCrackShotWithParams:(id)params
 {
-  v3 = a3;
-  string = xpc_dictionary_get_string(v3, "reason");
-  uint64 = xpc_dictionary_get_uint64(v3, "PID");
-  v18 = xpc_dictionary_get_uint64(v3, "ers_namespace");
-  v19 = xpc_dictionary_get_uint64(v3, "ers_code");
-  v20 = xpc_dictionary_get_uint64(v3, "ers_flags");
-  v6 = xpc_dictionary_get_value(v3, "additional_payload");
+  paramsCopy = params;
+  string = xpc_dictionary_get_string(paramsCopy, "reason");
+  uint64 = xpc_dictionary_get_uint64(paramsCopy, "PID");
+  v18 = xpc_dictionary_get_uint64(paramsCopy, "ers_namespace");
+  v19 = xpc_dictionary_get_uint64(paramsCopy, "ers_code");
+  v20 = xpc_dictionary_get_uint64(paramsCopy, "ers_flags");
+  v6 = xpc_dictionary_get_value(paramsCopy, "additional_payload");
 
   v7 = [CDTerminatingStackshotReport alloc];
   v8 = [NSString stringWithUTF8String:string];
@@ -973,11 +973,11 @@ LABEL_50:
   return v11;
 }
 
-- (BOOL)generateSystemMemoryResetWithParams:(id)a3
+- (BOOL)generateSystemMemoryResetWithParams:(id)params
 {
-  v3 = a3;
-  string = xpc_dictionary_get_string(v3, "reason");
-  uint64 = xpc_dictionary_get_uint64(v3, "event_code");
+  paramsCopy = params;
+  string = xpc_dictionary_get_string(paramsCopy, "reason");
+  uint64 = xpc_dictionary_get_uint64(paramsCopy, "event_code");
 
   v6 = [OSASystemMemoryResetReport alloc];
   v7 = v6;

@@ -1,17 +1,17 @@
 @interface SFUnreadIndicator
 - (CGSize)intrinsicContentSize;
-- (SFUnreadIndicator)initWithFrame:(CGRect)a3;
+- (SFUnreadIndicator)initWithFrame:(CGRect)frame;
 - (void)tintColorDidChange;
 @end
 
 @implementation SFUnreadIndicator
 
-- (SFUnreadIndicator)initWithFrame:(CGRect)a3
+- (SFUnreadIndicator)initWithFrame:(CGRect)frame
 {
   v22[4] = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = SFUnreadIndicator;
-  v3 = [(SFUnreadIndicator *)&v21 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFUnreadIndicator *)&v21 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -24,19 +24,19 @@
     [(UIView *)v4->_indicator setTranslatesAutoresizingMaskIntoConstraints:0];
     [(SFUnreadIndicator *)v4 addSubview:v4->_indicator];
     v18 = MEMORY[0x1E696ACD8];
-    v20 = [(UIView *)v4->_indicator centerXAnchor];
-    v19 = [(SFUnreadIndicator *)v4 centerXAnchor];
-    v7 = [v20 constraintEqualToAnchor:v19];
+    centerXAnchor = [(UIView *)v4->_indicator centerXAnchor];
+    centerXAnchor2 = [(SFUnreadIndicator *)v4 centerXAnchor];
+    v7 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v22[0] = v7;
-    v8 = [(UIView *)v4->_indicator centerYAnchor];
-    v9 = [(SFUnreadIndicator *)v4 centerYAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    centerYAnchor = [(UIView *)v4->_indicator centerYAnchor];
+    centerYAnchor2 = [(SFUnreadIndicator *)v4 centerYAnchor];
+    v10 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v22[1] = v10;
-    v11 = [(UIView *)v4->_indicator widthAnchor];
-    v12 = [v11 constraintEqualToConstant:10.0];
+    widthAnchor = [(UIView *)v4->_indicator widthAnchor];
+    v12 = [widthAnchor constraintEqualToConstant:10.0];
     v22[2] = v12;
-    v13 = [(UIView *)v4->_indicator heightAnchor];
-    v14 = [v13 constraintEqualToConstant:10.0];
+    heightAnchor = [(UIView *)v4->_indicator heightAnchor];
+    v14 = [heightAnchor constraintEqualToConstant:10.0];
     v22[3] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:4];
     [v18 activateConstraints:v15];
@@ -61,8 +61,8 @@
   v4.receiver = self;
   v4.super_class = SFUnreadIndicator;
   [(SFUnreadIndicator *)&v4 tintColorDidChange];
-  v3 = [(SFUnreadIndicator *)self tintColor];
-  [(UIView *)self->_indicator setBackgroundColor:v3];
+  tintColor = [(SFUnreadIndicator *)self tintColor];
+  [(UIView *)self->_indicator setBackgroundColor:tintColor];
 }
 
 @end

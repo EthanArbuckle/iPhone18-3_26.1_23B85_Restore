@@ -1,8 +1,8 @@
 @interface MCMClientCodeSignIndex
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToClientCodeSignIndex:(id)a3;
-- (MCMClientCodeSignIndex)initWithCDHash:(id)a3 identifier:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToClientCodeSignIndex:(id)index;
+- (MCMClientCodeSignIndex)initWithCDHash:(id)hash identifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -17,7 +17,7 @@
   return v4 ^ v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9 = *MEMORY[0x1E69E9840];
   v4 = [MCMClientCodeSignIndex alloc];
@@ -28,23 +28,23 @@
   return [(MCMClientCodeSignIndex *)v4 initWithCDHash:cdhash identifier:identifier];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MCMClientCodeSignIndex *)self isEqualToClientCodeSignIndex:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(MCMClientCodeSignIndex *)self isEqualToClientCodeSignIndex:equalCopy];
 
   v6 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (BOOL)isEqualToClientCodeSignIndex:(id)a3
+- (BOOL)isEqualToClientCodeSignIndex:(id)index
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([(NSData *)self->_cdhash isEqualToData:v4[1]])
+  indexCopy = index;
+  if ([(NSData *)self->_cdhash isEqualToData:indexCopy[1]])
   {
-    v5 = [(NSString *)self->_identifier isEqualToString:v4[2]];
+    v5 = [(NSString *)self->_identifier isEqualToString:indexCopy[2]];
   }
 
   else
@@ -56,19 +56,19 @@
   return v5;
 }
 
-- (MCMClientCodeSignIndex)initWithCDHash:(id)a3 identifier:(id)a4
+- (MCMClientCodeSignIndex)initWithCDHash:(id)hash identifier:(id)identifier
 {
   v14 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  hashCopy = hash;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = MCMClientCodeSignIndex;
   v9 = [(MCMClientCodeSignIndex *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cdhash, a3);
-    objc_storeStrong(&v10->_identifier, a4);
+    objc_storeStrong(&v9->_cdhash, hash);
+    objc_storeStrong(&v10->_identifier, identifier);
   }
 
   v11 = *MEMORY[0x1E69E9840];

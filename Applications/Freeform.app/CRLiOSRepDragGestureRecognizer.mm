@@ -1,14 +1,14 @@
 @interface CRLiOSRepDragGestureRecognizer
-- (BOOL)allowTrackerManipulatorToTakeControl:(id)a3;
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3;
+- (BOOL)allowTrackerManipulatorToTakeControl:(id)control;
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer;
 - (BOOL)canDrag;
 - (BOOL)i_beginGestureExternally;
 - (BOOL)p_canBeginDrag;
 - (BOOL)p_currentlyTransformingRepsAreDraggable;
 - (CGPoint)currentPosition;
 - (CRLInteractiveCanvasController)icc;
-- (CRLiOSRepDragGestureRecognizer)initWithInteractiveCanvasController:(id)a3;
-- (CRLiOSRepDragGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (CRLiOSRepDragGestureRecognizer)initWithInteractiveCanvasController:(id)controller;
+- (CRLiOSRepDragGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)cancelBecauseOfRotation;
 - (void)dealloc;
 - (void)didRelinquishControl;
@@ -20,25 +20,25 @@
 - (void)p_delayElapsed;
 - (void)p_setTrackerPoints;
 - (void)reset;
-- (void)setState:(int64_t)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
-- (void)updateAfterAutoscroll:(id)a3;
+- (void)setState:(int64_t)state;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
+- (void)updateAfterAutoscroll:(id)autoscroll;
 @end
 
 @implementation CRLiOSRepDragGestureRecognizer
 
-- (CRLiOSRepDragGestureRecognizer)initWithInteractiveCanvasController:(id)a3
+- (CRLiOSRepDragGestureRecognizer)initWithInteractiveCanvasController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v18.receiver = self;
   v18.super_class = CRLiOSRepDragGestureRecognizer;
   v5 = [(CRLiOSRepDragGestureRecognizer *)&v18 initWithTarget:0 action:0];
   if (v5)
   {
-    if (!v4)
+    if (!controllerCopy)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -67,7 +67,7 @@
       [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:108 isFatal:0 description:"invalid nil value for '%{public}s'", "icc"];
     }
 
-    objc_storeWeak(&v5->mICC, v4);
+    objc_storeWeak(&v5->mICC, controllerCopy);
     v9 = [[NSMapTable alloc] initWithKeyOptions:512 valueOptions:0 capacity:0];
     mOriginalPointsInWindow = v5->mOriginalPointsInWindow;
     v5->mOriginalPointsInWindow = v9;
@@ -90,9 +90,9 @@
   return v5;
 }
 
-- (CRLiOSRepDragGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (CRLiOSRepDragGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  v4 = a3;
+  targetCopy = target;
   v5 = +[CRLAssertionHandler _atomicIncrementAssertCount];
   if (qword_101AD5A10 != -1)
   {
@@ -175,24 +175,24 @@
   }
 
   v6 = [(CRLiOSRepDragGestureRecognizer *)self icc];
-  v7 = [v6 tmCoordinator];
-  v8 = [v7 controllingTM];
+  tmCoordinator = [v6 tmCoordinator];
+  controllingTM = [tmCoordinator controllingTM];
 
-  if (v8 == self)
+  if (controllingTM == self)
   {
-    v9 = [v6 tmCoordinator];
-    [v9 relinquishTrackerManipulatorControl:self];
+    tmCoordinator2 = [v6 tmCoordinator];
+    [tmCoordinator2 relinquishTrackerManipulatorControl:self];
   }
 
   mTracker = self->mTracker;
   if (mTracker)
   {
     [(CRLCanvasRepDragTracker *)mTracker endPossibleRepDragGesture];
-    v11 = [v6 dynamicOperationController];
-    [(CRLiOSRepDragGestureRecognizer *)self removeTarget:v11 action:"handleGestureRecognizer:"];
+    dynamicOperationController = [v6 dynamicOperationController];
+    [(CRLiOSRepDragGestureRecognizer *)self removeTarget:dynamicOperationController action:"handleGestureRecognizer:"];
 
-    v12 = [v6 tmCoordinator];
-    [v12 unregisterTrackerManipulator:self];
+    tmCoordinator3 = [v6 tmCoordinator];
+    [tmCoordinator3 unregisterTrackerManipulator:self];
 
     v13 = self->mTracker;
     self->mTracker = 0;
@@ -244,8 +244,8 @@
     v19 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLiOSRepDragGestureRecognizer.m"];
     [CRLAssertionHandler handleFailureInFunction:v18 file:v19 lineNumber:170 isFatal:0 description:"Should close group before resetting"];
 
-    v20 = [v6 commandController];
-    [v20 closeGroup];
+    commandController = [v6 commandController];
+    [commandController closeGroup];
 
     self->mShouldCloseCommandGroupWhenOperationCompletes = 0;
   }
@@ -255,9 +255,9 @@
   self->mShouldConstrainDueToAdditionalTouches = 0;
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  if ([(CRLiOSRepDragGestureRecognizer *)self state]!= a3)
+  if ([(CRLiOSRepDragGestureRecognizer *)self state]!= state)
   {
     if (qword_101AD5C90 != -1)
     {
@@ -267,19 +267,19 @@
     v5 = off_1019EF740;
     if (os_log_type_enabled(off_1019EF740, OS_LOG_TYPE_DEBUG))
     {
-      sub_101357AD0(a3, v5);
+      sub_101357AD0(state, v5);
     }
 
     v6 = [(CRLiOSRepDragGestureRecognizer *)self icc];
-    v7 = [v6 tmCoordinator];
+    tmCoordinator = [v6 tmCoordinator];
 
-    if (a3 == 3)
+    if (state == 3)
     {
-      v8 = [v7 controllingTM];
+      controllingTM = [tmCoordinator controllingTM];
 
-      if (v8 != self)
+      if (controllingTM != self)
       {
-        if (([v7 takeControlWithTrackerManipulator:self] & 1) == 0)
+        if (([tmCoordinator takeControlWithTrackerManipulator:self] & 1) == 0)
         {
           +[CRLAssertionHandler _atomicIncrementAssertCount];
           if (qword_101AD5A10 != -1)
@@ -315,15 +315,15 @@
 
   v12.receiver = self;
   v12.super_class = CRLiOSRepDragGestureRecognizer;
-  [(CRLiOSRepDragGestureRecognizer *)&v12 setState:a3];
+  [(CRLiOSRepDragGestureRecognizer *)&v12 setState:state];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
+  beganCopy = began;
   v113.receiver = self;
   v113.super_class = CRLiOSRepDragGestureRecognizer;
-  [(CRLiOSRepDragGestureRecognizer *)&v113 touchesBegan:v6 withEvent:a4];
+  [(CRLiOSRepDragGestureRecognizer *)&v113 touchesBegan:beganCopy withEvent:event];
   if (qword_101AD5C90 != -1)
   {
     sub_101357C54();
@@ -336,8 +336,8 @@
   }
 
   v8 = [(CRLiOSRepDragGestureRecognizer *)self icc];
-  v9 = [v8 layerHost];
-  v10 = [v9 asUIKitHost];
+  layerHost = [v8 layerHost];
+  asUIKitHost = [layerHost asUIKitHost];
 
   v100 = v8;
   if (!-[CRLiOSRepDragGestureRecognizer state](self, "state") && [v8 currentlyScrolling])
@@ -356,17 +356,17 @@
     goto LABEL_109;
   }
 
-  v98 = v10;
-  v11 = [v8 tmCoordinator];
-  v103 = self;
-  [v11 registerTrackerManipulator:self];
+  v98 = asUIKitHost;
+  tmCoordinator = [v8 tmCoordinator];
+  selfCopy = self;
+  [tmCoordinator registerTrackerManipulator:self];
 
   v111 = 0u;
   v112 = 0u;
   v109 = 0u;
   v110 = 0u;
-  v94 = v6;
-  obj = v6;
+  v94 = beganCopy;
+  obj = beganCopy;
   v12 = [obj countByEnumeratingWithState:&v109 objects:v121 count:16];
   if (v12)
   {
@@ -382,13 +382,13 @@
         }
 
         v16 = *(*(&v109 + 1) + 8 * i);
-        mOriginalPointsInWindow = v103->mOriginalPointsInWindow;
-        v18 = [v16 window];
-        [v16 locationInView:v18];
+        mOriginalPointsInWindow = selfCopy->mOriginalPointsInWindow;
+        window = [v16 window];
+        [v16 locationInView:window];
         v19 = [NSValue valueWithCGPoint:?];
         [(NSMapTable *)mOriginalPointsInWindow setObject:v19 forKey:v16];
 
-        mOriginalTimestamps = v103->mOriginalTimestamps;
+        mOriginalTimestamps = selfCopy->mOriginalTimestamps;
         [v16 timestamp];
         v21 = [NSNumber numberWithDouble:?];
         [(NSMapTable *)mOriginalTimestamps setObject:v21 forKey:v16];
@@ -406,8 +406,8 @@
   v106 = 0u;
   obja = obj;
   v22 = [obja countByEnumeratingWithState:&v105 objects:v120 count:16];
-  v24 = v103;
-  v10 = v98;
+  v24 = selfCopy;
+  asUIKitHost = v98;
   if (v22)
   {
     v25 = v22;
@@ -430,25 +430,25 @@
         {
           if (v24->mTouch)
           {
-            v39 = [v10 hitRepWithTouch:v28];
-            v40 = [v39 repForDragging];
+            v39 = [asUIKitHost hitRepWithTouch:v28];
+            repForDragging = [v39 repForDragging];
 
-            if (!v40)
+            if (!repForDragging)
             {
               goto LABEL_35;
             }
 
-            if (v24->mRep == v40)
+            if (v24->mRep == repForDragging)
             {
               [(CRLiOSRepDragGestureRecognizer *)v24 setState:5];
 
               goto LABEL_94;
             }
 
-            v41 = [v10 multiSelectGestureRecognizer];
-            v42 = [v41 state];
+            multiSelectGestureRecognizer = [asUIKitHost multiSelectGestureRecognizer];
+            state = [multiSelectGestureRecognizer state];
 
-            if (v42 != 5)
+            if (state != 5)
             {
               [(NSMutableSet *)v24->mTouchesDownOnReps addObject:v28];
               v24->mPassedDragThreshold = 0;
@@ -462,15 +462,15 @@ LABEL_35:
               {
                 if ([(NSMutableSet *)v24->mTouchesDownOnReps count]== 1)
                 {
-                  mTouch = v103->mTouch;
-                  v44 = [v100 canvasView];
-                  [(UITouch *)mTouch locationInView:v44];
+                  mTouch = selfCopy->mTouch;
+                  canvasView = [v100 canvasView];
+                  [(UITouch *)mTouch locationInView:canvasView];
                   [v100 convertBoundsToUnscaledPoint:?];
-                  v103->mOnlyTouchDownLocation.x = v45;
-                  v103->mOnlyTouchDownLocation.y = v46;
-                  v24 = v103;
+                  selfCopy->mOnlyTouchDownLocation.x = v45;
+                  selfCopy->mOnlyTouchDownLocation.y = v46;
+                  v24 = selfCopy;
 
-                  v103->mPassedDragThreshold = 0;
+                  selfCopy->mPassedDragThreshold = 0;
                 }
 
                 v47 = [NSTimer scheduledTimerWithTimeInterval:v24 target:"p_beginConstraining" selector:0 userInfo:0 repeats:0.2];
@@ -485,8 +485,8 @@ LABEL_35:
           objc_storeStrong(&v24->mTouch, v28);
           p_x = &v24->mOnlyTouchDownLocation.x;
           v50 = v24->mTouch;
-          v51 = [v100 canvasView];
-          [(UITouch *)v50 locationInView:v51];
+          canvasView2 = [v100 canvasView];
+          [(UITouch *)v50 locationInView:canvasView2];
           [v100 convertBoundsToUnscaledPoint:?];
           v24->mOnlyTouchDownLocation.x = v52;
           v24->mOnlyTouchDownLocation.y = v53;
@@ -495,31 +495,31 @@ LABEL_35:
           if ([(UITouch *)v24->mTouch tapCount]!= 1)
           {
             [(CRLiOSRepDragGestureRecognizer *)v24 setState:5];
-            v10 = v98;
+            asUIKitHost = v98;
 LABEL_48:
             v26 = v99;
             goto LABEL_49;
           }
 
           v55 = v24->mTouch;
-          v56 = [v100 canvasView];
-          [(UITouch *)v55 locationInView:v56];
+          canvasView3 = [v100 canvasView];
+          [(UITouch *)v55 locationInView:canvasView3];
           [v100 convertBoundsToUnscaledPoint:?];
           v58 = v57;
           v60 = v59;
 
-          v61 = [v100 freehandDrawingToolkit];
-          LOBYTE(v56) = [v61 currentToolAllowsDragForTouchType:-[UITouch type](v24->mTouch atUnscaledPoint:{"type"), v58, v60}];
+          freehandDrawingToolkit = [v100 freehandDrawingToolkit];
+          LOBYTE(canvasView3) = [freehandDrawingToolkit currentToolAllowsDragForTouchType:-[UITouch type](v24->mTouch atUnscaledPoint:{"type"), v58, v60}];
 
-          if ((v56 & 1) == 0)
+          if ((canvasView3 & 1) == 0)
           {
             if (qword_101AD5C90 != -1)
             {
               sub_101357D00();
             }
 
-            v6 = v94;
-            v10 = v98;
+            beganCopy = v94;
+            asUIKitHost = v98;
             if (os_log_type_enabled(off_1019EF740, OS_LOG_TYPE_DEBUG))
             {
               sub_101357D28();
@@ -537,29 +537,29 @@ LABEL_48:
           }
 
           v64 = v63;
-          v65 = [v63 repForDragging];
-          mRep = v103->mRep;
-          v103->mRep = v65;
+          repForDragging2 = [v63 repForDragging];
+          mRep = selfCopy->mRep;
+          selfCopy->mRep = repForDragging2;
 
           v97 = v64;
-          v67 = [v64 repForSelecting];
-          v68 = v103->mRep;
+          repForSelecting = [v64 repForSelecting];
+          v68 = selfCopy->mRep;
 
-          if (v67 != v68)
+          if (repForSelecting != v68)
           {
-            v10 = v98;
+            asUIKitHost = v98;
             if (qword_101AD5C90 != -1)
             {
               sub_101357D5C();
             }
 
-            v6 = v94;
+            beganCopy = v94;
             if (os_log_type_enabled(off_1019EF740, OS_LOG_TYPE_DEBUG))
             {
               sub_101357D84();
             }
 
-            [(CRLiOSRepDragGestureRecognizer *)v103 setState:5];
+            [(CRLiOSRepDragGestureRecognizer *)selfCopy setState:5];
 
 LABEL_108:
             goto LABEL_109;
@@ -569,37 +569,37 @@ LABEL_108:
           v69 = [v100 hitKnobAtPoint:v54 inputType:&v104 returningRep:{v24->mOnlyTouchDownLocation.x, v24->mOnlyTouchDownLocation.y}];
           v70 = v104;
           v71 = v70;
-          v72 = v103->mRep;
+          v72 = selfCopy->mRep;
           if (v72 && !v69)
           {
             v96 = v70;
             [(CRLCanvasRep *)v72 convertNaturalPointFromUnscaledCanvas:v24->mOnlyTouchDownLocation.x, v24->mOnlyTouchDownLocation.y];
             v95 = [(CRLCanvasRep *)v72 hitRepChrome:0 passingTest:?];
-            v103->mHitRepChrome = v103->mRep == v95;
-            [(NSMutableSet *)v103->mTouchesDownOnReps addObject:v28];
-            v103->mDragType = [(CRLCanvasRep *)v103->mRep dragTypeAtCanvasPoint:[(UITouch *)v103->mTouch type] forTouchType:v24->mOnlyTouchDownLocation.x, v24->mOnlyTouchDownLocation.y];
-            v73 = v103->mRep;
-            v74 = [v100 canvasView];
-            [v28 locationInView:v74];
+            selfCopy->mHitRepChrome = selfCopy->mRep == v95;
+            [(NSMutableSet *)selfCopy->mTouchesDownOnReps addObject:v28];
+            selfCopy->mDragType = [(CRLCanvasRep *)selfCopy->mRep dragTypeAtCanvasPoint:[(UITouch *)selfCopy->mTouch type] forTouchType:v24->mOnlyTouchDownLocation.x, v24->mOnlyTouchDownLocation.y];
+            v73 = selfCopy->mRep;
+            canvasView4 = [v100 canvasView];
+            [v28 locationInView:canvasView4];
             [v100 convertBoundsToUnscaledPoint:?];
-            v103->mHUDAndGuidesType = [(CRLCanvasRep *)v73 dragHUDAndGuidesTypeAtCanvasPoint:?];
+            selfCopy->mHUDAndGuidesType = [(CRLCanvasRep *)v73 dragHUDAndGuidesTypeAtCanvasPoint:?];
 
-            v103->mDragState = 1;
+            selfCopy->mDragState = 1;
             v75 = objc_opt_class();
-            v24 = v103;
-            v76 = [(CRLCanvasRep *)v103->mRep info];
-            v77 = sub_100014370(v75, v76);
+            v24 = selfCopy;
+            info = [(CRLCanvasRep *)selfCopy->mRep info];
+            v77 = sub_100014370(v75, info);
 
             if ([v77 allowedToBeDragAndDropped])
             {
-              v78 = [v100 canvasEditor];
-              if ([v78 canvasEditorCanCopyWithSender:0])
+              canvasEditor = [v100 canvasEditor];
+              if ([canvasEditor canvasEditorCanCopyWithSender:0])
               {
                 v79 = +[UIDevice crl_phoneDevice];
 
                 if ((v79 & 1) == 0)
                 {
-                  v103->mPossibleContentionWithSystemDrag = 1;
+                  selfCopy->mPossibleContentionWithSystemDrag = 1;
                 }
               }
 
@@ -608,9 +608,9 @@ LABEL_108:
               }
             }
 
-            v10 = v98;
+            asUIKitHost = v98;
             v71 = v96;
-            if (!v103->mHUDAndGuidesType && v103->mDragType)
+            if (!selfCopy->mHUDAndGuidesType && selfCopy->mDragType)
             {
               v80 = +[CRLAssertionHandler _atomicIncrementAssertCount];
               if (qword_101AD5A10 != -1)
@@ -666,13 +666,13 @@ LABEL_108:
             v85 = off_1019EF740;
             if (os_log_type_enabled(off_1019EF740, OS_LOG_TYPE_DEBUG))
             {
-              mDragType = v103->mDragType;
+              mDragType = selfCopy->mDragType;
               *buf = 134217984;
               *v115 = mDragType;
               _os_log_debug_impl(&_mh_execute_header, v85, OS_LOG_TYPE_DEBUG, "drag type %li", buf, 0xCu);
             }
 
-            v86 = v103->mDragType;
+            v86 = selfCopy->mDragType;
             if (v86 > 1)
             {
               if (v86 != 2 && v86 != 3)
@@ -685,39 +685,39 @@ LABEL_108:
             {
               if (!v86)
               {
-                [(CRLiOSRepDragGestureRecognizer *)v103 setState:5];
+                [(CRLiOSRepDragGestureRecognizer *)selfCopy setState:5];
                 goto LABEL_87;
               }
 
               if (v86 != 1)
               {
 LABEL_87:
-                if (v103->mHUDAndGuidesType == 1)
+                if (selfCopy->mHUDAndGuidesType == 1)
                 {
-                  [(CRLiOSRepDragGestureRecognizer *)v103 p_beginTracking];
+                  [(CRLiOSRepDragGestureRecognizer *)selfCopy p_beginTracking];
                 }
 
                 goto LABEL_90;
               }
             }
 
-            [(CRLiOSRepDragGestureRecognizer *)v103 p_createDelayCallback];
+            [(CRLiOSRepDragGestureRecognizer *)selfCopy p_createDelayCallback];
             goto LABEL_87;
           }
 
-          v24 = v103;
-          [(CRLiOSRepDragGestureRecognizer *)v103 setState:5];
-          v10 = v98;
+          v24 = selfCopy;
+          [(CRLiOSRepDragGestureRecognizer *)selfCopy setState:5];
+          asUIKitHost = v98;
 LABEL_90:
           v26 = v99;
 
           goto LABEL_49;
         }
 
-        v29 = [v10 hitRepWithTouch:v28];
-        v30 = [v29 repForDragging];
+        v29 = [asUIKitHost hitRepWithTouch:v28];
+        repForDragging3 = [v29 repForDragging];
 
-        if (v30 && ([v10 multiSelectGestureRecognizer], v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v31, "state"), v31, v32 != 5))
+        if (repForDragging3 && ([asUIKitHost multiSelectGestureRecognizer], v31 = objc_claimAutoreleasedReturnValue(), v32 = objc_msgSend(v31, "state"), v31, v32 != 5))
         {
           [(NSMutableSet *)v24->mTouchesDownOnReps addObject:v28];
         }
@@ -730,9 +730,9 @@ LABEL_90:
             if ([(NSMutableSet *)v24->mTouchesDownOnReps count]== 1)
             {
               v33 = v24->mTouch;
-              v34 = [v100 canvasView];
-              [(UITouch *)v33 locationInView:v34];
-              v10 = v98;
+              canvasView5 = [v100 canvasView];
+              [(UITouch *)v33 locationInView:canvasView5];
+              asUIKitHost = v98;
               [v100 convertBoundsToUnscaledPoint:?];
               v24->mOnlyTouchDownLocation.x = v35;
               v24->mOnlyTouchDownLocation.y = v36;
@@ -761,7 +761,7 @@ LABEL_49:
 
 LABEL_94:
 
-  v6 = v94;
+  beganCopy = v94;
   if (v24->mTracker && v24->mTouch && [(CRLiOSRepDragGestureRecognizer *)v24 state]!= 5)
   {
     [(CRLiOSRepDragGestureRecognizer *)v24 p_setTrackerPoints];
@@ -770,19 +770,19 @@ LABEL_94:
 LABEL_109:
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a3;
+  movedCopy = moved;
   v92.receiver = self;
   v92.super_class = CRLiOSRepDragGestureRecognizer;
-  [(CRLiOSRepDragGestureRecognizer *)&v92 touchesMoved:v6 withEvent:a4];
+  [(CRLiOSRepDragGestureRecognizer *)&v92 touchesMoved:movedCopy withEvent:event];
   v7 = [(CRLiOSRepDragGestureRecognizer *)self icc];
-  if ([v6 containsObject:self->mTouch])
+  if ([movedCopy containsObject:self->mTouch])
   {
-    v8 = [(CRLiOSRepDragGestureRecognizer *)self state];
-    if ((v8 - 1) >= 2)
+    state = [(CRLiOSRepDragGestureRecognizer *)self state];
+    if ((state - 1) >= 2)
     {
-      if (!v8)
+      if (!state)
       {
         mDragType = self->mDragType;
         [(UITouch *)self->mTouch timestamp];
@@ -790,8 +790,8 @@ LABEL_109:
         v30 = [(NSMapTable *)self->mOriginalTimestamps objectForKey:self->mTouch];
         [v30 doubleValue];
         v32 = v29 - v31;
-        v33 = [(UITouch *)self->mTouch type];
-        v36 = v32 < 0.02 && v33 == UITouchTypeDirect || v33 == UITouchTypeIndirectPointer;
+        type = [(UITouch *)self->mTouch type];
+        v36 = v32 < 0.02 && type == UITouchTypeDirect || type == UITouchTypeIndirectPointer;
         if (mDragType == 3 && v36)
         {
           v37 = 0.05;
@@ -815,8 +815,8 @@ LABEL_109:
           v47 = v46;
           v49 = v48;
           mTouch = self->mTouch;
-          v51 = [(UITouch *)mTouch window];
-          [(UITouch *)mTouch locationInView:v51];
+          window = [(UITouch *)mTouch window];
+          [(UITouch *)mTouch locationInView:window];
           self->mPassedDragThreshold = sub_100120090(v47, v49, v52, v53) >= v37;
 
           if (qword_101AD5C90 != -1)
@@ -836,11 +836,11 @@ LABEL_109:
             v60 = v59;
             v62 = v61;
             v63 = self->mTouch;
-            v64 = [(UITouch *)v63 window];
-            [(UITouch *)v63 locationInView:v64];
+            window2 = [(UITouch *)v63 window];
+            [(UITouch *)v63 locationInView:window2];
             v67 = sub_100120090(v60, v62, v65, v66);
-            v68 = [(UITouch *)self->mTouch type];
-            v71 = v43 < 0.02 && v68 == UITouchTypeDirect || v68 == UITouchTypeIndirectPointer;
+            type2 = [(UITouch *)self->mTouch type];
+            v71 = v43 < 0.02 && type2 == UITouchTypeDirect || type2 == UITouchTypeIndirectPointer;
             if (mDragType == 3 && v71)
             {
               v72 = 0.05;
@@ -897,10 +897,10 @@ LABEL_109:
           v91 = 0u;
           v88 = 0u;
           v89 = 0u;
-          v18 = [v7 dynamicOperationController];
-          v19 = [v18 currentlyTransformingReps];
+          dynamicOperationController = [v7 dynamicOperationController];
+          currentlyTransformingReps = [dynamicOperationController currentlyTransformingReps];
 
-          v20 = [v19 countByEnumeratingWithState:&v88 objects:v93 count:16];
+          v20 = [currentlyTransformingReps countByEnumeratingWithState:&v88 objects:v93 count:16];
           if (v20)
           {
             v21 = v20;
@@ -911,20 +911,20 @@ LABEL_109:
               {
                 if (*v89 != v22)
                 {
-                  objc_enumerationMutation(v19);
+                  objc_enumerationMutation(currentlyTransformingReps);
                 }
 
                 [*(*(&v88 + 1) + 8 * i) fadeKnobsOut];
               }
 
-              v21 = [v19 countByEnumeratingWithState:&v88 objects:v93 count:16];
+              v21 = [currentlyTransformingReps countByEnumeratingWithState:&v88 objects:v93 count:16];
             }
 
             while (v21);
           }
 
-          v24 = [v7 tmCoordinator];
-          [v24 takeControlWithTrackerManipulator:self];
+          tmCoordinator = [v7 tmCoordinator];
+          [tmCoordinator takeControlWithTrackerManipulator:self];
 
           mConstrainingTimer = self->mConstrainingTimer;
           if (mConstrainingTimer)
@@ -948,23 +948,23 @@ LABEL_109:
       self->mPassedDragThreshold = 0;
     }
 
-    v73 = [v7 canvasView];
+    canvasView = [v7 canvasView];
     if (self->mTracker && self->mPassedDragThreshold)
     {
-      [(UITouch *)self->mTouch locationInView:v73];
+      [(UITouch *)self->mTouch locationInView:canvasView];
       v75 = v74;
       v77 = v76;
-      [(UITouch *)self->mTouch previousLocationInView:v73];
+      [(UITouch *)self->mTouch previousLocationInView:canvasView];
       [v7 convertBoundsToUnscaledPoint:{sub_10011F31C(v75, v77, v78)}];
       [(CRLCanvasRepDragTracker *)self->mTracker addUnscaledDragDelta:1 roundDeltaToViewScale:?];
     }
 
     else
     {
-      [(UITouch *)self->mTouch locationInView:v73];
+      [(UITouch *)self->mTouch locationInView:canvasView];
       v80 = v79;
       v82 = v81;
-      [(UITouch *)self->mTouch previousLocationInView:v73];
+      [(UITouch *)self->mTouch previousLocationInView:canvasView];
       v84 = sub_10011F31C(v80, v82, v83);
       self->mTouchDelta.x = sub_10011F334(self->mTouchDelta.x, self->mTouchDelta.y, v84);
       self->mTouchDelta.y = v85;
@@ -977,10 +977,10 @@ LABEL_109:
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   if (qword_101AD5C90 != -1)
   {
     sub_101357F10();
@@ -994,14 +994,14 @@ LABEL_109:
 
   v72.receiver = self;
   v72.super_class = CRLiOSRepDragGestureRecognizer;
-  v59 = v7;
-  [(CRLiOSRepDragGestureRecognizer *)&v72 touchesEnded:v6 withEvent:v7];
+  v59 = eventCopy;
+  [(CRLiOSRepDragGestureRecognizer *)&v72 touchesEnded:endedCopy withEvent:eventCopy];
   v58 = [(CRLiOSRepDragGestureRecognizer *)self icc];
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v9 = v6;
+  v9 = endedCopy;
   v10 = [v9 countByEnumeratingWithState:&v68 objects:v75 count:16];
   if (v10)
   {
@@ -1056,14 +1056,14 @@ LABEL_109:
   mTouchesDownOnReps = self->mTouchesDownOnReps;
   if (v18 == 1 && (v12 & 1) != 0)
   {
-    v20 = [(NSMutableSet *)mTouchesDownOnReps anyObject];
+    anyObject = [(NSMutableSet *)mTouchesDownOnReps anyObject];
     mTouch = self->mTouch;
-    self->mTouch = v20;
+    self->mTouch = anyObject;
 
     v22 = self->mTouch;
     v23 = v58;
-    v24 = [v58 canvasView];
-    [(UITouch *)v22 locationInView:v24];
+    canvasView = [v58 canvasView];
+    [(UITouch *)v22 locationInView:canvasView];
     [v58 convertBoundsToUnscaledPoint:?];
     self->mOnlyTouchDownLocation.x = v25;
     self->mOnlyTouchDownLocation.y = v26;
@@ -1077,11 +1077,11 @@ LABEL_109:
     v23 = v58;
     if (!v27)
     {
-      v28 = [(CRLiOSRepDragGestureRecognizer *)self state];
-      if ((v28 - 1) >= 2)
+      state = [(CRLiOSRepDragGestureRecognizer *)self state];
+      if ((state - 1) >= 2)
       {
         v36 = &unk_101AD5000;
-        if (!v28)
+        if (!state)
         {
           if (!self->mPassedDragThreshold)
           {
@@ -1100,17 +1100,17 @@ LABEL_109:
           if ([(CRLiOSRepDragGestureRecognizer *)self p_canBeginDrag])
           {
             [(CRLiOSRepDragGestureRecognizer *)self p_beginGesture];
-            v49 = self;
+            selfCopy2 = self;
             v50 = 3;
           }
 
           else
           {
-            v49 = self;
+            selfCopy2 = self;
             v50 = 5;
           }
 
-          [(CRLiOSRepDragGestureRecognizer *)v49 setState:v50];
+          [(CRLiOSRepDragGestureRecognizer *)selfCopy2 setState:v50];
         }
       }
 
@@ -1121,10 +1121,10 @@ LABEL_109:
         v67 = 0u;
         v64 = 0u;
         v65 = 0u;
-        v29 = [v58 dynamicOperationController];
-        v30 = [v29 currentlyTransformingReps];
+        dynamicOperationController = [v58 dynamicOperationController];
+        currentlyTransformingReps = [dynamicOperationController currentlyTransformingReps];
 
-        v31 = [v30 countByEnumeratingWithState:&v64 objects:v74 count:16];
+        v31 = [currentlyTransformingReps countByEnumeratingWithState:&v64 objects:v74 count:16];
         if (v31)
         {
           v32 = v31;
@@ -1135,7 +1135,7 @@ LABEL_109:
             {
               if (*v65 != v33)
               {
-                objc_enumerationMutation(v30);
+                objc_enumerationMutation(currentlyTransformingReps);
               }
 
               v35 = *(*(&v64 + 1) + 8 * j);
@@ -1143,7 +1143,7 @@ LABEL_109:
               [v35 setShowKnobsDuringManipulation:0];
             }
 
-            v32 = [v30 countByEnumeratingWithState:&v64 objects:v74 count:16];
+            v32 = [currentlyTransformingReps countByEnumeratingWithState:&v64 objects:v74 count:16];
           }
 
           while (v32);
@@ -1152,13 +1152,13 @@ LABEL_109:
         v36 = &unk_101AD5000;
         if ((v12 & 1) != 0 && self->mPassedDragThreshold)
         {
-          v37 = [v58 canvasEditor];
+          canvasEditor = [v58 canvasEditor];
           v38 = objc_opt_respondsToSelector();
 
           if (v38)
           {
-            v39 = [v58 canvasEditor];
-            [v39 hideLassoSelectionEditMenuInDrawingModeIfLassoToolIsSelected];
+            canvasEditor2 = [v58 canvasEditor];
+            [canvasEditor2 hideLassoSelectionEditMenuInDrawingModeIfLassoToolIsSelected];
           }
         }
       }
@@ -1212,18 +1212,18 @@ LABEL_109:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
+  cancelledCopy = cancelled;
   v35.receiver = self;
   v35.super_class = CRLiOSRepDragGestureRecognizer;
-  [(CRLiOSRepDragGestureRecognizer *)&v35 touchesCancelled:v6 withEvent:a4];
+  [(CRLiOSRepDragGestureRecognizer *)&v35 touchesCancelled:cancelledCopy withEvent:event];
   v26 = [(CRLiOSRepDragGestureRecognizer *)self icc];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v7 = v6;
+  v7 = cancelledCopy;
   v8 = [v7 countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v8)
   {
@@ -1247,19 +1247,19 @@ LABEL_109:
             continue;
           }
 
-          v13 = [(CRLiOSRepDragGestureRecognizer *)self state];
-          if ((v13 - 1) < 2)
+          state = [(CRLiOSRepDragGestureRecognizer *)self state];
+          if ((state - 1) < 2)
           {
-            v14 = self;
+            selfCopy2 = self;
             v15 = 4;
 LABEL_18:
-            [(CRLiOSRepDragGestureRecognizer *)v14 setState:v15];
+            [(CRLiOSRepDragGestureRecognizer *)selfCopy2 setState:v15];
             continue;
           }
 
-          if (v13)
+          if (state)
           {
-            v14 = self;
+            selfCopy2 = self;
             v15 = 5;
             goto LABEL_18;
           }
@@ -1269,8 +1269,8 @@ LABEL_18:
           if (mTracker)
           {
             [(CRLCanvasRepDragTracker *)mTracker endPossibleRepDragGesture];
-            v19 = [v26 dynamicOperationController];
-            [(CRLiOSRepDragGestureRecognizer *)self removeTarget:v19 action:"handleGestureRecognizer:"];
+            dynamicOperationController = [v26 dynamicOperationController];
+            [(CRLiOSRepDragGestureRecognizer *)self removeTarget:dynamicOperationController action:"handleGestureRecognizer:"];
 
             v17 = self->mTracker;
           }
@@ -1345,8 +1345,8 @@ LABEL_21:
 {
   v3 = [(CRLiOSRepDragGestureRecognizer *)self icc];
   mTouch = self->mTouch;
-  v5 = [v3 canvasView];
-  [(UITouch *)mTouch locationInView:v5];
+  canvasView = [v3 canvasView];
+  [(UITouch *)mTouch locationInView:canvasView];
   [v3 convertBoundsToUnscaledPoint:?];
   v7 = v6;
   v9 = v8;
@@ -1366,9 +1366,9 @@ LABEL_21:
   }
 
   v3 = [(CRLiOSRepDragGestureRecognizer *)self icc];
-  v4 = [v3 dynamicOperationController];
-  v5 = [v4 currentlyTransformingReps];
-  v6 = [v5 count] != 0;
+  dynamicOperationController = [v3 dynamicOperationController];
+  currentlyTransformingReps = [dynamicOperationController currentlyTransformingReps];
+  v6 = [currentlyTransformingReps count] != 0;
 
   return v6;
 }
@@ -1379,8 +1379,8 @@ LABEL_21:
   {
     [(CRLiOSRepDragGestureRecognizer *)self setState:5];
     v4 = [(CRLiOSRepDragGestureRecognizer *)self icc];
-    v3 = [v4 tmCoordinator];
-    [v3 takeControlWithTrackerManipulator:self];
+    tmCoordinator = [v4 tmCoordinator];
+    [tmCoordinator takeControlWithTrackerManipulator:self];
   }
 }
 
@@ -1397,19 +1397,19 @@ LABEL_21:
   if ([(NSMutableSet *)self->mTouchesDownOnReps count]== 1)
   {
     mTouch = self->mTouch;
-    v6 = [(NSMutableSet *)self->mTouchesDownOnReps anyObject];
+    anyObject = [(NSMutableSet *)self->mTouchesDownOnReps anyObject];
 
-    if (mTouch != v6)
+    if (mTouch != anyObject)
     {
-      v7 = [(NSMutableSet *)self->mTouchesDownOnReps anyObject];
+      anyObject2 = [(NSMutableSet *)self->mTouchesDownOnReps anyObject];
       v8 = self->mTouch;
-      self->mTouch = v7;
+      self->mTouch = anyObject2;
     }
 
     v13 = [(CRLiOSRepDragGestureRecognizer *)self icc];
     v9 = self->mTouch;
-    v10 = [v13 canvasView];
-    [(UITouch *)v9 locationInView:v10];
+    canvasView = [v13 canvasView];
+    [(UITouch *)v9 locationInView:canvasView];
     [v13 convertBoundsToUnscaledPoint:?];
     self->mOnlyTouchDownLocation.x = v11;
     self->mOnlyTouchDownLocation.y = v12;
@@ -1418,21 +1418,21 @@ LABEL_21:
   }
 }
 
-- (BOOL)allowTrackerManipulatorToTakeControl:(id)a3
+- (BOOL)allowTrackerManipulatorToTakeControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   v5 = [(CRLiOSRepDragGestureRecognizer *)self icc];
-  v6 = [v5 layerHost];
-  v7 = [v6 asUIKitHost];
+  layerHost = [v5 layerHost];
+  asUIKitHost = [layerHost asUIKitHost];
 
-  if (v4)
+  if (controlCopy)
   {
-    v8 = [v7 multiSelectGestureRecognizer];
-    if ([v8 state] == 2)
+    multiSelectGestureRecognizer = [asUIKitHost multiSelectGestureRecognizer];
+    if ([multiSelectGestureRecognizer state] == 2)
     {
-      v9 = [v7 knobDragGestureRecognizer];
+      knobDragGestureRecognizer = [asUIKitHost knobDragGestureRecognizer];
 
-      if (v9 == v4)
+      if (knobDragGestureRecognizer == controlCopy)
       {
         goto LABEL_15;
       }
@@ -1442,8 +1442,8 @@ LABEL_21:
     {
     }
 
-    v10 = [v7 knobDragGestureRecognizer];
-    if (v10 == v4)
+    knobDragGestureRecognizer2 = [asUIKitHost knobDragGestureRecognizer];
+    if (knobDragGestureRecognizer2 == controlCopy)
     {
       mHitRepChrome = self->mHitRepChrome;
 
@@ -1461,9 +1461,9 @@ LABEL_15:
 
     if ([(CRLiOSRepDragGestureRecognizer *)self state]== 3)
     {
-      v12 = [v7 nudgeGestureRecognizer];
+      nudgeGestureRecognizer = [asUIKitHost nudgeGestureRecognizer];
 
-      if (v12 == v4)
+      if (nudgeGestureRecognizer == controlCopy)
       {
         goto LABEL_15;
       }
@@ -1471,8 +1471,8 @@ LABEL_15:
 
     if ([(CRLiOSRepDragGestureRecognizer *)self state]== 2)
     {
-      v13 = [v7 nudgeGestureRecognizer];
-      if (v13 == v4)
+      nudgeGestureRecognizer2 = [asUIKitHost nudgeGestureRecognizer];
+      if (nudgeGestureRecognizer2 == controlCopy)
       {
         mShouldConstrainDueToAdditionalTouches = self->mShouldConstrainDueToAdditionalTouches;
 
@@ -1495,8 +1495,8 @@ LABEL_16:
   {
     [(CRLCanvasRepDragTracker *)mTracker endPossibleRepDragGesture];
     v4 = [(CRLiOSRepDragGestureRecognizer *)self icc];
-    v5 = [v4 dynamicOperationController];
-    [(CRLiOSRepDragGestureRecognizer *)self removeTarget:v5 action:"handleGestureRecognizer:"];
+    dynamicOperationController = [v4 dynamicOperationController];
+    [(CRLiOSRepDragGestureRecognizer *)self removeTarget:dynamicOperationController action:"handleGestureRecognizer:"];
 
     v6 = self->mTracker;
     self->mTracker = 0;
@@ -1505,10 +1505,10 @@ LABEL_16:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [v4 dynamicOperationController];
-    v8 = [v7 currentlyTransformingReps];
+    dynamicOperationController2 = [v4 dynamicOperationController];
+    currentlyTransformingReps = [dynamicOperationController2 currentlyTransformingReps];
 
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v9 = [currentlyTransformingReps countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
       v10 = v9;
@@ -1519,7 +1519,7 @@ LABEL_16:
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(currentlyTransformingReps);
           }
 
           v13 = *(*(&v15 + 1) + 8 * i);
@@ -1527,7 +1527,7 @@ LABEL_16:
           [v13 setShowKnobsDuringManipulation:0];
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v10 = [currentlyTransformingReps countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v10);
@@ -1535,8 +1535,8 @@ LABEL_16:
 
     if (self->mShouldCloseCommandGroupWhenOperationCompletes)
     {
-      v14 = [v4 commandController];
-      [v14 closeGroup];
+      commandController = [v4 commandController];
+      [commandController closeGroup];
 
       self->mShouldCloseCommandGroupWhenOperationCompletes = 0;
     }
@@ -1550,11 +1550,11 @@ LABEL_16:
   return WeakRetained;
 }
 
-- (void)updateAfterAutoscroll:(id)a3
+- (void)updateAfterAutoscroll:(id)autoscroll
 {
   if (self->mTouch)
   {
-    [a3 lastAutoscrollDelta];
+    [autoscroll lastAutoscrollDelta];
     [(CRLCanvasRepDragTracker *)self->mTracker addUnscaledDragDelta:1 roundDeltaToViewScale:?];
     [(CRLiOSRepDragGestureRecognizer *)self p_setTrackerPoints];
 
@@ -1565,9 +1565,9 @@ LABEL_16:
 - (BOOL)p_canBeginDrag
 {
   v3 = [(CRLiOSRepDragGestureRecognizer *)self icc];
-  v4 = [v3 isInDynamicOperation];
+  isInDynamicOperation = [v3 isInDynamicOperation];
 
-  if ((v4 & 1) != 0 || ![(CRLiOSRepDragGestureRecognizer *)self p_currentlyTransformingRepsAreDraggable])
+  if ((isInDynamicOperation & 1) != 0 || ![(CRLiOSRepDragGestureRecognizer *)self p_currentlyTransformingRepsAreDraggable])
   {
     goto LABEL_8;
   }
@@ -1607,20 +1607,20 @@ LABEL_8:
 - (BOOL)p_currentlyTransformingRepsAreDraggable
 {
   v3 = [(CRLiOSRepDragGestureRecognizer *)self icc];
-  v4 = [v3 dynamicOperationController];
-  v5 = [v4 isInPossibleDynamicOperation];
+  dynamicOperationController = [v3 dynamicOperationController];
+  isInPossibleDynamicOperation = [dynamicOperationController isInPossibleDynamicOperation];
 
-  if (!v5)
+  if (!isInPossibleDynamicOperation)
   {
-    v17 = [v3 infosForCurrentSelectionPath];
-    v8 = [v17 count] != 0;
+    infosForCurrentSelectionPath = [v3 infosForCurrentSelectionPath];
+    v8 = [infosForCurrentSelectionPath count] != 0;
 
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v10 = [v3 infosForCurrentSelectionPath];
-    v18 = [v10 countByEnumeratingWithState:&v25 objects:v33 count:16];
+    infosForCurrentSelectionPath2 = [v3 infosForCurrentSelectionPath];
+    v18 = [infosForCurrentSelectionPath2 countByEnumeratingWithState:&v25 objects:v33 count:16];
     if (!v18)
     {
       goto LABEL_24;
@@ -1634,20 +1634,20 @@ LABEL_14:
     {
       if (*v26 != v20)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(infosForCurrentSelectionPath2);
       }
 
       v22 = [v3 repForInfo:*(*(&v25 + 1) + 8 * v21)];
-      v23 = [v22 repForDragging];
+      repForDragging = [v22 repForDragging];
 
-      if (v22 != v23)
+      if (v22 != repForDragging)
       {
         break;
       }
 
       if (v19 == ++v21)
       {
-        v19 = [v10 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        v19 = [infosForCurrentSelectionPath2 countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v19)
         {
           goto LABEL_14;
@@ -1662,14 +1662,14 @@ LABEL_21:
     goto LABEL_24;
   }
 
-  v6 = [v3 dynamicOperationController];
-  v7 = [v6 currentlyTransformingReps];
-  v8 = [v7 count] != 0;
+  dynamicOperationController2 = [v3 dynamicOperationController];
+  currentlyTransformingReps = [dynamicOperationController2 currentlyTransformingReps];
+  v8 = [currentlyTransformingReps count] != 0;
 
-  v9 = [v3 dynamicOperationController];
-  v10 = [v9 currentlyTransformingReps];
+  dynamicOperationController3 = [v3 dynamicOperationController];
+  infosForCurrentSelectionPath2 = [dynamicOperationController3 currentlyTransformingReps];
 
-  if (![v10 containsObject:self->mRep])
+  if (![infosForCurrentSelectionPath2 containsObject:self->mRep])
   {
     goto LABEL_21;
   }
@@ -1678,8 +1678,8 @@ LABEL_21:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v10 = v10;
-  v11 = [v10 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  infosForCurrentSelectionPath2 = infosForCurrentSelectionPath2;
+  v11 = [infosForCurrentSelectionPath2 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1690,20 +1690,20 @@ LABEL_21:
       {
         if (*v30 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(infosForCurrentSelectionPath2);
         }
 
         v15 = *(*(&v29 + 1) + 8 * i);
-        v16 = [v15 repForDragging];
+        repForDragging2 = [v15 repForDragging];
 
-        if (v15 != v16)
+        if (v15 != repForDragging2)
         {
           v8 = 0;
           goto LABEL_23;
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v12 = [infosForCurrentSelectionPath2 countByEnumeratingWithState:&v29 objects:v34 count:16];
       if (v12)
       {
         continue;
@@ -1804,18 +1804,18 @@ LABEL_24:
   [(CRLiOSRepDragGestureRecognizer *)self setState:1];
   self->mDragState = 2;
   v5 = [(CRLiOSRepDragGestureRecognizer *)self icc];
-  v6 = [v5 dynamicOperationController];
-  if (([v6 isInOperation] & 1) == 0)
+  dynamicOperationController = [v5 dynamicOperationController];
+  if (([dynamicOperationController isInOperation] & 1) == 0)
   {
-    [v6 beginOperation];
+    [dynamicOperationController beginOperation];
   }
 
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v6 currentlyTransformingReps];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  currentlyTransformingReps = [dynamicOperationController currentlyTransformingReps];
+  v8 = [currentlyTransformingReps countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1826,7 +1826,7 @@ LABEL_24:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(currentlyTransformingReps);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
@@ -1834,7 +1834,7 @@ LABEL_24:
         [v12 turnKnobsOn];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [currentlyTransformingReps countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -1862,40 +1862,40 @@ LABEL_24:
   if (!self->mTracker)
   {
     v3 = [(CRLiOSRepDragGestureRecognizer *)self icc];
-    v4 = [v3 layerHost];
-    v5 = [v4 asUIKitHost];
+    layerHost = [v3 layerHost];
+    asUIKitHost = [layerHost asUIKitHost];
 
-    v6 = [v3 dynamicOperationController];
-    v7 = [v3 tmCoordinator];
+    dynamicOperationController = [v3 dynamicOperationController];
+    tmCoordinator = [v3 tmCoordinator];
     v8 = [[CRLCanvasRepDragTracker alloc] initWithRep:self->mRep];
     mTracker = self->mTracker;
     self->mTracker = v8;
 
-    [(CRLiOSRepDragGestureRecognizer *)self addTarget:v6 action:"handleGestureRecognizer:"];
-    if (self->mHitRepChrome && ([v6 isInOperation] & 1) != 0)
+    [(CRLiOSRepDragGestureRecognizer *)self addTarget:dynamicOperationController action:"handleGestureRecognizer:"];
+    if (self->mHitRepChrome && ([dynamicOperationController isInOperation] & 1) != 0)
     {
-      v10 = [v7 controllingTM];
-      v11 = [v5 knobDragGestureRecognizer];
+      controllingTM = [tmCoordinator controllingTM];
+      knobDragGestureRecognizer = [asUIKitHost knobDragGestureRecognizer];
 
-      v12 = [v7 takeControlWithTrackerManipulator:self];
-      if (v10 == v11 && v12)
+      v12 = [tmCoordinator takeControlWithTrackerManipulator:self];
+      if (controllingTM == knobDragGestureRecognizer && v12)
       {
-        [v7 relinquishTrackerManipulatorControl:self];
-        [v7 unregisterTrackerManipulator:self];
-        v13 = [v6 currentlyTransformingReps];
-        v14 = [NSSet setWithSet:v13];
+        [tmCoordinator relinquishTrackerManipulatorControl:self];
+        [tmCoordinator unregisterTrackerManipulator:self];
+        currentlyTransformingReps = [dynamicOperationController currentlyTransformingReps];
+        v14 = [NSSet setWithSet:currentlyTransformingReps];
 
-        [v6 cancelOperation];
-        [v7 registerTrackerManipulator:self];
-        [v7 takeControlWithTrackerManipulator:self];
-        [v6 beginPossibleDynamicOperation];
-        [v6 startTransformingReps:v14];
+        [dynamicOperationController cancelOperation];
+        [tmCoordinator registerTrackerManipulator:self];
+        [tmCoordinator takeControlWithTrackerManipulator:self];
+        [dynamicOperationController beginPossibleDynamicOperation];
+        [dynamicOperationController startTransformingReps:v14];
       }
     }
 
     else
     {
-      [v7 takeControlWithTrackerManipulator:self];
+      [tmCoordinator takeControlWithTrackerManipulator:self];
     }
 
     if (!self->mTracker)
@@ -1904,18 +1904,18 @@ LABEL_24:
     }
 
     [(CRLiOSRepDragGestureRecognizer *)self p_setTrackerPoints];
-    if (([v6 isInOperation] & 1) == 0 && (objc_msgSend(v6, "isInPossibleDynamicOperation") & 1) == 0)
+    if (([dynamicOperationController isInOperation] & 1) == 0 && (objc_msgSend(dynamicOperationController, "isInPossibleDynamicOperation") & 1) == 0)
     {
-      v27 = v7;
-      v28 = v5;
-      [v6 beginPossibleDynamicOperation];
+      v27 = tmCoordinator;
+      v28 = asUIKitHost;
+      [dynamicOperationController beginPossibleDynamicOperation];
       v15 = +[NSMutableSet set];
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
       v32 = 0u;
-      v16 = [v3 infosForCurrentSelectionPath];
-      v17 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      infosForCurrentSelectionPath = [v3 infosForCurrentSelectionPath];
+      v17 = [infosForCurrentSelectionPath countByEnumeratingWithState:&v29 objects:v33 count:16];
       if (v17)
       {
         v18 = v17;
@@ -1926,7 +1926,7 @@ LABEL_24:
           {
             if (*v30 != v19)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(infosForCurrentSelectionPath);
             }
 
             v21 = [v3 repForInfo:*(*(&v29 + 1) + 8 * i)];
@@ -1936,15 +1936,15 @@ LABEL_24:
             }
           }
 
-          v18 = [v16 countByEnumeratingWithState:&v29 objects:v33 count:16];
+          v18 = [infosForCurrentSelectionPath countByEnumeratingWithState:&v29 objects:v33 count:16];
         }
 
         while (v18);
       }
 
-      [v6 startTransformingReps:v15];
-      v7 = v27;
-      v5 = v28;
+      [dynamicOperationController startTransformingReps:v15];
+      tmCoordinator = v27;
+      asUIKitHost = v28;
     }
 
     v22 = self->mTracker;
@@ -1957,15 +1957,15 @@ LABEL_24:
         [(CRLCanvasRepDragTracker *)self->mTracker setShouldConstrain:0];
         [(CRLCanvasRepDragTracker *)self->mTracker setSnapLevel:0.0];
 LABEL_33:
-        v25 = [v3 canvasView];
-        v26 = [v25 enclosingScrollView];
+        canvasView = [v3 canvasView];
+        enclosingScrollView = [canvasView enclosingScrollView];
 
-        if (v26)
+        if (enclosingScrollView)
         {
-          if ([v26 isScrollEnabled])
+          if ([enclosingScrollView isScrollEnabled])
           {
-            [v26 setScrollEnabled:0];
-            [v26 setScrollEnabled:1];
+            [enclosingScrollView setScrollEnabled:0];
+            [enclosingScrollView setScrollEnabled:1];
           }
         }
 
@@ -2067,15 +2067,15 @@ LABEL_31:
 
   v6 = [(CRLiOSRepDragGestureRecognizer *)self icc];
   mTouch = self->mTouch;
-  v8 = [v6 canvasView];
-  [(UITouch *)mTouch locationInView:v8];
+  canvasView = [v6 canvasView];
+  [(UITouch *)mTouch locationInView:canvasView];
   v10 = v9;
   v12 = v11;
 
-  v13 = [v6 tmCoordinator];
-  v14 = [v13 controllingTM];
+  tmCoordinator = [v6 tmCoordinator];
+  controllingTM = [tmCoordinator controllingTM];
 
-  if (v14 == self)
+  if (controllingTM == self)
   {
     mTracker = self->mTracker;
     if (self->mPassedDragThreshold)
@@ -2107,9 +2107,9 @@ LABEL_31:
 
   else
   {
-    v19 = [(CRLiOSRepDragGestureRecognizer *)self modifierFlags];
-    v20 = v19;
-    [(CRLCanvasRepDragTracker *)self->mTracker setShouldConstrain:(v19 >> 17) & 1];
+    modifierFlags = [(CRLiOSRepDragGestureRecognizer *)self modifierFlags];
+    v20 = modifierFlags;
+    [(CRLCanvasRepDragTracker *)self->mTracker setShouldConstrain:(modifierFlags >> 17) & 1];
     if ((v20 & 0x20000) == 0)
     {
       [(CRLCanvasRepDragTracker *)self->mTracker setSnapLevel:0.0];
@@ -2121,9 +2121,9 @@ LABEL_31:
   {
     [(CRLCanvasRepDragTracker *)self->mTracker setSnapLevel:(10 * [(NSMutableSet *)self->mTouchesDownOnCanvas count]- 10)];
     v21 = self->mTracker;
-    v22 = [(NSMutableSet *)self->mTouchesDownOnCanvas anyObject];
-    v23 = [v6 canvasView];
-    [v22 locationInView:v23];
+    anyObject = [(NSMutableSet *)self->mTouchesDownOnCanvas anyObject];
+    canvasView2 = [v6 canvasView];
+    [anyObject locationInView:canvasView2];
     [(CRLCanvasRepDragTracker *)v21 setConstrainingPoint:?];
 
     v24 = self->mTracker;
@@ -2141,11 +2141,11 @@ LABEL_31:
 LABEL_26:
 }
 
-- (BOOL)canBePreventedByGestureRecognizer:(id)a3
+- (BOOL)canBePreventedByGestureRecognizer:(id)recognizer
 {
-  v4 = a3;
+  recognizerCopy = recognizer;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 view], v5 = objc_claimAutoreleasedReturnValue(), -[CRLiOSRepDragGestureRecognizer icc](self, "icc"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "canvasView"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "enclosingScrollView"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v5, v5 == v8))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([recognizerCopy view], v5 = objc_claimAutoreleasedReturnValue(), -[CRLiOSRepDragGestureRecognizer icc](self, "icc"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "canvasView"), v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "enclosingScrollView"), v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v5, v5 == v8))
   {
     v9 = 0;
   }
@@ -2154,7 +2154,7 @@ LABEL_26:
   {
     v11.receiver = self;
     v11.super_class = CRLiOSRepDragGestureRecognizer;
-    v9 = [(CRLiOSRepDragGestureRecognizer *)&v11 canBePreventedByGestureRecognizer:v4];
+    v9 = [(CRLiOSRepDragGestureRecognizer *)&v11 canBePreventedByGestureRecognizer:recognizerCopy];
   }
 
   return v9;

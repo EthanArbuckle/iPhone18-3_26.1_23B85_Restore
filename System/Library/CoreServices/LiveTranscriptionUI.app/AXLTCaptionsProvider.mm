@@ -3,13 +3,13 @@
 - (void)addPlaceholder;
 - (void)cleanCaptions;
 - (void)cleanOldestCaptionsIfNeeded;
-- (void)handleAudioSessionInterruptionWithNotification:(id)a3;
-- (void)handleAudioSessionResetWithNotification:(id)a3;
-- (void)phoneCallListenerCallConnected:(id)a3 callID:(id)a4;
-- (void)phoneCallListenerCallEnded:(id)a3 callID:(id)a4;
-- (void)screenLockStateChanged:(BOOL)a3;
+- (void)handleAudioSessionInterruptionWithNotification:(id)notification;
+- (void)handleAudioSessionResetWithNotification:(id)notification;
+- (void)phoneCallListenerCallConnected:(id)connected callID:(id)d;
+- (void)phoneCallListenerCallEnded:(id)ended callID:(id)d;
+- (void)screenLockStateChanged:(BOOL)changed;
 - (void)startTranscribing;
-- (void)startTranscribing:(int64_t)a3 :(int64_t)a4;
+- (void)startTranscribing:(int64_t)transcribing :(int64_t)a4;
 - (void)stopTranscribing;
 @end
 
@@ -29,25 +29,25 @@
 
 - (void)startTranscribing
 {
-  v2 = self;
+  selfCopy = self;
   AXLTCaptionsProvider.startTranscribing()();
 }
 
-- (void)startTranscribing:(int64_t)a3 :(int64_t)a4
+- (void)startTranscribing:(int64_t)transcribing :(int64_t)a4
 {
-  v6 = self;
-  AXLTCaptionsProvider.startTranscribing(_:_:)(a3, a4);
+  selfCopy = self;
+  AXLTCaptionsProvider.startTranscribing(_:_:)(transcribing, a4);
 }
 
 - (void)stopTranscribing
 {
-  v2 = self;
+  selfCopy = self;
   AXLTCaptionsProvider.stopTranscribing()();
 }
 
 - (void)cleanCaptions
 {
-  v2 = self;
+  selfCopy = self;
   static os_log_type_t.debug.getter();
   v3 = AXLogLiveTranscription();
   if (v3)
@@ -74,11 +74,11 @@
 
 - (void)cleanOldestCaptionsIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002EF30();
 }
 
-- (void)handleAudioSessionInterruptionWithNotification:(id)a3
+- (void)handleAudioSessionInterruptionWithNotification:(id)notification
 {
   v3 = type metadata accessor for Notification();
   v4 = *(v3 - 8);
@@ -90,7 +90,7 @@
   (*(v4 + 8))(v7, v3);
 }
 
-- (void)handleAudioSessionResetWithNotification:(id)a3
+- (void)handleAudioSessionResetWithNotification:(id)notification
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
@@ -98,7 +98,7 @@
   __chkstk_darwin(v4);
   v8 = &v10 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   sub_10002FB3C(v8);
 
   (*(v5 + 8))(v8, v4);
@@ -106,11 +106,11 @@
 
 - (void)addPlaceholder
 {
-  v2 = self;
+  selfCopy = self;
   sub_100030684();
 }
 
-- (void)phoneCallListenerCallConnected:(id)a3 callID:(id)a4
+- (void)phoneCallListenerCallConnected:(id)connected callID:(id)d
 {
   v6 = type metadata accessor for UUID();
   v7 = *(v6 - 8);
@@ -118,8 +118,8 @@
   __chkstk_darwin(v6);
   v10 = &v17 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
+  connectedCopy = connected;
+  selfCopy = self;
   static os_log_type_t.default.getter();
   v13 = AXLogLiveTranscription();
   if (v13)
@@ -150,7 +150,7 @@
   }
 }
 
-- (void)phoneCallListenerCallEnded:(id)a3 callID:(id)a4
+- (void)phoneCallListenerCallEnded:(id)ended callID:(id)d
 {
   v6 = type metadata accessor for UUID();
   v7 = *(v6 - 8);
@@ -158,8 +158,8 @@
   __chkstk_darwin(v6);
   v10 = &v15 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UUID._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
+  endedCopy = ended;
+  selfCopy = self;
   static os_log_type_t.default.getter();
   v13 = AXLogLiveTranscription();
   if (v13)
@@ -167,7 +167,7 @@
     v14 = v13;
     os_log(_:dso:log:_:_:)();
 
-    if (*(&v12->super.isa + OBJC_IVAR___AXLTCaptionsProvider_activePid) == -2)
+    if (*(&selfCopy->super.isa + OBJC_IVAR___AXLTCaptionsProvider_activePid) == -2)
     {
       sub_100030DCC();
       AXLTCaptionsProvider.stopTranscribing()();
@@ -183,10 +183,10 @@
   }
 }
 
-- (void)screenLockStateChanged:(BOOL)a3
+- (void)screenLockStateChanged:(BOOL)changed
 {
-  v4 = self;
-  AXLTCaptionsProvider.screenLockStateChanged(_:)(a3);
+  selfCopy = self;
+  AXLTCaptionsProvider.screenLockStateChanged(_:)(changed);
 }
 
 @end

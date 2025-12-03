@@ -20,7 +20,7 @@
       (*v8)(v7, AFSecurityDigestibleChunksProviderData, 4);
     }
 
-    [a1 timeIntervalSince1970];
+    [self timeIntervalSince1970];
     v11[0] = v9;
     (*(v7 + 2))(v7, v11, 8);
     if ((a3 & 1) == 0)

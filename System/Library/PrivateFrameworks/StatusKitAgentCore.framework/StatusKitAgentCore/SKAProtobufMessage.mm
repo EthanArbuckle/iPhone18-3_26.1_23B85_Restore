@@ -2,24 +2,24 @@
 + (id)logger;
 - (BOOL)expectingMoreResponses;
 - (NSArray)responses;
-- (SKAProtobufMessage)initWithPushTopic:(id)a3 request:(id)a4;
-- (void)handleResponseDictionary:(id)a3;
+- (SKAProtobufMessage)initWithPushTopic:(id)topic request:(id)request;
+- (void)handleResponseDictionary:(id)dictionary;
 @end
 
 @implementation SKAProtobufMessage
 
-- (SKAProtobufMessage)initWithPushTopic:(id)a3 request:(id)a4
+- (SKAProtobufMessage)initWithPushTopic:(id)topic request:(id)request
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 data];
+  requestCopy = request;
+  topicCopy = topic;
+  data = [requestCopy data];
   v15.receiver = self;
   v15.super_class = SKAProtobufMessage;
-  v10 = [(FTProtobufMessage *)&v15 initWithPushTopic:v8 protoData:v9];
+  v10 = [(FTProtobufMessage *)&v15 initWithPushTopic:topicCopy protoData:data];
 
   if (v10)
   {
-    objc_storeStrong(&v10->_request, a4);
+    objc_storeStrong(&v10->_request, request);
     receivedResponseCount = v10->_receivedResponseCount;
     v10->_receivedResponseCount = &unk_2833EBA08;
 
@@ -43,8 +43,8 @@
   if ([(SharedChannelActivityRequest *)self->_request request]!= 1 && [(SharedChannelActivityRequest *)self->_request request]!= 3)
   {
 LABEL_9:
-    LOBYTE(v4) = 0;
-    return v4;
+    LOBYTE(integerValue) = 0;
+    return integerValue;
   }
 
   expectedResponseCount = self->_expectedResponseCount;
@@ -59,49 +59,49 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v4 = [(NSNumber *)expectedResponseCount integerValue];
-  if (v4)
+  integerValue = [(NSNumber *)expectedResponseCount integerValue];
+  if (integerValue)
   {
-    LOBYTE(v4) = self->_receivedResponseCount != self->_expectedResponseCount;
+    LOBYTE(integerValue) = self->_receivedResponseCount != self->_expectedResponseCount;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)handleResponseDictionary:(id)a3
+- (void)handleResponseDictionary:(id)dictionary
 {
   v41 = *MEMORY[0x277D85DE8];
   v36.receiver = self;
   v36.super_class = SKAProtobufMessage;
-  [(FTProtobufMessage *)&v36 handleResponseDictionary:a3];
+  [(FTProtobufMessage *)&v36 handleResponseDictionary:dictionary];
   if (![(FTProtobufMessage *)self responseValue])
   {
     v5 = [SharedChannelActivityResponse alloc];
-    v6 = [(FTProtobufMessage *)self protoResponse];
-    v4 = [(SharedChannelActivityResponse *)v5 initWithData:v6];
+    protoResponse = [(FTProtobufMessage *)self protoResponse];
+    v4 = [(SharedChannelActivityResponse *)v5 initWithData:protoResponse];
 
     [(NSMutableArray *)self->_mutableResponses addObject:v4];
-    v7 = [v4 response];
-    switch(v7)
+    response = [v4 response];
+    switch(response)
     {
       case 3:
-        v8 = [v4 pollingResponse];
+        pollingResponse = [v4 pollingResponse];
         v24 = objc_alloc(MEMORY[0x277CCAD78]);
-        v25 = [v8 uuid];
-        v26 = [v24 initWithUUIDBytes:{objc_msgSend(v25, "bytes")}];
+        uuid = [pollingResponse uuid];
+        v26 = [v24 initWithUUIDBytes:{objc_msgSend(uuid, "bytes")}];
         uuid = self->_uuid;
         self->_uuid = v26;
 
         v13 = +[SKAProtobufMessage logger];
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v28 = [v8 responseMessageIndex]+ 1;
-          v29 = [v8 totalResponseMessages];
+          v28 = [pollingResponse responseMessageIndex]+ 1;
+          totalResponseMessages = [pollingResponse totalResponseMessages];
           v30 = self->_uuid;
           *buf = 67109634;
           *v38 = v28;
           *&v38[4] = 1024;
-          *&v38[6] = v29;
+          *&v38[6] = totalResponseMessages;
           v39 = 2112;
           v40 = v30;
           v17 = "Received polling message %u/%u for request %@";
@@ -110,10 +110,10 @@ LABEL_9:
 
         break;
       case 2:
-        v8 = [v4 deactivationResponse];
+        pollingResponse = [v4 deactivationResponse];
         v18 = objc_alloc(MEMORY[0x277CCAD78]);
-        v19 = [v8 uuid];
-        v20 = [v18 initWithUUIDBytes:{objc_msgSend(v19, "bytes")}];
+        uuid2 = [pollingResponse uuid];
+        v20 = [v18 initWithUUIDBytes:{objc_msgSend(uuid2, "bytes")}];
         v21 = self->_uuid;
         self->_uuid = v20;
 
@@ -128,23 +128,23 @@ LABEL_9:
 
         goto LABEL_18;
       case 1:
-        v8 = [v4 activationResponse];
+        pollingResponse = [v4 activationResponse];
         v9 = objc_alloc(MEMORY[0x277CCAD78]);
-        v10 = [v8 uuid];
-        v11 = [v9 initWithUUIDBytes:{objc_msgSend(v10, "bytes")}];
+        uuid3 = [pollingResponse uuid];
+        v11 = [v9 initWithUUIDBytes:{objc_msgSend(uuid3, "bytes")}];
         v12 = self->_uuid;
         self->_uuid = v11;
 
         v13 = +[SKAProtobufMessage logger];
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = [v8 responseMessageIndex]+ 1;
-          v15 = [v8 totalResponseMessages];
+          v14 = [pollingResponse responseMessageIndex]+ 1;
+          totalResponseMessages2 = [pollingResponse totalResponseMessages];
           v16 = self->_uuid;
           *buf = 67109634;
           *v38 = v14;
           *&v38[4] = 1024;
-          *&v38[6] = v15;
+          *&v38[6] = totalResponseMessages2;
           v39 = 2112;
           v40 = v16;
           v17 = "Received activation message %u/%u for request %@";
@@ -154,16 +154,16 @@ LABEL_14:
 
         break;
       default:
-        v8 = +[SKAProtobufMessage logger];
-        if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+        pollingResponse = +[SKAProtobufMessage logger];
+        if (os_log_type_enabled(pollingResponse, OS_LOG_TYPE_ERROR))
         {
-          [(SKAProtobufMessage *)v4 handleResponseDictionary:v8];
+          [(SKAProtobufMessage *)v4 handleResponseDictionary:pollingResponse];
         }
 
         goto LABEL_18;
     }
 
-    v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[NSObject totalResponseMessages](v8, "totalResponseMessages")}];
+    v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[NSObject totalResponseMessages](pollingResponse, "totalResponseMessages")}];
     expectedResponseCount = self->_expectedResponseCount;
     self->_expectedResponseCount = v31;
 

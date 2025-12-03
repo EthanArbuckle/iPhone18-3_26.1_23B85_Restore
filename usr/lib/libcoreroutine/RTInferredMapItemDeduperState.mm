@@ -1,14 +1,14 @@
 @interface RTInferredMapItemDeduperState
-- (BOOL)enumerateDedupedUUIDToMapItemMapUsingBlock:(id)a3 error:(id *)a4;
-- (BOOL)finalizeState:(id *)a3;
-- (BOOL)ingestInferredMapItemWithIntermediateUUID:(id)a3 error:(id *)a4;
+- (BOOL)enumerateDedupedUUIDToMapItemMapUsingBlock:(id)block error:(id *)error;
+- (BOOL)finalizeState:(id *)state;
+- (BOOL)ingestInferredMapItemWithIntermediateUUID:(id)d error:(id *)error;
 - (RTInferredMapItemDeduperState)init;
-- (id)allDedupedUUIDsWithError:(id *)a3;
-- (id)allUniqueMapItemsWithError:(id *)a3;
-- (id)combinedInferredMapItemFromInferredMapItems:(id)a3 error:(id *)a4;
-- (id)inferredMapItemFromInferredMapItemWithIntermediateUUID:(id)a3 error:(id *)a4;
-- (id)mapItemForDedupedUUID:(id)a3 error:(id *)a4;
-- (id)mapItemForIntermediateUUID:(id)a3 error:(id *)a4;
+- (id)allDedupedUUIDsWithError:(id *)error;
+- (id)allUniqueMapItemsWithError:(id *)error;
+- (id)combinedInferredMapItemFromInferredMapItems:(id)items error:(id *)error;
+- (id)inferredMapItemFromInferredMapItemWithIntermediateUUID:(id)d error:(id *)error;
+- (id)mapItemForDedupedUUID:(id)d error:(id *)error;
+- (id)mapItemForIntermediateUUID:(id)d error:(id *)error;
 - (void)resetState;
 @end
 
@@ -23,13 +23,13 @@
   if (v2)
   {
     v2->_canIngest = 1;
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     uniqueInferredMapItems = v3->_uniqueInferredMapItems;
-    v3->_uniqueInferredMapItems = v4;
+    v3->_uniqueInferredMapItems = array;
 
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     intermediateUUIDToInferredMapItemsMap = v3->_intermediateUUIDToInferredMapItemsMap;
-    v3->_intermediateUUIDToInferredMapItemsMap = v6;
+    v3->_intermediateUUIDToInferredMapItemsMap = dictionary;
 
     intermediateUUIDToInferredMapItemMap = v3->_intermediateUUIDToInferredMapItemMap;
     v3->_intermediateUUIDToInferredMapItemMap = 0;
@@ -46,13 +46,13 @@
   obj = self;
   objc_sync_enter(obj);
   obj->_canIngest = 1;
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   uniqueInferredMapItems = obj->_uniqueInferredMapItems;
-  obj->_uniqueInferredMapItems = v2;
+  obj->_uniqueInferredMapItems = array;
 
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   intermediateUUIDToInferredMapItemsMap = obj->_intermediateUUIDToInferredMapItemsMap;
-  obj->_intermediateUUIDToInferredMapItemsMap = v4;
+  obj->_intermediateUUIDToInferredMapItemsMap = dictionary;
 
   intermediateUUIDToInferredMapItemMap = obj->_intermediateUUIDToInferredMapItemMap;
   obj->_intermediateUUIDToInferredMapItemMap = 0;
@@ -63,42 +63,42 @@
   objc_sync_exit(obj);
 }
 
-- (BOOL)ingestInferredMapItemWithIntermediateUUID:(id)a3 error:(id *)a4
+- (BOOL)ingestInferredMapItemWithIntermediateUUID:(id)d error:(id *)error
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  dCopy = d;
+  if (dCopy)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    canIngest = v7->_canIngest;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    canIngest = selfCopy->_canIngest;
     if (canIngest)
     {
-      intermediateUUIDToInferredMapItemsMap = v7->_intermediateUUIDToInferredMapItemsMap;
-      v10 = [v6 secondObject];
-      v11 = [(NSMutableDictionary *)intermediateUUIDToInferredMapItemsMap objectForKeyedSubscript:v10];
+      intermediateUUIDToInferredMapItemsMap = selfCopy->_intermediateUUIDToInferredMapItemsMap;
+      secondObject = [dCopy secondObject];
+      v11 = [(NSMutableDictionary *)intermediateUUIDToInferredMapItemsMap objectForKeyedSubscript:secondObject];
 
       if (v11)
       {
-        v12 = v7->_intermediateUUIDToInferredMapItemsMap;
-        v13 = [v6 secondObject];
-        v14 = [(NSMutableDictionary *)v12 objectForKeyedSubscript:v13];
-        v15 = [v6 firstObject];
-        [v14 addObject:v15];
+        v12 = selfCopy->_intermediateUUIDToInferredMapItemsMap;
+        secondObject2 = [dCopy secondObject];
+        v14 = [(NSMutableDictionary *)v12 objectForKeyedSubscript:secondObject2];
+        firstObject = [dCopy firstObject];
+        [v14 addObject:firstObject];
       }
 
       else
       {
-        uniqueInferredMapItems = v7->_uniqueInferredMapItems;
-        v22 = [v6 firstObject];
-        [(NSMutableArray *)uniqueInferredMapItems addObject:v22];
+        uniqueInferredMapItems = selfCopy->_uniqueInferredMapItems;
+        firstObject2 = [dCopy firstObject];
+        [(NSMutableArray *)uniqueInferredMapItems addObject:firstObject2];
 
         v23 = MEMORY[0x277CBEB18];
-        v13 = [v6 firstObject];
-        v14 = [v23 arrayWithObject:v13];
-        v24 = v7->_intermediateUUIDToInferredMapItemsMap;
-        v15 = [v6 secondObject];
-        [(NSMutableDictionary *)v24 setObject:v14 forKeyedSubscript:v15];
+        secondObject2 = [dCopy firstObject];
+        v14 = [v23 arrayWithObject:secondObject2];
+        v24 = selfCopy->_intermediateUUIDToInferredMapItemsMap;
+        firstObject = [dCopy secondObject];
+        [(NSMutableDictionary *)v24 setObject:v14 forKeyedSubscript:firstObject];
       }
     }
 
@@ -110,14 +110,14 @@
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:&v27 count:1];
       v19 = [v17 errorWithDomain:*MEMORY[0x277D01448] code:5 userInfo:v18];
 
-      if (a4)
+      if (error)
       {
         v20 = v19;
-        *a4 = v19;
+        *error = v19;
       }
     }
 
-    objc_sync_exit(v7);
+    objc_sync_exit(selfCopy);
   }
 
   else
@@ -129,10 +129,10 @@
       _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: inferredMapItemWithIntermediateUUID", v26, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"inferredMapItemWithIntermediateUUID");
-      *a4 = canIngest = 0;
+      *error = canIngest = 0;
     }
 
     else
@@ -144,12 +144,12 @@
   return canIngest;
 }
 
-- (id)combinedInferredMapItemFromInferredMapItems:(id)a3 error:(id *)a4
+- (id)combinedInferredMapItemFromInferredMapItems:(id)items error:(id *)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  itemsCopy = items;
+  v6 = itemsCopy;
+  if (!itemsCopy)
   {
     v24 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -158,12 +158,12 @@
       _os_log_error_impl(&dword_2304B3000, v24, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: inferredMapItems", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       v25 = @"inferredMapItems";
 LABEL_30:
       _RTErrorInvalidParameterCreate(v25);
-      *a4 = v10 = 0;
+      *error = v10 = 0;
       goto LABEL_34;
     }
 
@@ -172,7 +172,7 @@ LABEL_31:
     goto LABEL_34;
   }
 
-  if (![v5 count])
+  if (![itemsCopy count])
   {
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -181,7 +181,7 @@ LABEL_31:
       _os_log_error_impl(&dword_2304B3000, v26, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: inferredMapItems.count > 0", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       v25 = @"inferredMapItems.count > 0";
       goto LABEL_30;
@@ -221,13 +221,13 @@ LABEL_31:
         continue;
       }
 
-      v14 = [v10 mapItem];
-      if (([v14 validMUID] & 1) == 0)
+      mapItem = [v10 mapItem];
+      if (([mapItem validMUID] & 1) == 0)
       {
 
 LABEL_14:
-        v17 = [v10 mapItem];
-        if ([v17 validMUID])
+        mapItem2 = [v10 mapItem];
+        if ([mapItem2 validMUID])
         {
 
 LABEL_17:
@@ -242,10 +242,10 @@ LABEL_17:
 
         else
         {
-          v18 = [v13 mapItem];
-          v19 = [v18 validMUID];
+          mapItem3 = [v13 mapItem];
+          validMUID = [mapItem3 validMUID];
 
-          if (!v19)
+          if (!validMUID)
           {
             goto LABEL_17;
           }
@@ -257,10 +257,10 @@ LABEL_17:
         continue;
       }
 
-      v15 = [v13 mapItem];
-      v16 = [v15 validMUID];
+      mapItem4 = [v13 mapItem];
+      validMUID2 = [mapItem4 validMUID];
 
-      if (v16)
+      if (validMUID2)
       {
         goto LABEL_14;
       }
@@ -277,21 +277,21 @@ LABEL_34:
   return v10;
 }
 
-- (BOOL)finalizeState:(id *)a3
+- (BOOL)finalizeState:(id *)state
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_canIngest)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_canIngest)
   {
-    v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSMutableDictionary count](v4->_intermediateUUIDToInferredMapItemsMap, "count")}];
-    v27 = a3;
-    v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSMutableDictionary count](v4->_intermediateUUIDToInferredMapItemsMap, "count")}];
+    v5 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSMutableDictionary count](selfCopy->_intermediateUUIDToInferredMapItemsMap, "count")}];
+    stateCopy = state;
+    v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{-[NSMutableDictionary count](selfCopy->_intermediateUUIDToInferredMapItemsMap, "count")}];
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v7 = v4->_intermediateUUIDToInferredMapItemsMap;
+    v7 = selfCopy->_intermediateUUIDToInferredMapItemsMap;
     v8 = [(NSMutableDictionary *)v7 countByEnumeratingWithState:&v30 objects:v36 count:16];
     if (v8)
     {
@@ -307,9 +307,9 @@ LABEL_4:
         }
 
         v11 = *(*(&v30 + 1) + 8 * v10);
-        v12 = [(NSMutableDictionary *)v4->_intermediateUUIDToInferredMapItemsMap objectForKeyedSubscript:v11];
+        v12 = [(NSMutableDictionary *)selfCopy->_intermediateUUIDToInferredMapItemsMap objectForKeyedSubscript:v11];
         v29 = 0;
-        v13 = [(RTInferredMapItemDeduperState *)v4 combinedInferredMapItemFromInferredMapItems:v12 error:&v29];
+        v13 = [(RTInferredMapItemDeduperState *)selfCopy combinedInferredMapItemFromInferredMapItems:v12 error:&v29];
         v14 = v29;
 
         if (v14)
@@ -325,10 +325,10 @@ LABEL_4:
           v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
           v24 = [v22 errorWithDomain:*MEMORY[0x277D01448] code:0 userInfo:v23];
 
-          if (v27)
+          if (stateCopy)
           {
             v25 = v24;
-            *v27 = v24;
+            *stateCopy = v24;
           }
 
           v13 = 0;
@@ -340,10 +340,10 @@ LABEL_18:
         }
 
         [v5 setObject:v13 forKeyedSubscript:v11];
-        v15 = [v13 mapItem];
-        v16 = [v13 mapItem];
-        v17 = [v16 identifier];
-        [v6 setObject:v15 forKeyedSubscript:v17];
+        mapItem = [v13 mapItem];
+        mapItem2 = [v13 mapItem];
+        identifier = [mapItem2 identifier];
+        [v6 setObject:mapItem forKeyedSubscript:identifier];
 
         if (v8 == ++v10)
         {
@@ -358,10 +358,10 @@ LABEL_18:
         }
       }
 
-      if (v27)
+      if (stateCopy)
       {
         v21 = v14;
-        *v27 = v14;
+        *stateCopy = v14;
       }
 
       goto LABEL_18;
@@ -369,11 +369,11 @@ LABEL_18:
 
 LABEL_11:
 
-    v4->_canIngest = 0;
-    objc_storeStrong(&v4->_intermediateUUIDToInferredMapItemMap, v5);
+    selfCopy->_canIngest = 0;
+    objc_storeStrong(&selfCopy->_intermediateUUIDToInferredMapItemMap, v5);
     v18 = v6;
-    p_super = v4->_dedupedUUIDToMapItemMap;
-    v4->_dedupedUUIDToMapItemMap = v18;
+    p_super = selfCopy->_dedupedUUIDToMapItemMap;
+    selfCopy->_dedupedUUIDToMapItemMap = v18;
     v20 = 1;
 LABEL_19:
   }
@@ -383,69 +383,69 @@ LABEL_19:
     v20 = 1;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v20;
 }
 
-- (id)mapItemForIntermediateUUID:(id)a3 error:(id *)a4
+- (id)mapItemForIntermediateUUID:(id)d error:(id *)error
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  dCopy = d;
+  if (dCopy)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    intermediateUUIDToInferredMapItemMap = v7->_intermediateUUIDToInferredMapItemMap;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    intermediateUUIDToInferredMapItemMap = selfCopy->_intermediateUUIDToInferredMapItemMap;
     if (!intermediateUUIDToInferredMapItemMap)
     {
       v22 = 0;
-      v9 = [(RTInferredMapItemDeduperState *)v7 finalizeState:&v22];
+      v9 = [(RTInferredMapItemDeduperState *)selfCopy finalizeState:&v22];
       v10 = v22;
       v11 = v10;
       if (!v9)
       {
-        if (a4)
+        if (error)
         {
           v20 = v10;
-          v13 = 0;
-          *a4 = v11;
+          mapItem = 0;
+          *error = v11;
           goto LABEL_18;
         }
 
         goto LABEL_14;
       }
 
-      intermediateUUIDToInferredMapItemMap = v7->_intermediateUUIDToInferredMapItemMap;
+      intermediateUUIDToInferredMapItemMap = selfCopy->_intermediateUUIDToInferredMapItemMap;
     }
 
-    v12 = [(NSDictionary *)intermediateUUIDToInferredMapItemMap objectForKeyedSubscript:v6];
+    v12 = [(NSDictionary *)intermediateUUIDToInferredMapItemMap objectForKeyedSubscript:dCopy];
     v11 = v12;
     if (v12)
     {
-      v13 = [v12 mapItem];
+      mapItem = [v12 mapItem];
 LABEL_18:
 
-      objc_sync_exit(v7);
+      objc_sync_exit(selfCopy);
       goto LABEL_19;
     }
 
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"intermediateUUID, %@, not in table", v6];
+    dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"intermediateUUID, %@, not in table", dCopy];
     v16 = MEMORY[0x277CCA9B8];
     v24 = *MEMORY[0x277CCA450];
-    v25[0] = v15;
+    v25[0] = dCopy;
     v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
     v18 = [v16 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v17];
 
-    if (a4)
+    if (error)
     {
       v19 = v18;
-      *a4 = v18;
+      *error = v18;
     }
 
     v11 = 0;
 LABEL_14:
-    v13 = 0;
+    mapItem = 0;
     goto LABEL_18;
   }
 
@@ -456,40 +456,40 @@ LABEL_14:
     _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: intermediateUUID", buf, 2u);
   }
 
-  if (a4)
+  if (error)
   {
     _RTErrorInvalidParameterCreate(@"intermediateUUID");
-    *a4 = v13 = 0;
+    *error = mapItem = 0;
   }
 
   else
   {
-    v13 = 0;
+    mapItem = 0;
   }
 
 LABEL_19:
 
-  return v13;
+  return mapItem;
 }
 
-- (id)inferredMapItemFromInferredMapItemWithIntermediateUUID:(id)a3 error:(id *)a4
+- (id)inferredMapItemFromInferredMapItemWithIntermediateUUID:(id)d error:(id *)error
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  dCopy = d;
+  v7 = dCopy;
+  if (dCopy)
   {
-    v8 = [v6 secondObject];
+    secondObject = [dCopy secondObject];
     v20 = 0;
-    v9 = [(RTInferredMapItemDeduperState *)self mapItemForIntermediateUUID:v8 error:&v20];
+    v9 = [(RTInferredMapItemDeduperState *)self mapItemForIntermediateUUID:secondObject error:&v20];
     v10 = v20;
 
     if (v10)
     {
-      if (a4)
+      if (error)
       {
         v11 = v10;
         v12 = 0;
-        *a4 = v10;
+        *error = v10;
       }
 
       else
@@ -501,11 +501,11 @@ LABEL_19:
     else
     {
       v14 = objc_alloc(MEMORY[0x277D01128]);
-      v15 = [v7 firstObject];
-      [v15 confidence];
+      firstObject = [v7 firstObject];
+      [firstObject confidence];
       v17 = v16;
-      v18 = [v7 firstObject];
-      v12 = [v14 initWithMapItem:v9 confidence:objc_msgSend(v18 source:{"source"), v17}];
+      firstObject2 = [v7 firstObject];
+      v12 = [v14 initWithMapItem:v9 confidence:objc_msgSend(firstObject2 source:{"source"), v17}];
     }
   }
 
@@ -518,10 +518,10 @@ LABEL_19:
       _os_log_error_impl(&dword_2304B3000, v13, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: inferredMapItemWithIntermediateUUID", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"inferredMapItemWithIntermediateUUID");
-      *a4 = v12 = 0;
+      *error = v12 = 0;
     }
 
     else
@@ -533,11 +533,11 @@ LABEL_19:
   return v12;
 }
 
-- (id)mapItemForDedupedUUID:(id)a3 error:(id *)a4
+- (id)mapItemForDedupedUUID:(id)d error:(id *)error
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  dCopy = d;
+  if (!dCopy)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -546,17 +546,17 @@ LABEL_19:
       _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: dedupedUUID", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"dedupedUUID");
-      *a4 = v13 = 0;
+      *error = v13 = 0;
       goto LABEL_19;
     }
 
     goto LABEL_15;
   }
 
-  if (!a4)
+  if (!error)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -570,23 +570,23 @@ LABEL_15:
     goto LABEL_19;
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  dedupedUUIDToMapItemMap = v7->_dedupedUUIDToMapItemMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dedupedUUIDToMapItemMap = selfCopy->_dedupedUUIDToMapItemMap;
   if (dedupedUUIDToMapItemMap)
   {
     goto LABEL_6;
   }
 
   v22 = 0;
-  v9 = [(RTInferredMapItemDeduperState *)v7 finalizeState:&v22];
+  v9 = [(RTInferredMapItemDeduperState *)selfCopy finalizeState:&v22];
   v10 = v22;
   if (v9)
   {
 
-    dedupedUUIDToMapItemMap = v7->_dedupedUUIDToMapItemMap;
+    dedupedUUIDToMapItemMap = selfCopy->_dedupedUUIDToMapItemMap;
 LABEL_6:
-    v11 = [(NSDictionary *)dedupedUUIDToMapItemMap objectForKeyedSubscript:v6];
+    v11 = [(NSDictionary *)dedupedUUIDToMapItemMap objectForKeyedSubscript:dCopy];
     if (v11)
     {
       v12 = v11;
@@ -595,15 +595,15 @@ LABEL_6:
 
     else
     {
-      v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"dedupedUUID, %@, not in table", v6];
+      dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"dedupedUUID, %@, not in table", dCopy];
       v17 = MEMORY[0x277CCA9B8];
       v24 = *MEMORY[0x277CCA450];
-      v25[0] = v16;
+      v25[0] = dCopy;
       v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
       v19 = [v17 errorWithDomain:*MEMORY[0x277D01448] code:7 userInfo:v18];
 
       v20 = v19;
-      *a4 = v19;
+      *error = v19;
 
       v12 = 0;
       v13 = 0;
@@ -614,45 +614,45 @@ LABEL_6:
 
   v12 = v10;
   v13 = 0;
-  *a4 = v12;
+  *error = v12;
 LABEL_18:
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 LABEL_19:
 
   return v13;
 }
 
-- (id)allDedupedUUIDsWithError:(id *)a3
+- (id)allDedupedUUIDsWithError:(id *)error
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  dedupedUUIDToMapItemMap = v4->_dedupedUUIDToMapItemMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dedupedUUIDToMapItemMap = selfCopy->_dedupedUUIDToMapItemMap;
   if (dedupedUUIDToMapItemMap)
   {
     goto LABEL_4;
   }
 
   v13 = 0;
-  v6 = [(RTInferredMapItemDeduperState *)v4 finalizeState:&v13];
+  v6 = [(RTInferredMapItemDeduperState *)selfCopy finalizeState:&v13];
   v7 = v13;
-  v8 = v7;
+  allKeys = v7;
   if (v6)
   {
 
-    dedupedUUIDToMapItemMap = v4->_dedupedUUIDToMapItemMap;
+    dedupedUUIDToMapItemMap = selfCopy->_dedupedUUIDToMapItemMap;
 LABEL_4:
     v9 = MEMORY[0x277CBEB98];
-    v8 = [(NSDictionary *)dedupedUUIDToMapItemMap allKeys];
-    v10 = [v9 setWithArray:v8];
+    allKeys = [(NSDictionary *)dedupedUUIDToMapItemMap allKeys];
+    v10 = [v9 setWithArray:allKeys];
     goto LABEL_5;
   }
 
-  if (a3)
+  if (error)
   {
     v12 = v7;
     v10 = 0;
-    *a3 = v8;
+    *error = allKeys;
   }
 
   else
@@ -662,16 +662,16 @@ LABEL_4:
 
 LABEL_5:
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v10;
 }
 
-- (BOOL)enumerateDedupedUUIDToMapItemMapUsingBlock:(id)a3 error:(id *)a4
+- (BOOL)enumerateDedupedUUIDToMapItemMapUsingBlock:(id)block error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (!v6)
+  blockCopy = block;
+  if (!blockCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -680,10 +680,10 @@ LABEL_5:
       _os_log_error_impl(&dword_2304B3000, v18, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: block", buf, 2u);
     }
 
-    if (a4)
+    if (error)
     {
       _RTErrorInvalidParameterCreate(@"block");
-      *a4 = v17 = 0;
+      *error = v17 = 0;
       goto LABEL_24;
     }
 
@@ -692,7 +692,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  if (!a4)
+  if (!error)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -704,9 +704,9 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  dedupedUUIDToMapItemMap = v7->_dedupedUUIDToMapItemMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dedupedUUIDToMapItemMap = selfCopy->_dedupedUUIDToMapItemMap;
   if (dedupedUUIDToMapItemMap)
   {
 LABEL_6:
@@ -730,8 +730,8 @@ LABEL_8:
         }
 
         v15 = *(*(&v22 + 1) + 8 * v14);
-        v16 = [(NSDictionary *)v7->_dedupedUUIDToMapItemMap objectForKeyedSubscript:v15, v22];
-        v6[2](v6, v15, v16, buf);
+        v16 = [(NSDictionary *)selfCopy->_dedupedUUIDToMapItemMap objectForKeyedSubscript:v15, v22];
+        blockCopy[2](blockCopy, v15, v16, buf);
 
         if (buf[0])
         {
@@ -756,59 +756,59 @@ LABEL_8:
   }
 
   v26 = 0;
-  v9 = [(RTInferredMapItemDeduperState *)v7 finalizeState:&v26];
+  v9 = [(RTInferredMapItemDeduperState *)selfCopy finalizeState:&v26];
   v10 = v26;
   if (v9)
   {
 
-    dedupedUUIDToMapItemMap = v7->_dedupedUUIDToMapItemMap;
+    dedupedUUIDToMapItemMap = selfCopy->_dedupedUUIDToMapItemMap;
     goto LABEL_6;
   }
 
   v21 = v10;
-  *a4 = v21;
+  *error = v21;
 
   v17 = 0;
 LABEL_15:
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
 LABEL_24:
   return v17;
 }
 
-- (id)allUniqueMapItemsWithError:(id *)a3
+- (id)allUniqueMapItemsWithError:(id *)error
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  dedupedUUIDToMapItemMap = v4->_dedupedUUIDToMapItemMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dedupedUUIDToMapItemMap = selfCopy->_dedupedUUIDToMapItemMap;
   if (dedupedUUIDToMapItemMap)
   {
     goto LABEL_4;
   }
 
   v10 = 0;
-  v6 = [(RTInferredMapItemDeduperState *)v4 finalizeState:&v10];
+  v6 = [(RTInferredMapItemDeduperState *)selfCopy finalizeState:&v10];
   v7 = v10;
   if (v6)
   {
 
-    dedupedUUIDToMapItemMap = v4->_dedupedUUIDToMapItemMap;
+    dedupedUUIDToMapItemMap = selfCopy->_dedupedUUIDToMapItemMap;
 LABEL_4:
-    v8 = [(NSDictionary *)dedupedUUIDToMapItemMap allValues];
+    allValues = [(NSDictionary *)dedupedUUIDToMapItemMap allValues];
     goto LABEL_5;
   }
 
-  if (a3)
+  if (error)
   {
     v7 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
-  v8 = 0;
+  allValues = 0;
 LABEL_5:
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  return v8;
+  return allValues;
 }
 
 @end

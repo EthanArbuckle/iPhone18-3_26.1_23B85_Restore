@@ -1,7 +1,7 @@
 @interface MRDRouteRecommendationSuppressionController
 + (MRDRouteRecommendationSuppressionController)controller;
 - (MRDRouteRecommendationSuppressionController)init;
-- (id)suppressionPolicyWithContext:(id)a3;
+- (id)suppressionPolicyWithContext:(id)context;
 @end
 
 @implementation MRDRouteRecommendationSuppressionController
@@ -13,11 +13,11 @@
   return v2;
 }
 
-- (id)suppressionPolicyWithContext:(id)a3
+- (id)suppressionPolicyWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_10034EAD4(v4);
+  contextCopy = context;
+  selfCopy = self;
+  v6 = sub_10034EAD4(contextCopy);
 
   return v6;
 }

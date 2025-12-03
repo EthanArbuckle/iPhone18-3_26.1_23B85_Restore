@@ -1,9 +1,9 @@
 @interface HMDCameraParameterSelection
-+ (id)_selectedCryptoSuiteFromCameraCryptoSuites:(id)a3;
++ (id)_selectedCryptoSuiteFromCameraCryptoSuites:(id)suites;
 + (id)logCategory;
-+ (id)selectedParametersFromPreferredParameters:(id)a3 deviceSupportedParameters:(id)a4 cameraSupportedParameters:(id)a5 overriddenParameters:(id)a6 parameterDescription:(id)a7;
-+ (id)selectedSRTPParametersFromCryptoSuites:(id)a3;
-- (HMDCameraParameterSelection)initWithSessionID:(id)a3;
++ (id)selectedParametersFromPreferredParameters:(id)parameters deviceSupportedParameters:(id)supportedParameters cameraSupportedParameters:(id)cameraSupportedParameters overriddenParameters:(id)overriddenParameters parameterDescription:(id)description;
++ (id)selectedSRTPParametersFromCryptoSuites:(id)suites;
+- (HMDCameraParameterSelection)initWithSessionID:(id)d;
 - (id)logIdentifier;
 @end
 
@@ -11,22 +11,22 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCameraParameterSelection *)self sessionID];
-  v3 = [v2 description];
+  sessionID = [(HMDCameraParameterSelection *)self sessionID];
+  v3 = [sessionID description];
 
   return v3;
 }
 
-- (HMDCameraParameterSelection)initWithSessionID:(id)a3
+- (HMDCameraParameterSelection)initWithSessionID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = HMDCameraParameterSelection;
   v6 = [(HMDCameraParameterSelection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sessionID, a3);
+    objc_storeStrong(&v6->_sessionID, d);
   }
 
   return v7;
@@ -52,21 +52,21 @@ void __42__HMDCameraParameterSelection_logCategory__block_invoke()
   logCategory__hmf_once_v7_204320 = v1;
 }
 
-+ (id)_selectedCryptoSuiteFromCameraCryptoSuites:(id)a3
++ (id)_selectedCryptoSuiteFromCameraCryptoSuites:(id)suites
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  suitesCopy = suites;
   v5 = [HMDSRTPCryptoSuite arrayWithSuites:&unk_283E75B60];
   v6 = [v5 mutableCopy];
 
-  v7 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v8 = [v7 preferenceForKey:@"enableUnencryptedSRTPStream"];
-  v9 = [v8 BOOLValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v8 = [mEMORY[0x277D0F8D0] preferenceForKey:@"enableUnencryptedSRTPStream"];
+  bOOLValue = [v8 BOOLValue];
 
-  if (isInternalBuild() && v9)
+  if (isInternalBuild() && bOOLValue)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = a1;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -92,33 +92,33 @@ void __42__HMDCameraParameterSelection_logCategory__block_invoke()
     v16 = 0;
   }
 
-  v17 = [v15 selectedParametersFromPreferredParameters:v6 deviceSupportedParameters:v6 cameraSupportedParameters:v4 overriddenParameters:v16 parameterDescription:@"Crypto-Suite"];
+  v17 = [v15 selectedParametersFromPreferredParameters:v6 deviceSupportedParameters:v6 cameraSupportedParameters:suitesCopy overriddenParameters:v16 parameterDescription:@"Crypto-Suite"];
 
-  v18 = [v17 firstObject];
+  firstObject = [v17 firstObject];
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v18;
+  return firstObject;
 }
 
-+ (id)selectedSRTPParametersFromCryptoSuites:(id)a3
++ (id)selectedSRTPParametersFromCryptoSuites:(id)suites
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 _selectedCryptoSuiteFromCameraCryptoSuites:v4];
+  suitesCopy = suites;
+  v5 = [self _selectedCryptoSuiteFromCameraCryptoSuites:suitesCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 srtpCryptoSuite];
+    srtpCryptoSuite = [v5 srtpCryptoSuite];
     v8 = 16;
     v9 = 14;
-    if (v7)
+    if (srtpCryptoSuite)
     {
       v9 = 0;
       v8 = 0;
     }
 
-    if (v7 == 1)
+    if (srtpCryptoSuite == 1)
     {
       v10 = 14;
     }
@@ -128,7 +128,7 @@ void __42__HMDCameraParameterSelection_logCategory__block_invoke()
       v10 = v9;
     }
 
-    if (v7 == 1)
+    if (srtpCryptoSuite == 1)
     {
       v11 = 32;
     }
@@ -144,7 +144,7 @@ void __42__HMDCameraParameterSelection_logCategory__block_invoke()
     if (SecRandomCopyBytes(*MEMORY[0x277CDC540], [v12 length], objc_msgSend(v12, "mutableBytes")) || SecRandomCopyBytes(v14, objc_msgSend(v13, "length"), objc_msgSend(v13, "mutableBytes")))
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = a1;
+      selfCopy = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
@@ -167,7 +167,7 @@ void __42__HMDCameraParameterSelection_logCategory__block_invoke()
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = a1;
+    selfCopy2 = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -186,20 +186,20 @@ void __42__HMDCameraParameterSelection_logCategory__block_invoke()
   return v19;
 }
 
-+ (id)selectedParametersFromPreferredParameters:(id)a3 deviceSupportedParameters:(id)a4 cameraSupportedParameters:(id)a5 overriddenParameters:(id)a6 parameterDescription:(id)a7
++ (id)selectedParametersFromPreferredParameters:(id)parameters deviceSupportedParameters:(id)supportedParameters cameraSupportedParameters:(id)cameraSupportedParameters overriddenParameters:(id)overriddenParameters parameterDescription:(id)description
 {
   v60 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = v16;
-  if (!v15)
+  parametersCopy = parameters;
+  supportedParametersCopy = supportedParameters;
+  cameraSupportedParametersCopy = cameraSupportedParameters;
+  overriddenParametersCopy = overriddenParameters;
+  descriptionCopy = description;
+  v17 = descriptionCopy;
+  if (!overriddenParametersCopy)
   {
-    v41 = v16;
-    v42 = v12;
-    v22 = [v12 mutableCopy];
+    v41 = descriptionCopy;
+    v42 = parametersCopy;
+    v22 = [parametersCopy mutableCopy];
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
@@ -220,7 +220,7 @@ void __42__HMDCameraParameterSelection_logCategory__block_invoke()
           }
 
           v28 = *(*(&v43 + 1) + 8 * i);
-          if (![v13 containsObject:v28] || (objc_msgSend(v14, "containsObject:", v28) & 1) == 0)
+          if (![supportedParametersCopy containsObject:v28] || (objc_msgSend(cameraSupportedParametersCopy, "containsObject:", v28) & 1) == 0)
           {
             [v22 removeObject:v28];
           }
@@ -234,13 +234,13 @@ void __42__HMDCameraParameterSelection_logCategory__block_invoke()
 
     v29 = [v22 count];
     v30 = objc_autoreleasePoolPush();
-    v31 = a1;
+    selfCopy = self;
     v32 = HMFGetOSLogHandle();
     v33 = v32;
     if (v29)
     {
       v17 = v41;
-      v12 = v42;
+      parametersCopy = v42;
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
       {
         v34 = HMFGetLogIdentifier();
@@ -251,9 +251,9 @@ void __42__HMDCameraParameterSelection_logCategory__block_invoke()
         v51 = 2112;
         v52 = v42;
         v53 = 2112;
-        v54 = v13;
+        v54 = supportedParametersCopy;
         v55 = 2112;
-        v56 = v14;
+        v56 = cameraSupportedParametersCopy;
         v57 = 2112;
         v58 = v22;
         v35 = "%{public}@Parameter: %@, preferredParameters: %@, deviceSupportedParameters: %@, cameraSupportedParameters: %@. preferredAndSupportedList: %@";
@@ -268,7 +268,7 @@ LABEL_20:
     else
     {
       v17 = v41;
-      v12 = v42;
+      parametersCopy = v42;
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
         v34 = HMFGetLogIdentifier();
@@ -279,9 +279,9 @@ LABEL_20:
         v51 = 2112;
         v52 = v42;
         v53 = 2112;
-        v54 = v13;
+        v54 = supportedParametersCopy;
         v55 = 2112;
-        v56 = v14;
+        v56 = cameraSupportedParametersCopy;
         v35 = "%{public}@No compatible elements for %@: preferredParameters: %@, deviceSupportedParameters: %@, cameraSupportedParameters: %@";
         v36 = v33;
         v37 = OS_LOG_TYPE_ERROR;
@@ -295,7 +295,7 @@ LABEL_20:
   }
 
   v18 = objc_autoreleasePoolPush();
-  v19 = a1;
+  selfCopy2 = self;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
@@ -305,12 +305,12 @@ LABEL_20:
     v49 = 2112;
     v50 = v17;
     v51 = 2112;
-    v52 = v15;
+    v52 = overriddenParametersCopy;
     _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_INFO, "%{public}@Local preference is set for %@, replying the same as filtered: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v18);
-  v22 = v15;
+  v22 = overriddenParametersCopy;
 LABEL_22:
 
   v39 = *MEMORY[0x277D85DE8];

@@ -1,10 +1,10 @@
 @interface INGetCarPowerLevelStatusIntentResponse
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
 - (INCarChargingConnectorType)activeConnector;
-- (INGetCarPowerLevelStatusIntentResponse)initWithBackingStore:(id)a3;
+- (INGetCarPowerLevelStatusIntentResponse)initWithBackingStore:(id)store;
 - (INGetCarPowerLevelStatusIntentResponse)initWithCode:(INGetCarPowerLevelStatusIntentResponseCode)code userActivity:(NSUserActivity *)userActivity;
-- (INGetCarPowerLevelStatusIntentResponse)initWithCoder:(id)a3;
+- (INGetCarPowerLevelStatusIntentResponse)initWithCoder:(id)coder;
 - (INGetCarPowerLevelStatusIntentResponseCode)code;
 - (NSDateComponents)dateOfLastStateUpdate;
 - (NSDictionary)chargingFormulaArguments;
@@ -24,10 +24,10 @@
 - (NSNumber)minutesToFull;
 - (NSString)carIdentifier;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setActiveConnector:(INCarChargingConnectorType)activeConnector;
 - (void)setCarIdentifier:(NSString *)carIdentifier;
 - (void)setChargePercentRemaining:(NSNumber *)chargePercentRemaining;
@@ -54,217 +54,217 @@
 {
   v73[19] = *MEMORY[0x1E69E9840];
   v72[0] = @"code";
-  v3 = [(INGetCarPowerLevelStatusIntentResponse *)self code];
-  v70 = v3;
-  if (v3 < (INGetCarPowerLevelStatusIntentResponseCodeFailure|INGetCarPowerLevelStatusIntentResponseCodeInProgress))
+  code = [(INGetCarPowerLevelStatusIntentResponse *)self code];
+  v70 = code;
+  if (code < (INGetCarPowerLevelStatusIntentResponseCodeFailure|INGetCarPowerLevelStatusIntentResponseCodeInProgress))
   {
-    v4 = *(&off_1E7283320 + v3);
-    v69 = v4;
+    null = *(&off_1E7283320 + code);
+    v69 = null;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v69 = 0;
   }
 
-  v57 = v4;
-  v73[0] = v4;
+  v57 = null;
+  v73[0] = null;
   v72[1] = @"carIdentifier";
-  v5 = [(INGetCarPowerLevelStatusIntentResponse *)self carIdentifier];
-  v6 = v5;
-  if (!v5)
+  carIdentifier = [(INGetCarPowerLevelStatusIntentResponse *)self carIdentifier];
+  v6 = carIdentifier;
+  if (!carIdentifier)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    carIdentifier = [MEMORY[0x1E695DFB0] null];
   }
 
-  v56 = v5;
-  v73[1] = v5;
+  v56 = carIdentifier;
+  v73[1] = carIdentifier;
   v72[2] = @"fuelPercentRemaining";
-  v7 = [(INGetCarPowerLevelStatusIntentResponse *)self fuelPercentRemaining];
-  v8 = v7;
-  if (!v7)
+  fuelPercentRemaining = [(INGetCarPowerLevelStatusIntentResponse *)self fuelPercentRemaining];
+  v8 = fuelPercentRemaining;
+  if (!fuelPercentRemaining)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    fuelPercentRemaining = [MEMORY[0x1E695DFB0] null];
   }
 
-  v55 = v7;
-  v73[2] = v7;
+  v55 = fuelPercentRemaining;
+  v73[2] = fuelPercentRemaining;
   v72[3] = @"chargePercentRemaining";
-  v9 = [(INGetCarPowerLevelStatusIntentResponse *)self chargePercentRemaining];
-  v10 = v9;
-  if (!v9)
+  chargePercentRemaining = [(INGetCarPowerLevelStatusIntentResponse *)self chargePercentRemaining];
+  v10 = chargePercentRemaining;
+  if (!chargePercentRemaining)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    chargePercentRemaining = [MEMORY[0x1E695DFB0] null];
   }
 
-  v54 = v9;
-  v73[3] = v9;
+  v54 = chargePercentRemaining;
+  v73[3] = chargePercentRemaining;
   v72[4] = @"distanceRemaining";
-  v11 = [(INGetCarPowerLevelStatusIntentResponse *)self distanceRemaining];
-  v12 = v11;
-  if (!v11)
+  distanceRemaining = [(INGetCarPowerLevelStatusIntentResponse *)self distanceRemaining];
+  v12 = distanceRemaining;
+  if (!distanceRemaining)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    distanceRemaining = [MEMORY[0x1E695DFB0] null];
   }
 
-  v53 = v11;
-  v73[4] = v11;
+  v53 = distanceRemaining;
+  v73[4] = distanceRemaining;
   v72[5] = @"charging";
-  v13 = [(INGetCarPowerLevelStatusIntentResponse *)self charging];
-  v14 = v13;
-  if (!v13)
+  charging = [(INGetCarPowerLevelStatusIntentResponse *)self charging];
+  v14 = charging;
+  if (!charging)
   {
-    v13 = [MEMORY[0x1E695DFB0] null];
+    charging = [MEMORY[0x1E695DFB0] null];
   }
 
-  v52 = v13;
-  v73[5] = v13;
+  v52 = charging;
+  v73[5] = charging;
   v72[6] = @"minutesToFull";
-  v15 = [(INGetCarPowerLevelStatusIntentResponse *)self minutesToFull];
-  v16 = v15;
-  if (!v15)
+  minutesToFull = [(INGetCarPowerLevelStatusIntentResponse *)self minutesToFull];
+  v16 = minutesToFull;
+  if (!minutesToFull)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    minutesToFull = [MEMORY[0x1E695DFB0] null];
   }
 
-  v51 = v15;
-  v73[6] = v15;
+  v51 = minutesToFull;
+  v73[6] = minutesToFull;
   v72[7] = @"maximumDistance";
-  v17 = [(INGetCarPowerLevelStatusIntentResponse *)self maximumDistance];
-  v18 = v17;
-  if (!v17)
+  maximumDistance = [(INGetCarPowerLevelStatusIntentResponse *)self maximumDistance];
+  v18 = maximumDistance;
+  if (!maximumDistance)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    maximumDistance = [MEMORY[0x1E695DFB0] null];
   }
 
-  v50 = v17;
-  v73[7] = v17;
+  v50 = maximumDistance;
+  v73[7] = maximumDistance;
   v72[8] = @"distanceRemainingElectric";
-  v19 = [(INGetCarPowerLevelStatusIntentResponse *)self distanceRemainingElectric];
-  v62 = v19;
-  if (!v19)
+  distanceRemainingElectric = [(INGetCarPowerLevelStatusIntentResponse *)self distanceRemainingElectric];
+  v62 = distanceRemainingElectric;
+  if (!distanceRemainingElectric)
   {
-    v19 = [MEMORY[0x1E695DFB0] null];
+    distanceRemainingElectric = [MEMORY[0x1E695DFB0] null];
   }
 
-  v49 = v19;
-  v73[8] = v19;
+  v49 = distanceRemainingElectric;
+  v73[8] = distanceRemainingElectric;
   v72[9] = @"maximumDistanceElectric";
-  v20 = [(INGetCarPowerLevelStatusIntentResponse *)self maximumDistanceElectric];
-  v21 = v20;
-  if (!v20)
+  maximumDistanceElectric = [(INGetCarPowerLevelStatusIntentResponse *)self maximumDistanceElectric];
+  v21 = maximumDistanceElectric;
+  if (!maximumDistanceElectric)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    maximumDistanceElectric = [MEMORY[0x1E695DFB0] null];
   }
 
-  v48 = v20;
-  v73[9] = v20;
+  v48 = maximumDistanceElectric;
+  v73[9] = maximumDistanceElectric;
   v72[10] = @"distanceRemainingFuel";
-  v22 = [(INGetCarPowerLevelStatusIntentResponse *)self distanceRemainingFuel];
-  v23 = v22;
-  if (!v22)
+  distanceRemainingFuel = [(INGetCarPowerLevelStatusIntentResponse *)self distanceRemainingFuel];
+  v23 = distanceRemainingFuel;
+  if (!distanceRemainingFuel)
   {
-    v22 = [MEMORY[0x1E695DFB0] null];
+    distanceRemainingFuel = [MEMORY[0x1E695DFB0] null];
   }
 
-  v47 = v22;
-  v73[10] = v22;
+  v47 = distanceRemainingFuel;
+  v73[10] = distanceRemainingFuel;
   v72[11] = @"maximumDistanceFuel";
-  v24 = [(INGetCarPowerLevelStatusIntentResponse *)self maximumDistanceFuel];
-  v71 = v24;
-  if (!v24)
+  maximumDistanceFuel = [(INGetCarPowerLevelStatusIntentResponse *)self maximumDistanceFuel];
+  v71 = maximumDistanceFuel;
+  if (!maximumDistanceFuel)
   {
-    v24 = [MEMORY[0x1E695DFB0] null];
+    maximumDistanceFuel = [MEMORY[0x1E695DFB0] null];
   }
 
   v65 = v12;
-  v46 = v24;
-  v73[11] = v24;
+  v46 = maximumDistanceFuel;
+  v73[11] = maximumDistanceFuel;
   v72[12] = @"consumptionFormulaArguments";
-  v25 = [(INGetCarPowerLevelStatusIntentResponse *)self consumptionFormulaArguments];
-  v59 = v25;
-  if (!v25)
+  consumptionFormulaArguments = [(INGetCarPowerLevelStatusIntentResponse *)self consumptionFormulaArguments];
+  v59 = consumptionFormulaArguments;
+  if (!consumptionFormulaArguments)
   {
-    v25 = [MEMORY[0x1E695DFB0] null];
+    consumptionFormulaArguments = [MEMORY[0x1E695DFB0] null];
   }
 
   v63 = v18;
-  v45 = v25;
-  v73[12] = v25;
+  v45 = consumptionFormulaArguments;
+  v73[12] = consumptionFormulaArguments;
   v72[13] = @"chargingFormulaArguments";
-  v26 = [(INGetCarPowerLevelStatusIntentResponse *)self chargingFormulaArguments];
-  v27 = v26;
-  if (!v26)
+  chargingFormulaArguments = [(INGetCarPowerLevelStatusIntentResponse *)self chargingFormulaArguments];
+  v27 = chargingFormulaArguments;
+  if (!chargingFormulaArguments)
   {
-    v26 = [MEMORY[0x1E695DFB0] null];
+    chargingFormulaArguments = [MEMORY[0x1E695DFB0] null];
   }
 
   v68 = v6;
-  v44 = v26;
-  v73[13] = v26;
+  v44 = chargingFormulaArguments;
+  v73[13] = chargingFormulaArguments;
   v72[14] = @"dateOfLastStateUpdate";
-  v28 = [(INGetCarPowerLevelStatusIntentResponse *)self dateOfLastStateUpdate];
-  v29 = v28;
-  if (!v28)
+  dateOfLastStateUpdate = [(INGetCarPowerLevelStatusIntentResponse *)self dateOfLastStateUpdate];
+  v29 = dateOfLastStateUpdate;
+  if (!dateOfLastStateUpdate)
   {
-    v28 = [MEMORY[0x1E695DFB0] null];
+    dateOfLastStateUpdate = [MEMORY[0x1E695DFB0] null];
   }
 
   v60 = v23;
   v67 = v8;
-  v43 = v28;
-  v73[14] = v28;
+  v43 = dateOfLastStateUpdate;
+  v73[14] = dateOfLastStateUpdate;
   v72[15] = @"activeConnector";
-  v30 = [(INGetCarPowerLevelStatusIntentResponse *)self activeConnector];
-  v31 = v30;
-  if (!v30)
+  activeConnector = [(INGetCarPowerLevelStatusIntentResponse *)self activeConnector];
+  v31 = activeConnector;
+  if (!activeConnector)
   {
-    v30 = [MEMORY[0x1E695DFB0] null];
+    activeConnector = [MEMORY[0x1E695DFB0] null];
   }
 
   v61 = v21;
   v64 = v14;
   v66 = v10;
-  v73[15] = v30;
+  v73[15] = activeConnector;
   v72[16] = @"maximumBatteryCapacity";
-  v32 = [(INGetCarPowerLevelStatusIntentResponse *)self maximumBatteryCapacity];
-  v33 = v32;
-  if (!v32)
+  maximumBatteryCapacity = [(INGetCarPowerLevelStatusIntentResponse *)self maximumBatteryCapacity];
+  null2 = maximumBatteryCapacity;
+  if (!maximumBatteryCapacity)
   {
-    v33 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
   v34 = v16;
-  v73[16] = v33;
+  v73[16] = null2;
   v72[17] = @"currentBatteryCapacity";
-  v35 = [(INGetCarPowerLevelStatusIntentResponse *)self currentBatteryCapacity];
-  v36 = v35;
-  if (!v35)
+  currentBatteryCapacity = [(INGetCarPowerLevelStatusIntentResponse *)self currentBatteryCapacity];
+  null3 = currentBatteryCapacity;
+  if (!currentBatteryCapacity)
   {
-    v36 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v73[17] = v36;
+  v73[17] = null3;
   v72[18] = @"minimumBatteryCapacity";
-  v37 = [(INGetCarPowerLevelStatusIntentResponse *)self minimumBatteryCapacity];
-  v38 = v37;
-  if (!v37)
+  minimumBatteryCapacity = [(INGetCarPowerLevelStatusIntentResponse *)self minimumBatteryCapacity];
+  null4 = minimumBatteryCapacity;
+  if (!minimumBatteryCapacity)
   {
-    v38 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v73[18] = v38;
+  v73[18] = null4;
   v58 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v73 forKeys:v72 count:19];
-  if (!v37)
+  if (!minimumBatteryCapacity)
   {
   }
 
-  if (!v35)
+  if (!currentBatteryCapacity)
   {
   }
 
-  if (!v32)
+  if (!maximumBatteryCapacity)
   {
   }
 
@@ -343,269 +343,269 @@
 - (void)setMinimumBatteryCapacity:(NSMeasurement *)minimumBatteryCapacity
 {
   v4 = minimumBatteryCapacity;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToEnergy(v4);
 
-  [v5 setMinimumBatteryCapacity:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setMinimumBatteryCapacity:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setCurrentBatteryCapacity:(NSMeasurement *)currentBatteryCapacity
 {
   v4 = currentBatteryCapacity;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToEnergy(v4);
 
-  [v5 setCurrentBatteryCapacity:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setCurrentBatteryCapacity:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setMaximumBatteryCapacity:(NSMeasurement *)maximumBatteryCapacity
 {
   v4 = maximumBatteryCapacity;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToEnergy(v4);
 
-  [v5 setMaximumBatteryCapacity:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setMaximumBatteryCapacity:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setActiveConnector:(INCarChargingConnectorType)activeConnector
 {
   BackingType = INCarChargingConnectorTypeGetBackingType(activeConnector);
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = v5;
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  v6 = _responseMessagePBRepresentation;
   if (BackingType == 0x7FFFFFFF)
   {
-    [v5 setHasActiveConnector:0];
+    [_responseMessagePBRepresentation setHasActiveConnector:0];
   }
 
   else
   {
-    [v5 setActiveConnector:BackingType];
+    [_responseMessagePBRepresentation setActiveConnector:BackingType];
   }
 
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setDateOfLastStateUpdate:(NSDateComponents *)dateOfLastStateUpdate
 {
   v4 = dateOfLastStateUpdate;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToDateTime(v4);
 
-  [v5 setDateOfLastStateUpdate:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setDateOfLastStateUpdate:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setChargingFormulaArguments:(NSDictionary *)chargingFormulaArguments
 {
   v4 = chargingFormulaArguments;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToJSONDictionary(v4);
 
-  [v5 setChargingFormulaArguments:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setChargingFormulaArguments:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setConsumptionFormulaArguments:(NSDictionary *)consumptionFormulaArguments
 {
   v4 = consumptionFormulaArguments;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToJSONDictionary(v4);
 
-  [v5 setConsumptionFormulaArguments:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setConsumptionFormulaArguments:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setMaximumDistanceFuel:(NSMeasurement *)maximumDistanceFuel
 {
   v4 = maximumDistanceFuel;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToDistance(v4);
 
-  [v5 setMaximumDistanceFuel:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setMaximumDistanceFuel:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setDistanceRemainingFuel:(NSMeasurement *)distanceRemainingFuel
 {
   v4 = distanceRemainingFuel;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToDistance(v4);
 
-  [v5 setDistanceRemainingFuel:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setDistanceRemainingFuel:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setMaximumDistanceElectric:(NSMeasurement *)maximumDistanceElectric
 {
   v4 = maximumDistanceElectric;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToDistance(v4);
 
-  [v5 setMaximumDistanceElectric:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setMaximumDistanceElectric:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setDistanceRemainingElectric:(NSMeasurement *)distanceRemainingElectric
 {
   v4 = distanceRemainingElectric;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToDistance(v4);
 
-  [v5 setDistanceRemainingElectric:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setDistanceRemainingElectric:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setMaximumDistance:(NSMeasurement *)maximumDistance
 {
   v4 = maximumDistance;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToDistance(v4);
 
-  [v5 setMaximumDistance:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setMaximumDistance:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setMinutesToFull:(NSNumber *)minutesToFull
 {
   v4 = minutesToFull;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToInteger(v4);
 
-  [v5 setMinutesToFull:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setMinutesToFull:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setCharging:(NSNumber *)charging
 {
   v7 = charging;
-  v4 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   if (v7)
   {
-    [v4 setCharging:{-[NSNumber BOOLValue](v7, "BOOLValue")}];
+    [_responseMessagePBRepresentation setCharging:{-[NSNumber BOOLValue](v7, "BOOLValue")}];
   }
 
   else
   {
-    [v4 setHasCharging:0];
+    [_responseMessagePBRepresentation setHasCharging:0];
   }
 
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = [v5 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setDistanceRemaining:(NSMeasurement *)distanceRemaining
 {
   v4 = distanceRemaining;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToDistance(v4);
 
-  [v5 setDistanceRemaining:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setDistanceRemaining:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setChargePercentRemaining:(NSNumber *)chargePercentRemaining
 {
   v4 = chargePercentRemaining;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToDouble(v4);
 
-  [v5 setChargePercentRemaining:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setChargePercentRemaining:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setFuelPercentRemaining:(NSNumber *)fuelPercentRemaining
 {
   v4 = fuelPercentRemaining;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
   v6 = INIntentSlotValueTransformToDouble(v4);
 
-  [v5 setFuelPercentRemaining:v6];
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  [_responseMessagePBRepresentation setFuelPercentRemaining:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (void)setCarIdentifier:(NSString *)carIdentifier
 {
   v4 = carIdentifier;
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  [v5 setCarIdentifier:v4];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  [_responseMessagePBRepresentation setCarIdentifier:v4];
 
-  v7 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = [v7 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v6];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (NSMeasurement)minimumBatteryCapacity
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 minimumBatteryCapacity];
-  v4 = INIntentSlotValueTransformFromEnergy(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  minimumBatteryCapacity = [_responseMessagePBRepresentation minimumBatteryCapacity];
+  v4 = INIntentSlotValueTransformFromEnergy(minimumBatteryCapacity);
 
   return v4;
 }
 
 - (NSMeasurement)currentBatteryCapacity
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 currentBatteryCapacity];
-  v4 = INIntentSlotValueTransformFromEnergy(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  currentBatteryCapacity = [_responseMessagePBRepresentation currentBatteryCapacity];
+  v4 = INIntentSlotValueTransformFromEnergy(currentBatteryCapacity);
 
   return v4;
 }
 
 - (NSMeasurement)maximumBatteryCapacity
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 maximumBatteryCapacity];
-  v4 = INIntentSlotValueTransformFromEnergy(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  maximumBatteryCapacity = [_responseMessagePBRepresentation maximumBatteryCapacity];
+  v4 = INIntentSlotValueTransformFromEnergy(maximumBatteryCapacity);
 
   return v4;
 }
 
 - (INCarChargingConnectorType)activeConnector
 {
-  v3 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v4 = [v3 hasActiveConnector];
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = [v5 activeConnector];
-  if (v4 && (v6 - 2) <= 9)
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  hasActiveConnector = [_responseMessagePBRepresentation hasActiveConnector];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  activeConnector = [_responseMessagePBRepresentation2 activeConnector];
+  if (hasActiveConnector && (activeConnector - 2) <= 9)
   {
-    v7 = off_1E7288530[v6 - 2];
+    v7 = off_1E7288530[activeConnector - 2];
   }
 
   else
@@ -620,93 +620,93 @@
 
 - (NSDateComponents)dateOfLastStateUpdate
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 dateOfLastStateUpdate];
-  v4 = INIntentSlotValueTransformFromDateTime(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  dateOfLastStateUpdate = [_responseMessagePBRepresentation dateOfLastStateUpdate];
+  v4 = INIntentSlotValueTransformFromDateTime(dateOfLastStateUpdate);
 
   return v4;
 }
 
 - (NSDictionary)chargingFormulaArguments
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 chargingFormulaArguments];
-  v4 = INIntentSlotValueTransformFromJSONDictionary(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  chargingFormulaArguments = [_responseMessagePBRepresentation chargingFormulaArguments];
+  v4 = INIntentSlotValueTransformFromJSONDictionary(chargingFormulaArguments);
 
   return v4;
 }
 
 - (NSDictionary)consumptionFormulaArguments
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 consumptionFormulaArguments];
-  v4 = INIntentSlotValueTransformFromJSONDictionary(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  consumptionFormulaArguments = [_responseMessagePBRepresentation consumptionFormulaArguments];
+  v4 = INIntentSlotValueTransformFromJSONDictionary(consumptionFormulaArguments);
 
   return v4;
 }
 
 - (NSMeasurement)maximumDistanceFuel
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 maximumDistanceFuel];
-  v4 = INIntentSlotValueTransformFromDistance(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  maximumDistanceFuel = [_responseMessagePBRepresentation maximumDistanceFuel];
+  v4 = INIntentSlotValueTransformFromDistance(maximumDistanceFuel);
 
   return v4;
 }
 
 - (NSMeasurement)distanceRemainingFuel
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 distanceRemainingFuel];
-  v4 = INIntentSlotValueTransformFromDistance(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  distanceRemainingFuel = [_responseMessagePBRepresentation distanceRemainingFuel];
+  v4 = INIntentSlotValueTransformFromDistance(distanceRemainingFuel);
 
   return v4;
 }
 
 - (NSMeasurement)maximumDistanceElectric
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 maximumDistanceElectric];
-  v4 = INIntentSlotValueTransformFromDistance(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  maximumDistanceElectric = [_responseMessagePBRepresentation maximumDistanceElectric];
+  v4 = INIntentSlotValueTransformFromDistance(maximumDistanceElectric);
 
   return v4;
 }
 
 - (NSMeasurement)distanceRemainingElectric
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 distanceRemainingElectric];
-  v4 = INIntentSlotValueTransformFromDistance(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  distanceRemainingElectric = [_responseMessagePBRepresentation distanceRemainingElectric];
+  v4 = INIntentSlotValueTransformFromDistance(distanceRemainingElectric);
 
   return v4;
 }
 
 - (NSMeasurement)maximumDistance
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 maximumDistance];
-  v4 = INIntentSlotValueTransformFromDistance(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  maximumDistance = [_responseMessagePBRepresentation maximumDistance];
+  v4 = INIntentSlotValueTransformFromDistance(maximumDistance);
 
   return v4;
 }
 
 - (NSNumber)minutesToFull
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 minutesToFull];
-  v4 = INIntentSlotValueTransformFromInteger(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  minutesToFull = [_responseMessagePBRepresentation minutesToFull];
+  v4 = INIntentSlotValueTransformFromInteger(minutesToFull);
 
   return v4;
 }
 
 - (NSNumber)charging
 {
-  v3 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  if ([v3 hasCharging])
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  if ([_responseMessagePBRepresentation hasCharging])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "charging")}];
+    _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+    v6 = [v4 numberWithBool:{objc_msgSend(_responseMessagePBRepresentation2, "charging")}];
   }
 
   else
@@ -719,56 +719,56 @@
 
 - (NSMeasurement)distanceRemaining
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 distanceRemaining];
-  v4 = INIntentSlotValueTransformFromDistance(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  distanceRemaining = [_responseMessagePBRepresentation distanceRemaining];
+  v4 = INIntentSlotValueTransformFromDistance(distanceRemaining);
 
   return v4;
 }
 
 - (NSNumber)chargePercentRemaining
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 chargePercentRemaining];
-  v4 = INIntentSlotValueTransformFromDouble(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  chargePercentRemaining = [_responseMessagePBRepresentation chargePercentRemaining];
+  v4 = INIntentSlotValueTransformFromDouble(chargePercentRemaining);
 
   return v4;
 }
 
 - (NSNumber)fuelPercentRemaining
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 fuelPercentRemaining];
-  v4 = INIntentSlotValueTransformFromDouble(v3);
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  fuelPercentRemaining = [_responseMessagePBRepresentation fuelPercentRemaining];
+  v4 = INIntentSlotValueTransformFromDouble(fuelPercentRemaining);
 
   return v4;
 }
 
 - (NSString)carIdentifier
 {
-  v2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v3 = [v2 carIdentifier];
-  v4 = [v3 copy];
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  carIdentifier = [_responseMessagePBRepresentation carIdentifier];
+  v4 = [carIdentifier copy];
 
   return v4;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INGetCarPowerLevelStatusIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INGetCarPowerLevelStatusIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INGetCarPowerLevelStatusIntentResponseCodeInProgress"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INGetCarPowerLevelStatusIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INGetCarPowerLevelStatusIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INGetCarPowerLevelStatusIntentResponseCodeInProgress"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INGetCarPowerLevelStatusIntentResponseCodeSuccess"])
+  if ([nameCopy isEqualToString:@"INGetCarPowerLevelStatusIntentResponseCodeSuccess"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INGetCarPowerLevelStatusIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INGetCarPowerLevelStatusIntentResponseCodeFailure"])
   {
     v5 = 4;
   }
@@ -778,7 +778,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INGetCarPowerLevelStatusIntentResponseCodeFailureRequiringAppLaunch"];
+  v6 = [nameCopy isEqualToString:@"INGetCarPowerLevelStatusIntentResponseCodeFailureRequiringAppLaunch"];
 
   if (v6)
   {
@@ -793,30 +793,30 @@
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INGetCarPowerLevelStatusIntentResponse *)self code];
-  if ((v2 - 1) > 4)
+  code = [(INGetCarPowerLevelStatusIntentResponse *)self code];
+  if ((code - 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5FDC8[v2 - 1];
+    return qword_18EE5FDC8[code - 1];
   }
 }
 
-- (INGetCarPowerLevelStatusIntentResponse)initWithCoder:(id)a3
+- (INGetCarPowerLevelStatusIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INGetCarPowerLevelStatusIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INGetCarPowerLevelStatusIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (INGetCarPowerLevelStatusIntentResponseCode)code
@@ -826,18 +826,18 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INGetCarPowerLevelStatusIntentResponse)initWithBackingStore:(id)a3
+- (INGetCarPowerLevelStatusIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INGetCarPowerLevelStatusIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INGetCarPowerLevelStatusIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
 - (INGetCarPowerLevelStatusIntentResponse)initWithCode:(INGetCarPowerLevelStatusIntentResponseCode)code userActivity:(NSUserActivity *)userActivity
@@ -878,45 +878,45 @@
   return v11;
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 4)
+  if ((code - 1) > 4)
   {
     return 3;
   }
 
   else
   {
-    return dword_18EE5FDB0[a3 - 1];
+    return dword_18EE5FDB0[code - 1];
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
   v5 = 2;
-  if (a3 != 2)
+  if (type != 2)
   {
-    v5 = a3 == 5;
+    v5 = type == 5;
   }
 
   v6 = 3;
   v7 = 4;
-  if (a5)
+  if (requested)
   {
     v7 = 5;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v7 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     v6 = v7;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
     return v6;
   }

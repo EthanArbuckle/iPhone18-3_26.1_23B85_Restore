@@ -1,11 +1,11 @@
 @interface MKLookAroundEntryPoint
-+ (id)entryPointWithMapItem:(id)a3 isMarkedLocation:(BOOL)a4 wantsCloseUpView:(BOOL)a5 cameraFrameOverride:(id)a6 triggerAction:(int)a7;
-+ (id)entryPointWithMapItem:(id)a3 triggerAction:(int)a4;
-+ (id)entryPointWithMapItem:(id)a3 wantsCloseUpView:(BOOL)a4 cameraFrameOverride:(id)a5;
-+ (id)entryPointWithMuninMarker:(id)a3 heading:(double)a4;
-+ (id)entryPointWithMuninViewState:(id)a3;
-+ (id)entryPointWithMuninViewState:(id)a3 triggerAction:(int)a4;
-+ (id)entryPointWithScene:(id)a3 wantsCloseUpView:(BOOL)a4;
++ (id)entryPointWithMapItem:(id)item isMarkedLocation:(BOOL)location wantsCloseUpView:(BOOL)view cameraFrameOverride:(id)override triggerAction:(int)action;
++ (id)entryPointWithMapItem:(id)item triggerAction:(int)action;
++ (id)entryPointWithMapItem:(id)item wantsCloseUpView:(BOOL)view cameraFrameOverride:(id)override;
++ (id)entryPointWithMuninMarker:(id)marker heading:(double)heading;
++ (id)entryPointWithMuninViewState:(id)state;
++ (id)entryPointWithMuninViewState:(id)state triggerAction:(int)action;
++ (id)entryPointWithScene:(id)scene wantsCloseUpView:(BOOL)view;
 - (MKLookAroundEntryPoint)init;
 @end
 
@@ -25,90 +25,90 @@
   return v3;
 }
 
-+ (id)entryPointWithMapItem:(id)a3 isMarkedLocation:(BOOL)a4 wantsCloseUpView:(BOOL)a5 cameraFrameOverride:(id)a6 triggerAction:(int)a7
++ (id)entryPointWithMapItem:(id)item isMarkedLocation:(BOOL)location wantsCloseUpView:(BOOL)view cameraFrameOverride:(id)override triggerAction:(int)action
 {
-  v7 = *&a7;
-  v8 = a5;
-  v9 = a4;
-  v12 = a6;
-  v13 = [a1 entryPointWithMapItem:a3 wantsCloseUpView:v8];
-  [v13 setCameraFrameOverride:v12];
+  v7 = *&action;
+  viewCopy = view;
+  locationCopy = location;
+  overrideCopy = override;
+  v13 = [self entryPointWithMapItem:item wantsCloseUpView:viewCopy];
+  [v13 setCameraFrameOverride:overrideCopy];
 
   [v13 setTriggerAction:v7];
-  [v13 setIsMarkedLocation:v9];
+  [v13 setIsMarkedLocation:locationCopy];
 
   return v13;
 }
 
-+ (id)entryPointWithMuninViewState:(id)a3 triggerAction:(int)a4
++ (id)entryPointWithMuninViewState:(id)state triggerAction:(int)action
 {
-  v4 = *&a4;
-  v5 = [a1 entryPointWithMuninViewState:a3];
+  v4 = *&action;
+  v5 = [self entryPointWithMuninViewState:state];
   [v5 setTriggerAction:v4];
 
   return v5;
 }
 
-+ (id)entryPointWithMapItem:(id)a3 triggerAction:(int)a4
++ (id)entryPointWithMapItem:(id)item triggerAction:(int)action
 {
-  v4 = *&a4;
-  v5 = [a1 entryPointWithMapItem:a3];
+  v4 = *&action;
+  v5 = [self entryPointWithMapItem:item];
   [v5 setTriggerAction:v4];
 
   return v5;
 }
 
-+ (id)entryPointWithScene:(id)a3 wantsCloseUpView:(BOOL)a4
++ (id)entryPointWithScene:(id)scene wantsCloseUpView:(BOOL)view
 {
-  v4 = a4;
-  v6 = [a3 _mapItem];
-  v7 = [a1 entryPointWithMapItem:v6 wantsCloseUpView:v4];
+  viewCopy = view;
+  _mapItem = [scene _mapItem];
+  v7 = [self entryPointWithMapItem:_mapItem wantsCloseUpView:viewCopy];
 
   return v7;
 }
 
-+ (id)entryPointWithMuninViewState:(id)a3
++ (id)entryPointWithMuninViewState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = objc_alloc_init(objc_opt_class());
   v5 = v4;
   if (v4)
   {
     [v4 setType:2];
-    [v5 setMuninViewState:v3];
+    [v5 setMuninViewState:stateCopy];
   }
 
   return v5;
 }
 
-+ (id)entryPointWithMuninMarker:(id)a3 heading:(double)a4
++ (id)entryPointWithMuninMarker:(id)marker heading:(double)heading
 {
-  v5 = a3;
+  markerCopy = marker;
   v6 = objc_alloc_init(objc_opt_class());
   v7 = v6;
   if (v6)
   {
     [v6 setType:1];
-    [v7 setMuninMarker:v5];
-    [v7 setHeading:a4];
+    [v7 setMuninMarker:markerCopy];
+    [v7 setHeading:heading];
   }
 
   return v7;
 }
 
-+ (id)entryPointWithMapItem:(id)a3 wantsCloseUpView:(BOOL)a4 cameraFrameOverride:(id)a5
++ (id)entryPointWithMapItem:(id)item wantsCloseUpView:(BOOL)view cameraFrameOverride:(id)override
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
+  viewCopy = view;
+  itemCopy = item;
+  overrideCopy = override;
   v9 = objc_alloc_init(objc_opt_class());
   v10 = v9;
   if (v9)
   {
     [v9 setType:0];
-    [v10 setMapItem:v7];
-    [v10 setWantsCloseUpView:v6];
-    [v10 setCameraFrameOverride:v8];
+    [v10 setMapItem:itemCopy];
+    [v10 setWantsCloseUpView:viewCopy];
+    [v10 setCameraFrameOverride:overrideCopy];
   }
 
   return v10;

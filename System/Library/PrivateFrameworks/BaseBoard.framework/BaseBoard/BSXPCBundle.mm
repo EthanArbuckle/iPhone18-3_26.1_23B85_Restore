@@ -1,16 +1,16 @@
 @interface BSXPCBundle
-+ (id)bundleForPID:(int)a3;
-+ (id)bundleWithExecutablePath:(id)a3;
-+ (id)bundleWithPath:(id)a3;
-+ (id)bundleWithXPCBundle:(id)a3;
++ (id)bundleForPID:(int)d;
++ (id)bundleWithExecutablePath:(id)path;
++ (id)bundleWithPath:(id)path;
++ (id)bundleWithXPCBundle:(id)bundle;
 + (id)mainBundle;
 - (NSDictionary)infoDictionary;
 - (NSString)bundleIdentifier;
 - (NSString)bundlePath;
 - (NSString)executablePath;
-- (id)_initWithXPCBundle:(id)a1;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_initWithXPCBundle:(id)bundle;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
@@ -38,32 +38,32 @@ void __25__BSXPCBundle_mainBundle__block_invoke()
   _MergedGlobals_3 = v1;
 }
 
-- (id)_initWithXPCBundle:(id)a1
+- (id)_initWithXPCBundle:(id)bundle
 {
   v4 = a2;
   v5 = v4;
-  if (a1 && v4)
+  if (bundle && v4)
   {
-    v6 = [a1 init];
+    v6 = [bundle init];
     v7 = v6;
     if (v6)
     {
       objc_storeStrong((v6 + 40), a2);
     }
 
-    a1 = v7;
-    v8 = a1;
+    bundle = v7;
+    bundleCopy = bundle;
   }
 
   else
   {
-    v8 = 0;
+    bundleCopy = 0;
   }
 
-  return v8;
+  return bundleCopy;
 }
 
-+ (id)bundleForPID:(int)a3
++ (id)bundleForPID:(int)d
 {
   v3 = BSXPCBundleForPID();
   v4 = [BSXPCBundle bundleWithXPCBundle:v3];
@@ -71,26 +71,26 @@ void __25__BSXPCBundle_mainBundle__block_invoke()
   return v4;
 }
 
-+ (id)bundleWithPath:(id)a3
++ (id)bundleWithPath:(id)path
 {
-  v3 = BSXPCBundleForBundlePath(a3);
+  v3 = BSXPCBundleForBundlePath(path);
   v4 = [BSXPCBundle bundleWithXPCBundle:v3];
 
   return v4;
 }
 
-+ (id)bundleWithExecutablePath:(id)a3
++ (id)bundleWithExecutablePath:(id)path
 {
-  v3 = BSXPCBundleForExecutablePath(a3);
+  v3 = BSXPCBundleForExecutablePath(path);
   v4 = [BSXPCBundle bundleWithXPCBundle:v3];
 
   return v4;
 }
 
-+ (id)bundleWithXPCBundle:(id)a3
++ (id)bundleWithXPCBundle:(id)bundle
 {
-  v3 = a3;
-  v4 = [[BSXPCBundle alloc] _initWithXPCBundle:v3];
+  bundleCopy = bundle;
+  v4 = [[BSXPCBundle alloc] _initWithXPCBundle:bundleCopy];
 
   return v4;
 }
@@ -161,37 +161,37 @@ void __25__BSXPCBundle_mainBundle__block_invoke()
 
 - (id)succinctDescription
 {
-  v2 = [(BSXPCBundle *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(BSXPCBundle *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
 {
   v3 = [BSDescriptionBuilder builderWithObject:self];
-  v4 = [(BSXPCBundle *)self bundleIdentifier];
-  v5 = [v3 appendObject:v4 withName:@"bundleID"];
+  bundleIdentifier = [(BSXPCBundle *)self bundleIdentifier];
+  v5 = [v3 appendObject:bundleIdentifier withName:@"bundleID"];
 
-  v6 = [(BSXPCBundle *)self bundlePath];
-  v7 = [v3 appendObject:v6 withName:@"path"];
+  bundlePath = [(BSXPCBundle *)self bundlePath];
+  v7 = [v3 appendObject:bundlePath withName:@"path"];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSXPCBundle *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(BSXPCBundle *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v3 = [(BSXPCBundle *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(BSXPCBundle *)self succinctDescriptionBuilder];
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
 @end

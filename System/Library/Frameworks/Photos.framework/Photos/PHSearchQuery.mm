@@ -1,25 +1,25 @@
 @interface PHSearchQuery
-+ (id)_attributeKeyForPropertyKey:(id)a3;
-+ (id)_fetchAttributesForSortDescriptors:(id)a3;
-+ (id)_spotlightQueryContextWithSearchOptions:(id)a3;
-+ (unint64_t)_searchResultTypesFromSearchQueryResultTypes:(unint64_t)a3;
-+ (void)_triggerQueryTimeoutTapToRadarForQuery:(id)a3;
-+ (void)performSearch:(id)a3 queryQueue:(id)a4 resultsHandler:(id)a5;
-+ (void)performSuggestionsSearch:(id)a3 queryQueue:(id)a4 suggestionsHandler:(id)a5;
-+ (void)suggestionsForSearchQuery:(id)a3 searchQueryResult:(id)a4 rangeOfSuggestionText:(_NSRange)a5 queryQueue:(id)a6 suggestionsHandler:(id)a7;
++ (id)_attributeKeyForPropertyKey:(id)key;
++ (id)_fetchAttributesForSortDescriptors:(id)descriptors;
++ (id)_spotlightQueryContextWithSearchOptions:(id)options;
++ (unint64_t)_searchResultTypesFromSearchQueryResultTypes:(unint64_t)types;
++ (void)_triggerQueryTimeoutTapToRadarForQuery:(id)query;
++ (void)performSearch:(id)search queryQueue:(id)queue resultsHandler:(id)handler;
++ (void)performSuggestionsSearch:(id)search queryQueue:(id)queue suggestionsHandler:(id)handler;
++ (void)suggestionsForSearchQuery:(id)query searchQueryResult:(id)result rangeOfSuggestionText:(_NSRange)text queryQueue:(id)queue suggestionsHandler:(id)handler;
 - (BOOL)isCancelled;
-- (BOOL)isEqual:(id)a3;
-- (PHSearchQuery)initWithSearchText:(id)a3 searchOptions:(id)a4 photoLibrary:(id)a5 queryIdentifier:(int)a6 batchIdentifier:(int)a7;
-- (PHSearchQuery)initWithText:(id)a3 suggestionOptions:(id)a4 photoLibrary:(id)a5 queryIdentifier:(int)a6;
+- (BOOL)isEqual:(id)equal;
+- (PHSearchQuery)initWithSearchText:(id)text searchOptions:(id)options photoLibrary:(id)library queryIdentifier:(int)identifier batchIdentifier:(int)batchIdentifier;
+- (PHSearchQuery)initWithText:(id)text suggestionOptions:(id)options photoLibrary:(id)library queryIdentifier:(int)identifier;
 - (id)_effectiveScopedUUIDs;
-- (id)_executePhotosEntityStoreSearchWithAssetUUIDs:(id)a3 collectionUUIDs:(id)a4 annotatedQueryString:(id)a5 rangeOfSuggestionText:(_NSRange)a6;
+- (id)_executePhotosEntityStoreSearchWithAssetUUIDs:(id)ds collectionUUIDs:(id)iDs annotatedQueryString:(id)string rangeOfSuggestionText:(_NSRange)text;
 - (id)description;
 - (id)jsonDictionary;
 - (id)redactedJSONDictionary;
-- (void)_executeSearchWithResultsHandler:(id)a3;
-- (void)_executeSpotlightSearchWithResultsHandlerV2:(id)a3;
+- (void)_executeSearchWithResultsHandler:(id)handler;
+- (void)_executeSpotlightSearchWithResultsHandlerV2:(id)v2;
 - (void)cancel;
-- (void)setIsCancelled:(BOOL)a3;
+- (void)setIsCancelled:(BOOL)cancelled;
 @end
 
 @implementation PHSearchQuery
@@ -29,43 +29,43 @@
   v32[8] = *MEMORY[0x1E69E9840];
   v25 = objc_alloc(MEMORY[0x1E695DF90]);
   v31[0] = @"searchText";
-  v30 = [(PHSearchQuery *)self searchText];
-  v29 = [v30 string];
-  v3 = [v29 description];
-  v28 = v3;
-  if (!v3)
+  searchText = [(PHSearchQuery *)self searchText];
+  string = [searchText string];
+  null = [string description];
+  v28 = null;
+  if (!null)
   {
-    v3 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v21 = v3;
-  v32[0] = v3;
+  v21 = null;
+  v32[0] = null;
   v31[1] = @"searchText_photosAttributedString";
-  v27 = [(PHSearchQuery *)self searchText];
+  searchText2 = [(PHSearchQuery *)self searchText];
   v26 = [PHSearchQueryAnnotation annotatedQueryStringByFilteringToPHSearchQueryAttributes:?];
-  v4 = [v26 description];
-  v5 = v4;
-  if (!v4)
+  null2 = [v26 description];
+  v5 = null2;
+  if (!null2)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v4;
-  v32[1] = v4;
+  v20 = null2;
+  v32[1] = null2;
   v31[2] = @"queryIdentifier";
-  v6 = [(PHSearchQuery *)self type];
+  type = [(PHSearchQuery *)self type];
   v7 = MEMORY[0x1E696AD98];
-  if (v6)
+  if (type)
   {
-    v8 = [(PHSearchQuery *)self suggestionQueryIdentifier];
+    suggestionQueryIdentifier = [(PHSearchQuery *)self suggestionQueryIdentifier];
   }
 
   else
   {
-    v8 = [(PHSearchQuery *)self queryIdentifier];
+    suggestionQueryIdentifier = [(PHSearchQuery *)self queryIdentifier];
   }
 
-  v24 = [v7 numberWithInt:v8];
+  v24 = [v7 numberWithInt:suggestionQueryIdentifier];
   v32[2] = v24;
   v31[3] = @"batchIdentifier";
   v23 = [MEMORY[0x1E696AD98] numberWithInt:{-[PHSearchQuery batchIdentifier](self, "batchIdentifier")}];
@@ -77,29 +77,29 @@
   v9 = [MEMORY[0x1E696AD98] numberWithBool:PLIsFeaturedContentAllowed()];
   v32[5] = v9;
   v31[6] = @"spotlightQueryString";
-  v10 = [(PHSearchQuery *)self queryStringSentToSpotlight];
-  v11 = [v10 description];
-  v12 = v11;
+  queryStringSentToSpotlight = [(PHSearchQuery *)self queryStringSentToSpotlight];
+  v11 = [queryStringSentToSpotlight description];
+  null3 = v11;
   if (!v11)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32[6] = v12;
+  v32[6] = null3;
   v31[7] = @"spotlightFetchAttributes";
-  v13 = [(PHSearchQuery *)self spotlightQueryContext];
-  v14 = [v13 fetchAttributes];
-  v15 = v14;
-  if (!v14)
+  spotlightQueryContext = [(PHSearchQuery *)self spotlightQueryContext];
+  fetchAttributes = [spotlightQueryContext fetchAttributes];
+  null4 = fetchAttributes;
+  if (!fetchAttributes)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v32[7] = v15;
+  v32[7] = null4;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:8];
   v17 = [v25 initWithDictionary:v16];
 
-  if (!v14)
+  if (!fetchAttributes)
   {
   }
 
@@ -125,9 +125,9 @@
   v35[10] = *MEMORY[0x1E69E9840];
   v29 = objc_alloc(MEMORY[0x1E695DF90]);
   v34[0] = @"type";
-  v3 = [(PHSearchQuery *)self type];
+  type = [(PHSearchQuery *)self type];
   v4 = @"Suggestion";
-  if (!v3)
+  if (!type)
   {
     v4 = @"Retrieval";
   }
@@ -144,44 +144,44 @@
     [(PHSearchQuery *)self searchOptions];
   }
   v33 = ;
-  v32 = [v33 jsonDictionary];
-  v35[1] = v32;
+  jsonDictionary = [v33 jsonDictionary];
+  v35[1] = jsonDictionary;
   v34[2] = @"searchText";
-  v31 = [(PHSearchQuery *)self searchText];
-  v5 = [v31 description];
-  v30 = v5;
-  if (!v5)
+  searchText = [(PHSearchQuery *)self searchText];
+  null = [searchText description];
+  v30 = null;
+  if (!null)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v5;
-  v35[2] = v5;
+  v23 = null;
+  v35[2] = null;
   v34[3] = @"searchText_photosAttributedString";
-  v28 = [(PHSearchQuery *)self searchText];
+  searchText2 = [(PHSearchQuery *)self searchText];
   v27 = [PHSearchQueryAnnotation annotatedQueryStringByFilteringToPHSearchQueryAttributes:?];
-  v6 = [v27 description];
-  v7 = v6;
-  if (!v6)
+  null2 = [v27 description];
+  v7 = null2;
+  if (!null2)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[3] = v6;
+  v35[3] = null2;
   v34[4] = @"queryIdentifier";
-  v8 = [(PHSearchQuery *)self type];
+  type2 = [(PHSearchQuery *)self type];
   v9 = MEMORY[0x1E696AD98];
-  if (v8)
+  if (type2)
   {
-    v10 = [(PHSearchQuery *)self suggestionQueryIdentifier];
+    suggestionQueryIdentifier = [(PHSearchQuery *)self suggestionQueryIdentifier];
   }
 
   else
   {
-    v10 = [(PHSearchQuery *)self queryIdentifier];
+    suggestionQueryIdentifier = [(PHSearchQuery *)self queryIdentifier];
   }
 
-  v26 = [v9 numberWithInt:v10];
+  v26 = [v9 numberWithInt:suggestionQueryIdentifier];
   v35[4] = v26;
   v34[5] = @"batchIdentifier";
   v25 = [MEMORY[0x1E696AD98] numberWithInt:{-[PHSearchQuery batchIdentifier](self, "batchIdentifier")}];
@@ -193,29 +193,29 @@
   v11 = [MEMORY[0x1E696AD98] numberWithBool:PLIsFeaturedContentAllowed()];
   v35[7] = v11;
   v34[8] = @"spotlightQueryString";
-  v12 = [(PHSearchQuery *)self queryStringSentToSpotlight];
-  v13 = [v12 description];
-  v14 = v13;
+  queryStringSentToSpotlight = [(PHSearchQuery *)self queryStringSentToSpotlight];
+  v13 = [queryStringSentToSpotlight description];
+  null3 = v13;
   if (!v13)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[8] = v14;
+  v35[8] = null3;
   v34[9] = @"spotlightFetchAttributes";
-  v15 = [(PHSearchQuery *)self spotlightQueryContext];
-  v16 = [v15 fetchAttributes];
-  v17 = v16;
-  if (!v16)
+  spotlightQueryContext = [(PHSearchQuery *)self spotlightQueryContext];
+  fetchAttributes = [spotlightQueryContext fetchAttributes];
+  null4 = fetchAttributes;
+  if (!fetchAttributes)
   {
-    v17 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v35[9] = v17;
+  v35[9] = null4;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:10];
   v19 = [v29 initWithDictionary:v18];
 
-  if (!v16)
+  if (!fetchAttributes)
   {
   }
 
@@ -243,18 +243,18 @@
     if ([(PHSearchQuery *)self type]== 1)
     {
       v3 = MEMORY[0x1E696AEC0];
-      v4 = [(PHSearchQuery *)self suggestionQueryIdentifier];
-      v5 = [(PHSearchQuery *)self isCancelled];
+      suggestionQueryIdentifier = [(PHSearchQuery *)self suggestionQueryIdentifier];
+      isCancelled = [(PHSearchQuery *)self isCancelled];
       v6 = @"NO";
-      if (v5)
+      if (isCancelled)
       {
         v6 = @"YES";
       }
 
       v7 = v6;
-      v8 = [(PHSearchQuery *)self searchText];
-      v9 = [(PHSearchQuery *)self suggestionOptions];
-      v10 = [v3 stringWithFormat:@"Type: Suggestion Query, QueryId: %d, isCancelled: %@, SearchText: '%@', SuggestionOptions: %@", v4, v7, v8, v9];
+      searchText = [(PHSearchQuery *)self searchText];
+      suggestionOptions = [(PHSearchQuery *)self suggestionOptions];
+      v10 = [v3 stringWithFormat:@"Type: Suggestion Query, QueryId: %d, isCancelled: %@, SearchText: '%@', SuggestionOptions: %@", suggestionQueryIdentifier, v7, searchText, suggestionOptions];
     }
 
     else
@@ -268,8 +268,8 @@
   else
   {
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [(PHSearchQuery *)self queryIdentifier];
-    v13 = [(PHSearchQuery *)self batchIdentifier];
+    queryIdentifier = [(PHSearchQuery *)self queryIdentifier];
+    batchIdentifier = [(PHSearchQuery *)self batchIdentifier];
     if ([(PHSearchQuery *)self isCancelled])
     {
       v14 = @"YES";
@@ -281,7 +281,7 @@
     }
 
     v15 = v14;
-    v16 = [(PHSearchQuery *)self searchText];
+    searchText2 = [(PHSearchQuery *)self searchText];
     if (PLIsFeaturedContentAllowed())
     {
       v17 = @"YES";
@@ -293,8 +293,8 @@
     }
 
     v18 = v17;
-    v19 = [(PHSearchQuery *)self searchOptions];
-    v10 = [v11 stringWithFormat:@"Type: Retrieval Query, QueryId: %d, BatchId: %d, isCancelled: %@, SearchText: '%@', FeaturedContentAllowed: %@, SearchOptions: %@", v12, v13, v15, v16, v18, v19];
+    searchOptions = [(PHSearchQuery *)self searchOptions];
+    v10 = [v11 stringWithFormat:@"Type: Retrieval Query, QueryId: %d, BatchId: %d, isCancelled: %@, SearchText: '%@', FeaturedContentAllowed: %@, SearchOptions: %@", queryIdentifier, batchIdentifier, v15, searchText2, v18, searchOptions];
   }
 
   return v10;
@@ -303,11 +303,11 @@
 - (id)_effectiveScopedUUIDs
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(PHSearchQuery *)self searchOptions];
-  v4 = [v3 scopedIdentifiers];
+  searchOptions = [(PHSearchQuery *)self searchOptions];
+  scopedIdentifiers = [searchOptions scopedIdentifiers];
 
-  v5 = [(PHSearchQuery *)self searchText];
-  v6 = [PHSearchUtility extractAssetUUIDsForLocationDisambiguationsInQueryString:v5];
+  searchText = [(PHSearchQuery *)self searchText];
+  v6 = [PHSearchUtility extractAssetUUIDsForLocationDisambiguationsInQueryString:searchText];
 
   if ([v6 count])
   {
@@ -331,13 +331,13 @@
       _os_log_impl(&dword_19C86F000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Found %tu assetUUIDs from location disambiguations to scope the search.", buf, 0x16u);
     }
 
-    if ([v4 count])
+    if ([scopedIdentifiers count])
     {
-      v9 = [v4 mutableCopy];
+      v9 = [scopedIdentifiers mutableCopy];
       [v9 intersectSet:v6];
       v10 = [v9 copy];
 
-      v4 = v9;
+      scopedIdentifiers = v9;
     }
 
     else
@@ -345,16 +345,16 @@
       v10 = v6;
     }
 
-    v4 = v10;
+    scopedIdentifiers = v10;
   }
 
-  return v4;
+  return scopedIdentifiers;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -364,23 +364,23 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PHSearchQuery *)self type];
-      if (v6 == [(PHSearchQuery *)v5 type])
+      v5 = equalCopy;
+      type = [(PHSearchQuery *)self type];
+      if (type == [(PHSearchQuery *)v5 type])
       {
         if (![(PHSearchQuery *)self type])
         {
-          v7 = [(PHSearchQuery *)self queryIdentifier];
-          v8 = [(PHSearchQuery *)v5 queryIdentifier];
+          queryIdentifier = [(PHSearchQuery *)self queryIdentifier];
+          queryIdentifier2 = [(PHSearchQuery *)v5 queryIdentifier];
           goto LABEL_11;
         }
 
         if ([(PHSearchQuery *)self type]== 1)
         {
-          v7 = [(PHSearchQuery *)self suggestionQueryIdentifier];
-          v8 = [(PHSearchQuery *)v5 suggestionQueryIdentifier];
+          queryIdentifier = [(PHSearchQuery *)self suggestionQueryIdentifier];
+          queryIdentifier2 = [(PHSearchQuery *)v5 suggestionQueryIdentifier];
 LABEL_11:
-          v9 = v7 == v8;
+          v9 = queryIdentifier == queryIdentifier2;
           goto LABEL_12;
         }
       }
@@ -401,30 +401,30 @@ LABEL_13:
 
 - (BOOL)isCancelled
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  isCancelled = v2->_isCancelled;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isCancelled = selfCopy->_isCancelled;
+  objc_sync_exit(selfCopy);
 
   return isCancelled;
 }
 
-- (void)setIsCancelled:(BOOL)a3
+- (void)setIsCancelled:(BOOL)cancelled
 {
   obj = self;
   objc_sync_enter(obj);
-  obj->_isCancelled = a3;
+  obj->_isCancelled = cancelled;
   objc_sync_exit(obj);
 }
 
-- (id)_executePhotosEntityStoreSearchWithAssetUUIDs:(id)a3 collectionUUIDs:(id)a4 annotatedQueryString:(id)a5 rangeOfSuggestionText:(_NSRange)a6
+- (id)_executePhotosEntityStoreSearchWithAssetUUIDs:(id)ds collectionUUIDs:(id)iDs annotatedQueryString:(id)string rangeOfSuggestionText:(_NSRange)text
 {
-  length = a6.length;
-  location = a6.location;
+  length = text.length;
+  location = text.location;
   v58 = *MEMORY[0x1E69E9840];
-  v37 = a3;
-  v38 = a4;
-  v36 = a5;
+  dsCopy = ds;
+  iDsCopy = iDs;
+  stringCopy = string;
   v11 = PLPhotosSearchGetLog();
   v12 = os_signpost_id_generate(v11);
 
@@ -436,19 +436,19 @@ LABEL_13:
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "PLSearchBackendQuerySuggestions", byte_19CB567AE, buf, 2u);
   }
 
-  v15 = [(PHSearchQuery *)self photosRetrievalSuggestionsQuery];
-  v16 = v15;
-  if (v15)
+  photosRetrievalSuggestionsQuery = [(PHSearchQuery *)self photosRetrievalSuggestionsQuery];
+  v16 = photosRetrievalSuggestionsQuery;
+  if (photosRetrievalSuggestionsQuery)
   {
-    v17 = v15;
+    photosSuggestionsQuery = photosRetrievalSuggestionsQuery;
   }
 
   else
   {
-    v17 = [(PHSearchQuery *)self photosSuggestionsQuery];
+    photosSuggestionsQuery = [(PHSearchQuery *)self photosSuggestionsQuery];
   }
 
-  v18 = v17;
+  v18 = photosSuggestionsQuery;
 
   *buf = 0;
   v48 = buf;
@@ -462,42 +462,42 @@ LABEL_13:
   v44 = __Block_byref_object_copy__33343;
   v45 = __Block_byref_object_dispose__33344;
   v46 = 0;
-  v19 = [(PHSearchQuery *)self photosRetrievalSuggestionsQuery];
-  if (v19)
+  photosRetrievalSuggestionsQuery2 = [(PHSearchQuery *)self photosRetrievalSuggestionsQuery];
+  if (photosRetrievalSuggestionsQuery2)
   {
-    v20 = [v18 suggestionOptions];
-    v21 = [v20 searchSuggestionType] == 1;
+    suggestionOptions = [v18 suggestionOptions];
+    v21 = [suggestionOptions searchSuggestionType] == 1;
 
     if (v21)
     {
-      v22 = [v18 suggestionOptions];
-      v23 = [v22 locationInQueryStringForSuggestionGeneration];
+      suggestionOptions2 = [v18 suggestionOptions];
+      locationInQueryStringForSuggestionGeneration = [suggestionOptions2 locationInQueryStringForSuggestionGeneration];
       v40[0] = MEMORY[0x1E69E9820];
       v40[1] = 3221225472;
       v40[2] = __122__PHSearchQuery__executePhotosEntityStoreSearchWithAssetUUIDs_collectionUUIDs_annotatedQueryString_rangeOfSuggestionText___block_invoke;
       v40[3] = &unk_1E75A8700;
       v40[4] = buf;
       v40[5] = &v41;
-      [PHSearchUtility completionSuggestionDateComponentsForQueryString:v36 locationInQueryString:v23 completion:v40];
+      [PHSearchUtility completionSuggestionDateComponentsForQueryString:stringCopy locationInQueryString:locationInQueryStringForSuggestionGeneration completion:v40];
     }
   }
 
-  v24 = [v18 performQueryWithSearchResultAssetUUIDs:v37 collectionUUIDs:v38 completionSuggestionDateComponents:*(v48 + 5) completionTextForDateComponents:v42[5]];
+  v24 = [v18 performQueryWithSearchResultAssetUUIDs:dsCopy collectionUUIDs:iDsCopy completionSuggestionDateComponents:*(v48 + 5) completionTextForDateComponents:v42[5]];
   v39 = 0;
   [PHSearchSuggestionProcessor searchSuggestionsFromPLSearchSuggestions:v24 suggestions:&v39 queryId:[(PHSearchQuery *)self queryIdentifier] batchId:[(PHSearchQuery *)self batchIdentifier] rangeOfSuggestionText:location, length];
   v35 = v39;
-  v25 = [(PHSearchQuery *)self queryIdentifier];
-  v26 = [(PHSearchQuery *)self batchIdentifier];
+  queryIdentifier = [(PHSearchQuery *)self queryIdentifier];
+  batchIdentifier = [(PHSearchQuery *)self batchIdentifier];
   v27 = v14;
   v28 = v27;
   if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v27))
   {
-    v29 = [v37 count];
-    v30 = [v38 count];
+    v29 = [dsCopy count];
+    v30 = [iDsCopy count];
     *v53 = 67109888;
-    *v54 = v25;
+    *v54 = queryIdentifier;
     *&v54[4] = 1024;
-    *&v54[6] = v26;
+    *&v54[6] = batchIdentifier;
     *v55 = 2048;
     *&v55[2] = v29;
     v56 = 2048;
@@ -508,14 +508,14 @@ LABEL_13:
   v31 = PLSearchBackendQueryGetLog();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
-    if (v26)
+    if (batchIdentifier)
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", v26, v25];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", batchIdentifier, queryIdentifier];
     }
 
     else
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", v25];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", queryIdentifier];
     }
     v32 = ;
     v33 = [v24 count];
@@ -552,10 +552,10 @@ void __122__PHSearchQuery__executePhotosEntityStoreSearchWithAssetUUIDs_collecti
   *(v7 + 40) = v5;
 }
 
-- (void)_executeSpotlightSearchWithResultsHandlerV2:(id)a3
+- (void)_executeSpotlightSearchWithResultsHandlerV2:(id)v2
 {
   v50 = *MEMORY[0x1E69E9840];
-  v30 = a3;
+  v2Copy = v2;
   v4 = PLPhotosSearchGetLog();
   v5 = os_signpost_id_generate(v4);
 
@@ -567,37 +567,37 @@ void __122__PHSearchQuery__executePhotosEntityStoreSearchWithAssetUUIDs_collecti
     _os_signpost_emit_with_name_impl(&dword_19C86F000, v7, OS_SIGNPOST_INTERVAL_BEGIN, v5, "PLSearchBackendQuerySpotlightQuery", byte_19CB567AE, buf, 2u);
   }
 
-  v8 = [(PHSearchQuery *)self batchIdentifier];
-  v9 = [(PHSearchQuery *)self queryIdentifier];
+  batchIdentifier = [(PHSearchQuery *)self batchIdentifier];
+  queryIdentifier = [(PHSearchQuery *)self queryIdentifier];
   v10 = PLSearchBackendQueryGetLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    if (v8)
+    if (batchIdentifier)
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", v8, v9];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", batchIdentifier, queryIdentifier];
     }
 
     else
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", v9];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", queryIdentifier];
     }
     v11 = ;
-    v12 = [(PHSearchQuery *)self spotlightQuery];
-    v13 = [(PHSearchQuery *)self queryStringSentToSpotlight];
+    spotlightQuery = [(PHSearchQuery *)self spotlightQuery];
+    queryStringSentToSpotlight = [(PHSearchQuery *)self queryStringSentToSpotlight];
     *buf = 138543874;
     *&buf[4] = v11;
     *&buf[12] = 2112;
-    *&buf[14] = v12;
+    *&buf[14] = spotlightQuery;
     *&buf[22] = 2112;
-    v49 = v13;
+    v49 = queryStringSentToSpotlight;
     _os_log_impl(&dword_19C86F000, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Start Spotlight query: %@, queryString: %@.", buf, 0x20u);
   }
 
-  v14 = [(PHSearchQuery *)self _effectiveScopedUUIDs];
+  _effectiveScopedUUIDs = [(PHSearchQuery *)self _effectiveScopedUUIDs];
   v15 = [PHSearchResultProcessor alloc];
-  v16 = [(PHSearchQuery *)self searchOptions];
-  v17 = [(PHSearchQuery *)self photoLibrary];
-  v18 = [(PHSearchResultProcessor *)v15 initWithSearchQueryOptions:v16 scopedUUIDs:v14 photoLibrary:v17];
+  searchOptions = [(PHSearchQuery *)self searchOptions];
+  photoLibrary = [(PHSearchQuery *)self photoLibrary];
+  v18 = [(PHSearchResultProcessor *)v15 initWithSearchQueryOptions:searchOptions scopedUUIDs:_effectiveScopedUUIDs photoLibrary:photoLibrary];
 
   *buf = 0;
   *&buf[8] = buf;
@@ -609,8 +609,8 @@ void __122__PHSearchQuery__executePhotosEntityStoreSearchWithAssetUUIDs_collecti
   v46[3] = &unk_1E75A8688;
   v19 = v18;
   v47 = v19;
-  v20 = [(PHSearchQuery *)self spotlightQuery];
-  [v20 setAttributedQueryHandler:v46];
+  spotlightQuery2 = [(PHSearchQuery *)self spotlightQuery];
+  [spotlightQuery2 setAttributedQueryHandler:v46];
 
   v44[0] = MEMORY[0x1E69E9820];
   v44[1] = 3221225472;
@@ -618,8 +618,8 @@ void __122__PHSearchQuery__executePhotosEntityStoreSearchWithAssetUUIDs_collecti
   v44[3] = &unk_1E75A86B0;
   v21 = v19;
   v45 = v21;
-  v22 = [(PHSearchQuery *)self spotlightQuery];
-  [v22 setPhotosComputedAttributesHandler:v44];
+  spotlightQuery3 = [(PHSearchQuery *)self spotlightQuery];
+  [spotlightQuery3 setPhotosComputedAttributesHandler:v44];
 
   v41[0] = MEMORY[0x1E69E9820];
   v41[1] = 3221225472;
@@ -628,8 +628,8 @@ void __122__PHSearchQuery__executePhotosEntityStoreSearchWithAssetUUIDs_collecti
   v23 = v21;
   v42 = v23;
   v43 = buf;
-  v24 = [(PHSearchQuery *)self spotlightQuery];
-  [v24 setFoundItemsHandler:v41];
+  spotlightQuery4 = [(PHSearchQuery *)self spotlightQuery];
+  [spotlightQuery4 setFoundItemsHandler:v41];
 
   objc_initWeak(&location, self);
   v31[0] = MEMORY[0x1E69E9820];
@@ -637,9 +637,9 @@ void __122__PHSearchQuery__executePhotosEntityStoreSearchWithAssetUUIDs_collecti
   v31[2] = __61__PHSearchQuery__executeSpotlightSearchWithResultsHandlerV2___block_invoke_4;
   v31[3] = &unk_1F0FC4538;
   objc_copyWeak(&v35, &location);
-  v38 = v8;
-  v39 = v9;
-  v25 = v30;
+  v38 = batchIdentifier;
+  v39 = queryIdentifier;
+  v25 = v2Copy;
   v33 = v25;
   v26 = v23;
   v32 = v26;
@@ -647,11 +647,11 @@ void __122__PHSearchQuery__executePhotosEntityStoreSearchWithAssetUUIDs_collecti
   v36 = v27;
   v37 = v5;
   v34 = buf;
-  v28 = [(PHSearchQuery *)self spotlightQuery];
-  [v28 setCompletionHandler:v31];
+  spotlightQuery5 = [(PHSearchQuery *)self spotlightQuery];
+  [spotlightQuery5 setCompletionHandler:v31];
 
-  v29 = [(PHSearchQuery *)self spotlightQuery];
-  [v29 start];
+  spotlightQuery6 = [(PHSearchQuery *)self spotlightQuery];
+  [spotlightQuery6 start];
 
   objc_destroyWeak(&v35);
   objc_destroyWeak(&location);
@@ -827,25 +827,25 @@ void __61__PHSearchQuery__executeSpotlightSearchWithResultsHandlerV2___block_inv
   (*(*(a1 + 40) + 16))(*(a1 + 40), v17, v38, v37);
 }
 
-- (void)_executeSearchWithResultsHandler:(id)a3
+- (void)_executeSearchWithResultsHandler:(id)handler
 {
-  v10 = a3;
-  v4 = [(PHSearchQuery *)self searchText];
-  v5 = [PHSearchUtility locationDisambiguationSpansFullLengthOfString:v4];
+  handlerCopy = handler;
+  searchText = [(PHSearchQuery *)self searchText];
+  v5 = [PHSearchUtility locationDisambiguationSpansFullLengthOfString:searchText];
 
   if (v5)
   {
-    v6 = [(PHSearchQuery *)self searchText];
-    v7 = [PHSearchUtility extractAssetUUIDsForLocationDisambiguationsInQueryString:v6];
+    searchText2 = [(PHSearchQuery *)self searchText];
+    v7 = [PHSearchUtility extractAssetUUIDsForLocationDisambiguationsInQueryString:searchText2];
 
-    v8 = [v7 allObjects];
-    v9 = [PHSearchResultProcessor searchResultsFromAssetUUIDs:v8];
-    (*(v10 + 2))(v10, v9, v9, MEMORY[0x1E695E0F0], MEMORY[0x1E695E0F0], v8, MEMORY[0x1E695E0F0], 0, 0, 0, 0, 0);
+    allObjects = [v7 allObjects];
+    v9 = [PHSearchResultProcessor searchResultsFromAssetUUIDs:allObjects];
+    (*(handlerCopy + 2))(handlerCopy, v9, v9, MEMORY[0x1E695E0F0], MEMORY[0x1E695E0F0], allObjects, MEMORY[0x1E695E0F0], 0, 0, 0, 0, 0);
   }
 
   else
   {
-    [(PHSearchQuery *)self _executeSpotlightSearchWithResultsHandlerV2:v10];
+    [(PHSearchQuery *)self _executeSpotlightSearchWithResultsHandlerV2:handlerCopy];
   }
 }
 
@@ -876,11 +876,11 @@ void __61__PHSearchQuery__executeSpotlightSearchWithResultsHandlerV2___block_inv
       *buf = 138543618;
       v12 = v8;
       v13 = 2112;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_19C86F000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ PHSearchQuery cancelled: %@", buf, 0x16u);
     }
 
-    v7 = [(PHSearchQuery *)self photosSuggestionsQuery];
+    photosSuggestionsQuery = [(PHSearchQuery *)self photosSuggestionsQuery];
   }
 
   else
@@ -901,30 +901,30 @@ void __61__PHSearchQuery__executeSpotlightSearchWithResultsHandlerV2___block_inv
       *buf = 138543618;
       v12 = v5;
       v13 = 2112;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_19C86F000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ PHSearchQuery cancelled: %@", buf, 0x16u);
     }
 
-    v6 = [(PHSearchQuery *)self spotlightQuery];
-    [v6 cancel];
+    spotlightQuery = [(PHSearchQuery *)self spotlightQuery];
+    [spotlightQuery cancel];
 
-    v7 = [(PHSearchQuery *)self photosRetrievalSuggestionsQuery];
+    photosSuggestionsQuery = [(PHSearchQuery *)self photosRetrievalSuggestionsQuery];
   }
 
-  v9 = v7;
-  [v7 cancel];
+  v9 = photosSuggestionsQuery;
+  [photosSuggestionsQuery cancel];
 }
 
-- (PHSearchQuery)initWithText:(id)a3 suggestionOptions:(id)a4 photoLibrary:(id)a5 queryIdentifier:(int)a6
+- (PHSearchQuery)initWithText:(id)text suggestionOptions:(id)options photoLibrary:(id)library queryIdentifier:(int)identifier
 {
   v48 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = v13;
-  if (v11)
+  textCopy = text;
+  optionsCopy = options;
+  libraryCopy = library;
+  v14 = libraryCopy;
+  if (textCopy)
   {
-    if (v13)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
@@ -932,22 +932,22 @@ void __61__PHSearchQuery__executeSpotlightSearchWithResultsHandlerV2___block_inv
 
   else
   {
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:153 description:{@"Invalid parameter not satisfying: %@", @"text"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:153 description:{@"Invalid parameter not satisfying: %@", @"text"}];
 
     if (v14)
     {
 LABEL_3:
-      if (v12)
+      if (optionsCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_24:
-      v39 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v39 handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:155 description:{@"Invalid parameter not satisfying: %@", @"suggestionOptions"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:155 description:{@"Invalid parameter not satisfying: %@", @"suggestionOptions"}];
 
-      if (a6)
+      if (identifier)
       {
         goto LABEL_5;
       }
@@ -956,23 +956,23 @@ LABEL_24:
     }
   }
 
-  v38 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v38 handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
 
-  if (!v12)
+  if (!optionsCopy)
   {
     goto LABEL_24;
   }
 
 LABEL_4:
-  if (a6)
+  if (identifier)
   {
     goto LABEL_5;
   }
 
 LABEL_25:
-  v40 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v40 handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"queryIdentifier != PHInvalidSuggestionsQueryID"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:156 description:{@"Invalid parameter not satisfying: %@", @"queryIdentifier != PHInvalidSuggestionsQueryID"}];
 
 LABEL_5:
   v45.receiver = self;
@@ -985,59 +985,59 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v16 = [v14 searchIndex];
-  v17 = [v16 unverifiedPsiSearchIndex];
+  searchIndex = [v14 searchIndex];
+  unverifiedPsiSearchIndex = [searchIndex unverifiedPsiSearchIndex];
 
-  if (v17)
+  if (unverifiedPsiSearchIndex)
   {
-    v18 = [v11 copy];
+    v18 = [textCopy copy];
     searchText = v15->_searchText;
     v15->_searchText = v18;
 
-    v20 = [v12 copy];
+    v20 = [optionsCopy copy];
     suggestionOptions = v15->_suggestionOptions;
     v15->_suggestionOptions = v20;
 
-    v15->_suggestionQueryIdentifier = a6;
-    objc_storeStrong(&v15->_photoLibrary, a5);
+    v15->_suggestionQueryIdentifier = identifier;
+    objc_storeStrong(&v15->_photoLibrary, library);
     v15->_type = 1;
-    if ([v11 length])
+    if ([textCopy length])
     {
-      v22 = [PHSearchUtility insertSpacingIfNeededBetweenAnnotationsAndPlainTextInQueryString:v11];
+      v22 = [PHSearchUtility insertSpacingIfNeededBetweenAnnotationsAndPlainTextInQueryString:textCopy];
       v42 = [PHSearchUtility completionSuggestionTextsForQueryString:v22 locationInQueryString:[v22 length]];
       v23 = [PHSearchUtility suggestionComponentsInQueryString:v22];
       v24 = 1;
-      v25 = [objc_alloc(MEMORY[0x1E69BE8C0]) initWithSuggestionType:1 suggestionLimit:{objc_msgSend(v12, "suggestionLimit")}];
-      [v25 setSuggestionResultTypes:{objc_msgSend(objc_opt_class(), "_searchResultTypesFromSearchQueryResultTypes:", objc_msgSend(v12, "suggestionResultTypes"))}];
-      [v25 setLocationInQueryStringForSuggestionGeneration:{objc_msgSend(v11, "length")}];
-      v26 = [v12 suggestionCategories];
-      [v25 setSuggestionCategories:v26];
+      v25 = [objc_alloc(MEMORY[0x1E69BE8C0]) initWithSuggestionType:1 suggestionLimit:{objc_msgSend(optionsCopy, "suggestionLimit")}];
+      [v25 setSuggestionResultTypes:{objc_msgSend(objc_opt_class(), "_searchResultTypesFromSearchQueryResultTypes:", objc_msgSend(optionsCopy, "suggestionResultTypes"))}];
+      [v25 setLocationInQueryStringForSuggestionGeneration:{objc_msgSend(textCopy, "length")}];
+      suggestionCategories = [optionsCopy suggestionCategories];
+      [v25 setSuggestionCategories:suggestionCategories];
 
-      [v25 setWantsUnscopedSuggestions:{objc_msgSend(v12, "wantsUnscopedSuggestions")}];
-      [v25 setWantsPairedSuggestions:{objc_msgSend(v12, "wantsPairedSuggestions")}];
-      [v25 setLimitSuggestionsToExactTextMatches:{objc_msgSend(v12, "limitSuggestionsToExactTextMatches")}];
+      [v25 setWantsUnscopedSuggestions:{objc_msgSend(optionsCopy, "wantsUnscopedSuggestions")}];
+      [v25 setWantsPairedSuggestions:{objc_msgSend(optionsCopy, "wantsPairedSuggestions")}];
+      [v25 setLimitSuggestionsToExactTextMatches:{objc_msgSend(optionsCopy, "limitSuggestionsToExactTextMatches")}];
       do
       {
-        [v25 setMinMatchPercent:objc_msgSend(v12 forCategoriesType:{"minMatchPercentForCategoriesType:", v24), v24}];
+        [v25 setMinMatchPercent:objc_msgSend(optionsCopy forCategoriesType:{"minMatchPercentForCategoriesType:", v24), v24}];
         ++v24;
       }
 
       while (v24 != 44);
-      v27 = [v12 substringMatchedCategories];
-      [v25 setSubstringMatchedCategories:v27];
+      substringMatchedCategories = [optionsCopy substringMatchedCategories];
+      [v25 setSubstringMatchedCategories:substringMatchedCategories];
 
       v28 = objc_alloc_init(MEMORY[0x1E696AD50]);
-      v29 = [v12 suggestionCategories];
+      suggestionCategories2 = [optionsCopy suggestionCategories];
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __77__PHSearchQuery_initWithText_suggestionOptions_photoLibrary_queryIdentifier___block_invoke;
       v43[3] = &unk_1E75A9568;
       v44 = v28;
       v30 = v28;
-      [v29 enumerateIndexesUsingBlock:v43];
+      [suggestionCategories2 enumerateIndexesUsingBlock:v43];
 
-      [v12 setSuggestionCategories:v30];
-      v31 = [objc_alloc(MEMORY[0x1E69BE8C8]) initWithFormattedSearchText:v22 originalSearchText:v11 completionSuggestionTexts:v42 suggestionOptions:v25 suggestionComponents:v23 photosEntityStore:v17];
+      [optionsCopy setSuggestionCategories:v30];
+      v31 = [objc_alloc(MEMORY[0x1E69BE8C8]) initWithFormattedSearchText:v22 originalSearchText:textCopy completionSuggestionTexts:v42 suggestionOptions:v25 suggestionComponents:v23 photosEntityStore:unverifiedPsiSearchIndex];
       photosSuggestionsQuery = v15->_photosSuggestionsQuery;
       v15->_photosSuggestionsQuery = v31;
     }
@@ -1094,25 +1094,25 @@ uint64_t __77__PHSearchQuery_initWithText_suggestionOptions_photoLibrary_queryId
   return [*(a1 + 32) addIndex:v2];
 }
 
-- (PHSearchQuery)initWithSearchText:(id)a3 searchOptions:(id)a4 photoLibrary:(id)a5 queryIdentifier:(int)a6 batchIdentifier:(int)a7
+- (PHSearchQuery)initWithSearchText:(id)text searchOptions:(id)options photoLibrary:(id)library queryIdentifier:(int)identifier batchIdentifier:(int)batchIdentifier
 {
   v87 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = v15;
-  if (v13)
+  textCopy = text;
+  optionsCopy = options;
+  libraryCopy = library;
+  v16 = libraryCopy;
+  if (textCopy)
   {
-    if (v15)
+    if (libraryCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_77:
-    v74 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v74 handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
 
-    if (a6)
+    if (identifier)
     {
       goto LABEL_4;
     }
@@ -1120,8 +1120,8 @@ LABEL_77:
     goto LABEL_78;
   }
 
-  v73 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v73 handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"searchText"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"searchText"}];
 
   if (!v16)
   {
@@ -1129,14 +1129,14 @@ LABEL_77:
   }
 
 LABEL_3:
-  if (a6)
+  if (identifier)
   {
     goto LABEL_4;
   }
 
 LABEL_78:
-  v75 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v75 handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"queryIdentifier != PHInvalidSearchQueryID"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"queryIdentifier != PHInvalidSearchQueryID"}];
 
 LABEL_4:
   v78.receiver = self;
@@ -1144,24 +1144,24 @@ LABEL_4:
   v17 = [(PHSearchQuery *)&v78 init];
   if (!v17)
   {
-    v21 = v14;
+    v21 = optionsCopy;
     goto LABEL_75;
   }
 
-  v18 = [(NSAttributedString *)v13 copy];
+  v18 = [(NSAttributedString *)textCopy copy];
   searchText = v17->_searchText;
   v17->_searchText = v18;
 
   v20 = off_1E75A1000;
   if ([PHSearchUtility isSyndicationLibrary:v16])
   {
-    v21 = [PHSearchQueryOptions queryOptionsForSyndicationLibraryWithOptions:v14];
+    v21 = [PHSearchQueryOptions queryOptionsForSyndicationLibraryWithOptions:optionsCopy];
 
     v22 = PLSearchBackendQueryGetLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(NSAttributedString *)v21 bundleIdentifiers];
-      v24 = [v23 componentsJoinedByString:{@", "}];
+      bundleIdentifiers = [(NSAttributedString *)v21 bundleIdentifiers];
+      v24 = [bundleIdentifiers componentsJoinedByString:{@", "}];
       *buf = 138412290;
       v80 = v24;
       _os_log_impl(&dword_19C86F000, v22, OS_LOG_TYPE_DEFAULT, "Preparing query options for syndication library query with bundleIDs: %@", buf, 0xCu);
@@ -1172,7 +1172,7 @@ LABEL_4:
 
   else
   {
-    v25 = [(NSAttributedString *)v14 copy];
+    v25 = [(NSAttributedString *)optionsCopy copy];
     v26 = v25;
     if (v25)
     {
@@ -1189,8 +1189,8 @@ LABEL_4:
     v22 = PLSearchBackendQueryGetLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [(NSAttributedString *)v21 bundleIdentifiers];
-      v29 = [v28 componentsJoinedByString:{@", "}];
+      bundleIdentifiers2 = [(NSAttributedString *)v21 bundleIdentifiers];
+      v29 = [bundleIdentifiers2 componentsJoinedByString:{@", "}];
       *buf = 138412290;
       v80 = v29;
       _os_log_impl(&dword_19C86F000, v22, OS_LOG_TYPE_DEFAULT, "Preparing query options for SPL query with bundleIDs: %@", buf, 0xCu);
@@ -1200,15 +1200,15 @@ LABEL_4:
   }
 
   objc_storeStrong(&v17->_searchOptions, v21);
-  v17->_queryIdentifier = a6;
-  v17->_batchIdentifier = a7;
-  objc_storeStrong(&v17->_photoLibrary, a5);
+  v17->_queryIdentifier = identifier;
+  v17->_batchIdentifier = batchIdentifier;
+  objc_storeStrong(&v17->_photoLibrary, library);
   v17->_type = 0;
   v30 = [objc_opt_class() _spotlightQueryContextWithSearchOptions:v21];
   spotlightQueryContext = v17->_spotlightQueryContext;
   v17->_spotlightQueryContext = v30;
 
-  if (![(NSAttributedString *)v13 length])
+  if (![(NSAttributedString *)textCopy length])
   {
     v32 = PLSearchBackendQueryGetLog();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -1260,19 +1260,19 @@ LABEL_4:
     }
   }
 
-  v37 = [(__objc2_class *)v20[222] insertSpacingIfNeededBetweenAnnotationsAndPlainTextInQueryString:v13];
+  v37 = [(__objc2_class *)v20[222] insertSpacingIfNeededBetweenAnnotationsAndPlainTextInQueryString:textCopy];
   v38 = [PHSearchQueryAnnotation spotlightAttributedQueryStringFromAnnotatedQueryString:v37];
   queryStringSentToSpotlight = v17->_queryStringSentToSpotlight;
   v17->_queryStringSentToSpotlight = v38;
 
   if ([MEMORY[0x1E69BE810] spotlightPrivateIndexEnabled])
   {
-    v40 = [v16 pathManager];
-    v41 = [v40 spotlightSearchIndexPath];
+    pathManager = [v16 pathManager];
+    spotlightSearchIndexPath = [pathManager spotlightSearchIndexPath];
 
     v42 = objc_alloc(MEMORY[0x1E6964E40]);
-    v43 = [(PHSearchQuery *)v17 queryStringSentToSpotlight];
-    v44 = [v42 initWithUserAttributedQueryString:v43 userQueryContext:v17->_spotlightQueryContext path:v41];
+    queryStringSentToSpotlight = [(PHSearchQuery *)v17 queryStringSentToSpotlight];
+    v44 = [v42 initWithUserAttributedQueryString:queryStringSentToSpotlight userQueryContext:v17->_spotlightQueryContext path:spotlightSearchIndexPath];
     spotlightQuery = v17->_spotlightQuery;
     v17->_spotlightQuery = v44;
   }
@@ -1280,22 +1280,22 @@ LABEL_4:
   else
   {
     v46 = objc_alloc(MEMORY[0x1E6964EC8]);
-    v41 = [(PHSearchQuery *)v17 queryStringSentToSpotlight];
-    v47 = [v46 initWithUserAttributedQueryString:v41 userQueryContext:v17->_spotlightQueryContext];
-    v43 = v17->_spotlightQuery;
+    spotlightSearchIndexPath = [(PHSearchQuery *)v17 queryStringSentToSpotlight];
+    v47 = [v46 initWithUserAttributedQueryString:spotlightSearchIndexPath userQueryContext:v17->_spotlightQueryContext];
+    queryStringSentToSpotlight = v17->_spotlightQuery;
     v17->_spotlightQuery = v47;
   }
 
   if ([(NSAttributedString *)v21 suggestionLimit])
   {
-    v48 = [v16 searchIndex];
-    v49 = [v48 unverifiedPsiSearchIndex];
+    searchIndex = [v16 searchIndex];
+    unverifiedPsiSearchIndex = [searchIndex unverifiedPsiSearchIndex];
 
-    if (v49)
+    if (unverifiedPsiSearchIndex)
     {
       v50 = v20[222];
-      v51 = [(PHSearchQuery *)v17 searchText];
-      v52 = [(__objc2_class *)v50 suggestionTypeForQueryString:v51 locationInQueryStringForSuggestionGeneration:[(NSAttributedString *)v21 locationInQueryStringForSuggestionGeneration]];
+      searchText = [(PHSearchQuery *)v17 searchText];
+      v52 = [(__objc2_class *)v50 suggestionTypeForQueryString:searchText locationInQueryStringForSuggestionGeneration:[(NSAttributedString *)v21 locationInQueryStringForSuggestionGeneration]];
 
       if (!v52)
       {
@@ -1307,19 +1307,19 @@ LABEL_58:
       v53 = 0x7FFFFFFFFFFFFFFFLL;
       if ([(NSAttributedString *)v21 locationInQueryStringForSuggestionGeneration]!= 0x7FFFFFFFFFFFFFFFLL)
       {
-        v54 = [(__objc2_class *)v20[222] numberOfInsertedSpacesBetweenAnnotationsAndPlainTextInQueryString:v13 beforeLocation:[(NSAttributedString *)v21 locationInQueryStringForSuggestionGeneration]];
+        v54 = [(__objc2_class *)v20[222] numberOfInsertedSpacesBetweenAnnotationsAndPlainTextInQueryString:textCopy beforeLocation:[(NSAttributedString *)v21 locationInQueryStringForSuggestionGeneration]];
         v53 = [(NSAttributedString *)v21 locationInQueryStringForSuggestionGeneration]+ v54;
       }
 
-      v55 = [(NSAttributedString *)v21 suggestionLimit];
-      v56 = [objc_alloc(MEMORY[0x1E69BE8C0]) initWithSuggestionType:v52 suggestionLimit:v55];
+      suggestionLimit = [(NSAttributedString *)v21 suggestionLimit];
+      v56 = [objc_alloc(MEMORY[0x1E69BE8C0]) initWithSuggestionType:v52 suggestionLimit:suggestionLimit];
       [v56 setLimitSuggestionsToExactTextMatches:[(NSAttributedString *)v21 limitSuggestionsToExactTextMatches]];
       -[NSObject setSuggestionResultTypes:](v56, "setSuggestionResultTypes:", [objc_opt_class() _searchResultTypesFromSearchQueryResultTypes:{-[NSAttributedString searchQueryResultTypes](v21, "searchQueryResultTypes")}]);
       [v56 setLocationInQueryStringForSuggestionGeneration:v53];
       [v56 setMinNumberOfResultsForNextTokenGeneration:[(NSAttributedString *)v21 minNumberOfResultsForNextTokenGeneration]];
       [v56 setEnableNextTokenSuggestions:[(NSAttributedString *)v21 enableNextTokenSuggestions]];
-      v57 = [(NSAttributedString *)v21 substringMatchedCategories];
-      [v56 setSubstringMatchedCategories:v57];
+      substringMatchedCategories = [(NSAttributedString *)v21 substringMatchedCategories];
+      [v56 setSubstringMatchedCategories:substringMatchedCategories];
 
       if ([v56 searchSuggestionType]== 1)
       {
@@ -1333,7 +1333,7 @@ LABEL_58:
 
       v59 = [(__objc2_class *)v20[222] suggestionComponentsInQueryString:v37];
       v77 = v37;
-      v60 = [objc_alloc(MEMORY[0x1E69BE8C8]) initWithFormattedSearchText:v37 originalSearchText:v13 completionSuggestionTexts:v58 suggestionOptions:v56 suggestionComponents:v59 photosEntityStore:v49];
+      v60 = [objc_alloc(MEMORY[0x1E69BE8C8]) initWithFormattedSearchText:v37 originalSearchText:textCopy completionSuggestionTexts:v58 suggestionOptions:v56 suggestionComponents:v59 photosEntityStore:unverifiedPsiSearchIndex];
       photosRetrievalSuggestionsQuery = v17->_photosRetrievalSuggestionsQuery;
       v17->_photosRetrievalSuggestionsQuery = v60;
 
@@ -1446,7 +1446,7 @@ LABEL_59:
     *buf = 138543618;
     v80 = v71;
     v81 = 2112;
-    v82 = v13;
+    v82 = textCopy;
     _os_log_impl(&dword_19C86F000, v70, OS_LOG_TYPE_DEFAULT, "%{public}@ Initialized PHSearchQuery for searchText: %@", buf, 0x16u);
   }
 
@@ -1454,15 +1454,15 @@ LABEL_75:
   return v17;
 }
 
-+ (unint64_t)_searchResultTypesFromSearchQueryResultTypes:(unint64_t)a3
++ (unint64_t)_searchResultTypesFromSearchQueryResultTypes:(unint64_t)types
 {
   v3 = 1;
-  if ((a3 & 1) == 0)
+  if ((types & 1) == 0)
   {
     v3 = 2;
   }
 
-  if ((~a3 & 3) != 0)
+  if ((~types & 3) != 0)
   {
     return v3;
   }
@@ -1473,16 +1473,16 @@ LABEL_75:
   }
 }
 
-+ (id)_attributeKeyForPropertyKey:(id)a3
++ (id)_attributeKeyForPropertyKey:(id)key
 {
   v3 = _attributeKeyForPropertyKey__onceToken;
-  v4 = a3;
+  keyCopy = key;
   if (v3 != -1)
   {
     dispatch_once(&_attributeKeyForPropertyKey__onceToken, &__block_literal_global_33432);
   }
 
-  v5 = [_attributeKeyForPropertyKey__propertyKeyMap objectForKeyedSubscript:v4];
+  v5 = [_attributeKeyForPropertyKey__propertyKeyMap objectForKeyedSubscript:keyCopy];
 
   return v5;
 }
@@ -1502,19 +1502,19 @@ void __45__PHSearchQuery__attributeKeyForPropertyKey___block_invoke()
   _attributeKeyForPropertyKey__propertyKeyMap = v1;
 }
 
-+ (id)_fetchAttributesForSortDescriptors:(id)a3
++ (id)_fetchAttributesForSortDescriptors:(id)descriptors
 {
   v4 = MEMORY[0x1E695DF70];
-  v5 = a3;
+  descriptorsCopy = descriptors;
   v6 = objc_alloc_init(v4);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __52__PHSearchQuery__fetchAttributesForSortDescriptors___block_invoke;
   v9[3] = &unk_1E75A8728;
-  v11 = a1;
+  selfCopy = self;
   v7 = v6;
   v10 = v7;
-  [v5 enumerateObjectsUsingBlock:v9];
+  [descriptorsCopy enumerateObjectsUsingBlock:v9];
 
   return v7;
 }
@@ -1542,25 +1542,25 @@ void __52__PHSearchQuery__fetchAttributesForSortDescriptors___block_invoke(uint6
   [*(a1 + 32) addObject:v4];
 }
 
-+ (id)_spotlightQueryContextWithSearchOptions:(id)a3
++ (id)_spotlightQueryContextWithSearchOptions:(id)options
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E6964ED0] userQueryContext];
+  optionsCopy = options;
+  userQueryContext = [MEMORY[0x1E6964ED0] userQueryContext];
   v6 = PLSearchFileProtectionTypes();
-  [v5 setProtectionClasses:v6];
+  [userQueryContext setProtectionClasses:v6];
 
-  v7 = [v4 bundleIdentifiers];
-  [v5 setBundleIDs:v7];
+  bundleIdentifiers = [optionsCopy bundleIdentifiers];
+  [userQueryContext setBundleIDs:bundleIdentifiers];
 
-  [v5 setDisableBlockingOnIndex:1];
-  [v5 setDisableMetadataSearch:{objc_msgSend(v4, "disableMetadataSearch")}];
-  [v5 setDisableSafetyCheck:{objc_msgSend(v4, "disableSafetyCheck")}];
-  [v5 setDisableU2:{objc_msgSend(v4, "disableU2")}];
-  if ([v4 maxSearchResults])
+  [userQueryContext setDisableBlockingOnIndex:1];
+  [userQueryContext setDisableMetadataSearch:{objc_msgSend(optionsCopy, "disableMetadataSearch")}];
+  [userQueryContext setDisableSafetyCheck:{objc_msgSend(optionsCopy, "disableSafetyCheck")}];
+  [userQueryContext setDisableU2:{objc_msgSend(optionsCopy, "disableU2")}];
+  if ([optionsCopy maxSearchResults])
   {
-    v8 = [v4 maxSearchResults];
-    v9 = v5;
+    maxSearchResults = [optionsCopy maxSearchResults];
+    v9 = userQueryContext;
   }
 
   else
@@ -1572,17 +1572,17 @@ void __52__PHSearchQuery__fetchAttributesForSortDescriptors___block_invoke(uint6
       _os_log_impl(&dword_19C86F000, v10, OS_LOG_TYPE_DEBUG, "maxSearchResults == 0, forcing maxResultCount = 1000000 due to rdar://123315356", buf, 2u);
     }
 
-    v9 = v5;
-    v8 = 1000000;
+    v9 = userQueryContext;
+    maxSearchResults = 1000000;
   }
 
-  [v9 setMaxResultCount:v8];
+  [v9 setMaxResultCount:maxSearchResults];
   v11 = PLSearchSemanticSearchQueriesSupported();
-  v12 = [v4 disableSemanticSearch];
-  v13 = v12;
+  disableSemanticSearch = [optionsCopy disableSemanticSearch];
+  v13 = disableSemanticSearch;
   if ((v11 & 1) == 0)
   {
-    if (v12)
+    if (disableSemanticSearch)
     {
       goto LABEL_12;
     }
@@ -1597,27 +1597,27 @@ void __52__PHSearchQuery__fetchAttributesForSortDescriptors___block_invoke(uint6
     v13 = 1;
   }
 
-  [v5 setDisableSemanticSearch:v13];
+  [userQueryContext setDisableSemanticSearch:v13];
 LABEL_12:
-  [v4 embeddingRelevanceThreshold];
+  [optionsCopy embeddingRelevanceThreshold];
   if (v15 != -1.0)
   {
     v16 = PLSearchBackendQueryGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      [v4 embeddingRelevanceThreshold];
+      [optionsCopy embeddingRelevanceThreshold];
       *buf = 134349056;
       v39 = v17;
       _os_log_impl(&dword_19C86F000, v16, OS_LOG_TYPE_DEFAULT, "[OVERRIDE SET] Set the queryContext.embeddingRelevanceThreshold to %{public}lf", buf, 0xCu);
     }
 
-    [v4 embeddingRelevanceThreshold];
-    [v5 setEmbeddingRelevanceThreshold:?];
+    [optionsCopy embeddingRelevanceThreshold];
+    [userQueryContext setEmbeddingRelevanceThreshold:?];
   }
 
-  if ([v4 embeddingGenerationTimeout] != -1)
+  if ([optionsCopy embeddingGenerationTimeout] != -1)
   {
-    [v5 setEmbeddingGenerationTimeout:{objc_msgSend(v4, "embeddingGenerationTimeout")}];
+    [userQueryContext setEmbeddingGenerationTimeout:{objc_msgSend(optionsCopy, "embeddingGenerationTimeout")}];
   }
 
   v18 = MEMORY[0x1E695DF70];
@@ -1625,9 +1625,9 @@ LABEL_12:
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v37 count:1];
   v20 = [v18 arrayWithArray:v19];
 
-  if ([v4 enableQueryMatchDetails])
+  if ([optionsCopy enableQueryMatchDetails])
   {
-    [v5 setComputePhotosDerivedAttributes:1];
+    [userQueryContext setComputePhotosDerivedAttributes:1];
     v21 = *MEMORY[0x1E6964DB0];
     v36[0] = *MEMORY[0x1E6964DC8];
     v36[1] = v21;
@@ -1635,21 +1635,21 @@ LABEL_12:
     v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:3];
     [v20 addObjectsFromArray:v22];
 
-    if (([v4 disableSemanticSearch] & 1) == 0)
+    if (([optionsCopy disableSemanticSearch] & 1) == 0)
     {
       [v20 addObject:*MEMORY[0x1E6964D78]];
     }
   }
 
-  if ([v4 maxRankedAssetSearchResults] >= 1)
+  if ([optionsCopy maxRankedAssetSearchResults] >= 1)
   {
-    [v5 setEnableRankedResults:1];
-    [v5 setMaxRankedResultCount:{objc_msgSend(v4, "maxRankedAssetSearchResults")}];
+    [userQueryContext setEnableRankedResults:1];
+    [userQueryContext setMaxRankedResultCount:{objc_msgSend(optionsCopy, "maxRankedAssetSearchResults")}];
     [v20 addObject:*MEMORY[0x1E6964DB8]];
     [v20 addObject:*MEMORY[0x1E6964DC0]];
   }
 
-  if (([v4 searchQueryResultTypes] & 2) != 0)
+  if (([optionsCopy searchQueryResultTypes] & 2) != 0)
   {
     v23 = *MEMORY[0x1E69BF088];
     v35[0] = *MEMORY[0x1E69BF090];
@@ -1670,7 +1670,7 @@ LABEL_12:
     }
   }
 
-  if ([v4 fetchContextualThumbnails])
+  if ([optionsCopy fetchContextualThumbnails])
   {
     if (_os_feature_enabled_impl())
     {
@@ -1690,37 +1690,37 @@ LABEL_12:
     }
   }
 
-  v29 = [v4 sortDescriptors];
-  v30 = [a1 _fetchAttributesForSortDescriptors:v29];
+  sortDescriptors = [optionsCopy sortDescriptors];
+  v30 = [self _fetchAttributesForSortDescriptors:sortDescriptors];
 
   [v20 addObjectsFromArray:v30];
   v31 = [v20 copy];
-  [v5 setFetchAttributes:v31];
+  [userQueryContext setFetchAttributes:v31];
 
-  v32 = [v4 filterQueries];
-  [v5 setFilterQueries:v32];
+  filterQueries = [optionsCopy filterQueries];
+  [userQueryContext setFilterQueries:filterQueries];
 
-  return v5;
+  return userQueryContext;
 }
 
-+ (void)performSuggestionsSearch:(id)a3 queryQueue:(id)a4 suggestionsHandler:(id)a5
++ (void)performSuggestionsSearch:(id)search queryQueue:(id)queue suggestionsHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  searchCopy = search;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (searchCopy)
   {
-    if (v10)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_14:
-    v18 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v18 handleFailureInMethod:a2 object:a1 file:@"PHSearchQuery.m" lineNumber:421 description:{@"Invalid parameter not satisfying: %@", @"queryQueue"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:421 description:{@"Invalid parameter not satisfying: %@", @"queryQueue"}];
 
-    if (v11)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -1728,44 +1728,44 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v17 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v17 handleFailureInMethod:a2 object:a1 file:@"PHSearchQuery.m" lineNumber:420 description:{@"Invalid parameter not satisfying: %@", @"suggestionsQuery"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:420 description:{@"Invalid parameter not satisfying: %@", @"suggestionsQuery"}];
 
-  if (!v10)
+  if (!queueCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_3:
-  if (v11)
+  if (handlerCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_15:
-  v19 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v19 handleFailureInMethod:a2 object:a1 file:@"PHSearchQuery.m" lineNumber:422 description:{@"Invalid parameter not satisfying: %@", @"suggestionsHandler"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:422 description:{@"Invalid parameter not satisfying: %@", @"suggestionsHandler"}];
 
 LABEL_4:
-  v12 = [v9 photosSuggestionsQuery];
-  if (v12)
+  photosSuggestionsQuery = [searchCopy photosSuggestionsQuery];
+  if (photosSuggestionsQuery)
   {
-    if (![v9 isCancelled])
+    if (![searchCopy isCancelled])
     {
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __72__PHSearchQuery_performSuggestionsSearch_queryQueue_suggestionsHandler___block_invoke;
       block[3] = &unk_1E75AA870;
-      v21 = v12;
-      v22 = v9;
-      v23 = v11;
-      dispatch_async(v10, block);
+      v21 = photosSuggestionsQuery;
+      v22 = searchCopy;
+      v23 = handlerCopy;
+      dispatch_async(queueCopy, block);
 
       goto LABEL_12;
     }
 
-    v13 = [[PHSearchSuggestionQueryResult alloc] initWithSearchQuery:v9];
-    (*(v11 + 2))(v11, v13, 2, 0);
+    v13 = [[PHSearchSuggestionQueryResult alloc] initWithSearchQuery:searchCopy];
+    (*(handlerCopy + 2))(handlerCopy, v13, 2, 0);
   }
 
   else
@@ -1773,17 +1773,17 @@ LABEL_4:
     v14 = PLSearchBackendQueryGetLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
-      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", objc_msgSend(v9, "suggestionQueryIdentifier")];
-      v16 = [v9 searchText];
+      v15 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", objc_msgSend(searchCopy, "suggestionQueryIdentifier")];
+      searchText = [searchCopy searchText];
       *buf = 138543618;
       v25 = v15;
       v26 = 2112;
-      v27 = v16;
+      v27 = searchText;
       _os_log_impl(&dword_19C86F000, v14, OS_LOG_TYPE_ERROR, "%{public}@ PHSearchQuery suggestions query unexpectedly nil for query: %@, suggestions will not be generated", buf, 0x16u);
     }
 
-    v13 = [[PHSearchSuggestionQueryResult alloc] initWithSearchQuery:v9];
-    (*(v11 + 2))(v11, v13, 3, 0);
+    v13 = [[PHSearchSuggestionQueryResult alloc] initWithSearchQuery:searchCopy];
+    (*(handlerCopy + 2))(handlerCopy, v13, 3, 0);
   }
 
 LABEL_12:
@@ -1818,17 +1818,17 @@ void __72__PHSearchQuery_performSuggestionsSearch_queryQueue_suggestionsHandler_
   (*(*(a1 + 48) + 16))();
 }
 
-+ (void)suggestionsForSearchQuery:(id)a3 searchQueryResult:(id)a4 rangeOfSuggestionText:(_NSRange)a5 queryQueue:(id)a6 suggestionsHandler:(id)a7
++ (void)suggestionsForSearchQuery:(id)query searchQueryResult:(id)result rangeOfSuggestionText:(_NSRange)text queryQueue:(id)queue suggestionsHandler:(id)handler
 {
-  length = a5.length;
-  location = a5.location;
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a7;
-  if (v14)
+  length = text.length;
+  location = text.location;
+  queryCopy = query;
+  resultCopy = result;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (queryCopy)
   {
-    if (v16)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -1836,44 +1836,44 @@ void __72__PHSearchQuery_performSuggestionsSearch_queryQueue_suggestionsHandler_
 
   else
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"PHSearchQuery.m" lineNumber:378 description:{@"Invalid parameter not satisfying: %@", @"searchQuery"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:378 description:{@"Invalid parameter not satisfying: %@", @"searchQuery"}];
 
-    if (v16)
+    if (queueCopy)
     {
 LABEL_3:
-      if (v15)
+      if (resultCopy)
       {
         goto LABEL_4;
       }
 
 LABEL_8:
-      v23 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v23 handleFailureInMethod:a2 object:a1 file:@"PHSearchQuery.m" lineNumber:380 description:{@"Invalid parameter not satisfying: %@", @"searchQueryResult"}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:380 description:{@"Invalid parameter not satisfying: %@", @"searchQueryResult"}];
 
-      if (v17)
+      if (handlerCopy)
       {
         goto LABEL_5;
       }
 
 LABEL_9:
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v24 handleFailureInMethod:a2 object:a1 file:@"PHSearchQuery.m" lineNumber:381 description:{@"Invalid parameter not satisfying: %@", @"suggestionsHandler"}];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:381 description:{@"Invalid parameter not satisfying: %@", @"suggestionsHandler"}];
 
       goto LABEL_5;
     }
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:a1 file:@"PHSearchQuery.m" lineNumber:379 description:{@"Invalid parameter not satisfying: %@", @"queryQueue"}];
+  currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:379 description:{@"Invalid parameter not satisfying: %@", @"queryQueue"}];
 
-  if (!v15)
+  if (!resultCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_4:
-  if (!v17)
+  if (!handlerCopy)
   {
     goto LABEL_9;
   }
@@ -1883,15 +1883,15 @@ LABEL_5:
   block[1] = 3221225472;
   block[2] = __113__PHSearchQuery_suggestionsForSearchQuery_searchQueryResult_rangeOfSuggestionText_queryQueue_suggestionsHandler___block_invoke;
   block[3] = &unk_1E75A8638;
-  v26 = v15;
-  v27 = v14;
+  v26 = resultCopy;
+  v27 = queryCopy;
   v29 = location;
   v30 = length;
-  v28 = v17;
-  v18 = v17;
-  v19 = v14;
-  v20 = v15;
-  dispatch_async(v16, block);
+  v28 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = queryCopy;
+  v20 = resultCopy;
+  dispatch_async(queueCopy, block);
 }
 
 void __113__PHSearchQuery_suggestionsForSearchQuery_searchQueryResult_rangeOfSuggestionText_queryQueue_suggestionsHandler___block_invoke(uint64_t a1)
@@ -1980,9 +1980,9 @@ void __113__PHSearchQuery_suggestionsForSearchQuery_searchQueryResult_rangeOfSug
   }
 }
 
-+ (void)_triggerQueryTimeoutTapToRadarForQuery:(id)a3
++ (void)_triggerQueryTimeoutTapToRadarForQuery:(id)query
 {
-  v16 = a3;
+  queryCopy = query;
   if (PFOSVariantHasInternalDiagnostics() && ((PFIsPhotosAppAnyPlatform() & 1) != 0 || PFIsPhotosPicker()))
   {
     v3 = objc_alloc_init(MEMORY[0x1E696AB78]);
@@ -1990,56 +1990,56 @@ void __113__PHSearchQuery_suggestionsForSearchQuery_searchQueryResult_rangeOfSug
     v4 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:@"en_US"];
     [v3 setLocale:v4];
 
-    v5 = [MEMORY[0x1E695DF00] date];
-    v6 = [v3 stringFromDate:v5];
+    date = [MEMORY[0x1E695DF00] date];
+    v6 = [v3 stringFromDate:date];
 
     v7 = MEMORY[0x1E696AD60];
-    if ([v16 batchIdentifier])
+    if ([queryCopy batchIdentifier])
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", objc_msgSend(v16, "batchIdentifier"), objc_msgSend(v16, "queryIdentifier")];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", objc_msgSend(queryCopy, "batchIdentifier"), objc_msgSend(queryCopy, "queryIdentifier")];
     }
 
     else
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", objc_msgSend(v16, "queryIdentifier"), v15];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", objc_msgSend(queryCopy, "queryIdentifier"), v15];
     }
     v8 = ;
-    v9 = [v16 searchText];
-    v10 = [v9 string];
-    v11 = [v7 stringWithFormat:@"%@: %@\n\n", v8, v10];
+    searchText = [queryCopy searchText];
+    string = [searchText string];
+    v11 = [v7 stringWithFormat:@"%@: %@\n\n", v8, string];
 
     [v11 appendFormat:@"Report Time: %@\n", v6];
-    v12 = [v16 searchOptions];
-    [v12 spotlightQueryTimeout];
+    searchOptions = [queryCopy searchOptions];
+    [searchOptions spotlightQueryTimeout];
     [v11 appendFormat:@"Timeout: %.0fs\n", v13];
 
-    v14 = [v16 queryStringSentToSpotlight];
-    [v11 appendFormat:@"Spotlight query string: %@\n", v14];
+    queryStringSentToSpotlight = [queryCopy queryStringSentToSpotlight];
+    [v11 appendFormat:@"Spotlight query string: %@\n", queryStringSentToSpotlight];
 
     [v11 appendFormat:@"\n----------------------------------------\n"];
-    [v11 appendFormat:@"Query: %@\n", v16];
+    [v11 appendFormat:@"Query: %@\n", queryCopy];
     [MEMORY[0x1E69BE3F0] fileRadarUserNotificationWithHeader:@"Search Query Hang Issue" message:@"Your search query has experienced an unexpected hang/timeout radarTitle:please file a Radar to diagnose the issue" radarDescription:@"TTR: Detected search query hang/timeout" radarComponent:v11 diagnosticTTRType:4 attachments:0 extensionItem:{MEMORY[0x1E695E0F0], 0}];
   }
 }
 
-+ (void)performSearch:(id)a3 queryQueue:(id)a4 resultsHandler:(id)a5
++ (void)performSearch:(id)search queryQueue:(id)queue resultsHandler:(id)handler
 {
   v47 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  searchCopy = search;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (searchCopy)
   {
-    if (v10)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_26:
-    v33 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v33 handleFailureInMethod:a2 object:a1 file:@"PHSearchQuery.m" lineNumber:225 description:{@"Invalid parameter not satisfying: %@", @"queryQueue"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:225 description:{@"Invalid parameter not satisfying: %@", @"queryQueue"}];
 
-    if (v11)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -2047,131 +2047,131 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  v32 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v32 handleFailureInMethod:a2 object:a1 file:@"PHSearchQuery.m" lineNumber:224 description:{@"Invalid parameter not satisfying: %@", @"searchQuery"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:224 description:{@"Invalid parameter not satisfying: %@", @"searchQuery"}];
 
-  if (!v10)
+  if (!queueCopy)
   {
     goto LABEL_26;
   }
 
 LABEL_3:
-  if (v11)
+  if (handlerCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_27:
-  v34 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v34 handleFailureInMethod:a2 object:a1 file:@"PHSearchQuery.m" lineNumber:226 description:{@"Invalid parameter not satisfying: %@", @"resultsHandler"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PHSearchQuery.m" lineNumber:226 description:{@"Invalid parameter not satisfying: %@", @"resultsHandler"}];
 
 LABEL_4:
-  v12 = [v9 photoLibrary];
-  v13 = [v12 searchIndex];
-  [v13 acquireSpotlightSandboxExtensionIfNeeded];
+  photoLibrary = [searchCopy photoLibrary];
+  searchIndex = [photoLibrary searchIndex];
+  [searchIndex acquireSpotlightSandboxExtensionIfNeeded];
 
-  v14 = [v9 batchIdentifier];
-  v15 = [v9 queryIdentifier];
+  batchIdentifier = [searchCopy batchIdentifier];
+  queryIdentifier = [searchCopy queryIdentifier];
   v16 = PLSearchBackendQueryGetLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    if (v14)
+    if (batchIdentifier)
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", v14, v15];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", batchIdentifier, queryIdentifier];
     }
 
     else
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", v15, v35];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", queryIdentifier, v35];
     }
     v17 = ;
     *buf = 138543618;
     v44 = v17;
     v45 = 2112;
-    v46 = v9;
+    v46 = searchCopy;
     _os_log_impl(&dword_19C86F000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ Perform Search: %@", buf, 0x16u);
   }
 
   v18 = PLSearchBackendQueryGetLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    if (v14)
+    if (batchIdentifier)
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", v14, v15];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", batchIdentifier, queryIdentifier];
     }
 
     else
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", v15, v35];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", queryIdentifier, v35];
     }
     v19 = ;
-    v20 = [v9 searchOptions];
+    searchOptions = [searchCopy searchOptions];
     *buf = 138543618;
     v44 = v19;
     v45 = 2114;
-    v46 = v20;
+    v46 = searchOptions;
     _os_log_impl(&dword_19C86F000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@ Search Options: %{public}@", buf, 0x16u);
   }
 
   v21 = PLSearchBackendQueryGetLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    if (v14)
+    if (batchIdentifier)
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", v14, v15];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", batchIdentifier, queryIdentifier];
     }
 
     else
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", v15, v35];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", queryIdentifier, v35];
     }
     v22 = ;
-    v23 = [v9 queryStringSentToSpotlight];
+    queryStringSentToSpotlight = [searchCopy queryStringSentToSpotlight];
     *buf = 138543618;
     v44 = v22;
     v45 = 2112;
-    v46 = v23;
+    v46 = queryStringSentToSpotlight;
     _os_log_impl(&dword_19C86F000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@ Query string sent to Spotlight: %@", buf, 0x16u);
   }
 
   v24 = PLSearchBackendQueryGetLog();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
-    if (v14)
+    if (batchIdentifier)
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", v14, v15];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Batch: %d | Query: %d]", batchIdentifier, queryIdentifier];
     }
 
     else
     {
-      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", v15, v35];
+      [MEMORY[0x1E696AEC0] stringWithFormat:@"[Query: %d]", queryIdentifier, v35];
     }
     v25 = ;
-    v26 = [v9 searchText];
-    v27 = [v26 string];
+    searchText = [searchCopy searchText];
+    string = [searchText string];
     *buf = 138543618;
     v44 = v25;
     v45 = 2112;
-    v46 = v27;
+    v46 = string;
     _os_log_impl(&dword_19C86F000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@ Plain text query string: %@", buf, 0x16u);
   }
 
   v28 = [MEMORY[0x1E695DF00] now];
-  [v9 setStartDate:v28];
+  [searchCopy setStartDate:v28];
 
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __57__PHSearchQuery_performSearch_queryQueue_resultsHandler___block_invoke;
   block[3] = &unk_1E75A8638;
-  v37 = v9;
-  v38 = v10;
-  v41 = v14;
-  v42 = v15;
-  v39 = v11;
-  v40 = a1;
-  v29 = v10;
-  v30 = v11;
-  v31 = v9;
+  v37 = searchCopy;
+  v38 = queueCopy;
+  v41 = batchIdentifier;
+  v42 = queryIdentifier;
+  v39 = handlerCopy;
+  selfCopy = self;
+  v29 = queueCopy;
+  v30 = handlerCopy;
+  v31 = searchCopy;
   dispatch_async(v29, block);
 }
 

@@ -22,9 +22,9 @@
   v7 = a3;
   v8 = a4;
   v52 = v7;
-  v9 = [a1 ams_cookiesForProperties:v7];
+  v9 = [self ams_cookiesForProperties:v7];
   v51 = v8;
-  v50 = [a1 ams_cookiesForProperties:v8];
+  v50 = [self ams_cookiesForProperties:v8];
   v10 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:v50];
   v68 = 0u;
   v69 = 0u;
@@ -62,8 +62,8 @@
             v15 = +[AMSLogConfig sharedConfig];
           }
 
-          v16 = [v15 OSLogObject];
-          if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+          oSLogObject = [v15 OSLogObject];
+          if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
           {
             v17 = AMSLogKey();
             v18 = MEMORY[0x1E696AEC0];
@@ -87,7 +87,7 @@
             v73 = v21;
             v74 = 2114;
             v75 = v40;
-            _os_log_impl(&dword_192869000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@Added cookie %{public}@ from source into existing.", buf, 0x16u);
+            _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@Added cookie %{public}@ from source into existing.", buf, 0x16u);
             v41 = v14;
             if (v17)
             {
@@ -116,8 +116,8 @@
               v26 = +[AMSLogConfig sharedConfig];
             }
 
-            v27 = [v26 OSLogObject];
-            if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+            oSLogObject2 = [v26 OSLogObject];
+            if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
             {
               v28 = AMSLogKey();
               v29 = MEMORY[0x1E696AEC0];
@@ -146,7 +146,7 @@
               v75 = v42;
               v76 = 2114;
               v77 = v43;
-              _os_log_impl(&dword_192869000, v27, OS_LOG_TYPE_DEFAULT, "%{public}@Replacing cookie %{public}@ with cookie %{public}@.", buf, 0x20u);
+              _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@Replacing cookie %{public}@ with cookie %{public}@.", buf, 0x20u);
               v57 = v33;
               v44 = v33;
               if (v58)
@@ -169,8 +169,8 @@
               v26 = +[AMSLogConfig sharedConfig];
             }
 
-            v34 = [v26 OSLogObject];
-            if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
+            oSLogObject3 = [v26 OSLogObject];
+            if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
             {
               v35 = AMSLogKey();
               v36 = MEMORY[0x1E696AEC0];
@@ -198,7 +198,7 @@
               v75 = v45;
               v76 = 2114;
               v77 = v46;
-              _os_log_impl(&dword_192869000, v34, OS_LOG_TYPE_DEFAULT, "%{public}@Found equivalent cookie %{public}@, but the newer cookie version already exists. Discard this old cookie %{public}@.", buf, 0x20u);
+              _os_log_impl(&dword_192869000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@Found equivalent cookie %{public}@, but the newer cookie version already exists. Discard this old cookie %{public}@.", buf, 0x20u);
               v47 = v4;
               if (v35)
               {

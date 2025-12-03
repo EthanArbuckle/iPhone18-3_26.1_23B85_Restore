@@ -1,6 +1,6 @@
 @interface TILexiconServer
 + (id)sharedLexiconServer;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (TILexiconServer)init;
 - (void)dealloc;
 @end
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = sub_100007900;
   block[3] = &unk_10001C810;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000265C8 != -1)
   {
     dispatch_once(&qword_1000265C8, block);
@@ -58,10 +58,10 @@
   [(TILexiconServer *)&v3 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [v5 _xpcConnection];
+  connectionCopy = connection;
+  _xpcConnection = [connectionCopy _xpcConnection];
   v7 = xpc_connection_copy_bundle_id();
 
   if (v7)
@@ -77,14 +77,14 @@
 
   v9 = objc_alloc_init(TILexiconDataHandler);
   [(TILexiconDataHandler *)v9 setBundleID:v8];
-  [v5 setExportedObject:v9];
+  [connectionCopy setExportedObject:v9];
   v10 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___TILexiconRequestHandler];
-  [v5 setExportedInterface:v10];
+  [connectionCopy setExportedInterface:v10];
 
-  v11 = [(TILexiconServer *)self dispatchQueue];
-  [v5 _setQueue:v11];
+  dispatchQueue = [(TILexiconServer *)self dispatchQueue];
+  [connectionCopy _setQueue:dispatchQueue];
 
-  [v5 resume];
+  [connectionCopy resume];
   return 1;
 }
 

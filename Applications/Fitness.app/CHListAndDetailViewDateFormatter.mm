@@ -2,7 +2,7 @@
 + (id)_dayDateFormatter;
 + (id)_todayDateFormatter;
 + (id)detailViewDateFormatter;
-+ (id)formattedListStringForDate:(id)a3 font:(id)a4;
++ (id)formattedListStringForDate:(id)date font:(id)font;
 + (id)listViewDateFormatter;
 + (id)timeDateFormatter;
 @end
@@ -69,12 +69,12 @@
   return v3;
 }
 
-+ (id)formattedListStringForDate:(id)a3 font:(id)a4
++ (id)formattedListStringForDate:(id)date font:(id)font
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  fontCopy = font;
   v8 = +[NSCalendar currentCalendar];
-  v9 = [v8 isDateInToday:v6];
+  v9 = [v8 isDateInToday:dateCopy];
 
   if (v9)
   {
@@ -85,49 +85,49 @@
       v11 = v10;
       v12 = +[NSDate date];
       *buf = 138543618;
-      v37 = v6;
+      v37 = dateCopy;
       v38 = 2114;
       v39 = v12;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "NSCalendar reported that date %{public}@ is in today %{public}@", buf, 0x16u);
     }
 
-    v13 = [a1 _todayDateFormatter];
+    _todayDateFormatter = [self _todayDateFormatter];
     v14 = +[NSCalendar currentCalendar];
     v15 = +[NSDate date];
     v16 = [v14 startOfDayForDate:v15];
 
-    if ([v6 compare:v16] == -1)
+    if ([dateCopy compare:v16] == -1)
     {
       _HKInitializeLogging();
       v17 = HKLogActivity;
       if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v37 = v6;
+        v37 = dateCopy;
         v38 = 2114;
         v39 = v16;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Found date:%{public}@ to be before the start of today:%{public}@", buf, 0x16u);
       }
 
-      v18 = [objc_opt_class() _dayDateFormatter];
+      _dayDateFormatter = [objc_opt_class() _dayDateFormatter];
 
-      v13 = v18;
+      _todayDateFormatter = _dayDateFormatter;
     }
 
-    v19 = [v13 stringFromDate:v6];
+    localizedUppercaseString = [_todayDateFormatter stringFromDate:dateCopy];
     _HKInitializeLogging();
     v20 = HKLogActivity;
     if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v37 = v19;
+      v37 = localizedUppercaseString;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "List view date string: %@", buf, 0xCu);
     }
   }
 
   else
   {
-    v21 = v6;
+    v21 = dateCopy;
     v22 = +[NSCalendar currentCalendar];
     v23 = +[NSDate date];
     v24 = [v22 dateByAddingUnit:16 value:-6 toDate:v23 options:0];
@@ -139,23 +139,23 @@
 
     if (v27 == v21)
     {
-      v28 = [a1 _dayDateFormatter];
-      v19 = [v28 stringFromDate:v21];
+      _dayDateFormatter2 = [self _dayDateFormatter];
+      localizedUppercaseString = [_dayDateFormatter2 stringFromDate:v21];
     }
 
     else
     {
-      v28 = [a1 listViewDateFormatter];
-      v29 = [v28 stringFromDate:v21];
-      v19 = [v29 localizedUppercaseString];
+      _dayDateFormatter2 = [self listViewDateFormatter];
+      v29 = [_dayDateFormatter2 stringFromDate:v21];
+      localizedUppercaseString = [v29 localizedUppercaseString];
     }
   }
 
   v30 = [NSAttributedString alloc];
   v34 = NSFontAttributeName;
-  v35 = v7;
+  v35 = fontCopy;
   v31 = [NSDictionary dictionaryWithObjects:&v35 forKeys:&v34 count:1];
-  v32 = [v30 initWithString:v19 attributes:v31];
+  v32 = [v30 initWithString:localizedUppercaseString attributes:v31];
 
   return v32;
 }

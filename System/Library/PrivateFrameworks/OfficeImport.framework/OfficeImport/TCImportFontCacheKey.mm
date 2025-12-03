@@ -1,26 +1,26 @@
 @interface TCImportFontCacheKey
-+ (id)createFontCacheKeyForName:(id)a3 size:(int)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)createFontCacheKeyForName:(id)name size:(int)size;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation TCImportFontCacheKey
 
-+ (id)createFontCacheKeyForName:(id)a3 size:(int)a4
++ (id)createFontCacheKeyForName:(id)name size:(int)size
 {
-  v4 = *&a4;
-  v5 = a3;
+  v4 = *&size;
+  nameCopy = name;
   v6 = objc_alloc_init(TCImportFontCacheKey);
-  [(TCImportFontCacheKey *)v6 setName:v5];
+  [(TCImportFontCacheKey *)v6 setName:nameCopy];
   [(TCImportFontCacheKey *)v6 setSize:v4];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_size == v4[2] && [(NSString *)self->_name isEqualToString:*(v4 + 2)];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_size == equalCopy[2] && [(NSString *)self->_name isEqualToString:*(equalCopy + 2)];
 
   return v5;
 }

@@ -1,17 +1,17 @@
 @interface FCChannelSectionHeadlinesFetchOperation
 - (BOOL)validateOperation;
 - (FCChannelSectionHeadlinesFetchOperation)init;
-- (FCChannelSectionHeadlinesFetchOperation)initWithCloudContext:(id)a3 channelID:(id)a4 maxHeadlinesCount:(unint64_t)a5 maxHeadlinesPerFeed:(unint64_t)a6 fetchWindow:(id)a7 sectionsCacheTimeToLive:(double)a8 edgeCacheHint:(id)a9;
-- (id)_channelAndSectionTagsPromiseWithChannelID:(id)a3;
-- (id)_channelPromiseWithTagsByID:(id)a3 parentChannelID:(id)a4;
+- (FCChannelSectionHeadlinesFetchOperation)initWithCloudContext:(id)context channelID:(id)d maxHeadlinesCount:(unint64_t)count maxHeadlinesPerFeed:(unint64_t)feed fetchWindow:(id)window sectionsCacheTimeToLive:(double)live edgeCacheHint:(id)hint;
+- (id)_channelAndSectionTagsPromiseWithChannelID:(id)d;
+- (id)_channelPromiseWithTagsByID:(id)d parentChannelID:(id)iD;
 - (id)_configurationPromise;
-- (id)_createFeedRequestWithFeedID:(id)a3 feedRange:(id)a4;
-- (id)_feedItemsPromiseWithChannel:(id)a3 sectionsByID:(id)a4 configuration:(id)a5;
-- (id)_feedItemsTransformationWithConfiguration:(id)a3;
-- (id)_headlinesAssembledBySectionFromFeedItemMap:(id)a3 sectionIDsByFeedID:(id)a4 sectionsByID:(id)a5;
-- (id)_headlinesPromiseWithFeedItems:(id)a3 sectionsByID:(id)a4 configuration:(id)a5;
-- (id)_sectionsPromiseWithTagsByID:(id)a3 sectionIDs:(id)a4;
-- (void)operationWillFinishWithError:(id)a3;
+- (id)_createFeedRequestWithFeedID:(id)d feedRange:(id)range;
+- (id)_feedItemsPromiseWithChannel:(id)channel sectionsByID:(id)d configuration:(id)configuration;
+- (id)_feedItemsTransformationWithConfiguration:(id)configuration;
+- (id)_headlinesAssembledBySectionFromFeedItemMap:(id)map sectionIDsByFeedID:(id)d sectionsByID:(id)iD;
+- (id)_headlinesPromiseWithFeedItems:(id)items sectionsByID:(id)d configuration:(id)configuration;
+- (id)_sectionsPromiseWithTagsByID:(id)d sectionIDs:(id)ds;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
@@ -43,28 +43,28 @@
   objc_exception_throw(v6);
 }
 
-- (FCChannelSectionHeadlinesFetchOperation)initWithCloudContext:(id)a3 channelID:(id)a4 maxHeadlinesCount:(unint64_t)a5 maxHeadlinesPerFeed:(unint64_t)a6 fetchWindow:(id)a7 sectionsCacheTimeToLive:(double)a8 edgeCacheHint:(id)a9
+- (FCChannelSectionHeadlinesFetchOperation)initWithCloudContext:(id)context channelID:(id)d maxHeadlinesCount:(unint64_t)count maxHeadlinesPerFeed:(unint64_t)feed fetchWindow:(id)window sectionsCacheTimeToLive:(double)live edgeCacheHint:(id)hint
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a7;
-  v20 = a9;
+  contextCopy = context;
+  dCopy = d;
+  windowCopy = window;
+  hintCopy = hint;
   v26.receiver = self;
   v26.super_class = FCChannelSectionHeadlinesFetchOperation;
   v21 = [(FCOperation *)&v26 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_cloudContext, a3);
-    v23 = [v18 copy];
+    objc_storeStrong(&v21->_cloudContext, context);
+    v23 = [dCopy copy];
     channelID = v22->_channelID;
     v22->_channelID = v23;
 
-    v22->_maxHeadlinesCount = a5;
-    v22->_maxHeadlinesPerFeed = a6;
-    objc_storeStrong(&v22->_fetchWindow, a7);
-    v22->_sectionsCacheTimeToLive = a8;
-    objc_storeStrong(&v22->_edgeCacheHint, a9);
+    v22->_maxHeadlinesCount = count;
+    v22->_maxHeadlinesPerFeed = feed;
+    objc_storeStrong(&v22->_fetchWindow, window);
+    v22->_sectionsCacheTimeToLive = live;
+    objc_storeStrong(&v22->_edgeCacheHint, hint);
   }
 
   return v22;
@@ -73,9 +73,9 @@
 - (BOOL)validateOperation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(FCChannelSectionHeadlinesFetchOperation *)self cloudContext];
+  cloudContext = [(FCChannelSectionHeadlinesFetchOperation *)self cloudContext];
 
-  if (!v3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!cloudContext && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Channel section headlines fetch operation must have a content context"];
     v13 = 136315906;
@@ -89,9 +89,9 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v13, 0x26u);
   }
 
-  v4 = [(FCChannelSectionHeadlinesFetchOperation *)self channelID];
+  channelID = [(FCChannelSectionHeadlinesFetchOperation *)self channelID];
 
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!channelID && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Channel section headlines fetch operation must have a channel ID"];
     v13 = 136315906;
@@ -105,9 +105,9 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v13, 0x26u);
   }
 
-  v5 = [(FCChannelSectionHeadlinesFetchOperation *)self fetchCompletionHandler];
+  fetchCompletionHandler = [(FCChannelSectionHeadlinesFetchOperation *)self fetchCompletionHandler];
 
-  if (!v5 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!fetchCompletionHandler && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Channel section headlines fetch operation must have a fetch completion handler"];
     v13 = 136315906;
@@ -121,9 +121,9 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v13, 0x26u);
   }
 
-  if (v3)
+  if (cloudContext)
   {
-    v6 = v4 == 0;
+    v6 = channelID == 0;
   }
 
   else
@@ -131,7 +131,7 @@
     v6 = 1;
   }
 
-  result = !v6 && v5 != 0;
+  result = !v6 && fetchCompletionHandler != 0;
   v9 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -276,37 +276,37 @@ uint64_t __59__FCChannelSectionHeadlinesFetchOperation_performOperation__block_i
   return 0;
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v10 = a3;
+  errorCopy = error;
   v4 = [FCChannelSectionHeadlinesFetchResult alloc];
-  v5 = [(FCChannelSectionHeadlinesFetchOperation *)self channel];
-  v6 = [(FCChannelSectionHeadlinesFetchOperation *)self sectionHeadlinesGroups];
-  v7 = [(FCChannelSectionHeadlinesFetchResult *)v4 initWithChannel:v5 sectionHeadlinesGroups:v6];
+  channel = [(FCChannelSectionHeadlinesFetchOperation *)self channel];
+  sectionHeadlinesGroups = [(FCChannelSectionHeadlinesFetchOperation *)self sectionHeadlinesGroups];
+  v7 = [(FCChannelSectionHeadlinesFetchResult *)v4 initWithChannel:channel sectionHeadlinesGroups:sectionHeadlinesGroups];
 
-  v8 = [(FCChannelSectionHeadlinesFetchOperation *)self fetchCompletionHandler];
+  fetchCompletionHandler = [(FCChannelSectionHeadlinesFetchOperation *)self fetchCompletionHandler];
 
-  if (v8)
+  if (fetchCompletionHandler)
   {
-    v9 = [(FCChannelSectionHeadlinesFetchOperation *)self fetchCompletionHandler];
-    (v9)[2](v9, v7, v10);
+    fetchCompletionHandler2 = [(FCChannelSectionHeadlinesFetchOperation *)self fetchCompletionHandler];
+    (fetchCompletionHandler2)[2](fetchCompletionHandler2, v7, errorCopy);
   }
 }
 
 - (id)_configurationPromise
 {
-  v2 = [(FCChannelSectionHeadlinesFetchOperation *)self cloudContext];
-  v3 = [v2 configurationManager];
-  v4 = FCCoreConfigurationPromise(v3);
+  cloudContext = [(FCChannelSectionHeadlinesFetchOperation *)self cloudContext];
+  configurationManager = [cloudContext configurationManager];
+  v4 = FCCoreConfigurationPromise(configurationManager);
 
   return v4;
 }
 
-- (id)_channelAndSectionTagsPromiseWithChannelID:(id)a3
+- (id)_channelAndSectionTagsPromiseWithChannelID:(id)d
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  if (!dCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "channelID"];
     *buf = 136315906;
@@ -326,8 +326,8 @@ uint64_t __59__FCChannelSectionHeadlinesFetchOperation_performOperation__block_i
   v11[2] = __86__FCChannelSectionHeadlinesFetchOperation__channelAndSectionTagsPromiseWithChannelID___block_invoke;
   v11[3] = &unk_1E7C3B310;
   v11[4] = self;
-  v12 = v4;
-  v6 = v4;
+  v12 = dCopy;
+  v6 = dCopy;
   v7 = [v5 initWithResolver:v11];
 
   v8 = *MEMORY[0x1E69E9840];
@@ -381,12 +381,12 @@ void __86__FCChannelSectionHeadlinesFetchOperation__channelAndSectionTagsPromise
   }
 }
 
-- (id)_channelPromiseWithTagsByID:(id)a3 parentChannelID:(id)a4
+- (id)_channelPromiseWithTagsByID:(id)d parentChannelID:(id)iD
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  iDCopy = iD;
+  if (!dCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "tagsByID"];
     *buf = 136315906;
@@ -399,13 +399,13 @@ void __86__FCChannelSectionHeadlinesFetchOperation__channelAndSectionTagsPromise
     v27 = v14;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v7)
+    if (iDCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (iDCopy)
   {
     goto LABEL_6;
   }
@@ -430,11 +430,11 @@ LABEL_6:
   v16[1] = 3221225472;
   v16[2] = __87__FCChannelSectionHeadlinesFetchOperation__channelPromiseWithTagsByID_parentChannelID___block_invoke;
   v16[3] = &unk_1E7C3B768;
-  v17 = v6;
-  v18 = self;
-  v19 = v7;
-  v9 = v7;
-  v10 = v6;
+  v17 = dCopy;
+  selfCopy = self;
+  v19 = iDCopy;
+  v9 = iDCopy;
+  v10 = dCopy;
   v11 = [v8 initWithResolver:v16];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -497,12 +497,12 @@ void __87__FCChannelSectionHeadlinesFetchOperation__channelPromiseWithTagsByID_p
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_sectionsPromiseWithTagsByID:(id)a3 sectionIDs:(id)a4
+- (id)_sectionsPromiseWithTagsByID:(id)d sectionIDs:(id)ds
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  dsCopy = ds;
+  if (!dCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "tagsByID"];
     *buf = 136315906;
@@ -515,13 +515,13 @@ void __87__FCChannelSectionHeadlinesFetchOperation__channelPromiseWithTagsByID_p
     v27 = v14;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v7)
+    if (dsCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v7)
+  else if (dsCopy)
   {
     goto LABEL_6;
   }
@@ -546,11 +546,11 @@ LABEL_6:
   v16[1] = 3221225472;
   v16[2] = __83__FCChannelSectionHeadlinesFetchOperation__sectionsPromiseWithTagsByID_sectionIDs___block_invoke;
   v16[3] = &unk_1E7C3B768;
-  v17 = v7;
-  v18 = v6;
-  v19 = self;
-  v9 = v6;
-  v10 = v7;
+  v17 = dsCopy;
+  v18 = dCopy;
+  selfCopy = self;
+  v9 = dCopy;
+  v10 = dsCopy;
   v11 = [v8 initWithResolver:v16];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -696,13 +696,13 @@ void __83__FCChannelSectionHeadlinesFetchOperation__sectionsPromiseWithTagsByID_
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_feedItemsPromiseWithChannel:(id)a3 sectionsByID:(id)a4 configuration:(id)a5
+- (id)_feedItemsPromiseWithChannel:(id)channel sectionsByID:(id)d configuration:(id)configuration
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  channelCopy = channel;
+  dCopy = d;
+  configurationCopy = configuration;
+  if (!channelCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "channel"];
     *buf = 136315906;
@@ -715,13 +715,13 @@ void __83__FCChannelSectionHeadlinesFetchOperation__sectionsPromiseWithTagsByID_
     v31 = v18;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v10)
+    if (configurationCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v10)
+  else if (configurationCopy)
   {
     goto LABEL_6;
   }
@@ -747,12 +747,12 @@ LABEL_6:
   v20[2] = __99__FCChannelSectionHeadlinesFetchOperation__feedItemsPromiseWithChannel_sectionsByID_configuration___block_invoke;
   v20[3] = &unk_1E7C45E30;
   v20[4] = self;
-  v21 = v8;
-  v22 = v9;
-  v23 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v21 = channelCopy;
+  v22 = dCopy;
+  v23 = configurationCopy;
+  v12 = configurationCopy;
+  v13 = dCopy;
+  v14 = channelCopy;
   v15 = [v11 initWithResolver:v20];
 
   v16 = *MEMORY[0x1E69E9840];
@@ -896,13 +896,13 @@ void __99__FCChannelSectionHeadlinesFetchOperation__feedItemsPromiseWithChannel_
   }
 }
 
-- (id)_headlinesPromiseWithFeedItems:(id)a3 sectionsByID:(id)a4 configuration:(id)a5
+- (id)_headlinesPromiseWithFeedItems:(id)items sectionsByID:(id)d configuration:(id)configuration
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  itemsCopy = items;
+  dCopy = d;
+  configurationCopy = configuration;
+  if (!itemsCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v18 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "feedItemsResult"];
     *buf = 136315906;
@@ -915,13 +915,13 @@ void __99__FCChannelSectionHeadlinesFetchOperation__feedItemsPromiseWithChannel_
     v33 = v18;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v9)
+    if (dCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v9)
+  else if (dCopy)
   {
     goto LABEL_6;
   }
@@ -941,7 +941,7 @@ void __99__FCChannelSectionHeadlinesFetchOperation__feedItemsPromiseWithChannel_
   }
 
 LABEL_6:
-  if (!v10 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!configurationCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v20 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "configuration"];
     *buf = 136315906;
@@ -960,13 +960,13 @@ LABEL_6:
   v21[1] = 3221225472;
   v21[2] = __101__FCChannelSectionHeadlinesFetchOperation__headlinesPromiseWithFeedItems_sectionsByID_configuration___block_invoke;
   v21[3] = &unk_1E7C45E30;
-  v22 = v10;
-  v23 = self;
-  v24 = v8;
-  v25 = v9;
-  v12 = v9;
-  v13 = v8;
-  v14 = v10;
+  v22 = configurationCopy;
+  selfCopy = self;
+  v24 = itemsCopy;
+  v25 = dCopy;
+  v12 = dCopy;
+  v13 = itemsCopy;
+  v14 = configurationCopy;
   v15 = [v11 initWithResolver:v21];
 
   v16 = *MEMORY[0x1E69E9840];
@@ -1050,32 +1050,32 @@ void __101__FCChannelSectionHeadlinesFetchOperation__headlinesPromiseWithFeedIte
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_createFeedRequestWithFeedID:(id)a3 feedRange:(id)a4
+- (id)_createFeedRequestWithFeedID:(id)d feedRange:(id)range
 {
-  v6 = a4;
-  v7 = a3;
+  rangeCopy = range;
+  dCopy = d;
   v8 = objc_alloc_init(FCFeedRequest);
-  [(FCFeedRequest *)v8 setFeedID:v7];
+  [(FCFeedRequest *)v8 setFeedID:dCopy];
 
   [(FCFeedRequest *)v8 setMaxCount:[(FCChannelSectionHeadlinesFetchOperation *)self maxHeadlinesPerFeed]];
-  [(FCFeedRequest *)v8 setFeedRange:v6];
+  [(FCFeedRequest *)v8 setFeedRange:rangeCopy];
 
   return v8;
 }
 
-- (id)_headlinesAssembledBySectionFromFeedItemMap:(id)a3 sectionIDsByFeedID:(id)a4 sectionsByID:(id)a5
+- (id)_headlinesAssembledBySectionFromFeedItemMap:(id)map sectionIDsByFeedID:(id)d sectionsByID:(id)iD
 {
   v44 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v33 = a4;
-  v7 = a5;
+  mapCopy = map;
+  dCopy = d;
+  iDCopy = iD;
   v8 = objc_opt_new();
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v9 = [v7 allValues];
-  v10 = [v9 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  allValues = [iDCopy allValues];
+  v10 = [allValues countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1086,15 +1086,15 @@ void __101__FCChannelSectionHeadlinesFetchOperation__headlinesPromiseWithFeedIte
       {
         if (*v39 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues);
         }
 
         v14 = *(*(&v38 + 1) + 8 * i);
-        v15 = [MEMORY[0x1E695DF70] array];
-        [v8 setObject:v15 forKeyedSubscript:v14];
+        array = [MEMORY[0x1E695DF70] array];
+        [v8 setObject:array forKeyedSubscript:v14];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v38 objects:v43 count:16];
+      v11 = [allValues countByEnumeratingWithState:&v38 objects:v43 count:16];
     }
 
     while (v11);
@@ -1104,9 +1104,9 @@ void __101__FCChannelSectionHeadlinesFetchOperation__headlinesPromiseWithFeedIte
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v16 = v32;
-  v17 = [v32 keyEnumerator];
-  v18 = [v17 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  v16 = mapCopy;
+  keyEnumerator = [mapCopy keyEnumerator];
+  v18 = [keyEnumerator countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v18)
   {
     v19 = v18;
@@ -1117,14 +1117,14 @@ void __101__FCChannelSectionHeadlinesFetchOperation__headlinesPromiseWithFeedIte
       {
         if (*v35 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v22 = *(*(&v34 + 1) + 8 * j);
-        v23 = [v22 feedID];
-        v24 = [v33 objectForKeyedSubscript:v23];
+        feedID = [v22 feedID];
+        v24 = [dCopy objectForKeyedSubscript:feedID];
 
-        v25 = [v7 objectForKeyedSubscript:v24];
+        v25 = [iDCopy objectForKeyedSubscript:v24];
         v26 = [v16 objectForKey:v22];
         v27 = v26;
         if (v25)
@@ -1142,11 +1142,11 @@ void __101__FCChannelSectionHeadlinesFetchOperation__headlinesPromiseWithFeedIte
           v29 = [v8 objectForKeyedSubscript:v25];
           [v29 addObject:v27];
 
-          v16 = v32;
+          v16 = mapCopy;
         }
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      v19 = [keyEnumerator countByEnumeratingWithState:&v34 objects:v42 count:16];
     }
 
     while (v19);
@@ -1157,11 +1157,11 @@ void __101__FCChannelSectionHeadlinesFetchOperation__headlinesPromiseWithFeedIte
   return v8;
 }
 
-- (id)_feedItemsTransformationWithConfiguration:(id)a3
+- (id)_feedItemsTransformationWithConfiguration:(id)configuration
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  configurationCopy = configuration;
+  if (!configurationCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v17 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "configuration"];
     *buf = 136315906;
@@ -1175,16 +1175,16 @@ void __101__FCChannelSectionHeadlinesFetchOperation__headlinesPromiseWithFeedIte
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  v5 = [(FCChannelSectionHeadlinesFetchOperation *)self cloudContext];
+  cloudContext = [(FCChannelSectionHeadlinesFetchOperation *)self cloudContext];
   v6 = objc_alloc(MEMORY[0x1E695DFD8]);
-  v7 = [(FCChannelSectionHeadlinesFetchOperation *)self channelID];
-  v19 = v7;
+  channelID = [(FCChannelSectionHeadlinesFetchOperation *)self channelID];
+  v19 = channelID;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v19 count:1];
   v9 = [v6 initWithArray:v8];
-  v10 = [FCFeedTransformationFilter transformationWithFilterOptions:0x60002213CLL configuration:v4 context:v5 ignoreMutedTagIDs:v9];
+  v10 = [FCFeedTransformationFilter transformationWithFilterOptions:0x60002213CLL configuration:configurationCopy context:cloudContext ignoreMutedTagIDs:v9];
 
-  v11 = [v5 readingHistory];
-  v12 = [FCFeedTransformationUnreadOnly transformationWithReadingHistory:v11];
+  readingHistory = [cloudContext readingHistory];
+  v12 = [FCFeedTransformationUnreadOnly transformationWithReadingHistory:readingHistory];
 
   v18[0] = v10;
   v18[1] = v12;

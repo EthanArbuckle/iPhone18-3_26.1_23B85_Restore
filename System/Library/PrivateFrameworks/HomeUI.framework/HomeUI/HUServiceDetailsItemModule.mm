@@ -1,21 +1,21 @@
 @interface HUServiceDetailsItemModule
-+ (id)serviceDetailsItemSectionComparatorForSortStrategy:(id)a3;
-- (HUServiceDetailsItemModule)initWithItemUpdater:(id)a3 home:(id)a4 sourceItem:(id)a5;
++ (id)serviceDetailsItemSectionComparatorForSortStrategy:(id)strategy;
+- (HUServiceDetailsItemModule)initWithItemUpdater:(id)updater home:(id)home sourceItem:(id)item;
 - (id)itemProviders;
 @end
 
 @implementation HUServiceDetailsItemModule
 
-+ (id)serviceDetailsItemSectionComparatorForSortStrategy:(id)a3
++ (id)serviceDetailsItemSectionComparatorForSortStrategy:(id)strategy
 {
-  if ([a3 isEqualToString:@"HUServiceDetailsItemModuleSortStrategyProgrammableSwitch"])
+  if ([strategy isEqualToString:@"HUServiceDetailsItemModuleSortStrategyProgrammableSwitch"])
   {
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __81__HUServiceDetailsItemModule_serviceDetailsItemSectionComparatorForSortStrategy___block_invoke;
     v7[3] = &__block_descriptor_48_e41_q24__0__HFItemSection_8__HFItemSection_16l;
     v7[4] = a2;
-    v7[5] = a1;
+    v7[5] = self;
     v5 = _Block_copy(v7);
   }
 
@@ -153,15 +153,15 @@ uint64_t __81__HUServiceDetailsItemModule_serviceDetailsItemSectionComparatorFor
   return v16;
 }
 
-- (HUServiceDetailsItemModule)initWithItemUpdater:(id)a3 home:(id)a4 sourceItem:(id)a5
+- (HUServiceDetailsItemModule)initWithItemUpdater:(id)updater home:(id)home sourceItem:(id)item
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  updaterCopy = updater;
+  homeCopy = home;
+  itemCopy = item;
+  v12 = itemCopy;
+  if (homeCopy)
   {
-    if (v11)
+    if (itemCopy)
     {
       goto LABEL_3;
     }
@@ -169,8 +169,8 @@ uint64_t __81__HUServiceDetailsItemModule_serviceDetailsItemSectionComparatorFor
 
   else
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HUServiceDetailsItemModule.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"home"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUServiceDetailsItemModule.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"home"}];
 
     if (v12)
     {
@@ -178,17 +178,17 @@ uint64_t __81__HUServiceDetailsItemModule_serviceDetailsItemSectionComparatorFor
     }
   }
 
-  v17 = [MEMORY[0x277CCA890] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"HUServiceDetailsItemModule.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"sourceItem"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HUServiceDetailsItemModule.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"sourceItem"}];
 
 LABEL_3:
   v18.receiver = self;
   v18.super_class = HUServiceDetailsItemModule;
-  v13 = [(HFItemModule *)&v18 initWithItemUpdater:v9];
+  v13 = [(HFItemModule *)&v18 initWithItemUpdater:updaterCopy];
   v14 = v13;
   if (v13)
   {
-    [(HUServiceDetailsItemModule *)v13 setHome:v10];
+    [(HUServiceDetailsItemModule *)v13 setHome:homeCopy];
     [(HUServiceDetailsItemModule *)v14 setSourceItem:v12];
   }
 
@@ -197,8 +197,8 @@ LABEL_3:
 
 - (id)itemProviders
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HUServiceDetailsItemModule.m" lineNumber:95 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUServiceDetailsItemModule itemProviders]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUServiceDetailsItemModule.m" lineNumber:95 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HUServiceDetailsItemModule itemProviders]", objc_opt_class()}];
 
   return 0;
 }

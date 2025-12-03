@@ -1,41 +1,41 @@
 @interface ZWZoomDockedLensViewController
 - (BOOL)_zoomRegionOnDockReplicatorEdge;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (BOOL)zoomRegionOnScreenReplicatorEdge;
 - (CGPoint)_lensDragMultiplier;
-- (CGPoint)deltaForDockedZoomMovementToRect:(CGRect)a3;
-- (CGPoint)maximumPanOffsetWithZoomFactor:(double)a3;
+- (CGPoint)deltaForDockedZoomMovementToRect:(CGRect)rect;
+- (CGPoint)maximumPanOffsetWithZoomFactor:(double)factor;
 - (CGRect)frameForResizeDrag;
 - (CGRect)zoomRegionFrame;
 - (ZWZoomDockedLensViewControllerDelegate)dockedDelegate;
 - (double)_maxDockHeight;
 - (double)_maxDockWidth;
 - (id)stringForCurrentDockPosition;
-- (id)zoomRootview:(id)a3 viewForHitTestAtPoint:(CGPoint)a4;
-- (int64_t)_dockPositionForString:(id)a3;
+- (id)zoomRootview:(id)rootview viewForHitTestAtPoint:(CGPoint)point;
+- (int64_t)_dockPositionForString:(id)string;
 - (void)_applyInitialLayoutConstraints;
-- (void)_layoutDockUIWithFrames:(CGRect)a3 restOfScreeFrame:(CGRect)a4 positionOrientationChanged:(BOOL)a5;
-- (void)_moveZoomRegionToPoint:(CGPoint)a3 animated:(BOOL)a4;
-- (void)_shiftReplicatorsWithOverflowPan:(CGPoint)a3 useFullDelta:(BOOL)a4;
+- (void)_layoutDockUIWithFrames:(CGRect)frames restOfScreeFrame:(CGRect)frame positionOrientationChanged:(BOOL)changed;
+- (void)_moveZoomRegionToPoint:(CGPoint)point animated:(BOOL)animated;
+- (void)_shiftReplicatorsWithOverflowPan:(CGPoint)pan useFullDelta:(BOOL)delta;
 - (void)_toggleVisibilityButtonWasLongPressed;
-- (void)_updateConstraintsAndShiftsForDockPosition:(int64_t)a3;
-- (void)_updateZoomRegionFrameForDockResizeWithScreenShiftDelta:(double)a3;
+- (void)_updateConstraintsAndShiftsForDockPosition:(int64_t)position;
+- (void)_updateZoomRegionFrameForDockResizeWithScreenShiftDelta:(double)delta;
 - (void)_updateZoomRegionPositionAndSize;
-- (void)interceptFingerDownAtLocation:(CGPoint)a3;
+- (void)interceptFingerDownAtLocation:(CGPoint)location;
 - (void)loadView;
-- (void)moveDockedZoomToPhysicalScreenPoint:(CGPoint)a3 animated:(BOOL)a4;
-- (void)resizeDock:(CGSize)a3 animated:(BOOL)a4;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)setInDockResizingMode:(BOOL)a3;
-- (void)shiftDock:(double)a3;
-- (void)shiftScreen:(double)a3 animated:(BOOL)a4 discardNewValue:(BOOL)a5;
-- (void)showOrHideUIForStandbyModeWithCompletion:(id)a3;
+- (void)moveDockedZoomToPhysicalScreenPoint:(CGPoint)point animated:(BOOL)animated;
+- (void)resizeDock:(CGSize)dock animated:(BOOL)animated;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)setInDockResizingMode:(BOOL)mode;
+- (void)shiftDock:(double)dock;
+- (void)shiftScreen:(double)screen animated:(BOOL)animated discardNewValue:(BOOL)value;
+- (void)showOrHideUIForStandbyModeWithCompletion:(id)completion;
 - (void)toggleZoomRegionVisibility;
-- (void)transitionToDockPosition:(id)a3 completion:(id)a4;
-- (void)updateZoomFactor:(double)a3 panOffset:(CGPoint)a4 animated:(BOOL)a5 animationDuration:(double)a6 completion:(id)a7;
+- (void)transitionToDockPosition:(id)position completion:(id)completion;
+- (void)updateZoomFactor:(double)factor panOffset:(CGPoint)offset animated:(BOOL)animated animationDuration:(double)duration completion:(id)completion;
 - (void)viewDidLayoutSubviews;
 @end
 
@@ -46,13 +46,13 @@
   v52.receiver = self;
   v52.super_class = ZWZoomDockedLensViewController;
   [(ZWZoomLensViewController *)&v52 loadView];
-  v3 = [(ZWZoomDockedLensViewController *)self view];
-  v4 = [(ZWZoomLensViewController *)self screen];
-  [v4 bounds];
+  view = [(ZWZoomDockedLensViewController *)self view];
+  screen = [(ZWZoomLensViewController *)self screen];
+  [screen bounds];
   v6 = v5;
 
-  v7 = [(ZWZoomLensViewController *)self screen];
-  [v7 bounds];
+  screen2 = [(ZWZoomLensViewController *)self screen];
+  [screen2 bounds];
   v9 = v8;
 
   v10 = +[ZWCoalescedSettings sharedInstance];
@@ -72,7 +72,7 @@
   [(ZWZoomDockedLensViewController *)self setDockedBorderView:v48];
   [v14 addSubview:v48];
   v45 = v14;
-  [v3 addSubview:v14];
+  [view addSubview:v14];
   [(ZWZoomDockedLensViewController *)self setZoomRegionFrame:0.0, v13, v9, v13];
   v46 = [UIBezierPath bezierPathWithRect:0.0, v13, v9, v13];
   v47 = [UIBezierPath bezierPathWithRoundedRect:0.0 cornerRadius:v13, v9, v13, 5.0];
@@ -92,9 +92,9 @@
   v44 = v16;
   [(ZWZoomDockedLensViewController *)self setMaskLayer:v16];
   [(ZWZoomDockedLensViewController *)self setZoomRegionVisible:1];
-  v20 = [v3 layer];
-  v21 = [v14 layer];
-  [v20 insertSublayer:v16 below:v21];
+  layer = [view layer];
+  layer2 = [v14 layer];
+  [layer insertSublayer:v16 below:layer2];
 
   v22 = +[CAShapeLayer layer];
   v23 = +[UIColor whiteColor];
@@ -104,13 +104,13 @@
   [v22 setFrame:{0.0, v13, v9, v13}];
   v43 = v22;
   [(ZWZoomDockedLensViewController *)self setTouchStealLayer:v22];
-  v25 = [v3 layer];
-  [v25 addSublayer:v22];
+  layer3 = [view layer];
+  [layer3 addSublayer:v22];
 
   v26 = [[UIView alloc] initWithFrame:{0.0, 0.0, v9, v6}];
   [v26 setCenter:{v9 * 0.5, v6 * 0.5}];
   [(ZWZoomDockedLensViewController *)self setScreenReplicatorView:v26];
-  [v3 addSubview:v26];
+  [view addSubview:v26];
   v27 = objc_alloc_init(CAReplicatorLayer);
   [v27 setAllowsHitTesting:0];
   [v27 setBounds:{0.0, 0.0, v9, v6}];
@@ -122,8 +122,8 @@
   [v27 setInstanceTransform:&v50];
   [(ZWZoomDockedLensViewController *)self setScreenShift:v13];
   [(ZWZoomDockedLensViewController *)self setScreenReplicatorLayer:v27];
-  v28 = [v26 layer];
-  [v28 addSublayer:v27];
+  layer4 = [v26 layer];
+  [layer4 addSublayer:v27];
 
   v29 = objc_alloc_init(CABackdropLayer);
   [v29 setAllowsHitTesting:0];
@@ -134,7 +134,7 @@
   v30 = [[UIView alloc] initWithFrame:{0.0, 0.0, v9, v6}];
   [v30 setCenter:{v9 * 0.5, v6 * 0.5}];
   [(ZWZoomDockedLensViewController *)self setDockReplicatorView:v30];
-  [v3 addSubview:v30];
+  [view addSubview:v30];
   v31 = objc_alloc_init(CAReplicatorLayer);
   [v31 setAllowsHitTesting:0];
   [v31 setBounds:{0.0, 0.0, v9, v13}];
@@ -145,8 +145,8 @@
   [v31 setInstanceTransform:&v50];
   [(ZWZoomDockedLensViewController *)self setDockShift:v13];
   [(ZWZoomDockedLensViewController *)self setDockReplicatorLayer:v31];
-  v32 = [v30 layer];
-  [v32 addSublayer:v31];
+  layer5 = [v30 layer];
+  [layer5 addSublayer:v31];
 
   v33 = objc_alloc_init(CABackdropLayer);
   [v33 setAllowsHitTesting:0];
@@ -154,47 +154,47 @@
   [v33 setBackdropRect:{0.0, 0.0, v9, v13}];
   [(ZWZoomDockedLensViewController *)self setDockBackdropLayer:v33];
   [v31 addSublayer:v33];
-  v34 = v3;
-  [v3 sendSubviewToBack:v30];
-  v42 = v3;
-  [v3 sendSubviewToBack:v26];
+  v34 = view;
+  [view sendSubviewToBack:v30];
+  v42 = view;
+  [view sendSubviewToBack:v26];
   v35 = objc_alloc_init(ZWShowHideZoomRegionButton);
   [(ZWShowHideZoomRegionButton *)v35 addTarget:self action:"_toggleVisibilityButtonWasPressed" forControlEvents:64];
   [(ZWZoomDockedLensViewController *)self setToggleZoomRegionButton:v35];
-  v36 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
-  [v36 makeHorizontal];
+  toggleZoomRegionButton = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
+  [toggleZoomRegionButton makeHorizontal];
 
-  v37 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
-  [v37 setCenter:{v9 * 0.5, v13}];
+  toggleZoomRegionButton2 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
+  [toggleZoomRegionButton2 setCenter:{v9 * 0.5, v13}];
 
   [v34 addSubview:v35];
   v38 = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:"_toggleVisibilityButtonWasLongPressed"];
-  v39 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
-  [v39 addGestureRecognizer:v38];
+  toggleZoomRegionButton3 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
+  [toggleZoomRegionButton3 addGestureRecognizer:v38];
 
-  v40 = [(ZWZoomLensViewController *)self lensZoomView];
-  v41 = [v40 zoomReplicatorLayer];
-  [v41 setPosition:{v9 * 0.5, v13 * 0.5}];
+  lensZoomView = [(ZWZoomLensViewController *)self lensZoomView];
+  zoomReplicatorLayer = [lensZoomView zoomReplicatorLayer];
+  [zoomReplicatorLayer setPosition:{v9 * 0.5, v13 * 0.5}];
 }
 
-- (int64_t)_dockPositionForString:(id)a3
+- (int64_t)_dockPositionForString:(id)string
 {
-  v3 = a3;
-  if (([v3 isEqualToString:AXZoomDockPositionTop] & 1) == 0)
+  stringCopy = string;
+  if (([stringCopy isEqualToString:AXZoomDockPositionTop] & 1) == 0)
   {
-    if ([v3 isEqualToString:AXZoomDockPositionLeft])
+    if ([stringCopy isEqualToString:AXZoomDockPositionLeft])
     {
       v4 = 1;
       goto LABEL_9;
     }
 
-    if ([v3 isEqualToString:AXZoomDockPositionRight])
+    if ([stringCopy isEqualToString:AXZoomDockPositionRight])
     {
       v4 = 2;
       goto LABEL_9;
     }
 
-    if ([v3 isEqualToString:AXZoomDockPositionBottom])
+    if ([stringCopy isEqualToString:AXZoomDockPositionBottom])
     {
       v4 = 3;
       goto LABEL_9;
@@ -214,60 +214,60 @@ LABEL_9:
   v29.receiver = self;
   v29.super_class = ZWZoomDockedLensViewController;
   [(ZWZoomLensViewController *)&v29 _applyInitialLayoutConstraints];
-  v3 = [(ZWZoomDockedLensViewController *)self view];
-  v4 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-  v5 = [(ZWZoomLensViewController *)self lensZoomView];
-  [v4 bounds];
+  view = [(ZWZoomDockedLensViewController *)self view];
+  dockedLensView = [(ZWZoomDockedLensViewController *)self dockedLensView];
+  lensZoomView = [(ZWZoomLensViewController *)self lensZoomView];
+  [dockedLensView bounds];
   v7 = v6;
-  v8 = [(ZWZoomLensViewController *)self screen];
-  [v8 bounds];
+  screen = [(ZWZoomLensViewController *)self screen];
+  [screen bounds];
   v10 = v9;
 
-  v11 = [NSLayoutConstraint constraintWithItem:v5 attribute:1 relatedBy:0 toItem:v4 attribute:1 multiplier:1.0 constant:0.0];
+  v11 = [NSLayoutConstraint constraintWithItem:lensZoomView attribute:1 relatedBy:0 toItem:dockedLensView attribute:1 multiplier:1.0 constant:0.0];
   [(ZWZoomDockedLensViewController *)self setZoomViewLeftConstraint:v11];
 
-  v12 = [NSLayoutConstraint constraintWithItem:v5 attribute:2 relatedBy:0 toItem:v4 attribute:2 multiplier:1.0 constant:0.0];
+  v12 = [NSLayoutConstraint constraintWithItem:lensZoomView attribute:2 relatedBy:0 toItem:dockedLensView attribute:2 multiplier:1.0 constant:0.0];
   [(ZWZoomDockedLensViewController *)self setZoomViewRightConstraint:v12];
 
-  v13 = [NSLayoutConstraint constraintWithItem:v5 attribute:3 relatedBy:0 toItem:v4 attribute:3 multiplier:1.0 constant:0.0];
+  v13 = [NSLayoutConstraint constraintWithItem:lensZoomView attribute:3 relatedBy:0 toItem:dockedLensView attribute:3 multiplier:1.0 constant:0.0];
   [(ZWZoomDockedLensViewController *)self setZoomViewTopConstraint:v13];
 
-  v14 = [NSLayoutConstraint constraintWithItem:v5 attribute:4 relatedBy:0 toItem:v4 attribute:4 multiplier:1.0 constant:0.0];
+  v14 = [NSLayoutConstraint constraintWithItem:lensZoomView attribute:4 relatedBy:0 toItem:dockedLensView attribute:4 multiplier:1.0 constant:0.0];
   [(ZWZoomDockedLensViewController *)self setZoomViewBottomConstraint:v14];
 
-  v15 = [(ZWZoomDockedLensViewController *)self zoomViewTopConstraint];
-  v31[0] = v15;
-  v16 = [(ZWZoomDockedLensViewController *)self zoomViewRightConstraint];
-  v31[1] = v16;
-  v17 = [(ZWZoomDockedLensViewController *)self zoomViewLeftConstraint];
-  v31[2] = v17;
-  v18 = [(ZWZoomDockedLensViewController *)self zoomViewBottomConstraint];
-  v31[3] = v18;
+  zoomViewTopConstraint = [(ZWZoomDockedLensViewController *)self zoomViewTopConstraint];
+  v31[0] = zoomViewTopConstraint;
+  zoomViewRightConstraint = [(ZWZoomDockedLensViewController *)self zoomViewRightConstraint];
+  v31[1] = zoomViewRightConstraint;
+  zoomViewLeftConstraint = [(ZWZoomDockedLensViewController *)self zoomViewLeftConstraint];
+  v31[2] = zoomViewLeftConstraint;
+  zoomViewBottomConstraint = [(ZWZoomDockedLensViewController *)self zoomViewBottomConstraint];
+  v31[3] = zoomViewBottomConstraint;
   v19 = [NSArray arrayWithObjects:v31 count:4];
-  [v3 addConstraints:v19];
+  [view addConstraints:v19];
 
-  v20 = [NSLayoutConstraint constraintWithItem:v4 attribute:1 relatedBy:0 toItem:v3 attribute:1 multiplier:1.0 constant:0.0];
+  v20 = [NSLayoutConstraint constraintWithItem:dockedLensView attribute:1 relatedBy:0 toItem:view attribute:1 multiplier:1.0 constant:0.0];
   [(ZWZoomDockedLensViewController *)self setDockedViewLeftConstraint:v20];
 
-  v21 = [NSLayoutConstraint constraintWithItem:v4 attribute:2 relatedBy:0 toItem:v3 attribute:2 multiplier:1.0 constant:0.0];
+  v21 = [NSLayoutConstraint constraintWithItem:dockedLensView attribute:2 relatedBy:0 toItem:view attribute:2 multiplier:1.0 constant:0.0];
   [(ZWZoomDockedLensViewController *)self setDockedViewRightConstraint:v21];
 
-  v22 = [NSLayoutConstraint constraintWithItem:v4 attribute:3 relatedBy:0 toItem:v3 attribute:3 multiplier:1.0 constant:0.0];
+  v22 = [NSLayoutConstraint constraintWithItem:dockedLensView attribute:3 relatedBy:0 toItem:view attribute:3 multiplier:1.0 constant:0.0];
   [(ZWZoomDockedLensViewController *)self setDockedViewTopConstraint:v22];
 
-  v23 = [NSLayoutConstraint constraintWithItem:v4 attribute:4 relatedBy:0 toItem:v3 attribute:4 multiplier:1.0 constant:-(v10 - v7)];
+  v23 = [NSLayoutConstraint constraintWithItem:dockedLensView attribute:4 relatedBy:0 toItem:view attribute:4 multiplier:1.0 constant:-(v10 - v7)];
   [(ZWZoomDockedLensViewController *)self setDockedViewBottomConstraint:v23];
 
-  v24 = [(ZWZoomDockedLensViewController *)self dockedViewTopConstraint];
-  v30[0] = v24;
-  v25 = [(ZWZoomDockedLensViewController *)self dockedViewRightConstraint];
-  v30[1] = v25;
-  v26 = [(ZWZoomDockedLensViewController *)self dockedViewLeftConstraint];
-  v30[2] = v26;
-  v27 = [(ZWZoomDockedLensViewController *)self dockedViewBottomConstraint];
-  v30[3] = v27;
+  dockedViewTopConstraint = [(ZWZoomDockedLensViewController *)self dockedViewTopConstraint];
+  v30[0] = dockedViewTopConstraint;
+  dockedViewRightConstraint = [(ZWZoomDockedLensViewController *)self dockedViewRightConstraint];
+  v30[1] = dockedViewRightConstraint;
+  dockedViewLeftConstraint = [(ZWZoomDockedLensViewController *)self dockedViewLeftConstraint];
+  v30[2] = dockedViewLeftConstraint;
+  dockedViewBottomConstraint = [(ZWZoomDockedLensViewController *)self dockedViewBottomConstraint];
+  v30[3] = dockedViewBottomConstraint;
   v28 = [NSArray arrayWithObjects:v30 count:4];
-  [v3 addConstraints:v28];
+  [view addConstraints:v28];
 }
 
 - (void)viewDidLayoutSubviews
@@ -275,17 +275,17 @@ LABEL_9:
   v54.receiver = self;
   v54.super_class = ZWZoomDockedLensViewController;
   [(ZWZoomDockedLensViewController *)&v54 viewDidLayoutSubviews];
-  v3 = [(ZWZoomDockedLensViewController *)self screenReplicatorView];
-  v52 = [(ZWZoomDockedLensViewController *)self dockReplicatorView];
-  v4 = [(ZWZoomDockedLensViewController *)self screenReplicatorLayer];
-  v5 = [(ZWZoomDockedLensViewController *)self screenBackdropLayer];
-  v6 = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
-  v7 = [(ZWZoomDockedLensViewController *)self view];
-  [v7 bounds];
+  screenReplicatorView = [(ZWZoomDockedLensViewController *)self screenReplicatorView];
+  dockReplicatorView = [(ZWZoomDockedLensViewController *)self dockReplicatorView];
+  screenReplicatorLayer = [(ZWZoomDockedLensViewController *)self screenReplicatorLayer];
+  screenBackdropLayer = [(ZWZoomDockedLensViewController *)self screenBackdropLayer];
+  dockReplicatorLayer = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
+  view = [(ZWZoomDockedLensViewController *)self view];
+  [view bounds];
   v9 = v8;
 
-  v10 = [(ZWZoomDockedLensViewController *)self view];
-  [v10 bounds];
+  view2 = [(ZWZoomDockedLensViewController *)self view];
+  [view2 bounds];
   v12 = v11;
 
   [(ZWZoomDockedLensViewController *)self dockSize];
@@ -306,62 +306,62 @@ LABEL_9:
     v15 = v12;
   }
 
-  v17 = v3;
-  [v3 bounds];
+  v17 = screenReplicatorView;
+  [screenReplicatorView bounds];
   v19 = v18;
   v20 = +[AXSettings sharedInstance];
-  v21 = [v20 zoomPreferredCurrentDockPosition];
-  v22 = [(ZWZoomDockedLensViewController *)self stringForCurrentDockPosition];
-  if ([v21 isEqualToString:v22])
+  zoomPreferredCurrentDockPosition = [v20 zoomPreferredCurrentDockPosition];
+  stringForCurrentDockPosition = [(ZWZoomDockedLensViewController *)self stringForCurrentDockPosition];
+  if ([zoomPreferredCurrentDockPosition isEqualToString:stringForCurrentDockPosition])
   {
   }
 
   else
   {
-    v23 = [(ZWZoomDockedLensViewController *)self dockPositionIsTransitioning];
+    dockPositionIsTransitioning = [(ZWZoomDockedLensViewController *)self dockPositionIsTransitioning];
 
-    if ((v23 & 1) == 0)
+    if ((dockPositionIsTransitioning & 1) == 0)
     {
       v40 = +[AXSettings sharedInstance];
-      v41 = [v40 zoomPreferredCurrentDockPosition];
-      [(ZWZoomDockedLensViewController *)self transitionToDockPosition:v41 completion:0];
+      zoomPreferredCurrentDockPosition2 = [v40 zoomPreferredCurrentDockPosition];
+      [(ZWZoomDockedLensViewController *)self transitionToDockPosition:zoomPreferredCurrentDockPosition2 completion:0];
 
-      v24 = v5;
-      v25 = v6;
-      v26 = v4;
-      v27 = v52;
+      v24 = screenBackdropLayer;
+      v25 = dockReplicatorLayer;
+      v26 = screenReplicatorLayer;
+      v27 = dockReplicatorView;
       goto LABEL_11;
     }
   }
 
-  v24 = v5;
-  v25 = v6;
-  v26 = v4;
-  v27 = v52;
+  v24 = screenBackdropLayer;
+  v25 = dockReplicatorLayer;
+  v26 = screenReplicatorLayer;
+  v27 = dockReplicatorView;
   if (vabdd_f64(v19, v12) < 2.22044605e-16)
   {
-    v28 = [(ZWZoomDockedLensViewController *)self view];
-    [v28 bounds];
+    view3 = [(ZWZoomDockedLensViewController *)self view];
+    [view3 bounds];
     [v17 setBounds:?];
 
     [v17 center];
     v30 = v29;
     [v17 center];
     [v17 setCenter:{v30, v31}];
-    v32 = [(ZWZoomDockedLensViewController *)self view];
-    [v32 bounds];
-    [v52 setBounds:?];
+    view4 = [(ZWZoomDockedLensViewController *)self view];
+    [view4 bounds];
+    [dockReplicatorView setBounds:?];
 
-    [v52 center];
+    [dockReplicatorView center];
     v34 = v33;
-    [v52 center];
-    [v52 setCenter:{v34, v35}];
-    v36 = [(ZWZoomDockedLensViewController *)self view];
-    [v36 bounds];
+    [dockReplicatorView center];
+    [dockReplicatorView setCenter:{v34, v35}];
+    view5 = [(ZWZoomDockedLensViewController *)self view];
+    [view5 bounds];
     [v26 setBounds:?];
 
-    v37 = [(ZWZoomDockedLensViewController *)self screenReplicatorView];
-    [v37 center];
+    screenReplicatorView2 = [(ZWZoomDockedLensViewController *)self screenReplicatorView];
+    [screenReplicatorView2 center];
     [v26 setPosition:?];
 
     [(ZWZoomDockedLensViewController *)self screenShift];
@@ -382,21 +382,21 @@ LABEL_9:
   }
 
 LABEL_11:
-  v42 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-  [v42 frame];
+  dockedLensView = [(ZWZoomDockedLensViewController *)self dockedLensView];
+  [dockedLensView frame];
   v44 = v43;
   v46 = v45;
 
   y = CGPointZero.y;
-  v48 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-  [v48 setFrame:{CGPointZero.x, y, v44, v46}];
+  dockedBorderView = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+  [dockedBorderView setFrame:{CGPointZero.x, y, v44, v46}];
 
-  v49 = [(ZWZoomDockedLensViewController *)self dockPosition];
-  v50 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-  [v50 setDockPosition:v49];
+  dockPosition = [(ZWZoomDockedLensViewController *)self dockPosition];
+  dockedBorderView2 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+  [dockedBorderView2 setDockPosition:dockPosition];
 
-  v51 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-  [v51 setNeedsLayout];
+  dockedBorderView3 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+  [dockedBorderView3 setNeedsLayout];
 }
 
 id __55__ZWZoomDockedLensViewController_viewDidLayoutSubviews__block_invoke(uint64_t a1)
@@ -409,19 +409,19 @@ id __55__ZWZoomDockedLensViewController_viewDidLayoutSubviews__block_invoke(uint
   return [v3 _updateZoomRegionPositionAndSize];
 }
 
-- (void)updateZoomFactor:(double)a3 panOffset:(CGPoint)a4 animated:(BOOL)a5 animationDuration:(double)a6 completion:(id)a7
+- (void)updateZoomFactor:(double)factor panOffset:(CGPoint)offset animated:(BOOL)animated animationDuration:(double)duration completion:(id)completion
 {
   v8.receiver = self;
   v8.super_class = ZWZoomDockedLensViewController;
-  [(ZWZoomLensViewController *)&v8 updateZoomFactor:a5 panOffset:a7 animated:a3 animationDuration:a4.x completion:a4.y, a6];
+  [(ZWZoomLensViewController *)&v8 updateZoomFactor:animated panOffset:completion animated:factor animationDuration:offset.x completion:offset.y, duration];
   [(ZWZoomDockedLensViewController *)self _updateZoomRegionPositionAndSize];
 }
 
 - (void)toggleZoomRegionVisibility
 {
-  v3 = [(ZWZoomDockedLensViewController *)self zoomRegionVisible];
+  zoomRegionVisible = [(ZWZoomDockedLensViewController *)self zoomRegionVisible];
   v4 = 0.0;
-  if (!v3)
+  if (!zoomRegionVisible)
   {
     [(ZWZoomDockedLensViewController *)self _updateZoomRegionPositionAndSize];
     v4 = 1.0;
@@ -432,48 +432,48 @@ id __55__ZWZoomDockedLensViewController_viewDidLayoutSubviews__block_invoke(uint
   v7 = [NSNumber numberWithFloat:v6];
   [v5 setToValue:v7];
 
-  v8 = [(ZWZoomDockedLensViewController *)self maskLayer];
-  [v8 addAnimation:v5 forKey:0];
+  maskLayer = [(ZWZoomDockedLensViewController *)self maskLayer];
+  [maskLayer addAnimation:v5 forKey:0];
 
-  v9 = [(ZWZoomDockedLensViewController *)self maskLayer];
+  maskLayer2 = [(ZWZoomDockedLensViewController *)self maskLayer];
   *&v10 = v4;
-  [v9 setOpacity:v10];
+  [maskLayer2 setOpacity:v10];
 
-  v11 = [(ZWZoomDockedLensViewController *)self touchStealLayer];
-  [v11 setHidden:v3];
+  touchStealLayer = [(ZWZoomDockedLensViewController *)self touchStealLayer];
+  [touchStealLayer setHidden:zoomRegionVisible];
 
-  [(ZWZoomDockedLensViewController *)self setZoomRegionVisible:v3 ^ 1];
-  v12 = [(ZWZoomDockedLensViewController *)self dockedDelegate];
-  [v12 dockedLensViewController:self zoomRegionVisibilityWasChanged:{-[ZWZoomDockedLensViewController zoomRegionVisible](self, "zoomRegionVisible")}];
+  [(ZWZoomDockedLensViewController *)self setZoomRegionVisible:zoomRegionVisible ^ 1];
+  dockedDelegate = [(ZWZoomDockedLensViewController *)self dockedDelegate];
+  [dockedDelegate dockedLensViewController:self zoomRegionVisibilityWasChanged:{-[ZWZoomDockedLensViewController zoomRegionVisible](self, "zoomRegionVisible")}];
 }
 
-- (void)moveDockedZoomToPhysicalScreenPoint:(CGPoint)a3 animated:(BOOL)a4
+- (void)moveDockedZoomToPhysicalScreenPoint:(CGPoint)point animated:(BOOL)animated
 {
-  y = a3.y;
-  x = a3.x;
-  [(ZWZoomDockedLensViewController *)self _moveZoomRegionToPoint:a4 animated:?];
-  v7 = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
-  [v7 position];
+  y = point.y;
+  x = point.x;
+  [(ZWZoomDockedLensViewController *)self _moveZoomRegionToPoint:animated animated:?];
+  dockReplicatorLayer = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
+  [dockReplicatorLayer position];
   v9 = x - v8;
-  v10 = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
-  [v10 position];
+  dockReplicatorLayer2 = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
+  [dockReplicatorLayer2 position];
   v12 = y - v11;
 
   [(ZWZoomLensViewController *)self zoomPanOffset];
   v14 = v9 - v13;
   [(ZWZoomLensViewController *)self zoomPanOffset];
   v16 = v12 - v15;
-  v18 = [(ZWZoomLensViewController *)self delegate];
-  v17 = [(ZWZoomLensViewController *)self lensZoomView];
-  [v18 zoomLensViewController:self didMoveLens:v17 withDelta:{v14, v16}];
+  delegate = [(ZWZoomLensViewController *)self delegate];
+  lensZoomView = [(ZWZoomLensViewController *)self lensZoomView];
+  [delegate zoomLensViewController:self didMoveLens:lensZoomView withDelta:{v14, v16}];
 }
 
-- (void)interceptFingerDownAtLocation:(CGPoint)a3
+- (void)interceptFingerDownAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
-  [v7 frame];
+  y = location.y;
+  x = location.x;
+  toggleZoomRegionButton = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
+  [toggleZoomRegionButton frame];
   v9.x = x;
   v9.y = y;
   if (CGRectContainsPoint(v11, v9) || ([(ZWZoomDockedLensViewController *)self zoomRegionFrame], v10.x = x, v10.y = y, CGRectContainsPoint(v12, v10)))
@@ -482,9 +482,9 @@ id __55__ZWZoomDockedLensViewController_viewDidLayoutSubviews__block_invoke(uint
 
   else
   {
-    v6 = [(ZWZoomDockedLensViewController *)self zoomRegionVisible];
+    zoomRegionVisible = [(ZWZoomDockedLensViewController *)self zoomRegionVisible];
 
-    if (v6)
+    if (zoomRegionVisible)
     {
 
       [(ZWZoomDockedLensViewController *)self toggleZoomRegionVisibility];
@@ -492,33 +492,33 @@ id __55__ZWZoomDockedLensViewController_viewDidLayoutSubviews__block_invoke(uint
   }
 }
 
-- (void)showOrHideUIForStandbyModeWithCompletion:(id)a3
+- (void)showOrHideUIForStandbyModeWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(ZWZoomDockedLensViewController *)self view];
-  [v5 bounds];
+  completionCopy = completion;
+  view = [(ZWZoomDockedLensViewController *)self view];
+  [view bounds];
   v7 = v6;
 
-  v8 = [(ZWZoomDockedLensViewController *)self view];
-  [v8 bounds];
+  view2 = [(ZWZoomDockedLensViewController *)self view];
+  [view2 bounds];
   v10 = v9;
 
-  v11 = [(ZWZoomLensViewController *)self inStandbyMode];
+  inStandbyMode = [(ZWZoomLensViewController *)self inStandbyMode];
   +[CATransaction begin];
-  if (v11)
+  if (inStandbyMode)
   {
     v43[0] = _NSConcreteStackBlock;
     v43[1] = 3221225472;
     v43[2] = __75__ZWZoomDockedLensViewController_showOrHideUIForStandbyModeWithCompletion___block_invoke;
     v43[3] = &unk_79018;
     v43[4] = self;
-    v44 = v4;
+    v44 = completionCopy;
     [CATransaction setCompletionBlock:v43];
-    v12 = [(ZWZoomDockedLensViewController *)self maskLayer];
-    [v12 setHidden:1];
+    maskLayer = [(ZWZoomDockedLensViewController *)self maskLayer];
+    [maskLayer setHidden:1];
 
-    v13 = [(ZWZoomDockedLensViewController *)self view];
-    [v13 frame];
+    view3 = [(ZWZoomDockedLensViewController *)self view];
+    [view3 frame];
     v47.origin.x = CGRectZero.origin.x;
     v47.origin.y = CGRectZero.origin.y;
     v47.size.width = CGRectZero.size.width;
@@ -555,29 +555,29 @@ id __55__ZWZoomDockedLensViewController_viewDidLayoutSubviews__block_invoke(uint
     v38 = 3221225472;
     v39 = __75__ZWZoomDockedLensViewController_showOrHideUIForStandbyModeWithCompletion___block_invoke_2;
     v40 = &unk_79040;
-    v41 = self;
-    v42 = v4;
+    selfCopy = self;
+    v42 = completionCopy;
     [CATransaction setCompletionBlock:&v37];
     v24 = [(ZWZoomDockedLensViewController *)self dockedLensView:v37];
     [v24 setHidden:0];
 
-    v25 = [(ZWZoomDockedLensViewController *)self screenReplicatorView];
-    [v25 setHidden:0];
+    screenReplicatorView = [(ZWZoomDockedLensViewController *)self screenReplicatorView];
+    [screenReplicatorView setHidden:0];
 
-    v26 = [(ZWZoomDockedLensViewController *)self dockReplicatorView];
-    [v26 setHidden:0];
+    dockReplicatorView = [(ZWZoomDockedLensViewController *)self dockReplicatorView];
+    [dockReplicatorView setHidden:0];
 
-    v27 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
-    [v27 setHidden:0];
+    toggleZoomRegionButton = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
+    [toggleZoomRegionButton setHidden:0];
 
     if ([(ZWZoomDockedLensViewController *)self zoomRegionVisible])
     {
-      v28 = [(ZWZoomDockedLensViewController *)self touchStealLayer];
-      [v28 setHidden:0];
+      touchStealLayer = [(ZWZoomDockedLensViewController *)self touchStealLayer];
+      [touchStealLayer setHidden:0];
     }
 
-    v29 = [(ZWZoomDockedLensViewController *)self view];
-    [v29 frame];
+    view4 = [(ZWZoomDockedLensViewController *)self view];
+    [view4 frame];
     v48.origin.x = CGRectZero.origin.x;
     v48.origin.y = CGRectZero.origin.y;
     v48.size.width = CGRectZero.size.width;
@@ -654,20 +654,20 @@ void __75__ZWZoomDockedLensViewController_showOrHideUIForStandbyModeWithCompleti
   [v3 setHidden:0];
 }
 
-- (void)transitionToDockPosition:(id)a3 completion:(id)a4
+- (void)transitionToDockPosition:(id)position completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  positionCopy = position;
+  completionCopy = completion;
   +[CATransaction begin];
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = __70__ZWZoomDockedLensViewController_transitionToDockPosition_completion___block_invoke;
   v13 = &unk_79018;
-  v14 = self;
-  v8 = v7;
+  selfCopy = self;
+  v8 = completionCopy;
   v15 = v8;
   [CATransaction setCompletionBlock:&v10];
-  if ([v6 isEqualToString:{AXZoomDockPositionTop, v10, v11, v12, v13, v14}])
+  if ([positionCopy isEqualToString:{AXZoomDockPositionTop, v10, v11, v12, v13, selfCopy}])
   {
     v9 = 0;
 LABEL_9:
@@ -675,19 +675,19 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v6 isEqualToString:AXZoomDockPositionLeft])
+  if ([positionCopy isEqualToString:AXZoomDockPositionLeft])
   {
     v9 = 1;
     goto LABEL_9;
   }
 
-  if ([v6 isEqualToString:AXZoomDockPositionRight])
+  if ([positionCopy isEqualToString:AXZoomDockPositionRight])
   {
     v9 = 2;
     goto LABEL_9;
   }
 
-  if ([v6 isEqualToString:AXZoomDockPositionBottom])
+  if ([positionCopy isEqualToString:AXZoomDockPositionBottom])
   {
     v9 = 3;
     goto LABEL_9;
@@ -735,25 +735,25 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
   return result;
 }
 
-- (void)_moveZoomRegionToPoint:(CGPoint)a3 animated:(BOOL)a4
+- (void)_moveZoomRegionToPoint:(CGPoint)point animated:(BOOL)animated
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v7 = [(ZWZoomDockedLensViewController *)self view];
-  [v7 bounds];
+  animatedCopy = animated;
+  y = point.y;
+  x = point.x;
+  view = [(ZWZoomDockedLensViewController *)self view];
+  [view bounds];
   v9 = v8;
 
-  v10 = [(ZWZoomDockedLensViewController *)self view];
-  [v10 bounds];
+  view2 = [(ZWZoomDockedLensViewController *)self view];
+  [view2 bounds];
   v12 = v11;
 
-  v13 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-  [v13 bounds];
+  dockedLensView = [(ZWZoomDockedLensViewController *)self dockedLensView];
+  [dockedLensView bounds];
   v15 = v14;
 
-  v16 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-  [v16 bounds];
+  dockedLensView2 = [(ZWZoomDockedLensViewController *)self dockedLensView];
+  [dockedLensView2 bounds];
   v18 = v17;
 
   [(ZWZoomDockedLensViewController *)self zoomRegionFrame];
@@ -763,10 +763,10 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
   v22 = v20 * 0.5;
   v23 = v21 * 0.5;
   v25 = v24 + v21 * 0.5;
-  v26 = [(ZWZoomDockedLensViewController *)self dockPosition];
+  dockPosition = [(ZWZoomDockedLensViewController *)self dockPosition];
   v27 = v12 - v18;
   v28 = v9 - v15;
-  if (v26 == 3)
+  if (dockPosition == 3)
   {
     v29 = v12;
   }
@@ -776,12 +776,12 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
     v29 = 0.0;
   }
 
-  if (v26 != 3)
+  if (dockPosition != 3)
   {
     v28 = 0.0;
   }
 
-  if (v26 == 2)
+  if (dockPosition == 2)
   {
     v28 = v9;
   }
@@ -791,7 +791,7 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
     v27 = v29;
   }
 
-  if (v26 == 1)
+  if (dockPosition == 1)
   {
     v30 = v12;
   }
@@ -801,7 +801,7 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
     v30 = 0.0;
   }
 
-  if (v26 == 1)
+  if (dockPosition == 1)
   {
     v31 = v18;
   }
@@ -811,7 +811,7 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
     v31 = 0.0;
   }
 
-  if (v26 == 1)
+  if (dockPosition == 1)
   {
     v32 = v9;
   }
@@ -821,7 +821,7 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
     v32 = 0.0;
   }
 
-  if (v26)
+  if (dockPosition)
   {
     v33 = 0.0;
   }
@@ -834,7 +834,7 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
     v33 = v15;
   }
 
-  if (v26 <= 1)
+  if (dockPosition <= 1)
   {
     v34 = v30;
   }
@@ -844,7 +844,7 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
     v34 = v27;
   }
 
-  if (v26 <= 1)
+  if (dockPosition <= 1)
   {
     v35 = v31;
   }
@@ -854,7 +854,7 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
     v35 = 0.0;
   }
 
-  if (v26 <= 1)
+  if (dockPosition <= 1)
   {
     v36 = v32;
   }
@@ -864,7 +864,7 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
     v36 = v28;
   }
 
-  if (v26 <= 1)
+  if (dockPosition <= 1)
   {
     v37 = v33;
   }
@@ -912,8 +912,8 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
   [(ZWZoomDockedLensViewController *)self dockShift];
   [(ZWZoomDockedLensViewController *)self shiftDock:v41 + v42];
   v60 = [CABasicAnimation animationWithKeyPath:@"path"];
-  v43 = [(ZWZoomDockedLensViewController *)self maskLayer];
-  v44 = +[UIBezierPath bezierPathWithCGPath:](UIBezierPath, "bezierPathWithCGPath:", [v43 path]);
+  maskLayer = [(ZWZoomDockedLensViewController *)self maskLayer];
+  v44 = +[UIBezierPath bezierPathWithCGPath:](UIBezierPath, "bezierPathWithCGPath:", [maskLayer path]);
   [v60 setFromValue:v44];
 
   v45 = v34 - v35;
@@ -923,22 +923,22 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
   [v46 appendPath:v48];
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  v49 = [(ZWZoomDockedLensViewController *)self maskLayer];
-  [v49 setStrokeStart:(v36 - v37 + v36 - v37 + v45 * 2.0) / (v57 + v57 + v56 * 2.0 + -8.58407346 + v36 - v37 + v36 - v37 + v45 * 2.0)];
+  maskLayer2 = [(ZWZoomDockedLensViewController *)self maskLayer];
+  [maskLayer2 setStrokeStart:(v36 - v37 + v36 - v37 + v45 * 2.0) / (v57 + v57 + v56 * 2.0 + -8.58407346 + v36 - v37 + v36 - v37 + v45 * 2.0)];
 
   +[CATransaction commit];
   [v60 setToValue:v46];
   [v60 setDuration:0.15];
-  if (v4)
+  if (animatedCopy)
   {
-    v50 = [(ZWZoomDockedLensViewController *)self maskLayer];
-    v51 = [v60 keyPath];
-    [v50 addAnimation:v60 forKey:v51];
+    maskLayer3 = [(ZWZoomDockedLensViewController *)self maskLayer];
+    keyPath = [v60 keyPath];
+    [maskLayer3 addAnimation:v60 forKey:keyPath];
   }
 
-  v52 = [v46 CGPath];
-  v53 = [(ZWZoomDockedLensViewController *)self maskLayer];
-  [v53 setPath:v52];
+  cGPath = [v46 CGPath];
+  maskLayer4 = [(ZWZoomDockedLensViewController *)self maskLayer];
+  [maskLayer4 setPath:cGPath];
 
   [(ZWZoomDockedLensViewController *)self setZoomRegionFrame:v47, v55 - v23, v57, v56];
   self->_lastScrollPoint.x = v58;
@@ -947,28 +947,28 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
 
 - (void)_updateZoomRegionPositionAndSize
 {
-  v3 = [(ZWZoomDockedLensViewController *)self view];
-  [v3 bounds];
+  view = [(ZWZoomDockedLensViewController *)self view];
+  [view bounds];
   v5 = v4;
 
-  v6 = [(ZWZoomDockedLensViewController *)self view];
-  [v6 bounds];
+  view2 = [(ZWZoomDockedLensViewController *)self view];
+  [view2 bounds];
   v8 = v7;
 
-  v9 = [(ZWZoomLensViewController *)self lensZoomView];
-  v10 = [v9 zoomReplicatorLayer];
-  [v10 frame];
+  lensZoomView = [(ZWZoomLensViewController *)self lensZoomView];
+  zoomReplicatorLayer = [lensZoomView zoomReplicatorLayer];
+  [zoomReplicatorLayer frame];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v59 = v17;
 
-  v18 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-  [v18 bounds];
+  dockedLensView = [(ZWZoomDockedLensViewController *)self dockedLensView];
+  [dockedLensView bounds];
   v20 = v19;
 
-  v21 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-  [v21 bounds];
+  dockedLensView2 = [(ZWZoomDockedLensViewController *)self dockedLensView];
+  [dockedLensView2 bounds];
   v23 = v22;
 
   [(ZWZoomDockedLensViewController *)self zoomRegionFrame];
@@ -976,10 +976,10 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
   v58 = v25;
   if ([(ZWZoomDockedLensViewController *)self dockPosition]&& [(ZWZoomDockedLensViewController *)self dockPosition]!= &dword_0 + 3)
   {
-    v35 = [(ZWZoomDockedLensViewController *)self dockPosition];
+    dockPosition = [(ZWZoomDockedLensViewController *)self dockPosition];
     v26 = v8 - v23;
     v36 = 0.0;
-    if (v35 == 1)
+    if (dockPosition == 1)
     {
       v36 = v23;
     }
@@ -1033,13 +1033,13 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
   v52 = v51 + v51 + v50 * 2.0 + -8.58407346;
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  v53 = [(ZWZoomDockedLensViewController *)self maskLayer];
-  [v53 setStrokeStart:v44 / (v44 + v52)];
+  maskLayer = [(ZWZoomDockedLensViewController *)self maskLayer];
+  [maskLayer setStrokeStart:v44 / (v44 + v52)];
 
   v54 = v61;
-  v55 = [v61 CGPath];
-  v56 = [(ZWZoomDockedLensViewController *)self maskLayer];
-  [v56 setPath:v55];
+  cGPath = [v61 CGPath];
+  maskLayer2 = [(ZWZoomDockedLensViewController *)self maskLayer];
+  [maskLayer2 setPath:cGPath];
 
   +[CATransaction commit];
   if (v60 == v46 && v58 == v48)
@@ -1056,8 +1056,8 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
-  [v11 frame];
+  dockReplicatorLayer = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
+  [dockReplicatorLayer frame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -1094,8 +1094,8 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(ZWZoomDockedLensViewController *)self screenReplicatorLayer];
-  [v11 frame];
+  screenReplicatorLayer = [(ZWZoomDockedLensViewController *)self screenReplicatorLayer];
+  [screenReplicatorLayer frame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -1125,9 +1125,9 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
   return vabdd_f64(v21, v22) < v20;
 }
 
-- (void)shiftScreen:(double)a3 animated:(BOOL)a4 discardNewValue:(BOOL)a5
+- (void)shiftScreen:(double)screen animated:(BOOL)animated discardNewValue:(BOOL)value
 {
-  v6 = a4;
+  animatedCopy = animated;
   v9 = *&CATransform3DIdentity.m33;
   *&v50.m31 = *&CATransform3DIdentity.m31;
   *&v50.m33 = v9;
@@ -1144,28 +1144,28 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
   v14 = v13;
   [CATransaction setDisableActions:1];
   +[CATransaction begin];
-  v15 = [(ZWZoomDockedLensViewController *)self dockPosition];
-  if (v15 > 1)
+  dockPosition = [(ZWZoomDockedLensViewController *)self dockPosition];
+  if (dockPosition > 1)
   {
-    if (v15 == 2)
+    if (dockPosition == 2)
     {
-      v33 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-      [v33 bounds];
+      dockedLensView = [(ZWZoomDockedLensViewController *)self dockedLensView];
+      [dockedLensView bounds];
       v35 = v34;
 
-      if (v35 <= a3)
+      if (v35 <= screen)
       {
-        v36 = v35;
+        screenCopy = v35;
       }
 
       else
       {
-        v36 = a3;
+        screenCopy = screen;
       }
 
-      if (v36 >= 0.0)
+      if (screenCopy >= 0.0)
       {
-        v14 = v36;
+        v14 = screenCopy;
       }
 
       else
@@ -1173,8 +1173,8 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
         v14 = 0.0;
       }
 
-      v37 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-      [v37 bounds];
+      dockedLensView2 = [(ZWZoomDockedLensViewController *)self dockedLensView];
+      [dockedLensView2 bounds];
       v39 = v38;
 
       v21 = -(v39 - v14);
@@ -1183,28 +1183,28 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
 
     else
     {
-      if (v15 != 3)
+      if (dockPosition != 3)
       {
         goto LABEL_35;
       }
 
-      v22 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-      [v22 bounds];
+      dockedLensView3 = [(ZWZoomDockedLensViewController *)self dockedLensView];
+      [dockedLensView3 bounds];
       v24 = v23;
 
-      if (v24 <= a3)
+      if (v24 <= screen)
       {
-        v25 = v24;
+        screenCopy2 = v24;
       }
 
       else
       {
-        v25 = a3;
+        screenCopy2 = screen;
       }
 
-      if (v25 >= 0.0)
+      if (screenCopy2 >= 0.0)
       {
-        v14 = v25;
+        v14 = screenCopy2;
       }
 
       else
@@ -1212,8 +1212,8 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
         v14 = 0.0;
       }
 
-      v26 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-      [v26 bounds];
+      dockedLensView4 = [(ZWZoomDockedLensViewController *)self dockedLensView];
+      [dockedLensView4 bounds];
       v28 = v27;
 
       v20 = -(v28 - v14);
@@ -1221,31 +1221,31 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
     }
   }
 
-  else if (v15)
+  else if (dockPosition)
   {
-    if (v15 != 1)
+    if (dockPosition != 1)
     {
       goto LABEL_35;
     }
 
-    v16 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-    [v16 bounds];
+    dockedLensView5 = [(ZWZoomDockedLensViewController *)self dockedLensView];
+    [dockedLensView5 bounds];
     v18 = v17;
 
-    if (v18 <= a3)
+    if (v18 <= screen)
     {
-      v19 = v18;
+      screenCopy3 = v18;
     }
 
     else
     {
-      v19 = a3;
+      screenCopy3 = screen;
     }
 
     v20 = 0.0;
-    if (v19 >= 0.0)
+    if (screenCopy3 >= 0.0)
     {
-      v14 = v19;
+      v14 = screenCopy3;
     }
 
     else
@@ -1258,23 +1258,23 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
 
   else
   {
-    v29 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-    [v29 bounds];
+    dockedLensView6 = [(ZWZoomDockedLensViewController *)self dockedLensView];
+    [dockedLensView6 bounds];
     v31 = v30;
 
-    if (v31 <= a3)
+    if (v31 <= screen)
     {
-      v32 = v31;
+      screenCopy4 = v31;
     }
 
     else
     {
-      v32 = a3;
+      screenCopy4 = screen;
     }
 
-    if (v32 >= 0.0)
+    if (screenCopy4 >= 0.0)
     {
-      v14 = v32;
+      v14 = screenCopy4;
     }
 
     else
@@ -1288,14 +1288,14 @@ uint64_t __70__ZWZoomDockedLensViewController_transitionToDockPosition_completio
 
   CATransform3DMakeTranslation(&v50, v21, v20, 0.0);
 LABEL_35:
-  if (v6)
+  if (animatedCopy)
   {
     v40 = [CABasicAnimation animationWithKeyPath:@"instanceTransform"];
-    v41 = [(ZWZoomDockedLensViewController *)self screenReplicatorLayer];
-    v42 = v41;
-    if (v41)
+    screenReplicatorLayer = [(ZWZoomDockedLensViewController *)self screenReplicatorLayer];
+    v42 = screenReplicatorLayer;
+    if (screenReplicatorLayer)
     {
-      [v41 instanceTransform];
+      [screenReplicatorLayer instanceTransform];
     }
 
     else
@@ -1315,11 +1315,11 @@ LABEL_35:
     [v40 setTimingFunction:v45];
 
     [v40 setCumulative:1];
-    v46 = [(ZWZoomDockedLensViewController *)self screenReplicatorLayer];
-    [v46 addAnimation:v40 forKey:@"RepInstanceTransform"];
+    screenReplicatorLayer2 = [(ZWZoomDockedLensViewController *)self screenReplicatorLayer];
+    [screenReplicatorLayer2 addAnimation:v40 forKey:@"RepInstanceTransform"];
   }
 
-  if (!a5)
+  if (!value)
   {
     [(ZWZoomDockedLensViewController *)self setScreenShift:v14];
   }
@@ -1331,49 +1331,49 @@ LABEL_35:
   +[CATransaction commit];
 }
 
-- (void)shiftDock:(double)a3
+- (void)shiftDock:(double)dock
 {
-  v5 = [(ZWZoomDockedLensViewController *)self view];
-  [v5 bounds];
+  view = [(ZWZoomDockedLensViewController *)self view];
+  [view bounds];
   v7 = v6;
 
-  v8 = [(ZWZoomDockedLensViewController *)self view];
-  [v8 bounds];
+  view2 = [(ZWZoomDockedLensViewController *)self view];
+  [view2 bounds];
   v10 = v9;
 
-  v11 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-  [v11 bounds];
+  dockedLensView = [(ZWZoomDockedLensViewController *)self dockedLensView];
+  [dockedLensView bounds];
   v13 = v12;
 
-  v14 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-  [v14 bounds];
+  dockedLensView2 = [(ZWZoomDockedLensViewController *)self dockedLensView];
+  [dockedLensView2 bounds];
   v16 = v15;
 
   [CATransaction setDisableActions:1];
   +[CATransaction begin];
-  v17 = [(ZWZoomDockedLensViewController *)self dockPosition];
-  if (v17 > 1)
+  dockPosition = [(ZWZoomDockedLensViewController *)self dockPosition];
+  if (dockPosition > 1)
   {
-    if (v17 == 2)
+    if (dockPosition == 2)
     {
-      v40 = v7 + v16 * -2.0;
-      if (v40 >= a3)
+      dockCopy = v7 + v16 * -2.0;
+      if (dockCopy >= dock)
       {
-        v40 = a3;
+        dockCopy = dock;
       }
 
-      [(ZWZoomDockedLensViewController *)self setDockShift:v40];
+      [(ZWZoomDockedLensViewController *)self setDockShift:dockCopy];
       [(ZWZoomDockedLensViewController *)self dockShift];
       [(ZWZoomDockedLensViewController *)self setDockShift:fmax(v41, 0.0)];
       [(ZWZoomDockedLensViewController *)self dockShift];
       v43 = v16 * 0.5 + v42;
-      v44 = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
-      [v44 setPosition:{v43, v13 * 0.5}];
+      dockReplicatorLayer = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
+      [dockReplicatorLayer setPosition:{v43, v13 * 0.5}];
 
       [(ZWZoomDockedLensViewController *)self dockShift];
       CATransform3DMakeTranslation(&v50, v7 - v16 - v45, 0.0, 0.0);
-      v24 = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
-      v25 = v24;
+      dockReplicatorLayer2 = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
+      v25 = dockReplicatorLayer2;
       v56 = *&v50.m31;
       v57 = *&v50.m33;
       v58 = *&v50.m41;
@@ -1385,26 +1385,26 @@ LABEL_35:
       goto LABEL_22;
     }
 
-    if (v17 == 3)
+    if (dockPosition == 3)
     {
-      v28 = v10 + v13 * -2.0;
-      if (v28 >= a3)
+      dockCopy2 = v10 + v13 * -2.0;
+      if (dockCopy2 >= dock)
       {
-        v28 = a3;
+        dockCopy2 = dock;
       }
 
-      [(ZWZoomDockedLensViewController *)self setDockShift:v28];
+      [(ZWZoomDockedLensViewController *)self setDockShift:dockCopy2];
       [(ZWZoomDockedLensViewController *)self dockShift];
       [(ZWZoomDockedLensViewController *)self setDockShift:fmax(v29, 0.0)];
       [(ZWZoomDockedLensViewController *)self dockShift];
       v31 = v13 * 0.5 + v30;
-      v32 = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
-      [v32 setPosition:{v16 * 0.5, v31}];
+      dockReplicatorLayer3 = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
+      [dockReplicatorLayer3 setPosition:{v16 * 0.5, v31}];
 
       [(ZWZoomDockedLensViewController *)self dockShift];
       CATransform3DMakeTranslation(&v49, 0.0, v10 - v13 - v33, 0.0);
-      v24 = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
-      v25 = v24;
+      dockReplicatorLayer2 = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
+      v25 = dockReplicatorLayer2;
       v56 = *&v49.m31;
       v57 = *&v49.m33;
       v58 = *&v49.m41;
@@ -1419,15 +1419,15 @@ LABEL_35:
 
   else
   {
-    if (!v17)
+    if (!dockPosition)
     {
-      v34 = v10 - v13;
-      if (v10 - v13 >= a3)
+      dockCopy3 = v10 - v13;
+      if (v10 - v13 >= dock)
       {
-        v34 = a3;
+        dockCopy3 = dock;
       }
 
-      [(ZWZoomDockedLensViewController *)self setDockShift:v34];
+      [(ZWZoomDockedLensViewController *)self setDockShift:dockCopy3];
       [(ZWZoomDockedLensViewController *)self dockShift];
       if (v13 >= v35)
       {
@@ -1437,13 +1437,13 @@ LABEL_35:
       [(ZWZoomDockedLensViewController *)self setDockShift:v35];
       [(ZWZoomDockedLensViewController *)self dockShift];
       v37 = v13 * 0.5 + v36;
-      v38 = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
-      [v38 setPosition:{v16 * 0.5, v37}];
+      dockReplicatorLayer4 = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
+      [dockReplicatorLayer4 setPosition:{v16 * 0.5, v37}];
 
       [(ZWZoomDockedLensViewController *)self dockShift];
       CATransform3DMakeTranslation(&v60, 0.0, -v39, 0.0);
-      v24 = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
-      v25 = v24;
+      dockReplicatorLayer2 = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
+      v25 = dockReplicatorLayer2;
       v56 = *&v60.m31;
       v57 = *&v60.m33;
       v58 = *&v60.m41;
@@ -1455,15 +1455,15 @@ LABEL_35:
       goto LABEL_22;
     }
 
-    if (v17 == 1)
+    if (dockPosition == 1)
     {
-      v18 = v7 - v16;
-      if (v7 - v16 >= a3)
+      dockCopy4 = v7 - v16;
+      if (v7 - v16 >= dock)
       {
-        v18 = a3;
+        dockCopy4 = dock;
       }
 
-      [(ZWZoomDockedLensViewController *)self setDockShift:v18];
+      [(ZWZoomDockedLensViewController *)self setDockShift:dockCopy4];
       [(ZWZoomDockedLensViewController *)self dockShift];
       if (v16 >= v19)
       {
@@ -1473,13 +1473,13 @@ LABEL_35:
       [(ZWZoomDockedLensViewController *)self setDockShift:v19];
       [(ZWZoomDockedLensViewController *)self dockShift];
       v21 = v16 * 0.5 + v20;
-      v22 = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
-      [v22 setPosition:{v21, v13 * 0.5}];
+      dockReplicatorLayer5 = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
+      [dockReplicatorLayer5 setPosition:{v21, v13 * 0.5}];
 
       [(ZWZoomDockedLensViewController *)self dockShift];
       CATransform3DMakeTranslation(&v51, -v23, 0.0, 0.0);
-      v24 = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
-      v25 = v24;
+      dockReplicatorLayer2 = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
+      v25 = dockReplicatorLayer2;
       v56 = *&v51.m31;
       v57 = *&v51.m33;
       v58 = *&v51.m41;
@@ -1491,32 +1491,32 @@ LABEL_35:
 LABEL_22:
       v54 = v26;
       v55 = v27;
-      [v24 setInstanceTransform:&v52];
+      [dockReplicatorLayer2 setInstanceTransform:&v52];
     }
   }
 
   +[CATransaction commit];
   [(ZWZoomDockedLensViewController *)self dockShift];
-  v47 = a3 - v46;
+  v47 = dock - v46;
   [(ZWZoomDockedLensViewController *)self screenShift];
   [(ZWZoomDockedLensViewController *)self shiftScreen:v48 - v47];
 }
 
-- (void)_shiftReplicatorsWithOverflowPan:(CGPoint)a3 useFullDelta:(BOOL)a4
+- (void)_shiftReplicatorsWithOverflowPan:(CGPoint)pan useFullDelta:(BOOL)delta
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = [(ZWZoomDockedLensViewController *)self dockedDelegate];
-  if ([v8 userIsInteractingWithSlugWithDockedLensViewController:self])
+  y = pan.y;
+  x = pan.x;
+  dockedDelegate = [(ZWZoomDockedLensViewController *)self dockedDelegate];
+  if ([dockedDelegate userIsInteractingWithSlugWithDockedLensViewController:self])
   {
   }
 
   else
   {
-    v9 = [(ZWZoomDockedLensViewController *)self dockedDelegate];
-    v10 = [v9 isZoomMovingWithVelocityWithDockedLensViewController:self];
+    dockedDelegate2 = [(ZWZoomDockedLensViewController *)self dockedDelegate];
+    v10 = [dockedDelegate2 isZoomMovingWithVelocityWithDockedLensViewController:self];
 
-    if ((v10 & 1) == 0 && !a4)
+    if ((v10 & 1) == 0 && !delta)
     {
       v11 = self->_lastPanPoint.y;
       v12 = x - self->_lastPanPoint.x;
@@ -1540,21 +1540,21 @@ LABEL_22:
   +[CATransaction commit];
 }
 
-- (void)_layoutDockUIWithFrames:(CGRect)a3 restOfScreeFrame:(CGRect)a4 positionOrientationChanged:(BOOL)a5
+- (void)_layoutDockUIWithFrames:(CGRect)frames restOfScreeFrame:(CGRect)frame positionOrientationChanged:(BOOL)changed
 {
-  v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v13 = [(ZWZoomDockedLensViewController *)self view:a3.origin.x];
+  changedCopy = changed;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v10 = frames.size.height;
+  v11 = frames.size.width;
+  v13 = [(ZWZoomDockedLensViewController *)self view:frames.origin.x];
   [v13 bounds];
   v50 = v14;
 
-  v15 = [(ZWZoomDockedLensViewController *)self view];
-  [v15 bounds];
+  view = [(ZWZoomDockedLensViewController *)self view];
+  [view bounds];
   v49 = v16;
 
   [(ZWZoomDockedLensViewController *)self zoomRegionFrame];
@@ -1563,15 +1563,15 @@ LABEL_22:
   [(ZWZoomDockedLensViewController *)self zoomRegionFrame];
   v21 = v20;
   v48 = v22;
-  v23 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-  [v23 bounds];
+  dockedLensView = [(ZWZoomDockedLensViewController *)self dockedLensView];
+  [dockedLensView bounds];
   v46 = v24;
 
-  v25 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-  [v25 bounds];
+  dockedLensView2 = [(ZWZoomDockedLensViewController *)self dockedLensView];
+  [dockedLensView2 bounds];
   v45 = v26;
 
-  if (v5)
+  if (changedCopy)
   {
     [(ZWZoomDockedLensViewController *)self screenShift];
     [(ZWZoomDockedLensViewController *)self setScreenShift:v49 * (v27 / v50)];
@@ -1580,26 +1580,26 @@ LABEL_22:
     [(ZWZoomDockedLensViewController *)self setZoomRegionFrame:v21, v48, v11 * (v18 / v45), v10 * (v47 / v46)];
   }
 
-  v29 = [(ZWZoomDockedLensViewController *)self touchStealLayer];
-  [v29 setFrame:{x, y, width, height}];
+  touchStealLayer = [(ZWZoomDockedLensViewController *)self touchStealLayer];
+  [touchStealLayer setFrame:{x, y, width, height}];
 
-  v30 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-  [v30 bounds];
+  dockedLensView3 = [(ZWZoomDockedLensViewController *)self dockedLensView];
+  [dockedLensView3 bounds];
   v32 = v31;
   v34 = v33;
 
-  v35 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-  [v35 setBounds:{v32, v34, v11, v10}];
+  dockedLensView4 = [(ZWZoomDockedLensViewController *)self dockedLensView];
+  [dockedLensView4 setBounds:{v32, v34, v11, v10}];
 
   [(ZWZoomDockedLensViewController *)self screenShift];
   [(ZWZoomDockedLensViewController *)self shiftScreen:?];
-  v36 = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
-  [v36 setBounds:{0.0, 0.0, v11, v10}];
+  dockReplicatorLayer = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
+  [dockReplicatorLayer setBounds:{0.0, 0.0, v11, v10}];
 
   [(ZWZoomDockedLensViewController *)self dockShift];
   [(ZWZoomDockedLensViewController *)self shiftDock:?];
-  v37 = [(ZWZoomDockedLensViewController *)self dockBackdropLayer];
-  [v37 setBackdropRect:{0.0, 0.0, v11, v10}];
+  dockBackdropLayer = [(ZWZoomDockedLensViewController *)self dockBackdropLayer];
+  [dockBackdropLayer setBackdropRect:{0.0, 0.0, v11, v10}];
 
   if ([(ZWZoomLensViewController *)self inStandbyMode])
   {
@@ -1628,14 +1628,14 @@ LABEL_22:
   }
 }
 
-- (void)_updateConstraintsAndShiftsForDockPosition:(int64_t)a3
+- (void)_updateConstraintsAndShiftsForDockPosition:(int64_t)position
 {
-  v5 = [(ZWZoomDockedLensViewController *)self view];
-  [v5 bounds];
+  view = [(ZWZoomDockedLensViewController *)self view];
+  [view bounds];
   v97 = v6;
 
-  v7 = [(ZWZoomDockedLensViewController *)self view];
-  [v7 bounds];
+  view2 = [(ZWZoomDockedLensViewController *)self view];
+  [view2 bounds];
   v96 = v8;
 
   [(ZWZoomDockedLensViewController *)self zoomRegionFrame];
@@ -1644,12 +1644,12 @@ LABEL_22:
   [(ZWZoomDockedLensViewController *)self zoomRegionFrame];
   v94 = v13;
   v95 = v14;
-  v15 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-  [v15 bounds];
+  dockedLensView = [(ZWZoomDockedLensViewController *)self dockedLensView];
+  [dockedLensView bounds];
   v17 = v16;
 
-  v18 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-  [v18 bounds];
+  dockedLensView2 = [(ZWZoomDockedLensViewController *)self dockedLensView];
+  [dockedLensView2 bounds];
   v20 = v19;
 
   x = CGRectNull.origin.x;
@@ -1658,30 +1658,30 @@ LABEL_22:
   height = CGRectNull.size.height;
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  v25 = [(ZWZoomDockedLensViewController *)self dockPosition];
-  [(ZWZoomDockedLensViewController *)self setDockPosition:a3];
-  v26 = [(ZWZoomDockedLensViewController *)self dockBackdropLayer];
+  dockPosition = [(ZWZoomDockedLensViewController *)self dockPosition];
+  [(ZWZoomDockedLensViewController *)self setDockPosition:position];
+  dockBackdropLayer = [(ZWZoomDockedLensViewController *)self dockBackdropLayer];
   v92 = v17;
-  [v26 setFrame:{0.0, 0.0, v17, v20}];
+  [dockBackdropLayer setFrame:{0.0, 0.0, v17, v20}];
 
   v27 = 0;
-  if (a3 <= 1)
+  if (position <= 1)
   {
-    if (a3)
+    if (position)
     {
       v90 = v10;
       v28 = height;
       v29 = width;
       v30 = y;
       v31 = CGRectNull.origin.x;
-      if (a3 != 1)
+      if (position != 1)
       {
         goto LABEL_54;
       }
 
       [(ZWZoomDockedLensViewController *)self dockSize];
       v33 = v97 * v32;
-      if (v25 == &dword_0 + 3)
+      if (dockPosition == &dword_0 + 3)
       {
         [(ZWZoomDockedLensViewController *)self screenShift];
         v12 = v12 + v54;
@@ -1693,11 +1693,11 @@ LABEL_22:
       else
       {
         v34 = v90;
-        if (v25 != &dword_0 + 2)
+        if (dockPosition != &dword_0 + 2)
         {
           height = v96;
           v35 = v97;
-          if (v25)
+          if (dockPosition)
           {
             v27 = 0;
           }
@@ -1726,24 +1726,24 @@ LABEL_36:
       [(ZWZoomDockedLensViewController *)self setZoomRegionFrame:v34, v12, v94, v95];
       v43 = v33;
       v39 = v35 - v33;
-      v66 = [(ZWZoomDockedLensViewController *)self dockedViewBottomConstraint];
+      dockedViewBottomConstraint = [(ZWZoomDockedLensViewController *)self dockedViewBottomConstraint];
       v30 = 0.0;
-      [v66 setConstant:0.0];
+      [dockedViewBottomConstraint setConstant:0.0];
 
-      v67 = [(ZWZoomDockedLensViewController *)self dockedViewLeftConstraint];
-      [v67 setConstant:0.0];
+      dockedViewLeftConstraint = [(ZWZoomDockedLensViewController *)self dockedViewLeftConstraint];
+      [dockedViewLeftConstraint setConstant:0.0];
 
-      v68 = [(ZWZoomDockedLensViewController *)self dockedViewRightConstraint];
-      [v68 setConstant:-v39];
+      dockedViewRightConstraint = [(ZWZoomDockedLensViewController *)self dockedViewRightConstraint];
+      [dockedViewRightConstraint setConstant:-v39];
 
-      v69 = [(ZWZoomDockedLensViewController *)self dockedViewTopConstraint];
-      [v69 setConstant:0.0];
+      dockedViewTopConstraint = [(ZWZoomDockedLensViewController *)self dockedViewTopConstraint];
+      [dockedViewTopConstraint setConstant:0.0];
 
-      v70 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
-      [v70 makeVertical];
+      toggleZoomRegionButton = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
+      [toggleZoomRegionButton makeVertical];
 
-      v64 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
-      [v64 setCenter:{v33, height * 0.5}];
+      toggleZoomRegionButton2 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
+      [toggleZoomRegionButton2 setCenter:{v33, height * 0.5}];
       v93 = height;
       v65 = v33;
 LABEL_50:
@@ -1755,37 +1755,37 @@ LABEL_51:
 
     [(ZWZoomDockedLensViewController *)self dockSize];
     v41 = v96 * v40;
-    if (v25 == [(ZWZoomDockedLensViewController *)self dockPosition])
+    if (dockPosition == [(ZWZoomDockedLensViewController *)self dockPosition])
     {
       v27 = 0;
       v39 = v97;
 LABEL_49:
       height = v96 - v41;
-      v85 = [(ZWZoomDockedLensViewController *)self dockedViewBottomConstraint];
-      [v85 setConstant:-(v96 - v41)];
+      dockedViewBottomConstraint2 = [(ZWZoomDockedLensViewController *)self dockedViewBottomConstraint];
+      [dockedViewBottomConstraint2 setConstant:-(v96 - v41)];
 
-      v86 = [(ZWZoomDockedLensViewController *)self dockedViewLeftConstraint];
+      dockedViewLeftConstraint2 = [(ZWZoomDockedLensViewController *)self dockedViewLeftConstraint];
       v65 = 0.0;
-      [v86 setConstant:0.0];
+      [dockedViewLeftConstraint2 setConstant:0.0];
 
-      v87 = [(ZWZoomDockedLensViewController *)self dockedViewRightConstraint];
-      [v87 setConstant:0.0];
+      dockedViewRightConstraint2 = [(ZWZoomDockedLensViewController *)self dockedViewRightConstraint];
+      [dockedViewRightConstraint2 setConstant:0.0];
 
-      v88 = [(ZWZoomDockedLensViewController *)self dockedViewTopConstraint];
-      [v88 setConstant:0.0];
+      dockedViewTopConstraint2 = [(ZWZoomDockedLensViewController *)self dockedViewTopConstraint];
+      [dockedViewTopConstraint2 setConstant:0.0];
 
-      v89 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
-      [v89 makeHorizontal];
+      toggleZoomRegionButton3 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
+      [toggleZoomRegionButton3 makeHorizontal];
 
-      v64 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
-      [v64 setCenter:{v39 * 0.5, v41}];
+      toggleZoomRegionButton2 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
+      [toggleZoomRegionButton2 setCenter:{v39 * 0.5, v41}];
       v30 = v41;
       v93 = v41;
       v43 = v39;
       goto LABEL_50;
     }
 
-    if (v25 == &dword_0 + 3)
+    if (dockPosition == &dword_0 + 3)
     {
       v12 = v12 + v20;
       [(ZWZoomDockedLensViewController *)self dockShift];
@@ -1795,10 +1795,10 @@ LABEL_49:
 
     else
     {
-      if (v25 != &dword_0 + 2)
+      if (dockPosition != &dword_0 + 2)
       {
         v39 = v97;
-        if (v25 == &dword_0 + 1)
+        if (dockPosition == &dword_0 + 1)
         {
           [(ZWZoomDockedLensViewController *)self screenShift];
           v10 = v10 - v51;
@@ -1827,21 +1827,21 @@ LABEL_48:
     goto LABEL_49;
   }
 
-  if (a3 != 2)
+  if (position != 2)
   {
     v91 = v10;
     v28 = height;
     v29 = width;
     v30 = y;
     v31 = CGRectNull.origin.x;
-    if (a3 != 3)
+    if (position != 3)
     {
       goto LABEL_54;
     }
 
     [(ZWZoomDockedLensViewController *)self dockSize];
     v93 = v96 * v38;
-    if (v25 == [(ZWZoomDockedLensViewController *)self dockPosition])
+    if (dockPosition == [(ZWZoomDockedLensViewController *)self dockPosition])
     {
       v27 = 0;
       v39 = v97;
@@ -1849,12 +1849,12 @@ LABEL_48:
 
     else
     {
-      if (v25)
+      if (dockPosition)
       {
         v48 = v94;
         v47 = v95;
         v49 = v91;
-        if (v25 == &dword_0 + 2)
+        if (dockPosition == &dword_0 + 2)
         {
           [(ZWZoomDockedLensViewController *)self screenShift];
           v49 = v91 + v92 - v71;
@@ -1867,7 +1867,7 @@ LABEL_48:
         else
         {
           v39 = v97;
-          if (v25 == &dword_0 + 1)
+          if (dockPosition == &dword_0 + 1)
           {
             [(ZWZoomDockedLensViewController *)self screenShift];
             v49 = v91 - v50;
@@ -1898,23 +1898,23 @@ LABEL_48:
     }
 
     height = v96 - v93;
-    v78 = [(ZWZoomDockedLensViewController *)self dockedViewBottomConstraint];
-    [v78 setConstant:0.0];
+    dockedViewBottomConstraint3 = [(ZWZoomDockedLensViewController *)self dockedViewBottomConstraint];
+    [dockedViewBottomConstraint3 setConstant:0.0];
 
-    v79 = [(ZWZoomDockedLensViewController *)self dockedViewLeftConstraint];
-    [v79 setConstant:0.0];
+    dockedViewLeftConstraint3 = [(ZWZoomDockedLensViewController *)self dockedViewLeftConstraint];
+    [dockedViewLeftConstraint3 setConstant:0.0];
 
-    v80 = [(ZWZoomDockedLensViewController *)self dockedViewRightConstraint];
-    [v80 setConstant:0.0];
+    dockedViewRightConstraint3 = [(ZWZoomDockedLensViewController *)self dockedViewRightConstraint];
+    [dockedViewRightConstraint3 setConstant:0.0];
 
-    v81 = [(ZWZoomDockedLensViewController *)self dockedViewTopConstraint];
-    [v81 setConstant:v96 - v93];
+    dockedViewTopConstraint3 = [(ZWZoomDockedLensViewController *)self dockedViewTopConstraint];
+    [dockedViewTopConstraint3 setConstant:v96 - v93];
 
-    v82 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
-    [v82 makeHorizontal];
+    toggleZoomRegionButton4 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
+    [toggleZoomRegionButton4 makeHorizontal];
 
-    v83 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
-    [v83 setCenter:{v39 * 0.5, v96 - v93}];
+    toggleZoomRegionButton5 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
+    [toggleZoomRegionButton5 setCenter:{v39 * 0.5, v96 - v93}];
 
     if (![(ZWZoomLensViewController *)self inStandbyMode])
     {
@@ -1928,9 +1928,9 @@ LABEL_48:
       goto LABEL_54;
     }
 
-    v64 = [(ZWZoomDockedLensViewController *)self dockBackdropLayer];
+    toggleZoomRegionButton2 = [(ZWZoomDockedLensViewController *)self dockBackdropLayer];
     v30 = 0.0;
-    [v64 setFrame:{0.0, v93, v39, v93}];
+    [toggleZoomRegionButton2 setFrame:{0.0, v93, v39, v93}];
     v65 = 0.0;
     v43 = v39;
     y = v96 - v93;
@@ -1939,7 +1939,7 @@ LABEL_48:
 
   [(ZWZoomDockedLensViewController *)self dockSize];
   v43 = v97 * v42;
-  if (v25 == &dword_0 + 3)
+  if (dockPosition == &dword_0 + 3)
   {
     [(ZWZoomDockedLensViewController *)self screenShift];
     v12 = v12 + v56;
@@ -1952,14 +1952,14 @@ LABEL_48:
   else
   {
     height = v96;
-    if (v25 == &dword_0 + 1)
+    if (dockPosition == &dword_0 + 1)
     {
       v10 = v10 - v43;
       [(ZWZoomDockedLensViewController *)self dockShift];
       [(ZWZoomDockedLensViewController *)self setDockShift:v53 - v92];
     }
 
-    else if (!v25)
+    else if (!dockPosition)
     {
       [(ZWZoomDockedLensViewController *)self screenShift];
       v12 = v12 - v44;
@@ -1977,29 +1977,29 @@ LABEL_48:
 LABEL_32:
   [(ZWZoomDockedLensViewController *)self setZoomRegionFrame:v10, v12, v94, v95];
   v39 = v97 - v43;
-  v58 = [(ZWZoomDockedLensViewController *)self dockedViewBottomConstraint];
-  [v58 setConstant:0.0];
+  dockedViewBottomConstraint4 = [(ZWZoomDockedLensViewController *)self dockedViewBottomConstraint];
+  [dockedViewBottomConstraint4 setConstant:0.0];
 
-  v59 = [(ZWZoomDockedLensViewController *)self dockedViewLeftConstraint];
-  [v59 setConstant:v97 - v43];
+  dockedViewLeftConstraint4 = [(ZWZoomDockedLensViewController *)self dockedViewLeftConstraint];
+  [dockedViewLeftConstraint4 setConstant:v97 - v43];
 
-  v60 = [(ZWZoomDockedLensViewController *)self dockedViewRightConstraint];
-  [v60 setConstant:0.0];
+  dockedViewRightConstraint4 = [(ZWZoomDockedLensViewController *)self dockedViewRightConstraint];
+  [dockedViewRightConstraint4 setConstant:0.0];
 
-  v61 = [(ZWZoomDockedLensViewController *)self dockedViewTopConstraint];
-  [v61 setConstant:0.0];
+  dockedViewTopConstraint4 = [(ZWZoomDockedLensViewController *)self dockedViewTopConstraint];
+  [dockedViewTopConstraint4 setConstant:0.0];
 
-  v62 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
-  [v62 makeVertical];
+  toggleZoomRegionButton6 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
+  [toggleZoomRegionButton6 makeVertical];
 
-  v63 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
-  [v63 setCenter:{v97 - v43, height * 0.5}];
+  toggleZoomRegionButton7 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
+  [toggleZoomRegionButton7 setCenter:{v97 - v43, height * 0.5}];
 
   if ([(ZWZoomLensViewController *)self inStandbyMode])
   {
-    v64 = [(ZWZoomDockedLensViewController *)self dockBackdropLayer];
+    toggleZoomRegionButton2 = [(ZWZoomDockedLensViewController *)self dockBackdropLayer];
     v30 = 0.0;
-    [v64 setFrame:{v43, 0.0, v43, height}];
+    [toggleZoomRegionButton2 setFrame:{v43, 0.0, v43, height}];
     v65 = 0.0;
     v93 = height;
     y = 0.0;
@@ -2026,39 +2026,39 @@ LABEL_54:
   +[CATransaction commit];
 }
 
-- (void)setInDockResizingMode:(BOOL)a3
+- (void)setInDockResizingMode:(BOOL)mode
 {
-  if (self->_inDockResizingMode != a3)
+  if (self->_inDockResizingMode != mode)
   {
-    self->_inDockResizingMode = a3;
-    v4 = [(ZWZoomLensViewController *)self lensZoomView];
-    [v4 setNeedsLayout];
+    self->_inDockResizingMode = mode;
+    lensZoomView = [(ZWZoomLensViewController *)self lensZoomView];
+    [lensZoomView setNeedsLayout];
   }
 }
 
-- (void)_updateZoomRegionFrameForDockResizeWithScreenShiftDelta:(double)a3
+- (void)_updateZoomRegionFrameForDockResizeWithScreenShiftDelta:(double)delta
 {
   [(ZWZoomDockedLensViewController *)self zoomRegionFrame];
   v6 = v5;
   [(ZWZoomDockedLensViewController *)self zoomRegionFrame];
   v8 = v7;
-  v9 = [(ZWZoomLensViewController *)self lensZoomView];
-  v10 = [v9 zoomReplicatorLayer];
-  [v10 frame];
+  lensZoomView = [(ZWZoomLensViewController *)self lensZoomView];
+  zoomReplicatorLayer = [lensZoomView zoomReplicatorLayer];
+  [zoomReplicatorLayer frame];
   v12 = v11;
   v14 = v13;
 
-  v15 = [(ZWZoomDockedLensViewController *)self dockPosition];
-  if (v15 > 1)
+  dockPosition = [(ZWZoomDockedLensViewController *)self dockPosition];
+  if (dockPosition > 1)
   {
-    if (v15 == 2)
+    if (dockPosition == 2)
     {
-      v37 = fmax(v6 + a3, 0.0);
-      v38 = [(ZWZoomDockedLensViewController *)self view];
-      [v38 bounds];
+      v37 = fmax(v6 + delta, 0.0);
+      view = [(ZWZoomDockedLensViewController *)self view];
+      [view bounds];
       v40 = v39;
-      v41 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-      [v41 bounds];
+      dockedLensView = [(ZWZoomDockedLensViewController *)self dockedLensView];
+      [dockedLensView bounds];
       v6 = v40 - v42 - v12;
 
       if (v6 >= v37)
@@ -2067,18 +2067,18 @@ LABEL_54:
       }
     }
 
-    else if (v15 == 3)
+    else if (dockPosition == 3)
     {
-      v22 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-      [v22 bounds];
+      dockedLensView2 = [(ZWZoomDockedLensViewController *)self dockedLensView];
+      [dockedLensView2 bounds];
       v24 = v23;
 
-      v25 = v24 >= v8 + a3 ? v24 : v8 + a3;
-      v26 = [(ZWZoomDockedLensViewController *)self view];
-      [v26 bounds];
+      v25 = v24 >= v8 + delta ? v24 : v8 + delta;
+      view2 = [(ZWZoomDockedLensViewController *)self view];
+      [view2 bounds];
       v28 = v27;
-      v29 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-      [v29 bounds];
+      dockedLensView3 = [(ZWZoomDockedLensViewController *)self dockedLensView];
+      [dockedLensView3 bounds];
       v8 = v28 - v30 - v14;
 
       if (v8 >= v25)
@@ -2088,17 +2088,17 @@ LABEL_54:
     }
   }
 
-  else if (v15)
+  else if (dockPosition)
   {
-    if (v15 == 1)
+    if (dockPosition == 1)
     {
-      v16 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-      [v16 bounds];
+      dockedLensView4 = [(ZWZoomDockedLensViewController *)self dockedLensView];
+      [dockedLensView4 bounds];
       v18 = v17;
 
-      v6 = v18 >= v6 + a3 ? v18 : v6 + a3;
-      v19 = [(ZWZoomDockedLensViewController *)self view];
-      [v19 bounds];
+      v6 = v18 >= v6 + delta ? v18 : v6 + delta;
+      view3 = [(ZWZoomDockedLensViewController *)self view];
+      [view3 bounds];
       v21 = v20 - v12;
 
       if (v21 < v6)
@@ -2110,22 +2110,22 @@ LABEL_54:
 
   else
   {
-    v31 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-    [v31 bounds];
+    dockedLensView5 = [(ZWZoomDockedLensViewController *)self dockedLensView];
+    [dockedLensView5 bounds];
     v33 = v32;
 
-    if (v33 >= v8 + a3)
+    if (v33 >= v8 + delta)
     {
       v8 = v33;
     }
 
     else
     {
-      v8 = v8 + a3;
+      v8 = v8 + delta;
     }
 
-    v34 = [(ZWZoomDockedLensViewController *)self view];
-    [v34 bounds];
+    view4 = [(ZWZoomDockedLensViewController *)self view];
+    [view4 bounds];
     v36 = v35 - v14;
 
     if (v36 < v8)
@@ -2137,30 +2137,30 @@ LABEL_54:
   [(ZWZoomDockedLensViewController *)self setZoomRegionFrame:v6, v8, v12, v14];
 }
 
-- (void)resizeDock:(CGSize)a3 animated:(BOOL)a4
+- (void)resizeDock:(CGSize)dock animated:(BOOL)animated
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
-  v8 = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
-  v9 = [(ZWZoomDockedLensViewController *)self dockBackdropLayer];
+  animatedCopy = animated;
+  height = dock.height;
+  width = dock.width;
+  dockReplicatorLayer = [(ZWZoomDockedLensViewController *)self dockReplicatorLayer];
+  dockBackdropLayer = [(ZWZoomDockedLensViewController *)self dockBackdropLayer];
   [(ZWZoomDockedLensViewController *)self zoomRegionFrame];
   v11 = v10;
   v13 = v12;
-  v14 = [(ZWZoomDockedLensViewController *)self view];
-  [v14 bounds];
+  view = [(ZWZoomDockedLensViewController *)self view];
+  [view bounds];
   v16 = v15;
 
-  v17 = [(ZWZoomDockedLensViewController *)self view];
-  [v17 bounds];
+  view2 = [(ZWZoomDockedLensViewController *)self view];
+  [view2 bounds];
   v19 = v18;
 
-  v20 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-  [v20 bounds];
+  dockedLensView = [(ZWZoomDockedLensViewController *)self dockedLensView];
+  [dockedLensView bounds];
   v22 = v21;
 
-  v23 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-  [v23 bounds];
+  dockedLensView2 = [(ZWZoomDockedLensViewController *)self dockedLensView];
+  [dockedLensView2 bounds];
   v25 = v24;
 
   [(ZWZoomDockedLensViewController *)self _maxDockWidth];
@@ -2182,7 +2182,7 @@ LABEL_54:
     v166 = width;
     v30 = &PLLogRegisteredEvent_ptr;
     +[CATransaction begin];
-    [CATransaction setDisableActions:v4 ^ 1];
+    [CATransaction setDisableActions:animatedCopy ^ 1];
     [CATransaction setAnimationDuration:0.35];
     v31 = [CABasicAnimation animationWithKeyPath:@"position"];
     v32 = &PLLogRegisteredEvent_ptr;
@@ -2190,39 +2190,39 @@ LABEL_54:
     [v31 setTimingFunction:v33];
 
     [v31 setDuration:0.35];
-    v34 = [(ZWZoomDockedLensViewController *)self dockPosition];
+    dockPosition = [(ZWZoomDockedLensViewController *)self dockPosition];
     v35 = 0;
     v36 = 0.0;
     v167 = v22;
     v169 = v25;
     v165 = v16;
     v161 = v19;
-    if (v34 > 1)
+    if (dockPosition > 1)
     {
-      if (v34 == 2)
+      if (dockPosition == 2)
       {
         [(ZWZoomDockedLensViewController *)self setDockSize:v166 / v19];
         [(ZWZoomDockedLensViewController *)self dockSize];
         v97 = v19;
         v19 = v19 * v98;
         v168 = v19 - v25;
-        v99 = [(ZWZoomDockedLensViewController *)self dockedViewBottomConstraint];
-        [v99 setConstant:0.0];
+        dockedViewBottomConstraint = [(ZWZoomDockedLensViewController *)self dockedViewBottomConstraint];
+        [dockedViewBottomConstraint setConstant:0.0];
 
-        v100 = [(ZWZoomDockedLensViewController *)self dockedViewLeftConstraint];
+        dockedViewLeftConstraint = [(ZWZoomDockedLensViewController *)self dockedViewLeftConstraint];
         v160 = v97 - v19;
-        [v100 setConstant:v97 - v19];
+        [dockedViewLeftConstraint setConstant:v97 - v19];
 
-        v101 = [(ZWZoomDockedLensViewController *)self dockedViewRightConstraint];
-        [v101 setConstant:0.0];
+        dockedViewRightConstraint = [(ZWZoomDockedLensViewController *)self dockedViewRightConstraint];
+        [dockedViewRightConstraint setConstant:0.0];
 
-        v102 = [(ZWZoomDockedLensViewController *)self dockedViewTopConstraint];
-        [v102 setConstant:0.0];
+        dockedViewTopConstraint = [(ZWZoomDockedLensViewController *)self dockedViewTopConstraint];
+        [dockedViewTopConstraint setConstant:0.0];
 
         v163 = v13;
         v164 = v11;
         v162 = height;
-        if (v4)
+        if (animatedCopy)
         {
           v171[0] = _NSConcreteStackBlock;
           v171[1] = 3221225472;
@@ -2235,40 +2235,40 @@ LABEL_54:
           *&v171[8] = v19;
           *&v171[9] = v16;
           [UIView animateWithDuration:327680 delay:v171 options:0 animations:0.35 completion:0.0];
-          v103 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-          [v103 center];
+          dockedBorderView = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+          [dockedBorderView center];
           v105 = v168 * 0.5 + v104;
-          v106 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-          [v106 center];
+          dockedBorderView2 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+          [dockedBorderView2 center];
           v107 = [NSValue valueWithCGPoint:v105];
           [v31 setFromValue:v107];
 
           v30 = &PLLogRegisteredEvent_ptr;
-          v108 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-          [v108 center];
+          dockedBorderView3 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+          [dockedBorderView3 center];
           v110 = v168 * 0.5 + v109;
-          v111 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-          [v111 center];
+          dockedBorderView4 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+          [dockedBorderView4 center];
           v112 = [NSValue valueWithCGPoint:v110];
           [v31 setToValue:v112];
 
           v32 = &PLLogRegisteredEvent_ptr;
-          v113 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-          [v113 setFrame:{0.0, 0.0, v19, v16}];
+          dockedBorderView5 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+          [dockedBorderView5 setFrame:{0.0, 0.0, v19, v16}];
 
           v42 = v97 - v19;
         }
 
         else
         {
-          v118 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
+          toggleZoomRegionButton = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
           v42 = v97 - v19;
-          [v118 setCenter:{v160, v16 * 0.5}];
+          [toggleZoomRegionButton setCenter:{v160, v16 * 0.5}];
         }
 
-        v114 = [(ZWZoomDockedLensViewController *)self touchStealLayer];
+        touchStealLayer = [(ZWZoomDockedLensViewController *)self touchStealLayer];
         v63 = 0.0;
-        [v114 setFrame:{0.0, 0.0, v42, v16}];
+        [touchStealLayer setFrame:{0.0, 0.0, v42, v16}];
         v36 = 0.0;
 LABEL_33:
         v37 = v16;
@@ -2281,7 +2281,7 @@ LABEL_33:
       v168 = 0.0;
       v19 = 0.0;
       v37 = 0.0;
-      if (v34 != 3)
+      if (dockPosition != 3)
       {
         goto LABEL_35;
       }
@@ -2291,22 +2291,22 @@ LABEL_33:
       [(ZWZoomDockedLensViewController *)self dockSize];
       v37 = v16 * v56;
       v57 = v16 * v56 - v22;
-      v58 = [(ZWZoomDockedLensViewController *)self dockedViewBottomConstraint];
-      [v58 setConstant:0.0];
+      dockedViewBottomConstraint2 = [(ZWZoomDockedLensViewController *)self dockedViewBottomConstraint];
+      [dockedViewBottomConstraint2 setConstant:0.0];
 
-      v59 = [(ZWZoomDockedLensViewController *)self dockedViewLeftConstraint];
-      [v59 setConstant:0.0];
+      dockedViewLeftConstraint2 = [(ZWZoomDockedLensViewController *)self dockedViewLeftConstraint];
+      [dockedViewLeftConstraint2 setConstant:0.0];
 
-      v60 = [(ZWZoomDockedLensViewController *)self dockedViewRightConstraint];
-      [v60 setConstant:0.0];
+      dockedViewRightConstraint2 = [(ZWZoomDockedLensViewController *)self dockedViewRightConstraint];
+      [dockedViewRightConstraint2 setConstant:0.0];
 
-      v61 = [(ZWZoomDockedLensViewController *)self dockedViewTopConstraint];
-      [v61 setConstant:v16 - v37];
+      dockedViewTopConstraint2 = [(ZWZoomDockedLensViewController *)self dockedViewTopConstraint];
+      [dockedViewTopConstraint2 setConstant:v16 - v37];
 
       v162 = height;
       v163 = v13;
       v168 = v57;
-      if (v4)
+      if (animatedCopy)
       {
         v170[0] = _NSConcreteStackBlock;
         v170[1] = 3221225472;
@@ -2322,26 +2322,26 @@ LABEL_33:
         *&v170[9] = v37;
         v63 = 0.0;
         [UIView animateWithDuration:327680 delay:v170 options:0 animations:0.35 completion:0.0];
-        v64 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-        [v64 center];
+        dockedBorderView6 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+        [dockedBorderView6 center];
         v66 = v65;
-        v67 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-        [v67 center];
+        dockedBorderView7 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+        [dockedBorderView7 center];
         v69 = [NSValue valueWithCGPoint:v66, v62 * 0.5 + v68];
         [v31 setFromValue:v69];
 
         v30 = &PLLogRegisteredEvent_ptr;
-        v70 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-        [v70 center];
+        dockedBorderView8 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+        [dockedBorderView8 center];
         v72 = v71;
-        v73 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-        [v73 center];
+        dockedBorderView9 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+        [dockedBorderView9 center];
         v75 = [NSValue valueWithCGPoint:v72, v62 * 0.5 + v74];
         [v31 setToValue:v75];
 
         v32 = &PLLogRegisteredEvent_ptr;
-        v76 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-        [v76 setFrame:{0.0, 0.0, v161, v37}];
+        dockedBorderView10 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+        [dockedBorderView10 setFrame:{0.0, 0.0, v161, v37}];
 
         v36 = 0.0;
         v42 = v165 - v37;
@@ -2350,27 +2350,27 @@ LABEL_33:
       else
       {
         v19 = v161;
-        v115 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
-        [v115 setCenter:{v161 * 0.5, v16 - v37}];
+        toggleZoomRegionButton2 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
+        [toggleZoomRegionButton2 setCenter:{v161 * 0.5, v16 - v37}];
 
         v42 = v16 - v37;
         v63 = 0.0;
       }
 
-      v114 = [(ZWZoomDockedLensViewController *)self touchStealLayer];
-      [v114 setFrame:{0.0, 0.0, v19, v42}];
+      touchStealLayer = [(ZWZoomDockedLensViewController *)self touchStealLayer];
+      [touchStealLayer setFrame:{0.0, 0.0, v19, v42}];
       v116 = v19;
       v79 = v42;
     }
 
     else
     {
-      if (v34)
+      if (dockPosition)
       {
         v168 = 0.0;
         v19 = 0.0;
         v37 = 0.0;
-        if (v34 != 1)
+        if (dockPosition != 1)
         {
           goto LABEL_35;
         }
@@ -2379,24 +2379,24 @@ LABEL_33:
         [(ZWZoomDockedLensViewController *)self dockSize];
         v19 = v161 * v38;
         v39 = v161 * v38 - v169;
-        v40 = [(ZWZoomDockedLensViewController *)self dockedViewBottomConstraint];
-        [v40 setConstant:0.0];
+        dockedViewBottomConstraint3 = [(ZWZoomDockedLensViewController *)self dockedViewBottomConstraint];
+        [dockedViewBottomConstraint3 setConstant:0.0];
 
-        v41 = [(ZWZoomDockedLensViewController *)self dockedViewLeftConstraint];
-        [v41 setConstant:0.0];
+        dockedViewLeftConstraint3 = [(ZWZoomDockedLensViewController *)self dockedViewLeftConstraint];
+        [dockedViewLeftConstraint3 setConstant:0.0];
 
         v42 = v161 - v19;
-        v43 = [(ZWZoomDockedLensViewController *)self dockedViewRightConstraint];
-        [v43 setConstant:-(v161 - v19)];
+        dockedViewRightConstraint3 = [(ZWZoomDockedLensViewController *)self dockedViewRightConstraint];
+        [dockedViewRightConstraint3 setConstant:-(v161 - v19)];
 
-        v44 = [(ZWZoomDockedLensViewController *)self dockedViewTopConstraint];
-        [v44 setConstant:0.0];
+        dockedViewTopConstraint3 = [(ZWZoomDockedLensViewController *)self dockedViewTopConstraint];
+        [dockedViewTopConstraint3 setConstant:0.0];
 
         v163 = v13;
         v164 = v11;
         v168 = v39;
         v162 = height;
-        if (v4)
+        if (animatedCopy)
         {
           v172[0] = _NSConcreteStackBlock;
           v172[1] = 3221225472;
@@ -2408,38 +2408,38 @@ LABEL_33:
           *&v172[7] = v19;
           *&v172[8] = v16;
           [UIView animateWithDuration:327680 delay:v172 options:0 animations:0.35 completion:0.0];
-          v45 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-          [v45 center];
+          dockedBorderView11 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+          [dockedBorderView11 center];
           v47 = v46 - v39 * 0.5;
-          v48 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-          [v48 center];
+          dockedBorderView12 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+          [dockedBorderView12 center];
           v49 = [NSValue valueWithCGPoint:v47];
           [v31 setFromValue:v49];
 
           v30 = &PLLogRegisteredEvent_ptr;
-          v50 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-          [v50 center];
+          dockedBorderView13 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+          [dockedBorderView13 center];
           v52 = v39 * 0.5 + v51;
           v42 = v161 - v19;
-          v53 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-          [v53 center];
+          dockedBorderView14 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+          [dockedBorderView14 center];
           v54 = [NSValue valueWithCGPoint:v52];
           [v31 setToValue:v54];
 
           v32 = &PLLogRegisteredEvent_ptr;
-          v55 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-          [v55 setFrame:{0.0, 0.0, v19, v16}];
+          dockedBorderView15 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+          [dockedBorderView15 setFrame:{0.0, 0.0, v19, v16}];
         }
 
         else
         {
-          v55 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
-          [v55 setCenter:{v19, v16 * 0.5}];
+          dockedBorderView15 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
+          [dockedBorderView15 setCenter:{v19, v16 * 0.5}];
         }
 
-        v114 = [(ZWZoomDockedLensViewController *)self touchStealLayer];
+        touchStealLayer = [(ZWZoomDockedLensViewController *)self touchStealLayer];
         v36 = 0.0;
-        [v114 setFrame:{v19, 0.0, v42, v16}];
+        [touchStealLayer setFrame:{v19, 0.0, v42, v16}];
         v63 = v19;
         goto LABEL_33;
       }
@@ -2450,22 +2450,22 @@ LABEL_33:
       v37 = v16 * v77;
       v78 = v16 * v77 - v22;
       v79 = v16 - v16 * v77;
-      v80 = [(ZWZoomDockedLensViewController *)self dockedViewBottomConstraint];
-      [v80 setConstant:-v79];
+      dockedViewBottomConstraint4 = [(ZWZoomDockedLensViewController *)self dockedViewBottomConstraint];
+      [dockedViewBottomConstraint4 setConstant:-v79];
 
-      v81 = [(ZWZoomDockedLensViewController *)self dockedViewLeftConstraint];
-      [v81 setConstant:0.0];
+      dockedViewLeftConstraint4 = [(ZWZoomDockedLensViewController *)self dockedViewLeftConstraint];
+      [dockedViewLeftConstraint4 setConstant:0.0];
 
-      v82 = [(ZWZoomDockedLensViewController *)self dockedViewRightConstraint];
-      [v82 setConstant:0.0];
+      dockedViewRightConstraint4 = [(ZWZoomDockedLensViewController *)self dockedViewRightConstraint];
+      [dockedViewRightConstraint4 setConstant:0.0];
 
-      v83 = [(ZWZoomDockedLensViewController *)self dockedViewTopConstraint];
-      [v83 setConstant:0.0];
+      dockedViewTopConstraint4 = [(ZWZoomDockedLensViewController *)self dockedViewTopConstraint];
+      [dockedViewTopConstraint4 setConstant:0.0];
 
       v163 = v13;
       v164 = v11;
       v168 = v78;
-      if (v4)
+      if (animatedCopy)
       {
         v173[0] = _NSConcreteStackBlock;
         v173[1] = 3221225472;
@@ -2477,38 +2477,38 @@ LABEL_33:
         *&v173[7] = v19;
         *&v173[8] = v37;
         [UIView animateWithDuration:327680 delay:v173 options:0 animations:0.35 completion:0.0];
-        v84 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-        [v84 center];
+        dockedBorderView16 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+        [dockedBorderView16 center];
         v86 = v85;
-        v87 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-        [v87 center];
+        dockedBorderView17 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+        [dockedBorderView17 center];
         v89 = [NSValue valueWithCGPoint:v86, v88 - v78 * 0.5];
         [v31 setFromValue:v89];
 
         v30 = &PLLogRegisteredEvent_ptr;
-        v90 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-        [v90 center];
+        dockedBorderView18 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+        [dockedBorderView18 center];
         v92 = v91;
-        v93 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-        [v93 center];
+        dockedBorderView19 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+        [dockedBorderView19 center];
         v95 = [NSValue valueWithCGPoint:v92, v78 * 0.5 + v94];
         [v31 setToValue:v95];
 
         v32 = &PLLogRegisteredEvent_ptr;
-        v96 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-        [v96 setFrame:{0.0, 0.0, v19, v37}];
+        dockedBorderView20 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+        [dockedBorderView20 setFrame:{0.0, 0.0, v19, v37}];
       }
 
       else
       {
-        v96 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
-        [v96 setCenter:{v19 * 0.5, v37}];
+        dockedBorderView20 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
+        [dockedBorderView20 setCenter:{v19 * 0.5, v37}];
       }
 
-      v114 = [(ZWZoomDockedLensViewController *)self touchStealLayer];
+      touchStealLayer = [(ZWZoomDockedLensViewController *)self touchStealLayer];
       v63 = 0.0;
       v42 = v79;
-      [v114 setFrame:{0.0, v37, v19, v79}];
+      [touchStealLayer setFrame:{0.0, v37, v19, v79}];
       v36 = v37;
       v116 = v19;
     }
@@ -2522,18 +2522,18 @@ LABEL_34:
     v11 = v164;
     height = v162;
 LABEL_35:
-    v119 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-    [v119 bounds];
+    dockedLensView3 = [(ZWZoomDockedLensViewController *)self dockedLensView];
+    [dockedLensView3 bounds];
     v121 = v120;
     v123 = v122;
 
-    v124 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-    [v124 setBounds:{v121, v123, v19, v37}];
+    dockedLensView4 = [(ZWZoomDockedLensViewController *)self dockedLensView];
+    [dockedLensView4 setBounds:{v121, v123, v19, v37}];
 
     if (height == 0.0 || (v125 = v166, v166 == 0.0) || (v125 = v169, v169 == 0.0) || (v125 = v167, v167 == 0.0))
     {
       [(ZWZoomDockedLensViewController *)self screenShift];
-      [(ZWZoomDockedLensViewController *)self shiftScreen:v4 animated:1 discardNewValue:?];
+      [(ZWZoomDockedLensViewController *)self shiftScreen:animatedCopy animated:1 discardNewValue:?];
     }
 
     else
@@ -2541,21 +2541,21 @@ LABEL_35:
       [(ZWZoomDockedLensViewController *)self screenShift];
       v127 = v126;
       [(ZWZoomDockedLensViewController *)self screenShift];
-      [(ZWZoomDockedLensViewController *)self shiftScreen:v4 animated:v168 + v128];
+      [(ZWZoomDockedLensViewController *)self shiftScreen:animatedCopy animated:v168 + v128];
       [(ZWZoomDockedLensViewController *)self screenShift];
       [(ZWZoomDockedLensViewController *)self _updateZoomRegionFrameForDockResizeWithScreenShiftDelta:v129 - v127];
     }
 
     [(ZWZoomDockedLensViewController *)self zoomRegionFrame];
     v130 = [UIBezierPath bezierPathWithRoundedRect:"bezierPathWithRoundedRect:cornerRadius:" cornerRadius:?];
-    [v8 frame];
+    [dockReplicatorLayer frame];
     v132 = v131;
-    [v8 frame];
-    [v8 setFrame:v132];
-    if (v4)
+    [dockReplicatorLayer frame];
+    [dockReplicatorLayer setFrame:v132];
+    if (animatedCopy)
     {
-      v133 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-      [v133 addAnimation:v31 forKey:@"position"];
+      dockedBorderView21 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+      [dockedBorderView21 addAnimation:v31 forKey:@"position"];
 
       if ([(ZWZoomDockedLensViewController *)self dockPosition]== &dword_0 + 2 || [(ZWZoomDockedLensViewController *)self dockPosition]== &dword_0 + 3)
       {
@@ -2564,36 +2564,36 @@ LABEL_35:
         v135 = [v32[327] functionWithName:kCAMediaTimingFunctionDefault];
         [v134 setTimingFunction:v135];
 
-        v136 = [(ZWZoomDockedLensViewController *)self dockBackdropLayer];
-        [v136 position];
+        dockBackdropLayer2 = [(ZWZoomDockedLensViewController *)self dockBackdropLayer];
+        [dockBackdropLayer2 position];
 
         if ([(ZWZoomDockedLensViewController *)self dockPosition]== &dword_0 + 3)
         {
           v137 = v161 * 0.5;
-          v138 = [(ZWZoomDockedLensViewController *)self dockBackdropLayer];
-          [v138 position];
+          dockBackdropLayer3 = [(ZWZoomDockedLensViewController *)self dockBackdropLayer];
+          [dockBackdropLayer3 position];
           v140 = v139;
         }
 
         else
         {
-          v138 = [(ZWZoomDockedLensViewController *)self dockBackdropLayer];
-          [v138 position];
+          dockBackdropLayer3 = [(ZWZoomDockedLensViewController *)self dockBackdropLayer];
+          [dockBackdropLayer3 position];
           v137 = v142;
           v140 = v165 * 0.5;
         }
 
-        v143 = [NSValue valueWithCGPoint:v137, v140];
-        [v134 setFromValue:v143];
+        v140 = [NSValue valueWithCGPoint:v137, v140];
+        [v134 setFromValue:v140];
 
         v144 = v169 + v137 - v19;
         v145 = v167 + v140 - v37;
-        v146 = [NSValue valueWithCGPoint:v144, v145];
-        [v134 setToValue:v146];
+        v145 = [NSValue valueWithCGPoint:v144, v145];
+        [v134 setToValue:v145];
 
-        [v9 setPosition:{v144, v145}];
+        [dockBackdropLayer setPosition:{v144, v145}];
         v147 = @"position";
-        v148 = v9;
+        v148 = dockBackdropLayer;
         v149 = v134;
       }
 
@@ -2604,17 +2604,17 @@ LABEL_35:
         v150 = [v32[327] functionWithName:kCAMediaTimingFunctionDefault];
         [v134 setTimingFunction:v150];
 
-        [v9 backdropRect];
+        [dockBackdropLayer backdropRect];
         v151 = [NSValue valueWithCGRect:?];
         [v134 setFromValue:v151];
 
         v152 = [NSValue valueWithCGRect:0.0, 0.0, v19, v37];
         [v134 setToValue:v152];
 
-        [v9 setBackdropRect:{0.0, 0.0, v19, v37}];
-        [v9 backdropRect];
-        [v9 setFrame:?];
-        v148 = v9;
+        [dockBackdropLayer setBackdropRect:{0.0, 0.0, v19, v37}];
+        [dockBackdropLayer backdropRect];
+        [dockBackdropLayer setFrame:?];
+        v148 = dockBackdropLayer;
         v149 = v134;
         v147 = @"backdropRect";
       }
@@ -2626,17 +2626,17 @@ LABEL_35:
     {
       [(ZWZoomDockedLensViewController *)self dockShift];
       [(ZWZoomDockedLensViewController *)self shiftDock:v168 + v141];
-      [v9 setBackdropRect:{0.0, 0.0, v19, v37}];
+      [dockBackdropLayer setBackdropRect:{0.0, 0.0, v19, v37}];
     }
 
     [v35 appendPath:v130];
     [v30[331] setDisableActions:1];
-    v153 = [(ZWZoomDockedLensViewController *)self maskLayer];
-    [v153 setStrokeStart:v36 / (v13 + v13 + v11 * 2.0 + -8.58407346 + v36)];
+    maskLayer = [(ZWZoomDockedLensViewController *)self maskLayer];
+    [maskLayer setStrokeStart:v36 / (v13 + v13 + v11 * 2.0 + -8.58407346 + v36)];
 
-    v154 = [v35 CGPath];
-    v155 = [(ZWZoomDockedLensViewController *)self maskLayer];
-    [v155 setPath:v154];
+    cGPath = [v35 CGPath];
+    maskLayer2 = [(ZWZoomDockedLensViewController *)self maskLayer];
+    [maskLayer2 setPath:cGPath];
 
     [(ZWZoomDockedLensViewController *)self dockSize];
     if (v156 > 0.0)
@@ -2719,15 +2719,15 @@ void __54__ZWZoomDockedLensViewController_resizeDock_animated___block_invoke_4(u
 {
   if ([(ZWZoomDockedLensViewController *)self dockPosition]&& [(ZWZoomDockedLensViewController *)self dockPosition]!= &dword_0 + 3)
   {
-    v3 = [(ZWZoomDockedLensViewController *)self view];
-    [v3 bounds];
+    view = [(ZWZoomDockedLensViewController *)self view];
+    [view bounds];
     v5 = v6 * 0.5;
   }
 
   else
   {
-    v3 = [(ZWZoomDockedLensViewController *)self view];
-    [v3 bounds];
+    view = [(ZWZoomDockedLensViewController *)self view];
+    [view bounds];
     v5 = v4;
   }
 
@@ -2738,15 +2738,15 @@ void __54__ZWZoomDockedLensViewController_resizeDock_animated___block_invoke_4(u
 {
   if ([(ZWZoomDockedLensViewController *)self dockPosition]&& [(ZWZoomDockedLensViewController *)self dockPosition]!= &dword_0 + 3)
   {
-    v3 = [(ZWZoomDockedLensViewController *)self view];
-    [v3 bounds];
+    view = [(ZWZoomDockedLensViewController *)self view];
+    [view bounds];
     v5 = v6;
   }
 
   else
   {
-    v3 = [(ZWZoomDockedLensViewController *)self view];
-    [v3 bounds];
+    view = [(ZWZoomDockedLensViewController *)self view];
+    [view bounds];
     v5 = v4 * 0.5;
   }
 
@@ -2755,10 +2755,10 @@ void __54__ZWZoomDockedLensViewController_resizeDock_animated___block_invoke_4(u
 
 - (id)stringForCurrentDockPosition
 {
-  v2 = [(ZWZoomDockedLensViewController *)self dockPosition];
-  if (v2 <= 3)
+  dockPosition = [(ZWZoomDockedLensViewController *)self dockPosition];
+  if (dockPosition <= 3)
   {
-    v3 = **(&off_790B0 + v2);
+    v3 = **(&off_790B0 + dockPosition);
   }
 
   return v3;
@@ -2766,20 +2766,20 @@ void __54__ZWZoomDockedLensViewController_resizeDock_animated___block_invoke_4(u
 
 - (void)_toggleVisibilityButtonWasLongPressed
 {
-  v4 = [(ZWZoomDockedLensViewController *)self dockedDelegate];
-  v3 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
-  [v4 dockedLensViewController:self toggleButtonDidReceiveLongPress:v3];
+  dockedDelegate = [(ZWZoomDockedLensViewController *)self dockedDelegate];
+  toggleZoomRegionButton = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
+  [dockedDelegate dockedLensViewController:self toggleButtonDidReceiveLongPress:toggleZoomRegionButton];
 }
 
-- (CGPoint)maximumPanOffsetWithZoomFactor:(double)a3
+- (CGPoint)maximumPanOffsetWithZoomFactor:(double)factor
 {
-  v5 = [(ZWZoomLensViewController *)self lensZoomView];
-  [v5 bounds];
+  lensZoomView = [(ZWZoomLensViewController *)self lensZoomView];
+  [lensZoomView bounds];
   v7 = v6;
   v9 = v8;
 
-  v10 = [(ZWZoomLensViewController *)self lensZoomView];
-  [v10 sampledContentSizeWithZoomFactor:a3];
+  lensZoomView2 = [(ZWZoomLensViewController *)self lensZoomView];
+  [lensZoomView2 sampledContentSizeWithZoomFactor:factor];
   v12 = v11;
   v14 = v13;
 
@@ -2790,20 +2790,20 @@ void __54__ZWZoomDockedLensViewController_resizeDock_animated___block_invoke_4(u
   return result;
 }
 
-- (CGPoint)deltaForDockedZoomMovementToRect:(CGRect)a3
+- (CGPoint)deltaForDockedZoomMovementToRect:(CGRect)rect
 {
-  v4 = [(ZWZoomDockedLensViewController *)self dockPosition];
-  if (v4 > 1)
+  dockPosition = [(ZWZoomDockedLensViewController *)self dockPosition];
+  if (dockPosition > 1)
   {
-    if (v4 == 2 || v4 == 3)
+    if (dockPosition == 2 || dockPosition == 3)
     {
-      v5 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-      [v5 bounds];
+      dockedLensView = [(ZWZoomDockedLensViewController *)self dockedLensView];
+      [dockedLensView bounds];
       [(ZWZoomDockedLensViewController *)self screenShift];
     }
   }
 
-  else if (v4 <= 1)
+  else if (dockPosition <= 1)
   {
     [(ZWZoomDockedLensViewController *)self screenShift];
   }
@@ -2819,12 +2819,12 @@ void __54__ZWZoomDockedLensViewController_resizeDock_animated___block_invoke_4(u
   {
     [(ZWZoomDockedLensViewController *)self zoomRegionFrame];
     v23 = v22;
-    v24 = [(ZWZoomDockedLensViewController *)self view];
-    [v24 bounds];
+    view = [(ZWZoomDockedLensViewController *)self view];
+    [view bounds];
     v26 = v25;
 
-    v27 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-    [v27 bounds];
+    dockedLensView2 = [(ZWZoomDockedLensViewController *)self dockedLensView];
+    [dockedLensView2 bounds];
     v29 = v28;
 
     v11 = v11 / (v29 / (v26 - v29 - v23) + 1.0);
@@ -2834,12 +2834,12 @@ void __54__ZWZoomDockedLensViewController_resizeDock_animated___block_invoke_4(u
   {
     [(ZWZoomDockedLensViewController *)self zoomRegionFrame];
     v15 = v14;
-    v16 = [(ZWZoomDockedLensViewController *)self view];
-    [v16 bounds];
+    view2 = [(ZWZoomDockedLensViewController *)self view];
+    [view2 bounds];
     v18 = v17;
 
-    v19 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-    [v19 bounds];
+    dockedLensView3 = [(ZWZoomDockedLensViewController *)self dockedLensView];
+    [dockedLensView3 bounds];
     v21 = v20;
 
     v13 = v13 / (v21 / (v18 - v21 - v15) + 1.0);
@@ -2863,20 +2863,20 @@ void __54__ZWZoomDockedLensViewController_resizeDock_animated___block_invoke_4(u
 
 - (CGRect)frameForResizeDrag
 {
-  v3 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-  [v3 frame];
+  dockedLensView = [(ZWZoomDockedLensViewController *)self dockedLensView];
+  [dockedLensView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
   v12 = ZWZoomLensBorderThicknessForTouches();
-  v13 = [(ZWZoomDockedLensViewController *)self dockPosition];
-  if (v13 <= 1)
+  dockPosition = [(ZWZoomDockedLensViewController *)self dockPosition];
+  if (dockPosition <= 1)
   {
-    if (v13)
+    if (dockPosition)
     {
-      if (v13 == 1)
+      if (dockPosition == 1)
       {
         v20.origin.x = v5;
         v20.origin.y = v7;
@@ -2903,7 +2903,7 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  if (v13 == 2)
+  if (dockPosition == 2)
   {
     v23.origin.x = v5;
     v23.origin.y = v7;
@@ -2913,7 +2913,7 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  if (v13 == 3)
+  if (dockPosition == 3)
   {
     v21.origin.x = v5;
     v21.origin.y = v7;
@@ -2935,25 +2935,25 @@ LABEL_12:
   return result;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = [v4 panGestureRecognizer];
-  v6 = [(ZWZoomDockedLensViewController *)self view];
-  [v5 locationInView:v6];
+  draggingCopy = dragging;
+  panGestureRecognizer = [draggingCopy panGestureRecognizer];
+  view = [(ZWZoomDockedLensViewController *)self view];
+  [panGestureRecognizer locationInView:view];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(ZWZoomDockedLensViewController *)self view];
-  v12 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-  [v11 convertPoint:v12 toView:{v8, v10}];
+  view2 = [(ZWZoomDockedLensViewController *)self view];
+  dockedLensView = [(ZWZoomDockedLensViewController *)self dockedLensView];
+  [view2 convertPoint:dockedLensView toView:{v8, v10}];
   v14 = v13;
   v16 = v15;
 
   if (![(ZWZoomLensViewController *)self inStandbyMode])
   {
-    v17 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
-    [v17 frame];
+    toggleZoomRegionButton = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
+    [toggleZoomRegionButton frame];
     v22.x = v8;
     v22.y = v10;
     if (CGRectContainsPoint(v25, v22))
@@ -2969,12 +2969,12 @@ LABEL_12:
 
       if (v18)
       {
-        v19 = [(ZWZoomDockedLensViewController *)self dockedDelegate];
-        [v19 handleWasDraggedWithDockedLensViewController:self];
+        dockedDelegate = [(ZWZoomDockedLensViewController *)self dockedDelegate];
+        [dockedDelegate handleWasDraggedWithDockedLensViewController:self];
 
         v21.receiver = self;
         v21.super_class = ZWZoomDockedLensViewController;
-        [(ZWZoomLensViewController *)&v21 scrollViewWillBeginDragging:v4];
+        [(ZWZoomLensViewController *)&v21 scrollViewWillBeginDragging:draggingCopy];
         goto LABEL_10;
       }
     }
@@ -2991,7 +2991,7 @@ LABEL_12:
       {
         v20.receiver = self;
         v20.super_class = ZWZoomDockedLensViewController;
-        [(ZWZoomLensViewController *)&v20 scrollViewWillBeginDragging:v4];
+        [(ZWZoomLensViewController *)&v20 scrollViewWillBeginDragging:draggingCopy];
         self->_lastScrollPoint.x = v8;
         self->_lastScrollPoint.y = v10;
       }
@@ -3001,12 +3001,12 @@ LABEL_12:
 LABEL_10:
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = [v4 panGestureRecognizer];
-  v6 = [(ZWZoomDockedLensViewController *)self view];
-  [v5 locationInView:v6];
+  scrollCopy = scroll;
+  panGestureRecognizer = [scrollCopy panGestureRecognizer];
+  view = [(ZWZoomDockedLensViewController *)self view];
+  [panGestureRecognizer locationInView:view];
   v8 = v7;
   v10 = v9;
 
@@ -3023,10 +3023,10 @@ LABEL_10:
         {
           v22.receiver = self;
           v22.super_class = ZWZoomDockedLensViewController;
-          [(ZWZoomLensViewController *)&v22 scrollViewDidScroll:v4];
-          v11 = [v4 panGestureRecognizer];
-          v12 = [(ZWZoomDockedLensViewController *)self view];
-          [v11 locationInView:v12];
+          [(ZWZoomLensViewController *)&v22 scrollViewDidScroll:scrollCopy];
+          panGestureRecognizer2 = [scrollCopy panGestureRecognizer];
+          view2 = [(ZWZoomDockedLensViewController *)self view];
+          [panGestureRecognizer2 locationInView:view2];
           v14 = v13;
           v16 = v15;
 
@@ -3062,49 +3062,49 @@ LABEL_10:
   {
     v23.receiver = self;
     v23.super_class = ZWZoomDockedLensViewController;
-    [(ZWZoomLensViewController *)&v23 scrollViewDidScroll:v4];
+    [(ZWZoomLensViewController *)&v23 scrollViewDidScroll:scrollCopy];
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v4 = a4;
-  v6 = a3;
+  decelerateCopy = decelerate;
+  draggingCopy = dragging;
   if (![(ZWZoomLensViewController *)self inStandbyMode]&& ([(ZWZoomDockedLensViewController *)self isInDockResizingMode]|| [(ZWZoomDockedLensViewController *)self zoomRegionVisible]))
   {
     v8.receiver = self;
     v8.super_class = ZWZoomDockedLensViewController;
-    [(ZWZoomLensViewController *)&v8 scrollViewDidEndDragging:v6 willDecelerate:v4];
-    v7 = [(ZWZoomDockedLensViewController *)self dockedDelegate];
-    [v7 doneResizingDockWithDockedLensViewController:self];
+    [(ZWZoomLensViewController *)&v8 scrollViewDidEndDragging:draggingCopy willDecelerate:decelerateCopy];
+    dockedDelegate = [(ZWZoomDockedLensViewController *)self dockedDelegate];
+    [dockedDelegate doneResizingDockWithDockedLensViewController:self];
 
     [(ZWZoomDockedLensViewController *)self zoomMovementDidEnd];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
+  deceleratingCopy = decelerating;
   if (![(ZWZoomLensViewController *)self inStandbyMode]&& ([(ZWZoomDockedLensViewController *)self zoomRegionVisible]|| [(ZWZoomDockedLensViewController *)self isInDockResizingMode]))
   {
     v5.receiver = self;
     v5.super_class = ZWZoomDockedLensViewController;
-    [(ZWZoomLensViewController *)&v5 scrollViewDidEndDecelerating:v4];
+    [(ZWZoomLensViewController *)&v5 scrollViewDidEndDecelerating:deceleratingCopy];
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(ZWZoomDockedLensViewController *)self view];
-  [v7 locationInView:v8];
+  touchCopy = touch;
+  recognizerCopy = recognizer;
+  view = [(ZWZoomDockedLensViewController *)self view];
+  [recognizerCopy locationInView:view];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(ZWZoomDockedLensViewController *)self view];
-  v14 = [(ZWZoomDockedLensViewController *)self dockedLensView];
-  [v13 convertPoint:v14 toView:{v10, v12}];
+  view2 = [(ZWZoomDockedLensViewController *)self view];
+  dockedLensView = [(ZWZoomDockedLensViewController *)self dockedLensView];
+  [view2 convertPoint:dockedLensView toView:{v10, v12}];
   v16 = v15;
   v18 = v17;
 
@@ -3118,7 +3118,7 @@ LABEL_10:
 
   else
   {
-    v20 = [v6 view];
+    view3 = [touchCopy view];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -3128,42 +3128,42 @@ LABEL_10:
   return v19 & 1;
 }
 
-- (id)zoomRootview:(id)a3 viewForHitTestAtPoint:(CGPoint)a4
+- (id)zoomRootview:(id)rootview viewForHitTestAtPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
-  v8 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
-  v9 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
-  [v7 convertPoint:v9 toView:{x, y}];
-  v10 = [v8 hitTest:0 withEvent:?];
+  y = point.y;
+  x = point.x;
+  rootviewCopy = rootview;
+  toggleZoomRegionButton = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
+  toggleZoomRegionButton2 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
+  [rootviewCopy convertPoint:toggleZoomRegionButton2 toView:{x, y}];
+  v10 = [toggleZoomRegionButton hitTest:0 withEvent:?];
 
   if (v10)
   {
-    v11 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
+    toggleZoomRegionButton3 = [(ZWZoomDockedLensViewController *)self toggleZoomRegionButton];
   }
 
   else
   {
-    v12 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-    v13 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
-    [v7 convertPoint:v13 toView:{x, y}];
-    v14 = [v12 hitTest:0 withEvent:?];
+    dockedBorderView = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+    dockedBorderView2 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+    [rootviewCopy convertPoint:dockedBorderView2 toView:{x, y}];
+    v14 = [dockedBorderView hitTest:0 withEvent:?];
 
     if (v14)
     {
-      v11 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
+      toggleZoomRegionButton3 = [(ZWZoomDockedLensViewController *)self dockedBorderView];
     }
 
     else
     {
       v17.receiver = self;
       v17.super_class = ZWZoomDockedLensViewController;
-      v11 = [(ZWZoomLensViewController *)&v17 zoomRootview:v7 viewForHitTestAtPoint:x, y];
+      toggleZoomRegionButton3 = [(ZWZoomLensViewController *)&v17 zoomRootview:rootviewCopy viewForHitTestAtPoint:x, y];
     }
   }
 
-  v15 = v11;
+  v15 = toggleZoomRegionButton3;
 
   return v15;
 }

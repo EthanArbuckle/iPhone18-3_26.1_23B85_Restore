@@ -1,13 +1,13 @@
 @interface PLManagedObjectPagingIterator
-+ (id)_nextBatchOfResultsWithManagedObjectContext:(id)a3 entityName:(id)a4 resultType:(unint64_t)a5 resumeObjectID:(id)a6 additionalPredicate:(id)a7 batchSize:(unint64_t)a8 propertiesToFetch:(id)a9 relationshipKeyPathsToPrefetch:(id)a10;
++ (id)_nextBatchOfResultsWithManagedObjectContext:(id)context entityName:(id)name resultType:(unint64_t)type resumeObjectID:(id)d additionalPredicate:(id)predicate batchSize:(unint64_t)size propertiesToFetch:(id)fetch relationshipKeyPathsToPrefetch:(id)self0;
 - (BOOL)_lock_shouldFetchCountRemaining;
 - (NSManagedObjectID)resumeObjectID;
-- (PLManagedObjectPagingIterator)initWithEntityName:(id)a3 resultType:(unint64_t)a4 resumeObjectID:(id)a5 additionalPredicate:(id)a6 batchSize:(unint64_t)a7 propertiesToFetch:(id)a8 relationshipKeyPathsToPrefetch:(id)a9;
-- (id)_neverCallWithLock_refillResultQueueWithManagedObjectContext:(id)a3;
-- (id)countRemainingWithManagedObjectContext:(id)a3 logger:(id)a4;
-- (id)nextBatchWithManagedObjectContext:(id)a3;
-- (id)nextObjectWithManagedObjectContext:(id)a3;
-- (void)_updateResumeObjectIDWithObject:(id)a3 progressCount:(unint64_t)a4;
+- (PLManagedObjectPagingIterator)initWithEntityName:(id)name resultType:(unint64_t)type resumeObjectID:(id)d additionalPredicate:(id)predicate batchSize:(unint64_t)size propertiesToFetch:(id)fetch relationshipKeyPathsToPrefetch:(id)prefetch;
+- (id)_neverCallWithLock_refillResultQueueWithManagedObjectContext:(id)context;
+- (id)countRemainingWithManagedObjectContext:(id)context logger:(id)logger;
+- (id)nextBatchWithManagedObjectContext:(id)context;
+- (id)nextObjectWithManagedObjectContext:(id)context;
+- (void)_updateResumeObjectIDWithObject:(id)object progressCount:(unint64_t)count;
 @end
 
 @implementation PLManagedObjectPagingIterator
@@ -34,16 +34,16 @@ uint64_t __38__PLManagedObjectPagingIterator_reset__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)countRemainingWithManagedObjectContext:(id)a3 logger:(id)a4
+- (id)countRemainingWithManagedObjectContext:(id)context logger:(id)logger
 {
   v84 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  loggerCopy = logger;
   v44 = MEMORY[0x1E69E9820];
   v45 = 3221225472;
   v46 = __79__PLManagedObjectPagingIterator_countRemainingWithManagedObjectContext_logger___block_invoke;
   v47 = &unk_1E7573368;
-  v48 = self;
+  selfCopy = self;
   if (PLBoolResultWithUnfairLock())
   {
     v8 = [MEMORY[0x1E69BF2D0] successWithResult:&unk_1F0FBD960];
@@ -65,17 +65,17 @@ uint64_t __38__PLManagedObjectPagingIterator_reset__block_invoke(uint64_t a1)
     v31 = &v30;
     v32 = 0x2020000000;
     v33 = 0;
-    v9 = [(PLManagedObjectPagingIterator *)self resumeObjectID];
+    resumeObjectID = [(PLManagedObjectPagingIterator *)self resumeObjectID];
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __79__PLManagedObjectPagingIterator_countRemainingWithManagedObjectContext_logger___block_invoke_25;
     v24[3] = &unk_1E7572800;
     v27 = &v30;
     v24[4] = self;
-    v10 = v9;
+    v10 = resumeObjectID;
     v25 = v10;
     v28 = &v40;
-    v26 = v6;
+    v26 = contextCopy;
     v29 = &v34;
     [v26 performBlockAndWait:v24];
     if (*(v31 + 24) == 1 && v41[3] != 0x7FFFFFFFFFFFFFFFLL)
@@ -85,7 +85,7 @@ uint64_t __38__PLManagedObjectPagingIterator_reset__block_invoke(uint64_t a1)
 
       if (v12)
       {
-        if (v7)
+        if (loggerCopy)
         {
           v82 = 0u;
           v83 = 0u;
@@ -120,16 +120,16 @@ uint64_t __38__PLManagedObjectPagingIterator_reset__block_invoke(uint64_t a1)
           memset(buf, 0, sizeof(buf));
           v13 = PLSearchBackendIndexingEngineGetLog();
           os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-          v14 = [(PLManagedObjectPagingIterator *)self entityName];
+          entityName = [(PLManagedObjectPagingIterator *)self entityName];
           v15 = v41[3];
           v49 = 138543618;
-          v50 = v14;
+          v50 = entityName;
           v51 = 2048;
           v52 = v15;
           LODWORD(v23) = 22;
           v16 = _os_log_send_and_compose_impl();
 
-          [v7 logWithMessage:v16 fromCodeLocation:"PLManagedObjectPagingIterator.m" type:{206, 0, &v49, v23}];
+          [loggerCopy logWithMessage:v16 fromCodeLocation:"PLManagedObjectPagingIterator.m" type:{206, 0, &v49, v23}];
           if (v16 != buf)
           {
             free(v16);
@@ -141,10 +141,10 @@ uint64_t __38__PLManagedObjectPagingIterator_reset__block_invoke(uint64_t a1)
           v17 = PLSearchBackendIndexingEngineGetLog();
           if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
           {
-            v18 = [(PLManagedObjectPagingIterator *)self entityName];
+            entityName2 = [(PLManagedObjectPagingIterator *)self entityName];
             v19 = v41[3];
             *buf = 138543618;
-            *&buf[4] = v18;
+            *&buf[4] = entityName2;
             *&buf[12] = 2048;
             *&buf[14] = v19;
             _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEFAULT, "Remaining count for search indexing entity %{public}@: %tu", buf, 0x16u);
@@ -240,9 +240,9 @@ void __79__PLManagedObjectPagingIterator_countRemainingWithManagedObjectContext_
   *(*(a1 + 32) + 24) = *(*(*(a1 + 40) + 8) + 24);
 }
 
-- (id)nextBatchWithManagedObjectContext:(id)a3
+- (id)nextBatchWithManagedObjectContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (PLBoolResultWithUnfairLock())
   {
     v5 = 0;
@@ -256,8 +256,8 @@ LABEL_8:
     if ([v9 count])
     {
       v5 = [MEMORY[0x1E69BF2D0] successWithResult:v9];
-      v10 = [v9 lastObject];
-      -[PLManagedObjectPagingIterator _updateResumeObjectIDWithObject:progressCount:](self, "_updateResumeObjectIDWithObject:progressCount:", v10, [v9 count]);
+      lastObject = [v9 lastObject];
+      -[PLManagedObjectPagingIterator _updateResumeObjectIDWithObject:progressCount:](self, "_updateResumeObjectIDWithObject:progressCount:", lastObject, [v9 count]);
     }
 
     else
@@ -268,7 +268,7 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  v6 = [(PLManagedObjectPagingIterator *)self _neverCallWithLock_refillResultQueueWithManagedObjectContext:v4];
+  v6 = [(PLManagedObjectPagingIterator *)self _neverCallWithLock_refillResultQueueWithManagedObjectContext:contextCopy];
   if (([v6 isFailure] & 1) == 0)
   {
 
@@ -276,8 +276,8 @@ LABEL_8:
   }
 
   v7 = MEMORY[0x1E69BF2D0];
-  v8 = [v6 error];
-  v5 = [v7 failureWithError:v8];
+  error = [v6 error];
+  v5 = [v7 failureWithError:error];
 
   if (!v5)
   {
@@ -297,9 +297,9 @@ id __67__PLManagedObjectPagingIterator_nextBatchWithManagedObjectContext___block
   return v2;
 }
 
-- (id)nextObjectWithManagedObjectContext:(id)a3
+- (id)nextObjectWithManagedObjectContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if (PLBoolResultWithUnfairLock())
   {
     v5 = 0;
@@ -324,7 +324,7 @@ LABEL_8:
     goto LABEL_12;
   }
 
-  v6 = [(PLManagedObjectPagingIterator *)self _neverCallWithLock_refillResultQueueWithManagedObjectContext:v4];
+  v6 = [(PLManagedObjectPagingIterator *)self _neverCallWithLock_refillResultQueueWithManagedObjectContext:contextCopy];
   if (([v6 isFailure] & 1) == 0)
   {
 
@@ -332,8 +332,8 @@ LABEL_8:
   }
 
   v7 = MEMORY[0x1E69BF2D0];
-  v8 = [v6 error];
-  v5 = [v7 failureWithError:v8];
+  error = [v6 error];
+  v5 = [v7 failureWithError:error];
 
   if (!v5)
   {
@@ -356,10 +356,10 @@ id __68__PLManagedObjectPagingIterator_nextObjectWithManagedObjectContext___bloc
   return v2;
 }
 
-- (void)_updateResumeObjectIDWithObject:(id)a3 progressCount:(unint64_t)a4
+- (void)_updateResumeObjectIDWithObject:(id)object progressCount:(unint64_t)count
 {
-  v5 = a3;
-  v4 = v5;
+  objectCopy = object;
+  v4 = objectCopy;
   PLSafeRunWithUnfairLock();
 }
 
@@ -407,9 +407,9 @@ LABEL_6:
   }
 }
 
-- (id)_neverCallWithLock_refillResultQueueWithManagedObjectContext:(id)a3
+- (id)_neverCallWithLock_refillResultQueueWithManagedObjectContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
@@ -421,7 +421,7 @@ LABEL_6:
   v8[2] = __94__PLManagedObjectPagingIterator__neverCallWithLock_refillResultQueueWithManagedObjectContext___block_invoke;
   v8[3] = &unk_1E7578820;
   v8[4] = self;
-  v5 = v4;
+  v5 = contextCopy;
   v9 = v5;
   v10 = &v11;
   [v5 performBlockAndWait:v8];
@@ -492,24 +492,24 @@ void __94__PLManagedObjectPagingIterator__neverCallWithLock_refillResultQueueWit
     return 1;
   }
 
-  v3 = [MEMORY[0x1E695DF00] date];
-  [v3 timeIntervalSinceDate:self->_lock_lastFetchCountTime];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSinceDate:self->_lock_lastFetchCountTime];
   v5 = v4;
 
   return v5 > 300.0 || self->_lock_countRemaining == 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (PLManagedObjectPagingIterator)initWithEntityName:(id)a3 resultType:(unint64_t)a4 resumeObjectID:(id)a5 additionalPredicate:(id)a6 batchSize:(unint64_t)a7 propertiesToFetch:(id)a8 relationshipKeyPathsToPrefetch:(id)a9
+- (PLManagedObjectPagingIterator)initWithEntityName:(id)name resultType:(unint64_t)type resumeObjectID:(id)d additionalPredicate:(id)predicate batchSize:(unint64_t)size propertiesToFetch:(id)fetch relationshipKeyPathsToPrefetch:(id)prefetch
 {
-  v27 = a3;
-  v26 = a5;
-  v25 = a6;
-  v16 = a8;
-  v17 = a9;
-  if (a4 >= 2)
+  nameCopy = name;
+  dCopy = d;
+  predicateCopy = predicate;
+  fetchCopy = fetch;
+  prefetchCopy = prefetch;
+  if (type >= 2)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PLManagedObjectPagingIterator.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"resultType == NSManagedObjectResultType || resultType == NSManagedObjectIDResultType"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLManagedObjectPagingIterator.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"resultType == NSManagedObjectResultType || resultType == NSManagedObjectIDResultType"}];
   }
 
   v28.receiver = self;
@@ -518,13 +518,13 @@ void __94__PLManagedObjectPagingIterator__neverCallWithLock_refillResultQueueWit
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_entityName, a3);
-    v19->_resultType = a4;
-    objc_storeStrong(&v19->_lock_resumeObjectID, a5);
-    objc_storeStrong(&v19->_additionalPredicate, a6);
-    v19->_batchSize = a7;
-    objc_storeStrong(&v19->_propertiesToFetch, a8);
-    objc_storeStrong(&v19->_relationshipKeyPathsToPrefetch, a9);
+    objc_storeStrong(&v18->_entityName, name);
+    v19->_resultType = type;
+    objc_storeStrong(&v19->_lock_resumeObjectID, d);
+    objc_storeStrong(&v19->_additionalPredicate, predicate);
+    v19->_batchSize = size;
+    objc_storeStrong(&v19->_propertiesToFetch, fetch);
+    objc_storeStrong(&v19->_relationshipKeyPathsToPrefetch, prefetch);
     v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
     lock_resultQueue = v19->_lock_resultQueue;
     v19->_lock_resultQueue = v20;
@@ -535,28 +535,28 @@ void __94__PLManagedObjectPagingIterator__neverCallWithLock_refillResultQueueWit
   return v19;
 }
 
-+ (id)_nextBatchOfResultsWithManagedObjectContext:(id)a3 entityName:(id)a4 resultType:(unint64_t)a5 resumeObjectID:(id)a6 additionalPredicate:(id)a7 batchSize:(unint64_t)a8 propertiesToFetch:(id)a9 relationshipKeyPathsToPrefetch:(id)a10
++ (id)_nextBatchOfResultsWithManagedObjectContext:(id)context entityName:(id)name resultType:(unint64_t)type resumeObjectID:(id)d additionalPredicate:(id)predicate batchSize:(unint64_t)size propertiesToFetch:(id)fetch relationshipKeyPathsToPrefetch:(id)self0
 {
   v36[2] = *MEMORY[0x1E69E9840];
-  v13 = a6;
-  v14 = a7;
+  dCopy = d;
+  predicateCopy = predicate;
   v15 = MEMORY[0x1E695D5E0];
-  v16 = a10;
-  v17 = a9;
-  v18 = a3;
-  v19 = [v15 fetchRequestWithEntityName:a4];
+  prefetchCopy = prefetch;
+  fetchCopy = fetch;
+  contextCopy = context;
+  v19 = [v15 fetchRequestWithEntityName:name];
   v20 = MEMORY[0x1E696AB28];
-  v21 = v14;
-  if (!v14)
+  v21 = predicateCopy;
+  if (!predicateCopy)
   {
     v21 = [MEMORY[0x1E696AE18] predicateWithValue:1];
   }
 
   v36[0] = v21;
-  v33 = v13;
-  if (v13)
+  v33 = dCopy;
+  if (dCopy)
   {
-    [MEMORY[0x1E696AE18] predicateWithFormat:@"self < %@", v13];
+    [MEMORY[0x1E696AE18] predicateWithFormat:@"self < %@", dCopy];
   }
 
   else
@@ -569,7 +569,7 @@ void __94__PLManagedObjectPagingIterator__neverCallWithLock_refillResultQueueWit
   v24 = [v20 andPredicateWithSubpredicates:v23];
   [v19 setPredicate:v24];
 
-  if (!v14)
+  if (!predicateCopy)
   {
   }
 
@@ -578,14 +578,14 @@ void __94__PLManagedObjectPagingIterator__neverCallWithLock_refillResultQueueWit
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v35 count:1];
   [v19 setSortDescriptors:v26];
 
-  [v19 setFetchLimit:a8];
-  [v19 setResultType:a5];
+  [v19 setFetchLimit:size];
+  [v19 setResultType:type];
   [v19 setIncludesPendingChanges:0];
-  [v19 setPropertiesToFetch:v17];
+  [v19 setPropertiesToFetch:fetchCopy];
 
-  [v19 setRelationshipKeyPathsForPrefetching:v16];
+  [v19 setRelationshipKeyPathsForPrefetching:prefetchCopy];
   v34 = 0;
-  v27 = [v18 executeFetchRequest:v19 error:&v34];
+  v27 = [contextCopy executeFetchRequest:v19 error:&v34];
 
   v28 = v34;
   if (v27)

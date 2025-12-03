@@ -1,47 +1,47 @@
 @interface CLIndoorServiceDelegate
-+ (BOOL)isEntitled:(id)a3 forEntitlement:(id)a4 allowRootEverything:(BOOL)a5;
-+ (BOOL)validateEntitlement:(id)a3 forConnection:(id)a4 forSelector:(SEL)a5;
++ (BOOL)isEntitled:(id)entitled forEntitlement:(id)entitlement allowRootEverything:(BOOL)everything;
++ (BOOL)validateEntitlement:(id)entitlement forConnection:(id)connection forSelector:(SEL)selector;
 + (id)defaultWorkdir;
 + (id)versionString;
-+ (void)logViolation:(id)a3 ofEntitlement:(id)a4 forSelector:(SEL)a5;
-- (BOOL)initializeDb:(BOOL)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (BOOL)tilePrefetchShouldPrefetchMetadataForFloor:(const void *)a3 withLocationContext:(int64_t)a4;
-- (BOOL)tilePrefetchShouldPrefetchTileDataForFloor:(const void *)a3;
++ (void)logViolation:(id)violation ofEntitlement:(id)entitlement forSelector:(SEL)selector;
+- (BOOL)initializeDb:(BOOL)db;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (BOOL)tilePrefetchShouldPrefetchMetadataForFloor:(const void *)floor withLocationContext:(int64_t)context;
+- (BOOL)tilePrefetchShouldPrefetchTileDataForFloor:(const void *)floor;
 - (CLIndoorProvider)currentProvider;
-- (CLIndoorServiceDelegate)initWithWorkdir:(id)a3;
+- (CLIndoorServiceDelegate)initWithWorkdir:(id)workdir;
 - (CLIndoorTilePrefetcher)prefetcher;
 - (id).cxx_construct;
-- (id)onQueueCreateProviderForConnection:(id)a3;
-- (int)getMaxPriorityForPrefetch:(id)a3;
+- (id)onQueueCreateProviderForConnection:(id)connection;
+- (int)getMaxPriorityForPrefetch:(id)prefetch;
 - (int64_t)numFloors;
 - (int64_t)onQueueNumFloors;
-- (shared_ptr<ITileDb>)createDbAtBasedir:(id)a3 rootdir:(id)a4 relativeTo:(id)a5;
-- (shared_ptr<ITileDb>)createLocalizerDbWithRootDir:(BOOL)a3 relativeTo:(id)a4;
+- (shared_ptr<ITileDb>)createDbAtBasedir:(id)basedir rootdir:(id)rootdir relativeTo:(id)to;
+- (shared_ptr<ITileDb>)createLocalizerDbWithRootDir:(BOOL)dir relativeTo:(id)to;
 - (vector<std::shared_ptr<ITileDb>,)onQueueDbsToClear;
-- (void)_setWorkingdir:(id)a3;
+- (void)_setWorkingdir:(id)workingdir;
 - (void)cancelPrefetch;
-- (void)clearTiles:(id)a3;
+- (void)clearTiles:(id)tiles;
 - (void)createIndoorProvderTransaction;
 - (void)deleteLegacyPrefetchDatabase;
-- (void)fullyVacuumAllDBsWithReply:(id)a3;
+- (void)fullyVacuumAllDBsWithReply:(id)reply;
 - (void)keybagDidLock;
 - (void)keybagDidUnlock;
-- (void)onQueueClearTiles:(id)a3;
-- (void)onQueueClearTiles:(id)a3 fromDbs:()vector<std:(std::allocator<std::shared_ptr<ITileDb>>> *)a4 :shared_ptr<ITileDb>;
-- (void)onQueueClearTilesIfPossible:(id)a3 fromDbs:()vector<std:(std::allocator<std::shared_ptr<ITileDb>>> *)a4 :shared_ptr<ITileDb>;
-- (void)onQueuePrefetch:(id)a3 callback:(id)a4 when:(unsigned __int8)a5;
+- (void)onQueueClearTiles:(id)tiles;
+- (void)onQueueClearTiles:(id)tiles fromDbs:()vector<std:(std::allocator<std::shared_ptr<ITileDb>>> *)std :shared_ptr<ITileDb>;
+- (void)onQueueClearTilesIfPossible:(id)possible fromDbs:()vector<std:(std::allocator<std::shared_ptr<ITileDb>>> *)std :shared_ptr<ITileDb>;
+- (void)onQueuePrefetch:(id)prefetch callback:(id)callback when:(unsigned __int8)when;
 - (void)onQueueShutdown;
-- (void)prefetch:(id)a3 callback:(id)a4 when:(unsigned __int8)a5;
-- (void)prefetcher:(id)a3 didFinishForegroundRequest:(id)a4;
-- (void)prefetcher:(id)a3 didFinishForegroundRequest:(id)a4 withError:(id)a5;
+- (void)prefetch:(id)prefetch callback:(id)callback when:(unsigned __int8)when;
+- (void)prefetcher:(id)prefetcher didFinishForegroundRequest:(id)request;
+- (void)prefetcher:(id)prefetcher didFinishForegroundRequest:(id)request withError:(id)error;
 - (void)releaseObjectsNotNeededForLocalization;
 - (void)reloadAvailabilityTilePrefetchParameters;
 - (void)shutdown;
 - (void)tileForegroundFetchFinishedAllDownloads;
-- (void)tilePrefetchDidDownload:(const void *)a3 forRequest:(id)a4;
+- (void)tilePrefetchDidDownload:(const void *)download forRequest:(id)request;
 - (void)tilePrefetchFinishedAllDownloads;
-- (void)tilePrefetchForTileId:(const void *)a3 updateRelevancy:(id)a4;
+- (void)tilePrefetchForTileId:(const void *)id updateRelevancy:(id)relevancy;
 @end
 
 @implementation CLIndoorServiceDelegate
@@ -50,10 +50,10 @@
 {
   v2 = objc_autoreleasePoolPush();
   v3 = +[NSBundle mainBundle];
-  v4 = [v3 infoDictionary];
+  infoDictionary = [v3 infoDictionary];
 
-  v5 = [v4 objectForKeyedSubscript:@"CFBundleVersion"];
-  v6 = [v4 objectForKeyedSubscript:@"Revision"];
+  v5 = [infoDictionary objectForKeyedSubscript:@"CFBundleVersion"];
+  v6 = [infoDictionary objectForKeyedSubscript:@"Revision"];
   if ([(__CFString *)v6 length])
   {
     v7 = [NSString stringWithFormat:@"%@-%@", v5, v6];
@@ -79,8 +79,8 @@
 
 - (void)createIndoorProvderTransaction
 {
-  v2 = [(CLIndoorServiceDelegate *)self transactionManager];
-  [v2 openTransactionWithDescription:@"start indoor provider"];
+  transactionManager = [(CLIndoorServiceDelegate *)self transactionManager];
+  [transactionManager openTransactionWithDescription:@"start indoor provider"];
 }
 
 - (void)keybagDidUnlock
@@ -176,8 +176,8 @@ LABEL_14:
       if (!os_log_type_enabled(qword_10045B078, OS_LOG_TYPE_INFO))
       {
 LABEL_17:
-        v8 = [(CLIndoorServiceDelegate *)self prefetcher];
-        [v8 invalidate];
+        prefetcher = [(CLIndoorServiceDelegate *)self prefetcher];
+        [prefetcher invalidate];
 
         if (qword_10045B070 == -1)
         {
@@ -248,25 +248,25 @@ LABEL_11:
   }
 }
 
-+ (BOOL)validateEntitlement:(id)a3 forConnection:(id)a4 forSelector:(SEL)a5
++ (BOOL)validateEntitlement:(id)entitlement forConnection:(id)connection forSelector:(SEL)selector
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 isEntitled:v9 forEntitlement:v8];
+  entitlementCopy = entitlement;
+  connectionCopy = connection;
+  v10 = [self isEntitled:connectionCopy forEntitlement:entitlementCopy];
   if ((v10 & 1) == 0)
   {
-    [a1 logViolation:v9 ofEntitlement:v8 forSelector:a5];
+    [self logViolation:connectionCopy ofEntitlement:entitlementCopy forSelector:selector];
   }
 
   return v10;
 }
 
-+ (BOOL)isEntitled:(id)a3 forEntitlement:(id)a4 allowRootEverything:(BOOL)a5
++ (BOOL)isEntitled:(id)entitled forEntitlement:(id)entitlement allowRootEverything:(BOOL)everything
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  everythingCopy = everything;
+  entitledCopy = entitled;
+  entitlementCopy = entitlement;
+  if (!entitledCopy)
   {
     if (qword_10045B070 == -1)
     {
@@ -294,17 +294,17 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  if (v5 && ![v7 effectiveUserIdentifier] || (v9 = objc_msgSend(v7, "processIdentifier"), v9 == getpid()))
+  if (everythingCopy && ![entitledCopy effectiveUserIdentifier] || (v9 = objc_msgSend(entitledCopy, "processIdentifier"), v9 == getpid()))
   {
     v10 = 1;
   }
 
   else
   {
-    v12 = [v7 valueForEntitlement:@"com.apple.pipelined"];
+    v12 = [entitledCopy valueForEntitlement:@"com.apple.pipelined"];
     if (v12 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v10 = [v12 containsObject:v8];
+      v10 = [v12 containsObject:entitlementCopy];
     }
 
     else
@@ -318,10 +318,10 @@ LABEL_15:
   return v10;
 }
 
-+ (void)logViolation:(id)a3 ofEntitlement:(id)a4 forSelector:(SEL)a5
++ (void)logViolation:(id)violation ofEntitlement:(id)entitlement forSelector:(SEL)selector
 {
-  v7 = a3;
-  v8 = a4;
+  violationCopy = violation;
+  entitlementCopy = entitlement;
   if (qword_10045B070 != -1)
   {
     sub_100388008();
@@ -330,13 +330,13 @@ LABEL_15:
   v9 = qword_10045B078;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    v10 = NSStringFromSelector(a5);
+    v10 = NSStringFromSelector(selector);
     v11 = 138543875;
     v12 = v10;
     v13 = 1025;
-    v14 = [v7 processIdentifier];
+    processIdentifier = [violationCopy processIdentifier];
     v15 = 2113;
-    v16 = v8;
+    v16 = entitlementCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Attempt to invoke %{public}@ by pid %{private}d without the appropriate entitlement %{private}@ set", &v11, 0x1Cu);
   }
 }
@@ -407,15 +407,15 @@ LABEL_15:
     v17 = sub_100374178();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
     {
-      v18 = [v16 localizedDescription];
-      v19 = v18;
-      v20 = [v18 UTF8String];
+      localizedDescription = [v16 localizedDescription];
+      v19 = localizedDescription;
+      uTF8String = [localizedDescription UTF8String];
       *buf = 68289795;
       *&buf[4] = 0;
       v30 = 2082;
       v31 = "";
       v32 = 2081;
-      v33 = v20;
+      v33 = uTF8String;
       v34 = 2082;
       v35 = "assert";
       v36 = 2081;
@@ -426,15 +426,15 @@ LABEL_15:
     v21 = sub_100374178();
     if (os_signpost_enabled(v21))
     {
-      v22 = [v16 localizedDescription];
-      v23 = v22;
-      v24 = [v22 UTF8String];
+      localizedDescription2 = [v16 localizedDescription];
+      v23 = localizedDescription2;
+      uTF8String2 = [localizedDescription2 UTF8String];
       *buf = 68289795;
       *&buf[4] = 0;
       v30 = 2082;
       v31 = "";
       v32 = 2081;
-      v33 = v24;
+      v33 = uTF8String2;
       v34 = 2082;
       v35 = "assert";
       v36 = 2081;
@@ -445,9 +445,9 @@ LABEL_15:
     v25 = sub_100374178();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
-      v26 = [v16 localizedDescription];
-      v27 = v26;
-      sub_100388130([v26 UTF8String], buf, v25, v26);
+      localizedDescription3 = [v16 localizedDescription];
+      v27 = localizedDescription3;
+      sub_100388130([localizedDescription3 UTF8String], buf, v25, localizedDescription3);
     }
 
     abort_report_np();
@@ -481,9 +481,9 @@ LABEL_29:
   return v14;
 }
 
-- (CLIndoorServiceDelegate)initWithWorkdir:(id)a3
+- (CLIndoorServiceDelegate)initWithWorkdir:(id)workdir
 {
-  v4 = a3;
+  workdirCopy = workdir;
   v45.receiver = self;
   v45.super_class = CLIndoorServiceDelegate;
   v5 = [(CLIndoorServiceDelegate *)&v45 init];
@@ -515,9 +515,9 @@ LABEL_29:
   sub_1002186B4(to, v9, v11, v13, v15, v17, v19);
   *(v5 + 60) = *to;
   *(v5 + 76) = v44;
-  if (v4 || (+[CLIndoorServiceDelegate defaultWorkdir], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (workdirCopy || (+[CLIndoorServiceDelegate defaultWorkdir], (workdirCopy = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    [v5 _setWorkingdir:v4];
+    [v5 _setWorkingdir:workdirCopy];
     [v5 deleteLegacyPrefetchDatabase];
     objc_initWeak(&location, v5);
     v20 = sub_100003F78();
@@ -527,7 +527,7 @@ LABEL_29:
     v28[2] = sub_100374DA4;
     v28[3] = &unk_10044BA48;
     objc_copyWeak(to, &location);
-    v22 = v4;
+    v22 = workdirCopy;
     to[1] = v22;
     objc_copyWeak(&v29, to);
     v30 = to[1];
@@ -545,7 +545,7 @@ LABEL_29:
     v26 = v5;
     objc_destroyWeak(&v29);
     objc_destroyWeak(&location);
-    v4 = v22;
+    workdirCopy = v22;
 LABEL_7:
 
     return v26;
@@ -583,12 +583,12 @@ LABEL_7:
   _os_log_impl(&_mh_execute_header, v2, OS_LOG_TYPE_INFO, "keybag did lock", v3, 2u);
 }
 
-- (void)_setWorkingdir:(id)a3
+- (void)_setWorkingdir:(id)workingdir
 {
-  v5 = a3;
-  v6 = [(CLIndoorServiceDelegate *)self workdir];
+  workingdirCopy = workingdir;
+  workdir = [(CLIndoorServiceDelegate *)self workdir];
 
-  if (v6)
+  if (workdir)
   {
     sub_100388640(&v23);
 
@@ -621,13 +621,13 @@ LABEL_21:
     {
       v10 = v8;
 
-      v5 = v10;
+      workingdirCopy = v10;
     }
   }
 
-  v6 = +[NSFileManager defaultManager];
-  v11 = [v5 path];
-  v12 = [v6 fileExistsAtPath:v11];
+  workdir = +[NSFileManager defaultManager];
+  path = [workingdirCopy path];
+  v12 = [workdir fileExistsAtPath:path];
 
   if (v12)
   {
@@ -635,9 +635,9 @@ LABEL_21:
     goto LABEL_16;
   }
 
-  v13 = [v5 path];
+  path2 = [workingdirCopy path];
   v20 = 0;
-  v14 = [v6 createDirectoryAtPath:v13 withIntermediateDirectories:1 attributes:0 error:&v20];
+  v14 = [workdir createDirectoryAtPath:path2 withIntermediateDirectories:1 attributes:0 error:&v20];
   v3 = v20;
 
   if (v14)
@@ -661,7 +661,7 @@ LABEL_13:
   }
 
 LABEL_16:
-  [(CLIndoorServiceDelegate *)self setWorkdir:v5, v17, v18, v19];
+  [(CLIndoorServiceDelegate *)self setWorkdir:workingdirCopy, v17, v18, v19];
 
   if (v23 == 1 && v25 < 0)
   {
@@ -672,9 +672,9 @@ LABEL_16:
 - (void)deleteLegacyPrefetchDatabase
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(CLIndoorServiceDelegate *)self workdir];
-  v5 = [v4 path];
-  v16[0] = v5;
+  workdir = [(CLIndoorServiceDelegate *)self workdir];
+  path = [workdir path];
+  v16[0] = path;
   v16[1] = @"prefetch";
   v6 = [NSArray arrayWithObjects:v16 count:2];
   v7 = [NSString pathWithComponents:v6];
@@ -721,9 +721,9 @@ LABEL_16:
   }
 }
 
-- (void)fullyVacuumAllDBsWithReply:(id)a3
+- (void)fullyVacuumAllDBsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   if (qword_10045B070 != -1)
   {
     sub_100388008();
@@ -752,17 +752,17 @@ LABEL_4:
   v8[2] = sub_100375884;
   v8[3] = &unk_10044BAC0;
   objc_copyWeak(&v10, buf);
-  v9 = v4;
-  v7 = v4;
+  v9 = replyCopy;
+  v7 = replyCopy;
   dispatch_async(q, v8);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
 }
 
-- (void)clearTiles:(id)a3
+- (void)clearTiles:(id)tiles
 {
-  v4 = a3;
+  tilesCopy = tiles;
   if (qword_10045B070 != -1)
   {
     sub_100388008();
@@ -791,9 +791,9 @@ LABEL_4:
   block[2] = sub_100375E38;
   block[3] = &unk_10044BAE8;
   objc_copyWeak(&v11, buf);
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = tilesCopy;
+  selfCopy = self;
+  v7 = tilesCopy;
   dispatch_async(q, block);
 
   objc_destroyWeak(&v11);
@@ -881,10 +881,10 @@ LABEL_4:
   return prefetcher;
 }
 
-- (void)prefetch:(id)a3 callback:(id)a4 when:(unsigned __int8)a5
+- (void)prefetch:(id)prefetch callback:(id)callback when:(unsigned __int8)when
 {
-  v8 = a3;
-  v9 = a4;
+  prefetchCopy = prefetch;
+  callbackCopy = callback;
   objc_initWeak(&location, self);
   v10 = [(CLIndoorServiceDelegate *)self q];
   block[0] = _NSConcreteStackBlock;
@@ -892,20 +892,20 @@ LABEL_4:
   block[2] = sub_100376680;
   block[3] = &unk_10044BB10;
   objc_copyWeak(&v16, &location);
-  v14 = v8;
-  v15 = v9;
-  v17 = a5;
-  v11 = v9;
-  v12 = v8;
+  v14 = prefetchCopy;
+  v15 = callbackCopy;
+  whenCopy = when;
+  v11 = callbackCopy;
+  v12 = prefetchCopy;
   dispatch_async(v10, block);
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(&location);
 }
 
-- (int)getMaxPriorityForPrefetch:(id)a3
+- (int)getMaxPriorityForPrefetch:(id)prefetch
 {
-  v34 = a3;
+  prefetchCopy = prefetch;
   [(CLIndoorServiceDelegate *)self initializeDb];
   if (self->_fsDb.__ptr_)
   {
@@ -916,7 +916,7 @@ LABEL_4:
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v4 = v34;
+    v4 = prefetchCopy;
     v5 = [v4 countByEnumeratingWithState:&v37 objects:v73 count:16];
     if (v5)
     {
@@ -933,14 +933,14 @@ LABEL_4:
           }
 
           v8 = *(*(&v37 + 1) + 8 * v7);
-          v9 = [v8 venueUuid];
-          v10 = v9;
-          __s = [v9 UTF8String];
-          v36 = [v8 priority];
+          venueUuid = [v8 venueUuid];
+          v10 = venueUuid;
+          __s = [venueUuid UTF8String];
+          priority = [v8 priority];
           v11 = v42;
           if (v42 >= v43)
           {
-            v15 = sub_10037CF30(&__p, &__s, &v36);
+            v15 = sub_10037CF30(&__p, &__s, &priority);
           }
 
           else
@@ -965,7 +965,7 @@ LABEL_4:
             }
 
             *(v11 + v14) = 0;
-            v11[6] = v36;
+            v11[6] = priority;
             v15 = (v11 + 8);
             v5 = v35;
           }
@@ -1152,41 +1152,41 @@ LABEL_49:
   return v16;
 }
 
-- (void)onQueuePrefetch:(id)a3 callback:(id)a4 when:(unsigned __int8)a5
+- (void)onQueuePrefetch:(id)prefetch callback:(id)callback when:(unsigned __int8)when
 {
-  v5 = a5;
-  v44 = a3;
-  v45 = a4;
-  v46 = self;
+  whenCopy = when;
+  prefetchCopy = prefetch;
+  callbackCopy = callback;
+  selfCopy = self;
   v8 = [(CLIndoorServiceDelegate *)self q];
   dispatch_assert_queue_V2(v8);
 
-  if (v5)
+  if (whenCopy)
   {
-    if (v5 == 1)
+    if (whenCopy == 1)
     {
-      [(CLIndoorServiceDelegate *)v46 setPrefetchCompletion:v45];
+      [(CLIndoorServiceDelegate *)selfCopy setPrefetchCompletion:callbackCopy];
     }
   }
 
   else
   {
-    v45[2]();
+    callbackCopy[2]();
   }
 
-  v9 = [(CLIndoorServiceDelegate *)v46 transactionManager];
-  [v9 openTransactionWithDescription:@"Prefetching"];
+  transactionManager = [(CLIndoorServiceDelegate *)selfCopy transactionManager];
+  [transactionManager openTransactionWithDescription:@"Prefetching"];
 
-  if ([(CLIndoorServiceDelegate *)v46 initializeDb])
+  if ([(CLIndoorServiceDelegate *)selfCopy initializeDb])
   {
-    [(CLIndoorServiceDelegate *)v46 reloadAvailabilityTilePrefetchParameters];
-    v10 = objc_alloc_init(NSMutableArray);
+    [(CLIndoorServiceDelegate *)selfCopy reloadAvailabilityTilePrefetchParameters];
+    transactionManager2 = objc_alloc_init(NSMutableArray);
     v48 = objc_alloc_init(NSMutableArray);
     v60 = 0u;
     v61 = 0u;
     v58 = 0u;
     v59 = 0u;
-    obj = v44;
+    obj = prefetchCopy;
     v11 = [obj countByEnumeratingWithState:&v58 objects:v77 count:16];
     if (!v11)
     {
@@ -1204,14 +1204,14 @@ LABEL_49:
         }
 
         v14 = *(*(&v58 + 1) + 8 * i);
-        v15 = [v14 locationContext];
-        v16 = v10;
-        if (!v15)
+        locationContext = [v14 locationContext];
+        v16 = transactionManager2;
+        if (!locationContext)
         {
           goto LABEL_9;
         }
 
-        if (v15 == 1)
+        if (locationContext == 1)
         {
           v16 = v48;
 LABEL_9:
@@ -1225,7 +1225,7 @@ LABEL_9:
       {
 LABEL_17:
 
-        v43 = [v10 count];
+        v43 = [transactionManager2 count];
         if ([v48 count])
         {
           v76 = [[NSSortDescriptor alloc] initWithKey:@"priority" ascending:1];
@@ -1261,14 +1261,14 @@ LABEL_17:
                 v23 = qword_10045B078;
                 if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
                 {
-                  v24 = [v22 venueUuid];
-                  v25 = v24;
-                  v26 = [v24 UTF8String];
-                  v27 = [v22 priority];
+                  venueUuid = [v22 venueUuid];
+                  v25 = venueUuid;
+                  uTF8String = [venueUuid UTF8String];
+                  priority = [v22 priority];
                   *buf = 136380931;
-                  v63 = v26;
+                  v63 = uTF8String;
                   v64 = 1026;
-                  LODWORD(v65) = v27;
+                  LODWORD(v65) = priority;
                   _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "TileMaxPri, sortedreg, %{private}s, %{public}d", buf, 0x12u);
                 }
 
@@ -1282,7 +1282,7 @@ LABEL_17:
             while (v19);
           }
 
-          v28 = [(CLIndoorServiceDelegate *)v46 getMaxPriorityForPrefetch:v47];
+          v28 = [(CLIndoorServiceDelegate *)selfCopy getMaxPriorityForPrefetch:v47];
           v52 = 0u;
           v53 = 0u;
           v50 = 0u;
@@ -1312,7 +1312,7 @@ LABEL_17:
                   goto LABEL_44;
                 }
 
-                [v10 addObject:v35];
+                [transactionManager2 addObject:v35];
                 ++v34;
                 v33 = v33 + 1;
               }
@@ -1337,7 +1337,7 @@ LABEL_45:
             if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
             {
               v38 = [obj count];
-              v39 = [v10 count];
+              v39 = [transactionManager2 count];
               v40 = [v48 count];
               *buf = 134350336;
               v63 = v38;
@@ -1354,10 +1354,10 @@ LABEL_45:
               _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "TileFetch, onPrefetch, %{public}lu, reduced, %{public}lu, indoor, %{public}lu, regional, %{public}lu, %{public}d, prioritylimit, %{public}d", buf, 0x36u);
             }
 
-            if ([v10 count])
+            if ([transactionManager2 count])
             {
-              v41 = [(CLIndoorServiceDelegate *)v46 prefetcher];
-              [v41 prefetch:v10];
+              prefetcher = [(CLIndoorServiceDelegate *)selfCopy prefetcher];
+              [prefetcher prefetch:transactionManager2];
             }
 
             goto LABEL_50;
@@ -1392,31 +1392,31 @@ LABEL_45:
     _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_ERROR, "TileFetch, onPrefetch, skip, database handle unavailable", buf, 2u);
   }
 
-  v10 = [(CLIndoorServiceDelegate *)v46 transactionManager];
-  [v10 closeTransactionWithDescription:@"Prefetching"];
+  transactionManager2 = [(CLIndoorServiceDelegate *)selfCopy transactionManager];
+  [transactionManager2 closeTransactionWithDescription:@"Prefetching"];
 LABEL_50:
 }
 
-- (BOOL)tilePrefetchShouldPrefetchMetadataForFloor:(const void *)a3 withLocationContext:(int64_t)a4
+- (BOOL)tilePrefetchShouldPrefetchMetadataForFloor:(const void *)floor withLocationContext:(int64_t)context
 {
   v7 = [(CLIndoorServiceDelegate *)self q];
   dispatch_assert_queue_V2(v7);
 
-  v8 = [(CLIndoorServiceDelegate *)self transactionManager];
-  v9 = [v8 hasAnyOpenTransaction];
+  transactionManager = [(CLIndoorServiceDelegate *)self transactionManager];
+  hasAnyOpenTransaction = [transactionManager hasAnyOpenTransaction];
 
-  if (v9)
+  if (hasAnyOpenTransaction)
   {
     [(CLIndoorServiceDelegate *)self initializeDb];
     if (self->_fsDb.__ptr_)
     {
       std::chrono::system_clock::now();
-      if (a4 == 1)
+      if (context == 1)
       {
         sub_100218BF4(&self->_tileStorageLimits);
       }
 
-      else if (a4)
+      else if (context)
       {
         if (qword_10045B070 != -1)
         {
@@ -1427,7 +1427,7 @@ LABEL_50:
         if (os_log_type_enabled(qword_10045B078, OS_LOG_TYPE_ERROR))
         {
           v19 = 67109120;
-          LODWORD(v20) = a4;
+          LODWORD(v20) = context;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "Unimplemented CLPipelinedLocationContext %d, default to indoor...", &v19, 8u);
         }
 
@@ -1440,7 +1440,7 @@ LABEL_50:
       }
 
       ptr = self->_fsDb.__ptr_;
-      sub_1001181E4(&v19, a3);
+      sub_1001181E4(&v19, floor);
     }
 
     if (qword_10045B070 != -1)
@@ -1485,22 +1485,22 @@ LABEL_14:
   return v11;
 }
 
-- (BOOL)tilePrefetchShouldPrefetchTileDataForFloor:(const void *)a3
+- (BOOL)tilePrefetchShouldPrefetchTileDataForFloor:(const void *)floor
 {
   v5 = [(CLIndoorServiceDelegate *)self q];
   dispatch_assert_queue_V2(v5);
 
-  v6 = [(CLIndoorServiceDelegate *)self transactionManager];
-  v7 = [v6 hasAnyOpenTransaction];
+  transactionManager = [(CLIndoorServiceDelegate *)self transactionManager];
+  hasAnyOpenTransaction = [transactionManager hasAnyOpenTransaction];
 
-  if (v7)
+  if (hasAnyOpenTransaction)
   {
     [(CLIndoorServiceDelegate *)self initializeDb];
     if (self->_fsDb.__ptr_)
     {
       std::chrono::system_clock::now();
       ptr = self->_fsDb.__ptr_;
-      sub_1001181E4(&v16, a3);
+      sub_1001181E4(&v16, floor);
     }
 
     if (qword_10045B070 != -1)
@@ -1545,26 +1545,26 @@ LABEL_12:
   return v10;
 }
 
-- (void)tilePrefetchDidDownload:(const void *)a3 forRequest:(id)a4
+- (void)tilePrefetchDidDownload:(const void *)download forRequest:(id)request
 {
-  v6 = a4;
+  requestCopy = request;
   v7 = [(CLIndoorServiceDelegate *)self q];
   dispatch_assert_queue_V2(v7);
 
-  v8 = [(CLIndoorServiceDelegate *)self transactionManager];
-  v9 = [v8 hasAnyOpenTransaction];
+  transactionManager = [(CLIndoorServiceDelegate *)self transactionManager];
+  hasAnyOpenTransaction = [transactionManager hasAnyOpenTransaction];
 
-  if (v9)
+  if (hasAnyOpenTransaction)
   {
     [(CLIndoorServiceDelegate *)self initializeDb];
     if (self->_fsDb.__ptr_)
     {
       v10.__d_.__rep_ = std::chrono::system_clock::now().__d_.__rep_;
-      v11 = [v6 venueUuid];
-      v12 = v11;
-      if (v11)
+      venueUuid = [requestCopy venueUuid];
+      v12 = venueUuid;
+      if (venueUuid)
       {
-        [v11 ps_STLString];
+        [venueUuid ps_STLString];
       }
 
       else
@@ -1574,11 +1574,11 @@ LABEL_12:
         v41 = 0;
       }
 
-      v18 = [v6 floorUuid];
-      v19 = v18;
-      if (v18)
+      floorUuid = [requestCopy floorUuid];
+      v19 = floorUuid;
+      if (floorUuid)
       {
-        [v18 ps_STLString];
+        [floorUuid ps_STLString];
       }
 
       else
@@ -1610,7 +1610,7 @@ LABEL_12:
         v35 = v41;
       }
 
-      *&v20 = sub_100261BAC(buf, v36, __p, +[CLLocationContextConversions fromCLPipelinedLocationContext:](CLLocationContextConversions, "fromCLPipelinedLocationContext:", [v6 context])).n128_u64[0];
+      *&v20 = sub_100261BAC(buf, v36, __p, +[CLLocationContextConversions fromCLPipelinedLocationContext:](CLLocationContextConversions, "fromCLPipelinedLocationContext:", [requestCopy context])).n128_u64[0];
       if (SHIBYTE(v35) < 0)
       {
         operator delete(__p[0]);
@@ -1627,21 +1627,21 @@ LABEL_12:
 
       operator delete(v36[0]);
 LABEL_26:
-      v21 = [v6 lastRelevant];
-      [(CLIndoorServiceDelegate *)self tilePrefetchForTileId:buf updateRelevancy:v21];
+      lastRelevant = [requestCopy lastRelevant];
+      [(CLIndoorServiceDelegate *)self tilePrefetchForTileId:buf updateRelevancy:lastRelevant];
 
-      v22 = [v6 kind];
-      if (v22)
+      kind = [requestCopy kind];
+      if (kind)
       {
-        if (v22 == 1)
+        if (kind == 1)
         {
-          (*(*self->_fsDb.__ptr_ + 168))(self->_fsDb.__ptr_, v10.__d_.__rep_, buf, -1, a3, &self->_tileStorageLimits);
+          (*(*self->_fsDb.__ptr_ + 168))(self->_fsDb.__ptr_, v10.__d_.__rep_, buf, -1, download, &self->_tileStorageLimits);
         }
       }
 
       else
       {
-        (*(*self->_fsDb.__ptr_ + 160))(self->_fsDb.__ptr_, v10.__d_.__rep_, buf, a3, &self->_tileStorageLimits);
+        (*(*self->_fsDb.__ptr_ + 160))(self->_fsDb.__ptr_, v10.__d_.__rep_, buf, download, &self->_tileStorageLimits);
       }
 
       if (qword_10045B070 != -1)
@@ -1652,13 +1652,13 @@ LABEL_26:
       v23 = qword_10045B078;
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
-        v24 = [v6 kind];
-        v25 = [v6 session];
+        kind2 = [requestCopy kind];
+        session = [requestCopy session];
         v26 = SHIBYTE(v39);
         v27 = v38[0];
         v28 = SHIBYTE(v41);
         v29 = v40[0];
-        v30 = [v6 context];
+        context = [requestCopy context];
         v31 = v40;
         *v42 = 67241219;
         if (v28 < 0)
@@ -1666,7 +1666,7 @@ LABEL_26:
           v31 = v29;
         }
 
-        v43 = v24;
+        v43 = kind2;
         v32 = v38;
         v44 = 1026;
         if (v26 < 0)
@@ -1674,9 +1674,9 @@ LABEL_26:
           v32 = v27;
         }
 
-        v45 = v25;
+        v45 = session;
         v46 = 2081;
-        if (v30 == 1)
+        if (context == 1)
         {
           v33 = 82;
         }
@@ -1777,23 +1777,23 @@ LABEL_13:
 LABEL_47:
 }
 
-- (void)tilePrefetchForTileId:(const void *)a3 updateRelevancy:(id)a4
+- (void)tilePrefetchForTileId:(const void *)id updateRelevancy:(id)relevancy
 {
-  v6 = a4;
+  relevancyCopy = relevancy;
   v7 = [(CLIndoorServiceDelegate *)self q];
   dispatch_assert_queue_V2(v7);
 
-  v8 = [(CLIndoorServiceDelegate *)self transactionManager];
-  v9 = [v8 hasAnyOpenTransaction];
+  transactionManager = [(CLIndoorServiceDelegate *)self transactionManager];
+  hasAnyOpenTransaction = [transactionManager hasAnyOpenTransaction];
 
-  if (v9)
+  if (hasAnyOpenTransaction)
   {
     [(CLIndoorServiceDelegate *)self initializeDb];
     if (self->_fsDb.__ptr_)
     {
-      [v6 timeIntervalSince1970];
+      [relevancyCopy timeIntervalSince1970];
       v11.__d_.__rep_ = std::chrono::system_clock::from_time_t(v10).__d_.__rep_;
-      (*(*self->_fsDb.__ptr_ + 192))(self->_fsDb.__ptr_, v11.__d_.__rep_, a3);
+      (*(*self->_fsDb.__ptr_ + 192))(self->_fsDb.__ptr_, v11.__d_.__rep_, id);
       goto LABEL_13;
     }
 
@@ -1893,8 +1893,8 @@ LABEL_3:
   }
 
 LABEL_4:
-  v5 = [(CLIndoorServiceDelegate *)self transactionManager];
-  v6 = [v5 hasOpenTransactionWithDescription:@"Prefetching"];
+  transactionManager = [(CLIndoorServiceDelegate *)self transactionManager];
+  v6 = [transactionManager hasOpenTransactionWithDescription:@"Prefetching"];
 
   if (v6)
   {
@@ -1908,17 +1908,17 @@ LABEL_4:
     v8 = objc_autoreleasePoolPush();
     if ([(CLIndoorServiceDelegate *)self initializeDb])
     {
-      v9 = [(CLIndoorServiceDelegate *)self prefetchCompletion];
+      prefetchCompletion = [(CLIndoorServiceDelegate *)self prefetchCompletion];
 
-      if (v9)
+      if (prefetchCompletion)
       {
-        v10 = [(CLIndoorServiceDelegate *)self prefetchCompletion];
-        v10[2]();
+        prefetchCompletion2 = [(CLIndoorServiceDelegate *)self prefetchCompletion];
+        prefetchCompletion2[2]();
       }
 
       [(CLIndoorServiceDelegate *)self setPrefetchCompletion:0];
-      v11 = [(CLIndoorServiceDelegate *)self transactionManager];
-      v12 = [v11 isLastOpenTransactionWithDescription:@"Prefetching"];
+      transactionManager2 = [(CLIndoorServiceDelegate *)self transactionManager];
+      v12 = [transactionManager2 isLastOpenTransactionWithDescription:@"Prefetching"];
 
       if (v12)
       {
@@ -1948,8 +1948,8 @@ LABEL_22:
             if (!os_log_type_enabled(qword_10045B078, OS_LOG_TYPE_INFO))
             {
 LABEL_25:
-              v17 = [(CLIndoorServiceDelegate *)self transactionManager];
-              [v17 closeTransactionWithDescription:@"Prefetching"];
+              transactionManager3 = [(CLIndoorServiceDelegate *)self transactionManager];
+              [transactionManager3 closeTransactionWithDescription:@"Prefetching"];
 
               goto LABEL_26;
             }
@@ -2023,32 +2023,32 @@ LABEL_14:
   }
 }
 
-- (void)prefetcher:(id)a3 didFinishForegroundRequest:(id)a4
+- (void)prefetcher:(id)prefetcher didFinishForegroundRequest:(id)request
 {
-  v7 = a4;
+  requestCopy = request;
   v5 = [(CLIndoorServiceDelegate *)self q];
   dispatch_assert_queue_V2(v5);
 
-  v6 = [(CLIndoorServiceDelegate *)self currentProvider];
-  [v6 foregroundRequestCompleted:v7];
+  currentProvider = [(CLIndoorServiceDelegate *)self currentProvider];
+  [currentProvider foregroundRequestCompleted:requestCopy];
 }
 
-- (void)prefetcher:(id)a3 didFinishForegroundRequest:(id)a4 withError:(id)a5
+- (void)prefetcher:(id)prefetcher didFinishForegroundRequest:(id)request withError:(id)error
 {
-  v10 = a4;
-  v7 = a5;
+  requestCopy = request;
+  errorCopy = error;
   v8 = [(CLIndoorServiceDelegate *)self q];
   dispatch_assert_queue_V2(v8);
 
-  v9 = [(CLIndoorServiceDelegate *)self currentProvider];
-  [v9 foregroundRequestCompleted:v10 withError:v7];
+  currentProvider = [(CLIndoorServiceDelegate *)self currentProvider];
+  [currentProvider foregroundRequestCompleted:requestCopy withError:errorCopy];
 }
 
-- (BOOL)initializeDb:(BOOL)a3
+- (BOOL)initializeDb:(BOOL)db
 {
-  v3 = a3;
-  v5 = [(CLIndoorServiceDelegate *)self workdir];
-  if (!v5)
+  dbCopy = db;
+  workdir = [(CLIndoorServiceDelegate *)self workdir];
+  if (!workdir)
   {
     sub_10038877C(buf);
 
@@ -2080,7 +2080,7 @@ LABEL_18:
   ptr = self->_fsDb.__ptr_;
   if (!ptr)
   {
-    [(CLIndoorServiceDelegate *)self createLocalizerDbWithRootDir:0 relativeTo:v5];
+    [(CLIndoorServiceDelegate *)self createLocalizerDbWithRootDir:0 relativeTo:workdir];
     v12 = *buf;
     memset(buf, 0, 16);
     cntrl = self->_fsDb.__cntrl_;
@@ -2110,7 +2110,7 @@ LABEL_28:
     goto LABEL_30;
   }
 
-  if (v3)
+  if (dbCopy)
   {
     v7 = (*(*ptr + 240))(ptr);
     v8 = *(v7 + 23);
@@ -2121,7 +2121,7 @@ LABEL_28:
 
     if (!v8)
     {
-      [(CLIndoorServiceDelegate *)self createLocalizerDbWithRootDir:1 relativeTo:v5];
+      [(CLIndoorServiceDelegate *)self createLocalizerDbWithRootDir:1 relativeTo:workdir];
       if (buf[0])
       {
         v9 = buf[1];
@@ -2154,16 +2154,16 @@ LABEL_30:
   return v15;
 }
 
-- (shared_ptr<ITileDb>)createLocalizerDbWithRootDir:(BOOL)a3 relativeTo:(id)a4
+- (shared_ptr<ITileDb>)createLocalizerDbWithRootDir:(BOOL)dir relativeTo:(id)to
 {
-  if (a3)
+  if (dir)
   {
-    v4 = [(CLIndoorServiceDelegate *)self createDbAtBasedir:@"base.local" rootdir:@"playback" relativeTo:a4];
+    v4 = [(CLIndoorServiceDelegate *)self createDbAtBasedir:@"base.local" rootdir:@"playback" relativeTo:to];
   }
 
   else
   {
-    v4 = [(CLIndoorServiceDelegate *)self createDbAtBasedir:@"base.local" rootdir:0 relativeTo:a4];
+    v4 = [(CLIndoorServiceDelegate *)self createDbAtBasedir:@"base.local" rootdir:0 relativeTo:to];
   }
 
   result.__cntrl_ = v5;
@@ -2171,17 +2171,17 @@ LABEL_30:
   return result;
 }
 
-- (shared_ptr<ITileDb>)createDbAtBasedir:(id)a3 rootdir:(id)a4 relativeTo:(id)a5
+- (shared_ptr<ITileDb>)createDbAtBasedir:(id)basedir rootdir:(id)rootdir relativeTo:(id)to
 {
   v54 = v5;
-  v9 = a3;
-  v55 = a4;
-  v10 = a5;
+  basedirCopy = basedir;
+  rootdirCopy = rootdir;
+  toCopy = to;
   sub_10000B2A4(&buf);
   v11 = sub_10000B010(&buf, &buf.__r_.__value_.__r.__words[2]);
-  v12 = v10;
-  v13 = [v10 fileSystemRepresentation];
-  v14 = strlen(v13);
+  v12 = toCopy;
+  fileSystemRepresentation = [toCopy fileSystemRepresentation];
+  v14 = strlen(fileSystemRepresentation);
   if (v14 > 0x7FFFFFFFFFFFFFF7)
   {
     sub_10000D39C();
@@ -2196,7 +2196,7 @@ LABEL_30:
   *(&__dst.__r_.__value_.__s + 23) = v14;
   if (v14)
   {
-    memmove(&__dst, v13, v14);
+    memmove(&__dst, fileSystemRepresentation, v14);
   }
 
   __dst.__r_.__value_.__s.__data_[v15] = 0;
@@ -2246,10 +2246,10 @@ LABEL_31:
           operator delete(__dst.__r_.__value_.__l.__data_);
         }
 
-        v21 = [(CLIndoorServiceDelegate *)self transactionManager];
-        v22 = [v21 hasAnyOpenTransaction];
+        transactionManager = [(CLIndoorServiceDelegate *)self transactionManager];
+        hasAnyOpenTransaction = [transactionManager hasAnyOpenTransaction];
 
-        if ((v22 & 1) == 0)
+        if ((hasAnyOpenTransaction & 1) == 0)
         {
           sub_100388890(&buf);
 
@@ -2257,12 +2257,12 @@ LABEL_31:
           goto LABEL_127;
         }
 
-        v23 = [v10 URLByAppendingPathComponent:v9];
-        v24 = [v23 path];
+        v23 = [toCopy URLByAppendingPathComponent:basedirCopy];
+        path = [v23 path];
 
-        if (v24)
+        if (path)
         {
-          [v24 ps_STLString];
+          [path ps_STLString];
         }
 
         else
@@ -2274,7 +2274,7 @@ LABEL_31:
         *&v57.__val_ = 0;
         v57.__cat_ = 0;
         v58 = 0;
-        if (!v55)
+        if (!rootdirCopy)
         {
 LABEL_41:
           p_fsDbHandle = &self->_fsDbHandle;
@@ -2558,12 +2558,12 @@ LABEL_103:
           goto LABEL_103;
         }
 
-        v25 = [v10 URLByAppendingPathComponent:v55];
-        v26 = [v25 path];
+        v25 = [toCopy URLByAppendingPathComponent:rootdirCopy];
+        path2 = [v25 path];
 
-        if (v26)
+        if (path2)
         {
-          [v26 ps_STLString];
+          [path2 ps_STLString];
           if ((SHIBYTE(v58) & 0x80000000) == 0)
           {
 LABEL_40:
@@ -2613,7 +2613,7 @@ LABEL_40:
   if (os_log_type_enabled(qword_10045B078, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf.__r_.__value_.__l.__data_) = 138478339;
-    *(buf.__r_.__value_.__r.__words + 4) = v9;
+    *(buf.__r_.__value_.__r.__words + 4) = basedirCopy;
     WORD2(buf.__r_.__value_.__r.__words[1]) = 2050;
     *(&buf.__r_.__value_.__r.__words[1] + 6) = v16;
     HIWORD(buf.__r_.__value_.__r.__words[2]) = 2050;
@@ -2694,9 +2694,9 @@ LABEL_11:
   return result;
 }
 
-- (void)onQueueClearTiles:(id)a3
+- (void)onQueueClearTiles:(id)tiles
 {
-  v4 = a3;
+  tilesCopy = tiles;
   [(CLIndoorServiceDelegate *)self initializeDb];
   [(CLIndoorServiceDelegate *)self onQueueDbsToClear];
   if (v25 == v26)
@@ -2713,13 +2713,13 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "No DB handles could be obtained to process tile eviction request.", buf, 2u);
     }
 
-    v10 = [v4 activity];
-    v11 = v10 == 0;
+    activity = [tilesCopy activity];
+    v11 = activity == 0;
 
     if (!v11)
     {
-      v12 = [v4 activity];
-      v13 = xpc_activity_set_state(v12, 5);
+      activity2 = [tilesCopy activity];
+      v13 = xpc_activity_set_state(activity2, 5);
 
       if (!v13)
       {
@@ -2731,8 +2731,8 @@ LABEL_11:
         v14 = qword_10045B078;
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
-          v15 = [v4 activity];
-          state = xpc_activity_get_state(v15);
+          activity3 = [tilesCopy activity];
+          state = xpc_activity_get_state(activity3);
           *buf = 134349056;
           v29 = state;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "@CtsClear, failed to mark tile cleanup activity as done.  current state is %{public}ld", buf, 0xCu);
@@ -2761,7 +2761,7 @@ LABEL_11:
     v25 = 0;
     v26 = 0;
     v27 = 0;
-    [(CLIndoorServiceDelegate *)self onQueueClearTilesIfPossible:v4 fromDbs:&__p];
+    [(CLIndoorServiceDelegate *)self onQueueClearTilesIfPossible:tilesCopy fromDbs:&__p];
     v5 = __p;
     if (__p)
     {
@@ -2818,9 +2818,9 @@ LABEL_11:
   }
 }
 
-- (void)onQueueClearTiles:(id)a3 fromDbs:()vector<std:(std::allocator<std::shared_ptr<ITileDb>>> *)a4 :shared_ptr<ITileDb>
+- (void)onQueueClearTiles:(id)tiles fromDbs:()vector<std:(std::allocator<std::shared_ptr<ITileDb>>> *)std :shared_ptr<ITileDb>
 {
-  v31 = a3;
+  tilesCopy = tiles;
   v6 = [(CLIndoorServiceDelegate *)self q];
   dispatch_assert_queue_V2(v6);
 
@@ -2851,14 +2851,14 @@ LABEL_11:
   context = objc_autoreleasePoolPush();
   *(&v30.__r_.__value_.__s + 23) = 3;
   LODWORD(v30.__r_.__value_.__l.__data_) = 6645601;
-  [v31 maxModifiedAge];
+  [tilesCopy maxModifiedAge];
   if (v10 == -1.79769313e308)
   {
     std::string::assign(&v30, "privacy");
   }
 
-  var0 = a4->var0;
-  if (a4->var0 != a4->var1)
+  var0 = std->var0;
+  if (std->var0 != std->var1)
   {
     if (qword_10045B070 != -1)
     {
@@ -2915,13 +2915,13 @@ LABEL_11:
   }
 
   objc_autoreleasePoolPop(context);
-  v19 = [v31 activity];
-  v20 = v19 == 0;
+  activity = [tilesCopy activity];
+  v20 = activity == 0;
 
   if (!v20)
   {
-    v21 = [v31 activity];
-    v22 = xpc_activity_set_state(v21, 5);
+    activity2 = [tilesCopy activity];
+    v22 = xpc_activity_set_state(activity2, 5);
 
     if (!v22)
     {
@@ -2933,8 +2933,8 @@ LABEL_11:
       v23 = qword_10045B078;
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        v24 = [v31 activity];
-        state = xpc_activity_get_state(v24);
+        activity3 = [tilesCopy activity];
+        state = xpc_activity_get_state(activity3);
         buf = 134349056;
         buf_4 = state;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "failed to mark tile cleanup activity as done.  current state is %{public}ld", &buf, 0xCu);
@@ -2943,9 +2943,9 @@ LABEL_11:
   }
 }
 
-- (void)onQueueClearTilesIfPossible:(id)a3 fromDbs:()vector<std:(std::allocator<std::shared_ptr<ITileDb>>> *)a4 :shared_ptr<ITileDb>
+- (void)onQueueClearTilesIfPossible:(id)possible fromDbs:()vector<std:(std::allocator<std::shared_ptr<ITileDb>>> *)std :shared_ptr<ITileDb>
 {
-  v7 = a3;
+  possibleCopy = possible;
   WeakRetained = objc_loadWeakRetained(&self->_currentProvider);
   if (qword_10045B070 != -1)
   {
@@ -2955,12 +2955,12 @@ LABEL_11:
   v9 = qword_10045B078;
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 forceClean];
-    [v7 maxModifiedAge];
+    forceClean = [possibleCopy forceClean];
+    [possibleCopy maxModifiedAge];
     *buf = 67240704;
     *&buf[4] = WeakRetained == 0;
     v32 = 1026;
-    v33 = v10;
+    v33 = forceClean;
     v34 = 2050;
     v35 = v11;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "@CtsClear, check, providernil, %{public}d, force, %{public}d, agethresh, %{public}.1f", buf, 0x18u);
@@ -2968,7 +2968,7 @@ LABEL_11:
 
   if (WeakRetained)
   {
-    if ([v7 forceClean])
+    if ([possibleCopy forceClean])
     {
       if (qword_10045B070 != -1)
       {
@@ -2985,8 +2985,8 @@ LABEL_11:
       __p = 0;
       v26 = 0;
       v27 = 0;
-      var0 = a4->var0;
-      var1 = a4->var1;
+      var0 = std->var0;
+      var1 = std->var1;
       *buf = &__p;
       LOBYTE(v32) = 0;
       if (var1 != var0)
@@ -2999,7 +2999,7 @@ LABEL_11:
         sub_10000FC84();
       }
 
-      [(CLIndoorServiceDelegate *)self onQueueClearTiles:v7 fromDbs:&__p];
+      [(CLIndoorServiceDelegate *)self onQueueClearTiles:possibleCopy fromDbs:&__p];
       v22 = __p;
       if (__p)
       {
@@ -3031,7 +3031,7 @@ LABEL_39:
 
     else
     {
-      objc_storeStrong(&self->_delayedClearTilesPolicy, a3);
+      objc_storeStrong(&self->_delayedClearTilesPolicy, possible);
       if (qword_10045B070 != -1)
       {
         sub_100388618();
@@ -3050,8 +3050,8 @@ LABEL_39:
   {
     v28 = 0;
     v29 = 0;
-    v15 = a4->var0;
-    v16 = a4->var1;
+    v15 = std->var0;
+    v16 = std->var1;
     v30 = 0;
     *buf = &v28;
     LOBYTE(v32) = 0;
@@ -3065,7 +3065,7 @@ LABEL_39:
       sub_10000FC84();
     }
 
-    [(CLIndoorServiceDelegate *)self onQueueClearTiles:v7 fromDbs:&v28];
+    [(CLIndoorServiceDelegate *)self onQueueClearTiles:possibleCopy fromDbs:&v28];
     v18 = v28;
     if (v28)
     {
@@ -3204,36 +3204,36 @@ LABEL_3:
 
 LABEL_4:
   v4 = [CLAvailabilityTileParser alloc];
-  v5 = [(CLIndoorServiceDelegate *)self workdir];
-  v6 = [CLIndoorProvider getAvailabilityTilePathFromWorkdir:v5];
+  workdir = [(CLIndoorServiceDelegate *)self workdir];
+  v6 = [CLIndoorProvider getAvailabilityTilePathFromWorkdir:workdir];
   v7 = [(CLAvailabilityTileParser *)v4 initWithTilePathIncrementalIO:v6];
 
   if (v7)
   {
-    v8 = [(CLAvailabilityTileParser *)v7 getAvlTile];
+    getAvlTile = [(CLAvailabilityTileParser *)v7 getAvlTile];
     v32[0] = sub_100005F30();
     v32[1] = v9;
-    v31 = sub_10017038C(v8);
+    v31 = sub_10017038C(getAvlTile);
     v10 = sub_100005C94(v32, &v31);
     v30[0] = sub_100005F40();
     v30[1] = v11;
-    v29 = sub_10017047C(v8);
+    v29 = sub_10017047C(getAvlTile);
     v12 = sub_100005C94(v30, &v29);
     v28[0] = sub_100005F54();
     v28[1] = v13;
-    v27 = sub_100170398(v8);
+    v27 = sub_100170398(getAvlTile);
     v14 = sub_100005C94(v28, &v27);
     v26[0] = sub_100005F64();
     v26[1] = v15;
-    v25 = sub_100170550(v8);
+    v25 = sub_100170550(getAvlTile);
     v16 = sub_100005C94(v26, &v25);
     v24[0] = sub_100006214();
     v24[1] = v17;
-    v23 = sub_100170714(v8);
+    v23 = sub_100170714(getAvlTile);
     v18 = sub_100005F78(v24, &v23);
     v22[0] = sub_100006224();
     v22[1] = v19;
-    v21 = sub_100170720(v8);
+    v21 = sub_100170720(getAvlTile);
     v20 = sub_100005F78(v22, &v21);
     sub_1002186B4(&buf, v10, v12, v14, v16, v18, v20);
     *&self->_tileStorageLimits._maxIndoorCount = buf;
@@ -3241,11 +3241,11 @@ LABEL_4:
   }
 }
 
-- (id)onQueueCreateProviderForConnection:(id)a3
+- (id)onQueueCreateProviderForConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [CLIndoorServiceDelegate isEntitled:v4 forEntitlement:@"replay" allowRootEverything:0];
-  v6 = [[CLIndoorProvider alloc] initWithConnection:v4];
+  connectionCopy = connection;
+  v5 = [CLIndoorServiceDelegate isEntitled:connectionCopy forEntitlement:@"replay" allowRootEverything:0];
+  v6 = [[CLIndoorProvider alloc] initWithConnection:connectionCopy];
   [(CLIndoorServiceDelegate *)self initializeDb:v5];
   cntrl = self->_fsDb.__cntrl_;
   ptr = self->_fsDb.__ptr_;
@@ -3263,19 +3263,19 @@ LABEL_4:
     std::__shared_weak_count::__release_weak(v8);
   }
 
-  v9 = [(CLIndoorServiceDelegate *)self prefetcher];
-  [(CLIndoorProvider *)v6 setPrefetcher:v9];
+  prefetcher = [(CLIndoorServiceDelegate *)self prefetcher];
+  [(CLIndoorProvider *)v6 setPrefetcher:prefetcher];
 
-  v10 = [(CLIndoorServiceDelegate *)self workdir];
-  [(CLIndoorProvider *)v6 setWorkdir:v10];
+  workdir = [(CLIndoorServiceDelegate *)self workdir];
+  [(CLIndoorProvider *)v6 setWorkdir:workdir];
 
   return v6;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   if (qword_10045B070 != -1)
   {
     sub_100388008();
@@ -3290,10 +3290,10 @@ LABEL_4:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "New XPC connection to pipelined %{public}@", buf, 0xCu);
   }
 
-  if ([CLIndoorServiceDelegate validateEntitlement:@"positioning" forConnection:v8 forSelector:a2])
+  if ([CLIndoorServiceDelegate validateEntitlement:@"positioning" forConnection:connectionCopy forSelector:a2])
   {
-    v11 = [v7 _queue];
-    [v8 _setQueue:v11];
+    _queue = [listenerCopy _queue];
+    [connectionCopy _setQueue:_queue];
 
     WeakRetained = objc_loadWeakRetained(&self->_currentProvider);
     v13 = WeakRetained;
@@ -3310,27 +3310,27 @@ LABEL_4:
         v22 = qword_10045B078;
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
-          v23 = [v8 processIdentifier];
+          processIdentifier = [connectionCopy processIdentifier];
           *buf = 67174657;
-          LODWORD(v36[0]) = v23;
+          LODWORD(v36[0]) = processIdentifier;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "WARNING: Connection from %{private}d postponing shutdown", buf, 8u);
         }
       }
 
       v24 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CLIndoorProtocolPrivate];
-      [v8 setExportedInterface:v24];
+      [connectionCopy setExportedInterface:v24];
 
       v25 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___CLIndoorDelegateProtocolInternal];
-      [v8 setRemoteObjectInterface:v25];
+      [connectionCopy setRemoteObjectInterface:v25];
 
       [(CLIndoorServiceDelegate *)self createIndoorProvderTransaction];
-      v15 = [(CLIndoorServiceDelegate *)self onQueueCreateProviderForConnection:v8];
-      [v15 setPrefetchFloorLimitIndoor:sub_1002187CC(&self->_tileStorageLimits)];
-      [v15 setPrefetchByteSizeLimitIndoor:sub_1002189DC(&self->_tileStorageLimits)];
-      [v15 setPrefetchFloorLimitRegional:sub_1002186C4(&self->_tileStorageLimits)];
-      [v15 setPrefetchByteSizeLimitRegional:sub_1002188D4(&self->_tileStorageLimits)];
-      [v8 setExportedObject:v15];
-      objc_initWeak(&location, v8);
+      xpcConnection = [(CLIndoorServiceDelegate *)self onQueueCreateProviderForConnection:connectionCopy];
+      [xpcConnection setPrefetchFloorLimitIndoor:sub_1002187CC(&self->_tileStorageLimits)];
+      [xpcConnection setPrefetchByteSizeLimitIndoor:sub_1002189DC(&self->_tileStorageLimits)];
+      [xpcConnection setPrefetchFloorLimitRegional:sub_1002186C4(&self->_tileStorageLimits)];
+      [xpcConnection setPrefetchByteSizeLimitRegional:sub_1002188D4(&self->_tileStorageLimits)];
+      [connectionCopy setExportedObject:xpcConnection];
+      objc_initWeak(&location, connectionCopy);
       objc_initWeak(&from, self);
       v30[0] = _NSConcreteStackBlock;
       v30[1] = 3221225472;
@@ -3339,7 +3339,7 @@ LABEL_4:
       objc_copyWeak(&v31, &location);
       objc_copyWeak(&v32, &from);
       v30[4] = self;
-      [v8 setInvalidationHandler:v30];
+      [connectionCopy setInvalidationHandler:v30];
       if (qword_10045B070 != -1)
       {
         sub_100388618();
@@ -3349,12 +3349,12 @@ LABEL_4:
       if (os_log_type_enabled(qword_10045B078, OS_LOG_TYPE_INFO))
       {
         *buf = 134283521;
-        v36[0] = v15;
+        v36[0] = xpcConnection;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "Resuming XPC connection with %{private}p as the provider", buf, 0xCu);
       }
 
-      [v8 resume];
-      objc_storeWeak(&self->_currentProvider, v15);
+      [connectionCopy resume];
+      objc_storeWeak(&self->_currentProvider, xpcConnection);
       objc_destroyWeak(&v32);
       objc_destroyWeak(&v31);
       objc_destroyWeak(&from);
@@ -3362,9 +3362,9 @@ LABEL_4:
       goto LABEL_30;
     }
 
-    v15 = [WeakRetained xpcConnection];
-    v16 = [v15 processIdentifier];
-    if (v16 == [v8 processIdentifier])
+    xpcConnection = [WeakRetained xpcConnection];
+    processIdentifier2 = [xpcConnection processIdentifier];
+    if (processIdentifier2 == [connectionCopy processIdentifier])
     {
       if (qword_10045B070 != -1)
       {
@@ -3377,9 +3377,9 @@ LABEL_4:
         goto LABEL_29;
       }
 
-      v18 = [v15 processIdentifier];
+      processIdentifier3 = [xpcConnection processIdentifier];
       *buf = 67174657;
-      LODWORD(v36[0]) = v18;
+      LODWORD(v36[0]) = processIdentifier3;
       v19 = "WARNING: Already have a connection from %{private}d - rejecting";
       v20 = v17;
       v21 = 8;
@@ -3398,12 +3398,12 @@ LABEL_4:
         goto LABEL_29;
       }
 
-      v27 = [v15 processIdentifier];
-      v28 = [v8 processIdentifier];
+      processIdentifier4 = [xpcConnection processIdentifier];
+      processIdentifier5 = [connectionCopy processIdentifier];
       *buf = 67174913;
-      LODWORD(v36[0]) = v27;
+      LODWORD(v36[0]) = processIdentifier4;
       WORD2(v36[0]) = 1025;
-      *(v36 + 6) = v28;
+      *(v36 + 6) = processIdentifier5;
       v19 = "WARNING: Already have a connection from %{private}d - rejecting connection from  %{private}d";
       v20 = v17;
       v21 = 14;

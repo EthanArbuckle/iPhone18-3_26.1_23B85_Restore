@@ -1,14 +1,14 @@
 @interface NWURLSessionResumeInfo
-- (NWURLSessionResumeInfo)initWithCoder:(id)a3;
-- (id)initWithTask:(id)a1;
-- (void)encodeWithCoder:(id)a3;
+- (NWURLSessionResumeInfo)initWithCoder:(id)coder;
+- (id)initWithTask:(id)task;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NWURLSessionResumeInfo
 
-- (NWURLSessionResumeInfo)initWithCoder:(id)a3
+- (NWURLSessionResumeInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = NWURLSessionResumeInfo;
   v5 = [(NWURLSessionResumeInfo *)&v17 init];
@@ -17,7 +17,7 @@
     goto LABEL_5;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originalRequest"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originalRequest"];
   if (!v6)
   {
     if (__nwlog_url_log::onceToken != -1)
@@ -37,7 +37,7 @@
 
   v7 = v6;
   [(NWURLSessionResumeInfo *)v5 setOriginalRequest:v6];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentRequest"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentRequest"];
   if (!v8)
   {
     if (__nwlog_url_log::onceToken != -1)
@@ -59,22 +59,22 @@ LABEL_15:
 
   v9 = v8;
   [(NWURLSessionResumeInfo *)v5 setCurrentRequest:v8];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"response"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"response"];
   [(NWURLSessionResumeInfo *)v5 setResponse:v10];
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"earliestBeginDate"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"earliestBeginDate"];
   [(NWURLSessionResumeInfo *)v5 setEarliestBeginDate:v11];
 
-  -[NWURLSessionResumeInfo setCountOfBytesClientExpectsToSend:](v5, "setCountOfBytesClientExpectsToSend:", [v4 decodeInt64ForKey:@"countOfBytesClientExpectsToSend"]);
-  -[NWURLSessionResumeInfo setCountOfBytesClientExpectsToReceive:](v5, "setCountOfBytesClientExpectsToReceive:", [v4 decodeInt64ForKey:@"countOfBytesClientExpectsToReceive"]);
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"taskDescription"];
+  -[NWURLSessionResumeInfo setCountOfBytesClientExpectsToSend:](v5, "setCountOfBytesClientExpectsToSend:", [coderCopy decodeInt64ForKey:@"countOfBytesClientExpectsToSend"]);
+  -[NWURLSessionResumeInfo setCountOfBytesClientExpectsToReceive:](v5, "setCountOfBytesClientExpectsToReceive:", [coderCopy decodeInt64ForKey:@"countOfBytesClientExpectsToReceive"]);
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"taskDescription"];
   [(NWURLSessionResumeInfo *)v5 setTaskDescription:v12];
 
-  [v4 decodeFloatForKey:@"priority"];
+  [coderCopy decodeFloatForKey:@"priority"];
   [(NWURLSessionResumeInfo *)v5 setPriority:?];
-  -[NWURLSessionResumeInfo setPrefersIncrementalDelivery:](v5, "setPrefersIncrementalDelivery:", [v4 decodeBoolForKey:@"prefersIncrementalDelivery"]);
-  -[NWURLSessionResumeInfo setTaskIdentifier:](v5, "setTaskIdentifier:", [v4 decodeInt32ForKey:@"taskIdentifier"]);
-  [v4 decodeDoubleForKey:@"startTime"];
+  -[NWURLSessionResumeInfo setPrefersIncrementalDelivery:](v5, "setPrefersIncrementalDelivery:", [coderCopy decodeBoolForKey:@"prefersIncrementalDelivery"]);
+  -[NWURLSessionResumeInfo setTaskIdentifier:](v5, "setTaskIdentifier:", [coderCopy decodeInt32ForKey:@"taskIdentifier"]);
+  [coderCopy decodeDoubleForKey:@"startTime"];
   [(NWURLSessionResumeInfo *)v5 setStartTime:?];
 
 LABEL_5:
@@ -84,75 +84,75 @@ LABEL_16:
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  v4 = [(NWURLSessionResumeInfo *)self originalRequest];
-  [v9 encodeObject:v4 forKey:@"originalRequest"];
+  coderCopy = coder;
+  originalRequest = [(NWURLSessionResumeInfo *)self originalRequest];
+  [coderCopy encodeObject:originalRequest forKey:@"originalRequest"];
 
-  v5 = [(NWURLSessionResumeInfo *)self currentRequest];
-  [v9 encodeObject:v5 forKey:@"currentRequest"];
+  currentRequest = [(NWURLSessionResumeInfo *)self currentRequest];
+  [coderCopy encodeObject:currentRequest forKey:@"currentRequest"];
 
-  v6 = [(NWURLSessionResumeInfo *)self response];
-  [v9 encodeObject:v6 forKey:@"response"];
+  response = [(NWURLSessionResumeInfo *)self response];
+  [coderCopy encodeObject:response forKey:@"response"];
 
-  v7 = [(NWURLSessionResumeInfo *)self earliestBeginDate];
-  [v9 encodeObject:v7 forKey:@"earliestBeginDate"];
+  earliestBeginDate = [(NWURLSessionResumeInfo *)self earliestBeginDate];
+  [coderCopy encodeObject:earliestBeginDate forKey:@"earliestBeginDate"];
 
-  [v9 encodeInt64:-[NWURLSessionResumeInfo countOfBytesClientExpectsToSend](self forKey:{"countOfBytesClientExpectsToSend"), @"countOfBytesClientExpectsToSend"}];
-  [v9 encodeInt64:-[NWURLSessionResumeInfo countOfBytesClientExpectsToReceive](self forKey:{"countOfBytesClientExpectsToReceive"), @"countOfBytesClientExpectsToReceive"}];
-  v8 = [(NWURLSessionResumeInfo *)self taskDescription];
-  [v9 encodeObject:v8 forKey:@"taskDescription"];
+  [coderCopy encodeInt64:-[NWURLSessionResumeInfo countOfBytesClientExpectsToSend](self forKey:{"countOfBytesClientExpectsToSend"), @"countOfBytesClientExpectsToSend"}];
+  [coderCopy encodeInt64:-[NWURLSessionResumeInfo countOfBytesClientExpectsToReceive](self forKey:{"countOfBytesClientExpectsToReceive"), @"countOfBytesClientExpectsToReceive"}];
+  taskDescription = [(NWURLSessionResumeInfo *)self taskDescription];
+  [coderCopy encodeObject:taskDescription forKey:@"taskDescription"];
 
   [(NWURLSessionResumeInfo *)self priority];
-  [v9 encodeFloat:@"priority" forKey:?];
-  [v9 encodeBool:-[NWURLSessionResumeInfo prefersIncrementalDelivery](self forKey:{"prefersIncrementalDelivery"), @"prefersIncrementalDelivery"}];
-  [v9 encodeInt32:-[NWURLSessionResumeInfo taskIdentifier](self forKey:{"taskIdentifier"), @"taskIdentifier"}];
+  [coderCopy encodeFloat:@"priority" forKey:?];
+  [coderCopy encodeBool:-[NWURLSessionResumeInfo prefersIncrementalDelivery](self forKey:{"prefersIncrementalDelivery"), @"prefersIncrementalDelivery"}];
+  [coderCopy encodeInt32:-[NWURLSessionResumeInfo taskIdentifier](self forKey:{"taskIdentifier"), @"taskIdentifier"}];
   [(NWURLSessionResumeInfo *)self startTime];
-  [v9 encodeDouble:@"startTime" forKey:?];
+  [coderCopy encodeDouble:@"startTime" forKey:?];
 }
 
-- (id)initWithTask:(id)a1
+- (id)initWithTask:(id)task
 {
   v3 = a2;
-  if (a1)
+  if (task)
   {
-    v12.receiver = a1;
+    v12.receiver = task;
     v12.super_class = NWURLSessionResumeInfo;
-    a1 = objc_msgSendSuper2(&v12, sel_init);
-    if (a1)
+    task = objc_msgSendSuper2(&v12, sel_init);
+    if (task)
     {
-      v4 = [v3 originalRequest];
-      [a1 setOriginalRequest:v4];
+      originalRequest = [v3 originalRequest];
+      [task setOriginalRequest:originalRequest];
 
-      v5 = [v3 currentRequest];
-      [a1 setCurrentRequest:v5];
+      currentRequest = [v3 currentRequest];
+      [task setCurrentRequest:currentRequest];
 
-      v6 = [v3 response];
+      response = [v3 response];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v8 = [v3 response];
-        [a1 setResponse:v8];
+        response2 = [v3 response];
+        [task setResponse:response2];
       }
 
-      v9 = [v3 earliestBeginDate];
-      [a1 setEarliestBeginDate:v9];
+      earliestBeginDate = [v3 earliestBeginDate];
+      [task setEarliestBeginDate:earliestBeginDate];
 
-      [a1 setCountOfBytesClientExpectsToSend:{objc_msgSend(v3, "countOfBytesClientExpectsToSend")}];
-      [a1 setCountOfBytesClientExpectsToReceive:{objc_msgSend(v3, "countOfBytesExpectedToReceive")}];
-      v10 = [v3 taskDescription];
-      [a1 setTaskDescription:v10];
+      [task setCountOfBytesClientExpectsToSend:{objc_msgSend(v3, "countOfBytesClientExpectsToSend")}];
+      [task setCountOfBytesClientExpectsToReceive:{objc_msgSend(v3, "countOfBytesExpectedToReceive")}];
+      taskDescription = [v3 taskDescription];
+      [task setTaskDescription:taskDescription];
 
       [v3 priority];
-      [a1 setPriority:?];
-      [a1 setPrefersIncrementalDelivery:{objc_msgSend(v3, "prefersIncrementalDelivery")}];
+      [task setPriority:?];
+      [task setPrefersIncrementalDelivery:{objc_msgSend(v3, "prefersIncrementalDelivery")}];
     }
   }
 
-  return a1;
+  return task;
 }
 
 @end

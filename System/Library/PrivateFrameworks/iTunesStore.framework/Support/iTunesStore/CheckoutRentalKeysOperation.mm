@@ -1,10 +1,10 @@
 @interface CheckoutRentalKeysOperation
-- (BOOL)_handleResponse:(id)a3 error:(id *)a4;
+- (BOOL)_handleResponse:(id)response error:(id *)error;
 - (BOOL)_haveValidRentalInformation;
-- (BOOL)_performCheckout:(id *)a3;
-- (CheckoutRentalKeysOperation)initWithAccountIdentifier:(id)a3 rentalKeyIdentifier:(id)a4;
-- (CheckoutRentalKeysOperation)initWithSinfs:(id)a3;
-- (CheckoutRentalKeysOperation)initWithStoreDownloadSinfs:(id)a3;
+- (BOOL)_performCheckout:(id *)checkout;
+- (CheckoutRentalKeysOperation)initWithAccountIdentifier:(id)identifier rentalKeyIdentifier:(id)keyIdentifier;
+- (CheckoutRentalKeysOperation)initWithSinfs:(id)sinfs;
+- (CheckoutRentalKeysOperation)initWithStoreDownloadSinfs:(id)sinfs;
 - (NSArray)sinfs;
 - (NSNumber)accountIdentifier;
 - (NSNumber)rentalKeyIdentifier;
@@ -16,17 +16,17 @@
 - (id)_copyRentalIdentifier;
 - (id)_primarySINF;
 - (void)_run;
-- (void)_showErrorDialogForOutput:(id)a3;
+- (void)_showErrorDialogForOutput:(id)output;
 - (void)dealloc;
-- (void)setClientIdentifierHeader:(id)a3;
-- (void)setUserAgent:(id)a3;
+- (void)setClientIdentifierHeader:(id)header;
+- (void)setUserAgent:(id)agent;
 @end
 
 @implementation CheckoutRentalKeysOperation
 
-- (CheckoutRentalKeysOperation)initWithSinfs:(id)a3
+- (CheckoutRentalKeysOperation)initWithSinfs:(id)sinfs
 {
-  if (![a3 count])
+  if (![sinfs count])
   {
     sub_100271F04(a2, self);
   }
@@ -36,16 +36,16 @@
   v6 = [(CheckoutRentalKeysOperation *)&v8 init];
   if (v6)
   {
-    v6->_sinfs = [a3 copy];
+    v6->_sinfs = [sinfs copy];
     v6->_shouldValidateRentalInfo = 1;
   }
 
   return v6;
 }
 
-- (CheckoutRentalKeysOperation)initWithAccountIdentifier:(id)a3 rentalKeyIdentifier:(id)a4
+- (CheckoutRentalKeysOperation)initWithAccountIdentifier:(id)identifier rentalKeyIdentifier:(id)keyIdentifier
 {
-  if (![a3 unsignedLongLongValue] || !objc_msgSend(a4, "unsignedLongLongValue"))
+  if (![identifier unsignedLongLongValue] || !objc_msgSend(keyIdentifier, "unsignedLongLongValue"))
   {
     sub_100271F60(a2, self);
   }
@@ -55,24 +55,24 @@
   v8 = [(CheckoutRentalKeysOperation *)&v10 init];
   if (v8)
   {
-    v8->_accountIdentifier = [a3 copy];
-    v8->_rentalKeyIdentifier = [a4 copy];
+    v8->_accountIdentifier = [identifier copy];
+    v8->_rentalKeyIdentifier = [keyIdentifier copy];
     v8->_shouldValidateRentalInfo = 1;
   }
 
   return v8;
 }
 
-- (CheckoutRentalKeysOperation)initWithStoreDownloadSinfs:(id)a3
+- (CheckoutRentalKeysOperation)initWithStoreDownloadSinfs:(id)sinfs
 {
-  v4 = [[DownloadDRM alloc] initWithSinfArray:a3];
+  v4 = [[DownloadDRM alloc] initWithSinfArray:sinfs];
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [(DownloadDRM *)v4 sinfs];
+  sinfs = [(DownloadDRM *)v4 sinfs];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [(NSArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [(NSArray *)sinfs countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -84,7 +84,7 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(sinfs);
         }
 
         v11 = [*(*(&v14 + 1) + 8 * v10) dataForSinfDataKey:off_100382E78];
@@ -97,7 +97,7 @@
       }
 
       while (v8 != v10);
-      v8 = [(NSArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [(NSArray *)sinfs countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -137,27 +137,27 @@
   return v2;
 }
 
-- (void)setClientIdentifierHeader:(id)a3
+- (void)setClientIdentifierHeader:(id)header
 {
   [(CheckoutRentalKeysOperation *)self lock];
   clientIdentifierHeader = self->_clientIdentifierHeader;
-  if (clientIdentifierHeader != a3)
+  if (clientIdentifierHeader != header)
   {
 
-    self->_clientIdentifierHeader = [a3 copy];
+    self->_clientIdentifierHeader = [header copy];
   }
 
   [(CheckoutRentalKeysOperation *)self unlock];
 }
 
-- (void)setUserAgent:(id)a3
+- (void)setUserAgent:(id)agent
 {
   [(CheckoutRentalKeysOperation *)self lock];
   userAgent = self->_userAgent;
-  if (userAgent != a3)
+  if (userAgent != agent)
   {
 
-    self->_userAgent = [a3 copy];
+    self->_userAgent = [agent copy];
   }
 
   [(CheckoutRentalKeysOperation *)self unlock];
@@ -197,15 +197,15 @@
       v15 = +[SSLogConfig sharedConfig];
     }
 
-    v16 = [v15 shouldLog];
+    shouldLog = [v15 shouldLog];
     if ([v15 shouldLogToDisk])
     {
-      v17 = v16 | 2;
+      v17 = shouldLog | 2;
     }
 
     else
     {
-      v17 = v16;
+      v17 = shouldLog;
     }
 
     if (!os_log_type_enabled([v15 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -229,12 +229,12 @@
     v57 = 0;
     if (sub_1000B208C(&v57, &v56))
     {
-      v5 = [(CheckoutRentalKeysOperation *)self _copyAccountIdentifier];
-      if (v5)
+      _copyAccountIdentifier = [(CheckoutRentalKeysOperation *)self _copyAccountIdentifier];
+      if (_copyAccountIdentifier)
       {
-        v6 = v5;
-        v7 = [(CheckoutRentalKeysOperation *)self _copyRentalIdentifier];
-        if (!v7)
+        v6 = _copyAccountIdentifier;
+        _copyRentalIdentifier = [(CheckoutRentalKeysOperation *)self _copyRentalIdentifier];
+        if (!_copyRentalIdentifier)
         {
           v39 = +[SSLogConfig sharedDaemonConfig];
           if (!v39)
@@ -242,15 +242,15 @@
             v39 = +[SSLogConfig sharedConfig];
           }
 
-          v40 = [v39 shouldLog];
+          shouldLog2 = [v39 shouldLog];
           if ([v39 shouldLogToDisk])
           {
-            v41 = v40 | 2;
+            v41 = shouldLog2 | 2;
           }
 
           else
           {
-            v41 = v40;
+            v41 = shouldLog2;
           }
 
           if (!os_log_type_enabled([v39 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -279,7 +279,7 @@
           goto LABEL_62;
         }
 
-        v8 = v7;
+        v8 = _copyRentalIdentifier;
         v9 = objc_alloc_init(NSMutableDictionary);
         v10 = @"play";
         if (MGGetSInt32Answer() != 4 && ![(CheckoutRentalKeysOperation *)self shouldCheckoutWithPlay])
@@ -289,10 +289,10 @@
 
         [v9 setObject:+[NSNumber numberWithBool:](NSNumber forKey:{"numberWithBool:", 1), v10}];
         [v9 setObject:v6 forKey:@"dsid"];
-        v11 = [+[ISDevice sharedInstance](ISDevice guid];
-        if (v11)
+        guid = [+[ISDevice sharedInstance](ISDevice guid];
+        if (guid)
         {
-          [v9 setObject:v11 forKey:@"guid"];
+          [v9 setObject:guid forKey:@"guid"];
         }
 
         v12 = [+[SSDevice currentDevice](SSDevice "currentDevice")];
@@ -313,15 +313,15 @@
 
         [v9 setObject:v4 forKey:@"rental-bag"];
         [v9 setObject:v8 forKey:@"rental-id"];
-        v13 = [(CheckoutRentalKeysOperation *)self checkoutType];
-        if (v13 == 1)
+        checkoutType = [(CheckoutRentalKeysOperation *)self checkoutType];
+        if (checkoutType == 1)
         {
           v14 = @"download";
         }
 
         else
         {
-          if (v13 != 2)
+          if (checkoutType != 2)
           {
 LABEL_86:
             v46 = +[SSLogConfig sharedWriteToDiskConfig];
@@ -330,15 +330,15 @@ LABEL_86:
               v46 = +[SSLogConfig sharedConfig];
             }
 
-            v47 = [v46 shouldLog];
+            shouldLog3 = [v46 shouldLog];
             if ([v46 shouldLogToDisk])
             {
-              v48 = v47 | 2;
+              v48 = shouldLog3 | 2;
             }
 
             else
             {
-              v48 = v47;
+              v48 = shouldLog3;
             }
 
             if (!os_log_type_enabled([v46 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -384,15 +384,15 @@ LABEL_86:
         v27 = +[SSLogConfig sharedConfig];
       }
 
-      v28 = [v27 shouldLog];
+      shouldLog4 = [v27 shouldLog];
       if ([v27 shouldLogToDisk])
       {
-        v29 = v28 | 2;
+        v29 = shouldLog4 | 2;
       }
 
       else
       {
-        v29 = v28;
+        v29 = shouldLog4;
       }
 
       if (!os_log_type_enabled([v27 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -416,15 +416,15 @@ LABEL_61:
         v24 = +[SSLogConfig sharedConfig];
       }
 
-      v25 = [v24 shouldLog];
+      shouldLog5 = [v24 shouldLog];
       if ([v24 shouldLogToDisk])
       {
-        v26 = v25 | 2;
+        v26 = shouldLog5 | 2;
       }
 
       else
       {
-        v26 = v25;
+        v26 = shouldLog5;
       }
 
       if (!os_log_type_enabled([v24 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -462,15 +462,15 @@ LABEL_61:
     v18 = +[SSLogConfig sharedConfig];
   }
 
-  v19 = [v18 shouldLog];
+  shouldLog6 = [v18 shouldLog];
   if ([v18 shouldLogToDisk])
   {
-    v20 = v19 | 2;
+    v20 = shouldLog6 | 2;
   }
 
   else
   {
-    v20 = v19;
+    v20 = shouldLog6;
   }
 
   if (!os_log_type_enabled([v18 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -510,15 +510,15 @@ LABEL_62:
     v34 = +[SSLogConfig sharedConfig];
   }
 
-  v35 = [v34 shouldLog];
+  shouldLog7 = [v34 shouldLog];
   if ([v34 shouldLogToDisk])
   {
-    v36 = v35 | 2;
+    v36 = shouldLog7 | 2;
   }
 
   else
   {
-    v36 = v35;
+    v36 = shouldLog7;
   }
 
   if (!os_log_type_enabled([v34 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -587,10 +587,10 @@ LABEL_97:
   }
 }
 
-- (BOOL)_handleResponse:(id)a3 error:(id *)a4
+- (BOOL)_handleResponse:(id)response error:(id *)error
 {
-  v7 = [a3 objectForKey:kISFailureTypeKey];
-  v8 = [a3 objectForKey:@"rental-bag-response"];
+  v7 = [response objectForKey:kISFailureTypeKey];
+  v8 = [response objectForKey:@"rental-bag-response"];
   if (v7)
   {
     v9 = +[SSLogConfig sharedDaemonConfig];
@@ -599,15 +599,15 @@ LABEL_97:
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
     if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -620,7 +620,7 @@ LABEL_97:
       v40 = 138412546;
       v41 = objc_opt_class();
       v42 = 2112;
-      v43 = v7;
+      responseCopy = v7;
       LODWORD(v39) = 22;
       v38 = &v40;
       v12 = _os_log_send_and_compose_impl();
@@ -637,7 +637,7 @@ LABEL_97:
     if ((objc_opt_respondsToSelector() & 1) != 0 && [v7 intValue] == 5102)
     {
       v15 = [ISError() errorBySettingFatalError:1];
-      [(CheckoutRentalKeysOperation *)self _showErrorDialogForOutput:a3];
+      [(CheckoutRentalKeysOperation *)self _showErrorDialogForOutput:response];
 LABEL_32:
       v24 = 0;
       goto LABEL_33;
@@ -651,7 +651,7 @@ LABEL_31:
 
   if (v8)
   {
-    if (!sub_1000B2C3C(v8) || (v17 = [a3 objectForKey:@"device-diversity"]) != 0 && !sub_1000B2D94(v17))
+    if (!sub_1000B2C3C(v8) || (v17 = [response objectForKey:@"device-diversity"]) != 0 && !sub_1000B2D94(v17))
     {
       v18 = +[SSLogConfig sharedDaemonConfig];
       if (!v18)
@@ -659,15 +659,15 @@ LABEL_31:
         v18 = +[SSLogConfig sharedConfig];
       }
 
-      v19 = [v18 shouldLog];
+      shouldLog2 = [v18 shouldLog];
       if ([v18 shouldLogToDisk])
       {
-        v20 = v19 | 2;
+        v20 = shouldLog2 | 2;
       }
 
       else
       {
-        v20 = v19;
+        v20 = shouldLog2;
       }
 
       if (!os_log_type_enabled([v18 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -707,15 +707,15 @@ LABEL_31:
     v32 = +[SSLogConfig sharedConfig];
   }
 
-  v33 = [v32 shouldLog];
+  shouldLog3 = [v32 shouldLog];
   if ([v32 shouldLogToDisk])
   {
-    v34 = v33 | 2;
+    v34 = shouldLog3 | 2;
   }
 
   else
   {
-    v34 = v33;
+    v34 = shouldLog3;
   }
 
   v24 = 1;
@@ -753,15 +753,15 @@ LABEL_33:
     v25 = +[SSLogConfig sharedConfig];
   }
 
-  v26 = [v25 shouldLog];
+  shouldLog4 = [v25 shouldLog];
   if ([v25 shouldLogToDisk])
   {
-    v27 = v26 | 2;
+    v27 = shouldLog4 | 2;
   }
 
   else
   {
-    v27 = v26;
+    v27 = shouldLog4;
   }
 
   if (!os_log_type_enabled([v25 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -775,7 +775,7 @@ LABEL_33:
     v40 = 138412546;
     v41 = v28;
     v42 = 2112;
-    v43 = a3;
+    responseCopy = response;
     LODWORD(v39) = 22;
     v29 = _os_log_send_and_compose_impl();
     if (v29)
@@ -787,9 +787,9 @@ LABEL_33:
     }
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v15;
+    *error = v15;
   }
 
   return v24;
@@ -829,15 +829,15 @@ LABEL_33:
     v6 = +[SSLogConfig sharedConfig];
   }
 
-  v7 = [v6 shouldLog];
+  shouldLog = [v6 shouldLog];
   if ([v6 shouldLogToDisk])
   {
-    v8 = v7 | 2;
+    v8 = shouldLog | 2;
   }
 
   else
   {
-    v8 = v7;
+    v8 = shouldLog;
   }
 
   if (!os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -876,15 +876,15 @@ LABEL_33:
       v20 = +[SSLogConfig sharedConfig];
     }
 
-    v21 = [v20 shouldLog];
+    shouldLog2 = [v20 shouldLog];
     if ([v20 shouldLogToDisk])
     {
-      v22 = v21 | 2;
+      v22 = shouldLog2 | 2;
     }
 
     else
     {
-      v22 = v21;
+      v22 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v20 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -895,11 +895,11 @@ LABEL_33:
     if (v22)
     {
       v23 = objc_opt_class();
-      v24 = [(ISFairPlayRentalInfo *)v4 playbackDuration];
+      playbackDuration = [(ISFairPlayRentalInfo *)v4 playbackDuration];
       *v30 = 138412546;
       *&v30[4] = v23;
       *&v30[12] = 2048;
-      *&v30[14] = v24;
+      *&v30[14] = playbackDuration;
       LODWORD(v29) = 22;
 LABEL_35:
       v25 = _os_log_send_and_compose_impl();
@@ -922,15 +922,15 @@ LABEL_35:
       v15 = +[SSLogConfig sharedConfig];
     }
 
-    v16 = [v15 shouldLog];
+    shouldLog3 = [v15 shouldLog];
     if ([v15 shouldLogToDisk])
     {
-      v17 = v16 | 2;
+      v17 = shouldLog3 | 2;
     }
 
     else
     {
-      v17 = v16;
+      v17 = shouldLog3;
     }
 
     if (!os_log_type_enabled([v15 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -958,27 +958,27 @@ LABEL_37:
   return v4 != 0;
 }
 
-- (BOOL)_performCheckout:(id *)a3
+- (BOOL)_performCheckout:(id *)checkout
 {
   v24 = 0;
-  v5 = [(CheckoutRentalKeysOperation *)self _bodyData];
-  if (!v5)
+  _bodyData = [(CheckoutRentalKeysOperation *)self _bodyData];
+  if (!_bodyData)
   {
     v24 = ISError();
-    if (!a3)
+    if (!checkout)
     {
-      return v5;
+      return _bodyData;
     }
 
     goto LABEL_22;
   }
 
   v6 = objc_alloc_init(ISStoreURLOperation);
-  v7 = [(CheckoutRentalKeysOperation *)self _copyAccountIdentifier];
-  if (v7)
+  _copyAccountIdentifier = [(CheckoutRentalKeysOperation *)self _copyAccountIdentifier];
+  if (_copyAccountIdentifier)
   {
-    v8 = v7;
-    v9 = [[SSAuthenticationContext alloc] initWithAccountIdentifier:v7];
+    v8 = _copyAccountIdentifier;
+    v9 = [[SSAuthenticationContext alloc] initWithAccountIdentifier:_copyAccountIdentifier];
     [v6 setAuthenticationContext:v9];
   }
 
@@ -992,11 +992,11 @@ LABEL_37:
   v11 = objc_alloc_init(SSMutableURLRequestProperties);
   [v11 setCachePolicy:1];
   [v11 setClientIdentifier:{-[CheckoutRentalKeysOperation clientIdentifierHeader](self, "clientIdentifierHeader")}];
-  [v11 setHTTPBody:v5];
+  [v11 setHTTPBody:_bodyData];
   [v11 setHTTPMethod:@"POST"];
   [v11 setURLBagKey:@"rental-checkout"];
-  v12 = [(CheckoutRentalKeysOperation *)self userAgent];
-  [v11 setValue:v12 forHTTPHeaderField:SSHTTPHeaderUserAgent];
+  userAgent = [(CheckoutRentalKeysOperation *)self userAgent];
+  [v11 setValue:userAgent forHTTPHeaderField:SSHTTPHeaderUserAgent];
   [v6 setRequestProperties:v11];
 
   v13 = +[SSLogConfig sharedDaemonConfig];
@@ -1005,15 +1005,15 @@ LABEL_37:
     v13 = +[SSLogConfig sharedConfig];
   }
 
-  v14 = [v13 shouldLog];
+  shouldLog = [v13 shouldLog];
   if ([v13 shouldLogToDisk])
   {
-    v15 = v14 | 2;
+    v15 = shouldLog | 2;
   }
 
   else
   {
-    v15 = v14;
+    v15 = shouldLog;
   }
 
   if (!os_log_type_enabled([v13 OSLogObject], OS_LOG_TYPE_INFO))
@@ -1040,9 +1040,9 @@ LABEL_37:
 
   if ([(CheckoutRentalKeysOperation *)self runSubOperation:v6 returningError:&v24, v22])
   {
-    v19 = [(DaemonProtocolDataProvider *)v10 output];
-    LOBYTE(v5) = [(CheckoutRentalKeysOperation *)self _handleResponse:v19 error:&v24];
-    v20 = [NSPropertyListSerialization dataWithPropertyList:v19 format:100 options:0 error:0];
+    output = [(DaemonProtocolDataProvider *)v10 output];
+    LOBYTE(_bodyData) = [(CheckoutRentalKeysOperation *)self _handleResponse:output error:&v24];
+    v20 = [NSPropertyListSerialization dataWithPropertyList:output format:100 options:0 error:0];
     [(CheckoutRentalKeysOperation *)self lock];
 
     self->_urlResponse = [[SSURLConnectionResponse alloc] initWithURLResponse:objc_msgSend(v6 bodyData:{"response"), v20}];
@@ -1051,16 +1051,16 @@ LABEL_37:
 
   else
   {
-    LOBYTE(v5) = 0;
+    LOBYTE(_bodyData) = 0;
   }
 
-  if (a3)
+  if (checkout)
   {
 LABEL_22:
-    *a3 = v24;
+    *checkout = v24;
   }
 
-  return v5;
+  return _bodyData;
 }
 
 - (id)_primarySINF
@@ -1089,15 +1089,15 @@ LABEL_22:
       v5 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v5 shouldLog];
+    shouldLog = [v5 shouldLog];
     if ([v5 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog;
     }
 
     if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_INFO))
@@ -1137,15 +1137,15 @@ LABEL_22:
           v21 = +[SSLogConfig sharedConfig];
         }
 
-        v22 = [v21 shouldLog];
+        shouldLog2 = [v21 shouldLog];
         if ([v21 shouldLogToDisk])
         {
-          v23 = v22 | 2;
+          v23 = shouldLog2 | 2;
         }
 
         else
         {
-          v23 = v22;
+          v23 = shouldLog2;
         }
 
         if (!os_log_type_enabled([v21 OSLogObject], OS_LOG_TYPE_INFO))
@@ -1198,15 +1198,15 @@ LABEL_17:
         v13 = +[SSLogConfig sharedConfig];
       }
 
-      v14 = [v13 shouldLog];
+      shouldLog3 = [v13 shouldLog];
       if ([v13 shouldLogToDisk])
       {
-        v15 = v14 | 2;
+        v15 = shouldLog3 | 2;
       }
 
       else
       {
-        v15 = v14;
+        v15 = shouldLog3;
       }
 
       if (!os_log_type_enabled([v13 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -1244,15 +1244,15 @@ LABEL_17:
     v28 = +[SSLogConfig sharedConfig];
   }
 
-  v29 = [v28 shouldLog];
+  shouldLog4 = [v28 shouldLog];
   if ([v28 shouldLogToDisk])
   {
-    v30 = v29 | 2;
+    v30 = shouldLog4 | 2;
   }
 
   else
   {
-    v30 = v29;
+    v30 = shouldLog4;
   }
 
   if (!os_log_type_enabled([v28 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -1284,11 +1284,11 @@ LABEL_53:
   [(CheckoutRentalKeysOperation *)self setSuccess:v20];
 }
 
-- (void)_showErrorDialogForOutput:(id)a3
+- (void)_showErrorDialogForOutput:(id)output
 {
-  v5 = [a3 objectForKey:@"customerMessage"];
+  v5 = [output objectForKey:@"customerMessage"];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 length] && v5 && !objc_msgSend(a3, "objectForKey:", kISDialogKey) && !-[CheckoutRentalKeysOperation isBackgroundCheckout](self, "isBackgroundCheckout"))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [v5 length] && v5 && !objc_msgSend(output, "objectForKey:", kISDialogKey) && !-[CheckoutRentalKeysOperation isBackgroundCheckout](self, "isBackgroundCheckout"))
   {
     v6 = [ISDialogOperation operationWithError:ISError()];
     v7 = +[ISOperationQueue mainQueue];

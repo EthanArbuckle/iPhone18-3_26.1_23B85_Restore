@@ -1,26 +1,26 @@
 @interface TrafficIncidentReport
-+ (int)actionForVoteType:(int)a3;
-- (BOOL)isEqual:(id)a3;
++ (int)actionForVoteType:(int)type;
+- (BOOL)isEqual:(id)equal;
 - (NSString)descriptionText;
 - (NSString)displayText;
-- (TrafficIncidentReport)initWithCoder:(id)a3;
-- (TrafficIncidentReport)initWithIncidentLocation:(id)a3 type:(int)a4 userPath:(int)a5;
-- (TrafficIncidentReport)initWithType:(int)a3 countryCodeUponCreation:(id)a4;
-- (TrafficIncidentReport)initWithUserLocation:(id)a3 type:(int)a4 userPath:(int)a5;
+- (TrafficIncidentReport)initWithCoder:(id)coder;
+- (TrafficIncidentReport)initWithIncidentLocation:(id)location type:(int)type userPath:(int)path;
+- (TrafficIncidentReport)initWithType:(int)type countryCodeUponCreation:(id)creation;
+- (TrafficIncidentReport)initWithUserLocation:(id)location type:(int)type userPath:(int)path;
 - (double)timestamp;
 - (id)_incidentUserPath;
-- (id)_processLocations:(id)a3;
+- (id)_processLocations:(id)locations;
 - (id)description;
 - (id)mapItemLocation;
 - (void)_commonInit;
 - (void)_displayInternalErrorAlert;
-- (void)_submitFeedbackRequestParameters:(id)a3 attachedImages:(id)a4 comments:(id)a5 requireAuthenication:(BOOL)a6 completionHandler:(id)a7;
-- (void)_submitFeedbackRequestParameters:(id)a3 attachedImages:(id)a4 comments:(id)a5 userInfo:(id)a6;
-- (void)_updateForUserIncidentReport:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)submitFeedbackForType:(int)a3 incidentId:(id)a4 completionHandler:(id)a5;
-- (void)submitWithAttachedImages:(id)a3 comments:(id)a4 completionHandler:(id)a5;
-- (void)submitWithCompletionHandler:(id)a3;
+- (void)_submitFeedbackRequestParameters:(id)parameters attachedImages:(id)images comments:(id)comments requireAuthenication:(BOOL)authenication completionHandler:(id)handler;
+- (void)_submitFeedbackRequestParameters:(id)parameters attachedImages:(id)images comments:(id)comments userInfo:(id)info;
+- (void)_updateForUserIncidentReport:(id)report;
+- (void)encodeWithCoder:(id)coder;
+- (void)submitFeedbackForType:(int)type incidentId:(id)id completionHandler:(id)handler;
+- (void)submitWithAttachedImages:(id)images comments:(id)comments completionHandler:(id)handler;
+- (void)submitWithCompletionHandler:(id)handler;
 @end
 
 @implementation TrafficIncidentReport
@@ -31,9 +31,9 @@
   [v3 addUserPath:self->_userPath];
   [v3 setReportedFromCarplay:self->_reportedFromCarplay];
   v4 = +[MNNavigationService sharedService];
-  v5 = [v4 isInNavigatingState];
+  isInNavigatingState = [v4 isInNavigatingState];
 
-  if (v5)
+  if (isInNavigatingState)
   {
     [v3 setNavigationActive:1];
     v6 = +[MNNavigationService sharedService];
@@ -43,15 +43,15 @@
   return v3;
 }
 
-- (id)_processLocations:(id)a3
+- (id)_processLocations:(id)locations
 {
-  v3 = a3;
-  if ([v3 count])
+  locationsCopy = locations;
+  if ([locationsCopy count])
   {
-    v4 = [v3 count];
-    if ([v3 count] <= 0x78)
+    v4 = [locationsCopy count];
+    if ([locationsCopy count] <= 0x78)
     {
-      v5 = [v3 count];
+      v5 = [locationsCopy count];
     }
 
     else
@@ -59,7 +59,7 @@
       v5 = 120;
     }
 
-    v7 = [v3 subarrayWithRange:{&v4[-v5], objc_msgSend(v3, "count") - &v4[-v5]}];
+    v7 = [locationsCopy subarrayWithRange:{&v4[-v5], objc_msgSend(locationsCopy, "count") - &v4[-v5]}];
     v6 = sub_100021DB0(v7, &stru_10163BA60);
   }
 
@@ -74,12 +74,12 @@
 - (void)_displayInternalErrorAlert
 {
   v3 = +[GEOPlatform sharedPlatform];
-  v4 = [v3 isInternalInstall];
+  isInternalInstall = [v3 isInternalInstall];
 
-  if (v4)
+  if (isInternalInstall)
   {
-    v5 = [(TrafficIncidentReport *)self submissionCount];
-    if (v5 >= GEOConfigGetUInteger())
+    submissionCount = [(TrafficIncidentReport *)self submissionCount];
+    if (submissionCount >= GEOConfigGetUInteger())
     {
 
       dispatch_async(&_dispatch_main_q, &stru_10163BA00);
@@ -87,50 +87,50 @@
   }
 }
 
-- (void)_updateForUserIncidentReport:(id)a3
+- (void)_updateForUserIncidentReport:(id)report
 {
-  v3 = a3;
-  v4 = [v3 submissionParameters];
-  v5 = [v4 details];
-  v6 = [v5 incidentFeedback];
-  v7 = [v6 newIncidentDetails];
+  reportCopy = report;
+  submissionParameters = [reportCopy submissionParameters];
+  details = [submissionParameters details];
+  incidentFeedback = [details incidentFeedback];
+  newIncidentDetails = [incidentFeedback newIncidentDetails];
 
   v8 = +[MNNavigationService sharedService];
-  LODWORD(v5) = [v8 isInNavigatingState];
+  LODWORD(details) = [v8 isInNavigatingState];
 
-  if (v5 && v7)
+  if (details && newIncidentDetails)
   {
     v9 = objc_alloc_init(GEOUserIncidentReport);
-    -[NSObject setType:](v9, "setType:", [v7 type]);
-    v10 = [v3 submissionParameters];
-    v11 = [v10 clientSubmissionUuid];
-    [v9 setClientSubmissionUuid:v11];
+    -[NSObject setType:](v9, "setType:", [newIncidentDetails type]);
+    submissionParameters2 = [reportCopy submissionParameters];
+    clientSubmissionUuid = [submissionParameters2 clientSubmissionUuid];
+    [v9 setClientSubmissionUuid:clientSubmissionUuid];
 
     v12 = objc_alloc_init(GEOUserReportLocationDetails);
     [v9 setUserLocation:v12];
 
-    v13 = [v7 userLocation];
-    v14 = [v13 currentUserLocation];
-    v15 = [v9 userLocation];
-    [v15 setCurrentUserLocation:v14];
+    userLocation = [newIncidentDetails userLocation];
+    currentUserLocation = [userLocation currentUserLocation];
+    userLocation2 = [v9 userLocation];
+    [userLocation2 setCurrentUserLocation:currentUserLocation];
 
-    v16 = [v7 userLocation];
-    v17 = [v16 deviceHistoricalLocations];
-    v18 = [v9 userLocation];
-    [v18 setDeviceHistoricalLocations:v17];
+    userLocation3 = [newIncidentDetails userLocation];
+    deviceHistoricalLocations = [userLocation3 deviceHistoricalLocations];
+    userLocation4 = [v9 userLocation];
+    [userLocation4 setDeviceHistoricalLocations:deviceHistoricalLocations];
 
     v19 = [MNRouteProximitySensor alloc];
     v20 = +[MNNavigationService sharedService];
-    v21 = [v20 route];
-    v22 = [v19 initWithRoute:v21];
+    route = [v20 route];
+    v22 = [v19 initWithRoute:route];
 
-    v23 = [v9 userLocation];
-    v24 = [v23 currentUserLocation];
-    [v22 updateForLocation:v24];
+    userLocation5 = [v9 userLocation];
+    currentUserLocation2 = [userLocation5 currentUserLocation];
+    [v22 updateForLocation:currentUserLocation2];
 
-    v25 = [v22 closestPointOnRoute];
-    v26 = [v9 userLocation];
-    [v26 setLastKnownRoadLocation:v25];
+    closestPointOnRoute = [v22 closestPointOnRoute];
+    userLocation6 = [v9 userLocation];
+    [userLocation6 setLastKnownRoadLocation:closestPointOnRoute];
 
     v27 = +[MNNavigationService sharedService];
     [v27 updateForUserIncidentReport:v9];
@@ -147,16 +147,16 @@
   }
 }
 
-- (void)_submitFeedbackRequestParameters:(id)a3 attachedImages:(id)a4 comments:(id)a5 userInfo:(id)a6
+- (void)_submitFeedbackRequestParameters:(id)parameters attachedImages:(id)images comments:(id)comments userInfo:(id)info
 {
-  v10 = a3;
-  v46 = a4;
-  v11 = a5;
-  v45 = a6;
+  parametersCopy = parameters;
+  imagesCopy = images;
+  commentsCopy = comments;
+  infoCopy = info;
   if (_GEOConfigHasValue())
   {
     BOOL = GEOConfigGetBOOL();
-    if (!v11)
+    if (!commentsCopy)
     {
       goto LABEL_12;
     }
@@ -179,22 +179,22 @@
     v18 = [v16 objectForKeyedSubscript:v17];
 
     v19 = +[GEOCountryConfiguration sharedConfiguration];
-    v20 = [v19 countryCode];
-    v21 = [v18 objectForKey:v20];
+    countryCode = [v19 countryCode];
+    v21 = [v18 objectForKey:countryCode];
 
     if (v21)
     {
-      v22 = [v21 BOOLValue];
+      bOOLValue = [v21 BOOLValue];
     }
 
     else
     {
-      v22 = GEOConfigGetBOOL();
+      bOOLValue = GEOConfigGetBOOL();
     }
 
-    BOOL = v22;
+    BOOL = bOOLValue;
 
-    if (!v11)
+    if (!commentsCopy)
     {
       goto LABEL_12;
     }
@@ -202,23 +202,23 @@
 
   if (BOOL)
   {
-    v23 = [v10 submissionParameters];
-    v24 = [v23 commonCorrections];
+    submissionParameters = [parametersCopy submissionParameters];
+    commonCorrections = [submissionParameters commonCorrections];
 
-    if (!v24)
+    if (!commonCorrections)
     {
       v25 = objc_alloc_init(GEORPFeedbackCommonCorrections);
-      v26 = [v10 submissionParameters];
-      [v26 setCommonCorrections:v25];
+      submissionParameters2 = [parametersCopy submissionParameters];
+      [submissionParameters2 setCommonCorrections:v25];
     }
 
-    v27 = [v10 submissionParameters];
-    v28 = [v27 commonCorrections];
-    [v28 setComments:v11];
+    submissionParameters3 = [parametersCopy submissionParameters];
+    commonCorrections2 = [submissionParameters3 commonCorrections];
+    [commonCorrections2 setComments:commentsCopy];
   }
 
 LABEL_12:
-  [(TrafficIncidentReport *)self _updateForUserIncidentReport:v10];
+  [(TrafficIncidentReport *)self _updateForUserIncidentReport:parametersCopy];
   if (!_GEOConfigHasValue())
   {
     v30 = [NSNumber numberWithUnsignedInt:168];
@@ -236,14 +236,14 @@ LABEL_12:
     v35 = [v33 objectForKeyedSubscript:v34];
 
     v36 = +[GEOCountryConfiguration sharedConfiguration];
-    v37 = [v36 countryCode];
-    v38 = [v35 objectForKey:v37];
+    countryCode2 = [v36 countryCode];
+    v38 = [v35 objectForKey:countryCode2];
 
     if (v38)
     {
-      v39 = [v38 BOOLValue];
+      bOOLValue2 = [v38 BOOLValue];
 
-      if (v39)
+      if (bOOLValue2)
       {
         goto LABEL_14;
       }
@@ -277,32 +277,32 @@ LABEL_18:
   block[2] = sub_100B8A464;
   block[3] = &unk_10163B9E0;
   v53 = BOOL;
-  v48 = v10;
-  v49 = v46;
-  v50 = v45;
+  v48 = parametersCopy;
+  v49 = imagesCopy;
+  v50 = infoCopy;
   v51 = v29;
-  v52 = self;
+  selfCopy = self;
   v40 = v29;
-  v41 = v45;
-  v42 = v46;
-  v43 = v10;
+  v41 = infoCopy;
+  v42 = imagesCopy;
+  v43 = parametersCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_submitFeedbackRequestParameters:(id)a3 attachedImages:(id)a4 comments:(id)a5 requireAuthenication:(BOOL)a6 completionHandler:(id)a7
+- (void)_submitFeedbackRequestParameters:(id)parameters attachedImages:(id)images comments:(id)comments requireAuthenication:(BOOL)authenication completionHandler:(id)handler
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = v15;
-  if (v15)
+  authenicationCopy = authenication;
+  parametersCopy = parameters;
+  imagesCopy = images;
+  commentsCopy = comments;
+  handlerCopy = handler;
+  v16 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v15 + 2))(v15);
+    (*(handlerCopy + 2))(handlerCopy);
   }
 
-  if (v8)
+  if (authenicationCopy)
   {
     v17 = +[TrafficIncidentAuthenticationManager sharedInstance];
     v18[0] = _NSConcreteStackBlock;
@@ -310,23 +310,23 @@ LABEL_18:
     v18[2] = sub_100B8A7D0;
     v18[3] = &unk_10163B990;
     v18[4] = self;
-    v19 = v12;
-    v20 = v13;
-    v21 = v14;
+    v19 = parametersCopy;
+    v20 = imagesCopy;
+    v21 = commentsCopy;
     [v17 generateAuthenticationInfoWithCompletionHandler:v18];
   }
 
   else
   {
-    [(TrafficIncidentReport *)self _submitFeedbackRequestParameters:v12 attachedImages:v13 comments:v14 userInfo:0];
+    [(TrafficIncidentReport *)self _submitFeedbackRequestParameters:parametersCopy attachedImages:imagesCopy comments:commentsCopy userInfo:0];
   }
 }
 
-- (void)submitFeedbackForType:(int)a3 incidentId:(id)a4 completionHandler:(id)a5
+- (void)submitFeedbackForType:(int)type incidentId:(id)id completionHandler:(id)handler
 {
-  v7 = *&a3;
-  v9 = a4;
-  v10 = a5;
+  v7 = *&type;
+  idCopy = id;
+  handlerCopy = handler;
   if (v7 != 4)
   {
     goto LABEL_4;
@@ -338,29 +338,29 @@ LABEL_18:
     {
 LABEL_4:
       v11 = +[MKLocationManager sharedLocationManager];
-      v12 = [v11 currentLocation];
+      currentLocation = [v11 currentLocation];
 
       v13 = objc_alloc_init(GEORPIncidentAnnotationDetails);
       v14 = objc_alloc_init(GEORPUserLocationDetails);
       [v13 setUserLocation:v14];
 
-      v15 = [v13 userLocation];
-      [v15 setCurrentUserLocation:v12];
+      userLocation = [v13 userLocation];
+      [userLocation setCurrentUserLocation:currentLocation];
 
       [v13 setAnnotationType:v7];
-      [v13 setIncidentId:v9];
+      [v13 setIncidentId:idCopy];
       [v13 setIncidentType:self->_incidentType];
-      v16 = [(GEOLocation *)self->_incidentLocation latLng];
-      [v13 setIncidentLocation:v16];
+      latLng = [(GEOLocation *)self->_incidentLocation latLng];
+      [v13 setIncidentLocation:latLng];
 
       self->_annotationType = v7;
-      objc_storeStrong(&self->_incidentId, a4);
-      objc_storeStrong(&self->_userLocation, v12);
+      objc_storeStrong(&self->_incidentId, id);
+      objc_storeStrong(&self->_userLocation, currentLocation);
       self->_hidden = 1;
       v17 = +[TrafficIncidentsStorageManager sharedInstance];
       [v17 addReport:self];
 
-      if (v7 == 3 || v9)
+      if (v7 == 3 || idCopy)
       {
         v18 = +[TrafficIncidentsStorageManager sharedInstance];
         [v18 hideReport:self];
@@ -368,8 +368,8 @@ LABEL_4:
 
       objc_initWeak(location, self);
       v19 = [GEORPFeedbackRequestParameters alloc];
-      v20 = [(TrafficIncidentReport *)self _incidentUserPath];
-      v21 = [v19 initWithIncidentAnnotationDetails:v13 userPath:v20];
+      _incidentUserPath = [(TrafficIncidentReport *)self _incidentUserPath];
+      v21 = [v19 initWithIncidentAnnotationDetails:v13 userPath:_incidentUserPath];
 
       v22 = sub_100F35DC4();
       if (v7 == 4)
@@ -408,7 +408,7 @@ LABEL_4:
       v38[2] = sub_100B8ADF0;
       v38[3] = &unk_101660648;
       objc_copyWeak(&v40, location);
-      v39 = v10;
+      v39 = handlerCopy;
       [(TrafficIncidentReport *)self _submitFeedbackRequestParameters:v21 attachedImages:0 comments:0 requireAuthenication:v23 completionHandler:v38];
 
       objc_destroyWeak(&v40);
@@ -435,8 +435,8 @@ LABEL_4:
     v32 = [v30 objectForKeyedSubscript:v31];
 
     v33 = +[GEOCountryConfiguration sharedConfiguration];
-    v34 = [v33 countryCode];
-    v35 = [v32 objectForKey:v34];
+    countryCode = [v33 countryCode];
+    v35 = [v32 objectForKey:countryCode];
 
     if (v35)
     {
@@ -461,19 +461,19 @@ LABEL_4:
     _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_INFO, "Submitting Feedback for AUTO_UP_VOTE is disabled", buf, 2u);
   }
 
-  if (v10)
+  if (handlerCopy)
   {
-    v10[2](v10);
+    handlerCopy[2](handlerCopy);
   }
 
 LABEL_18:
 }
 
-- (void)submitWithAttachedImages:(id)a3 comments:(id)a4 completionHandler:(id)a5
+- (void)submitWithAttachedImages:(id)images comments:(id)comments completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  imagesCopy = images;
+  commentsCopy = comments;
+  handlerCopy = handler;
   v11 = +[TrafficIncidentsStorageManager sharedInstance];
   [v11 addReport:self];
 
@@ -483,19 +483,19 @@ LABEL_18:
   v16[2] = sub_100B8AF98;
   v16[3] = &unk_10163B968;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
+  v17 = imagesCopy;
+  v18 = commentsCopy;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = commentsCopy;
+  v15 = imagesCopy;
   [v12 updateLocationsWithCompletionHandler:v16];
 }
 
-- (void)submitWithCompletionHandler:(id)a3
+- (void)submitWithCompletionHandler:(id)handler
 {
   annotationType = self->_annotationType;
-  v5 = a3;
+  handlerCopy = handler;
   v6 = sub_10002171C();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
   if (annotationType)
@@ -506,7 +506,7 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Submitting feedback", buf, 2u);
     }
 
-    [(TrafficIncidentReport *)self submitFeedbackForType:self->_annotationType incidentId:self->_incidentId completionHandler:v5];
+    [(TrafficIncidentReport *)self submitFeedbackForType:self->_annotationType incidentId:self->_incidentId completionHandler:handlerCopy];
   }
 
   else
@@ -517,7 +517,7 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Submitting new report", v8, 2u);
     }
 
-    [(TrafficIncidentReport *)self submitWithAttachedImages:0 comments:0 completionHandler:v5];
+    [(TrafficIncidentReport *)self submitWithAttachedImages:0 comments:0 completionHandler:handlerCopy];
   }
 }
 
@@ -531,9 +531,9 @@ LABEL_18:
 
 - (NSString)displayText
 {
-  v2 = [(TrafficIncidentReport *)self incidentType];
+  incidentType = [(TrafficIncidentReport *)self incidentType];
 
-  return [TrafficIncidentLayoutItem defaultDisplayTextForType:v2];
+  return [TrafficIncidentLayoutItem defaultDisplayTextForType:incidentType];
 }
 
 - (double)timestamp
@@ -617,10 +617,10 @@ LABEL_18:
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -630,11 +630,11 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(TrafficIncidentReport *)v4 uniqueID];
-      v6 = [v5 UUIDString];
-      v7 = [(TrafficIncidentReport *)self uniqueID];
-      v8 = [v7 UUIDString];
-      v9 = [v6 isEqualToString:v8];
+      uniqueID = [(TrafficIncidentReport *)equalCopy uniqueID];
+      uUIDString = [uniqueID UUIDString];
+      uniqueID2 = [(TrafficIncidentReport *)self uniqueID];
+      uUIDString2 = [uniqueID2 UUIDString];
+      v9 = [uUIDString isEqualToString:uUIDString2];
     }
 
     else
@@ -646,65 +646,65 @@ LABEL_18:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v9 = a3;
-  v4 = [(TrafficIncidentReport *)self incidentLocation];
-  [v9 encodeObject:v4 forKey:@"incidentLocation"];
+  coderCopy = coder;
+  incidentLocation = [(TrafficIncidentReport *)self incidentLocation];
+  [coderCopy encodeObject:incidentLocation forKey:@"incidentLocation"];
 
-  v5 = [(TrafficIncidentReport *)self userLocation];
-  [v9 encodeObject:v5 forKey:@"userLocation"];
+  userLocation = [(TrafficIncidentReport *)self userLocation];
+  [coderCopy encodeObject:userLocation forKey:@"userLocation"];
 
-  [v9 encodeInt32:-[TrafficIncidentReport incidentType](self forKey:{"incidentType"), @"incidentType"}];
-  v6 = [(TrafficIncidentReport *)self incidentId];
-  [v9 encodeObject:v6 forKey:@"incidentId"];
+  [coderCopy encodeInt32:-[TrafficIncidentReport incidentType](self forKey:{"incidentType"), @"incidentType"}];
+  incidentId = [(TrafficIncidentReport *)self incidentId];
+  [coderCopy encodeObject:incidentId forKey:@"incidentId"];
 
-  [v9 encodeInt32:-[TrafficIncidentReport annotationType](self forKey:{"annotationType"), @"annotationType"}];
-  [v9 encodeInt32:-[TrafficIncidentReport userPath](self forKey:{"userPath"), @"userPath"}];
-  v7 = [(TrafficIncidentReport *)self uniqueID];
-  [v9 encodeObject:v7 forKey:@"uniqueID"];
+  [coderCopy encodeInt32:-[TrafficIncidentReport annotationType](self forKey:{"annotationType"), @"annotationType"}];
+  [coderCopy encodeInt32:-[TrafficIncidentReport userPath](self forKey:{"userPath"), @"userPath"}];
+  uniqueID = [(TrafficIncidentReport *)self uniqueID];
+  [coderCopy encodeObject:uniqueID forKey:@"uniqueID"];
 
-  v8 = [(TrafficIncidentReport *)self incidentUpdateTime];
-  [v9 encodeObject:v8 forKey:@"incidentUpdateTime"];
+  incidentUpdateTime = [(TrafficIncidentReport *)self incidentUpdateTime];
+  [coderCopy encodeObject:incidentUpdateTime forKey:@"incidentUpdateTime"];
 
-  [v9 encodeBool:-[TrafficIncidentReport isSiriContext](self forKey:{"isSiriContext"), @"siriContext"}];
-  [v9 encodeBool:-[TrafficIncidentReport isHidden](self forKey:{"isHidden"), @"hidden"}];
-  [v9 encodeBool:-[TrafficIncidentReport isReportedFromCarplay](self forKey:{"isReportedFromCarplay"), @"reportedFromCarplay"}];
-  [v9 encodeBool:-[TrafficIncidentReport submissionFailed](self forKey:{"submissionFailed"), @"submissionFailed"}];
-  [v9 encodeInteger:-[TrafficIncidentReport submissionCount](self forKey:{"submissionCount"), @"submissionCount"}];
+  [coderCopy encodeBool:-[TrafficIncidentReport isSiriContext](self forKey:{"isSiriContext"), @"siriContext"}];
+  [coderCopy encodeBool:-[TrafficIncidentReport isHidden](self forKey:{"isHidden"), @"hidden"}];
+  [coderCopy encodeBool:-[TrafficIncidentReport isReportedFromCarplay](self forKey:{"isReportedFromCarplay"), @"reportedFromCarplay"}];
+  [coderCopy encodeBool:-[TrafficIncidentReport submissionFailed](self forKey:{"submissionFailed"), @"submissionFailed"}];
+  [coderCopy encodeInteger:-[TrafficIncidentReport submissionCount](self forKey:{"submissionCount"), @"submissionCount"}];
 }
 
-- (TrafficIncidentReport)initWithCoder:(id)a3
+- (TrafficIncidentReport)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = TrafficIncidentReport;
   v5 = [(TrafficIncidentReport *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"incidentLocation"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"incidentLocation"];
     [(TrafficIncidentReport *)v5 setIncidentLocation:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userLocation"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userLocation"];
     [(TrafficIncidentReport *)v5 setUserLocation:v7];
 
-    -[TrafficIncidentReport setIncidentType:](v5, "setIncidentType:", [v4 decodeInt32ForKey:@"incidentType"]);
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"incidentId"];
+    -[TrafficIncidentReport setIncidentType:](v5, "setIncidentType:", [coderCopy decodeInt32ForKey:@"incidentType"]);
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"incidentId"];
     [(TrafficIncidentReport *)v5 setIncidentId:v8];
 
-    -[TrafficIncidentReport setAnnotationType:](v5, "setAnnotationType:", [v4 decodeInt32ForKey:@"annotationType"]);
-    -[TrafficIncidentReport setUserPath:](v5, "setUserPath:", [v4 decodeInt32ForKey:@"userPath"]);
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueID"];
+    -[TrafficIncidentReport setAnnotationType:](v5, "setAnnotationType:", [coderCopy decodeInt32ForKey:@"annotationType"]);
+    -[TrafficIncidentReport setUserPath:](v5, "setUserPath:", [coderCopy decodeInt32ForKey:@"userPath"]);
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueID"];
     [(TrafficIncidentReport *)v5 setUniqueID:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"incidentUpdateTime"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"incidentUpdateTime"];
     [(TrafficIncidentReport *)v5 setIncidentUpdateTime:v10];
 
-    -[TrafficIncidentReport setSiriContext:](v5, "setSiriContext:", [v4 decodeBoolForKey:@"siriContext"]);
-    -[TrafficIncidentReport setHidden:](v5, "setHidden:", [v4 decodeBoolForKey:@"hidden"]);
-    -[TrafficIncidentReport setReportedFromCarplay:](v5, "setReportedFromCarplay:", [v4 decodeBoolForKey:@"reportedFromCarplay"]);
-    -[TrafficIncidentReport setSubmissionFailed:](v5, "setSubmissionFailed:", [v4 decodeBoolForKey:@"submissionFailed"]);
-    -[TrafficIncidentReport setSubmissionCount:](v5, "setSubmissionCount:", [v4 decodeIntegerForKey:@"submissionCount"]);
+    -[TrafficIncidentReport setSiriContext:](v5, "setSiriContext:", [coderCopy decodeBoolForKey:@"siriContext"]);
+    -[TrafficIncidentReport setHidden:](v5, "setHidden:", [coderCopy decodeBoolForKey:@"hidden"]);
+    -[TrafficIncidentReport setReportedFromCarplay:](v5, "setReportedFromCarplay:", [coderCopy decodeBoolForKey:@"reportedFromCarplay"]);
+    -[TrafficIncidentReport setSubmissionFailed:](v5, "setSubmissionFailed:", [coderCopy decodeBoolForKey:@"submissionFailed"]);
+    -[TrafficIncidentReport setSubmissionCount:](v5, "setSubmissionCount:", [coderCopy decodeIntegerForKey:@"submissionCount"]);
   }
 
   return v5;
@@ -727,69 +727,69 @@ LABEL_18:
   [(GEOLocation *)userLocation clearSensitiveFields:0];
 }
 
-- (TrafficIncidentReport)initWithUserLocation:(id)a3 type:(int)a4 userPath:(int)a5
+- (TrafficIncidentReport)initWithUserLocation:(id)location type:(int)type userPath:(int)path
 {
-  v9 = a3;
+  locationCopy = location;
   v13.receiver = self;
   v13.super_class = TrafficIncidentReport;
   v10 = [(TrafficIncidentReport *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_userLocation, a3);
-    v11->_incidentType = a4;
-    v11->_userPath = a5;
+    objc_storeStrong(&v10->_userLocation, location);
+    v11->_incidentType = type;
+    v11->_userPath = path;
     [(TrafficIncidentReport *)v11 _commonInit];
   }
 
   return v11;
 }
 
-- (TrafficIncidentReport)initWithIncidentLocation:(id)a3 type:(int)a4 userPath:(int)a5
+- (TrafficIncidentReport)initWithIncidentLocation:(id)location type:(int)type userPath:(int)path
 {
-  v9 = a3;
+  locationCopy = location;
   v13.receiver = self;
   v13.super_class = TrafficIncidentReport;
   v10 = [(TrafficIncidentReport *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_incidentLocation, a3);
-    v11->_incidentType = a4;
-    v11->_userPath = a5;
+    objc_storeStrong(&v10->_incidentLocation, location);
+    v11->_incidentType = type;
+    v11->_userPath = path;
     [(TrafficIncidentReport *)v11 _commonInit];
   }
 
   return v11;
 }
 
-- (TrafficIncidentReport)initWithType:(int)a3 countryCodeUponCreation:(id)a4
+- (TrafficIncidentReport)initWithType:(int)type countryCodeUponCreation:(id)creation
 {
-  v7 = a4;
+  creationCopy = creation;
   v11.receiver = self;
   v11.super_class = TrafficIncidentReport;
   v8 = [(TrafficIncidentReport *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_incidentType = a3;
-    objc_storeStrong(&v8->_countryCodeUponCreation, a4);
+    v8->_incidentType = type;
+    objc_storeStrong(&v8->_countryCodeUponCreation, creation);
     [(TrafficIncidentReport *)v9 _commonInit];
   }
 
   return v9;
 }
 
-+ (int)actionForVoteType:(int)a3
++ (int)actionForVoteType:(int)type
 {
-  if ((a3 - 1) > 3)
+  if ((type - 1) > 3)
   {
     return 107;
   }
 
   else
   {
-    return dword_101212C60[a3 - 1];
+    return dword_101212C60[type - 1];
   }
 }
 

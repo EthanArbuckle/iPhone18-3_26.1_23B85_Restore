@@ -1,64 +1,64 @@
 @interface HDDeviceStoreServer
 + (id)requiredEntitlements;
-- (void)remote_deleteDevice:(id)a3 completion:(id)a4;
-- (void)remote_fetchAllDevicesWithCompletion:(id)a3;
-- (void)remote_fetchDevicesMatchingValues:(id)a3 forProperty:(id)a4 completion:(id)a5;
-- (void)remote_fetchGymkitAndBluetoothDevicesMatchingValues:(id)a3 forProperty:(id)a4 completion:(id)a5;
+- (void)remote_deleteDevice:(id)device completion:(id)completion;
+- (void)remote_fetchAllDevicesWithCompletion:(id)completion;
+- (void)remote_fetchDevicesMatchingValues:(id)values forProperty:(id)property completion:(id)completion;
+- (void)remote_fetchGymkitAndBluetoothDevicesMatchingValues:(id)values forProperty:(id)property completion:(id)completion;
 @end
 
 @implementation HDDeviceStoreServer
 
-- (void)remote_fetchDevicesMatchingValues:(id)a3 forProperty:(id)a4 completion:(id)a5
+- (void)remote_fetchDevicesMatchingValues:(id)values forProperty:(id)property completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(HDStandardTaskServer *)self profile];
-  v12 = [v11 deviceManager];
+  completionCopy = completion;
+  propertyCopy = property;
+  valuesCopy = values;
+  profile = [(HDStandardTaskServer *)self profile];
+  deviceManager = [profile deviceManager];
   v15 = 0;
-  v13 = [v12 devicesWithProperty:v9 matchingValues:v10 error:&v15];
+  v13 = [deviceManager devicesWithProperty:propertyCopy matchingValues:valuesCopy error:&v15];
 
   v14 = v15;
-  v8[2](v8, v13, v14);
+  completionCopy[2](completionCopy, v13, v14);
 }
 
-- (void)remote_fetchGymkitAndBluetoothDevicesMatchingValues:(id)a3 forProperty:(id)a4 completion:(id)a5
+- (void)remote_fetchGymkitAndBluetoothDevicesMatchingValues:(id)values forProperty:(id)property completion:(id)completion
 {
   v111 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HDStandardTaskServer *)self profile];
-  v12 = [v11 sourceManager];
+  valuesCopy = values;
+  propertyCopy = property;
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  sourceManager = [profile sourceManager];
   v13 = *MEMORY[0x277CCE288];
   v102 = 0;
-  v14 = [v12 allSourcesForBundleIdentifier:v13 error:&v102];
+  v14 = [sourceManager allSourcesForBundleIdentifier:v13 error:&v102];
   v15 = v102;
 
   if (v14)
   {
-    v16 = [(HDStandardTaskServer *)self profile];
-    v17 = [v16 sourceManager];
+    profile2 = [(HDStandardTaskServer *)self profile];
+    sourceManager2 = [profile2 sourceManager];
     v18 = *MEMORY[0x277CCE2C0];
     v101 = v15;
-    v19 = [v17 allSourcesForBundleIdentifier:v18 error:&v101];
+    v19 = [sourceManager2 allSourcesForBundleIdentifier:v18 error:&v101];
     v20 = v101;
 
     if (v19)
     {
-      v80 = self;
-      v21 = [(HDStandardTaskServer *)self profile];
-      v22 = [v21 sourceManager];
+      selfCopy = self;
+      profile3 = [(HDStandardTaskServer *)self profile];
+      sourceManager3 = [profile3 sourceManager];
       v23 = *MEMORY[0x277CCE420];
       v100 = v20;
-      v24 = [v22 allSourcesForBundleIdentifier:v23 error:&v100];
+      v24 = [sourceManager3 allSourcesForBundleIdentifier:v23 error:&v100];
       v25 = v100;
 
       if (v24)
       {
         v76 = v24;
         v77 = v19;
-        v75 = v10;
+        v75 = completionCopy;
         v26 = objc_alloc_init(MEMORY[0x277CBEB58]);
         v96 = 0u;
         v97 = 0u;
@@ -148,19 +148,19 @@
           while (v41);
         }
 
-        v45 = v80;
-        v46 = [(HDStandardTaskServer *)v80 profile];
-        v47 = [v46 dataProvenanceManager];
-        v48 = [(HDStandardTaskServer *)v80 profile];
+        v45 = selfCopy;
+        profile4 = [(HDStandardTaskServer *)selfCopy profile];
+        dataProvenanceManager = [profile4 dataProvenanceManager];
+        profile5 = [(HDStandardTaskServer *)selfCopy profile];
         v87 = v25;
-        v49 = [v47 deviceIDsForSourceIDs:v26 profile:v48 error:&v87];
+        v49 = [dataProvenanceManager deviceIDsForSourceIDs:v26 profile:profile5 error:&v87];
         v50 = v87;
 
         v73 = v49;
         if (v49)
         {
-          v71 = v9;
-          v72 = v8;
+          v71 = propertyCopy;
+          v72 = valuesCopy;
           v51 = objc_alloc_init(MEMORY[0x277CBEB18]);
           v83 = 0u;
           v84 = 0u;
@@ -184,27 +184,27 @@
                 }
 
                 v57 = *(*(&v83 + 1) + 8 * m);
-                v58 = [(HDStandardTaskServer *)v45 profile];
-                v59 = [v58 deviceManager];
+                profile6 = [(HDStandardTaskServer *)v45 profile];
+                deviceManager = [profile6 deviceManager];
                 v82 = v50;
-                v60 = [v59 deviceForPersistentID:v57 error:&v82];
+                v60 = [deviceManager deviceForPersistentID:v57 error:&v82];
                 v50 = v82;
 
                 if (v60)
                 {
                   [v79 addObject:v60];
-                  v45 = v80;
+                  v45 = selfCopy;
                 }
 
                 else
                 {
                   _HKInitializeLogging();
                   v61 = *MEMORY[0x277CCC2A0];
-                  v45 = v80;
+                  v45 = selfCopy;
                   if (os_log_type_enabled(*MEMORY[0x277CCC2A0], OS_LOG_TYPE_ERROR))
                   {
                     *buf = 138412546;
-                    v104 = v80;
+                    v104 = selfCopy;
                     v105 = 2114;
                     v106 = v57;
                     _os_log_error_impl(&dword_228986000, v61, OS_LOG_TYPE_ERROR, "%@: Failed to fetch device with ID: %{public}@", buf, 0x16u);
@@ -221,29 +221,29 @@
           v62 = v45;
           v63 = v50;
 
-          v64 = [(HDStandardTaskServer *)v62 profile];
-          v65 = [v64 deviceManager];
+          profile7 = [(HDStandardTaskServer *)v62 profile];
+          deviceManager2 = [profile7 deviceManager];
           v81 = v50;
-          v9 = v71;
-          v8 = v72;
-          v66 = [v65 devicesWithProperty:v71 matchingValues:v72 error:&v81];
+          propertyCopy = v71;
+          valuesCopy = v72;
+          v66 = [deviceManager2 devicesWithProperty:v71 matchingValues:v72 error:&v81];
           v50 = v81;
 
           v14 = v74;
           if (v66)
           {
-            v67 = [v66 allObjects];
+            allObjects = [v66 allObjects];
             v68 = v79;
-            [v79 addObjectsFromArray:v67];
+            [v79 addObjectsFromArray:allObjects];
 
             v69 = [MEMORY[0x277CBEB98] setWithArray:v79];
-            v10 = v75;
+            completionCopy = v75;
             (v75)[2](v75, v69, 0);
           }
 
           else
           {
-            v10 = v75;
+            completionCopy = v75;
             v75[2](v75, 0, v50);
             v68 = v79;
           }
@@ -251,7 +251,7 @@
 
         else
         {
-          v10 = v75;
+          completionCopy = v75;
           v75[2](v75, 0, v50);
           v14 = v74;
         }
@@ -264,7 +264,7 @@
 
       else
       {
-        v10[2](v10, 0, v25);
+        completionCopy[2](completionCopy, 0, v25);
       }
 
       v20 = v25;
@@ -272,7 +272,7 @@
 
     else
     {
-      v10[2](v10, 0, v20);
+      completionCopy[2](completionCopy, 0, v20);
     }
 
     v15 = v20;
@@ -280,35 +280,35 @@
 
   else
   {
-    v10[2](v10, 0, v15);
+    completionCopy[2](completionCopy, 0, v15);
   }
 
   v70 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_fetchAllDevicesWithCompletion:(id)a3
+- (void)remote_fetchAllDevicesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(HDStandardTaskServer *)self profile];
-  v6 = [v5 deviceManager];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  deviceManager = [profile deviceManager];
   v9 = 0;
-  v7 = [v6 allDevicesWithError:&v9];
+  v7 = [deviceManager allDevicesWithError:&v9];
   v8 = v9;
 
-  v4[2](v4, v7, v8);
+  completionCopy[2](completionCopy, v7, v8);
 }
 
-- (void)remote_deleteDevice:(id)a3 completion:(id)a4
+- (void)remote_deleteDevice:(id)device completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HDStandardTaskServer *)self profile];
-  v9 = [v8 deviceManager];
+  completionCopy = completion;
+  deviceCopy = device;
+  profile = [(HDStandardTaskServer *)self profile];
+  deviceManager = [profile deviceManager];
   v12 = 0;
-  v10 = [v9 deleteDevice:v7 error:&v12];
+  v10 = [deviceManager deleteDevice:deviceCopy error:&v12];
 
   v11 = v12;
-  v6[2](v6, v10, v11);
+  completionCopy[2](completionCopy, v10, v11);
 }
 
 + (id)requiredEntitlements

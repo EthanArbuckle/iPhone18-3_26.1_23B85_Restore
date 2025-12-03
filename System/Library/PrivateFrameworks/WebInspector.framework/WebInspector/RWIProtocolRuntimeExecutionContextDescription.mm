@@ -3,9 +3,9 @@
 - (NSString)name;
 - (int)identifier;
 - (int64_t)type;
-- (void)setFrameId:(id)a3;
-- (void)setName:(id)a3;
-- (void)setType:(int64_t)a3;
+- (void)setFrameId:(id)id;
+- (void)setName:(id)name;
+- (void)setType:(int64_t)type;
 @end
 
 @implementation RWIProtocolRuntimeExecutionContextDescription
@@ -17,7 +17,7 @@
   return [(RWIProtocolJSONObject *)&v3 integerForKey:@"id"];
 }
 
-- (void)setType:(int64_t)a3
+- (void)setType:(int64_t)type
 {
   WTF::StringImpl::createWithoutCopyingNonEmpty();
   if (v6)
@@ -85,11 +85,11 @@ LABEL_8:
   return v10;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimeExecutionContextDescription;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"name"];
+  [(RWIProtocolJSONObject *)&v3 setString:name forKey:@"name"];
 }
 
 - (NSString)name
@@ -101,11 +101,11 @@ LABEL_8:
   return v2;
 }
 
-- (void)setFrameId:(id)a3
+- (void)setFrameId:(id)id
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolRuntimeExecutionContextDescription;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"frameId"];
+  [(RWIProtocolJSONObject *)&v3 setString:id forKey:@"frameId"];
 }
 
 - (NSString)frameId

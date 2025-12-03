@@ -1,6 +1,6 @@
 @interface LoadMicroPaymentQueueCountOperation
-- (BOOL)_loadCountReturningError:(id *)a3;
-- (BOOL)_setCountWithResponse:(id)a3 error:(id *)a4;
+- (BOOL)_loadCountReturningError:(id *)error;
+- (BOOL)_setCountWithResponse:(id)response error:(id *)error;
 - (void)dealloc;
 - (void)run;
 @end
@@ -17,9 +17,9 @@
 - (void)run
 {
   v22 = 0;
-  v3 = [(LoadMicroPaymentQueueCountOperation *)self request];
-  v4 = [(LoadMicroPaymentQueueCountOperation *)self lastQueueCheckDate];
-  if (v4 && (v5 = v4, -[NSDate timeIntervalSinceNow](v4, "timeIntervalSinceNow"), v6 < 2.22044605e-16) && (v7 = [-[LoadMicroPaymentQueueCountOperation loadedURLBagWithContext:returningError:](self loadedURLBagWithContext:+[SSURLBagContext contextWithBagType:](SSURLBagContext returningError:{"contextWithBagType:", -[MicroPaymentQueueRequest URLBagType](v3, "URLBagType")), 0), "valueForKey:", @"p2-in-app-download-queue-check-interval"}]) != 0 && (v8 = v7, -[NSDate timeIntervalSinceNow](v5, "timeIntervalSinceNow"), v10 = v9, objc_msgSend(v8, "doubleValue"), v10 >= -v11))
+  request = [(LoadMicroPaymentQueueCountOperation *)self request];
+  lastQueueCheckDate = [(LoadMicroPaymentQueueCountOperation *)self lastQueueCheckDate];
+  if (lastQueueCheckDate && (v5 = lastQueueCheckDate, -[NSDate timeIntervalSinceNow](lastQueueCheckDate, "timeIntervalSinceNow"), v6 < 2.22044605e-16) && (v7 = [-[LoadMicroPaymentQueueCountOperation loadedURLBagWithContext:returningError:](self loadedURLBagWithContext:+[SSURLBagContext contextWithBagType:](SSURLBagContext returningError:{"contextWithBagType:", -[MicroPaymentQueueRequest URLBagType](request, "URLBagType")), 0), "valueForKey:", @"p2-in-app-download-queue-check-interval"}]) != 0 && (v8 = v7, -[NSDate timeIntervalSinceNow](v5, "timeIntervalSinceNow"), v10 = v9, objc_msgSend(v8, "doubleValue"), v10 >= -v11))
   {
     v14 = +[SSLogConfig sharedDaemonConfig];
     if (!v14)
@@ -27,15 +27,15 @@
       v14 = +[SSLogConfig sharedConfig];
     }
 
-    v15 = [v14 shouldLog];
+    shouldLog = [v14 shouldLog];
     if ([v14 shouldLogToDisk])
     {
-      v16 = v15 | 2;
+      v16 = shouldLog | 2;
     }
 
     else
     {
-      v16 = v15;
+      v16 = shouldLog;
     }
 
     if (!os_log_type_enabled([v14 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -48,7 +48,7 @@
       v23 = 138412546;
       v24 = objc_opt_class();
       v25 = 2112;
-      v26 = [(MicroPaymentQueueRequest *)v3 clientIdentity];
+      clientIdentity = [(MicroPaymentQueueRequest *)request clientIdentity];
       LODWORD(v21) = 22;
       v20 = &v23;
       v17 = _os_log_send_and_compose_impl();
@@ -77,16 +77,16 @@
   [(LoadMicroPaymentQueueCountOperation *)self setSuccess:v12];
 }
 
-- (BOOL)_loadCountReturningError:(id *)a3
+- (BOOL)_loadCountReturningError:(id *)error
 {
   v21 = 0;
-  v5 = [(LoadMicroPaymentQueueCountOperation *)self request];
-  v6 = [(MicroPaymentQueueRequest *)v5 newStoreURLOperation:&v21];
+  request = [(LoadMicroPaymentQueueCountOperation *)self request];
+  v6 = [(MicroPaymentQueueRequest *)request newStoreURLOperation:&v21];
   [v6 setDelegate:self];
   if (!v6)
   {
     v17 = 0;
-    if (!a3)
+    if (!error)
     {
       return v17;
     }
@@ -106,15 +106,15 @@
     v9 = +[SSLogConfig sharedConfig];
   }
 
-  v10 = [v9 shouldLog];
+  shouldLog = [v9 shouldLog];
   if ([v9 shouldLogToDisk])
   {
-    v11 = v10 | 2;
+    v11 = shouldLog | 2;
   }
 
   else
   {
-    v11 = v10;
+    v11 = shouldLog;
   }
 
   if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_INFO))
@@ -125,13 +125,13 @@
   if (v11)
   {
     v12 = objc_opt_class();
-    v13 = [(LoadMicroPaymentQueueCountOperation *)self URLBagKey];
+    uRLBagKey = [(LoadMicroPaymentQueueCountOperation *)self URLBagKey];
     v22 = 138412802;
     v23 = v12;
     v24 = 2112;
-    v25 = v13;
+    v25 = uRLBagKey;
     v26 = 2112;
-    v27 = v5;
+    v27 = request;
     LODWORD(v20) = 32;
     v19 = &v22;
     v14 = _os_log_send_and_compose_impl();
@@ -156,23 +156,23 @@
   }
 
   [v6 setDelegate:0];
-  if (a3)
+  if (error)
   {
 LABEL_18:
-    *a3 = v21;
+    *error = v21;
   }
 
   return v17;
 }
 
-- (BOOL)_setCountWithResponse:(id)a3 error:(id *)a4
+- (BOOL)_setCountWithResponse:(id)response error:(id *)error
 {
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if ((isKindOfClass & 1) == 0)
   {
     v12 = ISError();
-    if (!a4)
+    if (!error)
     {
       return isKindOfClass & 1;
     }
@@ -180,7 +180,7 @@ LABEL_18:
     goto LABEL_15;
   }
 
-  v8 = [a3 objectForKey:@"download-queue-item-count"];
+  v8 = [response objectForKey:@"download-queue-item-count"];
   if (objc_opt_respondsToSelector())
   {
     -[LoadMicroPaymentQueueCountOperation setQueueItemCount:](self, "setQueueItemCount:", [v8 intValue]);
@@ -190,8 +190,8 @@ LABEL_18:
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
-    v11 = [v9 shouldLogToDisk] ? v10 | 2 : v10;
+    shouldLog = [v9 shouldLog];
+    v11 = [v9 shouldLogToDisk] ? shouldLog | 2 : shouldLog;
     if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_INFO))
     {
       v11 &= 2u;
@@ -204,7 +204,7 @@ LABEL_18:
       v18 = 2112;
       v19 = v8;
       v20 = 2112;
-      v21 = [(LoadMicroPaymentQueueCountOperation *)self URLBagKey];
+      uRLBagKey = [(LoadMicroPaymentQueueCountOperation *)self URLBagKey];
       LODWORD(v15) = 32;
       v12 = _os_log_send_and_compose_impl();
       if (!v12)
@@ -221,10 +221,10 @@ LABEL_18:
 
   v12 = 0;
 LABEL_14:
-  if (a4)
+  if (error)
   {
 LABEL_15:
-    *a4 = v12;
+    *error = v12;
   }
 
   return isKindOfClass & 1;

@@ -1,66 +1,66 @@
 @interface AMSUIWebPlaceholderViewController
-- (AMSUIWebPlaceholderViewController)initWithContext:(id)a3;
-- (AMSUIWebPlaceholderViewController)initWithModel:(id)a3 context:(id)a4 appearance:(id)a5;
-- (AMSUIWebPlaceholderViewController)initWithSnapshot:(id)a3 context:(id)a4 appearance:(id)a5;
+- (AMSUIWebPlaceholderViewController)initWithContext:(id)context;
+- (AMSUIWebPlaceholderViewController)initWithModel:(id)model context:(id)context appearance:(id)appearance;
+- (AMSUIWebPlaceholderViewController)initWithSnapshot:(id)snapshot context:(id)context appearance:(id)appearance;
 - (id)removeSnapshot;
 - (void)_animateTransition;
 - (void)_applyAppearance;
-- (void)_replacePrimaryViewWithView:(id)a3 animated:(BOOL)a4;
-- (void)_replacePrimaryViewWithViewController:(id)a3 animated:(BOOL)a4;
-- (void)_startReappearTransitionTimerAnimated:(BOOL)a3;
+- (void)_replacePrimaryViewWithView:(id)view animated:(BOOL)animated;
+- (void)_replacePrimaryViewWithViewController:(id)controller animated:(BOOL)animated;
+- (void)_startReappearTransitionTimerAnimated:(BOOL)animated;
 - (void)_transitionToSnapshot;
-- (void)awaitSnapshotWithCompletion:(id)a3;
+- (void)awaitSnapshotWithCompletion:(id)completion;
 - (void)dealloc;
 - (void)loadView;
 - (void)viewWillLayoutSubviews;
-- (void)willPresentPageModel:(id)a3 appearance:(id)a4;
+- (void)willPresentPageModel:(id)model appearance:(id)appearance;
 @end
 
 @implementation AMSUIWebPlaceholderViewController
 
-- (AMSUIWebPlaceholderViewController)initWithContext:(id)a3
+- (AMSUIWebPlaceholderViewController)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = AMSUIWebPlaceholderViewController;
   v6 = [(AMSUICommonViewController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
-    v8 = [MEMORY[0x1E698C7F0] promiseWithSuccess];
+    objc_storeStrong(&v6->_context, context);
+    promiseWithSuccess = [MEMORY[0x1E698C7F0] promiseWithSuccess];
     snapshotPromise = v7->_snapshotPromise;
-    v7->_snapshotPromise = v8;
+    v7->_snapshotPromise = promiseWithSuccess;
   }
 
   return v7;
 }
 
-- (AMSUIWebPlaceholderViewController)initWithModel:(id)a3 context:(id)a4 appearance:(id)a5
+- (AMSUIWebPlaceholderViewController)initWithModel:(id)model context:(id)context appearance:(id)appearance
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [(AMSUIWebPlaceholderViewController *)self initWithContext:a4];
+  modelCopy = model;
+  appearanceCopy = appearance;
+  v11 = [(AMSUIWebPlaceholderViewController *)self initWithContext:context];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_appearance, a5);
-    objc_storeStrong(&v12->_model, a3);
+    objc_storeStrong(&v11->_appearance, appearance);
+    objc_storeStrong(&v12->_model, model);
   }
 
   return v12;
 }
 
-- (AMSUIWebPlaceholderViewController)initWithSnapshot:(id)a3 context:(id)a4 appearance:(id)a5
+- (AMSUIWebPlaceholderViewController)initWithSnapshot:(id)snapshot context:(id)context appearance:(id)appearance
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(AMSUIWebPlaceholderViewController *)self initWithContext:v9];
+  snapshotCopy = snapshot;
+  contextCopy = context;
+  appearanceCopy = appearance;
+  v11 = [(AMSUIWebPlaceholderViewController *)self initWithContext:contextCopy];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_appearance, a5);
+    objc_storeStrong(&v11->_appearance, appearance);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,13 +70,13 @@
 
       objc_initWeak(&location, v12);
       v15 = [AMSUIWebSnapshotView alloc];
-      v16 = [v8 view];
+      view = [snapshotCopy view];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __73__AMSUIWebPlaceholderViewController_initWithSnapshot_context_appearance___block_invoke;
       v20[3] = &unk_1E7F24968;
       objc_copyWeak(&v21, &location);
-      v17 = [(AMSUIWebSnapshotView *)v15 initWithView:v16 completion:v20];
+      v17 = [(AMSUIWebSnapshotView *)v15 initWithView:view completion:v20];
       snapshotView = v12->_snapshotView;
       v12->_snapshotView = v17;
 
@@ -95,23 +95,23 @@ void __73__AMSUIWebPlaceholderViewController_initWithSnapshot_context_appearance
   [v1 finishWithSuccess];
 }
 
-- (void)awaitSnapshotWithCompletion:(id)a3
+- (void)awaitSnapshotWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(AMSUIWebPlaceholderViewController *)self snapshotPromise];
+  completionCopy = completion;
+  snapshotPromise = [(AMSUIWebPlaceholderViewController *)self snapshotPromise];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__AMSUIWebPlaceholderViewController_awaitSnapshotWithCompletion___block_invoke;
   v7[3] = &unk_1E7F26A48;
-  v8 = v4;
-  v6 = v4;
-  [v5 addFinishBlock:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [snapshotPromise addFinishBlock:v7];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AMSUIWebPlaceholderViewController;
@@ -124,23 +124,23 @@ void __73__AMSUIWebPlaceholderViewController_initWithSnapshot_context_appearance
   v14.super_class = AMSUIWebPlaceholderViewController;
   [(AMSUICommonViewController *)&v14 loadView];
   v3 = +[AMSUIWebAppearance defaultPlatformBackgroundColor];
-  v4 = [(AMSUICommonViewController *)self view];
-  [v4 ams_setBackgroundColor:v3];
+  view = [(AMSUICommonViewController *)self view];
+  [view ams_setBackgroundColor:v3];
 
   v5 = objc_opt_class();
-  v6 = [(AMSUIWebPlaceholderViewController *)self model];
-  v7 = [v6 message];
-  v8 = [v5 placeholderStyleLoadingControllerWithMessage:v7];
+  model = [(AMSUIWebPlaceholderViewController *)self model];
+  message = [model message];
+  v8 = [v5 placeholderStyleLoadingControllerWithMessage:message];
   [(AMSUIWebPlaceholderViewController *)self setLoadingController:v8];
 
-  v9 = [(AMSUIWebPlaceholderViewController *)self loadingController];
-  v10 = [v9 view];
-  [v10 ams_setBackgroundColor:v3];
+  loadingController = [(AMSUIWebPlaceholderViewController *)self loadingController];
+  view2 = [loadingController view];
+  [view2 ams_setBackgroundColor:v3];
 
-  v11 = [(AMSUIWebPlaceholderViewController *)self model];
-  LODWORD(v10) = [v11 disableDelay];
+  model2 = [(AMSUIWebPlaceholderViewController *)self model];
+  LODWORD(view2) = [model2 disableDelay];
 
-  if (v10)
+  if (view2)
   {
     [(AMSUIWebPlaceholderViewController *)self _transitionToLoadingAnimated:0];
   }
@@ -150,9 +150,9 @@ void __73__AMSUIWebPlaceholderViewController_initWithSnapshot_context_appearance
     [(AMSUIWebPlaceholderViewController *)self _transitionToSnapshot];
   }
 
-  v12 = [(AMSUIWebPlaceholderViewController *)self snapshotID];
+  snapshotID = [(AMSUIWebPlaceholderViewController *)self snapshotID];
 
-  if (!v12)
+  if (!snapshotID)
   {
     v13 = objc_opt_new();
     [(AMSUIWebPlaceholderViewController *)self setSnapshotID:v13];
@@ -164,30 +164,30 @@ void __73__AMSUIWebPlaceholderViewController_initWithSnapshot_context_appearance
   v13.receiver = self;
   v13.super_class = AMSUIWebPlaceholderViewController;
   [(AMSUIWebPlaceholderViewController *)&v13 viewWillLayoutSubviews];
-  v3 = [(AMSUICommonViewController *)self view];
-  [v3 frame];
+  view = [(AMSUICommonViewController *)self view];
+  [view frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(AMSUIWebPlaceholderViewController *)self visibleView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  visibleView = [(AMSUIWebPlaceholderViewController *)self visibleView];
+  [visibleView setFrame:{v5, v7, v9, v11}];
 }
 
 - (id)removeSnapshot
 {
-  v2 = [(AMSUIWebPlaceholderViewController *)self snapshotView];
-  v3 = [v2 removeSnapshot];
+  snapshotView = [(AMSUIWebPlaceholderViewController *)self snapshotView];
+  removeSnapshot = [snapshotView removeSnapshot];
 
-  return v3;
+  return removeSnapshot;
 }
 
-- (void)willPresentPageModel:(id)a3 appearance:(id)a4
+- (void)willPresentPageModel:(id)model appearance:(id)appearance
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  modelCopy = model;
+  appearanceCopy = appearance;
+  v8 = modelCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -202,31 +202,31 @@ void __73__AMSUIWebPlaceholderViewController_initWithSnapshot_context_appearance
   if (v9)
   {
     objc_storeStrong(&self->_model, v9);
-    objc_storeStrong(&self->_appearance, a4);
+    objc_storeStrong(&self->_appearance, appearance);
     [(AMSUIWebPlaceholderViewController *)self _applyAppearance];
   }
 
   else
   {
-    v10 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v10)
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v10 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v11 = [v10 OSLogObject];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v12 = objc_opt_class();
-      v13 = [(AMSUIWebPlaceholderViewController *)self context];
-      v14 = [v13 logKey];
+      context = [(AMSUIWebPlaceholderViewController *)self context];
+      logKey = [context logKey];
       v16 = 138543874;
       v17 = v12;
       v18 = 2114;
-      v19 = v14;
+      v19 = logKey;
       v20 = 2114;
       v21 = v8;
-      _os_log_impl(&dword_1BB036000, v11, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Invalid loading page model: %{public}@", &v16, 0x20u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Invalid loading page model: %{public}@", &v16, 0x20u);
     }
   }
 
@@ -235,13 +235,13 @@ void __73__AMSUIWebPlaceholderViewController_initWithSnapshot_context_appearance
 
 - (void)_applyAppearance
 {
-  v13 = [(AMSUIWebPlaceholderViewController *)self appearance];
+  appearance = [(AMSUIWebPlaceholderViewController *)self appearance];
   v3 = +[AMSUIWebAppearance defaultPlatformBackgroundColor];
-  v4 = [v13 backgroundColor];
-  v5 = v4;
-  if (v4)
+  backgroundColor = [appearance backgroundColor];
+  v5 = backgroundColor;
+  if (backgroundColor)
   {
-    v6 = v4;
+    v6 = backgroundColor;
   }
 
   else
@@ -249,14 +249,14 @@ void __73__AMSUIWebPlaceholderViewController_initWithSnapshot_context_appearance
     v6 = v3;
   }
 
-  v7 = [(AMSUICommonViewController *)self view];
-  [v7 ams_setBackgroundColor:v6];
+  view = [(AMSUICommonViewController *)self view];
+  [view ams_setBackgroundColor:v6];
 
-  v8 = [v13 backgroundColor];
-  v9 = v8;
-  if (v8)
+  backgroundColor2 = [appearance backgroundColor];
+  v9 = backgroundColor2;
+  if (backgroundColor2)
   {
-    v10 = v8;
+    v10 = backgroundColor2;
   }
 
   else
@@ -264,18 +264,18 @@ void __73__AMSUIWebPlaceholderViewController_initWithSnapshot_context_appearance
     v10 = v3;
   }
 
-  v11 = [(AMSUIWebPlaceholderViewController *)self loadingController];
-  v12 = [v11 view];
-  [v12 ams_setBackgroundColor:v10];
+  loadingController = [(AMSUIWebPlaceholderViewController *)self loadingController];
+  view2 = [loadingController view];
+  [view2 ams_setBackgroundColor:v10];
 }
 
-- (void)_startReappearTransitionTimerAnimated:(BOOL)a3
+- (void)_startReappearTransitionTimerAnimated:(BOOL)animated
 {
-  v5 = [(AMSUIWebPlaceholderViewController *)self visibleView];
-  v6 = [(AMSUIWebPlaceholderViewController *)self loadingController];
-  v7 = [v6 view];
+  visibleView = [(AMSUIWebPlaceholderViewController *)self visibleView];
+  loadingController = [(AMSUIWebPlaceholderViewController *)self loadingController];
+  view = [loadingController view];
 
-  if (v5 != v7)
+  if (visibleView != view)
   {
     objc_initWeak(&location, self);
     v8 = MEMORY[0x1E69E96A0];
@@ -284,7 +284,7 @@ void __73__AMSUIWebPlaceholderViewController_initWithSnapshot_context_appearance
     v14[2] = __75__AMSUIWebPlaceholderViewController__startReappearTransitionTimerAnimated___block_invoke;
     v14[3] = &unk_1E7F26A70;
     objc_copyWeak(&v15, &location);
-    v16 = a3;
+    animatedCopy = animated;
     v9 = v14;
     v10 = AMSLogKey();
     v11 = dispatch_time(0, 1500000000);
@@ -310,62 +310,62 @@ void __75__AMSUIWebPlaceholderViewController__startReappearTransitionTimerAnimat
   [WeakRetained setSnapshotView:0];
 }
 
-- (void)_replacePrimaryViewWithView:(id)a3 animated:(BOOL)a4
+- (void)_replacePrimaryViewWithView:(id)view animated:(BOOL)animated
 {
-  v4 = a4;
-  v15 = a3;
-  v6 = [(AMSUIWebPlaceholderViewController *)self visibleView];
+  animatedCopy = animated;
+  viewCopy = view;
+  visibleView = [(AMSUIWebPlaceholderViewController *)self visibleView];
 
-  v7 = v15;
-  if (v6 != v15)
+  v7 = viewCopy;
+  if (visibleView != viewCopy)
   {
-    v8 = [(AMSUIWebPlaceholderViewController *)self visibleView];
-    v9 = [(AMSUIWebPlaceholderViewController *)self loadingController];
-    v10 = [v9 view];
+    visibleView2 = [(AMSUIWebPlaceholderViewController *)self visibleView];
+    loadingController = [(AMSUIWebPlaceholderViewController *)self loadingController];
+    view = [loadingController view];
 
-    if (v8 == v10)
+    if (visibleView2 == view)
     {
-      v11 = [(AMSUIWebPlaceholderViewController *)self loadingController];
-      [(AMSUICommonViewController *)self unsetChildViewController:v11];
+      loadingController2 = [(AMSUIWebPlaceholderViewController *)self loadingController];
+      [(AMSUICommonViewController *)self unsetChildViewController:loadingController2];
     }
 
-    v12 = [(AMSUIWebPlaceholderViewController *)self visibleView];
-    [v12 removeFromSuperview];
+    visibleView3 = [(AMSUIWebPlaceholderViewController *)self visibleView];
+    [visibleView3 removeFromSuperview];
 
-    v13 = [(AMSUICommonViewController *)self view];
-    [v13 bounds];
-    [v15 setFrame:?];
+    view2 = [(AMSUICommonViewController *)self view];
+    [view2 bounds];
+    [viewCopy setFrame:?];
 
-    v14 = [(AMSUICommonViewController *)self view];
-    [v14 addSubview:v15];
+    view3 = [(AMSUICommonViewController *)self view];
+    [view3 addSubview:viewCopy];
 
-    [(AMSUIWebPlaceholderViewController *)self setVisibleView:v15];
-    v7 = v15;
-    if (v4)
+    [(AMSUIWebPlaceholderViewController *)self setVisibleView:viewCopy];
+    v7 = viewCopy;
+    if (animatedCopy)
     {
       [(AMSUIWebPlaceholderViewController *)self _animateTransition];
-      v7 = v15;
+      v7 = viewCopy;
     }
   }
 }
 
-- (void)_replacePrimaryViewWithViewController:(id)a3 animated:(BOOL)a4
+- (void)_replacePrimaryViewWithViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v10 = a3;
-  v6 = [(AMSUIWebPlaceholderViewController *)self visibleView];
-  v7 = [v10 view];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  visibleView = [(AMSUIWebPlaceholderViewController *)self visibleView];
+  view = [controllerCopy view];
 
-  if (v6 != v7)
+  if (visibleView != view)
   {
-    v8 = [(AMSUIWebPlaceholderViewController *)self visibleView];
-    [v8 removeFromSuperview];
+    visibleView2 = [(AMSUIWebPlaceholderViewController *)self visibleView];
+    [visibleView2 removeFromSuperview];
 
-    [(AMSUICommonViewController *)self setChildViewController:v10];
-    v9 = [v10 view];
-    [(AMSUIWebPlaceholderViewController *)self setVisibleView:v9];
+    [(AMSUICommonViewController *)self setChildViewController:controllerCopy];
+    view2 = [controllerCopy view];
+    [(AMSUIWebPlaceholderViewController *)self setVisibleView:view2];
 
-    if (v4)
+    if (animatedCopy)
     {
       [(AMSUIWebPlaceholderViewController *)self _animateTransition];
     }
@@ -374,8 +374,8 @@ void __75__AMSUIWebPlaceholderViewController__startReappearTransitionTimerAnimat
 
 - (void)_animateTransition
 {
-  v3 = [(AMSUIWebPlaceholderViewController *)self visibleView];
-  [v3 setAlpha:0.0];
+  visibleView = [(AMSUIWebPlaceholderViewController *)self visibleView];
+  [visibleView setAlpha:0.0];
 
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
@@ -393,12 +393,12 @@ void __55__AMSUIWebPlaceholderViewController__animateTransition__block_invoke(ui
 
 - (void)_transitionToSnapshot
 {
-  v3 = [(AMSUIWebPlaceholderViewController *)self snapshotView];
+  snapshotView = [(AMSUIWebPlaceholderViewController *)self snapshotView];
 
-  if (v3)
+  if (snapshotView)
   {
-    v4 = [(AMSUIWebPlaceholderViewController *)self snapshotView];
-    [(AMSUIWebPlaceholderViewController *)self _replacePrimaryViewWithView:v4 animated:0];
+    snapshotView2 = [(AMSUIWebPlaceholderViewController *)self snapshotView];
+    [(AMSUIWebPlaceholderViewController *)self _replacePrimaryViewWithView:snapshotView2 animated:0];
   }
 }
 

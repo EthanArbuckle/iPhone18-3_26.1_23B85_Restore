@@ -1,45 +1,45 @@
 @interface MTRDeviceControllerOverXPC
-+ (id)sharedControllerWithID:(id)a3 xpcConnectBlock:(id)a4;
-- (BOOL)cancelCommissioningForNodeID:(id)a3 error:(id *)a4;
-- (BOOL)commissionDevice:(unint64_t)a3 commissioningParams:(id)a4 error:(id *)a5;
-- (BOOL)commissionNodeWithID:(id)a3 commissioningParams:(id)a4 error:(id *)a5;
-- (BOOL)getBaseDevice:(unint64_t)a3 queue:(id)a4 completionHandler:(id)a5;
-- (BOOL)openPairingWindow:(unint64_t)a3 duration:(unint64_t)a4 error:(id *)a5;
-- (BOOL)pairDevice:(unint64_t)a3 address:(id)a4 port:(unsigned __int16)a5 discriminator:(unsigned __int16)a6 setupPINCode:(unsigned int)a7 error:(id *)a8;
-- (BOOL)pairDevice:(unint64_t)a3 discriminator:(unsigned __int16)a4 setupPINCode:(unsigned int)a5 error:(id *)a6;
-- (BOOL)pairDevice:(unint64_t)a3 onboardingPayload:(id)a4 error:(id *)a5;
-- (BOOL)setupCommissioningSessionWithPayload:(id)a3 newNodeID:(id)a4 error:(id *)a5;
-- (BOOL)stopDevicePairing:(unint64_t)a3 error:(id *)a4;
-- (MTRDeviceControllerOverXPC)initWithControllerID:(id)a3 workQueue:(id)a4 connectBlock:(id)a5;
-- (MTRDeviceControllerOverXPC)initWithControllerID:(id)a3 workQueue:(id)a4 xpcConnection:(id)a5;
-- (id)baseDeviceForNodeID:(id)a3;
-- (id)deviceBeingCommissionedWithNodeID:(id)a3 error:(id *)a4;
-- (id)getDeviceBeingCommissioned:(unint64_t)a3 error:(id *)a4;
-- (id)openPairingWindowWithPIN:(unint64_t)a3 duration:(unint64_t)a4 discriminator:(unint64_t)a5 setupPIN:(unint64_t)a6 error:(id *)a7;
-- (void)fetchControllerIdWithQueue:(id)a3 completion:(id)a4;
++ (id)sharedControllerWithID:(id)d xpcConnectBlock:(id)block;
+- (BOOL)cancelCommissioningForNodeID:(id)d error:(id *)error;
+- (BOOL)commissionDevice:(unint64_t)device commissioningParams:(id)params error:(id *)error;
+- (BOOL)commissionNodeWithID:(id)d commissioningParams:(id)params error:(id *)error;
+- (BOOL)getBaseDevice:(unint64_t)device queue:(id)queue completionHandler:(id)handler;
+- (BOOL)openPairingWindow:(unint64_t)window duration:(unint64_t)duration error:(id *)error;
+- (BOOL)pairDevice:(unint64_t)device address:(id)address port:(unsigned __int16)port discriminator:(unsigned __int16)discriminator setupPINCode:(unsigned int)code error:(id *)error;
+- (BOOL)pairDevice:(unint64_t)device discriminator:(unsigned __int16)discriminator setupPINCode:(unsigned int)code error:(id *)error;
+- (BOOL)pairDevice:(unint64_t)device onboardingPayload:(id)payload error:(id *)error;
+- (BOOL)setupCommissioningSessionWithPayload:(id)payload newNodeID:(id)d error:(id *)error;
+- (BOOL)stopDevicePairing:(unint64_t)pairing error:(id *)error;
+- (MTRDeviceControllerOverXPC)initWithControllerID:(id)d workQueue:(id)queue connectBlock:(id)block;
+- (MTRDeviceControllerOverXPC)initWithControllerID:(id)d workQueue:(id)queue xpcConnection:(id)connection;
+- (id)baseDeviceForNodeID:(id)d;
+- (id)deviceBeingCommissionedWithNodeID:(id)d error:(id *)error;
+- (id)getDeviceBeingCommissioned:(unint64_t)commissioned error:(id *)error;
+- (id)openPairingWindowWithPIN:(unint64_t)n duration:(unint64_t)duration discriminator:(unint64_t)discriminator setupPIN:(unint64_t)iN error:(id *)error;
+- (void)fetchControllerIdWithQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation MTRDeviceControllerOverXPC
 
-+ (id)sharedControllerWithID:(id)a3 xpcConnectBlock:(id)a4
++ (id)sharedControllerWithID:(id)d xpcConnectBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  blockCopy = block;
   if (qword_27DF77670 != -1)
   {
     sub_23952D5DC();
   }
 
   v7 = [MTRDeviceControllerOverXPC alloc];
-  v8 = [(MTRDeviceControllerOverXPC *)v7 initWithControllerID:v5 workQueue:qword_27DF77668 connectBlock:v6];
+  v8 = [(MTRDeviceControllerOverXPC *)v7 initWithControllerID:dCopy workQueue:qword_27DF77668 connectBlock:blockCopy];
 
   return v8;
 }
 
-- (BOOL)setupCommissioningSessionWithPayload:(id)a3 newNodeID:(id)a4 error:(id *)a5
+- (BOOL)setupCommissioningSessionWithPayload:(id)payload newNodeID:(id)d error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  payloadCopy = payload;
+  dCopy = d;
   v9 = sub_2393D9044(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
@@ -52,15 +52,15 @@
     sub_2393D5320(0, 1);
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MTRErrorDomain" code:6 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"MTRErrorDomain" code:6 userInfo:0];
   }
 
   return 0;
 }
 
-- (BOOL)pairDevice:(unint64_t)a3 discriminator:(unsigned __int16)a4 setupPINCode:(unsigned int)a5 error:(id *)a6
+- (BOOL)pairDevice:(unint64_t)device discriminator:(unsigned __int16)discriminator setupPINCode:(unsigned int)code error:(id *)error
 {
   v7 = sub_2393D9044(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -74,17 +74,17 @@
     sub_2393D5320(0, 1);
   }
 
-  if (a6)
+  if (error)
   {
-    *a6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MTRErrorDomain" code:6 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"MTRErrorDomain" code:6 userInfo:0];
   }
 
   return 0;
 }
 
-- (BOOL)pairDevice:(unint64_t)a3 address:(id)a4 port:(unsigned __int16)a5 discriminator:(unsigned __int16)a6 setupPINCode:(unsigned int)a7 error:(id *)a8
+- (BOOL)pairDevice:(unint64_t)device address:(id)address port:(unsigned __int16)port discriminator:(unsigned __int16)discriminator setupPINCode:(unsigned int)code error:(id *)error
 {
-  v9 = a4;
+  addressCopy = address;
   v10 = sub_2393D9044(0);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
@@ -97,17 +97,17 @@
     sub_2393D5320(0, 1);
   }
 
-  if (a8)
+  if (error)
   {
-    *a8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MTRErrorDomain" code:6 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"MTRErrorDomain" code:6 userInfo:0];
   }
 
   return 0;
 }
 
-- (BOOL)pairDevice:(unint64_t)a3 onboardingPayload:(id)a4 error:(id *)a5
+- (BOOL)pairDevice:(unint64_t)device onboardingPayload:(id)payload error:(id *)error
 {
-  v6 = a4;
+  payloadCopy = payload;
   v7 = sub_2393D9044(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -120,17 +120,17 @@
     sub_2393D5320(0, 1);
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MTRErrorDomain" code:6 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"MTRErrorDomain" code:6 userInfo:0];
   }
 
   return 0;
 }
 
-- (BOOL)commissionDevice:(unint64_t)a3 commissioningParams:(id)a4 error:(id *)a5
+- (BOOL)commissionDevice:(unint64_t)device commissioningParams:(id)params error:(id *)error
 {
-  v6 = a4;
+  paramsCopy = params;
   v7 = sub_2393D9044(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
@@ -143,15 +143,15 @@
     sub_2393D5320(0, 1);
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MTRErrorDomain" code:6 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"MTRErrorDomain" code:6 userInfo:0];
   }
 
   return 0;
 }
 
-- (BOOL)stopDevicePairing:(unint64_t)a3 error:(id *)a4
+- (BOOL)stopDevicePairing:(unint64_t)pairing error:(id *)error
 {
   v5 = sub_2393D9044(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -165,15 +165,15 @@
     sub_2393D5320(0, 1);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MTRErrorDomain" code:6 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"MTRErrorDomain" code:6 userInfo:0];
   }
 
   return 0;
 }
 
-- (id)getDeviceBeingCommissioned:(unint64_t)a3 error:(id *)a4
+- (id)getDeviceBeingCommissioned:(unint64_t)commissioned error:(id *)error
 {
   v5 = sub_2393D9044(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -187,18 +187,18 @@
     sub_2393D5320(0, 1);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MTRErrorDomain" code:6 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"MTRErrorDomain" code:6 userInfo:0];
   }
 
   return 0;
 }
 
-- (BOOL)commissionNodeWithID:(id)a3 commissioningParams:(id)a4 error:(id *)a5
+- (BOOL)commissionNodeWithID:(id)d commissioningParams:(id)params error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  paramsCopy = params;
   v9 = sub_2393D9044(0);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
@@ -211,17 +211,17 @@
     sub_2393D5320(0, 1);
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MTRErrorDomain" code:6 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"MTRErrorDomain" code:6 userInfo:0];
   }
 
   return 0;
 }
 
-- (BOOL)cancelCommissioningForNodeID:(id)a3 error:(id *)a4
+- (BOOL)cancelCommissioningForNodeID:(id)d error:(id *)error
 {
-  v5 = a3;
+  dCopy = d;
   v6 = sub_2393D9044(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
@@ -234,17 +234,17 @@
     sub_2393D5320(0, 1);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MTRErrorDomain" code:6 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"MTRErrorDomain" code:6 userInfo:0];
   }
 
   return 0;
 }
 
-- (id)deviceBeingCommissionedWithNodeID:(id)a3 error:(id *)a4
+- (id)deviceBeingCommissionedWithNodeID:(id)d error:(id *)error
 {
-  v5 = a3;
+  dCopy = d;
   v6 = sub_2393D9044(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
@@ -257,34 +257,34 @@
     sub_2393D5320(0, 1);
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MTRErrorDomain" code:6 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"MTRErrorDomain" code:6 userInfo:0];
   }
 
   return 0;
 }
 
-- (BOOL)getBaseDevice:(unint64_t)a3 queue:(id)a4 completionHandler:(id)a5
+- (BOOL)getBaseDevice:(unint64_t)device queue:(id)queue completionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = sub_2392D012C;
   v11[3] = &unk_278A75100;
   v11[4] = self;
-  v12 = v8;
-  v13 = a3;
-  v9 = v8;
-  [(MTRDeviceControllerOverXPC *)self fetchControllerIdWithQueue:a4 completion:v11];
+  v12 = handlerCopy;
+  deviceCopy = device;
+  v9 = handlerCopy;
+  [(MTRDeviceControllerOverXPC *)self fetchControllerIdWithQueue:queue completion:v11];
 
   return 1;
 }
 
-- (void)fetchControllerIdWithQueue:(id)a3 completion:(id)a4
+- (void)fetchControllerIdWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x3032000000;
@@ -297,27 +297,27 @@
   v11[2] = sub_2392D034C;
   v11[3] = &unk_278A751A0;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
+  v12 = queueCopy;
+  v13 = completionCopy;
   v14 = v15;
-  v9 = v7;
-  v10 = v6;
+  v9 = completionCopy;
+  v10 = queueCopy;
   dispatch_async(workQueue, v11);
 
   _Block_object_dispose(v15, 8);
 }
 
-- (id)baseDeviceForNodeID:(id)a3
+- (id)baseDeviceForNodeID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = [MTRDeviceOverXPC alloc];
-  v6 = [(MTRDeviceControllerOverXPC *)self xpcConnection];
-  v7 = [(MTRDeviceOverXPC *)v5 initWithControllerOverXPC:self deviceID:v4 xpcConnection:v6];
+  xpcConnection = [(MTRDeviceControllerOverXPC *)self xpcConnection];
+  v7 = [(MTRDeviceOverXPC *)v5 initWithControllerOverXPC:self deviceID:dCopy xpcConnection:xpcConnection];
 
   return v7;
 }
 
-- (BOOL)openPairingWindow:(unint64_t)a3 duration:(unint64_t)a4 error:(id *)a5
+- (BOOL)openPairingWindow:(unint64_t)window duration:(unint64_t)duration error:(id *)error
 {
   v5 = sub_2393D9044(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -334,7 +334,7 @@
   return 0;
 }
 
-- (id)openPairingWindowWithPIN:(unint64_t)a3 duration:(unint64_t)a4 discriminator:(unint64_t)a5 setupPIN:(unint64_t)a6 error:(id *)a7
+- (id)openPairingWindowWithPIN:(unint64_t)n duration:(unint64_t)duration discriminator:(unint64_t)discriminator setupPIN:(unint64_t)iN error:(id *)error
 {
   v7 = sub_2393D9044(0);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -351,31 +351,31 @@
   return 0;
 }
 
-- (MTRDeviceControllerOverXPC)initWithControllerID:(id)a3 workQueue:(id)a4 xpcConnection:(id)a5
+- (MTRDeviceControllerOverXPC)initWithControllerID:(id)d workQueue:(id)queue xpcConnection:(id)connection
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  queueCopy = queue;
+  connectionCopy = connection;
   controllerXPCID = self->_controllerXPCID;
-  self->_controllerXPCID = v8;
-  v12 = v8;
+  self->_controllerXPCID = dCopy;
+  v12 = dCopy;
 
   workQueue = self->_workQueue;
-  self->_workQueue = v9;
-  v14 = v9;
+  self->_workQueue = queueCopy;
+  v14 = queueCopy;
 
   xpcConnection = self->_xpcConnection;
-  self->_xpcConnection = v10;
+  self->_xpcConnection = connectionCopy;
 
   return self;
 }
 
-- (MTRDeviceControllerOverXPC)initWithControllerID:(id)a3 workQueue:(id)a4 connectBlock:(id)a5
+- (MTRDeviceControllerOverXPC)initWithControllerID:(id)d workQueue:(id)queue connectBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [MTRDeviceControllerXPCConnection connectionWithWorkQueue:v9 connectBlock:a5];
-  v11 = [(MTRDeviceControllerOverXPC *)self initWithControllerID:v8 workQueue:v9 xpcConnection:v10];
+  dCopy = d;
+  queueCopy = queue;
+  v10 = [MTRDeviceControllerXPCConnection connectionWithWorkQueue:queueCopy connectBlock:block];
+  v11 = [(MTRDeviceControllerOverXPC *)self initWithControllerID:dCopy workQueue:queueCopy xpcConnection:v10];
 
   return v11;
 }

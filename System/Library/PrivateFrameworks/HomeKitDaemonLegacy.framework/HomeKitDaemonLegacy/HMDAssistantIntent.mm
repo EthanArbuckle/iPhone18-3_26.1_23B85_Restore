@@ -1,27 +1,27 @@
 @interface HMDAssistantIntent
 + (id)logCategory;
-- (HMDAssistantIntent)initWithIntent:(id)a3;
+- (HMDAssistantIntent)initWithIntent:(id)intent;
 - (id)_getObjectsWithUUID;
-- (void)_handleActionSetForConfirmation:(id)a3 message:(id)a4;
-- (void)_handleActionSetForExecution:(id)a3 message:(id)a4;
-- (void)_handleIntentRequestMessage:(id)a3;
-- (void)performWithGather:(id)a3 message:(id)a4;
+- (void)_handleActionSetForConfirmation:(id)confirmation message:(id)message;
+- (void)_handleActionSetForExecution:(id)execution message:(id)message;
+- (void)_handleIntentRequestMessage:(id)message;
+- (void)performWithGather:(id)gather message:(id)message;
 @end
 
 @implementation HMDAssistantIntent
 
-- (void)_handleActionSetForExecution:(id)a3 message:(id)a4
+- (void)_handleActionSetForExecution:(id)execution message:(id)message
 {
   v18[3] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = actionSetFromObject(a3);
+  messageCopy = message;
+  v6 = actionSetFromObject(execution);
   v18[0] = &unk_286628CD8;
   v7 = *MEMORY[0x277CD2060];
   v17[0] = @"sourceType";
   v17[1] = v7;
-  v8 = [v6 uuid];
-  v9 = [v8 UUIDString];
-  v18[1] = v9;
+  uuid = [v6 uuid];
+  uUIDString = [uuid UUIDString];
+  v18[1] = uUIDString;
   v17[2] = @"kApplyDeviceUnlockKey";
   v10 = [MEMORY[0x277CCABB0] numberWithInt:!isPasscodeEnabledOnThisDevice()];
   v18[2] = v10;
@@ -29,19 +29,19 @@
 
   v12 = MEMORY[0x277D0F818];
   v13 = *MEMORY[0x277CD2348];
-  v14 = [v5 responseHandler];
+  responseHandler = [messageCopy responseHandler];
 
-  v15 = [v12 internalMessageWithName:v13 messagePayload:v11 responseHandler:v14];
+  v15 = [v12 internalMessageWithName:v13 messagePayload:v11 responseHandler:responseHandler];
 
   [v6 execute:v15];
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleActionSetForConfirmation:(id)a3 message:(id)a4
+- (void)_handleActionSetForConfirmation:(id)confirmation message:(id)message
 {
   v17[2] = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = actionSetFromObject(a3);
+  messageCopy = message;
+  v6 = actionSetFromObject(confirmation);
   v7 = isPasscodeEnabledOnThisDevice();
   v16[0] = @"sourceType";
   v16[1] = @"kApplyDeviceUnlockKey";
@@ -50,14 +50,14 @@
   v17[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
 
-  v10 = [MEMORY[0x277D0F818] messageWithMessage:v5 messagePayload:v9];
+  v10 = [MEMORY[0x277D0F818] messageWithMessage:messageCopy messagePayload:v9];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __62__HMDAssistantIntent__handleActionSetForConfirmation_message___block_invoke;
   v13[3] = &unk_27972B1E8;
   v15 = v7;
-  v14 = v5;
-  v11 = v5;
+  v14 = messageCopy;
+  v11 = messageCopy;
   [v6 isAccessValidForExecutionWithMessage:v10 completion:v13];
 
   v12 = *MEMORY[0x277D85DE8];
@@ -98,54 +98,54 @@ LABEL_8:
 
 - (id)_getObjectsWithUUID
 {
-  v3 = [(HMDAssistantIntent *)self intent];
-  v4 = [v3 contents];
-  v5 = [v4 firstObject];
+  intent = [(HMDAssistantIntent *)self intent];
+  contents = [intent contents];
+  firstObject = [contents firstObject];
 
-  v6 = [v5 filter];
-  v7 = [v6 entityIdentifiers];
-  v8 = [v7 firstObject];
+  filter = [firstObject filter];
+  entityIdentifiers = [filter entityIdentifiers];
+  firstObject2 = [entityIdentifiers firstObject];
 
-  v9 = [(HMDAssistantIntent *)self homeKitObjects];
-  v10 = v9;
-  if (v9 && [v9 count])
+  homeKitObjects = [(HMDAssistantIntent *)self homeKitObjects];
+  v10 = homeKitObjects;
+  if (homeKitObjects && [homeKitObjects count])
   {
-    v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K =[d] %@", @"objectSPIIdentifier", v8];
+    v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K =[d] %@", @"objectSPIIdentifier", firstObject2];
     v12 = [v10 filteredArrayUsingPredicate:v11];
 
     v10 = v12;
   }
 
-  v13 = [v10 firstObject];
+  firstObject3 = [v10 firstObject];
 
-  return v13;
+  return firstObject3;
 }
 
-- (void)_handleIntentRequestMessage:(id)a3
+- (void)_handleIntentRequestMessage:(id)message
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDAssistantIntent *)self intent];
-  v6 = [v5 contents];
-  v7 = [v6 count];
+  messageCopy = message;
+  intent = [(HMDAssistantIntent *)self intent];
+  contents = [intent contents];
+  v7 = [contents count];
 
   if (v7)
   {
-    v8 = [(HMDAssistantIntent *)self intent];
-    v9 = [v8 contents];
-    v10 = [v9 firstObject];
+    intent2 = [(HMDAssistantIntent *)self intent];
+    contents2 = [intent2 contents];
+    firstObject = [contents2 firstObject];
 
-    v11 = [v10 filter];
-    v12 = [v11 entityType];
+    filter = [firstObject filter];
+    entityType = [filter entityType];
 
     v13 = 0;
-    if (v12 <= 4)
+    if (entityType <= 4)
     {
-      if (v12 <= 1)
+      if (entityType <= 1)
       {
-        if (v12)
+        if (entityType)
         {
-          if (v12 == 1)
+          if (entityType == 1)
           {
             v13 = @"INHomeEntityTypeHome";
           }
@@ -157,12 +157,12 @@ LABEL_8:
         }
       }
 
-      else if (v12 == 2)
+      else if (entityType == 2)
       {
         v13 = @"INHomeEntityTypeZone";
       }
 
-      else if (v12 == 3)
+      else if (entityType == 3)
       {
         v13 = @"INHomeEntityTypeRoom";
       }
@@ -175,9 +175,9 @@ LABEL_8:
       goto LABEL_32;
     }
 
-    if (v12 > 7)
+    if (entityType > 7)
     {
-      switch(v12)
+      switch(entityType)
       {
         case 8:
           v13 = @"INHomeEntityTypeServiceGroup";
@@ -193,9 +193,9 @@ LABEL_8:
       goto LABEL_32;
     }
 
-    if (v12 != 5)
+    if (entityType != 5)
     {
-      if (v12 == 6)
+      if (entityType == 6)
       {
         v13 = @"INHomeEntityTypeTrigger";
       }
@@ -207,7 +207,7 @@ LABEL_8:
 
 LABEL_32:
       v22 = objc_autoreleasePoolPush();
-      v23 = self;
+      selfCopy = self;
       v24 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
@@ -221,27 +221,27 @@ LABEL_32:
 
       objc_autoreleasePoolPop(v22);
       v26 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-      [v4 respondWithError:v26];
+      [messageCopy respondWithError:v26];
 
       goto LABEL_35;
     }
 
-    v18 = [(HMDAssistantIntent *)self _getObjectsWithUUID];
-    if (v18)
+    _getObjectsWithUUID = [(HMDAssistantIntent *)self _getObjectsWithUUID];
+    if (_getObjectsWithUUID)
     {
-      v19 = [v4 numberForKey:*MEMORY[0x277CD26A0]];
+      v19 = [messageCopy numberForKey:*MEMORY[0x277CD26A0]];
       if (v19)
       {
         v20 = v19;
-        v21 = [v19 unsignedIntegerValue];
-        if (v21 == 1)
+        unsignedIntegerValue = [v19 unsignedIntegerValue];
+        if (unsignedIntegerValue == 1)
         {
-          [(HMDAssistantIntent *)self _handleActionSetForExecution:v18 message:v4];
+          [(HMDAssistantIntent *)self _handleActionSetForExecution:_getObjectsWithUUID message:messageCopy];
         }
 
-        else if (!v21)
+        else if (!unsignedIntegerValue)
         {
-          [(HMDAssistantIntent *)self _handleActionSetForConfirmation:v18 message:v4];
+          [(HMDAssistantIntent *)self _handleActionSetForConfirmation:_getObjectsWithUUID message:messageCopy];
         }
 
         goto LABEL_43;
@@ -254,7 +254,7 @@ LABEL_32:
     else
     {
       v28 = objc_autoreleasePoolPush();
-      v29 = self;
+      selfCopy2 = self;
       v30 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
@@ -270,14 +270,14 @@ LABEL_32:
     }
 
     v34 = [v32 hmErrorWithCode:v33];
-    [v4 respondWithError:v34];
+    [messageCopy respondWithError:v34];
 
 LABEL_43:
     goto LABEL_35;
   }
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy3 = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
   {
@@ -288,32 +288,32 @@ LABEL_43:
   }
 
   objc_autoreleasePoolPop(v14);
-  v10 = [MEMORY[0x277CCA9B8] hmErrorWithCode:58];
-  [v4 respondWithError:v10];
+  firstObject = [MEMORY[0x277CCA9B8] hmErrorWithCode:58];
+  [messageCopy respondWithError:firstObject];
 LABEL_35:
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performWithGather:(id)a3 message:(id)a4
+- (void)performWithGather:(id)gather message:(id)message
 {
-  v7 = a4;
-  v6 = [a3 homeKitObjects];
-  [(HMDAssistantIntent *)self setHomeKitObjects:v6];
+  messageCopy = message;
+  homeKitObjects = [gather homeKitObjects];
+  [(HMDAssistantIntent *)self setHomeKitObjects:homeKitObjects];
 
-  [(HMDAssistantIntent *)self _handleIntentRequestMessage:v7];
+  [(HMDAssistantIntent *)self _handleIntentRequestMessage:messageCopy];
 }
 
-- (HMDAssistantIntent)initWithIntent:(id)a3
+- (HMDAssistantIntent)initWithIntent:(id)intent
 {
-  v5 = a3;
+  intentCopy = intent;
   v9.receiver = self;
   v9.super_class = HMDAssistantIntent;
   v6 = [(HMDAssistantIntent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_intent, a3);
+    objc_storeStrong(&v6->_intent, intent);
   }
 
   return v7;

@@ -7,10 +7,10 @@
 
 - (uint64_t)ts_isCollapsing
 {
-  result = [a1 _isCollapsed];
+  result = [self _isCollapsed];
   if (result)
   {
-    return [a1 isCollapsed] ^ 1;
+    return [self isCollapsed] ^ 1;
   }
 
   return result;

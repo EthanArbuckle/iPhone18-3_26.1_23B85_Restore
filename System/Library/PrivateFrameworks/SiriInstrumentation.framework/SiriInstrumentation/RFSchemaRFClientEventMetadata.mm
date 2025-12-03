@@ -1,26 +1,26 @@
 @interface RFSchemaRFClientEventMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (RFSchemaRFClientEventMetadata)initWithDictionary:(id)a3;
-- (RFSchemaRFClientEventMetadata)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (RFSchemaRFClientEventMetadata)initWithDictionary:(id)dictionary;
+- (RFSchemaRFClientEventMetadata)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation RFSchemaRFClientEventMetadata
 
-- (RFSchemaRFClientEventMetadata)initWithDictionary:(id)a3
+- (RFSchemaRFClientEventMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = RFSchemaRFClientEventMetadata;
   v5 = [(RFSchemaRFClientEventMetadata *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"turnId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"turnId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(RFSchemaRFClientEventMetadata *)v5 setTurnId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"requestId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"requestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(RFSchemaRFClientEventMetadata *)v5 setRequestId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"subRequestId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"subRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,7 +44,7 @@
       [(RFSchemaRFClientEventMetadata *)v5 setSubRequestId:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"aceViewId"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"aceViewId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,30 +58,30 @@
   return v5;
 }
 
-- (RFSchemaRFClientEventMetadata)initWithJSON:(id)a3
+- (RFSchemaRFClientEventMetadata)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(RFSchemaRFClientEventMetadata *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(RFSchemaRFClientEventMetadata *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(RFSchemaRFClientEventMetadata *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -94,74 +94,74 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_aceViewId)
   {
-    v4 = [(RFSchemaRFClientEventMetadata *)self aceViewId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    aceViewId = [(RFSchemaRFClientEventMetadata *)self aceViewId];
+    dictionaryRepresentation = [aceViewId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"aceViewId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"aceViewId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"aceViewId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"aceViewId"];
     }
   }
 
   if (self->_requestId)
   {
-    v7 = [(RFSchemaRFClientEventMetadata *)self requestId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    requestId = [(RFSchemaRFClientEventMetadata *)self requestId];
+    dictionaryRepresentation2 = [requestId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"requestId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"requestId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"requestId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"requestId"];
     }
   }
 
   if (self->_subRequestId)
   {
-    v10 = [(RFSchemaRFClientEventMetadata *)self subRequestId];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    subRequestId = [(RFSchemaRFClientEventMetadata *)self subRequestId];
+    dictionaryRepresentation3 = [subRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"subRequestId"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"subRequestId"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"subRequestId"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"subRequestId"];
     }
   }
 
   if (self->_turnId)
   {
-    v13 = [(RFSchemaRFClientEventMetadata *)self turnId];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    turnId = [(RFSchemaRFClientEventMetadata *)self turnId];
+    dictionaryRepresentation4 = [turnId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"turnId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"turnId"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"turnId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"turnId"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -172,28 +172,28 @@
   return v4 ^ v5 ^ [(SISchemaUUID *)self->_aceViewId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(RFSchemaRFClientEventMetadata *)self turnId];
-  v6 = [v4 turnId];
-  if ((v5 != 0) == (v6 == 0))
+  turnId = [(RFSchemaRFClientEventMetadata *)self turnId];
+  turnId2 = [equalCopy turnId];
+  if ((turnId != 0) == (turnId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(RFSchemaRFClientEventMetadata *)self turnId];
-  if (v7)
+  turnId3 = [(RFSchemaRFClientEventMetadata *)self turnId];
+  if (turnId3)
   {
-    v8 = v7;
-    v9 = [(RFSchemaRFClientEventMetadata *)self turnId];
-    v10 = [v4 turnId];
-    v11 = [v9 isEqual:v10];
+    v8 = turnId3;
+    turnId4 = [(RFSchemaRFClientEventMetadata *)self turnId];
+    turnId5 = [equalCopy turnId];
+    v11 = [turnId4 isEqual:turnId5];
 
     if (!v11)
     {
@@ -205,20 +205,20 @@
   {
   }
 
-  v5 = [(RFSchemaRFClientEventMetadata *)self requestId];
-  v6 = [v4 requestId];
-  if ((v5 != 0) == (v6 == 0))
+  turnId = [(RFSchemaRFClientEventMetadata *)self requestId];
+  turnId2 = [equalCopy requestId];
+  if ((turnId != 0) == (turnId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(RFSchemaRFClientEventMetadata *)self requestId];
-  if (v12)
+  requestId = [(RFSchemaRFClientEventMetadata *)self requestId];
+  if (requestId)
   {
-    v13 = v12;
-    v14 = [(RFSchemaRFClientEventMetadata *)self requestId];
-    v15 = [v4 requestId];
-    v16 = [v14 isEqual:v15];
+    v13 = requestId;
+    requestId2 = [(RFSchemaRFClientEventMetadata *)self requestId];
+    requestId3 = [equalCopy requestId];
+    v16 = [requestId2 isEqual:requestId3];
 
     if (!v16)
     {
@@ -230,20 +230,20 @@
   {
   }
 
-  v5 = [(RFSchemaRFClientEventMetadata *)self subRequestId];
-  v6 = [v4 subRequestId];
-  if ((v5 != 0) == (v6 == 0))
+  turnId = [(RFSchemaRFClientEventMetadata *)self subRequestId];
+  turnId2 = [equalCopy subRequestId];
+  if ((turnId != 0) == (turnId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(RFSchemaRFClientEventMetadata *)self subRequestId];
-  if (v17)
+  subRequestId = [(RFSchemaRFClientEventMetadata *)self subRequestId];
+  if (subRequestId)
   {
-    v18 = v17;
-    v19 = [(RFSchemaRFClientEventMetadata *)self subRequestId];
-    v20 = [v4 subRequestId];
-    v21 = [v19 isEqual:v20];
+    v18 = subRequestId;
+    subRequestId2 = [(RFSchemaRFClientEventMetadata *)self subRequestId];
+    subRequestId3 = [equalCopy subRequestId];
+    v21 = [subRequestId2 isEqual:subRequestId3];
 
     if (!v21)
     {
@@ -255,12 +255,12 @@
   {
   }
 
-  v5 = [(RFSchemaRFClientEventMetadata *)self aceViewId];
-  v6 = [v4 aceViewId];
-  if ((v5 != 0) != (v6 == 0))
+  turnId = [(RFSchemaRFClientEventMetadata *)self aceViewId];
+  turnId2 = [equalCopy aceViewId];
+  if ((turnId != 0) != (turnId2 == 0))
   {
-    v22 = [(RFSchemaRFClientEventMetadata *)self aceViewId];
-    if (!v22)
+    aceViewId = [(RFSchemaRFClientEventMetadata *)self aceViewId];
+    if (!aceViewId)
     {
 
 LABEL_25:
@@ -268,10 +268,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(RFSchemaRFClientEventMetadata *)self aceViewId];
-    v25 = [v4 aceViewId];
-    v26 = [v24 isEqual:v25];
+    v23 = aceViewId;
+    aceViewId2 = [(RFSchemaRFClientEventMetadata *)self aceViewId];
+    aceViewId3 = [equalCopy aceViewId];
+    v26 = [aceViewId2 isEqual:aceViewId3];
 
     if (v26)
     {
@@ -291,83 +291,83 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(RFSchemaRFClientEventMetadata *)self turnId];
+  toCopy = to;
+  turnId = [(RFSchemaRFClientEventMetadata *)self turnId];
 
-  if (v4)
+  if (turnId)
   {
-    v5 = [(RFSchemaRFClientEventMetadata *)self turnId];
+    turnId2 = [(RFSchemaRFClientEventMetadata *)self turnId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(RFSchemaRFClientEventMetadata *)self requestId];
+  requestId = [(RFSchemaRFClientEventMetadata *)self requestId];
 
-  if (v6)
+  if (requestId)
   {
-    v7 = [(RFSchemaRFClientEventMetadata *)self requestId];
+    requestId2 = [(RFSchemaRFClientEventMetadata *)self requestId];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(RFSchemaRFClientEventMetadata *)self subRequestId];
+  subRequestId = [(RFSchemaRFClientEventMetadata *)self subRequestId];
 
-  if (v8)
+  if (subRequestId)
   {
-    v9 = [(RFSchemaRFClientEventMetadata *)self subRequestId];
+    subRequestId2 = [(RFSchemaRFClientEventMetadata *)self subRequestId];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(RFSchemaRFClientEventMetadata *)self aceViewId];
+  aceViewId = [(RFSchemaRFClientEventMetadata *)self aceViewId];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (aceViewId)
   {
-    v12 = [(RFSchemaRFClientEventMetadata *)self aceViewId];
+    aceViewId2 = [(RFSchemaRFClientEventMetadata *)self aceViewId];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = RFSchemaRFClientEventMetadata;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(RFSchemaRFClientEventMetadata *)self turnId];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  turnId = [(RFSchemaRFClientEventMetadata *)self turnId];
+  v7 = [turnId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(RFSchemaRFClientEventMetadata *)self deleteTurnId];
   }
 
-  v9 = [(RFSchemaRFClientEventMetadata *)self requestId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  requestId = [(RFSchemaRFClientEventMetadata *)self requestId];
+  v10 = [requestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(RFSchemaRFClientEventMetadata *)self deleteRequestId];
   }
 
-  v12 = [(RFSchemaRFClientEventMetadata *)self subRequestId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  subRequestId = [(RFSchemaRFClientEventMetadata *)self subRequestId];
+  v13 = [subRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(RFSchemaRFClientEventMetadata *)self deleteSubRequestId];
   }
 
-  v15 = [(RFSchemaRFClientEventMetadata *)self aceViewId];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  aceViewId = [(RFSchemaRFClientEventMetadata *)self aceViewId];
+  v16 = [aceViewId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(RFSchemaRFClientEventMetadata *)self deleteAceViewId];
   }

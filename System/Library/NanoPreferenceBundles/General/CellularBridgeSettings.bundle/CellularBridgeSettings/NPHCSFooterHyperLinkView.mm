@@ -1,8 +1,8 @@
 @interface NPHCSFooterHyperLinkView
 - (UITextView)textView;
-- (_TtC22CellularBridgeSettings24NPHCSFooterHyperLinkView)initWithReuseIdentifier:(id)a3;
+- (_TtC22CellularBridgeSettings24NPHCSFooterHyperLinkView)initWithReuseIdentifier:(id)identifier;
 - (void)configureContents;
-- (void)setTextView:(id)a3;
+- (void)setTextView:(id)view;
 @end
 
 @implementation NPHCSFooterHyperLinkView
@@ -14,16 +14,16 @@
   return v2;
 }
 
-- (void)setTextView:(id)a3
+- (void)setTextView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_D7B8(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_D7B8(viewCopy);
 }
 
-- (_TtC22CellularBridgeSettings24NPHCSFooterHyperLinkView)initWithReuseIdentifier:(id)a3
+- (_TtC22CellularBridgeSettings24NPHCSFooterHyperLinkView)initWithReuseIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = sub_E418();
   }
@@ -39,7 +39,7 @@
 
 - (void)configureContents
 {
-  v2 = self;
+  selfCopy = self;
   sub_D928();
 }
 

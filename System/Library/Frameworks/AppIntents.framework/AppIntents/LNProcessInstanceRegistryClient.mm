@@ -2,22 +2,22 @@
 + (LNProcessInstanceRegistryClient)sharedInstance;
 - (LNProcessInstanceRegistryClient)init;
 - (id)makeXPCConnection;
-- (id)registerWithError:(id *)a3;
+- (id)registerWithError:(id *)error;
 @end
 
 @implementation LNProcessInstanceRegistryClient
 
-- (id)registerWithError:(id *)a3
+- (id)registerWithError:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
   if (geteuid() == 248)
   {
-    v5 = getLNLogCategoryConnection();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
+    listenerEndpoint = getLNLogCategoryConnection();
+    if (os_log_type_enabled(listenerEndpoint, OS_LOG_TYPE_INFO))
     {
       LOWORD(buf) = 0;
       v6 = "Attempting to register during setup, linkd is not running";
-      v7 = v5;
+      v7 = listenerEndpoint;
       v8 = OS_LOG_TYPE_INFO;
 LABEL_10:
       _os_log_impl(&dword_18F0E9000, v7, v8, v6, &buf, 2u);
@@ -30,13 +30,13 @@ LABEL_10:
   v9 = *MEMORY[0x1E69ACB70];
   if (([MEMORY[0x1E69ACEF8] currentProcessHasMachLookup:*MEMORY[0x1E69ACB70]] & 1) == 0)
   {
-    *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:@"LNProcessInstanceRegistryClientErrorDomain" code:1 userInfo:0];
-    v5 = getLNLogCategoryConnection();
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"LNProcessInstanceRegistryClientErrorDomain" code:1 userInfo:0];
+    listenerEndpoint = getLNLogCategoryConnection();
+    if (os_log_type_enabled(listenerEndpoint, OS_LOG_TYPE_ERROR))
     {
       LOWORD(buf) = 0;
       v6 = "Missing the com.apple.linkd.autoShortcut mach-lookup entitlement, will NOT register the process";
-      v7 = v5;
+      v7 = listenerEndpoint;
       v8 = OS_LOG_TYPE_ERROR;
       goto LABEL_10;
     }
@@ -46,9 +46,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v10 = [(LNProcessInstanceRegistryClient *)self makeXPCConnection];
+  makeXPCConnection = [(LNProcessInstanceRegistryClient *)self makeXPCConnection];
   xpcConnection = self->_xpcConnection;
-  self->_xpcConnection = v10;
+  self->_xpcConnection = makeXPCConnection;
 
   [(NSXPCConnection *)self->_xpcConnection activate];
   v12 = getLNLogCategoryConnection();
@@ -60,7 +60,7 @@ LABEL_11:
   }
 
   v13 = +[LNAppConnectionListener sharedListener];
-  v5 = [v13 listenerEndpoint];
+  listenerEndpoint = [v13 listenerEndpoint];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -74,13 +74,13 @@ LABEL_11:
   v23 = __Block_byref_object_copy_;
   v24 = __Block_byref_object_dispose_;
   v25 = 0;
-  v14 = [(LNProcessInstanceRegistryClient *)self xpcConnection];
+  xpcConnection = [(LNProcessInstanceRegistryClient *)self xpcConnection];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __53__LNProcessInstanceRegistryClient_registerWithError___block_invoke;
   v19[3] = &unk_1E72B7230;
   v19[4] = &buf;
-  v15 = [v14 synchronousRemoteObjectProxyWithErrorHandler:v19];
+  v15 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v19];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __53__LNProcessInstanceRegistryClient_registerWithError___block_invoke_24;
@@ -88,9 +88,9 @@ LABEL_11:
   v18[6] = &v20;
   v18[4] = self;
   v18[5] = &buf;
-  [v15 registerListenerEndpointWithXPCListenerEndpoint:v5 reply:v18];
+  [v15 registerListenerEndpointWithXPCListenerEndpoint:listenerEndpoint reply:v18];
 
-  *a3 = *(*(&buf + 1) + 40);
+  *error = *(*(&buf + 1) + 40);
   v16 = v21[5];
   _Block_object_dispose(&v20, 8);
 
@@ -141,9 +141,9 @@ void __53__LNProcessInstanceRegistryClient_registerWithError___block_invoke_24(v
   v3 = objc_alloc(MEMORY[0x1E696B0B8]);
   v4 = [v3 initWithMachServiceName:*MEMORY[0x1E69ACB70] options:0];
   v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.appintents.process-instance-registry-client.retry-%ld", self->_retryCount];
-  v6 = [v5 UTF8String];
+  uTF8String = [v5 UTF8String];
   v7 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
-  v8 = dispatch_queue_create(v6, v7);
+  v8 = dispatch_queue_create(uTF8String, v7);
 
   [v4 _setQueue:v8];
   v9 = LNDaemonApplicationXPCInterface();

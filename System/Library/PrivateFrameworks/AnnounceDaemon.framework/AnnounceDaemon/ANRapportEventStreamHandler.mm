@@ -1,7 +1,7 @@
 @interface ANRapportEventStreamHandler
 - (ANRapportEventStreamHandler)init;
 - (void)addAnnounceRapportServiceType;
-- (void)addRapportServiceType:(id)a3 activationBlock:(id)a4;
+- (void)addRapportServiceType:(id)type activationBlock:(id)block;
 - (void)setEventStreamHandler;
 @end
 
@@ -22,20 +22,20 @@
   return v2;
 }
 
-- (void)addRapportServiceType:(id)a3 activationBlock:(id)a4
+- (void)addRapportServiceType:(id)type activationBlock:(id)block
 {
-  v6 = a3;
-  v8 = _Block_copy(a4);
-  v7 = [(ANRapportEventStreamHandler *)self rapportActivationHandlers];
-  [v7 setObject:v8 forKeyedSubscript:v6];
+  typeCopy = type;
+  v8 = _Block_copy(block);
+  rapportActivationHandlers = [(ANRapportEventStreamHandler *)self rapportActivationHandlers];
+  [rapportActivationHandlers setObject:v8 forKeyedSubscript:typeCopy];
 }
 
 - (void)addAnnounceRapportServiceType
 {
   if ([MEMORY[0x277CEAB38] isAnnounceEnabled])
   {
-    v3 = [(ANRapportEventStreamHandler *)self rapportActivationHandlers];
-    [v3 setObject:&__block_literal_global_7 forKeyedSubscript:*MEMORY[0x277CEA758]];
+    rapportActivationHandlers = [(ANRapportEventStreamHandler *)self rapportActivationHandlers];
+    [rapportActivationHandlers setObject:&__block_literal_global_7 forKeyedSubscript:*MEMORY[0x277CEA758]];
   }
 }
 

@@ -1,8 +1,8 @@
 @interface UIWindowSceneDragInteraction
 - (UIView)view;
 - (UIWindowSceneDragInteraction)init;
-- (void)didMoveToView:(id)a3;
-- (void)willMoveToView:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)willMoveToView:(id)view;
 @end
 
 @implementation UIWindowSceneDragInteraction
@@ -29,16 +29,16 @@
   return WeakRetained;
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v4 = a3;
-  objc_storeWeak(&self->_view, v4);
-  [(_UIWindowSceneDragInteractionImpl *)self->_impl didMoveToView:v4];
+  viewCopy = view;
+  objc_storeWeak(&self->_view, viewCopy);
+  [(_UIWindowSceneDragInteractionImpl *)self->_impl didMoveToView:viewCopy];
 }
 
-- (void)willMoveToView:(id)a3
+- (void)willMoveToView:(id)view
 {
-  [(_UIWindowSceneDragInteractionImpl *)self->_impl willMoveToView:a3];
+  [(_UIWindowSceneDragInteractionImpl *)self->_impl willMoveToView:view];
 
   objc_storeWeak(&self->_view, 0);
 }

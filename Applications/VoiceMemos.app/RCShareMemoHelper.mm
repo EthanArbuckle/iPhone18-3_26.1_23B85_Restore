@@ -1,7 +1,7 @@
 @interface RCShareMemoHelper
-+ (id)customActivitiesForShareableCompositions:(id)a3;
++ (id)customActivitiesForShareableCompositions:(id)compositions;
 + (id)customActivityTypes;
-+ (id)shareableCompositionsFromCompositions:(id)a3;
++ (id)shareableCompositionsFromCompositions:(id)compositions;
 + (id)unsupportedActivityTypes;
 @end
 
@@ -19,13 +19,13 @@
   return v3;
 }
 
-+ (id)customActivitiesForShareableCompositions:(id)a3
++ (id)customActivitiesForShareableCompositions:(id)compositions
 {
-  v3 = a3;
-  v4 = [[_TtC10VoiceMemos24RCCopyTranscriptActivity alloc] initWithShareableCompositions:v3];
-  v5 = [(RCUIActivity *)[RCDuplicateActivity alloc] initWithShareableCompositions:v3];
-  v6 = [(RCUIActivity *)[RCFavoriteActionActivity alloc] initWithShareableCompositions:v3];
-  v7 = [(RCUIActivity *)[RCMoveToFolderActivity alloc] initWithShareableCompositions:v3];
+  compositionsCopy = compositions;
+  v4 = [[_TtC10VoiceMemos24RCCopyTranscriptActivity alloc] initWithShareableCompositions:compositionsCopy];
+  v5 = [(RCUIActivity *)[RCDuplicateActivity alloc] initWithShareableCompositions:compositionsCopy];
+  v6 = [(RCUIActivity *)[RCFavoriteActionActivity alloc] initWithShareableCompositions:compositionsCopy];
+  v7 = [(RCUIActivity *)[RCMoveToFolderActivity alloc] initWithShareableCompositions:compositionsCopy];
 
   if ([(RCCopyTranscriptActivity *)v4 shouldShowTranscriptionActivity])
   {
@@ -63,16 +63,16 @@
   return v3;
 }
 
-+ (id)shareableCompositionsFromCompositions:(id)a3
++ (id)shareableCompositionsFromCompositions:(id)compositions
 {
-  v3 = a3;
+  compositionsCopy = compositions;
   v4 = +[NSMutableArray array];
-  v5 = [v3 count];
+  v5 = [compositionsCopy count];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v3;
+  v6 = compositionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {

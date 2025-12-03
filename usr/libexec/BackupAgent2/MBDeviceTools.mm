@@ -1,34 +1,34 @@
 @interface MBDeviceTools
-+ (id)toolsWithSettingsContext:(id)a3 error:(id *)a4;
-- (BOOL)_extractWithManifest:(id)a3 file:(id)a4 keybag:(id)a5 toDrivePath:(id)a6 error:(id *)a7;
-- (BOOL)extractWithDomainName:(id)a3 relativePath:(id)a4 error:(id *)a5;
-- (BOOL)unbackWithError:(id *)a3;
-- (MBDeviceTools)initWithSettingsContext:(id)a3 error:(id *)a4;
-- (id)infoWithError:(id *)a3;
-- (id)listWithError:(id *)a3;
++ (id)toolsWithSettingsContext:(id)context error:(id *)error;
+- (BOOL)_extractWithManifest:(id)manifest file:(id)file keybag:(id)keybag toDrivePath:(id)path error:(id *)error;
+- (BOOL)extractWithDomainName:(id)name relativePath:(id)path error:(id *)error;
+- (BOOL)unbackWithError:(id *)error;
+- (MBDeviceTools)initWithSettingsContext:(id)context error:(id *)error;
+- (id)infoWithError:(id *)error;
+- (id)listWithError:(id *)error;
 @end
 
 @implementation MBDeviceTools
 
-+ (id)toolsWithSettingsContext:(id)a3 error:(id *)a4
++ (id)toolsWithSettingsContext:(id)context error:(id *)error
 {
-  v5 = a3;
-  v6 = [[MBDeviceTools alloc] initWithSettingsContext:v5 error:a4];
+  contextCopy = context;
+  v6 = [[MBDeviceTools alloc] initWithSettingsContext:contextCopy error:error];
 
   return v6;
 }
 
-- (MBDeviceTools)initWithSettingsContext:(id)a3 error:(id *)a4
+- (MBDeviceTools)initWithSettingsContext:(id)context error:(id *)error
 {
-  v7 = a3;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = MBDeviceTools;
   v8 = [(MBDeviceTools *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_settingsContext, a3);
-    v10 = [[MBToolsDomainManager alloc] initWithTools:v9 error:a4];
+    objc_storeStrong(&v8->_settingsContext, context);
+    v10 = [[MBToolsDomainManager alloc] initWithTools:v9 error:error];
     domainManager = v9->_domainManager;
     v9->_domainManager = &v10->super;
 
@@ -49,37 +49,37 @@
   return v9;
 }
 
-- (BOOL)_extractWithManifest:(id)a3 file:(id)a4 keybag:(id)a5 toDrivePath:(id)a6 error:(id *)a7
+- (BOOL)_extractWithManifest:(id)manifest file:(id)file keybag:(id)keybag toDrivePath:(id)path error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [a3 properties];
-  LOBYTE(a3) = [v15 hasManifestDB];
-  v16 = [v12 fileID];
-  v17 = v16;
-  if (a3)
+  fileCopy = file;
+  keybagCopy = keybag;
+  pathCopy = path;
+  properties = [manifest properties];
+  LOBYTE(manifest) = [properties hasManifestDB];
+  fileID = [fileCopy fileID];
+  v17 = fileID;
+  if (manifest)
   {
-    [v16 filenameWithPrefix];
+    [fileID filenameWithPrefix];
   }
 
   else
   {
-    [v16 filename];
+    [fileID filename];
   }
   v18 = ;
 
-  v19 = [(MBDriveSettingsContext *)self->_settingsContext driveBackupDir];
-  v20 = [v19 stringByAppendingPathComponent:v18];
+  driveBackupDir = [(MBDriveSettingsContext *)self->_settingsContext driveBackupDir];
+  v20 = [driveBackupDir stringByAppendingPathComponent:v18];
 
-  if (v13)
+  if (keybagCopy)
   {
-    v21 = sub_100028F5C();
-    v22 = [v12 encryptionKey];
-    if (v22)
+    drive3 = sub_100028F5C();
+    encryptionKey = [fileCopy encryptionKey];
+    if (encryptionKey)
     {
       v39 = @"FileHandleFactory";
-      v40 = [[MBToolsFileHandleFactory alloc] initWithKeyBag:v13 key:v22];
+      v40 = [[MBToolsFileHandleFactory alloc] initWithKeyBag:keybagCopy key:encryptionKey];
       v33 = v40;
       v34 = [NSDictionary dictionaryWithObjects:&v40 forKeys:&v39 count:1];
       v23 = MBGetDefaultLog();
@@ -91,9 +91,9 @@
         _MBLog();
       }
 
-      v24 = [(MBDriveSettingsContext *)self->_settingsContext drive];
-      v32 = a7;
-      v25 = [v24 downloadFileAtPath:v20 toPath:v21 options:v34 error:a7];
+      drive = [(MBDriveSettingsContext *)self->_settingsContext drive];
+      errorCopy = error;
+      v25 = [drive downloadFileAtPath:v20 toPath:drive3 options:v34 error:error];
 
       if (v25)
       {
@@ -101,16 +101,16 @@
         if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          v36 = v14;
+          v36 = pathCopy;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "Uploading unencrypted file to %@", buf, 0xCu);
           _MBLog();
         }
 
-        v27 = [(MBDriveSettingsContext *)self->_settingsContext drive];
-        v28 = [v27 uploadFileAtPath:v21 toPath:v14 options:0 error:v32];
+        drive2 = [(MBDriveSettingsContext *)self->_settingsContext drive];
+        v28 = [drive2 uploadFileAtPath:drive3 toPath:pathCopy options:0 error:errorCopy];
 
         v29 = +[NSFileManager defaultManager];
-        [v29 removeItemAtPath:v21 error:0];
+        [v29 removeItemAtPath:drive3 error:0];
       }
 
       else
@@ -119,10 +119,10 @@
       }
     }
 
-    else if (a7)
+    else if (error)
     {
       [MBError errorWithCode:205 format:@"Encryption key not found"];
-      *a7 = v28 = 0;
+      *error = v28 = 0;
     }
 
     else
@@ -139,36 +139,36 @@
       *buf = 138412546;
       v36 = v20;
       v37 = 2112;
-      v38 = v14;
+      v38 = pathCopy;
       _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "Copying %@ to %@", buf, 0x16u);
       _MBLog();
     }
 
-    v21 = [(MBDriveSettingsContext *)self->_settingsContext drive];
-    v28 = [v21 copyItemAtPath:v20 toPath:v14 options:0 error:a7];
+    drive3 = [(MBDriveSettingsContext *)self->_settingsContext drive];
+    v28 = [drive3 copyItemAtPath:v20 toPath:pathCopy options:0 error:error];
   }
 
   return v28;
 }
 
-- (BOOL)extractWithDomainName:(id)a3 relativePath:(id)a4 error:(id *)a5
+- (BOOL)extractWithDomainName:(id)name relativePath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  pathCopy = path;
   v10 = MBGetDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    *&buf[4] = v8;
+    *&buf[4] = nameCopy;
     *&buf[12] = 2112;
-    *&buf[14] = v9;
+    *&buf[14] = pathCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Extracting %@-%@", buf, 0x16u);
-    v31 = v8;
-    v32 = v9;
+    v31 = nameCopy;
+    v32 = pathCopy;
     _MBLog();
   }
 
-  v11 = [(MBBackupHelper *)self->_backupHelper readBackupManifestWithError:a5];
+  v11 = [(MBBackupHelper *)self->_backupHelper readBackupManifestWithError:error];
   v12 = v11;
   if (!v11)
   {
@@ -176,22 +176,22 @@
   }
 
   [v11 buildIndexFromDatabaseIfNeeded];
-  v13 = [v12 properties];
-  v14 = [v13 encrypted];
+  properties = [v12 properties];
+  encrypted = [properties encrypted];
 
-  if (!v14)
+  if (!encrypted)
   {
     v18 = 0;
     goto LABEL_9;
   }
 
-  v15 = [v12 properties];
-  v16 = [v15 keybagData];
+  properties2 = [v12 properties];
+  keybagData = [properties2 keybagData];
 
-  if (v16)
+  if (keybagData)
   {
-    v17 = [(MBDriveSettingsContext *)self->_settingsContext password];
-    v18 = [MBKeyBag unlockedKeyBagWithData:v16 password:v17 error:a5];
+    password = [(MBDriveSettingsContext *)self->_settingsContext password];
+    v18 = [MBKeyBag unlockedKeyBagWithData:keybagData password:password error:error];
 
     if (!v18)
     {
@@ -199,22 +199,22 @@
     }
 
 LABEL_9:
-    v19 = [(MBDomainManager *)self->_domainManager domainForName:v8, v31, v32];
+    v19 = [(MBDomainManager *)self->_domainManager domainForName:nameCopy, v31, v32];
     if (v19)
     {
       if (MBIsValidRelativePath())
       {
-        v34 = [MBFileID fileIDWithDomain:v19 relativePath:v9];
-        v20 = [v12 fetchFileWithID:v34 error:a5];
+        v34 = [MBFileID fileIDWithDomain:v19 relativePath:pathCopy];
+        v20 = [v12 fetchFileWithID:v34 error:error];
         v21 = v20;
         if (v20)
         {
           if ([v20 isDirectory])
           {
-            v33 = [(MBDriveSettingsContext *)self->_settingsContext drive];
-            v22 = [v21 relativePath];
-            v23 = [v22 lastPathComponent];
-            [v33 removeItemAtPath:v23 options:0 error:0];
+            drive = [(MBDriveSettingsContext *)self->_settingsContext drive];
+            relativePath = [v21 relativePath];
+            lastPathComponent = [relativePath lastPathComponent];
+            [drive removeItemAtPath:lastPathComponent options:0 error:0];
 
             *buf = 0;
             *&buf[8] = buf;
@@ -227,16 +227,16 @@ LABEL_9:
             v35[2] = sub_100067668;
             v35[3] = &unk_1000FE2A0;
             v36 = v21;
-            v37 = self;
+            selfCopy = self;
             v40 = buf;
             v38 = v12;
             v39 = v18;
             v24 = [v38 enumerateFiles:v35 includeUninstalled:1];
             v25 = *(*&buf[8] + 40);
             v26 = v25 == 0;
-            if (a5 && v25)
+            if (error && v25)
             {
-              *a5 = v25;
+              *error = v25;
             }
 
             _Block_object_dispose(buf, 8);
@@ -245,26 +245,26 @@ LABEL_9:
 
           if ([v21 isRegularFile])
           {
-            v29 = [v9 lastPathComponent];
-            v26 = [(MBDeviceTools *)self _extractWithManifest:v12 file:v21 keybag:v18 toDrivePath:v29 error:a5];
+            lastPathComponent2 = [pathCopy lastPathComponent];
+            v26 = [(MBDeviceTools *)self _extractWithManifest:v12 file:v21 keybag:v18 toDrivePath:lastPathComponent2 error:error];
 
 LABEL_36:
             goto LABEL_37;
           }
 
-          if (a5)
+          if (error)
           {
             v27 = [MBError errorWithCode:4 format:@"Not a regular file or directory"];
             goto LABEL_34;
           }
         }
 
-        else if (a5)
+        else if (error)
         {
           v27 = [MBError errorWithCode:4 format:@"File not found in manifest"];
 LABEL_34:
           v26 = 0;
-          *a5 = v27;
+          *error = v27;
           goto LABEL_36;
         }
 
@@ -272,7 +272,7 @@ LABEL_34:
         goto LABEL_36;
       }
 
-      if (a5)
+      if (error)
       {
         if ([v19 isUninstalledAppDomain])
         {
@@ -284,14 +284,14 @@ LABEL_34:
           [v19 rootPath];
         }
         v28 = ;
-        *a5 = [MBError errorWithCode:1 format:@"Path to extract must be relative to domain root (%@)", v28];
+        *error = [MBError errorWithCode:1 format:@"Path to extract must be relative to domain root (%@)", v28];
       }
     }
 
-    else if (a5)
+    else if (error)
     {
       [MBError errorWithCode:4 format:@"Domain not found"];
-      *a5 = v26 = 0;
+      *error = v26 = 0;
 LABEL_37:
 
       goto LABEL_38;
@@ -301,7 +301,7 @@ LABEL_37:
     goto LABEL_37;
   }
 
-  if (!a5)
+  if (!error)
   {
 LABEL_24:
     v26 = 0;
@@ -309,18 +309,18 @@ LABEL_24:
   }
 
   [MBError errorWithCode:205 format:@"Keybag data not found"];
-  *a5 = v26 = 0;
+  *error = v26 = 0;
 LABEL_38:
 
   return v26;
 }
 
-- (id)infoWithError:(id *)a3
+- (id)infoWithError:(id *)error
 {
   v23 = [(MBBackupHelper *)self->_backupHelper readStatusWithError:?];
   if (v23)
   {
-    v5 = [(MBBackupHelper *)self->_backupHelper readBackupManifestWithError:a3];
+    v5 = [(MBBackupHelper *)self->_backupHelper readBackupManifestWithError:error];
     v22 = v5;
     if (v5)
     {
@@ -351,8 +351,8 @@ LABEL_38:
       v7 = [v23 description];
       [v24 appendFormat:@"%@\n", v7];
 
-      v8 = [v22 properties];
-      v9 = [v8 description];
+      properties = [v22 properties];
+      v9 = [properties description];
       [v24 appendFormat:@"%@\n", v9];
 
       [v24 appendString:@"\n"];
@@ -361,8 +361,8 @@ LABEL_38:
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v10 = [v31[5] allKeys];
-      v11 = [v10 sortedArrayUsingSelector:"compare:"];
+      allKeys = [v31[5] allKeys];
+      v11 = [allKeys sortedArrayUsingSelector:"compare:"];
 
       v12 = [v11 countByEnumeratingWithState:&v25 objects:v44 count:16];
       if (v12)
@@ -380,12 +380,12 @@ LABEL_38:
             v15 = *(*(&v25 + 1) + 8 * i);
             v16 = [v31[5] objectForKeyedSubscript:v15];
             v17 = [v16 objectAtIndexedSubscript:0];
-            v18 = [v17 longValue];
+            longValue = [v17 longValue];
 
             v19 = [v16 objectAtIndexedSubscript:1];
-            v20 = [v19 longLongValue];
+            longLongValue = [v19 longLongValue];
 
-            [v24 appendFormat:@"  %4ld %10lld %@\n", v18, v20, v15];
+            [v24 appendFormat:@"  %4ld %10lld %@\n", longValue, longLongValue, v15];
           }
 
           v12 = [v11 countByEnumeratingWithState:&v25 objects:v44 count:16];
@@ -415,9 +415,9 @@ LABEL_38:
   return v24;
 }
 
-- (id)listWithError:(id *)a3
+- (id)listWithError:(id *)error
 {
-  if (!a3)
+  if (!error)
   {
     sub_10009F1D0();
   }
@@ -439,7 +439,7 @@ LABEL_38:
     v8 = v5;
     v15 = v8;
     v9 = v7;
-    *a3 = [v4 enumerateFiles:v13];
+    *error = [v4 enumerateFiles:v13];
     v10 = v15;
     v11 = v8;
   }
@@ -452,40 +452,40 @@ LABEL_38:
   return v11;
 }
 
-- (BOOL)unbackWithError:(id *)a3
+- (BOOL)unbackWithError:(id *)error
 {
-  v5 = [(MBDriveSettingsContext *)self->_settingsContext sourceIdentifier];
-  v6 = v5;
-  if (v5)
+  sourceIdentifier = [(MBDriveSettingsContext *)self->_settingsContext sourceIdentifier];
+  v6 = sourceIdentifier;
+  if (sourceIdentifier)
   {
-    v7 = v5;
+    targetIdentifier = sourceIdentifier;
   }
 
   else
   {
-    v7 = [(MBDriveSettingsContext *)self->_settingsContext targetIdentifier];
+    targetIdentifier = [(MBDriveSettingsContext *)self->_settingsContext targetIdentifier];
   }
 
-  v8 = v7;
+  v8 = targetIdentifier;
 
   v9 = [@"_unback_" stringByAppendingPathComponent:v8];
   v32 = [NSMutableDictionary dictionaryWithCapacity:0];
-  v10 = [(MBBackupHelper *)self->_backupHelper readBackupManifestWithError:a3];
+  v10 = [(MBBackupHelper *)self->_backupHelper readBackupManifestWithError:error];
   v11 = v10;
   if (v10)
   {
     [v10 buildIndexFromDatabaseIfNeeded];
-    v12 = [v11 properties];
-    v13 = [v12 encrypted];
+    properties = [v11 properties];
+    encrypted = [properties encrypted];
 
-    if (v13)
+    if (encrypted)
     {
-      v14 = [v11 properties];
-      v15 = [v14 keybagData];
+      properties2 = [v11 properties];
+      keybagData = [properties2 keybagData];
 
-      if (!v15)
+      if (!keybagData)
       {
-        if (!a3)
+        if (!error)
         {
           v17 = 0;
 LABEL_30:
@@ -498,14 +498,14 @@ LABEL_31:
         [MBError errorWithCode:205 format:@"Keybag data not found"];
         v17 = 0;
         v18 = 0;
-        *a3 = v19 = 0;
+        *error = v19 = 0;
 LABEL_34:
 
         goto LABEL_35;
       }
 
-      v16 = [(MBDriveSettingsContext *)self->_settingsContext password];
-      v17 = [MBKeyBag unlockedKeyBagWithData:v15 password:v16 error:a3];
+      password = [(MBDriveSettingsContext *)self->_settingsContext password];
+      v17 = [MBKeyBag unlockedKeyBagWithData:keybagData password:password error:error];
 
       if (!v17)
       {
@@ -527,9 +527,9 @@ LABEL_34:
       _MBLog();
     }
 
-    v21 = [(MBDriveSettingsContext *)self->_settingsContext drive];
+    drive = [(MBDriveSettingsContext *)self->_settingsContext drive];
     v42 = 0;
-    v22 = [v21 createDirectoryAtPath:@"_unback_" options:0 error:&v42];
+    v22 = [drive createDirectoryAtPath:@"_unback_" options:0 error:&v42];
     v18 = v42;
 
     if ((v22 & 1) != 0 || ([MBError isError:v18 withCode:3]& 1) != 0)
@@ -543,9 +543,9 @@ LABEL_34:
         _MBLog();
       }
 
-      v24 = [(MBDriveSettingsContext *)self->_settingsContext drive];
+      drive2 = [(MBDriveSettingsContext *)self->_settingsContext drive];
       v41 = v18;
-      v25 = [v24 createDirectoryAtPath:v9 options:0 error:&v41];
+      v25 = [drive2 createDirectoryAtPath:v9 options:0 error:&v41];
       v26 = v41;
 
       if ((v25 & 1) != 0 || ([MBError isError:v26 withCode:3]& 1) != 0)
@@ -562,7 +562,7 @@ LABEL_34:
         v33[3] = &unk_1000FE318;
         v34 = v9;
         v35 = v32;
-        v36 = self;
+        selfCopy = self;
         p_buf = &buf;
         v18 = v26;
         v37 = v18;
@@ -572,9 +572,9 @@ LABEL_34:
         v27 = [v38 enumerateFiles:v33 includeUninstalled:1];
         v28 = *(*(&buf + 1) + 40);
         v19 = v28 == 0;
-        if (a3 && v28)
+        if (error && v28)
         {
-          *a3 = v28;
+          *error = v28;
         }
 
         _Block_object_dispose(&buf, 8);
@@ -582,11 +582,11 @@ LABEL_34:
 
       else
       {
-        if (a3)
+        if (error)
         {
           v30 = v26;
           v19 = 0;
-          *a3 = v26;
+          *error = v26;
         }
 
         else
@@ -600,14 +600,14 @@ LABEL_34:
       goto LABEL_34;
     }
 
-    if (!a3)
+    if (!error)
     {
       goto LABEL_31;
     }
 
     v29 = v18;
     v19 = 0;
-    *a3 = v18;
+    *error = v18;
     goto LABEL_34;
   }
 

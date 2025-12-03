@@ -7,8 +7,8 @@
 
 + (double)_lp_mainScreenScale
 {
-  v0 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v0 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v2 = v1;
 
   return v2;
@@ -16,8 +16,8 @@
 
 + (double)_lp_mainScreenSize
 {
-  v0 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v0 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v2 = v1;
 
   return v2;

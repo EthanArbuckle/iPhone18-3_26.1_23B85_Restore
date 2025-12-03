@@ -3,7 +3,7 @@
 + (UIImageReader)readerWithConfiguration:(UIImageReaderConfiguration *)configuration;
 - (UIImage)imageWithContentsOfFileURL:(NSURL *)url;
 - (UIImageReader)init;
-- (UIImageReader)initWithConfiguration:(id)a3;
+- (UIImageReader)initWithConfiguration:(id)configuration;
 - (UIImageReaderConfiguration)configuration;
 - (void)imageWithContentsOfFileURL:(NSURL *)url completion:(void *)completion;
 @end
@@ -29,21 +29,21 @@ void __30__UIImageReader_defaultReader__block_invoke()
   qword_1ED4A0A78 = v0;
 }
 
-- (UIImageReader)initWithConfiguration:(id)a3
+- (UIImageReader)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = UIImageReader;
   v5 = [(UIImageReader *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [configurationCopy copy];
     v7 = *(v5 + 1);
     *(v5 + 1) = v6;
 
-    v8 = [(UIImageReaderConfiguration *)*(v5 + 1) _imageOptions];
+    _imageOptions = [(UIImageReaderConfiguration *)*(v5 + 1) _imageOptions];
     v9 = *(v5 + 2);
-    *(v5 + 2) = v8;
+    *(v5 + 2) = _imageOptions;
   }
 
   return v5;
@@ -62,11 +62,11 @@ void __30__UIImageReader_defaultReader__block_invoke()
   v5 = configuration;
   if (!v5)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"UIImageReader.m" lineNumber:275 description:@"Client Error: configuration==nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIImageReader.m" lineNumber:275 description:@"Client Error: configuration==nil"];
   }
 
-  v6 = [[a1 alloc] initWithConfiguration:v5];
+  v6 = [[self alloc] initWithConfiguration:v5];
 
   return v6;
 }

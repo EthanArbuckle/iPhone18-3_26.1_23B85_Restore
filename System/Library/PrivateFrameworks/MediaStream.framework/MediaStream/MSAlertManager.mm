@@ -1,22 +1,22 @@
 @interface MSAlertManager
 + (id)sharedAlertManager;
 - (MSAlertManager)init;
-- (void)_dismissNotificationForPersonID:(id)a3;
-- (void)_showNotificationInfo:(id)a3;
-- (void)_userDidRespondToNotification:(__CFUserNotification *)a3 info:(id)a4 responseFlags:(unint64_t)a5;
-- (void)displayAlertForPersonID:(id)a3 notificationDict:(id)a4 completionBlock:(id)a5;
+- (void)_dismissNotificationForPersonID:(id)d;
+- (void)_showNotificationInfo:(id)info;
+- (void)_userDidRespondToNotification:(__CFUserNotification *)notification info:(id)info responseFlags:(unint64_t)flags;
+- (void)displayAlertForPersonID:(id)d notificationDict:(id)dict completionBlock:(id)block;
 @end
 
 @implementation MSAlertManager
 
-- (void)displayAlertForPersonID:(id)a3 notificationDict:(id)a4 completionBlock:(id)a5
+- (void)displayAlertForPersonID:(id)d notificationDict:(id)dict completionBlock:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  blockCopy = block;
   error = 0;
   v10 = *MEMORY[0x277CBECE8];
-  v11 = CFUserNotificationCreate(*MEMORY[0x277CBECE8], 0.0, 0, &error, a4);
+  v11 = CFUserNotificationCreate(*MEMORY[0x277CBECE8], 0.0, 0, &error, dict);
   if (v11)
   {
     v12 = v11;
@@ -26,10 +26,10 @@
       v14 = RunLoopSource;
       v15 = +[MSAMNotificationInfo info];
       [v15 setOwner:self];
-      [v15 setPersonID:v8];
+      [v15 setPersonID:dCopy];
       [v15 setRunLoopSource:v14];
       [v15 setUserNotification:v12];
-      [v15 setCompletionBlock:v9];
+      [v15 setCompletionBlock:blockCopy];
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
@@ -61,11 +61,11 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_showNotificationInfo:(id)a3
+- (void)_showNotificationInfo:(id)info
 {
-  v4 = a3;
-  v5 = [v4 personID];
-  [(MSAlertManager *)self _dismissNotificationForPersonID:v5];
+  infoCopy = info;
+  personID = [infoCopy personID];
+  [(MSAlertManager *)self _dismissNotificationForPersonID:personID];
 
   Mutable = _notificationToInfo_dict;
   if (!_notificationToInfo_dict)
@@ -74,37 +74,37 @@
     _notificationToInfo_dict = Mutable;
   }
 
-  CFDictionarySetValue(Mutable, [v4 userNotification], v4);
+  CFDictionarySetValue(Mutable, [infoCopy userNotification], infoCopy);
   personIDToNotification = self->_personIDToNotification;
-  v8 = [v4 userNotification];
-  v9 = [v4 personID];
-  [(NSMutableDictionary *)personIDToNotification setObject:v8 forKey:v9];
+  userNotification = [infoCopy userNotification];
+  personID2 = [infoCopy personID];
+  [(NSMutableDictionary *)personIDToNotification setObject:userNotification forKey:personID2];
 
-  v10 = [MEMORY[0x277CBEB88] currentRunLoop];
-  v11 = [v10 getCFRunLoop];
-  v12 = [v4 runLoopSource];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  getCFRunLoop = [currentRunLoop getCFRunLoop];
+  runLoopSource = [infoCopy runLoopSource];
 
-  CFRunLoopAddSource(v11, v12, *MEMORY[0x277CBF058]);
+  CFRunLoopAddSource(getCFRunLoop, runLoopSource, *MEMORY[0x277CBF058]);
   v13 = +[MSPowerAssertionManager sharedManager];
   [v13 retainUIBusy];
 }
 
-- (void)_dismissNotificationForPersonID:(id)a3
+- (void)_dismissNotificationForPersonID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_personIDToNotification objectForKey:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_personIDToNotification objectForKey:dCopy];
 
   if (v5)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
       v15 = 138412290;
-      v16 = v4;
+      v16 = dCopy;
       _os_log_debug_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "Dismissing notification for personID %@", &v15, 0xCu);
     }
 
-    v6 = [(NSMutableDictionary *)self->_personIDToNotification objectForKey:v4];
+    v6 = [(NSMutableDictionary *)self->_personIDToNotification objectForKey:dCopy];
     if (v6)
     {
       v7 = v6;
@@ -117,7 +117,7 @@
 
       v9 = CFDictionaryGetValue(Mutable, v7);
       CFUserNotificationCancel(v7);
-      [(NSMutableDictionary *)self->_personIDToNotification removeObjectForKey:v4];
+      [(NSMutableDictionary *)self->_personIDToNotification removeObjectForKey:dCopy];
       v10 = _notificationToInfo_dict;
       if (!_notificationToInfo_dict)
       {
@@ -126,12 +126,12 @@
       }
 
       CFDictionaryRemoveValue(v10, v7);
-      v11 = [v9 completionBlock];
+      completionBlock = [v9 completionBlock];
 
-      if (v11)
+      if (completionBlock)
       {
-        v12 = [v9 completionBlock];
-        v12[2](v12, 0, 3);
+        completionBlock2 = [v9 completionBlock];
+        completionBlock2[2](completionBlock2, 0, 3);
       }
 
       v13 = +[MSPowerAssertionManager sharedManager];
@@ -141,7 +141,7 @@
     else if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
     {
       v15 = 138412290;
-      v16 = v4;
+      v16 = dCopy;
       _os_log_error_impl(&dword_258743000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Cannot find notification associated with person ID %@ to dismiss. Ignoring.", &v15, 0xCu);
     }
   }
@@ -149,9 +149,9 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_userDidRespondToNotification:(__CFUserNotification *)a3 info:(id)a4 responseFlags:(unint64_t)a5
+- (void)_userDidRespondToNotification:(__CFUserNotification *)notification info:(id)info responseFlags:(unint64_t)flags
 {
-  v14 = a4;
+  infoCopy = info;
   Mutable = _notificationToInfo_dict;
   if (!_notificationToInfo_dict)
   {
@@ -159,17 +159,17 @@
     _notificationToInfo_dict = Mutable;
   }
 
-  CFDictionaryRemoveValue(Mutable, a3);
+  CFDictionaryRemoveValue(Mutable, notification);
   personIDToNotification = self->_personIDToNotification;
-  v10 = [v14 personID];
-  [(NSMutableDictionary *)personIDToNotification removeObjectForKey:v10];
+  personID = [infoCopy personID];
+  [(NSMutableDictionary *)personIDToNotification removeObjectForKey:personID];
 
-  v11 = [v14 completionBlock];
+  completionBlock = [infoCopy completionBlock];
 
-  if (v11)
+  if (completionBlock)
   {
-    v12 = [v14 completionBlock];
-    v12[2](v12, 1, a5);
+    completionBlock2 = [infoCopy completionBlock];
+    completionBlock2[2](completionBlock2, 1, flags);
   }
 
   v13 = +[MSPowerAssertionManager sharedManager];

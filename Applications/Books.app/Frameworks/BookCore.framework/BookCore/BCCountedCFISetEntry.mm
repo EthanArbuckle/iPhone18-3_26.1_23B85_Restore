@@ -1,31 +1,31 @@
 @interface BCCountedCFISetEntry
-- (BCCountedCFISetEntry)initWithCFI:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BCCountedCFISetEntry)initWithCFI:(id)i;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation BCCountedCFISetEntry
 
-- (BCCountedCFISetEntry)initWithCFI:(id)a3
+- (BCCountedCFISetEntry)initWithCFI:(id)i
 {
-  v5 = a3;
+  iCopy = i;
   v9.receiver = self;
   v9.super_class = BCCountedCFISetEntry;
   v6 = [(BCCountedCFISetEntry *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cfi, a3);
+    objc_storeStrong(&v6->_cfi, i);
   }
 
   return v7;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  if (self == v4)
+  compareCopy = compare;
+  if (self == compareCopy)
   {
     v7 = 0;
   }
@@ -36,7 +36,7 @@
     if (objc_opt_isKindOfClass())
     {
       v5 = [(BCCountedCFISetEntry *)self cfi];
-      v6 = [(BCCountedCFISetEntry *)v4 cfi];
+      v6 = [(BCCountedCFISetEntry *)compareCopy cfi];
       v7 = [v5 compare:v6];
     }
 
@@ -49,7 +49,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v5 = [(BCCountedCFISetEntry *)self cfi];
@@ -63,9 +63,9 @@
 - (id)description
 {
   v3 = [(BCCountedCFISetEntry *)self cfi];
-  v4 = [v3 string];
+  string = [v3 string];
   [(BCCountedCFISetEntry *)self count];
-  v6 = [NSString stringWithFormat:@"%@ => %.1f", v4, v5];
+  v6 = [NSString stringWithFormat:@"%@ => %.1f", string, v5];
 
   return v6;
 }

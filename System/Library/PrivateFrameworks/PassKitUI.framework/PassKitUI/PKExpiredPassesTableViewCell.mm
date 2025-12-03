@@ -1,25 +1,25 @@
 @interface PKExpiredPassesTableViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKExpiredPassesTableViewCell)initWithReuseIdentifier:(id)a3;
-- (double)_layoutWithBounds:(double)a3 isTemplateLayout:(double)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKExpiredPassesTableViewCell)initWithReuseIdentifier:(id)identifier;
+- (double)_layoutWithBounds:(double)bounds isTemplateLayout:(double)layout;
 - (uint64_t)_configureLabels;
 - (void)_determineAccessibilitySettings;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setPass:(id)a3;
-- (void)setPrimaryText:(id)a3;
-- (void)setSecondaryText:(id)a3;
-- (void)setTertiaryText:(id)a3;
+- (void)setPass:(id)pass;
+- (void)setPrimaryText:(id)text;
+- (void)setSecondaryText:(id)text;
+- (void)setTertiaryText:(id)text;
 @end
 
 @implementation PKExpiredPassesTableViewCell
 
-- (PKExpiredPassesTableViewCell)initWithReuseIdentifier:(id)a3
+- (PKExpiredPassesTableViewCell)initWithReuseIdentifier:(id)identifier
 {
   v33[1] = *MEMORY[0x1E69E9840];
   v32.receiver = self;
   v32.super_class = PKExpiredPassesTableViewCell;
-  v3 = [(PKExpiredPassesTableViewCell *)&v32 initWithStyle:0 reuseIdentifier:a3];
+  v3 = [(PKExpiredPassesTableViewCell *)&v32 initWithStyle:0 reuseIdentifier:identifier];
   v4 = v3;
   if (v3)
   {
@@ -30,15 +30,15 @@
     v4->_primaryLabel = v5;
 
     v7 = v4->_primaryLabel;
-    v8 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v7 setTextColor:v8];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v7 setTextColor:labelColor];
 
     v9 = v4->_primaryLabel;
     v10 = PKFontForDefaultDesign(*MEMORY[0x1E69DDCF8], *MEMORY[0x1E69DDC20], 2, 0);
     [(UILabel *)v9 setFont:v10];
 
-    v11 = [(PKExpiredPassesTableViewCell *)v4 contentView];
-    [v11 addSubview:v4->_primaryLabel];
+    contentView = [(PKExpiredPassesTableViewCell *)v4 contentView];
+    [contentView addSubview:v4->_primaryLabel];
 
     [(UILabel *)v4->_primaryLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
     v12 = objc_alloc_init(MEMORY[0x1E69DCC10]);
@@ -46,8 +46,8 @@
     v4->_secondaryLabel = v12;
 
     v14 = v4->_secondaryLabel;
-    v15 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v14 setTextColor:v15];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v14 setTextColor:secondaryLabelColor];
 
     v16 = v4->_secondaryLabel;
     v17 = *MEMORY[0x1E69DDD28];
@@ -55,8 +55,8 @@
     v19 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD28], *MEMORY[0x1E69DDC28], 0x8000, 0);
     [(UILabel *)v16 setFont:v19];
 
-    v20 = [(PKExpiredPassesTableViewCell *)v4 contentView];
-    [v20 addSubview:v4->_secondaryLabel];
+    contentView2 = [(PKExpiredPassesTableViewCell *)v4 contentView];
+    [contentView2 addSubview:v4->_secondaryLabel];
 
     v21 = *MEMORY[0x1E69B9CC8];
     [(UILabel *)v4->_secondaryLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9CC8]];
@@ -65,15 +65,15 @@
     v4->_tertiaryLabel = v22;
 
     v24 = v4->_tertiaryLabel;
-    v25 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v24 setTextColor:v25];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v24 setTextColor:secondaryLabelColor2];
 
     v26 = v4->_tertiaryLabel;
     v27 = PKFontForDefaultDesign(v17, v18, 0x8000, 0);
     [(UILabel *)v26 setFont:v27];
 
-    v28 = [(PKExpiredPassesTableViewCell *)v4 contentView];
-    [v28 addSubview:v4->_tertiaryLabel];
+    contentView3 = [(PKExpiredPassesTableViewCell *)v4 contentView];
+    [contentView3 addSubview:v4->_tertiaryLabel];
 
     [(UILabel *)v4->_tertiaryLabel setAccessibilityIdentifier:v21];
     [(PKExpiredPassesTableViewCell *)v4 _configureLabels];
@@ -90,12 +90,12 @@
 
 - (void)_determineAccessibilitySettings
 {
-  if (a1)
+  if (self)
   {
-    v2 = [a1 traitCollection];
-    category = [v2 preferredContentSizeCategory];
+    traitCollection = [self traitCollection];
+    category = [traitCollection preferredContentSizeCategory];
 
-    a1[1024] = UIContentSizeCategoryIsAccessibilityCategory(category);
+    self[1024] = UIContentSizeCategoryIsAccessibilityCategory(category);
   }
 }
 
@@ -157,17 +157,17 @@ void __56__PKExpiredPassesTableViewCell_initWithReuseIdentifier___block_invoke(u
   [v2 setNeedsLayout];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = [(PKExpiredPassesTableViewCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8] isTemplateLayout:*(MEMORY[0x1E695EFF8] + 8), a3.width, 1.79769313e308];
+  v3 = [(PKExpiredPassesTableViewCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8] isTemplateLayout:*(MEMORY[0x1E695EFF8] + 8), fits.width, 1.79769313e308];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-- (double)_layoutWithBounds:(double)a3 isTemplateLayout:(double)a4
+- (double)_layoutWithBounds:(double)bounds isTemplateLayout:(double)layout
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
@@ -182,7 +182,7 @@ void __56__PKExpiredPassesTableViewCell_initWithReuseIdentifier___block_invoke(u
 
   else
   {
-    if (*(a1 + 1025))
+    if (*(self + 1025))
     {
       v14 = 10.0;
     }
@@ -192,7 +192,7 @@ void __56__PKExpiredPassesTableViewCell_initWithReuseIdentifier___block_invoke(u
       v14 = 16.0;
     }
 
-    if (*(a1 + 1025))
+    if (*(self + 1025))
     {
       v12 = 16.0;
     }
@@ -206,7 +206,7 @@ void __56__PKExpiredPassesTableViewCell_initWithReuseIdentifier___block_invoke(u
     v15 = 8.0;
   }
 
-  if (*(a1 + 1025))
+  if (*(self + 1025))
   {
     v16 = CGRectMaxXEdge;
   }
@@ -219,7 +219,7 @@ void __56__PKExpiredPassesTableViewCell_initWithReuseIdentifier___block_invoke(u
   PKContentAlignmentMake();
   if (_UISolariumFeatureFlagEnabled())
   {
-    if (*(a1 + 1024))
+    if (*(self + 1024))
     {
       v17 = 80.0;
     }
@@ -236,8 +236,8 @@ void __56__PKExpiredPassesTableViewCell_initWithReuseIdentifier___block_invoke(u
   }
 
   v73 = a5;
-  remainder.origin.x = a3 + v14;
-  remainder.origin.y = a4 + v15;
+  remainder.origin.x = bounds + v14;
+  remainder.origin.y = layout + v15;
   remainder.size.width = a5 - (v14 + v12);
   remainder.size.height = a6 - (v13 + v15);
   v18 = *(MEMORY[0x1E695F050] + 16);
@@ -245,7 +245,7 @@ void __56__PKExpiredPassesTableViewCell_initWithReuseIdentifier___block_invoke(u
   v20 = *(MEMORY[0x1E695F058] + 8);
   v21 = *(MEMORY[0x1E695F058] + 16);
   v22 = *(MEMORY[0x1E695F058] + 24);
-  v23 = *(a1 + 1032);
+  v23 = *(self + 1032);
   slice.origin = *MEMORY[0x1E695F050];
   slice.size = v18;
   v24 = v22;
@@ -259,7 +259,7 @@ void __56__PKExpiredPassesTableViewCell_initWithReuseIdentifier___block_invoke(u
     y = remainder.origin.y;
     width = remainder.size.width;
     height = remainder.size.height;
-    if (*(a1 + 1024) == 1)
+    if (*(self + 1024) == 1)
     {
       CGRectDivide(*&x, &slice, &remainder, v78[1], CGRectMinYEdge);
       PKSizeAlignedInRect();
@@ -282,16 +282,16 @@ void __56__PKExpiredPassesTableViewCell_initWithReuseIdentifier___block_invoke(u
   }
 
   v77 = v24;
-  if (*(a1 + 1072))
+  if (*(self + 1072))
   {
     v37 = 0.0;
-    if (*(a1 + 1032) && *(a1 + 1024) == 1)
+    if (*(self + 1032) && *(self + 1024) == 1)
     {
       v37 = 2.0;
       CGRectDivide(remainder, &slice, &remainder, 2.0, CGRectMinYEdge);
     }
 
-    [*(a1 + 1040) sizeThatFits:{remainder.size.width, remainder.size.height}];
+    [*(self + 1040) sizeThatFits:{remainder.size.width, remainder.size.height}];
     CGRectDivide(remainder, &slice, &remainder, v38, CGRectMinYEdge);
     PKSizeAlignedInRect();
     v70 = v39;
@@ -310,11 +310,11 @@ void __56__PKExpiredPassesTableViewCell_initWithReuseIdentifier___block_invoke(u
     v70 = v19;
   }
 
-  if (*(a1 + 1080))
+  if (*(self + 1080))
   {
     v45 = remainder.size.width;
     v46 = remainder.size.height;
-    if (*(a1 + 1072))
+    if (*(self + 1072))
     {
       v47 = remainder.origin.x;
       v48 = remainder.origin.y;
@@ -324,7 +324,7 @@ void __56__PKExpiredPassesTableViewCell_initWithReuseIdentifier___block_invoke(u
       v46 = remainder.size.height;
     }
 
-    [*(a1 + 1048) sizeThatFits:{v45, v46}];
+    [*(self + 1048) sizeThatFits:{v45, v46}];
     CGRectDivide(remainder, &slice, &remainder, v49, CGRectMinYEdge);
     PKSizeAlignedInRect();
     v68 = v50;
@@ -342,11 +342,11 @@ void __56__PKExpiredPassesTableViewCell_initWithReuseIdentifier___block_invoke(u
     v53 = v20;
   }
 
-  if (*(a1 + 1088))
+  if (*(self + 1088))
   {
     v56 = remainder.size.width;
     v57 = remainder.size.height;
-    if (*(a1 + 1080))
+    if (*(self + 1080))
     {
       v58 = remainder.origin.x;
       v59 = remainder.origin.y;
@@ -356,7 +356,7 @@ void __56__PKExpiredPassesTableViewCell_initWithReuseIdentifier___block_invoke(u
       v57 = remainder.size.height;
     }
 
-    [*(a1 + 1056) sizeThatFits:{v56, v57}];
+    [*(self + 1056) sizeThatFits:{v56, v57}];
     CGRectDivide(remainder, &slice, &remainder, v60, CGRectMinYEdge);
     PKSizeAlignedInRect();
     v19 = v61;
@@ -366,21 +366,21 @@ void __56__PKExpiredPassesTableViewCell_initWithReuseIdentifier___block_invoke(u
     v44 = v44 + v64;
   }
 
-  if (*(a1 + 1024) != 1 && v77 > v44)
+  if (*(self + 1024) != 1 && v77 > v44)
   {
     v65 = (v77 - v44) * 0.5;
-    if (*(a1 + 1072))
+    if (*(self + 1072))
     {
       v42 = v42 + v65;
     }
 
-    if (*(a1 + 1080))
+    if (*(self + 1080))
     {
       v53 = v53 + v65;
     }
 
     v66 = v20 + v65;
-    if (*(a1 + 1088))
+    if (*(self + 1088))
     {
       v20 = v66;
     }
@@ -388,10 +388,10 @@ void __56__PKExpiredPassesTableViewCell_initWithReuseIdentifier___block_invoke(u
 
   if ((a2 & 1) == 0)
   {
-    [*(a1 + 1032) setFrame:{v74, v75, v76, v77}];
-    [*(a1 + 1040) setFrame:{v70, v42, v71, v72}];
-    [*(a1 + 1048) setFrame:{v68, v53, v69, v55}];
-    [*(a1 + 1056) setFrame:{v19, v20, v21, v22}];
+    [*(self + 1032) setFrame:{v74, v75, v76, v77}];
+    [*(self + 1040) setFrame:{v70, v42, v71, v72}];
+    [*(self + 1048) setFrame:{v68, v53, v69, v55}];
+    [*(self + 1056) setFrame:{v19, v20, v21, v22}];
   }
 
   return v73;
@@ -402,8 +402,8 @@ void __56__PKExpiredPassesTableViewCell_initWithReuseIdentifier___block_invoke(u
   v8.receiver = self;
   v8.super_class = PKExpiredPassesTableViewCell;
   [(PKExpiredPassesTableViewCell *)&v8 layoutSubviews];
-  v3 = [(PKExpiredPassesTableViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKExpiredPassesTableViewCell *)self contentView];
+  [contentView bounds];
   [(PKExpiredPassesTableViewCell *)self _layoutWithBounds:v4 isTemplateLayout:v5, v6, v7];
 }
 
@@ -418,13 +418,13 @@ void __56__PKExpiredPassesTableViewCell_initWithReuseIdentifier___block_invoke(u
   [(PKExpiredPassesTableViewCell *)self setPass:0];
 }
 
-- (void)setPass:(id)a3
+- (void)setPass:(id)pass
 {
-  v5 = a3;
-  if (self->_pass != v5)
+  passCopy = pass;
+  if (self->_pass != passCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_pass, a3);
+    v11 = passCopy;
+    objc_storeStrong(&self->_pass, pass);
     if (self->_pass)
     {
       v6 = [PKPassThumbnailView alloc];
@@ -443,8 +443,8 @@ void __56__PKExpiredPassesTableViewCell_initWithReuseIdentifier___block_invoke(u
         v8->_preferMinimumHeight = 0;
       }
 
-      v9 = [(PKExpiredPassesTableViewCell *)self contentView];
-      [v9 addSubview:self->_thumbnailView];
+      contentView = [(PKExpiredPassesTableViewCell *)self contentView];
+      [contentView addSubview:self->_thumbnailView];
 
       [(PKExpiredPassesTableViewCell *)self setNeedsLayout];
     }
@@ -456,15 +456,15 @@ void __56__PKExpiredPassesTableViewCell_initWithReuseIdentifier___block_invoke(u
       self->_thumbnailView = 0;
     }
 
-    v5 = v11;
+    passCopy = v11;
   }
 }
 
-- (void)setPrimaryText:(id)a3
+- (void)setPrimaryText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   primaryText = self->_primaryText;
-  v9 = v5;
+  v9 = textCopy;
   v7 = primaryText;
   if (v7 == v9)
   {
@@ -483,7 +483,7 @@ void __56__PKExpiredPassesTableViewCell_initWithReuseIdentifier___block_invoke(u
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_primaryText, a3);
+    objc_storeStrong(&self->_primaryText, text);
     [(UILabel *)self->_primaryLabel setText:self->_primaryText];
     [(PKExpiredPassesTableViewCell *)self setNeedsLayout];
   }
@@ -491,11 +491,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setSecondaryText:(id)a3
+- (void)setSecondaryText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   secondaryText = self->_secondaryText;
-  v9 = v5;
+  v9 = textCopy;
   v7 = secondaryText;
   if (v7 == v9)
   {
@@ -514,7 +514,7 @@ LABEL_9:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_secondaryText, a3);
+    objc_storeStrong(&self->_secondaryText, text);
     [(UILabel *)self->_secondaryLabel setText:self->_secondaryText];
     [(PKExpiredPassesTableViewCell *)self setNeedsLayout];
   }
@@ -522,11 +522,11 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setTertiaryText:(id)a3
+- (void)setTertiaryText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   tertiaryText = self->_tertiaryText;
-  v9 = v5;
+  v9 = textCopy;
   v7 = tertiaryText;
   if (v7 == v9)
   {
@@ -545,7 +545,7 @@ LABEL_9:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_tertiaryText, a3);
+    objc_storeStrong(&self->_tertiaryText, text);
     [(UILabel *)self->_tertiaryLabel setText:self->_tertiaryText];
     [(PKExpiredPassesTableViewCell *)self setNeedsLayout];
   }

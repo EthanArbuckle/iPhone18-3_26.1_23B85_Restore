@@ -1,16 +1,16 @@
 @interface PUOneUpAssetTransitionContext
-+ (id)oneUpAssetTransitionContextWithContainerView:(id)a3 fromView:(id)a4 snapshotView:(id)a5 transitionInfo:(id)a6;
-+ (id)oneUpAssetTransitionContextWithContainerView:(id)a3 fromView:(id)a4 snapshotView:(id)a5 transitionInfo:(id)a6 trailingAssetTransitionInfo:(id)a7 leadingAssetTransitionInfo:(id)a8;
-- (id)oneUpTransitionContextWithAnimationBlock:(id)a3;
-- (id)oneUpTransitionContextWithContextShouldHideBackground:(BOOL)a3;
-- (id)oneUpTransitionContextWithContextWithContainerView:(id)a3;
++ (id)oneUpAssetTransitionContextWithContainerView:(id)view fromView:(id)fromView snapshotView:(id)snapshotView transitionInfo:(id)info;
++ (id)oneUpAssetTransitionContextWithContainerView:(id)view fromView:(id)fromView snapshotView:(id)snapshotView transitionInfo:(id)info trailingAssetTransitionInfo:(id)transitionInfo leadingAssetTransitionInfo:(id)assetTransitionInfo;
+- (id)oneUpTransitionContextWithAnimationBlock:(id)block;
+- (id)oneUpTransitionContextWithContextShouldHideBackground:(BOOL)background;
+- (id)oneUpTransitionContextWithContextWithContainerView:(id)view;
 @end
 
 @implementation PUOneUpAssetTransitionContext
 
-- (id)oneUpTransitionContextWithAnimationBlock:(id)a3
+- (id)oneUpTransitionContextWithAnimationBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(PUOneUpAssetTransitionContext);
   [(PUOneUpAssetTransitionContext *)v5 _setContainerView:self->_containerView];
   [(PUOneUpAssetTransitionContext *)v5 _setFromView:self->_fromView];
@@ -18,7 +18,7 @@
   [(PUOneUpAssetTransitionContext *)v5 _setTransitionInfo:self->_transitionInfo];
   [(PUOneUpAssetTransitionContext *)v5 _setTrailingAssetTransitionInfo:self->_trailingAssetTransitionInfo];
   [(PUOneUpAssetTransitionContext *)v5 _setLeadingAssetTransitionInfo:self->_leadingAssetTransitionInfo];
-  [(PUOneUpAssetTransitionContext *)v5 _setAnimationBlock:v4];
+  [(PUOneUpAssetTransitionContext *)v5 _setAnimationBlock:blockCopy];
 
   [(PUOneUpAssetTransitionContext *)v5 _setShouldHideBackground:self->_shouldHideBackground];
   [(PUOneUpAssetTransitionContext *)v5 setExecutedAction:self->_executedAction];
@@ -26,9 +26,9 @@
   return v5;
 }
 
-- (id)oneUpTransitionContextWithContextShouldHideBackground:(BOOL)a3
+- (id)oneUpTransitionContextWithContextShouldHideBackground:(BOOL)background
 {
-  v3 = a3;
+  backgroundCopy = background;
   v5 = objc_alloc_init(PUOneUpAssetTransitionContext);
   [(PUOneUpAssetTransitionContext *)v5 _setContainerView:self->_containerView];
   [(PUOneUpAssetTransitionContext *)v5 _setFromView:self->_fromView];
@@ -36,17 +36,17 @@
   [(PUOneUpAssetTransitionContext *)v5 _setTransitionInfo:self->_transitionInfo];
   [(PUOneUpAssetTransitionContext *)v5 _setTrailingAssetTransitionInfo:self->_trailingAssetTransitionInfo];
   [(PUOneUpAssetTransitionContext *)v5 _setLeadingAssetTransitionInfo:self->_leadingAssetTransitionInfo];
-  [(PUOneUpAssetTransitionContext *)v5 _setShouldHideBackground:v3];
+  [(PUOneUpAssetTransitionContext *)v5 _setShouldHideBackground:backgroundCopy];
   [(PUOneUpAssetTransitionContext *)v5 setExecutedAction:self->_executedAction];
 
   return v5;
 }
 
-- (id)oneUpTransitionContextWithContextWithContainerView:(id)a3
+- (id)oneUpTransitionContextWithContextWithContainerView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_alloc_init(PUOneUpAssetTransitionContext);
-  [(PUOneUpAssetTransitionContext *)v5 _setContainerView:v4];
+  [(PUOneUpAssetTransitionContext *)v5 _setContainerView:viewCopy];
 
   [(PUOneUpAssetTransitionContext *)v5 _setFromView:self->_fromView];
   [(PUOneUpAssetTransitionContext *)v5 _setSnapshotView:self->_snapshotView];
@@ -59,41 +59,41 @@
   return v5;
 }
 
-+ (id)oneUpAssetTransitionContextWithContainerView:(id)a3 fromView:(id)a4 snapshotView:(id)a5 transitionInfo:(id)a6 trailingAssetTransitionInfo:(id)a7 leadingAssetTransitionInfo:(id)a8
++ (id)oneUpAssetTransitionContextWithContainerView:(id)view fromView:(id)fromView snapshotView:(id)snapshotView transitionInfo:(id)info trailingAssetTransitionInfo:(id)transitionInfo leadingAssetTransitionInfo:(id)assetTransitionInfo
 {
-  v13 = a8;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  assetTransitionInfoCopy = assetTransitionInfo;
+  transitionInfoCopy = transitionInfo;
+  infoCopy = info;
+  snapshotViewCopy = snapshotView;
+  fromViewCopy = fromView;
+  viewCopy = view;
   v19 = objc_alloc_init(PUOneUpAssetTransitionContext);
-  [(PUOneUpAssetTransitionContext *)v19 _setContainerView:v18];
+  [(PUOneUpAssetTransitionContext *)v19 _setContainerView:viewCopy];
 
-  [(PUOneUpAssetTransitionContext *)v19 _setFromView:v17];
-  [(PUOneUpAssetTransitionContext *)v19 _setSnapshotView:v16];
+  [(PUOneUpAssetTransitionContext *)v19 _setFromView:fromViewCopy];
+  [(PUOneUpAssetTransitionContext *)v19 _setSnapshotView:snapshotViewCopy];
 
-  [(PUOneUpAssetTransitionContext *)v19 _setTransitionInfo:v15];
-  [(PUOneUpAssetTransitionContext *)v19 _setTrailingAssetTransitionInfo:v14];
+  [(PUOneUpAssetTransitionContext *)v19 _setTransitionInfo:infoCopy];
+  [(PUOneUpAssetTransitionContext *)v19 _setTrailingAssetTransitionInfo:transitionInfoCopy];
 
-  [(PUOneUpAssetTransitionContext *)v19 _setLeadingAssetTransitionInfo:v13];
+  [(PUOneUpAssetTransitionContext *)v19 _setLeadingAssetTransitionInfo:assetTransitionInfoCopy];
 
   return v19;
 }
 
-+ (id)oneUpAssetTransitionContextWithContainerView:(id)a3 fromView:(id)a4 snapshotView:(id)a5 transitionInfo:(id)a6
++ (id)oneUpAssetTransitionContextWithContainerView:(id)view fromView:(id)fromView snapshotView:(id)snapshotView transitionInfo:(id)info
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  infoCopy = info;
+  snapshotViewCopy = snapshotView;
+  fromViewCopy = fromView;
+  viewCopy = view;
   v13 = objc_alloc_init(PUOneUpAssetTransitionContext);
-  [(PUOneUpAssetTransitionContext *)v13 _setContainerView:v12];
+  [(PUOneUpAssetTransitionContext *)v13 _setContainerView:viewCopy];
 
-  [(PUOneUpAssetTransitionContext *)v13 _setFromView:v11];
-  [(PUOneUpAssetTransitionContext *)v13 _setSnapshotView:v10];
+  [(PUOneUpAssetTransitionContext *)v13 _setFromView:fromViewCopy];
+  [(PUOneUpAssetTransitionContext *)v13 _setSnapshotView:snapshotViewCopy];
 
-  [(PUOneUpAssetTransitionContext *)v13 _setTransitionInfo:v9];
+  [(PUOneUpAssetTransitionContext *)v13 _setTransitionInfo:infoCopy];
 
   return v13;
 }

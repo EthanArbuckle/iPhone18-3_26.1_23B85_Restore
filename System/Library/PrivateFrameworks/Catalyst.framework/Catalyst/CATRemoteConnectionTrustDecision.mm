@@ -1,5 +1,5 @@
 @interface CATRemoteConnectionTrustDecision
-- (CATRemoteConnectionTrustDecision)initWithConnection:(id)a3 trust:(__SecTrust *)a4;
+- (CATRemoteConnectionTrustDecision)initWithConnection:(id)connection trust:(__SecTrust *)trust;
 - (void)dealloc;
 @end
 
@@ -18,17 +18,17 @@
   [(CATRemoteConnectionTrustDecision *)&v4 dealloc];
 }
 
-- (CATRemoteConnectionTrustDecision)initWithConnection:(id)a3 trust:(__SecTrust *)a4
+- (CATRemoteConnectionTrustDecision)initWithConnection:(id)connection trust:(__SecTrust *)trust
 {
-  v6 = a3;
+  connectionCopy = connection;
   v10.receiver = self;
   v10.super_class = CATRemoteConnectionTrustDecision;
   v7 = [(CATRemoteConnectionTrustDecision *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->mConnection, v6);
-    objc_storeStrong(&v8->_trust, a4);
+    objc_storeWeak(&v7->mConnection, connectionCopy);
+    objc_storeStrong(&v8->_trust, trust);
   }
 
   return v8;

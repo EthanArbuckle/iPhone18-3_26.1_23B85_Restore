@@ -1,12 +1,12 @@
 @interface MKRoutePolyline
-- (id)_stepWithRange:(_NSRange)a3;
+- (id)_stepWithRange:(_NSRange)range;
 @end
 
 @implementation MKRoutePolyline
 
-- (id)_stepWithRange:(_NSRange)a3
+- (id)_stepWithRange:(_NSRange)range
 {
-  v3 = [[MKRouteStepPolyline alloc] _initWithRoute:self range:a3.location, a3.length];
+  v3 = [[MKRouteStepPolyline alloc] _initWithRoute:self range:range.location, range.length];
 
   return v3;
 }

@@ -8,7 +8,7 @@
 - (void)didTapClose
 {
   v2 = *((swift_isaMask & self->super.isa) + 0x58);
-  v5 = self;
+  selfCopy = self;
   v3 = v2();
   if (v3)
   {

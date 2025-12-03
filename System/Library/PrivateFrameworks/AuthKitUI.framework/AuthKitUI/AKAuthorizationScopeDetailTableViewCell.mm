@@ -1,8 +1,8 @@
 @interface AKAuthorizationScopeDetailTableViewCell
-- (AKAuthorizationScopeDetailTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (AKAuthorizationScopeDetailTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (double)minimumHeight;
 - (id)_checkmarkCircleImage;
-- (id)_checkmarkCircleImageViewChecked:(BOOL)a3;
+- (id)_checkmarkCircleImageViewChecked:(BOOL)checked;
 - (id)_checkmarkImage;
 - (id)_checkmarkImageView;
 - (id)_circleImage;
@@ -10,81 +10,81 @@
 - (id)_newLabel;
 - (id)_selectedCheckmarkCircleImageView;
 - (id)_unselectedCheckmarkCircleImageView;
-- (void)_setCheckMarkStyleLeadingChecked:(BOOL)a3;
-- (void)_setCheckmarkStyleTrailingChecked:(BOOL)a3;
+- (void)_setCheckMarkStyleLeadingChecked:(BOOL)checked;
+- (void)_setCheckmarkStyleTrailingChecked:(BOOL)checked;
 - (void)_setSeparatorIndentToMainLabel;
 - (void)_setupLayout;
 - (void)_setupScopeImageView;
 - (void)_setupViews;
 - (void)layoutSubviews;
-- (void)setChecked:(BOOL)a3;
-- (void)setCheckmarkStyle:(unint64_t)a3;
-- (void)setMinimumHeight:(double)a3;
-- (void)setScopeImage:(id)a3;
+- (void)setChecked:(BOOL)checked;
+- (void)setCheckmarkStyle:(unint64_t)style;
+- (void)setMinimumHeight:(double)height;
+- (void)setScopeImage:(id)image;
 @end
 
 @implementation AKAuthorizationScopeDetailTableViewCell
 
-- (AKAuthorizationScopeDetailTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (AKAuthorizationScopeDetailTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v9 = self;
+  selfCopy = self;
   location[2] = a2;
-  location[1] = a3;
+  location[1] = style;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  v4 = v9;
-  v9 = 0;
+  objc_storeStrong(location, identifier);
+  v4 = selfCopy;
+  selfCopy = 0;
   v7.receiver = v4;
   v7.super_class = AKAuthorizationScopeDetailTableViewCell;
-  v9 = [(AKAuthorizationScopeDetailTableViewCell *)&v7 initWithStyle:2 reuseIdentifier:location[0]];
-  objc_storeStrong(&v9, v9);
-  if (v9)
+  selfCopy = [(AKAuthorizationScopeDetailTableViewCell *)&v7 initWithStyle:2 reuseIdentifier:location[0]];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
-    [(AKAuthorizationScopeDetailTableViewCell *)v9 _setupViews];
-    [(AKAuthorizationScopeDetailTableViewCell *)v9 _setupLayout];
+    [(AKAuthorizationScopeDetailTableViewCell *)selfCopy _setupViews];
+    [(AKAuthorizationScopeDetailTableViewCell *)selfCopy _setupLayout];
   }
 
-  v6 = MEMORY[0x277D82BE0](v9);
+  v6 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
 - (void)_setupViews
 {
-  v2 = [(AKAuthorizationScopeDetailTableViewCell *)self _newLabel];
+  _newLabel = [(AKAuthorizationScopeDetailTableViewCell *)self _newLabel];
   scopeLabel = self->_scopeLabel;
-  self->_scopeLabel = v2;
-  v4 = [(AKAuthorizationScopeDetailTableViewCell *)self _newLabel];
+  self->_scopeLabel = _newLabel;
+  _newLabel2 = [(AKAuthorizationScopeDetailTableViewCell *)self _newLabel];
   mainLabel = self->_mainLabel;
-  self->_mainLabel = v4;
-  v6 = [(AKAuthorizationScopeDetailTableViewCell *)self _newLabel];
+  self->_mainLabel = _newLabel2;
+  _newLabel3 = [(AKAuthorizationScopeDetailTableViewCell *)self _newLabel];
   mainDetailLabel = self->_mainDetailLabel;
-  self->_mainDetailLabel = v6;
+  self->_mainDetailLabel = _newLabel3;
   v9 = +[AKAuthorizationAppearance scopeTitleFont];
-  v8 = [(AKAuthorizationScopeDetailTableViewCell *)self mainLabel];
-  [(UILabel *)v8 setFont:v9];
-  MEMORY[0x277D82BD8](v8);
+  mainLabel = [(AKAuthorizationScopeDetailTableViewCell *)self mainLabel];
+  [(UILabel *)mainLabel setFont:v9];
+  MEMORY[0x277D82BD8](mainLabel);
   v11 = +[AKAuthorizationAppearance scopeTitleTextColor];
-  v10 = [(AKAuthorizationScopeDetailTableViewCell *)self mainLabel];
-  [(UILabel *)v10 setTextColor:v11];
-  MEMORY[0x277D82BD8](v10);
+  mainLabel2 = [(AKAuthorizationScopeDetailTableViewCell *)self mainLabel];
+  [(UILabel *)mainLabel2 setTextColor:v11];
+  MEMORY[0x277D82BD8](mainLabel2);
   v13 = +[AKAuthorizationAppearance scopeSubtitleFont];
-  v12 = [(AKAuthorizationScopeDetailTableViewCell *)self mainDetailLabel];
-  [(UILabel *)v12 setFont:v13];
-  MEMORY[0x277D82BD8](v12);
+  mainDetailLabel = [(AKAuthorizationScopeDetailTableViewCell *)self mainDetailLabel];
+  [(UILabel *)mainDetailLabel setFont:v13];
+  MEMORY[0x277D82BD8](mainDetailLabel);
   v15 = +[AKAuthorizationAppearance scopeSubtitleTextColor];
-  v14 = [(AKAuthorizationScopeDetailTableViewCell *)self mainDetailLabel];
-  [(UILabel *)v14 setTextColor:v15];
-  MEMORY[0x277D82BD8](v14);
+  mainDetailLabel2 = [(AKAuthorizationScopeDetailTableViewCell *)self mainDetailLabel];
+  [(UILabel *)mainDetailLabel2 setTextColor:v15];
+  MEMORY[0x277D82BD8](mainDetailLabel2);
   v17 = +[AKAuthorizationAppearance scopeInfoLabelFont];
-  v16 = [(AKAuthorizationScopeDetailTableViewCell *)self scopeLabel];
-  [(UILabel *)v16 setFont:v17];
-  MEMORY[0x277D82BD8](v16);
+  scopeLabel = [(AKAuthorizationScopeDetailTableViewCell *)self scopeLabel];
+  [(UILabel *)scopeLabel setFont:v17];
+  MEMORY[0x277D82BD8](scopeLabel);
   v19 = +[AKAuthorizationAppearance scopeInfoLabelTextColor];
-  v18 = [(AKAuthorizationScopeDetailTableViewCell *)self scopeLabel];
-  [(UILabel *)v18 setTextColor:v19];
-  MEMORY[0x277D82BD8](v18);
+  scopeLabel2 = [(AKAuthorizationScopeDetailTableViewCell *)self scopeLabel];
+  [(UILabel *)scopeLabel2 setTextColor:v19];
+  MEMORY[0x277D82BD8](scopeLabel2);
   v20 = +[AKAuthorizationAppearance scopeRowBackgroundColor];
   [(AKAuthorizationScopeDetailTableViewCell *)self setBackgroundColor:?];
   [(AKAuthorizationScopeDetailTableViewCell *)self _setupScopeImageView];
@@ -94,241 +94,241 @@
 - (void)_setupLayout
 {
   v115[4] = *MEMORY[0x277D85DE8];
-  v113 = self;
+  selfCopy = self;
   v112[1] = a2;
   v2 = objc_alloc_init(MEMORY[0x277D756D0]);
-  mainGuide = v113->_mainGuide;
-  v113->_mainGuide = v2;
+  mainGuide = selfCopy->_mainGuide;
+  selfCopy->_mainGuide = v2;
   MEMORY[0x277D82BD8](mainGuide);
   v4 = objc_alloc_init(MEMORY[0x277D756D0]);
-  mainLabelFirstLineGuide = v113->_mainLabelFirstLineGuide;
-  v113->_mainLabelFirstLineGuide = v4;
+  mainLabelFirstLineGuide = selfCopy->_mainLabelFirstLineGuide;
+  selfCopy->_mainLabelFirstLineGuide = v4;
   MEMORY[0x277D82BD8](mainLabelFirstLineGuide);
   v6 = objc_alloc_init(MEMORY[0x277D756D0]);
-  scopeLabelFirstLineGuide = v113->_scopeLabelFirstLineGuide;
-  v113->_scopeLabelFirstLineGuide = v6;
-  v20 = [(AKAuthorizationScopeDetailTableViewCell *)v113 contentView];
-  v19 = [(AKAuthorizationScopeDetailTableViewCell *)v113 mainGuide];
-  [v20 addLayoutGuide:?];
-  MEMORY[0x277D82BD8](v19);
-  v22 = [(AKAuthorizationScopeDetailTableViewCell *)v113 contentView];
-  v21 = [(AKAuthorizationScopeDetailTableViewCell *)v113 mainLabelFirstLineGuide];
-  [v22 addLayoutGuide:?];
-  MEMORY[0x277D82BD8](v21);
-  v24 = [(AKAuthorizationScopeDetailTableViewCell *)v113 contentView];
-  v23 = [(AKAuthorizationScopeDetailTableViewCell *)v113 scopeLabelFirstLineGuide];
-  [v24 addLayoutGuide:?];
-  MEMORY[0x277D82BD8](v23);
+  scopeLabelFirstLineGuide = selfCopy->_scopeLabelFirstLineGuide;
+  selfCopy->_scopeLabelFirstLineGuide = v6;
+  contentView = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy contentView];
+  mainGuide = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainGuide];
+  [contentView addLayoutGuide:?];
+  MEMORY[0x277D82BD8](mainGuide);
+  contentView2 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy contentView];
+  mainLabelFirstLineGuide = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainLabelFirstLineGuide];
+  [contentView2 addLayoutGuide:?];
+  MEMORY[0x277D82BD8](mainLabelFirstLineGuide);
+  contentView3 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy contentView];
+  scopeLabelFirstLineGuide = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy scopeLabelFirstLineGuide];
+  [contentView3 addLayoutGuide:?];
+  MEMORY[0x277D82BD8](scopeLabelFirstLineGuide);
   v112[0] = [MEMORY[0x277CBEB18] array];
-  v26 = [(AKAuthorizationScopeDetailTableViewCell *)v113 contentView];
-  v25 = [v26 heightAnchor];
-  v8 = [v25 constraintGreaterThanOrEqualToConstant:0.0];
-  minimumHeightConstraint = v113->_minimumHeightConstraint;
-  v113->_minimumHeightConstraint = v8;
+  contentView4 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy contentView];
+  heightAnchor = [contentView4 heightAnchor];
+  v8 = [heightAnchor constraintGreaterThanOrEqualToConstant:0.0];
+  minimumHeightConstraint = selfCopy->_minimumHeightConstraint;
+  selfCopy->_minimumHeightConstraint = v8;
   MEMORY[0x277D82BD8](minimumHeightConstraint);
-  MEMORY[0x277D82BD8](v25);
-  *&v10 = MEMORY[0x277D82BD8](v26).n128_u64[0];
+  MEMORY[0x277D82BD8](heightAnchor);
+  *&v10 = MEMORY[0x277D82BD8](contentView4).n128_u64[0];
   v27 = v112[0];
-  v44 = [(AKAuthorizationScopeDetailTableViewCell *)v113 scopeImageView];
-  v43 = [(UIImageView *)v44 leadingAnchor];
-  v42 = [(AKAuthorizationScopeDetailTableViewCell *)v113 contentView];
-  v41 = [v42 leadingAnchor];
+  scopeImageView = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy scopeImageView];
+  leadingAnchor = [(UIImageView *)scopeImageView leadingAnchor];
+  contentView5 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy contentView];
+  leadingAnchor2 = [contentView5 leadingAnchor];
   +[AKAuthorizationSubPaneMetrics scopeImageViewLeadingSpacing];
-  v40 = [v43 constraintEqualToAnchor:v41 constant:?];
+  v40 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
   v115[0] = v40;
-  v39 = [(AKAuthorizationScopeDetailTableViewCell *)v113 scopeImageView];
-  v38 = [(UIImageView *)v39 widthAnchor];
+  scopeImageView2 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy scopeImageView];
+  widthAnchor = [(UIImageView *)scopeImageView2 widthAnchor];
   +[AKAuthorizationSubPaneMetrics scopeImageViewSize];
-  v37 = [v38 constraintEqualToConstant:?];
+  v37 = [widthAnchor constraintEqualToConstant:?];
   v115[1] = v37;
-  v36 = [(AKAuthorizationScopeDetailTableViewCell *)v113 scopeImageView];
-  v35 = [(UIImageView *)v36 heightAnchor];
+  scopeImageView3 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy scopeImageView];
+  heightAnchor2 = [(UIImageView *)scopeImageView3 heightAnchor];
   +[AKAuthorizationSubPaneMetrics scopeImageViewSize];
-  v34 = [v35 constraintEqualToConstant:?];
+  v34 = [heightAnchor2 constraintEqualToConstant:?];
   v115[2] = v34;
-  v33 = [(AKAuthorizationScopeDetailTableViewCell *)v113 scopeImageView];
-  v32 = [(UIImageView *)v33 topAnchor];
-  v31 = [(AKAuthorizationScopeDetailTableViewCell *)v113 contentView];
-  v30 = [v31 topAnchor];
+  scopeImageView4 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy scopeImageView];
+  topAnchor = [(UIImageView *)scopeImageView4 topAnchor];
+  contentView6 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy contentView];
+  topAnchor2 = [contentView6 topAnchor];
   +[AKAuthorizationSubPaneMetrics scopeImageViewTopSpacing];
-  v29 = [v32 constraintEqualToAnchor:v30 constant:?];
+  v29 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
   v115[3] = v29;
   v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v115 count:4];
   [v27 addObjectsFromArray:?];
   MEMORY[0x277D82BD8](v28);
   MEMORY[0x277D82BD8](v29);
-  MEMORY[0x277D82BD8](v30);
-  MEMORY[0x277D82BD8](v31);
-  MEMORY[0x277D82BD8](v32);
-  MEMORY[0x277D82BD8](v33);
+  MEMORY[0x277D82BD8](topAnchor2);
+  MEMORY[0x277D82BD8](contentView6);
+  MEMORY[0x277D82BD8](topAnchor);
+  MEMORY[0x277D82BD8](scopeImageView4);
   MEMORY[0x277D82BD8](v34);
-  MEMORY[0x277D82BD8](v35);
-  MEMORY[0x277D82BD8](v36);
+  MEMORY[0x277D82BD8](heightAnchor2);
+  MEMORY[0x277D82BD8](scopeImageView3);
   MEMORY[0x277D82BD8](v37);
-  MEMORY[0x277D82BD8](v38);
-  MEMORY[0x277D82BD8](v39);
+  MEMORY[0x277D82BD8](widthAnchor);
+  MEMORY[0x277D82BD8](scopeImageView2);
   MEMORY[0x277D82BD8](v40);
-  MEMORY[0x277D82BD8](v41);
-  MEMORY[0x277D82BD8](v42);
-  MEMORY[0x277D82BD8](v43);
-  *&v11 = MEMORY[0x277D82BD8](v44).n128_u64[0];
-  v48 = [(AKAuthorizationScopeDetailTableViewCell *)v113 mainLabel];
-  v47 = [(UILabel *)v48 leadingAnchor];
-  v46 = [(AKAuthorizationScopeDetailTableViewCell *)v113 scopeImageView];
-  v45 = [(UIImageView *)v46 trailingAnchor];
+  MEMORY[0x277D82BD8](leadingAnchor2);
+  MEMORY[0x277D82BD8](contentView5);
+  MEMORY[0x277D82BD8](leadingAnchor);
+  *&v11 = MEMORY[0x277D82BD8](scopeImageView).n128_u64[0];
+  mainLabel = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainLabel];
+  leadingAnchor3 = [(UILabel *)mainLabel leadingAnchor];
+  scopeImageView5 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy scopeImageView];
+  trailingAnchor = [(UIImageView *)scopeImageView5 trailingAnchor];
   +[AKAuthorizationSubPaneMetrics scopeTitleLabelLeadingSpacing];
-  v12 = [v47 constraintEqualToAnchor:v45 constant:?];
-  mainLabelLeadingConstraint = v113->_mainLabelLeadingConstraint;
-  v113->_mainLabelLeadingConstraint = v12;
+  v12 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:?];
+  mainLabelLeadingConstraint = selfCopy->_mainLabelLeadingConstraint;
+  selfCopy->_mainLabelLeadingConstraint = v12;
   MEMORY[0x277D82BD8](mainLabelLeadingConstraint);
-  MEMORY[0x277D82BD8](v45);
-  MEMORY[0x277D82BD8](v46);
-  MEMORY[0x277D82BD8](v47);
-  *&v14 = MEMORY[0x277D82BD8](v48).n128_u64[0];
-  v52 = [(AKAuthorizationScopeDetailTableViewCell *)v113 mainLabel];
-  v51 = [(UILabel *)v52 leadingAnchor];
-  v50 = [(AKAuthorizationScopeDetailTableViewCell *)v113 scopeImageView];
-  v49 = [(UIImageView *)v50 leadingAnchor];
-  v15 = [v51 constraintEqualToAnchor:?];
-  mainLabelWithoutImageLeadingConstraint = v113->_mainLabelWithoutImageLeadingConstraint;
-  v113->_mainLabelWithoutImageLeadingConstraint = v15;
+  MEMORY[0x277D82BD8](trailingAnchor);
+  MEMORY[0x277D82BD8](scopeImageView5);
+  MEMORY[0x277D82BD8](leadingAnchor3);
+  *&v14 = MEMORY[0x277D82BD8](mainLabel).n128_u64[0];
+  mainLabel2 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainLabel];
+  leadingAnchor4 = [(UILabel *)mainLabel2 leadingAnchor];
+  scopeImageView6 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy scopeImageView];
+  leadingAnchor5 = [(UIImageView *)scopeImageView6 leadingAnchor];
+  v15 = [leadingAnchor4 constraintEqualToAnchor:?];
+  mainLabelWithoutImageLeadingConstraint = selfCopy->_mainLabelWithoutImageLeadingConstraint;
+  selfCopy->_mainLabelWithoutImageLeadingConstraint = v15;
   MEMORY[0x277D82BD8](mainLabelWithoutImageLeadingConstraint);
-  MEMORY[0x277D82BD8](v49);
-  MEMORY[0x277D82BD8](v50);
-  MEMORY[0x277D82BD8](v51);
-  *&v17 = MEMORY[0x277D82BD8](v52).n128_u64[0];
+  MEMORY[0x277D82BD8](leadingAnchor5);
+  MEMORY[0x277D82BD8](scopeImageView6);
+  MEMORY[0x277D82BD8](leadingAnchor4);
+  *&v17 = MEMORY[0x277D82BD8](mainLabel2).n128_u64[0];
   v53 = v112[0];
-  v111 = [(AKAuthorizationScopeDetailTableViewCell *)v113 minimumHeightConstraint];
-  v114[0] = v111;
-  v110 = [(AKAuthorizationScopeDetailTableViewCell *)v113 mainLabel];
-  v109 = [(UILabel *)v110 topAnchor];
-  v108 = [(AKAuthorizationScopeDetailTableViewCell *)v113 mainGuide];
-  v107 = [(UILayoutGuide *)v108 topAnchor];
-  v106 = [v109 constraintEqualToAnchor:?];
+  minimumHeightConstraint = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy minimumHeightConstraint];
+  v114[0] = minimumHeightConstraint;
+  mainLabel3 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainLabel];
+  topAnchor3 = [(UILabel *)mainLabel3 topAnchor];
+  mainGuide2 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainGuide];
+  topAnchor4 = [(UILayoutGuide *)mainGuide2 topAnchor];
+  v106 = [topAnchor3 constraintEqualToAnchor:?];
   v114[1] = v106;
-  v105 = [(AKAuthorizationScopeDetailTableViewCell *)v113 mainLabel];
-  v104 = [(UILabel *)v105 bottomAnchor];
-  v103 = [(AKAuthorizationScopeDetailTableViewCell *)v113 mainDetailLabel];
-  v102 = [(UILabel *)v103 topAnchor];
-  v101 = [v104 constraintEqualToAnchor:?];
+  mainLabel4 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainLabel];
+  bottomAnchor = [(UILabel *)mainLabel4 bottomAnchor];
+  mainDetailLabel = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainDetailLabel];
+  topAnchor5 = [(UILabel *)mainDetailLabel topAnchor];
+  v101 = [bottomAnchor constraintEqualToAnchor:?];
   v114[2] = v101;
-  v100 = [(AKAuthorizationScopeDetailTableViewCell *)v113 mainDetailLabel];
-  v99 = [(UILabel *)v100 bottomAnchor];
-  v98 = [(AKAuthorizationScopeDetailTableViewCell *)v113 mainGuide];
-  v97 = [(UILayoutGuide *)v98 bottomAnchor];
-  v96 = [v99 constraintEqualToAnchor:?];
+  mainDetailLabel2 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainDetailLabel];
+  bottomAnchor2 = [(UILabel *)mainDetailLabel2 bottomAnchor];
+  mainGuide3 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainGuide];
+  bottomAnchor3 = [(UILayoutGuide *)mainGuide3 bottomAnchor];
+  v96 = [bottomAnchor2 constraintEqualToAnchor:?];
   v114[3] = v96;
-  v95 = [(AKAuthorizationScopeDetailTableViewCell *)v113 mainDetailLabel];
-  v94 = [(UILabel *)v95 leadingAnchor];
-  v93 = [(AKAuthorizationScopeDetailTableViewCell *)v113 mainLabel];
-  v92 = [(UILabel *)v93 leadingAnchor];
-  v91 = [v94 constraintEqualToAnchor:?];
+  mainDetailLabel3 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainDetailLabel];
+  leadingAnchor6 = [(UILabel *)mainDetailLabel3 leadingAnchor];
+  mainLabel5 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainLabel];
+  leadingAnchor7 = [(UILabel *)mainLabel5 leadingAnchor];
+  v91 = [leadingAnchor6 constraintEqualToAnchor:?];
   v114[4] = v91;
-  v90 = [(AKAuthorizationScopeDetailTableViewCell *)v113 mainDetailLabel];
-  v89 = [(UILabel *)v90 trailingAnchor];
-  v88 = [(AKAuthorizationScopeDetailTableViewCell *)v113 mainLabel];
-  v87 = [(UILabel *)v88 trailingAnchor];
-  v86 = [v89 constraintEqualToAnchor:?];
+  mainDetailLabel4 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainDetailLabel];
+  trailingAnchor2 = [(UILabel *)mainDetailLabel4 trailingAnchor];
+  mainLabel6 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainLabel];
+  trailingAnchor3 = [(UILabel *)mainLabel6 trailingAnchor];
+  v86 = [trailingAnchor2 constraintEqualToAnchor:?];
   v114[5] = v86;
-  v85 = [(AKAuthorizationScopeDetailTableViewCell *)v113 mainGuide];
-  v84 = [(UILayoutGuide *)v85 centerYAnchor];
-  v83 = [(AKAuthorizationScopeDetailTableViewCell *)v113 contentView];
-  v82 = [v83 centerYAnchor];
-  v81 = [(NSLayoutYAxisAnchor *)v84 constraintEqualToAnchor:?];
+  mainGuide4 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainGuide];
+  centerYAnchor = [(UILayoutGuide *)mainGuide4 centerYAnchor];
+  contentView7 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy contentView];
+  centerYAnchor2 = [contentView7 centerYAnchor];
+  v81 = [(NSLayoutYAxisAnchor *)centerYAnchor constraintEqualToAnchor:?];
   v114[6] = v81;
-  v80 = [(AKAuthorizationScopeDetailTableViewCell *)v113 mainLabel];
-  v79 = [(UILabel *)v80 firstBaselineAnchor];
-  v78 = [(AKAuthorizationScopeDetailTableViewCell *)v113 contentView];
-  v77 = [v78 topAnchor];
-  v76 = [v79 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:? multiplier:?];
+  mainLabel7 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainLabel];
+  firstBaselineAnchor = [(UILabel *)mainLabel7 firstBaselineAnchor];
+  contentView8 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy contentView];
+  topAnchor6 = [contentView8 topAnchor];
+  v76 = [firstBaselineAnchor constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:? multiplier:?];
   v114[7] = v76;
-  v75 = [(AKAuthorizationScopeDetailTableViewCell *)v113 contentView];
-  v74 = [v75 bottomAnchor];
-  v73 = [(AKAuthorizationScopeDetailTableViewCell *)v113 mainDetailLabel];
-  v72 = [(UILabel *)v73 lastBaselineAnchor];
-  v71 = [v74 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:1.0 multiplier:?];
+  contentView9 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy contentView];
+  bottomAnchor4 = [contentView9 bottomAnchor];
+  mainDetailLabel5 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainDetailLabel];
+  lastBaselineAnchor = [(UILabel *)mainDetailLabel5 lastBaselineAnchor];
+  v71 = [bottomAnchor4 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:1.0 multiplier:?];
   v114[8] = v71;
-  v70 = [(AKAuthorizationScopeDetailTableViewCell *)v113 mainLabelLeadingConstraint];
-  v114[9] = v70;
-  v69 = [(AKAuthorizationScopeDetailTableViewCell *)v113 mainLabel];
-  v68 = [(UILabel *)v69 trailingAnchor];
-  v67 = [(AKAuthorizationScopeDetailTableViewCell *)v113 contentView];
-  v66 = [v67 trailingAnchor];
-  v65 = [v68 constraintEqualToAnchor:-16.0 constant:?];
+  mainLabelLeadingConstraint = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainLabelLeadingConstraint];
+  v114[9] = mainLabelLeadingConstraint;
+  mainLabel8 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainLabel];
+  trailingAnchor4 = [(UILabel *)mainLabel8 trailingAnchor];
+  contentView10 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy contentView];
+  trailingAnchor5 = [contentView10 trailingAnchor];
+  v65 = [trailingAnchor4 constraintEqualToAnchor:-16.0 constant:?];
   v114[10] = v65;
-  v64 = [(AKAuthorizationScopeDetailTableViewCell *)v113 mainLabelFirstLineGuide];
-  v63 = [(UILayoutGuide *)v64 bottomAnchor];
-  v62 = [(AKAuthorizationScopeDetailTableViewCell *)v113 mainLabel];
-  v61 = [(UILabel *)v62 firstBaselineAnchor];
-  v60 = [(NSLayoutYAxisAnchor *)v63 constraintEqualToAnchor:?];
+  mainLabelFirstLineGuide2 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainLabelFirstLineGuide];
+  bottomAnchor5 = [(UILayoutGuide *)mainLabelFirstLineGuide2 bottomAnchor];
+  mainLabel9 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainLabel];
+  firstBaselineAnchor2 = [(UILabel *)mainLabel9 firstBaselineAnchor];
+  v60 = [(NSLayoutYAxisAnchor *)bottomAnchor5 constraintEqualToAnchor:?];
   v114[11] = v60;
-  v59 = [(AKAuthorizationScopeDetailTableViewCell *)v113 mainLabelFirstLineGuide];
-  v58 = [(UILayoutGuide *)v59 heightAnchor];
-  v57 = [(AKAuthorizationScopeDetailTableViewCell *)v113 mainLabel];
-  v56 = [(UILabel *)v57 font];
-  [(UIFont *)v56 capHeight];
-  v55 = [(NSLayoutDimension *)v58 constraintEqualToConstant:?];
+  mainLabelFirstLineGuide3 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainLabelFirstLineGuide];
+  heightAnchor3 = [(UILayoutGuide *)mainLabelFirstLineGuide3 heightAnchor];
+  mainLabel10 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainLabel];
+  font = [(UILabel *)mainLabel10 font];
+  [(UIFont *)font capHeight];
+  v55 = [(NSLayoutDimension *)heightAnchor3 constraintEqualToConstant:?];
   v114[12] = v55;
   v54 = [MEMORY[0x277CBEA60] arrayWithObjects:v114 count:13];
   [v53 addObjectsFromArray:?];
   MEMORY[0x277D82BD8](v54);
   MEMORY[0x277D82BD8](v55);
-  MEMORY[0x277D82BD8](v56);
-  MEMORY[0x277D82BD8](v57);
-  MEMORY[0x277D82BD8](v58);
-  MEMORY[0x277D82BD8](v59);
+  MEMORY[0x277D82BD8](font);
+  MEMORY[0x277D82BD8](mainLabel10);
+  MEMORY[0x277D82BD8](heightAnchor3);
+  MEMORY[0x277D82BD8](mainLabelFirstLineGuide3);
   MEMORY[0x277D82BD8](v60);
-  MEMORY[0x277D82BD8](v61);
-  MEMORY[0x277D82BD8](v62);
-  MEMORY[0x277D82BD8](v63);
-  MEMORY[0x277D82BD8](v64);
+  MEMORY[0x277D82BD8](firstBaselineAnchor2);
+  MEMORY[0x277D82BD8](mainLabel9);
+  MEMORY[0x277D82BD8](bottomAnchor5);
+  MEMORY[0x277D82BD8](mainLabelFirstLineGuide2);
   MEMORY[0x277D82BD8](v65);
-  MEMORY[0x277D82BD8](v66);
-  MEMORY[0x277D82BD8](v67);
-  MEMORY[0x277D82BD8](v68);
-  MEMORY[0x277D82BD8](v69);
-  MEMORY[0x277D82BD8](v70);
+  MEMORY[0x277D82BD8](trailingAnchor5);
+  MEMORY[0x277D82BD8](contentView10);
+  MEMORY[0x277D82BD8](trailingAnchor4);
+  MEMORY[0x277D82BD8](mainLabel8);
+  MEMORY[0x277D82BD8](mainLabelLeadingConstraint);
   MEMORY[0x277D82BD8](v71);
-  MEMORY[0x277D82BD8](v72);
-  MEMORY[0x277D82BD8](v73);
-  MEMORY[0x277D82BD8](v74);
-  MEMORY[0x277D82BD8](v75);
+  MEMORY[0x277D82BD8](lastBaselineAnchor);
+  MEMORY[0x277D82BD8](mainDetailLabel5);
+  MEMORY[0x277D82BD8](bottomAnchor4);
+  MEMORY[0x277D82BD8](contentView9);
   MEMORY[0x277D82BD8](v76);
-  MEMORY[0x277D82BD8](v77);
-  MEMORY[0x277D82BD8](v78);
-  MEMORY[0x277D82BD8](v79);
-  MEMORY[0x277D82BD8](v80);
+  MEMORY[0x277D82BD8](topAnchor6);
+  MEMORY[0x277D82BD8](contentView8);
+  MEMORY[0x277D82BD8](firstBaselineAnchor);
+  MEMORY[0x277D82BD8](mainLabel7);
   MEMORY[0x277D82BD8](v81);
-  MEMORY[0x277D82BD8](v82);
-  MEMORY[0x277D82BD8](v83);
-  MEMORY[0x277D82BD8](v84);
-  MEMORY[0x277D82BD8](v85);
+  MEMORY[0x277D82BD8](centerYAnchor2);
+  MEMORY[0x277D82BD8](contentView7);
+  MEMORY[0x277D82BD8](centerYAnchor);
+  MEMORY[0x277D82BD8](mainGuide4);
   MEMORY[0x277D82BD8](v86);
-  MEMORY[0x277D82BD8](v87);
-  MEMORY[0x277D82BD8](v88);
-  MEMORY[0x277D82BD8](v89);
-  MEMORY[0x277D82BD8](v90);
+  MEMORY[0x277D82BD8](trailingAnchor3);
+  MEMORY[0x277D82BD8](mainLabel6);
+  MEMORY[0x277D82BD8](trailingAnchor2);
+  MEMORY[0x277D82BD8](mainDetailLabel4);
   MEMORY[0x277D82BD8](v91);
-  MEMORY[0x277D82BD8](v92);
-  MEMORY[0x277D82BD8](v93);
-  MEMORY[0x277D82BD8](v94);
-  MEMORY[0x277D82BD8](v95);
+  MEMORY[0x277D82BD8](leadingAnchor7);
+  MEMORY[0x277D82BD8](mainLabel5);
+  MEMORY[0x277D82BD8](leadingAnchor6);
+  MEMORY[0x277D82BD8](mainDetailLabel3);
   MEMORY[0x277D82BD8](v96);
-  MEMORY[0x277D82BD8](v97);
-  MEMORY[0x277D82BD8](v98);
-  MEMORY[0x277D82BD8](v99);
-  MEMORY[0x277D82BD8](v100);
+  MEMORY[0x277D82BD8](bottomAnchor3);
+  MEMORY[0x277D82BD8](mainGuide3);
+  MEMORY[0x277D82BD8](bottomAnchor2);
+  MEMORY[0x277D82BD8](mainDetailLabel2);
   MEMORY[0x277D82BD8](v101);
-  MEMORY[0x277D82BD8](v102);
-  MEMORY[0x277D82BD8](v103);
-  MEMORY[0x277D82BD8](v104);
-  MEMORY[0x277D82BD8](v105);
+  MEMORY[0x277D82BD8](topAnchor5);
+  MEMORY[0x277D82BD8](mainDetailLabel);
+  MEMORY[0x277D82BD8](bottomAnchor);
+  MEMORY[0x277D82BD8](mainLabel4);
   MEMORY[0x277D82BD8](v106);
-  MEMORY[0x277D82BD8](v107);
-  MEMORY[0x277D82BD8](v108);
-  MEMORY[0x277D82BD8](v109);
-  MEMORY[0x277D82BD8](v110);
-  *&v18 = MEMORY[0x277D82BD8](v111).n128_u64[0];
+  MEMORY[0x277D82BD8](topAnchor4);
+  MEMORY[0x277D82BD8](mainGuide2);
+  MEMORY[0x277D82BD8](topAnchor3);
+  MEMORY[0x277D82BD8](mainLabel3);
+  *&v18 = MEMORY[0x277D82BD8](minimumHeightConstraint).n128_u64[0];
   [MEMORY[0x277CCAAD0] activateConstraints:{v112[0], v18}];
   objc_storeStrong(v112, 0);
   *MEMORY[0x277D85DE8];
@@ -336,14 +336,14 @@
 
 - (id)_newLabel
 {
-  v6 = self;
+  selfCopy = self;
   v5[1] = a2;
   v5[0] = objc_alloc_init(MEMORY[0x277D756B8]);
   [v5[0] setTranslatesAutoresizingMaskIntoConstraints:0];
   [v5[0] setNumberOfLines:0];
-  v3 = [(AKAuthorizationScopeDetailTableViewCell *)v6 contentView];
-  [v3 addSubview:v5[0]];
-  MEMORY[0x277D82BD8](v3);
+  contentView = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy contentView];
+  [contentView addSubview:v5[0]];
+  MEMORY[0x277D82BD8](contentView);
   v4 = MEMORY[0x277D82BE0](v5[0]);
   objc_storeStrong(v5, 0);
   return v4;
@@ -359,71 +359,71 @@
   [(UIImageView *)self->_scopeImageView setTranslatesAutoresizingMaskIntoConstraints:0, MEMORY[0x277D82BD8](v5).n128_f64[0]];
   +[AKAuthorizationSubPaneMetrics scopeImageViewCornerRadius];
   v6 = v4;
-  v7 = [(UIImageView *)self->_scopeImageView layer];
-  [v7 setCornerRadius:v6];
+  layer = [(UIImageView *)self->_scopeImageView layer];
+  [layer setCornerRadius:v6];
   v8 = +[AKAuthorizationAppearance scopeImageViewTintColor];
   [(UIImageView *)self->_scopeImageView setTintColor:?];
   [(UIImageView *)self->_scopeImageView setContentMode:4, MEMORY[0x277D82BD8](v8).n128_f64[0]];
   [(UIImageView *)self->_scopeImageView setHidden:1];
-  v9 = [(AKAuthorizationScopeDetailTableViewCell *)self contentView];
-  [v9 addSubview:self->_scopeImageView];
-  MEMORY[0x277D82BD8](v9);
+  contentView = [(AKAuthorizationScopeDetailTableViewCell *)self contentView];
+  [contentView addSubview:self->_scopeImageView];
+  MEMORY[0x277D82BD8](contentView);
 }
 
 - (void)layoutSubviews
 {
-  v27 = self;
+  selfCopy = self;
   v26 = a2;
   v25.receiver = self;
   v25.super_class = AKAuthorizationScopeDetailTableViewCell;
   [(AKAuthorizationScopeDetailTableViewCell *)&v25 layoutSubviews];
-  v2 = [(AKAuthorizationScopeDetailTableViewCell *)v27 _isLTR];
+  _isLTR = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy _isLTR];
   v3 = 2;
-  if (!v2)
+  if (!_isLTR)
   {
     v3 = 0;
   }
 
   v18 = v3;
-  v19 = [(AKAuthorizationScopeDetailTableViewCell *)v27 scopeLabel];
-  [(UILabel *)v19 setTextAlignment:v18];
-  *&v4 = MEMORY[0x277D82BD8](v19).n128_u64[0];
-  v20 = [(AKAuthorizationScopeDetailTableViewCell *)v27 leadingCheckmarkView];
-  MEMORY[0x277D82BD8](v20);
-  if (v20)
+  scopeLabel = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy scopeLabel];
+  [(UILabel *)scopeLabel setTextAlignment:v18];
+  *&v4 = MEMORY[0x277D82BD8](scopeLabel).n128_u64[0];
+  leadingCheckmarkView = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy leadingCheckmarkView];
+  MEMORY[0x277D82BD8](leadingCheckmarkView);
+  if (leadingCheckmarkView)
   {
-    v16 = [(AKAuthorizationScopeDetailTableViewCell *)v27 leadingCheckmarkView];
-    [(UIImageView *)v16 frame];
+    leadingCheckmarkView2 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy leadingCheckmarkView];
+    [(UIImageView *)leadingCheckmarkView2 frame];
     v23 = v5;
     v24 = v6;
-    *&v7 = MEMORY[0x277D82BD8](v16).n128_u64[0];
-    v17 = [(AKAuthorizationScopeDetailTableViewCell *)v27 contentView];
-    [v17 frame];
+    *&v7 = MEMORY[0x277D82BD8](leadingCheckmarkView2).n128_u64[0];
+    contentView = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy contentView];
+    [contentView frame];
     v22 = CGRectGetMidY(v28) - v23 / 2.0;
-    *&v8 = MEMORY[0x277D82BD8](v17).n128_u64[0];
-    if ([(AKAuthorizationScopeDetailTableViewCell *)v27 _isLTR])
+    *&v8 = MEMORY[0x277D82BD8](contentView).n128_u64[0];
+    if ([(AKAuthorizationScopeDetailTableViewCell *)selfCopy _isLTR])
     {
-      v14 = [(AKAuthorizationScopeDetailTableViewCell *)v27 mainLabel];
-      [(UILabel *)v14 frame];
+      mainLabel = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainLabel];
+      [(UILabel *)mainLabel frame];
       MinX = CGRectGetMinX(v29);
       +[AKAuthorizationSubPaneMetrics checkmarkToLabelSpacing];
       v21 = MinX - v9 - v23;
-      MEMORY[0x277D82BD8](v14);
+      MEMORY[0x277D82BD8](mainLabel);
     }
 
     else
     {
-      v12 = [(AKAuthorizationScopeDetailTableViewCell *)v27 mainLabel];
-      [(UILabel *)v12 frame];
+      mainLabel2 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy mainLabel];
+      [(UILabel *)mainLabel2 frame];
       MaxX = CGRectGetMaxX(v30);
       +[AKAuthorizationSubPaneMetrics checkmarkToLabelSpacing];
       v21 = MaxX + v10;
-      MEMORY[0x277D82BD8](v12);
+      MEMORY[0x277D82BD8](mainLabel2);
     }
 
-    v11 = [(AKAuthorizationScopeDetailTableViewCell *)v27 leadingCheckmarkView];
-    [(UIImageView *)v11 setFrame:v21, v22, v23, v24];
-    MEMORY[0x277D82BD8](v11);
+    leadingCheckmarkView3 = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy leadingCheckmarkView];
+    [(UIImageView *)leadingCheckmarkView3 setFrame:v21, v22, v23, v24];
+    MEMORY[0x277D82BD8](leadingCheckmarkView3);
   }
 }
 
@@ -439,54 +439,54 @@
 
 - (double)minimumHeight
 {
-  v4 = [(AKAuthorizationScopeDetailTableViewCell *)self minimumHeightConstraint];
-  [(NSLayoutConstraint *)v4 constant];
+  minimumHeightConstraint = [(AKAuthorizationScopeDetailTableViewCell *)self minimumHeightConstraint];
+  [(NSLayoutConstraint *)minimumHeightConstraint constant];
   v5 = v2;
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](minimumHeightConstraint);
   return v5;
 }
 
-- (void)setMinimumHeight:(double)a3
+- (void)setMinimumHeight:(double)height
 {
-  v4 = [(AKAuthorizationScopeDetailTableViewCell *)self minimumHeightConstraint];
-  [(NSLayoutConstraint *)v4 setConstant:a3];
-  MEMORY[0x277D82BD8](v4);
+  minimumHeightConstraint = [(AKAuthorizationScopeDetailTableViewCell *)self minimumHeightConstraint];
+  [(NSLayoutConstraint *)minimumHeightConstraint setConstant:height];
+  MEMORY[0x277D82BD8](minimumHeightConstraint);
 }
 
-- (void)setCheckmarkStyle:(unint64_t)a3
+- (void)setCheckmarkStyle:(unint64_t)style
 {
-  if ([(AKAuthorizationScopeDetailTableViewCell *)self internalCheckmarkStyle]!= a3)
+  if ([(AKAuthorizationScopeDetailTableViewCell *)self internalCheckmarkStyle]!= style)
   {
-    v7 = [(AKAuthorizationScopeDetailTableViewCell *)self internalCheckmarkStyle];
-    if (v7)
+    internalCheckmarkStyle = [(AKAuthorizationScopeDetailTableViewCell *)self internalCheckmarkStyle];
+    if (internalCheckmarkStyle)
     {
-      if (v7 == 1)
+      if (internalCheckmarkStyle == 1)
       {
         [(AKAuthorizationScopeDetailTableViewCell *)self _setCheckMarkStyleLeadingChecked:0];
         +[AKAuthorizationSubPaneMetrics scopeTitleLabelLeadingSpacing];
         v5 = v3;
-        v6 = [(AKAuthorizationScopeDetailTableViewCell *)self mainLabelLeadingConstraint];
-        [(NSLayoutConstraint *)v6 setConstant:v5];
-        MEMORY[0x277D82BD8](v6);
+        mainLabelLeadingConstraint = [(AKAuthorizationScopeDetailTableViewCell *)self mainLabelLeadingConstraint];
+        [(NSLayoutConstraint *)mainLabelLeadingConstraint setConstant:v5];
+        MEMORY[0x277D82BD8](mainLabelLeadingConstraint);
       }
 
-      else if (v7 == 2)
+      else if (internalCheckmarkStyle == 2)
       {
         [(AKAuthorizationScopeDetailTableViewCell *)self setAccessoryType:0];
       }
     }
 
-    [(AKAuthorizationScopeDetailTableViewCell *)self setInternalCheckmarkStyle:a3];
-    if (a3)
+    [(AKAuthorizationScopeDetailTableViewCell *)self setInternalCheckmarkStyle:style];
+    if (style)
     {
-      if (a3 == 1)
+      if (style == 1)
       {
-        v4 = [(AKAuthorizationScopeDetailTableViewCell *)self mainLabelLeadingConstraint];
-        [(NSLayoutConstraint *)v4 setConstant:40.0];
+        mainLabelLeadingConstraint2 = [(AKAuthorizationScopeDetailTableViewCell *)self mainLabelLeadingConstraint];
+        [(NSLayoutConstraint *)mainLabelLeadingConstraint2 setConstant:40.0];
         [(AKAuthorizationScopeDetailTableViewCell *)self _setCheckMarkStyleLeadingChecked:[(AKAuthorizationScopeDetailTableViewCell *)self isChecked]];
       }
 
-      else if (a3 == 2)
+      else if (style == 2)
       {
         [(AKAuthorizationScopeDetailTableViewCell *)self _setCheckmarkStyleTrailingChecked:[(AKAuthorizationScopeDetailTableViewCell *)self isChecked]];
       }
@@ -494,125 +494,125 @@
   }
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  if ([(AKAuthorizationScopeDetailTableViewCell *)self internalIsChecked]!= a3)
+  if ([(AKAuthorizationScopeDetailTableViewCell *)self internalIsChecked]!= checked)
   {
-    [(AKAuthorizationScopeDetailTableViewCell *)self setInternalChecked:a3];
-    v3 = [(AKAuthorizationScopeDetailTableViewCell *)self checkmarkStyle];
-    if (v3)
+    [(AKAuthorizationScopeDetailTableViewCell *)self setInternalChecked:checked];
+    checkmarkStyle = [(AKAuthorizationScopeDetailTableViewCell *)self checkmarkStyle];
+    if (checkmarkStyle)
     {
-      if (v3 == 1)
+      if (checkmarkStyle == 1)
       {
-        [(AKAuthorizationScopeDetailTableViewCell *)self _setCheckMarkStyleLeadingChecked:a3];
+        [(AKAuthorizationScopeDetailTableViewCell *)self _setCheckMarkStyleLeadingChecked:checked];
       }
 
-      else if (v3 == 2)
+      else if (checkmarkStyle == 2)
       {
-        [(AKAuthorizationScopeDetailTableViewCell *)self _setCheckmarkStyleTrailingChecked:a3];
+        [(AKAuthorizationScopeDetailTableViewCell *)self _setCheckmarkStyleTrailingChecked:checked];
       }
     }
   }
 }
 
-- (void)_setCheckMarkStyleLeadingChecked:(BOOL)a3
+- (void)_setCheckMarkStyleLeadingChecked:(BOOL)checked
 {
   v9 = 0;
   v8 = 0;
-  if (a3)
+  if (checked)
   {
-    v10 = [(AKAuthorizationScopeDetailTableViewCell *)self leadingCheckmarkView];
+    leadingCheckmarkView = [(AKAuthorizationScopeDetailTableViewCell *)self leadingCheckmarkView];
     v9 = 1;
-    v8 = v10 == 0;
+    v8 = leadingCheckmarkView == 0;
   }
 
   if (v9)
   {
-    MEMORY[0x277D82BD8](v10);
+    MEMORY[0x277D82BD8](leadingCheckmarkView);
   }
 
   if (v8)
   {
-    v3 = [(AKAuthorizationScopeDetailTableViewCell *)self _checkmarkImageView];
+    _checkmarkImageView = [(AKAuthorizationScopeDetailTableViewCell *)self _checkmarkImageView];
     leadingCheckmarkView = self->_leadingCheckmarkView;
-    self->_leadingCheckmarkView = v3;
-    v7 = [(AKAuthorizationScopeDetailTableViewCell *)self contentView];
-    v6 = [(AKAuthorizationScopeDetailTableViewCell *)self leadingCheckmarkView];
-    [v7 addSubview:?];
-    MEMORY[0x277D82BD8](v6);
-    MEMORY[0x277D82BD8](v7);
+    self->_leadingCheckmarkView = _checkmarkImageView;
+    contentView = [(AKAuthorizationScopeDetailTableViewCell *)self contentView];
+    leadingCheckmarkView2 = [(AKAuthorizationScopeDetailTableViewCell *)self leadingCheckmarkView];
+    [contentView addSubview:?];
+    MEMORY[0x277D82BD8](leadingCheckmarkView2);
+    MEMORY[0x277D82BD8](contentView);
   }
 
   else
   {
-    v5 = [(AKAuthorizationScopeDetailTableViewCell *)self leadingCheckmarkView];
-    [(UIImageView *)v5 removeFromSuperview];
-    MEMORY[0x277D82BD8](v5);
+    leadingCheckmarkView3 = [(AKAuthorizationScopeDetailTableViewCell *)self leadingCheckmarkView];
+    [(UIImageView *)leadingCheckmarkView3 removeFromSuperview];
+    MEMORY[0x277D82BD8](leadingCheckmarkView3);
     objc_storeStrong(&self->_leadingCheckmarkView, 0);
   }
 }
 
-- (void)_setCheckmarkStyleTrailingChecked:(BOOL)a3
+- (void)_setCheckmarkStyleTrailingChecked:(BOOL)checked
 {
-  v3 = [(AKAuthorizationScopeDetailTableViewCell *)self _checkmarkCircleImageViewChecked:a3];
+  v3 = [(AKAuthorizationScopeDetailTableViewCell *)self _checkmarkCircleImageViewChecked:checked];
   [(AKAuthorizationScopeDetailTableViewCell *)self setAccessoryView:?];
   MEMORY[0x277D82BD8](v3);
 }
 
-- (void)setScopeImage:(id)a3
+- (void)setScopeImage:(id)image
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_scopeImage, location[0]);
-  if (v4->_scopeImage)
+  objc_storeStrong(location, image);
+  objc_storeStrong(&selfCopy->_scopeImage, location[0]);
+  if (selfCopy->_scopeImage)
   {
-    [(UIImageView *)v4->_scopeImageView setImage:location[0]];
-    [(UIImageView *)v4->_scopeImageView setHidden:0];
+    [(UIImageView *)selfCopy->_scopeImageView setImage:location[0]];
+    [(UIImageView *)selfCopy->_scopeImageView setHidden:0];
   }
 
   else
   {
-    [(UIImageView *)v4->_scopeImageView setHidden:1];
+    [(UIImageView *)selfCopy->_scopeImageView setHidden:1];
   }
 
-  [(AKAuthorizationScopeDetailTableViewCell *)v4 setNeedsLayout];
-  [(AKAuthorizationScopeDetailTableViewCell *)v4 layoutIfNeeded];
+  [(AKAuthorizationScopeDetailTableViewCell *)selfCopy setNeedsLayout];
+  [(AKAuthorizationScopeDetailTableViewCell *)selfCopy layoutIfNeeded];
   objc_storeStrong(location, 0);
 }
 
 - (id)_checkmarkImageView
 {
   v3 = objc_alloc(MEMORY[0x277D755E8]);
-  v4 = [(AKAuthorizationScopeDetailTableViewCell *)self _checkmarkImage];
+  _checkmarkImage = [(AKAuthorizationScopeDetailTableViewCell *)self _checkmarkImage];
   v5 = [v3 initWithImage:?];
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](_checkmarkImage);
 
   return v5;
 }
 
-- (id)_checkmarkCircleImageViewChecked:(BOOL)a3
+- (id)_checkmarkCircleImageViewChecked:(BOOL)checked
 {
-  if (a3)
+  if (checked)
   {
-    v4 = [(AKAuthorizationScopeDetailTableViewCell *)self _selectedCheckmarkCircleImageView];
+    _selectedCheckmarkCircleImageView = [(AKAuthorizationScopeDetailTableViewCell *)self _selectedCheckmarkCircleImageView];
   }
 
   else
   {
-    v4 = [(AKAuthorizationScopeDetailTableViewCell *)self _unselectedCheckmarkCircleImageView];
+    _selectedCheckmarkCircleImageView = [(AKAuthorizationScopeDetailTableViewCell *)self _unselectedCheckmarkCircleImageView];
   }
 
-  return v4;
+  return _selectedCheckmarkCircleImageView;
 }
 
 - (id)_selectedCheckmarkCircleImageView
 {
-  v11 = self;
+  selfCopy = self;
   v10[1] = a2;
   v7 = objc_alloc(MEMORY[0x277D755E8]);
-  v8 = [(AKAuthorizationScopeDetailTableViewCell *)v11 _checkmarkCircleImage];
+  _checkmarkCircleImage = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy _checkmarkCircleImage];
   v10[0] = [v7 initWithImage:?];
   +[AKAuthorizationSubPaneMetrics accessoryViewSize];
   +[AKAuthorizationSubPaneMetrics accessoryViewSize];
@@ -626,10 +626,10 @@
 
 - (id)_unselectedCheckmarkCircleImageView
 {
-  v12 = self;
+  selfCopy = self;
   v11[1] = a2;
   v7 = objc_alloc(MEMORY[0x277D755E8]);
-  v8 = [(AKAuthorizationScopeDetailTableViewCell *)v12 _circleImage];
+  _circleImage = [(AKAuthorizationScopeDetailTableViewCell *)selfCopy _circleImage];
   v11[0] = [v7 initWithImage:?];
   v9 = +[AKAuthorizationAppearance checkmarkDeselectedTintColor];
   [v11[0] setTintColor:?];

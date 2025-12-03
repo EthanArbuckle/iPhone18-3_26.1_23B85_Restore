@@ -1,62 +1,62 @@
 @interface TUITrackTimeRemainingView
-+ (id)renderModelWithIdentifier:(id)a3 dynamicProgress:(id)a4 style:(id)a5;
-- (TUITrackTimeRemainingView)initWithFrame:(CGRect)a3;
-- (void)applyLayoutAttributes:(id)a3;
++ (id)renderModelWithIdentifier:(id)identifier dynamicProgress:(id)progress style:(id)style;
+- (TUITrackTimeRemainingView)initWithFrame:(CGRect)frame;
+- (void)applyLayoutAttributes:(id)attributes;
 - (void)dealloc;
-- (void)dynamicProgressChanged:(id)a3;
+- (void)dynamicProgressChanged:(id)changed;
 @end
 
 @implementation TUITrackTimeRemainingView
 
-+ (id)renderModelWithIdentifier:(id)a3 dynamicProgress:(id)a4 style:(id)a5
++ (id)renderModelWithIdentifier:(id)identifier dynamicProgress:(id)progress style:(id)style
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  styleCopy = style;
+  progressCopy = progress;
+  identifierCopy = identifier;
   v10 = objc_alloc_init(_TUITrackTimeRemainingRenderModel);
-  [(_TUITrackTimeRemainingRenderModel *)v10 setDynamicProgress:v8];
+  [(_TUITrackTimeRemainingRenderModel *)v10 setDynamicProgress:progressCopy];
 
-  [(_TUITrackTimeRemainingRenderModel *)v10 setStyle:v7];
-  v11 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"TUIReuseIdentifierTrackTimeRemainingView" identifier:v9 submodel:v10];
+  [(_TUITrackTimeRemainingRenderModel *)v10 setStyle:styleCopy];
+  v11 = [[TUIRenderModelView alloc] initWithReuseIdentifier:@"TUIReuseIdentifierTrackTimeRemainingView" identifier:identifierCopy submodel:v10];
 
   return v11;
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v15.receiver = self;
   v15.super_class = TUITrackTimeRemainingView;
-  v4 = a3;
-  [(TUIReusableBaseView *)&v15 applyLayoutAttributes:v4];
-  v5 = [v4 renderModel];
+  attributesCopy = attributes;
+  [(TUIReusableBaseView *)&v15 applyLayoutAttributes:attributesCopy];
+  renderModel = [attributesCopy renderModel];
 
-  v6 = [v5 submodel];
+  submodel = [renderModel submodel];
   renderModel = self->_renderModel;
-  self->_renderModel = v6;
+  self->_renderModel = submodel;
 
-  v8 = [(_TUITrackTimeRemainingRenderModel *)self->_renderModel dynamicProgress];
+  dynamicProgress = [(_TUITrackTimeRemainingRenderModel *)self->_renderModel dynamicProgress];
   dynamicProgress = self->_dynamicProgress;
-  self->_dynamicProgress = v8;
+  self->_dynamicProgress = dynamicProgress;
 
-  v10 = [(_TUITrackTimeRemainingRenderModel *)self->_renderModel style];
+  style = [(_TUITrackTimeRemainingRenderModel *)self->_renderModel style];
   style = self->_style;
-  self->_style = v10;
+  self->_style = style;
 
-  v12 = [(TUITextContentStyler *)self->_style textColor];
-  [(UILabel *)self->_textView setTextColor:v12];
+  textColor = [(TUITextContentStyler *)self->_style textColor];
+  [(UILabel *)self->_textView setTextColor:textColor];
 
-  v13 = [(TUITextContentStyler *)self->_style font];
-  [(UILabel *)self->_textView setFont:v13];
+  font = [(TUITextContentStyler *)self->_style font];
+  [(UILabel *)self->_textView setFont:font];
 
-  v14 = [(TUITrackTimeRemainingView *)self dynamicProgress];
-  [v14 registerProgressObserver:self];
+  dynamicProgress2 = [(TUITrackTimeRemainingView *)self dynamicProgress];
+  [dynamicProgress2 registerProgressObserver:self];
 }
 
-- (TUITrackTimeRemainingView)initWithFrame:(CGRect)a3
+- (TUITrackTimeRemainingView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = TUITrackTimeRemainingView;
-  v3 = [(TUITrackTimeRemainingView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUITrackTimeRemainingView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [UILabel alloc];
@@ -76,17 +76,17 @@
   return v3;
 }
 
-- (void)dynamicProgressChanged:(id)a3
+- (void)dynamicProgressChanged:(id)changed
 {
-  v4 = [a3 formattedProgress];
+  formattedProgress = [changed formattedProgress];
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_EF608;
   block[3] = &unk_25DF18;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = formattedProgress;
+  v5 = formattedProgress;
   dispatch_async(&_dispatch_main_q, block);
 
   objc_destroyWeak(&v8);
@@ -95,8 +95,8 @@
 
 - (void)dealloc
 {
-  v3 = [(TUITrackTimeRemainingView *)self dynamicProgress];
-  [v3 unregisterProgressObserver:self];
+  dynamicProgress = [(TUITrackTimeRemainingView *)self dynamicProgress];
+  [dynamicProgress unregisterProgressObserver:self];
 
   v4.receiver = self;
   v4.super_class = TUITrackTimeRemainingView;

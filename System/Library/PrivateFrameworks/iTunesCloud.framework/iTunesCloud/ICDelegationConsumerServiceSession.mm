@@ -1,12 +1,12 @@
 @interface ICDelegationConsumerServiceSession
-- (BOOL)delegationServiceConnection:(id)a3 didReceiveRequest:(id)a4;
-- (ICDelegationConsumerServiceSession)initWithRequest:(id)a3 responseHandler:(id)a4;
+- (BOOL)delegationServiceConnection:(id)connection didReceiveRequest:(id)request;
+- (ICDelegationConsumerServiceSession)initWithRequest:(id)request responseHandler:(id)handler;
 - (void)_handleTimeout;
 - (void)_stop;
 - (void)dealloc;
-- (void)delegationConsumerNetService:(id)a3 didAcceptConnectionWithInputStream:(id)a4 outputStream:(id)a5;
-- (void)delegationServiceConnection:(id)a3 didEncouterError:(id)a4;
-- (void)delegationServiceConnectionDidClose:(id)a3;
+- (void)delegationConsumerNetService:(id)service didAcceptConnectionWithInputStream:(id)stream outputStream:(id)outputStream;
+- (void)delegationServiceConnection:(id)connection didEncouterError:(id)error;
+- (void)delegationServiceConnectionDidClose:(id)close;
 - (void)start;
 - (void)stop;
 @end
@@ -73,7 +73,7 @@
   v8[2] = __52__ICDelegationConsumerServiceSession__handleTimeout__block_invoke;
   v8[3] = &unk_1E7BF8260;
   v9 = v3;
-  v10 = self;
+  selfCopy = self;
   v11 = v5;
   v6 = v5;
   v7 = v3;
@@ -114,7 +114,7 @@ void __52__ICDelegationConsumerServiceSession__handleTimeout__block_invoke_2(uin
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Stopping", buf, 0xCu);
   }
 
@@ -134,7 +134,7 @@ void __52__ICDelegationConsumerServiceSession__handleTimeout__block_invoke_2(uin
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting session", buf, 0xCu);
   }
 
@@ -210,11 +210,11 @@ void __43__ICDelegationConsumerServiceSession_start__block_invoke_2(uint64_t a1)
   }
 }
 
-- (BOOL)delegationServiceConnection:(id)a3 didReceiveRequest:(id)a4
+- (BOOL)delegationServiceConnection:(id)connection didReceiveRequest:(id)request
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  connectionCopy = connection;
+  requestCopy = request;
   v8 = os_log_create("com.apple.amp.iTunesCloud", "Default");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -223,9 +223,9 @@ void __43__ICDelegationConsumerServiceSession_start__block_invoke_2(uint64_t a1)
     _os_log_impl(&dword_1B4491000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@ Stopping", &buf, 0xCu);
   }
 
-  if (v7)
+  if (requestCopy)
   {
-    v9 = *(v7 + 2);
+    v9 = *(requestCopy + 2);
   }
 
   else
@@ -234,19 +234,19 @@ void __43__ICDelegationConsumerServiceSession_start__block_invoke_2(uint64_t a1)
   }
 
   v10 = v9;
-  objc_initWeak(&location, v6);
+  objc_initWeak(&location, connectionCopy);
   if (v10)
   {
     protocolHandler = self->_protocolHandler;
-    v12 = [(ICDelegationConsumerServiceRequest *)self->_request requestContext];
+    requestContext = [(ICDelegationConsumerServiceRequest *)self->_request requestContext];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __84__ICDelegationConsumerServiceSession_delegationServiceConnection_didReceiveRequest___block_invoke;
     v23[3] = &unk_1E7BF81E8;
     v23[4] = self;
     objc_copyWeak(&v25, &location);
-    v24 = v7;
-    [(ICDelegationConsumerServiceProtocolHandler *)protocolHandler getResponseForStartDelegationRequest:v10 requestContext:v12 withCompletionHandler:v23];
+    v24 = requestCopy;
+    [(ICDelegationConsumerServiceProtocolHandler *)protocolHandler getResponseForStartDelegationRequest:v10 requestContext:requestContext withCompletionHandler:v23];
 
     objc_destroyWeak(&v25);
     v13 = 1;
@@ -254,9 +254,9 @@ void __43__ICDelegationConsumerServiceSession_start__block_invoke_2(uint64_t a1)
 
   else
   {
-    if (v7)
+    if (requestCopy)
     {
-      v14 = *(v7 + 1);
+      v14 = *(requestCopy + 1);
       if (v14)
       {
         *&buf = 0;
@@ -290,7 +290,7 @@ void __43__ICDelegationConsumerServiceSession_start__block_invoke_2(uint64_t a1)
         v19[3] = &unk_1E7BF8238;
         v19[4] = self;
         objc_copyWeak(&v21, &location);
-        v20 = v7;
+        v20 = requestCopy;
         [(ICDelegationConsumerServiceProtocolHandler *)v16 getResponseForFinishDelegationRequest:v14 withSessionIDToRequestInfoMap:v17 completionHandler:v19];
 
         objc_destroyWeak(&v21);
@@ -500,47 +500,47 @@ uint64_t __84__ICDelegationConsumerServiceSession_delegationServiceConnection_di
   return [v2 addEntriesFromDictionary:v6];
 }
 
-- (void)delegationServiceConnection:(id)a3 didEncouterError:(id)a4
+- (void)delegationServiceConnection:(id)connection didEncouterError:(id)error
 {
-  v5 = a3;
+  connectionCopy = connection;
   accessQueue = self->_accessQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __83__ICDelegationConsumerServiceSession_delegationServiceConnection_didEncouterError___block_invoke;
   v8[3] = &unk_1E7BFA078;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = connectionCopy;
+  v7 = connectionCopy;
   dispatch_barrier_async(accessQueue, v8);
 }
 
-- (void)delegationServiceConnectionDidClose:(id)a3
+- (void)delegationServiceConnectionDidClose:(id)close
 {
-  v4 = a3;
+  closeCopy = close;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __74__ICDelegationConsumerServiceSession_delegationServiceConnectionDidClose___block_invoke;
   v7[3] = &unk_1E7BFA078;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = closeCopy;
+  v6 = closeCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 
-- (void)delegationConsumerNetService:(id)a3 didAcceptConnectionWithInputStream:(id)a4 outputStream:(id)a5
+- (void)delegationConsumerNetService:(id)service didAcceptConnectionWithInputStream:(id)stream outputStream:(id)outputStream
 {
-  v7 = a4;
-  v8 = a5;
+  streamCopy = stream;
+  outputStreamCopy = outputStream;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __115__ICDelegationConsumerServiceSession_delegationConsumerNetService_didAcceptConnectionWithInputStream_outputStream___block_invoke;
   v11[3] = &unk_1E7BF81C0;
-  v12 = v7;
-  v13 = v8;
-  v14 = self;
-  v9 = v8;
-  v10 = v7;
+  v12 = streamCopy;
+  v13 = outputStreamCopy;
+  selfCopy = self;
+  v9 = outputStreamCopy;
+  v10 = streamCopy;
   [ICDelegationServiceSecuritySettings getDeviceReceiverSettingsWithCompletion:v11];
 }
 
@@ -629,10 +629,10 @@ void __115__ICDelegationConsumerServiceSession_delegationConsumerNetService_didA
   [(ICDelegationConsumerServiceSession *)&v3 dealloc];
 }
 
-- (ICDelegationConsumerServiceSession)initWithRequest:(id)a3 responseHandler:(id)a4
+- (ICDelegationConsumerServiceSession)initWithRequest:(id)request responseHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   v23.receiver = self;
   v23.super_class = ICDelegationConsumerServiceSession;
   v9 = [(ICDelegationConsumerServiceSession *)&v23 init];
@@ -646,14 +646,14 @@ void __115__ICDelegationConsumerServiceSession_delegationConsumerNetService_didA
     calloutQueue = v9->_calloutQueue;
     v9->_calloutQueue = v12;
 
-    objc_storeStrong(&v9->_request, a3);
-    v14 = [(ICDelegationConsumerServiceRequest *)v9->_request userIdentityDelegationAccountUUIDs];
-    v15 = [v14 allKeys];
-    v16 = [v15 mutableCopy];
+    objc_storeStrong(&v9->_request, request);
+    userIdentityDelegationAccountUUIDs = [(ICDelegationConsumerServiceRequest *)v9->_request userIdentityDelegationAccountUUIDs];
+    allKeys = [userIdentityDelegationAccountUUIDs allKeys];
+    v16 = [allKeys mutableCopy];
     pendingUserIdentities = v9->_pendingUserIdentities;
     v9->_pendingUserIdentities = v16;
 
-    v18 = MEMORY[0x1B8C781E0](v8);
+    v18 = MEMORY[0x1B8C781E0](handlerCopy);
     responseHandler = v9->_responseHandler;
     v9->_responseHandler = v18;
 

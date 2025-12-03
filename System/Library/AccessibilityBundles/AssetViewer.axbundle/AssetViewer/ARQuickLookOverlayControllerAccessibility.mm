@@ -1,5 +1,5 @@
 @interface ARQuickLookOverlayControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)axShouldDisableAutoHidingControls;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axSpeakUpdateToStatusPill;
@@ -9,16 +9,16 @@
 
 @implementation ARQuickLookOverlayControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AssetViewer.ARQuickLookOverlayController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"ASVButton" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AssetViewer.ARQuickLookOverlayController" hasInstanceMethod:@"startAutoHideControlsTimer" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"AssetViewer.ARQuickLookOverlayController" hasInstanceMethod:@"enableWorldModeControl:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"AssetViewer.ARQuickLookOverlayController" hasInstanceMethod:@"updateStatusPill" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"AssetViewer.ARQuickLookOverlayController" hasInstanceMethod:@"statusPill" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ASVTrackingStateStatusLabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AssetViewer.ARQuickLookOverlayController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"ASVButton" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AssetViewer.ARQuickLookOverlayController" hasInstanceMethod:@"startAutoHideControlsTimer" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"AssetViewer.ARQuickLookOverlayController" hasInstanceMethod:@"enableWorldModeControl:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"AssetViewer.ARQuickLookOverlayController" hasInstanceMethod:@"updateStatusPill" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"AssetViewer.ARQuickLookOverlayController" hasInstanceMethod:@"statusPill" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ASVTrackingStateStatusLabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)axShouldDisableAutoHidingControls
@@ -39,14 +39,14 @@
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
   v3 = accessibilityLocalizedString(@"CLOSE_BUTTON");
-  v4 = [v2 navigationItem];
-  v5 = [v4 leftBarButtonItem];
-  [v5 setAccessibilityLabel:v3];
+  navigationItem = [v2 navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
+  [leftBarButtonItem setAccessibilityLabel:v3];
 
   v6 = accessibilityLocalizedString(@"SHARE_BUTTON");
-  v7 = [v2 navigationItem];
-  v8 = [v7 rightBarButtonItem];
-  [v8 setAccessibilityLabel:v6];
+  navigationItem2 = [v2 navigationItem];
+  rightBarButtonItem = [navigationItem2 rightBarButtonItem];
+  [rightBarButtonItem setAccessibilityLabel:v6];
 }
 
 - (void)startAutoHideControlsTimer
@@ -57,7 +57,7 @@
     v5 = 3221225472;
     v6 = __71__ARQuickLookOverlayControllerAccessibility_startAutoHideControlsTimer__block_invoke;
     v7 = &unk_29F2A1D28;
-    v8 = self;
+    selfCopy = self;
     AXPerformSafeBlock();
   }
 

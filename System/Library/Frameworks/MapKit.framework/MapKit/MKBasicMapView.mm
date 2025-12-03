@@ -1,48 +1,48 @@
 @interface MKBasicMapView
-- (CGPoint)convertCoordinate:(CLLocationCoordinate2D)a3 toCameraModelPointToView:(id)a4;
-- (CGPoint)convertCoordinate:(CLLocationCoordinate2D)a3 toPointToView:(id)a4;
+- (CGPoint)convertCoordinate:(CLLocationCoordinate2D)coordinate toCameraModelPointToView:(id)view;
+- (CGPoint)convertCoordinate:(CLLocationCoordinate2D)coordinate toPointToView:(id)view;
 - (CGSize)calloutContainerCanvasSize;
-- (CLLocationCoordinate2D)convertPoint:(CGPoint)a3 toCoordinateFromView:(id)a4;
-- (MKBasicMapView)initWithFrame:(CGRect)a3 andGlobe:(BOOL)a4 shouldRasterize:(BOOL)a5 allowsAntialiasing:(BOOL)a6 carDisplayType:(int64_t)a7;
+- (CLLocationCoordinate2D)convertPoint:(CGPoint)point toCoordinateFromView:(id)view;
+- (MKBasicMapView)initWithFrame:(CGRect)frame andGlobe:(BOOL)globe shouldRasterize:(BOOL)rasterize allowsAntialiasing:(BOOL)antialiasing carDisplayType:(int64_t)type;
 - (UIEdgeInsets)edgeInsets;
-- (void)_animateCanvasForBounds:(CGRect)a3;
+- (void)_animateCanvasForBounds:(CGRect)bounds;
 - (void)_didEnterBackground;
 - (void)_finishChangingViewSize;
 - (void)_registerSceneNotifications;
 - (void)_unregisterSceneNotifications;
 - (void)_updateBackgroundState;
-- (void)_updateBackgroundState:(int64_t)a3;
+- (void)_updateBackgroundState:(int64_t)state;
 - (void)_updateForCurrentLocale;
 - (void)_updateForCurrentScreen;
 - (void)_updateMapViewHidden;
-- (void)_updateStatsForTimeSpentInCurrentMapTypeIsShowingFlyover:(BOOL)a3 ignoreIfViewInWindow:(BOOL)a4;
-- (void)_updateStatsForTrafficEnabledTime:(BOOL)a3;
+- (void)_updateStatsForTimeSpentInCurrentMapTypeIsShowingFlyover:(BOOL)flyover ignoreIfViewInWindow:(BOOL)window;
+- (void)_updateStatsForTrafficEnabledTime:(BOOL)time;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)setBounds:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setHidden:(BOOL)a3;
-- (void)setInactive:(BOOL)a3;
-- (void)setRendersInBackground:(BOOL)a3;
-- (void)updateStatsForSwitchingToMapType:(int)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setFrame:(CGRect)frame;
+- (void)setHidden:(BOOL)hidden;
+- (void)setInactive:(BOOL)inactive;
+- (void)setRendersInBackground:(BOOL)background;
+- (void)updateStatsForSwitchingToMapType:(int)type;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation MKBasicMapView
 
 - (void)_updateForCurrentLocale
 {
-  v3 = [MEMORY[0x1E695DF58] currentLocale];
-  -[VKMapView setPreferredUnits:](self->_mapView, "setPreferredUnits:", [v3 usesMetricSystem]);
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  -[VKMapView setPreferredUnits:](self->_mapView, "setPreferredUnits:", [currentLocale usesMetricSystem]);
 }
 
 - (void)_updateBackgroundState
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(MKBasicMapView *)self window];
-  v4 = [v3 windowScene];
+  window = [(MKBasicMapView *)self window];
+  windowScene = [window windowScene];
 
-  if (v4 && (v5 = [v4 activationState] + 1, v5 <= 3))
+  if (windowScene && (v5 = [windowScene activationState] + 1, v5 <= 3))
   {
     v6 = qword_1A30F7618[v5];
   }
@@ -58,9 +58,9 @@
     v8 = 138413058;
     v9 = objc_opt_class();
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
-    v13 = [v4 activationState];
+    activationState = [windowScene activationState];
     v14 = 2048;
     v15 = v6;
     _os_log_impl(&dword_1A2EA0000, v7, OS_LOG_TYPE_INFO, "%@<%p> updateBackgroundState: determined activation state %ld == map scene state %ld", &v8, 0x2Au);
@@ -80,8 +80,8 @@
 
   else
   {
-    v5 = [(MKBasicMapView *)self window];
-    if (v5)
+    window = [(MKBasicMapView *)self window];
+    if (window)
     {
       v4 = 0;
     }
@@ -101,8 +101,8 @@
   v8.super_class = MKBasicMapView;
   [(MKBasicMapView *)&v8 didMoveToWindow];
   [(MKBasicMapView *)self _updateMapViewHidden];
-  v3 = [(MKBasicMapView *)self window];
-  if (v3)
+  window = [(MKBasicMapView *)self window];
+  if (window)
   {
   }
 
@@ -112,15 +112,15 @@
     [(UIView *)self->_hostView setFrame:?];
   }
 
-  v4 = [(MKBasicMapView *)self window];
+  window2 = [(MKBasicMapView *)self window];
 
-  if (v4)
+  if (window2)
   {
     [(MKBasicMapView *)self _registerSceneNotifications];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v6 = *MEMORY[0x1E69DE7C0];
-    v7 = [(MKBasicMapView *)self window];
-    [v5 addObserver:self selector:sel__updateForCurrentScreen name:v6 object:v7];
+    window3 = [(MKBasicMapView *)self window];
+    [defaultCenter addObserver:self selector:sel__updateForCurrentScreen name:v6 object:window3];
 
     self->_mapModeStartTime = CFAbsoluteTimeGetCurrent();
     self->_trafficStartTime = CFAbsoluteTimeGetCurrent();
@@ -138,67 +138,67 @@
 
 - (void)_registerSceneNotifications
 {
-  v3 = [(MKBasicMapView *)self window];
-  v7 = [v3 windowScene];
+  window = [(MKBasicMapView *)self window];
+  windowScene = [window windowScene];
 
-  if (v7)
+  if (windowScene)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:self selector:sel__sceneWillEnterForeground_ name:*MEMORY[0x1E69DE360] object:v7];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__sceneWillEnterForeground_ name:*MEMORY[0x1E69DE360] object:windowScene];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:self selector:sel__sceneDidEnterBackground_ name:*MEMORY[0x1E69DE348] object:v7];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__sceneDidEnterBackground_ name:*MEMORY[0x1E69DE348] object:windowScene];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:self selector:sel__finishedSnapshot_ name:*MEMORY[0x1E69DEA28] object:v7];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:self selector:sel__finishedSnapshot_ name:*MEMORY[0x1E69DEA28] object:windowScene];
   }
 }
 
 - (void)_updateForCurrentScreen
 {
-  v3 = [(MKBasicMapView *)self window];
-  v21 = [v3 screen];
+  window = [(MKBasicMapView *)self window];
+  screen = [window screen];
 
-  v4 = v21;
-  if (v21)
+  v4 = screen;
+  if (screen)
   {
-    [v21 nativeScale];
+    [screen nativeScale];
     v6 = v5;
     v7 = GEOResourceFilterScaleForScale();
-    [v21 scale];
+    [screen scale];
     v8 = GEOResourceFilterScaleForScale();
-    v9 = [v21 _userInterfaceIdiom];
-    v10 = [MEMORY[0x1E69A2478] modernManager];
-    [v10 activateResourceScale:v8];
+    _userInterfaceIdiom = [screen _userInterfaceIdiom];
+    modernManager = [MEMORY[0x1E69A2478] modernManager];
+    [modernManager activateResourceScale:v8];
 
     if (v8 != v7)
     {
-      v11 = [MEMORY[0x1E69A2478] modernManager];
-      [v11 activateResourceScale:v7];
+      modernManager2 = [MEMORY[0x1E69A2478] modernManager];
+      [modernManager2 activateResourceScale:v7];
     }
 
-    if (v9 == 3)
+    if (_userInterfaceIdiom == 3)
     {
-      v12 = [MEMORY[0x1E69A2478] modernManager];
-      [v12 activateResourceScenario:1];
+      modernManager3 = [MEMORY[0x1E69A2478] modernManager];
+      [modernManager3 activateResourceScenario:1];
     }
 
-    v13 = [MEMORY[0x1E69A2478] modernManager];
-    v14 = [v13 activeTileGroup];
+    modernManager4 = [MEMORY[0x1E69A2478] modernManager];
+    activeTileGroup = [modernManager4 activeTileGroup];
 
-    [v14 readAll:1];
-    v15 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v15 scale];
+    [activeTileGroup readAll:1];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v16 = GEOResourceFilterScaleForScale();
 
-    if (v9 == 3 && v14 && v7 != v16)
+    if (_userInterfaceIdiom == 3 && activeTileGroup && v7 != v16)
     {
-      if ([v14 activeScalesCount])
+      if ([activeTileGroup activeScalesCount])
       {
         v17 = 0;
-        while ([v14 activeScaleAtIndex:v17] != v7)
+        while ([activeTileGroup activeScaleAtIndex:v17] != v7)
         {
-          if (++v17 >= [v14 activeScalesCount])
+          if (++v17 >= [activeTileGroup activeScalesCount])
           {
             goto LABEL_13;
           }
@@ -208,18 +208,18 @@
       else
       {
 LABEL_13:
-        v18 = [MEMORY[0x1E69DCEB0] mainScreen];
-        [v18 nativeScale];
+        mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+        [mainScreen2 nativeScale];
         v6 = v19;
       }
     }
 
     [(VKMapView *)self->_mapView setContentsScale:v6];
-    [(VKMapView *)self->_mapView setTargetDisplay:v9 == 3];
-    v20 = [v21 _mapkit_display];
-    [(VKMapView *)self->_mapView setHostDisplay:v20];
+    [(VKMapView *)self->_mapView setTargetDisplay:_userInterfaceIdiom == 3];
+    _mapkit_display = [screen _mapkit_display];
+    [(VKMapView *)self->_mapView setHostDisplay:_mapkit_display];
 
-    v4 = v21;
+    v4 = screen;
   }
 }
 
@@ -227,8 +227,8 @@ LABEL_13:
 {
   [(VKMapView *)self->_mapView closeLoaderConnection];
   [(VKMapView *)self->_mapView didEnterBackground];
-  v3 = [MEMORY[0x1E696AAE8] mainBundle];
-  v6 = [v3 objectForInfoDictionaryKey:@"CAProcessCanAccessGPU"];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  v6 = [mainBundle objectForInfoDictionaryKey:@"CAProcessCanAccessGPU"];
 
   if (!v6 || (v4 = [v6 BOOLValue], v5 = v6, (v4 & 1) == 0))
   {
@@ -237,23 +237,23 @@ LABEL_13:
   }
 }
 
-- (void)_updateStatsForTimeSpentInCurrentMapTypeIsShowingFlyover:(BOOL)a3 ignoreIfViewInWindow:(BOOL)a4
+- (void)_updateStatsForTimeSpentInCurrentMapTypeIsShowingFlyover:(BOOL)flyover ignoreIfViewInWindow:(BOOL)window
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(MKBasicMapView *)self window];
+  windowCopy = window;
+  flyoverCopy = flyover;
+  window = [(MKBasicMapView *)self window];
 
-  if ((v7 || v4) && CFAbsoluteTimeGetCurrent() - self->_mapModeStartTime >= 1.0)
+  if ((window || windowCopy) && CFAbsoluteTimeGetCurrent() - self->_mapModeStartTime >= 1.0)
   {
-    v8 = [(MKBasicMapView *)self mapView];
-    v9 = [v8 mapType];
+    mapView = [(MKBasicMapView *)self mapView];
+    mapType = [mapView mapType];
 
-    v10 = [(VKMapView *)self->_mapView isPitched];
-    if (v9 <= 3)
+    isPitched = [(VKMapView *)self->_mapView isPitched];
+    if (mapType <= 3)
     {
-      if (v9 <= 1)
+      if (mapType <= 1)
       {
-        if (!v9)
+        if (!mapType)
         {
 LABEL_20:
           v11 = @"com.apple.maps.standardMode.time";
@@ -261,7 +261,7 @@ LABEL_20:
           goto LABEL_23;
         }
 
-        if (v9 != 1)
+        if (mapType != 1)
         {
 LABEL_35:
           self->_mapModeStartTime = CFAbsoluteTimeGetCurrent();
@@ -274,7 +274,7 @@ LABEL_13:
         goto LABEL_23;
       }
 
-      if (v9 == 2)
+      if (mapType == 2)
       {
         v11 = @"com.apple.maps.hybridMode.time";
         v12 = @"com.apple.maps.hybridPitchedMode.time";
@@ -282,9 +282,9 @@ LABEL_13:
       }
 
       v11 = @"com.apple.maps.satelliteGlobeMode.time";
-      v13 = !v5;
+      v13 = !flyoverCopy;
       v14 = @"com.apple.maps.satelliteGlobePitchedMode.time";
-      if (v5)
+      if (flyoverCopy)
       {
         v11 = @"com.apple.maps.satelliteGlobeFlyoverMode.time";
       }
@@ -294,13 +294,13 @@ LABEL_13:
 
     else
     {
-      if (v9 > 5)
+      if (mapType > 5)
       {
-        if (v9 != 8)
+        if (mapType != 8)
         {
-          if (v9 != 7)
+          if (mapType != 7)
           {
-            if (v9 != 6)
+            if (mapType != 6)
             {
               goto LABEL_35;
             }
@@ -314,7 +314,7 @@ LABEL_13:
         v11 = @"com.apple.maps.transitMode.time";
         v12 = @"com.apple.maps.transitPitchedMode.time";
 LABEL_23:
-        if (v10)
+        if (isPitched)
         {
           v11 = v12;
         }
@@ -326,7 +326,7 @@ LABEL_34:
         goto LABEL_35;
       }
 
-      if (v9 != 4)
+      if (mapType != 4)
       {
         v11 = @"com.apple.maps.navigationMode.time";
         v12 = @"com.apple.maps.navigationPitchedMode.time";
@@ -334,9 +334,9 @@ LABEL_34:
       }
 
       v11 = @"com.apple.maps.hybridGlobeMode.time";
-      v13 = !v5;
+      v13 = !flyoverCopy;
       v14 = @"com.apple.maps.hybridGlobePitchedMode.time";
-      if (v5)
+      if (flyoverCopy)
       {
         v11 = @"com.apple.maps.hybridGlobeFlyoverMode.time";
       }
@@ -349,7 +349,7 @@ LABEL_34:
       v15 = v14;
     }
 
-    if (v10)
+    if (isPitched)
     {
       v11 = v15;
     }
@@ -358,20 +358,20 @@ LABEL_34:
   }
 }
 
-- (void)updateStatsForSwitchingToMapType:(int)a3
+- (void)updateStatsForSwitchingToMapType:(int)type
 {
-  if (a3 <= 8)
+  if (type <= 8)
   {
     ADClientAddValueForScalarKey();
   }
 }
 
-- (void)_updateStatsForTrafficEnabledTime:(BOOL)a3
+- (void)_updateStatsForTrafficEnabledTime:(BOOL)time
 {
-  v3 = a3;
-  v5 = [(MKBasicMapView *)self window];
+  timeCopy = time;
+  window = [(MKBasicMapView *)self window];
 
-  if ((v5 || v3) && CFAbsoluteTimeGetCurrent() - self->_trafficStartTime >= 1.0)
+  if ((window || timeCopy) && CFAbsoluteTimeGetCurrent() - self->_trafficStartTime >= 1.0)
   {
     if (([(VKMapView *)self->_mapView trafficEnabled]& 1) == 0)
     {
@@ -383,58 +383,58 @@ LABEL_34:
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
   v4.receiver = self;
   v4.super_class = MKBasicMapView;
-  [(MKBasicMapView *)&v4 setHidden:a3];
+  [(MKBasicMapView *)&v4 setHidden:hidden];
   [(MKBasicMapView *)self _updateMapViewHidden];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = a3;
-  v5 = [(MKBasicMapView *)self window];
+  windowCopy = window;
+  window = [(MKBasicMapView *)self window];
 
-  if (v5)
+  if (window)
   {
     [(MKBasicMapView *)self _unregisterSceneNotifications];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v7 = *MEMORY[0x1E69DE7C0];
-    v8 = [(MKBasicMapView *)self window];
-    [v6 removeObserver:self name:v7 object:v8];
+    window2 = [(MKBasicMapView *)self window];
+    [defaultCenter removeObserver:self name:v7 object:window2];
   }
 
   v9.receiver = self;
   v9.super_class = MKBasicMapView;
-  [(MKBasicMapView *)&v9 willMoveToWindow:v4];
+  [(MKBasicMapView *)&v9 willMoveToWindow:windowCopy];
 }
 
 - (void)_unregisterSceneNotifications
 {
-  v3 = [(MKBasicMapView *)self window];
-  v7 = [v3 windowScene];
+  window = [(MKBasicMapView *)self window];
+  windowScene = [window windowScene];
 
-  if (v7)
+  if (windowScene)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x1E69DE360] object:v7];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE360] object:windowScene];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 removeObserver:self name:*MEMORY[0x1E69DE348] object:v7];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 removeObserver:self name:*MEMORY[0x1E69DE348] object:windowScene];
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 removeObserver:self name:*MEMORY[0x1E69DEA28] object:v7];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 removeObserver:self name:*MEMORY[0x1E69DEA28] object:windowScene];
   }
 }
 
-- (CGPoint)convertCoordinate:(CLLocationCoordinate2D)a3 toCameraModelPointToView:(id)a4
+- (CGPoint)convertCoordinate:(CLLocationCoordinate2D)coordinate toCameraModelPointToView:(id)view
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   mapView = self->_mapView;
-  v7 = [a4 layer];
-  [(VKMapView *)mapView convertCoordinate:v7 toCameraModelPointToLayer:latitude, longitude];
+  layer = [view layer];
+  [(VKMapView *)mapView convertCoordinate:layer toCameraModelPointToLayer:latitude, longitude];
   v9 = v8;
   v11 = v10;
 
@@ -445,13 +445,13 @@ LABEL_34:
   return result;
 }
 
-- (CGPoint)convertCoordinate:(CLLocationCoordinate2D)a3 toPointToView:(id)a4
+- (CGPoint)convertCoordinate:(CLLocationCoordinate2D)coordinate toPointToView:(id)view
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
   mapView = self->_mapView;
-  v7 = [a4 layer];
-  [(VKMapView *)mapView convertCoordinate:v7 toPointToLayer:latitude, longitude];
+  layer = [view layer];
+  [(VKMapView *)mapView convertCoordinate:layer toPointToLayer:latitude, longitude];
   v9 = v8;
   v11 = v10;
 
@@ -462,13 +462,13 @@ LABEL_34:
   return result;
 }
 
-- (CLLocationCoordinate2D)convertPoint:(CGPoint)a3 toCoordinateFromView:(id)a4
+- (CLLocationCoordinate2D)convertPoint:(CGPoint)point toCoordinateFromView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   mapView = self->_mapView;
-  v7 = [a4 layer];
-  [(VKMapView *)mapView convertPoint:v7 toCoordinateFromLayer:x, y];
+  layer = [view layer];
+  [(VKMapView *)mapView convertPoint:layer toCoordinateFromLayer:x, y];
   v9 = v8;
   v11 = v10;
 
@@ -479,12 +479,12 @@ LABEL_34:
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(MKBasicMapView *)self bounds];
   v14.origin.x = v8;
   v14.origin.y = v9;
@@ -519,12 +519,12 @@ LABEL_34:
   [(MKBasicMapView *)&v12 setFrame:x, y, width, height];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(MKBasicMapView *)self bounds];
   v14.origin.x = v8;
   v14.origin.y = v9;
@@ -559,11 +559,11 @@ LABEL_34:
   [(MKBasicMapView *)&v12 setBounds:x, y, width, height];
 }
 
-- (void)_animateCanvasForBounds:(CGRect)a3
+- (void)_animateCanvasForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  [(MKBasicMapView *)self frame:a3.origin.x];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  [(MKBasicMapView *)self frame:bounds.origin.x];
   v6 = width;
   if (width <= v7)
   {
@@ -633,9 +633,9 @@ uint64_t __42__MKBasicMapView__animateCanvasForBounds___block_invoke_3(uint64_t 
   return [v3 _finishChangingViewSize];
 }
 
-- (void)setInactive:(BOOL)a3
+- (void)setInactive:(BOOL)inactive
 {
-  v3 = a3;
+  inactiveCopy = inactive;
   v16 = *MEMORY[0x1E69E9840];
   v5 = MKGetMKDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -645,42 +645,42 @@ uint64_t __42__MKBasicMapView__animateCanvasForBounds___block_invoke_3(uint64_t 
     v8 = 138413058;
     v9 = v6;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 1024;
-    v13 = inactive;
+    inactiveCopy2 = inactive;
     v14 = 1024;
-    v15 = v3;
+    v15 = inactiveCopy;
     _os_log_impl(&dword_1A2EA0000, v5, OS_LOG_TYPE_INFO, "%@<%p> setInactive: %d -> %d", &v8, 0x22u);
   }
 
-  if (self->_inactive != v3)
+  if (self->_inactive != inactiveCopy)
   {
-    self->_inactive = v3;
+    self->_inactive = inactiveCopy;
     [(MKBasicMapView *)self _updateBackgroundState];
   }
 }
 
-- (void)setRendersInBackground:(BOOL)a3
+- (void)setRendersInBackground:(BOOL)background
 {
-  v3 = a3;
+  backgroundCopy = background;
   v16 = *MEMORY[0x1E69E9840];
   v5 = MKGetMKDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = objc_opt_class();
-    v7 = [(VKMapView *)self->_mapView rendersInBackground];
+    rendersInBackground = [(VKMapView *)self->_mapView rendersInBackground];
     v8 = 138413058;
     v9 = v6;
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 1024;
-    v13 = v7;
+    v13 = rendersInBackground;
     v14 = 1024;
-    v15 = v3;
+    v15 = backgroundCopy;
     _os_log_impl(&dword_1A2EA0000, v5, OS_LOG_TYPE_INFO, "%@<%p> setRendersInBackground: %d -> %d", &v8, 0x22u);
   }
 
-  [(VKMapView *)self->_mapView setRendersInBackground:v3];
+  [(VKMapView *)self->_mapView setRendersInBackground:backgroundCopy];
   [(MKBasicMapView *)self _updateBackgroundState];
   [(MKBasicMapView *)self _updateMapViewHidden];
 }
@@ -711,25 +711,25 @@ uint64_t __42__MKBasicMapView__animateCanvasForBounds___block_invoke_3(uint64_t 
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E69A2478] modernManager];
-  [v3 removeTileGroupObserver:self];
+  modernManager = [MEMORY[0x1E69A2478] modernManager];
+  [modernManager removeTileGroupObserver:self];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = MKBasicMapView;
   [(MKBasicMapView *)&v5 dealloc];
 }
 
-- (MKBasicMapView)initWithFrame:(CGRect)a3 andGlobe:(BOOL)a4 shouldRasterize:(BOOL)a5 allowsAntialiasing:(BOOL)a6 carDisplayType:(int64_t)a7
+- (MKBasicMapView)initWithFrame:(CGRect)frame andGlobe:(BOOL)globe shouldRasterize:(BOOL)rasterize allowsAntialiasing:(BOOL)antialiasing carDisplayType:(int64_t)type
 {
-  v8 = a6;
-  v9 = a5;
+  antialiasingCopy = antialiasing;
+  rasterizeCopy = rasterize;
   v32[4] = *MEMORY[0x1E69E9840];
   v30.receiver = self;
   v30.super_class = MKBasicMapView;
-  v10 = [(MKBasicMapView *)&v30 initWithFrame:a4, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v10 = [(MKBasicMapView *)&v30 initWithFrame:globe, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v10)
   {
     if (initWithFrame_andGlobe_shouldRasterize_allowsAntialiasing_carDisplayType__once != -1)
@@ -745,55 +745,55 @@ uint64_t __42__MKBasicMapView__animateCanvasForBounds___block_invoke_3(uint64_t 
     v10->_hostView = &v12->super;
     v14 = v12;
 
-    v15 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v15 nativeScale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen nativeScale];
     v17 = v16;
 
-    v18 = [MEMORY[0x1E69DF458] descriptorWithShouldRasterize:v9 inBackground:v10->_inBackground contentScale:0 auditToken:0 mapViewPurpose:v8 allowsAntialiasing:v17];
-    [v18 setCarDisplayType:a7];
+    v18 = [MEMORY[0x1E69DF458] descriptorWithShouldRasterize:rasterizeCopy inBackground:v10->_inBackground contentScale:0 auditToken:0 mapViewPurpose:antialiasingCopy allowsAntialiasing:v17];
+    [v18 setCarDisplayType:type];
     v19 = [objc_alloc(MEMORY[0x1E69DF450]) initWithDescriptor:v18];
     mapView = v10->_mapView;
     v10->_mapView = v19;
 
     [(_MKMapLayerHostingView *)v14 setMapView:v10->_mapView];
     v31[0] = @"bounds";
-    v21 = [MEMORY[0x1E695DFB0] null];
-    v32[0] = v21;
+    null = [MEMORY[0x1E695DFB0] null];
+    v32[0] = null;
     v31[1] = @"position";
-    v22 = [MEMORY[0x1E695DFB0] null];
-    v32[1] = v22;
+    null2 = [MEMORY[0x1E695DFB0] null];
+    v32[1] = null2;
     v31[2] = @"hidden";
-    v23 = [MEMORY[0x1E695DFB0] null];
-    v32[2] = v23;
+    null3 = [MEMORY[0x1E695DFB0] null];
+    v32[2] = null3;
     v31[3] = @"sublayers";
-    v24 = [MEMORY[0x1E695DFB0] null];
-    v32[3] = v24;
+    null4 = [MEMORY[0x1E695DFB0] null];
+    v32[3] = null4;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v32 forKeys:v31 count:4];
     [(VKMapView *)v10->_mapView setActions:v25];
 
     [(UIView *)v10->_hostView bounds];
     [(VKMapView *)v10->_mapView setFrame:?];
     [(VKMapView *)v10->_mapView setHidden:1];
-    v26 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v26 addObserver:v10 selector:sel__updateForCurrentLocale name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__updateForCurrentLocale name:*MEMORY[0x1E695D8F0] object:0];
 
     [(MKBasicMapView *)v10 _updateForCurrentLocale];
-    v27 = [(UIView *)v10->_hostView layer];
-    [v27 addSublayer:v10->_mapView];
+    layer = [(UIView *)v10->_hostView layer];
+    [layer addSublayer:v10->_mapView];
 
     [(MKBasicMapView *)v10 addSubview:v10->_hostView];
     [(MKBasicMapView *)v10 setClipsToBounds:1];
     v10->_mapModeStartTime = CFAbsoluteTimeGetCurrent();
     v10->_trafficStartTime = CFAbsoluteTimeGetCurrent();
-    v28 = [MEMORY[0x1E69A2478] modernManager];
+    modernManager = [MEMORY[0x1E69A2478] modernManager];
 
-    [v28 addTileGroupObserver:v10 queue:MEMORY[0x1E69E96A0]];
+    [modernManager addTileGroupObserver:v10 queue:MEMORY[0x1E69E96A0]];
   }
 
   return v10;
 }
 
-- (void)_updateBackgroundState:(int64_t)a3
+- (void)_updateBackgroundState:(int64_t)state
 {
   v27 = *MEMORY[0x1E69E9840];
   if (self->_inactive)
@@ -803,7 +803,7 @@ uint64_t __42__MKBasicMapView__animateCanvasForBounds___block_invoke_3(uint64_t 
 
   else
   {
-    v6 = a3 & 0xFFFFFFFFFFFFFFFDLL;
+    v6 = state & 0xFFFFFFFFFFFFFFFDLL;
     v7 = [(VKMapView *)self->_mapView rendersInBackground]^ 1;
     if (v6 == 1)
     {
@@ -835,17 +835,17 @@ uint64_t __42__MKBasicMapView__animateCanvasForBounds___block_invoke_3(uint64_t 
     v13 = 138413826;
     v14 = v9;
     v15 = 2048;
-    v16 = self;
+    selfCopy = self;
     v17 = 2080;
     v18 = v10;
     v19 = 1024;
     v20 = inBackground;
     v21 = 2048;
-    v22 = a3;
+    stateCopy = state;
     v23 = 1024;
     v24 = inactive;
     v25 = 1024;
-    v26 = [(MKBasicMapView *)self rendersInBackground];
+    rendersInBackground = [(MKBasicMapView *)self rendersInBackground];
     _os_log_impl(&dword_1A2EA0000, v8, OS_LOG_TYPE_INFO, "%@<%p> updateBackgroundState: determined is%s in background (was background: %d, scene state: %ld, inactive: %d, rendersInBackground: %d)", &v13, 0x3Cu);
   }
 

@@ -1,46 +1,46 @@
 @interface HTPrefs
 + (id)sharedPrefs;
-- (BOOL)BOOLProperty:(HTPrefInit *)a3 contextPrefixOut:(id *)a4;
-- (BOOL)compareBootSessionUUIDAndClearPreferencesWithDomain:(id)a3 prefix:(id)a4;
+- (BOOL)BOOLProperty:(HTPrefInit *)property contextPrefixOut:(id *)out;
+- (BOOL)compareBootSessionUUIDAndClearPreferencesWithDomain:(id)domain prefix:(id)prefix;
 - (BOOL)shouldDisplayFenceHangToHUD;
 - (BOOL)shouldUpdateHangsHUD;
 - (HTPrefInit)prefInitList;
 - (NSArray)prefContextPrefixPriorityOrder;
-- (double)doubleProperty:(HTPrefInit *)a3 contextPrefixOut:(id *)a4;
+- (double)doubleProperty:(HTPrefInit *)property contextPrefixOut:(id *)out;
 - (id)getBootSessionUUID;
-- (id)objectProperty:(HTPrefInit *)a3 matchingSelector:(SEL)a4 contextPrefixOut:(id *)a5;
-- (id)prefNamed:(__CFString *)a3 domain:(__CFString *)a4 profile:(id)a5 matchingSelector:(SEL)a6 contextPrefixOut:(id *)a7;
-- (id)stringProperty:(HTPrefInit *)a3 contextPrefixOut:(id *)a4;
-- (int)intProperty:(HTPrefInit *)a3 contextPrefixOut:(id *)a4;
-- (unint64_t)unsignedLongLongProperty:(HTPrefInit *)a3 contextPrefixOut:(id *)a4;
-- (unint64_t)unsignedLongProperty:(HTPrefInit *)a3 contextPrefixOut:(id *)a4;
-- (unsigned)unsignedIntProperty:(HTPrefInit *)a3 contextPrefixOut:(id *)a4;
+- (id)objectProperty:(HTPrefInit *)property matchingSelector:(SEL)selector contextPrefixOut:(id *)out;
+- (id)prefNamed:(__CFString *)named domain:(__CFString *)domain profile:(id)profile matchingSelector:(SEL)selector contextPrefixOut:(id *)out;
+- (id)stringProperty:(HTPrefInit *)property contextPrefixOut:(id *)out;
+- (int)intProperty:(HTPrefInit *)property contextPrefixOut:(id *)out;
+- (unint64_t)unsignedLongLongProperty:(HTPrefInit *)property contextPrefixOut:(id *)out;
+- (unint64_t)unsignedLongProperty:(HTPrefInit *)property contextPrefixOut:(id *)out;
+- (unsigned)unsignedIntProperty:(HTPrefInit *)property contextPrefixOut:(id *)out;
 - (void)__createInternalSettings;
 - (void)_removeAllPrefs;
 - (void)dealloc;
 - (void)earlyInitNecessaryPrefs;
-- (void)initBoolProperty:(HTPrefInit *)a3;
-- (void)initDoubleProperty:(HTPrefInit *)a3;
-- (void)initIntProperty:(HTPrefInit *)a3;
-- (void)initIsAutomationGroup:(HTPrefInit *)a3;
-- (void)initNSObjectProperty:(HTPrefInit *)a3;
-- (void)initNSStringProperty:(HTPrefInit *)a3;
-- (void)initPropertyForceQuitDetectionEnabled:(HTPrefInit *)a3;
-- (void)initPropertyHangtracerDaemonEnabled:(HTPrefInit *)a3;
-- (void)initPropertyHaveInternalSettings:(HTPrefInit *)a3;
-- (void)initPropertyIsCarryDevice:(HTPrefInit *)a3;
-- (void)initPropertyIsInternal:(HTPrefInit *)a3;
-- (void)initPropertyProcessTerminationSubReasonsMonitored:(HTPrefInit *)a3;
-- (void)initPropertyReportPeriod:(HTPrefInit *)a3;
-- (void)initPropertyShouldSaveAndCompressTailspins:(HTPrefInit *)a3;
-- (void)initPropertyThirdPartyDevPreferredLanguages:(HTPrefInit *)a3;
-- (void)initUnsignedIntProperty:(HTPrefInit *)a3;
-- (void)initUnsignedLongLongProperty:(HTPrefInit *)a3;
-- (void)initUnsignedLongProperty:(HTPrefInit *)a3;
+- (void)initBoolProperty:(HTPrefInit *)property;
+- (void)initDoubleProperty:(HTPrefInit *)property;
+- (void)initIntProperty:(HTPrefInit *)property;
+- (void)initIsAutomationGroup:(HTPrefInit *)group;
+- (void)initNSObjectProperty:(HTPrefInit *)property;
+- (void)initNSStringProperty:(HTPrefInit *)property;
+- (void)initPropertyForceQuitDetectionEnabled:(HTPrefInit *)enabled;
+- (void)initPropertyHangtracerDaemonEnabled:(HTPrefInit *)enabled;
+- (void)initPropertyHaveInternalSettings:(HTPrefInit *)settings;
+- (void)initPropertyIsCarryDevice:(HTPrefInit *)device;
+- (void)initPropertyIsInternal:(HTPrefInit *)internal;
+- (void)initPropertyProcessTerminationSubReasonsMonitored:(HTPrefInit *)monitored;
+- (void)initPropertyReportPeriod:(HTPrefInit *)period;
+- (void)initPropertyShouldSaveAndCompressTailspins:(HTPrefInit *)tailspins;
+- (void)initPropertyThirdPartyDevPreferredLanguages:(HTPrefInit *)languages;
+- (void)initUnsignedIntProperty:(HTPrefInit *)property;
+- (void)initUnsignedLongLongProperty:(HTPrefInit *)property;
+- (void)initUnsignedLongProperty:(HTPrefInit *)property;
 - (void)refreshHTPrefs;
-- (void)savePreferencesForRestoration:(id)a3 withDomain:(id)a4 prefix:(id)a5;
-- (void)setupPrefsWithQueue:(id)a3;
-- (void)setupPrefsWithQueue:(id)a3 profilePath:(id)a4 taskingDomainName:(__CFString *)a5 hangtracerDomain:(__CFString *)a6 setupInternalPrefs:(BOOL)a7;
+- (void)savePreferencesForRestoration:(id)restoration withDomain:(id)domain prefix:(id)prefix;
+- (void)setupPrefsWithQueue:(id)queue;
+- (void)setupPrefsWithQueue:(id)queue profilePath:(id)path taskingDomainName:(__CFString *)name hangtracerDomain:(__CFString *)domain setupInternalPrefs:(BOOL)prefs;
 @end
 
 @implementation HTPrefs
@@ -69,10 +69,10 @@
   return v3;
 }
 
-- (id)prefNamed:(__CFString *)a3 domain:(__CFString *)a4 profile:(id)a5 matchingSelector:(SEL)a6 contextPrefixOut:(id *)a7
+- (id)prefNamed:(__CFString *)named domain:(__CFString *)domain profile:(id)profile matchingSelector:(SEL)selector contextPrefixOut:(id *)out
 {
-  v25 = a5;
-  v27 = a3;
+  profileCopy = profile;
+  namedCopy = named;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -96,23 +96,23 @@
         v15 = [(__CFString *)v14 isEqualToString:&stru_100057080];
         if (v15)
         {
-          v16 = v27;
+          namedCopy = namedCopy;
         }
 
         else
         {
-          v16 = [NSString stringWithFormat:@"%@.%@", v14, v27];
+          namedCopy = [NSString stringWithFormat:@"%@.%@", v14, namedCopy];
         }
 
-        v17 = v16;
+        v17 = namedCopy;
         if ([(__CFString *)v14 isEqualToString:@"HTProfile"])
         {
-          v18 = [v25 objectForKeyedSubscript:v17];
+          v18 = [profileCopy objectForKeyedSubscript:v17];
         }
 
         else
         {
-          v18 = CFPreferencesCopyValue(v17, a4, @"mobile", kCFPreferencesAnyHost);
+          v18 = CFPreferencesCopyValue(v17, domain, @"mobile", kCFPreferencesAnyHost);
         }
 
         v19 = v18;
@@ -130,24 +130,24 @@
 
             v33 = v23;
             v34 = 2112;
-            v35 = v27;
+            v35 = namedCopy;
             v36 = 2112;
             v37 = v19;
             _os_log_debug_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "HTPrefs: Overriden by %@: %@ = %@", buf, 0x20u);
           }
 
-          if (a7)
+          if (out)
           {
             v21 = v14;
-            *a7 = v14;
+            *out = v14;
           }
 
           goto LABEL_25;
         }
 
-        if (a7)
+        if (out)
         {
-          *a7 = 0;
+          *out = 0;
         }
       }
 
@@ -173,7 +173,7 @@ LABEL_25:
   return v19;
 }
 
-- (BOOL)BOOLProperty:(HTPrefInit *)a3 contextPrefixOut:(id *)a4
+- (BOOL)BOOLProperty:(HTPrefInit *)property contextPrefixOut:(id *)out
 {
   v4 = 16;
   if (!self->_isInternal)
@@ -181,17 +181,17 @@ LABEL_25:
     v4 = 24;
   }
 
-  v5 = *(&a3->var0 + v4);
-  v6 = [(HTPrefs *)self prefNamed:a3->var0 domain:self->__htTaskingDomain profile:self->__installedHTProfileDict matchingSelector:"BOOLValue" contextPrefixOut:a4];
+  bOOLValue = *(&property->var0 + v4);
+  v6 = [(HTPrefs *)self prefNamed:property->var0 domain:self->__htTaskingDomain profile:self->__installedHTProfileDict matchingSelector:"BOOLValue" contextPrefixOut:out];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
-  return v5 & 1;
+  return bOOLValue & 1;
 }
 
-- (int)intProperty:(HTPrefInit *)a3 contextPrefixOut:(id *)a4
+- (int)intProperty:(HTPrefInit *)property contextPrefixOut:(id *)out
 {
   v5 = 24;
   if (self->_isInternal)
@@ -199,22 +199,22 @@ LABEL_25:
     v5 = 16;
   }
 
-  v6 = *(&a3->var0 + v5);
-  v7 = [(HTPrefs *)self prefNamed:a3->var0 domain:self->__htTaskingDomain profile:self->__installedHTProfileDict matchingSelector:"intValue" contextPrefixOut:a4];
+  v6 = *(&property->var0 + v5);
+  v7 = [(HTPrefs *)self prefNamed:property->var0 domain:self->__htTaskingDomain profile:self->__installedHTProfileDict matchingSelector:"intValue" contextPrefixOut:out];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v8 = [v7 intValue];
-  v9 = v8;
-  if ((a3->var4 & 1) != 0 && !v8)
+  intValue = [v7 intValue];
+  v9 = intValue;
+  if ((property->var4 & 1) != 0 && !intValue)
   {
     v10 = sub_100003824();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      var0 = a3->var0;
-      var4 = a3->var4;
+      var0 = property->var0;
+      var4 = property->var4;
       v14 = 138412802;
       v15 = var0;
       v16 = 2048;
@@ -231,7 +231,7 @@ LABEL_9:
   return v9;
 }
 
-- (unsigned)unsignedIntProperty:(HTPrefInit *)a3 contextPrefixOut:(id *)a4
+- (unsigned)unsignedIntProperty:(HTPrefInit *)property contextPrefixOut:(id *)out
 {
   v5 = 24;
   if (self->_isInternal)
@@ -239,22 +239,22 @@ LABEL_9:
     v5 = 16;
   }
 
-  v6 = *(&a3->var0 + v5);
-  v7 = [(HTPrefs *)self prefNamed:a3->var0 domain:self->__htTaskingDomain profile:self->__installedHTProfileDict matchingSelector:"unsignedIntValue" contextPrefixOut:a4];
+  v6 = *(&property->var0 + v5);
+  v7 = [(HTPrefs *)self prefNamed:property->var0 domain:self->__htTaskingDomain profile:self->__installedHTProfileDict matchingSelector:"unsignedIntValue" contextPrefixOut:out];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v8 = [v7 unsignedIntValue];
-  v9 = v8;
-  if ((a3->var4 & 1) != 0 && !v8)
+  unsignedIntValue = [v7 unsignedIntValue];
+  v9 = unsignedIntValue;
+  if ((property->var4 & 1) != 0 && !unsignedIntValue)
   {
     v10 = sub_100003824();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      var0 = a3->var0;
-      var4 = a3->var4;
+      var0 = property->var0;
+      var4 = property->var4;
       v14 = 138412802;
       v15 = var0;
       v16 = 2048;
@@ -271,7 +271,7 @@ LABEL_9:
   return v9;
 }
 
-- (unint64_t)unsignedLongProperty:(HTPrefInit *)a3 contextPrefixOut:(id *)a4
+- (unint64_t)unsignedLongProperty:(HTPrefInit *)property contextPrefixOut:(id *)out
 {
   v5 = 24;
   if (self->_isInternal)
@@ -279,22 +279,22 @@ LABEL_9:
     v5 = 16;
   }
 
-  v6 = *(&a3->var0 + v5);
-  v7 = [(HTPrefs *)self prefNamed:a3->var0 domain:self->__htTaskingDomain profile:self->__installedHTProfileDict matchingSelector:"unsignedLongValue" contextPrefixOut:a4];
+  v6 = *(&property->var0 + v5);
+  v7 = [(HTPrefs *)self prefNamed:property->var0 domain:self->__htTaskingDomain profile:self->__installedHTProfileDict matchingSelector:"unsignedLongValue" contextPrefixOut:out];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v8 = [v7 unsignedLongValue];
-  v9 = v8;
-  if ((a3->var4 & 1) != 0 && !v8)
+  unsignedLongValue = [v7 unsignedLongValue];
+  v9 = unsignedLongValue;
+  if ((property->var4 & 1) != 0 && !unsignedLongValue)
   {
     v10 = sub_100003824();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      var0 = a3->var0;
-      var4 = a3->var4;
+      var0 = property->var0;
+      var4 = property->var4;
       v14 = 138412802;
       v15 = var0;
       v16 = 2048;
@@ -311,7 +311,7 @@ LABEL_9:
   return v9;
 }
 
-- (unint64_t)unsignedLongLongProperty:(HTPrefInit *)a3 contextPrefixOut:(id *)a4
+- (unint64_t)unsignedLongLongProperty:(HTPrefInit *)property contextPrefixOut:(id *)out
 {
   v5 = 24;
   if (self->_isInternal)
@@ -319,22 +319,22 @@ LABEL_9:
     v5 = 16;
   }
 
-  v6 = *(&a3->var0 + v5);
-  v7 = [(HTPrefs *)self prefNamed:a3->var0 domain:self->__htTaskingDomain profile:self->__installedHTProfileDict matchingSelector:"unsignedLongLongValue" contextPrefixOut:a4];
+  v6 = *(&property->var0 + v5);
+  v7 = [(HTPrefs *)self prefNamed:property->var0 domain:self->__htTaskingDomain profile:self->__installedHTProfileDict matchingSelector:"unsignedLongLongValue" contextPrefixOut:out];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  v8 = [v7 unsignedLongLongValue];
-  v9 = v8;
-  if ((a3->var4 & 1) != 0 && !v8)
+  unsignedLongLongValue = [v7 unsignedLongLongValue];
+  v9 = unsignedLongLongValue;
+  if ((property->var4 & 1) != 0 && !unsignedLongLongValue)
   {
     v10 = sub_100003824();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      var0 = a3->var0;
-      var4 = a3->var4;
+      var0 = property->var0;
+      var4 = property->var4;
       v14 = 138412802;
       v15 = var0;
       v16 = 2048;
@@ -351,7 +351,7 @@ LABEL_9:
   return v9;
 }
 
-- (double)doubleProperty:(HTPrefInit *)a3 contextPrefixOut:(id *)a4
+- (double)doubleProperty:(HTPrefInit *)property contextPrefixOut:(id *)out
 {
   v5 = 24;
   if (self->_isInternal)
@@ -359,19 +359,19 @@ LABEL_9:
     v5 = 16;
   }
 
-  v6 = *(&a3->var0 + v5);
-  v7 = [(HTPrefs *)self prefNamed:a3->var0 domain:self->__htTaskingDomain profile:self->__installedHTProfileDict matchingSelector:"doubleValue" contextPrefixOut:a4];
+  v6 = *(&property->var0 + v5);
+  v7 = [(HTPrefs *)self prefNamed:property->var0 domain:self->__htTaskingDomain profile:self->__installedHTProfileDict matchingSelector:"doubleValue" contextPrefixOut:out];
   if (objc_opt_respondsToSelector())
   {
     [v7 doubleValue];
     v9 = v8;
-    if ((a3->var4 & 2) != 0 && v8 < v6)
+    if ((property->var4 & 2) != 0 && v8 < v6)
     {
       v10 = sub_100003824();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        var0 = a3->var0;
-        var4 = a3->var4;
+        var0 = property->var0;
+        var4 = property->var4;
         v14 = 138412802;
         v15 = var0;
         v16 = 2048;
@@ -391,7 +391,7 @@ LABEL_9:
   return v6;
 }
 
-- (id)stringProperty:(HTPrefInit *)a3 contextPrefixOut:(id *)a4
+- (id)stringProperty:(HTPrefInit *)property contextPrefixOut:(id *)out
 {
   v7 = 24;
   if (self->_isInternal)
@@ -399,18 +399,18 @@ LABEL_9:
     v7 = 16;
   }
 
-  v8 = *(&a3->var0 + v7);
-  v9 = [(HTPrefs *)self prefNamed:a3->var0 domain:self->__htTaskingDomain profile:self->__installedHTProfileDict matchingSelector:"isEqualToString:" contextPrefixOut:a4];
+  v8 = *(&property->var0 + v7);
+  v9 = [(HTPrefs *)self prefNamed:property->var0 domain:self->__htTaskingDomain profile:self->__installedHTProfileDict matchingSelector:"isEqualToString:" contextPrefixOut:out];
   v10 = v9;
   if (v9)
   {
-    if ((a3->var4 & 4) != 0 && ![v9 length])
+    if ((property->var4 & 4) != 0 && ![v9 length])
     {
       v13 = sub_100003824();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        var0 = a3->var0;
-        var4 = a3->var4;
+        var0 = property->var0;
+        var4 = property->var4;
         v16 = 138412802;
         v17 = var0;
         v18 = 2048;
@@ -432,7 +432,7 @@ LABEL_9:
   return v8;
 }
 
-- (id)objectProperty:(HTPrefInit *)a3 matchingSelector:(SEL)a4 contextPrefixOut:(id *)a5
+- (id)objectProperty:(HTPrefInit *)property matchingSelector:(SEL)selector contextPrefixOut:(id *)out
 {
   v9 = 24;
   if (self->_isInternal)
@@ -440,8 +440,8 @@ LABEL_9:
     v9 = 16;
   }
 
-  v10 = *(&a3->var0 + v9);
-  v11 = [(HTPrefs *)self prefNamed:a3->var0 domain:self->__htTaskingDomain profile:self->__installedHTProfileDict matchingSelector:a4 contextPrefixOut:a5];
+  v10 = *(&property->var0 + v9);
+  v11 = [(HTPrefs *)self prefNamed:property->var0 domain:self->__htTaskingDomain profile:self->__installedHTProfileDict matchingSelector:selector contextPrefixOut:out];
   v12 = v11;
   if (v11)
   {
@@ -453,9 +453,9 @@ LABEL_9:
   return v10;
 }
 
-- (void)initBoolProperty:(HTPrefInit *)a3
+- (void)initBoolProperty:(HTPrefInit *)property
 {
-  v5 = *a3->var1;
+  v5 = *property->var1;
   v6 = [HTPrefs BOOLProperty:"BOOLProperty:contextPrefixOut:" contextPrefixOut:?];
   if (v5 != v6)
   {
@@ -463,7 +463,7 @@ LABEL_9:
     v8 = sub_100003824();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      var0 = a3->var0;
+      var0 = property->var0;
       v10 = 138412802;
       v11 = var0;
       v12 = 1024;
@@ -473,14 +473,14 @@ LABEL_9:
       _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "HTPrefs: %@: %{BOOL}d -> %{BOOL}d", &v10, 0x18u);
     }
 
-    *a3->var1 = v7;
+    *property->var1 = v7;
     [(HTPrefs *)self setShouldPostHTPrefsChangedNotification:1];
   }
 }
 
-- (void)initIntProperty:(HTPrefInit *)a3
+- (void)initIntProperty:(HTPrefInit *)property
 {
-  v5 = *a3->var1;
+  v5 = *property->var1;
   v6 = [HTPrefs intProperty:"intProperty:contextPrefixOut:" contextPrefixOut:?];
   if (v5 != v6)
   {
@@ -488,7 +488,7 @@ LABEL_9:
     v8 = sub_100003824();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      var0 = a3->var0;
+      var0 = property->var0;
       v10 = 138412802;
       v11 = var0;
       v12 = 1024;
@@ -498,14 +498,14 @@ LABEL_9:
       _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "HTPrefs: %@: %d -> %d", &v10, 0x18u);
     }
 
-    *a3->var1 = v7;
+    *property->var1 = v7;
     [(HTPrefs *)self setShouldPostHTPrefsChangedNotification:1];
   }
 }
 
-- (void)initUnsignedIntProperty:(HTPrefInit *)a3
+- (void)initUnsignedIntProperty:(HTPrefInit *)property
 {
-  v5 = *a3->var1;
+  v5 = *property->var1;
   v6 = [HTPrefs unsignedIntProperty:"unsignedIntProperty:contextPrefixOut:" contextPrefixOut:?];
   if (v5 != v6)
   {
@@ -513,7 +513,7 @@ LABEL_9:
     v8 = sub_100003824();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      var0 = a3->var0;
+      var0 = property->var0;
       v10 = 138412802;
       v11 = var0;
       v12 = 1024;
@@ -523,14 +523,14 @@ LABEL_9:
       _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "HTPrefs: %@: %u -> %u", &v10, 0x18u);
     }
 
-    *a3->var1 = v7;
+    *property->var1 = v7;
     [(HTPrefs *)self setShouldPostHTPrefsChangedNotification:1];
   }
 }
 
-- (void)initUnsignedLongProperty:(HTPrefInit *)a3
+- (void)initUnsignedLongProperty:(HTPrefInit *)property
 {
-  v5 = *a3->var1;
+  v5 = *property->var1;
   v6 = [HTPrefs unsignedLongProperty:"unsignedLongProperty:contextPrefixOut:" contextPrefixOut:?];
   if (v5 != v6)
   {
@@ -538,7 +538,7 @@ LABEL_9:
     v8 = sub_100003824();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      var0 = a3->var0;
+      var0 = property->var0;
       v10 = 138412802;
       v11 = var0;
       v12 = 2048;
@@ -548,14 +548,14 @@ LABEL_9:
       _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "HTPrefs: %@: %lu -> %lu", &v10, 0x20u);
     }
 
-    *a3->var1 = v7;
+    *property->var1 = v7;
     [(HTPrefs *)self setShouldPostHTPrefsChangedNotification:1];
   }
 }
 
-- (void)initUnsignedLongLongProperty:(HTPrefInit *)a3
+- (void)initUnsignedLongLongProperty:(HTPrefInit *)property
 {
-  v5 = *a3->var1;
+  v5 = *property->var1;
   v6 = [HTPrefs unsignedLongProperty:"unsignedLongProperty:contextPrefixOut:" contextPrefixOut:?];
   if (v5 != v6)
   {
@@ -563,7 +563,7 @@ LABEL_9:
     v8 = sub_100003824();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      var0 = a3->var0;
+      var0 = property->var0;
       v10 = 138412802;
       v11 = var0;
       v12 = 2048;
@@ -573,14 +573,14 @@ LABEL_9:
       _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "HTPrefs: %@: %llu -> %llu", &v10, 0x20u);
     }
 
-    *a3->var1 = v7;
+    *property->var1 = v7;
     [(HTPrefs *)self setShouldPostHTPrefsChangedNotification:1];
   }
 }
 
-- (void)initDoubleProperty:(HTPrefInit *)a3
+- (void)initDoubleProperty:(HTPrefInit *)property
 {
-  v5 = *a3->var1;
+  v5 = *property->var1;
   [HTPrefs doubleProperty:"doubleProperty:contextPrefixOut:" contextPrefixOut:?];
   if (v5 != v6)
   {
@@ -588,7 +588,7 @@ LABEL_9:
     v8 = sub_100003824();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      var0 = a3->var0;
+      var0 = property->var0;
       v10 = 138412802;
       v11 = var0;
       v12 = 2048;
@@ -598,21 +598,21 @@ LABEL_9:
       _os_log_debug_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "HTPrefs: %@: %f -> %f", &v10, 0x20u);
     }
 
-    *a3->var1 = v7;
+    *property->var1 = v7;
     [(HTPrefs *)self setShouldPostHTPrefsChangedNotification:1];
   }
 }
 
-- (void)initNSStringProperty:(HTPrefInit *)a3
+- (void)initNSStringProperty:(HTPrefInit *)property
 {
-  v5 = *a3->var1;
-  v6 = [(HTPrefs *)self stringProperty:a3 contextPrefixOut:0];
+  v5 = *property->var1;
+  v6 = [(HTPrefs *)self stringProperty:property contextPrefixOut:0];
   if (([v6 isEqualToString:v5] & 1) == 0)
   {
     v7 = sub_100003824();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      var0 = a3->var0;
+      var0 = property->var0;
       v12 = 138412802;
       v13 = var0;
       v14 = 2112;
@@ -622,8 +622,8 @@ LABEL_9:
       _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "HTPrefs: %@: %@ -> %@", &v12, 0x20u);
     }
 
-    v8 = [(HTPrefs *)self stringProperty:a3 contextPrefixOut:0];
-    var1 = a3->var1;
+    v8 = [(HTPrefs *)self stringProperty:property contextPrefixOut:0];
+    var1 = property->var1;
     v10 = *var1;
     *var1 = v8;
 
@@ -631,17 +631,17 @@ LABEL_9:
   }
 }
 
-- (void)initNSObjectProperty:(HTPrefInit *)a3
+- (void)initNSObjectProperty:(HTPrefInit *)property
 {
-  v5 = *a3->var1;
-  v6 = [(HTPrefs *)self objectProperty:a3 matchingSelector:"isEqual:" contextPrefixOut:0];
+  v5 = *property->var1;
+  v6 = [(HTPrefs *)self objectProperty:property matchingSelector:"isEqual:" contextPrefixOut:0];
   v7 = v6;
   if ((v5 == 0) == (v6 != 0) || (v5 ? (v8 = v6 == 0) : (v8 = 1), !v8 && ([v5 isEqual:v6] & 1) == 0))
   {
     v9 = sub_100003824();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      var0 = a3->var0;
+      var0 = property->var0;
       v14 = 138412802;
       v15 = var0;
       v16 = 2112;
@@ -651,8 +651,8 @@ LABEL_9:
       _os_log_debug_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEBUG, "HTPrefs: %@: %@ -> %@", &v14, 0x20u);
     }
 
-    v10 = [(HTPrefs *)self objectProperty:a3 matchingSelector:"isEqual:" contextPrefixOut:0];
-    var1 = a3->var1;
+    v10 = [(HTPrefs *)self objectProperty:property matchingSelector:"isEqual:" contextPrefixOut:0];
+    var1 = property->var1;
     v12 = *var1;
     *var1 = v10;
 
@@ -660,19 +660,19 @@ LABEL_9:
   }
 }
 
-- (void)initIsAutomationGroup:(HTPrefInit *)a3
+- (void)initIsAutomationGroup:(HTPrefInit *)group
 {
-  v5 = *a3->var1;
+  v5 = *group->var1;
   v6 = 24;
   if (self->_isInternal)
   {
     v6 = 16;
   }
 
-  v7 = *(&a3->var0 + v6);
+  v7 = *(&group->var0 + v6);
   v8 = +[OSASystemConfiguration automatedDeviceGroup];
   v9 = v8;
-  if (v8 && ((a3->var4 & 4) == 0 || [v8 length]))
+  if (v8 && ((group->var4 & 4) == 0 || [v8 length]))
   {
     v10 = v9;
 
@@ -684,7 +684,7 @@ LABEL_9:
     v11 = sub_100003824();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      var0 = a3->var0;
+      var0 = group->var0;
       v13 = 138412802;
       v14 = var0;
       v15 = 2112;
@@ -694,16 +694,16 @@ LABEL_9:
       _os_log_debug_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "HTPrefs: %@: %@ -> %@", &v13, 0x20u);
     }
 
-    objc_storeStrong(a3->var1, v7);
+    objc_storeStrong(group->var1, v7);
     [(HTPrefs *)self setShouldPostHTPrefsChangedNotification:1];
   }
 }
 
-- (void)initPropertyHangtracerDaemonEnabled:(HTPrefInit *)a3
+- (void)initPropertyHangtracerDaemonEnabled:(HTPrefInit *)enabled
 {
   hangtracerDaemonEnabled = self->_hangtracerDaemonEnabled;
   v13 = 0;
-  v6 = [(HTPrefs *)self BOOLProperty:a3 contextPrefixOut:&v13];
+  v6 = [(HTPrefs *)self BOOLProperty:enabled contextPrefixOut:&v13];
   v7 = v13;
   v8 = v13;
   v9 = self->_enablementPrefix;
@@ -723,7 +723,7 @@ LABEL_9:
     v11 = sub_100003824();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      var0 = a3->var0;
+      var0 = enabled->var0;
       *buf = 138412802;
       v15 = var0;
       v16 = 1024;
@@ -737,7 +737,7 @@ LABEL_9:
   }
 }
 
-- (void)initPropertyIsInternal:(HTPrefInit *)a3
+- (void)initPropertyIsInternal:(HTPrefInit *)internal
 {
   isInternalNoOverride = self->__isInternalNoOverride;
   v5 = MGGetBoolAnswer();
@@ -769,11 +769,11 @@ LABEL_9:
   }
 }
 
-- (void)initPropertyForceQuitDetectionEnabled:(HTPrefInit *)a3
+- (void)initPropertyForceQuitDetectionEnabled:(HTPrefInit *)enabled
 {
   forceQuitDetectionEnabled = self->_forceQuitDetectionEnabled;
   v15 = 0;
-  v6 = [(HTPrefs *)self BOOLProperty:a3 contextPrefixOut:&v15];
+  v6 = [(HTPrefs *)self BOOLProperty:enabled contextPrefixOut:&v15];
   v7 = v15;
   v8 = v7;
   isInternal = self->_isInternal;
@@ -785,7 +785,7 @@ LABEL_9:
       v11 = sub_100003824();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        var0 = a3->var0;
+        var0 = enabled->var0;
         *buf = 138412290;
         v17 = var0;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "HTPrefs: %@ force-enabled by isCarryDevice", buf, 0xCu);
@@ -802,11 +802,11 @@ LABEL_9:
 
   if (forceQuitDetectionEnabled != v10)
   {
-    *a3->var1 = v10;
+    *enabled->var1 = v10;
     v13 = sub_100003824();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      v14 = a3->var0;
+      v14 = enabled->var0;
       *buf = 138412802;
       v17 = v14;
       v18 = 1024;
@@ -820,9 +820,9 @@ LABEL_9:
   }
 }
 
-- (void)initPropertyIsCarryDevice:(HTPrefInit *)a3
+- (void)initPropertyIsCarryDevice:(HTPrefInit *)device
 {
-  v5 = *a3->var1;
+  v5 = *device->var1;
   v6 = sub_100003824();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -857,7 +857,7 @@ LABEL_9:
 
   if (v5 != v11)
   {
-    *a3->var1 = v11;
+    *device->var1 = v11;
     v12 = sub_100003824();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
@@ -868,7 +868,7 @@ LABEL_9:
   }
 }
 
-- (void)initPropertyShouldSaveAndCompressTailspins:(HTPrefInit *)a3
+- (void)initPropertyShouldSaveAndCompressTailspins:(HTPrefInit *)tailspins
 {
   shouldSaveTailspins = self->_shouldSaveTailspins;
   shouldCompressSavedTailspins = self->_shouldCompressSavedTailspins;
@@ -926,17 +926,17 @@ LABEL_9:
   }
 }
 
-- (void)initPropertyReportPeriod:(HTPrefInit *)a3
+- (void)initPropertyReportPeriod:(HTPrefInit *)period
 {
   reportPeriodMATU = self->_reportPeriodMATU;
-  [(HTPrefs *)self doubleProperty:a3 contextPrefixOut:0];
+  [(HTPrefs *)self doubleProperty:period contextPrefixOut:0];
   v7 = v6 * 1000.0 / sub_100029458();
   if (v7 != reportPeriodMATU)
   {
     v8 = sub_100003824();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      var0 = a3->var0;
+      var0 = period->var0;
       v10 = 138412802;
       v11 = var0;
       v12 = 2048;
@@ -951,7 +951,7 @@ LABEL_9:
   }
 }
 
-- (void)initPropertyHaveInternalSettings:(HTPrefInit *)a3
+- (void)initPropertyHaveInternalSettings:(HTPrefInit *)settings
 {
   v5 = CFPreferencesCopyValue(@"HangTracerInternalSettingCreated", self->__htTaskingDomain, @"mobile", kCFPreferencesAnyHost);
   hasInternalSettings = self->_hasInternalSettings;
@@ -961,7 +961,7 @@ LABEL_9:
     v8 = sub_100003824();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      var0 = a3->var0;
+      var0 = settings->var0;
       v10 = 138412802;
       v11 = var0;
       v12 = 1024;
@@ -976,7 +976,7 @@ LABEL_9:
   }
 }
 
-- (void)initPropertyThirdPartyDevPreferredLanguages:(HTPrefInit *)a3
+- (void)initPropertyThirdPartyDevPreferredLanguages:(HTPrefInit *)languages
 {
   v5 = self->_thirdPartyDevPreferredLanguages;
   v6 = CFPreferencesCopyValue(@"AppleLanguages", kCFPreferencesAnyApplication, @"mobile", kCFPreferencesAnyHost);
@@ -996,7 +996,7 @@ LABEL_9:
     v9 = sub_100003824();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      var0 = a3->var0;
+      var0 = languages->var0;
       v11 = 138412802;
       v12 = var0;
       v13 = 2112;
@@ -1011,7 +1011,7 @@ LABEL_9:
   }
 }
 
-- (void)initPropertyProcessTerminationSubReasonsMonitored:(HTPrefInit *)a3
+- (void)initPropertyProcessTerminationSubReasonsMonitored:(HTPrefInit *)monitored
 {
   v3 = sub_1000155F4();
   v17 = +[NSMutableDictionary dictionary];
@@ -1061,7 +1061,7 @@ LABEL_9:
     v14 = sub_100003824();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
-      var0 = a3->var0;
+      var0 = monitored->var0;
       *buf = 138412802;
       v25 = var0;
       v26 = 2112;
@@ -1858,20 +1858,20 @@ LABEL_9:
 {
   if ([(HTPrefs *)self hudEnabled]&& [(HTPrefs *)self isInternal])
   {
-    LOBYTE(v3) = 1;
+    LOBYTE(thirdPartyDevHangHUDEnabled) = 1;
   }
 
   else
   {
-    v3 = [(HTPrefs *)self thirdPartyDevHangHUDEnabled];
-    if (v3)
+    thirdPartyDevHangHUDEnabled = [(HTPrefs *)self thirdPartyDevHangHUDEnabled];
+    if (thirdPartyDevHangHUDEnabled)
     {
 
-      LOBYTE(v3) = +[HTProcessInfo isAnyThirdPartyDeveloperProcessForeground];
+      LOBYTE(thirdPartyDevHangHUDEnabled) = +[HTProcessInfo isAnyThirdPartyDeveloperProcessForeground];
     }
   }
 
-  return v3;
+  return thirdPartyDevHangHUDEnabled;
 }
 
 - (BOOL)shouldUpdateHangsHUD
@@ -1896,15 +1896,15 @@ LABEL_9:
   return v3;
 }
 
-- (void)savePreferencesForRestoration:(id)a3 withDomain:(id)a4 prefix:(id)a5
+- (void)savePreferencesForRestoration:(id)restoration withDomain:(id)domain prefix:(id)prefix
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  applicationID = v8;
-  if (([(__CFString *)v8 isEqual:@"com.apple.hangtracer"]& 1) == 0)
+  restorationCopy = restoration;
+  domainCopy = domain;
+  prefixCopy = prefix;
+  applicationID = domainCopy;
+  if (([(__CFString *)domainCopy isEqual:@"com.apple.hangtracer"]& 1) == 0)
   {
-    v10 = sub_100017020(v9);
+    v10 = sub_100017020(prefixCopy);
     if ([v10 count])
     {
       v11 = +[NSMutableSet set];
@@ -1928,7 +1928,7 @@ LABEL_9:
               objc_enumerationMutation(v12);
             }
 
-            v17 = [NSString stringWithFormat:@"%@.%@", v9, *(*(&v32 + 1) + 8 * i)];
+            v17 = [NSString stringWithFormat:@"%@.%@", prefixCopy, *(*(&v32 + 1) + 8 * i)];
             [v11 addObject:v17];
           }
 
@@ -1942,7 +1942,7 @@ LABEL_9:
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      obj = v7;
+      obj = restorationCopy;
       v18 = [obj countByEnumeratingWithState:&v28 objects:v40 count:16];
       if (v18)
       {
@@ -1966,7 +1966,7 @@ LABEL_9:
                 *buf = 138412546;
                 v37 = v22;
                 v38 = 2112;
-                v39 = v9;
+                v39 = prefixCopy;
                 _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "Saving Setting Key for restoration: %@ that matches prefix: %@", buf, 0x16u);
               }
 
@@ -1990,11 +1990,11 @@ LABEL_9:
   }
 }
 
-- (BOOL)compareBootSessionUUIDAndClearPreferencesWithDomain:(id)a3 prefix:(id)a4
+- (BOOL)compareBootSessionUUIDAndClearPreferencesWithDomain:(id)domain prefix:(id)prefix
 {
-  v6 = a3;
-  v30 = a4;
-  v7 = sub_10002B7C8(v6, @"mobile", v30);
+  domainCopy = domain;
+  prefixCopy = prefix;
+  v7 = sub_10002B7C8(domainCopy, @"mobile", prefixCopy);
   if ([v7 count])
   {
     v37 = 0u;
@@ -2038,11 +2038,11 @@ LABEL_4:
 
       if (v15)
       {
-        v14 = CFPreferencesCopyValue(v15, v6, @"mobile", kCFPreferencesAnyHost);
+        v14 = CFPreferencesCopyValue(v15, domainCopy, @"mobile", kCFPreferencesAnyHost);
         if (v14 && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          v16 = [(HTPrefs *)self getBootSessionUUID];
-          v17 = [v14 isEqualToString:v16];
+          getBootSessionUUID = [(HTPrefs *)self getBootSessionUUID];
+          v17 = [v14 isEqualToString:getBootSessionUUID];
 
           if (v17)
           {
@@ -2052,7 +2052,7 @@ LABEL_4:
           v28 = v15;
           v29 = v7;
           v27 = v17 ^ 1;
-          [(HTPrefs *)self savePreferencesForRestoration:v8 withDomain:v6 prefix:v30];
+          [(HTPrefs *)self savePreferencesForRestoration:v8 withDomain:domainCopy prefix:prefixCopy];
           v33 = 0u;
           v34 = 0u;
           v31 = 0u;
@@ -2079,11 +2079,11 @@ LABEL_4:
                   *buf = 138412546;
                   v40 = v23;
                   v41 = 2112;
-                  v42 = v30;
+                  v42 = prefixCopy;
                   _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Removing Setting Key: %@ that matches prefix: %@", buf, 0x16u);
                 }
 
-                CFPreferencesSetValue(v23, 0, v6, @"mobile", kCFPreferencesAnyHost);
+                CFPreferencesSetValue(v23, 0, domainCopy, @"mobile", kCFPreferencesAnyHost);
               }
 
               v20 = [v18 countByEnumeratingWithState:&v31 objects:v43 count:16];
@@ -2155,7 +2155,7 @@ LABEL_30:
     }
   }
 
-  v7 = [(HTPrefs *)self prefInitList];
+  prefInitList = [(HTPrefs *)self prefInitList];
   v11[2] = 1;
   v11[3] = 0;
   v11[0] = @"HangTracerEnabled";
@@ -2163,10 +2163,10 @@ LABEL_30:
   v11[4] = 0;
   v11[5] = "initPropertyHangtracerDaemonEnabled:";
   [(HTPrefs *)self initPropertyHangtracerDaemonEnabled:v11];
-  for (i = v7->var5; i; ++v7)
+  for (i = prefInitList->var5; i; ++prefInitList)
   {
     [self i];
-    i = v7[1].var5;
+    i = prefInitList[1].var5;
   }
 
   [(HTPrefs *)self initPropertyProcessTerminationSubReasonsMonitored:?];
@@ -2270,23 +2270,23 @@ LABEL_11:
   }
 }
 
-- (void)setupPrefsWithQueue:(id)a3
+- (void)setupPrefsWithQueue:(id)queue
 {
-  v4 = a3;
-  if (!v4)
+  queueCopy = queue;
+  if (!queueCopy)
   {
     sub_10003403C();
   }
 
-  v5 = v4;
-  [(HTPrefs *)self setupPrefsWithQueue:v4 profilePath:@"/Library/Managed Preferences/mobile/.GlobalPreferences.plist" taskingDomainName:@"com.apple.da" hangtracerDomain:@"com.apple.hangtracer" setupInternalPrefs:1];
+  v5 = queueCopy;
+  [(HTPrefs *)self setupPrefsWithQueue:queueCopy profilePath:@"/Library/Managed Preferences/mobile/.GlobalPreferences.plist" taskingDomainName:@"com.apple.da" hangtracerDomain:@"com.apple.hangtracer" setupInternalPrefs:1];
 }
 
-- (void)setupPrefsWithQueue:(id)a3 profilePath:(id)a4 taskingDomainName:(__CFString *)a5 hangtracerDomain:(__CFString *)a6 setupInternalPrefs:(BOOL)a7
+- (void)setupPrefsWithQueue:(id)queue profilePath:(id)path taskingDomainName:(__CFString *)name hangtracerDomain:(__CFString *)domain setupInternalPrefs:(BOOL)prefs
 {
-  v7 = a7;
-  v12 = a3;
-  v13 = a4;
+  prefsCopy = prefs;
+  queueCopy = queue;
+  pathCopy = path;
   v14 = sub_100003824();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -2294,12 +2294,12 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "HTPrefs initialization", buf, 2u);
   }
 
-  objc_storeStrong(&self->__profilePath, a4);
-  self->__htTaskingDomain = a5;
-  self->__htDomain = a6;
+  objc_storeStrong(&self->__profilePath, path);
+  self->__htTaskingDomain = name;
+  self->__htDomain = domain;
   *&self->_shouldAllowSentryEnablement = 0;
   [(HTPrefs *)self earlyInitNecessaryPrefs];
-  if (v7)
+  if (prefsCopy)
   {
     [(HTPrefs *)self __createInternalSettings];
   }
@@ -2307,7 +2307,7 @@ LABEL_11:
   v15 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
   if (!self->__prefsQueue)
   {
-    v16 = dispatch_queue_create_with_target_V2("com.apple.hangtracer.preferences", v15, v12);
+    v16 = dispatch_queue_create_with_target_V2("com.apple.hangtracer.preferences", v15, queueCopy);
     prefsQueue = self->__prefsQueue;
     self->__prefsQueue = v16;
   }

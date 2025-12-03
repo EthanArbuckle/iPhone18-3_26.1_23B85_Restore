@@ -1,26 +1,26 @@
 @interface SSVFairPlaySAPSession
 - (BOOL)_primeTheConnection;
-- (BOOL)_shouldRetrySAPOperationForError:(id)a3;
-- (BOOL)_verifyPrimeResponse:(id)a3;
-- (BOOL)_verifySignature:(id)a3 forData:(id)a4 error:(id *)a5;
-- (BOOL)verifyData:(id)a3 withSignature:(id)a4 error:(id *)a5;
+- (BOOL)_shouldRetrySAPOperationForError:(id)error;
+- (BOOL)_verifyPrimeResponse:(id)response;
+- (BOOL)_verifySignature:(id)signature forData:(id)data error:(id *)error;
+- (BOOL)verifyData:(id)data withSignature:(id)signature error:(id *)error;
 - (NSData)certificateData;
-- (SSVFairPlaySAPSession)initWithSSBag:(id)a3 SAPVersion:(int64_t)a4;
-- (SSVFairPlaySAPSession)initWithURLBag:(id)a3 SAPVersion:(int64_t)a4;
-- (SSVFairPlaySAPSession)initWithURLBagDictionary:(id)a3 SAPVersion:(int64_t)a4;
+- (SSVFairPlaySAPSession)initWithSSBag:(id)bag SAPVersion:(int64_t)version;
+- (SSVFairPlaySAPSession)initWithURLBag:(id)bag SAPVersion:(int64_t)version;
+- (SSVFairPlaySAPSession)initWithURLBagDictionary:(id)dictionary SAPVersion:(int64_t)version;
 - (id)_establishContext;
 - (id)_initSSVFairPlaySAPSession;
-- (id)_initWithURLBagInterpreter:(id)a3 SAPVersion:(int64_t)a4;
+- (id)_initWithURLBagInterpreter:(id)interpreter SAPVersion:(int64_t)version;
 - (id)_loadCertificateData;
-- (id)_postExchangeData:(id)a3;
-- (id)_signData:(id)a3 error:(id *)a4;
+- (id)_postExchangeData:(id)data;
+- (id)_signData:(id)data error:(id *)error;
 - (id)_urlBagInterpreter;
-- (id)signatureWithData:(id)a3 error:(id *)a4;
-- (void)establishSessionWithCompletionBlock:(id)a3;
-- (void)primeSessionWithCompletionBlock:(id)a3;
-- (void)setCertificateData:(id)a3;
-- (void)signData:(id)a3 completionBlock:(id)a4;
-- (void)verifySignature:(id)a3 forData:(id)a4 completionBlock:(id)a5;
+- (id)signatureWithData:(id)data error:(id *)error;
+- (void)establishSessionWithCompletionBlock:(id)block;
+- (void)primeSessionWithCompletionBlock:(id)block;
+- (void)setCertificateData:(id)data;
+- (void)signData:(id)data completionBlock:(id)block;
+- (void)verifySignature:(id)signature forData:(id)data completionBlock:(id)block;
 @end
 
 @implementation SSVFairPlaySAPSession
@@ -44,84 +44,84 @@
   return v2;
 }
 
-- (SSVFairPlaySAPSession)initWithSSBag:(id)a3 SAPVersion:(int64_t)a4
+- (SSVFairPlaySAPSession)initWithSSBag:(id)bag SAPVersion:(int64_t)version
 {
-  v7 = a3;
-  v8 = [(SSVFairPlaySAPSession *)self _initSSVFairPlaySAPSession];
-  v9 = v8;
-  if (v8)
+  bagCopy = bag;
+  _initSSVFairPlaySAPSession = [(SSVFairPlaySAPSession *)self _initSSVFairPlaySAPSession];
+  v9 = _initSSVFairPlaySAPSession;
+  if (_initSSVFairPlaySAPSession)
   {
-    if (v7)
+    if (bagCopy)
     {
-      objc_storeStrong(v8 + 1, a3);
-      v10 = [[SSVURLBagInterpreter alloc] initWithSSBag:v7];
+      objc_storeStrong(_initSSVFairPlaySAPSession + 1, bag);
+      v10 = [[SSVURLBagInterpreter alloc] initWithSSBag:bagCopy];
       urlBagInterpreter = v9->_urlBagInterpreter;
       v9->_urlBagInterpreter = v10;
     }
 
-    v9->_version = a4;
+    v9->_version = version;
   }
 
   return v9;
 }
 
-- (SSVFairPlaySAPSession)initWithURLBag:(id)a3 SAPVersion:(int64_t)a4
+- (SSVFairPlaySAPSession)initWithURLBag:(id)bag SAPVersion:(int64_t)version
 {
-  v6 = a3;
-  v7 = [(SSVFairPlaySAPSession *)self _initSSVFairPlaySAPSession];
-  if (v7)
+  bagCopy = bag;
+  _initSSVFairPlaySAPSession = [(SSVFairPlaySAPSession *)self _initSSVFairPlaySAPSession];
+  if (_initSSVFairPlaySAPSession)
   {
-    if (v6)
+    if (bagCopy)
     {
-      v8 = v6;
-      urlBag = v7->_urlBag;
-      v7->_urlBag = v8;
+      v8 = bagCopy;
+      urlBag = _initSSVFairPlaySAPSession->_urlBag;
+      _initSSVFairPlaySAPSession->_urlBag = v8;
     }
 
     else
     {
       urlBag = [SSURLBagContext contextWithBagType:0];
       v10 = [[SSURLBag alloc] initWithURLBagContext:urlBag];
-      v11 = v7->_urlBag;
-      v7->_urlBag = v10;
+      v11 = _initSSVFairPlaySAPSession->_urlBag;
+      _initSSVFairPlaySAPSession->_urlBag = v10;
     }
 
-    v7->_version = a4;
+    _initSSVFairPlaySAPSession->_version = version;
   }
 
-  return v7;
+  return _initSSVFairPlaySAPSession;
 }
 
-- (SSVFairPlaySAPSession)initWithURLBagDictionary:(id)a3 SAPVersion:(int64_t)a4
+- (SSVFairPlaySAPSession)initWithURLBagDictionary:(id)dictionary SAPVersion:(int64_t)version
 {
-  v6 = a3;
-  v7 = [(SSVFairPlaySAPSession *)self _initSSVFairPlaySAPSession];
-  if (v7)
+  dictionaryCopy = dictionary;
+  _initSSVFairPlaySAPSession = [(SSVFairPlaySAPSession *)self _initSSVFairPlaySAPSession];
+  if (_initSSVFairPlaySAPSession)
   {
-    v8 = [[SSVURLBagInterpreter alloc] initWithURLBagDictionary:v6];
-    urlBagInterpreter = v7->_urlBagInterpreter;
-    v7->_urlBagInterpreter = v8;
+    v8 = [[SSVURLBagInterpreter alloc] initWithURLBagDictionary:dictionaryCopy];
+    urlBagInterpreter = _initSSVFairPlaySAPSession->_urlBagInterpreter;
+    _initSSVFairPlaySAPSession->_urlBagInterpreter = v8;
 
-    v7->_version = a4;
+    _initSSVFairPlaySAPSession->_version = version;
   }
 
-  return v7;
+  return _initSSVFairPlaySAPSession;
 }
 
-- (id)_initWithURLBagInterpreter:(id)a3 SAPVersion:(int64_t)a4
+- (id)_initWithURLBagInterpreter:(id)interpreter SAPVersion:(int64_t)version
 {
-  v6 = a3;
-  v7 = [(SSVFairPlaySAPSession *)self _initSSVFairPlaySAPSession];
-  if (v7)
+  interpreterCopy = interpreter;
+  _initSSVFairPlaySAPSession = [(SSVFairPlaySAPSession *)self _initSSVFairPlaySAPSession];
+  if (_initSSVFairPlaySAPSession)
   {
-    v8 = [v6 copy];
-    v9 = v7[10];
-    v7[10] = v8;
+    v8 = [interpreterCopy copy];
+    v9 = _initSSVFairPlaySAPSession[10];
+    _initSSVFairPlaySAPSession[10] = v8;
 
-    v7[8] = a4;
+    _initSSVFairPlaySAPSession[8] = version;
   }
 
-  return v7;
+  return _initSSVFairPlaySAPSession;
 }
 
 - (NSData)certificateData
@@ -154,17 +154,17 @@ void __40__SSVFairPlaySAPSession_certificateData__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)establishSessionWithCompletionBlock:(id)a3
+- (void)establishSessionWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __61__SSVFairPlaySAPSession_establishSessionWithCompletionBlock___block_invoke;
   v7[3] = &unk_1E84AC360;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -187,17 +187,17 @@ void __61__SSVFairPlaySAPSession_establishSessionWithCompletionBlock___block_inv
   }
 }
 
-- (void)primeSessionWithCompletionBlock:(id)a3
+- (void)primeSessionWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__SSVFairPlaySAPSession_primeSessionWithCompletionBlock___block_invoke;
   v7[3] = &unk_1E84AC360;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -220,17 +220,17 @@ void __57__SSVFairPlaySAPSession_primeSessionWithCompletionBlock___block_invoke(
   }
 }
 
-- (void)setCertificateData:(id)a3
+- (void)setCertificateData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__SSVFairPlaySAPSession_setCertificateData___block_invoke;
   v7[3] = &unk_1E84AC028;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dataCopy;
+  v6 = dataCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -247,20 +247,20 @@ void __44__SSVFairPlaySAPSession_setCertificateData___block_invoke(uint64_t a1)
   }
 }
 
-- (void)signData:(id)a3 completionBlock:(id)a4
+- (void)signData:(id)data completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __50__SSVFairPlaySAPSession_signData_completionBlock___block_invoke;
   block[3] = &unk_1E84AC000;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dataCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = dataCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -410,23 +410,23 @@ LABEL_27:
   dispatch_async(v39, block);
 }
 
-- (void)verifySignature:(id)a3 forData:(id)a4 completionBlock:(id)a5
+- (void)verifySignature:(id)signature forData:(id)data completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  signatureCopy = signature;
+  dataCopy = data;
+  blockCopy = block;
   dispatchQueue = self->_dispatchQueue;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __65__SSVFairPlaySAPSession_verifySignature_forData_completionBlock___block_invoke;
   v15[3] = &unk_1E84B3718;
   v15[4] = self;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = signatureCopy;
+  v17 = dataCopy;
+  v18 = blockCopy;
+  v12 = blockCopy;
+  v13 = dataCopy;
+  v14 = signatureCopy;
   dispatch_async(dispatchQueue, v15);
 }
 
@@ -583,9 +583,9 @@ LABEL_31:
   dispatch_async(v42, block);
 }
 
-- (id)signatureWithData:(id)a3 error:(id *)a4
+- (id)signatureWithData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -607,12 +607,12 @@ LABEL_31:
   v15 = &v16;
   v8 = v7;
   v13 = v8;
-  [(SSVFairPlaySAPSession *)self signData:v6 completionBlock:v12];
+  [(SSVFairPlaySAPSession *)self signData:dataCopy completionBlock:v12];
   dispatch_semaphore_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
   v9 = v17[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
-    *a4 = v23[5];
+    *error = v23[5];
     v9 = v17[5];
   }
 
@@ -637,10 +637,10 @@ void __49__SSVFairPlaySAPSession_signatureWithData_error___block_invoke(uint64_t
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (BOOL)verifyData:(id)a3 withSignature:(id)a4 error:(id *)a5
+- (BOOL)verifyData:(id)data withSignature:(id)signature error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  signatureCopy = signature;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -660,12 +660,12 @@ void __49__SSVFairPlaySAPSession_signatureWithData_error___block_invoke(uint64_t
   v17 = &v18;
   v11 = v10;
   v15 = v11;
-  [(SSVFairPlaySAPSession *)self verifySignature:v9 forData:v8 completionBlock:v14];
+  [(SSVFairPlaySAPSession *)self verifySignature:signatureCopy forData:dataCopy completionBlock:v14];
   dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
   v12 = *(v19 + 24);
-  if (a5 && (v19[3] & 1) == 0)
+  if (error && (v19[3] & 1) == 0)
   {
-    *a5 = v23[5];
+    *error = v23[5];
     v12 = *(v19 + 24);
   }
 
@@ -692,12 +692,12 @@ void __56__SSVFairPlaySAPSession_verifyData_withSignature_error___block_invoke(u
     goto LABEL_29;
   }
 
-  v4 = [(SSVFairPlaySAPSession *)self _loadCertificateData];
-  if (v4)
+  _loadCertificateData = [(SSVFairPlaySAPSession *)self _loadCertificateData];
+  if (_loadCertificateData)
   {
     v5 = [[SSVFairPlaySAPContext alloc] initWithSAPVersion:self->_version];
     v29 = 0;
-    v6 = [(SSVFairPlaySAPContext *)v5 exchangeData:v4 error:&v29];
+    v6 = [(SSVFairPlaySAPContext *)v5 exchangeData:_loadCertificateData error:&v29];
     v7 = v29;
     if (v6)
     {
@@ -752,19 +752,19 @@ LABEL_26:
       v12 = +[SSLogConfig sharedConfig];
     }
 
-    v13 = [v12 shouldLog];
+    shouldLog = [v12 shouldLog];
     if ([v12 shouldLogToDisk])
     {
-      v14 = v13 | 2;
+      v14 = shouldLog | 2;
     }
 
     else
     {
-      v14 = v13;
+      v14 = shouldLog;
     }
 
-    v15 = [v12 OSLogObject];
-    if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v12 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v14 &= 2u;
     }
@@ -785,9 +785,9 @@ LABEL_26:
         goto LABEL_26;
       }
 
-      v15 = [MEMORY[0x1E696AEC0] stringWithCString:v18 encoding:{4, &v30, v27}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v18 encoding:{4, &v30, v27}];
       free(v18);
-      SSFileLog(v12, @"%@", v19, v20, v21, v22, v23, v24, v15);
+      SSFileLog(v12, @"%@", v19, v20, v21, v22, v23, v24, oSLogObject);
     }
 
     goto LABEL_26;
@@ -815,12 +815,12 @@ LABEL_29:
   certificateData = self->_certificateData;
   if (!certificateData)
   {
-    v4 = [(SSVFairPlaySAPSession *)self _urlBagInterpreter];
-    v5 = [v4 URLForURLBagKey:@"sign-sap-setup-cert"];
+    _urlBagInterpreter = [(SSVFairPlaySAPSession *)self _urlBagInterpreter];
+    v5 = [_urlBagInterpreter URLForURLBagKey:@"sign-sap-setup-cert"];
     if (v5)
     {
       v6 = [[SSVLoadURLOperation alloc] initWithURL:v5];
-      [(SSVLoadURLOperation *)v6 _configureWithURLBagInterpreter:v4];
+      [(SSVLoadURLOperation *)v6 _configureWithURLBagInterpreter:_urlBagInterpreter];
       v7 = +[(SSVURLDataConsumer *)SSVURLProtocolConsumer];
       [(SSVLoadURLOperation *)v6 setDataConsumer:v7];
 
@@ -844,19 +844,19 @@ LABEL_29:
         v8 = +[SSLogConfig sharedConfig];
       }
 
-      v9 = [v8 shouldLog];
+      shouldLog = [v8 shouldLog];
       if ([v8 shouldLogToDisk])
       {
-        v10 = v9 | 2;
+        v10 = shouldLog | 2;
       }
 
       else
       {
-        v10 = v9;
+        v10 = shouldLog;
       }
 
-      v11 = [v8 OSLogObject];
-      if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+      oSLogObject = [v8 OSLogObject];
+      if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v10 &= 2u;
       }
@@ -878,9 +878,9 @@ LABEL_16:
           goto LABEL_17;
         }
 
-        v11 = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &v24, v22}];
+        oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v14 encoding:{4, &v24, v22}];
         free(v14);
-        SSFileLog(v8, @"%@", v15, v16, v17, v18, v19, v20, v11);
+        SSFileLog(v8, @"%@", v15, v16, v17, v18, v19, v20, oSLogObject);
       }
 
       goto LABEL_16;
@@ -911,28 +911,28 @@ void __45__SSVFairPlaySAPSession__loadCertificateData__block_invoke(uint64_t a1,
   }
 }
 
-- (id)_postExchangeData:(id)a3
+- (id)_postExchangeData:(id)data
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
   v31 = __Block_byref_object_copy__79;
   v32 = __Block_byref_object_dispose__79;
   v33 = 0;
-  v5 = [(SSVFairPlaySAPSession *)self _urlBagInterpreter];
-  v6 = [v5 URLForURLBagKey:@"sign-sap-setup"];
+  _urlBagInterpreter = [(SSVFairPlaySAPSession *)self _urlBagInterpreter];
+  v6 = [_urlBagInterpreter URLForURLBagKey:@"sign-sap-setup"];
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x1E696AD68]) initWithURL:v6];
     [v7 setHTTPMethod:@"POST"];
-    v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{v4, @"sign-sap-setup-buffer", 0}];
+    v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithObjectsAndKeys:{dataCopy, @"sign-sap-setup-buffer", 0}];
     v9 = [MEMORY[0x1E696AE40] dataWithPropertyList:v8 format:100 options:0 error:0];
     [v7 setHTTPBody:v9];
 
     v10 = [[SSVLoadURLOperation alloc] initWithURLRequest:v7];
-    [(SSVLoadURLOperation *)v10 _configureWithURLBagInterpreter:v5];
+    [(SSVLoadURLOperation *)v10 _configureWithURLBagInterpreter:_urlBagInterpreter];
     v11 = +[(SSVURLDataConsumer *)SSVURLProtocolConsumer];
     [(SSVLoadURLOperation *)v10 setDataConsumer:v11];
 
@@ -956,21 +956,21 @@ LABEL_3:
     v7 = +[SSLogConfig sharedConfig];
   }
 
-  v14 = [v7 shouldLog];
-  v15 = [v7 shouldLogToDisk];
-  v16 = [v7 OSLogObject];
-  v8 = v16;
-  if (v15)
+  shouldLog = [v7 shouldLog];
+  shouldLogToDisk = [v7 shouldLogToDisk];
+  oSLogObject = [v7 OSLogObject];
+  v8 = oSLogObject;
+  if (shouldLogToDisk)
   {
-    v14 |= 2u;
+    shouldLog |= 2u;
   }
 
-  if (!os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
   {
-    v14 &= 2u;
+    shouldLog &= 2u;
   }
 
-  if (!v14)
+  if (!shouldLog)
   {
     goto LABEL_3;
   }
@@ -1027,8 +1027,8 @@ void __43__SSVFairPlaySAPSession__postExchangeData___block_invoke(uint64_t a1, v
   if (self->_version == 1)
   {
     context = self->_context;
-    v5 = [MEMORY[0x1E695DEF0] data];
-    v6 = [(SSVFairPlaySAPContext *)context primingSignatureForData:v5 error:0];
+    data = [MEMORY[0x1E695DEF0] data];
+    v6 = [(SSVFairPlaySAPContext *)context primingSignatureForData:data error:0];
 
     if (v6)
     {
@@ -1040,20 +1040,20 @@ void __43__SSVFairPlaySAPSession__postExchangeData___block_invoke(uint64_t a1, v
       v7 = 0;
     }
 
-    v8 = [(SSVFairPlaySAPSession *)self _urlBagInterpreter];
-    v9 = [v8 mescalPrimingURL];
-    if (v9)
+    _urlBagInterpreter = [(SSVFairPlaySAPSession *)self _urlBagInterpreter];
+    mescalPrimingURL = [_urlBagInterpreter mescalPrimingURL];
+    if (mescalPrimingURL)
     {
       v10 = +[SSDevice currentDevice];
-      v11 = [v10 uniqueDeviceIdentifier];
-      v12 = [v11 uppercaseString];
+      uniqueDeviceIdentifier = [v10 uniqueDeviceIdentifier];
+      uppercaseString = [uniqueDeviceIdentifier uppercaseString];
 
-      v13 = [v9 URLByAppendingQueryParameter:@"guid" value:v12];
+      v13 = [mescalPrimingURL URLByAppendingQueryParameter:@"guid" value:uppercaseString];
 
       if (v13 && v7)
       {
         v14 = [[SSVLoadURLOperation alloc] initWithURL:v13];
-        [(SSVLoadURLOperation *)v14 _configureWithURLBagInterpreter:v8];
+        [(SSVLoadURLOperation *)v14 _configureWithURLBagInterpreter:_urlBagInterpreter];
         [(SSVLoadURLOperation *)v14 setSAPSession:self];
         v15 = +[(SSVURLDataConsumer *)SSVURLProtocolConsumer];
         [(SSVLoadURLOperation *)v14 setDataConsumer:v15];
@@ -1120,13 +1120,13 @@ void __44__SSVFairPlaySAPSession__primeTheConnection__block_invoke_2(uint64_t a1
   }
 }
 
-- (BOOL)_shouldRetrySAPOperationForError:(id)a3
+- (BOOL)_shouldRetrySAPOperationForError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:@"SSErrorDomain"])
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:@"SSErrorDomain"])
   {
-    v5 = [v3 code] == 148;
+    v5 = [errorCopy code] == 148;
   }
 
   else
@@ -1137,18 +1137,18 @@ void __44__SSVFairPlaySAPSession__primeTheConnection__block_invoke_2(uint64_t a1
   return v5;
 }
 
-- (id)_signData:(id)a3 error:(id *)a4
+- (id)_signData:(id)data error:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(SSVFairPlaySAPSession *)self _establishContext];
-  v8 = v7;
-  if (v7)
+  dataCopy = data;
+  _establishContext = [(SSVFairPlaySAPSession *)self _establishContext];
+  v8 = _establishContext;
+  if (_establishContext)
   {
     v26 = 0;
-    v9 = [v7 signData:v6 error:&v26];
+    v9 = [_establishContext signData:dataCopy error:&v26];
     v10 = v26;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -1162,19 +1162,19 @@ void __44__SSVFairPlaySAPSession__primeTheConnection__block_invoke_2(uint64_t a1
     v13 = +[SSLogConfig sharedConfig];
   }
 
-  v14 = [v13 shouldLog];
+  shouldLog = [v13 shouldLog];
   if ([v13 shouldLogToDisk])
   {
-    v15 = v14 | 2;
+    v15 = shouldLog | 2;
   }
 
   else
   {
-    v15 = v14;
+    v15 = shouldLog;
   }
 
-  v16 = [v13 OSLogObject];
-  if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [v13 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v15 &= 2u;
   }
@@ -1192,19 +1192,19 @@ void __44__SSVFairPlaySAPSession__primeTheConnection__block_invoke_2(uint64_t a1
       goto LABEL_18;
     }
 
-    v16 = [MEMORY[0x1E696AEC0] stringWithCString:v18 encoding:{4, &v27, v25}];
+    oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v18 encoding:{4, &v27, v25}];
     free(v18);
-    SSFileLog(v13, @"%@", v19, v20, v21, v22, v23, v24, v16);
+    SSFileLog(v13, @"%@", v19, v20, v21, v22, v23, v24, oSLogObject);
   }
 
 LABEL_18:
   v10 = SSError(@"SSErrorDomain", 122, @"No SAP context for signing", 0);
   v9 = 0;
-  if (a4)
+  if (error)
   {
 LABEL_3:
     v11 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
 LABEL_4:
@@ -1237,17 +1237,17 @@ LABEL_4:
   return v7;
 }
 
-- (BOOL)_verifyPrimeResponse:(id)a3
+- (BOOL)_verifyPrimeResponse:(id)response
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  responseCopy = response;
   self->_primed = 0;
-  v5 = [v4 allHeaderFields];
-  v6 = [v5 objectForKey:@"X-Apple-ActionSignature"];
+  allHeaderFields = [responseCopy allHeaderFields];
+  v6 = [allHeaderFields objectForKey:@"X-Apple-ActionSignature"];
   if (!v6)
   {
-    v7 = [@"X-Apple-ActionSignature" lowercaseString];
-    v6 = [v5 objectForKey:v7];
+    lowercaseString = [@"X-Apple-ActionSignature" lowercaseString];
+    v6 = [allHeaderFields objectForKey:lowercaseString];
   }
 
   if ([v6 length])
@@ -1266,20 +1266,20 @@ LABEL_4:
         v12 = +[SSLogConfig sharedConfig];
       }
 
-      v13 = [v12 shouldLog];
+      shouldLog = [v12 shouldLog];
       if ([v12 shouldLogToDisk])
       {
-        v14 = v13 | 2;
+        v14 = shouldLog | 2;
       }
 
       else
       {
-        v14 = v13;
+        v14 = shouldLog;
       }
 
-      v15 = [v12 OSLogObject];
+      oSLogObject = [v12 OSLogObject];
       v16 = 1;
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
       {
         v17 = v14;
       }
@@ -1294,7 +1294,7 @@ LABEL_4:
         v37 = v8;
         v18 = objc_opt_class();
         v19 = v18;
-        v20 = [v4 URL];
+        v20 = [responseCopy URL];
         v40 = 138412546;
         v41 = v18;
         v42 = 2112;
@@ -1313,9 +1313,9 @@ LABEL_4:
         v8 = v37;
         v22 = v38;
 LABEL_26:
-        v15 = [MEMORY[0x1E696AEC0] stringWithCString:v21 encoding:{4, &v40, v36}];
+        oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v21 encoding:{4, &v40, v36}];
         free(v21);
-        SSFileLog(v12, @"%@", v28, v29, v30, v31, v32, v33, v15);
+        SSFileLog(v12, @"%@", v28, v29, v30, v31, v32, v33, oSLogObject);
 LABEL_29:
 
         goto LABEL_30;
@@ -1329,19 +1329,19 @@ LABEL_29:
         v12 = +[SSLogConfig sharedConfig];
       }
 
-      v23 = [v12 shouldLog];
+      shouldLog2 = [v12 shouldLog];
       if ([v12 shouldLogToDisk])
       {
-        v24 = v23 | 2;
+        v24 = shouldLog2 | 2;
       }
 
       else
       {
-        v24 = v23;
+        v24 = shouldLog2;
       }
 
-      v15 = [v12 OSLogObject];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v12 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         v25 = v24;
       }
@@ -1388,14 +1388,14 @@ LABEL_31:
   return primed;
 }
 
-- (BOOL)_verifySignature:(id)a3 forData:(id)a4 error:(id *)a5
+- (BOOL)_verifySignature:(id)signature forData:(id)data error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(SSVFairPlaySAPSession *)self _establishContext];
-  v11 = v10;
-  if (!v10)
+  signatureCopy = signature;
+  dataCopy = data;
+  _establishContext = [(SSVFairPlaySAPSession *)self _establishContext];
+  v11 = _establishContext;
+  if (!_establishContext)
   {
     v16 = +[SSLogConfig sharedStoreServicesConfig];
     if (!v16)
@@ -1403,19 +1403,19 @@ LABEL_31:
       v16 = +[SSLogConfig sharedConfig];
     }
 
-    v17 = [v16 shouldLog];
+    shouldLog = [v16 shouldLog];
     if ([v16 shouldLogToDisk])
     {
-      v18 = v17 | 2;
+      v18 = shouldLog | 2;
     }
 
     else
     {
-      v18 = v17;
+      v18 = shouldLog;
     }
 
-    v19 = [v16 OSLogObject];
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [v16 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v18 &= 2u;
     }
@@ -1433,15 +1433,15 @@ LABEL_31:
         goto LABEL_16;
       }
 
-      v19 = [MEMORY[0x1E696AEC0] stringWithCString:v21 encoding:{4, &v30, v28}];
+      oSLogObject = [MEMORY[0x1E696AEC0] stringWithCString:v21 encoding:{4, &v30, v28}];
       free(v21);
-      SSFileLog(v16, @"%@", v22, v23, v24, v25, v26, v27, v19);
+      SSFileLog(v16, @"%@", v22, v23, v24, v25, v26, v27, oSLogObject);
     }
 
 LABEL_16:
     v13 = SSError(@"SSErrorDomain", 122, @"No SAP context for signature verification", 0);
     v12 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -1450,13 +1450,13 @@ LABEL_16:
   }
 
   v29 = 0;
-  v12 = [v10 verifySignature:v8 forData:v9 error:&v29];
+  v12 = [_establishContext verifySignature:signatureCopy forData:dataCopy error:&v29];
   v13 = v29;
-  if (a5)
+  if (error)
   {
 LABEL_3:
     v14 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
 LABEL_4:

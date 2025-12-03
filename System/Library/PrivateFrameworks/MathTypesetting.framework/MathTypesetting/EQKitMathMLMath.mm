@@ -3,14 +3,14 @@
 - (NSString)description;
 - (Schemata)layoutSchemata;
 - (const)mathMLAttributes;
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4;
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser;
 - (id)newLayout;
 - (void)dealloc;
 @end
 
 @implementation EQKitMathMLMath
 
-- (id)initFromXMLNode:(_xmlNode *)a3 parser:(id)a4
+- (id)initFromXMLNode:(_xmlNode *)node parser:(id)parser
 {
   v13.receiver = self;
   v13.super_class = EQKitMathMLMath;
@@ -23,8 +23,8 @@
       v8 = v7;
       v9 = EQKit::AttributeCollection::AttributeCollection(v7);
       v6->mAttributeCollection = v10;
-      [a4 setAttributeCollection:{v8, v9}];
-      v11 = [a4 parseChildrenAsNodeFromXMLNode:a3];
+      [parser setAttributeCollection:{v8, v9}];
+      v11 = [parser parseChildrenAsNodeFromXMLNode:node];
       v6->mExpression = v11;
       [(EQKitMathMLNode *)v11 setParent:v6];
     }
@@ -36,7 +36,7 @@
 
     if (v6->mExpression)
     {
-      v6->mEnvironment = [a4 environment];
+      v6->mEnvironment = [parser environment];
     }
 
     else
@@ -90,15 +90,15 @@
 {
   if (self->mExpression)
   {
-    v4 = [MEMORY[0x277CBEA60] arrayWithObject:?];
+    array = [MEMORY[0x277CBEA60] arrayWithObject:?];
   }
 
   else
   {
-    v4 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  return EQKit::Layout::Schemata::row(v4, retstr);
+  return EQKit::Layout::Schemata::row(array, retstr);
 }
 
 - (NSString)description

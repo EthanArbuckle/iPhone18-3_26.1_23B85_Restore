@@ -1,18 +1,18 @@
 @interface _HMEventOrTimerTriggerBuilder
 - (NSArray)recurrences;
 - (unint64_t)recurrenceDays;
-- (void)setRecurrenceDays:(unint64_t)a3;
-- (void)setRecurrences:(id)a3;
-- (void)updateRecurrences:(id)a3 completionHandler:(id)a4;
+- (void)setRecurrenceDays:(unint64_t)days;
+- (void)setRecurrences:(id)recurrences;
+- (void)updateRecurrences:(id)recurrences completionHandler:(id)handler;
 @end
 
 @implementation _HMEventOrTimerTriggerBuilder
 
-- (void)updateRecurrences:(id)a3 completionHandler:(id)a4
+- (void)updateRecurrences:(id)recurrences completionHandler:(id)handler
 {
   v13 = 0;
-  v6 = a4;
-  v7 = HMDaysOfTheWeekFromDateComponents(a3, &v13);
+  handlerCopy = handler;
+  v7 = HMDaysOfTheWeekFromDateComponents(recurrences, &v13);
   if (v13)
   {
     v8 = v7;
@@ -20,8 +20,8 @@
     self->_recurrenceDays = v8;
     os_unfair_lock_unlock(&self->super.super._lock);
     v9 = self->super.super._context;
-    v10 = [(_HMContext *)v9 delegateCaller];
-    [v10 callCompletion:v6 error:0];
+    delegateCaller = [(_HMContext *)v9 delegateCaller];
+    [delegateCaller callCompletion:handlerCopy error:0];
   }
 
   else
@@ -37,19 +37,19 @@
     }
 
     v9 = context;
-    v10 = [(_HMContext *)v9 delegateCaller];
+    delegateCaller = [(_HMContext *)v9 delegateCaller];
     v12 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3];
-    [v10 callCompletion:v6 error:v12];
+    [delegateCaller callCompletion:handlerCopy error:v12];
 
-    v6 = v12;
+    handlerCopy = v12;
   }
 }
 
-- (void)setRecurrences:(id)a3
+- (void)setRecurrences:(id)recurrences
 {
-  v4 = a3;
+  recurrencesCopy = recurrences;
   v9 = 0;
-  v5 = HMDaysOfTheWeekFromDateComponents(v4, &v9);
+  v5 = HMDaysOfTheWeekFromDateComponents(recurrencesCopy, &v9);
   if (v9)
   {
     v6 = v5;
@@ -84,9 +84,9 @@
   return v4;
 }
 
-- (void)setRecurrenceDays:(unint64_t)a3
+- (void)setRecurrenceDays:(unint64_t)days
 {
-  if (a3 - 128 <= 0xFFFFFFFFFFFFFF80)
+  if (days - 128 <= 0xFFFFFFFFFFFFFF80)
   {
     v6 = _HMFPreconditionFailureWithFormat();
     [(_HMEventOrTimerTriggerBuilder *)v6 recurrenceDays];
@@ -95,17 +95,17 @@
   else
   {
     os_unfair_lock_lock_with_options();
-    if (a3 == 127)
+    if (days == 127)
     {
-      v5 = 0;
+      daysCopy = 0;
     }
 
     else
     {
-      v5 = a3;
+      daysCopy = days;
     }
 
-    self->_recurrenceDays = v5;
+    self->_recurrenceDays = daysCopy;
 
     os_unfair_lock_unlock(&self->super.super._lock);
   }

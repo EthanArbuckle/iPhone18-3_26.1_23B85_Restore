@@ -1,36 +1,36 @@
 @interface MUImpressionsLogger
-- (void)logImpressionElementDidEnter:(id)a3 onDate:(id)a4;
-- (void)logImpressionElementDidExit:(id)a3 usingEnterDate:(id)a4 exitDate:(id)a5;
+- (void)logImpressionElementDidEnter:(id)enter onDate:(id)date;
+- (void)logImpressionElementDidExit:(id)exit usingEnterDate:(id)date exitDate:(id)exitDate;
 @end
 
 @implementation MUImpressionsLogger
 
-- (void)logImpressionElementDidExit:(id)a3 usingEnterDate:(id)a4 exitDate:(id)a5
+- (void)logImpressionElementDidExit:(id)exit usingEnterDate:(id)date exitDate:(id)exitDate
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  exitCopy = exit;
   v6 = MUGetMUImpressionsLoggerLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v7 = [v5 debugString];
+    debugString = [exitCopy debugString];
     v9 = 138412290;
-    v10 = v7;
+    v10 = debugString;
     _os_log_impl(&dword_1C5620000, v6, OS_LOG_TYPE_DEBUG, "Logging element did exit %@", &v9, 0xCu);
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)logImpressionElementDidEnter:(id)a3 onDate:(id)a4
+- (void)logImpressionElementDidEnter:(id)enter onDate:(id)date
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  enterCopy = enter;
   v5 = MUGetMUImpressionsLoggerLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [v4 debugString];
+    debugString = [enterCopy debugString];
     v8 = 138412290;
-    v9 = v6;
+    v9 = debugString;
     _os_log_impl(&dword_1C5620000, v5, OS_LOG_TYPE_DEBUG, "Logging element did enter %@", &v8, 0xCu);
   }
 

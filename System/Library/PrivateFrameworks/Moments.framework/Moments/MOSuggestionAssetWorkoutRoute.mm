@@ -1,39 +1,39 @@
 @interface MOSuggestionAssetWorkoutRoute
-- (MOSuggestionAssetWorkoutRoute)initWithCoder:(id)a3;
-- (id)init:(id)a3 workout:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (MOSuggestionAssetWorkoutRoute)initWithCoder:(id)coder;
+- (id)init:(id)init workout:(id)workout;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MOSuggestionAssetWorkoutRoute
 
-- (id)init:(id)a3 workout:(id)a4
+- (id)init:(id)init workout:(id)workout
 {
-  v7 = a3;
-  v8 = a4;
+  initCopy = init;
+  workoutCopy = workout;
   v12.receiver = self;
   v12.super_class = MOSuggestionAssetWorkoutRoute;
   v9 = [(MOSuggestionAssetWorkoutRoute *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_locationReadings, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_locationReadings, init);
+    objc_storeStrong(p_isa + 2, workout);
   }
 
   return p_isa;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   locationReadings = self->_locationReadings;
-  v5 = a3;
-  [v5 encodeObject:locationReadings forKey:@"coderKeyMOSuggestionAssetHKLocationReadings"];
-  [v5 encodeObject:self->_workout forKey:@"coderKeyMOSuggestionAssetHKWorkout"];
+  coderCopy = coder;
+  [coderCopy encodeObject:locationReadings forKey:@"coderKeyMOSuggestionAssetHKLocationReadings"];
+  [coderCopy encodeObject:self->_workout forKey:@"coderKeyMOSuggestionAssetHKWorkout"];
 }
 
-- (MOSuggestionAssetWorkoutRoute)initWithCoder:(id)a3
+- (MOSuggestionAssetWorkoutRoute)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = MOSuggestionAssetWorkoutRoute;
   v5 = [(MOSuggestionAssetWorkoutRoute *)&v14 init];
@@ -42,11 +42,11 @@
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"coderKeyMOSuggestionAssetHKLocationReadings"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"coderKeyMOSuggestionAssetHKLocationReadings"];
     locationReadings = v5->_locationReadings;
     v5->_locationReadings = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"coderKeyMOSuggestionAssetHKWorkout"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"coderKeyMOSuggestionAssetHKWorkout"];
     workout = v5->_workout;
     v5->_workout = v11;
   }

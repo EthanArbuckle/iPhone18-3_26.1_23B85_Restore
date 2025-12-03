@@ -45,8 +45,8 @@
 
         v24[0] = *(*(&v20 + 1) + 8 * v10);
         v12 = [v19 objectForKeyedSubscript:?];
-        v13 = [v12 value];
-        v24[1] = v13;
+        value = [v12 value];
+        v24[1] = value;
         v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
         v8 = [v14 componentsJoinedByString:@""];;
 

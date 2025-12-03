@@ -1,10 +1,10 @@
 @interface ICPBDGSPlayerDelegateInfoToken
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ICPBDGSPlayerDelegateInfoToken
@@ -60,16 +60,16 @@ LABEL_3:
   return v6 ^ v3 ^ v10 ^ [(NSString *)self->_storefrontIdentifier hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   token = self->_token;
-  if (token | *(v4 + 4))
+  if (token | *(equalCopy + 4))
   {
     if (![(NSData *)token isEqual:?])
     {
@@ -79,13 +79,13 @@ LABEL_3:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 40) & 2) == 0 || self->_sessionID != *(v4 + 2))
+    if ((*(equalCopy + 40) & 2) == 0 || self->_sessionID != *(equalCopy + 2))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 40) & 2) != 0)
+  else if ((*(equalCopy + 40) & 2) != 0)
   {
 LABEL_16:
     v7 = 0;
@@ -94,19 +94,19 @@ LABEL_16:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) == 0 || self->_expirationTimeInterval != *(v4 + 1))
+    if ((*(equalCopy + 40) & 1) == 0 || self->_expirationTimeInterval != *(equalCopy + 1))
     {
       goto LABEL_16;
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_16;
   }
 
   storefrontIdentifier = self->_storefrontIdentifier;
-  if (storefrontIdentifier | *(v4 + 3))
+  if (storefrontIdentifier | *(equalCopy + 3))
   {
     v7 = [(NSString *)storefrontIdentifier isEqual:?];
   }
@@ -121,10 +121,10 @@ LABEL_17:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_token copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_token copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -142,52 +142,52 @@ LABEL_17:
     *(v5 + 40) |= 1u;
   }
 
-  v9 = [(NSString *)self->_storefrontIdentifier copyWithZone:a3];
+  v9 = [(NSString *)self->_storefrontIdentifier copyWithZone:zone];
   v10 = *(v5 + 24);
   *(v5 + 24) = v9;
 
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_token)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if (has)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_storefrontIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   token = self->_token;
   if (token)
   {
-    [v3 setObject:token forKey:@"token"];
+    [dictionary setObject:token forKey:@"token"];
   }
 
   has = self->_has;
@@ -220,8 +220,8 @@ LABEL_17:
   v8.receiver = self;
   v8.super_class = ICPBDGSPlayerDelegateInfoToken;
   v4 = [(ICPBDGSPlayerDelegateInfoToken *)&v8 description];
-  v5 = [(ICPBDGSPlayerDelegateInfoToken *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ICPBDGSPlayerDelegateInfoToken *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

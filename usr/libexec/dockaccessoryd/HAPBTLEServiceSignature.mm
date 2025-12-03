@@ -1,16 +1,16 @@
 @interface HAPBTLEServiceSignature
-- (HAPBTLEServiceSignature)initWithServiceType:(id)a3 serviceInstanceID:(id)a4 serviceProperties:(unint64_t)a5 linkedServices:(id)a6 authenticated:(BOOL)a7;
+- (HAPBTLEServiceSignature)initWithServiceType:(id)type serviceInstanceID:(id)d serviceProperties:(unint64_t)properties linkedServices:(id)services authenticated:(BOOL)authenticated;
 - (id)description;
 @end
 
 @implementation HAPBTLEServiceSignature
 
-- (HAPBTLEServiceSignature)initWithServiceType:(id)a3 serviceInstanceID:(id)a4 serviceProperties:(unint64_t)a5 linkedServices:(id)a6 authenticated:(BOOL)a7
+- (HAPBTLEServiceSignature)initWithServiceType:(id)type serviceInstanceID:(id)d serviceProperties:(unint64_t)properties linkedServices:(id)services authenticated:(BOOL)authenticated
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  if (!v12)
+  typeCopy = type;
+  dCopy = d;
+  servicesCopy = services;
+  if (!typeCopy)
   {
     v23 = sub_10007FAA0();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -28,11 +28,11 @@ LABEL_10:
 
 LABEL_11:
 
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_12;
   }
 
-  if (!v13)
+  if (!dCopy)
   {
     v23 = sub_10007FAA0();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -55,36 +55,36 @@ LABEL_11:
   v15 = [(HAPBTLEServiceSignature *)&v28 init];
   if (v15)
   {
-    v16 = [v12 copy];
+    v16 = [typeCopy copy];
     serviceType = v15->_serviceType;
     v15->_serviceType = v16;
 
-    v18 = [v13 copy];
+    v18 = [dCopy copy];
     serviceInstanceID = v15->_serviceInstanceID;
     v15->_serviceInstanceID = v18;
 
-    v15->_serviceProperties = a5;
-    v20 = [v14 copy];
+    v15->_serviceProperties = properties;
+    v20 = [servicesCopy copy];
     linkedServices = v15->_linkedServices;
     v15->_linkedServices = v20;
 
-    v15->_authenticated = a7;
+    v15->_authenticated = authenticated;
   }
 
   self = v15;
-  v22 = self;
+  selfCopy = self;
 LABEL_12:
 
-  return v22;
+  return selfCopy;
 }
 
 - (id)description
 {
-  v3 = [(HAPBTLEServiceSignature *)self serviceType];
-  v4 = [(HAPBTLEServiceSignature *)self serviceInstanceID];
-  v5 = [(HAPBTLEServiceSignature *)self serviceProperties];
-  v6 = [(HAPBTLEServiceSignature *)self linkedServices];
-  v7 = [NSString stringWithFormat:@"Service Signature: Type : %@, InstanceID : %@, Properties : %tu, Linked Services : %@", v3, v4, v5, v6];
+  serviceType = [(HAPBTLEServiceSignature *)self serviceType];
+  serviceInstanceID = [(HAPBTLEServiceSignature *)self serviceInstanceID];
+  serviceProperties = [(HAPBTLEServiceSignature *)self serviceProperties];
+  linkedServices = [(HAPBTLEServiceSignature *)self linkedServices];
+  v7 = [NSString stringWithFormat:@"Service Signature: Type : %@, InstanceID : %@, Properties : %tu, Linked Services : %@", serviceType, serviceInstanceID, serviceProperties, linkedServices];
 
   return v7;
 }

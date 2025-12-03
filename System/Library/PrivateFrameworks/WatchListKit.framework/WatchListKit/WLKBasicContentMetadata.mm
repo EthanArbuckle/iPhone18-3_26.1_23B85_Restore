@@ -1,36 +1,36 @@
 @interface WLKBasicContentMetadata
-+ (Class)_classForContentType:(unint64_t)a3;
-+ (unint64_t)contentTypeForString:(id)a3;
-- (WLKBasicContentMetadata)initWithDictionary:(id)a3;
++ (Class)_classForContentType:(unint64_t)type;
++ (unint64_t)contentTypeForString:(id)string;
+- (WLKBasicContentMetadata)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation WLKBasicContentMetadata
 
-+ (unint64_t)contentTypeForString:(id)a3
++ (unint64_t)contentTypeForString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqual:@"Movie"])
+  stringCopy = string;
+  if ([stringCopy isEqual:@"Movie"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqual:@"Show"])
+  else if ([stringCopy isEqual:@"Show"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqual:@"Season"])
+  else if ([stringCopy isEqual:@"Season"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqual:@"Episode"])
+  else if ([stringCopy isEqual:@"Episode"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqual:@"SportingEvent"])
+  else if ([stringCopy isEqual:@"SportingEvent"])
   {
     v4 = 5;
   }
@@ -43,29 +43,29 @@
   return v4;
 }
 
-+ (Class)_classForContentType:(unint64_t)a3
++ (Class)_classForContentType:(unint64_t)type
 {
-  if (a3 - 1 > 4)
+  if (type - 1 > 4)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = *off_279E5E680[a3 - 1];
+    v4 = *off_279E5E680[type - 1];
     v5 = objc_opt_class();
   }
 
   return v5;
 }
 
-- (WLKBasicContentMetadata)initWithDictionary:(id)a3
+- (WLKBasicContentMetadata)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dictionaryCopy = dictionary;
+  v5 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v6 = [v4 wlk_stringForKey:@"type"];
+    v6 = [dictionaryCopy wlk_stringForKey:@"type"];
     v7 = [objc_opt_class() contentTypeForString:v6];
     v8 = [objc_opt_class() _classForContentType:v7];
     if (v8 && (v9 = v8, (objc_opt_isKindOfClass() & 1) == 0))
@@ -188,9 +188,9 @@
     title = self->_shortTitle;
   }
 
-  v7 = [v3 stringWithFormat:@"%@ contentType:%@ canonical:%@ title:%@", v4, self->_contentTypeString, self->_canonicalID, title];
+  title = [v3 stringWithFormat:@"%@ contentType:%@ canonical:%@ title:%@", v4, self->_contentTypeString, self->_canonicalID, title];
 
-  return v7;
+  return title;
 }
 
 @end

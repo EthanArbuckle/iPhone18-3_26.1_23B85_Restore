@@ -1,83 +1,83 @@
 @interface RhizomePosterEditor
-- (BOOL)editor:(id)a3 shouldAllowUserToSelectTimeFontConfiguration:(id)a4;
-- (id)initialLookIdentifierForEditor:(id)a3;
-- (id)looksForEditor:(id)a3;
-- (id)timeColorPickerConfigurationForEditor:(id)a3;
-- (void)editor:(id)a3 didInitializeWithEnvironment:(id)a4;
-- (void)editor:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5;
-- (void)editor:(id)a3 finalizeWithCompletion:(id)a4;
-- (void)editor:(id)a3 populateViews:(id)a4 forLook:(id)a5;
-- (void)editorDidInvalidate:(id)a3;
+- (BOOL)editor:(id)editor shouldAllowUserToSelectTimeFontConfiguration:(id)configuration;
+- (id)initialLookIdentifierForEditor:(id)editor;
+- (id)looksForEditor:(id)editor;
+- (id)timeColorPickerConfigurationForEditor:(id)editor;
+- (void)editor:(id)editor didInitializeWithEnvironment:(id)environment;
+- (void)editor:(id)editor didUpdateEnvironment:(id)environment withTransition:(id)transition;
+- (void)editor:(id)editor finalizeWithCompletion:(id)completion;
+- (void)editor:(id)editor populateViews:(id)views forLook:(id)look;
+- (void)editorDidInvalidate:(id)invalidate;
 @end
 
 @implementation RhizomePosterEditor
 
-- (void)editor:(id)a3 didInitializeWithEnvironment:(id)a4
+- (void)editor:(id)editor didInitializeWithEnvironment:(id)environment
 {
-  v5 = a3;
+  editorCopy = editor;
   swift_unknownObjectRetain();
-  v6 = self;
-  sub_10002CB2C(v5);
+  selfCopy = self;
+  sub_10002CB2C(editorCopy);
 
   swift_unknownObjectRelease();
 }
 
-- (void)editor:(id)a3 populateViews:(id)a4 forLook:(id)a5
+- (void)editor:(id)editor populateViews:(id)views forLook:(id)look
 {
-  v8 = a3;
+  editorCopy = editor;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  sub_10002A234(v8, a4, v9);
+  lookCopy = look;
+  selfCopy = self;
+  sub_10002A234(editorCopy, views, lookCopy);
 
   swift_unknownObjectRelease();
 }
 
-- (void)editor:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5
+- (void)editor:(id)editor didUpdateEnvironment:(id)environment withTransition:(id)transition
 {
   swift_unknownObjectWeakAssign();
-  v8 = a3;
-  v10 = a5;
-  v9 = self;
+  editorCopy = editor;
+  transitionCopy = transition;
+  selfCopy = self;
   sub_100036E88();
 }
 
-- (void)editor:(id)a3 finalizeWithCompletion:(id)a4
+- (void)editor:(id)editor finalizeWithCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_10002D648(v7, v8, v6);
+  editorCopy = editor;
+  selfCopy = self;
+  sub_10002D648(editorCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)editorDidInvalidate:(id)a3
+- (void)editorDidInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
+  invalidateCopy = invalidate;
+  selfCopy = self;
   sub_10002D830();
 }
 
-- (BOOL)editor:(id)a3 shouldAllowUserToSelectTimeFontConfiguration:(id)a4
+- (BOOL)editor:(id)editor shouldAllowUserToSelectTimeFontConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_10002DA38(v7);
+  editorCopy = editor;
+  configurationCopy = configuration;
+  selfCopy = self;
+  v9 = sub_10002DA38(configurationCopy);
 
   return v9 & 1;
 }
 
-- (id)timeColorPickerConfigurationForEditor:(id)a3
+- (id)timeColorPickerConfigurationForEditor:(id)editor
 {
   v3 = sub_10002DC00();
 
   return v3;
 }
 
-- (id)looksForEditor:(id)a3
+- (id)looksForEditor:(id)editor
 {
   if (qword_10004AE10 != -1)
   {
@@ -90,11 +90,11 @@
   return v3.super.isa;
 }
 
-- (id)initialLookIdentifierForEditor:(id)a3
+- (id)initialLookIdentifierForEditor:(id)editor
 {
-  v4 = a3;
-  v5 = self;
-  sub_10002DCE8(v4);
+  editorCopy = editor;
+  selfCopy = self;
+  sub_10002DCE8(editorCopy);
 
   v6 = sub_100037058();
 

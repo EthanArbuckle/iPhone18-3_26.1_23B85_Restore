@@ -1,52 +1,52 @@
 @interface PSAppChannelSubscriptionResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSubscriptionChannelResponse:(id)a3;
-- (void)addUnsubscriptionChannelResponse:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSubscriptionChannelResponse:(id)response;
+- (void)addUnsubscriptionChannelResponse:(id)response;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PSAppChannelSubscriptionResponse
 
-- (void)addSubscriptionChannelResponse:(id)a3
+- (void)addSubscriptionChannelResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   subscriptionChannelResponses = self->_subscriptionChannelResponses;
-  v8 = v4;
+  v8 = responseCopy;
   if (!subscriptionChannelResponses)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_subscriptionChannelResponses;
     self->_subscriptionChannelResponses = v6;
 
-    v4 = v8;
+    responseCopy = v8;
     subscriptionChannelResponses = self->_subscriptionChannelResponses;
   }
 
-  [(NSMutableArray *)subscriptionChannelResponses addObject:v4];
+  [(NSMutableArray *)subscriptionChannelResponses addObject:responseCopy];
 }
 
-- (void)addUnsubscriptionChannelResponse:(id)a3
+- (void)addUnsubscriptionChannelResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   unsubscriptionChannelResponses = self->_unsubscriptionChannelResponses;
-  v8 = v4;
+  v8 = responseCopy;
   if (!unsubscriptionChannelResponses)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_unsubscriptionChannelResponses;
     self->_unsubscriptionChannelResponses = v6;
 
-    v4 = v8;
+    responseCopy = v8;
     unsubscriptionChannelResponses = self->_unsubscriptionChannelResponses;
   }
 
-  [(NSMutableArray *)unsubscriptionChannelResponses addObject:v4];
+  [(NSMutableArray *)unsubscriptionChannelResponses addObject:responseCopy];
 }
 
 - (id)description
@@ -54,8 +54,8 @@
   v7.receiver = self;
   v7.super_class = PSAppChannelSubscriptionResponse;
   v3 = [(PSAppChannelSubscriptionResponse *)&v7 description];
-  v4 = [(PSAppChannelSubscriptionResponse *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PSAppChannelSubscriptionResponse *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -92,8 +92,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -127,8 +127,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v21 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation2 = [*(*(&v21 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation2];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v21 objects:v29 count:16];
@@ -143,9 +143,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_appId)
   {
     PBDataWriterWriteStringField();
@@ -216,49 +216,49 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if (self->_appId)
   {
-    [v12 setAppId:?];
+    [toCopy setAppId:?];
   }
 
   if ([(PSAppChannelSubscriptionResponse *)self subscriptionChannelResponsesCount])
   {
-    [v12 clearSubscriptionChannelResponses];
-    v4 = [(PSAppChannelSubscriptionResponse *)self subscriptionChannelResponsesCount];
-    if (v4)
+    [toCopy clearSubscriptionChannelResponses];
+    subscriptionChannelResponsesCount = [(PSAppChannelSubscriptionResponse *)self subscriptionChannelResponsesCount];
+    if (subscriptionChannelResponsesCount)
     {
-      v5 = v4;
+      v5 = subscriptionChannelResponsesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PSAppChannelSubscriptionResponse *)self subscriptionChannelResponseAtIndex:i];
-        [v12 addSubscriptionChannelResponse:v7];
+        [toCopy addSubscriptionChannelResponse:v7];
       }
     }
   }
 
   if ([(PSAppChannelSubscriptionResponse *)self unsubscriptionChannelResponsesCount])
   {
-    [v12 clearUnsubscriptionChannelResponses];
-    v8 = [(PSAppChannelSubscriptionResponse *)self unsubscriptionChannelResponsesCount];
-    if (v8)
+    [toCopy clearUnsubscriptionChannelResponses];
+    unsubscriptionChannelResponsesCount = [(PSAppChannelSubscriptionResponse *)self unsubscriptionChannelResponsesCount];
+    if (unsubscriptionChannelResponsesCount)
     {
-      v9 = v8;
+      v9 = unsubscriptionChannelResponsesCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(PSAppChannelSubscriptionResponse *)self unsubscriptionChannelResponseAtIndex:j];
-        [v12 addUnsubscriptionChannelResponse:v11];
+        [toCopy addUnsubscriptionChannelResponse:v11];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_appId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_appId copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -282,7 +282,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v25 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v25 + 1) + 8 * v12) copyWithZone:zone];
         [v5 addSubscriptionChannelResponse:v13];
 
         v12 = v12 + 1;
@@ -315,7 +315,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v21 + 1) + 8 * v18) copyWithZone:{a3, v21}];
+        v19 = [*(*(&v21 + 1) + 8 * v18) copyWithZone:{zone, v21}];
         [v5 addUnsubscriptionChannelResponse:v19];
 
         v18 = v18 + 1;
@@ -331,13 +331,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((appId = self->_appId, !(appId | v4[1])) || -[NSString isEqual:](appId, "isEqual:")) && ((subscriptionChannelResponses = self->_subscriptionChannelResponses, !(subscriptionChannelResponses | v4[2])) || -[NSMutableArray isEqual:](subscriptionChannelResponses, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((appId = self->_appId, !(appId | equalCopy[1])) || -[NSString isEqual:](appId, "isEqual:")) && ((subscriptionChannelResponses = self->_subscriptionChannelResponses, !(subscriptionChannelResponses | equalCopy[2])) || -[NSMutableArray isEqual:](subscriptionChannelResponses, "isEqual:")))
   {
     unsubscriptionChannelResponses = self->_unsubscriptionChannelResponses;
-    if (unsubscriptionChannelResponses | v4[3])
+    if (unsubscriptionChannelResponses | equalCopy[3])
     {
       v8 = [(NSMutableArray *)unsubscriptionChannelResponses isEqual:?];
     }
@@ -363,10 +363,10 @@
   return v4 ^ [(NSMutableArray *)self->_unsubscriptionChannelResponses hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(PSAppChannelSubscriptionResponse *)self setAppId:?];
   }
@@ -375,7 +375,7 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = *(v4 + 2);
+  v5 = *(fromCopy + 2);
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
@@ -403,7 +403,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v11)
   {

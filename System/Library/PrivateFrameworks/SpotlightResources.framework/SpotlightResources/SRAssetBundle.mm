@@ -1,38 +1,38 @@
 @interface SRAssetBundle
-- (BOOL)shouldUpdateForBundleVersions:(id)a3;
+- (BOOL)shouldUpdateForBundleVersions:(id)versions;
 - (NSArray)contentTypes;
-- (SRAssetBundle)initWithLocale:(id)a3 bundleVersions:(id)a4;
-- (id)assetsWithContentType:(id)a3;
-- (void)loadAssetsWithContentType:(id)a3 contentName:(id)a4 contentPath:(id)a5;
+- (SRAssetBundle)initWithLocale:(id)locale bundleVersions:(id)versions;
+- (id)assetsWithContentType:(id)type;
+- (void)loadAssetsWithContentType:(id)type contentName:(id)name contentPath:(id)path;
 @end
 
 @implementation SRAssetBundle
 
-- (SRAssetBundle)initWithLocale:(id)a3 bundleVersions:(id)a4
+- (SRAssetBundle)initWithLocale:(id)locale bundleVersions:(id)versions
 {
-  v7 = a3;
-  v8 = a4;
+  localeCopy = locale;
+  versionsCopy = versions;
   v14.receiver = self;
   v14.super_class = SRAssetBundle;
   v9 = [(SRAssetBundle *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_locale, a3);
+    objc_storeStrong(&v9->_locale, locale);
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
     contents = v10->_contents;
     v10->_contents = v11;
 
-    objc_storeStrong(&v10->_bundleVersions, a4);
+    objc_storeStrong(&v10->_bundleVersions, versions);
     v10->_contentsLock._os_unfair_lock_opaque = 0;
   }
 
   return v10;
 }
 
-- (BOOL)shouldUpdateForBundleVersions:(id)a3
+- (BOOL)shouldUpdateForBundleVersions:(id)versions
 {
-  v4 = a3;
+  versionsCopy = versions;
   v7 = 0;
   v8 = &v7;
   v9 = 0x2020000000;
@@ -43,7 +43,7 @@
   v6[3] = &unk_1E7A2AD48;
   v6[4] = self;
   v6[5] = &v7;
-  [v4 enumerateKeysAndObjectsUsingBlock:v6];
+  [versionsCopy enumerateKeysAndObjectsUsingBlock:v6];
   LOBYTE(self) = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
 
@@ -108,22 +108,22 @@ void __47__SRAssetBundle_shouldUpdateForBundleVersions___block_invoke_2(void *a1
   }
 }
 
-- (void)loadAssetsWithContentType:(id)a3 contentName:(id)a4 contentPath:(id)a5
+- (void)loadAssetsWithContentType:(id)type contentName:(id)name contentPath:(id)path
 {
-  v13 = a3;
-  v8 = a5;
-  v9 = a4;
+  typeCopy = type;
+  pathCopy = path;
+  nameCopy = name;
   os_unfair_lock_lock(&self->_contentsLock);
-  v10 = [(NSMutableDictionary *)self->_contents objectForKeyedSubscript:v13];
+  v10 = [(NSMutableDictionary *)self->_contents objectForKeyedSubscript:typeCopy];
 
   if (!v10)
   {
     v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    [(NSMutableDictionary *)self->_contents setObject:v11 forKeyedSubscript:v13];
+    [(NSMutableDictionary *)self->_contents setObject:v11 forKeyedSubscript:typeCopy];
   }
 
-  v12 = [(NSMutableDictionary *)self->_contents objectForKeyedSubscript:v13];
-  [v12 setObject:v8 forKeyedSubscript:v9];
+  v12 = [(NSMutableDictionary *)self->_contents objectForKeyedSubscript:typeCopy];
+  [v12 setObject:pathCopy forKeyedSubscript:nameCopy];
 
   os_unfair_lock_unlock(&self->_contentsLock);
 }
@@ -131,32 +131,32 @@ void __47__SRAssetBundle_shouldUpdateForBundleVersions___block_invoke_2(void *a1
 - (NSArray)contentTypes
 {
   os_unfair_lock_lock(&self->_contentsLock);
-  v3 = [(NSMutableDictionary *)self->_contents allKeys];
+  allKeys = [(NSMutableDictionary *)self->_contents allKeys];
   os_unfair_lock_unlock(&self->_contentsLock);
 
-  return v3;
+  return allKeys;
 }
 
-- (id)assetsWithContentType:(id)a3
+- (id)assetsWithContentType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   os_unfair_lock_lock(&self->_contentsLock);
-  v5 = [(NSMutableDictionary *)self->_contents objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_contents objectForKeyedSubscript:typeCopy];
 
   if (v5)
   {
-    v6 = [(NSMutableDictionary *)self->_contents objectForKeyedSubscript:v4];
-    v7 = [v6 allValues];
+    v6 = [(NSMutableDictionary *)self->_contents objectForKeyedSubscript:typeCopy];
+    allValues = [v6 allValues];
   }
 
   else
   {
-    v7 = MEMORY[0x1E695E0F0];
+    allValues = MEMORY[0x1E695E0F0];
   }
 
   os_unfair_lock_unlock(&self->_contentsLock);
 
-  return v7;
+  return allValues;
 }
 
 @end

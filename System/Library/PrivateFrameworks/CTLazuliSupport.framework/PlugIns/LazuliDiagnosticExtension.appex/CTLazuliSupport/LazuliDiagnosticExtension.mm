@@ -1,8 +1,8 @@
 @interface LazuliDiagnosticExtension
 - (LazuliDiagnosticExtension)init;
-- (id)attachmentsForParameters:(id)a3;
-- (id)royalBlueDirectoryAttachment:(BOOL)a3;
-- (void)teardownWithParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
+- (id)royalBlueDirectoryAttachment:(BOOL)attachment;
+- (void)teardownWithParameters:(id)parameters;
 @end
 
 @implementation LazuliDiagnosticExtension
@@ -20,13 +20,13 @@
   return result;
 }
 
-- (id)royalBlueDirectoryAttachment:(BOOL)a3
+- (id)royalBlueDirectoryAttachment:(BOOL)attachment
 {
-  v3 = a3;
+  attachmentCopy = attachment;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = "is not allowed";
-    if (v3)
+    if (attachmentCopy)
     {
       v5 = "is allowed";
     }
@@ -36,7 +36,7 @@
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "Attempting to attach RoyalBlue directory, sensitive collection %s", &v37, 0xCu);
   }
 
-  if (!v3)
+  if (!attachmentCopy)
   {
     goto LABEL_17;
   }
@@ -124,10 +124,10 @@ LABEL_28:
   return v10;
 }
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
+  parametersCopy = parameters;
+  v5 = [parametersCopy objectForKeyedSubscript:@"DEExtensionAttachmentsParamConsentProvidedKey"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -156,9 +156,9 @@ LABEL_28:
   return v10;
 }
 
-- (void)teardownWithParameters:(id)a3
+- (void)teardownWithParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   if ((self->_commCenterExtensionToken & 0x8000000000000000) == 0)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))

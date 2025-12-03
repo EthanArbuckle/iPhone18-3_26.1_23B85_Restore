@@ -1,31 +1,31 @@
 @interface TUIEmbeddedScrollViewCoordinator
-- (void)registerEmbeddedScrollView:(id)a3;
-- (void)updateWithImpressionSnapshot:(id)a3;
+- (void)registerEmbeddedScrollView:(id)view;
+- (void)updateWithImpressionSnapshot:(id)snapshot;
 @end
 
 @implementation TUIEmbeddedScrollViewCoordinator
 
-- (void)registerEmbeddedScrollView:(id)a3
+- (void)registerEmbeddedScrollView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   embeddedScrollViews = self->_embeddedScrollViews;
-  v8 = v4;
+  v8 = viewCopy;
   if (!embeddedScrollViews)
   {
     v6 = [NSHashTable hashTableWithOptions:512];
     v7 = self->_embeddedScrollViews;
     self->_embeddedScrollViews = v6;
 
-    v4 = v8;
+    viewCopy = v8;
     embeddedScrollViews = self->_embeddedScrollViews;
   }
 
-  [(NSHashTable *)embeddedScrollViews addObject:v4];
+  [(NSHashTable *)embeddedScrollViews addObject:viewCopy];
 }
 
-- (void)updateWithImpressionSnapshot:(id)a3
+- (void)updateWithImpressionSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -46,7 +46,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9) updateWithImpressionSnapshot:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9) updateWithImpressionSnapshot:{snapshotCopy, v10}];
         v9 = v9 + 1;
       }
 

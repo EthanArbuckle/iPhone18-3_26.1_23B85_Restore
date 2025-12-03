@@ -1,16 +1,16 @@
 @interface BKMatchEvent
-+ (id)matchEventWithDictionary:(id)a3 device:(id)a4 error:(id *)a5;
++ (id)matchEventWithDictionary:(id)dictionary device:(id)device error:(id *)error;
 @end
 
 @implementation BKMatchEvent
 
-+ (id)matchEventWithDictionary:(id)a3 device:(id)a4 error:(id *)a5
++ (id)matchEventWithDictionary:(id)dictionary device:(id)device error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dictionaryCopy = dictionary;
+  deviceCopy = device;
+  if (!dictionaryCopy)
   {
-    [BKMatchEvent matchEventWithDictionary:a5 device:? error:?];
+    [BKMatchEvent matchEventWithDictionary:error device:? error:?];
     v9 = 0;
 LABEL_13:
     v15 = 0;
@@ -20,27 +20,27 @@ LABEL_13:
   v9 = objc_alloc_init(BKMatchEvent);
   if (!v9)
   {
-    [BKMatchEvent matchEventWithDictionary:a5 device:? error:?];
+    [BKMatchEvent matchEventWithDictionary:error device:? error:?];
     goto LABEL_13;
   }
 
-  v10 = [v7 objectForKeyedSubscript:@"BKMatchEventTimeStamp"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"BKMatchEventTimeStamp"];
   -[BKMatchEvent setTimeStamp:](v9, "setTimeStamp:", [v10 unsignedLongValue]);
 
   if (![(BKMatchEvent *)v9 timeStamp])
   {
-    setError(2, a5);
+    setError(2, error);
     goto LABEL_13;
   }
 
-  v11 = [v7 objectForKeyedSubscript:@"BKMatchEventResult"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"BKMatchEventResult"];
   -[BKMatchEvent setResult:](v9, "setResult:", [v11 BOOLValue]);
 
   if ([(BKMatchEvent *)v9 result])
   {
     v12 = [BKIdentity alloc];
-    v13 = [v7 objectForKeyedSubscript:@"BKMatchEventMatchedIdentity"];
-    v14 = [(BKIdentity *)v12 initWithServerIdentity:v13 device:v8];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"BKMatchEventMatchedIdentity"];
+    v14 = [(BKIdentity *)v12 initWithServerIdentity:v13 device:deviceCopy];
     [(BKMatchEvent *)v9 setMatchedIdentity:v14];
   }
 

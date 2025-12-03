@@ -1,18 +1,18 @@
 @interface NFCCModule
-- (id)contentViewControllerForContext:(id)a3;
-- (void)setContentModuleContext:(id)a3;
+- (id)contentViewControllerForContext:(id)context;
+- (void)setContentModuleContext:(id)context;
 @end
 
 @implementation NFCCModule
 
-- (void)setContentModuleContext:(id)a3
+- (void)setContentModuleContext:(id)context
 {
-  objc_storeStrong(&self->_context, a3);
-  v5 = a3;
-  [(NFCCContentViewController *)self->_contentViewController setContentModuleContext:v5];
+  objc_storeStrong(&self->_context, context);
+  contextCopy = context;
+  [(NFCCContentViewController *)self->_contentViewController setContentModuleContext:contextCopy];
 }
 
-- (id)contentViewControllerForContext:(id)a3
+- (id)contentViewControllerForContext:(id)context
 {
   contentViewController = self->_contentViewController;
   if (!contentViewController)

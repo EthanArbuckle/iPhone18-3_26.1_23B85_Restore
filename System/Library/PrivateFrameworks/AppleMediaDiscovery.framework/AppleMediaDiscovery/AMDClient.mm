@@ -1,36 +1,36 @@
 @interface AMDClient
-- (id)appSegmentData:(id)a3 completion:(id)a4;
-- (id)callDebugEvent:(id)a3 withPayload:(id)a4;
-- (id)getFeature:(id)a3;
-- (id)getFeatureStub:(id)a3;
-- (id)getModelPath:(id)a3 error:(id *)a4;
-- (id)getModelPathForUsecase:(id)a3 withTreatmentId:(id)a4 inDomain:(id)a5 error:(id *)a6;
-- (id)getMusicModelPathForUsecase:(id)a3 withTreatmentId:(id)a4 error:(id *)a5;
-- (id)sendBatchedPECSimilarityScores:(id)a3 withCallHandle:(id)a4 andRequestError:(id)a5 error:(id *)a6;
-- (id)sendBatchedPIRData:(id)a3 forKeywords:(id)a4 withCallHandle:(id)a5 andRequestError:(id)a6 error:(id *)a7;
-- (id)sendPECSimilarityScores:(id)a3 withCallHandle:(id)a4 andRequestError:(id)a5 error:(id *)a6;
-- (id)sendPIRData:(id)a3 forKeyword:(id)a4 withCallHandle:(id)a5 andRequestError:(id)a6 error:(id *)a7;
-- (id)sendPIRData:(id)a3 forKeyword:(id)a4 withCallHandle:(id)a5 error:(id *)a6;
+- (id)appSegmentData:(id)data completion:(id)completion;
+- (id)callDebugEvent:(id)event withPayload:(id)payload;
+- (id)getFeature:(id)feature;
+- (id)getFeatureStub:(id)stub;
+- (id)getModelPath:(id)path error:(id *)error;
+- (id)getModelPathForUsecase:(id)usecase withTreatmentId:(id)id inDomain:(id)domain error:(id *)error;
+- (id)getMusicModelPathForUsecase:(id)usecase withTreatmentId:(id)id error:(id *)error;
+- (id)sendBatchedPECSimilarityScores:(id)scores withCallHandle:(id)handle andRequestError:(id)error error:(id *)a6;
+- (id)sendBatchedPIRData:(id)data forKeywords:(id)keywords withCallHandle:(id)handle andRequestError:(id)error error:(id *)a7;
+- (id)sendPECSimilarityScores:(id)scores withCallHandle:(id)handle andRequestError:(id)error error:(id *)a6;
+- (id)sendPIRData:(id)data forKeyword:(id)keyword withCallHandle:(id)handle andRequestError:(id)error error:(id *)a7;
+- (id)sendPIRData:(id)data forKeyword:(id)keyword withCallHandle:(id)handle error:(id *)error;
 - (void)callIAESegmentNotificationHandler;
-- (void)clearDataForDSID:(id)a3 completion:(id)a4;
-- (void)fetchAppSegments:(id)a3 completion:(id)a4;
-- (void)getAppSegmentDataWithRequest:(id)a3 completion:(id)a4;
-- (void)iaeSegmentNotificationHandler:(id)a3;
-- (void)subscribeToSegmentNotificationWithCallback:(id)a3 forAccountDSID:(id)a4;
+- (void)clearDataForDSID:(id)d completion:(id)completion;
+- (void)fetchAppSegments:(id)segments completion:(id)completion;
+- (void)getAppSegmentDataWithRequest:(id)request completion:(id)completion;
+- (void)iaeSegmentNotificationHandler:(id)handler;
+- (void)subscribeToSegmentNotificationWithCallback:(id)callback forAccountDSID:(id)d;
 - (void)unsubscribeFromSegmentNotification;
 @end
 
 @implementation AMDClient
 
-- (id)callDebugEvent:(id)a3 withPayload:(id)a4
+- (id)callDebugEvent:(id)event withPayload:(id)payload
 {
   v23[5] = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, event);
   v17 = 0;
-  objc_storeStrong(&v17, a4);
+  objc_storeStrong(&v17, payload);
   v16 = objc_alloc_init(AMDAMSEngagementEvent);
   v22[0] = @"action";
   v23[0] = @"amd.debug";
@@ -55,17 +55,17 @@
   if (v13)
   {
     v20 = @"error";
-    v7 = [v13 localizedDescription];
-    v21 = v7;
+    localizedDescription = [v13 localizedDescription];
+    v21 = localizedDescription;
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](localizedDescription);
   }
 
   else if (v12)
   {
-    v6 = [v12 data];
-    v19 = [v6 objectForKey:@"response"];
-    MEMORY[0x277D82BD8](v6);
+    data = [v12 data];
+    v19 = [data objectForKey:@"response"];
+    MEMORY[0x277D82BD8](data);
   }
 
   else
@@ -86,16 +86,16 @@
   return v4;
 }
 
-- (id)getFeatureStub:(id)a3
+- (id)getFeatureStub:(id)stub
 {
   v64[2] = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v26 = [location[0] featureName];
-  v27 = [v26 isEqual:@"testFeatureList"];
-  MEMORY[0x277D82BD8](v26);
+  objc_storeStrong(location, stub);
+  featureName = [location[0] featureName];
+  v27 = [featureName isEqual:@"testFeatureList"];
+  MEMORY[0x277D82BD8](featureName);
   if (v27)
   {
     v63[0] = @"status";
@@ -108,9 +108,9 @@
 
   else
   {
-    v24 = [location[0] featureName];
-    v25 = [v24 isEqual:@"testFeatureDict"];
-    MEMORY[0x277D82BD8](v24);
+    featureName2 = [location[0] featureName];
+    v25 = [featureName2 isEqual:@"testFeatureDict"];
+    MEMORY[0x277D82BD8](featureName2);
     if (v25)
     {
       v61[0] = @"status";
@@ -123,9 +123,9 @@
 
     else
     {
-      v22 = [location[0] featureName];
-      v23 = [v22 isEqual:@"testFeatureDictLongKey"];
-      MEMORY[0x277D82BD8](v22);
+      featureName3 = [location[0] featureName];
+      v23 = [featureName3 isEqual:@"testFeatureDictLongKey"];
+      MEMORY[0x277D82BD8](featureName3);
       if (v23)
       {
         v59[0] = @"status";
@@ -144,9 +144,9 @@
 
       else
       {
-        v19 = [location[0] featureName];
-        v20 = [v19 isEqual:@"testFeatureDictFloatKey"];
-        MEMORY[0x277D82BD8](v19);
+        featureName4 = [location[0] featureName];
+        v20 = [featureName4 isEqual:@"testFeatureDictFloatKey"];
+        MEMORY[0x277D82BD8](featureName4);
         if (v20)
         {
           v55[0] = @"status";
@@ -165,9 +165,9 @@
 
         else
         {
-          v16 = [location[0] featureName];
-          v17 = [v16 isEqual:@"dictOfArrays"];
-          MEMORY[0x277D82BD8](v16);
+          featureName5 = [location[0] featureName];
+          v17 = [featureName5 isEqual:@"dictOfArrays"];
+          MEMORY[0x277D82BD8](featureName5);
           if (v17)
           {
             v51[0] = @"status";
@@ -180,9 +180,9 @@
 
           else
           {
-            v14 = [location[0] featureName];
-            v15 = [v14 isEqual:@"dictOfDicts"];
-            MEMORY[0x277D82BD8](v14);
+            featureName6 = [location[0] featureName];
+            v15 = [featureName6 isEqual:@"dictOfDicts"];
+            MEMORY[0x277D82BD8](featureName6);
             if (v15)
             {
               v49[0] = @"status";
@@ -195,9 +195,9 @@
 
             else
             {
-              v12 = [location[0] featureName];
-              v13 = [v12 isEqual:@"dictOfDictsWithString"];
-              MEMORY[0x277D82BD8](v12);
+              featureName7 = [location[0] featureName];
+              v13 = [featureName7 isEqual:@"dictOfDictsWithString"];
+              MEMORY[0x277D82BD8](featureName7);
               if (v13)
               {
                 v47[0] = @"status";
@@ -210,41 +210,41 @@
 
               else
               {
-                v10 = [location[0] featureName];
-                v11 = [v10 isEqual:@"98apps"];
-                MEMORY[0x277D82BD8](v10);
+                featureName8 = [location[0] featureName];
+                v11 = [featureName8 isEqual:@"98apps"];
+                MEMORY[0x277D82BD8](featureName8);
                 if (v11)
                 {
-                  v35 = [MEMORY[0x277CBEB18] array];
+                  array = [MEMORY[0x277CBEB18] array];
                   for (i = 0; i < 50; ++i)
                   {
                     v9 = [MEMORY[0x277CCABB0] numberWithInt:(10 * i)];
-                    [v35 addObject:?];
+                    [array addObject:?];
                     MEMORY[0x277D82BD8](v9);
                   }
 
                   v45[0] = @"status";
                   v46[0] = @"OK";
                   v45[1] = @"data";
-                  v46[1] = v35;
+                  v46[1] = array;
                   v38 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v46 forKeys:v45 count:2];
                   v36 = 1;
-                  objc_storeStrong(&v35, 0);
+                  objc_storeStrong(&array, 0);
                 }
 
                 else
                 {
-                  v7 = [location[0] featureName];
-                  v8 = [v7 hasPrefix:@"purchase_id"];
-                  MEMORY[0x277D82BD8](v7);
+                  featureName9 = [location[0] featureName];
+                  v8 = [featureName9 hasPrefix:@"purchase_id"];
+                  MEMORY[0x277D82BD8](featureName9);
                   if (v8)
                   {
                     v33 = objc_alloc_init(MEMORY[0x277CBEB18]);
                     for (j = 0; j < 500; ++j)
                     {
-                      v31 = [MEMORY[0x277CCABB0] numberWithInt:arc4random() % 0x9C40];
-                      [v33 addObject:v31];
-                      objc_storeStrong(&v31, 0);
+                      0x9C40 = [MEMORY[0x277CCABB0] numberWithInt:arc4random() % 0x9C40];
+                      [v33 addObject:0x9C40];
+                      objc_storeStrong(&0x9C40, 0);
                     }
 
                     v43[0] = @"status";
@@ -258,17 +258,17 @@
 
                   else
                   {
-                    v5 = [location[0] featureName];
-                    v6 = [v5 hasPrefix:@"label"];
-                    MEMORY[0x277D82BD8](v5);
+                    featureName10 = [location[0] featureName];
+                    v6 = [featureName10 hasPrefix:@"label"];
+                    MEMORY[0x277D82BD8](featureName10);
                     if (v6)
                     {
                       v30 = objc_alloc_init(MEMORY[0x277CBEB18]);
                       for (k = 0; k < 500; ++k)
                       {
-                        v28 = [MEMORY[0x277CCABB0] numberWithInt:arc4random() % 0x78];
-                        [v30 addObject:v28];
-                        objc_storeStrong(&v28, 0);
+                        0x78 = [MEMORY[0x277CCABB0] numberWithInt:arc4random() % 0x78];
+                        [v30 addObject:0x78];
+                        objc_storeStrong(&0x78, 0);
                       }
 
                       v41[0] = @"status";
@@ -306,17 +306,17 @@
   return v3;
 }
 
-- (id)getFeature:(id)a3
+- (id)getFeature:(id)feature
 {
   v24[2] = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, feature);
   v16 = objc_alloc_init(MEMORY[0x277CEE498]);
-  v8 = [location[0] getAMSRequest];
+  getAMSRequest = [location[0] getAMSRequest];
   v15 = [v16 enqueueEvent:?];
-  MEMORY[0x277D82BD8](v8);
+  MEMORY[0x277D82BD8](getAMSRequest);
   v14 = 0;
   obj = 0;
   v9 = [v15 resultWithError:&obj];
@@ -327,20 +327,20 @@
     v23[0] = @"status";
     v24[0] = @"executionError";
     v23[1] = @"error";
-    v7 = [v14 localizedDescription];
-    v24[1] = v7;
+    localizedDescription = [v14 localizedDescription];
+    v24[1] = localizedDescription;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:2];
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](localizedDescription);
     v11 = 1;
   }
 
   else
   {
-    v6 = [v13 data];
-    v5 = [v6 objectForKey:@"response"];
+    data = [v13 data];
+    v5 = [data objectForKey:@"response"];
     v10 = [v5 objectForKey:@"featureData"];
     MEMORY[0x277D82BD8](v5);
-    MEMORY[0x277D82BD8](v6);
+    MEMORY[0x277D82BD8](data);
     if (v10)
     {
       v19[0] = @"status";
@@ -374,21 +374,21 @@
   return v3;
 }
 
-- (void)clearDataForDSID:(id)a3 completion:(id)a4
+- (void)clearDataForDSID:(id)d completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, d);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
+  objc_storeStrong(&v24, completion);
   v23 = objc_alloc_init(MEMORY[0x277CEE498]);
   v4 = [AMDClientRequestEvent alloc];
   v22 = [(AMDClientRequestEvent *)v4 initClearUserDataFor:location[0] inDomain:@"apps"];
-  v10 = [v22 getAMSRequest];
+  getAMSRequest = [v22 getAMSRequest];
   v21 = [v23 enqueueEvent:?];
-  MEMORY[0x277D82BD8](v10);
+  MEMORY[0x277D82BD8](getAMSRequest);
   v20 = 0;
   v18 = 0;
   v11 = [v21 resultWithError:&v18];
@@ -400,10 +400,10 @@
     v16 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v8 = [v20 localizedDescription];
-      __os_log_helper_16_2_1_8_64(v27, v8);
+      localizedDescription = [v20 localizedDescription];
+      __os_log_helper_16_2_1_8_64(v27, localizedDescription);
       _os_log_error_impl(&dword_240CB9000, v17, v16, "Error clearing user data: %@", v27, 0xCu);
-      MEMORY[0x277D82BD8](v8);
+      MEMORY[0x277D82BD8](localizedDescription);
     }
 
     objc_storeStrong(&v17, 0);
@@ -413,9 +413,9 @@
 
   else
   {
-    v7 = [v19 data];
-    v14 = [v7 objectForKey:@"response"];
-    MEMORY[0x277D82BD8](v7);
+    data = [v19 data];
+    v14 = [data objectForKey:@"response"];
+    MEMORY[0x277D82BD8](data);
     if (v14)
     {
       NSLog(&cfstr_ClearUserDataS.isa, v14);
@@ -455,44 +455,44 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (void)getAppSegmentDataWithRequest:(id)a3 completion:(id)a4
+- (void)getAppSegmentDataWithRequest:(id)request completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
+  objc_storeStrong(&v5, completion);
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (id)appSegmentData:(id)a3 completion:(id)a4
+- (id)appSegmentData:(id)data completion:(id)completion
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
+  objc_storeStrong(&v6, completion);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
   return 0;
 }
 
-- (void)fetchAppSegments:(id)a3 completion:(id)a4
+- (void)fetchAppSegments:(id)segments completion:(id)completion
 {
   v51 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, segments);
   v47 = 0;
-  objc_storeStrong(&v47, a4);
+  objc_storeStrong(&v47, completion);
   v46 = objc_alloc_init(MEMORY[0x277CEE498]);
-  v27 = [location[0] getAMSRequest];
+  getAMSRequest = [location[0] getAMSRequest];
   v45 = [v46 enqueueEvent:?];
-  MEMORY[0x277D82BD8](v27);
+  MEMORY[0x277D82BD8](getAMSRequest);
   v44 = 0;
   v42 = 0;
   v28 = [v45 resultWithError:&v42];
@@ -506,11 +506,11 @@
     {
       log = v41;
       v24 = type;
-      v25 = [v44 localizedDescription];
-      v39 = MEMORY[0x277D82BE0](v25);
+      localizedDescription = [v44 localizedDescription];
+      v39 = MEMORY[0x277D82BE0](localizedDescription);
       __os_log_helper_16_2_1_8_64(v50, v39);
       _os_log_error_impl(&dword_240CB9000, log, v24, "error retrieving segment data: %@", v50, 0xCu);
-      MEMORY[0x277D82BD8](v25);
+      MEMORY[0x277D82BD8](localizedDescription);
       objc_storeStrong(&v39, 0);
     }
 
@@ -521,9 +521,9 @@
 
   else
   {
-    v22 = [v43 data];
-    v37 = [v22 objectForKey:@"response"];
-    MEMORY[0x277D82BD8](v22);
+    data = [v43 data];
+    v37 = [data objectForKey:@"response"];
+    MEMORY[0x277D82BD8](data);
     if (v37)
     {
       v36 = [v37 objectForKey:@"segmentDataType"];
@@ -629,27 +629,27 @@
   *MEMORY[0x277D85DE8];
 }
 
-- (void)iaeSegmentNotificationHandler:(id)a3
+- (void)iaeSegmentNotificationHandler:(id)handler
 {
   v64 = *MEMORY[0x277D85DE8];
-  v57 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v55 = [location[0] name];
-  v54 = [location[0] userInfo];
+  objc_storeStrong(location, handler);
+  name = [location[0] name];
+  userInfo = [location[0] userInfo];
   oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   type = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
-    __os_log_helper_16_2_2_8_64_8_64(v63, v55, v54);
+    __os_log_helper_16_2_2_8_64_8_64(v63, name, userInfo);
     _os_log_debug_impl(&dword_240CB9000, oslog, type, "IAE segment notification: name: %@ userInfo: %@", v63, 0x16u);
   }
 
   objc_storeStrong(&oslog, 0);
-  v28 = [(AMDClient *)v57 dsId];
-  MEMORY[0x277D82BD8](v28);
-  if (!v28)
+  dsId = [(AMDClient *)selfCopy dsId];
+  MEMORY[0x277D82BD8](dsId);
+  if (!dsId)
   {
     v51 = MEMORY[0x277D82BE0](@"Programmer error: no dsId, dropping IAE segments notification");
     v50 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
@@ -661,17 +661,17 @@
     }
 
     objc_storeStrong(&v50, 0);
-    v27 = [(AMDClient *)v57 callback];
+    callback = [(AMDClient *)selfCopy callback];
     v26 = [AMDError allocError:28 withMessage:v51];
-    v27[2](v27, 0);
+    callback[2](callback, 0);
     MEMORY[0x277D82BD8](v26);
-    MEMORY[0x277D82BD8](v27);
+    MEMORY[0x277D82BD8](callback);
     objc_storeStrong(&v51, 0);
   }
 
-  v25 = [(AMDClient *)v57 callback];
-  MEMORY[0x277D82BD8](v25);
-  if (!v25)
+  callback2 = [(AMDClient *)selfCopy callback];
+  MEMORY[0x277D82BD8](callback2);
+  if (!callback2)
   {
     v48 = MEMORY[0x277D82BE0](@"Programmer error: no callback, dropping IAE segments notification");
     v47 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
@@ -683,35 +683,35 @@
     }
 
     objc_storeStrong(&v47, 0);
-    v24 = [(AMDClient *)v57 callback];
+    callback3 = [(AMDClient *)selfCopy callback];
     v23 = [AMDError allocError:28 withMessage:v48];
-    v24[2](v24, 0);
+    callback3[2](callback3, 0);
     MEMORY[0x277D82BD8](v23);
-    MEMORY[0x277D82BD8](v24);
+    MEMORY[0x277D82BD8](callback3);
     objc_storeStrong(&v48, 0);
   }
 
-  v45 = [v54 objectForKey:@"dsId"];
+  v45 = [userInfo objectForKey:@"dsId"];
   v43 = 0;
   LOBYTE(v22) = 1;
   if (v45)
   {
-    v44 = [(AMDClient *)v57 dsId];
+    dsId2 = [(AMDClient *)selfCopy dsId];
     v43 = 1;
     v22 = [v45 isEqualToString:?] ^ 1;
   }
 
   if (v43)
   {
-    MEMORY[0x277D82BD8](v44);
+    MEMORY[0x277D82BD8](dsId2);
   }
 
   if (v22)
   {
     v20 = MEMORY[0x277CCACA8];
-    v21 = [(AMDClient *)v57 dsId];
-    v42 = [v20 stringWithFormat:@"Programmer error: dsId mismatch: payload: %@, expected: %@", v45, v21];
-    MEMORY[0x277D82BD8](v21);
+    dsId3 = [(AMDClient *)selfCopy dsId];
+    v42 = [v20 stringWithFormat:@"Programmer error: dsId mismatch: payload: %@, expected: %@", v45, dsId3];
+    MEMORY[0x277D82BD8](dsId3);
     v41 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
     v40 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
@@ -721,15 +721,15 @@
     }
 
     objc_storeStrong(&v41, 0);
-    v19 = [(AMDClient *)v57 callback];
+    callback4 = [(AMDClient *)selfCopy callback];
     v18 = [AMDError allocError:28 withMessage:v42];
-    v19[2](v19, 0);
+    callback4[2](callback4, 0);
     MEMORY[0x277D82BD8](v18);
-    MEMORY[0x277D82BD8](v19);
+    MEMORY[0x277D82BD8](callback4);
     objc_storeStrong(&v42, 0);
   }
 
-  v39 = [v54 objectForKey:@"segmentDataType"];
+  v39 = [userInfo objectForKey:@"segmentDataType"];
   if (!v39 || [v39 unsignedIntValue])
   {
     v38 = [MEMORY[0x277CCACA8] stringWithFormat:@"Programmer error: Unexpected response type in IAE segments notification: %@", v39];
@@ -742,15 +742,15 @@
     }
 
     objc_storeStrong(&v37, 0);
-    v17 = [(AMDClient *)v57 callback];
+    callback5 = [(AMDClient *)selfCopy callback];
     v16 = [AMDError allocError:28 withMessage:v38];
-    v17[2](v17, 0);
+    callback5[2](callback5, 0);
     MEMORY[0x277D82BD8](v16);
-    MEMORY[0x277D82BD8](v17);
+    MEMORY[0x277D82BD8](callback5);
     objc_storeStrong(&v38, 0);
   }
 
-  v35 = [v54 objectForKey:@"segmentData"];
+  v35 = [userInfo objectForKey:@"segmentData"];
   v34 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v35, "count")}];
   memset(__b, 0, sizeof(__b));
   v14 = MEMORY[0x277D82BE0](v35);
@@ -793,47 +793,47 @@
   }
 
   MEMORY[0x277D82BD8](v14);
-  v30 = [v54 objectForKey:@"metadata"];
+  v30 = [userInfo objectForKey:@"metadata"];
   v4 = [AMDFetchAppSegmentsResponse alloc];
   v29 = [(AMDFetchAppSegmentsResponse *)v4 initWithSegmentInfo:v34 ofType:v39 andMetaData:v30];
-  v5 = [(AMDClient *)v57 callback];
-  v5[2](v5, v29);
-  MEMORY[0x277D82BD8](v5);
+  callback6 = [(AMDClient *)selfCopy callback];
+  callback6[2](callback6, v29);
+  MEMORY[0x277D82BD8](callback6);
   objc_storeStrong(&v29, 0);
   objc_storeStrong(&v30, 0);
   objc_storeStrong(&v34, 0);
   objc_storeStrong(&v35, 0);
   objc_storeStrong(&v39, 0);
   objc_storeStrong(&v45, 0);
-  objc_storeStrong(&v54, 0);
-  objc_storeStrong(&v55, 0);
+  objc_storeStrong(&userInfo, 0);
+  objc_storeStrong(&name, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)subscribeToSegmentNotificationWithCallback:(id)a3 forAccountDSID:(id)a4
+- (void)subscribeToSegmentNotificationWithCallback:(id)callback forAccountDSID:(id)d
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, callback);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  [(AMDClient *)v17 setDsId:v15];
-  [(AMDClient *)v17 setCallback:location[0]];
-  v14 = [MEMORY[0x277CCA9A0] defaultCenter];
-  v6 = v14;
-  v7 = [MEMORY[0x277CCABD8] currentQueue];
+  objc_storeStrong(&v15, d);
+  [(AMDClient *)selfCopy setDsId:v15];
+  [(AMDClient *)selfCopy setCallback:location[0]];
+  defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
+  v6 = defaultCenter;
+  currentQueue = [MEMORY[0x277CCABD8] currentQueue];
   v8 = MEMORY[0x277D85DD0];
   v9 = -1073741824;
   v10 = 0;
   v11 = __71__AMDClient_subscribeToSegmentNotificationWithCallback_forAccountDSID___block_invoke;
   v12 = &unk_278CB5EE0;
-  v13 = MEMORY[0x277D82BE0](v17);
-  v4 = [v6 addObserverForName:@"com.apple.AppleMediaDiscovery.IAESegmentNotification" object:0 queue:v7 usingBlock:?];
-  MEMORY[0x277D82BD8](v7);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
+  v4 = [v6 addObserverForName:@"com.apple.AppleMediaDiscovery.IAESegmentNotification" object:0 queue:currentQueue usingBlock:?];
+  MEMORY[0x277D82BD8](currentQueue);
   objc_storeStrong(&v13, 0);
-  objc_storeStrong(&v14, 0);
+  objc_storeStrong(&defaultCenter, 0);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(location, 0);
 }
@@ -849,43 +849,43 @@ void __71__AMDClient_subscribeToSegmentNotificationWithCallback_forAccountDSID__
 
 - (void)unsubscribeFromSegmentNotification
 {
-  v3 = self;
+  selfCopy = self;
   v2[1] = a2;
   v2[0] = [MEMORY[0x277CCA9A0] defaultCenter];
-  [v2[0] removeObserver:v3 name:@"com.apple.AppleMediaDiscovery.IAESegmentNotification" object:?];
+  [v2[0] removeObserver:selfCopy name:@"com.apple.AppleMediaDiscovery.IAESegmentNotification" object:?];
   objc_storeStrong(v2, 0);
 }
 
 - (void)callIAESegmentNotificationHandler
 {
-  v3 = self;
+  selfCopy = self;
   v2[1] = a2;
   v2[0] = [objc_alloc(MEMORY[0x277CCAB88]) initWithName:@"com.apple.AppleMediaDiscovery.IAESegmentNotification" object:? userInfo:?];
-  [(AMDClient *)v3 iaeSegmentNotificationHandler:v2[0]];
+  [(AMDClient *)selfCopy iaeSegmentNotificationHandler:v2[0]];
   objc_storeStrong(v2, 0);
 }
 
-- (id)getModelPath:(id)a3 error:(id *)a4
+- (id)getModelPath:(id)path error:(id *)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17 = a4;
+  objc_storeStrong(location, path);
+  errorCopy = error;
   if (location[0])
   {
     v15 = objc_alloc_init(MEMORY[0x277CEE498]);
     v5 = [AMDClientRequestEvent alloc];
     v14 = [(AMDClientRequestEvent *)v5 initModelPathRequestForUsecaseId:0 andModelId:location[0] withTreatmentId:0 inDomain:?];
-    v9 = [v14 getAMSRequest];
+    getAMSRequest = [v14 getAMSRequest];
     v13 = [v15 enqueueEvent:?];
-    MEMORY[0x277D82BD8](v9);
-    v12 = [v13 resultWithError:v17];
-    if (!*v17 && v12)
+    MEMORY[0x277D82BD8](getAMSRequest);
+    v12 = [v13 resultWithError:errorCopy];
+    if (!*errorCopy && v12)
     {
-      v8 = [v12 data];
-      v19 = [v8 objectForKey:@"response"];
-      MEMORY[0x277D82BD8](v8);
+      data = [v12 data];
+      v19 = [data objectForKey:@"response"];
+      MEMORY[0x277D82BD8](data);
       v16 = 1;
     }
 
@@ -905,7 +905,7 @@ void __71__AMDClient_subscribeToSegmentNotificationWithCallback_forAccountDSID__
   {
     v10 = [AMDError allocError:14 withMessage:@"Nil modelId passed"];
     v4 = v10;
-    *v17 = v10;
+    *errorCopy = v10;
     v19 = 0;
     v16 = 1;
   }
@@ -916,31 +916,31 @@ void __71__AMDClient_subscribeToSegmentNotificationWithCallback_forAccountDSID__
   return v6;
 }
 
-- (id)getModelPathForUsecase:(id)a3 withTreatmentId:(id)a4 inDomain:(id)a5 error:(id *)a6
+- (id)getModelPathForUsecase:(id)usecase withTreatmentId:(id)id inDomain:(id)domain error:(id *)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, usecase);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, id);
   v22 = 0;
-  objc_storeStrong(&v22, a5);
-  v21 = a6;
+  objc_storeStrong(&v22, domain);
+  errorCopy = error;
   if (location[0])
   {
     v19 = objc_alloc_init(MEMORY[0x277CEE498]);
     v7 = [AMDClientRequestEvent alloc];
     v18 = [(AMDClientRequestEvent *)v7 initModelPathRequestForUsecaseId:location[0] andModelId:0 withTreatmentId:v23 inDomain:v22];
-    v11 = [v18 getAMSRequest];
+    getAMSRequest = [v18 getAMSRequest];
     v17 = [v19 enqueueEvent:?];
-    MEMORY[0x277D82BD8](v11);
-    v16 = [v17 resultWithError:v21];
-    if (!*v21 && v16)
+    MEMORY[0x277D82BD8](getAMSRequest);
+    v16 = [v17 resultWithError:errorCopy];
+    if (!*errorCopy && v16)
     {
-      v10 = [v16 data];
-      v25 = [v10 objectForKey:@"response"];
-      MEMORY[0x277D82BD8](v10);
+      data = [v16 data];
+      v25 = [data objectForKey:@"response"];
+      MEMORY[0x277D82BD8](data);
       v20 = 1;
     }
 
@@ -960,7 +960,7 @@ void __71__AMDClient_subscribeToSegmentNotificationWithCallback_forAccountDSID__
   {
     v12 = [AMDError allocError:14 withMessage:@"Nil usecaseId passed"];
     v6 = v12;
-    *v21 = v12;
+    *errorCopy = v12;
     v25 = 0;
     v20 = 1;
   }
@@ -973,34 +973,34 @@ void __71__AMDClient_subscribeToSegmentNotificationWithCallback_forAccountDSID__
   return v8;
 }
 
-- (id)getMusicModelPathForUsecase:(id)a3 withTreatmentId:(id)a4 error:(id *)a5
+- (id)getMusicModelPathForUsecase:(id)usecase withTreatmentId:(id)id error:(id *)error
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, usecase);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
-  v8 = [(AMDClient *)v11 getModelPathForUsecase:location[0] withTreatmentId:v9 inDomain:@"music" error:a5];
+  objc_storeStrong(&v9, id);
+  v8 = [(AMDClient *)selfCopy getModelPathForUsecase:location[0] withTreatmentId:v9 inDomain:@"music" error:error];
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 
   return v8;
 }
 
-- (id)sendPIRData:(id)a3 forKeyword:(id)a4 withCallHandle:(id)a5 andRequestError:(id)a6 error:(id *)a7
+- (id)sendPIRData:(id)data forKeyword:(id)keyword withCallHandle:(id)handle andRequestError:(id)error error:(id *)a7
 {
   v56[1] = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v51 = 0;
-  objc_storeStrong(&v51, a4);
+  objc_storeStrong(&v51, keyword);
   v50 = 0;
-  objc_storeStrong(&v50, a5);
+  objc_storeStrong(&v50, handle);
   v49 = 0;
-  objc_storeStrong(&v49, a6);
+  objc_storeStrong(&v49, error);
   v48 = a7;
   if (!location[0] || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -1045,9 +1045,9 @@ void __71__AMDClient_subscribeToSegmentNotificationWithCallback_forAccountDSID__
                 MEMORY[0x277D82BD8](v27);
               }
 
-              v25 = [v45 getAMSRequestForCipherML];
+              getAMSRequestForCipherML = [v45 getAMSRequestForCipherML];
               v44 = [v46 enqueueEvent:?];
-              MEMORY[0x277D82BD8](v25);
+              MEMORY[0x277D82BD8](getAMSRequestForCipherML);
               v43 = [v44 resultWithError:v48];
               if (*v48)
               {
@@ -1057,9 +1057,9 @@ void __71__AMDClient_subscribeToSegmentNotificationWithCallback_forAccountDSID__
 
               else if (v43)
               {
-                v22 = [v43 data];
-                v42 = [v22 objectForKey:@"response"];
-                MEMORY[0x277D82BD8](v22);
+                data = [v43 data];
+                v42 = [data objectForKey:@"response"];
+                MEMORY[0x277D82BD8](data);
                 v23 = [v42 objectForKey:@"frameworkError"];
                 MEMORY[0x277D82BD8](v23);
                 if (v23)
@@ -1166,18 +1166,18 @@ void __71__AMDClient_subscribeToSegmentNotificationWithCallback_forAccountDSID__
   return v19;
 }
 
-- (id)sendBatchedPIRData:(id)a3 forKeywords:(id)a4 withCallHandle:(id)a5 andRequestError:(id)a6 error:(id *)a7
+- (id)sendBatchedPIRData:(id)data forKeywords:(id)keywords withCallHandle:(id)handle andRequestError:(id)error error:(id *)a7
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v62 = 0;
-  objc_storeStrong(&v62, a4);
+  objc_storeStrong(&v62, keywords);
   v61 = 0;
-  objc_storeStrong(&v61, a5);
+  objc_storeStrong(&v61, handle);
   v60 = 0;
-  objc_storeStrong(&v60, a6);
+  objc_storeStrong(&v60, error);
   v59 = a7;
   if (location[0])
   {
@@ -1323,9 +1323,9 @@ LABEL_28:
     v50 = objc_alloc_init(MEMORY[0x277CEE498]);
     v21 = [AMDClientRequestEvent alloc];
     v49 = [(AMDClientRequestEvent *)v21 initPIRResponseForKeywordArray:v56 withDataArray:v55 withMissingKeywords:v57 requestError:v60 andCallHandle:v61];
-    v30 = [v49 getAMSRequestForCipherML];
+    getAMSRequestForCipherML = [v49 getAMSRequestForCipherML];
     v48 = [v50 enqueueEvent:?];
-    MEMORY[0x277D82BD8](v30);
+    MEMORY[0x277D82BD8](getAMSRequestForCipherML);
     v47 = [v48 resultWithError:v59];
     if (*v59)
     {
@@ -1335,9 +1335,9 @@ LABEL_28:
 
     else if (v47)
     {
-      v27 = [v47 data];
-      v46 = [v27 objectForKey:@"response"];
-      MEMORY[0x277D82BD8](v27);
+      data = [v47 data];
+      v46 = [data objectForKey:@"response"];
+      MEMORY[0x277D82BD8](data);
       v28 = [v46 objectForKey:@"frameworkError"];
       MEMORY[0x277D82BD8](v28);
       if (v28)
@@ -1395,17 +1395,17 @@ LABEL_38:
   return v24;
 }
 
-- (id)sendPECSimilarityScores:(id)a3 withCallHandle:(id)a4 andRequestError:(id)a5 error:(id *)a6
+- (id)sendPECSimilarityScores:(id)scores withCallHandle:(id)handle andRequestError:(id)error error:(id *)a6
 {
   v41[1] = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, scores);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
+  objc_storeStrong(&v38, handle);
   v37 = 0;
-  objc_storeStrong(&v37, a5);
+  objc_storeStrong(&v37, error);
   v36 = a6;
   if (v38)
   {
@@ -1433,9 +1433,9 @@ LABEL_38:
           v32 = v9;
           MEMORY[0x277D82BD8](v10);
           MEMORY[0x277D82BD8](v20);
-          v21 = [v32 getAMSRequestForCipherML];
+          getAMSRequestForCipherML = [v32 getAMSRequestForCipherML];
           v31 = [v33 enqueueEvent:?];
-          MEMORY[0x277D82BD8](v21);
+          MEMORY[0x277D82BD8](getAMSRequestForCipherML);
           v30 = [v31 resultWithError:v36];
           if (*v36)
           {
@@ -1445,9 +1445,9 @@ LABEL_38:
 
           else if (v30)
           {
-            v16 = [v30 data];
-            v29 = [v16 objectForKey:@"response"];
-            MEMORY[0x277D82BD8](v16);
+            data = [v30 data];
+            v29 = [data objectForKey:@"response"];
+            MEMORY[0x277D82BD8](data);
             v17 = [v29 objectForKey:@"frameworkError"];
             MEMORY[0x277D82BD8](v17);
             if (v17)
@@ -1526,17 +1526,17 @@ LABEL_38:
   return v13;
 }
 
-- (id)sendBatchedPECSimilarityScores:(id)a3 withCallHandle:(id)a4 andRequestError:(id)a5 error:(id *)a6
+- (id)sendBatchedPECSimilarityScores:(id)scores withCallHandle:(id)handle andRequestError:(id)error error:(id *)a6
 {
   v52 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, scores);
   v48 = 0;
-  objc_storeStrong(&v48, a4);
+  objc_storeStrong(&v48, handle);
   v47 = 0;
-  objc_storeStrong(&v47, a5);
+  objc_storeStrong(&v47, error);
   v46 = a6;
   if (!v48)
   {
@@ -1580,9 +1580,9 @@ LABEL_23:
     v40 = objc_alloc_init(MEMORY[0x277CEE498]);
     v12 = [AMDClientRequestEvent alloc];
     v39 = [(AMDClientRequestEvent *)v12 initPECResponseForSimilarityScores:v44 requestError:v47 andCallHandle:v48];
-    v21 = [v39 getAMSRequestForCipherML];
+    getAMSRequestForCipherML = [v39 getAMSRequestForCipherML];
     v38 = [v40 enqueueEvent:?];
-    MEMORY[0x277D82BD8](v21);
+    MEMORY[0x277D82BD8](getAMSRequestForCipherML);
     v37 = [v38 resultWithError:v46];
     if (*v46)
     {
@@ -1592,9 +1592,9 @@ LABEL_23:
 
     else if (v37)
     {
-      v18 = [v37 data];
-      v36 = [v18 objectForKey:@"response"];
-      MEMORY[0x277D82BD8](v18);
+      data = [v37 data];
+      v36 = [data objectForKey:@"response"];
+      MEMORY[0x277D82BD8](data);
       v19 = [v36 objectForKey:@"frameworkError"];
       MEMORY[0x277D82BD8](v19);
       if (v19)
@@ -1721,19 +1721,19 @@ LABEL_33:
   return v15;
 }
 
-- (id)sendPIRData:(id)a3 forKeyword:(id)a4 withCallHandle:(id)a5 error:(id *)a6
+- (id)sendPIRData:(id)data forKeyword:(id)keyword withCallHandle:(id)handle error:(id *)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, keyword);
   v12 = 0;
-  objc_storeStrong(&v12, a5);
+  objc_storeStrong(&v12, handle);
   v11 = [AMDError allocError:18 withMessage:@"Deprecated method"];
   v6 = v11;
-  *a6 = v11;
+  *error = v11;
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);

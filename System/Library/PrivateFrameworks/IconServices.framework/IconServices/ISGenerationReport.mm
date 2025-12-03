@@ -1,20 +1,20 @@
 @interface ISGenerationReport
-+ (id)generationReportWithCustomRenderedTag:(unsigned __int16)a3;
-- (ISGenerationReport)initWithIconTreatment:(unint64_t)a3 hasLightingEffects:(BOOL)a4;
++ (id)generationReportWithCustomRenderedTag:(unsigned __int16)tag;
+- (ISGenerationReport)initWithIconTreatment:(unint64_t)treatment hasLightingEffects:(BOOL)effects;
 - (unsigned)customRenderedTag;
 @end
 
 @implementation ISGenerationReport
 
-- (ISGenerationReport)initWithIconTreatment:(unint64_t)a3 hasLightingEffects:(BOOL)a4
+- (ISGenerationReport)initWithIconTreatment:(unint64_t)treatment hasLightingEffects:(BOOL)effects
 {
   v7.receiver = self;
   v7.super_class = ISGenerationReport;
   result = [(ISGenerationReport *)&v7 init];
   if (result)
   {
-    result->_iconTreatment = a3;
-    result->_hasLightingEffects = a4;
+    result->_iconTreatment = treatment;
+    result->_hasLightingEffects = effects;
   }
 
   return result;
@@ -22,7 +22,7 @@
 
 - (unsigned)customRenderedTag
 {
-  v3 = [(ISGenerationReport *)self iconTreatment];
+  iconTreatment = [(ISGenerationReport *)self iconTreatment];
   if ([(ISGenerationReport *)self hasLightingEffects])
   {
     v4 = 16;
@@ -33,14 +33,14 @@
     v4 = 0;
   }
 
-  return (v4 | v3) + 256;
+  return (v4 | iconTreatment) + 256;
 }
 
-+ (id)generationReportWithCustomRenderedTag:(unsigned __int16)a3
++ (id)generationReportWithCustomRenderedTag:(unsigned __int16)tag
 {
-  if ((a3 & 0xFF00) == 0x100)
+  if ((tag & 0xFF00) == 0x100)
   {
-    v4 = [[ISGenerationReport alloc] initWithIconTreatment:(a3 - 256) & 0xF hasLightingEffects:((a3 - 256) >> 4) & 1];
+    v4 = [[ISGenerationReport alloc] initWithIconTreatment:(tag - 256) & 0xF hasLightingEffects:((tag - 256) >> 4) & 1];
   }
 
   else

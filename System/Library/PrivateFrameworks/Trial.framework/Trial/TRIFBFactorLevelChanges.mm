@@ -1,193 +1,193 @@
 @interface TRIFBFactorLevelChanges
-- (void)replaceAlias:(id)a3;
-- (void)replaceFactorId:(id)a3;
-- (void)replaceFactorNamespaceName:(id)a3;
-- (void)replaceLevelWithBoolVal:(id)a3;
-- (void)replaceLevelWithDoubleVal:(id)a3;
-- (void)replaceLevelWithInt64Val:(id)a3;
-- (void)replaceLevelWithMaRefVal:(id)a3;
-- (void)replaceLevelWithStringVal:(id)a3;
-- (void)replaceLevelWithTrialAssetVal:(id)a3;
-- (void)replaceMetadata:(id)a3;
-- (void)replaceName:(id)a3;
+- (void)replaceAlias:(id)alias;
+- (void)replaceFactorId:(id)id;
+- (void)replaceFactorNamespaceName:(id)name;
+- (void)replaceLevelWithBoolVal:(id)val;
+- (void)replaceLevelWithDoubleVal:(id)val;
+- (void)replaceLevelWithInt64Val:(id)val;
+- (void)replaceLevelWithMaRefVal:(id)val;
+- (void)replaceLevelWithStringVal:(id)val;
+- (void)replaceLevelWithTrialAssetVal:(id)val;
+- (void)replaceMetadata:(id)metadata;
+- (void)replaceName:(id)name;
 @end
 
 @implementation TRIFBFactorLevelChanges
 
-- (void)replaceName:(id)a3
+- (void)replaceName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   self->_changeTypeName = 1;
-  v7 = v5;
-  if (!v5)
+  v7 = nameCopy;
+  if (!nameCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3970 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3970 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    nameCopy = 0;
   }
 
-  self->_replacementName = [v5 unsignedIntValue];
+  self->_replacementName = [nameCopy unsignedIntValue];
 }
 
-- (void)replaceLevelWithBoolVal:(id)a3
+- (void)replaceLevelWithBoolVal:(id)val
 {
-  v5 = a3;
-  v7 = v5;
-  if (!v5)
+  valCopy = val;
+  v7 = valCopy;
+  if (!valCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3992 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3992 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    valCopy = 0;
   }
 
   *&self->_replacementLevelType = 257;
-  self->_replacementLevel = [v5 unsignedIntValue];
+  self->_replacementLevel = [valCopy unsignedIntValue];
 }
 
-- (void)replaceLevelWithStringVal:(id)a3
+- (void)replaceLevelWithStringVal:(id)val
 {
-  v5 = a3;
-  v7 = v5;
-  if (!v5)
+  valCopy = val;
+  v7 = valCopy;
+  if (!valCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3999 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:3999 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    valCopy = 0;
   }
 
   *&self->_replacementLevelType = 258;
-  self->_replacementLevel = [v5 unsignedIntValue];
+  self->_replacementLevel = [valCopy unsignedIntValue];
 }
 
-- (void)replaceLevelWithInt64Val:(id)a3
+- (void)replaceLevelWithInt64Val:(id)val
 {
-  v5 = a3;
-  v7 = v5;
-  if (!v5)
+  valCopy = val;
+  v7 = valCopy;
+  if (!valCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:4006 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:4006 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    valCopy = 0;
   }
 
   *&self->_replacementLevelType = 259;
-  self->_replacementLevel = [v5 unsignedIntValue];
+  self->_replacementLevel = [valCopy unsignedIntValue];
 }
 
-- (void)replaceLevelWithDoubleVal:(id)a3
+- (void)replaceLevelWithDoubleVal:(id)val
 {
-  v5 = a3;
-  v7 = v5;
-  if (!v5)
+  valCopy = val;
+  v7 = valCopy;
+  if (!valCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:4013 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:4013 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    valCopy = 0;
   }
 
   *&self->_replacementLevelType = 260;
-  self->_replacementLevel = [v5 unsignedIntValue];
+  self->_replacementLevel = [valCopy unsignedIntValue];
 }
 
-- (void)replaceLevelWithTrialAssetVal:(id)a3
+- (void)replaceLevelWithTrialAssetVal:(id)val
 {
-  v5 = a3;
-  v7 = v5;
-  if (!v5)
+  valCopy = val;
+  v7 = valCopy;
+  if (!valCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:4020 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:4020 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    valCopy = 0;
   }
 
   *&self->_replacementLevelType = 261;
-  self->_replacementLevel = [v5 unsignedIntValue];
+  self->_replacementLevel = [valCopy unsignedIntValue];
 }
 
-- (void)replaceLevelWithMaRefVal:(id)a3
+- (void)replaceLevelWithMaRefVal:(id)val
 {
-  v5 = a3;
-  v7 = v5;
-  if (!v5)
+  valCopy = val;
+  v7 = valCopy;
+  if (!valCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:4027 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:4027 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    valCopy = 0;
   }
 
   *&self->_replacementLevelType = 262;
-  self->_replacementLevel = [v5 unsignedIntValue];
+  self->_replacementLevel = [valCopy unsignedIntValue];
 }
 
-- (void)replaceMetadata:(id)a3
+- (void)replaceMetadata:(id)metadata
 {
-  v5 = a3;
+  metadataCopy = metadata;
   self->_changeTypeMetadata = 1;
-  v7 = v5;
-  if (!v5)
+  v7 = metadataCopy;
+  if (!metadataCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:4047 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:4047 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    metadataCopy = 0;
   }
 
-  self->_replacementMetadata = [v5 unsignedIntValue];
+  self->_replacementMetadata = [metadataCopy unsignedIntValue];
 }
 
-- (void)replaceAlias:(id)a3
+- (void)replaceAlias:(id)alias
 {
-  v5 = a3;
+  aliasCopy = alias;
   self->_changeTypeAlias = 1;
-  v7 = v5;
-  if (!v5)
+  v7 = aliasCopy;
+  if (!aliasCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:4087 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:4087 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    aliasCopy = 0;
   }
 
-  self->_replacementAlias = [v5 unsignedIntValue];
+  self->_replacementAlias = [aliasCopy unsignedIntValue];
 }
 
-- (void)replaceFactorNamespaceName:(id)a3
+- (void)replaceFactorNamespaceName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   self->_changeTypeFactorNamespaceName = 1;
-  v7 = v5;
-  if (!v5)
+  v7 = nameCopy;
+  if (!nameCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:4110 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:4110 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    nameCopy = 0;
   }
 
-  self->_replacementFactorNamespaceName = [v5 unsignedIntValue];
+  self->_replacementFactorNamespaceName = [nameCopy unsignedIntValue];
 }
 
-- (void)replaceFactorId:(id)a3
+- (void)replaceFactorId:(id)id
 {
-  v5 = a3;
+  idCopy = id;
   self->_changeTypeFactorId = 1;
-  v7 = v5;
-  if (!v5)
+  v7 = idCopy;
+  if (!idCopy)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:4133 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIFBFastFactorLevels_generated.mm" lineNumber:4133 description:{@"Invalid parameter not satisfying: %@", @"ofs"}];
 
-    v5 = 0;
+    idCopy = 0;
   }
 
-  self->_replacementFactorId = [v5 unsignedIntValue];
+  self->_replacementFactorId = [idCopy unsignedIntValue];
 }
 
 @end

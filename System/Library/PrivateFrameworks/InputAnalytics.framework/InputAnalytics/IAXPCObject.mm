@@ -1,10 +1,10 @@
 @interface IAXPCObject
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (IAXPCObject)init;
-- (IAXPCObject)initWithCoder:(id)a3;
-- (IAXPCObject)initWithTimestamp:(id)a3;
+- (IAXPCObject)initWithCoder:(id)coder;
+- (IAXPCObject)initWithTimestamp:(id)timestamp;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IAXPCObject
@@ -40,9 +40,9 @@
   return v19;
 }
 
-- (IAXPCObject)initWithTimestamp:(id)a3
+- (IAXPCObject)initWithTimestamp:(id)timestamp
 {
-  v4 = a3;
+  timestampCopy = timestamp;
   v15.receiver = self;
   v15.super_class = IAXPCObject;
   v7 = [(IAXPCObject *)&v15 init];
@@ -52,22 +52,22 @@
     v11 = objc_msgSend_bundleIdentifier(v8, v9, v10);
     objc_msgSend_setAppBundleId_(v7, v12, v11);
 
-    objc_msgSend_setTimestamp_(v7, v13, v4);
+    objc_msgSend_setTimestamp_(v7, v13, timestampCopy);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v8 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
+      v9 = equalCopy;
     }
 
     else
@@ -186,36 +186,36 @@ LABEL_37:
   return v19;
 }
 
-- (IAXPCObject)initWithCoder:(id)a3
+- (IAXPCObject)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = IAXPCObject;
   v5 = [(IAXPCObject *)&v27 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"textInputSessionId");
+    v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"textInputSessionId");
     textInputSessionId = v5->textInputSessionId;
     v5->textInputSessionId = v8;
 
     v10 = objc_opt_class();
-    v12 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v11, v10, @"appSessionId");
+    v12 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v11, v10, @"appSessionId");
     appSessionId = v5->appSessionId;
     v5->appSessionId = v12;
 
     v14 = objc_opt_class();
-    v16 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v15, v14, @"appBundleId");
+    v16 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v15, v14, @"appBundleId");
     appBundleId = v5->appBundleId;
     v5->appBundleId = v16;
 
     v18 = objc_opt_class();
-    v20 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v19, v18, @"timestamp");
+    v20 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v19, v18, @"timestamp");
     timestamp = v5->timestamp;
     v5->timestamp = v20;
 
     v22 = objc_opt_class();
-    v24 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v23, v22, @"creationTimestamp");
+    v24 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v23, v22, @"creationTimestamp");
     creationTimestamp = v5->creationTimestamp;
     v5->creationTimestamp = v24;
   }
@@ -223,15 +223,15 @@ LABEL_37:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   textInputSessionId = self->textInputSessionId;
-  v10 = a3;
-  objc_msgSend_encodeObject_forKey_(v10, v5, textInputSessionId, @"textInputSessionId");
-  objc_msgSend_encodeObject_forKey_(v10, v6, self->appSessionId, @"appSessionId");
-  objc_msgSend_encodeObject_forKey_(v10, v7, self->appBundleId, @"appBundleId");
-  objc_msgSend_encodeObject_forKey_(v10, v8, self->timestamp, @"timestamp");
-  objc_msgSend_encodeObject_forKey_(v10, v9, self->creationTimestamp, @"creationTimestamp");
+  coderCopy = coder;
+  objc_msgSend_encodeObject_forKey_(coderCopy, v5, textInputSessionId, @"textInputSessionId");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v6, self->appSessionId, @"appSessionId");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v7, self->appBundleId, @"appBundleId");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, self->timestamp, @"timestamp");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v9, self->creationTimestamp, @"creationTimestamp");
 }
 
 @end

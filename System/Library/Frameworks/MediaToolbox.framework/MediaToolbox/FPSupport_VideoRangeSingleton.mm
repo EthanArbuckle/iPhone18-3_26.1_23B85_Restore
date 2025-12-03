@@ -2,7 +2,7 @@
 + (id)sharedFPSupportSingleton;
 - (FPSupport_VideoRangeSingleton)init;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation FPSupport_VideoRangeSingleton
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __57__FPSupport_VideoRangeSingleton_sharedFPSupportSingleton__block_invoke;
   block[3] = &unk_1E7482608;
-  block[4] = a1;
+  block[4] = self;
   if (sharedFPSupportSingleton_onceToken != -1)
   {
     dispatch_once(&sharedFPSupportSingleton_onceToken, block);
@@ -43,9 +43,9 @@
   [(FPSupport_VideoRangeSingleton *)&v2 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:@"currentMode"])
+  if ([path isEqualToString:@"currentMode"])
   {
     notificationQ = self->_notificationQ;
 
@@ -56,7 +56,7 @@
   {
     v12.receiver = self;
     v12.super_class = FPSupport_VideoRangeSingleton;
-    [(FPSupport_VideoRangeSingleton *)&v12 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:a6];
+    [(FPSupport_VideoRangeSingleton *)&v12 observeValueForKeyPath:path ofObject:object change:change context:context];
   }
 }
 

@@ -1,35 +1,35 @@
 @interface MKPolygonView
 - (MKPolygonView)initWithPolygon:(MKPolygon *)polygon;
 - (void)createPath;
-- (void)fillPath:(CGPath *)a3 inContext:(CGContext *)a4;
-- (void)strokePath:(CGPath *)a3 inContext:(CGContext *)a4;
+- (void)fillPath:(CGPath *)path inContext:(CGContext *)context;
+- (void)strokePath:(CGPath *)path inContext:(CGContext *)context;
 @end
 
 @implementation MKPolygonView
 
-- (void)strokePath:(CGPath *)a3 inContext:(CGContext *)a4
+- (void)strokePath:(CGPath *)path inContext:(CGContext *)context
 {
-  v6 = [(MKOverlayPathView *)self strokeColor];
+  strokeColor = [(MKOverlayPathView *)self strokeColor];
 
-  if (a3 && v6)
+  if (path && strokeColor)
   {
-    CGContextBeginPath(a4);
-    CGContextAddPath(a4, a3);
+    CGContextBeginPath(context);
+    CGContextAddPath(context, path);
 
-    CGContextStrokePath(a4);
+    CGContextStrokePath(context);
   }
 }
 
-- (void)fillPath:(CGPath *)a3 inContext:(CGContext *)a4
+- (void)fillPath:(CGPath *)path inContext:(CGContext *)context
 {
-  v6 = [(MKOverlayPathView *)self fillColor];
+  fillColor = [(MKOverlayPathView *)self fillColor];
 
-  if (a3 && v6)
+  if (path && fillColor)
   {
-    CGContextBeginPath(a4);
-    CGContextAddPath(a4, a3);
+    CGContextBeginPath(context);
+    CGContextAddPath(context, path);
 
-    CGContextDrawPath(a4, kCGPathEOFill);
+    CGContextDrawPath(context, kCGPathEOFill);
   }
 }
 
@@ -39,17 +39,17 @@
   [(MKOverlayView *)self _originMapPoint];
   v4 = v3;
   v6 = v5;
-  v7 = [(MKOverlayView *)self overlay];
-  PathForPolygon = CreatePathForPolygon(v7, v4, v6);
+  overlay = [(MKOverlayView *)self overlay];
+  PathForPolygon = CreatePathForPolygon(overlay, v4, v6);
 
-  v9 = [(MKOverlayView *)self overlay];
-  v10 = [v9 interiorPolygons];
+  overlay2 = [(MKOverlayView *)self overlay];
+  interiorPolygons = [overlay2 interiorPolygons];
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = v10;
+  v11 = interiorPolygons;
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v12)
   {

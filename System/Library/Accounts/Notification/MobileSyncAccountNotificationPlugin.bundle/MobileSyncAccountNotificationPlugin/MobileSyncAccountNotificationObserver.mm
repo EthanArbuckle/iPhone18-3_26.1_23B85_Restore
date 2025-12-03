@@ -1,6 +1,6 @@
 @interface MobileSyncAccountNotificationObserver
 - (MobileSyncAccountNotificationObserver)init;
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6;
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount;
 @end
 
 @implementation MobileSyncAccountNotificationObserver
@@ -24,54 +24,54 @@
   return v2;
 }
 
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount
 {
-  v8 = a3;
-  v9 = a6;
-  v10 = v9;
-  if (v8)
+  accountCopy = account;
+  oldAccountCopy = oldAccount;
+  v10 = oldAccountCopy;
+  if (accountCopy)
   {
-    v11 = v8;
+    v11 = accountCopy;
   }
 
   else
   {
-    v11 = v9;
+    v11 = oldAccountCopy;
   }
 
   v12 = v11;
-  v13 = [v12 accountType];
-  v14 = [v13 supportedDataclasses];
+  accountType = [v12 accountType];
+  supportedDataclasses = [accountType supportedDataclasses];
   v45 = *MEMORY[0x29EDB8480];
-  if ([v14 containsObject:?])
+  if ([supportedDataclasses containsObject:?])
   {
     v15 = 0;
   }
 
   else
   {
-    v42 = a4;
-    v43 = v8;
+    typeCopy = type;
+    v43 = accountCopy;
     v16 = v10;
-    v17 = [v12 accountType];
-    v18 = [v17 supportedDataclasses];
-    if ([v18 containsObject:*MEMORY[0x29EDB8488]])
+    accountType2 = [v12 accountType];
+    supportedDataclasses2 = [accountType2 supportedDataclasses];
+    if ([supportedDataclasses2 containsObject:*MEMORY[0x29EDB8488]])
     {
       v15 = 0;
     }
 
     else
     {
-      v19 = [v12 accountType];
-      v20 = [v19 supportedDataclasses];
-      v21 = [v20 containsObject:*MEMORY[0x29EDB8470]];
+      accountType3 = [v12 accountType];
+      supportedDataclasses3 = [accountType3 supportedDataclasses];
+      v21 = [supportedDataclasses3 containsObject:*MEMORY[0x29EDB8470]];
 
       v15 = v21 ^ 1;
     }
 
     v10 = v16;
-    v8 = v43;
-    a4 = v42;
+    accountCopy = v43;
+    type = typeCopy;
   }
 
   if (qword_2A1A11BF0 != -1)
@@ -79,27 +79,27 @@
     sub_29C8E941C();
   }
 
-  v22 = [v12 accountType];
-  v23 = [v22 identifier];
+  accountType4 = [v12 accountType];
+  identifier = [accountType4 identifier];
 
-  v24 = [v12 parentAccount];
+  parentAccount = [v12 parentAccount];
 
-  if (v24)
+  if (parentAccount)
   {
-    v25 = [v12 parentAccount];
-    v26 = [v25 accountType];
-    v27 = [v26 identifier];
+    parentAccount2 = [v12 parentAccount];
+    accountType5 = [parentAccount2 accountType];
+    identifier2 = [accountType5 identifier];
 
-    v23 = v27;
+    identifier = identifier2;
   }
 
-  if (!(v15 & 1 | (([qword_2A1A11BE8 containsObject:v23] & 1) == 0)))
+  if (!(v15 & 1 | (([qword_2A1A11BE8 containsObject:identifier] & 1) == 0)))
   {
-    v28 = [v12 parentAccount];
+    parentAccount3 = [v12 parentAccount];
 
-    if (!v28)
+    if (!parentAccount3)
     {
-      if ((a4 - 1) > 1)
+      if ((type - 1) > 1)
       {
         v44 = 0;
         v41 = 0;
@@ -108,13 +108,13 @@
 
       else
       {
-        v44 = [v8 isEnabledForDataclass:v45];
-        BYTE4(v41) = [v8 isEnabledForDataclass:*MEMORY[0x29EDB8470]];
-        LOBYTE(v41) = [v8 isEnabledForDataclass:*MEMORY[0x29EDB8488]];
-        v40 = [v8 isEnabledForDataclass:*MEMORY[0x29EDB84A8]];
+        v44 = [accountCopy isEnabledForDataclass:v45];
+        BYTE4(v41) = [accountCopy isEnabledForDataclass:*MEMORY[0x29EDB8470]];
+        LOBYTE(v41) = [accountCopy isEnabledForDataclass:*MEMORY[0x29EDB8488]];
+        v40 = [accountCopy isEnabledForDataclass:*MEMORY[0x29EDB84A8]];
       }
 
-      if (a4 == 3)
+      if (type == 3)
       {
         v32 = v10;
         v29 = 1;
@@ -123,7 +123,7 @@
         v33 = 1;
       }
 
-      else if (a4 == 2)
+      else if (type == 2)
       {
         v29 = [v10 isEnabledForDataclass:v45];
         v30 = [v10 isEnabledForDataclass:*MEMORY[0x29EDB8470]];
@@ -141,10 +141,10 @@
         v33 = 0;
       }
 
-      v34 = [v12 accountType];
-      v35 = [v34 accountTypeDescription];
+      accountType6 = [v12 accountType];
+      accountTypeDescription = [accountType6 accountTypeDescription];
 
-      v36 = [v12 accountDescription];
+      accountDescription = [v12 accountDescription];
       serialQueue = self->_serialQueue;
       block[0] = MEMORY[0x29EDCA5F8];
       block[1] = 3221225472;
@@ -152,16 +152,16 @@
       block[3] = &unk_29F330FE0;
       v50 = v44;
       v51 = v29;
-      v48 = v35;
-      v49 = v36;
+      v48 = accountTypeDescription;
+      v49 = accountDescription;
       v52 = BYTE4(v41);
       v53 = v30;
       v54 = v41;
       v55 = v31;
       v56 = v40;
       v57 = v33;
-      v38 = v36;
-      v39 = v35;
+      v38 = accountDescription;
+      v39 = accountTypeDescription;
       dispatch_async(serialQueue, block);
 
       v10 = v32;

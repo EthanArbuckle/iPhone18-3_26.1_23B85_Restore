@@ -1,32 +1,32 @@
 @interface CKAppInstallation
 - (BOOL)installed;
-- (CKAppInstallation)initWithBundleIdentifier:(id)a3;
-- (CKAppInstallation)initWithBundleIdentifier:(id)a3 startTime:(double)a4;
+- (CKAppInstallation)initWithBundleIdentifier:(id)identifier;
+- (CKAppInstallation)initWithBundleIdentifier:(id)identifier startTime:(double)time;
 - (NSString)localizedDisplayName;
 - (NSString)pluginBundleIdentifier;
 - (UIImage)icon;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)setProxy:(id)a3;
+- (void)setProxy:(id)proxy;
 @end
 
 @implementation CKAppInstallation
 
-- (CKAppInstallation)initWithBundleIdentifier:(id)a3
+- (CKAppInstallation)initWithBundleIdentifier:(id)identifier
 {
   v4 = MEMORY[0x1E695DF00];
-  v5 = a3;
-  v6 = [v4 date];
-  [v6 timeIntervalSinceReferenceDate];
-  v7 = [(CKAppInstallation *)self initWithBundleIdentifier:v5 startTime:?];
+  identifierCopy = identifier;
+  date = [v4 date];
+  [date timeIntervalSinceReferenceDate];
+  v7 = [(CKAppInstallation *)self initWithBundleIdentifier:identifierCopy startTime:?];
 
   return v7;
 }
 
-- (CKAppInstallation)initWithBundleIdentifier:(id)a3 startTime:(double)a4
+- (CKAppInstallation)initWithBundleIdentifier:(id)identifier startTime:(double)time
 {
-  v7 = a3;
-  if (v7)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     v16.receiver = self;
     v16.super_class = CKAppInstallation;
@@ -34,14 +34,14 @@
     v9 = v8;
     if (v8)
     {
-      objc_storeStrong(&v8->_bundleIdentifier, a3);
+      objc_storeStrong(&v8->_bundleIdentifier, identifier);
       v10 = MEMORY[0x1E69635E0];
-      v11 = [(CKAppInstallation *)v9 bundleIdentifier];
-      v12 = [v10 applicationProxyForIdentifier:v11];
+      bundleIdentifier = [(CKAppInstallation *)v9 bundleIdentifier];
+      v12 = [v10 applicationProxyForIdentifier:bundleIdentifier];
       proxy = v9->_proxy;
       v9->_proxy = v12;
 
-      v9->_startTime = a4;
+      v9->_startTime = time;
       if (!v9->_proxy)
       {
 
@@ -50,22 +50,22 @@
     }
 
     self = v9;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CKAppInstallation alloc];
-  v5 = [(CKAppInstallation *)self bundleIdentifier];
-  v6 = [(CKAppInstallation *)v4 initWithBundleIdentifier:v5];
+  bundleIdentifier = [(CKAppInstallation *)self bundleIdentifier];
+  v6 = [(CKAppInstallation *)v4 initWithBundleIdentifier:bundleIdentifier];
 
   [(CKAppInstallation *)self percentComplete];
   [v6 setPercentComplete:?];
@@ -77,41 +77,41 @@
 
 - (NSString)pluginBundleIdentifier
 {
-  v2 = [(CKAppInstallation *)self proxy];
-  v3 = [v2 __ck_messagesPluginKitProxy];
-  v4 = [v3 bundleIdentifier];
+  proxy = [(CKAppInstallation *)self proxy];
+  __ck_messagesPluginKitProxy = [proxy __ck_messagesPluginKitProxy];
+  bundleIdentifier = [__ck_messagesPluginKitProxy bundleIdentifier];
 
-  return v4;
+  return bundleIdentifier;
 }
 
 - (NSString)localizedDisplayName
 {
-  v2 = [(CKAppInstallation *)self proxy];
-  v3 = [v2 localizedName];
+  proxy = [(CKAppInstallation *)self proxy];
+  localizedName = [proxy localizedName];
 
-  return v3;
+  return localizedName;
 }
 
-- (void)setProxy:(id)a3
+- (void)setProxy:(id)proxy
 {
-  v5 = a3;
-  if (self->_proxy != v5)
+  proxyCopy = proxy;
+  if (self->_proxy != proxyCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_proxy, a3);
+    v7 = proxyCopy;
+    objc_storeStrong(&self->_proxy, proxy);
     icon = self->_icon;
     self->_icon = 0;
 
-    v5 = v7;
+    proxyCopy = v7;
   }
 }
 
 - (BOOL)installed
 {
-  v2 = [(CKAppInstallation *)self proxy];
-  v3 = [v2 isInstalled];
+  proxy = [(CKAppInstallation *)self proxy];
+  isInstalled = [proxy isInstalled];
 
-  return v3;
+  return isInstalled;
 }
 
 - (UIImage)icon
@@ -119,18 +119,18 @@
   v16 = *MEMORY[0x1E69E9840];
   if (!self->_icon)
   {
-    v3 = [(CKAppInstallation *)self proxy];
-    v4 = [v3 __ck_messagesPluginKitProxy];
-    v5 = [v4 __ck_icon];
+    proxy = [(CKAppInstallation *)self proxy];
+    __ck_messagesPluginKitProxy = [proxy __ck_messagesPluginKitProxy];
+    __ck_icon = [__ck_messagesPluginKitProxy __ck_icon];
     icon = self->_icon;
-    self->_icon = v5;
+    self->_icon = __ck_icon;
 
     if (!self->_icon)
     {
-      v7 = [(CKAppInstallation *)self proxy];
-      v8 = [v7 __ck_icon];
+      proxy2 = [(CKAppInstallation *)self proxy];
+      __ck_icon2 = [proxy2 __ck_icon];
       v9 = self->_icon;
-      self->_icon = v8;
+      self->_icon = __ck_icon2;
     }
 
     if (IMOSLoggingEnabled())
@@ -154,19 +154,19 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CKAppInstallation *)self bundleIdentifier];
+  bundleIdentifier = [(CKAppInstallation *)self bundleIdentifier];
   [(CKAppInstallation *)self percentComplete];
   v6 = v5;
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CKAppInstallation installState](self, "installState")}];
-  v8 = [(CKAppInstallation *)self proxy];
-  v9 = [v8 isInstalled];
+  proxy = [(CKAppInstallation *)self proxy];
+  isInstalled = [proxy isInstalled];
   v10 = @"NO";
-  if (v9)
+  if (isInstalled)
   {
     v10 = @"YES";
   }
 
-  v11 = [v3 stringWithFormat:@"CKAppInstallation[%@, %f%% complete, install state=%@, installed=%@, icon=%@]", v4, v6, v7, v10, self->_icon];
+  v11 = [v3 stringWithFormat:@"CKAppInstallation[%@, %f%% complete, install state=%@, installed=%@, icon=%@]", bundleIdentifier, v6, v7, v10, self->_icon];
 
   return v11;
 }

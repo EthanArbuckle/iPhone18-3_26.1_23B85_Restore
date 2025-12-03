@@ -1,70 +1,70 @@
 @interface WFChooseFromMenuAction
-- (BOOL)legacyBehaviorIgnoresOutputFromAction:(id)a3 inWorkflow:(id)a4;
-- (WFChooseFromMenuAction)initWithIdentifier:(id)a3 definition:(id)a4 serializedParameters:(id)a5;
+- (BOOL)legacyBehaviorIgnoresOutputFromAction:(id)action inWorkflow:(id)workflow;
+- (WFChooseFromMenuAction)initWithIdentifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters;
 - (id)createAccompanyingActions;
-- (id)localizedDefaultOutputNameWithContext:(id)a3;
-- (id)localizedNameWithContext:(id)a3;
-- (id)newIntermediaryActionWithMenuItemTitle:(id)a3;
+- (id)localizedDefaultOutputNameWithContext:(id)context;
+- (id)localizedNameWithContext:(id)context;
+- (id)newIntermediaryActionWithMenuItemTitle:(id)title;
 - (id)serializedParameters;
-- (void)arrayParameter:(id)a3 confirmDeletionOfItemAtIndex:(unint64_t)a4 withHandler:(id)a5;
+- (void)arrayParameter:(id)parameter confirmDeletionOfItemAtIndex:(unint64_t)index withHandler:(id)handler;
 - (void)initializeParameters;
-- (void)runAsynchronouslyWithInput:(id)a3;
-- (void)setItemTitle:(id)a3;
-- (void)showAlertWithInput:(id)a3;
+- (void)runAsynchronouslyWithInput:(id)input;
+- (void)setItemTitle:(id)title;
+- (void)showAlertWithInput:(id)input;
 @end
 
 @implementation WFChooseFromMenuAction
 
-- (void)arrayParameter:(id)a3 confirmDeletionOfItemAtIndex:(unint64_t)a4 withHandler:(id)a5
+- (void)arrayParameter:(id)parameter confirmDeletionOfItemAtIndex:(unint64_t)index withHandler:(id)handler
 {
-  v12 = a5;
-  v7 = [(WFControlFlowAction *)self groupedIntermediaryActions];
-  if ([v7 count] <= a4)
+  handlerCopy = handler;
+  groupedIntermediaryActions = [(WFControlFlowAction *)self groupedIntermediaryActions];
+  if ([groupedIntermediaryActions count] <= index)
   {
-    v12[2](v12, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
   {
-    v8 = [(WFAction *)self workflow];
-    v9 = [v8 editingDelegate];
-    v10 = [(WFAction *)self workflow];
-    v11 = [v7 objectAtIndexedSubscript:a4];
-    [v9 workflow:v10 askToRemoveNestedActionsWithinAction:v11 completionHandler:v12];
+    workflow = [(WFAction *)self workflow];
+    editingDelegate = [workflow editingDelegate];
+    workflow2 = [(WFAction *)self workflow];
+    v11 = [groupedIntermediaryActions objectAtIndexedSubscript:index];
+    [editingDelegate workflow:workflow2 askToRemoveNestedActionsWithinAction:v11 completionHandler:handlerCopy];
   }
 }
 
-- (BOOL)legacyBehaviorIgnoresOutputFromAction:(id)a3 inWorkflow:(id)a4
+- (BOOL)legacyBehaviorIgnoresOutputFromAction:(id)action inWorkflow:(id)workflow
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  workflowCopy = workflow;
   if ([(WFControlFlowAction *)self mode])
   {
-    v8 = v6 == 0;
+    v8 = actionCopy == 0;
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = WFChooseFromMenuAction;
-    v8 = [(WFAction *)&v10 legacyBehaviorIgnoresOutputFromAction:v6 inWorkflow:v7];
+    v8 = [(WFAction *)&v10 legacyBehaviorIgnoresOutputFromAction:actionCopy inWorkflow:workflowCopy];
   }
 
   return v8;
 }
 
-- (id)localizedDefaultOutputNameWithContext:(id)a3
+- (id)localizedDefaultOutputNameWithContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = WFLocalizedStringResourceWithKey(@"Menu Result", @"Menu Result");
-  v5 = [v3 localize:v4];
+  v5 = [contextCopy localize:v4];
 
   return v5;
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   if ([(WFControlFlowAction *)self mode])
   {
     self->_latestMenuChoice = -1;
@@ -73,11 +73,11 @@
 
   else
   {
-    [(WFChooseFromMenuAction *)self showAlertWithInput:v4];
+    [(WFChooseFromMenuAction *)self showAlertWithInput:inputCopy];
   }
 }
 
-- (void)showAlertWithInput:(id)a3
+- (void)showAlertWithInput:(id)input
 {
   v4 = [(WFAction *)self parameterValueForKey:@"WFMenuItems" ofClass:objc_opt_class()];
   if ([v4 count])
@@ -91,8 +91,8 @@
 
     else
     {
-      v7 = [(WFAction *)self localizedDefaultDisambiguationPrompt];
-      [v5 setTitle:v7];
+      localizedDefaultDisambiguationPrompt = [(WFAction *)self localizedDefaultDisambiguationPrompt];
+      [v5 setTitle:localizedDefaultDisambiguationPrompt];
     }
 
     v14[0] = MEMORY[0x1E69E9820];
@@ -103,10 +103,10 @@
     v8 = v5;
     v15 = v8;
     [v4 enumerateObjectsUsingBlock:v14];
-    v9 = [(WFAction *)self userInterface];
-    v10 = [v9 isRunningWithSiriUI];
+    userInterface = [(WFAction *)self userInterface];
+    isRunningWithSiriUI = [userInterface isRunningWithSiriUI];
 
-    if ((v10 & 1) == 0)
+    if ((isRunningWithSiriUI & 1) == 0)
     {
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
@@ -117,8 +117,8 @@
       [v8 addButton:v11];
     }
 
-    v12 = [(WFAction *)self userInterface];
-    [v12 presentAlert:v8];
+    userInterface2 = [(WFAction *)self userInterface];
+    [userInterface2 presentAlert:v8];
   }
 
   else
@@ -166,11 +166,11 @@ void __45__WFChooseFromMenuAction_showAlertWithInput___block_invoke_3(uint64_t a
   [v1 finishRunningWithError:v2];
 }
 
-- (id)newIntermediaryActionWithMenuItemTitle:(id)a3
+- (id)newIntermediaryActionWithMenuItemTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = [(WFControlFlowAction *)self createAccompanyingActionWithMode:1];
-  [v5 setItemTitle:v4];
+  [v5 setItemTitle:titleCopy];
 
   return v5;
 }
@@ -191,8 +191,8 @@ void __45__WFChooseFromMenuAction_showAlertWithInput___block_invoke_3(uint64_t a
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v5 = [v4 values];
-    v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    values = [v4 values];
+    v6 = [values countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
       v7 = v6;
@@ -203,7 +203,7 @@ void __45__WFChooseFromMenuAction_showAlertWithInput___block_invoke_3(uint64_t a
         {
           if (*v16 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(values);
           }
 
           v10 = WFTitleForParameterValue(*(*(&v15 + 1) + 8 * i));
@@ -211,7 +211,7 @@ void __45__WFChooseFromMenuAction_showAlertWithInput___block_invoke_3(uint64_t a
           [v3 addObject:v11];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v7 = [values countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v7);
@@ -226,45 +226,45 @@ void __45__WFChooseFromMenuAction_showAlertWithInput___block_invoke_3(uint64_t a
   return v3;
 }
 
-- (id)localizedNameWithContext:(id)a3
+- (id)localizedNameWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(WFControlFlowAction *)self mode];
-  if (v5 == 2)
+  contextCopy = context;
+  mode = [(WFControlFlowAction *)self mode];
+  if (mode == 2)
   {
-    v6 = WFLocalizedStringResourceWithKey(@"Choose From Menu - End Menu", @"End Menu");
-    v7 = [v4 localize:v6];
+    itemTitle = WFLocalizedStringResourceWithKey(@"Choose From Menu - End Menu", @"End Menu");
+    stringByReplacingVariablesWithNames = [contextCopy localize:itemTitle];
     goto LABEL_5;
   }
 
-  if (v5 == 1)
+  if (mode == 1)
   {
-    v6 = [(WFChooseFromMenuAction *)self itemTitle];
-    v7 = [v6 stringByReplacingVariablesWithNames];
+    itemTitle = [(WFChooseFromMenuAction *)self itemTitle];
+    stringByReplacingVariablesWithNames = [itemTitle stringByReplacingVariablesWithNames];
 LABEL_5:
-    v8 = v7;
+    v8 = stringByReplacingVariablesWithNames;
 
     goto LABEL_7;
   }
 
   v10.receiver = self;
   v10.super_class = WFChooseFromMenuAction;
-  v8 = [(WFAction *)&v10 localizedNameWithContext:v4];
+  v8 = [(WFAction *)&v10 localizedNameWithContext:contextCopy];
 LABEL_7:
 
   return v8;
 }
 
-- (void)setItemTitle:(id)a3
+- (void)setItemTitle:(id)title
 {
-  v11 = a3;
-  v4 = [(WFControlFlowAction *)self mode];
+  titleCopy = title;
+  mode = [(WFControlFlowAction *)self mode];
   itemTitle = self->_itemTitle;
-  if (v4 == 1)
+  if (mode == 1)
   {
-    v6 = [(WFVariableString *)itemTitle isEqual:v11];
+    v6 = [(WFVariableString *)itemTitle isEqual:titleCopy];
     [(WFVariableString *)self->_itemTitle removeVariableDelegate:self];
-    v7 = [v11 copy];
+    v7 = [titleCopy copy];
     v8 = self->_itemTitle;
     self->_itemTitle = v7;
 
@@ -278,7 +278,7 @@ LABEL_7:
   else
   {
     [(WFVariableString *)itemTitle removeVariableDelegate:self];
-    v9 = [v11 copy];
+    v9 = [titleCopy copy];
     v10 = self->_itemTitle;
     self->_itemTitle = v9;
 
@@ -291,22 +291,22 @@ LABEL_7:
   v3 = objc_alloc(MEMORY[0x1E695DF90]);
   v14.receiver = self;
   v14.super_class = WFChooseFromMenuAction;
-  v4 = [(WFControlFlowAction *)&v14 serializedParameters];
-  v5 = [v3 initWithDictionary:v4];
+  serializedParameters = [(WFControlFlowAction *)&v14 serializedParameters];
+  v5 = [v3 initWithDictionary:serializedParameters];
 
-  v6 = [(WFChooseFromMenuAction *)self itemTitle];
-  v7 = [v6 stringByReplacingVariablesWithNames];
-  [v5 setValue:v7 forKey:@"WFMenuItemTitle"];
+  itemTitle = [(WFChooseFromMenuAction *)self itemTitle];
+  stringByReplacingVariablesWithNames = [itemTitle stringByReplacingVariablesWithNames];
+  [v5 setValue:stringByReplacingVariablesWithNames forKey:@"WFMenuItemTitle"];
 
-  v8 = [(WFChooseFromMenuAction *)self itemTitle];
-  v9 = [v8 variables];
-  v10 = [v9 count];
+  itemTitle2 = [(WFChooseFromMenuAction *)self itemTitle];
+  variables = [itemTitle2 variables];
+  v10 = [variables count];
 
   if (v10)
   {
-    v11 = [(WFChooseFromMenuAction *)self itemTitle];
-    v12 = [v11 serializedRepresentation];
-    [v5 setValue:v12 forKey:@"WFMenuItemAttributedTitle"];
+    itemTitle3 = [(WFChooseFromMenuAction *)self itemTitle];
+    serializedRepresentation = [itemTitle3 serializedRepresentation];
+    [v5 setValue:serializedRepresentation forKey:@"WFMenuItemAttributedTitle"];
   }
 
   return v5;
@@ -321,11 +321,11 @@ LABEL_7:
   [v3 addEventObserver:self];
 }
 
-- (WFChooseFromMenuAction)initWithIdentifier:(id)a3 definition:(id)a4 serializedParameters:(id)a5
+- (WFChooseFromMenuAction)initWithIdentifier:(id)identifier definition:(id)definition serializedParameters:(id)parameters
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a5 mutableCopy];
+  definitionCopy = definition;
+  identifierCopy = identifier;
+  v10 = [parameters mutableCopy];
   v11 = [v10 wf_popObjectForKey:@"WFMenuItemTitle"];
   v12 = objc_opt_class();
   v13 = WFEnforceClass_1501(v11, v12);
@@ -336,7 +336,7 @@ LABEL_7:
 
   v22.receiver = self;
   v22.super_class = WFChooseFromMenuAction;
-  v17 = [(WFControlFlowAction *)&v22 initWithIdentifier:v9 definition:v8 serializedParameters:v10];
+  v17 = [(WFControlFlowAction *)&v22 initWithIdentifier:identifierCopy definition:definitionCopy serializedParameters:v10];
 
   if (v17)
   {

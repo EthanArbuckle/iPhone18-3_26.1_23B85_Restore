@@ -1,18 +1,18 @@
 @interface engageModel
 + (id)URLOfModelInThisBundle;
-+ (void)loadContentsOfURL:(id)a3 configuration:(id)a4 completionHandler:(id)a5;
-+ (void)loadWithConfiguration:(id)a3 completionHandler:(id)a4;
++ (void)loadContentsOfURL:(id)l configuration:(id)configuration completionHandler:(id)handler;
++ (void)loadWithConfiguration:(id)configuration completionHandler:(id)handler;
 - (engageModel)init;
-- (engageModel)initWithConfiguration:(id)a3 error:(id *)a4;
-- (engageModel)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (engageModel)initWithContentsOfURL:(id)a3 error:(id *)a4;
-- (engageModel)initWithMLModel:(id)a3;
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4;
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)predictionFromPlugin_battery_level:(double)a3 time_from_plugin:(double)a4 med_dur_1:(double)a5 med_dur_2:(double)a6 med_dur_4:(double)a7 med_dur_8:(double)a8 med_dur_16:(double)a9 med_dur_24:(double)a10 cnt_dur_1:(double)a11 cnt_dur_2:(double)a12 cnt_dur_4:(double)a13 cnt_dur_8:(double)a14 cnt_dur_16:(double)a15 cnt_dur_24:(double)a16 std_dur_1:(double)a17 std_dur_2:(double)a18 std_dur_4:(double)a19 std_dur_8:(double)a20 std_dur_16:(double)a21 std_dur_24:(double)a22 weekday_med_dur_1:(double)a23 weekday_med_dur_2:(double)a24 weekday_med_dur_4:(double)a25 weekday_med_dur_8:(double)a26 weekday_med_dur_24:(double)a27 weekday_std_dur_4:(double)a28 error:(id *)a29;
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5;
-- (void)predictionFromFeatures:(id)a3 completionHandler:(id)a4;
-- (void)predictionFromFeatures:(id)a3 options:(id)a4 completionHandler:(id)a5;
+- (engageModel)initWithConfiguration:(id)configuration error:(id *)error;
+- (engageModel)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error;
+- (engageModel)initWithContentsOfURL:(id)l error:(id *)error;
+- (engageModel)initWithMLModel:(id)model;
+- (id)predictionFromFeatures:(id)features error:(id *)error;
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error;
+- (id)predictionFromPlugin_battery_level:(double)plugin_battery_level time_from_plugin:(double)time_from_plugin med_dur_1:(double)med_dur_1 med_dur_2:(double)med_dur_2 med_dur_4:(double)med_dur_4 med_dur_8:(double)med_dur_8 med_dur_16:(double)med_dur_16 med_dur_24:(double)self0 cnt_dur_1:(double)self1 cnt_dur_2:(double)self2 cnt_dur_4:(double)self3 cnt_dur_8:(double)self4 cnt_dur_16:(double)self5 cnt_dur_24:(double)self6 std_dur_1:(double)self7 std_dur_2:(double)self8 std_dur_4:(double)self9 std_dur_8:(double)std_dur_8 std_dur_16:(double)std_dur_16 std_dur_24:(double)std_dur_24 weekday_med_dur_1:(double)weekday_med_dur_1 weekday_med_dur_2:(double)weekday_med_dur_2 weekday_med_dur_4:(double)weekday_med_dur_4 weekday_med_dur_8:(double)weekday_med_dur_8 weekday_med_dur_24:(double)weekday_med_dur_24 weekday_std_dur_4:(double)weekday_std_dur_4 error:(id *)error;
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error;
+- (void)predictionFromFeatures:(id)features completionHandler:(id)handler;
+- (void)predictionFromFeatures:(id)features options:(id)options completionHandler:(id)handler;
 @end
 
 @implementation engageModel
@@ -40,10 +40,10 @@
   return v4;
 }
 
-- (engageModel)initWithMLModel:(id)a3
+- (engageModel)initWithMLModel:(id)model
 {
-  v5 = a3;
-  if (v5)
+  modelCopy = model;
+  if (modelCopy)
   {
     v10.receiver = self;
     v10.super_class = engageModel;
@@ -51,118 +51,118 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_model, a3);
+      objc_storeStrong(&v6->_model, model);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (engageModel)init
 {
-  v3 = [objc_opt_class() URLOfModelInThisBundle];
-  v4 = [(engageModel *)self initWithContentsOfURL:v3 error:0];
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
+  v4 = [(engageModel *)self initWithContentsOfURL:uRLOfModelInThisBundle error:0];
 
   return v4;
 }
 
-- (engageModel)initWithConfiguration:(id)a3 error:(id *)a4
+- (engageModel)initWithConfiguration:(id)configuration error:(id *)error
 {
-  v6 = a3;
-  v7 = [objc_opt_class() URLOfModelInThisBundle];
-  v8 = [(engageModel *)self initWithContentsOfURL:v7 configuration:v6 error:a4];
+  configurationCopy = configuration;
+  uRLOfModelInThisBundle = [objc_opt_class() URLOfModelInThisBundle];
+  v8 = [(engageModel *)self initWithContentsOfURL:uRLOfModelInThisBundle configuration:configurationCopy error:error];
 
   return v8;
 }
 
-- (engageModel)initWithContentsOfURL:(id)a3 error:(id *)a4
+- (engageModel)initWithContentsOfURL:(id)l error:(id *)error
 {
-  v5 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:a3 error:a4];
+  v5 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:l error:error];
   if (v5)
   {
     self = [(engageModel *)self initWithMLModel:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (engageModel)initWithContentsOfURL:(id)a3 configuration:(id)a4 error:(id *)a5
+- (engageModel)initWithContentsOfURL:(id)l configuration:(id)configuration error:(id *)error
 {
-  v6 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:a3 configuration:a4 error:a5];
+  v6 = [MEMORY[0x277CBFF20] modelWithContentsOfURL:l configuration:configuration error:error];
   if (v6)
   {
     self = [(engageModel *)self initWithMLModel:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-+ (void)loadWithConfiguration:(id)a3 completionHandler:(id)a4
++ (void)loadWithConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 URLOfModelInThisBundle];
-  [a1 loadContentsOfURL:v8 configuration:v7 completionHandler:v6];
+  handlerCopy = handler;
+  configurationCopy = configuration;
+  uRLOfModelInThisBundle = [self URLOfModelInThisBundle];
+  [self loadContentsOfURL:uRLOfModelInThisBundle configuration:configurationCopy completionHandler:handlerCopy];
 }
 
-+ (void)loadContentsOfURL:(id)a3 configuration:(id)a4 completionHandler:(id)a5
++ (void)loadContentsOfURL:(id)l configuration:(id)configuration completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v8 = MEMORY[0x277CBFF20];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __65__engageModel_loadContentsOfURL_configuration_completionHandler___block_invoke;
   v10[3] = &unk_2782D5248;
-  v11 = v7;
-  v9 = v7;
-  [v8 loadContentsOfURL:a3 configuration:a4 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [v8 loadContentsOfURL:l configuration:configuration completionHandler:v10];
 }
 
-- (id)predictionFromFeatures:(id)a3 error:(id *)a4
+- (id)predictionFromFeatures:(id)features error:(id *)error
 {
   v6 = MEMORY[0x277CBFF68];
-  v7 = a3;
+  featuresCopy = features;
   v8 = objc_alloc_init(v6);
-  v9 = [(engageModel *)self predictionFromFeatures:v7 options:v8 error:a4];
+  v9 = [(engageModel *)self predictionFromFeatures:featuresCopy options:v8 error:error];
 
   return v9;
 }
 
-- (id)predictionFromFeatures:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionFromFeatures:(id)features options:(id)options error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(engageModel *)self model];
-  v11 = [v10 predictionFromFeatures:v9 options:v8 error:a5];
+  optionsCopy = options;
+  featuresCopy = features;
+  model = [(engageModel *)self model];
+  v11 = [model predictionFromFeatures:featuresCopy options:optionsCopy error:error];
 
   if (v11)
   {
     v12 = [engageModelOutput alloc];
     v13 = [v11 featureValueForName:@"engage"];
-    v14 = [v13 int64Value];
+    int64Value = [v13 int64Value];
     v15 = [v11 featureValueForName:@"classProbability"];
-    v16 = [v15 dictionaryValue];
-    v17 = [(engageModelOutput *)v12 initWithEngage:v14 classProbability:v16];
+    dictionaryValue = [v15 dictionaryValue];
+    v17 = [(engageModelOutput *)v12 initWithEngage:int64Value classProbability:dictionaryValue];
   }
 
   else
@@ -173,50 +173,50 @@
   return v17;
 }
 
-- (void)predictionFromFeatures:(id)a3 completionHandler:(id)a4
+- (void)predictionFromFeatures:(id)features completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(engageModel *)self model];
+  handlerCopy = handler;
+  featuresCopy = features;
+  model = [(engageModel *)self model];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__engageModel_predictionFromFeatures_completionHandler___block_invoke;
   v10[3] = &unk_2782D5270;
-  v11 = v6;
-  v9 = v6;
-  [v8 predictionFromFeatures:v7 completionHandler:v10];
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  [model predictionFromFeatures:featuresCopy completionHandler:v10];
 }
 
-- (void)predictionFromFeatures:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)predictionFromFeatures:(id)features options:(id)options completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(engageModel *)self model];
+  handlerCopy = handler;
+  optionsCopy = options;
+  featuresCopy = features;
+  model = [(engageModel *)self model];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __64__engageModel_predictionFromFeatures_options_completionHandler___block_invoke;
   v13[3] = &unk_2782D5270;
-  v14 = v8;
-  v12 = v8;
-  [v11 predictionFromFeatures:v10 options:v9 completionHandler:v13];
+  v14 = handlerCopy;
+  v12 = handlerCopy;
+  [model predictionFromFeatures:featuresCopy options:optionsCopy completionHandler:v13];
 }
 
-- (id)predictionFromPlugin_battery_level:(double)a3 time_from_plugin:(double)a4 med_dur_1:(double)a5 med_dur_2:(double)a6 med_dur_4:(double)a7 med_dur_8:(double)a8 med_dur_16:(double)a9 med_dur_24:(double)a10 cnt_dur_1:(double)a11 cnt_dur_2:(double)a12 cnt_dur_4:(double)a13 cnt_dur_8:(double)a14 cnt_dur_16:(double)a15 cnt_dur_24:(double)a16 std_dur_1:(double)a17 std_dur_2:(double)a18 std_dur_4:(double)a19 std_dur_8:(double)a20 std_dur_16:(double)a21 std_dur_24:(double)a22 weekday_med_dur_1:(double)a23 weekday_med_dur_2:(double)a24 weekday_med_dur_4:(double)a25 weekday_med_dur_8:(double)a26 weekday_med_dur_24:(double)a27 weekday_std_dur_4:(double)a28 error:(id *)a29
+- (id)predictionFromPlugin_battery_level:(double)plugin_battery_level time_from_plugin:(double)time_from_plugin med_dur_1:(double)med_dur_1 med_dur_2:(double)med_dur_2 med_dur_4:(double)med_dur_4 med_dur_8:(double)med_dur_8 med_dur_16:(double)med_dur_16 med_dur_24:(double)self0 cnt_dur_1:(double)self1 cnt_dur_2:(double)self2 cnt_dur_4:(double)self3 cnt_dur_8:(double)self4 cnt_dur_16:(double)self5 cnt_dur_24:(double)self6 std_dur_1:(double)self7 std_dur_2:(double)self8 std_dur_4:(double)self9 std_dur_8:(double)std_dur_8 std_dur_16:(double)std_dur_16 std_dur_24:(double)std_dur_24 weekday_med_dur_1:(double)weekday_med_dur_1 weekday_med_dur_2:(double)weekday_med_dur_2 weekday_med_dur_4:(double)weekday_med_dur_4 weekday_med_dur_8:(double)weekday_med_dur_8 weekday_med_dur_24:(double)weekday_med_dur_24 weekday_std_dur_4:(double)weekday_std_dur_4 error:(id *)error
 {
-  v31 = [[engageModelInput alloc] initWithPlugin_battery_level:a3 time_from_plugin:a4 med_dur_1:a5 med_dur_2:a6 med_dur_4:a7 med_dur_8:a8 med_dur_16:a9 med_dur_24:a10 cnt_dur_1:*&a11 cnt_dur_2:*&a12 cnt_dur_4:*&a13 cnt_dur_8:*&a14 cnt_dur_16:*&a15 cnt_dur_24:*&a16 std_dur_1:*&a17 std_dur_2:*&a18 std_dur_4:*&a19 std_dur_8:*&a20 std_dur_16:*&a21 std_dur_24:*&a22 weekday_med_dur_1:*&a23 weekday_med_dur_2:*&a24 weekday_med_dur_4:*&a25 weekday_med_dur_8:*&a26 weekday_med_dur_24:*&a27 weekday_std_dur_4:*&a28];
-  v32 = [(engageModel *)self predictionFromFeatures:v31 error:a29];
+  v31 = [[engageModelInput alloc] initWithPlugin_battery_level:plugin_battery_level time_from_plugin:time_from_plugin med_dur_1:med_dur_1 med_dur_2:med_dur_2 med_dur_4:med_dur_4 med_dur_8:med_dur_8 med_dur_16:med_dur_16 med_dur_24:med_dur_24 cnt_dur_1:*&cnt_dur_1 cnt_dur_2:*&cnt_dur_2 cnt_dur_4:*&cnt_dur_4 cnt_dur_8:*&cnt_dur_8 cnt_dur_16:*&cnt_dur_16 cnt_dur_24:*&cnt_dur_24 std_dur_1:*&std_dur_1 std_dur_2:*&std_dur_2 std_dur_4:*&std_dur_4 std_dur_8:*&std_dur_8 std_dur_16:*&std_dur_16 std_dur_24:*&std_dur_24 weekday_med_dur_1:*&weekday_med_dur_1 weekday_med_dur_2:*&weekday_med_dur_2 weekday_med_dur_4:*&weekday_med_dur_4 weekday_med_dur_8:*&weekday_med_dur_8 weekday_med_dur_24:*&weekday_med_dur_24 weekday_std_dur_4:*&weekday_std_dur_4];
+  v32 = [(engageModel *)self predictionFromFeatures:v31 error:error];
 
   return v32;
 }
 
-- (id)predictionsFromInputs:(id)a3 options:(id)a4 error:(id *)a5
+- (id)predictionsFromInputs:(id)inputs options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [objc_alloc(MEMORY[0x277CBFEB0]) initWithFeatureProviderArray:v8];
-  v11 = [(engageModel *)self model];
-  v12 = [v11 predictionsFromBatch:v10 options:v9 error:a5];
+  inputsCopy = inputs;
+  optionsCopy = options;
+  v10 = [objc_alloc(MEMORY[0x277CBFEB0]) initWithFeatureProviderArray:inputsCopy];
+  model = [(engageModel *)self model];
+  v12 = [model predictionsFromBatch:v10 options:optionsCopy error:error];
 
   if (v12)
   {
@@ -224,26 +224,26 @@
     if ([v12 count] >= 1)
     {
       v23 = v10;
-      v24 = v9;
-      v25 = v8;
+      v24 = optionsCopy;
+      v25 = inputsCopy;
       v14 = 0;
       do
       {
         v15 = [v12 featuresAtIndex:v14];
         v16 = [engageModelOutput alloc];
         v17 = [v15 featureValueForName:@"engage"];
-        v18 = [v17 int64Value];
+        int64Value = [v17 int64Value];
         v19 = [v15 featureValueForName:@"classProbability"];
-        v20 = [v19 dictionaryValue];
-        v21 = [(engageModelOutput *)v16 initWithEngage:v18 classProbability:v20];
+        dictionaryValue = [v19 dictionaryValue];
+        v21 = [(engageModelOutput *)v16 initWithEngage:int64Value classProbability:dictionaryValue];
 
         [v13 addObject:v21];
         ++v14;
       }
 
       while (v14 < [v12 count]);
-      v9 = v24;
-      v8 = v25;
+      optionsCopy = v24;
+      inputsCopy = v25;
       v10 = v23;
     }
   }

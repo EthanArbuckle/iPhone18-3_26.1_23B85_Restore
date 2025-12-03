@@ -1,6 +1,6 @@
 @interface MapsAppTestMultitaskResizeWindow
 - (BOOL)runTest;
-- (MapsAppTestMultitaskResizeWindow)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5;
+- (MapsAppTestMultitaskResizeWindow)initWithApplication:(id)application testName:(id)name options:(id)options;
 @end
 
 @implementation MapsAppTestMultitaskResizeWindow
@@ -35,18 +35,18 @@
   return 1;
 }
 
-- (MapsAppTestMultitaskResizeWindow)initWithApplication:(id)a3 testName:(id)a4 options:(id)a5
+- (MapsAppTestMultitaskResizeWindow)initWithApplication:(id)application testName:(id)name options:(id)options
 {
-  v8 = a5;
+  optionsCopy = options;
   v13.receiver = self;
   v13.super_class = MapsAppTestMultitaskResizeWindow;
-  v9 = [(MapsAppTest *)&v13 initWithApplication:a3 testName:a4 options:v8];
+  v9 = [(MapsAppTest *)&v13 initWithApplication:application testName:name options:optionsCopy];
   if (v9)
   {
-    v10 = [v8 objectForKeyedSubscript:@"timeoutInSeconds"];
+    v10 = [optionsCopy objectForKeyedSubscript:@"timeoutInSeconds"];
     v9->_timeoutInSeconds = [v10 integerValue];
 
-    v11 = [v8 objectForKeyedSubscript:@"numberOfResizes"];
+    v11 = [optionsCopy objectForKeyedSubscript:@"numberOfResizes"];
     v9->_numberOfResizes = [v11 integerValue];
   }
 

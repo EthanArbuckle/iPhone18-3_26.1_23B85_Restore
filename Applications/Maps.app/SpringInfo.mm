@@ -1,6 +1,6 @@
 @interface SpringInfo
-- (SpringInfo)initWithMass:(double)a3 stiffness:(double)a4 damping:(double)a5 initialVelocity:(double)a6;
-- (double)valueAtTime:(double)a3;
+- (SpringInfo)initWithMass:(double)mass stiffness:(double)stiffness damping:(double)damping initialVelocity:(double)velocity;
+- (double)valueAtTime:(double)time;
 - (id)description;
 @end
 
@@ -44,7 +44,7 @@
   return v24;
 }
 
-- (double)valueAtTime:(double)a3
+- (double)valueAtTime:(double)time
 {
   [(SpringInfo *)self mass];
   v6 = v5;
@@ -54,10 +54,10 @@
   v10 = v9;
   [(SpringInfo *)self initialVelocity];
   sub_1006F7BEC(v13, v6, v8, v10, v11);
-  return sub_1006F7D10(v13, a3);
+  return sub_1006F7D10(v13, time);
 }
 
-- (SpringInfo)initWithMass:(double)a3 stiffness:(double)a4 damping:(double)a5 initialVelocity:(double)a6
+- (SpringInfo)initWithMass:(double)mass stiffness:(double)stiffness damping:(double)damping initialVelocity:(double)velocity
 {
   v74.receiver = self;
   v74.super_class = SpringInfo;
@@ -65,11 +65,11 @@
   v11 = v10;
   if (v10)
   {
-    v10->_mass = a3;
-    v10->_stiffness = a4;
-    v10->_damping = a5;
-    v10->_initialVelocity = a6;
-    sub_1006F7BEC(v75, a3, a4, a5, a6);
+    v10->_mass = mass;
+    v10->_stiffness = stiffness;
+    v10->_damping = damping;
+    v10->_initialVelocity = velocity;
+    sub_1006F7BEC(v75, mass, stiffness, damping, velocity);
     v12 = v77;
     if (v77 < 1.0)
     {

@@ -5,16 +5,16 @@
 - (NSArray)privacyItems;
 - (NSString)localizedDetailsNavigationTitle;
 - (NSString)localizedPrivacyNavigationTitle;
-- (RAPLookAroundQuestion)initWithReport:(id)a3 parentQuestion:(id)a4;
+- (RAPLookAroundQuestion)initWithReport:(id)report parentQuestion:(id)question;
 - (id)_labelItems;
 - (id)localizedDescription;
 - (id)localizedTitle;
 - (int)analyticTarget;
 - (void)_clearFields;
-- (void)_fillSubmissionParameters:(id)a3;
+- (void)_fillSubmissionParameters:(id)parameters;
 - (void)_initCorrectableFields;
 - (void)_resolveCompleteness;
-- (void)setSelectedQuestionType:(unint64_t)a3;
+- (void)setSelectedQuestionType:(unint64_t)type;
 @end
 
 @implementation RAPLookAroundQuestion
@@ -33,53 +33,53 @@
   }
 }
 
-- (void)_fillSubmissionParameters:(id)a3
+- (void)_fillSubmissionParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = [v4 details];
+  parametersCopy = parameters;
+  details = [parametersCopy details];
 
-  if (!v5)
+  if (!details)
   {
     v6 = objc_opt_new();
-    [v4 setDetails:v6];
+    [parametersCopy setDetails:v6];
   }
 
-  v7 = [v4 details];
-  v8 = [v7 groundViewFeedback];
+  details2 = [parametersCopy details];
+  groundViewFeedback = [details2 groundViewFeedback];
 
-  if (!v8)
+  if (!groundViewFeedback)
   {
     v9 = objc_opt_new();
-    v10 = [v4 details];
-    [v10 setGroundViewFeedback:v9];
+    details3 = [parametersCopy details];
+    [details3 setGroundViewFeedback:v9];
   }
 
-  v11 = [v4 details];
-  v12 = [v11 groundViewFeedback];
-  v13 = [v12 groundViewContext];
+  details4 = [parametersCopy details];
+  groundViewFeedback2 = [details4 groundViewFeedback];
+  groundViewContext = [groundViewFeedback2 groundViewContext];
 
-  if (!v13)
+  if (!groundViewContext)
   {
-    v13 = objc_opt_new();
-    v14 = [v4 details];
-    v15 = [v14 groundViewFeedback];
-    [v15 setGroundViewContext:v13];
+    groundViewContext = objc_opt_new();
+    details5 = [parametersCopy details];
+    groundViewFeedback3 = [details5 groundViewFeedback];
+    [groundViewFeedback3 setGroundViewContext:groundViewContext];
   }
 
-  v16 = [(RAPQuestion *)self _context];
-  v17 = [v16 reportedLookAroundContext];
+  _context = [(RAPQuestion *)self _context];
+  reportedLookAroundContext = [_context reportedLookAroundContext];
 
-  v18 = [v17 reportedMuninViewState];
-  [v13 setViewState:v18];
+  reportedMuninViewState = [reportedLookAroundContext reportedMuninViewState];
+  [groundViewContext setViewState:reportedMuninViewState];
 
-  [v13 setMetadataTileBuildId:{objc_msgSend(v17, "muninMetadataTileBuildId")}];
-  [v13 setImdataId:{objc_msgSend(v17, "muninImageDataId")}];
+  [groundViewContext setMetadataTileBuildId:{objc_msgSend(reportedLookAroundContext, "muninMetadataTileBuildId")}];
+  [groundViewContext setImdataId:{objc_msgSend(reportedLookAroundContext, "muninImageDataId")}];
   v73 = 0u;
   v74 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v19 = [v17 reportedVisibleMUIDs];
-  v20 = [v19 countByEnumeratingWithState:&v71 objects:v77 count:16];
+  reportedVisibleMUIDs = [reportedLookAroundContext reportedVisibleMUIDs];
+  v20 = [reportedVisibleMUIDs countByEnumeratingWithState:&v71 objects:v77 count:16];
   if (v20)
   {
     v21 = v20;
@@ -90,13 +90,13 @@
       {
         if (*v72 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(reportedVisibleMUIDs);
         }
 
-        [v13 addVisiblePlaceMuid:{objc_msgSend(*(*(&v71 + 1) + 8 * i), "unsignedLongLongValue")}];
+        [groundViewContext addVisiblePlaceMuid:{objc_msgSend(*(*(&v71 + 1) + 8 * i), "unsignedLongLongValue")}];
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v71 objects:v77 count:16];
+      v21 = [reportedVisibleMUIDs countByEnumeratingWithState:&v71 objects:v77 count:16];
     }
 
     while (v21);
@@ -106,8 +106,8 @@
   v70 = 0u;
   v67 = 0u;
   v68 = 0u;
-  v24 = [v17 reportedMuninImageResources];
-  v25 = [v24 countByEnumeratingWithState:&v67 objects:v76 count:16];
+  reportedMuninImageResources = [reportedLookAroundContext reportedMuninImageResources];
+  v25 = [reportedMuninImageResources countByEnumeratingWithState:&v67 objects:v76 count:16];
   if (v25)
   {
     v26 = v25;
@@ -118,26 +118,26 @@
       {
         if (*v68 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(reportedMuninImageResources);
         }
 
-        [v13 addOnscreenImageResource:*(*(&v67 + 1) + 8 * j)];
+        [groundViewContext addOnscreenImageResource:*(*(&v67 + 1) + 8 * j)];
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v67 objects:v76 count:16];
+      v26 = [reportedMuninImageResources countByEnumeratingWithState:&v67 objects:v76 count:16];
     }
 
     while (v26);
   }
 
-  v62 = self;
+  selfCopy = self;
 
   v65 = 0u;
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v29 = [v17 reportedMuninRoadLabels];
-  v30 = [v29 countByEnumeratingWithState:&v63 objects:v75 count:16];
+  reportedMuninRoadLabels = [reportedLookAroundContext reportedMuninRoadLabels];
+  v30 = [reportedMuninRoadLabels countByEnumeratingWithState:&v63 objects:v75 count:16];
   if (v30)
   {
     v31 = v30;
@@ -148,38 +148,38 @@
       {
         if (*v64 != v32)
         {
-          objc_enumerationMutation(v29);
+          objc_enumerationMutation(reportedMuninRoadLabels);
         }
 
-        v34 = [*(*(&v63 + 1) + 8 * k) featureHandles];
-        v35 = [v34 firstObject];
-        v36 = sub_1007A364C(v35);
+        featureHandles = [*(*(&v63 + 1) + 8 * k) featureHandles];
+        firstObject = [featureHandles firstObject];
+        v36 = sub_1007A364C(firstObject);
 
         if (v36)
         {
-          [v13 addVisibleFeatureHandle:v36];
+          [groundViewContext addVisibleFeatureHandle:v36];
         }
       }
 
-      v31 = [v29 countByEnumeratingWithState:&v63 objects:v75 count:16];
+      v31 = [reportedMuninRoadLabels countByEnumeratingWithState:&v63 objects:v75 count:16];
     }
 
     while (v31);
   }
 
-  v37 = [v4 details];
-  v38 = [v37 groundViewFeedback];
-  v39 = [v38 groundViewCorrections];
+  details6 = [parametersCopy details];
+  groundViewFeedback4 = [details6 groundViewFeedback];
+  groundViewCorrections = [groundViewFeedback4 groundViewCorrections];
 
-  if (!v39)
+  if (!groundViewCorrections)
   {
-    v39 = objc_opt_new();
-    v40 = [v4 details];
-    v41 = [v40 groundViewFeedback];
-    [v41 setGroundViewCorrections:v39];
+    groundViewCorrections = objc_opt_new();
+    details7 = [parametersCopy details];
+    groundViewFeedback5 = [details7 groundViewFeedback];
+    [groundViewFeedback5 setGroundViewCorrections:groundViewCorrections];
   }
 
-  selectedQuestionType = v62->_selectedQuestionType;
+  selectedQuestionType = selfCopy->_selectedQuestionType;
   if (selectedQuestionType > 6)
   {
     goto LABEL_40;
@@ -187,102 +187,102 @@
 
   if ((0x77u >> selectedQuestionType))
   {
-    [v39 setCorrectionType:dword_101213268[selectedQuestionType]];
-    selectedQuestionType = v62->_selectedQuestionType;
+    [groundViewCorrections setCorrectionType:dword_101213268[selectedQuestionType]];
+    selectedQuestionType = selfCopy->_selectedQuestionType;
   }
 
   if (selectedQuestionType != 5)
   {
 LABEL_40:
-    v52 = [(RAPLookAroundQuestion *)v62 commentQuestion];
-    [v52 _fillSubmissionParameters:v4];
+    commentQuestion = [(RAPLookAroundQuestion *)selfCopy commentQuestion];
+    [commentQuestion _fillSubmissionParameters:parametersCopy];
     goto LABEL_41;
   }
 
   v43 = objc_alloc_init(GEORPFeedbackAddressFields);
-  [v39 setAddressToCensor:v43];
+  [groundViewCorrections setAddressToCensor:v43];
 
-  v44 = [(RAPPlaceCorrectableAddress *)v62->_addressCorrectableString freeformAddress];
-  v45 = [v44 value];
-  v46 = sub_1006680A4(v45);
+  freeformAddress = [(RAPPlaceCorrectableAddress *)selfCopy->_addressCorrectableString freeformAddress];
+  value = [freeformAddress value];
+  v46 = sub_1006680A4(value);
 
   if (v46)
   {
-    v47 = [(RAPPlaceCorrectableAddress *)v62->_addressCorrectableString freeformAddress];
-    v48 = [v47 value];
-    v49 = [v39 addressToCensor];
-    [v49 setAddressBasic:v48];
+    freeformAddress2 = [(RAPPlaceCorrectableAddress *)selfCopy->_addressCorrectableString freeformAddress];
+    value2 = [freeformAddress2 value];
+    addressToCensor = [groundViewCorrections addressToCensor];
+    [addressToCensor setAddressBasic:value2];
   }
 
-  v50 = [(RAPPlaceCorrectableString *)v62->_emailAddressCorrectableString value];
-  v51 = sub_1006680A4(v50);
+  value3 = [(RAPPlaceCorrectableString *)selfCopy->_emailAddressCorrectableString value];
+  v51 = sub_1006680A4(value3);
 
   if (v51)
   {
-    v52 = [(RAPPlaceCorrectableString *)v62->_emailAddressCorrectableString value];
-    v53 = [(RAPQuestion *)v62 report];
-    [v53 setPreferredEmailAddress:v52];
+    commentQuestion = [(RAPPlaceCorrectableString *)selfCopy->_emailAddressCorrectableString value];
+    report = [(RAPQuestion *)selfCopy report];
+    [report setPreferredEmailAddress:commentQuestion];
 
 LABEL_41:
   }
 
-  v54 = [v17 lookAroundSnapshotImageData];
+  lookAroundSnapshotImageData = [reportedLookAroundContext lookAroundSnapshotImageData];
 
-  if (v54)
+  if (lookAroundSnapshotImageData)
   {
     v55 = [RAPPhoto alloc];
-    v56 = [v17 lookAroundSnapshotImageData];
-    v57 = [UIImage imageWithData:v56];
+    lookAroundSnapshotImageData2 = [reportedLookAroundContext lookAroundSnapshotImageData];
+    v57 = [UIImage imageWithData:lookAroundSnapshotImageData2];
     v58 = +[NSDate date];
     v59 = [(RAPPhoto *)v55 initWithPhoto:v57 date:v58 location:0];
 
     v60 = [[RAPPhotoWithMetadata alloc] initWithRAPPhoto:v59 photoType:5];
-    v61 = [(RAPQuestion *)v62 report];
-    [v61 addPhotoWithMetadata:v60];
+    report2 = [(RAPQuestion *)selfCopy report];
+    [report2 addPhotoWithMetadata:v60];
   }
 }
 
 - (void)_resolveCompleteness
 {
-  v3 = 0;
+  isComplete = 0;
   selectedQuestionType = self->_selectedQuestionType;
   if (selectedQuestionType <= 6)
   {
     if (((1 << selectedQuestionType) & 0x57) != 0)
     {
-      v3 = [(RAPQuestion *)self->_commentQuestion isComplete];
+      isComplete = [(RAPQuestion *)self->_commentQuestion isComplete];
     }
 
     else if (selectedQuestionType == 5)
     {
-      v5 = [(RAPPlaceCorrectableString *)self->_emailAddressCorrectableString value];
-      if (sub_1006680A4(v5))
+      value = [(RAPPlaceCorrectableString *)self->_emailAddressCorrectableString value];
+      if (sub_1006680A4(value))
       {
-        v6 = [(RAPPlaceCorrectableString *)self->_emailAddressCorrectableString value];
-        v7 = [v6 _maps_isEmailAddress];
+        value2 = [(RAPPlaceCorrectableString *)self->_emailAddressCorrectableString value];
+        _maps_isEmailAddress = [value2 _maps_isEmailAddress];
       }
 
       else
       {
-        v7 = 0;
+        _maps_isEmailAddress = 0;
       }
 
-      v8 = [(RAPPlaceCorrectableAddress *)self->_addressCorrectableString freeformAddress];
-      v9 = [v8 value];
-      v10 = sub_1006680A4(v9);
+      freeformAddress = [(RAPPlaceCorrectableAddress *)self->_addressCorrectableString freeformAddress];
+      value3 = [freeformAddress value];
+      v10 = sub_1006680A4(value3);
 
-      v3 = v7 & v10;
+      isComplete = _maps_isEmailAddress & v10;
     }
   }
 
-  [(RAPQuestion *)self _setComplete:v3];
+  [(RAPQuestion *)self _setComplete:isComplete];
 }
 
 - (NSArray)privacyItems
 {
   v2 = +[GEOCountryConfiguration sharedConfiguration];
-  v3 = [v2 countryCode];
-  v4 = [v3 isEqualToString:@"KR"];
+  countryCode = [v2 countryCode];
+  v4 = [countryCode isEqualToString:@"KR"];
 
   v5 = [[RAPLookAroundCategoryItem alloc] initWithType:4];
   v6 = v5;
@@ -330,8 +330,8 @@ LABEL_41:
 
   if (self->_labelsEnabled)
   {
-    v5 = [(RAPLookAroundQuestion *)self _labelItems];
-    v6 = [v4 arrayByAddingObjectsFromArray:v5];
+    _labelItems = [(RAPLookAroundQuestion *)self _labelItems];
+    v6 = [v4 arrayByAddingObjectsFromArray:_labelItems];
 
     v4 = v6;
   }
@@ -350,8 +350,8 @@ LABEL_41:
 
   if (self->_labelsEnabled)
   {
-    v5 = [(RAPLookAroundQuestion *)self _labelItems];
-    v6 = [v4 arrayByAddingObjectsFromArray:v5];
+    _labelItems = [(RAPLookAroundQuestion *)self _labelItems];
+    v6 = [v4 arrayByAddingObjectsFromArray:_labelItems];
 
     v4 = v6;
   }
@@ -372,28 +372,28 @@ LABEL_41:
   [(RAPQuestion *)self->_commentQuestion removeObserver:self];
   [(RAPLookAroundQuestion *)self _initCorrectableFields];
   [(RAPQuestion *)self _setComplete:0];
-  v3 = [(RAPQuestion *)self report];
-  [v3 _questionDidChange:self];
+  report = [(RAPQuestion *)self report];
+  [report _questionDidChange:self];
 }
 
 - (BOOL)isAnonymous
 {
   v5.receiver = self;
   v5.super_class = RAPLookAroundQuestion;
-  v3 = [(RAPQuestion *)&v5 isAnonymous];
-  if (v3)
+  isAnonymous = [(RAPQuestion *)&v5 isAnonymous];
+  if (isAnonymous)
   {
-    LOBYTE(v3) = self->_selectedQuestionType != 5;
+    LOBYTE(isAnonymous) = self->_selectedQuestionType != 5;
   }
 
-  return v3;
+  return isAnonymous;
 }
 
-- (void)setSelectedQuestionType:(unint64_t)a3
+- (void)setSelectedQuestionType:(unint64_t)type
 {
-  if (self->_selectedQuestionType != a3)
+  if (self->_selectedQuestionType != type)
   {
-    self->_selectedQuestionType = a3;
+    self->_selectedQuestionType = type;
   }
 
   [(RAPLookAroundQuestion *)self _clearFields];
@@ -412,10 +412,10 @@ LABEL_41:
 - (NSString)localizedDetailsNavigationTitle
 {
   v3 = +[UIDevice currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
   selectedQuestionType = self->_selectedQuestionType;
-  if (v4 == 5)
+  if (userInterfaceIdiom == 5)
   {
     if (selectedQuestionType < 7 && ((0x77u >> selectedQuestionType) & 1) != 0)
     {
@@ -462,11 +462,11 @@ LABEL_10:
 - (id)localizedTitle
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (v3 == 5)
+  if (userInterfaceIdiom == 5)
   {
     v6 = @"Report an Issue with Look Around [LookAround RAP]";
   }
@@ -501,8 +501,8 @@ LABEL_10:
   }
 
   v6 = [RAPCommentQuestion alloc];
-  v7 = [(RAPQuestion *)self report];
-  v8 = [(RAPCommentQuestion *)v6 initWithReport:v7 parentQuestion:self title:&stru_1016631F0 placeholderText:&stru_1016631F0 emphasis:v5];
+  report = [(RAPQuestion *)self report];
+  v8 = [(RAPCommentQuestion *)v6 initWithReport:report parentQuestion:self title:&stru_1016631F0 placeholderText:&stru_1016631F0 emphasis:v5];
   commentQuestion = self->_commentQuestion;
   self->_commentQuestion = v8;
 
@@ -515,23 +515,23 @@ LABEL_10:
   [(RAPPlaceCorrectableAddress *)self->_addressCorrectableString addObserver:self changeHandler:&stru_101625260];
 }
 
-- (RAPLookAroundQuestion)initWithReport:(id)a3 parentQuestion:(id)a4
+- (RAPLookAroundQuestion)initWithReport:(id)report parentQuestion:(id)question
 {
   v12.receiver = self;
   v12.super_class = RAPLookAroundQuestion;
-  v4 = [(RAPQuestion *)&v12 initWithReport:a3 parentQuestion:a4];
+  v4 = [(RAPQuestion *)&v12 initWithReport:report parentQuestion:question];
   v5 = v4;
   if (v4)
   {
-    v6 = [(RAPQuestion *)v4 _context];
-    v7 = [v6 reportedLookAroundContext];
+    _context = [(RAPQuestion *)v4 _context];
+    reportedLookAroundContext = [_context reportedLookAroundContext];
 
-    v8 = [v7 lookAroundSnapshotImageData];
-    v9 = [UIImage imageWithData:v8];
+    lookAroundSnapshotImageData = [reportedLookAroundContext lookAroundSnapshotImageData];
+    v9 = [UIImage imageWithData:lookAroundSnapshotImageData];
     thumbnailImage = v5->_thumbnailImage;
     v5->_thumbnailImage = v9;
 
-    v5->_labelsEnabled = [v7 lookAroundLabelsEnabled];
+    v5->_labelsEnabled = [reportedLookAroundContext lookAroundLabelsEnabled];
     [(RAPLookAroundQuestion *)v5 _initCorrectableFields];
   }
 

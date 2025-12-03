@@ -1,38 +1,38 @@
 @interface _LSClaimBindingTypeIdentifierBindable
-- (BOOL)isEqual:(id)a3;
-- (_LSClaimBindingTypeIdentifierBindable)initWithCoder:(id)a3;
-- (id)typeRecordWithError:(id *)a3;
-- (void)initWithTypeIdentifier:(void *)a1;
+- (BOOL)isEqual:(id)equal;
+- (_LSClaimBindingTypeIdentifierBindable)initWithCoder:(id)coder;
+- (id)typeRecordWithError:(id *)error;
+- (void)initWithTypeIdentifier:(void *)identifier;
 @end
 
 @implementation _LSClaimBindingTypeIdentifierBindable
 
-- (void)initWithTypeIdentifier:(void *)a1
+- (void)initWithTypeIdentifier:(void *)identifier
 {
   v3 = a2;
-  if (a1)
+  if (identifier)
   {
-    v7.receiver = a1;
+    v7.receiver = identifier;
     v7.super_class = _LSClaimBindingTypeIdentifierBindable;
-    a1 = objc_msgSendSuper2(&v7, sel__initProtected);
-    if (a1)
+    identifier = objc_msgSendSuper2(&v7, sel__initProtected);
+    if (identifier)
     {
       v4 = [v3 copy];
-      v5 = a1[1];
-      a1[1] = v4;
+      v5 = identifier[1];
+      identifier[1] = v4;
     }
   }
 
-  return a1;
+  return identifier;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(NSString *)self->_typeIdentifier isEqual:v4[1]];
+    v5 = [(NSString *)self->_typeIdentifier isEqual:equalCopy[1]];
   }
 
   else
@@ -43,10 +43,10 @@
   return v5;
 }
 
-- (_LSClaimBindingTypeIdentifierBindable)initWithCoder:(id)a3
+- (_LSClaimBindingTypeIdentifierBindable)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 ls_decodeObjectOfClass:objc_opt_class() forKey:@"typeIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy ls_decodeObjectOfClass:objc_opt_class() forKey:@"typeIdentifier"];
   if (v5)
   {
     v6 = [(_LSClaimBindingTypeIdentifierBindable *)self initWithTypeIdentifier:v5];
@@ -61,13 +61,13 @@
   return v6;
 }
 
-- (id)typeRecordWithError:(id *)a3
+- (id)typeRecordWithError:(id *)error
 {
   v4 = [UTTypeRecord typeRecordWithIdentifier:self->_typeIdentifier];
   v5 = v4;
-  if (a3 && !v4)
+  if (error && !v4)
   {
-    *a3 = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -9499, 0, "[_LSClaimBindingTypeIdentifierBindable typeRecordWithError:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/LSClaimBindingConfiguration.mm", 435);
+    *error = _LSMakeNSErrorImpl(*MEMORY[0x1E696A768], -9499, 0, "[_LSClaimBindingTypeIdentifierBindable typeRecordWithError:]", "/Library/Caches/com.apple.xbs/Sources/CoreServices/LaunchServices.subprj/Source/LaunchServices/Record/LSClaimBindingConfiguration.mm", 435);
   }
 
   return v5;

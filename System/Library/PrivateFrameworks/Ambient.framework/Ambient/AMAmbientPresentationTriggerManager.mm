@@ -1,6 +1,6 @@
 @interface AMAmbientPresentationTriggerManager
 - (AMAmbientDefaults)ambientDefaults;
-- (AMAmbientPresentationTriggerManager)initWithMagicMountManager:(id)a3;
+- (AMAmbientPresentationTriggerManager)initWithMagicMountManager:(id)manager;
 - (BOOL)_analogousTriggerEvents;
 - (BOOL)_ignoreBatteryChargingForPresentation;
 - (BOOL)_isDeviceBatteryCharging;
@@ -9,56 +9,56 @@
 - (int64_t)_currentTriggerState;
 - (void)_deviceBatteryStateChanged;
 - (void)_disableMagicMountDetection;
-- (void)_notifyObserversUpdatedAmbientMountState:(int64_t)a3;
-- (void)_notifyObserversUpdatedAmbientPresentationState:(int64_t)a3;
-- (void)_notifyObserversUpdatedAmbientTriggerState:(int64_t)a3;
-- (void)_setDeviceBatteryMonitoringEnabled:(BOOL)a3;
-- (void)_setEffectiveMountState:(int64_t)a3;
+- (void)_notifyObserversUpdatedAmbientMountState:(int64_t)state;
+- (void)_notifyObserversUpdatedAmbientPresentationState:(int64_t)state;
+- (void)_notifyObserversUpdatedAmbientTriggerState:(int64_t)state;
+- (void)_setDeviceBatteryMonitoringEnabled:(BOOL)enabled;
+- (void)_setEffectiveMountState:(int64_t)state;
 - (void)_setupMagicMountDetectionIfNecessary;
 - (void)_updateAmbientMountState;
 - (void)_updateAmbientTriggerState;
 - (void)_updateEffectiveMountState;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setAmbientDefaults:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)setAmbientDefaults:(id)defaults;
 @end
 
 @implementation AMAmbientPresentationTriggerManager
 
-- (AMAmbientPresentationTriggerManager)initWithMagicMountManager:(id)a3
+- (AMAmbientPresentationTriggerManager)initWithMagicMountManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v6 = [(AMAmbientPresentationTriggerManager *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_overridenMagicMountManager, a3);
+    objc_storeStrong(&v6->_overridenMagicMountManager, manager);
   }
 
   return v7;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  [(NSHashTable *)self->_observers removeObject:a3];
+  [(NSHashTable *)self->_observers removeObject:observer];
   if (![(NSHashTable *)self->_observers count])
   {
     observers = self->_observers;
@@ -86,8 +86,8 @@
     return 0;
   }
 
-  v3 = [(AMAmbientPresentationTriggerManager *)self cachedMagicMountState];
-  if ([v3 isMounted])
+  cachedMagicMountState = [(AMAmbientPresentationTriggerManager *)self cachedMagicMountState];
+  if ([cachedMagicMountState isMounted])
   {
 
     return 3;
@@ -95,17 +95,17 @@
 
   else
   {
-    v5 = [(AMAmbientPresentationTriggerManager *)self cachedMagicMountState];
-    v6 = [v5 mountStatus];
+    cachedMagicMountState2 = [(AMAmbientPresentationTriggerManager *)self cachedMagicMountState];
+    mountStatus = [cachedMagicMountState2 mountStatus];
 
-    if ((v6 - 2) >= 3)
+    if ((mountStatus - 2) >= 3)
     {
       return 0;
     }
 
     else
     {
-      return v6 - 1;
+      return mountStatus - 1;
     }
   }
 }
@@ -117,19 +117,19 @@
     return 0;
   }
 
-  v3 = [(AMAmbientPresentationTriggerManager *)self cachedMagicMountState];
-  if ([v3 isMounted])
+  cachedMagicMountState = [(AMAmbientPresentationTriggerManager *)self cachedMagicMountState];
+  if ([cachedMagicMountState isMounted])
   {
 
     return 1;
   }
 
-  v5 = [(AMAmbientPresentationTriggerManager *)self cachedMagicMountState];
-  v6 = [v5 mountStatus];
+  cachedMagicMountState2 = [(AMAmbientPresentationTriggerManager *)self cachedMagicMountState];
+  mountStatus = [cachedMagicMountState2 mountStatus];
 
-  if ((v6 - 2) <= 2)
+  if ((mountStatus - 2) <= 2)
   {
-    return qword_23EE4FC00[v6 - 2];
+    return qword_23EE4FC00[mountStatus - 2];
   }
 
   else
@@ -141,42 +141,42 @@
 - (void)_updateAmbientTriggerState
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [(AMAmbientPresentationTriggerManager *)self _effectiveMountState];
-  v4 = [(AMAmbientPresentationTriggerManager *)self _isDeviceBatteryCharging];
-  v5 = [(AMAmbientPresentationTriggerManager *)self _currentTriggerState];
+  _effectiveMountState = [(AMAmbientPresentationTriggerManager *)self _effectiveMountState];
+  _isDeviceBatteryCharging = [(AMAmbientPresentationTriggerManager *)self _isDeviceBatteryCharging];
+  _currentTriggerState = [(AMAmbientPresentationTriggerManager *)self _currentTriggerState];
   v6 = AMLogPresentation();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = v3 == 1;
+    v7 = _effectiveMountState == 1;
     v8 = @"asserted";
-    if (v5 != 1)
+    if (_currentTriggerState != 1)
     {
       v8 = @"unknown";
     }
 
-    if (!v5)
+    if (!_currentTriggerState)
     {
       v8 = @"idle";
     }
 
     v9 = v8;
-    v10 = [(AMAmbientPresentationTriggerManager *)self cachedMagicMountState];
-    v11 = [v10 mountStatus] - 1;
+    cachedMagicMountState = [(AMAmbientPresentationTriggerManager *)self cachedMagicMountState];
+    v11 = [cachedMagicMountState mountStatus] - 1;
     v12 = @"unknown";
     if (v11 <= 3)
     {
       v12 = off_278C735F0[v11];
     }
 
-    v13 = [(AMAmbientPresentationTriggerManager *)self _ignoreBatteryChargingForPresentation];
-    v14 = [(AMAmbientPresentationTriggerManager *)self _effectiveMountState];
+    _ignoreBatteryChargingForPresentation = [(AMAmbientPresentationTriggerManager *)self _ignoreBatteryChargingForPresentation];
+    _effectiveMountState2 = [(AMAmbientPresentationTriggerManager *)self _effectiveMountState];
     v15 = @"mounted";
-    if (v14 != 1)
+    if (_effectiveMountState2 != 1)
     {
       v15 = @"unknown";
     }
 
-    if (!v14)
+    if (!_effectiveMountState2)
     {
       v15 = @"unmounted";
     }
@@ -189,54 +189,54 @@
     v22 = 2114;
     v23 = v12;
     v24 = 1024;
-    v25 = v4;
+    v25 = _isDeviceBatteryCharging;
     v26 = 1024;
-    v27 = v13;
+    v27 = _ignoreBatteryChargingForPresentation;
     v28 = 2114;
     v29 = v16;
     _os_log_impl(&dword_23EE48000, v6, OS_LOG_TYPE_DEFAULT, "Updating ambient trigger state : %{public}@ [ isMounted : %{BOOL}d ; mountStatus : %{public}@ ; isCharging : %{BOOL}d ; ignoreCharging : %{BOOL}d ; effectiveMountState : %{public}@ ]", &v18, 0x32u);
   }
 
   [(AMAmbientPresentationTriggerManager *)self _notifyObserversUpdatedAmbientPresentationState:[(AMAmbientPresentationTriggerManager *)self _currentPresentationState]];
-  [(AMAmbientPresentationTriggerManager *)self _notifyObserversUpdatedAmbientTriggerState:v5];
+  [(AMAmbientPresentationTriggerManager *)self _notifyObserversUpdatedAmbientTriggerState:_currentTriggerState];
   v17 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_updateAmbientMountState
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(AMAmbientPresentationTriggerManager *)self _isDeviceBatteryCharging];
-  v4 = [(AMAmbientPresentationTriggerManager *)self _currentMountState];
+  _isDeviceBatteryCharging = [(AMAmbientPresentationTriggerManager *)self _isDeviceBatteryCharging];
+  _currentMountState = [(AMAmbientPresentationTriggerManager *)self _currentMountState];
   v5 = AMLogPresentation();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    if (v4 > 3)
+    if (_currentMountState > 3)
     {
       v6 = @"unknown";
     }
 
     else
     {
-      v6 = off_278C735D0[v4];
+      v6 = off_278C735D0[_currentMountState];
     }
 
-    v7 = [(AMAmbientPresentationTriggerManager *)self cachedMagicMountState];
-    v8 = [v7 mountStatus] - 1;
+    cachedMagicMountState = [(AMAmbientPresentationTriggerManager *)self cachedMagicMountState];
+    v8 = [cachedMagicMountState mountStatus] - 1;
     v9 = @"unknown";
     if (v8 <= 3)
     {
       v9 = off_278C735F0[v8];
     }
 
-    v10 = [(AMAmbientPresentationTriggerManager *)self _ignoreBatteryChargingForPresentation];
-    v11 = [(AMAmbientPresentationTriggerManager *)self _effectiveMountState];
+    _ignoreBatteryChargingForPresentation = [(AMAmbientPresentationTriggerManager *)self _ignoreBatteryChargingForPresentation];
+    _effectiveMountState = [(AMAmbientPresentationTriggerManager *)self _effectiveMountState];
     v12 = @"mounted";
-    if (v11 != 1)
+    if (_effectiveMountState != 1)
     {
       v12 = @"unknown";
     }
 
-    if (!v11)
+    if (!_effectiveMountState)
     {
       v12 = @"unmounted";
     }
@@ -247,43 +247,43 @@
     v17 = 2114;
     v18 = v9;
     v19 = 1024;
-    v20 = v3;
+    v20 = _isDeviceBatteryCharging;
     v21 = 1024;
-    v22 = v10;
+    v22 = _ignoreBatteryChargingForPresentation;
     v23 = 2114;
     v24 = v13;
     _os_log_impl(&dword_23EE48000, v5, OS_LOG_TYPE_DEFAULT, "Updating ambient mount state : %{public}@ [ mountStatus : %{public}@ ; isCharging : %{BOOL}d ; ignoreCharging : %{BOOL}d ; effectiveMountState : %{public}@ ]", &v15, 0x2Cu);
   }
 
   [(AMAmbientPresentationTriggerManager *)self _notifyObserversUpdatedAmbientPresentationState:[(AMAmbientPresentationTriggerManager *)self _currentPresentationState]];
-  [(AMAmbientPresentationTriggerManager *)self _notifyObserversUpdatedAmbientMountState:v4];
+  [(AMAmbientPresentationTriggerManager *)self _notifyObserversUpdatedAmbientMountState:_currentMountState];
   v14 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_updateEffectiveMountState
 {
-  v3 = [(AMAmbientPresentationTriggerManager *)self cachedMagicMountState];
-  v4 = [v3 mountStatus];
+  cachedMagicMountState = [(AMAmbientPresentationTriggerManager *)self cachedMagicMountState];
+  mountStatus = [cachedMagicMountState mountStatus];
 
-  v5 = [(AMAmbientPresentationTriggerManager *)self _effectiveMountState];
-  if (v5 == 1)
+  _effectiveMountState = [(AMAmbientPresentationTriggerManager *)self _effectiveMountState];
+  if (_effectiveMountState == 1)
   {
-    v6 = v4 != 1;
+    v6 = mountStatus != 1;
   }
 
   else
   {
-    v6 = v5;
-    if (!v5)
+    v6 = _effectiveMountState;
+    if (!_effectiveMountState)
     {
-      v6 = v4 == 4 || v4 == 3 && [(AMAmbientPresentationTriggerManager *)self _analogousTriggerEvents];
+      v6 = mountStatus == 4 || mountStatus == 3 && [(AMAmbientPresentationTriggerManager *)self _analogousTriggerEvents];
     }
   }
 
   [(AMAmbientPresentationTriggerManager *)self _setEffectiveMountState:v6];
 }
 
-- (void)_setEffectiveMountState:(int64_t)a3
+- (void)_setEffectiveMountState:(int64_t)state
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = AMLogPresentation();
@@ -291,19 +291,19 @@
   {
     v6 = @"unknown";
     v7 = @"mounted";
-    if (a3 != 1)
+    if (state != 1)
     {
       v7 = @"unknown";
     }
 
-    if (!a3)
+    if (!state)
     {
       v7 = @"unmounted";
     }
 
     v8 = v7;
-    v9 = [(AMAmbientPresentationTriggerManager *)self cachedMagicMountState];
-    v10 = [v9 mountStatus] - 1;
+    cachedMagicMountState = [(AMAmbientPresentationTriggerManager *)self cachedMagicMountState];
+    v10 = [cachedMagicMountState mountStatus] - 1;
     if (v10 <= 3)
     {
       v6 = off_278C735F0[v10];
@@ -314,30 +314,30 @@
     v14 = 2114;
     v15 = v6;
     v16 = 1024;
-    v17 = [(AMAmbientPresentationTriggerManager *)self _analogousTriggerEvents];
+    _analogousTriggerEvents = [(AMAmbientPresentationTriggerManager *)self _analogousTriggerEvents];
     _os_log_impl(&dword_23EE48000, v5, OS_LOG_TYPE_DEFAULT, "Updating ambient effective mount state : %{public}@ [ mountStatus : %{public}@ ; analogousTriggerEvents : %{BOOL}d ]", &v12, 0x1Cu);
   }
 
-  if (self->_effectiveMountState != a3)
+  if (self->_effectiveMountState != state)
   {
-    self->_effectiveMountState = a3;
+    self->_effectiveMountState = state;
     [(AMAmbientPresentationTriggerManager *)self _updateAmbientTriggerState];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyObserversUpdatedAmbientPresentationState:(int64_t)a3
+- (void)_notifyObserversUpdatedAmbientPresentationState:(int64_t)state
 {
-  v5 = [(NSHashTable *)self->_observers allObjects];
-  v6 = [v5 copy];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v6 = [allObjects copy];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __87__AMAmbientPresentationTriggerManager__notifyObserversUpdatedAmbientPresentationState___block_invoke;
   v7[3] = &unk_278C73560;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = state;
   [v6 enumerateObjectsUsingBlock:v7];
 }
 
@@ -355,17 +355,17 @@ void __87__AMAmbientPresentationTriggerManager__notifyObserversUpdatedAmbientPre
   }
 }
 
-- (void)_notifyObserversUpdatedAmbientTriggerState:(int64_t)a3
+- (void)_notifyObserversUpdatedAmbientTriggerState:(int64_t)state
 {
-  v5 = [(NSHashTable *)self->_observers allObjects];
-  v6 = [v5 copy];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v6 = [allObjects copy];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __82__AMAmbientPresentationTriggerManager__notifyObserversUpdatedAmbientTriggerState___block_invoke;
   v7[3] = &unk_278C73560;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = state;
   [v6 enumerateObjectsUsingBlock:v7];
 }
 
@@ -378,17 +378,17 @@ void __82__AMAmbientPresentationTriggerManager__notifyObserversUpdatedAmbientTri
   }
 }
 
-- (void)_notifyObserversUpdatedAmbientMountState:(int64_t)a3
+- (void)_notifyObserversUpdatedAmbientMountState:(int64_t)state
 {
-  v5 = [(NSHashTable *)self->_observers allObjects];
-  v6 = [v5 copy];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v6 = [allObjects copy];
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__AMAmbientPresentationTriggerManager__notifyObserversUpdatedAmbientMountState___block_invoke;
   v7[3] = &unk_278C73560;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = state;
   [v6 enumerateObjectsUsingBlock:v7];
 }
 
@@ -456,13 +456,13 @@ void __80__AMAmbientPresentationTriggerManager__notifyObserversUpdatedAmbientMou
     [(CMMagicMountManager *)self->_magicMountManager setMagicMountConfiguration:2];
     objc_initWeak(&location, self);
     v6 = self->_magicMountManager;
-    v7 = [MEMORY[0x277CCABD8] mainQueue];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __75__AMAmbientPresentationTriggerManager__setupMagicMountDetectionIfNecessary__block_invoke;
     v8[3] = &unk_278C73588;
     objc_copyWeak(&v9, &location);
-    [(CMMagicMountManager *)v6 startMagicMountUpdatesToQueue:v7 withHandler:v8];
+    [(CMMagicMountManager *)v6 startMagicMountUpdatesToQueue:mainQueue withHandler:v8];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -522,19 +522,19 @@ void __75__AMAmbientPresentationTriggerManager__setupMagicMountDetectionIfNecess
   }
 }
 
-- (void)_setDeviceBatteryMonitoringEnabled:(BOOL)a3
+- (void)_setDeviceBatteryMonitoringEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  v6 = v5;
-  if (v3)
+  enabledCopy = enabled;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v6 = defaultCenter;
+  if (enabledCopy)
   {
-    [v5 addObserver:self selector:sel__deviceBatteryStateChanged name:*MEMORY[0x277D76870] object:0];
+    [defaultCenter addObserver:self selector:sel__deviceBatteryStateChanged name:*MEMORY[0x277D76870] object:0];
   }
 
   else
   {
-    [v5 removeObserver:self name:*MEMORY[0x277D76870] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D76870] object:0];
   }
 }
 
@@ -549,9 +549,9 @@ void __75__AMAmbientPresentationTriggerManager__setupMagicMountDetectionIfNecess
     _os_log_impl(&dword_23EE48000, v3, OS_LOG_TYPE_DEFAULT, "Ambient device battery state change detected [ isDeviceBatteryCharging : %{BOOL}d ]", v7, 8u);
   }
 
-  v4 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   batteryStateChangeTimestamp = self->_batteryStateChangeTimestamp;
-  self->_batteryStateChangeTimestamp = v4;
+  self->_batteryStateChangeTimestamp = date;
 
   [(AMAmbientPresentationTriggerManager *)self _updateEffectiveMountState];
   [(AMAmbientPresentationTriggerManager *)self _updateAmbientMountState];
@@ -564,57 +564,57 @@ void __75__AMAmbientPresentationTriggerManager__setupMagicMountDetectionIfNecess
   v12 = *MEMORY[0x277D85DE8];
   if ([(AMAmbientPresentationTriggerManager *)self _ignoreBatteryChargingForPresentation])
   {
-    v3 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v4 = [(AMAmbientPresentationTriggerManager *)self overriddenBatteryChargingState];
+    overriddenBatteryChargingState = [(AMAmbientPresentationTriggerManager *)self overriddenBatteryChargingState];
 
-    if (v4)
+    if (overriddenBatteryChargingState)
     {
-      v5 = [(AMAmbientPresentationTriggerManager *)self overriddenBatteryChargingState];
-      v3 = [v5 BOOLValue];
+      overriddenBatteryChargingState2 = [(AMAmbientPresentationTriggerManager *)self overriddenBatteryChargingState];
+      bOOLValue = [overriddenBatteryChargingState2 BOOLValue];
     }
 
     else
     {
-      v6 = [MEMORY[0x277D75418] currentDevice];
-      v7 = [v6 batteryState];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      batteryState = [currentDevice batteryState];
 
-      v8 = v7 & 0xFFFFFFFFFFFFFFFELL;
-      v3 = (v7 & 0xFFFFFFFFFFFFFFFELL) == 2;
-      v5 = AMLogPresentation();
-      if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+      v8 = batteryState & 0xFFFFFFFFFFFFFFFELL;
+      bOOLValue = (batteryState & 0xFFFFFFFFFFFFFFFELL) == 2;
+      overriddenBatteryChargingState2 = AMLogPresentation();
+      if (os_log_type_enabled(overriddenBatteryChargingState2, OS_LOG_TYPE_DEFAULT))
       {
         v11[0] = 67109120;
         v11[1] = v8 == 2;
-        _os_log_impl(&dword_23EE48000, v5, OS_LOG_TYPE_DEFAULT, "Ambient determining battery charging = %{BOOL}d ", v11, 8u);
+        _os_log_impl(&dword_23EE48000, overriddenBatteryChargingState2, OS_LOG_TYPE_DEFAULT, "Ambient determining battery charging = %{BOOL}d ", v11, 8u);
       }
     }
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)_ignoreBatteryChargingForPresentation
 {
   WeakRetained = objc_loadWeakRetained(&self->_ambientDefaults);
-  v3 = [WeakRetained ignoreBatteryChargingForPresentation];
+  ignoreBatteryChargingForPresentation = [WeakRetained ignoreBatteryChargingForPresentation];
 
-  return v3;
+  return ignoreBatteryChargingForPresentation;
 }
 
-- (void)setAmbientDefaults:(id)a3
+- (void)setAmbientDefaults:(id)defaults
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  defaultsCopy = defaults;
   WeakRetained = objc_loadWeakRetained(&self->_ambientDefaults);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != defaultsCopy)
   {
-    objc_storeWeak(&self->_ambientDefaults, v4);
+    objc_storeWeak(&self->_ambientDefaults, defaultsCopy);
     objc_initWeak(&location, self);
     v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ignoreBatteryChargingForPresentation"];
     v14[0] = v6;
@@ -625,7 +625,7 @@ void __75__AMAmbientPresentationTriggerManager__setupMagicMountDetectionIfNecess
     v11[2] = __58__AMAmbientPresentationTriggerManager_setAmbientDefaults___block_invoke;
     v11[3] = &unk_278C735B0;
     objc_copyWeak(&v12, &location);
-    v9 = [v4 observeDefaults:v7 onQueue:MEMORY[0x277D85CD0] withBlock:v11];
+    v9 = [defaultsCopy observeDefaults:v7 onQueue:MEMORY[0x277D85CD0] withBlock:v11];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);

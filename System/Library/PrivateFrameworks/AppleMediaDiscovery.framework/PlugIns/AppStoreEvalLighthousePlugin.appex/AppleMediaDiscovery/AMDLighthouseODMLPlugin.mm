@@ -1,17 +1,17 @@
 @interface AMDLighthouseODMLPlugin
 + (void)initialize;
 - (AMDLighthouseODMLPlugin)init;
-- (id)checkIfTaskShouldBeStopped:(id *)a3;
-- (id)createMLRTaskAttachmentsObject:(id)a3 modelDirURL:(id)a4 error:(id *)a5;
-- (id)downloadModel:(id)a3 outError:(id *)a4;
-- (id)gatherGaussianResults:(id)a3 withPartitions:(id)a4 outError:(id *)a5;
-- (id)getAttachmentURLByName:(id)a3 namespaceID:(id)a4 triClient:(id)a5 isDirectory:(BOOL)a6 error:(id *)a7;
-- (id)performTask:(id)a3 outError:(id *)a4;
-- (id)performTrialTask:(id)a3 outError:(id *)a4;
-- (id)setUpForGenericTaskWithClient:(id)a3 outError:(id *)a4;
-- (id)setupModelDirectoryWithTask:(id)a3 error:(id *)a4;
-- (id)setupRecipeWithTask:(id)a3 error:(id *)a4;
-- (id)targetingKeyValuePairsForKeys:(id)a3 error:(id *)a4;
+- (id)checkIfTaskShouldBeStopped:(id *)stopped;
+- (id)createMLRTaskAttachmentsObject:(id)object modelDirURL:(id)l error:(id *)error;
+- (id)downloadModel:(id)model outError:(id *)error;
+- (id)gatherGaussianResults:(id)results withPartitions:(id)partitions outError:(id *)error;
+- (id)getAttachmentURLByName:(id)name namespaceID:(id)d triClient:(id)client isDirectory:(BOOL)directory error:(id *)error;
+- (id)performTask:(id)task outError:(id *)error;
+- (id)performTrialTask:(id)task outError:(id *)error;
+- (id)setUpForGenericTaskWithClient:(id)client outError:(id *)error;
+- (id)setupModelDirectoryWithTask:(id)task error:(id *)error;
+- (id)setupRecipeWithTask:(id)task error:(id *)error;
+- (id)targetingKeyValuePairsForKeys:(id)keys error:(id *)error;
 - (void)stop;
 @end
 
@@ -19,7 +19,7 @@
 
 + (void)initialize
 {
-  if (a1 == objc_opt_class())
+  if (self == objc_opt_class())
   {
     v2 = os_log_create("com.apple.aiml.AMDLighthouseODMLPlugin", "AMDLighthouseODMLPlugin");
     v3 = sLog;
@@ -27,38 +27,38 @@
   }
 }
 
-- (id)getAttachmentURLByName:(id)a3 namespaceID:(id)a4 triClient:(id)a5 isDirectory:(BOOL)a6 error:(id *)a7
+- (id)getAttachmentURLByName:(id)name namespaceID:(id)d triClient:(id)client isDirectory:(BOOL)directory error:(id *)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
+  objc_storeStrong(&v31, d);
   v30 = 0;
-  objc_storeStrong(&v30, a5);
-  v29 = a6;
-  v28 = a7;
+  objc_storeStrong(&v30, client);
+  directoryCopy = directory;
+  errorCopy = error;
   v27 = [v30 levelForFactor:location[0] withNamespaceName:v31];
   v26 = 0;
-  if (a6)
+  if (directory)
   {
-    v7 = [v27 directoryValue];
+    directoryValue = [v27 directoryValue];
   }
 
   else
   {
-    v7 = [v27 fileValue];
+    directoryValue = [v27 fileValue];
   }
 
   v8 = v26;
-  v26 = v7;
+  v26 = directoryValue;
 
-  v16 = [v26 path];
+  path = [v26 path];
   v25 = [NSURL fileURLWithPath:?];
 
   v24 = +[NSFileManager defaultManager];
-  v17 = [v25 path];
+  path2 = [v25 path];
   v18 = [v24 fileExistsAtPath:?];
 
   if (v18)
@@ -76,7 +76,7 @@
     }
 
     objc_storeStrong(&v23, 0);
-    if (v28)
+    if (errorCopy)
     {
       v12 = AMDLighthouseODMLPluginErrorDomain;
       v34 = NSLocalizedDescriptionKey;
@@ -85,7 +85,7 @@
       v13 = [NSDictionary dictionaryWithObjects:&v35 forKeys:&v34 count:1];
       v14 = [NSError errorWithDomain:v12 code:133 userInfo:?];
       v9 = v14;
-      *v28 = v14;
+      *errorCopy = v14;
     }
 
     v33 = 0;
@@ -103,15 +103,15 @@
   return v10;
 }
 
-- (id)createMLRTaskAttachmentsObject:(id)a3 modelDirURL:(id)a4 error:(id *)a5
+- (id)createMLRTaskAttachmentsObject:(id)object modelDirURL:(id)l error:(id *)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, object);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
-  v21[1] = a5;
+  objc_storeStrong(&v22, l);
+  v21[1] = error;
   v21[0] = [location[0] objectForKey:AttachmentKeys];
   v20 = objc_opt_new();
   memset(__b, 0, sizeof(__b));
@@ -159,18 +159,18 @@
   return v7;
 }
 
-- (id)setupRecipeWithTask:(id)a3 error:(id *)a4
+- (id)setupRecipeWithTask:(id)task error:(id *)error
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v29[1] = a4;
-  [(AMDLighthouseODMLPlugin *)v31 setClient:location[0]];
-  v17 = v31;
+  objc_storeStrong(location, task);
+  v29[1] = error;
+  [(AMDLighthouseODMLPlugin *)selfCopy setClient:location[0]];
+  v17 = selfCopy;
   v15 = RecipeAttachmentKey;
   v16 = TrialNamespace;
-  v18 = [(AMDLighthouseODMLPlugin *)v31 client];
+  client = [(AMDLighthouseODMLPlugin *)selfCopy client];
   v29[0] = [AMDLighthouseODMLPlugin getAttachmentURLByName:v17 namespaceID:"getAttachmentURLByName:namespaceID:triClient:isDirectory:error:" triClient:v15 isDirectory:v16 error:?];
 
   if (v29[0])
@@ -179,15 +179,15 @@
     v26 = OS_LOG_TYPE_INFO;
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
-      v13 = [v29[0] path];
-      __os_log_helper_16_2_1_8_64(v35, v13);
+      path = [v29[0] path];
+      __os_log_helper_16_2_1_8_64(v35, path);
       _os_log_impl(&_mh_execute_header, v27, v26, "recipe path: %@", v35, 0xCu);
     }
 
     objc_storeStrong(&v27, 0);
     v25 = 0;
     v7 = [NSData alloc];
-    v9 = [v29[0] path];
+    path2 = [v29[0] path];
     v23 = v25;
     v8 = [v7 initWithContentsOfFile:? options:? error:?];
     objc_storeStrong(&v25, v23);
@@ -196,9 +196,9 @@
     v22 = v25;
     v10 = [NSJSONSerialization JSONObjectWithData:v24 options:0 error:&v22];
     objc_storeStrong(&v25, v22);
-    [(AMDLighthouseODMLPlugin *)v31 setRecipe:v10];
+    [(AMDLighthouseODMLPlugin *)selfCopy setRecipe:v10];
 
-    v11 = [(AMDLighthouseODMLPlugin *)v31 recipe];
+    recipe = [(AMDLighthouseODMLPlugin *)selfCopy recipe];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -207,8 +207,8 @@
       v19 = sLog;
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
-        v6 = [(AMDLighthouseODMLPlugin *)v31 recipe];
-        __os_log_helper_16_2_1_8_64(v33, v6);
+        recipe2 = [(AMDLighthouseODMLPlugin *)selfCopy recipe];
+        __os_log_helper_16_2_1_8_64(v33, recipe2);
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Loaded JSON recipe: %@", v33, 0xCu);
       }
 
@@ -249,36 +249,36 @@
   return v4;
 }
 
-- (id)setupModelDirectoryWithTask:(id)a3 error:(id *)a4
+- (id)setupModelDirectoryWithTask:(id)task error:(id *)error
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17[1] = a4;
-  v17[0] = [(AMDLighthouseODMLPlugin *)v19 getAttachmentURLByName:ModelsDirectoryKey namespaceID:TrialNamespace triClient:location[0] isDirectory:1 error:a4];
+  objc_storeStrong(location, task);
+  v17[1] = error;
+  v17[0] = [(AMDLighthouseODMLPlugin *)selfCopy getAttachmentURLByName:ModelsDirectoryKey namespaceID:TrialNamespace triClient:location[0] isDirectory:1 error:error];
   if (v17[0])
   {
-    v10 = [(AMDLighthouseODMLPlugin *)v19 worker];
-    [(AMDLighthouseODMLWorker *)v10 setModelsURL:v17[0]];
+    worker = [(AMDLighthouseODMLPlugin *)selfCopy worker];
+    [(AMDLighthouseODMLWorker *)worker setModelsURL:v17[0]];
 
     v15 = sLog;
     v14 = OS_LOG_TYPE_INFO;
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v9 = [v17[0] path];
-      __os_log_helper_16_2_1_8_64(v21, v9);
+      path = [v17[0] path];
+      __os_log_helper_16_2_1_8_64(v21, path);
       _os_log_impl(&_mh_execute_header, v15, v14, "model path: %@", v21, 0xCu);
     }
 
     objc_storeStrong(&v15, 0);
     v13 = 0;
-    v6 = v19;
-    v8 = [(AMDLighthouseODMLPlugin *)v19 recipe];
+    v6 = selfCopy;
+    recipe = [(AMDLighthouseODMLPlugin *)selfCopy recipe];
     obj = v13;
     v7 = [AMDLighthouseODMLPlugin createMLRTaskAttachmentsObject:v6 modelDirURL:"createMLRTaskAttachmentsObject:modelDirURL:error:" error:?];
     objc_storeStrong(&v13, obj);
-    [(AMDLighthouseODMLPlugin *)v19 setAttachments:v7];
+    [(AMDLighthouseODMLPlugin *)selfCopy setAttachments:v7];
 
     v20 = &off_10002DF00;
     v16 = 1;
@@ -298,15 +298,15 @@
   return v4;
 }
 
-- (id)gatherGaussianResults:(id)a3 withPartitions:(id)a4 outError:(id *)a5
+- (id)gatherGaussianResults:(id)results withPartitions:(id)partitions outError:(id *)error
 {
-  v40 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, results);
   v38 = 0;
-  objc_storeStrong(&v38, a4);
-  v37 = a5;
+  objc_storeStrong(&v38, partitions);
+  errorCopy = error;
   v36 = objc_alloc_init(NSMutableDictionary);
   v35 = objc_alloc_init(NSMutableDictionary);
   memset(__b, 0, sizeof(__b));
@@ -345,7 +345,7 @@
           }
 
           v30 = *(v29[1] + 8 * v14);
-          v11 = [(AMDLighthouseODMLPlugin *)v40 checkIfTaskShouldBeStopped:v37];
+          v11 = [(AMDLighthouseODMLPlugin *)selfCopy checkIfTaskShouldBeStopped:errorCopy];
 
           if (!v11)
           {
@@ -440,16 +440,16 @@ LABEL_22:
   return v6;
 }
 
-- (id)downloadModel:(id)a3 outError:(id *)a4
+- (id)downloadModel:(id)model outError:(id *)error
 {
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v22 = a4;
+  objc_storeStrong(location, model);
+  errorCopy = error;
   v21 = dispatch_semaphore_create(0);
   NSLog(@"Calling downloadLevelsForFactors");
-  v16 = [(AMDLighthouseODMLPlugin *)v24 client];
+  client = [(AMDLighthouseODMLPlugin *)selfCopy client];
   v26 = location[0];
   v15 = [NSArray arrayWithObjects:&v26 count:1];
   v13 = TrialNamespace;
@@ -460,7 +460,7 @@ LABEL_22:
   v18[3] = &unk_10002C320;
   v19 = location[0];
   v20 = v21;
-  [(TRIClient *)v16 downloadLevelsForFactors:v15 withNamespace:v13 queue:0 options:v14 progress:0 completion:v18];
+  [(TRIClient *)client downloadLevelsForFactors:v15 withNamespace:v13 queue:0 options:v14 progress:0 completion:v18];
 
   dsema = v21;
   v4 = dispatch_time(0, 600000000000);
@@ -469,18 +469,18 @@ LABEL_22:
     v5 = [NSError alloc];
     v11 = [v5 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:149 userInfo:0];
     v6 = v11;
-    *v22 = v11;
+    *errorCopy = v11;
     v25 = 0;
   }
 
   else
   {
-    v10 = [(AMDLighthouseODMLPlugin *)v24 checkIfTaskShouldBeStopped:v22];
+    v10 = [(AMDLighthouseODMLPlugin *)selfCopy checkIfTaskShouldBeStopped:errorCopy];
 
     if (v10)
     {
-      v9 = [(AMDLighthouseODMLPlugin *)v24 client];
-      [(TRIClient *)v9 refresh];
+      client2 = [(AMDLighthouseODMLPlugin *)selfCopy client];
+      [(TRIClient *)client2 refresh];
 
       v25 = [NSNumber numberWithLong:1];
     }
@@ -520,29 +520,29 @@ void __50__AMDLighthouseODMLPlugin_downloadModel_outError___block_invoke(uint64_
   objc_storeStrong(&location, 0);
 }
 
-- (id)targetingKeyValuePairsForKeys:(id)a3 error:(id *)a4
+- (id)targetingKeyValuePairsForKeys:(id)keys error:(id *)error
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7[1] = a4;
+  objc_storeStrong(location, keys);
+  v7[1] = error;
   v7[0] = objc_alloc_init(AMDDODMLCustomTargetingHelper);
-  v6 = [v7[0] mainTargetingResolver:location[0] error:a4];
+  v6 = [v7[0] mainTargetingResolver:location[0] error:error];
   objc_storeStrong(v7, 0);
   objc_storeStrong(location, 0);
 
   return v6;
 }
 
-- (id)checkIfTaskShouldBeStopped:(id *)a3
+- (id)checkIfTaskShouldBeStopped:(id *)stopped
 {
   if ([(NSNumber *)self->_taskShouldBeStopped intValue]== 1)
   {
     v3 = [NSError alloc];
     v6 = [v3 initWithDomain:AMDLighthouseODMLPluginErrorDomain code:148 userInfo:0];
     v4 = v6;
-    *a3 = v6;
+    *stopped = v6;
     v8 = 0;
   }
 
@@ -554,16 +554,16 @@ void __50__AMDLighthouseODMLPlugin_downloadModel_outError___block_invoke(uint64_
   return v8;
 }
 
-- (id)setUpForGenericTaskWithClient:(id)a3 outError:(id *)a4
+- (id)setUpForGenericTaskWithClient:(id)client outError:(id *)error
 {
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v25 = a4;
+  objc_storeStrong(location, client);
+  errorCopy = error;
   v4 = [NSNumber numberWithInt:0];
-  taskShouldBeStopped = v27->_taskShouldBeStopped;
-  v27->_taskShouldBeStopped = v4;
+  taskShouldBeStopped = selfCopy->_taskShouldBeStopped;
+  selfCopy->_taskShouldBeStopped = v4;
 
   v24 = sLog;
   v23 = 1;
@@ -576,28 +576,28 @@ void __50__AMDLighthouseODMLPlugin_downloadModel_outError___block_invoke(uint64_
   }
 
   objc_storeStrong(&v24, 0);
-  v21 = [(AMDLighthouseODMLPlugin *)v27 setupRecipeWithTask:location[0] error:v25];
+  v21 = [(AMDLighthouseODMLPlugin *)selfCopy setupRecipeWithTask:location[0] error:errorCopy];
   if (v21)
   {
-    v10 = [(AMDLighthouseODMLPlugin *)v27 worker];
-    v9 = [(AMDLighthouseODMLPlugin *)v27 recipe];
-    v19 = [AMDLighthouseODMLWorker checkIfModelShouldBeDownloaded:v10 outError:"checkIfModelShouldBeDownloaded:outError:"];
+    worker = [(AMDLighthouseODMLPlugin *)selfCopy worker];
+    recipe = [(AMDLighthouseODMLPlugin *)selfCopy recipe];
+    v19 = [AMDLighthouseODMLWorker checkIfModelShouldBeDownloaded:worker outError:"checkIfModelShouldBeDownloaded:outError:"];
 
-    v18 = [v19 getCoreDictionary];
-    if (v18)
+    getCoreDictionary = [v19 getCoreDictionary];
+    if (getCoreDictionary)
     {
-      v17 = [v19 processRecipe:v25 errorDomain:AMDLighthouseODMLPluginErrorDomain];
+      v17 = [v19 processRecipe:errorCopy errorDomain:AMDLighthouseODMLPluginErrorDomain];
       if (v17)
       {
-        v8 = [(AMDLighthouseODMLPlugin *)v27 recipe];
-        v16 = [(NSDictionary *)v8 objectForKeyedSubscript:ModelDirectoryName];
+        recipe2 = [(AMDLighthouseODMLPlugin *)selfCopy recipe];
+        v16 = [(NSDictionary *)recipe2 objectForKeyedSubscript:ModelDirectoryName];
 
         if (!v16)
         {
           objc_storeStrong(&v16, ModelsDirectoryKey);
         }
 
-        v15 = [(AMDLighthouseODMLPlugin *)v27 downloadModel:v16 outError:v25];
+        v15 = [(AMDLighthouseODMLPlugin *)selfCopy downloadModel:v16 outError:errorCopy];
         if (v15)
         {
           v20 = 0;
@@ -613,10 +613,10 @@ void __50__AMDLighthouseODMLPlugin_downloadModel_outError___block_invoke(uint64_
         objc_storeStrong(&v16, 0);
         if (!v20)
         {
-          v14 = [(AMDLighthouseODMLPlugin *)v27 setupModelDirectoryWithTask:location[0] error:v25];
+          v14 = [(AMDLighthouseODMLPlugin *)selfCopy setupModelDirectoryWithTask:location[0] error:errorCopy];
           if (v14)
           {
-            v28 = v18;
+            v28 = getCoreDictionary;
           }
 
           else
@@ -644,7 +644,7 @@ void __50__AMDLighthouseODMLPlugin_downloadModel_outError___block_invoke(uint64_
       v20 = 1;
     }
 
-    objc_storeStrong(&v18, 0);
+    objc_storeStrong(&getCoreDictionary, 0);
     objc_storeStrong(&v19, 0);
   }
 
@@ -682,31 +682,31 @@ void __50__AMDLighthouseODMLPlugin_downloadModel_outError___block_invoke(uint64_
   return v6;
 }
 
-- (id)performTrialTask:(id)a3 outError:(id *)a4
+- (id)performTrialTask:(id)task outError:(id *)error
 {
-  v51 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v49 = a4;
+  objc_storeStrong(location, task);
+  errorCopy = error;
   v30 = objc_alloc_init(AMDLighthouseODMLWorker);
-  [(AMDLighthouseODMLPlugin *)v51 setWorker:?];
+  [(AMDLighthouseODMLPlugin *)selfCopy setWorker:?];
 
-  v48 = [location[0] triClient];
-  v47 = [(AMDLighthouseODMLPlugin *)v51 setUpForGenericTaskWithClient:v48 outError:a4];
-  v31 = [(AMDLighthouseODMLPlugin *)v51 client];
-  v46 = [(TRIClient *)v31 experimentIdentifiersWithNamespaceName:TrialNamespace];
+  triClient = [location[0] triClient];
+  v47 = [(AMDLighthouseODMLPlugin *)selfCopy setUpForGenericTaskWithClient:triClient outError:error];
+  client = [(AMDLighthouseODMLPlugin *)selfCopy client];
+  v46 = [(TRIClient *)client experimentIdentifiersWithNamespaceName:TrialNamespace];
 
-  v32 = [(AMDLighthouseODMLPlugin *)v51 worker];
-  [(AMDLighthouseODMLWorker *)v32 setTriExperimentIdentifiers:v46];
+  worker = [(AMDLighthouseODMLPlugin *)selfCopy worker];
+  [(AMDLighthouseODMLWorker *)worker setTriExperimentIdentifiers:v46];
 
-  if (*a4)
+  if (*error)
   {
     v45 = sLog;
     v44 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
     {
-      __os_log_helper_16_2_1_8_64(v53, *v49);
+      __os_log_helper_16_2_1_8_64(v53, *errorCopy);
       _os_log_error_impl(&_mh_execute_header, v45, v44, "Encountered error when setting up for generic task: %@", v53, 0xCu);
     }
 
@@ -717,21 +717,21 @@ void __50__AMDLighthouseODMLPlugin_downloadModel_outError___block_invoke(uint64_
 
   else
   {
-    v28 = [(AMDLighthouseODMLPlugin *)v51 worker];
-    v27 = [(AMDLighthouseODMLPlugin *)v51 recipe];
-    v26 = [(AMDLighthouseODMLPlugin *)v51 attachments];
-    v42 = [AMDLighthouseODMLWorker gatherMetricsToReturn:v28 withRecipe:"gatherMetricsToReturn:withRecipe:withAttachments:outError:" withAttachments:v47 outError:v27];
+    worker2 = [(AMDLighthouseODMLPlugin *)selfCopy worker];
+    recipe = [(AMDLighthouseODMLPlugin *)selfCopy recipe];
+    attachments = [(AMDLighthouseODMLPlugin *)selfCopy attachments];
+    v42 = [AMDLighthouseODMLWorker gatherMetricsToReturn:worker2 withRecipe:"gatherMetricsToReturn:withRecipe:withAttachments:outError:" withAttachments:v47 outError:recipe];
 
     if (v42)
     {
-      v24 = [(AMDLighthouseODMLPlugin *)v51 recipe];
-      v23 = [(NSDictionary *)v24 objectForKeyedSubscript:LoggingStrategies];
+      recipe2 = [(AMDLighthouseODMLPlugin *)selfCopy recipe];
+      v23 = [(NSDictionary *)recipe2 objectForKeyedSubscript:LoggingStrategies];
       v25 = [v23 containsObject:GaussianDeDisco];
 
       if (v25)
       {
-        v21 = [(AMDLighthouseODMLPlugin *)v51 recipe];
-        v20 = [(NSDictionary *)v21 objectForKeyedSubscript:LoggingStrategies];
+        recipe3 = [(AMDLighthouseODMLPlugin *)selfCopy recipe];
+        v20 = [(NSDictionary *)recipe3 objectForKeyedSubscript:LoggingStrategies];
         v22 = [v20 count];
 
         if (v22 <= 1)
@@ -739,10 +739,10 @@ void __50__AMDLighthouseODMLPlugin_downloadModel_outError___block_invoke(uint64_
           goto LABEL_15;
         }
 
-        v19 = [(AMDLighthouseODMLPlugin *)v51 worker];
-        v18 = [(AMDLighthouseODMLPlugin *)v51 recipe];
-        v17 = [(NSDictionary *)v18 objectForKeyedSubscript:LoggingStrategies];
-        v41 = [AMDLighthouseODMLWorker logAllResultsToCoreAnalyticsOrDeDisco:v19 withLoggingStrategies:"logAllResultsToCoreAnalyticsOrDeDisco:withLoggingStrategies:outError:" outError:v42];
+        worker3 = [(AMDLighthouseODMLPlugin *)selfCopy worker];
+        recipe4 = [(AMDLighthouseODMLPlugin *)selfCopy recipe];
+        v17 = [(NSDictionary *)recipe4 objectForKeyedSubscript:LoggingStrategies];
+        v41 = [AMDLighthouseODMLWorker logAllResultsToCoreAnalyticsOrDeDisco:worker3 withLoggingStrategies:"logAllResultsToCoreAnalyticsOrDeDisco:withLoggingStrategies:outError:" outError:v42];
 
         if (v41)
         {
@@ -770,10 +770,10 @@ void __50__AMDLighthouseODMLPlugin_downloadModel_outError___block_invoke(uint64_
         if (!v43)
         {
 LABEL_15:
-          v12 = v51;
+          v12 = selfCopy;
           v11 = v42;
-          v14 = [(AMDLighthouseODMLPlugin *)v51 recipe];
-          v13 = [(NSDictionary *)v14 objectForKeyedSubscript:GaussianDeDiscoPartitions];
+          recipe5 = [(AMDLighthouseODMLPlugin *)selfCopy recipe];
+          v13 = [(NSDictionary *)recipe5 objectForKeyedSubscript:GaussianDeDiscoPartitions];
           v37 = [AMDLighthouseODMLPlugin gatherGaussianResults:v12 withPartitions:"gatherGaussianResults:withPartitions:outError:" outError:v11];
 
           if (v37)
@@ -793,10 +793,10 @@ LABEL_15:
 
       else
       {
-        v10 = [(AMDLighthouseODMLPlugin *)v51 worker];
-        v9 = [(AMDLighthouseODMLPlugin *)v51 recipe];
-        v8 = [(NSDictionary *)v9 objectForKeyedSubscript:LoggingStrategies];
-        v36 = [AMDLighthouseODMLWorker logAllResultsToCoreAnalyticsOrDeDisco:v10 withLoggingStrategies:"logAllResultsToCoreAnalyticsOrDeDisco:withLoggingStrategies:outError:" outError:v42];
+        worker4 = [(AMDLighthouseODMLPlugin *)selfCopy worker];
+        recipe6 = [(AMDLighthouseODMLPlugin *)selfCopy recipe];
+        v8 = [(NSDictionary *)recipe6 objectForKeyedSubscript:LoggingStrategies];
+        v36 = [AMDLighthouseODMLWorker logAllResultsToCoreAnalyticsOrDeDisco:worker4 withLoggingStrategies:"logAllResultsToCoreAnalyticsOrDeDisco:withLoggingStrategies:outError:" outError:v42];
 
         if (v36)
         {
@@ -836,32 +836,32 @@ LABEL_15:
 
   objc_storeStrong(&v46, 0);
   objc_storeStrong(&v47, 0);
-  objc_storeStrong(&v48, 0);
+  objc_storeStrong(&triClient, 0);
   objc_storeStrong(location, 0);
   v4 = v52;
 
   return v4;
 }
 
-- (id)performTask:(id)a3 outError:(id *)a4
+- (id)performTask:(id)task outError:(id *)error
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v26 = a4;
+  objc_storeStrong(location, task);
+  errorCopy = error;
   v15 = objc_alloc_init(AMDLighthouseODMLWorker);
-  [(AMDLighthouseODMLPlugin *)v28 setWorker:?];
+  [(AMDLighthouseODMLPlugin *)selfCopy setWorker:?];
 
   v25 = [TRIClient mlr_clientWithMLRTask:location[0]];
-  v24 = [(AMDLighthouseODMLPlugin *)v28 setUpForGenericTaskWithClient:v25 outError:a4];
-  if (*a4)
+  v24 = [(AMDLighthouseODMLPlugin *)selfCopy setUpForGenericTaskWithClient:v25 outError:error];
+  if (*error)
   {
     v23 = sLog;
     v22 = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
-      __os_log_helper_16_2_1_8_64(v30, *v26);
+      __os_log_helper_16_2_1_8_64(v30, *errorCopy);
       _os_log_error_impl(&_mh_execute_header, v23, v22, "Encountered error when setting up for generic task: %@", v30, 0xCu);
     }
 
@@ -872,17 +872,17 @@ LABEL_15:
 
   else
   {
-    v13 = [(AMDLighthouseODMLPlugin *)v28 worker];
-    v12 = [(AMDLighthouseODMLPlugin *)v28 recipe];
-    v11 = [(AMDLighthouseODMLPlugin *)v28 attachments];
-    v20 = [AMDLighthouseODMLWorker gatherMetricsToReturn:v13 withRecipe:"gatherMetricsToReturn:withRecipe:withAttachments:outError:" withAttachments:v24 outError:v12];
+    worker = [(AMDLighthouseODMLPlugin *)selfCopy worker];
+    recipe = [(AMDLighthouseODMLPlugin *)selfCopy recipe];
+    attachments = [(AMDLighthouseODMLPlugin *)selfCopy attachments];
+    v20 = [AMDLighthouseODMLWorker gatherMetricsToReturn:worker withRecipe:"gatherMetricsToReturn:withRecipe:withAttachments:outError:" withAttachments:v24 outError:recipe];
 
     if (v20)
     {
-      v10 = [(AMDLighthouseODMLPlugin *)v28 worker];
-      v9 = [(AMDLighthouseODMLPlugin *)v28 recipe];
-      v8 = [(NSDictionary *)v9 objectForKeyedSubscript:LoggingStrategies];
-      v19 = [AMDLighthouseODMLWorker logAllResultsToCoreAnalyticsOrDeDisco:v10 withLoggingStrategies:"logAllResultsToCoreAnalyticsOrDeDisco:withLoggingStrategies:outError:" outError:v20];
+      worker2 = [(AMDLighthouseODMLPlugin *)selfCopy worker];
+      recipe2 = [(AMDLighthouseODMLPlugin *)selfCopy recipe];
+      v8 = [(NSDictionary *)recipe2 objectForKeyedSubscript:LoggingStrategies];
+      v19 = [AMDLighthouseODMLWorker logAllResultsToCoreAnalyticsOrDeDisco:worker2 withLoggingStrategies:"logAllResultsToCoreAnalyticsOrDeDisco:withLoggingStrategies:outError:" outError:v20];
 
       if (v19)
       {
@@ -933,17 +933,17 @@ LABEL_15:
   taskShouldBeStopped = self->_taskShouldBeStopped;
   self->_taskShouldBeStopped = v2;
 
-  v7 = [(AMDLighthouseODMLPlugin *)self worker];
-  if (v7)
+  worker = [(AMDLighthouseODMLPlugin *)self worker];
+  if (worker)
   {
-    v6 = [(AMDLighthouseODMLPlugin *)self worker];
-    [(AMDLighthouseODMLWorker *)v6 stop];
+    worker2 = [(AMDLighthouseODMLPlugin *)self worker];
+    [(AMDLighthouseODMLWorker *)worker2 stop];
   }
 
-  v5 = [(AMDLighthouseODMLPlugin *)self client];
+  client = [(AMDLighthouseODMLPlugin *)self client];
   v9 = ModelsDirectoryKey;
   v4 = [NSArray arrayWithObjects:&v9 count:1];
-  [TRIClient removeLevelsForFactors:v5 withNamespace:"removeLevelsForFactors:withNamespace:queue:completion:" queue:? completion:?];
+  [TRIClient removeLevelsForFactors:client withNamespace:"removeLevelsForFactors:withNamespace:queue:completion:" queue:? completion:?];
 }
 
 void __31__AMDLighthouseODMLPlugin_stop__block_invoke(id a1, BOOL a2, NSError *a3)

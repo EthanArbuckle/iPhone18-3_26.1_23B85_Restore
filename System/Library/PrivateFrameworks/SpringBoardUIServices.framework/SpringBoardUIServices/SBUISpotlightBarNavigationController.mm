@@ -1,19 +1,19 @@
 @interface SBUISpotlightBarNavigationController
 - (BOOL)isNavigationBarBottomTrailingCornerRounded;
-- (SBUISpotlightBarNavigationController)initWithRootViewController:(id)a3 searchBarViewController:(id)a4;
-- (void)setLegibilitySettings:(id)a3;
-- (void)setNavigationBarBlurProgress:(double)a3 animated:(BOOL)a4;
-- (void)setNavigationBarBottomTrailingCornerRounded:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (SBUISpotlightBarNavigationController)initWithRootViewController:(id)controller searchBarViewController:(id)viewController;
+- (void)setLegibilitySettings:(id)settings;
+- (void)setNavigationBarBlurProgress:(double)progress animated:(BOOL)animated;
+- (void)setNavigationBarBottomTrailingCornerRounded:(BOOL)rounded;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SBUISpotlightBarNavigationController
 
-- (SBUISpotlightBarNavigationController)initWithRootViewController:(id)a3 searchBarViewController:(id)a4
+- (SBUISpotlightBarNavigationController)initWithRootViewController:(id)controller searchBarViewController:(id)viewController
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   v8 = objc_opt_class();
   v16.receiver = self;
   v16.super_class = SBUISpotlightBarNavigationController;
@@ -21,91 +21,91 @@
   v10 = v9;
   if (v9)
   {
-    [(SBUISpotlightBarNavigationController *)v9 pushViewController:v6 animated:0];
+    [(SBUISpotlightBarNavigationController *)v9 pushViewController:controllerCopy animated:0];
     [(SBUISpotlightBarNavigationController *)v10 setDelegate:v10];
     [(SBUISpotlightBarNavigationController *)v10 _setBuiltinTransitionStyle:1];
-    [(SBUISpotlightBarNavigationController *)v10 setSearchBarViewController:v7];
-    v11 = [(SBUISpotlightBarNavigationController *)v10 navigationBar];
-    v12 = [v7 backgroundBlurView];
-    [v11 _setBackgroundView:v12];
+    [(SBUISpotlightBarNavigationController *)v10 setSearchBarViewController:viewControllerCopy];
+    navigationBar = [(SBUISpotlightBarNavigationController *)v10 navigationBar];
+    backgroundBlurView = [viewControllerCopy backgroundBlurView];
+    [navigationBar _setBackgroundView:backgroundBlurView];
 
-    v13 = [v6 navigationItem];
-    v14 = [v7 view];
-    [v13 setTitleView:v14];
+    navigationItem = [controllerCopy navigationItem];
+    view = [viewControllerCopy view];
+    [navigationItem setTitleView:view];
   }
 
   return v10;
 }
 
-- (void)setNavigationBarBlurProgress:(double)a3 animated:(BOOL)a4
+- (void)setNavigationBarBlurProgress:(double)progress animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   if ([(SBUISpotlightBarNavigationController *)self isPullingToSearch])
   {
-    a3 = 0.0;
+    progress = 0.0;
   }
 
-  v7 = [(SBUISpotlightBarNavigationController *)self navigationBar];
-  v8 = [v7 _backgroundView];
-  v9 = v8;
+  navigationBar = [(SBUISpotlightBarNavigationController *)self navigationBar];
+  _backgroundView = [navigationBar _backgroundView];
+  v9 = _backgroundView;
   v10 = 1.0;
-  if (a3 == 0.0)
+  if (progress == 0.0)
   {
     v10 = 0.0;
   }
 
-  [v8 setAlpha:v10];
+  [_backgroundView setAlpha:v10];
 
-  v11 = [(SBUISpotlightBarNavigationController *)self searchBarViewController];
-  [v11 setBlurProgress:v4 animated:a3];
+  searchBarViewController = [(SBUISpotlightBarNavigationController *)self searchBarViewController];
+  [searchBarViewController setBlurProgress:animatedCopy animated:progress];
 }
 
 - (BOOL)isNavigationBarBottomTrailingCornerRounded
 {
-  v2 = [(SBUISpotlightBarNavigationController *)self searchBarViewController];
-  v3 = [v2 roundedCornerVisible];
+  searchBarViewController = [(SBUISpotlightBarNavigationController *)self searchBarViewController];
+  roundedCornerVisible = [searchBarViewController roundedCornerVisible];
 
-  return v3;
+  return roundedCornerVisible;
 }
 
-- (void)setNavigationBarBottomTrailingCornerRounded:(BOOL)a3
+- (void)setNavigationBarBottomTrailingCornerRounded:(BOOL)rounded
 {
-  v3 = a3;
-  v4 = [(SBUISpotlightBarNavigationController *)self searchBarViewController];
-  [v4 setRoundedCornerVisible:v3];
+  roundedCopy = rounded;
+  searchBarViewController = [(SBUISpotlightBarNavigationController *)self searchBarViewController];
+  [searchBarViewController setRoundedCornerVisible:roundedCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = SBUISpotlightBarNavigationController;
   [(SBUISpotlightBarNavigationController *)&v6 viewWillAppear:?];
-  v5 = [(SBUISpotlightBarNavigationController *)self searchBarViewController];
-  [v5 viewWillAppear:v3];
+  searchBarViewController = [(SBUISpotlightBarNavigationController *)self searchBarViewController];
+  [searchBarViewController viewWillAppear:appearCopy];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = SBUISpotlightBarNavigationController;
   [(SBUISpotlightBarNavigationController *)&v6 viewDidDisappear:?];
-  v5 = [(SBUISpotlightBarNavigationController *)self searchBarViewController];
-  [v5 viewDidDisappear:v3];
+  searchBarViewController = [(SBUISpotlightBarNavigationController *)self searchBarViewController];
+  [searchBarViewController viewDidDisappear:disappearCopy];
 }
 
-- (void)setLegibilitySettings:(id)a3
+- (void)setLegibilitySettings:(id)settings
 {
-  v7 = a3;
+  settingsCopy = settings;
   if (([(_UILegibilitySettings *)self->_legibilitySettings isEqual:?]& 1) == 0)
   {
-    v4 = [v7 copy];
+    v4 = [settingsCopy copy];
     legibilitySettings = self->_legibilitySettings;
     self->_legibilitySettings = v4;
 
-    v6 = [(SBUISpotlightBarNavigationController *)self searchBarViewController];
-    [v6 setLegibilitySettings:v7];
+    searchBarViewController = [(SBUISpotlightBarNavigationController *)self searchBarViewController];
+    [searchBarViewController setLegibilitySettings:settingsCopy];
   }
 }
 

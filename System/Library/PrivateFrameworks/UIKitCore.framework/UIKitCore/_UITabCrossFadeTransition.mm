@@ -1,26 +1,26 @@
 @interface _UITabCrossFadeTransition
-+ (BOOL)isSupportedForTraits:(id)a3;
++ (BOOL)isSupportedForTraits:(id)traits;
 - (_UITabCrossFadeTransition)init;
-- (_UITabCrossFadeTransition)initWithBackgroundColor:(id)a3;
-- (double)_customNavigationBarHidingDuration:(id)a3;
-- (double)transitionDuration:(id)a3;
-- (id)preemptWithContext:(id)a3;
-- (void)animateTransition:(id)a3;
-- (void)animationEnded:(BOOL)a3;
-- (void)willBeginAfterPreemptionWithContext:(id)a3 data:(id)a4;
+- (_UITabCrossFadeTransition)initWithBackgroundColor:(id)color;
+- (double)_customNavigationBarHidingDuration:(id)duration;
+- (double)transitionDuration:(id)duration;
+- (id)preemptWithContext:(id)context;
+- (void)animateTransition:(id)transition;
+- (void)animationEnded:(BOOL)ended;
+- (void)willBeginAfterPreemptionWithContext:(id)context data:(id)data;
 @end
 
 @implementation _UITabCrossFadeTransition
 
-- (_UITabCrossFadeTransition)initWithBackgroundColor:(id)a3
+- (_UITabCrossFadeTransition)initWithBackgroundColor:(id)color
 {
   *(&self->super.isa + OBJC_IVAR____UITabCrossFadeTransition_wasPreempted) = 0;
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
-  *(&self->super.isa + OBJC_IVAR____UITabCrossFadeTransition_backgroundColor) = a3;
+  *(&self->super.isa + OBJC_IVAR____UITabCrossFadeTransition_backgroundColor) = color;
   v7.receiver = self;
   v7.super_class = _UITabCrossFadeTransition;
-  v5 = a3;
+  colorCopy = color;
   return [(_UITabCrossFadeTransition *)&v7 init];
 }
 
@@ -35,10 +35,10 @@
   return [(_UITabCrossFadeTransition *)&v4 init];
 }
 
-+ (BOOL)isSupportedForTraits:(id)a3
++ (BOOL)isSupportedForTraits:(id)traits
 {
-  v3 = a3;
-  if ([v3 userInterfaceIdiom] == 6)
+  traitsCopy = traits;
+  if ([traitsCopy userInterfaceIdiom] == 6)
   {
 
     return 0;
@@ -46,56 +46,56 @@
 
   else
   {
-    v5 = [v3 userInterfaceIdiom];
+    userInterfaceIdiom = [traitsCopy userInterfaceIdiom];
 
-    return v5 != 5;
+    return userInterfaceIdiom != 5;
   }
 }
 
-- (double)_customNavigationBarHidingDuration:(id)a3
+- (double)_customNavigationBarHidingDuration:(id)duration
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_18912AB1C(a3);
+  selfCopy = self;
+  sub_18912AB1C(duration);
   v7 = v6;
   swift_unknownObjectRelease();
 
   return v7;
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_18912ABDC(a3);
+  selfCopy = self;
+  v6 = sub_18912ABDC(duration);
   swift_unknownObjectRelease();
 
   return v6;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_189129BBC(a3);
+  selfCopy = self;
+  sub_189129BBC(transition);
   swift_unknownObjectRelease();
 }
 
-- (void)animationEnded:(BOOL)a3
+- (void)animationEnded:(BOOL)ended
 {
-  v3 = self;
+  selfCopy = self;
   sub_18912B844();
 }
 
-- (id)preemptWithContext:(id)a3
+- (id)preemptWithContext:(id)context
 {
   *(&self->super.isa + OBJC_IVAR____UITabCrossFadeTransition_wasPreempted) = 1;
-  [a3 completeTransition_];
+  [context completeTransition_];
 
   return 0;
 }
 
-- (void)willBeginAfterPreemptionWithContext:(id)a3 data:(id)a4
+- (void)willBeginAfterPreemptionWithContext:(id)context data:(id)data
 {
   swift_unknownObjectRetain();
   sub_18A4A7DE8();

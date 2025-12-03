@@ -1,21 +1,21 @@
 @interface OADNormalTextBodyAutoFit
-- (BOOL)isEqual:(id)a3;
-- (OADNormalTextBodyAutoFit)initWithFontScalePercent:(float)a3 lineSpacingReductionPercent:(float)a4;
+- (BOOL)isEqual:(id)equal;
+- (OADNormalTextBodyAutoFit)initWithFontScalePercent:(float)percent lineSpacingReductionPercent:(float)reductionPercent;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation OADNormalTextBodyAutoFit
 
-- (OADNormalTextBodyAutoFit)initWithFontScalePercent:(float)a3 lineSpacingReductionPercent:(float)a4
+- (OADNormalTextBodyAutoFit)initWithFontScalePercent:(float)percent lineSpacingReductionPercent:(float)reductionPercent
 {
   v7.receiver = self;
   v7.super_class = OADNormalTextBodyAutoFit;
   result = [(OADTextBodyAutoFit *)&v7 initWithType:2];
   if (result)
   {
-    *(&result->super.mType + 1) = a3;
-    result->mFontScalePercent = a4;
+    *(&result->super.mType + 1) = percent;
+    result->mFontScalePercent = reductionPercent;
   }
 
   return result;
@@ -29,15 +29,15 @@
   return v2 ^ [(OADTextBodyAutoFit *)&v4 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = *(&self->super.mType + 1), [v4 fontScalePercent], v5 == v6) && (mFontScalePercent = self->mFontScalePercent, objc_msgSend(v4, "lineSpacingReductionPercent"), mFontScalePercent == v8))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = *(&self->super.mType + 1), [equalCopy fontScalePercent], v5 == v6) && (mFontScalePercent = self->mFontScalePercent, objc_msgSend(equalCopy, "lineSpacingReductionPercent"), mFontScalePercent == v8))
   {
     v11.receiver = self;
     v11.super_class = OADNormalTextBodyAutoFit;
-    v9 = [(OADTextBodyAutoFit *)&v11 isEqual:v4];
+    v9 = [(OADTextBodyAutoFit *)&v11 isEqual:equalCopy];
   }
 
   else

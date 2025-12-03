@@ -1,20 +1,20 @@
 @interface ICASNoteSnapshotData
-- (ICASNoteSnapshotData)initWithNoteSnapshotSummary:(id)a3;
+- (ICASNoteSnapshotData)initWithNoteSnapshotSummary:(id)summary;
 - (id)toDict;
 @end
 
 @implementation ICASNoteSnapshotData
 
-- (ICASNoteSnapshotData)initWithNoteSnapshotSummary:(id)a3
+- (ICASNoteSnapshotData)initWithNoteSnapshotSummary:(id)summary
 {
-  v5 = a3;
+  summaryCopy = summary;
   v9.receiver = self;
   v9.super_class = ICASNoteSnapshotData;
   v6 = [(ICASNoteSnapshotData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_noteSnapshotSummary, a3);
+    objc_storeStrong(&v6->_noteSnapshotSummary, summary);
   }
 
   return v7;
@@ -24,19 +24,19 @@
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"noteSnapshotSummary";
-  v3 = [(ICASNoteSnapshotData *)self noteSnapshotSummary];
-  if (v3)
+  noteSnapshotSummary = [(ICASNoteSnapshotData *)self noteSnapshotSummary];
+  if (noteSnapshotSummary)
   {
-    v4 = [(ICASNoteSnapshotData *)self noteSnapshotSummary];
+    noteSnapshotSummary2 = [(ICASNoteSnapshotData *)self noteSnapshotSummary];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    noteSnapshotSummary2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v10[0] = v4;
+  v5 = noteSnapshotSummary2;
+  v10[0] = noteSnapshotSummary2;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = *MEMORY[0x277D85DE8];

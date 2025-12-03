@@ -1,7 +1,7 @@
 @interface FMListFooterActionsView
 - (_TtC6FindMy23FMListFooterActionsView)init;
-- (_TtC6FindMy23FMListFooterActionsView)initWithCoder:(id)a3;
-- (_TtC6FindMy23FMListFooterActionsView)initWithFrame:(CGRect)a3;
+- (_TtC6FindMy23FMListFooterActionsView)initWithCoder:(id)coder;
+- (_TtC6FindMy23FMListFooterActionsView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FMListFooterActionsView
@@ -21,7 +21,7 @@
   return v2;
 }
 
-- (_TtC6FindMy23FMListFooterActionsView)initWithCoder:(id)a3
+- (_TtC6FindMy23FMListFooterActionsView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC6FindMy23FMListFooterActionsView_actions) = _swiftEmptyArrayStorage;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -29,7 +29,7 @@
   return result;
 }
 
-- (_TtC6FindMy23FMListFooterActionsView)initWithFrame:(CGRect)a3
+- (_TtC6FindMy23FMListFooterActionsView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

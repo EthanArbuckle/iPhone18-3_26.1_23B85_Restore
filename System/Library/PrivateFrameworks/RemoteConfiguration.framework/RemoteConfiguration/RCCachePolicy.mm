@@ -2,8 +2,8 @@
 + (id)cacheOnlyPolicy;
 + (id)defaultCachePolicy;
 + (id)ignoreCachePolicy;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -78,24 +78,24 @@ uint64_t __32__RCCachePolicy_cacheOnlyPolicy__block_invoke()
   return [v2 setRequestCachePolicy:2];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setRequestCachePolicy:{-[RCCachePolicy requestCachePolicy](self, "requestCachePolicy")}];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(RCCachePolicy *)self requestCachePolicy];
-    v7 = [v5 requestCachePolicy];
+    v5 = equalCopy;
+    requestCachePolicy = [(RCCachePolicy *)self requestCachePolicy];
+    requestCachePolicy2 = [v5 requestCachePolicy];
 
-    v8 = v6 == v7;
+    v8 = requestCachePolicy == requestCachePolicy2;
   }
 
   else

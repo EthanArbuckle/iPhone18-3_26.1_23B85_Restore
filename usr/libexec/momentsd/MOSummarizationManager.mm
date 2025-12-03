@@ -1,23 +1,23 @@
 @interface MOSummarizationManager
-- (BOOL)supressCoarseGranularityPropertyOfEventBundle:(id)a3 dominantBundle:(id)a4;
+- (BOOL)supressCoarseGranularityPropertyOfEventBundle:(id)bundle dominantBundle:(id)dominantBundle;
 - (MOSummarizationManager)init;
-- (MOSummarizationManager)initWithUniverse:(id)a3;
-- (id)_getThirdPartyKeyByAlbumArtist:(id)a3 albumOrArtist:(id)a4;
-- (id)_getThirdPartyTitleKey:(id)a3;
-- (id)_getThirdPartyTitleKey:(id)a3 dayKey:(id)a4 isRecommendTab:(BOOL)a5;
-- (id)_removeDuplicateFromResource:(id)a3 nonMediaKeySet:(id)a4 mediaOnRepeatDict:(id)a5 eventBundleDayKey:(id)a6 keyName:(id)a7;
-- (id)_removeDuplicateFromResourceThridParty:(id)a3 mediaKeySet:(id)a4 dayKey:(id)a5 isRecommendTab:(BOOL)a6;
-- (id)removeDuplicateAssetsAccrossMultipleBundleTypes:(id)a3;
-- (unint64_t)supressCoarseGranularityPropertyOfEventBundles:(id)a3 primaryBundles:(id)a4 bundleMapping:(id)a5;
-- (void)_aggregateEventBundles:(id)a3 withAggregtaionDateInterval:(id)a4 handler:(id)a5;
-- (void)_compressAssetsForThirdPartyBundle:(id)a3;
-- (void)_dedupAssetForMediaBundle:(id)a3 nonPlayedMediaBudnles:(id)a4 isRecommendTab:(BOOL)a5;
-- (void)_removeDuplicateAssetsForBundleType:(id)a3 bundleSuperType:(unint64_t)a4 musicAlbumSet:(id)a5 podcastEpisodeSet:(id)a6 isRecommendTab:(BOOL)a7;
-- (void)aggregateEventBundles:(id)a3 withAggregtaionDateInterval:(id)a4 handler:(id)a5;
-- (void)compressAssetsForThirdPartyBundles:(id)a3;
-- (void)dedupAssetForMediaBundleThirdParty:(id)a3 nonPlayedMediaBudnles:(id)a4 isRecommendTab:(BOOL)a5;
-- (void)removeDuplicateAssetsFromMediaBundle:(id)a3;
-- (void)removeDuplicateAssetsPerBundleTypeForThirdParty:(id)a3 bundleSuperType:(unint64_t)a4 titleSet:(id)a5 isRecommendTab:(BOOL)a6 isMediaOnRepeat:(BOOL)a7;
+- (MOSummarizationManager)initWithUniverse:(id)universe;
+- (id)_getThirdPartyKeyByAlbumArtist:(id)artist albumOrArtist:(id)orArtist;
+- (id)_getThirdPartyTitleKey:(id)key;
+- (id)_getThirdPartyTitleKey:(id)key dayKey:(id)dayKey isRecommendTab:(BOOL)tab;
+- (id)_removeDuplicateFromResource:(id)resource nonMediaKeySet:(id)set mediaOnRepeatDict:(id)dict eventBundleDayKey:(id)key keyName:(id)name;
+- (id)_removeDuplicateFromResourceThridParty:(id)party mediaKeySet:(id)set dayKey:(id)key isRecommendTab:(BOOL)tab;
+- (id)removeDuplicateAssetsAccrossMultipleBundleTypes:(id)types;
+- (unint64_t)supressCoarseGranularityPropertyOfEventBundles:(id)bundles primaryBundles:(id)primaryBundles bundleMapping:(id)mapping;
+- (void)_aggregateEventBundles:(id)bundles withAggregtaionDateInterval:(id)interval handler:(id)handler;
+- (void)_compressAssetsForThirdPartyBundle:(id)bundle;
+- (void)_dedupAssetForMediaBundle:(id)bundle nonPlayedMediaBudnles:(id)budnles isRecommendTab:(BOOL)tab;
+- (void)_removeDuplicateAssetsForBundleType:(id)type bundleSuperType:(unint64_t)superType musicAlbumSet:(id)set podcastEpisodeSet:(id)episodeSet isRecommendTab:(BOOL)tab;
+- (void)aggregateEventBundles:(id)bundles withAggregtaionDateInterval:(id)interval handler:(id)handler;
+- (void)compressAssetsForThirdPartyBundles:(id)bundles;
+- (void)dedupAssetForMediaBundleThirdParty:(id)party nonPlayedMediaBudnles:(id)budnles isRecommendTab:(BOOL)tab;
+- (void)removeDuplicateAssetsFromMediaBundle:(id)bundle;
+- (void)removeDuplicateAssetsPerBundleTypeForThirdParty:(id)party bundleSuperType:(unint64_t)type titleSet:(id)set isRecommendTab:(BOOL)tab isMediaOnRepeat:(BOOL)repeat;
 @end
 
 @implementation MOSummarizationManager
@@ -31,9 +31,9 @@
   {
     v3 = objc_opt_class();
     v4 = NSStringFromClass(v3);
-    v5 = [v4 UTF8String];
+    uTF8String = [v4 UTF8String];
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v7 = dispatch_queue_create(v5, v6);
+    v7 = dispatch_queue_create(uTF8String, v6);
     queue = v2->_queue;
     v2->_queue = v7;
   }
@@ -41,21 +41,21 @@
   return v2;
 }
 
-- (MOSummarizationManager)initWithUniverse:(id)a3
+- (MOSummarizationManager)initWithUniverse:(id)universe
 {
-  v5 = a3;
+  universeCopy = universe;
   v26.receiver = self;
   v26.super_class = MOSummarizationManager;
   v6 = [(MOSummarizationManager *)&v26 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fUniverse, a3);
+    objc_storeStrong(&v6->_fUniverse, universe);
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v12 = dispatch_queue_create(v10, v11);
+    v12 = dispatch_queue_create(uTF8String, v11);
     queue = v7->_queue;
     v7->_queue = v12;
 
@@ -72,7 +72,7 @@
 
     v21 = objc_opt_class();
     v22 = NSStringFromClass(v21);
-    v23 = [v5 getService:v22];
+    v23 = [universeCopy getService:v22];
     eventBundleRanking = v7->_eventBundleRanking;
     v7->_eventBundleRanking = v23;
   }
@@ -80,32 +80,32 @@
   return v7;
 }
 
-- (void)aggregateEventBundles:(id)a3 withAggregtaionDateInterval:(id)a4 handler:(id)a5
+- (void)aggregateEventBundles:(id)bundles withAggregtaionDateInterval:(id)interval handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  bundlesCopy = bundles;
+  intervalCopy = interval;
+  handlerCopy = handler;
   v11 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v21 = [v8 count];
+    v21 = [bundlesCopy count];
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "aggregate eventBundles count, %lu", buf, 0xCu);
   }
 
-  v12 = [(MOSummarizationManager *)self queue];
+  queue = [(MOSummarizationManager *)self queue];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = __84__MOSummarizationManager_aggregateEventBundles_withAggregtaionDateInterval_handler___block_invoke;
   v16[3] = &unk_1003361C0;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  dispatch_async(v12, v16);
+  v17 = bundlesCopy;
+  v18 = intervalCopy;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = intervalCopy;
+  v15 = bundlesCopy;
+  dispatch_async(queue, v16);
 }
 
 void __84__MOSummarizationManager_aggregateEventBundles_withAggregtaionDateInterval_handler___block_invoke(uint64_t a1)
@@ -132,32 +132,32 @@ uint64_t __84__MOSummarizationManager_aggregateEventBundles_withAggregtaionDateI
   return result;
 }
 
-- (void)_aggregateEventBundles:(id)a3 withAggregtaionDateInterval:(id)a4 handler:(id)a5
+- (void)_aggregateEventBundles:(id)bundles withAggregtaionDateInterval:(id)interval handler:(id)handler
 {
-  v8 = a3;
-  v38 = a4;
-  v37 = a5;
-  if ([v8 count])
+  bundlesCopy = bundles;
+  intervalCopy = interval;
+  handlerCopy = handler;
+  if ([bundlesCopy count])
   {
-    v9 = [(MOSummarizationManager *)self parameters];
-    [v9 setAggregationDateInterval:v38];
+    parameters = [(MOSummarizationManager *)self parameters];
+    [parameters setAggregationDateInterval:intervalCopy];
 
     v10 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [v38 startDate];
-      v12 = [v38 endDate];
+      startDate = [intervalCopy startDate];
+      endDate = [intervalCopy endDate];
       *buf = 138412546;
-      *&buf[4] = v11;
+      *&buf[4] = startDate;
       *&buf[12] = 2112;
-      *&buf[14] = v12;
+      *&buf[14] = endDate;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "aggregation date interval, start date: %@, end date: %@", buf, 0x16u);
     }
 
     v35 = [[NSArray alloc] initWithObjects:{&off_10036A390, &off_10036A3A8, 0}];
     v34 = [NSPredicate predicateWithFormat:@"interfaceType in %@", v35];
-    v36 = [v8 filteredArrayUsingPredicate:v34];
-    v13 = [v8 mutableCopy];
+    v36 = [bundlesCopy filteredArrayUsingPredicate:v34];
+    v13 = [bundlesCopy mutableCopy];
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
@@ -171,7 +171,7 @@ uint64_t __84__MOSummarizationManager_aggregateEventBundles_withAggregtaionDateI
     objc_autoreleasePoolPop(v15);
     v16 = [v13 count];
     v33 = [NSPredicate predicateWithFormat:@"%K == %lu", @"interfaceType", 13];
-    v17 = [v8 filteredArrayUsingPredicate:?];
+    v17 = [bundlesCopy filteredArrayUsingPredicate:?];
     [*(*&buf[8] + 40) addObjectsFromArray:v17];
     [v13 removeObjectsInArray:v17];
     v18 = [NSPredicate predicateWithFormat:@"%K.%K <= %lu", @"place", @"placeType", 100];
@@ -181,8 +181,8 @@ uint64_t __84__MOSummarizationManager_aggregateEventBundles_withAggregtaionDateI
 
     v22 = v19;
     v23 = [MODominantBundleCreationManager alloc];
-    v24 = [(MOSummarizationManager *)self fUniverse];
-    v25 = [(MODominantBundleCreationManager *)v23 initWithUniverse:v24];
+    fUniverse = [(MOSummarizationManager *)self fUniverse];
+    v25 = [(MODominantBundleCreationManager *)v23 initWithUniverse:fUniverse];
 
     v26 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
@@ -197,7 +197,7 @@ uint64_t __84__MOSummarizationManager_aggregateEventBundles_withAggregtaionDateI
     }
 
     v27 = [v13 copy];
-    v28 = [(MOSummarizationManager *)self parameters];
+    parameters2 = [(MOSummarizationManager *)self parameters];
     v39[0] = _NSConcreteStackBlock;
     v39[1] = 3221225472;
     v39[2] = __85__MOSummarizationManager__aggregateEventBundles_withAggregtaionDateInterval_handler___block_invoke;
@@ -205,14 +205,14 @@ uint64_t __84__MOSummarizationManager_aggregateEventBundles_withAggregtaionDateI
     v46 = buf;
     v29 = v13;
     v40 = v29;
-    v41 = self;
+    selfCopy = self;
     v42 = v22;
     v30 = v21;
     v43 = v30;
     v31 = v42;
     v44 = v31;
-    v45 = v37;
-    [(MODominantBundleCreationManager *)v25 processBundlesForCreatingDominantBundles:v27 withParameters:v28 handler:v39];
+    v45 = handlerCopy;
+    [(MODominantBundleCreationManager *)v25 processBundlesForCreatingDominantBundles:v27 withParameters:parameters2 handler:v39];
 
     _Block_object_dispose(buf, 8);
   }
@@ -226,7 +226,7 @@ uint64_t __84__MOSummarizationManager_aggregateEventBundles_withAggregtaionDateI
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "No eventBundle to be aggregated", buf, 2u);
     }
 
-    (*(v37 + 2))(v37, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 }
 
@@ -799,12 +799,12 @@ uint64_t __85__MOSummarizationManager__aggregateEventBundles_withAggregtaionDate
   return v6 ^ 1;
 }
 
-- (id)removeDuplicateAssetsAccrossMultipleBundleTypes:(id)a3
+- (id)removeDuplicateAssetsAccrossMultipleBundleTypes:(id)types
 {
-  v4 = a3;
-  if ([v4 count])
+  typesCopy = types;
+  if ([typesCopy count])
   {
-    v5 = [MOSummarizationUtilities sortedBundleBasedOnGoodnessScore:v4];
+    v5 = [MOSummarizationUtilities sortedBundleBasedOnGoodnessScore:typesCopy];
     v6 = objc_alloc_init(NSMutableSet);
     v7 = objc_alloc_init(NSMutableSet);
     v8 = objc_alloc_init(NSMutableSet);
@@ -850,30 +850,30 @@ uint64_t __85__MOSummarizationManager__aggregateEventBundles_withAggregtaionDate
 
   else
   {
-    v16 = v4;
+    v16 = typesCopy;
   }
 
   return v16;
 }
 
-- (void)_removeDuplicateAssetsForBundleType:(id)a3 bundleSuperType:(unint64_t)a4 musicAlbumSet:(id)a5 podcastEpisodeSet:(id)a6 isRecommendTab:(BOOL)a7
+- (void)_removeDuplicateAssetsForBundleType:(id)type bundleSuperType:(unint64_t)superType musicAlbumSet:(id)set podcastEpisodeSet:(id)episodeSet isRecommendTab:(BOOL)tab
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  if ([v11 count])
+  typeCopy = type;
+  setCopy = set;
+  episodeSetCopy = episodeSet;
+  if ([typeCopy count])
   {
-    v56 = v13;
-    v57 = v12;
+    v56 = episodeSetCopy;
+    v57 = setCopy;
     v73[0] = _NSConcreteStackBlock;
     v73[1] = 3221225472;
     v73[2] = __125__MOSummarizationManager__removeDuplicateAssetsForBundleType_bundleSuperType_musicAlbumSet_podcastEpisodeSet_isRecommendTab___block_invoke;
     v73[3] = &__block_descriptor_41_e40_B24__0__MOEventBundle_8__NSDictionary_16l;
-    v73[4] = a4;
-    v74 = a7;
+    v73[4] = superType;
+    tabCopy = tab;
     v48 = [NSPredicate predicateWithBlock:v73];
-    v49 = v11;
-    [v11 filteredArrayUsingPredicate:?];
+    v49 = typeCopy;
+    [typeCopy filteredArrayUsingPredicate:?];
     v69 = 0u;
     v70 = 0u;
     v71 = 0u;
@@ -900,17 +900,17 @@ uint64_t __85__MOSummarizationManager__aggregateEventBundles_withAggregtaionDate
 
         v18 = *(*(&v69 + 1) + 8 * v17);
         context = objc_autoreleasePoolPush();
-        v19 = [v18 resources];
-        if (v19)
+        resources = [v18 resources];
+        if (resources)
         {
-          v20 = v19;
-          v21 = [v18 resources];
-          v22 = [v21 count];
+          v20 = resources;
+          resources2 = [v18 resources];
+          v22 = [resources2 count];
 
           if (v22)
           {
-            v23 = [v18 resources];
-            v24 = [(MOSummarizationManager *)self _sortResourcesByPriorityScore:v23];
+            resources3 = [v18 resources];
+            v24 = [(MOSummarizationManager *)self _sortResourcesByPriorityScore:resources3];
 
             v60 = objc_alloc_init(NSMutableArray);
             v65 = 0u;
@@ -937,16 +937,16 @@ uint64_t __85__MOSummarizationManager__aggregateEventBundles_withAggregtaionDate
 
                   v30 = *(*(&v65 + 1) + 8 * i);
                   v31 = objc_autoreleasePoolPush();
-                  v32 = [v30 type];
-                  if ([v18 bundleSuperType] == a4 && v32 == 3)
+                  type = [v30 type];
+                  if ([v18 bundleSuperType] == superType && type == 3)
                   {
-                    v33 = [v30 getDictionary];
-                    v34 = [v33 objectForKey:@"MOMediaPlayMetaDataKeyPlayerMediaTypeKey"];
+                    getDictionary = [v30 getDictionary];
+                    v34 = [getDictionary objectForKey:@"MOMediaPlayMetaDataKeyPlayerMediaTypeKey"];
 
                     if (([v34 isEqualToString:MOMediaPlayMetaDataKeyPlayerMediaTypeSongAlbum[0]] & 1) != 0 || objc_msgSend(v34, "isEqualToString:", MOMediaPlayMetaDataKeyPlayerMediaTypeSong[0]))
                     {
-                      v35 = [v30 getDictionary];
-                      v36 = [v35 objectForKey:@"MOMediaPlayMetaDataKeyPlayerAlbumName"];
+                      getDictionary2 = [v30 getDictionary];
+                      v36 = [getDictionary2 objectForKey:@"MOMediaPlayMetaDataKeyPlayerAlbumName"];
 
                       if (!v36)
                       {
@@ -983,8 +983,8 @@ LABEL_30:
                         goto LABEL_32;
                       }
 
-                      v38 = [v30 getDictionary];
-                      v36 = [v38 objectForKey:@"MOMediaPlayMetaDataKeyPlayerArtist"];
+                      getDictionary3 = [v30 getDictionary];
+                      v36 = [getDictionary3 objectForKey:@"MOMediaPlayMetaDataKeyPlayerArtist"];
 
                       if (!v36)
                       {
@@ -1098,9 +1098,9 @@ LABEL_37:
       {
 LABEL_56:
 
-        v11 = v49;
-        v12 = v57;
-        v13 = v56;
+        typeCopy = v49;
+        setCopy = v57;
+        episodeSetCopy = v56;
         break;
       }
     }
@@ -1160,16 +1160,16 @@ LABEL_19:
   return v12;
 }
 
-- (void)compressAssetsForThirdPartyBundles:(id)a3
+- (void)compressAssetsForThirdPartyBundles:(id)bundles
 {
-  v4 = a3;
-  if ([v4 count])
+  bundlesCopy = bundles;
+  if ([bundlesCopy count])
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = v4;
+    v5 = bundlesCopy;
     v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
@@ -1198,26 +1198,26 @@ LABEL_19:
   }
 }
 
-- (void)_compressAssetsForThirdPartyBundle:(id)a3
+- (void)_compressAssetsForThirdPartyBundle:(id)bundle
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 bundleSuperType] == 4 || objc_msgSend(v4, "bundleSuperType") == 2 || objc_msgSend(v4, "bundleSuperType") == 1 || objc_msgSend(v4, "bundleSuperType") == 5) && (objc_msgSend(v4, "isAggregatedAndSuppressed") & 1) == 0)
+  bundleCopy = bundle;
+  v4 = bundleCopy;
+  if (bundleCopy && ([bundleCopy bundleSuperType] == 4 || objc_msgSend(v4, "bundleSuperType") == 2 || objc_msgSend(v4, "bundleSuperType") == 1 || objc_msgSend(v4, "bundleSuperType") == 5) && (objc_msgSend(v4, "isAggregatedAndSuppressed") & 1) == 0)
   {
     if ([v4 bundleSuperType] == 4)
     {
       goto LABEL_11;
     }
 
-    v5 = [v4 rankingDictionary];
-    if (!v5)
+    rankingDictionary = [v4 rankingDictionary];
+    if (!rankingDictionary)
     {
       goto LABEL_11;
     }
 
-    v6 = v5;
-    v7 = [v4 rankingDictionary];
-    v8 = [v7 objectForKeyedSubscript:@"visibilityCategoryForUI"];
+    v6 = rankingDictionary;
+    rankingDictionary2 = [v4 rankingDictionary];
+    v8 = [rankingDictionary2 objectForKeyedSubscript:@"visibilityCategoryForUI"];
 
     if (!v8 || ([v4 rankingDictionary], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "objectForKeyedSubscript:", @"visibilityCategoryForUI"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v10, "unsignedIntValue"), v10, v9, v11 != 4))
     {
@@ -1249,16 +1249,16 @@ LABEL_11:
             v18 = objc_autoreleasePoolPush();
             if ([v17 type] == 3)
             {
-              v19 = [v17 getDictionary];
-              v20 = [v19 objectForKey:@"MOMediaPlayMetaDataKeyPlayerMediaTypeKey"];
+              getDictionary = [v17 getDictionary];
+              v20 = [getDictionary objectForKey:@"MOMediaPlayMetaDataKeyPlayerMediaTypeKey"];
 
               if (([v20 isEqualToString:MOMediaPlayMetaDataKeyPlayerMediaTypeThirdPartyMedia[0]] & 1) != 0 || (objc_msgSend(v20, "isEqualToString:", MOMediaPlayMetaDataKeyPlayerMediaTypeThirdPartyMediaAlbum[0]) & 1) != 0 || objc_msgSend(v20, "isEqualToString:", MOMediaPlayMetaDataKeyPlayerMediaTypeThirdPartyMediaArtist))
               {
-                v21 = [v17 getDictionary];
-                v22 = [v21 objectForKey:@"MOMediaPlayMetaDataKeyPlayerAlbumName"];
+                getDictionary2 = [v17 getDictionary];
+                v22 = [getDictionary2 objectForKey:@"MOMediaPlayMetaDataKeyPlayerAlbumName"];
 
-                v23 = [v17 getDictionary];
-                v24 = [(MOSummarizationManager *)self _getThirdPartyKeyByAlbumArtist:v23 albumOrArtist:v22];
+                getDictionary3 = [v17 getDictionary];
+                v24 = [(MOSummarizationManager *)self _getThirdPartyKeyByAlbumArtist:getDictionary3 albumOrArtist:v22];
 
                 if (!v22)
                 {
@@ -1325,8 +1325,8 @@ LABEL_35:
         v71 = 0u;
         v72 = 0u;
         v73 = 0u;
-        v30 = [v4 resources];
-        v31 = [v30 countByEnumeratingWithState:&v70 objects:v85 count:16];
+        resources = [v4 resources];
+        v31 = [resources countByEnumeratingWithState:&v70 objects:v85 count:16];
         if (v31)
         {
           v32 = v31;
@@ -1337,15 +1337,15 @@ LABEL_35:
             {
               if (*v71 != v33)
               {
-                objc_enumerationMutation(v30);
+                objc_enumerationMutation(resources);
               }
 
               v35 = *(*(&v70 + 1) + 8 * j);
               v36 = objc_autoreleasePoolPush();
               if ([v35 type] == 3)
               {
-                v37 = [v35 getDictionary];
-                v38 = [v37 objectForKey:@"MOMediaPlayMetaDataKeyPlayerMediaTypeKey"];
+                getDictionary4 = [v35 getDictionary];
+                v38 = [getDictionary4 objectForKey:@"MOMediaPlayMetaDataKeyPlayerMediaTypeKey"];
 
                 if (([v38 isEqualToString:MOMediaPlayMetaDataKeyPlayerMediaTypeThirdPartyMedia[0]] & 1) == 0 && (objc_msgSend(v38, "isEqualToString:", MOMediaPlayMetaDataKeyPlayerMediaTypeThirdPartyMediaAlbum[0]) & 1) == 0 && (objc_msgSend(v38, "isEqualToString:", MOMediaPlayMetaDataKeyPlayerMediaTypeThirdPartyMediaArtist) & 1) == 0)
                 {
@@ -1361,7 +1361,7 @@ LABEL_35:
               objc_autoreleasePoolPop(v36);
             }
 
-            v32 = [v30 countByEnumeratingWithState:&v70 objects:v85 count:16];
+            v32 = [resources countByEnumeratingWithState:&v70 objects:v85 count:16];
           }
 
           while (v32);
@@ -1372,8 +1372,8 @@ LABEL_35:
         v69 = 0u;
         v66 = 0u;
         v67 = 0u;
-        v62 = [v65 allKeys];
-        v39 = [v62 countByEnumeratingWithState:&v66 objects:v84 count:16];
+        allKeys = [v65 allKeys];
+        v39 = [allKeys countByEnumeratingWithState:&v66 objects:v84 count:16];
         if (v39)
         {
           v40 = v39;
@@ -1384,7 +1384,7 @@ LABEL_35:
             {
               if (*v67 != v41)
               {
-                objc_enumerationMutation(v62);
+                objc_enumerationMutation(allKeys);
               }
 
               v43 = *(*(&v66 + 1) + 8 * k);
@@ -1403,16 +1403,16 @@ LABEL_35:
               else
               {
                 v49 = [NSMutableDictionary alloc];
-                v50 = [v46 getDictionary];
-                v51 = [v49 initWithDictionary:v50];
+                getDictionary5 = [v46 getDictionary];
+                v51 = [v49 initWithDictionary:getDictionary5];
 
                 [v51 setValue:MOMediaPlayMetaDataKeyPlayerMediaTypeThirdPartyMediaAlbum[0] forKey:@"MOMediaPlayMetaDataKeyPlayerMediaTypeKey"];
                 v52 = [MOResource alloc];
-                v53 = [v46 name];
-                v54 = -[MOResource initWithName:type:dict:value:](v52, "initWithName:type:dict:value:", v53, [v46 type], v51, 0.0);
+                name = [v46 name];
+                v54 = -[MOResource initWithName:type:dict:value:](v52, "initWithName:type:dict:value:", name, [v46 type], v51, 0.0);
 
-                v55 = [v46 sourceEventIdentifier];
-                [(MOResource *)v54 setSourceEventIdentifier:v55];
+                sourceEventIdentifier = [v46 sourceEventIdentifier];
+                [(MOResource *)v54 setSourceEventIdentifier:sourceEventIdentifier];
 
                 -[MOResource setSourceEventAccessType:](v54, "setSourceEventAccessType:", [v46 sourceEventAccessType]);
                 [v46 priorityScore];
@@ -1421,14 +1421,14 @@ LABEL_35:
                 v56 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
                 if (os_log_type_enabled(v56, OS_LOG_TYPE_DEBUG))
                 {
-                  v57 = [v46 name];
-                  v58 = [v46 type];
+                  name2 = [v46 name];
+                  type = [v46 type];
                   *buf = 138412802;
                   v79 = v43;
                   v80 = 2112;
-                  v81 = v57;
+                  v81 = name2;
                   v82 = 2048;
-                  v83 = v58;
+                  v83 = type;
                   _os_log_debug_impl(&_mh_execute_header, v56, OS_LOG_TYPE_DEBUG, "Compress assets by album, %@, name , %@, type, %lu", buf, 0x20u);
                 }
               }
@@ -1436,7 +1436,7 @@ LABEL_35:
               objc_autoreleasePoolPop(v44);
             }
 
-            v40 = [v62 countByEnumeratingWithState:&v66 objects:v84 count:16];
+            v40 = [allKeys countByEnumeratingWithState:&v66 objects:v84 count:16];
           }
 
           while (v40);
@@ -1449,25 +1449,25 @@ LABEL_35:
   }
 }
 
-- (void)removeDuplicateAssetsPerBundleTypeForThirdParty:(id)a3 bundleSuperType:(unint64_t)a4 titleSet:(id)a5 isRecommendTab:(BOOL)a6 isMediaOnRepeat:(BOOL)a7
+- (void)removeDuplicateAssetsPerBundleTypeForThirdParty:(id)party bundleSuperType:(unint64_t)type titleSet:(id)set isRecommendTab:(BOOL)tab isMediaOnRepeat:(BOOL)repeat
 {
-  v7 = a7;
-  v11 = a3;
-  v12 = a5;
-  if ([v11 count])
+  repeatCopy = repeat;
+  partyCopy = party;
+  setCopy = set;
+  if ([partyCopy count])
   {
-    v55 = v12;
+    v55 = setCopy;
     v71[0] = _NSConcreteStackBlock;
     v71[1] = 3221225472;
     v71[2] = __130__MOSummarizationManager_removeDuplicateAssetsPerBundleTypeForThirdParty_bundleSuperType_titleSet_isRecommendTab_isMediaOnRepeat___block_invoke;
     v71[3] = &__block_descriptor_42_e40_B24__0__MOEventBundle_8__NSDictionary_16l;
-    v71[4] = a4;
-    v72 = a6;
-    v56 = v7;
-    v73 = v7;
+    v71[4] = type;
+    tabCopy = tab;
+    v56 = repeatCopy;
+    v73 = repeatCopy;
     v47 = [NSPredicate predicateWithBlock:v71];
-    v48 = v11;
-    [v11 filteredArrayUsingPredicate:?];
+    v48 = partyCopy;
+    [partyCopy filteredArrayUsingPredicate:?];
     v67 = 0u;
     v68 = 0u;
     v69 = 0u;
@@ -1480,7 +1480,7 @@ LABEL_35:
 
     v14 = v13;
     v15 = *v68;
-    v57 = a4;
+    typeCopy = type;
     v49 = *v68;
     while (1)
     {
@@ -1494,18 +1494,18 @@ LABEL_35:
         }
 
         v17 = *(*(&v67 + 1) + 8 * v16);
-        v18 = [v17 resources];
-        if (v18)
+        resources = [v17 resources];
+        if (resources)
         {
-          v19 = v18;
-          v20 = [v17 resources];
-          v21 = [v20 count];
+          v19 = resources;
+          resources2 = [v17 resources];
+          v21 = [resources2 count];
 
           if (v21)
           {
             v52 = v16;
-            v22 = [v17 resources];
-            v23 = [(MOSummarizationManager *)self _sortResourcesByPriorityScore:v22];
+            resources3 = [v17 resources];
+            v23 = [(MOSummarizationManager *)self _sortResourcesByPriorityScore:resources3];
 
             v53 = objc_alloc_init(NSMutableArray);
             v63 = 0u;
@@ -1530,25 +1530,25 @@ LABEL_35:
 
                   v29 = *(*(&v63 + 1) + 8 * i);
                   v30 = objc_autoreleasePoolPush();
-                  v31 = [v29 type];
-                  if ([v17 bundleSuperType] == a4 && v31 == 3)
+                  type = [v29 type];
+                  if ([v17 bundleSuperType] == type && type == 3)
                   {
-                    v32 = [v29 getDictionary];
-                    v33 = [v32 objectForKey:@"MOMediaPlayMetaDataKeyPlayerMediaTypeKey"];
+                    getDictionary = [v29 getDictionary];
+                    v33 = [getDictionary objectForKey:@"MOMediaPlayMetaDataKeyPlayerMediaTypeKey"];
 
                     if (([v33 isEqualToString:MOMediaPlayMetaDataKeyPlayerMediaTypeThirdPartyMedia[0]] & 1) == 0 && !objc_msgSend(v33, "isEqualToString:", MOMediaPlayMetaDataKeyPlayerMediaTypeThirdPartyMediaAlbum[0]))
                     {
                       goto LABEL_28;
                     }
 
-                    v34 = [v29 getDictionary];
-                    v35 = [(MOSummarizationManager *)self _getThirdPartyTitleKey:v34];
+                    getDictionary2 = [v29 getDictionary];
+                    v35 = [(MOSummarizationManager *)self _getThirdPartyTitleKey:getDictionary2];
 
                     if (v56)
                     {
                       if (v35)
                       {
-                        a4 = v57;
+                        type = typeCopy;
                         if (([v55 containsObject:v35] & 1) == 0)
                         {
                           [v55 addObject:v35];
@@ -1573,7 +1573,7 @@ LABEL_28:
                       [v53 addObject:v29];
                     }
 
-                    a4 = v57;
+                    type = typeCopy;
                     goto LABEL_27;
                   }
 
@@ -1645,11 +1645,11 @@ LABEL_33:
               }
 
               [v17 setResources:v37];
-              a4 = v57;
+              type = typeCopy;
               if ([v17 bundleSuperType] == 4)
               {
-                v45 = [v17 resources];
-                v46 = [v45 count];
+                resources4 = [v17 resources];
+                v46 = [resources4 count];
 
                 if (!v46)
                 {
@@ -1673,8 +1673,8 @@ LABEL_33:
       {
 LABEL_55:
 
-        v11 = v48;
-        v12 = v55;
+        partyCopy = v48;
+        setCopy = v55;
         break;
       }
     }
@@ -1773,23 +1773,23 @@ LABEL_26:
   return v12;
 }
 
-- (void)removeDuplicateAssetsFromMediaBundle:(id)a3
+- (void)removeDuplicateAssetsFromMediaBundle:(id)bundle
 {
-  v12 = a3;
-  if ([v12 count])
+  bundleCopy = bundle;
+  if ([bundleCopy count])
   {
     v4 = [NSPredicate predicateWithBlock:&__block_literal_global_435];
-    v5 = [v12 filteredArrayUsingPredicate:v4];
-    [(MOSummarizationManager *)self _dedupAssetForMediaBundle:v12 nonPlayedMediaBudnles:v5 isRecommendTab:1];
+    v5 = [bundleCopy filteredArrayUsingPredicate:v4];
+    [(MOSummarizationManager *)self _dedupAssetForMediaBundle:bundleCopy nonPlayedMediaBudnles:v5 isRecommendTab:1];
     v6 = [NSPredicate predicateWithBlock:&__block_literal_global_437];
-    v7 = [v12 filteredArrayUsingPredicate:v6];
-    [(MOSummarizationManager *)self _dedupAssetForMediaBundle:v12 nonPlayedMediaBudnles:v7 isRecommendTab:0];
+    v7 = [bundleCopy filteredArrayUsingPredicate:v6];
+    [(MOSummarizationManager *)self _dedupAssetForMediaBundle:bundleCopy nonPlayedMediaBudnles:v7 isRecommendTab:0];
     v8 = [NSPredicate predicateWithBlock:&__block_literal_global_439];
-    v9 = [v12 filteredArrayUsingPredicate:v8];
-    [(MOSummarizationManager *)self dedupAssetForMediaBundleThirdParty:v12 nonPlayedMediaBudnles:v9 isRecommendTab:1];
+    v9 = [bundleCopy filteredArrayUsingPredicate:v8];
+    [(MOSummarizationManager *)self dedupAssetForMediaBundleThirdParty:bundleCopy nonPlayedMediaBudnles:v9 isRecommendTab:1];
     v10 = [NSPredicate predicateWithBlock:&__block_literal_global_441];
-    v11 = [v12 filteredArrayUsingPredicate:v10];
-    [(MOSummarizationManager *)self dedupAssetForMediaBundleThirdParty:v12 nonPlayedMediaBudnles:v11 isRecommendTab:0];
+    v11 = [bundleCopy filteredArrayUsingPredicate:v10];
+    [(MOSummarizationManager *)self dedupAssetForMediaBundleThirdParty:bundleCopy nonPlayedMediaBudnles:v11 isRecommendTab:0];
   }
 }
 
@@ -1981,15 +1981,15 @@ LABEL_10:
   return v11;
 }
 
-- (void)_dedupAssetForMediaBundle:(id)a3 nonPlayedMediaBudnles:(id)a4 isRecommendTab:(BOOL)a5
+- (void)_dedupAssetForMediaBundle:(id)bundle nonPlayedMediaBudnles:(id)budnles isRecommendTab:(BOOL)tab
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  if ([v8 count])
+  tabCopy = tab;
+  bundleCopy = bundle;
+  budnlesCopy = budnles;
+  if ([budnlesCopy count])
   {
-    v62 = v5;
-    v61 = v7;
+    v62 = tabCopy;
+    v61 = bundleCopy;
     v9 = +[NSCalendar currentCalendar];
     v10 = objc_alloc_init(NSDateFormatter);
     v59 = v9;
@@ -2003,8 +2003,8 @@ LABEL_10:
     v83 = 0u;
     v84 = 0u;
     v85 = 0u;
-    v60 = v8;
-    obj = v8;
+    v60 = budnlesCopy;
+    obj = budnlesCopy;
     v11 = [obj countByEnumeratingWithState:&v82 objects:v88 count:16];
     if (!v11)
     {
@@ -2027,19 +2027,19 @@ LABEL_10:
 
         v15 = *(*(&v82 + 1) + 8 * v14);
         v16 = objc_autoreleasePoolPush();
-        v17 = [v15 resources];
-        if (v17)
+        resources = [v15 resources];
+        if (resources)
         {
-          v18 = v17;
-          v19 = [v15 resources];
-          v20 = [v19 count];
+          v18 = resources;
+          resources2 = [v15 resources];
+          v20 = [resources2 count];
 
           if (v20)
           {
             v67 = v16;
             v68 = v14;
-            v21 = [v15 resources];
-            v22 = [(MOSummarizationManager *)self _sortResourcesByPriorityScore:v21];
+            resources3 = [v15 resources];
+            v22 = [(MOSummarizationManager *)self _sortResourcesByPriorityScore:resources3];
 
             v80 = 0u;
             v81 = 0u;
@@ -2065,16 +2065,16 @@ LABEL_10:
 
                 v27 = *(*(&v78 + 1) + 8 * i);
                 v28 = objc_autoreleasePoolPush();
-                v29 = [v27 type];
-                if ([v15 bundleSuperType] != 4 && v29 == 3)
+                type = [v27 type];
+                if ([v15 bundleSuperType] != 4 && type == 3)
                 {
-                  v30 = [v27 getDictionary];
-                  v31 = [v30 objectForKey:@"MOMediaPlayMetaDataKeyPlayerMediaTypeKey"];
+                  getDictionary = [v27 getDictionary];
+                  v31 = [getDictionary objectForKey:@"MOMediaPlayMetaDataKeyPlayerMediaTypeKey"];
 
                   if (([v31 isEqualToString:MOMediaPlayMetaDataKeyPlayerMediaTypeSongAlbum[0]] & 1) != 0 || objc_msgSend(v31, "isEqualToString:", MOMediaPlayMetaDataKeyPlayerMediaTypeSong[0]))
                   {
-                    v32 = [v27 getDictionary];
-                    v33 = [v32 objectForKey:@"MOMediaPlayMetaDataKeyPlayerAlbumName"];
+                    getDictionary2 = [v27 getDictionary];
+                    v33 = [getDictionary2 objectForKey:@"MOMediaPlayMetaDataKeyPlayerAlbumName"];
 
                     if (!v33)
                     {
@@ -2091,8 +2091,8 @@ LABEL_10:
                       goto LABEL_35;
                     }
 
-                    v39 = [v27 getDictionary];
-                    v33 = [v39 objectForKey:@"MOMediaPlayMetaDataKeyPlayerArtist"];
+                    getDictionary3 = [v27 getDictionary];
+                    v33 = [getDictionary3 objectForKey:@"MOMediaPlayMetaDataKeyPlayerArtist"];
 
                     if (!v33)
                     {
@@ -2115,13 +2115,13 @@ LABEL_35:
 
                 if ([v15 bundleSuperType] == 4 && (objc_msgSend(v15, "bundleSubType") == 401 || objc_msgSend(v15, "bundleSubType") == 404))
                 {
-                  v35 = [v27 getDictionary];
-                  v31 = [v35 objectForKey:@"MOMediaPlayMetaDataKeyPlayerAlbumName"];
+                  getDictionary4 = [v27 getDictionary];
+                  v31 = [getDictionary4 objectForKey:@"MOMediaPlayMetaDataKeyPlayerAlbumName"];
 
                   if (v31)
                   {
-                    v36 = [v15 startDate];
-                    v33 = [v71 stringFromDate:v36];
+                    startDate = [v15 startDate];
+                    v33 = [v71 stringFromDate:startDate];
 
                     v37 = [v70 objectForKey:v33];
 
@@ -2199,16 +2199,16 @@ LABEL_43:
       }
 
       v47 = *(*(&v74 + 1) + 8 * v46);
-      v48 = [v47 bundleSuperType];
+      bundleSuperType = [v47 bundleSuperType];
       if (v43)
       {
-        if (v48 != 4 || [v47 summarizationGranularity] != 2)
+        if (bundleSuperType != 4 || [v47 summarizationGranularity] != 2)
         {
           goto LABEL_65;
         }
       }
 
-      else if (v48 != 4 || [v47 summarizationGranularity] != 1)
+      else if (bundleSuperType != 4 || [v47 summarizationGranularity] != 1)
       {
         goto LABEL_65;
       }
@@ -2226,8 +2226,8 @@ LABEL_65:
         {
 LABEL_67:
 
-          v8 = v60;
-          v7 = v61;
+          budnlesCopy = v60;
+          bundleCopy = v61;
           goto LABEL_68;
         }
 
@@ -2235,14 +2235,14 @@ LABEL_67:
       }
     }
 
-    v49 = [v47 startDate];
-    v50 = [v71 stringFromDate:v49];
+    startDate2 = [v47 startDate];
+    v50 = [v71 stringFromDate:startDate2];
 
     if ([v47 bundleSubType] == 402)
     {
-      v51 = [v47 resources];
-      v52 = self;
-      v53 = v51;
+      resources4 = [v47 resources];
+      selfCopy3 = self;
+      v53 = resources4;
       v54 = v72;
       v55 = v70;
       v56 = v50;
@@ -2253,9 +2253,9 @@ LABEL_67:
     {
       if ([v47 bundleSubType] == 403)
       {
-        v51 = [v47 resources];
-        v52 = self;
-        v53 = v51;
+        resources4 = [v47 resources];
+        selfCopy3 = self;
+        v53 = resources4;
         v54 = v69;
         v55 = 0;
       }
@@ -2270,9 +2270,9 @@ LABEL_64:
           goto LABEL_65;
         }
 
-        v51 = [v47 resources];
-        v52 = self;
-        v53 = v51;
+        resources4 = [v47 resources];
+        selfCopy3 = self;
+        v53 = resources4;
         v54 = v69;
         v55 = v70;
       }
@@ -2281,7 +2281,7 @@ LABEL_64:
       v57 = @"MOMediaPlayMetaDataKeyPlayerArtist";
     }
 
-    v58 = [(MOSummarizationManager *)v52 _removeDuplicateFromResource:v53 nonMediaKeySet:v54 mediaOnRepeatDict:v55 eventBundleDayKey:v56 keyName:v57];
+    v58 = [(MOSummarizationManager *)selfCopy3 _removeDuplicateFromResource:v53 nonMediaKeySet:v54 mediaOnRepeatDict:v55 eventBundleDayKey:v56 keyName:v57];
 
     [v47 setResources:v58];
     if (!v58 || ![v58 count])
@@ -2295,14 +2295,14 @@ LABEL_64:
 LABEL_68:
 }
 
-- (void)dedupAssetForMediaBundleThirdParty:(id)a3 nonPlayedMediaBudnles:(id)a4 isRecommendTab:(BOOL)a5
+- (void)dedupAssetForMediaBundleThirdParty:(id)party nonPlayedMediaBudnles:(id)budnles isRecommendTab:(BOOL)tab
 {
-  v60 = a5;
-  v6 = a3;
-  v7 = a4;
-  if ([v7 count])
+  tabCopy = tab;
+  partyCopy = party;
+  budnlesCopy = budnles;
+  if ([budnlesCopy count])
   {
-    v53 = v6;
+    v53 = partyCopy;
     v8 = +[NSCalendar currentCalendar];
     v9 = objc_alloc_init(NSDateFormatter);
     v51 = v8;
@@ -2314,8 +2314,8 @@ LABEL_68:
     v71 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v52 = v7;
-    obj = v7;
+    v52 = budnlesCopy;
+    obj = budnlesCopy;
     v11 = [obj countByEnumeratingWithState:&v70 objects:v76 count:16];
     if (!v11)
     {
@@ -2338,20 +2338,20 @@ LABEL_68:
 
         v15 = *(*(&v70 + 1) + 8 * v14);
         v16 = objc_autoreleasePoolPush();
-        v17 = [v15 resources];
-        if (v17)
+        resources = [v15 resources];
+        if (resources)
         {
-          v18 = v17;
-          v19 = [v15 resources];
-          v20 = [v19 count];
+          v18 = resources;
+          resources2 = [v15 resources];
+          v20 = [resources2 count];
 
           if (v20)
           {
             v57 = v16;
             v58 = v14;
             v21 = v10;
-            v22 = [v15 resources];
-            v23 = [(MOSummarizationManager *)self _sortResourcesByPriorityScore:v22];
+            resources3 = [v15 resources];
+            v23 = [(MOSummarizationManager *)self _sortResourcesByPriorityScore:resources3];
 
             v68 = 0u;
             v69 = 0u;
@@ -2377,16 +2377,16 @@ LABEL_68:
 
                 v29 = *(*(&v66 + 1) + 8 * i);
                 v30 = objc_autoreleasePoolPush();
-                v31 = [v29 type];
-                if ([v15 bundleSuperType] != 4 && v31 == 3)
+                type = [v29 type];
+                if ([v15 bundleSuperType] != 4 && type == 3)
                 {
-                  v32 = [v29 getDictionary];
-                  v33 = [v32 objectForKey:@"MOMediaPlayMetaDataKeyPlayerMediaTypeKey"];
+                  getDictionary = [v29 getDictionary];
+                  v33 = [getDictionary objectForKey:@"MOMediaPlayMetaDataKeyPlayerMediaTypeKey"];
 
                   if (([v33 isEqualToString:MOMediaPlayMetaDataKeyPlayerMediaTypeThirdPartyMedia[0]] & 1) != 0 || (objc_msgSend(v33, "isEqualToString:", MOMediaPlayMetaDataKeyPlayerMediaTypeThirdPartyMediaAlbum[0]) & 1) != 0 || objc_msgSend(v33, "isEqualToString:", MOMediaPlayMetaDataKeyPlayerMediaTypeThirdPartyMediaArtist))
                   {
-                    v34 = [v29 getDictionary];
-                    v35 = [(MOSummarizationManager *)self _getThirdPartyTitleKey:v34];
+                    getDictionary2 = [v29 getDictionary];
+                    v35 = [(MOSummarizationManager *)self _getThirdPartyTitleKey:getDictionary2];
 
                     if (v35 && ([v21 containsObject:v35] & 1) == 0)
                     {
@@ -2401,13 +2401,13 @@ LABEL_23:
 
                 if ([v15 bundleSuperType] == 4)
                 {
-                  v36 = [v15 bundleSubType];
-                  if (v60)
+                  bundleSubType = [v15 bundleSubType];
+                  if (tabCopy)
                   {
-                    if (v36 == 409)
+                    if (bundleSubType == 409)
                     {
-                      v37 = [v29 getDictionary];
-                      v33 = [(MOSummarizationManager *)self _getThirdPartyTitleKey:v37];
+                      getDictionary3 = [v29 getDictionary];
+                      v33 = [(MOSummarizationManager *)self _getThirdPartyTitleKey:getDictionary3];
 LABEL_30:
 
                       if (v33 && ([v21 containsObject:v33] & 1) == 0)
@@ -2419,13 +2419,13 @@ LABEL_30:
                     }
                   }
 
-                  else if (v36 == 407)
+                  else if (bundleSubType == 407)
                   {
-                    v38 = [v15 startDate];
-                    v37 = [v59 stringFromDate:v38];
+                    startDate = [v15 startDate];
+                    getDictionary3 = [v59 stringFromDate:startDate];
 
-                    v39 = [v29 getDictionary];
-                    v33 = [(MOSummarizationManager *)self _getThirdPartyTitleKey:v39 dayKey:v37 isRecommendTab:0];
+                    getDictionary4 = [v29 getDictionary];
+                    v33 = [(MOSummarizationManager *)self _getThirdPartyTitleKey:getDictionary4 dayKey:getDictionary3 isRecommendTab:0];
 
                     goto LABEL_30;
                   }
@@ -2466,7 +2466,7 @@ LABEL_38:
     v65 = 0u;
     v62 = 0u;
     v63 = 0u;
-    v6 = v53;
+    partyCopy = v53;
     v40 = v53;
     v41 = [v40 countByEnumeratingWithState:&v62 objects:v74 count:16];
     if (!v41)
@@ -2486,25 +2486,25 @@ LABEL_40:
       }
 
       v45 = *(*(&v62 + 1) + 8 * v44);
-      v46 = [v45 bundleSuperType];
-      if (v60)
+      bundleSuperType = [v45 bundleSuperType];
+      if (tabCopy)
       {
-        if (v46 == 4 && [v45 summarizationGranularity] == 2 && (objc_msgSend(v45, "isAggregatedAndSuppressed") & 1) == 0 && objc_msgSend(v45, "bundleSubType") == 410)
+        if (bundleSuperType == 4 && [v45 summarizationGranularity] == 2 && (objc_msgSend(v45, "isAggregatedAndSuppressed") & 1) == 0 && objc_msgSend(v45, "bundleSubType") == 410)
         {
           goto LABEL_53;
         }
       }
 
-      else if (v46 == 4 && [v45 summarizationGranularity] == 1 && (objc_msgSend(v45, "isAggregatedAndSuppressed") & 1) == 0 && objc_msgSend(v45, "bundleSubType") == 408)
+      else if (bundleSuperType == 4 && [v45 summarizationGranularity] == 1 && (objc_msgSend(v45, "isAggregatedAndSuppressed") & 1) == 0 && objc_msgSend(v45, "bundleSubType") == 408)
       {
 LABEL_53:
-        v47 = [v45 startDate];
-        v48 = [v59 stringFromDate:v47];
+        startDate2 = [v45 startDate];
+        v48 = [v59 stringFromDate:startDate2];
 
         if ([v45 bundleSubType] == 408 || objc_msgSend(v45, "bundleSubType") == 410)
         {
-          v49 = [v45 resources];
-          v50 = [(MOSummarizationManager *)self _removeDuplicateFromResourceThridParty:v49 mediaKeySet:v10 dayKey:v48 isRecommendTab:v60];
+          resources4 = [v45 resources];
+          v50 = [(MOSummarizationManager *)self _removeDuplicateFromResourceThridParty:resources4 mediaKeySet:v10 dayKey:v48 isRecommendTab:tabCopy];
 
           [v45 setResources:v50];
           if (!v50 || ![v50 count])
@@ -2521,7 +2521,7 @@ LABEL_53:
         {
 LABEL_62:
 
-          v7 = v52;
+          budnlesCopy = v52;
           break;
         }
 
@@ -2564,25 +2564,25 @@ int64_t __56__MOSummarizationManager__sortResourcesByPriorityScore___block_invok
   return v9;
 }
 
-- (id)_getThirdPartyKeyByAlbumArtist:(id)a3 albumOrArtist:(id)a4
+- (id)_getThirdPartyKeyByAlbumArtist:(id)artist albumOrArtist:(id)orArtist
 {
-  v5 = a4;
-  v6 = [a3 objectForKey:@"MOMediaPlayMetaDataKeyPlayerBundleID"];
+  orArtistCopy = orArtist;
+  v6 = [artist objectForKey:@"MOMediaPlayMetaDataKeyPlayerBundleID"];
   v7 = v6;
   v8 = 0;
-  if (v5 && v6)
+  if (orArtistCopy && v6)
   {
-    v8 = [NSString stringWithFormat:@"%@_%@", v5, v6];
+    v8 = [NSString stringWithFormat:@"%@_%@", orArtistCopy, v6];
   }
 
   return v8;
 }
 
-- (id)_getThirdPartyTitleKey:(id)a3
+- (id)_getThirdPartyTitleKey:(id)key
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"MOMediaPlayMetaDataKeyPlayerTitle"];
-  v5 = [v3 objectForKey:@"MOMediaPlayMetaDataKeyPlayerBundleID"];
+  keyCopy = key;
+  v4 = [keyCopy objectForKey:@"MOMediaPlayMetaDataKeyPlayerTitle"];
+  v5 = [keyCopy objectForKey:@"MOMediaPlayMetaDataKeyPlayerBundleID"];
 
   if (v4)
   {
@@ -2607,13 +2607,13 @@ int64_t __56__MOSummarizationManager__sortResourcesByPriorityScore___block_invok
   return v7;
 }
 
-- (id)_getThirdPartyTitleKey:(id)a3 dayKey:(id)a4 isRecommendTab:(BOOL)a5
+- (id)_getThirdPartyTitleKey:(id)key dayKey:(id)dayKey isRecommendTab:(BOOL)tab
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
-  v9 = [v8 objectForKey:@"MOMediaPlayMetaDataKeyPlayerTitle"];
-  v10 = [v8 objectForKey:@"MOMediaPlayMetaDataKeyPlayerBundleID"];
+  tabCopy = tab;
+  dayKeyCopy = dayKey;
+  keyCopy = key;
+  v9 = [keyCopy objectForKey:@"MOMediaPlayMetaDataKeyPlayerTitle"];
+  v10 = [keyCopy objectForKey:@"MOMediaPlayMetaDataKeyPlayerBundleID"];
 
   if (v9)
   {
@@ -2632,14 +2632,14 @@ int64_t __56__MOSummarizationManager__sortResourcesByPriorityScore___block_invok
 
   else
   {
-    if (v5)
+    if (tabCopy)
     {
       [NSString stringWithFormat:@"%@_%@", v9, v10, v14];
     }
 
     else
     {
-      [NSString stringWithFormat:@"%@_%@_%@", v7, v9, v10];
+      [NSString stringWithFormat:@"%@_%@_%@", dayKeyCopy, v9, v10];
     }
     v12 = ;
   }
@@ -2647,19 +2647,19 @@ int64_t __56__MOSummarizationManager__sortResourcesByPriorityScore___block_invok
   return v12;
 }
 
-- (id)_removeDuplicateFromResource:(id)a3 nonMediaKeySet:(id)a4 mediaOnRepeatDict:(id)a5 eventBundleDayKey:(id)a6 keyName:(id)a7
+- (id)_removeDuplicateFromResource:(id)resource nonMediaKeySet:(id)set mediaOnRepeatDict:(id)dict eventBundleDayKey:(id)key keyName:(id)name
 {
-  v11 = a3;
-  v31 = a4;
-  v33 = a5;
-  v29 = a6;
-  v32 = a7;
+  resourceCopy = resource;
+  setCopy = set;
+  dictCopy = dict;
+  keyCopy = key;
+  nameCopy = name;
   v28 = objc_opt_new();
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  obj = v11;
+  obj = resourceCopy;
   v12 = [obj countByEnumeratingWithState:&v34 objects:v44 count:16];
   if (v12)
   {
@@ -2677,28 +2677,28 @@ int64_t __56__MOSummarizationManager__sortResourcesByPriorityScore___block_invok
 
         v16 = *(*(&v34 + 1) + 8 * v15);
         v17 = objc_autoreleasePoolPush();
-        v18 = [v16 getDictionary];
-        v19 = [v18 objectForKey:v32];
+        getDictionary = [v16 getDictionary];
+        v19 = [getDictionary objectForKey:nameCopy];
 
-        v20 = [v16 getDictionary];
-        v21 = [v20 objectForKey:@"MOMediaPlayMetaDataKeyPlayerTitle"];
+        getDictionary2 = [v16 getDictionary];
+        v21 = [getDictionary2 objectForKey:@"MOMediaPlayMetaDataKeyPlayerTitle"];
 
         if (!v19)
         {
           goto LABEL_12;
         }
 
-        v22 = [v31 containsObject:v19];
+        v22 = [setCopy containsObject:v19];
         v23 = v22;
-        if (v33)
+        if (dictCopy)
         {
           if ((v22 & 1) == 0)
           {
-            v24 = [v33 objectForKey:v29];
+            v24 = [dictCopy objectForKey:keyCopy];
 
             if (v24)
             {
-              v25 = [v33 objectForKey:v29];
+              v25 = [dictCopy objectForKey:keyCopy];
               v23 = [v25 containsObject:v19];
             }
           }
@@ -2716,7 +2716,7 @@ LABEL_12:
           if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412802;
-            v39 = v32;
+            v39 = nameCopy;
             v40 = 2112;
             v41 = v19;
             v42 = 2112;
@@ -2739,18 +2739,18 @@ LABEL_12:
   return v28;
 }
 
-- (id)_removeDuplicateFromResourceThridParty:(id)a3 mediaKeySet:(id)a4 dayKey:(id)a5 isRecommendTab:(BOOL)a6
+- (id)_removeDuplicateFromResourceThridParty:(id)party mediaKeySet:(id)set dayKey:(id)key isRecommendTab:(BOOL)tab
 {
-  v31 = a6;
-  v9 = a3;
-  v32 = a4;
-  v29 = a5;
+  tabCopy = tab;
+  partyCopy = party;
+  setCopy = set;
+  keyCopy = key;
   v27 = objc_opt_new();
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v9;
+  obj = partyCopy;
   v10 = [obj countByEnumeratingWithState:&v33 objects:v43 count:16];
   if (v10)
   {
@@ -2771,13 +2771,13 @@ LABEL_12:
 
         v15 = *(*(&v33 + 1) + 8 * v14);
         v16 = objc_autoreleasePoolPush();
-        v17 = [v15 getDictionary];
-        v18 = [(MOSummarizationManager *)self _getThirdPartyTitleKey:v17];
+        getDictionary = [v15 getDictionary];
+        v18 = [(MOSummarizationManager *)self _getThirdPartyTitleKey:getDictionary];
 
-        v19 = [v15 getDictionary];
-        v20 = [v19 objectForKey:v13];
+        getDictionary2 = [v15 getDictionary];
+        v20 = [getDictionary2 objectForKey:v13];
 
-        if (v31)
+        if (tabCopy)
         {
           v21 = v18;
         }
@@ -2786,18 +2786,18 @@ LABEL_12:
         {
           [v15 getDictionary];
           v23 = v22 = v13;
-          v21 = [(MOSummarizationManager *)self _getThirdPartyTitleKey:v23 dayKey:v29 isRecommendTab:0];
+          v21 = [(MOSummarizationManager *)self _getThirdPartyTitleKey:v23 dayKey:keyCopy isRecommendTab:0];
 
           v13 = v22;
         }
 
-        if ([v32 containsObject:{v18, v26}] & 1) != 0 || (objc_msgSend(v32, "containsObject:", v21))
+        if ([setCopy containsObject:{v18, v26}] & 1) != 0 || (objc_msgSend(setCopy, "containsObject:", v21))
         {
           v24 = _mo_log_facility_get_os_log(&MOLogFacilitySummarization);
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
           {
             *buf = v26;
-            v38 = v29;
+            v38 = keyCopy;
             v39 = 2112;
             v40 = v18;
             v41 = 2112;
@@ -2825,14 +2825,14 @@ LABEL_12:
   return v27;
 }
 
-- (unint64_t)supressCoarseGranularityPropertyOfEventBundles:(id)a3 primaryBundles:(id)a4 bundleMapping:(id)a5
+- (unint64_t)supressCoarseGranularityPropertyOfEventBundles:(id)bundles primaryBundles:(id)primaryBundles bundleMapping:(id)mapping
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count] && objc_msgSend(v9, "count"))
+  bundlesCopy = bundles;
+  primaryBundlesCopy = primaryBundles;
+  mappingCopy = mapping;
+  if ([bundlesCopy count] && objc_msgSend(primaryBundlesCopy, "count"))
   {
-    v11 = [[MOObjectZipper alloc] initWithObjects:v8 others:v9 comparator:&__block_literal_global_460];
+    v11 = [[MOObjectZipper alloc] initWithObjects:bundlesCopy others:primaryBundlesCopy comparator:&__block_literal_global_460];
     v18 = 0;
     v19 = &v18;
     v20 = 0x2020000000;
@@ -2844,7 +2844,7 @@ LABEL_12:
       v15[2] = __102__MOSummarizationManager_supressCoarseGranularityPropertyOfEventBundles_primaryBundles_bundleMapping___block_invoke_2;
       v15[3] = &unk_10033C920;
       v15[4] = self;
-      v16 = v10;
+      v16 = mappingCopy;
       v17 = &v18;
       v12 = [(MOObjectZipper *)v11 nextObjectPairWithHandler:v15];
     }
@@ -2963,49 +2963,49 @@ void __102__MOSummarizationManager_supressCoarseGranularityPropertyOfEventBundle
   }
 }
 
-- (BOOL)supressCoarseGranularityPropertyOfEventBundle:(id)a3 dominantBundle:(id)a4
+- (BOOL)supressCoarseGranularityPropertyOfEventBundle:(id)bundle dominantBundle:(id)dominantBundle
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  bundleCopy = bundle;
+  dominantBundleCopy = dominantBundle;
+  v7 = dominantBundleCopy;
   v8 = 0;
-  if (v5 && v6)
+  if (bundleCopy && dominantBundleCopy)
   {
-    if ([v6 isAggregatedAndSuppressed] & 1) != 0 || (objc_msgSend(v5, "isAggregatedAndSuppressed"))
+    if ([dominantBundleCopy isAggregatedAndSuppressed] & 1) != 0 || (objc_msgSend(bundleCopy, "isAggregatedAndSuppressed"))
     {
       v8 = 0;
     }
 
     else
     {
-      if ([v5 summarizationGranularity] == 2)
+      if ([bundleCopy summarizationGranularity] == 2)
       {
-        [v5 setIsAggregatedAndSuppressed:1];
+        [bundleCopy setIsAggregatedAndSuppressed:1];
       }
 
       else
       {
-        [v5 setSummarizationGranularity:1];
+        [bundleCopy setSummarizationGranularity:1];
       }
 
       v9 = objc_opt_new();
-      v10 = [v7 subBundleIDs];
-      [v9 addObjectsFromArray:v10];
+      subBundleIDs = [v7 subBundleIDs];
+      [v9 addObjectsFromArray:subBundleIDs];
 
-      v11 = [v5 bundleIdentifier];
-      v12 = [v11 UUIDString];
-      [v9 addObject:v12];
+      bundleIdentifier = [bundleCopy bundleIdentifier];
+      uUIDString = [bundleIdentifier UUIDString];
+      [v9 addObject:uUIDString];
 
       v13 = [v9 copy];
       [v7 setSubBundleIDs:v13];
 
       v14 = objc_opt_new();
-      v15 = [v7 subSuggestionIDs];
-      [v14 addObjectsFromArray:v15];
+      subSuggestionIDs = [v7 subSuggestionIDs];
+      [v14 addObjectsFromArray:subSuggestionIDs];
 
-      v16 = [v5 suggestionID];
-      v17 = [v16 UUIDString];
-      [v14 addObject:v17];
+      suggestionID = [bundleCopy suggestionID];
+      uUIDString2 = [suggestionID UUIDString];
+      [v14 addObject:uUIDString2];
 
       v18 = [v14 copy];
       [v7 setSubSuggestionIDs:v18];

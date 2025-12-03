@@ -2,29 +2,29 @@
 + (OS_os_log)log;
 - (ContentRepresentationHandlingDelegate)representationHandler;
 - (EMMailDropMetadata)mailDropBannerMetadata;
-- (MessageContentItemsHelper)initWithWebView:(id)a3 contentItemHandler:(id)a4;
-- (id)_futureForContentItem:(id)a3 networkUsage:(int64_t)a4 invokerID:(id)a5 previouslyInvoked:(BOOL *)a6 progress:(id *)a7;
-- (id)_representationTypeForContentItem:(id)a3;
-- (id)contentItemForContentID:(id)a3;
-- (id)contentItemForElementID:(id)a3;
-- (id)futureForContentItem:(id)a3 download:(BOOL)a4;
-- (id)startDownloadForContentItem:(id)a3 userInitiated:(BOOL)a4;
-- (int64_t)displayStateForContentItem:(id)a3;
+- (MessageContentItemsHelper)initWithWebView:(id)view contentItemHandler:(id)handler;
+- (id)_futureForContentItem:(id)item networkUsage:(int64_t)usage invokerID:(id)d previouslyInvoked:(BOOL *)invoked progress:(id *)progress;
+- (id)_representationTypeForContentItem:(id)item;
+- (id)contentItemForContentID:(id)d;
+- (id)contentItemForElementID:(id)d;
+- (id)futureForContentItem:(id)item download:(BOOL)download;
+- (id)startDownloadForContentItem:(id)item userInitiated:(BOOL)initiated;
+- (int64_t)displayStateForContentItem:(id)item;
 - (void)_computeMailDropProperties;
-- (void)_injectAttachmentViewForElementWithSourceAttributeValue:(id)a3 forContentItem:(id)a4;
-- (void)_updateProgressFraction:(id)a3 forContentItem:(id)a4;
-- (void)attachmentWasTappedWithElementID:(id)a3 rect:(CGRect)a4 view:(id)a5;
-- (void)displayViewerForContentItem:(id)a3 rect:(CGRect)a4 view:(id)a5;
+- (void)_injectAttachmentViewForElementWithSourceAttributeValue:(id)value forContentItem:(id)item;
+- (void)_updateProgressFraction:(id)fraction forContentItem:(id)item;
+- (void)attachmentWasTappedWithElementID:(id)d rect:(CGRect)rect view:(id)view;
+- (void)displayViewerForContentItem:(id)item rect:(CGRect)rect view:(id)view;
 - (void)downloadAllMailDropAttachments;
-- (void)inlineImageFinishedDownloading:(id)a3;
-- (void)noteDidFailLoadingResourceWithURL:(id)a3;
-- (void)saveContentItem:(id)a3 toDestination:(int64_t)a4;
-- (void)setContentItems:(id)a3;
-- (void)setDisplayState:(int64_t)a3 forContentItem:(id)a4;
-- (void)setPercentCompleted:(double)a3 forContentItem:(id)a4;
-- (void)showMenuForContentItem:(id)a3 rect:(CGRect)a4 view:(id)a5;
-- (void)updateDragItemProvider:(id)a3 forElementID:(id)a4;
-- (void)updatePDFContentItemIfNeeded:(void *)a3 contentRepresentation:;
+- (void)inlineImageFinishedDownloading:(id)downloading;
+- (void)noteDidFailLoadingResourceWithURL:(id)l;
+- (void)saveContentItem:(id)item toDestination:(int64_t)destination;
+- (void)setContentItems:(id)items;
+- (void)setDisplayState:(int64_t)state forContentItem:(id)item;
+- (void)setPercentCompleted:(double)completed forContentItem:(id)item;
+- (void)showMenuForContentItem:(id)item rect:(CGRect)rect view:(id)view;
+- (void)updateDragItemProvider:(id)provider forElementID:(id)d;
+- (void)updatePDFContentItemIfNeeded:(void *)needed contentRepresentation:;
 @end
 
 @implementation MessageContentItemsHelper
@@ -35,7 +35,7 @@
   block[1] = 3221225472;
   block[2] = __32__MessageContentItemsHelper_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_1 != -1)
   {
     dispatch_once(&log_onceToken_1, block);
@@ -54,12 +54,12 @@ void __32__MessageContentItemsHelper_log__block_invoke(uint64_t a1)
   log_log_1 = v1;
 }
 
-- (id)_representationTypeForContentItem:(id)a3
+- (id)_representationTypeForContentItem:(id)item
 {
-  v3 = [a3 uniformTypeIdentifier];
-  v4 = [v3 ef_conformsToRFC822UTType];
+  uniformTypeIdentifier = [item uniformTypeIdentifier];
+  ef_conformsToRFC822UTType = [uniformTypeIdentifier ef_conformsToRFC822UTType];
   v5 = MEMORY[0x277D06B98];
-  if (!v4)
+  if (!ef_conformsToRFC822UTType)
   {
     v5 = MEMORY[0x277D06BA8];
   }
@@ -70,18 +70,18 @@ void __32__MessageContentItemsHelper_log__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (MessageContentItemsHelper)initWithWebView:(id)a3 contentItemHandler:(id)a4
+- (MessageContentItemsHelper)initWithWebView:(id)view contentItemHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  handlerCopy = handler;
   v26.receiver = self;
   v26.super_class = MessageContentItemsHelper;
   v9 = [(MessageContentItemsHelper *)&v26 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_webView, a3);
-    objc_storeWeak(&v10->_representationHandler, v8);
+    objc_storeStrong(&v9->_webView, view);
+    objc_storeWeak(&v10->_representationHandler, handlerCopy);
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     elementIDToContentID = v10->_elementIDToContentID;
     v10->_elementIDToContentID = v11;
@@ -103,8 +103,8 @@ void __32__MessageContentItemsHelper_log__block_invoke(uint64_t a1)
     v10->_attachmentsScheduler = v19;
 
     v21 = [MEMORY[0x277CE3898] remoteObjectInterfaceWithProtocol:&unk_282716BE8];
-    v22 = [v7 _remoteObjectRegistry];
-    v23 = [v22 remoteObjectProxyWithInterface:v21];
+    _remoteObjectRegistry = [viewCopy _remoteObjectRegistry];
+    v23 = [_remoteObjectRegistry remoteObjectProxyWithInterface:v21];
     webProcessProxy = v10->_webProcessProxy;
     v10->_webProcessProxy = v23;
   }
@@ -112,10 +112,10 @@ void __32__MessageContentItemsHelper_log__block_invoke(uint64_t a1)
   return v10;
 }
 
-- (void)setContentItems:(id)a3
+- (void)setContentItems:(id)items
 {
-  v9 = a3;
-  v4 = [v9 copy];
+  itemsCopy = items;
+  v4 = [itemsCopy copy];
   contentItems = self->_contentItems;
   self->_contentItems = v4;
 
@@ -134,26 +134,26 @@ void __32__MessageContentItemsHelper_log__block_invoke(uint64_t a1)
   self->_allMailDropsDownloaded = 0;
 }
 
-- (id)contentItemForElementID:(id)a3
+- (id)contentItemForElementID:(id)d
 {
-  v4 = [(NSMutableDictionary *)self->_elementIDToContentID objectForKeyedSubscript:a3];
+  v4 = [(NSMutableDictionary *)self->_elementIDToContentID objectForKeyedSubscript:d];
   v5 = [(MessageContentItemsHelper *)self contentItemForContentID:v4];
 
   return v5;
 }
 
-- (id)contentItemForContentID:(id)a3
+- (id)contentItemForContentID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [(MessageContentItemsHelper *)self contentItems];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    contentItems = [(MessageContentItemsHelper *)self contentItems];
+    v6 = [contentItems countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = *v15;
@@ -163,12 +163,12 @@ void __32__MessageContentItemsHelper_log__block_invoke(uint64_t a1)
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(contentItems);
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
-          v10 = [v9 contentID];
-          v11 = [v10 isEqualToString:v4];
+          contentID = [v9 contentID];
+          v11 = [contentID isEqualToString:dCopy];
 
           if (v11)
           {
@@ -177,7 +177,7 @@ void __32__MessageContentItemsHelper_log__block_invoke(uint64_t a1)
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [contentItems countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v6)
         {
           continue;
@@ -226,30 +226,30 @@ LABEL_12:
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 mailDropMetadata];
-        if (v10)
+        mailDropMetadata = [v9 mailDropMetadata];
+        if (mailDropMetadata)
         {
           if (!v4)
           {
-            v11 = [MEMORY[0x277D06DA8] mailDropMetadata];
+            mailDropMetadata2 = [MEMORY[0x277D06DA8] mailDropMetadata];
             mailDropBannerMetadata = self->_mailDropBannerMetadata;
-            self->_mailDropBannerMetadata = v11;
+            self->_mailDropBannerMetadata = mailDropMetadata2;
           }
 
-          v13 = [v10 fileSize];
+          fileSize = [mailDropMetadata fileSize];
           if ([v9 isAvailableLocally])
           {
-            v5 += v13;
+            v5 += fileSize;
           }
 
           else
           {
-            self->_totalUnstartedMailDropDownloadSize += v13;
+            self->_totalUnstartedMailDropDownloadSize += fileSize;
           }
 
-          [(EMMailDropMetadata *)self->_mailDropBannerMetadata merge:v10];
+          [(EMMailDropMetadata *)self->_mailDropBannerMetadata merge:mailDropMetadata];
           ++v4;
-          v6 += v13;
+          v6 += fileSize;
         }
       }
 
@@ -299,13 +299,13 @@ LABEL_12:
   return mailDropBannerMetadata;
 }
 
-- (void)noteDidFailLoadingResourceWithURL:(id)a3
+- (void)noteDidFailLoadingResourceWithURL:(id)l
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCACE0] componentsWithURL:v4 resolvingAgainstBaseURL:0];
-  v6 = [v5 path];
-  v7 = [(MessageContentItemsHelper *)self contentItemForContentID:v6];
+  lCopy = l;
+  v5 = [MEMORY[0x277CCACE0] componentsWithURL:lCopy resolvingAgainstBaseURL:0];
+  path = [v5 path];
+  v7 = [(MessageContentItemsHelper *)self contentItemForContentID:path];
   if (v7)
   {
     v8 = +[MessageContentItemsHelper log];
@@ -316,30 +316,30 @@ LABEL_12:
       [MessageContentItemsHelper noteDidFailLoadingResourceWithURL:];
     }
 
-    v9 = [v4 absoluteString];
-    [(MessageContentItemsHelper *)self _injectAttachmentViewForElementWithSourceAttributeValue:v9 forContentItem:v7];
+    absoluteString = [lCopy absoluteString];
+    [(MessageContentItemsHelper *)self _injectAttachmentViewForElementWithSourceAttributeValue:absoluteString forContentItem:v7];
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)attachmentWasTappedWithElementID:(id)a3 rect:(CGRect)a4 view:(id)a5
+- (void)attachmentWasTappedWithElementID:(id)d rect:(CGRect)rect view:(id)view
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v28 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a5;
-  v13 = [(MessageContentItemsHelper *)self contentItemForElementID:v11];
+  dCopy = d;
+  viewCopy = view;
+  v13 = [(MessageContentItemsHelper *)self contentItemForElementID:dCopy];
   if (!v13)
   {
     v17 = +[MessageContentItemsHelper log];
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v26 = 138412290;
-      v27 = v11;
+      v27 = dCopy;
       _os_log_impl(&dword_2149C9000, v17, OS_LOG_TYPE_DEFAULT, "tapped unknown attachment %@", &v26, 0xCu);
     }
 
@@ -349,9 +349,9 @@ LABEL_12:
   v14 = +[MessageContentItemsHelper log];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v13 contentID];
+    contentID = [v13 contentID];
     v26 = 138412290;
-    v27 = v15;
+    v27 = contentID;
     _os_log_impl(&dword_2149C9000, v14, OS_LOG_TYPE_DEFAULT, "tapped attachment %@", &v26, 0xCu);
   }
 
@@ -359,27 +359,27 @@ LABEL_12:
   switch(v16)
   {
     case 1:
-      [(MessageContentItemsHelper *)self displayViewerForContentItem:v13 rect:v12 view:x, y, width, height];
+      [(MessageContentItemsHelper *)self displayViewerForContentItem:v13 rect:viewCopy view:x, y, width, height];
       v17 = +[MessageContentItemsHelper log];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v23 = [v13 contentID];
+        contentID2 = [v13 contentID];
         v26 = 138412290;
-        v27 = v23;
+        v27 = contentID2;
         _os_log_impl(&dword_2149C9000, v17, OS_LOG_TYPE_DEFAULT, "attachment %@ is already downloaded", &v26, 0xCu);
       }
 
       goto LABEL_19;
     case 2:
-      v19 = [(NSMutableDictionary *)self->_elementIDToWKAttachmentID objectForKeyedSubscript:v11];
+      v19 = [(NSMutableDictionary *)self->_elementIDToWKAttachmentID objectForKeyedSubscript:dCopy];
 
       if (!v19)
       {
         v17 = +[MessageContentItemsHelper log];
         if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
         {
-          v24 = [v13 contentID];
-          [(MessageContentItemsHelper *)v24 attachmentWasTappedWithElementID:v11 rect:&v26 view:v17];
+          contentID3 = [v13 contentID];
+          [(MessageContentItemsHelper *)contentID3 attachmentWasTappedWithElementID:dCopy rect:&v26 view:v17];
         }
 
         goto LABEL_19;
@@ -388,9 +388,9 @@ LABEL_12:
       v20 = +[MessageContentItemsHelper log];
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [v13 contentID];
+        contentID4 = [v13 contentID];
         v26 = 138412290;
-        v27 = v21;
+        v27 = contentID4;
         _os_log_impl(&dword_2149C9000, v20, OS_LOG_TYPE_DEFAULT, "attachment %@ is downloadable", &v26, 0xCu);
       }
 
@@ -400,9 +400,9 @@ LABEL_12:
       v17 = +[MessageContentItemsHelper log];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
-        v18 = [v13 contentID];
+        contentID5 = [v13 contentID];
         v26 = 138412290;
-        v27 = v18;
+        v27 = contentID5;
         _os_log_impl(&dword_2149C9000, v17, OS_LOG_TYPE_DEFAULT, "attachment %@ is downloading", &v26, 0xCu);
       }
 
@@ -414,24 +414,24 @@ LABEL_19:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)displayViewerForContentItem:(id)a3 rect:(CGRect)a4 view:(id)a5
+- (void)displayViewerForContentItem:(id)item rect:(CGRect)rect view:(id)view
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
-  v12 = a5;
-  if ([v11 exchangeEventUID])
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  itemCopy = item;
+  viewCopy = view;
+  if ([itemCopy exchangeEventUID])
   {
-    v13 = [(MessageContentItemsHelper *)self representationHandler];
-    [v13 showSelectedExchangeEventUID:objc_msgSend(v11 fromRect:"exchangeEventUID") view:{v12, x, y, width, height}];
+    representationHandler = [(MessageContentItemsHelper *)self representationHandler];
+    [representationHandler showSelectedExchangeEventUID:objc_msgSend(itemCopy fromRect:"exchangeEventUID") view:{viewCopy, x, y, width, height}];
   }
 
   else
   {
-    v13 = [(MessageContentItemsHelper *)self _futureForContentItem:v11 networkUsage:0 invokerID:0 previouslyInvoked:0 progress:0];
-    v14 = [MEMORY[0x277D071B8] mainThreadScheduler];
+    representationHandler = [(MessageContentItemsHelper *)self _futureForContentItem:itemCopy networkUsage:0 invokerID:0 previouslyInvoked:0 progress:0];
+    mainThreadScheduler = [MEMORY[0x277D071B8] mainThreadScheduler];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __67__MessageContentItemsHelper_displayViewerForContentItem_rect_view___block_invoke;
@@ -441,8 +441,8 @@ LABEL_19:
     v18 = y;
     v19 = width;
     v20 = height;
-    v16 = v12;
-    [v13 onScheduler:v14 addSuccessBlock:v15];
+    v16 = viewCopy;
+    [representationHandler onScheduler:mainThreadScheduler addSuccessBlock:v15];
   }
 }
 
@@ -453,15 +453,15 @@ void __67__MessageContentItemsHelper_displayViewerForContentItem_rect_view___blo
   [v3 showSelectedContentRepresentation:v4 fromRect:*(a1 + 40) view:{*(a1 + 48), *(a1 + 56), *(a1 + 64), *(a1 + 72)}];
 }
 
-- (void)showMenuForContentItem:(id)a3 rect:(CGRect)a4 view:(id)a5
+- (void)showMenuForContentItem:(id)item rect:(CGRect)rect view:(id)view
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a5;
-  v12 = [(MessageContentItemsHelper *)self _futureForContentItem:a3 networkUsage:0 invokerID:0 previouslyInvoked:0 progress:0];
-  v13 = [MEMORY[0x277D071B8] mainThreadScheduler];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  viewCopy = view;
+  v12 = [(MessageContentItemsHelper *)self _futureForContentItem:item networkUsage:0 invokerID:0 previouslyInvoked:0 progress:0];
+  mainThreadScheduler = [MEMORY[0x277D071B8] mainThreadScheduler];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __62__MessageContentItemsHelper_showMenuForContentItem_rect_view___block_invoke;
@@ -471,9 +471,9 @@ void __67__MessageContentItemsHelper_displayViewerForContentItem_rect_view___blo
   v18 = y;
   v19 = width;
   v20 = height;
-  v14 = v11;
+  v14 = viewCopy;
   v16 = v14;
-  [v12 onScheduler:v13 addSuccessBlock:v15];
+  [v12 onScheduler:mainThreadScheduler addSuccessBlock:v15];
 }
 
 void __62__MessageContentItemsHelper_showMenuForContentItem_rect_view___block_invoke(uint64_t a1, void *a2)
@@ -483,9 +483,9 @@ void __62__MessageContentItemsHelper_showMenuForContentItem_rect_view___block_in
   [v3 showMenuForSelectedContentRepresentation:v4 fromRect:*(a1 + 40) view:{*(a1 + 48), *(a1 + 56), *(a1 + 64), *(a1 + 72)}];
 }
 
-- (id)futureForContentItem:(id)a3 download:(BOOL)a4
+- (id)futureForContentItem:(id)item download:(BOOL)download
 {
-  if (a4)
+  if (download)
   {
     v4 = 2;
   }
@@ -495,48 +495,48 @@ void __62__MessageContentItemsHelper_showMenuForContentItem_rect_view___block_in
     v4 = 0;
   }
 
-  v5 = [(MessageContentItemsHelper *)self _futureForContentItem:a3 networkUsage:v4 invokerID:0 previouslyInvoked:0 progress:0];
+  v5 = [(MessageContentItemsHelper *)self _futureForContentItem:item networkUsage:v4 invokerID:0 previouslyInvoked:0 progress:0];
 
   return v5;
 }
 
-- (id)_futureForContentItem:(id)a3 networkUsage:(int64_t)a4 invokerID:(id)a5 previouslyInvoked:(BOOL *)a6 progress:(id *)a7
+- (id)_futureForContentItem:(id)item networkUsage:(int64_t)usage invokerID:(id)d previouslyInvoked:(BOOL *)invoked progress:(id *)progress
 {
   v37 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = [v12 contentID];
-  if (v14)
+  itemCopy = item;
+  dCopy = d;
+  contentID = [itemCopy contentID];
+  if (contentID)
   {
-    v15 = [(NSMutableDictionary *)self->_contentIDToTask objectForKeyedSubscript:v14];
-    v16 = v15;
+    v15 = [(NSMutableDictionary *)self->_contentIDToTask objectForKeyedSubscript:contentID];
+    ef_invalidInputError = v15;
     if (v15)
     {
-      v17 = [(MessageContentItemRepresentationTask *)v15 future];
-      v18 = [v17 resultIfAvailable];
-      if (v18)
+      future = [(MessageContentItemRepresentationTask *)v15 future];
+      resultIfAvailable = [future resultIfAvailable];
+      if (resultIfAvailable)
       {
 
 LABEL_13:
-        v28 = [(MessageContentItemRepresentationTask *)v16 hasBeenAccessedByInvokerWithID:v13];
-        [(MessageContentItemRepresentationTask *)v16 addAccessedByInvokerWithID:v13];
-        if (a6)
+        v28 = [(MessageContentItemRepresentationTask *)ef_invalidInputError hasBeenAccessedByInvokerWithID:dCopy];
+        [(MessageContentItemRepresentationTask *)ef_invalidInputError addAccessedByInvokerWithID:dCopy];
+        if (invoked)
         {
-          *a6 = v28;
+          *invoked = v28;
         }
 
-        if (a7)
+        if (progress)
         {
-          *a7 = [(MessageContentItemRepresentationTask *)v16 progress];
+          *progress = [(MessageContentItemRepresentationTask *)ef_invalidInputError progress];
         }
 
-        v21 = [(MessageContentItemRepresentationTask *)v16 future];
+        future2 = [(MessageContentItemRepresentationTask *)ef_invalidInputError future];
         goto LABEL_18;
       }
 
-      v22 = [(MessageContentItemRepresentationTask *)v16 networkUsage];
+      networkUsage = [(MessageContentItemRepresentationTask *)ef_invalidInputError networkUsage];
 
-      if (v22 >= a4)
+      if (networkUsage >= usage)
       {
         goto LABEL_13;
       }
@@ -545,47 +545,47 @@ LABEL_13:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v36 = v16;
+        v36 = ef_invalidInputError;
         _os_log_impl(&dword_2149C9000, v23, OS_LOG_TYPE_DEFAULT, "Removing and re-creating task: %@", buf, 0xCu);
       }
 
-      v24 = [(MessageContentItemRepresentationTask *)v16 progress];
-      [v24 cancel];
+      progress = [(MessageContentItemRepresentationTask *)ef_invalidInputError progress];
+      [progress cancel];
 
-      [(NSMutableDictionary *)self->_contentIDToTask setObject:0 forKeyedSubscript:v14];
+      [(NSMutableDictionary *)self->_contentIDToTask setObject:0 forKeyedSubscript:contentID];
     }
 
-    v25 = [(MessageContentItemsHelper *)self _representationTypeForContentItem:v12];
-    v16 = [[MessageContentItemRepresentationTask alloc] initWithContentItem:v12 type:v25 networkUsage:a4];
-    [(NSMutableDictionary *)self->_contentIDToTask setObject:v16 forKeyedSubscript:v14];
-    v26 = [(MessageContentItemRepresentationTask *)v16 future];
-    v27 = [MEMORY[0x277D071B8] mainThreadScheduler];
+    v25 = [(MessageContentItemsHelper *)self _representationTypeForContentItem:itemCopy];
+    ef_invalidInputError = [[MessageContentItemRepresentationTask alloc] initWithContentItem:itemCopy type:v25 networkUsage:usage];
+    [(NSMutableDictionary *)self->_contentIDToTask setObject:ef_invalidInputError forKeyedSubscript:contentID];
+    future3 = [(MessageContentItemRepresentationTask *)ef_invalidInputError future];
+    mainThreadScheduler = [MEMORY[0x277D071B8] mainThreadScheduler];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __101__MessageContentItemsHelper__futureForContentItem_networkUsage_invokerID_previouslyInvoked_progress___block_invoke;
     v32[3] = &unk_2781815F8;
     v32[4] = self;
-    v33 = v12;
-    v34 = v14;
-    [v26 onScheduler:v27 addFailureBlock:v32];
+    v33 = itemCopy;
+    v34 = contentID;
+    [future3 onScheduler:mainThreadScheduler addFailureBlock:v32];
 
-    [(MessageContentItemRepresentationTask *)v16 resume];
+    [(MessageContentItemRepresentationTask *)ef_invalidInputError resume];
     goto LABEL_13;
   }
 
   v19 = +[MessageContentItemsHelper log];
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
-    [v12 ef_publicDescription];
+    [itemCopy ef_publicDescription];
     objc_claimAutoreleasedReturnValue();
     [MessageContentItemsHelper _futureForContentItem:networkUsage:invokerID:previouslyInvoked:progress:];
   }
 
   v20 = MEMORY[0x277D07150];
-  v16 = [MEMORY[0x277D28200] ef_invalidInputError];
-  v21 = [v20 futureWithError:v16];
+  ef_invalidInputError = [MEMORY[0x277D28200] ef_invalidInputError];
+  future2 = [v20 futureWithError:ef_invalidInputError];
 LABEL_18:
-  v29 = v21;
+  v29 = future2;
 
   v30 = *MEMORY[0x277D85DE8];
 
@@ -601,13 +601,13 @@ uint64_t __101__MessageContentItemsHelper__futureForContentItem_networkUsage_inv
   return [v2 setObject:0 forKeyedSubscript:v3];
 }
 
-- (void)updateDragItemProvider:(id)a3 forElementID:(id)a4
+- (void)updateDragItemProvider:(id)provider forElementID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MessageContentItemsHelper *)self contentItemForElementID:v7];
+  providerCopy = provider;
+  dCopy = d;
+  v8 = [(MessageContentItemsHelper *)self contentItemForElementID:dCopy];
   v9 = [(MessageContentItemsHelper *)self _futureForContentItem:v8 networkUsage:0 invokerID:0 previouslyInvoked:0 progress:0];
-  objc_initWeak(&location, v6);
+  objc_initWeak(&location, providerCopy);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __65__MessageContentItemsHelper_updateDragItemProvider_forElementID___block_invoke;
@@ -652,33 +652,33 @@ void __65__MessageContentItemsHelper_updateDragItemProvider_forElementID___block
   }
 }
 
-- (void)_injectAttachmentViewForElementWithSourceAttributeValue:(id)a3 forContentItem:(id)a4
+- (void)_injectAttachmentViewForElementWithSourceAttributeValue:(id)value forContentItem:(id)item
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [ContentItemMarkupGenerator attachmentElementMarkupStringForContentItem:v7];
-  v9 = [(MessageContentItemsHelper *)self webView];
-  v13[0] = v6;
+  valueCopy = value;
+  itemCopy = item;
+  v8 = [ContentItemMarkupGenerator attachmentElementMarkupStringForContentItem:itemCopy];
+  webView = [(MessageContentItemsHelper *)self webView];
+  v13[0] = valueCopy;
   v13[1] = v8;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
-  v11 = [v9 mcv_stringFromJavaScriptMethod:@"replaceNodeWithSrcWithAttachment" arguments:v10];
+  v11 = [webView mcv_stringFromJavaScriptMethod:@"replaceNodeWithSrcWithAttachment" arguments:v10];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)displayStateForContentItem:(id)a3
+- (int64_t)displayStateForContentItem:(id)item
 {
   contentIDToTask = self->_contentIDToTask;
-  v4 = [a3 contentID];
-  v5 = [(NSMutableDictionary *)contentIDToTask objectForKeyedSubscript:v4];
+  contentID = [item contentID];
+  v5 = [(NSMutableDictionary *)contentIDToTask objectForKeyedSubscript:contentID];
 
   if (v5)
   {
-    v6 = [v5 future];
-    v7 = [v6 isFinished];
+    future = [v5 future];
+    isFinished = [future isFinished];
 
-    if (v7)
+    if (isFinished)
     {
       v8 = 1;
     }
@@ -697,91 +697,91 @@ void __65__MessageContentItemsHelper_updateDragItemProvider_forElementID___block
   return v8;
 }
 
-- (void)setDisplayState:(int64_t)a3 forContentItem:(id)a4
+- (void)setDisplayState:(int64_t)state forContentItem:(id)item
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(MessageContentItemsHelper *)self webView];
-  v8 = [v6 contentID];
-  v13[0] = v8;
-  v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  itemCopy = item;
+  webView = [(MessageContentItemsHelper *)self webView];
+  contentID = [itemCopy contentID];
+  v13[0] = contentID;
+  v9 = [MEMORY[0x277CCABB0] numberWithInteger:state];
   v13[1] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
-  v11 = [v7 mcv_stringFromJavaScriptMethod:@"set_state_for_attachment_cid" arguments:v10];
+  v11 = [webView mcv_stringFromJavaScriptMethod:@"set_state_for_attachment_cid" arguments:v10];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateProgressFraction:(id)a3 forContentItem:(id)a4
+- (void)_updateProgressFraction:(id)fraction forContentItem:(id)item
 {
-  v10 = a3;
-  v6 = a4;
-  [v10 fractionCompleted];
-  [(MessageContentItemsHelper *)self setPercentCompleted:v6 forContentItem:?];
-  v7 = [v6 mailDropMetadata];
+  fractionCopy = fraction;
+  itemCopy = item;
+  [fractionCopy fractionCompleted];
+  [(MessageContentItemsHelper *)self setPercentCompleted:itemCopy forContentItem:?];
+  mailDropMetadata = [itemCopy mailDropMetadata];
 
-  if (v7)
+  if (mailDropMetadata)
   {
-    if ([(MessageContentItemsHelper *)self displayStateForContentItem:v6]== 3)
+    if ([(MessageContentItemsHelper *)self displayStateForContentItem:itemCopy]== 3)
     {
-      v8 = [(MessageContentItemsHelper *)self maildropProgressHandler];
+      maildropProgressHandler = [(MessageContentItemsHelper *)self maildropProgressHandler];
 
-      if (v8)
+      if (maildropProgressHandler)
       {
-        v9 = [(MessageContentItemsHelper *)self maildropProgressHandler];
+        maildropProgressHandler2 = [(MessageContentItemsHelper *)self maildropProgressHandler];
         [(NSProgress *)self->_totalMailDropProgress fractionCompleted];
-        v9[2](v9, 3);
+        maildropProgressHandler2[2](maildropProgressHandler2, 3);
       }
     }
   }
 }
 
-- (void)setPercentCompleted:(double)a3 forContentItem:(id)a4
+- (void)setPercentCompleted:(double)completed forContentItem:(id)item
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(MessageContentItemsHelper *)self webView];
-  v8 = [v6 contentID];
-  v13[0] = v8;
-  v9 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  itemCopy = item;
+  webView = [(MessageContentItemsHelper *)self webView];
+  contentID = [itemCopy contentID];
+  v13[0] = contentID;
+  v9 = [MEMORY[0x277CCABB0] numberWithDouble:completed];
   v13[1] = v9;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
-  v11 = [v7 mcv_stringFromJavaScriptMethod:@"set_progress_for_attachment_cid" arguments:v10];
+  v11 = [webView mcv_stringFromJavaScriptMethod:@"set_progress_for_attachment_cid" arguments:v10];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)inlineImageFinishedDownloading:(id)a3
+- (void)inlineImageFinishedDownloading:(id)downloading
 {
   v15[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 contentID];
-  if (([(NSMutableSet *)self->_inlinedImageContentIDs containsObject:v5]& 1) == 0)
+  downloadingCopy = downloading;
+  contentID = [downloadingCopy contentID];
+  if (([(NSMutableSet *)self->_inlinedImageContentIDs containsObject:contentID]& 1) == 0)
   {
-    [(NSMutableSet *)self->_inlinedImageContentIDs addObject:v5];
-    v6 = [v4 contentID];
+    [(NSMutableSet *)self->_inlinedImageContentIDs addObject:contentID];
+    contentID2 = [downloadingCopy contentID];
     v7 = MFCreateURLForContentID();
 
-    v8 = [v4 type];
-    v9 = _markupForInlineAttachment(v4, [v8 conformsToType:*MEMORY[0x277CE1E08]]);
+    type = [downloadingCopy type];
+    v9 = _markupForInlineAttachment(downloadingCopy, [type conformsToType:*MEMORY[0x277CE1E08]]);
 
-    v10 = [(MessageContentItemsHelper *)self webView];
-    v11 = [v7 absoluteString];
-    v15[1] = v11;
+    webView = [(MessageContentItemsHelper *)self webView];
+    absoluteString = [v7 absoluteString];
+    v15[1] = absoluteString;
     v15[2] = v9;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:3];
-    v13 = [v10 mcv_stringFromJavaScriptMethod:@"imageAttachmentNodeFinishedDownloading" arguments:v12];
+    v13 = [webView mcv_stringFromJavaScriptMethod:@"imageAttachmentNodeFinishedDownloading" arguments:v12];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)startDownloadForContentItem:(id)a3 userInitiated:(BOOL)a4
+- (id)startDownloadForContentItem:(id)item userInitiated:(BOOL)initiated
 {
-  v4 = a4;
+  initiatedCopy = initiated;
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v4)
+  itemCopy = item;
+  if (initiatedCopy)
   {
     v7 = 2;
   }
@@ -793,17 +793,17 @@ void __65__MessageContentItemsHelper_updateDragItemProvider_forElementID___block
 
   v44 = 0;
   v43 = 0;
-  v8 = [(MessageContentItemsHelper *)self _futureForContentItem:v6 networkUsage:v7 invokerID:@"startDownloadForContentItem" previouslyInvoked:&v44 progress:&v43];
+  v8 = [(MessageContentItemsHelper *)self _futureForContentItem:itemCopy networkUsage:v7 invokerID:@"startDownloadForContentItem" previouslyInvoked:&v44 progress:&v43];
   v9 = v43;
-  v10 = [v6 dataTransferByteCount];
+  dataTransferByteCount = [itemCopy dataTransferByteCount];
   if (v44 == 1)
   {
     v11 = +[MessageContentItemsHelper log];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v6 contentID];
+      contentID = [itemCopy contentID];
       *buf = 138412546;
-      v46 = v12;
+      v46 = contentID;
       v47 = 2112;
       v48 = v9;
       _os_log_impl(&dword_2149C9000, v11, OS_LOG_TYPE_DEFAULT, "Stopped downloading contentItem %@ since downloading was previously invoked with a progress of %@", buf, 0x16u);
@@ -812,10 +812,10 @@ void __65__MessageContentItemsHelper_updateDragItemProvider_forElementID___block
 
   else
   {
-    v13 = v10;
-    if (([v6 isAvailableLocally] & 1) == 0)
+    v13 = dataTransferByteCount;
+    if (([itemCopy isAvailableLocally] & 1) == 0)
     {
-      [(MessageContentItemsHelper *)self setDisplayState:3 forContentItem:v6];
+      [(MessageContentItemsHelper *)self setDisplayState:3 forContentItem:itemCopy];
       v14 = NSStringFromSelector(sel_fractionCompleted);
       v40[0] = MEMORY[0x277D85DD0];
       v40[1] = 3221225472;
@@ -823,7 +823,7 @@ void __65__MessageContentItemsHelper_updateDragItemProvider_forElementID___block
       v40[3] = &unk_278181698;
       v40[4] = self;
       v41 = v9;
-      v42 = v6;
+      v42 = itemCopy;
       v15 = [v41 ef_observeKeyPath:v14 options:1 autoCancelToken:0 usingBlock:v40];
 
       v38[0] = MEMORY[0x277D85DD0];
@@ -835,38 +835,38 @@ void __65__MessageContentItemsHelper_updateDragItemProvider_forElementID___block
       [v8 always:v38];
     }
 
-    v17 = [v6 mailDropMetadata];
-    v18 = [v17 isPhotoArchive];
+    mailDropMetadata = [itemCopy mailDropMetadata];
+    isPhotoArchive = [mailDropMetadata isPhotoArchive];
 
-    v19 = [MEMORY[0x277D071B8] mainThreadScheduler];
+    mainThreadScheduler = [MEMORY[0x277D071B8] mainThreadScheduler];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __71__MessageContentItemsHelper_startDownloadForContentItem_userInitiated___block_invoke_4;
     v34[3] = &unk_278181738;
-    v36 = v18;
+    v36 = isPhotoArchive;
     v34[4] = self;
-    v20 = v6;
+    v20 = itemCopy;
     v35 = v20;
-    v37 = v4;
-    [v8 onScheduler:v19 addSuccessBlock:v34];
+    v37 = initiatedCopy;
+    [v8 onScheduler:mainThreadScheduler addSuccessBlock:v34];
 
-    v21 = [MEMORY[0x277D071B8] mainThreadScheduler];
+    mainThreadScheduler2 = [MEMORY[0x277D071B8] mainThreadScheduler];
     v27 = MEMORY[0x277D85DD0];
     v28 = 3221225472;
     v29 = __71__MessageContentItemsHelper_startDownloadForContentItem_userInitiated___block_invoke_151;
     v30 = &unk_278181760;
     v22 = v20;
     v31 = v22;
-    v32 = self;
+    selfCopy = self;
     v33 = v13;
-    [v8 onScheduler:v21 addFailureBlock:&v27];
+    [v8 onScheduler:mainThreadScheduler2 addFailureBlock:&v27];
 
     v23 = [(MessageContentItemsHelper *)self representationHandler:v27];
     [v23 didStartDownloadForContentItemWithProgress:v9];
 
-    v24 = [v22 mailDropMetadata];
+    mailDropMetadata2 = [v22 mailDropMetadata];
 
-    if (v24)
+    if (mailDropMetadata2)
     {
       self->_totalUnstartedMailDropDownloadSize -= v13;
       [(NSProgress *)self->_totalMailDropProgress addChild:v9 withPendingUnitCount:v13];
@@ -1145,21 +1145,21 @@ void __71__MessageContentItemsHelper_startDownloadForContentItem_userInitiated__
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updatePDFContentItemIfNeeded:(void *)a3 contentRepresentation:
+- (void)updatePDFContentItemIfNeeded:(void *)needed contentRepresentation:
 {
   v23 = *MEMORY[0x277D85DE8];
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  neededCopy = needed;
+  if (self)
   {
-    v7 = *(a1 + 32);
-    v8 = [v5 contentID];
-    LODWORD(v7) = [v7 containsObject:v8];
+    v7 = *(self + 32);
+    contentID = [v5 contentID];
+    LODWORD(v7) = [v7 containsObject:contentID];
 
     if (v7)
     {
-      v9 = +[MessageContentItemsHelper log];
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      type = +[MessageContentItemsHelper log];
+      if (os_log_type_enabled(type, OS_LOG_TYPE_DEFAULT))
       {
         [v5 ef_publicDescription];
         objc_claimAutoreleasedReturnValue();
@@ -1169,23 +1169,23 @@ void __71__MessageContentItemsHelper_startDownloadForContentItem_userInitiated__
 
     else
     {
-      v9 = [v5 type];
-      if (([v9 conformsToType:*MEMORY[0x277CE1E08]]& 1) != 0)
+      type = [v5 type];
+      if (([type conformsToType:*MEMORY[0x277CE1E08]]& 1) != 0)
       {
         v10 = MEMORY[0x277CBEA90];
-        v11 = [v6 contentURL];
+        contentURL = [neededCopy contentURL];
         v21 = 0;
-        v12 = [v10 dataWithContentsOfURL:v11 options:3 error:&v21];
+        v12 = [v10 dataWithContentsOfURL:contentURL options:3 error:&v21];
         v13 = v21;
 
         if (v12)
         {
           v14 = _markupForInlineAttachment(v5, 1);
           v15 = objc_alloc(MEMORY[0x277D259E8]);
-          v16 = [v5 contentID];
-          v17 = [v15 initWithContentID:v16 uttype:v9 data:v12 additionalMarkup:v14];
+          contentID2 = [v5 contentID];
+          v17 = [v15 initWithContentID:contentID2 uttype:type data:v12 additionalMarkup:v14];
 
-          [*(a1 + 72) updateToInlinePDFAttachmentIfNeeded:v17];
+          [*(self + 72) updateToInlinePDFAttachmentIfNeeded:v17];
         }
 
         else
@@ -1193,9 +1193,9 @@ void __71__MessageContentItemsHelper_startDownloadForContentItem_userInitiated__
           v14 = +[MessageContentItemsHelper log];
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
           {
-            v18 = [v13 ef_publicDescription];
-            v19 = [v5 ef_publicDescription];
-            [(MessageContentItemsHelper *)v18 updatePDFContentItemIfNeeded:v19 contentRepresentation:buf, v14];
+            ef_publicDescription = [v13 ef_publicDescription];
+            ef_publicDescription2 = [v5 ef_publicDescription];
+            [(MessageContentItemsHelper *)ef_publicDescription updatePDFContentItemIfNeeded:ef_publicDescription2 contentRepresentation:buf, v14];
           }
         }
       }
@@ -1261,8 +1261,8 @@ void __71__MessageContentItemsHelper_startDownloadForContentItem_userInitiated__
         v7 = *(*(&v12 + 1) + 8 * i);
         if (([v7 isAvailableLocally] & 1) == 0)
         {
-          v8 = [v7 mailDropMetadata];
-          v9 = v8 == 0;
+          mailDropMetadata = [v7 mailDropMetadata];
+          v9 = mailDropMetadata == 0;
 
           if (!v9)
           {
@@ -1280,16 +1280,16 @@ void __71__MessageContentItemsHelper_startDownloadForContentItem_userInitiated__
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveContentItem:(id)a3 toDestination:(int64_t)a4
+- (void)saveContentItem:(id)item toDestination:(int64_t)destination
 {
-  v5 = [(MessageContentItemsHelper *)self _futureForContentItem:a3 networkUsage:0 invokerID:0 previouslyInvoked:0 progress:0];
-  v6 = [MEMORY[0x277D071B8] globalAsyncScheduler];
+  v5 = [(MessageContentItemsHelper *)self _futureForContentItem:item networkUsage:0 invokerID:0 previouslyInvoked:0 progress:0];
+  globalAsyncScheduler = [MEMORY[0x277D071B8] globalAsyncScheduler];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__MessageContentItemsHelper_saveContentItem_toDestination___block_invoke;
   v7[3] = &__block_descriptor_40_e33_v16__0__EMContentRepresentation_8l;
-  v7[4] = a4;
-  [v5 onScheduler:v6 addSuccessBlock:v7];
+  v7[4] = destination;
+  [v5 onScheduler:globalAsyncScheduler addSuccessBlock:v7];
 }
 
 void __59__MessageContentItemsHelper_saveContentItem_toDestination___block_invoke(uint64_t a1, void *a2)

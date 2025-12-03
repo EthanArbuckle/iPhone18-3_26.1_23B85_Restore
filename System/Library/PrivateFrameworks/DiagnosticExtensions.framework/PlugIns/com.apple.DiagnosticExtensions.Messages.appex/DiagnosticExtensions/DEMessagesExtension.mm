@@ -1,12 +1,12 @@
 @interface DEMessagesExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation DEMessagesExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   v27[0] = @"collectionFlags";
   v4 = [NSNumber numberWithInteger:1023];
   v28[0] = v4;

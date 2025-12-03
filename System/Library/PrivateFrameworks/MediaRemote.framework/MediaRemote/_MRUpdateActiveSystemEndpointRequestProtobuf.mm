@@ -1,18 +1,18 @@
 @interface _MRUpdateActiveSystemEndpointRequestProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsChangeType:(id)a3;
+- (int)StringAsChangeType:(id)type;
 - (int)changeType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasChangeType:(BOOL)a3;
-- (void)setHasDemoteWhenSyncingToCompanion:(BOOL)a3;
-- (void)setHasPairedDeviceSync:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasChangeType:(BOOL)type;
+- (void)setHasDemoteWhenSyncingToCompanion:(BOOL)companion;
+- (void)setHasPairedDeviceSync:(BOOL)sync;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRUpdateActiveSystemEndpointRequestProtobuf
@@ -30,9 +30,9 @@
   }
 }
 
-- (void)setHasChangeType:(BOOL)a3
+- (void)setHasChangeType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -45,25 +45,25 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsChangeType:(id)a3
+- (int)StringAsChangeType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Immediate"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Immediate"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Deferrable"];
+    v4 = [typeCopy isEqualToString:@"Deferrable"];
   }
 
   return v4;
 }
 
-- (void)setHasPairedDeviceSync:(BOOL)a3
+- (void)setHasPairedDeviceSync:(BOOL)sync
 {
-  if (a3)
+  if (sync)
   {
     v3 = 16;
   }
@@ -76,9 +76,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -91,9 +91,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasDemoteWhenSyncingToCompanion:(BOOL)a3
+- (void)setHasDemoteWhenSyncingToCompanion:(BOOL)companion
 {
-  if (a3)
+  if (companion)
   {
     v3 = 8;
   }
@@ -112,20 +112,20 @@
   v8.receiver = self;
   v8.super_class = _MRUpdateActiveSystemEndpointRequestProtobuf;
   v4 = [(_MRUpdateActiveSystemEndpointRequestProtobuf *)&v8 description];
-  v5 = [(_MRUpdateActiveSystemEndpointRequestProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRUpdateActiveSystemEndpointRequestProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   outputDeviceUID = self->_outputDeviceUID;
   if (outputDeviceUID)
   {
-    [v3 setObject:outputDeviceUID forKey:@"outputDeviceUID"];
+    [dictionary setObject:outputDeviceUID forKey:@"outputDeviceUID"];
   }
 
   if ((*&self->_has & 4) != 0)
@@ -218,27 +218,27 @@ LABEL_17:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v11 = v4;
+  toCopy = to;
+  v11 = toCopy;
   if (self->_outputDeviceUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     changeType = self->_changeType;
     PBDataWriterWriteInt32Field();
-    v4 = v11;
+    toCopy = v11;
   }
 
   if (self->_reason)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 
   has = self->_has;
@@ -246,7 +246,7 @@ LABEL_17:
   {
     pairedDeviceSync = self->_pairedDeviceSync;
     PBDataWriterWriteBOOLField();
-    v4 = v11;
+    toCopy = v11;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -267,7 +267,7 @@ LABEL_9:
 
   type = self->_type;
   PBDataWriterWriteUint64Field();
-  v4 = v11;
+  toCopy = v11;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -283,50 +283,50 @@ LABEL_10:
 LABEL_19:
   disableDuration = self->_disableDuration;
   PBDataWriterWriteDoubleField();
-  v4 = v11;
+  toCopy = v11;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_11:
     demoteWhenSyncingToCompanion = self->_demoteWhenSyncingToCompanion;
     PBDataWriterWriteBOOLField();
-    v4 = v11;
+    toCopy = v11;
   }
 
 LABEL_12:
   if (self->_previousOutputDeviceUID)
   {
     PBDataWriterWriteStringField();
-    v4 = v11;
+    toCopy = v11;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_outputDeviceUID)
   {
-    [v4 setOutputDeviceUID:?];
-    v4 = v6;
+    [toCopy setOutputDeviceUID:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 6) = self->_changeType;
-    *(v4 + 60) |= 4u;
+    *(toCopy + 6) = self->_changeType;
+    *(toCopy + 60) |= 4u;
   }
 
   if (self->_reason)
   {
     [v6 setReason:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    *(v4 + 57) = self->_pairedDeviceSync;
-    *(v4 + 60) |= 0x10u;
+    *(toCopy + 57) = self->_pairedDeviceSync;
+    *(toCopy + 60) |= 0x10u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -345,8 +345,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 2) = self->_type;
-  *(v4 + 60) |= 2u;
+  *(toCopy + 2) = self->_type;
+  *(toCopy + 60) |= 2u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -360,27 +360,27 @@ LABEL_10:
   }
 
 LABEL_19:
-  *(v4 + 1) = *&self->_disableDuration;
-  *(v4 + 60) |= 1u;
+  *(toCopy + 1) = *&self->_disableDuration;
+  *(toCopy + 60) |= 1u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_11:
-    *(v4 + 56) = self->_demoteWhenSyncingToCompanion;
-    *(v4 + 60) |= 8u;
+    *(toCopy + 56) = self->_demoteWhenSyncingToCompanion;
+    *(toCopy + 60) |= 8u;
   }
 
 LABEL_12:
   if (self->_previousOutputDeviceUID)
   {
     [v6 setPreviousOutputDeviceUID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_outputDeviceUID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_outputDeviceUID copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -390,7 +390,7 @@ LABEL_12:
     *(v5 + 60) |= 4u;
   }
 
-  v8 = [(NSString *)self->_reason copyWithZone:a3];
+  v8 = [(NSString *)self->_reason copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
@@ -442,23 +442,23 @@ LABEL_7:
   }
 
 LABEL_8:
-  v11 = [(NSString *)self->_previousOutputDeviceUID copyWithZone:a3];
+  v11 = [(NSString *)self->_previousOutputDeviceUID copyWithZone:zone];
   v12 = *(v5 + 40);
   *(v5 + 40) = v11;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
   outputDeviceUID = self->_outputDeviceUID;
-  if (outputDeviceUID | *(v4 + 4))
+  if (outputDeviceUID | *(equalCopy + 4))
   {
     if (![(NSString *)outputDeviceUID isEqual:?])
     {
@@ -467,22 +467,22 @@ LABEL_8:
   }
 
   has = self->_has;
-  v7 = *(v4 + 60);
+  v7 = *(equalCopy + 60);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 60) & 4) == 0 || self->_changeType != *(v4 + 6))
+    if ((*(equalCopy + 60) & 4) == 0 || self->_changeType != *(equalCopy + 6))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 60) & 4) != 0)
+  else if ((*(equalCopy + 60) & 4) != 0)
   {
     goto LABEL_35;
   }
 
   reason = self->_reason;
-  if (reason | *(v4 + 6))
+  if (reason | *(equalCopy + 6))
   {
     if (![(NSString *)reason isEqual:?])
     {
@@ -492,63 +492,63 @@ LABEL_8:
     has = self->_has;
   }
 
-  v9 = *(v4 + 60);
+  v9 = *(equalCopy + 60);
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 60) & 0x10) == 0)
+    if ((*(equalCopy + 60) & 0x10) == 0)
     {
       goto LABEL_35;
     }
 
-    v10 = *(v4 + 57);
+    v10 = *(equalCopy + 57);
     if (self->_pairedDeviceSync)
     {
-      if ((*(v4 + 57) & 1) == 0)
+      if ((*(equalCopy + 57) & 1) == 0)
       {
         goto LABEL_35;
       }
     }
 
-    else if (*(v4 + 57))
+    else if (*(equalCopy + 57))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 60) & 0x10) != 0)
+  else if ((*(equalCopy + 60) & 0x10) != 0)
   {
     goto LABEL_35;
   }
 
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0 || self->_type != *(v4 + 2))
+    if ((*(equalCopy + 60) & 2) == 0 || self->_type != *(equalCopy + 2))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 60) & 2) != 0)
+  else if ((*(equalCopy + 60) & 2) != 0)
   {
     goto LABEL_35;
   }
 
   if (has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_disableDuration != *(v4 + 1))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_disableDuration != *(equalCopy + 1))
     {
       goto LABEL_35;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
     goto LABEL_35;
   }
 
   if ((has & 8) == 0)
   {
-    if ((*(v4 + 60) & 8) == 0)
+    if ((*(equalCopy + 60) & 8) == 0)
     {
       goto LABEL_32;
     }
@@ -558,28 +558,28 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  if ((*(v4 + 60) & 8) == 0)
+  if ((*(equalCopy + 60) & 8) == 0)
   {
     goto LABEL_35;
   }
 
-  v14 = *(v4 + 56);
+  v14 = *(equalCopy + 56);
   if (self->_demoteWhenSyncingToCompanion)
   {
-    if ((*(v4 + 56) & 1) == 0)
+    if ((*(equalCopy + 56) & 1) == 0)
     {
       goto LABEL_35;
     }
   }
 
-  else if (*(v4 + 56))
+  else if (*(equalCopy + 56))
   {
     goto LABEL_35;
   }
 
 LABEL_32:
   previousOutputDeviceUID = self->_previousOutputDeviceUID;
-  if (previousOutputDeviceUID | *(v4 + 5))
+  if (previousOutputDeviceUID | *(equalCopy + 5))
   {
     v12 = [(NSString *)previousOutputDeviceUID isEqual:?];
   }
@@ -681,34 +681,34 @@ LABEL_14:
   return v4 ^ v3 ^ v5 ^ v8 ^ v9 ^ v13 ^ v14 ^ [(NSString *)self->_previousOutputDeviceUID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 4))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(_MRUpdateActiveSystemEndpointRequestProtobuf *)self setOutputDeviceUID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 60) & 4) != 0)
+  if ((*(fromCopy + 60) & 4) != 0)
   {
-    self->_changeType = *(v4 + 6);
+    self->_changeType = *(fromCopy + 6);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(_MRUpdateActiveSystemEndpointRequestProtobuf *)self setReason:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 0x10) != 0)
   {
-    self->_pairedDeviceSync = *(v4 + 57);
+    self->_pairedDeviceSync = *(fromCopy + 57);
     *&self->_has |= 0x10u;
-    v5 = *(v4 + 60);
+    v5 = *(fromCopy + 60);
     if ((v5 & 2) == 0)
     {
 LABEL_9:
@@ -721,14 +721,14 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 60) & 2) == 0)
+  else if ((*(fromCopy + 60) & 2) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_type = *(v4 + 2);
+  self->_type = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if ((v5 & 1) == 0)
   {
 LABEL_10:
@@ -741,20 +741,20 @@ LABEL_10:
   }
 
 LABEL_19:
-  self->_disableDuration = *(v4 + 1);
+  self->_disableDuration = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 60) & 8) != 0)
+  if ((*(fromCopy + 60) & 8) != 0)
   {
 LABEL_11:
-    self->_demoteWhenSyncingToCompanion = *(v4 + 56);
+    self->_demoteWhenSyncingToCompanion = *(fromCopy + 56);
     *&self->_has |= 8u;
   }
 
 LABEL_12:
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(_MRUpdateActiveSystemEndpointRequestProtobuf *)self setPreviousOutputDeviceUID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 

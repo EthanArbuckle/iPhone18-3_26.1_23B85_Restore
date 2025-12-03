@@ -1,22 +1,22 @@
 @interface ICFolderComposerViewController
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4;
-- (ICFolderComposerViewController)initWithAccount:(id)a3 folderTitle:(id)a4 smartFolderQuery:(id)a5 showFilters:(BOOL)a6 completion:(id)a7;
-- (ICFolderComposerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)doneActionWithSender:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path;
+- (ICFolderComposerViewController)initWithAccount:(id)account folderTitle:(id)title smartFolderQuery:(id)query showFilters:(BOOL)filters completion:(id)completion;
+- (ICFolderComposerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)doneActionWithSender:(id)sender;
+- (void)scrollViewWillBeginDragging:(id)dragging;
 - (void)viewDidLoad;
 @end
 
 @implementation ICFolderComposerViewController
 
-- (ICFolderComposerViewController)initWithAccount:(id)a3 folderTitle:(id)a4 smartFolderQuery:(id)a5 showFilters:(BOOL)a6 completion:(id)a7
+- (ICFolderComposerViewController)initWithAccount:(id)account folderTitle:(id)title smartFolderQuery:(id)query showFilters:(BOOL)filters completion:(id)completion
 {
-  v11 = _Block_copy(a7);
-  if (a4)
+  v11 = _Block_copy(completion);
+  if (title)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    title = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v13 = v12;
   }
 
@@ -27,32 +27,32 @@
 
   v14 = swift_allocObject();
   *(v14 + 16) = v11;
-  v15 = a3;
-  v16 = a5;
-  return sub_100333540(v15, a4, v13, a5, a6, sub_100335564, v14);
+  accountCopy = account;
+  queryCopy = query;
+  return sub_100333540(accountCopy, title, v13, query, filters, sub_100335564, v14);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100334018();
 }
 
-- (void)doneActionWithSender:(id)a3
+- (void)doneActionWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
+  senderCopy = sender;
+  selfCopy = self;
   sub_1003351AC();
 }
 
-- (BOOL)collectionView:(id)a3 shouldSelectItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldSelectItemAtIndexPath:(id)path
 {
   v5 = type metadata accessor for IndexPath();
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
   v8 = &v12[-((v7 + 15) & 0xFFFFFFFFFFFFFFF0)];
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   v10 = sub_10017EB60();
   dispatch thunk of UICollectionViewDiffableDataSource.itemIdentifier(for:)();
 
@@ -60,45 +60,45 @@
   return v12[15] & 1;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = type metadata accessor for IndexPath();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v10 = a3;
-  v11 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_1003352B0();
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
   __chkstk_darwin(v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
-  sub_1003353FC(v13);
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
+  sub_1003353FC(cellCopy);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (ICFolderComposerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ICFolderComposerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v5 = self;
+  selfCopy = self;
   v3 = sub_10017E644();
   if (v3)
   {

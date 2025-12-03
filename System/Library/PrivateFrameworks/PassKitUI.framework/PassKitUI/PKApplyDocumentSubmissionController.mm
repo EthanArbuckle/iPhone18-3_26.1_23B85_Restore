@@ -1,5 +1,5 @@
 @interface PKApplyDocumentSubmissionController
-- (PKApplyDocumentSubmissionController)initWithController:(id)a3 setupDelegate:(id)a4 documentPage:(id)a5;
+- (PKApplyDocumentSubmissionController)initWithController:(id)controller setupDelegate:(id)delegate documentPage:(id)page;
 - (id)nextViewController;
 - (void)_cancelledConfirmed;
 - (void)_featureApplicationUpdated;
@@ -12,27 +12,27 @@
 
 @implementation PKApplyDocumentSubmissionController
 
-- (PKApplyDocumentSubmissionController)initWithController:(id)a3 setupDelegate:(id)a4 documentPage:(id)a5
+- (PKApplyDocumentSubmissionController)initWithController:(id)controller setupDelegate:(id)delegate documentPage:(id)page
 {
-  v9 = a3;
-  obj = a5;
-  v10 = a5;
-  v11 = a4;
-  v12 = [v9 context];
-  v13 = [v10 acceptableDocuments];
-  v14 = [v9 featureIdentifier];
-  v15 = [v9 localizationBundle];
-  v16 = [v9 preferredLanguage];
+  controllerCopy = controller;
+  obj = page;
+  pageCopy = page;
+  delegateCopy = delegate;
+  context = [controllerCopy context];
+  acceptableDocuments = [pageCopy acceptableDocuments];
+  featureIdentifier = [controllerCopy featureIdentifier];
+  localizationBundle = [controllerCopy localizationBundle];
+  preferredLanguage = [controllerCopy preferredLanguage];
   v21.receiver = self;
   v21.super_class = PKApplyDocumentSubmissionController;
-  v17 = [(PKPaymentDocumentSubmissionController *)&v21 initWithSetupDelegate:v11 context:v12 acceptableDocuments:v13 featureIdentifier:v14 localizationBundle:v15 preferredLanguage:v16];
+  v17 = [(PKPaymentDocumentSubmissionController *)&v21 initWithSetupDelegate:delegateCopy context:context acceptableDocuments:acceptableDocuments featureIdentifier:featureIdentifier localizationBundle:localizationBundle preferredLanguage:preferredLanguage];
 
   if (v17)
   {
-    objc_storeStrong(&v17->_applyController, a3);
+    objc_storeStrong(&v17->_applyController, controller);
     objc_storeStrong(&v17->_documentPage, obj);
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v17 selector:sel__featureApplicationUpdated name:@"PKApplyControllerUpdatedNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v17 selector:sel__featureApplicationUpdated name:@"PKApplyControllerUpdatedNotification" object:0];
   }
 
   return v17;
@@ -48,24 +48,24 @@
 
 - (void)removeApplicationUpdateObserver
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:@"PKApplyControllerUpdatedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:@"PKApplyControllerUpdatedNotification" object:0];
 }
 
 - (id)nextViewController
 {
-  v3 = self->_nextViewController;
+  nextViewController = self->_nextViewController;
   nextViewController = self->_nextViewController;
   self->_nextViewController = 0;
 
-  if (!v3)
+  if (!nextViewController)
   {
     v6.receiver = self;
     v6.super_class = PKApplyDocumentSubmissionController;
-    v3 = [(PKPaymentDocumentSubmissionController *)&v6 nextViewController];
+    nextViewController = [(PKPaymentDocumentSubmissionController *)&v6 nextViewController];
   }
 
-  return v3;
+  return nextViewController;
 }
 
 - (void)uploadID
@@ -77,16 +77,16 @@
     objc_initWeak(&location, self);
     applyController = self->_applyController;
     documentPage = self->_documentPage;
-    v5 = [(PKPaymentDocumentSubmissionController *)self selectedDocument];
-    v6 = [(PKPaymentDocumentSubmissionController *)self frontID];
-    v7 = [(PKPaymentDocumentSubmissionController *)self backID];
+    selectedDocument = [(PKPaymentDocumentSubmissionController *)self selectedDocument];
+    frontID = [(PKPaymentDocumentSubmissionController *)self frontID];
+    backID = [(PKPaymentDocumentSubmissionController *)self backID];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __47__PKApplyDocumentSubmissionController_uploadID__block_invoke;
     v8[3] = &unk_1E801F0A0;
     objc_copyWeak(&v9, &location);
     v8[4] = self;
-    [(PKApplyController *)applyController submitDocumentPage:documentPage selectedDocument:v5 frontImage:v6 backImage:v7 completion:v8];
+    [(PKApplyController *)applyController submitDocumentPage:documentPage selectedDocument:selectedDocument frontImage:frontID backImage:backID completion:v8];
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -196,10 +196,10 @@ void __47__PKApplyDocumentSubmissionController_uploadID__block_invoke(uint64_t a
 {
   if (+[PKBusinessChatController deviceSupportsBusinessChat])
   {
-    v3 = [(PKApplyController *)self->_applyController featureApplication];
-    v4 = [v3 businessChatIdentifier];
+    featureApplication = [(PKApplyController *)self->_applyController featureApplication];
+    businessChatIdentifier = [featureApplication businessChatIdentifier];
 
-    if (v4)
+    if (businessChatIdentifier)
     {
       if (!self->_businessChatController)
       {
@@ -208,7 +208,7 @@ void __47__PKApplyDocumentSubmissionController_uploadID__block_invoke(uint64_t a
         self->_businessChatController = v5;
       }
 
-      v7 = [[PKBuinessChatApplyContext alloc] initWithIdentifier:v4 intent:2];
+      v7 = [[PKBuinessChatApplyContext alloc] initWithIdentifier:businessChatIdentifier intent:2];
       v8 = self->_businessChatController;
       v9[0] = MEMORY[0x1E69E9820];
       v9[1] = 3221225472;
@@ -274,15 +274,15 @@ void __58__PKApplyDocumentSubmissionController_contactApplePressed__block_invoke
       _os_log_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEFAULT, "%@ Application update received presenting next step", buf, 0xCu);
     }
 
-    v10 = [(PKPaymentDocumentSubmissionController *)self delegate];
+    delegate = [(PKPaymentDocumentSubmissionController *)self delegate];
     applyController = self->_applyController;
     v13 = MEMORY[0x1E69E9820];
     v14 = 3221225472;
     v15 = __65__PKApplyDocumentSubmissionController__featureApplicationUpdated__block_invoke;
     v16 = &unk_1E8010A10;
-    v17 = v10;
-    v18 = self;
-    v4 = v10;
+    v17 = delegate;
+    selfCopy = self;
+    v4 = delegate;
     v12 = [(PKApplyController *)applyController applicationUpdatedAlertControllerWithHandler:&v13];
     [v4 presentViewController:v12 animated:1 completion:0, v13, v14, v15, v16];
   }
@@ -343,11 +343,11 @@ void __65__PKApplyDocumentSubmissionController__featureApplicationUpdated__block
     aBlock[3] = &unk_1E8010970;
     aBlock[4] = self;
     v3 = _Block_copy(aBlock);
-    v4 = [(PKPaymentDocumentSubmissionController *)self delegate];
+    delegate = [(PKPaymentDocumentSubmissionController *)self delegate];
     v5 = [(PKApplyController *)self->_applyController cancelAlertWithContinueAction:v3];
     if (v5)
     {
-      [v4 presentViewController:v5 animated:1 completion:0];
+      [delegate presentViewController:v5 animated:1 completion:0];
     }
 
     else

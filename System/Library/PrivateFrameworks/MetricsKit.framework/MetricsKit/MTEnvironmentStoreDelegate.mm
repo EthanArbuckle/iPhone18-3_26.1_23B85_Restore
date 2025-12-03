@@ -21,8 +21,8 @@
 
 - (id)dsId
 {
-  v2 = [(MTEnvironmentStoreDelegate *)self _activeItunesAccount];
-  v3 = [v2 thenWithBlock:&__block_literal_global_15];
+  _activeItunesAccount = [(MTEnvironmentStoreDelegate *)self _activeItunesAccount];
+  v3 = [_activeItunesAccount thenWithBlock:&__block_literal_global_15];
 
   return v3;
 }
@@ -37,8 +37,8 @@ id __34__MTEnvironmentStoreDelegate_dsId__block_invoke(uint64_t a1, void *a2)
 
 - (id)storeFrontHeader
 {
-  v2 = [(MTEnvironmentStoreDelegate *)self _activeItunesAccount];
-  v3 = [v2 thenWithBlock:&__block_literal_global_5];
+  _activeItunesAccount = [(MTEnvironmentStoreDelegate *)self _activeItunesAccount];
+  v3 = [_activeItunesAccount thenWithBlock:&__block_literal_global_5];
 
   return v3;
 }
@@ -62,13 +62,13 @@ id __39__MTEnvironmentStoreDelegate_userAgent__block_invoke()
 
 - (id)_connectionType
 {
-  v2 = [MEMORY[0x277D7FD08] sharedInstance];
-  v3 = [v2 connectionTypeHeader];
+  mEMORY[0x277D7FD08] = [MEMORY[0x277D7FD08] sharedInstance];
+  connectionTypeHeader = [mEMORY[0x277D7FD08] connectionTypeHeader];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = connectionTypeHeader;
   }
 
   else

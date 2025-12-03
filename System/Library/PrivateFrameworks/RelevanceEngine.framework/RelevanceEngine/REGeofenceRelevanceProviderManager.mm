@@ -1,8 +1,8 @@
 @interface REGeofenceRelevanceProviderManager
 + (id)_dependencyClasses;
 + (id)_features;
-- (id)_valueForProvider:(id)a3 context:(id)a4 feature:(id)a5;
-- (int)_queryRevokableStatusForProvider:(id)a3;
+- (id)_valueForProvider:(id)provider context:(id)context feature:(id)feature;
+- (int)_queryRevokableStatusForProvider:(id)provider;
 @end
 
 @implementation REGeofenceRelevanceProviderManager
@@ -27,21 +27,21 @@
   return [v2 setWithObject:v3];
 }
 
-- (int)_queryRevokableStatusForProvider:(id)a3
+- (int)_queryRevokableStatusForProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   objc_initWeak(&location, self);
   v5 = +[(RESingleton *)RELocationAuthorizationStatusCache];
-  v6 = [v4 bundleIdentifier];
-  v7 = [(RERelevanceProviderManager *)self _manager_queue];
+  bundleIdentifier = [providerCopy bundleIdentifier];
+  _manager_queue = [(RERelevanceProviderManager *)self _manager_queue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __71__REGeofenceRelevanceProviderManager__queryRevokableStatusForProvider___block_invoke;
   v11[3] = &unk_2785FAEC0;
   objc_copyWeak(&v13, &location);
-  v8 = v4;
+  v8 = providerCopy;
   v12 = v8;
-  v9 = [v5 cachedAuthorizationStatusForBundleIdentifier:v6 invalidationUpdateQueue:v7 withCallback:v11];
+  v9 = [v5 cachedAuthorizationStatusForBundleIdentifier:bundleIdentifier invalidationUpdateQueue:_manager_queue withCallback:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
@@ -56,43 +56,43 @@ void __71__REGeofenceRelevanceProviderManager__queryRevokableStatusForProvider__
   [WeakRetained _scheduleUpdate:v2];
 }
 
-- (id)_valueForProvider:(id)a3 context:(id)a4 feature:(id)a5
+- (id)_valueForProvider:(id)provider context:(id)context feature:(id)feature
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [a4 attributeForKey:@"RETrainingContextLocationKey"];
+  providerCopy = provider;
+  currentLocation = [context attributeForKey:@"RETrainingContextLocationKey"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
 LABEL_5:
-    v8 = [(RESharedLocationRelevanceProviderManager *)self currentLocation];
+    currentLocation = [(RESharedLocationRelevanceProviderManager *)self currentLocation];
     goto LABEL_6;
   }
 
-  if (!v8)
+  if (!currentLocation)
   {
     goto LABEL_5;
   }
 
 LABEL_6:
-  v9 = [v7 bundleIdentifier];
+  bundleIdentifier = [providerCopy bundleIdentifier];
 
-  if (!v9 || [(REGeofenceRelevanceProviderManager *)self _queryRevokableStatusForProvider:v7]- 3 < 2)
+  if (!bundleIdentifier || [(REGeofenceRelevanceProviderManager *)self _queryRevokableStatusForProvider:providerCopy]- 3 < 2)
   {
-    v10 = [v7 region];
-    [v10 radius];
+    region = [providerCopy region];
+    [region radius];
     v12 = v11;
     v13 = objc_alloc(MEMORY[0x277CE41F8]);
-    [v10 center];
+    [region center];
     v15 = v14;
-    [v10 center];
+    [region center];
     v16 = [v13 initWithLatitude:v15 longitude:?];
-    [v8 distanceFromLocation:v16];
+    [currentLocation distanceFromLocation:v16];
     v18 = v17;
     if (v17 < v12 + v12)
     {
-      if ([v10 notifyOnEntry])
+      if ([region notifyOnEntry])
       {
         if (v18 > v12)
         {
@@ -109,7 +109,7 @@ LABEL_17:
         goto LABEL_22;
       }
 
-      if ([v10 notifyOnExit])
+      if ([region notifyOnExit])
       {
         if (v18 < v12)
         {
@@ -134,9 +134,9 @@ LABEL_17:
   v20 = RELogForDomain(5);
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
-    v21 = [v7 bundleIdentifier];
+    bundleIdentifier2 = [providerCopy bundleIdentifier];
     v26 = 136315138;
-    v27 = [v21 UTF8String];
+    uTF8String = [bundleIdentifier2 UTF8String];
     _os_log_impl(&dword_22859F000, v20, OS_LOG_TYPE_INFO, "Bundle identifier (%s) lacks geofence permission. Skipping relevance.", &v26, 0xCu);
   }
 

@@ -1,28 +1,28 @@
 @interface ML3ProtoSyncExportSession
-- (ML3ProtoSyncExportSession)initWithLibrary:(id)a3 outputStream:(id)a4 syncType:(int)a5;
-- (id)_writSyncPackageToStream:(id)a3;
-- (id)begin:(unsigned int)a3;
+- (ML3ProtoSyncExportSession)initWithLibrary:(id)library outputStream:(id)stream syncType:(int)type;
+- (id)_writSyncPackageToStream:(id)stream;
+- (id)begin:(unsigned int)begin;
 - (id)end;
-- (id)exportAlbumArtistAdded:(unint64_t)a3;
-- (id)exportAlbumArtistDeleted:(unint64_t)a3;
-- (id)exportAlbumArtistUpdated:(unint64_t)a3;
-- (id)exportAlbumUpdated:(unint64_t)a3;
-- (id)exportLibraryPinWithCloudItemID:(int64_t)a3 cloudLibraryID:(id)a4 defaultAtion:(int64_t)a5 type:(int64_t)a6 position:(int64_t)a7 positionUUID:(id)a8;
-- (id)exportPlaylistAdded:(unint64_t)a3;
-- (id)exportPlaylistDeleted:(unint64_t)a3;
-- (id)exportPlaylistUpdated:(unint64_t)a3;
-- (id)exportTrackAdded:(unint64_t)a3;
-- (id)exportTrackDeleted:(unint64_t)a3;
-- (id)exportTrackUpdated:(unint64_t)a3;
+- (id)exportAlbumArtistAdded:(unint64_t)added;
+- (id)exportAlbumArtistDeleted:(unint64_t)deleted;
+- (id)exportAlbumArtistUpdated:(unint64_t)updated;
+- (id)exportAlbumUpdated:(unint64_t)updated;
+- (id)exportLibraryPinWithCloudItemID:(int64_t)d cloudLibraryID:(id)iD defaultAtion:(int64_t)ation type:(int64_t)type position:(int64_t)position positionUUID:(id)uID;
+- (id)exportPlaylistAdded:(unint64_t)added;
+- (id)exportPlaylistDeleted:(unint64_t)deleted;
+- (id)exportPlaylistUpdated:(unint64_t)updated;
+- (id)exportTrackAdded:(unint64_t)added;
+- (id)exportTrackDeleted:(unint64_t)deleted;
+- (id)exportTrackUpdated:(unint64_t)updated;
 @end
 
 @implementation ML3ProtoSyncExportSession
 
-- (id)_writSyncPackageToStream:(id)a3
+- (id)_writSyncPackageToStream:(id)stream
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = [a3 data];
-  [v4 length];
+  data = [stream data];
+  [data length];
   v5 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:v19 length:PBDataWriterWriteBareVarint() freeWhenDone:0];
   streamWriter = self->_streamWriter;
   v16 = 0;
@@ -32,7 +32,7 @@
   {
     v9 = self->_streamWriter;
     v15 = v8;
-    v10 = [(MSVStreamWriter *)v9 writeAllData:v4 error:&v15];
+    v10 = [(MSVStreamWriter *)v9 writeAllData:data error:&v15];
     v11 = v15;
 
     if (v10)
@@ -65,33 +65,33 @@
   v11 = v8;
 LABEL_9:
   v13 = [v5 length];
-  self->_stats.totalSize += [v4 length] + v13;
+  self->_stats.totalSize += [data length] + v13;
 
   return v11;
 }
 
-- (id)exportLibraryPinWithCloudItemID:(int64_t)a3 cloudLibraryID:(id)a4 defaultAtion:(int64_t)a5 type:(int64_t)a6 position:(int64_t)a7 positionUUID:(id)a8
+- (id)exportLibraryPinWithCloudItemID:(int64_t)d cloudLibraryID:(id)iD defaultAtion:(int64_t)ation type:(int64_t)type position:(int64_t)position positionUUID:(id)uID
 {
   ++self->_stats.pinAdds;
-  v13 = a8;
-  v14 = a4;
+  uIDCopy = uID;
+  iDCopy = iD;
   v15 = objc_alloc_init(MSPMediaSyncPackage);
   [(MSPMediaSyncPackage *)v15 setType:4];
   v16 = objc_alloc_init(MSPMediaSyncOperation);
   [(MSPMediaSyncOperation *)v16 setOperationType:1];
   v17 = objc_alloc_init(MIPMultiverseIdentifier);
   [(MIPMultiverseIdentifier *)v17 setMediaObjectType:9];
-  [(MIPMultiverseIdentifier *)v17 setSagaId:a3];
-  [(MIPMultiverseIdentifier *)v17 setCloudLibraryId:v14];
+  [(MIPMultiverseIdentifier *)v17 setSagaId:d];
+  [(MIPMultiverseIdentifier *)v17 setCloudLibraryId:iDCopy];
   [(MSPMediaSyncOperation *)v16 setMultiverseId:v17];
   v18 = objc_alloc_init(MIPLibraryPin);
-  [(MIPLibraryPin *)v18 setCloudItemID:a3];
-  [(MIPLibraryPin *)v18 setCloudLibraryID:v14];
+  [(MIPLibraryPin *)v18 setCloudItemID:d];
+  [(MIPLibraryPin *)v18 setCloudLibraryID:iDCopy];
 
-  [(MIPLibraryPin *)v18 setDefaultAction:a5];
-  [(MIPLibraryPin *)v18 setPosition:a7];
-  [(MIPLibraryPin *)v18 setEntityType:a6];
-  [(MIPLibraryPin *)v18 setPositionUUID:v13];
+  [(MIPLibraryPin *)v18 setDefaultAction:ation];
+  [(MIPLibraryPin *)v18 setPosition:position];
+  [(MIPLibraryPin *)v18 setEntityType:type];
+  [(MIPLibraryPin *)v18 setPositionUUID:uIDCopy];
 
   [(MSPMediaSyncOperation *)v16 setLibraryPin:v18];
   [(MSPMediaSyncPackage *)v15 setSyncOperation:v16];
@@ -100,7 +100,7 @@ LABEL_9:
   return v19;
 }
 
-- (id)exportAlbumUpdated:(unint64_t)a3
+- (id)exportAlbumUpdated:(unint64_t)updated
 {
   ++self->_stats.albumUpdates;
   v5 = objc_alloc_init(MSPMediaSyncPackage);
@@ -108,14 +108,14 @@ LABEL_9:
   v6 = objc_alloc_init(MSPMediaSyncOperation);
   [(MSPMediaSyncOperation *)v6 setOperationType:2];
   v7 = [ML3Album alloc];
-  v8 = [(ML3ExportSession *)self library];
-  v9 = [(ML3Entity *)v7 initWithPersistentID:a3 inLibrary:v8];
+  library = [(ML3ExportSession *)self library];
+  v9 = [(ML3Entity *)v7 initWithPersistentID:updated inLibrary:library];
 
-  v10 = [(ML3Album *)v9 protocolItem];
-  [(MSPMediaSyncOperation *)v6 setAlbum:v10];
+  protocolItem = [(ML3Album *)v9 protocolItem];
+  [(MSPMediaSyncOperation *)v6 setAlbum:protocolItem];
 
-  v11 = [(ML3Album *)v9 multiverseIdentifier];
-  [(MSPMediaSyncOperation *)v6 setMultiverseId:v11];
+  multiverseIdentifier = [(ML3Album *)v9 multiverseIdentifier];
+  [(MSPMediaSyncOperation *)v6 setMultiverseId:multiverseIdentifier];
 
   [(MSPMediaSyncPackage *)v5 setSyncOperation:v6];
   v12 = [(ML3ProtoSyncExportSession *)self _writSyncPackageToStream:v5];
@@ -123,7 +123,7 @@ LABEL_9:
   return v12;
 }
 
-- (id)exportAlbumArtistUpdated:(unint64_t)a3
+- (id)exportAlbumArtistUpdated:(unint64_t)updated
 {
   ++self->_stats.artistUpdates;
   v5 = objc_alloc_init(MSPMediaSyncPackage);
@@ -131,14 +131,14 @@ LABEL_9:
   v6 = objc_alloc_init(MSPMediaSyncOperation);
   [(MSPMediaSyncOperation *)v6 setOperationType:2];
   v7 = [ML3AlbumArtist alloc];
-  v8 = [(ML3ExportSession *)self library];
-  v9 = [(ML3Entity *)v7 initWithPersistentID:a3 inLibrary:v8];
+  library = [(ML3ExportSession *)self library];
+  v9 = [(ML3Entity *)v7 initWithPersistentID:updated inLibrary:library];
 
-  v10 = [(ML3AlbumArtist *)v9 protocolItem];
-  [(MSPMediaSyncOperation *)v6 setArtist:v10];
+  protocolItem = [(ML3AlbumArtist *)v9 protocolItem];
+  [(MSPMediaSyncOperation *)v6 setArtist:protocolItem];
 
-  v11 = [(ML3AlbumArtist *)v9 multiverseIdentifier];
-  [(MSPMediaSyncOperation *)v6 setMultiverseId:v11];
+  multiverseIdentifier = [(ML3AlbumArtist *)v9 multiverseIdentifier];
+  [(MSPMediaSyncOperation *)v6 setMultiverseId:multiverseIdentifier];
 
   [(MSPMediaSyncPackage *)v5 setSyncOperation:v6];
   v12 = [(ML3ProtoSyncExportSession *)self _writSyncPackageToStream:v5];
@@ -146,7 +146,7 @@ LABEL_9:
   return v12;
 }
 
-- (id)exportAlbumArtistDeleted:(unint64_t)a3
+- (id)exportAlbumArtistDeleted:(unint64_t)deleted
 {
   ++self->_stats.artistUpdates;
   v5 = objc_alloc_init(MSPMediaSyncPackage);
@@ -154,14 +154,14 @@ LABEL_9:
   v6 = objc_alloc_init(MSPMediaSyncOperation);
   [(MSPMediaSyncOperation *)v6 setOperationType:3];
   v7 = [ML3AlbumArtist alloc];
-  v8 = [(ML3ExportSession *)self library];
-  v9 = [(ML3Entity *)v7 initWithPersistentID:a3 inLibrary:v8];
+  library = [(ML3ExportSession *)self library];
+  v9 = [(ML3Entity *)v7 initWithPersistentID:deleted inLibrary:library];
 
-  v10 = [(ML3AlbumArtist *)v9 protocolItem];
-  [(MSPMediaSyncOperation *)v6 setArtist:v10];
+  protocolItem = [(ML3AlbumArtist *)v9 protocolItem];
+  [(MSPMediaSyncOperation *)v6 setArtist:protocolItem];
 
-  v11 = [(ML3AlbumArtist *)v9 multiverseIdentifier];
-  [(MSPMediaSyncOperation *)v6 setMultiverseId:v11];
+  multiverseIdentifier = [(ML3AlbumArtist *)v9 multiverseIdentifier];
+  [(MSPMediaSyncOperation *)v6 setMultiverseId:multiverseIdentifier];
 
   [(MSPMediaSyncPackage *)v5 setSyncOperation:v6];
   v12 = [(ML3ProtoSyncExportSession *)self _writSyncPackageToStream:v5];
@@ -169,7 +169,7 @@ LABEL_9:
   return v12;
 }
 
-- (id)exportAlbumArtistAdded:(unint64_t)a3
+- (id)exportAlbumArtistAdded:(unint64_t)added
 {
   ++self->_stats.artistAdds;
   v5 = objc_alloc_init(MSPMediaSyncPackage);
@@ -177,14 +177,14 @@ LABEL_9:
   v6 = objc_alloc_init(MSPMediaSyncOperation);
   [(MSPMediaSyncOperation *)v6 setOperationType:1];
   v7 = [ML3AlbumArtist alloc];
-  v8 = [(ML3ExportSession *)self library];
-  v9 = [(ML3Entity *)v7 initWithPersistentID:a3 inLibrary:v8];
+  library = [(ML3ExportSession *)self library];
+  v9 = [(ML3Entity *)v7 initWithPersistentID:added inLibrary:library];
 
-  v10 = [(ML3AlbumArtist *)v9 protocolItem];
-  [(MSPMediaSyncOperation *)v6 setArtist:v10];
+  protocolItem = [(ML3AlbumArtist *)v9 protocolItem];
+  [(MSPMediaSyncOperation *)v6 setArtist:protocolItem];
 
-  v11 = [(ML3AlbumArtist *)v9 multiverseIdentifier];
-  [(MSPMediaSyncOperation *)v6 setMultiverseId:v11];
+  multiverseIdentifier = [(ML3AlbumArtist *)v9 multiverseIdentifier];
+  [(MSPMediaSyncOperation *)v6 setMultiverseId:multiverseIdentifier];
 
   [(MSPMediaSyncPackage *)v5 setSyncOperation:v6];
   v12 = [(ML3ProtoSyncExportSession *)self _writSyncPackageToStream:v5];
@@ -192,7 +192,7 @@ LABEL_9:
   return v12;
 }
 
-- (id)exportPlaylistUpdated:(unint64_t)a3
+- (id)exportPlaylistUpdated:(unint64_t)updated
 {
   ++self->_stats.playlistUpdates;
   v5 = objc_alloc_init(MSPMediaSyncPackage);
@@ -200,14 +200,14 @@ LABEL_9:
   v6 = objc_alloc_init(MSPMediaSyncOperation);
   [(MSPMediaSyncOperation *)v6 setOperationType:2];
   v7 = [ML3Container alloc];
-  v8 = [(ML3ExportSession *)self library];
-  v9 = [(ML3Entity *)v7 initWithPersistentID:a3 inLibrary:v8];
+  library = [(ML3ExportSession *)self library];
+  v9 = [(ML3Entity *)v7 initWithPersistentID:updated inLibrary:library];
 
-  v10 = [(ML3Container *)v9 protocolItemForDynamicUpdate];
-  [(MSPMediaSyncOperation *)v6 setPlaylist:v10];
+  protocolItemForDynamicUpdate = [(ML3Container *)v9 protocolItemForDynamicUpdate];
+  [(MSPMediaSyncOperation *)v6 setPlaylist:protocolItemForDynamicUpdate];
 
-  v11 = [(ML3Container *)v9 multiverseIdentifier];
-  [(MSPMediaSyncOperation *)v6 setMultiverseId:v11];
+  multiverseIdentifier = [(ML3Container *)v9 multiverseIdentifier];
+  [(MSPMediaSyncOperation *)v6 setMultiverseId:multiverseIdentifier];
 
   [(MSPMediaSyncPackage *)v5 setSyncOperation:v6];
   v12 = [(ML3ProtoSyncExportSession *)self _writSyncPackageToStream:v5];
@@ -215,7 +215,7 @@ LABEL_9:
   return v12;
 }
 
-- (id)exportPlaylistDeleted:(unint64_t)a3
+- (id)exportPlaylistDeleted:(unint64_t)deleted
 {
   ++self->_stats.playlistDeletes;
   v5 = objc_alloc_init(MSPMediaSyncPackage);
@@ -223,11 +223,11 @@ LABEL_9:
   v6 = objc_alloc_init(MSPMediaSyncOperation);
   [(MSPMediaSyncOperation *)v6 setOperationType:3];
   v7 = [ML3Container alloc];
-  v8 = [(ML3ExportSession *)self library];
-  v9 = [(ML3Entity *)v7 initWithPersistentID:a3 inLibrary:v8];
+  library = [(ML3ExportSession *)self library];
+  v9 = [(ML3Entity *)v7 initWithPersistentID:deleted inLibrary:library];
 
-  v10 = [(ML3Container *)v9 multiverseIdentifier];
-  [(MSPMediaSyncOperation *)v6 setMultiverseId:v10];
+  multiverseIdentifier = [(ML3Container *)v9 multiverseIdentifier];
+  [(MSPMediaSyncOperation *)v6 setMultiverseId:multiverseIdentifier];
 
   [(MSPMediaSyncPackage *)v5 setSyncOperation:v6];
   v11 = [(ML3ProtoSyncExportSession *)self _writSyncPackageToStream:v5];
@@ -235,7 +235,7 @@ LABEL_9:
   return v11;
 }
 
-- (id)exportPlaylistAdded:(unint64_t)a3
+- (id)exportPlaylistAdded:(unint64_t)added
 {
   ++self->_stats.playlistAdds;
   v5 = objc_alloc_init(MSPMediaSyncPackage);
@@ -243,14 +243,14 @@ LABEL_9:
   v6 = objc_alloc_init(MSPMediaSyncOperation);
   [(MSPMediaSyncOperation *)v6 setOperationType:1];
   v7 = [ML3Container alloc];
-  v8 = [(ML3ExportSession *)self library];
-  v9 = [(ML3Entity *)v7 initWithPersistentID:a3 inLibrary:v8];
+  library = [(ML3ExportSession *)self library];
+  v9 = [(ML3Entity *)v7 initWithPersistentID:added inLibrary:library];
 
-  v10 = [(ML3Container *)v9 protocolItem];
-  [(MSPMediaSyncOperation *)v6 setPlaylist:v10];
+  protocolItem = [(ML3Container *)v9 protocolItem];
+  [(MSPMediaSyncOperation *)v6 setPlaylist:protocolItem];
 
-  v11 = [(ML3Container *)v9 multiverseIdentifier];
-  [(MSPMediaSyncOperation *)v6 setMultiverseId:v11];
+  multiverseIdentifier = [(ML3Container *)v9 multiverseIdentifier];
+  [(MSPMediaSyncOperation *)v6 setMultiverseId:multiverseIdentifier];
 
   [(MSPMediaSyncPackage *)v5 setSyncOperation:v6];
   v12 = [(ML3ProtoSyncExportSession *)self _writSyncPackageToStream:v5];
@@ -258,7 +258,7 @@ LABEL_9:
   return v12;
 }
 
-- (id)exportTrackDeleted:(unint64_t)a3
+- (id)exportTrackDeleted:(unint64_t)deleted
 {
   ++self->_stats.trackDeletes;
   v5 = objc_alloc_init(MSPMediaSyncPackage);
@@ -266,8 +266,8 @@ LABEL_9:
   v6 = objc_alloc_init(MSPMediaSyncOperation);
   [(MSPMediaSyncOperation *)v6 setOperationType:3];
   v7 = [ML3Track alloc];
-  v8 = [(ML3ExportSession *)self library];
-  v9 = [(ML3Entity *)v7 initWithPersistentID:a3 inLibrary:v8];
+  library = [(ML3ExportSession *)self library];
+  v9 = [(ML3Entity *)v7 initWithPersistentID:deleted inLibrary:library];
 
   v10 = [(ML3Track *)v9 multiverseIdentifierLibraryOnly:1];
   [(MSPMediaSyncOperation *)v6 setMultiverseId:v10];
@@ -278,7 +278,7 @@ LABEL_9:
   return v11;
 }
 
-- (id)exportTrackUpdated:(unint64_t)a3
+- (id)exportTrackUpdated:(unint64_t)updated
 {
   ++self->_stats.trackUpdates;
   v5 = objc_alloc_init(MSPMediaSyncPackage);
@@ -286,11 +286,11 @@ LABEL_9:
   v6 = objc_alloc_init(MSPMediaSyncOperation);
   [(MSPMediaSyncOperation *)v6 setOperationType:2];
   v7 = [ML3Track alloc];
-  v8 = [(ML3ExportSession *)self library];
-  v9 = [(ML3Entity *)v7 initWithPersistentID:a3 inLibrary:v8];
+  library = [(ML3ExportSession *)self library];
+  v9 = [(ML3Entity *)v7 initWithPersistentID:updated inLibrary:library];
 
-  v10 = [(ML3Track *)v9 protocolItemForDynamicUpdate];
-  [(MSPMediaSyncOperation *)v6 setMediaItem:v10];
+  protocolItemForDynamicUpdate = [(ML3Track *)v9 protocolItemForDynamicUpdate];
+  [(MSPMediaSyncOperation *)v6 setMediaItem:protocolItemForDynamicUpdate];
 
   v11 = [(ML3Track *)v9 multiverseIdentifierLibraryOnly:1];
   [(MSPMediaSyncOperation *)v6 setMultiverseId:v11];
@@ -301,7 +301,7 @@ LABEL_9:
   return v12;
 }
 
-- (id)exportTrackAdded:(unint64_t)a3
+- (id)exportTrackAdded:(unint64_t)added
 {
   ++self->_stats.trackAdds;
   v5 = objc_alloc_init(MSPMediaSyncPackage);
@@ -309,11 +309,11 @@ LABEL_9:
   v6 = objc_alloc_init(MSPMediaSyncOperation);
   [(MSPMediaSyncOperation *)v6 setOperationType:1];
   v7 = [ML3Track alloc];
-  v8 = [(ML3ExportSession *)self library];
-  v9 = [(ML3Entity *)v7 initWithPersistentID:a3 inLibrary:v8];
+  library = [(ML3ExportSession *)self library];
+  v9 = [(ML3Entity *)v7 initWithPersistentID:added inLibrary:library];
 
-  v10 = [(ML3Track *)v9 protocolItem];
-  [(MSPMediaSyncOperation *)v6 setMediaItem:v10];
+  protocolItem = [(ML3Track *)v9 protocolItem];
+  [(MSPMediaSyncOperation *)v6 setMediaItem:protocolItem];
 
   v11 = [(ML3Track *)v9 multiverseIdentifierLibraryOnly:1];
   [(MSPMediaSyncOperation *)v6 setMultiverseId:v11];
@@ -377,9 +377,9 @@ LABEL_9:
   return v4;
 }
 
-- (id)begin:(unsigned int)a3
+- (id)begin:(unsigned int)begin
 {
-  v3 = *&a3;
+  v3 = *&begin;
   v16 = *MEMORY[0x277D85DE8];
   v5 = os_log_create("com.apple.amp.medialibrary", "Default");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -392,8 +392,8 @@ LABEL_9:
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   self->_sessionStartTime = v6;
   v7 = objc_alloc(MEMORY[0x277D27F28]);
-  v8 = [(ML3ExportSession *)self outputStream];
-  v9 = [v7 initWithOutputStream:v8 queue:0];
+  outputStream = [(ML3ExportSession *)self outputStream];
+  v9 = [v7 initWithOutputStream:outputStream queue:0];
   streamWriter = self->_streamWriter;
   self->_streamWriter = v9;
 
@@ -410,19 +410,19 @@ LABEL_9:
   return v13;
 }
 
-- (ML3ProtoSyncExportSession)initWithLibrary:(id)a3 outputStream:(id)a4 syncType:(int)a5
+- (ML3ProtoSyncExportSession)initWithLibrary:(id)library outputStream:(id)stream syncType:(int)type
 {
-  v8 = a3;
+  libraryCopy = library;
   v13.receiver = self;
   v13.super_class = ML3ProtoSyncExportSession;
-  v9 = [(ML3ExportSession *)&v13 initWithLibrary:v8 outputStream:a4];
+  v9 = [(ML3ExportSession *)&v13 initWithLibrary:libraryCopy outputStream:stream];
   if (v9)
   {
-    v10 = [v8 libraryUID];
+    libraryUID = [libraryCopy libraryUID];
     libraryUUID = v9->_libraryUUID;
-    v9->_libraryUUID = v10;
+    v9->_libraryUUID = libraryUID;
 
-    v9->_syncType = a5;
+    v9->_syncType = type;
   }
 
   return v9;

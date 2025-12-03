@@ -1,5 +1,5 @@
 @interface PHAlertHandleConfiguration
-+ (id)carPlayAlertActivationOptionsWithReason:(id)a3;
++ (id)carPlayAlertActivationOptionsWithReason:(id)reason;
 + (id)carPlayAlertConfiguration;
 @end
 
@@ -15,11 +15,11 @@
   return v3;
 }
 
-+ (id)carPlayAlertActivationOptionsWithReason:(id)a3
++ (id)carPlayAlertActivationOptionsWithReason:(id)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
   v4 = objc_alloc_init(SBSRemoteAlertActivationOptions);
-  [v4 setReason:v3];
+  [v4 setReason:reasonCopy];
 
   return v4;
 }

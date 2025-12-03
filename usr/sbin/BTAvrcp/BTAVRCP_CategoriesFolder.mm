@@ -1,24 +1,24 @@
 @interface BTAVRCP_CategoriesFolder
-- (BTAVRCP_CategoriesFolder)initWithName:(id)a3 uid:(unint64_t)a4;
+- (BTAVRCP_CategoriesFolder)initWithName:(id)name uid:(unint64_t)uid;
 - (id)baseQuery;
-- (id)folderNameForUid:(unint64_t)a3;
-- (id)replyAttributesForUid:(unint64_t)a3 attributeIDs:(id)a4;
-- (id)replyItemAtIndex:(unint64_t)a3 attributeIDs:(id)a4;
+- (id)folderNameForUid:(unint64_t)uid;
+- (id)replyAttributesForUid:(unint64_t)uid attributeIDs:(id)ds;
+- (id)replyItemAtIndex:(unint64_t)index attributeIDs:(id)ds;
 - (unint64_t)childrenCount;
-- (unsigned)createFolderWithUid:(unint64_t)a3 folder:(id *)a4;
-- (unsigned)folderTypeForUid:(unint64_t)a3;
-- (unsigned)playItemWithUid:(unint64_t)a3;
+- (unsigned)createFolderWithUid:(unint64_t)uid folder:(id *)folder;
+- (unsigned)folderTypeForUid:(unint64_t)uid;
+- (unsigned)playItemWithUid:(unint64_t)uid;
 - (void)dealloc;
 - (void)refreshActiveCategories;
 @end
 
 @implementation BTAVRCP_CategoriesFolder
 
-- (BTAVRCP_CategoriesFolder)initWithName:(id)a3 uid:(unint64_t)a4
+- (BTAVRCP_CategoriesFolder)initWithName:(id)name uid:(unint64_t)uid
 {
   v9.receiver = self;
   v9.super_class = BTAVRCP_CategoriesFolder;
-  v4 = [(BTAVRCP_VFSFolder *)&v9 initWithName:a3 uid:a4];
+  v4 = [(BTAVRCP_VFSFolder *)&v9 initWithName:name uid:uid];
   if (v4)
   {
     v5 = +[NSNotificationCenter defaultCenter];
@@ -57,17 +57,17 @@
       {
         case 3:
           v6 = +[MPRadioLibrary defaultRadioLibrary];
-          v7 = [v6 isEnabled];
+          isEnabled = [v6 isEnabled];
           break;
         case 4:
           v6 = +[MPMediaLibrary defaultMediaLibrary];
-          v7 = [v6 hasPodcasts];
+          isEnabled = [v6 hasPodcasts];
           break;
         case 5:
           v4 = +[MPMediaLibrary defaultMediaLibrary];
-          v5 = [v4 hasAudiobooks];
+          hasAudiobooks = [v4 hasAudiobooks];
 
-          if ((v5 & 1) == 0)
+          if ((hasAudiobooks & 1) == 0)
           {
             goto LABEL_19;
           }
@@ -82,7 +82,7 @@ LABEL_14:
       }
 
 LABEL_13:
-      v8 = v7;
+      v8 = isEnabled;
 
       if ((v8 & 1) == 0)
       {
@@ -100,14 +100,14 @@ LABEL_13:
       }
 
       v6 = +[MPMediaLibrary defaultMediaLibrary];
-      v7 = [v6 hasPlaylists];
+      isEnabled = [v6 hasPlaylists];
       goto LABEL_13;
     }
 
     v10 = +[MPMediaLibrary defaultMediaLibrary];
-    v11 = [v10 hasMedia];
+    hasMedia = [v10 hasMedia];
 
-    if (v11)
+    if (hasMedia)
     {
       goto LABEL_14;
     }
@@ -117,14 +117,14 @@ LABEL_19:
   [(BTAVRCP_CategoriesFolder *)self setActiveCategories:v12];
 }
 
-- (id)folderNameForUid:(unint64_t)a3
+- (id)folderNameForUid:(unint64_t)uid
 {
   v4 = +[NSBundle mobileBluetoothBundle];
   v5 = v4;
   v6 = 0;
-  if (a3 <= 2)
+  if (uid <= 2)
   {
-    if (a3 == 1)
+    if (uid == 1)
     {
       v7 = @"MY_MUSIC";
       v8 = @"My Music";
@@ -132,7 +132,7 @@ LABEL_19:
 
     else
     {
-      if (a3 != 2)
+      if (uid != 2)
       {
         goto LABEL_13;
       }
@@ -144,7 +144,7 @@ LABEL_19:
 
   else
   {
-    switch(a3)
+    switch(uid)
     {
       case 3uLL:
         v7 = @"RADIO";
@@ -169,10 +169,10 @@ LABEL_13:
   return v6;
 }
 
-- (unsigned)folderTypeForUid:(unint64_t)a3
+- (unsigned)folderTypeForUid:(unint64_t)uid
 {
-  v3 = 0x20205050000uLL >> (8 * a3);
-  if (a3 >= 6)
+  v3 = 0x20205050000uLL >> (8 * uid);
+  if (uid >= 6)
   {
     LOBYTE(v3) = 0;
   }
@@ -189,62 +189,62 @@ LABEL_13:
 
 - (unint64_t)childrenCount
 {
-  v2 = [(BTAVRCP_CategoriesFolder *)self activeCategories];
-  v3 = [v2 count];
+  activeCategories = [(BTAVRCP_CategoriesFolder *)self activeCategories];
+  v3 = [activeCategories count];
 
   return v3;
 }
 
-- (unsigned)createFolderWithUid:(unint64_t)a3 folder:(id *)a4
+- (unsigned)createFolderWithUid:(unint64_t)uid folder:(id *)folder
 {
-  v7 = [(BTAVRCP_CategoriesFolder *)self activeCategories];
-  v8 = [NSNumber numberWithUnsignedLongLong:a3];
-  v9 = [v7 containsObject:v8];
+  activeCategories = [(BTAVRCP_CategoriesFolder *)self activeCategories];
+  v8 = [NSNumber numberWithUnsignedLongLong:uid];
+  v9 = [activeCategories containsObject:v8];
 
   if (!v9)
   {
     return 9;
   }
 
-  if (a3 - 1 <= 4)
+  if (uid - 1 <= 4)
   {
-    v10 = objc_alloc(*(&off_100018AE8)[a3 - 1]);
-    v11 = [(BTAVRCP_CategoriesFolder *)self folderNameForUid:a3];
-    *a4 = [v10 initWithName:v11 uid:a3];
+    v10 = objc_alloc(*(&off_100018AE8)[uid - 1]);
+    v11 = [(BTAVRCP_CategoriesFolder *)self folderNameForUid:uid];
+    *folder = [v10 initWithName:v11 uid:uid];
   }
 
   return 4;
 }
 
-- (id)replyItemAtIndex:(unint64_t)a3 attributeIDs:(id)a4
+- (id)replyItemAtIndex:(unint64_t)index attributeIDs:(id)ds
 {
-  v6 = [(BTAVRCP_CategoriesFolder *)self activeCategories:a3];
+  v6 = [(BTAVRCP_CategoriesFolder *)self activeCategories:index];
   v7 = [v6 count];
 
-  if (v7 <= a3)
+  if (v7 <= index)
   {
     v14 = 0;
   }
 
   else
   {
-    v8 = [(BTAVRCP_CategoriesFolder *)self activeCategories];
-    v9 = [v8 objectAtIndexedSubscript:a3];
-    v10 = [v9 unsignedLongLongValue];
+    activeCategories = [(BTAVRCP_CategoriesFolder *)self activeCategories];
+    v9 = [activeCategories objectAtIndexedSubscript:index];
+    unsignedLongLongValue = [v9 unsignedLongLongValue];
 
-    v11 = [(BTAVRCP_CategoriesFolder *)self folderTypeForUid:v10];
-    v12 = [NSNumber numberWithUnsignedLongLong:v10];
-    v13 = [(BTAVRCP_CategoriesFolder *)self folderNameForUid:v10];
+    v11 = [(BTAVRCP_CategoriesFolder *)self folderTypeForUid:unsignedLongLongValue];
+    v12 = [NSNumber numberWithUnsignedLongLong:unsignedLongLongValue];
+    v13 = [(BTAVRCP_CategoriesFolder *)self folderNameForUid:unsignedLongLongValue];
     v14 = [(BTAVRCP_VFSFolder *)self replyFolderWithType:v11 uid:v12 name:v13];
   }
 
   return v14;
 }
 
-- (id)replyAttributesForUid:(unint64_t)a3 attributeIDs:(id)a4
+- (id)replyAttributesForUid:(unint64_t)uid attributeIDs:(id)ds
 {
-  v5 = [(BTAVRCP_CategoriesFolder *)self activeCategories:a3];
-  v6 = [NSNumber numberWithUnsignedLongLong:a3];
+  v5 = [(BTAVRCP_CategoriesFolder *)self activeCategories:uid];
+  v6 = [NSNumber numberWithUnsignedLongLong:uid];
   v7 = [v5 containsObject:v6];
 
   if (v7)
@@ -258,11 +258,11 @@ LABEL_13:
   }
 }
 
-- (unsigned)playItemWithUid:(unint64_t)a3
+- (unsigned)playItemWithUid:(unint64_t)uid
 {
-  v4 = [(BTAVRCP_CategoriesFolder *)self activeCategories];
-  v5 = [NSNumber numberWithUnsignedLongLong:a3];
-  v6 = [v4 containsObject:v5];
+  activeCategories = [(BTAVRCP_CategoriesFolder *)self activeCategories];
+  v5 = [NSNumber numberWithUnsignedLongLong:uid];
+  v6 = [activeCategories containsObject:v5];
 
   if (v6)
   {

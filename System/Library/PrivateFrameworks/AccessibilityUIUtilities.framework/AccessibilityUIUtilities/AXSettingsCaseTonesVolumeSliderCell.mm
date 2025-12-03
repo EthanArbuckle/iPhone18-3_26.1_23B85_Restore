@@ -1,69 +1,69 @@
 @interface AXSettingsCaseTonesVolumeSliderCell
-- (double)_roundFactorIfNeeded:(double)a3 forValue:(double)a4;
+- (double)_roundFactorIfNeeded:(double)needed forValue:(double)value;
 - (double)defaultSliderValue;
 - (double)initialValue;
-- (double)roundValueIfNeeded:(double)a3;
-- (void)saveNewValue:(double)a3;
+- (double)roundValueIfNeeded:(double)needed;
+- (void)saveNewValue:(double)value;
 @end
 
 @implementation AXSettingsCaseTonesVolumeSliderCell
 
 - (double)defaultSliderValue
 {
-  v3 = [MEMORY[0x1E6989850] sharedInstance];
-  v4 = [(AXSettingsTickedSliderCell *)self btAddress];
-  v5 = [v3 defaultCaseTonesVolumeForDeviceAddress:v4];
+  mEMORY[0x1E6989850] = [MEMORY[0x1E6989850] sharedInstance];
+  btAddress = [(AXSettingsTickedSliderCell *)self btAddress];
+  v5 = [mEMORY[0x1E6989850] defaultCaseTonesVolumeForDeviceAddress:btAddress];
 
   return v5;
 }
 
 - (double)initialValue
 {
-  v3 = [(AXSettingsTickedSliderCell *)self isInWatchSettings];
-  v4 = [MEMORY[0x1E6989850] sharedInstance];
-  v5 = [(AXSettingsTickedSliderCell *)self btAddress];
-  if (v3)
+  isInWatchSettings = [(AXSettingsTickedSliderCell *)self isInWatchSettings];
+  mEMORY[0x1E6989850] = [MEMORY[0x1E6989850] sharedInstance];
+  btAddress = [(AXSettingsTickedSliderCell *)self btAddress];
+  if (isInWatchSettings)
   {
-    [v4 nps_caseTonesVolumeForDeviceAddress:v5];
+    [mEMORY[0x1E6989850] nps_caseTonesVolumeForDeviceAddress:btAddress];
     v7 = v6;
   }
 
   else
   {
-    v7 = [v4 caseTonesVolumeForDeviceAddress:v5];
+    v7 = [mEMORY[0x1E6989850] caseTonesVolumeForDeviceAddress:btAddress];
   }
 
   return v7;
 }
 
-- (void)saveNewValue:(double)a3
+- (void)saveNewValue:(double)value
 {
-  v5 = [(AXSettingsTickedSliderCell *)self controller];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setCaseTonesVolume:v4 specifier:0];
+  controller = [(AXSettingsTickedSliderCell *)self controller];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:value];
+  [controller setCaseTonesVolume:v4 specifier:0];
 }
 
-- (double)roundValueIfNeeded:(double)a3
+- (double)roundValueIfNeeded:(double)needed
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E6989850] sharedInstance];
-  v7 = [(AXSettingsTickedSliderCell *)self btAddress];
-  v8 = [v6 defaultCaseTonesVolumeForDeviceAddress:v7];
+  neededCopy = needed;
+  mEMORY[0x1E6989850] = [MEMORY[0x1E6989850] sharedInstance];
+  btAddress = [(AXSettingsTickedSliderCell *)self btAddress];
+  v8 = [mEMORY[0x1E6989850] defaultCaseTonesVolumeForDeviceAddress:btAddress];
 
-  v9 = (v5 - v8);
-  v10 = (v5 - v8) > 0.0 && (v5 - v8) < 1.0;
-  if (v10 || v5 < 0.0 && v9 > -0.1)
+  v9 = (neededCopy - v8);
+  v10 = (neededCopy - v8) > 0.0 && (neededCopy - v8) < 1.0;
+  if (v10 || neededCopy < 0.0 && v9 > -0.1)
   {
-    v5 = v8;
+    neededCopy = v8;
   }
 
   v11 = AXLogAirPodSettings();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     v13 = [MEMORY[0x1E696AD98] numberWithDouble:v9];
-    v14 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-    *&v15 = v5;
+    v14 = [MEMORY[0x1E696AD98] numberWithDouble:needed];
+    *&v15 = neededCopy;
     v16 = [MEMORY[0x1E696AD98] numberWithFloat:v15];
     *&v17 = v8;
     v18 = [MEMORY[0x1E696AD98] numberWithFloat:v17];
@@ -78,14 +78,14 @@
     _os_log_debug_impl(&dword_1C0DFB000, v11, OS_LOG_TYPE_DEBUG, "roundValueIfNeeded difference: %@, new value: %@, display value: %@ defaultCaseTonesValue: %@", &v19, 0x2Au);
   }
 
-  return v5;
+  return neededCopy;
 }
 
-- (double)_roundFactorIfNeeded:(double)a3 forValue:(double)a4
+- (double)_roundFactorIfNeeded:(double)needed forValue:(double)value
 {
   [(AXSettingsCaseTonesVolumeSliderCell *)self defaultSliderValue];
-  v8 = vabdd_f64(a4, v7);
-  if (fabs(a3 / 10.0 + -0.1) < 0.001 || v8 < 0.001)
+  v8 = vabdd_f64(value, v7);
+  if (fabs(needed / 10.0 + -0.1) < 0.001 || v8 < 0.001)
   {
     v9 = AXLogAirPodSettings();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -93,14 +93,14 @@
       [AXSettingsCaseTonesVolumeSliderCell _roundFactorIfNeeded:v9 forValue:?];
     }
 
-    a3 = 1.0;
+    needed = 1.0;
     if (v8 >= 0.001)
     {
       [(AXSettingsCaseTonesVolumeSliderCell *)self defaultSliderValue];
-      if (v10 >= a4)
+      if (v10 >= value)
       {
         [(AXSettingsCaseTonesVolumeSliderCell *)self defaultSliderValue];
-        if (v11 > a4)
+        if (v11 > value)
         {
           return 0.99;
         }
@@ -113,7 +113,7 @@
     }
   }
 
-  return a3;
+  return needed;
 }
 
 - (void)_roundFactorIfNeeded:(NSObject *)a1 forValue:.cold.1(NSObject *a1)

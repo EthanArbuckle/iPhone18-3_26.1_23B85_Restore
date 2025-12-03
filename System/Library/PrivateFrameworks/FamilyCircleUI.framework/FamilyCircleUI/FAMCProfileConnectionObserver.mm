@@ -1,7 +1,7 @@
 @interface FAMCProfileConnectionObserver
 - (_TtC14FamilyCircleUI29FAMCProfileConnectionObserver)init;
 - (void)dealloc;
-- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)a3 userInfo:(id)a4;
+- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)notification userInfo:(id)info;
 @end
 
 @implementation FAMCProfileConnectionObserver
@@ -14,11 +14,11 @@
   v5 = v11;
   __swift_project_boxed_opaque_existential_1Tm(v9, v10);
   v6 = *(v5 + 24);
-  v7 = self;
+  selfCopy = self;
   v6(self, v4, v5);
 
   __swift_destroy_boxed_opaque_existential_0Tm(v9);
-  v8.receiver = v7;
+  v8.receiver = selfCopy;
   v8.super_class = ObjectType;
   [(FAMCProfileConnectionObserver *)&v8 dealloc];
 }
@@ -30,7 +30,7 @@
   return result;
 }
 
-- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)a3 userInfo:(id)a4
+- (void)profileConnectionDidReceiveRestrictionChangedNotification:(id)notification userInfo:(id)info
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CDB5790, &qword_21BE32800);
   v6 = *(*(v5 - 8) + 64);
@@ -42,7 +42,7 @@
   v10[2] = 0;
   v10[3] = 0;
   v10[4] = self;
-  v11 = self;
+  selfCopy = self;
   sub_21BBA932C(0, 0, v8, &unk_21BE4BC00, v10);
 }
 

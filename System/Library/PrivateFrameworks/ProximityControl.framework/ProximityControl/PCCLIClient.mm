@@ -1,47 +1,47 @@
 @interface PCCLIClient
 - (PCCLIClientDelegate)delegate;
-- (void)_activateWithCompletion:(id)a3;
+- (void)_activateWithCompletion:(id)completion;
 - (void)_interrupted;
 - (void)_invalidate;
 - (void)_invalidated;
 - (void)_wakingXPCEnsureStarted;
 - (void)_xpcEnsureStarted;
-- (void)activateWithCompletion:(id)a3;
-- (void)didProvideState:(id)a3;
-- (void)dismissBannerWithCompletion:(id)a3;
+- (void)activateWithCompletion:(id)completion;
+- (void)didProvideState:(id)state;
+- (void)dismissBannerWithCompletion:(id)completion;
 - (void)invalidate;
-- (void)presentBannerWithCompletion:(id)a3;
+- (void)presentBannerWithCompletion:(id)completion;
 - (void)requestState;
-- (void)setBannerScaleProgress:(float)a3 completion:(id)a4;
-- (void)stateWithCompletion:(id)a3;
-- (void)tapBannerWithCompletion:(id)a3;
-- (void)triggerHandoffFeedbackAlertWithCompletion:(id)a3;
-- (void)updateLockscreenMediaThresholdWithCompletion:(id)a3;
+- (void)setBannerScaleProgress:(float)progress completion:(id)completion;
+- (void)stateWithCompletion:(id)completion;
+- (void)tapBannerWithCompletion:(id)completion;
+- (void)triggerHandoffFeedbackAlertWithCompletion:(id)completion;
+- (void)updateLockscreenMediaThresholdWithCompletion:(id)completion;
 @end
 
 @implementation PCCLIClient
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__PCCLIClient_activateWithCompletion___block_invoke;
   v7[3] = &unk_279AD19E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
   dispatchQueue = self->_dispatchQueue;
-  v5 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(dispatchQueue);
   [(PCCLIClient *)self _xpcEnsureStarted];
-  v7 = MEMORY[0x2666FB170](v5);
+  v7 = MEMORY[0x2666FB170](completionCopy);
 
   v6 = v7;
   if (v7)
@@ -156,24 +156,24 @@
     v9[4] = self;
     [(NSXPCConnection *)self->_xpcCnx setInvalidationHandler:v9];
     [(NSXPCConnection *)self->_xpcCnx setRemoteObjectInterface:v4];
-    v8 = [(NSXPCConnection *)self->_xpcCnx _xpcConnection];
+    _xpcConnection = [(NSXPCConnection *)self->_xpcCnx _xpcConnection];
     xpc_connection_set_non_launching();
 
     [(NSXPCConnection *)self->_xpcCnx resume];
   }
 }
 
-- (void)dismissBannerWithCompletion:(id)a3
+- (void)dismissBannerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__PCCLIClient_dismissBannerWithCompletion___block_invoke;
   v7[3] = &unk_279AD19E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_sync(dispatchQueue, v7);
 }
 
@@ -219,17 +219,17 @@ void __43__PCCLIClient_dismissBannerWithCompletion___block_invoke_3(uint64_t a1,
   }
 }
 
-- (void)presentBannerWithCompletion:(id)a3
+- (void)presentBannerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__PCCLIClient_presentBannerWithCompletion___block_invoke;
   v7[3] = &unk_279AD19E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -275,18 +275,18 @@ void __43__PCCLIClient_presentBannerWithCompletion___block_invoke_3(uint64_t a1,
   }
 }
 
-- (void)setBannerScaleProgress:(float)a3 completion:(id)a4
+- (void)setBannerScaleProgress:(float)progress completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__PCCLIClient_setBannerScaleProgress_completion___block_invoke;
   block[3] = &unk_279AD1B00;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
+  v10 = completionCopy;
+  progressCopy = progress;
+  v8 = completionCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -334,17 +334,17 @@ void __49__PCCLIClient_setBannerScaleProgress_completion___block_invoke_3(uint64
   }
 }
 
-- (void)tapBannerWithCompletion:(id)a3
+- (void)tapBannerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __39__PCCLIClient_tapBannerWithCompletion___block_invoke;
   v7[3] = &unk_279AD19E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -390,13 +390,13 @@ void __39__PCCLIClient_tapBannerWithCompletion___block_invoke_3(uint64_t a1, voi
   }
 }
 
-- (void)didProvideState:(id)a3
+- (void)didProvideState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [WeakRetained client:self didProvideState:v5];
+    [WeakRetained client:self didProvideState:stateCopy];
   }
 }
 
@@ -419,17 +419,17 @@ void __27__PCCLIClient_requestState__block_invoke(uint64_t a1)
   [v2 requestState];
 }
 
-- (void)stateWithCompletion:(id)a3
+- (void)stateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__PCCLIClient_stateWithCompletion___block_invoke;
   v7[3] = &unk_279AD19E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -474,17 +474,17 @@ void __35__PCCLIClient_stateWithCompletion___block_invoke_3(uint64_t a1, void *a
   }
 }
 
-- (void)triggerHandoffFeedbackAlertWithCompletion:(id)a3
+- (void)triggerHandoffFeedbackAlertWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__PCCLIClient_triggerHandoffFeedbackAlertWithCompletion___block_invoke;
   v7[3] = &unk_279AD19E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -514,17 +514,17 @@ void __57__PCCLIClient_triggerHandoffFeedbackAlertWithCompletion___block_invoke_
   }
 }
 
-- (void)updateLockscreenMediaThresholdWithCompletion:(id)a3
+- (void)updateLockscreenMediaThresholdWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__PCCLIClient_updateLockscreenMediaThresholdWithCompletion___block_invoke;
   v7[3] = &unk_279AD19E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 

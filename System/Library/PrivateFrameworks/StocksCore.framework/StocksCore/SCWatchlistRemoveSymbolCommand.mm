@@ -1,21 +1,21 @@
 @interface SCWatchlistRemoveSymbolCommand
-- (SCWatchlistRemoveSymbolCommand)initWithCoder:(id)a3;
-- (SCWatchlistRemoveSymbolCommand)initWithSymbol:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithZone:(id)a3;
+- (SCWatchlistRemoveSymbolCommand)initWithCoder:(id)coder;
+- (SCWatchlistRemoveSymbolCommand)initWithSymbol:(id)symbol;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithZone:(id)zone;
 @end
 
 @implementation SCWatchlistRemoveSymbolCommand
 
-- (SCWatchlistRemoveSymbolCommand)initWithSymbol:(id)a3
+- (SCWatchlistRemoveSymbolCommand)initWithSymbol:(id)symbol
 {
-  v4 = a3;
+  symbolCopy = symbol;
   v9.receiver = self;
   v9.super_class = SCWatchlistRemoveSymbolCommand;
   v5 = [(SCWatchlistRemoveSymbolCommand *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [symbolCopy copy];
     symbol = v5->_symbol;
     v5->_symbol = v6;
   }
@@ -23,16 +23,16 @@
   return v5;
 }
 
-- (void)executeWithZone:(id)a3
+- (void)executeWithZone:(id)zone
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __50__SCWatchlistRemoveSymbolCommand_executeWithZone___block_invoke;
   aBlock[3] = &unk_1E85E3320;
   aBlock[4] = self;
-  v3 = a3;
+  zoneCopy = zone;
   v4 = _Block_copy(aBlock);
-  [v3 createOrUpdateRecordWithName:@"watchlist" recordType:@"Watchlist" modifyBlock:v4];
+  [zoneCopy createOrUpdateRecordWithName:@"watchlist" recordType:@"Watchlist" modifyBlock:v4];
 }
 
 void __50__SCWatchlistRemoveSymbolCommand_executeWithZone___block_invoke(uint64_t a1, void *a2)
@@ -52,32 +52,32 @@ void __50__SCWatchlistRemoveSymbolCommand_executeWithZone___block_invoke(uint64_
   [v9 setObject:v8 forKeyedSubscript:@"symbols"];
 }
 
-- (SCWatchlistRemoveSymbolCommand)initWithCoder:(id)a3
+- (SCWatchlistRemoveSymbolCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"symbol"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"symbol"];
 
   if (v5)
   {
     self = [(SCWatchlistRemoveSymbolCommand *)self initWithSymbol:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  v7 = v6;
+  v7 = selfCopy;
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SCWatchlistRemoveSymbolCommand *)self symbol];
-  [v4 encodeObject:v5 forKey:@"symbol"];
+  coderCopy = coder;
+  symbol = [(SCWatchlistRemoveSymbolCommand *)self symbol];
+  [coderCopy encodeObject:symbol forKey:@"symbol"];
 }
 
 @end

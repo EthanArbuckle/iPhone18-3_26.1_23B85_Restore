@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneIndexIndexFormatTooOldException
-- (OrgApacheLuceneIndexIndexFormatTooOldException)initWithOrgApacheLuceneStoreDataInput:(id)a3 withNSString:(id)a4;
+- (OrgApacheLuceneIndexIndexFormatTooOldException)initWithOrgApacheLuceneStoreDataInput:(id)input withNSString:(id)string;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneIndexIndexFormatTooOldException
 
-- (OrgApacheLuceneIndexIndexFormatTooOldException)initWithOrgApacheLuceneStoreDataInput:(id)a3 withNSString:(id)a4
+- (OrgApacheLuceneIndexIndexFormatTooOldException)initWithOrgApacheLuceneStoreDataInput:(id)input withNSString:(id)string
 {
-  v6 = OrgLukhnosPortmobileUtilObjects_toStringWithId_(a3);
-  OrgApacheLuceneIndexIndexFormatTooOldException_initWithNSString_withNSString_(&self->super.super.super.super.super.isa, v6, a4, v7, v8, v9, v10, v11);
+  v6 = OrgLukhnosPortmobileUtilObjects_toStringWithId_(input);
+  OrgApacheLuceneIndexIndexFormatTooOldException_initWithNSString_withNSString_(&self->super.super.super.super.super.isa, v6, string, v7, v8, v9, v10, v11);
   return self;
 }
 

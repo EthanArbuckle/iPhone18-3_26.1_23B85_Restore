@@ -226,7 +226,7 @@ LABEL_36:
     v395 = 0uLL;
     v396 = 0;
     v405 = 0;
-    v406 = 0;
+    selfCopy = 0;
     v407 = 0;
     v402 = 0;
     v403 = 0;
@@ -241,7 +241,7 @@ LABEL_36:
     v295 = v11;
     objc_msgSend_secondarySourceMatrixOrigin(self, v288, v289, v290, v291, v292, v293, v294);
     objc_msgSend_secondarySourceMatrixOrigin(self, v298, v299, v300, v301, v302, v303, v304);
-    v388 = __PAIR64__(v395, v406);
+    v388 = __PAIR64__(v395, selfCopy);
     objc_msgSend_resultMatrixOrigin(self, v305, v306, v307, v308, v309, v310, v311);
     v297 = v402;
     objc_msgSend_resultMatrixOrigin(self, v312, v313, v314, v315, v316, v317, v318);
@@ -254,7 +254,7 @@ LABEL_36:
   v329 = objc_alloc(MEMORY[0x277CD7210]);
   v341 = objc_msgSend_initWithCommandBuffer_withDispatchType_(v329, v330, v295, 0, v331, v332, v333, v334);
   v405 = v341;
-  v406 = self;
+  selfCopy = self;
   if ((*(&self->super.super.super.isa + *MEMORY[0x277CD7378]) & 0x18) != 0)
   {
     v342 = *(&self->super.super.super.isa + *MEMORY[0x277CD7360]);

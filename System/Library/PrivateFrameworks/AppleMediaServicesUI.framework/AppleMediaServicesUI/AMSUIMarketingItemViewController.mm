@@ -1,35 +1,35 @@
 @interface AMSUIMarketingItemViewController
 + (AMSBagKeySet)bagKeySet;
 + (id)createBagForSubProfile;
-- (AMSUIMarketingItemViewController)initWithMarketingItem:(id)a3 bag:(id)a4;
-- (AMSUIMarketingItemViewController)initWithServiceType:(id)a3 placement:(id)a4 account:(id)a5 bag:(id)a6;
-- (AMSUIMarketingItemViewController)initWithServiceType:(id)a3 placement:(id)a4 bag:(id)a5;
+- (AMSUIMarketingItemViewController)initWithMarketingItem:(id)item bag:(id)bag;
+- (AMSUIMarketingItemViewController)initWithServiceType:(id)type placement:(id)placement account:(id)account bag:(id)bag;
+- (AMSUIMarketingItemViewController)initWithServiceType:(id)type placement:(id)placement bag:(id)bag;
 - (NSString)offerHints;
 - (NSString)seed;
-- (id)_performCampaignAttributionWithBag:(id)a3;
+- (id)_performCampaignAttributionWithBag:(id)bag;
 - (void)_performCampaignAttributionIfNeeded;
-- (void)_setInternalClientOptionsValue:(id)a3 forKey:(id)a4;
+- (void)_setInternalClientOptionsValue:(id)value forKey:(id)key;
 @end
 
 @implementation AMSUIMarketingItemViewController
 
-- (AMSUIMarketingItemViewController)initWithMarketingItem:(id)a3 bag:(id)a4
+- (AMSUIMarketingItemViewController)initWithMarketingItem:(id)item bag:(id)bag
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 URLForKey:@"marketingItemDynamicUIUrl"];
+  itemCopy = item;
+  bagCopy = bag;
+  v8 = [bagCopy URLForKey:@"marketingItemDynamicUIUrl"];
   v14.receiver = self;
   v14.super_class = AMSUIMarketingItemViewController;
-  v9 = [(AMSUIDynamicViewController *)&v14 initWithBag:v7 bagValue:v8];
+  v9 = [(AMSUIDynamicViewController *)&v14 initWithBag:bagCopy bagValue:v8];
 
   if (v9)
   {
-    [(AMSUIMarketingItemViewController *)v9 setOriginalBag:v7];
+    [(AMSUIMarketingItemViewController *)v9 setOriginalBag:bagCopy];
     [(AMSUIMarketingItemViewController *)v9 _performCampaignAttributionIfNeeded];
     v15 = @"marketingItem";
-    v10 = [v6 rawValues];
-    v16[0] = v10;
+    rawValues = [itemCopy rawValues];
+    v16[0] = rawValues;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
     [(AMSUIDynamicViewController *)v9 setInternalClientOptions:v11];
   }
@@ -38,25 +38,25 @@
   return v9;
 }
 
-- (AMSUIMarketingItemViewController)initWithServiceType:(id)a3 placement:(id)a4 bag:(id)a5
+- (AMSUIMarketingItemViewController)initWithServiceType:(id)type placement:(id)placement bag:(id)bag
 {
   v18[2] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 URLForKey:@"marketingItemDynamicUIUrl"];
+  typeCopy = type;
+  placementCopy = placement;
+  bagCopy = bag;
+  v11 = [bagCopy URLForKey:@"marketingItemDynamicUIUrl"];
   v16.receiver = self;
   v16.super_class = AMSUIMarketingItemViewController;
-  v12 = [(AMSUIDynamicViewController *)&v16 initWithBag:v10 bagValue:v11];
+  v12 = [(AMSUIDynamicViewController *)&v16 initWithBag:bagCopy bagValue:v11];
 
   if (v12)
   {
-    [(AMSUIMarketingItemViewController *)v12 setOriginalBag:v10];
+    [(AMSUIMarketingItemViewController *)v12 setOriginalBag:bagCopy];
     [(AMSUIMarketingItemViewController *)v12 _performCampaignAttributionIfNeeded];
     v17[0] = @"serviceType";
     v17[1] = @"placement";
-    v18[0] = v8;
-    v18[1] = v9;
+    v18[0] = typeCopy;
+    v18[1] = placementCopy;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:v17 count:2];
     [(AMSUIDynamicViewController *)v12 setInternalClientOptions:v13];
   }
@@ -67,59 +67,59 @@
 
 - (NSString)offerHints
 {
-  v2 = [(AMSUIDynamicViewController *)self internalClientOptions];
-  v3 = [v2 objectForKeyedSubscript:@"offerHints"];
+  internalClientOptions = [(AMSUIDynamicViewController *)self internalClientOptions];
+  v3 = [internalClientOptions objectForKeyedSubscript:@"offerHints"];
 
   return v3;
 }
 
 - (NSString)seed
 {
-  v2 = [(AMSUIDynamicViewController *)self internalClientOptions];
-  v3 = [v2 objectForKeyedSubscript:@"seed"];
+  internalClientOptions = [(AMSUIDynamicViewController *)self internalClientOptions];
+  v3 = [internalClientOptions objectForKeyedSubscript:@"seed"];
 
   return v3;
 }
 
-- (void)_setInternalClientOptionsValue:(id)a3 forKey:(id)a4
+- (void)_setInternalClientOptionsValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AMSUIDynamicViewController *)self internalClientOptions];
-  v9 = [v8 mutableCopy];
+  keyCopy = key;
+  valueCopy = value;
+  internalClientOptions = [(AMSUIDynamicViewController *)self internalClientOptions];
+  v9 = [internalClientOptions mutableCopy];
 
-  [v9 setObject:v7 forKeyedSubscript:v6];
+  [v9 setObject:valueCopy forKeyedSubscript:keyCopy];
   [(AMSUIDynamicViewController *)self setInternalClientOptions:v9];
 }
 
 - (void)_performCampaignAttributionIfNeeded
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(AMSUIMarketingItemViewController *)self campaignQueryParameters];
-  v4 = [v3 count];
+  campaignQueryParameters = [(AMSUIMarketingItemViewController *)self campaignQueryParameters];
+  v4 = [campaignQueryParameters count];
 
   if (v4)
   {
-    v5 = [(AMSUIMarketingItemViewController *)self originalBag];
-    v6 = [(AMSUIMarketingItemViewController *)self _performCampaignAttributionWithBag:v5];
+    originalBag = [(AMSUIMarketingItemViewController *)self originalBag];
+    oSLogObject = [(AMSUIMarketingItemViewController *)self _performCampaignAttributionWithBag:originalBag];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __71__AMSUIMarketingItemViewController__performCampaignAttributionIfNeeded__block_invoke;
     v10[3] = &unk_1E7F24FB0;
     v10[4] = self;
-    [v6 addFinishBlock:v10];
+    [oSLogObject addFinishBlock:v10];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E698C968] sharedConfig];
-    if (!v5)
+    originalBag = [MEMORY[0x1E698C968] sharedConfig];
+    if (!originalBag)
     {
-      v5 = [MEMORY[0x1E698C968] sharedConfig];
+      originalBag = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v6 = [v5 OSLogObject];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [originalBag OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v7 = objc_opt_class();
       v8 = AMSLogKey();
@@ -127,7 +127,7 @@
       v12 = v7;
       v13 = 2114;
       v14 = v8;
-      _os_log_impl(&dword_1BB036000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No campaign query parameters provided", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] No campaign query parameters provided", buf, 0x16u);
     }
   }
 
@@ -191,42 +191,42 @@ LABEL_10:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_performCampaignAttributionWithBag:(id)a3
+- (id)_performCampaignAttributionWithBag:(id)bag
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  bagCopy = bag;
   v5 = AMSLogKey();
-  v6 = [MEMORY[0x1E698C968] sharedConfig];
-  if (!v6)
+  mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+  if (!mEMORY[0x1E698C968])
   {
-    v6 = [MEMORY[0x1E698C968] sharedConfig];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
   }
 
-  v7 = [v6 OSLogObject];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+  if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
   {
     v8 = objc_opt_class();
     v9 = AMSLogKey();
-    v10 = [(AMSUIMarketingItemViewController *)self campaignQueryParameters];
+    campaignQueryParameters = [(AMSUIMarketingItemViewController *)self campaignQueryParameters];
     *buf = 138543874;
     v20 = v8;
     v21 = 2114;
     v22 = v9;
     v23 = 2112;
-    v24 = v10;
-    _os_log_impl(&dword_1BB036000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Found campaign query parameters, kicking off Campaign Attribution: %@", buf, 0x20u);
+    v24 = campaignQueryParameters;
+    _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Found campaign query parameters, kicking off Campaign Attribution: %@", buf, 0x20u);
   }
 
-  v11 = [v4 URLForKey:@"marketingItemDynamicUIUrl"];
-  v12 = [v11 valuePromise];
+  v11 = [bagCopy URLForKey:@"marketingItemDynamicUIUrl"];
+  valuePromise = [v11 valuePromise];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __71__AMSUIMarketingItemViewController__performCampaignAttributionWithBag___block_invoke;
   v17[3] = &unk_1E7F24FD8;
   v17[4] = self;
-  v18 = v4;
-  v13 = v4;
-  v14 = [v12 continueWithBlock:v17];
+  v18 = bagCopy;
+  v13 = bagCopy;
+  v14 = [valuePromise continueWithBlock:v17];
 
   v15 = *MEMORY[0x1E69E9840];
 
@@ -434,27 +434,27 @@ id __71__AMSUIMarketingItemViewController__performCampaignAttributionWithBag___b
 + (id)createBagForSubProfile
 {
   v2 = MEMORY[0x1E698C7E0];
-  v3 = [objc_opt_class() bagKeySet];
-  v4 = [objc_opt_class() bagSubProfile];
-  v5 = [objc_opt_class() bagSubProfileVersion];
-  [v2 registerBagKeySet:v3 forProfile:v4 profileVersion:v5];
+  bagKeySet = [objc_opt_class() bagKeySet];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  [v2 registerBagKeySet:bagKeySet forProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   v6 = MEMORY[0x1E698C7D8];
-  v7 = [objc_opt_class() bagSubProfile];
-  v8 = [objc_opt_class() bagSubProfileVersion];
-  v9 = [v6 bagForProfile:v7 profileVersion:v8];
+  bagSubProfile2 = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion2 = [objc_opt_class() bagSubProfileVersion];
+  v9 = [v6 bagForProfile:bagSubProfile2 profileVersion:bagSubProfileVersion2];
 
   return v9;
 }
 
-- (AMSUIMarketingItemViewController)initWithServiceType:(id)a3 placement:(id)a4 account:(id)a5 bag:(id)a6
+- (AMSUIMarketingItemViewController)initWithServiceType:(id)type placement:(id)placement account:(id)account bag:(id)bag
 {
-  v10 = a5;
-  v11 = [(AMSUIMarketingItemViewController *)self initWithServiceType:a3 placement:a4 bag:a6];
+  accountCopy = account;
+  v11 = [(AMSUIMarketingItemViewController *)self initWithServiceType:type placement:placement bag:bag];
   v12 = v11;
   if (v11)
   {
-    [(AMSUIDynamicViewController *)v11 setAccount:v10];
+    [(AMSUIDynamicViewController *)v11 setAccount:accountCopy];
   }
 
   return v12;

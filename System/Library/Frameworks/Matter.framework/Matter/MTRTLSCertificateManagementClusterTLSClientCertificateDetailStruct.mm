@@ -1,6 +1,6 @@
 @interface MTRTLSCertificateManagementClusterTLSClientCertificateDetailStruct
 - (MTRTLSCertificateManagementClusterTLSClientCertificateDetailStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRTLSCertificateManagementClusterTLSClientCertificateDetailStruct);
-  v5 = [(MTRTLSCertificateManagementClusterTLSClientCertificateDetailStruct *)self ccdid];
-  [(MTRTLSCertificateManagementClusterTLSClientCertificateDetailStruct *)v4 setCcdid:v5];
+  ccdid = [(MTRTLSCertificateManagementClusterTLSClientCertificateDetailStruct *)self ccdid];
+  [(MTRTLSCertificateManagementClusterTLSClientCertificateDetailStruct *)v4 setCcdid:ccdid];
 
-  v6 = [(MTRTLSCertificateManagementClusterTLSClientCertificateDetailStruct *)self clientCertificate];
-  [(MTRTLSCertificateManagementClusterTLSClientCertificateDetailStruct *)v4 setClientCertificate:v6];
+  clientCertificate = [(MTRTLSCertificateManagementClusterTLSClientCertificateDetailStruct *)self clientCertificate];
+  [(MTRTLSCertificateManagementClusterTLSClientCertificateDetailStruct *)v4 setClientCertificate:clientCertificate];
 
-  v7 = [(MTRTLSCertificateManagementClusterTLSClientCertificateDetailStruct *)self intermediateCertificates];
-  [(MTRTLSCertificateManagementClusterTLSClientCertificateDetailStruct *)v4 setIntermediateCertificates:v7];
+  intermediateCertificates = [(MTRTLSCertificateManagementClusterTLSClientCertificateDetailStruct *)self intermediateCertificates];
+  [(MTRTLSCertificateManagementClusterTLSClientCertificateDetailStruct *)v4 setIntermediateCertificates:intermediateCertificates];
 
-  v8 = [(MTRTLSCertificateManagementClusterTLSClientCertificateDetailStruct *)self fabricIndex];
-  [(MTRTLSCertificateManagementClusterTLSClientCertificateDetailStruct *)v4 setFabricIndex:v8];
+  fabricIndex = [(MTRTLSCertificateManagementClusterTLSClientCertificateDetailStruct *)self fabricIndex];
+  [(MTRTLSCertificateManagementClusterTLSClientCertificateDetailStruct *)v4 setFabricIndex:fabricIndex];
 
   return v4;
 }

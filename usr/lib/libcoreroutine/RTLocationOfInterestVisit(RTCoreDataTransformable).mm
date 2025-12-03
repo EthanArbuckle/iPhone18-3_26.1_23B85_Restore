@@ -43,37 +43,37 @@ LABEL_8:
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D01160]);
-    v5 = [v3 locationLatitude];
-    [v5 doubleValue];
+    locationLatitude = [v3 locationLatitude];
+    [locationLatitude doubleValue];
     v7 = v6;
-    v8 = [v3 locationLongitude];
-    [v8 doubleValue];
+    locationLongitude = [v3 locationLongitude];
+    [locationLongitude doubleValue];
     v10 = v9;
-    v11 = [v3 locationHorizontalUncertainty];
-    [v11 doubleValue];
+    locationHorizontalUncertainty = [v3 locationHorizontalUncertainty];
+    [locationHorizontalUncertainty doubleValue];
     v13 = v12;
-    v14 = [v3 locationAltitude];
-    [v14 doubleValue];
+    locationAltitude = [v3 locationAltitude];
+    [locationAltitude doubleValue];
     v16 = v15;
-    v17 = [v3 locationVerticalUncertainty];
-    [v17 doubleValue];
+    locationVerticalUncertainty = [v3 locationVerticalUncertainty];
+    [locationVerticalUncertainty doubleValue];
     v19 = v18;
-    v20 = [v3 locationReferenceFrame];
-    v21 = [v20 intValue];
-    v22 = [v3 locationSourceAccuracy];
-    v23 = [v4 initWithLatitude:0 longitude:v21 horizontalUncertainty:objc_msgSend(v22 altitude:"intValue") verticalUncertainty:v7 date:v10 referenceFrame:v13 speed:v16 sourceAccuracy:{v19, 0.0}];
+    locationReferenceFrame = [v3 locationReferenceFrame];
+    intValue = [locationReferenceFrame intValue];
+    locationSourceAccuracy = [v3 locationSourceAccuracy];
+    v23 = [v4 initWithLatitude:0 longitude:intValue horizontalUncertainty:objc_msgSend(locationSourceAccuracy altitude:"intValue") verticalUncertainty:v7 date:v10 referenceFrame:v13 speed:v16 sourceAccuracy:{v19, 0.0}];
 
     if (v23)
     {
       v24 = objc_alloc(MEMORY[0x277D01188]);
-      v25 = [v3 identifier];
-      v26 = [v3 entryDate];
-      v27 = [v3 exitDate];
-      v28 = [v3 locationOfInterestConfidence];
-      [v28 doubleValue];
+      identifier = [v3 identifier];
+      entryDate = [v3 entryDate];
+      exitDate = [v3 exitDate];
+      locationOfInterestConfidence = [v3 locationOfInterestConfidence];
+      [locationOfInterestConfidence doubleValue];
       v30 = v29;
-      v31 = [v3 locationOfInterestSource];
-      v32 = [v24 initWithIdentifier:v25 entry:v26 exit:v27 location:v23 locationOfInterestConfidence:objc_msgSend(v31 locationOfInterestSource:{"unsignedIntegerValue"), v30}];
+      locationOfInterestSource = [v3 locationOfInterestSource];
+      v32 = [v24 initWithIdentifier:identifier entry:entryDate exit:exitDate location:v23 locationOfInterestConfidence:objc_msgSend(locationOfInterestSource locationOfInterestSource:{"unsignedIntegerValue"), v30}];
     }
 
     else

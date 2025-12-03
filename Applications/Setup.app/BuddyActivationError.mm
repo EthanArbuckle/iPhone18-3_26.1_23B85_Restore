@@ -1,14 +1,14 @@
 @interface BuddyActivationError
-- (BuddyActivationError)initWithConnectionFailure:(BOOL)a3 cellular:(BOOL)a4;
+- (BuddyActivationError)initWithConnectionFailure:(BOOL)failure cellular:(BOOL)cellular;
 @end
 
 @implementation BuddyActivationError
 
-- (BuddyActivationError)initWithConnectionFailure:(BOOL)a3 cellular:(BOOL)a4
+- (BuddyActivationError)initWithConnectionFailure:(BOOL)failure cellular:(BOOL)cellular
 {
   v9 = a2;
-  v8 = a3;
-  v7 = a4;
+  failureCopy = failure;
+  cellularCopy = cellular;
   location = 0;
   v6.receiver = self;
   v6.super_class = BuddyActivationError;
@@ -16,8 +16,8 @@
   objc_storeStrong(&location, location);
   if (location)
   {
-    *(location + 8) = v8;
-    *(location + 9) = v7;
+    *(location + 8) = failureCopy;
+    *(location + 9) = cellularCopy;
   }
 
   v4 = location;

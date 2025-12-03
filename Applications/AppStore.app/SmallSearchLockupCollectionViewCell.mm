@@ -1,11 +1,11 @@
 @interface SmallSearchLockupCollectionViewCell
-- (_TtC8AppStore35SmallSearchLockupCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC8AppStore35SmallSearchLockupCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation SmallSearchLockupCollectionViewCell
 
-- (_TtC8AppStore35SmallSearchLockupCollectionViewCell)initWithCoder:(id)a3
+- (_TtC8AppStore35SmallSearchLockupCollectionViewCell)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC8AppStore35SmallSearchLockupCollectionViewCell_lockupView;
   *(&self->super.super.super.super.super.isa + v3) = [objc_allocWithZone(type metadata accessor for SmallLockupView()) initWithFrame:{0.0, 0.0, 0.0, 0.0}];
@@ -21,8 +21,8 @@
   v2 = v13.receiver;
   [(SmallSearchLockupCollectionViewCell *)&v13 layoutSubviews];
   v3 = *&v2[OBJC_IVAR____TtC8AppStore35SmallSearchLockupCollectionViewCell_lockupView];
-  v4 = [v2 contentView];
-  [v4 bounds];
+  contentView = [v2 contentView];
+  [contentView bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;

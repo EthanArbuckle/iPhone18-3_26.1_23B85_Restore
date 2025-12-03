@@ -1,36 +1,36 @@
 @interface NTKCBuildNumberComplicationEntryModel
-+ (id)modelWithBuildNum:(id)a3;
-- (id)entryForComplicationFamily:(int64_t)a3;
++ (id)modelWithBuildNum:(id)num;
+- (id)entryForComplicationFamily:(int64_t)family;
 @end
 
 @implementation NTKCBuildNumberComplicationEntryModel
 
-+ (id)modelWithBuildNum:(id)a3
++ (id)modelWithBuildNum:(id)num
 {
-  v3 = a3;
+  numCopy = num;
   v4 = objc_alloc_init(NTKCBuildNumberComplicationEntryModel);
   buildNum = v4->buildNum;
-  v4->buildNum = v3;
-  v6 = v3;
+  v4->buildNum = numCopy;
+  v6 = numCopy;
 
   prefixString = v4->prefixString;
   v4->prefixString = @"Phone";
 
-  v8 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
 
-  [(NTKTimelineEntryModel *)v4 setEntryDate:v8];
+  [(NTKTimelineEntryModel *)v4 setEntryDate:date];
 
   return v4;
 }
 
-- (id)entryForComplicationFamily:(int64_t)a3
+- (id)entryForComplicationFamily:(int64_t)family
 {
   v5 = [MEMORY[0x277CBBB88] textProviderWithText:self->prefixString];
   v6 = [MEMORY[0x277CBBB88] textProviderWithText:self->buildNum];
   v7 = 0;
-  if (a3 <= 8)
+  if (family <= 8)
   {
-    switch(a3)
+    switch(family)
     {
       case 1:
         v9 = [MEMORY[0x277CBBA08] templateWithHeaderTextProvider:v5 body1TextProvider:v6];
@@ -55,11 +55,11 @@
     goto LABEL_17;
   }
 
-  if (a3 > 10)
+  if (family > 10)
   {
-    if (a3 != 11)
+    if (family != 11)
     {
-      if (a3 != 12)
+      if (family != 12)
       {
         goto LABEL_19;
       }
@@ -81,7 +81,7 @@ LABEL_15:
     goto LABEL_19;
   }
 
-  if (a3 != 9)
+  if (family != 9)
   {
     v8 = MEMORY[0x277CBB898];
 LABEL_12:
@@ -90,9 +90,9 @@ LABEL_12:
   }
 
   v10 = [(NTKCBuildNumberComplicationEntryModel *)self entryForComplicationFamily:10];
-  v11 = [v10 complicationTemplate];
+  complicationTemplate = [v10 complicationTemplate];
 
-  v12 = [MEMORY[0x277CBB810] templateWithCircularTemplate:v11];
+  v12 = [MEMORY[0x277CBB810] templateWithCircularTemplate:complicationTemplate];
 
   if (!v12)
   {
@@ -101,8 +101,8 @@ LABEL_12:
 
 LABEL_18:
   v13 = MEMORY[0x277CBBAC8];
-  v14 = [(NTKTimelineEntryModel *)self entryDate];
-  v7 = [v13 entryWithDate:v14 complicationTemplate:v12];
+  entryDate = [(NTKTimelineEntryModel *)self entryDate];
+  v7 = [v13 entryWithDate:entryDate complicationTemplate:v12];
 
 LABEL_19:
 

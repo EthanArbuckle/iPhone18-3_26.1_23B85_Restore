@@ -1,81 +1,81 @@
 @interface _SWCServiceDetails
-+ (BOOL)auditTokenHasReadAccess:(id *)a3;
-+ (BOOL)auditTokenHasWriteAccess:(id *)a3;
++ (BOOL)auditTokenHasReadAccess:(id *)access;
++ (BOOL)auditTokenHasWriteAccess:(id *)access;
 + (BOOL)currentProcessHasReadAccess;
 + (BOOL)currentProcessHasWriteAccess;
 + (BOOL)isDeveloperModeEnabled;
-+ (id)_serviceDetailsWithServiceSpecifier:(id)a3 URLComponents:(id)a4 limit:(unint64_t)a5 callerAuditToken:(id *)a6 error:(id *)a7;
-+ (id)serviceDetailsWithServiceSpecifier:(id)a3 URLComponents:(id)a4 limit:(unint64_t)a5 auditToken:(id *)a6 error:(id *)a7;
-+ (id)serviceDetailsWithServiceSpecifier:(id)a3 URLComponents:(id)a4 limit:(unint64_t)a5 error:(id *)a6;
-+ (id)serviceDetailsWithServiceSpecifier:(id)a3 error:(id *)a4;
-+ (id)serviceDetailsWithServiceSpecifier:(id)a3 limit:(unint64_t)a4 auditToken:(id *)a5 error:(id *)a6;
-+ (id)serviceDetailsWithServiceSpecifier:(id)a3 limit:(unint64_t)a4 error:(id *)a5;
-+ (void)setAdditionalServiceDetailsForApplicationIdentifiers:(id)a3 usingContentsOfDictionary:(id)a4 completionHandler:(id)a5;
-+ (void)synchronizeWithCompletionHandler:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)_serviceDetailsWithServiceSpecifier:(id)specifier URLComponents:(id)components limit:(unint64_t)limit callerAuditToken:(id *)token error:(id *)error;
++ (id)serviceDetailsWithServiceSpecifier:(id)specifier URLComponents:(id)components limit:(unint64_t)limit auditToken:(id *)token error:(id *)error;
++ (id)serviceDetailsWithServiceSpecifier:(id)specifier URLComponents:(id)components limit:(unint64_t)limit error:(id *)error;
++ (id)serviceDetailsWithServiceSpecifier:(id)specifier error:(id *)error;
++ (id)serviceDetailsWithServiceSpecifier:(id)specifier limit:(unint64_t)limit auditToken:(id *)token error:(id *)error;
++ (id)serviceDetailsWithServiceSpecifier:(id)specifier limit:(unint64_t)limit error:(id *)error;
++ (void)setAdditionalServiceDetailsForApplicationIdentifiers:(id)identifiers usingContentsOfDictionary:(id)dictionary completionHandler:(id)handler;
++ (void)synchronizeWithCompletionHandler:(id)handler;
+- (BOOL)isEqual:(id)equal;
 - (NSNumber)isEnabledByDefault;
-- (_SWCServiceDetails)initWithCoder:(id)a3;
+- (_SWCServiceDetails)initWithCoder:(id)coder;
 - (char)modeOfOperation;
-- (id)_initWithServiceSpecifier:(id)a3 fields:(const SWCFields *)a4;
+- (id)_initWithServiceSpecifier:(id)specifier fields:(const SWCFields *)fields;
 - (id)debugDescription;
 - (id)description;
 - (id)redactedDescription;
 - (unsigned)siteApprovalState;
-- (void)encodeWithCoder:(id)a3;
-- (void)waitForSiteApprovalWithCompletionHandler:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)waitForSiteApprovalWithCompletionHandler:(id)handler;
 @end
 
 @implementation _SWCServiceDetails
 
-+ (id)serviceDetailsWithServiceSpecifier:(id)a3 error:(id *)a4
++ (id)serviceDetailsWithServiceSpecifier:(id)specifier error:(id *)error
 {
-  v4 = [a1 _serviceDetailsWithServiceSpecifier:a3 URLComponents:0 limit:-1 callerAuditToken:0 error:a4];
+  v4 = [self _serviceDetailsWithServiceSpecifier:specifier URLComponents:0 limit:-1 callerAuditToken:0 error:error];
 
   return v4;
 }
 
-+ (id)serviceDetailsWithServiceSpecifier:(id)a3 limit:(unint64_t)a4 error:(id *)a5
++ (id)serviceDetailsWithServiceSpecifier:(id)specifier limit:(unint64_t)limit error:(id *)error
 {
-  v5 = [a1 _serviceDetailsWithServiceSpecifier:a3 URLComponents:0 limit:a4 callerAuditToken:0 error:a5];
+  v5 = [self _serviceDetailsWithServiceSpecifier:specifier URLComponents:0 limit:limit callerAuditToken:0 error:error];
 
   return v5;
 }
 
-+ (id)serviceDetailsWithServiceSpecifier:(id)a3 limit:(unint64_t)a4 auditToken:(id *)a5 error:(id *)a6
++ (id)serviceDetailsWithServiceSpecifier:(id)specifier limit:(unint64_t)limit auditToken:(id *)token error:(id *)error
 {
-  v6 = [a1 _serviceDetailsWithServiceSpecifier:a3 URLComponents:0 limit:a4 callerAuditToken:a5 error:a6];
+  v6 = [self _serviceDetailsWithServiceSpecifier:specifier URLComponents:0 limit:limit callerAuditToken:token error:error];
 
   return v6;
 }
 
-+ (id)serviceDetailsWithServiceSpecifier:(id)a3 URLComponents:(id)a4 limit:(unint64_t)a5 error:(id *)a6
++ (id)serviceDetailsWithServiceSpecifier:(id)specifier URLComponents:(id)components limit:(unint64_t)limit error:(id *)error
 {
-  v6 = [a1 _serviceDetailsWithServiceSpecifier:a3 URLComponents:a4 limit:a5 callerAuditToken:0 error:a6];
+  v6 = [self _serviceDetailsWithServiceSpecifier:specifier URLComponents:components limit:limit callerAuditToken:0 error:error];
 
   return v6;
 }
 
-+ (id)serviceDetailsWithServiceSpecifier:(id)a3 URLComponents:(id)a4 limit:(unint64_t)a5 auditToken:(id *)a6 error:(id *)a7
++ (id)serviceDetailsWithServiceSpecifier:(id)specifier URLComponents:(id)components limit:(unint64_t)limit auditToken:(id *)token error:(id *)error
 {
-  v7 = [a1 _serviceDetailsWithServiceSpecifier:a3 URLComponents:a4 limit:a5 callerAuditToken:a6 error:a7];
+  v7 = [self _serviceDetailsWithServiceSpecifier:specifier URLComponents:components limit:limit callerAuditToken:token error:error];
 
   return v7;
 }
 
-- (id)_initWithServiceSpecifier:(id)a3 fields:(const SWCFields *)a4
+- (id)_initWithServiceSpecifier:(id)specifier fields:(const SWCFields *)fields
 {
-  v7 = a3;
+  specifierCopy = specifier;
   v13.receiver = self;
   v13.super_class = _SWCServiceDetails;
   v8 = [(_SWCServiceDetails *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_serviceSpecifier, a3);
-    if (a4)
+    objc_storeStrong(&v8->_serviceSpecifier, specifier);
+    if (fields)
     {
-      v11 = *a4;
-      relativeOrder = a4->relativeOrder;
+      v11 = *fields;
+      relativeOrder = fields->relativeOrder;
     }
 
     else
@@ -91,10 +91,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -102,7 +102,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_SWCServiceSpecifier *)self->_serviceSpecifier isEqual:v4->_serviceSpecifier];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_SWCServiceSpecifier *)self->_serviceSpecifier isEqual:equalCopy->_serviceSpecifier];
   }
 
   return v5;
@@ -111,12 +111,12 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(_SWCServiceSpecifier *)self->_serviceSpecifier serviceType];
-  v5 = [(_SWCServiceSpecifier *)self->_serviceSpecifier applicationIdentifier];
-  v6 = [(_SWCServiceSpecifier *)self->_serviceSpecifier domain];
+  serviceType = [(_SWCServiceSpecifier *)self->_serviceSpecifier serviceType];
+  applicationIdentifier = [(_SWCServiceSpecifier *)self->_serviceSpecifier applicationIdentifier];
+  domain = [(_SWCServiceSpecifier *)self->_serviceSpecifier domain];
   v7 = _SWCServiceApprovalStateGetDebugDescription(*&self->_fields & 3);
   v8 = _SWCServiceApprovalStateGetDebugDescription((*&self->_fields >> 2) & 3);
-  v9 = [v3 initWithFormat:@"{ s = %@, a = %@, d = %@, ua = %@, sa = %@ }", v4, v5, v6, v7, v8];
+  v9 = [v3 initWithFormat:@"{ s = %@, a = %@, d = %@, ua = %@, sa = %@ }", serviceType, applicationIdentifier, domain, v7, v8];
 
   return v9;
 }
@@ -134,30 +134,30 @@
 - (id)redactedDescription
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(_SWCServiceSpecifier *)self->_serviceSpecifier serviceType];
-  v5 = [(_SWCServiceSpecifier *)self->_serviceSpecifier SWCApplicationIdentifier];
-  v6 = [v5 redactedDescription];
-  v7 = [(_SWCServiceSpecifier *)self->_serviceSpecifier SWCDomain];
-  v8 = [v7 redactedDescription];
+  serviceType = [(_SWCServiceSpecifier *)self->_serviceSpecifier serviceType];
+  sWCApplicationIdentifier = [(_SWCServiceSpecifier *)self->_serviceSpecifier SWCApplicationIdentifier];
+  redactedDescription = [sWCApplicationIdentifier redactedDescription];
+  sWCDomain = [(_SWCServiceSpecifier *)self->_serviceSpecifier SWCDomain];
+  redactedDescription2 = [sWCDomain redactedDescription];
   v9 = _SWCServiceApprovalStateGetDebugDescription(*&self->_fields & 3);
   v10 = _SWCServiceApprovalStateGetDebugDescription((*&self->_fields >> 2) & 3);
-  v11 = [v3 initWithFormat:@"{ s = %@, a = %@, d = %@, ua = %@, sa = %@ }", v4, v6, v8, v9, v10];
+  v11 = [v3 initWithFormat:@"{ s = %@, a = %@, d = %@, ua = %@, sa = %@ }", serviceType, redactedDescription, redactedDescription2, v9, v10];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_serviceSpecifier forKey:@"serviceSpecifier"];
-  [v4 encodeInt64:*&self->_fields | (self->_fields.relativeOrder << 16) forKey:@"fields"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_serviceSpecifier forKey:@"serviceSpecifier"];
+  [coderCopy encodeInt64:*&self->_fields | (self->_fields.relativeOrder << 16) forKey:@"fields"];
 }
 
-- (_SWCServiceDetails)initWithCoder:(id)a3
+- (_SWCServiceDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 swc_decodeObjectOfClass:objc_opt_class() forKey:@"serviceSpecifier"];
-  v6 = [v4 decodeInt64ForKey:@"fields"];
+  coderCopy = coder;
+  v5 = [coderCopy swc_decodeObjectOfClass:objc_opt_class() forKey:@"serviceSpecifier"];
+  v6 = [coderCopy decodeInt64ForKey:@"fields"];
   v9 = v6;
   v10 = BYTE2(v6);
   v7 = [(_SWCServiceDetails *)self _initWithServiceSpecifier:v5 fields:&v9];
@@ -179,18 +179,18 @@
   }
 }
 
-- (void)waitForSiteApprovalWithCompletionHandler:(id)a3
+- (void)waitForSiteApprovalWithCompletionHandler:(id)handler
 {
-  v5 = a3;
-  if (!v5)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"SWCServiceDetails.mm" lineNumber:239 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SWCServiceDetails.mm" lineNumber:239 description:{@"Invalid parameter not satisfying: %@", @"completionHandler != nil"}];
   }
 
   if ((*&self->_fields & 0xC) != 0)
   {
-    v5[2](v5, self, 0);
+    handlerCopy[2](handlerCopy, self, 0);
   }
 
   else
@@ -200,11 +200,11 @@
     v11[1] = 3221225472;
     v11[2] = __83___SWCServiceDetails_SWCServiceApproval__waitForSiteApprovalWithCompletionHandler___block_invoke;
     v11[3] = &unk_279BBE000;
-    v7 = v5;
+    v7 = handlerCopy;
     v12 = v7;
     v8 = [v6 remoteObjectProxyWithErrorHandler:v11];
-    v9 = [(_SWCServiceDetails *)self serviceSpecifier];
-    [v8 waitForSiteApprovalWithServiceSpecifier:v9 completionHandler:v7];
+    serviceSpecifier = [(_SWCServiceDetails *)self serviceSpecifier];
+    [v8 waitForSiteApprovalWithServiceSpecifier:serviceSpecifier completionHandler:v7];
   }
 }
 
@@ -215,22 +215,22 @@
   {
     v5[0] = v6[0];
     v5[1] = v6[1];
-    LOBYTE(v3) = [a1 auditTokenHasReadAccess:v5];
+    LOBYTE(v3) = [self auditTokenHasReadAccess:v5];
   }
 
   return v3;
 }
 
-+ (BOOL)auditTokenHasReadAccess:(id *)a3
++ (BOOL)auditTokenHasReadAccess:(id *)access
 {
-  v4 = *&a3->var0[4];
-  v8 = *a3->var0;
+  v4 = *&access->var0[4];
+  v8 = *access->var0;
   v9 = v4;
   v5 = _SWCCanAuditTokenConnect(&v8);
   if (v5)
   {
-    v6 = *&a3->var0[4];
-    v8 = *a3->var0;
+    v6 = *&access->var0[4];
+    v8 = *access->var0;
     v9 = v6;
     LOBYTE(v5) = _SWCIsAuditTokenEntitled(&v8, 0);
   }
@@ -245,22 +245,22 @@
   {
     v5[0] = v6[0];
     v5[1] = v6[1];
-    LOBYTE(v3) = [a1 auditTokenHasWriteAccess:v5];
+    LOBYTE(v3) = [self auditTokenHasWriteAccess:v5];
   }
 
   return v3;
 }
 
-+ (BOOL)auditTokenHasWriteAccess:(id *)a3
++ (BOOL)auditTokenHasWriteAccess:(id *)access
 {
-  v4 = *&a3->var0[4];
-  v8 = *a3->var0;
+  v4 = *&access->var0[4];
+  v8 = *access->var0;
   v9 = v4;
   v5 = _SWCCanAuditTokenConnect(&v8);
   if (v5)
   {
-    v6 = *&a3->var0[4];
-    v8 = *a3->var0;
+    v6 = *&access->var0[4];
+    v8 = *access->var0;
     v9 = v6;
     LOBYTE(v5) = _SWCIsAuditTokenEntitled(&v8, 1);
   }
@@ -298,21 +298,21 @@
 
 - (char)modeOfOperation
 {
-  v2 = [(_SWCServiceSpecifier *)self->_serviceSpecifier SWCDomain];
-  v3 = [v2 modeOfOperation];
+  sWCDomain = [(_SWCServiceSpecifier *)self->_serviceSpecifier SWCDomain];
+  modeOfOperation = [sWCDomain modeOfOperation];
 
-  return v3;
+  return modeOfOperation;
 }
 
-+ (void)setAdditionalServiceDetailsForApplicationIdentifiers:(id)a3 usingContentsOfDictionary:(id)a4 completionHandler:(id)a5
++ (void)setAdditionalServiceDetailsForApplicationIdentifiers:(id)identifiers usingContentsOfDictionary:(id)dictionary completionHandler:(id)handler
 {
   v38 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v26 = a5;
-  if (v9)
+  identifiersCopy = identifiers;
+  dictionaryCopy = dictionary;
+  handlerCopy = handler;
+  if (identifiersCopy)
   {
-    if (v10)
+    if (dictionaryCopy)
     {
       goto LABEL_3;
     }
@@ -320,25 +320,25 @@
 
   else
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:a1 file:@"SWCServiceDetails.mm" lineNumber:397 description:{@"Invalid parameter not satisfying: %@", @"applicationIdentifiers != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"SWCServiceDetails.mm" lineNumber:397 description:{@"Invalid parameter not satisfying: %@", @"applicationIdentifiers != nil"}];
 
-    if (v10)
+    if (dictionaryCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v25 = [MEMORY[0x277CCA890] currentHandler];
-  [v25 handleFailureInMethod:a2 object:a1 file:@"SWCServiceDetails.mm" lineNumber:398 description:{@"Invalid parameter not satisfying: %@", @"jsonDataByDomainName != nil"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"SWCServiceDetails.mm" lineNumber:398 description:{@"Invalid parameter not satisfying: %@", @"jsonDataByDomainName != nil"}];
 
 LABEL_3:
-  v11 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v9, "count")}];
+  v11 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(identifiersCopy, "count")}];
   v35 = 0u;
   v36 = 0u;
   v34 = 0u;
   v33 = 0u;
-  v12 = v9;
+  v12 = identifiersCopy;
   v13 = [v12 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v13)
   {
@@ -369,20 +369,20 @@ LABEL_3:
     while (v13);
   }
 
-  v17 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v10, "count")}];
+  v17 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
   v31[0] = MEMORY[0x277D85DD0];
   v31[1] = 3221225472;
   v31[2] = __136___SWCServiceDetails_Synchronization__setAdditionalServiceDetailsForApplicationIdentifiers_usingContentsOfDictionary_completionHandler___block_invoke;
   v31[3] = &unk_279BBE028;
   v18 = v17;
   v32 = v18;
-  [v10 enumerateKeysAndObjectsUsingBlock:v31];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v31];
   v19 = _SWCGetServerConnection();
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __136___SWCServiceDetails_Synchronization__setAdditionalServiceDetailsForApplicationIdentifiers_usingContentsOfDictionary_completionHandler___block_invoke_2;
   v29[3] = &unk_279BBE000;
-  v20 = v26;
+  v20 = handlerCopy;
   v30 = v20;
   v21 = [v19 remoteObjectProxyWithErrorHandler:v29];
   v27[0] = MEMORY[0x277D85DD0];
@@ -396,15 +396,15 @@ LABEL_3:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)synchronizeWithCompletionHandler:(id)a3
++ (void)synchronizeWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v4 = _SWCGetServerConnection();
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __72___SWCServiceDetails_Synchronization__synchronizeWithCompletionHandler___block_invoke;
   v10[3] = &unk_279BBE000;
-  v5 = v3;
+  v5 = handlerCopy;
   v11 = v5;
   v6 = [v4 remoteObjectProxyWithErrorHandler:v10];
   v8[0] = MEMORY[0x277D85DD0];
@@ -436,10 +436,10 @@ LABEL_3:
   return v4;
 }
 
-+ (id)_serviceDetailsWithServiceSpecifier:(id)a3 URLComponents:(id)a4 limit:(unint64_t)a5 callerAuditToken:(id *)a6 error:(id *)a7
++ (id)_serviceDetailsWithServiceSpecifier:(id)specifier URLComponents:(id)components limit:(unint64_t)limit callerAuditToken:(id *)token error:(id *)error
 {
-  v11 = a3;
-  v12 = a4;
+  specifierCopy = specifier;
+  componentsCopy = components;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -452,9 +452,9 @@ LABEL_3:
   v24 = __Block_byref_object_copy__1;
   v25 = __Block_byref_object_dispose__1;
   v26 = 0;
-  if (a6)
+  if (token)
   {
-    a6 = [MEMORY[0x277CCAE60] valueWithBytes:a6 objCType:"{?=[8I]}"];
+    token = [MEMORY[0x277CCAE60] valueWithBytes:token objCType:"{?=[8I]}"];
   }
 
   v13 = _SWCGetServerConnection();
@@ -464,19 +464,19 @@ LABEL_3:
   v20[3] = &unk_279BBDE70;
   v20[4] = &v21;
   v14 = [v13 synchronousRemoteObjectProxyWithErrorHandler:v20];
-  v15 = [v12 URL];
+  v15 = [componentsCopy URL];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __110___SWCServiceDetails_Private___serviceDetailsWithServiceSpecifier_URLComponents_limit_callerAuditToken_error___block_invoke_2;
   v19[3] = &unk_279BBE0E0;
   v19[4] = &v27;
   v19[5] = &v21;
-  [v14 getDetailsWithServiceSpecifier:v11 URL:v15 limit:a5 callerAuditToken:a6 completionHandler:v19];
+  [v14 getDetailsWithServiceSpecifier:specifierCopy URL:v15 limit:limit callerAuditToken:token completionHandler:v19];
 
   v16 = v28[5];
-  if (a7 && !v16)
+  if (error && !v16)
   {
-    *a7 = v22[5];
+    *error = v22[5];
     v16 = v28[5];
   }
 

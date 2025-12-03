@@ -1,19 +1,19 @@
 @interface PXSharedLibraryComposeMessageActionPerformer
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4;
-- (void)performActionWithInvitationURL:(id)a3 originatorDisplayName:(id)a4 recipients:(id)a5 completionHandler:(id)a6;
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result;
+- (void)performActionWithInvitationURL:(id)l originatorDisplayName:(id)name recipients:(id)recipients completionHandler:(id)handler;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXSharedLibraryComposeMessageActionPerformer
 
-- (void)messageComposeViewController:(id)a3 didFinishWithResult:(int64_t)a4
+- (void)messageComposeViewController:(id)controller didFinishWithResult:(int64_t)result
 {
-  v6 = a3;
+  controllerCopy = controller;
   [(MFMessageComposeViewController *)self->_messageComposeViewController setMessageComposeDelegate:0];
   messageComposeViewController = self->_messageComposeViewController;
   self->_messageComposeViewController = 0;
 
-  if (!a4)
+  if (!result)
   {
     v12 = PLSharedLibraryGetLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -26,7 +26,7 @@
     goto LABEL_14;
   }
 
-  if (a4 == 2)
+  if (result == 2)
   {
     v11 = PLSharedLibraryGetLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -39,7 +39,7 @@
     goto LABEL_14;
   }
 
-  if (a4 != 1)
+  if (result != 1)
   {
     v9 = 0;
 LABEL_14:
@@ -65,7 +65,7 @@ LABEL_15:
   v18 = v10;
   v13 = v9;
   v17 = v13;
-  if (![(PXActionPerformer *)self dismissViewController:v6 completionHandler:v16])
+  if (![(PXActionPerformer *)self dismissViewController:controllerCopy completionHandler:v16])
   {
     v14 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PXSharedLibraryErrorDomain" code:-1000 userInfo:0];
     v15 = PLSharedLibraryGetLog();
@@ -83,9 +83,9 @@ LABEL_15:
 {
   v17 = *MEMORY[0x1E69E9840];
   v3 = +[PXSharedLibrarySettings sharedInstance];
-  v4 = [v3 simulateErrorType];
+  simulateErrorType = [v3 simulateErrorType];
 
-  if (v4 != 7)
+  if (simulateErrorType != 7)
   {
     if ([getMFMessageComposeViewControllerClass_250979() canSendText])
     {
@@ -153,21 +153,21 @@ LABEL_16:
   [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:0 error:v6, *v14];
 }
 
-- (void)performActionWithInvitationURL:(id)a3 originatorDisplayName:(id)a4 recipients:(id)a5 completionHandler:(id)a6
+- (void)performActionWithInvitationURL:(id)l originatorDisplayName:(id)name recipients:(id)recipients completionHandler:(id)handler
 {
-  v11 = a3;
-  v23 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  lCopy = l;
+  nameCopy = name;
+  recipientsCopy = recipients;
+  handlerCopy = handler;
+  if (!lCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryComposeMessageActionPerformer+iOS.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"invitationURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryComposeMessageActionPerformer+iOS.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"invitationURL"}];
   }
 
-  if (v23)
+  if (nameCopy)
   {
-    if (v12)
+    if (recipientsCopy)
     {
       goto LABEL_5;
     }
@@ -175,32 +175,32 @@ LABEL_16:
 
   else
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryComposeMessageActionPerformer+iOS.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"displayName"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryComposeMessageActionPerformer+iOS.m" lineNumber:38 description:{@"Invalid parameter not satisfying: %@", @"displayName"}];
 
-    if (v12)
+    if (recipientsCopy)
     {
       goto LABEL_5;
     }
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryComposeMessageActionPerformer+iOS.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"recipients"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryComposeMessageActionPerformer+iOS.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"recipients"}];
 
 LABEL_5:
   invitationURL = self->_invitationURL;
-  self->_invitationURL = v11;
-  v15 = v11;
+  self->_invitationURL = lCopy;
+  v15 = lCopy;
 
-  v16 = [v23 copy];
+  v16 = [nameCopy copy];
   displayName = self->_displayName;
   self->_displayName = v16;
 
-  v18 = [v12 copy];
+  v18 = [recipientsCopy copy];
   recipients = self->_recipients;
   self->_recipients = v18;
 
-  [(PXActionPerformer *)self performActionWithCompletionHandler:v13];
+  [(PXActionPerformer *)self performActionWithCompletionHandler:handlerCopy];
 }
 
 @end

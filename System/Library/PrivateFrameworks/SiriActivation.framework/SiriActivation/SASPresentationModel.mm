@@ -1,5 +1,5 @@
 @interface SASPresentationModel
-- (SASPresentationModel)initWithPresentationServer:(id)a3;
+- (SASPresentationModel)initWithPresentationServer:(id)server;
 - (void)flushEnqueuedButtonEventCompletions;
 @end
 
@@ -43,8 +43,8 @@
           }
 
           v11 = *(*(&v14 + 1) + 8 * v10);
-          v12 = [(SASPresentationModel *)self presentationServer];
-          (*(v11 + 16))(v11, v12);
+          presentationServer = [(SASPresentationModel *)self presentationServer];
+          (*(v11 + 16))(v11, presentationServer);
 
           ++v10;
         }
@@ -62,16 +62,16 @@
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (SASPresentationModel)initWithPresentationServer:(id)a3
+- (SASPresentationModel)initWithPresentationServer:(id)server
 {
-  v5 = a3;
+  serverCopy = server;
   v11.receiver = self;
   v11.super_class = SASPresentationModel;
   v6 = [(SASPresentationModel *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_presentationServer, a3);
+    objc_storeStrong(&v6->_presentationServer, server);
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     enqueuedButtonEventCompletions = v7->_enqueuedButtonEventCompletions;
     v7->_enqueuedButtonEventCompletions = v8;

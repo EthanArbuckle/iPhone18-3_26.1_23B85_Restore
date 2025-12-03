@@ -1,30 +1,30 @@
 @interface DTUVShellService
-- (DTUVShellService)initWithChannel:(id)a3;
-- (id)_makeDTXMessageFrom:(id)a3;
-- (id)_makeDTXReplyHandlerFrom:(id)a3;
-- (id)_makeServiceMessageFrom:(id)a3 error:(id *)a4;
-- (id)_makeServiceReplyHandlerFrom:(id)a3;
-- (id)createExternalService:(id)a3 error:(id *)a4;
+- (DTUVShellService)initWithChannel:(id)channel;
+- (id)_makeDTXMessageFrom:(id)from;
+- (id)_makeDTXReplyHandlerFrom:(id)from;
+- (id)_makeServiceMessageFrom:(id)from error:(id *)error;
+- (id)_makeServiceReplyHandlerFrom:(id)from;
+- (id)createExternalService:(id)service error:(id *)error;
 - (void)_activateService;
 - (void)_bindServiceCancelationToChannelCancelation;
-- (void)_replyToQueuedMessages:(id)a3;
-- (void)messageReceived:(id)a3;
-- (void)sendMessage:(id)a3;
+- (void)_replyToQueuedMessages:(id)messages;
+- (void)messageReceived:(id)received;
+- (void)sendMessage:(id)message;
 @end
 
 @implementation DTUVShellService
 
-- (DTUVShellService)initWithChannel:(id)a3
+- (DTUVShellService)initWithChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   v15.receiver = self;
   v15.super_class = DTUVShellService;
-  v5 = [(DTXService *)&v15 initWithChannel:v4];
+  v5 = [(DTXService *)&v15 initWithChannel:channelCopy];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     queuedServiceMessages = v5->_queuedServiceMessages;
-    v5->_queuedServiceMessages = v6;
+    v5->_queuedServiceMessages = array;
 
     v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-MessageQueue", objc_opt_class()];
     v9 = dispatch_queue_create([v8 UTF8String], 0);
@@ -36,7 +36,7 @@
     v12[2] = sub_248003CE0;
     v12[3] = &unk_278EF45A8;
     v13 = v5;
-    v14 = v4;
+    v14 = channelCopy;
     DTUVLaunchPreviewShell(v12);
   }
 
@@ -52,13 +52,13 @@
   v6[3] = &unk_278EF1070;
   v6[4] = self;
   [(DTUVService *)service observeCancelation:v6];
-  v4 = [(DTXService *)self channel];
+  channel = [(DTXService *)self channel];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = sub_248003F84;
   v5[3] = &unk_278EF1070;
   v5[4] = self;
-  [v4 registerDisconnectHandler:v5];
+  [channel registerDisconnectHandler:v5];
 }
 
 - (void)_activateService
@@ -72,27 +72,27 @@
   [(DTUVService *)service activateWithCompletion:v3];
 }
 
-- (void)_replyToQueuedMessages:(id)a3
+- (void)_replyToQueuedMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   messageQueue = self->_messageQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_248004298;
   v7[3] = &unk_278EF1550;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = messagesCopy;
+  v6 = messagesCopy;
   dispatch_sync(messageQueue, v7);
 }
 
-- (void)messageReceived:(id)a3
+- (void)messageReceived:(id)received
 {
-  v4 = a3;
-  if (*MEMORY[0x277D03698] != v4)
+  receivedCopy = received;
+  if (*MEMORY[0x277D03698] != receivedCopy)
   {
     v12 = 0;
-    v5 = [(DTUVShellService *)self _makeServiceMessageFrom:v4 error:&v12];
+    v5 = [(DTUVShellService *)self _makeServiceMessageFrom:receivedCopy error:&v12];
     v6 = v12;
     if (v5)
     {
@@ -108,39 +108,39 @@
 
     else
     {
-      v8 = [(DTXService *)self channel];
-      v9 = [v4 newReplyWithError:v6];
-      [v8 sendControlAsync:v9 replyHandler:0];
+      channel = [(DTXService *)self channel];
+      v9 = [receivedCopy newReplyWithError:v6];
+      [channel sendControlAsync:v9 replyHandler:0];
     }
   }
 }
 
-- (void)sendMessage:(id)a3
+- (void)sendMessage:(id)message
 {
-  v4 = a3;
-  v7 = [(DTUVShellService *)self _makeDTXMessageFrom:v4];
-  v5 = [(DTUVShellService *)self _makeDTXReplyHandlerFrom:v4];
+  messageCopy = message;
+  v7 = [(DTUVShellService *)self _makeDTXMessageFrom:messageCopy];
+  v5 = [(DTUVShellService *)self _makeDTXReplyHandlerFrom:messageCopy];
 
-  v6 = [(DTXService *)self channel];
-  [v6 sendControlAsync:v7 replyHandler:v5];
+  channel = [(DTXService *)self channel];
+  [channel sendControlAsync:v7 replyHandler:v5];
 }
 
-- (id)_makeServiceMessageFrom:(id)a3 error:(id *)a4
+- (id)_makeServiceMessageFrom:(id)from error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 stringForMessageKey:@"type"];
-  v8 = [(DTUVShellService *)self _makeServiceReplyHandlerFrom:v6];
-  v9 = [v6 object];
+  fromCopy = from;
+  v7 = [fromCopy stringForMessageKey:@"type"];
+  v8 = [(DTUVShellService *)self _makeServiceReplyHandlerFrom:fromCopy];
+  object = [fromCopy object];
 
-  v10 = DTUVMakeServiceMessage(v7, v9, v8, a4);
+  v10 = DTUVMakeServiceMessage(v7, object, v8, error);
 
   return v10;
 }
 
-- (id)_makeServiceReplyHandlerFrom:(id)a3
+- (id)_makeServiceReplyHandlerFrom:(id)from
 {
-  v4 = a3;
-  if ([v4 integerForMessageKey:@"UVOneWayMessageKey"] == 1)
+  fromCopy = from;
+  if ([fromCopy integerForMessageKey:@"UVOneWayMessageKey"] == 1)
   {
     v5 = 0;
   }
@@ -151,68 +151,68 @@
     v7[1] = 3221225472;
     v7[2] = sub_248004778;
     v7[3] = &unk_278EF45F8;
-    v8 = v4;
-    v9 = self;
+    v8 = fromCopy;
+    selfCopy = self;
     v5 = _Block_copy(v7);
   }
 
   return v5;
 }
 
-- (id)_makeDTXMessageFrom:(id)a3
+- (id)_makeDTXMessageFrom:(id)from
 {
-  v3 = a3;
-  v4 = [v3 payload];
+  fromCopy = from;
+  payload = [fromCopy payload];
 
   v5 = MEMORY[0x277D03668];
-  if (v4)
+  if (payload)
   {
-    v6 = [v3 payload];
-    v7 = [v5 messageWithObject:v6];
+    payload2 = [fromCopy payload];
+    message = [v5 messageWithObject:payload2];
   }
 
   else
   {
-    v7 = [MEMORY[0x277D03668] message];
+    message = [MEMORY[0x277D03668] message];
   }
 
-  v8 = [v3 messageType];
+  messageType = [fromCopy messageType];
 
-  if (v8)
+  if (messageType)
   {
-    v9 = [v3 messageType];
-    [v7 setString:v9 forMessageKey:@"type"];
+    messageType2 = [fromCopy messageType];
+    [message setString:messageType2 forMessageKey:@"type"];
   }
 
-  v10 = [v3 replyHandler];
+  replyHandler = [fromCopy replyHandler];
 
-  if (!v10)
+  if (!replyHandler)
   {
-    [v7 setInteger:1 forMessageKey:@"UVOneWayMessageKey"];
+    [message setInteger:1 forMessageKey:@"UVOneWayMessageKey"];
   }
 
-  return v7;
+  return message;
 }
 
-- (id)_makeDTXReplyHandlerFrom:(id)a3
+- (id)_makeDTXReplyHandlerFrom:(id)from
 {
-  v3 = a3;
-  v4 = [v3 replyHandler];
+  fromCopy = from;
+  replyHandler = [fromCopy replyHandler];
 
-  if (v4)
+  if (replyHandler)
   {
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = sub_2480049EC;
     aBlock[3] = &unk_278EF32E8;
-    v7 = v3;
-    v4 = _Block_copy(aBlock);
+    v7 = fromCopy;
+    replyHandler = _Block_copy(aBlock);
   }
 
-  return v4;
+  return replyHandler;
 }
 
-- (id)createExternalService:(id)a3 error:(id *)a4
+- (id)createExternalService:(id)service error:(id *)error
 {
   objc_opt_class();
   NSRequestConcreteImplementation();

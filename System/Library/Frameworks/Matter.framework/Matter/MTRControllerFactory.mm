@@ -12,9 +12,9 @@
 - (BOOL)isRunning
 {
   v2 = +[MTRDeviceControllerFactory sharedInstance];
-  v3 = [v2 isRunning];
+  isRunning = [v2 isRunning];
 
-  return v3;
+  return isRunning;
 }
 
 + (MTRControllerFactory)sharedInstance

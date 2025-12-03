@@ -1,6 +1,6 @@
 @interface CUIKCalendarListSorter
 + (id)ekCalendarComparator;
-+ (int64_t)orderForOtherCalendar:(id)a3;
++ (int64_t)orderForOtherCalendar:(id)calendar;
 @end
 
 @implementation CUIKCalendarListSorter
@@ -70,7 +70,7 @@ LABEL_17:
   aBlock[1] = 3221225472;
   aBlock[2] = __46__CUIKCalendarListSorter_ekCalendarComparator__block_invoke;
   aBlock[3] = &__block_descriptor_40_e35_q24__0__EKCalendar_8__EKCalendar_16l;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v2 = _Block_copy(aBlock);
 
   return v2;
@@ -143,20 +143,20 @@ uint64_t __51__CUIKCalendarListSorter_ekOtherCalendarComparator__block_invoke(ui
   }
 }
 
-+ (int64_t)orderForOtherCalendar:(id)a3
++ (int64_t)orderForOtherCalendar:(id)calendar
 {
-  v3 = a3;
-  if ([v3 type] == 4 || objc_msgSend(v3, "type") == 6)
+  calendarCopy = calendar;
+  if ([calendarCopy type] == 4 || objc_msgSend(calendarCopy, "type") == 6)
   {
     v4 = 0;
   }
 
-  else if ([v3 isSubscribedHolidayCalendar])
+  else if ([calendarCopy isSubscribedHolidayCalendar])
   {
     v4 = 1;
   }
 
-  else if ([v3 isSuggestedEventCalendar])
+  else if ([calendarCopy isSuggestedEventCalendar])
   {
     v4 = 2;
   }
@@ -166,7 +166,7 @@ uint64_t __51__CUIKCalendarListSorter_ekOtherCalendarComparator__block_invoke(ui
     v6 = +[CUIKLogSubsystem defaultCategory];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(CUIKCalendarListSorter *)v3 orderForOtherCalendar:v6];
+      [(CUIKCalendarListSorter *)calendarCopy orderForOtherCalendar:v6];
     }
 
     v4 = -1;

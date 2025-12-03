@@ -1,15 +1,15 @@
 @interface NULivePhotoMedia
-- (NULivePhotoMedia)initWithImage:(id)a3 video:(id)a4;
+- (NULivePhotoMedia)initWithImage:(id)image video:(id)video;
 @end
 
 @implementation NULivePhotoMedia
 
-- (NULivePhotoMedia)initWithImage:(id)a3 video:(id)a4
+- (NULivePhotoMedia)initWithImage:(id)image video:(id)video
 {
   v94 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  imageCopy = image;
+  videoCopy = video;
+  if (!imageCopy)
   {
     v13 = NUAssertLogger_2109();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -30,8 +30,8 @@
         v47 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v48 = MEMORY[0x1E696AF00];
         v49 = v47;
-        v50 = [v48 callStackSymbols];
-        v51 = [v50 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v48 callStackSymbols];
+        v51 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v91 = v47;
         v92 = 2114;
@@ -42,8 +42,8 @@
 
     else if (v17)
     {
-      v18 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v91 = v19;
       _os_log_error_impl(&dword_1C0184000, v16, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -52,8 +52,8 @@
     _NUAssertFailHandler("[NULivePhotoMedia initWithImage:video:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Pipeline/API/NUMedia.m", 428, @"Invalid parameter not satisfying: %s", v52, v53, v54, v55, "image != nil");
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = videoCopy;
+  if (!videoCopy)
   {
     v20 = NUAssertLogger_2109();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -74,8 +74,8 @@
         v56 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v57 = MEMORY[0x1E696AF00];
         v58 = v56;
-        v59 = [v57 callStackSymbols];
-        v60 = [v59 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [v57 callStackSymbols];
+        v60 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v91 = v56;
         v92 = 2114;
@@ -86,8 +86,8 @@
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v91 = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -121,8 +121,8 @@
         v65 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v66 = MEMORY[0x1E696AF00];
         v67 = v65;
-        v68 = [v66 callStackSymbols];
-        v69 = [v68 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [v66 callStackSymbols];
+        v69 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v91 = v65;
         v92 = 2114;
@@ -133,8 +133,8 @@
 
     else if (v34)
     {
-      v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v36 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v36 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v91 = v36;
       _os_log_error_impl(&dword_1C0184000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -170,8 +170,8 @@
         v76 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v77 = MEMORY[0x1E696AF00];
         v78 = v76;
-        v79 = [v77 callStackSymbols];
-        v80 = [v79 componentsJoinedByString:@"\n"];
+        callStackSymbols7 = [v77 callStackSymbols];
+        v80 = [callStackSymbols7 componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v91 = v76;
         v92 = 2114;
@@ -182,8 +182,8 @@
 
     else if (v44)
     {
-      v45 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v46 = [v45 componentsJoinedByString:@"\n"];
+      callStackSymbols8 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v46 = [callStackSymbols8 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v91 = v46;
       _os_log_error_impl(&dword_1C0184000, v43, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -196,13 +196,13 @@
 
   v88[0] = @"image";
   v88[1] = @"video";
-  v89[0] = v6;
+  v89[0] = imageCopy;
   v89[1] = v8;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v89 forKeys:v88 count:2];
-  v10 = [v6 geometry];
+  geometry = [imageCopy geometry];
   v87.receiver = self;
   v87.super_class = NULivePhotoMedia;
-  v11 = [(_NUContainerMedia *)&v87 initWithContainerType:3 components:v9 geometry:v10];
+  v11 = [(_NUContainerMedia *)&v87 initWithContainerType:3 components:v9 geometry:geometry];
 
   return v11;
 }

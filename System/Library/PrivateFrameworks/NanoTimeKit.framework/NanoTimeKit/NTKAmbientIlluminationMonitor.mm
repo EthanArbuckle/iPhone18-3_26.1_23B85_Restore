@@ -2,10 +2,10 @@
 - (NTKAmbientIlluminationMonitor)init;
 - (NTKAmbientIlluminationMonitorDelegate)delegate;
 - (void)_registerForNotifications;
-- (void)_setAmbientLux:(double)a3;
-- (void)_setDisplayNits:(double)a3;
+- (void)_setAmbientLux:(double)lux;
+- (void)_setDisplayNits:(double)nits;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation NTKAmbientIlluminationMonitor
@@ -41,7 +41,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "[%p] AutoNightMode Illumination monitor dealloc", buf, 0xCu);
   }
 
@@ -50,9 +50,9 @@
   [(NTKAmbientIlluminationMonitor *)&v4 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -94,7 +94,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
     v27 = v4;
     _os_log_impl(&dword_22D9C5000, v5, OS_LOG_TYPE_DEFAULT, "[%p] AutoNightMode Illumination monitor initial lux %@", buf, 0x16u);
@@ -445,10 +445,10 @@ uint64_t __58__NTKAmbientIlluminationMonitor__registerForNotifications__block_in
   return [v1 _setDisplayNits:?];
 }
 
-- (void)_setAmbientLux:(double)a3
+- (void)_setAmbientLux:(double)lux
 {
-  self->_ambientLux = a3;
-  if (a3 < 0.0)
+  self->_ambientLux = lux;
+  if (lux < 0.0)
   {
     v5 = _NTKLoggingObjectForDomain(23, "NTKLoggingDomainFace");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -459,7 +459,7 @@ uint64_t __58__NTKAmbientIlluminationMonitor__registerForNotifications__block_in
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained ambientIlluminationMonitor:self receivedAmbientLux:a3];
+  [WeakRetained ambientIlluminationMonitor:self receivedAmbientLux:lux];
 
   v7 = objc_loadWeakRetained(&self->_delegate);
   if (!v7)
@@ -473,11 +473,11 @@ uint64_t __58__NTKAmbientIlluminationMonitor__registerForNotifications__block_in
   }
 }
 
-- (void)_setDisplayNits:(double)a3
+- (void)_setDisplayNits:(double)nits
 {
-  self->_displayNits = a3;
+  self->_displayNits = nits;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained ambientIlluminationMonitor:self receivedDisplayNits:a3];
+  [WeakRetained ambientIlluminationMonitor:self receivedDisplayNits:nits];
 
   v6 = objc_loadWeakRetained(&self->_delegate);
   if (!v6)

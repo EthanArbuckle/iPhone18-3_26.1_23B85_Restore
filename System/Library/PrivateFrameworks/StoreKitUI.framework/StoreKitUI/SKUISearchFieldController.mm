@@ -1,45 +1,45 @@
 @interface SKUISearchFieldController
-- (BOOL)_presentsInPopover:(id)a3;
+- (BOOL)_presentsInPopover:(id)popover;
 - (BOOL)canBecomeActive;
-- (BOOL)searchBarShouldBeginEditing:(id)a3;
-- (BOOL)searchBarShouldClear:(id)a3;
-- (SKUISearchFieldController)initWithContentsController:(id)a3;
-- (SKUISearchFieldController)initWithContentsController:(id)a3 clientContext:(id)a4;
+- (BOOL)searchBarShouldBeginEditing:(id)editing;
+- (BOOL)searchBarShouldClear:(id)clear;
+- (SKUISearchFieldController)initWithContentsController:(id)controller;
+- (SKUISearchFieldController)initWithContentsController:(id)controller clientContext:(id)context;
 - (SKUISearchFieldDelegate)delegate;
 - (UIViewController)contentsController;
-- (id)URLForTrendingSearchPageView:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_adjustInsetsForResultsTableView:(id)a3;
-- (void)_loadResultsForSearchRequest:(id)a3;
+- (id)URLForTrendingSearchPageView:(id)view;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_adjustInsetsForResultsTableView:(id)view;
+- (void)_loadResultsForSearchRequest:(id)request;
 - (void)_reloadData;
 - (void)_reloadTrendingVisibility;
-- (void)_setResponse:(id)a3 error:(id)a4;
+- (void)_setResponse:(id)response error:(id)error;
 - (void)becomeActive;
-- (void)popoverPresentationControllerDidDismissPopover:(id)a3;
-- (void)prepareForPopoverPresentation:(id)a3;
-- (void)presentSearchController:(id)a3;
-- (void)resignActive:(BOOL)a3;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarSearchButtonClicked:(id)a3;
-- (void)searchControllerWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)setClientContext:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setNumberOfSearchResults:(int64_t)a3;
-- (void)setSearchBarAccessoryText:(id)a3;
-- (void)setSearchTerm:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)trendingSearchPageView:(id)a3 didSelectSearch:(id)a4;
-- (void)willDismissSearchController:(id)a3;
-- (void)willPresentSearchController:(id)a3;
+- (void)popoverPresentationControllerDidDismissPopover:(id)popover;
+- (void)prepareForPopoverPresentation:(id)presentation;
+- (void)presentSearchController:(id)controller;
+- (void)resignActive:(BOOL)active;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarSearchButtonClicked:(id)clicked;
+- (void)searchControllerWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)setClientContext:(id)context;
+- (void)setDelegate:(id)delegate;
+- (void)setNumberOfSearchResults:(int64_t)results;
+- (void)setSearchBarAccessoryText:(id)text;
+- (void)setSearchTerm:(id)term;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)trendingSearchPageView:(id)view didSelectSearch:(id)search;
+- (void)willDismissSearchController:(id)controller;
+- (void)willPresentSearchController:(id)controller;
 @end
 
 @implementation SKUISearchFieldController
 
-- (SKUISearchFieldController)initWithContentsController:(id)a3 clientContext:(id)a4
+- (SKUISearchFieldController)initWithContentsController:(id)controller clientContext:(id)context
 {
-  objc_initWeak(&location, a3);
-  v6 = a4;
+  objc_initWeak(&location, controller);
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUISearchFieldController initWithContentsController:clientContext:];
@@ -60,22 +60,22 @@
     v11 = [SKUISearchFieldTableView alloc];
     v12 = [(SKUISearchFieldTableView *)v11 initWithFrame:0 style:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
     [(SKUISearchFieldTableView *)v12 setTrendingSearchDelegate:v7];
-    v13 = [v6 trendingSearchProvider];
-    [(SKUISearchFieldTableView *)v12 setTrendingSearchProvider:v13];
+    trendingSearchProvider = [contextCopy trendingSearchProvider];
+    [(SKUISearchFieldTableView *)v12 setTrendingSearchProvider:trendingSearchProvider];
 
-    v14 = [(SKUISearchFieldController *)v7 _presentsInPopover:v6];
+    v14 = [(SKUISearchFieldController *)v7 _presentsInPopover:contextCopy];
     v15 = [objc_alloc(MEMORY[0x277D75B58]) initWithStyle:0];
     searchResultsController = v7->_searchResultsController;
     v7->_searchResultsController = v15;
 
     [(UITableViewController *)v7->_searchResultsController setTableView:v12];
-    v17 = [(UITableViewController *)v7->_searchResultsController tableView];
-    [v17 setDataSource:v7];
+    tableView = [(UITableViewController *)v7->_searchResultsController tableView];
+    [tableView setDataSource:v7];
 
-    v18 = [(UITableViewController *)v7->_searchResultsController tableView];
-    [v18 setDelegate:v7];
+    tableView2 = [(UITableViewController *)v7->_searchResultsController tableView];
+    [tableView2 setDelegate:v7];
 
-    v19 = [(UITableViewController *)v7->_searchResultsController tableView];
+    tableView3 = [(UITableViewController *)v7->_searchResultsController tableView];
     if (v14)
     {
       [MEMORY[0x277D75348] clearColor];
@@ -86,12 +86,12 @@
       [MEMORY[0x277D75348] _systemBackgroundColor];
     }
     v20 = ;
-    [v19 setBackgroundColor:v20];
+    [tableView3 setBackgroundColor:v20];
 
     if (v14)
     {
-      v21 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v7->_searchResultsController];
-      v22 = [[SKUISearchController alloc] initWithSearchResultsController:v21];
+      tableView4 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v7->_searchResultsController];
+      v22 = [[SKUISearchController alloc] initWithSearchResultsController:tableView4];
       searchController = v7->_searchController;
       v7->_searchController = v22;
     }
@@ -103,34 +103,34 @@
       v7->_searchController = v24;
 
       [(UITableViewController *)v7->_searchResultsController setAutomaticallyAdjustsScrollViewInsets:0];
-      v21 = [(UITableViewController *)v7->_searchResultsController tableView];
-      [v21 setContentInsetAdjustmentBehavior:101];
+      tableView4 = [(UITableViewController *)v7->_searchResultsController tableView];
+      [tableView4 setContentInsetAdjustmentBehavior:101];
     }
 
     [(SKUISearchController *)v7->_searchController setHidesNavigationBarDuringPresentation:0];
     [(SKUISearchController *)v7->_searchController setDelegate:v7];
     [(SKUISearchController *)v7->_searchController setSearchResultsUpdater:v7];
-    v26 = [(SKUISearchController *)v7->_searchController searchBar];
-    [v26 setDrawsBackground:0];
-    [v26 setAutocapitalizationType:0];
-    [v26 setAutocorrectionType:1];
-    [v26 setDelegate:v7];
-    [v26 setSearchBarStyle:2];
+    searchBar = [(SKUISearchController *)v7->_searchController searchBar];
+    [searchBar setDrawsBackground:0];
+    [searchBar setAutocapitalizationType:0];
+    [searchBar setAutocorrectionType:1];
+    [searchBar setDelegate:v7];
+    [searchBar setSearchBarStyle:2];
     v27 = objc_loadWeakRetained(&location);
-    v28 = [v27 navigationController];
-    v29 = [v28 navigationBar];
-    v30 = [v29 barStyle];
+    navigationController = [v27 navigationController];
+    navigationBar = [navigationController navigationBar];
+    barStyle = [navigationBar barStyle];
 
-    if (v30 == 1)
+    if (barStyle == 1)
     {
-      v31 = [v26 searchField];
+      searchField = [searchBar searchField];
       v32 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.6];
-      [v31 setTextColor:v32];
+      [searchField setTextColor:v32];
     }
 
-    if (v6)
+    if (contextCopy)
     {
-      [(SKUISearchFieldController *)v7 setClientContext:v6];
+      [(SKUISearchFieldController *)v7 setClientContext:contextCopy];
     }
   }
 
@@ -138,10 +138,10 @@
   return v7;
 }
 
-- (SKUISearchFieldController)initWithContentsController:(id)a3
+- (SKUISearchFieldController)initWithContentsController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SKUISearchFieldController *)self initWithContentsController:v4 clientContext:0];
+  controllerCopy = controller;
+  v5 = [(SKUISearchFieldController *)self initWithContentsController:controllerCopy clientContext:0];
 
   return v5;
 }
@@ -153,31 +153,31 @@
     return 0;
   }
 
-  v4 = [(SKUISearchController *)self->_searchController searchBar];
-  v5 = [v4 superview];
-  v3 = v5 != 0;
+  searchBar = [(SKUISearchController *)self->_searchController searchBar];
+  superview = [searchBar superview];
+  v3 = superview != 0;
 
   return v3;
 }
 
 - (void)becomeActive
 {
-  v3 = [(SKUISearchController *)self->_searchController transitionCoordinator];
-  v4 = v3;
-  if (v3)
+  transitionCoordinator = [(SKUISearchController *)self->_searchController transitionCoordinator];
+  v4 = transitionCoordinator;
+  if (transitionCoordinator)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __41__SKUISearchFieldController_becomeActive__block_invoke;
     v6[3] = &unk_2781F8348;
     v6[4] = self;
-    [v3 animateAlongsideTransition:0 completion:v6];
+    [transitionCoordinator animateAlongsideTransition:0 completion:v6];
   }
 
   else
   {
-    v5 = [(SKUISearchController *)self->_searchController searchBar];
-    [v5 becomeFirstResponder];
+    searchBar = [(SKUISearchController *)self->_searchController searchBar];
+    [searchBar becomeFirstResponder];
   }
 }
 
@@ -187,12 +187,12 @@ void __41__SKUISearchFieldController_becomeActive__block_invoke(uint64_t a1)
   [v1 becomeFirstResponder];
 }
 
-- (void)resignActive:(BOOL)a3
+- (void)resignActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   if ([(SKUISearchController *)self->_searchController isActive])
   {
-    if (v3)
+    if (activeCopy)
     {
       searchController = self->_searchController;
 
@@ -211,12 +211,12 @@ void __41__SKUISearchFieldController_becomeActive__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setNumberOfSearchResults:(int64_t)a3
+- (void)setNumberOfSearchResults:(int64_t)results
 {
-  if (self->_numberOfSearchResults != a3)
+  if (self->_numberOfSearchResults != results)
   {
-    self->_numberOfSearchResults = a3;
-    if (a3)
+    self->_numberOfSearchResults = results;
+    if (results)
     {
       clientContext = self->_clientContext;
       if (clientContext)
@@ -244,10 +244,10 @@ void __41__SKUISearchFieldController_becomeActive__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setClientContext:(id)a3
+- (void)setClientContext:(id)context
 {
-  v8 = a3;
-  objc_storeStrong(&self->_clientContext, a3);
+  contextCopy = context;
+  objc_storeStrong(&self->_clientContext, context);
   searchResultsController = self->_searchResultsController;
   clientContext = self->_clientContext;
   if (clientContext)
@@ -265,12 +265,12 @@ void __41__SKUISearchFieldController_becomeActive__block_invoke(uint64_t a1)
   [(SKUISearchFieldController *)self _reloadTrendingVisibility];
 }
 
-- (void)setSearchBarAccessoryText:(id)a3
+- (void)setSearchBarAccessoryText:(id)text
 {
-  v6 = a3;
-  if (([v6 isEqualToString:self->_searchBarAccessoryText] & 1) == 0)
+  textCopy = text;
+  if (([textCopy isEqualToString:self->_searchBarAccessoryText] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [textCopy copy];
     searchBarAccessoryText = self->_searchBarAccessoryText;
     self->_searchBarAccessoryText = v4;
 
@@ -278,21 +278,21 @@ void __41__SKUISearchFieldController_becomeActive__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setSearchTerm:(id)a3
+- (void)setSearchTerm:(id)term
 {
   searchController = self->_searchController;
-  v5 = a3;
-  v6 = [(SKUISearchController *)searchController searchBar];
-  v7 = [v6 searchField];
-  [v7 setText:v5];
+  termCopy = term;
+  searchBar = [(SKUISearchController *)searchController searchBar];
+  searchField = [searchBar searchField];
+  [searchField setText:termCopy];
 
   [(SKUISearchFieldController *)self _reloadTrendingVisibility];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_delegate, v4);
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
   *&self->_delegateRespondsTo = *&self->_delegateRespondsTo & 0xFE | objc_opt_respondsToSelector() & 1;
   if (objc_opt_respondsToSelector())
   {
@@ -320,20 +320,20 @@ void __41__SKUISearchFieldController_becomeActive__block_invoke(uint64_t a1)
   *&self->_delegateRespondsTo = *&self->_delegateRespondsTo & 0xFB | v7;
 }
 
-- (void)searchBarSearchButtonClicked:(id)a3
+- (void)searchBarSearchButtonClicked:(id)clicked
 {
-  v4 = a3;
+  clickedCopy = clicked;
   v6 = objc_alloc_init(SKUISearchRequest);
-  v5 = [v4 text];
-  [(SKUISearchRequest *)v6 setTerm:v5];
+  text = [clickedCopy text];
+  [(SKUISearchRequest *)v6 setTerm:text];
 
   [(SKUISearchFieldController *)self _loadResultsForSearchRequest:v6];
-  [v4 resignFirstResponder];
+  [clickedCopy resignFirstResponder];
 
   [(SKUISearchController *)self->_searchController setActive:0];
 }
 
-- (BOOL)searchBarShouldBeginEditing:(id)a3
+- (BOOL)searchBarShouldBeginEditing:(id)editing
 {
   if ((*&self->_delegateRespondsTo & 4) != 0)
   {
@@ -346,35 +346,35 @@ void __41__SKUISearchFieldController_becomeActive__block_invoke(uint64_t a1)
     v4 = 1;
   }
 
-  v6 = [(UITableViewController *)self->_searchResultsController tableView];
-  [(SKUISearchFieldController *)self _adjustInsetsForResultsTableView:v6];
+  tableView = [(UITableViewController *)self->_searchResultsController tableView];
+  [(SKUISearchFieldController *)self _adjustInsetsForResultsTableView:tableView];
 
   return v4;
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   if ((*&self->_delegateRespondsTo & 2) != 0)
   {
-    v6 = a4;
+    changeCopy = change;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained searchFieldController:self searchBarDidChangeText:v6];
+    [WeakRetained searchFieldController:self searchBarDidChangeText:changeCopy];
   }
 }
 
-- (BOOL)searchBarShouldClear:(id)a3
+- (BOOL)searchBarShouldClear:(id)clear
 {
-  v4 = a3;
-  if (([v4 isFirstResponder] & 1) != 0 || -[SKUISearchFieldController _presentsInPopover:](self, "_presentsInPopover:", self->_clientContext))
+  clearCopy = clear;
+  if (([clearCopy isFirstResponder] & 1) != 0 || -[SKUISearchFieldController _presentsInPopover:](self, "_presentsInPopover:", self->_clientContext))
   {
     v5 = 1;
   }
 
   else
   {
-    [v4 setText:0];
-    v6 = [v4 text];
-    [(SKUISearchFieldController *)self searchBar:v4 textDidChange:v6];
+    [clearCopy setText:0];
+    text = [clearCopy text];
+    [(SKUISearchFieldController *)self searchBar:clearCopy textDidChange:text];
 
     [(SKUISearchFieldController *)self becomeActive];
     v5 = 0;
@@ -383,34 +383,34 @@ void __41__SKUISearchFieldController_becomeActive__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)willPresentSearchController:(id)a3
+- (void)willPresentSearchController:(id)controller
 {
-  v4 = [(UITableViewController *)self->_searchResultsController tableView];
-  [(SKUISearchFieldController *)self _adjustInsetsForResultsTableView:v4];
+  tableView = [(UITableViewController *)self->_searchResultsController tableView];
+  [(SKUISearchFieldController *)self _adjustInsetsForResultsTableView:tableView];
 
   [(SKUISearchFieldController *)self _reloadData];
 }
 
-- (void)presentSearchController:(id)a3
+- (void)presentSearchController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   if ([(SKUISearchFieldController *)self _presentsInPopover:self->_clientContext])
   {
-    [v4 setModalPresentationStyle:7];
-    v5 = [v4 popoverPresentationController];
-    [v5 setDelegate:self];
+    [controllerCopy setModalPresentationStyle:7];
+    popoverPresentationController = [controllerCopy popoverPresentationController];
+    [popoverPresentationController setDelegate:self];
   }
 
-  v6 = [(SKUISearchFieldController *)self contentsController];
-  [v6 setDefinesPresentationContext:1];
+  contentsController = [(SKUISearchFieldController *)self contentsController];
+  [contentsController setDefinesPresentationContext:1];
 
-  v7 = [(SKUISearchFieldController *)self contentsController];
+  contentsController2 = [(SKUISearchFieldController *)self contentsController];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__SKUISearchFieldController_presentSearchController___block_invoke;
   v8[3] = &unk_2781F80F0;
   v8[4] = self;
-  [v7 presentViewController:v4 animated:1 completion:v8];
+  [contentsController2 presentViewController:controllerCopy animated:1 completion:v8];
 }
 
 void __53__SKUISearchFieldController_presentSearchController___block_invoke(uint64_t a1)
@@ -440,20 +440,20 @@ void __53__SKUISearchFieldController_presentSearchController___block_invoke(uint
   }
 }
 
-- (void)willDismissSearchController:(id)a3
+- (void)willDismissSearchController:(id)controller
 {
-  v3 = [(SKUISearchFieldController *)self contentsController];
-  [v3 setDefinesPresentationContext:0];
+  contentsController = [(SKUISearchFieldController *)self contentsController];
+  [contentsController setDefinesPresentationContext:0];
 }
 
-- (void)searchControllerWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)searchControllerWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __92__SKUISearchFieldController_searchControllerWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v4[3] = &unk_2781F8348;
   v4[4] = self;
-  [a4 animateAlongsideTransition:0 completion:v4];
+  [coordinator animateAlongsideTransition:0 completion:v4];
 }
 
 void __92__SKUISearchFieldController_searchControllerWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -463,47 +463,47 @@ void __92__SKUISearchFieldController_searchControllerWillTransitionToSize_withTr
   [v1 _adjustInsetsForResultsTableView:v2];
 }
 
-- (void)prepareForPopoverPresentation:(id)a3
+- (void)prepareForPopoverPresentation:(id)presentation
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 setPermittedArrowDirections:1];
-  v5 = [(SKUISearchController *)self->_searchController searchBar];
-  [v4 setSourceView:v5];
+  presentationCopy = presentation;
+  [presentationCopy setPermittedArrowDirections:1];
+  searchBar = [(SKUISearchController *)self->_searchController searchBar];
+  [presentationCopy setSourceView:searchBar];
 
-  v6 = [(SKUISearchController *)self->_searchController searchBar];
-  [v6 bounds];
-  [v4 setSourceRect:?];
+  searchBar2 = [(SKUISearchController *)self->_searchController searchBar];
+  [searchBar2 bounds];
+  [presentationCopy setSourceRect:?];
 
-  v7 = [(SKUISearchController *)self->_searchController searchBar];
-  v9[0] = v7;
+  searchBar3 = [(SKUISearchController *)self->_searchController searchBar];
+  v9[0] = searchBar3;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
-  [v4 setPassthroughViews:v8];
+  [presentationCopy setPassthroughViews:v8];
 }
 
-- (void)popoverPresentationControllerDidDismissPopover:(id)a3
+- (void)popoverPresentationControllerDidDismissPopover:(id)popover
 {
-  v3 = [(SKUISearchFieldController *)self contentsController];
-  [v3 setDefinesPresentationContext:0];
+  contentsController = [(SKUISearchFieldController *)self contentsController];
+  [contentsController setDefinesPresentationContext:0];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"a"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"a"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:0 reuseIdentifier:@"a"];
   }
 
-  v8 = [(SKUICompletionList *)self->_completionList completions];
-  v9 = [v6 row];
+  completions = [(SKUICompletionList *)self->_completionList completions];
+  v9 = [pathCopy row];
 
-  v10 = [v8 objectAtIndex:v9];
+  v10 = [completions objectAtIndex:v9];
 
-  v11 = [v7 textLabel];
-  v12 = [v10 alternateTitle];
-  if ([v12 length])
+  textLabel = [v7 textLabel];
+  alternateTitle = [v10 alternateTitle];
+  if ([alternateTitle length])
   {
     [v10 alternateTitle];
   }
@@ -513,102 +513,102 @@ void __92__SKUISearchFieldController_searchControllerWillTransitionToSize_withTr
     [v10 title];
   }
   v13 = ;
-  [v11 setText:v13];
+  [textLabel setText:v13];
 
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(SKUICompletionList *)self->_completionList completions:a3];
+  v4 = [(SKUICompletionList *)self->_completionList completions:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
+  pathCopy = path;
   v22 = objc_alloc_init(SKUISearchRequest);
-  v6 = [(SKUISearchController *)self->_searchController searchBar];
-  v7 = [v6 text];
-  [(SKUISearchRequest *)v22 setSearchHintOriginalTerm:v7];
+  searchBar = [(SKUISearchController *)self->_searchController searchBar];
+  text = [searchBar text];
+  [(SKUISearchRequest *)v22 setSearchHintOriginalTerm:text];
 
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v5, "row")}];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(pathCopy, "row")}];
   [(SKUISearchRequest *)v22 setSearchHintIndex:v8];
 
-  v9 = [(SKUICompletionList *)self->_completionList completions];
-  v10 = [v5 row];
+  completions = [(SKUICompletionList *)self->_completionList completions];
+  v10 = [pathCopy row];
 
-  v11 = [v9 objectAtIndex:v10];
+  v11 = [completions objectAtIndex:v10];
 
-  v12 = [v11 title];
-  [(SKUISearchRequest *)v22 setTerm:v12];
+  title = [v11 title];
+  [(SKUISearchRequest *)v22 setTerm:title];
   v13 = objc_alloc(MEMORY[0x277CBEBC0]);
-  v14 = [v11 URLString];
-  v15 = [v13 initWithString:v14];
+  uRLString = [v11 URLString];
+  v15 = [v13 initWithString:uRLString];
 
   [(SKUISearchRequest *)v22 setURL:v15];
-  v16 = [v11 alternateTitle];
-  v17 = [(SKUISearchController *)self->_searchController searchBar];
-  v18 = [v17 searchField];
-  v19 = v18;
-  if (v16)
+  alternateTitle = [v11 alternateTitle];
+  searchBar2 = [(SKUISearchController *)self->_searchController searchBar];
+  searchField = [searchBar2 searchField];
+  v19 = searchField;
+  if (alternateTitle)
   {
-    v20 = v16;
+    v20 = alternateTitle;
   }
 
   else
   {
-    v20 = v12;
+    v20 = title;
   }
 
-  [v18 setText:v20];
+  [searchField setText:v20];
 
   [(SKUISearchFieldController *)self _loadResultsForSearchRequest:v22];
-  v21 = [(SKUISearchController *)self->_searchController searchBar];
-  [v21 resignFirstResponder];
+  searchBar3 = [(SKUISearchController *)self->_searchController searchBar];
+  [searchBar3 resignFirstResponder];
 
   [(SKUISearchController *)self->_searchController setActive:0];
 }
 
-- (void)trendingSearchPageView:(id)a3 didSelectSearch:(id)a4
+- (void)trendingSearchPageView:(id)view didSelectSearch:(id)search
 {
-  v5 = a4;
+  searchCopy = search;
   v12 = objc_alloc_init(SKUISearchRequest);
   v6 = MEMORY[0x277CBEBC0];
-  v7 = [v5 URLString];
-  v8 = [v6 URLWithString:v7];
+  uRLString = [searchCopy URLString];
+  v8 = [v6 URLWithString:uRLString];
   [(SKUISearchRequest *)v12 setURL:v8];
 
-  v9 = [v5 term];
+  term = [searchCopy term];
 
-  [(SKUISearchRequest *)v12 setTerm:v9];
-  v10 = [(SKUISearchController *)self->_searchController searchBar];
-  v11 = [v10 searchField];
-  [v11 setText:v9];
+  [(SKUISearchRequest *)v12 setTerm:term];
+  searchBar = [(SKUISearchController *)self->_searchController searchBar];
+  searchField = [searchBar searchField];
+  [searchField setText:term];
 
   [(SKUISearchFieldController *)self _loadResultsForSearchRequest:v12];
   [(SKUISearchController *)self->_searchController setActive:0];
 }
 
-- (id)URLForTrendingSearchPageView:(id)a3
+- (id)URLForTrendingSearchPageView:(id)view
 {
   v3 = MEMORY[0x277CBEBC0];
-  v4 = [(SKUISearchFieldController *)self trendingSearchURLString];
-  v5 = [v3 URLWithString:v4];
+  trendingSearchURLString = [(SKUISearchFieldController *)self trendingSearchURLString];
+  v5 = [v3 URLWithString:trendingSearchURLString];
 
   return v5;
 }
 
-- (BOOL)_presentsInPopover:(id)a3
+- (BOOL)_presentsInPopover:(id)popover
 {
-  v3 = a3;
-  if (SKUIUserInterfaceIdiom(v3) == 1)
+  popoverCopy = popover;
+  if (SKUIUserInterfaceIdiom(popoverCopy) == 1)
   {
-    v4 = [MEMORY[0x277D75128] sharedApplication];
-    v5 = [v4 keyWindow];
-    [v5 bounds];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    keyWindow = [mEMORY[0x277D75128] keyWindow];
+    [keyWindow bounds];
     if (v6 <= SKUICompactThreshold())
     {
       LOBYTE(v7) = 0;
@@ -616,7 +616,7 @@ void __92__SKUISearchFieldController_searchControllerWillTransitionToSize_withTr
 
     else
     {
-      v7 = [v3 shouldForceTransientSearchControllerBahavior] ^ 1;
+      v7 = [popoverCopy shouldForceTransientSearchControllerBahavior] ^ 1;
     }
   }
 
@@ -628,20 +628,20 @@ void __92__SKUISearchFieldController_searchControllerWillTransitionToSize_withTr
   return v7;
 }
 
-- (void)_adjustInsetsForResultsTableView:(id)a3
+- (void)_adjustInsetsForResultsTableView:(id)view
 {
-  v25 = a3;
-  v4 = [(SKUISearchFieldController *)self clientContext];
-  if (SKUIUserInterfaceIdiom(v4) == 1)
+  viewCopy = view;
+  clientContext = [(SKUISearchFieldController *)self clientContext];
+  if (SKUIUserInterfaceIdiom(clientContext) == 1)
   {
-    v5 = [MEMORY[0x277D75128] sharedApplication];
-    v6 = [v5 keyWindow];
-    [v6 bounds];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    keyWindow = [mEMORY[0x277D75128] keyWindow];
+    [keyWindow bounds];
     if (v7 > SKUICompactThreshold())
     {
-      v8 = [(SKUIClientContext *)self->_clientContext shouldForceTransientSearchControllerBahavior];
+      shouldForceTransientSearchControllerBahavior = [(SKUIClientContext *)self->_clientContext shouldForceTransientSearchControllerBahavior];
 
-      if (!v8)
+      if (!shouldForceTransientSearchControllerBahavior)
       {
         goto LABEL_9;
       }
@@ -651,45 +651,45 @@ void __92__SKUISearchFieldController_searchControllerWillTransitionToSize_withTr
   }
 
 LABEL_7:
-  [v25 contentInset];
+  [viewCopy contentInset];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [v25 contentOffset];
+  [viewCopy contentOffset];
   v18 = v17;
   v20 = v19;
-  v21 = [(SKUISearchFieldController *)self contentsController];
-  v22 = [v21 topLayoutGuide];
-  [v22 length];
+  contentsController = [(SKUISearchFieldController *)self contentsController];
+  topLayoutGuide = [contentsController topLayoutGuide];
+  [topLayoutGuide length];
   v24 = v23;
 
   if (v24 != v10)
   {
-    [v25 setContentInset:{v24, v12, v14, v16}];
-    [v25 setScrollIndicatorInsets:{v24, v12, v14, v16}];
-    [v25 setContentOffset:{v18, v20 - (v24 - v10)}];
+    [viewCopy setContentInset:{v24, v12, v14, v16}];
+    [viewCopy setScrollIndicatorInsets:{v24, v12, v14, v16}];
+    [viewCopy setContentOffset:{v18, v20 - (v24 - v10)}];
   }
 
 LABEL_9:
 }
 
-- (void)_loadResultsForSearchRequest:(id)a3
+- (void)_loadResultsForSearchRequest:(id)request
 {
-  v12 = a3;
-  v4 = [(SKUISearchFieldController *)self delegate];
-  v5 = v4;
+  requestCopy = request;
+  delegate = [(SKUISearchFieldController *)self delegate];
+  v5 = delegate;
   if (*&self->_delegateRespondsTo)
   {
-    [v4 searchFieldController:self requestSearch:v12];
+    [delegate searchFieldController:self requestSearch:requestCopy];
   }
 
   else
   {
-    v6 = [v12 term];
-    v7 = [v12 URL];
+    term = [requestCopy term];
+    v7 = [requestCopy URL];
     v8 = v7;
-    if (!v6 || v7)
+    if (!term || v7)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
       v10 = objc_opt_respondsToSelector();
@@ -703,30 +703,30 @@ LABEL_9:
 
     else if (objc_opt_respondsToSelector())
     {
-      [v5 searchFieldController:self requestSearchWithSearchTerm:v6 metricsEvent:0];
+      [v5 searchFieldController:self requestSearchWithSearchTerm:term metricsEvent:0];
     }
   }
 }
 
 - (void)_reloadData
 {
-  v3 = [(SKUISearchController *)self->_searchController searchBar];
-  v4 = [v3 text];
+  searchBar = [(SKUISearchController *)self->_searchController searchBar];
+  text = [searchBar text];
 
-  if ([v4 length])
+  if ([text length])
   {
-    v5 = [(SKUISearchFieldController *)self searchHintsURLString];
+    searchHintsURLString = [(SKUISearchFieldController *)self searchHintsURLString];
 
-    if (!v5)
+    if (!searchHintsURLString)
     {
       objc_initWeak(&location, self);
-      v18 = [(SKUIClientContext *)self->_clientContext URLBag];
+      uRLBag = [(SKUIClientContext *)self->_clientContext URLBag];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __40__SKUISearchFieldController__reloadData__block_invoke;
       v21[3] = &unk_2781FBDE0;
       objc_copyWeak(&v22, &location);
-      [v18 loadValueForKey:@"searchHints" completionBlock:v21];
+      [uRLBag loadValueForKey:@"searchHints" completionBlock:v21];
 
       objc_destroyWeak(&v22);
       objc_destroyWeak(&location);
@@ -736,11 +736,11 @@ LABEL_9:
     [(SSVLoadURLOperation *)self->_loadOperation setOutputBlock:0];
     [(SSVLoadURLOperation *)self->_loadOperation cancel];
     v6 = MEMORY[0x277CBEBC0];
-    v7 = [(SKUISearchFieldController *)self searchHintsURLString];
-    v8 = [v6 URLWithString:v7];
-    v9 = [v8 URLByAppendingQueryParameter:@"term" value:v4];
+    searchHintsURLString2 = [(SKUISearchFieldController *)self searchHintsURLString];
+    v8 = [v6 URLWithString:searchHintsURLString2];
+    tableView = [v8 URLByAppendingQueryParameter:@"term" value:text];
 
-    v10 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURL:v9];
+    v10 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURL:tableView];
     loadOperation = self->_loadOperation;
     self->_loadOperation = v10;
 
@@ -772,8 +772,8 @@ LABEL_9:
     completionList = self->_completionList;
     self->_completionList = 0;
 
-    v9 = [(UITableViewController *)self->_searchResultsController tableView];
-    [v9 reloadData];
+    tableView = [(UITableViewController *)self->_searchResultsController tableView];
+    [tableView reloadData];
   }
 
 LABEL_7:
@@ -835,35 +835,35 @@ void __40__SKUISearchFieldController__reloadData__block_invoke_4(uint64_t a1)
 
 - (void)_reloadTrendingVisibility
 {
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v14 = [MEMORY[0x277D75128] sharedApplication];
-    v5 = [v14 keyWindow];
-    [v5 bounds];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    keyWindow = [mEMORY[0x277D75128] keyWindow];
+    [keyWindow bounds];
     if (v6 <= SKUICompactThreshold())
     {
     }
 
     else
     {
-      v7 = [(SKUIClientContext *)self->_clientContext shouldForceTransientSearchControllerBahavior];
+      shouldForceTransientSearchControllerBahavior = [(SKUIClientContext *)self->_clientContext shouldForceTransientSearchControllerBahavior];
 
-      if (v7)
+      if (shouldForceTransientSearchControllerBahavior)
       {
         return;
       }
 
-      v14 = [(UITableViewController *)self->_searchResultsController tableView];
-      v8 = [(SKUIClientContext *)self->_clientContext trendingSearchProvider];
-      [v14 setTrendingSearchProvider:v8];
+      mEMORY[0x277D75128] = [(UITableViewController *)self->_searchResultsController tableView];
+      trendingSearchProvider = [(SKUIClientContext *)self->_clientContext trendingSearchProvider];
+      [mEMORY[0x277D75128] setTrendingSearchProvider:trendingSearchProvider];
 
-      v9 = [(SKUISearchController *)self->_searchController isActive];
-      v10 = [(SKUISearchController *)self->_searchController searchBar];
-      v11 = [v10 text];
-      v12 = [v11 length];
+      isActive = [(SKUISearchController *)self->_searchController isActive];
+      searchBar = [(SKUISearchController *)self->_searchController searchBar];
+      text = [searchBar text];
+      v12 = [text length];
 
       if (v12)
       {
@@ -872,29 +872,29 @@ void __40__SKUISearchFieldController__reloadData__block_invoke_4(uint64_t a1)
 
       else
       {
-        v13 = v9;
+        v13 = isActive;
       }
 
-      [v14 setTrendingSearchesVisible:v13];
+      [mEMORY[0x277D75128] setTrendingSearchesVisible:v13];
     }
   }
 }
 
-- (void)_setResponse:(id)a3 error:(id)a4
+- (void)_setResponse:(id)response error:(id)error
 {
-  v12 = a3;
-  v7 = a4;
-  if (v12)
+  responseCopy = response;
+  errorCopy = error;
+  if (responseCopy)
   {
-    v8 = [(SKUISearchController *)self->_searchController searchBar];
-    v9 = [v8 text];
-    v10 = [v9 length];
+    searchBar = [(SKUISearchController *)self->_searchController searchBar];
+    text = [searchBar text];
+    v10 = [text length];
 
     if (v10)
     {
-      objc_storeStrong(&self->_completionList, a3);
-      v11 = [(UITableViewController *)self->_searchResultsController tableView];
-      [v11 reloadData];
+      objc_storeStrong(&self->_completionList, response);
+      tableView = [(UITableViewController *)self->_searchResultsController tableView];
+      [tableView reloadData];
     }
   }
 }

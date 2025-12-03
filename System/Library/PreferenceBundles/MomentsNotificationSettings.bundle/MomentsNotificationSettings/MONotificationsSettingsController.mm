@@ -2,18 +2,18 @@
 + (id)notificationSettingsBundle;
 - (MONotificationsSettingsController)init;
 - (id)createCustomScheduleSpecifiers;
-- (id)defaultJournalApp:(id)a3;
+- (id)defaultJournalApp:(id)app;
 - (id)defaultJournalingAppSpecifier;
 - (id)getLegacyMomentsdSchedule;
 - (id)getLegacyMomentsdScheduleType;
-- (id)notificationCustomTime:(id)a3;
+- (id)notificationCustomTime:(id)time;
 - (id)specifiers;
 - (void)previousScheduleDefaults;
 - (void)saveDataIfNeeded;
-- (void)setDefaultJournalApp:(id)a3 specifier:(id)a4;
-- (void)setNotificationCustomScheduleDays:(id)a3 specifier:(id)a4;
-- (void)setNotificationCustomTime:(id)a3 specifier:(id)a4;
-- (void)setNotificationScheduleOptionsSetting:(id)a3 specifier:(id)a4;
+- (void)setDefaultJournalApp:(id)app specifier:(id)specifier;
+- (void)setNotificationCustomScheduleDays:(id)days specifier:(id)specifier;
+- (void)setNotificationCustomTime:(id)time specifier:(id)specifier;
+- (void)setNotificationScheduleOptionsSetting:(id)setting specifier:(id)specifier;
 @end
 
 @implementation MONotificationsSettingsController
@@ -26,9 +26,9 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(MONotificationsSettingsController *)v2 momentsUIService];
+    momentsUIService = [(MONotificationsSettingsController *)v2 momentsUIService];
 
-    if (!v4)
+    if (!momentsUIService)
     {
       v5 = objc_alloc_init(_TtC9MomentsUI26ProcessingServerConnection);
       [(MONotificationsSettingsController *)v3 setMomentsUIService:v5];
@@ -46,8 +46,8 @@
     v10 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.momentsd"];
     [(MONotificationsSettingsController *)v3 setMomentsdUserDefaults:v10];
 
-    v11 = [(MONotificationsSettingsController *)v3 createCustomScheduleSpecifiers];
-    [(MONotificationsSettingsController *)v3 setCustomScheduleSpecifiers:v11];
+    createCustomScheduleSpecifiers = [(MONotificationsSettingsController *)v3 createCustomScheduleSpecifiers];
+    [(MONotificationsSettingsController *)v3 setCustomScheduleSpecifiers:createCustomScheduleSpecifiers];
 
     [(MONotificationsSettingsController *)v3 setNeedsSaveSchedule:0];
     [(MONotificationsSettingsController *)v3 previousScheduleDefaults];
@@ -58,8 +58,8 @@
 
 - (void)previousScheduleDefaults
 {
-  v3 = [(MONotificationsSettingsController *)self userDefaults];
-  v19 = [v3 objectForKey:@"NotificationScheduleType"];
+  userDefaults = [(MONotificationsSettingsController *)self userDefaults];
+  v19 = [userDefaults objectForKey:@"NotificationScheduleType"];
 
   if (v19 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -68,75 +68,75 @@
 
   else
   {
-    v5 = [(MONotificationsSettingsController *)self getLegacyMomentsdScheduleType];
+    getLegacyMomentsdScheduleType = [(MONotificationsSettingsController *)self getLegacyMomentsdScheduleType];
 
-    v4 = v5;
+    v4 = getLegacyMomentsdScheduleType;
   }
 
   v20 = v4;
   [(MONotificationsSettingsController *)self setScheduleType:?];
-  v6 = [(MONotificationsSettingsController *)self scheduleType];
-  v7 = [v6 intValue];
+  scheduleType = [(MONotificationsSettingsController *)self scheduleType];
+  intValue = [scheduleType intValue];
 
-  if (v7 == 2)
+  if (intValue == 2)
   {
-    v8 = [(MONotificationsSettingsController *)self userDefaults];
-    v9 = [v8 objectForKey:@"NotificationScheduleDayArray"];
+    userDefaults2 = [(MONotificationsSettingsController *)self userDefaults];
+    v9 = [userDefaults2 objectForKey:@"NotificationScheduleDayArray"];
 
     if (v9 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v10 = 0;
+      getLegacyMomentsdSchedule = 0;
     }
 
     else
     {
-      v10 = [(MONotificationsSettingsController *)self getLegacyMomentsdSchedule];
-      v11 = [v10 weekdays];
-      if (v11)
+      getLegacyMomentsdSchedule = [(MONotificationsSettingsController *)self getLegacyMomentsdSchedule];
+      weekdays = [getLegacyMomentsdSchedule weekdays];
+      if (weekdays)
       {
-        v12 = [v10 weekdays];
+        weekdays2 = [getLegacyMomentsdSchedule weekdays];
       }
 
       else
       {
-        v12 = &__NSArray0__struct;
+        weekdays2 = &__NSArray0__struct;
       }
 
-      v9 = v12;
+      v9 = weekdays2;
     }
 
     [(MONotificationsSettingsController *)self setScheduledDays:v9];
-    v13 = [(MONotificationsSettingsController *)self userDefaults];
-    v14 = [v13 objectForKey:@"NotificationScheduleHour"];
+    userDefaults3 = [(MONotificationsSettingsController *)self userDefaults];
+    v14 = [userDefaults3 objectForKey:@"NotificationScheduleHour"];
 
     if (v14)
     {
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 || !v10)
+      if ((objc_opt_isKindOfClass() & 1) != 0 || !getLegacyMomentsdSchedule)
       {
 LABEL_20:
         [(MONotificationsSettingsController *)self setScheduledHour:v14];
-        v16 = [(MONotificationsSettingsController *)self userDefaults];
-        v17 = [v16 objectForKey:@"NotificationScheduleMinute"];
+        userDefaults4 = [(MONotificationsSettingsController *)self userDefaults];
+        v17 = [userDefaults4 objectForKey:@"NotificationScheduleMinute"];
 
         if (v17)
         {
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 || !v10)
+          if ((objc_opt_isKindOfClass() & 1) != 0 || !getLegacyMomentsdSchedule)
           {
             goto LABEL_27;
           }
         }
 
-        else if (!v10)
+        else if (!getLegacyMomentsdSchedule)
         {
           v17 = 0;
           goto LABEL_27;
         }
 
-        v18 = [v10 minute];
+        minute = [getLegacyMomentsdSchedule minute];
 
-        v17 = v18;
+        v17 = minute;
 LABEL_27:
         [(MONotificationsSettingsController *)self setScheduledMinute:v17];
 
@@ -144,15 +144,15 @@ LABEL_27:
       }
     }
 
-    else if (!v10)
+    else if (!getLegacyMomentsdSchedule)
     {
       v14 = 0;
       goto LABEL_20;
     }
 
-    v15 = [v10 hour];
+    hour = [getLegacyMomentsdSchedule hour];
 
-    v14 = v15;
+    v14 = hour;
     goto LABEL_20;
   }
 
@@ -232,12 +232,12 @@ void __52__MONotificationsSettingsController_viewWillAppear___block_invoke_3(id 
 
   v5 = objc_opt_new();
   v6 = +[UIDevice currentDevice];
-  v7 = [v6 userInterfaceIdiom];
+  userInterfaceIdiom = [v6 userInterfaceIdiom];
 
   v8 = +[MONotificationsSettingsController notificationSettingsBundle];
   v9 = [PSSpecifier groupSpecifierWithID:@"NOTIFICATION_SCHEDULE_OPTION_GROUP_ID"];
   [v5 addObject:v9];
-  if (!v7)
+  if (!userInterfaceIdiom)
   {
     if ([(MONotificationsSettingsController *)self noEligibleApps])
     {
@@ -246,20 +246,20 @@ void __52__MONotificationsSettingsController_viewWillAppear___block_invoke_3(id 
 
     else
     {
-      v11 = [(MONotificationsSettingsController *)self scheduleType];
-      v12 = [v11 intValue];
+      scheduleType = [(MONotificationsSettingsController *)self scheduleType];
+      intValue = [scheduleType intValue];
 
-      if (v12 == 1)
+      if (intValue == 1)
       {
         v10 = @"Your routine and location will determine when you’ll be notified it’s time to write, or when there are new journaling suggestions. You can also create a custom schedule.";
       }
 
       else
       {
-        v13 = [(MONotificationsSettingsController *)self scheduleType];
-        v14 = [v13 intValue];
+        scheduleType2 = [(MONotificationsSettingsController *)self scheduleType];
+        intValue2 = [scheduleType2 intValue];
 
-        if (v14)
+        if (intValue2)
         {
           v15 = &stru_C5D8;
 LABEL_11:
@@ -288,33 +288,33 @@ LABEL_12:
 
   [v16 setIdentifier:@"NOTIFICATION_SCHEDULE_OPTIONS_CELL"];
   [v5 addObject:v16];
-  v18 = [(MONotificationsSettingsController *)self scheduleType];
-  if ([v18 intValue] == 2)
+  scheduleType3 = [(MONotificationsSettingsController *)self scheduleType];
+  if ([scheduleType3 intValue] == 2)
   {
-    v19 = [(MONotificationsSettingsController *)self noEligibleApps];
+    noEligibleApps = [(MONotificationsSettingsController *)self noEligibleApps];
 
-    if (v19)
+    if (noEligibleApps)
     {
       goto LABEL_18;
     }
 
-    v18 = [(MONotificationsSettingsController *)self customScheduleSpecifiers];
-    [v5 addObjectsFromArray:v18];
+    scheduleType3 = [(MONotificationsSettingsController *)self customScheduleSpecifiers];
+    [v5 addObjectsFromArray:scheduleType3];
   }
 
 LABEL_18:
   if (![(MONotificationsSettingsController *)self noEligibleApps])
   {
-    v20 = [(MONotificationsSettingsController *)self orderedDefaultApplications];
-    v21 = [v20 count];
+    orderedDefaultApplications = [(MONotificationsSettingsController *)self orderedDefaultApplications];
+    v21 = [orderedDefaultApplications count];
 
     if (v21 >= 2)
     {
       v22 = [PSSpecifier groupSpecifierWithID:@"PREFERRED_JOURNAL_APP_GROUP"];
       [v22 setTarget:self];
       [v5 addObject:v22];
-      v23 = [(MONotificationsSettingsController *)self defaultJournalingAppSpecifier];
-      [v5 addObject:v23];
+      defaultJournalingAppSpecifier = [(MONotificationsSettingsController *)self defaultJournalingAppSpecifier];
+      [v5 addObject:defaultJournalingAppSpecifier];
       v24 = [v8 localizedStringForKey:@"Choose an app to open journaling notifications." value:&stru_C5D8 table:0];
       [v22 setObject:v24 forKeyedSubscript:PSFooterTextGroupKey];
     }
@@ -344,8 +344,8 @@ LABEL_22:
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [(MONotificationsSettingsController *)self orderedDefaultApplications];
-  v6 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  orderedDefaultApplications = [(MONotificationsSettingsController *)self orderedDefaultApplications];
+  v6 = [orderedDefaultApplications countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -356,18 +356,18 @@ LABEL_22:
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(orderedDefaultApplications);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
-        v11 = [v10 bundleID];
-        [v4 addObject:v11];
+        bundleID = [v10 bundleID];
+        [v4 addObject:bundleID];
 
-        v12 = [v10 localizedName];
-        [v3 addObject:v12];
+        localizedName = [v10 localizedName];
+        [v3 addObject:localizedName];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [orderedDefaultApplications countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
@@ -384,11 +384,11 @@ LABEL_22:
   return v15;
 }
 
-- (void)setDefaultJournalApp:(id)a3 specifier:(id)a4
+- (void)setDefaultJournalApp:(id)app specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(MONotificationsSettingsController *)self momentsdUserDefaults];
-  [v6 setObject:v5 forKey:@"ChosenDefaultApplication"];
+  appCopy = app;
+  momentsdUserDefaults = [(MONotificationsSettingsController *)self momentsdUserDefaults];
+  [momentsdUserDefaults setObject:appCopy forKey:@"ChosenDefaultApplication"];
 
   objc_initWeak(&location, self);
   queue = self->_queue;
@@ -397,9 +397,9 @@ LABEL_22:
   v9[2] = __68__MONotificationsSettingsController_setDefaultJournalApp_specifier___block_invoke;
   v9[3] = &unk_C570;
   objc_copyWeak(&v12, &location);
-  v10 = v5;
-  v11 = self;
-  v8 = v5;
+  v10 = appCopy;
+  selfCopy = self;
+  v8 = appCopy;
   dispatch_async(queue, v9);
 
   objc_destroyWeak(&v12);
@@ -419,42 +419,42 @@ void __68__MONotificationsSettingsController_setDefaultJournalApp_specifier___bl
   [v3 handleDefaultAppChangeToBundleID:v4.i64[0] handler:v5];
 }
 
-- (id)defaultJournalApp:(id)a3
+- (id)defaultJournalApp:(id)app
 {
-  v4 = [(MONotificationsSettingsController *)self chosenApp];
-  if (v4)
+  chosenApp = [(MONotificationsSettingsController *)self chosenApp];
+  if (chosenApp)
   {
-    v5 = [(MONotificationsSettingsController *)self chosenApp];
+    chosenApp2 = [(MONotificationsSettingsController *)self chosenApp];
   }
 
   else
   {
-    v6 = [(MONotificationsSettingsController *)self orderedDefaultApplications];
-    v7 = [v6 firstObject];
-    v5 = [v7 bundleID];
+    orderedDefaultApplications = [(MONotificationsSettingsController *)self orderedDefaultApplications];
+    firstObject = [orderedDefaultApplications firstObject];
+    chosenApp2 = [firstObject bundleID];
   }
 
-  return v5;
+  return chosenApp2;
 }
 
-- (void)setNotificationScheduleOptionsSetting:(id)a3 specifier:(id)a4
+- (void)setNotificationScheduleOptionsSetting:(id)setting specifier:(id)specifier
 {
-  v18 = a3;
-  v6 = a4;
-  if (v18)
+  settingCopy = setting;
+  specifierCopy = specifier;
+  if (settingCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v18;
+      v7 = settingCopy;
       v8 = +[UIDevice currentDevice];
-      v9 = [v8 userInterfaceIdiom];
+      userInterfaceIdiom = [v8 userInterfaceIdiom];
 
       v10 = +[MONotificationsSettingsController notificationSettingsBundle];
       [(MONotificationsSettingsController *)self setNeedsSaveSchedule:1];
       [(MONotificationsSettingsController *)self setSavePhase:0];
       [(MONotificationsSettingsController *)self setScheduleType:v7];
-      if (v9)
+      if (userInterfaceIdiom)
       {
 LABEL_11:
         [(MONotificationsSettingsController *)self reloadSpecifiers];
@@ -463,20 +463,20 @@ LABEL_11:
       }
 
       v11 = [*&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers] specifierForID:@"NOTIFICATION_SCHEDULE_OPTION_GROUP_ID"];
-      v12 = [(MONotificationsSettingsController *)self scheduleType];
-      v13 = [v12 intValue];
+      scheduleType = [(MONotificationsSettingsController *)self scheduleType];
+      intValue = [scheduleType intValue];
 
-      if (v13 == 1)
+      if (intValue == 1)
       {
         v14 = @"Your routine and location will determine when you’ll be notified it’s time to write, or when there are new journaling suggestions. You can also create a custom schedule.";
       }
 
       else
       {
-        v15 = [(MONotificationsSettingsController *)self scheduleType];
-        v16 = [v15 intValue];
+        scheduleType2 = [(MONotificationsSettingsController *)self scheduleType];
+        intValue2 = [scheduleType2 intValue];
 
-        if (v16)
+        if (intValue2)
         {
           [v11 removePropertyForKey:PSFooterTextGroupKey];
 LABEL_10:
@@ -519,30 +519,30 @@ LABEL_12:
   return v11;
 }
 
-- (void)setNotificationCustomScheduleDays:(id)a3 specifier:(id)a4
+- (void)setNotificationCustomScheduleDays:(id)days specifier:(id)specifier
 {
-  v6 = a3;
+  daysCopy = days;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v6 allObjects];
-    [(MONotificationsSettingsController *)self setScheduledDays:v5];
+    allObjects = [daysCopy allObjects];
+    [(MONotificationsSettingsController *)self setScheduledDays:allObjects];
     [(MONotificationsSettingsController *)self setNeedsSaveSchedule:1];
     [(MONotificationsSettingsController *)self setSavePhase:0];
   }
 }
 
-- (void)setNotificationCustomTime:(id)a3 specifier:(id)a4
+- (void)setNotificationCustomTime:(id)time specifier:(id)specifier
 {
-  v8 = a3;
+  timeCopy = time;
   v5 = +[NSCalendar currentCalendar];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 component:32 fromDate:v8]);
+    v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 component:32 fromDate:timeCopy]);
     [(MONotificationsSettingsController *)self setScheduledHour:v6];
 
-    v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 component:64 fromDate:v8]);
+    v7 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 component:64 fromDate:timeCopy]);
     [(MONotificationsSettingsController *)self setScheduledMinute:v7];
 
     [(MONotificationsSettingsController *)self setNeedsSaveSchedule:1];
@@ -550,15 +550,15 @@ LABEL_12:
   }
 }
 
-- (id)notificationCustomTime:(id)a3
+- (id)notificationCustomTime:(id)time
 {
   v4 = +[NSCalendar currentCalendar];
-  v5 = [(MONotificationsSettingsController *)self scheduledHour];
-  v6 = [v5 intValue];
-  v7 = [(MONotificationsSettingsController *)self scheduledMinute];
-  v8 = [v7 intValue];
+  scheduledHour = [(MONotificationsSettingsController *)self scheduledHour];
+  intValue = [scheduledHour intValue];
+  scheduledMinute = [(MONotificationsSettingsController *)self scheduledMinute];
+  intValue2 = [scheduledMinute intValue];
   v9 = +[NSDate now];
-  v10 = [v4 dateBySettingHour:v6 minute:v8 second:0 ofDate:v9 options:1];
+  v10 = [v4 dateBySettingHour:intValue minute:intValue2 second:0 ofDate:v9 options:1];
 
   return v10;
 }
@@ -568,43 +568,43 @@ LABEL_12:
   if ([(MONotificationsSettingsController *)self needsSaveSchedule]|| ![(MONotificationsSettingsController *)self savePhase])
   {
     v3 = [NotificationScheduleItem alloc];
-    v4 = [(MONotificationsSettingsController *)self scheduleType];
-    v5 = [(MONotificationsSettingsController *)self scheduledHour];
-    v6 = [(MONotificationsSettingsController *)self scheduledMinute];
-    v7 = [(MONotificationsSettingsController *)self scheduledDays];
-    v8 = [v3 initScheduleWithType:v4 hour:v5 minute:v6 weekdays:v7];
+    scheduleType = [(MONotificationsSettingsController *)self scheduleType];
+    scheduledHour = [(MONotificationsSettingsController *)self scheduledHour];
+    scheduledMinute = [(MONotificationsSettingsController *)self scheduledMinute];
+    scheduledDays = [(MONotificationsSettingsController *)self scheduledDays];
+    v8 = [v3 initScheduleWithType:scheduleType hour:scheduledHour minute:scheduledMinute weekdays:scheduledDays];
 
     if (v8)
     {
-      v9 = [(MONotificationsSettingsController *)self userDefaults];
-      v10 = [(MONotificationsSettingsController *)self scheduleType];
-      [v9 setObject:v10 forKey:@"NotificationScheduleType"];
+      userDefaults = [(MONotificationsSettingsController *)self userDefaults];
+      scheduleType2 = [(MONotificationsSettingsController *)self scheduleType];
+      [userDefaults setObject:scheduleType2 forKey:@"NotificationScheduleType"];
 
-      v11 = [(MONotificationsSettingsController *)self scheduledDays];
+      scheduledDays2 = [(MONotificationsSettingsController *)self scheduledDays];
 
-      if (v11)
+      if (scheduledDays2)
       {
-        v12 = [(MONotificationsSettingsController *)self userDefaults];
-        v13 = [(MONotificationsSettingsController *)self scheduledDays];
-        [v12 setObject:v13 forKey:@"NotificationScheduleDayArray"];
+        userDefaults2 = [(MONotificationsSettingsController *)self userDefaults];
+        scheduledDays3 = [(MONotificationsSettingsController *)self scheduledDays];
+        [userDefaults2 setObject:scheduledDays3 forKey:@"NotificationScheduleDayArray"];
       }
 
-      v14 = [(MONotificationsSettingsController *)self scheduledHour];
+      scheduledHour2 = [(MONotificationsSettingsController *)self scheduledHour];
 
-      if (v14)
+      if (scheduledHour2)
       {
-        v15 = [(MONotificationsSettingsController *)self userDefaults];
-        v16 = [(MONotificationsSettingsController *)self scheduledHour];
-        [v15 setObject:v16 forKey:@"NotificationScheduleHour"];
+        userDefaults3 = [(MONotificationsSettingsController *)self userDefaults];
+        scheduledHour3 = [(MONotificationsSettingsController *)self scheduledHour];
+        [userDefaults3 setObject:scheduledHour3 forKey:@"NotificationScheduleHour"];
       }
 
-      v17 = [(MONotificationsSettingsController *)self scheduledMinute];
+      scheduledMinute2 = [(MONotificationsSettingsController *)self scheduledMinute];
 
-      if (v17)
+      if (scheduledMinute2)
       {
-        v18 = [(MONotificationsSettingsController *)self userDefaults];
-        v19 = [(MONotificationsSettingsController *)self scheduledMinute];
-        [v18 setObject:v19 forKey:@"NotificationScheduleMinute"];
+        userDefaults4 = [(MONotificationsSettingsController *)self userDefaults];
+        scheduledMinute3 = [(MONotificationsSettingsController *)self scheduledMinute];
+        [userDefaults4 setObject:scheduledMinute3 forKey:@"NotificationScheduleMinute"];
       }
 
       objc_initWeak(&location, self);
@@ -615,7 +615,7 @@ LABEL_12:
       v21[3] = &unk_C570;
       objc_copyWeak(&v24, &location);
       v22 = v8;
-      v23 = self;
+      selfCopy = self;
       dispatch_async(queue, v21);
 
       objc_destroyWeak(&v24);
@@ -647,8 +647,8 @@ id __53__MONotificationsSettingsController_saveDataIfNeeded__block_invoke_112(ui
 
 - (id)getLegacyMomentsdScheduleType
 {
-  v2 = [(MONotificationsSettingsController *)self momentsdUserDefaults];
-  v3 = [v2 objectForKey:@"UserNotificationScheduleInMinutesArray"];
+  momentsdUserDefaults = [(MONotificationsSettingsController *)self momentsdUserDefaults];
+  v3 = [momentsdUserDefaults objectForKey:@"UserNotificationScheduleInMinutesArray"];
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -676,8 +676,8 @@ id __53__MONotificationsSettingsController_saveDataIfNeeded__block_invoke_112(ui
 
 - (id)getLegacyMomentsdSchedule
 {
-  v2 = [(MONotificationsSettingsController *)self momentsdUserDefaults];
-  v3 = [v2 objectForKey:@"UserNotificationScheduleInMinutesArray"];
+  momentsdUserDefaults = [(MONotificationsSettingsController *)self momentsdUserDefaults];
+  v3 = [momentsdUserDefaults objectForKey:@"UserNotificationScheduleInMinutesArray"];
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v3 count])
   {
@@ -704,12 +704,12 @@ id __53__MONotificationsSettingsController_saveDataIfNeeded__block_invoke_112(ui
             objc_enumerationMutation(v5);
           }
 
-          v12 = [*(*(&v23 + 1) + 8 * i) intValue];
-          if (v12 >> 5 <= 0x13A)
+          intValue = [*(*(&v23 + 1) + 8 * i) intValue];
+          if (intValue >> 5 <= 0x13A)
           {
-            v13 = v12;
-            v14 = v12;
-            v15 = v12 / 0x5A0u;
+            v13 = intValue;
+            v14 = intValue;
+            v15 = intValue / 0x5A0u;
             v16 = [NSNumber numberWithInt:v15 + 1];
             [v4 addObject:v16];
 

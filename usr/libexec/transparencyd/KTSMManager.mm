@@ -1,128 +1,128 @@
 @interface KTSMManager
-- (BOOL)changeOptInState:(unint64_t)a3 application:(id)a4 loggableData:(id *)a5 error:(id *)a6;
+- (BOOL)changeOptInState:(unint64_t)state application:(id)application loggableData:(id *)data error:(id *)error;
 - (BOOL)isCloudKitManateeAcountAvailable;
-- (BOOL)isKTKeyDifferent:(id)a3;
-- (BOOL)maybeUpdateMonitorState:(double)a3;
-- (BOOL)optOutWhenNotEligible:(id)a3 error:(id *)a4;
-- (BOOL)triggerCKFetchCLI:(id *)a3;
-- (BOOL)waitUntilReadyForRPCForOperation:(id)a3 fast:(BOOL)a4 error:(id *)a5;
-- (KTSMManager)initWithDependencies:(id)a3;
+- (BOOL)isKTKeyDifferent:(id)different;
+- (BOOL)maybeUpdateMonitorState:(double)state;
+- (BOOL)optOutWhenNotEligible:(id)eligible error:(id *)error;
+- (BOOL)triggerCKFetchCLI:(id *)i;
+- (BOOL)waitUntilReadyForRPCForOperation:(id)operation fast:(BOOL)fast error:(id *)error;
+- (KTSMManager)initWithDependencies:(id)dependencies;
 - (NSNumber)smState;
 - (id)_onqueueCreateNewServerOptInFetch;
-- (id)_onqueueNextStateMachineTransition:(id)a3 flags:(id)a4 pendingFlags:(id)a5;
+- (id)_onqueueNextStateMachineTransition:(id)transition flags:(id)flags pendingFlags:(id)pendingFlags;
 - (id)accountFirstSeenDate;
 - (id)createSuccesfulCKFetchDependency;
-- (id)idsKTData:(id)a3;
+- (id)idsKTData:(id)data;
 - (id)initializingOperation;
 - (id)lastSelfValidate;
 - (id)metricsRegistration_idsView;
 - (id)metricsRegistration_ktView;
 - (id)missingValidateSelfFallbackDiagnostics;
-- (id)newCKFetch:(id)a3;
-- (id)optInStateForKeyStore:(id)a3 error:(id *)a4;
-- (id)prettyFormatIDSKTStateArray:(id)a3;
+- (id)newCKFetch:(id)fetch;
+- (id)optInStateForKeyStore:(id)store error:(id *)error;
+- (id)prettyFormatIDSKTStateArray:(id)array;
 - (id)recheckAccount;
-- (id)requestSuccessfulCKFetchForManyReasons:(id)a3;
+- (id)requestSuccessfulCKFetchForManyReasons:(id)reasons;
 - (id)triggerCKFetch24h;
-- (id)validateSelfDiagnostics:(id)a3;
+- (id)validateSelfDiagnostics:(id)diagnostics;
 - (int)checkAccountKeyChanged;
 - (void)_onQueueMaybeCreateNewServerOptInFetch;
-- (void)_waitForIDSRegistration:(BOOL)a3 complete:(id)a4;
-- (void)accountChanged:(id)a3 to:(id)a4;
-- (void)addEvent:(id)a3;
+- (void)_waitForIDSRegistration:(BOOL)registration complete:(id)complete;
+- (void)accountChanged:(id)changed to:(id)to;
+- (void)addEvent:(id)event;
 - (void)captureEligibilityHealthCheckup;
-- (void)checkIDSHealth:(BOOL)a3 complete:(id)a4;
-- (void)checkKTAccountKey:(id)a3 complete:(id)a4;
+- (void)checkIDSHealth:(BOOL)health complete:(id)complete;
+- (void)checkKTAccountKey:(id)key complete:(id)complete;
 - (void)clearAccountMetrics;
-- (void)clearAllFollowups:(id)a3;
-- (void)clearEligibilityOverrides:(id)a3;
-- (void)clearIDSCacheForUri:(id)a3 application:(id)a4;
-- (void)clearOptInStateForURI:(id)a3 application:(id)a4 complete:(id)a5;
-- (void)cloudkitAccountStateChange:(id)a3 to:(id)a4;
+- (void)clearAllFollowups:(id)followups;
+- (void)clearEligibilityOverrides:(id)overrides;
+- (void)clearIDSCacheForUri:(id)uri application:(id)application;
+- (void)clearOptInStateForURI:(id)i application:(id)application complete:(id)complete;
+- (void)cloudkitAccountStateChange:(id)change to:(id)to;
 - (void)dealloc;
-- (void)fillUploadedRdata:(id)a3 withRegistrationData:(id)a4;
-- (void)getAggregateResult:(int64_t)a3 element:(id)a4 complete:(id)a5;
-- (void)getAllOptInStates:(id)a3;
-- (void)getOptInForURI:(id)a3 application:(id)a4 complete:(id)a5;
-- (void)getOptInStateForAccount:(id)a3 complete:(id)a4;
-- (void)getOptInStateForApplication:(id)a3 complete:(id)a4;
-- (void)getStatus:(id)a3;
+- (void)fillUploadedRdata:(id)rdata withRegistrationData:(id)data;
+- (void)getAggregateResult:(int64_t)result element:(id)element complete:(id)complete;
+- (void)getAllOptInStates:(id)states;
+- (void)getOptInForURI:(id)i application:(id)application complete:(id)complete;
+- (void)getOptInStateForAccount:(id)account complete:(id)complete;
+- (void)getOptInStateForApplication:(id)application complete:(id)complete;
+- (void)getStatus:(id)status;
 - (void)haltStateMachine;
 - (void)idsServerBagUpdate;
-- (void)idsServerReportKTKeyWrong:(id)a3;
-- (void)insertOSVersion:(id)a3 complete:(id)a4;
-- (void)inspectErrorForRetryAfter:(id)a3 trigger:(id)a4;
-- (void)ktRepair:(id)a3 complete:(id)a4;
-- (void)mapHeadUpdated:(id)a3 populating:(BOOL)a4;
+- (void)idsServerReportKTKeyWrong:(id)wrong;
+- (void)insertOSVersion:(id)version complete:(id)complete;
+- (void)inspectErrorForRetryAfter:(id)after trigger:(id)trigger;
+- (void)ktRepair:(id)repair complete:(id)complete;
+- (void)mapHeadUpdated:(id)updated populating:(BOOL)populating;
 - (void)maybeCreateServerOptInFetch;
-- (void)newServerOptInFetch:(id)a3;
-- (void)notifyBackgroundValidationFailure:(id)a3 data:(id)a4 type:(id)a5 serverHint:(id)a6 failure:(id)a7;
+- (void)newServerOptInFetch:(id)fetch;
+- (void)notifyBackgroundValidationFailure:(id)failure data:(id)data type:(id)type serverHint:(id)hint failure:(id)a7;
 - (void)notifyIDSRegistrationCorrect;
-- (void)notifyPushChange:(id)a3 userInfo:(id)a4;
-- (void)performAndWaitForSelfValidate:(id)a3;
-- (void)performRegistrationSignatures:(id)a3;
-- (void)refreshDeviceList:(id)a3;
-- (void)reportEligibility:(id)a3 withCompletion:(id)a4;
-- (void)requestServerOptInFetchForManyReasons:(id)a3 delayInSeconds:(double)a4;
+- (void)notifyPushChange:(id)change userInfo:(id)info;
+- (void)performAndWaitForSelfValidate:(id)validate;
+- (void)performRegistrationSignatures:(id)signatures;
+- (void)refreshDeviceList:(id)list;
+- (void)reportEligibility:(id)eligibility withCompletion:(id)completion;
+- (void)requestServerOptInFetchForManyReasons:(id)reasons delayInSeconds:(double)seconds;
 - (void)resetCloudStore;
 - (void)resetLastAccountOperations;
 - (void)resetLocalCloudDataState;
-- (void)resetLocalState:(id)a3;
-- (void)retryPendingValidations:(id)a3;
+- (void)resetLocalState:(id)state;
+- (void)retryPendingValidations:(id)validations;
 - (void)setCloudKitOutgoingFlag;
-- (void)setLastSelfValidate:(id)a3;
-- (void)setOverrideTimeBetweenReports:(double)a3 completion:(id)a4;
+- (void)setLastSelfValidate:(id)validate;
+- (void)setOverrideTimeBetweenReports:(double)reports completion:(id)completion;
 - (void)startMetrics;
 - (void)startStateMachine;
-- (void)storeEligiblilityFailure:(id)a3 error:(id)a4;
-- (void)storeEligiblilitySuccess:(id)a3;
-- (void)storeNeedsUpdate:(id)a3;
-- (void)successInfoForElement:(id)a3 samples:(int64_t)a4 complete:(id)a5;
-- (void)sysdiagnoseInfo:(id)a3;
-- (void)timeout:(unint64_t)a3 block:(id)a4;
-- (void)transparencyClearKTRegistrationData:(id)a3;
-- (void)transparencyCloudDeviceAdd:(id)a3 clientData:(id)a4 complete:(id)a5;
-- (void)transparencyCloudDeviceRemove:(id)a3 clientData:(id)a4 complete:(id)a5;
-- (void)transparencyCloudDevices:(id)a3;
-- (void)transparencyDumpKTRegistrationData:(id)a3;
-- (void)transparencyGetKTSignatures:(id)a3 complete:(id)a4;
-- (void)transparencyPerformRegistrationSignature:(id)a3;
+- (void)storeEligiblilityFailure:(id)failure error:(id)error;
+- (void)storeEligiblilitySuccess:(id)success;
+- (void)storeNeedsUpdate:(id)update;
+- (void)successInfoForElement:(id)element samples:(int64_t)samples complete:(id)complete;
+- (void)sysdiagnoseInfo:(id)info;
+- (void)timeout:(unint64_t)timeout block:(id)block;
+- (void)transparencyClearKTRegistrationData:(id)data;
+- (void)transparencyCloudDeviceAdd:(id)add clientData:(id)data complete:(id)complete;
+- (void)transparencyCloudDeviceRemove:(id)remove clientData:(id)data complete:(id)complete;
+- (void)transparencyCloudDevices:(id)devices;
+- (void)transparencyDumpKTRegistrationData:(id)data;
+- (void)transparencyGetKTSignatures:(id)signatures complete:(id)complete;
+- (void)transparencyPerformRegistrationSignature:(id)signature;
 - (void)triggerBAACertFetcher;
-- (void)triggerBackgroundSystemValidate:(id)a3 completionHandler:(id)a4;
+- (void)triggerBackgroundSystemValidate:(id)validate completionHandler:(id)handler;
 - (void)triggerCheckAccountIdentityChanged;
-- (void)triggerCheckCKKSOctagonEligibilityWithCompletion:(id)a3;
+- (void)triggerCheckCKKSOctagonEligibilityWithCompletion:(id)completion;
 - (void)triggerCheckExpiredPublicKeyStores;
 - (void)triggerCheckIDSRegistration;
 - (void)triggerCheckKTAccountKey;
 - (void)triggerCloudKitStaticKeyRemoteUpdateNotification;
-- (void)triggerConfigBagFetch:(double)a3;
+- (void)triggerConfigBagFetch:(double)fetch;
 - (void)triggerEnsureIdentity;
-- (void)triggerFetchSelf:(double)a3;
+- (void)triggerFetchSelf:(double)self;
 - (void)triggerGetPrimaryAccount;
-- (void)triggerIDMSFetch:(double)a3;
-- (void)triggerIDMSFetchBackstop:(id)a3;
-- (void)triggerIDSRepair:(double)a3 selfValidationResult:(id)a4;
+- (void)triggerIDMSFetch:(double)fetch;
+- (void)triggerIDMSFetchBackstop:(id)backstop;
+- (void)triggerIDSRepair:(double)repair selfValidationResult:(id)result;
 - (void)triggerIDSServerBagNotification;
-- (void)triggerKTAccountKeySignature:(double)a3;
-- (void)triggerMaybeReportEligibilityWithCompletion:(id)a3;
+- (void)triggerKTAccountKeySignature:(double)signature;
+- (void)triggerMaybeReportEligibilityWithCompletion:(id)completion;
 - (void)triggerOptInStateChange;
 - (void)triggerPublicKeyFetch;
-- (void)triggerRegistrationDataNeedsUpdate:(id)a3;
-- (void)triggerReportAndMaybeOptInWithCompletion:(id)a3;
-- (void)triggerSelfValidate:(double)a3;
+- (void)triggerRegistrationDataNeedsUpdate:(id)update;
+- (void)triggerReportAndMaybeOptInWithCompletion:(id)completion;
+- (void)triggerSelfValidate:(double)validate;
 - (void)triggerSelfValidateFromEnrollment;
-- (void)triggerStatusUpdate:(id)a3;
-- (void)tryOptInByDefaultWithCompletionHandler:(id)a3;
-- (void)uriNeedsUpdate:(id)a3 forApplication:(id)a4;
+- (void)triggerStatusUpdate:(id)update;
+- (void)tryOptInByDefaultWithCompletionHandler:(id)handler;
+- (void)uriNeedsUpdate:(id)update forApplication:(id)application;
 - (void)validatePendingURIsAndRequests;
-- (void)xpc24HrNotification:(id)a3;
+- (void)xpc24HrNotification:(id)notification;
 @end
 
 @implementation KTSMManager
 
-- (KTSMManager)initWithDependencies:(id)a3
+- (KTSMManager)initWithDependencies:(id)dependencies
 {
-  v4 = a3;
+  dependenciesCopy = dependencies;
   v118.receiver = self;
   v118.super_class = KTSMManager;
   v5 = [(KTSMManager *)&v118 init];
@@ -140,7 +140,7 @@
     v9 = dispatch_queue_create("eligibility", 0);
     [(KTSMManager *)v5 setEligibilityQueue:v9];
 
-    [(KTSMManager *)v5 setDeps:v4];
+    [(KTSMManager *)v5 setDeps:dependenciesCopy];
     v10 = objc_alloc_init(KTOptInStateHolder);
     [(KTSMManager *)v5 setOptInStates:v10];
 
@@ -166,20 +166,20 @@
 
     v17 = [_TtC13transparencyd10KTWatchdog alloc];
     v18 = [KTManagerWatchdogControl alloc];
-    v83 = v4;
-    v19 = [v4 dew];
+    v83 = dependenciesCopy;
+    v19 = [dependenciesCopy dew];
     v20 = [(KTManagerWatchdogControl *)v18 initWithDew:v19];
     v21 = [(KTWatchdog *)v17 initWithControl:v20];
     [(KTSMManager *)v5 setWatchdog:v21];
 
-    v22 = [(KTSMManager *)v5 deps];
-    v23 = [v22 idsConfigBag];
+    deps = [(KTSMManager *)v5 deps];
+    idsConfigBag = [deps idsConfigBag];
 
-    if (!v23)
+    if (!idsConfigBag)
     {
       v24 = +[TransparencyIDSConfigBag sharedInstance];
-      v25 = [(KTSMManager *)v5 deps];
-      [v25 setIdsConfigBag:v24];
+      deps2 = [(KTSMManager *)v5 deps];
+      [deps2 setIdsConfigBag:v24];
     }
 
     v26 = +[NSNotificationCenter defaultCenter];
@@ -187,29 +187,29 @@
 
     v27 = [KTStateMachine alloc];
     v86 = +[KTStates KTStateMap];
-    v85 = [v86 allKeys];
-    v28 = [NSSet setWithArray:v85];
+    allKeys = [v86 allKeys];
+    v28 = [NSSet setWithArray:allKeys];
     v29 = +[KTStates AllKTFlags];
-    v30 = [(KTSMManager *)v5 stateMachineQueue];
-    v84 = [(KTSMManager *)v5 deps];
-    v31 = [v84 lockStateTracker];
-    v32 = [(KTSMManager *)v5 deps];
-    v33 = [v32 reachabilityTracker];
-    v34 = [(KTSMManager *)v5 deps];
-    v35 = [v34 idsConfigBag];
+    stateMachineQueue = [(KTSMManager *)v5 stateMachineQueue];
+    deps3 = [(KTSMManager *)v5 deps];
+    lockStateTracker = [deps3 lockStateTracker];
+    deps4 = [(KTSMManager *)v5 deps];
+    reachabilityTracker = [deps4 reachabilityTracker];
+    deps5 = [(KTSMManager *)v5 deps];
+    idsConfigBag2 = [deps5 idsConfigBag];
     v36 = v27;
-    v37 = v30;
-    v38 = [(KTStateMachine *)v36 initWithName:@"KTStateMachine" states:v28 flags:v29 initialState:@"PublicKeysInitialFetch" queue:v30 stateEngine:v5 lockStateTracker:v31 reachabilityTracker:v33 idsConfigBag:v35];
+    v37 = stateMachineQueue;
+    v38 = [(KTStateMachine *)v36 initWithName:@"KTStateMachine" states:v28 flags:v29 initialState:@"PublicKeysInitialFetch" queue:stateMachineQueue stateEngine:v5 lockStateTracker:lockStateTracker reachabilityTracker:reachabilityTracker idsConfigBag:idsConfigBag2];
     [(KTSMManager *)v5 setStateMachine:v38];
 
     [(KTSMManager *)v5 setManateeViewToken:0xFFFFFFFFLL];
-    v39 = [(KTSMManager *)v5 stateMachine];
-    v40 = [(KTSMManager *)v5 deps];
-    [v40 setFlagHandler:v39];
+    stateMachine = [(KTSMManager *)v5 stateMachine];
+    deps6 = [(KTSMManager *)v5 deps];
+    [deps6 setFlagHandler:stateMachine];
 
-    v41 = [(KTSMManager *)v5 deps];
-    v42 = [v41 cloudKitAccountTracker];
-    v43 = [v42 registerForNotificationsOfCloudKitAccountStatusChange:v5];
+    deps7 = [(KTSMManager *)v5 deps];
+    cloudKitAccountTracker = [deps7 cloudKitAccountTracker];
+    v43 = [cloudKitAccountTracker registerForNotificationsOfCloudKitAccountStatusChange:v5];
 
     objc_initWeak(&location, v5);
     v115[0] = _NSConcreteStackBlock;
@@ -217,27 +217,27 @@
     v115[2] = sub_100049398;
     v115[3] = &unk_10031A490;
     objc_copyWeak(&v116, &location);
-    v44 = [(KTSMManager *)v5 deps];
-    v45 = [v44 octagonOperations];
-    [v45 setOctagonObserver:v115];
+    deps8 = [(KTSMManager *)v5 deps];
+    octagonOperations = [deps8 octagonOperations];
+    [octagonOperations setOctagonObserver:v115];
 
     v113[0] = _NSConcreteStackBlock;
     v113[1] = 3221225472;
     v113[2] = sub_1000494D0;
     v113[3] = &unk_10031A4D8;
     objc_copyWeak(&v114, &location);
-    v46 = [(KTSMManager *)v5 deps];
-    v47 = [v46 octagonOperations];
-    [v47 setCkksViewObserver:v113];
+    deps9 = [(KTSMManager *)v5 deps];
+    octagonOperations2 = [deps9 octagonOperations];
+    [octagonOperations2 setCkksViewObserver:v113];
 
     v111[0] = _NSConcreteStackBlock;
     v111[1] = 3221225472;
     v111[2] = sub_10004966C;
     v111[3] = &unk_10031A520;
     objc_copyWeak(&v112, &location);
-    v48 = [(KTSMManager *)v5 deps];
-    v49 = [v48 idsAccountTracker];
-    [v49 setIdsObserver:v111];
+    deps10 = [(KTSMManager *)v5 deps];
+    idsAccountTracker = [deps10 idsAccountTracker];
+    [idsAccountTracker setIdsObserver:v111];
 
     v50 = [KTNearFutureScheduler alloc];
     v109[0] = _NSConcreteStackBlock;
@@ -275,11 +275,11 @@
     v57 = [(KTNearFutureScheduler *)v56 initWithName:@"ck-zone-fetcher" initialDelay:2000000000 exponentialBackoff:3600000000000 maximumDelay:0 keepProcessAlive:0 dependencyDescriptionCode:v103 block:1.2];
     [(KTSMManager *)v5 setCkFetchScheduler:v57];
 
-    v58 = [(KTSMManager *)v5 deps];
-    v59 = [v58 logger];
+    deps11 = [(KTSMManager *)v5 deps];
+    logger = [deps11 logger];
     v60 = objc_opt_self();
-    v61 = [v60 ckFetchScheduler];
-    [v59 addNFSReporting:v61];
+    ckFetchScheduler = [v60 ckFetchScheduler];
+    [logger addNFSReporting:ckFetchScheduler];
 
     v62 = [KTNearFutureScheduler alloc];
     v101[0] = _NSConcreteStackBlock;
@@ -309,10 +309,10 @@
     v68 = [(KTNearFutureScheduler *)v66 initWithName:@"manateeViewChanged" initialDelay:5000000000 continuingDelay:90000000000 keepProcessAlive:0 dependencyDescriptionCode:0 block:v97];
     [v67 setManateeViewChangedScheduler:v68];
 
-    v69 = [v67 deps];
-    v70 = [v69 logger];
-    v71 = [v67 manateeViewChangedScheduler];
-    [v70 addNFSReporting:v71];
+    deps12 = [v67 deps];
+    logger2 = [deps12 logger];
+    manateeViewChangedScheduler = [v67 manateeViewChangedScheduler];
+    [logger2 addNFSReporting:manateeViewChangedScheduler];
 
     v72 = [KTNearFutureScheduler alloc];
     v95[0] = _NSConcreteStackBlock;
@@ -341,24 +341,24 @@
     v77 = [(KTNearFutureScheduler *)v76 initWithName:@"pokeIDS" initialDelay:2000000000 exponentialBackoff:2000000000000 maximumDelay:0 keepProcessAlive:0 dependencyDescriptionCode:v91 block:10.0];
     [v67 setPokeIDS:v77];
 
-    v78 = [v67 queue];
+    queue = [v67 queue];
     handler[0] = _NSConcreteStackBlock;
     handler[1] = 3221225472;
     handler[2] = sub_100049B34;
     handler[3] = &unk_10031A548;
     objc_copyWeak(&v90, &location);
-    notify_register_dispatch("com.apple.security.view-change.Manatee", v67 + 4, v78, handler);
+    notify_register_dispatch("com.apple.security.view-change.Manatee", v67 + 4, queue, handler);
 
-    v79 = [v67 watchdog];
+    watchdog = [v67 watchdog];
     v87[0] = _NSConcreteStackBlock;
     v87[1] = 3221225472;
     v87[2] = sub_100049B8C;
     v87[3] = &unk_10031A590;
     objc_copyWeak(&v88, &location);
-    [v79 addWithNamed:@"stateMachineQueue" watcher:v87];
+    [watchdog addWithNamed:@"stateMachineQueue" watcher:v87];
 
-    v80 = [v67 watchdog];
-    [v80 resume];
+    watchdog2 = [v67 watchdog];
+    [watchdog2 resume];
 
     [v67 startMetrics];
     v81 = v67;
@@ -378,7 +378,7 @@
     objc_destroyWeak(&v114);
     objc_destroyWeak(&v116);
     objc_destroyWeak(&location);
-    v4 = v83;
+    dependenciesCopy = v83;
   }
 
   return v5;
@@ -400,9 +400,9 @@
 - (NSNumber)smState
 {
   v3 = +[KTStates KTStateMap];
-  v4 = [(KTSMManager *)self stateMachine];
-  v5 = [v4 currentState];
-  v6 = [v3 objectForKeyedSubscript:v5];
+  stateMachine = [(KTSMManager *)self stateMachine];
+  currentState = [stateMachine currentState];
+  v6 = [v3 objectForKeyedSubscript:currentState];
 
   return v6;
 }
@@ -421,8 +421,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "KTSMManager: start state machine", v5, 2u);
   }
 
-  v4 = [(KTSMManager *)self stateMachine];
-  [v4 startOperation];
+  stateMachine = [(KTSMManager *)self stateMachine];
+  [stateMachine startOperation];
 
   [(KTSMManager *)self setStateMachineRunning:1];
 }
@@ -430,49 +430,49 @@
 - (void)haltStateMachine
 {
   [(KTSMManager *)self setStateMachineRunning:0];
-  v3 = [(KTSMManager *)self publicKeyFetcher];
-  [v3 cancel];
+  publicKeyFetcher = [(KTSMManager *)self publicKeyFetcher];
+  [publicKeyFetcher cancel];
 
-  v4 = [(KTSMManager *)self retryEnsureIdentity];
-  [v4 cancel];
+  retryEnsureIdentity = [(KTSMManager *)self retryEnsureIdentity];
+  [retryEnsureIdentity cancel];
 
-  v5 = [(KTSMManager *)self retryGetPrimaryAccount];
-  [v5 cancel];
+  retryGetPrimaryAccount = [(KTSMManager *)self retryGetPrimaryAccount];
+  [retryGetPrimaryAccount cancel];
 
-  v6 = [(KTSMManager *)self checkKTAccountKeyScheduler];
-  [v6 cancel];
+  checkKTAccountKeyScheduler = [(KTSMManager *)self checkKTAccountKeyScheduler];
+  [checkKTAccountKeyScheduler cancel];
 
-  v7 = [(KTSMManager *)self checkKTSignatureScheduler];
-  [v7 cancel];
+  checkKTSignatureScheduler = [(KTSMManager *)self checkKTSignatureScheduler];
+  [checkKTSignatureScheduler cancel];
 
-  v8 = [(KTSMManager *)self serverOptInScheduler];
-  [v8 cancel];
+  serverOptInScheduler = [(KTSMManager *)self serverOptInScheduler];
+  [serverOptInScheduler cancel];
 
-  v9 = [(KTSMManager *)self ckFetchScheduler];
-  [v9 cancel];
+  ckFetchScheduler = [(KTSMManager *)self ckFetchScheduler];
+  [ckFetchScheduler cancel];
 
-  v10 = [(KTSMManager *)self manateeViewChangedScheduler];
-  [v10 cancel];
+  manateeViewChangedScheduler = [(KTSMManager *)self manateeViewChangedScheduler];
+  [manateeViewChangedScheduler cancel];
 
-  v11 = [(KTSMManager *)self retryPendingValidations];
-  [v11 cancel];
+  retryPendingValidations = [(KTSMManager *)self retryPendingValidations];
+  [retryPendingValidations cancel];
 
-  v12 = [(KTSMManager *)self pokeIDS];
-  [v12 cancel];
+  pokeIDS = [(KTSMManager *)self pokeIDS];
+  [pokeIDS cancel];
 
-  v13 = [(KTSMManager *)self statusReporting];
+  statusReporting = [(KTSMManager *)self statusReporting];
 
-  if (v13)
+  if (statusReporting)
   {
     v14 = dispatch_semaphore_create(0);
-    v15 = [(KTSMManager *)self statusReporting];
+    statusReporting2 = [(KTSMManager *)self statusReporting];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_10004A010;
     v21[3] = &unk_10031A5F8;
     v16 = v14;
     v22 = v16;
-    [v15 closeDatabaseWithCompletionHandler:v21];
+    [statusReporting2 closeDatabaseWithCompletionHandler:v21];
 
     v17 = dispatch_time(0, 2000000000);
     if (dispatch_semaphore_wait(v16, v17))
@@ -493,71 +493,71 @@
     [(KTSMManager *)self setStatusReporting:0];
   }
 
-  v19 = [(KTSMManager *)self stateMachine];
-  [v19 haltOperation];
+  stateMachine = [(KTSMManager *)self stateMachine];
+  [stateMachine haltOperation];
 }
 
 - (void)captureEligibilityHealthCheckup
 {
-  v3 = [(KTSMManager *)self statusReporting];
+  statusReporting = [(KTSMManager *)self statusReporting];
 
-  if (v3)
+  if (statusReporting)
   {
-    v4 = [(KTSMManager *)self statusReporting];
+    statusReporting2 = [(KTSMManager *)self statusReporting];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_10004A21C;
     v5[3] = &unk_10031A640;
     v5[4] = self;
-    [v4 eligibilityCheckupMetricsWithSamples:60 interval:v5 completionHandler:86400.0];
+    [statusReporting2 eligibilityCheckupMetricsWithSamples:60 interval:v5 completionHandler:86400.0];
   }
 }
 
 - (void)startMetrics
 {
   objc_initWeak(&location, self);
-  v3 = [(KTSMManager *)self deps];
-  v4 = [v3 logger];
+  deps = [(KTSMManager *)self deps];
+  logger = [deps logger];
   v5 = SFAnalyticsSamplerIntervalOncePerReport;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10004A70C;
   v10[3] = &unk_1003188E8;
   objc_copyWeak(&v11, &location);
-  [v4 addMultiSamplerForName:@"transparencydEligibilityMultiSampler" withTimeInterval:v10 block:v5];
+  [logger addMultiSamplerForName:@"transparencydEligibilityMultiSampler" withTimeInterval:v10 block:v5];
 
-  v6 = [(KTSMManager *)self deps];
-  v7 = [v6 logger];
+  deps2 = [(KTSMManager *)self deps];
+  logger2 = [deps2 logger];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10004ACB0;
   v8[3] = &unk_1003188E8;
   objc_copyWeak(&v9, &location);
-  [v7 addMultiSamplerForName:@"transparencydMultiSampler" withTimeInterval:v8 block:v5];
+  [logger2 addMultiSamplerForName:@"transparencydMultiSampler" withTimeInterval:v8 block:v5];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
 }
 
-- (void)cloudkitAccountStateChange:(id)a3 to:(id)a4
+- (void)cloudkitAccountStateChange:(id)change to:(id)to
 {
-  v5 = a4;
-  v6 = [(KTSMManager *)self stateMachineQueue];
+  toCopy = to;
+  stateMachineQueue = [(KTSMManager *)self stateMachineQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10004B4C0;
   v8[3] = &unk_1003180E0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = toCopy;
+  v7 = toCopy;
+  dispatch_async(stateMachineQueue, v8);
 }
 
-- (void)accountChanged:(id)a3 to:(id)a4
+- (void)accountChanged:(id)changed to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  toCopy = to;
   if (qword_10038BD00 != -1)
   {
     sub_100249A98();
@@ -567,41 +567,41 @@
   if (os_log_type_enabled(qword_10038BD08, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412546;
-    v12 = v6;
+    v12 = changedCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = toCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "account %@ state changed to: %@", &v11, 0x16u);
   }
 
   v9 = [[KTPendingFlag alloc] initWithFlag:@"AccountChanged" conditions:0 delayInSeconds:0.1];
-  v10 = [(KTSMManager *)self stateMachine];
-  [v10 handlePendingFlag:v9];
+  stateMachine = [(KTSMManager *)self stateMachine];
+  [stateMachine handlePendingFlag:v9];
 }
 
 - (void)triggerPublicKeyFetch
 {
   v4 = [[KTPendingFlag alloc] initWithFlag:@"FetchPublicKeys" conditions:2 delayInSeconds:0.1];
-  v3 = [(KTSMManager *)self stateMachine];
-  [v3 handlePendingFlag:v4];
+  stateMachine = [(KTSMManager *)self stateMachine];
+  [stateMachine handlePendingFlag:v4];
 }
 
 - (void)triggerEnsureIdentity
 {
   v4 = [[KTPendingFlag alloc] initWithFlag:@"EnsureIdentity" conditions:3 delayInSeconds:0.1];
-  v3 = [(KTSMManager *)self stateMachine];
-  [v3 handlePendingFlag:v4];
+  stateMachine = [(KTSMManager *)self stateMachine];
+  [stateMachine handlePendingFlag:v4];
 }
 
 - (void)triggerGetPrimaryAccount
 {
   v4 = [[KTPendingFlag alloc] initWithFlag:@"AccountChanged" delayInSeconds:0.1];
-  v3 = [(KTSMManager *)self stateMachine];
-  [v3 handlePendingFlag:v4];
+  stateMachine = [(KTSMManager *)self stateMachine];
+  [stateMachine handlePendingFlag:v4];
 }
 
-- (void)storeNeedsUpdate:(id)a3
+- (void)storeNeedsUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   if (qword_10038BD00 != -1)
   {
     sub_100249AAC();
@@ -611,7 +611,7 @@
   if (os_log_type_enabled(qword_10038BD08, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = updateCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "public key store request update: %@", &v6, 0xCu);
   }
 
@@ -621,46 +621,46 @@
 - (void)triggerCheckIDSRegistration
 {
   v4 = [[KTPendingFlag alloc] initWithFlag:@"CheckIDSRegistration" conditions:2 delayInSeconds:0.0];
-  v3 = [(KTSMManager *)self stateMachine];
-  [v3 handlePendingFlag:v4];
+  stateMachine = [(KTSMManager *)self stateMachine];
+  [stateMachine handlePendingFlag:v4];
 }
 
 - (void)triggerCheckAccountIdentityChanged
 {
   v4 = [[KTPendingFlag alloc] initWithFlag:@"CheckKTAccountKeyChanged" conditions:2 delayInSeconds:0.0];
-  v3 = [(KTSMManager *)self stateMachine];
-  [v3 handlePendingFlag:v4];
+  stateMachine = [(KTSMManager *)self stateMachine];
+  [stateMachine handlePendingFlag:v4];
 }
 
 - (void)triggerOptInStateChange
 {
   v4 = [[KTPendingFlag alloc] initWithFlag:@"ChangeOptInState" conditions:2 delayInSeconds:0.0];
-  v3 = [(KTSMManager *)self stateMachine];
-  [v3 handlePendingFlag:v4];
+  stateMachine = [(KTSMManager *)self stateMachine];
+  [stateMachine handlePendingFlag:v4];
 }
 
-- (void)triggerConfigBagFetch:(double)a3
+- (void)triggerConfigBagFetch:(double)fetch
 {
-  v5 = [[KTPendingFlag alloc] initWithFlag:@"ConfigBagFetch" conditions:2 delayInSeconds:a3];
-  v4 = [(KTSMManager *)self stateMachine];
-  [v4 handlePendingFlag:v5];
+  v5 = [[KTPendingFlag alloc] initWithFlag:@"ConfigBagFetch" conditions:2 delayInSeconds:fetch];
+  stateMachine = [(KTSMManager *)self stateMachine];
+  [stateMachine handlePendingFlag:v5];
 }
 
-- (void)triggerKTAccountKeySignature:(double)a3
+- (void)triggerKTAccountKeySignature:(double)signature
 {
-  v5 = [(KTSMManager *)self stateMachineQueue];
+  stateMachineQueue = [(KTSMManager *)self stateMachineQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10004BD1C;
   v6[3] = &unk_10031A740;
-  *&v6[5] = a3;
+  *&v6[5] = signature;
   v6[4] = self;
-  dispatch_async(v5, v6);
+  dispatch_async(stateMachineQueue, v6);
 }
 
-- (void)performRegistrationSignatures:(id)a3
+- (void)performRegistrationSignatures:(id)signatures
 {
-  v4 = a3;
+  signaturesCopy = signatures;
   v17 = 0;
   v5 = [(KTSMManager *)self waitUntilReadyForRPCForOperation:@"performRegistrationSignatures" fast:0 error:&v17];
   v6 = v17;
@@ -679,44 +679,44 @@
     v11 = [NSArray arrayWithObjects:&v18 count:1];
     v12 = [NSSet setWithArray:v11];
 
-    v13 = [(KTSMManager *)self stateMachine];
+    stateMachine = [(KTSMManager *)self stateMachine];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10004BFD4;
     v15[3] = &unk_10031A768;
-    v16 = v4;
-    v14 = [v13 doWatchedStateMachineRPC:@"sign-registration-data" sourceStates:v12 path:v10 reply:v15];
+    v16 = signaturesCopy;
+    v14 = [stateMachine doWatchedStateMachineRPC:@"sign-registration-data" sourceStates:v12 path:v10 reply:v15];
   }
 
   else
   {
-    (*(v4 + 2))(v4, v6);
+    (*(signaturesCopy + 2))(signaturesCopy, v6);
   }
 }
 
-- (BOOL)waitUntilReadyForRPCForOperation:(id)a3 fast:(BOOL)a4 error:(id *)a5
+- (BOOL)waitUntilReadyForRPCForOperation:(id)operation fast:(BOOL)fast error:(id *)error
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [(KTSMManager *)self initializedComplete];
-  v10 = [v9 wait:5000000000];
+  fastCopy = fast;
+  operationCopy = operation;
+  initializedComplete = [(KTSMManager *)self initializedComplete];
+  v10 = [initializedComplete wait:5000000000];
 
   if (v10)
   {
     v11 = kTransparencyErrorInternal;
     v40[0] = @"state";
-    v12 = [(KTSMManager *)self stateMachine];
-    v13 = [v12 currentState];
-    v14 = v13;
+    stateMachine = [(KTSMManager *)self stateMachine];
+    currentState = [stateMachine currentState];
+    v14 = currentState;
     v15 = @"-";
-    if (v13)
+    if (currentState)
     {
-      v15 = v13;
+      v15 = currentState;
     }
 
     v40[1] = @"opName";
     v41[0] = v15;
-    v41[1] = v8;
+    v41[1] = operationCopy;
     v16 = [NSDictionary dictionaryWithObjects:v41 forKeys:v40 count:2];
     v17 = [TransparencyError errorWithDomain:v11 code:-367 underlyingError:0 userinfo:v16 description:@"not ready yet"];
 
@@ -737,11 +737,11 @@
     goto LABEL_23;
   }
 
-  v20 = [(KTSMManager *)self deps];
-  v21 = [v20 lockStateTracker];
-  v22 = [v21 hasBeenUnlocked];
+  deps = [(KTSMManager *)self deps];
+  lockStateTracker = [deps lockStateTracker];
+  hasBeenUnlocked = [lockStateTracker hasBeenUnlocked];
 
-  if ((v22 & 1) == 0)
+  if ((hasBeenUnlocked & 1) == 0)
   {
     v17 = [TransparencyError errorWithDomain:kTransparencyErrorInternal code:-345 description:@"not unlocked yet"];
     if (qword_10038BD00 != -1)
@@ -761,9 +761,9 @@
     goto LABEL_23;
   }
 
-  v23 = [(KTSMManager *)self readyComplete];
-  v24 = v23;
-  if (v6)
+  readyComplete = [(KTSMManager *)self readyComplete];
+  v24 = readyComplete;
+  if (fastCopy)
   {
     v25 = 500000000;
   }
@@ -773,7 +773,7 @@
     v25 = 2000000000;
   }
 
-  v26 = [v23 wait:v25];
+  v26 = [readyComplete wait:v25];
 
   if (!v26)
   {
@@ -783,18 +783,18 @@
   }
 
   v27 = kTransparencyErrorInternal;
-  v28 = [(KTSMManager *)self stateMachine];
-  v29 = [v28 currentState];
-  v30 = v29;
+  stateMachine2 = [(KTSMManager *)self stateMachine];
+  currentState2 = [stateMachine2 currentState];
+  v30 = currentState2;
   v31 = @"-";
-  if (v29)
+  if (currentState2)
   {
-    v31 = v29;
+    v31 = currentState2;
   }
 
   v36[1] = @"opName";
   v37[0] = v31;
-  v37[1] = v8;
+  v37[1] = operationCopy;
   v32 = [NSDictionary dictionaryWithObjects:v37 forKeys:v36 count:2];
   v17 = [TransparencyError errorWithDomain:v27 code:-368 underlyingError:0 userinfo:v32 description:@"not ready yet"];
 
@@ -814,11 +814,11 @@ LABEL_23:
   }
 
 LABEL_24:
-  if (a5)
+  if (error)
   {
     v33 = v17;
     v34 = 0;
-    *a5 = v17;
+    *error = v17;
   }
 
   else
@@ -831,45 +831,45 @@ LABEL_27:
   return v34;
 }
 
-- (void)triggerIDSRepair:(double)a3 selfValidationResult:(id)a4
+- (void)triggerIDSRepair:(double)repair selfValidationResult:(id)result
 {
-  v6 = a4;
-  v7 = [(KTSMManager *)self stateMachineQueue];
+  resultCopy = result;
+  stateMachineQueue = [(KTSMManager *)self stateMachineQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10004C5A8;
   block[3] = &unk_10031A7F0;
   block[4] = self;
-  v10 = v6;
-  v11 = a3;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = resultCopy;
+  repairCopy = repair;
+  v8 = resultCopy;
+  dispatch_async(stateMachineQueue, block);
 }
 
-- (void)ktRepair:(id)a3 complete:(id)a4
+- (void)ktRepair:(id)repair complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
-  [_TtC13transparencyd11KTRepairCKV rateLimitAppliesWithRepair:v6];
-  v8 = [(KTSMManager *)self stateMachineQueue];
+  repairCopy = repair;
+  completeCopy = complete;
+  [_TtC13transparencyd11KTRepairCKV rateLimitAppliesWithRepair:repairCopy];
+  stateMachineQueue = [(KTSMManager *)self stateMachineQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10004C7B0;
   block[3] = &unk_10031A818;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = repairCopy;
+  v13 = completeCopy;
+  v9 = completeCopy;
+  v10 = repairCopy;
+  dispatch_async(stateMachineQueue, block);
 }
 
-- (BOOL)maybeUpdateMonitorState:(double)a3
+- (BOOL)maybeUpdateMonitorState:(double)state
 {
-  v5 = [(KTSMManager *)self deps];
-  v6 = [v5 stateMonitor];
-  v7 = [v6 ktStatus];
-  v8 = [v7 selfStatus];
+  deps = [(KTSMManager *)self deps];
+  stateMonitor = [deps stateMonitor];
+  ktStatus = [stateMonitor ktStatus];
+  selfStatus = [ktStatus selfStatus];
 
   if (qword_10038BD00 != -1)
   {
@@ -880,18 +880,18 @@ LABEL_27:
   if (os_log_type_enabled(qword_10038BD08, OS_LOG_TYPE_DEFAULT))
   {
     v11[0] = 67109376;
-    v11[1] = v8;
+    v11[1] = selfStatus;
     v12 = 1024;
-    v13 = v8 != 0;
+    v13 = selfStatus != 0;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Maybe update monitor selfStatus: %d: %d", v11, 0xEu);
   }
 
-  if (v8)
+  if (selfStatus)
   {
-    [(KTSMManager *)self triggerSelfValidate:a3];
+    [(KTSMManager *)self triggerSelfValidate:state];
   }
 
-  return v8 != 0;
+  return selfStatus != 0;
 }
 
 - (id)createSuccesfulCKFetchDependency
@@ -902,9 +902,9 @@ LABEL_27:
   return v2;
 }
 
-- (id)requestSuccessfulCKFetchForManyReasons:(id)a3
+- (id)requestSuccessfulCKFetchForManyReasons:(id)reasons
 {
-  v4 = a3;
+  reasonsCopy = reasons;
   if (qword_10038BD00 != -1)
   {
     sub_100249B38();
@@ -914,20 +914,20 @@ LABEL_27:
   if (os_log_type_enabled(qword_10038BD08, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 allObjects];
-    v8 = [v7 componentsJoinedByString:{@", "}];
+    allObjects = [reasonsCopy allObjects];
+    v8 = [allObjects componentsJoinedByString:{@", "}];
     v15 = 138412290;
     v16 = v8;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "triggering a new CK fetch because of reason: %@", &v15, 0xCu);
   }
 
-  v9 = [(KTSMManager *)self deps];
-  v10 = [v9 cloudRecords];
+  deps = [(KTSMManager *)self deps];
+  cloudRecords = [deps cloudRecords];
 
-  if (v10 && [(KTSMManager *)self isCloudKitManateeAcountAvailable]&& ([(KTSMManager *)self specificUser], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+  if (cloudRecords && [(KTSMManager *)self isCloudKitManateeAcountAvailable]&& ([(KTSMManager *)self specificUser], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
   {
-    v12 = [(KTSMManager *)self zoneFetcher];
-    v13 = [v12 requestSuccessfulCKFetchForManyReasons:v4];
+    zoneFetcher = [(KTSMManager *)self zoneFetcher];
+    v13 = [zoneFetcher requestSuccessfulCKFetchForManyReasons:reasonsCopy];
   }
 
   else
@@ -938,26 +938,26 @@ LABEL_27:
   return v13;
 }
 
-- (id)newCKFetch:(id)a3
+- (id)newCKFetch:(id)fetch
 {
-  v4 = [NSSet setWithObject:a3];
+  v4 = [NSSet setWithObject:fetch];
   v5 = [(KTSMManager *)self requestSuccessfulCKFetchForManyReasons:v4];
 
   return v5;
 }
 
-- (void)notifyPushChange:(id)a3 userInfo:(id)a4
+- (void)notifyPushChange:(id)change userInfo:(id)info
 {
-  v5 = [NSDate date:a3];
+  v5 = [NSDate date:change];
   [(KTSMManager *)self setLastPush:v5];
 
-  v6 = [(KTSMManager *)self deps];
-  v7 = [v6 networkTimeout];
-  [v7 networkWithFeedback:2];
+  deps = [(KTSMManager *)self deps];
+  networkTimeout = [deps networkTimeout];
+  [networkTimeout networkWithFeedback:2];
 
-  v8 = [(KTSMManager *)self specificUser];
+  specificUser = [(KTSMManager *)self specificUser];
 
-  if (v8)
+  if (specificUser)
   {
     v9 = [NSSet setWithObject:@"apns"];
     [(KTSMManager *)self requestServerOptInFetchForManyReasons:v9 delayInSeconds:10.0];
@@ -969,7 +969,7 @@ LABEL_27:
   }
 }
 
-- (BOOL)triggerCKFetchCLI:(id *)a3
+- (BOOL)triggerCKFetchCLI:(id *)i
 {
   v5 = [NSSet setWithObject:@"cli"];
   v6 = [(KTSMManager *)self requestSuccessfulCKFetchForManyReasons:v5];
@@ -1001,11 +1001,11 @@ LABEL_4:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "triggerCKFetchCLI failed: %@", &v12, 0xCu);
   }
 
-  if (a3)
+  if (i)
   {
     v11 = v7;
     v8 = 0;
-    *a3 = v7;
+    *i = v7;
   }
 
   else
@@ -1030,8 +1030,8 @@ LABEL_5:
     v8[4] = self;
     v5 = [KTResultOperation named:@"device-record-check" withBlock:v8];
     [v5 addNullableSuccessDependency:v4];
-    v6 = [(KTSMManager *)self operationQueue];
-    [v6 addOperation:v5];
+    operationQueue = [(KTSMManager *)self operationQueue];
+    [operationQueue addOperation:v5];
   }
 
   else
@@ -1045,20 +1045,20 @@ LABEL_5:
 - (void)triggerCheckKTAccountKey
 {
   v4 = [[KTPendingFlag alloc] initWithFlag:@"CheckKTAccountKey" conditions:2 delayInSeconds:0.0];
-  v3 = [(KTSMManager *)self stateMachine];
-  [v3 handlePendingFlag:v4];
+  stateMachine = [(KTSMManager *)self stateMachine];
+  [stateMachine handlePendingFlag:v4];
 }
 
-- (void)triggerIDMSFetchBackstop:(id)a3
+- (void)triggerIDMSFetchBackstop:(id)backstop
 {
-  v4 = a3;
+  backstopCopy = backstop;
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v5 = [(KTSMManager *)self deps];
-  v6 = [v5 logClient];
-  [v6 idmsFetchTime];
+  deps = [(KTSMManager *)self deps];
+  logClient = [deps logClient];
+  [logClient idmsFetchTime];
   v8 = v7;
 
   if (v8 < 604800.0)
@@ -1066,40 +1066,40 @@ LABEL_5:
     v8 = 604800.0;
   }
 
-  v9 = [(KTSMManager *)self deps];
-  v10 = [v9 smDataStore];
+  deps2 = [(KTSMManager *)self deps];
+  smDataStore = [deps2 smDataStore];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10004D3FC;
   v14[3] = &unk_10031A8A0;
   v17 = v8;
-  v11 = v4;
+  v11 = backstopCopy;
   v15 = v11;
   v16 = &v18;
-  [v10 fetchIDMSDeviceList:v14];
+  [smDataStore fetchIDMSDeviceList:v14];
 
   if (*(v19 + 24))
   {
     v12 = [[KTPendingFlag alloc] initWithFlag:@"FetchIDMS" conditions:2 delayInSeconds:0.1];
-    v13 = [(KTSMManager *)self stateMachine];
-    [v13 handlePendingFlag:v12];
+    stateMachine = [(KTSMManager *)self stateMachine];
+    [stateMachine handlePendingFlag:v12];
   }
 
   _Block_object_dispose(&v18, 8);
 }
 
-- (void)triggerIDMSFetch:(double)a3
+- (void)triggerIDMSFetch:(double)fetch
 {
-  v5 = [[KTPendingFlag alloc] initWithFlag:@"FetchIDMS" conditions:2 delayInSeconds:a3];
-  v4 = [(KTSMManager *)self stateMachine];
-  [v4 handlePendingFlag:v5];
+  v5 = [[KTPendingFlag alloc] initWithFlag:@"FetchIDMS" conditions:2 delayInSeconds:fetch];
+  stateMachine = [(KTSMManager *)self stateMachine];
+  [stateMachine handlePendingFlag:v5];
 }
 
-- (void)triggerSelfValidate:(double)a3
+- (void)triggerSelfValidate:(double)validate
 {
-  v4 = [[KTPendingFlag alloc] initWithFlag:@"ValidateSelf" conditions:2 delayInSeconds:a3];
-  v5 = [(KTSMManager *)self stateMachine];
-  [v5 handlePendingFlag:v4];
+  v4 = [[KTPendingFlag alloc] initWithFlag:@"ValidateSelf" conditions:2 delayInSeconds:validate];
+  stateMachine = [(KTSMManager *)self stateMachine];
+  [stateMachine handlePendingFlag:v4];
 
   if (qword_10038BD00 != -1)
   {
@@ -1116,14 +1116,14 @@ LABEL_5:
 
 - (void)triggerSelfValidateFromEnrollment
 {
-  v3 = [(KTSMManager *)self deps];
-  v4 = [v3 dew];
+  deps = [(KTSMManager *)self deps];
+  v4 = [deps dew];
   [v4 selfValidationEnrollment];
   v6 = v5;
 
-  v7 = [(KTSMManager *)self deps];
-  v8 = [v7 stateMonitor];
-  v9 = [v8 ktStatus];
+  deps2 = [(KTSMManager *)self deps];
+  stateMonitor = [deps2 stateMonitor];
+  ktStatus = [stateMonitor ktStatus];
 
   if (qword_10038BD00 != -1)
   {
@@ -1137,48 +1137,48 @@ LABEL_5:
     v14 = 134218242;
     v15 = v11;
     v16 = 2112;
-    v17 = v9;
+    v17 = ktStatus;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "triggerSelfValidateFromEnrollment: delay: %f current state: %@", &v14, 0x16u);
   }
 
-  if ([v9 selfStatus] == 2)
+  if ([ktStatus selfStatus] == 2)
   {
     v12 = [[KTPendingFlag alloc] initWithFlag:@"ValidateSelf" conditions:2 delayInSeconds:v6];
-    v13 = [(KTSMManager *)self stateMachine];
-    [v13 handlePendingFlag:v12];
+    stateMachine = [(KTSMManager *)self stateMachine];
+    [stateMachine handlePendingFlag:v12];
   }
 }
 
-- (void)triggerFetchSelf:(double)a3
+- (void)triggerFetchSelf:(double)self
 {
-  v5 = [[KTPendingFlag alloc] initWithFlag:@"FetchSelf" conditions:2 delayInSeconds:a3];
-  v4 = [(KTSMManager *)self stateMachine];
-  [v4 handlePendingFlag:v5];
+  v5 = [[KTPendingFlag alloc] initWithFlag:@"FetchSelf" conditions:2 delayInSeconds:self];
+  stateMachine = [(KTSMManager *)self stateMachine];
+  [stateMachine handlePendingFlag:v5];
 }
 
 - (void)triggerCheckExpiredPublicKeyStores
 {
-  v3 = [(KTSMManager *)self deps];
-  v4 = [v3 publicKeyStore];
-  v5 = [v4 anyStoreExpired];
+  deps = [(KTSMManager *)self deps];
+  publicKeyStore = [deps publicKeyStore];
+  anyStoreExpired = [publicKeyStore anyStoreExpired];
 
-  if (v5)
+  if (anyStoreExpired)
   {
-    v6 = [(KTSMManager *)self publicKeyFetcher];
-    [v6 trigger];
+    publicKeyFetcher = [(KTSMManager *)self publicKeyFetcher];
+    [publicKeyFetcher trigger];
   }
 }
 
-- (void)triggerBackgroundSystemValidate:(id)a3 completionHandler:(id)a4
+- (void)triggerBackgroundSystemValidate:(id)validate completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  validateCopy = validate;
+  handlerCopy = handler;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = sub_10004DA78;
   v20 = sub_10004DA88;
-  v8 = v6;
+  v8 = validateCopy;
   v21 = v8;
   if (!v17[5])
   {
@@ -1187,61 +1187,61 @@ LABEL_5:
     v17[5] = v9;
   }
 
-  v11 = [(KTSMManager *)self queue];
+  queue = [(KTSMManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10004DA90;
   block[3] = &unk_10031A978;
   block[4] = self;
-  v14 = v7;
+  v14 = handlerCopy;
   v15 = &v16;
-  v12 = v7;
-  dispatch_async(v11, block);
+  v12 = handlerCopy;
+  dispatch_async(queue, block);
 
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)notifyBackgroundValidationFailure:(id)a3 data:(id)a4 type:(id)a5 serverHint:(id)a6 failure:(id)a7
+- (void)notifyBackgroundValidationFailure:(id)failure data:(id)data type:(id)type serverHint:(id)hint failure:(id)a7
 {
   v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(KTSMManager *)self deps];
-  v18 = [v17 smDataStore];
-  v19 = [v15 base64EncodedStringWithOptions:0];
+  hintCopy = hint;
+  typeCopy = type;
+  dataCopy = data;
+  failureCopy = failure;
+  deps = [(KTSMManager *)self deps];
+  smDataStore = [deps smDataStore];
+  v19 = [dataCopy base64EncodedStringWithOptions:0];
 
-  [KTBackgroundSystemValidationOperation addErrorToBackgroundOp:v16 smDataStore:v18 failureDataString:v19 type:v14 serverHint:v13 failure:v12];
+  [KTBackgroundSystemValidationOperation addErrorToBackgroundOp:failureCopy smDataStore:smDataStore failureDataString:v19 type:typeCopy serverHint:hintCopy failure:v12];
   v20 = kKTApplicationIdentifierIDS;
 
   [(KTSMManager *)self triggerStatusUpdate:v20];
 }
 
-- (void)triggerStatusUpdate:(id)a3
+- (void)triggerStatusUpdate:(id)update
 {
-  v4 = [(KTSMManager *)self deps];
-  v5 = [v4 stateMonitor];
-  [v5 setPendingChanges:1];
+  deps = [(KTSMManager *)self deps];
+  stateMonitor = [deps stateMonitor];
+  [stateMonitor setPendingChanges:1];
 
-  v6 = [(KTSMManager *)self queue];
+  queue = [(KTSMManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10004E138;
   block[3] = &unk_100316FE0;
   block[4] = self;
-  dispatch_async(v6, block);
+  dispatch_async(queue, block);
 }
 
-- (id)optInStateForKeyStore:(id)a3 error:(id *)a4
+- (id)optInStateForKeyStore:(id)store error:(id *)error
 {
-  v6 = a3;
-  v7 = [(KTSMManager *)self deps];
-  v8 = [v7 cloudRecords];
+  storeCopy = store;
+  deps = [(KTSMManager *)self deps];
+  cloudRecords = [deps cloudRecords];
 
-  if (v8)
+  if (cloudRecords)
   {
-    v9 = [v8 getAggregateOptInStateForApplication:v6];
+    v9 = [cloudRecords getAggregateOptInStateForApplication:storeCopy];
     if (!v9)
     {
       if (qword_10038BD00 != -1)
@@ -1253,15 +1253,15 @@ LABEL_5:
       if (os_log_type_enabled(qword_10038BD08, OS_LOG_TYPE_ERROR))
       {
         v13 = 138412546;
-        v14 = v6;
+        v14 = storeCopy;
         v15 = 2112;
         v16 = 0;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "getAggregateOptInStateForApplication failed for %@: %@", &v13, 0x16u);
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = 0;
+        *error = 0;
       }
     }
   }
@@ -1294,80 +1294,80 @@ LABEL_5:
   v5[3] = sub_10004DA78;
   v5[4] = sub_10004DA88;
   v6 = os_transaction_create();
-  v3 = [(KTSMManager *)self queue];
+  queue = [(KTSMManager *)self queue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10004E4E8;
   v4[3] = &unk_10031A9E0;
   v4[4] = self;
   v4[5] = v5;
-  dispatch_async(v3, v4);
+  dispatch_async(queue, v4);
 
   _Block_object_dispose(v5, 8);
 }
 
-- (void)retryPendingValidations:(id)a3
+- (void)retryPendingValidations:(id)validations
 {
-  if ([a3 isEqual:kKTApplicationIdentifierIDS])
+  if ([validations isEqual:kKTApplicationIdentifierIDS])
   {
     v4 = objc_alloc_init(KTCondition);
     [(KTSMManager *)self setPendingValidationsComplete:v4];
 
-    v5 = [(KTSMManager *)self retryPendingValidations];
-    [v5 trigger];
+    retryPendingValidations = [(KTSMManager *)self retryPendingValidations];
+    [retryPendingValidations trigger];
   }
 }
 
-- (void)triggerRegistrationDataNeedsUpdate:(id)a3
+- (void)triggerRegistrationDataNeedsUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   [(KTSMManager *)self addEvent:@"PokeIDSWithUpdatedRegData"];
-  v5 = [(KTSMManager *)self deps];
-  v6 = [v5 stateMonitor];
-  [v6 setSystemStatus:2];
+  deps = [(KTSMManager *)self deps];
+  stateMonitor = [deps stateMonitor];
+  [stateMonitor setSystemStatus:2];
 
-  v7 = [(KTSMManager *)self deps];
-  v8 = [v7 idsOperations];
-  [v8 registrationDataNeedsUpdate:v4];
+  deps2 = [(KTSMManager *)self deps];
+  idsOperations = [deps2 idsOperations];
+  [idsOperations registrationDataNeedsUpdate:updateCopy];
 
-  v11 = [(KTSMManager *)self deps];
-  v9 = [v11 logger];
+  deps3 = [(KTSMManager *)self deps];
+  logger = [deps3 logger];
   v10 = +[NSDate date];
-  [v9 setDateProperty:v10 forKey:off_100381CF8];
+  [logger setDateProperty:v10 forKey:off_100381CF8];
 }
 
 - (void)notifyIDSRegistrationCorrect
 {
   objc_initWeak(&location, self);
-  v3 = [(KTSMManager *)self queue];
+  queue = [(KTSMManager *)self queue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10004EAD8;
   v4[3] = &unk_1003175E0;
   objc_copyWeak(&v5, &location);
-  dispatch_async(v3, v4);
+  dispatch_async(queue, v4);
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)isKTKeyDifferent:(id)a3
+- (BOOL)isKTKeyDifferent:(id)different
 {
-  v4 = a3;
+  differentCopy = different;
   if (![(KTSMManager *)self idsServerReportedWrong])
   {
     goto LABEL_4;
   }
 
-  v5 = [(KTSMManager *)self idsServerReportedWrongPublicKey];
-  if (!v5)
+  idsServerReportedWrongPublicKey = [(KTSMManager *)self idsServerReportedWrongPublicKey];
+  if (!idsServerReportedWrongPublicKey)
   {
     goto LABEL_5;
   }
 
-  v6 = v5;
-  v7 = [(KTSMManager *)self idsServerReportedWrongPublicKey];
-  v8 = [v7 isEqual:v4];
+  v6 = idsServerReportedWrongPublicKey;
+  idsServerReportedWrongPublicKey2 = [(KTSMManager *)self idsServerReportedWrongPublicKey];
+  v8 = [idsServerReportedWrongPublicKey2 isEqual:differentCopy];
 
   if (v8)
   {
@@ -1386,11 +1386,11 @@ LABEL_5:
   return v9;
 }
 
-- (void)idsServerReportKTKeyWrong:(id)a3
+- (void)idsServerReportKTKeyWrong:(id)wrong
 {
-  v4 = a3;
+  wrongCopy = wrong;
   [(KTSMManager *)self setIdsServerReportedWrong:1];
-  [(KTSMManager *)self setIdsServerReportedWrongPublicKey:v4];
+  [(KTSMManager *)self setIdsServerReportedWrongPublicKey:wrongCopy];
 }
 
 - (void)resetLastAccountOperations
@@ -1409,13 +1409,13 @@ LABEL_5:
   [(KTSMManager *)self setLastDutyCycle:0];
 }
 
-- (void)clearAllFollowups:(id)a3
+- (void)clearAllFollowups:(id)followups
 {
-  v4 = a3;
-  v5 = [(KTSMManager *)self deps];
-  v6 = [v5 followup];
+  followupsCopy = followups;
+  deps = [(KTSMManager *)self deps];
+  followup = [deps followup];
   v10 = 0;
-  v7 = [v6 clearAllFollowups:&v10];
+  v7 = [followup clearAllFollowups:&v10];
   v8 = v10;
 
   if ((v7 & 1) == 0)
@@ -1429,7 +1429,7 @@ LABEL_5:
     if (os_log_type_enabled(qword_10038BD08, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v12 = v4;
+      v12 = followupsCopy;
       v13 = 2114;
       v14 = v8;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "clearAllFollowups failed: %{public}@ %{public}@", buf, 0x16u);
@@ -1437,9 +1437,9 @@ LABEL_5:
   }
 }
 
-- (void)performAndWaitForSelfValidate:(id)a3
+- (void)performAndWaitForSelfValidate:(id)validate
 {
-  v4 = a3;
+  validateCopy = validate;
   v17 = 0;
   v5 = [(KTSMManager *)self waitUntilReadyForRPCForOperation:@"performAndWaitForSelfValidate" fast:0 error:&v17];
   v6 = v17;
@@ -1458,32 +1458,32 @@ LABEL_5:
     v11 = [NSArray arrayWithObjects:&v18 count:1];
     v12 = [NSSet setWithArray:v11];
 
-    v13 = [(KTSMManager *)self stateMachine];
+    stateMachine = [(KTSMManager *)self stateMachine];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10004F110;
     v15[3] = &unk_10031AA28;
     v15[4] = self;
-    v16 = v4;
-    v14 = [v13 doWatchedStateMachineRPC:@"validate-self" sourceStates:v12 path:v10 reply:v15];
+    v16 = validateCopy;
+    v14 = [stateMachine doWatchedStateMachineRPC:@"validate-self" sourceStates:v12 path:v10 reply:v15];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 2, 0, 0, v6);
+    (*(validateCopy + 2))(validateCopy, 2, 0, 0, v6);
   }
 }
 
-- (id)validateSelfDiagnostics:(id)a3
+- (id)validateSelfDiagnostics:(id)diagnostics
 {
-  v3 = a3;
+  diagnosticsCopy = diagnostics;
   +[NSMutableDictionary dictionary];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10004F2D4;
   v4 = v6[3] = &unk_10031AA50;
   v7 = v4;
-  [v3 handleOperationResults:v6];
+  [diagnosticsCopy handleOperationResults:v6];
 
   return v4;
 }
@@ -1491,8 +1491,8 @@ LABEL_5:
 - (id)missingValidateSelfFallbackDiagnostics
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(KTSMManager *)self deps];
-  v5 = [v4 smDataStore];
+  deps = [(KTSMManager *)self deps];
+  smDataStore = [deps smDataStore];
   v6 = kKTApplicationIdentifierIDS;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
@@ -1500,53 +1500,53 @@ LABEL_5:
   v9[3] = &unk_10031AAC0;
   v7 = v3;
   v10 = v7;
-  [v5 fetchSelfVerificationInfoForApplication:v6 complete:v9];
+  [smDataStore fetchSelfVerificationInfoForApplication:v6 complete:v9];
 
   return v7;
 }
 
-- (id)idsKTData:(id)a3
+- (id)idsKTData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v3 = a3;
+    dataCopy = data;
     v4 = +[NSMutableDictionary dictionary];
-    v5 = [v3 ktDataForRegistration];
-    v6 = [v5 kt_hexString];
-    [v4 setObject:v6 forKeyedSubscript:@"tbs"];
+    ktDataForRegistration = [dataCopy ktDataForRegistration];
+    kt_hexString = [ktDataForRegistration kt_hexString];
+    [v4 setObject:kt_hexString forKeyedSubscript:@"tbs"];
 
-    v7 = [v3 ktPublicAccountKey];
-    v8 = [v7 kt_hexString];
-    [v4 setObject:v8 forKeyedSubscript:@"pub"];
+    ktPublicAccountKey = [dataCopy ktPublicAccountKey];
+    kt_hexString2 = [ktPublicAccountKey kt_hexString];
+    [v4 setObject:kt_hexString2 forKeyedSubscript:@"pub"];
 
-    v9 = [v3 ktDataSignature];
-    v10 = [v9 kt_hexString];
-    [v4 setObject:v10 forKeyedSubscript:@"sig"];
+    ktDataSignature = [dataCopy ktDataSignature];
+    kt_hexString3 = [ktDataSignature kt_hexString];
+    [v4 setObject:kt_hexString3 forKeyedSubscript:@"sig"];
 
-    v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 uploadedToKVS]);
+    v11 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [dataCopy uploadedToKVS]);
     [v4 setObject:v11 forKeyedSubscript:@"kvs"];
 
-    v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v3 ktOptInStatus]);
+    v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [dataCopy ktOptInStatus]);
     [v4 setObject:v12 forKeyedSubscript:@"optin"];
 
-    v13 = [v3 registeredTime];
-    v14 = [v13 description];
+    registeredTime = [dataCopy registeredTime];
+    v14 = [registeredTime description];
     [v4 setObject:v14 forKeyedSubscript:@"regTS"];
 
-    v15 = [v3 ktAccountKeyTimestamp];
-    v16 = [v15 description];
+    ktAccountKeyTimestamp = [dataCopy ktAccountKeyTimestamp];
+    v16 = [ktAccountKeyTimestamp description];
     [v4 setObject:v16 forKeyedSubscript:@"accTS"];
 
-    v17 = [v3 ktOptInTimestamp];
-    v18 = [v17 description];
+    ktOptInTimestamp = [dataCopy ktOptInTimestamp];
+    v18 = [ktOptInTimestamp description];
     [v4 setObject:v18 forKeyedSubscript:@"optTS"];
 
-    v19 = [v3 ktAccountKeyErrorCode];
-    [v4 setObject:v19 forKeyedSubscript:@"accErr"];
+    ktAccountKeyErrorCode = [dataCopy ktAccountKeyErrorCode];
+    [v4 setObject:ktAccountKeyErrorCode forKeyedSubscript:@"accErr"];
 
-    v20 = [v3 ktOptInErrorCode];
+    ktOptInErrorCode = [dataCopy ktOptInErrorCode];
 
-    [v4 setObject:v20 forKeyedSubscript:@"optErr"];
+    [v4 setObject:ktOptInErrorCode forKeyedSubscript:@"optErr"];
     if ([v4 count])
     {
       v21 = v4;
@@ -1566,15 +1566,15 @@ LABEL_5:
   return v21;
 }
 
-- (id)prettyFormatIDSKTStateArray:(id)a3
+- (id)prettyFormatIDSKTStateArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v26 = +[NSMutableArray array];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = v3;
+  obj = arrayCopy;
   v27 = [obj countByEnumeratingWithState:&v33 objects:v39 count:16];
   if (v27)
   {
@@ -1596,12 +1596,12 @@ LABEL_5:
         v31 = sub_100024C18([v5 status]);
         v38[1] = v31;
         v37[2] = @"accountKey";
-        v30 = [v5 ktAccountKey];
-        v6 = [v30 kt_hexString];
-        v29 = v6;
-        if (v6)
+        ktAccountKey = [v5 ktAccountKey];
+        kt_hexString = [ktAccountKey kt_hexString];
+        v29 = kt_hexString;
+        if (kt_hexString)
         {
-          v7 = v6;
+          v7 = kt_hexString;
         }
 
         else
@@ -1611,8 +1611,8 @@ LABEL_5:
 
         v38[2] = v7;
         v37[3] = @"accountKeyTimestamp";
-        v28 = [v5 ktAccountKeyTimestamp];
-        v8 = [v28 description];
+        ktAccountKeyTimestamp = [v5 ktAccountKeyTimestamp];
+        v8 = [ktAccountKeyTimestamp description];
         v9 = v8;
         if (v8)
         {
@@ -1626,12 +1626,12 @@ LABEL_5:
 
         v38[3] = v10;
         v37[4] = @"signature";
-        v11 = [v5 deviceSignature];
-        v12 = [v11 kt_hexString];
-        v13 = v12;
-        if (v12)
+        deviceSignature = [v5 deviceSignature];
+        kt_hexString2 = [deviceSignature kt_hexString];
+        v13 = kt_hexString2;
+        if (kt_hexString2)
         {
-          v14 = v12;
+          v14 = kt_hexString2;
         }
 
         else
@@ -1644,8 +1644,8 @@ LABEL_5:
         v15 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v5 optedIn]);
         v38[5] = v15;
         v37[6] = @"optInTimestamp";
-        v16 = [v5 ktOptInTimestamp];
-        v17 = [v16 description];
+        ktOptInTimestamp = [v5 ktOptInTimestamp];
+        v17 = [ktOptInTimestamp description];
         v18 = v17;
         if (v17)
         {
@@ -1663,8 +1663,8 @@ LABEL_5:
 
         if (+[TransparencyAnalytics hasInternalDiagnostics])
         {
-          v22 = [v5 userID];
-          [v21 setObject:v22 forKeyedSubscript:@"URI"];
+          userID = [v5 userID];
+          [v21 setObject:userID forKeyedSubscript:@"URI"];
         }
 
         [v26 addObject:v21];
@@ -1679,48 +1679,48 @@ LABEL_5:
   return v26;
 }
 
-- (void)sysdiagnoseInfo:(id)a3
+- (void)sysdiagnoseInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(KTSMManager *)self stateMachine];
-  v6 = [v5 dumpPendingFlags];
+  infoCopy = info;
+  stateMachine = [(KTSMManager *)self stateMachine];
+  dumpPendingFlags = [stateMachine dumpPendingFlags];
 
-  v7 = [(KTSMManager *)self queue];
+  queue = [(KTSMManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005005C;
   block[3] = &unk_10031A818;
   block[4] = self;
-  v11 = v6;
-  v12 = v4;
-  v8 = v4;
-  v9 = v6;
-  dispatch_async(v7, block);
+  v11 = dumpPendingFlags;
+  v12 = infoCopy;
+  v8 = infoCopy;
+  v9 = dumpPendingFlags;
+  dispatch_async(queue, block);
 }
 
-- (void)getStatus:(id)a3
+- (void)getStatus:(id)status
 {
-  v4 = a3;
-  v5 = [(KTSMManager *)self queue];
+  statusCopy = status;
+  queue = [(KTSMManager *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100051ACC;
   v7[3] = &unk_10031ABA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = statusCopy;
+  v6 = statusCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)mapHeadUpdated:(id)a3 populating:(BOOL)a4
+- (void)mapHeadUpdated:(id)updated populating:(BOOL)populating
 {
-  v6 = a3;
-  v7 = [(KTSMManager *)self deps];
-  v8 = [v7 stateMonitor];
-  v9 = [v8 ktStatus];
-  v10 = [v9 systemStatus];
+  updatedCopy = updated;
+  deps = [(KTSMManager *)self deps];
+  stateMonitor = [deps stateMonitor];
+  ktStatus = [stateMonitor ktStatus];
+  systemStatus = [ktStatus systemStatus];
 
-  if (v10 == 3 && !a4)
+  if (systemStatus == 3 && !populating)
   {
     if (qword_10038BD00 != -1)
     {
@@ -1731,14 +1731,14 @@ LABEL_5:
     if (os_log_type_enabled(qword_10038BD08, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v18 = v6;
+      v18 = updatedCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Detected tree reset populating->non-populating edge for %{public}@", buf, 0xCu);
     }
 
-    v12 = [(KTSMManager *)self deps];
-    v13 = [v12 followup];
+    deps2 = [(KTSMManager *)self deps];
+    followup = [deps2 followup];
     v16 = 0;
-    [v13 clearFollowupsByType:v6 type:3 error:&v16];
+    [followup clearFollowupsByType:updatedCopy type:3 error:&v16];
     v14 = v16;
 
     if (v14)
@@ -1752,29 +1752,29 @@ LABEL_5:
       if (os_log_type_enabled(qword_10038BD08, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v18 = v6;
+        v18 = updatedCopy;
         v19 = 2112;
         v20 = v14;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Error clearing tree reset followups for %@: %@", buf, 0x16u);
       }
     }
 
-    [(KTSMManager *)self triggerStatusUpdate:v6];
+    [(KTSMManager *)self triggerStatusUpdate:updatedCopy];
   }
 }
 
 - (id)metricsRegistration_ktView
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(KTSMManager *)self deps];
-  v5 = [v4 smDataStore];
+  deps = [(KTSMManager *)self deps];
+  smDataStore = [deps smDataStore];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10005216C;
   v8[3] = &unk_10031A640;
   v6 = v3;
   v9 = v6;
-  [v5 fetchDeviceSignature:0 complete:v8];
+  [smDataStore fetchDeviceSignature:0 complete:v8];
 
   return v6;
 }
@@ -1784,8 +1784,8 @@ LABEL_5:
   v29 = +[NSMutableDictionary dictionary];
   v3 = +[NSMutableDictionary dictionary];
   v4 = dispatch_semaphore_create(0);
-  v5 = [(KTSMManager *)self deps];
-  v6 = [v5 idsOperations];
+  deps = [(KTSMManager *)self deps];
+  idsOperations = [deps idsOperations];
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
   v38[2] = sub_100052678;
@@ -1794,7 +1794,7 @@ LABEL_5:
   v39 = v7;
   v8 = v4;
   v40 = v8;
-  [v6 getCurrentRegistrationState:0 withCompletion:v38];
+  [idsOperations getCurrentRegistrationState:0 withCompletion:v38];
 
   v9 = dispatch_time(0, 1000000000);
   if (!dispatch_semaphore_wait(v8, v9))
@@ -1848,8 +1848,8 @@ LABEL_5:
                 {
                   if ([v22 status] == 5)
                   {
-                    v23 = [v22 deviceSignature];
-                    if (v23)
+                    deviceSignature = [v22 deviceSignature];
+                    if (deviceSignature)
                     {
                       v24 = &off_10033CF00;
                     }
@@ -1898,20 +1898,20 @@ LABEL_22:
   return v29;
 }
 
-- (void)resetLocalState:(id)a3
+- (void)resetLocalState:(id)state
 {
-  v4 = [(KTSMManager *)self deps];
-  v5 = [v4 accountKeyService];
-  [v5 clearCachedPCSIdentities];
+  deps = [(KTSMManager *)self deps];
+  accountKeyService = [deps accountKeyService];
+  [accountKeyService clearCachedPCSIdentities];
 
-  v6 = [(KTSMManager *)self deps];
-  v7 = [v6 accountStateHolder];
-  [v7 clearAccountMetadata];
+  deps2 = [(KTSMManager *)self deps];
+  accountStateHolder = [deps2 accountStateHolder];
+  [accountStateHolder clearAccountMetadata];
 
-  v8 = [(KTSMManager *)self deps];
-  v9 = [v8 smDataStore];
+  deps3 = [(KTSMManager *)self deps];
+  smDataStore = [deps3 smDataStore];
   v23 = 0;
-  v10 = [v9 clearDataStore:&v23];
+  v10 = [smDataStore clearDataStore:&v23];
   v11 = v23;
 
   if ((v10 & 1) == 0)
@@ -1930,10 +1930,10 @@ LABEL_22:
     }
   }
 
-  v13 = [(KTSMManager *)self deps];
-  v14 = [v13 dataStore];
+  deps4 = [(KTSMManager *)self deps];
+  dataStore = [deps4 dataStore];
   v22 = 0;
-  v15 = [v14 clearState:&v22];
+  v15 = [dataStore clearState:&v22];
   v16 = v22;
 
   if ((v15 & 1) == 0)
@@ -1952,19 +1952,19 @@ LABEL_22:
     }
   }
 
-  v18 = [(KTSMManager *)self deps];
-  v19 = [v18 cloudRecords];
-  [v19 clearLocalCloudState];
+  deps5 = [(KTSMManager *)self deps];
+  cloudRecords = [deps5 cloudRecords];
+  [cloudRecords clearLocalCloudState];
 
-  v20 = [(KTSMManager *)self deps];
-  v21 = [v20 cloudRecords];
-  [v21 clearDataStore:0];
+  deps6 = [(KTSMManager *)self deps];
+  cloudRecords2 = [deps6 cloudRecords];
+  [cloudRecords2 clearDataStore:0];
 }
 
 - (int)checkAccountKeyChanged
 {
-  v3 = [(KTSMManager *)self pcsOperation];
-  v4 = [v3 getCurrentKTPCSIdentity:off_10038B2A0 error:0];
+  pcsOperation = [(KTSMManager *)self pcsOperation];
+  v4 = [pcsOperation getCurrentKTPCSIdentity:off_10038B2A0 error:0];
 
   if (v4)
   {
@@ -1973,21 +1973,21 @@ LABEL_22:
     if (v5)
     {
       v6 = v5;
-      v7 = [(KTSMManager *)self deps];
-      v8 = [v7 stateMonitor];
-      v9 = [v8 ktStatus];
-      v10 = [v9 accountKey];
+      deps = [(KTSMManager *)self deps];
+      stateMonitor = [deps stateMonitor];
+      ktStatus = [stateMonitor ktStatus];
+      accountKey = [ktStatus accountKey];
 
-      if (v10 && ([v10 isEqual:v6] & 1) != 0)
+      if (accountKey && ([accountKey isEqual:v6] & 1) != 0)
       {
         v11 = 1;
       }
 
       else
       {
-        v12 = [(KTSMManager *)self deps];
-        v13 = [v12 stateMonitor];
-        [v13 setKTAccountKey:v6];
+        deps2 = [(KTSMManager *)self deps];
+        stateMonitor2 = [deps2 stateMonitor];
+        [stateMonitor2 setKTAccountKey:v6];
 
         v11 = 3;
       }
@@ -2007,22 +2007,22 @@ LABEL_22:
   return v11;
 }
 
-- (void)addEvent:(id)a3
+- (void)addEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(KTSMManager *)self launch];
-  [v5 addEvent:v4];
+  eventCopy = event;
+  launch = [(KTSMManager *)self launch];
+  [launch addEvent:eventCopy];
 }
 
 - (BOOL)isCloudKitManateeAcountAvailable
 {
-  v3 = [(KTSMManager *)self cloudKitAccountInfo];
-  v4 = [v3 hasValidCredentials];
+  cloudKitAccountInfo = [(KTSMManager *)self cloudKitAccountInfo];
+  hasValidCredentials = [cloudKitAccountInfo hasValidCredentials];
 
-  if (v4)
+  if (hasValidCredentials)
   {
-    v5 = [(KTSMManager *)self cloudKitAccountInfo];
-    v6 = ([v5 deviceToDeviceEncryptionAvailability] >> 1) & 1;
+    cloudKitAccountInfo2 = [(KTSMManager *)self cloudKitAccountInfo];
+    v6 = ([cloudKitAccountInfo2 deviceToDeviceEncryptionAvailability] >> 1) & 1;
   }
 
   else
@@ -2033,20 +2033,20 @@ LABEL_22:
   return v6;
 }
 
-- (id)_onqueueNextStateMachineTransition:(id)a3 flags:(id)a4 pendingFlags:(id)a5
+- (id)_onqueueNextStateMachineTransition:(id)transition flags:(id)flags pendingFlags:(id)pendingFlags
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [(KTSMManager *)self addEvent:v8];
-  if ([v8 isEqual:@"PublicKeysInitialFetch"])
+  transitionCopy = transition;
+  flagsCopy = flags;
+  pendingFlagsCopy = pendingFlags;
+  [(KTSMManager *)self addEvent:transitionCopy];
+  if ([transitionCopy isEqual:@"PublicKeysInitialFetch"])
   {
     v11 = [KTPublicKeyStoreRefresh alloc];
-    v12 = [(KTSMManager *)self deps];
+    deps = [(KTSMManager *)self deps];
     v13 = @"Initializing";
     v14 = @"PublicKeysWait";
     v15 = v11;
-    v16 = v12;
+    v16 = deps;
     v17 = 1;
 LABEL_3:
     v18 = [(KTPublicKeyStoreRefresh *)v15 initWithDependencies:v16 initialFetch:v17 intendedState:v13 errorState:v14];
@@ -2055,47 +2055,47 @@ LABEL_3:
     goto LABEL_22;
   }
 
-  if ([v8 isEqual:@"PublicKeysWait"])
+  if ([transitionCopy isEqual:@"PublicKeysWait"])
   {
-    if ([v9 _onqueueContains:@"FetchPublicKeys"])
+    if ([flagsCopy _onqueueContains:@"FetchPublicKeys"])
     {
-      [v9 _onqueueRemoveFlag:@"FetchPublicKeys"];
-      v19 = [KTStateTransitionOperation named:@"need-to-fetch-public-keys" entering:@"PublicKeysInitialFetch"];
+      [flagsCopy _onqueueRemoveFlag:@"FetchPublicKeys"];
+      initializingOperation = [KTStateTransitionOperation named:@"need-to-fetch-public-keys" entering:@"PublicKeysInitialFetch"];
 LABEL_9:
-      v18 = v19;
+      v18 = initializingOperation;
       goto LABEL_22;
     }
 
-    v20 = [(KTSMManager *)self publicKeyFetcher];
-    [(KTPendingFlag *)v20 trigger];
+    publicKeyFetcher = [(KTSMManager *)self publicKeyFetcher];
+    [(KTPendingFlag *)publicKeyFetcher trigger];
     goto LABEL_20;
   }
 
-  if ([v8 isEqual:@"Initializing"])
+  if ([transitionCopy isEqual:@"Initializing"])
   {
-    [v9 _onqueueRemoveFlag:@"CKAccountChanged"];
-    [v9 _onqueueRemoveFlag:@"AccountChanged"];
-    [v9 _onqueueRemoveFlag:@"OctagonTrustChanged"];
-    [v9 _onqueueRemoveFlag:@"ManateeViewChanged"];
-    [v9 _onqueueRemoveFlag:@"EnsureIdentity"];
-    [v9 _onqueueRemoveFlag:@"FetchSelf"];
-    [v9 _onqueueRemoveFlag:@"CloudKitOutgoing"];
-    [v9 _onqueueRemoveFlag:@"CheckAccountSignatures"];
-    [v9 _onqueueRemoveFlag:@"CloudKitZoneRecreate"];
-    [v9 _onqueueRemoveFlag:@"CheckKTAccountKey"];
-    [v9 _onqueueRemoveFlag:@"CheckKTAccountKeyChanged"];
-    [v9 _onqueueRemoveFlag:@"IDSStatusChanged"];
-    [v9 _onqueueRemoveFlag:@"IDSServerBagChanged"];
-    v19 = [(KTSMManager *)self initializingOperation];
+    [flagsCopy _onqueueRemoveFlag:@"CKAccountChanged"];
+    [flagsCopy _onqueueRemoveFlag:@"AccountChanged"];
+    [flagsCopy _onqueueRemoveFlag:@"OctagonTrustChanged"];
+    [flagsCopy _onqueueRemoveFlag:@"ManateeViewChanged"];
+    [flagsCopy _onqueueRemoveFlag:@"EnsureIdentity"];
+    [flagsCopy _onqueueRemoveFlag:@"FetchSelf"];
+    [flagsCopy _onqueueRemoveFlag:@"CloudKitOutgoing"];
+    [flagsCopy _onqueueRemoveFlag:@"CheckAccountSignatures"];
+    [flagsCopy _onqueueRemoveFlag:@"CloudKitZoneRecreate"];
+    [flagsCopy _onqueueRemoveFlag:@"CheckKTAccountKey"];
+    [flagsCopy _onqueueRemoveFlag:@"CheckKTAccountKeyChanged"];
+    [flagsCopy _onqueueRemoveFlag:@"IDSStatusChanged"];
+    [flagsCopy _onqueueRemoveFlag:@"IDSServerBagChanged"];
+    initializingOperation = [(KTSMManager *)self initializingOperation];
     goto LABEL_9;
   }
 
-  if ([v8 isEqual:@"WaitForUnlock"])
+  if ([transitionCopy isEqual:@"WaitForUnlock"])
   {
-    if (![v9 _onqueueContains:@"Unlocked"])
+    if (![flagsCopy _onqueueContains:@"Unlocked"])
     {
-      v20 = [[KTPendingFlag alloc] initWithFlag:@"Unlocked" conditions:1];
-      [v10 _onqueueHandlePendingFlagLater:v20];
+      publicKeyFetcher = [[KTPendingFlag alloc] initWithFlag:@"Unlocked" conditions:1];
+      [pendingFlagsCopy _onqueueHandlePendingFlagLater:publicKeyFetcher];
 LABEL_20:
 
 LABEL_21:
@@ -2103,32 +2103,32 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    [v9 _onqueueRemoveFlag:@"Unlocked"];
-    v21 = [NSString stringWithFormat:@"%@", @"initializing-after-unlock"];
-    v22 = [KTStateTransitionOperation named:v21 entering:@"Initializing"];
+    [flagsCopy _onqueueRemoveFlag:@"Unlocked"];
+    deps6 = [NSString stringWithFormat:@"%@", @"initializing-after-unlock"];
+    v22 = [KTStateTransitionOperation named:deps6 entering:@"Initializing"];
     goto LABEL_14;
   }
 
-  if ([v8 isEqual:@"NoAccount"])
+  if ([transitionCopy isEqual:@"NoAccount"])
   {
-    if ([v9 _onqueueContains:@"AccountChanged"])
+    if ([flagsCopy _onqueueContains:@"AccountChanged"])
     {
-      v19 = [KTStateTransitionOperation named:@"account-probably-changed" entering:@"Initializing"];
+      initializingOperation = [KTStateTransitionOperation named:@"account-probably-changed" entering:@"Initializing"];
       goto LABEL_9;
     }
 
-    if ([v9 _onqueueContains:@"CKAccountChanged"])
+    if ([flagsCopy _onqueueContains:@"CKAccountChanged"])
     {
-      v19 = [KTStateTransitionOperation named:@"account-probably-changed-ck" entering:@"Initializing"];
+      initializingOperation = [KTStateTransitionOperation named:@"account-probably-changed-ck" entering:@"Initializing"];
       goto LABEL_9;
     }
 
     goto LABEL_21;
   }
 
-  if ([v8 isEqual:@"KTStateCheckCloudKitAccount"])
+  if ([transitionCopy isEqual:@"KTStateCheckCloudKitAccount"])
   {
-    [v9 _onqueueRemoveFlag:@"CKAccountChanged"];
+    [flagsCopy _onqueueRemoveFlag:@"CKAccountChanged"];
     if (![(KTSMManager *)self isCloudKitManateeAcountAvailable])
     {
       if (qword_10038BD00 != -1)
@@ -2140,36 +2140,36 @@ LABEL_21:
       if (os_log_type_enabled(qword_10038BD08, OS_LOG_TYPE_DEFAULT))
       {
         v26 = v25;
-        v27 = [(KTSMManager *)self cloudKitAccountInfo];
+        cloudKitAccountInfo = [(KTSMManager *)self cloudKitAccountInfo];
         *buf = 138412290;
-        v153 = v27;
+        v153 = cloudKitAccountInfo;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "CloudKit not available for device2device encryption, holding start up: %@", buf, 0xCu);
       }
 
       goto LABEL_21;
     }
 
-    v21 = [NSString stringWithFormat:@"%@", @"initializing-ck-show-up"];
-    v22 = [KTStateTransitionOperation named:v21 entering:@"GetStatusInitial"];
+    deps6 = [NSString stringWithFormat:@"%@", @"initializing-ck-show-up"];
+    v22 = [KTStateTransitionOperation named:deps6 entering:@"GetStatusInitial"];
     goto LABEL_14;
   }
 
   v24 = @"WaitForManatee";
-  if ([v8 isEqual:@"WaitForManatee"])
+  if ([transitionCopy isEqual:@"WaitForManatee"])
   {
-    if ([v9 _onqueueContains:@"OctagonTrustChanged"])
+    if ([flagsCopy _onqueueContains:@"OctagonTrustChanged"])
     {
-      v19 = [KTStateTransitionOperation named:@"octagon-trust-probably-changed" entering:@"Initializing"];
+      initializingOperation = [KTStateTransitionOperation named:@"octagon-trust-probably-changed" entering:@"Initializing"];
       goto LABEL_9;
     }
 
-    if ([v9 _onqueueContains:@"ManateeViewChanged"])
+    if ([flagsCopy _onqueueContains:@"ManateeViewChanged"])
     {
-      v19 = [KTStateTransitionOperation named:@"retry-manatee-check" entering:@"Initializing"];
+      initializingOperation = [KTStateTransitionOperation named:@"retry-manatee-check" entering:@"Initializing"];
       goto LABEL_9;
     }
 
-    if (![v9 _onqueueContains:@"CheckAccountSignatures"])
+    if (![flagsCopy _onqueueContains:@"CheckAccountSignatures"])
     {
       goto LABEL_21;
     }
@@ -2178,34 +2178,34 @@ LABEL_21:
   }
 
   v24 = @"WaitForCKKS";
-  if (![v8 isEqual:@"WaitForCKKS"])
+  if (![transitionCopy isEqual:@"WaitForCKKS"])
   {
-    if ([v8 isEqual:@"CheckKTAccountKeyChanged"])
+    if ([transitionCopy isEqual:@"CheckKTAccountKeyChanged"])
     {
-      [v9 _onqueueRemoveFlag:@"CheckKTAccountKeyChanged"];
+      [flagsCopy _onqueueRemoveFlag:@"CheckKTAccountKeyChanged"];
       v149[0] = _NSConcreteStackBlock;
       v149[1] = 3221225472;
       v149[2] = sub_100055478;
       v149[3] = &unk_10031AD18;
       v149[4] = self;
-      v150 = v9;
+      v150 = flagsCopy;
       v18 = [KTStateTransitionOperation named:@"check-kt-account-key-changed" intending:@"Ready" errorState:@"Ready" withBlockTakingSelf:v149];
 
       goto LABEL_22;
     }
 
-    if ([v8 isEqual:@"ForceSyncKTAccountKey"])
+    if ([transitionCopy isEqual:@"ForceSyncKTAccountKey"])
     {
-      [v9 _onqueueRemoveFlag:@"CheckKTAccountKey"];
+      [flagsCopy _onqueueRemoveFlag:@"CheckKTAccountKey"];
       objc_initWeak(buf, self);
-      v30 = [(KTSMManager *)self deps];
-      v31 = [v30 octagonOperations];
+      deps2 = [(KTSMManager *)self deps];
+      octagonOperations = [deps2 octagonOperations];
       v147[0] = _NSConcreteStackBlock;
       v147[1] = 3221225472;
       v147[2] = sub_1000557B8;
       v147[3] = &unk_10031AD60;
       objc_copyWeak(&v148, buf);
-      [v31 ckksRequestViewSync:@"Manatee" complete:v147];
+      [octagonOperations ckksRequestViewSync:@"Manatee" complete:v147];
 
       v18 = [KTStateTransitionOperation named:@"force-sync-kt-account-key-done" entering:@"Ready"];
       objc_destroyWeak(&v148);
@@ -2213,26 +2213,26 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    if ([v8 isEqual:@"KTStateFixups"])
+    if ([transitionCopy isEqual:@"KTStateFixups"])
     {
       v32 = [KTFixupOperation alloc];
-      v33 = [(KTSMManager *)self deps];
-      v34 = [(KTFixupOperation *)v32 initWithDependenics:v33 intendedState:@"EnsureAccountIdentity" errorState:@"EnsureAccountIdentity"];
+      deps3 = [(KTSMManager *)self deps];
+      v34 = [(KTFixupOperation *)v32 initWithDependenics:deps3 intendedState:@"EnsureAccountIdentity" errorState:@"EnsureAccountIdentity"];
 LABEL_52:
       v18 = v34;
 
       goto LABEL_22;
     }
 
-    if ([v8 isEqual:@"RetryEnsureAccountIdentity"])
+    if ([transitionCopy isEqual:@"RetryEnsureAccountIdentity"])
     {
-      if (([v9 _onqueueContains:@"CKAccountChanged"] & 1) != 0 || objc_msgSend(v9, "_onqueueContains:", @"OctagonTrustChanged"))
+      if (([flagsCopy _onqueueContains:@"CKAccountChanged"] & 1) != 0 || objc_msgSend(flagsCopy, "_onqueueContains:", @"OctagonTrustChanged"))
       {
-        v19 = [KTStateTransitionOperation named:@"recheck-accountstate" entering:@"Initializing"];
+        initializingOperation = [KTStateTransitionOperation named:@"recheck-accountstate" entering:@"Initializing"];
         goto LABEL_9;
       }
 
-      if (([v9 _onqueueContains:@"EnsureIdentity"] & 1) == 0 && !objc_msgSend(v9, "_onqueueContains:", @"ManateeViewChanged"))
+      if (([flagsCopy _onqueueContains:@"EnsureIdentity"] & 1) == 0 && !objc_msgSend(flagsCopy, "_onqueueContains:", @"ManateeViewChanged"))
       {
         goto LABEL_21;
       }
@@ -2240,13 +2240,13 @@ LABEL_52:
       goto LABEL_155;
     }
 
-    if ([v8 isEqual:@"EnsureAccountIdentity"])
+    if ([transitionCopy isEqual:@"EnsureAccountIdentity"])
     {
-      [v9 _onqueueRemoveFlag:@"EnsureIdentity"];
+      [flagsCopy _onqueueRemoveFlag:@"EnsureIdentity"];
       v41 = [KTEnsureAccountIdentityOperation alloc];
-      v42 = [(KTSMManager *)self deps];
-      v43 = [(KTSMManager *)self pcsOperation];
-      v44 = [(KTEnsureAccountIdentityOperation *)v41 initWithDependencies:v42 pcsOperation:v43];
+      deps4 = [(KTSMManager *)self deps];
+      pcsOperation = [(KTSMManager *)self pcsOperation];
+      v44 = [(KTEnsureAccountIdentityOperation *)v41 initWithDependencies:deps4 pcsOperation:pcsOperation];
 
       v145[0] = _NSConcreteStackBlock;
       v145[1] = 3221225472;
@@ -2257,31 +2257,31 @@ LABEL_52:
       v45 = v44;
       v18 = [KTStateTransitionOperation named:@"ensure-identity" intending:@"KTStateCheckCloudKitAccount" errorState:@"Error" withBlockTakingSelf:v145];
       [(KTSignalIDSOperation *)v18 addNullableDependency:v45];
-      v46 = [(KTSMManager *)self operationQueue];
-      [v46 addOperation:v45];
+      operationQueue = [(KTSMManager *)self operationQueue];
+      [operationQueue addOperation:v45];
 
       goto LABEL_22;
     }
 
-    if ([v8 isEqual:@"SignalIDS"])
+    if ([transitionCopy isEqual:@"SignalIDS"])
     {
-      [v9 _onqueueRemoveFlag:@"RepairIDSFlag"];
+      [flagsCopy _onqueueRemoveFlag:@"RepairIDSFlag"];
       v47 = [KTSignalIDSOperation alloc];
-      v48 = [(KTSMManager *)self deps];
-      v49 = [(KTSMManager *)self selfValidationResult];
-      v50 = [(KTSMManager *)self stateMachine];
-      v18 = [(KTSignalIDSOperation *)v47 initWithDependencies:v48 intendedState:@"InitialIDMSCheck" errorState:@"Ready" selfValidationResult:v49 stateMachine:v50];
+      deps5 = [(KTSMManager *)self deps];
+      selfValidationResult = [(KTSMManager *)self selfValidationResult];
+      stateMachine = [(KTSMManager *)self stateMachine];
+      v18 = [(KTSignalIDSOperation *)v47 initWithDependencies:deps5 intendedState:@"InitialIDMSCheck" errorState:@"Ready" selfValidationResult:selfValidationResult stateMachine:stateMachine];
 
       [(KTSMManager *)self setLastSignalIDS:v18];
       goto LABEL_22;
     }
 
-    if ([v8 isEqual:@"FetchConfigBag"])
+    if ([transitionCopy isEqual:@"FetchConfigBag"])
     {
-      [v9 _onqueueRemoveFlag:@"ConfigBagFetch"];
+      [flagsCopy _onqueueRemoveFlag:@"ConfigBagFetch"];
       v51 = [KTConfigBagFetchOperation alloc];
-      v21 = [(KTSMManager *)self deps];
-      v22 = [(KTConfigBagFetchOperation *)v51 initWithDependencies:v21 intendedState:@"Ready" errorState:@"Ready" triggerInterface:self];
+      deps6 = [(KTSMManager *)self deps];
+      v22 = [(KTConfigBagFetchOperation *)v51 initWithDependencies:deps6 intendedState:@"Ready" errorState:@"Ready" triggerInterface:self];
 LABEL_14:
       v18 = v22;
 LABEL_15:
@@ -2289,80 +2289,80 @@ LABEL_15:
       goto LABEL_22;
     }
 
-    if ([v8 isEqual:?])
+    if ([transitionCopy isEqual:?])
     {
-      [v9 _onqueueRemoveFlag:@"FetchSelf"];
+      [flagsCopy _onqueueRemoveFlag:@"FetchSelf"];
       v52 = [KTFetchIDSSelfOperation alloc];
-      v53 = [(KTSMManager *)self deps];
+      deps7 = [(KTSMManager *)self deps];
       v54 = kKTApplicationIdentifierIDS;
       v55 = off_10032D088;
 LABEL_72:
-      v18 = [(KTFetchIDSSelfOperation *)v52 initWithApplication:v54 dependencies:v53 intendedState:*v55 errorState:@"Ready"];
+      v18 = [(KTFetchIDSSelfOperation *)v52 initWithApplication:v54 dependencies:deps7 intendedState:*v55 errorState:@"Ready"];
 
       [(KTSMManager *)self setLastFetchIDSSelf:v18];
       goto LABEL_22;
     }
 
-    if ([v8 isEqual:@"FetchKTSelf"])
+    if ([transitionCopy isEqual:@"FetchKTSelf"])
     {
 LABEL_74:
       v56 = [KTFetchKTSelfOperation alloc];
-      v57 = [(KTSMManager *)self deps];
-      v18 = [(KTFetchKTSelfOperation *)v56 initWithApplication:kKTApplicationIdentifierIDS dependencies:v57 intendedState:@"Ready" errorState:@"Ready"];
+      deps8 = [(KTSMManager *)self deps];
+      v18 = [(KTFetchKTSelfOperation *)v56 initWithApplication:kKTApplicationIdentifierIDS dependencies:deps8 intendedState:@"Ready" errorState:@"Ready"];
 
       [(KTSMManager *)self setLastFetchKTSelf:v18];
       goto LABEL_22;
     }
 
-    if ([v8 isEqual:@"ValidateFetchIDSSelf"])
+    if ([transitionCopy isEqual:@"ValidateFetchIDSSelf"])
     {
-      [v9 _onqueueRemoveFlag:@"ValidateSelf"];
-      [v9 _onqueueRemoveFlag:@"FetchSelf"];
+      [flagsCopy _onqueueRemoveFlag:@"ValidateSelf"];
+      [flagsCopy _onqueueRemoveFlag:@"FetchSelf"];
       v52 = [KTFetchIDSSelfOperation alloc];
-      v53 = [(KTSMManager *)self deps];
+      deps7 = [(KTSMManager *)self deps];
       v54 = kKTApplicationIdentifierIDS;
       v55 = off_10032D0A8;
       goto LABEL_72;
     }
 
-    if ([v8 isEqual:?])
+    if ([transitionCopy isEqual:?])
     {
-      [v9 _onqueueRemoveFlag:@"FetchIDMS"];
+      [flagsCopy _onqueueRemoveFlag:@"FetchIDMS"];
       v58 = [KTFetchIDMSOperation alloc];
-      v59 = [(KTSMManager *)self deps];
-      v60 = [(KTSMManager *)self specificUser];
-      v18 = [(KTFetchIDMSOperation *)v58 initWithDependencies:v59 specificUser:v60 intendedState:@"Ready" errorState:@"Ready"];
+      deps9 = [(KTSMManager *)self deps];
+      specificUser = [(KTSMManager *)self specificUser];
+      v18 = [(KTFetchIDMSOperation *)v58 initWithDependencies:deps9 specificUser:specificUser intendedState:@"Ready" errorState:@"Ready"];
 
       [(KTSMManager *)self setLastFetchIDMS:v18];
       goto LABEL_22;
     }
 
-    if ([v8 isEqual:?])
+    if ([transitionCopy isEqual:?])
     {
-      [v9 _onqueueRemoveFlag:@"CheckIDSRegistration"];
+      [flagsCopy _onqueueRemoveFlag:@"CheckIDSRegistration"];
       v144[0] = _NSConcreteStackBlock;
       v144[1] = 3221225472;
       v144[2] = sub_100056064;
       v144[3] = &unk_10031AE48;
       v144[4] = self;
-      v19 = [KTStateTransitionGroupOperation named:@"check-ids-registration" intending:@"Ready" errorState:@"Ready" withBlockTakingSelf:v144];
+      initializingOperation = [KTStateTransitionGroupOperation named:@"check-ids-registration" intending:@"Ready" errorState:@"Ready" withBlockTakingSelf:v144];
       goto LABEL_9;
     }
 
-    if ([v8 isEqual:?])
+    if ([transitionCopy isEqual:?])
     {
       v143[0] = _NSConcreteStackBlock;
       v143[1] = 3221225472;
       v143[2] = sub_100056380;
       v143[3] = &unk_10031AC90;
       v143[4] = self;
-      v19 = [KTStateTransitionOperation named:@"idms-fetch" intending:@"ZoneSetup" errorState:@"ZoneSetup" withBlockTakingSelf:v143];
+      initializingOperation = [KTStateTransitionOperation named:@"idms-fetch" intending:@"ZoneSetup" errorState:@"ZoneSetup" withBlockTakingSelf:v143];
       goto LABEL_9;
     }
 
-    if ([v8 isEqual:?])
+    if ([transitionCopy isEqual:?])
     {
-      [v9 _onqueueRemoveFlag:@"CloudKitZoneRecreate"];
+      [flagsCopy _onqueueRemoveFlag:@"CloudKitZoneRecreate"];
       objc_initWeak(buf, self);
       v141[0] = _NSConcreteStackBlock;
       v141[1] = 3221225472;
@@ -2375,77 +2375,77 @@ LABEL_74:
       goto LABEL_22;
     }
 
-    if ([v8 isEqual:@"CKProcessInitial"])
+    if ([transitionCopy isEqual:@"CKProcessInitial"])
     {
-      v121 = [(KTSMManager *)self deps];
-      v118 = [v121 fetchCloudStorage];
-      v116 = [(KTSMManager *)self deps];
+      deps10 = [(KTSMManager *)self deps];
+      fetchCloudStorage = [deps10 fetchCloudStorage];
+      deps11 = [(KTSMManager *)self deps];
       v61 = off_100381DA0;
-      v62 = [(KTSMManager *)self zoneHandler];
-      v63 = [(KTSMManager *)self deps];
-      v64 = [v63 dataStore];
-      v65 = [v64 controller];
-      v66 = [v65 backgroundContext];
-      v67 = [v118 cloudFetchOperationWithDeps:v116 initialFetch:0 userInteractive:1 reason:v61 zoneHandler:v62 context:v66];
+      zoneHandler = [(KTSMManager *)self zoneHandler];
+      deps12 = [(KTSMManager *)self deps];
+      dataStore = [deps12 dataStore];
+      controller = [dataStore controller];
+      backgroundContext = [controller backgroundContext];
+      v67 = [fetchCloudStorage cloudFetchOperationWithDeps:deps11 initialFetch:0 userInteractive:1 reason:v61 zoneHandler:zoneHandler context:backgroundContext];
 
       v138[0] = _NSConcreteStackBlock;
       v138[1] = 3221225472;
       v138[2] = sub_1000568B8;
       v138[3] = &unk_10031AD18;
       v139 = v67;
-      v140 = self;
+      selfCopy = self;
       v68 = v67;
       v18 = [KTStateTransitionOperation named:@"initial-fetch" intending:@"InitialSignRegistrationData" errorState:@"InitialSignRegistrationData" withBlockTakingSelf:v138];
       [(KTSignalIDSOperation *)v18 addNullableDependency:v68];
-      v69 = [(KTSMManager *)self operationQueue];
-      [v69 addOperation:v68];
+      operationQueue2 = [(KTSMManager *)self operationQueue];
+      [operationQueue2 addOperation:v68];
 
       goto LABEL_22;
     }
 
-    if ([v8 isEqual:?])
+    if ([transitionCopy isEqual:?])
     {
-      [v9 _onqueueRemoveFlag:@"CloudKitReboot"];
+      [flagsCopy _onqueueRemoveFlag:@"CloudKitReboot"];
       v137[0] = _NSConcreteStackBlock;
       v137[1] = 3221225472;
       v137[2] = sub_100056974;
       v137[3] = &unk_10031AE48;
       v137[4] = self;
-      v19 = [KTStateTransitionGroupOperation named:@"process-reboot" intending:@"Ready" errorState:@"Ready" withBlockTakingSelf:v137];
+      initializingOperation = [KTStateTransitionGroupOperation named:@"process-reboot" intending:@"Ready" errorState:@"Ready" withBlockTakingSelf:v137];
       goto LABEL_9;
     }
 
-    if ([v8 isEqual:@"InitialSignRegistrationData"])
+    if ([transitionCopy isEqual:@"InitialSignRegistrationData"])
     {
-      [v9 _onqueueRemoveFlag:@"CheckAccountSignatures"];
+      [flagsCopy _onqueueRemoveFlag:@"CheckAccountSignatures"];
       v70 = [KTEnrollmentRegistrationSignature alloc];
-      v71 = [(KTSMManager *)self deps];
+      deps13 = [(KTSMManager *)self deps];
       v72 = v70;
-      v73 = v71;
+      v73 = deps13;
       v74 = 0;
     }
 
     else
     {
-      if (![v8 isEqual:?])
+      if (![transitionCopy isEqual:?])
       {
-        if (![v8 isEqual:@"ValidateFetchKTSelf"])
+        if (![transitionCopy isEqual:@"ValidateFetchKTSelf"])
         {
-          if ([v8 isEqual:@"ForceSyncKVS"])
+          if ([transitionCopy isEqual:@"ForceSyncKVS"])
           {
             v77 = [KTForceSyncKVSOperation alloc];
-            v78 = [(KTSMManager *)self deps];
-            v18 = [(KTForceSyncKVSOperation *)v77 initWithDependencies:v78 timeout:30000000000 intendedState:@"Ready" errorState:@"Ready"];
+            deps14 = [(KTSMManager *)self deps];
+            v18 = [(KTForceSyncKVSOperation *)v77 initWithDependencies:deps14 timeout:30000000000 intendedState:@"Ready" errorState:@"Ready"];
 
             [(KTSMManager *)self setLastForceSyncKVS:v18];
             goto LABEL_22;
           }
 
-          if ([v8 isEqual:?])
+          if ([transitionCopy isEqual:?])
           {
-            [v9 _onqueueRemoveFlag:@"ValidateSelf"];
-            [v9 _onqueueRemoveFlag:@"FetchSelf"];
-            [v9 _onqueueRemoveFlag:@"ValidateSelfOptIn"];
+            [flagsCopy _onqueueRemoveFlag:@"ValidateSelf"];
+            [flagsCopy _onqueueRemoveFlag:@"FetchSelf"];
+            [flagsCopy _onqueueRemoveFlag:@"ValidateSelfOptIn"];
             v79 = +[NSDate date];
             [(KTSMManager *)self setLastSelfValidate:v79];
 
@@ -2461,32 +2461,32 @@ LABEL_74:
             goto LABEL_22;
           }
 
-          if ([v8 isEqual:?])
+          if ([transitionCopy isEqual:?])
           {
-            [v9 _onqueueRemoveFlag:@"ChangeOptInState"];
-            v80 = [(KTSMManager *)self optInStates];
-            v81 = [v80 targetOptInStates];
-            v82 = [v81 count];
+            [flagsCopy _onqueueRemoveFlag:@"ChangeOptInState"];
+            optInStates = [(KTSMManager *)self optInStates];
+            targetOptInStates = [optInStates targetOptInStates];
+            v82 = [targetOptInStates count];
 
             if (!v82)
             {
-              v19 = [KTStateTransitionOperation named:@"Done with all opt-in changes" entering:@"Ready"];
+              initializingOperation = [KTStateTransitionOperation named:@"Done with all opt-in changes" entering:@"Ready"];
               goto LABEL_9;
             }
 
             v83 = [KTChangeOptInStateOperation alloc];
-            v21 = [(KTSMManager *)self deps];
-            v84 = [(KTSMManager *)self optInStates];
+            deps6 = [(KTSMManager *)self deps];
+            optInStates2 = [(KTSMManager *)self optInStates];
             v85 = @"SetOptIO";
             v86 = v83;
-            v87 = v21;
+            v87 = deps6;
           }
 
           else
           {
-            if (![v8 isEqual:?])
+            if (![transitionCopy isEqual:?])
             {
-              if ([v8 isEqual:@"ValidateSelfOptIn"])
+              if ([transitionCopy isEqual:@"ValidateSelfOptIn"])
               {
                 objc_initWeak(buf, self);
                 v133[0] = _NSConcreteStackBlock;
@@ -2500,54 +2500,54 @@ LABEL_74:
                 goto LABEL_22;
               }
 
-              if ([v8 isEqual:?])
+              if ([transitionCopy isEqual:?])
               {
-                [v9 _onqueueRemoveFlag:@"CloudKitOutgoing"];
-                v122 = [(KTSMManager *)self deps];
-                v119 = [v122 cloudRecords];
-                v89 = [(KTSMManager *)self deps];
-                v90 = [(KTSMManager *)self deps];
-                v91 = [v90 dataStore];
-                v92 = [v91 controller];
-                v93 = [v92 backgroundContext];
-                v94 = [v119 updateCloudRecordsOperation:v89 context:v93];
+                [flagsCopy _onqueueRemoveFlag:@"CloudKitOutgoing"];
+                deps15 = [(KTSMManager *)self deps];
+                cloudRecords = [deps15 cloudRecords];
+                deps16 = [(KTSMManager *)self deps];
+                deps17 = [(KTSMManager *)self deps];
+                dataStore2 = [deps17 dataStore];
+                controller2 = [dataStore2 controller];
+                backgroundContext2 = [controller2 backgroundContext];
+                v94 = [cloudRecords updateCloudRecordsOperation:deps16 context:backgroundContext2];
 
                 v130[0] = _NSConcreteStackBlock;
                 v130[1] = 3221225472;
                 v130[2] = sub_100057C34;
                 v130[3] = &unk_10031AD18;
                 v131 = v94;
-                v132 = self;
+                selfCopy2 = self;
                 v95 = v94;
                 v18 = [KTStateTransitionOperation named:@"processOutgoing" intending:@"Ready" errorState:@"Ready" withBlockTakingSelf:v130];
                 [(KTGroupOperation *)v18 addDependency:v95];
-                v96 = [(KTSMManager *)self operationQueue];
-                [v96 addOperation:v95];
+                operationQueue3 = [(KTSMManager *)self operationQueue];
+                [operationQueue3 addOperation:v95];
 
                 goto LABEL_22;
               }
 
-              if ([v8 isEqual:?])
+              if ([transitionCopy isEqual:?])
               {
-                [v9 _onqueueRemoveFlag:@"FetchPublicKeys"];
+                [flagsCopy _onqueueRemoveFlag:@"FetchPublicKeys"];
                 v97 = [KTPublicKeyStoreRefresh alloc];
-                v12 = [(KTSMManager *)self deps];
+                deps = [(KTSMManager *)self deps];
                 v13 = @"Ready";
                 v15 = v97;
-                v16 = v12;
+                v16 = deps;
                 v17 = 0;
                 v14 = @"Ready";
                 goto LABEL_3;
               }
 
-              if ([v8 isEqual:?])
+              if ([transitionCopy isEqual:?])
               {
-                [v9 _onqueueRemoveFlag:@"AccountChanged"];
-                v19 = [(KTSMManager *)self recheckAccount];
+                [flagsCopy _onqueueRemoveFlag:@"AccountChanged"];
+                initializingOperation = [(KTSMManager *)self recheckAccount];
                 goto LABEL_9;
               }
 
-              if ([v8 isEqual:@"EnvironmentSwitch"])
+              if ([transitionCopy isEqual:@"EnvironmentSwitch"])
               {
                 objc_initWeak(buf, self);
                 v128[0] = _NSConcreteStackBlock;
@@ -2561,29 +2561,29 @@ LABEL_74:
                 goto LABEL_22;
               }
 
-              if ([v8 isEqual:@"ResetLocalState"])
+              if ([transitionCopy isEqual:@"ResetLocalState"])
               {
                 v127[0] = _NSConcreteStackBlock;
                 v127[1] = 3221225472;
                 v127[2] = sub_100057FFC;
                 v127[3] = &unk_10031AC90;
                 v127[4] = self;
-                v19 = [KTStateTransitionOperation named:@"transparency-reset-local" intending:@"Initializing" errorState:@"Error" withBlockTakingSelf:v127];
+                initializingOperation = [KTStateTransitionOperation named:@"transparency-reset-local" intending:@"Initializing" errorState:@"Error" withBlockTakingSelf:v127];
                 goto LABEL_9;
               }
 
-              if ([v8 isEqual:?])
+              if ([transitionCopy isEqual:?])
               {
                 v126[0] = _NSConcreteStackBlock;
                 v126[1] = 3221225472;
                 v126[2] = sub_100058178;
                 v126[3] = &unk_10031AC90;
                 v126[4] = self;
-                v19 = [KTStateTransitionOperation named:@"transparency-reset-local-cloud-state" intending:@"Initializing" errorState:@"Initializing" withBlockTakingSelf:v126];
+                initializingOperation = [KTStateTransitionOperation named:@"transparency-reset-local-cloud-state" intending:@"Initializing" errorState:@"Initializing" withBlockTakingSelf:v126];
                 goto LABEL_9;
               }
 
-              if ([v8 isEqual:@"KTStateResetCloudStore"])
+              if ([transitionCopy isEqual:@"KTStateResetCloudStore"])
               {
                 objc_initWeak(buf, self);
                 v124[0] = _NSConcreteStackBlock;
@@ -2597,44 +2597,44 @@ LABEL_74:
                 goto LABEL_22;
               }
 
-              if ([v8 isEqual:@"GetStatusInitial"])
+              if ([transitionCopy isEqual:@"GetStatusInitial"])
               {
-                [v9 _onqueueRemoveFlag:@"StatusUpdate"];
+                [flagsCopy _onqueueRemoveFlag:@"StatusUpdate"];
                 v98 = [KTFillStatusOperation alloc];
-                v33 = [(KTSMManager *)self deps];
+                deps3 = [(KTSMManager *)self deps];
                 v99 = kKTApplicationIdentifierIDS;
                 v100 = v98;
                 v101 = 1;
-                v102 = v33;
+                v102 = deps3;
                 v103 = @"InitialIDMSCheck";
               }
 
               else
               {
-                if (![v8 isEqual:?])
+                if (![transitionCopy isEqual:?])
                 {
-                  if ([v8 isEqual:?])
+                  if ([transitionCopy isEqual:?])
                   {
-                    [v9 _onqueueRemoveFlag:@"PokeIDS"];
+                    [flagsCopy _onqueueRemoveFlag:@"PokeIDS"];
                     v123[0] = _NSConcreteStackBlock;
                     v123[1] = 3221225472;
                     v123[2] = sub_100058388;
                     v123[3] = &unk_10031AC90;
                     v123[4] = self;
-                    v19 = [KTStateTransitionOperation named:@"poke-ids" intending:@"Ready" errorState:@"Ready" withBlockTakingSelf:v123];
+                    initializingOperation = [KTStateTransitionOperation named:@"poke-ids" intending:@"Ready" errorState:@"Ready" withBlockTakingSelf:v123];
                     goto LABEL_9;
                   }
 
-                  if ([v8 isEqual:?])
+                  if ([transitionCopy isEqual:?])
                   {
-                    [v9 _onqueueRemoveFlag:@"PendingCKVRepair"];
-                    v21 = [(KTSMManager *)self repair];
+                    [flagsCopy _onqueueRemoveFlag:@"PendingCKVRepair"];
+                    deps6 = [(KTSMManager *)self repair];
                     [(KTSMManager *)self setRepair:0];
-                    if (v21)
+                    if (deps6)
                     {
                       v105 = [KTRepairCKVOperation alloc];
-                      v106 = [(KTSMManager *)self deps];
-                      v18 = [(KTRepairCKVOperation *)v105 initWithDependencies:v106 repair:v21 reset:self intendedState:@"Initializing" errorState:@"Initializing"];
+                      deps18 = [(KTSMManager *)self deps];
+                      v18 = [(KTRepairCKVOperation *)v105 initWithDependencies:deps18 repair:deps6 reset:self intendedState:@"Initializing" errorState:@"Initializing"];
 
                       goto LABEL_15;
                     }
@@ -2643,174 +2643,174 @@ LABEL_74:
                     goto LABEL_14;
                   }
 
-                  if (![v8 isEqual:@"Ready"])
+                  if (![transitionCopy isEqual:@"Ready"])
                   {
                     goto LABEL_21;
                   }
 
-                  v112 = [(KTSMManager *)self stateMachine];
-                  [v112 _onqueueCancelPendingFlag:@"CheckServerOptIn"];
+                  stateMachine2 = [(KTSMManager *)self stateMachine];
+                  [stateMachine2 _onqueueCancelPendingFlag:@"CheckServerOptIn"];
 
-                  v113 = [(KTSMManager *)self readyComplete];
-                  [v113 fulfill];
+                  readyComplete = [(KTSMManager *)self readyComplete];
+                  [readyComplete fulfill];
 
-                  v114 = [(KTSMManager *)self deps];
-                  v111 = [v114 stateMonitor];
-                  [v111 setAccountStatus:4];
+                  deps19 = [(KTSMManager *)self deps];
+                  stateMonitor = [deps19 stateMonitor];
+                  [stateMonitor setAccountStatus:4];
 
-                  if ([v9 _onqueueContains:@"AccountChanged"])
+                  if ([flagsCopy _onqueueContains:@"AccountChanged"])
                   {
-                    v19 = [KTStateTransitionOperation named:@"account-probably-changed" entering:@"RecheckAccount"];
+                    initializingOperation = [KTStateTransitionOperation named:@"account-probably-changed" entering:@"RecheckAccount"];
                     goto LABEL_9;
                   }
 
-                  if ([v9 _onqueueContains:@"CheckAccountSignatures"])
+                  if ([flagsCopy _onqueueContains:@"CheckAccountSignatures"])
                   {
-                    v19 = [KTStateTransitionOperation named:@"make-signatures" entering:@"SignRegistrationData"];
+                    initializingOperation = [KTStateTransitionOperation named:@"make-signatures" entering:@"SignRegistrationData"];
                     goto LABEL_9;
                   }
 
-                  if ([v9 _onqueueContains:@"OctagonTrustChanged"])
+                  if ([flagsCopy _onqueueContains:@"OctagonTrustChanged"])
                   {
-                    v19 = [KTStateTransitionOperation named:@"recheck-after-octagon-change" entering:@"Initializing"];
+                    initializingOperation = [KTStateTransitionOperation named:@"recheck-after-octagon-change" entering:@"Initializing"];
                     goto LABEL_9;
                   }
 
-                  if ([v9 _onqueueContains:@"RepairIDSFlag"])
+                  if ([flagsCopy _onqueueContains:@"RepairIDSFlag"])
                   {
-                    v19 = [KTStateTransitionOperation named:@"repair-ids" entering:@"SignalIDS"];
+                    initializingOperation = [KTStateTransitionOperation named:@"repair-ids" entering:@"SignalIDS"];
                     goto LABEL_9;
                   }
 
-                  if ([v9 _onqueueContains:@"ConfigBagFetch"])
+                  if ([flagsCopy _onqueueContains:@"ConfigBagFetch"])
                   {
-                    v19 = [KTStateTransitionOperation named:@"fetch-config-bag" entering:@"FetchConfigBag"];
+                    initializingOperation = [KTStateTransitionOperation named:@"fetch-config-bag" entering:@"FetchConfigBag"];
                     goto LABEL_9;
                   }
 
-                  if ([v9 _onqueueContains:@"FetchSelf"])
+                  if ([flagsCopy _onqueueContains:@"FetchSelf"])
                   {
-                    v19 = [KTStateTransitionOperation named:@"fetch-ids-self" entering:@"FetchIDSSelf"];
+                    initializingOperation = [KTStateTransitionOperation named:@"fetch-ids-self" entering:@"FetchIDSSelf"];
                     goto LABEL_9;
                   }
 
-                  if ([v9 _onqueueContains:@"FetchIDMS"])
+                  if ([flagsCopy _onqueueContains:@"FetchIDMS"])
                   {
-                    v19 = [KTStateTransitionOperation named:@"fetch-idms" entering:@"FetchIDMS"];
+                    initializingOperation = [KTStateTransitionOperation named:@"fetch-idms" entering:@"FetchIDMS"];
                     goto LABEL_9;
                   }
 
-                  if ([v9 _onqueueContains:@"FetchPublicKeys"])
+                  if ([flagsCopy _onqueueContains:@"FetchPublicKeys"])
                   {
-                    v19 = [KTStateTransitionOperation named:@"public-keys-fetch" entering:@"PublicKeysFetch"];
+                    initializingOperation = [KTStateTransitionOperation named:@"public-keys-fetch" entering:@"PublicKeysFetch"];
                     goto LABEL_9;
                   }
 
-                  if ([v9 _onqueueContains:@"CheckIDSRegistration"])
+                  if ([flagsCopy _onqueueContains:@"CheckIDSRegistration"])
                   {
-                    v19 = [KTStateTransitionOperation named:@"check-ids-registration" entering:@"CheckIDSRegistration"];
+                    initializingOperation = [KTStateTransitionOperation named:@"check-ids-registration" entering:@"CheckIDSRegistration"];
                     goto LABEL_9;
                   }
 
-                  if ([v9 _onqueueContains:@"ChangeOptInState"])
+                  if ([flagsCopy _onqueueContains:@"ChangeOptInState"])
                   {
-                    v19 = [KTStateTransitionOperation named:@"process-opt-in-out" entering:@"ChangeOptIn"];
+                    initializingOperation = [KTStateTransitionOperation named:@"process-opt-in-out" entering:@"ChangeOptIn"];
                     goto LABEL_9;
                   }
 
-                  if (![v9 _onqueueContains:@"EnsureIdentity"])
+                  if (![flagsCopy _onqueueContains:@"EnsureIdentity"])
                   {
-                    if ([v9 _onqueueContains:@"CloudKitZoneRecreate"])
+                    if ([flagsCopy _onqueueContains:@"CloudKitZoneRecreate"])
                     {
-                      v19 = [KTStateTransitionOperation named:@"zone-needs-resetup" entering:@"ZoneSetup"];
+                      initializingOperation = [KTStateTransitionOperation named:@"zone-needs-resetup" entering:@"ZoneSetup"];
                       goto LABEL_9;
                     }
 
-                    if ([v9 _onqueueContains:@"CloudKitOutgoing"])
+                    if ([flagsCopy _onqueueContains:@"CloudKitOutgoing"])
                     {
-                      v19 = [KTStateTransitionOperation named:@"upload-to-ck" entering:@"ProcessOutgoing"];
+                      initializingOperation = [KTStateTransitionOperation named:@"upload-to-ck" entering:@"ProcessOutgoing"];
                       goto LABEL_9;
                     }
 
-                    if ([v9 _onqueueContains:@"CloudKitReboot"])
+                    if ([flagsCopy _onqueueContains:@"CloudKitReboot"])
                     {
-                      v19 = [KTStateTransitionOperation named:@"fetch-because-reboot" entering:@"CKProcessReboot"];
+                      initializingOperation = [KTStateTransitionOperation named:@"fetch-because-reboot" entering:@"CKProcessReboot"];
                       goto LABEL_9;
                     }
 
-                    if ([v9 _onqueueContains:@"ValidateSelf"])
+                    if ([flagsCopy _onqueueContains:@"ValidateSelf"])
                     {
-                      v19 = [KTStateTransitionOperation named:@"validate-self" entering:@"ValidateSelf"];
+                      initializingOperation = [KTStateTransitionOperation named:@"validate-self" entering:@"ValidateSelf"];
                       goto LABEL_9;
                     }
 
-                    if ([v9 _onqueueContains:@"CheckKTAccountKey"])
+                    if ([flagsCopy _onqueueContains:@"CheckKTAccountKey"])
                     {
-                      v19 = [KTStateTransitionOperation named:@"check-kt-account-key" entering:@"ForceSyncKTAccountKey"];
+                      initializingOperation = [KTStateTransitionOperation named:@"check-kt-account-key" entering:@"ForceSyncKTAccountKey"];
                       goto LABEL_9;
                     }
 
-                    if ([v9 _onqueueContains:@"StatusUpdate"])
+                    if ([flagsCopy _onqueueContains:@"StatusUpdate"])
                     {
-                      v19 = [KTStateTransitionOperation named:@"fill-status" entering:@"GetStatus"];
+                      initializingOperation = [KTStateTransitionOperation named:@"fill-status" entering:@"GetStatus"];
                       goto LABEL_9;
                     }
 
-                    if ([v9 _onqueueContains:@"CheckKTAccountKeyChanged"])
+                    if ([flagsCopy _onqueueContains:@"CheckKTAccountKeyChanged"])
                     {
-                      v19 = [KTStateTransitionOperation named:@"check-account-key-changed" entering:@"CheckKTAccountKeyChanged"];
+                      initializingOperation = [KTStateTransitionOperation named:@"check-account-key-changed" entering:@"CheckKTAccountKeyChanged"];
                       goto LABEL_9;
                     }
 
-                    if ([v9 _onqueueContains:@"IDSStatusChanged"])
+                    if ([flagsCopy _onqueueContains:@"IDSStatusChanged"])
                     {
-                      v19 = [KTStateTransitionOperation named:@"check-ids-account" entering:@"Initializing"];
+                      initializingOperation = [KTStateTransitionOperation named:@"check-ids-account" entering:@"Initializing"];
                       goto LABEL_9;
                     }
 
-                    if ([v9 _onqueueContains:@"PokeIDS"])
+                    if ([flagsCopy _onqueueContains:@"PokeIDS"])
                     {
-                      v19 = [KTStateTransitionOperation named:@"poke-ids" entering:@"PokeIDS"];
+                      initializingOperation = [KTStateTransitionOperation named:@"poke-ids" entering:@"PokeIDS"];
                       goto LABEL_9;
                     }
 
-                    if ([v9 _onqueueContains:@"PendingCKVRepair"])
+                    if ([flagsCopy _onqueueContains:@"PendingCKVRepair"])
                     {
-                      v19 = [KTStateTransitionOperation named:@"pending-ckv-repair" entering:@"RepairCKV"];
+                      initializingOperation = [KTStateTransitionOperation named:@"pending-ckv-repair" entering:@"RepairCKV"];
                       goto LABEL_9;
                     }
 
-                    if ([v9 _onqueueContains:@"IDSServerBagChanged"])
+                    if ([flagsCopy _onqueueContains:@"IDSServerBagChanged"])
                     {
                       [(KTSMManager *)self setStatusReporting:0];
-                      v19 = [KTStateTransitionOperation named:@"ids-server-bag-update" entering:@"Initializing"];
+                      initializingOperation = [KTStateTransitionOperation named:@"ids-server-bag-update" entering:@"Initializing"];
                       goto LABEL_9;
                     }
 
-                    v107 = [(KTSMManager *)self launch];
-                    [v107 launch];
+                    launch = [(KTSMManager *)self launch];
+                    [launch launch];
 
-                    v108 = [(KTSMManager *)self deps];
-                    v109 = [v108 logger];
-                    v110 = [(KTSMManager *)self launch];
-                    [v109 noteLaunchSequence:v110];
+                    deps20 = [(KTSMManager *)self deps];
+                    logger = [deps20 logger];
+                    launch2 = [(KTSMManager *)self launch];
+                    [logger noteLaunchSequence:launch2];
 
                     goto LABEL_21;
                   }
 
 LABEL_155:
-                  v19 = [KTStateTransitionOperation named:@"retry-ensure-identity" entering:@"EnsureAccountIdentity"];
+                  initializingOperation = [KTStateTransitionOperation named:@"retry-ensure-identity" entering:@"EnsureAccountIdentity"];
                   goto LABEL_9;
                 }
 
-                [v9 _onqueueRemoveFlag:@"StatusUpdate"];
+                [flagsCopy _onqueueRemoveFlag:@"StatusUpdate"];
                 v104 = [KTFillStatusOperation alloc];
-                v33 = [(KTSMManager *)self deps];
+                deps3 = [(KTSMManager *)self deps];
                 v99 = kKTApplicationIdentifierIDS;
                 v103 = @"Ready";
                 v100 = v104;
                 v101 = 0;
-                v102 = v33;
+                v102 = deps3;
               }
 
               v34 = [(KTFillStatusOperation *)v100 initWithApplication:v99 initialFill:v101 dependencies:v102 intendedState:v103 errorState:v103];
@@ -2818,14 +2818,14 @@ LABEL_155:
             }
 
             v88 = [KTSetOptInStateOperation alloc];
-            v21 = [(KTSMManager *)self deps];
-            v84 = [(KTSMManager *)self optInStates];
+            deps6 = [(KTSMManager *)self deps];
+            optInStates2 = [(KTSMManager *)self optInStates];
             v85 = @"Ready";
             v86 = v88;
-            v87 = v21;
+            v87 = deps6;
           }
 
-          v18 = [v86 initWithDependenics:v87 intendedState:v85 errorState:@"Ready" optinStates:v84];
+          v18 = [v86 initWithDependenics:v87 intendedState:v85 errorState:@"Ready" optinStates:optInStates2];
 
           goto LABEL_15;
         }
@@ -2833,12 +2833,12 @@ LABEL_155:
         goto LABEL_74;
       }
 
-      v75 = [v9 _onqueueContains:@"CheckAccountSignatures"];
-      [v9 _onqueueRemoveFlag:@"CheckAccountSignatures"];
+      v75 = [flagsCopy _onqueueContains:@"CheckAccountSignatures"];
+      [flagsCopy _onqueueRemoveFlag:@"CheckAccountSignatures"];
       v76 = [KTEnrollmentRegistrationSignature alloc];
-      v71 = [(KTSMManager *)self deps];
+      deps13 = [(KTSMManager *)self deps];
       v72 = v76;
-      v73 = v71;
+      v73 = deps13;
       v74 = v75;
     }
 
@@ -2848,37 +2848,37 @@ LABEL_155:
     goto LABEL_22;
   }
 
-  if (([v9 _onqueueContains:@"CKAccountChanged"] & 1) != 0 || (objc_msgSend(v9, "_onqueueContains:", @"OctagonTrustChanged") & 1) != 0 || objc_msgSend(v9, "_onqueueContains:", @"ManateeViewChanged"))
+  if (([flagsCopy _onqueueContains:@"CKAccountChanged"] & 1) != 0 || (objc_msgSend(flagsCopy, "_onqueueContains:", @"OctagonTrustChanged") & 1) != 0 || objc_msgSend(flagsCopy, "_onqueueContains:", @"ManateeViewChanged"))
   {
-    v19 = [KTStateTransitionOperation named:@"retry-ckks-check" entering:@"Initializing"];
+    initializingOperation = [KTStateTransitionOperation named:@"retry-ckks-check" entering:@"Initializing"];
     goto LABEL_9;
   }
 
-  if ([v9 _onqueueContains:@"CheckAccountSignatures"])
+  if ([flagsCopy _onqueueContains:@"CheckAccountSignatures"])
   {
 LABEL_47:
-    [v9 _onqueueRemoveFlag:@"CheckAccountSignatures"];
+    [flagsCopy _onqueueRemoveFlag:@"CheckAccountSignatures"];
     v28 = [KTEnrollmentRegistrationSignature alloc];
-    v29 = [(KTSMManager *)self deps];
-    v18 = [(KTEnrollmentRegistrationSignature *)v28 initWithDependencies:v29 forceUpdate:0 intendedState:v24 errorState:v24 idsRegistrationInterface:self signatureTracker:self];
+    deps21 = [(KTSMManager *)self deps];
+    v18 = [(KTEnrollmentRegistrationSignature *)v28 initWithDependencies:deps21 forceUpdate:0 intendedState:v24 errorState:v24 idsRegistrationInterface:self signatureTracker:self];
 
     goto LABEL_22;
   }
 
-  if (![v9 _onqueueContains:@"CloudKitOutgoing"])
+  if (![flagsCopy _onqueueContains:@"CloudKitOutgoing"])
   {
     goto LABEL_21;
   }
 
-  [v9 _onqueueRemoveFlag:@"CloudKitOutgoing"];
-  v117 = [(KTSMManager *)self deps];
-  v115 = [v117 cloudRecords];
-  v35 = [(KTSMManager *)self deps];
-  v36 = [(KTSMManager *)self deps];
-  v37 = [v36 dataStore];
-  v38 = [v37 controller];
-  v39 = [v38 backgroundContext];
-  v120 = [v115 updateCloudRecordsOperation:v35 context:v39];
+  [flagsCopy _onqueueRemoveFlag:@"CloudKitOutgoing"];
+  deps22 = [(KTSMManager *)self deps];
+  cloudRecords2 = [deps22 cloudRecords];
+  deps23 = [(KTSMManager *)self deps];
+  deps24 = [(KTSMManager *)self deps];
+  dataStore3 = [deps24 dataStore];
+  controller3 = [dataStore3 controller];
+  backgroundContext3 = [controller3 backgroundContext];
+  v120 = [cloudRecords2 updateCloudRecordsOperation:deps23 context:backgroundContext3];
 
   v151[0] = _NSConcreteStackBlock;
   v151[1] = 3221225472;
@@ -2887,8 +2887,8 @@ LABEL_47:
   v151[4] = self;
   v18 = [KTStateTransitionOperation named:@"processOutgoing" intending:@"WaitForCKKS" errorState:@"WaitForCKKS" withBlockTakingSelf:v151];
   [(KTResultOperation *)v18 addSuccessDependency:v120];
-  v40 = [(KTSMManager *)self operationQueue];
-  [v40 addOperation:v120];
+  operationQueue4 = [(KTSMManager *)self operationQueue];
+  [operationQueue4 addOperation:v120];
 
 LABEL_22:
 
@@ -2897,32 +2897,32 @@ LABEL_22:
 
 - (void)maybeCreateServerOptInFetch
 {
-  v3 = [(KTSMManager *)self queue];
+  queue = [(KTSMManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005848C;
   block[3] = &unk_100316FE0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_onQueueMaybeCreateNewServerOptInFetch
 {
-  v3 = [(KTSMManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(KTSMManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v12 = [(KTSMManager *)self deps];
-  v4 = [v12 stateMonitor];
-  if ([v4 newServerOptInRequests])
+  deps = [(KTSMManager *)self deps];
+  stateMonitor = [deps stateMonitor];
+  if ([stateMonitor newServerOptInRequests])
   {
-    v5 = [(KTSMManager *)self currentServerOptInFetch];
-    if (v5)
+    currentServerOptInFetch = [(KTSMManager *)self currentServerOptInFetch];
+    if (currentServerOptInFetch)
     {
-      v6 = v5;
-      v7 = [(KTSMManager *)self currentServerOptInFetch];
-      v8 = [v7 isFinished];
+      v6 = currentServerOptInFetch;
+      currentServerOptInFetch2 = [(KTSMManager *)self currentServerOptInFetch];
+      isFinished = [currentServerOptInFetch2 isFinished];
 
-      if (!v8)
+      if (!isFinished)
       {
         return;
       }
@@ -2944,9 +2944,9 @@ LABEL_22:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Creating new ServerOptIn fetch", buf, 2u);
     }
 
-    v10 = [(KTSMManager *)self _onqueueCreateNewServerOptInFetch];
-    v11 = [(KTSMManager *)self stateMachine];
-    [v11 cancelPendingFlag:@"CheckServerOptIn"];
+    _onqueueCreateNewServerOptInFetch = [(KTSMManager *)self _onqueueCreateNewServerOptInFetch];
+    stateMachine = [(KTSMManager *)self stateMachine];
+    [stateMachine cancelPendingFlag:@"CheckServerOptIn"];
   }
 
   else
@@ -2956,25 +2956,25 @@ LABEL_22:
 
 - (id)_onqueueCreateNewServerOptInFetch
 {
-  v3 = [(KTSMManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(KTSMManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(KTSMManager *)self serverOptInFetchReasons];
+  serverOptInFetchReasons = [(KTSMManager *)self serverOptInFetchReasons];
   v5 = +[NSMutableSet set];
   [(KTSMManager *)self setServerOptInFetchReasons:v5];
 
-  v6 = [v4 allObjects];
-  v7 = [v6 componentsJoinedByString:{@", "}];
+  allObjects = [serverOptInFetchReasons allObjects];
+  v7 = [allObjects componentsJoinedByString:{@", "}];
 
   v8 = [KTFetchServerOptInStatus alloc];
-  v9 = [(KTSMManager *)self deps];
-  v10 = [(KTSMManager *)self serverOptInScheduler];
-  v11 = [(KTFetchServerOptInStatus *)v8 initWithDependencies:v9 reason:v7 retryScheduler:v10];
+  deps = [(KTSMManager *)self deps];
+  serverOptInScheduler = [(KTSMManager *)self serverOptInScheduler];
+  v11 = [(KTFetchServerOptInStatus *)v8 initWithDependencies:deps reason:v7 retryScheduler:serverOptInScheduler];
 
   [(KTSMManager *)self setCurrentServerOptInFetch:v11];
-  v12 = [(KTSMManager *)self deps];
-  v13 = [v12 stateMonitor];
-  [v13 setNewServerOptInRequests:0];
+  deps2 = [(KTSMManager *)self deps];
+  stateMonitor = [deps2 stateMonitor];
+  [stateMonitor setNewServerOptInRequests:0];
 
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
@@ -2982,28 +2982,28 @@ LABEL_22:
   v24[3] = &unk_100316FE0;
   v24[4] = self;
   v14 = [NSBlockOperation blockOperationWithBlock:v24];
-  v15 = [(KTSMManager *)self currentServerOptInFetch];
-  [v14 addNullableDependency:v15];
+  currentServerOptInFetch = [(KTSMManager *)self currentServerOptInFetch];
+  [v14 addNullableDependency:currentServerOptInFetch];
 
-  v16 = [(KTSMManager *)self currentServerOptInFetch];
-  v17 = [(KTSMManager *)self deps];
-  v18 = [v17 reachabilityTracker];
-  v19 = [v18 reachabilityDependency];
-  [v16 addNullableDependency:v19];
+  currentServerOptInFetch2 = [(KTSMManager *)self currentServerOptInFetch];
+  deps3 = [(KTSMManager *)self deps];
+  reachabilityTracker = [deps3 reachabilityTracker];
+  reachabilityDependency = [reachabilityTracker reachabilityDependency];
+  [currentServerOptInFetch2 addNullableDependency:reachabilityDependency];
 
-  v20 = [(KTSMManager *)self operationQueue];
-  v21 = [(KTSMManager *)self currentServerOptInFetch];
-  [v20 addOperation:v21];
+  operationQueue = [(KTSMManager *)self operationQueue];
+  currentServerOptInFetch3 = [(KTSMManager *)self currentServerOptInFetch];
+  [operationQueue addOperation:currentServerOptInFetch3];
 
-  v22 = [(KTSMManager *)self operationQueue];
-  [v22 addOperation:v14];
+  operationQueue2 = [(KTSMManager *)self operationQueue];
+  [operationQueue2 addOperation:v14];
 
   return v11;
 }
 
-- (void)requestServerOptInFetchForManyReasons:(id)a3 delayInSeconds:(double)a4
+- (void)requestServerOptInFetchForManyReasons:(id)reasons delayInSeconds:(double)seconds
 {
-  v6 = a3;
+  reasonsCopy = reasons;
   if (qword_10038BD00 != -1)
   {
     sub_100249E44();
@@ -3013,48 +3013,48 @@ LABEL_22:
   if (os_log_type_enabled(qword_10038BD08, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [v6 allObjects];
-    v10 = [v9 componentsJoinedByString:{@", "}];
+    allObjects = [reasonsCopy allObjects];
+    v10 = [allObjects componentsJoinedByString:{@", "}];
     *buf = 138412290;
     v24 = v10;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "triggering a new server opt-in state fetch because of reason: %@", buf, 0xCu);
   }
 
-  v11 = [(KTSMManager *)self deps];
-  v12 = [v11 stateMonitor];
-  [v12 setNewServerOptInRequests:1];
+  deps = [(KTSMManager *)self deps];
+  stateMonitor = [deps stateMonitor];
+  [stateMonitor setNewServerOptInRequests:1];
 
   v13 = [KTPendingFlag alloc];
-  v14 = [(KTSMManager *)self serverOptInScheduler];
-  v15 = [(KTPendingFlag *)v13 initWithFlag:@"CheckServerOptIn" conditions:2 scheduler:v14];
+  serverOptInScheduler = [(KTSMManager *)self serverOptInScheduler];
+  v15 = [(KTPendingFlag *)v13 initWithFlag:@"CheckServerOptIn" conditions:2 scheduler:serverOptInScheduler];
 
-  v16 = [(KTSMManager *)self deps];
-  v17 = [v16 flagHandler];
-  [v17 handlePendingFlag:v15];
+  deps2 = [(KTSMManager *)self deps];
+  flagHandler = [deps2 flagHandler];
+  [flagHandler handlePendingFlag:v15];
 
-  v18 = [(KTSMManager *)self queue];
+  queue = [(KTSMManager *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100058BF4;
   block[3] = &unk_10031A7F0;
   block[4] = self;
-  v21 = v6;
-  v22 = a4;
-  v19 = v6;
-  dispatch_async(v18, block);
+  v21 = reasonsCopy;
+  secondsCopy = seconds;
+  v19 = reasonsCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)newServerOptInFetch:(id)a3
+- (void)newServerOptInFetch:(id)fetch
 {
-  v4 = [NSSet setWithObject:a3];
+  v4 = [NSSet setWithObject:fetch];
   [(KTSMManager *)self requestServerOptInFetchForManyReasons:v4 delayInSeconds:0.0];
 }
 
 - (void)triggerBAACertFetcher
 {
-  v3 = [(KTSMManager *)self deps];
-  v2 = [v3 certFetcher];
-  [v2 getDeviceCertWithForcedFetch:1 completionHandler:&stru_10031B0F0];
+  deps = [(KTSMManager *)self deps];
+  certFetcher = [deps certFetcher];
+  [certFetcher getDeviceCertWithForcedFetch:1 completionHandler:&stru_10031B0F0];
 }
 
 - (id)initializingOperation
@@ -3089,55 +3089,55 @@ LABEL_22:
 
 - (id)accountFirstSeenDate
 {
-  v2 = [(KTSMManager *)self deps];
-  v3 = [v2 logger];
-  v4 = [v3 datePropertyForKey:off_100381D10];
+  deps = [(KTSMManager *)self deps];
+  logger = [deps logger];
+  v4 = [logger datePropertyForKey:off_100381D10];
 
   return v4;
 }
 
 - (void)clearAccountMetrics
 {
-  v3 = [(KTSMManager *)self deps];
-  v4 = [v3 logger];
-  [v4 setDateProperty:0 forKey:off_100381D10];
+  deps = [(KTSMManager *)self deps];
+  logger = [deps logger];
+  [logger setDateProperty:0 forKey:off_100381D10];
 
-  v5 = [(KTSMManager *)self deps];
-  v6 = [v5 logger];
-  [v6 setCKManateeState:1];
+  deps2 = [(KTSMManager *)self deps];
+  logger2 = [deps2 logger];
+  [logger2 setCKManateeState:1];
 
   [(KTSMManager *)self setLastSelfValidate:0];
 }
 
 - (id)lastSelfValidate
 {
-  v2 = [(KTSMManager *)self deps];
-  v3 = [v2 smDataStore];
-  v4 = [v3 getSettingsDate:off_100381D18];
+  deps = [(KTSMManager *)self deps];
+  smDataStore = [deps smDataStore];
+  v4 = [smDataStore getSettingsDate:off_100381D18];
 
   return v4;
 }
 
-- (void)setLastSelfValidate:(id)a3
+- (void)setLastSelfValidate:(id)validate
 {
-  v4 = a3;
-  v6 = [(KTSMManager *)self deps];
-  v5 = [v6 smDataStore];
-  [v5 setSettingsDate:off_100381D18 date:v4];
+  validateCopy = validate;
+  deps = [(KTSMManager *)self deps];
+  smDataStore = [deps smDataStore];
+  [smDataStore setSettingsDate:off_100381D18 date:validateCopy];
 }
 
-- (BOOL)optOutWhenNotEligible:(id)a3 error:(id *)a4
+- (BOOL)optOutWhenNotEligible:(id)eligible error:(id *)error
 {
-  v5 = a3;
+  eligibleCopy = eligible;
   v6 = objc_alloc_init(KTIDSOpsOptInOutData);
   [(KTIDSOpsOptInOutData *)v6 setOptInStatus:&__kCFBooleanFalse];
   [(KTIDSOpsOptInOutData *)v6 setOptChangeReason:3];
-  v16 = v5;
+  v16 = eligibleCopy;
   v17 = v6;
   v7 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
   v8 = dispatch_semaphore_create(0);
-  v9 = [(KTSMManager *)self deps];
-  v10 = [v9 idsOperations];
+  deps = [(KTSMManager *)self deps];
+  idsOperations = [deps idsOperations];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100059D8C;
@@ -3145,7 +3145,7 @@ LABEL_22:
   v14[4] = self;
   v15 = v8;
   v11 = v8;
-  [v10 sendOptInUpdateRequest:v7 withCompletion:v14];
+  [idsOperations sendOptInUpdateRequest:v7 withCompletion:v14];
 
   v12 = dispatch_time(0, 2000000000);
   dispatch_semaphore_wait(v11, v12);
@@ -3153,13 +3153,13 @@ LABEL_22:
   return 1;
 }
 
-- (BOOL)changeOptInState:(unint64_t)a3 application:(id)a4 loggableData:(id *)a5 error:(id *)a6
+- (BOOL)changeOptInState:(unint64_t)state application:(id)application loggableData:(id *)data error:(id *)error
 {
-  v62 = a4;
-  v8 = [(KTSMManager *)self deps];
-  v9 = [v8 accountOperations];
+  applicationCopy = application;
+  deps = [(KTSMManager *)self deps];
+  accountOperations = [deps accountOperations];
   v69 = 0;
-  v10 = [v9 primaryAccount:&v69];
+  v10 = [accountOperations primaryAccount:&v69];
   v11 = v69;
 
   if (!v10)
@@ -3178,26 +3178,26 @@ LABEL_22:
     }
   }
 
-  v13 = [(KTSMManager *)self deps];
-  v14 = [v13 idsOperations];
-  v15 = [v14 accountStateFetched];
-  [v15 wait:2000000000];
+  deps2 = [(KTSMManager *)self deps];
+  idsOperations = [deps2 idsOperations];
+  accountStateFetched = [idsOperations accountStateFetched];
+  [accountStateFetched wait:2000000000];
 
-  v16 = [(KTSMManager *)self deps];
-  v17 = [v16 accountOperations];
-  v18 = [(KTSMManager *)self deps];
-  v19 = [v18 idsAccountTracker];
+  deps3 = [(KTSMManager *)self deps];
+  accountOperations2 = [deps3 accountOperations];
+  deps4 = [(KTSMManager *)self deps];
+  idsAccountTracker = [deps4 idsAccountTracker];
   v68 = v11;
-  v20 = [v17 ktAccountStatus:v10 idsAccountsTracker:v19 error:&v68];
+  v20 = [accountOperations2 ktAccountStatus:v10 idsAccountsTracker:idsAccountTracker error:&v68];
   v21 = v68;
 
   if ((v20 - 4) >= 2)
   {
     if (v20)
     {
-      v29 = 0;
+      accountStatus = 0;
       v30 = 0;
-      if (!a3)
+      if (!state)
       {
         goto LABEL_12;
       }
@@ -3205,26 +3205,26 @@ LABEL_22:
 
     else
     {
-      v31 = [(KTSMManager *)self readyComplete];
-      v32 = [(KTSMManager *)self deps];
-      v33 = [v32 settings];
-      [v33 uiBlockingNetworkTimeout];
-      [v31 wait:(v34 * 1000000000.0)];
+      readyComplete = [(KTSMManager *)self readyComplete];
+      deps5 = [(KTSMManager *)self deps];
+      settings = [deps5 settings];
+      [settings uiBlockingNetworkTimeout];
+      [readyComplete wait:(v34 * 1000000000.0)];
 
-      v35 = [(KTSMManager *)self deps];
-      v36 = [v35 stateMonitor];
-      v37 = [v36 ktStatus];
-      v29 = [v37 accountStatus];
+      deps6 = [(KTSMManager *)self deps];
+      stateMonitor = [deps6 stateMonitor];
+      ktStatus = [stateMonitor ktStatus];
+      accountStatus = [ktStatus accountStatus];
 
-      v30 = (v29 & 0xFFFFFFFFFFFFFFFELL) != 2;
-      if (!a3 || (v29 & 0xFFFFFFFFFFFFFFFELL) != 2)
+      v30 = (accountStatus & 0xFFFFFFFFFFFFFFFELL) != 2;
+      if (!state || (accountStatus & 0xFFFFFFFFFFFFFFFELL) != 2)
       {
 LABEL_12:
         v73[0] = @"cdp";
-        v38 = [NSNumber numberWithUnsignedInteger:v29];
+        v38 = [NSNumber numberWithUnsignedInteger:accountStatus];
         v73[1] = @"newState";
         v74[0] = v38;
-        v39 = [NSNumber numberWithUnsignedInteger:a3];
+        v39 = [NSNumber numberWithUnsignedInteger:state];
         v74[1] = v39;
         v40 = [NSDictionary dictionaryWithObjects:v74 forKeys:v73 count:2];
 
@@ -3234,7 +3234,7 @@ LABEL_12:
           v51 = +[TransparencyAnalytics logger];
           [v51 logResultForEvent:kTransparencyAnalyticsEventOptIn hardFailure:1 result:v45 withAttributes:v40];
 
-          v50 = [(KTSMManager *)self optOutWhenNotEligible:v62 error:a6];
+          v50 = [(KTSMManager *)self optOutWhenNotEligible:applicationCopy error:error];
 LABEL_38:
 
           goto LABEL_39;
@@ -3244,22 +3244,22 @@ LABEL_38:
         v42 = kTransparencyAnalyticsEventOptIn;
         [v41 logResultForEvent:kTransparencyAnalyticsEventOptIn hardFailure:0 result:0 withAttributes:v40];
 
-        v43 = [[KTOptInWatcher alloc] initWithTargetState:a3];
+        v43 = [[KTOptInWatcher alloc] initWithTargetState:state];
         *&buf = 0;
         *(&buf + 1) = &buf;
         v71 = 0x2020000000;
         v72 = 0;
-        v44 = [(KTSMManager *)self stateMachineQueue];
+        stateMachineQueue = [(KTSMManager *)self stateMachineQueue];
         block[0] = _NSConcreteStackBlock;
         block[1] = 3221225472;
         block[2] = sub_10005A67C;
         block[3] = &unk_10031B4B0;
         block[4] = self;
-        v65 = v62;
+        v65 = applicationCopy;
         p_buf = &buf;
         v45 = v43;
         v66 = v45;
-        dispatch_sync(v44, block);
+        dispatch_sync(stateMachineQueue, block);
 
         if (*(*(&buf + 1) + 24) == 1)
         {
@@ -3271,19 +3271,19 @@ LABEL_38:
         else
         {
           [(KTSMManager *)self triggerOptInStateChange];
-          v52 = [(KTOptInWatcher *)v45 targetResolved];
-          v53 = [v52 wait:120000000000] == 0;
+          targetResolved = [(KTOptInWatcher *)v45 targetResolved];
+          v53 = [targetResolved wait:120000000000] == 0;
 
           if (v53)
           {
-            v55 = [(KTOptInWatcher *)v45 error];
+            error = [(KTOptInWatcher *)v45 error];
 
-            if (!v55)
+            if (!error)
             {
               if ([(KTOptInWatcher *)v45 targetState]== 3)
               {
-                v60 = [(KTSMManager *)self statusReporting];
-                [v60 insertHasOptedInByDefaultWithValue:0 completionHandler:&stru_10031B4D0];
+                statusReporting = [(KTSMManager *)self statusReporting];
+                [statusReporting insertHasOptedInByDefaultWithValue:0 completionHandler:&stru_10031B4D0];
               }
 
               v56 = 0;
@@ -3292,31 +3292,31 @@ LABEL_38:
               goto LABEL_32;
             }
 
-            v54 = [(KTOptInWatcher *)v45 error];
+            error2 = [(KTOptInWatcher *)v45 error];
           }
 
           else
           {
-            v54 = [TransparencyError errorWithDomain:kTransparencyErrorInternal code:-343 underlyingError:0 description:@"timeout setting opt-in"];
+            error2 = [TransparencyError errorWithDomain:kTransparencyErrorInternal code:-343 underlyingError:0 description:@"timeout setting opt-in"];
           }
 
-          v46 = v54;
+          v46 = error2;
         }
 
         v50 = 0;
         v56 = v46 != 0;
-        if (a6 && v46)
+        if (error && v46)
         {
           v57 = v46;
           v50 = 0;
-          *a6 = v46;
+          *error = v46;
           v56 = 1;
         }
 
 LABEL_32:
-        if (a5)
+        if (data)
         {
-          *a5 = [(KTOptInWatcher *)v45 loggableData];
+          *data = [(KTOptInWatcher *)v45 loggableData];
         }
 
         +[TransparencyAnalytics logger];
@@ -3338,25 +3338,25 @@ LABEL_32:
 
   else
   {
-    v22 = [(KTSMManager *)self readyComplete];
-    v23 = [(KTSMManager *)self deps];
-    v24 = [v23 settings];
-    [v24 uiBlockingNetworkTimeout];
-    [v22 wait:(v25 * 1000000000.0)];
+    readyComplete2 = [(KTSMManager *)self readyComplete];
+    deps7 = [(KTSMManager *)self deps];
+    settings2 = [deps7 settings];
+    [settings2 uiBlockingNetworkTimeout];
+    [readyComplete2 wait:(v25 * 1000000000.0)];
 
-    v26 = [(KTSMManager *)self deps];
-    v27 = [v26 stateMonitor];
-    v28 = [v27 ktStatus];
-    v29 = [v28 accountStatus];
+    deps8 = [(KTSMManager *)self deps];
+    stateMonitor2 = [deps8 stateMonitor];
+    ktStatus2 = [stateMonitor2 ktStatus];
+    accountStatus = [ktStatus2 accountStatus];
 
-    v30 = (v29 & 0xFFFFFFFFFFFFFFFELL) != 2;
-    if (!a3)
+    v30 = (accountStatus & 0xFFFFFFFFFFFFFFFELL) != 2;
+    if (!state)
     {
       goto LABEL_12;
     }
   }
 
-  v40 = [TransparencyError errorWithDomain:kTransparencyErrorInternal code:-160 underlyingError:v21 description:@"Opt-in not allowed, account state: %d cdpState: %d", v20, v29];
+  v40 = [TransparencyError errorWithDomain:kTransparencyErrorInternal code:-160 underlyingError:v21 description:@"Opt-in not allowed, account state: %d cdpState: %d", v20, accountStatus];
   if (qword_10038BD00 != -1)
   {
     sub_10024A150();
@@ -3370,11 +3370,11 @@ LABEL_32:
     _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_ERROR, "Opt-in not allowed: %{public}@", &buf, 0xCu);
   }
 
-  if (a6)
+  if (error)
   {
     v49 = v40;
     v50 = 0;
-    *a6 = v40;
+    *error = v40;
   }
 
   else
@@ -3387,9 +3387,9 @@ LABEL_39:
   return v50;
 }
 
-- (void)timeout:(unint64_t)a3 block:(id)a4
+- (void)timeout:(unint64_t)timeout block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   if (qword_10038BD00 != -1)
   {
     sub_10024A178();
@@ -3399,63 +3399,63 @@ LABEL_39:
   if (os_log_type_enabled(qword_10038BD08, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v22 = a3;
+    timeoutCopy = timeout;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Setting a timer to watch for IDS registration timeouts - timeout %llu", buf, 0xCu);
   }
 
-  v8 = [(KTSMManager *)self queue];
-  v9 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v8);
+  queue = [(KTSMManager *)self queue];
+  v9 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
   [(KTSMManager *)self setTimer:v9];
 
-  v10 = [(KTSMManager *)self timer];
+  timer = [(KTSMManager *)self timer];
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_10005A97C;
   v18 = &unk_10031ABA0;
-  v19 = self;
-  v20 = v6;
-  v11 = v6;
-  dispatch_source_set_event_handler(v10, &v15);
+  selfCopy = self;
+  v20 = blockCopy;
+  v11 = blockCopy;
+  dispatch_source_set_event_handler(timer, &v15);
 
   v12 = [(KTSMManager *)self timer:v15];
-  v13 = dispatch_time(0, a3);
+  v13 = dispatch_time(0, timeout);
   dispatch_source_set_timer(v12, v13, 0xFFFFFFFFFFFFFFFFLL, 0x6FC23AC00uLL);
 
-  v14 = [(KTSMManager *)self timer];
-  dispatch_resume(v14);
+  timer2 = [(KTSMManager *)self timer];
+  dispatch_resume(timer2);
 }
 
-- (void)_waitForIDSRegistration:(BOOL)a3 complete:(id)a4
+- (void)_waitForIDSRegistration:(BOOL)registration complete:(id)complete
 {
-  v6 = a4;
-  v7 = [(KTSMManager *)self queue];
-  v8 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v7);
+  completeCopy = complete;
+  queue = [(KTSMManager *)self queue];
+  v8 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, queue);
   [(KTSMManager *)self setCheckIDSTimer:v8];
 
-  v9 = [(KTSMManager *)self checkIDSTimer];
+  checkIDSTimer = [(KTSMManager *)self checkIDSTimer];
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_10005ADF4;
   handler[3] = &unk_10031B5A0;
-  v18 = a3;
+  registrationCopy = registration;
   handler[4] = self;
-  v17 = v6;
-  v10 = v6;
-  dispatch_source_set_event_handler(v9, handler);
+  v17 = completeCopy;
+  v10 = completeCopy;
+  dispatch_source_set_event_handler(checkIDSTimer, handler);
 
-  v11 = [(KTSMManager *)self checkIDSTimer];
-  v12 = [(KTSMManager *)self deps];
-  v13 = [v12 idsOperations];
-  [v13 sleepTimeBetweenIDSCheckups];
-  dispatch_source_set_timer(v11, 0, (v14 * 1000000000.0), 0x2FAF080uLL);
+  checkIDSTimer2 = [(KTSMManager *)self checkIDSTimer];
+  deps = [(KTSMManager *)self deps];
+  idsOperations = [deps idsOperations];
+  [idsOperations sleepTimeBetweenIDSCheckups];
+  dispatch_source_set_timer(checkIDSTimer2, 0, (v14 * 1000000000.0), 0x2FAF080uLL);
 
-  v15 = [(KTSMManager *)self checkIDSTimer];
-  dispatch_resume(v15);
+  checkIDSTimer3 = [(KTSMManager *)self checkIDSTimer];
+  dispatch_resume(checkIDSTimer3);
 }
 
-- (void)checkIDSHealth:(BOOL)a3 complete:(id)a4
+- (void)checkIDSHealth:(BOOL)health complete:(id)complete
 {
-  v6 = a4;
+  completeCopy = complete;
   v7 = objc_alloc_init(CheckIDSRegistrationMonitor);
   objc_initWeak(&location, self);
   v18[0] = _NSConcreteStackBlock;
@@ -3463,7 +3463,7 @@ LABEL_39:
   v18[2] = sub_10005B32C;
   v18[3] = &unk_10031B5C8;
   objc_copyWeak(&v20, &location);
-  v21 = a3;
+  healthCopy = health;
   v8 = v7;
   v19 = v8;
   v9 = [KTStateTransitionGroupOperation named:@"check-ids-health" intending:@"Ready" errorState:@"Ready" withBlockTakingSelf:v18];
@@ -3471,32 +3471,32 @@ LABEL_39:
   v10 = [NSArray arrayWithObjects:&v23 count:1];
   v11 = [NSSet setWithArray:v10];
 
-  v12 = [(KTSMManager *)self stateMachine];
+  stateMachine = [(KTSMManager *)self stateMachine];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10005B414;
   v15[3] = &unk_10031B610;
-  v13 = v6;
+  v13 = completeCopy;
   v17 = v13;
   v14 = v8;
   v16 = v14;
-  [v12 doSimpleStateMachineRPC:@"check-ids" op:v9 sourceStates:v11 reply:v15];
+  [stateMachine doSimpleStateMachineRPC:@"check-ids" op:v9 sourceStates:v11 reply:v15];
 
   objc_destroyWeak(&v20);
   objc_destroyWeak(&location);
 }
 
-- (void)checkKTAccountKey:(id)a3 complete:(id)a4
+- (void)checkKTAccountKey:(id)key complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  completeCopy = complete;
   if (os_variant_allows_internal_security_policies())
   {
-    v8 = [(KTSMManager *)self deps];
-    v9 = [v8 settings];
-    v10 = [v9 ktSignaturePolicy];
+    deps = [(KTSMManager *)self deps];
+    settings = [deps settings];
+    ktSignaturePolicy = [settings ktSignaturePolicy];
 
-    if (v10 <= 8 && ((1 << v10) & 0x154) != 0)
+    if (ktSignaturePolicy <= 8 && ((1 << ktSignaturePolicy) & 0x154) != 0)
     {
       if (qword_10038BD00 != -1)
       {
@@ -3507,13 +3507,13 @@ LABEL_39:
       if (os_log_type_enabled(qword_10038BD08, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 67109120;
-        v17 = v10;
+        v17 = ktSignaturePolicy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "signaturePolicy: clearing signature policy: %d", &v16, 8u);
       }
 
-      v12 = [(KTSMManager *)self deps];
-      v13 = [v12 settings];
-      [v13 clearKTSignaturePolicy];
+      deps2 = [(KTSMManager *)self deps];
+      settings2 = [deps2 settings];
+      [settings2 clearKTSignaturePolicy];
     }
 
     else
@@ -3527,50 +3527,50 @@ LABEL_39:
       if (os_log_type_enabled(qword_10038BD08, OS_LOG_TYPE_DEFAULT))
       {
         v16 = 67109120;
-        v17 = v10;
+        v17 = ktSignaturePolicy;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "signaturePolicy: leaving policy in place: %d", &v16, 8u);
       }
     }
   }
 
-  [(KTSMManager *)self idsServerReportKTKeyWrong:v6];
-  v14 = [(KTSMManager *)self checkKTAccountKeyScheduler];
-  [v14 trigger];
+  [(KTSMManager *)self idsServerReportKTKeyWrong:keyCopy];
+  checkKTAccountKeyScheduler = [(KTSMManager *)self checkKTAccountKeyScheduler];
+  [checkKTAccountKeyScheduler trigger];
 
-  v7[2](v7, 0);
+  completeCopy[2](completeCopy, 0);
 }
 
-- (void)refreshDeviceList:(id)a3
+- (void)refreshDeviceList:(id)list
 {
-  v10 = a3;
-  v4 = [(KTSMManager *)self specificUser];
-  v5 = v4;
-  if (v4 && ([v4 altDSID], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  listCopy = list;
+  specificUser = [(KTSMManager *)self specificUser];
+  v5 = specificUser;
+  if (specificUser && ([specificUser altDSID], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
-    v7 = [(KTSMManager *)self deps];
-    v8 = [v7 idmsOperations];
-    v9 = [v5 altDSID];
-    [v8 refreshDeviceList:v9 complete:v10];
+    deps = [(KTSMManager *)self deps];
+    idmsOperations = [deps idmsOperations];
+    altDSID = [v5 altDSID];
+    [idmsOperations refreshDeviceList:altDSID complete:listCopy];
   }
 
   else
   {
-    v7 = [TransparencyError errorWithDomain:kTransparencyErrorInternal code:-339 description:@"No specific user available yet"];
-    v10[2](v10, 0, v7);
+    deps = [TransparencyError errorWithDomain:kTransparencyErrorInternal code:-339 description:@"No specific user available yet"];
+    listCopy[2](listCopy, 0, deps);
   }
 }
 
-- (void)clearIDSCacheForUri:(id)a3 application:(id)a4
+- (void)clearIDSCacheForUri:(id)uri application:(id)application
 {
-  v6 = a4;
-  v7 = [TransparencyApplication stripApplicationPrefixForIdentifier:v6 uri:a3];
+  applicationCopy = application;
+  v7 = [TransparencyApplication stripApplicationPrefixForIdentifier:applicationCopy uri:uri];
   v8 = [[IDSURI alloc] initWithPrefixedURI:v7];
   v9 = objc_alloc_init(IDSCacheClearRequestContext);
   v17 = v8;
   v10 = [NSArray arrayWithObjects:&v17 count:1];
   [v9 setUris:v10];
 
-  v11 = [TransparencyApplication idsServiceForIdentifier:v6];
+  v11 = [TransparencyApplication idsServiceForIdentifier:applicationCopy];
 
   [v9 setService:v11];
   v12 = objc_alloc_init(IDSCacheClearRequest);
@@ -3578,15 +3578,15 @@ LABEL_39:
   v13 = [NSArray arrayWithObjects:&v16 count:1];
   [v12 setRequestContexts:v13];
 
-  v14 = [(KTSMManager *)self deps];
-  v15 = [v14 idsOperations];
-  [v15 cacheClearRequest:v12];
+  deps = [(KTSMManager *)self deps];
+  idsOperations = [deps idsOperations];
+  [idsOperations cacheClearRequest:v12];
 }
 
-- (void)transparencyGetKTSignatures:(id)a3 complete:(id)a4
+- (void)transparencyGetKTSignatures:(id)signatures complete:(id)complete
 {
-  v6 = a3;
-  v7 = a4;
+  signaturesCopy = signatures;
+  completeCopy = complete;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
@@ -3601,49 +3601,49 @@ LABEL_39:
   v8 = qword_10038BD08;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v6 requests];
-    v10 = [v9 count];
-    v11 = [v6 traceUUID];
+    requests = [signaturesCopy requests];
+    v10 = [requests count];
+    traceUUID = [signaturesCopy traceUUID];
     *buf = 67109378;
     v24 = v10;
     v25 = 2114;
-    v26 = v11;
+    v26 = traceUUID;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Getting signature request: %d: %{public}@", buf, 0x12u);
   }
 
   [(KTSMManager *)self addEvent:@"GettingSignatureRequest"];
-  v12 = [(KTSMManager *)self signatureQueue];
+  signatureQueue = [(KTSMManager *)self signatureQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005BDBC;
   block[3] = &unk_100316FE0;
   block[4] = self;
-  dispatch_async(v12, block);
+  dispatch_async(signatureQueue, block);
 
-  v13 = [(KTSMManager *)self deps];
+  deps = [(KTSMManager *)self deps];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10005BDC8;
   v16[3] = &unk_10031B768;
   v16[4] = self;
   v19 = v21;
-  v14 = v6;
+  v14 = signaturesCopy;
   v17 = v14;
-  v15 = v7;
+  v15 = completeCopy;
   v18 = v15;
-  [KTEnrollmentSignatureSupport updateClientData:v14 deps:v13 complete:v16];
+  [KTEnrollmentSignatureSupport updateClientData:v14 deps:deps complete:v16];
 
   _Block_object_dispose(v21, 8);
 }
 
-- (void)fillUploadedRdata:(id)a3 withRegistrationData:(id)a4
+- (void)fillUploadedRdata:(id)rdata withRegistrationData:(id)data
 {
-  v53 = a3;
+  rdataCopy = rdata;
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  obj = [a4 objectEnumerator];
+  obj = [data objectEnumerator];
   v6 = [obj countByEnumeratingWithState:&v70 objects:v80 count:16];
   if (v6)
   {
@@ -3662,19 +3662,19 @@ LABEL_39:
         }
 
         v11 = *(*(&v70 + 1) + 8 * v10);
-        v12 = [(KTSMManager *)self deps];
-        v13 = [v12 cloudRecords];
-        v14 = [v11 pushToken];
-        v15 = [v11 tbsKTIDSRegistrationData];
-        v16 = [v13 fetchCloudDeviceWithPushToken:v14 tbsRegistrationData:v15];
+        deps = [(KTSMManager *)self deps];
+        cloudRecords = [deps cloudRecords];
+        pushToken = [v11 pushToken];
+        tbsKTIDSRegistrationData = [v11 tbsKTIDSRegistrationData];
+        v16 = [cloudRecords fetchCloudDeviceWithPushToken:pushToken tbsRegistrationData:tbsKTIDSRegistrationData];
 
-        v17 = [v16 uploadedToCKAt];
-        [v11 setUploadedToCKAt:v17];
+        uploadedToCKAt = [v16 uploadedToCKAt];
+        [v11 setUploadedToCKAt:uploadedToCKAt];
 
         if (([v16 stateReady] & 1) != 0 || (-[KTSMManager deps](self, "deps"), v18 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v18, "cloudRecords"), v19 = objc_claimAutoreleasedReturnValue(), v19, v18, !v19))
         {
-          v21 = [v11 application];
-          [v53 setValue:v11 forKey:v21];
+          application = [v11 application];
+          [rdataCopy setValue:v11 forKey:application];
           goto LABEL_13;
         }
 
@@ -3686,11 +3686,11 @@ LABEL_39:
         v20 = qword_10038BD08;
         if (os_log_type_enabled(qword_10038BD08, OS_LOG_TYPE_DEFAULT))
         {
-          v21 = v20;
-          v22 = [v11 application];
+          application = v20;
+          application2 = [v11 application];
           *buf = v51;
-          v79 = v22;
-          _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "updateClientData callback: Skipping rdata for application %{public}@ because it has not been uploaded to CloudKit", buf, 0xCu);
+          v79 = application2;
+          _os_log_impl(&_mh_execute_header, application, OS_LOG_TYPE_DEFAULT, "updateClientData callback: Skipping rdata for application %{public}@ because it has not been uploaded to CloudKit", buf, 0xCu);
 
 LABEL_13:
         }
@@ -3707,13 +3707,13 @@ LABEL_13:
 
   if (os_variant_allows_internal_security_policies())
   {
-    v23 = [(KTSMManager *)self deps];
-    v24 = [v23 settings];
-    v25 = [v24 ktSignaturePolicy];
+    deps2 = [(KTSMManager *)self deps];
+    settings = [deps2 settings];
+    ktSignaturePolicy = [settings ktSignaturePolicy];
 
-    if (v25 <= 8)
+    if (ktSignaturePolicy <= 8)
     {
-      if (((1 << v25) & 0x18) != 0)
+      if (((1 << ktSignaturePolicy) & 0x18) != 0)
       {
         if (qword_10038BD00 != -1)
         {
@@ -3731,8 +3731,8 @@ LABEL_13:
         v65 = 0u;
         v62 = 0u;
         v63 = 0u;
-        v27 = [v53 objectEnumerator];
-        v45 = [v27 countByEnumeratingWithState:&v62 objects:v76 count:16];
+        objectEnumerator = [rdataCopy objectEnumerator];
+        v45 = [objectEnumerator countByEnumeratingWithState:&v62 objects:v76 count:16];
         if (v45)
         {
           v46 = v45;
@@ -3743,7 +3743,7 @@ LABEL_13:
             {
               if (*v63 != v47)
               {
-                objc_enumerationMutation(v27);
+                objc_enumerationMutation(objectEnumerator);
               }
 
               v49 = *(*(&v62 + 1) + 8 * i);
@@ -3751,7 +3751,7 @@ LABEL_13:
               [v49 setPublicKey:v50];
             }
 
-            v46 = [v27 countByEnumeratingWithState:&v62 objects:v76 count:16];
+            v46 = [objectEnumerator countByEnumeratingWithState:&v62 objects:v76 count:16];
           }
 
           while (v46);
@@ -3760,7 +3760,7 @@ LABEL_13:
         goto LABEL_69;
       }
 
-      if (((1 << v25) & 0x60) != 0)
+      if (((1 << ktSignaturePolicy) & 0x60) != 0)
       {
         if (qword_10038BD00 != -1)
         {
@@ -3778,8 +3778,8 @@ LABEL_13:
         v61 = 0u;
         v58 = 0u;
         v59 = 0u;
-        v27 = [v53 objectEnumerator];
-        v40 = [v27 countByEnumeratingWithState:&v58 objects:v75 count:16];
+        objectEnumerator = [rdataCopy objectEnumerator];
+        v40 = [objectEnumerator countByEnumeratingWithState:&v58 objects:v75 count:16];
         if (v40)
         {
           v41 = v40;
@@ -3790,13 +3790,13 @@ LABEL_13:
             {
               if (*v59 != v42)
               {
-                objc_enumerationMutation(v27);
+                objc_enumerationMutation(objectEnumerator);
               }
 
               [*(*(&v58 + 1) + 8 * j) setSignature:0];
             }
 
-            v41 = [v27 countByEnumeratingWithState:&v58 objects:v75 count:16];
+            v41 = [objectEnumerator countByEnumeratingWithState:&v58 objects:v75 count:16];
           }
 
           while (v41);
@@ -3805,7 +3805,7 @@ LABEL_13:
         goto LABEL_69;
       }
 
-      if (((1 << v25) & 0x180) != 0)
+      if (((1 << ktSignaturePolicy) & 0x180) != 0)
       {
         if (qword_10038BD00 != -1)
         {
@@ -3823,8 +3823,8 @@ LABEL_13:
         v57 = 0u;
         v54 = 0u;
         v55 = 0u;
-        v27 = [v53 objectEnumerator];
-        v28 = [v27 countByEnumeratingWithState:&v54 objects:v74 count:16];
+        objectEnumerator = [rdataCopy objectEnumerator];
+        v28 = [objectEnumerator countByEnumeratingWithState:&v54 objects:v74 count:16];
         if (v28)
         {
           v29 = v28;
@@ -3835,13 +3835,13 @@ LABEL_13:
             {
               if (*v55 != v30)
               {
-                objc_enumerationMutation(v27);
+                objc_enumerationMutation(objectEnumerator);
               }
 
               [*(*(&v54 + 1) + 8 * k) setPublicKey:0];
             }
 
-            v29 = [v27 countByEnumeratingWithState:&v54 objects:v74 count:16];
+            v29 = [objectEnumerator countByEnumeratingWithState:&v54 objects:v74 count:16];
           }
 
           while (v29);
@@ -3853,7 +3853,7 @@ LABEL_69:
       }
     }
 
-    if (v25 - 1 < 2)
+    if (ktSignaturePolicy - 1 < 2)
     {
       if (qword_10038BD00 != -1)
       {
@@ -3871,8 +3871,8 @@ LABEL_69:
       v69 = 0u;
       v66 = 0u;
       v67 = 0u;
-      v27 = [v53 objectEnumerator];
-      v33 = [v27 countByEnumeratingWithState:&v66 objects:v77 count:16];
+      objectEnumerator = [rdataCopy objectEnumerator];
+      v33 = [objectEnumerator countByEnumeratingWithState:&v66 objects:v77 count:16];
       if (v33)
       {
         v34 = v33;
@@ -3883,7 +3883,7 @@ LABEL_69:
           {
             if (*v67 != v35)
             {
-              objc_enumerationMutation(v27);
+              objc_enumerationMutation(objectEnumerator);
             }
 
             v37 = *(*(&v66 + 1) + 8 * m);
@@ -3891,7 +3891,7 @@ LABEL_69:
             [v37 setSignature:v38];
           }
 
-          v34 = [v27 countByEnumeratingWithState:&v66 objects:v77 count:16];
+          v34 = [objectEnumerator countByEnumeratingWithState:&v66 objects:v77 count:16];
         }
 
         while (v34);
@@ -3904,266 +3904,266 @@ LABEL_69:
 LABEL_70:
 }
 
-- (void)transparencyDumpKTRegistrationData:(id)a3
+- (void)transparencyDumpKTRegistrationData:(id)data
 {
-  v4 = a3;
-  v5 = [(KTSMManager *)self deps];
-  v6 = [v5 smDataStore];
+  dataCopy = data;
+  deps = [(KTSMManager *)self deps];
+  smDataStore = [deps smDataStore];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10005CF04;
   v8[3] = &unk_1003176B8;
-  v9 = v4;
-  v7 = v4;
-  [v6 fetchDeviceSignature:0 complete:v8];
+  v9 = dataCopy;
+  v7 = dataCopy;
+  [smDataStore fetchDeviceSignature:0 complete:v8];
 }
 
-- (void)transparencyClearKTRegistrationData:(id)a3
+- (void)transparencyClearKTRegistrationData:(id)data
 {
-  v4 = a3;
-  v5 = [(KTSMManager *)self deps];
-  v6 = [v5 smDataStore];
+  dataCopy = data;
+  deps = [(KTSMManager *)self deps];
+  smDataStore = [deps smDataStore];
   v8 = 0;
-  [v6 clearDeviceSignatures:&v8];
+  [smDataStore clearDeviceSignatures:&v8];
   v7 = v8;
 
-  v4[2](v4, v7);
+  dataCopy[2](dataCopy, v7);
 }
 
-- (void)transparencyPerformRegistrationSignature:(id)a3
+- (void)transparencyPerformRegistrationSignature:(id)signature
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10005D0C4;
   v4[3] = &unk_10031B610;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(KTSMManager *)v5 performRegistrationSignatures:v4];
+  selfCopy = self;
+  signatureCopy = signature;
+  v3 = signatureCopy;
+  [(KTSMManager *)selfCopy performRegistrationSignatures:v4];
 }
 
-- (void)transparencyCloudDevices:(id)a3
+- (void)transparencyCloudDevices:(id)devices
 {
-  v9 = a3;
-  v4 = [(KTSMManager *)self deps];
-  v5 = [v4 cloudRecords];
+  devicesCopy = devices;
+  deps = [(KTSMManager *)self deps];
+  cloudRecords = [deps cloudRecords];
 
-  if (v5)
+  if (cloudRecords)
   {
-    v6 = [(KTSMManager *)self deps];
-    v7 = [v6 cloudRecords];
-    v8 = [v7 cloudDevices];
+    deps2 = [(KTSMManager *)self deps];
+    cloudRecords2 = [deps2 cloudRecords];
+    cloudDevices = [cloudRecords2 cloudDevices];
 
-    v9[2](v9, v8, 0);
+    devicesCopy[2](devicesCopy, cloudDevices, 0);
   }
 
   else
   {
-    v9[2](v9, 0, 0);
+    devicesCopy[2](devicesCopy, 0, 0);
   }
 }
 
 - (void)setCloudKitOutgoingFlag
 {
   v3 = [KTPendingFlag alloc];
-  v4 = [(KTSMManager *)self deps];
-  v5 = [v4 cloudKitOutgoingNFS];
-  v10 = [(KTPendingFlag *)v3 initWithFlag:@"CloudKitOutgoing" conditions:2 scheduler:v5];
+  deps = [(KTSMManager *)self deps];
+  cloudKitOutgoingNFS = [deps cloudKitOutgoingNFS];
+  v10 = [(KTPendingFlag *)v3 initWithFlag:@"CloudKitOutgoing" conditions:2 scheduler:cloudKitOutgoingNFS];
 
-  v6 = [(KTSMManager *)self deps];
-  v7 = [v6 flagHandler];
-  [v7 handlePendingFlag:v10];
+  deps2 = [(KTSMManager *)self deps];
+  flagHandler = [deps2 flagHandler];
+  [flagHandler handlePendingFlag:v10];
 
-  v8 = [(KTSMManager *)self deps];
-  v9 = [v8 cloudKitOutgoingNFS];
-  [v9 trigger];
+  deps3 = [(KTSMManager *)self deps];
+  cloudKitOutgoingNFS2 = [deps3 cloudKitOutgoingNFS];
+  [cloudKitOutgoingNFS2 trigger];
 }
 
-- (void)transparencyCloudDeviceAdd:(id)a3 clientData:(id)a4 complete:(id)a5
+- (void)transparencyCloudDeviceAdd:(id)add clientData:(id)data complete:(id)complete
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(KTSMManager *)self deps];
-  v12 = [v11 cloudRecords];
+  addCopy = add;
+  dataCopy = data;
+  completeCopy = complete;
+  deps = [(KTSMManager *)self deps];
+  cloudRecords = [deps cloudRecords];
 
-  if (v12)
+  if (cloudRecords)
   {
-    v13 = [(KTSMManager *)self deps];
-    v14 = [v13 cloudRecords];
+    deps2 = [(KTSMManager *)self deps];
+    cloudRecords2 = [deps2 cloudRecords];
     v16 = 0;
-    [v14 addDevice:v8 clientData:v9 error:&v16];
+    [cloudRecords2 addDevice:addCopy clientData:dataCopy error:&v16];
     v15 = v16;
 
     [(KTSMManager *)self setCloudKitOutgoingFlag];
-    v10[2](v10, v15);
+    completeCopy[2](completeCopy, v15);
   }
 
   else
   {
-    v10[2](v10, 0);
+    completeCopy[2](completeCopy, 0);
   }
 }
 
-- (void)transparencyCloudDeviceRemove:(id)a3 clientData:(id)a4 complete:(id)a5
+- (void)transparencyCloudDeviceRemove:(id)remove clientData:(id)data complete:(id)complete
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(KTSMManager *)self deps];
-  v12 = [v11 cloudRecords];
+  removeCopy = remove;
+  dataCopy = data;
+  completeCopy = complete;
+  deps = [(KTSMManager *)self deps];
+  cloudRecords = [deps cloudRecords];
 
-  if (v12)
+  if (cloudRecords)
   {
-    v13 = [(KTSMManager *)self deps];
-    v14 = [v13 cloudRecords];
+    deps2 = [(KTSMManager *)self deps];
+    cloudRecords2 = [deps2 cloudRecords];
     v16 = 0;
-    [v14 removeDevice:v8 clientData:v9 error:&v16];
+    [cloudRecords2 removeDevice:removeCopy clientData:dataCopy error:&v16];
     v15 = v16;
 
     [(KTSMManager *)self setCloudKitOutgoingFlag];
-    v10[2](v10, v15);
+    completeCopy[2](completeCopy, v15);
   }
 
   else
   {
-    v10[2](v10, 0);
+    completeCopy[2](completeCopy, 0);
   }
 }
 
-- (void)getOptInStateForAccount:(id)a3 complete:(id)a4
+- (void)getOptInStateForAccount:(id)account complete:(id)complete
 {
-  v5 = a4;
-  v6 = [(KTSMManager *)self deps];
-  v7 = [v6 cloudRecords];
+  completeCopy = complete;
+  deps = [(KTSMManager *)self deps];
+  cloudRecords = [deps cloudRecords];
 
-  if (v7)
+  if (cloudRecords)
   {
-    v8 = [v7 getAllOptInStates];
-    if (v8)
+    getAllOptInStates = [cloudRecords getAllOptInStates];
+    if (getAllOptInStates)
     {
-      v9 = [[_TtC13transparencyd16KTOptIOValidator alloc] initWithOptInRecords:v8 uriToSMT:&__NSDictionary0__struct];
+      v9 = [[_TtC13transparencyd16KTOptIOValidator alloc] initWithOptInRecords:getAllOptInStates uriToSMT:&__NSDictionary0__struct];
       v12 = 0;
       v10 = [(KTOptIOValidator *)v9 evaluateCloudDataWithApplication:@"IDS" error:&v12];
       v11 = v12;
-      v5[2](v5, v10, v11);
+      completeCopy[2](completeCopy, v10, v11);
     }
 
     else
     {
-      v5[2](v5, 0, 0);
+      completeCopy[2](completeCopy, 0, 0);
     }
   }
 
   else
   {
-    v5[2](v5, 0, 0);
+    completeCopy[2](completeCopy, 0, 0);
   }
 }
 
-- (void)getOptInForURI:(id)a3 application:(id)a4 complete:(id)a5
+- (void)getOptInForURI:(id)i application:(id)application complete:(id)complete
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(KTSMManager *)self deps];
-  v11 = [v10 cloudRecords];
+  iCopy = i;
+  applicationCopy = application;
+  completeCopy = complete;
+  deps = [(KTSMManager *)self deps];
+  cloudRecords = [deps cloudRecords];
 
-  if (v11)
+  if (cloudRecords)
   {
-    v12 = [v11 getOptInStateWithUri:v13 application:v8];
-    v9[2](v9, v12, 0);
+    v12 = [cloudRecords getOptInStateWithUri:iCopy application:applicationCopy];
+    completeCopy[2](completeCopy, v12, 0);
   }
 
   else
   {
-    v9[2](v9, 0, 0);
+    completeCopy[2](completeCopy, 0, 0);
   }
 }
 
-- (void)getAllOptInStates:(id)a3
+- (void)getAllOptInStates:(id)states
 {
-  v7 = a3;
-  v4 = [(KTSMManager *)self deps];
-  v5 = [v4 cloudRecords];
+  statesCopy = states;
+  deps = [(KTSMManager *)self deps];
+  cloudRecords = [deps cloudRecords];
 
-  if (v5)
+  if (cloudRecords)
   {
-    v6 = [v5 getAllOptInStates];
-    v7[2](v7, v6, 0);
+    getAllOptInStates = [cloudRecords getAllOptInStates];
+    statesCopy[2](statesCopy, getAllOptInStates, 0);
   }
 
   else
   {
-    v7[2](v7, 0, 0);
+    statesCopy[2](statesCopy, 0, 0);
   }
 }
 
-- (void)getOptInStateForApplication:(id)a3 complete:(id)a4
+- (void)getOptInStateForApplication:(id)application complete:(id)complete
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(KTSMManager *)self deps];
-  v8 = [v7 cloudRecords];
+  applicationCopy = application;
+  completeCopy = complete;
+  deps = [(KTSMManager *)self deps];
+  cloudRecords = [deps cloudRecords];
 
-  if (v8)
+  if (cloudRecords)
   {
-    v9 = [v8 getAggregateOptInStateForApplication:v10];
-    v6[2](v6, v9, 0);
+    v9 = [cloudRecords getAggregateOptInStateForApplication:applicationCopy];
+    completeCopy[2](completeCopy, v9, 0);
   }
 
   else
   {
-    v6[2](v6, 0, 0);
+    completeCopy[2](completeCopy, 0, 0);
   }
 }
 
-- (void)clearOptInStateForURI:(id)a3 application:(id)a4 complete:(id)a5
+- (void)clearOptInStateForURI:(id)i application:(id)application complete:(id)complete
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(KTSMManager *)self deps];
-  v12 = [v11 cloudRecords];
+  iCopy = i;
+  applicationCopy = application;
+  completeCopy = complete;
+  deps = [(KTSMManager *)self deps];
+  cloudRecords = [deps cloudRecords];
 
-  if (v12)
+  if (cloudRecords)
   {
     v15 = 0;
-    v13 = [v12 clearOptInStateForURI:v8 application:v9 error:&v15];
+    v13 = [cloudRecords clearOptInStateForURI:iCopy application:applicationCopy error:&v15];
     v14 = v15;
-    v10[2](v10, v13, v14);
+    completeCopy[2](completeCopy, v13, v14);
   }
 
   else
   {
-    v10[2](v10, 0, 0);
+    completeCopy[2](completeCopy, 0, 0);
   }
 }
 
 - (void)resetLocalCloudDataState
 {
   v7 = [KTStateTransitionOperation named:@"cloud-data-reset" entering:@"ResetLocalCloudState"];
-  v3 = [(KTSMManager *)self stateMachine];
+  stateMachine = [(KTSMManager *)self stateMachine];
   v4 = +[KTStates KTStateMap];
-  v5 = [v4 allKeys];
-  v6 = [NSSet setWithArray:v5];
-  [v3 doSimpleStateMachineRPC:@"cloud-data-reset" op:v7 sourceStates:v6 reply:&stru_10031B848];
+  allKeys = [v4 allKeys];
+  v6 = [NSSet setWithArray:allKeys];
+  [stateMachine doSimpleStateMachineRPC:@"cloud-data-reset" op:v7 sourceStates:v6 reply:&stru_10031B848];
 }
 
 - (void)resetCloudStore
 {
   v7 = [KTStateTransitionOperation named:@"cloud-data-reset" entering:@"KTStateResetCloudStore"];
-  v3 = [(KTSMManager *)self stateMachine];
+  stateMachine = [(KTSMManager *)self stateMachine];
   v4 = +[KTStates KTStateMap];
-  v5 = [v4 allKeys];
-  v6 = [NSSet setWithArray:v5];
-  [v3 doSimpleStateMachineRPC:@"cloud-store-reset" op:v7 sourceStates:v6 reply:&stru_10031B888];
+  allKeys = [v4 allKeys];
+  v6 = [NSSet setWithArray:allKeys];
+  [stateMachine doSimpleStateMachineRPC:@"cloud-store-reset" op:v7 sourceStates:v6 reply:&stru_10031B888];
 }
 
-- (void)uriNeedsUpdate:(id)a3 forApplication:(id)a4
+- (void)uriNeedsUpdate:(id)update forApplication:(id)application
 {
-  v5 = a3;
-  v6 = a4;
+  updateCopy = update;
+  applicationCopy = application;
   if (qword_10038BD00 != -1)
   {
     sub_10024A3A8();
@@ -4173,17 +4173,17 @@ LABEL_70:
   if (os_log_type_enabled(qword_10038BD08, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412546;
-    v9 = v5;
+    v9 = updateCopy;
     v10 = 2112;
-    v11 = v6;
+    v11 = applicationCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "uriNeedsUpdate: %@[%@]", &v8, 0x16u);
   }
 }
 
-- (void)inspectErrorForRetryAfter:(id)a3 trigger:(id)a4
+- (void)inspectErrorForRetryAfter:(id)after trigger:(id)trigger
 {
-  v5 = a3;
-  v6 = a4;
+  afterCopy = after;
+  triggerCopy = trigger;
   CKRetryAfterSecondsForError();
   if (v7 != 0.0)
   {
@@ -4198,17 +4198,17 @@ LABEL_70:
     if (os_log_type_enabled(qword_10038BD08, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [v6 name];
+      name = [triggerCopy name];
       v13 = 138412802;
-      v14 = v12;
+      v14 = name;
       v15 = 2048;
       v16 = v8;
       v17 = 2112;
-      v18 = v5;
+      v18 = afterCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "CK operation failed, scheduling %@ delay for %.1f seconds: %@", &v13, 0x20u);
     }
 
-    [v6 waitUntil:v9];
+    [triggerCopy waitUntil:v9];
   }
 }
 
@@ -4229,8 +4229,8 @@ LABEL_70:
   if (_os_feature_enabled_impl())
   {
     v4 = [[KTPendingFlag alloc] initWithFlag:@"IDSServerBagChanged" conditions:0 delayInSeconds:0.0];
-    v5 = [(KTSMManager *)self stateMachine];
-    [v5 handlePendingFlag:v4];
+    stateMachine = [(KTSMManager *)self stateMachine];
+    [stateMachine handlePendingFlag:v4];
   }
 
   else
@@ -4249,32 +4249,32 @@ LABEL_70:
   }
 }
 
-- (void)triggerCheckCKKSOctagonEligibilityWithCompletion:(id)a3
+- (void)triggerCheckCKKSOctagonEligibilityWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(KTSMManager *)self eligibilityQueue];
+  completionCopy = completion;
+  eligibilityQueue = [(KTSMManager *)self eligibilityQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10005E558;
   v7[3] = &unk_10031ABA0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_async(eligibilityQueue, v7);
 }
 
-- (void)storeEligiblilitySuccess:(id)a3
+- (void)storeEligiblilitySuccess:(id)success
 {
-  v4 = a3;
+  successCopy = success;
   if (_os_feature_enabled_impl())
   {
-    v5 = [(KTSMManager *)self statusReporting];
+    statusReporting = [(KTSMManager *)self statusReporting];
 
-    if (v5)
+    if (statusReporting)
     {
-      v6 = [_TtC13transparencyd25KTEligibilityStatusResult statusResultWithSuccessWithElement:v4];
-      v7 = [(KTSMManager *)self statusReporting];
-      [v7 storeWithStatus:v6 completionHandler:&stru_10031B988];
+      v6 = [_TtC13transparencyd25KTEligibilityStatusResult statusResultWithSuccessWithElement:successCopy];
+      statusReporting2 = [(KTSMManager *)self statusReporting];
+      [statusReporting2 storeWithStatus:v6 completionHandler:&stru_10031B988];
     }
 
     else
@@ -4294,19 +4294,19 @@ LABEL_70:
   }
 }
 
-- (void)storeEligiblilityFailure:(id)a3 error:(id)a4
+- (void)storeEligiblilityFailure:(id)failure error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  failureCopy = failure;
+  errorCopy = error;
   if (_os_feature_enabled_impl())
   {
-    v8 = [(KTSMManager *)self statusReporting];
+    statusReporting = [(KTSMManager *)self statusReporting];
 
-    if (v8)
+    if (statusReporting)
     {
-      v9 = [_TtC13transparencyd25KTEligibilityStatusResult statusResultWithFailureWithElement:v6 error:v7];
-      v10 = [(KTSMManager *)self statusReporting];
-      [v10 storeWithStatus:v9 completionHandler:&stru_10031B9E8];
+      v9 = [_TtC13transparencyd25KTEligibilityStatusResult statusResultWithFailureWithElement:failureCopy error:errorCopy];
+      statusReporting2 = [(KTSMManager *)self statusReporting];
+      [statusReporting2 storeWithStatus:v9 completionHandler:&stru_10031B9E8];
     }
 
     else
@@ -4326,9 +4326,9 @@ LABEL_70:
   }
 }
 
-- (void)triggerMaybeReportEligibilityWithCompletion:(id)a3
+- (void)triggerMaybeReportEligibilityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     if (qword_10038BD00 != -1)
@@ -4349,54 +4349,54 @@ LABEL_70:
     goto LABEL_10;
   }
 
-  v5 = [(KTSMManager *)self statusReporting];
+  statusReporting = [(KTSMManager *)self statusReporting];
 
-  if (!v5)
+  if (!statusReporting)
   {
     v8 = kTransparencyErrorInternal;
     v9 = @"State Machine not initialized yet, can't run eligibility commands";
     v10 = -367;
 LABEL_10:
     v11 = [TransparencyError errorWithDomain:v8 code:v10 description:v9];
-    v4[2](v4, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
 
     goto LABEL_11;
   }
 
-  v6 = [(KTSMManager *)self statusReporting];
+  statusReporting2 = [(KTSMManager *)self statusReporting];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10005ED60;
   v12[3] = &unk_10031BB20;
   v12[4] = self;
-  v13 = v4;
-  [v6 timeOfLastReportWithCompletionHandler:v12];
+  v13 = completionCopy;
+  [statusReporting2 timeOfLastReportWithCompletionHandler:v12];
 
 LABEL_11:
 }
 
-- (void)tryOptInByDefaultWithCompletionHandler:(id)a3
+- (void)tryOptInByDefaultWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(KTSMManager *)self deps];
-  v6 = [v5 eligibilitySupport];
-  v7 = [v6 allowKTEnableByDefault];
+  handlerCopy = handler;
+  deps = [(KTSMManager *)self deps];
+  eligibilitySupport = [deps eligibilitySupport];
+  allowKTEnableByDefault = [eligibilitySupport allowKTEnableByDefault];
 
-  if ((v7 & 1) == 0)
+  if ((allowKTEnableByDefault & 1) == 0)
   {
     v19 = kTransparencyErrorEligibility;
     v20 = @"KTEnableByDefault feature flag is not enabled";
     v21 = 9;
 LABEL_10:
     v22 = [TransparencyError errorWithDomain:v19 code:v21 description:v20];
-    v4[2](v4, 0, v22);
+    handlerCopy[2](handlerCopy, 0, v22);
 
     goto LABEL_11;
   }
 
-  v8 = [(KTSMManager *)self statusReporting];
+  statusReporting = [(KTSMManager *)self statusReporting];
 
-  if (!v8)
+  if (!statusReporting)
   {
     v19 = kTransparencyErrorInternal;
     v20 = @"State Machine not initialized yet, can't run eligibility commands";
@@ -4404,117 +4404,117 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  v9 = [(KTSMManager *)self deps];
-  v10 = [v9 accountOperations];
+  deps2 = [(KTSMManager *)self deps];
+  accountOperations = [deps2 accountOperations];
   v26 = 0;
-  v11 = [v10 primaryAccount:&v26];
+  v11 = [accountOperations primaryAccount:&v26];
   v12 = v26;
 
   if (v11 && (-[KTSMManager deps](self, "deps"), v13 = objc_claimAutoreleasedReturnValue(), [v13 accountOperations], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "accountLevel:", v11), v14, v13, v15 == 4))
   {
     v16 = +[TransparencySettings deviceUserAgent];
-    v17 = [(KTSMManager *)self statusReporting];
+    statusReporting2 = [(KTSMManager *)self statusReporting];
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = sub_10005F5F4;
     v23[3] = &unk_10031BBC8;
     v23[4] = self;
     v24 = v16;
-    v25 = v4;
+    v25 = handlerCopy;
     v18 = v16;
-    [v17 osVersionWithCompletionHandler:v23];
+    [statusReporting2 osVersionWithCompletionHandler:v23];
   }
 
   else
   {
     v18 = [TransparencyError errorWithDomain:kTransparencyErrorEligibility code:12 description:@"Account nil or not HSA2, can't opt in"];
-    v4[2](v4, 0, v18);
+    handlerCopy[2](handlerCopy, 0, v18);
   }
 
 LABEL_11:
 }
 
-- (void)triggerReportAndMaybeOptInWithCompletion:(id)a3
+- (void)triggerReportAndMaybeOptInWithCompletion:(id)completion
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10005FD44;
   v4[3] = &unk_10031BAF8;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(KTSMManager *)v5 triggerMaybeReportEligibilityWithCompletion:v4];
+  selfCopy = self;
+  completionCopy = completion;
+  v3 = completionCopy;
+  [(KTSMManager *)selfCopy triggerMaybeReportEligibilityWithCompletion:v4];
 }
 
-- (void)insertOSVersion:(id)a3 complete:(id)a4
+- (void)insertOSVersion:(id)version complete:(id)complete
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(KTSMManager *)self statusReporting];
+  versionCopy = version;
+  completeCopy = complete;
+  statusReporting = [(KTSMManager *)self statusReporting];
 
-  if (v7)
+  if (statusReporting)
   {
-    v8 = [(KTSMManager *)self statusReporting];
-    [v8 insertOSVersion:v9 completionHandler:v6];
+    statusReporting2 = [(KTSMManager *)self statusReporting];
+    [statusReporting2 insertOSVersion:versionCopy completionHandler:completeCopy];
   }
 
   else
   {
-    v8 = [TransparencyError errorWithDomain:kTransparencyErrorInternal code:-367 description:@"State Machine not initialized yet, can't run eligibility commands"];
-    v6[2](v6, v8);
+    statusReporting2 = [TransparencyError errorWithDomain:kTransparencyErrorInternal code:-367 description:@"State Machine not initialized yet, can't run eligibility commands"];
+    completeCopy[2](completeCopy, statusReporting2);
   }
 }
 
-- (void)clearEligibilityOverrides:(id)a3
+- (void)clearEligibilityOverrides:(id)overrides
 {
-  v4 = a3;
-  v5 = [(KTSMManager *)self statusReporting];
+  overridesCopy = overrides;
+  statusReporting = [(KTSMManager *)self statusReporting];
 
-  if (v5)
+  if (statusReporting)
   {
-    v6 = [(KTSMManager *)self statusReporting];
+    statusReporting2 = [(KTSMManager *)self statusReporting];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_1000606CC;
     v8[3] = &unk_10031BCC0;
-    v9 = v4;
-    [v6 clearEligibilityOverridesWithCompletionHandler:v8];
+    v9 = overridesCopy;
+    [statusReporting2 clearEligibilityOverridesWithCompletionHandler:v8];
   }
 
   else
   {
     v7 = [TransparencyError errorWithDomain:kTransparencyErrorInternal code:-367 description:@"State Machine not initialized yet, can't run eligibility commands"];
-    (*(v4 + 2))(v4, v7);
+    (*(overridesCopy + 2))(overridesCopy, v7);
   }
 }
 
-- (void)setOverrideTimeBetweenReports:(double)a3 completion:(id)a4
+- (void)setOverrideTimeBetweenReports:(double)reports completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(KTSMManager *)self statusReporting];
+  completionCopy = completion;
+  statusReporting = [(KTSMManager *)self statusReporting];
 
-  if (v7)
+  if (statusReporting)
   {
-    v8 = [(KTSMManager *)self statusReporting];
+    statusReporting2 = [(KTSMManager *)self statusReporting];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100060800;
     v10[3] = &unk_10031BCC0;
-    v11 = v6;
-    [v8 setOverrideTimeBetweenReportsWithValue:v10 completionHandler:a3];
+    v11 = completionCopy;
+    [statusReporting2 setOverrideTimeBetweenReportsWithValue:v10 completionHandler:reports];
   }
 
   else
   {
     v9 = [TransparencyError errorWithDomain:kTransparencyErrorInternal code:-367 description:@"State Machine not initialized yet, can't run eligibility commands"];
-    (*(v6 + 2))(v6, v9);
+    (*(completionCopy + 2))(completionCopy, v9);
   }
 }
 
-- (void)reportEligibility:(id)a3 withCompletion:(id)a4
+- (void)reportEligibility:(id)eligibility withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  eligibilityCopy = eligibility;
+  completionCopy = completion;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     v11 = [TransparencyError errorWithDomain:kTransparencyErrorEligibility code:9 description:@"KTEligibilityServerReporting feature not enabled"];
@@ -4533,29 +4533,29 @@ LABEL_11:
     goto LABEL_10;
   }
 
-  v8 = [(KTSMManager *)self statusReporting];
+  statusReporting = [(KTSMManager *)self statusReporting];
 
-  if (!v8)
+  if (!statusReporting)
   {
     v11 = [TransparencyError errorWithDomain:kTransparencyErrorInternal code:-367 description:@"State Machine not initialized yet, can't run eligibility commands"];
 LABEL_10:
-    v7[2](v7, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
 
     goto LABEL_11;
   }
 
-  if (v6)
+  if (eligibilityCopy)
   {
     objc_initWeak(&location, self);
-    v9 = [(KTSMManager *)self statusReporting];
-    v10 = [v6 BOOLValue];
+    statusReporting2 = [(KTSMManager *)self statusReporting];
+    bOOLValue = [eligibilityCopy BOOLValue];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100060B14;
     v14[3] = &unk_10031BD50;
     objc_copyWeak(&v16, &location);
-    v15 = v7;
-    [v9 setOverrideReportValueWithReportValue:v10 completionHandler:v14];
+    v15 = completionCopy;
+    [statusReporting2 setOverrideReportValueWithReportValue:bOOLValue completionHandler:v14];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -4563,22 +4563,22 @@ LABEL_10:
 
   else
   {
-    v13 = [(KTSMManager *)self statusReporting];
+    statusReporting3 = [(KTSMManager *)self statusReporting];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_100060AFC;
     v18[3] = &unk_10031BA90;
-    v19 = v7;
-    [v13 reportWithCompletionHandler:v18];
+    v19 = completionCopy;
+    [statusReporting3 reportWithCompletionHandler:v18];
   }
 
 LABEL_11:
 }
 
-- (void)getAggregateResult:(int64_t)a3 element:(id)a4 complete:(id)a5
+- (void)getAggregateResult:(int64_t)result element:(id)element complete:(id)complete
 {
-  v8 = a4;
-  v9 = a5;
+  elementCopy = element;
+  completeCopy = complete;
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     v12 = [TransparencyError errorWithDomain:kTransparencyErrorEligibility code:9 description:@"KTEligibilityMetrics feature not enabled"];
@@ -4597,46 +4597,46 @@ LABEL_11:
     goto LABEL_9;
   }
 
-  v10 = [(KTSMManager *)self statusReporting];
+  statusReporting = [(KTSMManager *)self statusReporting];
 
-  if (!v10)
+  if (!statusReporting)
   {
     v12 = [TransparencyError errorWithDomain:kTransparencyErrorInternal code:-367 description:@"State Machine not initialized yet, can't run eligibility commands"];
 LABEL_9:
-    v9[2](v9, 0, v12);
+    completeCopy[2](completeCopy, 0, v12);
 
     goto LABEL_10;
   }
 
-  v11 = [(KTSMManager *)self statusReporting];
+  statusReporting2 = [(KTSMManager *)self statusReporting];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100060E58;
   v14[3] = &unk_10031BD98;
-  v15 = v9;
-  [v11 aggregateResultWithSamples:a3 element:v8 completionHandler:v14];
+  v15 = completeCopy;
+  [statusReporting2 aggregateResultWithSamples:result element:elementCopy completionHandler:v14];
 
 LABEL_10:
 }
 
-- (void)successInfoForElement:(id)a3 samples:(int64_t)a4 complete:(id)a5
+- (void)successInfoForElement:(id)element samples:(int64_t)samples complete:(id)complete
 {
-  v20 = a3;
-  v19 = a5;
-  v7 = [(KTSMManager *)self statusReporting];
+  elementCopy = element;
+  completeCopy = complete;
+  statusReporting = [(KTSMManager *)self statusReporting];
 
-  if (v7)
+  if (statusReporting)
   {
-    if (v20)
+    if (elementCopy)
     {
-      v8 = [(KTSMManager *)self statusReporting];
+      statusReporting2 = [(KTSMManager *)self statusReporting];
       v41[0] = _NSConcreteStackBlock;
       v41[1] = 3221225472;
       v41[2] = sub_100061A94;
       v41[3] = &unk_10031BE30;
-      v43 = v19;
-      v42 = v20;
-      [v8 successInfoWithElement:v42 samples:a4 completionHandler:v41];
+      v43 = completeCopy;
+      v42 = elementCopy;
+      [statusReporting2 successInfoWithElement:v42 samples:samples completionHandler:v41];
     }
 
     else
@@ -4677,7 +4677,7 @@ LABEL_10:
 
             v17 = *(*(&v33 + 1) + 8 * v16);
             dispatch_group_enter(v13);
-            v18 = [(KTSMManager *)self statusReporting];
+            statusReporting3 = [(KTSMManager *)self statusReporting];
             v27[0] = _NSConcreteStackBlock;
             v27[1] = 3221225472;
             v27[2] = sub_100061B74;
@@ -4687,7 +4687,7 @@ LABEL_10:
             v31 = v37;
             v32 = v39;
             v30 = v13;
-            [v18 successInfoWithElement:v17 samples:a4 completionHandler:v27];
+            [statusReporting3 successInfoWithElement:v17 samples:samples completionHandler:v27];
 
             v16 = v16 + 1;
           }
@@ -4704,7 +4704,7 @@ LABEL_10:
       block[2] = sub_100061CC4;
       block[3] = &unk_10031BEA8;
       v25 = v39;
-      v24 = v19;
+      v24 = completeCopy;
       v26 = v37;
       dispatch_group_notify(v13, queue, block);
 
@@ -4712,15 +4712,15 @@ LABEL_10:
       _Block_object_dispose(v39, 8);
     }
 
-    v11 = v19;
+    v11 = completeCopy;
   }
 
   else
   {
     v9 = [TransparencyError errorWithDomain:kTransparencyErrorInternal code:-367 description:@"State Machine not initialized yet, can't run eligibility commands"];
     v10 = [SecXPCHelper cleanseErrorForXPC:v9];
-    v11 = v19;
-    (*(v19 + 2))(v19, 0, v10);
+    v11 = completeCopy;
+    (*(completeCopy + 2))(completeCopy, 0, v10);
   }
 }
 
@@ -4733,12 +4733,12 @@ LABEL_10:
 - (void)triggerCloudKitStaticKeyRemoteUpdateNotification
 {
   v5 = [NSNotification notificationWithName:NSPersistentStoreRemoteChangeNotification object:0];
-  v3 = [(KTSMManager *)self deps];
-  v4 = [v3 staticKeyStore];
-  [v4 remoteUpdate:v5];
+  deps = [(KTSMManager *)self deps];
+  staticKeyStore = [deps staticKeyStore];
+  [staticKeyStore remoteUpdate:v5];
 }
 
-- (void)xpc24HrNotification:(id)a3
+- (void)xpc24HrNotification:(id)notification
 {
   v4 = +[NSDate date];
   [(KTSMManager *)self triggerIDMSFetchBackstop:v4];
@@ -4746,7 +4746,7 @@ LABEL_10:
   [(KTSMManager *)self triggerKTAccountKeySignature:10.0];
   [(KTSMManager *)self triggerCheckIDSRegistration];
   [(KTSMManager *)self triggerCheckExpiredPublicKeyStores];
-  v5 = [(KTSMManager *)self triggerCKFetch24h];
+  triggerCKFetch24h = [(KTSMManager *)self triggerCKFetch24h];
   [(KTSMManager *)self triggerReportAndMaybeOptInWithCompletion:&stru_10031BEE8];
 
   [(KTSMManager *)self captureEligibilityHealthCheckup];

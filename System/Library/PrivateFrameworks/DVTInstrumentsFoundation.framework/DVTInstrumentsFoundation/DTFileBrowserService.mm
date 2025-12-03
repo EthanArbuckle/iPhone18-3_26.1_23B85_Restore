@@ -1,31 +1,31 @@
 @interface DTFileBrowserService
-+ (void)registerCapabilities:(id)a3;
-- (id)contentsOfDirectoryAtPath:(id)a3;
-- (id)dataFromFileAtPath:(id)a3;
-- (id)entriesAtPath:(id)a3;
-- (id)entriesInPathsArray:(id)a3;
-- (id)fileExistsAtPath:(id)a3;
-- (id)updateAttributesForItem:(id)a3;
++ (void)registerCapabilities:(id)capabilities;
+- (id)contentsOfDirectoryAtPath:(id)path;
+- (id)dataFromFileAtPath:(id)path;
+- (id)entriesAtPath:(id)path;
+- (id)entriesInPathsArray:(id)array;
+- (id)fileExistsAtPath:(id)path;
+- (id)updateAttributesForItem:(id)item;
 @end
 
 @implementation DTFileBrowserService
 
-+ (void)registerCapabilities:(id)a3
++ (void)registerCapabilities:(id)capabilities
 {
-  v4 = a3;
+  capabilitiesCopy = capabilities;
   if (+[DTInstrumentServer isAppleInternal])
   {
-    [v4 publishCapability:@"com.apple.instruments.server.services.filebrowser" withVersion:2 forClass:a1];
+    [capabilitiesCopy publishCapability:@"com.apple.instruments.server.services.filebrowser" withVersion:2 forClass:self];
   }
 }
 
-- (id)entriesAtPath:(id)a3
+- (id)entriesAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   v25 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v31[0] = 0;
-  v5 = [v4 contentsOfDirectoryAtPath:v3 error:v31];
+  v5 = [defaultManager contentsOfDirectoryAtPath:pathCopy error:v31];
   v6 = v31[0];
   if (!v6)
   {
@@ -37,13 +37,13 @@
       v9 = 0;
       v22 = v7;
       v23 = v5;
-      v24 = v3;
+      v24 = pathCopy;
       while (1)
       {
         v10 = [v5 objectAtIndex:v9];
-        v11 = [v3 stringByAppendingPathComponent:v10];
+        v11 = [pathCopy stringByAppendingPathComponent:v10];
         v30 = v6;
-        v12 = [v4 attributesOfItemAtPath:v11 error:&v30];
+        v12 = [defaultManager attributesOfItemAtPath:v11 error:&v30];
         v13 = v30;
 
         if (!v13)
@@ -74,17 +74,17 @@ LABEL_12:
         {
 LABEL_11:
           v27 = 0;
-          [v4 fileExistsAtPath:v11 isDirectory:&v27];
+          [defaultManager fileExistsAtPath:v11 isDirectory:&v27];
           v17 = *(v16 + 2752);
           [MEMORY[0x277CCABB0] numberWithBool:v27];
-          v19 = v18 = v4;
+          v19 = v18 = defaultManager;
           v20 = [v17 dictionaryWithObjectsAndKeys:{v11, @"DTFileBrowserEntryPath", v10, @"DTFileBrowserEntryName", v12, @"DTFileBrowserEntryAttributes", v15, @"DTFileBrowserEntryPList", v19, @"DTFileBrowserEntryIsDirectory", 0}];
 
-          v4 = v18;
+          defaultManager = v18;
           [v25 addObject:v20];
 
           v5 = v23;
-          v3 = v24;
+          pathCopy = v24;
           v8 = v22;
           goto LABEL_12;
         }
@@ -108,12 +108,12 @@ LABEL_15:
   return v25;
 }
 
-- (id)entriesInPathsArray:(id)a3
+- (id)entriesInPathsArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v22 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v3 count];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [arrayCopy count];
   if (v5)
   {
     v6 = v5;
@@ -121,12 +121,12 @@ LABEL_15:
     v8 = 0;
     v9 = 0x277CBE000uLL;
     v20 = v5;
-    v21 = v3;
+    v21 = arrayCopy;
     while (1)
     {
-      v10 = [v3 objectAtIndex:v8];
+      v10 = [arrayCopy objectAtIndex:v8];
       v27[0] = v7;
-      v11 = [v4 attributesOfItemAtPath:v10 error:v27];
+      v11 = [defaultManager attributesOfItemAtPath:v10 error:v27];
       v12 = v27[0];
 
       if (!v12)
@@ -157,17 +157,17 @@ LABEL_11:
       {
 LABEL_10:
         v24 = 0;
-        [v4 fileExistsAtPath:v10 isDirectory:&v24];
+        [defaultManager fileExistsAtPath:v10 isDirectory:&v24];
         v15 = *(v9 + 2752);
-        v16 = [v10 lastPathComponent];
+        lastPathComponent = [v10 lastPathComponent];
         v17 = [MEMORY[0x277CCABB0] numberWithBool:v24];
-        v18 = [v15 dictionaryWithObjectsAndKeys:{v10, @"DTFileBrowserEntryPath", v16, @"DTFileBrowserEntryName", v11, @"DTFileBrowserEntryAttributes", v14, @"DTFileBrowserEntryPList", v17, @"DTFileBrowserEntryIsDirectory", 0}];
+        v18 = [v15 dictionaryWithObjectsAndKeys:{v10, @"DTFileBrowserEntryPath", lastPathComponent, @"DTFileBrowserEntryName", v11, @"DTFileBrowserEntryAttributes", v14, @"DTFileBrowserEntryPList", v17, @"DTFileBrowserEntryIsDirectory", 0}];
 
         v9 = 0x277CBE000;
         [v22 addObject:v18];
 
         v6 = v20;
-        v3 = v21;
+        arrayCopy = v21;
         goto LABEL_11;
       }
     }
@@ -186,14 +186,14 @@ LABEL_13:
   return v22;
 }
 
-- (id)dataFromFileAtPath:(id)a3
+- (id)dataFromFileAtPath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  if ([v4 fileExistsAtPath:v3])
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  if ([defaultManager fileExistsAtPath:pathCopy])
   {
     v7 = 0;
-    v5 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v3 options:2 error:&v7];
+    v5 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:pathCopy options:2 error:&v7];
   }
 
   else
@@ -204,12 +204,12 @@ LABEL_13:
   return v5;
 }
 
-- (id)contentsOfDirectoryAtPath:(id)a3
+- (id)contentsOfDirectoryAtPath:(id)path
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  pathCopy = path;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v15 = 0;
-  v5 = [v4 contentsOfDirectoryAtPath:v3 error:&v15];
+  v5 = [defaultManager contentsOfDirectoryAtPath:pathCopy error:&v15];
   v6 = v15;
   if (!v6)
   {
@@ -217,53 +217,53 @@ LABEL_13:
   }
 
   v14 = 0;
-  if ([v4 fileExistsAtPath:v3 isDirectory:&v14] && v14 == 1)
+  if ([defaultManager fileExistsAtPath:pathCopy isDirectory:&v14] && v14 == 1)
   {
     v7 = objc_alloc(MEMORY[0x277CBEAD8]);
     v8 = [v6 description];
-    v9 = [v6 userInfo];
-    v10 = [v7 initWithName:@"XRFileSystemException" reason:v8 userInfo:v9];
+    userInfo = [v6 userInfo];
+    v10 = [v7 initWithName:@"XRFileSystemException" reason:v8 userInfo:userInfo];
 
     [v10 raise];
 LABEL_5:
-    v11 = v5;
+    array = v5;
     goto LABEL_7;
   }
 
-  v11 = [MEMORY[0x277CBEA60] array];
+  array = [MEMORY[0x277CBEA60] array];
 LABEL_7:
-  v12 = v11;
+  v12 = array;
 
   return v12;
 }
 
-- (id)updateAttributesForItem:(id)a3
+- (id)updateAttributesForItem:(id)item
 {
-  v3 = a3;
-  v4 = [v3 valueForKey:@"DTFileBrowserEntryPath"];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  itemCopy = item;
+  v4 = [itemCopy valueForKey:@"DTFileBrowserEntryPath"];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v10 = 0;
-  v6 = [v5 attributesOfItemAtPath:v4 error:&v10];
+  v6 = [defaultManager attributesOfItemAtPath:v4 error:&v10];
   if (!v10)
   {
     v9 = 0;
-    [v5 fileExistsAtPath:v4 isDirectory:&v9];
-    [v3 setObject:v6 forKey:@"DTFileBrowserEntryAttributes"];
+    [defaultManager fileExistsAtPath:v4 isDirectory:&v9];
+    [itemCopy setObject:v6 forKey:@"DTFileBrowserEntryAttributes"];
     v7 = [MEMORY[0x277CCABB0] numberWithBool:v9];
-    [v3 setObject:v7 forKey:@"DTFileBrowserEntryIsDirectory"];
+    [itemCopy setObject:v7 forKey:@"DTFileBrowserEntryIsDirectory"];
   }
 
-  return v3;
+  return itemCopy;
 }
 
-- (id)fileExistsAtPath:(id)a3
+- (id)fileExistsAtPath:(id)path
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v12 = 0;
   v3 = MEMORY[0x277CCAA00];
-  v4 = a3;
-  v5 = [v3 defaultManager];
-  v6 = [v5 fileExistsAtPath:v4 isDirectory:&v12];
+  pathCopy = path;
+  defaultManager = [v3 defaultManager];
+  v6 = [defaultManager fileExistsAtPath:pathCopy isDirectory:&v12];
 
   v13[0] = @"fileExists";
   v7 = [MEMORY[0x277CCABB0] numberWithBool:v6];

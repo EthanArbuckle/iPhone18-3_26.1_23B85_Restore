@@ -1,20 +1,20 @@
 @interface PAREngagementResponse
-+ (id)responseFromReply:(id)a3;
++ (id)responseFromReply:(id)reply;
 @end
 
 @implementation PAREngagementResponse
 
-+ (id)responseFromReply:(id)a3
++ (id)responseFromReply:(id)reply
 {
-  v3 = a3;
-  v4 = [v3 task];
-  v5 = [v4 session];
-  v6 = [v5 configuration];
-  v7 = [v6 factory];
-  v8 = v7;
-  if (v7)
+  replyCopy = reply;
+  task = [replyCopy task];
+  session = [task session];
+  configuration = [session configuration];
+  factory = [configuration factory];
+  v8 = factory;
+  if (factory)
   {
-    v9 = v7;
+    v9 = factory;
   }
 
   else
@@ -25,8 +25,8 @@
   v10 = v9;
 
   v11 = [PAREngagementResponse alloc];
-  v12 = [v3 data];
-  v13 = [(PARResponse *)v11 initWithReply:v3 factory:v10 responseData:v12];
+  data = [replyCopy data];
+  v13 = [(PARResponse *)v11 initWithReply:replyCopy factory:v10 responseData:data];
 
   return v13;
 }

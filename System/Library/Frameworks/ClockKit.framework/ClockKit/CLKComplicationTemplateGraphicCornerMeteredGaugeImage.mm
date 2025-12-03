@@ -1,33 +1,33 @@
 @interface CLKComplicationTemplateGraphicCornerMeteredGaugeImage
-- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)a3;
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3;
+- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)block;
+- (void)_enumerateTextProviderKeysWithBlock:(id)block;
 @end
 
 @implementation CLKComplicationTemplateGraphicCornerMeteredGaugeImage
 
-- (void)_enumerateTextProviderKeysWithBlock:(id)a3
+- (void)_enumerateTextProviderKeysWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = 0;
-  v3[2](v3, @"leadingTextProvider", 1, 1, &v4);
+  blockCopy[2](blockCopy, @"leadingTextProvider", 1, 1, &v4);
   if ((v4 & 1) == 0)
   {
-    v3[2](v3, @"trailingTextProvider", 1, 1, &v4);
+    blockCopy[2](blockCopy, @"trailingTextProvider", 1, 1, &v4);
   }
 }
 
-- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)a3
+- (void)_enumerateFullColorImageProviderKeysWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = +[CLKRenderingContext sharedRenderingContext];
-  v6 = [v5 device];
+  device = [v5 device];
 
-  __103__CLKComplicationTemplateGraphicCornerMeteredGaugeImage__enumerateFullColorImageProviderKeysWithBlock___block_invoke(v7, v6);
+  __103__CLKComplicationTemplateGraphicCornerMeteredGaugeImage__enumerateFullColorImageProviderKeysWithBlock___block_invoke(v7, device);
   v8 = *&qword_27DE91A80;
   v9 = *&_enumerateFullColorImageProviderKeysWithBlock___imageDiameter_1252[[(CLKComplicationTemplate *)self sdkVersion]];
   v11 = 0;
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:*&_enumerateFullColorImageProviderKeysWithBlock___pointSize_1253];
-  v4[2](v4, @"imageProvider", 0, 1, v10, 4, &v11, v9, v9, v8, v8, v8 * 0.5);
+  blockCopy[2](blockCopy, @"imageProvider", 0, 1, v10, 4, &v11, v9, v9, v8, v8, v8 * 0.5);
 }
 
 uint64_t __103__CLKComplicationTemplateGraphicCornerMeteredGaugeImage__enumerateFullColorImageProviderKeysWithBlock___block_invoke(uint64_t a1, void *a2)

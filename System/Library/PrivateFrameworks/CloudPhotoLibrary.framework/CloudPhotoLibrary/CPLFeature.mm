@@ -1,43 +1,43 @@
 @interface CPLFeature
-+ (id)featureWithName:(id)a3;
-- (BOOL)disableFeatureInStore:(id)a3 error:(id *)a4;
-- (BOOL)enableFeatureInStore:(id)a3 error:(id *)a4;
++ (id)featureWithName:(id)name;
+- (BOOL)disableFeatureInStore:(id)store error:(id *)error;
+- (BOOL)enableFeatureInStore:(id)store error:(id *)error;
 @end
 
 @implementation CPLFeature
 
-- (BOOL)enableFeatureInStore:(id)a3 error:(id *)a4
+- (BOOL)enableFeatureInStore:(id)store error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
+  storeCopy = store;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLFeature.m"];
   v9 = NSStringFromSelector(a2);
-  [v7 handleFailureInMethod:a2 object:self file:v8 lineNumber:45 description:{@"%@ should be implemented by subclasses", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:v8 lineNumber:45 description:{@"%@ should be implemented by subclasses", v9}];
 
   abort();
 }
 
-- (BOOL)disableFeatureInStore:(id)a3 error:(id *)a4
+- (BOOL)disableFeatureInStore:(id)store error:(id *)error
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
+  storeCopy = store;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLFeature.m"];
   v9 = NSStringFromSelector(a2);
-  [v7 handleFailureInMethod:a2 object:self file:v8 lineNumber:40 description:{@"%@ should be implemented by subclasses", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:v8 lineNumber:40 description:{@"%@ should be implemented by subclasses", v9}];
 
   abort();
 }
 
-+ (id)featureWithName:(id)a3
++ (id)featureWithName:(id)name
 {
   v3 = featureWithName__onceToken;
-  v4 = a3;
+  nameCopy = name;
   if (v3 != -1)
   {
     dispatch_once(&featureWithName__onceToken, &__block_literal_global_18433);
   }
 
-  v5 = [featureWithName__features objectForKeyedSubscript:v4];
+  v5 = [featureWithName__features objectForKeyedSubscript:nameCopy];
 
   return v5;
 }

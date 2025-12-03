@@ -1,12 +1,12 @@
 @interface PaletteContentView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC15RemindersUICoreP33_7BA5891348DD5304637361581A4B546418PaletteContentView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC15RemindersUICoreP33_7BA5891348DD5304637361581A4B546418PaletteContentView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation PaletteContentView
 
-- (_TtC15RemindersUICoreP33_7BA5891348DD5304637361581A4B546418PaletteContentView)initWithCoder:(id)a3
+- (_TtC15RemindersUICoreP33_7BA5891348DD5304637361581A4B546418PaletteContentView)initWithCoder:(id)coder
 {
   result = sub_21DBFC31C();
   __break(1u);
@@ -30,21 +30,21 @@
   [*&v2[v9] setFrame_];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
-  [(PaletteContentView *)v4 layoutMargins];
+  width = fits.width;
+  selfCopy = self;
+  [(PaletteContentView *)selfCopy layoutMargins];
   v6 = v5;
-  [(PaletteContentView *)v4 layoutMargins];
+  [(PaletteContentView *)selfCopy layoutMargins];
   v8 = width - (v6 + v7);
-  [*(&v4->super.super.super.isa + OBJC_IVAR____TtC15RemindersUICoreP33_7BA5891348DD5304637361581A4B546418PaletteContentView_titleLabel) sizeThatFits_];
+  [*(&selfCopy->super.super.super.isa + OBJC_IVAR____TtC15RemindersUICoreP33_7BA5891348DD5304637361581A4B546418PaletteContentView_titleLabel) sizeThatFits_];
   v16.size.height = v9;
   v16.origin.y = 0.0;
   v16.origin.x = v6;
   v16.size.width = v8;
   MaxY = CGRectGetMaxY(v16);
-  [(PaletteContentView *)v4 layoutMargins];
+  [(PaletteContentView *)selfCopy layoutMargins];
   v12 = v11;
 
   v13 = MaxY + v12;

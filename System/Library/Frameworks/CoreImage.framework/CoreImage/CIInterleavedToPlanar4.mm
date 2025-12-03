@@ -7,23 +7,23 @@
 - (id)outputImage
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v2 = [(CIPlanarize *)self inputImage];
-  [(CIImage *)v2 extent];
+  inputImage = [(CIPlanarize *)self inputImage];
+  [(CIImage *)inputImage extent];
   if (CGRectIsEmpty(v25))
   {
     return 0;
   }
 
-  [(CIImage *)v2 extent];
+  [(CIImage *)inputImage extent];
   if (CGRectIsInfinite(v26))
   {
     return 0;
   }
 
   v4 = [CIKernel kernelWithInternalRepresentation:&CI::_interleavedToPlanar4];
-  [(CIImage *)v2 extent];
+  [(CIImage *)inputImage extent];
   v6 = v5;
-  [(CIImage *)v2 extent];
+  [(CIImage *)inputImage extent];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -38,7 +38,7 @@
   y = v28.origin.y;
   width = v28.size.width;
   height = v28.size.height;
-  v24[0] = v2;
+  v24[0] = inputImage;
   v24[1] = [MEMORY[0x1E696AD98] numberWithDouble:{v6, MEMORY[0x1E69E9820], 3221225472, __37__CIInterleavedToPlanar4_outputImage__block_invoke, &__block_descriptor_40_e73__CGRect__CGPoint_dd__CGSize_dd__44__0i8_CGRect__CGPoint_dd__CGSize_dd__12l, *&v6}];
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
   v22 = @"kCIKernelOutputFormat";

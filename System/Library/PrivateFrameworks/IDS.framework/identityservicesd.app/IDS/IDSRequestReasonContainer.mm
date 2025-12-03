@@ -1,26 +1,26 @@
 @interface IDSRequestReasonContainer
-+ (id)initialRequestWithSubreason:(unint64_t)a3 pathID:(unint64_t)a4;
-+ (id)pushRequestWithSubreason:(unint64_t)a3 pathID:(unint64_t)a4;
-+ (id)repairRequestWithSubreason:(unint64_t)a3 pathID:(unint64_t)a4;
-+ (id)retryRequestWithSubreason:(unint64_t)a3 pathID:(unint64_t)a4;
-+ (id)scheduledRequestWithSubreason:(unint64_t)a3 pathID:(unint64_t)a4;
++ (id)initialRequestWithSubreason:(unint64_t)subreason pathID:(unint64_t)d;
++ (id)pushRequestWithSubreason:(unint64_t)subreason pathID:(unint64_t)d;
++ (id)repairRequestWithSubreason:(unint64_t)subreason pathID:(unint64_t)d;
++ (id)retryRequestWithSubreason:(unint64_t)subreason pathID:(unint64_t)d;
++ (id)scheduledRequestWithSubreason:(unint64_t)subreason pathID:(unint64_t)d;
 + (id)unknownReasonContainer;
-+ (id)userRequestWithSubreason:(unint64_t)a3 pathID:(unint64_t)a4;
-- (IDSRequestReasonContainer)initWithReason:(unint64_t)a3 subreason:(unint64_t)a4 pathID:(unint64_t)a5;
++ (id)userRequestWithSubreason:(unint64_t)subreason pathID:(unint64_t)d;
+- (IDSRequestReasonContainer)initWithReason:(unint64_t)reason subreason:(unint64_t)subreason pathID:(unint64_t)d;
 @end
 
 @implementation IDSRequestReasonContainer
 
-- (IDSRequestReasonContainer)initWithReason:(unint64_t)a3 subreason:(unint64_t)a4 pathID:(unint64_t)a5
+- (IDSRequestReasonContainer)initWithReason:(unint64_t)reason subreason:(unint64_t)subreason pathID:(unint64_t)d
 {
   v9.receiver = self;
   v9.super_class = IDSRequestReasonContainer;
   result = [(IDSRequestReasonContainer *)&v9 init];
   if (result)
   {
-    result->_reason = a3;
-    result->_subreason = a4;
-    result->_pathID = a5;
+    result->_reason = reason;
+    result->_subreason = subreason;
+    result->_pathID = d;
   }
 
   return result;
@@ -28,49 +28,49 @@
 
 + (id)unknownReasonContainer
 {
-  v2 = [[a1 alloc] initWithReason:1 subreason:1 pathID:0];
+  v2 = [[self alloc] initWithReason:1 subreason:1 pathID:0];
 
   return v2;
 }
 
-+ (id)scheduledRequestWithSubreason:(unint64_t)a3 pathID:(unint64_t)a4
++ (id)scheduledRequestWithSubreason:(unint64_t)subreason pathID:(unint64_t)d
 {
-  v4 = [[a1 alloc] initWithReason:2 subreason:a3 pathID:a4];
+  v4 = [[self alloc] initWithReason:2 subreason:subreason pathID:d];
 
   return v4;
 }
 
-+ (id)initialRequestWithSubreason:(unint64_t)a3 pathID:(unint64_t)a4
++ (id)initialRequestWithSubreason:(unint64_t)subreason pathID:(unint64_t)d
 {
-  v4 = [[a1 alloc] initWithReason:3 subreason:a3 pathID:a4];
+  v4 = [[self alloc] initWithReason:3 subreason:subreason pathID:d];
 
   return v4;
 }
 
-+ (id)userRequestWithSubreason:(unint64_t)a3 pathID:(unint64_t)a4
++ (id)userRequestWithSubreason:(unint64_t)subreason pathID:(unint64_t)d
 {
-  v4 = [[a1 alloc] initWithReason:4 subreason:a3 pathID:a4];
+  v4 = [[self alloc] initWithReason:4 subreason:subreason pathID:d];
 
   return v4;
 }
 
-+ (id)pushRequestWithSubreason:(unint64_t)a3 pathID:(unint64_t)a4
++ (id)pushRequestWithSubreason:(unint64_t)subreason pathID:(unint64_t)d
 {
-  v4 = [[a1 alloc] initWithReason:5 subreason:a3 pathID:a4];
+  v4 = [[self alloc] initWithReason:5 subreason:subreason pathID:d];
 
   return v4;
 }
 
-+ (id)repairRequestWithSubreason:(unint64_t)a3 pathID:(unint64_t)a4
++ (id)repairRequestWithSubreason:(unint64_t)subreason pathID:(unint64_t)d
 {
-  v4 = [[a1 alloc] initWithReason:6 subreason:a3 pathID:a4];
+  v4 = [[self alloc] initWithReason:6 subreason:subreason pathID:d];
 
   return v4;
 }
 
-+ (id)retryRequestWithSubreason:(unint64_t)a3 pathID:(unint64_t)a4
++ (id)retryRequestWithSubreason:(unint64_t)subreason pathID:(unint64_t)d
 {
-  v4 = [[a1 alloc] initWithReason:7 subreason:a3 pathID:a4];
+  v4 = [[self alloc] initWithReason:7 subreason:subreason pathID:d];
 
   return v4;
 }

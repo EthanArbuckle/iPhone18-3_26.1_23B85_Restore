@@ -1,24 +1,24 @@
 @interface SUUIGiftPurchaseRequest
-- (SUUIGiftPurchaseRequest)initWithDonation:(id)a3 configuration:(id)a4;
-- (SUUIGiftPurchaseRequest)initWithGift:(id)a3 configuration:(id)a4;
-- (id)_requestWithURL:(id)a3 bodyDictionary:(id)a4;
-- (void)purchaseWithCompletionBlock:(id)a3;
+- (SUUIGiftPurchaseRequest)initWithDonation:(id)donation configuration:(id)configuration;
+- (SUUIGiftPurchaseRequest)initWithGift:(id)gift configuration:(id)configuration;
+- (id)_requestWithURL:(id)l bodyDictionary:(id)dictionary;
+- (void)purchaseWithCompletionBlock:(id)block;
 @end
 
 @implementation SUUIGiftPurchaseRequest
 
-- (SUUIGiftPurchaseRequest)initWithDonation:(id)a3 configuration:(id)a4
+- (SUUIGiftPurchaseRequest)initWithDonation:(id)donation configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  donationCopy = donation;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = SUUIGiftPurchaseRequest;
   v8 = [(SUUIGiftPurchaseRequest *)&v14 init];
   if (v8)
   {
-    v9 = [v7 donationPurchaseURL];
-    v10 = [v6 HTTPBodyDictionary];
-    v11 = [(SUUIGiftPurchaseRequest *)v8 _requestWithURL:v9 bodyDictionary:v10];
+    donationPurchaseURL = [configurationCopy donationPurchaseURL];
+    hTTPBodyDictionary = [donationCopy HTTPBodyDictionary];
+    v11 = [(SUUIGiftPurchaseRequest *)v8 _requestWithURL:donationPurchaseURL bodyDictionary:hTTPBodyDictionary];
     request = v8->_request;
     v8->_request = v11;
   }
@@ -26,18 +26,18 @@
   return v8;
 }
 
-- (SUUIGiftPurchaseRequest)initWithGift:(id)a3 configuration:(id)a4
+- (SUUIGiftPurchaseRequest)initWithGift:(id)gift configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  giftCopy = gift;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = SUUIGiftPurchaseRequest;
   v8 = [(SUUIGiftPurchaseRequest *)&v14 init];
   if (v8)
   {
-    v9 = [v7 giftPurchaseURL];
-    v10 = [v6 HTTPBodyDictionary];
-    v11 = [(SUUIGiftPurchaseRequest *)v8 _requestWithURL:v9 bodyDictionary:v10];
+    giftPurchaseURL = [configurationCopy giftPurchaseURL];
+    hTTPBodyDictionary = [giftCopy HTTPBodyDictionary];
+    v11 = [(SUUIGiftPurchaseRequest *)v8 _requestWithURL:giftPurchaseURL bodyDictionary:hTTPBodyDictionary];
     request = v8->_request;
     v8->_request = v11;
   }
@@ -45,16 +45,16 @@
   return v8;
 }
 
-- (void)purchaseWithCompletionBlock:(id)a3
+- (void)purchaseWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   request = self->_request;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__SUUIGiftPurchaseRequest_purchaseWithCompletionBlock___block_invoke;
   v7[3] = &unk_2798FBFD0;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   [(SUUIURLConnectionRequest *)request startWithConnectionResponseBlock:v7];
 }
 
@@ -113,17 +113,17 @@ void __55__SUUIGiftPurchaseRequest_purchaseWithCompletionBlock___block_invoke(ui
   (*(*(a1 + 32) + 16))();
 }
 
-- (id)_requestWithURL:(id)a3 bodyDictionary:(id)a4
+- (id)_requestWithURL:(id)l bodyDictionary:(id)dictionary
 {
   v5 = MEMORY[0x277D69BD0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithURL:v7];
+  dictionaryCopy = dictionary;
+  lCopy = l;
+  v8 = [[v5 alloc] initWithURL:lCopy];
 
   [v8 setAllowedRetryCount:0];
   [v8 setITunesStoreRequest:1];
   [v8 setKBSyncType:2];
-  [v8 setRequestParameters:v6];
+  [v8 setRequestParameters:dictionaryCopy];
 
   [v8 setShouldProcessProtocol:1];
   [v8 setShouldSendSecureToken:1];

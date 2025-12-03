@@ -3,14 +3,14 @@
 + (id)currentModeEvent;
 + (id)currentModeSemanticType;
 + (id)currentModeUUID;
-+ (id)currrentModeEventAtGivenTime:(id)a3;
++ (id)currrentModeEventAtGivenTime:(id)time;
 - (ATXUserFocusComputedMode)init;
-- (ATXUserFocusComputedMode)initWithStream:(id)a3;
+- (ATXUserFocusComputedMode)initWithStream:(id)stream;
 - (id)currentMode;
 - (id)currentModeEvent;
 - (id)currentModeSemanticType;
 - (id)currentModeUUID;
-- (id)currrentModeEventAtGivenTime:(id)a3;
+- (id)currrentModeEventAtGivenTime:(id)time;
 - (id)lastTwoUserFocusComputedStoreEvents;
 @end
 
@@ -20,11 +20,11 @@
 {
   v2 = objc_autoreleasePoolPush();
   v3 = objc_opt_new();
-  v4 = [v3 currentModeUUID];
+  currentModeUUID = [v3 currentModeUUID];
 
   objc_autoreleasePoolPop(v2);
 
-  return v4;
+  return currentModeUUID;
 }
 
 - (id)currentModeUUID
@@ -70,23 +70,23 @@ void __43__ATXUserFocusComputedMode_currentModeUUID__block_invoke(uint64_t a1, v
 - (ATXUserFocusComputedMode)init
 {
   v3 = BiomeLibrary();
-  v4 = [v3 UserFocus];
-  v5 = [v4 ComputedMode];
-  v6 = [(ATXUserFocusComputedMode *)self initWithStream:v5];
+  userFocus = [v3 UserFocus];
+  computedMode = [userFocus ComputedMode];
+  v6 = [(ATXUserFocusComputedMode *)self initWithStream:computedMode];
 
   return v6;
 }
 
-- (ATXUserFocusComputedMode)initWithStream:(id)a3
+- (ATXUserFocusComputedMode)initWithStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v9.receiver = self;
   v9.super_class = ATXUserFocusComputedMode;
   v6 = [(ATXUserFocusComputedMode *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_stream, a3);
+    objc_storeStrong(&v6->_stream, stream);
   }
 
   return v7;
@@ -366,10 +366,10 @@ LABEL_10:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)currrentModeEventAtGivenTime:(id)a3
+- (id)currrentModeEventAtGivenTime:(id)time
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  timeCopy = time;
   v5 = objc_autoreleasePoolPush();
   v16 = 0;
   v17 = &v16;
@@ -383,16 +383,16 @@ LABEL_10:
     *buf = 136315394;
     v23 = "[ATXUserFocusComputedMode currrentModeEventAtGivenTime:]";
     v24 = 2112;
-    v25 = v4;
+    v25 = timeCopy;
     _os_log_impl(&dword_260C9F000, v6, OS_LOG_TYPE_DEFAULT, "%s: Searching for active mode at time: %@", buf, 0x16u);
   }
 
-  v7 = [(BMStream *)self->_stream atx_publisherWithStartDate:v4 endDate:0 maxEvents:&unk_28733C838 lastN:0 reversed:1];
+  v7 = [(BMStream *)self->_stream atx_publisherWithStartDate:timeCopy endDate:0 maxEvents:&unk_28733C838 lastN:0 reversed:1];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __57__ATXUserFocusComputedMode_currrentModeEventAtGivenTime___block_invoke_30;
   v13[3] = &unk_279AB88E0;
-  v8 = v4;
+  v8 = timeCopy;
   v14 = v8;
   v15 = &v16;
   v9 = [v7 sinkWithCompletion:&__block_literal_global_29_0 shouldContinue:v13];
@@ -468,41 +468,41 @@ uint64_t __57__ATXUserFocusComputedMode_currrentModeEventAtGivenTime___block_inv
 {
   v2 = objc_autoreleasePoolPush();
   v3 = objc_opt_new();
-  v4 = [v3 currentModeSemanticType];
+  currentModeSemanticType = [v3 currentModeSemanticType];
 
   objc_autoreleasePoolPop(v2);
 
-  return v4;
+  return currentModeSemanticType;
 }
 
 + (id)currentMode
 {
   v2 = objc_autoreleasePoolPush();
   v3 = objc_opt_new();
-  v4 = [v3 currentMode];
+  currentMode = [v3 currentMode];
 
   objc_autoreleasePoolPop(v2);
 
-  return v4;
+  return currentMode;
 }
 
 + (id)currentModeEvent
 {
   v2 = objc_autoreleasePoolPush();
   v3 = objc_opt_new();
-  v4 = [v3 currentModeEvent];
+  currentModeEvent = [v3 currentModeEvent];
 
   objc_autoreleasePoolPop(v2);
 
-  return v4;
+  return currentModeEvent;
 }
 
-+ (id)currrentModeEventAtGivenTime:(id)a3
++ (id)currrentModeEventAtGivenTime:(id)time
 {
-  v3 = a3;
+  timeCopy = time;
   v4 = objc_autoreleasePoolPush();
   v5 = objc_opt_new();
-  v6 = [v5 currrentModeEventAtGivenTime:v3];
+  v6 = [v5 currrentModeEventAtGivenTime:timeCopy];
 
   objc_autoreleasePoolPop(v4);
 

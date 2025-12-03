@@ -1,50 +1,50 @@
 @interface _UICollectionViewDragSourceController
-- (BOOL)_delegateImplementsSelector:(SEL)a3;
-- (BOOL)dragInteraction:(id)a3 prefersFullSizePreviewsForSession:(id)a4;
-- (BOOL)dragInteraction:(id)a3 sessionAllowsMoveOperation:(id)a4;
-- (BOOL)dragInteraction:(id)a3 sessionIsRestrictedToDraggingApplication:(id)a4;
+- (BOOL)_delegateImplementsSelector:(SEL)selector;
+- (BOOL)dragInteraction:(id)interaction prefersFullSizePreviewsForSession:(id)session;
+- (BOOL)dragInteraction:(id)interaction sessionAllowsMoveOperation:(id)operation;
+- (BOOL)dragInteraction:(id)interaction sessionIsRestrictedToDraggingApplication:(id)application;
 - (BOOL)isActive;
 - (NSString)description;
-- (_UICollectionViewDragSourceController)initWithCollectionView:(id)a3 delegate:(id)a4;
+- (_UICollectionViewDragSourceController)initWithCollectionView:(id)view delegate:(id)delegate;
 - (id)_dragDelegateActual;
 - (id)_dragDelegateProxy;
-- (id)_dragInteraction:(id)a3 sessionPropertiesForSession:(id)a4;
+- (id)_dragInteraction:(id)interaction sessionPropertiesForSession:(id)session;
 - (id)_dragSourceDelegateActual;
 - (id)_dragSourceDelegateProxy;
-- (id)_filterCandidateIndexPaths:(id)a3 forUserSelectedIndexPath:(id)a4 session:(id)a5;
-- (id)_previewParametersForItemAtIndexPath:(id)a3;
-- (id)_queryForItemsFromClientForSession:(id)a3 dataSourceIndexPath:(id)a4 location:(CGPoint)a5 isInitialQuery:(BOOL)a6;
+- (id)_filterCandidateIndexPaths:(id)paths forUserSelectedIndexPath:(id)path session:(id)session;
+- (id)_previewParametersForItemAtIndexPath:(id)path;
+- (id)_queryForItemsFromClientForSession:(id)session dataSourceIndexPath:(id)path location:(CGPoint)location isInitialQuery:(BOOL)query;
 - (id)dragFromIndexPath;
 - (id)dragFromIndexPaths;
-- (id)dragInteraction:(id)a3 itemsForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5;
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4;
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5;
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5;
-- (id)dragInteraction:(id)a3 sessionForAddingItems:(id)a4 withTouchAtPoint:(CGPoint)a5;
+- (id)dragInteraction:(id)interaction itemsForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point;
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session;
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default;
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session;
+- (id)dragInteraction:(id)interaction sessionForAddingItems:(id)items withTouchAtPoint:(CGPoint)point;
 - (id)dragSession;
-- (id)indexPathForDragItem:(id *)a1;
-- (int64_t)_dataOwnerForDragSession:(id)a3 atIndexPath:(id)a4;
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5;
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4;
+- (id)indexPathForDragItem:(id *)item;
+- (int64_t)_dataOwnerForDragSession:(id)session atIndexPath:(id)path;
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point;
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session;
 - (uint64_t)currentSessionItemCount;
 - (uint64_t)dragItemsCreatedForReordering;
-- (void)_addDragItemsToExistingSession:(id)a3 forDataSourceIndexPath:(id)a4;
+- (void)_addDragItemsToExistingSession:(id)session forDataSourceIndexPath:(id)path;
 - (void)_configureInteraction;
-- (void)_sessionWillBegin:(id)a3 forDragInteraction:(id)a4;
-- (void)attemptToBeginDragImmediatelyWithTouch:(uint64_t)a1;
+- (void)_sessionWillBegin:(id)begin forDragInteraction:(id)interaction;
+- (void)attemptToBeginDragImmediatelyWithTouch:(uint64_t)touch;
 - (void)deactivate;
 - (void)dealloc;
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 session:(id)a4 willAddItems:(id)a5 forInteraction:(id)a6;
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5;
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5;
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator;
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction session:(id)session willAddItems:(id)items forInteraction:(id)forInteraction;
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation;
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session;
 - (void)dragState;
-- (void)rebaseForUpdates:(void *)a1;
+- (void)rebaseForUpdates:(void *)updates;
 - (void)sessionState;
-- (void)setDragInteractionEnabled:(uint64_t)a1;
-- (void)setDragState:(uint64_t)a1;
-- (void)setSessionState:(uint64_t)a1;
+- (void)setDragInteractionEnabled:(uint64_t)enabled;
+- (void)setDragState:(uint64_t)state;
+- (void)setSessionState:(uint64_t)state;
 @end
 
 @implementation _UICollectionViewDragSourceController
@@ -63,15 +63,15 @@
 
 - (BOOL)isActive
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v1 = [(_UICollectionViewDragSourceController *)a1 sessionState];
-  if (v1)
+  sessionState = [(_UICollectionViewDragSourceController *)self sessionState];
+  if (sessionState)
   {
-    v2 = v1[1] != 0;
+    v2 = sessionState[1] != 0;
   }
 
   else
@@ -92,55 +92,55 @@
 
 - (void)sessionState
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[4];
+    selfCopy = self;
+    v3 = self[4];
     if (!v3)
     {
       v4 = objc_alloc_init(_UICollectionViewDragSourceControllerSessionState);
-      v5 = v2[4];
-      v2[4] = v4;
+      v5 = selfCopy[4];
+      selfCopy[4] = v4;
 
-      v3 = v2[4];
+      v3 = selfCopy[4];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)deactivate
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
+    WeakRetained = objc_loadWeakRetained((self + 16));
 
     if (WeakRetained)
     {
-      v3 = objc_loadWeakRetained((a1 + 8));
-      v4 = objc_loadWeakRetained((a1 + 16));
+      v3 = objc_loadWeakRetained((self + 8));
+      v4 = objc_loadWeakRetained((self + 16));
       [v3 removeInteraction:v4];
 
-      objc_storeWeak((a1 + 16), 0);
+      objc_storeWeak((self + 16), 0);
     }
   }
 }
 
-- (_UICollectionViewDragSourceController)initWithCollectionView:(id)a3 delegate:(id)a4
+- (_UICollectionViewDragSourceController)initWithCollectionView:(id)view delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = _UICollectionViewDragSourceController;
   v8 = [(_UICollectionViewDragSourceController *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_collectionView, v6);
-    objc_storeWeak(&v9->_delegate, v7);
+    objc_storeWeak(&v8->_collectionView, viewCopy);
+    objc_storeWeak(&v9->_delegate, delegateCopy);
     [(_UICollectionViewDragSourceController *)v9 _configureInteraction];
   }
 
@@ -162,44 +162,44 @@
     WeakRetained = 0;
   }
 
-  v7 = [(_UICollectionViewDragSourceController *)self sessionState];
-  v8 = [(_UICollectionViewDragSourceController *)self dragState];
-  v9 = [v3 stringWithFormat:@"<%@:%p cv = %p; sessionState = %@; dragState = %@>", v5, self, WeakRetained, v7, v8];;
+  sessionState = [(_UICollectionViewDragSourceController *)self sessionState];
+  dragState = [(_UICollectionViewDragSourceController *)self dragState];
+  v9 = [v3 stringWithFormat:@"<%@:%p cv = %p; sessionState = %@; dragState = %@>", v5, self, WeakRetained, sessionState, dragState];;
 
   return v9;
 }
 
 - (void)dragState
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    v3 = a1[5];
+    selfCopy = self;
+    v3 = self[5];
     if (!v3)
     {
       v4 = objc_alloc_init(_UICollectionViewDragSourceControllerDragState);
-      v5 = v2[5];
-      v2[5] = v4;
+      v5 = selfCopy[5];
+      selfCopy[5] = v4;
 
-      v3 = v2[5];
+      v3 = selfCopy[5];
     }
 
-    a1 = v3;
+    self = v3;
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)dragSession
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(_UICollectionViewDragSourceController *)a1 sessionState];
-    v2 = v1;
-    if (v1)
+    sessionState = [(_UICollectionViewDragSourceController *)self sessionState];
+    v2 = sessionState;
+    if (sessionState)
     {
-      v3 = *(v1 + 8);
+      v3 = *(sessionState + 8);
     }
 
     else
@@ -220,13 +220,13 @@
 
 - (uint64_t)currentSessionItemCount
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v2 = [(_UICollectionViewDragSourceController *)a1 sessionState];
-  if (!v2)
+  sessionState = [(_UICollectionViewDragSourceController *)self sessionState];
+  if (!sessionState)
   {
     v5 = 0;
     v3 = 0;
@@ -235,19 +235,19 @@ LABEL_7:
     return v3;
   }
 
-  v3 = v2[1];
+  v3 = sessionState[1];
 
   if (v3)
   {
-    v4 = [(_UICollectionViewDragSourceController *)a1 sessionState];
-    v5 = v4;
-    if (v4)
+    sessionState2 = [(_UICollectionViewDragSourceController *)self sessionState];
+    v5 = sessionState2;
+    if (sessionState2)
     {
-      v4 = v4[1];
+      sessionState2 = sessionState2[1];
     }
 
-    v6 = [v4 items];
-    v3 = [v6 count];
+    items = [sessionState2 items];
+    v3 = [items count];
 
     goto LABEL_7;
   }
@@ -257,44 +257,44 @@ LABEL_7:
 
 - (id)dragFromIndexPaths
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(_UICollectionViewDragSourceController *)a1 dragState];
-    v2 = [(_UICollectionViewDragSourceControllerDragState *)v1 draggingDataSourceIndexPaths];
+    dragState = [(_UICollectionViewDragSourceController *)self dragState];
+    draggingDataSourceIndexPaths = [(_UICollectionViewDragSourceControllerDragState *)dragState draggingDataSourceIndexPaths];
   }
 
   else
   {
-    v2 = 0;
+    draggingDataSourceIndexPaths = 0;
   }
 
-  return v2;
+  return draggingDataSourceIndexPaths;
 }
 
 - (id)dragFromIndexPath
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(_UICollectionViewDragSourceController *)a1 dragState];
-    v2 = [(_UICollectionViewDragSourceControllerDragState *)v1 dragFromDataSourceIndexPath];
+    dragState = [(_UICollectionViewDragSourceController *)self dragState];
+    dragFromDataSourceIndexPath = [(_UICollectionViewDragSourceControllerDragState *)dragState dragFromDataSourceIndexPath];
   }
 
   else
   {
-    v2 = 0;
+    dragFromDataSourceIndexPath = 0;
   }
 
-  return v2;
+  return dragFromDataSourceIndexPath;
 }
 
 - (uint64_t)dragItemsCreatedForReordering
 {
-  if (a1)
+  if (self)
   {
-    v1 = [(_UICollectionViewDragSourceController *)a1 dragState];
-    if (v1)
+    dragState = [(_UICollectionViewDragSourceController *)self dragState];
+    if (dragState)
     {
-      v2 = v1[8];
+      v2 = dragState[8];
     }
 
     else
@@ -311,44 +311,44 @@ LABEL_7:
   return v2 & 1;
 }
 
-- (id)indexPathForDragItem:(id *)a1
+- (id)indexPathForDragItem:(id *)item
 {
-  v2 = a1;
-  if (a1)
+  itemCopy = item;
+  if (item)
   {
     v3 = a2;
-    v4 = [(_UICollectionViewDragSourceController *)v2 dragState];
-    WeakRetained = objc_loadWeakRetained(v2 + 1);
-    v2 = [(_UICollectionViewDragSourceControllerDragState *)v4 dataSourceIndexPathForDragItem:v3 forCollectionView:WeakRetained];
+    dragState = [(_UICollectionViewDragSourceController *)itemCopy dragState];
+    WeakRetained = objc_loadWeakRetained(itemCopy + 1);
+    itemCopy = [(_UICollectionViewDragSourceControllerDragState *)dragState dataSourceIndexPathForDragItem:v3 forCollectionView:WeakRetained];
   }
 
-  return v2;
+  return itemCopy;
 }
 
-- (void)setDragInteractionEnabled:(uint64_t)a1
+- (void)setDragInteractionEnabled:(uint64_t)enabled
 {
-  if (a1)
+  if (enabled)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
+    WeakRetained = objc_loadWeakRetained((enabled + 16));
     [WeakRetained setEnabled:a2];
   }
 }
 
-- (void)attemptToBeginDragImmediatelyWithTouch:(uint64_t)a1
+- (void)attemptToBeginDragImmediatelyWithTouch:(uint64_t)touch
 {
-  if (a1)
+  if (touch)
   {
     v3 = a2;
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
+    WeakRetained = objc_loadWeakRetained((touch + 16));
     [WeakRetained _immediatelyBeginDragWithTouch:v3 completion:0];
   }
 }
 
-- (id)dragInteraction:(id)a3 itemsForBeginningSession:(id)a4
+- (id)dragInteraction:(id)interaction itemsForBeginningSession:(id)session
 {
   v59 = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v6 = a4;
+  interactionCopy = interaction;
+  sessionCopy = session;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_collectionView);
@@ -364,7 +364,7 @@ LABEL_7:
   {
     [_UICollectionViewDragSourceController setSessionState:?];
     [_UICollectionViewDragSourceController setDragState:?];
-    [v6 locationInView:WeakRetained];
+    [sessionCopy locationInView:WeakRetained];
     v34 = [WeakRetained indexPathForItemAtPoint:?];
     v8 = MEMORY[0x1E695E0F0];
     if (v34)
@@ -386,7 +386,7 @@ LABEL_7:
       [v48 performUsingPresentationValues:v47];
       if ([v51[5] containsObject:v34] && (v10 = objc_loadWeakRetained(&self->_delegate)) != 0 && (v11 = v10[41], v10, (v11 & 1) != 0))
       {
-        v12 = [(_UICollectionViewDragSourceController *)self _filterCandidateIndexPaths:v51[5] forUserSelectedIndexPath:v34 session:v6];
+        v12 = [(_UICollectionViewDragSourceController *)self _filterCandidateIndexPaths:v51[5] forUserSelectedIndexPath:v34 session:sessionCopy];
         [v9 addObjectsFromArray:v12];
       }
 
@@ -417,7 +417,7 @@ LABEL_7:
             }
 
             v18 = *(*(&v43 + 1) + 8 * i);
-            v19 = [(_UICollectionViewDragSourceController *)self _queryForItemsFromClientForSession:v6 dataSourceIndexPath:v18 location:1 isInitialQuery:v15, v16];
+            v19 = [(_UICollectionViewDragSourceController *)self _queryForItemsFromClientForSession:sessionCopy dataSourceIndexPath:v18 location:1 isInitialQuery:v15, v16];
             [(_UICollectionViewDragSourceController *)self _addDragItemsToExistingSession:v19 forDataSourceIndexPath:v18];
             [v8 addObjectsFromArray:v19];
           }
@@ -469,10 +469,10 @@ LABEL_7:
 
         if ([v8 count])
         {
-          v27 = [(_UICollectionViewDragSourceController *)self dragState];
-          if (v27)
+          dragState = [(_UICollectionViewDragSourceController *)self dragState];
+          if (dragState)
           {
-            v27[8] = 1;
+            dragState[8] = 1;
           }
         }
       }
@@ -487,9 +487,9 @@ LABEL_7:
         v28 = 0;
       }
 
-      v29 = [(_UICollectionViewDragSourceController *)self dragState];
-      v30 = [(_UICollectionViewDragSourceControllerDragState *)v29 draggingDataSourceIndexPaths];
-      [(_UICollectionViewDragAndDropController *)v28 dragSourceController:v30 didUpdateItemsAtIndexPaths:?];
+      dragState2 = [(_UICollectionViewDragSourceController *)self dragState];
+      draggingDataSourceIndexPaths = [(_UICollectionViewDragSourceControllerDragState *)dragState2 draggingDataSourceIndexPaths];
+      [(_UICollectionViewDragAndDropController *)v28 dragSourceController:draggingDataSourceIndexPaths didUpdateItemsAtIndexPaths:?];
 
       _Block_object_dispose(&v50, 8);
     }
@@ -503,26 +503,26 @@ LABEL_7:
   return v8;
 }
 
-- (void)setSessionState:(uint64_t)a1
+- (void)setSessionState:(uint64_t)state
 {
-  if (a1)
+  if (state)
   {
-    objc_storeStrong((a1 + 32), 0);
+    objc_storeStrong((state + 32), 0);
   }
 }
 
-- (void)setDragState:(uint64_t)a1
+- (void)setDragState:(uint64_t)state
 {
-  if (a1)
+  if (state)
   {
-    objc_storeStrong((a1 + 40), 0);
+    objc_storeStrong((state + 40), 0);
   }
 }
 
-- (id)dragInteraction:(id)a3 previewForLiftingItem:(id)a4 session:(id)a5
+- (id)dragInteraction:(id)interaction previewForLiftingItem:(id)item session:(id)session
 {
-  v6 = a4;
-  v7 = [(_UICollectionViewDragSourceController *)self dragState];
+  itemCopy = item;
+  dragState = [(_UICollectionViewDragSourceController *)self dragState];
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_collectionView);
@@ -533,7 +533,7 @@ LABEL_7:
     WeakRetained = 0;
   }
 
-  v9 = [(_UICollectionViewDragSourceControllerDragState *)v7 dataSourceIndexPathForDragItem:v6 forCollectionView:WeakRetained];
+  v9 = [(_UICollectionViewDragSourceControllerDragState *)dragState dataSourceIndexPathForDragItem:itemCopy forCollectionView:WeakRetained];
 
   if (v9)
   {
@@ -580,13 +580,13 @@ LABEL_7:
   return v16;
 }
 
-- (void)dragInteraction:(id)a3 willAnimateLiftWithAnimator:(id)a4 session:(id)a5
+- (void)dragInteraction:(id)interaction willAnimateLiftWithAnimator:(id)animator session:(id)session
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_UICollectionViewDragSourceController *)self dragState];
-  v12 = [(_UICollectionViewDragSourceControllerDragState *)v11 draggingDataSourceIndexPaths];
+  interactionCopy = interaction;
+  animatorCopy = animator;
+  sessionCopy = session;
+  dragState = [(_UICollectionViewDragSourceController *)self dragState];
+  draggingDataSourceIndexPaths = [(_UICollectionViewDragSourceControllerDragState *)dragState draggingDataSourceIndexPaths];
 
   objc_initWeak(&location, self);
   v18[0] = MEMORY[0x1E69E9820];
@@ -594,9 +594,9 @@ LABEL_7:
   v18[2] = __93___UICollectionViewDragSourceController_dragInteraction_willAnimateLiftWithAnimator_session___block_invoke;
   v18[3] = &unk_1E70F2F80;
   objc_copyWeak(&v20, &location);
-  v13 = v12;
+  v13 = draggingDataSourceIndexPaths;
   v19 = v13;
-  [v9 addAnimations:v18];
+  [animatorCopy addAnimations:v18];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __93___UICollectionViewDragSourceController_dragInteraction_willAnimateLiftWithAnimator_session___block_invoke_2;
@@ -604,22 +604,22 @@ LABEL_7:
   objc_copyWeak(&v17, &location);
   v14 = v13;
   v16 = v14;
-  [v9 addCompletion:v15];
+  [animatorCopy addCompletion:v15];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&v20);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)dragInteraction:(id)a3 prefersFullSizePreviewsForSession:(id)a4
+- (BOOL)dragInteraction:(id)interaction prefersFullSizePreviewsForSession:(id)session
 {
-  v5 = a4;
-  v6 = [(_UICollectionViewDragSourceController *)self _dragDelegateActual];
+  sessionCopy = session;
+  _dragDelegateActual = [(_UICollectionViewDragSourceController *)self _dragDelegateActual];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(_UICollectionViewDragSourceController *)self _dragDelegateProxy];
+    _dragDelegateProxy = [(_UICollectionViewDragSourceController *)self _dragDelegateProxy];
     if (self)
     {
       WeakRetained = objc_loadWeakRetained(&self->_collectionView);
@@ -630,7 +630,7 @@ LABEL_7:
       WeakRetained = 0;
     }
 
-    v10 = [v8 _collectionView:WeakRetained prefersFullSizePreviewsForDragSession:v5];
+    v10 = [_dragDelegateProxy _collectionView:WeakRetained prefersFullSizePreviewsForDragSession:sessionCopy];
   }
 
   else
@@ -641,17 +641,17 @@ LABEL_7:
   return v10;
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 willEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation
 {
-  v6 = self;
-  v7 = [(_UICollectionViewDragSourceController *)self dragState];
-  v9 = [(_UICollectionViewDragSourceControllerDragState *)v7 draggingDataSourceIndexPaths];
+  selfCopy = self;
+  dragState = [(_UICollectionViewDragSourceController *)self dragState];
+  draggingDataSourceIndexPaths = [(_UICollectionViewDragSourceControllerDragState *)dragState draggingDataSourceIndexPaths];
 
-  if (v6)
+  if (selfCopy)
   {
-    WeakRetained = objc_loadWeakRetained(&v6->_delegate);
-    v6 = WeakRetained;
-    if (a5 <= 1)
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
+    selfCopy = WeakRetained;
+    if (operation <= 1)
     {
       if (WeakRetained)
       {
@@ -661,11 +661,11 @@ LABEL_7:
   }
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 didEndWithOperation:(unint64_t)a5
+- (void)dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation
 {
-  v15 = a4;
-  v6 = [(_UICollectionViewDragSourceController *)self dragState];
-  v7 = [(_UICollectionViewDragSourceControllerDragState *)v6 draggingDataSourceIndexPaths];
+  sessionCopy = session;
+  dragState = [(_UICollectionViewDragSourceController *)self dragState];
+  draggingDataSourceIndexPaths = [(_UICollectionViewDragSourceControllerDragState *)dragState draggingDataSourceIndexPaths];
 
   [_UICollectionViewDragSourceController setSessionState:?];
   [_UICollectionViewDragSourceController setDragState:?];
@@ -681,7 +681,7 @@ LABEL_7:
 
   [_UICollectionViewDragAndDropController dragSourceController:? didEndForItemsAtIndexPaths:?];
 
-  v9 = [(_UICollectionViewDragSourceController *)self _dragDelegateActual];
+  _dragDelegateActual = [(_UICollectionViewDragSourceController *)self _dragDelegateActual];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
@@ -696,18 +696,18 @@ LABEL_7:
       v11 = 0;
     }
 
-    v12 = [v11 _dragDelegateProxy];
+    _dragDelegateProxy = [v11 _dragDelegateProxy];
     if (self)
     {
       self = objc_loadWeakRetained(&self->_collectionView);
     }
 
-    [v12 collectionView:self dragSessionDidEnd:v15];
+    [_dragDelegateProxy collectionView:self dragSessionDidEnd:sessionCopy];
   }
 
   else
   {
-    v13 = [(_UICollectionViewDragSourceController *)self _dragSourceDelegateActual];
+    _dragSourceDelegateActual = [(_UICollectionViewDragSourceController *)self _dragSourceDelegateActual];
     v14 = objc_opt_respondsToSelector();
 
     if ((v14 & 1) == 0)
@@ -725,24 +725,24 @@ LABEL_7:
       v11 = 0;
     }
 
-    v12 = [v11 _dragSourceDelegateProxy];
+    _dragDelegateProxy = [v11 _dragSourceDelegateProxy];
     if (self)
     {
       self = objc_loadWeakRetained(&self->_collectionView);
     }
 
-    [v12 _collectionView:self dragSessionDidEnd:v15];
+    [_dragDelegateProxy _collectionView:self dragSessionDidEnd:sessionCopy];
   }
 
 LABEL_16:
 }
 
-- (id)dragInteraction:(id)a3 itemsForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5
+- (id)dragInteraction:(id)interaction itemsForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a3;
-  v10 = a4;
+  y = point.y;
+  x = point.x;
+  interactionCopy = interaction;
+  sessionCopy = session;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_collectionView);
@@ -755,18 +755,18 @@ LABEL_16:
 
   v12 = [WeakRetained indexPathForItemAtPoint:{x, y}];
 
-  if (!v12 || (-[_UICollectionViewDragSourceController dragState](self), (v13 = objc_claimAutoreleasedReturnValue()) != 0) && (v14 = v13, v15 = v12, [v14 dataSourceIndexPathsOfDraggingItems], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "containsObject:", v15), v15, v16, v14, (v17 & 1) != 0) || _UIShouldEnforceOpenInRulesInAccountBasedApp() && (v18 = objc_msgSend(v10, "_dataOwner"), v18 != -[_UICollectionViewDragSourceController _dataOwnerForDragSession:atIndexPath:](self, "_dataOwnerForDragSession:atIndexPath:", v10, v12)))
+  if (!v12 || (-[_UICollectionViewDragSourceController dragState](self), (v13 = objc_claimAutoreleasedReturnValue()) != 0) && (v14 = v13, v15 = v12, [v14 dataSourceIndexPathsOfDraggingItems], v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "containsObject:", v15), v15, v16, v14, (v17 & 1) != 0) || _UIShouldEnforceOpenInRulesInAccountBasedApp() && (v18 = objc_msgSend(sessionCopy, "_dataOwner"), v18 != -[_UICollectionViewDragSourceController _dataOwnerForDragSession:atIndexPath:](self, "_dataOwnerForDragSession:atIndexPath:", sessionCopy, v12)))
   {
     v19 = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v19 = [(_UICollectionViewDragSourceController *)self _queryForItemsFromClientForSession:v10 dataSourceIndexPath:v12 location:0 isInitialQuery:x, y];
+    v19 = [(_UICollectionViewDragSourceController *)self _queryForItemsFromClientForSession:sessionCopy dataSourceIndexPath:v12 location:0 isInitialQuery:x, y];
     [(_UICollectionViewDragSourceController *)self _addDragItemsToExistingSession:v19 forDataSourceIndexPath:v12];
-    v20 = [(_UICollectionViewDragSourceController *)self sessionState];
-    v21 = v20;
-    if (v20 && (v22 = *(v20 + 8)) != 0)
+    sessionState = [(_UICollectionViewDragSourceController *)self sessionState];
+    v21 = sessionState;
+    if (sessionState && (v22 = *(sessionState + 8)) != 0)
     {
     }
 
@@ -776,7 +776,7 @@ LABEL_16:
 
       if (v24)
       {
-        [(_UICollectionViewDragSourceController *)self _sessionWillBegin:v10 forDragInteraction:v9];
+        [(_UICollectionViewDragSourceController *)self _sessionWillBegin:sessionCopy forDragInteraction:interactionCopy];
       }
     }
   }
@@ -784,14 +784,14 @@ LABEL_16:
   return v19;
 }
 
-- (id)dragInteraction:(id)a3 sessionForAddingItems:(id)a4 withTouchAtPoint:(CGPoint)a5
+- (id)dragInteraction:(id)interaction sessionForAddingItems:(id)items withTouchAtPoint:(CGPoint)point
 {
-  v6 = a4;
-  v7 = [(_UICollectionViewDragSourceController *)self sessionState];
-  v8 = v7;
-  if (v7)
+  itemsCopy = items;
+  sessionState = [(_UICollectionViewDragSourceController *)self sessionState];
+  v8 = sessionState;
+  if (sessionState)
   {
-    v9 = *(v7 + 8);
+    v9 = *(sessionState + 8);
   }
 
   else
@@ -799,15 +799,15 @@ LABEL_16:
     v9 = 0;
   }
 
-  v10 = [v6 containsObject:v9];
+  v10 = [itemsCopy containsObject:v9];
 
   if (v10)
   {
-    v11 = [(_UICollectionViewDragSourceController *)self sessionState];
-    v12 = v11;
-    if (v11)
+    sessionState2 = [(_UICollectionViewDragSourceController *)self sessionState];
+    v12 = sessionState2;
+    if (sessionState2)
     {
-      v13 = *(v11 + 8);
+      v13 = *(sessionState2 + 8);
     }
 
     else
@@ -815,23 +815,23 @@ LABEL_16:
       v13 = 0;
     }
 
-    v14 = v13;
+    firstObject = v13;
   }
 
-  else if ([v6 count] == 1)
+  else if ([itemsCopy count] == 1)
   {
-    v14 = [v6 firstObject];
+    firstObject = [itemsCopy firstObject];
   }
 
   else
   {
-    v14 = 0;
+    firstObject = 0;
   }
 
-  return v14;
+  return firstObject;
 }
 
-- (void)dragInteraction:(id)a3 session:(id)a4 willAddItems:(id)a5 forInteraction:(id)a6
+- (void)dragInteraction:(id)interaction session:(id)session willAddItems:(id)items forInteraction:(id)forInteraction
 {
   if (self)
   {
@@ -843,8 +843,8 @@ LABEL_16:
     WeakRetained = 0;
   }
 
-  v7 = [(_UICollectionViewDragSourceController *)self dragFromIndexPaths];
-  v8 = [v7 count];
+  dragFromIndexPaths = [(_UICollectionViewDragSourceController *)self dragFromIndexPaths];
+  v8 = [dragFromIndexPaths count];
   if (WeakRetained)
   {
     [(_UICollectionViewDragDestinationController *)WeakRetained[6] dragSourceSelectedItemCountDidChangeWithCount:v8];
@@ -852,10 +852,10 @@ LABEL_16:
   }
 }
 
-- (id)dragInteraction:(id)a3 previewForCancellingItem:(id)a4 withDefault:(id)a5
+- (id)dragInteraction:(id)interaction previewForCancellingItem:(id)item withDefault:(id)default
 {
-  v6 = a4;
-  v7 = [(_UICollectionViewDragSourceController *)self dragState];
+  itemCopy = item;
+  dragState = [(_UICollectionViewDragSourceController *)self dragState];
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_collectionView);
@@ -866,7 +866,7 @@ LABEL_16:
     WeakRetained = 0;
   }
 
-  v9 = [(_UICollectionViewDragSourceControllerDragState *)v7 dataSourceIndexPathForDragItem:v6 forCollectionView:WeakRetained];
+  v9 = [(_UICollectionViewDragSourceControllerDragState *)dragState dataSourceIndexPathForDragItem:itemCopy forCollectionView:WeakRetained];
 
   if (v9)
   {
@@ -884,9 +884,9 @@ LABEL_16:
 
     if (v11)
     {
-      v12 = [v11 window];
+      window = [v11 window];
 
-      if (v12)
+      if (window)
       {
         v13 = [(_UICollectionViewDragSourceController *)self _previewParametersForItemAtIndexPath:v9];
         v14 = [UITargetedDragPreview alloc];
@@ -900,13 +900,13 @@ LABEL_16:
           v15 = [(UITargetedDragPreview *)v14 initWithView:v11];
         }
 
-        v12 = v15;
+        window = v15;
       }
     }
 
     else
     {
-      v12 = 0;
+      window = 0;
     }
 
     if (self)
@@ -924,18 +924,18 @@ LABEL_16:
 
   else
   {
-    v12 = 0;
+    window = 0;
   }
 
-  return v12;
+  return window;
 }
 
-- (void)dragInteraction:(id)a3 item:(id)a4 willAnimateCancelWithAnimator:(id)a5
+- (void)dragInteraction:(id)interaction item:(id)item willAnimateCancelWithAnimator:(id)animator
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  v9 = [(_UICollectionViewDragSourceController *)self dragState];
+  itemCopy = item;
+  animatorCopy = animator;
+  dragState = [(_UICollectionViewDragSourceController *)self dragState];
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_collectionView);
@@ -946,7 +946,7 @@ LABEL_16:
     WeakRetained = 0;
   }
 
-  v11 = [(_UICollectionViewDragSourceControllerDragState *)v9 dataSourceIndexPathForDragItem:v7 forCollectionView:WeakRetained];
+  v11 = [(_UICollectionViewDragSourceControllerDragState *)dragState dataSourceIndexPathForDragItem:itemCopy forCollectionView:WeakRetained];
 
   if (v11)
   {
@@ -955,7 +955,7 @@ LABEL_16:
       v12 = objc_loadWeakRetained(&self->_delegate);
       v18[0] = v11;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-      [(_UICollectionViewDragAndDropController *)v12 dragSourceController:v13 willBeginAnimatingCancelForItemsAtIndexPaths:v8 withAnimator:?];
+      [(_UICollectionViewDragAndDropController *)v12 dragSourceController:v13 willBeginAnimatingCancelForItemsAtIndexPaths:animatorCopy withAnimator:?];
 
       v14 = objc_loadWeakRetained(&self->_delegate);
     }
@@ -964,12 +964,12 @@ LABEL_16:
     {
       v18[0] = v11;
       v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-      [(_UICollectionViewDragAndDropController *)0 dragSourceController:v15 willBeginAnimatingCancelForItemsAtIndexPaths:v8 withAnimator:?];
+      [(_UICollectionViewDragAndDropController *)0 dragSourceController:v15 willBeginAnimatingCancelForItemsAtIndexPaths:animatorCopy withAnimator:?];
 
       v14 = 0;
     }
 
-    [(_UICollectionViewDragAndDropController *)v14 _performCancelDropToIndexPath:v11 forDragItem:v7];
+    [(_UICollectionViewDragAndDropController *)v14 _performCancelDropToIndexPath:v11 forDragItem:itemCopy];
 
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
@@ -977,19 +977,19 @@ LABEL_16:
     v16[3] = &unk_1E71003B0;
     v16[4] = self;
     v17 = v11;
-    [v8 addCompletion:v16];
+    [animatorCopy addCompletion:v16];
   }
 }
 
-- (BOOL)dragInteraction:(id)a3 sessionAllowsMoveOperation:(id)a4
+- (BOOL)dragInteraction:(id)interaction sessionAllowsMoveOperation:(id)operation
 {
-  v5 = a4;
-  v6 = [(_UICollectionViewDragSourceController *)self _dragDelegateActual];
+  operationCopy = operation;
+  _dragDelegateActual = [(_UICollectionViewDragSourceController *)self _dragDelegateActual];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(_UICollectionViewDragSourceController *)self _dragDelegateProxy];
+    _dragDelegateProxy = [(_UICollectionViewDragSourceController *)self _dragDelegateProxy];
     if (self)
     {
       WeakRetained = objc_loadWeakRetained(&self->_collectionView);
@@ -1000,7 +1000,7 @@ LABEL_16:
       WeakRetained = 0;
     }
 
-    v10 = [v8 collectionView:WeakRetained dragSessionAllowsMoveOperation:v5];
+    v10 = [_dragDelegateProxy collectionView:WeakRetained dragSessionAllowsMoveOperation:operationCopy];
   }
 
   else
@@ -1011,15 +1011,15 @@ LABEL_16:
   return v10;
 }
 
-- (BOOL)dragInteraction:(id)a3 sessionIsRestrictedToDraggingApplication:(id)a4
+- (BOOL)dragInteraction:(id)interaction sessionIsRestrictedToDraggingApplication:(id)application
 {
-  v5 = a4;
-  v6 = [(_UICollectionViewDragSourceController *)self _dragDelegateActual];
+  applicationCopy = application;
+  _dragDelegateActual = [(_UICollectionViewDragSourceController *)self _dragDelegateActual];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(_UICollectionViewDragSourceController *)self _dragDelegateProxy];
+    _dragDelegateProxy = [(_UICollectionViewDragSourceController *)self _dragDelegateProxy];
     if (self)
     {
       WeakRetained = objc_loadWeakRetained(&self->_collectionView);
@@ -1030,7 +1030,7 @@ LABEL_16:
       WeakRetained = 0;
     }
 
-    v10 = [v8 collectionView:WeakRetained dragSessionIsRestrictedToDraggingApplication:v5];
+    v10 = [_dragDelegateProxy collectionView:WeakRetained dragSessionIsRestrictedToDraggingApplication:applicationCopy];
   }
 
   else
@@ -1041,10 +1041,10 @@ LABEL_16:
   return v10;
 }
 
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForSession:(id)a4
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  interactionCopy = interaction;
+  sessionCopy = session;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_collectionView);
@@ -1055,7 +1055,7 @@ LABEL_16:
     WeakRetained = 0;
   }
 
-  [v7 locationInView:WeakRetained];
+  [sessionCopy locationInView:WeakRetained];
   v10 = v9;
   v12 = v11;
 
@@ -1071,15 +1071,15 @@ LABEL_16:
 
   v14 = [v13 indexPathForItemAtPoint:{v10, v12}];
 
-  v15 = [(_UICollectionViewDragSourceController *)self _dataOwnerForDragSession:v7 atIndexPath:v14];
+  v15 = [(_UICollectionViewDragSourceController *)self _dataOwnerForDragSession:sessionCopy atIndexPath:v14];
   return v15;
 }
 
-- (int64_t)_dragInteraction:(id)a3 dataOwnerForAddingToSession:(id)a4 withTouchAtPoint:(CGPoint)a5
+- (int64_t)_dragInteraction:(id)interaction dataOwnerForAddingToSession:(id)session withTouchAtPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a4;
+  y = point.y;
+  x = point.x;
+  sessionCopy = session;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_collectionView);
@@ -1092,31 +1092,31 @@ LABEL_16:
 
   v10 = [WeakRetained indexPathForItemAtPoint:{x, y}];
 
-  v11 = [(_UICollectionViewDragSourceController *)self _dataOwnerForDragSession:v8 atIndexPath:v10];
+  v11 = [(_UICollectionViewDragSourceController *)self _dataOwnerForDragSession:sessionCopy atIndexPath:v10];
   return v11;
 }
 
-- (id)_dragInteraction:(id)a3 sessionPropertiesForSession:(id)a4
+- (id)_dragInteraction:(id)interaction sessionPropertiesForSession:(id)session
 {
-  v5 = a4;
-  v6 = [(_UICollectionViewDragSourceController *)self _dragDelegateActual];
+  sessionCopy = session;
+  _dragDelegateActual = [(_UICollectionViewDragSourceController *)self _dragDelegateActual];
   v7 = objc_opt_respondsToSelector();
 
-  if ((v7 & 1) == 0 || ((-[_UICollectionViewDragSourceController _dragDelegateProxy](self, "_dragDelegateProxy"), v8 = objc_claimAutoreleasedReturnValue(), !self) ? (WeakRetained = 0) : (WeakRetained = objc_loadWeakRetained(&self->_collectionView)), [v8 _collectionView:WeakRetained dragSessionPropertiesForSession:v5], v10 = objc_claimAutoreleasedReturnValue(), WeakRetained, v8, !v10))
+  if ((v7 & 1) == 0 || ((-[_UICollectionViewDragSourceController _dragDelegateProxy](self, "_dragDelegateProxy"), v8 = objc_claimAutoreleasedReturnValue(), !self) ? (WeakRetained = 0) : (WeakRetained = objc_loadWeakRetained(&self->_collectionView)), [v8 _collectionView:WeakRetained dragSessionPropertiesForSession:sessionCopy], v10 = objc_claimAutoreleasedReturnValue(), WeakRetained, v8, !v10))
   {
-    v11 = [(_UICollectionViewDragSourceController *)self _dragDelegateActual];
+    _dragDelegateActual2 = [(_UICollectionViewDragSourceController *)self _dragDelegateActual];
     v12 = objc_opt_respondsToSelector();
 
     if (v12)
     {
       v10 = objc_opt_new();
-      v13 = [(_UICollectionViewDragSourceController *)self _dragDelegateProxy];
+      _dragDelegateProxy = [(_UICollectionViewDragSourceController *)self _dragDelegateProxy];
       if (self)
       {
         self = objc_loadWeakRetained(&self->_collectionView);
       }
 
-      [v10 set_supportsSystemDrag:{objc_msgSend(v13, "_collectionView:dragSessionSupportsSystemDrag:", self, v5)}];
+      [v10 set_supportsSystemDrag:{objc_msgSend(_dragDelegateProxy, "_collectionView:dragSessionSupportsSystemDrag:", self, sessionCopy)}];
     }
 
     else
@@ -1128,13 +1128,13 @@ LABEL_16:
   return v10;
 }
 
-- (int64_t)_dataOwnerForDragSession:(id)a3 atIndexPath:(id)a4
+- (int64_t)_dataOwnerForDragSession:(id)session atIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7 && ([(_UICollectionViewDragSourceController *)self _dragDelegateActual], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_opt_respondsToSelector(), v8, (v9 & 1) != 0))
+  sessionCopy = session;
+  pathCopy = path;
+  if (pathCopy && ([(_UICollectionViewDragSourceController *)self _dragDelegateActual], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_opt_respondsToSelector(), v8, (v9 & 1) != 0))
   {
-    v10 = [(_UICollectionViewDragSourceController *)self _dragDelegateProxy];
+    _dragDelegateProxy = [(_UICollectionViewDragSourceController *)self _dragDelegateProxy];
     if (self)
     {
       WeakRetained = objc_loadWeakRetained(&self->_collectionView);
@@ -1145,7 +1145,7 @@ LABEL_16:
       WeakRetained = 0;
     }
 
-    v12 = [v10 _collectionView:WeakRetained dataOwnerForDragSession:v6 atIndexPath:v7];
+    v12 = [_dragDelegateProxy _collectionView:WeakRetained dataOwnerForDragSession:sessionCopy atIndexPath:pathCopy];
   }
 
   else
@@ -1168,9 +1168,9 @@ LABEL_16:
     WeakRetained = 0;
   }
 
-  v3 = [WeakRetained _dragDelegateActual];
+  _dragDelegateActual = [WeakRetained _dragDelegateActual];
 
-  return v3;
+  return _dragDelegateActual;
 }
 
 - (id)_dragDelegateProxy
@@ -1185,9 +1185,9 @@ LABEL_16:
     WeakRetained = 0;
   }
 
-  v3 = [WeakRetained _dragDelegateProxy];
+  _dragDelegateProxy = [WeakRetained _dragDelegateProxy];
 
-  return v3;
+  return _dragDelegateProxy;
 }
 
 - (id)_dragSourceDelegateActual
@@ -1202,9 +1202,9 @@ LABEL_16:
     WeakRetained = 0;
   }
 
-  v3 = [WeakRetained _dragSourceDelegateActual];
+  _dragSourceDelegateActual = [WeakRetained _dragSourceDelegateActual];
 
-  return v3;
+  return _dragSourceDelegateActual;
 }
 
 - (id)_dragSourceDelegateProxy
@@ -1219,19 +1219,19 @@ LABEL_16:
     WeakRetained = 0;
   }
 
-  v3 = [WeakRetained _dragSourceDelegateProxy];
+  _dragSourceDelegateProxy = [WeakRetained _dragSourceDelegateProxy];
 
-  return v3;
+  return _dragSourceDelegateProxy;
 }
 
-- (BOOL)_delegateImplementsSelector:(SEL)a3
+- (BOOL)_delegateImplementsSelector:(SEL)selector
 {
   WeakRetained = objc_loadWeakRetained(&self->_collectionView);
-  v5 = [WeakRetained _dragSourceDelegateActual];
-  if (v5)
+  _dragSourceDelegateActual = [WeakRetained _dragSourceDelegateActual];
+  if (_dragSourceDelegateActual)
   {
     v6 = objc_loadWeakRetained(&self->_collectionView);
-    v7 = [v6 _dragSourceDelegateActual];
+    _dragSourceDelegateActual2 = [v6 _dragSourceDelegateActual];
     v8 = objc_opt_respondsToSelector();
   }
 
@@ -1243,36 +1243,36 @@ LABEL_16:
   return v8 & 1;
 }
 
-- (void)_addDragItemsToExistingSession:(id)a3 forDataSourceIndexPath:(id)a4
+- (void)_addDragItemsToExistingSession:(id)session forDataSourceIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  sessionCopy = session;
+  pathCopy = path;
+  if ([sessionCopy count])
   {
     v11 = MEMORY[0x1E69E9820];
     v12 = 3221225472;
     v13 = __95___UICollectionViewDragSourceController__addDragItemsToExistingSession_forDataSourceIndexPath___block_invoke;
     v14 = &unk_1E71004E0;
-    v15 = self;
-    v8 = v7;
+    selfCopy = self;
+    v8 = pathCopy;
     v16 = v8;
-    [v6 enumerateObjectsUsingBlock:&v11];
-    v9 = [(_UICollectionViewDragSourceController *)self dragState];
-    v10 = v9;
-    if (v8 && v9)
+    [sessionCopy enumerateObjectsUsingBlock:&v11];
+    dragState = [(_UICollectionViewDragSourceController *)self dragState];
+    v10 = dragState;
+    if (v8 && dragState)
     {
-      [*(v9 + 16) addObject:{v8, v11, v12, v13, v14, v15}];
+      [*(dragState + 16) addObject:{v8, v11, v12, v13, v14, selfCopy}];
     }
   }
 }
 
-- (id)_queryForItemsFromClientForSession:(id)a3 dataSourceIndexPath:(id)a4 location:(CGPoint)a5 isInitialQuery:(BOOL)a6
+- (id)_queryForItemsFromClientForSession:(id)session dataSourceIndexPath:(id)path location:(CGPoint)location isInitialQuery:(BOOL)query
 {
-  v6 = a6;
-  y = a5.y;
-  x = a5.x;
-  v11 = a3;
-  v12 = a4;
+  queryCopy = query;
+  y = location.y;
+  x = location.x;
+  sessionCopy = session;
+  pathCopy = path;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -1283,42 +1283,42 @@ LABEL_16:
     WeakRetained = 0;
   }
 
-  v14 = [WeakRetained indexPathAfterShadowUpdates:v12];
+  v14 = [WeakRetained indexPathAfterShadowUpdates:pathCopy];
 
   if (v14)
   {
-    v15 = [(_UICollectionViewDragSourceController *)self _dragDelegateActual];
-    if (v6)
+    _dragDelegateActual = [(_UICollectionViewDragSourceController *)self _dragDelegateActual];
+    if (queryCopy)
     {
       v16 = objc_opt_respondsToSelector();
 
       if (v16)
       {
-        v17 = [(_UICollectionViewDragSourceController *)self _dragDelegateProxy];
+        _dragDelegateProxy = [(_UICollectionViewDragSourceController *)self _dragDelegateProxy];
         if (self)
         {
           self = objc_loadWeakRetained(&self->_collectionView);
         }
 
-        v18 = [v17 collectionView:self itemsForBeginningDragSession:v11 atIndexPath:v14];
+        v18 = [_dragDelegateProxy collectionView:self itemsForBeginningDragSession:sessionCopy atIndexPath:v14];
 LABEL_21:
         v24 = v18;
 
         goto LABEL_23;
       }
 
-      v20 = [(_UICollectionViewDragSourceController *)self _dragSourceDelegateActual];
+      _dragSourceDelegateActual = [(_UICollectionViewDragSourceController *)self _dragSourceDelegateActual];
       v21 = objc_opt_respondsToSelector();
 
       if (v21)
       {
-        v17 = [(_UICollectionViewDragSourceController *)self _dragSourceDelegateProxy];
+        _dragDelegateProxy = [(_UICollectionViewDragSourceController *)self _dragSourceDelegateProxy];
         if (self)
         {
           self = objc_loadWeakRetained(&self->_collectionView);
         }
 
-        v18 = [v17 _collectionView:self itemsForBeginningDragSession:v11 atIndexPath:v14];
+        v18 = [_dragDelegateProxy _collectionView:self itemsForBeginningDragSession:sessionCopy atIndexPath:v14];
         goto LABEL_21;
       }
     }
@@ -1329,28 +1329,28 @@ LABEL_21:
 
       if (v19)
       {
-        v17 = [(_UICollectionViewDragSourceController *)self _dragDelegateProxy];
+        _dragDelegateProxy = [(_UICollectionViewDragSourceController *)self _dragDelegateProxy];
         if (self)
         {
           self = objc_loadWeakRetained(&self->_collectionView);
         }
 
-        v18 = [v17 collectionView:self itemsForAddingToDragSession:v11 atIndexPath:v14 point:{x, y}];
+        v18 = [_dragDelegateProxy collectionView:self itemsForAddingToDragSession:sessionCopy atIndexPath:v14 point:{x, y}];
         goto LABEL_21;
       }
 
-      v22 = [(_UICollectionViewDragSourceController *)self _dragSourceDelegateActual];
+      _dragSourceDelegateActual2 = [(_UICollectionViewDragSourceController *)self _dragSourceDelegateActual];
       v23 = objc_opt_respondsToSelector();
 
       if (v23)
       {
-        v17 = [(_UICollectionViewDragSourceController *)self _dragSourceDelegateProxy];
+        _dragDelegateProxy = [(_UICollectionViewDragSourceController *)self _dragSourceDelegateProxy];
         if (self)
         {
           self = objc_loadWeakRetained(&self->_collectionView);
         }
 
-        v18 = [v17 _collectionView:self itemsForAddingToDragSession:v11 atIndexPath:v14 point:{x, y}];
+        v18 = [_dragDelegateProxy _collectionView:self itemsForAddingToDragSession:sessionCopy atIndexPath:v14 point:{x, y}];
         goto LABEL_21;
       }
     }
@@ -1362,9 +1362,9 @@ LABEL_23:
   return v24;
 }
 
-- (id)_previewParametersForItemAtIndexPath:(id)a3
+- (id)_previewParametersForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_collectionView);
@@ -1375,7 +1375,7 @@ LABEL_23:
     WeakRetained = 0;
   }
 
-  v6 = [WeakRetained _dragDelegateActual];
+  _dragDelegateActual = [WeakRetained _dragDelegateActual];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
@@ -1390,7 +1390,7 @@ LABEL_23:
       v8 = 0;
     }
 
-    v9 = [v8 _dragDelegateProxy];
+    _dragDelegateProxy = [v8 _dragDelegateProxy];
     if (self)
     {
       v10 = objc_loadWeakRetained(&self->_collectionView);
@@ -1401,7 +1401,7 @@ LABEL_23:
       v10 = 0;
     }
 
-    v11 = [v9 collectionView:v10 dragPreviewParametersForItemAtIndexPath:v4];
+    v11 = [_dragDelegateProxy collectionView:v10 dragPreviewParametersForItemAtIndexPath:pathCopy];
   }
 
   else
@@ -1416,7 +1416,7 @@ LABEL_23:
       v12 = 0;
     }
 
-    v13 = [v12 _dragSourceDelegateActual];
+    _dragSourceDelegateActual = [v12 _dragSourceDelegateActual];
     v14 = objc_opt_respondsToSelector();
 
     if ((v14 & 1) == 0)
@@ -1434,7 +1434,7 @@ LABEL_23:
       v8 = 0;
     }
 
-    v9 = [v8 _dragSourceDelegateProxy];
+    _dragDelegateProxy = [v8 _dragSourceDelegateProxy];
     if (self)
     {
       v10 = objc_loadWeakRetained(&self->_collectionView);
@@ -1445,7 +1445,7 @@ LABEL_23:
       v10 = 0;
     }
 
-    v11 = [v9 _collectionView:v10 liftingPreviewParametersForItemAtIndexPath:v4];
+    v11 = [_dragDelegateProxy _collectionView:v10 liftingPreviewParametersForItemAtIndexPath:pathCopy];
   }
 
   v15 = v11;
@@ -1463,13 +1463,13 @@ LABEL_18:
       v16 = 0;
     }
 
-    v17 = [v16 _cellForItemAtIndexPath:v4];
+    v17 = [v16 _cellForItemAtIndexPath:pathCopy];
 
-    v18 = [v17 _visiblePathForBackgroundConfiguration];
-    if (v18)
+    _visiblePathForBackgroundConfiguration = [v17 _visiblePathForBackgroundConfiguration];
+    if (_visiblePathForBackgroundConfiguration)
     {
       v15 = objc_alloc_init(UIDragPreviewParameters);
-      [(UIPreviewParameters *)v15 setVisiblePath:v18];
+      [(UIPreviewParameters *)v15 setVisiblePath:_visiblePathForBackgroundConfiguration];
     }
 
     else
@@ -1481,17 +1481,17 @@ LABEL_18:
   return v15;
 }
 
-- (void)_sessionWillBegin:(id)a3 forDragInteraction:(id)a4
+- (void)_sessionWillBegin:(id)begin forDragInteraction:(id)interaction
 {
-  v16 = a3;
-  v6 = [(_UICollectionViewDragSourceController *)self sessionState];
-  v7 = v6;
-  if (v6)
+  beginCopy = begin;
+  sessionState = [(_UICollectionViewDragSourceController *)self sessionState];
+  v7 = sessionState;
+  if (sessionState)
   {
-    objc_storeStrong((v6 + 8), a3);
+    objc_storeStrong((sessionState + 8), begin);
   }
 
-  v8 = [(_UICollectionViewDragSourceController *)self _dragDelegateActual];
+  _dragDelegateActual = [(_UICollectionViewDragSourceController *)self _dragDelegateActual];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
@@ -1506,7 +1506,7 @@ LABEL_18:
       WeakRetained = 0;
     }
 
-    v11 = [WeakRetained _dragDelegateProxy];
+    _dragDelegateProxy = [WeakRetained _dragDelegateProxy];
     if (self)
     {
       v12 = objc_loadWeakRetained(&self->_collectionView);
@@ -1517,13 +1517,13 @@ LABEL_18:
       v12 = 0;
     }
 
-    [v11 collectionView:v12 dragSessionWillBegin:v16];
+    [_dragDelegateProxy collectionView:v12 dragSessionWillBegin:beginCopy];
 LABEL_15:
 
     goto LABEL_16;
   }
 
-  v13 = [(_UICollectionViewDragSourceController *)self _dragSourceDelegateActual];
+  _dragSourceDelegateActual = [(_UICollectionViewDragSourceController *)self _dragSourceDelegateActual];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
@@ -1538,7 +1538,7 @@ LABEL_15:
       WeakRetained = 0;
     }
 
-    v11 = [WeakRetained _dragSourceDelegateProxy];
+    _dragDelegateProxy = [WeakRetained _dragSourceDelegateProxy];
     if (self)
     {
       v12 = objc_loadWeakRetained(&self->_collectionView);
@@ -1549,7 +1549,7 @@ LABEL_15:
       v12 = 0;
     }
 
-    [v11 _collectionView:v12 dragSessionWillBegin:v16];
+    [_dragDelegateProxy _collectionView:v12 dragSessionWillBegin:beginCopy];
     goto LABEL_15;
   }
 
@@ -1565,15 +1565,15 @@ LABEL_16:
   }
 }
 
-- (id)_filterCandidateIndexPaths:(id)a3 forUserSelectedIndexPath:(id)a4 session:(id)a5
+- (id)_filterCandidateIndexPaths:(id)paths forUserSelectedIndexPath:(id)path session:(id)session
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v30 = a5;
-  if (_UIShouldEnforceOpenInRulesInAccountBasedApp() & 1) != 0 && v9 && (!self ? (v10 = 0) : (v10 = objc_loadWeakRetained(&self->_collectionView)), [v10 _dragDelegateActual], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_opt_respondsToSelector(), v11, v10, (v12))
+  pathsCopy = paths;
+  pathCopy = path;
+  sessionCopy = session;
+  if (_UIShouldEnforceOpenInRulesInAccountBasedApp() & 1) != 0 && pathCopy && (!self ? (v10 = 0) : (v10 = objc_loadWeakRetained(&self->_collectionView)), [v10 _dragDelegateActual], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_opt_respondsToSelector(), v11, v10, (v12))
   {
-    v13 = [(_UICollectionViewDragSourceController *)self _dragDelegateProxy];
+    _dragDelegateProxy = [(_UICollectionViewDragSourceController *)self _dragDelegateProxy];
     if (self)
     {
       WeakRetained = objc_loadWeakRetained(&self->_collectionView);
@@ -1584,15 +1584,15 @@ LABEL_16:
       WeakRetained = 0;
     }
 
-    v15 = [v13 _collectionView:WeakRetained dataOwnerForDragSession:v30 atIndexPath:{v9, v9}];
+    v15 = [_dragDelegateProxy _collectionView:WeakRetained dataOwnerForDragSession:sessionCopy atIndexPath:{pathCopy, pathCopy}];
 
-    v28 = v8;
+    v28 = pathsCopy;
     v29 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v16 = v8;
+    v16 = pathsCopy;
     v17 = [v16 countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v17)
     {
@@ -1609,7 +1609,7 @@ LABEL_16:
           }
 
           v21 = *(*(&v31 + 1) + 8 * v20);
-          v22 = [(_UICollectionViewDragSourceController *)self _dragDelegateProxy];
+          _dragDelegateProxy2 = [(_UICollectionViewDragSourceController *)self _dragDelegateProxy];
           if (self)
           {
             v23 = objc_loadWeakRetained(&self->_collectionView);
@@ -1620,7 +1620,7 @@ LABEL_16:
             v23 = 0;
           }
 
-          v24 = [v22 _collectionView:v23 dataOwnerForDragSession:v30 atIndexPath:v21];
+          v24 = [_dragDelegateProxy2 _collectionView:v23 dataOwnerForDragSession:sessionCopy atIndexPath:v21];
 
           if (v24 == v15)
           {
@@ -1638,25 +1638,25 @@ LABEL_16:
       while (v25);
     }
 
-    v9 = v27;
-    v8 = v28;
+    pathCopy = v27;
+    pathsCopy = v28;
   }
 
   else
   {
-    v29 = v8;
+    v29 = pathsCopy;
   }
 
   return v29;
 }
 
-- (void)rebaseForUpdates:(void *)a1
+- (void)rebaseForUpdates:(void *)updates
 {
-  if (a1)
+  if (updates)
   {
     v3 = a2;
-    v4 = [(_UICollectionViewDragSourceController *)a1 dragState];
-    [(_UICollectionViewDragSourceControllerDragState *)v4 rebaseForUpdates:v3];
+    dragState = [(_UICollectionViewDragSourceController *)updates dragState];
+    [(_UICollectionViewDragSourceControllerDragState *)dragState rebaseForUpdates:v3];
   }
 }
 

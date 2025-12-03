@@ -3,11 +3,11 @@
 - (NSString)debugDescription;
 - (PKNANDataSession)init;
 - (id)queue;
-- (void)activateWithCompletion:(id)a3;
-- (void)dataSession:(id)a3 confirmedForPeerDataAddress:(id)a4 serviceSpecificInfo:(id)a5;
-- (void)dataSession:(id)a3 failedToStartWithError:(int64_t)a4;
-- (void)dataSession:(id)a3 terminatedWithReason:(int64_t)a4;
-- (void)dataSessionRequestStarted:(id)a3;
+- (void)activateWithCompletion:(id)completion;
+- (void)dataSession:(id)session confirmedForPeerDataAddress:(id)address serviceSpecificInfo:(id)info;
+- (void)dataSession:(id)session failedToStartWithError:(int64_t)error;
+- (void)dataSession:(id)session terminatedWithReason:(int64_t)reason;
+- (void)dataSessionRequestStarted:(id)started;
 - (void)invalidate;
 @end
 
@@ -22,20 +22,20 @@
 
 - (id)queue
 {
-  v3 = [(PKNANDataSession *)self dispatchQueue];
+  dispatchQueue = [(PKNANDataSession *)self dispatchQueue];
 
-  if (v3)
+  if (dispatchQueue)
   {
-    v4 = [(PKNANDataSession *)self dispatchQueue];
+    dispatchQueue2 = [(PKNANDataSession *)self dispatchQueue];
   }
 
   else
   {
-    v4 = &_dispatch_main_q;
+    dispatchQueue2 = &_dispatch_main_q;
     v5 = &_dispatch_main_q;
   }
 
-  return v4;
+  return dispatchQueue2;
 }
 
 - (NSString)debugDescription
@@ -49,13 +49,13 @@
   return v5;
 }
 
-- (void)dataSessionRequestStarted:(id)a3
+- (void)dataSessionRequestStarted:(id)started
 {
   v4 = NSStringFromSelector(a2);
   NSLog(@"%@: %@", self, v4);
 }
 
-- (void)dataSession:(id)a3 failedToStartWithError:(int64_t)a4
+- (void)dataSession:(id)session failedToStartWithError:(int64_t)error
 {
   v6 = NSStringFromSelector(a2);
   NSLog(@"%@: %@", self, v6);
@@ -67,12 +67,12 @@
   if (v7)
   {
     v17 = @"WiFiP2PError";
-    v9 = [NSNumber numberWithInteger:a4];
+    v9 = [NSNumber numberWithInteger:error];
     v18 = v9;
     v10 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
     v11 = [NSError errorWithDomain:NSPOSIXErrorDomain code:14 userInfo:v10];
 
-    v12 = [(PKNANDataSession *)self queue];
+    queue = [(PKNANDataSession *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10002C7CC;
@@ -80,44 +80,44 @@
     v15 = v11;
     v16 = v7;
     v13 = v11;
-    dispatch_async(v12, block);
+    dispatch_async(queue, block);
   }
 }
 
-- (void)dataSession:(id)a3 confirmedForPeerDataAddress:(id)a4 serviceSpecificInfo:(id)a5
+- (void)dataSession:(id)session confirmedForPeerDataAddress:(id)address serviceSpecificInfo:(id)info
 {
-  v9 = a4;
-  v10 = a5;
+  addressCopy = address;
+  infoCopy = info;
   v11 = NSStringFromSelector(a2);
   NSLog(@"%@: %@", self, v11);
 
-  objc_storeStrong(&self->_peerDataAddress, a4);
-  objc_storeStrong(&self->_serviceSpecificInfo, a5);
+  objc_storeStrong(&self->_peerDataAddress, address);
+  objc_storeStrong(&self->_serviceSpecificInfo, info);
   v12 = objc_retainBlock(self->_activateHandler);
   activateHandler = self->_activateHandler;
   self->_activateHandler = 0;
 
   if (v12)
   {
-    v14 = [(PKNANDataSession *)self queue];
+    queue = [(PKNANDataSession *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10002C938;
     block[3] = &unk_100095840;
     v16 = v12;
-    dispatch_async(v14, block);
+    dispatch_async(queue, block);
   }
 }
 
-- (void)dataSession:(id)a3 terminatedWithReason:(int64_t)a4
+- (void)dataSession:(id)session terminatedWithReason:(int64_t)reason
 {
-  v7 = a3;
+  sessionCopy = session;
   v8 = NSStringFromSelector(a2);
-  NSLog(@"%@: %@ - %d", self, v8, a4);
+  NSLog(@"%@: %@ - %d", self, v8, reason);
 
-  [v7 setDelegate:0];
+  [sessionCopy setDelegate:0];
   v24 = @"WiFiAwareTerminationReason";
-  v9 = [NSNumber numberWithInteger:a4];
+  v9 = [NSNumber numberWithInteger:reason];
   v25 = v9;
   v10 = [NSDictionary dictionaryWithObjects:&v25 forKeys:&v24 count:1];
   v11 = [NSError errorWithDomain:NSPOSIXErrorDomain code:14 userInfo:v10];
@@ -125,41 +125,41 @@
   if (self->_activateHandler)
   {
     NSLog(@"terminated without activation, so not sending to termination handler");
-    v12 = objc_retainBlock(self->_activateHandler);
+    terminationHandler = objc_retainBlock(self->_activateHandler);
     activateHandler = self->_activateHandler;
     self->_activateHandler = 0;
 
-    if (v12)
+    if (terminationHandler)
     {
-      v14 = [(PKNANDataSession *)self queue];
+      queue = [(PKNANDataSession *)self queue];
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_10002CC34;
       v21[3] = &unk_100095B90;
       v15 = &v23;
-      v12 = v12;
-      v23 = v12;
+      terminationHandler = terminationHandler;
+      v23 = terminationHandler;
       v16 = &v22;
       v22 = v11;
       v17 = v21;
 LABEL_6:
-      dispatch_async(v14, v17);
+      dispatch_async(queue, v17);
     }
   }
 
   else
   {
-    v12 = [(PKNANDataSession *)self terminationHandler];
-    if (v12)
+    terminationHandler = [(PKNANDataSession *)self terminationHandler];
+    if (terminationHandler)
     {
-      v14 = [(PKNANDataSession *)self queue];
+      queue = [(PKNANDataSession *)self queue];
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_10002CC48;
       block[3] = &unk_100095B90;
       v15 = &v20;
-      v12 = v12;
-      v20 = v12;
+      terminationHandler = terminationHandler;
+      v20 = terminationHandler;
       v16 = &v19;
       v19 = v11;
       v17 = block;
@@ -168,19 +168,19 @@ LABEL_6:
   }
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v16 = a3;
-  v4 = [(PKNANDataSession *)self passphrase];
-  v5 = [v4 length];
+  completionCopy = completion;
+  passphrase = [(PKNANDataSession *)self passphrase];
+  v5 = [passphrase length];
 
   if (v5)
   {
     v6 = [WiFiAwareDataSession alloc];
-    v7 = [(PKNANDataSession *)self peerEndpoint];
-    v8 = [v7 discoveryResult];
-    v9 = [(PKNANDataSession *)self passphrase];
-    v10 = [v6 initWithDiscoveryResult:v8 serviceType:0 serviceSpecificInfo:0 passphrase:v9];
+    peerEndpoint = [(PKNANDataSession *)self peerEndpoint];
+    discoveryResult = [peerEndpoint discoveryResult];
+    passphrase2 = [(PKNANDataSession *)self passphrase];
+    v10 = [v6 initWithDiscoveryResult:discoveryResult serviceType:0 serviceSpecificInfo:0 passphrase:passphrase2];
     dataSession = self->_dataSession;
     self->_dataSession = v10;
   }
@@ -188,15 +188,15 @@ LABEL_6:
   else
   {
     v12 = [WiFiAwareDataSession alloc];
-    v7 = [(PKNANDataSession *)self peerEndpoint];
-    v8 = [v7 discoveryResult];
-    v13 = [v12 initWithDiscoveryResult:v8 serviceType:0 serviceSpecificInfo:0];
-    v9 = self->_dataSession;
+    peerEndpoint = [(PKNANDataSession *)self peerEndpoint];
+    discoveryResult = [peerEndpoint discoveryResult];
+    v13 = [v12 initWithDiscoveryResult:discoveryResult serviceType:0 serviceSpecificInfo:0];
+    passphrase2 = self->_dataSession;
     self->_dataSession = v13;
   }
 
   [(WiFiAwareDataSession *)self->_dataSession setDelegate:self];
-  v14 = objc_retainBlock(v16);
+  v14 = objc_retainBlock(completionCopy);
   activateHandler = self->_activateHandler;
   self->_activateHandler = v14;
 
@@ -209,8 +209,8 @@ LABEL_6:
   retstr->var2.sin6_scope_id = 0;
   *&retstr->var2.sin6_addr.__u6_addr32[2] = 0;
   *&retstr->var0.sa_len = 7708;
-  v5 = [(WiFiMACAddress *)self->_peerDataAddress ipv6LinkLocalAddress];
-  retstr->var2.sin6_addr = *[v5 bytes];
+  ipv6LinkLocalAddress = [(WiFiMACAddress *)self->_peerDataAddress ipv6LinkLocalAddress];
+  retstr->var2.sin6_addr = *[ipv6LinkLocalAddress bytes];
 
   retstr->var2.sin6_scope_id = [(WiFiAwareDataSession *)self->_dataSession localInterfaceIndex];
   result = [(WiFiAwarePublishDatapathServiceSpecificInfo *)self->_serviceSpecificInfo servicePort];

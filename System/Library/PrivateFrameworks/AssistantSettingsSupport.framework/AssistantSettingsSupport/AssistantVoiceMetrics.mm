@@ -1,31 +1,31 @@
 @interface AssistantVoiceMetrics
 - (AssistantVoiceMetrics)init;
-- (AssistantVoiceMetrics)initWithCoder:(id)a3;
+- (AssistantVoiceMetrics)initWithCoder:(id)coder;
 - (double)_clockFactor;
 - (double)downloadObservationDuration;
 - (id)description;
 - (id)dictionaryMetrics;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)sendAnalyticsEvent;
-- (void)setVoiceDownloadForLanguageCode:(id)a3 name:(id)a4;
-- (void)setVoicePreviewedForLanguageCode:(id)a3 name:(id)a4;
+- (void)setVoiceDownloadForLanguageCode:(id)code name:(id)name;
+- (void)setVoicePreviewedForLanguageCode:(id)code name:(id)name;
 @end
 
 @implementation AssistantVoiceMetrics
 
-- (void)setVoiceDownloadForLanguageCode:(id)a3 name:(id)a4
+- (void)setVoiceDownloadForLanguageCode:(id)code name:(id)name
 {
-  v5 = [AssistantVoiceMetrics keyForLanguage:a3 name:a4];
+  v5 = [AssistantVoiceMetrics keyForLanguage:code name:name];
   voiceDownloadKey = self->_voiceDownloadKey;
   self->_voiceDownloadKey = v5;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (void)setVoicePreviewedForLanguageCode:(id)a3 name:(id)a4
+- (void)setVoicePreviewedForLanguageCode:(id)code name:(id)name
 {
   ++self->_voicesPreviewed;
-  v5 = [AssistantVoiceMetrics keyForLanguage:a3 name:a4];
+  v5 = [AssistantVoiceMetrics keyForLanguage:code name:name];
   lastVoicePreviewedKey = self->_lastVoicePreviewedKey;
   self->_lastVoicePreviewedKey = v5;
 
@@ -49,59 +49,59 @@
 
 - (id)description
 {
-  v2 = [(AssistantVoiceMetrics *)self dictionaryMetrics];
-  v3 = [v2 description];
+  dictionaryMetrics = [(AssistantVoiceMetrics *)self dictionaryMetrics];
+  v3 = [dictionaryMetrics description];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   voiceDownloadKey = self->_voiceDownloadKey;
-  v6 = a3;
-  [v6 encodeObject:voiceDownloadKey forKey:@"_voiceDownloadKey"];
-  [v6 encodeObject:self->_lastVoicePreviewedKey forKey:@"_lastVoicePreviewedKey"];
-  [v6 encodeInteger:self->_voicesPreviewed forKey:@"_voicesPreviewed"];
-  v5 = [(NSMutableSet *)self->_mutableUniqueVoicesPreviewed allObjects];
-  [v6 encodeObject:v5 forKey:@"_uniqueVoicesPreviewed"];
+  coderCopy = coder;
+  [coderCopy encodeObject:voiceDownloadKey forKey:@"_voiceDownloadKey"];
+  [coderCopy encodeObject:self->_lastVoicePreviewedKey forKey:@"_lastVoicePreviewedKey"];
+  [coderCopy encodeInteger:self->_voicesPreviewed forKey:@"_voicesPreviewed"];
+  allObjects = [(NSMutableSet *)self->_mutableUniqueVoicesPreviewed allObjects];
+  [coderCopy encodeObject:allObjects forKey:@"_uniqueVoicesPreviewed"];
 
-  [v6 encodeBool:self->_isCellularAllowed forKey:@"_isCellularAllowed"];
-  [v6 encodeInt64:self->_downloadObservationBeginTimestamp forKey:@"_downloadObservationBeginTimestamp"];
-  [v6 encodeInt64:self->_downloadObservationEndTimestamp forKey:@"_downloadObservationEndTimestamp"];
-  [v6 encodeDouble:@"_downloadObservationProgress" forKey:self->_downloadObservationProgress];
-  [v6 encodeBool:self->_downloadError forKey:@"_downloadError"];
+  [coderCopy encodeBool:self->_isCellularAllowed forKey:@"_isCellularAllowed"];
+  [coderCopy encodeInt64:self->_downloadObservationBeginTimestamp forKey:@"_downloadObservationBeginTimestamp"];
+  [coderCopy encodeInt64:self->_downloadObservationEndTimestamp forKey:@"_downloadObservationEndTimestamp"];
+  [coderCopy encodeDouble:@"_downloadObservationProgress" forKey:self->_downloadObservationProgress];
+  [coderCopy encodeBool:self->_downloadError forKey:@"_downloadError"];
 }
 
-- (AssistantVoiceMetrics)initWithCoder:(id)a3
+- (AssistantVoiceMetrics)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v16.receiver = self;
   v16.super_class = AssistantVoiceMetrics;
   v5 = [(AssistantVoiceMetrics *)&v16 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_voiceDownloadKey"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_voiceDownloadKey"];
     voiceDownloadKey = v5->_voiceDownloadKey;
     v5->_voiceDownloadKey = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_lastVoicePreviewedKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_lastVoicePreviewedKey"];
     lastVoicePreviewedKey = v5->_lastVoicePreviewedKey;
     v5->_lastVoicePreviewedKey = v8;
 
-    v5->_voicesPreviewed = [v4 decodeIntegerForKey:@"_voicesPreviewed"];
+    v5->_voicesPreviewed = [coderCopy decodeIntegerForKey:@"_voicesPreviewed"];
     v10 = MEMORY[0x277CBEB58];
-    v11 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_uniqueVoicesPreviewed"];
+    v11 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"_uniqueVoicesPreviewed"];
     v12 = [v10 setWithArray:v11];
     mutableUniqueVoicesPreviewed = v5->_mutableUniqueVoicesPreviewed;
     v5->_mutableUniqueVoicesPreviewed = v12;
 
-    v5->_isCellularAllowed = [v4 decodeBoolForKey:@"_isCellularAllowed"];
-    v5->_downloadObservationBeginTimestamp = [v4 decodeInt64ForKey:@"_downloadObservationBeginTimestamp"];
-    v5->_downloadObservationEndTimestamp = [v4 decodeInt64ForKey:@"_downloadObservationEndTimestamp"];
-    [v4 decodeDoubleForKey:@"_downloadObservationProgress"];
+    v5->_isCellularAllowed = [coderCopy decodeBoolForKey:@"_isCellularAllowed"];
+    v5->_downloadObservationBeginTimestamp = [coderCopy decodeInt64ForKey:@"_downloadObservationBeginTimestamp"];
+    v5->_downloadObservationEndTimestamp = [coderCopy decodeInt64ForKey:@"_downloadObservationEndTimestamp"];
+    [coderCopy decodeDoubleForKey:@"_downloadObservationProgress"];
     *&v14 = v14;
     v5->_downloadObservationProgress = *&v14;
-    v5->_downloadError = [v4 decodeBoolForKey:@"_downloadError"];
+    v5->_downloadError = [coderCopy decodeBoolForKey:@"_downloadError"];
   }
 
   return v5;
@@ -187,9 +187,9 @@ double __37__AssistantVoiceMetrics__clockFactor__block_invoke()
 
 - (void)sendAnalyticsEvent
 {
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"_Bool soft_AnalyticsSendEventLazy(NSString *__strong, NSDictionary<NSString *, NSObject *> *(^__strong)(void))"}];
-  [v0 handleFailureInFunction:v1 file:@"AssistantVoiceMetrics.m" lineNumber:20 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"AssistantVoiceMetrics.m" lineNumber:20 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

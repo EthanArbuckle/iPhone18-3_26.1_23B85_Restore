@@ -1,6 +1,6 @@
 @interface ASUIPasskeyEntryViewController
-- (_TtC16AccessorySetupUI30ASUIPasskeyEntryViewController)initWithContentView:(id)a3;
-- (void)textDidChange:(id)a3;
+- (_TtC16AccessorySetupUI30ASUIPasskeyEntryViewController)initWithContentView:(id)view;
+- (void)textDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -15,14 +15,14 @@
   [v2 setDismissalType:{1, v3.receiver, v3.super_class}];
 }
 
-- (void)textDidChange:(id)a3
+- (void)textDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_100030CE4(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_100030CE4(changeCopy);
 }
 
-- (_TtC16AccessorySetupUI30ASUIPasskeyEntryViewController)initWithContentView:(id)a3
+- (_TtC16AccessorySetupUI30ASUIPasskeyEntryViewController)initWithContentView:(id)view
 {
   ObjectType = swift_getObjectType();
   self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC16AccessorySetupUI30ASUIPasskeyEntryViewController_type] = 6;
@@ -39,7 +39,7 @@
   *&self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC16AccessorySetupUI30ASUIPasskeyEntryViewController_numberOfDigits] = 6;
   v8.receiver = self;
   v8.super_class = ObjectType;
-  return [(ASUIPasskeyEntryViewController *)&v8 initWithContentView:a3];
+  return [(ASUIPasskeyEntryViewController *)&v8 initWithContentView:view];
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface OZFxPlugAPIManager
 - (OZFxPlugAPIManager)init;
 - (id).cxx_construct;
-- (id)apiForProtocol:(id)a3;
+- (id)apiForProtocol:(id)protocol;
 - (void)dealloc;
-- (void)registerAPIObject:(id)a3 forProtocol:(id)a4 version:(unsigned int)a5;
-- (void)unregisterAPIForProtocol:(id)a3;
+- (void)registerAPIObject:(id)object forProtocol:(id)protocol version:(unsigned int)version;
+- (void)unregisterAPIForProtocol:(id)protocol;
 @end
 
 @implementation OZFxPlugAPIManager
@@ -34,9 +34,9 @@
   [(OZFxPlugAPIManager *)&v3 dealloc];
 }
 
-- (void)registerAPIObject:(id)a3 forProtocol:(id)a4 version:(unsigned int)a5
+- (void)registerAPIObject:(id)object forProtocol:(id)protocol version:(unsigned int)version
 {
-  v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:protocol_getName(a4)];
+  v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:protocol_getName(protocol)];
   p_mutex = &self->_mutex;
   PCMutex::lock(&self->_mutex);
   v8 = [(NSMutableDictionary *)self->_apis objectForKey:v7];
@@ -50,16 +50,16 @@
 
   else
   {
-    -[NSMutableDictionary setObject:forKey:](self->_apis, "setObject:forKey:", [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{a3, @"API Object", objc_msgSend(MEMORY[0x277CCABB0], "numberWithInt:", 1), @"RefCount", 0, p_mutex}], v7);
+    -[NSMutableDictionary setObject:forKey:](self->_apis, "setObject:forKey:", [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{object, @"API Object", objc_msgSend(MEMORY[0x277CCABB0], "numberWithInt:", 1), @"RefCount", 0, p_mutex}], v7);
   }
 
   PCMutex::unlock(&self->_mutex);
 }
 
-- (void)unregisterAPIForProtocol:(id)a3
+- (void)unregisterAPIForProtocol:(id)protocol
 {
   v5 = objc_alloc_init(MEMORY[0x277CCA8B0]);
-  v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:protocol_getName(a3)];
+  v10 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:protocol_getName(protocol)];
   PCMutex::lock(&self->_mutex);
   v6 = [(NSMutableDictionary *)self->_apis objectForKey:v10];
   v7 = v6;
@@ -81,9 +81,9 @@
   PCMutex::unlock(&self->_mutex);
 }
 
-- (id)apiForProtocol:(id)a3
+- (id)apiForProtocol:(id)protocol
 {
-  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:protocol_getName(a3)];
+  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:protocol_getName(protocol)];
   p_mutex = &self->_mutex;
   PCMutex::lock(&self->_mutex);
   LOBYTE(v8) = 1;

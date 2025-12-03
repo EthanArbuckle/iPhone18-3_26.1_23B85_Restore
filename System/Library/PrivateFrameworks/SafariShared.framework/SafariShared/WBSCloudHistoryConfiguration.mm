@@ -1,12 +1,12 @@
 @interface WBSCloudHistoryConfiguration
 - (WBSCloudHistoryConfiguration)init;
-- (WBSCloudHistoryConfiguration)initWithDictionary:(id)a3;
+- (WBSCloudHistoryConfiguration)initWithDictionary:(id)dictionary;
 - (id)_builtInConfiguration;
 - (id)_sharedBuiltInConfiguration;
 - (id)dictionaryRepresentation;
-- (void)_applyBuiltInConfiguration:(id)a3;
-- (void)_applyConfiguration:(id)a3 withTolerance:(int64_t)a4;
-- (void)applyRemoteConfiguration:(id)a3;
+- (void)_applyBuiltInConfiguration:(id)configuration;
+- (void)_applyConfiguration:(id)configuration withTolerance:(int64_t)tolerance;
+- (void)applyRemoteConfiguration:(id)configuration;
 @end
 
 @implementation WBSCloudHistoryConfiguration
@@ -27,8 +27,8 @@
       _os_log_impl(&dword_1BB6F3000, v4, OS_LOG_TYPE_INFO, "Applying built-in configuration", v10, 2u);
     }
 
-    v5 = [(WBSCloudHistoryConfiguration *)v3 _builtInConfiguration];
-    [(WBSCloudHistoryConfiguration *)v3 _applyBuiltInConfiguration:v5];
+    _builtInConfiguration = [(WBSCloudHistoryConfiguration *)v3 _builtInConfiguration];
+    [(WBSCloudHistoryConfiguration *)v3 _applyBuiltInConfiguration:_builtInConfiguration];
 
     v6 = WBS_LOG_CHANNEL_PREFIXCloudHistory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -37,8 +37,8 @@
       _os_log_impl(&dword_1BB6F3000, v6, OS_LOG_TYPE_INFO, "Applying remote configuration", v10, 2u);
     }
 
-    v7 = [(WBSCloudHistoryConfiguration *)v3 remoteConfiguration];
-    [(WBSCloudHistoryConfiguration *)v3 applyRemoteConfiguration:v7];
+    remoteConfiguration = [(WBSCloudHistoryConfiguration *)v3 remoteConfiguration];
+    [(WBSCloudHistoryConfiguration *)v3 applyRemoteConfiguration:remoteConfiguration];
 
     v8 = v3;
   }
@@ -46,17 +46,17 @@
   return v3;
 }
 
-- (WBSCloudHistoryConfiguration)initWithDictionary:(id)a3
+- (WBSCloudHistoryConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = WBSCloudHistoryConfiguration;
   v5 = [(WBSCloudHistoryConfiguration *)&v8 init];
   if (v5)
   {
-    v5->_shouldBatchSaveRecords = [v4 safari_BOOLForKey:@"ShouldBatchSaveRecords"];
-    v5->_shouldUseLongLivedOperationsToSaveRecords = [v4 safari_BOOLForKey:@"ShouldUseLongLivedOperationsToSaveRecords"];
-    [(WBSCloudHistoryConfiguration *)v5 _applyConfiguration:v4 withTolerance:0];
+    v5->_shouldBatchSaveRecords = [dictionaryCopy safari_BOOLForKey:@"ShouldBatchSaveRecords"];
+    v5->_shouldUseLongLivedOperationsToSaveRecords = [dictionaryCopy safari_BOOLForKey:@"ShouldUseLongLivedOperationsToSaveRecords"];
+    [(WBSCloudHistoryConfiguration *)v5 _applyConfiguration:dictionaryCopy withTolerance:0];
     v6 = v5;
   }
 
@@ -97,39 +97,39 @@
 
 - (id)_builtInConfiguration
 {
-  v3 = [(WBSCloudHistoryConfiguration *)self _sharedBuiltInConfiguration];
-  v4 = [(WBSCloudHistoryConfiguration *)self platformBuiltInConfiguration];
-  if (v4)
+  _sharedBuiltInConfiguration = [(WBSCloudHistoryConfiguration *)self _sharedBuiltInConfiguration];
+  platformBuiltInConfiguration = [(WBSCloudHistoryConfiguration *)self platformBuiltInConfiguration];
+  if (platformBuiltInConfiguration)
   {
-    v5 = [v3 mutableCopy];
-    [v5 addEntriesFromDictionary:v4];
+    v5 = [_sharedBuiltInConfiguration mutableCopy];
+    [v5 addEntriesFromDictionary:platformBuiltInConfiguration];
   }
 
   else
   {
-    v5 = v3;
+    v5 = _sharedBuiltInConfiguration;
   }
 
   return v5;
 }
 
-- (void)_applyBuiltInConfiguration:(id)a3
+- (void)_applyBuiltInConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   [WBSCloudHistoryConfiguration applyPlatformConfiguration:"applyPlatformConfiguration:withTolerance:" withTolerance:?];
-  [(WBSCloudHistoryConfiguration *)self _applyConfiguration:v4 withTolerance:0];
+  [(WBSCloudHistoryConfiguration *)self _applyConfiguration:configurationCopy withTolerance:0];
 }
 
-- (void)_applyConfiguration:(id)a3 withTolerance:(int64_t)a4
+- (void)_applyConfiguration:(id)configuration withTolerance:(int64_t)tolerance
 {
-  v6 = a3;
+  configurationCopy = configuration;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __66__WBSCloudHistoryConfiguration__applyConfiguration_withTolerance___block_invoke;
   v23[3] = &unk_1E7FB80C8;
-  v7 = v6;
+  v7 = configurationCopy;
   v24 = v7;
-  v25 = a4;
+  toleranceCopy = tolerance;
   v8 = MEMORY[0x1BFB13CE0](v23);
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
@@ -137,7 +137,7 @@
   v20[3] = &unk_1E7FB80F0;
   v9 = v7;
   v21 = v9;
-  v22 = a4;
+  toleranceCopy2 = tolerance;
   v10 = MEMORY[0x1BFB13CE0](v20);
   v19[2] = __66__WBSCloudHistoryConfiguration__applyConfiguration_withTolerance___block_invoke_33;
   v19[3] = &unk_1E7FB8118;
@@ -418,16 +418,16 @@ uint64_t __66__WBSCloudHistoryConfiguration__applyConfiguration_withTolerance___
   return v2;
 }
 
-- (void)applyRemoteConfiguration:(id)a3
+- (void)applyRemoteConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(WBSCloudHistoryConfiguration *)self applyPlatformConfiguration:v5 withTolerance:1];
-    [(WBSCloudHistoryConfiguration *)self _applyConfiguration:v5 withTolerance:1];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 postNotificationName:@"WBSCloudHistoryConfigurationChangedNotification" object:self userInfo:0];
+    [(WBSCloudHistoryConfiguration *)self applyPlatformConfiguration:configurationCopy withTolerance:1];
+    [(WBSCloudHistoryConfiguration *)self _applyConfiguration:configurationCopy withTolerance:1];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"WBSCloudHistoryConfigurationChangedNotification" object:self userInfo:0];
   }
 }
 

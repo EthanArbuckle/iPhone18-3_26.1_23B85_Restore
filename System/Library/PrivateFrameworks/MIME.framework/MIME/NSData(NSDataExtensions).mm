@@ -21,14 +21,14 @@
     }
   }
 
-  v8 = [[MFData alloc] _initWithRange:a3 from:a4 retainingParent:a1, v7];
+  v8 = [[MFData alloc] _initWithRange:a3 from:a4 retainingParent:self, v7];
 
   return v8;
 }
 
 - (BOOL)mf_containsRange:()NSDataExtensions
 {
-  v9.length = [a1 length];
+  v9.length = [self length];
   v9.location = 0;
   v10.location = a3;
   v10.length = a4;

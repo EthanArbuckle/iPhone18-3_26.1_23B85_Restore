@@ -1,45 +1,45 @@
 @interface CHWorkoutDetailFourColumnSegmentTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)configureWithSegment:(id)a3 segmentIndex:(int64_t)a4 workout:(id)a5 trackDistanceUnit:(unint64_t)a6 activityType:(id)a7 activityMoveMode:(int64_t)a8 isLastCell:(BOOL)a9 formattingManager:(id)a10;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)configureWithSegment:(id)segment segmentIndex:(int64_t)index workout:(id)workout trackDistanceUnit:(unint64_t)unit activityType:(id)type activityMoveMode:(int64_t)mode isLastCell:(BOOL)cell formattingManager:(id)self0;
 @end
 
 @implementation CHWorkoutDetailFourColumnSegmentTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CHWorkoutDetailFourColumnSegmentTableViewCell" hasInstanceMethod:@"configureWithSegment:segmentIndex:workout:trackDistanceUnit:activityType:activityMoveMode:isLastCell:formattingManager:" withFullSignature:{"v", "@", "q", "@", "Q", "@", "q", "B", "@", 0}];
-  [v3 validateClass:@"CHWorkoutDetailFourColumnSegmentTableViewCell" isKindOfClass:@"CHWorkoutDetailFourColumnTableViewCell"];
-  [v3 validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnOneLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnTwoLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnThreeLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnFourLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CHWorkoutFormattingManager" hasInstanceMethod:@"supportsDistanceForWorkout:workoutActivity:" withFullSignature:{"B", "@", "@", 0}];
-  [v3 validateClass:@"CHWorkoutFormattingManager" hasInstanceMethod:@"supportsPaceForWorkout:workoutActivity:" withFullSignature:{"B", "@", "@", 0}];
-  [v3 validateClass:@"CHWorkoutFormattingManager" hasInstanceMethod:@"fitnessUIFormattingManager" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnSegmentTableViewCell" hasInstanceMethod:@"configureWithSegment:segmentIndex:workout:trackDistanceUnit:activityType:activityMoveMode:isLastCell:formattingManager:" withFullSignature:{"v", "@", "q", "@", "Q", "@", "q", "B", "@", 0}];
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnSegmentTableViewCell" isKindOfClass:@"CHWorkoutDetailFourColumnTableViewCell"];
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnOneLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnTwoLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnThreeLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"CHWorkoutDetailFourColumnTableViewCell" hasSwiftField:@"columnFourLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CHWorkoutFormattingManager" hasInstanceMethod:@"supportsDistanceForWorkout:workoutActivity:" withFullSignature:{"B", "@", "@", 0}];
+  [validationsCopy validateClass:@"CHWorkoutFormattingManager" hasInstanceMethod:@"supportsPaceForWorkout:workoutActivity:" withFullSignature:{"B", "@", "@", 0}];
+  [validationsCopy validateClass:@"CHWorkoutFormattingManager" hasInstanceMethod:@"fitnessUIFormattingManager" withFullSignature:{"@", 0}];
 }
 
-- (void)configureWithSegment:(id)a3 segmentIndex:(int64_t)a4 workout:(id)a5 trackDistanceUnit:(unint64_t)a6 activityType:(id)a7 activityMoveMode:(int64_t)a8 isLastCell:(BOOL)a9 formattingManager:(id)a10
+- (void)configureWithSegment:(id)segment segmentIndex:(int64_t)index workout:(id)workout trackDistanceUnit:(unint64_t)unit activityType:(id)type activityMoveMode:(int64_t)mode isLastCell:(BOOL)cell formattingManager:(id)self0
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a7;
-  v19 = a10;
+  segmentCopy = segment;
+  workoutCopy = workout;
+  typeCopy = type;
+  managerCopy = manager;
   v62.receiver = self;
   v62.super_class = CHWorkoutDetailFourColumnSegmentTableViewCellAccessibility;
-  [(CHWorkoutDetailFourColumnSegmentTableViewCellAccessibility *)&v62 configureWithSegment:v16 segmentIndex:a4 workout:v17 trackDistanceUnit:a6 activityType:v18 activityMoveMode:a8 isLastCell:a9 formattingManager:v19];
-  if (v16)
+  [(CHWorkoutDetailFourColumnSegmentTableViewCellAccessibility *)&v62 configureWithSegment:segmentCopy segmentIndex:index workout:workoutCopy trackDistanceUnit:unit activityType:typeCopy activityMoveMode:mode isLastCell:cell formattingManager:managerCopy];
+  if (segmentCopy)
   {
     LOBYTE(v58) = 0;
     objc_opt_class();
     v20 = [(CHWorkoutDetailFourColumnSegmentTableViewCellAccessibility *)self safeSwiftValueForKey:@"columnOneLabel"];
     v21 = __UIAccessibilityCastAsClass();
 
-    v53 = v18;
+    v53 = typeCopy;
     v22 = accessibilityLocalizedString(@"segment.number");
-    v23 = [v21 text];
-    v24 = [NSString localizedStringWithFormat:v22, v23];
+    text = [v21 text];
+    v24 = [NSString localizedStringWithFormat:v22, text];
     v54 = v21;
     [v21 setAccessibilityLabel:v24];
 
@@ -49,8 +49,8 @@
     v26 = __UIAccessibilityCastAsClass();
 
     v27 = accessibilityLocalizedString(@"time.value");
-    v28 = [v26 text];
-    v29 = [NSString localizedStringWithFormat:v27, v28];
+    text2 = [v26 text];
+    v29 = [NSString localizedStringWithFormat:v27, text2];
     v52 = v26;
     [v26 setAccessibilityLabel:v29];
 
@@ -58,8 +58,8 @@
     v59 = &v58;
     v60 = 0x2020000000;
     LOBYTE(v61) = 0;
-    v30 = v19;
-    v31 = v17;
+    v30 = managerCopy;
+    v31 = workoutCopy;
     AXPerformSafeBlock();
     LODWORD(v29) = *(v59 + 24);
 
@@ -74,8 +74,8 @@
       if (v58 != 1)
       {
         v34 = accessibilityLocalizedString(@"distance.value");
-        v35 = [v33 text];
-        v36 = [NSString localizedStringWithFormat:v34, v35];
+        text3 = [v33 text];
+        v36 = [NSString localizedStringWithFormat:v34, text3];
         v51 = v33;
         [v33 setAccessibilityLabel:v36];
 
@@ -93,7 +93,7 @@
         v38 = v54;
         if (!v37)
         {
-          v18 = v53;
+          typeCopy = v53;
           v50 = v51;
 LABEL_23:
 
@@ -111,7 +111,7 @@ LABEL_23:
 
         _Block_object_dispose(&v58, 8);
         v40 = v39 ? @"average.speed.value" : @"pace.value";
-        v41 = accessibilityLocalizedString(v40);
+        localizedLongActiveEnergyUnitString = accessibilityLocalizedString(v40);
         LOBYTE(v58) = 0;
         v42 = objc_opt_class();
         v43 = [(CHWorkoutDetailFourColumnSegmentTableViewCellAccessibility *)self safeSwiftValueForKey:@"columnFourLabel"];
@@ -121,20 +121,20 @@ LABEL_23:
         {
           if (v39 || ([v44 text], v42 = objc_claimAutoreleasedReturnValue(), !objc_msgSend(v42, "containsString:", @"--")))
           {
-            v45 = [v44 text];
+            text4 = [v44 text];
             if (v39)
             {
 LABEL_21:
-              v48 = [NSString localizedStringWithFormat:v41, v45];
-              [v44 setAccessibilityLabel:v48];
-              v18 = v53;
+              text5 = [NSString localizedStringWithFormat:localizedLongActiveEnergyUnitString, text4];
+              [v44 setAccessibilityLabel:text5];
+              typeCopy = v53;
               goto LABEL_22;
             }
           }
 
           else
           {
-            v45 = accessibilityLocalizedString(@"no.data");
+            text4 = accessibilityLocalizedString(@"no.data");
           }
 
           goto LABEL_21;
@@ -144,9 +144,9 @@ LABEL_21:
 
     else
     {
-      v18 = v53;
+      typeCopy = v53;
       v38 = v54;
-      if (a8 != 1)
+      if (mode != 1)
       {
 LABEL_24:
 
@@ -160,7 +160,7 @@ LABEL_24:
 
       if (v58 != 1)
       {
-        v41 = [v50 localizedLongActiveEnergyUnitString];
+        localizedLongActiveEnergyUnitString = [v50 localizedLongActiveEnergyUnitString];
         LOBYTE(v58) = 0;
         objc_opt_class();
         v47 = [(CHWorkoutDetailFourColumnSegmentTableViewCellAccessibility *)self safeSwiftValueForKey:@"columnTwoLabel"];
@@ -168,9 +168,9 @@ LABEL_24:
 
         if (v58 != 1)
         {
-          v45 = accessibilityLocalizedString(@"energy.value");
-          v48 = [v44 text];
-          v49 = [NSString localizedStringWithFormat:v45, v41, v48];
+          text4 = accessibilityLocalizedString(@"energy.value");
+          text5 = [v44 text];
+          v49 = [NSString localizedStringWithFormat:text4, localizedLongActiveEnergyUnitString, text5];
           [v44 setAccessibilityLabel:v49];
 
 LABEL_22:

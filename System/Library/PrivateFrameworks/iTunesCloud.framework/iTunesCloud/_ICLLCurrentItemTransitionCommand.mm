@@ -1,20 +1,20 @@
 @interface _ICLLCurrentItemTransitionCommand
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _ICLLCurrentItemTransitionCommand
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((transitionItemId = self->_transitionItemId, !(transitionItemId | v4[2])) || -[NSString isEqual:](transitionItemId, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((transitionItemId = self->_transitionItemId, !(transitionItemId | equalCopy[2])) || -[NSString isEqual:](transitionItemId, "isEqual:")))
   {
     previousItemId = self->_previousItemId;
-    if (previousItemId | v4[1])
+    if (previousItemId | equalCopy[1])
     {
       v7 = [(NSString *)previousItemId isEqual:?];
     }
@@ -33,45 +33,45 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_transitionItemId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_transitionItemId copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSString *)self->_previousItemId copyWithZone:a3];
+  v8 = [(NSString *)self->_previousItemId copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_transitionItemId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_previousItemId)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   transitionItemId = self->_transitionItemId;
   if (transitionItemId)
   {
-    [v3 setObject:transitionItemId forKey:@"transitionItemId"];
+    [dictionary setObject:transitionItemId forKey:@"transitionItemId"];
   }
 
   previousItemId = self->_previousItemId;
@@ -89,8 +89,8 @@
   v8.receiver = self;
   v8.super_class = _ICLLCurrentItemTransitionCommand;
   v4 = [(_ICLLCurrentItemTransitionCommand *)&v8 description];
-  v5 = [(_ICLLCurrentItemTransitionCommand *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_ICLLCurrentItemTransitionCommand *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

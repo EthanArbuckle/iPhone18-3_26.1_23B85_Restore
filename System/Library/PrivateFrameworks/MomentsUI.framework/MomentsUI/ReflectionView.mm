@@ -1,6 +1,6 @@
 @interface ReflectionView
 - (_TtC9MomentsUI14ReflectionView)init;
-- (void)updatePromptIndex:(id)a3;
+- (void)updatePromptIndex:(id)index;
 @end
 
 @implementation ReflectionView
@@ -12,10 +12,10 @@
   return result;
 }
 
-- (void)updatePromptIndex:(id)a3
+- (void)updatePromptIndex:(id)index
 {
-  v4 = a3;
-  v5 = self;
+  indexCopy = index;
+  selfCopy = self;
   specialized ReflectionView.updatePromptIndex(_:)();
 }
 

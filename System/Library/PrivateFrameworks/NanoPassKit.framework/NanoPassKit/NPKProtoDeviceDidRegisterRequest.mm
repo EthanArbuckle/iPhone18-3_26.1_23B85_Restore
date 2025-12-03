@@ -1,71 +1,71 @@
 @interface NPKProtoDeviceDidRegisterRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addBrokerRegionPushTopics:(id)a3;
-- (void)addTsmRegionPushTopics:(id)a3;
-- (void)addTsmRegionURLs:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addBrokerRegionPushTopics:(id)topics;
+- (void)addTsmRegionPushTopics:(id)topics;
+- (void)addTsmRegionURLs:(id)ls;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoDeviceDidRegisterRequest
 
-- (void)addTsmRegionPushTopics:(id)a3
+- (void)addTsmRegionPushTopics:(id)topics
 {
-  v4 = a3;
+  topicsCopy = topics;
   tsmRegionPushTopics = self->_tsmRegionPushTopics;
-  v8 = v4;
+  v8 = topicsCopy;
   if (!tsmRegionPushTopics)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_tsmRegionPushTopics;
     self->_tsmRegionPushTopics = v6;
 
-    v4 = v8;
+    topicsCopy = v8;
     tsmRegionPushTopics = self->_tsmRegionPushTopics;
   }
 
-  [(NSMutableArray *)tsmRegionPushTopics addObject:v4];
+  [(NSMutableArray *)tsmRegionPushTopics addObject:topicsCopy];
 }
 
-- (void)addTsmRegionURLs:(id)a3
+- (void)addTsmRegionURLs:(id)ls
 {
-  v4 = a3;
+  lsCopy = ls;
   tsmRegionURLs = self->_tsmRegionURLs;
-  v8 = v4;
+  v8 = lsCopy;
   if (!tsmRegionURLs)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_tsmRegionURLs;
     self->_tsmRegionURLs = v6;
 
-    v4 = v8;
+    lsCopy = v8;
     tsmRegionURLs = self->_tsmRegionURLs;
   }
 
-  [(NSMutableArray *)tsmRegionURLs addObject:v4];
+  [(NSMutableArray *)tsmRegionURLs addObject:lsCopy];
 }
 
-- (void)addBrokerRegionPushTopics:(id)a3
+- (void)addBrokerRegionPushTopics:(id)topics
 {
-  v4 = a3;
+  topicsCopy = topics;
   brokerRegionPushTopics = self->_brokerRegionPushTopics;
-  v8 = v4;
+  v8 = topicsCopy;
   if (!brokerRegionPushTopics)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_brokerRegionPushTopics;
     self->_brokerRegionPushTopics = v6;
 
-    v4 = v8;
+    topicsCopy = v8;
     brokerRegionPushTopics = self->_brokerRegionPushTopics;
   }
 
-  [(NSMutableArray *)brokerRegionPushTopics addObject:v4];
+  [(NSMutableArray *)brokerRegionPushTopics addObject:topicsCopy];
 }
 
 - (id)description
@@ -74,20 +74,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoDeviceDidRegisterRequest;
   v4 = [(NPKProtoDeviceDidRegisterRequest *)&v8 description];
-  v5 = [(NPKProtoDeviceDidRegisterRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoDeviceDidRegisterRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   tsmRegionPushTopics = self->_tsmRegionPushTopics;
   if (tsmRegionPushTopics)
   {
-    [v3 setObject:tsmRegionPushTopics forKey:@"tsmRegionPushTopics"];
+    [dictionary setObject:tsmRegionPushTopics forKey:@"tsmRegionPushTopics"];
   }
 
   tsmRegionURLs = self->_tsmRegionURLs;
@@ -111,10 +111,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -219,64 +219,64 @@
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   if ([(NPKProtoDeviceDidRegisterRequest *)self tsmRegionPushTopicsCount])
   {
-    [v16 clearTsmRegionPushTopics];
-    v4 = [(NPKProtoDeviceDidRegisterRequest *)self tsmRegionPushTopicsCount];
-    if (v4)
+    [toCopy clearTsmRegionPushTopics];
+    tsmRegionPushTopicsCount = [(NPKProtoDeviceDidRegisterRequest *)self tsmRegionPushTopicsCount];
+    if (tsmRegionPushTopicsCount)
     {
-      v5 = v4;
+      v5 = tsmRegionPushTopicsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NPKProtoDeviceDidRegisterRequest *)self tsmRegionPushTopicsAtIndex:i];
-        [v16 addTsmRegionPushTopics:v7];
+        [toCopy addTsmRegionPushTopics:v7];
       }
     }
   }
 
   if ([(NPKProtoDeviceDidRegisterRequest *)self tsmRegionURLsCount])
   {
-    [v16 clearTsmRegionURLs];
-    v8 = [(NPKProtoDeviceDidRegisterRequest *)self tsmRegionURLsCount];
-    if (v8)
+    [toCopy clearTsmRegionURLs];
+    tsmRegionURLsCount = [(NPKProtoDeviceDidRegisterRequest *)self tsmRegionURLsCount];
+    if (tsmRegionURLsCount)
     {
-      v9 = v8;
+      v9 = tsmRegionURLsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(NPKProtoDeviceDidRegisterRequest *)self tsmRegionURLsAtIndex:j];
-        [v16 addTsmRegionURLs:v11];
+        [toCopy addTsmRegionURLs:v11];
       }
     }
   }
 
   if ([(NPKProtoDeviceDidRegisterRequest *)self brokerRegionPushTopicsCount])
   {
-    [v16 clearBrokerRegionPushTopics];
-    v12 = [(NPKProtoDeviceDidRegisterRequest *)self brokerRegionPushTopicsCount];
-    if (v12)
+    [toCopy clearBrokerRegionPushTopics];
+    brokerRegionPushTopicsCount = [(NPKProtoDeviceDidRegisterRequest *)self brokerRegionPushTopicsCount];
+    if (brokerRegionPushTopicsCount)
     {
-      v13 = v12;
+      v13 = brokerRegionPushTopicsCount;
       for (k = 0; k != v13; ++k)
       {
         v15 = [(NPKProtoDeviceDidRegisterRequest *)self brokerRegionPushTopicsAtIndex:k];
-        [v16 addBrokerRegionPushTopics:v15];
+        [toCopy addBrokerRegionPushTopics:v15];
       }
     }
   }
 
   if (self->_primaryRegionTopic)
   {
-    [v16 setPrimaryRegionTopic:?];
+    [toCopy setPrimaryRegionTopic:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -297,7 +297,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v36 + 1) + 8 * v10) copyWithZone:a3];
+        v11 = [*(*(&v36 + 1) + 8 * v10) copyWithZone:zone];
         [v5 addTsmRegionPushTopics:v11];
 
         ++v10;
@@ -330,7 +330,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v32 + 1) + 8 * v16) copyWithZone:a3];
+        v17 = [*(*(&v32 + 1) + 8 * v16) copyWithZone:zone];
         [v5 addTsmRegionURLs:v17];
 
         ++v16;
@@ -363,7 +363,7 @@
           objc_enumerationMutation(v18);
         }
 
-        v23 = [*(*(&v28 + 1) + 8 * v22) copyWithZone:{a3, v28}];
+        v23 = [*(*(&v28 + 1) + 8 * v22) copyWithZone:{zone, v28}];
         [v5 addBrokerRegionPushTopics:v23];
 
         ++v22;
@@ -376,7 +376,7 @@
     while (v20);
   }
 
-  v24 = [(NSString *)self->_primaryRegionTopic copyWithZone:a3];
+  v24 = [(NSString *)self->_primaryRegionTopic copyWithZone:zone];
   v25 = v5[2];
   v5[2] = v24;
 
@@ -384,13 +384,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((tsmRegionPushTopics = self->_tsmRegionPushTopics, !(tsmRegionPushTopics | v4[3])) || -[NSMutableArray isEqual:](tsmRegionPushTopics, "isEqual:")) && ((tsmRegionURLs = self->_tsmRegionURLs, !(tsmRegionURLs | v4[4])) || -[NSMutableArray isEqual:](tsmRegionURLs, "isEqual:")) && ((brokerRegionPushTopics = self->_brokerRegionPushTopics, !(brokerRegionPushTopics | v4[1])) || -[NSMutableArray isEqual:](brokerRegionPushTopics, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((tsmRegionPushTopics = self->_tsmRegionPushTopics, !(tsmRegionPushTopics | equalCopy[3])) || -[NSMutableArray isEqual:](tsmRegionPushTopics, "isEqual:")) && ((tsmRegionURLs = self->_tsmRegionURLs, !(tsmRegionURLs | equalCopy[4])) || -[NSMutableArray isEqual:](tsmRegionURLs, "isEqual:")) && ((brokerRegionPushTopics = self->_brokerRegionPushTopics, !(brokerRegionPushTopics | equalCopy[1])) || -[NSMutableArray isEqual:](brokerRegionPushTopics, "isEqual:")))
   {
     primaryRegionTopic = self->_primaryRegionTopic;
-    if (primaryRegionTopic | v4[2])
+    if (primaryRegionTopic | equalCopy[2])
     {
       v9 = [(NSString *)primaryRegionTopic isEqual:?];
     }
@@ -417,15 +417,15 @@
   return v4 ^ v5 ^ [(NSString *)self->_primaryRegionTopic hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fromCopy = from;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = v4[3];
+  v5 = fromCopy[3];
   v6 = [v5 countByEnumeratingWithState:&v29 objects:v35 count:16];
   if (v6)
   {
@@ -453,7 +453,7 @@
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v10 = v4[4];
+  v10 = fromCopy[4];
   v11 = [v10 countByEnumeratingWithState:&v25 objects:v34 count:16];
   if (v11)
   {
@@ -481,7 +481,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v15 = v4[1];
+  v15 = fromCopy[1];
   v16 = [v15 countByEnumeratingWithState:&v21 objects:v33 count:16];
   if (v16)
   {
@@ -505,7 +505,7 @@
     while (v17);
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(NPKProtoDeviceDidRegisterRequest *)self setPrimaryRegionTopic:?];
   }

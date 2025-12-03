@@ -1,5 +1,5 @@
 @interface SBFTouchPassThroughViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilitySupportsActivateAction;
 - (BOOL)accessibilityActivate;
 - (BOOL)isTransparentFocusItem;
@@ -7,26 +7,26 @@
 
 @implementation SBFTouchPassThroughViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBFTouchPassThroughView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"isTransparentFocusItem" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"UIView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBFTouchPassThroughView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"isTransparentFocusItem" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"UIView" hasInstanceMethod:@"canBecomeFocused" withFullSignature:{"B", 0}];
 }
 
 - (BOOL)accessibilityActivate
 {
-  v3 = [(SBFTouchPassThroughViewAccessibility *)self _accessibilityWindow];
-  v4 = [v3 accessibilityIdentifier];
-  v5 = [v4 isEqualToString:@"PIP-SBInteractionPassThroughView"];
+  _accessibilityWindow = [(SBFTouchPassThroughViewAccessibility *)self _accessibilityWindow];
+  accessibilityIdentifier = [_accessibilityWindow accessibilityIdentifier];
+  v5 = [accessibilityIdentifier isEqualToString:@"PIP-SBInteractionPassThroughView"];
 
   if (v5)
   {
     v6 = [(SBFTouchPassThroughViewAccessibility *)self safeValueForKey:@"_viewDelegate"];
-    v7 = [v6 accessibilityActivate];
+    accessibilityActivate = [v6 accessibilityActivate];
 
-    return v7;
+    return accessibilityActivate;
   }
 
   else
@@ -39,9 +39,9 @@
 
 - (BOOL)_accessibilitySupportsActivateAction
 {
-  v3 = [(SBFTouchPassThroughViewAccessibility *)self _accessibilityWindow];
-  v4 = [v3 accessibilityIdentifier];
-  v5 = [v4 isEqualToString:@"PIP-SBInteractionPassThroughView"];
+  _accessibilityWindow = [(SBFTouchPassThroughViewAccessibility *)self _accessibilityWindow];
+  accessibilityIdentifier = [_accessibilityWindow accessibilityIdentifier];
+  v5 = [accessibilityIdentifier isEqualToString:@"PIP-SBInteractionPassThroughView"];
 
   if (v5)
   {

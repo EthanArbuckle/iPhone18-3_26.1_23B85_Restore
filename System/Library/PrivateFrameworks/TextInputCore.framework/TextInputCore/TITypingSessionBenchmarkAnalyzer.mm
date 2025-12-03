@@ -1,5 +1,5 @@
 @interface TITypingSessionBenchmarkAnalyzer
-- (BOOL)analyzeSession:(id)a3 alignedSession:(id)a4 withConfidence:(unint64_t)a5;
+- (BOOL)analyzeSession:(id)session alignedSession:(id)alignedSession withConfidence:(unint64_t)confidence;
 - (TITypingSessionBenchmarkAnalyzer)init;
 - (void)dispatchEvent;
 - (void)registerEventSpec;
@@ -10,16 +10,16 @@
 - (void)dispatchEvent
 {
   v32[15] = *MEMORY[0x277D85DE8];
-  v3 = [(TITypingSession *)self->_session userActionHistory];
-  v4 = [v3 lastObject];
-  v30 = [v4 keyboardState];
+  userActionHistory = [(TITypingSession *)self->_session userActionHistory];
+  lastObject = [userActionHistory lastObject];
+  keyboardState = [lastObject keyboardState];
 
   v5 = [TIKBAnalyticsMetricsContext alloc];
-  v6 = [(TITypingSession *)self->_session sessionParams];
-  v7 = [v6 activeInputModes];
-  v8 = [(TITypingSession *)self->_session sessionParams];
-  v9 = [v8 testingParameters];
-  v10 = [(TIKBAnalyticsMetricsContext *)v5 initWithKeyboardState:v30 activeInputModes:v7 testingParameters:v9];
+  sessionParams = [(TITypingSession *)self->_session sessionParams];
+  activeInputModes = [sessionParams activeInputModes];
+  sessionParams2 = [(TITypingSession *)self->_session sessionParams];
+  testingParameters = [sessionParams2 testingParameters];
+  v10 = [(TIKBAnalyticsMetricsContext *)v5 initWithKeyboardState:keyboardState activeInputModes:activeInputModes testingParameters:testingParameters];
 
   v31[0] = @"typingSessionConfidence";
   v29 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_typingSessionConfidence];
@@ -46,31 +46,31 @@
   v11 = [MEMORY[0x277CCABB0] numberWithInt:self->_alignedWordsWithText];
   v32[7] = v11;
   v31[8] = kFeatureStringKeyboardLanguage;
-  v12 = [(TIAnalyticsMetricsContext *)v10 inputLanguage];
-  v32[8] = v12;
+  inputLanguage = [(TIAnalyticsMetricsContext *)v10 inputLanguage];
+  v32[8] = inputLanguage;
   v31[9] = kFeatureStringKeyboardRegion;
-  v13 = [(TIAnalyticsMetricsContext *)v10 inputRegion];
-  v32[9] = v13;
+  inputRegion = [(TIAnalyticsMetricsContext *)v10 inputRegion];
+  v32[9] = inputRegion;
   v31[10] = kFeatureStringKeyboardVariant;
-  v14 = [(TIKBAnalyticsMetricsContext *)v10 inputVariant];
-  v32[10] = v14;
+  inputVariant = [(TIKBAnalyticsMetricsContext *)v10 inputVariant];
+  v32[10] = inputVariant;
   v31[11] = kFeatureStringKeyboardSecondaryLanguage;
-  v15 = [(TIKBAnalyticsMetricsContext *)v10 secondaryLanguage];
-  v32[11] = v15;
+  secondaryLanguage = [(TIKBAnalyticsMetricsContext *)v10 secondaryLanguage];
+  v32[11] = secondaryLanguage;
   v31[12] = kFeatureStringKeyboardSecondaryRegion;
-  v16 = [(TIKBAnalyticsMetricsContext *)v10 secondaryRegion];
-  v32[12] = v16;
+  secondaryRegion = [(TIKBAnalyticsMetricsContext *)v10 secondaryRegion];
+  v32[12] = secondaryRegion;
   v31[13] = kFeatureStringKeyboardLayout;
-  v17 = [(TIKBAnalyticsMetricsContext *)v10 layoutName];
-  v32[13] = v17;
+  layoutName = [(TIKBAnalyticsMetricsContext *)v10 layoutName];
+  v32[13] = layoutName;
   v31[14] = kFeatureStringKeyboardType;
   v18 = [TIKBAnalyticsMetricsContext keyboardTypeEnumToString:[(TIKBAnalyticsMetricsContext *)v10 keyboardType]];
   v32[14] = v18;
   v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:15];
 
-  v20 = [MEMORY[0x277D6F318] sharedInstance];
-  v21 = [(TIKBAnalyticsMetricsContext *)v10 testingParameters];
-  [v20 dispatchEventWithName:@"typingSessionBenchmark" payload:v19 testingParameters:v21 allowSparsePayload:0];
+  mEMORY[0x277D6F318] = [MEMORY[0x277D6F318] sharedInstance];
+  testingParameters2 = [(TIKBAnalyticsMetricsContext *)v10 testingParameters];
+  [mEMORY[0x277D6F318] dispatchEventWithName:@"typingSessionBenchmark" payload:v19 testingParameters:testingParameters2 allowSparsePayload:0];
 
   v22 = *MEMORY[0x277D85DE8];
 }
@@ -112,23 +112,23 @@
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v22 count:15];
   v11 = [v17 eventSpecWithName:@"typingSessionBenchmark" inputModeRequired:0 fieldSpecs:v10];
 
-  v12 = [MEMORY[0x277D6F318] sharedInstance];
-  [v12 registerEventSpec:v11];
+  mEMORY[0x277D6F318] = [MEMORY[0x277D6F318] sharedInstance];
+  [mEMORY[0x277D6F318] registerEventSpec:v11];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)analyzeSession:(id)a3 alignedSession:(id)a4 withConfidence:(unint64_t)a5
+- (BOOL)analyzeSession:(id)session alignedSession:(id)alignedSession withConfidence:(unint64_t)confidence
 {
   v41 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  if (a5)
+  sessionCopy = session;
+  alignedSessionCopy = alignedSession;
+  if (confidence)
   {
-    v30 = v10;
-    objc_storeStrong(&self->_session, a3);
-    objc_storeStrong(&self->_alignedSession, a4);
-    self->_typingSessionConfidence = a5;
+    v30 = alignedSessionCopy;
+    objc_storeStrong(&self->_session, session);
+    objc_storeStrong(&self->_alignedSession, alignedSession);
+    self->_typingSessionConfidence = confidence;
     [TIStandardTypingSessionConfidenceEvaluator calculateAlignedTypingSessionConfidence:self->_alignedSession];
     self->_sessionAlignmentConfidence = v11;
     self->_sessionWords = 0;
@@ -137,8 +137,8 @@
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v12 = [v9 userActionHistory];
-    v13 = [v12 countByEnumeratingWithState:&v35 objects:v40 count:16];
+    userActionHistory = [sessionCopy userActionHistory];
+    v13 = [userActionHistory countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v13)
     {
       v14 = v13;
@@ -149,7 +149,7 @@
         {
           if (*v36 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(userActionHistory);
           }
 
           v17 = *(*(&v35 + 1) + 8 * i);
@@ -157,8 +157,8 @@
           {
             ++self->_sessionWords;
             v18 = MEMORY[0x277D6F320];
-            v19 = [v17 acceptedString];
-            LODWORD(v18) = [v18 hasNonWhitespaceNonPunctuationText:v19];
+            acceptedString = [v17 acceptedString];
+            LODWORD(v18) = [v18 hasNonWhitespaceNonPunctuationText:acceptedString];
 
             if (v18)
             {
@@ -167,7 +167,7 @@
           }
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v35 objects:v40 count:16];
+        v14 = [userActionHistory countByEnumeratingWithState:&v35 objects:v40 count:16];
       }
 
       while (v14);
@@ -179,8 +179,8 @@
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v20 = [(TITypingSessionAligned *)self->_alignedSession alignedEntries];
-    v21 = [v20 countByEnumeratingWithState:&v31 objects:v39 count:16];
+    alignedEntries = [(TITypingSessionAligned *)self->_alignedSession alignedEntries];
+    v21 = [alignedEntries countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (v21)
     {
       v22 = v21;
@@ -191,14 +191,14 @@
         {
           if (*v32 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(alignedEntries);
           }
 
           v25 = *(*(&v31 + 1) + 8 * j);
           ++self->_alignedWords;
           v26 = MEMORY[0x277D6F320];
-          v27 = [v25 expectedString];
-          LODWORD(v26) = [v26 hasNonWhitespaceNonPunctuationText:v27];
+          expectedString = [v25 expectedString];
+          LODWORD(v26) = [v26 hasNonWhitespaceNonPunctuationText:expectedString];
 
           if (v26)
           {
@@ -206,18 +206,18 @@
           }
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v31 objects:v39 count:16];
+        v22 = [alignedEntries countByEnumeratingWithState:&v31 objects:v39 count:16];
       }
 
       while (v22);
     }
 
     [(TITypingSessionBenchmarkAnalyzer *)self dispatchEvent];
-    v10 = v30;
+    alignedSessionCopy = v30;
   }
 
   v28 = *MEMORY[0x277D85DE8];
-  return a5 != 0;
+  return confidence != 0;
 }
 
 - (TITypingSessionBenchmarkAnalyzer)init

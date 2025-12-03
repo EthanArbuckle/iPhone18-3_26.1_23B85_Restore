@@ -1,15 +1,15 @@
 @interface CHLoadingView
-- (CHLoadingView)initWithFrame:(CGRect)a3;
+- (CHLoadingView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation CHLoadingView
 
-- (CHLoadingView)initWithFrame:(CGRect)a3
+- (CHLoadingView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v12.receiver = self;
   v12.super_class = CHLoadingView;
   v7 = [(CHLoadingView *)&v12 initWithFrame:?];

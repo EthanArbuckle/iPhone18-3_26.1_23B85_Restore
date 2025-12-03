@@ -1,7 +1,7 @@
 @interface CardTitleView
 - (_TtC7Measure13CardTitleView)init;
-- (_TtC7Measure13CardTitleView)initWithCoder:(id)a3;
-- (_TtC7Measure13CardTitleView)initWithFrame:(CGRect)a3;
+- (_TtC7Measure13CardTitleView)initWithCoder:(id)coder;
+- (_TtC7Measure13CardTitleView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation CardTitleView
@@ -20,7 +20,7 @@
   return v5;
 }
 
-- (_TtC7Measure13CardTitleView)initWithCoder:(id)a3
+- (_TtC7Measure13CardTitleView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7Measure13CardTitleView_editableTitleView;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(UITextField) init];
@@ -31,7 +31,7 @@
   return result;
 }
 
-- (_TtC7Measure13CardTitleView)initWithFrame:(CGRect)a3
+- (_TtC7Measure13CardTitleView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,8 +1,8 @@
 @interface CIRenderTask
-+ (CIRenderTask)rendertaskWithInternalTask:(void *)a3;
++ (CIRenderTask)rendertaskWithInternalTask:(void *)task;
 - (CIRenderInfo)waitUntilCompletedAndReturnError:(NSError *)error;
 - (CIRenderTask)init;
-- (CIRenderTask)initWithInternalTask:(void *)a3;
+- (CIRenderTask)initWithInternalTask:(void *)task;
 - (id)_pdfDataRepresentation;
 - (void)dealloc;
 @end
@@ -20,22 +20,22 @@
   return 0;
 }
 
-- (CIRenderTask)initWithInternalTask:(void *)a3
+- (CIRenderTask)initWithInternalTask:(void *)task
 {
   v6.receiver = self;
   v6.super_class = CIRenderTask;
   v4 = [(CIRenderTask *)&v6 init];
   if (v4)
   {
-    v4->_priv = CI::Object::ref(a3);
+    v4->_priv = CI::Object::ref(task);
   }
 
   return v4;
 }
 
-+ (CIRenderTask)rendertaskWithInternalTask:(void *)a3
++ (CIRenderTask)rendertaskWithInternalTask:(void *)task
 {
-  v3 = [[a1 alloc] initWithInternalTask:a3];
+  v3 = [[self alloc] initWithInternalTask:task];
 
   return v3;
 }

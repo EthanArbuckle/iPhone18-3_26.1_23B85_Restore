@@ -1,11 +1,11 @@
 @interface SagaCloudAddItemOperation
-- (SagaCloudAddItemOperation)initWithCoder:(id)a3;
-- (SagaCloudAddItemOperation)initWithConfiguration:(id)a3 adamIDs:(id)a4 clientIdentity:(id)a5;
-- (SagaCloudAddItemOperation)initWithConfiguration:(id)a3 adamIDs:(id)a4 referralAlbumAdamID:(int64_t)a5 clientIdentity:(id)a6;
-- (SagaCloudAddItemOperation)initWithConfiguration:(id)a3 adamIDs:(id)a4 referralPlaylistGlobalID:(id)a5 clientIdentity:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (SagaCloudAddItemOperation)initWithCoder:(id)coder;
+- (SagaCloudAddItemOperation)initWithConfiguration:(id)configuration adamIDs:(id)ds clientIdentity:(id)identity;
+- (SagaCloudAddItemOperation)initWithConfiguration:(id)configuration adamIDs:(id)ds referralAlbumAdamID:(int64_t)d clientIdentity:(id)identity;
+- (SagaCloudAddItemOperation)initWithConfiguration:(id)configuration adamIDs:(id)ds referralPlaylistGlobalID:(id)d clientIdentity:(id)identity;
+- (void)encodeWithCoder:(id)coder;
 - (void)logCloudAddRequestDescription;
-- (void)processAddedItems:(id)a3;
+- (void)processAddedItems:(id)items;
 - (void)removePendingAddedItemsForPermanentlyFailedOperation;
 @end
 
@@ -20,20 +20,20 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Updating in_my_library for cloud-add failure.", v8, 2u);
   }
 
-  v4 = [(CloudLibraryOperation *)self configuration];
-  v5 = [(CloudLibraryOperation *)self clientIdentity];
-  v6 = [(CloudLibraryOperation *)self musicLibrary];
+  configuration = [(CloudLibraryOperation *)self configuration];
+  clientIdentity = [(CloudLibraryOperation *)self clientIdentity];
+  musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
   v7 = objc_opt_class();
-  sub_1001075A8(v4, v5, v6, v7, *(&self->super._updateRequired + 1));
+  sub_1001075A8(configuration, clientIdentity, musicLibrary, v7, *(&self->super._updateRequired + 1));
 }
 
-- (void)processAddedItems:(id)a3
+- (void)processAddedItems:(id)items
 {
-  v4 = a3;
-  [(SagaCloudAddItemOperation *)self setAdamIDToSagaIDMap:v4];
-  v5 = [(CloudLibraryOperation *)self musicLibrary];
-  v6 = [(CloudLibraryOperation *)self clientIdentity];
-  sub_10013FD54(v4, v5, v6);
+  itemsCopy = items;
+  [(SagaCloudAddItemOperation *)self setAdamIDToSagaIDMap:itemsCopy];
+  musicLibrary = [(CloudLibraryOperation *)self musicLibrary];
+  clientIdentity = [(CloudLibraryOperation *)self clientIdentity];
+  sub_10013FD54(itemsCopy, musicLibrary, clientIdentity);
 
   v7 = os_log_create("com.apple.amp.itunescloudd", "CloudSync");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -42,11 +42,11 @@
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Updating in_my_library for cloud-add success.", v12, 2u);
   }
 
-  v8 = [(CloudLibraryOperation *)self configuration];
-  v9 = [(CloudLibraryOperation *)self clientIdentity];
-  v10 = [(CloudLibraryOperation *)self musicLibrary];
+  configuration = [(CloudLibraryOperation *)self configuration];
+  clientIdentity2 = [(CloudLibraryOperation *)self clientIdentity];
+  musicLibrary2 = [(CloudLibraryOperation *)self musicLibrary];
   v11 = objc_opt_class();
-  sub_1001075A8(v8, v9, v10, v11, *(&self->super._updateRequired + 1));
+  sub_1001075A8(configuration, clientIdentity2, musicLibrary2, v11, *(&self->super._updateRequired + 1));
 }
 
 - (void)logCloudAddRequestDescription
@@ -61,30 +61,30 @@
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SagaCloudAddItemOperation;
-  v4 = a3;
-  [(CloudLibraryOperation *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:*(&self->super._updateRequired + 1) forKey:{@"SagaCloudAddItemOperationAdamsIDKey", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CloudLibraryOperation *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:*(&self->super._updateRequired + 1) forKey:{@"SagaCloudAddItemOperationAdamsIDKey", v5.receiver, v5.super_class}];
 }
 
-- (SagaCloudAddItemOperation)initWithCoder:(id)a3
+- (SagaCloudAddItemOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = SagaCloudAddItemOperation;
-  v5 = [(CloudLibraryOperation *)&v13 initWithCoder:v4];
+  v5 = [(CloudLibraryOperation *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"SagaCloudAddItemOperationAdamsIDKey"];
+    v6 = [coderCopy decodeObjectForKey:@"SagaCloudAddItemOperationAdamsIDKey"];
     v7 = *(v5 + 89);
     *(v5 + 89) = v6;
 
     if (!*(v5 + 89))
     {
-      v8 = [v4 decodeInt64ForKey:@"SagaCloudAddItemOperationAdamIDKey"];
+      v8 = [coderCopy decodeInt64ForKey:@"SagaCloudAddItemOperationAdamIDKey"];
       if (v8)
       {
         v9 = [NSNumber numberWithLongLong:v8];
@@ -98,39 +98,39 @@
   return v5;
 }
 
-- (SagaCloudAddItemOperation)initWithConfiguration:(id)a3 adamIDs:(id)a4 referralPlaylistGlobalID:(id)a5 clientIdentity:(id)a6
+- (SagaCloudAddItemOperation)initWithConfiguration:(id)configuration adamIDs:(id)ds referralPlaylistGlobalID:(id)d clientIdentity:(id)identity
 {
-  v11 = a5;
-  v12 = [(SagaCloudAddItemOperation *)self initWithConfiguration:a3 adamIDs:a4 clientIdentity:a6];
+  dCopy = d;
+  v12 = [(SagaCloudAddItemOperation *)self initWithConfiguration:configuration adamIDs:ds clientIdentity:identity];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong((&v12->_referralAlbumAdamID + 1), a5);
+    objc_storeStrong((&v12->_referralAlbumAdamID + 1), d);
   }
 
   return v13;
 }
 
-- (SagaCloudAddItemOperation)initWithConfiguration:(id)a3 adamIDs:(id)a4 referralAlbumAdamID:(int64_t)a5 clientIdentity:(id)a6
+- (SagaCloudAddItemOperation)initWithConfiguration:(id)configuration adamIDs:(id)ds referralAlbumAdamID:(int64_t)d clientIdentity:(id)identity
 {
-  result = [(SagaCloudAddItemOperation *)self initWithConfiguration:a3 adamIDs:a4 clientIdentity:a6];
+  result = [(SagaCloudAddItemOperation *)self initWithConfiguration:configuration adamIDs:ds clientIdentity:identity];
   if (result)
   {
-    *(&result->_adamIDs + 1) = a5;
+    *(&result->_adamIDs + 1) = d;
   }
 
   return result;
 }
 
-- (SagaCloudAddItemOperation)initWithConfiguration:(id)a3 adamIDs:(id)a4 clientIdentity:(id)a5
+- (SagaCloudAddItemOperation)initWithConfiguration:(id)configuration adamIDs:(id)ds clientIdentity:(id)identity
 {
-  v8 = a4;
+  dsCopy = ds;
   v13.receiver = self;
   v13.super_class = SagaCloudAddItemOperation;
-  v9 = [(CloudLibraryOperation *)&v13 initWithConfiguration:a3 clientIdentity:a5];
+  v9 = [(CloudLibraryOperation *)&v13 initWithConfiguration:configuration clientIdentity:identity];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [dsCopy copy];
     v11 = *(v9 + 89);
     *(v9 + 89) = v10;
   }

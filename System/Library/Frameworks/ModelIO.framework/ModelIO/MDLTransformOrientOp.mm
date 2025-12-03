@@ -1,33 +1,33 @@
 @interface MDLTransformOrientOp
-- (MDLTransformOrientOp)initWithName:(id)a3 inverse:(BOOL)a4 data:(id)a5;
-- (double)double4x4AtTime:(uint64_t)a3@<X2>;
-- (double)float4x4AtTime:(uint64_t)a3;
+- (MDLTransformOrientOp)initWithName:(id)name inverse:(BOOL)inverse data:(id)data;
+- (double)double4x4AtTime:(uint64_t)time@<X2>;
+- (double)float4x4AtTime:(uint64_t)time;
 @end
 
 @implementation MDLTransformOrientOp
 
-- (MDLTransformOrientOp)initWithName:(id)a3 inverse:(BOOL)a4 data:(id)a5
+- (MDLTransformOrientOp)initWithName:(id)name inverse:(BOOL)inverse data:(id)data
 {
-  v9 = a3;
-  v10 = a5;
+  nameCopy = name;
+  dataCopy = data;
   v15.receiver = self;
   v15.super_class = MDLTransformOrientOp;
   v11 = [(MDLTransformOrientOp *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_animatedValue, a5);
-    objc_storeStrong(&v12->_name, a3);
-    v12->_inverse = a4;
+    objc_storeStrong(&v11->_animatedValue, data);
+    objc_storeStrong(&v12->_name, name);
+    v12->_inverse = inverse;
     v13 = v12;
   }
 
   return v12;
 }
 
-- (double)float4x4AtTime:(uint64_t)a3
+- (double)float4x4AtTime:(uint64_t)time
 {
-  objc_msgSend_floatQuaternionAtTime_(*(a1 + 24), a2, a3);
+  objc_msgSend_floatQuaternionAtTime_(*(self + 24), a2, time);
   v15.columns[1] = v15.columns[0];
   v15.columns[3].f32[0] = vmulq_f32(v15.columns[0], v15.columns[0]).f32[0];
   v4 = v15.columns[0].f32[1];
@@ -52,7 +52,7 @@
   v15.columns[2].f32[1] = (v13 - v14) + (v13 - v14);
   v15.columns[2].f32[2] = (v6 + v7) - (v15.columns[3].f32[0] + v5);
   v15.columns[3] = xmmword_239F9C1B0;
-  if (*(a1 + 8))
+  if (*(self + 8))
   {
     v15.columns[0].f32[2] = (v10 - v11) + (v10 - v11);
     v15.columns[1].f32[2] = (v13 + v14) + (v13 + v14);
@@ -62,12 +62,12 @@
   return *v15.columns[0].i64;
 }
 
-- (double)double4x4AtTime:(uint64_t)a3@<X2>
+- (double)double4x4AtTime:(uint64_t)time@<X2>
 {
-  v6 = *(a1 + 24);
+  v6 = *(self + 24);
   if (v6)
   {
-    objc_msgSend_doubleQuaternionAtTime_(v6, a2, a3);
+    objc_msgSend_doubleQuaternionAtTime_(v6, a2, time);
     v7 = v24;
     v8 = v25;
   }
@@ -93,7 +93,7 @@
   v20 = vmuld_lane_f64(v8.f64[0], v7, 1);
   v21 = vmuld_lane_f64(v7.f64[0], v8, 1);
   v7.f64[1] = 0.0;
-  if (*(a1 + 8))
+  if (*(self + 8))
   {
     __invert_d4();
   }

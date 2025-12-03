@@ -1,24 +1,24 @@
 @interface HDCodableRoutePointDatum
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLatitude:(BOOL)a3;
-- (void)setHasLongitude:(BOOL)a3;
-- (void)setHasOdometer:(BOOL)a3;
-- (void)setHasSignalEnvironmentType:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasLatitude:(BOOL)latitude;
+- (void)setHasLongitude:(BOOL)longitude;
+- (void)setHasOdometer:(BOOL)odometer;
+- (void)setHasSignalEnvironmentType:(BOOL)type;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableRoutePointDatum
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 16;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasLatitude:(BOOL)a3
+- (void)setHasLatitude:(BOOL)latitude
 {
-  if (a3)
+  if (latitude)
   {
     v3 = 2;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasLongitude:(BOOL)a3
+- (void)setHasLongitude:(BOOL)longitude
 {
-  if (a3)
+  if (longitude)
   {
     v3 = 4;
   }
@@ -61,9 +61,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasOdometer:(BOOL)a3
+- (void)setHasOdometer:(BOOL)odometer
 {
-  if (a3)
+  if (odometer)
   {
     v3 = 8;
   }
@@ -76,9 +76,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasSignalEnvironmentType:(BOOL)a3
+- (void)setHasSignalEnvironmentType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 32;
   }
@@ -97,20 +97,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableRoutePointDatum;
   v4 = [(HDCodableRoutePointDatum *)&v8 description];
-  v5 = [(HDCodableRoutePointDatum *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableRoutePointDatum *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithDouble:self->_timestamp];
-    [v3 setObject:v7 forKey:@"timestamp"];
+    [dictionary setObject:v7 forKey:@"timestamp"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -131,7 +131,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_latitude];
-  [v3 setObject:v8 forKey:@"latitude"];
+  [dictionary setObject:v8 forKey:@"latitude"];
 
   has = self->_has;
   if ((has & 4) == 0)
@@ -147,7 +147,7 @@ LABEL_4:
 
 LABEL_13:
   v9 = [MEMORY[0x277CCABB0] numberWithDouble:self->_longitude];
-  [v3 setObject:v9 forKey:@"longitude"];
+  [dictionary setObject:v9 forKey:@"longitude"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -163,7 +163,7 @@ LABEL_5:
 
 LABEL_14:
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:self->_altitude];
-  [v3 setObject:v10 forKey:@"altitude"];
+  [dictionary setObject:v10 forKey:@"altitude"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -179,23 +179,23 @@ LABEL_6:
 
 LABEL_15:
   v11 = [MEMORY[0x277CCABB0] numberWithDouble:self->_odometer];
-  [v3 setObject:v11 forKey:@"odometer"];
+  [dictionary setObject:v11 forKey:@"odometer"];
 
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_7:
     v5 = [MEMORY[0x277CCABB0] numberWithInt:self->_signalEnvironmentType];
-    [v3 setObject:v5 forKey:@"signalEnvironmentType"];
+    [dictionary setObject:v5 forKey:@"signalEnvironmentType"];
   }
 
 LABEL_8:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -276,14 +276,14 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    v4[5] = *&self->_timestamp;
-    *(v4 + 52) |= 0x10u;
+    toCopy[5] = *&self->_timestamp;
+    *(toCopy + 52) |= 0x10u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -302,8 +302,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[2] = *&self->_latitude;
-  *(v4 + 52) |= 2u;
+  toCopy[2] = *&self->_latitude;
+  *(toCopy + 52) |= 2u;
   has = self->_has;
   if ((has & 4) == 0)
   {
@@ -317,8 +317,8 @@ LABEL_4:
   }
 
 LABEL_13:
-  v4[3] = *&self->_longitude;
-  *(v4 + 52) |= 4u;
+  toCopy[3] = *&self->_longitude;
+  *(toCopy + 52) |= 4u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -332,8 +332,8 @@ LABEL_5:
   }
 
 LABEL_14:
-  v4[1] = *&self->_altitude;
-  *(v4 + 52) |= 1u;
+  toCopy[1] = *&self->_altitude;
+  *(toCopy + 52) |= 1u;
   has = self->_has;
   if ((has & 8) == 0)
   {
@@ -347,21 +347,21 @@ LABEL_6:
   }
 
 LABEL_15:
-  v4[4] = *&self->_odometer;
-  *(v4 + 52) |= 8u;
+  toCopy[4] = *&self->_odometer;
+  *(toCopy + 52) |= 8u;
   if ((*&self->_has & 0x20) != 0)
   {
 LABEL_7:
-    *(v4 + 12) = self->_signalEnvironmentType;
-    *(v4 + 52) |= 0x20u;
+    *(toCopy + 12) = self->_signalEnvironmentType;
+    *(toCopy + 52) |= 0x20u;
   }
 
 LABEL_8:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
@@ -443,23 +443,23 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 52) & 0x10) == 0 || self->_timestamp != *(v4 + 5))
+    if ((*(equalCopy + 52) & 0x10) == 0 || self->_timestamp != *(equalCopy + 5))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 52) & 0x10) != 0)
+  else if ((*(equalCopy + 52) & 0x10) != 0)
   {
 LABEL_31:
     v5 = 0;
@@ -468,60 +468,60 @@ LABEL_31:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 52) & 2) == 0 || self->_latitude != *(v4 + 2))
+    if ((*(equalCopy + 52) & 2) == 0 || self->_latitude != *(equalCopy + 2))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 52) & 2) != 0)
+  else if ((*(equalCopy + 52) & 2) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 52) & 4) == 0 || self->_longitude != *(v4 + 3))
+    if ((*(equalCopy + 52) & 4) == 0 || self->_longitude != *(equalCopy + 3))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 52) & 4) != 0)
+  else if ((*(equalCopy + 52) & 4) != 0)
   {
     goto LABEL_31;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 52) & 1) == 0 || self->_altitude != *(v4 + 1))
+    if ((*(equalCopy + 52) & 1) == 0 || self->_altitude != *(equalCopy + 1))
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(v4 + 52))
+  else if (*(equalCopy + 52))
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 52) & 8) == 0 || self->_odometer != *(v4 + 4))
+    if ((*(equalCopy + 52) & 8) == 0 || self->_odometer != *(equalCopy + 4))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 52) & 8) != 0)
+  else if ((*(equalCopy + 52) & 8) != 0)
   {
     goto LABEL_31;
   }
 
-  v5 = (*(v4 + 52) & 0x20) == 0;
+  v5 = (*(equalCopy + 52) & 0x20) == 0;
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 52) & 0x20) == 0 || self->_signalEnvironmentType != *(v4 + 12))
+    if ((*(equalCopy + 52) & 0x20) == 0 || self->_signalEnvironmentType != *(equalCopy + 12))
     {
       goto LABEL_31;
     }
@@ -718,15 +718,15 @@ LABEL_32:
   return v8 ^ v4 ^ v12 ^ v16 ^ v20 ^ v24;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 52);
+  fromCopy = from;
+  v5 = *(fromCopy + 52);
   if ((v5 & 0x10) != 0)
   {
-    self->_timestamp = *(v4 + 5);
+    self->_timestamp = *(fromCopy + 5);
     *&self->_has |= 0x10u;
-    v5 = *(v4 + 52);
+    v5 = *(fromCopy + 52);
     if ((v5 & 2) == 0)
     {
 LABEL_3:
@@ -739,14 +739,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 52) & 2) == 0)
+  else if ((*(fromCopy + 52) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_latitude = *(v4 + 2);
+  self->_latitude = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 4) == 0)
   {
 LABEL_4:
@@ -759,9 +759,9 @@ LABEL_4:
   }
 
 LABEL_13:
-  self->_longitude = *(v4 + 3);
+  self->_longitude = *(fromCopy + 3);
   *&self->_has |= 4u;
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 1) == 0)
   {
 LABEL_5:
@@ -774,9 +774,9 @@ LABEL_5:
   }
 
 LABEL_14:
-  self->_altitude = *(v4 + 1);
+  self->_altitude = *(fromCopy + 1);
   *&self->_has |= 1u;
-  v5 = *(v4 + 52);
+  v5 = *(fromCopy + 52);
   if ((v5 & 8) == 0)
   {
 LABEL_6:
@@ -789,12 +789,12 @@ LABEL_6:
   }
 
 LABEL_15:
-  self->_odometer = *(v4 + 4);
+  self->_odometer = *(fromCopy + 4);
   *&self->_has |= 8u;
-  if ((*(v4 + 52) & 0x20) != 0)
+  if ((*(fromCopy + 52) & 0x20) != 0)
   {
 LABEL_7:
-    self->_signalEnvironmentType = *(v4 + 12);
+    self->_signalEnvironmentType = *(fromCopy + 12);
     *&self->_has |= 0x20u;
   }
 

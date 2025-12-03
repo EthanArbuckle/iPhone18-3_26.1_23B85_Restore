@@ -1,11 +1,11 @@
 @interface NTKBundleComplicationDataSourceInfo
-- (BOOL)isEqual:(id)a3;
-- (NTKBundleComplicationDataSourceInfo)initWithDataSourceClass:(Class)a3;
+- (BOOL)isEqual:(id)equal;
+- (NTKBundleComplicationDataSourceInfo)initWithDataSourceClass:(Class)class;
 @end
 
 @implementation NTKBundleComplicationDataSourceInfo
 
-- (NTKBundleComplicationDataSourceInfo)initWithDataSourceClass:(Class)a3
+- (NTKBundleComplicationDataSourceInfo)initWithDataSourceClass:(Class)class
 {
   v21.receiver = self;
   v21.super_class = NTKBundleComplicationDataSourceInfo;
@@ -13,47 +13,47 @@
   v5 = v4;
   if (v4)
   {
-    objc_storeStrong(&v4->_dataSourceClass, a3);
-    v6 = [(objc_class *)a3 bundleIdentifier];
+    objc_storeStrong(&v4->_dataSourceClass, class);
+    bundleIdentifier = [(objc_class *)class bundleIdentifier];
     bundleIdentifier = v5->_bundleIdentifier;
-    v5->_bundleIdentifier = v6;
+    v5->_bundleIdentifier = bundleIdentifier;
 
-    v8 = [(objc_class *)a3 appIdentifier];
+    appIdentifier = [(objc_class *)class appIdentifier];
     appIdentifier = v5->_appIdentifier;
-    v5->_appIdentifier = v8;
+    v5->_appIdentifier = appIdentifier;
 
-    v10 = [(objc_class *)a3 localizedAppName];
+    localizedAppName = [(objc_class *)class localizedAppName];
     localizedAppName = v5->_localizedAppName;
-    v5->_localizedAppName = v10;
+    v5->_localizedAppName = localizedAppName;
 
-    v12 = [(objc_class *)a3 localizedComplicationName];
+    localizedComplicationName = [(objc_class *)class localizedComplicationName];
     localizedComplicationName = v5->_localizedComplicationName;
-    v5->_localizedComplicationName = v12;
+    v5->_localizedComplicationName = localizedComplicationName;
 
-    v14 = [(objc_class *)a3 sectionIdentifier];
+    sectionIdentifier = [(objc_class *)class sectionIdentifier];
     sectionIdentifier = v5->_sectionIdentifier;
-    v5->_sectionIdentifier = v14;
+    v5->_sectionIdentifier = sectionIdentifier;
 
-    v16 = [(objc_class *)a3 appGroupIdentifier];
+    appGroupIdentifier = [(objc_class *)class appGroupIdentifier];
     appGroupIdentifier = v5->_appGroupIdentifier;
-    v5->_appGroupIdentifier = v16;
+    v5->_appGroupIdentifier = appGroupIdentifier;
 
-    v18 = [(objc_class *)a3 legacyNTKComplicationType];
+    legacyNTKComplicationType = [(objc_class *)class legacyNTKComplicationType];
     legacyNTKComplicationType = v5->_legacyNTKComplicationType;
-    v5->_legacyNTKComplicationType = v18;
+    v5->_legacyNTKComplicationType = legacyNTKComplicationType;
 
-    v5->_useComplicationDescriptorsOnCompanion = [(objc_class *)a3 useComplicationDescriptorsOnCompanion];
-    v5->_hash = [(objc_class *)a3 hash];
+    v5->_useComplicationDescriptorsOnCompanion = [(objc_class *)class useComplicationDescriptorsOnCompanion];
+    v5->_hash = [(objc_class *)class hash];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && v4[3] == self->_dataSourceClass;
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && equalCopy[3] == self->_dataSourceClass;
 
   return v5;
 }

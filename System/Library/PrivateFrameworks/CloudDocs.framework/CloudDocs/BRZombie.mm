@@ -1,6 +1,6 @@
 @interface BRZombie
-+ (void)turnObjectIntoZombie:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
++ (void)turnObjectIntoZombie:(id)zombie;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (void)dealloc;
 @end
 
@@ -15,7 +15,7 @@
   object_setClass(self, AssociatedObject);
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v19 = *MEMORY[0x1E69E9840];
   AssociatedObject = objc_getAssociatedObject(self, "BRZombieDescription");
@@ -27,34 +27,34 @@
     v11 = 136315906;
     ClassName = object_getClassName(v6);
     v13 = 2080;
-    v14 = [NSStringFromSelector(a3) UTF8String];
+    uTF8String = [NSStringFromSelector(selector) UTF8String];
     v15 = 2080;
-    v16 = [AssociatedObject UTF8String];
+    uTF8String2 = [AssociatedObject UTF8String];
     v17 = 2112;
     v18 = v7;
     _os_log_fault_impl(&dword_1AE2A9000, v8, OS_LOG_TYPE_FAULT, "[CRIT] UNREACHABLE: *** [%s %s]: message sent to deallocated instance %s%@", &v11, 0x2Au);
   }
 
-  result = [v6 instanceMethodSignatureForSelector:a3];
+  result = [v6 instanceMethodSignatureForSelector:selector];
   v10 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-+ (void)turnObjectIntoZombie:(id)a3
++ (void)turnObjectIntoZombie:(id)zombie
 {
-  if (a3)
+  if (zombie)
   {
     v4 = objc_opt_class();
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p (old description: %@)>", v4, a3, a3];
-    objc_setAssociatedObject(a3, "BRZombieDescription", v5, 0x301);
-    objc_setAssociatedObject(a3, "BRZombieFormerClass", v4, 0);
+    zombie = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%@:%p (old description: %@)>", v4, zombie, zombie];
+    objc_setAssociatedObject(zombie, "BRZombieDescription", zombie, 0x301);
+    objc_setAssociatedObject(zombie, "BRZombieFormerClass", v4, 0);
     v6 = objc_opt_class();
-    object_setClass(a3, v6);
+    object_setClass(zombie, v6);
     v7 = brc_bread_crumbs("+[BRZombie turnObjectIntoZombie:]", 72);
     v8 = brc_default_log(1, 0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [(BRZombie *)v5 turnObjectIntoZombie:v7, v8];
+      [(BRZombie *)zombie turnObjectIntoZombie:v7, v8];
     }
   }
 }

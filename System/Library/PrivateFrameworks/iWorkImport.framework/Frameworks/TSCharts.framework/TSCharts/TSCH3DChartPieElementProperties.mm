@@ -1,12 +1,12 @@
 @interface TSCH3DChartPieElementProperties
 - (BOOL)anyHasExplosion;
-- (BOOL)applyElementTransform:(void *)a3 series:(id)a4 index:(tvec2<int>)a5 propertyAccessor:(id)a6;
-- (float)elementTransformDepthFromPropertyAccessor:(id)a3;
-- (float)explosionAtElementIndex:(void *)a3 propertyAccessor:(id)a4;
+- (BOOL)applyElementTransform:(void *)transform series:(id)series index:(tvec2<int>)index propertyAccessor:(id)accessor;
+- (float)elementTransformDepthFromPropertyAccessor:(id)accessor;
+- (float)explosionAtElementIndex:(void *)index propertyAccessor:(id)accessor;
 - (id).cxx_construct;
-- (id)boundsGeometryForSeries:(id)a3 index:(void *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)flatIndex:(void *)a3;
+- (id)boundsGeometryForSeries:(id)series index:(void *)index;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)flatIndex:(void *)index;
 - (void)reset;
 - (void)updateLabels;
 - (void)updateValues;
@@ -14,11 +14,11 @@
 
 @implementation TSCH3DChartPieElementProperties
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = TSCH3DChartPieElementProperties;
-  v4 = [(TSCH3DChartBasicElementProperties *)&v8 copyWithZone:a3];
+  v4 = [(TSCH3DChartBasicElementProperties *)&v8 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -40,11 +40,11 @@
   return v5;
 }
 
-- (id)boundsGeometryForSeries:(id)a3 index:(void *)a4
+- (id)boundsGeometryForSeries:(id)series index:(void *)index
 {
   v10.receiver = self;
   v10.super_class = TSCH3DChartPieElementProperties;
-  v4 = [(TSCH3DChartBasicElementProperties *)&v10 boundsGeometryForSeries:a3 index:a4];
+  v4 = [(TSCH3DChartBasicElementProperties *)&v10 boundsGeometryForSeries:series index:index];
   objc_msgSend_setType_(v4, v5, v6, v7, v8, 5);
 
   return v4;
@@ -86,9 +86,9 @@
   }
 }
 
-- (int64_t)flatIndex:(void *)a3
+- (int64_t)flatIndex:(void *)index
 {
-  if (*a3)
+  if (*index)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "[TSCH3DChartPieElementProperties flatIndex:]");
@@ -98,7 +98,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
   }
 
-  v23 = *(a3 + 1);
+  v23 = *(index + 1);
   if (v23 >= self->super._size.var1.var0)
   {
     v24 = MEMORY[0x277D81150];
@@ -107,7 +107,7 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v24, v31, v32, v33, v34, v25, v30, 78, 0, "Invalid series position");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v35, v36, v37, v38);
-    return *(a3 + 1);
+    return *(index + 1);
   }
 
   return v23;
@@ -132,10 +132,10 @@
   return begin != end;
 }
 
-- (float)explosionAtElementIndex:(void *)a3 propertyAccessor:(id)a4
+- (float)explosionAtElementIndex:(void *)index propertyAccessor:(id)accessor
 {
-  v7 = a4;
-  if (!v7)
+  accessorCopy = accessor;
+  if (!accessorCopy)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v8, v9, v10, "[TSCH3DChartPieElementProperties explosionAtElementIndex:propertyAccessor:]");
@@ -146,19 +146,19 @@
   }
 
   v30 = 0.0;
-  if ((objc_msgSend_layoutConfigurationEnabled(v7, v6, v8, v9, v10) & 1) == 0)
+  if ((objc_msgSend_layoutConfigurationEnabled(accessorCopy, v6, v8, v9, v10) & 1) == 0)
   {
-    objc_msgSend_explosionAtElementIndex_(self, v26, v27, v28, v29, a3);
+    objc_msgSend_explosionAtElementIndex_(self, v26, v27, v28, v29, index);
     v30 = v31;
   }
 
   return v30;
 }
 
-- (float)elementTransformDepthFromPropertyAccessor:(id)a3
+- (float)elementTransformDepthFromPropertyAccessor:(id)accessor
 {
-  v4 = a3;
-  if (!v4)
+  accessorCopy = accessor;
+  if (!accessorCopy)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v3, v5, v6, v7, "[TSCH3DChartPieElementProperties elementTransformDepthFromPropertyAccessor:]");
@@ -173,11 +173,11 @@
   return v23;
 }
 
-- (BOOL)applyElementTransform:(void *)a3 series:(id)a4 index:(tvec2<int>)a5 propertyAccessor:(id)a6
+- (BOOL)applyElementTransform:(void *)transform series:(id)series index:(tvec2<int>)index propertyAccessor:(id)accessor
 {
-  v10 = a4;
-  v12 = a6;
-  if (!v12)
+  seriesCopy = series;
+  accessorCopy = accessor;
+  if (!accessorCopy)
   {
     v16 = MEMORY[0x277D81150];
     v17 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, v13, v14, v15, "[TSCH3DChartPieElementProperties applyElementTransform:series:index:propertyAccessor:]");
@@ -187,9 +187,9 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28, v29, v30);
   }
 
-  objc_msgSend_elementTransformDepthFromPropertyAccessor_(self, v11, v13, v14, v15, v12);
+  objc_msgSend_elementTransformDepthFromPropertyAccessor_(self, v11, v13, v14, v15, accessorCopy);
   v32 = LODWORD(v31);
-  objc_msgSend_rotationAtElementIndex_(self, v33, v31, v34, v35, a5);
+  objc_msgSend_rotationAtElementIndex_(self, v33, v31, v34, v35, index);
   v37 = __sincosf_stret(v36 * -0.5);
   v64 = 0;
   v63 = 0;
@@ -200,20 +200,20 @@
   v59 = v32;
   v60 = v37.__sinval * 0.0;
   v65 = 1;
-  sub_276168C80(a3, &v57);
+  sub_276168C80(transform, &v57);
   v50 = xmmword_2764D60D0;
   v51 = 0;
   v52 = 0;
   v53 = 1065353216;
   v54 = 0;
   v55 = 0;
-  objc_msgSend_explosionAtElementIndex_propertyAccessor_(self, v38, 0.00781250185, v39, v40, a5, v12);
+  objc_msgSend_explosionAtElementIndex_propertyAccessor_(self, v38, 0.00781250185, v39, v40, index, accessorCopy);
   v49[0] = 0;
   *&v49[1] = v41 * +[TSCH3DChartPieFamilySceneObject geometrySpaceRadius]_0();
   v49[2] = 0;
   v56 = 1;
-  *&v42 = sub_276168C80(a3, v49);
-  objc_msgSend_percentOfTotalAtElementIndex_(self, v43, v42, v44, v45, a5);
+  *&v42 = sub_276168C80(transform, v49);
+  objc_msgSend_percentOfTotalAtElementIndex_(self, v43, v42, v44, v45, index);
   v47 = fabsf(v46) > 0.00000011921;
 
   return v47;

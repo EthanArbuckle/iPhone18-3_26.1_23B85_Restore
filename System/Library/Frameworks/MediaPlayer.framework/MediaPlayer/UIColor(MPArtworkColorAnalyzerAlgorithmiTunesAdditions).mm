@@ -12,9 +12,9 @@
   }
 
   v4 = MEMORY[0x1E69B13B0];
-  v5 = [a1 CGColor];
+  cGColor = [self CGColor];
 
-  return [v4 isLightColor:v5];
+  return [v4 isLightColor:cGColor];
 }
 
 @end

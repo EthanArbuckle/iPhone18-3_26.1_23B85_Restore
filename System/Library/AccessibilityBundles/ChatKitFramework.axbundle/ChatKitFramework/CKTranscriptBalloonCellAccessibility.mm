@@ -1,9 +1,9 @@
 @interface CKTranscriptBalloonCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilitySupportsActivateAction;
 - (BOOL)accessibilityActivate;
 - (CGPoint)accessibilityActivationPoint;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)accessibilityCustomRotors;
 - (id)accessibilityLabel;
 - (id)automationElements;
@@ -12,49 +12,49 @@
 
 @implementation CKTranscriptBalloonCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKTranscriptBalloonCell" isKindOfClass:@"CKEditableCollectionViewCell"];
-  [v3 validateClass:@"CKEditableCollectionViewCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"CKTranscriptBalloonCell" isKindOfClass:@"CKTranscriptMessageCell"];
-  [v3 validateClass:@"CKTranscriptMessageCell" hasInstanceMethod:@"failureButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKEditableCollectionViewCell" hasInstanceMethod:@"updateCheckmarkImage" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"CKTranscriptBalloonCell" isKindOfClass:@"UICollectionViewCell"];
-  [v3 validateClass:@"UICollectionViewCell" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"UICollectionViewCell" hasInstanceMethod:@"isHighlighted" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKTranscriptBalloonCell" isKindOfClass:@"CKEditableCollectionViewCell"];
+  [validationsCopy validateClass:@"CKEditableCollectionViewCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"CKTranscriptBalloonCell" isKindOfClass:@"CKTranscriptMessageCell"];
+  [validationsCopy validateClass:@"CKTranscriptMessageCell" hasInstanceMethod:@"failureButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKEditableCollectionViewCell" hasInstanceMethod:@"updateCheckmarkImage" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"CKTranscriptBalloonCell" isKindOfClass:@"UICollectionViewCell"];
+  [validationsCopy validateClass:@"UICollectionViewCell" hasInstanceMethod:@"isSelected" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"UICollectionViewCell" hasInstanceMethod:@"isHighlighted" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v2 = [(CKTranscriptBalloonCellAccessibility *)self safeValueForKey:@"_balloonView"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (BOOL)_accessibilitySupportsActivateAction
 {
   v2 = [(CKTranscriptBalloonCellAccessibility *)self safeValueForKey:@"_balloonView"];
-  v3 = [v2 _accessibilitySupportsActivateAction];
+  _accessibilitySupportsActivateAction = [v2 _accessibilitySupportsActivateAction];
 
-  return v3;
+  return _accessibilitySupportsActivateAction;
 }
 
 - (id)accessibilityCustomRotors
 {
   v2 = [(CKTranscriptBalloonCellAccessibility *)self safeValueForKey:@"_balloonView"];
-  v3 = [v2 accessibilityCustomRotors];
+  accessibilityCustomRotors = [v2 accessibilityCustomRotors];
 
-  return v3;
+  return accessibilityCustomRotors;
 }
 
 - (BOOL)accessibilityActivate
 {
   v2 = [(CKTranscriptBalloonCellAccessibility *)self safeValueForKey:@"_balloonView"];
-  v3 = [v2 accessibilityActivate];
+  accessibilityActivate = [v2 accessibilityActivate];
 
-  return v3;
+  return accessibilityActivate;
 }
 
 - (CGPoint)accessibilityActivationPoint
@@ -80,16 +80,16 @@
   return v5;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  if (![v7 _accessibilityAutomationHitTest] || (-[CKTranscriptBalloonCellAccessibility safeValueForKey:](self, "safeValueForKey:", @"_balloonView"), v8 = objc_claimAutoreleasedReturnValue(), -[CKTranscriptBalloonCellAccessibility safeValueForKey:](self, "safeValueForKey:", @"_balloonView"), v9 = objc_claimAutoreleasedReturnValue(), -[CKTranscriptBalloonCellAccessibility convertPoint:toView:](self, "convertPoint:toView:", v9, x, y), objc_msgSend(v8, "_accessibilityHitTest:withEvent:", v7), v10 = objc_claimAutoreleasedReturnValue(), v9, v8, !v10))
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  if (![eventCopy _accessibilityAutomationHitTest] || (-[CKTranscriptBalloonCellAccessibility safeValueForKey:](self, "safeValueForKey:", @"_balloonView"), v8 = objc_claimAutoreleasedReturnValue(), -[CKTranscriptBalloonCellAccessibility safeValueForKey:](self, "safeValueForKey:", @"_balloonView"), v9 = objc_claimAutoreleasedReturnValue(), -[CKTranscriptBalloonCellAccessibility convertPoint:toView:](self, "convertPoint:toView:", v9, x, y), objc_msgSend(v8, "_accessibilityHitTest:withEvent:", eventCopy), v10 = objc_claimAutoreleasedReturnValue(), v9, v8, !v10))
   {
     v12.receiver = self;
     v12.super_class = CKTranscriptBalloonCellAccessibility;
-    v10 = [(CKTranscriptBalloonCellAccessibility *)&v12 _accessibilityHitTest:v7 withEvent:x, y];
+    v10 = [(CKTranscriptBalloonCellAccessibility *)&v12 _accessibilityHitTest:eventCopy withEvent:x, y];
   }
 
   return v10;

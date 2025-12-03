@@ -3,18 +3,18 @@
 - (BOOL)paletteIsHidden;
 - (UIEdgeInsets)preferredContentInsets;
 - (UIView)_backgroundView;
-- (void)setFrame:(CGRect)a3 isAnimating:(BOOL)a4;
+- (void)setFrame:(CGRect)frame isAnimating:(BOOL)animating;
 @end
 
 @implementation _UINavigationBarBridgingPalette
 
-- (void)setFrame:(CGRect)a3 isAnimating:(BOOL)a4
+- (void)setFrame:(CGRect)frame isAnimating:(BOOL)animating
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(UIView *)self setFrame:a4];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [(UIView *)self setFrame:animating];
   v11.origin.x = x;
   v11.origin.y = y;
   v11.size.width = width;
@@ -54,16 +54,16 @@
 
 - (BOOL)isAttached
 {
-  v2 = [(UIView *)self window];
-  v3 = v2 != 0;
+  window = [(UIView *)self window];
+  v3 = window != 0;
 
   return v3;
 }
 
 - (BOOL)paletteIsHidden
 {
-  v2 = [(UIView *)self window];
-  v3 = v2 == 0;
+  window = [(UIView *)self window];
+  v3 = window == 0;
 
   return v3;
 }

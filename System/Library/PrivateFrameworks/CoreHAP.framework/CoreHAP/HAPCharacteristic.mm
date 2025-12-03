@@ -1,32 +1,32 @@
 @interface HAPCharacteristic
 + (id)dummy;
-+ (id)hap2_shortTypeFromUUID:(id)a3;
++ (id)hap2_shortTypeFromUUID:(id)d;
 - (BOOL)hap2_canUseCachedValue;
-- (BOOL)hap2_mergeWithCharacteristic:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)mergeObject:(id)a3;
+- (BOOL)hap2_mergeWithCharacteristic:(id)characteristic;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)mergeObject:(id)object;
 - (BOOL)supportsAdditionalAuthorizationData;
 - (BOOL)supportsWriteWithResponse;
 - (CBCharacteristic)cbCharacteristic;
-- (HAPCharacteristic)initWithType:(id)a3 instanceID:(id)a4 value:(id)a5 stateNumber:(id)a6 properties:(unsigned __int16)a7 eventNotificationsEnabled:(BOOL)a8 implicitWriteWithResponse:(BOOL)a9 metadata:(id)a10;
+- (HAPCharacteristic)initWithType:(id)type instanceID:(id)d value:(id)value stateNumber:(id)number properties:(unsigned __int16)properties eventNotificationsEnabled:(BOOL)enabled implicitWriteWithResponse:(BOOL)response metadata:(id)self0;
 - (HAPService)service;
 - (NSData)notificationContext;
 - (NSDate)valueUpdatedTime;
 - (NSNumber)stateNumber;
 - (NSString)description;
-- (id)_generateValidMetadata:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_generateValidMetadata:(id)metadata;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)initDummy;
 - (id)propertiesDescription;
 - (id)shortDescription;
-- (id)validateValue:(id)a3 outValue:(id *)a4;
+- (id)validateValue:(id)value outValue:(id *)outValue;
 - (id)value;
 - (unint64_t)hash;
-- (void)_updateMetadata:(id)a3 withProvidedMetadata:(id)a4;
-- (void)setNotificationContext:(id)a3;
-- (void)setStateNumber:(id)a3;
-- (void)setValue:(id)a3;
-- (void)setValueUpdatedTime:(id)a3;
+- (void)_updateMetadata:(id)metadata withProvidedMetadata:(id)providedMetadata;
+- (void)setNotificationContext:(id)context;
+- (void)setStateNumber:(id)number;
+- (void)setValue:(id)value;
+- (void)setValueUpdatedTime:(id)time;
 @end
 
 @implementation HAPCharacteristic
@@ -53,12 +53,12 @@
   v3 = +[HAPMetadata getSharedInstance];
   if ([(HAPCharacteristic *)self eventNotificationsEnabled]&& ![(HAPCharacteristic *)self prohibitCaching])
   {
-    v5 = [(HAPCharacteristic *)self value];
+    value = [(HAPCharacteristic *)self value];
     v4 = 0;
-    if (v5 && v3)
+    if (value && v3)
     {
-      v6 = [(HAPCharacteristic *)self type];
-      v4 = [v3 isStandardHAPCharacteristic:v6];
+      type = [(HAPCharacteristic *)self type];
+      v4 = [v3 isStandardHAPCharacteristic:type];
     }
   }
 
@@ -70,59 +70,59 @@
   return v4;
 }
 
-- (BOOL)hap2_mergeWithCharacteristic:(id)a3
+- (BOOL)hap2_mergeWithCharacteristic:(id)characteristic
 {
-  v4 = a3;
-  v5 = [v4 value];
-  [(HAPCharacteristic *)self setValue:v5];
+  characteristicCopy = characteristic;
+  value = [characteristicCopy value];
+  [(HAPCharacteristic *)self setValue:value];
 
-  v6 = [v4 valueUpdatedTime];
-  [(HAPCharacteristic *)self setValueUpdatedTime:v6];
+  valueUpdatedTime = [characteristicCopy valueUpdatedTime];
+  [(HAPCharacteristic *)self setValueUpdatedTime:valueUpdatedTime];
 
-  -[HAPCharacteristic setProperties:](self, "setProperties:", [v4 properties]);
-  v7 = [v4 metadata];
+  -[HAPCharacteristic setProperties:](self, "setProperties:", [characteristicCopy properties]);
+  metadata = [characteristicCopy metadata];
 
-  [(HAPCharacteristic *)self setMetadata:v7];
+  [(HAPCharacteristic *)self setMetadata:metadata];
   return 1;
 }
 
-+ (id)hap2_shortTypeFromUUID:(id)a3
++ (id)hap2_shortTypeFromUUID:(id)d
 {
-  v3 = a3;
-  v4 = v3;
-  if ([v3 hasSuffix:@"-0000-1000-8000-0026BB765291"])
+  dCopy = d;
+  v4 = dCopy;
+  if ([dCopy hasSuffix:@"-0000-1000-8000-0026BB765291"])
   {
-    v4 = [v3 substringToIndex:{objc_msgSend(v3, "length") - objc_msgSend(@"-0000-1000-8000-0026BB765291", "length")}];
+    v4 = [dCopy substringToIndex:{objc_msgSend(dCopy, "length") - objc_msgSend(@"-0000-1000-8000-0026BB765291", "length")}];
   }
 
   return v4;
 }
 
-- (id)validateValue:(id)a3 outValue:(id *)a4
+- (id)validateValue:(id)value outValue:(id *)outValue
 {
   v102 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(HAPCharacteristic *)self metadata];
-  if (!v7)
+  valueCopy = value;
+  metadata = [(HAPCharacteristic *)self metadata];
+  if (!metadata)
   {
     goto LABEL_4;
   }
 
-  v8 = v7;
-  v9 = [(HAPCharacteristic *)self metadata];
-  if (!v9)
+  v8 = metadata;
+  metadata2 = [(HAPCharacteristic *)self metadata];
+  if (!metadata2)
   {
 
 LABEL_7:
-    v15 = [(HAPCharacteristic *)self metadata];
-    v16 = [v15 format];
+    metadata3 = [(HAPCharacteristic *)self metadata];
+    format = [metadata3 format];
 
-    if (a4)
+    if (outValue)
     {
-      *a4 = 0;
+      *outValue = 0;
     }
 
-    if (!v6)
+    if (!valueCopy)
     {
       v14 = 0;
 LABEL_66:
@@ -130,77 +130,77 @@ LABEL_66:
       goto LABEL_67;
     }
 
-    v17 = [(HAPCharacteristic *)self metadata];
-    if (v17)
+    metadata4 = [(HAPCharacteristic *)self metadata];
+    if (metadata4)
     {
-      v18 = [(HAPCharacteristic *)self metadata];
-      v19 = [v18 constraints];
+      metadata5 = [(HAPCharacteristic *)self metadata];
+      constraints = [metadata5 constraints];
 
-      if (v19)
+      if (constraints)
       {
-        v20 = [(HAPCharacteristic *)self metadata];
-        v21 = [v20 constraints];
-        v17 = [v21 minimumValue];
+        metadata6 = [(HAPCharacteristic *)self metadata];
+        constraints2 = [metadata6 constraints];
+        metadata4 = [constraints2 minimumValue];
 
-        v22 = [(HAPCharacteristic *)self metadata];
-        v23 = [v22 constraints];
-        v24 = [v23 maximumValue];
+        metadata7 = [(HAPCharacteristic *)self metadata];
+        constraints3 = [metadata7 constraints];
+        maximumValue = [constraints3 maximumValue];
 
-        v25 = [(HAPCharacteristic *)self metadata];
-        v26 = [v25 constraints];
-        v27 = [v26 minLength];
+        metadata8 = [(HAPCharacteristic *)self metadata];
+        constraints4 = [metadata8 constraints];
+        minLength = [constraints4 minLength];
 
-        v28 = [(HAPCharacteristic *)self metadata];
-        v29 = [v28 constraints];
-        v93 = [v29 maxLength];
+        metadata9 = [(HAPCharacteristic *)self metadata];
+        constraints5 = [metadata9 constraints];
+        maxLength = [constraints5 maxLength];
 
-        v30 = v27;
+        v30 = minLength;
       }
 
       else
       {
-        v93 = 0;
+        maxLength = 0;
         v30 = 0;
-        v24 = 0;
-        v17 = 0;
+        maximumValue = 0;
+        metadata4 = 0;
       }
     }
 
     else
     {
-      v93 = 0;
+      maxLength = 0;
       v30 = 0;
-      v24 = 0;
+      maximumValue = 0;
     }
 
-    if ([v16 isEqualToString:@"int"] & 1) != 0 || (objc_msgSend(v16, "isEqualToString:", @"float") & 1) != 0 || (objc_msgSend(v16, "isEqualToString:", @"BOOL") & 1) != 0 || (objc_msgSend(v16, "isEqualToString:", @"int8") & 1) != 0 || (objc_msgSend(v16, "isEqualToString:", @"int16") & 1) != 0 || (objc_msgSend(v16, "isEqualToString:", @"int64") & 1) != 0 || (objc_msgSend(v16, "isEqualToString:", @"uint8") & 1) != 0 || (objc_msgSend(v16, "isEqualToString:", @"uint16") & 1) != 0 || (objc_msgSend(v16, "isEqualToString:", @"uint32") & 1) != 0 || (objc_msgSend(v16, "isEqualToString:", @"uint64"))
+    if ([format isEqualToString:@"int"] & 1) != 0 || (objc_msgSend(format, "isEqualToString:", @"float") & 1) != 0 || (objc_msgSend(format, "isEqualToString:", @"BOOL") & 1) != 0 || (objc_msgSend(format, "isEqualToString:", @"int8") & 1) != 0 || (objc_msgSend(format, "isEqualToString:", @"int16") & 1) != 0 || (objc_msgSend(format, "isEqualToString:", @"int64") & 1) != 0 || (objc_msgSend(format, "isEqualToString:", @"uint8") & 1) != 0 || (objc_msgSend(format, "isEqualToString:", @"uint16") & 1) != 0 || (objc_msgSend(format, "isEqualToString:", @"uint32") & 1) != 0 || (objc_msgSend(format, "isEqualToString:", @"uint64"))
     {
       v31 = 0x277CCABB0;
     }
 
-    else if ([v16 isEqualToString:@"string"])
+    else if ([format isEqualToString:@"string"])
     {
       v31 = 0x277CCACA8;
     }
 
-    else if ([v16 isEqualToString:@"date"])
+    else if ([format isEqualToString:@"date"])
     {
       v31 = 0x277CBEAA8;
     }
 
-    else if ([v16 isEqualToString:@"array"])
+    else if ([format isEqualToString:@"array"])
     {
       v31 = 0x277CBEA60;
     }
 
-    else if ([v16 isEqualToString:@"dict"])
+    else if ([format isEqualToString:@"dict"])
     {
       v31 = 0x277D82BB8;
     }
 
     else
     {
-      if (([v16 isEqualToString:@"data"] & 1) == 0 && !objc_msgSend(v16, "isEqualToString:", @"tlv8"))
+      if (([format isEqualToString:@"data"] & 1) == 0 && !objc_msgSend(format, "isEqualToString:", @"tlv8"))
       {
         v33 = 0;
 LABEL_29:
@@ -212,43 +212,43 @@ LABEL_29:
           if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
           {
             HMFGetLogIdentifier();
-            v90 = v16;
-            v43 = v24;
-            v44 = v17;
+            v90 = format;
+            v43 = maximumValue;
+            v44 = metadata4;
             v46 = v45 = v30;
-            v47 = [(HAPCharacteristic *)self type];
+            type = [(HAPCharacteristic *)self type];
             *buf = 138544130;
             v95 = v46;
             v96 = 2112;
-            v97 = v47;
+            v97 = type;
             v98 = 2112;
             v99 = objc_opt_class();
             v100 = 2112;
-            v101 = v33;
+            objCType = v33;
             v48 = v99;
             _os_log_impl(&dword_22AADC000, v42, OS_LOG_TYPE_ERROR, "%{public}@### Failed to validate value for characteristic with type '%@' because the value was of class '%@' but should be '%@'", buf, 0x2Au);
 
             v30 = v45;
-            v17 = v44;
-            v24 = v43;
-            v16 = v90;
+            metadata4 = v44;
+            maximumValue = v43;
+            format = v90;
           }
 
           objc_autoreleasePoolPop(v41);
           goto LABEL_65;
         }
 
-        if (!a4)
+        if (!outValue)
         {
 LABEL_48:
-          if (([v16 isEqualToString:@"int"] & 1) != 0 || (objc_msgSend(v16, "isEqualToString:", @"float") & 1) != 0 || (objc_msgSend(v16, "isEqualToString:", @"int8") & 1) != 0 || (objc_msgSend(v16, "isEqualToString:", @"int16") & 1) != 0 || (objc_msgSend(v16, "isEqualToString:", @"int64") & 1) != 0 || (objc_msgSend(v16, "isEqualToString:", @"uint8") & 1) != 0 || (objc_msgSend(v16, "isEqualToString:", @"uint16") & 1) != 0 || (objc_msgSend(v16, "isEqualToString:", @"uint32") & 1) != 0 || objc_msgSend(v16, "isEqualToString:", @"uint64"))
+          if (([format isEqualToString:@"int"] & 1) != 0 || (objc_msgSend(format, "isEqualToString:", @"float") & 1) != 0 || (objc_msgSend(format, "isEqualToString:", @"int8") & 1) != 0 || (objc_msgSend(format, "isEqualToString:", @"int16") & 1) != 0 || (objc_msgSend(format, "isEqualToString:", @"int64") & 1) != 0 || (objc_msgSend(format, "isEqualToString:", @"uint8") & 1) != 0 || (objc_msgSend(format, "isEqualToString:", @"uint16") & 1) != 0 || (objc_msgSend(format, "isEqualToString:", @"uint32") & 1) != 0 || objc_msgSend(format, "isEqualToString:", @"uint64"))
           {
-            if (v17 && [v6 compare:v17] == -1)
+            if (metadata4 && [valueCopy compare:metadata4] == -1)
             {
               v66 = [MEMORY[0x277CCA9B8] errorWithHMErrorCode:44];
-              if (a4)
+              if (outValue)
               {
-                *a4 = 0;
+                *outValue = 0;
               }
             }
 
@@ -257,13 +257,13 @@ LABEL_48:
               v66 = 0;
             }
 
-            if (v24 && [v6 compare:v24] == 1)
+            if (maximumValue && [valueCopy compare:maximumValue] == 1)
             {
               v40 = [MEMORY[0x277CCA9B8] errorWithHMErrorCode:45];
 
-              if (a4)
+              if (outValue)
               {
-                *a4 = 0;
+                *outValue = 0;
               }
             }
 
@@ -275,7 +275,7 @@ LABEL_48:
             goto LABEL_65;
           }
 
-          if ([v16 isEqualToString:@"BOOL"])
+          if ([format isEqualToString:@"BOOL"])
           {
             v69 = objc_opt_class();
             if (([v69 isSubclassOfClass:objc_opt_class()] & 1) == 0)
@@ -283,7 +283,7 @@ LABEL_48:
               v70 = v30;
               if ([v69 isSubclassOfClass:objc_opt_class()])
               {
-                if ([v6 intValue] < 2)
+                if ([valueCopy intValue] < 2)
                 {
                   v40 = 0;
 LABEL_105:
@@ -297,16 +297,16 @@ LABEL_105:
                 {
                   v73 = HMFGetLogIdentifier();
                   v74 = objc_opt_class();
-                  v75 = v6;
+                  v75 = valueCopy;
                   v91 = v74;
                   *buf = 138544130;
                   v95 = v73;
                   v96 = 2112;
-                  v97 = v6;
+                  v97 = valueCopy;
                   v98 = 2112;
                   v99 = v74;
                   v100 = 2080;
-                  v101 = [v6 objCType];
+                  objCType = [valueCopy objCType];
                   _os_log_impl(&dword_22AADC000, v72, OS_LOG_TYPE_ERROR, "%{public}@Value to be validated is expected to be either '0' or '1', instead it was '%@' - class %@  objCType %s", buf, 0x2Au);
                 }
               }
@@ -321,7 +321,7 @@ LABEL_105:
                   *buf = 138543874;
                   v95 = v84;
                   v96 = 2112;
-                  v97 = v6;
+                  v97 = valueCopy;
                   v98 = 2112;
                   v99 = v69;
                   _os_log_impl(&dword_22AADC000, v83, OS_LOG_TYPE_ERROR, "%{public}@inValue not a BOOLean value %@ - class %@", buf, 0x20u);
@@ -330,9 +330,9 @@ LABEL_105:
 
               objc_autoreleasePoolPop(v71);
               v40 = [MEMORY[0x277CCA9B8] errorWithHMErrorCode:3];
-              if (a4)
+              if (outValue)
               {
-                *a4 = 0;
+                *outValue = 0;
               }
 
               goto LABEL_105;
@@ -346,15 +346,15 @@ LABEL_65:
             goto LABEL_66;
           }
 
-          if (![v16 isEqualToString:@"string"])
+          if (![format isEqualToString:@"string"])
           {
             goto LABEL_88;
           }
 
           v92 = v30;
-          v76 = v6;
+          v76 = valueCopy;
           v77 = [v76 length];
-          if (v77 <= [v93 unsignedIntValue])
+          if (v77 <= [maxLength unsignedIntValue])
           {
             v85 = [v76 length];
             if (v85 >= [v30 unsignedIntValue])
@@ -397,7 +397,7 @@ LABEL_107:
               v96 = 2048;
               v97 = [v76 length];
               v98 = 1024;
-              LODWORD(v99) = [v93 unsignedIntValue];
+              LODWORD(v99) = [maxLength unsignedIntValue];
               _os_log_impl(&dword_22AADC000, v79, OS_LOG_TYPE_ERROR, "%{public}@inValue string.length: %lu > maxLength: %u", buf, 0x1Cu);
             }
 
@@ -407,43 +407,43 @@ LABEL_107:
           }
 
           v40 = [v81 errorWithHMErrorCode:{v82, v92}];
-          if (a4)
+          if (outValue)
           {
-            *a4 = 0;
+            *outValue = 0;
           }
 
           goto LABEL_107;
         }
 
-        v89 = v24;
-        v34 = v17;
+        v89 = maximumValue;
+        v34 = metadata4;
         v35 = v30;
-        v36 = [(HAPCharacteristic *)self metadata];
-        v37 = [v36 constraints];
-        v38 = [v37 stepValue];
-        if (v38)
+        metadata10 = [(HAPCharacteristic *)self metadata];
+        constraints6 = [metadata10 constraints];
+        stepValue = [constraints6 stepValue];
+        if (stepValue)
         {
-          v39 = v38;
-          if ([v16 isEqualToString:@"float"])
+          v39 = stepValue;
+          if ([format isEqualToString:@"float"])
           {
 
 LABEL_39:
-            v50 = [(HAPCharacteristic *)self metadata];
-            v51 = [v50 constraints];
-            v52 = [v51 stepValue];
-            [v52 doubleValue];
+            metadata11 = [(HAPCharacteristic *)self metadata];
+            constraints7 = [metadata11 constraints];
+            stepValue2 = [constraints7 stepValue];
+            [stepValue2 doubleValue];
             v54 = v53;
 
-            v55 = [(HAPCharacteristic *)self metadata];
-            v56 = [v55 constraints];
-            v57 = [v56 minimumValue];
+            metadata12 = [(HAPCharacteristic *)self metadata];
+            constraints8 = [metadata12 constraints];
+            minimumValue = [constraints8 minimumValue];
 
-            if (v57)
+            if (minimumValue)
             {
-              v58 = [(HAPCharacteristic *)self metadata];
-              v59 = [v58 constraints];
-              v60 = [v59 minimumValue];
-              [v60 doubleValue];
+              metadata13 = [(HAPCharacteristic *)self metadata];
+              constraints9 = [metadata13 constraints];
+              minimumValue2 = [constraints9 minimumValue];
+              [minimumValue2 doubleValue];
               v62 = v61;
             }
 
@@ -452,10 +452,10 @@ LABEL_39:
               v62 = 0.0;
             }
 
-            [v6 doubleValue];
+            [valueCopy doubleValue];
             v65 = v62 + round((v64 - v62) / v54) * v54;
             v30 = v35;
-            if ([v16 isEqualToString:@"int"])
+            if ([format isEqualToString:@"int"])
             {
               [MEMORY[0x277CCABB0] numberWithInteger:v65];
             }
@@ -465,11 +465,11 @@ LABEL_39:
               [MEMORY[0x277CCABB0] numberWithDouble:v65];
             }
 
-            v63 = v17 = v34;
+            v63 = metadata4 = v34;
             goto LABEL_47;
           }
 
-          v49 = [v16 isEqualToString:@"int"];
+          v49 = [format isEqualToString:@"int"];
 
           if (v49)
           {
@@ -481,12 +481,12 @@ LABEL_39:
         {
         }
 
-        v63 = v6;
+        v63 = valueCopy;
         v30 = v35;
-        v17 = v34;
+        metadata4 = v34;
 LABEL_47:
-        v24 = v89;
-        *a4 = v63;
+        maximumValue = v89;
+        *outValue = v63;
         goto LABEL_48;
       }
 
@@ -498,21 +498,21 @@ LABEL_47:
     goto LABEL_29;
   }
 
-  v10 = v9;
-  v11 = [(HAPCharacteristic *)self metadata];
-  v12 = [v11 format];
+  v10 = metadata2;
+  metadata14 = [(HAPCharacteristic *)self metadata];
+  format2 = [metadata14 format];
 
-  if (v12)
+  if (format2)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  if (a4)
+  if (outValue)
   {
-    v13 = v6;
+    v13 = valueCopy;
     v14 = 0;
-    *a4 = v6;
+    *outValue = valueCopy;
   }
 
   else
@@ -527,20 +527,20 @@ LABEL_67:
   return v14;
 }
 
-- (id)_generateValidMetadata:(id)a3
+- (id)_generateValidMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = +[HAPMetadata getSharedInstance];
-  v6 = [(HAPCharacteristic *)self type];
-  v7 = [v5 getDefaultCharacteristicMetadata:v6];
+  type = [(HAPCharacteristic *)self type];
+  v7 = [v5 getDefaultCharacteristicMetadata:type];
 
-  v8 = v4;
+  v8 = metadataCopy;
   if (v7)
   {
     v8 = v7;
-    if (v4)
+    if (metadataCopy)
     {
-      [(HAPCharacteristic *)self _updateMetadata:v7 withProvidedMetadata:v4];
+      [(HAPCharacteristic *)self _updateMetadata:v7 withProvidedMetadata:metadataCopy];
       v8 = v7;
     }
   }
@@ -550,100 +550,100 @@ LABEL_67:
   return v9;
 }
 
-- (void)_updateMetadata:(id)a3 withProvidedMetadata:(id)a4
+- (void)_updateMetadata:(id)metadata withProvidedMetadata:(id)providedMetadata
 {
-  v40 = a3;
-  v5 = a4;
-  v6 = [v40 format];
+  metadataCopy = metadata;
+  providedMetadataCopy = providedMetadata;
+  format = [metadataCopy format];
 
-  if (!v6)
+  if (!format)
   {
-    v7 = [v5 format];
-    [v40 setFormat:v7];
+    format2 = [providedMetadataCopy format];
+    [metadataCopy setFormat:format2];
   }
 
-  v8 = [v40 units];
+  units = [metadataCopy units];
 
-  if (!v8)
+  if (!units)
   {
-    v9 = [v5 units];
-    [v40 setUnits:v9];
+    units2 = [providedMetadataCopy units];
+    [metadataCopy setUnits:units2];
   }
 
-  v10 = [v40 manufacturerDescription];
+  manufacturerDescription = [metadataCopy manufacturerDescription];
 
-  if (!v10)
+  if (!manufacturerDescription)
   {
-    v11 = [v5 manufacturerDescription];
-    [v40 setManufacturerDescription:v11];
+    manufacturerDescription2 = [providedMetadataCopy manufacturerDescription];
+    [metadataCopy setManufacturerDescription:manufacturerDescription2];
   }
 
-  v12 = [v40 constraints];
+  constraints = [metadataCopy constraints];
 
-  v13 = [v5 constraints];
-  v14 = v13;
-  if (!v12)
+  constraints2 = [providedMetadataCopy constraints];
+  constraints16 = constraints2;
+  if (!constraints)
   {
-    [v40 setConstraints:v13];
+    [metadataCopy setConstraints:constraints2];
     goto LABEL_20;
   }
 
-  if (v14)
+  if (constraints16)
   {
-    v15 = [v5 constraints];
-    v16 = [v15 minimumValue];
+    constraints3 = [providedMetadataCopy constraints];
+    minimumValue = [constraints3 minimumValue];
 
-    if (v16)
+    if (minimumValue)
     {
-      v17 = [v5 constraints];
-      v18 = [v17 minimumValue];
-      v19 = [v40 constraints];
-      [v19 setMinimumValue:v18];
+      constraints4 = [providedMetadataCopy constraints];
+      minimumValue2 = [constraints4 minimumValue];
+      constraints5 = [metadataCopy constraints];
+      [constraints5 setMinimumValue:minimumValue2];
     }
 
-    v20 = [v5 constraints];
-    v21 = [v20 maximumValue];
+    constraints6 = [providedMetadataCopy constraints];
+    maximumValue = [constraints6 maximumValue];
 
-    if (v21)
+    if (maximumValue)
     {
-      v22 = [v5 constraints];
-      v23 = [v22 maximumValue];
-      v24 = [v40 constraints];
-      [v24 setMaximumValue:v23];
+      constraints7 = [providedMetadataCopy constraints];
+      maximumValue2 = [constraints7 maximumValue];
+      constraints8 = [metadataCopy constraints];
+      [constraints8 setMaximumValue:maximumValue2];
     }
 
-    v25 = [v5 constraints];
-    v26 = [v25 stepValue];
+    constraints9 = [providedMetadataCopy constraints];
+    stepValue = [constraints9 stepValue];
 
-    if (v26)
+    if (stepValue)
     {
-      v27 = [v5 constraints];
-      v28 = [v27 stepValue];
-      v29 = [v40 constraints];
-      [v29 setStepValue:v28];
+      constraints10 = [providedMetadataCopy constraints];
+      stepValue2 = [constraints10 stepValue];
+      constraints11 = [metadataCopy constraints];
+      [constraints11 setStepValue:stepValue2];
     }
 
-    v30 = [v5 constraints];
-    v31 = [v30 maxLength];
+    constraints12 = [providedMetadataCopy constraints];
+    maxLength = [constraints12 maxLength];
 
-    if (v31)
+    if (maxLength)
     {
-      v32 = [v5 constraints];
-      v33 = [v32 maxLength];
-      v34 = [v40 constraints];
-      [v34 setMaxLength:v33];
+      constraints13 = [providedMetadataCopy constraints];
+      maxLength2 = [constraints13 maxLength];
+      constraints14 = [metadataCopy constraints];
+      [constraints14 setMaxLength:maxLength2];
     }
 
-    v35 = [v5 constraints];
-    v36 = [v35 validValues];
-    v37 = [v36 count];
+    constraints15 = [providedMetadataCopy constraints];
+    validValues = [constraints15 validValues];
+    v37 = [validValues count];
 
     if (v37)
     {
-      v14 = [v5 constraints];
-      v38 = [v14 validValues];
-      v39 = [v40 constraints];
-      [v39 setValidValues:v38];
+      constraints16 = [providedMetadataCopy constraints];
+      validValues2 = [constraints16 validValues];
+      constraints17 = [metadataCopy constraints];
+      [constraints17 setValidValues:validValues2];
 
 LABEL_20:
     }
@@ -657,14 +657,14 @@ LABEL_20:
   return WeakRetained;
 }
 
-- (BOOL)mergeObject:(id)a3
+- (BOOL)mergeObject:(id)object
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
   }
 
   else
@@ -682,7 +682,7 @@ LABEL_20:
   if (![(HAPCharacteristic *)self shouldMergeObject:v6])
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
@@ -698,12 +698,12 @@ LABEL_20:
     goto LABEL_13;
   }
 
-  v7 = [v6 value];
-  [(HAPCharacteristic *)self setValue:v7];
+  value = [v6 value];
+  [(HAPCharacteristic *)self setValue:value];
 
-  v8 = [(HAPCharacteristic *)self metadata];
-  v9 = [v6 metadata];
-  v10 = [v8 isEqualToCharacteristicMetadata:v9];
+  metadata = [(HAPCharacteristic *)self metadata];
+  metadata2 = [v6 metadata];
+  v10 = [metadata isEqualToCharacteristicMetadata:metadata2];
 
   if (v10)
   {
@@ -713,22 +713,22 @@ LABEL_13:
   }
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy2 = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
-    v15 = [v6 metadata];
+    metadata3 = [v6 metadata];
     v24 = 138543618;
     v25 = v14;
     v26 = 2112;
-    v27 = v15;
+    v27 = metadata3;
     _os_log_impl(&dword_22AADC000, v13, OS_LOG_TYPE_INFO, "%{public}@Updated the characteristic metadata: %@", &v24, 0x16u);
   }
 
   objc_autoreleasePoolPop(v11);
-  v16 = [v6 metadata];
-  [(HAPCharacteristic *)v12 setMetadata:v16];
+  metadata4 = [v6 metadata];
+  [(HAPCharacteristic *)selfCopy2 setMetadata:metadata4];
 
   v17 = 1;
 LABEL_14:
@@ -745,25 +745,25 @@ LABEL_14:
   }
 
   v3 = +[HAPMetadata getSharedInstance];
-  v4 = [(HAPCharacteristic *)self service];
-  v5 = [(HAPCharacteristic *)self type];
-  v6 = [v4 type];
-  v7 = [v3 supportsAdditionalAuthorizationData:v5 forService:v6];
+  service = [(HAPCharacteristic *)self service];
+  type = [(HAPCharacteristic *)self type];
+  type2 = [service type];
+  v7 = [v3 supportsAdditionalAuthorizationData:type forService:type2];
 
   return v7;
 }
 
 - (BOOL)supportsWriteWithResponse
 {
-  v3 = [(HAPCharacteristic *)self properties];
-  if ((v3 & 0x80) != 0)
+  properties = [(HAPCharacteristic *)self properties];
+  if ((properties & 0x80) != 0)
   {
     LOBYTE(v4) = 1;
   }
 
   else
   {
-    return [(HAPCharacteristic *)self isWriteWithResponseImplicitlySupported]& (v3 >> 2);
+    return [(HAPCharacteristic *)self isWriteWithResponseImplicitlySupported]& (properties >> 2);
   }
 
   return v4;
@@ -778,12 +778,12 @@ LABEL_14:
   return v3;
 }
 
-- (void)setNotificationContext:(id)a3
+- (void)setNotificationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   os_unfair_lock_lock_with_options();
   notificationContext = self->_notificationContext;
-  self->_notificationContext = v4;
+  self->_notificationContext = contextCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -797,12 +797,12 @@ LABEL_14:
   return v3;
 }
 
-- (void)setValueUpdatedTime:(id)a3
+- (void)setValueUpdatedTime:(id)time
 {
-  v4 = a3;
+  timeCopy = time;
   os_unfair_lock_lock_with_options();
   valueUpdatedTime = self->_valueUpdatedTime;
-  self->_valueUpdatedTime = v4;
+  self->_valueUpdatedTime = timeCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -816,12 +816,12 @@ LABEL_14:
   return v3;
 }
 
-- (void)setStateNumber:(id)a3
+- (void)setStateNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   os_unfair_lock_lock_with_options();
   stateNumber = self->_stateNumber;
-  self->_stateNumber = v4;
+  self->_stateNumber = numberCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -835,17 +835,17 @@ LABEL_14:
   return v3;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEAA8] date];
+  valueCopy = value;
+  date = [MEMORY[0x277CBEAA8] date];
   os_unfair_lock_lock_with_options();
   value = self->_value;
-  self->_value = v4;
-  v7 = v4;
+  self->_value = valueCopy;
+  v7 = valueCopy;
 
   valueUpdatedTime = self->_valueUpdatedTime;
-  self->_valueUpdatedTime = v5;
+  self->_valueUpdatedTime = date;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -949,19 +949,19 @@ LABEL_14:
 
 - (id)shortDescription
 {
-  v3 = [(HAPCharacteristic *)self service];
-  v4 = [v3 accessory];
-  v5 = [v4 uniqueIdentifier];
+  service = [(HAPCharacteristic *)self service];
+  accessory = [service accessory];
+  uniqueIdentifier = [accessory uniqueIdentifier];
 
   v6 = MEMORY[0x277CCACA8];
   v7 = objc_opt_class();
-  v8 = [(HAPCharacteristic *)self instanceID];
-  v9 = [(HAPCharacteristic *)self type];
-  v10 = HAPShortUUIDType(v9);
-  v11 = [(HAPCharacteristic *)self stateNumber];
-  v12 = [(HAPCharacteristic *)self value];
-  v13 = [(HAPCharacteristic *)self valueUpdatedTime];
-  v14 = [v6 stringWithFormat:@"%@ %@/%@/%@/%@ %@/%@", v7, v5, v8, v10, v11, v12, v13];
+  instanceID = [(HAPCharacteristic *)self instanceID];
+  type = [(HAPCharacteristic *)self type];
+  v10 = HAPShortUUIDType(type);
+  stateNumber = [(HAPCharacteristic *)self stateNumber];
+  value = [(HAPCharacteristic *)self value];
+  valueUpdatedTime = [(HAPCharacteristic *)self valueUpdatedTime];
+  v14 = [v6 stringWithFormat:@"%@ %@/%@/%@/%@ %@/%@", v7, uniqueIdentifier, instanceID, v10, stateNumber, value, valueUpdatedTime];
 
   return v14;
 }
@@ -974,29 +974,29 @@ LABEL_14:
   v4 = [(HMFObject *)&v20 description];
   [v3 appendFormat:@"%@", v4];
 
-  v5 = [(HAPCharacteristic *)self service];
-  v6 = [v5 accessory];
-  v7 = [v6 uniqueIdentifier];
-  [v3 appendFormat:@", Accessory Unique ID: %@", v7];
+  service = [(HAPCharacteristic *)self service];
+  accessory = [service accessory];
+  uniqueIdentifier = [accessory uniqueIdentifier];
+  [v3 appendFormat:@", Accessory Unique ID: %@", uniqueIdentifier];
 
-  v8 = [(HAPCharacteristic *)self instanceID];
-  [v3 appendFormat:@", Instance ID: %@", v8];
+  instanceID = [(HAPCharacteristic *)self instanceID];
+  [v3 appendFormat:@", Instance ID: %@", instanceID];
 
-  v9 = [(HAPCharacteristic *)self type];
-  [v3 appendFormat:@", Type: %@", v9];
+  type = [(HAPCharacteristic *)self type];
+  [v3 appendFormat:@", Type: %@", type];
 
-  v10 = [(HAPCharacteristic *)self value];
-  [v3 appendFormat:@", Value: %@", v10];
+  value = [(HAPCharacteristic *)self value];
+  [v3 appendFormat:@", Value: %@", value];
 
-  v11 = [(HAPCharacteristic *)self stateNumber];
-  [v3 appendFormat:@", State Number: %@", v11];
+  stateNumber = [(HAPCharacteristic *)self stateNumber];
+  [v3 appendFormat:@", State Number: %@", stateNumber];
 
-  v12 = [(HAPCharacteristic *)self valueUpdatedTime];
-  v13 = [v12 hmf_localTimeDescription];
-  [v3 appendFormat:@", Value update time: %@", v13];
+  valueUpdatedTime = [(HAPCharacteristic *)self valueUpdatedTime];
+  hmf_localTimeDescription = [valueUpdatedTime hmf_localTimeDescription];
+  [v3 appendFormat:@", Value update time: %@", hmf_localTimeDescription];
 
-  v14 = [(HAPCharacteristic *)self propertiesDescription];
-  [v3 appendFormat:@", Properties: %@", v14];
+  propertiesDescription = [(HAPCharacteristic *)self propertiesDescription];
+  [v3 appendFormat:@", Properties: %@", propertiesDescription];
 
   [(HAPCharacteristic *)self eventNotificationsEnabled];
   v15 = HMFBooleanToString();
@@ -1005,8 +1005,8 @@ LABEL_14:
   v16 = [MEMORY[0x277CCABB0] numberWithBool:{-[HAPCharacteristic isWriteWithResponseImplicitlySupported](self, "isWriteWithResponseImplicitlySupported")}];
   [v3 appendFormat:@", Write With Response Implicitly Supported: %@", v16];
 
-  v17 = [(HAPCharacteristic *)self metadata];
-  [v3 appendFormat:@", Metadata: %@", v17];
+  metadata = [(HAPCharacteristic *)self metadata];
+  [v3 appendFormat:@", Metadata: %@", metadata];
 
   [(HAPCharacteristic *)self supportsEventNotificationContext];
   v18 = HMFBooleanToString();
@@ -1015,10 +1015,10 @@ LABEL_14:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -1028,7 +1028,7 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -1042,21 +1042,21 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v7 = [(HAPCharacteristic *)self instanceID];
-    v8 = [(HAPCharacteristic *)v6 instanceID];
-    v9 = numbersAreNotEqualNilSafe(v7, v8);
+    instanceID = [(HAPCharacteristic *)self instanceID];
+    instanceID2 = [(HAPCharacteristic *)v6 instanceID];
+    v9 = numbersAreNotEqualNilSafe(instanceID, instanceID2);
 
     if (v9)
     {
       goto LABEL_15;
     }
 
-    v10 = [(HAPCharacteristic *)self type];
-    v11 = [(HAPCharacteristic *)v6 type];
-    if (v10 | v11)
+    type = [(HAPCharacteristic *)self type];
+    type2 = [(HAPCharacteristic *)v6 type];
+    if (type | type2)
     {
-      v12 = v11;
-      v13 = [v10 isEqualToString:v11];
+      v12 = type2;
+      v13 = [type isEqualToString:type2];
 
       if (!v13)
       {
@@ -1064,20 +1064,20 @@ LABEL_14:
       }
     }
 
-    v15 = [(HAPCharacteristic *)self properties];
-    if (v15 == [(HAPCharacteristic *)v6 properties])
+    properties = [(HAPCharacteristic *)self properties];
+    if (properties == [(HAPCharacteristic *)v6 properties])
     {
-      v16 = [(HAPCharacteristic *)self service];
-      if (v16)
+      service = [(HAPCharacteristic *)self service];
+      if (service)
       {
-        v17 = v16;
-        v18 = [(HAPCharacteristic *)v6 service];
-        if (v18)
+        v17 = service;
+        service2 = [(HAPCharacteristic *)v6 service];
+        if (service2)
         {
-          v19 = v18;
-          v20 = [(HAPCharacteristic *)self service];
-          v21 = [(HAPCharacteristic *)v6 service];
-          v14 = [v20 isEqual:v21];
+          v19 = service2;
+          service3 = [(HAPCharacteristic *)self service];
+          service4 = [(HAPCharacteristic *)v6 service];
+          v14 = [service3 isEqual:service4];
         }
 
         else
@@ -1104,55 +1104,55 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v2 = [(HAPCharacteristic *)self instanceID];
-  v3 = [v2 hash];
+  instanceID = [(HAPCharacteristic *)self instanceID];
+  v3 = [instanceID hash];
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [(HAPCharacteristic *)self value];
-  if (([v5 conformsToProtocol:&unk_283EACBD0] & 1) == 0)
+  value = [(HAPCharacteristic *)self value];
+  if (([value conformsToProtocol:&unk_283EACBD0] & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v6 = [(HAPCharacteristic *)self value];
+  value2 = [(HAPCharacteristic *)self value];
 
-  if (!v6)
+  if (!value2)
   {
 LABEL_5:
-    v6 = [(HAPCharacteristic *)self value];
-    v7 = [v6 copy];
+    value2 = [(HAPCharacteristic *)self value];
+    v7 = [value2 copy];
     goto LABEL_6;
   }
 
-  v7 = [v6 copyWithZone:a3];
+  v7 = [value2 copyWithZone:zone];
 LABEL_6:
   v25 = v7;
 
   v22 = objc_alloc(objc_opt_class());
-  v24 = [(HAPCharacteristic *)self type];
-  v21 = [v24 copyWithZone:a3];
-  v23 = [(HAPCharacteristic *)self instanceID];
-  v8 = [v23 copyWithZone:a3];
-  v9 = [(HAPCharacteristic *)self stateNumber];
-  v10 = [v9 copyWithZone:a3];
-  v11 = [(HAPCharacteristic *)self properties];
-  v12 = [(HAPCharacteristic *)self eventNotificationsEnabled];
-  v13 = [(HAPCharacteristic *)self isWriteWithResponseImplicitlySupported];
-  v14 = [(HAPCharacteristic *)self metadata];
-  v15 = [v14 copyWithZone:a3];
-  LOBYTE(v20) = v13;
-  v16 = [v22 initWithType:v21 instanceID:v8 value:v25 stateNumber:v10 properties:v11 eventNotificationsEnabled:v12 implicitWriteWithResponse:v20 metadata:v15];
+  type = [(HAPCharacteristic *)self type];
+  v21 = [type copyWithZone:zone];
+  instanceID = [(HAPCharacteristic *)self instanceID];
+  v8 = [instanceID copyWithZone:zone];
+  stateNumber = [(HAPCharacteristic *)self stateNumber];
+  v10 = [stateNumber copyWithZone:zone];
+  properties = [(HAPCharacteristic *)self properties];
+  eventNotificationsEnabled = [(HAPCharacteristic *)self eventNotificationsEnabled];
+  isWriteWithResponseImplicitlySupported = [(HAPCharacteristic *)self isWriteWithResponseImplicitlySupported];
+  metadata = [(HAPCharacteristic *)self metadata];
+  v15 = [metadata copyWithZone:zone];
+  LOBYTE(v20) = isWriteWithResponseImplicitlySupported;
+  v16 = [v22 initWithType:v21 instanceID:v8 value:v25 stateNumber:v10 properties:properties eventNotificationsEnabled:eventNotificationsEnabled implicitWriteWithResponse:v20 metadata:v15];
 
-  v17 = [(HAPCharacteristic *)self valueUpdatedTime];
-  [v16 setValueUpdatedTime:v17];
+  valueUpdatedTime = [(HAPCharacteristic *)self valueUpdatedTime];
+  [v16 setValueUpdatedTime:valueUpdatedTime];
 
-  v18 = [(HAPCharacteristic *)self notificationContext];
-  [v16 setNotificationContext:v18];
+  notificationContext = [(HAPCharacteristic *)self notificationContext];
+  [v16 setNotificationContext:notificationContext];
 
   [v16 setProhibitCaching:{-[HAPCharacteristic prohibitCaching](self, "prohibitCaching")}];
   [v16 setShouldValidateValueAfterReading:{-[HAPCharacteristic shouldValidateValueAfterReading](self, "shouldValidateValueAfterReading")}];
@@ -1160,38 +1160,38 @@ LABEL_6:
   return v16;
 }
 
-- (HAPCharacteristic)initWithType:(id)a3 instanceID:(id)a4 value:(id)a5 stateNumber:(id)a6 properties:(unsigned __int16)a7 eventNotificationsEnabled:(BOOL)a8 implicitWriteWithResponse:(BOOL)a9 metadata:(id)a10
+- (HAPCharacteristic)initWithType:(id)type instanceID:(id)d value:(id)value stateNumber:(id)number properties:(unsigned __int16)properties eventNotificationsEnabled:(BOOL)enabled implicitWriteWithResponse:(BOOL)response metadata:(id)self0
 {
-  v11 = a7;
+  propertiesCopy = properties;
   v88 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v78 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a10;
-  if (isValidTypeName(v16))
+  typeCopy = type;
+  dCopy = d;
+  valueCopy = value;
+  numberCopy = number;
+  metadataCopy = metadata;
+  if (isValidTypeName(typeCopy))
   {
-    v77 = [v16 hap_validatedAndNormalizedUUIDString];
-    if (v77)
+    hap_validatedAndNormalizedUUIDString = [typeCopy hap_validatedAndNormalizedUUIDString];
+    if (hap_validatedAndNormalizedUUIDString)
     {
-      if (isValidInstanceID(v78))
+      if (isValidInstanceID(dCopy))
       {
-        log = v77;
+        log = hap_validatedAndNormalizedUUIDString;
         v20 = +[HAPMetadata getSharedInstance];
         v73 = v20;
-        if (v11)
+        if (propertiesCopy)
         {
-          if ((v11 & 0xF) != 0)
+          if ((propertiesCopy & 0xF) != 0)
           {
             v21 = [v20 getDefaultCharacteristicProperties:log];
             v22 = v21;
             if (v21)
             {
               v70 = v21;
-              v23 = [v21 unsignedIntegerValue];
-              if ((v11 & 2) == 0 && (v23 & 2) != 0)
+              unsignedIntegerValue = [v21 unsignedIntegerValue];
+              if ((propertiesCopy & 2) == 0 && (unsignedIntegerValue & 2) != 0)
               {
-                v24 = v19;
+                v24 = metadataCopy;
                 v25 = objc_autoreleasePoolPush();
                 v26 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -1216,9 +1216,9 @@ LABEL_52:
               }
 
               v22 = v70;
-              if (v23 < 0 && (v11 & 0x80) == 0 && ((v11 & 4) == 0 || !a9))
+              if (unsignedIntegerValue < 0 && (propertiesCopy & 0x80) == 0 && ((propertiesCopy & 4) == 0 || !response))
               {
-                v24 = v19;
+                v24 = metadataCopy;
                 v25 = objc_autoreleasePoolPush();
                 v26 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -1239,12 +1239,12 @@ LABEL_51:
               }
             }
 
-            v48 = v19;
+            v48 = metadataCopy;
             v74 = v48;
             if (v48)
             {
-              v49 = [v48 constraints];
-              if (v49 || ([v74 manufacturerDescription], (v49 = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v74, "format"), (v49 = objc_claimAutoreleasedReturnValue()) != 0))
+              constraints = [v48 constraints];
+              if (constraints || ([v74 manufacturerDescription], (constraints = objc_claimAutoreleasedReturnValue()) != 0) || (objc_msgSend(v74, "format"), (constraints = objc_claimAutoreleasedReturnValue()) != 0))
               {
 
                 v48 = v74;
@@ -1252,12 +1252,12 @@ LABEL_51:
 
               else
               {
-                v72 = [v74 units];
+                units = [v74 units];
 
                 v48 = v74;
-                if (!v72)
+                if (!units)
                 {
-                  v24 = v19;
+                  v24 = metadataCopy;
                   v64 = objc_autoreleasePoolPush();
                   v65 = HMFGetOSLogHandle();
                   if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
@@ -1292,7 +1292,7 @@ LABEL_51:
             v50 = [(HAPCharacteristic *)&v79 init];
             if (v50)
             {
-              v69 = v19;
+              v69 = metadataCopy;
               v71 = +[HAPMetadata getSharedInstance];
               v51 = [MEMORY[0x277D0F888] hmf_cachedInstanceForString:log];
               type = v50->_type;
@@ -1314,23 +1314,23 @@ LABEL_51:
                   v84 = 2112;
                   v85 = v53;
                   v86 = 2112;
-                  v87 = v78;
+                  v87 = dCopy;
                   _os_log_impl(&dword_22AADC000, loga, OS_LOG_TYPE_DEBUG, "%{public}@%@ ----> %@ [%@]", buf, 0x2Au);
                 }
 
                 objc_autoreleasePoolPop(context);
               }
 
-              objc_storeStrong(&v50->_instanceID, a4);
-              objc_storeStrong(&v50->_value, a5);
-              objc_storeStrong(&v50->_stateNumber, a6);
-              v55 = [MEMORY[0x277CBEAA8] date];
+              objc_storeStrong(&v50->_instanceID, d);
+              objc_storeStrong(&v50->_value, value);
+              objc_storeStrong(&v50->_stateNumber, number);
+              date = [MEMORY[0x277CBEAA8] date];
               valueUpdatedTime = v50->_valueUpdatedTime;
-              v50->_valueUpdatedTime = v55;
+              v50->_valueUpdatedTime = date;
 
-              v50->_properties = v11;
-              v50->_eventNotificationsEnabled = a8;
-              v50->_implicitWriteWithResponse = a9;
+              v50->_properties = propertiesCopy;
+              v50->_eventNotificationsEnabled = enabled;
+              v50->_implicitWriteWithResponse = response;
               v50->_shouldValidateValueAfterReading = 1;
               v57 = [HMFObjectCacheHAPCharacteristicMetadata hap_cacheInstanceForMetadata:v74];
               accessoryMetadata = v50->_accessoryMetadata;
@@ -1341,15 +1341,15 @@ LABEL_51:
               metadata = v50->_metadata;
               v50->_metadata = v60;
 
-              v19 = v69;
+              metadataCopy = v69;
             }
 
             self = v50;
-            v33 = self;
+            selfCopy = self;
             goto LABEL_47;
           }
 
-          v24 = v19;
+          v24 = metadataCopy;
           v40 = objc_autoreleasePoolPush();
           v41 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -1364,7 +1364,7 @@ LABEL_51:
 
         else
         {
-          v24 = v19;
+          v24 = metadataCopy;
           v40 = objc_autoreleasePoolPush();
           v41 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -1390,8 +1390,8 @@ LABEL_27:
 LABEL_30:
 
           objc_autoreleasePoolPop(v44);
-          v33 = 0;
-          v19 = v24;
+          selfCopy = 0;
+          metadataCopy = v24;
           goto LABEL_47;
         }
 
@@ -1415,7 +1415,7 @@ LABEL_29:
         *buf = 138543618;
         v81 = v36;
         v82 = 2112;
-        v83 = v77;
+        v83 = hap_validatedAndNormalizedUUIDString;
         v37 = "%{public}@### Unable to initialize characteristic '%@' because of invalid instance ID";
         v38 = v35;
         v39 = 22;
@@ -1441,7 +1441,7 @@ LABEL_19:
     }
 
     objc_autoreleasePoolPop(v34);
-    v33 = 0;
+    selfCopy = 0;
 LABEL_47:
 
     goto LABEL_48;
@@ -1455,16 +1455,16 @@ LABEL_47:
     *buf = 138543618;
     v81 = v32;
     v82 = 2112;
-    v83 = v16;
+    v83 = typeCopy;
     _os_log_impl(&dword_22AADC000, v31, OS_LOG_TYPE_ERROR, "%{public}@### Unable to initialize characteristic because of invalid characteristic type name: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v30);
-  v33 = 0;
+  selfCopy = 0;
 LABEL_48:
 
   v62 = *MEMORY[0x277D85DE8];
-  return v33;
+  return selfCopy;
 }
 
 - (id)initDummy
@@ -1487,9 +1487,9 @@ LABEL_48:
     stateNumber = v3->_stateNumber;
     v3->_stateNumber = 0;
 
-    v8 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     valueUpdatedTime = v3->_valueUpdatedTime;
-    v3->_valueUpdatedTime = v8;
+    v3->_valueUpdatedTime = date;
 
     v3->_properties = 0;
     v3->_eventNotificationsEnabled = 0;
@@ -1504,9 +1504,9 @@ LABEL_48:
 
 + (id)dummy
 {
-  v2 = [[HAPCharacteristic alloc] initDummy];
+  initDummy = [[HAPCharacteristic alloc] initDummy];
 
-  return v2;
+  return initDummy;
 }
 
 @end

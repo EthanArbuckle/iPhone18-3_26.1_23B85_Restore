@@ -1,5 +1,5 @@
 @interface MRHitBlob
-- (BOOL)isEqualToHitBlob:(id)a3;
+- (BOOL)isEqualToHitBlob:(id)blob;
 - (CGSize)innerResolution;
 - (NSString)mediaType;
 - (double)aspectRatio;
@@ -38,10 +38,10 @@
   return &v3->isa;
 }
 
-- (BOOL)isEqualToHitBlob:(id)a3
+- (BOOL)isEqualToHitBlob:(id)blob
 {
   clientObject = self->_clientObject;
-  if (clientObject != [a3 clientObject])
+  if (clientObject != [blob clientObject])
   {
     return 0;
   }
@@ -52,9 +52,9 @@
     return 1;
   }
 
-  v8 = [a3 innerPath];
+  innerPath = [blob innerPath];
 
-  return [(NSString *)innerPath isEqualToString:v8];
+  return [(NSString *)innerPath isEqualToString:innerPath];
 }
 
 @end

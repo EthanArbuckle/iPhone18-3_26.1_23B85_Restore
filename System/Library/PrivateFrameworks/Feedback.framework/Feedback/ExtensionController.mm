@@ -1,7 +1,7 @@
 @interface ExtensionController
-- (BOOL)shouldAcceptXPCConnection:(id)a3;
-- (ExtensionController)initWithCoder:(id)a3;
-- (ExtensionController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)shouldAcceptXPCConnection:(id)connection;
+- (ExtensionController)initWithCoder:(id)coder;
+- (ExtensionController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)loadView;
 @end
 
@@ -9,27 +9,27 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B8BBF43C();
 }
 
-- (BOOL)shouldAcceptXPCConnection:(id)a3
+- (BOOL)shouldAcceptXPCConnection:(id)connection
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_1B8BBF7A8(v4);
+  connectionCopy = connection;
+  selfCopy = self;
+  LOBYTE(self) = sub_1B8BBF7A8(connectionCopy);
 
   return self & 1;
 }
 
-- (ExtensionController)initWithNibName:(id)a3 bundle:(id)a4
+- (ExtensionController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1B8C25128();
     *(&self->super.super.super.super.isa + OBJC_IVAR___ExtensionController_xpcConnection) = 0;
     *(&self->super.super.super.super.isa + OBJC_IVAR___ExtensionController_contentViewController) = 0;
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_1B8C250F8();
   }
 
@@ -37,25 +37,25 @@
   {
     *(&self->super.super.super.super.isa + OBJC_IVAR___ExtensionController_xpcConnection) = 0;
     *(&self->super.super.super.super.isa + OBJC_IVAR___ExtensionController_contentViewController) = 0;
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for ExtensionController();
-  v9 = [(ExtensionController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(ExtensionController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (ExtensionController)initWithCoder:(id)a3
+- (ExtensionController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR___ExtensionController_xpcConnection) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR___ExtensionController_contentViewController) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for ExtensionController();
-  v4 = a3;
-  v5 = [(ExtensionController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ExtensionController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

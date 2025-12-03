@@ -1,90 +1,90 @@
 @interface ASCredentialRequestSecurityKeyStringUtilities
 + (NSString)activateSecurityKeyAgainMessageText;
-+ (id)_basicAssertionMessageTextWithServiceName:(id)a3 serviceType:(unint64_t)a4;
-+ (id)_multipleAllowedSecurityKeysMessageTextWithServiceName:(id)a3 serviceType:(unint64_t)a4;
-+ (id)_registerSecurityKeyMessageTextWithServiceName:(id)a3 serviceType:(unint64_t)a4;
-+ (id)messageWithMode:(int64_t)a3 serviceName:(id)a4 serviceType:(unint64_t)a5;
-+ (id)messageWithPresentationContext:(id)a3;
-+ (id)titleWithMode:(int64_t)a3;
-+ (id)titleWithPresentationContext:(id)a3;
-+ (int64_t)modeForPresentationContext:(id)a3;
++ (id)_basicAssertionMessageTextWithServiceName:(id)name serviceType:(unint64_t)type;
++ (id)_multipleAllowedSecurityKeysMessageTextWithServiceName:(id)name serviceType:(unint64_t)type;
++ (id)_registerSecurityKeyMessageTextWithServiceName:(id)name serviceType:(unint64_t)type;
++ (id)messageWithMode:(int64_t)mode serviceName:(id)name serviceType:(unint64_t)type;
++ (id)messageWithPresentationContext:(id)context;
++ (id)titleWithMode:(int64_t)mode;
++ (id)titleWithPresentationContext:(id)context;
++ (int64_t)modeForPresentationContext:(id)context;
 @end
 
 @implementation ASCredentialRequestSecurityKeyStringUtilities
 
-+ (id)titleWithPresentationContext:(id)a3
++ (id)titleWithPresentationContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 overrideTitle];
-  v6 = [v5 length];
+  contextCopy = context;
+  overrideTitle = [contextCopy overrideTitle];
+  v6 = [overrideTitle length];
 
   if (v6)
   {
-    v7 = [v4 overrideTitle];
+    overrideTitle2 = [contextCopy overrideTitle];
   }
 
   else
   {
-    v8 = [a1 modeForPresentationContext:v4];
+    v8 = [self modeForPresentationContext:contextCopy];
 
-    v7 = [a1 titleWithMode:v8];
+    overrideTitle2 = [self titleWithMode:v8];
   }
 
-  return v7;
+  return overrideTitle2;
 }
 
-+ (id)titleWithMode:(int64_t)a3
++ (id)titleWithMode:(int64_t)mode
 {
-  if ((a3 - 1) < 2 || !a3)
+  if ((mode - 1) < 2 || !mode)
   {
-    a1 = _WBSLocalizedString();
+    self = _WBSLocalizedString();
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)messageWithPresentationContext:(id)a3
++ (id)messageWithPresentationContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 overrideSubtitle];
-  v6 = [v5 length];
+  contextCopy = context;
+  overrideSubtitle = [contextCopy overrideSubtitle];
+  v6 = [overrideSubtitle length];
 
   if (v6)
   {
-    v7 = [v4 overrideSubtitle];
+    overrideSubtitle2 = [contextCopy overrideSubtitle];
   }
 
   else
   {
-    v8 = [a1 modeForPresentationContext:v4];
-    v9 = [v4 serviceName];
-    v7 = [a1 messageWithMode:v8 serviceName:v9 serviceType:{objc_msgSend(v4, "serviceType")}];
+    v8 = [self modeForPresentationContext:contextCopy];
+    serviceName = [contextCopy serviceName];
+    overrideSubtitle2 = [self messageWithMode:v8 serviceName:serviceName serviceType:{objc_msgSend(contextCopy, "serviceType")}];
   }
 
-  return v7;
+  return overrideSubtitle2;
 }
 
-+ (id)messageWithMode:(int64_t)a3 serviceName:(id)a4 serviceType:(unint64_t)a5
++ (id)messageWithMode:(int64_t)mode serviceName:(id)name serviceType:(unint64_t)type
 {
-  v9 = a4;
-  if (a3 == 2)
+  nameCopy = name;
+  if (mode == 2)
   {
-    v10 = [a1 _multipleAllowedSecurityKeysMessageTextWithServiceName:v9 serviceType:a5];
+    v10 = [self _multipleAllowedSecurityKeysMessageTextWithServiceName:nameCopy serviceType:type];
   }
 
-  else if (a3 == 1)
+  else if (mode == 1)
   {
-    v10 = [a1 _basicAssertionMessageTextWithServiceName:v9 serviceType:a5];
+    v10 = [self _basicAssertionMessageTextWithServiceName:nameCopy serviceType:type];
   }
 
   else
   {
-    if (a3)
+    if (mode)
     {
       goto LABEL_8;
     }
 
-    v10 = [a1 _registerSecurityKeyMessageTextWithServiceName:v9 serviceType:a5];
+    v10 = [self _registerSecurityKeyMessageTextWithServiceName:nameCopy serviceType:type];
   }
 
   v5 = v10;
@@ -95,26 +95,26 @@ LABEL_8:
 
 + (NSString)activateSecurityKeyAgainMessageText
 {
-  v2 = [MEMORY[0x1E69C8860] currentDevice];
-  [v2 deviceClass];
+  currentDevice = [MEMORY[0x1E69C8860] currentDevice];
+  [currentDevice deviceClass];
 
   v3 = _WBSLocalizedString();
 
   return v3;
 }
 
-+ (int64_t)modeForPresentationContext:(id)a3
++ (int64_t)modeForPresentationContext:(id)context
 {
-  v3 = a3;
-  if ([v3 isRegistrationRequest])
+  contextCopy = context;
+  if ([contextCopy isRegistrationRequest])
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [v3 allowedCredentialsForSecurityKeyAssertion];
-    v6 = [v5 count];
+    allowedCredentialsForSecurityKeyAssertion = [contextCopy allowedCredentialsForSecurityKeyAssertion];
+    v6 = [allowedCredentialsForSecurityKeyAssertion count];
 
     if (v6 <= 1)
     {
@@ -130,22 +130,22 @@ LABEL_8:
   return v4;
 }
 
-+ (id)_registerSecurityKeyMessageTextWithServiceName:(id)a3 serviceType:(unint64_t)a4
++ (id)_registerSecurityKeyMessageTextWithServiceName:(id)name serviceType:(unint64_t)type
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E69C8860] currentDevice];
-  v7 = [v6 deviceClass];
+  nameCopy = name;
+  currentDevice = [MEMORY[0x1E69C8860] currentDevice];
+  deviceClass = [currentDevice deviceClass];
 
-  if (v7 == 1)
+  if (deviceClass == 1)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
       v8 = MEMORY[0x1E696AEC0];
     }
 
     else
     {
-      if (a4)
+      if (type)
       {
         goto LABEL_11;
       }
@@ -154,14 +154,14 @@ LABEL_8:
     }
   }
 
-  else if (a4 == 1)
+  else if (type == 1)
   {
     v8 = MEMORY[0x1E696AEC0];
   }
 
   else
   {
-    if (a4)
+    if (type)
     {
       goto LABEL_11;
     }
@@ -170,29 +170,29 @@ LABEL_8:
   }
 
   v9 = _WBSLocalizedString();
-  v6 = [v8 localizedStringWithFormat:v9, v5];
+  currentDevice = [v8 localizedStringWithFormat:v9, nameCopy];
 
 LABEL_11:
 
-  return v6;
+  return currentDevice;
 }
 
-+ (id)_multipleAllowedSecurityKeysMessageTextWithServiceName:(id)a3 serviceType:(unint64_t)a4
++ (id)_multipleAllowedSecurityKeysMessageTextWithServiceName:(id)name serviceType:(unint64_t)type
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E69C8860] currentDevice];
-  v7 = [v6 deviceClass];
+  nameCopy = name;
+  currentDevice = [MEMORY[0x1E69C8860] currentDevice];
+  deviceClass = [currentDevice deviceClass];
 
-  if (v7 == 1)
+  if (deviceClass == 1)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
       v8 = MEMORY[0x1E696AEC0];
     }
 
     else
     {
-      if (a4)
+      if (type)
       {
         goto LABEL_11;
       }
@@ -201,14 +201,14 @@ LABEL_11:
     }
   }
 
-  else if (a4 == 1)
+  else if (type == 1)
   {
     v8 = MEMORY[0x1E696AEC0];
   }
 
   else
   {
-    if (a4)
+    if (type)
     {
       goto LABEL_11;
     }
@@ -217,29 +217,29 @@ LABEL_11:
   }
 
   v9 = _WBSLocalizedString();
-  v6 = [v8 localizedStringWithFormat:v9, v5];
+  currentDevice = [v8 localizedStringWithFormat:v9, nameCopy];
 
 LABEL_11:
 
-  return v6;
+  return currentDevice;
 }
 
-+ (id)_basicAssertionMessageTextWithServiceName:(id)a3 serviceType:(unint64_t)a4
++ (id)_basicAssertionMessageTextWithServiceName:(id)name serviceType:(unint64_t)type
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E69C8860] currentDevice];
-  v7 = [v6 deviceClass];
+  nameCopy = name;
+  currentDevice = [MEMORY[0x1E69C8860] currentDevice];
+  deviceClass = [currentDevice deviceClass];
 
-  if (v7 == 1)
+  if (deviceClass == 1)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
       v8 = MEMORY[0x1E696AEC0];
     }
 
     else
     {
-      if (a4)
+      if (type)
       {
         goto LABEL_11;
       }
@@ -248,14 +248,14 @@ LABEL_11:
     }
   }
 
-  else if (a4 == 1)
+  else if (type == 1)
   {
     v8 = MEMORY[0x1E696AEC0];
   }
 
   else
   {
-    if (a4)
+    if (type)
     {
       goto LABEL_11;
     }
@@ -264,11 +264,11 @@ LABEL_11:
   }
 
   v9 = _WBSLocalizedString();
-  v6 = [v8 localizedStringWithFormat:v9, v5];
+  currentDevice = [v8 localizedStringWithFormat:v9, nameCopy];
 
 LABEL_11:
 
-  return v6;
+  return currentDevice;
 }
 
 @end

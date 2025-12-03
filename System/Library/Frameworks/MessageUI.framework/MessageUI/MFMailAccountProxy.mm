@@ -8,7 +8,7 @@
 - (BOOL)supportsMailDrop;
 - (BOOL)supportsThreadOperations;
 - (NSString)firstEmailAddress;
-- (id)_initWithProperties:(id)a3;
+- (id)_initWithProperties:(id)properties;
 - (id)mailAccount;
 @end
 
@@ -20,7 +20,7 @@
   block[1] = 3221225472;
   block[2] = __25__MFMailAccountProxy_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_2 != -1)
   {
     dispatch_once(&log_onceToken_2, block);
@@ -39,15 +39,15 @@ void __25__MFMailAccountProxy_log__block_invoke(uint64_t a1)
   log_log_2 = v1;
 }
 
-- (id)_initWithProperties:(id)a3
+- (id)_initWithProperties:(id)properties
 {
-  v4 = a3;
+  propertiesCopy = properties;
   v9.receiver = self;
   v9.super_class = MFMailAccountProxy;
   v5 = [(MFMailAccountProxy *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [propertiesCopy copy];
     properties = v5->_properties;
     v5->_properties = v6;
   }
@@ -58,9 +58,9 @@ void __25__MFMailAccountProxy_log__block_invoke(uint64_t a1)
 - (BOOL)isDefaultDeliveryAccount
 {
   v2 = [(NSDictionary *)self->_properties objectForKeyedSubscript:*MEMORY[0x1E69ADA88]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)firstEmailAddress
@@ -69,64 +69,64 @@ void __25__MFMailAccountProxy_log__block_invoke(uint64_t a1)
   v4 = v3;
   if (v3)
   {
-    v5 = v3;
+    firstObject = v3;
   }
 
   else
   {
-    v6 = [(MFMailAccountProxy *)self emailAddresses];
-    v5 = [v6 firstObject];
+    emailAddresses = [(MFMailAccountProxy *)self emailAddresses];
+    firstObject = [emailAddresses firstObject];
   }
 
-  return v5;
+  return firstObject;
 }
 
 - (BOOL)supportsThreadOperations
 {
   v2 = [(NSDictionary *)self->_properties objectForKeyedSubscript:*MEMORY[0x1E69ADAB0]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)restrictsRepliesAndForwards
 {
   v2 = [(NSDictionary *)self->_properties objectForKeyedSubscript:*MEMORY[0x1E69ADAA0]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)supportsMailDrop
 {
   v2 = [(NSDictionary *)self->_properties objectForKeyedSubscript:*MEMORY[0x1E69ADAA8]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isManaged
 {
   v2 = [(NSDictionary *)self->_properties objectForKeyedSubscript:*MEMORY[0x1E69ADA90]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)_isActive
 {
   v2 = [(NSDictionary *)self->_properties objectForKeyedSubscript:*MEMORY[0x1E69ADA80]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)_isRestricted
 {
   v2 = [(NSDictionary *)self->_properties objectForKeyedSubscript:*MEMORY[0x1E69ADA98]];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)mailAccount
@@ -134,8 +134,8 @@ void __25__MFMailAccountProxy_log__block_invoke(uint64_t a1)
   if (MFIsMobileMail())
   {
     v3 = MEMORY[0x1E69B16A8];
-    v4 = [(MFMailAccountProxy *)self firstEmailAddress];
-    v5 = [v3 accountContainingEmailAddress:v4 includingInactive:0];
+    firstEmailAddress = [(MFMailAccountProxy *)self firstEmailAddress];
+    v5 = [v3 accountContainingEmailAddress:firstEmailAddress includingInactive:0];
   }
 
   else

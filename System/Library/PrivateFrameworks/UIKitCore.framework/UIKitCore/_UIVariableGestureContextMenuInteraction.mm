@@ -1,10 +1,10 @@
 @interface _UIVariableGestureContextMenuInteraction
-- (_UIVariableGestureContextMenuInteraction)initWithDelegate:(id)a3;
+- (_UIVariableGestureContextMenuInteraction)initWithDelegate:(id)delegate;
 - (id)_interactionDrivers;
 - (int64_t)menuAppearance;
-- (void)_setPresentOnTouchDown:(BOOL)a3;
-- (void)_willBeginWithConfiguration:(id)a3;
-- (void)didMoveToView:(id)a3;
+- (void)_setPresentOnTouchDown:(BOOL)down;
+- (void)_willBeginWithConfiguration:(id)configuration;
+- (void)didMoveToView:(id)view;
 @end
 
 @implementation _UIVariableGestureContextMenuInteraction
@@ -52,11 +52,11 @@
   return v9;
 }
 
-- (_UIVariableGestureContextMenuInteraction)initWithDelegate:(id)a3
+- (_UIVariableGestureContextMenuInteraction)initWithDelegate:(id)delegate
 {
   v6.receiver = self;
   v6.super_class = _UIVariableGestureContextMenuInteraction;
-  v3 = [(UIContextMenuInteraction *)&v6 initWithDelegate:a3];
+  v3 = [(UIContextMenuInteraction *)&v6 initWithDelegate:delegate];
   v4 = v3;
   if (v3)
   {
@@ -66,54 +66,54 @@
   return v4;
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v4 = a3;
-  v5 = [(_UIVariableGestureContextMenuInteraction *)self _interactionDrivers];
-  [(UIContextMenuInteraction *)self setDrivers:v5];
+  viewCopy = view;
+  _interactionDrivers = [(_UIVariableGestureContextMenuInteraction *)self _interactionDrivers];
+  [(UIContextMenuInteraction *)self setDrivers:_interactionDrivers];
 
   v6.receiver = self;
   v6.super_class = _UIVariableGestureContextMenuInteraction;
-  [(UIContextMenuInteraction *)&v6 didMoveToView:v4];
+  [(UIContextMenuInteraction *)&v6 didMoveToView:viewCopy];
 }
 
 - (int64_t)menuAppearance
 {
   v5.receiver = self;
   v5.super_class = _UIVariableGestureContextMenuInteraction;
-  v3 = [(UIContextMenuInteraction *)&v5 menuAppearance];
-  if ([(_UIVariableGestureContextMenuInteraction *)self _prefersCompactAppearance]&& v3 != 0)
+  menuAppearance = [(UIContextMenuInteraction *)&v5 menuAppearance];
+  if ([(_UIVariableGestureContextMenuInteraction *)self _prefersCompactAppearance]&& menuAppearance != 0)
   {
     return 2;
   }
 
   else
   {
-    return v3;
+    return menuAppearance;
   }
 }
 
-- (void)_setPresentOnTouchDown:(BOOL)a3
+- (void)_setPresentOnTouchDown:(BOOL)down
 {
   flags = self->_flags;
-  if ((flags & 1) != a3)
+  if ((flags & 1) != down)
   {
-    *&self->_flags = flags & 0xFE | a3;
-    v6 = [(_UIVariableGestureContextMenuInteraction *)self _interactionDrivers];
-    [(UIContextMenuInteraction *)self setDrivers:v6];
+    *&self->_flags = flags & 0xFE | down;
+    _interactionDrivers = [(_UIVariableGestureContextMenuInteraction *)self _interactionDrivers];
+    [(UIContextMenuInteraction *)self setDrivers:_interactionDrivers];
   }
 }
 
-- (void)_willBeginWithConfiguration:(id)a3
+- (void)_willBeginWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v6.receiver = self;
   v6.super_class = _UIVariableGestureContextMenuInteraction;
-  [(UIContextMenuInteraction *)&v6 _willBeginWithConfiguration:v4];
-  v5 = [(UIContextMenuInteraction *)self delegate];
+  [(UIContextMenuInteraction *)&v6 _willBeginWithConfiguration:configurationCopy];
+  delegate = [(UIContextMenuInteraction *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v5 _contextMenuInteraction:self willBeginWithConfiguration:v4];
+    [delegate _contextMenuInteraction:self willBeginWithConfiguration:configurationCopy];
   }
 }
 

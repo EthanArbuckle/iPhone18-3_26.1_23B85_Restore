@@ -11,29 +11,29 @@
   v13 = a4;
   v14 = a5;
   v15 = a6;
-  v16 = [v12 value];
-  if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  value = [v12 value];
+  if (value && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v17 = objc_alloc([a1 wf_objectClass]);
-    v18 = [v16 isTransient];
-    [v16 identifier];
-    v34 = a1;
+    v17 = objc_alloc([self wf_objectClass]);
+    isTransient = [value isTransient];
+    [value identifier];
+    selfCopy = self;
     v19 = v15;
     v20 = v14;
     v22 = v21 = v13;
-    [v16 properties];
+    [value properties];
     v23 = v35 = a7;
-    v24 = [v16 managedAccountIdentifier];
-    v25 = [v17 initWithTransient:v18 identifier:v22 properties:v23 managedAccountIdentifier:v24];
+    managedAccountIdentifier = [value managedAccountIdentifier];
+    v25 = [v17 initWithTransient:isTransient identifier:v22 properties:v23 managedAccountIdentifier:managedAccountIdentifier];
 
     v13 = v21;
     v14 = v20;
     v15 = v19;
     v26 = objc_alloc(MEMORY[0x1E69ACA90]);
-    v27 = [v12 valueType];
-    v28 = [v26 initWithValue:v25 valueType:v27];
+    valueType = [v12 valueType];
+    v28 = [v26 initWithValue:v25 valueType:valueType];
 
-    v36.receiver = v34;
+    v36.receiver = selfCopy;
     v36.super_class = &off_1F4B0B638;
     v29 = objc_msgSendSuper2(&v36, sel_wf_contentItemFromLinkValue_appBundleIdentifier_displayedBundleIdentifier_teamIdentifier_disclosureLevel_, v28, v13, v14, v19, v35);
     if (v29)
@@ -56,8 +56,8 @@
     }
 
     v31 = v30;
-    v32 = [v12 displayRepresentation];
-    [v31 setDisplayRepresentation:v32];
+    displayRepresentation = [v12 displayRepresentation];
+    [v31 setDisplayRepresentation:displayRepresentation];
   }
 
   else
@@ -72,19 +72,19 @@
 - (id)wf_contentItemClassWithAppBundleIdentifier:()ContentItem
 {
   v27 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69E0970] sharedProvider];
-  v3 = [a1 identifier];
-  v4 = [a1 bundleIdentifier];
-  v5 = [v2 entityWithIdentifier:v3 fromBundleIdentifier:v4];
+  mEMORY[0x1E69E0970] = [MEMORY[0x1E69E0970] sharedProvider];
+  identifier = [self identifier];
+  bundleIdentifier = [self bundleIdentifier];
+  v5 = [mEMORY[0x1E69E0970] entityWithIdentifier:identifier fromBundleIdentifier:bundleIdentifier];
 
-  v6 = [a1 bundleIdentifier];
-  v7 = [v5 wf_contentItemClassWithQueryMetadata:0 appBundleIdentifier:v6 displayedAppBundleIdentifier:0];
+  bundleIdentifier2 = [self bundleIdentifier];
+  v7 = [v5 wf_contentItemClassWithQueryMetadata:0 appBundleIdentifier:bundleIdentifier2 displayedAppBundleIdentifier:0];
 
   if (v7)
   {
-    v8 = [a1 identifier];
-    v9 = [MEMORY[0x1E69ACA38] wf_placeDescriptorEntityIdentifier];
-    v10 = [v8 isEqualToString:v9];
+    identifier2 = [self identifier];
+    wf_placeDescriptorEntityIdentifier = [MEMORY[0x1E69ACA38] wf_placeDescriptorEntityIdentifier];
+    v10 = [identifier2 isEqualToString:wf_placeDescriptorEntityIdentifier];
 
     if (v10)
     {
@@ -129,7 +129,7 @@
       *buf = 136315650;
       v22 = "[LNSystemEntityValueType(ContentItem) wf_contentItemClassWithAppBundleIdentifier:]";
       v23 = 2112;
-      v24 = a1;
+      selfCopy = self;
       v25 = 2112;
       v26 = v5;
       _os_log_impl(&dword_1CA256000, v15, OS_LOG_TYPE_FAULT, "%s Unable to construct entityContentItemClass for value type: %@, entityMetadata: %@", buf, 0x20u);

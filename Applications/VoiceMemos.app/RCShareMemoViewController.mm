@@ -1,16 +1,16 @@
 @interface RCShareMemoViewController
 + (RCShareMemoViewController)presentedController;
-+ (id)_newPresentedPrepareFailureAlertControllerForCompositions:(id)a3 source:(id)a4;
-+ (void)prepareToShareCompositions:(id)a3 ignoringInteraction:(BOOL)a4 source:(id)a5 isShareButton:(BOOL)a6 shouldContinuePreparingBlock:(id)a7 preparedHandler:(id)a8 completionWithItemsHandler:(id)a9;
-+ (void)presentInViewController:(id)a3 source:(id)a4 compositions:(id)a5 ignoringInteraction:(BOOL)a6 shouldContinuePreparingBlock:(id)a7 preparedToPresentBlock:(id)a8 isShareButton:(BOOL)a9 completionWithItemsHandler:(id)a10;
++ (id)_newPresentedPrepareFailureAlertControllerForCompositions:(id)compositions source:(id)source;
++ (void)prepareToShareCompositions:(id)compositions ignoringInteraction:(BOOL)interaction source:(id)source isShareButton:(BOOL)button shouldContinuePreparingBlock:(id)block preparedHandler:(id)handler completionWithItemsHandler:(id)itemsHandler;
++ (void)presentInViewController:(id)controller source:(id)source compositions:(id)compositions ignoringInteraction:(BOOL)interaction shouldContinuePreparingBlock:(id)block preparedToPresentBlock:(id)presentBlock isShareButton:(BOOL)button completionWithItemsHandler:(id)self0;
 - (BOOL)isRecentlyDeletedShown;
-- (RCShareMemoViewController)initWithCompositions:(id)a3 accessTokens:(id)a4;
+- (RCShareMemoViewController)initWithCompositions:(id)compositions accessTokens:(id)tokens;
 - (void)_endAccessSession;
-- (void)_performActivity:(id)a3;
-- (void)_prepareActivity:(id)a3 completion:(id)a4;
+- (void)_performActivity:(id)activity;
+- (void)_prepareActivity:(id)activity completion:(id)completion;
 - (void)updateShareableContent;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation RCShareMemoViewController
@@ -22,56 +22,56 @@
   return WeakRetained;
 }
 
-+ (void)presentInViewController:(id)a3 source:(id)a4 compositions:(id)a5 ignoringInteraction:(BOOL)a6 shouldContinuePreparingBlock:(id)a7 preparedToPresentBlock:(id)a8 isShareButton:(BOOL)a9 completionWithItemsHandler:(id)a10
++ (void)presentInViewController:(id)controller source:(id)source compositions:(id)compositions ignoringInteraction:(BOOL)interaction shouldContinuePreparingBlock:(id)block preparedToPresentBlock:(id)presentBlock isShareButton:(BOOL)button completionWithItemsHandler:(id)self0
 {
-  v27 = a6;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
+  interactionCopy = interaction;
+  controllerCopy = controller;
+  sourceCopy = source;
+  compositionsCopy = compositions;
+  blockCopy = block;
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
   v38[2] = sub_10005DE1C;
   v38[3] = &unk_10028AFB8;
-  v39 = a8;
-  v28 = v39;
-  v19 = a10;
+  presentBlockCopy = presentBlock;
+  v28 = presentBlockCopy;
+  handlerCopy = handler;
   v20 = objc_retainBlock(v38);
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_10005DE34;
   v36[3] = &unk_10028B010;
-  v37 = v18;
-  v21 = v18;
+  v37 = blockCopy;
+  v21 = blockCopy;
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_10005DE50;
   v29[3] = &unk_10028B080;
-  v30 = v15;
-  v31 = v16;
+  v30 = controllerCopy;
+  v31 = sourceCopy;
   v34 = objc_retainBlock(v36);
-  v35 = a1;
-  v32 = v17;
+  selfCopy = self;
+  v32 = compositionsCopy;
   v33 = v20;
-  v22 = v17;
+  v22 = compositionsCopy;
   v23 = v34;
-  v24 = v16;
-  v25 = v15;
+  v24 = sourceCopy;
+  v25 = controllerCopy;
   v26 = v20;
-  [RCShareMemoViewController prepareToShareCompositions:v22 ignoringInteraction:v27 source:v24 isShareButton:a9 shouldContinuePreparingBlock:v23 preparedHandler:v29 completionWithItemsHandler:v19];
+  [RCShareMemoViewController prepareToShareCompositions:v22 ignoringInteraction:interactionCopy source:v24 isShareButton:button shouldContinuePreparingBlock:v23 preparedHandler:v29 completionWithItemsHandler:handlerCopy];
 }
 
-+ (void)prepareToShareCompositions:(id)a3 ignoringInteraction:(BOOL)a4 source:(id)a5 isShareButton:(BOOL)a6 shouldContinuePreparingBlock:(id)a7 preparedHandler:(id)a8 completionWithItemsHandler:(id)a9
++ (void)prepareToShareCompositions:(id)compositions ignoringInteraction:(BOOL)interaction source:(id)source isShareButton:(BOOL)button shouldContinuePreparingBlock:(id)block preparedHandler:(id)handler completionWithItemsHandler:(id)itemsHandler
 {
-  v10 = a3;
-  v11 = a8;
-  v25 = a9;
+  compositionsCopy = compositions;
+  handlerCopy = handler;
+  itemsHandlerCopy = itemsHandler;
   v12 = +[NSMutableArray array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v13 = v10;
+  v13 = compositionsCopy;
   v14 = [v13 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v14)
   {
@@ -88,9 +88,9 @@
 
         v18 = *(*(&v27 + 1) + 8 * i);
         v19 = +[RCSSavedRecordingService sharedService];
-        v20 = [v18 composedAVURL];
+        composedAVURL = [v18 composedAVURL];
         v26 = 0;
-        v21 = [v19 prepareToExportCompositionAVURL:v20 error:&v26];
+        v21 = [v19 prepareToExportCompositionAVURL:composedAVURL error:&v26];
 
         if (v21)
         {
@@ -109,25 +109,25 @@
   {
     v23 = [[RCShareMemoViewController alloc] initWithCompositions:v13 accessTokens:v12];
     [RCShareMemoViewController setPresentedController:v23];
-    if (!a6)
+    if (!button)
     {
       [(RCShareMemoViewController *)v23 setSharingStyle:1];
     }
 
-    if (v25)
+    if (itemsHandlerCopy)
     {
-      [(RCShareMemoViewController *)v23 setCompletionWithItemsHandler:v25];
+      [(RCShareMemoViewController *)v23 setCompletionWithItemsHandler:itemsHandlerCopy];
     }
 
-    v11[2](v11, v23, 0);
+    handlerCopy[2](handlerCopy, v23, 0);
   }
 }
 
-- (RCShareMemoViewController)initWithCompositions:(id)a3 accessTokens:(id)a4
+- (RCShareMemoViewController)initWithCompositions:(id)compositions accessTokens:(id)tokens
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [RCShareMemoHelper shareableCompositionsFromCompositions:v7];
+  compositionsCopy = compositions;
+  tokensCopy = tokens;
+  v9 = [RCShareMemoHelper shareableCompositionsFromCompositions:compositionsCopy];
   if ([(RCShareMemoViewController *)self isRecentlyDeletedShown])
   {
     v10 = 0;
@@ -145,8 +145,8 @@
   if (v11)
   {
     objc_storeStrong(&v11->_shareableCompositions, v9);
-    objc_storeStrong(&v12->_compositions, a3);
-    objc_storeStrong(&v12->_accessTokens, a4);
+    objc_storeStrong(&v12->_compositions, compositions);
+    objc_storeStrong(&v12->_accessTokens, tokens);
     v13 = +[RCShareMemoHelper customActivityTypes];
     [(RCShareMemoViewController *)v12 setActivityTypeOrder:v13];
 
@@ -168,12 +168,12 @@
   objc_copyWeak(&v27, &location);
   v17 = objc_retainBlock(&v23);
   v18 = [RCShareMemoOptionsManager alloc];
-  v19 = [(RCShareMemoOptionsManager *)v18 initWithCompositions:v7 onUpdate:v17, v23, v24, v25, v26];
+  v19 = [(RCShareMemoOptionsManager *)v18 initWithCompositions:compositionsCopy onUpdate:v17, v23, v24, v25, v26];
   shareMemoOptionsManager = v12->_shareMemoOptionsManager;
   v12->_shareMemoOptionsManager = v19;
 
-  v21 = [(RCShareMemoViewController *)v12 shareMemoOptionsManager];
-  [(RCShareMemoViewController *)v12 setObjectManipulationDelegate:v21];
+  shareMemoOptionsManager = [(RCShareMemoViewController *)v12 shareMemoOptionsManager];
+  [(RCShareMemoViewController *)v12 setObjectManipulationDelegate:shareMemoOptionsManager];
 
   objc_destroyWeak(&v27);
   objc_destroyWeak(&location);
@@ -183,8 +183,8 @@
 
 - (void)updateShareableContent
 {
-  v3 = [(RCShareMemoViewController *)self compositions];
-  v4 = [RCShareMemoHelper shareableCompositionsFromCompositions:v3];
+  compositions = [(RCShareMemoViewController *)self compositions];
+  v4 = [RCShareMemoHelper shareableCompositionsFromCompositions:compositions];
 
   v16 = 0u;
   v17 = 0u;
@@ -208,8 +208,8 @@
         v10 = *(*(&v14 + 1) + 8 * i);
         if ([v10 hasMultipleTracks])
         {
-          v11 = [(RCShareMemoViewController *)self shareMemoOptionsManager];
-          [v10 setExportSeparateTracks:{objc_msgSend(v11, "selectedExportOptionIndex") != 0}];
+          shareMemoOptionsManager = [(RCShareMemoViewController *)self shareMemoOptionsManager];
+          [v10 setExportSeparateTracks:{objc_msgSend(shareMemoOptionsManager, "selectedExportOptionIndex") != 0}];
         }
 
         else
@@ -217,8 +217,8 @@
           [v10 setExportSeparateTracks:0];
         }
 
-        v12 = [(RCShareMemoViewController *)self shareMemoOptionsManager];
-        [v10 setSendAsRaw:{objc_msgSend(v12, "selectedSendAsOptionIndex") != 0}];
+        shareMemoOptionsManager2 = [(RCShareMemoViewController *)self shareMemoOptionsManager];
+        [v10 setSendAsRaw:{objc_msgSend(shareMemoOptionsManager2, "selectedSendAsOptionIndex") != 0}];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -228,13 +228,13 @@
   }
 
   [(RCShareMemoViewController *)self setShareableCompositions:v5];
-  v13 = [(RCShareMemoViewController *)self shareableCompositions];
-  [(RCShareMemoViewController *)self _updateActivityItems:v13];
+  shareableCompositions = [(RCShareMemoViewController *)self shareableCompositions];
+  [(RCShareMemoViewController *)self _updateActivityItems:shareableCompositions];
 }
 
-- (void)_performActivity:(id)a3
+- (void)_performActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = dispatch_time(0, 250000000);
   objc_initWeak(&location, self);
   block[0] = _NSConcreteStackBlock;
@@ -244,27 +244,27 @@
   objc_copyWeak(&v9, &location);
   block[4] = self;
   dispatch_after(v5, &_dispatch_main_q, block);
-  v6 = [(RCShareMemoViewController *)self progressOverlayPresenter];
-  [v6 setCanPresentOverlay:1];
+  progressOverlayPresenter = [(RCShareMemoViewController *)self progressOverlayPresenter];
+  [progressOverlayPresenter setCanPresentOverlay:1];
 
   v7.receiver = self;
   v7.super_class = RCShareMemoViewController;
-  [(RCShareMemoViewController *)&v7 _performActivity:v4];
+  [(RCShareMemoViewController *)&v7 _performActivity:activityCopy];
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)_prepareActivity:(id)a3 completion:(id)a4
+- (void)_prepareActivity:(id)activity completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(RCShareMemoViewController *)self progressOverlayPresenter];
-  [v8 setCanPresentOverlay:0];
+  activityCopy = activity;
+  completionCopy = completion;
+  progressOverlayPresenter = [(RCShareMemoViewController *)self progressOverlayPresenter];
+  [progressOverlayPresenter setCanPresentOverlay:0];
 
-  v9 = [(RCShareMemoViewController *)self progressOverlayPresenter];
-  v10 = [v9 isPresented];
+  progressOverlayPresenter2 = [(RCShareMemoViewController *)self progressOverlayPresenter];
+  isPresented = [progressOverlayPresenter2 isPresented];
 
-  if (v10)
+  if (isPresented)
   {
     objc_initWeak(&location, self);
     block[0] = _NSConcreteStackBlock;
@@ -272,9 +272,9 @@
     block[2] = sub_10005ECC0;
     block[3] = &unk_10028B120;
     objc_copyWeak(&v16, &location);
-    v13 = v6;
-    v14 = self;
-    v15 = v7;
+    v13 = activityCopy;
+    selfCopy = self;
+    v15 = completionCopy;
     dispatch_async(&_dispatch_main_q, block);
 
     objc_destroyWeak(&v16);
@@ -285,7 +285,7 @@
   {
     v11.receiver = self;
     v11.super_class = RCShareMemoViewController;
-    [(RCShareMemoViewController *)&v11 _prepareActivity:v6 completion:v7];
+    [(RCShareMemoViewController *)&v11 _prepareActivity:activityCopy completion:completionCopy];
   }
 }
 
@@ -332,47 +332,47 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   +[RCAnalyticsUtilities sendDidOpenShareMemoController];
   v5.receiver = self;
   v5.super_class = RCShareMemoViewController;
-  [(RCShareMemoViewController *)&v5 viewDidAppear:v3];
+  [(RCShareMemoViewController *)&v5 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(RCShareMemoViewController *)self _endAccessSession];
   [RCShareMemoViewController setPresentedController:0];
   v5.receiver = self;
   v5.super_class = RCShareMemoViewController;
-  [(RCShareMemoViewController *)&v5 viewWillDisappear:v3];
+  [(RCShareMemoViewController *)&v5 viewWillDisappear:disappearCopy];
 }
 
 - (BOOL)isRecentlyDeletedShown
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 delegate];
+  delegate = [v2 delegate];
 
-  v4 = [v3 defaultSceneDelegate];
-  v5 = [v4 mainViewController];
+  defaultSceneDelegate = [delegate defaultSceneDelegate];
+  mainViewController = [defaultSceneDelegate mainViewController];
 
-  LOBYTE(v4) = [v5 isShowingRecentlyDeleted];
-  return v4;
+  LOBYTE(defaultSceneDelegate) = [mainViewController isShowingRecentlyDeleted];
+  return defaultSceneDelegate;
 }
 
-+ (id)_newPresentedPrepareFailureAlertControllerForCompositions:(id)a3 source:(id)a4
++ (id)_newPresentedPrepareFailureAlertControllerForCompositions:(id)compositions source:(id)source
 {
-  v5 = a4;
-  v6 = a3;
+  sourceCopy = source;
+  compositionsCopy = compositions;
   v7 = +[NSBundle mainBundle];
   v8 = [v7 localizedStringForKey:@"PREPARE_TO_SHARE_MEMO_FAILED_TITLE" value:&stru_100295BB8 table:0];
 
   v9 = +[NSBundle mainBundle];
   v10 = [v9 localizedStringForKey:@"PREPARE_TO_SHARE_MEMOS_FAILED_MESSAGE_FORMAT" value:&stru_100295BB8 table:0];
-  v11 = [v6 count];
+  v11 = [compositionsCopy count];
 
   v12 = [NSString localizedStringWithFormat:v10, v11];
 
@@ -383,12 +383,12 @@
   [v13 addAction:v16];
 
   v17 = +[UIApplication sharedApplication];
-  v18 = [v17 delegate];
-  v19 = [v18 window];
-  v20 = [v19 rootViewController];
+  delegate = [v17 delegate];
+  window = [delegate window];
+  rootViewController = [window rootViewController];
 
-  [v13 rc_configurePopoverControllerWithSource:v5];
-  [v20 presentViewController:v13 animated:1 completion:0];
+  [v13 rc_configurePopoverControllerWithSource:sourceCopy];
+  [rootViewController presentViewController:v13 animated:1 completion:0];
 
   return v13;
 }

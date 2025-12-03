@@ -1,7 +1,7 @@
 @interface HMDAccessoryPowerManagementLogEvent
-- (HMDAccessoryPowerManagementLogEvent)initWithAccessory:(id)a3 linkType:(id)a4 operation:(id)a5 suspendedState:(id)a6 reachable:(BOOL)a7 remotelyReachable:(BOOL)a8;
-- (HMDAccessoryPowerManagementLogEvent)initWithAccessory:(id)a3 linkType:(id)a4 operation:(id)a5 suspendedState:(id)a6 reachable:(BOOL)a7 remotelyReachable:(BOOL)a8 wakeDurationSec:(double)a9;
-- (HMDAccessoryPowerManagementLogEvent)initWithAccessory:(id)a3 wolanWakeUpType:(int64_t)a4 version:(unsigned __int8)a5;
+- (HMDAccessoryPowerManagementLogEvent)initWithAccessory:(id)accessory linkType:(id)type operation:(id)operation suspendedState:(id)state reachable:(BOOL)reachable remotelyReachable:(BOOL)remotelyReachable;
+- (HMDAccessoryPowerManagementLogEvent)initWithAccessory:(id)accessory linkType:(id)type operation:(id)operation suspendedState:(id)state reachable:(BOOL)reachable remotelyReachable:(BOOL)remotelyReachable wakeDurationSec:(double)sec;
+- (HMDAccessoryPowerManagementLogEvent)initWithAccessory:(id)accessory wolanWakeUpType:(int64_t)type version:(unsigned __int8)version;
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (NSString)description;
 @end
@@ -10,37 +10,37 @@
 
 - (NSDictionary)coreAnalyticsEventDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDAccessoryPowerManagementLogEvent logType](self, "logType")}];
-  [v3 setObject:v4 forKeyedSubscript:@"logType"];
+  [dictionary setObject:v4 forKeyedSubscript:@"logType"];
 
-  v5 = [(HMDAccessoryPowerManagementLogEvent *)self linkType];
-  [v3 setObject:v5 forKeyedSubscript:@"linkType"];
+  linkType = [(HMDAccessoryPowerManagementLogEvent *)self linkType];
+  [dictionary setObject:linkType forKeyedSubscript:@"linkType"];
 
-  v6 = [(HMDAccessoryPowerManagementLogEvent *)self operationType];
-  [v3 setObject:v6 forKeyedSubscript:@"operationType"];
+  operationType = [(HMDAccessoryPowerManagementLogEvent *)self operationType];
+  [dictionary setObject:operationType forKeyedSubscript:@"operationType"];
 
-  v7 = [(HMDAccessoryPowerManagementLogEvent *)self suspendedState];
-  [v3 setObject:v7 forKeyedSubscript:@"suspendedState"];
+  suspendedState = [(HMDAccessoryPowerManagementLogEvent *)self suspendedState];
+  [dictionary setObject:suspendedState forKeyedSubscript:@"suspendedState"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDAccessoryPowerManagementLogEvent reachable](self, "reachable")}];
-  [v3 setObject:v8 forKeyedSubscript:@"reachable"];
+  [dictionary setObject:v8 forKeyedSubscript:@"reachable"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDAccessoryPowerManagementLogEvent remotelyReachable](self, "remotelyReachable")}];
-  [v3 setObject:v9 forKeyedSubscript:@"remotelyReachable"];
+  [dictionary setObject:v9 forKeyedSubscript:@"remotelyReachable"];
 
   v10 = MEMORY[0x277CCABB0];
   [(HMDAccessoryPowerManagementLogEvent *)self wakeDurationSec];
   v11 = [v10 numberWithDouble:?];
-  [v3 setObject:v11 forKeyedSubscript:@"wakeDurationSec"];
+  [dictionary setObject:v11 forKeyedSubscript:@"wakeDurationSec"];
 
   v12 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDAccessoryPowerManagementLogEvent wolanWakeUpType](self, "wolanWakeUpType")}];
-  [v3 setObject:v12 forKeyedSubscript:@"wolanWakeUpType"];
+  [dictionary setObject:v12 forKeyedSubscript:@"wolanWakeUpType"];
 
   v13 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{-[HMDAccessoryPowerManagementLogEvent wolanVersion](self, "wolanVersion")}];
-  [v3 setObject:v13 forKeyedSubscript:@"wolanVersion"];
+  [dictionary setObject:v13 forKeyedSubscript:@"wolanVersion"];
 
-  v14 = [v3 copy];
+  v14 = [dictionary copy];
 
   return v14;
 }
@@ -48,96 +48,96 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDAccessoryPowerManagementLogEvent *)self logType];
-  v5 = [(HMDAccessoryPowerManagementLogEvent *)self linkType];
-  v6 = [(HMDAccessoryPowerManagementLogEvent *)self operationType];
-  v7 = [(HMDAccessoryPowerManagementLogEvent *)self suspendedState];
-  v8 = [(HMDAccessoryPowerManagementLogEvent *)self reachable];
-  v9 = [(HMDAccessoryPowerManagementLogEvent *)self remotelyReachable];
+  logType = [(HMDAccessoryPowerManagementLogEvent *)self logType];
+  linkType = [(HMDAccessoryPowerManagementLogEvent *)self linkType];
+  operationType = [(HMDAccessoryPowerManagementLogEvent *)self operationType];
+  suspendedState = [(HMDAccessoryPowerManagementLogEvent *)self suspendedState];
+  reachable = [(HMDAccessoryPowerManagementLogEvent *)self reachable];
+  remotelyReachable = [(HMDAccessoryPowerManagementLogEvent *)self remotelyReachable];
   [(HMDAccessoryPowerManagementLogEvent *)self wakeDurationSec];
-  v11 = [v3 stringWithFormat:@"HMDAccessoryPowerManagementLogEvent - Log Type: %ld, linkType: %@, operationType: %@, suspendedState: %@, reachable: %d, remotelyReachable: %d, wakeDurationSec: %f, wolanWakeUpType: %ld, wolanVersion: %hhu", v4, v5, v6, v7, v8, v9, v10, -[HMDAccessoryPowerManagementLogEvent wolanWakeUpType](self, "wolanWakeUpType"), -[HMDAccessoryPowerManagementLogEvent wolanVersion](self, "wolanVersion")];
+  v11 = [v3 stringWithFormat:@"HMDAccessoryPowerManagementLogEvent - Log Type: %ld, linkType: %@, operationType: %@, suspendedState: %@, reachable: %d, remotelyReachable: %d, wakeDurationSec: %f, wolanWakeUpType: %ld, wolanVersion: %hhu", logType, linkType, operationType, suspendedState, reachable, remotelyReachable, v10, -[HMDAccessoryPowerManagementLogEvent wolanWakeUpType](self, "wolanWakeUpType"), -[HMDAccessoryPowerManagementLogEvent wolanVersion](self, "wolanVersion")];
 
   return v11;
 }
 
-- (HMDAccessoryPowerManagementLogEvent)initWithAccessory:(id)a3 wolanWakeUpType:(int64_t)a4 version:(unsigned __int8)a5
+- (HMDAccessoryPowerManagementLogEvent)initWithAccessory:(id)accessory wolanWakeUpType:(int64_t)type version:(unsigned __int8)version
 {
-  v8 = a3;
+  accessoryCopy = accessory;
   v13.receiver = self;
   v13.super_class = HMDAccessoryPowerManagementLogEvent;
   v9 = [(HMMLogEvent *)&v13 init];
   if (v9)
   {
-    v10 = [v8 identifier];
+    identifier = [accessoryCopy identifier];
     accessoryIdentifier = v9->_accessoryIdentifier;
-    v9->_accessoryIdentifier = v10;
+    v9->_accessoryIdentifier = identifier;
 
     v9->_logType = 2;
-    v9->_wolanWakeUpType = a4;
-    v9->_wolanVersion = a5;
+    v9->_wolanWakeUpType = type;
+    v9->_wolanVersion = version;
   }
 
   return v9;
 }
 
-- (HMDAccessoryPowerManagementLogEvent)initWithAccessory:(id)a3 linkType:(id)a4 operation:(id)a5 suspendedState:(id)a6 reachable:(BOOL)a7 remotelyReachable:(BOOL)a8 wakeDurationSec:(double)a9
+- (HMDAccessoryPowerManagementLogEvent)initWithAccessory:(id)accessory linkType:(id)type operation:(id)operation suspendedState:(id)state reachable:(BOOL)reachable remotelyReachable:(BOOL)remotelyReachable wakeDurationSec:(double)sec
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
+  accessoryCopy = accessory;
+  typeCopy = type;
+  operationCopy = operation;
+  stateCopy = state;
   v26.receiver = self;
   v26.super_class = HMDAccessoryPowerManagementLogEvent;
   v20 = [(HMMLogEvent *)&v26 init];
   if (v20)
   {
-    v21 = [v16 identifier];
+    identifier = [accessoryCopy identifier];
     accessoryIdentifier = v20->_accessoryIdentifier;
-    v20->_accessoryIdentifier = v21;
+    v20->_accessoryIdentifier = identifier;
 
     v20->_logType = 1;
-    objc_storeStrong(&v20->_linkType, a4);
-    objc_storeStrong(&v20->_operationType, a5);
-    objc_storeStrong(&v20->_suspendedState, a6);
-    v20->_reachable = a7;
-    v20->_remotelyReachable = a8;
-    v20->_wakeDurationSec = a9;
-    v23 = [v16 connectivityInfo];
-    v20->_wolanWakeUpType = [v23 woWLANWakeUpTypeSupport];
+    objc_storeStrong(&v20->_linkType, type);
+    objc_storeStrong(&v20->_operationType, operation);
+    objc_storeStrong(&v20->_suspendedState, state);
+    v20->_reachable = reachable;
+    v20->_remotelyReachable = remotelyReachable;
+    v20->_wakeDurationSec = sec;
+    connectivityInfo = [accessoryCopy connectivityInfo];
+    v20->_wolanWakeUpType = [connectivityInfo woWLANWakeUpTypeSupport];
 
-    v24 = [v16 connectivityInfo];
-    v20->_wolanVersion = [v24 woWLANVersion];
+    connectivityInfo2 = [accessoryCopy connectivityInfo];
+    v20->_wolanVersion = [connectivityInfo2 woWLANVersion];
   }
 
   return v20;
 }
 
-- (HMDAccessoryPowerManagementLogEvent)initWithAccessory:(id)a3 linkType:(id)a4 operation:(id)a5 suspendedState:(id)a6 reachable:(BOOL)a7 remotelyReachable:(BOOL)a8
+- (HMDAccessoryPowerManagementLogEvent)initWithAccessory:(id)accessory linkType:(id)type operation:(id)operation suspendedState:(id)state reachable:(BOOL)reachable remotelyReachable:(BOOL)remotelyReachable
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  accessoryCopy = accessory;
+  typeCopy = type;
+  operationCopy = operation;
+  stateCopy = state;
   v24.receiver = self;
   v24.super_class = HMDAccessoryPowerManagementLogEvent;
   v18 = [(HMMLogEvent *)&v24 init];
   if (v18)
   {
-    v19 = [v14 identifier];
+    identifier = [accessoryCopy identifier];
     accessoryIdentifier = v18->_accessoryIdentifier;
-    v18->_accessoryIdentifier = v19;
+    v18->_accessoryIdentifier = identifier;
 
     v18->_logType = 0;
-    objc_storeStrong(&v18->_linkType, a4);
-    objc_storeStrong(&v18->_operationType, a5);
-    objc_storeStrong(&v18->_suspendedState, a6);
-    v18->_reachable = a7;
-    v18->_remotelyReachable = a8;
-    v21 = [v14 connectivityInfo];
-    v18->_wolanWakeUpType = [v21 woWLANWakeUpTypeSupport];
+    objc_storeStrong(&v18->_linkType, type);
+    objc_storeStrong(&v18->_operationType, operation);
+    objc_storeStrong(&v18->_suspendedState, state);
+    v18->_reachable = reachable;
+    v18->_remotelyReachable = remotelyReachable;
+    connectivityInfo = [accessoryCopy connectivityInfo];
+    v18->_wolanWakeUpType = [connectivityInfo woWLANWakeUpTypeSupport];
 
-    v22 = [v14 connectivityInfo];
-    v18->_wolanVersion = [v22 woWLANVersion];
+    connectivityInfo2 = [accessoryCopy connectivityInfo];
+    v18->_wolanVersion = [connectivityInfo2 woWLANVersion];
   }
 
   return v18;

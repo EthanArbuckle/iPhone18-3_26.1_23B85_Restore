@@ -6,8 +6,8 @@
 
 - (BOOL)isFileExistsError
 {
-  v3 = [(NSError *)self domain];
-  if ([(NSString *)v3 isEqualToString:NSPOSIXErrorDomain])
+  domain = [(NSError *)self domain];
+  if ([(NSString *)domain isEqualToString:NSPOSIXErrorDomain])
   {
     v4 = [(NSError *)self code]== 17;
   }

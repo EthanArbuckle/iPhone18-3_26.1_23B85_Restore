@@ -17,7 +17,7 @@
     goto LABEL_25;
   }
 
-  v26 = [(OrgApacheLuceneAnalysisTokenattributesCharTermAttribute *)termAtt buffer];
+  buffer = [(OrgApacheLuceneAnalysisTokenattributesCharTermAttribute *)termAtt buffer];
   v4 = 0;
   v25 = -1;
   v27 = -1;
@@ -70,14 +70,14 @@ LABEL_8:
     {
       if (v4)
       {
-        if (!v26)
+        if (!buffer)
         {
           goto LABEL_25;
         }
 
-        if (v4 >= v26[2] - 1)
+        if (v4 >= buffer[2] - 1)
         {
-          v26 = [*(&self->super.super.super.super.isa + v24) resizeBufferWithInt:(v4 + 2)];
+          buffer = [*(&self->super.super.super.super.isa + v24) resizeBufferWithInt:(v4 + 2)];
         }
 
         v12 = v27;
@@ -91,7 +91,7 @@ LABEL_8:
 
       v27 = v12 + v11;
       v13 = [(OrgApacheLuceneAnalysisUtilCharTokenizer *)self normalizeWithInt:v10, v24];
-      v4 = JavaLangCharacter_toCharsWithInt_withCharArray_withInt_(v13, v26, v4, v14, v15, v16, v17, v18) + v4;
+      v4 = JavaLangCharacter_toCharsWithInt_withCharArray_withInt_(v13, buffer, v4, v14, v15, v16, v17, v18) + v4;
       if (v4 > 254)
       {
         goto LABEL_22;

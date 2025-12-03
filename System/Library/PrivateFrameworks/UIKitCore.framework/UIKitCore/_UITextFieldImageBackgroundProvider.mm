@@ -1,16 +1,16 @@
 @interface _UITextFieldImageBackgroundProvider
 - (void)_applyCorrectImage;
-- (void)addToTextField:(id)a3;
-- (void)enabledDidChangeAnimated:(BOOL)a3;
+- (void)addToTextField:(id)field;
+- (void)enabledDidChangeAnimated:(BOOL)animated;
 - (void)layoutIfNeeded;
 - (void)setNeedsDisplay;
 @end
 
 @implementation _UITextFieldImageBackgroundProvider
 
-- (void)addToTextField:(id)a3
+- (void)addToTextField:(id)field
 {
-  v4 = a3;
+  fieldCopy = field;
   if (!self->_backgroundView)
   {
     v5 = objc_opt_new();
@@ -20,19 +20,19 @@
 
   v7.receiver = self;
   v7.super_class = _UITextFieldImageBackgroundProvider;
-  [(_UITextFieldViewBackgroundProvider *)&v7 addToTextField:v4];
+  [(_UITextFieldViewBackgroundProvider *)&v7 addToTextField:fieldCopy];
 }
 
-- (void)enabledDidChangeAnimated:(BOOL)a3
+- (void)enabledDidChangeAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v8.receiver = self;
   v8.super_class = _UITextFieldImageBackgroundProvider;
   [(_UITextFieldBackgroundProvider *)&v8 enabledDidChangeAnimated:?];
-  v5 = [(_UITextFieldBackgroundProvider *)self textField];
-  if (v5)
+  textField = [(_UITextFieldBackgroundProvider *)self textField];
+  if (textField)
   {
-    if (v3)
+    if (animatedCopy)
     {
       backgroundView = self->_backgroundView;
       v7[0] = MEMORY[0x1E69E9820];
@@ -54,28 +54,28 @@
 
 - (void)_applyCorrectImage
 {
-  v8 = [(_UITextFieldBackgroundProvider *)self textField];
-  v3 = [v8 background];
-  if (([v8 isEnabled] & 1) == 0)
+  textField = [(_UITextFieldBackgroundProvider *)self textField];
+  background = [textField background];
+  if (([textField isEnabled] & 1) == 0)
   {
-    v4 = [v8 disabledBackground];
-    v5 = v4;
-    if (v4)
+    disabledBackground = [textField disabledBackground];
+    v5 = disabledBackground;
+    if (disabledBackground)
     {
-      v6 = v4;
+      v6 = disabledBackground;
     }
 
     else
     {
-      v6 = v3;
+      v6 = background;
     }
 
     v7 = v6;
 
-    v3 = v7;
+    background = v7;
   }
 
-  [(UIImageView *)self->_backgroundView setImage:v3];
+  [(UIImageView *)self->_backgroundView setImage:background];
 }
 
 - (void)setNeedsDisplay
@@ -88,9 +88,9 @@
 
 - (void)layoutIfNeeded
 {
-  v3 = [(_UITextFieldBackgroundProvider *)self textField];
-  [v3 bounds];
-  [v3 borderRectForBounds:?];
+  textField = [(_UITextFieldBackgroundProvider *)self textField];
+  [textField bounds];
+  [textField borderRectForBounds:?];
   [(UIImageView *)self->_backgroundView setFrame:?];
   v4.receiver = self;
   v4.super_class = _UITextFieldImageBackgroundProvider;

@@ -8,29 +8,29 @@
 
 - (id)iconController
 {
-  v2 = [SBApp windowSceneManager];
-  v3 = [v2 embeddedDisplayWindowScene];
-  v4 = [v3 iconController];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
+  iconController = [embeddedDisplayWindowScene iconController];
 
-  return v4;
+  return iconController;
 }
 
 - (void)handleVolumeIncrease
 {
-  v2 = [(SBIconListScrollingRecipe *)self iconController];
-  v3 = [v2 iconManager];
-  v4 = [v3 rootFolderController];
+  iconController = [(SBIconListScrollingRecipe *)self iconController];
+  iconManager = [iconController iconManager];
+  rootFolderController = [iconManager rootFolderController];
 
-  [v4 setCurrentPageIndex:objc_msgSend(v4 animated:{"firstIconPageIndex"), 1}];
+  [rootFolderController setCurrentPageIndex:objc_msgSend(rootFolderController animated:{"firstIconPageIndex"), 1}];
 }
 
 - (void)handleVolumeDecrease
 {
-  v2 = [(SBIconListScrollingRecipe *)self iconController];
-  v3 = [v2 iconManager];
-  v4 = [v3 rootFolderController];
+  iconController = [(SBIconListScrollingRecipe *)self iconController];
+  iconManager = [iconController iconManager];
+  rootFolderController = [iconManager rootFolderController];
 
-  [v4 setCurrentPageIndex:objc_msgSend(v4 animated:{"firstIconPageIndex"), 0}];
+  [rootFolderController setCurrentPageIndex:objc_msgSend(rootFolderController animated:{"firstIconPageIndex"), 0}];
 }
 
 @end

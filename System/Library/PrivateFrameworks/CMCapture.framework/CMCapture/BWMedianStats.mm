@@ -1,18 +1,18 @@
 @interface BWMedianStats
-- (BOOL)addDataPointP:(double)a3;
-- (BWMedianStats)initWithMaxNumberOfSamplesForMedianCalculation:(int64_t)a3;
+- (BOOL)addDataPointP:(double)p;
+- (BWMedianStats)initWithMaxNumberOfSamplesForMedianCalculation:(int64_t)calculation;
 - (double)median;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (uint64_t)addDataPointP:(double)a3 atIndex:;
+- (uint64_t)addDataPointP:(double)p atIndex:;
 - (void)dealloc;
 @end
 
 @implementation BWMedianStats
 
-- (BWMedianStats)initWithMaxNumberOfSamplesForMedianCalculation:(int64_t)a3
+- (BWMedianStats)initWithMaxNumberOfSamplesForMedianCalculation:(int64_t)calculation
 {
-  if (a3 < 0)
+  if (calculation < 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Invalid median max number of samples" userInfo:0]);
   }
@@ -23,14 +23,14 @@
   v5 = v4;
   if (v4)
   {
-    v4->_maxNumberOfSamplesForMedianCalculation = a3;
+    v4->_maxNumberOfSamplesForMedianCalculation = calculation;
     v4->_samples = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
 
   return v5;
 }
 
-- (BOOL)addDataPointP:(double)a3
+- (BOOL)addDataPointP:(double)p
 {
   v7.receiver = self;
   v7.super_class = BWMedianStats;
@@ -39,7 +39,7 @@
   {
     if (self->_maxNumberOfSamplesForMedianCalculation < 1 || [(BWStats *)self numberOfSamples]<= self->_maxNumberOfSamplesForMedianCalculation)
     {
-      -[NSMutableArray addObject:](self->_samples, "addObject:", [MEMORY[0x1E696AD98] numberWithDouble:a3]);
+      -[NSMutableArray addObject:](self->_samples, "addObject:", [MEMORY[0x1E696AD98] numberWithDouble:p]);
       LOBYTE(v5) = 1;
     }
 
@@ -52,7 +52,7 @@
   return v5;
 }
 
-- (uint64_t)addDataPointP:(double)a3 atIndex:
+- (uint64_t)addDataPointP:(double)p atIndex:
 {
   if (result)
   {
@@ -63,7 +63,7 @@
 
     v8.receiver = v5;
     v8.super_class = BWMedianStats;
-    result = objc_msgSendSuper2(&v8, sel_addDataPointP_, a3);
+    result = objc_msgSendSuper2(&v8, sel_addDataPointP_, p);
     if (result)
     {
       [objc_msgSend(*(v5 + 72) objectAtIndexedSubscript:{a2), "doubleValue"}];
@@ -71,7 +71,7 @@
       v6 = *(v5 + 56);
       *(v5 + 48) = *(v5 + 48) - v7;
       *(v5 + 56) = v6 - v7 * v7;
-      [*(v5 + 72) setObject:objc_msgSend(MEMORY[0x1E696AD98] atIndexedSubscript:{"numberWithDouble:", a3), a2}];
+      [*(v5 + 72) setObject:objc_msgSend(MEMORY[0x1E696AD98] atIndexedSubscript:{"numberWithDouble:", p), a2}];
       return 1;
     }
   }
@@ -128,9 +128,9 @@
   return [v3 stringWithFormat:@"%@, median: %lf%@ over %lu samples", v4, v5, -[BWStats unitDesignator](self, "unitDesignator"), -[NSMutableArray count](self->_samples, "count")];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v4[8] = self->_maxNumberOfSamplesForMedianCalculation;
   v4[9] = [(NSMutableArray *)self->_samples copy];
   return v4;

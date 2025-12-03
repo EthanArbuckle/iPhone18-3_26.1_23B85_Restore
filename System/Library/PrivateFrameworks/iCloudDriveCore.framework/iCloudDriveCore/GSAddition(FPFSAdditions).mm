@@ -7,13 +7,13 @@
 + (uint64_t)brc_isLegacyConflictAddition:()FPFSAdditions
 {
   v3 = a3;
-  v4 = [v3 nameSpace];
-  v5 = [v4 isEqualToString:*MEMORY[0x277D0D610]];
+  nameSpace = [v3 nameSpace];
+  v5 = [nameSpace isEqualToString:*MEMORY[0x277D0D610]];
 
   if (v5)
   {
-    v6 = [v3 name];
-    v7 = [v6 componentsSeparatedByString:@"_"];
+    name = [v3 name];
+    v7 = [name componentsSeparatedByString:@"_"];
 
     if (v7 && [v7 count])
     {

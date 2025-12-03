@@ -1,27 +1,27 @@
 @interface IKHeadElement
-+ (BOOL)shouldParseChildDOMElement:(id)a3;
++ (BOOL)shouldParseChildDOMElement:(id)element;
 @end
 
 @implementation IKHeadElement
 
-+ (BOOL)shouldParseChildDOMElement:(id)a3
++ (BOOL)shouldParseChildDOMElement:(id)element
 {
-  v4 = a3;
-  v5 = [v4 tagName];
-  if ([v5 isEqualToString:@"style"])
+  elementCopy = element;
+  tagName = [elementCopy tagName];
+  if ([tagName isEqualToString:@"style"])
   {
   }
 
   else
   {
-    v6 = [v4 tagName];
-    v7 = [v6 isEqualToString:@"script"];
+    tagName2 = [elementCopy tagName];
+    v7 = [tagName2 isEqualToString:@"script"];
 
     if ((v7 & 1) == 0)
     {
-      v10.receiver = a1;
+      v10.receiver = self;
       v10.super_class = &OBJC_METACLASS___IKHeadElement;
-      v8 = objc_msgSendSuper2(&v10, sel_shouldParseChildDOMElement_, v4);
+      v8 = objc_msgSendSuper2(&v10, sel_shouldParseChildDOMElement_, elementCopy);
       goto LABEL_6;
     }
   }

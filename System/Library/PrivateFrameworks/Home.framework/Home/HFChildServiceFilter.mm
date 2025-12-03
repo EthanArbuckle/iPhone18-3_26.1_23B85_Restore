@@ -1,19 +1,19 @@
 @interface HFChildServiceFilter
-- (HFChildServiceFilter)initWithChildServiceTypes:(id)a3;
-- (id)filteredChildServicesForParentService:(id)a3;
+- (HFChildServiceFilter)initWithChildServiceTypes:(id)types;
+- (id)filteredChildServicesForParentService:(id)service;
 @end
 
 @implementation HFChildServiceFilter
 
-- (HFChildServiceFilter)initWithChildServiceTypes:(id)a3
+- (HFChildServiceFilter)initWithChildServiceTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v9.receiver = self;
   v9.super_class = HFChildServiceFilter;
   v5 = [(HFChildServiceFilter *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [typesCopy copy];
     childServiceTypes = v5->_childServiceTypes;
     v5->_childServiceTypes = v6;
   }
@@ -21,15 +21,15 @@
   return v5;
 }
 
-- (id)filteredChildServicesForParentService:(id)a3
+- (id)filteredChildServicesForParentService:(id)service
 {
-  v4 = [a3 hf_childServices];
+  hf_childServices = [service hf_childServices];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__HFChildServiceFilter_filteredChildServicesForParentService___block_invoke;
   v7[3] = &unk_277DF4020;
   v7[4] = self;
-  v5 = [v4 na_filter:v7];
+  v5 = [hf_childServices na_filter:v7];
 
   return v5;
 }

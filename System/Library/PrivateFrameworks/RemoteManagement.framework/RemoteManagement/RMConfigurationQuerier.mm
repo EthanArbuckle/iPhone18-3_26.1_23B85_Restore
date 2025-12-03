@@ -1,31 +1,31 @@
 @interface RMConfigurationQuerier
-- (RMConfigurationQuerier)initWithPersistentContainer:(id)a3;
-- (id)_activeConfigurationsByTypeForTypes:(id)a3 managementSourceIdentifier:(id)a4 error:(id *)a5;
-- (id)activeConfigurationsForManagementSourceIdentifier:(id)a3 error:(id *)a4;
-- (id)configurationUIsByTypeForTypes:(id)a3 managementSourceIdentifier:(id)a4 error:(id *)a5;
+- (RMConfigurationQuerier)initWithPersistentContainer:(id)container;
+- (id)_activeConfigurationsByTypeForTypes:(id)types managementSourceIdentifier:(id)identifier error:(id *)error;
+- (id)activeConfigurationsForManagementSourceIdentifier:(id)identifier error:(id *)error;
+- (id)configurationUIsByTypeForTypes:(id)types managementSourceIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation RMConfigurationQuerier
 
-- (RMConfigurationQuerier)initWithPersistentContainer:(id)a3
+- (RMConfigurationQuerier)initWithPersistentContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   v9.receiver = self;
   v9.super_class = RMConfigurationQuerier;
   v6 = [(RMConfigurationQuerier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_persistentContainer, a3);
+    objc_storeStrong(&v6->_persistentContainer, container);
   }
 
   return v7;
 }
 
-- (id)_activeConfigurationsByTypeForTypes:(id)a3 managementSourceIdentifier:(id)a4 error:(id *)a5
+- (id)_activeConfigurationsByTypeForTypes:(id)types managementSourceIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  typesCopy = types;
+  identifierCopy = identifier;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -38,26 +38,26 @@
   v23 = sub_100022F9C;
   v24 = sub_100022FAC;
   v25 = 0;
-  if ([v8 count])
+  if ([typesCopy count])
   {
-    v10 = [(RMConfigurationQuerier *)self persistentContainer];
-    v11 = [v10 newBackgroundContext];
+    persistentContainer = [(RMConfigurationQuerier *)self persistentContainer];
+    newBackgroundContext = [persistentContainer newBackgroundContext];
 
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100022FB4;
     v15[3] = &unk_1000D15B0;
-    v16 = v9;
-    v17 = v8;
+    v16 = identifierCopy;
+    v17 = typesCopy;
     v18 = &v20;
     v19 = &v26;
-    [v11 performBlockAndWait:v15];
-    if (a5)
+    [newBackgroundContext performBlockAndWait:v15];
+    if (error)
     {
       v12 = v21[5];
       if (v12)
       {
-        *a5 = v12;
+        *error = v12;
       }
     }
 
@@ -76,9 +76,9 @@
   return v13;
 }
 
-- (id)activeConfigurationsForManagementSourceIdentifier:(id)a3 error:(id *)a4
+- (id)activeConfigurationsForManagementSourceIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -91,24 +91,24 @@
   v20 = sub_100022F9C;
   v21 = sub_100022FAC;
   v22 = 0;
-  v7 = [(RMConfigurationQuerier *)self persistentContainer];
-  v8 = [v7 newBackgroundContext];
+  persistentContainer = [(RMConfigurationQuerier *)self persistentContainer];
+  newBackgroundContext = [persistentContainer newBackgroundContext];
 
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100023734;
   v13[3] = &unk_1000D18B8;
-  v9 = v6;
+  v9 = identifierCopy;
   v14 = v9;
   v15 = &v17;
   v16 = &v23;
-  [v8 performBlockAndWait:v13];
-  if (a4)
+  [newBackgroundContext performBlockAndWait:v13];
+  if (error)
   {
     v10 = v18[5];
     if (v10)
     {
-      *a4 = v10;
+      *error = v10;
     }
   }
 
@@ -120,10 +120,10 @@
   return v11;
 }
 
-- (id)configurationUIsByTypeForTypes:(id)a3 managementSourceIdentifier:(id)a4 error:(id *)a5
+- (id)configurationUIsByTypeForTypes:(id)types managementSourceIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  typesCopy = types;
+  identifierCopy = identifier;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -136,26 +136,26 @@
   v23 = sub_100022F9C;
   v24 = sub_100022FAC;
   v25 = 0;
-  if ([v8 count])
+  if ([typesCopy count])
   {
-    v10 = [(RMConfigurationQuerier *)self persistentContainer];
-    v11 = [v10 newBackgroundContext];
+    persistentContainer = [(RMConfigurationQuerier *)self persistentContainer];
+    newBackgroundContext = [persistentContainer newBackgroundContext];
 
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100023E64;
     v15[3] = &unk_1000D15B0;
-    v16 = v9;
-    v17 = v8;
+    v16 = identifierCopy;
+    v17 = typesCopy;
     v18 = &v20;
     v19 = &v26;
-    [v11 performBlockAndWait:v15];
-    if (a5)
+    [newBackgroundContext performBlockAndWait:v15];
+    if (error)
     {
       v12 = v21[5];
       if (v12)
       {
-        *a5 = v12;
+        *error = v12;
       }
     }
 

@@ -1,22 +1,22 @@
 @interface SBApplicationPlaceholderController
 + (SBApplicationPlaceholderController)sharedInstance;
-- (BOOL)placeholderRepresentsNewAppInstallFromStore:(id)a3;
-- (BOOL)placeholderShouldAllowPausing:(id)a3;
+- (BOOL)placeholderRepresentsNewAppInstallFromStore:(id)store;
+- (BOOL)placeholderShouldAllowPausing:(id)pausing;
 - (SBApplicationPlaceholderController)init;
 - (id)iconControllers;
-- (id)placeholderForDisplayID:(id)a3;
-- (void)_addPlaceholders:(id)a3;
-- (void)_finishPlaceholder:(id)a3;
-- (void)_postPlaceholdersDidChangeForAdded:(id)a3 modified:(id)a4 removed:(id)a5;
+- (id)placeholderForDisplayID:(id)d;
+- (void)_addPlaceholders:(id)placeholders;
+- (void)_finishPlaceholder:(id)placeholder;
+- (void)_postPlaceholdersDidChangeForAdded:(id)added modified:(id)modified removed:(id)removed;
 - (void)_processPendingProxies;
-- (void)_removePlaceholders:(id)a3 forInstall:(BOOL)a4;
-- (void)applicationPlaceholdersAdded:(id)a3;
-- (void)applicationPlaceholdersCancelled:(id)a3;
-- (void)applicationPlaceholdersInstalled:(id)a3;
-- (void)applicationPlaceholdersNetworkUsageChanged:(BOOL)a3;
+- (void)_removePlaceholders:(id)placeholders forInstall:(BOOL)install;
+- (void)applicationPlaceholdersAdded:(id)added;
+- (void)applicationPlaceholdersCancelled:(id)cancelled;
+- (void)applicationPlaceholdersInstalled:(id)installed;
+- (void)applicationPlaceholdersNetworkUsageChanged:(BOOL)changed;
 - (void)dealloc;
-- (void)iconAccessoriesDidUpdate:(id)a3;
-- (void)placeholderWantsUninstall:(id)a3;
+- (void)iconAccessoriesDidUpdate:(id)update;
+- (void)placeholderWantsUninstall:(id)uninstall;
 @end
 
 @implementation SBApplicationPlaceholderController
@@ -59,9 +59,9 @@ uint64_t __52__SBApplicationPlaceholderController_sharedInstance__block_invoke()
     appController = v2->_appController;
     v2->_appController = v5;
 
-    v7 = [(SBApplicationController *)v2->_appController _appLibraryObserver];
+    _appLibraryObserver = [(SBApplicationController *)v2->_appController _appLibraryObserver];
     lsWorkspaceObserver = v2->_lsWorkspaceObserver;
-    v2->_lsWorkspaceObserver = v7;
+    v2->_lsWorkspaceObserver = _appLibraryObserver;
 
     [(SBApplicationLibraryObserver *)v2->_lsWorkspaceObserver addPlaceholderLifecycleObserver:v2];
     v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -80,8 +80,8 @@ uint64_t __52__SBApplicationPlaceholderController_sharedInstance__block_invoke()
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v15 = [(SBApplicationLibraryObserver *)v2->_lsWorkspaceObserver placeholders];
-    v16 = [v15 countByEnumeratingWithState:&v27 objects:v34 count:16];
+    placeholders = [(SBApplicationLibraryObserver *)v2->_lsWorkspaceObserver placeholders];
+    v16 = [placeholders countByEnumeratingWithState:&v27 objects:v34 count:16];
     if (v16)
     {
       v17 = v16;
@@ -92,24 +92,24 @@ uint64_t __52__SBApplicationPlaceholderController_sharedInstance__block_invoke()
         {
           if (*v28 != v18)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(placeholders);
           }
 
           v20 = *(*(&v27 + 1) + 8 * i);
-          v21 = [v20 bundleIdentifier];
-          if (v21)
+          bundleIdentifier = [v20 bundleIdentifier];
+          if (bundleIdentifier)
           {
             v22 = [(SBHProxiedApplicationPlaceholder *)[SBApplicationPlaceholder alloc] initWithPlaceholderProxy:v20];
             v23 = v22;
             if (v22)
             {
               [(SBHProxiedApplicationPlaceholder *)v22 setDelegate:v2];
-              [(NSMutableDictionary *)v2->_placeholdersByBundleID setObject:v23 forKey:v21];
+              [(NSMutableDictionary *)v2->_placeholdersByBundleID setObject:v23 forKey:bundleIdentifier];
             }
           }
         }
 
-        v17 = [v15 countByEnumeratingWithState:&v27 objects:v34 count:16];
+        v17 = [placeholders countByEnumeratingWithState:&v27 objects:v34 count:16];
       }
 
       while (v17);
@@ -118,9 +118,9 @@ uint64_t __52__SBApplicationPlaceholderController_sharedInstance__block_invoke()
     v24 = SBLogAppPlaceholder();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [(NSMutableDictionary *)v2->_placeholdersByBundleID allKeys];
+      allKeys = [(NSMutableDictionary *)v2->_placeholdersByBundleID allKeys];
       *buf = 138412290;
-      v33 = v25;
+      v33 = allKeys;
       _os_log_impl(&dword_21ED4E000, v24, OS_LOG_TYPE_DEFAULT, "Placeholders @ boot time: %@", buf, 0xCu);
     }
   }
@@ -136,9 +136,9 @@ uint64_t __52__SBApplicationPlaceholderController_sharedInstance__block_invoke()
   [(SBApplicationPlaceholderController *)&v3 dealloc];
 }
 
-- (id)placeholderForDisplayID:(id)a3
+- (id)placeholderForDisplayID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = [(NSMutableDictionary *)self->_placeholdersByBundleID objectForKey:?];
   }
@@ -151,16 +151,16 @@ uint64_t __52__SBApplicationPlaceholderController_sharedInstance__block_invoke()
   return v4;
 }
 
-- (void)applicationPlaceholdersAdded:(id)a3
+- (void)applicationPlaceholdersAdded:(id)added
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  addedCopy = added;
   v5 = SBLogAppPlaceholder();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     placeholdersByBundleID = self->_placeholdersByBundleID;
     v9 = 138412546;
-    v10 = v4;
+    v10 = addedCopy;
     v11 = 2112;
     v12 = placeholdersByBundleID;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "App placeholder proxies added: %@, currentlyKnownExistingPlaceholders: %@", &v9, 0x16u);
@@ -169,7 +169,7 @@ uint64_t __52__SBApplicationPlaceholderController_sharedInstance__block_invoke()
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBApplicationPlaceholderController applicationPlaceholdersAdded:];
-    if (!v4)
+    if (!addedCopy)
     {
       goto LABEL_6;
     }
@@ -177,11 +177,11 @@ uint64_t __52__SBApplicationPlaceholderController_sharedInstance__block_invoke()
     goto LABEL_5;
   }
 
-  if (v4)
+  if (addedCopy)
   {
 LABEL_5:
     pendingAdded = self->_pendingAdded;
-    v8 = [MEMORY[0x277CBEB98] setWithArray:v4];
+    v8 = [MEMORY[0x277CBEB98] setWithArray:addedCopy];
     [(NSMutableSet *)pendingAdded unionSet:v8];
 
     [(NSMutableSet *)self->_pendingCancelled minusSet:self->_pendingAdded];
@@ -192,22 +192,22 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)applicationPlaceholdersInstalled:(id)a3
+- (void)applicationPlaceholdersInstalled:(id)installed
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  installedCopy = installed;
   v5 = SBLogAppPlaceholder();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = installedCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "App placeholder proxies installed: %@", &v8, 0xCu);
   }
 
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBApplicationPlaceholderController applicationPlaceholdersInstalled:];
-    if (!v4)
+    if (!installedCopy)
     {
       goto LABEL_6;
     }
@@ -215,11 +215,11 @@ LABEL_6:
     goto LABEL_5;
   }
 
-  if (v4)
+  if (installedCopy)
   {
 LABEL_5:
     pendingInstalled = self->_pendingInstalled;
-    v7 = [MEMORY[0x277CBEB98] setWithArray:v4];
+    v7 = [MEMORY[0x277CBEB98] setWithArray:installedCopy];
     [(NSMutableSet *)pendingInstalled unionSet:v7];
 
     [(SBApplicationPlaceholderController *)self _processPendingProxies];
@@ -228,22 +228,22 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)applicationPlaceholdersCancelled:(id)a3
+- (void)applicationPlaceholdersCancelled:(id)cancelled
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  cancelledCopy = cancelled;
   v5 = SBLogAppPlaceholder();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138412290;
-    v9 = v4;
+    v9 = cancelledCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "App placeholder proxies cancelled: %@", &v8, 0xCu);
   }
 
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
     [SBApplicationPlaceholderController applicationPlaceholdersCancelled:];
-    if (!v4)
+    if (!cancelledCopy)
     {
       goto LABEL_6;
     }
@@ -251,11 +251,11 @@ LABEL_6:
     goto LABEL_5;
   }
 
-  if (v4)
+  if (cancelledCopy)
   {
 LABEL_5:
     pendingCancelled = self->_pendingCancelled;
-    v7 = [MEMORY[0x277CBEB98] setWithArray:v4];
+    v7 = [MEMORY[0x277CBEB98] setWithArray:cancelledCopy];
     [(NSMutableSet *)pendingCancelled unionSet:v7];
 
     [(SBApplicationPlaceholderController *)self _processPendingProxies];
@@ -264,37 +264,37 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)applicationPlaceholdersNetworkUsageChanged:(BOOL)a3
+- (void)applicationPlaceholdersNetworkUsageChanged:(BOOL)changed
 {
-  if (self->_usingNetwork != a3)
+  if (self->_usingNetwork != changed)
   {
-    self->_usingNetwork = a3;
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 postNotificationName:@"SBApplicationPlaceholdersNetworkUsageDidChangeNotification" object:self userInfo:0];
+    self->_usingNetwork = changed;
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBApplicationPlaceholdersNetworkUsageDidChangeNotification" object:self userInfo:0];
   }
 }
 
 - (void)_processPendingProxies
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:"-[SBApplicationPlaceholderController _processPendingProxies]" object:? file:? lineNumber:? description:?];
 }
 
 - (id)iconControllers
 {
-  v2 = [SBApp windowSceneManager];
-  v3 = [v2 connectedWindowScenes];
-  v4 = [v3 bs_compactMap:&__block_literal_global_35_3];
+  windowSceneManager = [SBApp windowSceneManager];
+  connectedWindowScenes = [windowSceneManager connectedWindowScenes];
+  v4 = [connectedWindowScenes bs_compactMap:&__block_literal_global_35_3];
 
   return v4;
 }
 
-- (void)_addPlaceholders:(id)a3
+- (void)_addPlaceholders:(id)placeholders
 {
   v64 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  placeholdersCopy = placeholders;
   v37 = +[SBIconController sharedIconRepository];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v36 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -303,7 +303,7 @@ LABEL_6:
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  obj = v4;
+  obj = placeholdersCopy;
   v7 = [obj countByEnumeratingWithState:&v53 objects:v63 count:16];
   v33 = v5;
   if (!v7)
@@ -326,12 +326,12 @@ LABEL_6:
 
       v11 = *(*(&v53 + 1) + 8 * i);
       v12 = objc_autoreleasePoolPush();
-      v13 = [v11 bundleIdentifier];
+      bundleIdentifier = [v11 bundleIdentifier];
       v14 = MEMORY[0x277D28AB8];
       v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Placeholder add BEGIN"];
-      [v14 logStep:0 byParty:10 phase:1 success:1 forBundleID:v13 description:v15];
+      [v14 logStep:0 byParty:10 phase:1 success:1 forBundleID:bundleIdentifier description:v15];
 
-      v16 = [(SBApplicationPlaceholderController *)self placeholderForDisplayID:v13];
+      v16 = [(SBApplicationPlaceholderController *)self placeholderForDisplayID:bundleIdentifier];
       if (v16)
       {
         v17 = v16;
@@ -346,7 +346,7 @@ LABEL_10:
       if (v19)
       {
         [(SBHProxiedApplicationPlaceholder *)v19 setDelegate:self];
-        [(NSMutableDictionary *)self->_placeholdersByBundleID setObject:v17 forKey:v13];
+        [(NSMutableDictionary *)self->_placeholdersByBundleID setObject:v17 forKey:bundleIdentifier];
         v18 = v33;
         goto LABEL_10;
       }
@@ -360,7 +360,7 @@ LABEL_11:
 
       if ([(SBApplicationPlaceholderController *)self placeholderRepresentsNewAppInstallFromStore:v17])
       {
-        v20 = v13;
+        v20 = bundleIdentifier;
 
         v9 = v20;
       }
@@ -379,8 +379,8 @@ LABEL_20:
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v34 = [(SBApplicationPlaceholderController *)self iconControllers];
-  v41 = [v34 countByEnumeratingWithState:&v49 objects:v62 count:16];
+  iconControllers = [(SBApplicationPlaceholderController *)self iconControllers];
+  v41 = [iconControllers countByEnumeratingWithState:&v49 objects:v62 count:16];
   if (v41)
   {
     v38 = *v50;
@@ -392,12 +392,12 @@ LABEL_20:
       {
         if (*v50 != v38)
         {
-          objc_enumerationMutation(v34);
+          objc_enumerationMutation(iconControllers);
         }
 
         v43 = v21;
-        v42 = [*(*(&v49 + 1) + 8 * v21) iconManager];
-        v22 = [v42 addApplicationPlaceholders:v6];
+        iconManager = [*(*(&v49 + 1) + 8 * v21) iconManager];
+        v22 = [iconManager addApplicationPlaceholders:v6];
         v45 = 0u;
         v46 = 0u;
         v47 = 0u;
@@ -417,10 +417,10 @@ LABEL_20:
               }
 
               v27 = *(*(&v45 + 1) + 8 * j);
-              v28 = [v27 applicationBundleID];
+              applicationBundleID = [v27 applicationBundleID];
               v29 = MEMORY[0x277D28AB8];
               v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"Created icon for placeholder."];
-              [v29 logStep:1 byParty:10 phase:3 success:1 forBundleID:v28 description:v30];
+              [v29 logStep:1 byParty:10 phase:3 success:1 forBundleID:applicationBundleID description:v30];
 
               v31 = SBLogAppPlaceholder();
               if (os_log_type_enabled(v31, OS_LOG_TYPE_DEBUG))
@@ -428,7 +428,7 @@ LABEL_20:
                 *buf = 134218242;
                 v58 = v27;
                 v59 = 2112;
-                v60 = v28;
+                v60 = applicationBundleID;
                 _os_log_debug_impl(&dword_21ED4E000, v31, OS_LOG_TYPE_DEBUG, "Created icon %p for placeholder %@", buf, 0x16u);
               }
 
@@ -449,8 +449,8 @@ LABEL_20:
           v32 = [v37 applicationIconForBundleIdentifier:?];
           if (v32)
           {
-            [v42 setIconToReveal:v32 revealingPrevious:1];
-            [v42 tryScrollToIconToRevealAnimated:SBWorkspaceSpringBoardIsActive()];
+            [iconManager setIconToReveal:v32 revealingPrevious:1];
+            [iconManager tryScrollToIconToRevealAnimated:SBWorkspaceSpringBoardIsActive()];
           }
         }
 
@@ -459,7 +459,7 @@ LABEL_20:
       }
 
       while (v43 + 1 != v41);
-      v41 = [v34 countByEnumeratingWithState:&v49 objects:v62 count:16];
+      v41 = [iconControllers countByEnumeratingWithState:&v49 objects:v62 count:16];
     }
 
     while (v41);
@@ -471,19 +471,19 @@ LABEL_20:
   }
 }
 
-- (void)_removePlaceholders:(id)a3 forInstall:(BOOL)a4
+- (void)_removePlaceholders:(id)placeholders forInstall:(BOOL)install
 {
-  v4 = a4;
+  installCopy = install;
   v76 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v49 = [(SBApplicationController *)self->_appController allBundleIdentifiers];
-  v45 = [(SBApplicationPlaceholderController *)self iconControllers];
+  placeholdersCopy = placeholders;
+  allBundleIdentifiers = [(SBApplicationController *)self->_appController allBundleIdentifiers];
+  iconControllers = [(SBApplicationPlaceholderController *)self iconControllers];
   v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  obj = v6;
+  obj = placeholdersCopy;
   v52 = [obj countByEnumeratingWithState:&v65 objects:v75 count:16];
   if (v52)
   {
@@ -492,7 +492,7 @@ LABEL_20:
     v10 = 0x277CCA000uLL;
     *&v8 = 138543362;
     v44 = v8;
-    v47 = v4;
+    v47 = installCopy;
     v46 = v7;
     do
     {
@@ -504,20 +504,20 @@ LABEL_20:
         }
 
         v12 = *(*(&v65 + 1) + 8 * i);
-        v13 = [v12 bundleIdentifier];
+        bundleIdentifier = [v12 bundleIdentifier];
         v14 = *(v9 + 2744);
         v15 = [*(v10 + 3240) stringWithFormat:@"Placeholder remove BEGIN"];
-        [v14 logStep:4 byParty:10 phase:1 success:1 forBundleID:v13 description:v15];
+        [v14 logStep:4 byParty:10 phase:1 success:1 forBundleID:bundleIdentifier description:v15];
 
-        v16 = [(SBApplicationPlaceholderController *)self placeholderForDisplayID:v13];
+        v16 = [(SBApplicationPlaceholderController *)self placeholderForDisplayID:bundleIdentifier];
         if (v16)
         {
           [v7 addObject:v16];
           v17 = objc_autoreleasePoolPush();
-          if (v4)
+          if (installCopy)
           {
-            v18 = [(SBApplicationController *)self->_appController _appLibrary];
-            v19 = [v18 installedApplicationWithBundleIdentifier:v13];
+            _appLibrary = [(SBApplicationController *)self->_appController _appLibrary];
+            v19 = [_appLibrary installedApplicationWithBundleIdentifier:bundleIdentifier];
 
             if (v19)
             {
@@ -526,7 +526,7 @@ LABEL_20:
               v64 = 0u;
               v61 = 0u;
               v62 = 0u;
-              v20 = v45;
+              v20 = iconControllers;
               v21 = [v20 countByEnumeratingWithState:&v61 objects:v72 count:16];
               if (v21)
               {
@@ -583,7 +583,7 @@ LABEL_20:
                 while (v29);
               }
 
-              v4 = v47;
+              installCopy = v47;
               v17 = v48;
             }
 
@@ -593,21 +593,21 @@ LABEL_20:
               if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
               {
                 *buf = v44;
-                v74 = v13;
+                v74 = bundleIdentifier;
                 _os_log_error_impl(&dword_21ED4E000, v27, OS_LOG_TYPE_ERROR, "No app info found for supposedly installed placeholder for %{public}@", buf, 0xCu);
               }
 
-              v4 = v47;
+              installCopy = v47;
             }
 
             v7 = v46;
           }
 
-          v35 = [(SBApplicationController *)self->_appController applicationWithBundleIdentifier:v13];
-          v36 = [v12 installType];
-          if (v36 == 1)
+          v35 = [(SBApplicationController *)self->_appController applicationWithBundleIdentifier:bundleIdentifier];
+          installType = [v12 installType];
+          if (installType == 1)
           {
-            if (![v49 containsObject:v13])
+            if (![allBundleIdentifiers containsObject:bundleIdentifier])
             {
               goto LABEL_37;
             }
@@ -615,7 +615,7 @@ LABEL_20:
 
           else
           {
-            if (v36 != 3)
+            if (installType != 3)
             {
 LABEL_37:
 
@@ -623,7 +623,7 @@ LABEL_37:
               goto LABEL_38;
             }
 
-            if (([v49 containsObject:v13] & 1) == 0)
+            if (([allBundleIdentifiers containsObject:bundleIdentifier] & 1) == 0)
             {
               [v35 markNewlyInstalled];
               goto LABEL_37;
@@ -636,13 +636,13 @@ LABEL_37:
 
         v32 = *(v9 + 2744);
         v33 = [*(v10 + 3240) stringWithFormat:@"State mismatch -- no model placeholder found matching."];
-        [v32 logStep:4 byParty:10 phase:2 success:0 forBundleID:v13 description:v33];
+        [v32 logStep:4 byParty:10 phase:2 success:0 forBundleID:bundleIdentifier description:v33];
 
         v34 = SBLogAppPlaceholder();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
         {
           *buf = v44;
-          v74 = v13;
+          v74 = bundleIdentifier;
           _os_log_impl(&dword_21ED4E000, v34, OS_LOG_TYPE_DEFAULT, "*** No placeholder exists for placeholderProxy with bundleID: %{public}@. Ignoring this removal.", buf, 0xCu);
         }
 
@@ -678,8 +678,8 @@ LABEL_38:
         }
 
         v42 = *(*(&v53 + 1) + 8 * m);
-        v43 = [v42 applicationBundleID];
-        if (v43)
+        applicationBundleID = [v42 applicationBundleID];
+        if (applicationBundleID)
         {
           [(SBApplicationPlaceholderController *)self _finishPlaceholder:v42];
         }
@@ -692,33 +692,33 @@ LABEL_38:
   }
 }
 
-- (void)_finishPlaceholder:(id)a3
+- (void)_finishPlaceholder:(id)placeholder
 {
   v33[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v23 = [v5 placeholderProxy];
-  if (!v23)
+  placeholderCopy = placeholder;
+  placeholderProxy = [placeholderCopy placeholderProxy];
+  if (!placeholderProxy)
   {
     [SBApplicationPlaceholderController _finishPlaceholder:];
   }
 
-  v6 = [v5 applicationBundleID];
-  if (v6)
+  applicationBundleID = [placeholderCopy applicationBundleID];
+  if (applicationBundleID)
   {
-    [v5 invalidate];
-    [(NSMutableDictionary *)self->_placeholdersByBundleID removeObjectForKey:v6];
+    [placeholderCopy invalidate];
+    [(NSMutableDictionary *)self->_placeholdersByBundleID removeObjectForKey:applicationBundleID];
   }
 
   else
   {
-    [(SBApplicationPlaceholderController *)a2 _finishPlaceholder:v5];
+    [(SBApplicationPlaceholderController *)a2 _finishPlaceholder:placeholderCopy];
   }
 
-  v33[0] = v5;
+  v33[0] = placeholderCopy;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:1];
   [(SBApplicationPlaceholderController *)self _postPlaceholdersDidChangeForAdded:0 modified:0 removed:v7];
 
-  v8 = [(SBApplicationController *)self->_appController applicationWithBundleIdentifier:v6];
+  v8 = [(SBApplicationController *)self->_appController applicationWithBundleIdentifier:applicationBundleID];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
@@ -729,7 +729,7 @@ LABEL_38:
   {
     v10 = v9;
     v11 = *v29;
-    v25 = v5;
+    v25 = placeholderCopy;
     do
     {
       for (i = 0; i != v10; ++i)
@@ -739,38 +739,38 @@ LABEL_38:
           objc_enumerationMutation(obj);
         }
 
-        v13 = [*(*(&v28 + 1) + 8 * i) iconManager];
-        v14 = [v13 iconModel];
-        v15 = [v14 applicationIconsForBundleIdentifier:v6];
+        iconManager = [*(*(&v28 + 1) + 8 * i) iconManager];
+        iconModel = [iconManager iconModel];
+        v15 = [iconModel applicationIconsForBundleIdentifier:applicationBundleID];
         if (v8)
         {
-          v16 = [v13 replaceApplicationPlaceholderWithApplication:v8];
+          v16 = [iconManager replaceApplicationPlaceholderWithApplication:v8];
           if ([v15 count])
           {
             v17 = v11;
-            v18 = v6;
-            v19 = [v8 info];
-            if ([v19 isAppLibraryOnlyByDefault])
+            v18 = applicationBundleID;
+            info = [v8 info];
+            if ([info isAppLibraryOnlyByDefault])
             {
-              v20 = [v14 lastLayoutUnarchivedIdentifiers];
-              v26 = [v20 containsObject:v18];
+              lastLayoutUnarchivedIdentifiers = [iconModel lastLayoutUnarchivedIdentifiers];
+              v26 = [lastLayoutUnarchivedIdentifiers containsObject:v18];
 
-              v5 = v25;
-              v6 = v18;
+              placeholderCopy = v25;
+              applicationBundleID = v18;
               v11 = v17;
               if ((v26 & 1) == 0)
               {
-                v21 = [v15 firstObject];
-                [v13 addIconToIgnoredList:v21 options:2 completion:0];
+                firstObject = [v15 firstObject];
+                [iconManager addIconToIgnoredList:firstObject options:2 completion:0];
 
-                v5 = v25;
+                placeholderCopy = v25;
               }
             }
 
             else
             {
 
-              v6 = v18;
+              applicationBundleID = v18;
               v11 = v17;
             }
           }
@@ -778,10 +778,10 @@ LABEL_38:
 
         else
         {
-          [v14 removeIcons:v15];
+          [iconModel removeIcons:v15];
         }
 
-        v22 = [v14 removeApplicationPlaceholder:v5 pruneEmptyIcons:1];
+        v22 = [iconModel removeApplicationPlaceholder:placeholderCopy pruneEmptyIcons:1];
       }
 
       v10 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -791,66 +791,66 @@ LABEL_38:
   }
 }
 
-- (void)_postPlaceholdersDidChangeForAdded:(id)a3 modified:(id)a4 removed:(id)a5
+- (void)_postPlaceholdersDidChangeForAdded:(id)added modified:(id)modified removed:(id)removed
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count] || objc_msgSend(v9, "count") || objc_msgSend(v10, "count"))
+  addedCopy = added;
+  modifiedCopy = modified;
+  removedCopy = removed;
+  if ([addedCopy count] || objc_msgSend(modifiedCopy, "count") || objc_msgSend(removedCopy, "count"))
   {
-    v11 = [MEMORY[0x277CBEB38] dictionary];
-    if ([v8 count])
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    if ([addedCopy count])
     {
-      [v11 setObject:v8 forKey:@"__placeholdersAdded"];
+      [dictionary setObject:addedCopy forKey:@"__placeholdersAdded"];
     }
 
-    if ([v9 count])
+    if ([modifiedCopy count])
     {
-      [v11 setObject:v9 forKey:@"__placeholdersModified"];
+      [dictionary setObject:modifiedCopy forKey:@"__placeholdersModified"];
     }
 
-    if ([v10 count])
+    if ([removedCopy count])
     {
-      [v11 setObject:v10 forKey:@"__placeholdersRemoved"];
+      [dictionary setObject:removedCopy forKey:@"__placeholdersRemoved"];
     }
 
     v12 = SBLogAppPlaceholder();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412802;
-      v15 = v8;
+      v15 = addedCopy;
       v16 = 2112;
-      v17 = v9;
+      v17 = modifiedCopy;
       v18 = 2112;
-      v19 = v10;
+      v19 = removedCopy;
       _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "Placeholders added: %@, modified: %@, removed: %@", &v14, 0x20u);
     }
 
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v13 postNotificationName:@"SBApplicationPlaceholdersDidChangeNotification" object:self userInfo:v11];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBApplicationPlaceholdersDidChangeNotification" object:self userInfo:dictionary];
   }
 }
 
-- (BOOL)placeholderShouldAllowPausing:(id)a3
+- (BOOL)placeholderShouldAllowPausing:(id)pausing
 {
-  v3 = [SBApp windowSceneManager];
-  v4 = [v3 embeddedDisplayWindowScene];
-  v5 = [v4 iconController];
+  windowSceneManager = [SBApp windowSceneManager];
+  embeddedDisplayWindowScene = [windowSceneManager embeddedDisplayWindowScene];
+  iconController = [embeddedDisplayWindowScene iconController];
 
-  v6 = [v5 iconManager];
-  LOBYTE(v4) = [v6 isEditingAllowed];
+  iconManager = [iconController iconManager];
+  LOBYTE(embeddedDisplayWindowScene) = [iconManager isEditingAllowed];
 
-  return v4;
+  return embeddedDisplayWindowScene;
 }
 
-- (void)placeholderWantsUninstall:(id)a3
+- (void)placeholderWantsUninstall:(id)uninstall
 {
-  v3 = a3;
+  uninstallCopy = uninstall;
   v6 = +[SBApplicationController sharedInstance];
-  v4 = [v3 applicationBundleID];
+  applicationBundleID = [uninstallCopy applicationBundleID];
 
-  v5 = [v6 applicationWithBundleIdentifier:v4];
+  v5 = [v6 applicationWithBundleIdentifier:applicationBundleID];
 
   if (v5)
   {
@@ -858,14 +858,14 @@ LABEL_38:
   }
 }
 
-- (BOOL)placeholderRepresentsNewAppInstallFromStore:(id)a3
+- (BOOL)placeholderRepresentsNewAppInstallFromStore:(id)store
 {
-  v3 = a3;
-  v4 = [v3 isStoreDownload];
-  v5 = [v3 applicationBundleIdentifier];
+  storeCopy = store;
+  isStoreDownload = [storeCopy isStoreDownload];
+  applicationBundleIdentifier = [storeCopy applicationBundleIdentifier];
 
   v6 = +[SBApplicationController sharedInstance];
-  v7 = [v6 applicationWithBundleIdentifier:v5];
+  v7 = [v6 applicationWithBundleIdentifier:applicationBundleIdentifier];
 
   if (v7)
   {
@@ -874,16 +874,16 @@ LABEL_38:
 
   else
   {
-    v8 = v4;
+    v8 = isStoreDownload;
   }
 
   return v8;
 }
 
-- (void)iconAccessoriesDidUpdate:(id)a3
+- (void)iconAccessoriesDidUpdate:(id)update
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -908,10 +908,10 @@ LABEL_38:
         }
 
         v10 = *(*(&v32 + 1) + 8 * v9);
-        v27 = [v10 iconManager];
-        if ([v27 isEditing])
+        iconManager = [v10 iconManager];
+        if ([iconManager isEditing])
         {
-          v11 = [v10 isUninstallSupportedForIcon:v4];
+          v11 = [v10 isUninstallSupportedForIcon:updateCopy];
         }
 
         else
@@ -919,8 +919,8 @@ LABEL_38:
           v11 = 0;
         }
 
-        v12 = [*(v8 + 2312) sharedInstance];
-        v13 = [v12 alertItemsOfClass:objc_opt_class()];
+        sharedInstance = [*(v8 + 2312) sharedInstance];
+        v13 = [sharedInstance alertItemsOfClass:objc_opt_class()];
 
         if ((v11 & 1) == 0 && [v13 count])
         {
@@ -945,13 +945,13 @@ LABEL_38:
                 }
 
                 v19 = *(*(&v28 + 1) + 8 * i);
-                v20 = [v19 icon];
-                v21 = v20;
-                if (v20 == v4)
+                icon = [v19 icon];
+                v21 = icon;
+                if (icon == updateCopy)
                 {
-                  v22 = [v19 iconController];
+                  iconController = [v19 iconController];
 
-                  if (v22 == v10)
+                  if (iconController == v10)
                   {
                     [v19 deactivate];
                   }

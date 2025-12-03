@@ -1,28 +1,28 @@
 @interface PXGSpriteStyleSerializable
 - ($105A79951CE75EB7BB90BCA93995B378)spriteStyle;
-- (PXGSpriteStyleSerializable)initWithSerializableObject:(id)a3;
+- (PXGSpriteStyleSerializable)initWithSerializableObject:(id)object;
 - (id)createSerializableObject;
-- (void)setSpriteStyle:(id *)a3;
+- (void)setSpriteStyle:(id *)style;
 @end
 
 @implementation PXGSpriteStyleSerializable
 
-- (void)setSpriteStyle:(id *)a3
+- (void)setSpriteStyle:(id *)style
 {
-  v3 = *(&a3->var1 + 12);
-  *&self->_spriteStyle.alpha = *&a3->var0;
+  v3 = *(&style->var1 + 12);
+  *&self->_spriteStyle.alpha = *&style->var0;
   *self[1]._anon_8 = v3;
-  v4 = *&a3->var5;
-  var1 = a3[1].var1;
-  v6 = *&a3[1].var6;
-  *self[3]._anon_8 = *&a3[1].var2;
+  v4 = *&style->var5;
+  var1 = style[1].var1;
+  v6 = *&style[1].var6;
+  *self[3]._anon_8 = *&style[1].var2;
   *&self[4].super.isa = v6;
   *&self[2].super.isa = v4;
   *&self[2]._spriteStyle.alpha = var1;
-  v7 = *(&a3[2].var1 + 4);
-  v8 = *&a3[2].var3;
-  v9 = *(&a3[3].var1 + 8);
-  *&self[6].super.isa = *&a3[2].var8;
+  v7 = *(&style[2].var1 + 4);
+  v8 = *&style[2].var3;
+  v9 = *(&style[3].var1 + 8);
+  *&self[6].super.isa = *&style[2].var8;
   *&self[6]._spriteStyle.alpha = v9;
   *&self[4]._spriteStyle.alpha = v7;
   *self[5]._anon_8 = v8;
@@ -57,16 +57,16 @@
   return v3;
 }
 
-- (PXGSpriteStyleSerializable)initWithSerializableObject:(id)a3
+- (PXGSpriteStyleSerializable)initWithSerializableObject:(id)object
 {
   v9 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   v7.receiver = self;
   v7.super_class = PXGSpriteStyleSerializable;
   v5 = [(PXGSpriteStyleSerializable *)&v7 init];
   if (v5)
   {
-    PXGDeserializeSpriteStyle(v4, v8);
+    PXGDeserializeSpriteStyle(objectCopy, v8);
     [(PXGSpriteStyleSerializable *)v5 setSpriteStyle:v8];
   }
 

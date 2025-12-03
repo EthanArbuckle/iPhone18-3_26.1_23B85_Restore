@@ -1,54 +1,54 @@
 @interface HMBLocalZoneQueryResultRecordIDSequence
-- (BOOL)bindPropertiesToStatement:(sqlite3_stmt *)a3 currentSequence:(id)a4 error:(id *)a5;
-- (HMBLocalZoneQueryResultRecordIDSequence)initWithLocalZone:(id)a3 statement:(id)a4 initialSequence:(id)a5 sequenceBindOffset:(unint64_t)a6 arguments:(id)a7 maximumRowsPerSelect:(unint64_t)a8;
-- (id)fetchRow:(id)a3 error:(id *)a4;
-- (id)fetchRowFromStatement:(sqlite3_stmt *)a3 skip:(BOOL *)a4 updatedSequenceColumn:(id *)a5 error:(id *)a6;
+- (BOOL)bindPropertiesToStatement:(sqlite3_stmt *)statement currentSequence:(id)sequence error:(id *)error;
+- (HMBLocalZoneQueryResultRecordIDSequence)initWithLocalZone:(id)zone statement:(id)statement initialSequence:(id)sequence sequenceBindOffset:(unint64_t)offset arguments:(id)arguments maximumRowsPerSelect:(unint64_t)select;
+- (id)fetchRow:(id)row error:(id *)error;
+- (id)fetchRowFromStatement:(sqlite3_stmt *)statement skip:(BOOL *)skip updatedSequenceColumn:(id *)column error:(id *)error;
 - (id)nextObject;
 @end
 
 @implementation HMBLocalZoneQueryResultRecordIDSequence
 
-- (id)fetchRow:(id)a3 error:(id *)a4
+- (id)fetchRow:(id)row error:(id *)error
 {
-  v6 = a3;
-  v7 = [(HMBLocalZoneQueryResult *)self localZone];
-  v8 = [v6 unsignedIntegerValue];
+  rowCopy = row;
+  localZone = [(HMBLocalZoneQueryResult *)self localZone];
+  unsignedIntegerValue = [rowCopy unsignedIntegerValue];
 
-  v9 = [v7 fetchModelWithRecordRow:v8 error:a4];
+  v9 = [localZone fetchModelWithRecordRow:unsignedIntegerValue error:error];
 
   return v9;
 }
 
-- (HMBLocalZoneQueryResultRecordIDSequence)initWithLocalZone:(id)a3 statement:(id)a4 initialSequence:(id)a5 sequenceBindOffset:(unint64_t)a6 arguments:(id)a7 maximumRowsPerSelect:(unint64_t)a8
+- (HMBLocalZoneQueryResultRecordIDSequence)initWithLocalZone:(id)zone statement:(id)statement initialSequence:(id)sequence sequenceBindOffset:(unint64_t)offset arguments:(id)arguments maximumRowsPerSelect:(unint64_t)select
 {
-  v15 = a5;
+  sequenceCopy = sequence;
   v19.receiver = self;
   v19.super_class = HMBLocalZoneQueryResultRecordIDSequence;
-  v16 = [(HMBLocalZoneQueryResult *)&v19 initWithLocalZone:a3 statement:a4 initialSequence:0 arguments:a7 maximumRowsPerSelect:a8];
+  v16 = [(HMBLocalZoneQueryResult *)&v19 initWithLocalZone:zone statement:statement initialSequence:0 arguments:arguments maximumRowsPerSelect:select];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_currentSequenceAsData, a5);
-    [(HMBSQLQueryIterator *)v17 setSequenceBindOffset:a6];
+    objc_storeStrong(&v16->_currentSequenceAsData, sequence);
+    [(HMBSQLQueryIterator *)v17 setSequenceBindOffset:offset];
   }
 
   return v17;
 }
 
-- (BOOL)bindPropertiesToStatement:(sqlite3_stmt *)a3 currentSequence:(id)a4 error:(id *)a5
+- (BOOL)bindPropertiesToStatement:(sqlite3_stmt *)statement currentSequence:(id)sequence error:(id *)error
 {
-  v8 = a4;
-  v9 = [(HMBLocalZoneQueryResult *)self arguments];
+  sequenceCopy = sequence;
+  arguments = [(HMBLocalZoneQueryResult *)self arguments];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __91__HMBLocalZoneQueryResultRecordIDSequence_bindPropertiesToStatement_currentSequence_error___block_invoke;
   v11[3] = &unk_2786E1720;
   v11[4] = self;
-  v11[5] = a3;
-  [v9 enumerateKeysAndObjectsUsingBlock:v11];
+  v11[5] = statement;
+  [arguments enumerateKeysAndObjectsUsingBlock:v11];
 
-  hmbBindDataSQLite3(a3, [(HMBSQLQueryIterator *)self sequenceBindOffset], v8, a5);
-  hmbBindIntSQLite3(a3, [(HMBLocalZoneQueryResult *)self zoneRowBindOffset], [(HMBLocalZoneQueryResult *)self zoneRow], a5);
+  hmbBindDataSQLite3(statement, [(HMBSQLQueryIterator *)self sequenceBindOffset], sequenceCopy, error);
+  hmbBindIntSQLite3(statement, [(HMBLocalZoneQueryResult *)self zoneRowBindOffset], [(HMBLocalZoneQueryResult *)self zoneRow], error);
   return 1;
 }
 
@@ -83,37 +83,37 @@ void __91__HMBLocalZoneQueryResultRecordIDSequence_bindPropertiesToStatement_cur
   }
 }
 
-- (id)fetchRowFromStatement:(sqlite3_stmt *)a3 skip:(BOOL *)a4 updatedSequenceColumn:(id *)a5 error:(id *)a6
+- (id)fetchRowFromStatement:(sqlite3_stmt *)statement skip:(BOOL *)skip updatedSequenceColumn:(id *)column error:(id *)error
 {
-  v10 = sqlite3_column_int64(a3, 0);
-  *a5 = [MEMORY[0x277CBEA90] hmbDataWithSQLite3Column:a3 column:1];
-  v11 = [(HMBLocalZoneQueryResultRecordIDSequence *)self lastReturnedSequence];
-  v12 = [v11 isEqual:*a5];
+  v10 = sqlite3_column_int64(statement, 0);
+  *column = [MEMORY[0x277CBEA90] hmbDataWithSQLite3Column:statement column:1];
+  lastReturnedSequence = [(HMBLocalZoneQueryResultRecordIDSequence *)self lastReturnedSequence];
+  v12 = [lastReturnedSequence isEqual:*column];
 
   if (v12)
   {
-    v13 = [(HMBLocalZoneQueryResultRecordIDSequence *)self returnedIDs];
+    returnedIDs = [(HMBLocalZoneQueryResultRecordIDSequence *)self returnedIDs];
     v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
-    v15 = [v13 containsObject:v14];
+    v15 = [returnedIDs containsObject:v14];
 
     if (v15)
     {
-      *a4 = 1;
+      *skip = 1;
       v16 = &unk_283EB9E40;
       goto LABEL_7;
     }
 
-    v18 = [(HMBLocalZoneQueryResultRecordIDSequence *)self returnedIDs];
+    returnedIDs2 = [(HMBLocalZoneQueryResultRecordIDSequence *)self returnedIDs];
     v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
-    [v18 addObject:v19];
+    [returnedIDs2 addObject:v19];
   }
 
   else
   {
-    [(HMBLocalZoneQueryResultRecordIDSequence *)self setLastReturnedSequence:*a5];
+    [(HMBLocalZoneQueryResultRecordIDSequence *)self setLastReturnedSequence:*column];
     v17 = MEMORY[0x277CBEB58];
-    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
-    v19 = [v17 setWithObject:v18];
+    returnedIDs2 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
+    v19 = [v17 setWithObject:returnedIDs2];
     [(HMBLocalZoneQueryResultRecordIDSequence *)self setReturnedIDs:v19];
   }
 
@@ -130,49 +130,49 @@ LABEL_7:
   v41 = v2;
   while (1)
   {
-    v3 = [(HMBSQLQueryIterator *)self error];
-    v4 = v3 == 0;
+    error = [(HMBSQLQueryIterator *)self error];
+    v4 = error == 0;
 
     if (!v4)
     {
       goto LABEL_38;
     }
 
-    v5 = [(HMBSQLQueryIterator *)self cachedResults];
-    if (!v5)
+    cachedResults = [(HMBSQLQueryIterator *)self cachedResults];
+    if (!cachedResults)
     {
       goto LABEL_7;
     }
 
-    v6 = [(HMBSQLQueryIterator *)self cachedResults];
-    if ([v6 count])
+    cachedResults2 = [(HMBSQLQueryIterator *)self cachedResults];
+    if ([cachedResults2 count])
     {
 
       goto LABEL_29;
     }
 
-    v7 = [(HMBLocalZoneQueryResultRecordIDSequence *)self currentSequenceAsData];
-    v8 = v7 == 0;
+    currentSequenceAsData = [(HMBLocalZoneQueryResultRecordIDSequence *)self currentSequenceAsData];
+    v8 = currentSequenceAsData == 0;
 
     if (!v8)
     {
 LABEL_7:
-      v9 = self;
+      selfCopy = self;
       while (1)
       {
-        v10 = [(HMBSQLQueryIterator *)v9 cachedResults];
-        if (v10)
+        cachedResults3 = [(HMBSQLQueryIterator *)selfCopy cachedResults];
+        if (cachedResults3)
         {
-          v11 = [(HMBSQLQueryIterator *)v9 cachedResults];
-          if ([v11 count])
+          cachedResults4 = [(HMBSQLQueryIterator *)selfCopy cachedResults];
+          if ([cachedResults4 count])
           {
 
 LABEL_28:
             break;
           }
 
-          v12 = [(HMBLocalZoneQueryResultRecordIDSequence *)v9 currentSequenceAsData];
-          v13 = v12 == 0;
+          currentSequenceAsData2 = [(HMBLocalZoneQueryResultRecordIDSequence *)selfCopy currentSequenceAsData];
+          v13 = currentSequenceAsData2 == 0;
 
           if (v13)
           {
@@ -180,13 +180,13 @@ LABEL_28:
           }
         }
 
-        v14 = [(HMBSQLQueryIterator *)v9 maximumRowsPerQuery];
+        maximumRowsPerQuery = [(HMBSQLQueryIterator *)selfCopy maximumRowsPerQuery];
         v59 = 0;
         v60 = &v59;
         v61 = 0x3032000000;
         v62 = __Block_byref_object_copy__5204;
         v63 = __Block_byref_object_dispose__5205;
-        v64 = [MEMORY[0x277CBEB18] arrayWithCapacity:v14];
+        v64 = [MEMORY[0x277CBEB18] arrayWithCapacity:maximumRowsPerQuery];
         v53 = 0;
         v54 = &v53;
         v55 = 0x3032000000;
@@ -197,34 +197,34 @@ LABEL_28:
         v50 = &v49;
         v51 = 0x2020000000;
         v52 = 0;
-        v15 = [(HMBSQLQueryIterator *)v9 statement];
-        v16 = [v15 context];
+        statement = [(HMBSQLQueryIterator *)selfCopy statement];
+        context = [statement context];
         v44[0] = MEMORY[0x277D85DD0];
         v44[1] = 3221225472;
         v44[2] = ____fetchNextBatch_block_invoke_5207;
         v44[3] = &unk_2786E1770;
-        v17 = v9;
+        v17 = selfCopy;
         v45 = v17;
         v46 = &v53;
         v47 = &v49;
         v48 = &v59;
-        v18 = [v16 sqlBlockWithActivity:0 block:v44];
+        v18 = [context sqlBlockWithActivity:0 block:v44];
 
         v19 = v60[5];
         if (v19)
         {
           if ((v50[3] & 1) != 0 || [v19 count])
           {
-            v20 = [(HMBLocalZoneQueryResultRecordIDSequence *)v17 currentSequenceAsData];
-            v21 = v20 == 0;
+            currentSequenceAsData3 = [(HMBLocalZoneQueryResultRecordIDSequence *)v17 currentSequenceAsData];
+            v21 = currentSequenceAsData3 == 0;
 
             if (!v21)
             {
               [(HMBLocalZoneQueryResultRecordIDSequence *)v17 setCurrentSequenceAsData:v54[5]];
             }
 
-            v22 = [(HMBSQLQueryIterator *)v17 cachedResults];
-            v23 = v22 == 0;
+            cachedResults5 = [(HMBSQLQueryIterator *)v17 cachedResults];
+            v23 = cachedResults5 == 0;
 
             if (v23)
             {
@@ -233,8 +233,8 @@ LABEL_28:
 
             else
             {
-              v24 = [(HMBSQLQueryIterator *)v17 cachedResults];
-              [v24 addObjectsFromArray:v60[5]];
+              cachedResults6 = [(HMBSQLQueryIterator *)v17 cachedResults];
+              [cachedResults6 addObjectsFromArray:v60[5]];
             }
 
             v30 = 1;
@@ -252,11 +252,11 @@ LABEL_28:
           if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
           {
             v28 = HMFGetLogIdentifier();
-            v29 = [(HMBSQLQueryIterator *)v26 currentSequence];
+            currentSequence = [(HMBSQLQueryIterator *)v26 currentSequence];
             *buf = v41;
             v66 = v28;
             v67 = 2112;
-            v68 = v29;
+            v68 = currentSequence;
             v69 = 2112;
             v70 = v18;
             _os_log_impl(&dword_22AD27000, v27, OS_LOG_TYPE_ERROR, "%{public}@Failed to fetch additional items into query enumeration %@: %@", buf, 0x20u);
@@ -283,8 +283,8 @@ LABEL_24:
     }
 
 LABEL_29:
-    v31 = [(HMBSQLQueryIterator *)self cachedResults];
-    if (![v31 count])
+    cachedResults7 = [(HMBSQLQueryIterator *)self cachedResults];
+    if (![cachedResults7 count])
     {
 
 LABEL_36:
@@ -292,19 +292,19 @@ LABEL_36:
       goto LABEL_38;
     }
 
-    v32 = [(HMBSQLQueryIterator *)self error];
-    v33 = v32 == 0;
+    error2 = [(HMBSQLQueryIterator *)self error];
+    v33 = error2 == 0;
 
     if (!v33)
     {
       goto LABEL_36;
     }
 
-    v34 = [(HMBSQLQueryIterator *)self cachedResults];
-    v35 = [v34 hmf_dequeue];
+    cachedResults8 = [(HMBSQLQueryIterator *)self cachedResults];
+    hmf_dequeue = [cachedResults8 hmf_dequeue];
 
     v43 = 0;
-    v36 = [(HMBLocalZoneQueryResultRecordIDSequence *)self fetchRow:v35 error:&v43];
+    v36 = [(HMBLocalZoneQueryResultRecordIDSequence *)self fetchRow:hmf_dequeue error:&v43];
     v37 = v43;
     v38 = v37;
     if (!v36)

@@ -1,27 +1,27 @@
 @interface CMIVideoDeghostingV1
-- (BOOL)_shouldRunVideoDeghosting:(id)a3;
-- (CMIVideoDeghostingV1)initWithCommandQueue:(id)a3 imageDimensions:(id)a4 tuningParameters:(id)a5;
-- (float)_computeStrengthForConfidence:(float)a3 ghostRectangle:(CGRect)a4;
-- (int)_extractAndCheckTuningParameters:(id)a3;
+- (BOOL)_shouldRunVideoDeghosting:(id)deghosting;
+- (CMIVideoDeghostingV1)initWithCommandQueue:(id)queue imageDimensions:(id)dimensions tuningParameters:(id)parameters;
+- (float)_computeStrengthForConfidence:(float)confidence ghostRectangle:(CGRect)rectangle;
+- (int)_extractAndCheckTuningParameters:(id)parameters;
 - (int)detectAndTrack;
-- (int)initGhostInformationLookAheadForSize:(int)a3;
+- (int)initGhostInformationLookAheadForSize:(int)size;
 - (int)prewarm;
 - (int)process;
 - (int)purgeResources;
 - (int)repair;
 - (int)resetState;
-- (void)_updateAWBAttenuationFactor:(id)a3;
-- (void)_updateFilteredStrength:(BOOL)a3 portType:(id)a4;
+- (void)_updateAWBAttenuationFactor:(id)factor;
+- (void)_updateFilteredStrength:(BOOL)strength portType:(id)type;
 - (void)dealloc;
-- (void)setCameraInfoByPortType:(id)a3;
+- (void)setCameraInfoByPortType:(id)type;
 @end
 
 @implementation CMIVideoDeghostingV1
 
-- (CMIVideoDeghostingV1)initWithCommandQueue:(id)a3 imageDimensions:(id)a4 tuningParameters:(id)a5
+- (CMIVideoDeghostingV1)initWithCommandQueue:(id)queue imageDimensions:(id)dimensions tuningParameters:(id)parameters
 {
-  v8 = a3;
-  v9 = a5;
+  queueCopy = queue;
+  parametersCopy = parameters;
   v41.receiver = self;
   v41.super_class = CMIVideoDeghostingV1;
   v10 = [(CMIVideoDeghostingV1 *)&v41 init];
@@ -34,39 +34,39 @@ LABEL_24:
     goto LABEL_14;
   }
 
-  if ([(CMIVideoDeghostingV1 *)v10 _extractAndCheckTuningParameters:v9])
+  if ([(CMIVideoDeghostingV1 *)v10 _extractAndCheckTuningParameters:parametersCopy])
   {
     sub_1A880();
     goto LABEL_24;
   }
 
-  objc_storeStrong(&v11->_tuningParameters, a5);
+  objc_storeStrong(&v11->_tuningParameters, parameters);
   v12 = [NSBundle bundleForClass:objc_opt_class()];
-  v13 = [[FigMetalContext alloc] initWithbundle:v12 andOptionalCommandQueue:v8];
+  v13 = [[FigMetalContext alloc] initWithbundle:v12 andOptionalCommandQueue:queueCopy];
   metalContext = v11->_metalContext;
   v11->_metalContext = v13;
 
-  if (v8)
+  if (queueCopy)
   {
-    v15 = v8;
+    commandQueue = queueCopy;
   }
 
   else
   {
-    v15 = [(FigMetalContext *)v11->_metalContext commandQueue];
+    commandQueue = [(FigMetalContext *)v11->_metalContext commandQueue];
   }
 
   metalCommandQueue = v11->_metalCommandQueue;
-  v11->_metalCommandQueue = v15;
+  v11->_metalCommandQueue = commandQueue;
 
   v17 = [FigMetalAllocator alloc];
-  v18 = [(FigMetalContext *)v11->_metalContext device];
-  v19 = [v17 initWithDevice:v18 allocatorType:2];
+  device = [(FigMetalContext *)v11->_metalContext device];
+  v19 = [v17 initWithDevice:device allocatorType:2];
   [(FigMetalContext *)v11->_metalContext setAllocator:v19];
 
-  v20 = [(FigMetalContext *)v11->_metalContext allocator];
+  allocator = [(FigMetalContext *)v11->_metalContext allocator];
 
-  if (!v20)
+  if (!allocator)
   {
     sub_1ACDC(v12);
     goto LABEL_24;
@@ -80,11 +80,11 @@ LABEL_24:
   }
 
   v22 = v21;
-  [v21 setMemSize:llroundf(((a4.var0 * a4.var1) / 2986000.0) * 3932200.0)];
+  [v21 setMemSize:llroundf(((dimensions.var0 * dimensions.var1) / 2986000.0) * 3932200.0)];
   [v22 setWireMemory:1];
   [v22 setLabel:@"FigMetalAllocator_VideoDeghosting"];
-  v23 = [(FigMetalContext *)v11->_metalContext allocator];
-  v24 = [v23 setupWithDescriptor:v22];
+  allocator2 = [(FigMetalContext *)v11->_metalContext allocator];
+  v24 = [allocator2 setupWithDescriptor:v22];
 
   if (v24)
   {
@@ -97,7 +97,7 @@ LABEL_24:
   v25 = [CMIVideoDeghostingDetectionAndTrackingV1 alloc];
   v26 = v11->_metalContext;
   v27 = [(NSDictionary *)v11->_tuningParameters objectForKeyedSubscript:@"DetectionAndTracking"];
-  v28 = [(CMIVideoDeghostingDetectionAndTrackingV1 *)v25 initWithMetalContext:v26 imageDimensions:a4 tuningParameters:v27];
+  v28 = [(CMIVideoDeghostingDetectionAndTrackingV1 *)v25 initWithMetalContext:v26 imageDimensions:dimensions tuningParameters:v27];
   detectionAndTracking = v11->_detectionAndTracking;
   v11->_detectionAndTracking = v28;
 
@@ -108,11 +108,11 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  [(CMIVideoDeghostingDetectionAndTracking *)v30 setMetalCommandQueue:v8];
+  [(CMIVideoDeghostingDetectionAndTracking *)v30 setMetalCommandQueue:queueCopy];
   v31 = [CMIVideoDeghostingRepairV1 alloc];
   v32 = v11->_metalContext;
   v33 = [(NSDictionary *)v11->_tuningParameters objectForKeyedSubscript:@"Repair"];
-  v34 = [(CMIVideoDeghostingRepairV1 *)v31 initWithMetalContext:v32 imageDimensions:a4 tuningParameters:v33];
+  v34 = [(CMIVideoDeghostingRepairV1 *)v31 initWithMetalContext:v32 imageDimensions:dimensions tuningParameters:v33];
   repair = v11->_repair;
   v11->_repair = v34;
 
@@ -123,18 +123,18 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  v37 = [(CMIVideoDeghostingRepair *)v36 setup];
-  if (v37)
+  setup = [(CMIVideoDeghostingRepair *)v36 setup];
+  if (setup)
   {
-    sub_1A9DC(v37, v22, v12);
+    sub_1A9DC(setup, v22, v12);
     goto LABEL_24;
   }
 
   v11->_ghostInformationLookAheadPointer = &v11->_ghostInformationLookAhead;
-  v38 = [(CMIVideoDeghostingV1 *)v11 resetState];
-  if (v38)
+  resetState = [(CMIVideoDeghostingV1 *)v11 resetState];
+  if (resetState)
   {
-    sub_1AA74(v38, v22, v12);
+    sub_1AA74(resetState, v22, v12);
     goto LABEL_24;
   }
 
@@ -221,16 +221,16 @@ LABEL_19:
       kdebug_trace();
     }
 
-    v7 = [(CMIVideoDeghostingDetectionAndTracking *)self->_detectionAndTracking process];
-    v8 = [(CMIVideoDeghostingDetectionAndTracking *)self->_detectionAndTracking detectionResult];
+    process = [(CMIVideoDeghostingDetectionAndTracking *)self->_detectionAndTracking process];
+    detectionResult = [(CMIVideoDeghostingDetectionAndTracking *)self->_detectionAndTracking detectionResult];
 
-    if (v8)
+    if (detectionResult)
     {
-      v9 = [(CMIVideoDeghostingDetectionAndTracking *)self->_detectionAndTracking detectionResult];
-      v10 = [v9 objectForKeyedSubscript:@"GhostsArray"];
+      detectionResult2 = [(CMIVideoDeghostingDetectionAndTracking *)self->_detectionAndTracking detectionResult];
+      v10 = [detectionResult2 objectForKeyedSubscript:@"GhostsArray"];
 
-      v11 = [v10 firstObject];
-      v12 = [v11 objectForKeyedSubscript:@"GhostConfidence"];
+      firstObject = [v10 firstObject];
+      v12 = [firstObject objectForKeyedSubscript:@"GhostConfidence"];
       [v12 floatValue];
     }
 
@@ -239,7 +239,7 @@ LABEL_19:
       kdebug_trace();
     }
 
-    if (v7)
+    if (process)
     {
       sub_1AE00(&v20);
       v14 = v20;
@@ -248,8 +248,8 @@ LABEL_19:
     else
     {
       v15 = [NSDictionary alloc];
-      v16 = [(CMIVideoDeghostingDetectionAndTracking *)self->_detectionAndTracking detectionResult];
-      v17 = [v15 initWithDictionary:v16];
+      detectionResult3 = [(CMIVideoDeghostingDetectionAndTracking *)self->_detectionAndTracking detectionResult];
+      v17 = [v15 initWithDictionary:detectionResult3];
       v18 = self->_detectionResult;
       self->_detectionResult = v17;
 
@@ -287,7 +287,7 @@ LABEL_16:
     v7 = 0;
     v5 = 0;
 LABEL_18:
-    v15 = 2;
+    process = 2;
     goto LABEL_15;
   }
 
@@ -314,8 +314,8 @@ LABEL_18:
     }
 
     [(CMIVideoDeghostingV1 *)self _updateAWBAttenuationFactor:v5];
-    v10 = [v9 firstObject];
-    v11 = [v10 objectForKeyedSubscript:@"GhostRect"];
+    firstObject = [v9 firstObject];
+    v11 = [firstObject objectForKeyedSubscript:@"GhostRect"];
 
     [(CMIVideoDeghostingRepair *)self->_repair setInputSampleBuffer:self->_repairInputSampleBuffer];
     v12 = [[NSArray alloc] initWithObjects:{v11, 0}];
@@ -329,32 +329,32 @@ LABEL_18:
 
     *&v13 = self->_awbAttenuationFactor * *(&self->super.isa + v14);
     [(CMIVideoDeghostingRepair *)self->_repair setBlendingStrength:v13];
-    v15 = [(CMIVideoDeghostingRepair *)self->_repair process];
+    process = [(CMIVideoDeghostingRepair *)self->_repair process];
     if (gGMFigKTraceEnabled)
     {
-      v16 = [(FigMetalContext *)self->_metalContext commandQueue];
-      v17 = [v16 commandBuffer];
+      commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
+      commandBuffer = [commandQueue commandBuffer];
 
-      [v17 setLabel:@"KTRACE_END_MTL"];
+      [commandBuffer setLabel:@"KTRACE_END_MTL"];
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_82EC;
       v21[3] = &unk_34850;
       memset(&v21[4], 0, 24);
-      [v17 addCompletedHandler:v21];
-      [v17 commit];
+      [commandBuffer addCompletedHandler:v21];
+      [commandBuffer commit];
     }
 
-    if (v15)
+    if (process)
     {
       sub_1AF7C(&v22);
-      v15 = v22;
+      process = v22;
     }
   }
 
   else
   {
-    v15 = 0;
+    process = 0;
   }
 
 LABEL_15:
@@ -362,7 +362,7 @@ LABEL_15:
   prevPortType = self->_prevPortType;
   self->_prevPortType = v18;
 
-  return v15;
+  return process;
 }
 
 - (int)prewarm
@@ -388,26 +388,26 @@ LABEL_15:
   self->_filteredStrength = NAN;
   self->_prevShouldRunVideoDeghosting = 0;
   *&self->_ghostInformationLookAhead.count = 0x3F80000000000000;
-  v4 = [(CMIVideoDeghostingDetectionAndTracking *)self->_detectionAndTracking resetState];
-  if (v4)
+  resetState = [(CMIVideoDeghostingDetectionAndTracking *)self->_detectionAndTracking resetState];
+  if (resetState)
   {
-    v5 = v4;
+    resetState2 = resetState;
     sub_1B178();
   }
 
   else
   {
-    v5 = [(CMIVideoDeghostingRepair *)self->_repair resetState];
-    if (v5)
+    resetState2 = [(CMIVideoDeghostingRepair *)self->_repair resetState];
+    if (resetState2)
     {
       sub_1B1F8();
     }
   }
 
-  return v5;
+  return resetState2;
 }
 
-- (int)initGhostInformationLookAheadForSize:(int)a3
+- (int)initGhostInformationLookAheadForSize:(int)size
 {
   info = self->_ghostInformationLookAhead.info;
   if (info)
@@ -417,12 +417,12 @@ LABEL_15:
   }
 
   *&self->_ghostInformationLookAhead.size = 0;
-  v6 = malloc_type_calloc(a3, 0x18uLL, 0x10A00403F27F3CFuLL);
+  v6 = malloc_type_calloc(size, 0x18uLL, 0x10A00403F27F3CFuLL);
   self->_ghostInformationLookAhead.info = v6;
   if (v6)
   {
     result = 0;
-    self->_ghostInformationLookAhead.size = a3;
+    self->_ghostInformationLookAhead.size = size;
   }
 
   else
@@ -434,11 +434,11 @@ LABEL_15:
   return result;
 }
 
-- (int)_extractAndCheckTuningParameters:(id)a3
+- (int)_extractAndCheckTuningParameters:(id)parameters
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  parametersCopy = parameters;
+  v5 = parametersCopy;
+  if (!parametersCopy)
   {
     sub_1B880(&v24);
     v6 = 0;
@@ -450,7 +450,7 @@ LABEL_29:
     goto LABEL_15;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"LuxLevelThresholdOFF"];
+  v6 = [parametersCopy objectForKeyedSubscript:@"LuxLevelThresholdOFF"];
 
   if (!v6)
   {
@@ -568,11 +568,11 @@ LABEL_15:
   return v22;
 }
 
-- (BOOL)_shouldRunVideoDeghosting:(id)a3
+- (BOOL)_shouldRunVideoDeghosting:(id)deghosting
 {
-  v4 = a3;
+  deghostingCopy = deghosting;
   prevShouldRunVideoDeghosting = self->_prevShouldRunVideoDeghosting;
-  v6 = [v4 objectForKeyedSubscript:kFigCaptureStreamMetadata_PortType];
+  v6 = [deghostingCopy objectForKeyedSubscript:kFigCaptureStreamMetadata_PortType];
   v7 = [v6 isEqual:kFigCapturePortType_BackFacingCamera];
 
   if (!v7)
@@ -585,17 +585,17 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  v8 = [v4 objectForKeyedSubscript:kFigCaptureStreamMetadata_LuxLevel];
-  v9 = [v8 intValue];
+  v8 = [deghostingCopy objectForKeyedSubscript:kFigCaptureStreamMetadata_LuxLevel];
+  intValue = [v8 intValue];
 
-  if (v9 < self->_luxLevelThresholdOFF && self->_prevShouldRunVideoDeghosting)
+  if (intValue < self->_luxLevelThresholdOFF && self->_prevShouldRunVideoDeghosting)
   {
 LABEL_5:
     prevShouldRunVideoDeghosting = 0;
     goto LABEL_9;
   }
 
-  if (v9 >= self->_luxLevelThresholdON && !self->_prevShouldRunVideoDeghosting)
+  if (intValue >= self->_luxLevelThresholdON && !self->_prevShouldRunVideoDeghosting)
   {
 LABEL_8:
     prevShouldRunVideoDeghosting = 1;
@@ -606,11 +606,11 @@ LABEL_9:
   return prevShouldRunVideoDeghosting;
 }
 
-- (float)_computeStrengthForConfidence:(float)a3 ghostRectangle:(CGRect)a4
+- (float)_computeStrengthForConfidence:(float)confidence ghostRectangle:(CGRect)rectangle
 {
-  if (a4.size.width <= 64.0 && a4.size.height <= 64.0)
+  if (rectangle.size.width <= 64.0 && rectangle.size.height <= 64.0)
   {
-    return fmaxf(fminf(self->_confidenceToStrengthScalingFactor * a3, self->_maxStrength), 0.0);
+    return fmaxf(fminf(self->_confidenceToStrengthScalingFactor * confidence, self->_maxStrength), 0.0);
   }
 
   else
@@ -619,12 +619,12 @@ LABEL_9:
   }
 }
 
-- (void)_updateFilteredStrength:(BOOL)a3 portType:(id)a4
+- (void)_updateFilteredStrength:(BOOL)strength portType:(id)type
 {
-  v4 = a3;
-  if ([a4 isEqualToString:kFigCapturePortType_BackFacingCamera])
+  strengthCopy = strength;
+  if ([type isEqualToString:kFigCapturePortType_BackFacingCamera])
   {
-    v4 |= [(NSString *)self->_prevPortType isEqualToString:kFigCapturePortType_BackFacingSuperWideCamera];
+    strengthCopy |= [(NSString *)self->_prevPortType isEqualToString:kFigCapturePortType_BackFacingSuperWideCamera];
   }
 
   if (self->_ghostInformationLookAhead.size >= 1)
@@ -641,11 +641,11 @@ LABEL_9:
       if (*info)
       {
         v8 = [*(info + 1) objectForKeyedSubscript:?];
-        v9 = [v8 firstObject];
-        v10 = [v9 objectForKeyedSubscript:?];
+        firstObject = [v8 firstObject];
+        v10 = [firstObject objectForKeyedSubscript:?];
 
-        v11 = [v8 firstObject];
-        v12 = [v11 objectForKeyedSubscript:@"GhostConfidence"];
+        firstObject2 = [v8 firstObject];
+        v12 = [firstObject2 objectForKeyedSubscript:@"GhostConfidence"];
         [v12 floatValue];
         v14 = v13;
 
@@ -656,7 +656,7 @@ LABEL_9:
         LODWORD(v16) = v14;
         [(CMIVideoDeghostingV1 *)self _computeStrengthForConfidence:v16 ghostRectangle:time.origin.x, time.origin.y, time.size.width, time.size.height];
         v18 = v17;
-        if (v4)
+        if (strengthCopy)
         {
           self->_filteredStrength = v17;
         }
@@ -664,7 +664,7 @@ LABEL_9:
         if (self->_ghostInformationLookAhead.count < 1)
         {
           v23 = 3.4028e38;
-          if (v4)
+          if (strengthCopy)
           {
             goto LABEL_34;
           }
@@ -673,7 +673,7 @@ LABEL_9:
         else
         {
           v47 = v10;
-          v46 = v4;
+          v46 = strengthCopy;
           v19 = 0;
           v20 = 0;
           v21 = 0;
@@ -699,11 +699,11 @@ LABEL_9:
 
             v26 = [*(v24 + v19 + 8) objectForKeyedSubscript:@"GhostsArray"];
 
-            v27 = [v26 firstObject];
-            v28 = [v27 objectForKeyedSubscript:@"GhostRect"];
+            firstObject3 = [v26 firstObject];
+            v28 = [firstObject3 objectForKeyedSubscript:@"GhostRect"];
 
-            v29 = [v26 firstObject];
-            v30 = [v29 objectForKeyedSubscript:@"GhostConfidence"];
+            firstObject4 = [v26 firstObject];
+            v30 = [firstObject4 objectForKeyedSubscript:@"GhostConfidence"];
             [v30 floatValue];
             v32 = v31;
 
@@ -780,11 +780,11 @@ LABEL_34:
   v38 = [(NSDictionary *)self->_detectionResult objectForKeyedSubscript:@"GhostsArray"];
   if ([v38 count])
   {
-    v40 = [v38 firstObject];
-    v41 = [v40 objectForKeyedSubscript:@"GhostRect"];
+    firstObject5 = [v38 firstObject];
+    v41 = [firstObject5 objectForKeyedSubscript:@"GhostRect"];
     CGRectMakeWithDictionaryRepresentation(v41, &time);
 
-    v42 = [v40 objectForKeyedSubscript:@"GhostConfidence"];
+    v42 = [firstObject5 objectForKeyedSubscript:@"GhostConfidence"];
     [v42 floatValue];
     v44 = v43;
   }
@@ -797,7 +797,7 @@ LABEL_34:
   LODWORD(v39) = v44;
   [(CMIVideoDeghostingV1 *)self _computeStrengthForConfidence:v39 ghostRectangle:time.origin.x, time.origin.y, time.size.width, time.size.height];
   v18 = v45;
-  if ((v4 & 1) == 0)
+  if ((strengthCopy & 1) == 0)
   {
     v18 = (v45 * 0.05) + (self->_filteredStrength * 0.95);
   }
@@ -806,28 +806,28 @@ LABEL_35:
   self->_filteredStrength = fmaxf(fminf(v18, self->_maxStrength), 0.0);
 }
 
-- (void)_updateAWBAttenuationFactor:(id)a3
+- (void)_updateAWBAttenuationFactor:(id)factor
 {
-  v4 = a3;
+  factorCopy = factor;
   self->_awbAttenuationFactor = 1.0;
-  v16 = v4;
-  if (v4)
+  v16 = factorCopy;
+  if (factorCopy)
   {
-    v5 = [v4 objectForKeyedSubscript:kFigCaptureStreamMetadata_AWBGrayWorldRGain];
-    v6 = [v5 intValue];
+    v5 = [factorCopy objectForKeyedSubscript:kFigCaptureStreamMetadata_AWBGrayWorldRGain];
+    intValue = [v5 intValue];
 
     v7 = [v16 objectForKeyedSubscript:kFigCaptureStreamMetadata_AWBGrayWorldGGain];
-    v8 = [v7 intValue];
+    intValue2 = [v7 intValue];
 
     v9 = [v16 objectForKeyedSubscript:kFigCaptureStreamMetadata_AWBGrayWorldBGain];
-    v10 = [v9 intValue];
+    intValue3 = [v9 intValue];
 
-    if (v6 < 1 || v8 < 1 || v10 <= 0)
+    if (intValue < 1 || intValue2 < 1 || intValue3 <= 0)
     {
       sub_1BC24();
     }
 
-    else if (v8 == 4096)
+    else if (intValue2 == 4096)
     {
       awbMinAttenuationThreshold = self->_awbMinAttenuationThreshold;
       awbMaxAttenuationThreshold = self->_awbMaxAttenuationThreshold;
@@ -838,7 +838,7 @@ LABEL_35:
 
       else
       {
-        v15 = 1.0 - ((fmaxf(awbMinAttenuationThreshold, fminf(awbMaxAttenuationThreshold, v10 / v6)) - awbMinAttenuationThreshold) / (awbMaxAttenuationThreshold - awbMinAttenuationThreshold));
+        v15 = 1.0 - ((fmaxf(awbMinAttenuationThreshold, fminf(awbMaxAttenuationThreshold, intValue3 / intValue)) - awbMinAttenuationThreshold) / (awbMaxAttenuationThreshold - awbMinAttenuationThreshold));
         if (v15 < 0.0)
         {
           sub_1BB34();
@@ -868,12 +868,12 @@ LABEL_35:
   }
 }
 
-- (void)setCameraInfoByPortType:(id)a3
+- (void)setCameraInfoByPortType:(id)type
 {
-  objc_storeStrong(&self->_cameraInfoByPortType, a3);
-  v5 = a3;
-  [(CMIVideoDeghostingRepair *)self->_repair setCameraInfoByPortType:v5];
-  [(CMIVideoDeghostingDetectionAndTracking *)self->_detectionAndTracking setCameraInfoByPortType:v5];
+  objc_storeStrong(&self->_cameraInfoByPortType, type);
+  typeCopy = type;
+  [(CMIVideoDeghostingRepair *)self->_repair setCameraInfoByPortType:typeCopy];
+  [(CMIVideoDeghostingDetectionAndTracking *)self->_detectionAndTracking setCameraInfoByPortType:typeCopy];
 }
 
 - (int)process

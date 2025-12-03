@@ -1,22 +1,22 @@
 @interface StandardLinkView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC8AppStore16StandardLinkView)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC8AppStore16StandardLinkView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation StandardLinkView
 
-- (_TtC8AppStore16StandardLinkView)initWithCoder:(id)a3
+- (_TtC8AppStore16StandardLinkView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   sub_1002BF250();
   v5 = v4;
   v7 = v6;
@@ -30,15 +30,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1002BF7C0();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1002BFC30(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1002BFC30(change);
 }
 
 @end

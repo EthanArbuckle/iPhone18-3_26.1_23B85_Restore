@@ -2,61 +2,61 @@
 - (void)awakeFromNib;
 - (void)guessBackgroundTopLeftCapSize;
 - (void)p_resetBackgroundImage;
-- (void)p_resetBackgroundImageForState:(unint64_t)a3;
-- (void)setBackgroundImage:(id)a3 forState:(unint64_t)a4;
-- (void)setBackgroundLeftCapWidth:(int64_t)a3;
-- (void)setBackgroundTopCapHeight:(int64_t)a3;
-- (void)setBackgroundTopLeftCapHeight:(int64_t)a3 width:(int64_t)a4;
+- (void)p_resetBackgroundImageForState:(unint64_t)state;
+- (void)setBackgroundImage:(id)image forState:(unint64_t)state;
+- (void)setBackgroundLeftCapWidth:(int64_t)width;
+- (void)setBackgroundTopCapHeight:(int64_t)height;
+- (void)setBackgroundTopLeftCapHeight:(int64_t)height width:(int64_t)width;
 @end
 
 @implementation TSKStretchableBackgroundButton
 
-- (void)setBackgroundImage:(id)a3 forState:(unint64_t)a4
+- (void)setBackgroundImage:(id)image forState:(unint64_t)state
 {
-  if (a3)
+  if (image)
   {
-    a3 = [a3 stretchableImageWithLeftCapWidth:self->mBackgroundLeftCapWidth topCapHeight:self->mBackgroundTopCapHeight];
+    image = [image stretchableImageWithLeftCapWidth:self->mBackgroundLeftCapWidth topCapHeight:self->mBackgroundTopCapHeight];
   }
 
   v6.receiver = self;
   v6.super_class = TSKStretchableBackgroundButton;
-  [(TSKStretchableBackgroundButton *)&v6 setBackgroundImage:a3 forState:a4];
+  [(TSKStretchableBackgroundButton *)&v6 setBackgroundImage:image forState:state];
 }
 
-- (void)setBackgroundTopCapHeight:(int64_t)a3
+- (void)setBackgroundTopCapHeight:(int64_t)height
 {
   objc_sync_enter(self);
-  if (self->mBackgroundTopCapHeight != a3)
+  if (self->mBackgroundTopCapHeight != height)
   {
-    self->mBackgroundTopCapHeight = a3;
+    self->mBackgroundTopCapHeight = height;
     [(TSKStretchableBackgroundButton *)self p_resetBackgroundImage];
   }
 
   objc_sync_exit(self);
 }
 
-- (void)setBackgroundLeftCapWidth:(int64_t)a3
+- (void)setBackgroundLeftCapWidth:(int64_t)width
 {
   objc_sync_enter(self);
-  if (self->mBackgroundLeftCapWidth != a3)
+  if (self->mBackgroundLeftCapWidth != width)
   {
-    self->mBackgroundLeftCapWidth = a3;
+    self->mBackgroundLeftCapWidth = width;
     [(TSKStretchableBackgroundButton *)self p_resetBackgroundImage];
   }
 
   objc_sync_exit(self);
 }
 
-- (void)setBackgroundTopLeftCapHeight:(int64_t)a3 width:(int64_t)a4
+- (void)setBackgroundTopLeftCapHeight:(int64_t)height width:(int64_t)width
 {
   objc_sync_enter(self);
-  if (self->mBackgroundTopCapHeight != a3)
+  if (self->mBackgroundTopCapHeight != height)
   {
     [(TSKStretchableBackgroundButton *)self willChangeValueForKey:@"backgroundTopCapHeight"];
-    self->mBackgroundTopCapHeight = a3;
+    self->mBackgroundTopCapHeight = height;
     [(TSKStretchableBackgroundButton *)self didChangeValueForKey:@"backgroundTopCapHeight"];
     p_mBackgroundLeftCapWidth = &self->mBackgroundLeftCapWidth;
-    if (self->mBackgroundLeftCapWidth == a4)
+    if (self->mBackgroundLeftCapWidth == width)
     {
 LABEL_6:
       [(TSKStretchableBackgroundButton *)self p_resetBackgroundImage];
@@ -65,13 +65,13 @@ LABEL_6:
 
 LABEL_5:
     [(TSKStretchableBackgroundButton *)self willChangeValueForKey:@"backgroundLeftCapWidth"];
-    *p_mBackgroundLeftCapWidth = a4;
+    *p_mBackgroundLeftCapWidth = width;
     [(TSKStretchableBackgroundButton *)self didChangeValueForKey:@"backgroundLeftCapWidth"];
     goto LABEL_6;
   }
 
   p_mBackgroundLeftCapWidth = &self->mBackgroundLeftCapWidth;
-  if (self->mBackgroundLeftCapWidth != a4)
+  if (self->mBackgroundLeftCapWidth != width)
   {
     goto LABEL_5;
   }
@@ -105,11 +105,11 @@ LABEL_7:
   }
 }
 
-- (void)p_resetBackgroundImageForState:(unint64_t)a3
+- (void)p_resetBackgroundImageForState:(unint64_t)state
 {
   v5 = [(TSKStretchableBackgroundButton *)self backgroundImageForState:?];
 
-  [(TSKStretchableBackgroundButton *)self setBackgroundImage:v5 forState:a3];
+  [(TSKStretchableBackgroundButton *)self setBackgroundImage:v5 forState:state];
 }
 
 - (void)p_resetBackgroundImage

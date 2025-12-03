@@ -1,42 +1,42 @@
 @interface ATXCommutePredictor
-- (ATXCommutePredictor)initWithTransitionsCache:(id)a3 locationManager:(id)a4;
-- (id)getNextTransitionOnActivity:(id)a3;
+- (ATXCommutePredictor)initWithTransitionsCache:(id)cache locationManager:(id)manager;
+- (id)getNextTransitionOnActivity:(id)activity;
 @end
 
 @implementation ATXCommutePredictor
 
-- (ATXCommutePredictor)initWithTransitionsCache:(id)a3 locationManager:(id)a4
+- (ATXCommutePredictor)initWithTransitionsCache:(id)cache locationManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
+  cacheCopy = cache;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = ATXCommutePredictor;
   v9 = [(ATXCommutePredictor *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_cache, a3);
-    objc_storeStrong(&v10->_manager, a4);
+    objc_storeStrong(&v9->_cache, cache);
+    objc_storeStrong(&v10->_manager, manager);
   }
 
   return v10;
 }
 
-- (id)getNextTransitionOnActivity:(id)a3
+- (id)getNextTransitionOnActivity:(id)activity
 {
-  v4 = a3;
-  v5 = [(ATXLocationManagerProtocol *)self->_manager locationOfInterestAtCurrentLocation];
-  v6 = v5;
-  if (!v5)
+  activityCopy = activity;
+  locationOfInterestAtCurrentLocation = [(ATXLocationManagerProtocol *)self->_manager locationOfInterestAtCurrentLocation];
+  v6 = locationOfInterestAtCurrentLocation;
+  if (!locationOfInterestAtCurrentLocation)
   {
     goto LABEL_7;
   }
 
-  v7 = [v5 type];
-  v8 = [v6 type];
-  if (!v7)
+  type = [locationOfInterestAtCurrentLocation type];
+  type2 = [v6 type];
+  if (!type)
   {
-    v9 = [(ATXPredictedTransitionsCache *)self->_cache getNextHomeToWorkTransitionsOnActivity:v4];
+    v9 = [(ATXPredictedTransitionsCache *)self->_cache getNextHomeToWorkTransitionsOnActivity:activityCopy];
     v10 = __atxlog_handle_dailyroutines();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -48,7 +48,7 @@
     goto LABEL_11;
   }
 
-  if (v8 != 1)
+  if (type2 != 1)
   {
 LABEL_7:
     v12 = 0;
@@ -56,7 +56,7 @@ LABEL_7:
     goto LABEL_12;
   }
 
-  v9 = [(ATXPredictedTransitionsCache *)self->_cache getNextWorkToHomeTransitionsOnActivity:v4];
+  v9 = [(ATXPredictedTransitionsCache *)self->_cache getNextWorkToHomeTransitionsOnActivity:activityCopy];
   v10 = __atxlog_handle_dailyroutines();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -74,9 +74,9 @@ LABEL_11:
 
 LABEL_12:
   v15 = [v9 sortedArrayUsingSelector:sel_compare_];
-  v16 = [v15 firstObject];
+  firstObject = [v15 firstObject];
 
-  v17 = [[ATXPredictedTransition alloc] initWithDate:v16 loi:v12];
+  v17 = [[ATXPredictedTransition alloc] initWithDate:firstObject loi:v12];
 
   return v17;
 }

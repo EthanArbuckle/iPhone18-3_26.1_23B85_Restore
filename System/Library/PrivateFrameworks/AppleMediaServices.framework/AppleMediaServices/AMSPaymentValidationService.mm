@@ -1,7 +1,7 @@
 @interface AMSPaymentValidationService
 + (BOOL)_isEntitledForDirectAccess;
 + (id)paymentHardwareStatusHeaders;
-+ (id)performPaymentHardwareStatusWithService:(id)a3;
++ (id)performPaymentHardwareStatusWithService:(id)service;
 @end
 
 @implementation AMSPaymentValidationService
@@ -9,9 +9,9 @@
 + (BOOL)_isEntitledForDirectAccess
 {
   v2 = +[AMSProcessInfo currentProcess];
-  v3 = [v2 isAMSAccountsDaemon];
+  isAMSAccountsDaemon = [v2 isAMSAccountsDaemon];
 
-  return v3;
+  return isAMSAccountsDaemon;
 }
 
 + (id)paymentHardwareStatusHeaders
@@ -24,23 +24,23 @@
     if (objc_opt_respondsToSelector())
     {
       v5 = [(objc_class *)v4 performSelector:sel_sharedService];
-      v6 = [a1 performPaymentHardwareStatusWithService:v5];
+      v6 = [self performPaymentHardwareStatusWithService:v5];
     }
 
     else
     {
       v8 = +[AMSUnitTests isRunningUnitTests];
       v9 = +[AMSLogConfig sharedConfig];
-      v10 = v9;
+      defaultCenter = v9;
       if (v8)
       {
         if (!v9)
         {
-          v10 = +[AMSLogConfig sharedConfig];
+          defaultCenter = +[AMSLogConfig sharedConfig];
         }
 
-        v11 = [v10 OSLogObject];
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+        oSLogObject = [defaultCenter OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v12 = AMSLogKey();
           v13 = MEMORY[0x1E696AEC0];
@@ -60,7 +60,7 @@
           v16 = ;
           LODWORD(buf) = 138543362;
           *(&buf + 4) = v16;
-          _os_log_impl(&dword_192869000, v11, OS_LOG_TYPE_ERROR, "%{public}@Process is entitled for direct access, does not respond to sharedService selector", &buf, 0xCu);
+          _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@Process is entitled for direct access, does not respond to sharedService selector", &buf, 0xCu);
           if (v12)
           {
 
@@ -68,20 +68,20 @@
           }
         }
 
-        v10 = [MEMORY[0x1E696AD88] defaultCenter];
-        v17 = +[AMSLogConfig sharedConfig];
-        [v10 postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:v17 userInfo:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        oSLogObject2 = +[AMSLogConfig sharedConfig];
+        [defaultCenter postNotificationName:@"com.apple.AppleMediaServicesTests.FaultLogged" object:oSLogObject2 userInfo:0];
       }
 
       else
       {
         if (!v9)
         {
-          v10 = +[AMSLogConfig sharedConfig];
+          defaultCenter = +[AMSLogConfig sharedConfig];
         }
 
-        v17 = [v10 OSLogObject];
-        if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
+        oSLogObject2 = [defaultCenter OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_FAULT))
         {
           v18 = AMSLogKey();
           v19 = MEMORY[0x1E696AEC0];
@@ -101,7 +101,7 @@
           v22 = ;
           LODWORD(buf) = 138543362;
           *(&buf + 4) = v22;
-          _os_log_impl(&dword_192869000, v17, OS_LOG_TYPE_FAULT, "%{public}@Process is entitled for direct access, does not respond to sharedService selector", &buf, 0xCu);
+          _os_log_impl(&dword_192869000, oSLogObject2, OS_LOG_TYPE_FAULT, "%{public}@Process is entitled for direct access, does not respond to sharedService selector", &buf, 0xCu);
           if (v18)
           {
 
@@ -123,14 +123,14 @@
     v28 = __Block_byref_object_copy__54;
     v29 = __Block_byref_object_dispose__54;
     v30 = objc_alloc_init(AMSDaemonConnection);
-    v7 = [*(*(&buf + 1) + 40) paymentValidationServiceProxy];
+    paymentValidationServiceProxy = [*(*(&buf + 1) + 40) paymentValidationServiceProxy];
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __59__AMSPaymentValidationService_paymentHardwareStatusHeaders__block_invoke;
     v25[3] = &unk_1E73BAB50;
     v25[4] = &buf;
-    v25[5] = a1;
-    v6 = [v7 thenWithBlock:v25];
+    v25[5] = self;
+    v6 = [paymentValidationServiceProxy thenWithBlock:v25];
 
     _Block_object_dispose(&buf, 8);
   }
@@ -158,18 +158,18 @@ void __59__AMSPaymentValidationService_paymentHardwareStatusHeaders__block_invok
   *(v1 + 40) = 0;
 }
 
-+ (id)performPaymentHardwareStatusWithService:(id)a3
++ (id)performPaymentHardwareStatusWithService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v5 = objc_alloc_init(AMSMutablePromise);
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __71__AMSPaymentValidationService_performPaymentHardwareStatusWithService___block_invoke;
   v8[3] = &unk_1E73BAB78;
-  v10 = a1;
+  selfCopy = self;
   v6 = v5;
   v9 = v6;
-  [v4 paymentHardwareStatusHeaderWithCompletion:v8];
+  [serviceCopy paymentHardwareStatusHeaderWithCompletion:v8];
 
   return v6;
 }

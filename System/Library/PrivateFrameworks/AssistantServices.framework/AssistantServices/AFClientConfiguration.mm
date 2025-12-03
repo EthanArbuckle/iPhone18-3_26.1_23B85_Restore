@@ -1,104 +1,104 @@
 @interface AFClientConfiguration
-+ (id)newWithBuilder:(id)a3;
-- (AFClientConfiguration)initWithAccessibilityState:(id)a3 deviceRingerSwitchState:(int64_t)a4 isDeviceInCarDNDMode:(BOOL)a5 isDeviceInStarkMode:(BOOL)a6 supportsCarPlayVehicleData:(BOOL)a7 isDeviceWatchAuthenticated:(BOOL)a8 areAnnouncementRequestsPermittedByPresentationWhileActive:(BOOL)a9 outputVolume:(float)a10 tapToSiriAudioPlaybackRequest:(id)a11 twoShotAudioPlaybackRequest:(id)a12 deviceSetupFlowBeginDate:(id)a13 deviceSetupFlowEndDate:(id)a14 carOwnsMainAudio:(BOOL)a15 isEyesFreeDevice:(BOOL)a16;
-- (AFClientConfiguration)initWithBuilder:(id)a3;
-- (AFClientConfiguration)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFClientConfiguration)initWithAccessibilityState:(id)state deviceRingerSwitchState:(int64_t)switchState isDeviceInCarDNDMode:(BOOL)mode isDeviceInStarkMode:(BOOL)starkMode supportsCarPlayVehicleData:(BOOL)data isDeviceWatchAuthenticated:(BOOL)authenticated areAnnouncementRequestsPermittedByPresentationWhileActive:(BOOL)active outputVolume:(float)self0 tapToSiriAudioPlaybackRequest:(id)self1 twoShotAudioPlaybackRequest:(id)self2 deviceSetupFlowBeginDate:(id)self3 deviceSetupFlowEndDate:(id)self4 carOwnsMainAudio:(BOOL)self5 isEyesFreeDevice:(BOOL)self6;
+- (AFClientConfiguration)initWithBuilder:(id)builder;
+- (AFClientConfiguration)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFClientConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   accessibilityState = self->_accessibilityState;
-  v5 = a3;
-  [v5 encodeObject:accessibilityState forKey:@"AFClientConfiguration::accessibilityState"];
+  coderCopy = coder;
+  [coderCopy encodeObject:accessibilityState forKey:@"AFClientConfiguration::accessibilityState"];
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:self->_deviceRingerSwitchState];
-  [v5 encodeObject:v6 forKey:@"AFClientConfiguration::deviceRingerSwitchState"];
+  [coderCopy encodeObject:v6 forKey:@"AFClientConfiguration::deviceRingerSwitchState"];
 
   v7 = [MEMORY[0x1E696AD98] numberWithBool:self->_isDeviceInCarDNDMode];
-  [v5 encodeObject:v7 forKey:@"AFClientConfiguration::isDeviceInCarDNDMode"];
+  [coderCopy encodeObject:v7 forKey:@"AFClientConfiguration::isDeviceInCarDNDMode"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_isDeviceInStarkMode];
-  [v5 encodeObject:v8 forKey:@"AFClientConfiguration::isDeviceInStarkMode"];
+  [coderCopy encodeObject:v8 forKey:@"AFClientConfiguration::isDeviceInStarkMode"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_supportsCarPlayVehicleData];
-  [v5 encodeObject:v9 forKey:@"AFClientConfiguration::supportsCarPlayVehicleData"];
+  [coderCopy encodeObject:v9 forKey:@"AFClientConfiguration::supportsCarPlayVehicleData"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:self->_isDeviceWatchAuthenticated];
-  [v5 encodeObject:v10 forKey:@"AFClientConfiguration::isDeviceWatchAuthenticated"];
+  [coderCopy encodeObject:v10 forKey:@"AFClientConfiguration::isDeviceWatchAuthenticated"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithBool:self->_areAnnouncementRequestsPermittedByPresentationWhileActive];
-  [v5 encodeObject:v11 forKey:@"AFClientConfiguration::areAnnouncementRequestsPermittedByPresentationWhileActive"];
+  [coderCopy encodeObject:v11 forKey:@"AFClientConfiguration::areAnnouncementRequestsPermittedByPresentationWhileActive"];
 
   *&v12 = self->_outputVolume;
   v13 = [MEMORY[0x1E696AD98] numberWithFloat:v12];
-  [v5 encodeObject:v13 forKey:@"AFClientConfiguration::outputVolume"];
+  [coderCopy encodeObject:v13 forKey:@"AFClientConfiguration::outputVolume"];
 
-  [v5 encodeObject:self->_tapToSiriAudioPlaybackRequest forKey:@"AFClientConfiguration::tapToSiriAudioPlaybackRequest"];
-  [v5 encodeObject:self->_twoShotAudioPlaybackRequest forKey:@"AFClientConfiguration::twoShotAudioPlaybackRequest"];
-  [v5 encodeObject:self->_deviceSetupFlowBeginDate forKey:@"AFClientConfiguration::deviceSetupFlowBeginDate"];
-  [v5 encodeObject:self->_deviceSetupFlowEndDate forKey:@"AFClientConfiguration::deviceSetupFlowEndDate"];
+  [coderCopy encodeObject:self->_tapToSiriAudioPlaybackRequest forKey:@"AFClientConfiguration::tapToSiriAudioPlaybackRequest"];
+  [coderCopy encodeObject:self->_twoShotAudioPlaybackRequest forKey:@"AFClientConfiguration::twoShotAudioPlaybackRequest"];
+  [coderCopy encodeObject:self->_deviceSetupFlowBeginDate forKey:@"AFClientConfiguration::deviceSetupFlowBeginDate"];
+  [coderCopy encodeObject:self->_deviceSetupFlowEndDate forKey:@"AFClientConfiguration::deviceSetupFlowEndDate"];
   v14 = [MEMORY[0x1E696AD98] numberWithBool:self->_carOwnsMainAudio];
-  [v5 encodeObject:v14 forKey:@"AFClientConfiguration::carOwnsMainAudio"];
+  [coderCopy encodeObject:v14 forKey:@"AFClientConfiguration::carOwnsMainAudio"];
 
   v15 = [MEMORY[0x1E696AD98] numberWithBool:self->_isEyesFreeDevice];
-  [v5 encodeObject:v15 forKey:@"AFClientConfiguration::isEyesFreeDevice"];
+  [coderCopy encodeObject:v15 forKey:@"AFClientConfiguration::isEyesFreeDevice"];
 }
 
-- (AFClientConfiguration)initWithCoder:(id)a3
+- (AFClientConfiguration)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v30 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::accessibilityState"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::deviceRingerSwitchState"];
-  v29 = [v4 integerValue];
+  coderCopy = coder;
+  v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::accessibilityState"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::deviceRingerSwitchState"];
+  integerValue = [v4 integerValue];
 
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::isDeviceInCarDNDMode"];
-  v28 = [v5 BOOLValue];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::isDeviceInCarDNDMode"];
+  bOOLValue = [v5 BOOLValue];
 
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::isDeviceInStarkMode"];
-  v27 = [v6 BOOLValue];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::isDeviceInStarkMode"];
+  bOOLValue2 = [v6 BOOLValue];
 
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::supportsCarPlayVehicleData"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::supportsCarPlayVehicleData"];
   HIDWORD(v26) = [v7 BOOLValue];
 
-  v8 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::isDeviceWatchAuthenticated"];
-  v9 = [v8 BOOLValue];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::isDeviceWatchAuthenticated"];
+  bOOLValue3 = [v8 BOOLValue];
 
-  v10 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::areAnnouncementRequestsPermittedByPresentationWhileActive"];
-  v11 = [v10 BOOLValue];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::areAnnouncementRequestsPermittedByPresentationWhileActive"];
+  bOOLValue4 = [v10 BOOLValue];
 
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::outputVolume"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::outputVolume"];
   [v12 floatValue];
   v14 = v13;
 
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::tapToSiriAudioPlaybackRequest"];
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::twoShotAudioPlaybackRequest"];
-  v17 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::deviceSetupFlowBeginDate"];
-  v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::deviceSetupFlowEndDate"];
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::carOwnsMainAudio"];
-  v20 = [v19 BOOLValue];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::tapToSiriAudioPlaybackRequest"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::twoShotAudioPlaybackRequest"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::deviceSetupFlowBeginDate"];
+  v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::deviceSetupFlowEndDate"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::carOwnsMainAudio"];
+  bOOLValue5 = [v19 BOOLValue];
 
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::isEyesFreeDevice"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFClientConfiguration::isEyesFreeDevice"];
 
-  LOBYTE(v3) = [v21 BOOLValue];
-  BYTE1(v26) = v3;
-  LOBYTE(v26) = v20;
-  LOBYTE(v25) = v11;
+  LOBYTE(coderCopy) = [v21 BOOLValue];
+  BYTE1(v26) = coderCopy;
+  LOBYTE(v26) = bOOLValue5;
+  LOBYTE(v25) = bOOLValue4;
   LODWORD(v22) = v14;
-  v23 = [(AFClientConfiguration *)self initWithAccessibilityState:v30 deviceRingerSwitchState:v29 isDeviceInCarDNDMode:v28 isDeviceInStarkMode:v27 supportsCarPlayVehicleData:HIDWORD(v26) isDeviceWatchAuthenticated:v9 areAnnouncementRequestsPermittedByPresentationWhileActive:v22 outputVolume:v25 tapToSiriAudioPlaybackRequest:v15 twoShotAudioPlaybackRequest:v16 deviceSetupFlowBeginDate:v17 deviceSetupFlowEndDate:v18 carOwnsMainAudio:v26 isEyesFreeDevice:?];
+  v23 = [(AFClientConfiguration *)self initWithAccessibilityState:v30 deviceRingerSwitchState:integerValue isDeviceInCarDNDMode:bOOLValue isDeviceInStarkMode:bOOLValue2 supportsCarPlayVehicleData:HIDWORD(v26) isDeviceWatchAuthenticated:bOOLValue3 areAnnouncementRequestsPermittedByPresentationWhileActive:v22 outputVolume:v25 tapToSiriAudioPlaybackRequest:v15 twoShotAudioPlaybackRequest:v16 deviceSetupFlowBeginDate:v17 deviceSetupFlowEndDate:v18 carOwnsMainAudio:v26 isEyesFreeDevice:?];
 
   return v23;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v26 = 1;
   }
@@ -108,7 +108,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       deviceRingerSwitchState = self->_deviceRingerSwitchState;
       if (deviceRingerSwitchState != [(AFClientConfiguration *)v5 deviceRingerSwitchState])
       {
@@ -130,25 +130,25 @@
       supportsCarPlayVehicleData = self->_supportsCarPlayVehicleData;
       if (supportsCarPlayVehicleData == [(AFClientConfiguration *)v5 supportsCarPlayVehicleData]&& (isDeviceWatchAuthenticated = self->_isDeviceWatchAuthenticated, isDeviceWatchAuthenticated == [(AFClientConfiguration *)v5 isDeviceWatchAuthenticated]) && (areAnnouncementRequestsPermittedByPresentationWhileActive = self->_areAnnouncementRequestsPermittedByPresentationWhileActive, areAnnouncementRequestsPermittedByPresentationWhileActive == [(AFClientConfiguration *)v5 areAnnouncementRequestsPermittedByPresentationWhileActive]) && (outputVolume = self->_outputVolume, [(AFClientConfiguration *)v5 outputVolume], outputVolume == v13) && (carOwnsMainAudio = self->_carOwnsMainAudio, carOwnsMainAudio == [(AFClientConfiguration *)v5 carOwnsMainAudio]) && (isEyesFreeDevice = self->_isEyesFreeDevice, isEyesFreeDevice == [(AFClientConfiguration *)v5 isEyesFreeDevice]))
       {
-        v16 = [(AFClientConfiguration *)v5 accessibilityState];
+        accessibilityState = [(AFClientConfiguration *)v5 accessibilityState];
         accessibilityState = self->_accessibilityState;
-        if (accessibilityState == v16 || [(AFAccessibilityState *)accessibilityState isEqual:v16])
+        if (accessibilityState == accessibilityState || [(AFAccessibilityState *)accessibilityState isEqual:accessibilityState])
         {
-          v18 = [(AFClientConfiguration *)v5 tapToSiriAudioPlaybackRequest];
+          tapToSiriAudioPlaybackRequest = [(AFClientConfiguration *)v5 tapToSiriAudioPlaybackRequest];
           tapToSiriAudioPlaybackRequest = self->_tapToSiriAudioPlaybackRequest;
-          if (tapToSiriAudioPlaybackRequest == v18 || [(AFAudioPlaybackRequest *)tapToSiriAudioPlaybackRequest isEqual:v18])
+          if (tapToSiriAudioPlaybackRequest == tapToSiriAudioPlaybackRequest || [(AFAudioPlaybackRequest *)tapToSiriAudioPlaybackRequest isEqual:tapToSiriAudioPlaybackRequest])
           {
-            v20 = [(AFClientConfiguration *)v5 twoShotAudioPlaybackRequest];
+            twoShotAudioPlaybackRequest = [(AFClientConfiguration *)v5 twoShotAudioPlaybackRequest];
             twoShotAudioPlaybackRequest = self->_twoShotAudioPlaybackRequest;
-            if (twoShotAudioPlaybackRequest == v20 || [(AFAudioPlaybackRequest *)twoShotAudioPlaybackRequest isEqual:v20])
+            if (twoShotAudioPlaybackRequest == twoShotAudioPlaybackRequest || [(AFAudioPlaybackRequest *)twoShotAudioPlaybackRequest isEqual:twoShotAudioPlaybackRequest])
             {
-              v22 = [(AFClientConfiguration *)v5 deviceSetupFlowBeginDate];
+              deviceSetupFlowBeginDate = [(AFClientConfiguration *)v5 deviceSetupFlowBeginDate];
               deviceSetupFlowBeginDate = self->_deviceSetupFlowBeginDate;
-              if (deviceSetupFlowBeginDate == v22 || [(NSDate *)deviceSetupFlowBeginDate isEqual:v22])
+              if (deviceSetupFlowBeginDate == deviceSetupFlowBeginDate || [(NSDate *)deviceSetupFlowBeginDate isEqual:deviceSetupFlowBeginDate])
               {
-                v24 = [(AFClientConfiguration *)v5 deviceSetupFlowEndDate];
+                deviceSetupFlowEndDate = [(AFClientConfiguration *)v5 deviceSetupFlowEndDate];
                 deviceSetupFlowEndDate = self->_deviceSetupFlowEndDate;
-                v26 = deviceSetupFlowEndDate == v24 || [(NSDate *)deviceSetupFlowEndDate isEqual:v24];
+                v26 = deviceSetupFlowEndDate == deviceSetupFlowEndDate || [(NSDate *)deviceSetupFlowEndDate isEqual:deviceSetupFlowEndDate];
               }
 
               else
@@ -221,7 +221,7 @@ LABEL_25:
   return v19 ^ v24;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v19.receiver = self;
@@ -311,36 +311,36 @@ LABEL_25:
   return v17;
 }
 
-- (AFClientConfiguration)initWithAccessibilityState:(id)a3 deviceRingerSwitchState:(int64_t)a4 isDeviceInCarDNDMode:(BOOL)a5 isDeviceInStarkMode:(BOOL)a6 supportsCarPlayVehicleData:(BOOL)a7 isDeviceWatchAuthenticated:(BOOL)a8 areAnnouncementRequestsPermittedByPresentationWhileActive:(BOOL)a9 outputVolume:(float)a10 tapToSiriAudioPlaybackRequest:(id)a11 twoShotAudioPlaybackRequest:(id)a12 deviceSetupFlowBeginDate:(id)a13 deviceSetupFlowEndDate:(id)a14 carOwnsMainAudio:(BOOL)a15 isEyesFreeDevice:(BOOL)a16
+- (AFClientConfiguration)initWithAccessibilityState:(id)state deviceRingerSwitchState:(int64_t)switchState isDeviceInCarDNDMode:(BOOL)mode isDeviceInStarkMode:(BOOL)starkMode supportsCarPlayVehicleData:(BOOL)data isDeviceWatchAuthenticated:(BOOL)authenticated areAnnouncementRequestsPermittedByPresentationWhileActive:(BOOL)active outputVolume:(float)self0 tapToSiriAudioPlaybackRequest:(id)self1 twoShotAudioPlaybackRequest:(id)self2 deviceSetupFlowBeginDate:(id)self3 deviceSetupFlowEndDate:(id)self4 carOwnsMainAudio:(BOOL)self5 isEyesFreeDevice:(BOOL)self6
 {
-  v19 = a3;
-  v20 = a11;
-  v21 = a12;
-  v22 = a13;
-  v23 = a14;
+  stateCopy = state;
+  requestCopy = request;
+  playbackRequestCopy = playbackRequest;
+  dateCopy = date;
+  endDateCopy = endDate;
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __382__AFClientConfiguration_initWithAccessibilityState_deviceRingerSwitchState_isDeviceInCarDNDMode_isDeviceInStarkMode_supportsCarPlayVehicleData_isDeviceWatchAuthenticated_areAnnouncementRequestsPermittedByPresentationWhileActive_outputVolume_tapToSiriAudioPlaybackRequest_twoShotAudioPlaybackRequest_deviceSetupFlowBeginDate_deviceSetupFlowEndDate_carOwnsMainAudio_isEyesFreeDevice___block_invoke;
   v35[3] = &unk_1E7343F68;
-  v43 = a5;
-  v44 = a6;
-  v45 = a7;
-  v46 = a8;
-  v47 = a9;
-  v42 = a10;
-  v36 = v19;
-  v37 = v20;
-  v38 = v21;
-  v39 = v22;
-  v40 = v23;
-  v41 = a4;
-  v48 = a15;
-  v49 = a16;
-  v24 = v23;
-  v25 = v22;
-  v26 = v21;
-  v27 = v20;
-  v28 = v19;
+  modeCopy = mode;
+  starkModeCopy = starkMode;
+  dataCopy = data;
+  authenticatedCopy = authenticated;
+  activeCopy = active;
+  volumeCopy = volume;
+  v36 = stateCopy;
+  v37 = requestCopy;
+  v38 = playbackRequestCopy;
+  v39 = dateCopy;
+  v40 = endDateCopy;
+  switchStateCopy = switchState;
+  audioCopy = audio;
+  deviceCopy = device;
+  v24 = endDateCopy;
+  v25 = dateCopy;
+  v26 = playbackRequestCopy;
+  v27 = requestCopy;
+  v28 = stateCopy;
   v29 = [(AFClientConfiguration *)self initWithBuilder:v35];
 
   return v29;
@@ -367,21 +367,21 @@ void __382__AFClientConfiguration_initWithAccessibilityState_deviceRingerSwitchS
   [v5 setIsEyesFreeDevice:*(a1 + 90)];
 }
 
-- (AFClientConfiguration)initWithBuilder:(id)a3
+- (AFClientConfiguration)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v25.receiver = self;
   v25.super_class = AFClientConfiguration;
   v5 = [(AFClientConfiguration *)&v25 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFClientConfigurationMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFClientConfigurationMutation *)v7 isDirty])
     {
-      v8 = [(_AFClientConfigurationMutation *)v7 getAccessibilityState];
-      v9 = [v8 copy];
+      getAccessibilityState = [(_AFClientConfigurationMutation *)v7 getAccessibilityState];
+      v9 = [getAccessibilityState copy];
       accessibilityState = v6->_accessibilityState;
       v6->_accessibilityState = v9;
 
@@ -393,23 +393,23 @@ void __382__AFClientConfiguration_initWithAccessibilityState_deviceRingerSwitchS
       v6->_areAnnouncementRequestsPermittedByPresentationWhileActive = [(_AFClientConfigurationMutation *)v7 getAreAnnouncementRequestsPermittedByPresentationWhileActive];
       [(_AFClientConfigurationMutation *)v7 getOutputVolume];
       v6->_outputVolume = v11;
-      v12 = [(_AFClientConfigurationMutation *)v7 getTapToSiriAudioPlaybackRequest];
-      v13 = [v12 copy];
+      getTapToSiriAudioPlaybackRequest = [(_AFClientConfigurationMutation *)v7 getTapToSiriAudioPlaybackRequest];
+      v13 = [getTapToSiriAudioPlaybackRequest copy];
       tapToSiriAudioPlaybackRequest = v6->_tapToSiriAudioPlaybackRequest;
       v6->_tapToSiriAudioPlaybackRequest = v13;
 
-      v15 = [(_AFClientConfigurationMutation *)v7 getTwoShotAudioPlaybackRequest];
-      v16 = [v15 copy];
+      getTwoShotAudioPlaybackRequest = [(_AFClientConfigurationMutation *)v7 getTwoShotAudioPlaybackRequest];
+      v16 = [getTwoShotAudioPlaybackRequest copy];
       twoShotAudioPlaybackRequest = v6->_twoShotAudioPlaybackRequest;
       v6->_twoShotAudioPlaybackRequest = v16;
 
-      v18 = [(_AFClientConfigurationMutation *)v7 getDeviceSetupFlowBeginDate];
-      v19 = [v18 copy];
+      getDeviceSetupFlowBeginDate = [(_AFClientConfigurationMutation *)v7 getDeviceSetupFlowBeginDate];
+      v19 = [getDeviceSetupFlowBeginDate copy];
       deviceSetupFlowBeginDate = v6->_deviceSetupFlowBeginDate;
       v6->_deviceSetupFlowBeginDate = v19;
 
-      v21 = [(_AFClientConfigurationMutation *)v7 getDeviceSetupFlowEndDate];
-      v22 = [v21 copy];
+      getDeviceSetupFlowEndDate = [(_AFClientConfigurationMutation *)v7 getDeviceSetupFlowEndDate];
+      v22 = [getDeviceSetupFlowEndDate copy];
       deviceSetupFlowEndDate = v6->_deviceSetupFlowEndDate;
       v6->_deviceSetupFlowEndDate = v22;
 
@@ -421,26 +421,26 @@ void __382__AFClientConfiguration_initWithAccessibilityState_deviceRingerSwitchS
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFClientConfigurationMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFClientConfigurationMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFClientConfiguration);
-      v7 = [(_AFClientConfigurationMutation *)v5 getAccessibilityState];
-      v8 = [v7 copy];
+      getAccessibilityState = [(_AFClientConfigurationMutation *)v5 getAccessibilityState];
+      v8 = [getAccessibilityState copy];
       accessibilityState = v6->_accessibilityState;
       v6->_accessibilityState = v8;
 
@@ -452,23 +452,23 @@ void __382__AFClientConfiguration_initWithAccessibilityState_deviceRingerSwitchS
       v6->_areAnnouncementRequestsPermittedByPresentationWhileActive = [(_AFClientConfigurationMutation *)v5 getAreAnnouncementRequestsPermittedByPresentationWhileActive];
       [(_AFClientConfigurationMutation *)v5 getOutputVolume];
       v6->_outputVolume = v10;
-      v11 = [(_AFClientConfigurationMutation *)v5 getTapToSiriAudioPlaybackRequest];
-      v12 = [v11 copy];
+      getTapToSiriAudioPlaybackRequest = [(_AFClientConfigurationMutation *)v5 getTapToSiriAudioPlaybackRequest];
+      v12 = [getTapToSiriAudioPlaybackRequest copy];
       tapToSiriAudioPlaybackRequest = v6->_tapToSiriAudioPlaybackRequest;
       v6->_tapToSiriAudioPlaybackRequest = v12;
 
-      v14 = [(_AFClientConfigurationMutation *)v5 getTwoShotAudioPlaybackRequest];
-      v15 = [v14 copy];
+      getTwoShotAudioPlaybackRequest = [(_AFClientConfigurationMutation *)v5 getTwoShotAudioPlaybackRequest];
+      v15 = [getTwoShotAudioPlaybackRequest copy];
       twoShotAudioPlaybackRequest = v6->_twoShotAudioPlaybackRequest;
       v6->_twoShotAudioPlaybackRequest = v15;
 
-      v17 = [(_AFClientConfigurationMutation *)v5 getDeviceSetupFlowBeginDate];
-      v18 = [v17 copy];
+      getDeviceSetupFlowBeginDate = [(_AFClientConfigurationMutation *)v5 getDeviceSetupFlowBeginDate];
+      v18 = [getDeviceSetupFlowBeginDate copy];
       deviceSetupFlowBeginDate = v6->_deviceSetupFlowBeginDate;
       v6->_deviceSetupFlowBeginDate = v18;
 
-      v20 = [(_AFClientConfigurationMutation *)v5 getDeviceSetupFlowEndDate];
-      v21 = [v20 copy];
+      getDeviceSetupFlowEndDate = [(_AFClientConfigurationMutation *)v5 getDeviceSetupFlowEndDate];
+      v21 = [getDeviceSetupFlowEndDate copy];
       deviceSetupFlowEndDate = v6->_deviceSetupFlowEndDate;
       v6->_deviceSetupFlowEndDate = v21;
 

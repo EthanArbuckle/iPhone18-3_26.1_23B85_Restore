@@ -1,45 +1,45 @@
 @interface MonthViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_axTopWeekViewWithTopPoint:(CGPoint)a3;
-- (id)accessibilityScrollStatusForScrollView:(id)a3;
-- (id)eventGestureController:(id)a3 setUpAtPoint:(CGPoint)a4 withOccurrence:(id)a5 forceNewEvent:(BOOL)a6;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_axTopWeekViewWithTopPoint:(CGPoint)point;
+- (id)accessibilityScrollStatusForScrollView:(id)view;
+- (id)eventGestureController:(id)controller setUpAtPoint:(CGPoint)point withOccurrence:(id)occurrence forceNewEvent:(BOOL)event;
 - (id)scrollView;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axAnnotateView;
-- (void)_updateDraggingOffsetTimesForPoint:(CGPoint)a3;
-- (void)eventGestureController:(id)a3 commitToPoint:(CGPoint)a4;
+- (void)_updateDraggingOffsetTimesForPoint:(CGPoint)point;
+- (void)eventGestureController:(id)controller commitToPoint:(CGPoint)point;
 - (void)viewDidLoad;
 @end
 
 @implementation MonthViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MonthViewController" isKindOfClass:@"InfiniteScrollViewController"];
-  [v3 validateClass:@"MonthViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"InfiniteScrollViewController" hasInstanceMethod:@"scrollView" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"InfiniteScrollViewSubview" hasMethod:@"calendarDate" isInstanceMethod:1 isRequired:1];
-  [v3 validateClass:@"InfiniteScrollViewController" hasInstanceVariable:@"_views" withType:"NSMutableArray"];
-  [v3 validateClass:@"MonthViewController" hasInstanceMethod:@"eventGestureController:setUpAtPoint:withOccurrence:forceNewEvent:" withFullSignature:{"@", "@", "{CGPoint=dd}", "@", "B", 0}];
-  [v3 validateClass:@"MonthViewController" hasInstanceMethod:@"_updateDraggingOffsetTimesForPoint:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"MonthViewController" hasInstanceMethod:@"eventGestureController: commitToPoint:" withFullSignature:{"v", "@", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"MonthViewController" hasInstanceVariable:@"_draggedOccurrence" withType:"EKEvent"];
-  [v3 validateClass:@"MonthViewController" hasInstanceVariable:@"_draggingExistingEvent" withType:"B"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MonthViewController" isKindOfClass:@"InfiniteScrollViewController"];
+  [validationsCopy validateClass:@"MonthViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"InfiniteScrollViewController" hasInstanceMethod:@"scrollView" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"InfiniteScrollViewSubview" hasMethod:@"calendarDate" isInstanceMethod:1 isRequired:1];
+  [validationsCopy validateClass:@"InfiniteScrollViewController" hasInstanceVariable:@"_views" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"MonthViewController" hasInstanceMethod:@"eventGestureController:setUpAtPoint:withOccurrence:forceNewEvent:" withFullSignature:{"@", "@", "{CGPoint=dd}", "@", "B", 0}];
+  [validationsCopy validateClass:@"MonthViewController" hasInstanceMethod:@"_updateDraggingOffsetTimesForPoint:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"MonthViewController" hasInstanceMethod:@"eventGestureController: commitToPoint:" withFullSignature:{"v", "@", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"MonthViewController" hasInstanceVariable:@"_draggedOccurrence" withType:"EKEvent"];
+  [validationsCopy validateClass:@"MonthViewController" hasInstanceVariable:@"_draggingExistingEvent" withType:"B"];
 }
 
-- (id)_axTopWeekViewWithTopPoint:(CGPoint)a3
+- (id)_axTopWeekViewWithTopPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v23 = *MEMORY[0x29EDCA608];
   v21 = 0;
   objc_opt_class();
   v6 = [(MonthViewControllerAccessibility *)self safeValueForKey:@"scrollView"];
   v7 = __UIAccessibilityCastAsClass();
 
-  v8 = [(MonthViewControllerAccessibility *)self view];
-  [v7 convertPoint:v8 fromView:{x, y}];
+  view = [(MonthViewControllerAccessibility *)self view];
+  [v7 convertPoint:view fromView:{x, y}];
   v10 = v9;
 
   v19 = 0u;
@@ -84,12 +84,12 @@ LABEL_11:
   return v12;
 }
 
-- (id)accessibilityScrollStatusForScrollView:(id)a3
+- (id)accessibilityScrollStatusForScrollView:(id)view
 {
-  [a3 contentInset];
+  [view contentInset];
   v5 = [(MonthViewControllerAccessibility *)self _axTopWeekViewWithTopPoint:0.0, v4];
   v6 = [v5 safeValueForKey:@"calendarDate"];
-  v7 = [v6 date];
+  date = [v6 date];
   v8 = AXDateStringForFormat();
 
   return v8;
@@ -99,8 +99,8 @@ LABEL_11:
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 view];
-  [v3 accessibilitySetIdentification:@"_AXMonthViewIdentifier"];
+  view = [v2 view];
+  [view accessibilitySetIdentification:@"_AXMonthViewIdentifier"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -123,24 +123,24 @@ LABEL_11:
 {
   v5.receiver = self;
   v5.super_class = MonthViewControllerAccessibility;
-  v2 = [(MonthViewControllerAccessibility *)&v5 scrollView];
-  [v2 setAccessibilityContainerType:4];
+  scrollView = [(MonthViewControllerAccessibility *)&v5 scrollView];
+  [scrollView setAccessibilityContainerType:4];
   v3 = accessibilityLocalizedString(@"months.container");
-  [v2 setAccessibilityLabel:v3];
+  [scrollView setAccessibilityLabel:v3];
 
-  return v2;
+  return scrollView;
 }
 
-- (id)eventGestureController:(id)a3 setUpAtPoint:(CGPoint)a4 withOccurrence:(id)a5 forceNewEvent:(BOOL)a6
+- (id)eventGestureController:(id)controller setUpAtPoint:(CGPoint)point withOccurrence:(id)occurrence forceNewEvent:(BOOL)event
 {
-  v6 = a6;
-  y = a4.y;
-  x = a4.x;
-  v11 = a3;
-  v12 = a5;
+  eventCopy = event;
+  y = point.y;
+  x = point.x;
+  controllerCopy = controller;
+  occurrenceCopy = occurrence;
   v22.receiver = self;
   v22.super_class = MonthViewControllerAccessibility;
-  v13 = [(MonthViewControllerAccessibility *)&v22 eventGestureController:v11 setUpAtPoint:v12 withOccurrence:v6 forceNewEvent:x, y];
+  v13 = [(MonthViewControllerAccessibility *)&v22 eventGestureController:controllerCopy setUpAtPoint:occurrenceCopy withOccurrence:eventCopy forceNewEvent:x, y];
   if (UIAccessibilityIsVoiceOverRunning() && ([(MonthViewControllerAccessibility *)self safeBoolForKey:@"_draggingExistingEvent"]& 1) == 0)
   {
     _AXAssert();
@@ -154,7 +154,7 @@ LABEL_11:
   {
     v16 = MEMORY[0x29EDBA0F8];
     v17 = accessibilityLocalizedString(@"began.time.adjust");
-    v18 = [v15 startDate];
+    startDate = [v15 startDate];
     v19 = AXDateStringForFormat();
     v20 = [v16 stringWithFormat:v17, v19];
 
@@ -164,10 +164,10 @@ LABEL_11:
   return v13;
 }
 
-- (void)_updateDraggingOffsetTimesForPoint:(CGPoint)a3
+- (void)_updateDraggingOffsetTimesForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v18 = 0;
   objc_opt_class();
   v6 = [(MonthViewControllerAccessibility *)self safeValueForKey:@"_draggedStartDate"];
@@ -198,10 +198,10 @@ LABEL_11:
       if ([(MonthViewControllerAccessibility *)self _axIsCommittingTimeAdjustment])
       {
         v12 = MEMORY[0x29EDBA0F8];
-        v13 = accessibilityLocalizedString(@"ended.time.adjust");
-        v14 = [v11 date];
+        date2 = accessibilityLocalizedString(@"ended.time.adjust");
+        date = [v11 date];
         v15 = AXDateStringForFormat();
-        v16 = [v12 stringWithFormat:v13, v15];
+        v16 = [v12 stringWithFormat:date2, v15];
       }
 
       else
@@ -213,7 +213,7 @@ LABEL_12:
           goto LABEL_13;
         }
 
-        v13 = [v11 date];
+        date2 = [v11 date];
         v16 = AXDateStringForFormat();
       }
 
@@ -232,15 +232,15 @@ LABEL_14:
 LABEL_13:
 }
 
-- (void)eventGestureController:(id)a3 commitToPoint:(CGPoint)a4
+- (void)eventGestureController:(id)controller commitToPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  controllerCopy = controller;
   [(MonthViewControllerAccessibility *)self _axSetIsCommittingTimeAdjustment:1];
   v8.receiver = self;
   v8.super_class = MonthViewControllerAccessibility;
-  [(MonthViewControllerAccessibility *)&v8 eventGestureController:v7 commitToPoint:x, y];
+  [(MonthViewControllerAccessibility *)&v8 eventGestureController:controllerCopy commitToPoint:x, y];
 
   [(MonthViewControllerAccessibility *)self _axSetIsCommittingTimeAdjustment:0];
 }

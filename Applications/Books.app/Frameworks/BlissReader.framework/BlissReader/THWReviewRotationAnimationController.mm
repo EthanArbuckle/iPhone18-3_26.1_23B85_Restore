@@ -1,23 +1,23 @@
 @interface THWReviewRotationAnimationController
-- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4;
-- (THWReviewRotationAnimationController)initWithRep:(id)a3;
+- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize;
+- (THWReviewRotationAnimationController)initWithRep:(id)rep;
 - (void)dealloc;
-- (void)expandedDidRotateTransitionToSize:(CGSize)a3;
-- (void)expandedWillAnimateRotationFromSize:(CGSize)a3 toSize:(CGSize)a4 duration:(double)a5;
-- (void)expandedWillRotateTransitionFromSize:(CGSize)a3 toSize:(CGSize)a4;
-- (void)expandedWillTransitionFromSize:(CGSize)a3 toSize:(CGSize)a4;
+- (void)expandedDidRotateTransitionToSize:(CGSize)size;
+- (void)expandedWillAnimateRotationFromSize:(CGSize)size toSize:(CGSize)toSize duration:(double)duration;
+- (void)expandedWillRotateTransitionFromSize:(CGSize)size toSize:(CGSize)toSize;
+- (void)expandedWillTransitionFromSize:(CGSize)size toSize:(CGSize)toSize;
 @end
 
 @implementation THWReviewRotationAnimationController
 
-- (THWReviewRotationAnimationController)initWithRep:(id)a3
+- (THWReviewRotationAnimationController)initWithRep:(id)rep
 {
   v6.receiver = self;
   v6.super_class = THWReviewRotationAnimationController;
   v4 = [(THWReviewRotationAnimationController *)&v6 init];
   if (v4)
   {
-    v4->_rep = a3;
+    v4->_rep = rep;
   }
 
   return v4;
@@ -30,7 +30,7 @@
   [(THWReviewRotationAnimationController *)&v3 dealloc];
 }
 
-- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4
+- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize
 {
   x = CGPointZero.x;
   y = CGPointZero.y;
@@ -39,40 +39,40 @@
   return result;
 }
 
-- (void)expandedWillRotateTransitionFromSize:(CGSize)a3 toSize:(CGSize)a4
+- (void)expandedWillRotateTransitionFromSize:(CGSize)size toSize:(CGSize)toSize
 {
-  [(THWPagedCanvasController *)[(THWReviewRep *)self->_rep stageCanvasController:a3.width] setPadInfos:0];
+  [(THWPagedCanvasController *)[(THWReviewRep *)self->_rep stageCanvasController:size.width] setPadInfos:0];
 
   +[CATransaction flush];
 }
 
-- (void)expandedDidRotateTransitionToSize:(CGSize)a3
+- (void)expandedDidRotateTransitionToSize:(CGSize)size
 {
-  [(THWPagedCanvasController *)[(THWReviewRep *)self->_rep stageCanvasController:a3.width] setPadInfos:1];
+  [(THWPagedCanvasController *)[(THWReviewRep *)self->_rep stageCanvasController:size.width] setPadInfos:1];
   [(THScrollView *)[(THWPagedCanvasController *)[(THWReviewRep *)self->_rep stageCanvasController] scrollView] setClipsToBounds:1];
   [-[THWReviewRep layout](self->_rep "layout")];
-  v4 = [(THWReviewRep *)self->_rep stageCanvasController];
+  stageCanvasController = [(THWReviewRep *)self->_rep stageCanvasController];
 
-  [(THWPagedCanvasController *)v4 invalidateLayoutsAndFrames];
+  [(THWPagedCanvasController *)stageCanvasController invalidateLayoutsAndFrames];
 }
 
-- (void)expandedWillAnimateRotationFromSize:(CGSize)a3 toSize:(CGSize)a4 duration:(double)a5
+- (void)expandedWillAnimateRotationFromSize:(CGSize)size toSize:(CGSize)toSize duration:(double)duration
 {
-  [(TSDInteractiveCanvasController *)[(THWPagedCanvasController *)[(THWReviewRep *)self->_rep stageCanvasController:a3.width] interactiveCanvasController] beginAnimations:@"reviewRotate" context:0];
-  [(TSDInteractiveCanvasController *)[(THWPagedCanvasController *)[(THWReviewRep *)self->_rep stageCanvasController] interactiveCanvasController] setAnimationDuration:a5];
-  v7 = [(THWReviewRep *)self->_rep p_currentScrollableCanvasController];
-  [objc_msgSend(v7 "interactiveCanvasController")];
-  [objc_msgSend(v7 "interactiveCanvasController")];
+  [(TSDInteractiveCanvasController *)[(THWPagedCanvasController *)[(THWReviewRep *)self->_rep stageCanvasController:size.width] interactiveCanvasController] beginAnimations:@"reviewRotate" context:0];
+  [(TSDInteractiveCanvasController *)[(THWPagedCanvasController *)[(THWReviewRep *)self->_rep stageCanvasController] interactiveCanvasController] setAnimationDuration:duration];
+  p_currentScrollableCanvasController = [(THWReviewRep *)self->_rep p_currentScrollableCanvasController];
+  [objc_msgSend(p_currentScrollableCanvasController "interactiveCanvasController")];
+  [objc_msgSend(p_currentScrollableCanvasController "interactiveCanvasController")];
   [(THScrollView *)[(THWPagedCanvasController *)[(THWReviewRep *)self->_rep stageCanvasController] scrollView] setClipsToBounds:0];
   [-[THWReviewRep layout](self->_rep "layout")];
   [(THWPagedCanvasController *)[(THWReviewRep *)self->_rep stageCanvasController] invalidateLayoutsAndFrames];
-  [v7 invalidateLayoutsAndFrames];
+  [p_currentScrollableCanvasController invalidateLayoutsAndFrames];
   v8 = objc_alloc_init(TSUMutableRetainedPointerSet);
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v9 = [objc_msgSend(objc_msgSend(v7 "interactiveCanvasController")];
+  v9 = [objc_msgSend(objc_msgSend(p_currentScrollableCanvasController "interactiveCanvasController")];
   v10 = [v9 countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v10)
   {
@@ -97,10 +97,10 @@
   }
 
   [-[THWReviewRep interactiveCanvasController](self->_rep "interactiveCanvasController")];
-  v22 = self;
+  selfCopy = self;
   [(TSDInteractiveCanvasController *)[(THWPagedCanvasController *)[(THWReviewRep *)self->_rep stageCanvasController] interactiveCanvasController] layoutIfNeeded];
-  v21 = v7;
-  [objc_msgSend(v7 "interactiveCanvasController")];
+  v21 = p_currentScrollableCanvasController;
+  [objc_msgSend(p_currentScrollableCanvasController "interactiveCanvasController")];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
@@ -126,7 +126,7 @@
           v19 = v18;
           v20 = +[CATransition animation];
           [v20 setType:kCATransitionFade];
-          [v20 setDuration:a5];
+          [v20 setDuration:duration];
           [objc_msgSend(v19 "textLayer")];
         }
       }
@@ -138,10 +138,10 @@
   }
 
   [objc_msgSend(v21 "interactiveCanvasController")];
-  [(TSDInteractiveCanvasController *)[(THWPagedCanvasController *)[(THWReviewRep *)v22->_rep stageCanvasController] interactiveCanvasController] commitAnimations];
+  [(TSDInteractiveCanvasController *)[(THWPagedCanvasController *)[(THWReviewRep *)selfCopy->_rep stageCanvasController] interactiveCanvasController] commitAnimations];
 }
 
-- (void)expandedWillTransitionFromSize:(CGSize)a3 toSize:(CGSize)a4
+- (void)expandedWillTransitionFromSize:(CGSize)size toSize:(CGSize)toSize
 {
   [-[THWReviewRep layout](self->_rep layout];
   [-[THWReviewRep layout](self->_rep "layout")];
@@ -150,8 +150,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = [(NSMutableDictionary *)[(THWReviewRep *)self->_rep scrollableCanvasControllers] allValues];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSMutableDictionary *)[(THWReviewRep *)self->_rep scrollableCanvasControllers] allValues];
+  v6 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -163,7 +163,7 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v10 + 1) + 8 * v9) invalidateLayoutsAndFrames];
@@ -171,7 +171,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);

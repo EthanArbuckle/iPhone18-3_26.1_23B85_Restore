@@ -1,7 +1,7 @@
 @interface PIParallaxClockMaterialRequest
-- (PIParallaxClockMaterialRequest)initWithComposition:(id)a3;
-- (PIParallaxClockMaterialRequest)initWithLayerStack:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PIParallaxClockMaterialRequest)initWithComposition:(id)composition;
+- (PIParallaxClockMaterialRequest)initWithLayerStack:(id)stack;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)newRenderJob;
 @end
 
@@ -14,20 +14,20 @@
   return [(NURenderJob *)v3 initWithRequest:self];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = PIParallaxClockMaterialRequest;
-  v4 = [(NURenderRequest *)&v10 copyWithZone:a3];
+  v4 = [(NURenderRequest *)&v10 copyWithZone:zone];
   if (v4)
   {
-    v5 = [(PIParallaxClockMaterialRequest *)self layerStack];
+    layerStack = [(PIParallaxClockMaterialRequest *)self layerStack];
     v6 = v4[20];
-    v4[20] = v5;
+    v4[20] = layerStack;
 
-    v7 = [(PIParallaxClockMaterialRequest *)self style];
+    style = [(PIParallaxClockMaterialRequest *)self style];
     v8 = v4[21];
-    v4[21] = v7;
+    v4[21] = style;
 
     v4[22] = [(PIParallaxClockMaterialRequest *)self luminanceCalculationType];
   }
@@ -35,10 +35,10 @@
   return v4;
 }
 
-- (PIParallaxClockMaterialRequest)initWithComposition:(id)a3
+- (PIParallaxClockMaterialRequest)initWithComposition:(id)composition
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  compositionCopy = composition;
   v5 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -77,8 +77,8 @@ LABEL_11:
           v22 = MEMORY[0x1E696AF00];
           v23 = specific;
           v24 = v20;
-          v25 = [v22 callStackSymbols];
-          v26 = [v25 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v22 callStackSymbols];
+          v26 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = specific;
           v30 = 2114;
@@ -105,8 +105,8 @@ LABEL_11:
     {
       v16 = MEMORY[0x1E696AF00];
       v17 = v15;
-      v18 = [v16 callStackSymbols];
-      v19 = [v18 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v16 callStackSymbols];
+      v19 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v19;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -124,13 +124,13 @@ LABEL_14:
   }
 }
 
-- (PIParallaxClockMaterialRequest)initWithLayerStack:(id)a3
+- (PIParallaxClockMaterialRequest)initWithLayerStack:(id)stack
 {
-  v5 = a3;
+  stackCopy = stack;
   v6 = +[PIPhotoEditHelper newComposition];
   v7 = MEMORY[0x1E695F658];
-  v8 = [MEMORY[0x1E695F610] whiteColor];
-  v9 = [v7 imageWithColor:v8];
+  whiteColor = [MEMORY[0x1E695F610] whiteColor];
+  v9 = [v7 imageWithColor:whiteColor];
   v10 = [PIPhotoEditHelper imageSourceWithCIImage:v9 orientation:1];
 
   [v6 setObject:v10 forKeyedSubscript:@"source"];
@@ -141,7 +141,7 @@ LABEL_14:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_layerStack, a3);
+    objc_storeStrong(&v11->_layerStack, stack);
   }
 
   return v12;

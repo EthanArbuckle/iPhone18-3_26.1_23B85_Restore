@@ -1,14 +1,14 @@
 @interface PlayControlsStackView
 - (CGSize)intrinsicContentSize;
-- (_TtC23ShelfKitCollectionViews21PlayControlsStackView)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews21PlayControlsStackView)initWithFrame:(CGRect)a3;
-- (void)setAccessibilityPlayButtonState:(int64_t)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC23ShelfKitCollectionViews21PlayControlsStackView)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews21PlayControlsStackView)initWithFrame:(CGRect)frame;
+- (void)setAccessibilityPlayButtonState:(int64_t)state;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PlayControlsStackView
 
-- (_TtC23ShelfKitCollectionViews21PlayControlsStackView)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews21PlayControlsStackView)initWithFrame:(CGRect)frame
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews21PlayControlsStackView_playButton) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews21PlayControlsStackView_accessibilityPlayButtonState) = 0;
@@ -18,7 +18,7 @@
   return result;
 }
 
-- (_TtC23ShelfKitCollectionViews21PlayControlsStackView)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews21PlayControlsStackView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews21PlayControlsStackView_playButton) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews21PlayControlsStackView_accessibilityPlayButtonState) = 0;
@@ -28,13 +28,13 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  v9.is_nil = v6;
-  v7 = v6;
-  v9.value.super.isa = a3;
+  changeCopy = change;
+  selfCopy = self;
+  v9.is_nil = selfCopy;
+  v7 = selfCopy;
+  v9.value.super.isa = change;
   PlayControlsStackView.traitCollectionDidChange(_:)(v9);
 }
 
@@ -53,10 +53,10 @@
   return result;
 }
 
-- (void)setAccessibilityPlayButtonState:(int64_t)a3
+- (void)setAccessibilityPlayButtonState:(int64_t)state
 {
-  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews21PlayControlsStackView_accessibilityPlayButtonState) = a3;
-  v3 = self;
+  *(&self->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews21PlayControlsStackView_accessibilityPlayButtonState) = state;
+  selfCopy = self;
   sub_308868();
   sub_308868();
 }

@@ -1,20 +1,20 @@
 @interface MapsWelcomeScreenViewController
 + (BOOL)hasDisplayedCurrentWelcomeScreen;
-+ (id)welcomeControllerWithConfiguration:(id)a3 block:(id)a4;
++ (id)welcomeControllerWithConfiguration:(id)configuration block:(id)block;
 + (void)_markWelcomeScreenAsDisplayed;
-+ (void)presentWelcomeScreenIfNecessaryInScene:(id)a3 completionBlock:(id)a4;
++ (void)presentWelcomeScreenIfNecessaryInScene:(id)scene completionBlock:(id)block;
 @end
 
 @implementation MapsWelcomeScreenViewController
 
-+ (id)welcomeControllerWithConfiguration:(id)a3 block:(id)a4
++ (id)welcomeControllerWithConfiguration:(id)configuration block:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  configurationCopy = configuration;
+  blockCopy = block;
   v7 = [OBWelcomeController alloc];
-  v28 = v5;
-  v8 = [v5 title];
-  v9 = [v7 initWithTitle:v8 detailText:0 icon:0];
+  v28 = configurationCopy;
+  title = [configurationCopy title];
+  v9 = [v7 initWithTitle:title detailText:0 icon:0];
 
   [v9 setModalPresentationStyle:2];
   v10 = +[OBBoldTrayButton boldButton];
@@ -28,20 +28,20 @@
   v33[2] = sub_1005AE4A4;
   v33[3] = &unk_101622998;
   objc_copyWeak(&v35, &location);
-  v27 = v6;
+  v27 = blockCopy;
   v34 = v27;
   v13 = [UIAction actionWithHandler:v33];
   [v10 addAction:v13 forControlEvents:0x2000];
 
-  v14 = [v9 buttonTray];
-  [v14 addButton:v10];
+  buttonTray = [v9 buttonTray];
+  [buttonTray addButton:v10];
 
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v15 = [v5 bullets];
-  v16 = [v15 countByEnumeratingWithState:&v29 objects:v38 count:16];
+  bullets = [configurationCopy bullets];
+  v16 = [bullets countByEnumeratingWithState:&v29 objects:v38 count:16];
   if (v16)
   {
     v17 = *v30;
@@ -51,27 +51,27 @@
       {
         if (*v30 != v17)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(bullets);
         }
 
         v19 = *(*(&v29 + 1) + 8 * i);
-        v20 = [v19 title];
-        v21 = [v19 body];
-        v22 = [v19 image];
-        v23 = [v19 tintColor];
-        [v9 addBulletedListItemWithTitle:v20 description:v21 image:v22 tintColor:v23];
+        title2 = [v19 title];
+        body = [v19 body];
+        image = [v19 image];
+        tintColor = [v19 tintColor];
+        [v9 addBulletedListItemWithTitle:title2 description:body image:image tintColor:tintColor];
       }
 
-      v16 = [v15 countByEnumeratingWithState:&v29 objects:v38 count:16];
+      v16 = [bullets countByEnumeratingWithState:&v29 objects:v38 count:16];
     }
 
     while (v16);
   }
 
-  v24 = [v9 buttonTray];
+  buttonTray2 = [v9 buttonTray];
   v37 = @"com.apple.onboarding.maps";
   v25 = [NSArray arrayWithObjects:&v37 count:1];
-  [v24 setPrivacyLinkForBundles:v25];
+  [buttonTray2 setPrivacyLinkForBundles:v25];
 
   objc_destroyWeak(&v35);
   objc_destroyWeak(&location);
@@ -79,17 +79,17 @@
   return v9;
 }
 
-+ (void)presentWelcomeScreenIfNecessaryInScene:(id)a3 completionBlock:(id)a4
++ (void)presentWelcomeScreenIfNecessaryInScene:(id)scene completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  blockCopy = block;
   if ([UIApp launchedToTest])
   {
     goto LABEL_6;
   }
 
   v8 = +[UMUserManager sharedManager];
-  if (([v8 isMultiUser] & 1) == 0 && (objc_msgSend(a1, "hasDisplayedCurrentWelcomeScreen") & 1) == 0 && !GEOConfigGetBOOL())
+  if (([v8 isMultiUser] & 1) == 0 && (objc_msgSend(self, "hasDisplayedCurrentWelcomeScreen") & 1) == 0 && !GEOConfigGetBOOL())
   {
     BOOL = GEOConfigGetBOOL();
 
@@ -98,11 +98,11 @@
       goto LABEL_6;
     }
 
-    v11 = [v6 delegate];
+    delegate = [sceneCopy delegate];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v12 = v11;
+      v12 = delegate;
     }
 
     else
@@ -117,11 +117,11 @@
       if (byte_10195CAE8 != 1)
       {
         v17 = +[GEOCountryConfiguration sharedConfiguration];
-        v18 = [v17 countryCode];
+        countryCode = [v17 countryCode];
 
-        v19 = [WelcomeScreenConfiguration configurationForCountryCode:v18];
-        v20 = [v19 bullets];
-        v21 = [v20 count];
+        v19 = [WelcomeScreenConfiguration configurationForCountryCode:countryCode];
+        bullets = [v19 bullets];
+        v21 = [bullets count];
 
         v22 = sub_100005610();
         v23 = os_log_type_enabled(v22, OS_LOG_TYPE_INFO);
@@ -133,11 +133,11 @@
             _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "MapsWelcomeScreen: presenting alert", v26, 2u);
           }
 
-          v24 = [MapsWelcomeScreenViewController welcomeControllerWithConfiguration:v19 block:v7];
-          v25 = [v13 chromeViewController];
+          v24 = [MapsWelcomeScreenViewController welcomeControllerWithConfiguration:v19 block:blockCopy];
+          chromeViewController = [v13 chromeViewController];
           [v24 setModalPresentationStyle:2];
           [v24 setModalInPresentation:1];
-          [v25 _maps_topMostPresentViewController:v24 animated:1 completion:0];
+          [chromeViewController _maps_topMostPresentViewController:v24 animated:1 completion:0];
           byte_10195CAE8 = 1;
         }
 
@@ -150,7 +150,7 @@
           }
 
           +[MapsWelcomeScreenViewController _markWelcomeScreenAsDisplayed];
-          v7[2](v7);
+          blockCopy[2](blockCopy);
         }
 
         goto LABEL_32;
@@ -179,7 +179,7 @@ LABEL_22:
       }
     }
 
-    v7[2](v7);
+    blockCopy[2](blockCopy);
 LABEL_32:
 
     goto LABEL_11;
@@ -198,7 +198,7 @@ LABEL_6:
     +[MapsWelcomeScreenViewController _markWelcomeScreenAsDisplayed];
   }
 
-  v7[2](v7);
+  blockCopy[2](blockCopy);
 LABEL_11:
 }
 

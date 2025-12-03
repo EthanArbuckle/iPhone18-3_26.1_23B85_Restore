@@ -1,24 +1,24 @@
 @interface TonePlayer
 - (_TtC28FitnessIntelligenceInference10TonePlayer)init;
-- (void)audioPlayerDecodeErrorDidOccur:(id)a3 error:(id)a4;
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4;
+- (void)audioPlayerDecodeErrorDidOccur:(id)occur error:(id)error;
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully;
 @end
 
 @implementation TonePlayer
 
-- (void)audioPlayerDidFinishPlaying:(id)a3 successfully:(BOOL)a4
+- (void)audioPlayerDidFinishPlaying:(id)playing successfully:(BOOL)successfully
 {
-  v6 = a3;
-  v7 = self;
-  sub_20CCCAC50(a4);
+  playingCopy = playing;
+  selfCopy = self;
+  sub_20CCCAC50(successfully);
 }
 
-- (void)audioPlayerDecodeErrorDidOccur:(id)a3 error:(id)a4
+- (void)audioPlayerDecodeErrorDidOccur:(id)occur error:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_20CCCAEE0(a4);
+  occurCopy = occur;
+  selfCopy = self;
+  errorCopy = error;
+  sub_20CCCAEE0(error);
 }
 
 - (_TtC28FitnessIntelligenceInference10TonePlayer)init

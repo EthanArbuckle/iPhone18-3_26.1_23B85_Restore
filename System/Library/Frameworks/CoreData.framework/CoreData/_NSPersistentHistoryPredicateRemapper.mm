@@ -1,11 +1,11 @@
 @interface _NSPersistentHistoryPredicateRemapper
 + (id)defaultInstance;
 - (_BYTE)replacementValueForKeyPath:(_BYTE *)result;
-- (_NSPersistentHistoryPredicateRemapper)initWithStoreIdentifier:(id)a3;
-- (id)createPredicateForFetchFromPredicate:(id)a3 withContext:(id)a4;
-- (id)replacementValueForValue:(uint64_t)a1;
+- (_NSPersistentHistoryPredicateRemapper)initWithStoreIdentifier:(id)identifier;
+- (id)createPredicateForFetchFromPredicate:(id)predicate withContext:(id)context;
+- (id)replacementValueForValue:(uint64_t)value;
 - (void)dealloc;
-- (void)visitPredicateExpression:(id)a3;
+- (void)visitPredicateExpression:(id)expression;
 @end
 
 @implementation _NSPersistentHistoryPredicateRemapper
@@ -29,22 +29,22 @@
   return result;
 }
 
-- (_NSPersistentHistoryPredicateRemapper)initWithStoreIdentifier:(id)a3
+- (_NSPersistentHistoryPredicateRemapper)initWithStoreIdentifier:(id)identifier
 {
   v4 = [(_NSPersistentHistoryPredicateRemapper *)self init];
   if (v4)
   {
-    v4->_storeID = a3;
+    v4->_storeID = identifier;
   }
 
   return v4;
 }
 
-- (id)createPredicateForFetchFromPredicate:(id)a3 withContext:(id)a4
+- (id)createPredicateForFetchFromPredicate:(id)predicate withContext:(id)context
 {
-  if (a3)
+  if (predicate)
   {
-    v6 = [a3 copy];
+    v6 = [predicate copy];
     [v6 acceptVisitor:self flags:1];
     if (self->_storeID)
     {
@@ -52,15 +52,15 @@
     }
   }
 
-  v8 = [MEMORY[0x1E696AE18] predicateWithValue:{a3 == 0, a4}];
+  v8 = [MEMORY[0x1E696AE18] predicateWithValue:{predicate == 0, context}];
 
   return v8;
 }
 
-- (id)replacementValueForValue:(uint64_t)a1
+- (id)replacementValueForValue:(uint64_t)value
 {
   v44 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!value)
   {
 LABEL_27:
     v9 = 0;
@@ -69,9 +69,9 @@ LABEL_27:
 
   if (!a2)
   {
-    if (*(a1 + 16) == 1)
+    if (*(value + 16) == 1)
     {
-      *(a1 + 16) = 0;
+      *(value + 16) = 0;
       v4 = objc_alloc(MEMORY[0x1E696AD98]);
       v5 = *MEMORY[0x1E69E9840];
 
@@ -88,7 +88,7 @@ LABEL_27:
     objc_opt_class();
     if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
     {
-      v3 = [obj _backingObjectID];
+      _backingObjectID = [obj _backingObjectID];
       goto LABEL_12;
     }
 
@@ -105,15 +105,15 @@ LABEL_27:
     }
 
     v9 = 0;
-    *(a1 + 8) = 0;
+    *(value + 8) = 0;
 LABEL_48:
     v25 = *MEMORY[0x1E69E9840];
     return v9;
   }
 
-  v3 = [obj objectID];
+  _backingObjectID = [obj objectID];
 LABEL_12:
-  obj = v3;
+  obj = _backingObjectID;
 LABEL_13:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -146,7 +146,7 @@ LABEL_15:
             objc_enumerationMutation(obj);
           }
 
-          v14 = [(_NSPersistentHistoryPredicateRemapper *)a1 replacementValueForValue:?];
+          v14 = [(_NSPersistentHistoryPredicateRemapper *)value replacementValueForValue:?];
           [v9 addObject:v14];
         }
 
@@ -180,7 +180,7 @@ LABEL_15:
             objc_enumerationMutation(obj);
           }
 
-          v19 = [(_NSPersistentHistoryPredicateRemapper *)a1 replacementValueForValue:?];
+          v19 = [(_NSPersistentHistoryPredicateRemapper *)value replacementValueForValue:?];
           [v9 addObject:v19];
         }
 
@@ -214,7 +214,7 @@ LABEL_15:
             objc_enumerationMutation(obj);
           }
 
-          v24 = [(_NSPersistentHistoryPredicateRemapper *)a1 replacementValueForValue:?];
+          v24 = [(_NSPersistentHistoryPredicateRemapper *)value replacementValueForValue:?];
           [v9 addObject:v24];
         }
 
@@ -326,7 +326,7 @@ LABEL_15:
   return a2;
 }
 
-- (void)visitPredicateExpression:(id)a3
+- (void)visitPredicateExpression:(id)expression
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -336,14 +336,14 @@ LABEL_15:
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [a3 expressionType] == 3)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [expression expressionType] == 3)
   {
 LABEL_3:
-    v5 = [a3 keyPath];
-    if (v5)
+    keyPath = [expression keyPath];
+    if (keyPath)
     {
-      v6 = v5;
-      v7 = [(_NSPersistentHistoryPredicateRemapper *)self replacementValueForKeyPath:v5];
+      v6 = keyPath;
+      v7 = [(_NSPersistentHistoryPredicateRemapper *)self replacementValueForKeyPath:keyPath];
       v8 = v7;
       if (v7)
       {
@@ -351,7 +351,7 @@ LABEL_3:
         {
           v9 = "_value";
 LABEL_15:
-          object_setInstanceVariableWithStrongDefault(a3, v9, v8);
+          object_setInstanceVariableWithStrongDefault(expression, v9, v8);
           goto LABEL_16;
         }
       }
@@ -366,14 +366,14 @@ LABEL_15:
     return;
   }
 
-  v10 = [a3 constantValue];
-  if (v10 || self->_previousKeyPathExpressionWasToken)
+  constantValue = [expression constantValue];
+  if (constantValue || self->_previousKeyPathExpressionWasToken)
   {
-    v11 = [(_NSPersistentHistoryPredicateRemapper *)self replacementValueForValue:v10];
+    v11 = [(_NSPersistentHistoryPredicateRemapper *)self replacementValueForValue:constantValue];
     v8 = v11;
     if (v11)
     {
-      if (v11 != v10)
+      if (v11 != constantValue)
       {
         v9 = "constantValue";
         goto LABEL_15;

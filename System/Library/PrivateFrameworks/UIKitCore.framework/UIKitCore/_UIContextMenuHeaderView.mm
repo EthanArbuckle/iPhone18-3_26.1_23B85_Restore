@@ -1,7 +1,7 @@
 @interface _UIContextMenuHeaderView
 - (BOOL)_isDisplayingTitleLabel;
 - (NSDirectionalEdgeInsets)unscaledLayoutMargins;
-- (_UIContextMenuHeaderView)initWithFrame:(CGRect)a3;
+- (_UIContextMenuHeaderView)initWithFrame:(CGRect)frame;
 - (double)_separatorHeight;
 - (id)_createAccessoryButton;
 - (id)_createTitleWithAccessoryContainerConstraints;
@@ -14,23 +14,23 @@
 - (void)_updateBackgroundView;
 - (void)_updateCompositingFilterForCurrentState;
 - (void)_updateLayoutMargins;
-- (void)setBackgroundMaterialGroupName:(id)a3;
-- (void)setContentView:(id)a3;
-- (void)setIsMenuTitle:(BOOL)a3;
-- (void)setSeparatorStyle:(unint64_t)a3;
-- (void)setTitle:(id)a3 accessoryAction:(id)a4;
-- (void)setUnscaledLayoutMargins:(NSDirectionalEdgeInsets)a3;
+- (void)setBackgroundMaterialGroupName:(id)name;
+- (void)setContentView:(id)view;
+- (void)setIsMenuTitle:(BOOL)title;
+- (void)setSeparatorStyle:(unint64_t)style;
+- (void)setTitle:(id)title accessoryAction:(id)action;
+- (void)setUnscaledLayoutMargins:(NSDirectionalEdgeInsets)margins;
 - (void)updateConstraints;
 @end
 
 @implementation _UIContextMenuHeaderView
 
-- (_UIContextMenuHeaderView)initWithFrame:(CGRect)a3
+- (_UIContextMenuHeaderView)initWithFrame:(CGRect)frame
 {
   v12[2] = *MEMORY[0x1E69E9840];
   v10.receiver = self;
   v10.super_class = _UIContextMenuHeaderView;
-  v3 = [(UICollectionReusableView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UICollectionReusableView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -52,127 +52,127 @@
 
 - (void)_updateBackgroundView
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = _UIContextMenuGetPlatformMetrics([v3 userInterfaceIdiom]);
-  v5 = [v4 gradientMaskingConfiguration];
-  v6 = [v5 backgroundMasksCorners];
+  traitCollection = [(UIView *)self traitCollection];
+  v4 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
+  gradientMaskingConfiguration = [v4 gradientMaskingConfiguration];
+  backgroundMasksCorners = [gradientMaskingConfiguration backgroundMasksCorners];
 
-  if (v6)
+  if (backgroundMasksCorners)
   {
-    v7 = [(UIView *)self layer];
-    [v7 setAllowsGroupBlending:0];
+    layer = [(UIView *)self layer];
+    [layer setAllowsGroupBlending:0];
 
-    v24 = [(UIView *)self layer];
-    [v24 setAllowsGroupOpacity:0];
+    layer2 = [(UIView *)self layer];
+    [layer2 setAllowsGroupOpacity:0];
   }
 
   else
   {
-    v8 = [(_UIContextMenuHeaderView *)self bgView];
+    bgView = [(_UIContextMenuHeaderView *)self bgView];
 
-    if (v8)
+    if (bgView)
     {
-      v9 = [(_UIContextMenuHeaderView *)self bgView];
-      [v9 removeFromSuperview];
+      bgView2 = [(_UIContextMenuHeaderView *)self bgView];
+      [bgView2 removeFromSuperview];
     }
 
-    v10 = [(_UIContextMenuHeaderView *)self isMenuTitle];
-    v11 = [(UIView *)self traitCollection];
-    v12 = [v11 userInterfaceIdiom];
-    v13 = _UIContextMenuGetPlatformMetrics(v12);
+    isMenuTitle = [(_UIContextMenuHeaderView *)self isMenuTitle];
+    traitCollection2 = [(UIView *)self traitCollection];
+    userInterfaceIdiom = [traitCollection2 userInterfaceIdiom];
+    v13 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
     v14 = v13;
-    if (v10)
+    if (isMenuTitle)
     {
-      v15 = [v13 menuTitleBackgroundProvider];
+      menuTitleBackgroundProvider = [v13 menuTitleBackgroundProvider];
 
-      if (v15)
+      if (menuTitleBackgroundProvider)
       {
-        v16 = [v14 menuTitleBackgroundProvider];
-        v17 = v16[2]();
+        menuTitleBackgroundProvider2 = [v14 menuTitleBackgroundProvider];
+        v17 = menuTitleBackgroundProvider2[2]();
       }
 
       else
       {
-        v16 = _UIContextMenuGetPlatformMetrics(v12);
+        menuTitleBackgroundProvider2 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
         v20 = [UIVisualEffectView alloc];
-        v21 = [v16 menuBackgroundEffect];
-        v17 = [(UIVisualEffectView *)v20 initWithEffect:v21];
+        menuBackgroundEffect = [menuTitleBackgroundProvider2 menuBackgroundEffect];
+        v17 = [(UIVisualEffectView *)v20 initWithEffect:menuBackgroundEffect];
 
-        v22 = [v16 menuBackgroundColor];
-        [(UIView *)v17 setBackgroundColor:v22];
+        menuBackgroundColor = [menuTitleBackgroundProvider2 menuBackgroundColor];
+        [(UIView *)v17 setBackgroundColor:menuBackgroundColor];
       }
     }
 
     else
     {
       v18 = [UIVisualEffectView alloc];
-      v19 = [v14 menuBackgroundEffect];
-      v17 = [(UIVisualEffectView *)v18 initWithEffect:v19];
+      menuBackgroundEffect2 = [v14 menuBackgroundEffect];
+      v17 = [(UIVisualEffectView *)v18 initWithEffect:menuBackgroundEffect2];
 
-      v16 = [v14 menuBackgroundColor];
-      [(UIView *)v17 setBackgroundColor:v16];
+      menuTitleBackgroundProvider2 = [v14 menuBackgroundColor];
+      [(UIView *)v17 setBackgroundColor:menuTitleBackgroundProvider2];
     }
 
     [(_UIContextMenuHeaderView *)self setBgView:v17];
-    v23 = [(_UIContextMenuHeaderView *)self bgView];
-    v24 = v23;
+    bgView3 = [(_UIContextMenuHeaderView *)self bgView];
+    layer2 = bgView3;
     if (self)
     {
-      [(UIView *)self insertSubview:v23 atIndex:0];
-      [(UIView *)self _addBoundsMatchingConstraintsForView:v24];
+      [(UIView *)self insertSubview:bgView3 atIndex:0];
+      [(UIView *)self _addBoundsMatchingConstraintsForView:layer2];
     }
   }
 }
 
-- (void)setIsMenuTitle:(BOOL)a3
+- (void)setIsMenuTitle:(BOOL)title
 {
-  if (self->_isMenuTitle != a3)
+  if (self->_isMenuTitle != title)
   {
-    self->_isMenuTitle = a3;
+    self->_isMenuTitle = title;
     [(_UIContextMenuHeaderView *)self _updateBackgroundView];
   }
 }
 
 - (void)_createTitleLabelIfNecessary
 {
-  v3 = [(_UIContextMenuHeaderView *)self titleLabel];
+  titleLabel = [(_UIContextMenuHeaderView *)self titleLabel];
 
-  if (!v3)
+  if (!titleLabel)
   {
     v16 = objc_opt_new();
-    v4 = [(UIView *)self traitCollection];
-    v5 = _UIContextMenuGetPlatformMetrics([v4 userInterfaceIdiom]);
-    v6 = [v5 headerPrimaryColor];
+    traitCollection = [(UIView *)self traitCollection];
+    v5 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
+    headerPrimaryColor = [v5 headerPrimaryColor];
 
-    [v16 setTextColor:v6];
-    v7 = [(_UIContextMenuHeaderView *)self _titleFont];
-    [v16 setFont:v7];
+    [v16 setTextColor:headerPrimaryColor];
+    _titleFont = [(_UIContextMenuHeaderView *)self _titleFont];
+    [v16 setFont:_titleFont];
 
-    v8 = [(UIView *)self traitCollection];
-    v9 = [v8 userInterfaceIdiom];
-    LODWORD(v6) = [(_UIContextMenuHeaderView *)self isMenuTitle];
-    v10 = _UIContextMenuGetPlatformMetrics(v9);
+    traitCollection2 = [(UIView *)self traitCollection];
+    userInterfaceIdiom = [traitCollection2 userInterfaceIdiom];
+    LODWORD(headerPrimaryColor) = [(_UIContextMenuHeaderView *)self isMenuTitle];
+    v10 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
     v11 = v10;
-    if (v6)
+    if (headerPrimaryColor)
     {
-      v12 = [v10 menuTitleTextAlignment];
+      menuTitleTextAlignment = [v10 menuTitleTextAlignment];
     }
 
     else
     {
-      v12 = [v10 headerTextAlignment];
+      menuTitleTextAlignment = [v10 headerTextAlignment];
     }
 
-    v13 = v12;
+    v13 = menuTitleTextAlignment;
 
     [v16 setTextAlignment:v13];
     [v16 setNumberOfLines:{-[_UIContextMenuHeaderView _titleLabelNumberOfLines](self, "_titleLabelNumberOfLines")}];
     [v16 setAdjustsFontForContentSizeCategory:1];
-    v14 = [(_UIContextMenuHeaderView *)self _titleLabelFilterForCurrentTraits];
-    if (v14)
+    _titleLabelFilterForCurrentTraits = [(_UIContextMenuHeaderView *)self _titleLabelFilterForCurrentTraits];
+    if (_titleLabelFilterForCurrentTraits)
     {
-      v15 = [v16 layer];
-      [v15 setCompositingFilter:v14];
+      layer = [v16 layer];
+      [layer setCompositingFilter:_titleLabelFilterForCurrentTraits];
     }
 
     [v16 _setOverrideUserInterfaceRenderingMode:{-[_UIContextMenuHeaderView _labelRenderingMode](self, "_labelRenderingMode")}];
@@ -182,12 +182,12 @@
 
 - (void)_clearTitleWithAccessoryContainerConstraints
 {
-  v5 = [(_UIContextMenuHeaderView *)self titleWithAccessoryContainerConstraints];
-  if ([v5 count])
+  titleWithAccessoryContainerConstraints = [(_UIContextMenuHeaderView *)self titleWithAccessoryContainerConstraints];
+  if ([titleWithAccessoryContainerConstraints count])
   {
     v3 = MEMORY[0x1E69977A0];
-    v4 = [(_UIContextMenuHeaderView *)self titleWithAccessoryContainerConstraints];
-    [v3 deactivateConstraints:v4];
+    titleWithAccessoryContainerConstraints2 = [(_UIContextMenuHeaderView *)self titleWithAccessoryContainerConstraints];
+    [v3 deactivateConstraints:titleWithAccessoryContainerConstraints2];
   }
 
   [(_UIContextMenuHeaderView *)self setTitleWithAccessoryContainerConstraints:0];
@@ -197,18 +197,18 @@
 {
   v3 = +[UIButtonConfiguration plainButtonConfiguration];
   [v3 setContentInsets:{0.0, 0.0, 0.0, 0.0}];
-  v4 = [(_UIContextMenuHeaderView *)self _titleFont];
+  _titleFont = [(_UIContextMenuHeaderView *)self _titleFont];
   objc_initWeak(&location, self);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __50___UIContextMenuHeaderView__createAccessoryButton__block_invoke;
   v11[3] = &unk_1E7115DE8;
   objc_copyWeak(&v13, &location);
-  v5 = v4;
+  v5 = _titleFont;
   v12 = v5;
   [v3 setTitleTextAttributesTransformer:v11];
-  v6 = [(_UIContextMenuHeaderView *)self accessoryAction];
-  v7 = [UIButton buttonWithConfiguration:v3 primaryAction:v6];
+  accessoryAction = [(_UIContextMenuHeaderView *)self accessoryAction];
+  v7 = [UIButton buttonWithConfiguration:v3 primaryAction:accessoryAction];
 
   [v7 setTranslatesAutoresizingMaskIntoConstraints:0];
   LODWORD(v8) = 1144913920;
@@ -224,28 +224,28 @@
 
 - (id)_createTitleWithAccessoryContainerConstraints
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(_UIContextMenuHeaderView *)self titleWithAccessoryContainer];
-  v5 = [(_UIContextMenuHeaderView *)self titleLabel];
-  v6 = [(_UIContextMenuHeaderView *)self accessoryButton];
-  v7 = v6;
-  if (v4 && v5 && v6)
+  array = [MEMORY[0x1E695DF70] array];
+  titleWithAccessoryContainer = [(_UIContextMenuHeaderView *)self titleWithAccessoryContainer];
+  titleLabel = [(_UIContextMenuHeaderView *)self titleLabel];
+  accessoryButton = [(_UIContextMenuHeaderView *)self accessoryButton];
+  v7 = accessoryButton;
+  if (titleWithAccessoryContainer && titleLabel && accessoryButton)
   {
-    v8 = _NSDictionaryOfVariableBindings(&cfstr_TitlelabelAcce.isa, v5, v6, 0);
+    v8 = _NSDictionaryOfVariableBindings(&cfstr_TitlelabelAcce.isa, titleLabel, accessoryButton, 0);
     v9 = [MEMORY[0x1E69977A0] constraintsWithVisualFormat:@"H:|[titleLabel]-(>=8)-[accessoryButton]|" options:2048 metrics:0 views:v8];
-    [v3 addObjectsFromArray:v9];
+    [array addObjectsFromArray:v9];
 
-    v10 = [v5 topAnchor];
-    v11 = [v4 topAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
-    [v3 addObject:v12];
+    topAnchor = [titleLabel topAnchor];
+    topAnchor2 = [titleWithAccessoryContainer topAnchor];
+    v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
+    [array addObject:v12];
 
-    v13 = [v5 lastBaselineAnchor];
-    v14 = [v4 bottomAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
-    [v3 addObject:v15];
+    lastBaselineAnchor = [titleLabel lastBaselineAnchor];
+    bottomAnchor = [titleWithAccessoryContainer bottomAnchor];
+    v15 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor];
+    [array addObject:v15];
 
-    [MEMORY[0x1E69977A0] activateConstraints:v3];
+    [MEMORY[0x1E69977A0] activateConstraints:array];
 LABEL_5:
 
     goto LABEL_9;
@@ -271,33 +271,33 @@ LABEL_5:
   }
 
 LABEL_9:
-  v17 = [v3 copy];
+  v17 = [array copy];
 
   return v17;
 }
 
-- (void)setTitle:(id)a3 accessoryAction:(id)a4
+- (void)setTitle:(id)title accessoryAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  actionCopy = action;
   title = self->_title;
-  v28 = v6;
-  v9 = title;
-  v10 = v9 == v28;
-  if (v9 == v28)
+  v28 = titleCopy;
+  titleCopy2 = title;
+  v10 = titleCopy2 == v28;
+  if (titleCopy2 == v28)
   {
 
-    v14 = v28;
+    titleLabel = v28;
     goto LABEL_13;
   }
 
-  if (!v28 || !v9)
+  if (!v28 || !titleCopy2)
   {
 
     goto LABEL_9;
   }
 
-  v11 = [(__CFString *)v28 isEqual:v9];
+  v11 = [(__CFString *)v28 isEqual:titleCopy2];
 
   if ((v11 & 1) == 0)
   {
@@ -317,18 +317,18 @@ LABEL_9:
       v17 = &stru_1EFB14550;
     }
 
-    v14 = [(_UIContextMenuHeaderView *)self titleLabel];
-    [v14 setText:v17];
+    titleLabel = [(_UIContextMenuHeaderView *)self titleLabel];
+    [titleLabel setText:v17];
 LABEL_13:
 
-    if (!v7)
+    if (!actionCopy)
     {
       goto LABEL_6;
     }
 
 LABEL_14:
     accessoryAction = self->_accessoryAction;
-    v19 = v7;
+    v19 = actionCopy;
     v20 = accessoryAction;
     v21 = v20;
     if (v20 == v19)
@@ -341,36 +341,36 @@ LABEL_14:
       if (!v20)
       {
 
-        v13 = [(_UIContextMenuHeaderView *)self accessoryButton];
+        accessoryButton = [(_UIContextMenuHeaderView *)self accessoryButton];
 LABEL_22:
         [(_UIContextMenuHeaderView *)self _clearTitleWithAccessoryContainerConstraints];
-        [v13 removeFromSuperview];
-        objc_storeStrong(&self->_accessoryAction, a4);
-        v23 = [(_UIContextMenuHeaderView *)self _createAccessoryButton];
+        [accessoryButton removeFromSuperview];
+        objc_storeStrong(&self->_accessoryAction, action);
+        _createAccessoryButton = [(_UIContextMenuHeaderView *)self _createAccessoryButton];
 
-        [(_UIContextMenuHeaderView *)self setAccessoryButton:v23];
-        v13 = v23;
+        [(_UIContextMenuHeaderView *)self setAccessoryButton:_createAccessoryButton];
+        accessoryButton = _createAccessoryButton;
 LABEL_23:
-        v24 = [(_UIContextMenuHeaderView *)self titleLabel];
-        [v24 setTranslatesAutoresizingMaskIntoConstraints:0];
-        v25 = [(_UIContextMenuHeaderView *)self titleWithAccessoryContainer];
-        if (!v25)
+        titleLabel2 = [(_UIContextMenuHeaderView *)self titleLabel];
+        [titleLabel2 setTranslatesAutoresizingMaskIntoConstraints:0];
+        titleWithAccessoryContainer = [(_UIContextMenuHeaderView *)self titleWithAccessoryContainer];
+        if (!titleWithAccessoryContainer)
         {
-          v25 = objc_alloc_init(UIView);
-          [(_UIContextMenuHeaderView *)self setTitleWithAccessoryContainer:v25];
+          titleWithAccessoryContainer = objc_alloc_init(UIView);
+          [(_UIContextMenuHeaderView *)self setTitleWithAccessoryContainer:titleWithAccessoryContainer];
         }
 
-        [(UIView *)v25 addSubview:v24];
-        [(UIView *)v25 addSubview:v13];
-        v26 = [(_UIContextMenuHeaderView *)self titleWithAccessoryContainerConstraints];
+        [(UIView *)titleWithAccessoryContainer addSubview:titleLabel2];
+        [(UIView *)titleWithAccessoryContainer addSubview:accessoryButton];
+        titleWithAccessoryContainerConstraints = [(_UIContextMenuHeaderView *)self titleWithAccessoryContainerConstraints];
 
-        if (!v26)
+        if (!titleWithAccessoryContainerConstraints)
         {
-          v27 = [(_UIContextMenuHeaderView *)self _createTitleWithAccessoryContainerConstraints];
-          [(_UIContextMenuHeaderView *)self setTitleWithAccessoryContainerConstraints:v27];
+          _createTitleWithAccessoryContainerConstraints = [(_UIContextMenuHeaderView *)self _createTitleWithAccessoryContainerConstraints];
+          [(_UIContextMenuHeaderView *)self setTitleWithAccessoryContainerConstraints:_createTitleWithAccessoryContainerConstraints];
         }
 
-        [(_UIContextMenuHeaderView *)self setContentView:v25];
+        [(_UIContextMenuHeaderView *)self setContentView:titleWithAccessoryContainer];
         self->_isDisplayingTitleAndAccessory = 1;
 
         goto LABEL_28;
@@ -384,7 +384,7 @@ LABEL_23:
       goto LABEL_29;
     }
 
-    v13 = [(_UIContextMenuHeaderView *)self accessoryButton];
+    accessoryButton = [(_UIContextMenuHeaderView *)self accessoryButton];
     if (v22)
     {
       goto LABEL_23;
@@ -394,33 +394,33 @@ LABEL_23:
   }
 
   v10 = 1;
-  if (v7)
+  if (actionCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_6:
   [(_UIContextMenuHeaderView *)self _clearTitleWithAccessoryContainerConstraints];
-  v12 = [(_UIContextMenuHeaderView *)self accessoryButton];
-  [v12 removeFromSuperview];
+  accessoryButton2 = [(_UIContextMenuHeaderView *)self accessoryButton];
+  [accessoryButton2 removeFromSuperview];
 
   [(_UIContextMenuHeaderView *)self setAccessoryButton:0];
-  v13 = [(_UIContextMenuHeaderView *)self titleLabel];
-  [(_UIContextMenuHeaderView *)self setContentView:v13];
+  accessoryButton = [(_UIContextMenuHeaderView *)self titleLabel];
+  [(_UIContextMenuHeaderView *)self setContentView:accessoryButton];
 LABEL_28:
 
 LABEL_29:
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
-  if (self->_contentView != v5)
+  viewCopy = view;
+  if (self->_contentView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     self->_isDisplayingTitleAndAccessory = 0;
     [(UIView *)self->_contentView removeFromSuperview];
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     contentView = self->_contentView;
     if (contentView)
     {
@@ -429,7 +429,7 @@ LABEL_29:
     }
 
     [(_UIContextMenuHeaderView *)self _setNeedsConstraintRebuild];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
@@ -440,37 +440,37 @@ LABEL_29:
     return 1;
   }
 
-  v4 = [(_UIContextMenuHeaderView *)self contentView];
-  v5 = [(_UIContextMenuHeaderView *)self titleLabel];
-  v2 = v4 == v5;
+  contentView = [(_UIContextMenuHeaderView *)self contentView];
+  titleLabel = [(_UIContextMenuHeaderView *)self titleLabel];
+  v2 = contentView == titleLabel;
 
   return v2;
 }
 
-- (void)setBackgroundMaterialGroupName:(id)a3
+- (void)setBackgroundMaterialGroupName:(id)name
 {
-  v7 = a3;
-  v4 = [(_UIContextMenuHeaderView *)self bgView];
+  nameCopy = name;
+  bgView = [(_UIContextMenuHeaderView *)self bgView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [(_UIContextMenuHeaderView *)self bgView];
-    [v6 _setGroupName:v7];
+    bgView2 = [(_UIContextMenuHeaderView *)self bgView];
+    [bgView2 _setGroupName:nameCopy];
   }
 }
 
-- (void)setSeparatorStyle:(unint64_t)a3
+- (void)setSeparatorStyle:(unint64_t)style
 {
-  if (self->_separatorStyle == a3)
+  if (self->_separatorStyle == style)
   {
     return;
   }
 
-  self->_separatorStyle = a3;
-  v4 = [(_UIContextMenuHeaderView *)self separator];
-  [v4 removeFromSuperview];
+  self->_separatorStyle = style;
+  separator = [(_UIContextMenuHeaderView *)self separator];
+  [separator removeFromSuperview];
 
   separatorStyle = self->_separatorStyle;
   if (separatorStyle != 2)
@@ -490,11 +490,11 @@ LABEL_7:
   }
 
   v12 = objc_opt_new();
-  v8 = [(UIView *)self traitCollection];
-  v9 = _UIContextMenuGetPlatformMetrics([v8 userInterfaceIdiom]);
-  v10 = [v9 sectionSeparatorColor];
+  traitCollection = [(UIView *)self traitCollection];
+  v9 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
+  sectionSeparatorColor = [v9 sectionSeparatorColor];
 
-  [v12 setBackgroundColor:v10];
+  [v12 setBackgroundColor:sectionSeparatorColor];
   v6 = v12;
   if (!v12)
   {
@@ -514,12 +514,12 @@ LABEL_8:
 
 - (id)_titleFont
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
-  v5 = [(_UIContextMenuHeaderView *)self isMenuTitle];
-  v6 = _UIContextMenuGetPlatformMetrics(v4);
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
+  isMenuTitle = [(_UIContextMenuHeaderView *)self isMenuTitle];
+  v6 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
   v7 = v6;
-  if (v5)
+  if (isMenuTitle)
   {
     [v6 menuTitleFont];
   }
@@ -529,16 +529,16 @@ LABEL_8:
     [v6 headerFont];
   }
   v8 = ;
-  v9 = [v8 _fontAdjustedForCurrentContentSizeCategory];
+  _fontAdjustedForCurrentContentSizeCategory = [v8 _fontAdjustedForCurrentContentSizeCategory];
 
-  return v9;
+  return _fontAdjustedForCurrentContentSizeCategory;
 }
 
 - (unint64_t)_titleLabelNumberOfLines
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
-  IsAccessibilityContentSizeCategory = _UIContentSizeCategoryIsAccessibilityContentSizeCategory(v3, v4);
+  traitCollection = [(UIView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityContentSizeCategory = _UIContentSizeCategoryIsAccessibilityContentSizeCategory(preferredContentSizeCategory, v4);
 
   if (IsAccessibilityContentSizeCategory)
   {
@@ -553,30 +553,30 @@ LABEL_8:
 
 - (void)_updateCompositingFilterForCurrentState
 {
-  v3 = [(_UIContextMenuHeaderView *)self _titleLabelFilterForCurrentTraits];
-  if (v3)
+  _titleLabelFilterForCurrentTraits = [(_UIContextMenuHeaderView *)self _titleLabelFilterForCurrentTraits];
+  if (_titleLabelFilterForCurrentTraits)
   {
-    v7 = v3;
-    v4 = [(_UIContextMenuHeaderView *)self _titleLabelFilterForCurrentTraits];
-    v5 = [(_UIContextMenuHeaderView *)self titleLabel];
-    v6 = [v5 layer];
-    [v6 setCompositingFilter:v4];
+    v7 = _titleLabelFilterForCurrentTraits;
+    _titleLabelFilterForCurrentTraits2 = [(_UIContextMenuHeaderView *)self _titleLabelFilterForCurrentTraits];
+    titleLabel = [(_UIContextMenuHeaderView *)self titleLabel];
+    layer = [titleLabel layer];
+    [layer setCompositingFilter:_titleLabelFilterForCurrentTraits2];
 
-    v3 = v7;
+    _titleLabelFilterForCurrentTraits = v7;
   }
 }
 
 - (id)_titleLabelFilterForCurrentTraits
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = _UIContextMenuGetPlatformMetrics([v3 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v4 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  v5 = [v4 headerPrimaryCompositingFilterProvider];
-  if (v5)
+  headerPrimaryCompositingFilterProvider = [v4 headerPrimaryCompositingFilterProvider];
+  if (headerPrimaryCompositingFilterProvider)
   {
-    v6 = [v4 headerPrimaryCompositingFilterProvider];
-    v7 = [(UIView *)self traitCollection];
-    v8 = (v6)[2](v6, v7);
+    headerPrimaryCompositingFilterProvider2 = [v4 headerPrimaryCompositingFilterProvider];
+    traitCollection2 = [(UIView *)self traitCollection];
+    v8 = (headerPrimaryCompositingFilterProvider2)[2](headerPrimaryCompositingFilterProvider2, traitCollection2);
   }
 
   else
@@ -593,64 +593,64 @@ LABEL_8:
   if (self->_needsConstraintRebuild)
   {
     self->_needsConstraintRebuild = 0;
-    v3 = [MEMORY[0x1E695DF70] array];
-    v4 = [(_UIContextMenuHeaderView *)self separator];
-    v49 = v3;
-    if (v4)
+    array = [MEMORY[0x1E695DF70] array];
+    separator = [(_UIContextMenuHeaderView *)self separator];
+    v49 = array;
+    if (separator)
     {
-      v5 = [(UIView *)self traitCollection];
-      v6 = [v5 userInterfaceIdiom];
+      traitCollection = [(UIView *)self traitCollection];
+      userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-      v7 = _UIContextMenuGetPlatformMetrics(v6);
+      v7 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
       [v7 sectionSeparatorInsets];
       v9 = v8;
       v11 = v10;
 
-      v46 = [v4 leadingAnchor];
-      v44 = [(UIView *)self leadingAnchor];
-      v42 = [v46 constraintEqualToAnchor:v44 constant:v9];
+      leadingAnchor = [separator leadingAnchor];
+      leadingAnchor2 = [(UIView *)self leadingAnchor];
+      v42 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:v9];
       v53[0] = v42;
-      v40 = [v4 trailingAnchor];
-      v12 = [(UIView *)self trailingAnchor];
-      v13 = [v40 constraintEqualToAnchor:v12 constant:-v11];
+      trailingAnchor = [separator trailingAnchor];
+      trailingAnchor2 = [(UIView *)self trailingAnchor];
+      v13 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-v11];
       v53[1] = v13;
-      v14 = [v4 bottomAnchor];
-      v15 = [(UIView *)self bottomAnchor];
-      v16 = [v14 constraintEqualToAnchor:v15];
+      bottomAnchor = [separator bottomAnchor];
+      bottomAnchor2 = [(UIView *)self bottomAnchor];
+      v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v53[2] = v16;
-      v17 = [v4 heightAnchor];
+      heightAnchor = [separator heightAnchor];
       [(_UIContextMenuHeaderView *)self _separatorHeight];
-      v18 = [v17 constraintEqualToConstant:?];
+      v18 = [heightAnchor constraintEqualToConstant:?];
       v53[3] = v18;
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:4];
       [v49 addObjectsFromArray:v19];
     }
 
-    v20 = [(_UIContextMenuHeaderView *)self contentView];
-    if (v20)
+    contentView = [(_UIContextMenuHeaderView *)self contentView];
+    if (contentView)
     {
-      v48 = v4;
+      v48 = separator;
       if ([(_UIContextMenuHeaderView *)self _isDisplayingTitleLabel])
       {
-        v21 = [(UIView *)self layoutMarginsGuide];
-        v22 = [v20 leadingAnchor];
-        v43 = [v21 leadingAnchor];
-        v45 = v22;
-        v41 = [v22 constraintEqualToAnchor:v43];
+        layoutMarginsGuide = [(UIView *)self layoutMarginsGuide];
+        leadingAnchor3 = [contentView leadingAnchor];
+        leadingAnchor4 = [layoutMarginsGuide leadingAnchor];
+        v45 = leadingAnchor3;
+        v41 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
         v52[0] = v41;
-        v23 = [v20 trailingAnchor];
-        v38 = [v21 trailingAnchor];
-        v39 = v23;
-        v24 = [v23 constraintEqualToAnchor:v38];
+        trailingAnchor3 = [contentView trailingAnchor];
+        trailingAnchor4 = [layoutMarginsGuide trailingAnchor];
+        v39 = trailingAnchor3;
+        v24 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
         v52[1] = v24;
-        v25 = [v20 topAnchor];
-        v26 = [v21 topAnchor];
-        v27 = [v25 constraintEqualToAnchor:v26];
+        topAnchor = [contentView topAnchor];
+        topAnchor2 = [layoutMarginsGuide topAnchor];
+        v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v52[2] = v27;
-        v28 = [v20 lastBaselineAnchor];
-        v47 = v21;
-        v29 = [v21 bottomAnchor];
-        v30 = [v28 constraintEqualToAnchor:v29];
+        lastBaselineAnchor = [contentView lastBaselineAnchor];
+        v47 = layoutMarginsGuide;
+        bottomAnchor3 = [layoutMarginsGuide bottomAnchor];
+        v30 = [lastBaselineAnchor constraintEqualToAnchor:bottomAnchor3];
         v52[3] = v30;
         v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v52 count:4];
         [v49 addObjectsFromArray:v31];
@@ -658,43 +658,43 @@ LABEL_8:
 
       else
       {
-        v32 = [v4 topAnchor];
-        v33 = v32;
-        if (v32)
+        topAnchor3 = [separator topAnchor];
+        v33 = topAnchor3;
+        if (topAnchor3)
         {
-          v34 = v32;
+          bottomAnchor4 = topAnchor3;
         }
 
         else
         {
-          v34 = [(UIView *)self bottomAnchor];
+          bottomAnchor4 = [(UIView *)self bottomAnchor];
         }
 
-        v35 = v34;
+        v35 = bottomAnchor4;
 
-        v36 = [v20 leadingAnchor];
-        v43 = [(UIView *)self leadingAnchor];
-        v45 = v36;
-        v41 = [v36 constraintEqualToAnchor:v43];
+        leadingAnchor5 = [contentView leadingAnchor];
+        leadingAnchor4 = [(UIView *)self leadingAnchor];
+        v45 = leadingAnchor5;
+        v41 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor4];
         v51[0] = v41;
-        v37 = [v20 trailingAnchor];
-        v38 = [(UIView *)self trailingAnchor];
-        v39 = v37;
-        v24 = [v37 constraintEqualToAnchor:v38];
+        trailingAnchor5 = [contentView trailingAnchor];
+        trailingAnchor4 = [(UIView *)self trailingAnchor];
+        v39 = trailingAnchor5;
+        v24 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor4];
         v51[1] = v24;
-        v25 = [v20 topAnchor];
-        v26 = [(UIView *)self topAnchor];
-        v27 = [v25 constraintEqualToAnchor:v26];
+        topAnchor = [contentView topAnchor];
+        topAnchor2 = [(UIView *)self topAnchor];
+        v27 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v51[2] = v27;
-        v28 = [v20 bottomAnchor];
+        lastBaselineAnchor = [contentView bottomAnchor];
         v47 = v35;
-        v29 = [v28 constraintEqualToAnchor:v35];
-        v51[3] = v29;
+        bottomAnchor3 = [lastBaselineAnchor constraintEqualToAnchor:v35];
+        v51[3] = bottomAnchor3;
         v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v51 count:4];
         [v49 addObjectsFromArray:v30];
       }
 
-      v4 = v48;
+      separator = v48;
     }
 
     [MEMORY[0x1E69977A0] activateConstraints:v49];
@@ -705,30 +705,30 @@ LABEL_8:
   [(UIView *)&v50 updateConstraints];
 }
 
-- (void)setUnscaledLayoutMargins:(NSDirectionalEdgeInsets)a3
+- (void)setUnscaledLayoutMargins:(NSDirectionalEdgeInsets)margins
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.leading;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.trailing;
+  v3.f64[0] = margins.top;
+  v3.f64[1] = margins.leading;
+  v4.f64[0] = margins.bottom;
+  v4.f64[1] = margins.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_unscaledLayoutMargins.top), vceqq_f64(v4, *&self->_unscaledLayoutMargins.bottom)))) & 1) == 0)
   {
-    self->_unscaledLayoutMargins = a3;
+    self->_unscaledLayoutMargins = margins;
     [(_UIContextMenuHeaderView *)self _updateLayoutMargins];
   }
 }
 
 - (void)_updateLayoutMargins
 {
-  v14 = [(_UIContextMenuHeaderView *)self _titleFont];
+  _titleFont = [(_UIContextMenuHeaderView *)self _titleFont];
   [(_UIContextMenuHeaderView *)self unscaledLayoutMargins];
   v4 = v3;
   v6 = v5;
   v8 = v7;
-  [v14 _scaledValueForValue:?];
+  [_titleFont _scaledValueForValue:?];
   UIRoundToViewScale(self);
   v10 = v9;
-  [v14 _scaledValueForValue:v6];
+  [_titleFont _scaledValueForValue:v6];
   UIRoundToViewScale(self);
   v12 = v11;
   [(_UIContextMenuHeaderView *)self _separatorHeight];
@@ -740,8 +740,8 @@ LABEL_8:
   separatorStyle = self->_separatorStyle;
   if (separatorStyle == 2)
   {
-    v4 = [(UIView *)self traitCollection];
-    v5 = _UIContextMenuGetPlatformMetrics([v4 userInterfaceIdiom]);
+    traitCollection = [(UIView *)self traitCollection];
+    v5 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
     [v5 sectionSeparatorHeight];
     goto LABEL_5;
   }
@@ -749,8 +749,8 @@ LABEL_8:
   v3 = 0.0;
   if (separatorStyle == 1)
   {
-    v4 = [(UIView *)self traitCollection];
-    v5 = _UIContextMenuGetPlatformMetrics([v4 userInterfaceIdiom]);
+    traitCollection = [(UIView *)self traitCollection];
+    v5 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
     [v5 itemSeparatorHeight];
 LABEL_5:
     v3 = v6;
@@ -761,11 +761,11 @@ LABEL_5:
 
 - (int64_t)_labelRenderingMode
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = _UIContextMenuGetPlatformMetrics([v2 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v3 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  v4 = [v3 itemSubtitleRenderingMode];
-  return v4;
+  itemSubtitleRenderingMode = [v3 itemSubtitleRenderingMode];
+  return itemSubtitleRenderingMode;
 }
 
 - (NSDirectionalEdgeInsets)unscaledLayoutMargins

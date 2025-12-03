@@ -4,7 +4,7 @@
 - (id)_init;
 - (void)assertNotRunningOnAudioQueue;
 - (void)assertRunningOnAudioQueue;
-- (void)performSynchronousTaskWithOptions:(unint64_t)a3 block:(id)a4;
+- (void)performSynchronousTaskWithOptions:(unint64_t)options block:(id)block;
 @end
 
 @implementation TLAudioQueue
@@ -39,8 +39,8 @@ uint64_t __32__TLAudioQueue_sharedAudioQueue__block_invoke()
     v4 = NSStringFromClass(v3);
     v5 = MEMORY[0x1E696AEC0];
     v6 = [MEMORY[0x1E696AAE8] bundleForClass:v3];
-    v7 = [v6 bundleIdentifier];
-    v8 = [v5 stringWithFormat:@"%@.%@", v7, v4];
+    bundleIdentifier = [v6 bundleIdentifier];
+    v8 = [v5 stringWithFormat:@"%@.%@", bundleIdentifier, v4];
 
     v9 = dispatch_queue_create([v8 UTF8String], 0);
     serialQueue = v2->_serialQueue;
@@ -54,28 +54,28 @@ uint64_t __32__TLAudioQueue_sharedAudioQueue__block_invoke()
   return v2;
 }
 
-- (void)performSynchronousTaskWithOptions:(unint64_t)a3 block:(id)a4
+- (void)performSynchronousTaskWithOptions:(unint64_t)options block:(id)block
 {
-  if (a3)
+  if (options)
   {
     v6 = MEMORY[0x1E696AF00];
-    v7 = a4;
-    v8 = [v6 currentThread];
-    v11 = [v8 threadDictionary];
+    blockCopy = block;
+    currentThread = [v6 currentThread];
+    blockCopy2 = [currentThread threadDictionary];
 
     v9 = self->_assumeRunningOnAudioQueueThreadLocalStorageKey;
-    v10 = [v11 objectForKey:v9];
-    [v11 setValue:MEMORY[0x1E695E118] forKey:v9];
-    v7[2](v7);
+    v10 = [blockCopy2 objectForKey:v9];
+    [blockCopy2 setValue:MEMORY[0x1E695E118] forKey:v9];
+    blockCopy[2](blockCopy);
 
-    [v11 setValue:v10 forKey:v9];
+    [blockCopy2 setValue:v10 forKey:v9];
   }
 
   else
   {
     serialQueue = self->_serialQueue;
-    v11 = a4;
-    dispatch_sync(serialQueue, v11);
+    blockCopy2 = block;
+    dispatch_sync(serialQueue, blockCopy2);
   }
 }
 
@@ -103,16 +103,16 @@ uint64_t __32__TLAudioQueue_sharedAudioQueue__block_invoke()
       v6 = TLLogGeneral();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [v5 lastPathComponent];
-        v8 = [MEMORY[0x1E696AF00] callStackSymbols];
+        lastPathComponent = [v5 lastPathComponent];
+        callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
         v11 = 136381443;
         v12 = "[TLAudioQueue assertNotRunningOnAudioQueue]";
         v13 = 2113;
-        v14 = v7;
+        v14 = lastPathComponent;
         v15 = 2049;
         v16 = 79;
         v17 = 2113;
-        v18 = v8;
+        v18 = callStackSymbols;
         _os_log_impl(&dword_1D9356000, v6, OS_LOG_TYPE_DEFAULT, "*** Assertion failure in %{private}s, %{private}@:%{private}lu.\n%{private}@", &v11, 0x2Au);
       }
     }
@@ -139,13 +139,13 @@ uint64_t __32__TLAudioQueue_sharedAudioQueue__block_invoke()
 
 - (BOOL)_shouldAssumeRunningOnAudioQueue
 {
-  v3 = [MEMORY[0x1E696AF00] currentThread];
-  v4 = [v3 threadDictionary];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v5 = [v4 objectForKey:self->_assumeRunningOnAudioQueueThreadLocalStorageKey];
-  LOBYTE(v3) = [v5 BOOLValue];
+  v5 = [threadDictionary objectForKey:self->_assumeRunningOnAudioQueueThreadLocalStorageKey];
+  LOBYTE(currentThread) = [v5 BOOLValue];
 
-  return v3;
+  return currentThread;
 }
 
 @end

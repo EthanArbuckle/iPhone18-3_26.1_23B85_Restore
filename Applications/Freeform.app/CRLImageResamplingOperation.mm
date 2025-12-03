@@ -2,20 +2,20 @@
 - (CGSize)desiredAlternateSizeIfConvertedToPNG;
 - (CGSize)desiredSize;
 - (CRLImageResamplingOperation)init;
-- (CRLImageResamplingOperation)initWithImageProvider:(id)a3 desiredSize:(CGSize)a4 assetOwner:(id)a5;
-- (id)performResampleOperationWithResampleOptions:(unint64_t)a3 bitmapContextOptions:(unint64_t)a4;
-- (void)setDesiredAlternateSizeIfConvertedToPNG:(CGSize)a3;
+- (CRLImageResamplingOperation)initWithImageProvider:(id)provider desiredSize:(CGSize)size assetOwner:(id)owner;
+- (id)performResampleOperationWithResampleOptions:(unint64_t)options bitmapContextOptions:(unint64_t)contextOptions;
+- (void)setDesiredAlternateSizeIfConvertedToPNG:(CGSize)g;
 @end
 
 @implementation CRLImageResamplingOperation
 
-- (CRLImageResamplingOperation)initWithImageProvider:(id)a3 desiredSize:(CGSize)a4 assetOwner:(id)a5
+- (CRLImageResamplingOperation)initWithImageProvider:(id)provider desiredSize:(CGSize)size assetOwner:(id)owner
 {
-  height = a4.height;
-  width = a4.width;
-  v10 = a3;
-  v11 = a5;
-  if (!v10)
+  height = size.height;
+  width = size.width;
+  providerCopy = provider;
+  ownerCopy = owner;
+  if (!providerCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -50,10 +50,10 @@
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->mImageProvider, a3);
+    objc_storeStrong(&v15->mImageProvider, provider);
     v16->mDesiredSize.width = width;
     v16->mDesiredSize.height = height;
-    objc_storeStrong(&v16->mAssetOwner, a5);
+    objc_storeStrong(&v16->mAssetOwner, owner);
     if (CRLWPShapeLayout.columnsAreLeftToRight.getter())
     {
       if (width * height > sub_10050CF30())
@@ -144,10 +144,10 @@
   objc_exception_throw(v10);
 }
 
-- (void)setDesiredAlternateSizeIfConvertedToPNG:(CGSize)a3
+- (void)setDesiredAlternateSizeIfConvertedToPNG:(CGSize)g
 {
-  height = a3.height;
-  width = a3.width;
+  height = g.height;
+  width = g.width;
   [(CRLImageResamplingOperation *)self desiredSize];
   if (width <= v6 && ([(CRLImageResamplingOperation *)self desiredSize], height <= v7))
   {
@@ -185,16 +185,16 @@
   }
 }
 
-- (id)performResampleOperationWithResampleOptions:(unint64_t)a3 bitmapContextOptions:(unint64_t)a4
+- (id)performResampleOperationWithResampleOptions:(unint64_t)options bitmapContextOptions:(unint64_t)contextOptions
 {
-  v132 = a4;
-  v4 = a3;
-  v6 = [(CRLImageResamplingOperation *)self imageProvider];
-  [v6 naturalSize];
+  contextOptionsCopy = contextOptions;
+  optionsCopy = options;
+  imageProvider = [(CRLImageResamplingOperation *)self imageProvider];
+  [imageProvider naturalSize];
   v8 = v7;
   v10 = v9;
 
-  if ((v4 & 8) != 0)
+  if ((optionsCopy & 8) != 0)
   {
     [(CRLImageResamplingOperation *)self desiredAlternateSizeIfConvertedToPNG];
     if (v12 != CGSizeZero.width || v11 != CGSizeZero.height)
@@ -228,17 +228,17 @@
     }
   }
 
-  v18 = v4 & 1;
+  v18 = optionsCopy & 1;
   [(CRLImageResamplingOperation *)self desiredSize];
   v22 = sub_10011FBF0(v19, v20, 1.0);
   v23 = v21;
-  if ((v4 & 8) == 0)
+  if ((optionsCopy & 8) == 0)
   {
     v22 = sub_100121EF4(0, v8, v10, v22, v21);
     v23 = v24;
   }
 
-  if (v4)
+  if (optionsCopy)
   {
     v25 = 0.5;
   }
@@ -249,21 +249,21 @@
   }
 
   v26 = objc_opt_class();
-  v27 = [(CRLImageResamplingOperation *)self imageProvider];
-  v28 = sub_100014370(v26, v27);
+  imageProvider2 = [(CRLImageResamplingOperation *)self imageProvider];
+  v28 = sub_100014370(v26, imageProvider2);
 
-  if ((v4 & 2) == 0 && !v28)
+  if ((optionsCopy & 2) == 0 && !v28)
   {
     v29 = [_TtC8Freeform27CRLPreinsertionAssetWrapper alloc];
-    v30 = [(CRLImageResamplingOperation *)self imageProvider];
-    v31 = [(__CFString *)v30 imageData];
-    v32 = [(CRLPreinsertionAssetWrapper *)v29 initWithAlreadyInsertedAsset:v31 owner:self->mAssetOwner];
+    imageProvider3 = [(CRLImageResamplingOperation *)self imageProvider];
+    imageData = [(__CFString *)imageProvider3 imageData];
+    v32 = [(CRLPreinsertionAssetWrapper *)v29 initWithAlreadyInsertedAsset:imageData owner:self->mAssetOwner];
     goto LABEL_141;
   }
 
-  v33 = [v28 CGImageSource];
-  isrc = v33;
-  if (v33 && (v34 = v33, CGImageSourceGetStatus(v33) == kCGImageStatusComplete))
+  cGImageSource = [v28 CGImageSource];
+  isrc = cGImageSource;
+  if (cGImageSource && (v34 = cGImageSource, CGImageSourceGetStatus(cGImageSource) == kCGImageStatusComplete))
   {
     v105 = CGImageSourceCopyPropertiesAtIndex(v34, 0, 0);
     if (v105)
@@ -285,43 +285,43 @@
   cf = 0;
   v135 = [v28 isOpaque] ^ 1;
 LABEL_27:
-  v35 = [(CRLImageResamplingOperation *)self displayName];
-  v30 = [v35 stringByDeletingPathExtension];
+  displayName = [(CRLImageResamplingOperation *)self displayName];
+  imageProvider3 = [displayName stringByDeletingPathExtension];
 
-  if (!v30 || ![(__CFString *)v30 length])
+  if (!imageProvider3 || ![(__CFString *)imageProvider3 length])
   {
-    v36 = [(CRLImageResamplingOperation *)self imageProvider];
-    v37 = [v36 imageData];
-    v38 = [v37 filename];
-    v39 = [v38 stringByDeletingPathExtension];
+    imageProvider4 = [(CRLImageResamplingOperation *)self imageProvider];
+    imageData2 = [imageProvider4 imageData];
+    filename = [imageData2 filename];
+    stringByDeletingPathExtension = [filename stringByDeletingPathExtension];
 
-    if (v39 && [(__CFString *)v39 length])
+    if (stringByDeletingPathExtension && [(__CFString *)stringByDeletingPathExtension length])
     {
-      v30 = v39;
+      imageProvider3 = stringByDeletingPathExtension;
     }
 
     else
     {
 
-      v30 = @"image";
+      imageProvider3 = @"image";
     }
   }
 
   v131 = v28;
-  v40 = [(CRLImageResamplingOperation *)self displayName];
-  v31 = [v40 pathExtension];
+  displayName2 = [(CRLImageResamplingOperation *)self displayName];
+  imageData = [displayName2 pathExtension];
 
-  if (!v31 || ![v31 length])
+  if (!imageData || ![imageData length])
   {
-    v41 = [(CRLImageResamplingOperation *)self imageProvider];
-    v42 = [v41 imageData];
-    v43 = [v42 filename];
-    v44 = [v43 pathExtension];
+    imageProvider5 = [(CRLImageResamplingOperation *)self imageProvider];
+    imageData3 = [imageProvider5 imageData];
+    filename2 = [imageData3 filename];
+    pathExtension = [filename2 pathExtension];
 
-    v31 = v44;
+    imageData = pathExtension;
   }
 
-  v45 = [UTType typeWithTag:v31 tagClass:UTTagClassFilenameExtension conformingToType:0];
+  v45 = [UTType typeWithTag:imageData tagClass:UTTagClassFilenameExtension conformingToType:0];
   v128 = v45;
   if (!v45)
   {
@@ -396,16 +396,16 @@ LABEL_27:
     }
   }
 
-  v59 = [(UTType *)v53 preferredFilenameExtension];
-  v127 = [(__CFString *)v30 stringByAppendingPathExtension:v59];
+  preferredFilenameExtension = [(UTType *)v53 preferredFilenameExtension];
+  v127 = [(__CFString *)imageProvider3 stringByAppendingPathExtension:preferredFilenameExtension];
   v60 = v133 ^ 1;
-  if ((v4 & 0x18) != 0)
+  if ((optionsCopy & 0x18) != 0)
   {
     v60 = 1;
   }
 
   v129 = v53;
-  v125 = v59;
+  v125 = preferredFilenameExtension;
   if ((v60 & 1) == 0 && v22 < v8 && v23 < v10)
   {
     v144[0] = kCGImageSourceCreateThumbnailFromImageAlways;
@@ -425,10 +425,10 @@ LABEL_27:
     }
   }
 
-  v65 = v132 | 2;
+  v65 = contextOptionsCopy | 2;
   if (!v135)
   {
-    v65 = v132;
+    v65 = contextOptionsCopy;
   }
 
   v66 = v65 | (4 * v18);
@@ -441,10 +441,10 @@ LABEL_27:
 
   else
   {
-    v76 = [(CRLImageResamplingOperation *)self imageProvider];
-    v77 = [v76 imageGamut];
+    imageProvider6 = [(CRLImageResamplingOperation *)self imageProvider];
+    imageGamut = [imageProvider6 imageGamut];
 
-    if (v77 == 2)
+    if (imageGamut == 2)
     {
       v78 = v66;
     }
@@ -537,9 +537,9 @@ LABEL_105:
     v142 = @"kCGImageSourceSubsampleFactor";
     v114 = [NSNumber numberWithInt:v86];
     v143 = v114;
-    v87 = [NSDictionary dictionaryWithObjects:&v143 forKeys:&v142 count:1];
+    imageProvider7 = [NSDictionary dictionaryWithObjects:&v143 forKeys:&v142 count:1];
 
-    ImageAtIndex = CGImageSourceCreateImageAtIndex(isrc, 0, v87);
+    ImageAtIndex = CGImageSourceCreateImageAtIndex(isrc, 0, imageProvider7);
     v116 = sub_10011ECB4();
     v118 = v117;
     v120 = v119;
@@ -575,8 +575,8 @@ LABEL_105:
 
   else
   {
-    v87 = [(CRLImageResamplingOperation *)self imageProvider];
-    [(__CFDictionary *)v87 drawImageInContext:v73 rect:sub_10011ECB4()];
+    imageProvider7 = [(CRLImageResamplingOperation *)self imageProvider];
+    [(__CFDictionary *)imageProvider7 drawImageInContext:v73 rect:sub_10011ECB4()];
   }
 
   ThumbnailAtIndex = CGBitmapContextCreateImage(v73);
@@ -588,8 +588,8 @@ LABEL_105:
 
 LABEL_95:
   v88 = objc_alloc_init(NSMutableData);
-  v89 = [(UTType *)v53 identifier];
-  v90 = CGImageDestinationCreateWithData(v88, v89, 1uLL, 0);
+  identifier = [(UTType *)v53 identifier];
+  v90 = CGImageDestinationCreateWithData(v88, identifier, 1uLL, 0);
 
   if (v90)
   {

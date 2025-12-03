@@ -1,23 +1,23 @@
 @interface RCSharedAudioFileInfo
-- (RCSharedAudioFileInfo)initWithURL:(id)a3 fileName:(id)a4 creationDate:(id)a5;
+- (RCSharedAudioFileInfo)initWithURL:(id)l fileName:(id)name creationDate:(id)date;
 @end
 
 @implementation RCSharedAudioFileInfo
 
-- (RCSharedAudioFileInfo)initWithURL:(id)a3 fileName:(id)a4 creationDate:(id)a5
+- (RCSharedAudioFileInfo)initWithURL:(id)l fileName:(id)name creationDate:(id)date
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  nameCopy = name;
+  dateCopy = date;
   v15.receiver = self;
   v15.super_class = RCSharedAudioFileInfo;
   v12 = [(RCSharedAudioFileInfo *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_url, a3);
-    objc_storeStrong(&v13->_fileName, a4);
-    objc_storeStrong(&v13->_creationDate, a5);
+    objc_storeStrong(&v12->_url, l);
+    objc_storeStrong(&v13->_fileName, name);
+    objc_storeStrong(&v13->_creationDate, date);
   }
 
   return v13;

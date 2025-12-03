@@ -1,9 +1,9 @@
 @interface JavaUtilResourceBundle
 + (id)getLoader;
 + (void)initialize;
-- (BOOL)containsKeyWithNSString:(id)a3;
-- (id)getStringArrayWithNSString:(id)a3;
-- (id)getStringWithNSString:(id)a3;
+- (BOOL)containsKeyWithNSString:(id)string;
+- (id)getStringArrayWithNSString:(id)string;
+- (id)getStringWithNSString:(id)string;
 - (id)handleKeySet;
 - (id)keySet;
 - (void)dealloc;
@@ -11,9 +11,9 @@
 
 @implementation JavaUtilResourceBundle
 
-- (id)getStringWithNSString:(id)a3
+- (id)getStringWithNSString:(id)string
 {
-  v3 = sub_10024575C(self, a3);
+  v3 = sub_10024575C(self, string);
   objc_opt_class();
   if (v3 && (objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -23,9 +23,9 @@
   return v3;
 }
 
-- (id)getStringArrayWithNSString:(id)a3
+- (id)getStringArrayWithNSString:(id)string
 {
-  v3 = sub_10024575C(self, a3);
+  v3 = sub_10024575C(self, string);
   objc_opt_class();
   if (v3 && (objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -35,34 +35,34 @@
   return v3;
 }
 
-- (BOOL)containsKeyWithNSString:(id)a3
+- (BOOL)containsKeyWithNSString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     v6 = new_JavaLangNullPointerException_initWithNSString_(@"key == null");
     objc_exception_throw(v6);
   }
 
-  v4 = [(JavaUtilResourceBundle *)self keySet];
-  if (!v4)
+  keySet = [(JavaUtilResourceBundle *)self keySet];
+  if (!keySet)
   {
     JreThrowNullPointerException();
   }
 
-  return [v4 containsWithId:a3];
+  return [keySet containsWithId:string];
 }
 
 - (id)keySet
 {
   v3 = new_JavaUtilHashSet_init();
-  v4 = [(JavaUtilResourceBundle *)self getKeys];
-  if (!v4)
+  getKeys = [(JavaUtilResourceBundle *)self getKeys];
+  if (!getKeys)
   {
     JreThrowNullPointerException();
   }
 
-  v5 = v4;
-  if ([v4 hasMoreElements])
+  v5 = getKeys;
+  if ([getKeys hasMoreElements])
   {
     do
     {
@@ -77,19 +77,19 @@
 
 - (id)handleKeySet
 {
-  v3 = [(JavaUtilResourceBundle *)self keySet];
+  keySet = [(JavaUtilResourceBundle *)self keySet];
   v4 = new_JavaUtilHashSet_init();
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  if (!v3)
+  if (!keySet)
   {
     JreThrowNullPointerException();
   }
 
   v5 = v4;
-  v6 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [keySet countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -100,7 +100,7 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(keySet);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
@@ -110,7 +110,7 @@
         }
       }
 
-      v7 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [keySet countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -128,7 +128,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [JavaUtilResourceBundle_MissingBundle alloc];
     v2->super.lastLoadTime_ = 0;

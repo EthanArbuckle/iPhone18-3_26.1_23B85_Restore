@@ -1,7 +1,7 @@
 @interface AONSenseSampleProvider
 + (_TtC19ProximityDaemonCore22AONSenseSampleProvider)shared;
 - (_TtC19ProximityDaemonCore22AONSenseSampleProvider)init;
-- (void)registerWithQueue:(id)a3 callback:(id)a4;
+- (void)registerWithQueue:(id)queue callback:(id)callback;
 @end
 
 @implementation AONSenseSampleProvider
@@ -18,14 +18,14 @@
   return v3;
 }
 
-- (void)registerWithQueue:(id)a3 callback:(id)a4
+- (void)registerWithQueue:(id)queue callback:(id)callback
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(callback);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  AONSenseSampleProvider.register(queue:callback:)(v8, sub_100396F60, v7);
+  queueCopy = queue;
+  selfCopy = self;
+  AONSenseSampleProvider.register(queue:callback:)(queueCopy, sub_100396F60, v7);
 }
 
 - (_TtC19ProximityDaemonCore22AONSenseSampleProvider)init

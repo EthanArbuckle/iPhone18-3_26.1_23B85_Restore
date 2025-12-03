@@ -1,39 +1,39 @@
 @interface PHAudioDeviceController
 + (AVSystemController)sharedSystemController;
 + (PHAudioDeviceController)sharedAudioDeviceController;
-- (BOOL)_routeIsAirTunes:(id)a3;
-- (BOOL)_routeIsDefault:(id)a3;
-- (BOOL)_routeIsHandset:(id)a3;
-- (BOOL)_routeIsReceiver:(id)a3;
-- (BOOL)_routeIsSpeaker:(id)a3;
+- (BOOL)_routeIsAirTunes:(id)tunes;
+- (BOOL)_routeIsDefault:(id)default;
+- (BOOL)_routeIsHandset:(id)handset;
+- (BOOL)_routeIsReceiver:(id)receiver;
+- (BOOL)_routeIsSpeaker:(id)speaker;
 - (BOOL)handsetRouteAvailable;
-- (BOOL)handsetRouteAvailableForUnformattedPickableRoutes:(id)a3;
+- (BOOL)handsetRouteAvailableForUnformattedPickableRoutes:(id)routes;
 - (BOOL)receiverRouteIsPicked;
 - (BOOL)speakerRouteAvailable;
-- (BOOL)speakerRouteAvailableForUnformattedPickableRoutes:(id)a3;
+- (BOOL)speakerRouteAvailableForUnformattedPickableRoutes:(id)routes;
 - (BOOL)speakerRouteIsPicked;
 - (NSArray)routes;
 - (PHAudioDeviceController)init;
 - (PHAudioDeviceControllerDelegate)delegate;
 - (TUAudioRoute)currentRoute;
-- (id)_pickableRoutesForCategory:(id)a3 mode:(id)a4;
+- (id)_pickableRoutesForCategory:(id)category mode:(id)mode;
 - (id)_pickableRoutesUsingAttribute;
-- (id)_pickableRoutesUsingBackgroundQueue:(BOOL)a3;
-- (id)_pickedRouteUsingBackgroundQueue:(BOOL)a3;
-- (id)_unformattedPickableRoutesForAudioSessionCategory:(id)a3 usingBackgroundQueue:(BOOL)a4;
-- (id)callForPickableRoutesUsingBackgroundQueue:(BOOL)a3;
-- (id)routesForUnformattedPickableRoutes:(id)a3;
+- (id)_pickableRoutesUsingBackgroundQueue:(BOOL)queue;
+- (id)_pickedRouteUsingBackgroundQueue:(BOOL)queue;
+- (id)_unformattedPickableRoutesForAudioSessionCategory:(id)category usingBackgroundQueue:(BOOL)queue;
+- (id)callForPickableRoutesUsingBackgroundQueue:(BOOL)queue;
+- (id)routesForUnformattedPickableRoutes:(id)routes;
 - (void)_acquireLock;
 - (void)_audioRouteInformationChanged;
-- (void)_pickRoute:(id)a3;
+- (void)_pickRoute:(id)route;
 - (void)_pickableRoutesUsingAttribute;
 - (void)_releaseLock;
 - (void)clearCachedRoutes;
 - (void)dealloc;
-- (void)fetchCurrentRouteWithCompletionHandler:(id)a3;
-- (void)fetchRoutesWithCompletionHandler:(id)a3;
+- (void)fetchCurrentRouteWithCompletionHandler:(id)handler;
+- (void)fetchRoutesWithCompletionHandler:(id)handler;
 - (void)pickHandsetRoute;
-- (void)pickRouteWithUID:(id)a3;
+- (void)pickRouteWithUID:(id)d;
 - (void)pickSpeakerRoute;
 - (void)restorePickedRoute;
 @end
@@ -51,12 +51,12 @@
     if (_TUAssertShouldCrashApplication())
     {
       v6 = +[NSAssertionHandler currentHandler];
-      [v6 handleFailureInMethod:a2 object:a1 file:@"PHAudioDeviceController.m" lineNumber:39 description:@"Weak linking of AVSystemController failed"];
+      [v6 handleFailureInMethod:a2 object:self file:@"PHAudioDeviceController.m" lineNumber:39 description:@"Weak linking of AVSystemController failed"];
     }
   }
 
-  v7 = [v4 sharedAVSystemController];
-  if (v7)
+  sharedAVSystemController = [v4 sharedAVSystemController];
+  if (sharedAVSystemController)
   {
     if (objc_opt_isKindOfClass())
     {
@@ -85,7 +85,7 @@
 
 LABEL_11:
 
-  return v7;
+  return sharedAVSystemController;
 }
 
 + (PHAudioDeviceController)sharedAudioDeviceController
@@ -147,25 +147,25 @@ void __54__PHAudioDeviceController_sharedAudioDeviceController__block_invoke(id 
 
 - (NSArray)routes
 {
-  v3 = [(PHAudioDeviceController *)self _pickableRoutes];
-  v4 = [(PHAudioDeviceController *)self routesForUnformattedPickableRoutes:v3];
+  _pickableRoutes = [(PHAudioDeviceController *)self _pickableRoutes];
+  v4 = [(PHAudioDeviceController *)self routesForUnformattedPickableRoutes:_pickableRoutes];
 
   return v4;
 }
 
-- (void)fetchRoutesWithCompletionHandler:(id)a3
+- (void)fetchRoutesWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PHAudioDeviceController *)self fetchRoutesBackgroundCallCenter];
-  v6 = [v5 queue];
+  handlerCopy = handler;
+  fetchRoutesBackgroundCallCenter = [(PHAudioDeviceController *)self fetchRoutesBackgroundCallCenter];
+  queue = [fetchRoutesBackgroundCallCenter queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __60__PHAudioDeviceController_fetchRoutesWithCompletionHandler___block_invoke;
   v8[3] = &unk_100285440;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  dispatch_async(queue, v8);
 }
 
 void __60__PHAudioDeviceController_fetchRoutesWithCompletionHandler___block_invoke(uint64_t a1)
@@ -185,15 +185,15 @@ void __60__PHAudioDeviceController_fetchRoutesWithCompletionHandler___block_invo
   dispatch_async(&_dispatch_main_q, v7);
 }
 
-- (id)routesForUnformattedPickableRoutes:(id)a3
+- (id)routesForUnformattedPickableRoutes:(id)routes
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  routesCopy = routes;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [routesCopy count]);
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = routesCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -228,9 +228,9 @@ void __60__PHAudioDeviceController_fetchRoutesWithCompletionHandler___block_invo
   return v13;
 }
 
-- (id)callForPickableRoutesUsingBackgroundQueue:(BOOL)a3
+- (id)callForPickableRoutesUsingBackgroundQueue:(BOOL)queue
 {
-  if (a3)
+  if (queue)
   {
     [(PHAudioDeviceController *)self fetchRoutesBackgroundCallCenter];
   }
@@ -240,43 +240,43 @@ void __60__PHAudioDeviceController_fetchRoutesWithCompletionHandler___block_invo
     +[TUCallCenter sharedInstance];
   }
   v3 = ;
-  v4 = [v3 queue];
-  dispatch_assert_queue_V2(v4);
+  queue = [v3 queue];
+  dispatch_assert_queue_V2(queue);
 
-  v5 = [v3 frontmostCall];
-  v6 = v5;
-  if (v5)
+  frontmostCall = [v3 frontmostCall];
+  v6 = frontmostCall;
+  if (frontmostCall)
   {
-    v7 = v5;
+    currentVideoCall = frontmostCall;
   }
 
   else
   {
-    v7 = [v3 currentVideoCall];
+    currentVideoCall = [v3 currentVideoCall];
   }
 
-  v8 = v7;
+  v8 = currentVideoCall;
 
   return v8;
 }
 
 - (BOOL)speakerRouteAvailable
 {
-  v2 = self;
-  v3 = [(PHAudioDeviceController *)self _pickableRoutes];
-  LOBYTE(v2) = [(PHAudioDeviceController *)v2 speakerRouteAvailableForUnformattedPickableRoutes:v3];
+  selfCopy = self;
+  _pickableRoutes = [(PHAudioDeviceController *)self _pickableRoutes];
+  LOBYTE(selfCopy) = [(PHAudioDeviceController *)selfCopy speakerRouteAvailableForUnformattedPickableRoutes:_pickableRoutes];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)speakerRouteAvailableForUnformattedPickableRoutes:(id)a3
+- (BOOL)speakerRouteAvailableForUnformattedPickableRoutes:(id)routes
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  routesCopy = routes;
+  v5 = [routesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -287,7 +287,7 @@ void __60__PHAudioDeviceController_fetchRoutesWithCompletionHandler___block_invo
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(routesCopy);
         }
 
         if ([(PHAudioDeviceController *)self _routeIsSpeaker:*(*(&v11 + 1) + 8 * i), v11])
@@ -297,7 +297,7 @@ void __60__PHAudioDeviceController_fetchRoutesWithCompletionHandler___block_invo
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [routesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -315,21 +315,21 @@ LABEL_11:
 
 - (BOOL)handsetRouteAvailable
 {
-  v2 = self;
-  v3 = [(PHAudioDeviceController *)self _pickableRoutes];
-  LOBYTE(v2) = [(PHAudioDeviceController *)v2 handsetRouteAvailableForUnformattedPickableRoutes:v3];
+  selfCopy = self;
+  _pickableRoutes = [(PHAudioDeviceController *)self _pickableRoutes];
+  LOBYTE(selfCopy) = [(PHAudioDeviceController *)selfCopy handsetRouteAvailableForUnformattedPickableRoutes:_pickableRoutes];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)handsetRouteAvailableForUnformattedPickableRoutes:(id)a3
+- (BOOL)handsetRouteAvailableForUnformattedPickableRoutes:(id)routes
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  routesCopy = routes;
+  v5 = [routesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -340,7 +340,7 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(routesCopy);
         }
 
         if ([(PHAudioDeviceController *)self _routeIsHandset:*(*(&v11 + 1) + 8 * i), v11])
@@ -350,7 +350,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [routesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -379,8 +379,8 @@ LABEL_11:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(PHAudioDeviceController *)self _pickableRoutes];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  _pickableRoutes = [(PHAudioDeviceController *)self _pickableRoutes];
+  v5 = [_pickableRoutes countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -391,7 +391,7 @@ LABEL_11:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_pickableRoutes);
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
@@ -402,7 +402,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v6 = [_pickableRoutes countByEnumeratingWithState:&v10 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -428,8 +428,8 @@ LABEL_13:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(PHAudioDeviceController *)self _pickableRoutes];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  _pickableRoutes = [(PHAudioDeviceController *)self _pickableRoutes];
+  v5 = [_pickableRoutes countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -440,7 +440,7 @@ LABEL_13:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_pickableRoutes);
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
@@ -451,7 +451,7 @@ LABEL_13:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v6 = [_pickableRoutes countByEnumeratingWithState:&v10 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -464,25 +464,25 @@ LABEL_13:
 LABEL_13:
 }
 
-- (void)pickRouteWithUID:(id)a3
+- (void)pickRouteWithUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v4;
+    v20 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Asked to pick route with UID %@", buf, 0xCu);
   }
 
-  if (v4)
+  if (dCopy)
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v6 = [(PHAudioDeviceController *)self _pickableRoutes];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    _pickableRoutes = [(PHAudioDeviceController *)self _pickableRoutes];
+    v7 = [_pickableRoutes countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
       v8 = v7;
@@ -493,12 +493,12 @@ LABEL_13:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(_pickableRoutes);
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
           v12 = [v11 objectForKey:AVSystemController_RouteDescriptionKey_RouteUID];
-          v13 = [v12 isEqualToString:v4];
+          v13 = [v12 isEqualToString:dCopy];
 
           if (v13)
           {
@@ -508,7 +508,7 @@ LABEL_13:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v8 = [_pickableRoutes countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v8)
         {
           continue;
@@ -518,7 +518,7 @@ LABEL_13:
       }
     }
 
-    if ([v4 isEqualToString:TUCallSourceIdentifierSpeakerRoute])
+    if ([dCopy isEqualToString:TUCallSourceIdentifierSpeakerRoute])
     {
       [(PHAudioDeviceController *)self pickSpeakerRoute];
     }
@@ -536,19 +536,19 @@ LABEL_15:
   return v5;
 }
 
-- (void)fetchCurrentRouteWithCompletionHandler:(id)a3
+- (void)fetchCurrentRouteWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(PHAudioDeviceController *)self fetchRoutesBackgroundCallCenter];
-  v6 = [v5 queue];
+  handlerCopy = handler;
+  fetchRoutesBackgroundCallCenter = [(PHAudioDeviceController *)self fetchRoutesBackgroundCallCenter];
+  queue = [fetchRoutesBackgroundCallCenter queue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __66__PHAudioDeviceController_fetchCurrentRouteWithCompletionHandler___block_invoke;
   v8[3] = &unk_100285440;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  dispatch_async(queue, v8);
 }
 
 void __66__PHAudioDeviceController_fetchCurrentRouteWithCompletionHandler___block_invoke(uint64_t a1)
@@ -598,23 +598,23 @@ void __66__PHAudioDeviceController_fetchCurrentRouteWithCompletionHandler___bloc
 
 - (BOOL)speakerRouteIsPicked
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(PHAudioDeviceController *)self _pickedRouteUsingBackgroundQueue:0];
-  LOBYTE(v2) = [(PHAudioDeviceController *)v2 _routeIsSpeaker:v3];
+  LOBYTE(selfCopy) = [(PHAudioDeviceController *)selfCopy _routeIsSpeaker:v3];
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)receiverRouteIsPicked
 {
-  v2 = self;
+  selfCopy = self;
   v3 = [(PHAudioDeviceController *)self _pickedRouteUsingBackgroundQueue:0];
-  LOBYTE(v2) = [(PHAudioDeviceController *)v2 _routeIsReceiver:v3];
+  LOBYTE(selfCopy) = [(PHAudioDeviceController *)selfCopy _routeIsReceiver:v3];
 
-  return v2;
+  return selfCopy;
 }
 
-- (id)_pickedRouteUsingBackgroundQueue:(BOOL)a3
+- (id)_pickedRouteUsingBackgroundQueue:(BOOL)queue
 {
   p_pickedRoute = &self->_pickedRoute;
   pickedRoute = self->_pickedRoute;
@@ -625,26 +625,26 @@ void __66__PHAudioDeviceController_fetchCurrentRouteWithCompletionHandler___bloc
 
   else
   {
-    v6 = a3;
+    queueCopy = queue;
     v8 = PHDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(PHAudioDeviceController *)self callForPickableRoutesUsingBackgroundQueue:v6];
+      v9 = [(PHAudioDeviceController *)self callForPickableRoutesUsingBackgroundQueue:queueCopy];
       *buf = 138412290;
       v31 = v9;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Refreshing picked route based on call: %@", buf, 0xCu);
     }
 
     v10 = +[TUAudioSystemController sharedAudioSystemController];
-    v11 = [v10 isTTY];
+    isTTY = [v10 isTTY];
 
-    if ((v11 & 1) == 0)
+    if ((isTTY & 1) == 0)
     {
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v12 = [(PHAudioDeviceController *)self _pickableRoutesUsingBackgroundQueue:v6, 0];
+      v12 = [(PHAudioDeviceController *)self _pickableRoutesUsingBackgroundQueue:queueCopy, 0];
       v13 = [v12 countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v13)
       {
@@ -661,9 +661,9 @@ LABEL_8:
 
           v17 = *(*(&v25 + 1) + 8 * v16);
           v18 = [v17 valueForKey:AVSystemController_RouteDescriptionKey_RouteCurrentlyPicked];
-          v19 = [v18 BOOLValue];
+          bOOLValue = [v18 BOOLValue];
 
-          if (v19)
+          if (bOOLValue)
           {
             break;
           }
@@ -757,70 +757,70 @@ void __56__PHAudioDeviceController__pickableRoutesUsingAttribute__block_invoke(i
   objc_storeStrong(&_pickableRoutesUsingAttribute__AVSystemController_PickableRoutesAttribute, v2);
 }
 
-- (id)_pickableRoutesUsingBackgroundQueue:(BOOL)a3
+- (id)_pickableRoutesUsingBackgroundQueue:(BOOL)queue
 {
-  v3 = a3;
-  v5 = [(PHAudioDeviceController *)self delegate];
-  if (v5 && (v6 = v5, -[PHAudioDeviceController delegate](self, "delegate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isPendingAudioSessionActivation], v7, v6, v8))
+  queueCopy = queue;
+  delegate = [(PHAudioDeviceController *)self delegate];
+  if (delegate && (v6 = delegate, -[PHAudioDeviceController delegate](self, "delegate"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isPendingAudioSessionActivation], v7, v6, v8))
   {
-    v9 = [(PHAudioDeviceController *)self _pickableRoutesUsingAttribute];
+    _pickableRoutesUsingAttribute = [(PHAudioDeviceController *)self _pickableRoutesUsingAttribute];
   }
 
   else
   {
     v10 = +[AVAudioSession sharedInstance];
-    v11 = [v10 category];
-    v9 = [(PHAudioDeviceController *)self _unformattedPickableRoutesForAudioSessionCategory:v11 usingBackgroundQueue:v3];
+    category = [v10 category];
+    _pickableRoutesUsingAttribute = [(PHAudioDeviceController *)self _unformattedPickableRoutesForAudioSessionCategory:category usingBackgroundQueue:queueCopy];
   }
 
-  return v9;
+  return _pickableRoutesUsingAttribute;
 }
 
-- (id)_unformattedPickableRoutesForAudioSessionCategory:(id)a3 usingBackgroundQueue:(BOOL)a4
+- (id)_unformattedPickableRoutesForAudioSessionCategory:(id)category usingBackgroundQueue:(BOOL)queue
 {
-  v4 = a4;
-  if ([a3 isEqualToString:AVAudioSessionCategoryVoiceMail])
+  queueCopy = queue;
+  if ([category isEqualToString:AVAudioSessionCategoryVoiceMail])
   {
-    v6 = [(PHAudioDeviceController *)self _pickableRoutesForCategory:@"Voicemail" mode:0];
+    pickableRoutesForTTY = [(PHAudioDeviceController *)self _pickableRoutesForCategory:@"Voicemail" mode:0];
   }
 
   else
   {
     v7 = +[TUAudioSystemController sharedAudioSystemController];
-    v8 = [v7 isTTY];
+    isTTY = [v7 isTTY];
 
-    if (v8)
+    if (isTTY)
     {
       v9 = +[TUAudioSystemController sharedAudioSystemController];
-      v6 = [v9 pickableRoutesForTTY];
+      pickableRoutesForTTY = [v9 pickableRoutesForTTY];
     }
 
     else
     {
-      v9 = [(PHAudioDeviceController *)self callForPickableRoutesUsingBackgroundQueue:v4];
-      v10 = [v9 audioCategory];
+      v9 = [(PHAudioDeviceController *)self callForPickableRoutesUsingBackgroundQueue:queueCopy];
+      audioCategory = [v9 audioCategory];
 
-      if (v10)
+      if (audioCategory)
       {
-        v11 = [v9 audioCategory];
-        v12 = [v9 audioMode];
-        v6 = [(PHAudioDeviceController *)self _pickableRoutesForCategory:v11 mode:v12];
+        audioCategory2 = [v9 audioCategory];
+        audioMode = [v9 audioMode];
+        pickableRoutesForTTY = [(PHAudioDeviceController *)self _pickableRoutesForCategory:audioCategory2 mode:audioMode];
       }
 
       else
       {
-        v11 = +[TUAudioSystemController sharedAudioSystemController];
-        v6 = [v11 bestGuessPickableRoutesForAnyCall];
+        audioCategory2 = +[TUAudioSystemController sharedAudioSystemController];
+        pickableRoutesForTTY = [audioCategory2 bestGuessPickableRoutesForAnyCall];
       }
     }
   }
 
-  v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v6 count]);
+  v13 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [pickableRoutesForTTY count]);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v14 = v6;
+  v14 = pickableRoutesForTTY;
   v15 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v15)
   {
@@ -862,10 +862,10 @@ void __56__PHAudioDeviceController__pickableRoutesUsingAttribute__block_invoke(i
   return v13;
 }
 
-- (id)_pickableRoutesForCategory:(id)a3 mode:(id)a4
+- (id)_pickableRoutesForCategory:(id)category mode:(id)mode
 {
-  v6 = a3;
-  v7 = a4;
+  categoryCopy = category;
+  modeCopy = mode;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -879,7 +879,7 @@ void __56__PHAudioDeviceController__pickableRoutesUsingAttribute__block_invoke(i
   v11[3] = &unk_100286830;
   v11[4] = self;
   v11[5] = &v12;
-  [v8 getPickableRoutesForCategory:v6 mode:v7 completion:v11];
+  [v8 getPickableRoutesForCategory:categoryCopy mode:modeCopy completion:v11];
 
   [(PHAudioDeviceController *)self _acquireLock];
   v9 = v13[5];
@@ -895,21 +895,21 @@ void __59__PHAudioDeviceController__pickableRoutesForCategory_mode___block_invok
   [*(a1 + 32) _releaseLock];
 }
 
-- (void)_pickRoute:(id)a3
+- (void)_pickRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   [(PHAudioDeviceController *)self clearCachedRoutes];
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v14 = v4;
+    v14 = routeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PHAudioDeviceController: Picking new route = %@", buf, 0xCu);
   }
 
   v6 = +[PHAudioDeviceController sharedSystemController];
   v12 = 0;
-  v7 = [v6 setAttribute:v4 forKey:AVSystemController_PickedRouteAttribute error:&v12];
+  v7 = [v6 setAttribute:routeCopy forKey:AVSystemController_PickedRouteAttribute error:&v12];
   v8 = v12;
 
   if ((v7 & 1) == 0)
@@ -922,8 +922,8 @@ void __59__PHAudioDeviceController__pickableRoutesForCategory_mode___block_invok
   }
 
   pickedRoute = self->_pickedRoute;
-  self->_pickedRoute = v4;
-  v11 = v4;
+  self->_pickedRoute = routeCopy;
+  v11 = routeCopy;
 
   dispatch_async(&_dispatch_main_q, &__block_literal_global_104);
 }
@@ -934,44 +934,44 @@ void __38__PHAudioDeviceController__pickRoute___block_invoke(id a1)
   [v1 postNotificationName:@"PHAudioDeviceControllerPickedRouteChangedNotification" object:0];
 }
 
-- (BOOL)_routeIsAirTunes:(id)a3
+- (BOOL)_routeIsAirTunes:(id)tunes
 {
-  v3 = [a3 valueForKey:AVSystemController_RouteDescriptionKey_AVAudioRouteName];
+  v3 = [tunes valueForKey:AVSystemController_RouteDescriptionKey_AVAudioRouteName];
   v4 = [v3 isEqual:@"AirTunes"];
 
   return v4;
 }
 
-- (BOOL)_routeIsSpeaker:(id)a3
+- (BOOL)_routeIsSpeaker:(id)speaker
 {
-  v3 = [a3 valueForKey:AVSystemController_RouteDescriptionKey_AVAudioRouteName];
+  v3 = [speaker valueForKey:AVSystemController_RouteDescriptionKey_AVAudioRouteName];
   v4 = [v3 isEqual:@"Speaker"];
 
   return v4;
 }
 
-- (BOOL)_routeIsReceiver:(id)a3
+- (BOOL)_routeIsReceiver:(id)receiver
 {
-  v3 = [a3 valueForKey:AVSystemController_RouteDescriptionKey_AVAudioRouteName];
+  v3 = [receiver valueForKey:AVSystemController_RouteDescriptionKey_AVAudioRouteName];
   v4 = [v3 isEqual:@"Receiver"];
 
   return v4;
 }
 
-- (BOOL)_routeIsDefault:(id)a3
+- (BOOL)_routeIsDefault:(id)default
 {
-  v3 = [a3 valueForKey:AVSystemController_RouteDescriptionKey_RouteType];
+  v3 = [default valueForKey:AVSystemController_RouteDescriptionKey_RouteType];
   v4 = [v3 isEqual:AVSystemController_PickableRouteType_Default];
 
   return v4;
 }
 
-- (BOOL)_routeIsHandset:(id)a3
+- (BOOL)_routeIsHandset:(id)handset
 {
-  v4 = a3;
-  v5 = [(PHAudioDeviceController *)self _routeIsReceiver:v4];
-  v6 = [(PHAudioDeviceController *)self _routeIsDefault:v4];
-  v7 = [(PHAudioDeviceController *)self _routeIsSpeaker:v4];
+  handsetCopy = handset;
+  v5 = [(PHAudioDeviceController *)self _routeIsReceiver:handsetCopy];
+  v6 = [(PHAudioDeviceController *)self _routeIsDefault:handsetCopy];
+  v7 = [(PHAudioDeviceController *)self _routeIsSpeaker:handsetCopy];
 
   if (v5)
   {
@@ -986,14 +986,14 @@ void __38__PHAudioDeviceController__pickRoute___block_invoke(id a1)
 
 - (void)_acquireLock
 {
-  v2 = [(PHAudioDeviceController *)self modifyingStateLock];
-  dispatch_semaphore_wait(v2, 0xFFFFFFFFFFFFFFFFLL);
+  modifyingStateLock = [(PHAudioDeviceController *)self modifyingStateLock];
+  dispatch_semaphore_wait(modifyingStateLock, 0xFFFFFFFFFFFFFFFFLL);
 }
 
 - (void)_releaseLock
 {
-  v2 = [(PHAudioDeviceController *)self modifyingStateLock];
-  dispatch_semaphore_signal(v2);
+  modifyingStateLock = [(PHAudioDeviceController *)self modifyingStateLock];
+  dispatch_semaphore_signal(modifyingStateLock);
 }
 
 - (void)_audioRouteInformationChanged
@@ -1027,7 +1027,7 @@ void __56__PHAudioDeviceController__audioRouteInformationChanged__block_invoke(i
 - (void)_pickableRoutesUsingAttribute
 {
   v4 = +[NSAssertionHandler currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"PHAudioDeviceController.m" lineNumber:265 description:@"Failed to weak link AVSystemController_PickableRoutesAttribute"];
+  [v4 handleFailureInMethod:self object:a2 file:@"PHAudioDeviceController.m" lineNumber:265 description:@"Failed to weak link AVSystemController_PickableRoutesAttribute"];
 }
 
 - (void)_pickRoute:(uint64_t)a1 .cold.1(uint64_t a1, NSObject *a2)

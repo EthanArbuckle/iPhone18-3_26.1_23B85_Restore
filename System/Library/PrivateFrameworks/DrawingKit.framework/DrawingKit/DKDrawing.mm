@@ -1,15 +1,15 @@
 @interface DKDrawing
-+ (id)copyOfDrawing:(id)a3 toFitInBounds:(CGRect)a4;
-+ (void)resizeDrawing:(id)a3 toFitInBounds:(CGRect)a4;
++ (id)copyOfDrawing:(id)drawing toFitInBounds:(CGRect)bounds;
++ (void)resizeDrawing:(id)drawing toFitInBounds:(CGRect)bounds;
 - (CGRect)canvasBounds;
 - (CGRect)strokesFrame;
 - (DKDrawing)init;
-- (DKDrawing)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)decodedBrushStrokesWithArchiverEncodedBrushStrokes:(id)a3;
+- (DKDrawing)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)decodedBrushStrokesWithArchiverEncodedBrushStrokes:(id)strokes;
 - (id)encodeBrushStrokesForArchiving;
 - (int64_t)totalPoints;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)reset;
 @end
 
@@ -22,9 +22,9 @@
   v2 = [(DKDrawing *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     strokes = v2->_strokes;
-    v2->_strokes = v3;
+    v2->_strokes = array;
 
     v5 = *(MEMORY[0x277CBF3A0] + 16);
     v2->_strokesFrame.origin = *MEMORY[0x277CBF3A0];
@@ -36,9 +36,9 @@
 
 - (void)reset
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   strokes = self->_strokes;
-  self->_strokes = v3;
+  self->_strokes = array;
 
   v5 = *(MEMORY[0x277CBF3A0] + 16);
   self->_strokesFrame.origin = *MEMORY[0x277CBF3A0];
@@ -52,8 +52,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(DKDrawing *)self strokes];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  strokes = [(DKDrawing *)self strokes];
+  v3 = [strokes countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -65,14 +65,14 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(strokes);
         }
 
-        v8 = [*(*(&v10 + 1) + 8 * i) strokePoints];
-        v5 += [v8 count];
+        strokePoints = [*(*(&v10 + 1) + 8 * i) strokePoints];
+        v5 += [strokePoints count];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [strokes countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -86,7 +86,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(DKDrawing);
   v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:self->_strokes copyItems:1];
@@ -102,9 +102,9 @@
   return v4;
 }
 
-- (DKDrawing)initWithCoder:(id)a3
+- (DKDrawing)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(DKDrawing *)self init];
   if (v5)
   {
@@ -112,14 +112,14 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"sb1"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"sb1"];
 
     CGRectMakeWithDictionaryRepresentation(v10, &v5->_strokesFrame);
     v11 = MEMORY[0x277CBEB98];
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v11 setWithObjects:{v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"cb1"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"cb1"];
 
     CGRectMakeWithDictionaryRepresentation(v15, &v5->_canvasBounds);
     v16 = MEMORY[0x277CBEB98];
@@ -127,7 +127,7 @@
     v18 = objc_opt_class();
     v19 = objc_opt_class();
     v20 = [v16 setWithObjects:{v17, v18, v19, objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"st1"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"st1"];
 
     v22 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v21, "count")}];
     strokes = v5->_strokes;
@@ -141,16 +141,16 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v7 = [(DKDrawing *)self encodeBrushStrokesForArchiving];
-  [v4 encodeObject:v7 forKey:@"st1"];
+  coderCopy = coder;
+  encodeBrushStrokesForArchiving = [(DKDrawing *)self encodeBrushStrokesForArchiving];
+  [coderCopy encodeObject:encodeBrushStrokesForArchiving forKey:@"st1"];
   DictionaryRepresentation = CGRectCreateDictionaryRepresentation(self->_strokesFrame);
-  [v4 encodeObject:DictionaryRepresentation forKey:@"sb1"];
+  [coderCopy encodeObject:DictionaryRepresentation forKey:@"sb1"];
   v6 = CGRectCreateDictionaryRepresentation(self->_canvasBounds);
 
-  [v4 encodeObject:v6 forKey:@"cb1"];
+  [coderCopy encodeObject:v6 forKey:@"cb1"];
 }
 
 - (id)encodeBrushStrokesForArchiving
@@ -177,12 +177,12 @@
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
-        v9 = [v8 encodedBrushStroke];
-        v10 = [v8 strokePoints];
-        v11 = [v10 count];
+        encodedBrushStroke = [v8 encodedBrushStroke];
+        strokePoints = [v8 strokePoints];
+        v11 = [strokePoints count];
 
         v20[1] = @"ct1";
-        v21[0] = v9;
+        v21[0] = encodedBrushStroke;
         v20[0] = @"bt1";
         v12 = [MEMORY[0x277CCABB0] numberWithInt:v11];
         v21[1] = v12;
@@ -199,16 +199,16 @@
   return v3;
 }
 
-- (id)decodedBrushStrokesWithArchiverEncodedBrushStrokes:(id)a3
+- (id)decodedBrushStrokesWithArchiverEncodedBrushStrokes:(id)strokes
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v17 = [MEMORY[0x277CBEB18] array];
+  strokesCopy = strokes;
+  array = [MEMORY[0x277CBEB18] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = v3;
+  v4 = strokesCopy;
   v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -226,11 +226,11 @@
         v9 = *(*(&v18 + 1) + 8 * i);
         v10 = [v9 objectForKey:@"bt1"];
         v11 = [v9 objectForKey:@"ct1"];
-        v12 = [v11 intValue];
+        intValue = [v11 intValue];
 
         if ([v10 length])
         {
-          v13 = v12 == 0;
+          v13 = intValue == 0;
         }
 
         else
@@ -240,16 +240,16 @@
 
         if (v13)
         {
-          NSLog(&cfstr_EncodedStrokeH.isa, [v10 length], v12);
+          NSLog(&cfstr_EncodedStrokeH.isa, [v10 length], intValue);
         }
 
         else
         {
-          v14 = [DKDrawingStroke drawingStrokeWithData:v10 count:v12];
+          v14 = [DKDrawingStroke drawingStrokeWithData:v10 count:intValue];
           v15 = v14;
           if (v14)
           {
-            [v17 addObject:v14];
+            [array addObject:v14];
           }
         }
       }
@@ -260,33 +260,33 @@
     while (v6);
   }
 
-  return v17;
+  return array;
 }
 
-+ (id)copyOfDrawing:(id)a3 toFitInBounds:(CGRect)a4
++ (id)copyOfDrawing:(id)drawing toFitInBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = [a3 copy];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v8 = [drawing copy];
   [objc_opt_class() resizeDrawing:v8 toFitInBounds:{x, y, width, height}];
   return v8;
 }
 
-+ (void)resizeDrawing:(id)a3 toFitInBounds:(CGRect)a4
++ (void)resizeDrawing:(id)drawing toFitInBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
+  height = bounds.size.height;
+  width = bounds.size.width;
   v67 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  [v6 strokesFrame];
+  drawingCopy = drawing;
+  [drawingCopy strokesFrame];
   v8 = v7;
-  [v6 strokesFrame];
+  [drawingCopy strokesFrame];
   v10 = v9;
-  [v6 strokesFrame];
+  [drawingCopy strokesFrame];
   v12 = width / v11;
-  [v6 strokesFrame];
+  [drawingCopy strokesFrame];
   v59 = 0u;
   v60 = 0u;
   if (v12 >= height / v13)
@@ -296,8 +296,8 @@
 
   v61 = 0uLL;
   v62 = 0uLL;
-  v14 = [v6 strokes];
-  v15 = [v14 countByEnumeratingWithState:&v59 objects:v66 count:16];
+  strokes = [drawingCopy strokes];
+  v15 = [strokes countByEnumeratingWithState:&v59 objects:v66 count:16];
   if (v15)
   {
     v16 = v15;
@@ -308,7 +308,7 @@
       {
         if (*v60 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(strokes);
         }
 
         v19 = *(*(&v59 + 1) + 8 * i);
@@ -316,8 +316,8 @@
         v56 = 0u;
         v57 = 0u;
         v58 = 0u;
-        v20 = [v19 strokePoints];
-        v21 = [v20 countByEnumeratingWithState:&v55 objects:v65 count:16];
+        strokePoints = [v19 strokePoints];
+        v21 = [strokePoints countByEnumeratingWithState:&v55 objects:v65 count:16];
         if (v21)
         {
           v22 = v21;
@@ -328,7 +328,7 @@
             {
               if (*v56 != v23)
               {
-                objc_enumerationMutation(v20);
+                objc_enumerationMutation(strokePoints);
               }
 
               v25 = *(*(&v55 + 1) + 8 * j);
@@ -338,14 +338,14 @@
               [v25 setLocation:{v27, v28 - v10}];
             }
 
-            v22 = [v20 countByEnumeratingWithState:&v55 objects:v65 count:16];
+            v22 = [strokePoints countByEnumeratingWithState:&v55 objects:v65 count:16];
           }
 
           while (v22);
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v59 objects:v66 count:16];
+      v16 = [strokes countByEnumeratingWithState:&v59 objects:v66 count:16];
     }
 
     while (v16);
@@ -355,8 +355,8 @@
   v54 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v29 = [v6 strokes];
-  v30 = [v29 countByEnumeratingWithState:&v51 objects:v64 count:16];
+  strokes2 = [drawingCopy strokes];
+  v30 = [strokes2 countByEnumeratingWithState:&v51 objects:v64 count:16];
   if (v30)
   {
     v31 = v30;
@@ -367,7 +367,7 @@
       {
         if (*v52 != v32)
         {
-          objc_enumerationMutation(v29);
+          objc_enumerationMutation(strokes2);
         }
 
         v34 = *(*(&v51 + 1) + 8 * k);
@@ -375,8 +375,8 @@
         v48 = 0u;
         v49 = 0u;
         v50 = 0u;
-        v35 = [v34 strokePoints];
-        v36 = [v35 countByEnumeratingWithState:&v47 objects:v63 count:16];
+        strokePoints2 = [v34 strokePoints];
+        v36 = [strokePoints2 countByEnumeratingWithState:&v47 objects:v63 count:16];
         if (v36)
         {
           v37 = v36;
@@ -387,7 +387,7 @@
             {
               if (*v48 != v38)
               {
-                objc_enumerationMutation(v35);
+                objc_enumerationMutation(strokePoints2);
               }
 
               v40 = *(*(&v47 + 1) + 8 * m);
@@ -397,23 +397,23 @@
               [v40 setLocation:{v42, v12 * v43}];
             }
 
-            v37 = [v35 countByEnumeratingWithState:&v47 objects:v63 count:16];
+            v37 = [strokePoints2 countByEnumeratingWithState:&v47 objects:v63 count:16];
           }
 
           while (v37);
         }
       }
 
-      v31 = [v29 countByEnumeratingWithState:&v51 objects:v64 count:16];
+      v31 = [strokes2 countByEnumeratingWithState:&v51 objects:v64 count:16];
     }
 
     while (v31);
   }
 
-  [v6 strokesFrame];
+  [drawingCopy strokesFrame];
   v45 = v12 * v44;
-  [v6 strokesFrame];
-  [v6 setStrokesFrame:{0.0, 0.0, v45, v12 * v46}];
+  [drawingCopy strokesFrame];
+  [drawingCopy setStrokesFrame:{0.0, 0.0, v45, v12 * v46}];
 }
 
 - (CGRect)canvasBounds

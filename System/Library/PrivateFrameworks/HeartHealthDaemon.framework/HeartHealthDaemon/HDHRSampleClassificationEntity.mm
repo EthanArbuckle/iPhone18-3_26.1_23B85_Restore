@@ -1,47 +1,47 @@
 @interface HDHRSampleClassificationEntity
-+ (BOOL)deleteAllClassificationsWithTransaction:(id)a3 error:(id *)a4;
-+ (BOOL)deleteClassificationWithSampleUUID:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (id)_insertEntityWithSampleUUID:(id)a3 classification:(int64_t)a4 sampleStartDate:(id)a5 sampleDuration:(double)a6 sampleTimeZone:(id)a7 transaction:(id)a8 error:(id *)a9;
-+ (id)allSampleClassificationsWithTransaction:(id)a3 error:(id *)a4;
++ (BOOL)deleteAllClassificationsWithTransaction:(id)transaction error:(id *)error;
++ (BOOL)deleteClassificationWithSampleUUID:(id)d transaction:(id)transaction error:(id *)error;
++ (id)_insertEntityWithSampleUUID:(id)d classification:(int64_t)classification sampleStartDate:(id)date sampleDuration:(double)duration sampleTimeZone:(id)zone transaction:(id)transaction error:(id *)error;
++ (id)allSampleClassificationsWithTransaction:(id)transaction error:(id *)error;
 + (id)databaseTable;
 + (id)foreignKeys;
-+ (id)insertSampleClassification:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (id)pruneWithProfile:(id)a3 nowDate:(id)a4 limit:(unint64_t)a5 error:(id *)a6;
-+ (id)sampleClassificationWithSampleUUID:(id)a3 transaction:(id)a4 error:(id *)a5;
++ (id)insertSampleClassification:(id)classification transaction:(id)transaction error:(id *)error;
++ (id)pruneWithProfile:(id)profile nowDate:(id)date limit:(unint64_t)limit error:(id *)error;
++ (id)sampleClassificationWithSampleUUID:(id)d transaction:(id)transaction error:(id *)error;
 @end
 
 @implementation HDHRSampleClassificationEntity
 
-+ (id)sampleClassificationWithSampleUUID:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)sampleClassificationWithSampleUUID:(id)d transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  transactionCopy = transaction;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__0;
   v23 = __Block_byref_object_dispose__0;
   v24 = 0;
-  v10 = [v9 databaseForEntityClass:a1];
+  v10 = [transactionCopy databaseForEntityClass:self];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __87__HDHRSampleClassificationEntity_sampleClassificationWithSampleUUID_transaction_error___block_invoke;
   v18[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v18[4] = a1;
+  v18[4] = self;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __87__HDHRSampleClassificationEntity_sampleClassificationWithSampleUUID_transaction_error___block_invoke_2;
   v16[3] = &unk_27865FBC0;
-  v11 = v8;
+  v11 = dCopy;
   v17 = v11;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __87__HDHRSampleClassificationEntity_sampleClassificationWithSampleUUID_transaction_error___block_invoke_3;
   v15[3] = &unk_27865FBE8;
   v15[4] = &v19;
-  LODWORD(a5) = [v10 executeCachedStatementForKey:&sampleClassificationWithSampleUUID_transaction_error__lookupKey error:a5 SQLGenerator:v18 bindingHandler:v16 enumerationHandler:v15];
+  LODWORD(error) = [v10 executeCachedStatementForKey:&sampleClassificationWithSampleUUID_transaction_error__lookupKey error:error SQLGenerator:v18 bindingHandler:v16 enumerationHandler:v15];
 
-  if (a5)
+  if (error)
   {
     v12 = v20[5];
   }
@@ -89,10 +89,10 @@ uint64_t __87__HDHRSampleClassificationEntity_sampleClassificationWithSampleUUID
   return 0;
 }
 
-+ (id)allSampleClassificationsWithTransaction:(id)a3 error:(id *)a4
++ (id)allSampleClassificationsWithTransaction:(id)transaction error:(id *)error
 {
-  v6 = [a3 databaseForEntityClass:a1];
-  v7 = [a1 queryWithDatabase:v6 predicate:0 limit:0 orderingTerms:0 groupBy:0];
+  v6 = [transaction databaseForEntityClass:self];
+  v7 = [self queryWithDatabase:v6 predicate:0 limit:0 orderingTerms:0 groupBy:0];
 
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v9 = HDHRSampleClassificationEntityPropertiesForModel();
@@ -101,11 +101,11 @@ uint64_t __87__HDHRSampleClassificationEntity_sampleClassificationWithSampleUUID
   v14[2] = __80__HDHRSampleClassificationEntity_allSampleClassificationsWithTransaction_error___block_invoke;
   v14[3] = &unk_27865FC10;
   v15 = v8;
-  v16 = a1;
+  selfCopy = self;
   v10 = v8;
-  LODWORD(a4) = [v7 enumerateProperties:v9 error:a4 enumerationHandler:v14];
+  LODWORD(error) = [v7 enumerateProperties:v9 error:error enumerationHandler:v14];
 
-  if (a4)
+  if (error)
   {
     v11 = v10;
   }
@@ -143,53 +143,53 @@ uint64_t __80__HDHRSampleClassificationEntity_allSampleClassificationsWithTransa
   return 1;
 }
 
-+ (id)insertSampleClassification:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)insertSampleClassification:(id)classification transaction:(id)transaction error:(id *)error
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [v9 sampleUUID];
-  v11 = [v9 classification];
-  v12 = [v9 sampleDateInterval];
-  v13 = [v12 startDate];
-  v14 = [v9 sampleDateInterval];
-  [v14 duration];
+  transactionCopy = transaction;
+  classificationCopy = classification;
+  sampleUUID = [classificationCopy sampleUUID];
+  classification = [classificationCopy classification];
+  sampleDateInterval = [classificationCopy sampleDateInterval];
+  startDate = [sampleDateInterval startDate];
+  sampleDateInterval2 = [classificationCopy sampleDateInterval];
+  [sampleDateInterval2 duration];
   v16 = v15;
-  v17 = [v9 sampleTimeZone];
+  sampleTimeZone = [classificationCopy sampleTimeZone];
 
-  v18 = [a1 _insertEntityWithSampleUUID:v10 classification:v11 sampleStartDate:v13 sampleDuration:v17 sampleTimeZone:v8 transaction:a5 error:v16];
+  v18 = [self _insertEntityWithSampleUUID:sampleUUID classification:classification sampleStartDate:startDate sampleDuration:sampleTimeZone sampleTimeZone:transactionCopy transaction:error error:v16];
 
   return v18;
 }
 
-+ (BOOL)deleteAllClassificationsWithTransaction:(id)a3 error:(id *)a4
++ (BOOL)deleteAllClassificationsWithTransaction:(id)transaction error:(id *)error
 {
-  v6 = [a3 databaseForEntityClass:a1];
-  v7 = [MEMORY[0x277D10B70] truePredicate];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  v6 = [transaction databaseForEntityClass:self];
+  truePredicate = [MEMORY[0x277D10B70] truePredicate];
+  v8 = [self queryWithDatabase:v6 predicate:truePredicate];
 
-  LOBYTE(a4) = [v8 deleteAllEntitiesWithError:a4];
-  return a4;
+  LOBYTE(error) = [v8 deleteAllEntitiesWithError:error];
+  return error;
 }
 
-+ (BOOL)deleteClassificationWithSampleUUID:(id)a3 transaction:(id)a4 error:(id *)a5
++ (BOOL)deleteClassificationWithSampleUUID:(id)d transaction:(id)transaction error:(id *)error
 {
   v8 = MEMORY[0x277D10B18];
-  v9 = a4;
-  v10 = [v8 predicateWithProperty:@"sample_uuid" value:a3 comparisonType:1];
-  v11 = [v9 databaseForEntityClass:a1];
+  transactionCopy = transaction;
+  v10 = [v8 predicateWithProperty:@"sample_uuid" value:d comparisonType:1];
+  v11 = [transactionCopy databaseForEntityClass:self];
 
-  v12 = [a1 queryWithDatabase:v11 predicate:v10];
+  v12 = [self queryWithDatabase:v11 predicate:v10];
 
-  LOBYTE(a5) = [v12 deleteAllEntitiesWithError:a5];
-  return a5;
+  LOBYTE(error) = [v12 deleteAllEntitiesWithError:error];
+  return error;
 }
 
-+ (id)pruneWithProfile:(id)a3 nowDate:(id)a4 limit:(unint64_t)a5 error:(id *)a6
++ (id)pruneWithProfile:(id)profile nowDate:(id)date limit:(unint64_t)limit error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [MEMORY[0x277CBEA80] currentCalendar];
-  v13 = [v12 hk_dateBySubtractingDays:44 fromDate:v11];
+  profileCopy = profile;
+  dateCopy = date;
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v13 = [currentCalendar hk_dateBySubtractingDays:44 fromDate:dateCopy];
 
   v14 = MEMORY[0x277D10B18];
   v15 = _HDSQLiteValueForDate();
@@ -199,19 +199,19 @@ uint64_t __80__HDHRSampleClassificationEntity_allSampleClassificationsWithTransa
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = 0;
-  v17 = [v10 database];
+  database = [profileCopy database];
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __71__HDHRSampleClassificationEntity_pruneWithProfile_nowDate_limit_error___block_invoke;
   v24 = &unk_27865FC38;
-  v27 = a1;
+  selfCopy = self;
   v18 = v16;
-  v28 = a5;
+  limitCopy = limit;
   v25 = v18;
   v26 = &v29;
-  LODWORD(a6) = [a1 performWriteTransactionWithHealthDatabase:v17 error:a6 block:&v21];
+  LODWORD(error) = [self performWriteTransactionWithHealthDatabase:database error:error block:&v21];
 
-  if (a6)
+  if (error)
   {
     v19 = [MEMORY[0x277CCABB0] numberWithInt:{*(v30 + 6), v21, v22, v23, v24}];
   }
@@ -261,26 +261,26 @@ uint64_t __71__HDHRSampleClassificationEntity_pruneWithProfile_nowDate_limit_err
   return v4;
 }
 
-+ (id)_insertEntityWithSampleUUID:(id)a3 classification:(int64_t)a4 sampleStartDate:(id)a5 sampleDuration:(double)a6 sampleTimeZone:(id)a7 transaction:(id)a8 error:(id *)a9
++ (id)_insertEntityWithSampleUUID:(id)d classification:(int64_t)classification sampleStartDate:(id)date sampleDuration:(double)duration sampleTimeZone:(id)zone transaction:(id)transaction error:(id *)error
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a7;
-  v19 = [a8 databaseForEntityClass:a1];
+  dCopy = d;
+  dateCopy = date;
+  zoneCopy = zone;
+  v19 = [transaction databaseForEntityClass:self];
   v20 = HDHRSampleClassificationEntityPropertiesForModel();
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __141__HDHRSampleClassificationEntity__insertEntityWithSampleUUID_classification_sampleStartDate_sampleDuration_sampleTimeZone_transaction_error___block_invoke;
   v26[3] = &unk_27865FCF0;
-  v27 = v16;
-  v28 = v17;
-  v31 = a6;
-  v29 = v18;
-  v30 = a4;
-  v21 = v18;
-  v22 = v17;
-  v23 = v16;
-  v24 = [a1 insertOrReplaceEntity:1 database:v19 properties:v20 error:a9 bindingHandler:v26];
+  v27 = dCopy;
+  v28 = dateCopy;
+  durationCopy = duration;
+  v29 = zoneCopy;
+  classificationCopy = classification;
+  v21 = zoneCopy;
+  v22 = dateCopy;
+  v23 = dCopy;
+  v24 = [self insertOrReplaceEntity:1 database:v19 properties:v20 error:error bindingHandler:v26];
 
   return v24;
 }

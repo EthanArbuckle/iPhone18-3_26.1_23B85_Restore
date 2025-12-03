@@ -1,22 +1,22 @@
 @interface AVAssetSynchronousInspectorLoader
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)duration;
-- (AVAssetSynchronousInspectorLoader)initWithAssetInspector:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (AVAssetSynchronousInspectorLoader)initWithAssetInspector:(id)inspector;
+- (BOOL)isEqual:(id)equal;
 - (void)dealloc;
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 completionHandler:(id)a4;
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 keysForCollectionKeys:(id)a4 completionHandler:(id)a5;
+- (void)loadValuesAsynchronouslyForKeys:(id)keys completionHandler:(id)handler;
+- (void)loadValuesAsynchronouslyForKeys:(id)keys keysForCollectionKeys:(id)collectionKeys completionHandler:(id)handler;
 @end
 
 @implementation AVAssetSynchronousInspectorLoader
 
-- (AVAssetSynchronousInspectorLoader)initWithAssetInspector:(id)a3
+- (AVAssetSynchronousInspectorLoader)initWithAssetInspector:(id)inspector
 {
   v6.receiver = self;
   v6.super_class = AVAssetSynchronousInspectorLoader;
   v4 = [(AVAssetInspectorLoader *)&v6 init];
   if (v4)
   {
-    v4->_assetInspector = a3;
+    v4->_assetInspector = inspector;
   }
 
   return v4;
@@ -29,7 +29,7 @@
   [(AVAssetInspectorLoader *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -38,24 +38,24 @@
   }
 
   assetInspector = self->_assetInspector;
-  v6 = [a3 assetInspector];
+  assetInspector = [equal assetInspector];
 
-  return [(AVAssetInspector *)assetInspector isEqual:v6];
+  return [(AVAssetInspector *)assetInspector isEqual:assetInspector];
 }
 
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 completionHandler:(id)a4
+- (void)loadValuesAsynchronouslyForKeys:(id)keys completionHandler:(id)handler
 {
-  if (a4)
+  if (handler)
   {
-    (*(a4 + 2))(a4);
+    (*(handler + 2))(handler);
   }
 }
 
-- (void)loadValuesAsynchronouslyForKeys:(id)a3 keysForCollectionKeys:(id)a4 completionHandler:(id)a5
+- (void)loadValuesAsynchronouslyForKeys:(id)keys keysForCollectionKeys:(id)collectionKeys completionHandler:(id)handler
 {
-  if (a5)
+  if (handler)
   {
-    (*(a5 + 2))(a5);
+    (*(handler + 2))(handler);
   }
 }
 

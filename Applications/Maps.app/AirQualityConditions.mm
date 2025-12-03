@@ -1,70 +1,70 @@
 @interface AirQualityConditions
-- (AirQualityConditions)initWithAirQualityIndex:(unint64_t)a3 isNumerical:(BOOL)a4 color:(id)a5 learnMoreURL:(id)a6 forLocation:(id)a7 withExpirationDate:(id)a8 airQualityDescription:(id)a9;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AirQualityConditions)initWithAirQualityIndex:(unint64_t)index isNumerical:(BOOL)numerical color:(id)color learnMoreURL:(id)l forLocation:(id)location withExpirationDate:(id)date airQualityDescription:(id)description;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation AirQualityConditions
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[1] = self->_airQualityIndex;
   *(v5 + 16) = self->_hasNumericalAirQualityIndex;
-  v6 = [(UIColor *)self->_color copyWithZone:a3];
+  v6 = [(UIColor *)self->_color copyWithZone:zone];
   v7 = v5[3];
   v5[3] = v6;
 
-  v8 = [(NSURL *)self->_learnMoreURL copyWithZone:a3];
+  v8 = [(NSURL *)self->_learnMoreURL copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(CLLocation *)self->_location copyWithZone:a3];
+  v10 = [(CLLocation *)self->_location copyWithZone:zone];
   v11 = v5[5];
   v5[5] = v10;
 
-  v12 = [(NSDate *)self->_expirationDate copyWithZone:a3];
+  v12 = [(NSDate *)self->_expirationDate copyWithZone:zone];
   v13 = v5[6];
   v5[6] = v12;
 
-  v14 = [(NSString *)self->_airQualityDescription copyWithZone:a3];
+  v14 = [(NSString *)self->_airQualityDescription copyWithZone:zone];
   v15 = v5[7];
   v5[7] = v14;
 
   return v5;
 }
 
-- (AirQualityConditions)initWithAirQualityIndex:(unint64_t)a3 isNumerical:(BOOL)a4 color:(id)a5 learnMoreURL:(id)a6 forLocation:(id)a7 withExpirationDate:(id)a8 airQualityDescription:(id)a9
+- (AirQualityConditions)initWithAirQualityIndex:(unint64_t)index isNumerical:(BOOL)numerical color:(id)color learnMoreURL:(id)l forLocation:(id)location withExpirationDate:(id)date airQualityDescription:(id)description
 {
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  colorCopy = color;
+  lCopy = l;
+  locationCopy = location;
+  dateCopy = date;
+  descriptionCopy = description;
   v39.receiver = self;
   v39.super_class = AirQualityConditions;
   v20 = [(AirQualityConditions *)&v39 init];
   v21 = v20;
   if (v20)
   {
-    v20->_airQualityIndex = a3;
-    v20->_hasNumericalAirQualityIndex = a4;
-    v22 = [(AirQualityConditions *)v20 colorForString:v15];
+    v20->_airQualityIndex = index;
+    v20->_hasNumericalAirQualityIndex = numerical;
+    v22 = [(AirQualityConditions *)v20 colorForString:colorCopy];
     color = v21->_color;
     v21->_color = v22;
 
-    v24 = [v16 copy];
+    v24 = [lCopy copy];
     learnMoreURL = v21->_learnMoreURL;
     v21->_learnMoreURL = v24;
 
-    v26 = [v17 copy];
+    v26 = [locationCopy copy];
     location = v21->_location;
     v21->_location = v26;
 
-    v28 = [v18 copy];
+    v28 = [dateCopy copy];
     expirationDate = v21->_expirationDate;
     v21->_expirationDate = v28;
 
-    v30 = [v19 copy];
+    v30 = [descriptionCopy copy];
     airQualityDescription = v21->_airQualityDescription;
     v21->_airQualityDescription = v30;
 

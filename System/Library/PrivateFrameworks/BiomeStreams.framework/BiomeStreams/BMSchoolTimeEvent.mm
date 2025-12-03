@@ -1,9 +1,9 @@
 @interface BMSchoolTimeEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMSchoolTimeEvent)initWithProto:(id)a3;
-- (BMSchoolTimeEvent)initWithProtoData:(id)a3;
-- (BMSchoolTimeEvent)initWithStarting:(BOOL)a3 reason:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMSchoolTimeEvent)initWithProto:(id)proto;
+- (BMSchoolTimeEvent)initWithProtoData:(id)data;
+- (BMSchoolTimeEvent)initWithStarting:(BOOL)starting reason:(unint64_t)reason;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)encodeAsProto;
 - (id)proto;
@@ -12,15 +12,15 @@
 
 @implementation BMSchoolTimeEvent
 
-- (BMSchoolTimeEvent)initWithStarting:(BOOL)a3 reason:(unint64_t)a4
+- (BMSchoolTimeEvent)initWithStarting:(BOOL)starting reason:(unint64_t)reason
 {
   v7.receiver = self;
   v7.super_class = BMSchoolTimeEvent;
   result = [(BMEventBase *)&v7 init];
   if (result)
   {
-    result->_starting = a3;
-    result->_reason = a4;
+    result->_starting = starting;
+    result->_reason = reason;
   }
 
   return result;
@@ -35,35 +35,35 @@
   return v5;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v5 = a3;
-  v6 = [[a1 alloc] initWithProtoData:v5];
+  dataCopy = data;
+  v6 = [[self alloc] initWithProtoData:dataCopy];
 
   return v6;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMSchoolTimeEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(BMSchoolTimeEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMSchoolTimeEvent)initWithProto:(id)a3
+- (BMSchoolTimeEvent)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [v5 starting];
-      v7 = [v5 reason];
-      v8 = v7;
-      if (v7 >= 3)
+      v5 = protoCopy;
+      starting = [v5 starting];
+      reason = [v5 reason];
+      v8 = reason;
+      if (reason >= 3)
       {
         v11 = __biome_log_for_category();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -76,11 +76,11 @@
 
       else
       {
-        v9 = v7;
+        v9 = reason;
       }
 
-      self = [(BMSchoolTimeEvent *)self initWithStarting:v6 reason:v9];
-      v10 = self;
+      self = [(BMSchoolTimeEvent *)self initWithStarting:starting reason:v9];
+      selfCopy = self;
     }
 
     else
@@ -91,48 +91,48 @@
         [(BMSchoolTimeEvent *)self initWithProto:v5];
       }
 
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (BMSchoolTimeEvent)initWithProtoData:(id)a3
+- (BMSchoolTimeEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBSchoolTimeEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBSchoolTimeEvent alloc] initWithData:dataCopy];
 
     self = [(BMSchoolTimeEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
   [v3 setStarting:{-[BMSchoolTimeEvent isStarting](self, "isStarting")}];
-  v4 = [(BMSchoolTimeEvent *)self reason];
-  if (v4 >= 3)
+  reason = [(BMSchoolTimeEvent *)self reason];
+  if (reason >= 3)
   {
     v6 = __biome_log_for_category();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(BMSchoolTimeEvent *)v4 proto];
+      [(BMSchoolTimeEvent *)reason proto];
     }
 
     v5 = 0;
@@ -140,7 +140,7 @@
 
   else
   {
-    [v3 setReason:v4];
+    [v3 setReason:reason];
     v5 = v3;
   }
 
@@ -157,13 +157,13 @@
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     starting = self->_starting;
     if (starting == [v5 isStarting])
     {

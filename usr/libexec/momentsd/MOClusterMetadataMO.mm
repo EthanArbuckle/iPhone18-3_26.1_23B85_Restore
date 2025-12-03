@@ -1,85 +1,85 @@
 @interface MOClusterMetadataMO
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context;
 @end
 
 @implementation MOClusterMetadataMO
 
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MOClusterMetadataMO alloc] initWithContext:v5];
+  contextCopy = context;
+  objectCopy = object;
+  v7 = [[MOClusterMetadataMO alloc] initWithContext:contextCopy];
 
-  v8 = [v6 identifier];
-  [(MOClusterMetadataMO *)v7 setIdentifier:v8];
+  identifier = [objectCopy identifier];
+  [(MOClusterMetadataMO *)v7 setIdentifier:identifier];
 
-  -[MOClusterMetadataMO setIsFiltered:](v7, "setIsFiltered:", [v6 isFiltered]);
-  v9 = [v6 phenotype];
-  [(MOClusterMetadataMO *)v7 setPhenotype:v9];
+  -[MOClusterMetadataMO setIsFiltered:](v7, "setIsFiltered:", [objectCopy isFiltered]);
+  phenotype = [objectCopy phenotype];
+  [(MOClusterMetadataMO *)v7 setPhenotype:phenotype];
 
-  v10 = [v6 topLevelActivityHistogram];
-  [(MOClusterMetadataMO *)v7 setTopLevelActivityHistogram:v10];
+  topLevelActivityHistogram = [objectCopy topLevelActivityHistogram];
+  [(MOClusterMetadataMO *)v7 setTopLevelActivityHistogram:topLevelActivityHistogram];
 
-  v11 = [v6 secondLevelActivityHistogram];
-  [(MOClusterMetadataMO *)v7 setSecondLevelActivityHistogram:v11];
+  secondLevelActivityHistogram = [objectCopy secondLevelActivityHistogram];
+  [(MOClusterMetadataMO *)v7 setSecondLevelActivityHistogram:secondLevelActivityHistogram];
 
-  v12 = [v6 activityTypeFromPhotoTraitsHistogram];
-  [(MOClusterMetadataMO *)v7 setActivityTypeFromPhotoTraitsHistogram:v12];
+  activityTypeFromPhotoTraitsHistogram = [objectCopy activityTypeFromPhotoTraitsHistogram];
+  [(MOClusterMetadataMO *)v7 setActivityTypeFromPhotoTraitsHistogram:activityTypeFromPhotoTraitsHistogram];
 
-  v13 = [v6 timeTagHistogram];
-  [(MOClusterMetadataMO *)v7 setTimeTagHistogram:v13];
+  timeTagHistogram = [objectCopy timeTagHistogram];
+  [(MOClusterMetadataMO *)v7 setTimeTagHistogram:timeTagHistogram];
 
-  v14 = [v6 dayOfWeekHistogram];
-  [(MOClusterMetadataMO *)v7 setDayOfWeekHistogram:v14];
+  dayOfWeekHistogram = [objectCopy dayOfWeekHistogram];
+  [(MOClusterMetadataMO *)v7 setDayOfWeekHistogram:dayOfWeekHistogram];
 
-  v15 = [v6 weekOfYearHistogram];
-  [(MOClusterMetadataMO *)v7 setWeekOfYearHistogram:v15];
+  weekOfYearHistogram = [objectCopy weekOfYearHistogram];
+  [(MOClusterMetadataMO *)v7 setWeekOfYearHistogram:weekOfYearHistogram];
 
-  v16 = [v6 timeContextFromPhotoTraitsHistogram];
-  [(MOClusterMetadataMO *)v7 setTimeContextFromPhotoTraitsHistogram:v16];
+  timeContextFromPhotoTraitsHistogram = [objectCopy timeContextFromPhotoTraitsHistogram];
+  [(MOClusterMetadataMO *)v7 setTimeContextFromPhotoTraitsHistogram:timeContextFromPhotoTraitsHistogram];
 
-  v17 = [v6 placeNameHistogram];
-  [(MOClusterMetadataMO *)v7 setPlaceNameHistogram:v17];
+  placeNameHistogram = [objectCopy placeNameHistogram];
+  [(MOClusterMetadataMO *)v7 setPlaceNameHistogram:placeNameHistogram];
 
-  v18 = [v6 combinedPlaceTypeHistogram];
-  [(MOClusterMetadataMO *)v7 setCombinedPlaceTypeHistogram:v18];
+  combinedPlaceTypeHistogram = [objectCopy combinedPlaceTypeHistogram];
+  [(MOClusterMetadataMO *)v7 setCombinedPlaceTypeHistogram:combinedPlaceTypeHistogram];
 
-  v19 = [v6 enclosingPlaceNameHistogram];
-  [(MOClusterMetadataMO *)v7 setEnclosingPlaceNameHistogram:v19];
+  enclosingPlaceNameHistogram = [objectCopy enclosingPlaceNameHistogram];
+  [(MOClusterMetadataMO *)v7 setEnclosingPlaceNameHistogram:enclosingPlaceNameHistogram];
 
-  v20 = [v6 placeTypeFromPhotoTraitsHistogram];
-  [(MOClusterMetadataMO *)v7 setPlaceTypeFromPhotoTraitsHistogram:v20];
+  placeTypeFromPhotoTraitsHistogram = [objectCopy placeTypeFromPhotoTraitsHistogram];
+  [(MOClusterMetadataMO *)v7 setPlaceTypeFromPhotoTraitsHistogram:placeTypeFromPhotoTraitsHistogram];
 
-  v21 = [v6 contactNamesHistogram];
-  [(MOClusterMetadataMO *)v7 setContactNamesHistogram:v21];
+  contactNamesHistogram = [objectCopy contactNamesHistogram];
+  [(MOClusterMetadataMO *)v7 setContactNamesHistogram:contactNamesHistogram];
 
-  v22 = [v6 personRelationshipHistogram];
-  [(MOClusterMetadataMO *)v7 setPersonRelationshipHistogram:v22];
+  personRelationshipHistogram = [objectCopy personRelationshipHistogram];
+  [(MOClusterMetadataMO *)v7 setPersonRelationshipHistogram:personRelationshipHistogram];
 
-  v23 = [v6 socialEventFromPhotoTraitsHistogram];
-  [(MOClusterMetadataMO *)v7 setSocialEventFromPhotoTraitsHistogram:v23];
+  socialEventFromPhotoTraitsHistogram = [objectCopy socialEventFromPhotoTraitsHistogram];
+  [(MOClusterMetadataMO *)v7 setSocialEventFromPhotoTraitsHistogram:socialEventFromPhotoTraitsHistogram];
 
-  v24 = [v6 otherSubjectFromPhotoTraitsHistogram];
-  [(MOClusterMetadataMO *)v7 setOtherSubjectFromPhotoTraitsHistogram:v24];
+  otherSubjectFromPhotoTraitsHistogram = [objectCopy otherSubjectFromPhotoTraitsHistogram];
+  [(MOClusterMetadataMO *)v7 setOtherSubjectFromPhotoTraitsHistogram:otherSubjectFromPhotoTraitsHistogram];
 
-  v25 = [v6 subBundleGoodnessScores];
-  [(MOClusterMetadataMO *)v7 setSubBundleGoodnessScores:v25];
+  subBundleGoodnessScores = [objectCopy subBundleGoodnessScores];
+  [(MOClusterMetadataMO *)v7 setSubBundleGoodnessScores:subBundleGoodnessScores];
 
-  v26 = [v6 subSuggestionIDsBeforePruning];
-  [(MOClusterMetadataMO *)v7 setSubSuggestionIDsBeforePruning:v26];
+  subSuggestionIDsBeforePruning = [objectCopy subSuggestionIDsBeforePruning];
+  [(MOClusterMetadataMO *)v7 setSubSuggestionIDsBeforePruning:subSuggestionIDsBeforePruning];
 
-  v27 = [v6 holidayHistogram];
-  [(MOClusterMetadataMO *)v7 setHolidayHistogram:v27];
+  holidayHistogram = [objectCopy holidayHistogram];
+  [(MOClusterMetadataMO *)v7 setHolidayHistogram:holidayHistogram];
 
-  v28 = [v6 celebrationHistogram];
-  [(MOClusterMetadataMO *)v7 setCelebrationHistogram:v28];
+  celebrationHistogram = [objectCopy celebrationHistogram];
+  [(MOClusterMetadataMO *)v7 setCelebrationHistogram:celebrationHistogram];
 
-  v29 = [v6 stateOfMindValenceHistogram];
-  [(MOClusterMetadataMO *)v7 setStateOfMindValenceHistogram:v29];
+  stateOfMindValenceHistogram = [objectCopy stateOfMindValenceHistogram];
+  [(MOClusterMetadataMO *)v7 setStateOfMindValenceHistogram:stateOfMindValenceHistogram];
 
-  v30 = [v6 phenotypePersonUUIDs];
+  phenotypePersonUUIDs = [objectCopy phenotypePersonUUIDs];
 
-  [(MOClusterMetadataMO *)v7 setPhenotypePersonUUIDs:v30];
+  [(MOClusterMetadataMO *)v7 setPhenotypePersonUUIDs:phenotypePersonUUIDs];
 
   return v7;
 }

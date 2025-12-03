@@ -1,23 +1,23 @@
 @interface SNLPITFMModelInfo
-+ (id)stringForModelType:(unint64_t)a3;
-- (SNLPITFMModelInfo)initWithType:(unint64_t)a3 loggingComponent:(int)a4 errorDomain:(id)a5;
++ (id)stringForModelType:(unint64_t)type;
+- (SNLPITFMModelInfo)initWithType:(unint64_t)type loggingComponent:(int)component errorDomain:(id)domain;
 @end
 
 @implementation SNLPITFMModelInfo
 
-- (SNLPITFMModelInfo)initWithType:(unint64_t)a3 loggingComponent:(int)a4 errorDomain:(id)a5
+- (SNLPITFMModelInfo)initWithType:(unint64_t)type loggingComponent:(int)component errorDomain:(id)domain
 {
   v25 = *MEMORY[0x277D85DE8];
-  v9 = a5;
+  domainCopy = domain;
   v20.receiver = self;
   v20.super_class = SNLPITFMModelInfo;
   v10 = [(SNLPITFMModelInfo *)&v20 init];
   v11 = v10;
   if (v10)
   {
-    v10->_loggingComponent = a4;
-    v10->_type = a3;
-    objc_storeStrong(&v10->_errorDomain, a5);
+    v10->_loggingComponent = component;
+    v10->_type = type;
+    objc_storeStrong(&v10->_errorDomain, domain);
     v12 = MEMORY[0x277CCACA8];
     loggingComponent = v11->_loggingComponent;
     if (loggingComponent >= 8)
@@ -49,16 +49,16 @@
   return v11;
 }
 
-+ (id)stringForModelType:(unint64_t)a3
++ (id)stringForModelType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_2784B6E98[a3];
+    return off_2784B6E98[type];
   }
 }
 

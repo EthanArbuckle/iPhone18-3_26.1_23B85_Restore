@@ -1,18 +1,18 @@
 @interface LTMStatsCompute
-- (LTMStatsCompute)initWithMetalContext:(id)a3;
-- (float)calcExposureRatio:(const sRefDriverInputs_SOFTISP *)a3;
-- (int)computeInputParametersForImageWidth:(id)a3 calcGlobalHistOnROI:(BOOL)a4 enableAntiAliasing:(BOOL)a5 enableDualLTC:(BOOL)a6 enableFATE:(BOOL)a7 with:(sRefDriverInputs_SOFTISP *)a8 to:(id *)a9;
-- (int)createShaders:(id)a3;
-- (int)encodeLTMStatisticsCalculationOptimized:(id)a3 params:(id *)a4 globalHistogram:(id)a5 globalFaceHistogram:(id)a6 localHistogram:(id)a7 thumbnail:(id)a8;
-- (int)encodeLTMStatisticsCalculationPrecise:(id)a3 paramsGlobalHist:(id *)a4 globalHistogram:(id)a5 localHistogram:(id)a6 thumbnail:(id)a7;
+- (LTMStatsCompute)initWithMetalContext:(id)context;
+- (float)calcExposureRatio:(const sRefDriverInputs_SOFTISP *)ratio;
+- (int)computeInputParametersForImageWidth:(id)width calcGlobalHistOnROI:(BOOL)i enableAntiAliasing:(BOOL)aliasing enableDualLTC:(BOOL)c enableFATE:(BOOL)e with:(sRefDriverInputs_SOFTISP *)with to:(id *)to;
+- (int)createShaders:(id)shaders;
+- (int)encodeLTMStatisticsCalculationOptimized:(id)optimized params:(id *)params globalHistogram:(id)histogram globalFaceHistogram:(id)faceHistogram localHistogram:(id)localHistogram thumbnail:(id)thumbnail;
+- (int)encodeLTMStatisticsCalculationPrecise:(id)precise paramsGlobalHist:(id *)hist globalHistogram:(id)histogram localHistogram:(id)localHistogram thumbnail:(id)thumbnail;
 - (int)waitUntilCompleted;
 @end
 
 @implementation LTMStatsCompute
 
-- (LTMStatsCompute)initWithMetalContext:(id)a3
+- (LTMStatsCompute)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = LTMStatsCompute;
   v6 = [(LTMStatsCompute *)&v10 init];
@@ -25,7 +25,7 @@ LABEL_7:
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v6->_metalContext, a3);
+  objc_storeStrong(&v6->_metalContext, context);
   if ([(LTMStatsCompute *)v7 createShaders:v7->_metalContext])
   {
     [LTMStatsCompute initWithMetalContext:];
@@ -40,10 +40,10 @@ LABEL_4:
   return v8;
 }
 
-- (int)createShaders:(id)a3
+- (int)createShaders:(id)shaders
 {
-  v4 = a3;
-  v5 = [v4 computePipelineStateFor:@"SoftLTM::localHistAndThumbKernel" constants:0];
+  shadersCopy = shaders;
+  v5 = [shadersCopy computePipelineStateFor:@"SoftLTM::localHistAndThumbKernel" constants:0];
   localHistAndThumKernelPipelineState = self->_localHistAndThumKernelPipelineState;
   self->_localHistAndThumKernelPipelineState = v5;
 
@@ -55,7 +55,7 @@ LABEL_19:
     goto LABEL_10;
   }
 
-  v7 = [v4 computePipelineStateFor:@"SoftLTM::localHistHiResAndThumbKernel" constants:0];
+  v7 = [shadersCopy computePipelineStateFor:@"SoftLTM::localHistHiResAndThumbKernel" constants:0];
   localHistHiResAndThumKernelPipelineState = self->_localHistHiResAndThumKernelPipelineState;
   self->_localHistHiResAndThumKernelPipelineState = v7;
 
@@ -65,7 +65,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v9 = [v4 computePipelineStateFor:@"SoftLTM::globalHistKernel" constants:0];
+  v9 = [shadersCopy computePipelineStateFor:@"SoftLTM::globalHistKernel" constants:0];
   globalHistKernelPipelineState = self->_globalHistKernelPipelineState;
   self->_globalHistKernelPipelineState = v9;
 
@@ -75,7 +75,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v11 = [v4 computePipelineStateFor:@"SoftLTM::globalFaceHistKernel" constants:0];
+  v11 = [shadersCopy computePipelineStateFor:@"SoftLTM::globalFaceHistKernel" constants:0];
   globalFaceHistKernelPipelineState = self->_globalFaceHistKernelPipelineState;
   self->_globalFaceHistKernelPipelineState = v11;
 
@@ -85,7 +85,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v13 = [v4 computePipelineStateFor:@"SoftLTM::collectLocalHistKernel" constants:0];
+  v13 = [shadersCopy computePipelineStateFor:@"SoftLTM::collectLocalHistKernel" constants:0];
   collectLocalHistKernelPipelineState = self->_collectLocalHistKernelPipelineState;
   self->_collectLocalHistKernelPipelineState = v13;
 
@@ -95,7 +95,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v15 = [v4 computePipelineStateFor:@"SoftLTM::collectLocalHistHiResKernel" constants:0];
+  v15 = [shadersCopy computePipelineStateFor:@"SoftLTM::collectLocalHistHiResKernel" constants:0];
   collectLocalHistHiResKernelPipelineState = self->_collectLocalHistHiResKernelPipelineState;
   self->_collectLocalHistHiResKernelPipelineState = v15;
 
@@ -105,7 +105,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v17 = [v4 computePipelineStateFor:@"SoftLTM::ltmStatisticsKernel" constants:0];
+  v17 = [shadersCopy computePipelineStateFor:@"SoftLTM::ltmStatisticsKernel" constants:0];
   calcLTMStatisticsPipelineState = self->_calcLTMStatisticsPipelineState;
   self->_calcLTMStatisticsPipelineState = v17;
 
@@ -115,7 +115,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v19 = [v4 computePipelineStateFor:@"SoftLTM::calcLocalHistogramShiftKernel" constants:0];
+  v19 = [shadersCopy computePipelineStateFor:@"SoftLTM::calcLocalHistogramShiftKernel" constants:0];
   calcLocalHistogramShift = self->_calcLocalHistogramShift;
   self->_calcLocalHistogramShift = v19;
 
@@ -131,49 +131,49 @@ LABEL_10:
   return v21;
 }
 
-- (int)encodeLTMStatisticsCalculationOptimized:(id)a3 params:(id *)a4 globalHistogram:(id)a5 globalFaceHistogram:(id)a6 localHistogram:(id)a7 thumbnail:(id)a8
+- (int)encodeLTMStatisticsCalculationOptimized:(id)optimized params:(id *)params globalHistogram:(id)histogram globalFaceHistogram:(id)faceHistogram localHistogram:(id)localHistogram thumbnail:(id)thumbnail
 {
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
+  optimizedCopy = optimized;
+  histogramCopy = histogram;
+  faceHistogramCopy = faceHistogram;
+  localHistogramCopy = localHistogram;
+  thumbnailCopy = thumbnail;
   v54 = 0;
-  v19 = [(FigMetalContext *)self->_metalContext commandQueue];
+  commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
 
-  v49 = v15;
-  if (!v19)
+  v49 = histogramCopy;
+  if (!commandQueue)
   {
     [LTMStatsCompute encodeLTMStatisticsCalculationOptimized:params:globalHistogram:globalFaceHistogram:localHistogram:thumbnail:];
 LABEL_37:
-    v28 = 0;
+    computeCommandEncoder3 = 0;
 LABEL_38:
     v44 = -1;
     goto LABEL_27;
   }
 
-  if (!v17)
+  if (!localHistogramCopy)
   {
     [LTMStatsCompute encodeLTMStatisticsCalculationOptimized:params:globalHistogram:globalFaceHistogram:localHistogram:thumbnail:];
 LABEL_32:
-    v19 = 0;
+    commandQueue = 0;
     goto LABEL_37;
   }
 
-  if (!v15)
+  if (!histogramCopy)
   {
     [LTMStatsCompute encodeLTMStatisticsCalculationOptimized:params:globalHistogram:globalFaceHistogram:localHistogram:thumbnail:];
     goto LABEL_32;
   }
 
-  if (!v18)
+  if (!thumbnailCopy)
   {
     [LTMStatsCompute encodeLTMStatisticsCalculationOptimized:params:globalHistogram:globalFaceHistogram:localHistogram:thumbnail:];
     goto LABEL_32;
   }
 
-  v48 = v18;
-  if (a4->var3.var19)
+  v48 = thumbnailCopy;
+  if (params->var3.var19)
   {
     v20 = 919360;
   }
@@ -183,25 +183,25 @@ LABEL_32:
     v20 = 240448;
   }
 
-  v21 = [(FigMetalContext *)self->_metalContext device];
-  v22 = [v21 newBufferWithLength:v20 options:0];
+  device = [(FigMetalContext *)self->_metalContext device];
+  v22 = [device newBufferWithLength:v20 options:0];
   v54 = v22;
 
   if (!v22)
   {
     [LTMStatsCompute encodeLTMStatisticsCalculationOptimized:params:globalHistogram:globalFaceHistogram:localHistogram:thumbnail:];
 LABEL_35:
-    v19 = 0;
-    v28 = 0;
+    commandQueue = 0;
+    computeCommandEncoder3 = 0;
     v44 = -1;
-    v18 = v48;
+    thumbnailCopy = v48;
     goto LABEL_27;
   }
 
-  v23 = [(FigMetalContext *)self->_metalContext commandQueue];
-  v24 = [v23 commandBuffer];
+  commandQueue2 = [(FigMetalContext *)self->_metalContext commandQueue];
+  commandBuffer = [commandQueue2 commandBuffer];
   cmdBuf = self->_cmdBuf;
-  self->_cmdBuf = v24;
+  self->_cmdBuf = commandBuffer;
 
   v26 = self->_cmdBuf;
   if (!v26)
@@ -210,30 +210,30 @@ LABEL_35:
     goto LABEL_35;
   }
 
-  v19 = [(MTLCommandBuffer *)v26 blitCommandEncoder];
-  v18 = v48;
-  if (!v19)
+  commandQueue = [(MTLCommandBuffer *)v26 blitCommandEncoder];
+  thumbnailCopy = v48;
+  if (!commandQueue)
   {
     [LTMStatsCompute encodeLTMStatisticsCalculationOptimized:params:globalHistogram:globalFaceHistogram:localHistogram:thumbnail:];
     goto LABEL_37;
   }
 
-  [v19 fillBuffer:v22 range:0 value:{objc_msgSend(v22, "length"), 0}];
-  [v19 fillBuffer:v17 range:0 value:{objc_msgSend(v17, "length"), 0}];
-  [v19 fillBuffer:v15 range:0 value:{objc_msgSend(v15, "length"), 0}];
-  [v19 fillBuffer:v16 range:0 value:{objc_msgSend(v16, "length"), 0}];
-  [v19 fillBuffer:v48 range:0 value:{objc_msgSend(v48, "length"), 0}];
-  [v19 endEncoding];
-  v27 = [(MTLCommandBuffer *)self->_cmdBuf computeCommandEncoder];
-  v28 = v27;
-  if (!v27)
+  [commandQueue fillBuffer:v22 range:0 value:{objc_msgSend(v22, "length"), 0}];
+  [commandQueue fillBuffer:localHistogramCopy range:0 value:{objc_msgSend(localHistogramCopy, "length"), 0}];
+  [commandQueue fillBuffer:histogramCopy range:0 value:{objc_msgSend(histogramCopy, "length"), 0}];
+  [commandQueue fillBuffer:faceHistogramCopy range:0 value:{objc_msgSend(faceHistogramCopy, "length"), 0}];
+  [commandQueue fillBuffer:v48 range:0 value:{objc_msgSend(v48, "length"), 0}];
+  [commandQueue endEncoding];
+  computeCommandEncoder = [(MTLCommandBuffer *)self->_cmdBuf computeCommandEncoder];
+  computeCommandEncoder3 = computeCommandEncoder;
+  if (!computeCommandEncoder)
   {
     [LTMStatsCompute encodeLTMStatisticsCalculationOptimized:params:globalHistogram:globalFaceHistogram:localHistogram:thumbnail:];
     goto LABEL_38;
   }
 
-  v46 = v19;
-  if (a4->var3.var19)
+  v46 = commandQueue;
+  if (params->var3.var19)
   {
     v29 = 40;
   }
@@ -243,182 +243,182 @@ LABEL_35:
     v29 = 32;
   }
 
-  [v27 setComputePipelineState:*(&self->super.isa + v29)];
-  v30 = [*(&self->super.isa + v29) threadExecutionWidth];
-  [v28 setTexture:v14 atIndex:0];
-  [v28 setBytes:&a4->var3 length:176 atIndex:0];
-  [v28 setBytes:&a4->var4 length:44 atIndex:1];
-  [v28 setBytes:a4 length:32 atIndex:2];
-  [v28 setBuffer:v22 offset:0 atIndex:3];
-  [v28 setBuffer:v48 offset:0 atIndex:4];
+  [computeCommandEncoder setComputePipelineState:*(&self->super.isa + v29)];
+  threadExecutionWidth = [*(&self->super.isa + v29) threadExecutionWidth];
+  [computeCommandEncoder3 setTexture:optimizedCopy atIndex:0];
+  [computeCommandEncoder3 setBytes:&params->var3 length:176 atIndex:0];
+  [computeCommandEncoder3 setBytes:&params->var4 length:44 atIndex:1];
+  [computeCommandEncoder3 setBytes:params length:32 atIndex:2];
+  [computeCommandEncoder3 setBuffer:v22 offset:0 atIndex:3];
+  [computeCommandEncoder3 setBuffer:v48 offset:0 atIndex:4];
   v53 = 1;
-  v50 = v30;
+  v50 = threadExecutionWidth;
   v51 = vdupq_n_s64(1uLL);
   v52 = xmmword_1C9335C00;
-  [v28 dispatchThreadgroups:&v52 threadsPerThreadgroup:&v50];
-  [v28 endEncoding];
-  v31 = [(MTLCommandBuffer *)self->_cmdBuf computeCommandEncoder];
+  [computeCommandEncoder3 dispatchThreadgroups:&v52 threadsPerThreadgroup:&v50];
+  [computeCommandEncoder3 endEncoding];
+  computeCommandEncoder2 = [(MTLCommandBuffer *)self->_cmdBuf computeCommandEncoder];
 
-  if (!v31)
+  if (!computeCommandEncoder2)
   {
     [LTMStatsCompute encodeLTMStatisticsCalculationOptimized:params:globalHistogram:globalFaceHistogram:localHistogram:thumbnail:];
-    v28 = 0;
+    computeCommandEncoder3 = 0;
     v44 = -1;
 LABEL_44:
-    v19 = v46;
+    commandQueue = v46;
     goto LABEL_27;
   }
 
-  v47 = v16;
-  [v31 setComputePipelineState:self->_globalHistKernelPipelineState];
-  [v31 setTexture:v14 atIndex:0];
-  [v31 setBytes:&a4->var1 length:52 atIndex:0];
-  [v31 setBytes:a4 length:32 atIndex:1];
-  [v31 setBytes:&a4->var4 length:44 atIndex:2];
-  [v31 setBuffer:v15 offset:0 atIndex:3];
-  v32 = [(MTLComputePipelineState *)self->_globalHistKernelPipelineState threadExecutionWidth];
-  v33 = [(MTLComputePipelineState *)self->_globalHistKernelPipelineState maxTotalThreadsPerThreadgroup]/ v32;
-  v34 = [v14 width];
-  v35 = [v14 height];
-  *&v52 = v34;
-  *(&v52 + 1) = v35;
+  v47 = faceHistogramCopy;
+  [computeCommandEncoder2 setComputePipelineState:self->_globalHistKernelPipelineState];
+  [computeCommandEncoder2 setTexture:optimizedCopy atIndex:0];
+  [computeCommandEncoder2 setBytes:&params->var1 length:52 atIndex:0];
+  [computeCommandEncoder2 setBytes:params length:32 atIndex:1];
+  [computeCommandEncoder2 setBytes:&params->var4 length:44 atIndex:2];
+  [computeCommandEncoder2 setBuffer:histogramCopy offset:0 atIndex:3];
+  threadExecutionWidth2 = [(MTLComputePipelineState *)self->_globalHistKernelPipelineState threadExecutionWidth];
+  v33 = [(MTLComputePipelineState *)self->_globalHistKernelPipelineState maxTotalThreadsPerThreadgroup]/ threadExecutionWidth2;
+  width = [optimizedCopy width];
+  height = [optimizedCopy height];
+  *&v52 = width;
+  *(&v52 + 1) = height;
   v53 = 1;
-  v50 = v32;
+  v50 = threadExecutionWidth2;
   v51.i64[0] = v33;
   v51.i64[1] = 1;
-  [v31 dispatchThreads:&v52 threadsPerThreadgroup:&v50];
-  [v31 endEncoding];
-  if (a4->var2.var0)
+  [computeCommandEncoder2 dispatchThreads:&v52 threadsPerThreadgroup:&v50];
+  [computeCommandEncoder2 endEncoding];
+  if (params->var2.var0)
   {
-    v28 = [(MTLCommandBuffer *)self->_cmdBuf computeCommandEncoder];
+    computeCommandEncoder3 = [(MTLCommandBuffer *)self->_cmdBuf computeCommandEncoder];
 
-    v16 = v47;
-    if (!v28)
+    faceHistogramCopy = v47;
+    if (!computeCommandEncoder3)
     {
       [LTMStatsCompute encodeLTMStatisticsCalculationOptimized:params:globalHistogram:globalFaceHistogram:localHistogram:thumbnail:];
       v44 = -1;
       goto LABEL_43;
     }
 
-    [v28 setComputePipelineState:self->_globalFaceHistKernelPipelineState];
-    [v28 setTexture:v14 atIndex:0];
-    [v28 setBytes:&a4->var2 length:52 atIndex:0];
-    [v28 setBytes:a4 length:32 atIndex:1];
-    [v28 setBytes:&a4->var4 length:44 atIndex:2];
-    [v28 setBuffer:v47 offset:0 atIndex:3];
-    v36 = [(MTLComputePipelineState *)self->_globalFaceHistKernelPipelineState threadExecutionWidth];
-    v37 = [(MTLComputePipelineState *)self->_globalFaceHistKernelPipelineState maxTotalThreadsPerThreadgroup]/ v36;
-    v38 = [v14 width];
-    v39 = [v14 height];
-    *&v52 = v38;
-    *(&v52 + 1) = v39;
+    [computeCommandEncoder3 setComputePipelineState:self->_globalFaceHistKernelPipelineState];
+    [computeCommandEncoder3 setTexture:optimizedCopy atIndex:0];
+    [computeCommandEncoder3 setBytes:&params->var2 length:52 atIndex:0];
+    [computeCommandEncoder3 setBytes:params length:32 atIndex:1];
+    [computeCommandEncoder3 setBytes:&params->var4 length:44 atIndex:2];
+    [computeCommandEncoder3 setBuffer:v47 offset:0 atIndex:3];
+    threadExecutionWidth3 = [(MTLComputePipelineState *)self->_globalFaceHistKernelPipelineState threadExecutionWidth];
+    v37 = [(MTLComputePipelineState *)self->_globalFaceHistKernelPipelineState maxTotalThreadsPerThreadgroup]/ threadExecutionWidth3;
+    width2 = [optimizedCopy width];
+    height2 = [optimizedCopy height];
+    *&v52 = width2;
+    *(&v52 + 1) = height2;
     v53 = 1;
-    v50 = v36;
+    v50 = threadExecutionWidth3;
     v51.i64[0] = v37;
-    v16 = v47;
+    faceHistogramCopy = v47;
     v51.i64[1] = 1;
-    [v28 dispatchThreads:&v52 threadsPerThreadgroup:&v50];
-    [v28 endEncoding];
-    v31 = v28;
+    [computeCommandEncoder3 dispatchThreads:&v52 threadsPerThreadgroup:&v50];
+    [computeCommandEncoder3 endEncoding];
+    computeCommandEncoder2 = computeCommandEncoder3;
   }
 
   else
   {
-    v16 = v47;
+    faceHistogramCopy = v47;
   }
 
-  v28 = [(MTLCommandBuffer *)self->_cmdBuf computeCommandEncoder];
+  computeCommandEncoder3 = [(MTLCommandBuffer *)self->_cmdBuf computeCommandEncoder];
 
-  if (!v28)
+  if (!computeCommandEncoder3)
   {
     [LTMStatsCompute encodeLTMStatisticsCalculationOptimized:params:globalHistogram:globalFaceHistogram:localHistogram:thumbnail:];
     v44 = -1;
 LABEL_43:
-    v18 = v48;
+    thumbnailCopy = v48;
     goto LABEL_44;
   }
 
   v40 = 64;
-  if (a4->var3.var19)
+  if (params->var3.var19)
   {
     v40 = 72;
   }
 
-  [v28 setComputePipelineState:*(&self->super.isa + v40)];
-  [v28 setBuffer:v22 offset:0 atIndex:0];
-  [v28 setBytes:&a4->var3 length:176 atIndex:1];
-  [v28 setBuffer:v17 offset:0 atIndex:2];
-  v18 = v48;
-  v19 = v46;
-  if (a4->var3.var19)
+  [computeCommandEncoder3 setComputePipelineState:*(&self->super.isa + v40)];
+  [computeCommandEncoder3 setBuffer:v22 offset:0 atIndex:0];
+  [computeCommandEncoder3 setBytes:&params->var3 length:176 atIndex:1];
+  [computeCommandEncoder3 setBuffer:localHistogramCopy offset:0 atIndex:2];
+  thumbnailCopy = v48;
+  commandQueue = v46;
+  if (params->var3.var19)
   {
-    v41 = [(MTLComputePipelineState *)self->_collectLocalHistHiResKernelPipelineState threadExecutionWidth];
+    threadExecutionWidth4 = [(MTLComputePipelineState *)self->_collectLocalHistHiResKernelPipelineState threadExecutionWidth];
     collectLocalHistHiResKernelPipelineState = self->_collectLocalHistHiResKernelPipelineState;
   }
 
   else
   {
-    v41 = [(MTLComputePipelineState *)self->_collectLocalHistKernelPipelineState threadExecutionWidth];
+    threadExecutionWidth4 = [(MTLComputePipelineState *)self->_collectLocalHistKernelPipelineState threadExecutionWidth];
     collectLocalHistHiResKernelPipelineState = self->_collectLocalHistKernelPipelineState;
   }
 
-  v43 = [(MTLComputePipelineState *)collectLocalHistHiResKernelPipelineState maxTotalThreadsPerThreadgroup];
+  maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)collectLocalHistHiResKernelPipelineState maxTotalThreadsPerThreadgroup];
   v52 = xmmword_1C9335C10;
   v53 = 1;
-  v50 = v41;
-  v51.i64[0] = v43 / v41;
+  v50 = threadExecutionWidth4;
+  v51.i64[0] = maxTotalThreadsPerThreadgroup / threadExecutionWidth4;
   v51.i64[1] = 1;
-  [v28 dispatchThreads:&v52 threadsPerThreadgroup:&v50];
+  [computeCommandEncoder3 dispatchThreads:&v52 threadsPerThreadgroup:&v50];
   v44 = 0;
 LABEL_27:
-  [v28 endEncoding];
+  [computeCommandEncoder3 endEncoding];
   [(MTLCommandBuffer *)self->_cmdBuf commit];
   FigMetalDecRef();
 
   return v44;
 }
 
-- (int)encodeLTMStatisticsCalculationPrecise:(id)a3 paramsGlobalHist:(id *)a4 globalHistogram:(id)a5 localHistogram:(id)a6 thumbnail:(id)a7
+- (int)encodeLTMStatisticsCalculationPrecise:(id)precise paramsGlobalHist:(id *)hist globalHistogram:(id)histogram localHistogram:(id)localHistogram thumbnail:(id)thumbnail
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(FigMetalContext *)self->_metalContext commandQueue];
+  preciseCopy = precise;
+  histogramCopy = histogram;
+  localHistogramCopy = localHistogram;
+  thumbnailCopy = thumbnail;
+  commandQueue = [(FigMetalContext *)self->_metalContext commandQueue];
 
-  if (!v16)
+  if (!commandQueue)
   {
     [LTMStatsCompute encodeLTMStatisticsCalculationPrecise:paramsGlobalHist:globalHistogram:localHistogram:thumbnail:];
 LABEL_18:
-    v25 = 0;
+    computeCommandEncoder2 = 0;
     v28 = -1;
     goto LABEL_11;
   }
 
-  if (!v13)
+  if (!histogramCopy)
   {
     [LTMStatsCompute encodeLTMStatisticsCalculationPrecise:paramsGlobalHist:globalHistogram:localHistogram:thumbnail:];
 LABEL_17:
-    v16 = 0;
+    commandQueue = 0;
     goto LABEL_18;
   }
 
-  if (!v14)
+  if (!localHistogramCopy)
   {
     [LTMStatsCompute encodeLTMStatisticsCalculationPrecise:paramsGlobalHist:globalHistogram:localHistogram:thumbnail:];
     goto LABEL_17;
   }
 
-  if (!v15)
+  if (!thumbnailCopy)
   {
     [LTMStatsCompute encodeLTMStatisticsCalculationPrecise:paramsGlobalHist:globalHistogram:localHistogram:thumbnail:];
     goto LABEL_17;
   }
 
-  v17 = [(FigMetalContext *)self->_metalContext commandQueue];
-  v18 = [v17 commandBuffer];
+  commandQueue2 = [(FigMetalContext *)self->_metalContext commandQueue];
+  commandBuffer = [commandQueue2 commandBuffer];
   cmdBuf = self->_cmdBuf;
-  self->_cmdBuf = v18;
+  self->_cmdBuf = commandBuffer;
 
   v20 = self->_cmdBuf;
   if (!v20)
@@ -427,60 +427,60 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v16 = [(MTLCommandBuffer *)v20 blitCommandEncoder];
-  if (!v16)
+  commandQueue = [(MTLCommandBuffer *)v20 blitCommandEncoder];
+  if (!commandQueue)
   {
     [LTMStatsCompute encodeLTMStatisticsCalculationPrecise:paramsGlobalHist:globalHistogram:localHistogram:thumbnail:];
     goto LABEL_18;
   }
 
-  [v16 fillBuffer:v13 range:0 value:{objc_msgSend(v13, "length"), 0}];
-  [v16 fillBuffer:v14 range:0 value:{objc_msgSend(v14, "length"), 0}];
-  [v16 fillBuffer:v15 range:0 value:{objc_msgSend(v15, "length"), 0}];
-  [v16 endEncoding];
-  v21 = [(MTLCommandBuffer *)self->_cmdBuf computeCommandEncoder];
-  if (!v21)
+  [commandQueue fillBuffer:histogramCopy range:0 value:{objc_msgSend(histogramCopy, "length"), 0}];
+  [commandQueue fillBuffer:localHistogramCopy range:0 value:{objc_msgSend(localHistogramCopy, "length"), 0}];
+  [commandQueue fillBuffer:thumbnailCopy range:0 value:{objc_msgSend(thumbnailCopy, "length"), 0}];
+  [commandQueue endEncoding];
+  computeCommandEncoder = [(MTLCommandBuffer *)self->_cmdBuf computeCommandEncoder];
+  if (!computeCommandEncoder)
   {
     [LTMStatsCompute encodeLTMStatisticsCalculationPrecise:paramsGlobalHist:globalHistogram:localHistogram:thumbnail:];
     goto LABEL_18;
   }
 
-  v22 = v21;
-  [v21 setComputePipelineState:self->_calcLTMStatisticsPipelineState];
-  [v22 setTexture:v12 atIndex:0];
-  [v22 setBytes:&a4->var1 length:52 atIndex:0];
-  [v22 setBytes:&a4->var3 length:176 atIndex:1];
-  [v22 setBytes:&a4->var4 length:44 atIndex:2];
-  [v22 setBytes:a4 length:32 atIndex:3];
-  v30 = v13;
-  [v22 setBuffer:v13 offset:0 atIndex:4];
-  [v22 setBuffer:v14 offset:0 atIndex:5];
-  [v22 setBuffer:v15 offset:0 atIndex:6];
-  v23 = [(MTLComputePipelineState *)self->_calcLTMStatisticsPipelineState threadExecutionWidth];
-  v24 = [(MTLComputePipelineState *)self->_calcLTMStatisticsPipelineState maxTotalThreadsPerThreadgroup]/ v23;
-  *&v34 = [v12 width];
-  *(&v34 + 1) = [v12 height];
+  v22 = computeCommandEncoder;
+  [computeCommandEncoder setComputePipelineState:self->_calcLTMStatisticsPipelineState];
+  [v22 setTexture:preciseCopy atIndex:0];
+  [v22 setBytes:&hist->var1 length:52 atIndex:0];
+  [v22 setBytes:&hist->var3 length:176 atIndex:1];
+  [v22 setBytes:&hist->var4 length:44 atIndex:2];
+  [v22 setBytes:hist length:32 atIndex:3];
+  v30 = histogramCopy;
+  [v22 setBuffer:histogramCopy offset:0 atIndex:4];
+  [v22 setBuffer:localHistogramCopy offset:0 atIndex:5];
+  [v22 setBuffer:thumbnailCopy offset:0 atIndex:6];
+  threadExecutionWidth = [(MTLComputePipelineState *)self->_calcLTMStatisticsPipelineState threadExecutionWidth];
+  v24 = [(MTLComputePipelineState *)self->_calcLTMStatisticsPipelineState maxTotalThreadsPerThreadgroup]/ threadExecutionWidth;
+  *&v34 = [preciseCopy width];
+  *(&v34 + 1) = [preciseCopy height];
   v35 = 1;
-  v31 = v23;
+  v31 = threadExecutionWidth;
   v32 = v24;
   v33 = 1;
   [v22 dispatchThreads:&v34 threadsPerThreadgroup:&v31];
   [v22 endEncoding];
-  v25 = [(MTLCommandBuffer *)self->_cmdBuf computeCommandEncoder];
+  computeCommandEncoder2 = [(MTLCommandBuffer *)self->_cmdBuf computeCommandEncoder];
 
-  if (v25)
+  if (computeCommandEncoder2)
   {
-    [v25 setComputePipelineState:self->_calcLocalHistogramShift];
-    [v25 setBytes:&a4->var3 length:176 atIndex:0];
-    [v25 setBuffer:v14 offset:0 atIndex:1];
-    v26 = [(MTLComputePipelineState *)self->_calcLocalHistogramShift threadExecutionWidth];
-    v27 = [(MTLComputePipelineState *)self->_calcLocalHistogramShift maxTotalThreadsPerThreadgroup];
+    [computeCommandEncoder2 setComputePipelineState:self->_calcLocalHistogramShift];
+    [computeCommandEncoder2 setBytes:&hist->var3 length:176 atIndex:0];
+    [computeCommandEncoder2 setBuffer:localHistogramCopy offset:0 atIndex:1];
+    threadExecutionWidth2 = [(MTLComputePipelineState *)self->_calcLocalHistogramShift threadExecutionWidth];
+    maxTotalThreadsPerThreadgroup = [(MTLComputePipelineState *)self->_calcLocalHistogramShift maxTotalThreadsPerThreadgroup];
     v34 = xmmword_1C9335C20;
     v35 = 1;
-    v31 = v26;
-    v32 = v27 / v26;
+    v31 = threadExecutionWidth2;
+    v32 = maxTotalThreadsPerThreadgroup / threadExecutionWidth2;
     v33 = 1;
-    [v25 dispatchThreads:&v34 threadsPerThreadgroup:&v31];
+    [computeCommandEncoder2 dispatchThreads:&v34 threadsPerThreadgroup:&v31];
     v28 = 0;
   }
 
@@ -490,9 +490,9 @@ LABEL_17:
     v28 = -1;
   }
 
-  v13 = v30;
+  histogramCopy = v30;
 LABEL_11:
-  [v25 endEncoding];
+  [computeCommandEncoder2 endEncoding];
   [(MTLCommandBuffer *)self->_cmdBuf commit];
 
   return v28;
@@ -518,18 +518,18 @@ LABEL_11:
   return 0;
 }
 
-- (int)computeInputParametersForImageWidth:(id)a3 calcGlobalHistOnROI:(BOOL)a4 enableAntiAliasing:(BOOL)a5 enableDualLTC:(BOOL)a6 enableFATE:(BOOL)a7 with:(sRefDriverInputs_SOFTISP *)a8 to:(id *)a9
+- (int)computeInputParametersForImageWidth:(id)width calcGlobalHistOnROI:(BOOL)i enableAntiAliasing:(BOOL)aliasing enableDualLTC:(BOOL)c enableFATE:(BOOL)e with:(sRefDriverInputs_SOFTISP *)with to:(id *)to
 {
-  v10 = a7;
-  v11 = a6;
-  v13 = a4;
-  v15 = a3;
+  eCopy = e;
+  cCopy = c;
+  iCopy = i;
+  widthCopy = width;
   if (computeInputParametersForImageWidth_calcGlobalHistOnROI_enableAntiAliasing_enableDualLTC_enableFATE_with_to__onceToken != -1)
   {
     [LTMStatsCompute computeInputParametersForImageWidth:calcGlobalHistOnROI:enableAntiAliasing:enableDualLTC:enableFATE:with:to:];
   }
 
-  if (a8->hardIspDGain <= 0.0)
+  if (with->hardIspDGain <= 0.0)
   {
     [LTMStatsCompute computeInputParametersForImageWidth:calcGlobalHistOnROI:enableAntiAliasing:enableDualLTC:enableFATE:with:to:];
 LABEL_30:
@@ -537,67 +537,67 @@ LABEL_30:
     goto LABEL_27;
   }
 
-  if (!a9)
+  if (!to)
   {
     [LTMStatsCompute computeInputParametersForImageWidth:calcGlobalHistOnROI:enableAntiAliasing:enableDualLTC:enableFATE:with:to:];
     goto LABEL_30;
   }
 
-  a9->var4.var10 = 0;
-  *&a9->var4.var2 = 0u;
-  *&a9->var4.var6 = 0u;
-  *&a9->var3.var18[20] = 0u;
-  *&a9->var3.var18[24] = 0u;
-  *&a9->var3.var18[12] = 0u;
-  *&a9->var3.var18[16] = 0u;
-  *&a9->var3.var18[4] = 0u;
-  *&a9->var3.var18[8] = 0u;
-  *&a9->var3.var14 = 0u;
-  *a9->var3.var18 = 0u;
-  *&a9->var3.var6 = 0u;
-  *&a9->var3.var10 = 0u;
-  *&a9->var2.var7[2] = 0u;
-  *&a9->var3.var2 = 0u;
-  *&a9->var2.var4 = 0u;
-  *&a9->var2.var6[2] = 0u;
-  *&a9->var1.var6[3] = 0u;
-  *&a9->var1.var7[3] = 0u;
-  *&a9->var1.var0 = 0u;
-  *&a9->var1.var5 = 0u;
-  *&a9->var0.var0 = 0u;
-  *a9->var0.var2 = 0u;
-  hardIspDGain_low = LODWORD(a8->hardIspDGain);
+  to->var4.var10 = 0;
+  *&to->var4.var2 = 0u;
+  *&to->var4.var6 = 0u;
+  *&to->var3.var18[20] = 0u;
+  *&to->var3.var18[24] = 0u;
+  *&to->var3.var18[12] = 0u;
+  *&to->var3.var18[16] = 0u;
+  *&to->var3.var18[4] = 0u;
+  *&to->var3.var18[8] = 0u;
+  *&to->var3.var14 = 0u;
+  *to->var3.var18 = 0u;
+  *&to->var3.var6 = 0u;
+  *&to->var3.var10 = 0u;
+  *&to->var2.var7[2] = 0u;
+  *&to->var3.var2 = 0u;
+  *&to->var2.var4 = 0u;
+  *&to->var2.var6[2] = 0u;
+  *&to->var1.var6[3] = 0u;
+  *&to->var1.var7[3] = 0u;
+  *&to->var1.var0 = 0u;
+  *&to->var1.var5 = 0u;
+  *&to->var0.var0 = 0u;
+  *to->var0.var2 = 0u;
+  hardIspDGain_low = LODWORD(with->hardIspDGain);
   v17 = vcvts_n_u32_f32(*&hardIspDGain_low, 0xBuLL);
   *&hardIspDGain_low = (*&hardIspDGain_low * 2048.0);
-  a9->var0.var0 = 11;
-  *a9->var0.var1 = vcvt_u32_f32(vmul_n_f32(0x3F370A3D3E5A1CACLL, *&hardIspDGain_low));
-  a9->var0.var1[2] = (*&hardIspDGain_low * 0.072);
-  a9->var0.var2[0] = v17;
-  a9->var0.var2[1] = v17;
-  a9->var0.var2[2] = v17;
-  a9->var0.var3 = 0;
-  if (v11 && ([v15 cropRect], v19 = v18, objc_msgSend(v15, "cropRect"), v19 < v20))
+  to->var0.var0 = 11;
+  *to->var0.var1 = vcvt_u32_f32(vmul_n_f32(0x3F370A3D3E5A1CACLL, *&hardIspDGain_low));
+  to->var0.var1[2] = (*&hardIspDGain_low * 0.072);
+  to->var0.var2[0] = v17;
+  to->var0.var2[1] = v17;
+  to->var0.var2[2] = v17;
+  to->var0.var3 = 0;
+  if (cCopy && ([widthCopy cropRect], v19 = v18, objc_msgSend(widthCopy, "cropRect"), v19 < v20))
   {
-    [v15 cropRect];
+    [widthCopy cropRect];
     v84 = v21;
-    [v15 cropRect];
+    [widthCopy cropRect];
     v82 = v22;
-    [v15 cropRect];
+    [widthCopy cropRect];
     v79 = v23;
-    [v15 cropRect];
+    [widthCopy cropRect];
     v25 = v24;
     v26 = 1;
   }
 
   else
   {
-    [v15 cropRect];
+    [widthCopy cropRect];
     v84 = v27;
-    [v15 cropRect];
+    [widthCopy cropRect];
     v82 = v28;
-    [v15 cropRect];
+    [widthCopy cropRect];
     v79 = v29;
-    [v15 cropRect];
+    [widthCopy cropRect];
     v26 = 0;
   }
 
@@ -606,7 +606,7 @@ LABEL_30:
   v31.f64[0] = v84;
   v31.f64[1] = v82;
   v32 = vcvt_f32_f64(v30);
-  a9->var3.var0 = 1;
+  to->var3.var0 = 1;
   __asm { FMOV            V5.2D, #0.5 }
 
   v38 = vcvtq_n_u64_f64(vrndmq_f64(vmulq_f64(vmulq_f64(vdivq_f64(vcvtq_f64_f32(v32), xmmword_1C9335C30), _Q5), _Q5)), 2uLL);
@@ -619,13 +619,13 @@ LABEL_30:
   v85 = *&v31.f64[0];
   v75 = v40;
   v31.f64[1] = v40.f64[0];
-  a9->var3.var1 = 2;
-  *&a9->var3.var3 = v31;
+  to->var3.var1 = 2;
+  *&to->var3.var3 = v31;
   v83 = vmulq_s32(vuzp1q_s32(v38, v38), xmmword_1C9335C40);
-  *&a9->var3.var7 = v83;
-  *&a9->var3.var11 = 0x80000000000;
-  a9->var3.var13 = 1;
-  a9->var4.var9 = v26;
+  *&to->var3.var7 = v83;
+  *&to->var3.var11 = 0x80000000000;
+  to->var3.var13 = 1;
+  to->var4.var9 = v26;
   if (useLowerLocalHistogramThreshold())
   {
     v41 = 65471;
@@ -636,150 +636,150 @@ LABEL_30:
     v41 = 65472;
   }
 
-  a9->var3.var16 = 3;
-  a9->var3.var14 = v41;
-  a9->var3.var19 = 0;
-  a9->var3.var15 = a5;
-  a9->var3.var17 = 1;
-  AuxCompute_CalcAntiAliasingSettings(&a9->var3.var17, &a9->var3.var16, a9->var3.var18, a8);
-  [LTMStatsCompute rewriteAntiAliasingCoefficients:a9->var3.var18];
-  a9->var3.var2 = ((a9->var3.var10 * a9->var3.var9) & 0xFFFE0000) != 0;
-  a9->var1.var0 = 1;
-  if (!v13)
+  to->var3.var16 = 3;
+  to->var3.var14 = v41;
+  to->var3.var19 = 0;
+  to->var3.var15 = aliasing;
+  to->var3.var17 = 1;
+  AuxCompute_CalcAntiAliasingSettings(&to->var3.var17, &to->var3.var16, to->var3.var18, with);
+  [LTMStatsCompute rewriteAntiAliasingCoefficients:to->var3.var18];
+  to->var3.var2 = ((to->var3.var10 * to->var3.var9) & 0xFFFE0000) != 0;
+  to->var1.var0 = 1;
+  if (!iCopy)
   {
-    [v15 sourceRect];
-    a9->var1.var2 = v46;
-    [v15 sourceRect];
-    a9->var1.var3 = v47;
-    [v15 sourceRect];
+    [widthCopy sourceRect];
+    to->var1.var2 = v46;
+    [widthCopy sourceRect];
+    to->var1.var3 = v47;
+    [widthCopy sourceRect];
     v49 = v48;
-    [v15 sourceRect];
-    a9->var1.var4 = (v49 + v50);
-    [v15 sourceRect];
+    [widthCopy sourceRect];
+    to->var1.var4 = (v49 + v50);
+    [widthCopy sourceRect];
     v52 = v51;
-    [v15 sourceRect];
+    [widthCopy sourceRect];
     var6 = (v52 + v53);
 LABEL_17:
     v45 = 48;
     goto LABEL_18;
   }
 
-  var3 = a9->var3.var3;
+  var3 = to->var3.var3;
   if (!v26)
   {
-    a9->var1.var2 = var3;
-    *&a9->var1.var3 = *&a9->var3.var4;
-    var6 = a9->var3.var6;
+    to->var1.var2 = var3;
+    *&to->var1.var3 = *&to->var3.var4;
+    var6 = to->var3.var6;
     goto LABEL_17;
   }
 
-  var5 = a9->var3.var5;
-  a9->var1.var2 = a9->var3.var4;
-  a9->var1.var3 = var3;
-  a9->var1.var5 = var5;
-  var6 = a9->var3.var6;
+  var5 = to->var3.var5;
+  to->var1.var2 = to->var3.var4;
+  to->var1.var3 = var3;
+  to->var1.var5 = var5;
+  var6 = to->var3.var6;
   v45 = 44;
 LABEL_18:
-  *(&a9->var0.var0 + v45) = var6;
-  [(LTMStatsCompute *)self calcExposureRatio:a8, *&v75];
+  *(&to->var0.var0 + v45) = var6;
+  [(LTMStatsCompute *)self calcExposureRatio:with, *&v75];
   *v55.i32 = v54 * 256.0;
-  *&a9->var1.var6[2] = 0;
-  *a9->var1.var6 = 0;
-  *a9->var1.var7 = vdupq_lane_s32(v55, 0);
-  if (v10)
+  *&to->var1.var6[2] = 0;
+  *to->var1.var6 = 0;
+  *to->var1.var7 = vdupq_lane_s32(v55, 0);
+  if (eCopy)
   {
-    numFaces = a8->faceInfo.numFaces;
-    a9->var2.var0 = numFaces != 0;
+    numFaces = with->faceInfo.numFaces;
+    to->var2.var0 = numFaces != 0;
     if (numFaces)
     {
-      v57 = (a8 + 16 * a8->faceInfo.primaryFaceIndex);
+      v57 = (with + 16 * with->faceInfo.primaryFaceIndex);
       v58 = v57[149];
-      *&a9->var2.var2 = v58;
-      *&a9->var2.var4 = vadd_s32(v57[150], v58);
-      *a9->var2.var6 = 0;
-      *&a9->var2.var6[2] = 0;
-      memset_pattern16(a9->var2.var7, &unk_1C9335C50, 0x10uLL);
-      a9->var2.var7[3] = a8->hardIspDGain * 64.0;
+      *&to->var2.var2 = v58;
+      *&to->var2.var4 = vadd_s32(v57[150], v58);
+      *to->var2.var6 = 0;
+      *&to->var2.var6[2] = 0;
+      memset_pattern16(to->var2.var7, &unk_1C9335C50, 0x10uLL);
+      to->var2.var7[3] = with->hardIspDGain * 64.0;
     }
   }
 
   else
   {
-    a9->var2.var0 = 0;
+    to->var2.var0 = 0;
   }
 
-  *&a9->var4.var0 = v85;
-  *&a9->var4.var2 = v76;
+  *&to->var4.var0 = v85;
+  *&to->var4.var2 = v76;
   v59.i64[0] = v80.u32[0];
   v59.i64[1] = v80.u32[1];
   v77 = vmulq_f64(vcvtq_f64_u64(v59), v78);
-  *&a9->var4.var6 = vmovn_s64(vcvtq_n_u64_f64(vrndmq_f64(vaddq_f64(vmulq_f64(vmulq_f64(v77, v78), v78), v78)), 1uLL));
-  a9->var4.var4 = v80.i32[0] >> 1;
-  a9->var4.var5 = v80.i32[1] >> 1;
-  a9->var4.var10 = vcvtms_u32_f32((4295000000.0 / (v80.i32[0] >> 1)) / (v80.i32[1] >> 1));
-  a9->var4.var8 = 1;
-  [v15 inputTextureDownsampleRatio];
-  a8->LTMGridConfig.width = (v60 * v83.u32[0]);
-  [v15 inputTextureDownsampleRatio];
-  a8->LTMGridConfig.height = (v61 * v83.u32[1]);
+  *&to->var4.var6 = vmovn_s64(vcvtq_n_u64_f64(vrndmq_f64(vaddq_f64(vmulq_f64(vmulq_f64(v77, v78), v78), v78)), 1uLL));
+  to->var4.var4 = v80.i32[0] >> 1;
+  to->var4.var5 = v80.i32[1] >> 1;
+  to->var4.var10 = vcvtms_u32_f32((4295000000.0 / (v80.i32[0] >> 1)) / (v80.i32[1] >> 1));
+  to->var4.var8 = 1;
+  [widthCopy inputTextureDownsampleRatio];
+  with->LTMGridConfig.width = (v60 * v83.u32[0]);
+  [widthCopy inputTextureDownsampleRatio];
+  with->LTMGridConfig.height = (v61 * v83.u32[1]);
   v62 = vadd_s32(v85, v80);
   v81 = v62.u32[1];
   v63 = v62.u32[0];
-  [v15 deepZoomOrigin];
+  [widthCopy deepZoomOrigin];
   if (v26)
   {
     v64 = v65;
   }
 
   v66 = v64 + v63;
-  [v15 inputTextureDownsampleRatio];
-  a8->LTMGridConfig.x = (v66 * v67);
-  [v15 deepZoomOrigin];
+  [widthCopy inputTextureDownsampleRatio];
+  with->LTMGridConfig.x = (v66 * v67);
+  [widthCopy deepZoomOrigin];
   if (!v26)
   {
     v68 = v69;
   }
 
   v70 = v68 + v81;
-  [v15 inputTextureDownsampleRatio];
+  [widthCopy inputTextureDownsampleRatio];
   v71 = 0;
-  a8->LTMGridConfig.y = (v70 * v72);
+  with->LTMGridConfig.y = (v70 * v72);
   v73.i64[0] = v85.u32[0];
   v73.i64[1] = v85.u32[1];
-  *&a8->localHistGridConfig.x = vmovn_s64(vcvtq_s64_f64(vaddq_f64(v77, vcvtq_f64_u64(v73))));
-  *&a8->localHistGridConfig.width = v83.i64[0];
+  *&with->localHistGridConfig.x = vmovn_s64(vcvtq_s64_f64(vaddq_f64(v77, vcvtq_f64_u64(v73))));
+  *&with->localHistGridConfig.width = v83.i64[0];
 LABEL_27:
 
   return v71;
 }
 
-- (float)calcExposureRatio:(const sRefDriverInputs_SOFTISP *)a3
+- (float)calcExposureRatio:(const sRefDriverInputs_SOFTISP *)ratio
 {
-  if (!a3->hdrRatio)
+  if (!ratio->hdrRatio)
   {
     [LTMStatsCompute calcExposureRatio:];
     return 1.0;
   }
 
-  if (!a3->gainDigi)
+  if (!ratio->gainDigi)
   {
     [LTMStatsCompute calcExposureRatio:];
     return 1.0;
   }
 
-  if (!a3->ev0Ratio)
+  if (!ratio->ev0Ratio)
   {
     [LTMStatsCompute calcExposureRatio:];
     return 1.0;
   }
 
-  if (!a3->overflowDGain)
+  if (!ratio->overflowDGain)
   {
     [LTMStatsCompute calcExposureRatio:];
     return 1.0;
   }
 
-  AuxCompute_CalcExposureRatio(a3);
+  AuxCompute_CalcExposureRatio(ratio);
   return result;
 }
 

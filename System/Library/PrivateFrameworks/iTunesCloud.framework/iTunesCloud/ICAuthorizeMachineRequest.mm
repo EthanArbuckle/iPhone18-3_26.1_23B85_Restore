@@ -1,24 +1,24 @@
 @interface ICAuthorizeMachineRequest
-- (ICAuthorizeMachineRequest)initWithRequestContext:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)performWithResponseHandler:(id)a3;
+- (ICAuthorizeMachineRequest)initWithRequestContext:(id)context;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)performWithResponseHandler:(id)handler;
 @end
 
 @implementation ICAuthorizeMachineRequest
 
-- (void)performWithResponseHandler:(id)a3
+- (void)performWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [ICAsyncBlockOperation alloc];
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __56__ICAuthorizeMachineRequest_performWithResponseHandler___block_invoke;
   v12 = &unk_1E7BF8080;
-  v13 = self;
-  v14 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [(ICAsyncBlockOperation *)v5 initWithStartHandler:&v9];
-  v8 = [MEMORY[0x1E696ADC8] ic_sharedRequestOperationQueueWithQualityOfService:{self->_qualityOfService, v9, v10, v11, v12, v13}];
+  v8 = [MEMORY[0x1E696ADC8] ic_sharedRequestOperationQueueWithQualityOfService:{self->_qualityOfService, v9, v10, v11, v12, selfCopy}];
   [v8 addOperation:v7];
 }
 
@@ -270,20 +270,20 @@ LABEL_30:
 LABEL_31:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [objc_alloc(objc_opt_class()) initWithRequestContext:self->_requestContext];
   if (v5)
   {
-    v6 = [(NSString *)self->_reason copyWithZone:a3];
+    v6 = [(NSString *)self->_reason copyWithZone:zone];
     v7 = v5[3];
     v5[3] = v6;
 
-    v8 = [(NSData *)self->_tokenData copyWithZone:a3];
+    v8 = [(NSData *)self->_tokenData copyWithZone:zone];
     v9 = v5[5];
     v5[5] = v8;
 
-    v10 = [(NSString *)self->_keybagPath copyWithZone:a3];
+    v10 = [(NSString *)self->_keybagPath copyWithZone:zone];
     v11 = v5[1];
     v5[1] = v10;
 
@@ -293,9 +293,9 @@ LABEL_31:
   return v5;
 }
 
-- (ICAuthorizeMachineRequest)initWithRequestContext:(id)a3
+- (ICAuthorizeMachineRequest)initWithRequestContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v10.receiver = self;
   v10.super_class = ICAuthorizeMachineRequest;
   v5 = [(ICAuthorizeMachineRequest *)&v10 init];
@@ -303,7 +303,7 @@ LABEL_31:
   if (v5)
   {
     v5->_qualityOfService = 17;
-    v7 = [v4 copy];
+    v7 = [contextCopy copy];
     requestContext = v6->_requestContext;
     v6->_requestContext = v7;
   }

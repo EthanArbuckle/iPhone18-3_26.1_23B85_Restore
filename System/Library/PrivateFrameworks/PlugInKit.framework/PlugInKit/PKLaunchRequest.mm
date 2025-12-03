@@ -1,34 +1,34 @@
 @interface PKLaunchRequest
-+ (id)launchRequestWithUUID:(id)a3 launchPersona:(id)a4;
-- (id)_initWithUUID:(id)a3 launchPersona:(id)a4;
++ (id)launchRequestWithUUID:(id)d launchPersona:(id)persona;
+- (id)_initWithUUID:(id)d launchPersona:(id)persona;
 @end
 
 @implementation PKLaunchRequest
 
-- (id)_initWithUUID:(id)a3 launchPersona:(id)a4
+- (id)_initWithUUID:(id)d launchPersona:(id)persona
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  personaCopy = persona;
   v12.receiver = self;
   v12.super_class = PKLaunchRequest;
   v8 = [(PKLaunchRequest *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dCopy copy];
     uuid = v8->_uuid;
     v8->_uuid = v9;
 
-    objc_storeStrong(&v8->_launchPersona, a4);
+    objc_storeStrong(&v8->_launchPersona, persona);
   }
 
   return v8;
 }
 
-+ (id)launchRequestWithUUID:(id)a3 launchPersona:(id)a4
++ (id)launchRequestWithUUID:(id)d launchPersona:(id)persona
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] _initWithUUID:v7 launchPersona:v6];
+  personaCopy = persona;
+  dCopy = d;
+  v8 = [[self alloc] _initWithUUID:dCopy launchPersona:personaCopy];
 
   return v8;
 }

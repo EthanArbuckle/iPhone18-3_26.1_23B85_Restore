@@ -1,22 +1,22 @@
 @interface AXMTRelativePointerMovementMapper
-- (AXMTRelativePointerMovementMapper)initWithScreenBounds:(CGRect)a3;
+- (AXMTRelativePointerMovementMapper)initWithScreenBounds:(CGRect)bounds;
 - (double)accelerationFactor;
-- (id)_processPointInNormalizedTrackingSpace:(CGPoint)a3 withTimestamp:(double)a4;
-- (id)processPointInNormalizedTrackingSpace:(CGPoint)a3;
+- (id)_processPointInNormalizedTrackingSpace:(CGPoint)space withTimestamp:(double)timestamp;
+- (id)processPointInNormalizedTrackingSpace:(CGPoint)space;
 - (void)_updateAccelerationCurve;
 - (void)reset;
-- (void)setAccelerationFactor:(double)a3;
-- (void)setNormalizedMovementThreshold:(double)a3;
-- (void)setScreenBounds:(CGRect)a3;
+- (void)setAccelerationFactor:(double)factor;
+- (void)setNormalizedMovementThreshold:(double)threshold;
+- (void)setScreenBounds:(CGRect)bounds;
 @end
 
 @implementation AXMTRelativePointerMovementMapper
 
-- (AXMTRelativePointerMovementMapper)initWithScreenBounds:(CGRect)a3
+- (AXMTRelativePointerMovementMapper)initWithScreenBounds:(CGRect)bounds
 {
   v6.receiver = self;
   v6.super_class = AXMTRelativePointerMovementMapper;
-  v3 = [(AXMTPointerMovementMapper *)&v6 initWithScreenBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AXMTPointerMovementMapper *)&v6 initWithScreenBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v4 = v3;
   if (v3)
   {
@@ -26,16 +26,16 @@
   return v4;
 }
 
-- (void)setAccelerationFactor:(double)a3
+- (void)setAccelerationFactor:(double)factor
 {
-  v4 = [(AXMTRelativePointerMovementMapper *)self _accelerationCurve];
-  [v4 setAccelerationFactor:a3];
+  _accelerationCurve = [(AXMTRelativePointerMovementMapper *)self _accelerationCurve];
+  [_accelerationCurve setAccelerationFactor:factor];
 }
 
 - (double)accelerationFactor
 {
-  v2 = [(AXMTRelativePointerMovementMapper *)self _accelerationCurve];
-  [v2 accelerationFactor];
+  _accelerationCurve = [(AXMTRelativePointerMovementMapper *)self _accelerationCurve];
+  [_accelerationCurve accelerationFactor];
   v4 = v3;
 
   return v4;
@@ -49,28 +49,28 @@
   [(AXMTRelativePointerMovementMapper *)self set_lastTrackingPointTimestamp:-1.0];
 }
 
-- (id)processPointInNormalizedTrackingSpace:(CGPoint)a3
+- (id)processPointInNormalizedTrackingSpace:(CGPoint)space
 {
-  y = a3.y;
-  x = a3.x;
+  y = space.y;
+  x = space.x;
   Current = CFAbsoluteTimeGetCurrent();
 
   return [(AXMTRelativePointerMovementMapper *)self _processPointInNormalizedTrackingSpace:x withTimestamp:y, Current];
 }
 
-- (void)setNormalizedMovementThreshold:(double)a3
+- (void)setNormalizedMovementThreshold:(double)threshold
 {
-  self->_normalizedMovementThreshold = a3;
-  [(AXMTRelativePointerMovementMapper *)self set_trueMovementThresholdX:a3 * 0.4 + 0.05];
+  self->_normalizedMovementThreshold = threshold;
+  [(AXMTRelativePointerMovementMapper *)self set_trueMovementThresholdX:threshold * 0.4 + 0.05];
 
-  [(AXMTRelativePointerMovementMapper *)self set_trueMovementThresholdY:a3 * 0.26 + 0.01];
+  [(AXMTRelativePointerMovementMapper *)self set_trueMovementThresholdY:threshold * 0.26 + 0.01];
 }
 
-- (void)setScreenBounds:(CGRect)a3
+- (void)setScreenBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = AXMTRelativePointerMovementMapper;
-  [(AXMTPointerMovementMapper *)&v4 setScreenBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(AXMTPointerMovementMapper *)&v4 setScreenBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(AXMTRelativePointerMovementMapper *)self _updateAccelerationCurve];
 }
 
@@ -84,25 +84,25 @@
   v8 = v7;
   [(AXMTPointerMovementMapper *)self screenBounds];
   v10 = sqrt(v8 * v9 + v4 * v6) * 0.5 * 0.02;
-  v11 = [(AXMTRelativePointerMovementMapper *)self _accelerationCurve];
+  _accelerationCurve = [(AXMTRelativePointerMovementMapper *)self _accelerationCurve];
 
-  if (v11)
+  if (_accelerationCurve)
   {
-    v12 = [(AXMTRelativePointerMovementMapper *)self _accelerationCurve];
-    [(AXMTAccelerationCurve *)v12 setInflectionPoint:v10];
+    _accelerationCurve2 = [(AXMTRelativePointerMovementMapper *)self _accelerationCurve];
+    [(AXMTAccelerationCurve *)_accelerationCurve2 setInflectionPoint:v10];
   }
 
   else
   {
-    v12 = [[AXMTAccelerationCurve alloc] initWithAccelerationFactor:1.5 inflectionPoint:v10];
+    _accelerationCurve2 = [[AXMTAccelerationCurve alloc] initWithAccelerationFactor:1.5 inflectionPoint:v10];
     [(AXMTRelativePointerMovementMapper *)self set_accelerationCurve:?];
   }
 }
 
-- (id)_processPointInNormalizedTrackingSpace:(CGPoint)a3 withTimestamp:(double)a4
+- (id)_processPointInNormalizedTrackingSpace:(CGPoint)space withTimestamp:(double)timestamp
 {
-  y = a3.y;
-  x = a3.x;
+  y = space.y;
+  x = space.x;
   [(AXMTRelativePointerMovementMapper *)self _lastTrackingPointTimestamp];
   if (v8 >= 0.0)
   {
@@ -144,14 +144,14 @@
     v24 = v16 * v23;
     [(AXMTPointerMovementMapper *)self screenBounds];
     v26 = v22 * v25;
-    v27 = [(AXMTRelativePointerMovementMapper *)self _accelerationCurve];
-    [v27 mapVector:{v24, v26}];
+    _accelerationCurve = [(AXMTRelativePointerMovementMapper *)self _accelerationCurve];
+    [_accelerationCurve mapVector:{v24, v26}];
     v29 = v28;
     v31 = v30;
 
     [(AXMTRelativePointerMovementMapper *)self _lastTrackingPointTimestamp];
-    v33 = a4 - v32;
-    [(AXMTRelativePointerMovementMapper *)self set_lastTrackingPointTimestamp:a4];
+    v33 = timestamp - v32;
+    [(AXMTRelativePointerMovementMapper *)self set_lastTrackingPointTimestamp:timestamp];
     v9 = [AXMTPointerMovement alloc];
     v10 = -(v29 * v33);
     v11 = v31 * v33;
@@ -159,7 +159,7 @@
 
   else
   {
-    [(AXMTRelativePointerMovementMapper *)self set_lastTrackingPointTimestamp:a4];
+    [(AXMTRelativePointerMovementMapper *)self set_lastTrackingPointTimestamp:timestamp];
     v9 = [AXMTPointerMovement alloc];
     v10 = NSZeroPoint.x;
     v11 = NSZeroPoint.y;

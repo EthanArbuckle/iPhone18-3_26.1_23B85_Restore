@@ -1,17 +1,17 @@
 @interface ICQCloudStorageDataAndMailBarButtonView
-+ (id)barButtonItemWithData:(id)a3 andMail:(id)a4;
-- (ICQCloudStorageDataAndMailBarButtonView)initWithData:(id)a3 andMail:(id)a4;
++ (id)barButtonItemWithData:(id)data andMail:(id)mail;
+- (ICQCloudStorageDataAndMailBarButtonView)initWithData:(id)data andMail:(id)mail;
 - (void)layoutSubviews;
 - (void)sizeToFit;
 @end
 
 @implementation ICQCloudStorageDataAndMailBarButtonView
 
-+ (id)barButtonItemWithData:(id)a3 andMail:(id)a4
++ (id)barButtonItemWithData:(id)data andMail:(id)mail
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[ICQCloudStorageDataAndMailBarButtonView alloc] initWithData:v6 andMail:v5];
+  mailCopy = mail;
+  dataCopy = data;
+  v7 = [[ICQCloudStorageDataAndMailBarButtonView alloc] initWithData:dataCopy andMail:mailCopy];
 
   [(ICQCloudStorageDataAndMailBarButtonView *)v7 setNeedsLayout];
   [(ICQCloudStorageDataAndMailBarButtonView *)v7 layoutIfNeeded];
@@ -21,10 +21,10 @@
   return v8;
 }
 
-- (ICQCloudStorageDataAndMailBarButtonView)initWithData:(id)a3 andMail:(id)a4
+- (ICQCloudStorageDataAndMailBarButtonView)initWithData:(id)data andMail:(id)mail
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  mailCopy = mail;
   v38.receiver = self;
   v38.super_class = ICQCloudStorageDataAndMailBarButtonView;
   v8 = *MEMORY[0x277CBF3A0];
@@ -44,8 +44,8 @@
     v16 = PSToolbarLabelsTextColor();
     [(UILabel *)v12->_data setTextColor:v16];
 
-    v17 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v12->_data setBackgroundColor:v17];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v12->_data setBackgroundColor:clearColor];
 
     [(UILabel *)v12->_data setTextAlignment:1];
     [(UILabel *)v12->_data setLineBreakMode:4];
@@ -65,12 +65,12 @@
     v23 = PSToolbarLabelsTextColor();
     [(UILabel *)v12->_dataSizes setTextColor:v23];
 
-    v24 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v12->_dataSizes setBackgroundColor:v24];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v12->_dataSizes setBackgroundColor:clearColor2];
 
     [(UILabel *)v12->_dataSizes setTextAlignment:1];
     [(UILabel *)v12->_dataSizes setLineBreakMode:4];
-    [(UILabel *)v12->_dataSizes setText:v6];
+    [(UILabel *)v12->_dataSizes setText:dataCopy];
     [(UILabel *)v12->_dataSizes sizeToFit];
     [(ICQCloudStorageDataAndMailBarButtonView *)v12 addSubview:v12->_dataSizes];
     v25 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v8, v9, v10, v11}];
@@ -83,8 +83,8 @@
     v28 = PSToolbarLabelsTextColor();
     [(UILabel *)v12->_mail setTextColor:v28];
 
-    v29 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v12->_mail setBackgroundColor:v29];
+    clearColor3 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v12->_mail setBackgroundColor:clearColor3];
 
     [(UILabel *)v12->_mail setTextAlignment:1];
     [(UILabel *)v12->_mail setLineBreakMode:4];
@@ -104,12 +104,12 @@
     v35 = PSToolbarLabelsTextColor();
     [(UILabel *)v12->_mailSizes setTextColor:v35];
 
-    v36 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v12->_mailSizes setBackgroundColor:v36];
+    clearColor4 = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v12->_mailSizes setBackgroundColor:clearColor4];
 
     [(UILabel *)v12->_mailSizes setTextAlignment:1];
     [(UILabel *)v12->_mailSizes setLineBreakMode:4];
-    [(UILabel *)v12->_mailSizes setText:v7];
+    [(UILabel *)v12->_mailSizes setText:mailCopy];
     [(UILabel *)v12->_mailSizes sizeToFit];
     [(ICQCloudStorageDataAndMailBarButtonView *)v12 addSubview:v12->_mailSizes];
   }

@@ -1,10 +1,10 @@
 @interface HKOAuth2TokenSession
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HKOAuth2TokenSession)init;
-- (HKOAuth2TokenSession)initWithCode:(id)a3 query:(id)a4 requestedScope:(id)a5 state:(id)a6 pkceVerifier:(id)a7;
-- (HKOAuth2TokenSession)initWithCoder:(id)a3;
+- (HKOAuth2TokenSession)initWithCode:(id)code query:(id)query requestedScope:(id)scope state:(id)state pkceVerifier:(id)verifier;
+- (HKOAuth2TokenSession)initWithCoder:(id)coder;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKOAuth2TokenSession
@@ -19,35 +19,35 @@
   return 0;
 }
 
-- (HKOAuth2TokenSession)initWithCode:(id)a3 query:(id)a4 requestedScope:(id)a5 state:(id)a6 pkceVerifier:(id)a7
+- (HKOAuth2TokenSession)initWithCode:(id)code query:(id)query requestedScope:(id)scope state:(id)state pkceVerifier:(id)verifier
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  codeCopy = code;
+  queryCopy = query;
+  scopeCopy = scope;
+  stateCopy = state;
+  verifierCopy = verifier;
   v29.receiver = self;
   v29.super_class = HKOAuth2TokenSession;
   v17 = [(HKOAuth2TokenSession *)&v29 init];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [codeCopy copy];
     code = v17->_code;
     v17->_code = v18;
 
-    v20 = [v13 copy];
+    v20 = [queryCopy copy];
     query = v17->_query;
     v17->_query = v20;
 
-    v22 = [v14 copy];
+    v22 = [scopeCopy copy];
     requestedScope = v17->_requestedScope;
     v17->_requestedScope = v22;
 
-    v24 = [v15 copy];
+    v24 = [stateCopy copy];
     state = v17->_state;
     v17->_state = v24;
 
-    v26 = [v16 copy];
+    v26 = [verifierCopy copy];
     pkceVerifier = v17->_pkceVerifier;
     v17->_pkceVerifier = v26;
   }
@@ -55,71 +55,71 @@
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (v5 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
-    LOBYTE(v12) = 1;
+    LOBYTE(query4) = 1;
   }
 
   else
   {
-    if ([(HKOAuth2TokenSession *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(HKOAuth2TokenSession *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(HKOAuth2TokenSession *)v6 code];
-      v8 = [(HKOAuth2TokenSession *)self code];
-      if (v7 != v8)
+      v6 = equalCopy;
+      code = [(HKOAuth2TokenSession *)v6 code];
+      code2 = [(HKOAuth2TokenSession *)self code];
+      if (code != code2)
       {
-        v9 = [(HKOAuth2TokenSession *)self code];
-        if (!v9)
+        code3 = [(HKOAuth2TokenSession *)self code];
+        if (!code3)
         {
-          LOBYTE(v12) = 0;
+          LOBYTE(query4) = 0;
           goto LABEL_55;
         }
 
-        v3 = v9;
-        v10 = [(HKOAuth2TokenSession *)v6 code];
-        v11 = [(HKOAuth2TokenSession *)self code];
-        v54 = v10;
-        if (![v10 isEqualToString:v11])
+        v3 = code3;
+        code4 = [(HKOAuth2TokenSession *)v6 code];
+        code5 = [(HKOAuth2TokenSession *)self code];
+        v54 = code4;
+        if (![code4 isEqualToString:code5])
         {
-          LOBYTE(v12) = 0;
+          LOBYTE(query4) = 0;
 LABEL_54:
 
           goto LABEL_55;
         }
 
-        v51 = v11;
+        v51 = code5;
       }
 
-      v13 = [(HKOAuth2TokenSession *)v6 query];
-      v14 = [(HKOAuth2TokenSession *)self query];
-      v15 = v14;
-      if (v13 == v14)
+      query = [(HKOAuth2TokenSession *)v6 query];
+      query2 = [(HKOAuth2TokenSession *)self query];
+      v15 = query2;
+      if (query == query2)
       {
-        v18 = v14;
+        v18 = query2;
       }
 
       else
       {
-        v16 = [(HKOAuth2TokenSession *)self query];
-        if (!v16)
+        query3 = [(HKOAuth2TokenSession *)self query];
+        if (!query3)
         {
 
           goto LABEL_43;
         }
 
-        v49 = v16;
-        v12 = [(HKOAuth2TokenSession *)v6 query];
-        v17 = [(HKOAuth2TokenSession *)self query];
-        if (([v12 isEqualToString:v17] & 1) == 0)
+        v49 = query3;
+        query4 = [(HKOAuth2TokenSession *)v6 query];
+        query5 = [(HKOAuth2TokenSession *)self query];
+        if (([query4 isEqualToString:query5] & 1) == 0)
         {
 
-          LOBYTE(v12) = 0;
-          v11 = v51;
-          if (v7 == v8)
+          LOBYTE(query4) = 0;
+          code5 = v51;
+          if (code == code2)
           {
             goto LABEL_55;
           }
@@ -127,43 +127,43 @@ LABEL_54:
           goto LABEL_54;
         }
 
-        v44 = v12;
+        v44 = query4;
         v18 = v15;
-        v47 = v17;
+        v47 = query5;
       }
 
-      v19 = [(HKOAuth2TokenSession *)v6 requestedScope];
-      v52 = [(HKOAuth2TokenSession *)self requestedScope];
-      v53 = v19;
-      if (v19 == v52)
+      requestedScope = [(HKOAuth2TokenSession *)v6 requestedScope];
+      requestedScope2 = [(HKOAuth2TokenSession *)self requestedScope];
+      v53 = requestedScope;
+      if (requestedScope == requestedScope2)
       {
         v48 = v18;
 LABEL_22:
-        v23 = [(HKOAuth2TokenSession *)v6 state];
-        v45 = [(HKOAuth2TokenSession *)self state];
-        v46 = v23;
-        if (v23 == v45)
+        state = [(HKOAuth2TokenSession *)v6 state];
+        state2 = [(HKOAuth2TokenSession *)self state];
+        v46 = state;
+        if (state == state2)
         {
           v50 = v3;
         }
 
         else
         {
-          v12 = [(HKOAuth2TokenSession *)self state];
-          if (!v12)
+          query4 = [(HKOAuth2TokenSession *)self state];
+          if (!query4)
           {
             goto LABEL_37;
           }
 
-          v24 = [(HKOAuth2TokenSession *)v6 state];
-          v25 = [(HKOAuth2TokenSession *)self state];
-          if (([v24 isEqual:v25] & 1) == 0)
+          state3 = [(HKOAuth2TokenSession *)v6 state];
+          state4 = [(HKOAuth2TokenSession *)self state];
+          if (([state3 isEqual:state4] & 1) == 0)
           {
 
-            LOBYTE(v12) = 0;
-            v32 = v52;
+            LOBYTE(query4) = 0;
+            v32 = requestedScope2;
             v33 = v53;
-            v34 = v53 == v52;
+            v34 = v53 == requestedScope2;
 LABEL_45:
             v26 = v47;
             if (!v34)
@@ -178,45 +178,45 @@ LABEL_49:
             goto LABEL_50;
           }
 
-          v39 = v24;
-          v40 = v12;
+          v39 = state3;
+          v40 = query4;
           v50 = v3;
-          v19 = v25;
+          requestedScope = state4;
         }
 
-        v27 = [(HKOAuth2TokenSession *)v6 pkceVerifier];
-        v28 = [(HKOAuth2TokenSession *)self pkceVerifier];
-        LOBYTE(v12) = v27 == v28;
-        if (v27 != v28)
+        pkceVerifier = [(HKOAuth2TokenSession *)v6 pkceVerifier];
+        pkceVerifier2 = [(HKOAuth2TokenSession *)self pkceVerifier];
+        LOBYTE(query4) = pkceVerifier == pkceVerifier2;
+        if (pkceVerifier != pkceVerifier2)
         {
-          v29 = [(HKOAuth2TokenSession *)self pkceVerifier];
-          if (v29)
+          pkceVerifier3 = [(HKOAuth2TokenSession *)self pkceVerifier];
+          if (pkceVerifier3)
           {
-            v37 = v19;
-            v38 = v29;
-            v30 = [(HKOAuth2TokenSession *)v6 pkceVerifier];
-            v31 = [(HKOAuth2TokenSession *)self pkceVerifier];
-            LOBYTE(v12) = [v30 isEqual:v31];
+            v37 = requestedScope;
+            v38 = pkceVerifier3;
+            pkceVerifier4 = [(HKOAuth2TokenSession *)v6 pkceVerifier];
+            pkceVerifier5 = [(HKOAuth2TokenSession *)self pkceVerifier];
+            LOBYTE(query4) = [pkceVerifier4 isEqual:pkceVerifier5];
 
-            if (v46 != v45)
+            if (v46 != state2)
             {
             }
 
-            v32 = v52;
+            v32 = requestedScope2;
             v33 = v53;
-            v34 = v53 == v52;
+            v34 = v53 == requestedScope2;
             v3 = v50;
             goto LABEL_45;
           }
         }
 
-        if (v46 == v45)
+        if (v46 == state2)
         {
 
-          v35 = v52;
+          v35 = requestedScope2;
           v3 = v50;
           v26 = v47;
-          if (v53 == v52)
+          if (v53 == requestedScope2)
           {
             goto LABEL_39;
           }
@@ -228,8 +228,8 @@ LABEL_49:
 LABEL_37:
         v26 = v47;
 
-        v35 = v52;
-        if (v53 == v52)
+        v35 = requestedScope2;
+        if (v53 == requestedScope2)
         {
 LABEL_39:
 
@@ -238,26 +238,26 @@ LABEL_39:
 
 LABEL_38:
 
-        v35 = v52;
+        v35 = requestedScope2;
         goto LABEL_39;
       }
 
-      v20 = [(HKOAuth2TokenSession *)self requestedScope];
+      requestedScope3 = [(HKOAuth2TokenSession *)self requestedScope];
       v21 = v18;
-      if (!v20)
+      if (!requestedScope3)
       {
-        LOBYTE(v12) = 0;
+        LOBYTE(query4) = 0;
         v26 = v47;
 LABEL_47:
 
 LABEL_50:
-        if (v13 != v21)
+        if (query != v21)
         {
         }
 
 LABEL_53:
-        v11 = v51;
-        if (v7 != v8)
+        code5 = v51;
+        if (code != code2)
         {
           goto LABEL_54;
         }
@@ -268,89 +268,89 @@ LABEL_55:
       }
 
       v48 = v18;
-      v43 = v20;
-      v22 = [(HKOAuth2TokenSession *)v6 requestedScope];
-      v19 = [(HKOAuth2TokenSession *)self requestedScope];
-      if ([v22 isEqualToString:v19])
+      v43 = requestedScope3;
+      requestedScope4 = [(HKOAuth2TokenSession *)v6 requestedScope];
+      requestedScope = [(HKOAuth2TokenSession *)self requestedScope];
+      if ([requestedScope4 isEqualToString:requestedScope])
       {
-        v41 = v19;
-        v42 = v22;
+        v41 = requestedScope;
+        v42 = requestedScope4;
         goto LABEL_22;
       }
 
-      if (v13 != v48)
+      if (query != v48)
       {
       }
 
 LABEL_43:
-      LOBYTE(v12) = 0;
+      LOBYTE(query4) = 0;
       goto LABEL_53;
     }
 
-    LOBYTE(v12) = 0;
+    LOBYTE(query4) = 0;
   }
 
 LABEL_56:
 
-  return v12;
+  return query4;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(HKOAuth2TokenSession *)self code];
-  v4 = [v3 hash];
-  v5 = [(HKOAuth2TokenSession *)self query];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(HKOAuth2TokenSession *)self requestedScope];
-  v8 = [v7 hash];
-  v9 = [(HKOAuth2TokenSession *)self state];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(HKOAuth2TokenSession *)self pkceVerifier];
-  v12 = [v11 hash];
+  code = [(HKOAuth2TokenSession *)self code];
+  v4 = [code hash];
+  query = [(HKOAuth2TokenSession *)self query];
+  v6 = [query hash] ^ v4;
+  requestedScope = [(HKOAuth2TokenSession *)self requestedScope];
+  v8 = [requestedScope hash];
+  state = [(HKOAuth2TokenSession *)self state];
+  v10 = v6 ^ v8 ^ [state hash];
+  pkceVerifier = [(HKOAuth2TokenSession *)self pkceVerifier];
+  v12 = [pkceVerifier hash];
 
   return v10 ^ v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HKOAuth2TokenSession *)self code];
-  [v4 encodeObject:v5 forKey:@"code"];
+  coderCopy = coder;
+  code = [(HKOAuth2TokenSession *)self code];
+  [coderCopy encodeObject:code forKey:@"code"];
 
-  v6 = [(HKOAuth2TokenSession *)self query];
-  [v4 encodeObject:v6 forKey:@"query"];
+  query = [(HKOAuth2TokenSession *)self query];
+  [coderCopy encodeObject:query forKey:@"query"];
 
-  v7 = [(HKOAuth2TokenSession *)self requestedScope];
-  [v4 encodeObject:v7 forKey:@"requestedScope"];
+  requestedScope = [(HKOAuth2TokenSession *)self requestedScope];
+  [coderCopy encodeObject:requestedScope forKey:@"requestedScope"];
 
-  v8 = [(HKOAuth2TokenSession *)self state];
-  [v4 encodeObject:v8 forKey:@"state"];
+  state = [(HKOAuth2TokenSession *)self state];
+  [coderCopy encodeObject:state forKey:@"state"];
 
-  v9 = [(HKOAuth2TokenSession *)self pkceVerifier];
-  [v4 encodeObject:v9 forKey:@"pkceVerifier"];
+  pkceVerifier = [(HKOAuth2TokenSession *)self pkceVerifier];
+  [coderCopy encodeObject:pkceVerifier forKey:@"pkceVerifier"];
 }
 
-- (HKOAuth2TokenSession)initWithCoder:(id)a3
+- (HKOAuth2TokenSession)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"code"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"query"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestedScope"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"state"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pkceVerifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"code"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"query"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestedScope"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"state"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pkceVerifier"];
   if (v5 && v6 && v7 && v8)
   {
     self = [(HKOAuth2TokenSession *)self initWithCode:v5 query:v6 requestedScope:v7 state:v8 pkceVerifier:v9];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v10 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 @end

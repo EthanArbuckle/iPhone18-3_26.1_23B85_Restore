@@ -2,10 +2,10 @@
 + (id)_sFetchElementsLog;
 + (id)sharedInstance;
 + (id)sharedLog;
-+ (void)CommandStringExecuted:(id)a3 success:(BOOL)a4;
-+ (void)CommandStringReceived:(id)a3;
-+ (void)FetchElementsEventBeganWithReason:(id)a3 expectedDelay:(double)a4;
-+ (void)FetchElementsEventCompletedWithNumberOfElements:(unint64_t)a3 numberOfElementsAlreadyCached:(unint64_t)a4;
++ (void)CommandStringExecuted:(id)executed success:(BOOL)success;
++ (void)CommandStringReceived:(id)received;
++ (void)FetchElementsEventBeganWithReason:(id)reason expectedDelay:(double)delay;
++ (void)FetchElementsEventCompletedWithNumberOfElements:(unint64_t)elements numberOfElementsAlreadyCached:(unint64_t)cached;
 @end
 
 @implementation CACSignPostLog
@@ -67,10 +67,10 @@ uint64_t __36__CACSignPostLog__sFetchElementsLog__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (void)FetchElementsEventBeganWithReason:(id)a3 expectedDelay:(double)a4
++ (void)FetchElementsEventBeganWithReason:(id)reason expectedDelay:(double)delay
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  reasonCopy = reason;
   v6 = +[CACSignPostLog _sFetchElementsLog];
   v7 = os_signpost_id_generate(v6);
 
@@ -79,9 +79,9 @@ uint64_t __36__CACSignPostLog__sFetchElementsLog__block_invoke()
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
     v11 = 138412546;
-    v12 = v5;
+    v12 = reasonCopy;
     v13 = 2048;
-    v14 = a4;
+    delayCopy2 = delay;
     _os_signpost_emit_with_name_impl(&dword_26B354000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "FetchElements", "Requesting elements refreshed with reason %@; expected delay: %f", &v11, 0x16u);
   }
 
@@ -89,14 +89,14 @@ uint64_t __36__CACSignPostLog__sFetchElementsLog__block_invoke()
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     v11 = 138412546;
-    v12 = v5;
+    v12 = reasonCopy;
     v13 = 2048;
-    v14 = a4;
+    delayCopy2 = delay;
     _os_log_impl(&dword_26B354000, v10, OS_LOG_TYPE_INFO, "FetchElements: Requesting elements refreshed with reason %@; expected delay: %f", &v11, 0x16u);
   }
 }
 
-+ (void)FetchElementsEventCompletedWithNumberOfElements:(unint64_t)a3 numberOfElementsAlreadyCached:(unint64_t)a4
++ (void)FetchElementsEventCompletedWithNumberOfElements:(unint64_t)elements numberOfElementsAlreadyCached:(unint64_t)cached
 {
   v14 = *MEMORY[0x277D85DE8];
   v6 = +[CACSignPostLog _sFetchElementsLog];
@@ -107,42 +107,42 @@ uint64_t __36__CACSignPostLog__sFetchElementsLog__block_invoke()
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v8))
   {
     v10 = 134218240;
-    v11 = a3;
+    elementsCopy = elements;
     v12 = 2048;
-    v13 = a4;
+    cachedCopy = cached;
     _os_signpost_emit_with_name_impl(&dword_26B354000, v9, OS_SIGNPOST_INTERVAL_END, v7, "FetchElements", "%lu elements fetched; %lu elements already cached", &v10, 0x16u);
   }
 }
 
-+ (void)CommandStringReceived:(id)a3
++ (void)CommandStringReceived:(id)received
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  receivedCopy = received;
   v4 = +[CACSignPostLog sharedLog];
   if (os_signpost_enabled(v4))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = receivedCopy;
     _os_signpost_emit_with_name_impl(&dword_26B354000, v4, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CommandStringReceived", "Starting to execute command with identifier %@", &v5, 0xCu);
   }
 }
 
-+ (void)CommandStringExecuted:(id)a3 success:(BOOL)a4
++ (void)CommandStringExecuted:(id)executed success:(BOOL)success
 {
-  v4 = a4;
+  successCopy = success;
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  executedCopy = executed;
   v6 = +[CACSignPostLog sharedLog];
   if (os_signpost_enabled(v6))
   {
     v7 = @"NO";
-    if (v4)
+    if (successCopy)
     {
       v7 = @"YES";
     }
 
     v8 = 138412546;
-    v9 = v5;
+    v9 = executedCopy;
     v10 = 2112;
     v11 = v7;
     _os_signpost_emit_with_name_impl(&dword_26B354000, v6, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "CommandStringExecuted", "Finished executing command with identifier %@; success: %@", &v8, 0x16u);

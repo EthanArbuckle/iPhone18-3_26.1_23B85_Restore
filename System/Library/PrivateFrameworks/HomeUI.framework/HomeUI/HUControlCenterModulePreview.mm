@@ -1,28 +1,28 @@
 @interface HUControlCenterModulePreview
-+ (id)emptyPreviewForGridSize:(HUGridSize)a3;
-+ (id)previewWithPackage:(id)a3 forGridSize:(HUGridSize)a4;
-+ (id)previewWithSystemIcon:(id)a3 forGridSize:(HUGridSize)a4;
-+ (id)previewWithTemplate:(id)a3 tintColor:(id)a4 title:(id)a5 subtitle:(id)a6 forGridSize:(HUGridSize)a7;
++ (id)emptyPreviewForGridSize:(HUGridSize)size;
++ (id)previewWithPackage:(id)package forGridSize:(HUGridSize)size;
++ (id)previewWithSystemIcon:(id)icon forGridSize:(HUGridSize)size;
++ (id)previewWithTemplate:(id)template tintColor:(id)color title:(id)title subtitle:(id)subtitle forGridSize:(HUGridSize)size;
 - (HUControlCenterModulePreview)init;
 @end
 
 @implementation HUControlCenterModulePreview
 
-+ (id)previewWithPackage:(id)a3 forGridSize:(HUGridSize)a4
++ (id)previewWithPackage:(id)package forGridSize:(HUGridSize)size
 {
-  columnsAcross = a4.columnsAcross;
-  rowsDown = a4.rowsDown;
+  columnsAcross = size.columnsAcross;
+  rowsDown = size.rowsDown;
   swift_getObjCClassMetadata();
-  v7 = a3;
-  v8 = static HUControlCenterModulePreview.preview(package:size:)(v7, rowsDown, columnsAcross);
+  packageCopy = package;
+  v8 = static HUControlCenterModulePreview.preview(package:size:)(packageCopy, rowsDown, columnsAcross);
 
   return v8;
 }
 
-+ (id)previewWithSystemIcon:(id)a3 forGridSize:(HUGridSize)a4
++ (id)previewWithSystemIcon:(id)icon forGridSize:(HUGridSize)size
 {
-  columnsAcross = a4.columnsAcross;
-  rowsDown = a4.rowsDown;
+  columnsAcross = size.columnsAcross;
+  rowsDown = size.rowsDown;
   v6 = sub_20D567838();
   v8 = v7;
   swift_getObjCClassMetadata();
@@ -31,16 +31,16 @@
   return v9;
 }
 
-+ (id)previewWithTemplate:(id)a3 tintColor:(id)a4 title:(id)a5 subtitle:(id)a6 forGridSize:(HUGridSize)a7
++ (id)previewWithTemplate:(id)template tintColor:(id)color title:(id)title subtitle:(id)subtitle forGridSize:(HUGridSize)size
 {
-  columnsAcross = a7.columnsAcross;
-  rowsDown = a7.rowsDown;
+  columnsAcross = size.columnsAcross;
+  rowsDown = size.rowsDown;
   v12 = sub_20D567838();
   v14 = v13;
-  if (a6)
+  if (subtitle)
   {
     v15 = sub_20D567838();
-    a6 = v16;
+    subtitle = v16;
   }
 
   else
@@ -49,17 +49,17 @@
   }
 
   swift_getObjCClassMetadata();
-  v17 = a3;
-  v18 = a4;
-  v19 = static HUControlCenterModulePreview.preview(templateIcon:tint:title:subtitle:size:)(v17, v18, v12, v14, v15, a6, rowsDown, columnsAcross);
+  templateCopy = template;
+  colorCopy = color;
+  v19 = static HUControlCenterModulePreview.preview(templateIcon:tint:title:subtitle:size:)(templateCopy, colorCopy, v12, v14, v15, subtitle, rowsDown, columnsAcross);
 
   return v19;
 }
 
-+ (id)emptyPreviewForGridSize:(HUGridSize)a3
++ (id)emptyPreviewForGridSize:(HUGridSize)size
 {
-  columnsAcross = a3.columnsAcross;
-  rowsDown = a3.rowsDown;
+  columnsAcross = size.columnsAcross;
+  rowsDown = size.rowsDown;
   swift_getObjCClassMetadata();
   v5 = static HUControlCenterModulePreview.empty(size:)(rowsDown, columnsAcross);
 

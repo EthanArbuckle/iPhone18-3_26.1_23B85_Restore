@@ -1,41 +1,41 @@
 @interface VKFeatureAccessibilityElement
-- (BOOL)pointInside:(CGPoint)a3;
+- (BOOL)pointInside:(CGPoint)inside;
 - (CGRect)accessibilityFrame;
-- (VKFeatureAccessibilityElement)initWithAccessibilityContainer:(id)a3;
-- (VKFeatureAccessibilityElement)initWithAccessibilityContainer:(id)a3 feature:(id)a4 ignoreMissingName:(BOOL)a5 useLocalizedLabels:(BOOL)a6;
-- (id)_accessibilityMapDetailedInfoAtPoint:(CGPoint)a3;
+- (VKFeatureAccessibilityElement)initWithAccessibilityContainer:(id)container;
+- (VKFeatureAccessibilityElement)initWithAccessibilityContainer:(id)container feature:(id)feature ignoreMissingName:(BOOL)name useLocalizedLabels:(BOOL)labels;
+- (id)_accessibilityMapDetailedInfoAtPoint:(CGPoint)point;
 - (id)_accessibilityMapSmartDescriptionDictionary;
-- (id)_accessibilityShortAddress:(id)a3;
-- (id)_accessibilityShortAddress:(id)a3 alwaysIncludeLocality:(BOOL)a4;
-- (id)_distanceAwayStringWithClockDirection:(BOOL)a3;
-- (id)_distanceStringForPoint:(id)a3 usingClockDirection:(BOOL)a4;
+- (id)_accessibilityShortAddress:(id)address;
+- (id)_accessibilityShortAddress:(id)address alwaysIncludeLocality:(BOOL)locality;
+- (id)_distanceAwayStringWithClockDirection:(BOOL)direction;
+- (id)_distanceStringForPoint:(id)point usingClockDirection:(BOOL)direction;
 - (id)accessibilityLabel;
 - (id)accessibilityPaths;
 - (id)description;
-- (id)pointsFromFeatureWrapper:(id)a3;
+- (id)pointsFromFeatureWrapper:(id)wrapper;
 - (void)_mergePaths;
 - (void)_updateElementStatus;
-- (void)addFeature:(id)a3;
-- (void)addFeatureWrapper:(id)a3;
-- (void)addFeaturesFromElement:(id)a3;
+- (void)addFeature:(id)feature;
+- (void)addFeatureWrapper:(id)wrapper;
+- (void)addFeaturesFromElement:(id)element;
 - (void)dealloc;
 - (void)removeFeatures;
-- (void)startLocationInformationRequest:(CGPoint)a3;
+- (void)startLocationInformationRequest:(CGPoint)request;
 @end
 
 @implementation VKFeatureAccessibilityElement
 
-- (VKFeatureAccessibilityElement)initWithAccessibilityContainer:(id)a3 feature:(id)a4 ignoreMissingName:(BOOL)a5 useLocalizedLabels:(BOOL)a6
+- (VKFeatureAccessibilityElement)initWithAccessibilityContainer:(id)container feature:(id)feature ignoreMissingName:(BOOL)name useLocalizedLabels:(BOOL)labels
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = v11;
-  if (v11 && ([v11 feature], (v13 = objc_claimAutoreleasedReturnValue()) != 0) && ((objc_msgSend(v12, "feature"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "name"), v14, v13, v15) || v7))
+  labelsCopy = labels;
+  nameCopy = name;
+  containerCopy = container;
+  featureCopy = feature;
+  v12 = featureCopy;
+  if (featureCopy && ([featureCopy feature], (v13 = objc_claimAutoreleasedReturnValue()) != 0) && ((objc_msgSend(v12, "feature"), v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "name"), v14, v13, v15) || nameCopy))
   {
-    v18 = [v12 feature];
-    if (v6)
+    feature = [v12 feature];
+    if (labelsCopy)
     {
       GEOFeatureGetLocalizedLabel();
       GEOFeatureGetLocalizedShield();
@@ -47,9 +47,9 @@
       GEOFeatureGetNativeShield();
     }
 
-    if (v7)
+    if (nameCopy)
     {
-      v19 = [(VKFeatureAccessibilityElement *)self initWithAccessibilityContainer:v10, 0];
+      v19 = [(VKFeatureAccessibilityElement *)self initWithAccessibilityContainer:containerCopy, 0];
       if (v19)
       {
         [(VKFeatureAccessibilityElement *)v19 setAccessibilityLabel:0];
@@ -57,32 +57,32 @@
         [(VKFeatureAccessibilityElement *)v19 addFeature:v12];
         objc_storeStrong(&v19->_shieldText, 0);
         v19->_shieldType = 0;
-        v19->_style = [v18 styleID];
+        v19->_style = [feature styleID];
       }
 
       self = v19;
-      v16 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v16 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 - (void)_updateElementStatus
 {
-  v3 = [(VKFeatureAccessibilityElement *)self accessibilityContainer];
+  accessibilityContainer = [(VKFeatureAccessibilityElement *)self accessibilityContainer];
   [(VKFeatureAccessibilityElement *)self accessibilityActivationPoint];
-  -[VKFeatureAccessibilityElement setIsAccessibilityElement:](self, "setIsAccessibilityElement:", [v3 accessibilityViewBoundsContainsPathPoint:?]);
+  -[VKFeatureAccessibilityElement setIsAccessibilityElement:](self, "setIsAccessibilityElement:", [accessibilityContainer accessibilityViewBoundsContainsPathPoint:?]);
 }
 
 - (id)accessibilityLabel
@@ -92,18 +92,18 @@
     v3 = AXVectorKitLocString(@"POI_BUILDING");
     v8.receiver = self;
     v8.super_class = VKFeatureAccessibilityElement;
-    v6 = [(VKFeatureAccessibilityElement *)&v8 accessibilityLabel];
-    v4 = __UIAXStringForVariables();
+    accessibilityLabel = [(VKFeatureAccessibilityElement *)&v8 accessibilityLabel];
+    accessibilityLabel2 = __UIAXStringForVariables();
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = VKFeatureAccessibilityElement;
-    v4 = [(VKFeatureAccessibilityElement *)&v7 accessibilityLabel];
+    accessibilityLabel2 = [(VKFeatureAccessibilityElement *)&v7 accessibilityLabel];
   }
 
-  return v4;
+  return accessibilityLabel2;
 }
 
 - (void)removeFeatures
@@ -114,55 +114,55 @@
   [(VKFeatureAccessibilityElement *)self setHitTestPaths:0];
 }
 
-- (void)addFeature:(id)a3
+- (void)addFeature:(id)feature
 {
-  v4 = a3;
-  if (v4)
+  featureCopy = feature;
+  if (featureCopy)
   {
-    v6 = v4;
-    v5 = [[AXVKMultiSectionFeatureWrapper alloc] initWithFeature:v4];
+    v6 = featureCopy;
+    v5 = [[AXVKMultiSectionFeatureWrapper alloc] initWithFeature:featureCopy];
     [(VKFeatureAccessibilityElement *)self addFeatureWrapper:v5];
 
-    v4 = v6;
+    featureCopy = v6;
   }
 }
 
-- (void)addFeatureWrapper:(id)a3
+- (void)addFeatureWrapper:(id)wrapper
 {
-  v4 = a3;
-  if (v4)
+  wrapperCopy = wrapper;
+  if (wrapperCopy)
   {
-    [(NSMutableSet *)self->_featureSet addObject:v4];
+    [(NSMutableSet *)self->_featureSet addObject:wrapperCopy];
     [(NSMutableArray *)self->_paths removeAllObjects];
     [(VKFeatureAccessibilityElement *)self setHitTestPaths:0];
   }
 }
 
-- (void)addFeaturesFromElement:(id)a3
+- (void)addFeaturesFromElement:(id)element
 {
   v18 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  elementCopy = element;
   [(VKFeatureAccessibilityElement *)self strokeWidth];
   v6 = v5;
-  [(VKFeatureAccessibilityElement *)v4 strokeWidth];
+  [(VKFeatureAccessibilityElement *)elementCopy strokeWidth];
   if (v6 <= v7)
   {
-    v8 = v4;
+    selfCopy = elementCopy;
   }
 
   else
   {
-    v8 = self;
+    selfCopy = self;
   }
 
-  [(VKFeatureAccessibilityElement *)v8 strokeWidth];
+  [(VKFeatureAccessibilityElement *)selfCopy strokeWidth];
   [(VKFeatureAccessibilityElement *)self setStrokeWidth:?];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v9 = [(VKFeatureAccessibilityElement *)v4 featureSet];
-  v10 = [v9 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  featureSet = [(VKFeatureAccessibilityElement *)elementCopy featureSet];
+  v10 = [featureSet countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v10)
   {
     v11 = *v14;
@@ -173,24 +173,24 @@
       {
         if (*v14 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(featureSet);
         }
 
         [(VKFeatureAccessibilityElement *)self addFeatureWrapper:*(*(&v13 + 1) + 8 * v12++)];
       }
 
       while (v10 != v12);
-      v10 = [v9 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v10 = [featureSet countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v10);
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3
+- (BOOL)pointInside:(CGPoint)inside
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v16 = *MEMORY[0x29EDCA608];
   [(VKFeatureAccessibilityElement *)self accessibilityFrame];
   v18.x = x;
@@ -201,8 +201,8 @@
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = [(VKFeatureAccessibilityElement *)self accessibilityPaths];
-    v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    accessibilityPaths = [(VKFeatureAccessibilityElement *)self accessibilityPaths];
+    v7 = [accessibilityPaths countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
       v8 = *v12;
@@ -212,7 +212,7 @@
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(accessibilityPaths);
           }
 
           v17.x = x;
@@ -224,7 +224,7 @@
           }
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [accessibilityPaths countByEnumeratingWithState:&v11 objects:v15 count:16];
         if (v7)
         {
           continue;
@@ -245,26 +245,26 @@ LABEL_13:
   return v7;
 }
 
-- (id)pointsFromFeatureWrapper:(id)a3
+- (id)pointsFromFeatureWrapper:(id)wrapper
 {
-  v4 = [a3 feature];
-  v5 = [v4 feature];
-  v6 = [v5 containingTile];
-  [v6 geoTileKey];
+  feature = [wrapper feature];
+  v4Feature = [feature feature];
+  containingTile = [v4Feature containingTile];
+  [containingTile geoTileKey];
 
   VKWorldBoundsFromGEOTileKey();
-  v7 = [v4 sectionCount];
-  v8 = [(VKFeatureAccessibilityElement *)self accessibilityContainer];
-  v9 = [MEMORY[0x29EDB8DE8] array];
-  if (v7)
+  sectionCount = [feature sectionCount];
+  accessibilityContainer = [(VKFeatureAccessibilityElement *)self accessibilityContainer];
+  array = [MEMORY[0x29EDB8DE8] array];
+  if (sectionCount)
   {
-    for (i = 0; i != v7; ++i)
+    for (i = 0; i != sectionCount; ++i)
     {
       GEOMultiSectionFeatureGetGEOVectorTilePoints();
     }
   }
 
-  return v9;
+  return array;
 }
 
 - (void)dealloc
@@ -281,12 +281,12 @@ LABEL_13:
   [(VKFeatureAccessibilityElement *)&v5 dealloc];
 }
 
-- (VKFeatureAccessibilityElement)initWithAccessibilityContainer:(id)a3
+- (VKFeatureAccessibilityElement)initWithAccessibilityContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v14.receiver = self;
   v14.super_class = VKFeatureAccessibilityElement;
-  v5 = [(VKFeatureAccessibilityElement *)&v14 initWithAccessibilityContainer:v4];
+  v5 = [(VKFeatureAccessibilityElement *)&v14 initWithAccessibilityContainer:containerCopy];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
@@ -310,16 +310,16 @@ LABEL_13:
 - (id)_accessibilityMapSmartDescriptionDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x29EDB8E00]);
-  v4 = [(VKFeatureAccessibilityElement *)self locationCoordinate];
+  locationCoordinate = [(VKFeatureAccessibilityElement *)self locationCoordinate];
 
-  if (v4)
+  if (locationCoordinate)
   {
-    v5 = [(VKFeatureAccessibilityElement *)self locationCoordinate];
-    [v5 coordinate];
+    locationCoordinate2 = [(VKFeatureAccessibilityElement *)self locationCoordinate];
+    [locationCoordinate2 coordinate];
     v7 = v6;
 
-    v8 = [(VKFeatureAccessibilityElement *)self locationCoordinate];
-    [v8 coordinate];
+    locationCoordinate3 = [(VKFeatureAccessibilityElement *)self locationCoordinate];
+    [locationCoordinate3 coordinate];
     v10 = v9;
 
     if (v7 != -180.0 && v10 != -180.0)
@@ -358,11 +358,11 @@ LABEL_13:
 {
   v3 = MEMORY[0x29EDBA0F8];
   v4 = objc_opt_class();
-  v5 = [(VKFeatureAccessibilityElement *)self accessibilityLabel];
-  v6 = [(VKFeatureAccessibilityElement *)self accessibilityPaths];
-  v7 = [v6 count];
-  v8 = [(VKFeatureAccessibilityElement *)self accessibilityLanguage];
-  v9 = [v3 stringWithFormat:@"%@:%p: %@ - Paths: %ld [%@]", v4, self, v5, v7, v8];
+  accessibilityLabel = [(VKFeatureAccessibilityElement *)self accessibilityLabel];
+  accessibilityPaths = [(VKFeatureAccessibilityElement *)self accessibilityPaths];
+  v7 = [accessibilityPaths count];
+  accessibilityLanguage = [(VKFeatureAccessibilityElement *)self accessibilityLanguage];
+  v9 = [v3 stringWithFormat:@"%@:%p: %@ - Paths: %ld [%@]", v4, self, accessibilityLabel, v7, accessibilityLanguage];
 
   return v9;
 }
@@ -473,30 +473,30 @@ void __44__VKFeatureAccessibilityElement__mergePaths__block_invoke(uint64_t a1, 
   return paths;
 }
 
-- (id)_accessibilityShortAddress:(id)a3
+- (id)_accessibilityShortAddress:(id)address
 {
-  v3 = [(VKFeatureAccessibilityElement *)self _accessibilityShortAddress:a3 alwaysIncludeLocality:1];
+  v3 = [(VKFeatureAccessibilityElement *)self _accessibilityShortAddress:address alwaysIncludeLocality:1];
 
   return v3;
 }
 
-- (id)_accessibilityShortAddress:(id)a3 alwaysIncludeLocality:(BOOL)a4
+- (id)_accessibilityShortAddress:(id)address alwaysIncludeLocality:(BOOL)locality
 {
-  v4 = AXShortAddressDescriptionForPlacemark(a3, a4);
+  v4 = AXShortAddressDescriptionForPlacemark(address, locality);
 
   return v4;
 }
 
-- (void)startLocationInformationRequest:(CGPoint)a3
+- (void)startLocationInformationRequest:(CGPoint)request
 {
   v4 = [(VKFeatureAccessibilityElement *)self _accessibilityAncestorIsKindOf:objc_opt_class()];
   UIAccessibilityPointToPoint();
   v6 = v5;
   v8 = v7;
 
-  v9 = [(VKFeatureAccessibilityElement *)self accessibilityContainer];
-  v10 = [(VKFeatureAccessibilityElement *)self accessibilityContainer];
-  [v9 convertPoint:v10 toCoordinateFromLayer:{v6, v8}];
+  accessibilityContainer = [(VKFeatureAccessibilityElement *)self accessibilityContainer];
+  accessibilityContainer2 = [(VKFeatureAccessibilityElement *)self accessibilityContainer];
+  [accessibilityContainer convertPoint:accessibilityContainer2 toCoordinateFromLayer:{v6, v8}];
   v12 = v11;
   v14 = v13;
 
@@ -549,20 +549,20 @@ void __65__VKFeatureAccessibilityElement_startLocationInformationRequest___block
   }
 }
 
-- (id)_distanceAwayStringWithClockDirection:(BOOL)a3
+- (id)_distanceAwayStringWithClockDirection:(BOOL)direction
 {
-  v3 = a3;
+  directionCopy = direction;
   if (-[NSMutableSet count](self->_featureSet, "count") && ([MEMORY[0x29EDBB270] sharedLocationManager], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "hasLocation"), v5, (v6 & 1) != 0))
   {
-    v7 = [(NSMutableSet *)self->_featureSet anyObject];
-    v8 = [v7 feature];
+    anyObject = [(NSMutableSet *)self->_featureSet anyObject];
+    feature = [anyObject feature];
     v9 = GEOMultiSectionFeatureBounds();
-    v10 = [v8 feature];
-    v11 = [v10 containingTile];
-    [v11 geoTileKey];
+    v8Feature = [feature feature];
+    containingTile = [v8Feature containingTile];
+    [containingTile geoTileKey];
 
     VKWorldBoundsFromGEOTileKey();
-    v16 = [(VKFeatureAccessibilityElement *)self _distanceStringForPoint:v3 usingClockDirection:AXVKPointForTileGLPoint(v12, v13, v14, v15, (*v9 + v9[2]) * 0.5)];
+    v16 = [(VKFeatureAccessibilityElement *)self _distanceStringForPoint:directionCopy usingClockDirection:AXVKPointForTileGLPoint(v12, v13, v14, v15, (*v9 + v9[2]) * 0.5)];
   }
 
   else
@@ -573,27 +573,27 @@ void __65__VKFeatureAccessibilityElement_startLocationInformationRequest___block
   return v16;
 }
 
-- (id)_distanceStringForPoint:(id)a3 usingClockDirection:(BOOL)a4
+- (id)_distanceStringForPoint:(id)point usingClockDirection:(BOOL)direction
 {
-  v4 = a4;
+  directionCopy = direction;
   VKLocationCoordinate2DForVKPoint();
-  v5 = [MEMORY[0x29EDBB270] sharedLocationManager];
-  v6 = [v5 currentLocation];
+  mEMORY[0x29EDBB270] = [MEMORY[0x29EDBB270] sharedLocationManager];
+  currentLocation = [mEMORY[0x29EDBB270] currentLocation];
 
-  v7 = [MEMORY[0x29EDBB270] sharedLocationManager];
-  v8 = [v7 heading];
+  mEMORY[0x29EDBB270]2 = [MEMORY[0x29EDBB270] sharedLocationManager];
+  heading = [mEMORY[0x29EDBB270]2 heading];
 
-  v9 = [v6 latLng];
-  [v9 lat];
-  v10 = [v6 latLng];
-  [v10 lng];
+  latLng = [currentLocation latLng];
+  [latLng lat];
+  latLng2 = [currentLocation latLng];
+  [latLng2 lng];
   GEOCalculateDistance();
   v12 = v11;
 
-  v13 = [MEMORY[0x29EDB8DE0] currentLocale];
-  LODWORD(v10) = [v13 _navigation_distanceUsesMetricSystem];
+  currentLocale = [MEMORY[0x29EDB8DE0] currentLocale];
+  LODWORD(latLng2) = [currentLocale _navigation_distanceUsesMetricSystem];
 
-  if (v10)
+  if (latLng2)
   {
     v14 = AXVectorKitLocString(@"POI_DISTANCE_KM");
     v15 = 1000.0;
@@ -605,17 +605,17 @@ void __65__VKFeatureAccessibilityElement_startLocationInformationRequest___block
     v15 = 1609.344;
   }
 
-  v16 = [v6 latLng];
-  [v16 lat];
-  v17 = [v6 latLng];
-  [v17 lng];
+  latLng3 = [currentLocation latLng];
+  [latLng3 lat];
+  latLng4 = [currentLocation latLng];
+  [latLng4 lng];
 
   GEOBearingFromCoordinateToCoordinate();
-  [v8 trueHeading];
+  [heading trueHeading];
   GEOAngleDifferenceDegrees();
   v19 = v18;
   v20 = [MEMORY[0x29EDBA0F8] localizedStringWithFormat:v14, v12 / v15];
-  if (v4)
+  if (directionCopy)
   {
     AXClockDescriptionForHeadingInDegrees(v19);
   }
@@ -630,10 +630,10 @@ void __65__VKFeatureAccessibilityElement_startLocationInformationRequest___block
   return v21;
 }
 
-- (id)_accessibilityMapDetailedInfoAtPoint:(CGPoint)a3
+- (id)_accessibilityMapDetailedInfoAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v6 = [(VKFeatureAccessibilityElement *)self _accessibilityValueForKey:@"PointInfo"];
   v7 = v6;
   if (v6 && (([v6 objectForKey:@"Point"], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "CGPointValue"), v10 = v9, v12 = v11, v8, v10 == x) ? (v13 = v12 == y) : (v13 = 0), v13))

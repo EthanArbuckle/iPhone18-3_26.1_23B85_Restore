@@ -1,8 +1,8 @@
 @interface TDIntegerProperty
 - (int64_t)integerValue;
-- (void)addToDictionary:(id)a3;
+- (void)addToDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)setIntegerValue:(int64_t)a3;
+- (void)setIntegerValue:(int64_t)value;
 @end
 
 @implementation TDIntegerProperty
@@ -22,20 +22,20 @@
   return integerValue;
 }
 
-- (void)setIntegerValue:(int64_t)a3
+- (void)setIntegerValue:(int64_t)value
 {
   [(TDIntegerProperty *)self willChangeValueForKey:@"integerValue"];
-  self->_integerValue = a3;
+  self->_integerValue = value;
 
   [(TDIntegerProperty *)self didChangeValueForKey:@"integerValue"];
 }
 
-- (void)addToDictionary:(id)a3
+- (void)addToDictionary:(id)dictionary
 {
   v5 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[TDIntegerProperty integerValue](self, "integerValue")}];
-  v6 = [(TDProperty *)self name];
+  name = [(TDProperty *)self name];
 
-  [a3 setObject:v5 forKey:v6];
+  [dictionary setObject:v5 forKey:name];
 }
 
 @end

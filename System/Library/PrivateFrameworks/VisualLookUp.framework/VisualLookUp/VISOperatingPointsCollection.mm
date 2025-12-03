@@ -1,51 +1,51 @@
 @interface VISOperatingPointsCollection
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (VISOperatingPointsCollection)initWithDictionary:(id)a3;
-- (VISOperatingPointsCollection)initWithJSON:(id)a3;
+- (VISOperatingPointsCollection)initWithDictionary:(id)dictionary;
+- (VISOperatingPointsCollection)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)addPoints:(id)a3;
-- (void)setPoints:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPoints:(id)points;
+- (void)setPoints:(id)points;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VISOperatingPointsCollection
 
-- (void)setPoints:(id)a3
+- (void)setPoints:(id)points
 {
-  self->_points = [a3 copy];
+  self->_points = [points copy];
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)addPoints:(id)a3
+- (void)addPoints:(id)points
 {
-  v4 = a3;
+  pointsCopy = points;
   points = self->_points;
-  v8 = v4;
+  v8 = pointsCopy;
   if (!points)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_points;
-    self->_points = v6;
+    self->_points = array;
 
-    v4 = v8;
+    pointsCopy = v8;
     points = self->_points;
   }
 
-  [(NSArray *)points addObject:v4];
+  [(NSArray *)points addObject:pointsCopy];
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(VISOperatingPointsCollection *)self points];
+  toCopy = to;
+  points = [(VISOperatingPointsCollection *)self points];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [points countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -57,7 +57,7 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(points);
         }
 
         PBDataWriterWriteSubmessage();
@@ -65,25 +65,25 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [points countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(VISOperatingPointsCollection *)self points];
-    v6 = [v4 points];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    points = [(VISOperatingPointsCollection *)self points];
+    points2 = [equalCopy points];
+    v7 = points2;
+    if ((points != 0) != (points2 == 0))
     {
-      v8 = [(VISOperatingPointsCollection *)self points];
-      if (!v8)
+      points3 = [(VISOperatingPointsCollection *)self points];
+      if (!points3)
       {
 
 LABEL_10:
@@ -91,10 +91,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(VISOperatingPointsCollection *)self points];
-      v11 = [v4 points];
-      v12 = [v10 isEqual:v11];
+      v9 = points3;
+      points4 = [(VISOperatingPointsCollection *)self points];
+      points5 = [equalCopy points];
+      v12 = [points4 isEqual:points5];
 
       if (v12)
       {
@@ -116,10 +116,10 @@ LABEL_8:
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_points count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -139,16 +139,16 @@ LABEL_8:
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -158,18 +158,18 @@ LABEL_8:
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"points"];
+    [dictionary setObject:array forKeyedSubscript:@"points"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(VISOperatingPointsCollection *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(VISOperatingPointsCollection *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -180,34 +180,34 @@ LABEL_8:
   return v3;
 }
 
-- (VISOperatingPointsCollection)initWithJSON:(id)a3
+- (VISOperatingPointsCollection)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(VISOperatingPointsCollection *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (VISOperatingPointsCollection)initWithDictionary:(id)a3
+- (VISOperatingPointsCollection)initWithDictionary:(id)dictionary
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = VISOperatingPointsCollection;
   v5 = [(VISOperatingPointsCollection *)&v21 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"points"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"points"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

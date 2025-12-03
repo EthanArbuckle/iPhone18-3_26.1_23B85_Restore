@@ -1,17 +1,17 @@
 @interface CBRemoteSetupManager
 + (CBRemoteSetupManager)sharedInstance;
-- (BOOL)setOverrideAuthPin:(id)a3;
+- (BOOL)setOverrideAuthPin:(id)pin;
 - (CBRemoteSetupManager)init;
 - (void)_handleRemoteSetupFinished;
 - (void)_handleSetupServerFinished;
-- (void)_processBasicConfigFromEvent:(id)a3;
-- (void)_reachabilityChanged:(id)a3;
-- (void)changeDesiredAuthType:(int)a3;
+- (void)_processBasicConfigFromEvent:(id)event;
+- (void)_reachabilityChanged:(id)changed;
+- (void)changeDesiredAuthType:(int)type;
 - (void)dealloc;
 - (void)endRemoteSetupBroadcast;
-- (void)handleSetupEvent:(id)a3;
+- (void)handleSetupEvent:(id)event;
 - (void)restartRemoteSetupBroadcast;
-- (void)sendAuthPassword:(id)a3;
+- (void)sendAuthPassword:(id)password;
 - (void)setupFailed;
 - (void)startRemoteSetupBroadcast;
 @end
@@ -72,9 +72,9 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Starting broadcast for remote setup", buf, 2u);
   }
 
-  v4 = [(CBRemoteSetupManager *)self setupServer];
+  setupServer = [(CBRemoteSetupManager *)self setupServer];
 
-  if (v4)
+  if (setupServer)
   {
     v5 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -89,20 +89,20 @@
   v6 = objc_alloc_init(SKSetupFieldDiagnosticsServer);
   [(CBRemoteSetupManager *)self setSetupServer:v6];
 
-  v7 = [(CBRemoteSetupManager *)self overridePin];
+  overridePin = [(CBRemoteSetupManager *)self overridePin];
 
-  if (v7)
+  if (overridePin)
   {
-    v8 = [(CBRemoteSetupManager *)self overridePin];
-    v9 = [(CBRemoteSetupManager *)self setupServer];
-    [v9 setPassword:v8];
+    overridePin2 = [(CBRemoteSetupManager *)self overridePin];
+    setupServer2 = [(CBRemoteSetupManager *)self setupServer];
+    [setupServer2 setPassword:overridePin2];
 
     [(CBRemoteSetupManager *)self setPreferredPasswordType:2];
   }
 
-  v10 = [(CBRemoteSetupManager *)self preferredPasswordType];
-  v11 = [(CBRemoteSetupManager *)self setupServer];
-  [v11 setPasswordType:v10];
+  preferredPasswordType = [(CBRemoteSetupManager *)self preferredPasswordType];
+  setupServer3 = [(CBRemoteSetupManager *)self setupServer];
+  [setupServer3 setPasswordType:preferredPasswordType];
 
   objc_initWeak(&location, self);
   objc_copyWeak(&v17, &location);
@@ -112,16 +112,16 @@
   v13 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [(CBRemoteSetupManager *)self setupServer];
+    setupServer4 = [(CBRemoteSetupManager *)self setupServer];
     *buf = 138412290;
-    v20 = v14;
+    v20 = setupServer4;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Beginning setup broadcast with setup server %@", buf, 0xCu);
   }
 
   [(CBRemoteSetupManager *)self setBroadcastingForSetup:1];
   [(CBRemoteSetupManager *)self setSetupState:2];
-  v15 = [(CBRemoteSetupManager *)self setupServer];
-  [v15 activate];
+  setupServer5 = [(CBRemoteSetupManager *)self setupServer];
+  [setupServer5 activate];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
@@ -131,12 +131,12 @@
 {
   [(CBRemoteSetupManager *)self setBroadcastingForSetup:0];
   [(CBRemoteSetupManager *)self setSetupState:1];
-  v3 = [(CBRemoteSetupManager *)self setupServer];
+  setupServer = [(CBRemoteSetupManager *)self setupServer];
 
-  if (v3)
+  if (setupServer)
   {
-    v4 = [(CBRemoteSetupManager *)self setupServer];
-    [v4 invalidate];
+    setupServer2 = [(CBRemoteSetupManager *)self setupServer];
+    [setupServer2 invalidate];
 
     [(CBRemoteSetupManager *)self setSetupServer:0];
   }
@@ -154,13 +154,13 @@
   dispatch_after(v3, &_dispatch_main_q, block);
 }
 
-- (BOOL)setOverrideAuthPin:(id)a3
+- (BOOL)setOverrideAuthPin:(id)pin
 {
-  v4 = a3;
-  v5 = [(CBRemoteSetupManager *)self broadcastingForSetup];
-  if (v4 && (v5 & 1) == 0 && [v4 length] == 6)
+  pinCopy = pin;
+  broadcastingForSetup = [(CBRemoteSetupManager *)self broadcastingForSetup];
+  if (pinCopy && (broadcastingForSetup & 1) == 0 && [pinCopy length] == 6)
   {
-    [(CBRemoteSetupManager *)self setOverridePin:v4];
+    [(CBRemoteSetupManager *)self setOverridePin:pinCopy];
     v6 = 1;
   }
 
@@ -169,7 +169,7 @@
     v7 = CheckerBoardLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_100046C60(v4, self, v7);
+      sub_100046C60(pinCopy, self, v7);
     }
 
     v6 = 0;
@@ -178,35 +178,35 @@
   return v6;
 }
 
-- (void)sendAuthPassword:(id)a3
+- (void)sendAuthPassword:(id)password
 {
-  v4 = a3;
-  v5 = [(CBRemoteSetupManager *)self broadcastingForSetup];
+  passwordCopy = password;
+  broadcastingForSetup = [(CBRemoteSetupManager *)self broadcastingForSetup];
   v6 = CheckerBoardLogHandleForCategory();
-  v7 = v6;
-  if (v5)
+  setupServer = v6;
+  if (broadcastingForSetup)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
-      _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Sending password %@ to SetupKit", &v9, 0xCu);
+      v10 = passwordCopy;
+      _os_log_impl(&_mh_execute_header, setupServer, OS_LOG_TYPE_DEFAULT, "Sending password %@ to SetupKit", &v9, 0xCu);
     }
 
-    v7 = [(CBRemoteSetupManager *)self setupServer];
-    v8 = [[SKAuthenticationResponseEvent alloc] initWithPassword:v4];
-    [v7 postEvent:v8];
+    setupServer = [(CBRemoteSetupManager *)self setupServer];
+    v8 = [[SKAuthenticationResponseEvent alloc] initWithPassword:passwordCopy];
+    [setupServer postEvent:v8];
   }
 
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    sub_100046D00(v7);
+    sub_100046D00(setupServer);
   }
 }
 
-- (void)changeDesiredAuthType:(int)a3
+- (void)changeDesiredAuthType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   if ([(CBRemoteSetupManager *)self broadcastingForSetup])
   {
     [(CBRemoteSetupManager *)self setPreferredPasswordType:v3];
@@ -229,27 +229,27 @@
   [v4 postNotificationName:@"CBRemoteSetupFailedNotification" object:self];
 }
 
-- (void)handleSetupEvent:(id)a3
+- (void)handleSetupEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v36 = v4;
+    v36 = eventCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Setup server event %@", buf, 0xCu);
   }
 
-  v6 = [v4 eventType];
-  if (v6 > 40)
+  eventType = [eventCopy eventType];
+  if (eventType > 40)
   {
-    if (v6 > 119)
+    if (eventType > 119)
     {
-      if (v6 != 120)
+      if (eventType != 120)
       {
-        if (v6 != 140)
+        if (eventType != 140)
         {
-          if (v6 == 300)
+          if (eventType == 300)
           {
             v7 = CheckerBoardLogHandleForCategory();
             if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -258,7 +258,7 @@
               _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Setup server received updated configuration", buf, 2u);
             }
 
-            [(CBRemoteSetupManager *)self _processBasicConfigFromEvent:v4];
+            [(CBRemoteSetupManager *)self _processBasicConfigFromEvent:eventCopy];
             goto LABEL_50;
           }
 
@@ -283,7 +283,7 @@ LABEL_45:
       v25 = CheckerBoardLogHandleForCategory();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
       {
-        v26 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 passwordType]);
+        v26 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [eventCopy passwordType]);
         *buf = 138412290;
         v36 = v26;
         _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Setup server wants us to respond with a password of auth type %@", buf, 0xCu);
@@ -292,16 +292,16 @@ LABEL_45:
       [(CBRemoteSetupManager *)self setSetupState:3];
       v11 = +[NSNotificationCenter defaultCenter];
       v31 = @"type";
-      v12 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 passwordType]);
+      v12 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [eventCopy passwordType]);
       v32 = v12;
-      v13 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
+      password2 = [NSDictionary dictionaryWithObjects:&v32 forKeys:&v31 count:1];
       v14 = @"CBRemoteSetupAuthenticationRequestNotification";
       goto LABEL_40;
     }
 
-    if (v6 != 41)
+    if (eventType != 41)
     {
-      if (v6 != 110)
+      if (eventType != 110)
       {
         goto LABEL_46;
       }
@@ -309,10 +309,10 @@ LABEL_45:
       v15 = CheckerBoardLogHandleForCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [v4 password];
-        v17 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 passwordType]);
+        password = [eventCopy password];
+        v17 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [eventCopy passwordType]);
         *buf = 138412546;
-        v36 = v16;
+        v36 = password;
         v37 = 2112;
         v38 = v17;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Setup server wants us to show the pin %@ with auth type %@", buf, 0x16u);
@@ -321,11 +321,11 @@ LABEL_45:
       [(CBRemoteSetupManager *)self setSetupState:3];
       v11 = +[NSNotificationCenter defaultCenter];
       v33[0] = @"type";
-      v12 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v4 passwordType]);
+      v12 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [eventCopy passwordType]);
       v33[1] = @"pin";
       v34[0] = v12;
-      v13 = [v4 password];
-      v34[1] = v13;
+      password2 = [eventCopy password];
+      v34[1] = password2;
       v18 = [NSDictionary dictionaryWithObjects:v34 forKeys:v33 count:2];
       [v11 postNotificationName:@"CBRemoteSetupAuthenticaitonDisplayNotification" object:self userInfo:v18];
 
@@ -335,9 +335,9 @@ LABEL_45:
     goto LABEL_28;
   }
 
-  if (v6 > 29)
+  if (eventType > 29)
   {
-    if (v6 == 30)
+    if (eventType == 30)
     {
 LABEL_28:
       if ([(CBRemoteSetupManager *)self broadcastingForSetup]&& [(CBRemoteSetupManager *)self setupState]== 4)
@@ -363,7 +363,7 @@ LABEL_28:
       goto LABEL_50;
     }
 
-    if (v6 != 40)
+    if (eventType != 40)
     {
       goto LABEL_46;
     }
@@ -375,17 +375,17 @@ LABEL_28:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Setup server has connected to a device", buf, 2u);
     }
 
-    v10 = [(CBRemoteSetupManager *)self overridePin];
+    overridePin = [(CBRemoteSetupManager *)self overridePin];
 
-    if (v10)
+    if (overridePin)
     {
       v11 = +[NSNotificationCenter defaultCenter];
       v12 = [(CBRemoteSetupManager *)self overridePin:@"type"];
       v30[1] = v12;
-      v13 = [NSDictionary dictionaryWithObjects:v30 forKeys:&v29 count:2];
+      password2 = [NSDictionary dictionaryWithObjects:v30 forKeys:&v29 count:2];
       v14 = @"CBRemoteSetupAuthenticaitonDisplayNotification";
 LABEL_40:
-      [v11 postNotificationName:v14 object:self userInfo:v13];
+      [v11 postNotificationName:v14 object:self userInfo:password2];
 LABEL_41:
 
       goto LABEL_45;
@@ -394,7 +394,7 @@ LABEL_41:
 
   else
   {
-    if (v6 == 10)
+    if (eventType == 10)
     {
       v21 = CheckerBoardLogHandleForCategory();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -412,17 +412,17 @@ LABEL_49:
       goto LABEL_50;
     }
 
-    if (v6 != 20)
+    if (eventType != 20)
     {
 LABEL_46:
       v21 = CheckerBoardLogHandleForCategory();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [v4 eventType];
+        eventType2 = [eventCopy eventType];
         *buf = 138412546;
-        v36 = v4;
+        v36 = eventCopy;
         v37 = 1024;
-        LODWORD(v38) = v28;
+        LODWORD(v38) = eventType2;
         v22 = "Unhandled setup event %@ with type %d";
         v23 = v21;
         v24 = 18;
@@ -445,18 +445,18 @@ LABEL_46:
 LABEL_50:
 }
 
-- (void)_processBasicConfigFromEvent:(id)a3
+- (void)_processBasicConfigFromEvent:(id)event
 {
-  v4 = [a3 basicConfig];
-  v5 = [v4 objectForKeyedSubscript:@"_locale"];
+  basicConfig = [event basicConfig];
+  v5 = [basicConfig objectForKeyedSubscript:@"_locale"];
   [(CBRemoteSetupManager *)self setRemoteLocaleCode:v5];
 
   v6 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(CBRemoteSetupManager *)self remoteLocaleCode];
+    remoteLocaleCode = [(CBRemoteSetupManager *)self remoteLocaleCode];
     v8 = 138412290;
-    v9 = v7;
+    v9 = remoteLocaleCode;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Locale from basic config: %@", &v8, 0xCu);
   }
 }
@@ -476,8 +476,8 @@ LABEL_50:
   v15 = 0x3032000000;
   v16 = sub_10000D74C;
   v17 = sub_10000D75C;
-  v4 = self;
-  v18 = v4;
+  selfCopy = self;
+  v18 = selfCopy;
   v5 = +[CPNetworkObserver sharedNetworkObserver];
   if ([v5 isNetworkReachable])
   {
@@ -488,7 +488,7 @@ LABEL_50:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Network is reachable. Completing remote setup flow", v12, 2u);
     }
 
-    [(CBRemoteSetupManager *)v4 _handleRemoteSetupFinished];
+    [(CBRemoteSetupManager *)selfCopy _handleRemoteSetupFinished];
   }
 
   else
@@ -500,7 +500,7 @@ LABEL_50:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Network is unreachable. Waiting for network...", v12, 2u);
     }
 
-    [v5 addObserver:v4 selector:"_reachabilityChanged:" forHostname:@"apple.com"];
+    [v5 addObserver:selfCopy selector:"_reachabilityChanged:" forHostname:@"apple.com"];
     v8 = dispatch_time(0, 10000000000);
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -514,29 +514,29 @@ LABEL_50:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)_reachabilityChanged:(id)a3
+- (void)_reachabilityChanged:(id)changed
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  changedCopy = changed;
+  v5 = changedCopy;
+  if (changedCopy)
   {
-    v6 = [v4 userInfo];
+    userInfo = [changedCopy userInfo];
 
-    if (v6)
+    if (userInfo)
     {
-      v7 = [v5 userInfo];
-      v8 = [v7 objectForKeyedSubscript:CPNetworkObserverReachable];
-      v9 = [v8 BOOLValue];
+      userInfo2 = [v5 userInfo];
+      v8 = [userInfo2 objectForKeyedSubscript:CPNetworkObserverReachable];
+      bOOLValue = [v8 BOOLValue];
 
       v10 = CheckerBoardLogHandleForCategory();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v13[0] = 67109120;
-        v13[1] = v9;
+        v13[1] = bOOLValue;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Network reachable from notification: %d", v13, 8u);
       }
 
-      if (v9)
+      if (bOOLValue)
       {
         v11 = CheckerBoardLogHandleForCategory();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))

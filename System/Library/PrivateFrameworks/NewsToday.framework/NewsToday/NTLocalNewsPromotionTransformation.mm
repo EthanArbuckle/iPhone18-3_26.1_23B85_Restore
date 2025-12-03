@@ -1,7 +1,7 @@
 @interface NTLocalNewsPromotionTransformation
 - (NTLocalNewsPromotionTransformation)init;
-- (NTLocalNewsPromotionTransformation)initWithLocalNewsTagID:(id)a3 localNewsPromotionIndex:(unint64_t)a4 baseTransformation:(id)a5;
-- (id)transformFeedItems:(id)a3;
+- (NTLocalNewsPromotionTransformation)initWithLocalNewsTagID:(id)d localNewsPromotionIndex:(unint64_t)index baseTransformation:(id)transformation;
+- (id)transformFeedItems:(id)items;
 @end
 
 @implementation NTLocalNewsPromotionTransformation
@@ -32,11 +32,11 @@
   objc_exception_throw(v6);
 }
 
-- (NTLocalNewsPromotionTransformation)initWithLocalNewsTagID:(id)a3 localNewsPromotionIndex:(unint64_t)a4 baseTransformation:(id)a5
+- (NTLocalNewsPromotionTransformation)initWithLocalNewsTagID:(id)d localNewsPromotionIndex:(unint64_t)index baseTransformation:(id)transformation
 {
-  v8 = a3;
-  v9 = a5;
-  if (!v9 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  transformationCopy = transformation;
+  if (!transformationCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTLocalNewsPromotionTransformation initWithLocalNewsTagID:localNewsPromotionIndex:baseTransformation:];
   }
@@ -46,36 +46,36 @@
   v10 = [(NTLocalNewsPromotionTransformation *)&v14 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [dCopy copy];
     localNewsTagID = v10->_localNewsTagID;
     v10->_localNewsTagID = v11;
 
-    v10->_localNewsPromotionIndex = a4;
-    objc_storeStrong(&v10->_baseTransformation, a5);
+    v10->_localNewsPromotionIndex = index;
+    objc_storeStrong(&v10->_baseTransformation, transformation);
   }
 
   return v10;
 }
 
-- (id)transformFeedItems:(id)a3
+- (id)transformFeedItems:(id)items
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NTLocalNewsPromotionTransformation *)self baseTransformation];
-  v6 = [v5 transformFeedItems:v4];
+  itemsCopy = items;
+  baseTransformation = [(NTLocalNewsPromotionTransformation *)self baseTransformation];
+  v6 = [baseTransformation transformFeedItems:itemsCopy];
 
-  v7 = [(NTLocalNewsPromotionTransformation *)self localNewsTagID];
-  v8 = v7;
-  if (v7)
+  localNewsTagID = [(NTLocalNewsPromotionTransformation *)self localNewsTagID];
+  v8 = localNewsTagID;
+  if (localNewsTagID)
   {
-    v9 = v7;
+    v9 = localNewsTagID;
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __57__NTLocalNewsPromotionTransformation_transformFeedItems___block_invoke_14;
     v25[3] = &unk_279982D28;
     v10 = &v26;
     v26 = v9;
-    v11 = [v4 fc_firstObjectPassingTest:v25];
+    v11 = [itemsCopy fc_firstObjectPassingTest:v25];
     if (v11)
     {
       v12 = [v6 mutableCopy];
@@ -89,10 +89,10 @@
       v22 = v15;
       [v12 fc_removeObjectsPassingTest:v21];
       v16 = [v12 count];
-      v17 = [(NTLocalNewsPromotionTransformation *)self localNewsPromotionIndex];
-      if (v16 >= v17)
+      localNewsPromotionIndex = [(NTLocalNewsPromotionTransformation *)self localNewsPromotionIndex];
+      if (v16 >= localNewsPromotionIndex)
       {
-        v16 = v17;
+        v16 = localNewsPromotionIndex;
       }
 
       [v15 markAsLocal];

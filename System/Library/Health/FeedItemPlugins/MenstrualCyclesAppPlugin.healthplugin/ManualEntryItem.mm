@@ -1,13 +1,13 @@
 @interface ManualEntryItem
 - (_TtC24MenstrualCyclesAppPlugin15ManualEntryItem)init;
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
 @end
 
 @implementation ManualEntryItem
 
-- (int64_t)pickerView:(id)a3 numberOfRowsInComponent:(int64_t)a4
+- (int64_t)pickerView:(id)view numberOfRowsInComponent:(int64_t)component
 {
   v6 = self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin15ManualEntryItem_dataSource;
   result = swift_unknownObjectWeakLoadStrong();
@@ -17,9 +17,9 @@
     ObjectType = swift_getObjectType();
     v10 = *(v8 + 8);
     v11 = *(v10 + 16);
-    v12 = a3;
-    v13 = self;
-    v14 = v11(v12, ObjectType, v10);
+    viewCopy = view;
+    selfCopy = self;
+    v14 = v11(viewCopy, ObjectType, v10);
     swift_unknownObjectRelease();
 
     return v14;
@@ -28,7 +28,7 @@
   return result;
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
   v7 = self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin15ManualEntryItem_dataSource;
   if (swift_unknownObjectWeakLoadStrong())
@@ -36,8 +36,8 @@
     v8 = *(v7 + 1);
     ObjectType = swift_getObjectType();
     v10 = *(v8 + 24);
-    v11 = self;
-    v10(a4, ObjectType, v8);
+    selfCopy = self;
+    v10(row, ObjectType, v8);
 
     swift_unknownObjectRelease();
     v12 = sub_29E2C33A4();
@@ -51,7 +51,7 @@
   return v12;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
   v8 = self + OBJC_IVAR____TtC24MenstrualCyclesAppPlugin15ManualEntryItem_dataSource;
   if (swift_unknownObjectWeakLoadStrong())
@@ -59,9 +59,9 @@
     v9 = *(v8 + 1);
     ObjectType = swift_getObjectType();
     v11 = *(v9 + 16);
-    v12 = a3;
-    v13 = self;
-    v11(v12, a4, ObjectType, v9);
+    viewCopy = view;
+    selfCopy = self;
+    v11(viewCopy, row, ObjectType, v9);
     swift_unknownObjectRelease();
   }
 }

@@ -1,23 +1,23 @@
 @interface MFAssistantEmailRetrieve
-- (BOOL)search:(id)a3 didFindResults:(id)a4;
-- (id)_convertMSEmailToSAEmail:(id)a3;
-- (id)_retrieveEmails:(id)a3;
-- (id)_validateEmails:(id)a3;
-- (void)_populateResults:(id)a3;
-- (void)performWithCompletion:(id)a3;
-- (void)search:(id)a3 didFinishWithError:(id)a4;
+- (BOOL)search:(id)search didFindResults:(id)results;
+- (id)_convertMSEmailToSAEmail:(id)email;
+- (id)_retrieveEmails:(id)emails;
+- (id)_validateEmails:(id)emails;
+- (void)_populateResults:(id)results;
+- (void)performWithCompletion:(id)completion;
+- (void)search:(id)search didFinishWithError:(id)error;
 @end
 
 @implementation MFAssistantEmailRetrieve
 
-- (id)_validateEmails:(id)a3
+- (id)_validateEmails:(id)emails
 {
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  emailsCopy = emails;
+  v4 = [emailsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -27,11 +27,11 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(emailsCopy);
         }
 
-        v7 = [*(*(&v9 + 1) + 8 * i) identifier];
-        if (([v7 em_isInternalMessageURL] & 1) == 0)
+        identifier = [*(*(&v9 + 1) + 8 * i) identifier];
+        if (([identifier em_isInternalMessageURL] & 1) == 0)
         {
           v4 = [[SACommandFailed alloc] initWithReason:@"Can only retrieve messages that are in our database."];
 
@@ -39,7 +39,7 @@
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [emailsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -54,9 +54,9 @@ LABEL_11:
   return v4;
 }
 
-- (id)_retrieveEmails:(id)a3
+- (id)_retrieveEmails:(id)emails
 {
-  v30 = a3;
+  emailsCopy = emails;
   if (!self->_resultsQueue)
   {
     v4 = dispatch_queue_create("com.apple.mobilemail.assistant-email-retrieve", 0);
@@ -69,7 +69,7 @@ LABEL_11:
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v7 = v30;
+  v7 = emailsCopy;
   v8 = [v7 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v8)
   {
@@ -87,8 +87,8 @@ LABEL_11:
 
         v13 = *(*(&v34 + 1) + 8 * i);
         v14 = [MSCriterion alloc];
-        v15 = [v13 identifier];
-        v16 = [v14 initWithType:v10 qualifier:v11 expression:v15];
+        identifier = [v13 identifier];
+        v16 = [v14 initWithType:v10 qualifier:v11 expression:identifier];
 
         [v6 addObject:v16];
       }
@@ -101,15 +101,15 @@ LABEL_11:
 
   if ([v6 count] < 2)
   {
-    v17 = [v6 lastObject];
+    lastObject = [v6 lastObject];
   }
 
   else
   {
-    v17 = [[MSCriterion alloc] initWithCriteria:v6 allRequired:0];
+    lastObject = [[MSCriterion alloc] initWithCriteria:v6 allRequired:0];
   }
 
-  v18 = v17;
+  v18 = lastObject;
   v19 = dispatch_semaphore_create(0);
   searchCompleted = self->_searchCompleted;
   self->_searchCompleted = v19;
@@ -136,7 +136,7 @@ LABEL_11:
       block[3] = &unk_C3B0;
       v28 = v26;
       v32 = v28;
-      v33 = self;
+      selfCopy = self;
       dispatch_sync(v27, block);
       v25 = v28;
     }
@@ -152,55 +152,55 @@ LABEL_11:
   return v25;
 }
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v8 = a3;
-  v4 = [(MFAssistantEmailRetrieve *)self identifiers];
-  v5 = [(MFAssistantEmailRetrieve *)self _validateEmails:v4];
+  completionCopy = completion;
+  identifiers = [(MFAssistantEmailRetrieve *)self identifiers];
+  v5 = [(MFAssistantEmailRetrieve *)self _validateEmails:identifiers];
 
   if (!v5)
   {
-    v6 = [(MFAssistantEmailRetrieve *)self identifiers];
-    v5 = [(MFAssistantEmailRetrieve *)self _retrieveEmails:v6];
+    identifiers2 = [(MFAssistantEmailRetrieve *)self identifiers];
+    v5 = [(MFAssistantEmailRetrieve *)self _retrieveEmails:identifiers2];
   }
 
-  v7 = [v5 dictionary];
-  v8[2](v8, v7);
+  dictionary = [v5 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
-- (id)_convertMSEmailToSAEmail:(id)a3
+- (id)_convertMSEmailToSAEmail:(id)email
 {
-  v3 = a3;
+  emailCopy = email;
   v4 = objc_alloc_init(SAEmailEmail);
-  v5 = [v3 objectForKey:MSResultsKeyMessageReference];
+  v5 = [emailCopy objectForKey:MSResultsKeyMessageReference];
   v6 = [NSURL URLWithString:v5];
   [v4 setIdentifier:v6];
 
-  v7 = [v3 objectForKey:MSResultsKeyRecipientTo];
+  v7 = [emailCopy objectForKey:MSResultsKeyRecipientTo];
   v8 = MFSAPersonAttributesFromEmails(v7);
   [v4 setRecipientsTo:v8];
 
-  v9 = [v3 objectForKey:MSResultsKeyRecipientCc];
+  v9 = [emailCopy objectForKey:MSResultsKeyRecipientCc];
   v10 = MFSAPersonAttributesFromEmails(v9);
   [v4 setRecipientsCc:v10];
 
-  v11 = [v3 objectForKey:MSResultsKeyRecipientBcc];
+  v11 = [emailCopy objectForKey:MSResultsKeyRecipientBcc];
   v12 = MFSAPersonAttributesFromEmails(v11);
   [v4 setRecipientsBcc:v12];
 
-  v13 = [v3 objectForKey:MSResultsKeySender];
+  v13 = [emailCopy objectForKey:MSResultsKeySender];
   v14 = MFSAPersonAttributeFromEmail(v13);
   [v4 setFromEmail:v14];
 
-  v15 = [v3 objectForKey:MSResultsKeyReceivingAddresses];
+  v15 = [emailCopy objectForKey:MSResultsKeyReceivingAddresses];
   [v4 setReceivingAddresses:v15];
 
   return v4;
 }
 
-- (void)_populateResults:(id)a3
+- (void)_populateResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   if (!self->_results)
   {
     v5 = objc_alloc_init(NSMutableArray);
@@ -212,7 +212,7 @@ LABEL_11:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = v4;
+  v7 = resultsCopy;
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
@@ -244,33 +244,33 @@ LABEL_11:
   }
 }
 
-- (BOOL)search:(id)a3 didFindResults:(id)a4
+- (BOOL)search:(id)search didFindResults:(id)results
 {
-  v5 = a4;
+  resultsCopy = results;
   resultsQueue = self->_resultsQueue;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_2A60;
   v9[3] = &unk_C3B0;
   v9[4] = self;
-  v10 = v5;
-  v7 = v5;
+  v10 = resultsCopy;
+  v7 = resultsCopy;
   dispatch_async(resultsQueue, v9);
 
   return 1;
 }
 
-- (void)search:(id)a3 didFinishWithError:(id)a4
+- (void)search:(id)search didFinishWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   resultsQueue = self->_resultsQueue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_2B0C;
   v8[3] = &unk_C3B0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = errorCopy;
+  v7 = errorCopy;
   dispatch_async(resultsQueue, v8);
 }
 

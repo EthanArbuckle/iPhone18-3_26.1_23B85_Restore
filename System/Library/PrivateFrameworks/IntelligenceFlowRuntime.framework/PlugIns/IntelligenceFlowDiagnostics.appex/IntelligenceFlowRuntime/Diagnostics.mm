@@ -1,12 +1,12 @@
 @interface Diagnostics
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation Diagnostics
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  if (a3)
+  if (parameters)
   {
     v4 = sub_100009810();
   }
@@ -16,7 +16,7 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   v10.value._rawValue = v4;
   v6 = Diagnostics.attachments(forParameters:)(v10);
 

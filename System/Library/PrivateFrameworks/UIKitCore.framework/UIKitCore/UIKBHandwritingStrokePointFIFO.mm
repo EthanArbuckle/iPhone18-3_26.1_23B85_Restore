@@ -1,18 +1,18 @@
 @interface UIKBHandwritingStrokePointFIFO
-- (UIKBHandwritingStrokePointFIFO)initWithFIFO:(id)a3;
-- (id)scaleStrokes:(double)a3;
-- (void)addPoint:(id *)a3;
+- (UIKBHandwritingStrokePointFIFO)initWithFIFO:(id)o;
+- (id)scaleStrokes:(double)strokes;
+- (void)addPoint:(id *)point;
 - (void)clear;
 - (void)flush;
 @end
 
 @implementation UIKBHandwritingStrokePointFIFO
 
-- (UIKBHandwritingStrokePointFIFO)initWithFIFO:(id)a3
+- (UIKBHandwritingStrokePointFIFO)initWithFIFO:(id)o
 {
   v6.receiver = self;
   v6.super_class = UIKBHandwritingStrokePointFIFO;
-  v3 = [(UIKBHandwritingPointFIFO *)&v6 initWithFIFO:a3];
+  v3 = [(UIKBHandwritingPointFIFO *)&v6 initWithFIFO:o];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -22,13 +22,13 @@
   return v3;
 }
 
-- (void)addPoint:(id *)a3
+- (void)addPoint:(id *)point
 {
   v6 = v5;
   v7 = v4;
   v8 = v3;
-  v10 = [(UIKBHandwritingStrokePointFIFO *)self strokes];
-  [v10 addPoint:{v8, v7}];
+  strokes = [(UIKBHandwritingStrokePointFIFO *)self strokes];
+  [strokes addPoint:{v8, v7}];
 
   v11.receiver = self;
   v11.super_class = UIKBHandwritingStrokePointFIFO;
@@ -37,8 +37,8 @@
 
 - (void)flush
 {
-  v3 = [(UIKBHandwritingStrokePointFIFO *)self strokes];
-  [v3 endStroke];
+  strokes = [(UIKBHandwritingStrokePointFIFO *)self strokes];
+  [strokes endStroke];
 
   v4.receiver = self;
   v4.super_class = UIKBHandwritingStrokePointFIFO;
@@ -47,59 +47,59 @@
 
 - (void)clear
 {
-  v3 = [(UIKBHandwritingStrokePointFIFO *)self strokes];
-  [v3 removeAllStrokes];
+  strokes = [(UIKBHandwritingStrokePointFIFO *)self strokes];
+  [strokes removeAllStrokes];
 
   v4.receiver = self;
   v4.super_class = UIKBHandwritingStrokePointFIFO;
   [(UIKBHandwritingPointFIFO *)&v4 clear];
 }
 
-- (id)scaleStrokes:(double)a3
+- (id)scaleStrokes:(double)strokes
 {
-  if (a3 == 1.0)
+  if (strokes == 1.0)
   {
-    v5 = [(UIKBHandwritingStrokePointFIFO *)self strokes];
+    strokes = [(UIKBHandwritingStrokePointFIFO *)self strokes];
   }
 
   else
   {
-    v5 = objc_alloc_init(MEMORY[0x1E69D9598]);
-    v6 = [(UIKBHandwritingStrokePointFIFO *)self strokes];
-    v7 = [v6 numberOfStrokes];
+    strokes = objc_alloc_init(MEMORY[0x1E69D9598]);
+    strokes2 = [(UIKBHandwritingStrokePointFIFO *)self strokes];
+    numberOfStrokes = [strokes2 numberOfStrokes];
 
-    if (v7)
+    if (numberOfStrokes)
     {
       v8 = 0;
       do
       {
-        v9 = [(UIKBHandwritingStrokePointFIFO *)self strokes];
-        v10 = [v9 numberOfPointsInStrokeAtIndex:v8];
+        strokes3 = [(UIKBHandwritingStrokePointFIFO *)self strokes];
+        v10 = [strokes3 numberOfPointsInStrokeAtIndex:v8];
 
         if (v10)
         {
           for (i = 0; i != v10; ++i)
           {
-            v12 = [(UIKBHandwritingStrokePointFIFO *)self strokes];
-            [v12 pointAtIndex:i inStrokeAtIndex:v8];
+            strokes4 = [(UIKBHandwritingStrokePointFIFO *)self strokes];
+            [strokes4 pointAtIndex:i inStrokeAtIndex:v8];
             v14 = v13;
             v16 = v15;
 
-            [v5 addPoint:{v14 * a3, v16 * a3}];
+            [strokes addPoint:{v14 * strokes, v16 * strokes}];
           }
         }
 
-        [v5 endStroke];
+        [strokes endStroke];
         ++v8;
-        v17 = [(UIKBHandwritingStrokePointFIFO *)self strokes];
-        v18 = [v17 numberOfStrokes];
+        strokes5 = [(UIKBHandwritingStrokePointFIFO *)self strokes];
+        numberOfStrokes2 = [strokes5 numberOfStrokes];
       }
 
-      while (v8 < v18);
+      while (v8 < numberOfStrokes2);
     }
   }
 
-  return v5;
+  return strokes;
 }
 
 @end

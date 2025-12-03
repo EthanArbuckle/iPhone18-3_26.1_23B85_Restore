@@ -2,17 +2,17 @@
 - (BOOL)shouldPresentRemoteViewController;
 - (GKHostedViewController)init;
 - (void)didReceiveMemoryWarning;
-- (void)dismissModalViewControllerAnimated:(BOOL)a3;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)donePressed:(id)a3;
+- (void)dismissModalViewControllerAnimated:(BOOL)animated;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)donePressed:(id)pressed;
 - (void)presentRemoteViewControllerIfNeeded;
 - (void)requestRemoteViewControllerIfNeeded;
 - (void)resetRemoteViewController;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation GKHostedViewController
@@ -34,9 +34,9 @@
   v4 = [(GKHostedViewController *)&v8 init];
   if (v4)
   {
-    v5 = [MEMORY[0x277D0C048] currentGame];
+    currentGame = [MEMORY[0x277D0C048] currentGame];
     game = v4->_game;
-    v4->_game = v5;
+    v4->_game = currentGame;
 
     [(GKHostedViewController *)v4 requestRemoteViewControllerIfNeeded];
   }
@@ -51,11 +51,11 @@
   [(GKHostedViewController *)&v2 didReceiveMemoryWarning];
 }
 
-- (void)donePressed:(id)a3
+- (void)donePressed:(id)pressed
 {
   [(GKHostedViewController *)self setPresentingRemoteViewController:0];
-  v4 = [(GKHostedViewController *)self presentingViewController];
-  [v4 dismissViewControllerAnimated:1 completion:&__block_literal_global_50];
+  presentingViewController = [(GKHostedViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:&__block_literal_global_50];
 }
 
 - (void)viewDidLoad
@@ -63,20 +63,20 @@
   v5.receiver = self;
   v5.super_class = GKHostedViewController;
   [(GKHostedViewController *)&v5 viewDidLoad];
-  v3 = [(GKHostedViewController *)self view];
-  [v3 setBackgroundColor:0];
+  view = [(GKHostedViewController *)self view];
+  [view setBackgroundColor:0];
 
-  v4 = [(GKHostedViewController *)self view];
-  [v4 setOpaque:0];
+  view2 = [(GKHostedViewController *)self view];
+  [view2 setOpaque:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   [(GKHostedViewController *)self requestRemoteViewControllerIfNeeded];
   v6.receiver = self;
   v6.super_class = GKHostedViewController;
-  [(GKHostedViewController *)&v6 viewWillAppear:v3];
+  [(GKHostedViewController *)&v6 viewWillAppear:appearCopy];
   if (!*MEMORY[0x277D0C2A0])
   {
     v5 = GKOSLoggers();
@@ -88,11 +88,11 @@
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = GKHostedViewController;
-  [(GKHostedViewController *)&v5 viewDidAppear:a3];
+  [(GKHostedViewController *)&v5 viewDidAppear:appear];
   if (!*MEMORY[0x277D0C2A0])
   {
     v4 = GKOSLoggers();
@@ -106,13 +106,13 @@
   [(GKHostedViewController *)self presentRemoteViewControllerIfNeeded];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(GKHostedViewController *)self setGkIsDisappearing:1];
   v6.receiver = self;
   v6.super_class = GKHostedViewController;
-  [(GKHostedViewController *)&v6 viewWillDisappear:v3];
+  [(GKHostedViewController *)&v6 viewWillDisappear:disappearCopy];
   if (!*MEMORY[0x277D0C2A0])
   {
     v5 = GKOSLoggers();
@@ -124,11 +124,11 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = GKHostedViewController;
-  [(GKHostedViewController *)&v5 viewDidDisappear:a3];
+  [(GKHostedViewController *)&v5 viewDidDisappear:disappear];
   [(GKHostedViewController *)self setGkIsDisappearing:0];
   [(GKHostedViewController *)self requestRemoteViewControllerIfNeeded];
   if (!*MEMORY[0x277D0C2A0])
@@ -157,19 +157,19 @@
 
     else
     {
-      v5 = [(GKHostedViewController *)self _presentingViewController];
+      _presentingViewController = [(GKHostedViewController *)self _presentingViewController];
       self->_isRequestingRemoteViewController = 1;
-      v6 = [MEMORY[0x277D75418] currentDevice];
-      v7 = [v6 userInterfaceIdiom];
+      currentDevice = [MEMORY[0x277D75418] currentDevice];
+      userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-      if (v7 == 1 && (*MEMORY[0x277D0C258] != 1 || (*MEMORY[0x277D0C8F0] & 1) != 0))
+      if (userInterfaceIdiom == 1 && (*MEMORY[0x277D0C258] != 1 || (*MEMORY[0x277D0C8F0] & 1) != 0))
       {
         [(GKHostedViewController *)self setModalPresentationStyle:16];
-        v8 = [MEMORY[0x277D0C8C8] sharedTheme];
-        [v8 formSheetSize];
+        mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+        [mEMORY[0x277D0C8C8] formSheetSize];
         [(GKHostedViewController *)self setFormSheetSize:?];
 
-        v9 = [(GKHostedViewController *)self view];
+        view = [(GKHostedViewController *)self view];
       }
 
       else
@@ -178,17 +178,17 @@
       }
 
       [(GKHostedViewController *)self setWantsFullScreenLayout:1];
-      v10 = [(GKHostedViewController *)self serviceSideViewControllerClassName];
+      serviceSideViewControllerClassName = [(GKHostedViewController *)self serviceSideViewControllerClassName];
       v13 = MEMORY[0x277D85DD0];
       v14 = 3221225472;
       v15 = __61__GKHostedViewController_requestRemoteViewControllerIfNeeded__block_invoke;
       v16 = &unk_27966AFE0;
-      v17 = self;
-      v18 = v5;
-      v11 = v5;
-      v12 = [GKRemoteViewServiceController requestViewController:v10 fromServiceWithBundleIdentifier:@"com.apple.gamecenter.GameCenterUIService" connectionHandler:&v13];
+      selfCopy = self;
+      v18 = _presentingViewController;
+      v11 = _presentingViewController;
+      v12 = [GKRemoteViewServiceController requestViewController:serviceSideViewControllerClassName fromServiceWithBundleIdentifier:@"com.apple.gamecenter.GameCenterUIService" connectionHandler:&v13];
 
-      [v11 _beginDelayingPresentation:&__block_literal_global_70 cancellationHandler:{5.0, v13, v14, v15, v16, v17}];
+      [v11 _beginDelayingPresentation:&__block_literal_global_70 cancellationHandler:{5.0, v13, v14, v15, v16, selfCopy}];
     }
   }
 }
@@ -305,8 +305,8 @@ uint64_t __61__GKHostedViewController_requestRemoteViewControllerIfNeeded__block
 {
   [(GKRemoteViewServiceController *)self->_remoteViewController willMoveToParentViewController:0];
   [(GKHostedViewController *)self removeChildViewController:self->_remoteViewController];
-  v3 = [(GKRemoteViewServiceController *)self->_remoteViewController view];
-  [v3 removeFromSuperview];
+  view = [(GKRemoteViewServiceController *)self->_remoteViewController view];
+  [view removeFromSuperview];
 
   [(GKHostedViewController *)self setRemoteViewController:0];
   [(GKHostedViewController *)self setRemoteViewReadyHandler:0];
@@ -324,19 +324,19 @@ uint64_t __61__GKHostedViewController_requestRemoteViewControllerIfNeeded__block
     return 0;
   }
 
-  v3 = [(GKHostedViewController *)self remoteViewController];
-  if (v3)
+  remoteViewController = [(GKHostedViewController *)self remoteViewController];
+  if (remoteViewController)
   {
-    v4 = [(GKHostedViewController *)self remoteViewController];
-    v5 = [v4 didSetRemoteGame];
+    remoteViewController2 = [(GKHostedViewController *)self remoteViewController];
+    didSetRemoteGame = [remoteViewController2 didSetRemoteGame];
   }
 
   else
   {
-    v5 = 0;
+    didSetRemoteGame = 0;
   }
 
-  return v5;
+  return didSetRemoteGame;
 }
 
 - (void)presentRemoteViewControllerIfNeeded
@@ -357,9 +357,9 @@ uint64_t __61__GKHostedViewController_requestRemoteViewControllerIfNeeded__block
   }
 }
 
-- (void)dismissModalViewControllerAnimated:(BOOL)a3
+- (void)dismissModalViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (!*MEMORY[0x277D0C2A0])
   {
     v5 = GKOSLoggers();
@@ -373,13 +373,13 @@ uint64_t __61__GKHostedViewController_requestRemoteViewControllerIfNeeded__block
   [(GKHostedViewController *)self setPresentingRemoteViewController:0];
   v6.receiver = self;
   v6.super_class = GKHostedViewController;
-  [(GKHostedViewController *)&v6 dismissModalViewControllerAnimated:v3];
+  [(GKHostedViewController *)&v6 dismissModalViewControllerAnimated:animatedCopy];
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   if (!*MEMORY[0x277D0C2A0])
   {
     v7 = GKOSLoggers();
@@ -388,13 +388,13 @@ uint64_t __61__GKHostedViewController_requestRemoteViewControllerIfNeeded__block
   v8 = *MEMORY[0x277D0C2A8];
   if (os_log_type_enabled(*MEMORY[0x277D0C2A8], OS_LOG_TYPE_DEBUG))
   {
-    [GKHostedViewController dismissViewControllerAnimated:v8 completion:v6];
+    [GKHostedViewController dismissViewControllerAnimated:v8 completion:completionCopy];
   }
 
   [(GKHostedViewController *)self setPresentingRemoteViewController:0];
   v9.receiver = self;
   v9.super_class = GKHostedViewController;
-  [(GKHostedViewController *)&v9 dismissViewControllerAnimated:v4 completion:v6];
+  [(GKHostedViewController *)&v9 dismissViewControllerAnimated:animatedCopy completion:completionCopy];
 }
 
 void __61__GKHostedViewController_requestRemoteViewControllerIfNeeded__block_invoke_cold_1(uint64_t a1, NSObject *a2)

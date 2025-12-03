@@ -1,7 +1,7 @@
 @interface WBSOnDeviceSearchSuggestionsModelEndpointFetcher
 - (WBSOnDeviceSearchSuggestionsModelEndpointFetcher)init;
-- (id)_parseEndpointsFromString:(id)a3;
-- (void)fetchModelEndpointURLsWithCompletionHandler:(id)a3;
+- (id)_parseEndpointsFromString:(id)string;
+- (void)fetchModelEndpointURLsWithCompletionHandler:(id)handler;
 @end
 
 @implementation WBSOnDeviceSearchSuggestionsModelEndpointFetcher
@@ -13,9 +13,9 @@
   v2 = [(WBSOnDeviceSearchSuggestionsModelEndpointFetcher *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695AC80] safari_ephemeralSessionConfiguration];
-    [v3 setURLCache:0];
-    v4 = [MEMORY[0x1E695AC78] sessionWithConfiguration:v3];
+    safari_ephemeralSessionConfiguration = [MEMORY[0x1E695AC80] safari_ephemeralSessionConfiguration];
+    [safari_ephemeralSessionConfiguration setURLCache:0];
+    v4 = [MEMORY[0x1E695AC78] sessionWithConfiguration:safari_ephemeralSessionConfiguration];
     urlSession = v2->_urlSession;
     v2->_urlSession = v4;
 
@@ -25,14 +25,14 @@
   return v2;
 }
 
-- (void)fetchModelEndpointURLsWithCompletionHandler:(id)a3
+- (void)fetchModelEndpointURLsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = v4;
+  handlerCopy = handler;
+  v5 = handlerCopy;
   modelEndpointInfos = self->_modelEndpointInfos;
   if (modelEndpointInfos)
   {
-    (*(v4 + 2))(v4, modelEndpointInfos, 0);
+    (*(handlerCopy + 2))(handlerCopy, modelEndpointInfos, 0);
   }
 
   else
@@ -94,13 +94,13 @@ void __96__WBSOnDeviceSearchSuggestionsModelEndpointFetcher_fetchModelEndpointUR
   }
 }
 
-- (id)_parseEndpointsFromString:(id)a3
+- (id)_parseEndpointsFromString:(id)string
 {
   v52 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v39 = [MEMORY[0x1E695DF90] dictionary];
-  v37 = v3;
-  [v3 componentsSeparatedByString:@"\n"];
+  stringCopy = string;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v37 = stringCopy;
+  [stringCopy componentsSeparatedByString:@"\n"];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
@@ -123,26 +123,26 @@ void __96__WBSOnDeviceSearchSuggestionsModelEndpointFetcher_fetchModelEndpointUR
         }
 
         v9 = *(*(&v47 + 1) + 8 * v8);
-        v10 = [v9 safari_stringByTrimmingWhitespace];
-        if ([v10 length] && objc_msgSend(v10, "characterAtIndex:", 0) != 35)
+        safari_stringByTrimmingWhitespace = [v9 safari_stringByTrimmingWhitespace];
+        if ([safari_stringByTrimmingWhitespace length] && objc_msgSend(safari_stringByTrimmingWhitespace, "characterAtIndex:", 0) != 35)
         {
-          v11 = [v9 safari_stringByRemovingWrappingParenthesis];
-          v12 = [v11 safari_indexOfFirstAppearanceOfCharacter:44];
+          safari_stringByRemovingWrappingParenthesis = [v9 safari_stringByRemovingWrappingParenthesis];
+          v12 = [safari_stringByRemovingWrappingParenthesis safari_indexOfFirstAppearanceOfCharacter:44];
           if (v12 == 0x7FFFFFFFFFFFFFFFLL)
           {
             goto LABEL_22;
           }
 
           v13 = v12;
-          v14 = [v11 substringToIndex:v12];
-          v44 = [v14 safari_stringByRemovingWrappingSingleQuotes];
+          v14 = [safari_stringByRemovingWrappingParenthesis substringToIndex:v12];
+          safari_stringByRemovingWrappingSingleQuotes = [v14 safari_stringByRemovingWrappingSingleQuotes];
 
-          v15 = [v11 substringFromIndex:v13 + 1];
-          v16 = [v15 safari_stringByTrimmingWhitespace];
+          v15 = [safari_stringByRemovingWrappingParenthesis substringFromIndex:v13 + 1];
+          safari_stringByTrimmingWhitespace2 = [v15 safari_stringByTrimmingWhitespace];
 
-          v43 = v16;
-          v17 = [v16 safari_stringByRemovingWrappingParenthesis];
-          v18 = [v17 componentsSeparatedByString:{@", "}];
+          v43 = safari_stringByTrimmingWhitespace2;
+          safari_stringByRemovingWrappingParenthesis2 = [safari_stringByTrimmingWhitespace2 safari_stringByRemovingWrappingParenthesis];
+          v18 = [safari_stringByRemovingWrappingParenthesis2 componentsSeparatedByString:{@", "}];
           v19 = [v18 safari_mapObjectsUsingBlock:&__block_literal_global_80];
 
           if ([v19 count] != 3)
@@ -157,31 +157,31 @@ LABEL_22:
 LABEL_23:
 
             v34 = 0;
-            v33 = v39;
+            v33 = dictionary;
             goto LABEL_24;
           }
 
-          v42 = v11;
+          v42 = safari_stringByRemovingWrappingParenthesis;
           v20 = MEMORY[0x1E695DFF8];
           v21 = [v19 objectAtIndexedSubscript:0];
-          v22 = [v21 safari_stringByRemovingWrappingSingleQuotes];
-          v23 = [v20 URLWithString:v22];
+          safari_stringByRemovingWrappingSingleQuotes2 = [v21 safari_stringByRemovingWrappingSingleQuotes];
+          v23 = [v20 URLWithString:safari_stringByRemovingWrappingSingleQuotes2];
 
           if (v23)
           {
             v24 = [WBSOnDeviceModelEndpointInfo alloc];
             v25 = [v19 objectAtIndexedSubscript:1];
-            v26 = [v25 integerValue];
+            integerValue = [v25 integerValue];
             v27 = [v19 objectAtIndexedSubscript:2];
             [v27 safari_stringByRemovingWrappingSingleQuotes];
-            v41 = v17;
+            v41 = safari_stringByRemovingWrappingParenthesis2;
             v29 = v28 = v7;
-            v30 = [(WBSOnDeviceModelEndpointInfo *)v24 initWithEndpointURL:v23 sizeInBytes:v26 checksumString:v29];
-            v31 = v44;
-            [v39 setObject:v30 forKeyedSubscript:v44];
+            v30 = [(WBSOnDeviceModelEndpointInfo *)v24 initWithEndpointURL:v23 sizeInBytes:integerValue checksumString:v29];
+            v31 = safari_stringByRemovingWrappingSingleQuotes;
+            [dictionary setObject:v30 forKeyedSubscript:safari_stringByRemovingWrappingSingleQuotes];
 
             v7 = v28;
-            v17 = v41;
+            safari_stringByRemovingWrappingParenthesis2 = v41;
 
             v4 = v38;
             v6 = v40;
@@ -191,7 +191,7 @@ LABEL_23:
           {
             v32 = WBS_LOG_CHANNEL_PREFIXOfflineSearchSuggestions();
             v6 = v40;
-            v31 = v44;
+            v31 = safari_stringByRemovingWrappingSingleQuotes;
             if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
             {
               [(WBSOnDeviceSearchSuggestionsModelEndpointFetcher *)&buf _parseEndpointsFromString:v46, v32];
@@ -222,8 +222,8 @@ LABEL_23:
     }
   }
 
-  v33 = v39;
-  v34 = [v39 copy];
+  v33 = dictionary;
+  v34 = [dictionary copy];
 LABEL_24:
 
   return v34;

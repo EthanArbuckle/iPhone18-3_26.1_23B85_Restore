@@ -1,14 +1,14 @@
 @interface GKSectionSeparatorView
-- (GKSectionSeparatorView)initWithFrame:(CGRect)a3;
+- (GKSectionSeparatorView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation GKSectionSeparatorView
 
-- (GKSectionSeparatorView)initWithFrame:(CGRect)a3
+- (GKSectionSeparatorView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = GKSectionSeparatorView;
-  v3 = [(GKSectionSeparatorView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GKSectionSeparatorView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(GKHairlineView);

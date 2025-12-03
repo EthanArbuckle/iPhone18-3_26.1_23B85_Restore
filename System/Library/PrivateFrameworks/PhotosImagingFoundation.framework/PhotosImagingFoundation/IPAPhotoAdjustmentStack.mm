@@ -1,8 +1,8 @@
 @interface IPAPhotoAdjustmentStack
 - (PFIntSize_st)inputSize;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)maskUUIDs;
-- (id)minimumVersionForFormat:(id)a3;
+- (id)minimumVersionForFormat:(id)format;
 @end
 
 @implementation IPAPhotoAdjustmentStack
@@ -24,12 +24,12 @@
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(IPAAdjustmentStack *)self adjustments];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  adjustments = [(IPAAdjustmentStack *)self adjustments];
+  v3 = [adjustments countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
-    v5 = 0;
+    orderedSet = 0;
     v6 = *v12;
     do
     {
@@ -37,22 +37,22 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(adjustments);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * i) maskUUID];
-        if (v8)
+        maskUUID = [*(*(&v11 + 1) + 8 * i) maskUUID];
+        if (maskUUID)
         {
-          if (!v5)
+          if (!orderedSet)
           {
-            v5 = [MEMORY[0x277CBEB40] orderedSet];
+            orderedSet = [MEMORY[0x277CBEB40] orderedSet];
           }
 
-          [v5 addObject:v8];
+          [orderedSet addObject:maskUUID];
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [adjustments countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);
@@ -60,18 +60,18 @@
 
   else
   {
-    v5 = 0;
+    orderedSet = 0;
   }
 
-  v9 = [MEMORY[0x277CBEB70] orderedSetWithOrderedSet:v5];
+  v9 = [MEMORY[0x277CBEB70] orderedSetWithOrderedSet:orderedSet];
 
   return v9;
 }
 
-- (id)minimumVersionForFormat:(id)a3
+- (id)minimumVersionForFormat:(id)format
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"com.apple.photo"])
+  formatCopy = format;
+  if ([formatCopy isEqualToString:@"com.apple.photo"])
   {
     v5 = @"1.4";
     v6 = @"1.4";
@@ -81,17 +81,17 @@
   {
     v8.receiver = self;
     v8.super_class = IPAPhotoAdjustmentStack;
-    v5 = [(IPAAdjustmentStack *)&v8 minimumVersionForFormat:v4];
+    v5 = [(IPAAdjustmentStack *)&v8 minimumVersionForFormat:formatCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = IPAPhotoAdjustmentStack;
-  v4 = [(IPAAdjustmentStack *)&v6 copyWithZone:a3];
+  v4 = [(IPAAdjustmentStack *)&v6 copyWithZone:zone];
   *(v4 + 40) = self->_inputSize;
   *(v4 + 3) = self->_orientation;
   objc_storeStrong(v4 + 4, self->_pipeline);

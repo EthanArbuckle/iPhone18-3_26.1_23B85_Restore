@@ -3,19 +3,19 @@
 - (CGRect)videoBounds;
 - (SVAutomaticFullscreenVideoPlaybackBehaviorManagerDelegate)delegate;
 - (void)conditionsChanged;
-- (void)setBehavior:(unint64_t)a3;
-- (void)setVideoBounds:(CGRect)a3;
+- (void)setBehavior:(unint64_t)behavior;
+- (void)setVideoBounds:(CGRect)bounds;
 @end
 
 @implementation SVAutomaticFullscreenVideoPlaybackBehaviorManager
 
-- (void)setVideoBounds:(CGRect)a3
+- (void)setVideoBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (!CGRectEqualToRect(a3, self->_videoBounds))
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if (!CGRectEqualToRect(bounds, self->_videoBounds))
   {
     self->_videoBounds.origin.x = x;
     self->_videoBounds.origin.y = y;
@@ -26,11 +26,11 @@
   }
 }
 
-- (void)setBehavior:(unint64_t)a3
+- (void)setBehavior:(unint64_t)behavior
 {
-  if (self->_behavior != a3)
+  if (self->_behavior != behavior)
   {
-    self->_behavior = a3;
+    self->_behavior = behavior;
     [(SVAutomaticFullscreenVideoPlaybackBehaviorManager *)self conditionsChanged];
   }
 }
@@ -57,13 +57,13 @@
 {
   if ([(SVAutomaticFullscreenVideoPlaybackBehaviorManager *)self fullscreenPlaybackRequiredForCurrentConditions])
   {
-    v3 = [(SVAutomaticFullscreenVideoPlaybackBehaviorManager *)self delegate];
+    delegate = [(SVAutomaticFullscreenVideoPlaybackBehaviorManager *)self delegate];
     v4 = objc_opt_respondsToSelector();
 
     if (v4)
     {
-      v5 = [(SVAutomaticFullscreenVideoPlaybackBehaviorManager *)self delegate];
-      [v5 fullscreenBehaviorManagerRequiresFullscreenPlayback:self];
+      delegate2 = [(SVAutomaticFullscreenVideoPlaybackBehaviorManager *)self delegate];
+      [delegate2 fullscreenBehaviorManagerRequiresFullscreenPlayback:self];
     }
   }
 }

@@ -2,28 +2,28 @@
 - (NSString)calendarType;
 - (RetainPtr<NSDateFormatter>)dateFormatterForPicker;
 - (RetainPtr<NSISO8601DateFormatter>)iso8601DateFormatterForCalendarView;
-- (WKDateTimePicker)initWithView:(id)a3 inputType:(unsigned __int8)a4;
+- (WKDateTimePicker)initWithView:(id)view inputType:(unsigned __int8)type;
 - (id).cxx_construct;
-- (id)_sanitizeInputValueForFormatter:(id)a3;
+- (id)_sanitizeInputValueForFormatter:(id)formatter;
 - (void)_dateChanged;
 - (void)controlBeginEditing;
 - (void)controlEndEditing;
-- (void)datePickerPopoverControllerDidReset:(id)a3;
+- (void)datePickerPopoverControllerDidReset:(id)reset;
 - (void)dealloc;
 - (void)handleDatePickerPresentationDismissal;
 - (void)removeDatePickerPresentation;
 - (void)setDateTimePickerToInitialValue;
-- (void)setHour:(int64_t)a3 minute:(int64_t)a4;
+- (void)setHour:(int64_t)hour minute:(int64_t)minute;
 - (void)setWeekPickerToInitialValue;
 - (void)showDateTimePicker;
-- (void)weekOfYearSelection:(id)a3 didSelectWeekOfYear:(id)a4;
+- (void)weekOfYearSelection:(id)selection didSelectWeekOfYear:(id)year;
 @end
 
 @implementation WKDateTimePicker
 
-- (WKDateTimePicker)initWithView:(id)a3 inputType:(unsigned __int8)a4
+- (WKDateTimePicker)initWithView:(id)view inputType:(unsigned __int8)type
 {
-  v4 = a4;
+  typeCopy = type;
   v28.receiver = self;
   v28.super_class = WKDateTimePicker;
   v6 = [(WKDateTimePicker *)&v28 init];
@@ -51,13 +51,13 @@
   {
   }
 
-  v6->_view = a3;
-  [a3 lastInteractionLocation];
+  v6->_view = view;
+  [view lastInteractionLocation];
   v6->_interactionPoint.x = v14;
   v6->_interactionPoint.y = v15;
-  if (v4 <= 12)
+  if (typeCopy <= 12)
   {
-    if (v4 == 11)
+    if (typeCopy == 11)
     {
       v18 = 0;
       v16 = 0;
@@ -66,7 +66,7 @@
       goto LABEL_21;
     }
 
-    if (v4 == 12)
+    if (typeCopy == 12)
     {
       v18 = 0;
       v16 = 0;
@@ -78,7 +78,7 @@
 
   else
   {
-    switch(v4)
+    switch(typeCopy)
     {
       case 13:
         v18 = 0;
@@ -169,37 +169,37 @@ LABEL_31:
   return v6;
 }
 
-- (void)weekOfYearSelection:(id)a3 didSelectWeekOfYear:(id)a4
+- (void)weekOfYearSelection:(id)selection didSelectWeekOfYear:(id)year
 {
-  v4 = a3;
-  if (a3)
+  selectionCopy = selection;
+  if (selection)
   {
-    v6 = a3;
+    selectionCopy2 = selection;
   }
 
   m_ptr = self->_selectionWeekOfYear.m_ptr;
-  self->_selectionWeekOfYear.m_ptr = v4;
+  self->_selectionWeekOfYear.m_ptr = selectionCopy;
   if (m_ptr)
   {
 
-    v4 = self->_selectionWeekOfYear.m_ptr;
+    selectionCopy = self->_selectionWeekOfYear.m_ptr;
   }
 
-  [(UICalendarView *)self->_calendarView.m_ptr setSelectionBehavior:v4, a4];
+  [(UICalendarView *)self->_calendarView.m_ptr setSelectionBehavior:selectionCopy, year];
 
   [(WKDateTimePicker *)self _dateChanged];
 }
 
-- (void)datePickerPopoverControllerDidReset:(id)a3
+- (void)datePickerPopoverControllerDidReset:(id)reset
 {
   [(WKDateTimePicker *)self setDateTimePickerToInitialValue];
-  v4 = [(WKContentView *)self->_view page];
-  v5 = [(WKContentView *)self->_view focusedElementInformation];
+  page = [(WKContentView *)self->_view page];
+  focusedElementInformation = [(WKContentView *)self->_view focusedElementInformation];
   v9 = 0;
-  v10[0] = v5 + 2;
-  v6 = v4[44];
+  v10[0] = focusedElementInformation + 2;
+  v6 = page[44];
   v10[1] = &v9;
-  WebKit::AuxiliaryProcessProxy::send<Messages::WebPage::SetFocusedElementValue>(v6, v10, v4[6], 0);
+  WebKit::AuxiliaryProcessProxy::send<Messages::WebPage::SetFocusedElementValue>(v6, v10, page[6], 0);
   v8 = v9;
   v9 = 0;
   if (v8)
@@ -250,9 +250,9 @@ LABEL_6:
   }
 
 LABEL_7:
-  v5 = [(WKContentView *)self->_view webView];
+  webView = [(WKContentView *)self->_view webView];
 
-  [v5 _didDismissContextMenu];
+  [webView _didDismissContextMenu];
 }
 
 - (void)showDateTimePicker
@@ -293,13 +293,13 @@ LABEL_7:
   v20[1] = 3321888768;
   v20[2] = __38__WKDateTimePicker_showDateTimePicker__block_invoke;
   v20[3] = &__block_descriptor_40_e8_32c51_ZTSKZ38__WKDateTimePicker_showDateTimePicker_E3__3_e5_v8__0l;
-  v17 = self;
-  v21 = self;
-  v18 = self;
+  selfCopy = self;
+  selfCopy2 = self;
+  selfCopy3 = self;
   [(WKDatePickerPopoverController *)v7 presentInView:view sourceRect:v20 completion:v10, v12, v14, v16];
 
-  v19 = v21;
-  v21 = 0;
+  v19 = selfCopy2;
+  selfCopy2 = 0;
   if (v19)
   {
   }
@@ -320,26 +320,26 @@ uint64_t __38__WKDateTimePicker_showDateTimePicker__block_invoke(uint64_t a1)
   [(WKDateTimePicker *)&v3 dealloc];
 }
 
-- (id)_sanitizeInputValueForFormatter:(id)a3
+- (id)_sanitizeInputValueForFormatter:(id)formatter
 {
   if (*([(WKContentView *)self->_view focusedElementInformation]+ 185) == 15)
   {
     v5 = [@"HH:mm" length];
 
-    return [a3 substringToIndex:v5];
+    return [formatter substringToIndex:v5];
   }
 
   else if (*([(WKContentView *)self->_view focusedElementInformation]+ 185) == 12)
   {
-    v7 = [objc_msgSend(a3 componentsSeparatedByString:{@"T", "objectAtIndex:", 1}];
+    v7 = [objc_msgSend(formatter componentsSeparatedByString:{@"T", "objectAtIndex:", 1}];
     v8 = [v7 substringToIndex:{objc_msgSend(@"HH:mm", "length")}];
 
-    return [a3 stringByReplacingOccurrencesOfString:v7 withString:v8];
+    return [formatter stringByReplacingOccurrencesOfString:v7 withString:v8];
   }
 
   else
   {
-    return a3;
+    return formatter;
   }
 }
 
@@ -415,13 +415,13 @@ uint64_t __38__WKDateTimePicker_showDateTimePicker__block_invoke(uint64_t a1)
     }
 
     v9 = [MEMORY[0x1E695DEE8] calendarWithIdentifier:*MEMORY[0x1E695D868]];
-    v10 = v4;
+    date = v4;
     if (!v6)
     {
-      v10 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
     }
 
-    v11 = [v9 components:25088 fromDate:v10];
+    v11 = [v9 components:25088 fromDate:date];
     v12 = v11;
     if (v11)
     {
@@ -482,11 +482,11 @@ uint64_t __38__WKDateTimePicker_showDateTimePicker__block_invoke(uint64_t a1)
 
     else
     {
-      v7 = [MEMORY[0x1E695DF00] date];
-      v6 = v7;
-      if (v7)
+      date = [MEMORY[0x1E695DF00] date];
+      v6 = date;
+      if (date)
       {
-        v8 = v7;
+        v8 = date;
       }
 
       if (v4)
@@ -571,23 +571,23 @@ LABEL_14:
 
 - (NSString)calendarType
 {
-  v2 = [(UIDatePicker *)self->_datePicker.m_ptr calendar];
+  calendar = [(UIDatePicker *)self->_datePicker.m_ptr calendar];
 
-  return [(NSCalendar *)v2 calendarIdentifier];
+  return [(NSCalendar *)calendar calendarIdentifier];
 }
 
-- (void)setHour:(int64_t)a3 minute:(int64_t)a4
+- (void)setHour:(int64_t)hour minute:(int64_t)minute
 {
-  v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%.2ld:%.2ld", a3, a4];
+  minute = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%.2ld:%.2ld", hour, minute];
   m_ptr = self->_datePicker.m_ptr;
   [(WKDateTimePicker *)self dateFormatterForPicker];
-  -[UIDatePicker setDate:](m_ptr, "setDate:", [v7 dateFromString:v5]);
+  -[UIDatePicker setDate:](m_ptr, "setDate:", [v7 dateFromString:minute]);
   if (v7)
   {
   }
 
   [(WKDateTimePicker *)self _dateChanged];
-  if (v5)
+  if (minute)
   {
   }
 }

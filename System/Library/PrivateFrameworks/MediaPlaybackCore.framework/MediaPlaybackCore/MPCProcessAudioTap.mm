@@ -1,12 +1,12 @@
 @interface MPCProcessAudioTap
-- (MPCProcessAudioTap)initWithPID:(int)a3 refreshRate:(id)a4 numberOfChannels:(unsigned int)a5 delegate:(id)a6;
-- (MPCProcessAudioTap)initWithRefreshRate:(id)a3 delegate:(id)a4;
+- (MPCProcessAudioTap)initWithPID:(int)d refreshRate:(id)rate numberOfChannels:(unsigned int)channels delegate:(id)delegate;
+- (MPCProcessAudioTap)initWithRefreshRate:(id)rate delegate:(id)delegate;
 - (MPCProcessAudioTapDelegate)delegate;
-- (void)_createProcessTapWithNumberOfFrames:(unsigned int)a3 sampleRate:(double)a4;
+- (void)_createProcessTapWithNumberOfFrames:(unsigned int)frames sampleRate:(double)rate;
 - (void)_destroyProcessTap;
 - (void)dealloc;
-- (void)mediaServerDidDie:(id)a3;
-- (void)mediaServerDidRestart:(id)a3;
+- (void)mediaServerDidDie:(id)die;
+- (void)mediaServerDidRestart:(id)restart;
 - (void)setupNotifications;
 - (void)start;
 - (void)stop;
@@ -17,11 +17,11 @@
 
 - (void)setupNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_mediaServerDidDie_ name:*MEMORY[0x1E6958110] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_mediaServerDidDie_ name:*MEMORY[0x1E6958110] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel_mediaServerDidRestart_ name:*MEMORY[0x1E6958128] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_mediaServerDidRestart_ name:*MEMORY[0x1E6958128] object:0];
 }
 
 - (MPCProcessAudioTapDelegate)delegate
@@ -31,14 +31,14 @@
   return WeakRetained;
 }
 
-- (void)mediaServerDidRestart:(id)a3
+- (void)mediaServerDidRestart:(id)restart
 {
   v9 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C5C61000, v4, OS_LOG_TYPE_DEFAULT, "[AP] - MPCProcessAudioTap %p - MediaServicesWereReset - creating AQ", buf, 0xCu);
   }
 
@@ -60,14 +60,14 @@ uint64_t __44__MPCProcessAudioTap_mediaServerDidRestart___block_invoke(uint64_t 
   return [v2 _createProcessTapWithNumberOfFrames:v3 sampleRate:v4];
 }
 
-- (void)mediaServerDidDie:(id)a3
+- (void)mediaServerDidDie:(id)die
 {
   v9 = *MEMORY[0x1E69E9840];
   v4 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C5C61000, v4, OS_LOG_TYPE_DEFAULT, "[AP] - MPCProcessAudioTap %p - MediaServicesWereLost - clearing AQ", buf, 0xCu);
   }
 
@@ -198,8 +198,8 @@ LABEL_21:
 
 - (void)tearDownNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
 - (void)_destroyProcessTap
@@ -422,15 +422,15 @@ LABEL_50:
   self->_processingQueue = 0;
 }
 
-- (void)_createProcessTapWithNumberOfFrames:(unsigned int)a3 sampleRate:(double)a4
+- (void)_createProcessTapWithNumberOfFrames:(unsigned int)frames sampleRate:(double)rate
 {
   v68[1] = *MEMORY[0x1E69E9840];
   dispatch_assert_queue_V2(self->_accessQueue);
-  v7 = [objc_alloc(MEMORY[0x1E6958418]) initWithCommonFormat:1 sampleRate:self->_numberOfChannels channels:1 interleaved:a4];
-  v8 = [v7 streamDescription];
-  v9 = *(v8 + 32);
-  v10 = *(v8 + 16);
-  *&inFormat.mSampleRate = *v8;
+  v7 = [objc_alloc(MEMORY[0x1E6958418]) initWithCommonFormat:1 sampleRate:self->_numberOfChannels channels:1 interleaved:rate];
+  streamDescription = [v7 streamDescription];
+  v9 = *(streamDescription + 32);
+  v10 = *(streamDescription + 16);
+  *&inFormat.mSampleRate = *streamDescription;
   *&inFormat.mBytesPerPacket = v10;
   *&inFormat.mBitsPerChannel = v9;
   v11 = [objc_alloc(MEMORY[0x1E695A888]) initProcessTapWithFormat:v7 PID:self->_pid];
@@ -632,7 +632,7 @@ LABEL_95:
     }
 
 LABEL_49:
-    Buffer = AudioQueueAllocateBuffer(self->_processingQueue, *([v7 streamDescription] + 20) * a3 * *(objc_msgSend(v7, "streamDescription") + 24), &self->_monoAudioBuffer);
+    Buffer = AudioQueueAllocateBuffer(self->_processingQueue, *([v7 streamDescription] + 20) * frames * *(objc_msgSend(v7, "streamDescription") + 24), &self->_monoAudioBuffer);
     if (!Buffer)
     {
       goto LABEL_72;
@@ -848,7 +848,7 @@ LABEL_99:
   v5 = 3221225472;
   v6 = __29__MPCProcessAudioTap_dealloc__block_invoke;
   v7 = &unk_1E8239298;
-  v8 = self;
+  selfCopy = self;
   msv_dispatch_sync_on_queue();
   v3.receiver = self;
   v3.super_class = MPCProcessAudioTap;
@@ -1140,34 +1140,34 @@ LABEL_23:
   }
 }
 
-- (MPCProcessAudioTap)initWithPID:(int)a3 refreshRate:(id)a4 numberOfChannels:(unsigned int)a5 delegate:(id)a6
+- (MPCProcessAudioTap)initWithPID:(int)d refreshRate:(id)rate numberOfChannels:(unsigned int)channels delegate:(id)delegate
 {
   v43 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a6;
+  rateCopy = rate;
+  delegateCopy = delegate;
   v28.receiver = self;
   v28.super_class = MPCProcessAudioTap;
   v12 = [(MPCProcessAudioTap *)&v28 init];
   v13 = v12;
   if (v12)
   {
-    v12->_pid = a3;
+    v12->_pid = d;
     v12->_sampleRate = 48000;
-    v12->_numberOfChannels = a5;
+    v12->_numberOfChannels = channels;
     v12->_enabled = 1;
-    if (v10)
+    if (rateCopy)
     {
-      v14 = [v10 integerValue];
+      integerValue = [rateCopy integerValue];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E69708A8] standardUserDefaults];
-      v14 = [v16 audioAnalysisRefreshRate];
+      standardUserDefaults = [MEMORY[0x1E69708A8] standardUserDefaults];
+      integerValue = [standardUserDefaults audioAnalysisRefreshRate];
     }
 
     LODWORD(v15) = v13->_sampleRate;
-    v17 = log2(v15 / v14);
+    v17 = log2(v15 / integerValue);
     v18 = exp2(ceil(v17));
     v19 = os_log_create("com.apple.amp.mediaplaybackcore", "Playback");
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -1176,7 +1176,7 @@ LABEL_23:
       *buf = 134219520;
       v30 = v13;
       v31 = 2048;
-      v32 = v14;
+      v32 = integerValue;
       v33 = 2048;
       v34 = (sampleRate / v18);
       v35 = 1024;
@@ -1195,7 +1195,7 @@ LABEL_23:
     v13->_accessQueue = v21;
 
     v13->_numberOfFrames = v18;
-    objc_storeWeak(&v13->_delegate, v11);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
     v23 = v13->_accessQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -1217,11 +1217,11 @@ uint64_t __72__MPCProcessAudioTap_initWithPID_refreshRate_numberOfChannels_deleg
   return [v2 _createProcessTapWithNumberOfFrames:v2[11] sampleRate:*&a2];
 }
 
-- (MPCProcessAudioTap)initWithRefreshRate:(id)a3 delegate:(id)a4
+- (MPCProcessAudioTap)initWithRefreshRate:(id)rate delegate:(id)delegate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MPCProcessAudioTap *)self initWithPID:getpid() refreshRate:v7 numberOfChannels:1 delegate:v6];
+  delegateCopy = delegate;
+  rateCopy = rate;
+  v8 = [(MPCProcessAudioTap *)self initWithPID:getpid() refreshRate:rateCopy numberOfChannels:1 delegate:delegateCopy];
 
   return v8;
 }

@@ -1,29 +1,29 @@
 @interface HDWorkoutObserverServer
 + (id)requiredEntitlements;
-- (HDWorkoutObserverServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
-- (void)_sendSnapshotForWorkout:(_BYTE *)a1;
+- (HDWorkoutObserverServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
+- (void)_sendSnapshotForWorkout:(_BYTE *)workout;
 - (void)dealloc;
 - (void)remote_startTaskServerIfNeeded;
-- (void)remote_waitForAutomaticWorkoutRecoveryWithCompletion:(id)a3;
-- (void)workoutManager:(id)a3 currentWorkout:(id)a4 didUpdateDataAccumulator:(id)a5;
-- (void)workoutManager:(id)a3 didUpdateCurrentWorkout:(id)a4;
+- (void)remote_waitForAutomaticWorkoutRecoveryWithCompletion:(id)completion;
+- (void)workoutManager:(id)manager currentWorkout:(id)workout didUpdateDataAccumulator:(id)accumulator;
+- (void)workoutManager:(id)manager didUpdateCurrentWorkout:(id)workout;
 @end
 
 @implementation HDWorkoutObserverServer
 
-- (HDWorkoutObserverServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDWorkoutObserverServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v15.receiver = self;
   v15.super_class = HDWorkoutObserverServer;
-  v11 = [(HDStandardTaskServer *)&v15 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDStandardTaskServer *)&v15 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
     v12 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     lock = v11->_lock;
     v11->_lock = v12;
 
-    v11->_reportInactiveSessions = [v10 reportInactiveSessions];
+    v11->_reportInactiveSessions = [configurationCopy reportInactiveSessions];
   }
 
   return v11;
@@ -76,9 +76,9 @@ void __34__HDWorkoutObserverServer_dealloc__block_invoke(uint64_t a1)
   v6[3] = &unk_278613968;
   v6[4] = self;
   [(NSLock *)lock hk_withLock:v6];
-  v4 = [(HDStandardTaskServer *)self profile];
-  v5 = [v4 workoutManager];
-  [v5 registerCurrentWorkoutObserver:self];
+  profile = [(HDStandardTaskServer *)self profile];
+  workoutManager = [profile workoutManager];
+  [workoutManager registerCurrentWorkoutObserver:self];
 }
 
 uint64_t __57__HDWorkoutObserverServer_remote_startTaskServerIfNeeded__block_invoke(uint64_t result)
@@ -92,25 +92,25 @@ uint64_t __57__HDWorkoutObserverServer_remote_startTaskServerIfNeeded__block_inv
   return result;
 }
 
-- (void)remote_waitForAutomaticWorkoutRecoveryWithCompletion:(id)a3
+- (void)remote_waitForAutomaticWorkoutRecoveryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(HDStandardTaskServer *)self profile];
-  v5 = [v6 workoutManager];
-  [v5 performWhenPostLaunchSessionRecoveryHasCompleted:v4];
+  completionCopy = completion;
+  profile = [(HDStandardTaskServer *)self profile];
+  workoutManager = [profile workoutManager];
+  [workoutManager performWhenPostLaunchSessionRecoveryHasCompleted:completionCopy];
 }
 
-- (void)workoutManager:(id)a3 didUpdateCurrentWorkout:(id)a4
+- (void)workoutManager:(id)manager didUpdateCurrentWorkout:(id)workout
 {
-  v5 = a4;
+  workoutCopy = workout;
   lock = self->_lock;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__HDWorkoutObserverServer_workoutManager_didUpdateCurrentWorkout___block_invoke;
   v8[3] = &unk_278613920;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = workoutCopy;
+  selfCopy = self;
+  v7 = workoutCopy;
   [(NSLock *)lock hk_withLock:v8];
   [(HDWorkoutObserverServer *)self _sendSnapshotForWorkout:v7];
 }
@@ -145,43 +145,43 @@ void __66__HDWorkoutObserverServer_workoutManager_didUpdateCurrentWorkout___bloc
   }
 }
 
-- (void)_sendSnapshotForWorkout:(_BYTE *)a1
+- (void)_sendSnapshotForWorkout:(_BYTE *)workout
 {
-  if (a1)
+  if (workout)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __51__HDWorkoutObserverServer__sendSnapshotForWorkout___block_invoke;
     v6[3] = &unk_2786138D0;
-    v6[4] = a1;
+    v6[4] = workout;
     v3 = a2;
-    v4 = [a1 remoteObjectProxyWithErrorHandler:v6];
-    v5 = [v3 currentWorkoutSnapshot];
+    v4 = [workout remoteObjectProxyWithErrorHandler:v6];
+    currentWorkoutSnapshot = [v3 currentWorkoutSnapshot];
 
-    if ((a1[64] & 1) == 0 && ([v5 isSessionActive] & 1) == 0)
+    if ((workout[64] & 1) == 0 && ([currentWorkoutSnapshot isSessionActive] & 1) == 0)
     {
 
-      v5 = 0;
+      currentWorkoutSnapshot = 0;
     }
 
-    [v4 clientRemote_didUpdateWorkoutSnapshot:v5];
+    [v4 clientRemote_didUpdateWorkoutSnapshot:currentWorkoutSnapshot];
   }
 }
 
-- (void)workoutManager:(id)a3 currentWorkout:(id)a4 didUpdateDataAccumulator:(id)a5
+- (void)workoutManager:(id)manager currentWorkout:(id)workout didUpdateDataAccumulator:(id)accumulator
 {
-  v7 = a5;
+  accumulatorCopy = accumulator;
   lock = self->_lock;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __82__HDWorkoutObserverServer_workoutManager_currentWorkout_didUpdateDataAccumulator___block_invoke;
   v11[3] = &unk_278613920;
-  v12 = v7;
-  v13 = self;
-  v9 = v7;
-  v10 = a4;
+  v12 = accumulatorCopy;
+  selfCopy = self;
+  v9 = accumulatorCopy;
+  workoutCopy = workout;
   [(NSLock *)lock hk_withLock:v11];
-  [(HDWorkoutObserverServer *)self _sendSnapshotForWorkout:v10];
+  [(HDWorkoutObserverServer *)self _sendSnapshotForWorkout:workoutCopy];
 }
 
 void __51__HDWorkoutObserverServer__sendSnapshotForWorkout___block_invoke(uint64_t a1, void *a2)

@@ -6,21 +6,21 @@
 
 - (void)popViewControllerAnimated:()SettingsPop
 {
-  v5 = [a1 navigationController];
-  v6 = [v5 viewControllers];
-  v7 = [a1 parentViewController];
-  v8 = [v6 containsObject:v7];
+  navigationController = [self navigationController];
+  viewControllers = [navigationController viewControllers];
+  parentViewController = [self parentViewController];
+  v8 = [viewControllers containsObject:parentViewController];
 
-  v12 = [a1 navigationController];
+  navigationController2 = [self navigationController];
   if (v8)
   {
-    v9 = [a1 parentViewController];
-    v10 = [v12 popToViewController:v9 animated:a3];
+    parentViewController2 = [self parentViewController];
+    v10 = [navigationController2 popToViewController:parentViewController2 animated:a3];
   }
 
   else
   {
-    v11 = [v12 popToViewController:a1 animated:a3];
+    v11 = [navigationController2 popToViewController:self animated:a3];
   }
 }
 

@@ -14,55 +14,55 @@
 
 - (uint64_t)crxu_BOOLForKey:()CRXUExtensions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (v1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v2 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
   else
   {
-    v2 = 0;
+    bOOLValue = 0;
   }
 
-  return v2;
+  return bOOLValue;
 }
 
 - (uint64_t)crxu_integerForKey:()CRXUExtensions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (v1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v2 = [v1 integerValue];
+    integerValue = [v1 integerValue];
   }
 
   else
   {
-    v2 = 0;
+    integerValue = 0;
   }
 
-  return v2;
+  return integerValue;
 }
 
 - (uint64_t)crxu_uintegerForKey:()CRXUExtensions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (v1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v2 = [v1 unsignedIntegerValue];
+    unsignedIntegerValue = [v1 unsignedIntegerValue];
   }
 
   else
   {
-    v2 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v2;
+  return unsignedIntegerValue;
 }
 
 - (double)crxu_doubleForKey:()CRXUExtensions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   v2 = 0.0;
   if (v1)
   {
@@ -79,7 +79,7 @@
 
 - (id)crxu_stringForKey:()CRXUExtensions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (v1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v2 = v1;
@@ -95,7 +95,7 @@
 
 - (id)crxu_dataForKey:()CRXUExtensions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (v1 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v2 = v1;
@@ -111,7 +111,7 @@
 
 - (id)crxu_dateForKey:()CRXUExtensions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   if (v1)
   {
     objc_opt_class();
@@ -140,7 +140,7 @@ LABEL_8:
 
 - (id)crxu_objectOfClass:()CRXUExtensions forKey:
 {
-  v4 = [a1 objectForKey:a4];
+  v4 = [self objectForKey:a4];
   if (v4 && (objc_opt_isKindOfClass() & 1) != 0)
   {
     v5 = v4;
@@ -156,7 +156,7 @@ LABEL_8:
 
 - (BOOL)crxu_containsKey:()CRXUExtensions
 {
-  v1 = [a1 objectForKey:?];
+  v1 = [self objectForKey:?];
   v2 = v1 != 0;
 
   return v2;

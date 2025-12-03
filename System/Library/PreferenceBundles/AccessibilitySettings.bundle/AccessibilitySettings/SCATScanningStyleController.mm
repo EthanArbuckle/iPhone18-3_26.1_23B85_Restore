@@ -1,7 +1,7 @@
 @interface SCATScanningStyleController
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SCATScanningStyleController
@@ -46,37 +46,37 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = SCATScanningStyleController;
-  v6 = a4;
-  v7 = [(SCATScanningStyleController *)&v13 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(SCATScanningStyleController *)self specifierAtIndexPath:v6, v13.receiver, v13.super_class];
+  pathCopy = path;
+  v7 = [(SCATScanningStyleController *)&v13 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(SCATScanningStyleController *)self specifierAtIndexPath:pathCopy, v13.receiver, v13.super_class];
 
   v9 = [v8 propertyForKey:@"ScanningStyle"];
-  v10 = [v9 integerValue];
+  integerValue = [v9 integerValue];
 
   v11 = +[AXSettings sharedInstance];
-  [v7 setChecked:{objc_msgSend(v11, "switchControlScanningStyle") == v10}];
+  [v7 setChecked:{objc_msgSend(v11, "switchControlScanningStyle") == integerValue}];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = SCATScanningStyleController;
-  v6 = a4;
-  [(SCATScanningStyleController *)&v11 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(SCATScanningStyleController *)self specifierAtIndexPath:v6, v11.receiver, v11.super_class];
+  pathCopy = path;
+  [(SCATScanningStyleController *)&v11 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(SCATScanningStyleController *)self specifierAtIndexPath:pathCopy, v11.receiver, v11.super_class];
   v8 = [v7 propertyForKey:@"ScanningStyle"];
-  v9 = [v8 integerValue];
+  integerValue = [v8 integerValue];
 
   v10 = +[AXSettings sharedInstance];
-  [v10 setSwitchControlScanningStyle:v9];
+  [v10 setSwitchControlScanningStyle:integerValue];
 
-  [(SCATScanningStyleController *)self updateTableCheckedSelection:v6];
+  [(SCATScanningStyleController *)self updateTableCheckedSelection:pathCopy];
 }
 
 @end

@@ -4,7 +4,7 @@
 - (CGSize)estimatedSize;
 - (CLLocationCoordinate2D)centerCoordinate;
 - (MKMapView)mapView;
-- (POIShapeComposedWaypoint)initWithMapView:(id)a3 composedWaypoint:(id)a4;
+- (POIShapeComposedWaypoint)initWithMapView:(id)view composedWaypoint:(id)waypoint;
 @end
 
 @implementation POIShapeComposedWaypoint
@@ -39,13 +39,13 @@
       v3 = 1;
     }
 
-    v4 = [(POIShapeComposedWaypoint *)self mapView];
-    v5 = [v4 _mapLayer];
-    v6 = [v5 metrics];
-    v7 = [(GEOComposedWaypoint *)self->_composedWaypoint name];
+    mapView = [(POIShapeComposedWaypoint *)self mapView];
+    _mapLayer = [mapView _mapLayer];
+    metrics = [_mapLayer metrics];
+    name = [(GEOComposedWaypoint *)self->_composedWaypoint name];
     v8 = +[NSLocale currentLocale];
-    v9 = [v8 localeIdentifier];
-    [v6 boundingRectForItem:v3 text:v7 locale:v9];
+    localeIdentifier = [v8 localeIdentifier];
+    [metrics boundingRectForItem:v3 text:name locale:localeIdentifier];
     self->_boundingRect.origin.x = v10;
     self->_boundingRect.origin.y = v11;
     self->_boundingRect.size.width = v12;
@@ -66,20 +66,20 @@
 - (CGSize)estimatedSize
 {
   [(POIShapeComposedWaypoint *)self _boundingRect];
-  v3 = [(POIShapeComposedWaypoint *)self mapView];
-  v4 = [v3 window];
-  v5 = [v4 screen];
-  if (v5)
+  mapView = [(POIShapeComposedWaypoint *)self mapView];
+  window = [mapView window];
+  screen = [window screen];
+  if (screen)
   {
-    v6 = [v3 window];
-    v7 = [v6 screen];
-    [v7 nativeScale];
+    window2 = [mapView window];
+    screen2 = [window2 screen];
+    [screen2 nativeScale];
   }
 
   else
   {
-    v6 = +[UIScreen mainScreen];
-    [v6 nativeScale];
+    window2 = +[UIScreen mainScreen];
+    [window2 nativeScale];
   }
 
   UIRectIntegralWithScale();
@@ -101,24 +101,24 @@
   if (CLLocationCoordinate2DIsValid(v24))
   {
     [(POIShapeComposedWaypoint *)self _boundingRect];
-    v5 = [(POIShapeComposedWaypoint *)self mapView];
-    v6 = [(POIShapeComposedWaypoint *)self mapView];
-    [v5 convertCoordinate:v6 toPointToView:{latitude, longitude}];
+    mapView = [(POIShapeComposedWaypoint *)self mapView];
+    mapView2 = [(POIShapeComposedWaypoint *)self mapView];
+    [mapView convertCoordinate:mapView2 toPointToView:{latitude, longitude}];
 
-    v7 = [(POIShapeComposedWaypoint *)self mapView];
-    v8 = [v7 window];
-    v9 = [v8 screen];
-    if (v9)
+    mapView3 = [(POIShapeComposedWaypoint *)self mapView];
+    window = [mapView3 window];
+    screen = [window screen];
+    if (screen)
     {
-      v10 = [v7 window];
-      v11 = [v10 screen];
-      [v11 nativeScale];
+      window2 = [mapView3 window];
+      screen2 = [window2 screen];
+      [screen2 nativeScale];
     }
 
     else
     {
-      v10 = +[UIScreen mainScreen];
-      [v10 nativeScale];
+      window2 = +[UIScreen mainScreen];
+      [window2 nativeScale];
     }
 
     UIRectCenteredAboutPointScale();
@@ -149,12 +149,12 @@
 
 - (CLLocationCoordinate2D)centerCoordinate
 {
-  v3 = [(GEOComposedWaypoint *)self->_composedWaypoint location];
+  location = [(GEOComposedWaypoint *)self->_composedWaypoint location];
 
-  if (v3)
+  if (location)
   {
-    v4 = [(GEOComposedWaypoint *)self->_composedWaypoint location];
-    [v4 coordinate];
+    location2 = [(GEOComposedWaypoint *)self->_composedWaypoint location];
+    [location2 coordinate];
     latitude = v5;
     longitude = v7;
   }
@@ -172,18 +172,18 @@
   return result;
 }
 
-- (POIShapeComposedWaypoint)initWithMapView:(id)a3 composedWaypoint:(id)a4
+- (POIShapeComposedWaypoint)initWithMapView:(id)view composedWaypoint:(id)waypoint
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  waypointCopy = waypoint;
   v12.receiver = self;
   v12.super_class = POIShapeComposedWaypoint;
   v8 = [(POIShapeComposedWaypoint *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_mapView, v6);
-    objc_storeStrong(&v9->_composedWaypoint, a4);
+    objc_storeWeak(&v8->_mapView, viewCopy);
+    objc_storeStrong(&v9->_composedWaypoint, waypoint);
     size = CGRectNull.size;
     v9->_boundingRect.origin = CGRectNull.origin;
     v9->_boundingRect.size = size;

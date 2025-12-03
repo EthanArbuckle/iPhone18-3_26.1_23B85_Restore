@@ -1,12 +1,12 @@
 @interface THWTapGestureAction
-- (BOOL)handleGesture:(id)a3;
-- (THWTapGestureAction)initWithAction:(id)a3;
+- (BOOL)handleGesture:(id)gesture;
+- (THWTapGestureAction)initWithAction:(id)action;
 - (void)dealloc;
 @end
 
 @implementation THWTapGestureAction
 
-- (THWTapGestureAction)initWithAction:(id)a3
+- (THWTapGestureAction)initWithAction:(id)action
 {
   v7.receiver = self;
   v7.super_class = THWTapGestureAction;
@@ -14,7 +14,7 @@
   v5 = v4;
   if (v4)
   {
-    [(THWTapGestureAction *)v4 setAction:a3];
+    [(THWTapGestureAction *)v4 setAction:action];
   }
 
   return v5;
@@ -27,9 +27,9 @@
   [(THWTapGestureAction *)&v3 dealloc];
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
-  if ([a3 gestureState] == 3)
+  if ([gesture gestureState] == 3)
   {
     action = self->_action;
     if (action)

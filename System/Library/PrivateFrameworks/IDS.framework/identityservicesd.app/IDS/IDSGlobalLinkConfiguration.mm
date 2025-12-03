@@ -7,17 +7,17 @@
 - (NSDate)timeBase;
 - (NSDictionary)pluginOptionsByPluginName;
 - (NSString)cellInterfaceName;
-- (void)configureGlobalLink:(id)a3;
+- (void)configureGlobalLink:(id)link;
 - (void)reset;
-- (void)setCellInterfaceName:(id)a3;
-- (void)setIdsContextBlob:(id)a3;
-- (void)setIsReliableUnicastClient:(BOOL)a3;
-- (void)setIsReliableUnicastSession:(BOOL)a3;
-- (void)setLinkSelectionStrategy:(id)a3;
-- (void)setPluginOptionsByPluginName:(id)a3;
-- (void)setPluginOptionsWithPluginName:(id)a3 options:(id)a4;
-- (void)setSharedSessionHasJoined:(BOOL)a3;
-- (void)setTimeBase:(id)a3;
+- (void)setCellInterfaceName:(id)name;
+- (void)setIdsContextBlob:(id)blob;
+- (void)setIsReliableUnicastClient:(BOOL)client;
+- (void)setIsReliableUnicastSession:(BOOL)session;
+- (void)setLinkSelectionStrategy:(id)strategy;
+- (void)setPluginOptionsByPluginName:(id)name;
+- (void)setPluginOptionsWithPluginName:(id)name options:(id)options;
+- (void)setSharedSessionHasJoined:(BOOL)joined;
+- (void)setTimeBase:(id)base;
 @end
 
 @implementation IDSGlobalLinkConfiguration
@@ -29,11 +29,11 @@
   return *(self + v3);
 }
 
-- (void)setSharedSessionHasJoined:(BOOL)a3
+- (void)setSharedSessionHasJoined:(BOOL)joined
 {
   v5 = OBJC_IVAR____TtC17identityservicesd26IDSGlobalLinkConfiguration_sharedSessionHasJoined;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = joined;
 }
 
 - (NSDictionary)pluginOptionsByPluginName
@@ -46,7 +46,7 @@
   return v2.super.isa;
 }
 
-- (void)setPluginOptionsByPluginName:(id)a3
+- (void)setPluginOptionsByPluginName:(id)name
 {
   sub_100706B30(&qword_100CB62A0);
   v4 = sub_100936A78();
@@ -73,9 +73,9 @@
   return v3;
 }
 
-- (void)setCellInterfaceName:(id)a3
+- (void)setCellInterfaceName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = sub_100936B38();
     v6 = v5;
@@ -111,20 +111,20 @@
   return v3;
 }
 
-- (void)setIdsContextBlob:(id)a3
+- (void)setIdsContextBlob:(id)blob
 {
-  v3 = a3;
-  if (a3)
+  blobCopy = blob;
+  if (blob)
   {
-    v5 = self;
-    v6 = v3;
-    v3 = sub_100935EA8();
+    selfCopy = self;
+    v6 = blobCopy;
+    blobCopy = sub_100935EA8();
     v8 = v7;
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v8 = 0xF000000000000000;
   }
 
@@ -132,7 +132,7 @@
   swift_beginAccess();
   v11 = *v10;
   v12 = v10[1];
-  *v10 = v3;
+  *v10 = blobCopy;
   v10[1] = v8;
   sub_10001C370(v11, v12);
 }
@@ -144,11 +144,11 @@
   return *(self + v3);
 }
 
-- (void)setIsReliableUnicastSession:(BOOL)a3
+- (void)setIsReliableUnicastSession:(BOOL)session
 {
   v5 = OBJC_IVAR____TtC17identityservicesd26IDSGlobalLinkConfiguration_isReliableUnicastSession;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = session;
 }
 
 - (BOOL)isReliableUnicastClient
@@ -158,11 +158,11 @@
   return *(self + v3);
 }
 
-- (void)setIsReliableUnicastClient:(BOOL)a3
+- (void)setIsReliableUnicastClient:(BOOL)client
 {
   v5 = OBJC_IVAR____TtC17identityservicesd26IDSGlobalLinkConfiguration_isReliableUnicastClient;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = client;
 }
 
 - (NSDate)timeBase
@@ -187,12 +187,12 @@
   return v10;
 }
 
-- (void)setTimeBase:(id)a3
+- (void)setTimeBase:(id)base
 {
   v5 = sub_100706B30(&qword_100CB4AC0);
   __chkstk_darwin(v5 - 8);
   v7 = &v12 - v6;
-  if (a3)
+  if (base)
   {
     sub_100935FE8();
     v8 = sub_100936038();
@@ -207,7 +207,7 @@
 
   v10 = OBJC_IVAR____TtC17identityservicesd26IDSGlobalLinkConfiguration_timeBase;
   swift_beginAccess();
-  v11 = self;
+  selfCopy = self;
   sub_100817548(v7, self + v10);
   swift_endAccess();
 }
@@ -219,22 +219,22 @@
   return *(self + v3);
 }
 
-- (void)setLinkSelectionStrategy:(id)a3
+- (void)setLinkSelectionStrategy:(id)strategy
 {
   v5 = OBJC_IVAR____TtC17identityservicesd26IDSGlobalLinkConfiguration_linkSelectionStrategy;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = strategy;
+  strategyCopy = strategy;
 }
 
-- (void)setPluginOptionsWithPluginName:(id)a3 options:(id)a4
+- (void)setPluginOptionsWithPluginName:(id)name options:(id)options
 {
   v5 = sub_100936B38();
   v7 = v6;
   v8 = sub_100936A78();
   v9 = *((swift_isaMask & *self) + 0xB8);
-  v10 = self;
+  selfCopy = self;
 
   v11 = v9(v16);
   v13 = v12;
@@ -250,19 +250,19 @@
 - (void)reset
 {
   v2 = *((swift_isaMask & *self) + 0xC8);
-  v3 = self;
+  selfCopy = self;
   v2(0, 0);
-  (*((swift_isaMask & *v3) + 0xE0))(0, 0xF000000000000000);
-  (*((swift_isaMask & *v3) + 0x98))(0);
-  (*((swift_isaMask & *v3) + 0xF8))(0);
-  (*((swift_isaMask & *v3) + 0x110))(0);
+  (*((swift_isaMask & *selfCopy) + 0xE0))(0, 0xF000000000000000);
+  (*((swift_isaMask & *selfCopy) + 0x98))(0);
+  (*((swift_isaMask & *selfCopy) + 0xF8))(0);
+  (*((swift_isaMask & *selfCopy) + 0x110))(0);
 }
 
-- (void)configureGlobalLink:(id)a3
+- (void)configureGlobalLink:(id)link
 {
-  v4 = a3;
-  v5 = self;
-  sub_100898AC0(v4);
+  linkCopy = link;
+  selfCopy = self;
+  sub_100898AC0(linkCopy);
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface MFModernAtomIconView
 - (CGPoint)drawingOffset;
 - (double)preferredWidth;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation MFModernAtomIconView
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v14.receiver = self;
   v14.super_class = MFModernAtomIconView;
-  [(MFModernAtomIconView *)&v14 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [(MFModernAtomIconView *)self effectiveUserInterfaceLayoutDirection];
-  v5 = v4 == 0;
+  [(MFModernAtomIconView *)&v14 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
+  effectiveUserInterfaceLayoutDirection = [(MFModernAtomIconView *)self effectiveUserInterfaceLayoutDirection];
+  v5 = effectiveUserInterfaceLayoutDirection == 0;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x2020000000;
-  if (v4)
+  if (effectiveUserInterfaceLayoutDirection)
   {
     [(MFModernAtomIconView *)self bounds];
     v7 = v6;
@@ -30,7 +30,7 @@
   }
 
   *&v13[3] = v9;
-  v10 = [(MFModernAtomIconView *)self iconImages];
+  iconImages = [(MFModernAtomIconView *)self iconImages];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __33__MFModernAtomIconView_drawRect___block_invoke;
@@ -38,7 +38,7 @@
   v12 = v5;
   v11[4] = self;
   v11[5] = v13;
-  [v10 enumerateObjectsUsingBlock:v11];
+  [iconImages enumerateObjectsUsingBlock:v11];
 
   _Block_object_dispose(v13, 8);
 }
@@ -85,14 +85,14 @@ void __33__MFModernAtomIconView_drawRect___block_invoke(uint64_t a1, void *a2)
   v10 = 0x2020000000;
   [(MFModernAtomIconView *)self drawingOffset];
   v11 = v3;
-  v4 = [(MFModernAtomIconView *)self iconImages];
+  iconImages = [(MFModernAtomIconView *)self iconImages];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __38__MFModernAtomIconView_preferredWidth__block_invoke;
   v7[3] = &unk_1E8070490;
   v7[4] = self;
   v7[5] = &v8;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [iconImages enumerateObjectsUsingBlock:v7];
 
   v5 = v9[3];
   _Block_object_dispose(&v8, 8);

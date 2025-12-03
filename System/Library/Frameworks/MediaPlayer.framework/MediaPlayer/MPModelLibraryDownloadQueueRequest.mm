@@ -1,20 +1,20 @@
 @interface MPModelLibraryDownloadQueueRequest
-- (id)newOperationWithResponseHandler:(id)a3;
+- (id)newOperationWithResponseHandler:(id)handler;
 @end
 
 @implementation MPModelLibraryDownloadQueueRequest
 
-- (id)newOperationWithResponseHandler:(id)a3
+- (id)newOperationWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x1E696AAE0];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __70__MPModelLibraryDownloadQueueRequest_newOperationWithResponseHandler___block_invoke;
   v9[3] = &unk_1E76824C8;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = handlerCopy;
+  v6 = handlerCopy;
   v7 = [v5 blockOperationWithBlock:v9];
 
   return v7;

@@ -1,24 +1,24 @@
 @interface CDDaemonPurgeableResultCache
 + (id)defaultPath;
-+ (id)pathForVersion:(unint64_t)a3;
++ (id)pathForVersion:(unint64_t)version;
 + (id)sharedPurgeableResultsCache;
-- (CDDaemonPurgeableResultCache)initWithPath:(id)a3;
-- (id)copyInvalidServicesForVolume:(id)a3 atUrgency:(id)a4;
+- (CDDaemonPurgeableResultCache)initWithPath:(id)path;
+- (id)copyInvalidServicesForVolume:(id)volume atUrgency:(id)urgency;
 - (id)copyPushingServices;
-- (id)emitRecentInfo:(id)a3;
-- (void)addInvalidVolume:(id)a3;
-- (void)deductPurgeableAmount:(id)a3 serviceID:(id)a4 volume:(id)a5 urgency:(int)a6;
-- (void)forgetPushingService:(id)a3;
-- (void)invalidateRecentResultsForVolume:(id)a3;
-- (void)keepUpToDate:(id)a3;
-- (void)prunePreserving:(id)a3;
-- (void)removeServiceInfo:(id)a3;
-- (void)save:(id)a3;
-- (void)setUpdateBlock:(id)a3;
-- (void)setUpdateNotificationBlock:(id)a3;
+- (id)emitRecentInfo:(id)info;
+- (void)addInvalidVolume:(id)volume;
+- (void)deductPurgeableAmount:(id)amount serviceID:(id)d volume:(id)volume urgency:(int)urgency;
+- (void)forgetPushingService:(id)service;
+- (void)invalidateRecentResultsForVolume:(id)volume;
+- (void)keepUpToDate:(id)date;
+- (void)prunePreserving:(id)preserving;
+- (void)removeServiceInfo:(id)info;
+- (void)save:(id)save;
+- (void)setUpdateBlock:(id)block;
+- (void)setUpdateNotificationBlock:(id)block;
 - (void)updateInvalidVolumes;
-- (void)updateRecentInfoForServiceID:(id)a3 volume:(id)a4 info:(id)a5;
-- (void)updateRecentStateforVolume:(id)a3;
+- (void)updateRecentInfoForServiceID:(id)d volume:(id)volume info:(id)info;
+- (void)updateRecentStateforVolume:(id)volume;
 @end
 
 @implementation CDDaemonPurgeableResultCache
@@ -31,13 +31,13 @@ void __52__CDDaemonPurgeableResultCache_updateInvalidVolumes__block_invoke(uint6
 
 - (void)updateInvalidVolumes
 {
-  v3 = [(CDDaemonPurgeableResultCache *)self queue];
+  queue = [(CDDaemonPurgeableResultCache *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __52__CDDaemonPurgeableResultCache_updateInvalidVolumes__block_invoke;
   block[3] = &unk_100060D58;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(queue, block);
 }
 
 - (id)copyPushingServices
@@ -48,14 +48,14 @@ void __52__CDDaemonPurgeableResultCache_updateInvalidVolumes__block_invoke(uint6
   v10 = __Block_byref_object_copy__1;
   v11 = __Block_byref_object_dispose__1;
   v12 = 0;
-  v3 = [(CDDaemonPurgeableResultCache *)self queue];
+  queue = [(CDDaemonPurgeableResultCache *)self queue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __51__CDDaemonPurgeableResultCache_copyPushingServices__block_invoke;
   v6[3] = &unk_100060DD0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -72,19 +72,19 @@ void __51__CDDaemonPurgeableResultCache_copyPushingServices__block_invoke(uint64
   *(v3 + 40) = v2;
 }
 
-+ (id)pathForVersion:(unint64_t)a3
++ (id)pathForVersion:(unint64_t)version
 {
-  if (a3 >= 2)
+  if (version >= 2)
   {
-    v3 = [NSString stringWithFormat:@"_v%lu", a3];
+    version = [NSString stringWithFormat:@"_v%lu", version];
   }
 
   else
   {
-    v3 = &stru_100064760;
+    version = &stru_100064760;
   }
 
-  v4 = [NSString localizedStringWithFormat:@"%@%@", @"CacheDeleteDaemonRecentInfo", v3];
+  v4 = [NSString localizedStringWithFormat:@"%@%@", @"CacheDeleteDaemonRecentInfo", version];
 
   return v4;
 }
@@ -92,7 +92,7 @@ void __51__CDDaemonPurgeableResultCache_copyPushingServices__block_invoke(uint64
 + (id)defaultPath
 {
   v3 = cdCachesPath();
-  v4 = [a1 pathForVersion:2];
+  v4 = [self pathForVersion:2];
   v5 = [v3 stringByAppendingPathComponent:v4];
 
   return v5;
@@ -119,9 +119,9 @@ void __59__CDDaemonPurgeableResultCache_sharedPurgeableResultsCache__block_invok
   _MergedGlobals_1 = v2;
 }
 
-- (CDDaemonPurgeableResultCache)initWithPath:(id)a3
+- (CDDaemonPurgeableResultCache)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v56.receiver = self;
   v56.super_class = CDDaemonPurgeableResultCache;
   v5 = [(CDDaemonPurgeableResultCache *)&v56 init];
@@ -131,27 +131,27 @@ void __59__CDDaemonPurgeableResultCache_sharedPurgeableResultsCache__block_invok
     goto LABEL_31;
   }
 
-  [(CDDaemonPurgeableResultCache *)v5 setPath:v4];
-  v7 = [(CDDaemonPurgeableResultCache *)v6 path];
+  [(CDDaemonPurgeableResultCache *)v5 setPath:pathCopy];
+  path = [(CDDaemonPurgeableResultCache *)v6 path];
 
-  if (!v7)
+  if (!path)
   {
     v9 = 0;
     v53 = 0;
     goto LABEL_21;
   }
 
-  v8 = [(CDDaemonPurgeableResultCache *)v6 path];
+  path2 = [(CDDaemonPurgeableResultCache *)v6 path];
   v55 = 0;
-  v53 = [NSData dataWithContentsOfFile:v8 options:1 error:&v55];
+  v53 = [NSData dataWithContentsOfFile:path2 options:1 error:&v55];
   v9 = v55;
 
   if (!v53 || v9)
   {
 LABEL_21:
-    v29 = [(__CFString *)v9 domain];
-    v30 = v29;
-    if (v29 == NSPOSIXErrorDomain)
+    domain = [(__CFString *)v9 domain];
+    v30 = domain;
+    if (domain == NSPOSIXErrorDomain)
     {
       v31 = [(__CFString *)v9 code]== 2;
 
@@ -170,7 +170,7 @@ LABEL_21:
     {
       v43 = [(__CFString *)v9 description];
       *buf = 138412546;
-      v58 = v4;
+      v58 = pathCopy;
       v59 = 2112;
       v60 = v43;
       _os_log_error_impl(&_mh_execute_header, v32, OS_LOG_TYPE_ERROR, "Unable to make data from %@ : %@", buf, 0x16u);
@@ -192,8 +192,8 @@ LABEL_21:
   v9 = v54;
   [(CDDaemonPurgeableResultCache *)v6 setRecentPurgeableResults:v17];
 
-  v18 = [(CDDaemonPurgeableResultCache *)v6 recentPurgeableResults];
-  if (v18)
+  recentPurgeableResults = [(CDDaemonPurgeableResultCache *)v6 recentPurgeableResults];
+  if (recentPurgeableResults)
   {
     v19 = v9 == 0;
   }
@@ -222,14 +222,14 @@ LABEL_21:
     }
   }
 
-  v22 = [(CDDaemonPurgeableResultCache *)v6 recentPurgeableResults];
+  recentPurgeableResults2 = [(CDDaemonPurgeableResultCache *)v6 recentPurgeableResults];
 
-  if (!v22)
+  if (!recentPurgeableResults2)
   {
     goto LABEL_28;
   }
 
-  v23 = [(CDDaemonPurgeableResultCache *)v6 recentPurgeableResults];
+  recentPurgeableResults3 = [(CDDaemonPurgeableResultCache *)v6 recentPurgeableResults];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -238,7 +238,7 @@ LABEL_21:
     v28 = CDGetLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      v45 = [(CDDaemonPurgeableResultCache *)v6 recentPurgeableResults];
+      recentPurgeableResults4 = [(CDDaemonPurgeableResultCache *)v6 recentPurgeableResults];
       v46 = objc_opt_class();
       *buf = 138412290;
       v58 = v46;
@@ -249,24 +249,24 @@ LABEL_21:
     goto LABEL_19;
   }
 
-  v25 = [(CDDaemonPurgeableResultCache *)v6 recentPurgeableResults];
-  v26 = [v25 version];
-  v27 = [v26 isEqualToNumber:&off_1000655F0];
+  recentPurgeableResults5 = [(CDDaemonPurgeableResultCache *)v6 recentPurgeableResults];
+  version = [recentPurgeableResults5 version];
+  v27 = [version isEqualToNumber:&off_1000655F0];
 
   if ((v27 & 1) == 0)
   {
     v28 = CDGetLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
-      v48 = [(CDDaemonPurgeableResultCache *)v6 recentPurgeableResults];
+      recentPurgeableResults6 = [(CDDaemonPurgeableResultCache *)v6 recentPurgeableResults];
       v49 = objc_opt_class();
       v50 = NSStringFromClass(v49);
-      v51 = [(CDDaemonPurgeableResultCache *)v6 recentPurgeableResults];
-      v52 = [v51 version];
+      recentPurgeableResults7 = [(CDDaemonPurgeableResultCache *)v6 recentPurgeableResults];
+      version2 = [recentPurgeableResults7 version];
       *buf = 138412802;
       v58 = v50;
       v59 = 2112;
-      v60 = v52;
+      v60 = version2;
       v61 = 1024;
       v62 = 2;
       _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "unarchived version of %@ (%@) is incompatible with current version (%d)", buf, 0x1Cu);
@@ -276,13 +276,13 @@ LABEL_19:
 
     [(CDDaemonPurgeableResultCache *)v6 setRecentPurgeableResults:0];
 LABEL_27:
-    v33 = v4;
-    unlink([(__CFString *)v4 fileSystemRepresentation]);
+    v33 = pathCopy;
+    unlink([(__CFString *)pathCopy fileSystemRepresentation]);
   }
 
 LABEL_28:
-  v34 = [(CDDaemonPurgeableResultCache *)v6 recentPurgeableResults];
-  v35 = v34 == 0;
+  recentPurgeableResults8 = [(CDDaemonPurgeableResultCache *)v6 recentPurgeableResults];
+  v35 = recentPurgeableResults8 == 0;
 
   if (v35)
   {
@@ -302,21 +302,21 @@ LABEL_31:
   return v6;
 }
 
-- (void)save:(id)a3
+- (void)save:(id)save
 {
-  v4 = a3;
+  saveCopy = save;
   v5 = os_transaction_create();
-  v6 = [(CDDaemonPurgeableResultCache *)self queue];
+  queue = [(CDDaemonPurgeableResultCache *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __37__CDDaemonPurgeableResultCache_save___block_invoke;
   block[3] = &unk_100061230;
   v10 = v5;
-  v11 = self;
-  v12 = v4;
-  v7 = v4;
+  selfCopy = self;
+  v12 = saveCopy;
+  v7 = saveCopy;
   v8 = v5;
-  dispatch_async(v6, block);
+  dispatch_async(queue, block);
 }
 
 void __37__CDDaemonPurgeableResultCache_save___block_invoke(uint64_t a1)
@@ -370,9 +370,9 @@ void __37__CDDaemonPurgeableResultCache_save___block_invoke(uint64_t a1)
   }
 }
 
-- (id)emitRecentInfo:(id)a3
+- (id)emitRecentInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -383,19 +383,19 @@ void __37__CDDaemonPurgeableResultCache_save___block_invoke(uint64_t a1)
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v4;
+    v19 = infoCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "emitRecentInfo ENTRY, info: %@", buf, 0xCu);
   }
 
-  [(CDDaemonPurgeableResultCache *)self keepUpToDate:v4];
-  v6 = [(CDDaemonPurgeableResultCache *)self queue];
+  [(CDDaemonPurgeableResultCache *)self keepUpToDate:infoCopy];
+  queue = [(CDDaemonPurgeableResultCache *)self queue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __47__CDDaemonPurgeableResultCache_emitRecentInfo___block_invoke;
   v11[3] = &unk_100060DD0;
   v11[4] = self;
   v11[5] = &v12;
-  dispatch_sync(v6, v11);
+  dispatch_sync(queue, v11);
 
   v7 = CDGetLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -422,18 +422,18 @@ void __47__CDDaemonPurgeableResultCache_emitRecentInfo___block_invoke(uint64_t a
   *(v4 + 40) = v3;
 }
 
-- (void)addInvalidVolume:(id)a3
+- (void)addInvalidVolume:(id)volume
 {
-  v4 = a3;
-  v5 = [(CDDaemonPurgeableResultCache *)self queue];
+  volumeCopy = volume;
+  queue = [(CDDaemonPurgeableResultCache *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __49__CDDaemonPurgeableResultCache_addInvalidVolume___block_invoke;
   v7[3] = &unk_100060B40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = volumeCopy;
+  v6 = volumeCopy;
+  dispatch_sync(queue, v7);
 }
 
 void __49__CDDaemonPurgeableResultCache_addInvalidVolume___block_invoke(uint64_t a1)
@@ -442,24 +442,24 @@ void __49__CDDaemonPurgeableResultCache_addInvalidVolume___block_invoke(uint64_t
   [v2 addInvalidVolume:*(a1 + 40)];
 }
 
-- (void)updateRecentInfoForServiceID:(id)a3 volume:(id)a4 info:(id)a5
+- (void)updateRecentInfoForServiceID:(id)d volume:(id)volume info:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CDDaemonPurgeableResultCache *)self queue];
+  dCopy = d;
+  volumeCopy = volume;
+  infoCopy = info;
+  queue = [(CDDaemonPurgeableResultCache *)self queue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = __73__CDDaemonPurgeableResultCache_updateRecentInfoForServiceID_volume_info___block_invoke;
   v15[3] = &unk_1000617E8;
-  v16 = v10;
-  v17 = v9;
-  v18 = self;
-  v19 = v8;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
-  dispatch_async(v11, v15);
+  v16 = infoCopy;
+  v17 = volumeCopy;
+  selfCopy = self;
+  v19 = dCopy;
+  v12 = dCopy;
+  v13 = volumeCopy;
+  v14 = infoCopy;
+  dispatch_async(queue, v15);
 }
 
 void __73__CDDaemonPurgeableResultCache_updateRecentInfoForServiceID_volume_info___block_invoke(uint64_t a1)
@@ -813,25 +813,25 @@ void __73__CDDaemonPurgeableResultCache_updateRecentInfoForServiceID_volume_info
   _objc_release_x1();
 }
 
-- (void)deductPurgeableAmount:(id)a3 serviceID:(id)a4 volume:(id)a5 urgency:(int)a6
+- (void)deductPurgeableAmount:(id)amount serviceID:(id)d volume:(id)volume urgency:(int)urgency
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(CDDaemonPurgeableResultCache *)self queue];
+  amountCopy = amount;
+  dCopy = d;
+  volumeCopy = volume;
+  queue = [(CDDaemonPurgeableResultCache *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __79__CDDaemonPurgeableResultCache_deductPurgeableAmount_serviceID_volume_urgency___block_invoke;
   block[3] = &unk_100061810;
   block[4] = self;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
-  v21 = a6;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
-  dispatch_async(v13, block);
+  v18 = amountCopy;
+  v19 = dCopy;
+  v20 = volumeCopy;
+  urgencyCopy = urgency;
+  v14 = volumeCopy;
+  v15 = dCopy;
+  v16 = amountCopy;
+  dispatch_async(queue, block);
 }
 
 void __79__CDDaemonPurgeableResultCache_deductPurgeableAmount_serviceID_volume_urgency___block_invoke(uint64_t a1)
@@ -845,18 +845,18 @@ void __79__CDDaemonPurgeableResultCache_deductPurgeableAmount_serviceID_volume_u
   [v6 updateServiceInfoAmount:v2 forService:v3 onVolume:v4 atUrgency:v5 withTimestamp:0 nonPurgeableAmount:1 deductFromCurrentAmount:0 info:?];
 }
 
-- (void)removeServiceInfo:(id)a3
+- (void)removeServiceInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(CDDaemonPurgeableResultCache *)self queue];
+  infoCopy = info;
+  queue = [(CDDaemonPurgeableResultCache *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __50__CDDaemonPurgeableResultCache_removeServiceInfo___block_invoke;
   v7[3] = &unk_100060B40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = infoCopy;
+  v6 = infoCopy;
+  dispatch_async(queue, v7);
 }
 
 void __50__CDDaemonPurgeableResultCache_removeServiceInfo___block_invoke(uint64_t a1)
@@ -873,22 +873,22 @@ void __50__CDDaemonPurgeableResultCache_removeServiceInfo___block_invoke(uint64_
   }
 }
 
-- (void)updateRecentStateforVolume:(id)a3
+- (void)updateRecentStateforVolume:(id)volume
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  volumeCopy = volume;
+  v5 = volumeCopy;
+  if (volumeCopy)
   {
-    v6 = [v4 state];
-    v7 = [(CDDaemonPurgeableResultCache *)self queue];
+    state = [volumeCopy state];
+    queue = [(CDDaemonPurgeableResultCache *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __59__CDDaemonPurgeableResultCache_updateRecentStateforVolume___block_invoke;
     block[3] = &unk_100061050;
     v9 = v5;
-    v10 = self;
-    v11 = v6;
-    dispatch_sync(v7, block);
+    selfCopy = self;
+    v11 = state;
+    dispatch_sync(queue, block);
   }
 }
 
@@ -920,18 +920,18 @@ void __59__CDDaemonPurgeableResultCache_updateRecentStateforVolume___block_invok
   }
 }
 
-- (void)prunePreserving:(id)a3
+- (void)prunePreserving:(id)preserving
 {
-  v4 = a3;
-  v5 = [(CDDaemonPurgeableResultCache *)self queue];
+  preservingCopy = preserving;
+  queue = [(CDDaemonPurgeableResultCache *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __48__CDDaemonPurgeableResultCache_prunePreserving___block_invoke;
   v7[3] = &unk_100060B40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = preservingCopy;
+  v6 = preservingCopy;
+  dispatch_async(queue, v7);
 }
 
 void __48__CDDaemonPurgeableResultCache_prunePreserving___block_invoke(uint64_t a1)
@@ -948,18 +948,18 @@ void __48__CDDaemonPurgeableResultCache_prunePreserving___block_invoke(uint64_t 
   }
 }
 
-- (void)forgetPushingService:(id)a3
+- (void)forgetPushingService:(id)service
 {
-  v4 = a3;
-  v5 = [(CDDaemonPurgeableResultCache *)self queue];
+  serviceCopy = service;
+  queue = [(CDDaemonPurgeableResultCache *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __53__CDDaemonPurgeableResultCache_forgetPushingService___block_invoke;
   v7[3] = &unk_100060B40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = serviceCopy;
+  v6 = serviceCopy;
+  dispatch_async(queue, v7);
 }
 
 void __53__CDDaemonPurgeableResultCache_forgetPushingService___block_invoke(uint64_t a1)
@@ -969,18 +969,18 @@ void __53__CDDaemonPurgeableResultCache_forgetPushingService___block_invoke(uint
   [v2 removeObject:*(a1 + 40)];
 }
 
-- (void)invalidateRecentResultsForVolume:(id)a3
+- (void)invalidateRecentResultsForVolume:(id)volume
 {
-  v4 = a3;
-  v5 = [(CDDaemonPurgeableResultCache *)self queue];
+  volumeCopy = volume;
+  queue = [(CDDaemonPurgeableResultCache *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __65__CDDaemonPurgeableResultCache_invalidateRecentResultsForVolume___block_invoke;
   v7[3] = &unk_100060B40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = volumeCopy;
+  v6 = volumeCopy;
+  dispatch_async(queue, v7);
 }
 
 void __65__CDDaemonPurgeableResultCache_invalidateRecentResultsForVolume___block_invoke(uint64_t a1)
@@ -990,28 +990,28 @@ void __65__CDDaemonPurgeableResultCache_invalidateRecentResultsForVolume___block
   [v3 invalidateForVolume:v2];
 }
 
-- (id)copyInvalidServicesForVolume:(id)a3 atUrgency:(id)a4
+- (id)copyInvalidServicesForVolume:(id)volume atUrgency:(id)urgency
 {
-  v6 = a3;
-  v7 = a4;
+  volumeCopy = volume;
+  urgencyCopy = urgency;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__1;
   v21 = __Block_byref_object_dispose__1;
   v22 = 0;
-  v8 = [(CDDaemonPurgeableResultCache *)self queue];
+  queue = [(CDDaemonPurgeableResultCache *)self queue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __71__CDDaemonPurgeableResultCache_copyInvalidServicesForVolume_atUrgency___block_invoke;
   v13[3] = &unk_100061838;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = volumeCopy;
+  v15 = urgencyCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, v13);
+  v9 = urgencyCopy;
+  v10 = volumeCopy;
+  dispatch_sync(queue, v13);
 
   v11 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -1029,52 +1029,52 @@ void __71__CDDaemonPurgeableResultCache_copyInvalidServicesForVolume_atUrgency__
   *(v4 + 40) = v3;
 }
 
-- (void)setUpdateNotificationBlock:(id)a3
+- (void)setUpdateNotificationBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CDDaemonPurgeableResultCache *)self queue];
+  blockCopy = block;
+  queue = [(CDDaemonPurgeableResultCache *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __59__CDDaemonPurgeableResultCache_setUpdateNotificationBlock___block_invoke;
   v7[3] = &unk_1000612A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)setUpdateBlock:(id)a3
+- (void)setUpdateBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CDDaemonPurgeableResultCache *)self queue];
+  blockCopy = block;
+  queue = [(CDDaemonPurgeableResultCache *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __47__CDDaemonPurgeableResultCache_setUpdateBlock___block_invoke;
   v7[3] = &unk_1000612A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)keepUpToDate:(id)a3
+- (void)keepUpToDate:(id)date
 {
-  v4 = a3;
-  v5 = [(CDDaemonPurgeableResultCache *)self updatedBlock];
+  dateCopy = date;
+  updatedBlock = [(CDDaemonPurgeableResultCache *)self updatedBlock];
 
-  if (v5)
+  if (updatedBlock)
   {
-    v6 = [(CDDaemonPurgeableResultCache *)self updatedBlock];
-    (*(v6 + 16))(v6, v4);
+    updatedBlock2 = [(CDDaemonPurgeableResultCache *)self updatedBlock];
+    (*(updatedBlock2 + 16))(updatedBlock2, dateCopy);
   }
 
   else
   {
-    v6 = CDGetLogHandle();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    updatedBlock2 = CDGetLogHandle();
+    if (os_log_type_enabled(updatedBlock2, OS_LOG_TYPE_ERROR))
     {
       *v7 = 0;
-      _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "keepUpToDate: no updateBlock.", v7, 2u);
+      _os_log_error_impl(&_mh_execute_header, updatedBlock2, OS_LOG_TYPE_ERROR, "keepUpToDate: no updateBlock.", v7, 2u);
     }
   }
 }

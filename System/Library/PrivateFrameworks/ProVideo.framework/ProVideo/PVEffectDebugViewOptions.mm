@@ -1,16 +1,16 @@
 @interface PVEffectDebugViewOptions
 + (NSArray)persistedProperties;
-+ (PVEffectDebugViewOptions)optionsWithDictionary:(id)a3;
-+ (PVEffectDebugViewOptions)optionsWithDictionary:(id)a3 propertyToKeyMap:(id)a4;
-+ (PVEffectDebugViewOptions)optionsWithUserDefaults:(id)a3 propertyToKeyMap:(id)a4;
++ (PVEffectDebugViewOptions)optionsWithDictionary:(id)dictionary;
++ (PVEffectDebugViewOptions)optionsWithDictionary:(id)dictionary propertyToKeyMap:(id)map;
++ (PVEffectDebugViewOptions)optionsWithUserDefaults:(id)defaults propertyToKeyMap:(id)map;
 + (id)keyPathsForValuesAffectingAnyPersistedPropertyChanged;
 + (id)options;
 + (id)propertyToDefaultKeyMap;
-+ (id)remapKeysToPropertyKeys:(id)a3 propertyToKeyMap:(id)a4;
++ (id)remapKeysToPropertyKeys:(id)keys propertyToKeyMap:(id)map;
 - (PVEffectDebugViewOptions)init;
 - (id)description;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation PVEffectDebugViewOptions
@@ -32,39 +32,39 @@
 
 + (id)options
 {
-  v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v4 = [a1 propertyToDefaultKeyMap];
-  v5 = [a1 optionsWithUserDefaults:v3 propertyToKeyMap:v4];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  propertyToDefaultKeyMap = [self propertyToDefaultKeyMap];
+  v5 = [self optionsWithUserDefaults:standardUserDefaults propertyToKeyMap:propertyToDefaultKeyMap];
 
   return v5;
 }
 
-+ (PVEffectDebugViewOptions)optionsWithUserDefaults:(id)a3 propertyToKeyMap:(id)a4
++ (PVEffectDebugViewOptions)optionsWithUserDefaults:(id)defaults propertyToKeyMap:(id)map
 {
-  v6 = a4;
-  v7 = [a3 dictionaryRepresentation];
-  v8 = [a1 optionsWithDictionary:v7 propertyToKeyMap:v6];
+  mapCopy = map;
+  dictionaryRepresentation = [defaults dictionaryRepresentation];
+  v8 = [self optionsWithDictionary:dictionaryRepresentation propertyToKeyMap:mapCopy];
 
   return v8;
 }
 
-+ (id)remapKeysToPropertyKeys:(id)a3 propertyToKeyMap:(id)a4
++ (id)remapKeysToPropertyKeys:(id)keys propertyToKeyMap:(id)map
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v6, "count")}];
-  v9 = [a1 persistedProperties];
+  keysCopy = keys;
+  mapCopy = map;
+  v8 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(keysCopy, "count")}];
+  persistedProperties = [self persistedProperties];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = *"";
   v16[2] = __69__PVEffectDebugViewOptions_remapKeysToPropertyKeys_propertyToKeyMap___block_invoke;
   v16[3] = &unk_279AA7E08;
-  v17 = v7;
+  v17 = mapCopy;
   v10 = v8;
   v18 = v10;
-  v19 = v6;
-  v11 = v6;
-  v12 = v7;
-  [v9 enumerateObjectsUsingBlock:v16];
+  v19 = keysCopy;
+  v11 = keysCopy;
+  v12 = mapCopy;
+  [persistedProperties enumerateObjectsUsingBlock:v16];
 
   v13 = v19;
   v14 = v10;
@@ -85,27 +85,27 @@ void __69__PVEffectDebugViewOptions_remapKeysToPropertyKeys_propertyToKeyMap___b
   [a1[5] setObject:v4 forKeyedSubscript:v5];
 }
 
-+ (PVEffectDebugViewOptions)optionsWithDictionary:(id)a3
++ (PVEffectDebugViewOptions)optionsWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [a1 propertyToDefaultKeyMap];
-  v6 = [a1 optionsWithDictionary:v4 propertyToKeyMap:v5];
+  dictionaryCopy = dictionary;
+  propertyToDefaultKeyMap = [self propertyToDefaultKeyMap];
+  v6 = [self optionsWithDictionary:dictionaryCopy propertyToKeyMap:propertyToDefaultKeyMap];
 
   return v6;
 }
 
-+ (PVEffectDebugViewOptions)optionsWithDictionary:(id)a3 propertyToKeyMap:(id)a4
++ (PVEffectDebugViewOptions)optionsWithDictionary:(id)dictionary propertyToKeyMap:(id)map
 {
-  v5 = a4;
-  v6 = a3;
+  mapCopy = map;
+  dictionaryCopy = dictionary;
   v7 = objc_opt_new();
-  [v7 setPropertyToKeyMap:v5];
-  v8 = [v7 saveToUserDefaultsOnUpdate];
+  [v7 setPropertyToKeyMap:mapCopy];
+  saveToUserDefaultsOnUpdate = [v7 saveToUserDefaultsOnUpdate];
   [v7 setSaveToUserDefaultsOnUpdate:0];
-  v9 = [PVEffectDebugViewOptions remapKeysToPropertyKeys:v6 propertyToKeyMap:v5];
+  v9 = [PVEffectDebugViewOptions remapKeysToPropertyKeys:dictionaryCopy propertyToKeyMap:mapCopy];
 
   [v7 setValuesForKeysWithDictionary:v9];
-  [v7 setSaveToUserDefaultsOnUpdate:v8];
+  [v7 setSaveToUserDefaultsOnUpdate:saveToUserDefaultsOnUpdate];
 
   return v7;
 }
@@ -127,49 +127,49 @@ void __69__PVEffectDebugViewOptions_remapKeysToPropertyKeys_propertyToKeyMap___b
     v26 = v4;
     [v3 enumerateObjectsUsingBlock:&v22];
 
-    v5 = [MEMORY[0x277D75348] magentaColor];
-    [(PVEffectDebugViewOptions *)v4 setDocumentBoundingBoxColor:v5];
+    magentaColor = [MEMORY[0x277D75348] magentaColor];
+    [(PVEffectDebugViewOptions *)v4 setDocumentBoundingBoxColor:magentaColor];
 
-    v6 = [MEMORY[0x277D75348] yellowColor];
-    [(PVEffectDebugViewOptions *)v4 setOutputROIColor:v6];
+    yellowColor = [MEMORY[0x277D75348] yellowColor];
+    [(PVEffectDebugViewOptions *)v4 setOutputROIColor:yellowColor];
 
-    v7 = [MEMORY[0x277D75348] cyanColor];
-    [(PVEffectDebugViewOptions *)v4 setObjectAlignedBoundingBoxColor:v7];
+    cyanColor = [MEMORY[0x277D75348] cyanColor];
+    [(PVEffectDebugViewOptions *)v4 setObjectAlignedBoundingBoxColor:cyanColor];
 
-    v8 = [MEMORY[0x277D75348] greenColor];
-    v31[0] = v8;
+    greenColor = [MEMORY[0x277D75348] greenColor];
+    v31[0] = greenColor;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:1];
     [(PVEffectDebugViewOptions *)v4 setTextBoundingBoxColors:v9];
 
-    v10 = [MEMORY[0x277D75348] orangeColor];
-    [(PVEffectDebugViewOptions *)v4 setHitAreaShapeColor:v10];
+    orangeColor = [MEMORY[0x277D75348] orangeColor];
+    [(PVEffectDebugViewOptions *)v4 setHitAreaShapeColor:orangeColor];
 
-    v11 = [MEMORY[0x277D75348] cyanColor];
-    [(PVEffectDebugViewOptions *)v4 setMidpointColor:v11];
+    cyanColor2 = [MEMORY[0x277D75348] cyanColor];
+    [(PVEffectDebugViewOptions *)v4 setMidpointColor:cyanColor2];
 
-    v12 = [MEMORY[0x277D75348] lightGrayColor];
-    [(PVEffectDebugViewOptions *)v4 setOriginColor:v12];
+    lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+    [(PVEffectDebugViewOptions *)v4 setOriginColor:lightGrayColor];
 
-    v13 = [MEMORY[0x277D75348] blueColor];
-    v14 = [MEMORY[0x277D75348] redColor];
-    v30[0] = v14;
-    v30[1] = v13;
-    v30[2] = v13;
-    v30[3] = v13;
+    blueColor = [MEMORY[0x277D75348] blueColor];
+    redColor = [MEMORY[0x277D75348] redColor];
+    v30[0] = redColor;
+    v30[1] = blueColor;
+    v30[2] = blueColor;
+    v30[3] = blueColor;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:4];
     [(PVEffectDebugViewOptions *)v4 setCornerPointColors:v15];
 
     v16 = [MEMORY[0x277D75348] colorWithRed:0.215686275 green:0.431372549 blue:0.0 alpha:1.0];
-    v17 = [MEMORY[0x277D75348] redColor];
-    v29[0] = v17;
+    redColor2 = [MEMORY[0x277D75348] redColor];
+    v29[0] = redColor2;
     v29[1] = v16;
     v29[2] = v16;
     v29[3] = v16;
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:4];
     [(PVEffectDebugViewOptions *)v4 setTextCornerPointColors:v18];
 
-    v19 = [MEMORY[0x277D75348] yellowColor];
-    v28 = v19;
+    yellowColor2 = [MEMORY[0x277D75348] yellowColor];
+    v28 = yellowColor2;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
     [(PVEffectDebugViewOptions *)v4 setHitAreaPointColors:v20];
 
@@ -187,13 +187,13 @@ void __32__PVEffectDebugViewOptions_init__block_invoke(uint64_t a1, void *a2)
   [*(a1 + 32) addObserver:*(a1 + 32) forKeyPath:v4 options:1 context:0];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a5;
+  changeCopy = change;
   if (self->_saveToUserDefaultsOnUpdate)
   {
-    v16 = v8;
-    v9 = [(NSDictionary *)self->_propertyToKeyMap objectForKeyedSubscript:a3];
+    v16 = changeCopy;
+    v9 = [(NSDictionary *)self->_propertyToKeyMap objectForKeyedSubscript:path];
     if (v9)
     {
       v10 = *MEMORY[0x277CCA2F0];
@@ -204,14 +204,14 @@ void __32__PVEffectDebugViewOptions_init__block_invoke(uint64_t a1, void *a2)
       if (isKindOfClass)
       {
         v13 = [v16 objectForKeyedSubscript:v10];
-        v14 = [v13 BOOLValue];
+        bOOLValue = [v13 BOOLValue];
 
-        v15 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-        [v15 setBool:v14 forKey:v9];
+        standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+        [standardUserDefaults setBool:bOOLValue forKey:v9];
       }
     }
 
-    v8 = v16;
+    changeCopy = v16;
   }
 }
 
@@ -268,8 +268,8 @@ void __51__PVEffectDebugViewOptions_propertyToDefaultKeyMap__block_invoke()
 + (id)keyPathsForValuesAffectingAnyPersistedPropertyChanged
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [a1 persistedProperties];
-  v4 = [v2 setWithArray:v3];
+  persistedProperties = [self persistedProperties];
+  v4 = [v2 setWithArray:persistedProperties];
 
   return v4;
 }
@@ -306,7 +306,7 @@ void __51__PVEffectDebugViewOptions_propertyToDefaultKeyMap__block_invoke()
   v17 = v20;
   v11 = v6;
   v15 = v11;
-  v16 = self;
+  selfCopy = self;
   v18 = v8 - 1;
   [v10 enumerateObjectsUsingBlock:v14];
 

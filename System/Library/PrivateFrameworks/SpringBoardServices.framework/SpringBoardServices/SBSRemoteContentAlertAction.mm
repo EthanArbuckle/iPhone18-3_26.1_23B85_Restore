@@ -1,72 +1,72 @@
 @interface SBSRemoteContentAlertAction
-- (BOOL)isEqual:(id)a3;
-- (SBSRemoteContentAlertAction)initWithCoder:(id)a3;
-- (SBSRemoteContentAlertAction)initWithTitle:(id)a3 style:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (SBSRemoteContentAlertAction)initWithCoder:(id)coder;
+- (SBSRemoteContentAlertAction)initWithTitle:(id)title style:(int64_t)style;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBSRemoteContentAlertAction
 
-- (SBSRemoteContentAlertAction)initWithCoder:(id)a3
+- (SBSRemoteContentAlertAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = SBSRemoteContentAlertAction;
   v5 = [(SBSRemoteContentAlertAction *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v5->_style = [v4 decodeIntegerForKey:@"style"];
-    v5->_enabled = [v4 decodeBoolForKey:@"enabled"];
+    v5->_style = [coderCopy decodeIntegerForKey:@"style"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"enabled"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeInteger:self->_style forKey:@"style"];
-  [v5 encodeBool:self->_enabled forKey:@"enabled"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeInteger:self->_style forKey:@"style"];
+  [coderCopy encodeBool:self->_enabled forKey:@"enabled"];
 }
 
-- (SBSRemoteContentAlertAction)initWithTitle:(id)a3 style:(int64_t)a4
+- (SBSRemoteContentAlertAction)initWithTitle:(id)title style:(int64_t)style
 {
-  v6 = a3;
+  titleCopy = title;
   v11.receiver = self;
   v11.super_class = SBSRemoteContentAlertAction;
   v7 = [(SBSRemoteContentAlertAction *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [titleCopy copy];
     title = v7->_title;
     v7->_title = v8;
 
-    v7->_style = a4;
+    v7->_style = style;
     v7->_enabled = 1;
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 title];
-    if (v6 || self->_title)
+    v5 = equalCopy;
+    title = [v5 title];
+    if (title || self->_title)
     {
-      v7 = [v5 title];
-      v8 = [v7 isEqualToString:self->_title];
+      title2 = [v5 title];
+      v8 = [title2 isEqualToString:self->_title];
     }
 
     else
@@ -74,10 +74,10 @@
       v8 = 1;
     }
 
-    v9 = [v5 style];
+    style = [v5 style];
     style = self->_style;
-    v11 = [v5 isEnabled];
-    if (v9 == style)
+    isEnabled = [v5 isEnabled];
+    if (style == style)
     {
       v12 = v8;
     }
@@ -87,7 +87,7 @@
       v12 = 0;
     }
 
-    if ((v11 & 1) == self->_enabled)
+    if ((isEnabled & 1) == self->_enabled)
     {
       v13 = v12;
     }

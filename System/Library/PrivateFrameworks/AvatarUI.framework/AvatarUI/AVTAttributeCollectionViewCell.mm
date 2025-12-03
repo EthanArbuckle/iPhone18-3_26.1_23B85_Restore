@@ -3,49 +3,49 @@
 - (CGRect)frameForAttributeView;
 - (void)discardContent;
 - (void)prepareForReuse;
-- (void)setAttributeView:(id)a3;
+- (void)setAttributeView:(id)view;
 @end
 
 @implementation AVTAttributeCollectionViewCell
 
 - (AVTAttributeValueView)valueView
 {
-  v3 = [(AVTAttributeCollectionViewCell *)self attributeView];
+  attributeView = [(AVTAttributeCollectionViewCell *)self attributeView];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = [(AVTAttributeCollectionViewCell *)self attributeView];
+    attributeView2 = [(AVTAttributeCollectionViewCell *)self attributeView];
   }
 
   else
   {
-    v5 = 0;
+    attributeView2 = 0;
   }
 
-  return v5;
+  return attributeView2;
 }
 
-- (void)setAttributeView:(id)a3
+- (void)setAttributeView:(id)view
 {
-  v6 = a3;
-  if (self->_attributeView != v6)
+  viewCopy = view;
+  if (self->_attributeView != viewCopy)
   {
-    objc_storeStrong(&self->_attributeView, a3);
+    objc_storeStrong(&self->_attributeView, view);
   }
 
   [(AVTAttributeCollectionViewCell *)self frameForAttributeView];
   [(UIView *)self->_attributeView setFrame:?];
   [(UIView *)self->_attributeView setAutoresizingMask:18];
-  v5 = [(AVTAttributeCollectionViewCell *)self contentView];
-  [v5 addSubview:self->_attributeView];
+  contentView = [(AVTAttributeCollectionViewCell *)self contentView];
+  [contentView addSubview:self->_attributeView];
 }
 
 - (CGRect)frameForAttributeView
 {
-  v2 = [(AVTAttributeCollectionViewCell *)self contentView];
-  [v2 bounds];
+  contentView = [(AVTAttributeCollectionViewCell *)self contentView];
+  [contentView bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -64,14 +64,14 @@
 
 - (void)prepareForReuse
 {
-  v3 = [(AVTAttributeCollectionViewCell *)self attributeView];
-  v4 = [v3 superview];
-  v5 = [(AVTAttributeCollectionViewCell *)self contentView];
+  attributeView = [(AVTAttributeCollectionViewCell *)self attributeView];
+  superview = [attributeView superview];
+  contentView = [(AVTAttributeCollectionViewCell *)self contentView];
 
-  if (v4 == v5)
+  if (superview == contentView)
   {
-    v6 = [(AVTAttributeCollectionViewCell *)self attributeView];
-    [v6 removeFromSuperview];
+    attributeView2 = [(AVTAttributeCollectionViewCell *)self attributeView];
+    [attributeView2 removeFromSuperview];
   }
 
   v7.receiver = self;
@@ -81,8 +81,8 @@
 
 - (void)discardContent
 {
-  v3 = [(AVTAttributeCollectionViewCell *)self valueView];
-  [v3 discardContent];
+  valueView = [(AVTAttributeCollectionViewCell *)self valueView];
+  [valueView discardContent];
 
   discardableContentHandler = self->discardableContentHandler;
   if (discardableContentHandler)

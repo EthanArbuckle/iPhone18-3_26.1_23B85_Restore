@@ -1,37 +1,37 @@
 @interface SMBClientService
-- (void)SMBClientProtocolCredentialsForServer:(id)a3 completionHandler:(id)a4;
-- (void)addSMBServerOrShare:(id)a3 completionHandler:(id)a4;
+- (void)SMBClientProtocolCredentialsForServer:(id)server completionHandler:(id)handler;
+- (void)addSMBServerOrShare:(id)share completionHandler:(id)handler;
 @end
 
 @implementation SMBClientService
 
-- (void)SMBClientProtocolCredentialsForServer:(id)a3 completionHandler:(id)a4
+- (void)SMBClientProtocolCredentialsForServer:(id)server completionHandler:(id)handler
 {
-  v4 = a4;
+  handlerCopy = handler;
   v5 = dispatch_time(0, 1000000);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100001140;
   block[3] = &unk_10008C718;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_after(v5, &_dispatch_main_q, block);
 }
 
-- (void)addSMBServerOrShare:(id)a3 completionHandler:(id)a4
+- (void)addSMBServerOrShare:(id)share completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 scheme];
-  v9 = [v8 isEqualToString:@"smb"];
+  shareCopy = share;
+  handlerCopy = handler;
+  scheme = [shareCopy scheme];
+  v9 = [scheme isEqualToString:@"smb"];
 
   if (v9)
   {
-    v10 = [v6 pathComponents];
-    if ([v10 count] < 2)
+    pathComponents = [shareCopy pathComponents];
+    if ([pathComponents count] < 2)
     {
       *buf = 0;
-      v12 = [srvsvc_subr getSharesAtServerURL:v6 Result:buf];
+      v12 = [srvsvc_subr getSharesAtServerURL:shareCopy Result:buf];
       if (*buf)
       {
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
@@ -40,7 +40,7 @@
         }
 
         v14 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*buf userInfo:0];
-        v7[2](v7, 0, v14);
+        handlerCopy[2](handlerCopy, 0, v14);
 
         goto LABEL_19;
       }
@@ -50,7 +50,7 @@
 
     else
     {
-      v11 = [v10 objectAtIndexedSubscript:1];
+      v11 = [pathComponents objectAtIndexedSubscript:1];
       v27 = v11;
       v12 = [NSArray arrayWithObjects:&v27 count:1];
 
@@ -58,7 +58,7 @@
     }
 
     v20 = 0;
-    v15 = [qword_1000954F0 addShares:v12 atServer:v6 serverDomainName:&v20 service:self];
+    v15 = [qword_1000954F0 addShares:v12 atServer:shareCopy serverDomainName:&v20 service:self];
     v16 = v20;
     v17 = v16;
     if (!v15)
@@ -89,14 +89,14 @@
       _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%s: sharePoint(%@) err: (%@)", buf, 0x20u);
     }
 
-    (v7)[2](v7, v13, v15);
+    (handlerCopy)[2](handlerCopy, v13, v15);
 
 LABEL_19:
     goto LABEL_20;
   }
 
-  v10 = [NSError errorWithDomain:NSCocoaErrorDomain code:262 userInfo:0];
-  v7[2](v7, 0, v10);
+  pathComponents = [NSError errorWithDomain:NSCocoaErrorDomain code:262 userInfo:0];
+  handlerCopy[2](handlerCopy, 0, pathComponents);
 LABEL_20:
 }
 

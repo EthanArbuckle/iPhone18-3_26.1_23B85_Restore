@@ -1,128 +1,128 @@
 @interface SBContinuousExposeHomeGestureSwitcherModifier
-- (BOOL)_isSelectedAppLayoutAtIndex:(unint64_t)a3;
-- (BOOL)_isTranslationPastDistanceThresholdToUnconditionallyGoHome:(double)a3;
+- (BOOL)_isSelectedAppLayoutAtIndex:(unint64_t)index;
+- (BOOL)_isTranslationPastDistanceThresholdToUnconditionallyGoHome:(double)home;
 - (BOOL)_preventPositioningCardsOffscreenForFlatBottomEdgeSwipe;
 - (BOOL)_shouldResignActiveBasedOnCardScale;
 - (BOOL)isContainerStatusBarVisible;
-- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)a3;
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3;
-- (CGPoint)_frameOffsetForTranslation:(CGPoint)a3;
+- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)space;
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space;
+- (CGPoint)_frameOffsetForTranslation:(CGPoint)translation;
 - (CGPoint)_maxPerspectiveAngleForSelectedAppLayout;
 - (CGPoint)_rubberbandedTranslationForAdjacentCards;
 - (CGPoint)_unadjustedGestureTranslation;
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4;
-- (CGPoint)anchorPointForIndex:(unint64_t)a3;
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4;
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout;
+- (CGPoint)anchorPointForIndex:(unint64_t)index;
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment;
 - (CGPoint)liftOffTranslationForGestureEnd;
 - (CGPoint)liftOffVelocityForGestureEnd;
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3;
-- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withPerspectiveAngle:(CGPoint)a5;
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5;
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index;
+- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)role inAppLayout:(id)layout withPerspectiveAngle:(CGPoint)angle;
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds;
 - (NSString)debugDescription;
-- (SBContinuousExposeHomeGestureSwitcherModifier)initWithGestureID:(id)a3 selectedAppLayout:(id)a4 startingEnvironmentMode:(int64_t)a5 multitaskingModifier:(id)a6 scrunchInitiated:(BOOL)a7 continuingGesture:(BOOL)a8 lastGestureWasAnArcSwipe:(BOOL)a9;
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3;
-- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
-- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withCornerRadii:(UIRectCornerRadii)a5;
+- (SBContinuousExposeHomeGestureSwitcherModifier)initWithGestureID:(id)d selectedAppLayout:(id)layout startingEnvironmentMode:(int64_t)mode multitaskingModifier:(id)modifier scrunchInitiated:(BOOL)initiated continuingGesture:(BOOL)gesture lastGestureWasAnArcSwipe:(BOOL)swipe;
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout;
+- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
+- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)role inAppLayout:(id)layout withCornerRadii:(UIRectCornerRadii)radii;
 - (double)_centerYOffsetDuringGesture;
 - (double)_coplanarSpacing;
 - (double)_distanceYToInSwitcherCardScale;
 - (double)_distanceYToMaxTranslation;
-- (double)_gestureProgressToMaxTranslationForTranslation:(double)a3;
+- (double)_gestureProgressToMaxTranslationForTranslation:(double)translation;
 - (double)_inSwitcherCenterYOffsetWhenPresented;
-- (double)_rangeForPerspectiveAngleProgressOfAppLayout:(id)a3 outMin:(double)a4 outMax:(double)a5;
+- (double)_rangeForPerspectiveAngleProgressOfAppLayout:(id)layout outMin:(double)min outMax:(double)max;
 - (double)_scaleForOffscreenAdjacentCardsForFlyIn;
-- (double)_scaleForTranslation:(CGPoint)a3;
+- (double)_scaleForTranslation:(CGPoint)translation;
 - (double)_switcherCardScale;
-- (double)adjustedSpaceAccessoryViewScale:(double)a3 forAppLayout:(id)a4;
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (double)adjustedSpaceAccessoryViewScale:(double)scale forAppLayout:(id)layout;
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (double)homeScreenAlpha;
 - (double)homeScreenBackdropBlurProgress;
 - (double)homeScreenDimmingAlpha;
 - (double)homeScreenScale;
-- (double)lighteningAlphaForIndex:(unint64_t)a3;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForIndex:(unint64_t)a3;
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4;
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3;
+- (double)lighteningAlphaForIndex:(unint64_t)index;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout;
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index;
+- (double)titleAndIconOpacityForIndex:(unint64_t)index;
 - (double)unconditionalDistanceThresholdForHome;
-- (double)wallpaperOverlayAlphaForIndex:(unint64_t)a3;
+- (double)wallpaperOverlayAlphaForIndex:(unint64_t)index;
 - (double)wallpaperScale;
 - (id)_cornerRadiusSettings;
-- (id)_layoutSettingsForAppLayout:(id)a3 layoutSettings:(id)a4;
-- (id)_newDockModifierRequiringVerticalSwipeToTrackDock:(BOOL)a3 startingEnvironmentMode:(int64_t)a4;
+- (id)_layoutSettingsForAppLayout:(id)layout layoutSettings:(id)settings;
+- (id)_newDockModifierRequiringVerticalSwipeToTrackDock:(BOOL)dock startingEnvironmentMode:(int64_t)mode;
 - (id)_nextRecentAppLayout;
 - (id)_previousRecentAppLayout;
-- (id)_responseForActivatingFinalDestination:(int64_t)a3;
-- (id)_responseForActivatingReachabilityIfNeededWithFinalDestination:(int64_t)a3;
-- (id)_responseForCancelingSystemGesturesIfNeededWithFinalDestination:(int64_t)a3;
-- (id)_responseForSBEventGestureBeganWithTimeDelta:(double)a3;
-- (id)_responseForSBEventGestureEndWithEvent:(id)a3 finalDestination:(int64_t)a4;
+- (id)_responseForActivatingFinalDestination:(int64_t)destination;
+- (id)_responseForActivatingReachabilityIfNeededWithFinalDestination:(int64_t)destination;
+- (id)_responseForCancelingSystemGesturesIfNeededWithFinalDestination:(int64_t)destination;
+- (id)_responseForSBEventGestureBeganWithTimeDelta:(double)delta;
+- (id)_responseForSBEventGestureEndWithEvent:(id)event finalDestination:(int64_t)destination;
 - (id)_responseForStudyLogDidBeginGesture;
-- (id)_responseForStudyLogDidEndGestureWithEvent:(id)a3 finalDestination:(int64_t)a4 destinationReason:(id)a5;
-- (id)_responseForUpdatingIconViewVisibility:(BOOL)a3;
+- (id)_responseForStudyLogDidEndGestureWithEvent:(id)event finalDestination:(int64_t)destination destinationReason:(id)reason;
+- (id)_responseForUpdatingIconViewVisibility:(BOOL)visibility;
 - (id)_responseForUpdatingLayoutForGestureBegan;
-- (id)_updateForGestureDidBeginWithEvent:(id)a3;
-- (id)_updateForGestureDidChangeWithEvent:(id)a3;
-- (id)_updateForGestureDidEndWithEvent:(id)a3;
-- (id)_updateInMultitaskingIfNeededWithEvent:(id)a3;
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)appLayoutsForContinuousExposeIdentifier:(id)a3;
+- (id)_updateForGestureDidBeginWithEvent:(id)event;
+- (id)_updateForGestureDidChangeWithEvent:(id)event;
+- (id)_updateForGestureDidEndWithEvent:(id)event;
+- (id)_updateInMultitaskingIfNeededWithEvent:(id)event;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)appLayoutsForContinuousExposeIdentifier:(id)identifier;
 - (id)appLayoutsToCacheFullsizeSnapshots;
 - (id)appLayoutsToCacheSnapshots;
 - (id)appLayoutsToResignActive;
 - (id)continuousExposeIdentifiersInSwitcher;
-- (id)handleGestureEvent:(id)a3;
-- (id)handleHomeGestureSettingsChangedEvent:(id)a3;
-- (id)handleRemovalEvent:(id)a3;
-- (id)handleSwitcherSettingsChangedEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
+- (id)handleGestureEvent:(id)event;
+- (id)handleHomeGestureSettingsChangedEvent:(id)event;
+- (id)handleRemovalEvent:(id)event;
+- (id)handleSwitcherSettingsChangedEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
 - (id)keyboardSuppressionMode;
 - (id)topMostLayoutElements;
 - (id)visibleAppLayouts;
 - (id)visibleSplitViewHandleDimmingViews;
 - (id)visibleSplitViewHandleNubViews;
 - (int64_t)homeScreenBackdropBlurType;
-- (int64_t)occlusionStateForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (int64_t)occlusionStateForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (unint64_t)_selectedAppLayoutIndex;
-- (unint64_t)hiddenContentStatusBarPartsForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (unint64_t)hiddenContentStatusBarPartsForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (void)_applyPrototypeSettings;
-- (void)_beginAnimatingArcSwipePullingPropertyWithMode:(int64_t)a3 settings:(id)a4;
-- (void)_beginAnimatingExposeMultitaskingPropertyWithMode:(int64_t)a3 settings:(id)a4;
-- (void)_beginAnimatingMultitaskingPropertyWithMode:(int64_t)a3 settings:(id)a4;
-- (void)_displayLinkFired:(id)a3;
-- (void)_getActivePositionAndScaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5 outPosition:(CGPoint *)a6 outScale:(double *)a7;
-- (void)_updateGestureTranslationVelocityAndProgressWithEvent:(id)a3;
-- (void)_updateShouldResignActiveWithEvent:(id)a3;
+- (void)_beginAnimatingArcSwipePullingPropertyWithMode:(int64_t)mode settings:(id)settings;
+- (void)_beginAnimatingExposeMultitaskingPropertyWithMode:(int64_t)mode settings:(id)settings;
+- (void)_beginAnimatingMultitaskingPropertyWithMode:(int64_t)mode settings:(id)settings;
+- (void)_displayLinkFired:(id)fired;
+- (void)_getActivePositionAndScaleForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds outPosition:(CGPoint *)position outScale:(double *)scale;
+- (void)_updateGestureTranslationVelocityAndProgressWithEvent:(id)event;
+- (void)_updateShouldResignActiveWithEvent:(id)event;
 - (void)_updateStackedProgress;
-- (void)_updateTranslationAdjustmentForGestureFromHomeScreenIfNeededWithEvent:(id)a3;
+- (void)_updateTranslationAdjustmentForGestureFromHomeScreenIfNeededWithEvent:(id)event;
 - (void)dealloc;
-- (void)didMoveToParentModifier:(id)a3;
+- (void)didMoveToParentModifier:(id)modifier;
 @end
 
 @implementation SBContinuousExposeHomeGestureSwitcherModifier
 
-- (SBContinuousExposeHomeGestureSwitcherModifier)initWithGestureID:(id)a3 selectedAppLayout:(id)a4 startingEnvironmentMode:(int64_t)a5 multitaskingModifier:(id)a6 scrunchInitiated:(BOOL)a7 continuingGesture:(BOOL)a8 lastGestureWasAnArcSwipe:(BOOL)a9
+- (SBContinuousExposeHomeGestureSwitcherModifier)initWithGestureID:(id)d selectedAppLayout:(id)layout startingEnvironmentMode:(int64_t)mode multitaskingModifier:(id)modifier scrunchInitiated:(BOOL)initiated continuingGesture:(BOOL)gesture lastGestureWasAnArcSwipe:(BOOL)swipe
 {
-  v16 = a4;
-  v17 = a6;
+  layoutCopy = layout;
+  modifierCopy = modifier;
   v25.receiver = self;
   v25.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-  v18 = [(SBGestureSwitcherModifier *)&v25 initWithGestureID:a3];
+  v18 = [(SBGestureSwitcherModifier *)&v25 initWithGestureID:d];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_selectedAppLayout, a4);
-    v19->_startingEnvironmentMode = a5;
-    v19->_scrunchInitiated = a7;
-    v19->_continuingGesture = a8;
-    v19->_lastGestureWasAnArcSwipe = a9;
+    objc_storeStrong(&v18->_selectedAppLayout, layout);
+    v19->_startingEnvironmentMode = mode;
+    v19->_scrunchInitiated = initiated;
+    v19->_continuingGesture = gesture;
+    v19->_lastGestureWasAnArcSwipe = swipe;
     v19->_providesHomeScreenDimmingAlpha = 1;
-    objc_storeStrong(&v19->_exposeModifier, a6);
+    objc_storeStrong(&v19->_exposeModifier, modifier);
     v20 = objc_alloc_init(SBAppSwitcherContinuousExposeSwitcherModifier);
     appSwitcherModifier = v19->_appSwitcherModifier;
     v19->_appSwitcherModifier = v20;
@@ -148,12 +148,12 @@
   [(SBChainableModifier *)&v3 dealloc];
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v38.receiver = self;
   v38.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
   [(SBChainableModifier *)&v38 didMoveToParentModifier:?];
-  if (!a3)
+  if (!modifier)
   {
     [(CADisplayLink *)self->_displayLink invalidate];
     return;
@@ -171,8 +171,8 @@
       v34[3] = &unk_2783A92D8;
       v34[4] = self;
       v35 = v9;
-      v10 = v9;
-      [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:v10 usingBlock:v34];
+      switcherSettings = v9;
+      [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:switcherSettings usingBlock:v34];
 
 LABEL_9:
       goto LABEL_10;
@@ -192,9 +192,9 @@ LABEL_9:
     v36.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
     [(SBContinuousExposeHomeGestureSwitcherModifier *)&v36 homeScreenAlpha];
     self->_toHomeScreenAlpha = v12;
-    v10 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
-    v13 = [(SBHomeScreenSwitcherModifier *)v10 animationSettings];
-    [v13 homeScreenBlurProgressForMode:2];
+    switcherSettings = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
+    animationSettings = [(SBHomeScreenSwitcherModifier *)switcherSettings animationSettings];
+    [animationSettings homeScreenBlurProgressForMode:2];
     self->_toHomeScreenBlurProgress = v14;
 
     goto LABEL_9;
@@ -240,9 +240,9 @@ LABEL_10:
     }
 
     v21 = [SBHomeGestureFinalDestinationSwitcherModifier alloc];
-    v22 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
-    v23 = [v22 windowingSettings];
-    [v23 homeGestureMinimumYDistanceForHomeOrAppSwitcher];
+    switcherSettings2 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
+    windowingSettings = [switcherSettings2 windowingSettings];
+    [windowingSettings homeGestureMinimumYDistanceForHomeOrAppSwitcher];
     v25 = [(SBHomeGestureFinalDestinationSwitcherModifier *)v21 initWithDelegate:self initialTranslationAdjustment:self->_startingEnvironmentMode minYDistanceForHomeOrSwitcher:self->_continuingGesture startingEnvironmentMode:v20 continuingGesture:self->_translationAdjustmentForStartingFromSwitcher.x dockModifier:self->_translationAdjustmentForStartingFromSwitcher.y, v24];
     finalDestinationModifier = self->_finalDestinationModifier;
     self->_finalDestinationModifier = v25;
@@ -250,13 +250,13 @@ LABEL_10:
     [(SBChainableModifier *)self addChildModifier:self->_finalDestinationModifier atLevel:1 key:0];
   }
 
-  v27 = [(SBAppLayout *)self->_selectedAppLayout allItems];
-  v28 = [v27 count];
+  allItems = [(SBAppLayout *)self->_selectedAppLayout allItems];
+  v28 = [allItems count];
   v29 = (v28 > 1 || (selectedAppLayout = self->_selectedAppLayout) != 0 && (-[SBContinuousExposeHomeGestureSwitcherModifier maximizedCenteredAndUnoccludedDisplayItemsInAppLayout:ignoreOcclusion:ignoreCentering:](self, "maximizedCenteredAndUnoccludedDisplayItemsInAppLayout:ignoreOcclusion:ignoreCentering:", selectedAppLayout, 0, 1), v31 = ;
   self->_canEnterExposeMultitasking = v29;
   [(SBContinuousExposeHomeGestureSwitcherModifier *)self _applyPrototypeSettings];
-  v33 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
-  self->_selectedIndex = [v33 indexOfObject:self->_selectedAppLayout];
+  appLayouts = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+  self->_selectedIndex = [appLayouts indexOfObject:self->_selectedAppLayout];
 }
 
 uint64_t __73__SBContinuousExposeHomeGestureSwitcherModifier_didMoveToParentModifier___block_invoke(uint64_t a1)
@@ -281,45 +281,45 @@ uint64_t __73__SBContinuousExposeHomeGestureSwitcherModifier_didMoveToParentModi
   return result;
 }
 
-- (id)_newDockModifierRequiringVerticalSwipeToTrackDock:(BOOL)a3 startingEnvironmentMode:(int64_t)a4
+- (id)_newDockModifierRequiringVerticalSwipeToTrackDock:(BOOL)dock startingEnvironmentMode:(int64_t)mode
 {
-  v5 = a3;
+  dockCopy = dock;
   v7 = [SBHomeGestureDockSwitcherModifier alloc];
 
-  return [(SBHomeGestureDockSwitcherModifier *)v7 initWithDelegate:self startingEnvironmentMode:a4 requireVerticalSwipeToTrackDock:v5];
+  return [(SBHomeGestureDockSwitcherModifier *)v7 initWithDelegate:self startingEnvironmentMode:mode requireVerticalSwipeToTrackDock:dockCopy];
 }
 
-- (id)handleHomeGestureSettingsChangedEvent:(id)a3
+- (id)handleHomeGestureSettingsChangedEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(SBContinuousExposeHomeGestureSwitcherModifier *)self _applyPrototypeSettings];
   v7.receiver = self;
   v7.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v7 handleHomeGestureSettingsChangedEvent:v4];
+  v5 = [(SBSwitcherModifier *)&v7 handleHomeGestureSettingsChangedEvent:eventCopy];
 
   return v5;
 }
 
-- (id)handleSwitcherSettingsChangedEvent:(id)a3
+- (id)handleSwitcherSettingsChangedEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   [(SBContinuousExposeHomeGestureSwitcherModifier *)self _applyPrototypeSettings];
   v7.receiver = self;
   v7.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v7 handleSwitcherSettingsChangedEvent:v4];
+  v5 = [(SBSwitcherModifier *)&v7 handleSwitcherSettingsChangedEvent:eventCopy];
 
   return v5;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBGestureSwitcherModifier *)&v8 handleTransitionEvent:v4];
-  v6 = [v4 phase];
+  eventCopy = event;
+  v5 = [(SBGestureSwitcherModifier *)&v8 handleTransitionEvent:eventCopy];
+  phase = [eventCopy phase];
 
-  if (v6 >= 2)
+  if (phase >= 2)
   {
     [(SBChainableModifier *)self setState:1];
   }
@@ -327,16 +327,16 @@ uint64_t __73__SBContinuousExposeHomeGestureSwitcherModifier_didMoveToParentModi
   return v5;
 }
 
-- (id)handleRemovalEvent:(id)a3
+- (id)handleRemovalEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v10.receiver = self;
   v10.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v10 handleRemovalEvent:v4];
-  if ([v4 phase] == 1)
+  v5 = [(SBSwitcherModifier *)&v10 handleRemovalEvent:eventCopy];
+  if ([eventCopy phase] == 1)
   {
-    v6 = [v4 appLayout];
-    if ([(SBAppLayout *)self->_selectedAppLayout isEqual:v6])
+    appLayout = [eventCopy appLayout];
+    if ([(SBAppLayout *)self->_selectedAppLayout isEqual:appLayout])
     {
       v7 = objc_alloc_init(SBCompleteGestureSwitcherEventResponse);
       v8 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v7 toResponse:v5];
@@ -348,49 +348,49 @@ uint64_t __73__SBContinuousExposeHomeGestureSwitcherModifier_didMoveToParentModi
   return v5;
 }
 
-- (id)handleGestureEvent:(id)a3
+- (id)handleGestureEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v13.receiver = self;
   v13.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-  v6 = [(SBGestureSwitcherModifier *)&v13 handleGestureEvent:v5];
-  v7 = [v5 phase];
+  v6 = [(SBGestureSwitcherModifier *)&v13 handleGestureEvent:eventCopy];
+  phase = [eventCopy phase];
   v8 = 0;
-  if (v7 > 1)
+  if (phase > 1)
   {
-    if (v7 == 2)
+    if (phase == 2)
     {
-      v9 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateForGestureDidChangeWithEvent:v5];
+      v9 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateForGestureDidChangeWithEvent:eventCopy];
     }
 
     else
     {
-      if (v7 != 3)
+      if (phase != 3)
       {
         goto LABEL_11;
       }
 
-      v9 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateForGestureDidEndWithEvent:v5];
+      v9 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateForGestureDidEndWithEvent:eventCopy];
     }
   }
 
   else
   {
-    if (!v7)
+    if (!phase)
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"SBContinuousExposeHomeGestureSwitcherModifier.m" lineNumber:352 description:@"Should not be getting PhasePossible"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SBContinuousExposeHomeGestureSwitcherModifier.m" lineNumber:352 description:@"Should not be getting PhasePossible"];
 
       v8 = 0;
       goto LABEL_11;
     }
 
-    if (v7 != 1)
+    if (phase != 1)
     {
       goto LABEL_11;
     }
 
-    v9 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateForGestureDidBeginWithEvent:v5];
+    v9 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateForGestureDidBeginWithEvent:eventCopy];
   }
 
   v8 = v9;
@@ -400,9 +400,9 @@ LABEL_11:
   return v11;
 }
 
-- (id)_updateForGestureDidBeginWithEvent:(id)a3
+- (id)_updateForGestureDidBeginWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (self->_gestureHasBegun)
   {
     [SBContinuousExposeHomeGestureSwitcherModifier _updateForGestureDidBeginWithEvent:];
@@ -415,9 +415,9 @@ LABEL_11:
 
   self->_gestureHasBegun = 1;
   v5 = objc_alloc_init(SBSwitcherModifierEventResponse);
-  v6 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self displayItemInSlideOver];
+  displayItemInSlideOver = [(SBContinuousExposeHomeGestureSwitcherModifier *)self displayItemInSlideOver];
 
-  if (v6)
+  if (displayItemInSlideOver)
   {
     v7 = objc_opt_new();
     v8 = SBAppendSwitcherModifierResponse(v7, v5);
@@ -426,15 +426,15 @@ LABEL_11:
   }
 
   v9 = CACurrentMediaTime();
-  [v4 lastTouchTimestamp];
+  [eventCopy lastTouchTimestamp];
   v11 = v10;
   v12 = [MEMORY[0x277CD9E48] displayLinkWithTarget:self selector:sel__displayLinkFired_];
   displayLink = self->_displayLink;
   self->_displayLink = v12;
 
   v14 = self->_displayLink;
-  v15 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [(CADisplayLink *)v14 addToRunLoop:v15 forMode:*MEMORY[0x277CBE738]];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [(CADisplayLink *)v14 addToRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE738]];
 
   v16 = self->_startingEnvironmentMode == 2;
   self->_inMultitasking = v16;
@@ -449,7 +449,7 @@ LABEL_11:
   [(SBContinuousExposeHomeGestureSwitcherModifier *)self containerViewBounds];
   v19 = v18;
   v21 = v20;
-  [v4 locationInContainerView];
+  [eventCopy locationInContainerView];
   v23 = v22;
   v25 = v24;
   UIRectGetCenter();
@@ -465,14 +465,14 @@ LABEL_11:
   }
 
   self->_didPlayFlyInHaptic = self->_inMultitasking;
-  [v4 translationInContainerView];
+  [eventCopy translationInContainerView];
   v29 = v28;
-  [v4 hysteresis];
+  [eventCopy hysteresis];
   self->_everTranslatedUpwards = v29 < -v30;
   self->_centroidAdjustment = *MEMORY[0x277CBF348];
   if (self->_scrunchInitiated)
   {
-    v31 = v4;
+    v31 = eventCopy;
     if ([v31 touchType] == 1)
     {
       [v31 initialCentroid];
@@ -481,11 +481,11 @@ LABEL_11:
     }
   }
 
-  [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateGestureTranslationVelocityAndProgressWithEvent:v4];
-  [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateShouldResignActiveWithEvent:v4];
+  [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateGestureTranslationVelocityAndProgressWithEvent:eventCopy];
+  [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateShouldResignActiveWithEvent:eventCopy];
   [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateStackedProgress];
-  v34 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _responseForUpdatingLayoutForGestureBegan];
-  [(SBChainableModifierEventResponse *)v5 addChildResponse:v34];
+  _responseForUpdatingLayoutForGestureBegan = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _responseForUpdatingLayoutForGestureBegan];
+  [(SBChainableModifierEventResponse *)v5 addChildResponse:_responseForUpdatingLayoutForGestureBegan];
   v35 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _responseForUpdatingIconViewVisibility:0];
   if (v35)
   {
@@ -493,10 +493,10 @@ LABEL_11:
   }
 
   v36 = v9 - v11;
-  v37 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _responseForStudyLogDidBeginGesture];
-  if (v37)
+  _responseForStudyLogDidBeginGesture = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _responseForStudyLogDidBeginGesture];
+  if (_responseForStudyLogDidBeginGesture)
   {
-    [(SBChainableModifierEventResponse *)v5 addChildResponse:v37];
+    [(SBChainableModifierEventResponse *)v5 addChildResponse:_responseForStudyLogDidBeginGesture];
   }
 
   v38 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _responseForSBEventGestureBeganWithTimeDelta:v36];
@@ -508,9 +508,9 @@ LABEL_11:
   return v5;
 }
 
-- (id)_updateForGestureDidChangeWithEvent:(id)a3
+- (id)_updateForGestureDidChangeWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (!self->_gestureHasBegun)
   {
     [SBContinuousExposeHomeGestureSwitcherModifier _updateForGestureDidChangeWithEvent:];
@@ -521,8 +521,8 @@ LABEL_11:
     [SBContinuousExposeHomeGestureSwitcherModifier _updateForGestureDidChangeWithEvent:];
   }
 
-  [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateGestureTranslationVelocityAndProgressWithEvent:v4];
-  [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateShouldResignActiveWithEvent:v4];
+  [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateGestureTranslationVelocityAndProgressWithEvent:eventCopy];
+  [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateShouldResignActiveWithEvent:eventCopy];
   [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateStackedProgress];
   [(SBContinuousExposeHomeGestureSwitcherModifier *)self _unadjustedGestureTranslation];
   v6 = v5;
@@ -532,10 +532,10 @@ LABEL_11:
   }
 
   v7 = objc_alloc_init(SBSwitcherModifierEventResponse);
-  [v4 locationInContainerView];
+  [eventCopy locationInContainerView];
   v9 = v8;
   v11 = v10;
-  v12 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateInMultitaskingIfNeededWithEvent:v4];
+  v12 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateInMultitaskingIfNeededWithEvent:eventCopy];
   if (v12)
   {
     [(SBChainableModifierEventResponse *)v7 addChildResponse:v12];
@@ -550,8 +550,8 @@ LABEL_11:
 
   if (self->_startingEnvironmentMode == 1)
   {
-    v13 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
-    if (![(SBCompleteGestureSwitcherEventResponse *)v13 count])
+    appLayouts = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+    if (![(SBCompleteGestureSwitcherEventResponse *)appLayouts count])
     {
       inMultitasking = self->_inMultitasking;
 
@@ -561,8 +561,8 @@ LABEL_11:
       }
 
       self->_cancelledGestureForEmptySwitcher = 1;
-      v13 = objc_alloc_init(SBCompleteGestureSwitcherEventResponse);
-      [(SBChainableModifierEventResponse *)v7 addChildResponse:v13];
+      appLayouts = objc_alloc_init(SBCompleteGestureSwitcherEventResponse);
+      [(SBChainableModifierEventResponse *)v7 addChildResponse:appLayouts];
     }
   }
 
@@ -571,10 +571,10 @@ LABEL_16:
   return v7;
 }
 
-- (id)_updateForGestureDidEndWithEvent:(id)a3
+- (id)_updateForGestureDidEndWithEvent:(id)event
 {
   v72 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   if (!self->_gestureHasBegun)
   {
     [SBContinuousExposeHomeGestureSwitcherModifier _updateForGestureDidEndWithEvent:];
@@ -586,30 +586,30 @@ LABEL_16:
   }
 
   self->_gestureHasEnded = 1;
-  [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateGestureTranslationVelocityAndProgressWithEvent:v4];
-  [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateShouldResignActiveWithEvent:v4];
+  [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateGestureTranslationVelocityAndProgressWithEvent:eventCopy];
+  [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateShouldResignActiveWithEvent:eventCopy];
   [(CADisplayLink *)self->_displayLink invalidate];
   displayLink = self->_displayLink;
   self->_displayLink = 0;
 
   self->_gestureLiftOffVelocity = self->_velocity;
   self->_gestureLiftOffTranslation = self->_translation;
-  [v4 locationInContainerView];
+  [eventCopy locationInContainerView];
   self->_lastTouchLocation.x = v6;
   self->_lastTouchLocation.y = v7;
-  v8 = [(SBHomeGestureFinalDestinationSwitcherModifier *)self->_finalDestinationModifier currentFinalDestination];
-  v9 = [(SBHomeGestureFinalDestinationSwitcherModifier *)self->_finalDestinationModifier finalDestinationReason];
+  currentFinalDestination = [(SBHomeGestureFinalDestinationSwitcherModifier *)self->_finalDestinationModifier currentFinalDestination];
+  finalDestinationReason = [(SBHomeGestureFinalDestinationSwitcherModifier *)self->_finalDestinationModifier finalDestinationReason];
   v10 = objc_alloc_init(SBSwitcherModifierEventResponse);
-  if (v8 == 3 && !self->_didPlayFlyInHaptic)
+  if (currentFinalDestination == 3 && !self->_didPlayFlyInHaptic)
   {
-    v11 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
-    v12 = [v11 count];
+    appLayouts = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+    v12 = [appLayouts count];
 
     if (v12)
     {
       self->_didPlayFlyInHaptic = 1;
       v13 = [[SBHapticSwitcherEventResponse alloc] initWithHapticType:0 phase:1];
-      -[SBHapticSwitcherEventResponse setHidEventSenderID:](v13, "setHidEventSenderID:", [v4 hidEventSenderID]);
+      -[SBHapticSwitcherEventResponse setHidEventSenderID:](v13, "setHidEventSenderID:", [eventCopy hidEventSenderID]);
       [(SBChainableModifierEventResponse *)v10 addChildResponse:v13];
     }
   }
@@ -620,15 +620,15 @@ LABEL_16:
     [(SBChainableModifierEventResponse *)v10 addChildResponse:v14];
   }
 
-  v15 = [v4 isCanceled];
-  v16 = v15;
-  if (v15)
+  isCanceled = [eventCopy isCanceled];
+  v16 = isCanceled;
+  if (isCanceled)
   {
     if (self->_cancelledGestureForEmptySwitcher)
     {
 
-      v9 = @"CancelledGestureForEmptySwitcher";
-      v8 = 3;
+      finalDestinationReason = @"CancelledGestureForEmptySwitcher";
+      currentFinalDestination = 3;
     }
 
     else
@@ -650,56 +650,56 @@ LABEL_16:
       v22 = startingEnvironmentMode == 2;
       if (startingEnvironmentMode == 2)
       {
-        v8 = 3;
+        currentFinalDestination = 3;
       }
 
       else
       {
-        v8 = v21;
+        currentFinalDestination = v21;
       }
 
       if (v22)
       {
-        v9 = @"CancelledGestureAndStayingInSwitcher";
+        finalDestinationReason = @"CancelledGestureAndStayingInSwitcher";
       }
 
       else
       {
-        v9 = v20;
+        finalDestinationReason = v20;
       }
     }
   }
 
   else
   {
-    if (self->_startingEnvironmentMode == 1 && v8 == 4)
+    if (self->_startingEnvironmentMode == 1 && currentFinalDestination == 4)
     {
       if (!self->_inMultitasking || (inMultitaskingChangedProperty = self->_inMultitaskingChangedProperty) != 0 && ([(UIViewFloatAnimatableProperty *)inMultitaskingChangedProperty presentationValue], v18 <= 0.2))
       {
-        v8 = 4;
+        currentFinalDestination = 4;
       }
 
       else
       {
 
-        v9 = @"AppSwitcherBecauseStartingFromHomeScreenAndShowingCards";
-        v8 = 3;
+        finalDestinationReason = @"AppSwitcherBecauseStartingFromHomeScreenAndShowingCards";
+        currentFinalDestination = 3;
       }
     }
 
-    v23 = [v4 touchType];
-    if (((self->_scrunchInitiated | [v4 isPointerTouch]) & 1) == 0 || v23 == 1)
+    touchType = [eventCopy touchType];
+    if (((self->_scrunchInitiated | [eventCopy isPointerTouch]) & 1) == 0 || touchType == 1)
     {
-      v24 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self homeGestureSettings];
-      v25 = v24;
-      if (v8 == 4 && self->_selectedAppLayout && [v24 injectGestureVelocityForZoomDown])
+      homeGestureSettings = [(SBContinuousExposeHomeGestureSwitcherModifier *)self homeGestureSettings];
+      v25 = homeGestureSettings;
+      if (currentFinalDestination == 4 && self->_selectedAppLayout && [homeGestureSettings injectGestureVelocityForZoomDown])
       {
-        [v4 velocityInContainerView];
+        [eventCopy velocityInContainerView];
         v27 = v26;
         v29 = v28;
         [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherViewBounds];
         v31 = v30;
-        v32 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self homeGestureSettings];
+        homeGestureSettings2 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self homeGestureSettings];
         v33 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self currentVelocityValueForVisibleAppLayout:self->_selectedAppLayout key:@"transform"];
         v34 = v33;
         if (v33)
@@ -714,10 +714,10 @@ LABEL_16:
           a = 0.0;
         }
 
-        [v32 scaleVelocityPercentOfGestureVelocityYDividedByViewHeight];
+        [homeGestureSettings2 scaleVelocityPercentOfGestureVelocityYDividedByViewHeight];
         v37 = v29 / v31 * v36;
-        v68 = v32;
-        if ([v32 onlyInjectVelocityForShortFlicks] && fabs(a / v37) >= 0.15)
+        v68 = homeGestureSettings2;
+        if ([homeGestureSettings2 onlyInjectVelocityForShortFlicks] && fabs(a / v37) >= 0.15)
         {
           v52 = 0;
         }
@@ -726,7 +726,7 @@ LABEL_16:
         {
           v66 = v34;
           v67 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:2];
-          [v32 maximumScaleVelocity];
+          [homeGestureSettings2 maximumScaleVelocity];
           memset(&v71, 0, sizeof(v71));
           SBVelocityMatrixForUniform2DScaling();
           v38 = [SBInjectVelocitySwitcherEventResponse alloc];
@@ -784,25 +784,25 @@ LABEL_16:
       }
     }
 
-    if (self->_startingEnvironmentMode == 1 && [(SBAppLayout *)self->_selectedAppLayout type]!= 2 && v8 == 4)
+    if (self->_startingEnvironmentMode == 1 && [(SBAppLayout *)self->_selectedAppLayout type]!= 2 && currentFinalDestination == 4)
     {
       v53 = objc_alloc_init(SBActivateHomeButtonSwitcherEventResponse);
       [(SBChainableModifierEventResponse *)v10 addChildResponse:v53];
 
-      v8 = 4;
+      currentFinalDestination = 4;
     }
   }
 
   v54 = SBLogSystemGestureAppSwitcher();
   if (os_log_type_enabled(v54, OS_LOG_TYPE_INFO))
   {
-    v55 = NSStringFromSBHomeGestureFinalDestination(v8);
+    v55 = NSStringFromSBHomeGestureFinalDestination(currentFinalDestination);
     LODWORD(v71.m11) = 138412802;
     *(&v71.m11 + 4) = v55;
     WORD2(v71.m12) = 2048;
-    *(&v71.m12 + 6) = v8;
+    *(&v71.m12 + 6) = currentFinalDestination;
     HIWORD(v71.m13) = 2112;
-    *&v71.m14 = v9;
+    *&v71.m14 = finalDestinationReason;
     _os_log_impl(&dword_21ED4E000, v54, OS_LOG_TYPE_INFO, "Home Gesture Modifier - Final Response: %@ (%lu), Reason: %@", &v71, 0x20u);
   }
 
@@ -812,30 +812,30 @@ LABEL_16:
     [(SBChainableModifierEventResponse *)v10 addChildResponse:v56];
   }
 
-  v57 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _responseForActivatingFinalDestination:v8];
+  v57 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _responseForActivatingFinalDestination:currentFinalDestination];
   [(SBChainableModifierEventResponse *)v10 addChildResponse:v57];
   if ((v16 & 1) == 0)
   {
-    v58 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _responseForActivatingReachabilityIfNeededWithFinalDestination:v8];
+    v58 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _responseForActivatingReachabilityIfNeededWithFinalDestination:currentFinalDestination];
     if (v58)
     {
       [(SBChainableModifierEventResponse *)v10 addChildResponse:v58];
     }
 
-    v59 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _responseForCancelingSystemGesturesIfNeededWithFinalDestination:v8];
+    v59 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _responseForCancelingSystemGesturesIfNeededWithFinalDestination:currentFinalDestination];
     if (v59)
     {
       [(SBChainableModifierEventResponse *)v10 addChildResponse:v59];
     }
   }
 
-  v60 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _responseForStudyLogDidEndGestureWithEvent:v4 finalDestination:v8 destinationReason:v9];
+  v60 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _responseForStudyLogDidEndGestureWithEvent:eventCopy finalDestination:currentFinalDestination destinationReason:finalDestinationReason];
   if (v60)
   {
     [(SBChainableModifierEventResponse *)v10 addChildResponse:v60];
   }
 
-  v61 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _responseForSBEventGestureEndWithEvent:v4 finalDestination:v8];
+  v61 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _responseForSBEventGestureEndWithEvent:eventCopy finalDestination:currentFinalDestination];
   if (v61)
   {
     [(SBChainableModifierEventResponse *)v10 addChildResponse:v61];
@@ -844,21 +844,21 @@ LABEL_16:
   return v10;
 }
 
-- (void)_updateTranslationAdjustmentForGestureFromHomeScreenIfNeededWithEvent:(id)a3
+- (void)_updateTranslationAdjustmentForGestureFromHomeScreenIfNeededWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (!self->_inMultitasking && self->_startingEnvironmentMode == 1)
   {
     x = self->_lastTouchLocation.x;
-    v16 = v4;
-    [v4 locationInContainerView];
+    v16 = eventCopy;
+    [eventCopy locationInContainerView];
     v7 = v6;
     v8 = v6 - x;
     v9 = MEMORY[0x277D76620];
-    v10 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
     v11 = -v8;
-    v12 = v10 == 1;
-    v4 = v16;
+    v12 = userInterfaceLayoutDirection == 1;
+    eventCopy = v16;
     if (!v12)
     {
       v11 = v8;
@@ -868,9 +868,9 @@ LABEL_16:
     {
       v13 = self->_initialTouchLocation.x - self->_translationAdjustmentForStartingFromHomeScreen.x;
       v12 = [*v9 userInterfaceLayoutDirection] == 1;
-      v4 = v16;
+      eventCopy = v16;
       v14 = !v12 || v7 <= v13;
-      if (!v14 || ((v12 = [*v9 userInterfaceLayoutDirection] == 1, v4 = v16, !v12) ? (v15 = v7 < v13) : (v15 = 0), v15))
+      if (!v14 || ((v12 = [*v9 userInterfaceLayoutDirection] == 1, eventCopy = v16, !v12) ? (v15 = v7 < v13) : (v15 = 0), v15))
       {
         self->_translationAdjustmentForStartingFromHomeScreen.x = self->_translationAdjustmentForStartingFromHomeScreen.x - v8;
       }
@@ -893,13 +893,13 @@ LABEL_16:
   return result;
 }
 
-- (void)_updateGestureTranslationVelocityAndProgressWithEvent:(id)a3
+- (void)_updateGestureTranslationVelocityAndProgressWithEvent:(id)event
 {
-  v4 = a3;
-  [v4 translationInContainerView];
+  eventCopy = event;
+  [eventCopy translationInContainerView];
   v6 = v5;
   v8 = v7;
-  [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateTranslationAdjustmentForGestureFromHomeScreenIfNeededWithEvent:v4];
+  [(SBContinuousExposeHomeGestureSwitcherModifier *)self _updateTranslationAdjustmentForGestureFromHomeScreenIfNeededWithEvent:eventCopy];
   v9 = self->_translationAdjustmentForStartingFromSwitcher.y + self->_translationAdjustmentForStartingFromHomeScreen.y;
   v10 = v6 + self->_translationAdjustmentForStartingFromSwitcher.x + self->_translationAdjustmentForStartingFromHomeScreen.x;
   v11 = v8 + v9;
@@ -911,7 +911,7 @@ LABEL_16:
     v11 = v14;
   }
 
-  [v4 averageTouchVelocityOverTimeDuration:0.0416666667];
+  [eventCopy averageTouchVelocityOverTimeDuration:0.0416666667];
   v16 = v15;
   v18 = v17;
   [(SBContinuousExposeHomeGestureSwitcherModifier *)self _distanceYToInSwitcherCardScale];
@@ -923,11 +923,11 @@ LABEL_16:
   self->_velocity.y = v18;
   self->_progressToInSwitcherCardScale = v20;
   self->_progressToMaxTranslation = v21;
-  [v4 lastTouchTimestamp];
+  [eventCopy lastTouchTimestamp];
   self->_lastTouchTimestamp = v22;
   if (self->_scrunchInitiated)
   {
-    v23 = v4;
+    v23 = eventCopy;
     [v23 initialCentroid];
     self->_initialCentroid.x = v24;
     self->_initialCentroid.y = v25;
@@ -946,12 +946,12 @@ LABEL_16:
     self->_translationWithoutScale.y = v32;
   }
 
-  v33 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self displayItemInSlideOver];
+  displayItemInSlideOver = [(SBContinuousExposeHomeGestureSwitcherModifier *)self displayItemInSlideOver];
 
-  if (v33)
+  if (displayItemInSlideOver)
   {
-    v34 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
-    self->_selectedIndex = [v34 indexOfObject:self->_selectedAppLayout];
+    appLayouts = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+    self->_selectedIndex = [appLayouts indexOfObject:self->_selectedAppLayout];
   }
 
   if (!self->_hideSplitViewHandles && self->_selectedIndex != 0x7FFFFFFFFFFFFFFFLL)
@@ -971,7 +971,7 @@ LABEL_16:
     v47 = v46;
     v49 = v48;
     v51 = v50;
-    v52 = [(SBAppLayout *)self->_selectedAppLayout allItems];
+    allItems = [(SBAppLayout *)self->_selectedAppLayout allItems];
     v53[0] = MEMORY[0x277D85DD0];
     v53[1] = 3221225472;
     v53[2] = __103__SBContinuousExposeHomeGestureSwitcherModifier__updateGestureTranslationVelocityAndProgressWithEvent___block_invoke;
@@ -985,7 +985,7 @@ LABEL_16:
     v53[10] = v47;
     v53[11] = v49;
     v53[12] = v51;
-    [v52 enumerateObjectsUsingBlock:v53];
+    [allItems enumerateObjectsUsingBlock:v53];
   }
 }
 
@@ -1121,7 +1121,7 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v60 = 0;
   v61 = &v60;
@@ -1136,7 +1136,7 @@ LABEL_12:
   *(&v64 + 1) = v6;
   *&v65 = v7;
   *(&v65 + 1) = v8;
-  if (![(SBContinuousExposeHomeGestureSwitcherModifier *)self _isSelectedAppLayoutAtIndex:a3])
+  if (![(SBContinuousExposeHomeGestureSwitcherModifier *)self _isSelectedAppLayoutAtIndex:index])
   {
     if (self->_inMultitasking)
     {
@@ -1168,7 +1168,7 @@ LABEL_12:
       v52[4] = self;
       v52[5] = &v60;
       v52[7] = v57;
-      v52[8] = a3;
+      v52[8] = index;
       v52[6] = &v53;
       [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:appSwitcherModifier usingBlock:v52];
       UIRectGetCenter();
@@ -1191,16 +1191,16 @@ LABEL_12:
     else
     {
       arcSwipePulledStripAppLayout = self->_arcSwipePulledStripAppLayout;
-      v39 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
-      v40 = [v39 objectAtIndex:a3];
+      appLayouts = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+      v40 = [appLayouts objectAtIndex:index];
       LODWORD(arcSwipePulledStripAppLayout) = [(SBAppLayout *)arcSwipePulledStripAppLayout isEqual:v40];
 
       v26 = v61;
       if (arcSwipePulledStripAppLayout)
       {
         UIRectGetCenter();
-        v41 = [(SBSwitcherModifier *)self windowingConfiguration];
-        [v41 stripWidth];
+        windowingConfiguration = [(SBSwitcherModifier *)self windowingConfiguration];
+        [windowingConfiguration stripWidth];
         v43 = v42 / 1.2;
 
         [(SBContinuousExposeHomeGestureSwitcherModifier *)self _rangeForPerspectiveAngleProgressOfAppLayout:self->_arcSwipePulledStripAppLayout outMin:0.0 outMax:v43];
@@ -1232,24 +1232,24 @@ LABEL_16:
     UIRectGetCenter();
     [(SBContinuousExposeHomeGestureSwitcherModifier *)self containerViewBounds];
     v28 = v27;
-    v29 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
-    v30 = [v29 objectAtIndex:a3];
+    appLayouts2 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+    v30 = [appLayouts2 objectAtIndex:index];
     [(SBContinuousExposeHomeGestureSwitcherModifier *)self _rangeForPerspectiveAngleProgressOfAppLayout:v30 outMin:0.0 outMax:v28];
 
     v31 = MEMORY[0x277D76620];
     [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
-    v32 = [*v31 userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [*v31 userInterfaceLayoutDirection];
     x = self->_translation.x;
     v34 = v61[4];
     v35 = v61[5];
     v36 = v61[6];
     v37 = v61[7];
-    if (v32 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       if (x >= 0.0)
       {
         CGRectGetMaxX(*&v34);
-        [(SBContinuousExposeHomeGestureSwitcherModifier *)self scaleForIndex:a3];
+        [(SBContinuousExposeHomeGestureSwitcherModifier *)self scaleForIndex:index];
       }
 
       else
@@ -1261,7 +1261,7 @@ LABEL_16:
     else if (x <= 0.0)
     {
       CGRectGetMinX(*&v34);
-      [(SBContinuousExposeHomeGestureSwitcherModifier *)self scaleForIndex:a3];
+      [(SBContinuousExposeHomeGestureSwitcherModifier *)self scaleForIndex:index];
     }
 
     else
@@ -1280,7 +1280,7 @@ LABEL_16:
 
   v58.receiver = self;
   v58.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-  [(SBContinuousExposeHomeGestureSwitcherModifier *)&v58 frameForIndex:a3];
+  [(SBContinuousExposeHomeGestureSwitcherModifier *)&v58 frameForIndex:index];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -1317,30 +1317,30 @@ double __63__SBContinuousExposeHomeGestureSwitcherModifier_frameForIndex___block
   return result;
 }
 
-- (CGRect)frameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5
+- (CGRect)frameForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
   v96 = 0;
   v97 = &v96;
   v98 = 0x4010000000;
   v99 = &unk_21F9DA6A3;
   v100 = 0u;
   v101 = 0u;
-  v12 = [v11 isEqual:self->_selectedAppLayout];
-  v13 = [v11 itemForLayoutRole:a3];
-  v14 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self displayItemInSlideOver];
+  v12 = [layoutCopy isEqual:self->_selectedAppLayout];
+  v13 = [layoutCopy itemForLayoutRole:role];
+  displayItemInSlideOver = [(SBContinuousExposeHomeGestureSwitcherModifier *)self displayItemInSlideOver];
   if (BSEqualObjects() && !self->_inExposeMultitasking && (selectedAppLayout = self->_selectedAppLayout) != 0)
   {
     v16 = [(SBAppLayout *)selectedAppLayout containsItem:v13];
 
     if (v16)
     {
-      v17 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
-      v18 = [v17 indexOfObject:v11];
+      appLayouts = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+      v18 = [appLayouts indexOfObject:layoutCopy];
 
       v95.receiver = self;
       v95.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
@@ -1356,11 +1356,11 @@ double __63__SBContinuousExposeHomeGestureSwitcherModifier_frameForIndex___block
       v71 = v25;
       v94.receiver = self;
       v94.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-      [(SBContinuousExposeHomeGestureSwitcherModifier *)&v94 scaleForLayoutRole:a3 inAppLayout:v11];
+      [(SBContinuousExposeHomeGestureSwitcherModifier *)&v94 scaleForLayoutRole:role inAppLayout:layoutCopy];
       v28 = v27;
       v93.receiver = self;
       v93.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-      [(SBContinuousExposeHomeGestureSwitcherModifier *)&v93 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+      [(SBContinuousExposeHomeGestureSwitcherModifier *)&v93 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
       v68 = v30;
       v69 = v29;
       v79 = v32;
@@ -1372,7 +1372,7 @@ double __63__SBContinuousExposeHomeGestureSwitcherModifier_frameForIndex___block
       [(SBContinuousExposeHomeGestureSwitcherModifier *)&v92 anchorPointForIndex:v18];
       v65 = v35;
       v66 = v34;
-      [(SBContinuousExposeHomeGestureSwitcherModifier *)self scaleForLayoutRole:a3 inAppLayout:v11];
+      [(SBContinuousExposeHomeGestureSwitcherModifier *)self scaleForLayoutRole:role inAppLayout:layoutCopy];
       v36.f64[0] = v76;
       v36.f64[1] = v74;
       v37.f64[0] = v72;
@@ -1409,11 +1409,11 @@ double __63__SBContinuousExposeHomeGestureSwitcherModifier_frameForIndex___block
   {
     v91.receiver = self;
     v91.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v91 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v91 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
     v79 = v52;
     v80 = v51;
     v90 = 0uLL;
-    [(SBContinuousExposeHomeGestureSwitcherModifier *)self _getActivePositionAndScaleForLayoutRole:a3 inAppLayout:v11 withBounds:&v90 outPosition:0 outScale:x, y, width, height];
+    [(SBContinuousExposeHomeGestureSwitcherModifier *)self _getActivePositionAndScaleForLayoutRole:role inAppLayout:layoutCopy withBounds:&v90 outPosition:0 outScale:x, y, width, height];
     v53.f64[0] = v80;
     v53.f64[1] = v79;
     __asm { FMOV            V2.2D, #-0.5 }
@@ -1429,9 +1429,9 @@ double __63__SBContinuousExposeHomeGestureSwitcherModifier_frameForIndex___block
     v82[2] = __91__SBContinuousExposeHomeGestureSwitcherModifier_frameForLayoutRole_inAppLayout_withBounds___block_invoke;
     v82[3] = &unk_2783AA640;
     v84 = &v96;
-    v85 = a3;
+    roleCopy = role;
     v82[4] = self;
-    v83 = v11;
+    v83 = layoutCopy;
     v86 = x;
     v87 = y;
     v88 = width;
@@ -1447,7 +1447,7 @@ double __63__SBContinuousExposeHomeGestureSwitcherModifier_frameForIndex___block
   {
     v81.receiver = self;
     v81.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v81 frameForLayoutRole:a3 inAppLayout:v11 withBounds:x, y, width, height];
+    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v81 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
     v56 = v97;
     v97[2].f64[0] = v57.f64[0];
     v56[5] = v58;
@@ -1484,19 +1484,19 @@ uint64_t __91__SBContinuousExposeHomeGestureSwitcherModifier_frameForLayoutRole_
   return result;
 }
 
-- (double)scaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)scaleForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  v7 = [v6 itemForLayoutRole:a3];
-  v8 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self displayItemInSlideOver];
+  layoutCopy = layout;
+  v7 = [layoutCopy itemForLayoutRole:role];
+  displayItemInSlideOver = [(SBContinuousExposeHomeGestureSwitcherModifier *)self displayItemInSlideOver];
   if (BSEqualObjects() && !self->_inExposeMultitasking && (selectedAppLayout = self->_selectedAppLayout) != 0)
   {
     v10 = [(SBAppLayout *)selectedAppLayout containsItem:v7];
 
     if (v10)
     {
-      v11 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
-      -[SBContinuousExposeHomeGestureSwitcherModifier scaleForIndex:](self, "scaleForIndex:", [v11 indexOfObject:v6]);
+      appLayouts = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+      -[SBContinuousExposeHomeGestureSwitcherModifier scaleForIndex:](self, "scaleForIndex:", [appLayouts indexOfObject:layoutCopy]);
       v13 = v12;
 
       if (BSFloatIsZero())
@@ -1517,11 +1517,11 @@ uint64_t __91__SBContinuousExposeHomeGestureSwitcherModifier_frameForLayoutRole_
   {
   }
 
-  if ([(SBAppLayout *)self->_selectedAppLayout isEqual:v6])
+  if ([(SBAppLayout *)self->_selectedAppLayout isEqual:layoutCopy])
   {
     v18 = 0.0;
     [(SBContinuousExposeHomeGestureSwitcherModifier *)self containerViewBounds];
-    [(SBContinuousExposeHomeGestureSwitcherModifier *)self _getActivePositionAndScaleForLayoutRole:a3 inAppLayout:v6 withBounds:0 outPosition:&v18 outScale:?];
+    [(SBContinuousExposeHomeGestureSwitcherModifier *)self _getActivePositionAndScaleForLayoutRole:role inAppLayout:layoutCopy withBounds:0 outPosition:&v18 outScale:?];
     v14 = v18;
   }
 
@@ -1529,7 +1529,7 @@ uint64_t __91__SBContinuousExposeHomeGestureSwitcherModifier_frameForLayoutRole_
   {
     v17.receiver = self;
     v17.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v17 scaleForLayoutRole:a3 inAppLayout:v6];
+    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v17 scaleForLayoutRole:role inAppLayout:layoutCopy];
     v14 = v15;
   }
 
@@ -1538,7 +1538,7 @@ LABEL_12:
   return v14;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
   v21 = 0;
   v22 = &v21;
@@ -1550,7 +1550,7 @@ LABEL_12:
     {
       v20.receiver = self;
       v20.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-      [(SBContinuousExposeHomeGestureSwitcherModifier *)&v20 scaleForIndex:a3];
+      [(SBContinuousExposeHomeGestureSwitcherModifier *)&v20 scaleForIndex:index];
     }
 
     else
@@ -1571,11 +1571,11 @@ LABEL_8:
   {
     v18.receiver = self;
     v18.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v18 scaleForIndex:a3];
+    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v18 scaleForIndex:index];
     *(v22 + 3) = v13;
     arcSwipePulledStripAppLayout = self->_arcSwipePulledStripAppLayout;
-    v15 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
-    v16 = [v15 objectAtIndex:a3];
+    appLayouts = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+    v16 = [appLayouts objectAtIndex:index];
     LODWORD(arcSwipePulledStripAppLayout) = [(SBAppLayout *)arcSwipePulledStripAppLayout isEqual:v16];
 
     if (!arcSwipePulledStripAppLayout)
@@ -1596,7 +1596,7 @@ LABEL_8:
   v19[3] = &unk_2783AA618;
   v19[4] = self;
   v19[5] = &v21;
-  v19[6] = a3;
+  v19[6] = index;
   [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:appSwitcherModifier usingBlock:v19];
 LABEL_9:
   v11 = v22[3];
@@ -1611,10 +1611,10 @@ uint64_t __63__SBContinuousExposeHomeGestureSwitcherModifier_scaleForIndex___blo
   return result;
 }
 
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index
 {
-  v5 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ([v6 isEqual:self->_selectedAppLayout])
   {
@@ -1641,16 +1641,16 @@ LABEL_5:
 
   v35.receiver = self;
   v35.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-  [(SBContinuousExposeHomeGestureSwitcherModifier *)&v35 perspectiveAngleForIndex:a3];
+  [(SBContinuousExposeHomeGestureSwitcherModifier *)&v35 perspectiveAngleForIndex:index];
   v7 = v12;
   v9 = v13;
   x = self->_translation.x;
   if (x != 0.0)
   {
     v15 = MEMORY[0x277D76620];
-    v16 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
     v17 = -x;
-    if (v16 != 1)
+    if (userInterfaceLayoutDirection != 1)
     {
       v17 = x;
     }
@@ -1690,9 +1690,9 @@ LABEL_5:
         v23 = fmin(v25, 1.0);
       }
 
-      v26 = [*v15 userInterfaceLayoutDirection];
+      userInterfaceLayoutDirection2 = [*v15 userInterfaceLayoutDirection];
       v27 = 1.0;
-      if (v26 == 1)
+      if (userInterfaceLayoutDirection2 == 1)
       {
         v27 = -1.0;
       }
@@ -1713,11 +1713,11 @@ LABEL_5:
       v31 = v30;
       if ((BSEqualObjects() & 1) == 0)
       {
-        v32 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
-        v33 = [v32 animationSettings];
-        v34 = [v33 arcSwipeSwitcherGlancingSettings];
+        switcherSettings = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
+        animationSettings = [switcherSettings animationSettings];
+        arcSwipeSwitcherGlancingSettings = [animationSettings arcSwipeSwitcherGlancingSettings];
 
-        [(SBContinuousExposeHomeGestureSwitcherModifier *)self _beginAnimatingArcSwipePullingPropertyWithMode:3 settings:v34];
+        [(SBContinuousExposeHomeGestureSwitcherModifier *)self _beginAnimatingArcSwipePullingPropertyWithMode:3 settings:arcSwipeSwitcherGlancingSettings];
         objc_storeStrong(&self->_arcSwipePulledStripAppLayout, v30);
       }
     }
@@ -1732,13 +1732,13 @@ LABEL_6:
   return result;
 }
 
-- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withPerspectiveAngle:(CGPoint)a5
+- (CGPoint)perspectiveAngleForLayoutRole:(int64_t)role inAppLayout:(id)layout withPerspectiveAngle:(CGPoint)angle
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4;
-  v10 = [v9 itemForLayoutRole:a3];
-  v11 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self displayItemInSlideOver];
+  y = angle.y;
+  x = angle.x;
+  layoutCopy = layout;
+  v10 = [layoutCopy itemForLayoutRole:role];
+  displayItemInSlideOver = [(SBContinuousExposeHomeGestureSwitcherModifier *)self displayItemInSlideOver];
   v12 = BSEqualObjects();
 
   if (v12)
@@ -1751,7 +1751,7 @@ LABEL_6:
   {
     v19.receiver = self;
     v19.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v19 perspectiveAngleForLayoutRole:a3 inAppLayout:v9 withPerspectiveAngle:x, y];
+    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v19 perspectiveAngleForLayoutRole:role inAppLayout:layoutCopy withPerspectiveAngle:x, y];
     v13 = v15;
     v14 = v16;
   }
@@ -1763,42 +1763,42 @@ LABEL_6:
   return result;
 }
 
-- (double)_rangeForPerspectiveAngleProgressOfAppLayout:(id)a3 outMin:(double)a4 outMax:(double)a5
+- (double)_rangeForPerspectiveAngleProgressOfAppLayout:(id)layout outMin:(double)min outMax:(double)max
 {
-  v8 = a3;
-  v9 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
-  -[SBContinuousExposeHomeGestureSwitcherModifier perspectiveAngleForIndex:](self, "perspectiveAngleForIndex:", [v9 indexOfObject:v8]);
+  layoutCopy = layout;
+  appLayouts = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+  -[SBContinuousExposeHomeGestureSwitcherModifier perspectiveAngleForIndex:](self, "perspectiveAngleForIndex:", [appLayouts indexOfObject:layoutCopy]);
   BSRadiansToDegrees();
   v11 = v10;
 
-  v12 = [v8 isEqual:self->_selectedAppLayout];
+  v12 = [layoutCopy isEqual:self->_selectedAppLayout];
   v13 = 0.0;
   v14 = MEMORY[0x277D76620];
   if ((v12 & 1) == 0)
   {
     [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
-    v15 = [(SBSwitcherModifier *)self windowingConfiguration];
-    [v15 stripTiltAngle];
+    windowingConfiguration = [(SBSwitcherModifier *)self windowingConfiguration];
+    [windowingConfiguration stripTiltAngle];
     BSRadiansToDegrees();
     v13 = v16;
   }
 
-  if ([v8 isEqual:self->_selectedAppLayout])
+  if ([layoutCopy isEqual:self->_selectedAppLayout])
   {
     [(SBContinuousExposeHomeGestureSwitcherModifier *)self _maxPerspectiveAngleForSelectedAppLayout];
   }
 
   else
   {
-    v18 = [*v14 userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [*v14 userInterfaceLayoutDirection];
     v17 = -25.0;
-    if (v18 != 1)
+    if (userInterfaceLayoutDirection != 1)
     {
       v17 = 25.0;
     }
   }
 
-  v19 = (a5 - a4) * (v11 - v13) / (v17 - v13) + a4;
+  v19 = (max - min) * (v11 - v13) / (v17 - v13) + min;
 
   return v19;
 }
@@ -1806,11 +1806,11 @@ LABEL_6:
 - (CGPoint)_maxPerspectiveAngleForSelectedAppLayout
 {
   v3 = MEMORY[0x277D76620];
-  v4 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
   x = self->_translation.x;
-  v6 = [*v3 userInterfaceLayoutDirection];
+  userInterfaceLayoutDirection2 = [*v3 userInterfaceLayoutDirection];
   v7 = -x;
-  if (v6 != 1)
+  if (userInterfaceLayoutDirection2 != 1)
   {
     v7 = x;
   }
@@ -1823,7 +1823,7 @@ LABEL_6:
   }
 
   v10 = -v9;
-  if (v4 != 1)
+  if (userInterfaceLayoutDirection != 1)
   {
     v10 = v9;
   }
@@ -1834,7 +1834,7 @@ LABEL_6:
   return result;
 }
 
-- (CGPoint)anchorPointForIndex:(unint64_t)a3
+- (CGPoint)anchorPointForIndex:(unint64_t)index
 {
   v17 = 0;
   v18 = &v17;
@@ -1847,7 +1847,7 @@ LABEL_6:
   {
     v16.receiver = self;
     v16.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v16 anchorPointForIndex:a3];
+    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v16 anchorPointForIndex:index];
   }
 
   else
@@ -1861,7 +1861,7 @@ LABEL_6:
       v15[3] = &unk_2783AA618;
       v15[4] = self;
       v15[5] = &v17;
-      v15[6] = a3;
+      v15[6] = index;
       [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:appSwitcherModifier usingBlock:v15];
       v8 = v18[4];
       v9 = v18[5];
@@ -1870,7 +1870,7 @@ LABEL_6:
 
     v14.receiver = self;
     v14.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v14 anchorPointForIndex:a3];
+    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v14 anchorPointForIndex:index];
   }
 
   v8 = v6;
@@ -1896,10 +1896,10 @@ uint64_t __69__SBContinuousExposeHomeGestureSwitcherModifier_anchorPointForIndex
   return result;
 }
 
-- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)space
 {
-  v5 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:space];
 
   if (self->_inExposeMultitasking && [(SBAppLayout *)self->_selectedAppLayout isEqual:v6])
   {
@@ -1908,8 +1908,8 @@ uint64_t __69__SBContinuousExposeHomeGestureSwitcherModifier_anchorPointForIndex
 
   else
   {
-    v8 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self selectedAppLayout];
-    v9 = [v6 isOrContainsAppLayout:v8];
+    selectedAppLayout = [(SBContinuousExposeHomeGestureSwitcherModifier *)self selectedAppLayout];
+    v9 = [v6 isOrContainsAppLayout:selectedAppLayout];
 
     if (v9)
     {
@@ -1920,17 +1920,17 @@ uint64_t __69__SBContinuousExposeHomeGestureSwitcherModifier_anchorPointForIndex
     {
       v11.receiver = self;
       v11.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-      v7 = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v11 shouldPinLayoutRolesToSpace:a3];
+      v7 = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v11 shouldPinLayoutRolesToSpace:space];
     }
   }
 
   return v7;
 }
 
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space
 {
-  v5 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:space];
 
   if (self->_inExposeMultitasking && [(SBAppLayout *)self->_selectedAppLayout isEqual:v6])
   {
@@ -1939,8 +1939,8 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v7 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self selectedAppLayout];
-  v8 = [v6 isOrContainsAppLayout:v7];
+  selectedAppLayout = [(SBContinuousExposeHomeGestureSwitcherModifier *)self selectedAppLayout];
+  v8 = [v6 isOrContainsAppLayout:selectedAppLayout];
 
   if ((v8 & 1) == 0)
   {
@@ -1948,7 +1948,7 @@ LABEL_7:
     {
       v11.receiver = self;
       v11.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-      v9 = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v11 shouldUseAnchorPointToPinLayoutRolesToSpace:a3];
+      v9 = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v11 shouldUseAnchorPointToPinLayoutRolesToSpace:space];
       goto LABEL_9;
     }
 
@@ -1961,32 +1961,32 @@ LABEL_9:
   return v9;
 }
 
-- (double)adjustedSpaceAccessoryViewScale:(double)a3 forAppLayout:(id)a4
+- (double)adjustedSpaceAccessoryViewScale:(double)scale forAppLayout:(id)layout
 {
-  v6 = a4;
-  if (!self->_inMultitasking || [(SBAppLayout *)self->_selectedAppLayout isEqual:v6])
+  layoutCopy = layout;
+  if (!self->_inMultitasking || [(SBAppLayout *)self->_selectedAppLayout isEqual:layoutCopy])
   {
     v9.receiver = self;
     v9.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v9 adjustedSpaceAccessoryViewScale:v6 forAppLayout:a3];
-    a3 = v7;
+    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v9 adjustedSpaceAccessoryViewScale:layoutCopy forAppLayout:scale];
+    scale = v7;
   }
 
-  return a3;
+  return scale;
 }
 
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  if (!self->_inMultitasking || [(SBAppLayout *)self->_selectedAppLayout isEqual:v9])
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
+  if (!self->_inMultitasking || [(SBAppLayout *)self->_selectedAppLayout isEqual:layoutCopy])
   {
     v18.receiver = self;
     v18.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v18 adjustedSpaceAccessoryViewFrame:v9 forAppLayout:x, y, width, height];
+    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v18 adjustedSpaceAccessoryViewFrame:layoutCopy forAppLayout:x, y, width, height];
     x = v10;
     y = v11;
     width = v12;
@@ -2004,16 +2004,16 @@ LABEL_9:
   return result;
 }
 
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  if (!self->_inMultitasking || [(SBAppLayout *)self->_selectedAppLayout isEqual:v7])
+  y = point.y;
+  x = point.x;
+  layoutCopy = layout;
+  if (!self->_inMultitasking || [(SBAppLayout *)self->_selectedAppLayout isEqual:layoutCopy])
   {
     v12.receiver = self;
     v12.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v12 adjustedSpaceAccessoryViewAnchorPoint:v7 forAppLayout:x, y];
+    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v12 adjustedSpaceAccessoryViewAnchorPoint:layoutCopy forAppLayout:x, y];
     x = v8;
     y = v9;
   }
@@ -2034,7 +2034,7 @@ LABEL_9:
   v12 = __Block_byref_object_dispose__118;
   v7.receiver = self;
   v7.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-  v13 = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v7 continuousExposeIdentifiersInSwitcher];
+  continuousExposeIdentifiersInSwitcher = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v7 continuousExposeIdentifiersInSwitcher];
   if (self->_inMultitasking && self->_selectedAppLayout)
   {
     appSwitcherModifier = self->_appSwitcherModifier;
@@ -2065,17 +2065,17 @@ void __86__SBContinuousExposeHomeGestureSwitcherModifier_continuousExposeIdentif
   *(v6 + 40) = v5;
 }
 
-- (id)appLayoutsForContinuousExposeIdentifier:(id)a3
+- (id)appLayoutsForContinuousExposeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-  v5 = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v11 appLayoutsForContinuousExposeIdentifier:v4];
+  v5 = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v11 appLayoutsForContinuousExposeIdentifier:identifierCopy];
   v6 = v5;
   if (self->_inMultitasking && [v5 count] >= 2)
   {
-    v7 = [(SBAppLayout *)self->_selectedAppLayout continuousExposeIdentifier];
-    v8 = [v7 isEqualToString:v4];
+    continuousExposeIdentifier = [(SBAppLayout *)self->_selectedAppLayout continuousExposeIdentifier];
+    v8 = [continuousExposeIdentifier isEqualToString:identifierCopy];
 
     if (v8)
     {
@@ -2115,9 +2115,9 @@ void __86__SBContinuousExposeHomeGestureSwitcherModifier_continuousExposeIdentif
   {
     v25.receiver = self;
     v25.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-    v4 = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v25 topMostLayoutElements];
+    topMostLayoutElements = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v25 topMostLayoutElements];
     v5 = v28[5];
-    v28[5] = v4;
+    v28[5] = topMostLayoutElements;
   }
 
   if (self->_arcSwipePulledStripAppLayout || self->_arcSwipePullingChangedProperty)
@@ -2189,7 +2189,7 @@ void __70__SBContinuousExposeHomeGestureSwitcherModifier_topMostLayoutElements__
   *(v3 + 40) = v2;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
   v29 = 0;
   v30 = &v29;
@@ -2199,19 +2199,19 @@ void __70__SBContinuousExposeHomeGestureSwitcherModifier_topMostLayoutElements__
   v34 = 0u;
   if ([(SBContinuousExposeHomeGestureSwitcherModifier *)self _isSelectedAppLayoutAtIndex:?])
   {
-    v5 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
-    v6 = [(SBSwitcherModifier *)self windowingConfiguration];
+    switcherSettings = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
+    windowingConfiguration = [(SBSwitcherModifier *)self windowingConfiguration];
     [(SBContinuousExposeHomeGestureSwitcherModifier *)self displayCornerRadius];
-    [v6 nonSolariumStageCornerRadii];
-    v7 = [v5 windowingSettings];
-    [v7 switcherCornerRadius];
+    [windowingConfiguration nonSolariumStageCornerRadii];
+    windowingSettings = [switcherSettings windowingSettings];
+    [windowingSettings switcherCornerRadius];
 
     if (self->_startingEnvironmentMode != 1 && [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayoutContainsAnUnoccludedMaximizedDisplayItem:self->_selectedAppLayout])
     {
       BSFloatIsZero();
     }
 
-    [(SBContinuousExposeHomeGestureSwitcherModifier *)self scaleForIndex:a3];
+    [(SBContinuousExposeHomeGestureSwitcherModifier *)self scaleForIndex:index];
     SBRectCornerRadiiForRadius();
     v14 = v30;
     v30[4] = v15;
@@ -2229,7 +2229,7 @@ void __70__SBContinuousExposeHomeGestureSwitcherModifier_topMostLayoutElements__
     v28[3] = &unk_2783AA618;
     v28[4] = self;
     v28[5] = &v29;
-    v28[6] = a3;
+    v28[6] = index;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:appSwitcherModifier usingBlock:v28];
   }
 
@@ -2237,7 +2237,7 @@ void __70__SBContinuousExposeHomeGestureSwitcherModifier_topMostLayoutElements__
   {
     v27.receiver = self;
     v27.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v27 cornerRadiiForIndex:a3];
+    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v27 cornerRadiiForIndex:index];
     v9 = v30;
     v30[4] = v10;
     v9[5] = v11;
@@ -2272,16 +2272,16 @@ uint64_t __69__SBContinuousExposeHomeGestureSwitcherModifier_cornerRadiiForIndex
   return result;
 }
 
-- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withCornerRadii:(UIRectCornerRadii)a5
+- (UIRectCornerRadii)cornerRadiiForLayoutRole:(int64_t)role inAppLayout:(id)layout withCornerRadii:(UIRectCornerRadii)radii
 {
-  topRight = a5.topRight;
-  bottomRight = a5.bottomRight;
-  bottomLeft = a5.bottomLeft;
-  topLeft = a5.topLeft;
-  v11 = a4;
-  if (BSEqualObjects() && ([v11 itemForLayoutRole:a3], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
+  topRight = radii.topRight;
+  bottomRight = radii.bottomRight;
+  bottomLeft = radii.bottomLeft;
+  topLeft = radii.topLeft;
+  layoutCopy = layout;
+  if (BSEqualObjects() && ([layoutCopy itemForLayoutRole:role], v12 = objc_claimAutoreleasedReturnValue(), v12, v12))
   {
-    if (-[SBContinuousExposeHomeGestureSwitcherModifier _shouldResignActiveBasedOnCardScale](self, "_shouldResignActiveBasedOnCardScale") && (-[SBContinuousExposeHomeGestureSwitcherModifier displayItemInSlideOver](self, "displayItemInSlideOver"), v13 = objc_claimAutoreleasedReturnValue(), [v11 itemForLayoutRole:a3], v14 = objc_claimAutoreleasedReturnValue(), v15 = BSEqualObjects(), v14, v13, !v15))
+    if (-[SBContinuousExposeHomeGestureSwitcherModifier _shouldResignActiveBasedOnCardScale](self, "_shouldResignActiveBasedOnCardScale") && (-[SBContinuousExposeHomeGestureSwitcherModifier displayItemInSlideOver](self, "displayItemInSlideOver"), v13 = objc_claimAutoreleasedReturnValue(), [layoutCopy itemForLayoutRole:role], v14 = objc_claimAutoreleasedReturnValue(), v15 = BSEqualObjects(), v14, v13, !v15))
     {
       v48 = 0;
       v49 = &v48;
@@ -2295,9 +2295,9 @@ uint64_t __69__SBContinuousExposeHomeGestureSwitcherModifier_cornerRadiiForIndex
       v40[2] = __102__SBContinuousExposeHomeGestureSwitcherModifier_cornerRadiiForLayoutRole_inAppLayout_withCornerRadii___block_invoke;
       v40[3] = &unk_2783AA640;
       v42 = &v48;
-      v43 = a3;
+      roleCopy = role;
       v40[4] = self;
-      v41 = v11;
+      v41 = layoutCopy;
       v44 = topLeft;
       v45 = bottomLeft;
       v46 = bottomRight;
@@ -2315,33 +2315,33 @@ uint64_t __69__SBContinuousExposeHomeGestureSwitcherModifier_cornerRadiiForIndex
     {
       [(SBContinuousExposeHomeGestureSwitcherModifier *)self displayCornerRadius];
       v17 = v16;
-      [(SBContinuousExposeHomeGestureSwitcherModifier *)self bestSupportedDefaultCornerRadiusForAppLayout:v11];
+      [(SBContinuousExposeHomeGestureSwitcherModifier *)self bestSupportedDefaultCornerRadiusForAppLayout:layoutCopy];
       SBRectCornerRadiiForRadius();
       v19 = v18;
       v21 = v20;
       v23 = v22;
       v25 = v24;
-      v26 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:v11];
-      v27 = [v11 itemForLayoutRole:a3];
+      v26 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:layoutCopy];
+      v27 = [layoutCopy itemForLayoutRole:role];
       v28 = [v26 flexibleAutoLayoutItemForDisplayItem:v27];
-      v29 = [v28 intersectedDisplayRectCorners];
+      intersectedDisplayRectCorners = [v28 intersectedDisplayRectCorners];
 
-      if (v29)
+      if (intersectedDisplayRectCorners)
       {
         v19 = v17;
       }
 
-      if ((v29 & 2) != 0)
+      if ((intersectedDisplayRectCorners & 2) != 0)
       {
         v25 = v17;
       }
 
-      if ((v29 & 4) != 0)
+      if ((intersectedDisplayRectCorners & 4) != 0)
       {
         v21 = v17;
       }
 
-      if ((v29 & 8) == 0)
+      if ((intersectedDisplayRectCorners & 8) == 0)
       {
         v17 = v23;
       }
@@ -2352,7 +2352,7 @@ uint64_t __69__SBContinuousExposeHomeGestureSwitcherModifier_cornerRadiiForIndex
   {
     v39.receiver = self;
     v39.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v39 cornerRadiiForLayoutRole:a3 inAppLayout:v11 withCornerRadii:topLeft, bottomLeft, bottomRight, topRight];
+    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v39 cornerRadiiForLayoutRole:role inAppLayout:layoutCopy withCornerRadii:topLeft, bottomLeft, bottomRight, topRight];
     v19 = v30;
     v21 = v31;
     v17 = v32;
@@ -2381,18 +2381,18 @@ uint64_t __102__SBContinuousExposeHomeGestureSwitcherModifier_cornerRadiiForLayo
   return result;
 }
 
-- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (SBSwitcherWallpaperGradientAttributes)wallpaperGradientAttributesForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  if (([v6 isEqual:self->_selectedAppLayout] & 1) != 0 || (v7 = 0.0, v8 = 0.0, !self->_inMultitasking))
+  layoutCopy = layout;
+  if (([layoutCopy isEqual:self->_selectedAppLayout] & 1) != 0 || (v7 = 0.0, v8 = 0.0, !self->_inMultitasking))
   {
     v7 = 0.0;
     v8 = 0.0;
-    if (([v6 isEqual:self->_arcSwipePulledStripAppLayout] & 1) == 0)
+    if (([layoutCopy isEqual:self->_arcSwipePulledStripAppLayout] & 1) == 0)
     {
       v13.receiver = self;
       v13.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-      [(SBContinuousExposeHomeGestureSwitcherModifier *)&v13 wallpaperGradientAttributesForLayoutRole:a3 inAppLayout:v6];
+      [(SBContinuousExposeHomeGestureSwitcherModifier *)&v13 wallpaperGradientAttributesForLayoutRole:role inAppLayout:layoutCopy];
       v8 = v9;
       v7 = v10;
     }
@@ -2405,17 +2405,17 @@ uint64_t __102__SBContinuousExposeHomeGestureSwitcherModifier_cornerRadiiForLayo
   return result;
 }
 
-- (double)dimmingAlphaForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (double)dimmingAlphaForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  if (([v6 isEqual:self->_selectedAppLayout] & 1) != 0 || (v7 = 0.0, !self->_inMultitasking))
+  layoutCopy = layout;
+  if (([layoutCopy isEqual:self->_selectedAppLayout] & 1) != 0 || (v7 = 0.0, !self->_inMultitasking))
   {
     v7 = 0.0;
-    if (([v6 isEqual:self->_arcSwipePulledStripAppLayout] & 1) == 0)
+    if (([layoutCopy isEqual:self->_arcSwipePulledStripAppLayout] & 1) == 0)
     {
       v10.receiver = self;
       v10.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-      [(SBContinuousExposeHomeGestureSwitcherModifier *)&v10 dimmingAlphaForLayoutRole:a3 inAppLayout:v6];
+      [(SBContinuousExposeHomeGestureSwitcherModifier *)&v10 dimmingAlphaForLayoutRole:role inAppLayout:layoutCopy];
       v7 = v8;
       if (BSFloatIsZero())
       {
@@ -2430,9 +2430,9 @@ uint64_t __102__SBContinuousExposeHomeGestureSwitcherModifier_cornerRadiiForLayo
 - (id)visibleAppLayouts
 {
   v3 = +[SBSetupManager sharedInstance];
-  v4 = [v3 isInSetupMode];
+  isInSetupMode = [v3 isInSetupMode];
 
-  if (v4)
+  if (isInSetupMode)
   {
     if (self->_selectedAppLayout)
     {
@@ -2450,28 +2450,28 @@ uint64_t __102__SBContinuousExposeHomeGestureSwitcherModifier_cornerRadiiForLayo
   {
     v42.receiver = self;
     v42.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-    v5 = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v42 visibleAppLayouts];
-    v6 = [v5 mutableCopy];
+    visibleAppLayouts = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v42 visibleAppLayouts];
+    v6 = [visibleAppLayouts mutableCopy];
 
     if (self->_selectedAppLayout)
     {
       [v6 addObject:?];
     }
 
-    v7 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _selectedAppLayoutIndex];
-    if (v7 == 0x7FFFFFFFFFFFFFFFLL)
+    _selectedAppLayoutIndex = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _selectedAppLayoutIndex];
+    if (_selectedAppLayoutIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
       v8 = 0;
     }
 
     else
     {
-      v8 = v7;
+      v8 = _selectedAppLayoutIndex;
     }
 
-    v9 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
-    v10 = v9;
-    if ((self->_shouldResignActive || self->_inMultitasking || self->_startingEnvironmentMode == 2) && [v9 count])
+    appLayouts = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+    v10 = appLayouts;
+    if ((self->_shouldResignActive || self->_inMultitasking || self->_startingEnvironmentMode == 2) && [appLayouts count])
     {
       if (self->_inMultitasking || (v11 = self->_startingEnvironmentMode != 1, (BSFloatIsZero() & 1) == 0))
       {
@@ -2557,24 +2557,24 @@ uint64_t __102__SBContinuousExposeHomeGestureSwitcherModifier_cornerRadiiForLayo
   return v6;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v12.receiver = self;
   v12.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-  v5 = [(SBGestureSwitcherModifier *)&v12 animationAttributesForLayoutElement:v4];
-  if (![v4 switcherLayoutElementType])
+  v5 = [(SBGestureSwitcherModifier *)&v12 animationAttributesForLayoutElement:elementCopy];
+  if (![elementCopy switcherLayoutElementType])
   {
     v6 = [v5 mutableCopy];
-    v7 = [v5 layoutSettings];
-    v8 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _layoutSettingsForAppLayout:v4 layoutSettings:v7];
+    layoutSettings = [v5 layoutSettings];
+    v8 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _layoutSettingsForAppLayout:elementCopy layoutSettings:layoutSettings];
     [v6 setLayoutSettings:v8];
 
-    v9 = [v6 opacitySettings];
-    [v6 setOpacitySettings:v9];
+    opacitySettings = [v6 opacitySettings];
+    [v6 setOpacitySettings:opacitySettings];
 
-    v10 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _cornerRadiusSettings];
-    [v6 setCornerRadiusSettings:v10];
+    _cornerRadiusSettings = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _cornerRadiusSettings];
+    [v6 setCornerRadiusSettings:_cornerRadiusSettings];
 
     v5 = v6;
   }
@@ -2584,17 +2584,17 @@ uint64_t __102__SBContinuousExposeHomeGestureSwitcherModifier_cornerRadiiForLayo
 
 - (id)_cornerRadiusSettings
 {
-  v2 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
-  v3 = [v2 animationSettings];
-  v4 = [v3 appToSwitcherCornerRadiusSettings];
+  switcherSettings = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  appToSwitcherCornerRadiusSettings = [animationSettings appToSwitcherCornerRadiusSettings];
 
-  return v4;
+  return appToSwitcherCornerRadiusSettings;
 }
 
-- (id)_layoutSettingsForAppLayout:(id)a3 layoutSettings:(id)a4
+- (id)_layoutSettingsForAppLayout:(id)layout layoutSettings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  settingsCopy = settings;
   inExposeMultitaskingChangedProperty = self->_inExposeMultitaskingChangedProperty;
   if (inExposeMultitaskingChangedProperty)
   {
@@ -2616,41 +2616,41 @@ uint64_t __102__SBContinuousExposeHomeGestureSwitcherModifier_cornerRadiiForLayo
   {
     v9 = 0.45;
 LABEL_7:
-    v11 = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
-    [v11 setTrackingResponse:v9];
-    [v11 setTrackingDampingRatio:0.85];
+    initWithDefaultValues = [objc_alloc(MEMORY[0x277D65E60]) initWithDefaultValues];
+    [initWithDefaultValues setTrackingResponse:v9];
+    [initWithDefaultValues setTrackingDampingRatio:0.85];
 LABEL_8:
     v16 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-    [v11 setFrameRateRange:1114113 highFrameRateReason:{*&v16.minimum, *&v16.maximum, *&v16.preferred}];
+    [initWithDefaultValues setFrameRateRange:1114113 highFrameRateReason:{*&v16.minimum, *&v16.maximum, *&v16.preferred}];
     goto LABEL_9;
   }
 
-  if ([(SBAppLayout *)self->_selectedAppLayout isEqual:v6])
+  if ([(SBAppLayout *)self->_selectedAppLayout isEqual:layoutCopy])
   {
-    v11 = v7;
+    initWithDefaultValues = settingsCopy;
   }
 
   else
   {
-    if (!-[SBContinuousExposeHomeGestureSwitcherModifier isShowingOrAnimatingCardsForFlyIn](self, "isShowingOrAnimatingCardsForFlyIn") && !self->_arcSwipePullingChangedProperty && ![v6 isEqual:self->_arcSwipePulledStripAppLayout])
+    if (!-[SBContinuousExposeHomeGestureSwitcherModifier isShowingOrAnimatingCardsForFlyIn](self, "isShowingOrAnimatingCardsForFlyIn") && !self->_arcSwipePullingChangedProperty && ![layoutCopy isEqual:self->_arcSwipePulledStripAppLayout])
     {
-      v11 = objc_alloc_init(MEMORY[0x277D65E60]);
-      [v11 setDefaultValues];
-      [v11 setTrackingResponse:0.0];
+      initWithDefaultValues = objc_alloc_init(MEMORY[0x277D65E60]);
+      [initWithDefaultValues setDefaultValues];
+      [initWithDefaultValues setTrackingResponse:0.0];
       goto LABEL_8;
     }
 
-    v13 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
-    v14 = [v13 animationSettings];
-    v11 = [v14 arcSwipeSwitcherGlancingSettings];
+    switcherSettings = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    initWithDefaultValues = [animationSettings arcSwipeSwitcherGlancingSettings];
   }
 
 LABEL_9:
 
-  return v11;
+  return initWithDefaultValues;
 }
 
-- (CGPoint)contentOffsetForIndex:(unint64_t)a3 alignment:(int64_t)a4
+- (CGPoint)contentOffsetForIndex:(unint64_t)index alignment:(int64_t)alignment
 {
   v12 = 0;
   v13 = &v12;
@@ -2667,8 +2667,8 @@ LABEL_9:
     v11[3] = &unk_2783AA6B8;
     v11[4] = self;
     v11[5] = &v12;
-    v11[6] = a3;
-    v11[7] = a4;
+    v11[6] = index;
+    v11[7] = alignment;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:appSwitcherModifier usingBlock:v11];
   }
 
@@ -2681,8 +2681,8 @@ LABEL_9:
     v10[3] = &unk_2783AA6B8;
     v10[4] = self;
     v10[5] = &v12;
-    v10[6] = a3;
-    v10[7] = a4;
+    v10[6] = index;
+    v10[7] = alignment;
     [(SBChainableModifier *)self performTransactionWithTemporaryChildModifier:exposeModifier usingBlock:v10];
   }
 
@@ -2714,13 +2714,13 @@ uint64_t __81__SBContinuousExposeHomeGestureSwitcherModifier_contentOffsetForInd
   return result;
 }
 
-- (double)_scaleForTranslation:(CGPoint)a3
+- (double)_scaleForTranslation:(CGPoint)translation
 {
   if (self->_scrunchInitiated)
   {
     x = self->_translationWithoutScale.x;
     y = self->_translationWithoutScale.y;
-    [(SBContinuousExposeHomeGestureSwitcherModifier *)self containerViewBounds:a3.x];
+    [(SBContinuousExposeHomeGestureSwitcherModifier *)self containerViewBounds:translation.x];
     v8 = self->_initialCentroid.y;
     if (v8 < v7 * 0.5)
     {
@@ -2732,7 +2732,7 @@ uint64_t __81__SBContinuousExposeHomeGestureSwitcherModifier_contentOffsetForInd
 
   else
   {
-    v9 = a3.y;
+    v9 = translation.y;
   }
 
   [(SBContinuousExposeHomeGestureSwitcherModifier *)self _gestureProgressToMaxTranslationForTranslation:v9];
@@ -2801,8 +2801,8 @@ uint64_t __81__SBContinuousExposeHomeGestureSwitcherModifier_contentOffsetForInd
   {
     if (+[SBFloatingDockController isFloatingDockSupported])
     {
-      v23 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
-      [v23 offscreenCardScaleForFlyIn];
+      switcherSettings = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
+      [switcherSettings offscreenCardScaleForFlyIn];
     }
 
     BSUIConstrainValueToIntervalWithRubberBand();
@@ -2814,8 +2814,8 @@ uint64_t __81__SBContinuousExposeHomeGestureSwitcherModifier_contentOffsetForInd
 
 - (double)_scaleForOffscreenAdjacentCardsForFlyIn
 {
-  v3 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
-  [v3 offscreenCardScaleForFlyIn];
+  switcherSettings = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
+  [switcherSettings offscreenCardScaleForFlyIn];
   v5 = v4;
   [(SBContinuousExposeHomeGestureSwitcherModifier *)self _scaleForTranslation:self->_translation.x, self->_translation.y];
   v7 = v6;
@@ -2872,44 +2872,44 @@ uint64_t __81__SBContinuousExposeHomeGestureSwitcherModifier_contentOffsetForInd
   return result;
 }
 
-- (void)_getActivePositionAndScaleForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 withBounds:(CGRect)a5 outPosition:(CGPoint *)a6 outScale:(double *)a7
+- (void)_getActivePositionAndScaleForLayoutRole:(int64_t)role inAppLayout:(id)layout withBounds:(CGRect)bounds outPosition:(CGPoint *)position outScale:(double *)scale
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v15 = a4;
-  v16 = [v15 itemForLayoutRole:a3];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
+  v16 = [layoutCopy itemForLayoutRole:role];
   v53.receiver = self;
   v53.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
   v48 = height;
   v49 = width;
-  [(SBContinuousExposeHomeGestureSwitcherModifier *)&v53 frameForLayoutRole:a3 inAppLayout:v15 withBounds:x, y, width, height];
+  [(SBContinuousExposeHomeGestureSwitcherModifier *)&v53 frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
   UIRectGetCenter();
   v18 = v17;
   v45 = v19;
   v52.receiver = self;
   v52.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-  [(SBContinuousExposeHomeGestureSwitcherModifier *)&v52 scaleForLayoutRole:a3 inAppLayout:v15];
+  [(SBContinuousExposeHomeGestureSwitcherModifier *)&v52 scaleForLayoutRole:role inAppLayout:layoutCopy];
   v21 = v20;
   [(SBContinuousExposeHomeGestureSwitcherModifier *)self _scaleForTranslation:self->_translation.x, self->_translation.y];
   v23 = v22;
   [(SBContinuousExposeHomeGestureSwitcherModifier *)self _frameOffsetForTranslation:self->_translation.x, self->_translation.y];
   v46 = v25;
   v47 = v24;
-  v26 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:v15];
+  v26 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:layoutCopy];
 
   [v26 boundingBox];
   v28 = v27;
   v30 = v29;
-  v31 = [v26 autoLayoutItems];
+  autoLayoutItems = [v26 autoLayoutItems];
   v50[0] = MEMORY[0x277D85DD0];
   v50[1] = 3221225472;
   v50[2] = __133__SBContinuousExposeHomeGestureSwitcherModifier__getActivePositionAndScaleForLayoutRole_inAppLayout_withBounds_outPosition_outScale___block_invoke;
   v50[3] = &unk_2783B6060;
   v51 = v16;
   v32 = v16;
-  v33 = [v31 bs_firstObjectPassingTest:v50];
+  v33 = [autoLayoutItems bs_firstObjectPassingTest:v50];
 
   [v33 exposePosition];
   v35 = v34 - v28;
@@ -2938,15 +2938,15 @@ uint64_t __81__SBContinuousExposeHomeGestureSwitcherModifier_contentOffsetForInd
     v39 = v21 + v44 * (v39 - v21);
   }
 
-  if (a6)
+  if (position)
   {
-    a6->x = v47 + v35 - (1.0 - v43) * (v47 + v35 - v49 * 0.5);
-    a6->y = v46 + v37 - (1.0 - v43) * (v46 + v37 - v48 * 0.5);
+    position->x = v47 + v35 - (1.0 - v43) * (v47 + v35 - v49 * 0.5);
+    position->y = v46 + v37 - (1.0 - v43) * (v46 + v37 - v48 * 0.5);
   }
 
-  if (a7)
+  if (scale)
   {
-    *a7 = v43 * v39;
+    *scale = v43 * v39;
   }
 }
 
@@ -2958,9 +2958,9 @@ uint64_t __133__SBContinuousExposeHomeGestureSwitcherModifier__getActivePosition
   return v4;
 }
 
-- (CGPoint)_frameOffsetForTranslation:(CGPoint)a3
+- (CGPoint)_frameOffsetForTranslation:(CGPoint)translation
 {
-  y = a3.y;
+  y = translation.y;
   v5 = MEMORY[0x277CBF348];
   v6 = *(MEMORY[0x277CBF348] + 8);
   if (self->_startingEnvironmentMode == 1)
@@ -3067,16 +3067,16 @@ uint64_t __133__SBContinuousExposeHomeGestureSwitcherModifier__getActivePosition
   return result;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
-  v9 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self peekingAppLayout];
+  layoutCopy = layout;
+  peekingAppLayout = [(SBContinuousExposeHomeGestureSwitcherModifier *)self peekingAppLayout];
 
-  if (v9)
+  if (peekingAppLayout)
   {
     v13.receiver = self;
     v13.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v13 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v13 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
     v11 = v10;
   }
 
@@ -3088,45 +3088,45 @@ uint64_t __133__SBContinuousExposeHomeGestureSwitcherModifier__getActivePosition
   return v11;
 }
 
-- (double)wallpaperOverlayAlphaForIndex:(unint64_t)a3
+- (double)wallpaperOverlayAlphaForIndex:(unint64_t)index
 {
   stackedProgress = self->_stackedProgress;
   v6.receiver = self;
   v6.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-  [(SBContinuousExposeHomeGestureSwitcherModifier *)&v6 wallpaperOverlayAlphaForIndex:a3];
+  [(SBContinuousExposeHomeGestureSwitcherModifier *)&v6 wallpaperOverlayAlphaForIndex:index];
   return stackedProgress * v4 + 0.0;
 }
 
-- (double)lighteningAlphaForIndex:(unint64_t)a3
+- (double)lighteningAlphaForIndex:(unint64_t)index
 {
   stackedProgress = self->_stackedProgress;
   v6.receiver = self;
   v6.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-  [(SBContinuousExposeHomeGestureSwitcherModifier *)&v6 lighteningAlphaForIndex:a3];
+  [(SBContinuousExposeHomeGestureSwitcherModifier *)&v6 lighteningAlphaForIndex:index];
   return stackedProgress * v4 + 0.0;
 }
 
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3
+- (double)titleAndIconOpacityForIndex:(unint64_t)index
 {
   result = 0.0;
   if (!self->_inMultitasking)
   {
     v4.receiver = self;
     v4.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v4 titleAndIconOpacityForIndex:a3, 0.0];
+    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v4 titleAndIconOpacityForIndex:index, 0.0];
   }
 
   return result;
 }
 
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index
 {
   result = 1.0;
   if (!self->_inMultitasking)
   {
     v5.receiver = self;
     v5.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v5 shadowOpacityForLayoutRole:a3 atIndex:a4, 1.0];
+    [(SBContinuousExposeHomeGestureSwitcherModifier *)&v5 shadowOpacityForLayoutRole:role atIndex:index, 1.0];
   }
 
   return result;
@@ -3195,9 +3195,9 @@ uint64_t __133__SBContinuousExposeHomeGestureSwitcherModifier__getActivePosition
   v4 = v3;
   if (self->_startingEnvironmentMode == 1 && self->_inMultitasking)
   {
-    v5 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
-    v6 = [v5 animationSettings];
-    [v6 wallpaperScaleInSwitcher];
+    switcherSettings = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings wallpaperScaleInSwitcher];
     v4 = v7;
   }
 
@@ -3225,17 +3225,17 @@ uint64_t __133__SBContinuousExposeHomeGestureSwitcherModifier__getActivePosition
 
     else
     {
-      v4 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self windowManagementContext];
-      v5 = [v4 isFlexibleWindowingEnabled];
+      windowManagementContext = [(SBContinuousExposeHomeGestureSwitcherModifier *)self windowManagementContext];
+      isFlexibleWindowingEnabled = [windowManagementContext isFlexibleWindowingEnabled];
 
-      if (v5)
+      if (isFlexibleWindowingEnabled)
       {
         v16.receiver = self;
         v16.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
         [(SBContinuousExposeHomeGestureSwitcherModifier *)&v16 homeScreenDimmingAlpha];
-        v6 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
-        v7 = [v6 windowingSettings];
-        [v7 maxHomeScreenDimmingAlphaForNonFullscreen];
+        switcherSettings = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
+        windowingSettings = [switcherSettings windowingSettings];
+        [windowingSettings maxHomeScreenDimmingAlphaForNonFullscreen];
 
         BSFloatByLinearlyInterpolatingFloats();
       }
@@ -3322,9 +3322,9 @@ uint64_t __133__SBContinuousExposeHomeGestureSwitcherModifier__getActivePosition
       toHomeScreenBlurProgress = v7 + v8;
     }
 
-    v10 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
-    v11 = [v10 windowingSettings];
-    if ([v11 blurWallpaperInApps])
+    switcherSettings = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
+    windowingSettings = [switcherSettings windowingSettings];
+    if ([windowingSettings blurWallpaperInApps])
     {
       startingEnvironmentMode = self->_startingEnvironmentMode;
 
@@ -3348,8 +3348,8 @@ uint64_t __133__SBContinuousExposeHomeGestureSwitcherModifier__getActivePosition
   {
     if (self->_inMultitasking)
     {
-      v2 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
-      v3 = [v2 count] == 0;
+      appLayouts = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+      v3 = [appLayouts count] == 0;
     }
 
     else
@@ -3368,16 +3368,16 @@ uint64_t __133__SBContinuousExposeHomeGestureSwitcherModifier__getActivePosition
   return v3;
 }
 
-- (unint64_t)hiddenContentStatusBarPartsForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (unint64_t)hiddenContentStatusBarPartsForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
+  layoutCopy = layout;
   if (![(SBContinuousExposeHomeGestureSwitcherModifier *)self _shouldResignActiveBasedOnCardScale])
   {
     goto LABEL_4;
   }
 
-  v7 = [v6 itemForLayoutRole:a3];
-  v8 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self displayItemInSlideOver];
+  v7 = [layoutCopy itemForLayoutRole:role];
+  displayItemInSlideOver = [(SBContinuousExposeHomeGestureSwitcherModifier *)self displayItemInSlideOver];
   if ((BSEqualObjects() & 1) == 0)
   {
 
@@ -3400,10 +3400,10 @@ LABEL_7:
   return v10;
 }
 
-- (int64_t)occlusionStateForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (int64_t)occlusionStateForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
-  v6 = a4;
-  v7 = [v6 itemForLayoutRole:a3];
+  layoutCopy = layout;
+  v7 = [layoutCopy itemForLayoutRole:role];
   if ([(SBAppLayout *)self->_selectedAppLayout containsItem:v7]&& self->_inExposeMultitasking)
   {
     v8 = 1;
@@ -3413,26 +3413,26 @@ LABEL_7:
   {
     v10.receiver = self;
     v10.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-    v8 = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v10 occlusionStateForLayoutRole:a3 inAppLayout:v6];
+    v8 = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v10 occlusionStateForLayoutRole:role inAppLayout:layoutCopy];
   }
 
   return v8;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
-  v4 = a3;
+  layoutsCopy = layouts;
   v15.receiver = self;
   v15.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-  v5 = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v15 adjustedAppLayoutsForAppLayouts:v4];
-  v6 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self displayItemInSlideOver];
-  if (v6 && ([v4 firstObject], v7 = objc_claimAutoreleasedReturnValue(), -[SBContinuousExposeHomeGestureSwitcherModifier layoutAttributesForDisplayItem:inAppLayout:](self, "layoutAttributesForDisplayItem:inAppLayout:", v6, v7), v8 = objc_claimAutoreleasedReturnValue(), -[SBDisplayItemLayoutAttributes slideOverConfiguration](v8, v14), v9 = v14[33], v8, v7, v9 == 1))
+  v5 = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v15 adjustedAppLayoutsForAppLayouts:layoutsCopy];
+  displayItemInSlideOver = [(SBContinuousExposeHomeGestureSwitcherModifier *)self displayItemInSlideOver];
+  if (displayItemInSlideOver && ([layoutsCopy firstObject], v7 = objc_claimAutoreleasedReturnValue(), -[SBContinuousExposeHomeGestureSwitcherModifier layoutAttributesForDisplayItem:inAppLayout:](self, "layoutAttributesForDisplayItem:inAppLayout:", displayItemInSlideOver, v7), v8 = objc_claimAutoreleasedReturnValue(), -[SBDisplayItemLayoutAttributes slideOverConfiguration](v8, v14), v9 = v14[33], v8, v7, v9 == 1))
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __81__SBContinuousExposeHomeGestureSwitcherModifier_adjustedAppLayoutsForAppLayouts___block_invoke;
     v12[3] = &unk_2783A8CB8;
-    v13 = v6;
+    v13 = displayItemInSlideOver;
     v10 = [v5 bs_filter:v12];
   }
 
@@ -3446,12 +3446,12 @@ LABEL_7:
 
 - (id)appLayoutsToCacheSnapshots
 {
-  v3 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
-  if ([v3 count])
+  appLayouts = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+  if ([appLayouts count])
   {
     if (self->_selectedAppLayout)
     {
-      v4 = [v3 indexOfObject:?];
+      v4 = [appLayouts indexOfObject:?];
       if (v4 == 0x7FFFFFFFFFFFFFFFLL)
       {
         v5 = 0;
@@ -3468,14 +3468,14 @@ LABEL_7:
       v5 = 0;
     }
 
-    v7 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
-    v8 = [v7 numberOfSnapshotsToAlwaysKeepAround];
-    if (!v8)
+    switcherSettings = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
+    numberOfSnapshotsToAlwaysKeepAround = [switcherSettings numberOfSnapshotsToAlwaysKeepAround];
+    if (!numberOfSnapshotsToAlwaysKeepAround)
     {
-      v8 = [v7 numberOfSnapshotsToCacheInSwitcher];
+      numberOfSnapshotsToAlwaysKeepAround = [switcherSettings numberOfSnapshotsToCacheInSwitcher];
     }
 
-    v6 = [(SBSwitcherModifier *)self appLayoutsToCacheSnapshotsWithVisibleRange:v5 numberOfSnapshotsToCache:1 biasForward:v8, 1];
+    v6 = [(SBSwitcherModifier *)self appLayoutsToCacheSnapshotsWithVisibleRange:v5 numberOfSnapshotsToCache:1 biasForward:numberOfSnapshotsToAlwaysKeepAround, 1];
   }
 
   else
@@ -3488,14 +3488,14 @@ LABEL_7:
 
 - (id)appLayoutsToCacheFullsizeSnapshots
 {
-  v3 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+  appLayouts = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
   if (!self->_selectedAppLayout)
   {
     goto LABEL_4;
   }
 
-  v4 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
-  v5 = [v4 indexOfObject:self->_selectedAppLayout];
+  appLayouts2 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+  v5 = [appLayouts2 indexOfObject:self->_selectedAppLayout];
 
   if (v5)
   {
@@ -3517,12 +3517,12 @@ LABEL_4:
   }
 
 LABEL_7:
-  v12.length = [v3 count];
+  v12.length = [appLayouts count];
   v11.location = v5;
   v11.length = v6;
   v12.location = 0;
   v7 = NSIntersectionRange(v11, v12);
-  v8 = [v3 subarrayWithRange:{v7.location, v7.length}];
+  v8 = [appLayouts subarrayWithRange:{v7.location, v7.length}];
 
   return v8;
 }
@@ -3531,34 +3531,34 @@ LABEL_7:
 {
   if (self->_hideSplitViewHandles)
   {
-    v2 = [MEMORY[0x277CBEB98] set];
+    visibleSplitViewHandleNubViews = [MEMORY[0x277CBEB98] set];
   }
 
   else
   {
     v4.receiver = self;
     v4.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-    v2 = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v4 visibleSplitViewHandleNubViews];
+    visibleSplitViewHandleNubViews = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v4 visibleSplitViewHandleNubViews];
   }
 
-  return v2;
+  return visibleSplitViewHandleNubViews;
 }
 
 - (id)visibleSplitViewHandleDimmingViews
 {
   if (self->_hideSplitViewHandles)
   {
-    v2 = [MEMORY[0x277CBEB98] set];
+    visibleSplitViewHandleDimmingViews = [MEMORY[0x277CBEB98] set];
   }
 
   else
   {
     v4.receiver = self;
     v4.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-    v2 = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v4 visibleSplitViewHandleDimmingViews];
+    visibleSplitViewHandleDimmingViews = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v4 visibleSplitViewHandleDimmingViews];
   }
 
-  return v2;
+  return visibleSplitViewHandleDimmingViews;
 }
 
 - (id)appLayoutsToResignActive
@@ -3568,8 +3568,8 @@ LABEL_7:
   {
     v2 = MEMORY[0x277CBEAC0];
     v3 = MEMORY[0x277CBEB98];
-    v4 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
-    v5 = [v3 setWithArray:v4];
+    appLayouts = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+    v5 = [v3 setWithArray:appLayouts];
     v6 = [v2 dictionaryWithObject:v5 forKey:&unk_283372080];
   }
 
@@ -3577,14 +3577,14 @@ LABEL_7:
   {
     v20.receiver = self;
     v20.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-    v7 = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v20 appLayoutsToResignActive];
+    appLayoutsToResignActive = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v20 appLayoutsToResignActive];
     v8 = objc_opt_new();
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v9 = [v7 allValues];
-    v10 = [v9 countByEnumeratingWithState:&v16 objects:v21 count:16];
+    allValues = [appLayoutsToResignActive allValues];
+    v10 = [allValues countByEnumeratingWithState:&v16 objects:v21 count:16];
     if (v10)
     {
       v11 = v10;
@@ -3595,14 +3595,14 @@ LABEL_7:
         {
           if (*v17 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allValues);
           }
 
-          v14 = [*(*(&v16 + 1) + 8 * i) allObjects];
-          [v8 addObjectsFromArray:v14];
+          allObjects = [*(*(&v16 + 1) + 8 * i) allObjects];
+          [v8 addObjectsFromArray:allObjects];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        v11 = [allValues countByEnumeratingWithState:&v16 objects:v21 count:16];
       }
 
       while (v11);
@@ -3618,20 +3618,20 @@ LABEL_7:
 {
   if (self->_shouldResignActive)
   {
-    v2 = +[SBSwitcherKeyboardSuppressionMode suppressionModeForAllScenes];
+    keyboardSuppressionMode = +[SBSwitcherKeyboardSuppressionMode suppressionModeForAllScenes];
   }
 
   else
   {
     v4.receiver = self;
     v4.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-    v2 = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v4 keyboardSuppressionMode];
+    keyboardSuppressionMode = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v4 keyboardSuppressionMode];
   }
 
-  return v2;
+  return keyboardSuppressionMode;
 }
 
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout
 {
   if (self->_shouldResignActive)
   {
@@ -3642,7 +3642,7 @@ LABEL_7:
   {
     v5.receiver = self;
     v5.super_class = SBContinuousExposeHomeGestureSwitcherModifier;
-    v3 = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v5 asyncRenderingAttributesForAppLayout:a3];
+    v3 = [(SBContinuousExposeHomeGestureSwitcherModifier *)&v5 asyncRenderingAttributesForAppLayout:layout];
   }
 
   return SBSwitcherAsyncRenderingAttributesMake(v3 & 1, 1);
@@ -3669,18 +3669,18 @@ LABEL_7:
 - (NSString)debugDescription
 {
   v3 = [(SBGestureSwitcherModifier *)self descriptionBuilderWithMultilinePrefix:&stru_283094718];
-  v4 = [v3 appendSuper];
+  appendSuper = [v3 appendSuper];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __65__SBContinuousExposeHomeGestureSwitcherModifier_debugDescription__block_invoke;
   v11 = &unk_2783A92D8;
   v12 = v3;
-  v13 = self;
+  selfCopy = self;
   v5 = v3;
   [v5 appendBodySectionWithName:0 multilinePrefix:@"\t" block:&v8];
-  v6 = [v5 build];
+  build = [v5 build];
 
-  return v6;
+  return build;
 }
 
 id __65__SBContinuousExposeHomeGestureSwitcherModifier_debugDescription__block_invoke(uint64_t a1)
@@ -3748,9 +3748,9 @@ id __65__SBContinuousExposeHomeGestureSwitcherModifier_debugDescription__block_i
   return [*(a1 + 32) appendBool:*(*(a1 + 40) + 595) withName:@"shouldResignActive"];
 }
 
-- (void)_updateShouldResignActiveWithEvent:(id)a3
+- (void)_updateShouldResignActiveWithEvent:(id)event
 {
-  if ([a3 phase] < 2 || !self->_shouldResignActive)
+  if ([event phase] < 2 || !self->_shouldResignActive)
   {
     if ([(SBAppLayout *)self->_selectedAppLayout type])
     {
@@ -3766,15 +3766,15 @@ id __65__SBContinuousExposeHomeGestureSwitcherModifier_debugDescription__block_i
 
       if ([(SBHomeGestureDockSwitcherModifier *)self->_dockModifier isCurrentlyTrackingDock])
       {
-        v4 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _shouldResignActiveBasedOnCardScale];
+        _shouldResignActiveBasedOnCardScale = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _shouldResignActiveBasedOnCardScale];
       }
 
       else
       {
-        v4 = 1;
+        _shouldResignActiveBasedOnCardScale = 1;
       }
 
-      self->_shouldResignActive = v4;
+      self->_shouldResignActive = _shouldResignActiveBasedOnCardScale;
     }
   }
 }
@@ -3835,27 +3835,27 @@ id __65__SBContinuousExposeHomeGestureSwitcherModifier_debugDescription__block_i
   return v3;
 }
 
-- (id)_responseForUpdatingIconViewVisibility:(BOOL)a3
+- (id)_responseForUpdatingIconViewVisibility:(BOOL)visibility
 {
   if (self->_selectedAppLayout && self->_startingEnvironmentMode == 3)
   {
-    v4 = a3;
-    if (a3)
+    visibilityCopy = visibility;
+    if (visibility)
     {
-      v5 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
-      v6 = [v5 animationSettings];
-      v7 = [v6 iconFadeInSettings];
+      switcherSettings = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
+      animationSettings = [switcherSettings animationSettings];
+      iconFadeInSettings = [animationSettings iconFadeInSettings];
     }
 
     else
     {
-      v7 = 0;
+      iconFadeInSettings = 0;
     }
 
     v9 = [SBIconViewVisibilitySwitcherEventResponse alloc];
     selectedAppLayout = self->_selectedAppLayout;
     v11 = [MEMORY[0x277CBEB98] setWithObjects:{*MEMORY[0x277D66690], @"SBIconLocationFloatingDockSuggestions", 0}];
-    v8 = [(SBIconViewVisibilitySwitcherEventResponse *)v9 initWithAppLayout:selectedAppLayout visible:v4 animationSettings:v7 excludedIconLocations:v11];
+    v8 = [(SBIconViewVisibilitySwitcherEventResponse *)v9 initWithAppLayout:selectedAppLayout visible:visibilityCopy animationSettings:iconFadeInSettings excludedIconLocations:v11];
   }
 
   else
@@ -3866,43 +3866,43 @@ id __65__SBContinuousExposeHomeGestureSwitcherModifier_debugDescription__block_i
   return v8;
 }
 
-- (id)_responseForActivatingFinalDestination:(int64_t)a3
+- (id)_responseForActivatingFinalDestination:(int64_t)destination
 {
   v4 = 0;
-  if (a3 <= 1)
+  if (destination <= 1)
   {
-    if (!a3)
+    if (!destination)
     {
       v5 = self->_selectedAppLayout;
-      v6 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherInterfaceOrientation];
+      switcherInterfaceOrientation = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherInterfaceOrientation];
       v4 = 0;
       goto LABEL_13;
     }
 
     v5 = 0;
-    v6 = 0;
+    switcherInterfaceOrientation = 0;
     v7 = 0;
     v8 = 0;
-    if (a3 != 1)
+    if (destination != 1)
     {
       goto LABEL_14;
     }
 
-    v9 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _previousRecentAppLayout];
+    _previousRecentAppLayout = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _previousRecentAppLayout];
   }
 
-  else if (a3 == 2)
+  else if (destination == 2)
   {
-    v9 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _nextRecentAppLayout];
+    _previousRecentAppLayout = [(SBContinuousExposeHomeGestureSwitcherModifier *)self _nextRecentAppLayout];
   }
 
   else
   {
-    if (a3 == 3)
+    if (destination == 3)
     {
-      v6 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherInterfaceOrientation];
-      v10 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self windowManagementContext];
-      LODWORD(v7) = [v10 isFlexibleWindowingEnabled];
+      switcherInterfaceOrientation = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherInterfaceOrientation];
+      windowManagementContext = [(SBContinuousExposeHomeGestureSwitcherModifier *)self windowManagementContext];
+      LODWORD(v7) = [windowManagementContext isFlexibleWindowingEnabled];
 
       v7 = v7;
       v11 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:0 alignment:0 animated:0];
@@ -3914,20 +3914,20 @@ id __65__SBContinuousExposeHomeGestureSwitcherModifier_debugDescription__block_i
     }
 
     v5 = 0;
-    v6 = 0;
+    switcherInterfaceOrientation = 0;
     v7 = 0;
     v8 = 0;
-    if (a3 != 4)
+    if (destination != 4)
     {
       goto LABEL_14;
     }
 
-    v9 = +[SBAppLayout homeScreenAppLayout];
+    _previousRecentAppLayout = +[SBAppLayout homeScreenAppLayout];
   }
 
-  v5 = v9;
+  v5 = _previousRecentAppLayout;
   v4 = 0;
-  v6 = 0;
+  switcherInterfaceOrientation = 0;
 LABEL_13:
   v7 = 0;
   v8 = 0;
@@ -3935,7 +3935,7 @@ LABEL_14:
   v12 = objc_alloc_init(SBMutableSwitcherTransitionRequest);
   [(SBSwitcherTransitionRequest *)v12 setAppLayout:v5];
   [(SBSwitcherTransitionRequest *)v12 setUnlockedEnvironmentMode:v4];
-  [(SBSwitcherTransitionRequest *)v12 setPreferredInterfaceOrientation:v6];
+  [(SBSwitcherTransitionRequest *)v12 setPreferredInterfaceOrientation:switcherInterfaceOrientation];
   [(SBSwitcherTransitionRequest *)v12 setPeekConfiguration:v7];
   v13 = [[SBPerformTransitionSwitcherEventResponse alloc] initWithTransitionRequest:v12 gestureInitiated:1];
   v14 = SBAppendSwitcherModifierResponse(v13, v8);
@@ -3945,11 +3945,11 @@ LABEL_14:
 
 - (id)_nextRecentAppLayout
 {
-  v3 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
-  v4 = v3;
+  appLayouts = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+  v4 = appLayouts;
   if (self->_selectedAppLayout)
   {
-    v5 = [v3 indexOfObject:?];
+    v5 = [appLayouts indexOfObject:?];
     if (v5 == 0x7FFFFFFFFFFFFFFFLL || (v6 = v5, ![v4 count]))
     {
       v10 = 0;
@@ -3967,15 +3967,15 @@ LABEL_14:
       v8 = v7 - 1;
     }
 
-    v9 = [v4 objectAtIndex:v8];
+    firstObject = [v4 objectAtIndex:v8];
   }
 
   else
   {
-    v9 = [v3 firstObject];
+    firstObject = [appLayouts firstObject];
   }
 
-  v10 = v9;
+  v10 = firstObject;
 LABEL_11:
 
   return v10;
@@ -3983,9 +3983,9 @@ LABEL_11:
 
 - (id)_previousRecentAppLayout
 {
-  v3 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
-  v4 = [v3 indexOfObject:self->_selectedAppLayout];
-  if (v4 == 0x7FFFFFFFFFFFFFFFLL || (v5 = v4, ![v3 count]))
+  appLayouts = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+  v4 = [appLayouts indexOfObject:self->_selectedAppLayout];
+  if (v4 == 0x7FFFFFFFFFFFFFFFLL || (v5 = v4, ![appLayouts count]))
   {
     v7 = 0;
   }
@@ -4002,7 +4002,7 @@ LABEL_11:
       v6 = v5;
     }
 
-    v7 = [v3 objectAtIndex:v6 - 1];
+    v7 = [appLayouts objectAtIndex:v6 - 1];
   }
 
   return v7;
@@ -4055,17 +4055,17 @@ LABEL_11:
   return v22;
 }
 
-- (id)_responseForStudyLogDidEndGestureWithEvent:(id)a3 finalDestination:(int64_t)a4 destinationReason:(id)a5
+- (id)_responseForStudyLogDidEndGestureWithEvent:(id)event finalDestination:(int64_t)destination destinationReason:(id)reason
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  eventCopy = event;
+  reasonCopy = reason;
   if ([(SBContinuousExposeHomeGestureSwitcherModifier *)self isStudyLogEnabled])
   {
     v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [v8 averageTouchPathAngleOverTimeDuration:0.0416666667];
+    [eventCopy averageTouchPathAngleOverTimeDuration:0.0416666667];
     v12 = v11;
-    [v8 velocityInContainerView];
+    [eventCopy velocityInContainerView];
     v14 = v13;
     v16 = v15;
     v36[0] = @"x";
@@ -4089,15 +4089,15 @@ LABEL_11:
     v23 = [MEMORY[0x277CCABB0] numberWithDouble:v12];
     [v10 setObject:v23 forKeyedSubscript:@"touchPathAngleAverage"];
 
-    v24 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+    v24 = [MEMORY[0x277CCABB0] numberWithInteger:destination];
     [v10 setObject:v24 forKeyedSubscript:@"finalDestination"];
 
-    v25 = NSStringFromSBHomeGestureFinalDestination(a4);
+    v25 = NSStringFromSBHomeGestureFinalDestination(destination);
     [v10 setObject:v25 forKeyedSubscript:@"finalDestinationString"];
 
-    if (v9)
+    if (reasonCopy)
     {
-      v26 = v9;
+      v26 = reasonCopy;
     }
 
     else
@@ -4112,12 +4112,12 @@ LABEL_11:
     dockModifier = self->_dockModifier;
     if (dockModifier)
     {
-      v29 = [(SBHomeGestureDockSwitcherModifier *)dockModifier studyLogData];
-      [v10 addEntriesFromDictionary:v29];
+      studyLogData = [(SBHomeGestureDockSwitcherModifier *)dockModifier studyLogData];
+      [v10 addEntriesFromDictionary:studyLogData];
     }
 
-    v30 = [(SBHomeGestureFinalDestinationSwitcherModifier *)self->_finalDestinationModifier studyLogData];
-    [v10 addEntriesFromDictionary:v30];
+    studyLogData2 = [(SBHomeGestureFinalDestinationSwitcherModifier *)self->_finalDestinationModifier studyLogData];
+    [v10 addEntriesFromDictionary:studyLogData2];
 
     v31 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:v10];
     v32 = [[SBEmitStudyLogSwitcherEventResponse alloc] initWithStudyLogWithName:@"[SBDeckSwitcherPanGestureWorkspaceTransresponse _finishWithGesture:]" payload:v31];
@@ -4131,7 +4131,7 @@ LABEL_11:
   return v32;
 }
 
-- (id)_responseForSBEventGestureBeganWithTimeDelta:(double)a3
+- (id)_responseForSBEventGestureBeganWithTimeDelta:(double)delta
 {
   v13[4] = *MEMORY[0x277D85DE8];
   v12[0] = *MEMORY[0x277D67660];
@@ -4144,7 +4144,7 @@ LABEL_11:
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SBContinuousExposeHomeGestureSwitcherModifier switcherInterfaceOrientation](self, "switcherInterfaceOrientation")}];
   v13[2] = v7;
   v12[3] = *MEMORY[0x277D67658];
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:delta];
   v13[3] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:4];
 
@@ -4153,17 +4153,17 @@ LABEL_11:
   return v10;
 }
 
-- (id)_responseForSBEventGestureEndWithEvent:(id)a3 finalDestination:(int64_t)a4
+- (id)_responseForSBEventGestureEndWithEvent:(id)event finalDestination:(int64_t)destination
 {
   v23[7] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  [v6 averageTouchPathAngleOverTimeDuration:0.0416666667];
+  eventCopy = event;
+  [eventCopy averageTouchPathAngleOverTimeDuration:0.0416666667];
   v8 = fmin(fmax(v7, 2.22507386e-308), 1.79769313e308);
-  [v6 peakSpeed];
+  [eventCopy peakSpeed];
   v10 = v9;
 
   v22[0] = *MEMORY[0x277D67628];
-  v11 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v11 = [MEMORY[0x277CCABB0] numberWithInteger:destination];
   v23[0] = v11;
   v22[1] = *MEMORY[0x277D67660];
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:self->_lastTouchLocation.x];
@@ -4191,10 +4191,10 @@ LABEL_11:
   return v20;
 }
 
-- (id)_responseForActivatingReachabilityIfNeededWithFinalDestination:(int64_t)a3
+- (id)_responseForActivatingReachabilityIfNeededWithFinalDestination:(int64_t)destination
 {
   v4 = 0;
-  if (!a3 && self->_startingEnvironmentMode != 2)
+  if (!destination && self->_startingEnvironmentMode != 2)
   {
     v26 = 0;
     lastTouchLocation = self->_lastTouchLocation;
@@ -4225,9 +4225,9 @@ LABEL_11:
   return v4;
 }
 
-- (id)_responseForCancelingSystemGesturesIfNeededWithFinalDestination:(int64_t)a3
+- (id)_responseForCancelingSystemGesturesIfNeededWithFinalDestination:(int64_t)destination
 {
-  if (a3 && [(SBContinuousExposeHomeGestureSwitcherModifier *)self isSystemAssistantExperienceEnabled])
+  if (destination && [(SBContinuousExposeHomeGestureSwitcherModifier *)self isSystemAssistantExperienceEnabled])
   {
     v3 = [objc_alloc(MEMORY[0x277CBEB98]) initWithObjects:{&unk_283372098, &unk_2833720B0, 0}];
     v4 = [[SBCancelSystemGesturesSwitcherEventResponse alloc] initWithSystemGestureTypes:v3];
@@ -4241,17 +4241,17 @@ LABEL_11:
   return v4;
 }
 
-- (id)_updateInMultitaskingIfNeededWithEvent:(id)a3
+- (id)_updateInMultitaskingIfNeededWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v29 = objc_alloc_init(SBSwitcherModifierEventResponse);
-  v5 = [(SBHomeGestureFinalDestinationSwitcherModifier *)self->_finalDestinationModifier currentFinalDestination];
-  v6 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
-  v7 = [v6 count];
+  currentFinalDestination = [(SBHomeGestureFinalDestinationSwitcherModifier *)self->_finalDestinationModifier currentFinalDestination];
+  appLayouts = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+  v7 = [appLayouts count];
 
   inMultitasking = self->_inMultitasking;
   inExposeMultitasking = self->_inExposeMultitasking;
-  if (v5 == 3)
+  if (currentFinalDestination == 3)
   {
     if (!self->_didWarmupFlyInHaptic)
     {
@@ -4263,22 +4263,22 @@ LABEL_11:
     if (inMultitasking && !self->_didPlayFlyInHaptic && v7 && fabs(self->_velocity.x) < *&kPauseVelocityThresholdForAppSwitcher_2 && fabs(self->_velocity.y) < *&kPauseVelocityThresholdForAppSwitcher_2)
     {
       v28 = [[SBHapticSwitcherEventResponse alloc] initWithHapticType:0 phase:1];
-      -[SBHapticSwitcherEventResponse setHidEventSenderID:](v28, "setHidEventSenderID:", [v4 hidEventSenderID]);
+      -[SBHapticSwitcherEventResponse setHidEventSenderID:](v28, "setHidEventSenderID:", [eventCopy hidEventSenderID]);
       [(SBChainableModifierEventResponse *)v29 addChildResponse:v28];
       self->_didPlayFlyInHaptic = 1;
     }
   }
 
-  v11 = [(SBHomeGestureFinalDestinationSwitcherModifier *)self->_finalDestinationModifier currentFinalDestination];
-  self->_inMultitasking = v11 == 3;
-  v13 = self->_canEnterExposeMultitasking && v11 == 3 && [(SBHomeGestureFinalDestinationSwitcherModifier *)self->_finalDestinationModifier currentFinalDestination]== 3;
+  currentFinalDestination2 = [(SBHomeGestureFinalDestinationSwitcherModifier *)self->_finalDestinationModifier currentFinalDestination];
+  self->_inMultitasking = currentFinalDestination2 == 3;
+  v13 = self->_canEnterExposeMultitasking && currentFinalDestination2 == 3 && [(SBHomeGestureFinalDestinationSwitcherModifier *)self->_finalDestinationModifier currentFinalDestination]== 3;
   self->_inExposeMultitasking = v13;
   if (inExposeMultitasking != v13)
   {
-    v14 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
-    v15 = [v14 animationSettings];
-    v16 = [v15 layoutSettings];
-    [(SBContinuousExposeHomeGestureSwitcherModifier *)self _beginAnimatingExposeMultitaskingPropertyWithMode:3 settings:v16];
+    switcherSettings = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    layoutSettings = [animationSettings layoutSettings];
+    [(SBContinuousExposeHomeGestureSwitcherModifier *)self _beginAnimatingExposeMultitaskingPropertyWithMode:3 settings:layoutSettings];
   }
 
   v17 = inMultitasking;
@@ -4295,11 +4295,11 @@ LABEL_11:
       if (!self->_inMultitasking)
       {
 LABEL_26:
-        v19 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
-        v20 = [v19 animationSettings];
-        v21 = [v20 arcSwipeSwitcherGlancingSettings];
+        switcherSettings2 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
+        animationSettings2 = [switcherSettings2 animationSettings];
+        arcSwipeSwitcherGlancingSettings = [animationSettings2 arcSwipeSwitcherGlancingSettings];
 
-        [(SBContinuousExposeHomeGestureSwitcherModifier *)self _beginAnimatingMultitaskingPropertyWithMode:3 settings:v21];
+        [(SBContinuousExposeHomeGestureSwitcherModifier *)self _beginAnimatingMultitaskingPropertyWithMode:3 settings:arcSwipeSwitcherGlancingSettings];
         v17 = self->_inMultitasking;
         goto LABEL_27;
       }
@@ -4308,7 +4308,7 @@ LABEL_26:
     if (!self->_didPlayFlyInHaptic && v7 && fabs(self->_velocity.x) < *&kVelocityXThresholdForUnconditionalArcSwipe_2)
     {
       v18 = [[SBHapticSwitcherEventResponse alloc] initWithHapticType:0 phase:1];
-      -[SBHapticSwitcherEventResponse setHidEventSenderID:](v18, "setHidEventSenderID:", [v4 hidEventSenderID]);
+      -[SBHapticSwitcherEventResponse setHidEventSenderID:](v18, "setHidEventSenderID:", [eventCopy hidEventSenderID]);
       [(SBChainableModifierEventResponse *)v29 addChildResponse:v18];
       self->_didPlayFlyInHaptic = 1;
     }
@@ -4319,16 +4319,16 @@ LABEL_26:
 LABEL_27:
   if (!inMultitasking && v17 && self->_startingEnvironmentMode != 1)
   {
-    v22 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self continuousExposeIdentifiersInSwitcher];
-    if ([v22 count])
+    continuousExposeIdentifiersInSwitcher = [(SBContinuousExposeHomeGestureSwitcherModifier *)self continuousExposeIdentifiersInSwitcher];
+    if ([continuousExposeIdentifiersInSwitcher count])
     {
-      v23 = [v22 firstObject];
-      v24 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayoutsForContinuousExposeIdentifier:v23];
-      v25 = [v24 firstObject];
+      firstObject = [continuousExposeIdentifiersInSwitcher firstObject];
+      v24 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayoutsForContinuousExposeIdentifier:firstObject];
+      firstObject2 = [v24 firstObject];
 
-      if (v25)
+      if (firstObject2)
       {
-        v26 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:v25 alignment:0 animated:0];
+        v26 = [[SBScrollToAppLayoutSwitcherEventResponse alloc] initWithAppLayout:firstObject2 alignment:0 animated:0];
         [(SBChainableModifierEventResponse *)v29 addChildResponse:v26];
       }
     }
@@ -4347,15 +4347,15 @@ LABEL_27:
   return v6 < v7 * 0.75;
 }
 
-- (void)_displayLinkFired:(id)a3
+- (void)_displayLinkFired:(id)fired
 {
   if ([(SBGestureSwitcherModifier *)self gesturePhase]== 2 && [(SBChainableModifier *)self state]!= 1)
   {
     [(SBContinuousExposeHomeGestureSwitcherModifier *)self gestureHandlingModifier:self averageVelocityOverDuration:0.0416666667];
-    v4 = [(SBHomeGestureFinalDestinationSwitcherModifier *)self->_finalDestinationModifier currentFinalDestination];
-    if (v4)
+    currentFinalDestination = [(SBHomeGestureFinalDestinationSwitcherModifier *)self->_finalDestinationModifier currentFinalDestination];
+    if (currentFinalDestination)
     {
-      v5 = v4 == 4;
+      v5 = currentFinalDestination == 4;
     }
 
     else
@@ -4368,7 +4368,7 @@ LABEL_27:
       self->_gestureHoldTimer = 0;
     }
 
-    else if (v4 == 3 && BSFloatLessThanFloat())
+    else if (currentFinalDestination == 3 && BSFloatLessThanFloat())
     {
       ++self->_gestureHoldTimer;
     }
@@ -4381,9 +4381,9 @@ LABEL_27:
   }
 }
 
-- (void)_beginAnimatingMultitaskingPropertyWithMode:(int64_t)a3 settings:(id)a4
+- (void)_beginAnimatingMultitaskingPropertyWithMode:(int64_t)mode settings:(id)settings
 {
-  v6 = a4;
+  settingsCopy = settings;
   inMultitaskingChangedProperty = self->_inMultitaskingChangedProperty;
   if (inMultitaskingChangedProperty)
   {
@@ -4397,7 +4397,7 @@ LABEL_27:
   self->_inMultitaskingChangedProperty = v9;
 
   [(UIViewFloatAnimatableProperty *)self->_inMultitaskingChangedProperty setValue:0.0];
-  v11 = [v6 copy];
+  v11 = [settingsCopy copy];
   LODWORD(v12) = *MEMORY[0x277CD9DD0];
   LODWORD(v13) = *(MEMORY[0x277CD9DD0] + 4);
   LODWORD(v14) = *(MEMORY[0x277CD9DD0] + 8);
@@ -4419,7 +4419,7 @@ LABEL_27:
   objc_copyWeak(&v21, &location);
   v18 = v16;
   v20 = v18;
-  [v17 sb_animateWithSettings:v15 mode:a3 animations:v22 completion:v19];
+  [v17 sb_animateWithSettings:v15 mode:mode animations:v22 completion:v19];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -4443,9 +4443,9 @@ void __102__SBContinuousExposeHomeGestureSwitcherModifier__beginAnimatingMultita
   }
 }
 
-- (void)_beginAnimatingArcSwipePullingPropertyWithMode:(int64_t)a3 settings:(id)a4
+- (void)_beginAnimatingArcSwipePullingPropertyWithMode:(int64_t)mode settings:(id)settings
 {
-  v6 = a4;
+  settingsCopy = settings;
   arcSwipePullingChangedProperty = self->_arcSwipePullingChangedProperty;
   if (arcSwipePullingChangedProperty)
   {
@@ -4459,7 +4459,7 @@ void __102__SBContinuousExposeHomeGestureSwitcherModifier__beginAnimatingMultita
   self->_arcSwipePullingChangedProperty = v9;
 
   [(UIViewFloatAnimatableProperty *)self->_arcSwipePullingChangedProperty setValue:0.0];
-  v11 = [v6 copy];
+  v11 = [settingsCopy copy];
   LODWORD(v12) = *MEMORY[0x277CD9DD0];
   LODWORD(v13) = *(MEMORY[0x277CD9DD0] + 4);
   LODWORD(v14) = *(MEMORY[0x277CD9DD0] + 8);
@@ -4481,7 +4481,7 @@ void __102__SBContinuousExposeHomeGestureSwitcherModifier__beginAnimatingMultita
   objc_copyWeak(&v21, &location);
   v18 = v16;
   v20 = v18;
-  [v17 sb_animateWithSettings:v15 mode:a3 animations:v22 completion:v19];
+  [v17 sb_animateWithSettings:v15 mode:mode animations:v22 completion:v19];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -4505,9 +4505,9 @@ void __105__SBContinuousExposeHomeGestureSwitcherModifier__beginAnimatingArcSwip
   }
 }
 
-- (void)_beginAnimatingExposeMultitaskingPropertyWithMode:(int64_t)a3 settings:(id)a4
+- (void)_beginAnimatingExposeMultitaskingPropertyWithMode:(int64_t)mode settings:(id)settings
 {
-  v6 = a4;
+  settingsCopy = settings;
   inExposeMultitaskingChangedProperty = self->_inExposeMultitaskingChangedProperty;
   if (inExposeMultitaskingChangedProperty)
   {
@@ -4521,7 +4521,7 @@ void __105__SBContinuousExposeHomeGestureSwitcherModifier__beginAnimatingArcSwip
   self->_inExposeMultitaskingChangedProperty = v9;
 
   [(UIViewFloatAnimatableProperty *)self->_inExposeMultitaskingChangedProperty setValue:0.0];
-  v11 = [v6 copy];
+  v11 = [settingsCopy copy];
   LODWORD(v12) = *MEMORY[0x277CD9DD0];
   LODWORD(v13) = *(MEMORY[0x277CD9DD0] + 4);
   LODWORD(v14) = *(MEMORY[0x277CD9DD0] + 8);
@@ -4543,7 +4543,7 @@ void __105__SBContinuousExposeHomeGestureSwitcherModifier__beginAnimatingArcSwip
   objc_copyWeak(&v21, &location);
   v18 = v16;
   v20 = v18;
-  [v17 sb_animateWithSettings:v15 mode:a3 animations:v22 completion:v19];
+  [v17 sb_animateWithSettings:v15 mode:mode animations:v22 completion:v19];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&location);
@@ -4567,25 +4567,25 @@ void __108__SBContinuousExposeHomeGestureSwitcherModifier__beginAnimatingExposeM
   }
 }
 
-- (BOOL)_isTranslationPastDistanceThresholdToUnconditionallyGoHome:(double)a3
+- (BOOL)_isTranslationPastDistanceThresholdToUnconditionallyGoHome:(double)home
 {
-  v3 = -a3;
+  v3 = -home;
   [(SBContinuousExposeHomeGestureSwitcherModifier *)self unconditionalDistanceThresholdForHome];
   return v4 < v3;
 }
 
-- (double)_gestureProgressToMaxTranslationForTranslation:(double)a3
+- (double)_gestureProgressToMaxTranslationForTranslation:(double)translation
 {
   [(SBContinuousExposeHomeGestureSwitcherModifier *)self _distanceYToMaxTranslation];
   v6 = v5;
   if (self->_startingEnvironmentMode == 2 && !self->_scrunchInitiated)
   {
     [(SBContinuousExposeHomeGestureSwitcherModifier *)self _distanceYToInSwitcherCardScale];
-    a3 = v7 + a3;
+    translation = v7 + translation;
     v6 = v6 - v7;
   }
 
-  return -a3 / v6;
+  return -translation / v6;
 }
 
 - (double)_distanceYToInSwitcherCardScale
@@ -4608,8 +4608,8 @@ void __108__SBContinuousExposeHomeGestureSwitcherModifier__beginAnimatingExposeM
 
 - (double)_inSwitcherCenterYOffsetWhenPresented
 {
-  v3 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
-  [v3 switcherCenterYOffsetPercentOfScreenHeight];
+  switcherSettings = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
+  [switcherSettings switcherCenterYOffsetPercentOfScreenHeight];
 
   [(SBContinuousExposeHomeGestureSwitcherModifier *)self containerViewBounds];
   [(SBContinuousExposeHomeGestureSwitcherModifier *)self screenScale];
@@ -4628,8 +4628,8 @@ void __108__SBContinuousExposeHomeGestureSwitcherModifier__beginAnimatingExposeM
 
   else
   {
-    v4 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self homeGestureSettings];
-    [v4 homeGestureCenterZoomDownCenterYOffsetFactor];
+    homeGestureSettings = [(SBContinuousExposeHomeGestureSwitcherModifier *)self homeGestureSettings];
+    [homeGestureSettings homeGestureCenterZoomDownCenterYOffsetFactor];
     [(SBContinuousExposeHomeGestureSwitcherModifier *)self containerViewBounds];
     [(SBContinuousExposeHomeGestureSwitcherModifier *)self screenScale];
     BSFloatRoundForScale();
@@ -4643,8 +4643,8 @@ void __108__SBContinuousExposeHomeGestureSwitcherModifier__beginAnimatingExposeM
 
 - (double)_switcherCardScale
 {
-  v2 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
-  [v2 deckSwitcherPageScale];
+  switcherSettings = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
+  [switcherSettings deckSwitcherPageScale];
   v4 = v3;
 
   return v4;
@@ -4652,11 +4652,11 @@ void __108__SBContinuousExposeHomeGestureSwitcherModifier__beginAnimatingExposeM
 
 - (unint64_t)_selectedAppLayoutIndex
 {
-  v3 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
-  v4 = v3;
-  if (v3 && self->_selectedAppLayout)
+  appLayouts = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+  v4 = appLayouts;
+  if (appLayouts && self->_selectedAppLayout)
   {
-    v5 = [v3 indexOfObject:?];
+    v5 = [appLayouts indexOfObject:?];
   }
 
   else
@@ -4667,27 +4667,27 @@ void __108__SBContinuousExposeHomeGestureSwitcherModifier__beginAnimatingExposeM
   return v5;
 }
 
-- (BOOL)_isSelectedAppLayoutAtIndex:(unint64_t)a3
+- (BOOL)_isSelectedAppLayoutAtIndex:(unint64_t)index
 {
-  v4 = self;
-  v5 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  selfCopy = self;
+  appLayouts = [(SBContinuousExposeHomeGestureSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
-  LOBYTE(v4) = [v6 isEqual:v4->_selectedAppLayout];
-  return v4;
+  LOBYTE(selfCopy) = [v6 isEqual:selfCopy->_selectedAppLayout];
+  return selfCopy;
 }
 
 - (double)_coplanarSpacing
 {
-  v3 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
+  switcherSettings = [(SBContinuousExposeHomeGestureSwitcherModifier *)self switcherSettings];
   if ([(SBContinuousExposeHomeGestureSwitcherModifier *)self isDevicePad])
   {
-    [v3 coplanarSpacingPad];
+    [switcherSettings coplanarSpacingPad];
   }
 
   else
   {
-    [v3 coplanarSpacingPhone];
+    [switcherSettings coplanarSpacingPhone];
   }
 
   v5 = v4;
@@ -4698,22 +4698,22 @@ void __108__SBContinuousExposeHomeGestureSwitcherModifier__beginAnimatingExposeM
 - (void)_applyPrototypeSettings
 {
   v3 = SBMainScreenPointsPerMillimeter();
-  v12 = [(SBContinuousExposeHomeGestureSwitcherModifier *)self homeGestureSettings];
-  [v12 homeGestureMinimumCardScale];
+  homeGestureSettings = [(SBContinuousExposeHomeGestureSwitcherModifier *)self homeGestureSettings];
+  [homeGestureSettings homeGestureMinimumCardScale];
   self->_homeGestureMinimumCardScale = v4;
-  [v12 homeGestureMinimumCardScaleRubberBandingRange];
+  [homeGestureSettings homeGestureMinimumCardScaleRubberBandingRange];
   self->_homeGestureMinimumCardScaleRubberBandingRange = v5;
-  [v12 normalizedDistanceYThresholdForUnconditionalHome];
+  [homeGestureSettings normalizedDistanceYThresholdForUnconditionalHome];
   kHomeGestureNormalizedDistanceYThresholdForUnconditionalHome_2 = v6;
-  [v12 normalizedDistanceYThresholdRangeForUnconditionalHome];
+  [homeGestureSettings normalizedDistanceYThresholdRangeForUnconditionalHome];
   kHomeGestureNormalizedDistanceYThresholdRangeForUnconditionalHome_2 = v7;
-  [v12 pauseVelocityThresholdForAppSwitcher];
+  [homeGestureSettings pauseVelocityThresholdForAppSwitcher];
   *&kPauseVelocityThresholdForAppSwitcher_2 = v3 * v8;
-  [v12 velocityXThresholdForUnconditionalArcSwipe];
+  [homeGestureSettings velocityXThresholdForUnconditionalArcSwipe];
   *&kVelocityXThresholdForUnconditionalArcSwipe_2 = v3 * v9;
-  [v12 minimumYDistanceForHomeOrAppSwitcher];
+  [homeGestureSettings minimumYDistanceForHomeOrAppSwitcher];
   *&kMinimumYDistanceForHomeOrAppSwitcher_4 = v3 * v10;
-  [v12 cardFlyInMaximumVelocityThreshold];
+  [homeGestureSettings cardFlyInMaximumVelocityThreshold];
   *&kCardFlyInMaximumVelocityThreshold_2 = v3 * v11;
 }
 

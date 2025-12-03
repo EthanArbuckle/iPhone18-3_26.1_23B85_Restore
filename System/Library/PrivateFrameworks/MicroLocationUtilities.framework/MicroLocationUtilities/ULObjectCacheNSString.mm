@@ -1,43 +1,43 @@
 @interface ULObjectCacheNSString
-+ (id)ul_cachedInstanceForNSString:(id)a3;
++ (id)ul_cachedInstanceForNSString:(id)string;
 @end
 
 @implementation ULObjectCacheNSString
 
-+ (id)ul_cachedInstanceForNSString:(id)a3
++ (id)ul_cachedInstanceForNSString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = objc_autoreleasePoolPush();
-  if (v4)
+  if (stringCopy)
   {
     objc_opt_class();
-    if (objc_opt_isKindOfClass() & 1) != 0 && ([v4 conformsToProtocol:&unk_286A77A40])
+    if (objc_opt_isKindOfClass() & 1) != 0 && ([stringCopy conformsToProtocol:&unk_286A77A40])
     {
-      v6 = a1;
-      objc_sync_enter(v6);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
       v7 = ul_cachedInstanceForNSString__cachedInstances;
       if (!ul_cachedInstanceForNSString__cachedInstances)
       {
-        v8 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+        weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
         v9 = ul_cachedInstanceForNSString__cachedInstances;
-        ul_cachedInstanceForNSString__cachedInstances = v8;
+        ul_cachedInstanceForNSString__cachedInstances = weakObjectsHashTable;
 
         v7 = ul_cachedInstanceForNSString__cachedInstances;
       }
 
-      v10 = [v7 member:v4];
+      v10 = [v7 member:stringCopy];
       if (!v10)
       {
-        v10 = [v4 copy];
+        v10 = [stringCopy copy];
         [ul_cachedInstanceForNSString__cachedInstances addObject:v10];
       }
 
-      objc_sync_exit(v6);
+      objc_sync_exit(selfCopy);
     }
 
     else
     {
-      v10 = v4;
+      v10 = stringCopy;
     }
   }
 

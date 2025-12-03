@@ -1,31 +1,31 @@
 @interface _UIFluidSliderFeedbackGenerator
-- (BOOL)playFeedback:(int64_t)a3 forValue:(double)a4 atLocation:(CGPoint)a5;
-- (_UIFluidSliderFeedbackGenerator)initWithView:(id)a3;
+- (BOOL)playFeedback:(int64_t)feedback forValue:(double)value atLocation:(CGPoint)location;
+- (_UIFluidSliderFeedbackGenerator)initWithView:(id)view;
 @end
 
 @implementation _UIFluidSliderFeedbackGenerator
 
-- (_UIFluidSliderFeedbackGenerator)initWithView:(id)a3
+- (_UIFluidSliderFeedbackGenerator)initWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = +[_UIFluidSliderFeedbackConfiguration defaultConfiguration];
   v8.receiver = self;
   v8.super_class = _UIFluidSliderFeedbackGenerator;
-  v6 = [(UIFeedbackGenerator *)&v8 initWithConfiguration:v5 view:v4];
+  v6 = [(UIFeedbackGenerator *)&v8 initWithConfiguration:v5 view:viewCopy];
 
   return v6;
 }
 
-- (BOOL)playFeedback:(int64_t)a3 forValue:(double)a4 atLocation:(CGPoint)a5
+- (BOOL)playFeedback:(int64_t)feedback forValue:(double)value atLocation:(CGPoint)location
 {
-  y = a5.y;
-  x = a5.x;
+  y = location.y;
+  x = location.x;
   result = 1;
-  if (a3 > 1)
+  if (feedback > 1)
   {
-    if (a3 != 3)
+    if (feedback != 3)
     {
-      if (a3 != 2)
+      if (feedback != 2)
       {
         return result;
       }
@@ -35,28 +35,28 @@
         return 0;
       }
 
-      v11 = [(_UIFluidSliderFeedbackGenerator *)self _sliderConfig];
-      v15 = [v11 selectionFeedback];
-      [(UIFeedbackGenerator *)self _playFeedback:v15 withMinimumIntervalPassed:&_playSelectionFeedbackAtLocation____lastTime since:1 prefersRegularPace:0.04 atLocation:x, y];
+      _sliderConfig = [(_UIFluidSliderFeedbackGenerator *)self _sliderConfig];
+      selectionFeedback = [_sliderConfig selectionFeedback];
+      [(UIFeedbackGenerator *)self _playFeedback:selectionFeedback withMinimumIntervalPassed:&_playSelectionFeedbackAtLocation____lastTime since:1 prefersRegularPace:0.04 atLocation:x, y];
 
       goto LABEL_15;
     }
 
-    v13 = [(_UIFluidSliderFeedbackGenerator *)self _sliderConfig];
-    v16 = [v13 maxEdgeFeedback];
+    _sliderConfig2 = [(_UIFluidSliderFeedbackGenerator *)self _sliderConfig];
+    maxEdgeFeedback = [_sliderConfig2 maxEdgeFeedback];
     goto LABEL_12;
   }
 
-  if (!a3)
+  if (!feedback)
   {
-    v13 = [(_UIFluidSliderFeedbackGenerator *)self _sliderConfig];
-    v16 = [v13 minEdgeFeedback];
+    _sliderConfig2 = [(_UIFluidSliderFeedbackGenerator *)self _sliderConfig];
+    maxEdgeFeedback = [_sliderConfig2 minEdgeFeedback];
 LABEL_12:
-    v11 = v16;
+    _sliderConfig = maxEdgeFeedback;
     goto LABEL_13;
   }
 
-  if (a3 != 1)
+  if (feedback != 1)
   {
     return result;
   }
@@ -66,18 +66,18 @@ LABEL_12:
     return 1;
   }
 
-  v10 = [(_UIFluidSliderFeedbackGenerator *)self _sliderConfig];
-  v11 = [v10 detentFeedback];
+  _sliderConfig3 = [(_UIFluidSliderFeedbackGenerator *)self _sliderConfig];
+  _sliderConfig = [_sliderConfig3 detentFeedback];
 
-  v12 = a4 * 0.5 + (1.0 - a4) * 0.15;
-  v13 = [v11 hapticParameters];
+  v12 = value * 0.5 + (1.0 - value) * 0.15;
+  _sliderConfig2 = [_sliderConfig hapticParameters];
   *&v14 = v12;
-  [v13 setVolume:v14];
+  [_sliderConfig2 setVolume:v14];
 LABEL_13:
 
-  if (v11)
+  if (_sliderConfig)
   {
-    [(UIFeedbackGenerator *)self _playFeedback:v11 atLocation:x, y];
+    [(UIFeedbackGenerator *)self _playFeedback:_sliderConfig atLocation:x, y];
 LABEL_15:
   }
 

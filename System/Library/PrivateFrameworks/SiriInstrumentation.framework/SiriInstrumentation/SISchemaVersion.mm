@@ -1,48 +1,48 @@
 @interface SISchemaVersion
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaVersion)initWithDictionary:(id)a3;
-- (SISchemaVersion)initWithJSON:(id)a3;
+- (SISchemaVersion)initWithDictionary:(id)dictionary;
+- (SISchemaVersion)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasMinor:(BOOL)a3;
-- (void)setHasPatch:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasMinor:(BOOL)minor;
+- (void)setHasPatch:(BOOL)patch;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaVersion
 
-- (SISchemaVersion)initWithDictionary:(id)a3
+- (SISchemaVersion)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = SISchemaVersion;
   v5 = [(SISchemaVersion *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"major"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"major"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaVersion setMajor:](v5, "setMajor:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"minor"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"minor"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaVersion setMinor:](v5, "setMinor:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"patch"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"patch"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaVersion setPatch:](v5, "setPatch:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"prerelease"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"prerelease"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -56,30 +56,30 @@
   return v5;
 }
 
-- (SISchemaVersion)initWithJSON:(id)a3
+- (SISchemaVersion)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaVersion *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaVersion *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaVersion *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -92,12 +92,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SISchemaVersion major](self, "major")}];
-    [v3 setObject:v9 forKeyedSubscript:@"major"];
+    [dictionary setObject:v9 forKeyedSubscript:@"major"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -118,26 +118,26 @@ LABEL_3:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SISchemaVersion minor](self, "minor")}];
-  [v3 setObject:v10 forKeyedSubscript:@"minor"];
+  [dictionary setObject:v10 forKeyedSubscript:@"minor"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SISchemaVersion patch](self, "patch")}];
-    [v3 setObject:v5 forKeyedSubscript:@"patch"];
+    [dictionary setObject:v5 forKeyedSubscript:@"patch"];
   }
 
 LABEL_5:
   if (self->_prerelease)
   {
-    v6 = [(SISchemaVersion *)self prerelease];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"prerelease"];
+    prerelease = [(SISchemaVersion *)self prerelease];
+    v7 = [prerelease copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"prerelease"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -180,16 +180,16 @@ LABEL_4:
   return v7 ^ v6 ^ v8 ^ [(NSString *)self->_prerelease hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_18;
@@ -198,13 +198,13 @@ LABEL_4:
   if (*&has)
   {
     major = self->_major;
-    if (major != [v4 major])
+    if (major != [equalCopy major])
     {
       goto LABEL_18;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -213,27 +213,27 @@ LABEL_4:
     if (v8)
     {
       minor = self->_minor;
-      if (minor != [v4 minor])
+      if (minor != [equalCopy minor])
       {
         goto LABEL_18;
       }
 
       has = self->_has;
-      v6 = v4[32];
+      v6 = equalCopy[32];
     }
 
     v10 = (*&has >> 2) & 1;
     if (v10 == ((v6 >> 2) & 1))
     {
-      if (!v10 || (patch = self->_patch, patch == [v4 patch]))
+      if (!v10 || (patch = self->_patch, patch == [equalCopy patch]))
       {
-        v12 = [(SISchemaVersion *)self prerelease];
-        v13 = [v4 prerelease];
-        v14 = v13;
-        if ((v12 != 0) != (v13 == 0))
+        prerelease = [(SISchemaVersion *)self prerelease];
+        prerelease2 = [equalCopy prerelease];
+        v14 = prerelease2;
+        if ((prerelease != 0) != (prerelease2 == 0))
         {
-          v15 = [(SISchemaVersion *)self prerelease];
-          if (!v15)
+          prerelease3 = [(SISchemaVersion *)self prerelease];
+          if (!prerelease3)
           {
 
 LABEL_21:
@@ -241,10 +241,10 @@ LABEL_21:
             goto LABEL_19;
           }
 
-          v16 = v15;
-          v17 = [(SISchemaVersion *)self prerelease];
-          v18 = [v4 prerelease];
-          v19 = [v17 isEqual:v18];
+          v16 = prerelease3;
+          prerelease4 = [(SISchemaVersion *)self prerelease];
+          prerelease5 = [equalCopy prerelease];
+          v19 = [prerelease4 isEqual:prerelease5];
 
           if (v19)
           {
@@ -266,9 +266,9 @@ LABEL_19:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -299,19 +299,19 @@ LABEL_4:
   }
 
 LABEL_5:
-  v5 = [(SISchemaVersion *)self prerelease];
+  prerelease = [(SISchemaVersion *)self prerelease];
 
-  v6 = v7;
-  if (v5)
+  v6 = toCopy;
+  if (prerelease)
   {
     PBDataWriterWriteStringField();
-    v6 = v7;
+    v6 = toCopy;
   }
 }
 
-- (void)setHasPatch:(BOOL)a3
+- (void)setHasPatch:(BOOL)patch
 {
-  if (a3)
+  if (patch)
   {
     v3 = 4;
   }
@@ -324,9 +324,9 @@ LABEL_5:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMinor:(BOOL)a3
+- (void)setHasMinor:(BOOL)minor
 {
-  if (a3)
+  if (minor)
   {
     v3 = 2;
   }

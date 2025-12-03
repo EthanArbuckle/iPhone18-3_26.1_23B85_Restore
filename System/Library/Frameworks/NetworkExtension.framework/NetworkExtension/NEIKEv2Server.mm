@@ -1,9 +1,9 @@
 @interface NEIKEv2Server
-- (id)getNextViableServerAddressForPath:(void *)a1;
-- (id)getViableServerAddressForPath:(void *)a1;
+- (id)getNextViableServerAddressForPath:(void *)path;
+- (id)getViableServerAddressForPath:(void *)path;
 - (void)dealloc;
 - (void)resetPathProxyState;
-- (void)setServerResolvedAddress:(void *)a3 path:;
+- (void)setServerResolvedAddress:(void *)address path:;
 - (void)startRedirectTimer;
 - (void)stopRedirectTimer;
 @end
@@ -20,9 +20,9 @@
 
 - (void)stopRedirectTimer
 {
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 72);
+    v2 = *(self + 72);
     if (v2)
     {
       source = v2;
@@ -34,21 +34,21 @@
       else
       {
         dispatch_source_cancel(source);
-        v3 = *(a1 + 72);
+        v3 = *(self + 72);
       }
 
-      *(a1 + 72) = 0;
+      *(self + 72) = 0;
     }
   }
 }
 
-- (void)setServerResolvedAddress:(void *)a3 path:
+- (void)setServerResolvedAddress:(void *)address path:
 {
   *&v27[5] = *MEMORY[0x1E69E9840];
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    v7 = [NEIKEv2AddressList normalizeServerAddress:v5 path:a3];
+    v7 = [NEIKEv2AddressList normalizeServerAddress:v5 path:address];
     if (!v7)
     {
       v13 = ne_log_obj();
@@ -62,13 +62,13 @@
       goto LABEL_19;
     }
 
-    if (!objc_getProperty(a1, v6, 24, 1))
+    if (!objc_getProperty(self, v6, 24, 1))
     {
       v9 = objc_alloc_init(NEIKEv2AddressList);
-      objc_setProperty_atomic(a1, v10, v9, 24);
+      objc_setProperty_atomic(self, v10, v9, 24);
     }
 
-    Property = objc_getProperty(a1, v8, 24, 1);
+    Property = objc_getProperty(self, v8, 24, 1);
     v12 = v5;
     v13 = v12;
     if (!Property)
@@ -148,10 +148,10 @@ LABEL_20:
 - (void)startRedirectTimer
 {
   v11 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    [(NEIKEv2Server *)a1 stopRedirectTimer];
-    if (objc_getProperty(a1, v2, 32, 1))
+    [(NEIKEv2Server *)self stopRedirectTimer];
+    if (objc_getProperty(self, v2, 32, 1))
     {
       v3 = ne_log_obj();
       if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -166,10 +166,10 @@ LABEL_20:
       v8[1] = 3221225472;
       v8[2] = __35__NEIKEv2Server_startRedirectTimer__block_invoke;
       v8[3] = &unk_1E7F0B0E8;
-      v8[4] = a1;
+      v8[4] = self;
       v5 = NERepeatingEventCreate(MEMORY[0x1E69E96A0], v4, 0, 300000, 150000, 0, v8, 0);
-      v6 = a1[9];
-      a1[9] = v5;
+      v6 = self[9];
+      self[9] = v5;
     }
   }
 
@@ -198,22 +198,22 @@ void __35__NEIKEv2Server_startRedirectTimer__block_invoke(uint64_t a1)
 
 - (void)resetPathProxyState
 {
-  if (a1)
+  if (self)
   {
-    a1[8] = 0;
-    objc_setProperty_atomic(a1, a2, 0, 56);
+    self[8] = 0;
+    objc_setProperty_atomic(self, a2, 0, 56);
 
-    objc_setProperty_atomic(a1, v3, 0, 64);
+    objc_setProperty_atomic(self, v3, 0, 64);
   }
 }
 
-- (id)getNextViableServerAddressForPath:(void *)a1
+- (id)getNextViableServerAddressForPath:(void *)path
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (path)
   {
     v3 = a2;
-    Property = objc_getProperty(a1, v4, 24, 1);
+    Property = objc_getProperty(path, v4, 24, 1);
     v6 = v3;
     v7 = v6;
     if (Property)
@@ -228,7 +228,7 @@ void __35__NEIKEv2Server_startRedirectTimer__block_invoke(uint64_t a1)
 LABEL_21:
 
           v24 = [NEIKEv2AddressList normalizeServerAddress:v11 path:v7];
-          objc_setProperty_atomic(a1, v25, v24, 16);
+          objc_setProperty_atomic(path, v25, v24, 16);
 
           goto LABEL_22;
         }
@@ -251,8 +251,8 @@ LABEL_21:
         if (v16 < [objc_getProperty(Property v15])
         {
           *buf = 0;
-          v17 = [v7 scopedInterface];
-          if (v17)
+          scopedInterface = [v7 scopedInterface];
+          if (scopedInterface)
           {
             [v7 scopedInterface];
           }
@@ -323,56 +323,56 @@ LABEL_22:
   return v11;
 }
 
-- (id)getViableServerAddressForPath:(void *)a1
+- (id)getViableServerAddressForPath:(void *)path
 {
   v4 = a2;
-  if (a1)
+  if (path)
   {
-    if (objc_getProperty(a1, v3, 56, 1))
+    if (objc_getProperty(path, v3, 56, 1))
     {
-      v6 = [objc_getProperty(a1 v5];
+      v6 = [objc_getProperty(path v5];
 LABEL_14:
-      a1 = v6;
+      path = v6;
       goto LABEL_15;
     }
 
-    Property = objc_getProperty(a1, v5, 16, 1);
+    Property = objc_getProperty(path, v5, 16, 1);
     if (([NEIKEv2Helper getIdentifierType:?]& 3) != 1)
     {
-      v9 = [(NEIKEv2Server *)a1 getNextViableServerAddressForPath:v4];
+      v9 = [(NEIKEv2Server *)path getNextViableServerAddressForPath:v4];
     }
 
-    if (objc_getProperty(a1, v8, 16, 1))
+    if (objc_getProperty(path, v8, 16, 1))
     {
-      v11 = objc_getProperty(a1, v10, 16, 1);
+      v11 = objc_getProperty(path, v10, 16, 1);
       v12 = NEGetAddressFamilyFromString(v11);
       if ([v4 supportsIPv4] && (objc_msgSend(v4, "supportsIPv6") & 1) != 0 || objc_msgSend(v4, "supportsIPv4") && v12 == 2 || objc_msgSend(v4, "supportsIPv6") && v12 == 30)
       {
-        v6 = objc_getProperty(a1, v13, 16, 1);
+        v6 = objc_getProperty(path, v13, 16, 1);
         goto LABEL_14;
       }
 
-      if ([v4 supportsIPv4] && objc_getProperty(a1, v16, 40, 1))
+      if ([v4 supportsIPv4] && objc_getProperty(path, v16, 40, 1))
       {
-        v18 = a1;
+        pathCopy2 = path;
         v19 = 40;
 LABEL_28:
-        v6 = [objc_getProperty(v18 v17];
+        v6 = [objc_getProperty(pathCopy2 v17];
         goto LABEL_14;
       }
 
       if ([v4 supportsIPv6])
       {
-        if (objc_getProperty(a1, v20, 48, 1))
+        if (objc_getProperty(path, v20, 48, 1))
         {
-          v18 = a1;
+          pathCopy2 = path;
           v19 = 48;
           goto LABEL_28;
         }
 
         *buf = 0;
-        v21 = [v4 scopedInterface];
-        if (v21)
+        scopedInterface = [v4 scopedInterface];
+        if (scopedInterface)
         {
           [v4 scopedInterface];
         }
@@ -388,8 +388,8 @@ LABEL_28:
         if (v23)
         {
           v25 = v23;
-          v26 = objc_getProperty(a1, v24, 16, 1);
-          a1 = [NEIKEv2AddressList getSynthesizedIPv6Address:v26 outgoingIf:*buf nat64Prefixes:v25 numNat64Prefixes:?];
+          v26 = objc_getProperty(path, v24, 16, 1);
+          path = [NEIKEv2AddressList getSynthesizedIPv6Address:v26 outgoingIf:*buf nat64Prefixes:v25 numNat64Prefixes:?];
           goto LABEL_15;
         }
       }
@@ -405,12 +405,12 @@ LABEL_28:
       }
     }
 
-    a1 = 0;
+    path = 0;
   }
 
 LABEL_15:
 
-  return a1;
+  return path;
 }
 
 @end

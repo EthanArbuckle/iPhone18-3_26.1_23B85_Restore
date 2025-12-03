@@ -1,27 +1,27 @@
 @interface QSSMutableCorrectionsAlignment
 - (QSSMutableCorrectionsAlignment)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setCorrected_words:(id)a3;
-- (void)setOriginal_words:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setCorrected_words:(id)corrected_words;
+- (void)setOriginal_words:(id)original_words;
 @end
 
 @implementation QSSMutableCorrectionsAlignment
 
-- (void)setCorrected_words:(id)a3
+- (void)setCorrected_words:(id)corrected_words
 {
-  v4 = [a3 copy];
+  v4 = [corrected_words copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (void)setOriginal_words:(id)a3
+- (void)setOriginal_words:(id)original_words
 {
-  v4 = [a3 copy];
+  v4 = [original_words copy];
   [NSMutableDictionary setObject:"setObject:forKeyedSubscript:" forKeyedSubscript:?];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->super._storage copy];
   v6 = v4[1];
   v4[1] = v5;
@@ -36,9 +36,9 @@
   v2 = [(QSSMutableCorrectionsAlignment *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v2->super._storage;
-    v2->super._storage = v3;
+    v2->super._storage = dictionary;
   }
 
   return v2;

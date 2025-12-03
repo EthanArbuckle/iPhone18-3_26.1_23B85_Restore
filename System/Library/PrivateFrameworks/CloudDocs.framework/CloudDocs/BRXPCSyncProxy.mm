@@ -1,16 +1,16 @@
 @interface BRXPCSyncProxy
-- (BRXPCSyncProxy)initWithXPCObject:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)forwardInvocation:(id)a3;
-- (void)setBoolResult:(BOOL)a3 error:(id)a4;
-- (void)setObjResult:(id)a3 error:(id)a4;
+- (BRXPCSyncProxy)initWithXPCObject:(id)object;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)forwardInvocation:(id)invocation;
+- (void)setBoolResult:(BOOL)result error:(id)error;
+- (void)setObjResult:(id)result error:(id)error;
 @end
 
 @implementation BRXPCSyncProxy
 
-- (BRXPCSyncProxy)initWithXPCObject:(id)a3
+- (BRXPCSyncProxy)initWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     [BRXPCSyncProxy initWithXPCObject:];
@@ -22,7 +22,7 @@
   v8[2] = __36__BRXPCSyncProxy_initWithXPCObject___block_invoke;
   v8[3] = &unk_1E7A148A8;
   objc_copyWeak(&v9, &location);
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v8];
+  v5 = [objectCopy synchronousRemoteObjectProxyWithErrorHandler:v8];
   target = self->_target;
   self->_target = v5;
 
@@ -45,9 +45,9 @@ void __36__BRXPCSyncProxy_initWithXPCObject___block_invoke(uint64_t a1, void *a2
   [WeakRetained setObjResult:0 error:v3];
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   target = self->_target;
   if (!target)
   {
@@ -55,10 +55,10 @@ void __36__BRXPCSyncProxy_initWithXPCObject___block_invoke(uint64_t a1, void *a2
     target = v6;
   }
 
-  [target forwardInvocation:v4];
+  [target forwardInvocation:invocationCopy];
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   target = self->_target;
   if (!target)
@@ -67,14 +67,14 @@ void __36__BRXPCSyncProxy_initWithXPCObject___block_invoke(uint64_t a1, void *a2
     target = v7;
   }
 
-  v5 = [target methodSignatureForSelector:a3];
+  v5 = [target methodSignatureForSelector:selector];
 
   return v5;
 }
 
-- (void)setBoolResult:(BOOL)a3 error:(id)a4
+- (void)setBoolResult:(BOOL)result error:(id)error
 {
-  if (a3)
+  if (result)
   {
     v5 = MEMORY[0x1E695E118];
   }
@@ -84,16 +84,16 @@ void __36__BRXPCSyncProxy_initWithXPCObject___block_invoke(uint64_t a1, void *a2
     v5 = 0;
   }
 
-  v6 = a4;
+  errorCopy = error;
   [(BRXPCSyncProxy *)self setResult:v5];
-  [(BRXPCSyncProxy *)self setError:v6];
+  [(BRXPCSyncProxy *)self setError:errorCopy];
 }
 
-- (void)setObjResult:(id)a3 error:(id)a4
+- (void)setObjResult:(id)result error:(id)error
 {
-  v6 = a4;
-  [(BRXPCSyncProxy *)self setResult:a3];
-  [(BRXPCSyncProxy *)self setError:v6];
+  errorCopy = error;
+  [(BRXPCSyncProxy *)self setResult:result];
+  [(BRXPCSyncProxy *)self setError:errorCopy];
 }
 
 - (void)initWithXPCObject:.cold.1()

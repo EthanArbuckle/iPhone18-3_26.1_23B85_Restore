@@ -4,16 +4,16 @@
 - (BOOL)hasText;
 - (BOOL)iccAllowsTextEditing;
 - (BOOL)keyboardIsAnimating;
-- (BOOL)p_accessibilityShouldCheckAncestorCanPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)p_accessibilityShouldCheckAncestorCanPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)resignFirstResponder;
-- (BOOL)shouldChangeFirstResponderFor:(id)a3;
-- (CGPoint)convertPointFromTopResponderView:(CGPoint)a3;
-- (CGPoint)convertPointToTopResponderView:(CGPoint)a3;
-- (CGRect)_accessibilitySpeakRectForRange:(id)a3;
-- (CGRect)caretRectForPosition:(id)a3;
-- (CGRect)convertRectFromTopResponderView:(CGRect)a3;
-- (CGRect)convertRectToTopResponderView:(CGRect)a3;
-- (CGRect)firstRectForRange:(id)a3;
+- (BOOL)shouldChangeFirstResponderFor:(id)for;
+- (CGPoint)convertPointFromTopResponderView:(CGPoint)view;
+- (CGPoint)convertPointToTopResponderView:(CGPoint)view;
+- (CGRect)_accessibilitySpeakRectForRange:(id)range;
+- (CGRect)caretRectForPosition:(id)position;
+- (CGRect)convertRectFromTopResponderView:(CGRect)view;
+- (CGRect)convertRectToTopResponderView:(CGRect)view;
+- (CGRect)firstRectForRange:(id)range;
 - (CRLInteractiveCanvasController)icc;
 - (NSArray)keyCommands;
 - (NSArray)tirKeyCommands;
@@ -32,64 +32,64 @@
 - (_TtP8Freeform18CRLTextInputEditor_)editor;
 - (id)_accessibilitySpeakTextSelectionViews;
 - (id)_crlaxEditingTextRep;
-- (id)attributedTextInRange:(id)a3;
-- (id)characterRangeAtPoint:(CGPoint)a3;
-- (id)characterRangeByExtendingPosition:(id)a3 inDirection:(int64_t)a4;
-- (id)closestPositionToPoint:(CGPoint)a3;
-- (id)closestPositionToPoint:(CGPoint)a3 withinRange:(id)a4;
-- (id)keyCommandForArrowIn:(id)a3 with:(int64_t)a4;
-- (id)keyCommandsForArrowsWithModifiersIn:(id)a3;
+- (id)attributedTextInRange:(id)range;
+- (id)characterRangeAtPoint:(CGPoint)point;
+- (id)characterRangeByExtendingPosition:(id)position inDirection:(int64_t)direction;
+- (id)closestPositionToPoint:(CGPoint)point;
+- (id)closestPositionToPoint:(CGPoint)point withinRange:(id)range;
+- (id)keyCommandForArrowIn:(id)in with:(int64_t)with;
+- (id)keyCommandsForArrowsWithModifiersIn:(id)in;
 - (id)nextResponder;
-- (id)positionFromPosition:(id)a3 inDirection:(int64_t)a4 offset:(int64_t)a5;
-- (id)positionFromPosition:(id)a3 offset:(int64_t)a4;
-- (id)positionWithinRange:(id)a3 farthestInDirection:(int64_t)a4;
-- (id)selectionRectsForRange:(id)a3;
-- (id)targetForAction:(SEL)a3 withSender:(id)a4;
-- (id)textInRange:(id)a3;
-- (id)textRangeFromPosition:(id)a3 toPosition:(id)a4;
-- (int64_t)baseWritingDirectionForPosition:(id)a3 inDirection:(int64_t)a4;
-- (int64_t)comparePosition:(id)a3 toPosition:(id)a4;
-- (int64_t)offsetFromPosition:(id)a3 toPosition:(id)a4;
+- (id)positionFromPosition:(id)position inDirection:(int64_t)direction offset:(int64_t)offset;
+- (id)positionFromPosition:(id)position offset:(int64_t)offset;
+- (id)positionWithinRange:(id)range farthestInDirection:(int64_t)direction;
+- (id)selectionRectsForRange:(id)range;
+- (id)targetForAction:(SEL)action withSender:(id)sender;
+- (id)textInRange:(id)range;
+- (id)textRangeFromPosition:(id)position toPosition:(id)toPosition;
+- (int64_t)baseWritingDirectionForPosition:(id)position inDirection:(int64_t)direction;
+- (int64_t)comparePosition:(id)position toPosition:(id)toPosition;
+- (int64_t)offsetFromPosition:(id)position toPosition:(id)toPosition;
 - (int64_t)writingToolsBehavior;
 - (uint64_t)mathExpressionCompletionType;
 - (unint64_t)allowedWritingToolsResultOptions;
-- (void)_startWritingToolsWithTool:(id)a3 prompt:(id)a4 sender:(id)a5;
-- (void)applicationDidEnterBackgroundWithNotification:(id)a3;
-- (void)applicationWillEnterForegroundWithNotification:(id)a3;
-- (void)arrowKeyInputReceivedFrom:(id)a3;
-- (void)beginFloatingCursorAtPoint:(CGPoint)a3;
+- (void)_startWritingToolsWithTool:(id)tool prompt:(id)prompt sender:(id)sender;
+- (void)applicationDidEnterBackgroundWithNotification:(id)notification;
+- (void)applicationWillEnterForegroundWithNotification:(id)notification;
+- (void)arrowKeyInputReceivedFrom:(id)from;
+- (void)beginFloatingCursorAtPoint:(CGPoint)point;
 - (void)beginTextInput;
 - (void)deleteBackward;
 - (void)deleteKeyPressed;
 - (void)didDismissWritingTools;
 - (void)endFloatingCursor;
-- (void)endTextInput:(id)a3;
-- (void)firstResponderChangedWithNotification:(id)a3;
-- (void)forwardInvocation:(id)a3;
-- (void)insertAttributedText:(id)a3;
-- (void)insertText:(id)a3;
-- (void)insertText:(id)a3 alternatives:(id)a4 style:(int64_t)a5;
-- (void)insertWithText:(id)a3;
-- (void)reloadForMathPaperChangesWithNotification:(id)a3;
+- (void)endTextInput:(id)input;
+- (void)firstResponderChangedWithNotification:(id)notification;
+- (void)forwardInvocation:(id)invocation;
+- (void)insertAttributedText:(id)text;
+- (void)insertText:(id)text;
+- (void)insertText:(id)text alternatives:(id)alternatives style:(int64_t)style;
+- (void)insertWithText:(id)text;
+- (void)reloadForMathPaperChangesWithNotification:(id)notification;
 - (void)reloadInputViews;
-- (void)replaceRange:(id)a3 withAttributedText:(id)a4;
-- (void)replaceRange:(id)a3 withText:(id)a4;
-- (void)replaceWithRange:(id)a3 with:(id)a4;
-- (void)setAttributedMarkedText:(id)a3 selectedRange:(_NSRange)a4;
-- (void)setBaseWritingDirection:(int64_t)a3 forRange:(id)a4;
-- (void)setEditor:(id)a3 withFlags:(unint64_t)a4;
-- (void)setFloatingCursorHelper:(id)a3;
-- (void)setInputLogger:(id)a3;
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4;
+- (void)replaceRange:(id)range withAttributedText:(id)text;
+- (void)replaceRange:(id)range withText:(id)text;
+- (void)replaceWithRange:(id)range with:(id)with;
+- (void)setAttributedMarkedText:(id)text selectedRange:(_NSRange)range;
+- (void)setBaseWritingDirection:(int64_t)direction forRange:(id)range;
+- (void)setEditor:(id)editor withFlags:(unint64_t)flags;
+- (void)setFloatingCursorHelper:(id)helper;
+- (void)setInputLogger:(id)logger;
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range;
 - (void)setNeedsInputViewsReloaded;
-- (void)setSelectedTextRange:(id)a3;
+- (void)setSelectedTextRange:(id)range;
 - (void)textDidChange;
-- (void)textInput:(id)a3;
+- (void)textInput:(id)input;
 - (void)textSelectionDidChange;
 - (void)textSelectionWillChange;
 - (void)textWillChange;
 - (void)unmarkText;
-- (void)updateFloatingCursorAtPoint:(CGPoint)a3;
+- (void)updateFloatingCursorAtPoint:(CGPoint)point;
 @end
 
 @implementation CRLTextInputResponder
@@ -101,27 +101,27 @@
   return Strong;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   v15 = 0;
-  [v4 getArgument:&v15 atIndex:2];
+  [invocationCopy getArgument:&v15 atIndex:2];
   if (![CRLCanvasEditor physicalKeyboardIsSender:v15]|| ![(CRLTextInputResponder *)self isIgnoringKeyboardInput])
   {
-    v5 = [v4 selector];
+    selector = [invocationCopy selector];
     v6 = [(CRLTextInputResponder *)self icc];
-    v7 = [v6 layerHost];
-    v8 = [v7 asiOSCVC];
+    layerHost = [v6 layerHost];
+    asiOSCVC = [layerHost asiOSCVC];
 
-    if ([v8 respondsToSelector:v5 withSender:v15])
+    if ([asiOSCVC respondsToSelector:selector withSender:v15])
     {
       v9 = +[UIMenuController sharedMenuController];
       [v9 hideMenu];
 
-      [v4 invokeWithTarget:v8];
+      [invocationCopy invokeWithTarget:asiOSCVC];
     }
 
-    else if ((v15 == self || [@"UIEditingInteraction" isEqual:?]) && (v5 == "cut:" || v5 == "copy:" || v5 == "paste:"))
+    else if ((v15 == self || [@"UIEditingInteraction" isEqual:?]) && (selector == "cut:" || selector == "copy:" || selector == "paste:"))
     {
       v10 = +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -151,16 +151,16 @@
       [CRLAssertionHandler handleFailureInFunction:v13 file:v14 lineNumber:62 isFatal:0 description:"The OS undo gestures should not be sending us selectors we can't respond to!"];
     }
 
-    else if (![(CRLTextInputResponder *)self p_workAround17828487ForSelector:v5])
+    else if (![(CRLTextInputResponder *)self p_workAround17828487ForSelector:selector])
     {
-      [(CRLTextInputResponder *)self doesNotRecognizeSelector:v5];
+      [(CRLTextInputResponder *)self doesNotRecognizeSelector:selector];
     }
   }
 }
 
-- (BOOL)p_accessibilityShouldCheckAncestorCanPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)p_accessibilityShouldCheckAncestorCanPerformAction:(SEL)action withSender:(id)sender
 {
-  v4 = NSStringFromSelector(a3);
+  v4 = NSStringFromSelector(action);
   v5 = [&off_1018E1308 containsObject:v4];
 
   return v5;
@@ -169,10 +169,10 @@
 - (id)_crlaxEditingTextRep
 {
   v13 = 0;
-  v2 = [(CRLTextInputResponder *)self editor];
+  editor = [(CRLTextInputResponder *)self editor];
   v3 = objc_opt_class();
-  v4 = __CRLAccessibilityCastAsClass(v3, v2, 1, &v13);
-  if (v13 == 1 || (v5 = v4, v2, v12 = 0, [v5 editingReps], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "anyObject"), v7 = objc_claimAutoreleasedReturnValue(), v6, v8 = objc_opt_class(), __CRLAccessibilityCastAsClass(v8, v7, 1, &v12), v9 = objc_claimAutoreleasedReturnValue(), v12 == 1))
+  v4 = __CRLAccessibilityCastAsClass(v3, editor, 1, &v13);
+  if (v13 == 1 || (v5 = v4, editor, v12 = 0, [v5 editingReps], v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "anyObject"), v7 = objc_claimAutoreleasedReturnValue(), v6, v8 = objc_opt_class(), __CRLAccessibilityCastAsClass(v8, v7, 1, &v12), v9 = objc_claimAutoreleasedReturnValue(), v12 == 1))
   {
     abort();
   }
@@ -184,12 +184,12 @@
 
 - (id)_accessibilitySpeakTextSelectionViews
 {
-  v2 = [(CRLTextInputResponder *)self _crlaxEditingTextRep];
-  v3 = v2;
-  if (v2)
+  _crlaxEditingTextRep = [(CRLTextInputResponder *)self _crlaxEditingTextRep];
+  v3 = _crlaxEditingTextRep;
+  if (_crlaxEditingTextRep)
   {
-    v4 = [v2 crlaxValueForKey:@"_selectionHighlightLayer"];
-    v5 = [v3 overlayRenderables];
+    v4 = [_crlaxEditingTextRep crlaxValueForKey:@"_selectionHighlightLayer"];
+    overlayRenderables = [v3 overlayRenderables];
     v35 = 0;
     v6 = v3;
     v7 = objc_opt_class();
@@ -201,8 +201,8 @@
 
     v9 = v8;
 
-    v10 = [v9 crlaxRetainedTarget];
-    v11 = [v10 knobs];
+    crlaxRetainedTarget = [v9 crlaxRetainedTarget];
+    knobs = [crlaxRetainedTarget knobs];
 
     v12 = objc_opt_new();
     v13 = v12;
@@ -215,7 +215,7 @@
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v14 = v5;
+    v14 = overlayRenderables;
     v15 = [v14 countByEnumeratingWithState:&v31 objects:v37 count:16];
     if (v15)
     {
@@ -230,8 +230,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v31 + 1) + 8 * i) layer];
-          [v13 addObject:v19];
+          layer = [*(*(&v31 + 1) + 8 * i) layer];
+          [v13 addObject:layer];
         }
 
         v16 = [v14 countByEnumeratingWithState:&v31 objects:v37 count:16];
@@ -244,7 +244,7 @@
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v20 = v11;
+    v20 = knobs;
     v21 = [v20 countByEnumeratingWithState:&v27 objects:v36 count:16];
     if (v21)
     {
@@ -281,9 +281,9 @@
   return v13;
 }
 
-- (CGRect)_accessibilitySpeakRectForRange:(id)a3
+- (CGRect)_accessibilitySpeakRectForRange:(id)range
 {
-  v4 = a3;
+  rangeCopy = range;
   v34 = 0;
   v35 = &v34;
   v37 = &unk_1016A8115;
@@ -292,7 +292,7 @@
   origin = CGRectZero.origin;
   v39 = size;
   v33 = 0;
-  v6 = v4;
+  v6 = rangeCopy;
   v7 = objc_opt_class();
   v8 = __CRLAccessibilityCastAsClass(v7, v6, 1, &v33);
   if (v33 == 1)
@@ -304,9 +304,9 @@
 
   if (v9)
   {
-    v10 = [(CRLTextInputResponder *)self _crlaxEditingTextRep];
-    v11 = v10;
-    if (!v10)
+    _crlaxEditingTextRep = [(CRLTextInputResponder *)self _crlaxEditingTextRep];
+    v11 = _crlaxEditingTextRep;
+    if (!_crlaxEditingTextRep)
     {
 LABEL_7:
 
@@ -314,16 +314,16 @@ LABEL_7:
     }
 
     v33 = 0;
-    v12 = v10;
+    v12 = _crlaxEditingTextRep;
     v13 = objc_opt_class();
     v14 = __CRLAccessibilityCastAsSafeCategory(v13, v12, 1, &v33);
     if (v33 != 1)
     {
       v15 = v14;
 
-      v16 = [v15 crlaxRetainedTarget];
-      v17 = [v16 canvas];
-      v18 = [v17 canvasController];
+      crlaxRetainedTarget = [v15 crlaxRetainedTarget];
+      canvas = [crlaxRetainedTarget canvas];
+      canvasController = [canvas canvasController];
 
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
@@ -332,7 +332,7 @@ LABEL_7:
       v29 = v9;
       v32 = &v34;
       v30 = v12;
-      v19 = v18;
+      v19 = canvasController;
       v31 = v19;
       if (!__CRLAccessibilityPerformSafeBlock(v28))
       {
@@ -365,7 +365,7 @@ LABEL_8:
 
 - (UIView)selectionContainerViewBelowText
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007E4714();
 
   return v3;
@@ -373,32 +373,32 @@ LABEL_8:
 
 - (UIView)selectionContainerViewAboveText
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007E4764();
 
   return v3;
 }
 
-- (void)setInputLogger:(id)a3
+- (void)setInputLogger:(id)logger
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform21CRLTextInputResponder_inputLogger);
-  *(self + OBJC_IVAR____TtC8Freeform21CRLTextInputResponder_inputLogger) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform21CRLTextInputResponder_inputLogger) = logger;
+  loggerCopy = logger;
 }
 
 - (BOOL)iccAllowsTextEditing
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007E4940();
 
   return v3 & 1;
 }
 
-- (BOOL)shouldChangeFirstResponderFor:(id)a3
+- (BOOL)shouldChangeFirstResponderFor:(id)for
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_1007E4A2C(a3);
+  selfCopy = self;
+  v6 = sub_1007E4A2C(for);
   swift_unknownObjectRelease();
 
   return v6 & 1;
@@ -413,7 +413,7 @@ LABEL_8:
 
 - (void)setNeedsInputViewsReloaded
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007E4BF0();
 }
 
@@ -426,31 +426,31 @@ LABEL_8:
 
 - (void)reloadInputViews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007E4FC0();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for CRLTextInputResponder();
   [(CRLTextInputResponder *)&v3 reloadInputViews];
 }
 
 - (void)textWillChange
 {
-  v2 = self;
-  sub_1007E529C(v2, &selRef_textWillChange_);
+  selfCopy = self;
+  sub_1007E529C(selfCopy, &selRef_textWillChange_);
 }
 
 - (void)textDidChange
 {
-  v2 = self;
-  sub_1007E529C(v2, &selRef_textDidChange_);
+  selfCopy = self;
+  sub_1007E529C(selfCopy, &selRef_textDidChange_);
 }
 
-- (void)setEditor:(id)a3 withFlags:(unint64_t)a4
+- (void)setEditor:(id)editor withFlags:(unint64_t)flags
 {
-  v4 = a4;
+  flagsCopy = flags;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1007E5330(a3, v4);
+  selfCopy = self;
+  sub_1007E5330(editor, flagsCopy);
   swift_unknownObjectRelease();
 }
 
@@ -461,36 +461,36 @@ LABEL_8:
   return Strong;
 }
 
-- (void)applicationDidEnterBackgroundWithNotification:(id)a3
+- (void)applicationDidEnterBackgroundWithNotification:(id)notification
 {
   v3 = *(self + OBJC_IVAR____TtC8Freeform21CRLTextInputResponder_editor);
   if (v3)
   {
-    v5 = self;
-    v4 = [v3 textInputReceiver];
-    if (v4)
+    selfCopy = self;
+    textInputReceiver = [v3 textInputReceiver];
+    if (textInputReceiver)
     {
-      [v4 abortMarkedText];
+      [textInputReceiver abortMarkedText];
       swift_unknownObjectRelease();
     }
   }
 }
 
-- (void)applicationWillEnterForegroundWithNotification:(id)a3
+- (void)applicationWillEnterForegroundWithNotification:(id)notification
 {
-  v4 = a3;
-  v5 = self;
+  notificationCopy = notification;
+  selfCopy = self;
   sub_1007EDF30();
 }
 
-- (void)firstResponderChangedWithNotification:(id)a3
+- (void)firstResponderChangedWithNotification:(id)notification
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_1007E5D40();
 
   (*(v5 + 8))(v7, v4);
@@ -498,7 +498,7 @@ LABEL_8:
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007E5F08();
 
   return v3 & 1;
@@ -506,7 +506,7 @@ LABEL_8:
 
 - (BOOL)resignFirstResponder
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007E6140();
 
   return v3 & 1;
@@ -514,19 +514,19 @@ LABEL_8:
 
 - (void)textSelectionWillChange
 {
-  v2 = self;
-  sub_1007E6454(v2, &selRef_selectionWillChange_);
+  selfCopy = self;
+  sub_1007E6454(selfCopy, &selRef_selectionWillChange_);
 }
 
 - (void)textSelectionDidChange
 {
-  v2 = self;
-  sub_1007E6454(v2, &selRef_selectionDidChange_);
+  selfCopy = self;
+  sub_1007E6454(selfCopy, &selRef_selectionDidChange_);
 }
 
-- (void)textInput:(id)a3
+- (void)textInput:(id)input
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(input);
   v5 = OBJC_IVAR____TtC8Freeform21CRLTextInputResponder_textInputInProgress;
   v6 = *(self + OBJC_IVAR____TtC8Freeform21CRLTextInputResponder_textInputInProgress);
   v7 = __OFADD__(v6, 1);
@@ -540,7 +540,7 @@ LABEL_8:
   *(self + OBJC_IVAR____TtC8Freeform21CRLTextInputResponder_textInputInProgress) = v8;
   v9 = v4[2];
   v10 = v4;
-  v13 = self;
+  selfCopy = self;
   v9(v10);
   _Block_release(v10);
   v11 = *(self + v5);
@@ -558,13 +558,13 @@ LABEL_7:
 
 - (UITextRange)selectedTextRange
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007E65F0();
 
   return v3;
 }
 
-- (void)setSelectedTextRange:(id)a3
+- (void)setSelectedTextRange:(id)range
 {
   v3 = OBJC_IVAR____TtC8Freeform21CRLTextInputResponder_textInputInProgress;
   v4 = *(self + OBJC_IVAR____TtC8Freeform21CRLTextInputResponder_textInputInProgress);
@@ -577,9 +577,9 @@ LABEL_7:
   }
 
   *(self + OBJC_IVAR____TtC8Freeform21CRLTextInputResponder_textInputInProgress) = v6;
-  v9 = a3;
-  v12 = self;
-  sub_1007E66F4(a3, v12);
+  rangeCopy = range;
+  selfCopy = self;
+  sub_1007E66F4(range, selfCopy);
 
   v10 = *(self + v3);
   v5 = __OFSUB__(v10, 1);
@@ -596,17 +596,17 @@ LABEL_7:
 
 - (UITextRange)markedTextRange
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007E6F88();
 
   return v3;
 }
 
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  if (a3)
+  length = range.length;
+  location = range.location;
+  if (text)
   {
     v7 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v9 = v8;
@@ -618,28 +618,28 @@ LABEL_7:
     v9 = 0;
   }
 
-  v10 = self;
+  selfCopy = self;
   sub_1007E7098(v7, v9, location, length);
 }
 
-- (void)setAttributedMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)setAttributedMarkedText:(id)text selectedRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v8 = a3;
-  v9 = self;
-  sub_1007E7310(a3, location, length);
+  length = range.length;
+  location = range.location;
+  textCopy = text;
+  selfCopy = self;
+  sub_1007E7310(text, location, length);
 }
 
 - (void)unmarkText
 {
-  v2 = self;
-  sub_1007E74EC(v2);
+  selfCopy = self;
+  sub_1007E74EC(selfCopy);
 }
 
 - (UITextPosition)beginningOfDocument
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007E7644();
 
   return v3;
@@ -647,64 +647,64 @@ LABEL_7:
 
 - (UITextPosition)endOfDocument
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007E7694();
 
   return v3;
 }
 
-- (id)textRangeFromPosition:(id)a3 toPosition:(id)a4
+- (id)textRangeFromPosition:(id)position toPosition:(id)toPosition
 {
   v6 = qword_1019F1570;
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  positionCopy = position;
+  toPositionCopy = toPosition;
+  selfCopy = self;
   if (v6 != -1)
   {
     swift_once();
   }
 
-  sub_1007E7744(v9, &v12);
+  sub_1007E7744(selfCopy, &v12);
 
   v10 = v12;
 
   return v10;
 }
 
-- (id)positionFromPosition:(id)a3 offset:(int64_t)a4
+- (id)positionFromPosition:(id)position offset:(int64_t)offset
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1007E7978(v6, a4);
+  positionCopy = position;
+  selfCopy = self;
+  v8 = sub_1007E7978(positionCopy, offset);
 
   return v8;
 }
 
-- (id)positionFromPosition:(id)a3 inDirection:(int64_t)a4 offset:(int64_t)a5
+- (id)positionFromPosition:(id)position inDirection:(int64_t)direction offset:(int64_t)offset
 {
-  v8 = a3;
-  v9 = self;
-  v10 = sub_1007E7AF4(v8, a4, a5);
+  positionCopy = position;
+  selfCopy = self;
+  v10 = sub_1007E7AF4(positionCopy, direction, offset);
 
   return v10;
 }
 
-- (int64_t)comparePosition:(id)a3 toPosition:(id)a4
+- (int64_t)comparePosition:(id)position toPosition:(id)toPosition
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1007E7C74(v6, v7);
+  positionCopy = position;
+  toPositionCopy = toPosition;
+  selfCopy = self;
+  v9 = sub_1007E7C74(positionCopy, toPositionCopy);
 
   return v9;
 }
 
-- (int64_t)offsetFromPosition:(id)a3 toPosition:(id)a4
+- (int64_t)offsetFromPosition:(id)position toPosition:(id)toPosition
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1007E7CE4(v6, v7);
+  positionCopy = position;
+  toPositionCopy = toPosition;
+  selfCopy = self;
+  v9 = sub_1007E7CE4(positionCopy, toPositionCopy);
 
   return v9;
 }
@@ -723,51 +723,51 @@ LABEL_7:
   return v2;
 }
 
-- (id)positionWithinRange:(id)a3 farthestInDirection:(int64_t)a4
+- (id)positionWithinRange:(id)range farthestInDirection:(int64_t)direction
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1007E7EE0(v6, a4);
+  rangeCopy = range;
+  selfCopy = self;
+  v8 = sub_1007E7EE0(rangeCopy, direction);
 
   return v8;
 }
 
-- (id)characterRangeByExtendingPosition:(id)a3 inDirection:(int64_t)a4
+- (id)characterRangeByExtendingPosition:(id)position inDirection:(int64_t)direction
 {
   v6 = qword_1019F1570;
-  v7 = a3;
-  v8 = self;
+  positionCopy = position;
+  selfCopy = self;
   if (v6 != -1)
   {
     swift_once();
   }
 
-  sub_1007E7FF8(v8, a4, &v11);
+  sub_1007E7FF8(selfCopy, direction, &v11);
 
   v9 = v11;
 
   return v9;
 }
 
-- (int64_t)baseWritingDirectionForPosition:(id)a3 inDirection:(int64_t)a4
+- (int64_t)baseWritingDirectionForPosition:(id)position inDirection:(int64_t)direction
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_1007EDFA4(v5);
+  positionCopy = position;
+  selfCopy = self;
+  v7 = sub_1007EDFA4(positionCopy);
 
   return v7;
 }
 
-- (void)setBaseWritingDirection:(int64_t)a3 forRange:(id)a4
+- (void)setBaseWritingDirection:(int64_t)direction forRange:(id)range
 {
-  v6 = a4;
-  v7 = self;
-  sub_1007E81A0(a3, v6);
+  rangeCopy = range;
+  selfCopy = self;
+  sub_1007E81A0(direction, rangeCopy);
 }
 
-- (CGRect)firstRectForRange:(id)a3
+- (CGRect)firstRectForRange:(id)range
 {
-  v3 = sub_1007E8588(self, a2, a3, sub_1007E8324);
+  v3 = sub_1007E8588(self, a2, range, sub_1007E8324);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -775,9 +775,9 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
-  v3 = sub_1007E8588(self, a2, a3, sub_1007E8460);
+  v3 = sub_1007E8588(self, a2, position, sub_1007E8460);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -785,11 +785,11 @@ LABEL_7:
   return result;
 }
 
-- (id)selectionRectsForRange:(id)a3
+- (id)selectionRectsForRange:(id)range
 {
-  v4 = a3;
-  v5 = self;
-  sub_1007E8608(v4);
+  rangeCopy = range;
+  selfCopy = self;
+  sub_1007E8608(rangeCopy);
 
   sub_100006370(0, &qword_101A012B0);
   v6.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -797,39 +797,39 @@ LABEL_7:
   return v6.super.isa;
 }
 
-- (id)closestPositionToPoint:(CGPoint)a3
+- (id)closestPositionToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
   v6 = sub_1007E87D8(x, y);
 
   return v6;
 }
 
-- (id)closestPositionToPoint:(CGPoint)a3 withinRange:(id)a4
+- (id)closestPositionToPoint:(CGPoint)point withinRange:(id)range
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_1007E88EC(v7, x, y);
+  y = point.y;
+  x = point.x;
+  rangeCopy = range;
+  selfCopy = self;
+  v9 = sub_1007E88EC(rangeCopy, x, y);
 
   return v9;
 }
 
-- (id)characterRangeAtPoint:(CGPoint)a3
+- (id)characterRangeAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v5 = qword_1019F1570;
-  v6 = self;
+  selfCopy = self;
   if (v5 != -1)
   {
     swift_once();
   }
 
-  sub_1007E8A8C(v6, &v9, x, y);
+  sub_1007E8A8C(selfCopy, &v9, x, y);
 
   v7 = v9;
 
@@ -841,14 +841,14 @@ LABEL_7:
   v2 = *(self + OBJC_IVAR____TtC8Freeform21CRLTextInputResponder_editor);
   if (v2)
   {
-    v3 = self;
-    v4 = [v2 textInputReceiver];
-    if (v4)
+    selfCopy = self;
+    textInputReceiver = [v2 textInputReceiver];
+    if (textInputReceiver)
     {
-      v5 = [v4 hasText];
+      hasText = [textInputReceiver hasText];
 
       swift_unknownObjectRelease();
-      return v5;
+      return hasText;
     }
   }
 
@@ -857,16 +857,16 @@ LABEL_7:
 
 - (void)beginTextInput
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007E8C64();
 }
 
-- (void)endTextInput:(id)a3
+- (void)endTextInput:(id)input
 {
-  v3 = self;
-  if (a3)
+  selfCopy = self;
+  if (input)
   {
-    v4 = self;
+    selfCopy2 = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -876,10 +876,10 @@ LABEL_7:
   {
     v10 = 0u;
     v11 = 0u;
-    v5 = self;
+    selfCopy3 = self;
   }
 
-  v6 = *(v3 + OBJC_IVAR____TtC8Freeform21CRLTextInputResponder_resigningFirstResponder);
+  v6 = *(selfCopy + OBJC_IVAR____TtC8Freeform21CRLTextInputResponder_resigningFirstResponder);
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
@@ -896,7 +896,7 @@ LABEL_7:
     v9 = Strong;
     [(CRLTextInputResponder *)Strong endEditingWithFlags:v8, v10, v11];
 
-    v3 = v9;
+    selfCopy = v9;
   }
 
   sub_10000CAAC(&v10, &unk_1019F4D00);
@@ -904,7 +904,7 @@ LABEL_7:
 
 - (BOOL)editorWantsPlainTextDelete
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007E9418();
 
   return v3 & 1;
@@ -912,7 +912,7 @@ LABEL_7:
 
 - (void)deleteKeyPressed
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007E9574();
 }
 
@@ -929,8 +929,8 @@ LABEL_7:
   }
 
   *(self + OBJC_IVAR____TtC8Freeform21CRLTextInputResponder_textInputInProgress) = v5;
-  v9 = self;
-  sub_1007E9A24(v9);
+  selfCopy = self;
+  sub_1007E9A24(selfCopy);
   v7 = *(self + v2);
   v4 = __OFSUB__(v7, 1);
   v8 = v7 - 1;
@@ -946,7 +946,7 @@ LABEL_7:
 
 - (UIView)inputView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007EA084();
 
   return v3;
@@ -954,7 +954,7 @@ LABEL_7:
 
 - (NSArray)keyCommands
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007EA38C();
 
   if (v3)
@@ -971,10 +971,10 @@ LABEL_7:
   return v4.super.isa;
 }
 
-- (id)keyCommandsForArrowsWithModifiersIn:(id)a3
+- (id)keyCommandsForArrowsWithModifiersIn:(id)in
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v4 = self;
+  selfCopy = self;
   sub_1007EE160();
 
   sub_100006370(0, &qword_101A001C0);
@@ -983,9 +983,9 @@ LABEL_7:
   return v5.super.isa;
 }
 
-- (id)keyCommandForArrowIn:(id)a3 with:(int64_t)a4
+- (id)keyCommandForArrowIn:(id)in with:(int64_t)with
 {
-  v4 = [objc_opt_self() keyCommandWithInput:a3 modifierFlags:a4 action:"arrowKeyInputReceivedFrom:"];
+  v4 = [objc_opt_self() keyCommandWithInput:in modifierFlags:with action:"arrowKeyInputReceivedFrom:"];
   [v4 setWantsPriorityOverSystemBehavior:1];
 
   return v4;
@@ -993,7 +993,7 @@ LABEL_7:
 
 - (NSArray)tirKeyCommands
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007EA690();
 
   sub_100006370(0, &qword_101A001C0);
@@ -1002,18 +1002,18 @@ LABEL_7:
   return v3.super.isa;
 }
 
-- (void)arrowKeyInputReceivedFrom:(id)a3
+- (void)arrowKeyInputReceivedFrom:(id)from
 {
-  v4 = a3;
-  v5 = self;
-  sub_1007EAAD4(v4);
+  fromCopy = from;
+  selfCopy = self;
+  sub_1007EAAD4(fromCopy);
 }
 
-- (id)targetForAction:(SEL)a3 withSender:(id)a4
+- (id)targetForAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();
     swift_unknownObjectRelease();
@@ -1022,10 +1022,10 @@ LABEL_7:
   else
   {
     memset(v16, 0, sizeof(v16));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  sub_1007EAC8C(a3, v16, &v17);
+  sub_1007EAC8C(action, v16, &v17);
 
   sub_10000CAAC(v16, &unk_1019F4D00);
   v8 = v18;
@@ -1049,54 +1049,54 @@ LABEL_7:
   return v14;
 }
 
-- (void)setFloatingCursorHelper:(id)a3
+- (void)setFloatingCursorHelper:(id)helper
 {
   v4 = *(self + OBJC_IVAR____TtC8Freeform21CRLTextInputResponder_floatingCursorHelper);
-  *(self + OBJC_IVAR____TtC8Freeform21CRLTextInputResponder_floatingCursorHelper) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8Freeform21CRLTextInputResponder_floatingCursorHelper) = helper;
+  helperCopy = helper;
 }
 
-- (void)beginFloatingCursorAtPoint:(CGPoint)a3
+- (void)beginFloatingCursorAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
   sub_1007EB074(x, y);
 }
 
-- (void)updateFloatingCursorAtPoint:(CGPoint)a3
+- (void)updateFloatingCursorAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v5 = qword_1019F1570;
-  v6 = self;
-  v7 = v6;
+  selfCopy = self;
+  v7 = selfCopy;
   if (v5 != -1)
   {
     swift_once();
-    v6 = v7;
+    selfCopy = v7;
   }
 
-  sub_1007EB2CC(v6, sub_100F99178, x, y);
+  sub_1007EB2CC(selfCopy, sub_100F99178, x, y);
 }
 
 - (void)endFloatingCursor
 {
   v2 = qword_1019F1570;
-  v3 = self;
+  selfCopy = self;
   if (v2 != -1)
   {
     swift_once();
   }
 
   v4 = OBJC_IVAR____TtC8Freeform21CRLTextInputResponder_floatingCursorHelper;
-  v5 = *(v3 + OBJC_IVAR____TtC8Freeform21CRLTextInputResponder_floatingCursorHelper);
+  v5 = *(selfCopy + OBJC_IVAR____TtC8Freeform21CRLTextInputResponder_floatingCursorHelper);
   if (v5)
   {
     v6 = v5;
     sub_100F992C4(v6);
 
-    v7 = *(v3 + v4);
+    v7 = *(selfCopy + v4);
   }
 
   else
@@ -1104,12 +1104,12 @@ LABEL_7:
     v7 = 0;
   }
 
-  *(v3 + v4) = 0;
+  *(selfCopy + v4) = 0;
 }
 
-- (CGRect)convertRectToTopResponderView:(CGRect)a3
+- (CGRect)convertRectToTopResponderView:(CGRect)view
 {
-  v3 = sub_1007EB76C(self, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a2, sub_1007EB5AC);
+  v3 = sub_1007EB76C(self, view.origin.x, view.origin.y, view.size.width, view.size.height, a2, sub_1007EB5AC);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -1117,11 +1117,11 @@ LABEL_7:
   return result;
 }
 
-- (CGPoint)convertPointToTopResponderView:(CGPoint)a3
+- (CGPoint)convertPointToTopResponderView:(CGPoint)view
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = view.y;
+  x = view.x;
+  selfCopy = self;
   v6 = sub_1007EB5D0(x, y);
   v8 = v7;
 
@@ -1132,9 +1132,9 @@ LABEL_7:
   return result;
 }
 
-- (CGRect)convertRectFromTopResponderView:(CGRect)a3
+- (CGRect)convertRectFromTopResponderView:(CGRect)view
 {
-  v3 = sub_1007EB76C(self, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height, a2, sub_1007EB630);
+  v3 = sub_1007EB76C(self, view.origin.x, view.origin.y, view.size.width, view.size.height, a2, sub_1007EB630);
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -1142,11 +1142,11 @@ LABEL_7:
   return result;
 }
 
-- (CGPoint)convertPointFromTopResponderView:(CGPoint)a3
+- (CGPoint)convertPointFromTopResponderView:(CGPoint)view
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = view.y;
+  x = view.x;
+  selfCopy = self;
   v6 = sub_1007EB7F0(x, y);
   v8 = v7;
 
@@ -1159,7 +1159,7 @@ LABEL_7:
 
 - (UIView)topFirstResponderView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007EB984();
 
   return v3;
@@ -1167,72 +1167,72 @@ LABEL_7:
 
 - (UIView)textInputView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1007EBE60();
 
   return v3;
 }
 
-- (void)reloadForMathPaperChangesWithNotification:(id)a3
+- (void)reloadForMathPaperChangesWithNotification:(id)notification
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   sub_1007E4BF0();
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)_startWritingToolsWithTool:(id)a3 prompt:(id)a4 sender:(id)a5
+- (void)_startWritingToolsWithTool:(id)tool prompt:(id)prompt sender:(id)sender
 {
-  v6 = a4;
-  if (a3)
+  promptCopy = prompt;
+  if (tool)
   {
     v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v10 = v9;
-    if (v6)
+    if (promptCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_6:
     v11 = 0;
-    if (a5)
+    if (sender)
     {
       goto LABEL_4;
     }
 
 LABEL_7:
     memset(v15, 0, sizeof(v15));
-    v14 = self;
+    selfCopy = self;
     goto LABEL_8;
   }
 
   v8 = 0;
   v10 = 0;
-  if (!a4)
+  if (!prompt)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
   v11 = static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = v12;
-  if (!a5)
+  promptCopy = v12;
+  if (!sender)
   {
     goto LABEL_7;
   }
 
 LABEL_4:
-  v13 = self;
+  selfCopy2 = self;
   swift_unknownObjectRetain();
   _bridgeAnyObjectToAny(_:)();
   swift_unknownObjectRelease();
 LABEL_8:
-  sub_1007EC004(v8, v10, v11, v6, v15);
+  sub_1007EC004(v8, v10, v11, promptCopy, v15);
 
   sub_10000CAAC(v15, &unk_1019F4D00);
 }
@@ -1249,14 +1249,14 @@ LABEL_8:
   v2 = *(self + OBJC_IVAR____TtC8Freeform21CRLTextInputResponder_editor);
   if (v2)
   {
-    v3 = self;
-    v4 = [v2 textInputReceiver];
-    if (v4)
+    selfCopy = self;
+    textInputReceiver = [v2 textInputReceiver];
+    if (textInputReceiver)
     {
-      v5 = [v4 allowedWritingToolsResultOptions];
+      allowedWritingToolsResultOptions = [textInputReceiver allowedWritingToolsResultOptions];
 
       swift_unknownObjectRelease();
-      return v5;
+      return allowedWritingToolsResultOptions;
     }
   }
 
@@ -1268,14 +1268,14 @@ LABEL_8:
   v2 = *(self + OBJC_IVAR____TtC8Freeform21CRLTextInputResponder_editor);
   if (v2)
   {
-    v3 = self;
-    v4 = [v2 textInputReceiver];
-    if (v4)
+    selfCopy = self;
+    textInputReceiver = [v2 textInputReceiver];
+    if (textInputReceiver)
     {
-      v5 = [v4 writingToolsBehavior];
+      writingToolsBehavior = [textInputReceiver writingToolsBehavior];
 
       swift_unknownObjectRelease();
-      return v5;
+      return writingToolsBehavior;
     }
   }
 
@@ -1284,28 +1284,28 @@ LABEL_8:
 
 - (void)didDismissWritingTools
 {
-  v2 = self;
+  selfCopy = self;
   sub_1007EC5AC();
 }
 
-- (void)replaceRange:(id)a3 withAttributedText:(id)a4
+- (void)replaceRange:(id)range withAttributedText:(id)text
 {
   v7 = type metadata accessor for CRLWPTextString();
   v8 = objc_allocWithZone(v7);
   v9 = &v8[OBJC_IVAR____TtC8Freeform15CRLWPTextString_text];
-  *v9 = a4;
+  *v9 = text;
   *(v9 + 1) = 0;
   v9[16] = 1;
   v14.receiver = v8;
   v14.super_class = v7;
-  v10 = a4;
-  v11 = a3;
-  v12 = self;
+  textCopy = text;
+  rangeCopy = range;
+  selfCopy = self;
   v13 = [(CRLTextInputResponder *)&v14 init];
-  [(CRLTextInputResponder *)v12 replaceWithRange:v11 with:v13, v14.receiver, v14.super_class];
+  [(CRLTextInputResponder *)selfCopy replaceWithRange:rangeCopy with:v13, v14.receiver, v14.super_class];
 }
 
-- (void)replaceRange:(id)a3 withText:(id)a4
+- (void)replaceRange:(id)range withText:(id)text
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
@@ -1317,22 +1317,22 @@ LABEL_8:
   v11[16] = 0;
   v15.receiver = v10;
   v15.super_class = v9;
-  v12 = a3;
-  v13 = self;
+  rangeCopy = range;
+  selfCopy = self;
 
   v14 = [(CRLTextInputResponder *)&v15 init];
-  [(CRLTextInputResponder *)v13 replaceWithRange:v12 with:v14, v15.receiver, v15.super_class];
+  [(CRLTextInputResponder *)selfCopy replaceWithRange:rangeCopy with:v14, v15.receiver, v15.super_class];
 }
 
-- (void)replaceWithRange:(id)a3 with:(id)a4
+- (void)replaceWithRange:(id)range with:(id)with
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1007EC878(v6, v7);
+  rangeCopy = range;
+  withCopy = with;
+  selfCopy = self;
+  sub_1007EC878(rangeCopy, withCopy);
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
@@ -1344,13 +1344,13 @@ LABEL_8:
   v9[16] = 0;
   v12.receiver = v8;
   v12.super_class = v7;
-  v10 = self;
+  selfCopy = self;
 
   v11 = [(CRLTextInputResponder *)&v12 init];
-  [(CRLTextInputResponder *)v10 insertWithText:v11, v12.receiver, v12.super_class];
+  [(CRLTextInputResponder *)selfCopy insertWithText:v11, v12.receiver, v12.super_class];
 }
 
-- (void)insertText:(id)a3 alternatives:(id)a4 style:(int64_t)a5
+- (void)insertText:(id)text alternatives:(id)alternatives style:(int64_t)style
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
@@ -1362,49 +1362,49 @@ LABEL_8:
   v11[16] = 0;
   v14.receiver = v10;
   v14.super_class = v9;
-  v12 = self;
+  selfCopy = self;
 
   v13 = [(CRLTextInputResponder *)&v14 init];
-  [(CRLTextInputResponder *)v12 insertWithText:v13, v14.receiver, v14.super_class];
+  [(CRLTextInputResponder *)selfCopy insertWithText:v13, v14.receiver, v14.super_class];
 }
 
-- (void)insertAttributedText:(id)a3
+- (void)insertAttributedText:(id)text
 {
   v5 = type metadata accessor for CRLWPTextString();
   v6 = objc_allocWithZone(v5);
   v7 = &v6[OBJC_IVAR____TtC8Freeform15CRLWPTextString_text];
-  *v7 = a3;
+  *v7 = text;
   *(v7 + 1) = 0;
   v7[16] = 1;
   v11.receiver = v6;
   v11.super_class = v5;
-  v8 = a3;
-  v9 = self;
+  textCopy = text;
+  selfCopy = self;
   v10 = [(CRLTextInputResponder *)&v11 init];
-  [(CRLTextInputResponder *)v9 insertWithText:v10, v11.receiver, v11.super_class];
+  [(CRLTextInputResponder *)selfCopy insertWithText:v10, v11.receiver, v11.super_class];
 }
 
-- (void)insertWithText:(id)a3
+- (void)insertWithText:(id)text
 {
-  v4 = a3;
-  v5 = self;
-  sub_1007ECC64(v4);
+  textCopy = text;
+  selfCopy = self;
+  sub_1007ECC64(textCopy);
 }
 
-- (id)attributedTextInRange:(id)a3
+- (id)attributedTextInRange:(id)range
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1007ED2A0(v4);
+  rangeCopy = range;
+  selfCopy = self;
+  v6 = sub_1007ED2A0(rangeCopy);
 
   return v6;
 }
 
-- (id)textInRange:(id)a3
+- (id)textInRange:(id)range
 {
-  v4 = a3;
-  v5 = self;
-  sub_1007ED804(v4);
+  rangeCopy = range;
+  selfCopy = self;
+  sub_1007ED804(rangeCopy);
   v7 = v6;
 
   if (v7)
@@ -1422,8 +1422,8 @@ LABEL_8:
 
 - (uint64_t)mathExpressionCompletionType
 {
-  v0 = [objc_opt_self() standardUserDefaults];
-  v1 = [v0 integerForKey:@"CRLMathRecognitionMode"];
+  standardUserDefaults = [objc_opt_self() standardUserDefaults];
+  v1 = [standardUserDefaults integerForKey:@"CRLMathRecognitionMode"];
 
   v2 = sub_1005CC618(v1);
   if (v3)

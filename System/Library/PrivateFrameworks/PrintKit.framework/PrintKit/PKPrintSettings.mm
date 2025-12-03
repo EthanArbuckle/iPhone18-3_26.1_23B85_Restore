@@ -1,26 +1,26 @@
 @interface PKPrintSettings
 + (id)default;
 + (id)photo;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)pageRanges;
 - (PKPrintSettings)init;
-- (PKPrintSettings)initWithCoder:(id)a3;
-- (PKPrintSettings)initWithPaper:(id)a3;
-- (PKPrintSettings)initWithSettings:(id)a3;
-- (PKPrintSettings)initWithUserCodableDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKPrintSettings)initWithCoder:(id)coder;
+- (PKPrintSettings)initWithPaper:(id)paper;
+- (PKPrintSettings)initWithSettings:(id)settings;
+- (PKPrintSettings)initWithUserCodableDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (id)keyedNameToVisitName:(id)a3;
-- (id)objectForKey:(id)a3;
+- (id)keyedNameToVisitName:(id)name;
+- (id)objectForKey:(id)key;
 - (id)userCodableDictionary;
 - (unint64_t)hash;
 - (void)_setupDefaults;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeObjectForKey:(id)a3;
-- (void)setFromUserCodableDictionary:(id)a3;
-- (void)setObject:(id)a3 forKey:(id)a4;
-- (void)setPageRanges:(id)a3;
-- (void)visitProperties:(Visitor *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeObjectForKey:(id)key;
+- (void)setFromUserCodableDictionary:(id)dictionary;
+- (void)setObject:(id)object forKey:(id)key;
+- (void)setPageRanges:(id)ranges;
+- (void)visitProperties:(Visitor *)properties;
 @end
 
 @implementation PKPrintSettings
@@ -52,9 +52,9 @@
   return v3;
 }
 
-- (PKPrintSettings)initWithPaper:(id)a3
+- (PKPrintSettings)initWithPaper:(id)paper
 {
-  v4 = a3;
+  paperCopy = paper;
   v8.receiver = self;
   v8.super_class = PKPrintSettings;
   v5 = [(PKPrintSettings *)&v8 init];
@@ -62,46 +62,46 @@
   if (v5)
   {
     [(PKPrintSettings *)v5 _setupDefaults];
-    [(PKPrintSettings *)v6 setPaper:v4];
+    [(PKPrintSettings *)v6 setPaper:paperCopy];
   }
 
   return v6;
 }
 
-- (PKPrintSettings)initWithSettings:(id)a3
+- (PKPrintSettings)initWithSettings:(id)settings
 {
-  v4 = [a3 userCodableDictionary];
-  if (v4)
+  userCodableDictionary = [settings userCodableDictionary];
+  if (userCodableDictionary)
   {
-    self = [(PKPrintSettings *)self initWithUserCodableDictionary:v4];
-    v5 = self;
+    self = [(PKPrintSettings *)self initWithUserCodableDictionary:userCodableDictionary];
+    selfCopy = self;
   }
 
   else
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
   return [v4 initWithSettings:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:2 forKey:@"version"];
-  EncodeVisitor::visitProperties(self, v4);
+  coderCopy = coder;
+  [coderCopy encodeInt:2 forKey:@"version"];
+  EncodeVisitor::visitProperties(self, coderCopy);
 }
 
-- (PKPrintSettings)initWithCoder:(id)a3
+- (PKPrintSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = PKPrintSettings;
   v5 = [(PKPrintSettings *)&v8 init];
@@ -109,12 +109,12 @@
   if (v5)
   {
     [(PKPrintSettings *)v5 _setupDefaults];
-    if ([v4 decodeIntForKey:@"version"] != 2)
+    if ([coderCopy decodeIntForKey:@"version"] != 2)
     {
       __assert_rtn("[PKPrintSettings initWithCoder:]", "PKPrintSettings.m", 75, "[coder decodeIntForKey:@version] == 2");
     }
 
-    DecodeVisitor::visitProperties(v6, v4);
+    DecodeVisitor::visitProperties(v6, coderCopy);
   }
 
   return v6;
@@ -138,9 +138,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -153,7 +153,7 @@
     v7[2] = __27__PKPrintSettings_isEqual___block_invoke;
     v7[3] = &unk_279A92530;
     v7[4] = &v8;
-    CompareVisitor::visitProperties(self, v4, v7);
+    CompareVisitor::visitProperties(self, equalCopy, v7);
     v5 = *(v9 + 24);
     _Block_object_dispose(&v8, 8);
   }
@@ -175,8 +175,8 @@ uint64_t __27__PKPrintSettings_isEqual___block_invoke(uint64_t a1, uint64_t a2)
 
 - (unint64_t)hash
 {
-  v2 = [(PKPrintSettings *)self userCodableDictionary];
-  v3 = [v2 hash];
+  userCodableDictionary = [(PKPrintSettings *)self userCodableDictionary];
+  v3 = [userCodableDictionary hash];
 
   return v3;
 }
@@ -207,9 +207,9 @@ void __40__PKPrintSettings_userCodableDictionary__block_invoke(uint64_t a1, void
   }
 }
 
-- (PKPrintSettings)initWithUserCodableDictionary:(id)a3
+- (PKPrintSettings)initWithUserCodableDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = PKPrintSettings;
   v5 = [(PKPrintSettings *)&v8 init];
@@ -217,21 +217,21 @@ void __40__PKPrintSettings_userCodableDictionary__block_invoke(uint64_t a1, void
   if (v5)
   {
     [(PKPrintSettings *)v5 _setupDefaults];
-    [(PKPrintSettings *)v6 setFromUserCodableDictionary:v4];
+    [(PKPrintSettings *)v6 setFromUserCodableDictionary:dictionaryCopy];
   }
 
   return v6;
 }
 
-- (void)setFromUserCodableDictionary:(id)a3
+- (void)setFromUserCodableDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__PKPrintSettings_setFromUserCodableDictionary___block_invoke;
   v6[3] = &unk_279A92468;
-  v7 = v4;
-  v5 = v4;
+  v7 = dictionaryCopy;
+  v5 = dictionaryCopy;
   UserCodedSerializationVisitor::visitProperties(self, v6);
 }
 
@@ -281,41 +281,41 @@ void __35__PKPrintSettings_debugDescription__block_invoke(uint64_t a1, uint64_t 
   *(v8 + 40) = v7;
 }
 
-- (void)visitProperties:(Visitor *)a3
+- (void)visitProperties:(Visitor *)properties
 {
-  (*(a3->var0 + 2))(a3, a2);
-  (*(a3->var0 + 19))(a3, @"paper", &self->_paper);
-  (*(a3->var0 + 8))(a3, @"printerInfoURL", &self->_printerInfoURL);
-  (*(a3->var0 + 8))(a3, @"printerSuppliesURL", &self->_printerSuppliesURL);
-  (*(a3->var0 + 3))(a3, @"annotationsImaged", &self->_annotationsImaged);
-  (*(a3->var0 + 4))(a3, @"copies", &self->_copies);
-  (*(a3->var0 + 7))(a3, @"documentPassword", &self->_documentPassword);
-  (*(a3->var0 + 7))(a3, @"duplex", &self->_duplex);
-  (*(a3->var0 + 7))(a3, @"finishingTemplate", &self->_finishingTemplate);
-  (*(a3->var0 + 14))(a3, @"finishings", &self->_finishings);
-  (*(a3->var0 + 7))(a3, @"inputSlot", &self->_inputSlot);
-  (*(a3->var0 + 7))(a3, @"mediaType", &self->_mediaType);
-  (*(a3->var0 + 7))(a3, @"jobAccountID", &self->_jobAccountID);
-  (*(a3->var0 + 7))(a3, @"jobName", &self->_jobName);
-  (*(a3->var0 + 7))(a3, @"orientation", &self->_orientation);
-  (*(a3->var0 + 7))(a3, @"outputBin", &self->_outputBin);
-  (*(a3->var0 + 7))(a3, @"outputMode", &self->_outputMode);
-  (*(a3->var0 + 7))(a3, @"pageScale", &self->_pageScale);
-  (*(a3->var0 + 7))(a3, @"pageStackOrder", &self->_pageStackOrder);
-  (*(a3->var0 + 7))(a3, @"printQuality", &self->_printQuality);
-  (*(a3->var0 + 7))(a3, @"thumbnailPosition", &self->_thumbnailPosition);
-  (*(a3->var0 + 7))(a3, @"fileType", &self->_fileType);
-  (*(a3->var0 + 15))(a3, @"pageRanges_asStringArray", &self->_pageRanges_asStringArray);
-  (*(a3->var0 + 7))(a3, @"jobPresetName", &self->_jobPresetName);
-  v5 = *(a3->var0 + 24);
+  (*(properties->var0 + 2))(properties, a2);
+  (*(properties->var0 + 19))(properties, @"paper", &self->_paper);
+  (*(properties->var0 + 8))(properties, @"printerInfoURL", &self->_printerInfoURL);
+  (*(properties->var0 + 8))(properties, @"printerSuppliesURL", &self->_printerSuppliesURL);
+  (*(properties->var0 + 3))(properties, @"annotationsImaged", &self->_annotationsImaged);
+  (*(properties->var0 + 4))(properties, @"copies", &self->_copies);
+  (*(properties->var0 + 7))(properties, @"documentPassword", &self->_documentPassword);
+  (*(properties->var0 + 7))(properties, @"duplex", &self->_duplex);
+  (*(properties->var0 + 7))(properties, @"finishingTemplate", &self->_finishingTemplate);
+  (*(properties->var0 + 14))(properties, @"finishings", &self->_finishings);
+  (*(properties->var0 + 7))(properties, @"inputSlot", &self->_inputSlot);
+  (*(properties->var0 + 7))(properties, @"mediaType", &self->_mediaType);
+  (*(properties->var0 + 7))(properties, @"jobAccountID", &self->_jobAccountID);
+  (*(properties->var0 + 7))(properties, @"jobName", &self->_jobName);
+  (*(properties->var0 + 7))(properties, @"orientation", &self->_orientation);
+  (*(properties->var0 + 7))(properties, @"outputBin", &self->_outputBin);
+  (*(properties->var0 + 7))(properties, @"outputMode", &self->_outputMode);
+  (*(properties->var0 + 7))(properties, @"pageScale", &self->_pageScale);
+  (*(properties->var0 + 7))(properties, @"pageStackOrder", &self->_pageStackOrder);
+  (*(properties->var0 + 7))(properties, @"printQuality", &self->_printQuality);
+  (*(properties->var0 + 7))(properties, @"thumbnailPosition", &self->_thumbnailPosition);
+  (*(properties->var0 + 7))(properties, @"fileType", &self->_fileType);
+  (*(properties->var0 + 15))(properties, @"pageRanges_asStringArray", &self->_pageRanges_asStringArray);
+  (*(properties->var0 + 7))(properties, @"jobPresetName", &self->_jobPresetName);
+  v5 = *(properties->var0 + 24);
 
-  v5(a3);
+  v5(properties);
 }
 
-- (id)keyedNameToVisitName:(id)a3
+- (id)keyedNameToVisitName:(id)name
 {
   v10[18] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nameCopy = name;
   {
     v9[0] = @"com.apple.image-pdf-annotations";
     v9[1] = @"copies";
@@ -356,14 +356,14 @@ void __35__PKPrintSettings_debugDescription__block_invoke(uint64_t a1, uint64_t 
     [PKPrintSettings keyedNameToVisitName:]::sMapping = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:v9 count:18];
   }
 
-  v4 = [-[PKPrintSettings keyedNameToVisitName:]::sMapping objectForKeyedSubscript:v3];
+  v4 = [-[PKPrintSettings keyedNameToVisitName:]::sMapping objectForKeyedSubscript:nameCopy];
   if (!v4)
   {
     v5 = _PKLogCategory(PKLogCategoryDefault[0]);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v7 = 138412290;
-      v8 = v3;
+      v8 = nameCopy;
       _os_log_impl(&dword_25F5FC000, v5, OS_LOG_TYPE_ERROR, "No mapping to old style key from %@ anymore - use properties directly", &v7, 0xCu);
     }
   }
@@ -374,11 +374,11 @@ void __35__PKPrintSettings_debugDescription__block_invoke(uint64_t a1, uint64_t 
 - (NSArray)pageRanges
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [(PKPrintSettings *)self pageRanges_asStringArray];
-  v3 = v2;
-  if (v2)
+  pageRanges_asStringArray = [(PKPrintSettings *)self pageRanges_asStringArray];
+  v3 = pageRanges_asStringArray;
+  if (pageRanges_asStringArray)
   {
-    v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v2, "count")}];
+    v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(pageRanges_asStringArray, "count")}];
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
@@ -418,14 +418,14 @@ void __35__PKPrintSettings_debugDescription__block_invoke(uint64_t a1, uint64_t 
   return v4;
 }
 
-- (void)setPageRanges:(id)a3
+- (void)setPageRanges:(id)ranges
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  rangesCopy = ranges;
+  v5 = rangesCopy;
+  if (rangesCopy)
   {
-    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(rangesCopy, "count")}];
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
@@ -464,36 +464,36 @@ void __35__PKPrintSettings_debugDescription__block_invoke(uint64_t a1, uint64_t 
   [(PKPrintSettings *)self setPageRanges_asStringArray:v6];
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4
+- (void)setObject:(id)object forKey:(id)key
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 isEqualToString:@"com.apple.jobPreset"])
+  objectCopy = object;
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"com.apple.jobPreset"])
   {
-    v8 = [(__CFString *)v6 objectForKeyedSubscript:@"PresetInfo"];
+    v8 = [(__CFString *)objectCopy objectForKeyedSubscript:@"PresetInfo"];
     v9 = [v8 objectForKeyedSubscript:@"UIPrintInfoJobPresetKey"];
     v10 = [v9 objectForKeyedSubscript:@"JobPresetOption"];
     v11 = [v10 objectForKeyedSubscript:@"preset-name"];
     [(PKPrintSettings *)self setJobPresetName:v11];
   }
 
-  else if ([v7 isEqualToString:@"page-ranges"])
+  else if ([keyCopy isEqualToString:@"page-ranges"])
   {
-    [(PKPrintSettings *)self setPageRanges:v6];
+    [(PKPrintSettings *)self setPageRanges:objectCopy];
   }
 
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v7 isEqualToString:@"print-quality"])
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [keyCopy isEqualToString:@"print-quality"])
     {
-      v12 = [(__CFString *)v6 integerValue];
+      integerValue = [(__CFString *)objectCopy integerValue];
       v13 = @"3";
-      if (v12 != [@"3" integerValue])
+      if (integerValue != [@"3" integerValue])
       {
-        v14 = [(__CFString *)v6 integerValue];
-        if (v14 == [@"5" integerValue])
+        integerValue2 = [(__CFString *)objectCopy integerValue];
+        if (integerValue2 == [@"5" integerValue])
         {
           v13 = @"5";
         }
@@ -506,20 +506,20 @@ void __35__PKPrintSettings_debugDescription__block_invoke(uint64_t a1, uint64_t 
 
       v15 = v13;
 
-      v6 = v15;
+      objectCopy = v15;
     }
 
-    v16 = [(PKPrintSettings *)self keyedNameToVisitName:v7];
+    v16 = [(PKPrintSettings *)self keyedNameToVisitName:keyCopy];
     if (v16)
     {
-      v17 = [(PKPrintSettings *)self userCodableDictionary];
-      v18 = [v17 objectForKeyedSubscript:v16];
-      v19 = [v18 isEqual:v6];
+      userCodableDictionary = [(PKPrintSettings *)self userCodableDictionary];
+      v18 = [userCodableDictionary objectForKeyedSubscript:v16];
+      v19 = [v18 isEqual:objectCopy];
 
       if ((v19 & 1) == 0)
       {
         v21 = v16;
-        v22 = v6;
+        v22 = objectCopy;
         v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
         [(PKPrintSettings *)self setFromUserCodableDictionary:v20];
       }
@@ -527,22 +527,22 @@ void __35__PKPrintSettings_debugDescription__block_invoke(uint64_t a1, uint64_t 
 
     else
     {
-      v17 = _PKLogCategory(PKLogCategoryFramework);
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+      userCodableDictionary = _PKLogCategory(PKLogCategoryFramework);
+      if (os_log_type_enabled(userCodableDictionary, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v24 = v7;
-        _os_log_impl(&dword_25F5FC000, v17, OS_LOG_TYPE_ERROR, "No mapping to visit key %@", buf, 0xCu);
+        v24 = keyCopy;
+        _os_log_impl(&dword_25F5FC000, userCodableDictionary, OS_LOG_TYPE_ERROR, "No mapping to visit key %@", buf, 0xCu);
       }
     }
   }
 }
 
-- (void)removeObjectForKey:(id)a3
+- (void)removeObjectForKey:(id)key
 {
   v8 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEqualToString:@"orientation-requested"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"orientation-requested"])
   {
     [(PKPrintSettings *)self setOrientation:0];
   }
@@ -553,19 +553,19 @@ void __35__PKPrintSettings_debugDescription__block_invoke(uint64_t a1, uint64_t 
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = keyCopy;
       _os_log_impl(&dword_25F5FC000, v5, OS_LOG_TYPE_ERROR, "No mapping to visit key %@", &v6, 0xCu);
     }
   }
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEqualToString:@"page-ranges"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"page-ranges"])
   {
-    v5 = [(PKPrintSettings *)self pageRanges];
+    pageRanges = [(PKPrintSettings *)self pageRanges];
   }
 
   else
@@ -576,7 +576,7 @@ void __35__PKPrintSettings_debugDescription__block_invoke(uint64_t a1, uint64_t 
     v16 = __Block_byref_object_copy__4;
     v17 = __Block_byref_object_dispose__4;
     v18 = 0;
-    v6 = [(PKPrintSettings *)self keyedNameToVisitName:v4];
+    v6 = [(PKPrintSettings *)self keyedNameToVisitName:keyCopy];
     v7 = v6;
     if (v6)
     {
@@ -596,16 +596,16 @@ void __35__PKPrintSettings_debugDescription__block_invoke(uint64_t a1, uint64_t 
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v20 = v4;
+        v20 = keyCopy;
         _os_log_impl(&dword_25F5FC000, v8, OS_LOG_TYPE_ERROR, "No mapping to visit key %@", buf, 0xCu);
       }
     }
 
-    v5 = v14[5];
+    pageRanges = v14[5];
     _Block_object_dispose(&v13, 8);
   }
 
-  return v5;
+  return pageRanges;
 }
 
 void __32__PKPrintSettings_objectForKey___block_invoke(uint64_t a1, void *a2, void *a3, uint64_t a4, void *a5)

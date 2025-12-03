@@ -4,23 +4,23 @@
 + (void)submitBackgroundTasksNeededDuringDaemonStart;
 - (id)initInternal;
 - (void)_fetchAssets;
-- (void)_processResources:(id)a3 group:(id)a4;
-- (void)_pruneOldResourcesIn:(id)a3;
-- (void)_update:(id)a3;
+- (void)_processResources:(id)resources group:(id)group;
+- (void)_pruneOldResourcesIn:(id)in;
+- (void)_update:(id)_update;
 - (void)_updateComplete;
 - (void)_updateOnQueue;
 @end
 
 @implementation GEOMobileAssetResourceUpdater
 
-- (void)_pruneOldResourcesIn:(id)a3
+- (void)_pruneOldResourcesIn:(id)in
 {
-  v3 = a3;
+  inCopy = in;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v34 objects:v43 count:16];
+  v4 = [inCopy countByEnumeratingWithState:&v34 objects:v43 count:16];
   if (v4)
   {
     v5 = v4;
@@ -32,7 +32,7 @@
       {
         if (*v35 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(inCopy);
         }
 
         v9 = *(*(&v34 + 1) + 8 * i);
@@ -47,7 +47,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v34 objects:v43 count:16];
+      v5 = [inCopy countByEnumeratingWithState:&v34 objects:v43 count:16];
     }
 
     while (v5);
@@ -58,15 +58,15 @@
     v6 = 0;
   }
 
-  v10 = [v6 lastObject];
-  v11 = [v10 resourceInfo];
-  v12 = [v11 policy];
+  lastObject = [v6 lastObject];
+  resourceInfo = [lastObject resourceInfo];
+  policy = [resourceInfo policy];
 
-  v27 = v10;
-  v28 = v3;
-  if ((v12 - 2) >= 2)
+  v27 = lastObject;
+  v28 = inCopy;
+  if ((policy - 2) >= 2)
   {
-    if (v12 != 1)
+    if (policy != 1)
     {
       goto LABEL_19;
     }
@@ -74,10 +74,10 @@
     goto LABEL_18;
   }
 
-  v13 = [v10 resourceInfo];
-  v14 = [v13 isExpired];
+  resourceInfo2 = [lastObject resourceInfo];
+  isExpired = [resourceInfo2 isExpired];
 
-  if ((v14 & 1) == 0)
+  if ((isExpired & 1) == 0)
   {
 LABEL_18:
     [v6 removeLastObject];
@@ -147,31 +147,31 @@ LABEL_19:
   }
 }
 
-- (void)_processResources:(id)a3 group:(id)a4
+- (void)_processResources:(id)resources group:(id)group
 {
-  v6 = a4;
+  groupCopy = group;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10001A99C;
   v19[3] = &unk_100083A30;
-  v7 = [a3 mutableCopy];
+  v7 = [resources mutableCopy];
   v20 = v7;
-  v21 = self;
-  v8 = v6;
+  selfCopy = self;
+  v8 = groupCopy;
   v22 = v8;
   v9 = objc_retainBlock(v19);
-  v10 = [v7 lastObject];
-  if (([v10 state] | 4) == 4)
+  lastObject = [v7 lastObject];
+  if (([lastObject state] | 4) == 4)
   {
     goto LABEL_2;
   }
 
-  v11 = [v10 resourceInfo];
-  v12 = [v11 policy];
+  resourceInfo = [lastObject resourceInfo];
+  policy = [resourceInfo policy];
 
-  if ((v12 - 2) >= 2)
+  if ((policy - 2) >= 2)
   {
-    if (v12 != 4)
+    if (policy != 4)
     {
 LABEL_8:
       updateWorkQueue = self->_updateWorkQueue;
@@ -179,7 +179,7 @@ LABEL_8:
       v16[1] = 3221225472;
       v16[2] = sub_10001A9E4;
       v16[3] = &unk_100082CC8;
-      v17 = v10;
+      v17 = lastObject;
       v18 = v9;
       [v17 downloadWithOptions:0 queue:updateWorkQueue completion:v16];
 
@@ -189,10 +189,10 @@ LABEL_8:
 
   else
   {
-    v13 = [v10 resourceInfo];
-    v14 = [v13 isExpired];
+    resourceInfo2 = [lastObject resourceInfo];
+    isExpired = [resourceInfo2 isExpired];
 
-    if (!v14)
+    if (!isExpired)
     {
       goto LABEL_8;
     }
@@ -235,7 +235,7 @@ LABEL_3:
         v13[3] = &unk_100081D20;
         v13[4] = v8;
         v14 = v3;
-        v15 = self;
+        selfCopy = self;
         [v8 listResources:1 queue:updateWorkQueue results:v13];
 
         v7 = v7 + 1;
@@ -327,17 +327,17 @@ LABEL_3:
   }
 }
 
-- (void)_update:(id)a3
+- (void)_update:(id)_update
 {
-  v4 = a3;
+  _updateCopy = _update;
   updateWorkQueue = self->_updateWorkQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001B21C;
   v7[3] = &unk_100083940;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = _updateCopy;
+  v6 = _updateCopy;
   dispatch_async(updateWorkQueue, v7);
 }
 
@@ -377,17 +377,17 @@ LABEL_3:
 
 + (void)run
 {
-  v2 = [a1 sharedUpdater];
-  [v2 _update:0];
+  sharedUpdater = [self sharedUpdater];
+  [sharedUpdater _update:0];
 }
 
 + (void)submitBackgroundTasksNeededDuringDaemonStart
 {
   if (sub_10001FD1C())
   {
-    v2 = [sub_10001FF30() sharedScheduler];
+    sharedScheduler = [sub_10001FF30() sharedScheduler];
     v3 = GEOMobileAssetResourceUpdaterTaskIdentifier;
-    v4 = [v2 taskRequestForIdentifier:GEOMobileAssetResourceUpdaterTaskIdentifier];
+    v4 = [sharedScheduler taskRequestForIdentifier:GEOMobileAssetResourceUpdaterTaskIdentifier];
     if (v4)
     {
       v5 = sub_100020BFC();
@@ -422,7 +422,7 @@ LABEL_3:
       [v5 setRequiresInexpensiveNetworkConnectivity:1];
       [v5 setNetworkDownloadSize:10485760];
       v13 = 0;
-      v9 = [v2 submitTaskRequest:v5 error:&v13];
+      v9 = [sharedScheduler submitTaskRequest:v5 error:&v13];
       v10 = v13;
       if ((v9 & 1) == 0)
       {

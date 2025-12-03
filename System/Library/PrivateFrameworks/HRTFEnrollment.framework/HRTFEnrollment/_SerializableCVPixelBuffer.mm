@@ -1,13 +1,13 @@
 @interface _SerializableCVPixelBuffer
-- (_SerializableCVPixelBuffer)initWithCVPixelBufferRef:(__CVBuffer *)a3;
-- (_SerializableCVPixelBuffer)initWithCoder:(id)a3;
+- (_SerializableCVPixelBuffer)initWithCVPixelBufferRef:(__CVBuffer *)ref;
+- (_SerializableCVPixelBuffer)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _SerializableCVPixelBuffer
 
-- (_SerializableCVPixelBuffer)initWithCVPixelBufferRef:(__CVBuffer *)a3
+- (_SerializableCVPixelBuffer)initWithCVPixelBufferRef:(__CVBuffer *)ref
 {
   v7.receiver = self;
   v7.super_class = _SerializableCVPixelBuffer;
@@ -15,8 +15,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_pixelBuffer = a3;
-    CVBufferRetain(a3);
+    v4->_pixelBuffer = ref;
+    CVBufferRetain(ref);
   }
 
   return v5;
@@ -36,21 +36,21 @@
   [(_SerializableCVPixelBuffer *)&v4 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v43[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   CVPixelBufferLockBaseAddress(self->_pixelBuffer, 1uLL);
   PlaneCount = CVPixelBufferGetPlaneCount(self->_pixelBuffer);
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:CVPixelBufferGetPixelFormatType(self->_pixelBuffer)];
-  [v4 encodeObject:v6 forKey:@"PixelFormat"];
+  [coderCopy encodeObject:v6 forKey:@"PixelFormat"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithInteger:PlaneCount];
-  [v4 encodeObject:v7 forKey:@"PlaneCount"];
+  [coderCopy encodeObject:v7 forKey:@"PlaneCount"];
 
   if (PlaneCount)
   {
-    v38 = v4;
+    v38 = coderCopy;
     v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v39 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -95,7 +95,7 @@
       while (v15 != v14);
     }
 
-    v4 = v38;
+    coderCopy = v38;
     [v38 encodeObject:v8 forKey:@"Width"];
     [v38 encodeObject:v13 forKey:@"Height"];
     [v38 encodeObject:v39 forKey:@"BytesPerRow"];
@@ -107,24 +107,24 @@
     v27 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:CVPixelBufferGetWidth(self->_pixelBuffer)];
     v43[0] = v27;
     v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:1];
-    [v4 encodeObject:v28 forKey:@"Width"];
+    [coderCopy encodeObject:v28 forKey:@"Width"];
 
     v29 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:CVPixelBufferGetHeight(self->_pixelBuffer)];
     v42 = v29;
     v30 = [MEMORY[0x277CBEA60] arrayWithObjects:&v42 count:1];
-    [v4 encodeObject:v30 forKey:@"Height"];
+    [coderCopy encodeObject:v30 forKey:@"Height"];
 
     v31 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:CVPixelBufferGetBytesPerRow(self->_pixelBuffer)];
     v41 = v31;
     v32 = [MEMORY[0x277CBEA60] arrayWithObjects:&v41 count:1];
-    [v4 encodeObject:v32 forKey:@"BytesPerRow"];
+    [coderCopy encodeObject:v32 forKey:@"BytesPerRow"];
 
     v33 = objc_alloc(MEMORY[0x277CBEA90]);
     BaseAddress = CVPixelBufferGetBaseAddress(self->_pixelBuffer);
     v35 = [v33 initWithBytes:BaseAddress length:CVPixelBufferGetDataSize(self->_pixelBuffer)];
     v40 = v35;
     v36 = [MEMORY[0x277CBEA60] arrayWithObjects:&v40 count:1];
-    [v4 encodeObject:v36 forKey:@"PixelData"];
+    [coderCopy encodeObject:v36 forKey:@"PixelData"];
   }
 
   CVPixelBufferUnlockBaseAddress(self->_pixelBuffer, 1uLL);
@@ -132,14 +132,14 @@
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (_SerializableCVPixelBuffer)initWithCoder:(id)a3
+- (_SerializableCVPixelBuffer)initWithCoder:(id)coder
 {
   v88[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 containsValueForKey:@"PlaneCount"] && objc_msgSend(v4, "containsValueForKey:", @"PixelFormat") && objc_msgSend(v4, "containsValueForKey:", @"Width") && objc_msgSend(v4, "containsValueForKey:", @"Height") && objc_msgSend(v4, "containsValueForKey:", @"BytesPerRow") && objc_msgSend(v4, "containsValueForKey:", @"PixelData"))
+  coderCopy = coder;
+  if ([coderCopy containsValueForKey:@"PlaneCount"] && objc_msgSend(coderCopy, "containsValueForKey:", @"PixelFormat") && objc_msgSend(coderCopy, "containsValueForKey:", @"Width") && objc_msgSend(coderCopy, "containsValueForKey:", @"Height") && objc_msgSend(coderCopy, "containsValueForKey:", @"BytesPerRow") && objc_msgSend(coderCopy, "containsValueForKey:", @"PixelData"))
   {
-    v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PlaneCount"];
-    v6 = [v5 integerValue];
+    v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PlaneCount"];
+    integerValue = [v5 integerValue];
     v7 = MEMORY[0x277CBEB98];
     v88[0] = objc_opt_class();
     v88[1] = objc_opt_class();
@@ -147,7 +147,7 @@
     v9 = [v7 setWithArray:v8];
 
     v10 = MEMORY[0x277CBEB98];
-    v11 = v6;
+    v11 = integerValue;
     v87[0] = objc_opt_class();
     v87[1] = objc_opt_class();
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v87 count:2];
@@ -155,22 +155,22 @@
 
     v77 = v13;
     v78 = v9;
-    if (v6)
+    if (integerValue)
     {
-      v75 = self;
+      selfCopy = self;
       v76 = v5;
-      v14 = [v4 decodeObjectOfClasses:v9 forKey:@"Width"];
-      v15 = [v4 decodeObjectOfClasses:v9 forKey:@"Height"];
+      v14 = [coderCopy decodeObjectOfClasses:v9 forKey:@"Width"];
+      v15 = [coderCopy decodeObjectOfClasses:v9 forKey:@"Height"];
       v16 = v9;
       v17 = v15;
-      v18 = [v4 decodeObjectOfClasses:v16 forKey:@"BytesPerRow"];
-      v71 = v4;
-      v19 = [v4 decodeObjectOfClasses:v13 forKey:@"PixelData"];
+      v18 = [coderCopy decodeObjectOfClasses:v16 forKey:@"BytesPerRow"];
+      v71 = coderCopy;
+      v19 = [coderCopy decodeObjectOfClasses:v13 forKey:@"PixelData"];
       v20 = [(size_t *)v14 objectAtIndexedSubscript:0];
-      v73 = [v20 integerValue];
+      integerValue2 = [v20 integerValue];
 
       v21 = [v17 objectAtIndexedSubscript:0];
-      v72 = [v21 integerValue];
+      integerValue3 = [v21 integerValue];
 
       v74 = &v71;
       (MEMORY[0x28223BE20])();
@@ -224,12 +224,12 @@
           v32[v28] = [v39 integerValue];
 
           v40 = [v17 objectAtIndexedSubscript:v28 + 1];
-          v41 = [v40 integerValue];
-          v81[v28] = v41;
+          integerValue4 = [v40 integerValue];
+          v81[v28] = integerValue4;
 
           v42 = [v18 objectAtIndexedSubscript:v28];
-          v43 = [v42 integerValue];
-          planeBytesPerRow[v28] = v43;
+          integerValue5 = [v42 integerValue];
+          planeBytesPerRow[v28] = integerValue5;
 
           v11 = v79;
           v28 = v28 + 1;
@@ -240,18 +240,18 @@
 
       pixelBufferOut = 0;
       v44 = objc_opt_class();
-      v4 = v71;
+      coderCopy = v71;
       v45 = [v71 decodeObjectOfClass:v44 forKey:@"PixelFormat"];
 
-      v46 = [(size_t *)v45 integerValue];
-      v47 = CVPixelBufferCreateWithPlanarBytes(*MEMORY[0x277CBECE8], v73, v72, v46, 0, 0, v11, v23, planeWidth, v81, planeBytesPerRow, __planarDeallocateHelper, 0, 0, &pixelBufferOut);
+      integerValue6 = [(size_t *)v45 integerValue];
+      v47 = CVPixelBufferCreateWithPlanarBytes(*MEMORY[0x277CBECE8], integerValue2, integerValue3, integerValue6, 0, 0, v11, v23, planeWidth, v81, planeBytesPerRow, __planarDeallocateHelper, 0, 0, &pixelBufferOut);
       if (v47)
       {
         v48 = v47;
         v49 = HRTFLogObjectForCategory_HRTFSerializableCaptureData();
         v50 = os_log_type_enabled(v49, OS_LOG_TYPE_ERROR);
         v51 = v78;
-        self = v75;
+        self = selfCopy;
         if (v50)
         {
           *buf = 67109120;
@@ -259,12 +259,12 @@
           _os_log_impl(&dword_250984000, v49, OS_LOG_TYPE_ERROR, "failed to create planar CVPixelBuffer: %d", buf, 8u);
         }
 
-        v52 = 0;
+        selfCopy3 = 0;
       }
 
       else
       {
-        v82.receiver = v75;
+        v82.receiver = selfCopy;
         v82.super_class = _SerializableCVPixelBuffer;
         v69 = [(_SerializableCVPixelBuffer *)&v82 init];
         v51 = v78;
@@ -274,36 +274,36 @@
         }
 
         self = v69;
-        v52 = self;
+        selfCopy3 = self;
       }
     }
 
     else
     {
-      v55 = [v4 decodeObjectOfClasses:v13 forKey:@"PixelData"];
+      v55 = [coderCopy decodeObjectOfClasses:v13 forKey:@"PixelData"];
       v56 = [v55 objectAtIndexedSubscript:0];
 
       v74 = malloc_type_malloc([v56 length], 0x74067141uLL);
       v81 = v56;
       memcpy(v74, [v56 bytes], objc_msgSend(v56, "length"));
       pixelBufferOut = 0;
-      v57 = [v4 decodeObjectOfClasses:v9 forKey:@"Width"];
-      v58 = [v4 decodeObjectOfClasses:v9 forKey:@"Height"];
-      v59 = [v4 decodeObjectOfClasses:v9 forKey:@"BytesPerRow"];
-      v60 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PixelFormat"];
+      v57 = [coderCopy decodeObjectOfClasses:v9 forKey:@"Width"];
+      v58 = [coderCopy decodeObjectOfClasses:v9 forKey:@"Height"];
+      v59 = [coderCopy decodeObjectOfClasses:v9 forKey:@"BytesPerRow"];
+      v60 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PixelFormat"];
 
       planeBytesPerRow = v60;
-      v73 = [(size_t *)v60 integerValue];
+      integerValue2 = [(size_t *)v60 integerValue];
       v61 = *MEMORY[0x277CBECE8];
       v79 = v57;
       v62 = [v57 objectAtIndexedSubscript:0];
-      v63 = [v62 integerValue];
+      integerValue7 = [v62 integerValue];
       v76 = v58;
       v64 = [v58 objectAtIndexedSubscript:0];
-      v65 = [v64 integerValue];
-      v75 = v59;
+      integerValue8 = [v64 integerValue];
+      selfCopy = v59;
       v66 = [(_SerializableCVPixelBuffer *)v59 objectAtIndexedSubscript:0];
-      v67 = CVPixelBufferCreateWithBytes(v61, v63, v65, v73, v74, [v66 integerValue], __deallocateHelper, 0, 0, &pixelBufferOut);
+      v67 = CVPixelBufferCreateWithBytes(v61, integerValue7, integerValue8, integerValue2, v74, [v66 integerValue], __deallocateHelper, 0, 0, &pixelBufferOut);
 
       if (v67)
       {
@@ -315,7 +315,7 @@
           _os_log_impl(&dword_250984000, v68, OS_LOG_TYPE_ERROR, "failed to create CVPixelBuffer: %d", buf, 8u);
         }
 
-        v52 = 0;
+        selfCopy3 = 0;
       }
 
       else
@@ -329,7 +329,7 @@
         }
 
         self = v70;
-        v52 = self;
+        selfCopy3 = self;
       }
 
       v51 = v78;
@@ -340,11 +340,11 @@
 
   else
   {
-    v52 = 0;
+    selfCopy3 = 0;
   }
 
   v53 = *MEMORY[0x277D85DE8];
-  return v52;
+  return selfCopy3;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface ANMGProductTypeUtility
-+ (id)productTypeToSystemImageName:(int)a3;
++ (id)productTypeToSystemImageName:(int)name;
 - (_TtC14AnnounceDaemon22ANMGProductTypeUtility)init;
 @end
 
 @implementation ANMGProductTypeUtility
 
-+ (id)productTypeToSystemImageName:(int)a3
++ (id)productTypeToSystemImageName:(int)name
 {
   v3 = sub_23F5882C4();
 

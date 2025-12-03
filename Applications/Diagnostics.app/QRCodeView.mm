@@ -1,19 +1,19 @@
 @interface QRCodeView
-- (_TtC11Diagnostics10QRCodeView)initWithCoder:(id)a3;
-- (_TtC11Diagnostics10QRCodeView)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (_TtC11Diagnostics10QRCodeView)initWithCoder:(id)coder;
+- (_TtC11Diagnostics10QRCodeView)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 - (void)layoutSubviews;
 @end
 
 @implementation QRCodeView
 
-- (_TtC11Diagnostics10QRCodeView)initWithCoder:(id)a3
+- (_TtC11Diagnostics10QRCodeView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC11Diagnostics10QRCodeView_qrConfiguration) = 0;
   v9.receiver = self;
   v9.super_class = type metadata accessor for QRCodeView();
-  v4 = a3;
-  v5 = [(QRCodeView *)&v9 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(QRCodeView *)&v9 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -33,13 +33,13 @@
   [v2 setNeedsDisplay];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v3 = self;
+  selfCopy = self;
   _s11Diagnostics10QRCodeViewC4drawyySo6CGRectVF_0();
 }
 
-- (_TtC11Diagnostics10QRCodeView)initWithFrame:(CGRect)a3
+- (_TtC11Diagnostics10QRCodeView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

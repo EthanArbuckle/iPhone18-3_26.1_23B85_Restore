@@ -1,14 +1,14 @@
 @interface OAXTextFieldIdentity
-+ (id)identityWithGuid:(id)a3 type:(id)a4;
++ (id)identityWithGuid:(id)guid type:(id)type;
 @end
 
 @implementation OAXTextFieldIdentity
 
-+ (id)identityWithGuid:(id)a3 type:(id)a4
++ (id)identityWithGuid:(id)guid type:(id)type
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [(OITSUPair *)[OAXTextFieldIdentity alloc] initWithFirst:v5 second:v6];
+  guidCopy = guid;
+  typeCopy = type;
+  v7 = [(OITSUPair *)[OAXTextFieldIdentity alloc] initWithFirst:guidCopy second:typeCopy];
 
   return v7;
 }

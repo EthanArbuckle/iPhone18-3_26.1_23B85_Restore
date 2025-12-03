@@ -1,34 +1,34 @@
 @interface CPSClipLoadingView
-- (CPSClipLoadingView)initWithCoder:(id)a3;
-- (CPSClipLoadingView)initWithFrame:(CGRect)a3;
-- (id)_animationForTranslationY:(double)a3;
+- (CPSClipLoadingView)initWithCoder:(id)coder;
+- (CPSClipLoadingView)initWithFrame:(CGRect)frame;
+- (id)_animationForTranslationY:(double)y;
 - (id)_textScaleUpSpringAnimation;
-- (void)_arcadeAnimationDidComplete:(id)a3;
+- (void)_arcadeAnimationDidComplete:(id)complete;
 - (void)_configureViewForArcadeIfNeeded;
-- (void)_reloadTapped:(id)a3;
+- (void)_reloadTapped:(id)tapped;
 - (void)_revealBackgroundAndLabels;
-- (void)_showCompletionAnimation:(id)a3;
+- (void)_showCompletionAnimation:(id)animation;
 - (void)_startAnimationIfNeeded;
 - (void)_updateConicGradientRotation;
 - (void)_updateLoadingProgress;
-- (void)finishLoadingWithCompletion:(id)a3;
+- (void)finishLoadingWithCompletion:(id)completion;
 - (void)layoutSubviews;
-- (void)setBackgroundImage:(id)a3 animated:(BOOL)a4;
-- (void)setLoadingHasFailed:(BOOL)a3 animated:(BOOL)a4 reason:(id)a5 reloadHandler:(id)a6;
-- (void)setLoadingProgress:(float)a3 completion:(id)a4;
-- (void)setName:(id)a3;
-- (void)setProvider:(id)a3;
-- (void)setSupportsArcade:(BOOL)a3;
+- (void)setBackgroundImage:(id)image animated:(BOOL)animated;
+- (void)setLoadingHasFailed:(BOOL)failed animated:(BOOL)animated reason:(id)reason reloadHandler:(id)handler;
+- (void)setLoadingProgress:(float)progress completion:(id)completion;
+- (void)setName:(id)name;
+- (void)setProvider:(id)provider;
+- (void)setSupportsArcade:(BOOL)arcade;
 @end
 
 @implementation CPSClipLoadingView
 
-- (CPSClipLoadingView)initWithFrame:(CGRect)a3
+- (CPSClipLoadingView)initWithFrame:(CGRect)frame
 {
   v76[1] = *MEMORY[0x277D85DE8];
   v75.receiver = self;
   v75.super_class = CPSClipLoadingView;
-  v3 = [(CPSClipLoadingView *)&v75 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CPSClipLoadingView *)&v75 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -38,8 +38,8 @@
     provider = v4->_provider;
     v4->_provider = &stru_285684560;
 
-    v7 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(CPSClipLoadingView *)v4 setBackgroundColor:v7];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(CPSClipLoadingView *)v4 setBackgroundColor:systemBackgroundColor];
 
     [(CPSClipLoadingView *)v4 setAccessibilityIgnoresInvertColors:1];
     v8 = [MEMORY[0x277D755E8] cps_imageViewWithImage:0 tintColor:0 backgroundColor:0];
@@ -53,51 +53,51 @@
 
     if (UIAccessibilityIsReduceMotionEnabled())
     {
-      v12 = [MEMORY[0x277D75348] blackColor];
-      v13 = [v12 colorWithAlphaComponent:0.3];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      v13 = [blackColor colorWithAlphaComponent:0.3];
       [(UIView *)v4->_gradientView setBackgroundColor:v13];
     }
 
     else
     {
-      v14 = [MEMORY[0x277CD9EB0] cps_grayscaleConicGradientLayer];
+      cps_grayscaleConicGradientLayer = [MEMORY[0x277CD9EB0] cps_grayscaleConicGradientLayer];
       gradientLayer = v4->_gradientLayer;
-      v4->_gradientLayer = v14;
+      v4->_gradientLayer = cps_grayscaleConicGradientLayer;
 
-      v16 = [(UIView *)v4->_gradientView layer];
-      [v16 addSublayer:v4->_gradientLayer];
+      layer = [(UIView *)v4->_gradientView layer];
+      [layer addSublayer:v4->_gradientLayer];
 
-      v12 = [(UIView *)v4->_gradientView layer];
+      blackColor = [(UIView *)v4->_gradientView layer];
       LODWORD(v17) = 1053609165;
-      [v12 setOpacity:v17];
+      [blackColor setOpacity:v17];
     }
 
     [(UIView *)v4->_gradientView sizeToFit];
     v18 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA5D8]];
-    v19 = [(UIView *)v4->_gradientView layer];
-    [v19 setCompositingFilter:v18];
+    layer2 = [(UIView *)v4->_gradientView layer];
+    [layer2 setCompositingFilter:v18];
 
-    v20 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if (!UIAccessibilityIsReduceTransparencyEnabled())
     {
       v21 = [MEMORY[0x277CD9EA0] cps_filterWithType:*MEMORY[0x277CDA580] value:*MEMORY[0x277CDA360] forKey:0.4];
       [v21 setValue:&unk_285688B70 forKey:*MEMORY[0x277CDA540]];
-      [v20 addObject:v21];
+      [array addObject:v21];
     }
 
     v74 = [MEMORY[0x277CD9EA0] cps_filterWithType:*MEMORY[0x277CDA328] value:*MEMORY[0x277CDA4F0] forKey:50.0];
     [v74 setValue:MEMORY[0x277CBEC28] forKey:*MEMORY[0x277CDA448]];
     [v74 setValue:MEMORY[0x277CBEC38] forKey:*MEMORY[0x277CDA4C8]];
-    [v20 addObject:v74];
+    [array addObject:v74];
     v22 = *MEMORY[0x277CDA2D0];
     v73 = [MEMORY[0x277CD9EA0] cps_filterWithType:*MEMORY[0x277CDA2D0] value:*MEMORY[0x277CDA2D0] forKey:1.6];
-    [v20 addObject:v73];
+    [array addObject:v73];
     v23 = objc_alloc_init(MEMORY[0x277D75D18]);
     backdropView = v4->_backdropView;
     v4->_backdropView = v23;
 
-    v25 = [(UIView *)v4->_backdropView layer];
-    [v25 setAllowsGroupBlending:0];
+    layer3 = [(UIView *)v4->_backdropView layer];
+    [layer3 setAllowsGroupBlending:0];
 
     [(UIView *)v4->_backdropView addSubview:v4->_heroImageView];
     [(UIView *)v4->_backdropView addSubview:v4->_gradientView];
@@ -106,10 +106,10 @@
     backdropLayer = v4->_backdropLayer;
     v4->_backdropLayer = v26;
 
-    [(CABackdropLayer *)v4->_backdropLayer setFilters:v20];
+    [(CABackdropLayer *)v4->_backdropLayer setFilters:array];
     [(CABackdropLayer *)v4->_backdropLayer setScale:0.25];
-    v28 = [(CPSClipLoadingView *)v4 layer];
-    [v28 addSublayer:v4->_backdropLayer];
+    layer4 = [(CPSClipLoadingView *)v4 layer];
+    [layer4 addSublayer:v4->_backdropLayer];
 
     v29 = objc_alloc_init(MEMORY[0x277D75D18]);
     labelContainerView = v4->_labelContainerView;
@@ -120,51 +120,51 @@
     v4->_clipNameContainerView = v31;
 
     v33 = MEMORY[0x277D756B8];
-    v34 = [MEMORY[0x277D75348] whiteColor];
-    v35 = [v33 cps_labelWithText:0 textColor:v34 fontSize:35.0 fontWeight:*MEMORY[0x277D743F8]];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v35 = [v33 cps_labelWithText:0 textColor:whiteColor fontSize:35.0 fontWeight:*MEMORY[0x277D743F8]];
     clipNameLabel = v4->_clipNameLabel;
     v4->_clipNameLabel = v35;
 
     [(UILabel *)v4->_clipNameLabel setTextAlignment:1];
     [(UIView *)v4->_clipNameContainerView setMaskView:v4->_clipNameLabel];
     v37 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA2A8]];
-    v38 = [(UIView *)v4->_clipNameContainerView layer];
-    v39 = [v38 mask];
-    [v39 setCompositingFilter:v37];
+    layer5 = [(UIView *)v4->_clipNameContainerView layer];
+    mask = [layer5 mask];
+    [mask setCompositingFilter:v37];
 
     v72 = [MEMORY[0x277CD9EA0] cps_filterWithType:v22 value:v22 forKey:2.0];
     v40 = objc_alloc_init(MEMORY[0x277D75D18]);
     clipNameBackdropView = v4->_clipNameBackdropView;
     v4->_clipNameBackdropView = v40;
 
-    v42 = [MEMORY[0x277D75348] whiteColor];
-    [(UIView *)v4->_clipNameBackdropView setBackgroundColor:v42];
+    whiteColor2 = [MEMORY[0x277D75348] whiteColor];
+    [(UIView *)v4->_clipNameBackdropView setBackgroundColor:whiteColor2];
 
     [(UIView *)v4->_clipNameBackdropView setAlpha:0.5];
     v76[0] = v72;
     v43 = [MEMORY[0x277CBEA60] arrayWithObjects:v76 count:1];
-    v44 = [(UIView *)v4->_clipNameBackdropView layer];
-    [v44 setFilters:v43];
+    layer6 = [(UIView *)v4->_clipNameBackdropView layer];
+    [layer6 setFilters:v43];
 
     [(UIView *)v4->_clipNameContainerView addSubview:v4->_clipNameBackdropView];
     v45 = objc_alloc_init(MEMORY[0x277D75D18]);
     clipNameProgressView = v4->_clipNameProgressView;
     v4->_clipNameProgressView = v45;
 
-    v47 = [MEMORY[0x277D75348] whiteColor];
-    [(UIView *)v4->_clipNameProgressView setBackgroundColor:v47];
+    whiteColor3 = [MEMORY[0x277D75348] whiteColor];
+    [(UIView *)v4->_clipNameProgressView setBackgroundColor:whiteColor3];
 
     [(UIView *)v4->_clipNameContainerView addSubview:v4->_clipNameProgressView];
     v48 = MEMORY[0x277D756B8];
-    v49 = [MEMORY[0x277D75348] whiteColor];
-    v50 = [v48 cps_labelWithText:0 textColor:v49 fontSize:17.0 fontWeight:*MEMORY[0x277D74418]];
+    whiteColor4 = [MEMORY[0x277D75348] whiteColor];
+    v50 = [v48 cps_labelWithText:0 textColor:whiteColor4 fontSize:17.0 fontWeight:*MEMORY[0x277D74418]];
     poweredByLabel = v4->_poweredByLabel;
     v4->_poweredByLabel = v50;
 
     [(UILabel *)v4->_poweredByLabel setTextAlignment:1];
-    v52 = [(UILabel *)v4->_poweredByLabel layer];
+    layer7 = [(UILabel *)v4->_poweredByLabel layer];
     LODWORD(v53) = 0.75;
-    [v52 setOpacity:v53];
+    [layer7 setOpacity:v53];
 
     [(UIView *)v4->_labelContainerView addSubview:v4->_clipNameContainerView];
     [(UIView *)v4->_labelContainerView addSubview:v4->_poweredByLabel];
@@ -189,17 +189,17 @@
     [(UIView *)v4->_errorContainerView addSubview:v4->_clipUnavailableLabel];
     v60 = [CPSButton alloc];
     v61 = _CPSLocalizedString();
-    v62 = [MEMORY[0x277D75348] whiteColor];
-    v63 = [MEMORY[0x277D75348] whiteColor];
-    v64 = [v63 colorWithAlphaComponent:0.15];
+    whiteColor5 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor6 = [MEMORY[0x277D75348] whiteColor];
+    v64 = [whiteColor6 colorWithAlphaComponent:0.15];
     v65 = *MEMORY[0x277D76988];
-    v66 = [(CPSButton *)v60 initWithTitle:v61 enabledTitleColor:v62 disabledTitleColor:0 backgroundColor:v64 textStyle:*MEMORY[0x277D76988] cornerRadius:1 animatesAlphaWhenHighlighted:0.0];
+    v66 = [(CPSButton *)v60 initWithTitle:v61 enabledTitleColor:whiteColor5 disabledTitleColor:0 backgroundColor:v64 textStyle:*MEMORY[0x277D76988] cornerRadius:1 animatesAlphaWhenHighlighted:0.0];
     retryButton = v4->_retryButton;
     v4->_retryButton = v66;
 
     v68 = [MEMORY[0x277D74300] _preferredFontForTextStyle:v65 variant:8];
-    v69 = [(CPSButton *)v4->_retryButton titleLabel];
-    [v69 setFont:v68];
+    titleLabel = [(CPSButton *)v4->_retryButton titleLabel];
+    [titleLabel setFont:v68];
 
     [(CPSButton *)v4->_retryButton setContentEdgeInsets:14.0, 27.0, 14.0, 27.0];
     [(CPSButton *)v4->_retryButton addTarget:v4 action:sel__reloadTapped_ forControlEvents:64];
@@ -210,9 +210,9 @@
   return v4;
 }
 
-- (CPSClipLoadingView)initWithCoder:(id)a3
+- (CPSClipLoadingView)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:@"-initWithCoder: is not implemented." userInfo:0];
   objc_exception_throw(v4);
 }
@@ -416,35 +416,35 @@
   [(CPSClipLoadingView *)self _startAnimationIfNeeded];
 }
 
-- (void)setLoadingHasFailed:(BOOL)a3 animated:(BOOL)a4 reason:(id)a5 reloadHandler:(id)a6
+- (void)setLoadingHasFailed:(BOOL)failed animated:(BOOL)animated reason:(id)reason reloadHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = a5;
-  if (self->_loadingHasFailed != v8)
+  animatedCopy = animated;
+  failedCopy = failed;
+  reasonCopy = reason;
+  if (self->_loadingHasFailed != failedCopy)
   {
-    self->_loadingHasFailed = v8;
-    if (v8)
+    self->_loadingHasFailed = failedCopy;
+    if (failedCopy)
     {
-      v11 = a6;
+      handlerCopy = handler;
     }
 
     else
     {
-      v11 = 0;
+      handlerCopy = 0;
     }
 
-    v12 = MEMORY[0x245D3DDC0](v11);
+    v12 = MEMORY[0x245D3DDC0](handlerCopy);
     reloadHandler = self->_reloadHandler;
     self->_reloadHandler = v12;
 
-    if (v8 && [v10 length])
+    if (failedCopy && [reasonCopy length])
     {
-      [(CPSVibrantLabel *)self->_clipUnavailableLabel setText:v10];
+      [(CPSVibrantLabel *)self->_clipUnavailableLabel setText:reasonCopy];
     }
 
     v14 = 0.3;
-    if (!v7)
+    if (!animatedCopy)
     {
       v14 = 0.0;
     }
@@ -454,12 +454,12 @@
     v17[2] = __72__CPSClipLoadingView_setLoadingHasFailed_animated_reason_reloadHandler___block_invoke;
     v17[3] = &unk_278DD2498;
     v17[4] = self;
-    v18 = v8;
+    v18 = failedCopy;
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __72__CPSClipLoadingView_setLoadingHasFailed_animated_reason_reloadHandler___block_invoke_2;
     v15[3] = &unk_278DD2838;
-    v16 = v8;
+    v16 = failedCopy;
     v15[4] = self;
     [MEMORY[0x277D75D18] animateWithDuration:v17 animations:v15 completion:v14];
     [(CPSClipLoadingView *)self _updateConicGradientRotation];
@@ -486,15 +486,15 @@ uint64_t __72__CPSClipLoadingView_setLoadingHasFailed_animated_reason_reloadHand
   return result;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = &stru_285684560;
-  if (a3)
+  nameCopy = &stru_285684560;
+  if (name)
   {
-    v4 = a3;
+    nameCopy = name;
   }
 
-  v5 = v4;
+  v5 = nameCopy;
   name = self->_name;
   if (name != v5)
   {
@@ -516,15 +516,15 @@ uint64_t __72__CPSClipLoadingView_setLoadingHasFailed_animated_reason_reloadHand
   MEMORY[0x2821F96F8](name, v5);
 }
 
-- (void)setProvider:(id)a3
+- (void)setProvider:(id)provider
 {
-  v4 = &stru_285684560;
-  if (a3)
+  providerCopy = &stru_285684560;
+  if (provider)
   {
-    v4 = a3;
+    providerCopy = provider;
   }
 
-  v5 = v4;
+  v5 = providerCopy;
   provider = self->_provider;
   if (provider != v5)
   {
@@ -546,13 +546,13 @@ uint64_t __72__CPSClipLoadingView_setLoadingHasFailed_animated_reason_reloadHand
   MEMORY[0x2821F96F8](provider, v5);
 }
 
-- (void)setBackgroundImage:(id)a3 animated:(BOOL)a4
+- (void)setBackgroundImage:(id)image animated:(BOOL)animated
 {
-  v6 = a3;
+  imageCopy = image;
   if (self->_supportsArcade)
   {
 
-    v6 = 0;
+    imageCopy = 0;
   }
 
   v15[0] = MEMORY[0x277D85DD0];
@@ -560,11 +560,11 @@ uint64_t __72__CPSClipLoadingView_setLoadingHasFailed_animated_reason_reloadHand
   v15[2] = __50__CPSClipLoadingView_setBackgroundImage_animated___block_invoke;
   v15[3] = &unk_278DD2860;
   v15[4] = self;
-  v7 = v6;
+  v7 = imageCopy;
   v16 = v7;
   v8 = MEMORY[0x245D3DDC0](v15);
   v9 = v8;
-  if (a4)
+  if (animated)
   {
     v10 = MEMORY[0x277D75D18];
     heroImageView = self->_heroImageView;
@@ -612,27 +612,27 @@ void __50__CPSClipLoadingView_setBackgroundImage_animated___block_invoke(uint64_
   [v6 setOpacity:v5];
 }
 
-- (void)setSupportsArcade:(BOOL)a3
+- (void)setSupportsArcade:(BOOL)arcade
 {
-  if (self->_supportsArcade != a3)
+  if (self->_supportsArcade != arcade)
   {
-    self->_supportsArcade = a3;
-    if (a3)
+    self->_supportsArcade = arcade;
+    if (arcade)
     {
       [(CPSClipLoadingView *)self _configureViewForArcadeIfNeeded];
     }
   }
 }
 
-- (void)setLoadingProgress:(float)a3 completion:(id)a4
+- (void)setLoadingProgress:(float)progress completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (self->_loadingProgress == a3)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (self->_loadingProgress == progress)
   {
-    if (v6)
+    if (completionCopy)
     {
-      v6[2](v6);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -644,12 +644,12 @@ void __50__CPSClipLoadingView_setBackgroundImage_animated___block_invoke(uint64_
     v18[2] = __52__CPSClipLoadingView_setLoadingProgress_completion___block_invoke;
     v18[3] = &unk_278DD28B0;
     v18[4] = self;
-    v19 = v6;
+    v19 = completionCopy;
     v8 = MEMORY[0x245D3DDC0](v18);
-    self->_loadingProgress = a3;
-    v9 = [(CPSClipLoadingView *)self _loadingIsComplete];
-    v10 = v9;
-    if (v9)
+    self->_loadingProgress = progress;
+    _loadingIsComplete = [(CPSClipLoadingView *)self _loadingIsComplete];
+    v10 = _loadingIsComplete;
+    if (_loadingIsComplete)
     {
       v11 = 0.2;
     }
@@ -669,7 +669,7 @@ void __50__CPSClipLoadingView_setBackgroundImage_animated___block_invoke(uint64_
     v14[1] = 3221225472;
     v14[2] = __52__CPSClipLoadingView_setLoadingProgress_completion___block_invoke_3;
     v14[3] = &unk_278DD28D8;
-    v16 = v9;
+    v16 = _loadingIsComplete;
     v13 = v8;
     v15 = v13;
     [v12 animateWithDuration:v17 animations:v14 completion:v11];
@@ -714,10 +714,10 @@ uint64_t __52__CPSClipLoadingView_setLoadingProgress_completion___block_invoke_3
   return result;
 }
 
-- (void)finishLoadingWithCompletion:(id)a3
+- (void)finishLoadingWithCompletion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = CPS_LOG_CHANNEL_PREFIXClipUIServices();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -742,7 +742,7 @@ uint64_t __52__CPSClipLoadingView_setLoadingProgress_completion___block_invoke_3
         v24[2] = __50__CPSClipLoadingView_finishLoadingWithCompletion___block_invoke_2;
         v24[3] = &unk_278DD2900;
         objc_copyWeak(&v26, buf);
-        v25 = v4;
+        v25 = completionCopy;
         v9 = MEMORY[0x245D3DDC0](v24);
         deferredActions = self->_deferredActions;
         self->_deferredActions = v9;
@@ -769,23 +769,23 @@ uint64_t __52__CPSClipLoadingView_setLoadingProgress_completion___block_invoke_3
       v15 = [(CPSClipLoadingView *)self _backdropEffectRemovalAnimationForKeyPath:@"filters.colorSaturate.inputAmount"];
       [(CABackdropLayer *)v14 addAnimation:v15 forKey:0];
 
-      v16 = [(UIView *)self->_labelContainerView layer];
-      v17 = [(CPSClipLoadingView *)self _basicAnimationToDecreaseOpacity];
-      [v16 addAnimation:v17 forKey:0];
+      layer = [(UIView *)self->_labelContainerView layer];
+      _basicAnimationToDecreaseOpacity = [(CPSClipLoadingView *)self _basicAnimationToDecreaseOpacity];
+      [layer addAnimation:_basicAnimationToDecreaseOpacity forKey:0];
 
-      v18 = [(CPSClipLoadingView *)self layer];
-      v19 = [(CPSClipLoadingView *)self _springAnimationToDecreaseOpacity];
-      [v18 addAnimation:v19 forKey:0];
+      layer2 = [(CPSClipLoadingView *)self layer];
+      _springAnimationToDecreaseOpacity = [(CPSClipLoadingView *)self _springAnimationToDecreaseOpacity];
+      [layer2 addAnimation:_springAnimationToDecreaseOpacity forKey:0];
 
-      v20 = [(CPSClipLoadingView *)self _textScaleUpSpringAnimation];
+      _textScaleUpSpringAnimation = [(CPSClipLoadingView *)self _textScaleUpSpringAnimation];
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __50__CPSClipLoadingView_finishLoadingWithCompletion___block_invoke_71;
       v22[3] = &unk_278DD2928;
-      v23 = v4;
-      [v20 cps_setDelegateWithDidStartHandler:0 didStopHandler:v22];
-      v21 = [(UIView *)self->_clipNameContainerView layer];
-      [v21 addAnimation:v20 forKey:0];
+      v23 = completionCopy;
+      [_textScaleUpSpringAnimation cps_setDelegateWithDidStartHandler:0 didStopHandler:v22];
+      layer3 = [(UIView *)self->_clipNameContainerView layer];
+      [layer3 addAnimation:_textScaleUpSpringAnimation forKey:0];
     }
   }
 
@@ -797,7 +797,7 @@ uint64_t __52__CPSClipLoadingView_setLoadingProgress_completion___block_invoke_3
     v27[2] = __50__CPSClipLoadingView_finishLoadingWithCompletion___block_invoke;
     v27[3] = &unk_278DD2900;
     objc_copyWeak(&v29, buf);
-    v28 = v4;
+    v28 = completionCopy;
     LODWORD(v8) = 1.0;
     [(CPSClipLoadingView *)self setLoadingProgress:v27 completion:v8];
 
@@ -870,14 +870,14 @@ uint64_t __50__CPSClipLoadingView_finishLoadingWithCompletion___block_invoke_71(
 {
   if (!self->_animationHasStarted && !self->_loadingHasFailed)
   {
-    v3 = [(CPSClipLoadingView *)self superview];
-    if (v3)
+    superview = [(CPSClipLoadingView *)self superview];
+    if (superview)
     {
-      v7 = v3;
-      v4 = [(CPSClipLoadingView *)self window];
-      if (v4)
+      v7 = superview;
+      window = [(CPSClipLoadingView *)self window];
+      if (window)
       {
-        v5 = v4;
+        v5 = window;
         if ([(NSString *)self->_name length])
         {
         }
@@ -909,8 +909,8 @@ uint64_t __50__CPSClipLoadingView_finishLoadingWithCompletion___block_invoke_71(
   if (!UIAccessibilityIsReduceMotionEnabled())
   {
     v11 = [(CPSClipLoadingView *)self _animationForTranslationY:150.0];
-    v3 = [(UIView *)self->_labelContainerView layer];
-    [v3 addAnimation:v11 forKey:@"labelContainerTranslationAnimation"];
+    layer = [(UIView *)self->_labelContainerView layer];
+    [layer addAnimation:v11 forKey:@"labelContainerTranslationAnimation"];
 
     v4 = [(CPSClipLoadingView *)self _animationForTranslationY:80.0];
     if (self->_poweredByThirdParty)
@@ -924,16 +924,16 @@ uint64_t __50__CPSClipLoadingView_finishLoadingWithCompletion___block_invoke_71(
     }
 
     v6 = *(&self->super.super.super.isa + *v5);
-    v7 = [v6 layer];
-    [v7 addAnimation:v4 forKey:@"poweredByLabelTranslationAnimation"];
+    layer2 = [v6 layer];
+    [layer2 addAnimation:v4 forKey:@"poweredByLabelTranslationAnimation"];
 
     v8 = [MEMORY[0x277CD9FA0] cps_animationForKeyPath:@"transform.scale.xy" from:&unk_285688B20 to:&unk_285688AE8 beginAfter:0 duration:0.015 mass:0.8 stiffness:2.0 damping:300.0 keepFinalFrame:50.0];
-    v9 = [(UIImageView *)self->_heroImageView layer];
-    [v9 setValue:&unk_285688B20 forKey:@"transform.scale.xy"];
+    layer3 = [(UIImageView *)self->_heroImageView layer];
+    [layer3 setValue:&unk_285688B20 forKey:@"transform.scale.xy"];
 
-    v10 = [(UIImageView *)self->_heroImageView layer];
+    layer4 = [(UIImageView *)self->_heroImageView layer];
 
-    [v10 addAnimation:v8 forKey:@"heroImageScaleUpAnimation"];
+    [layer4 addAnimation:v8 forKey:@"heroImageScaleUpAnimation"];
   }
 }
 
@@ -944,19 +944,19 @@ uint64_t __50__CPSClipLoadingView_finishLoadingWithCompletion___block_invoke_71(
     return;
   }
 
-  v7 = [(UIView *)self->_gradientView layer];
-  v3 = [v7 animationForKey:@"conicGradientRotationAnimation"];
+  layer = [(UIView *)self->_gradientView layer];
+  v3 = [layer animationForKey:@"conicGradientRotationAnimation"];
   if (v3)
   {
     v4 = v3;
     if (self->_loadingHasFailed)
     {
-      [v7 cps_pauseAnimations];
+      [layer cps_pauseAnimations];
     }
 
     else
     {
-      [v7 cps_resumeAnimations];
+      [layer cps_resumeAnimations];
     }
 
     goto LABEL_10;
@@ -967,14 +967,14 @@ uint64_t __50__CPSClipLoadingView_finishLoadingWithCompletion___block_invoke_71(
     v4 = [MEMORY[0x277CD9E10] cps_animationForKeyPath:@"transform.rotation.z" from:0 to:&unk_285688B30 beginAfter:0 duration:0.0 keepFinalFrame:5.0];
     LODWORD(v5) = 2139095040;
     [v4 setRepeatCount:v5];
-    v6 = [(UIView *)self->_gradientView layer];
-    [v6 addAnimation:v4 forKey:@"conicGradientRotationAnimation"];
+    layer2 = [(UIView *)self->_gradientView layer];
+    [layer2 addAnimation:v4 forKey:@"conicGradientRotationAnimation"];
 
 LABEL_10:
   }
 }
 
-- (void)_arcadeAnimationDidComplete:(id)a3
+- (void)_arcadeAnimationDidComplete:(id)complete
 {
   self->_arcadeAnimationCompleted = 1;
   if (self->_deferredActions)
@@ -1008,14 +1008,14 @@ LABEL_10:
     [(CAGradientLayer *)self->_arcadeGradientLayer setColors:v10];
 
     [(CAGradientLayer *)self->_arcadeGradientLayer setLocations:&unk_285688B88];
-    v11 = [(UIView *)self->_arcadeGradientView layer];
-    [v11 insertSublayer:self->_arcadeGradientLayer atIndex:0];
+    layer = [(UIView *)self->_arcadeGradientView layer];
+    [layer insertSublayer:self->_arcadeGradientLayer atIndex:0];
 
     [(UIView *)self->_backdropView insertSubview:self->_arcadeGradientView above:self->_heroImageView];
     v12 = MEMORY[0x277CCA8D8];
     v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v14 = [v13 bundleURL];
-    v15 = [v12 URLForResource:@"Arcade_4K_Video_Layer_2K" withExtension:@"m4v" subdirectory:0 inBundleWithURL:v14];
+    bundleURL = [v13 bundleURL];
+    v15 = [v12 URLForResource:@"Arcade_4K_Video_Layer_2K" withExtension:@"m4v" subdirectory:0 inBundleWithURL:bundleURL];
 
     v16 = [MEMORY[0x277CE6598] playerWithURL:v15];
     arcadeAnimationPlayer = self->_arcadeAnimationPlayer;
@@ -1026,13 +1026,13 @@ LABEL_10:
     self->_arcadeAnimationPlayerLayer = v18;
 
     [(AVPlayerLayer *)self->_arcadeAnimationPlayerLayer setVideoGravity:*MEMORY[0x277CE5DD0]];
-    v20 = [(CPSClipLoadingView *)self layer];
-    [v20 addSublayer:self->_arcadeAnimationPlayerLayer];
+    layer2 = [(CPSClipLoadingView *)self layer];
+    [layer2 addSublayer:self->_arcadeAnimationPlayerLayer];
 
-    v21 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v22 = *MEMORY[0x277CE60C0];
-    v23 = [(AVPlayer *)self->_arcadeAnimationPlayer currentItem];
-    [v21 addObserver:self selector:sel__arcadeAnimationDidComplete_ name:v22 object:v23];
+    currentItem = [(AVPlayer *)self->_arcadeAnimationPlayer currentItem];
+    [defaultCenter addObserver:self selector:sel__arcadeAnimationDidComplete_ name:v22 object:currentItem];
 
     [(CABackdropLayer *)self->_backdropLayer setFilters:MEMORY[0x277CBEBF8]];
     [(UILabel *)self->_poweredByLabel setHidden:1];
@@ -1040,17 +1040,17 @@ LABEL_10:
   }
 }
 
-- (void)_showCompletionAnimation:(id)a3
+- (void)_showCompletionAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = [(UIView *)self->_clipNameContainerView layer];
-  v6 = [v5 animationForKey:@"progressCompletionAnimation"];
+  animationCopy = animation;
+  layer = [(UIView *)self->_clipNameContainerView layer];
+  v6 = [layer animationForKey:@"progressCompletionAnimation"];
 
   if (v6)
   {
-    if (v4)
+    if (animationCopy)
     {
-      v4[2](v4);
+      animationCopy[2](animationCopy);
     }
   }
 
@@ -1072,10 +1072,10 @@ LABEL_10:
     v11[1] = 3221225472;
     v11[2] = __47__CPSClipLoadingView__showCompletionAnimation___block_invoke;
     v11[3] = &unk_278DD2928;
-    v12 = v4;
+    v12 = animationCopy;
     [v7 cps_setDelegateWithDidStartHandler:0 didStopHandler:v11];
-    v10 = [(UIView *)self->_clipNameContainerView layer];
-    [v10 addAnimation:v7 forKey:@"progressCompletionAnimation"];
+    layer2 = [(UIView *)self->_clipNameContainerView layer];
+    [layer2 addAnimation:v7 forKey:@"progressCompletionAnimation"];
   }
 }
 
@@ -1090,7 +1090,7 @@ uint64_t __47__CPSClipLoadingView__showCompletionAnimation___block_invoke(uint64
   return result;
 }
 
-- (void)_reloadTapped:(id)a3
+- (void)_reloadTapped:(id)tapped
 {
   reloadHandler = self->_reloadHandler;
   if (reloadHandler)
@@ -1099,10 +1099,10 @@ uint64_t __47__CPSClipLoadingView__showCompletionAnimation___block_invoke(uint64
   }
 }
 
-- (id)_animationForTranslationY:(double)a3
+- (id)_animationForTranslationY:(double)y
 {
   v3 = MEMORY[0x277CD9FA0];
-  v4 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithDouble:y];
   v5 = [v3 cps_animationForKeyPath:@"transform.translation.y" from:v4 to:&unk_285688AD0 beginAfter:0 duration:0.0 mass:1.2 stiffness:3.0 damping:200.0 keepFinalFrame:300.0];
 
   return v5;

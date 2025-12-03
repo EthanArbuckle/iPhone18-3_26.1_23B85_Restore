@@ -1,28 +1,28 @@
 @interface BMParsecSearchEntity
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMParsecSearchEntity)initWithCoder:(id)a3;
-- (BMParsecSearchEntity)initWithName:(id)a3 category:(unsigned int)a4 probabilityScore:(float)a5 topics:(id)a6;
-- (BMParsecSearchEntity)initWithProto:(id)a3;
-- (BMParsecSearchEntity)initWithProtoData:(id)a3;
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMParsecSearchEntity)initWithCoder:(id)coder;
+- (BMParsecSearchEntity)initWithName:(id)name category:(unsigned int)category probabilityScore:(float)score topics:(id)topics;
+- (BMParsecSearchEntity)initWithProto:(id)proto;
+- (BMParsecSearchEntity)initWithProtoData:(id)data;
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
 - (id)proto;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMParsecSearchEntity
 
-- (BMParsecSearchEntity)initWithName:(id)a3 category:(unsigned int)a4 probabilityScore:(float)a5 topics:(id)a6
+- (BMParsecSearchEntity)initWithName:(id)name category:(unsigned int)category probabilityScore:(float)score topics:(id)topics
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = v12;
-  if (v11)
+  nameCopy = name;
+  topicsCopy = topics;
+  v13 = topicsCopy;
+  if (nameCopy)
   {
-    if (v12)
+    if (topicsCopy)
     {
       goto LABEL_3;
     }
@@ -45,21 +45,21 @@ LABEL_3:
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_name, a3);
-    v15->_category = a4;
-    v15->_probabilityScore = a5;
-    objc_storeStrong(&v15->_topics, a6);
+    objc_storeStrong(&v14->_name, name);
+    v15->_category = category;
+    v15->_probabilityScore = score;
+    objc_storeStrong(&v15->_topics, topics);
   }
 
   return v15;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 2)
+  dataCopy = data;
+  if (version == 2)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -101,9 +101,9 @@ LABEL_3:
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMParsecSearchEntity *)self jsonDict];
+  jsonDict = [(BMParsecSearchEntity *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (!v4)
@@ -118,62 +118,62 @@ LABEL_3:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BMParsecSearchEntity *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"dat"];
+  coderCopy = coder;
+  encodeAsProto = [(BMParsecSearchEntity *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"dat"];
 }
 
-- (BMParsecSearchEntity)initWithCoder:(id)a3
+- (BMParsecSearchEntity)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E69C5D78];
-  v5 = a3;
-  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:v5 expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
+  coderCopy = coder;
+  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:coderCopy expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
 
   if (v6)
   {
     self = [(BMParsecSearchEntity *)self initWithProtoData:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMParsecSearchEntity *)self proto];
-  v3 = [v2 data];
+  proto = [(BMParsecSearchEntity *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMParsecSearchEntity)initWithProto:(id)a3
+- (BMParsecSearchEntity)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       if ([v5 hasName]&& [v5 hasCategory]&& [v5 hasProbabilityScore]&& [v5 topicsCount])
       {
-        v6 = [v5 name];
-        v7 = [v5 category];
+        name = [v5 name];
+        category = [v5 category];
         [v5 probabilityScore];
         v9 = v8;
-        v10 = [v5 topics];
-        v11 = [v10 _pas_mappedArrayWithTransform:&__block_literal_global_145];
+        topics = [v5 topics];
+        v11 = [topics _pas_mappedArrayWithTransform:&__block_literal_global_145];
         LODWORD(v12) = v9;
-        self = [(BMParsecSearchEntity *)self initWithName:v6 category:v7 probabilityScore:v11 topics:v12];
+        self = [(BMParsecSearchEntity *)self initWithName:name category:category probabilityScore:v11 topics:v12];
 
-        v13 = self;
+        selfCopy = self;
 LABEL_15:
 
         goto LABEL_16;
@@ -195,14 +195,14 @@ LABEL_15:
       }
     }
 
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
-  v13 = 0;
+  selfCopy = 0;
 LABEL_16:
 
-  return v13;
+  return selfCopy;
 }
 
 BMParsecSearchTopic *__38__BMParsecSearchEntity_initWithProto___block_invoke(uint64_t a1, void *a2)
@@ -213,56 +213,56 @@ BMParsecSearchTopic *__38__BMParsecSearchEntity_initWithProto___block_invoke(uin
   return v3;
 }
 
-- (BMParsecSearchEntity)initWithProtoData:(id)a3
+- (BMParsecSearchEntity)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBParsecSearchEntity alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBParsecSearchEntity alloc] initWithData:dataCopy];
 
     self = [(BMParsecSearchEntity *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
 {
   v3 = objc_opt_new();
-  v4 = [(BMParsecSearchEntity *)self name];
-  [v3 setName:v4];
+  name = [(BMParsecSearchEntity *)self name];
+  [v3 setName:name];
 
   [v3 setCategory:{-[BMParsecSearchEntity category](self, "category")}];
   [(BMParsecSearchEntity *)self probabilityScore];
   [v3 setProbabilityScore:?];
-  v5 = [(BMParsecSearchEntity *)self topics];
-  v6 = [v5 _pas_mappedArrayWithTransform:&__block_literal_global_147];
+  topics = [(BMParsecSearchEntity *)self topics];
+  v6 = [topics _pas_mappedArrayWithTransform:&__block_literal_global_147];
   v7 = [v6 mutableCopy];
   [v3 setTopics:v7];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     name = self->_name;
-    v7 = [v5 name];
-    if (-[NSString isEqualToString:](name, "isEqualToString:", v7) && (category = self->_category, category == [v5 category]) && (probabilityScore = self->_probabilityScore, objc_msgSend(v5, "probabilityScore"), probabilityScore == v10))
+    name = [v5 name];
+    if (-[NSString isEqualToString:](name, "isEqualToString:", name) && (category = self->_category, category == [v5 category]) && (probabilityScore = self->_probabilityScore, objc_msgSend(v5, "probabilityScore"), probabilityScore == v10))
     {
       topics = self->_topics;
-      v12 = [v5 topics];
-      v13 = [(NSArray *)topics isEqual:v12];
+      topics = [v5 topics];
+      v13 = [(NSArray *)topics isEqual:topics];
     }
 
     else
@@ -279,10 +279,10 @@ BMParsecSearchTopic *__38__BMParsecSearchEntity_initWithProto___block_invoke(uin
   return v13;
 }
 
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -302,7 +302,7 @@ BMParsecSearchTopic *__38__BMParsecSearchEntity_initWithProto___block_invoke(uin
           objc_enumerationMutation(v7);
         }
 
-        if (![*(*(&v15 + 1) + 8 * i) isCompleteWithContext:v6 error:{a4, v15}])
+        if (![*(*(&v15 + 1) + 8 * i) isCompleteWithContext:contextCopy error:{error, v15}])
         {
 
           goto LABEL_12;
@@ -324,10 +324,10 @@ BMParsecSearchTopic *__38__BMParsecSearchEntity_initWithProto___block_invoke(uin
     v12 = 1;
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:@"BMStreamErrorDomain" code:3 userInfo:0];
-    *a4 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else

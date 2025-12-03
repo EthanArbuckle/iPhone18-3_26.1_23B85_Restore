@@ -1,73 +1,73 @@
 @interface UIMutableTransformer
 - (UIMutableTransformerDelegate)_delegate;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 - (void)_ensureTransformsStructuresExists;
 - (void)_updateTransform;
-- (void)addTransform:(id)a3 reason:(id)a4;
+- (void)addTransform:(id)transform reason:(id)reason;
 - (void)removeAll;
-- (void)removeTransform:(id)a3;
-- (void)replaceTransform:(id)a3 withTransform:(id)a4 reason:(id)a5;
+- (void)removeTransform:(id)transform;
+- (void)replaceTransform:(id)transform withTransform:(id)withTransform reason:(id)reason;
 @end
 
 @implementation UIMutableTransformer
 
-- (void)addTransform:(id)a3 reason:(id)a4
+- (void)addTransform:(id)transform reason:(id)reason
 {
-  v11 = a3;
-  v7 = a4;
-  if (!v11)
+  transformCopy = transform;
+  reasonCopy = reason;
+  if (!transformCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"UITransform.m" lineNumber:252 description:{@"Invalid parameter not satisfying: %@", @"transform"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITransform.m" lineNumber:252 description:{@"Invalid parameter not satisfying: %@", @"transform"}];
   }
 
   [(UIMutableTransformer *)self _ensureTransformsStructuresExists];
-  [(NSMutableArray *)self->super._transforms addObject:v11];
+  [(NSMutableArray *)self->super._transforms addObject:transformCopy];
   transformReasonAssociations = self->super._transformReasonAssociations;
-  v9 = [_UITransformToReasonAssociation association:v11 reason:v7];
+  v9 = [_UITransformToReasonAssociation association:transformCopy reason:reasonCopy];
   [(NSMutableArray *)transformReasonAssociations addObject:v9];
 
   [(UIMutableTransformer *)self _updateTransform];
 }
 
-- (void)replaceTransform:(id)a3 withTransform:(id)a4 reason:(id)a5
+- (void)replaceTransform:(id)transform withTransform:(id)withTransform reason:(id)reason
 {
-  v17 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v17)
+  transformCopy = transform;
+  withTransformCopy = withTransform;
+  reasonCopy = reason;
+  if (!transformCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"UITransform.m" lineNumber:262 description:{@"Invalid parameter not satisfying: %@", @"priorTransform"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITransform.m" lineNumber:262 description:{@"Invalid parameter not satisfying: %@", @"priorTransform"}];
 
-    if (v9)
+    if (withTransformCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"UITransform.m" lineNumber:263 description:{@"Invalid parameter not satisfying: %@", @"newTransform"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UITransform.m" lineNumber:263 description:{@"Invalid parameter not satisfying: %@", @"newTransform"}];
 
     goto LABEL_3;
   }
 
-  if (!v9)
+  if (!withTransformCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  v11 = [(NSMutableArray *)self->super._transforms indexOfObject:v17];
+  v11 = [(NSMutableArray *)self->super._transforms indexOfObject:transformCopy];
   if (v11 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v12 = v11;
     if (v11 < [(NSMutableArray *)self->super._transforms count])
     {
-      [(NSMutableArray *)self->super._transforms replaceObjectAtIndex:v12 withObject:v9];
+      [(NSMutableArray *)self->super._transforms replaceObjectAtIndex:v12 withObject:withTransformCopy];
       transformReasonAssociations = self->super._transformReasonAssociations;
-      v14 = [_UITransformToReasonAssociation association:v9 reason:v10];
+      v14 = [_UITransformToReasonAssociation association:withTransformCopy reason:reasonCopy];
       [(NSMutableArray *)transformReasonAssociations replaceObjectAtIndex:v12 withObject:v14];
 
       [(UIMutableTransformer *)self _updateTransform];
@@ -75,19 +75,19 @@ LABEL_3:
   }
 }
 
-- (void)removeTransform:(id)a3
+- (void)removeTransform:(id)transform
 {
-  v5 = a3;
-  v9 = v5;
-  if (!v5)
+  transformCopy = transform;
+  v9 = transformCopy;
+  if (!transformCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"UITransform.m" lineNumber:277 description:{@"Invalid parameter not satisfying: %@", @"transform"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UITransform.m" lineNumber:277 description:{@"Invalid parameter not satisfying: %@", @"transform"}];
 
-    v5 = 0;
+    transformCopy = 0;
   }
 
-  v6 = [(NSMutableArray *)self->super._transforms indexOfObject:v5];
+  v6 = [(NSMutableArray *)self->super._transforms indexOfObject:transformCopy];
   if (v6 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v7 = v6;
@@ -111,25 +111,25 @@ LABEL_3:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [UITransformer alloc];
 
   return [(UITransformer *)v4 _initWithTransformer:self];
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v12.receiver = self;
   v12.super_class = UIMutableTransformer;
-  v4 = [(UITransformer *)&v12 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(UITransformer *)&v12 descriptionBuilderWithMultilinePrefix:prefix];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__UIMutableTransformer_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E70F35B8;
   v5 = v4;
   v10 = v5;
-  v11 = self;
+  selfCopy = self;
   v6 = [v5 modifyBody:v9];
   v7 = v5;
 

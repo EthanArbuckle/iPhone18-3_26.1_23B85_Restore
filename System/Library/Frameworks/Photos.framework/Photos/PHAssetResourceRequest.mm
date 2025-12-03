@@ -2,18 +2,18 @@
 + (id)_globalFileIOQueue;
 - (BOOL)isCancelled;
 - (NSString)taskIdentifier;
-- (PHAssetResourceRequest)initWithAssetResource:(id)a3 options:(id)a4 requestID:(int)a5 managerID:(unint64_t)a6 delegate:(id)a7 urlReceivedHandler:(id)a8 dataReceivedHandler:(id)a9 completionHandler:(id)a10;
+- (PHAssetResourceRequest)initWithAssetResource:(id)resource options:(id)options requestID:(int)d managerID:(unint64_t)iD delegate:(id)delegate urlReceivedHandler:(id)handler dataReceivedHandler:(id)receivedHandler completionHandler:(id)self0;
 - (PHAssetResourceRequestDelegate)delegate;
 - (id)_initialValidationError;
-- (id)_loadMediaMetadataFromDatabaseWithPhotoLibrary:(id)a3 type:(id *)a4 error:(id *)a5;
-- (int64_t)_streamDataAtURL:(id)a3 error:(id *)a4 dataHandler:(id)a5;
-- (void)_assetsdMakeAvailableRequestRepliedWithSuccess:(BOOL)a3 url:(id)a4 data:(id)a5 info:(id)a6 error:(id)a7;
-- (void)_finishAsyncWithFileURL:(id)a3 didBecomeAvailable:(BOOL)a4 error:(id)a5;
-- (void)_finishWithFileURL:(id)a3 didBecomeAvailable:(BOOL)a4 error:(id)a5;
-- (void)_setAvailabilityProgress:(id)a3;
+- (id)_loadMediaMetadataFromDatabaseWithPhotoLibrary:(id)library type:(id *)type error:(id *)error;
+- (int64_t)_streamDataAtURL:(id)l error:(id *)error dataHandler:(id)handler;
+- (void)_assetsdMakeAvailableRequestRepliedWithSuccess:(BOOL)success url:(id)url data:(id)data info:(id)info error:(id)error;
+- (void)_finishAsyncWithFileURL:(id)l didBecomeAvailable:(BOOL)available error:(id)error;
+- (void)_finishWithFileURL:(id)l didBecomeAvailable:(BOOL)available error:(id)error;
+- (void)_setAvailabilityProgress:(id)progress;
 - (void)_setupFilestreamProgressIfNeeded;
 - (void)_setupTotalProgressIfNeeded;
-- (void)_updateAssetResourceWithLocallyAvailable:(BOOL)a3 fileURL:(id)a4;
+- (void)_updateAssetResourceWithLocallyAvailable:(BOOL)available fileURL:(id)l;
 - (void)cancel;
 - (void)dealloc;
 - (void)startRequest;
@@ -28,10 +28,10 @@
   return WeakRetained;
 }
 
-- (id)_loadMediaMetadataFromDatabaseWithPhotoLibrary:(id)a3 type:(id *)a4 error:(id *)a5
+- (id)_loadMediaMetadataFromDatabaseWithPhotoLibrary:(id)library type:(id *)type error:(id *)error
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  libraryCopy = library;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -53,9 +53,9 @@
   v9 = PLImageManagerGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(PHAssetResourceRequest *)self taskIdentifier];
+    taskIdentifier = [(PHAssetResourceRequest *)self taskIdentifier];
     *buf = 138412290;
-    v35 = v10;
+    v35 = taskIdentifier;
     _os_log_impl(&dword_19C86F000, v9, OS_LOG_TYPE_DEBUG, "[RM] %@ Attempting to load media metadata from database", buf, 0xCu);
   }
 
@@ -67,18 +67,18 @@
   v15[5] = &v28;
   v15[6] = &v22;
   v15[7] = &v16;
-  [v8 performBlockAndWait:v15];
-  if (a4)
+  [libraryCopy performBlockAndWait:v15];
+  if (type)
   {
-    *a4 = v17[5];
+    *type = v17[5];
   }
 
   v11 = v23[5];
   v12 = v29[5];
-  if (!v11 && a5)
+  if (!v11 && error)
   {
     v12 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   v13 = v23[5];
@@ -143,23 +143,23 @@ void __84__PHAssetResourceRequest__loadMediaMetadataFromDatabaseWithPhotoLibrary
   }
 }
 
-- (void)_updateAssetResourceWithLocallyAvailable:(BOOL)a3 fileURL:(id)a4
+- (void)_updateAssetResourceWithLocallyAvailable:(BOOL)available fileURL:(id)l
 {
-  v4 = a3;
+  availableCopy = available;
   assetResource = self->_assetResource;
-  v7 = a4;
-  [(PHAssetResource *)assetResource setLocallyAvailable:v4];
-  [(PHAssetResource *)self->_assetResource setPrivateFileURL:v7];
+  lCopy = l;
+  [(PHAssetResource *)assetResource setLocallyAvailable:availableCopy];
+  [(PHAssetResource *)self->_assetResource setPrivateFileURL:lCopy];
 }
 
-- (int64_t)_streamDataAtURL:(id)a3 error:(id *)a4 dataHandler:(id)a5
+- (int64_t)_streamDataAtURL:(id)l error:(id *)error dataHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  lCopy = l;
+  handlerCopy = handler;
+  v11 = handlerCopy;
+  if (lCopy)
   {
-    if (v10)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -167,8 +167,8 @@ void __84__PHAssetResourceRequest__loadMediaMetadataFromDatabaseWithPhotoLibrary
 
   else
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"PHAssetResourceRequest.m" lineNumber:418 description:{@"Invalid parameter not satisfying: %@", @"fileURL"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetResourceRequest.m" lineNumber:418 description:{@"Invalid parameter not satisfying: %@", @"fileURL"}];
 
     if (v11)
     {
@@ -176,23 +176,23 @@ void __84__PHAssetResourceRequest__loadMediaMetadataFromDatabaseWithPhotoLibrary
     }
   }
 
-  v30 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v30 handleFailureInMethod:a2 object:self file:@"PHAssetResourceRequest.m" lineNumber:419 description:{@"Invalid parameter not satisfying: %@", @"dataHandler"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PHAssetResourceRequest.m" lineNumber:419 description:{@"Invalid parameter not satisfying: %@", @"dataHandler"}];
 
 LABEL_3:
-  v12 = [objc_alloc(MEMORY[0x1E695DF48]) initWithURL:v9];
+  v12 = [objc_alloc(MEMORY[0x1E695DF48]) initWithURL:lCopy];
   v13 = v12;
   if (!v12)
   {
     v23 = @"Unable to initialize stream for resource %@";
 LABEL_18:
-    v14 = [MEMORY[0x1E696ABC0] ph_genericErrorWithLocalizedDescription:{v23, self->_assetResource}];
+    streamError = [MEMORY[0x1E696ABC0] ph_genericErrorWithLocalizedDescription:{v23, self->_assetResource}];
     goto LABEL_19;
   }
 
   [v12 open];
-  v14 = [v13 streamError];
-  if (v14)
+  streamError = [v13 streamError];
+  if (streamError)
   {
 LABEL_19:
     v32 = 0;
@@ -208,8 +208,8 @@ LABEL_19:
   }
 
   v16 = v15;
-  v31 = self;
-  v14 = 0;
+  selfCopy = self;
+  streamError = 0;
   v17 = 0;
   v32 = 0;
   while ([v13 hasBytesAvailable])
@@ -221,11 +221,11 @@ LABEL_19:
       if (v18 < 0)
       {
         v26 = MEMORY[0x1E696ABC0];
-        v27 = [v13 streamError];
-        v28 = [v26 ph_genericErrorWithUnderlyingError:v27 localizedDescription:{@"Unable to continue reading data for resource %@", v31->_assetResource}];
+        streamError2 = [v13 streamError];
+        v28 = [v26 ph_genericErrorWithUnderlyingError:streamError2 localizedDescription:{@"Unable to continue reading data for resource %@", selfCopy->_assetResource}];
 
         v17 = -1;
-        v14 = v28;
+        streamError = v28;
         break;
       }
 
@@ -245,7 +245,7 @@ LABEL_19:
         v22 = [MEMORY[0x1E696ABC0] ph_errorWithDomain:@"PHPhotosErrorDomain" code:3072 userInfo:0];
 
         v17 = -1;
-        v14 = v22;
+        streamError = v22;
       }
 
       else
@@ -266,41 +266,41 @@ LABEL_16:
   free(v16);
 LABEL_20:
   [v13 close];
-  if (a4)
+  if (error)
   {
-    v24 = v14;
-    *a4 = v14;
+    v24 = streamError;
+    *error = streamError;
   }
 
   return v17;
 }
 
-- (void)_finishAsyncWithFileURL:(id)a3 didBecomeAvailable:(BOOL)a4 error:(id)a5
+- (void)_finishAsyncWithFileURL:(id)l didBecomeAvailable:(BOOL)available error:(id)error
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [objc_opt_class() _globalFileIOQueue];
+  lCopy = l;
+  errorCopy = error;
+  _globalFileIOQueue = [objc_opt_class() _globalFileIOQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __75__PHAssetResourceRequest__finishAsyncWithFileURL_didBecomeAvailable_error___block_invoke;
   v13[3] = &unk_1E75A9D00;
   v13[4] = self;
-  v14 = v8;
-  v16 = a4;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = lCopy;
+  availableCopy = available;
+  v15 = errorCopy;
+  v11 = errorCopy;
+  v12 = lCopy;
+  dispatch_async(_globalFileIOQueue, v13);
 }
 
-- (void)_finishWithFileURL:(id)a3 didBecomeAvailable:(BOOL)a4 error:(id)a5
+- (void)_finishWithFileURL:(id)l didBecomeAvailable:(BOOL)available error:(id)error
 {
-  v6 = a4;
+  availableCopy = available;
   v48 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (!v8 || v9)
+  lCopy = l;
+  errorCopy = error;
+  v10 = errorCopy;
+  if (!lCopy || errorCopy)
   {
     goto LABEL_25;
   }
@@ -308,13 +308,13 @@ LABEL_20:
   urlReceivedHandler = self->_urlReceivedHandler;
   if (urlReceivedHandler)
   {
-    urlReceivedHandler[2](urlReceivedHandler, v8);
+    urlReceivedHandler[2](urlReceivedHandler, lCopy);
   }
 
   if (self->_loadURLOnly)
   {
     v10 = 0;
-    if (!v6)
+    if (!availableCopy)
     {
       goto LABEL_25;
     }
@@ -328,7 +328,7 @@ LABEL_20:
     v41 = 0;
     v12 = *MEMORY[0x1E695DB50];
     v40 = 0;
-    v13 = [v8 getResourceValue:&v41 forKey:v12 error:&v40];
+    v13 = [lCopy getResourceValue:&v41 forKey:v12 error:&v40];
     v14 = v41;
     v15 = v40;
     if (v13)
@@ -360,56 +360,56 @@ LABEL_20:
   v38[1] = 3221225472;
   v38[2] = __70__PHAssetResourceRequest__finishWithFileURL_didBecomeAvailable_error___block_invoke;
   v38[3] = &unk_1E75A9CD8;
-  [(PHAssetResourceRequest *)self _streamDataAtURL:v8 error:&v39 dataHandler:v38];
+  [(PHAssetResourceRequest *)self _streamDataAtURL:lCopy error:&v39 dataHandler:v38];
   v10 = v39;
 
-  if (v6)
+  if (availableCopy)
   {
 LABEL_17:
     if ([(PHAssetResourceRequestOptions *)self->_options pruneAfterAvailableOnLowDisk])
     {
-      v17 = [(PHAssetResourceRequestOptions *)self->_options pruneAfterAvailableLowDiskThresholdBytes];
-      if (v17)
+      pruneAfterAvailableLowDiskThresholdBytes = [(PHAssetResourceRequestOptions *)self->_options pruneAfterAvailableLowDiskThresholdBytes];
+      if (pruneAfterAvailableLowDiskThresholdBytes)
       {
-        v18 = [(PHAssetResourceRequestOptions *)self->_options pruneAfterAvailableLowDiskThresholdBytes];
-        v19 = [v18 longLongValue];
+        pruneAfterAvailableLowDiskThresholdBytes2 = [(PHAssetResourceRequestOptions *)self->_options pruneAfterAvailableLowDiskThresholdBytes];
+        longLongValue = [pruneAfterAvailableLowDiskThresholdBytes2 longLongValue];
       }
 
       else
       {
-        v19 = 0x80000000;
+        longLongValue = 0x80000000;
       }
 
       v20 = MEMORY[0x1E69BF208];
-      v21 = [v8 path];
-      v22 = [v20 diskSpaceAvailableForPath:v21];
+      path = [lCopy path];
+      v22 = [v20 diskSpaceAvailableForPath:path];
 
-      if (v22 < v19)
+      if (v22 < longLongValue)
       {
         v23 = PLImageManagerGetLog();
         if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [(PHAssetResourceRequest *)self taskIdentifier];
+          taskIdentifier = [(PHAssetResourceRequest *)self taskIdentifier];
           *buf = 138543874;
-          v43 = v24;
+          v43 = taskIdentifier;
           v44 = 2048;
           v45 = v22;
           v46 = 2048;
-          v47 = v19;
+          v47 = longLongValue;
           _os_log_impl(&dword_19C86F000, v23, OS_LOG_TYPE_DEFAULT, "[RM] %{public}@ sending resource unavailable request, availableStorage: %lld purgeThreshold: %lld", buf, 0x20u);
         }
 
         v25 = objc_alloc(MEMORY[0x1E69BE760]);
-        v26 = [(PHAssetResourceRequest *)self taskIdentifier];
-        v27 = [(PHAssetResource *)self->_assetResource assetObjectID];
-        v28 = [(PHAssetResource *)self->_assetResource backingResourceIdentity];
-        v29 = [v25 initWithTaskIdentifier:v26 assetObjectID:v27 resource:v28];
+        taskIdentifier2 = [(PHAssetResourceRequest *)self taskIdentifier];
+        assetObjectID = [(PHAssetResource *)self->_assetResource assetObjectID];
+        backingResourceIdentity = [(PHAssetResource *)self->_assetResource backingResourceIdentity];
+        v29 = [v25 initWithTaskIdentifier:taskIdentifier2 assetObjectID:assetObjectID resource:backingResourceIdentity];
 
-        v30 = [(PHAssetResourceRequest *)self assetResource];
-        v31 = [v30 photoLibrary];
-        v32 = [v31 assetsdClient];
-        v33 = [v32 resourceAvailabilityClient];
-        [v33 sendMakeResourceUnavailableRequest:v29];
+        assetResource = [(PHAssetResourceRequest *)self assetResource];
+        photoLibrary = [assetResource photoLibrary];
+        assetsdClient = [photoLibrary assetsdClient];
+        resourceAvailabilityClient = [assetsdClient resourceAvailabilityClient];
+        [resourceAvailabilityClient sendMakeResourceUnavailableRequest:v29];
       }
     }
   }
@@ -474,11 +474,11 @@ void __70__PHAssetResourceRequest__finishWithFileURL_didBecomeAvailable_error___
   }
 }
 
-- (void)_setAvailabilityProgress:(id)a3
+- (void)_setAvailabilityProgress:(id)progress
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_availabilityPendingCount >= 1)
+  progressCopy = progress;
+  v5 = progressCopy;
+  if (progressCopy && self->_availabilityPendingCount >= 1)
   {
     availabilityRequestProgressContainer = self->_availabilityRequestProgressContainer;
     v11 = v5;
@@ -489,24 +489,24 @@ void __70__PHAssetResourceRequest__finishWithFileURL_didBecomeAvailable_error___
       self->_availabilityRequestProgressContainer = v7;
 
       totalProgress = self->_totalProgress;
-      v10 = [(PHProgressContainerForRetryableRequest *)self->_availabilityRequestProgressContainer totalProgress];
-      [(NSProgress *)totalProgress addChild:v10 withPendingUnitCount:self->_availabilityPendingCount];
+      totalProgress = [(PHProgressContainerForRetryableRequest *)self->_availabilityRequestProgressContainer totalProgress];
+      [(NSProgress *)totalProgress addChild:totalProgress withPendingUnitCount:self->_availabilityPendingCount];
 
       availabilityRequestProgressContainer = self->_availabilityRequestProgressContainer;
     }
 
-    v4 = [(PHProgressContainerForRetryableRequest *)availabilityRequestProgressContainer setRequestProgress:v11];
+    progressCopy = [(PHProgressContainerForRetryableRequest *)availabilityRequestProgressContainer setRequestProgress:v11];
     v5 = v11;
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](progressCopy, v5);
 }
 
 - (void)_setupTotalProgressIfNeeded
 {
-  v3 = [(PHAssetResourceRequestOptions *)self->_options progressHandler];
+  progressHandler = [(PHAssetResourceRequestOptions *)self->_options progressHandler];
 
-  if (!v3 || self->_totalProgress)
+  if (!progressHandler || self->_totalProgress)
   {
     return;
   }
@@ -601,9 +601,9 @@ void __53__PHAssetResourceRequest__setupTotalProgressIfNeeded__block_invoke(uint
       v3 = [MEMORY[0x1E696ABC0] ph_errorWithCode:3164 localizedDescription:@"Transient data requests can only run with network access allowed"];
     }
 
-    v5 = [(PHAssetResource *)self->_assetResource privateFileLoader];
+    privateFileLoader = [(PHAssetResource *)self->_assetResource privateFileLoader];
 
-    if (v5)
+    if (privateFileLoader)
     {
       v6 = [MEMORY[0x1E696ABC0] ph_genericErrorWithLocalizedDescription:@"File loader backed asset resources do not support transient data requests"];
 
@@ -635,34 +635,34 @@ void __53__PHAssetResourceRequest__setupTotalProgressIfNeeded__block_invoke(uint
   return v3;
 }
 
-- (void)_assetsdMakeAvailableRequestRepliedWithSuccess:(BOOL)a3 url:(id)a4 data:(id)a5 info:(id)a6 error:(id)a7
+- (void)_assetsdMakeAvailableRequestRepliedWithSuccess:(BOOL)success url:(id)url data:(id)data info:(id)info error:(id)error
 {
-  v10 = a3;
+  successCopy = success;
   v43 = *MEMORY[0x1E69E9840];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  objc_storeStrong(&self->_info, a6);
-  if (v10)
+  urlCopy = url;
+  dataCopy = data;
+  infoCopy = info;
+  errorCopy = error;
+  objc_storeStrong(&self->_info, info);
+  if (successCopy)
   {
-    if (!v13)
+    if (!dataCopy)
     {
-      if (v12)
+      if (urlCopy)
       {
         v22 = MEMORY[0x1E69BE730];
-        v34 = [(PHAssetResourceRequest *)self assetResource];
-        v23 = [v34 libraryID];
-        v24 = [(PHAssetResourceRequest *)self assetResource];
-        v25 = [v24 assetLocalIdentifier];
-        v26 = [(PHObject *)PHAsset uuidFromLocalIdentifier:v25];
+        assetResource = [(PHAssetResourceRequest *)self assetResource];
+        libraryID = [assetResource libraryID];
+        assetResource2 = [(PHAssetResourceRequest *)self assetResource];
+        assetLocalIdentifier = [assetResource2 assetLocalIdentifier];
+        v26 = [(PHObject *)PHAsset uuidFromLocalIdentifier:assetLocalIdentifier];
         v36 = 0;
-        LOBYTE(v22) = [v22 refreshSandboxExtensionForURL:v12 libraryID:v23 assetUUID:v26 error:&v36];
+        LOBYTE(v22) = [v22 refreshSandboxExtensionForURL:urlCopy libraryID:libraryID assetUUID:v26 error:&v36];
         v35 = v36;
 
         if (v22)
         {
-          [(PHAssetResourceRequest *)self _updateAssetResourceWithLocallyAvailable:1 fileURL:v12];
+          [(PHAssetResourceRequest *)self _updateAssetResourceWithLocallyAvailable:1 fileURL:urlCopy];
           v27 = v35;
         }
 
@@ -672,19 +672,19 @@ void __53__PHAssetResourceRequest__setupTotalProgressIfNeeded__block_invoke(uint
           v27 = v35;
           if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
           {
-            v31 = [(PHAssetResourceRequest *)self taskIdentifier];
-            v32 = [v12 path];
+            taskIdentifier = [(PHAssetResourceRequest *)self taskIdentifier];
+            path = [urlCopy path];
             *buf = 138543874;
-            v38 = v31;
+            v38 = taskIdentifier;
             v39 = 2112;
-            v40 = v32;
+            v40 = path;
             v41 = 2112;
             v42 = v35;
             _os_log_impl(&dword_19C86F000, v30, OS_LOG_TYPE_ERROR, "[RM] %{public}@ asset resource request failed to refresh sandbox extension for path: %@, error; %@", buf, 0x20u);
           }
 
           v33 = v35;
-          v15 = v33;
+          errorCopy = v33;
         }
 
         v28 = 1;
@@ -695,7 +695,7 @@ void __53__PHAssetResourceRequest__setupTotalProgressIfNeeded__block_invoke(uint
         v29 = [MEMORY[0x1E696ABC0] ph_genericErrorWithLocalizedDescription:@"Download reported success but no file URL specified"];
 
         v28 = 0;
-        v15 = v29;
+        errorCopy = v29;
       }
 
       goto LABEL_16;
@@ -704,7 +704,7 @@ void __53__PHAssetResourceRequest__setupTotalProgressIfNeeded__block_invoke(uint
     dataHandler = self->_dataHandler;
     if (dataHandler)
     {
-      dataHandler[2](dataHandler, v13);
+      dataHandler[2](dataHandler, dataCopy);
     }
 
     goto LABEL_15;
@@ -712,21 +712,21 @@ void __53__PHAssetResourceRequest__setupTotalProgressIfNeeded__block_invoke(uint
 
   if (![(PHAssetResourceRequestOptions *)self->_options isNetworkAccessAllowed])
   {
-    v17 = [v14 objectForKeyedSubscript:@"PHImageResultIsInCloudKey"];
-    v18 = [v17 BOOLValue];
+    v17 = [infoCopy objectForKeyedSubscript:@"PHImageResultIsInCloudKey"];
+    bOOLValue = [v17 BOOLValue];
 
-    if (v18)
+    if (bOOLValue)
     {
       v19 = PHNetworkAccessAllowedRequiredError();
 
-      v15 = v19;
+      errorCopy = v19;
     }
   }
 
-  v20 = [(PHAssetResourceRequest *)self delegate];
-  v21 = [v20 retryAssetResourceRequest:self afterFailureWithError:v15];
+  delegate = [(PHAssetResourceRequest *)self delegate];
+  v21 = [delegate retryAssetResourceRequest:self afterFailureWithError:errorCopy];
 
-  if (v15)
+  if (errorCopy)
   {
     if (v21)
     {
@@ -736,13 +736,13 @@ void __53__PHAssetResourceRequest__setupTotalProgressIfNeeded__block_invoke(uint
     goto LABEL_15;
   }
 
-  v15 = [MEMORY[0x1E696ABC0] ph_genericErrorWithLocalizedDescription:@"Download failed"];
+  errorCopy = [MEMORY[0x1E696ABC0] ph_genericErrorWithLocalizedDescription:@"Download failed"];
   if ((v21 & 1) == 0)
   {
 LABEL_15:
     v28 = 0;
 LABEL_16:
-    [(PHAssetResourceRequest *)self _finishWithFileURL:v12 didBecomeAvailable:v28 error:v15];
+    [(PHAssetResourceRequest *)self _finishWithFileURL:urlCopy didBecomeAvailable:v28 error:errorCopy];
   }
 
 LABEL_17:
@@ -751,33 +751,33 @@ LABEL_17:
 - (void)startRequest
 {
   v73[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PHAssetResourceRequest *)self _initialValidationError];
-  if (v3)
+  _initialValidationError = [(PHAssetResourceRequest *)self _initialValidationError];
+  if (_initialValidationError)
   {
-    [(PHAssetResourceRequest *)self _finishWithFileURL:0 didBecomeAvailable:0 error:v3];
+    [(PHAssetResourceRequest *)self _finishWithFileURL:0 didBecomeAvailable:0 error:_initialValidationError];
     goto LABEL_37;
   }
 
   [(PHAssetResourceRequest *)self _setupTotalProgressIfNeeded];
-  v4 = [(PHAssetResource *)self->_assetResource backingResourceIdentity];
-  if ([v4 resourceType] == 9)
+  backingResourceIdentity = [(PHAssetResource *)self->_assetResource backingResourceIdentity];
+  if ([backingResourceIdentity resourceType] == 9)
   {
-    v5 = [(PHAssetResource *)self->_assetResource cplResourceType];
+    cplResourceType = [(PHAssetResource *)self->_assetResource cplResourceType];
 
-    if (!v5)
+    if (!cplResourceType)
     {
-      v6 = [(PHAssetResource *)self->_assetResource photoLibrary];
-      v7 = [v6 photoLibrary];
+      photoLibrary = [(PHAssetResource *)self->_assetResource photoLibrary];
+      v6PhotoLibrary = [photoLibrary photoLibrary];
       v60 = 0;
       v61 = 0;
-      v8 = [(PHAssetResourceRequest *)self _loadMediaMetadataFromDatabaseWithPhotoLibrary:v7 type:&v61 error:&v60];
-      v9 = v61;
+      v8 = [(PHAssetResourceRequest *)self _loadMediaMetadataFromDatabaseWithPhotoLibrary:v6PhotoLibrary type:&v61 error:&v60];
+      privateFileURL3 = v61;
       v10 = v60;
 
-      if (v9)
+      if (privateFileURL3)
       {
         v72 = @"PHMediaMetadataTypeKey";
-        v73[0] = v9;
+        v73[0] = privateFileURL3;
         v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v73 forKeys:&v72 count:1];
         info = self->_info;
         self->_info = v11;
@@ -801,27 +801,27 @@ LABEL_17:
 
   if ([(PHAssetResource *)self->_assetResource isLocallyAvailable]&& ![(PHAssetResourceRequestOptions *)self->_options downloadIsTransient])
   {
-    v14 = [(PHAssetResource *)self->_assetResource privateFileURL];
+    privateFileURL = [(PHAssetResource *)self->_assetResource privateFileURL];
 
-    if (v14)
+    if (privateFileURL)
     {
-      v15 = [(PHAssetResource *)self->_assetResource privateFileURL];
-      v16 = [v15 checkResourceIsReachableAndReturnError:0];
+      privateFileURL2 = [(PHAssetResource *)self->_assetResource privateFileURL];
+      v16 = [privateFileURL2 checkResourceIsReachableAndReturnError:0];
 
       if (v16)
       {
         if (![(PHAssetResourceRequestOptions *)self->_options downloadIsTransient])
         {
           synchronous = self->_synchronous;
-          v9 = [(PHAssetResource *)self->_assetResource privateFileURL];
+          privateFileURL3 = [(PHAssetResource *)self->_assetResource privateFileURL];
           if (synchronous)
           {
-            [(PHAssetResourceRequest *)self _finishWithFileURL:v9 didBecomeAvailable:0 error:0];
+            [(PHAssetResourceRequest *)self _finishWithFileURL:privateFileURL3 didBecomeAvailable:0 error:0];
           }
 
           else
           {
-            [(PHAssetResourceRequest *)self _finishAsyncWithFileURL:v9 didBecomeAvailable:0 error:0];
+            [(PHAssetResourceRequest *)self _finishAsyncWithFileURL:privateFileURL3 didBecomeAvailable:0 error:0];
           }
 
 LABEL_32:
@@ -855,23 +855,23 @@ LABEL_22:
   }
 
 LABEL_24:
-  v20 = [(PHAssetResource *)self->_assetResource privateFileLoader];
+  privateFileLoader = [(PHAssetResource *)self->_assetResource privateFileLoader];
 
-  if (v20)
+  if (privateFileLoader)
   {
     v21 = PLImageManagerGetLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
     {
-      v22 = [(PHAssetResourceRequest *)self taskIdentifier];
+      taskIdentifier = [(PHAssetResourceRequest *)self taskIdentifier];
       *buf = 138412290;
-      v65 = v22;
+      v65 = taskIdentifier;
       _os_log_impl(&dword_19C86F000, v21, OS_LOG_TYPE_DEBUG, "[RM] %@ Using private file loader to load asset resource data", buf, 0xCu);
     }
 
     v23 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:100];
     [(PHAssetResourceRequest *)self _setAvailabilityProgress:v23];
-    v24 = [(PHAssetResource *)self->_assetResource privateFileLoader];
-    v25 = [(PHAssetResourceRequestOptions *)self->_options isNetworkAccessAllowed];
+    privateFileLoader2 = [(PHAssetResource *)self->_assetResource privateFileLoader];
+    isNetworkAccessAllowed = [(PHAssetResourceRequestOptions *)self->_options isNetworkAccessAllowed];
     v58[0] = MEMORY[0x1E69E9820];
     v58[1] = 3221225472;
     v58[2] = __38__PHAssetResourceRequest_startRequest__block_invoke;
@@ -883,62 +883,62 @@ LABEL_24:
     v55[2] = __38__PHAssetResourceRequest_startRequest__block_invoke_2;
     v55[3] = &unk_1E75A9C38;
     v56 = v59;
-    v57 = self;
-    v26 = v24[2];
+    selfCopy = self;
+    v26 = privateFileLoader2[2];
     v27 = v59;
-    v26(v24, v25, v58, v55);
+    v26(privateFileLoader2, isNetworkAccessAllowed, v58, v55);
   }
 
   else
   {
-    v28 = [(PHAssetResource *)self->_assetResource backingResourceIdentity];
+    backingResourceIdentity2 = [(PHAssetResource *)self->_assetResource backingResourceIdentity];
 
-    if (v28)
+    if (backingResourceIdentity2)
     {
       v29 = objc_alloc(MEMORY[0x1E69BE760]);
-      v30 = [(PHAssetResourceRequest *)self taskIdentifier];
-      v31 = [(PHAssetResource *)self->_assetResource assetObjectID];
-      v32 = [(PHAssetResource *)self->_assetResource backingResourceIdentity];
-      v9 = [v29 initWithTaskIdentifier:v30 assetObjectID:v31 resource:v32];
+      taskIdentifier2 = [(PHAssetResourceRequest *)self taskIdentifier];
+      assetObjectID = [(PHAssetResource *)self->_assetResource assetObjectID];
+      backingResourceIdentity3 = [(PHAssetResource *)self->_assetResource backingResourceIdentity];
+      privateFileURL3 = [v29 initWithTaskIdentifier:taskIdentifier2 assetObjectID:assetObjectID resource:backingResourceIdentity3];
 
-      [v9 setNetworkAccessAllowed:{-[PHAssetResourceRequestOptions isNetworkAccessAllowed](self->_options, "isNetworkAccessAllowed")}];
-      v33 = [(PHAssetResourceRequestOptions *)self->_options progressHandler];
-      [v9 setWantsProgress:v33 != 0];
+      [privateFileURL3 setNetworkAccessAllowed:{-[PHAssetResourceRequestOptions isNetworkAccessAllowed](self->_options, "isNetworkAccessAllowed")}];
+      progressHandler = [(PHAssetResourceRequestOptions *)self->_options progressHandler];
+      [privateFileURL3 setWantsProgress:progressHandler != 0];
 
-      [v9 setTransient:{-[PHAssetResourceRequestOptions downloadIsTransient](self->_options, "downloadIsTransient")}];
-      [v9 setDownloadIntent:{-[PHAssetResourceRequestOptions downloadIntent](self->_options, "downloadIntent")}];
-      [v9 setDownloadPriority:{-[PHAssetResourceRequestOptions downloadPriority](self->_options, "downloadPriority")}];
+      [privateFileURL3 setTransient:{-[PHAssetResourceRequestOptions downloadIsTransient](self->_options, "downloadIsTransient")}];
+      [privateFileURL3 setDownloadIntent:{-[PHAssetResourceRequestOptions downloadIntent](self->_options, "downloadIntent")}];
+      [privateFileURL3 setDownloadPriority:{-[PHAssetResourceRequestOptions downloadPriority](self->_options, "downloadPriority")}];
       v34 = PLImageManagerGetLog();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
-        v35 = [(PHAssetResourceRequest *)self taskIdentifier];
-        v53 = [(PHAssetResource *)self->_assetResource assetObjectID];
-        v36 = [v53 pl_shortURI];
-        v37 = [(PHAssetResource *)self->_assetResource asset];
-        v38 = [v37 uuid];
-        v39 = [(PHAssetResource *)self->_assetResource backingResourceIdentity];
+        taskIdentifier3 = [(PHAssetResourceRequest *)self taskIdentifier];
+        assetObjectID2 = [(PHAssetResource *)self->_assetResource assetObjectID];
+        pl_shortURI = [assetObjectID2 pl_shortURI];
+        asset = [(PHAssetResource *)self->_assetResource asset];
+        uuid = [asset uuid];
+        backingResourceIdentity4 = [(PHAssetResource *)self->_assetResource backingResourceIdentity];
         v40 = PLResourceIdentityShortDescription();
         *buf = 138544130;
-        v65 = v35;
+        v65 = taskIdentifier3;
         v66 = 2114;
-        v67 = v36;
+        v67 = pl_shortURI;
         v68 = 2114;
-        v69 = v38;
+        v69 = uuid;
         v70 = 2114;
         v71 = v40;
         _os_log_impl(&dword_19C86F000, v34, OS_LOG_TYPE_DEFAULT, "[RM] %{public}@ asset resource request sending make available request for asset: %{public}@ %{public}@, resource: %{public}@", buf, 0x2Au);
       }
 
-      v41 = [(PHAssetResourceRequest *)self assetResource];
-      v42 = [v41 photoLibrary];
-      v43 = [v42 assetsdClient];
-      v44 = [v43 resourceAvailabilityClient];
+      assetResource = [(PHAssetResourceRequest *)self assetResource];
+      photoLibrary2 = [assetResource photoLibrary];
+      assetsdClient = [photoLibrary2 assetsdClient];
+      resourceAvailabilityClient = [assetsdClient resourceAvailabilityClient];
       v54[0] = MEMORY[0x1E69E9820];
       v54[1] = 3221225472;
       v54[2] = __38__PHAssetResourceRequest_startRequest__block_invoke_41;
       v54[3] = &unk_1E75A9C88;
       v54[4] = self;
-      v45 = [v44 sendMakeResourceAvailableRequest:v9 reply:v54];
+      v45 = [resourceAvailabilityClient sendMakeResourceAvailableRequest:privateFileURL3 reply:v54];
 
       [(PHAssetResourceRequest *)self _setAvailabilityProgress:v45];
       goto LABEL_32;
@@ -947,9 +947,9 @@ LABEL_24:
     v46 = MEMORY[0x1E696ABC0];
     v62 = *MEMORY[0x1E696A278];
     v47 = MEMORY[0x1E696AEC0];
-    v48 = [(PHAssetResource *)self->_assetResource assetLocalIdentifier];
-    v49 = [(PHAssetResource *)self->_assetResource originalFilename];
-    v50 = [v47 stringWithFormat:@"Asset resource (asset identifier: %@, filename: %@) missing fileLoader or backing resource, unable to load data", v48, v49];
+    assetLocalIdentifier = [(PHAssetResource *)self->_assetResource assetLocalIdentifier];
+    originalFilename = [(PHAssetResource *)self->_assetResource originalFilename];
+    v50 = [v47 stringWithFormat:@"Asset resource (asset identifier: %@, filename: %@) missing fileLoader or backing resource, unable to load data", assetLocalIdentifier, originalFilename];
     v63 = v50;
     v51 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v63 forKeys:&v62 count:1];
     v52 = [v46 ph_errorWithDomain:@"PHPhotosErrorDomain" code:-1 userInfo:v51];
@@ -1031,8 +1031,8 @@ void __38__PHAssetResourceRequest_startRequest__block_invoke_41(uint64_t a1, cha
   os_unfair_lock_lock(&self->_lock);
   self->_cancelled = 1;
   os_unfair_lock_unlock(&self->_lock);
-  v3 = [(PHProgressContainerForRetryableRequest *)self->_availabilityRequestProgressContainer totalProgress];
-  [v3 cancel];
+  totalProgress = [(PHProgressContainerForRetryableRequest *)self->_availabilityRequestProgressContainer totalProgress];
+  [totalProgress cancel];
 }
 
 - (BOOL)isCancelled
@@ -1051,18 +1051,18 @@ void __38__PHAssetResourceRequest_startRequest__block_invoke_41(uint64_t a1, cha
   [(PHAssetResourceRequest *)&v3 dealloc];
 }
 
-- (PHAssetResourceRequest)initWithAssetResource:(id)a3 options:(id)a4 requestID:(int)a5 managerID:(unint64_t)a6 delegate:(id)a7 urlReceivedHandler:(id)a8 dataReceivedHandler:(id)a9 completionHandler:(id)a10
+- (PHAssetResourceRequest)initWithAssetResource:(id)resource options:(id)options requestID:(int)d managerID:(unint64_t)iD delegate:(id)delegate urlReceivedHandler:(id)handler dataReceivedHandler:(id)receivedHandler completionHandler:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  if (!v16)
+  resourceCopy = resource;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  handlerCopy = handler;
+  receivedHandlerCopy = receivedHandler;
+  completionHandlerCopy = completionHandler;
+  if (!resourceCopy)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"PHAssetResourceRequest.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"assetResource"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PHAssetResourceRequest.m" lineNumber:75 description:{@"Invalid parameter not satisfying: %@", @"assetResource"}];
   }
 
   v34.receiver = self;
@@ -1071,32 +1071,32 @@ void __38__PHAssetResourceRequest_startRequest__block_invoke_41(uint64_t a1, cha
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_assetResource, a3);
-    if (v19)
+    objc_storeStrong(&v22->_assetResource, resource);
+    if (handlerCopy)
     {
-      v24 = [v19 copy];
+      v24 = [handlerCopy copy];
       urlReceivedHandler = v23->_urlReceivedHandler;
       v23->_urlReceivedHandler = v24;
     }
 
-    if (v20)
+    if (receivedHandlerCopy)
     {
-      v26 = [v20 copy];
+      v26 = [receivedHandlerCopy copy];
       dataHandler = v23->_dataHandler;
       v23->_dataHandler = v26;
     }
 
-    if (v21)
+    if (completionHandlerCopy)
     {
-      v28 = [v21 copy];
+      v28 = [completionHandlerCopy copy];
       completionHandler = v23->_completionHandler;
       v23->_completionHandler = v28;
     }
 
-    v23->_managerID = a6;
-    v23->_requestID = a5;
-    objc_storeStrong(&v23->_options, a4);
-    objc_storeWeak(&v23->_delegate, v18);
+    v23->_managerID = iD;
+    v23->_requestID = d;
+    objc_storeStrong(&v23->_options, options);
+    objc_storeWeak(&v23->_delegate, delegateCopy);
     v23->_lock._os_unfair_lock_opaque = 0;
     atomic_store(0, &v23->_retryAttemptCount);
     v23->_retryInterval = 0.1;

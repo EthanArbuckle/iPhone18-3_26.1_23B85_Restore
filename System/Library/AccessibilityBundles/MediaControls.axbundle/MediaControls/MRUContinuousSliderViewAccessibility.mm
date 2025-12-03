@@ -1,39 +1,39 @@
 @interface MRUContinuousSliderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
 @end
 
 @implementation MRUContinuousSliderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MRUVolumeViewController" hasInstanceMethod:@"audioModuleController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRUAudioModuleController" hasInstanceMethod:@"volumeController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRUSystemVolumeController" hasInstanceMethod:@"outputDeviceRouteController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRUSystemOutputDeviceRouteController" hasInstanceMethod:@"isSplitRoute" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MRUContinuousSliderView" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MRUVolumeViewController" hasInstanceMethod:@"audioModuleController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRUAudioModuleController" hasInstanceMethod:@"volumeController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRUSystemVolumeController" hasInstanceMethod:@"outputDeviceRouteController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRUSystemOutputDeviceRouteController" hasInstanceMethod:@"isSplitRoute" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MRUContinuousSliderView" isKindOfClass:@"UIView"];
 }
 
 - (id)accessibilityValue
 {
   v3 = [(MRUContinuousSliderViewAccessibility *)self safeUIViewForKey:@"superview"];
-  v4 = [v3 _accessibilityViewController];
-  v5 = [v4 safeValueForKeyPath:@"audioModuleController.volumeController"];
+  _accessibilityViewController = [v3 _accessibilityViewController];
+  v5 = [_accessibilityViewController safeValueForKeyPath:@"audioModuleController.volumeController"];
   v6 = [v5 safeValueForKey:@"outputDeviceRouteController"];
   if ([v6 safeBoolForKey:@"isSplitRoute"])
   {
-    v7 = accessibilityLocalizedString(@"volume.slider.value");
+    accessibilityValue = accessibilityLocalizedString(@"volume.slider.value");
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = MRUContinuousSliderViewAccessibility;
-    v7 = [(MRUContinuousSliderViewAccessibility *)&v10 accessibilityValue];
+    accessibilityValue = [(MRUContinuousSliderViewAccessibility *)&v10 accessibilityValue];
   }
 
-  v8 = v7;
+  v8 = accessibilityValue;
 
   return v8;
 }

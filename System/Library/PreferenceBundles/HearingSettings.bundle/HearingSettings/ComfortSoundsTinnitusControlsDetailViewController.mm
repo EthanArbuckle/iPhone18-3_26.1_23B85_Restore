@@ -1,21 +1,21 @@
 @interface ComfortSoundsTinnitusControlsDetailViewController
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (ComfortSoundsTinnitusControlsDetailViewController)init;
-- (id)localizedFilterMode:(unint64_t)a3;
-- (id)localizedFilterModeDescription:(unint64_t)a3;
-- (id)specIDFilterMode:(unint64_t)a3;
+- (id)localizedFilterMode:(unint64_t)mode;
+- (id)localizedFilterModeDescription:(unint64_t)description;
+- (id)specIDFilterMode:(unint64_t)mode;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tinnitusBalance:(id)a3;
-- (id)tinnitusFiltersEnabled:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tinnitusBalance:(id)balance;
+- (id)tinnitusFiltersEnabled:(id)enabled;
 - (void)_registerNotifications;
 - (void)_unregisterNotifications;
-- (void)balanceSliderDidChangeToValue:(double)a3;
-- (void)setPlayingSample:(BOOL)a3;
-- (void)setTinnitusBalance:(id)a3 specifier:(id)a4;
-- (void)setTinnitusFiltersEnabled:(id)a3 specifier:(id)a4;
-- (void)showBalanceConflictAlert:(id)a3 comfortSoundsDirection:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)balanceSliderDidChangeToValue:(double)value;
+- (void)setPlayingSample:(BOOL)sample;
+- (void)setTinnitusBalance:(id)balance specifier:(id)specifier;
+- (void)setTinnitusFiltersEnabled:(id)enabled specifier:(id)specifier;
+- (void)showBalanceConflictAlert:(id)alert comfortSoundsDirection:(id)direction;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)userUpdatedChartValue;
 - (void)viewDidLoad;
 @end
@@ -76,9 +76,9 @@
     [v11 setIdentifier:@"CSTinnitusToggleSpecID"];
     [v5 addObject:v11];
     v12 = +[HUComfortSoundsSettings sharedInstance];
-    v13 = [v12 tinnitusFilterEnabled];
+    tinnitusFilterEnabled = [v12 tinnitusFilterEnabled];
 
-    if (v13)
+    if (tinnitusFilterEnabled)
     {
       v41 = v3;
       v14 = comfortSoundsLocString();
@@ -118,9 +118,9 @@
         [v27 setIdentifier:v29];
 
         v30 = +[HUComfortSoundsSettings sharedInstance];
-        v31 = [v30 tinnitusFilterMode];
+        tinnitusFilterMode = [v30 tinnitusFilterMode];
 
-        if (v31 == v20)
+        if (tinnitusFilterMode == v20)
         {
           [v43 setProperty:v27 forKey:v21];
         }
@@ -188,30 +188,30 @@
   [v4 removeObserver:self];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v14.receiver = self;
   v14.super_class = ComfortSoundsTinnitusControlsDetailViewController;
-  v6 = a4;
-  [(ComfortSoundsTinnitusControlsDetailViewController *)&v14 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(ComfortSoundsTinnitusControlsDetailViewController *)self specifierAtIndexPath:v6, v14.receiver, v14.super_class];
+  pathCopy = path;
+  [(ComfortSoundsTinnitusControlsDetailViewController *)&v14 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(ComfortSoundsTinnitusControlsDetailViewController *)self specifierAtIndexPath:pathCopy, v14.receiver, v14.super_class];
 
-  v8 = [v7 identifier];
-  if ([v8 isEqual:@"CSTinnitusFilterModeFineSpecID"])
+  identifier = [v7 identifier];
+  if ([identifier isEqual:@"CSTinnitusFilterModeFineSpecID"])
   {
 
 LABEL_4:
-    v11 = [v7 userInfo];
-    v12 = [v11 unsignedIntegerValue];
+    userInfo = [v7 userInfo];
+    unsignedIntegerValue = [userInfo unsignedIntegerValue];
 
     v13 = +[HUComfortSoundsSettings sharedInstance];
-    [v13 setTinnitusFilterMode:v12];
+    [v13 setTinnitusFilterMode:unsignedIntegerValue];
 
     goto LABEL_5;
   }
 
-  v9 = [v7 identifier];
-  v10 = [v9 isEqual:@"CSTinnitusFilterModeCoarseSpecID"];
+  identifier2 = [v7 identifier];
+  v10 = [identifier2 isEqual:@"CSTinnitusFilterModeCoarseSpecID"];
 
   if (v10)
   {
@@ -221,11 +221,11 @@ LABEL_4:
 LABEL_5:
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = ComfortSoundsTinnitusControlsDetailViewController;
-  v5 = [(ComfortSoundsTinnitusControlsDetailViewController *)&v7 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(ComfortSoundsTinnitusControlsDetailViewController *)&v7 tableView:view cellForRowAtIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -235,13 +235,13 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ComfortSoundsTinnitusControlsDetailViewController *)self specifierAtIndexPath:v7];
-  v9 = [v8 identifier];
-  v10 = [v9 isEqual:@"CSTinnitusFilterChartSpecID"];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(ComfortSoundsTinnitusControlsDetailViewController *)self specifierAtIndexPath:pathCopy];
+  identifier = [v8 identifier];
+  v10 = [identifier isEqual:@"CSTinnitusFilterChartSpecID"];
 
   if (v10)
   {
@@ -252,7 +252,7 @@ LABEL_5:
   {
     v13.receiver = self;
     v13.super_class = ComfortSoundsTinnitusControlsDetailViewController;
-    v11 = [(ComfortSoundsTinnitusControlsDetailViewController *)&v13 tableView:v6 shouldHighlightRowAtIndexPath:v7];
+    v11 = [(ComfortSoundsTinnitusControlsDetailViewController *)&v13 tableView:viewCopy shouldHighlightRowAtIndexPath:pathCopy];
   }
 
   return v11;
@@ -263,20 +263,20 @@ LABEL_5:
   v9.receiver = self;
   v9.super_class = ComfortSoundsTinnitusControlsDetailViewController;
   [(ComfortSoundsTinnitusControlsDetailViewController *)&v9 viewDidLoad];
-  v3 = [(ComfortSoundsTinnitusControlsDetailViewController *)self table];
+  table = [(ComfortSoundsTinnitusControlsDetailViewController *)self table];
   v4 = objc_opt_class();
   v5 = +[HUIEQChartSettingsCell cellReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [table registerClass:v4 forCellReuseIdentifier:v5];
 
-  v6 = [(ComfortSoundsTinnitusControlsDetailViewController *)self table];
+  table2 = [(ComfortSoundsTinnitusControlsDetailViewController *)self table];
   v7 = objc_opt_class();
   v8 = +[HearingSettingsBalanceSliderCell cellReuseIdentifier];
-  [v6 registerClass:v7 forCellReuseIdentifier:v8];
+  [table2 registerClass:v7 forCellReuseIdentifier:v8];
 }
 
-- (id)localizedFilterMode:(unint64_t)a3
+- (id)localizedFilterMode:(unint64_t)mode
 {
-  if (a3 <= 1)
+  if (mode <= 1)
   {
     self = comfortSoundsLocString();
   }
@@ -284,9 +284,9 @@ LABEL_5:
   return self;
 }
 
-- (id)localizedFilterModeDescription:(unint64_t)a3
+- (id)localizedFilterModeDescription:(unint64_t)description
 {
-  if (a3 <= 1)
+  if (description <= 1)
   {
     self = comfortSoundsLocString();
   }
@@ -294,9 +294,9 @@ LABEL_5:
   return self;
 }
 
-- (id)specIDFilterMode:(unint64_t)a3
+- (id)specIDFilterMode:(unint64_t)mode
 {
-  if (a3)
+  if (mode)
   {
     return @"CSTinnitusFilterModeFineSpecID";
   }
@@ -307,16 +307,16 @@ LABEL_5:
   }
 }
 
-- (void)setTinnitusFiltersEnabled:(id)a3 specifier:(id)a4
+- (void)setTinnitusFiltersEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = a3;
+  enabledCopy = enabled;
   v6 = +[HUComfortSoundsSettings sharedInstance];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [enabledCopy BOOLValue];
 
-  [v6 setTinnitusFilterEnabled:v5];
+  [v6 setTinnitusFilterEnabled:bOOLValue];
 }
 
-- (id)tinnitusFiltersEnabled:(id)a3
+- (id)tinnitusFiltersEnabled:(id)enabled
 {
   v3 = +[HUComfortSoundsSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 tinnitusFilterEnabled]);
@@ -324,7 +324,7 @@ LABEL_5:
   return v4;
 }
 
-- (id)tinnitusBalance:(id)a3
+- (id)tinnitusBalance:(id)balance
 {
   v3 = +[HUComfortSoundsSettings sharedInstance];
   [v3 tinnitusBalance];
@@ -333,11 +333,11 @@ LABEL_5:
   return v4;
 }
 
-- (void)setTinnitusBalance:(id)a3 specifier:(id)a4
+- (void)setTinnitusBalance:(id)balance specifier:(id)specifier
 {
-  v4 = a3;
+  balanceCopy = balance;
   v7 = +[HUComfortSoundsSettings sharedInstance];
-  [v4 doubleValue];
+  [balanceCopy doubleValue];
   v6 = v5;
 
   [v7 setTinnitusBalance:v6];
@@ -347,24 +347,24 @@ LABEL_5:
 {
   [(ComfortSoundsTinnitusControlsDetailViewController *)self setPlayingSample:1];
   v2 = +[HUComfortSoundsSettings sharedInstance];
-  v3 = [v2 tinnitusFilterEnabled];
+  tinnitusFilterEnabled = [v2 tinnitusFilterEnabled];
 
-  if ((v3 & 1) == 0)
+  if ((tinnitusFilterEnabled & 1) == 0)
   {
     v4 = +[HUComfortSoundsSettings sharedInstance];
     [v4 setTinnitusFilterEnabled:1];
   }
 }
 
-- (void)setPlayingSample:(BOOL)a3
+- (void)setPlayingSample:(BOOL)sample
 {
-  if (self->_playingSample != a3)
+  if (self->_playingSample != sample)
   {
-    v4 = a3;
-    self->_playingSample = a3;
+    sampleCopy = sample;
+    self->_playingSample = sample;
     v5 = +[AXHAServer sharedInstance];
     v6 = v5;
-    if (v4)
+    if (sampleCopy)
     {
       [v5 startComfortSoundsPreview];
     }
@@ -376,7 +376,7 @@ LABEL_5:
   }
 }
 
-- (void)balanceSliderDidChangeToValue:(double)a3
+- (void)balanceSliderDidChangeToValue:(double)value
 {
   v13 = 0;
   v14 = &v13;
@@ -396,11 +396,11 @@ LABEL_5:
 
   v6 = v5;
   _Block_object_dispose(&v13, 8);
-  v7 = [v5 sharedInstance];
-  [v7 leftRightBalanceValue];
+  sharedInstance = [v5 sharedInstance];
+  [sharedInstance leftRightBalanceValue];
   v9 = v8;
 
-  if (fabs(v9) >= 0.001 && (a3 > 0.0 && v9 < 0.0 || a3 < 0.0 && v9 > 0.0))
+  if (fabs(v9) >= 0.001 && (value > 0.0 && v9 < 0.0 || value < 0.0 && v9 > 0.0))
   {
     v10 = comfortSoundsLocString();
     v11 = comfortSoundsLocString();
@@ -408,21 +408,21 @@ LABEL_5:
   }
 }
 
-- (void)showBalanceConflictAlert:(id)a3 comfortSoundsDirection:(id)a4
+- (void)showBalanceConflictAlert:(id)alert comfortSoundsDirection:(id)direction
 {
-  v6 = a4;
-  v7 = a3;
+  directionCopy = direction;
+  alertCopy = alert;
   v8 = comfortSoundsLocString();
   v9 = comfortSoundsLocString();
-  v10 = [NSString stringWithFormat:v9, v7, v6];
+  directionCopy = [NSString stringWithFormat:v9, alertCopy, directionCopy];
 
-  v14 = [UIAlertController alertControllerWithTitle:v8 message:v10 preferredStyle:1];
+  v14 = [UIAlertController alertControllerWithTitle:v8 message:directionCopy preferredStyle:1];
 
   v11 = comfortSoundsLocString();
   v12 = [UIAlertAction actionWithTitle:v11 style:0 handler:0];
 
-  v13 = [v14 view];
-  [v13 setAccessibilityIdentifier:@"CSBalanceAlert"];
+  view = [v14 view];
+  [view setAccessibilityIdentifier:@"CSBalanceAlert"];
 
   [v12 setAccessibilityIdentifier:@"CSBalanceAlertOkayButton"];
   [v14 addAction:v12];

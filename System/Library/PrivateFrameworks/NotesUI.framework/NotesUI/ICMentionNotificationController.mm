@@ -1,24 +1,24 @@
 @interface ICMentionNotificationController
-+ (_NSRange)rangeOfMention:(id)a3;
-+ (_NSRange)rangeOfParagraphForMention:(id)a3;
-+ (_NSRange)rangeOfSentenceAfterMention:(id)a3;
-+ (_NSRange)rangeOfSentenceBeforeMention:(id)a3;
-+ (_NSRange)rangeOfSentenceForMention:(id)a3;
-+ (_NSRange)rangeOfSnippetForMentions:(id)a3;
-+ (id)coalesceMentions:(id)a3;
-+ (id)noteTitleForMentions:(id)a3;
-+ (id)pendingMentionsInContext:(id)a3 createdBeforeDate:(id)a4;
-+ (id)predicateForMentionsInState:(int)a3 inContext:(id)a4;
-+ (id)sameNoteMentionsFrom:(id)a3;
-+ (id)senderNameForMentions:(id)a3;
++ (_NSRange)rangeOfMention:(id)mention;
++ (_NSRange)rangeOfParagraphForMention:(id)mention;
++ (_NSRange)rangeOfSentenceAfterMention:(id)mention;
++ (_NSRange)rangeOfSentenceBeforeMention:(id)mention;
++ (_NSRange)rangeOfSentenceForMention:(id)mention;
++ (_NSRange)rangeOfSnippetForMentions:(id)mentions;
++ (id)coalesceMentions:(id)mentions;
++ (id)noteTitleForMentions:(id)mentions;
++ (id)pendingMentionsInContext:(id)context createdBeforeDate:(id)date;
++ (id)predicateForMentionsInState:(int)state inContext:(id)context;
++ (id)sameNoteMentionsFrom:(id)from;
++ (id)senderNameForMentions:(id)mentions;
 + (id)sharedController;
-+ (id)snippetForMentions:(id)a3;
-+ (void)triggerNotificationForMentionAttachments:(id)a3 context:(id)a4;
++ (id)snippetForMentions:(id)mentions;
++ (void)triggerNotificationForMentionAttachments:(id)attachments context:(id)context;
 - (OS_dispatch_queue)notificationSerialQueue;
 - (void)listenForReachabilityChange;
-- (void)reachabilityChanged:(id)a3;
+- (void)reachabilityChanged:(id)changed;
 - (void)sendPendingNotifications;
-- (void)sendPendingNotificationsCreatedBefore:(id)a3;
+- (void)sendPendingNotificationsCreatedBefore:(id)before;
 @end
 
 @implementation ICMentionNotificationController
@@ -65,15 +65,15 @@ void __58__ICMentionNotificationController_notificationSerialQueue__block_invoke
 
 - (void)listenForReachabilityChange
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = *MEMORY[0x1E69B7B50];
-  v5 = [MEMORY[0x1E69B7AA0] sharedReachabilityForInternetConnection];
-  [v3 addObserver:self selector:sel_reachabilityChanged_ name:v4 object:v5];
+  mEMORY[0x1E69B7AA0] = [MEMORY[0x1E69B7AA0] sharedReachabilityForInternetConnection];
+  [defaultCenter addObserver:self selector:sel_reachabilityChanged_ name:v4 object:mEMORY[0x1E69B7AA0]];
 
   [(ICMentionNotificationController *)self sendPendingNotifications];
 }
 
-- (void)reachabilityChanged:(id)a3
+- (void)reachabilityChanged:(id)changed
 {
   v4 = dispatch_get_global_queue(9, 0);
   v5 = dispatch_time(0, 3000000000);
@@ -91,18 +91,18 @@ void __58__ICMentionNotificationController_notificationSerialQueue__block_invoke
   [(ICMentionNotificationController *)self sendPendingNotificationsCreatedBefore:v3];
 }
 
-- (void)sendPendingNotificationsCreatedBefore:(id)a3
+- (void)sendPendingNotificationsCreatedBefore:(id)before
 {
-  v4 = a3;
-  v5 = [(ICMentionNotificationController *)self notificationSerialQueue];
+  beforeCopy = before;
+  notificationSerialQueue = [(ICMentionNotificationController *)self notificationSerialQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73__ICMentionNotificationController_sendPendingNotificationsCreatedBefore___block_invoke;
   v7[3] = &unk_1E8468F80;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = beforeCopy;
+  selfCopy = self;
+  v6 = beforeCopy;
+  dispatch_async(notificationSerialQueue, v7);
 }
 
 void __73__ICMentionNotificationController_sendPendingNotificationsCreatedBefore___block_invoke(uint64_t a1)
@@ -189,36 +189,36 @@ void __73__ICMentionNotificationController_sendPendingNotificationsCreatedBefore
   }
 }
 
-+ (void)triggerNotificationForMentionAttachments:(id)a3 context:(id)a4
++ (void)triggerNotificationForMentionAttachments:(id)attachments context:(id)context
 {
   v121 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 firstObject];
-  v8 = [v7 tokenContentIdentifier];
-  v9 = [v7 note];
-  v10 = [v9 folder];
-  v11 = [v10 account];
-  v12 = [v11 identifier];
+  attachmentsCopy = attachments;
+  contextCopy = context;
+  firstObject = [attachmentsCopy firstObject];
+  tokenContentIdentifier = [firstObject tokenContentIdentifier];
+  note = [firstObject note];
+  folder = [note folder];
+  account = [folder account];
+  identifier = [account identifier];
 
-  v88 = v8;
-  v13 = [v9 participantForUserID:v8];
-  v14 = [v7 serverShareCheckingParent];
-  v15 = [v14 recordID];
-  v16 = [v15 recordName];
+  v88 = tokenContentIdentifier;
+  v13 = [note participantForUserID:tokenContentIdentifier];
+  serverShareCheckingParent = [firstObject serverShareCheckingParent];
+  recordID = [serverShareCheckingParent recordID];
+  recordName = [recordID recordName];
 
-  v17 = [v14 owner];
-  v82 = [v17 ic_userRecordNameInNote:v9];
+  owner = [serverShareCheckingParent owner];
+  v82 = [owner ic_userRecordNameInNote:note];
 
-  v18 = [v9 recordID];
-  v87 = [v18 recordName];
+  recordID2 = [note recordID];
+  recordName2 = [recordID2 recordName];
 
-  v19 = [v7 recordID];
-  v83 = [v19 recordName];
+  recordID3 = [firstObject recordID];
+  recordName3 = [recordID3 recordName];
 
-  v86 = v16;
-  v81 = v14;
-  if (!v16 || !v87 || !v88)
+  v86 = recordName;
+  v81 = serverShareCheckingParent;
+  if (!recordName || !recordName2 || !v88)
   {
     v26 = os_log_create("com.apple.notes", "Mentions");
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
@@ -230,7 +230,7 @@ void __73__ICMentionNotificationController_sendPendingNotificationsCreatedBefore
     v108 = 0u;
     v105 = 0u;
     v106 = 0u;
-    v21 = v5;
+    v21 = attachmentsCopy;
     v27 = [v21 countByEnumeratingWithState:&v105 objects:v120 count:16];
     if (v27)
     {
@@ -269,7 +269,7 @@ void __73__ICMentionNotificationController_sendPendingNotificationsCreatedBefore
     v104 = 0u;
     v101 = 0u;
     v102 = 0u;
-    v21 = v5;
+    v21 = attachmentsCopy;
     v22 = [v21 countByEnumeratingWithState:&v101 objects:v119 count:16];
     if (v22)
     {
@@ -295,21 +295,21 @@ void __73__ICMentionNotificationController_sendPendingNotificationsCreatedBefore
 
 LABEL_24:
 
-    [v6 ic_save];
+    [contextCopy ic_save];
     goto LABEL_48;
   }
 
   v75 = v13;
-  v76 = v12;
-  v77 = v9;
-  v78 = v7;
-  v79 = v6;
-  v80 = v5;
+  v76 = identifier;
+  v77 = note;
+  v78 = firstObject;
+  v79 = contextCopy;
+  v80 = attachmentsCopy;
   v99 = 0u;
   v100 = 0u;
   v98 = 0u;
   v97 = 0u;
-  obj = v5;
+  obj = attachmentsCopy;
   v31 = [obj countByEnumeratingWithState:&v97 objects:v118 count:16];
   if (v31)
   {
@@ -325,42 +325,42 @@ LABEL_24:
         }
 
         v35 = *(*(&v97 + 1) + 8 * k);
-        v36 = [v35 tokenContentIdentifier];
-        v37 = [v88 isEqualToString:v36];
+        tokenContentIdentifier2 = [v35 tokenContentIdentifier];
+        v37 = [v88 isEqualToString:tokenContentIdentifier2];
 
         if ((v37 & 1) == 0)
         {
           v38 = MEMORY[0x1E69B7A38];
-          v39 = [v35 tokenContentIdentifier];
-          [v38 handleFailedAssertWithCondition:"[recipientUserId isEqualToString:mention.tokenContentIdentifier]" functionName:"+[ICMentionNotificationController triggerNotificationForMentionAttachments:context:]" simulateCrash:1 showAlert:0 format:{@"Mismatch triggering coalesced mention notification to %@, expecting %@", v39, v88}];
+          tokenContentIdentifier3 = [v35 tokenContentIdentifier];
+          [v38 handleFailedAssertWithCondition:"[recipientUserId isEqualToString:mention.tokenContentIdentifier]" functionName:"+[ICMentionNotificationController triggerNotificationForMentionAttachments:context:]" simulateCrash:1 showAlert:0 format:{@"Mismatch triggering coalesced mention notification to %@, expecting %@", tokenContentIdentifier3, v88}];
         }
 
-        v40 = [v35 serverShareCheckingParent];
-        v41 = [v40 recordID];
-        v42 = [v41 recordName];
-        v43 = [v86 isEqualToString:v42];
+        serverShareCheckingParent2 = [v35 serverShareCheckingParent];
+        recordID4 = [serverShareCheckingParent2 recordID];
+        recordName4 = [recordID4 recordName];
+        v43 = [v86 isEqualToString:recordName4];
 
         if ((v43 & 1) == 0)
         {
           v44 = MEMORY[0x1E69B7A38];
-          v45 = [v35 serverShareCheckingParent];
-          v46 = [v45 recordID];
-          v47 = [v46 recordName];
-          [v44 handleFailedAssertWithCondition:"[shareRecordName isEqualToString:mention.serverShareCheckingParent.recordID.recordName]" functionName:"+[ICMentionNotificationController triggerNotificationForMentionAttachments:context:]" simulateCrash:1 showAlert:0 format:{@"Mismatch triggering coalesced mention notification for %@, expecting %@", v47, v86}];
+          serverShareCheckingParent3 = [v35 serverShareCheckingParent];
+          recordID5 = [serverShareCheckingParent3 recordID];
+          recordName5 = [recordID5 recordName];
+          [v44 handleFailedAssertWithCondition:"[shareRecordName isEqualToString:mention.serverShareCheckingParent.recordID.recordName]" functionName:"+[ICMentionNotificationController triggerNotificationForMentionAttachments:context:]" simulateCrash:1 showAlert:0 format:{@"Mismatch triggering coalesced mention notification for %@, expecting %@", recordName5, v86}];
         }
 
-        v48 = [v35 note];
-        v49 = [v48 recordID];
-        v50 = [v49 recordName];
-        v51 = [v87 isEqualToString:v50];
+        note2 = [v35 note];
+        recordID6 = [note2 recordID];
+        recordName6 = [recordID6 recordName];
+        v51 = [recordName2 isEqualToString:recordName6];
 
         if ((v51 & 1) == 0)
         {
           v52 = MEMORY[0x1E69B7A38];
-          v53 = [v35 note];
-          v54 = [v53 recordID];
-          v55 = [v54 recordName];
-          [v52 handleFailedAssertWithCondition:"[noteRecordName isEqualToString:mention.note.recordID.recordName]" functionName:"+[ICMentionNotificationController triggerNotificationForMentionAttachments:context:]" simulateCrash:1 showAlert:0 format:{@"Mismatch triggering coalesced mention notification for note %@, expecting %@", v55, v87}];
+          note3 = [v35 note];
+          recordID7 = [note3 recordID];
+          recordName7 = [recordID7 recordName];
+          [v52 handleFailedAssertWithCondition:"[noteRecordName isEqualToString:mention.note.recordID.recordName]" functionName:"+[ICMentionNotificationController triggerNotificationForMentionAttachments:context:]" simulateCrash:1 showAlert:0 format:{@"Mismatch triggering coalesced mention notification for note %@, expecting %@", recordName7, recordName2}];
         }
       }
 
@@ -370,10 +370,10 @@ LABEL_24:
     while (v32);
   }
 
-  v56 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v83];
-  v57 = [MEMORY[0x1E696AD88] defaultCenter];
+  v56 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:recordName3];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v74 = v56;
-  [v57 postNotificationName:@"ICMentionNotificationControllerWillSendNotification" object:v56];
+  [defaultCenter postNotificationName:@"ICMentionNotificationControllerWillSendNotification" object:v56];
 
   v95 = 0u;
   v96 = 0u;
@@ -401,18 +401,18 @@ LABEL_24:
         v64 = os_log_create("com.apple.notes", "Mentions");
         if (os_log_type_enabled(v64, OS_LOG_TYPE_DEBUG))
         {
-          v65 = [v63 mentionNotificationAttemptCount];
-          v66 = [MEMORY[0x1E69B76E8] sharedConfiguration];
-          v67 = [v66 mentionNotificationMaxRetries];
-          v68 = [v63 ic_loggingIdentifier];
+          mentionNotificationAttemptCount = [v63 mentionNotificationAttemptCount];
+          mEMORY[0x1E69B76E8] = [MEMORY[0x1E69B76E8] sharedConfiguration];
+          mentionNotificationMaxRetries = [mEMORY[0x1E69B76E8] mentionNotificationMaxRetries];
+          ic_loggingIdentifier = [v63 ic_loggingIdentifier];
           *buf = 67109890;
-          v110 = v65;
+          v110 = mentionNotificationAttemptCount;
           v111 = 2048;
-          v112 = v67;
+          v112 = mentionNotificationMaxRetries;
           v113 = 2112;
           v114 = v88;
           v115 = 2112;
-          v116 = v68;
+          v116 = ic_loggingIdentifier;
           _os_log_debug_impl(&dword_1D4171000, v64, OS_LOG_TYPE_DEBUG, "Attempt (%d/%lu) to send notification to participant (%@) for mention: %@", buf, 0x26u);
 
           v58 = obja;
@@ -425,12 +425,12 @@ LABEL_24:
     while (v60);
   }
 
-  v6 = v79;
+  contextCopy = v79;
   [v79 ic_save];
   v69 = [objc_opt_class() senderNameForMentions:v58];
   v70 = [objc_opt_class() noteTitleForMentions:v58];
   v71 = [objc_opt_class() snippetForMentions:v58];
-  v72 = [MEMORY[0x1E69B76F8] sharedController];
+  mEMORY[0x1E69B76F8] = [MEMORY[0x1E69B76F8] sharedController];
   v89[0] = MEMORY[0x1E69E9820];
   v89[1] = 3221225472;
   v89[2] = __84__ICMentionNotificationController_triggerNotificationForMentionAttachments_context___block_invoke;
@@ -439,12 +439,12 @@ LABEL_24:
   v91 = v58;
   v92 = v74;
   v73 = v74;
-  v12 = v76;
-  [v72 sendMentionNotificationToParticipant:v88 inlineAttachmentRecordName:v83 shareRecordName:v86 shareOwnerUserId:v82 accountId:v76 noteRecordName:v87 senderName:v69 noteTitle:v70 mentionSnippet:v71 callback:v89];
+  identifier = v76;
+  [mEMORY[0x1E69B76F8] sendMentionNotificationToParticipant:v88 inlineAttachmentRecordName:recordName3 shareRecordName:v86 shareOwnerUserId:v82 accountId:v76 noteRecordName:recordName2 senderName:v69 noteTitle:v70 mentionSnippet:v71 callback:v89];
 
-  v5 = v80;
-  v9 = v77;
-  v7 = v78;
+  attachmentsCopy = v80;
+  note = v77;
+  firstObject = v78;
   v13 = v75;
 LABEL_48:
 }
@@ -551,17 +551,17 @@ LABEL_14:
   [v20 postNotificationName:@"ICMentionNotificationControllerDidSendNotification" object:*(a1 + 56)];
 }
 
-+ (id)coalesceMentions:(id)a3
++ (id)coalesceMentions:(id)mentions
 {
   v41 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  mentionsCopy = mentions;
   v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v5 = v3;
+  v5 = mentionsCopy;
   v28 = [v5 countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v28)
   {
@@ -577,26 +577,26 @@ LABEL_14:
         }
 
         v8 = *(*(&v32 + 1) + 8 * i);
-        v9 = [v8 note];
-        v10 = [v9 identifier];
+        note = [v8 note];
+        identifier = [note identifier];
 
-        v11 = [v8 tokenContentIdentifier];
-        if (v10 && ([v10 length] ? (v12 = v11 == 0) : (v12 = 1), !v12 && objc_msgSend(v11, "length")))
+        tokenContentIdentifier = [v8 tokenContentIdentifier];
+        if (identifier && ([identifier length] ? (v12 = tokenContentIdentifier == 0) : (v12 = 1), !v12 && objc_msgSend(tokenContentIdentifier, "length")))
         {
-          v13 = [v10 stringByAppendingString:v11];
+          v13 = [identifier stringByAppendingString:tokenContentIdentifier];
           if (!v13)
           {
             [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"((noteParticipantParentKey) != nil)" functionName:"+[ICMentionNotificationController coalesceMentions:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "noteParticipantParentKey"}];
           }
 
-          v14 = [v8 parentAttachment];
-          v15 = [v14 identifier];
+          parentAttachment = [v8 parentAttachment];
+          identifier2 = [parentAttachment identifier];
 
-          if (v15)
+          if (identifier2)
           {
-            v16 = [v8 parentAttachment];
-            v17 = [v16 identifier];
-            [v13 stringByAppendingString:v17];
+            parentAttachment2 = [v8 parentAttachment];
+            identifier3 = [parentAttachment2 identifier];
+            [v13 stringByAppendingString:identifier3];
             v18 = v5;
             v20 = v19 = v4;
 
@@ -622,9 +622,9 @@ LABEL_14:
           if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
-            v37 = v11;
+            v37 = tokenContentIdentifier;
             v38 = 2112;
-            v39 = v10;
+            v39 = identifier;
             _os_log_error_impl(&dword_1D4171000, v13, OS_LOG_TYPE_ERROR, "Coalesce mentions skipping mention of %@ in note %@", buf, 0x16u);
           }
         }
@@ -641,7 +641,7 @@ LABEL_14:
   v29[2] = __52__ICMentionNotificationController_coalesceMentions___block_invoke;
   v29[3] = &unk_1E846D7D0;
   v30 = v25;
-  v31 = a1;
+  selfCopy = self;
   v22 = v25;
   [v4 enumerateKeysAndObjectsUsingBlock:v29];
   v23 = [v22 copy];
@@ -769,19 +769,19 @@ void __52__ICMentionNotificationController_coalesceMentions___block_invoke_2(uin
   [v3 addObject:v4];
 }
 
-+ (id)sameNoteMentionsFrom:(id)a3
++ (id)sameNoteMentionsFrom:(id)from
 {
-  v3 = a3;
-  v4 = [v3 firstObject];
-  v5 = [v4 note];
+  fromCopy = from;
+  firstObject = [fromCopy firstObject];
+  note = [firstObject note];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __56__ICMentionNotificationController_sameNoteMentionsFrom___block_invoke;
   v9[3] = &unk_1E846D7F8;
-  v10 = v5;
-  v6 = v5;
-  v7 = [v3 ic_compactMap:v9];
+  v10 = note;
+  v6 = note;
+  v7 = [fromCopy ic_compactMap:v9];
 
   return v7;
 }
@@ -805,12 +805,12 @@ void *__56__ICMentionNotificationController_sameNoteMentionsFrom___block_invoke(
   return v5;
 }
 
-+ (id)senderNameForMentions:(id)a3
++ (id)senderNameForMentions:(id)mentions
 {
-  v4 = a3;
-  v5 = [a1 sameNoteMentionsFrom:v4];
+  mentionsCopy = mentions;
+  v5 = [self sameNoteMentionsFrom:mentionsCopy];
   v6 = [v5 count];
-  v7 = [v4 count];
+  v7 = [mentionsCopy count];
 
   if (v6 != v7)
   {
@@ -821,26 +821,26 @@ void *__56__ICMentionNotificationController_sameNoteMentionsFrom___block_invoke(
     }
   }
 
-  v9 = [v5 firstObject];
-  v10 = [v9 note];
+  firstObject = [v5 firstObject];
+  note = [firstObject note];
 
-  if (!v10)
+  if (!note)
   {
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"note" functionName:"+[ICMentionNotificationController senderNameForMentions:]" simulateCrash:1 showAlert:0 format:@"Tried to get a sender name for mentions without a note"];
   }
 
-  v11 = [v10 serverShareCheckingParent];
-  if (!v11)
+  serverShareCheckingParent = [note serverShareCheckingParent];
+  if (!serverShareCheckingParent)
   {
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"share" functionName:"+[ICMentionNotificationController senderNameForMentions:]" simulateCrash:1 showAlert:0 format:@"Tried to a sender name for a note without a share"];
   }
 
-  v12 = [v11 currentUserParticipant];
-  v13 = [v12 ic_shortParticipantName];
-  v14 = v13;
-  if (v13)
+  currentUserParticipant = [serverShareCheckingParent currentUserParticipant];
+  ic_shortParticipantName = [currentUserParticipant ic_shortParticipantName];
+  v14 = ic_shortParticipantName;
+  if (ic_shortParticipantName)
   {
-    v15 = v13;
+    v15 = ic_shortParticipantName;
   }
 
   else
@@ -853,12 +853,12 @@ void *__56__ICMentionNotificationController_sameNoteMentionsFrom___block_invoke(
   return v15;
 }
 
-+ (id)noteTitleForMentions:(id)a3
++ (id)noteTitleForMentions:(id)mentions
 {
-  v4 = a3;
-  v5 = [a1 sameNoteMentionsFrom:v4];
+  mentionsCopy = mentions;
+  v5 = [self sameNoteMentionsFrom:mentionsCopy];
   v6 = [v5 count];
-  v7 = [v4 count];
+  v7 = [mentionsCopy count];
 
   if (v6 != v7)
   {
@@ -869,19 +869,19 @@ void *__56__ICMentionNotificationController_sameNoteMentionsFrom___block_invoke(
     }
   }
 
-  v9 = [v5 firstObject];
-  v10 = [v9 note];
+  firstObject = [v5 firstObject];
+  note = [firstObject note];
 
-  if (!v10)
+  if (!note)
   {
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"note" functionName:"+[ICMentionNotificationController noteTitleForMentions:]" simulateCrash:1 showAlert:0 format:@"Tried to get title for mentions without a note"];
   }
 
-  v11 = [v10 title];
-  v12 = v11;
-  if (v11)
+  title = [note title];
+  v12 = title;
+  if (title)
   {
-    v13 = v11;
+    v13 = title;
   }
 
   else
@@ -894,62 +894,62 @@ void *__56__ICMentionNotificationController_sameNoteMentionsFrom___block_invoke(
   return v13;
 }
 
-+ (id)snippetForMentions:(id)a3
++ (id)snippetForMentions:(id)mentions
 {
-  v4 = a3;
-  v5 = [v4 firstObject];
-  if (![v4 count])
+  mentionsCopy = mentions;
+  firstObject = [mentionsCopy firstObject];
+  if (![mentionsCopy count])
   {
-    v11 = &stru_1F4F94F00;
+    ic_trimmedString = &stru_1F4F94F00;
     goto LABEL_10;
   }
 
-  v6 = [v4 firstObject];
-  v7 = [v6 note];
+  firstObject2 = [mentionsCopy firstObject];
+  note = [firstObject2 note];
 
-  v8 = [v5 parentAttachment];
-  v9 = v8;
-  if (v8)
+  parentAttachment = [firstObject parentAttachment];
+  v9 = parentAttachment;
+  if (parentAttachment)
   {
-    v10 = [MEMORY[0x1E69B7680] mentionNotificationSnippetForAttachmentType:{objc_msgSend(v8, "attachmentType")}];
-    v11 = [v10 ic_trimmedString];
+    v10 = [MEMORY[0x1E69B7680] mentionNotificationSnippetForAttachmentType:{objc_msgSend(parentAttachment, "attachmentType")}];
+    ic_trimmedString = [v10 ic_trimmedString];
 LABEL_8:
 
     goto LABEL_9;
   }
 
-  v12 = [a1 rangeOfSnippetForMentions:v4];
+  v12 = [self rangeOfSnippetForMentions:mentionsCopy];
   if (v12 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v14 = v12;
     v15 = v13;
-    v16 = [v7 attributedString];
-    v10 = [v16 attributedSubstringFromRange:{v14, v15}];
+    attributedString = [note attributedString];
+    v10 = [attributedString attributedSubstringFromRange:{v14, v15}];
 
-    v17 = [v7 managedObjectContext];
-    v18 = [v10 ic_attributedStringByFlatteningInlineAttachmentsWithContext:v17 formatter:&__block_literal_global_78_0];
+    managedObjectContext = [note managedObjectContext];
+    v18 = [v10 ic_attributedStringByFlatteningInlineAttachmentsWithContext:managedObjectContext formatter:&__block_literal_global_78_0];
 
-    v19 = [v18 string];
-    v11 = [v19 ic_trimmedString];
+    string = [v18 string];
+    ic_trimmedString = [string ic_trimmedString];
 
     goto LABEL_8;
   }
 
-  v11 = &stru_1F4F94F00;
+  ic_trimmedString = &stru_1F4F94F00;
 LABEL_9:
 
 LABEL_10:
 
-  return v11;
+  return ic_trimmedString;
 }
 
-+ (_NSRange)rangeOfSnippetForMentions:(id)a3
++ (_NSRange)rangeOfSnippetForMentions:(id)mentions
 {
   v103 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 sameNoteMentionsFrom:v4];
+  mentionsCopy = mentions;
+  v5 = [self sameNoteMentionsFrom:mentionsCopy];
   v6 = [v5 count];
-  if (v6 != [v4 count])
+  if (v6 != [mentionsCopy count])
   {
     v7 = os_log_create("com.apple.notes", "Mentions");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -958,17 +958,17 @@ LABEL_10:
     }
   }
 
-  v8 = [v5 firstObject];
-  v9 = [v8 note];
+  firstObject = [v5 firstObject];
+  note = [firstObject note];
 
-  if (!v9)
+  if (!note)
   {
     v30 = 0;
     v31 = 0x7FFFFFFFFFFFFFFFLL;
     goto LABEL_93;
   }
 
-  v81 = v9;
+  v81 = note;
   v97 = 0u;
   v98 = 0u;
   v95 = 0u;
@@ -977,7 +977,7 @@ LABEL_10:
   v11 = [v10 countByEnumeratingWithState:&v95 objects:v102 count:16];
   v82 = v10;
   v77 = v5;
-  v79 = v4;
+  v79 = mentionsCopy;
   if (!v11)
   {
 LABEL_19:
@@ -998,7 +998,7 @@ LABEL_19:
         objc_enumerationMutation(v10);
       }
 
-      v17 = [a1 rangeOfParagraphForMention:{*(*(&v95 + 1) + 8 * i), v77, v79}];
+      v17 = [self rangeOfParagraphForMention:{*(*(&v95 + 1) + 8 * i), v77, v79}];
       v19.location = v17;
       v19.length = v18;
       if (location != 0x7FFFFFFFFFFFFFFFLL)
@@ -1055,7 +1055,7 @@ LABEL_20:
           objc_enumerationMutation(v20);
         }
 
-        v27 = [a1 rangeOfSentenceForMention:{*(*(&v91 + 1) + 8 * j), v77, v79}];
+        v27 = [self rangeOfSentenceForMention:{*(*(&v91 + 1) + 8 * j), v77, v79}];
         location = v27;
         length = v28;
         if (v25 != 0x7FFFFFFFFFFFFFFFLL)
@@ -1096,7 +1096,7 @@ LABEL_34:
   }
 
   v32 = length > 0xC8 || location == 0x7FFFFFFFFFFFFFFFLL;
-  v9 = v81;
+  note = v81;
   if (!v32)
   {
     goto LABEL_55;
@@ -1106,8 +1106,8 @@ LABEL_34:
   v90 = 0u;
   v87 = 0u;
   v88 = 0u;
-  v33 = v10;
-  v34 = [v33 countByEnumeratingWithState:&v87 objects:v100 count:16];
+  attributedString = v10;
+  v34 = [attributedString countByEnumeratingWithState:&v87 objects:v100 count:16];
   location = 0x7FFFFFFFFFFFFFFFLL;
   if (!v34)
   {
@@ -1126,10 +1126,10 @@ LABEL_34:
     {
       if (*v88 != v36)
       {
-        objc_enumerationMutation(v33);
+        objc_enumerationMutation(attributedString);
       }
 
-      v39 = [a1 rangeOfMention:{*(*(&v87 + 1) + 8 * k), v77, v79}];
+      v39 = [self rangeOfMention:{*(*(&v87 + 1) + 8 * k), v77, v79}];
       v41.location = v39;
       v41.length = v40;
       if (v37 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1148,7 +1148,7 @@ LABEL_34:
       }
     }
 
-    v35 = [v33 countByEnumeratingWithState:&v87 objects:v100 count:16];
+    v35 = [attributedString countByEnumeratingWithState:&v87 objects:v100 count:16];
   }
 
   while (v35);
@@ -1157,8 +1157,8 @@ LABEL_34:
   v10 = v82;
   if (v37 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v33 = [v81 attributedString];
-    v112.length = [v33 length];
+    attributedString = [v81 attributedString];
+    v112.length = [attributedString length];
     v107.location = v37;
     v107.length = 200;
     v112.location = 0;
@@ -1169,9 +1169,9 @@ LABEL_54:
   }
 
 LABEL_55:
-  v44 = [v81 attributedString];
-  v45 = [v44 string];
-  v46 = [v45 ic_rangeIsValid:{location, length}];
+  attributedString2 = [v81 attributedString];
+  string = [attributedString2 string];
+  v46 = [string ic_rangeIsValid:{location, length}];
 
   if (v46)
   {
@@ -1183,7 +1183,7 @@ LABEL_55:
     v47 = 1;
   }
 
-  if (v47 && ([v10 firstObject], v48 = objc_claimAutoreleasedReturnValue(), location = objc_msgSend(a1, "rangeOfMention:", v48), length = v49, v48, location == 0x7FFFFFFFFFFFFFFFLL))
+  if (v47 && ([v10 firstObject], v48 = objc_claimAutoreleasedReturnValue(), location = objc_msgSend(self, "rangeOfMention:", v48), length = v49, v48, location == 0x7FFFFFFFFFFFFFFFLL))
   {
     v50 = 0;
     location = 0x7FFFFFFFFFFFFFFFLL;
@@ -1191,24 +1191,24 @@ LABEL_55:
 
   else
   {
-    v51 = [v81 attributedString];
-    v52 = [v51 string];
-    v50 = [v52 substringWithRange:{location, length}];
+    attributedString3 = [v81 attributedString];
+    string2 = [attributedString3 string];
+    v50 = [string2 substringWithRange:{location, length}];
   }
 
-  v53 = [MEMORY[0x1E696AD48] whitespaceAndNewlineCharacterSet];
-  v54 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
-  [v53 formUnionWithCharacterSet:v54];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AD48] whitespaceAndNewlineCharacterSet];
+  punctuationCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+  [whitespaceAndNewlineCharacterSet formUnionWithCharacterSet:punctuationCharacterSet];
 
-  v55 = [v50 stringByTrimmingCharactersInSet:v53];
+  v55 = [v50 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   v56 = [v55 length];
 
   if (v56 == 1)
   {
-    v57 = [v82 firstObject];
-    v58 = [a1 rangeOfSentenceBeforeMention:v57];
+    firstObject2 = [v82 firstObject];
+    v58 = [self rangeOfSentenceBeforeMention:firstObject2];
     v60 = v59;
-    v113.location = [a1 rangeOfSentenceAfterMention:v57];
+    v113.location = [self rangeOfSentenceAfterMention:firstObject2];
     v113.length = v61;
     v108.location = v58;
     v108.length = v60;
@@ -1248,7 +1248,7 @@ LABEL_55:
             objc_enumerationMutation(v63);
           }
 
-          v68 = [a1 rangeOfMention:*(*(&v83 + 1) + 8 * m)];
+          v68 = [self rangeOfMention:*(*(&v83 + 1) + 8 * m)];
           v70.location = v68;
           v70.length = v69;
           if (location == 0x7FFFFFFFFFFFFFFFLL)
@@ -1284,12 +1284,12 @@ LABEL_55:
       length = 200;
     }
 
-    v9 = v81;
+    note = v81;
   }
 
-  v72 = [v9 attributedString];
-  v73 = [v72 string];
-  v74 = [v73 ic_rangeIsValid:{location, length}];
+  attributedString4 = [note attributedString];
+  string3 = [attributedString4 string];
+  v74 = [string3 ic_rangeIsValid:{location, length}];
   if (v74)
   {
     v31 = location;
@@ -1311,7 +1311,7 @@ LABEL_55:
   }
 
   v5 = v78;
-  v4 = v80;
+  mentionsCopy = v80;
 LABEL_93:
 
   v75 = v31;
@@ -1321,27 +1321,27 @@ LABEL_93:
   return result;
 }
 
-+ (_NSRange)rangeOfMention:(id)a3
++ (_NSRange)rangeOfMention:(id)mention
 {
-  v3 = a3;
-  v4 = [v3 note];
-  v5 = [v4 attributedString];
+  mentionCopy = mention;
+  note = [mentionCopy note];
+  attributedString = [note attributedString];
 
   v16 = 0;
   v17 = &v16;
   v18 = 0x3010000000;
   v19 = &unk_1D449C2A9;
   v20 = xmmword_1D4433FC0;
-  v6 = [v5 length];
+  v6 = [attributedString length];
   v7 = *MEMORY[0x1E69B7628];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __50__ICMentionNotificationController_rangeOfMention___block_invoke;
   v13[3] = &unk_1E846A510;
-  v8 = v3;
+  v8 = mentionCopy;
   v14 = v8;
   v15 = &v16;
-  [v5 enumerateAttribute:v7 inRange:0 options:v6 usingBlock:{0, v13}];
+  [attributedString enumerateAttribute:v7 inRange:0 options:v6 usingBlock:{0, v13}];
   v9 = v17[4];
   v10 = v17[5];
 
@@ -1379,13 +1379,13 @@ uint64_t __50__ICMentionNotificationController_rangeOfMention___block_invoke(uin
   return MEMORY[0x1EEE66BB8](v9);
 }
 
-+ (_NSRange)rangeOfParagraphForMention:(id)a3
++ (_NSRange)rangeOfParagraphForMention:(id)mention
 {
-  v4 = a3;
-  v5 = [v4 note];
-  v6 = [v5 attributedString];
+  mentionCopy = mention;
+  note = [mentionCopy note];
+  attributedString = [note attributedString];
 
-  v7 = [a1 rangeOfMention:v4];
+  v7 = [self rangeOfMention:mentionCopy];
   v9 = v8;
 
   v10 = 0x7FFFFFFFFFFFFFFFLL;
@@ -1396,8 +1396,8 @@ uint64_t __50__ICMentionNotificationController_rangeOfMention___block_invoke(uin
 
   else
   {
-    v12 = [v6 string];
-    v10 = [v12 paragraphRangeForRange:{v7, v9}];
+    string = [attributedString string];
+    v10 = [string paragraphRangeForRange:{v7, v9}];
     v11 = v13;
   }
 
@@ -1408,13 +1408,13 @@ uint64_t __50__ICMentionNotificationController_rangeOfMention___block_invoke(uin
   return result;
 }
 
-+ (_NSRange)rangeOfSentenceForMention:(id)a3
++ (_NSRange)rangeOfSentenceForMention:(id)mention
 {
-  v4 = a3;
-  v5 = [v4 note];
-  v6 = [v5 attributedString];
+  mentionCopy = mention;
+  note = [mentionCopy note];
+  attributedString = [note attributedString];
 
-  v7 = [a1 rangeOfMention:v4];
+  v7 = [self rangeOfMention:mentionCopy];
   v9 = v8;
 
   v10 = 0x7FFFFFFFFFFFFFFFLL;
@@ -1425,8 +1425,8 @@ uint64_t __50__ICMentionNotificationController_rangeOfMention___block_invoke(uin
 
   else
   {
-    v12 = [v6 string];
-    v10 = [v12 ic_sentenceRangeForRange:{v7, v9}];
+    string = [attributedString string];
+    v10 = [string ic_sentenceRangeForRange:{v7, v9}];
     v11 = v13;
   }
 
@@ -1437,18 +1437,18 @@ uint64_t __50__ICMentionNotificationController_rangeOfMention___block_invoke(uin
   return result;
 }
 
-+ (_NSRange)rangeOfSentenceBeforeMention:(id)a3
++ (_NSRange)rangeOfSentenceBeforeMention:(id)mention
 {
-  v4 = a3;
-  v5 = [v4 note];
-  v6 = [v5 attributedString];
-  v7 = [v6 string];
+  mentionCopy = mention;
+  note = [mentionCopy note];
+  attributedString = [note attributedString];
+  string = [attributedString string];
 
-  v8 = [a1 rangeOfMention:v4];
+  v8 = [self rangeOfMention:mentionCopy];
   v10 = v9;
-  v11 = [MEMORY[0x1E696AD48] whitespaceAndNewlineCharacterSet];
-  v12 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
-  [v11 formUnionWithCharacterSet:v12];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AD48] whitespaceAndNewlineCharacterSet];
+  punctuationCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+  [whitespaceAndNewlineCharacterSet formUnionWithCharacterSet:punctuationCharacterSet];
 
   v13 = v8;
   do
@@ -1466,13 +1466,13 @@ uint64_t __50__ICMentionNotificationController_rangeOfMention___block_invoke(uin
     --v13;
   }
 
-  while (([v11 characterIsMember:{objc_msgSend(v7, "characterAtIndex:", v13)}] & 1) != 0);
+  while (([whitespaceAndNewlineCharacterSet characterIsMember:{objc_msgSend(string, "characterAtIndex:", v13)}] & 1) != 0);
   v20.location = v13;
   v20.length = v10;
   v22.location = v8;
   v22.length = v10;
   v14 = NSUnionRange(v20, v22);
-  v15 = [v7 ic_sentenceRangeForRange:{v14.location, v14.length}];
+  v15 = [string ic_sentenceRangeForRange:{v14.location, v14.length}];
   v17 = v16;
 
   v18 = v15;
@@ -1482,23 +1482,23 @@ uint64_t __50__ICMentionNotificationController_rangeOfMention___block_invoke(uin
   return result;
 }
 
-+ (_NSRange)rangeOfSentenceAfterMention:(id)a3
++ (_NSRange)rangeOfSentenceAfterMention:(id)mention
 {
-  v4 = a3;
-  v5 = [v4 note];
-  v6 = [v5 attributedString];
-  v7 = [v6 string];
+  mentionCopy = mention;
+  note = [mentionCopy note];
+  attributedString = [note attributedString];
+  string = [attributedString string];
 
-  v8 = [a1 rangeOfMention:v4];
+  v8 = [self rangeOfMention:mentionCopy];
   v10 = v9;
-  v11 = [MEMORY[0x1E696AD48] whitespaceAndNewlineCharacterSet];
-  v12 = [MEMORY[0x1E696AB08] punctuationCharacterSet];
-  [v11 formUnionWithCharacterSet:v12];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AD48] whitespaceAndNewlineCharacterSet];
+  punctuationCharacterSet = [MEMORY[0x1E696AB08] punctuationCharacterSet];
+  [whitespaceAndNewlineCharacterSet formUnionWithCharacterSet:punctuationCharacterSet];
 
   v13 = v8;
   while (v13 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    if ([v7 length] >= 2 && v13 < objc_msgSend(v7, "length") - 2 && (objc_msgSend(v11, "characterIsMember:", objc_msgSend(v7, "characterAtIndex:", ++v13)) & 1) != 0)
+    if ([string length] >= 2 && v13 < objc_msgSend(string, "length") - 2 && (objc_msgSend(whitespaceAndNewlineCharacterSet, "characterIsMember:", objc_msgSend(string, "characterAtIndex:", ++v13)) & 1) != 0)
     {
       continue;
     }
@@ -1513,7 +1513,7 @@ LABEL_8:
   v22.location = v8;
   v22.length = v10;
   v14 = NSUnionRange(v20, v22);
-  v15 = [v7 ic_sentenceRangeForRange:{v14.location, v14.length}];
+  v15 = [string ic_sentenceRangeForRange:{v14.location, v14.length}];
   v17 = v16;
 
   v18 = v15;
@@ -1523,11 +1523,11 @@ LABEL_8:
   return result;
 }
 
-+ (id)predicateForMentionsInState:(int)a3 inContext:(id)a4
++ (id)predicateForMentionsInState:(int)state inContext:(id)context
 {
-  v4 = *&a3;
+  v4 = *&state;
   v13[2] = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E69B7778] predicateForMentionsInContext:a4];
+  v5 = [MEMORY[0x1E69B7778] predicateForMentionsInContext:context];
   v6 = MEMORY[0x1E696AE18];
   v7 = [MEMORY[0x1E696AD98] numberWithInt:v4];
   v8 = [v6 predicateWithFormat:@"mentionNotificationState == %@", v7];
@@ -1541,21 +1541,21 @@ LABEL_8:
   return v11;
 }
 
-+ (id)pendingMentionsInContext:(id)a3 createdBeforeDate:(id)a4
++ (id)pendingMentionsInContext:(id)context createdBeforeDate:(id)date
 {
   v16[2] = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 predicateForMentionsInState:1 inContext:v7];
-  v9 = [MEMORY[0x1E696AE18] predicateWithFormat:@"creationDate <= %@", v6];
+  dateCopy = date;
+  contextCopy = context;
+  v8 = [self predicateForMentionsInState:1 inContext:contextCopy];
+  dateCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"creationDate <= %@", dateCopy];
 
   v10 = MEMORY[0x1E69B7778];
   v11 = MEMORY[0x1E696AB28];
   v16[0] = v8;
-  v16[1] = v9;
+  v16[1] = dateCopy;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
   v13 = [v11 andPredicateWithSubpredicates:v12];
-  v14 = [v10 ic_objectsMatchingPredicate:v13 context:v7];
+  v14 = [v10 ic_objectsMatchingPredicate:v13 context:contextCopy];
 
   return v14;
 }

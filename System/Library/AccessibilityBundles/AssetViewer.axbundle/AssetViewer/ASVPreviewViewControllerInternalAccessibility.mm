@@ -1,87 +1,87 @@
 @interface ASVPreviewViewControllerInternalAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_axActivateForEntityController:(id)a3 deltaYaw:(float)a4 deltaPitch:(float)a5;
-- (BOOL)_axIsAccessibilityElementForEntityController:(id)a3;
-- (BOOL)_axIsOffScreenForEntityWrapper:(id)a3;
-- (BOOL)_axTranslateForLevitation:(BOOL)a3 delta:(id)a4 entityController:;
-- (CGRect)_axBoundingRectForEntityController:(id)a3;
-- (CGRect)_axBoundingRectForEntityWrapper:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_axActivateForEntityController:(id)controller deltaYaw:(float)yaw deltaPitch:(float)pitch;
+- (BOOL)_axIsAccessibilityElementForEntityController:(id)controller;
+- (BOOL)_axIsOffScreenForEntityWrapper:(id)wrapper;
+- (BOOL)_axTranslateForLevitation:(BOOL)levitation delta:(id)delta entityController:;
+- (CGRect)_axBoundingRectForEntityController:(id)controller;
+- (CGRect)_axBoundingRectForEntityWrapper:(id)wrapper;
 - (CGRect)_axBoundsForControls;
-- (CGRect)_axFrameForEntityController:(id)a3;
-- (id)_axARModeControlsForEntityController:(id)a3 isRTL:(BOOL)a4;
-- (id)_axControlForRotationWithDeltaYaw:(float)a3 deltaPitch:(float)a4 nameFormat:(id)a5 hintFormat:(id)a6 shouldUseArrows:(BOOL)a7 entityController:(id)a8;
-- (id)_axControlForScalingForEntityController:(id)a3;
+- (CGRect)_axFrameForEntityController:(id)controller;
+- (id)_axARModeControlsForEntityController:(id)controller isRTL:(BOOL)l;
+- (id)_axControlForRotationWithDeltaYaw:(float)yaw deltaPitch:(float)pitch nameFormat:(id)format hintFormat:(id)hintFormat shouldUseArrows:(BOOL)arrows entityController:(id)controller;
+- (id)_axControlForScalingForEntityController:(id)controller;
 - (id)_axControlsViewStack;
-- (id)_axCreateAssetElementForEntityController:(id)a3;
-- (id)_axDescriptionForCurrentPitchForEntityController:(id)a3;
-- (id)_axDescriptionForCurrentPositionForEntityController:(id)a3;
-- (id)_axDescriptionForCurrentRotationForEntityController:(id)a3;
-- (id)_axDescriptionForPitchInDegrees:(int64_t)a3;
-- (id)_axDescriptionForRotationInDegrees:(int64_t)a3;
-- (id)_axEntityElementsForEntityController:(id)a3;
-- (id)_axLabelForEntityController:(id)a3;
-- (id)_axNameForEntityController:(id)a3;
-- (id)_axObjectModeControlsForEntityController:(id)a3 isRTL:(BOOL)a4;
-- (id)_axRootEntityWrapperForEntityController:(id)a3;
-- (id)_axUnifiedGestureRecognizerForEntityController:(id)a3;
+- (id)_axCreateAssetElementForEntityController:(id)controller;
+- (id)_axDescriptionForCurrentPitchForEntityController:(id)controller;
+- (id)_axDescriptionForCurrentPositionForEntityController:(id)controller;
+- (id)_axDescriptionForCurrentRotationForEntityController:(id)controller;
+- (id)_axDescriptionForPitchInDegrees:(int64_t)degrees;
+- (id)_axDescriptionForRotationInDegrees:(int64_t)degrees;
+- (id)_axEntityElementsForEntityController:(id)controller;
+- (id)_axLabelForEntityController:(id)controller;
+- (id)_axNameForEntityController:(id)controller;
+- (id)_axObjectModeControlsForEntityController:(id)controller isRTL:(BOOL)l;
+- (id)_axRootEntityWrapperForEntityController:(id)controller;
+- (id)_axUnifiedGestureRecognizerForEntityController:(id)controller;
 - (int64_t)_axEmitterMode;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axAdjustScaleByMultiplier:(float)a3 entityController:(id)a4;
-- (void)_axAnnotateAsControl:(id)a3;
-- (void)_axCheckForAppearanceOfObjectsWithTimer:(id)a3;
-- (void)_axGetAccessibilityFrame:(CGRect *)a3 path:(id *)a4 forArrowTowardsEdge:(unint64_t)a5 isDoubleArrow:(BOOL)a6;
-- (void)_axResetToInitialScaleForEntityAction:(id)a3;
+- (void)_axAdjustScaleByMultiplier:(float)multiplier entityController:(id)controller;
+- (void)_axAnnotateAsControl:(id)control;
+- (void)_axCheckForAppearanceOfObjectsWithTimer:(id)timer;
+- (void)_axGetAccessibilityFrame:(CGRect *)frame path:(id *)path forArrowTowardsEdge:(unint64_t)edge isDoubleArrow:(BOOL)arrow;
+- (void)_axResetToInitialScaleForEntityAction:(id)action;
 - (void)_axToggleVisibilityAnnouncementsIfNeeded;
 - (void)_axUpdateARViewAccessibilityElements;
 - (void)_axUpdateForAXSettings;
-- (void)_axUpdateForOldEmitterMode:(int64_t)a3;
+- (void)_axUpdateForOldEmitterMode:(int64_t)mode;
 - (void)accessibilityDidSetUpEntityControllers;
-- (void)entityController:(id)a3 doubleTappedAt:(CGPoint)a4;
-- (void)handleTapAtPointWithPoint:(CGPoint)a3;
+- (void)entityController:(id)controller doubleTappedAt:(CGPoint)at;
+- (void)handleTapAtPointWithPoint:(CGPoint)point;
 - (void)updateInterfaceState;
 @end
 
 @implementation ASVPreviewViewControllerInternalAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ASVPreviewViewControllerInternal" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"AssetViewer.EntityController" conformsToProtocol:@"ASVUnifiedGestureRecognizerDelegate"];
-  [v3 validateClass:@"ASVPreviewViewControllerInternal" hasInstanceMethod:@"currentlyDisallowsUnifiedGestureRecognizerAction" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"ASVPreviewViewControllerInternal" hasInstanceMethod:@"handleTapAtPointWithPoint:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"ASVPreviewViewControllerInternal" hasInstanceMethod:@"overlayController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ASVPreviewViewControllerInternal" hasInstanceMethod:@"accessibilityEntityControllers" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ASVPreviewViewControllerInternal" hasInstanceMethod:@"accessibilityRootEntityController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ASVPreviewViewControllerInternal" hasInstanceMethod:@"accessibilityARView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ASVPreviewViewControllerInternal" hasInstanceMethod:@"updateInterfaceState" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ASVPreviewViewControllerInternal" hasInstanceMethod:@"entityController:doubleTappedAt:" withFullSignature:{"v", "@", "{CGPoint=dd}", 0}];
-  [v3 validateClass:@"ASVPreviewViewControllerInternal" hasInstanceMethod:@"accessibilityDidSetUpEntityControllers" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ASVPreviewViewControllerInternal" hasInstanceMethod:@"accessibilityShowControls" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"ASVPreviewViewControllerInternal" hasInstanceMethod:@"accessibilityDistanceInMetersFromEntityController:" withFullSignature:{"f", "@", 0}];
-  [v3 validateClass:@"AssetViewer.ARQuickLookOverlayController" hasInstanceMethod:@"controlsViewStack" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"accessibilityAssetURL" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"assetYaw" withFullSignature:{"f", 0}];
-  [v3 validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"assetPitch" withFullSignature:{"f", 0}];
-  [v3 validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"assetScale" withFullSignature:{"f", 0}];
-  [v3 validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"assetScreenPosition" withFullSignature:{"1", 0}];
-  [v3 validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"rotateByDeltaYaw:deltaPitch:" withFullSignature:{"v", "f", "f", 0}];
-  [v3 validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"worldGestureRecognizer:translatedAssetToScreenPoint:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"worldGestureRecognizer:levitatedAssetToScreenPoint:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"scaleTo:updateARScale:" withFullSignature:{"v", "f", "B", 0}];
-  [v3 validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"worldGestureRecognizer" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"levitationHeight" withFullSignature:{"f", 0}];
-  [v3 validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"calculateAssetScreenBoundingRectIn:" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", "@", 0}];
-  [v3 validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"entityAccessibilityWrappers" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"UIViewController" hasInstanceMethod:@"viewDidDisappear:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"AssetViewer.ARQLView" hasInstanceMethod:@"emitterMode" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"RealityKit.__EntityAccessibilityWrapper" hasInstanceMethod:@"isEntityRoot" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"RealityKit.__EntityAccessibilityWrapper" hasInstanceMethod:@"entityLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"RealityKit.__EntityAccessibilityWrapper" hasInstanceMethod:@"rootEntityWrapper" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"RealityKit.__EntityAccessibilityWrapper" hasInstanceMethod:@"isEntityActive" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"RealityKit.__EntityAccessibilityWrapper" hasInstanceMethod:@"calculateScreenBoundingRectIn:" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", "@", 0}];
-  [v3 validateClass:@"RealityKit.ARView" hasInstanceMethod:@"accessibilityElementsForEntityWrappers:" withFullSignature:{"@", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ASVPreviewViewControllerInternal" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"AssetViewer.EntityController" conformsToProtocol:@"ASVUnifiedGestureRecognizerDelegate"];
+  [validationsCopy validateClass:@"ASVPreviewViewControllerInternal" hasInstanceMethod:@"currentlyDisallowsUnifiedGestureRecognizerAction" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"ASVPreviewViewControllerInternal" hasInstanceMethod:@"handleTapAtPointWithPoint:" withFullSignature:{"v", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"ASVPreviewViewControllerInternal" hasInstanceMethod:@"overlayController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ASVPreviewViewControllerInternal" hasInstanceMethod:@"accessibilityEntityControllers" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ASVPreviewViewControllerInternal" hasInstanceMethod:@"accessibilityRootEntityController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ASVPreviewViewControllerInternal" hasInstanceMethod:@"accessibilityARView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ASVPreviewViewControllerInternal" hasInstanceMethod:@"updateInterfaceState" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ASVPreviewViewControllerInternal" hasInstanceMethod:@"entityController:doubleTappedAt:" withFullSignature:{"v", "@", "{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"ASVPreviewViewControllerInternal" hasInstanceMethod:@"accessibilityDidSetUpEntityControllers" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ASVPreviewViewControllerInternal" hasInstanceMethod:@"accessibilityShowControls" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"ASVPreviewViewControllerInternal" hasInstanceMethod:@"accessibilityDistanceInMetersFromEntityController:" withFullSignature:{"f", "@", 0}];
+  [validationsCopy validateClass:@"AssetViewer.ARQuickLookOverlayController" hasInstanceMethod:@"controlsViewStack" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"accessibilityAssetURL" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"assetYaw" withFullSignature:{"f", 0}];
+  [validationsCopy validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"assetPitch" withFullSignature:{"f", 0}];
+  [validationsCopy validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"assetScale" withFullSignature:{"f", 0}];
+  [validationsCopy validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"assetScreenPosition" withFullSignature:{"1", 0}];
+  [validationsCopy validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"rotateByDeltaYaw:deltaPitch:" withFullSignature:{"v", "f", "f", 0}];
+  [validationsCopy validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"worldGestureRecognizer:translatedAssetToScreenPoint:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"worldGestureRecognizer:levitatedAssetToScreenPoint:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"scaleTo:updateARScale:" withFullSignature:{"v", "f", "B", 0}];
+  [validationsCopy validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"worldGestureRecognizer" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"levitationHeight" withFullSignature:{"f", 0}];
+  [validationsCopy validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"calculateAssetScreenBoundingRectIn:" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", "@", 0}];
+  [validationsCopy validateClass:@"AssetViewer.EntityController" hasInstanceMethod:@"entityAccessibilityWrappers" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"viewDidAppear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"UIViewController" hasInstanceMethod:@"viewDidDisappear:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"AssetViewer.ARQLView" hasInstanceMethod:@"emitterMode" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"RealityKit.__EntityAccessibilityWrapper" hasInstanceMethod:@"isEntityRoot" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"RealityKit.__EntityAccessibilityWrapper" hasInstanceMethod:@"entityLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"RealityKit.__EntityAccessibilityWrapper" hasInstanceMethod:@"rootEntityWrapper" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"RealityKit.__EntityAccessibilityWrapper" hasInstanceMethod:@"isEntityActive" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"RealityKit.__EntityAccessibilityWrapper" hasInstanceMethod:@"calculateScreenBoundingRectIn:" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", "@", 0}];
+  [validationsCopy validateClass:@"RealityKit.ARView" hasInstanceMethod:@"accessibilityElementsForEntityWrappers:" withFullSignature:{"@", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -89,8 +89,8 @@
   v14.receiver = self;
   v14.super_class = ASVPreviewViewControllerInternalAccessibility;
   [(ASVPreviewViewControllerInternalAccessibility *)&v14 _accessibilityLoadAccessibilityInformation];
-  v3 = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
-  objc_initWeak(&location, v3);
+  _axARView = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
+  objc_initWeak(&location, _axARView);
   objc_initWeak(&from, self);
   v6 = MEMORY[0x29EDCA5F8];
   v7 = 3221225472;
@@ -98,17 +98,17 @@
   v9 = &unk_29F2A1D00;
   objc_copyWeak(&v10, &location);
   objc_copyWeak(&v11, &from);
-  [v3 _setAccessibilityFrameBlock:&v6];
-  [v3 setAccessibilityNavigationStyle:{2, v6, v7, v8, v9}];
+  [_axARView _setAccessibilityFrameBlock:&v6];
+  [_axARView setAccessibilityNavigationStyle:{2, v6, v7, v8, v9}];
   [(ASVPreviewViewControllerInternalAccessibility *)self _axUpdateARViewAccessibilityElements];
   if (![(ASVPreviewViewControllerInternalAccessibility *)self _axHasHandledLoadAX])
   {
     [(ASVPreviewViewControllerInternalAccessibility *)self _axToggleVisibilityAnnouncementsIfNeeded];
-    v4 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v4 addObserver:self selector:sel__axDidToggleAXSetting_ name:*MEMORY[0x29EDC8000] object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__axDidToggleAXSetting_ name:*MEMORY[0x29EDC8000] object:0];
 
-    v5 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v5 addObserver:self selector:sel__axDidToggleAXSetting_ name:*MEMORY[0x29EDC7F48] object:0];
+    defaultCenter2 = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__axDidToggleAXSetting_ name:*MEMORY[0x29EDC7F48] object:0];
 
     [(ASVPreviewViewControllerInternalAccessibility *)self _axUpdateForAXSettings];
     [(ASVPreviewViewControllerInternalAccessibility *)self _axSetHasHandledLoadAX:1];
@@ -133,7 +133,7 @@ double __91__ASVPreviewViewControllerInternalAccessibility__accessibilityLoadAcc
 - (void)_axUpdateForAXSettings
 {
   objc_opt_class();
-  v3 = [(ASVPreviewViewControllerInternalAccessibility *)self _axOverlayController];
+  _axOverlayController = [(ASVPreviewViewControllerInternalAccessibility *)self _axOverlayController];
   v4 = __UIAccessibilityCastAsSafeCategory();
 
   if ([v4 axShouldDisableAutoHidingControls])
@@ -142,7 +142,7 @@ double __91__ASVPreviewViewControllerInternalAccessibility__accessibilityLoadAcc
     v6 = 3221225472;
     v7 = __71__ASVPreviewViewControllerInternalAccessibility__axUpdateForAXSettings__block_invoke;
     v8 = &unk_29F2A1D28;
-    v9 = self;
+    selfCopy = self;
     AXPerformSafeBlock();
   }
 
@@ -151,20 +151,20 @@ double __91__ASVPreviewViewControllerInternalAccessibility__accessibilityLoadAcc
 
 - (id)_axControlsViewStack
 {
-  v2 = [(ASVPreviewViewControllerInternalAccessibility *)self _axOverlayController];
-  v3 = [v2 safeUIViewForKey:@"controlsViewStack"];
+  _axOverlayController = [(ASVPreviewViewControllerInternalAccessibility *)self _axOverlayController];
+  v3 = [_axOverlayController safeUIViewForKey:@"controlsViewStack"];
 
   return v3;
 }
 
-- (id)_axRootEntityWrapperForEntityController:(id)a3
+- (id)_axRootEntityWrapperForEntityController:(id)controller
 {
   v18 = *MEMORY[0x29EDCA608];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(ASVPreviewViewControllerInternalAccessibility *)self _axEntityWrappersForEntityController:a3, 0];
+  v3 = [(ASVPreviewViewControllerInternalAccessibility *)self _axEntityWrappersForEntityController:controller, 0];
   v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v4)
   {
@@ -218,24 +218,24 @@ LABEL_14:
   return v10;
 }
 
-- (id)_axNameForEntityController:(id)a3
+- (id)_axNameForEntityController:(id)controller
 {
-  v4 = a3;
-  v5 = [(ASVPreviewViewControllerInternalAccessibility *)self _axEntityControllers];
-  v6 = [v5 firstObject];
-  v7 = [(ASVPreviewViewControllerInternalAccessibility *)self _axRootEntityWrapperForEntityController:v6];
+  controllerCopy = controller;
+  _axEntityControllers = [(ASVPreviewViewControllerInternalAccessibility *)self _axEntityControllers];
+  firstObject = [_axEntityControllers firstObject];
+  v7 = [(ASVPreviewViewControllerInternalAccessibility *)self _axRootEntityWrapperForEntityController:firstObject];
   v8 = [(ASVPreviewViewControllerInternalAccessibility *)self _axNameForEntityWrapper:v7];
 
   if (![v8 length])
   {
     objc_opt_class();
-    v9 = [v4 safeValueForKey:@"accessibilityAssetURL"];
+    v9 = [controllerCopy safeValueForKey:@"accessibilityAssetURL"];
     v10 = __UIAccessibilityCastAsClass();
 
-    v11 = [v10 URLByDeletingPathExtension];
-    v12 = [v11 lastPathComponent];
+    uRLByDeletingPathExtension = [v10 URLByDeletingPathExtension];
+    lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
 
-    v8 = v12;
+    v8 = lastPathComponent;
   }
 
   if (![v8 length])
@@ -250,18 +250,18 @@ LABEL_14:
 
 - (CGRect)_axBoundsForControls
 {
-  v3 = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
-  [v3 bounds];
+  _axARView = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
+  [_axARView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlsViewStack];
-  v13 = v12;
-  if (v12)
+  _axControlsViewStack = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlsViewStack];
+  v13 = _axControlsViewStack;
+  if (_axControlsViewStack)
   {
-    [v12 bounds];
-    [v3 convertRect:v13 fromView:?];
+    [_axControlsViewStack bounds];
+    [_axARView convertRect:v13 fromView:?];
     MaxY = CGRectGetMaxY(v19);
     v11 = v11 - (MaxY - v7);
     v7 = MaxY;
@@ -278,16 +278,16 @@ LABEL_14:
   return result;
 }
 
-- (void)_axGetAccessibilityFrame:(CGRect *)a3 path:(id *)a4 forArrowTowardsEdge:(unint64_t)a5 isDoubleArrow:(BOOL)a6
+- (void)_axGetAccessibilityFrame:(CGRect *)frame path:(id *)path forArrowTowardsEdge:(unint64_t)edge isDoubleArrow:(BOOL)arrow
 {
-  v6 = a6;
+  arrowCopy = arrow;
   [(ASVPreviewViewControllerInternalAccessibility *)self _axBoundsForControls];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
   path = [MEMORY[0x29EDC7948] bezierPath];
-  if (a5 == 8 || a5 == 2)
+  if (edge == 8 || edge == 2)
   {
     v47.origin.x = v12;
     v47.origin.y = v14;
@@ -299,7 +299,7 @@ LABEL_14:
     v48.size.width = v16;
     v48.size.height = v18;
     v20 = MinY + (CGRectGetHeight(v48) + -80.0) * 0.5;
-    if (a5 == 2)
+    if (edge == 2)
     {
       v21 = 50.0;
       v22 = 80.0;
@@ -382,7 +382,7 @@ LABEL_14:
   }
 
   v22 = 75.0;
-  if (v6)
+  if (arrowCopy)
   {
     v31 = 75.0;
   }
@@ -402,9 +402,9 @@ LABEL_14:
   v64.size.width = v16;
   v64.size.height = v18;
   v27 = v32 + (CGRectGetWidth(v64) + -80.0) * 0.5;
-  if (a5 != 4)
+  if (edge != 4)
   {
-    if (a5 == 1)
+    if (edge == 1)
     {
       v21 = 80.0;
       v65.origin.x = v27;
@@ -422,7 +422,7 @@ LABEL_14:
       v67.size.width = 80.0;
       v67.size.height = v31;
       v34 = CGRectGetMaxY(v67);
-      if (v6)
+      if (arrowCopy)
       {
         MaxY = v34 + -25.0;
         v68.origin.x = v27;
@@ -456,7 +456,7 @@ LABEL_14:
         v73.size.height = v31;
         v37 = CGRectGetMaxY(v73);
 LABEL_20:
-        [(UIBezierPath *)path addLineToPoint:v36, v37, v44];
+        [(UIBezierPath *)path addLineToPoint:v36, v37, edgeCopy];
         v84.origin.x = v27;
         v84.origin.y = v14;
         v84.size.width = 80.0;
@@ -493,7 +493,7 @@ LABEL_20:
       goto LABEL_23;
     }
 
-    v44 = a5;
+    edgeCopy = edge;
     _AXAssert();
   }
 
@@ -518,7 +518,7 @@ LABEL_20:
   v77.size.width = 80.0;
   v77.size.height = v31;
   v39 = CGRectGetMinY(v77);
-  if (v6)
+  if (arrowCopy)
   {
     MaxY = v39 + 25.0;
     v78.origin.x = v27;
@@ -578,27 +578,27 @@ LABEL_23:
   MaxY = v42;
   v22 = 50.0;
 LABEL_7:
-  [(UIBezierPath *)path addLineToPoint:v25, MaxY, v44];
+  [(UIBezierPath *)path addLineToPoint:v25, MaxY, edgeCopy];
   [(UIBezierPath *)path closePath];
-  v30 = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
+  _axARView = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
   v62.origin.x = v27;
   v62.origin.y = v14;
   v62.size.width = v21;
   v62.size.height = v22;
-  *a3 = UIAccessibilityConvertFrameToScreenCoordinates(v62, v30);
-  *a4 = UIAccessibilityConvertPathToScreenCoordinates(path, v30);
+  *frame = UIAccessibilityConvertFrameToScreenCoordinates(v62, _axARView);
+  *path = UIAccessibilityConvertPathToScreenCoordinates(path, _axARView);
 }
 
-- (void)_axAnnotateAsControl:(id)a3
+- (void)_axAnnotateAsControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   objc_initWeak(&location, self);
   v5[0] = MEMORY[0x29EDCA5F8];
   v5[1] = 3221225472;
   v5[2] = __70__ASVPreviewViewControllerInternalAccessibility__axAnnotateAsControl___block_invoke;
   v5[3] = &unk_29F2A1D50;
   objc_copyWeak(&v6, &location);
-  [v4 _setIsAccessibilityElementBlock:v5];
+  [controlCopy _setIsAccessibilityElementBlock:v5];
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
 }
@@ -611,9 +611,9 @@ uint64_t __70__ASVPreviewViewControllerInternalAccessibility__axAnnotateAsContro
   return v2;
 }
 
-- (id)_axDescriptionForRotationInDegrees:(int64_t)a3
+- (id)_axDescriptionForRotationInDegrees:(int64_t)degrees
 {
-  v3 = round(a3 / 5.0) * 5.0;
+  v3 = round(degrees / 5.0) * 5.0;
   v4 = v3;
   v5 = 180;
   if (v3 < 180)
@@ -673,9 +673,9 @@ LABEL_17:
   return v14;
 }
 
-- (id)_axDescriptionForPitchInDegrees:(int64_t)a3
+- (id)_axDescriptionForPitchInDegrees:(int64_t)degrees
 {
-  v3 = round(a3 / 5.0) * 5.0;
+  v3 = round(degrees / 5.0) * 5.0;
   v4 = v3;
   v5 = 180;
   if (v3 < 180)
@@ -735,35 +735,35 @@ LABEL_17:
   return v14;
 }
 
-- (id)_axDescriptionForCurrentRotationForEntityController:(id)a3
+- (id)_axDescriptionForCurrentRotationForEntityController:(id)controller
 {
-  [a3 safeFloatForKey:@"assetYaw"];
+  [controller safeFloatForKey:@"assetYaw"];
 
   return [(ASVPreviewViewControllerInternalAccessibility *)self _axDescriptionForRotationInDegrees:(v4 / 0.0174532925)];
 }
 
-- (id)_axDescriptionForCurrentPitchForEntityController:(id)a3
+- (id)_axDescriptionForCurrentPitchForEntityController:(id)controller
 {
-  [a3 safeFloatForKey:@"assetPitch"];
+  [controller safeFloatForKey:@"assetPitch"];
 
   return [(ASVPreviewViewControllerInternalAccessibility *)self _axDescriptionForPitchInDegrees:(v4 / 0.0174532925)];
 }
 
-- (id)_axLabelForEntityController:(id)a3
+- (id)_axLabelForEntityController:(id)controller
 {
-  v4 = a3;
-  v5 = [(ASVPreviewViewControllerInternalAccessibility *)self _axNameForEntityController:v4];
-  v6 = [(ASVPreviewViewControllerInternalAccessibility *)self _axEmitterMode];
-  if ((v6 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  controllerCopy = controller;
+  v5 = [(ASVPreviewViewControllerInternalAccessibility *)self _axNameForEntityController:controllerCopy];
+  _axEmitterMode = [(ASVPreviewViewControllerInternalAccessibility *)self _axEmitterMode];
+  if ((_axEmitterMode & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    if (v6)
+    if (_axEmitterMode)
     {
       v7 = @"ASSET_IS_NOT_PLACED";
     }
 
     else
     {
-      if (![(ASVPreviewViewControllerInternalAccessibility *)self _axIsOffScreenForEntityController:v4])
+      if (![(ASVPreviewViewControllerInternalAccessibility *)self _axIsOffScreenForEntityController:controllerCopy])
       {
         goto LABEL_10;
       }
@@ -782,8 +782,8 @@ LABEL_17:
       goto LABEL_10;
     }
 
-    v8 = [(ASVPreviewViewControllerInternalAccessibility *)self _axDescriptionForCurrentRotationForEntityController:v4];
-    v11 = [(ASVPreviewViewControllerInternalAccessibility *)self _axDescriptionForCurrentPitchForEntityController:v4];
+    v8 = [(ASVPreviewViewControllerInternalAccessibility *)self _axDescriptionForCurrentRotationForEntityController:controllerCopy];
+    v11 = [(ASVPreviewViewControllerInternalAccessibility *)self _axDescriptionForCurrentPitchForEntityController:controllerCopy];
     v9 = __UIAXStringForVariables();
 
     v5 = v11;
@@ -795,9 +795,9 @@ LABEL_10:
   return v5;
 }
 
-- (CGRect)_axFrameForEntityController:(id)a3
+- (CGRect)_axFrameForEntityController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(ASVPreviewViewControllerInternalAccessibility *)self _axBoundsForControls];
   v6 = v5;
   v8 = v7;
@@ -805,7 +805,7 @@ LABEL_10:
   v12 = v11;
   if (([(ASVPreviewViewControllerInternalAccessibility *)self _axEmitterMode]& 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    [(ASVPreviewViewControllerInternalAccessibility *)self _axBoundingRectForEntityController:v4];
+    [(ASVPreviewViewControllerInternalAccessibility *)self _axBoundingRectForEntityController:controllerCopy];
     v31.origin.x = v6;
     v31.origin.y = v8;
     v31.size.width = v10;
@@ -824,12 +824,12 @@ LABEL_10:
     }
   }
 
-  v17 = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
+  _axARView = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
   v28.origin.x = v6;
   v28.origin.y = v8;
   v28.size.width = v10;
   v28.size.height = v12;
-  v29 = UIAccessibilityConvertFrameToScreenCoordinates(v28, v17);
+  v29 = UIAccessibilityConvertFrameToScreenCoordinates(v28, _axARView);
   v18 = v29.origin.x;
   v19 = v29.origin.y;
   v20 = v29.size.width;
@@ -846,23 +846,23 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)_axIsAccessibilityElementForEntityController:(id)a3
+- (BOOL)_axIsAccessibilityElementForEntityController:(id)controller
 {
-  v3 = [(ASVPreviewViewControllerInternalAccessibility *)self _axEntityElementsForEntityController:a3];
+  v3 = [(ASVPreviewViewControllerInternalAccessibility *)self _axEntityElementsForEntityController:controller];
   v4 = [v3 count] == 0;
 
   return v4;
 }
 
-- (id)_axCreateAssetElementForEntityController:(id)a3
+- (id)_axCreateAssetElementForEntityController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [AXEntityControllerElement alloc];
-  v6 = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
-  v7 = [(AXEntityControllerElement *)v5 initWithAccessibilityContainer:v6 entityController:v4 previewViewController:self];
+  _axARView = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
+  v7 = [(AXEntityControllerElement *)v5 initWithAccessibilityContainer:_axARView entityController:controllerCopy previewViewController:self];
 
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v4);
+  objc_initWeak(&from, controllerCopy);
   v18[0] = MEMORY[0x29EDCA5F8];
   v18[1] = 3221225472;
   v18[2] = __90__ASVPreviewViewControllerInternalAccessibility__axCreateAssetElementForEntityController___block_invoke;
@@ -942,19 +942,19 @@ id __90__ASVPreviewViewControllerInternalAccessibility__axCreateAssetElementForE
   return v4;
 }
 
-- (BOOL)_axActivateForEntityController:(id)a3 deltaYaw:(float)a4 deltaPitch:(float)a5
+- (BOOL)_axActivateForEntityController:(id)controller deltaYaw:(float)yaw deltaPitch:(float)pitch
 {
-  v8 = a3;
+  controllerCopy = controller;
   v16 = MEMORY[0x29EDCA5F8];
   v17 = 3221225472;
   v18 = __100__ASVPreviewViewControllerInternalAccessibility__axActivateForEntityController_deltaYaw_deltaPitch___block_invoke;
   v19 = &unk_29F2A1DF0;
-  v9 = v8;
+  v9 = controllerCopy;
   v20 = v9;
-  v21 = a4;
-  v22 = a5;
+  yawCopy = yaw;
+  pitchCopy = pitch;
   AXPerformSafeBlock();
-  if (a4 == 0.0)
+  if (yaw == 0.0)
   {
     [(ASVPreviewViewControllerInternalAccessibility *)self _axDescriptionForCurrentPitchForEntityController:v9];
   }
@@ -983,24 +983,24 @@ uint64_t __100__ASVPreviewViewControllerInternalAccessibility__axActivateForEnti
   return [*(a1 + 32) rotateByDeltaYaw:a2 deltaPitch:a3];
 }
 
-- (id)_axControlForRotationWithDeltaYaw:(float)a3 deltaPitch:(float)a4 nameFormat:(id)a5 hintFormat:(id)a6 shouldUseArrows:(BOOL)a7 entityController:(id)a8
+- (id)_axControlForRotationWithDeltaYaw:(float)yaw deltaPitch:(float)pitch nameFormat:(id)format hintFormat:(id)hintFormat shouldUseArrows:(BOOL)arrows entityController:(id)controller
 {
-  v9 = a7;
-  v14 = a5;
-  v15 = a6;
-  v16 = a8;
+  arrowsCopy = arrows;
+  formatCopy = format;
+  hintFormatCopy = hintFormat;
+  controllerCopy = controller;
   v17 = objc_alloc(MEMORY[0x29EDC78F8]);
-  v18 = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
-  v19 = [v17 initWithAccessibilityContainer:v18];
+  _axARView = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
+  v19 = [v17 initWithAccessibilityContainer:_axARView];
 
   [(ASVPreviewViewControllerInternalAccessibility *)self _axAnnotateAsControl:v19];
   v20 = *(MEMORY[0x29EDB90E0] + 16);
   v49 = *MEMORY[0x29EDB90E0];
   v50 = v20;
-  if (a3 == 0.0)
+  if (yaw == 0.0)
   {
     v46 = 0;
-    if (a4 < 0.0)
+    if (pitch < 0.0)
     {
       v21 = 1;
     }
@@ -1015,10 +1015,10 @@ uint64_t __100__ASVPreviewViewControllerInternalAccessibility__axActivateForEnti
     goto LABEL_11;
   }
 
-  if (v9)
+  if (arrowsCopy)
   {
     v48 = 0;
-    if (a3 >= 0.0)
+    if (yaw >= 0.0)
     {
       v21 = 8;
     }
@@ -1037,18 +1037,18 @@ LABEL_11:
 
   v47 = 0;
   v22 = &v47;
-  [(ASVPreviewViewControllerInternalAccessibility *)self _axGetAccessibilityFrame:&v49 path:&v47 forRotationControlClockwise:a3 < 0.0];
+  [(ASVPreviewViewControllerInternalAccessibility *)self _axGetAccessibilityFrame:&v49 path:&v47 forRotationControlClockwise:yaw < 0.0];
 LABEL_13:
   v24 = *v22;
   [v19 setAccessibilityFrame:{v49, v50}];
   [v19 setAccessibilityPath:v24];
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v16);
+  objc_initWeak(&from, controllerCopy);
   v40[0] = MEMORY[0x29EDCA5F8];
   v40[1] = 3221225472;
   v40[2] = __149__ASVPreviewViewControllerInternalAccessibility__axControlForRotationWithDeltaYaw_deltaPitch_nameFormat_hintFormat_shouldUseArrows_entityController___block_invoke;
   v40[3] = &unk_29F2A1E18;
-  v25 = v14;
+  v25 = formatCopy;
   v41 = v25;
   objc_copyWeak(&v42, &location);
   objc_copyWeak(&v43, &from);
@@ -1057,7 +1057,7 @@ LABEL_13:
   v36[1] = 3221225472;
   v36[2] = __149__ASVPreviewViewControllerInternalAccessibility__axControlForRotationWithDeltaYaw_deltaPitch_nameFormat_hintFormat_shouldUseArrows_entityController___block_invoke_2;
   v36[3] = &unk_29F2A1E18;
-  v26 = v15;
+  v26 = hintFormatCopy;
   v37 = v26;
   objc_copyWeak(&v38, &location);
   objc_copyWeak(&v39, &from);
@@ -1069,8 +1069,8 @@ LABEL_13:
   v31 = &unk_29F2A1E40;
   objc_copyWeak(&v32, &location);
   objc_copyWeak(&v33, &from);
-  v34 = a3;
-  v35 = a4;
+  yawCopy = yaw;
+  pitchCopy = pitch;
   [v19 _setAccessibilityActivateBlock:&v28];
   [v19 _accessibilitySetScannerActivateBehavior:{1, v28, v29, v30, v31}];
   objc_destroyWeak(&v33);
@@ -1122,24 +1122,24 @@ uint64_t __149__ASVPreviewViewControllerInternalAccessibility__axControlForRotat
   return v6;
 }
 
-- (id)_axUnifiedGestureRecognizerForEntityController:(id)a3
+- (id)_axUnifiedGestureRecognizerForEntityController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   objc_opt_class();
-  v4 = [v3 safeValueForKey:@"worldGestureRecognizer"];
+  v4 = [controllerCopy safeValueForKey:@"worldGestureRecognizer"];
   v5 = __UIAccessibilityCastAsClass();
 
   return v5;
 }
 
-- (void)_axAdjustScaleByMultiplier:(float)a3 entityController:(id)a4
+- (void)_axAdjustScaleByMultiplier:(float)multiplier entityController:(id)controller
 {
-  v5 = a4;
-  [(ASVPreviewViewControllerInternalAccessibility *)self _axAssetScaleForEntityController:v5];
-  [(ASVPreviewViewControllerInternalAccessibility *)self _axUnifiedGestureRecognizerForEntityController:v5];
-  v9 = v8 = v5;
+  controllerCopy = controller;
+  [(ASVPreviewViewControllerInternalAccessibility *)self _axAssetScaleForEntityController:controllerCopy];
+  [(ASVPreviewViewControllerInternalAccessibility *)self _axUnifiedGestureRecognizerForEntityController:controllerCopy];
+  v9 = v8 = controllerCopy;
   v6 = v9;
-  v7 = v5;
+  v7 = controllerCopy;
   AXPerformSafeBlock();
 }
 
@@ -1154,10 +1154,10 @@ uint64_t __93__ASVPreviewViewControllerInternalAccessibility__axAdjustScaleByMul
   return [v3 unifiedGestureRecognizerEndedScaling:v4];
 }
 
-- (void)_axResetToInitialScaleForEntityAction:(id)a3
+- (void)_axResetToInitialScaleForEntityAction:(id)action
 {
-  v4 = [a3 entityController];
-  v3 = v4;
+  entityController = [action entityController];
+  v3 = entityController;
   AXPerformSafeBlock();
 }
 
@@ -1170,13 +1170,13 @@ void __87__ASVPreviewViewControllerInternalAccessibility__axResetToInitialScaleF
   [v4 unifiedGestureRecognizer:v5 doubleTappedAtScreenPoint:1 onAsset:v3];
 }
 
-- (id)_axControlForScalingForEntityController:(id)a3
+- (id)_axControlForScalingForEntityController:(id)controller
 {
   v58[1] = *MEMORY[0x29EDCA608];
-  val = a3;
+  val = controller;
   v4 = objc_alloc(MEMORY[0x29EDC78F8]);
-  v5 = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
-  v6 = [v4 initWithAccessibilityContainer:v5];
+  _axARView = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
+  v6 = [v4 initWithAccessibilityContainer:_axARView];
 
   [(ASVPreviewViewControllerInternalAccessibility *)self _axAnnotateAsControl:v6];
   [(ASVPreviewViewControllerInternalAccessibility *)self _axBoundsForControls];
@@ -1285,9 +1285,9 @@ void __87__ASVPreviewViewControllerInternalAccessibility__axResetToInitialScaleF
   v29 = UIAccessibilityConvertPathToScreenCoordinates(v18, view);
   [v6 setAccessibilityPath:v29];
 
-  v30 = [v6 accessibilityPath];
-  v31 = v30;
-  PathBoundingBox = CGPathGetPathBoundingBox([v30 CGPath]);
+  accessibilityPath = [v6 accessibilityPath];
+  v31 = accessibilityPath;
+  PathBoundingBox = CGPathGetPathBoundingBox([accessibilityPath CGPath]);
   [v6 setAccessibilityFrame:{PathBoundingBox.origin.x, PathBoundingBox.origin.y, PathBoundingBox.size.width, PathBoundingBox.size.height}];
 
   objc_initWeak(&v56, self);
@@ -1405,11 +1405,11 @@ id __89__ASVPreviewViewControllerInternalAccessibility__axControlForScalingForEn
   return v4;
 }
 
-- (BOOL)_axTranslateForLevitation:(BOOL)a3 delta:(id)a4 entityController:
+- (BOOL)_axTranslateForLevitation:(BOOL)levitation delta:(id)delta entityController:
 {
   v5 = v4;
-  v6 = a3;
-  v8 = a4;
+  levitationCopy = levitation;
+  deltaCopy = delta;
   v43 = 0;
   v44 = &v43;
   v45 = 0x2020000000;
@@ -1419,7 +1419,7 @@ id __89__ASVPreviewViewControllerInternalAccessibility__axControlForScalingForEn
   v42[9] = __98__ASVPreviewViewControllerInternalAccessibility__axTranslateForLevitation_delta_entityController___block_invoke;
   v42[10] = &unk_29F2A1EE0;
   v42[12] = &v43;
-  v9 = v8;
+  v9 = deltaCopy;
   v42[11] = v9;
   AXPerformSafeBlock();
   v10 = v44[3];
@@ -1438,7 +1438,7 @@ id __89__ASVPreviewViewControllerInternalAccessibility__axControlForScalingForEn
   }
 
   v15 = vadd_f32(v10, v5);
-  if (v6)
+  if (levitationCopy)
   {
     v16 = v42;
     v42[0] = MEMORY[0x29EDCA5F8];
@@ -1481,7 +1481,7 @@ id __89__ASVPreviewViewControllerInternalAccessibility__axControlForScalingForEn
   v22 = vmvn_s8(vceq_f32(v10, v21));
   if ((v22.i32[0] | v22.i32[1]))
   {
-    if (!v6)
+    if (!levitationCopy)
     {
       v32 = [(ASVPreviewViewControllerInternalAccessibility *)self _axDescriptionForCurrentPositionForEntityController:v20];
       goto LABEL_16;
@@ -1575,17 +1575,17 @@ uint64_t __121__ASVPreviewViewControllerInternalAccessibility__axControlForTrans
   return v6;
 }
 
-- (id)_axDescriptionForCurrentPositionForEntityController:(id)a3
+- (id)_axDescriptionForCurrentPositionForEntityController:(id)controller
 {
-  v4 = a3;
-  v5 = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
-  [v5 bounds];
+  controllerCopy = controller;
+  _axARView = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
+  [_axARView bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  [(ASVPreviewViewControllerInternalAccessibility *)self _axBoundingRectForEntityController:v4];
+  [(ASVPreviewViewControllerInternalAccessibility *)self _axBoundingRectForEntityController:controllerCopy];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -1699,16 +1699,16 @@ LABEL_18:
   return v26;
 }
 
-- (CGRect)_axBoundingRectForEntityController:(id)a3
+- (CGRect)_axBoundingRectForEntityController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = MEMORY[0x29EDB90D8];
   v6 = *MEMORY[0x29EDB90D8];
   v7 = *(MEMORY[0x29EDB90D8] + 8);
   v8 = *(MEMORY[0x29EDB90D8] + 16);
   v9 = *(MEMORY[0x29EDB90D8] + 24);
-  v10 = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
-  if (v10)
+  _axARView = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
+  if (_axARView)
   {
     v26 = 0;
     v27 = &v26;
@@ -1717,8 +1717,8 @@ LABEL_18:
     v11 = v5[1];
     v30 = *v5;
     v31 = v11;
-    v24 = v4;
-    v25 = v10;
+    v24 = controllerCopy;
+    v25 = _axARView;
     AXPerformSafeBlock();
     if (!CGRectIsNull(v27[1]))
     {
@@ -1758,16 +1758,16 @@ uint64_t __84__ASVPreviewViewControllerInternalAccessibility__axBoundingRectForE
   return result;
 }
 
-- (CGRect)_axBoundingRectForEntityWrapper:(id)a3
+- (CGRect)_axBoundingRectForEntityWrapper:(id)wrapper
 {
-  v4 = a3;
+  wrapperCopy = wrapper;
   v5 = MEMORY[0x29EDB90D8];
   v6 = *MEMORY[0x29EDB90D8];
   v7 = *(MEMORY[0x29EDB90D8] + 8);
   v8 = *(MEMORY[0x29EDB90D8] + 16);
   v9 = *(MEMORY[0x29EDB90D8] + 24);
-  v10 = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
-  if (v10)
+  _axARView = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
+  if (_axARView)
   {
     v26 = 0;
     v27 = &v26;
@@ -1776,8 +1776,8 @@ uint64_t __84__ASVPreviewViewControllerInternalAccessibility__axBoundingRectForE
     v11 = v5[1];
     v30 = *v5;
     v31 = v11;
-    v24 = v4;
-    v25 = v10;
+    v24 = wrapperCopy;
+    v25 = _axARView;
     AXPerformSafeBlock();
     if (!CGRectIsNull(v27[1]))
     {
@@ -1819,28 +1819,28 @@ uint64_t __81__ASVPreviewViewControllerInternalAccessibility__axBoundingRectForE
 
 - (int64_t)_axEmitterMode
 {
-  v2 = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
-  v3 = [v2 safeIntegerForKey:@"emitterMode"];
+  _axARView = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
+  v3 = [_axARView safeIntegerForKey:@"emitterMode"];
 
   return v3;
 }
 
-- (id)_axEntityElementsForEntityController:(id)a3
+- (id)_axEntityElementsForEntityController:(id)controller
 {
   v45 = *MEMORY[0x29EDCA608];
-  v4 = a3;
-  v5 = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
-  v6 = [(ASVPreviewViewControllerInternalAccessibility *)self _axRootEntityController];
+  controllerCopy = controller;
+  _axARView = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
+  _axRootEntityController = [(ASVPreviewViewControllerInternalAccessibility *)self _axRootEntityController];
 
-  if (v6 == v4)
+  if (_axRootEntityController == controllerCopy)
   {
-    v7 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v8 = [(ASVPreviewViewControllerInternalAccessibility *)self _axEntityControllers];
-    v9 = [v8 countByEnumeratingWithState:&v40 objects:v44 count:16];
+    _axEntityControllers = [(ASVPreviewViewControllerInternalAccessibility *)self _axEntityControllers];
+    v9 = [_axEntityControllers countByEnumeratingWithState:&v40 objects:v44 count:16];
     if (v9)
     {
       v10 = *v41;
@@ -1850,12 +1850,12 @@ uint64_t __81__ASVPreviewViewControllerInternalAccessibility__axBoundingRectForE
         {
           if (*v41 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(_axEntityControllers);
           }
 
           v12 = *(*(&v40 + 1) + 8 * i);
-          v13 = [(ASVPreviewViewControllerInternalAccessibility *)self _axRootEntityController];
-          v14 = v12 == v13;
+          _axRootEntityController2 = [(ASVPreviewViewControllerInternalAccessibility *)self _axRootEntityController];
+          v14 = v12 == _axRootEntityController2;
 
           if (v14)
           {
@@ -1869,10 +1869,10 @@ uint64_t __81__ASVPreviewViewControllerInternalAccessibility__axBoundingRectForE
           }
 
           v15 = [(ASVPreviewViewControllerInternalAccessibility *)self _axEntityWrappersForEntityController:v12];
-          [v7 addObjectsFromArray:v15];
+          [array addObjectsFromArray:v15];
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v40 objects:v44 count:16];
+        v9 = [_axEntityControllers countByEnumeratingWithState:&v40 objects:v44 count:16];
         if (v9)
         {
           continue;
@@ -1887,7 +1887,7 @@ LABEL_15:
 
   else
   {
-    v7 = [(ASVPreviewViewControllerInternalAccessibility *)self _axEntityWrappersForEntityController:v4];
+    array = [(ASVPreviewViewControllerInternalAccessibility *)self _axEntityWrappersForEntityController:controllerCopy];
   }
 
   v39 = 0;
@@ -1903,9 +1903,9 @@ LABEL_15:
   v28 = __86__ASVPreviewViewControllerInternalAccessibility__axEntityElementsForEntityController___block_invoke;
   v29 = &unk_29F2A1CD8;
   v32 = &v33;
-  v17 = v5;
+  v17 = _axARView;
   v30 = v17;
-  v18 = v7;
+  v18 = array;
   v31 = v18;
   AXPerformSafeBlock();
   v19 = v34[5];
@@ -1988,25 +1988,25 @@ LABEL_6:
   return v3;
 }
 
-- (id)_axObjectModeControlsForEntityController:(id)a3 isRTL:(BOOL)a4
+- (id)_axObjectModeControlsForEntityController:(id)controller isRTL:(BOOL)l
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [MEMORY[0x29EDB8DE8] array];
-  v8 = [(ASVPreviewViewControllerInternalAccessibility *)self _axCreateAssetElementForEntityController:v6];
-  [v7 addObject:v8];
+  lCopy = l;
+  controllerCopy = controller;
+  array = [MEMORY[0x29EDB8DE8] array];
+  v8 = [(ASVPreviewViewControllerInternalAccessibility *)self _axCreateAssetElementForEntityController:controllerCopy];
+  [array addObject:v8];
 
   v9 = accessibilityLocalizedString(@"ROTATION_CONTROL_YAW_HINT");
   v10 = accessibilityLocalizedString(@"ROTATION_CONTROL_PITCH_HINT");
   v11 = accessibilityLocalizedString(@"ROTATION_CONTROL_CLOCKWISE");
   LODWORD(v12) = -1090123118;
-  v13 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForRotationWithDeltaYaw:v11 deltaPitch:v9 nameFormat:1 hintFormat:v6 shouldUseArrows:v12 entityController:0.0];
+  v13 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForRotationWithDeltaYaw:v11 deltaPitch:v9 nameFormat:1 hintFormat:controllerCopy shouldUseArrows:v12 entityController:0.0];
 
   v14 = accessibilityLocalizedString(@"ROTATION_CONTROL_COUNTERCLOCKWISE");
   LODWORD(v15) = 1057360530;
-  v16 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForRotationWithDeltaYaw:v14 deltaPitch:v9 nameFormat:1 hintFormat:v6 shouldUseArrows:v15 entityController:0.0];
+  v16 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForRotationWithDeltaYaw:v14 deltaPitch:v9 nameFormat:1 hintFormat:controllerCopy shouldUseArrows:v15 entityController:0.0];
 
-  if (v4)
+  if (lCopy)
   {
     v17 = v16;
   }
@@ -2016,7 +2016,7 @@ LABEL_6:
     v17 = v13;
   }
 
-  if (v4)
+  if (lCopy)
   {
     v18 = v13;
   }
@@ -2026,57 +2026,57 @@ LABEL_6:
     v18 = v16;
   }
 
-  [v7 addObject:v17];
-  [v7 addObject:v18];
+  [array addObject:v17];
+  [array addObject:v18];
   v19 = accessibilityLocalizedString(@"ROTATION_CONTROL_AWAY");
   LODWORD(v20) = -1098511726;
-  v21 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForRotationWithDeltaYaw:v19 deltaPitch:v10 nameFormat:1 hintFormat:v6 shouldUseArrows:0.0 entityController:v20];
-  [v7 addObject:v21];
+  v21 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForRotationWithDeltaYaw:v19 deltaPitch:v10 nameFormat:1 hintFormat:controllerCopy shouldUseArrows:0.0 entityController:v20];
+  [array addObject:v21];
 
   v22 = accessibilityLocalizedString(@"ROTATION_CONTROL_TOWARD");
   LODWORD(v23) = 1048971922;
-  v24 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForRotationWithDeltaYaw:v22 deltaPitch:v10 nameFormat:1 hintFormat:v6 shouldUseArrows:0.0 entityController:v23];
-  [v7 addObject:v24];
+  v24 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForRotationWithDeltaYaw:v22 deltaPitch:v10 nameFormat:1 hintFormat:controllerCopy shouldUseArrows:0.0 entityController:v23];
+  [array addObject:v24];
 
-  v25 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForScalingForEntityController:v6];
-  [v7 addObject:v25];
+  v25 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForScalingForEntityController:controllerCopy];
+  [array addObject:v25];
 
-  return v7;
+  return array;
 }
 
-- (id)_axARModeControlsForEntityController:(id)a3 isRTL:(BOOL)a4
+- (id)_axARModeControlsForEntityController:(id)controller isRTL:(BOOL)l
 {
-  v41 = a4;
+  lCopy = l;
   v42[4] = *MEMORY[0x29EDCA608];
-  v5 = a3;
-  v6 = [MEMORY[0x29EDB8DE8] array];
-  v7 = [(ASVPreviewViewControllerInternalAccessibility *)self _axCreateAssetElementForEntityController:v5];
-  [v6 addObject:v7];
+  controllerCopy = controller;
+  array = [MEMORY[0x29EDB8DE8] array];
+  v7 = [(ASVPreviewViewControllerInternalAccessibility *)self _axCreateAssetElementForEntityController:controllerCopy];
+  [array addObject:v7];
 
   v8 = accessibilityLocalizedString(@"TRANSLATION_CONTROL_LEFT");
-  v9 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForTranslationForLevitation:0 delta:v8 nameFormat:v5 entityController:COERCE_DOUBLE(3259498496)];
+  v9 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForTranslationForLevitation:0 delta:v8 nameFormat:controllerCopy entityController:COERCE_DOUBLE(3259498496)];
 
   v10 = accessibilityLocalizedString(@"TRANSLATION_CONTROL_RIGHT");
-  v11 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForTranslationForLevitation:0 delta:v10 nameFormat:v5 entityController:COERCE_DOUBLE(1112014848)];
+  v11 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForTranslationForLevitation:0 delta:v10 nameFormat:controllerCopy entityController:COERCE_DOUBLE(1112014848)];
 
   v12 = accessibilityLocalizedString(@"TRANSLATION_CONTROL_BACKWARD");
-  v13 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForTranslationForLevitation:0 delta:v12 nameFormat:v5 entityController:-2.0615843e11];
+  v13 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForTranslationForLevitation:0 delta:v12 nameFormat:controllerCopy entityController:-2.0615843e11];
   v38 = v13;
 
   v14 = accessibilityLocalizedString(@"TRANSLATION_CONTROL_FORWARD");
-  v15 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForTranslationForLevitation:0 delta:v14 nameFormat:v5 entityController:2.0615843e11];
+  v15 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForTranslationForLevitation:0 delta:v14 nameFormat:controllerCopy entityController:2.0615843e11];
   v37 = v15;
 
   v16 = accessibilityLocalizedString(@"TRANSLATION_CONTROL_UP");
-  v17 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForTranslationForLevitation:1 delta:v16 nameFormat:v5 entityController:-2.0615843e11];
+  v17 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForTranslationForLevitation:1 delta:v16 nameFormat:controllerCopy entityController:-2.0615843e11];
   v36 = v17;
 
   v18 = accessibilityLocalizedString(@"TRANSLATION_CONTROL_DOWN");
-  v19 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForTranslationForLevitation:1 delta:v18 nameFormat:v5 entityController:2.0615843e11];
+  v19 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForTranslationForLevitation:1 delta:v18 nameFormat:controllerCopy entityController:2.0615843e11];
 
   v39 = v11;
   v40 = v9;
-  if (v41)
+  if (lCopy)
   {
     v20 = v11;
   }
@@ -2086,7 +2086,7 @@ LABEL_6:
     v20 = v9;
   }
 
-  if (v41)
+  if (lCopy)
   {
     v21 = v9;
   }
@@ -2096,25 +2096,25 @@ LABEL_6:
     v21 = v11;
   }
 
-  [v6 addObject:v20];
-  [v6 addObject:v21];
+  [array addObject:v20];
+  [array addObject:v21];
   v42[0] = v13;
   v42[1] = v15;
   v42[2] = v17;
   v42[3] = v19;
   v22 = [MEMORY[0x29EDB8D80] arrayWithObjects:v42 count:4];
-  [v6 addObjectsFromArray:v22];
+  [array addObjectsFromArray:v22];
 
   v23 = accessibilityLocalizedString(@"ROTATION_CONTROL_YAW_HINT");
   v24 = accessibilityLocalizedString(@"ROTATION_CONTROL_CLOCKWISE");
   LODWORD(v25) = -1090123118;
-  v26 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForRotationWithDeltaYaw:v24 deltaPitch:v23 nameFormat:0 hintFormat:v5 shouldUseArrows:v25 entityController:0.0];
+  v26 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForRotationWithDeltaYaw:v24 deltaPitch:v23 nameFormat:0 hintFormat:controllerCopy shouldUseArrows:v25 entityController:0.0];
 
   v27 = accessibilityLocalizedString(@"ROTATION_CONTROL_COUNTERCLOCKWISE");
   LODWORD(v28) = 1057360530;
-  v29 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForRotationWithDeltaYaw:v27 deltaPitch:v23 nameFormat:0 hintFormat:v5 shouldUseArrows:v28 entityController:0.0];
+  v29 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForRotationWithDeltaYaw:v27 deltaPitch:v23 nameFormat:0 hintFormat:controllerCopy shouldUseArrows:v28 entityController:0.0];
   v30 = v29;
-  if (v41)
+  if (lCopy)
   {
     v31 = v29;
   }
@@ -2124,7 +2124,7 @@ LABEL_6:
     v31 = v26;
   }
 
-  if (v41)
+  if (lCopy)
   {
     v32 = v26;
   }
@@ -2134,43 +2134,43 @@ LABEL_6:
     v32 = v29;
   }
 
-  [v6 addObject:v31];
-  [v6 addObject:v32];
-  v33 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForScalingForEntityController:v5];
-  [v6 addObject:v33];
+  [array addObject:v31];
+  [array addObject:v32];
+  v33 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlForScalingForEntityController:controllerCopy];
+  [array addObject:v33];
 
   v34 = *MEMORY[0x29EDCA608];
 
-  return v6;
+  return array;
 }
 
 - (void)_axUpdateARViewAccessibilityElements
 {
   v20 = *MEMORY[0x29EDCA608];
-  v3 = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
-  v4 = v3;
-  if (v3)
+  _axARView = [(ASVPreviewViewControllerInternalAccessibility *)self _axARView];
+  v4 = _axARView;
+  if (_axARView)
   {
-    v5 = [v3 effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [_axARView effectiveUserInterfaceLayoutDirection];
     if (([(ASVPreviewViewControllerInternalAccessibility *)self _axEmitterMode]& 0xFFFFFFFFFFFFFFFELL) == 2)
     {
-      v6 = [(ASVPreviewViewControllerInternalAccessibility *)self _axARModeControls];
-      if (v6)
+      _axARModeControls = [(ASVPreviewViewControllerInternalAccessibility *)self _axARModeControls];
+      if (_axARModeControls)
       {
 LABEL_15:
-        [v4 setAccessibilityElements:{v6, v15}];
+        [v4 setAccessibilityElements:{_axARModeControls, v15}];
 
         goto LABEL_16;
       }
 
-      v7 = [(ASVPreviewViewControllerInternalAccessibility *)self _axEntityControllers];
-      v6 = [MEMORY[0x29EDB8DE8] array];
+      _axEntityControllers = [(ASVPreviewViewControllerInternalAccessibility *)self _axEntityControllers];
+      _axARModeControls = [MEMORY[0x29EDB8DE8] array];
       v15 = 0u;
       v16 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v8 = v7;
-      v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      _axRootEntityController = _axEntityControllers;
+      v9 = [_axRootEntityController countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
         v10 = v9;
@@ -2181,30 +2181,30 @@ LABEL_15:
           {
             if (*v16 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(_axRootEntityController);
             }
 
-            v13 = [(ASVPreviewViewControllerInternalAccessibility *)self _axARModeControlsForEntityController:*(*(&v15 + 1) + 8 * i) isRTL:v5 == 1, v15];
-            [v6 addObjectsFromArray:v13];
+            v13 = [(ASVPreviewViewControllerInternalAccessibility *)self _axARModeControlsForEntityController:*(*(&v15 + 1) + 8 * i) isRTL:effectiveUserInterfaceLayoutDirection == 1, v15];
+            [_axARModeControls addObjectsFromArray:v13];
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v10 = [_axRootEntityController countByEnumeratingWithState:&v15 objects:v19 count:16];
         }
 
         while (v10);
       }
 
-      [(ASVPreviewViewControllerInternalAccessibility *)self _axSetARModeControls:v6];
+      [(ASVPreviewViewControllerInternalAccessibility *)self _axSetARModeControls:_axARModeControls];
     }
 
     else
     {
-      v8 = [(ASVPreviewViewControllerInternalAccessibility *)self _axRootEntityController];
-      v6 = [(ASVPreviewViewControllerInternalAccessibility *)self _axObjectModeControls];
-      if (!v6)
+      _axRootEntityController = [(ASVPreviewViewControllerInternalAccessibility *)self _axRootEntityController];
+      _axARModeControls = [(ASVPreviewViewControllerInternalAccessibility *)self _axObjectModeControls];
+      if (!_axARModeControls)
       {
-        v6 = [(ASVPreviewViewControllerInternalAccessibility *)self _axObjectModeControlsForEntityController:v8 isRTL:v5 == 1];
-        [(ASVPreviewViewControllerInternalAccessibility *)self _axSetObjectModeControls:v6];
+        _axARModeControls = [(ASVPreviewViewControllerInternalAccessibility *)self _axObjectModeControlsForEntityController:_axRootEntityController isRTL:effectiveUserInterfaceLayoutDirection == 1];
+        [(ASVPreviewViewControllerInternalAccessibility *)self _axSetObjectModeControls:_axARModeControls];
       }
     }
 
@@ -2216,13 +2216,13 @@ LABEL_16:
   v14 = *MEMORY[0x29EDCA608];
 }
 
-- (void)handleTapAtPointWithPoint:(CGPoint)a3
+- (void)handleTapAtPointWithPoint:(CGPoint)point
 {
   v10.receiver = self;
   v10.super_class = ASVPreviewViewControllerInternalAccessibility;
-  [(ASVPreviewViewControllerInternalAccessibility *)&v10 handleTapAtPointWithPoint:a3.x, a3.y];
-  v4 = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlsViewStack];
-  [v4 alpha];
+  [(ASVPreviewViewControllerInternalAccessibility *)&v10 handleTapAtPointWithPoint:point.x, point.y];
+  _axControlsViewStack = [(ASVPreviewViewControllerInternalAccessibility *)self _axControlsViewStack];
+  [_axControlsViewStack alpha];
   v6 = v5;
 
   v7 = *MEMORY[0x29EDC7EA8];
@@ -2242,29 +2242,29 @@ LABEL_16:
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
 }
 
-- (BOOL)_axIsOffScreenForEntityWrapper:(id)a3
+- (BOOL)_axIsOffScreenForEntityWrapper:(id)wrapper
 {
-  v4 = [(ASVPreviewViewControllerInternalAccessibility *)self _axIdentifierForEntityWrapper:a3];
+  v4 = [(ASVPreviewViewControllerInternalAccessibility *)self _axIdentifierForEntityWrapper:wrapper];
   if (v4)
   {
-    v5 = [(ASVPreviewViewControllerInternalAccessibility *)self _axEntityIdentifiersToOffScreenState];
-    v6 = [v5 objectForKeyedSubscript:v4];
-    v7 = [v6 BOOLValue];
+    _axEntityIdentifiersToOffScreenState = [(ASVPreviewViewControllerInternalAccessibility *)self _axEntityIdentifiersToOffScreenState];
+    v6 = [_axEntityIdentifiersToOffScreenState objectForKeyedSubscript:v4];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
-- (void)_axCheckForAppearanceOfObjectsWithTimer:(id)a3
+- (void)_axCheckForAppearanceOfObjectsWithTimer:(id)timer
 {
   v48 = *MEMORY[0x29EDCA608];
-  v32 = [MEMORY[0x29EDB8DE8] array];
-  v33 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
+  array2 = [MEMORY[0x29EDB8DE8] array];
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
@@ -2354,12 +2354,12 @@ LABEL_20:
           v18 = [(ASVPreviewViewControllerInternalAccessibility *)self _axNameForEntityController:v5];
           if (v17)
           {
-            v19 = v33;
+            v19 = array2;
           }
 
           else
           {
-            v19 = v32;
+            v19 = array;
           }
 
           [v19 addObject:v18];
@@ -2372,14 +2372,14 @@ LABEL_20:
     while (v36);
   }
 
-  v20 = v33;
-  if (!-[ASVPreviewViewControllerInternalAccessibility _axIsFirstVisibilityAnnouncement](self, "_axIsFirstVisibilityAnnouncement") && ([v32 count] || objc_msgSend(v33, "count")))
+  v20 = array2;
+  if (!-[ASVPreviewViewControllerInternalAccessibility _axIsFirstVisibilityAnnouncement](self, "_axIsFirstVisibilityAnnouncement") && ([array count] || objc_msgSend(array2, "count")))
   {
-    if ([v33 count])
+    if ([array2 count])
     {
       v21 = MEMORY[0x29EDBA0F8];
       v22 = accessibilityLocalizedString(@"ASSETS_MOVED_OFF_SCREEN");
-      v23 = MEMORY[0x29C2C9B00](v33);
+      v23 = MEMORY[0x29C2C9B00](array2);
       v30 = [v21 localizedStringWithFormat:v22, v23];
       v31 = @"__AXStringForVariablesSentinel";
       v24 = __UIAXStringForVariables();
@@ -2390,11 +2390,11 @@ LABEL_20:
       v24 = 0;
     }
 
-    if ([v32 count])
+    if ([array count])
     {
       v25 = MEMORY[0x29EDBA0F8];
       v26 = accessibilityLocalizedString(@"ASSETS_MOVED_ON_SCREEN");
-      v27 = MEMORY[0x29C2C9B00](v32);
+      v27 = MEMORY[0x29C2C9B00](array);
       v30 = [v25 localizedStringWithFormat:v26, v27];
       v31 = @"__AXStringForVariablesSentinel";
       v28 = __UIAXStringForVariables();
@@ -2404,7 +2404,7 @@ LABEL_20:
 
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v24);
 
-    v20 = v33;
+    v20 = array2;
   }
 
   [(ASVPreviewViewControllerInternalAccessibility *)self _axSetIsFirstVisibilityAnnouncement:0, v30, v31];
@@ -2422,14 +2422,14 @@ LABEL_20:
   LOBYTE(location) = 0;
   objc_opt_class();
   v3 = __UIAccessibilityCastAsClass();
-  v4 = [v3 view];
-  v5 = [v4 window];
+  view = [v3 view];
+  window = [view window];
 
-  if (v5)
+  if (window)
   {
-    v6 = [(ASVPreviewViewControllerInternalAccessibility *)self _axTimerForVisibilityAnnouncements];
+    _axTimerForVisibilityAnnouncements = [(ASVPreviewViewControllerInternalAccessibility *)self _axTimerForVisibilityAnnouncements];
 
-    if (!v6)
+    if (!_axTimerForVisibilityAnnouncements)
     {
       [(ASVPreviewViewControllerInternalAccessibility *)self _axSetIsFirstVisibilityAnnouncement:1];
       objc_initWeak(&location, self);
@@ -2450,8 +2450,8 @@ LABEL_20:
   else
   {
 LABEL_5:
-    v9 = [(ASVPreviewViewControllerInternalAccessibility *)self _axTimerForVisibilityAnnouncements];
-    [v9 invalidate];
+    _axTimerForVisibilityAnnouncements2 = [(ASVPreviewViewControllerInternalAccessibility *)self _axTimerForVisibilityAnnouncements];
+    [_axTimerForVisibilityAnnouncements2 invalidate];
 
     [(ASVPreviewViewControllerInternalAccessibility *)self _axSetTimerForVisibilityAnnouncements:0];
   }
@@ -2464,23 +2464,23 @@ void __89__ASVPreviewViewControllerInternalAccessibility__axToggleVisibilityAnno
   [WeakRetained _axCheckForAppearanceOfObjectsWithTimer:v3];
 }
 
-- (void)_axUpdateForOldEmitterMode:(int64_t)a3
+- (void)_axUpdateForOldEmitterMode:(int64_t)mode
 {
-  v5 = [(ASVPreviewViewControllerInternalAccessibility *)self _axEmitterMode];
-  if (v5 != a3)
+  _axEmitterMode = [(ASVPreviewViewControllerInternalAccessibility *)self _axEmitterMode];
+  if (_axEmitterMode != mode)
   {
-    if (a3 == 3 && v5 == 2)
+    if (mode == 3 && _axEmitterMode == 2)
     {
       v6 = *MEMORY[0x29EDC7EA8];
       v7 = MEMORY[0x29EDBA0F8];
       v8 = accessibilityLocalizedString(@"ASSET_PLACED_IN_WORLD");
-      v9 = [(ASVPreviewViewControllerInternalAccessibility *)self _axRootEntityController];
-      v10 = [(ASVPreviewViewControllerInternalAccessibility *)self _axNameForEntityController:v9];
+      _axRootEntityController = [(ASVPreviewViewControllerInternalAccessibility *)self _axRootEntityController];
+      v10 = [(ASVPreviewViewControllerInternalAccessibility *)self _axNameForEntityController:_axRootEntityController];
       v11 = [v7 localizedStringWithFormat:v8, v10];
       UIAccessibilityPostNotification(v6, v11);
     }
 
-    else if (((a3 & 0xFFFFFFFFFFFFFFFELL) == 2) != ((v5 & 0xFFFFFFFFFFFFFFFELL) == 2))
+    else if (((mode & 0xFFFFFFFFFFFFFFFELL) == 2) != ((_axEmitterMode & 0xFFFFFFFFFFFFFFFELL) == 2))
     {
       [(ASVPreviewViewControllerInternalAccessibility *)self _axUpdateARViewAccessibilityElements];
       UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
@@ -2492,29 +2492,29 @@ void __89__ASVPreviewViewControllerInternalAccessibility__axToggleVisibilityAnno
 
 - (void)updateInterfaceState
 {
-  v3 = [(ASVPreviewViewControllerInternalAccessibility *)self _axEmitterMode];
+  _axEmitterMode = [(ASVPreviewViewControllerInternalAccessibility *)self _axEmitterMode];
   v4.receiver = self;
   v4.super_class = ASVPreviewViewControllerInternalAccessibility;
   [(ASVPreviewViewControllerInternalAccessibility *)&v4 updateInterfaceState];
-  [(ASVPreviewViewControllerInternalAccessibility *)self _axUpdateForOldEmitterMode:v3];
+  [(ASVPreviewViewControllerInternalAccessibility *)self _axUpdateForOldEmitterMode:_axEmitterMode];
 }
 
-- (void)entityController:(id)a3 doubleTappedAt:(CGPoint)a4
+- (void)entityController:(id)controller doubleTappedAt:(CGPoint)at
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = at.y;
+  x = at.x;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = ASVPreviewViewControllerInternalAccessibility;
-  [(ASVPreviewViewControllerInternalAccessibility *)&v12 entityController:v7 doubleTappedAt:x, y];
+  [(ASVPreviewViewControllerInternalAccessibility *)&v12 entityController:controllerCopy doubleTappedAt:x, y];
   v8 = dispatch_time(0, 500000000);
   v10[0] = MEMORY[0x29EDCA5F8];
   v10[1] = 3221225472;
   v10[2] = __81__ASVPreviewViewControllerInternalAccessibility_entityController_doubleTappedAt___block_invoke;
   v10[3] = &unk_29F2A1FD0;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
+  v11 = controllerCopy;
+  v9 = controllerCopy;
   dispatch_after(v8, MEMORY[0x29EDCA578], v10);
 }
 

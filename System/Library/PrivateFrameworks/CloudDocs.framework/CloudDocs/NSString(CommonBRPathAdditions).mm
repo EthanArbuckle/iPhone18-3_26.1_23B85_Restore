@@ -7,8 +7,8 @@
 
 - (id)br_stringByDeletingPathBounceNo:()CommonBRPathAdditions andPathExtension:
 {
-  v7 = [a1 fileSystemRepresentation];
-  v8 = _extensionInFilename(v7, 0);
+  fileSystemRepresentation = [self fileSystemRepresentation];
+  v8 = _extensionInFilename(fileSystemRepresentation, 0);
   v9 = v8;
   if (a4)
   {
@@ -20,7 +20,7 @@
 
     *a4 = 0;
 LABEL_8:
-    v11 = strlen(v7);
+    v11 = strlen(fileSystemRepresentation);
     v10 = 1;
     if (!v11)
     {
@@ -37,7 +37,7 @@ LABEL_8:
 
 LABEL_5:
   v10 = 0;
-  v11 = &v9[~v7];
+  v11 = &v9[~fileSystemRepresentation];
   if (!v11)
   {
     goto LABEL_15;
@@ -45,7 +45,7 @@ LABEL_5:
 
 LABEL_9:
   v12 = 1 - v11;
-  v13 = &v7[v11];
+  v13 = &fileSystemRepresentation[v11];
   while ((*(v13 - 1) - 48) <= 9)
   {
     ++v12;
@@ -108,27 +108,27 @@ LABEL_17:
 
   if (v15)
   {
-    if (v7[v11])
+    if (fileSystemRepresentation[v11])
     {
-      v16 = [MEMORY[0x1E696AC08] defaultManager];
-      v17 = [v16 stringWithFileSystemRepresentation:v7 length:v11];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      selfCopy = [defaultManager stringWithFileSystemRepresentation:fileSystemRepresentation length:v11];
     }
 
     else
     {
-      v17 = a1;
+      selfCopy = self;
     }
   }
 
   else
   {
     v24 = 0;
-    asprintf(&v24, "%.*s.%s", v11, v7, v9);
-    v17 = [MEMORY[0x1E696AEC0] br_pathWithFileSystemRepresentation:v24];
+    asprintf(&v24, "%.*s.%s", v11, fileSystemRepresentation, v9);
+    selfCopy = [MEMORY[0x1E696AEC0] br_pathWithFileSystemRepresentation:v24];
     free(v24);
   }
 
-  return v17;
+  return selfCopy;
 }
 
 + (char)br_pathWithFileSystemRepresentation:()CommonBRPathAdditions
@@ -136,8 +136,8 @@ LABEL_17:
   v3 = a3;
   if (a3)
   {
-    v4 = [MEMORY[0x1E696AC08] defaultManager];
-    v3 = [v4 stringWithFileSystemRepresentation:v3 length:strlen(v3)];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v3 = [defaultManager stringWithFileSystemRepresentation:v3 length:strlen(v3)];
   }
 
   return v3;

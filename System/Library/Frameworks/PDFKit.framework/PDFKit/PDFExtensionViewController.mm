@@ -1,35 +1,35 @@
 @interface PDFExtensionViewController
 - (PDFExtensionViewController)init;
-- (uint64_t)updatePDFViewLayout:(double)a3 scrollViewFrame:(double)a4 safeAreaInsets:(double)a5 zoomScale:(double)a6;
-- (void)_annotationHitNotification:(id)a3;
-- (void)_annotationLongPressNotification:(id)a3;
-- (void)_goToDestination:(id)a3;
-- (void)_goToPage:(id)a3;
-- (void)_pageChangedNotification:(id)a3;
-- (void)_pdfViewZoomToRect:(id)a3;
-- (void)_selectionChangedNotification:(id)a3;
-- (void)_selectionPointsChangedNotification:(id)a3;
+- (uint64_t)updatePDFViewLayout:(double)layout scrollViewFrame:(double)frame safeAreaInsets:(double)insets zoomScale:(double)scale;
+- (void)_annotationHitNotification:(id)notification;
+- (void)_annotationLongPressNotification:(id)notification;
+- (void)_goToDestination:(id)destination;
+- (void)_goToPage:(id)page;
+- (void)_pageChangedNotification:(id)notification;
+- (void)_pdfViewZoomToRect:(id)rect;
+- (void)_selectionChangedNotification:(id)notification;
+- (void)_selectionPointsChangedNotification:(id)notification;
 - (void)_setupDocumentViewSize;
-- (void)_textSelectionDidCopyNotification:(id)a3;
-- (void)_textSelectionShowTextSelectionMenu:(id)a3;
+- (void)_textSelectionDidCopyNotification:(id)notification;
+- (void)_textSelectionShowTextSelectionMenu:(id)menu;
 - (void)_updateDocumentIsLocked;
 - (void)_updatePageCount;
 - (void)_updateTextSelectionPoints;
-- (void)_zoomToRect:(CGRect)a3;
+- (void)_zoomToRect:(CGRect)rect;
 - (void)cancelFindString;
-- (void)cancelFindStringWithHighlightsCleared:(BOOL)a3;
+- (void)cancelFindStringWithHighlightsCleared:(BOOL)cleared;
 - (void)clearSearchHighlights;
-- (void)didMatchString:(id)a3;
-- (void)documentDidEndDocumentFind:(id)a3;
-- (void)findString:(id)a3 withOptions:(unint64_t)a4;
-- (void)focusOnSearchResultAtIndex:(unint64_t)a3;
-- (void)goToPageIndex:(int64_t)a3;
-- (void)handleGesture:(unint64_t)a3 state:(int64_t)a4 location:(CGPoint)a5 locationOfFirstTouch:(CGPoint)a6 isIndirectTouch:(BOOL)a7;
-- (void)pointerRegionForLocation:(CGPoint)a3;
-- (void)setDocumentData:(id)a3;
+- (void)didMatchString:(id)string;
+- (void)documentDidEndDocumentFind:(id)find;
+- (void)findString:(id)string withOptions:(unint64_t)options;
+- (void)focusOnSearchResultAtIndex:(unint64_t)index;
+- (void)goToPageIndex:(int64_t)index;
+- (void)handleGesture:(unint64_t)gesture state:(int64_t)state location:(CGPoint)location locationOfFirstTouch:(CGPoint)touch isIndirectTouch:(BOOL)indirectTouch;
+- (void)pointerRegionForLocation:(CGPoint)location;
+- (void)setDocumentData:(id)data;
 - (void)setupPDFView;
-- (void)snapshotViewRect:(CGRect)a3 forWidth:(double)a4 afterScreenUpdates:(BOOL)a5;
-- (void)unlockWithPassword:(id)a3;
+- (void)snapshotViewRect:(CGRect)rect forWidth:(double)width afterScreenUpdates:(BOOL)updates;
+- (void)unlockWithPassword:(id)password;
 - (void)viewDidLoad;
 @end
 
@@ -54,10 +54,10 @@
     searchSelection = v7->searchSelection;
     v7->searchSelection = 0;
 
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v10 = v2->_private;
     searchResults = v10->searchResults;
-    v10->searchResults = v9;
+    v10->searchResults = array;
 
     v2->_private->didCancelActiveSearch = 0;
     v2->_private->currentGestureState = 3;
@@ -65,35 +65,35 @@
     v12 = *MEMORY[0x1E695EFF8];
     v2->_private->topLeftSelectionPoint = *MEMORY[0x1E695EFF8];
     v2->_private->bottomRightSelectionPoint = v12;
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v2 selector:sel__pageChangedNotification_ name:@"PDFViewChangedPage" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__pageChangedNotification_ name:@"PDFViewChangedPage" object:0];
 
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v14 addObserver:v2 selector:sel__goToPage_ name:@"PDFExtensionViewGoToPage" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__goToPage_ name:@"PDFExtensionViewGoToPage" object:0];
 
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v2 selector:sel__goToDestination_ name:@"PDFExtensionViewGoToDestination" object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel__goToDestination_ name:@"PDFExtensionViewGoToDestination" object:0];
 
-    v16 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v16 addObserver:v2 selector:sel__pdfViewZoomToRect_ name:@"PDFExtensionViewZoomToRect" object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:v2 selector:sel__pdfViewZoomToRect_ name:@"PDFExtensionViewZoomToRect" object:0];
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 addObserver:v2 selector:sel__selectionChangedNotification_ name:@"PDFViewSelectionChanged" object:0];
+    defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter5 addObserver:v2 selector:sel__selectionChangedNotification_ name:@"PDFViewSelectionChanged" object:0];
 
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v2 selector:sel__selectionPointsChangedNotification_ name:@"PDFTextSelectionDidChangeTextSelectionPoints" object:0];
+    defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter6 addObserver:v2 selector:sel__selectionPointsChangedNotification_ name:@"PDFTextSelectionDidChangeTextSelectionPoints" object:0];
 
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v19 addObserver:v2 selector:sel__textSelectionShowTextSelectionMenu_ name:@"PDFTextSelectionShowTextSelectionMenu" object:0];
+    defaultCenter7 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter7 addObserver:v2 selector:sel__textSelectionShowTextSelectionMenu_ name:@"PDFTextSelectionShowTextSelectionMenu" object:0];
 
-    v20 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v20 addObserver:v2 selector:sel__textSelectionDidCopyNotification_ name:@"PDFTextSelectionDidCopy" object:0];
+    defaultCenter8 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter8 addObserver:v2 selector:sel__textSelectionDidCopyNotification_ name:@"PDFTextSelectionDidCopy" object:0];
 
-    v21 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v21 addObserver:v2 selector:sel__annotationHitNotification_ name:@"PDFViewAnnotationHit" object:0];
+    defaultCenter9 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter9 addObserver:v2 selector:sel__annotationHitNotification_ name:@"PDFViewAnnotationHit" object:0];
 
-    v22 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v22 addObserver:v2 selector:sel__annotationLongPressNotification_ name:@"PDFExtensionViewAnnotationLongPress" object:0];
+    defaultCenter10 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter10 addObserver:v2 selector:sel__annotationLongPressNotification_ name:@"PDFExtensionViewAnnotationLongPress" object:0];
   }
 
   return v2;
@@ -104,28 +104,28 @@
   v16.receiver = self;
   v16.super_class = PDFExtensionViewController;
   [(PDFExtensionViewController *)&v16 viewDidLoad];
-  v3 = [(PDFExtensionViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PDFExtensionViewController *)self view];
+  secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+  [view setBackgroundColor:secondarySystemBackgroundColor];
 
-  v5 = [(PDFExtensionViewController *)self extensionContext];
-  [v5 setExtensionViewController:self];
-  v6 = [v5 _auxiliaryConnection];
-  v7 = [v6 remoteObjectProxy];
+  extensionContext = [(PDFExtensionViewController *)self extensionContext];
+  [extensionContext setExtensionViewController:self];
+  _auxiliaryConnection = [extensionContext _auxiliaryConnection];
+  remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
   v8 = self->_private;
   hostProxy = v8->hostProxy;
-  v8->hostProxy = v7;
+  v8->hostProxy = remoteObjectProxy;
 
   v10 = [PDFView alloc];
-  v11 = [(PDFExtensionViewController *)self view];
-  [v11 bounds];
+  view2 = [(PDFExtensionViewController *)self view];
+  [view2 bounds];
   v12 = [(PDFView *)v10 initWithFrame:?];
   v13 = self->_private;
   pdfView = v13->pdfView;
   v13->pdfView = v12;
 
-  v15 = [(PDFExtensionViewController *)self view];
-  [v15 addSubview:self->_private->pdfView];
+  view3 = [(PDFExtensionViewController *)self view];
+  [view3 addSubview:self->_private->pdfView];
 
   [(PDFView *)self->_private->pdfView setDisplayMode:1];
   [(PDFView *)self->_private->pdfView setAutoScales:0];
@@ -147,8 +147,8 @@
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(PDFExtensionViewController *)self view];
-  [v15 setFrame:{v8, v10, v12, v14}];
+  view = [(PDFExtensionViewController *)self view];
+  [view setFrame:{v8, v10, v12, v14}];
 
   [(PDFView *)self->_private->pdfView setFrame:v8, v10, v12, v14];
   [(PDFExtensionViewController *)self _setupDocumentViewSize];
@@ -156,11 +156,11 @@
   [(PDFExtensionViewController *)self _updatePageCount];
 }
 
-- (void)setDocumentData:(id)a3
+- (void)setDocumentData:(id)data
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [[PDFDocument alloc] initWithData:v4];
+  dataCopy = data;
+  v5 = [[PDFDocument alloc] initWithData:dataCopy];
 
   if (v5)
   {
@@ -168,10 +168,10 @@
     [(PDFView *)self->_private->pdfView setDocument:v5];
     [(PDFView *)self->_private->pdfView setMinScaleFactor:1.0];
     [(PDFView *)self->_private->pdfView setMaxScaleFactor:5.0];
-    v6 = [(PDFView *)self->_private->pdfView document];
-    v7 = [v6 isLocked];
+    document = [(PDFView *)self->_private->pdfView document];
+    isLocked = [document isLocked];
 
-    if (v7)
+    if (isLocked)
     {
       hostProxy = self->_private->hostProxy;
       v11[0] = @"function";
@@ -195,55 +195,55 @@
   }
 }
 
-- (void)findString:(id)a3 withOptions:(unint64_t)a4
+- (void)findString:(id)string withOptions:(unint64_t)options
 {
-  v10 = a3;
-  if (([v10 isEqualToString:self->_private->searchString] & 1) == 0)
+  stringCopy = string;
+  if (([stringCopy isEqualToString:self->_private->searchString] & 1) == 0)
   {
     v7 = self->_private;
     searchSelection = v7->searchSelection;
     v7->searchSelection = 0;
 
-    objc_storeStrong(&self->_private->searchString, a3);
+    objc_storeStrong(&self->_private->searchString, string);
     [(PDFExtensionViewController *)self clearSearchHighlights];
   }
 
-  v9 = [(PDFView *)self->_private->pdfView document];
-  [v9 beginFindString:self->_private->searchString withOptions:a4];
+  document = [(PDFView *)self->_private->pdfView document];
+  [document beginFindString:self->_private->searchString withOptions:options];
 }
 
 - (void)cancelFindString
 {
   self->_private->didCancelActiveSearch = 1;
-  v3 = [(PDFView *)self->_private->pdfView document];
-  [v3 cancelFindString];
+  document = [(PDFView *)self->_private->pdfView document];
+  [document cancelFindString];
 
   self->_private->didCancelActiveSearch = 0;
 
   [(PDFExtensionViewController *)self clearSearchHighlights];
 }
 
-- (void)cancelFindStringWithHighlightsCleared:(BOOL)a3
+- (void)cancelFindStringWithHighlightsCleared:(BOOL)cleared
 {
-  v3 = a3;
+  clearedCopy = cleared;
   self->_private->didCancelActiveSearch = 1;
-  v5 = [(PDFView *)self->_private->pdfView document];
-  [v5 cancelFindString];
+  document = [(PDFView *)self->_private->pdfView document];
+  [document cancelFindString];
 
   self->_private->didCancelActiveSearch = 0;
-  if (v3)
+  if (clearedCopy)
   {
 
     [(PDFExtensionViewController *)self clearSearchHighlights];
   }
 }
 
-- (void)focusOnSearchResultAtIndex:(unint64_t)a3
+- (void)focusOnSearchResultAtIndex:(unint64_t)index
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  if ([(NSMutableArray *)self->_private->searchResults count]> a3)
+  if ([(NSMutableArray *)self->_private->searchResults count]> index)
   {
-    v5 = [(NSMutableArray *)self->_private->searchResults objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->_private->searchResults objectAtIndex:index];
     v6 = self->_private;
     searchSelection = v6->searchSelection;
     v6->searchSelection = v5;
@@ -254,19 +254,19 @@
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:1];
     [(PDFView *)pdfView setHighlightedSelections:v10];
 
-    v11 = [(PDFSelection *)self->_private->searchSelection pages];
-    v12 = [v11 firstObject];
+    pages = [(PDFSelection *)self->_private->searchSelection pages];
+    firstObject = [pages firstObject];
 
-    if (v12)
+    if (firstObject)
     {
-      [(PDFSelection *)self->_private->searchSelection boundsForPage:v12];
-      [(PDFView *)self->_private->pdfView convertRect:v12 fromPage:?];
+      [(PDFSelection *)self->_private->searchSelection boundsForPage:firstObject];
+      [(PDFView *)self->_private->pdfView convertRect:firstObject fromPage:?];
       v14 = v13;
       v16 = v15;
       v18 = v17;
       v20 = v19;
-      v21 = [(PDFExtensionViewController *)self view];
-      [v21 convertRect:self->_private->pdfView fromView:{v14, v16, v18, v20}];
+      view = [(PDFExtensionViewController *)self view];
+      [view convertRect:self->_private->pdfView fromView:{v14, v16, v18, v20}];
       v23 = v22;
       v25 = v24;
       v27 = v26;
@@ -305,10 +305,10 @@
   [(PDFView *)pdfView setHighlightedSelections:0];
 }
 
-- (void)goToPageIndex:(int64_t)a3
+- (void)goToPageIndex:(int64_t)index
 {
-  v5 = [(PDFView *)self->_private->pdfView document];
-  v7 = [v5 pageAtIndex:a3];
+  document = [(PDFView *)self->_private->pdfView document];
+  v7 = [document pageAtIndex:index];
 
   v6 = v7;
   if (v7)
@@ -318,11 +318,11 @@
   }
 }
 
-- (uint64_t)updatePDFViewLayout:(double)a3 scrollViewFrame:(double)a4 safeAreaInsets:(double)a5 zoomScale:(double)a6
+- (uint64_t)updatePDFViewLayout:(double)layout scrollViewFrame:(double)frame safeAreaInsets:(double)insets zoomScale:(double)scale
 {
   v23 = PDFRectScale(a10, a11, a12, a13, 1.0 / a14);
   v25 = v24;
-  v26 = a1[124];
+  v26 = self[124];
   v28 = v27 + v24 + *(v26 + 24);
   v30.n128_u64[0] = 0;
   v31.n128_u64[0] = 0;
@@ -330,8 +330,8 @@
   v34 = v33;
   v36 = v35;
   v38 = v37;
-  v39 = [a1 view];
-  [v39 frame];
+  view = [self view];
+  [view frame];
   v68.origin.x = v40;
   v68.origin.y = v41;
   v68.size.width = v42;
@@ -344,69 +344,69 @@
 
   if (!v44)
   {
-    v45 = [a1 view];
-    [v45 setFrame:{v32, v34, v36, v38}];
+    view2 = [self view];
+    [view2 setFrame:{v32, v34, v36, v38}];
 
-    [*(a1[124] + 8) extensionToHost:&unk_1F4184410];
+    [*(self[124] + 8) extensionToHost:&unk_1F4184410];
   }
 
-  [*(a1[124] + 16) frame];
-  if (vabdd_f64(v25, v46.n128_f64[0]) > 0.00000011920929 || ([*(a1[124] + 16) frame], vabdd_f64(v23, v47.n128_f64[0]) > 0.00000011920929))
+  [*(self[124] + 16) frame];
+  if (vabdd_f64(v25, v46.n128_f64[0]) > 0.00000011920929 || ([*(self[124] + 16) frame], vabdd_f64(v23, v47.n128_f64[0]) > 0.00000011920929))
   {
     v46.n128_f64[0] = v25;
     v47.n128_f64[0] = v23;
-    [*(a1[124] + 16) setFrame:{PDFRectMake(v46, v47, *(a1[124] + 24), *(a1[124] + 32))}];
+    [*(self[124] + 16) setFrame:{PDFRectMake(v46, v47, *(self[124] + 24), *(self[124] + 32))}];
   }
 
-  v48 = [a1 view];
-  [v48 convertRect:*(a1[124] + 16) toView:{a2, a3, a4, a5}];
+  view3 = [self view];
+  [view3 convertRect:*(self[124] + 16) toView:{a2, layout, frame, insets}];
   v50 = v49;
   v52 = v51;
   v54 = v53;
   v56 = v55;
 
-  v57 = *(a1[124] + 16);
+  v57 = *(self[124] + 16);
 
-  return [v57 updatePDFViewLayout:v50 scrollViewFrame:v52 zoomScale:{v54, v56, a6, a7, a8, a9}];
+  return [v57 updatePDFViewLayout:v50 scrollViewFrame:v52 zoomScale:{v54, v56, scale, a7, a8, a9}];
 }
 
-- (void)handleGesture:(unint64_t)a3 state:(int64_t)a4 location:(CGPoint)a5 locationOfFirstTouch:(CGPoint)a6 isIndirectTouch:(BOOL)a7
+- (void)handleGesture:(unint64_t)gesture state:(int64_t)state location:(CGPoint)location locationOfFirstTouch:(CGPoint)touch isIndirectTouch:(BOOL)indirectTouch
 {
-  v7 = a7;
-  y = a6.y;
-  x = a6.x;
-  v10 = a5.y;
-  v11 = a5.x;
-  self->_private->currentGestureState = a4;
-  v15 = [(PDFExtensionViewController *)self view];
-  [v15 convertPoint:self->_private->pdfView toView:{v11, v10}];
+  indirectTouchCopy = indirectTouch;
+  y = touch.y;
+  x = touch.x;
+  v10 = location.y;
+  v11 = location.x;
+  self->_private->currentGestureState = state;
+  view = [(PDFExtensionViewController *)self view];
+  [view convertPoint:self->_private->pdfView toView:{v11, v10}];
   v17 = v16;
   v19 = v18;
 
-  v20 = [(PDFExtensionViewController *)self view];
-  [v20 convertPoint:self->_private->pdfView toView:{x, y}];
+  view2 = [(PDFExtensionViewController *)self view];
+  [view2 convertPoint:self->_private->pdfView toView:{x, y}];
   v22 = v21;
   v24 = v23;
 
   pdfView = self->_private->pdfView;
 
-  [(PDFView *)pdfView handleGesture:a3 state:a4 location:v7 locationOfFirstTouch:v17 isIndirectTouch:v19, v22, v24];
+  [(PDFView *)pdfView handleGesture:gesture state:state location:indirectTouchCopy locationOfFirstTouch:v17 isIndirectTouch:v19, v22, v24];
 }
 
-- (void)snapshotViewRect:(CGRect)a3 forWidth:(double)a4 afterScreenUpdates:(BOOL)a5
+- (void)snapshotViewRect:(CGRect)rect forWidth:(double)width afterScreenUpdates:(BOOL)updates
 {
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v31[4] = *MEMORY[0x1E69E9840];
-  v10 = a3.size.height / a3.size.width * a4;
-  v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v12 = [v11 traitCollection];
-  v13 = [v12 displayGamut];
+  v10 = rect.size.height / rect.size.width * width;
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
+  displayGamut = [traitCollection displayGamut];
 
-  v14 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v15 = [v14 traitCollection];
-  [v15 displayScale];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  traitCollection2 = [mainScreen2 traitCollection];
+  [traitCollection2 displayScale];
   v17 = v16;
 
   if (v17 == 0.0)
@@ -416,13 +416,13 @@
 
   v18 = vcvtpd_s64_f64(v10 * v17);
   v30[0] = *MEMORY[0x1E696CDE0];
-  v19 = [MEMORY[0x1E696AD98] numberWithLong:vcvtpd_s64_f64(v17 * a4)];
+  v19 = [MEMORY[0x1E696AD98] numberWithLong:vcvtpd_s64_f64(v17 * width)];
   v31[0] = v19;
   v30[1] = *MEMORY[0x1E696CD90];
   v20 = [MEMORY[0x1E696AD98] numberWithLong:v18];
   v31[1] = v20;
   v30[2] = *MEMORY[0x1E696CDA0];
-  if (v13 == 1)
+  if (displayGamut == 1)
   {
     v21 = 1999843442;
   }
@@ -443,7 +443,7 @@
   if (v24)
   {
     [v24 lockWithOptions:0 seed:0];
-    if (v13 == 1)
+    if (displayGamut == 1)
     {
       v26 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F110]);
     }
@@ -459,11 +459,11 @@
     {
       CGContextTranslateCTM(v27, 0.0, v18);
       CGContextScaleCTM(v27, v17, -v17);
-      CGContextScaleCTM(v27, a4 / width, a4 / width);
+      CGContextScaleCTM(v27, width / width, width / width);
       CGContextTranslateCTM(v27, -x, -y);
-      v28 = [(PDFExtensionViewController *)self view];
-      v29 = [v28 layer];
-      [v29 renderInContext:v27];
+      view = [(PDFExtensionViewController *)self view];
+      layer = [view layer];
+      [layer renderInContext:v27];
 
       CGContextFlush(v27);
       [v25 unlockWithOptions:0 seed:0];
@@ -473,30 +473,30 @@
   }
 }
 
-- (void)unlockWithPassword:(id)a3
+- (void)unlockWithPassword:(id)password
 {
   pdfView = self->_private->pdfView;
-  v5 = a3;
-  v6 = [(PDFView *)pdfView document];
-  [v6 unlockWithPassword:v5];
+  passwordCopy = password;
+  document = [(PDFView *)pdfView document];
+  [document unlockWithPassword:passwordCopy];
 
   [(PDFExtensionViewController *)self _updateDocumentIsLocked];
 }
 
-- (void)pointerRegionForLocation:(CGPoint)a3
+- (void)pointerRegionForLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v30[3] = *MEMORY[0x1E69E9840];
-  v6 = [(PDFExtensionViewController *)self view];
-  [v6 convertPoint:self->_private->pdfView toView:{x, y}];
+  view = [(PDFExtensionViewController *)self view];
+  [view convertPoint:self->_private->pdfView toView:{x, y}];
   v8 = v7;
   v10 = v9;
 
   v11 = [(PDFView *)self->_private->pdfView pointerRegionForLocation:v8, v10];
-  v12 = [(PDFExtensionViewController *)self view];
+  view2 = [(PDFExtensionViewController *)self view];
   [v11 rect];
-  [v12 convertRect:self->_private->pdfView fromView:?];
+  [view2 convertRect:self->_private->pdfView fromView:?];
   [v11 setRect:?];
 
   hostProxy = self->_private->hostProxy;
@@ -522,8 +522,8 @@
   v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:4];
   v30[1] = v25;
   v29[2] = @"regionIdentifier";
-  v26 = [v11 identifier];
-  v30[2] = v26;
+  identifier = [v11 identifier];
+  v30[2] = identifier;
   v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:v29 count:3];
   [(PDFHostProtocol *)hostProxy extensionToHost:v27];
 }
@@ -552,33 +552,33 @@
 - (void)_updateDocumentIsLocked
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PDFView *)self->_private->pdfView document];
-  v4 = [v3 isLocked];
+  document = [(PDFView *)self->_private->pdfView document];
+  isLocked = [document isLocked];
 
   hostProxy = self->_private->hostProxy;
   v8[0] = @"function";
   v8[1] = @"isLocked";
   v9[0] = @"updateDocumentIsLocked";
-  v6 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v6 = [MEMORY[0x1E696AD98] numberWithBool:isLocked];
   v9[1] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
   [(PDFHostProtocol *)hostProxy extensionToHost:v7];
 
-  if ((v4 & 1) == 0)
+  if ((isLocked & 1) == 0)
   {
     [(PDFExtensionViewController *)self setupPDFView];
   }
 }
 
-- (void)_zoomToRect:(CGRect)a3
+- (void)_zoomToRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v26[4] = *MEMORY[0x1E69E9840];
-  v8 = [(PDFExtensionViewController *)self view];
-  [v8 convertRect:self->_private->pdfView fromView:{x, y, width, height}];
+  view = [(PDFExtensionViewController *)self view];
+  [view convertRect:self->_private->pdfView fromView:{x, y, width, height}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -609,14 +609,14 @@
 - (void)_updatePageCount
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PDFView *)self->_private->pdfView document];
-  v4 = [v3 pageCount];
+  document = [(PDFView *)self->_private->pdfView document];
+  pageCount = [document pageCount];
 
   hostProxy = self->_private->hostProxy;
   v8[0] = @"function";
   v8[1] = @"pageCount";
   v9[0] = @"updatePageCount";
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:pageCount];
   v9[1] = v6;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
   [(PDFHostProtocol *)hostProxy extensionToHost:v7];
@@ -625,8 +625,8 @@
 - (void)_updateTextSelectionPoints
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PDFExtensionViewController *)self view];
-  [v3 convertPoint:self->_private->pdfView fromView:{self->_private->topLeftSelectionPoint.x, self->_private->topLeftSelectionPoint.y}];
+  view = [(PDFExtensionViewController *)self view];
+  [view convertPoint:self->_private->pdfView fromView:{self->_private->topLeftSelectionPoint.x, self->_private->topLeftSelectionPoint.y}];
   v5 = v4;
   v7 = v6;
 
@@ -636,8 +636,8 @@
   v24[1] = v9;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
 
-  v11 = [(PDFExtensionViewController *)self view];
-  [v11 convertPoint:self->_private->pdfView fromView:{self->_private->bottomRightSelectionPoint.x, self->_private->bottomRightSelectionPoint.y}];
+  view2 = [(PDFExtensionViewController *)self view];
+  [view2 convertPoint:self->_private->pdfView fromView:{self->_private->bottomRightSelectionPoint.x, self->_private->bottomRightSelectionPoint.y}];
   v13 = v12;
   v15 = v14;
 
@@ -658,17 +658,17 @@
   [(PDFHostProtocol *)hostProxy extensionToHost:v20];
 }
 
-- (void)didMatchString:(id)a3
+- (void)didMatchString:(id)string
 {
   v15[3] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (string)
   {
     v4 = MEMORY[0x1E69DC888];
-    v5 = a3;
+    stringCopy = string;
     v6 = [v4 colorWithRed:1.0 green:0.89 blue:0.22 alpha:1.0];
-    [v5 setColor:v6];
+    [stringCopy setColor:v6];
 
-    [(NSMutableArray *)self->_private->searchResults addObject:v5];
+    [(NSMutableArray *)self->_private->searchResults addObject:stringCopy];
   }
 
   v7 = self->_private;
@@ -680,14 +680,14 @@
   v15[1] = v9;
   v14[2] = @"done";
   v10 = MEMORY[0x1E696AD98];
-  v11 = [(PDFView *)self->_private->pdfView document];
-  v12 = [v10 numberWithInt:{objc_msgSend(v11, "isFinding") ^ 1}];
+  document = [(PDFView *)self->_private->pdfView document];
+  v12 = [v10 numberWithInt:{objc_msgSend(document, "isFinding") ^ 1}];
   v15[2] = v12;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:3];
   [(PDFHostProtocol *)hostProxy extensionToHost:v13];
 }
 
-- (void)documentDidEndDocumentFind:(id)a3
+- (void)documentDidEndDocumentFind:(id)find
 {
   v8[3] = *MEMORY[0x1E69E9840];
   v3 = self->_private;
@@ -697,7 +697,7 @@
     v8[0] = @"findStringUpdate";
     v7[0] = @"function";
     v7[1] = @"numFound";
-    v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSMutableArray count](v3->searchResults, "count", a3)}];
+    v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[NSMutableArray count](v3->searchResults, "count", find)}];
     v7[2] = @"done";
     v8[1] = v5;
     v8[2] = MEMORY[0x1E695E118];
@@ -706,12 +706,12 @@
   }
 }
 
-- (void)_pageChangedNotification:(id)a3
+- (void)_pageChangedNotification:(id)notification
 {
   v11[2] = *MEMORY[0x1E69E9840];
-  v4 = [(PDFView *)self->_private->pdfView document];
-  v5 = [(PDFView *)self->_private->pdfView currentPage];
-  v6 = [v4 indexForPage:v5];
+  document = [(PDFView *)self->_private->pdfView document];
+  currentPage = [(PDFView *)self->_private->pdfView currentPage];
+  v6 = [document indexForPage:currentPage];
 
   hostProxy = self->_private->hostProxy;
   v10[0] = @"function";
@@ -723,25 +723,25 @@
   [(PDFHostProtocol *)hostProxy extensionToHost:v9];
 }
 
-- (void)_goToPage:(id)a3
+- (void)_goToPage:(id)page
 {
   v37[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"pageIndex"];
-  v7 = [v6 integerValue];
+  pageCopy = page;
+  userInfo = [pageCopy userInfo];
+  v6 = [userInfo objectForKey:@"pageIndex"];
+  integerValue = [v6 integerValue];
 
-  v8 = [v4 userInfo];
+  userInfo2 = [pageCopy userInfo];
 
-  v9 = [v8 objectForKey:@"pageFrame"];
+  v9 = [userInfo2 objectForKey:@"pageFrame"];
   [v9 PDFKitPDFRectValue];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  v18 = [(PDFExtensionViewController *)self view];
-  [v18 convertRect:self->_private->pdfView fromView:{v11, v13, v15, v17}];
+  view = [(PDFExtensionViewController *)self view];
+  [view convertRect:self->_private->pdfView fromView:{v11, v13, v15, v17}];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -761,7 +761,7 @@
   v36[0] = @"goToPage";
   v35[0] = @"function";
   v35[1] = @"pageIndex";
-  v33 = [MEMORY[0x1E696AD98] numberWithInteger:v7];
+  v33 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
   v35[2] = @"pageFrame";
   v36[1] = v33;
   v36[2] = v31;
@@ -769,23 +769,23 @@
   [(PDFHostProtocol *)hostProxy extensionToHost:v34];
 }
 
-- (void)_goToDestination:(id)a3
+- (void)_goToDestination:(id)destination
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"pageIndex"];
-  v7 = [v6 integerValue];
+  destinationCopy = destination;
+  userInfo = [destinationCopy userInfo];
+  v6 = [userInfo objectForKey:@"pageIndex"];
+  integerValue = [v6 integerValue];
 
-  v8 = [v4 userInfo];
+  userInfo2 = [destinationCopy userInfo];
 
-  v9 = [v8 objectForKey:@"point"];
+  v9 = [userInfo2 objectForKey:@"point"];
   [v9 PDFKitPDFPointValue];
   v11 = v10;
   v13 = v12;
 
-  v14 = [(PDFExtensionViewController *)self view];
-  [v14 convertPoint:self->_private->pdfView fromView:{v11, v13}];
+  view = [(PDFExtensionViewController *)self view];
+  [view convertPoint:self->_private->pdfView fromView:{v11, v13}];
   v16 = v15;
   v18 = v17;
 
@@ -799,7 +799,7 @@
   v26[0] = @"goToDestination";
   v25[0] = @"function";
   v25[1] = @"pageIndex";
-  v23 = [MEMORY[0x1E696AD98] numberWithInteger:v7];
+  v23 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
   v25[2] = @"point";
   v26[1] = v23;
   v26[2] = v21;
@@ -807,10 +807,10 @@
   [(PDFHostProtocol *)hostProxy extensionToHost:v24];
 }
 
-- (void)_pdfViewZoomToRect:(id)a3
+- (void)_pdfViewZoomToRect:(id)rect
 {
-  v13 = [a3 userInfo];
-  v4 = [v13 objectForKey:@"rect"];
+  userInfo = [rect userInfo];
+  v4 = [userInfo objectForKey:@"rect"];
   [v4 PDFKitPDFRectValue];
   v6 = v5;
   v8 = v7;
@@ -820,14 +820,14 @@
   [(PDFExtensionViewController *)self _zoomToRect:v6, v8, v10, v12];
 }
 
-- (void)_selectionChangedNotification:(id)a3
+- (void)_selectionChangedNotification:(id)notification
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v4 = [(PDFView *)self->_private->pdfView currentSelection];
-  v5 = v4;
-  if (v4)
+  currentSelection = [(PDFView *)self->_private->pdfView currentSelection];
+  v5 = currentSelection;
+  if (currentSelection)
   {
-    v6 = [v4 isEmpty] ^ 1;
+    v6 = [currentSelection isEmpty] ^ 1;
   }
 
   else
@@ -850,11 +850,11 @@
   }
 }
 
-- (void)_selectionPointsChangedNotification:(id)a3
+- (void)_selectionPointsChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v22 = [v5 objectForKey:@"topLeftSelectionPoint"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v22 = [userInfo objectForKey:@"topLeftSelectionPoint"];
 
   v6 = self->_private;
   v7 = [v22 objectAtIndex:0];
@@ -865,9 +865,9 @@
   v6->topLeftSelectionPoint.x = PDFPointMake(v9, v11);
   v6->topLeftSelectionPoint.y = v12;
 
-  v13 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v14 = [v13 objectForKey:@"bottomRightSelectionPoint"];
+  v14 = [userInfo2 objectForKey:@"bottomRightSelectionPoint"];
 
   v15 = self->_private;
   v16 = [v14 objectAtIndex:0];
@@ -881,25 +881,25 @@
   [(PDFExtensionViewController *)self _updateTextSelectionPoints];
 }
 
-- (void)_textSelectionShowTextSelectionMenu:(id)a3
+- (void)_textSelectionShowTextSelectionMenu:(id)menu
 {
   v37[4] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:@"visible"];
-  v7 = [v6 BOOLValue];
+  menuCopy = menu;
+  userInfo = [menuCopy userInfo];
+  v6 = [userInfo objectForKey:@"visible"];
+  bOOLValue = [v6 BOOLValue];
 
-  v8 = [v4 userInfo];
+  userInfo2 = [menuCopy userInfo];
 
-  v9 = [v8 objectForKey:@"selectionRect"];
+  v9 = [userInfo2 objectForKey:@"selectionRect"];
   [v9 PDFKitPDFRectValue];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  v18 = [(PDFExtensionViewController *)self view];
-  [v18 convertRect:self->_private->pdfView fromView:{v11, v13, v15, v17}];
+  view = [(PDFExtensionViewController *)self view];
+  [view convertRect:self->_private->pdfView fromView:{v11, v13, v15, v17}];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -919,7 +919,7 @@
   v36[0] = @"showTextSelectionMenu";
   v35[0] = @"function";
   v35[1] = @"visible";
-  v33 = [MEMORY[0x1E696AD98] numberWithBool:v7];
+  v33 = [MEMORY[0x1E696AD98] numberWithBool:bOOLValue];
   v35[2] = @"selectionRect";
   v36[1] = v33;
   v36[2] = v31;
@@ -927,11 +927,11 @@
   [(PDFHostProtocol *)hostProxy extensionToHost:v34];
 }
 
-- (void)_textSelectionDidCopyNotification:(id)a3
+- (void)_textSelectionDidCopyNotification:(id)notification
 {
   v9[2] = *MEMORY[0x1E69E9840];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"items"];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKey:@"items"];
 
   hostProxy = self->_private->hostProxy;
   v8[0] = @"function";
@@ -942,12 +942,12 @@
   [(PDFHostProtocol *)hostProxy extensionToHost:v7];
 }
 
-- (void)_annotationHitNotification:(id)a3
+- (void)_annotationHitNotification:(id)notification
 {
   v29[3] = *MEMORY[0x1E69E9840];
-  v4 = [a3 userInfo];
-  v5 = [v4 valueForKey:@"PDFAnnotationHit"];
-  v6 = [v4 valueForKey:@"location"];
+  userInfo = [notification userInfo];
+  v5 = [userInfo valueForKey:@"PDFAnnotationHit"];
+  v6 = [userInfo valueForKey:@"location"];
   v7 = v6;
   if (v5)
   {
@@ -961,25 +961,25 @@
         [v7 PDFKitPDFPointValue];
         v11 = v10;
         v13 = v12;
-        v14 = [(PDFExtensionViewController *)self view];
-        [v14 convertPoint:self->_private->pdfView fromView:{v11, v13}];
+        view = [(PDFExtensionViewController *)self view];
+        [view convertPoint:self->_private->pdfView fromView:{v11, v13}];
         v16 = v15;
         v18 = v17;
 
-        v19 = [v5 action];
+        action = [v5 action];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v20 = [v19 URL];
-          v21 = [v20 absoluteString];
+          v20 = [action URL];
+          absoluteString = [v20 absoluteString];
 
-          if (v21)
+          if (absoluteString)
           {
             hostProxy = self->_private->hostProxy;
             v28[0] = @"function";
             v28[1] = @"urlString";
             v29[0] = @"goToURL";
-            v29[1] = v21;
+            v29[1] = absoluteString;
             v28[2] = @"location";
             v23 = [MEMORY[0x1E696AD98] numberWithDouble:v16];
             v27[0] = v23;
@@ -996,12 +996,12 @@
   }
 }
 
-- (void)_annotationLongPressNotification:(id)a3
+- (void)_annotationLongPressNotification:(id)notification
 {
   v73[4] = *MEMORY[0x1E69E9840];
-  v4 = [a3 userInfo];
-  v5 = [v4 valueForKey:@"annotation"];
-  v6 = [v4 valueForKey:@"location"];
+  userInfo = [notification userInfo];
+  v5 = [userInfo valueForKey:@"annotation"];
+  v6 = [userInfo valueForKey:@"location"];
   v7 = v6;
   if (v5)
   {
@@ -1015,25 +1015,25 @@
         [v7 PDFKitPDFPointValue];
         v11 = v10;
         v13 = v12;
-        v14 = [(PDFExtensionViewController *)self view];
-        [v14 convertPoint:self->_private->pdfView fromView:{v11, v13}];
+        view = [(PDFExtensionViewController *)self view];
+        [view convertPoint:self->_private->pdfView fromView:{v11, v13}];
         v16 = v15;
         v18 = v17;
 
-        v19 = [v5 action];
+        action = [v5 action];
         [v5 bounds];
         v21 = v20;
         v23 = v22;
         v25 = v24;
         v27 = v26;
-        v28 = [v5 page];
-        [(PDFView *)self->_private->pdfView convertRect:v28 fromPage:v21, v23, v25, v27];
+        page = [v5 page];
+        [(PDFView *)self->_private->pdfView convertRect:page fromPage:v21, v23, v25, v27];
         v30 = v29;
         v32 = v31;
         v34 = v33;
         v36 = v35;
-        v37 = [(PDFExtensionViewController *)self view];
-        [v37 convertRect:self->_private->pdfView fromView:{v30, v32, v34, v36}];
+        view2 = [(PDFExtensionViewController *)self view];
+        [view2 convertRect:self->_private->pdfView fromView:{v30, v32, v34, v36}];
         v39 = v38;
         v41 = v40;
         v43 = v42;
@@ -1042,23 +1042,23 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v46 = [v19 URL];
-          v47 = [v46 absoluteString];
+          v46 = [action URL];
+          absoluteString = [v46 absoluteString];
 
-          if (!v47)
+          if (!absoluteString)
           {
 LABEL_11:
 
             goto LABEL_12;
           }
 
-          v64 = v47;
-          v65 = v28;
+          v64 = absoluteString;
+          v65 = page;
           hostProxy = self->_private->hostProxy;
           v72[0] = @"function";
           v72[1] = @"urlString";
           v73[0] = @"didLongPressLink";
-          v73[1] = v47;
+          v73[1] = absoluteString;
           v72[2] = @"location";
           v63 = [MEMORY[0x1E696AD98] numberWithDouble:v16];
           v71[0] = v63;
@@ -1089,18 +1089,18 @@ LABEL_11:
             goto LABEL_11;
           }
 
-          v53 = [v19 destination];
-          v54 = [v53 page];
+          destination = [action destination];
+          page2 = [destination page];
 
-          if (!v54)
+          if (!page2)
           {
             goto LABEL_11;
           }
 
-          v65 = v28;
-          v55 = [(PDFView *)self->_private->pdfView document];
-          v64 = v54;
-          v56 = [v55 indexForPage:v54];
+          v65 = page;
+          document = [(PDFView *)self->_private->pdfView document];
+          v64 = page2;
+          v56 = [document indexForPage:page2];
 
           v59 = self->_private->hostProxy;
           v69[0] = @"didLongPressLink";
@@ -1130,7 +1130,7 @@ LABEL_11:
           [(PDFHostProtocol *)v59 extensionToHost:v57];
         }
 
-        v28 = v65;
+        page = v65;
         goto LABEL_11;
       }
     }

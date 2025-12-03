@@ -1,13 +1,13 @@
 @interface INPrivateMediaIntentData
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INPrivateMediaIntentData)initWithCoder:(id)a3;
-- (INPrivateMediaIntentData)initWithSpeakerIDInfo:(id)a3 proxiedThirdPartyAppInfo:(id)a4 isAppAttributionRequired:(id)a5 useDialogMemoryForAttribution:(id)a6 isAppCorrection:(id)a7 fallbackUsername:(id)a8 wholeHouseAudioMetadata:(id)a9 nlConfidenceScore:(id)a10 nlConfidenceLevel:(int64_t)a11 asrConfidenceScore:(id)a12 asrConfidenceLevel:(int64_t)a13 resolvedSharedUserID:(id)a14 homeAutomationEntityProvider:(id)a15;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INPrivateMediaIntentData)initWithCoder:(id)coder;
+- (INPrivateMediaIntentData)initWithSpeakerIDInfo:(id)info proxiedThirdPartyAppInfo:(id)appInfo isAppAttributionRequired:(id)required useDialogMemoryForAttribution:(id)attribution isAppCorrection:(id)correction fallbackUsername:(id)username wholeHouseAudioMetadata:(id)metadata nlConfidenceScore:(id)self0 nlConfidenceLevel:(int64_t)self1 asrConfidenceScore:(id)self2 asrConfidenceLevel:(int64_t)self3 resolvedSharedUserID:(id)self4 homeAutomationEntityProvider:(id)self5;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INPrivateMediaIntentData
@@ -77,57 +77,57 @@
   v39[5] = fallbackUsername;
   v38[6] = @"wholeHouseAudioMetadata";
   wholeHouseAudioMetadata = self->_wholeHouseAudioMetadata;
-  v10 = wholeHouseAudioMetadata;
+  null = wholeHouseAudioMetadata;
   if (!wholeHouseAudioMetadata)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24 = v10;
-  v39[6] = v10;
+  v24 = null;
+  v39[6] = null;
   v38[7] = @"nlConfidenceScore";
   nlConfidenceScore = self->_nlConfidenceScore;
-  v12 = nlConfidenceScore;
+  null2 = nlConfidenceScore;
   if (!nlConfidenceScore)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23 = v12;
-  v39[7] = v12;
+  v23 = null2;
+  v39[7] = null2;
   v38[8] = @"nlConfidenceLevel";
   v13 = [MEMORY[0x1E696AD98] numberWithInteger:self->_nlConfidenceLevel];
   v39[8] = v13;
   v38[9] = @"asrConfidenceScore";
   asrConfidenceScore = self->_asrConfidenceScore;
-  v15 = asrConfidenceScore;
+  null3 = asrConfidenceScore;
   if (!asrConfidenceScore)
   {
-    v15 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v39[9] = v15;
+  v39[9] = null3;
   v38[10] = @"asrConfidenceLevel";
   v16 = [MEMORY[0x1E696AD98] numberWithInteger:self->_asrConfidenceLevel];
   v39[10] = v16;
   v38[11] = @"resolvedSharedUserID";
   resolvedSharedUserID = self->_resolvedSharedUserID;
-  v18 = resolvedSharedUserID;
+  null4 = resolvedSharedUserID;
   if (!resolvedSharedUserID)
   {
-    v18 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v39[11] = v18;
+  v39[11] = null4;
   v38[12] = @"homeAutomationEntityProvider";
   homeAutomationEntityProvider = self->_homeAutomationEntityProvider;
-  v20 = homeAutomationEntityProvider;
+  null5 = homeAutomationEntityProvider;
   if (!homeAutomationEntityProvider)
   {
-    v20 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v39[12] = v20;
+  v39[12] = null5;
   v31 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:13];
   if (homeAutomationEntityProvider)
   {
@@ -198,47 +198,47 @@ LABEL_29:
   return v31;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INPrivateMediaIntentData;
   v6 = [(INPrivateMediaIntentData *)&v11 description];
-  v7 = [(INPrivateMediaIntentData *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INPrivateMediaIntentData *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_speakerIDInfo];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"speakerIDInfo"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_speakerIDInfo];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"speakerIDInfo"];
 
-  v9 = [v6 encodeObject:self->_proxiedThirdPartyAppInfo];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"proxiedThirdPartyAppInfo"];
+  v9 = [encoderCopy encodeObject:self->_proxiedThirdPartyAppInfo];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"proxiedThirdPartyAppInfo"];
 
-  v10 = [v6 encodeObject:self->_isAppAttributionRequired];
-  [v7 if_setObjectIfNonNil:v10 forKey:@"isAppAttributionRequired"];
+  v10 = [encoderCopy encodeObject:self->_isAppAttributionRequired];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"isAppAttributionRequired"];
 
-  v11 = [v6 encodeObject:self->_useDialogMemoryForAttribution];
-  [v7 if_setObjectIfNonNil:v11 forKey:@"useDialogMemoryForAttribution"];
+  v11 = [encoderCopy encodeObject:self->_useDialogMemoryForAttribution];
+  [dictionary if_setObjectIfNonNil:v11 forKey:@"useDialogMemoryForAttribution"];
 
-  v12 = [v6 encodeObject:self->_isAppCorrection];
-  [v7 if_setObjectIfNonNil:v12 forKey:@"isAppCorrection"];
+  v12 = [encoderCopy encodeObject:self->_isAppCorrection];
+  [dictionary if_setObjectIfNonNil:v12 forKey:@"isAppCorrection"];
 
-  v13 = [v6 encodeObject:self->_fallbackUsername];
-  [v7 if_setObjectIfNonNil:v13 forKey:@"fallbackUsername"];
+  v13 = [encoderCopy encodeObject:self->_fallbackUsername];
+  [dictionary if_setObjectIfNonNil:v13 forKey:@"fallbackUsername"];
 
-  v14 = [v6 encodeObject:self->_wholeHouseAudioMetadata];
-  [v7 if_setObjectIfNonNil:v14 forKey:@"wholeHouseAudioMetadata"];
+  v14 = [encoderCopy encodeObject:self->_wholeHouseAudioMetadata];
+  [dictionary if_setObjectIfNonNil:v14 forKey:@"wholeHouseAudioMetadata"];
 
-  v15 = [v6 encodeObject:self->_nlConfidenceScore];
-  [v7 if_setObjectIfNonNil:v15 forKey:@"nlConfidenceScore"];
+  v15 = [encoderCopy encodeObject:self->_nlConfidenceScore];
+  [dictionary if_setObjectIfNonNil:v15 forKey:@"nlConfidenceScore"];
 
   v16 = self->_nlConfidenceLevel - 1;
   if (v16 > 2)
@@ -252,10 +252,10 @@ LABEL_29:
   }
 
   v18 = v17;
-  [v7 if_setObjectIfNonNil:v18 forKey:@"nlConfidenceLevel"];
+  [dictionary if_setObjectIfNonNil:v18 forKey:@"nlConfidenceLevel"];
 
-  v19 = [v6 encodeObject:self->_asrConfidenceScore];
-  [v7 if_setObjectIfNonNil:v19 forKey:@"asrConfidenceScore"];
+  v19 = [encoderCopy encodeObject:self->_asrConfidenceScore];
+  [dictionary if_setObjectIfNonNil:v19 forKey:@"asrConfidenceScore"];
 
   v20 = self->_asrConfidenceLevel - 1;
   if (v20 > 2)
@@ -269,62 +269,62 @@ LABEL_29:
   }
 
   v22 = v21;
-  [v7 if_setObjectIfNonNil:v22 forKey:@"asrConfidenceLevel"];
+  [dictionary if_setObjectIfNonNil:v22 forKey:@"asrConfidenceLevel"];
 
-  v23 = [v6 encodeObject:self->_resolvedSharedUserID];
-  [v7 if_setObjectIfNonNil:v23 forKey:@"resolvedSharedUserID"];
+  v23 = [encoderCopy encodeObject:self->_resolvedSharedUserID];
+  [dictionary if_setObjectIfNonNil:v23 forKey:@"resolvedSharedUserID"];
 
-  v24 = [v6 encodeObject:self->_homeAutomationEntityProvider];
+  v24 = [encoderCopy encodeObject:self->_homeAutomationEntityProvider];
 
-  [v7 if_setObjectIfNonNil:v24 forKey:@"homeAutomationEntityProvider"];
+  [dictionary if_setObjectIfNonNil:v24 forKey:@"homeAutomationEntityProvider"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   speakerIDInfo = self->_speakerIDInfo;
-  v5 = a3;
-  [v5 encodeObject:speakerIDInfo forKey:@"speakerIDInfo"];
-  [v5 encodeObject:self->_proxiedThirdPartyAppInfo forKey:@"proxiedThirdPartyAppInfo"];
-  [v5 encodeObject:self->_isAppAttributionRequired forKey:@"isAppAttributionRequired"];
-  [v5 encodeObject:self->_useDialogMemoryForAttribution forKey:@"useDialogMemoryForAttribution"];
-  [v5 encodeObject:self->_isAppCorrection forKey:@"isAppCorrection"];
-  [v5 encodeObject:self->_fallbackUsername forKey:@"fallbackUsername"];
-  [v5 encodeObject:self->_wholeHouseAudioMetadata forKey:@"wholeHouseAudioMetadata"];
-  [v5 encodeObject:self->_nlConfidenceScore forKey:@"nlConfidenceScore"];
-  [v5 encodeInteger:self->_nlConfidenceLevel forKey:@"nlConfidenceLevel"];
-  [v5 encodeObject:self->_asrConfidenceScore forKey:@"asrConfidenceScore"];
-  [v5 encodeInteger:self->_asrConfidenceLevel forKey:@"asrConfidenceLevel"];
-  [v5 encodeObject:self->_resolvedSharedUserID forKey:@"resolvedSharedUserID"];
-  [v5 encodeObject:self->_homeAutomationEntityProvider forKey:@"homeAutomationEntityProvider"];
+  coderCopy = coder;
+  [coderCopy encodeObject:speakerIDInfo forKey:@"speakerIDInfo"];
+  [coderCopy encodeObject:self->_proxiedThirdPartyAppInfo forKey:@"proxiedThirdPartyAppInfo"];
+  [coderCopy encodeObject:self->_isAppAttributionRequired forKey:@"isAppAttributionRequired"];
+  [coderCopy encodeObject:self->_useDialogMemoryForAttribution forKey:@"useDialogMemoryForAttribution"];
+  [coderCopy encodeObject:self->_isAppCorrection forKey:@"isAppCorrection"];
+  [coderCopy encodeObject:self->_fallbackUsername forKey:@"fallbackUsername"];
+  [coderCopy encodeObject:self->_wholeHouseAudioMetadata forKey:@"wholeHouseAudioMetadata"];
+  [coderCopy encodeObject:self->_nlConfidenceScore forKey:@"nlConfidenceScore"];
+  [coderCopy encodeInteger:self->_nlConfidenceLevel forKey:@"nlConfidenceLevel"];
+  [coderCopy encodeObject:self->_asrConfidenceScore forKey:@"asrConfidenceScore"];
+  [coderCopy encodeInteger:self->_asrConfidenceLevel forKey:@"asrConfidenceLevel"];
+  [coderCopy encodeObject:self->_resolvedSharedUserID forKey:@"resolvedSharedUserID"];
+  [coderCopy encodeObject:self->_homeAutomationEntityProvider forKey:@"homeAutomationEntityProvider"];
 }
 
-- (INPrivateMediaIntentData)initWithCoder:(id)a3
+- (INPrivateMediaIntentData)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v19 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"speakerIDInfo"];
-  v14 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"proxiedThirdPartyAppInfo"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"isAppAttributionRequired"];
-  v16 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"useDialogMemoryForAttribution"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"isAppCorrection"];
-  v15 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"fallbackUsername"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"wholeHouseAudioMetadata"];
-  v7 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"nlConfidenceScore"];
-  v8 = [v3 decodeIntegerForKey:@"nlConfidenceLevel"];
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"asrConfidenceScore"];
-  v10 = [v3 decodeIntegerForKey:@"asrConfidenceLevel"];
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"resolvedSharedUserID"];
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"homeAutomationEntityProvider"];
+  coderCopy = coder;
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"speakerIDInfo"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"proxiedThirdPartyAppInfo"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isAppAttributionRequired"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"useDialogMemoryForAttribution"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"isAppCorrection"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fallbackUsername"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"wholeHouseAudioMetadata"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nlConfidenceScore"];
+  v8 = [coderCopy decodeIntegerForKey:@"nlConfidenceLevel"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"asrConfidenceScore"];
+  v10 = [coderCopy decodeIntegerForKey:@"asrConfidenceLevel"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resolvedSharedUserID"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"homeAutomationEntityProvider"];
 
   v18 = [(INPrivateMediaIntentData *)self initWithSpeakerIDInfo:v19 proxiedThirdPartyAppInfo:v14 isAppAttributionRequired:v4 useDialogMemoryForAttribution:v16 isAppCorrection:v5 fallbackUsername:v15 wholeHouseAudioMetadata:v6 nlConfidenceScore:v7 nlConfidenceLevel:v8 asrConfidenceScore:v9 asrConfidenceLevel:v10 resolvedSharedUserID:v11 homeAutomationEntityProvider:v12];
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v17 = 1;
   }
@@ -334,7 +334,7 @@ LABEL_29:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       speakerIDInfo = self->_speakerIDInfo;
       if (speakerIDInfo != v5->_speakerIDInfo && ![(INSpeakerIDInfo *)speakerIDInfo isEqual:?])
       {
@@ -401,67 +401,67 @@ LABEL_30:
   return v16 ^ v17;
 }
 
-- (INPrivateMediaIntentData)initWithSpeakerIDInfo:(id)a3 proxiedThirdPartyAppInfo:(id)a4 isAppAttributionRequired:(id)a5 useDialogMemoryForAttribution:(id)a6 isAppCorrection:(id)a7 fallbackUsername:(id)a8 wholeHouseAudioMetadata:(id)a9 nlConfidenceScore:(id)a10 nlConfidenceLevel:(int64_t)a11 asrConfidenceScore:(id)a12 asrConfidenceLevel:(int64_t)a13 resolvedSharedUserID:(id)a14 homeAutomationEntityProvider:(id)a15
+- (INPrivateMediaIntentData)initWithSpeakerIDInfo:(id)info proxiedThirdPartyAppInfo:(id)appInfo isAppAttributionRequired:(id)required useDialogMemoryForAttribution:(id)attribution isAppCorrection:(id)correction fallbackUsername:(id)username wholeHouseAudioMetadata:(id)metadata nlConfidenceScore:(id)self0 nlConfidenceLevel:(int64_t)self1 asrConfidenceScore:(id)self2 asrConfidenceLevel:(int64_t)self3 resolvedSharedUserID:(id)self4 homeAutomationEntityProvider:(id)self5
 {
-  v20 = a3;
-  v55 = a4;
-  v54 = a5;
-  v53 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a12;
-  v26 = a14;
-  v27 = a15;
+  infoCopy = info;
+  appInfoCopy = appInfo;
+  requiredCopy = required;
+  attributionCopy = attribution;
+  correctionCopy = correction;
+  usernameCopy = username;
+  metadataCopy = metadata;
+  scoreCopy = score;
+  confidenceScoreCopy = confidenceScore;
+  dCopy = d;
+  providerCopy = provider;
   v56.receiver = self;
   v56.super_class = INPrivateMediaIntentData;
   v28 = [(INPrivateMediaIntentData *)&v56 init];
   if (v28)
   {
-    v29 = [v20 copy];
+    v29 = [infoCopy copy];
     speakerIDInfo = v28->_speakerIDInfo;
     v28->_speakerIDInfo = v29;
 
-    v31 = [v55 copy];
+    v31 = [appInfoCopy copy];
     proxiedThirdPartyAppInfo = v28->_proxiedThirdPartyAppInfo;
     v28->_proxiedThirdPartyAppInfo = v31;
 
-    v33 = [v54 copy];
+    v33 = [requiredCopy copy];
     isAppAttributionRequired = v28->_isAppAttributionRequired;
     v28->_isAppAttributionRequired = v33;
 
-    v35 = [v53 copy];
+    v35 = [attributionCopy copy];
     useDialogMemoryForAttribution = v28->_useDialogMemoryForAttribution;
     v28->_useDialogMemoryForAttribution = v35;
 
-    v37 = [v21 copy];
+    v37 = [correctionCopy copy];
     isAppCorrection = v28->_isAppCorrection;
     v28->_isAppCorrection = v37;
 
-    v39 = [v22 copy];
+    v39 = [usernameCopy copy];
     fallbackUsername = v28->_fallbackUsername;
     v28->_fallbackUsername = v39;
 
-    v41 = [v23 copy];
+    v41 = [metadataCopy copy];
     wholeHouseAudioMetadata = v28->_wholeHouseAudioMetadata;
     v28->_wholeHouseAudioMetadata = v41;
 
-    v43 = [v24 copy];
+    v43 = [scoreCopy copy];
     nlConfidenceScore = v28->_nlConfidenceScore;
     v28->_nlConfidenceScore = v43;
 
-    v28->_nlConfidenceLevel = a11;
-    v45 = [v25 copy];
+    v28->_nlConfidenceLevel = level;
+    v45 = [confidenceScoreCopy copy];
     asrConfidenceScore = v28->_asrConfidenceScore;
     v28->_asrConfidenceScore = v45;
 
-    v28->_asrConfidenceLevel = a13;
-    v47 = [v26 copy];
+    v28->_asrConfidenceLevel = confidenceLevel;
+    v47 = [dCopy copy];
     resolvedSharedUserID = v28->_resolvedSharedUserID;
     v28->_resolvedSharedUserID = v47;
 
-    v49 = [v27 copy];
+    v49 = [providerCopy copy];
     homeAutomationEntityProvider = v28->_homeAutomationEntityProvider;
     v28->_homeAutomationEntityProvider = v49;
   }
@@ -469,50 +469,50 @@ LABEL_30:
   return v28;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v32 = a1;
+    selfCopy = self;
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"speakerIDInfo"];
-    v38 = [v7 decodeObjectOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"speakerIDInfo"];
+    v38 = [decoderCopy decodeObjectOfClass:v9 from:v10];
 
     v11 = objc_opt_class();
-    v12 = [v8 objectForKeyedSubscript:@"proxiedThirdPartyAppInfo"];
-    v37 = [v7 decodeObjectOfClass:v11 from:v12];
+    v12 = [fromCopy objectForKeyedSubscript:@"proxiedThirdPartyAppInfo"];
+    v37 = [decoderCopy decodeObjectOfClass:v11 from:v12];
 
-    v36 = [v8 objectForKeyedSubscript:@"isAppAttributionRequired"];
-    v35 = [v8 objectForKeyedSubscript:@"useDialogMemoryForAttribution"];
-    v34 = [v8 objectForKeyedSubscript:@"isAppCorrection"];
+    v36 = [fromCopy objectForKeyedSubscript:@"isAppAttributionRequired"];
+    v35 = [fromCopy objectForKeyedSubscript:@"useDialogMemoryForAttribution"];
+    v34 = [fromCopy objectForKeyedSubscript:@"isAppCorrection"];
     v13 = objc_opt_class();
-    v14 = [v8 objectForKeyedSubscript:@"fallbackUsername"];
-    v33 = [v7 decodeObjectOfClass:v13 from:v14];
+    v14 = [fromCopy objectForKeyedSubscript:@"fallbackUsername"];
+    v33 = [decoderCopy decodeObjectOfClass:v13 from:v14];
 
     v15 = objc_opt_class();
-    v16 = [v8 objectForKeyedSubscript:@"wholeHouseAudioMetadata"];
-    v30 = [v7 decodeObjectOfClass:v15 from:v16];
+    v16 = [fromCopy objectForKeyedSubscript:@"wholeHouseAudioMetadata"];
+    v30 = [decoderCopy decodeObjectOfClass:v15 from:v16];
 
-    v31 = [v8 objectForKeyedSubscript:@"nlConfidenceScore"];
-    v17 = [v8 objectForKeyedSubscript:@"nlConfidenceLevel"];
+    v31 = [fromCopy objectForKeyedSubscript:@"nlConfidenceScore"];
+    v17 = [fromCopy objectForKeyedSubscript:@"nlConfidenceLevel"];
     v18 = INMediaConfidenceLevelWithString(v17);
 
-    v29 = [v8 objectForKeyedSubscript:@"asrConfidenceScore"];
-    v19 = [v8 objectForKeyedSubscript:@"asrConfidenceLevel"];
+    v29 = [fromCopy objectForKeyedSubscript:@"asrConfidenceScore"];
+    v19 = [fromCopy objectForKeyedSubscript:@"asrConfidenceLevel"];
     v20 = INMediaConfidenceLevelWithString(v19);
 
     v21 = objc_opt_class();
-    v22 = [v8 objectForKeyedSubscript:@"resolvedSharedUserID"];
-    v23 = [v7 decodeObjectOfClass:v21 from:v22];
+    v22 = [fromCopy objectForKeyedSubscript:@"resolvedSharedUserID"];
+    v23 = [decoderCopy decodeObjectOfClass:v21 from:v22];
 
     v24 = objc_opt_class();
-    v25 = [v8 objectForKeyedSubscript:@"homeAutomationEntityProvider"];
-    v26 = [v7 decodeObjectOfClass:v24 from:v25];
+    v25 = [fromCopy objectForKeyedSubscript:@"homeAutomationEntityProvider"];
+    v26 = [decoderCopy decodeObjectOfClass:v24 from:v25];
 
-    v27 = [[v32 alloc] initWithSpeakerIDInfo:v38 proxiedThirdPartyAppInfo:v37 isAppAttributionRequired:v36 useDialogMemoryForAttribution:v35 isAppCorrection:v34 fallbackUsername:v33 wholeHouseAudioMetadata:v30 nlConfidenceScore:v31 nlConfidenceLevel:v18 asrConfidenceScore:v29 asrConfidenceLevel:v20 resolvedSharedUserID:v23 homeAutomationEntityProvider:v26];
+    v27 = [[selfCopy alloc] initWithSpeakerIDInfo:v38 proxiedThirdPartyAppInfo:v37 isAppAttributionRequired:v36 useDialogMemoryForAttribution:v35 isAppCorrection:v34 fallbackUsername:v33 wholeHouseAudioMetadata:v30 nlConfidenceScore:v31 nlConfidenceLevel:v18 asrConfidenceScore:v29 asrConfidenceLevel:v20 resolvedSharedUserID:v23 homeAutomationEntityProvider:v26];
   }
 
   else

@@ -1,9 +1,9 @@
 @interface SFSSTTSEngineCallbackResult
 - (AudioStreamBasicDescription)asbd;
-- (SFSSTTSEngineCallbackResult)initWithBeginCallback:(id)a3 chunkCallback:(id)a4 endCallback:(id)a5;
+- (SFSSTTSEngineCallbackResult)initWithBeginCallback:(id)callback chunkCallback:(id)chunkCallback endCallback:(id)endCallback;
 - (id).cxx_construct;
-- (int)synthesisCallback:(int)a3;
-- (void)setAsbd:(AudioStreamBasicDescription *)a3;
+- (int)synthesisCallback:(int)callback;
+- (void)setAsbd:(AudioStreamBasicDescription *)asbd;
 @end
 
 @implementation SFSSTTSEngineCallbackResult
@@ -16,11 +16,11 @@
   return self;
 }
 
-- (void)setAsbd:(AudioStreamBasicDescription *)a3
+- (void)setAsbd:(AudioStreamBasicDescription *)asbd
 {
-  v3 = *&a3->mSampleRate;
-  v4 = *&a3->mBytesPerPacket;
-  *&self->_asbd.mBitsPerChannel = *&a3->mBitsPerChannel;
+  v3 = *&asbd->mSampleRate;
+  v4 = *&asbd->mBytesPerPacket;
+  *&self->_asbd.mBitsPerChannel = *&asbd->mBitsPerChannel;
   *&self->_asbd.mBytesPerPacket = v4;
   *&self->_asbd.mSampleRate = v3;
 }
@@ -34,9 +34,9 @@
   return self;
 }
 
-- (int)synthesisCallback:(int)a3
+- (int)synthesisCallback:(int)callback
 {
-  switch(a3)
+  switch(callback)
   {
     case 4:
       chunkCallback = self->_chunkCallback;
@@ -62,25 +62,25 @@ LABEL_6:
   return [(NSError *)self->_error code];
 }
 
-- (SFSSTTSEngineCallbackResult)initWithBeginCallback:(id)a3 chunkCallback:(id)a4 endCallback:(id)a5
+- (SFSSTTSEngineCallbackResult)initWithBeginCallback:(id)callback chunkCallback:(id)chunkCallback endCallback:(id)endCallback
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  callbackCopy = callback;
+  chunkCallbackCopy = chunkCallback;
+  endCallbackCopy = endCallback;
   v19.receiver = self;
   v19.super_class = SFSSTTSEngineCallbackResult;
   v11 = [(SFSSTTSEngineCallbackResult *)&v19 init];
   if (v11)
   {
-    v12 = MEMORY[0x26D631550](v8);
+    v12 = MEMORY[0x26D631550](callbackCopy);
     beginCallback = v11->_beginCallback;
     v11->_beginCallback = v12;
 
-    v14 = MEMORY[0x26D631550](v9);
+    v14 = MEMORY[0x26D631550](chunkCallbackCopy);
     chunkCallback = v11->_chunkCallback;
     v11->_chunkCallback = v14;
 
-    v16 = MEMORY[0x26D631550](v10);
+    v16 = MEMORY[0x26D631550](endCallbackCopy);
     endCallback = v11->_endCallback;
     v11->_endCallback = v16;
   }

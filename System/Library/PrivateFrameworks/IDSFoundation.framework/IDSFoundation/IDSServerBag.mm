@@ -1,23 +1,23 @@
 @interface IDSServerBag
 + (id)_sharedCourierBag;
 + (id)_sharedIDSBag;
-+ (id)sharedInstanceForBagType:(int64_t)a3;
++ (id)sharedInstanceForBagType:(int64_t)type;
 - (BOOL)isInDebilitatedMode;
 - (BOOL)requiresIDSConnection;
 - (BOOL)requiresIDSHost;
 - (IDSServerBag)init;
-- (IDSServerBag)initWithConfig:(id)a3 queue:(id)a4;
-- (IDSServerBag)initWithConfig:(id)a3 queue:(id)a4 contentProvider:(id)a5;
+- (IDSServerBag)initWithConfig:(id)config queue:(id)queue;
+- (IDSServerBag)initWithConfig:(id)config queue:(id)queue contentProvider:(id)provider;
 - (NSString)apsEnvironmentName;
 - (NSURL)bagURL;
 - (id)_overrideValues;
 - (id)copyLoadedContents;
 - (id)description;
-- (id)objectForKey:(id)a3;
-- (id)objectForKey:(id)a3 ofClass:(Class)a4;
-- (id)urlWithKey:(id)a3;
+- (id)objectForKey:(id)key;
+- (id)objectForKey:(id)key ofClass:(Class)class;
+- (id)urlWithKey:(id)key;
 - (void)_clearOverrideValues;
-- (void)_setOverrideValue:(id)a3 forKey:(id)a4;
+- (void)_setOverrideValue:(id)value forKey:(id)key;
 - (void)forceBagLoad;
 - (void)startBagLoad;
 @end
@@ -52,8 +52,8 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(IDSServerBag *)self config];
-  v6 = _IDSServerBagTypeInternalString([v5 bagType]);
+  config = [(IDSServerBag *)self config];
+  v6 = _IDSServerBagTypeInternalString([config bagType]);
   v7 = [v3 stringWithFormat:@"<%@:%p %@>", v4, self, v6];;
 
   return v7;
@@ -61,20 +61,20 @@
 
 - (void)startBagLoad
 {
-  v3 = [(IDSServerBag *)self contentProvider];
-  v2 = [v3 updateContentsIfPossibleShouldForce:0];
+  contentProvider = [(IDSServerBag *)self contentProvider];
+  v2 = [contentProvider updateContentsIfPossibleShouldForce:0];
 }
 
-+ (id)sharedInstanceForBagType:(int64_t)a3
++ (id)sharedInstanceForBagType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
-    [a1 _sharedCourierBag];
+    [self _sharedCourierBag];
   }
 
   else
   {
-    [a1 _sharedIDSBag];
+    [self _sharedIDSBag];
   }
   v3 = ;
 
@@ -88,32 +88,32 @@
   v2 = [(IDSServerBag *)&v5 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69A6138] serverBag];
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
+    serverBag = [MEMORY[0x1E69A6138] serverBag];
+    if (os_log_type_enabled(serverBag, OS_LOG_TYPE_FAULT))
     {
-      sub_1A7E1AAB0(v3);
+      sub_1A7E1AAB0(serverBag);
     }
   }
 
   return v2;
 }
 
-- (IDSServerBag)initWithConfig:(id)a3 queue:(id)a4
+- (IDSServerBag)initWithConfig:(id)config queue:(id)queue
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[IDSServerBagInProcessContentProvider alloc] initWithConfig:v7 queue:v6];
-  v9 = [(IDSServerBag *)self initWithConfig:v7 queue:v6 contentProvider:v8];
+  queueCopy = queue;
+  configCopy = config;
+  v8 = [[IDSServerBagInProcessContentProvider alloc] initWithConfig:configCopy queue:queueCopy];
+  v9 = [(IDSServerBag *)self initWithConfig:configCopy queue:queueCopy contentProvider:v8];
 
   return v9;
 }
 
-- (IDSServerBag)initWithConfig:(id)a3 queue:(id)a4 contentProvider:(id)a5
+- (IDSServerBag)initWithConfig:(id)config queue:(id)queue contentProvider:(id)provider
 {
   v41 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  configCopy = config;
+  queueCopy = queue;
+  providerCopy = provider;
   v30.receiver = self;
   v30.super_class = IDSServerBag;
   v12 = [(IDSServerBag *)&v30 init];
@@ -121,9 +121,9 @@
   if (v12)
   {
     v12->_contentsLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v12->_queue, a4);
-    objc_storeStrong(&v13->_config, a3);
-    objc_storeStrong(&v13->_contentProvider, a5);
+    objc_storeStrong(&v12->_queue, queue);
+    objc_storeStrong(&v13->_config, config);
+    objc_storeStrong(&v13->_contentProvider, provider);
     objc_initWeak(&location, v13);
     contentProvider = v13->_contentProvider;
     v27[0] = MEMORY[0x1E69E9820];
@@ -134,35 +134,35 @@
     [(IDSServerBagContentProvider *)contentProvider setContentsUpdatedBlock:v27];
     os_unfair_lock_lock(&v13->_contentsLock);
     v26 = 0;
-    v15 = [v11 currentLoadedContentsWithError:&v26];
+    v15 = [providerCopy currentLoadedContentsWithError:&v26];
     v16 = v26;
     loadedContents = v13->_loadedContents;
     v13->_loadedContents = v15;
 
-    v18 = [(IDSServerBagContentProvider *)v13->_contentProvider loadOverrideValuesIfPresent];
-    v19 = [v18 mutableCopy];
+    loadOverrideValuesIfPresent = [(IDSServerBagContentProvider *)v13->_contentProvider loadOverrideValuesIfPresent];
+    v19 = [loadOverrideValuesIfPresent mutableCopy];
     overrideValues = v13->_overrideValues;
     v13->_overrideValues = v19;
 
-    v21 = [(IDSServerBagLoadedContents *)v13->_loadedContents dictionary];
-    v22 = [v21 count];
+    dictionary = [(IDSServerBagLoadedContents *)v13->_loadedContents dictionary];
+    v22 = [dictionary count];
 
     v23 = [(NSMutableDictionary *)v13->_overrideValues count];
     os_unfair_lock_unlock(&v13->_contentsLock);
-    v24 = [v9 logCategory];
-    if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+    logCategory = [configCopy logCategory];
+    if (os_log_type_enabled(logCategory, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138544386;
       v32 = v13;
       v33 = 2114;
-      v34 = v9;
+      v34 = configCopy;
       v35 = 2112;
-      v36 = v11;
+      v36 = providerCopy;
       v37 = 2050;
       v38 = v22;
       v39 = 2050;
       v40 = v23;
-      _os_log_impl(&dword_1A7AD9000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@ created {config: %{public}@, contentProvider: %@, loadedContents.count: %{public}llu, overrideValues.count: %{public}llu}", buf, 0x34u);
+      _os_log_impl(&dword_1A7AD9000, logCategory, OS_LOG_TYPE_DEFAULT, "%{public}@ created {config: %{public}@, contentProvider: %@, loadedContents.count: %{public}llu, overrideValues.count: %{public}llu}", buf, 0x34u);
     }
 
     objc_destroyWeak(&v28);
@@ -174,8 +174,8 @@
 
 - (void)forceBagLoad
 {
-  v3 = [(IDSServerBag *)self contentProvider];
-  v2 = [v3 updateContentsIfPossibleShouldForce:1];
+  contentProvider = [(IDSServerBag *)self contentProvider];
+  v2 = [contentProvider updateContentsIfPossibleShouldForce:1];
 }
 
 - (BOOL)isInDebilitatedMode
@@ -193,45 +193,45 @@
 
 - (BOOL)requiresIDSConnection
 {
-  v2 = [(IDSServerBag *)self config];
-  v3 = [v2 requiresIDSHost];
+  config = [(IDSServerBag *)self config];
+  requiresIDSHost = [config requiresIDSHost];
 
-  return v3;
+  return requiresIDSHost;
 }
 
 - (BOOL)requiresIDSHost
 {
-  v2 = [(IDSServerBag *)self config];
-  v3 = [v2 requiresIDSHost];
+  config = [(IDSServerBag *)self config];
+  requiresIDSHost = [config requiresIDSHost];
 
-  return v3;
+  return requiresIDSHost;
 }
 
 - (NSURL)bagURL
 {
-  v2 = [(IDSServerBag *)self config];
-  v3 = [v2 url];
+  config = [(IDSServerBag *)self config];
+  v3 = [config url];
 
   return v3;
 }
 
 - (NSString)apsEnvironmentName
 {
-  v2 = [(IDSServerBag *)self config];
-  v3 = [v2 apsEnvironmentName];
+  config = [(IDSServerBag *)self config];
+  apsEnvironmentName = [config apsEnvironmentName];
 
-  return v3;
+  return apsEnvironmentName;
 }
 
-- (id)objectForKey:(id)a3
+- (id)objectForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_contentsLock);
   if (CUTIsInternalInstall())
   {
-    v5 = [@"server-bag-" stringByAppendingString:v4];
-    v6 = [MEMORY[0x1E69A6180] sharedDefaults];
-    v7 = [v6 appValueForKey:v5];
+    v5 = [@"server-bag-" stringByAppendingString:keyCopy];
+    mEMORY[0x1E69A6180] = [MEMORY[0x1E69A6180] sharedDefaults];
+    v7 = [mEMORY[0x1E69A6180] appValueForKey:v5];
 
     if (v7)
     {
@@ -242,7 +242,7 @@ LABEL_3:
 
     if ([(NSMutableDictionary *)self->_overrideValues count])
     {
-      v8 = [(NSMutableDictionary *)self->_overrideValues objectForKey:v4];
+      v8 = [(NSMutableDictionary *)self->_overrideValues objectForKey:keyCopy];
       if (v8)
       {
         v7 = v8;
@@ -251,9 +251,9 @@ LABEL_3:
     }
   }
 
-  v9 = [(IDSServerBag *)self loadedContents];
-  v10 = [v9 dictionary];
-  v5 = [v10 objectForKey:v4];
+  loadedContents = [(IDSServerBag *)self loadedContents];
+  dictionary = [loadedContents dictionary];
+  v5 = [dictionary objectForKey:keyCopy];
 
   os_unfair_lock_unlock(&self->_contentsLock);
   if (v5)
@@ -264,9 +264,9 @@ LABEL_3:
 
   else
   {
-    v11 = [(IDSServerBag *)self config];
-    v12 = [v11 defaultBag];
-    v7 = [v12 objectForKey:v4];
+    config = [(IDSServerBag *)self config];
+    defaultBag = [config defaultBag];
+    v7 = [defaultBag objectForKey:keyCopy];
   }
 
 LABEL_11:
@@ -274,29 +274,29 @@ LABEL_11:
   return v7;
 }
 
-- (id)objectForKey:(id)a3 ofClass:(Class)a4
+- (id)objectForKey:(id)key ofClass:(Class)class
 {
-  v4 = a4;
-  if (a4)
+  classCopy = class;
+  if (class)
   {
-    v5 = [(IDSServerBag *)self objectForKey:a3];
+    v5 = [(IDSServerBag *)self objectForKey:key];
     if (objc_opt_isKindOfClass())
     {
-      v4 = v5;
+      classCopy = v5;
     }
 
     else
     {
-      v4 = 0;
+      classCopy = 0;
     }
   }
 
-  return v4;
+  return classCopy;
 }
 
-- (id)urlWithKey:(id)a3
+- (id)urlWithKey:(id)key
 {
-  v4 = [(IDSServerBag *)self objectForKey:a3];
+  v4 = [(IDSServerBag *)self objectForKey:key];
   v5 = v4;
   if ([(IDSServerBag *)self isServerAvailable])
   {
@@ -328,17 +328,17 @@ LABEL_11:
   self->_overrideValues = 0;
 
   os_unfair_lock_unlock(&self->_contentsLock);
-  v4 = [(IDSServerBagContentProvider *)self->_contentProvider clearOverrideValues];
+  clearOverrideValues = [(IDSServerBagContentProvider *)self->_contentProvider clearOverrideValues];
 }
 
-- (void)_setOverrideValue:(id)a3 forKey:(id)a4
+- (void)_setOverrideValue:(id)value forKey:(id)key
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E69A60F0] sharedInstance];
-  v8 = [v7 isInternalInstall];
+  valueCopy = value;
+  keyCopy = key;
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  isInternalInstall = [mEMORY[0x1E69A60F0] isInternalInstall];
 
-  if (v8)
+  if (isInternalInstall)
   {
     os_unfair_lock_lock(&self->_contentsLock);
     overrideValues = self->_overrideValues;
@@ -351,7 +351,7 @@ LABEL_11:
       overrideValues = self->_overrideValues;
     }
 
-    [(NSMutableDictionary *)overrideValues setObject:v13 forKey:v6];
+    [(NSMutableDictionary *)overrideValues setObject:valueCopy forKey:keyCopy];
     os_unfair_lock_unlock(&self->_contentsLock);
     v12 = [(IDSServerBagContentProvider *)self->_contentProvider writeOverrideValues:self->_overrideValues];
   }

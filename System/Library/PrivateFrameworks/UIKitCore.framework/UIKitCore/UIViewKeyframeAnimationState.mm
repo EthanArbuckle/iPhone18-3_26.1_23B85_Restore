@@ -1,12 +1,12 @@
 @interface UIViewKeyframeAnimationState
 - (UIViewKeyframeAnimationState)init;
-- (id)_createDeferredAnimationForKey:(id)a3 ignoringKeyFrames:(BOOL)a4;
-- (id)_updateAnimationFrameWithAnimationProperties:(id)a3;
-- (id)animationForLayer:(id)a3 forKey:(id)a4 forView:(id)a5;
-- (void)addKeyframeWithRelativeStartTime:(double)a3 relativeDuration:(double)a4 animations:(id)a5;
+- (id)_createDeferredAnimationForKey:(id)key ignoringKeyFrames:(BOOL)frames;
+- (id)_updateAnimationFrameWithAnimationProperties:(id)properties;
+- (id)animationForLayer:(id)layer forKey:(id)key forView:(id)view;
+- (void)addKeyframeWithRelativeStartTime:(double)time relativeDuration:(double)duration animations:(id)animations;
 - (void)cleanupTrackedLayers;
 - (void)pop;
-- (void)setupWithDuration:(double)a3 delay:(double)a4 view:(id)a5 options:(unint64_t)a6 factory:(id)a7 parentState:(id)a8 start:(id)a9 completion:(id)a10;
+- (void)setupWithDuration:(double)duration delay:(double)delay view:(id)view options:(unint64_t)options factory:(id)factory parentState:(id)state start:(id)start completion:(id)self0;
 @end
 
 @implementation UIViewKeyframeAnimationState
@@ -26,54 +26,54 @@
   return v2;
 }
 
-- (void)setupWithDuration:(double)a3 delay:(double)a4 view:(id)a5 options:(unint64_t)a6 factory:(id)a7 parentState:(id)a8 start:(id)a9 completion:(id)a10
+- (void)setupWithDuration:(double)duration delay:(double)delay view:(id)view options:(unint64_t)options factory:(id)factory parentState:(id)state start:(id)start completion:(id)self0
 {
   v12.receiver = self;
   v12.super_class = UIViewKeyframeAnimationState;
-  [(UIViewAnimationState *)&v12 setupWithDuration:a5 delay:a6 view:a7 options:a8 factory:a9 parentState:a10 start:a3 completion:a4];
-  self->_calculationMode = (a6 >> 10) & 7;
+  [(UIViewAnimationState *)&v12 setupWithDuration:view delay:options view:factory options:state factory:start parentState:completion start:duration completion:delay];
+  self->_calculationMode = (options >> 10) & 7;
 }
 
-- (id)animationForLayer:(id)a3 forKey:(id)a4 forView:(id)a5
+- (id)animationForLayer:(id)layer forKey:(id)key forView:(id)view
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  layerCopy = layer;
+  keyCopy = key;
+  viewCopy = view;
   if (self->_inFrame)
   {
     v11 = 0;
-    if (v8 && v9)
+    if (layerCopy && keyCopy)
     {
-      v12 = objc_getAssociatedObject(v8, &_UITrackedKeyframeActionsForLayerKey);
+      v12 = objc_getAssociatedObject(layerCopy, &_UITrackedKeyframeActionsForLayerKey);
       if (!v12)
       {
         v12 = objc_alloc_init(MEMORY[0x1E695DF90]);
-        objc_setAssociatedObject(v8, &_UITrackedKeyframeActionsForLayerKey, v12, 1);
+        objc_setAssociatedObject(layerCopy, &_UITrackedKeyframeActionsForLayerKey, v12, 1);
       }
 
-      v13 = [v12 objectForKeyedSubscript:v9];
+      v13 = [v12 objectForKeyedSubscript:keyCopy];
       if (!v13)
       {
         v13 = objc_alloc_init(_UIViewDeferredKeyframeAnimation);
-        [(_UIViewDeferredAnimation *)v13 setKey:v9];
+        [(_UIViewDeferredAnimation *)v13 setKey:keyCopy];
         [(_UIViewDeferredAnimation *)v13 setDuration:self->super._duration];
-        v14 = [v10 _initialValueForLayer:v8 keyPath:v9 usePresentationValue:(*(&self->super + 172) >> 1) & 1];
+        v14 = [viewCopy _initialValueForLayer:layerCopy keyPath:keyCopy usePresentationValue:(*(&self->super + 172) >> 1) & 1];
         [(_UIViewDeferredAnimation *)v13 setInitialValue:v14];
 
         [(_UIViewDeferredAnimation *)v13 setRepeatCount:self->super._repeatCount];
         [(_UIViewDeferredAnimation *)v13 setAutoreverses:(*(&self->super + 172) >> 3) & 1];
-        [v12 setObject:v13 forKeyedSubscript:v9];
+        [v12 setObject:v13 forKeyedSubscript:keyCopy];
       }
 
-      [(NSMutableSet *)self->_keyframeLayers addObject:v8];
-      v15 = [(NSMutableDictionary *)self->_keyframeLayersForCurrentKeyFrameDict objectForKeyedSubscript:v9];
+      [(NSMutableSet *)self->_keyframeLayers addObject:layerCopy];
+      v15 = [(NSMutableDictionary *)self->_keyframeLayersForCurrentKeyFrameDict objectForKeyedSubscript:keyCopy];
       if (!v15)
       {
         v15 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-        [(NSMutableDictionary *)self->_keyframeLayersForCurrentKeyFrameDict setObject:v15 forKeyedSubscript:v9];
+        [(NSMutableDictionary *)self->_keyframeLayersForCurrentKeyFrameDict setObject:v15 forKeyedSubscript:keyCopy];
       }
 
-      [v15 addObject:v8];
+      [v15 addObject:layerCopy];
 
       v11 = 0;
     }
@@ -83,29 +83,29 @@
   {
     v17.receiver = self;
     v17.super_class = UIViewKeyframeAnimationState;
-    v11 = [(UIViewAnimationState *)&v17 animationForLayer:v8 forKey:v9 forView:v10];
+    v11 = [(UIViewAnimationState *)&v17 animationForLayer:layerCopy forKey:keyCopy forView:viewCopy];
   }
 
   return v11;
 }
 
-- (void)addKeyframeWithRelativeStartTime:(double)a3 relativeDuration:(double)a4 animations:(id)a5
+- (void)addKeyframeWithRelativeStartTime:(double)time relativeDuration:(double)duration animations:(id)animations
 {
-  v13 = a5;
+  animationsCopy = animations;
   if (self->_inFrame)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"UIView.m" lineNumber:2892 description:@"calls to +[UIView addKeyframeWithStartTime:duration:animations:] cannot be nested within a single keyframe animation"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIView.m" lineNumber:2892 description:@"calls to +[UIView addKeyframeWithStartTime:duration:animations:] cannot be nested within a single keyframe animation"];
   }
 
   self->_inFrame = 1;
-  self->_frameStartTime = a3;
-  self->_frameDuration = a4;
+  self->_frameStartTime = time;
+  self->_frameDuration = duration;
   v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
   keyframeLayersForCurrentKeyFrameDict = self->_keyframeLayersForCurrentKeyFrameDict;
   self->_keyframeLayersForCurrentKeyFrameDict = v9;
 
-  v13[2]();
+  animationsCopy[2]();
   [(NSMutableDictionary *)self->_keyframeLayersForCurrentKeyFrameDict enumerateKeysAndObjectsUsingBlock:&__block_literal_global_501_2];
   v11 = self->_keyframeLayersForCurrentKeyFrameDict;
   self->_keyframeLayersForCurrentKeyFrameDict = 0;
@@ -181,9 +181,9 @@ void __93__UIViewKeyframeAnimationState_addKeyframeWithRelativeStartTime_relativ
   }
 }
 
-- (id)_createDeferredAnimationForKey:(id)a3 ignoringKeyFrames:(BOOL)a4
+- (id)_createDeferredAnimationForKey:(id)key ignoringKeyFrames:(BOOL)frames
 {
-  if (self->_inFrame && !a4)
+  if (self->_inFrame && !frames)
   {
     v5 = objc_alloc_init(_UIViewDeferredKeyframeAnimation);
   }
@@ -192,24 +192,24 @@ void __93__UIViewKeyframeAnimationState_addKeyframeWithRelativeStartTime_relativ
   {
     v7.receiver = self;
     v7.super_class = UIViewKeyframeAnimationState;
-    v5 = [(UIViewAnimationState *)&v7 _createDeferredAnimationForKey:a3 ignoringKeyFrames:a4];
+    v5 = [(UIViewAnimationState *)&v7 _createDeferredAnimationForKey:key ignoringKeyFrames:frames];
   }
 
   return v5;
 }
 
-- (id)_updateAnimationFrameWithAnimationProperties:(id)a3
+- (id)_updateAnimationFrameWithAnimationProperties:(id)properties
 {
-  v4 = a3;
-  if (!v4)
+  propertiesCopy = properties;
+  if (!propertiesCopy)
   {
-    v4 = objc_alloc_init(_UIViewAnimationFrame);
+    propertiesCopy = objc_alloc_init(_UIViewAnimationFrame);
   }
 
-  [(_UIViewAnimationFrame *)v4 setStartTime:self->_frameStartTime];
-  [(_UIViewAnimationFrame *)v4 setDuration:self->_frameDuration];
+  [(_UIViewAnimationFrame *)propertiesCopy setStartTime:self->_frameStartTime];
+  [(_UIViewAnimationFrame *)propertiesCopy setDuration:self->_frameDuration];
 
-  return v4;
+  return propertiesCopy;
 }
 
 - (void)pop
@@ -256,7 +256,7 @@ void __93__UIViewKeyframeAnimationState_addKeyframeWithRelativeStartTime_relativ
         v14[2] = __35__UIViewKeyframeAnimationState_pop__block_invoke;
         v14[3] = &unk_1E712AF58;
         v15 = v5;
-        v16 = self;
+        selfCopy = self;
         v17 = v10;
         [v11 enumerateKeysAndObjectsUsingBlock:v14];
       }

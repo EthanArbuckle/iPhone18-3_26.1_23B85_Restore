@@ -1,16 +1,16 @@
 @interface PXUIOverlayBadgesView
 + (id)badgesViewWithDefaultBadgesAndOrder;
 + (id)defaultBadges;
-+ (id)defaultViewForBadge:(int64_t)a3;
++ (id)defaultViewForBadge:(int64_t)badge;
 - (PXUIOverlayBadgesView)init;
-- (PXUIOverlayBadgesView)initWithBadges:(id)a3 order:(id)a4;
-- (PXUIOverlayBadgesView)initWithCoder:(id)a3;
-- (PXUIOverlayBadgesView)initWithFrame:(CGRect)a3;
+- (PXUIOverlayBadgesView)initWithBadges:(id)badges order:(id)order;
+- (PXUIOverlayBadgesView)initWithCoder:(id)coder;
+- (PXUIOverlayBadgesView)initWithFrame:(CGRect)frame;
 - (UIImageView)backgroundView;
 - (id)createWeaklyReferencedBackgroundView;
-- (void)showBadges:(id)a3;
-- (void)showBadgesForPHAsset:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)showBadges:(id)badges;
+- (void)showBadgesForPHAsset:(id)asset;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PXUIOverlayBadgesView
@@ -22,62 +22,62 @@
   return WeakRetained;
 }
 
-- (PXUIOverlayBadgesView)initWithCoder:(id)a3
+- (PXUIOverlayBadgesView)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXUIOverlayBadgesView.m" lineNumber:158 description:{@"%s is not available as initializer", "-[PXUIOverlayBadgesView initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXUIOverlayBadgesView.m" lineNumber:158 description:{@"%s is not available as initializer", "-[PXUIOverlayBadgesView initWithCoder:]"}];
 
   abort();
 }
 
-- (PXUIOverlayBadgesView)initWithFrame:(CGRect)a3
+- (PXUIOverlayBadgesView)initWithFrame:(CGRect)frame
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXUIOverlayBadgesView.m" lineNumber:154 description:{@"%s is not available as initializer", "-[PXUIOverlayBadgesView initWithFrame:]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXUIOverlayBadgesView.m" lineNumber:154 description:{@"%s is not available as initializer", "-[PXUIOverlayBadgesView initWithFrame:]"}];
 
   abort();
 }
 
 - (PXUIOverlayBadgesView)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXUIOverlayBadgesView.m" lineNumber:150 description:{@"%s is not available as initializer", "-[PXUIOverlayBadgesView init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXUIOverlayBadgesView.m" lineNumber:150 description:{@"%s is not available as initializer", "-[PXUIOverlayBadgesView init]"}];
 
   abort();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v11.receiver = self;
   v11.super_class = PXUIOverlayBadgesView;
-  v4 = a3;
-  [(PXUIOverlayBadgesView *)&v11 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(PXUIOverlayBadgesView *)&v11 traitCollectionDidChange:changeCopy];
   v5 = [(PXUIOverlayBadgesView *)self traitCollection:v11.receiver];
-  v6 = [v5 layoutDirection];
-  v7 = [v4 layoutDirection];
+  layoutDirection = [v5 layoutDirection];
+  layoutDirection2 = [changeCopy layoutDirection];
 
-  if (v6 != v7)
+  if (layoutDirection != layoutDirection2)
   {
-    v8 = [(PXUIOverlayBadgesView *)self traitCollection];
-    v9 = [off_1E77214D8 leadingCornerGradientBackgroundImageForLayoutDirection:{objc_msgSend(v8, "layoutDirection")}];
-    v10 = [(PXUIOverlayBadgesView *)self backgroundView];
-    [v10 setImage:v9];
+    traitCollection = [(PXUIOverlayBadgesView *)self traitCollection];
+    v9 = [off_1E77214D8 leadingCornerGradientBackgroundImageForLayoutDirection:{objc_msgSend(traitCollection, "layoutDirection")}];
+    backgroundView = [(PXUIOverlayBadgesView *)self backgroundView];
+    [backgroundView setImage:v9];
   }
 }
 
-- (void)showBadges:(id)a3
+- (void)showBadges:(id)badges
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  badgesCopy = badges;
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v5 = [(PXUIOverlayBadgesView *)self badges];
-  v6 = [v5 allValues];
+  badges = [(PXUIOverlayBadgesView *)self badges];
+  allValues = [badges allValues];
 
-  v7 = [v6 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  v7 = [allValues countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v7)
   {
     v8 = v7;
@@ -88,13 +88,13 @@
       {
         if (*v39 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v38 + 1) + 8 * i) setHidden:1];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v38 objects:v43 count:16];
+      v8 = [allValues countByEnumeratingWithState:&v38 objects:v43 count:16];
     }
 
     while (v8);
@@ -104,7 +104,7 @@
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v11 = v4;
+  v11 = badgesCopy;
   v33 = [v11 countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v33)
   {
@@ -121,8 +121,8 @@
         }
 
         v15 = *(*(&v34 + 1) + 8 * v14);
-        v16 = [(PXUIOverlayBadgesView *)self badges];
-        v17 = [v16 objectForKeyedSubscript:v15];
+        badges2 = [(PXUIOverlayBadgesView *)self badges];
+        v17 = [badges2 objectForKeyedSubscript:v15];
 
         [v17 setHidden:0];
         if ([v15 integerValue] == 4)
@@ -136,19 +136,19 @@
               goto LABEL_16;
             }
 
-            v30 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
             v24 = objc_opt_class();
             v21 = NSStringFromClass(v24);
-            v28 = [v18 px_descriptionForAssertionMessage];
-            [v30 handleFailureInMethod:a2 object:self file:@"PXUIOverlayBadgesView.m" lineNumber:90 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"badge", v21, v28}];
+            px_descriptionForAssertionMessage = [v18 px_descriptionForAssertionMessage];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"PXUIOverlayBadgesView.m" lineNumber:90 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"badge", v21, px_descriptionForAssertionMessage}];
           }
 
           else
           {
-            v30 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
             v20 = objc_opt_class();
             v21 = NSStringFromClass(v20);
-            [v30 handleFailureInMethod:a2 object:self file:@"PXUIOverlayBadgesView.m" lineNumber:90 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"badge", v21}];
+            [currentHandler handleFailureInMethod:a2 object:self file:@"PXUIOverlayBadgesView.m" lineNumber:90 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"badge", v21}];
           }
 
 LABEL_16:
@@ -164,19 +164,19 @@ LABEL_18:
               goto LABEL_19;
             }
 
-            v31 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
             v25 = objc_opt_class();
             v23 = NSStringFromClass(v25);
-            v29 = [v19 px_descriptionForAssertionMessage];
-            [v31 handleFailureInMethod:a2 object:self file:@"PXUIOverlayBadgesView.m" lineNumber:91 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"badgesToShow[badgeNumber]", v23, v29}];
+            px_descriptionForAssertionMessage2 = [v19 px_descriptionForAssertionMessage];
+            [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXUIOverlayBadgesView.m" lineNumber:91 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"badgesToShow[badgeNumber]", v23, px_descriptionForAssertionMessage2}];
           }
 
           else
           {
-            v31 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
             v22 = objc_opt_class();
             v23 = NSStringFromClass(v22);
-            [v31 handleFailureInMethod:a2 object:self file:@"PXUIOverlayBadgesView.m" lineNumber:91 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"badgesToShow[badgeNumber]", v23}];
+            [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXUIOverlayBadgesView.m" lineNumber:91 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"badgesToShow[badgeNumber]", v23}];
           }
 
           goto LABEL_18;
@@ -196,15 +196,15 @@ LABEL_19:
   }
 
   [(PXUIOverlayBadgesView *)self setIsShowingAnyBadge:v33 != 0];
-  v27 = [(PXUIOverlayBadgesView *)self backgroundView];
-  [v27 setHidden:v33 == 0];
+  backgroundView = [(PXUIOverlayBadgesView *)self backgroundView];
+  [backgroundView setHidden:v33 == 0];
 }
 
 - (id)createWeaklyReferencedBackgroundView
 {
   v3 = objc_alloc(MEMORY[0x1E69DCAE0]);
-  v4 = [(PXUIOverlayBadgesView *)self traitCollection];
-  v5 = [off_1E77214D8 leadingCornerGradientBackgroundImageForLayoutDirection:{objc_msgSend(v4, "layoutDirection")}];
+  traitCollection = [(PXUIOverlayBadgesView *)self traitCollection];
+  v5 = [off_1E77214D8 leadingCornerGradientBackgroundImageForLayoutDirection:{objc_msgSend(traitCollection, "layoutDirection")}];
   v6 = [v3 initWithImage:v5];
 
   [v6 setHidden:{-[PXUIOverlayBadgesView isShowingAnyBadge](self, "isShowingAnyBadge") ^ 1}];
@@ -216,34 +216,34 @@ LABEL_19:
   return v6;
 }
 
-- (PXUIOverlayBadgesView)initWithBadges:(id)a3 order:(id)a4
+- (PXUIOverlayBadgesView)initWithBadges:(id)badges order:(id)order
 {
   v10 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  badgesCopy = badges;
+  orderCopy = order;
   v9.receiver = self;
   v9.super_class = PXUIOverlayBadgesView;
   if ([(PXUIOverlayBadgesView *)&v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)])
   {
-    v6;
+    badgesCopy;
     PXMap();
   }
 
   return 0;
 }
 
-+ (id)defaultViewForBadge:(int64_t)a3
++ (id)defaultViewForBadge:(int64_t)badge
 {
-  if (a3 <= 2)
+  if (badge <= 2)
   {
-    if (a3 == 1)
+    if (badge == 1)
     {
       v4 = @"heart.fill";
     }
 
     else
     {
-      if (a3 != 2)
+      if (badge != 2)
       {
         goto LABEL_11;
       }
@@ -254,7 +254,7 @@ LABEL_19:
     goto LABEL_10;
   }
 
-  if (a3 == 3)
+  if (badge == 3)
   {
     v4 = @"icloud.fill";
 LABEL_10:
@@ -262,14 +262,14 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a3 == 4)
+  if (badge == 4)
   {
     v3 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     v5 = [MEMORY[0x1E69DB878] systemFontOfSize:12.0];
     [v3 setFont:v5];
 
-    v6 = [MEMORY[0x1E69DC888] whiteColor];
-    [v3 setTextColor:v6];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [v3 setTextColor:whiteColor];
   }
 
 LABEL_11:
@@ -281,13 +281,13 @@ LABEL_11:
 {
   v9[3] = *MEMORY[0x1E69E9840];
   v8[0] = &unk_1F1909A18;
-  v3 = [a1 defaultViewForBadge:1];
+  v3 = [self defaultViewForBadge:1];
   v9[0] = v3;
   v8[1] = &unk_1F1909A30;
-  v4 = [a1 defaultViewForBadge:2];
+  v4 = [self defaultViewForBadge:2];
   v9[1] = v4;
   v8[2] = &unk_1F1909A48;
-  v5 = [a1 defaultViewForBadge:4];
+  v5 = [self defaultViewForBadge:4];
   v9[2] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:3];
 
@@ -297,30 +297,30 @@ LABEL_11:
 + (id)badgesViewWithDefaultBadgesAndOrder
 {
   v3 = [PXUIOverlayBadgesView alloc];
-  v4 = [a1 defaultBadges];
-  v5 = [a1 defaultOrder];
-  v6 = [(PXUIOverlayBadgesView *)v3 initWithBadges:v4 order:v5];
+  defaultBadges = [self defaultBadges];
+  defaultOrder = [self defaultOrder];
+  v6 = [(PXUIOverlayBadgesView *)v3 initWithBadges:defaultBadges order:defaultOrder];
 
   return v6;
 }
 
-- (void)showBadgesForPHAsset:(id)a3
+- (void)showBadgesForPHAsset:(id)asset
 {
-  v6 = a3;
+  assetCopy = asset;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if ([v6 isFavorite])
+  if ([assetCopy isFavorite])
   {
     [v4 setObject:MEMORY[0x1E695E118] forKeyedSubscript:&unk_1F190DE10];
   }
 
-  if ([v6 isMediaSubtype:1])
+  if ([assetCopy isMediaSubtype:1])
   {
     [v4 setObject:MEMORY[0x1E695E118] forKeyedSubscript:&unk_1F190DE28];
   }
 
-  if ([v6 isVideo])
+  if ([assetCopy isVideo])
   {
-    [v6 duration];
+    [assetCopy duration];
     PXLocalizedVideoDuration();
   }
 

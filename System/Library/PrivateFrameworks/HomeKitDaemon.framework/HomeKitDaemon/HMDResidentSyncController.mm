@@ -1,32 +1,32 @@
 @interface HMDResidentSyncController
-- (HMDResidentSyncController)initWithHome:(id)a3 codingModel:(id)a4 notificationCenter:(id)a5 persistence:(id)a6;
-- (id)decodeToken:(id)a3 error:(id *)a4;
-- (id)encodeToken:(id)a3 error:(id *)a4;
-- (uint64_t)changeToken:(void *)a3 isAheadOf:(uint64_t)a4 orEqual:;
+- (HMDResidentSyncController)initWithHome:(id)home codingModel:(id)model notificationCenter:(id)center persistence:(id)persistence;
+- (id)decodeToken:(id)token error:(id *)error;
+- (id)encodeToken:(id)token error:(id *)error;
+- (uint64_t)changeToken:(void *)token isAheadOf:(uint64_t)of orEqual:;
 @end
 
 @implementation HMDResidentSyncController
 
-- (uint64_t)changeToken:(void *)a3 isAheadOf:(uint64_t)a4 orEqual:
+- (uint64_t)changeToken:(void *)token isAheadOf:(uint64_t)of orEqual:
 {
   v7 = a2;
-  v8 = a3;
-  v9 = v8;
-  if (!a1)
+  tokenCopy = token;
+  v9 = tokenCopy;
+  if (!self)
   {
     goto LABEL_6;
   }
 
-  if (!v8)
+  if (!tokenCopy)
   {
 LABEL_8:
-    a4 = 1;
+    of = 1;
     goto LABEL_9;
   }
 
-  if (v7 != v8)
+  if (v7 != tokenCopy)
   {
-    v10 = [v7 compareToken:v8 error:0];
+    v10 = [v7 compareToken:tokenCopy error:0];
     if (v10 > 2)
     {
       if (v10 == 3)
@@ -38,7 +38,7 @@ LABEL_8:
     else if (v10 == 2)
     {
 LABEL_6:
-      a4 = 0;
+      of = 0;
       goto LABEL_9;
     }
 
@@ -47,15 +47,15 @@ LABEL_6:
 
 LABEL_9:
 
-  return a4;
+  return of;
 }
 
-- (id)decodeToken:(id)a3 error:(id *)a4
+- (id)decodeToken:(id)token error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  tokenCopy = token;
   v17 = 0;
-  v7 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v6 error:&v17];
+  v7 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:tokenCopy error:&v17];
   v8 = v17;
   if (v7)
   {
@@ -65,7 +65,7 @@ LABEL_9:
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -78,10 +78,10 @@ LABEL_9:
     }
 
     objc_autoreleasePoolPop(v10);
-    if (a4)
+    if (error)
     {
       v14 = v8;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -90,12 +90,12 @@ LABEL_9:
   return v7;
 }
 
-- (id)encodeToken:(id)a3 error:(id *)a4
+- (id)encodeToken:(id)token error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  tokenCopy = token;
   v17 = 0;
-  v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v17];
+  v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:tokenCopy requiringSecureCoding:1 error:&v17];
   v8 = v17;
   if (v7)
   {
@@ -105,7 +105,7 @@ LABEL_9:
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
@@ -118,10 +118,10 @@ LABEL_9:
     }
 
     objc_autoreleasePoolPop(v10);
-    if (a4)
+    if (error)
     {
       v14 = v8;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -130,12 +130,12 @@ LABEL_9:
   return v7;
 }
 
-- (HMDResidentSyncController)initWithHome:(id)a3 codingModel:(id)a4 notificationCenter:(id)a5 persistence:(id)a6
+- (HMDResidentSyncController)initWithHome:(id)home codingModel:(id)model notificationCenter:(id)center persistence:(id)persistence
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  homeCopy = home;
+  modelCopy = model;
+  centerCopy = center;
+  persistenceCopy = persistence;
   v33.receiver = self;
   v33.super_class = HMDResidentSyncController;
   v14 = [(HMDResidentSyncController *)&v33 init];
@@ -145,23 +145,23 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  objc_storeWeak(&v14->_home, v10);
-  v16 = [v10 uuid];
+  objc_storeWeak(&v14->_home, homeCopy);
+  uuid = [homeCopy uuid];
   homeUUID = v15->_homeUUID;
-  v15->_homeUUID = v16;
+  v15->_homeUUID = uuid;
 
-  objc_storeStrong(&v15->_notificationCenter, a5);
-  objc_storeStrong(&v15->_codingModel, a4);
-  v18 = [v11 objectModel];
-  v19 = [v18 versionIdentifiers];
+  objc_storeStrong(&v15->_notificationCenter, center);
+  objc_storeStrong(&v15->_codingModel, model);
+  objectModel = [modelCopy objectModel];
+  versionIdentifiers = [objectModel versionIdentifiers];
   objc_opt_self();
-  if ([v19 count] == 1)
+  if ([versionIdentifiers count] == 1)
   {
-    v20 = [v19 anyObject];
+    anyObject = [versionIdentifiers anyObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v21 = v20;
+      v21 = anyObject;
     }
 
     else
@@ -181,9 +181,9 @@ LABEL_9:
         schemaVersion = v15->_schemaVersion;
         v15->_schemaVersion = v24;
 
-        v26 = [v13 newManagedObjectContext];
+        newManagedObjectContext = [persistenceCopy newManagedObjectContext];
         context = v15->_context;
-        v15->_context = v26;
+        v15->_context = newManagedObjectContext;
 
         v28 = HMDWorkingContextNameForHomeUUID(v15->_homeUUID);
         [(HMDManagedObjectContext *)v15->_context setName:v28];

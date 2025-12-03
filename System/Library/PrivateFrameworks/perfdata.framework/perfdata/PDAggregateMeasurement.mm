@@ -1,26 +1,26 @@
 @interface PDAggregateMeasurement
-- (PDAggregateMeasurement)initWithContainer:(id)a3 metric:(id)a4 unitString:(id)a5;
+- (PDAggregateMeasurement)initWithContainer:(id)container metric:(id)metric unitString:(id)string;
 - (PDMeasurement)measurement;
 - (void)dealloc;
-- (void)updateWithMeasurement:(id)a3;
+- (void)updateWithMeasurement:(id)measurement;
 @end
 
 @implementation PDAggregateMeasurement
 
-- (PDAggregateMeasurement)initWithContainer:(id)a3 metric:(id)a4 unitString:(id)a5
+- (PDAggregateMeasurement)initWithContainer:(id)container metric:(id)metric unitString:(id)string
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  containerCopy = container;
+  metricCopy = metric;
+  stringCopy = string;
   v15.receiver = self;
   v15.super_class = PDAggregateMeasurement;
   v11 = [(PDAggregateMeasurement *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    [(PDAggregateMeasurement *)v11 setContainer:v8];
-    [(PDAggregateMeasurement *)v12 setMetric:v9];
-    [(PDAggregateMeasurement *)v12 setUnitString:v10];
+    [(PDAggregateMeasurement *)v11 setContainer:containerCopy];
+    [(PDAggregateMeasurement *)v12 setMetric:metricCopy];
+    [(PDAggregateMeasurement *)v12 setUnitString:stringCopy];
     [(PDAggregateMeasurement *)v12 setValues_mean:malloc_type_calloc(1uLL, 0x18uLL, 0x1000040504FFAC1uLL)];
     [(PDAggregateMeasurement *)v12 setStats_mean:malloc_type_calloc(1uLL, 0x30uLL, 0x1000040EED21634uLL)];
     [(PDAggregateMeasurement *)v12 setValidMin:1];
@@ -42,24 +42,24 @@
   [(PDAggregateMeasurement *)&v3 dealloc];
 }
 
-- (void)updateWithMeasurement:(id)a3
+- (void)updateWithMeasurement:(id)measurement
 {
   v104 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(PDAggregateMeasurement *)self variables];
+  measurementCopy = measurement;
+  variables = [(PDAggregateMeasurement *)self variables];
 
-  v91 = self;
-  v93 = v4;
-  if (v5)
+  selfCopy = self;
+  v93 = measurementCopy;
+  if (variables)
   {
     v100 = 0u;
     v101 = 0u;
     v98 = 0u;
     v99 = 0u;
-    v6 = [(PDAggregateMeasurement *)self variables];
-    v7 = [v6 allKeys];
+    variables2 = [(PDAggregateMeasurement *)self variables];
+    allKeys = [variables2 allKeys];
 
-    v8 = [v7 countByEnumeratingWithState:&v98 objects:v103 count:16];
+    v8 = [allKeys countByEnumeratingWithState:&v98 objects:v103 count:16];
     if (v8)
     {
       v9 = v8;
@@ -70,27 +70,27 @@
         {
           if (*v99 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allKeys);
           }
 
           v12 = *(*(&v98 + 1) + 8 * i);
-          v13 = [v4 variables];
-          v14 = [v13 objectForKeyedSubscript:v12];
-          v15 = [(PDAggregateMeasurement *)self variables];
-          v16 = [v15 objectForKeyedSubscript:v12];
+          variables3 = [measurementCopy variables];
+          v14 = [variables3 objectForKeyedSubscript:v12];
+          variables4 = [(PDAggregateMeasurement *)self variables];
+          v16 = [variables4 objectForKeyedSubscript:v12];
           v17 = [v14 isEqual:v16];
 
-          self = v91;
+          self = selfCopy;
           if ((v17 & 1) == 0)
           {
-            v18 = [(PDAggregateMeasurement *)v91 variables];
-            [v18 removeObjectForKey:v12];
+            variables5 = [(PDAggregateMeasurement *)selfCopy variables];
+            [variables5 removeObjectForKey:v12];
           }
 
-          v4 = v93;
+          measurementCopy = v93;
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v98 objects:v103 count:16];
+        v9 = [allKeys countByEnumeratingWithState:&v98 objects:v103 count:16];
       }
 
       while (v9);
@@ -99,28 +99,28 @@
 
   else
   {
-    v19 = [v4 variables];
-    v20 = [v19 mutableCopy];
+    variables6 = [measurementCopy variables];
+    v20 = [variables6 mutableCopy];
     [(PDAggregateMeasurement *)self setVariables:v20];
   }
 
-  v21 = [(PDAggregateMeasurement *)self labels];
+  labels = [(PDAggregateMeasurement *)self labels];
 
-  if (!v21)
+  if (!labels)
   {
-    v22 = [MEMORY[0x277CBEB38] dictionary];
-    [(PDAggregateMeasurement *)self setLabels:v22];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(PDAggregateMeasurement *)self setLabels:dictionary];
   }
 
   v96 = 0u;
   v97 = 0u;
   v94 = 0u;
   v95 = 0u;
-  v23 = [v4 labels];
-  v24 = [v23 allKeys];
+  labels2 = [measurementCopy labels];
+  allKeys2 = [labels2 allKeys];
 
-  v25 = v24;
-  v26 = [v24 countByEnumeratingWithState:&v94 objects:v102 count:16];
+  v25 = allKeys2;
+  v26 = [allKeys2 countByEnumeratingWithState:&v94 objects:v102 count:16];
   if (v26)
   {
     v27 = v26;
@@ -135,27 +135,27 @@
         }
 
         v30 = *(*(&v94 + 1) + 8 * j);
-        v31 = [(PDAggregateMeasurement *)self labels];
-        v32 = [v31 objectForKeyedSubscript:v30];
+        labels3 = [(PDAggregateMeasurement *)self labels];
+        v32 = [labels3 objectForKeyedSubscript:v30];
 
         if (v32)
         {
-          v33 = [v4 labels];
-          v34 = [v33 objectForKeyedSubscript:v30];
-          [v32 unionSet:v34];
+          labels4 = [measurementCopy labels];
+          labels5 = [labels4 objectForKeyedSubscript:v30];
+          [v32 unionSet:labels5];
         }
 
         else
         {
-          v33 = [(PDAggregateMeasurement *)self labels];
+          labels4 = [(PDAggregateMeasurement *)self labels];
           v35 = MEMORY[0x277CBEB58];
-          v34 = [v4 labels];
-          v36 = [v34 objectForKeyedSubscript:v30];
+          labels5 = [measurementCopy labels];
+          v36 = [labels5 objectForKeyedSubscript:v30];
           v37 = [v35 setWithSet:v36];
-          [v33 setValue:v37 forKey:v30];
+          [labels4 setValue:v37 forKey:v30];
 
           self = v92;
-          v4 = v93;
+          measurementCopy = v93;
         }
       }
 
@@ -165,44 +165,44 @@
     while (v27);
   }
 
-  v38 = [v4 value];
+  value = [measurementCopy value];
 
-  if (v38)
+  if (value)
   {
-    v39 = [(PDAggregateMeasurement *)self values_mean];
-    v40 = [v4 value];
-    [v40 doubleValue];
-    v41 = v39->var2 + 1;
-    v43 = v42 - v39->var0;
-    v44 = v39->var0 + v43 / v41;
-    v45 = v39->var1 + v43 * (v42 - v44);
-    v39->var0 = v44;
-    v39->var1 = v45;
-    v39->var2 = v41;
+    values_mean = [(PDAggregateMeasurement *)self values_mean];
+    value2 = [measurementCopy value];
+    [value2 doubleValue];
+    v41 = values_mean->var2 + 1;
+    v43 = v42 - values_mean->var0;
+    v44 = values_mean->var0 + v43 / v41;
+    v45 = values_mean->var1 + v43 * (v42 - v44);
+    values_mean->var0 = v44;
+    values_mean->var1 = v45;
+    values_mean->var2 = v41;
 
-    v46 = [v4 value];
-    [v46 doubleValue];
+    value3 = [measurementCopy value];
+    [value3 doubleValue];
     v48 = v47;
     [(PDAggregateMeasurement *)self min];
     v50 = v49;
 
     if (v48 < v50)
     {
-      v51 = [v4 value];
-      [v51 doubleValue];
+      value4 = [measurementCopy value];
+      [value4 doubleValue];
       [(PDAggregateMeasurement *)self setMin:?];
     }
 
-    v52 = [v4 value];
-    [v52 doubleValue];
+    value5 = [measurementCopy value];
+    [value5 doubleValue];
     v54 = v53;
     [(PDAggregateMeasurement *)self max];
     v56 = v55;
 
     if (v54 > v56)
     {
-      v57 = [v4 value];
-      [v57 doubleValue];
+      value6 = [measurementCopy value];
+      [value6 doubleValue];
       [(PDAggregateMeasurement *)self setMax:?];
     }
 
@@ -211,55 +211,55 @@
 
   else
   {
-    v58 = [v4 sampleCount];
+    sampleCount = [measurementCopy sampleCount];
 
-    if (v58)
+    if (sampleCount)
     {
-      v59 = [v4 mean];
-      if (v59)
+      mean = [measurementCopy mean];
+      if (mean)
       {
-        v60 = v59;
-        v61 = [v4 standardDeviation];
+        v60 = mean;
+        standardDeviation = [measurementCopy standardDeviation];
 
-        if (v61)
+        if (standardDeviation)
         {
-          v62 = [(PDAggregateMeasurement *)self stats_mean];
-          v63 = [v4 sampleCount];
-          v64 = [v63 unsignedIntegerValue];
-          v65 = [v4 mean];
-          [v65 doubleValue];
+          stats_mean = [(PDAggregateMeasurement *)self stats_mean];
+          sampleCount2 = [measurementCopy sampleCount];
+          unsignedIntegerValue = [sampleCount2 unsignedIntegerValue];
+          mean2 = [measurementCopy mean];
+          [mean2 doubleValue];
           v67 = v66;
-          v68 = [v4 standardDeviation];
-          [v68 doubleValue];
+          standardDeviation2 = [measurementCopy standardDeviation];
+          [standardDeviation2 doubleValue];
           v69 = vdupq_n_s64(1uLL);
-          v69.i64[0] = v64;
-          *&v62->var2 = vaddq_s64(*&v62->var2, v69);
-          v69.i64[0] = *&v62->var1.var0;
-          v71 = v70 * v70 * (v64 - 1) - v62->var1.var1;
-          v62->var1.var0 = *v69.i64 + v71;
-          v62->var1.var1 = *v69.i64 + v71 - *v69.i64 - v71;
-          v72 = v67 * v64 - v62->var0.var1;
-          v73 = v62->var0.var0 + v72;
-          v74 = v73 - v62->var0.var0 - v72;
-          v62->var0.var0 = v73;
-          v62->var0.var1 = v74;
+          v69.i64[0] = unsignedIntegerValue;
+          *&stats_mean->var2 = vaddq_s64(*&stats_mean->var2, v69);
+          v69.i64[0] = *&stats_mean->var1.var0;
+          v71 = v70 * v70 * (unsignedIntegerValue - 1) - stats_mean->var1.var1;
+          stats_mean->var1.var0 = *v69.i64 + v71;
+          stats_mean->var1.var1 = *v69.i64 + v71 - *v69.i64 - v71;
+          v72 = v67 * unsignedIntegerValue - stats_mean->var0.var1;
+          v73 = stats_mean->var0.var0 + v72;
+          v74 = v73 - stats_mean->var0.var0 - v72;
+          stats_mean->var0.var0 = v73;
+          stats_mean->var0.var1 = v74;
         }
       }
 
-      v75 = [v4 minimum];
+      minimum = [measurementCopy minimum];
 
-      if (v75)
+      if (minimum)
       {
-        v76 = [v4 minimum];
-        [v76 doubleValue];
+        minimum2 = [measurementCopy minimum];
+        [minimum2 doubleValue];
         v78 = v77;
         [(PDAggregateMeasurement *)self min];
         v80 = v79;
 
         if (v78 < v80)
         {
-          v81 = [v4 minimum];
-          [v81 doubleValue];
+          minimum3 = [measurementCopy minimum];
+          [minimum3 doubleValue];
           [(PDAggregateMeasurement *)self setMin:?];
         }
       }
@@ -269,20 +269,20 @@
         [(PDAggregateMeasurement *)self setValidMin:0];
       }
 
-      v82 = [v4 maximum];
+      maximum = [measurementCopy maximum];
 
-      if (v82)
+      if (maximum)
       {
-        v83 = [v4 maximum];
-        [v83 doubleValue];
+        maximum2 = [measurementCopy maximum];
+        [maximum2 doubleValue];
         v85 = v84;
         [(PDAggregateMeasurement *)self max];
         v87 = v86;
 
         if (v85 > v87)
         {
-          v88 = [v4 maximum];
-          [v88 doubleValue];
+          maximum3 = [measurementCopy maximum];
+          [maximum3 doubleValue];
           [(PDAggregateMeasurement *)self setMax:?];
         }
       }
@@ -292,8 +292,8 @@
         [(PDAggregateMeasurement *)self setValidMax:0];
       }
 
-      v89 = [v4 sampleCount];
-      -[PDAggregateMeasurement setSamples:](self, "setSamples:", -[PDAggregateMeasurement samples](self, "samples") + [v89 unsignedIntegerValue]);
+      sampleCount3 = [measurementCopy sampleCount];
+      -[PDAggregateMeasurement setSamples:](self, "setSamples:", -[PDAggregateMeasurement samples](self, "samples") + [sampleCount3 unsignedIntegerValue]);
     }
   }
 
@@ -303,20 +303,20 @@
 - (PDMeasurement)measurement
 {
   v3 = objc_alloc_init(PDMeasurement);
-  v4 = [(PDAggregateMeasurement *)self container];
-  [(PDMeasurement *)v3 setContainer:v4];
+  container = [(PDAggregateMeasurement *)self container];
+  [(PDMeasurement *)v3 setContainer:container];
 
-  v5 = [(PDAggregateMeasurement *)self metric];
-  [(PDMeasurement *)v3 setMetric:v5];
+  metric = [(PDAggregateMeasurement *)self metric];
+  [(PDMeasurement *)v3 setMetric:metric];
 
-  v6 = [(PDAggregateMeasurement *)self unitString];
-  [(PDMeasurement *)v3 setUnitString:v6];
+  unitString = [(PDAggregateMeasurement *)self unitString];
+  [(PDMeasurement *)v3 setUnitString:unitString];
 
-  v7 = [(PDAggregateMeasurement *)self variables];
-  [(PDMeasurement *)v3 setVariables:v7];
+  variables = [(PDAggregateMeasurement *)self variables];
+  [(PDMeasurement *)v3 setVariables:variables];
 
-  v8 = [(PDAggregateMeasurement *)self labels];
-  [(PDMeasurement *)v3 setLabels:v8];
+  labels = [(PDAggregateMeasurement *)self labels];
+  [(PDMeasurement *)v3 setLabels:labels];
 
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[PDAggregateMeasurement samples](self, "samples")}];
   [(PDMeasurement *)v3 setSampleCount:v9];
@@ -324,10 +324,10 @@
   if ([(PDAggregateMeasurement *)self stats_mean][40] && [(PDAggregateMeasurement *)self values_mean][16])
   {
     v10 = [(PDAggregateMeasurement *)self stats_mean][40];
-    v11 = [(PDAggregateMeasurement *)self stats_mean];
-    v12 = v11->var0.var0 / v11->var2;
-    v13 = [(PDAggregateMeasurement *)self stats_mean];
-    v14 = sqrt(v13->var1.var0 / (v13->var2 - v13->var3));
+    stats_mean = [(PDAggregateMeasurement *)self stats_mean];
+    v12 = stats_mean->var0.var0 / stats_mean->var2;
+    stats_mean2 = [(PDAggregateMeasurement *)self stats_mean];
+    v14 = sqrt(stats_mean2->var1.var0 / (stats_mean2->var2 - stats_mean2->var3));
     v15 = v14 * v14 * (v10 - 1);
     v16 = 0.0;
     v17 = v15 + 0.0;
@@ -337,11 +337,11 @@
     v21 = v19 + 0.0 - v19;
     v22 = [(PDAggregateMeasurement *)self values_mean][16];
     v23 = *[(PDAggregateMeasurement *)self values_mean];
-    v24 = [(PDAggregateMeasurement *)self values_mean];
-    var2 = v24->var2;
+    values_mean = [(PDAggregateMeasurement *)self values_mean];
+    var2 = values_mean->var2;
     if (var2 >= 2)
     {
-      v16 = sqrt(v24->var1 / (var2 - 1));
+      v16 = sqrt(values_mean->var1 / (var2 - 1));
     }
 
     v26 = v22 + v10;
@@ -356,14 +356,14 @@
   if ([(PDAggregateMeasurement *)self stats_mean][40])
   {
     v30 = MEMORY[0x277CCABB0];
-    v31 = [(PDAggregateMeasurement *)self stats_mean];
-    v32 = [v30 numberWithDouble:v31->var0.var0 / v31->var2];
+    stats_mean3 = [(PDAggregateMeasurement *)self stats_mean];
+    v32 = [v30 numberWithDouble:stats_mean3->var0.var0 / stats_mean3->var2];
     [(PDMeasurement *)v3 setMean:v32];
 
     v33 = MEMORY[0x277CCABB0];
-    v34 = [(PDAggregateMeasurement *)self stats_mean];
-    var0 = v34->var1.var0;
-    v36 = v34->var2 - v34->var3;
+    stats_mean4 = [(PDAggregateMeasurement *)self stats_mean];
+    var0 = stats_mean4->var1.var0;
+    v36 = stats_mean4->var2 - stats_mean4->var3;
   }
 
   else
@@ -378,15 +378,15 @@
     [(PDMeasurement *)v3 setMean:v50];
 
     v33 = MEMORY[0x277CCABB0];
-    v51 = [(PDAggregateMeasurement *)self values_mean];
-    v52 = v51->var2;
+    values_mean2 = [(PDAggregateMeasurement *)self values_mean];
+    v52 = values_mean2->var2;
     v29 = 0.0;
     if (v52 < 2)
     {
       goto LABEL_9;
     }
 
-    var0 = v51->var1;
+    var0 = values_mean2->var1;
     v36 = v52 - 1;
   }
 
@@ -397,13 +397,13 @@ LABEL_10:
   v37 = [v28 numberWithDouble:v29];
   [(PDMeasurement *)v3 setStandardDeviation:v37];
 
-  v38 = [(PDMeasurement *)v3 sampleCount];
-  if (v38)
+  sampleCount = [(PDMeasurement *)v3 sampleCount];
+  if (sampleCount)
   {
-    v39 = v38;
-    v40 = [(PDAggregateMeasurement *)self validMin];
+    v39 = sampleCount;
+    validMin = [(PDAggregateMeasurement *)self validMin];
 
-    if (v40)
+    if (validMin)
     {
       v41 = MEMORY[0x277CCABB0];
       [(PDAggregateMeasurement *)self min];
@@ -412,13 +412,13 @@ LABEL_10:
     }
   }
 
-  v43 = [(PDMeasurement *)v3 sampleCount];
-  if (v43)
+  sampleCount2 = [(PDMeasurement *)v3 sampleCount];
+  if (sampleCount2)
   {
-    v44 = v43;
-    v45 = [(PDAggregateMeasurement *)self validMax];
+    v44 = sampleCount2;
+    validMax = [(PDAggregateMeasurement *)self validMax];
 
-    if (v45)
+    if (validMax)
     {
       v46 = MEMORY[0x277CCABB0];
       [(PDAggregateMeasurement *)self max];

@@ -1,20 +1,20 @@
 @interface UniqueAnimationKeyMonitor
-- (UniqueAnimationKeyMonitor)initWithUniqueAnimationCounter:(id)a3;
+- (UniqueAnimationKeyMonitor)initWithUniqueAnimationCounter:(id)counter;
 - (void)dealloc;
 @end
 
 @implementation UniqueAnimationKeyMonitor
 
-- (UniqueAnimationKeyMonitor)initWithUniqueAnimationCounter:(id)a3
+- (UniqueAnimationKeyMonitor)initWithUniqueAnimationCounter:(id)counter
 {
-  v5 = a3;
+  counterCopy = counter;
   v10.receiver = self;
   v10.super_class = UniqueAnimationKeyMonitor;
   v6 = [(UniqueAnimationKeyMonitor *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_counter, a3);
+    objc_storeStrong(&v6->_counter, counter);
     v8 = v7;
   }
 

@@ -3,8 +3,8 @@
 + (BOOL)testPairingData2;
 + (BOOL)testPairingData3;
 + (id)keys;
-+ (id)randomDataOfSize:(unint64_t)a3;
-- (FMDRemoteUnlockPairingData)initWithData:(id)a3;
++ (id)randomDataOfSize:(unint64_t)size;
+- (FMDRemoteUnlockPairingData)initWithData:(id)data;
 - (id)data;
 @end
 
@@ -22,23 +22,23 @@
   return v3;
 }
 
-- (FMDRemoteUnlockPairingData)initWithData:(id)a3
+- (FMDRemoteUnlockPairingData)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v28.receiver = self;
   v28.super_class = FMDRemoteUnlockPairingData;
   v5 = [(FMDRemoteUnlockPairingData *)&v28 init];
   if (v5)
   {
-    v6 = [objc_opt_class() keys];
-    v7 = [v4 bytes];
-    v23 = v4;
-    v8 = [v4 length];
+    keys = [objc_opt_class() keys];
+    bytes = [dataCopy bytes];
+    v23 = dataCopy;
+    v8 = [dataCopy length];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v9 = v6;
+    v9 = keys;
     v10 = [v9 countByEnumeratingWithState:&v24 objects:v29 count:16];
     if (v10)
     {
@@ -57,12 +57,12 @@
           v15 = v12 + 2;
           if (v12 + 2 <= v8)
           {
-            v16 = __rev16(*&v7[v12]);
+            v16 = __rev16(*&bytes[v12]);
             v12 = v15 + v16;
             if (v15 + v16 > v8)
             {
               v19 = sub_100004FC8();
-              v4 = v23;
+              dataCopy = v23;
               if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
               {
                 sub_100015538(v23, v19);
@@ -75,7 +75,7 @@
             if (v16)
             {
               v17 = *(*(&v24 + 1) + 8 * i);
-              v18 = [NSData dataWithBytes:&v7[v15] length:?];
+              v18 = [NSData dataWithBytes:&bytes[v15] length:?];
               [(FMDRemoteUnlockPairingData *)v5 setValue:v18 forKey:v17];
             }
           }
@@ -98,11 +98,11 @@
 
     if (v8 > v12)
     {
-      v21 = [NSData dataWithBytes:&v7[v12] length:&v8[-v12]];
+      v21 = [NSData dataWithBytes:&bytes[v12] length:&v8[-v12]];
       [(FMDRemoteUnlockPairingData *)v5 setOtherData:v21];
     }
 
-    v4 = v23;
+    dataCopy = v23;
   }
 
   v20 = v5;
@@ -159,17 +159,17 @@ LABEL_22:
     }
   }
 
-  v12 = [(FMDRemoteUnlockPairingData *)self otherData];
-  if (v12)
+  otherData = [(FMDRemoteUnlockPairingData *)self otherData];
+  if (otherData)
   {
-    v13 = v12;
-    v14 = [(FMDRemoteUnlockPairingData *)self otherData];
-    v15 = [v14 length];
+    v13 = otherData;
+    otherData2 = [(FMDRemoteUnlockPairingData *)self otherData];
+    v15 = [otherData2 length];
 
     if (v15)
     {
-      v16 = [(FMDRemoteUnlockPairingData *)self otherData];
-      [v3 appendData:v16];
+      otherData3 = [(FMDRemoteUnlockPairingData *)self otherData];
+      [v3 appendData:otherData3];
     }
   }
 
@@ -185,14 +185,14 @@ LABEL_16:
   return v18;
 }
 
-+ (id)randomDataOfSize:(unint64_t)a3
++ (id)randomDataOfSize:(unint64_t)size
 {
-  v4 = malloc_type_malloc(a3, 0x855E318EuLL);
+  v4 = malloc_type_malloc(size, 0x855E318EuLL);
   if (v4)
   {
     v5 = v4;
-    arc4random_buf(v4, a3);
-    v4 = [NSData dataWithBytesNoCopy:v5 length:a3 freeWhenDone:1];
+    arc4random_buf(v4, size);
+    v4 = [NSData dataWithBytesNoCopy:v5 length:size freeWhenDone:1];
   }
 
   return v4;
@@ -207,10 +207,10 @@ LABEL_16:
   v4 = [objc_opt_class() randomDataOfSize:64];
   [(FMDRemoteUnlockPairingData *)v2 setLostModePrivateKey:v4];
 
-  v5 = [(FMDRemoteUnlockPairingData *)v2 data];
-  if (v5)
+  data = [(FMDRemoteUnlockPairingData *)v2 data];
+  if (data)
   {
-    v6 = [[FMDRemoteUnlockPairingData alloc] initWithData:v5];
+    v6 = [[FMDRemoteUnlockPairingData alloc] initWithData:data];
     if (v6)
     {
       [objc_opt_class() keys];
@@ -307,8 +307,8 @@ LABEL_18:
   {
     v5 = [[NSData alloc] initWithBytes:"12345" length:5];
     v6 = [[NSData alloc] initWithBytes:"abcdefghijkl" length:12];
-    v7 = [(FMDRemoteUnlockPairingData *)v4 pairingCheckToken];
-    v8 = [v5 isEqualToData:v7];
+    pairingCheckToken = [(FMDRemoteUnlockPairingData *)v4 pairingCheckToken];
+    v8 = [v5 isEqualToData:pairingCheckToken];
 
     if (v8 && (-[FMDRemoteUnlockPairingData lostModePrivateKey](v4, "lostModePrivateKey"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v6 isEqualToData:v9], v9, v10))
     {
@@ -363,28 +363,28 @@ LABEL_18:
     v6 = [[NSData alloc] initWithBytes:"abcdefghijkl" length:12];
     v7 = [[NSData alloc] initWithBytes:"123456789" length:9];
     v8 = [[NSData alloc] initWithBytes:"abcdefgh" length:8];
-    v9 = [(FMDRemoteUnlockPairingData *)v4 pairingCheckToken];
-    v10 = [v5 isEqualToData:v9];
+    pairingCheckToken = [(FMDRemoteUnlockPairingData *)v4 pairingCheckToken];
+    v10 = [v5 isEqualToData:pairingCheckToken];
 
     if (v10)
     {
-      v11 = [(FMDRemoteUnlockPairingData *)v4 lostModePrivateKey];
-      v12 = [v6 isEqualToData:v11];
+      lostModePrivateKey = [(FMDRemoteUnlockPairingData *)v4 lostModePrivateKey];
+      v12 = [v6 isEqualToData:lostModePrivateKey];
 
       if (v12)
       {
-        v13 = [(FMDRemoteUnlockPairingData *)v4 phoneNumber];
-        v14 = [v7 isEqualToData:v13];
+        phoneNumber = [(FMDRemoteUnlockPairingData *)v4 phoneNumber];
+        v14 = [v7 isEqualToData:phoneNumber];
 
         if (v14)
         {
-          v15 = [(FMDRemoteUnlockPairingData *)v4 otherData];
-          v16 = [v8 isEqualToData:v15];
+          otherData = [(FMDRemoteUnlockPairingData *)v4 otherData];
+          v16 = [v8 isEqualToData:otherData];
 
           if (v16)
           {
-            v17 = [(FMDRemoteUnlockPairingData *)v4 data];
-            v18 = [v17 isEqualToData:v3];
+            data = [(FMDRemoteUnlockPairingData *)v4 data];
+            v18 = [data isEqualToData:v3];
             v19 = sub_100004FC8();
             v20 = os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT);
             if (v18)
@@ -410,8 +410,8 @@ LABEL_26:
             goto LABEL_22;
           }
 
-          v17 = sub_100004FC8();
-          if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+          data = sub_100004FC8();
+          if (os_log_type_enabled(data, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 0;
             v23 = "FMDRemoteUnlockPairingData: otherData failure";
@@ -426,8 +426,8 @@ LABEL_22:
           goto LABEL_23;
         }
 
-        v17 = sub_100004FC8();
-        if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+        data = sub_100004FC8();
+        if (!os_log_type_enabled(data, OS_LOG_TYPE_DEFAULT))
         {
           goto LABEL_21;
         }
@@ -439,8 +439,8 @@ LABEL_22:
 
       else
       {
-        v17 = sub_100004FC8();
-        if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+        data = sub_100004FC8();
+        if (!os_log_type_enabled(data, OS_LOG_TYPE_DEFAULT))
         {
           goto LABEL_21;
         }
@@ -453,8 +453,8 @@ LABEL_22:
 
     else
     {
-      v17 = sub_100004FC8();
-      if (!os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+      data = sub_100004FC8();
+      if (!os_log_type_enabled(data, OS_LOG_TYPE_DEFAULT))
       {
         goto LABEL_21;
       }
@@ -465,7 +465,7 @@ LABEL_22:
     }
 
 LABEL_20:
-    _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, v23, v24, 2u);
+    _os_log_impl(&_mh_execute_header, data, OS_LOG_TYPE_DEFAULT, v23, v24, 2u);
     goto LABEL_21;
   }
 

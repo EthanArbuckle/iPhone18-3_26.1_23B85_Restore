@@ -1,67 +1,67 @@
 @interface ActivationController
 - (ActivationController)init;
 - (BOOL)controllerNeedsToRun;
-- (BOOL)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5;
+- (BOOL)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response;
 - (BOOL)shouldSuppressExtendedInitializationActivityIndicator;
 - (void)_activate;
 - (void)_activateIfNecessary;
-- (void)_activateWithPasscode:(id)a3 fromObjectModel:(id)a4;
-- (void)_addAnalyticsEventWithSuccess:(BOOL)a3;
+- (void)_activateWithPasscode:(id)passcode fromObjectModel:(id)model;
+- (void)_addAnalyticsEventWithSuccess:(BOOL)success;
 - (void)_attemptDismiss;
-- (void)_checkActivationFailIfNotActivated:(BOOL)a3;
-- (void)_checkActivationFailIfNotActivated:(BOOL)a3 isActivated:(BOOL)a4;
+- (void)_checkActivationFailIfNotActivated:(BOOL)activated;
+- (void)_checkActivationFailIfNotActivated:(BOOL)activated isActivated:(BOOL)isActivated;
 - (void)_checkBasebandStatusBeforeActivation;
 - (void)_clearDisplayTimer;
 - (void)_clearTicketAcceptedTimer;
 - (void)_dismissRemoteUI;
 - (void)_displayTimerTimeout;
-- (void)_enterState:(int)a3;
-- (void)_getSRPInitNonceRequestOptionsCompletion:(id)a3;
-- (void)_handleActivationData:(id)a3 responseHeaders:(id)a4 baseURL:(id)a5;
-- (void)_handleEscrowResponse:(id)a3;
-- (void)_handleFailureWithError:(id)a3;
-- (void)_handlePlanAddition:(id)a3;
+- (void)_enterState:(int)state;
+- (void)_getSRPInitNonceRequestOptionsCompletion:(id)completion;
+- (void)_handleActivationData:(id)data responseHeaders:(id)headers baseURL:(id)l;
+- (void)_handleEscrowResponse:(id)response;
+- (void)_handleFailureWithError:(id)error;
+- (void)_handlePlanAddition:(id)addition;
 - (void)_releaseOTAAssertion;
-- (void)_removeViewControllersIncludingSelf:(BOOL)a3;
+- (void)_removeViewControllersIncludingSelf:(BOOL)self;
 - (void)_restorePasteboard;
 - (void)_sanitizeSystemTime;
 - (void)_setHandlerForPasscode;
 - (void)_startActivation;
-- (void)_startActivationLockExpirationTimerForPage:(id)a3;
+- (void)_startActivationLockExpirationTimerForPage:(id)page;
 - (void)_stashPasteboard;
 - (void)_stopActivationLockExpirationTimer;
 - (void)_systemTimeUpdated;
 - (void)_ticketAcceptedDidTimeout;
-- (void)_tryActivateWithOptions:(id)a3 requestMutator:(id)a4;
-- (void)_userAgreedToTCs:(BOOL)a3;
+- (void)_tryActivateWithOptions:(id)options requestMutator:(id)mutator;
+- (void)_userAgreedToTCs:(BOOL)cs;
 - (void)_writeAcknowledgment;
-- (void)activationConfigurationChanged:(BOOL)a3 isActivated:(BOOL)a4;
+- (void)activationConfigurationChanged:(BOOL)changed isActivated:(BOOL)activated;
 - (void)agreeToRemoteUIDialog;
-- (void)back:(id)a3;
+- (void)back:(id)back;
 - (void)dealloc;
-- (void)didBecomeActive:(id)a3;
-- (void)didResignActive:(id)a3;
+- (void)didBecomeActive:(id)active;
+- (void)didResignActive:(id)active;
 - (void)loadView;
-- (void)remoteUIController:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5;
-- (void)remoteUIController:(id)a3 didReceiveObjectModel:(id)a4 actionSignal:(unint64_t *)a5;
-- (void)remoteUIController:(id)a3 didRemoveObjectModel:(id)a4;
-- (void)remoteUIController:(id)a3 willPresentObjectModel:(id)a4 modally:(BOOL)a5;
+- (void)remoteUIController:(id)controller didFinishLoadWithError:(id)error forRequest:(id)request;
+- (void)remoteUIController:(id)controller didReceiveObjectModel:(id)model actionSignal:(unint64_t *)signal;
+- (void)remoteUIController:(id)controller didRemoveObjectModel:(id)model;
+- (void)remoteUIController:(id)controller willPresentObjectModel:(id)model modally:(BOOL)modally;
 - (void)restart;
 - (void)startOver;
-- (void)startRequest:(id)a3 completion:(id)a4;
-- (void)startSpinningWithIdentifier:(id)a3;
-- (void)stopSpinningForIdentifier:(id)a3;
+- (void)startRequest:(id)request completion:(id)completion;
+- (void)startSpinningWithIdentifier:(id)identifier;
+- (void)stopSpinningForIdentifier:(id)identifier;
 - (void)tryAgainOnRemoteUIDialog;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ActivationController
 
 - (BOOL)controllerNeedsToRun
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   v2 = +[BYPreferencesController buddyPreferencesInternal];
   v3 = [v2 BOOLForKey:@"networkAlwaysSupportActivation"];
@@ -76,19 +76,19 @@
     location[0] = +[BuddyActivationConfiguration currentConfiguration];
     v8 = [location[0] isActivated] & 1;
     v6 = 0;
-    v4 = 0;
+    userSelectedTetheredActivation = 0;
     if (!v8)
     {
-      v7 = [(ActivationController *)v10 miscState];
+      miscState = [(ActivationController *)selfCopy miscState];
       v6 = 1;
-      v4 = [(BuddyMiscState *)v7 userSelectedTetheredActivation];
+      userSelectedTetheredActivation = [(BuddyMiscState *)miscState userSelectedTetheredActivation];
     }
 
     if (v6)
     {
     }
 
-    if (v4)
+    if (userSelectedTetheredActivation)
     {
       v11 = 0;
     }
@@ -106,7 +106,7 @@
 
 - (void)_releaseOTAAssertion
 {
-  v7 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if (self->_otaAssertion)
   {
@@ -121,49 +121,49 @@
     }
 
     objc_storeStrong(oslog, 0);
-    CFRelease(v7->_otaAssertion);
-    v7->_otaAssertion = 0;
+    CFRelease(selfCopy->_otaAssertion);
+    selfCopy->_otaAssertion = 0;
   }
 }
 
 - (void)restart
 {
   self->_state = 0;
-  v2 = [(ActivationController *)self navigationController];
-  v3 = [v2 popToViewController:self animated:1];
+  navigationController = [(ActivationController *)self navigationController];
+  v3 = [navigationController popToViewController:self animated:1];
 }
 
-- (void)_removeViewControllersIncludingSelf:(BOOL)a3
+- (void)_removeViewControllersIncludingSelf:(BOOL)self
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v7 = a3;
+  selfCopy2 = self;
   v6 = objc_alloc_init(NSMutableArray);
-  if (v7)
+  if (selfCopy2)
   {
-    [v6 addObject:v9];
+    [v6 addObject:selfCopy];
   }
 
   v3 = v6;
-  v4 = [(RemoteUIController *)v9->_remoteUIController displayedPages];
-  [v3 addObjectsFromArray:v4];
+  displayedPages = [(RemoteUIController *)selfCopy->_remoteUIController displayedPages];
+  [v3 addObjectsFromArray:displayedPages];
 
-  v5 = [(ActivationController *)v9 delegate];
-  [v5 removeViewControllersOnNextPush:v6];
+  delegate = [(ActivationController *)selfCopy delegate];
+  [delegate removeViewControllersOnNextPush:v6];
 
-  objc_storeStrong(&v9->_remoteUIController, 0);
+  objc_storeStrong(&selfCopy->_remoteUIController, 0);
   objc_storeStrong(&v6, 0);
 }
 
 - (void)_attemptDismiss
 {
-  v13 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v11 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
   {
-    if (v13->_displayTimerElapsed)
+    if (selfCopy->_displayTimerElapsed)
     {
       v2 = @"YASE";
     }
@@ -173,32 +173,32 @@
       v2 = @"NERP";
     }
 
-    sub_100097718(buf, v13->_state, v2);
+    sub_100097718(buf, selfCopy->_state, v2);
     _os_log_impl(&_mh_execute_header, oslog[0], v11, "Buddy Activate: Attempt dismiss. State = %i, _displayTimerElapsed = %@", buf, 0x12u);
   }
 
   objc_storeStrong(oslog, 0);
-  if (v13->_displayTimerElapsed)
+  if (selfCopy->_displayTimerElapsed)
   {
-    if (v13->_state != 3 || v13->_activationControllerDismissed)
+    if (selfCopy->_state != 3 || selfCopy->_activationControllerDismissed)
     {
-      if (v13->_state == 5)
+      if (selfCopy->_state == 5)
       {
-        [(ActivationController *)v13 _addAnalyticsEventWithSuccess:0];
-        v5 = [(ActivationController *)v13 navigationController];
-        location = [v5 viewControllers];
+        [(ActivationController *)selfCopy _addAnalyticsEventWithSuccess:0];
+        navigationController = [(ActivationController *)selfCopy navigationController];
+        location = [navigationController viewControllers];
 
-        if ([location containsObject:v13])
+        if ([location containsObject:selfCopy])
         {
           v6 = [BuddyActivationError alloc];
-          v7 = [(BuddyActivationError *)v6 initWithConnectionFailure:v13->_connectionFailed cellular:v13->_connectionOTA];
-          v8 = [(ActivationController *)v13 activationState];
-          [(BuddyActivationState *)v8 setError:v7];
+          v7 = [(BuddyActivationError *)v6 initWithConnectionFailure:selfCopy->_connectionFailed cellular:selfCopy->_connectionOTA];
+          activationState = [(ActivationController *)selfCopy activationState];
+          [(BuddyActivationState *)activationState setError:v7];
 
-          [(ActivationController *)v13 _removeViewControllersIncludingSelf:0];
-          [(ActivationController *)v13 _releaseOTAAssertion];
-          v9 = [(ActivationController *)v13 delegate];
-          [v9 flowItemDone:v13];
+          [(ActivationController *)selfCopy _removeViewControllersIncludingSelf:0];
+          [(ActivationController *)selfCopy _releaseOTAAssertion];
+          delegate = [(ActivationController *)selfCopy delegate];
+          [delegate flowItemDone:selfCopy];
         }
 
         objc_storeStrong(&location, 0);
@@ -207,34 +207,34 @@
 
     else
     {
-      [(ActivationController *)v13 _stopActivationLockExpirationTimer];
-      [(ActivationController *)v13 _clearDisplayTimer];
-      [(ActivationController *)v13 _clearTicketAcceptedTimer];
-      [(ActivationController *)v13 _releaseOTAAssertion];
-      [(ActivationController *)v13 _writeAcknowledgment];
-      [(ActivationController *)v13 _addAnalyticsEventWithSuccess:1];
-      [(ActivationController *)v13 _removeViewControllersIncludingSelf:1];
-      [(ActivationController *)v13 _restorePasteboard];
-      v3 = [(ActivationController *)v13 delegate];
-      [v3 flowItemDone:v13];
+      [(ActivationController *)selfCopy _stopActivationLockExpirationTimer];
+      [(ActivationController *)selfCopy _clearDisplayTimer];
+      [(ActivationController *)selfCopy _clearTicketAcceptedTimer];
+      [(ActivationController *)selfCopy _releaseOTAAssertion];
+      [(ActivationController *)selfCopy _writeAcknowledgment];
+      [(ActivationController *)selfCopy _addAnalyticsEventWithSuccess:1];
+      [(ActivationController *)selfCopy _removeViewControllersIncludingSelf:1];
+      [(ActivationController *)selfCopy _restorePasteboard];
+      delegate2 = [(ActivationController *)selfCopy delegate];
+      [delegate2 flowItemDone:selfCopy];
 
-      v4 = [(ActivationController *)v13 enrollmentCoordinator];
-      [(BuddyEnrollmentCoordinator *)v4 deviceActivated];
+      enrollmentCoordinator = [(ActivationController *)selfCopy enrollmentCoordinator];
+      [(BuddyEnrollmentCoordinator *)enrollmentCoordinator deviceActivated];
 
-      v13->_activationControllerDismissed = 1;
+      selfCopy->_activationControllerDismissed = 1;
     }
   }
 }
 
-- (void)_enterState:(int)a3
+- (void)_enterState:(int)state
 {
-  v47 = self;
+  selfCopy = self;
   v46 = a2;
-  v45 = a3;
-  self->_state = a3;
-  if (v45)
+  stateCopy = state;
+  self->_state = state;
+  if (stateCopy)
   {
-    switch(v45)
+    switch(stateCopy)
     {
       case 1:
         v41 = _BYLoggingFacility();
@@ -345,7 +345,7 @@
     objc_storeStrong(&location, 0);
   }
 
-  if (v45 == 1 || v45 == 7 || v45 == 6 || v45 == 2 || !v47->_displayTimerElapsed)
+  if (stateCopy == 1 || stateCopy == 7 || stateCopy == 6 || stateCopy == 2 || !selfCopy->_displayTimerElapsed)
   {
     v19 = +[UIApplication sharedApplication];
     [(UIApplication *)v19 setIdleTimerDisabled:1];
@@ -357,14 +357,14 @@
     [(UIApplication *)v20 setIdleTimerDisabled:0];
   }
 
-  [(ActivationController *)v47 _attemptDismiss];
+  [(ActivationController *)selfCopy _attemptDismiss];
 }
 
 - (BOOL)shouldSuppressExtendedInitializationActivityIndicator
 {
-  v2 = [(ActivationController *)self navigationController];
-  v3 = [v2 topViewController];
-  v4 = v3 == self;
+  navigationController = [(ActivationController *)self navigationController];
+  topViewController = [navigationController topViewController];
+  v4 = topViewController == self;
 
   return v4;
 }
@@ -385,15 +385,15 @@
   if (v6)
   {
     [UINavigationBar _setUseCustomBackButtonAction:1];
-    v7 = [location navigationItem];
-    [v7 setTitle:&stru_10032F900];
+    navigationItem = [location navigationItem];
+    [navigationItem setTitle:&stru_10032F900];
 
     v8 = [UIBarButtonItem alloc];
     v9 = +[NSBundle mainBundle];
     v10 = [(NSBundle *)v9 localizedStringForKey:@"BACK" value:&stru_10032F900 table:@"Localizable"];
     v11 = [v8 initWithTitle:v10 style:0 target:location action:"back:"];
-    v12 = [location navigationItem];
-    [v12 setBackBarButtonItem:v11];
+    navigationItem2 = [location navigationItem];
+    [navigationItem2 setBackBarButtonItem:v11];
 
     v13 = objc_opt_new();
     v14 = *(location + 3);
@@ -420,52 +420,52 @@
 
 - (void)dealloc
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
   center = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterRemoveEveryObserver(center, v6);
+  CFNotificationCenterRemoveEveryObserver(center, selfCopy);
   v2 = +[NSNotificationCenter defaultCenter];
-  [(NSNotificationCenter *)v2 removeObserver:v6];
+  [(NSNotificationCenter *)v2 removeObserver:selfCopy];
 
-  [(ActivationController *)v6 _cleanup];
-  [(RemoteUIController *)v6->_remoteUIController setDelegate:0];
-  [(ActivationController *)v6 _clearDisplayTimer];
-  [(ActivationController *)v6 _clearWaitingForBasebandTimer];
-  v3.receiver = v6;
+  [(ActivationController *)selfCopy _cleanup];
+  [(RemoteUIController *)selfCopy->_remoteUIController setDelegate:0];
+  [(ActivationController *)selfCopy _clearDisplayTimer];
+  [(ActivationController *)selfCopy _clearWaitingForBasebandTimer];
+  v3.receiver = selfCopy;
   v3.super_class = ActivationController;
   [(ActivationController *)&v3 dealloc];
 }
 
 - (void)loadView
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
   v5.receiver = self;
   v5.super_class = ActivationController;
   [(ActivationController *)&v5 loadView];
-  [(ActivationController *)v7 setActivityIndicatorHidden:1];
+  [(ActivationController *)selfCopy setActivityIndicatorHidden:1];
   v2 = [OBPrivacyLinkController linkWithBundleIdentifier:BYPrivacyActivationIdentifier];
-  [(ActivationController *)v7 setPrivacyLinkController:v2];
+  [(ActivationController *)selfCopy setPrivacyLinkController:v2];
 
-  v3 = [(ActivationController *)v7 privacyLinkController];
-  v4 = [v3 view];
-  [v4 setUserInteractionEnabled:0];
+  privacyLinkController = [(ActivationController *)selfCopy privacyLinkController];
+  view = [privacyLinkController view];
+  [view setUserInteractionEnabled:0];
 }
 
-- (void)back:(id)a3
+- (void)back:(id)back
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9 = [(ActivationController *)v11 navigationController];
-  v3 = [v9 topViewController];
+  objc_storeStrong(location, back);
+  navigationController = [(ActivationController *)selfCopy navigationController];
+  topViewController = [navigationController topViewController];
   objc_opt_class();
   v7 = 0;
   v4 = 0;
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(ActivationController *)v11 delegate];
+    delegate = [(ActivationController *)selfCopy delegate];
     v7 = 1;
     v4 = objc_opt_respondsToSelector();
   }
@@ -476,22 +476,22 @@
 
   if (v4)
   {
-    v5 = [(ActivationController *)v11 delegate];
-    [v5 presentWiFiPaneForFlowItem:v11];
+    delegate2 = [(ActivationController *)selfCopy delegate];
+    [delegate2 presentWiFiPaneForFlowItem:selfCopy];
   }
 
   else
   {
-    v6 = [v9 popViewControllerAnimated:1];
+    v6 = [navigationController popViewControllerAnimated:1];
   }
 
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&navigationController, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_addAnalyticsEventWithSuccess:(BOOL)a3
+- (void)_addAnalyticsEventWithSuccess:(BOOL)success
 {
-  v3 = [(ActivationController *)self analyticsManager];
+  analyticsManager = [(ActivationController *)self analyticsManager];
   v13[0] = @"cellular";
   v4 = [NSNumber numberWithBool:self->_connectionOTA];
   v14[0] = v4;
@@ -506,15 +506,15 @@
   v8 = [NSNumber numberWithBool:self->_usingBootstrap];
   v14[3] = v8;
   v13[4] = @"success";
-  v9 = [NSNumber numberWithBool:a3];
+  v9 = [NSNumber numberWithBool:success];
   v14[4] = v9;
   v10 = [NSDictionary dictionaryWithObjects:v14 forKeys:v13 count:5];
-  [(BYAnalyticsManager *)v3 addEvent:@"com.apple.setupassistant.ios.activation" withPayload:v10 persist:1];
+  [(BYAnalyticsManager *)analyticsManager addEvent:@"com.apple.setupassistant.ios.activation" withPayload:v10 persist:1];
 }
 
 - (void)_clearDisplayTimer
 {
-  v7 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v5 = 2;
@@ -527,84 +527,84 @@
   }
 
   objc_storeStrong(oslog, 0);
-  [(NSTimer *)v7->_displayTimer invalidate];
-  objc_storeStrong(&v7->_displayTimer, 0);
+  [(NSTimer *)selfCopy->_displayTimer invalidate];
+  objc_storeStrong(&selfCopy->_displayTimer, 0);
 }
 
-- (void)_checkActivationFailIfNotActivated:(BOOL)a3
+- (void)_checkActivationFailIfNotActivated:(BOOL)activated
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  activatedCopy = activated;
   v3 = dispatch_get_global_queue(0, 0);
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
   v7 = sub_1000E63D0;
   v8 = &unk_10032B688;
-  v9 = v13;
-  v10 = v11;
+  v9 = selfCopy;
+  v10 = activatedCopy;
   dispatch_async(v3, &v4);
 
   objc_storeStrong(&v9, 0);
 }
 
-- (void)_checkActivationFailIfNotActivated:(BOOL)a3 isActivated:(BOOL)a4
+- (void)_checkActivationFailIfNotActivated:(BOOL)activated isActivated:(BOOL)isActivated
 {
-  v10 = self;
+  selfCopy = self;
   v9 = a2;
-  v8 = a3;
-  v7 = a4;
+  activatedCopy = activated;
+  isActivatedCopy = isActivated;
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100075A38(buf, v10->_state, v7);
+    sub_100075A38(buf, selfCopy->_state, isActivatedCopy);
     _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Buddy Activate: Check Activation! State = %d Activated = %d", buf, 0xEu);
   }
 
   objc_storeStrong(&oslog, 0);
-  if (v7)
+  if (isActivatedCopy)
   {
-    [(ActivationController *)v10 _clearTicketAcceptedTimer];
-    if (v10->_state == 2)
+    [(ActivationController *)selfCopy _clearTicketAcceptedTimer];
+    if (selfCopy->_state == 2)
     {
-      [(ActivationController *)v10 _enterState:3];
+      [(ActivationController *)selfCopy _enterState:3];
     }
 
     else
     {
-      v4 = [(ActivationController *)v10 delegate];
-      v5 = [v4 isFlowItemOnTop:v10];
+      delegate = [(ActivationController *)selfCopy delegate];
+      v5 = [delegate isFlowItemOnTop:selfCopy];
 
       if (v5)
       {
-        [(ActivationController *)v10 _enterState:3];
+        [(ActivationController *)selfCopy _enterState:3];
       }
     }
   }
 
-  else if (v8)
+  else if (activatedCopy)
   {
-    [(ActivationController *)v10 _clearTicketAcceptedTimer];
-    [(ActivationController *)v10 _enterState:5];
+    [(ActivationController *)selfCopy _clearTicketAcceptedTimer];
+    [(ActivationController *)selfCopy _enterState:5];
   }
 }
 
 - (void)startOver
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   [(ActivationController *)self _cleanup];
-  v7->_state = 0;
-  location[0] = [(ActivationController *)v7 navigationController];
-  v2 = [location[0] viewControllers];
+  selfCopy->_state = 0;
+  location[0] = [(ActivationController *)selfCopy navigationController];
+  viewControllers = [location[0] viewControllers];
   v4 = 0;
   v3 = 0;
-  if ([v2 count] == 1)
+  if ([viewControllers count] == 1)
   {
-    v5 = [location[0] topViewController];
+    topViewController = [location[0] topViewController];
     v4 = 1;
-    v3 = v5 == v7;
+    v3 = topViewController == selfCopy;
   }
 
   if (v4)
@@ -613,7 +613,7 @@
 
   if (v3)
   {
-    [(ActivationController *)v7 _activateIfNecessary];
+    [(ActivationController *)selfCopy _activateIfNecessary];
   }
 
   objc_storeStrong(location, 0);
@@ -621,7 +621,7 @@
 
 - (void)_clearTicketAcceptedTimer
 {
-  v7 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v5 = OS_LOG_TYPE_DEFAULT;
@@ -634,13 +634,13 @@
   }
 
   objc_storeStrong(oslog, 0);
-  [(NSTimer *)v7->_ticketAcceptedTimer invalidate];
-  objc_storeStrong(&v7->_ticketAcceptedTimer, 0);
+  [(NSTimer *)selfCopy->_ticketAcceptedTimer invalidate];
+  objc_storeStrong(&selfCopy->_ticketAcceptedTimer, 0);
 }
 
 - (void)_ticketAcceptedDidTimeout
 {
-  v7 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v5 = OS_LOG_TYPE_DEFAULT;
@@ -653,21 +653,21 @@
   }
 
   objc_storeStrong(oslog, 0);
-  [(ActivationController *)v7 _clearTicketAcceptedTimer];
-  [(ActivationController *)v7 _checkActivationFailIfNotActivated:1];
+  [(ActivationController *)selfCopy _clearTicketAcceptedTimer];
+  [(ActivationController *)selfCopy _checkActivationFailIfNotActivated:1];
 }
 
 - (void)_activateIfNecessary
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   self->_displayTimerElapsed = 0;
-  [(ActivationController *)v18 _clearDisplayTimer];
+  [(ActivationController *)selfCopy _clearDisplayTimer];
   if (+[BuddyActivationBasebandDeadController controllerNeedsToRun])
   {
     location[0] = objc_alloc_init(BuddyActivationBasebandDeadController);
-    v2 = [(ActivationController *)v18 navigationController];
-    [v2 pushViewController:location[0] animated:1];
+    navigationController = [(ActivationController *)selfCopy navigationController];
+    [navigationController pushViewController:location[0] animated:1];
 
     objc_storeStrong(location, 0);
   }
@@ -685,11 +685,11 @@
     }
 
     objc_storeStrong(&v16, 0);
-    v5 = [NSTimer scheduledTimerWithTimeInterval:v18 target:"_displayTimerTimeout" selector:0 userInfo:0 repeats:1.0];
-    displayTimer = v18->_displayTimer;
-    v18->_displayTimer = v5;
+    v5 = [NSTimer scheduledTimerWithTimeInterval:selfCopy target:"_displayTimerTimeout" selector:0 userInfo:0 repeats:1.0];
+    displayTimer = selfCopy->_displayTimer;
+    selfCopy->_displayTimer = v5;
 
-    if (v18->_state != 1 && v18->_state != 2 && v18->_state != 6 && v18->_state != 7)
+    if (selfCopy->_state != 1 && selfCopy->_state != 2 && selfCopy->_state != 6 && selfCopy->_state != 7)
     {
       v7 = dispatch_get_global_queue(0, 0);
       block = _NSConcreteStackBlock;
@@ -697,7 +697,7 @@
       v10 = 0;
       v11 = sub_1000E6BC4;
       v12 = &unk_10032B0D0;
-      v13 = v18;
+      v13 = selfCopy;
       dispatch_async(v7, &block);
 
       objc_storeStrong(&v13, 0);
@@ -705,40 +705,40 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  appearCopy = appear;
   v3.receiver = self;
   v3.super_class = ActivationController;
-  [(ActivationController *)&v3 viewWillAppear:a3];
-  v6->_activationControllerDismissed = 0;
-  if (([(ActivationController *)v6 isMovingToParentViewController]& 1) == 0)
+  [(ActivationController *)&v3 viewWillAppear:appear];
+  selfCopy->_activationControllerDismissed = 0;
+  if (([(ActivationController *)selfCopy isMovingToParentViewController]& 1) == 0)
   {
-    [(ActivationController *)v6 _stopActivationLockExpirationTimer];
+    [(ActivationController *)selfCopy _stopActivationLockExpirationTimer];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v6 = self;
+  selfCopy = self;
   v5 = a2;
-  v4 = a3;
+  appearCopy = appear;
   v3.receiver = self;
   v3.super_class = ActivationController;
-  [(ActivationController *)&v3 viewDidAppear:a3];
-  if ((v4 || ([(ActivationController *)v6 isMovingToParentViewController]& 1) != 0) && !v6->_appIsSuspended)
+  [(ActivationController *)&v3 viewDidAppear:appear];
+  if ((appearCopy || ([(ActivationController *)selfCopy isMovingToParentViewController]& 1) != 0) && !selfCopy->_appIsSuspended)
   {
-    [(ActivationController *)v6 _activateIfNecessary];
+    [(ActivationController *)selfCopy _activateIfNecessary];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
-  v10 = a3;
+  disappearCopy = disappear;
   if (([(ActivationController *)self isMovingFromParentViewController]& 1) != 0)
   {
     oslog = _BYLoggingFacility();
@@ -752,49 +752,49 @@
     }
 
     objc_storeStrong(&oslog, 0);
-    [(ActivationController *)v12 _clearWaitingForBasebandTimer];
-    [(ActivationController *)v12 _clearDisplayTimer];
-    [(ActivationController *)v12 _cleanup];
-    [(ActivationController *)v12 _releaseOTAAssertion];
-    [(ActivationController *)v12 _enterState:0];
-    objc_storeStrong(&v12->_engine, 0);
+    [(ActivationController *)selfCopy _clearWaitingForBasebandTimer];
+    [(ActivationController *)selfCopy _clearDisplayTimer];
+    [(ActivationController *)selfCopy _cleanup];
+    [(ActivationController *)selfCopy _releaseOTAAssertion];
+    [(ActivationController *)selfCopy _enterState:0];
+    objc_storeStrong(&selfCopy->_engine, 0);
   }
 
   v5 = +[NSNotificationCenter defaultCenter];
-  [(NSNotificationCenter *)v5 removeObserver:v12 name:@"BuddySystemTimeUpdateFinishedNotification" object:0];
+  [(NSNotificationCenter *)v5 removeObserver:selfCopy name:@"BuddySystemTimeUpdateFinishedNotification" object:0];
 
-  v6.receiver = v12;
+  v6.receiver = selfCopy;
   v6.super_class = ActivationController;
-  [(ActivationController *)&v6 viewWillDisappear:v10];
+  [(ActivationController *)&v6 viewWillDisappear:disappearCopy];
 }
 
-- (void)didResignActive:(id)a3
+- (void)didResignActive:(id)active
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v4->_appIsSuspended = 1;
+  objc_storeStrong(location, active);
+  selfCopy->_appIsSuspended = 1;
   objc_storeStrong(location, 0);
 }
 
-- (void)didBecomeActive:(id)a3
+- (void)didBecomeActive:(id)active
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v9->_appIsSuspended = 0;
+  objc_storeStrong(location, active);
+  selfCopy->_appIsSuspended = 0;
   v6 = 0;
   v4 = 0;
   v3 = 0;
-  if (!v9->_activationControllerDismissed)
+  if (!selfCopy->_activationControllerDismissed)
   {
-    v7 = [(ActivationController *)v9 navigationController];
+    navigationController = [(ActivationController *)selfCopy navigationController];
     v6 = 1;
-    v5 = [v7 topViewController];
+    topViewController = [navigationController topViewController];
     v4 = 1;
-    v3 = v5 == v9;
+    v3 = topViewController == selfCopy;
   }
 
   if (v4)
@@ -807,7 +807,7 @@
 
   if (v3)
   {
-    [(ActivationController *)v9 _activateIfNecessary];
+    [(ActivationController *)selfCopy _activateIfNecessary];
   }
 
   objc_storeStrong(location, 0);
@@ -815,7 +815,7 @@
 
 - (void)_displayTimerTimeout
 {
-  v7 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   v5 = OS_LOG_TYPE_DEFAULT;
@@ -828,29 +828,29 @@
   }
 
   objc_storeStrong(oslog, 0);
-  [(ActivationController *)v7 _clearDisplayTimer];
-  v7->_displayTimerElapsed = 1;
-  [(ActivationController *)v7 _enterState:v7->_state];
+  [(ActivationController *)selfCopy _clearDisplayTimer];
+  selfCopy->_displayTimerElapsed = 1;
+  [(ActivationController *)selfCopy _enterState:selfCopy->_state];
 }
 
-- (void)startSpinningWithIdentifier:(id)a3
+- (void)startSpinningWithIdentifier:(id)identifier
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(ActivationController *)v10 navigationController];
-  v4 = [v3 topViewController];
-  spinningViewController = v10->_spinningViewController;
-  v10->_spinningViewController = v4;
+  objc_storeStrong(location, identifier);
+  navigationController = [(ActivationController *)selfCopy navigationController];
+  topViewController = [navigationController topViewController];
+  spinningViewController = selfCopy->_spinningViewController;
+  selfCopy->_spinningViewController = topViewController;
 
-  if (v10->_spinningViewController)
+  if (selfCopy->_spinningViewController)
   {
-    v6 = [(UIViewController *)v10->_spinningViewController view];
-    v7 = [(UIView *)v6 window];
-    [(UIWindow *)v7 setUserInteractionEnabled:0];
+    view = [(UIViewController *)selfCopy->_spinningViewController view];
+    window = [(UIView *)view window];
+    [(UIWindow *)window setUserInteractionEnabled:0];
 
-    [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:v10->_spinningViewController identifier:location[0]];
+    [BFFViewControllerSpinnerManager startAnimatingSpinnerFor:selfCopy->_spinningViewController identifier:location[0]];
   }
 
   else
@@ -868,20 +868,20 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)stopSpinningForIdentifier:(id)a3
+- (void)stopSpinningForIdentifier:(id)identifier
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v7->_spinningViewController)
+  objc_storeStrong(location, identifier);
+  if (selfCopy->_spinningViewController)
   {
-    v3 = [(UIViewController *)v7->_spinningViewController view];
-    v4 = [(UIView *)v3 window];
-    [(UIWindow *)v4 setUserInteractionEnabled:1];
+    view = [(UIViewController *)selfCopy->_spinningViewController view];
+    window = [(UIView *)view window];
+    [(UIWindow *)window setUserInteractionEnabled:1];
 
     [BFFViewControllerSpinnerManager stopAnimatingSpinnerFor:location[0]];
-    objc_storeStrong(&v7->_spinningViewController, 0);
+    objc_storeStrong(&selfCopy->_spinningViewController, 0);
   }
 
   else
@@ -899,14 +899,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)startRequest:(id)a3 completion:(id)a4
+- (void)startRequest:(id)request completion:(id)completion
 {
-  v31 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, request);
   v29 = 0;
-  objc_storeStrong(&v29, a4);
+  objc_storeStrong(&v29, completion);
   v27 = 0;
   v25 = 0;
   v5 = 0;
@@ -914,9 +914,9 @@
   {
     v28 = [location[0] URL];
     v27 = 1;
-    v26 = [v28 absoluteString];
+    absoluteString = [v28 absoluteString];
     v25 = 1;
-    v5 = [v26 hasSuffix:@"/deviceActivation"];
+    v5 = [absoluteString hasSuffix:@"/deviceActivation"];
   }
 
   if (v25)
@@ -962,14 +962,14 @@
     objc_storeStrong(&v24, 0);
   }
 
-  v13 = *(v31 + 1);
+  v13 = *(selfCopy + 1);
   v14 = location[0];
   v15 = _NSConcreteStackBlock;
   v16 = -1073741824;
   v17 = 0;
   v18 = sub_1000E78D0;
   v19 = &unk_10032C9D8;
-  v20 = v31;
+  v20 = selfCopy;
   v21 = v29;
   [v13 makeRequest:v14 completion:&v15];
   objc_storeStrong(&v21, 0);
@@ -978,16 +978,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleActivationData:(id)a3 responseHeaders:(id)a4 baseURL:(id)a5
+- (void)_handleActivationData:(id)data responseHeaders:(id)headers baseURL:(id)l
 {
-  v79 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, data);
   v77 = 0;
-  objc_storeStrong(&v77, a4);
+  objc_storeStrong(&v77, headers);
   v76 = 0;
-  objc_storeStrong(&v76, a5);
+  objc_storeStrong(&v76, l);
   *&v75[1] = [v77 objectForKeyedSubscript:@"Content-Type"];
   v75[0] = 0;
   v7 = [NSString alloc];
@@ -1008,7 +1008,7 @@
   v70 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
   {
-    sub_1000E84A8(buf, v79->_state, [location[0] length], *&v75[1]);
+    sub_1000E84A8(buf, selfCopy->_state, [location[0] length], *&v75[1]);
     _os_log_impl(&_mh_execute_header, v71, v70, "Buddy Activate: connectionDidFinishLoading state = %d response size = %ld, contentType = %@\n", buf, 0x1Cu);
   }
 
@@ -1031,7 +1031,7 @@
 
   if (v75[0])
   {
-    v79->_nonSilentActivation = 1;
+    selfCopy->_nonSilentActivation = 1;
     v67 = _BYLoggingFacility();
     v66 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
@@ -1043,26 +1043,26 @@
     }
 
     objc_storeStrong(&v67, 0);
-    [(ActivationController *)v79 _enterState:4];
-    [(RUIPage *)v79->_loadingPage setLoading:0];
-    objc_storeStrong(&v79->_loadingPage, 0);
-    if (!v79->_remoteUIController)
+    [(ActivationController *)selfCopy _enterState:4];
+    [(RUIPage *)selfCopy->_loadingPage setLoading:0];
+    objc_storeStrong(&selfCopy->_loadingPage, 0);
+    if (!selfCopy->_remoteUIController)
     {
       v13 = objc_alloc_init(RemoteUIController);
-      remoteUIController = v79->_remoteUIController;
-      v79->_remoteUIController = v13;
+      remoteUIController = selfCopy->_remoteUIController;
+      selfCopy->_remoteUIController = v13;
 
-      v15 = v79->_remoteUIController;
-      v16 = [(ActivationController *)v79 navigationController];
-      [(RemoteUIController *)v15 setNavigationController:v16];
+      v15 = selfCopy->_remoteUIController;
+      navigationController = [(ActivationController *)selfCopy navigationController];
+      [(RemoteUIController *)v15 setNavigationController:navigationController];
 
-      [(RemoteUIController *)v79->_remoteUIController setDelegate:?];
-      v17 = v79->_remoteUIController;
+      [(RemoteUIController *)selfCopy->_remoteUIController setDelegate:?];
+      v17 = selfCopy->_remoteUIController;
       v18 = +[RUIStyle setupAssistantStyle];
       [(RemoteUIController *)v17 setStyle:v18];
 
-      objc_initWeak(&from, v79);
-      v19 = v79->_remoteUIController;
+      objc_initWeak(&from, selfCopy);
+      v19 = selfCopy->_remoteUIController;
       v58 = _NSConcreteStackBlock;
       v59 = -1073741824;
       v60 = 0;
@@ -1070,7 +1070,7 @@
       v62 = &unk_10032CA00;
       objc_copyWeak(&v63, &from);
       [(RemoteUIController *)v19 setHandlerForElementName:@"agree" handler:&v58];
-      v20 = v79->_remoteUIController;
+      v20 = selfCopy->_remoteUIController;
       v52 = _NSConcreteStackBlock;
       v53 = -1073741824;
       v54 = 0;
@@ -1078,7 +1078,7 @@
       v56 = &unk_10032CA00;
       objc_copyWeak(&v57, &from);
       [(RemoteUIController *)v20 setHandlerForElementName:@"disagree" handler:&v52];
-      v21 = v79->_remoteUIController;
+      v21 = selfCopy->_remoteUIController;
       v46 = _NSConcreteStackBlock;
       v47 = -1073741824;
       v48 = 0;
@@ -1086,18 +1086,18 @@
       v50 = &unk_10032CA00;
       objc_copyWeak(&v51, &from);
       [(RemoteUIController *)v21 setHandlerForElementName:@"tryAgain" handler:&v46];
-      [(ActivationController *)v79 _setHandlerForPasscode];
+      [(ActivationController *)selfCopy _setHandlerForPasscode];
       objc_destroyWeak(&v51);
       objc_destroyWeak(&v57);
       objc_destroyWeak(&v63);
       objc_destroyWeak(&from);
     }
 
-    v22 = v79->_remoteUIController;
-    v23 = [(BuddyActivationEngine *)v79->_engine sessionConfiguration];
-    [(RemoteUIController *)v22 setSessionConfiguration:v23];
+    v22 = selfCopy->_remoteUIController;
+    sessionConfiguration = [(BuddyActivationEngine *)selfCopy->_engine sessionConfiguration];
+    [(RemoteUIController *)v22 setSessionConfiguration:sessionConfiguration];
 
-    [(RemoteUIController *)v79->_remoteUIController loadData:location[0] baseURL:v76];
+    [(RemoteUIController *)selfCopy->_remoteUIController loadData:location[0] baseURL:v76];
   }
 
   else
@@ -1106,14 +1106,14 @@
     v44 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      sub_100082D54(v80, v79->_state);
+      sub_100082D54(v80, selfCopy->_state);
       _os_log_impl(&_mh_execute_header, oslog, v44, "Buddy Activate: Non xmlui response! State = %d\n", v80, 8u);
     }
 
     objc_storeStrong(&oslog, 0);
-    if (v79->_state == 1 || v79->_state == 4)
+    if (selfCopy->_state == 1 || selfCopy->_state == 4)
     {
-      [(ActivationController *)v79 _enterState:2];
+      [(ActivationController *)selfCopy _enterState:2];
       if (!v77)
       {
         v43 = _BYLoggingFacility();
@@ -1137,7 +1137,7 @@
       v36 = &unk_10032B9A0;
       v37 = v77;
       v38 = location[0];
-      v39 = v79;
+      v39 = selfCopy;
       v40 = v74;
       dispatch_async(v26, &block);
 
@@ -1162,11 +1162,11 @@
       objc_storeStrong(&v31, 0);
     }
 
-    [(RUIPage *)v79->_loadingPage setLoading:0];
-    objc_storeStrong(&v79->_loadingPage, 0);
+    [(RUIPage *)selfCopy->_loadingPage setLoading:0];
+    objc_storeStrong(&selfCopy->_loadingPage, 0);
   }
 
-  [(ActivationController *)v79 _cleanup];
+  [(ActivationController *)selfCopy _cleanup];
   objc_storeStrong(&v74, 0);
   objc_storeStrong(&v75[1], 0);
   objc_storeStrong(&v76, 0);
@@ -1174,16 +1174,16 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_handleFailureWithError:(id)a3
+- (void)_handleFailureWithError:(id)error
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    state = v11->_state;
+    state = selfCopy->_state;
     v7 = 0;
     v5 = 0;
     if (_BYIsInternalInstall())
@@ -1193,9 +1193,9 @@
 
     else if (location[0])
     {
-      v8 = [location[0] domain];
+      domain = [location[0] domain];
       v7 = 1;
-      v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v8, [location[0] code]);
+      v4 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [location[0] code]);
       v6 = v4;
       v5 = 1;
     }
@@ -1217,26 +1217,26 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  if (v11->_state != 3)
+  if (selfCopy->_state != 3)
   {
-    v11->_connectionFailed = 1;
-    [(ActivationController *)v11 _enterState:5];
+    selfCopy->_connectionFailed = 1;
+    [(ActivationController *)selfCopy _enterState:5];
   }
 
-  [(RUIPage *)v11->_loadingPage setLoading:0];
-  objc_storeStrong(&v11->_loadingPage, 0);
-  [(ActivationController *)v11 _cleanup];
+  [(RUIPage *)selfCopy->_loadingPage setLoading:0];
+  objc_storeStrong(&selfCopy->_loadingPage, 0);
+  [(ActivationController *)selfCopy _cleanup];
   objc_storeStrong(location, 0);
 }
 
-- (void)_getSRPInitNonceRequestOptionsCompletion:(id)a3
+- (void)_getSRPInitNonceRequestOptionsCompletion:(id)completion
 {
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v30 = [(SecureBackup *)v32->_secureBackup srpInitNonce];
-  v29 = [v30 base64EncodedStringWithOptions:0];
+  objc_storeStrong(location, completion);
+  srpInitNonce = [(SecureBackup *)selfCopy->_secureBackup srpInitNonce];
+  v29 = [srpInitNonce base64EncodedStringWithOptions:0];
   v28 = objc_alloc_init(FMDDeviceIdentityFactory);
   v27 = +[NSMutableDictionary dictionary];
   if (v29)
@@ -1290,18 +1290,18 @@
   objc_storeStrong(&v27, 0);
   objc_storeStrong(&v28, 0);
   objc_storeStrong(&v29, 0);
-  objc_storeStrong(&v30, 0);
+  objc_storeStrong(&srpInitNonce, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_tryActivateWithOptions:(id)a3 requestMutator:(id)a4
+- (void)_tryActivateWithOptions:(id)options requestMutator:(id)mutator
 {
-  v26 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, options);
   v24 = 0;
-  objc_storeStrong(&v24, a4);
+  objc_storeStrong(&v24, mutator);
   v5 = +[BYPreferencesController buddyPreferencesInternal];
   v6 = [v5 BOOLForKey:@"ForceActivationFailure"];
 
@@ -1313,7 +1313,7 @@
     v20 = 0;
     v21 = sub_1000E9950;
     v22 = &unk_10032B0D0;
-    v23 = v26;
+    v23 = selfCopy;
     dispatch_async(v7, &block);
 
     v17 = 1;
@@ -1322,9 +1322,9 @@
 
   else
   {
-    if (v26->_engine)
+    if (selfCopy->_engine)
     {
-      engine = v26->_engine;
+      engine = selfCopy->_engine;
       v9 = location[0];
       v10 = v24;
       v11 = _NSConcreteStackBlock;
@@ -1332,7 +1332,7 @@
       v13 = 0;
       v14 = sub_1000E9980;
       v15 = &unk_10032CA50;
-      v16 = v26;
+      v16 = selfCopy;
       [(BuddyActivationEngine *)engine tryActivateWithOptions:v9 requestMutator:v10 completion:&v11];
       objc_storeStrong(&v16, 0);
     }
@@ -1346,21 +1346,21 @@
 
 - (void)_startActivation
 {
-  v58 = self;
+  selfCopy = self;
   v57 = a2;
   objc_storeStrong(&self->_escrowSessionKey, 0);
-  objc_storeStrong(&v58->_srpInitResponse, 0);
-  objc_storeStrong(&v58->_accountDSID, 0);
-  v58->_hasPresentedRemoteUI = 0;
+  objc_storeStrong(&selfCopy->_srpInitResponse, 0);
+  objc_storeStrong(&selfCopy->_accountDSID, 0);
+  selfCopy->_hasPresentedRemoteUI = 0;
   v2 = +[NSDate date];
-  startedActivationDate = v58->_startedActivationDate;
-  v58->_startedActivationDate = v2;
+  startedActivationDate = selfCopy->_startedActivationDate;
+  selfCopy->_startedActivationDate = v2;
 
-  [(ActivationController *)v58 _enterState:1];
-  v58->_cdmaSelectionActivation = 0;
-  v58->_connectionFailed = 0;
-  v4 = [(ActivationController *)v58 activationState];
-  [(BuddyActivationState *)v4 setError:0];
+  [(ActivationController *)selfCopy _enterState:1];
+  selfCopy->_cdmaSelectionActivation = 0;
+  selfCopy->_connectionFailed = 0;
+  activationState = [(ActivationController *)selfCopy activationState];
+  [(BuddyActivationState *)activationState setError:0];
 
   v5 = +[BuddyActivationConfiguration currentConfiguration];
   v54 = 0;
@@ -1368,14 +1368,14 @@
   v6 = 0;
   if ([v5 supportsCellularActivation])
   {
-    v55 = [(ActivationController *)v58 networkProvider];
+    networkProvider = [(ActivationController *)selfCopy networkProvider];
     v54 = 1;
     v6 = 1;
-    if ([(BuddyNetworkProvider *)v55 networkReachable])
+    if ([(BuddyNetworkProvider *)networkProvider networkReachable])
     {
-      v53 = [(ActivationController *)v58 networkProvider];
+      networkProvider2 = [(ActivationController *)selfCopy networkProvider];
       v52 = 1;
-      v6 = ![(BuddyNetworkProvider *)v53 connectedOverWiFi];
+      v6 = ![(BuddyNetworkProvider *)networkProvider2 connectedOverWiFi];
     }
   }
 
@@ -1467,7 +1467,7 @@
   }
 
   objc_storeStrong(&v41, 0);
-  [(BuddyActivationEngine *)v58->_engine cancel];
+  [(BuddyActivationEngine *)selfCopy->_engine cancel];
   if (v56)
   {
     v39 = _BYLoggingFacility();
@@ -1481,21 +1481,21 @@
     }
 
     objc_storeStrong(&v39, 0);
-    v58->_connectionOTA = 1;
+    selfCopy->_connectionOTA = 1;
     v17 = +[BuddyActivationConfiguration currentConfiguration];
-    v18 = [v17 cellularActivationMethod];
+    cellularActivationMethod = [v17 cellularActivationMethod];
 
-    if (v18)
+    if (cellularActivationMethod)
     {
-      if (v18 == 1)
+      if (cellularActivationMethod == 1)
       {
-        v58->_usingBootstrap = 1;
+        selfCopy->_usingBootstrap = 1;
 LABEL_37:
-        v19 = [BuddyActivationEngine cellularActivationEngineWithOverrideActivationURL:v51 sessionURL:location usingBootstrap:v58->_usingBootstrap];
-        engine = v58->_engine;
-        v58->_engine = v19;
+        v19 = [BuddyActivationEngine cellularActivationEngineWithOverrideActivationURL:v51 sessionURL:location usingBootstrap:selfCopy->_usingBootstrap];
+        engine = selfCopy->_engine;
+        selfCopy->_engine = v19;
 
-        if (!v58->_otaAssertion)
+        if (!selfCopy->_otaAssertion)
         {
           memset(__b, 0, sizeof(__b));
           v35 = _CTServerConnectionCreate();
@@ -1509,13 +1509,13 @@ LABEL_37:
         goto LABEL_44;
       }
 
-      if (v18 != 2)
+      if (cellularActivationMethod != 2)
       {
         goto LABEL_37;
       }
     }
 
-    v58->_usingBootstrap = 0;
+    selfCopy->_usingBootstrap = 0;
     goto LABEL_37;
   }
 
@@ -1530,21 +1530,21 @@ LABEL_37:
   }
 
   objc_storeStrong(v34, 0);
-  v58->_connectionOTA = 0;
-  v58->_usingBootstrap = 0;
+  selfCopy->_connectionOTA = 0;
+  selfCopy->_usingBootstrap = 0;
   v23 = [BuddyActivationEngine wifiActivationEngineWithOverrideActivationURL:v51 sessionURL:location];
-  v24 = v58->_engine;
-  v58->_engine = v23;
+  v24 = selfCopy->_engine;
+  selfCopy->_engine = v23;
 
 LABEL_44:
-  [(BuddyActivationEngine *)v58->_engine setAllowAnyHTTPSCertificate:v49 & 1];
-  v25 = v58;
+  [(BuddyActivationEngine *)selfCopy->_engine setAllowAnyHTTPSCertificate:v49 & 1];
+  v25 = selfCopy;
   v26 = _NSConcreteStackBlock;
   v27 = -1073741824;
   v28 = 0;
   v29 = sub_1000EA320;
   v30 = &unk_10032CA78;
-  v31 = v58;
+  v31 = selfCopy;
   [(ActivationController *)v25 _getSRPInitNonceRequestOptionsCompletion:&v26];
   objc_storeStrong(&v31, 0);
   objc_storeStrong(&location, 0);
@@ -1553,7 +1553,7 @@ LABEL_44:
 
 - (void)_checkBasebandStatusBeforeActivation
 {
-  v33 = self;
+  selfCopy = self;
   v32 = a2;
   v31 = 0;
   v30 = 0;
@@ -1588,10 +1588,10 @@ LABEL_44:
 
   if ((v31 & 1) == 0 && v30)
   {
-    [(ActivationController *)v33 _startActivation];
+    [(ActivationController *)selfCopy _startActivation];
   }
 
-  else if ((++v33->_waitingForBasebandFailureCount * 2.0) <= 120.0)
+  else if ((++selfCopy->_waitingForBasebandFailureCount * 2.0) <= 120.0)
   {
     if (v30)
     {
@@ -1623,10 +1623,10 @@ LABEL_44:
       objc_storeStrong(&v17, 0);
     }
 
-    [(ActivationController *)v33 _enterState:7];
-    v13 = [NSTimer scheduledTimerWithTimeInterval:v33 target:"_waitingForBasebandTimeout" selector:0 userInfo:0 repeats:2.0];
-    waitingForBasebandTimer = v33->_waitingForBasebandTimer;
-    v33->_waitingForBasebandTimer = v13;
+    [(ActivationController *)selfCopy _enterState:7];
+    v13 = [NSTimer scheduledTimerWithTimeInterval:selfCopy target:"_waitingForBasebandTimeout" selector:0 userInfo:0 repeats:2.0];
+    waitingForBasebandTimer = selfCopy->_waitingForBasebandTimer;
+    selfCopy->_waitingForBasebandTimer = v13;
   }
 
   else
@@ -1661,7 +1661,7 @@ LABEL_44:
       objc_storeStrong(&v23, 0);
     }
 
-    [(ActivationController *)v33 _enterState:5];
+    [(ActivationController *)selfCopy _enterState:5];
   }
 }
 
@@ -1698,15 +1698,15 @@ LABEL_44:
 
 - (void)_systemTimeUpdated
 {
-  v10 = self;
+  selfCopy = self;
   oslog[1] = a2;
   v2 = +[NSNotificationCenter defaultCenter];
-  [(NSNotificationCenter *)v2 removeObserver:v10 name:@"BuddySystemTimeUpdateFinishedNotification" object:0];
+  [(NSNotificationCenter *)v2 removeObserver:selfCopy name:@"BuddySystemTimeUpdateFinishedNotification" object:0];
 
-  v3 = [(ActivationController *)v10 systemTimeUpdateManager];
-  v4 = [(BuddySystemTimeUpdateManager *)v3 status];
+  systemTimeUpdateManager = [(ActivationController *)selfCopy systemTimeUpdateManager];
+  status = [(BuddySystemTimeUpdateManager *)systemTimeUpdateManager status];
 
-  if (v4 == 3)
+  if (status == 3)
   {
     oslog[0] = _BYLoggingFacility();
     v8 = OS_LOG_TYPE_DEFAULT;
@@ -1719,40 +1719,40 @@ LABEL_44:
     }
 
     objc_storeStrong(oslog, 0);
-    [(ActivationController *)v10 _sanitizeSystemTime];
+    [(ActivationController *)selfCopy _sanitizeSystemTime];
   }
 
-  [(ActivationController *)v10 _checkBasebandStatusBeforeActivation];
+  [(ActivationController *)selfCopy _checkBasebandStatusBeforeActivation];
 }
 
 - (void)_activate
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = +[NSDate date];
-  v7->_waitingForBasebandFailureCount = 0;
+  selfCopy->_waitingForBasebandFailureCount = 0;
   [location[0] timeIntervalSince1970];
   if (v2 < 315532800.0)
   {
-    v3 = [(ActivationController *)v7 systemTimeUpdateManager];
-    v4 = [(BuddySystemTimeUpdateManager *)v3 status];
+    systemTimeUpdateManager = [(ActivationController *)selfCopy systemTimeUpdateManager];
+    status = [(BuddySystemTimeUpdateManager *)systemTimeUpdateManager status];
 
-    if (v4 == 1)
+    if (status == 1)
     {
-      [(ActivationController *)v7 _enterState:6];
+      [(ActivationController *)selfCopy _enterState:6];
       v5 = +[NSNotificationCenter defaultCenter];
-      [(NSNotificationCenter *)v5 addObserver:v7 selector:"_systemTimeUpdated" name:@"BuddySystemTimeUpdateFinishedNotification" object:0];
+      [(NSNotificationCenter *)v5 addObserver:selfCopy selector:"_systemTimeUpdated" name:@"BuddySystemTimeUpdateFinishedNotification" object:0];
     }
 
     else
     {
-      [(ActivationController *)v7 _sanitizeSystemTime];
+      [(ActivationController *)selfCopy _sanitizeSystemTime];
     }
   }
 
-  if (v7->_state != 6)
+  if (selfCopy->_state != 6)
   {
-    [(ActivationController *)v7 _checkBasebandStatusBeforeActivation];
+    [(ActivationController *)selfCopy _checkBasebandStatusBeforeActivation];
   }
 
   objc_storeStrong(location, 0);
@@ -1760,17 +1760,17 @@ LABEL_44:
 
 - (void)_dismissRemoteUI
 {
-  v3 = self;
+  selfCopy = self;
   oslog[1] = a2;
   oslog[0] = _BYLoggingFacility();
   if (os_log_type_enabled(oslog[0], OS_LOG_TYPE_DEFAULT))
   {
-    sub_100082D54(buf, v3->_state);
+    sub_100082D54(buf, selfCopy->_state);
     _os_log_impl(&_mh_execute_header, oslog[0], OS_LOG_TYPE_DEFAULT, "Buddy Activate: Dismiss RemoteUI, state = %d", buf, 8u);
   }
 
   objc_storeStrong(oslog, 0);
-  [(ActivationController *)v3 _enterState:5];
+  [(ActivationController *)selfCopy _enterState:5];
 }
 
 - (void)_writeAcknowledgment
@@ -1779,12 +1779,12 @@ LABEL_44:
   dispatch_async(v2, &stru_10032CA98);
 }
 
-- (void)_startActivationLockExpirationTimerForPage:(id)a3
+- (void)_startActivationLockExpirationTimerForPage:(id)page
 {
-  v22 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, page);
   v20 = _BYLoggingFacility();
   v19 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
@@ -1796,7 +1796,7 @@ LABEL_44:
   }
 
   objc_storeStrong(&v20, 0);
-  if (v22->_activationLockTimer)
+  if (selfCopy->_activationLockTimer)
   {
     oslog = _BYLoggingFacility();
     v16 = OS_LOG_TYPE_DEFAULT;
@@ -1809,19 +1809,19 @@ LABEL_44:
     }
 
     objc_storeStrong(&oslog, 0);
-    [(NSTimer *)v22->_activationLockTimer invalidate];
+    [(NSTimer *)selfCopy->_activationLockTimer invalidate];
   }
 
-  objc_storeStrong(&v22->_activationLockPage, location[0]);
+  objc_storeStrong(&selfCopy->_activationLockPage, location[0]);
   v9 = _NSConcreteStackBlock;
   v10 = -1073741824;
   v11 = 0;
   v12 = sub_1000EB08C;
   v13 = &unk_10032CAC0;
-  v14 = v22;
+  v14 = selfCopy;
   v7 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:&v9 block:3600.0];
-  activationLockTimer = v22->_activationLockTimer;
-  v22->_activationLockTimer = v7;
+  activationLockTimer = selfCopy->_activationLockTimer;
+  selfCopy->_activationLockTimer = v7;
 
   objc_storeStrong(&v14, 0);
   objc_storeStrong(location, 0);
@@ -1829,7 +1829,7 @@ LABEL_44:
 
 - (void)_stopActivationLockExpirationTimer
 {
-  v7 = self;
+  selfCopy = self;
   oslog[1] = a2;
   if (self->_activationLockTimer)
   {
@@ -1844,32 +1844,32 @@ LABEL_44:
     }
 
     objc_storeStrong(oslog, 0);
-    objc_storeStrong(&v7->_activationLockPage, 0);
-    [(NSTimer *)v7->_activationLockTimer invalidate];
-    objc_storeStrong(&v7->_activationLockTimer, 0);
+    objc_storeStrong(&selfCopy->_activationLockPage, 0);
+    [(NSTimer *)selfCopy->_activationLockTimer invalidate];
+    objc_storeStrong(&selfCopy->_activationLockTimer, 0);
   }
 }
 
 - (void)agreeToRemoteUIDialog
 {
-  v23 = self;
+  selfCopy = self;
   v22[1] = a2;
   [(ActivationController *)self _cleanup];
-  v2 = [(NSMutableArray *)v23->_objectModels lastObject];
-  v3 = [v2 clientInfo];
-  v22[0] = [v3 objectForKey:@"agreeDialogTitle"];
+  lastObject = [(NSMutableArray *)selfCopy->_objectModels lastObject];
+  clientInfo = [lastObject clientInfo];
+  v22[0] = [clientInfo objectForKey:@"agreeDialogTitle"];
 
-  v4 = [(NSMutableArray *)v23->_objectModels lastObject];
-  v5 = [v4 clientInfo];
-  v21 = [v5 objectForKey:@"agreeDialogText"];
+  lastObject2 = [(NSMutableArray *)selfCopy->_objectModels lastObject];
+  clientInfo2 = [lastObject2 clientInfo];
+  v21 = [clientInfo2 objectForKey:@"agreeDialogText"];
 
-  v6 = [(NSMutableArray *)v23->_objectModels lastObject];
-  v7 = [v6 clientInfo];
-  v20 = [v7 objectForKey:@"agreeDialogOK"];
+  lastObject3 = [(NSMutableArray *)selfCopy->_objectModels lastObject];
+  clientInfo3 = [lastObject3 clientInfo];
+  v20 = [clientInfo3 objectForKey:@"agreeDialogOK"];
 
-  v8 = [(NSMutableArray *)v23->_objectModels lastObject];
-  v9 = [v8 clientInfo];
-  v19 = [v9 objectForKey:@"agreeDialogCancel"];
+  lastObject4 = [(NSMutableArray *)selfCopy->_objectModels lastObject];
+  clientInfo4 = [lastObject4 clientInfo];
+  v19 = [clientInfo4 objectForKey:@"agreeDialogCancel"];
 
   if (v21 && v20 && v19)
   {
@@ -1882,18 +1882,18 @@ LABEL_44:
     v14 = 3221225472;
     v15 = sub_1000EB668;
     v16 = &unk_10032B598;
-    v17 = v23;
+    v17 = selfCopy;
     v12 = [UIAlertAction actionWithTitle:v20 style:0 handler:&v13];
     [v11 addAction:{v12, v13, v14, v15, v16}];
 
-    [(ActivationController *)v23 presentViewController:location animated:1 completion:0];
+    [(ActivationController *)selfCopy presentViewController:location animated:1 completion:0];
     objc_storeStrong(&v17, 0);
     objc_storeStrong(&location, 0);
   }
 
   else
   {
-    [(ActivationController *)v23 _userAgreedToTCs:1];
+    [(ActivationController *)selfCopy _userAgreedToTCs:1];
   }
 
   objc_storeStrong(&v19, 0);
@@ -1906,16 +1906,16 @@ LABEL_44:
 {
   [(ActivationController *)self _cleanup];
   self->_state = 0;
-  v2 = [(ActivationController *)self navigationController];
-  v3 = [v2 popToViewController:self animated:1];
+  navigationController = [(ActivationController *)self navigationController];
+  v3 = [navigationController popToViewController:self animated:1];
 }
 
 - (void)_stashPasteboard
 {
   v2 = +[UIPasteboard generalPasteboard];
-  v3 = [(UIPasteboard *)v2 strings];
+  strings = [(UIPasteboard *)v2 strings];
   previousPasteboard = self->_previousPasteboard;
-  self->_previousPasteboard = v3;
+  self->_previousPasteboard = strings;
 
   v5 = +[UIPasteboard generalPasteboard];
   [(UIPasteboard *)v5 setStrings:0];
@@ -1930,9 +1930,9 @@ LABEL_44:
   {
     v7 = +[UIPasteboard generalPasteboard];
     v6 = 1;
-    v5 = [(UIPasteboard *)v7 strings];
+    strings = [(UIPasteboard *)v7 strings];
     v4 = 1;
-    v2 = [(NSArray *)v5 count]== 0;
+    v2 = [(NSArray *)strings count]== 0;
   }
 
   if (v4)
@@ -1952,13 +1952,13 @@ LABEL_44:
   }
 }
 
-- (void)activationConfigurationChanged:(BOOL)a3 isActivated:(BOOL)a4
+- (void)activationConfigurationChanged:(BOOL)changed isActivated:(BOOL)activated
 {
-  v20 = self;
+  selfCopy = self;
   v19 = a2;
-  v18 = a3;
-  v17 = a4;
-  if (a3)
+  changedCopy = changed;
+  activatedCopy = activated;
+  if (changed)
   {
     location = _BYLoggingFacility();
     v15 = OS_LOG_TYPE_DEFAULT;
@@ -1977,25 +1977,25 @@ LABEL_44:
     v9 = 0;
     v10 = sub_1000EBAD0;
     v11 = &unk_10032B688;
-    v12 = v20;
-    v13 = v17;
+    v12 = selfCopy;
+    v13 = activatedCopy;
     dispatch_async(v6, &v7);
 
     objc_storeStrong(&v12, 0);
   }
 }
 
-- (BOOL)remoteUIController:(id)a3 shouldLoadRequest:(id)a4 redirectResponse:(id)a5
+- (BOOL)remoteUIController:(id)controller shouldLoadRequest:(id)request redirectResponse:(id)response
 {
-  v33 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v31 = 0;
-  objc_storeStrong(&v31, a4);
+  objc_storeStrong(&v31, request);
   v30 = 0;
-  objc_storeStrong(&v30, a5);
-  if (v33->_state == 3)
+  objc_storeStrong(&v30, response);
+  if (selfCopy->_state == 3)
   {
     v34 = 0;
     v29 = 1;
@@ -2003,25 +2003,25 @@ LABEL_44:
 
   else
   {
-    [(ActivationController *)v33 _cleanup];
-    [(RUIPage *)v33->_loadingPage setLoading:0];
-    v7 = [(NSMutableArray *)v33->_objectModels lastObject];
-    v8 = [v7 visiblePage];
-    loadingPage = v33->_loadingPage;
-    v33->_loadingPage = v8;
+    [(ActivationController *)selfCopy _cleanup];
+    [(RUIPage *)selfCopy->_loadingPage setLoading:0];
+    lastObject = [(NSMutableArray *)selfCopy->_objectModels lastObject];
+    visiblePage = [lastObject visiblePage];
+    loadingPage = selfCopy->_loadingPage;
+    selfCopy->_loadingPage = visiblePage;
 
-    [(RUIPage *)v33->_loadingPage setLoading:1];
-    v10 = [(NSMutableArray *)v33->_objectModels lastObject];
-    v11 = [v10 clientInfo];
-    v28 = [v11 objectForKeyedSubscript:@"elementIdForiCloudAppleId"];
+    [(RUIPage *)selfCopy->_loadingPage setLoading:1];
+    lastObject2 = [(NSMutableArray *)selfCopy->_objectModels lastObject];
+    clientInfo = [lastObject2 clientInfo];
+    v28 = [clientInfo objectForKeyedSubscript:@"elementIdForiCloudAppleId"];
 
     if (![v28 length])
     {
       objc_storeStrong(&v28, @"login");
     }
 
-    v12 = [(NSMutableArray *)v33->_objectModels lastObject];
-    v27 = [v12 rowForFormField:v28];
+    lastObject3 = [(NSMutableArray *)selfCopy->_objectModels lastObject];
+    v27 = [lastObject3 rowForFormField:v28];
 
     if (v27)
     {
@@ -2033,8 +2033,8 @@ LABEL_44:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [(ActivationController *)v33 miscState];
-          [(BuddyMiscState *)v13 setICloudAppleIdFromActivation:v25];
+          miscState = [(ActivationController *)selfCopy miscState];
+          [(BuddyMiscState *)miscState setICloudAppleIdFromActivation:v25];
         }
       }
 
@@ -2043,16 +2043,16 @@ LABEL_44:
     }
 
     v24 = 0;
-    v14 = [v31 HTTPMethod];
-    v15 = [v14 lowercaseString];
-    v16 = [v15 isEqualToString:@"post"];
+    hTTPMethod = [v31 HTTPMethod];
+    lowercaseString = [hTTPMethod lowercaseString];
+    v16 = [lowercaseString isEqualToString:@"post"];
 
     if (v16)
     {
-      v17 = [(NSMutableArray *)v33->_objectModels lastObject];
-      v18 = [v17 postbackData];
+      lastObject4 = [(NSMutableArray *)selfCopy->_objectModels lastObject];
+      postbackData = [lastObject4 postbackData];
       v19 = v24;
-      v24 = v18;
+      v24 = postbackData;
     }
 
     if (v24)
@@ -2074,7 +2074,7 @@ LABEL_44:
     }
 
     objc_storeStrong(&oslog, 0);
-    [(ActivationController *)v33 startRequest:v31 completion:0];
+    [(ActivationController *)selfCopy startRequest:v31 completion:0];
     v34 = 0;
     v29 = 1;
     objc_storeStrong(&v24, 0);
@@ -2088,12 +2088,12 @@ LABEL_44:
   return v34 & 1;
 }
 
-- (void)_handleEscrowResponse:(id)a3
+- (void)_handleEscrowResponse:(id)response
 {
-  v41 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2123,9 +2123,9 @@ LABEL_44:
 
           else if (v37)
           {
-            v19 = [v37 domain];
+            domain = [v37 domain];
             v18 = 1;
-            v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v19, [v37 code]);
+            v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v37 code]);
             v17 = v7;
             v16 = 1;
           }
@@ -2157,7 +2157,7 @@ LABEL_44:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          objc_storeStrong(&v41->_escrowSessionKey, v34);
+          objc_storeStrong(&selfCopy->_escrowSessionKey, v34);
         }
 
         else
@@ -2180,8 +2180,8 @@ LABEL_44:
         if (objc_opt_isKindOfClass())
         {
           v4 = [[NSData alloc] initWithBase64EncodedString:v30 options:0];
-          srpInitResponse = v41->_srpInitResponse;
-          v41->_srpInitResponse = v4;
+          srpInitResponse = selfCopy->_srpInitResponse;
+          selfCopy->_srpInitResponse = v4;
         }
 
         else
@@ -2203,7 +2203,7 @@ LABEL_44:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          objc_storeStrong(&v41->_accountDSID, v26);
+          objc_storeStrong(&selfCopy->_accountDSID, v26);
         }
 
         else
@@ -2267,12 +2267,12 @@ LABEL_44:
   objc_storeStrong(location, 0);
 }
 
-- (void)_handlePlanAddition:(id)a3
+- (void)_handlePlanAddition:(id)addition
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, addition);
   v23 = [location[0] objectForKeyedSubscript:@"eid"];
   v22 = [location[0] objectForKeyedSubscript:@"iccid"];
   v21 = [location[0] objectForKeyedSubscript:@"phoneNumber"];
@@ -2287,26 +2287,26 @@ LABEL_44:
     v5 = [location[0] objectForKeyedSubscript:@"gid2"];
     v6 = [location[0] objectForKeyedSubscript:@"smdpAddress"];
     v7 = [location[0] objectForKeyedSubscript:@"useDS"];
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
     v9 = [location[0] objectForKeyedSubscript:@"isESim"];
     v10 = v5;
-    LOBYTE(v14) = v8 & 1;
+    LOBYTE(v14) = bOOLValue & 1;
     BYTE1(v14) = [v9 BOOLValue] & 1;
     v11 = [v3 initWithDetails:v23 installIccid:v22 sourceIccid:v18 unusableIccid:v4 phoneNumber:v21 mcc:v15 mnc:v17 gid1:v16 gid2:v5 smdp:v6 useDS:v14 esim:@"ODA" flowType:?];
-    v12 = [(ActivationController *)v25 miscState];
-    [(BuddyMiscState *)v12 setActivationPlanRequest:v11];
+    miscState = [(ActivationController *)selfCopy miscState];
+    [(BuddyMiscState *)miscState setActivationPlanRequest:v11];
 
     v19 = [location[0] objectForKeyedSubscript:@"success"];
     if ([v19 BOOLValue])
     {
-      v13 = [(ActivationController *)v25 miscState];
-      [(BuddyMiscState *)v13 setSkipActivationForActivationPlanRequest:0];
+      miscState2 = [(ActivationController *)selfCopy miscState];
+      [(BuddyMiscState *)miscState2 setSkipActivationForActivationPlanRequest:0];
     }
 
     else
     {
-      v13 = [(ActivationController *)v25 miscState];
-      [(BuddyMiscState *)v13 setSkipActivationForActivationPlanRequest:1];
+      miscState2 = [(ActivationController *)selfCopy miscState];
+      [(BuddyMiscState *)miscState2 setSkipActivationForActivationPlanRequest:1];
     }
 
     objc_storeStrong(&v19, 0);
@@ -2324,22 +2324,22 @@ LABEL_44:
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteUIController:(id)a3 didReceiveObjectModel:(id)a4 actionSignal:(unint64_t *)a5
+- (void)remoteUIController:(id)controller didReceiveObjectModel:(id)model actionSignal:(unint64_t *)signal
 {
-  v46 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v44 = 0;
-  objc_storeStrong(&v44, a4);
-  v43 = a5;
-  v42 = [v44 clientInfo];
-  v7 = [v42 objectForKeyedSubscript:@"carrierSelection"];
-  LOBYTE(a4) = [v7 BOOLValue];
+  objc_storeStrong(&v44, model);
+  signalCopy = signal;
+  clientInfo = [v44 clientInfo];
+  v7 = [clientInfo objectForKeyedSubscript:@"carrierSelection"];
+  LOBYTE(model) = [v7 BOOLValue];
 
-  if (a4)
+  if (model)
   {
-    v46->_cdmaSelectionActivation = 1;
+    selfCopy->_cdmaSelectionActivation = 1;
     oslog = _BYLoggingFacility();
     v40 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -2355,11 +2355,11 @@ LABEL_44:
 
   v37 = 0;
   v10 = 0;
-  if (v43)
+  if (signalCopy)
   {
-    v38 = [(RemoteUIController *)v46->_remoteUIController displayedPages];
+    displayedPages = [(RemoteUIController *)selfCopy->_remoteUIController displayedPages];
     v37 = 1;
-    v10 = [v38 count] == 0;
+    v10 = [displayedPages count] == 0;
   }
 
   if (v37)
@@ -2368,7 +2368,7 @@ LABEL_44:
 
   if (v10)
   {
-    if (*v43 == 3)
+    if (*signalCopy == 3)
     {
       v36 = _BYLoggingFacility();
       v35 = OS_LOG_TYPE_DEFAULT;
@@ -2381,10 +2381,10 @@ LABEL_44:
       }
 
       objc_storeStrong(&v36, 0);
-      *v43 = 2;
+      *signalCopy = 2;
     }
 
-    if (*v43 == 4)
+    if (*signalCopy == 4)
     {
       v33 = _BYLoggingFacility();
       v32 = OS_LOG_TYPE_DEFAULT;
@@ -2397,82 +2397,82 @@ LABEL_44:
       }
 
       objc_storeStrong(&v33, 0);
-      *v43 = 0;
+      *signalCopy = 0;
     }
   }
 
-  if (v43 && *v43 == 1)
+  if (signalCopy && *signalCopy == 1)
   {
-    [(ActivationController *)v46 _dismissRemoteUI];
+    [(ActivationController *)selfCopy _dismissRemoteUI];
   }
 
   v15 = v44;
-  v16 = [v42 objectForKey:@"agreeURL"];
+  v16 = [clientInfo objectForKey:@"agreeURL"];
   v17 = [v15 absoluteURLWithString:v16];
   v18 = v17;
   v29 = 0;
   if (v17)
   {
-    v19 = v17;
+    agreeURL = v17;
   }
 
   else
   {
-    v19 = [(ActivationController *)v46 agreeURL];
-    v30 = v19;
+    agreeURL = [(ActivationController *)selfCopy agreeURL];
+    v30 = agreeURL;
     v29 = 1;
   }
 
-  [(ActivationController *)v46 setAgreeURL:v19];
+  [(ActivationController *)selfCopy setAgreeURL:agreeURL];
   if (v29)
   {
   }
 
   v20 = v44;
-  v21 = [v42 objectForKey:@"disagreeURL"];
+  v21 = [clientInfo objectForKey:@"disagreeURL"];
   v22 = [v20 absoluteURLWithString:v21];
   v23 = v22;
   v27 = 0;
   if (v22)
   {
-    v24 = v22;
+    disagreeURL = v22;
   }
 
   else
   {
-    v24 = [(ActivationController *)v46 disagreeURL];
-    v28 = v24;
+    disagreeURL = [(ActivationController *)selfCopy disagreeURL];
+    v28 = disagreeURL;
     v27 = 1;
   }
 
-  [(ActivationController *)v46 setDisagreeURL:v24];
+  [(ActivationController *)selfCopy setDisagreeURL:disagreeURL];
   if (v27)
   {
   }
 
-  v25 = v46;
-  v26 = [v42 objectForKeyedSubscript:@"escrowResponse"];
+  v25 = selfCopy;
+  v26 = [clientInfo objectForKeyedSubscript:@"escrowResponse"];
   [(ActivationController *)v25 _handleEscrowResponse:v26];
 
-  [(ActivationController *)v46 _handlePlanAddition:v42];
-  [(RUIPage *)v46->_loadingPage setLoading:0];
-  objc_storeStrong(&v46->_loadingPage, 0);
-  objc_storeStrong(&v42, 0);
+  [(ActivationController *)selfCopy _handlePlanAddition:clientInfo];
+  [(RUIPage *)selfCopy->_loadingPage setLoading:0];
+  objc_storeStrong(&selfCopy->_loadingPage, 0);
+  objc_storeStrong(&clientInfo, 0);
   objc_storeStrong(&v44, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_activateWithPasscode:(id)a3 fromObjectModel:(id)a4
+- (void)_activateWithPasscode:(id)passcode fromObjectModel:(id)model
 {
-  v59 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, passcode);
   v57 = 0;
-  objc_storeStrong(&v57, a4);
+  objc_storeStrong(&v57, model);
   v5 = v57;
-  v6 = [v57 clientInfo];
-  v7 = [v6 objectForKeyedSubscript:@"activationURL"];
+  clientInfo = [v57 clientInfo];
+  v7 = [clientInfo objectForKeyedSubscript:@"activationURL"];
   v56 = [v5 absoluteURLWithString:v7];
 
   v55 = _BYLoggingFacility();
@@ -2484,7 +2484,7 @@ LABEL_44:
   }
 
   objc_storeStrong(&v55, 0);
-  if (v59->_escrowSessionKey && v59->_srpInitResponse && v59->_accountDSID && v56)
+  if (selfCopy->_escrowSessionKey && selfCopy->_srpInitResponse && selfCopy->_accountDSID && v56)
   {
     v50 = _BYLoggingFacility();
     v49 = OS_LOG_TYPE_DEFAULT;
@@ -2497,15 +2497,15 @@ LABEL_44:
     }
 
     objc_storeStrong(&v50, 0);
-    [(SecureBackup *)v59->_secureBackup srpRecoveryUpdateDSID:v59->_accountDSID recoveryPassphrase:location[0]];
-    v47 = [(SecureBackup *)v59->_secureBackup srpRecoveryBlobFromSRPInitResponse:v59->_srpInitResponse];
+    [(SecureBackup *)selfCopy->_secureBackup srpRecoveryUpdateDSID:selfCopy->_accountDSID recoveryPassphrase:location[0]];
+    v47 = [(SecureBackup *)selfCopy->_secureBackup srpRecoveryBlobFromSRPInitResponse:selfCopy->_srpInitResponse];
     v46 = [v47 base64EncodedStringWithOptions:0];
     v12 = objc_alloc_init(SecureBackup);
-    secureBackup = v59->_secureBackup;
-    v59->_secureBackup = v12;
+    secureBackup = selfCopy->_secureBackup;
+    selfCopy->_secureBackup = v12;
 
-    v45 = [(SecureBackup *)v59->_secureBackup srpInitNonce];
-    v44 = [v45 base64EncodedStringWithOptions:0];
+    srpInitNonce = [(SecureBackup *)selfCopy->_secureBackup srpInitNonce];
+    v44 = [srpInitNonce base64EncodedStringWithOptions:0];
     v43 = objc_alloc_init(FMDDeviceIdentityFactory);
     v42 = +[NSMutableDictionary dictionary];
     if (v44)
@@ -2518,9 +2518,9 @@ LABEL_44:
       [v42 setObject:v46 forKeyedSubscript:@"blob"];
     }
 
-    [v42 setObject:v59->_escrowSessionKey forKeyedSubscript:@"escrowSessionKey"];
+    [v42 setObject:selfCopy->_escrowSessionKey forKeyedSubscript:@"escrowSessionKey"];
     v41 = @"passcodeActivation";
-    [(ActivationController *)v59 startSpinningWithIdentifier:v41];
+    [(ActivationController *)selfCopy startSpinningWithIdentifier:v41];
     v40 = 0;
     v39 = 0;
     v14 = _BYSignpostSubsystem();
@@ -2563,7 +2563,7 @@ LABEL_44:
     v30[2] = v38;
     v27 = v57;
     v28 = v56;
-    v29 = v59;
+    v29 = selfCopy;
     v30[0] = v41;
     [v20 identityForPasscodeActivationUnlockWithContext:v21 completion:&v22];
     objc_storeStrong(v30, 0);
@@ -2574,7 +2574,7 @@ LABEL_44:
     objc_storeStrong(&v42, 0);
     objc_storeStrong(&v43, 0);
     objc_storeStrong(&v44, 0);
-    objc_storeStrong(&v45, 0);
+    objc_storeStrong(&srpInitNonce, 0);
     objc_storeStrong(&v46, 0);
     objc_storeStrong(&v47, 0);
   }
@@ -2592,7 +2592,7 @@ LABEL_44:
     }
 
     objc_storeStrong(&v53, 0);
-    [(ActivationController *)v59 _enterState:5];
+    [(ActivationController *)selfCopy _enterState:5];
   }
 
   objc_storeStrong(&v56, 0);
@@ -2602,10 +2602,10 @@ LABEL_44:
 
 - (void)_setHandlerForPasscode
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   objc_initWeak(location, self);
-  remoteUIController = v11->_remoteUIController;
+  remoteUIController = selfCopy->_remoteUIController;
   v4 = _NSConcreteStackBlock;
   v5 = -1073741824;
   v6 = 0;
@@ -2617,54 +2617,54 @@ LABEL_44:
   objc_destroyWeak(location);
 }
 
-- (void)remoteUIController:(id)a3 willPresentObjectModel:(id)a4 modally:(BOOL)a5
+- (void)remoteUIController:(id)controller willPresentObjectModel:(id)model modally:(BOOL)modally
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v12 = a5;
-  v15->_hasPresentedRemoteUI = 1;
-  [(NSMutableArray *)v15->_objectModels addObject:v13];
-  v7 = [v13 defaultPages];
-  v11 = [v7 firstObject];
+  objc_storeStrong(&v13, model);
+  modallyCopy = modally;
+  selfCopy->_hasPresentedRemoteUI = 1;
+  [(NSMutableArray *)selfCopy->_objectModels addObject:v13];
+  defaultPages = [v13 defaultPages];
+  firstObject = [defaultPages firstObject];
 
-  v8 = [v11 attributes];
-  v9 = [v8 objectForKeyedSubscript:@"name"];
+  attributes = [firstObject attributes];
+  v9 = [attributes objectForKeyedSubscript:@"name"];
   v10 = [v9 isEqualToString:@"FMIPLockChallenge"];
 
   if (v10)
   {
-    [(ActivationController *)v15 _startActivationLockExpirationTimerForPage:v11];
-    [(ActivationController *)v15 _stashPasteboard];
+    [(ActivationController *)selfCopy _startActivationLockExpirationTimerForPage:firstObject];
+    [(ActivationController *)selfCopy _stashPasteboard];
   }
 
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&firstObject, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteUIController:(id)a3 didRemoveObjectModel:(id)a4
+- (void)remoteUIController:(id)controller didRemoveObjectModel:(id)model
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v5 = [v10 defaultPages];
-  v6 = [v5 firstObject];
-  activationLockPage = v12->_activationLockPage;
+  objc_storeStrong(&v10, model);
+  defaultPages = [v10 defaultPages];
+  firstObject = [defaultPages firstObject];
+  activationLockPage = selfCopy->_activationLockPage;
 
-  if (v6 == activationLockPage)
+  if (firstObject == activationLockPage)
   {
-    [(ActivationController *)v12 _stopActivationLockExpirationTimer];
-    [(ActivationController *)v12 _restorePasteboard];
+    [(ActivationController *)selfCopy _stopActivationLockExpirationTimer];
+    [(ActivationController *)selfCopy _restorePasteboard];
   }
 
-  v9 = [(NSMutableArray *)v12->_objectModels indexOfObject:v10];
+  v9 = [(NSMutableArray *)selfCopy->_objectModels indexOfObject:v10];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
     oslog = _BYLoggingFacility();
@@ -2679,23 +2679,23 @@ LABEL_44:
 
   else
   {
-    [(NSMutableArray *)v12->_objectModels removeObjectAtIndex:v9];
+    [(NSMutableArray *)selfCopy->_objectModels removeObjectAtIndex:v9];
   }
 
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)remoteUIController:(id)a3 didFinishLoadWithError:(id)a4 forRequest:(id)a5
+- (void)remoteUIController:(id)controller didFinishLoadWithError:(id)error forRequest:(id)request
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, controller);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, error);
   v13 = 0;
-  objc_storeStrong(&v13, a5);
+  objc_storeStrong(&v13, request);
   if (v14)
   {
     oslog = _BYLoggingFacility();
@@ -2710,9 +2710,9 @@ LABEL_44:
 
       else if (v14)
       {
-        v11 = [v14 domain];
+        domain = [v14 domain];
         v10 = 1;
-        v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v11, [v14 code]);
+        v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [v14 code]);
         v9 = v7;
         v8 = 1;
       }
@@ -2734,7 +2734,7 @@ LABEL_44:
     }
 
     objc_storeStrong(&oslog, 0);
-    [(ActivationController *)v16 _enterState:5];
+    [(ActivationController *)selfCopy _enterState:5];
   }
 
   objc_storeStrong(&v13, 0);
@@ -2742,28 +2742,28 @@ LABEL_44:
   objc_storeStrong(location, 0);
 }
 
-- (void)_userAgreedToTCs:(BOOL)a3
+- (void)_userAgreedToTCs:(BOOL)cs
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
+  csCopy = cs;
   v8 = 0;
   v6 = 0;
-  if (a3)
+  if (cs)
   {
-    v3 = [(ActivationController *)v13 agreeURL];
-    v9 = v3;
+    agreeURL = [(ActivationController *)selfCopy agreeURL];
+    v9 = agreeURL;
     v8 = 1;
   }
 
   else
   {
-    v3 = [(ActivationController *)v13 disagreeURL];
-    v7 = v3;
+    agreeURL = [(ActivationController *)selfCopy disagreeURL];
+    v7 = agreeURL;
     v6 = 1;
   }
 
-  v10 = v3;
+  v10 = agreeURL;
   if (v6)
   {
   }
@@ -2776,12 +2776,12 @@ LABEL_44:
   oslog = _BYLoggingFacility();
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100097718(buf, v11, v10);
+    sub_100097718(buf, csCopy, v10);
     _os_log_impl(&_mh_execute_header, oslog, OS_LOG_TYPE_DEFAULT, "Buddy Activate: T&C request %d for URL %@", buf, 0x12u);
   }
 
   objc_storeStrong(&oslog, 0);
-  [(ActivationController *)v13 startRequest:location completion:0];
+  [(ActivationController *)selfCopy startRequest:location completion:0];
   objc_storeStrong(&location, 0);
   objc_storeStrong(&v10, 0);
 }

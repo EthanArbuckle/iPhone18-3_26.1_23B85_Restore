@@ -1,27 +1,27 @@
 @interface RouteStepManeuverItem
-- (BOOL)_shouldResetOnUserInfo:(id)a3 changedTo:(id)a4;
+- (BOOL)_shouldResetOnUserInfo:(id)info changedTo:(id)to;
 - (GuidanceManeuverArtwork)maneuverArtwork;
 - (MNGuidanceSignInfo)guidanceSignInfo;
 - (NSAttributedString)primaryText;
 - (NSAttributedString)secondaryText;
 - (NSAttributedString)tertiaryText;
-- (RouteStepManeuverItem)initWithRouteStep:(id)a3 cellClass:(Class)a4 state:(unint64_t)a5 metrics:(id)a6 context:(int64_t)a7 route:(id)a8 scale:(double)a9 isMissedStep:(BOOL)a10;
+- (RouteStepManeuverItem)initWithRouteStep:(id)step cellClass:(Class)class state:(unint64_t)state metrics:(id)metrics context:(int64_t)context route:(id)route scale:(double)scale isMissedStep:(BOOL)self0;
 - (UIColor)backgroundColor;
 - (UIImage)exitSignImage;
 - (UIImage)shieldImage;
-- (id)_combinedTertiaryTextForStepWithChargingStation:(id)a3 font:(id)a4 color:(id)a5;
-- (id)_evaluatedStringForInstructionString:(id)a3;
+- (id)_combinedTertiaryTextForStepWithChargingStation:(id)station font:(id)font color:(id)color;
+- (id)_evaluatedStringForInstructionString:(id)string;
 - (id)_instructionVariables;
-- (id)_listInstructionForStep:(id)a3;
-- (id)_listInstructionStringForStep:(id)a3;
-- (id)_signInstructionForStep:(id)a3;
-- (id)_signInstructionStringForStep:(id)a3;
+- (id)_listInstructionForStep:(id)step;
+- (id)_listInstructionStringForStep:(id)step;
+- (id)_signInstructionForStep:(id)step;
+- (id)_signInstructionStringForStep:(id)step;
 - (id)description;
 - (id)distanceToManeuver;
 - (id)laneGuidanceInfo;
 - (void)_computeContent;
 - (void)reset;
-- (void)setUserInfo:(id)a3;
+- (void)setUserInfo:(id)info;
 @end
 
 @implementation RouteStepManeuverItem
@@ -83,137 +83,137 @@
   p_secondaryText = &self->_secondaryText;
   self->_secondaryText = 0;
 
-  v270 = self;
-  v5 = [(RouteStepManeuverItem *)self step];
-  v262 = [v5 geoStep];
-  v255 = [v262 roadDescriptions];
-  v257 = [v5 chargingStationInfo];
+  selfCopy = self;
+  step = [(RouteStepManeuverItem *)self step];
+  geoStep = [step geoStep];
+  roadDescriptions = [geoStep roadDescriptions];
+  chargingStationInfo = [step chargingStationInfo];
   v6 = [(RouteStepItem *)self state]== 0;
-  v7 = [(RouteStepItem *)self metrics];
-  v8 = v7;
+  metrics = [(RouteStepItem *)self metrics];
+  v8 = metrics;
   if (v6)
   {
-    [v7 primaryTextDisabledTextColor];
+    [metrics primaryTextDisabledTextColor];
   }
 
   else
   {
-    [v7 primaryTextActiveTextColor];
+    [metrics primaryTextActiveTextColor];
   }
   v264 = ;
 
-  v9 = [(RouteStepItem *)v270 metrics];
-  v10 = [v9 primaryTextFontIsFixedSize];
+  metrics2 = [(RouteStepItem *)selfCopy metrics];
+  primaryTextFontIsFixedSize = [metrics2 primaryTextFontIsFixedSize];
 
-  v11 = [(RouteStepItem *)v270 metrics];
-  v12 = v11;
-  if (v10)
+  metrics3 = [(RouteStepItem *)selfCopy metrics];
+  v12 = metrics3;
+  if (primaryTextFontIsFixedSize)
   {
-    [v11 primaryTextFontSize];
+    [metrics3 primaryTextFontSize];
     v14 = v13;
-    v15 = [(RouteStepItem *)v270 metrics];
-    [v15 primaryTextFontWeight];
+    metrics4 = [(RouteStepItem *)selfCopy metrics];
+    [metrics4 primaryTextFontWeight];
     v263 = [UIFont systemFontOfSize:v14 weight:v16];
   }
 
   else
   {
-    v15 = [v11 primaryTextFontStyle];
-    v17 = [(RouteStepItem *)v270 metrics];
-    [v17 primaryTextFontWeight];
+    metrics4 = [metrics3 primaryTextFontStyle];
+    metrics5 = [(RouteStepItem *)selfCopy metrics];
+    [metrics5 primaryTextFontWeight];
     v19 = v18;
-    v20 = [(RouteStepItem *)v270 traitCollection];
-    v263 = [UIFont _maps_fontWithTextStyle:v15 weight:v20 compatibleWithTraitCollection:v19];
+    traitCollection = [(RouteStepItem *)selfCopy traitCollection];
+    v263 = [UIFont _maps_fontWithTextStyle:metrics4 weight:traitCollection compatibleWithTraitCollection:v19];
   }
 
-  v21 = [(RouteStepItem *)v270 state]== 0;
-  v22 = [(RouteStepItem *)v270 metrics];
-  v23 = v22;
+  v21 = [(RouteStepItem *)selfCopy state]== 0;
+  metrics6 = [(RouteStepItem *)selfCopy metrics];
+  v23 = metrics6;
   if (v21)
   {
-    [v22 secondaryTextDisabledTextColor];
+    [metrics6 secondaryTextDisabledTextColor];
   }
 
   else
   {
-    [v22 secondaryTextActiveTextColor];
+    [metrics6 secondaryTextActiveTextColor];
   }
   v259 = ;
 
-  v24 = [(RouteStepItem *)v270 metrics];
-  v25 = [v24 secondaryTextFontIsFixedSize];
+  metrics7 = [(RouteStepItem *)selfCopy metrics];
+  secondaryTextFontIsFixedSize = [metrics7 secondaryTextFontIsFixedSize];
 
-  v26 = [(RouteStepItem *)v270 metrics];
-  v27 = v26;
-  if (v25)
+  metrics8 = [(RouteStepItem *)selfCopy metrics];
+  v27 = metrics8;
+  if (secondaryTextFontIsFixedSize)
   {
-    [v26 secondaryTextFontSize];
+    [metrics8 secondaryTextFontSize];
     v29 = v28;
-    v30 = [(RouteStepItem *)v270 metrics];
-    [v30 secondaryTextFontWeight];
+    metrics9 = [(RouteStepItem *)selfCopy metrics];
+    [metrics9 secondaryTextFontWeight];
     v258 = [UIFont systemFontOfSize:v29 weight:v31];
   }
 
   else
   {
-    v30 = [v26 secondaryTextFontStyle];
-    v32 = [(RouteStepItem *)v270 metrics];
-    [v32 secondaryTextFontWeight];
+    metrics9 = [metrics8 secondaryTextFontStyle];
+    metrics10 = [(RouteStepItem *)selfCopy metrics];
+    [metrics10 secondaryTextFontWeight];
     v34 = v33;
-    v35 = [(RouteStepItem *)v270 traitCollection];
-    v258 = [UIFont _maps_fontWithTextStyle:v30 weight:v35 compatibleWithTraitCollection:v34];
+    traitCollection2 = [(RouteStepItem *)selfCopy traitCollection];
+    v258 = [UIFont _maps_fontWithTextStyle:metrics9 weight:traitCollection2 compatibleWithTraitCollection:v34];
   }
 
-  v269 = [(RouteStepManeuverItem *)v270 guidanceSignInfo];
-  v267 = [(RouteStepManeuverItem *)v270 laneGuidanceInfo];
-  v254 = [(RouteStepManeuverItem *)v270 distanceToManeuver];
-  if ([v5 isStartOrResumeStep])
+  guidanceSignInfo = [(RouteStepManeuverItem *)selfCopy guidanceSignInfo];
+  laneGuidanceInfo = [(RouteStepManeuverItem *)selfCopy laneGuidanceInfo];
+  distanceToManeuver = [(RouteStepManeuverItem *)selfCopy distanceToManeuver];
+  if ([step isStartOrResumeStep])
   {
-    v36 = 1;
+    isStaticText = 1;
   }
 
   else
   {
-    v37 = [v269 primarySign];
-    v36 = [v37 isStaticText];
+    primarySign = [guidanceSignInfo primarySign];
+    isStaticText = [primarySign isStaticText];
   }
 
-  v38 = [(RouteStepItem *)v270 metrics];
-  v39 = [v38 shouldFlipPrimaryAndSecondaryText];
+  metrics11 = [(RouteStepItem *)selfCopy metrics];
+  shouldFlipPrimaryAndSecondaryText = [metrics11 shouldFlipPrimaryAndSecondaryText];
 
   v288[0] = _NSConcreteStackBlock;
   v288[1] = 3221225472;
   v288[2] = sub_100C164FC;
   v288[3] = &unk_10164DCF0;
-  v266 = v5;
+  v266 = step;
   v289 = v266;
-  v290 = v270;
-  v291 = v36;
+  v290 = selfCopy;
+  v291 = isStaticText;
   v256 = objc_retainBlock(v288);
-  if (v267)
+  if (laneGuidanceInfo)
   {
-    v40 = [v267 primaryStrings];
-    v41 = [v40 count] == 0;
+    primaryStrings = [laneGuidanceInfo primaryStrings];
+    v41 = [primaryStrings count] == 0;
 
     if (v41)
     {
       v54 = [MKServerFormattedStringParameters alloc];
-      v55 = [v267 distanceDetailLevel];
-      v56 = [v267 variableOverrides];
-      v43 = [v54 initWithInstructionsDistanceDetailLevel:v55 variableOverrides:v56];
+      distanceDetailLevel = [laneGuidanceInfo distanceDetailLevel];
+      variableOverrides = [laneGuidanceInfo variableOverrides];
+      primaryStrings2 = [v54 initWithInstructionsDistanceDetailLevel:distanceDetailLevel variableOverrides:variableOverrides];
 
-      v57 = [v267 titles];
-      v44 = [v57 firstObject];
+      titles = [laneGuidanceInfo titles];
+      firstObject = [titles firstObject];
 
-      v45 = [[MKServerFormattedString alloc] initWithGeoServerString:v44 parameters:v43];
+      v45 = [[MKServerFormattedString alloc] initWithGeoServerString:firstObject parameters:primaryStrings2];
     }
 
     else
     {
       v42 = [MKServerFormattedString alloc];
-      v43 = [v267 primaryStrings];
-      v44 = [v43 firstObject];
-      v45 = [v42 initWithComposedString:v44];
+      primaryStrings2 = [laneGuidanceInfo primaryStrings];
+      firstObject = [primaryStrings2 firstObject];
+      v45 = [v42 initWithComposedString:firstObject];
     }
 
     v58 = v45;
@@ -226,9 +226,9 @@
     v308[2] = &off_1016E9470;
     v59 = [NSDictionary dictionaryWithObjects:v308 forKeys:v307 count:3];
     v60 = [v58 multiPartAttributedStringWithAttributes:v59];
-    v61 = [v60 attributedString];
+    attributedString = [v60 attributedString];
     v62 = *p_primaryText;
-    *p_primaryText = v61;
+    *p_primaryText = attributedString;
 
     if ([*p_primaryText length])
     {
@@ -241,34 +241,34 @@
     }
   }
 
-  else if (v269)
+  else if (guidanceSignInfo)
   {
-    v46 = [v269 primarySign];
-    v47 = v46;
-    if (v36)
+    primarySign2 = [guidanceSignInfo primarySign];
+    v47 = primarySign2;
+    if (isStaticText)
     {
-      v48 = [v46 secondaryStrings];
-      v49 = [v48 count] == 0;
+      secondaryStrings = [primarySign2 secondaryStrings];
+      v49 = [secondaryStrings count] == 0;
 
       if (v49)
       {
         v84 = [MKServerFormattedStringParameters alloc];
-        v85 = [v47 distanceDetailLevel];
-        v86 = [v47 variableOverrides];
-        v51 = [v84 initWithInstructionsDistanceDetailLevel:v85 variableOverrides:v86];
+        distanceDetailLevel2 = [v47 distanceDetailLevel];
+        variableOverrides2 = [v47 variableOverrides];
+        secondaryStrings2 = [v84 initWithInstructionsDistanceDetailLevel:distanceDetailLevel2 variableOverrides:variableOverrides2];
 
-        v87 = [v47 details];
-        v52 = [v87 firstObject];
+        details = [v47 details];
+        firstObject2 = [details firstObject];
 
-        v53 = [[MKServerFormattedString alloc] initWithGeoServerString:v52 parameters:v51];
+        v53 = [[MKServerFormattedString alloc] initWithGeoServerString:firstObject2 parameters:secondaryStrings2];
       }
 
       else
       {
         v50 = [MKServerFormattedString alloc];
-        v51 = [v47 secondaryStrings];
-        v52 = [v51 firstObject];
-        v53 = [v50 initWithComposedString:v52];
+        secondaryStrings2 = [v47 secondaryStrings];
+        firstObject2 = [secondaryStrings2 firstObject];
+        v53 = [v50 initWithComposedString:firstObject2];
       }
 
       v88 = v53;
@@ -281,9 +281,9 @@
       v306[2] = &off_1016E9470;
       v89 = [NSDictionary dictionaryWithObjects:v306 forKeys:v305 count:3];
       v90 = [v88 multiPartAttributedStringWithAttributes:v89];
-      v91 = [v90 attributedString];
+      attributedString2 = [v90 attributedString];
       v92 = *p_primaryText;
-      *p_primaryText = v91;
+      *p_primaryText = attributedString2;
 
       if ([*p_primaryText length])
       {
@@ -294,28 +294,28 @@
 
     else
     {
-      v76 = [v46 primaryStrings];
-      v77 = [v76 count] == 0;
+      primaryStrings3 = [primarySign2 primaryStrings];
+      v77 = [primaryStrings3 count] == 0;
 
       if (v77)
       {
         v93 = [MKServerFormattedStringParameters alloc];
-        v94 = [v47 distanceDetailLevel];
-        v95 = [v47 variableOverrides];
-        v79 = [v93 initWithInstructionsDistanceDetailLevel:v94 variableOverrides:v95];
+        distanceDetailLevel3 = [v47 distanceDetailLevel];
+        variableOverrides3 = [v47 variableOverrides];
+        primaryStrings4 = [v93 initWithInstructionsDistanceDetailLevel:distanceDetailLevel3 variableOverrides:variableOverrides3];
 
-        v96 = [v47 titles];
-        v80 = [v96 firstObject];
+        titles2 = [v47 titles];
+        firstObject3 = [titles2 firstObject];
 
-        v81 = [[MKServerFormattedString alloc] initWithGeoServerString:v80 parameters:v79];
+        v81 = [[MKServerFormattedString alloc] initWithGeoServerString:firstObject3 parameters:primaryStrings4];
       }
 
       else
       {
         v78 = [MKServerFormattedString alloc];
-        v79 = [v47 primaryStrings];
-        v80 = [v79 firstObject];
-        v81 = [v78 initWithComposedString:v80];
+        primaryStrings4 = [v47 primaryStrings];
+        firstObject3 = [primaryStrings4 firstObject];
+        v81 = [v78 initWithComposedString:firstObject3];
       }
 
       v97 = v81;
@@ -328,14 +328,14 @@
       v304[2] = &off_1016E9470;
       v98 = [NSDictionary dictionaryWithObjects:v304 forKeys:v303 count:3];
       v99 = [v97 multiPartAttributedStringWithAttributes:v98];
-      v100 = [v99 attributedString];
+      attributedString3 = [v99 attributedString];
       v101 = *p_primaryText;
-      *p_primaryText = v100;
+      *p_primaryText = attributedString3;
 
       if ([*p_primaryText length])
       {
         v260 = 0;
-        v73 = v269;
+        v73 = guidanceSignInfo;
         goto LABEL_56;
       }
     }
@@ -352,7 +352,7 @@
   {
     v63 = [NSAttributedString alloc];
     v64 = v263;
-    if (v39)
+    if (shouldFlipPrimaryAndSecondaryText)
     {
       v64 = v258;
     }
@@ -360,7 +360,7 @@
     v301[0] = NSFontAttributeName;
     v301[1] = NSForegroundColorAttributeName;
     v65 = v264;
-    if (v39)
+    if (shouldFlipPrimaryAndSecondaryText)
     {
       v65 = v259;
     }
@@ -370,7 +370,7 @@
     v66 = [NSDictionary dictionaryWithObjects:v302 forKeys:v301 count:2];
     v67 = [v63 initWithString:v260 attributes:v66];
 
-    if (v39)
+    if (shouldFlipPrimaryAndSecondaryText)
     {
       v68 = p_secondaryText;
     }
@@ -383,54 +383,54 @@
     objc_storeStrong(v68, v67);
   }
 
-  if ((v36 & 1) == 0)
+  if ((isStaticText & 1) == 0)
   {
-    if (v267)
+    if (laneGuidanceInfo)
     {
-      v69 = [v267 secondaryStrings];
-      v70 = [v69 count] == 0;
+      secondaryStrings3 = [laneGuidanceInfo secondaryStrings];
+      v70 = [secondaryStrings3 count] == 0;
 
       if (!v70)
       {
-        v71 = [v267 secondaryStrings];
-        v72 = [v71 firstObject];
+        secondaryStrings4 = [laneGuidanceInfo secondaryStrings];
+        firstObject4 = [secondaryStrings4 firstObject];
 
 LABEL_58:
-        v83 = 0;
-        v74 = 0;
+        variableOverrides5 = 0;
+        firstObject5 = 0;
         goto LABEL_62;
       }
 
-      v82 = [v267 instructions];
-      v74 = [v82 firstObject];
+      instructions = [laneGuidanceInfo instructions];
+      firstObject5 = [instructions firstObject];
 
-      v75 = [v267 variableOverrides];
+      variableOverrides4 = [laneGuidanceInfo variableOverrides];
       goto LABEL_49;
     }
 
-    v73 = v269;
-    if (!v269)
+    v73 = guidanceSignInfo;
+    if (!guidanceSignInfo)
     {
-      if ([(RouteStepItem *)v270 context]== 1)
+      if ([(RouteStepItem *)selfCopy context]== 1)
       {
-        v72 = [(RouteStepManeuverItem *)v270 _signInstructionStringForStep:v266];
-        if (!v72)
+        firstObject4 = [(RouteStepManeuverItem *)selfCopy _signInstructionStringForStep:v266];
+        if (!firstObject4)
         {
-          v74 = [(RouteStepManeuverItem *)v270 _signInstructionForStep:v266];
-          v75 = [(RouteStepManeuverItem *)v270 _instructionVariables];
+          firstObject5 = [(RouteStepManeuverItem *)selfCopy _signInstructionForStep:v266];
+          variableOverrides4 = [(RouteStepManeuverItem *)selfCopy _instructionVariables];
 LABEL_49:
-          v83 = v75;
+          variableOverrides5 = variableOverrides4;
           goto LABEL_61;
         }
 
 LABEL_70:
-        v83 = 0;
+        variableOverrides5 = 0;
         goto LABEL_71;
       }
 
-      v113 = [(RouteStepItem *)v270 context]== 2;
-      v114 = [(RouteStepManeuverItem *)v270 _listInstructionStringForStep:v266];
-      v72 = v114;
+      v113 = [(RouteStepItem *)selfCopy context]== 2;
+      v114 = [(RouteStepManeuverItem *)selfCopy _listInstructionStringForStep:v266];
+      firstObject4 = v114;
       if (v113)
       {
         if (v114)
@@ -444,64 +444,64 @@ LABEL_70:
         goto LABEL_70;
       }
 
-      v74 = [(RouteStepManeuverItem *)v270 _listInstructionForStep:v266];
-      v75 = [(RouteStepManeuverItem *)v270 _instructionVariables];
+      firstObject5 = [(RouteStepManeuverItem *)selfCopy _listInstructionForStep:v266];
+      variableOverrides4 = [(RouteStepManeuverItem *)selfCopy _instructionVariables];
       goto LABEL_49;
     }
 
 LABEL_56:
-    v102 = [v73 primarySign];
-    v103 = [v102 secondaryStrings];
-    v104 = [v103 count] == 0;
+    primarySign3 = [v73 primarySign];
+    secondaryStrings5 = [primarySign3 secondaryStrings];
+    v104 = [secondaryStrings5 count] == 0;
 
-    v105 = [v269 primarySign];
-    v106 = v105;
+    primarySign4 = [guidanceSignInfo primarySign];
+    v106 = primarySign4;
     if (!v104)
     {
-      v107 = [v105 secondaryStrings];
-      v72 = [v107 firstObject];
+      secondaryStrings6 = [primarySign4 secondaryStrings];
+      firstObject4 = [secondaryStrings6 firstObject];
 
       goto LABEL_58;
     }
 
-    v108 = [v105 details];
-    v74 = [v108 firstObject];
+    details2 = [primarySign4 details];
+    firstObject5 = [details2 firstObject];
 
-    v109 = [v269 primarySign];
-    v83 = [v109 variableOverrides];
+    primarySign5 = [guidanceSignInfo primarySign];
+    variableOverrides5 = [primarySign5 variableOverrides];
 
 LABEL_61:
-    v72 = 0;
+    firstObject4 = 0;
 LABEL_62:
-    if (!(v74 | v72))
+    if (!(firstObject5 | firstObject4))
     {
-      v74 = 0;
+      firstObject5 = 0;
 LABEL_83:
 
       goto LABEL_84;
     }
 
-    if (v74)
+    if (firstObject5)
     {
       v110 = [MKServerFormattedStringParameters alloc];
       MKFormattedStringOptionsMakeDefault();
-      v111 = [v110 initWithOptions:&v274 variableOverrides:v83];
-      v112 = [[MKServerFormattedString alloc] initWithGeoServerString:v74 parameters:v111];
+      v111 = [v110 initWithOptions:&v274 variableOverrides:variableOverrides5];
+      v112 = [[MKServerFormattedString alloc] initWithGeoServerString:firstObject5 parameters:v111];
 
       goto LABEL_72;
     }
 
 LABEL_71:
-    v112 = [[MKServerFormattedString alloc] initWithComposedString:v72];
-    v74 = 0;
+    v112 = [[MKServerFormattedString alloc] initWithComposedString:firstObject4];
+    firstObject5 = 0;
 LABEL_72:
-    v115 = v270;
-    if (v270->_cachedShouldFlipPrimaryAndSecondaryText != v39 || (v116 = [(MKServerFormattedString *)v270->_cachedSecondaryServerFormattedString isEqualToServerFormattedString:v112], v115 = v270, !v116))
+    v115 = selfCopy;
+    if (selfCopy->_cachedShouldFlipPrimaryAndSecondaryText != shouldFlipPrimaryAndSecondaryText || (v116 = [(MKServerFormattedString *)selfCopy->_cachedSecondaryServerFormattedString isEqualToServerFormattedString:v112], v115 = selfCopy, !v116))
     {
-      v115->_cachedShouldFlipPrimaryAndSecondaryText = v39;
+      v115->_cachedShouldFlipPrimaryAndSecondaryText = shouldFlipPrimaryAndSecondaryText;
       objc_storeStrong(&v115->_cachedSecondaryServerFormattedString, v112);
       v117 = v263;
-      if (!v39)
+      if (!shouldFlipPrimaryAndSecondaryText)
       {
         v117 = v258;
       }
@@ -509,7 +509,7 @@ LABEL_72:
       v299[0] = NSFontAttributeName;
       v299[1] = NSForegroundColorAttributeName;
       v118 = v264;
-      if (!v39)
+      if (!shouldFlipPrimaryAndSecondaryText)
       {
         v118 = v259;
       }
@@ -517,16 +517,16 @@ LABEL_72:
       v300[0] = v117;
       v300[1] = v118;
       v299[2] = MKServerFormattedStringArtworkSizeAttributeKey;
-      v119 = [(RouteStepItem *)v270 metrics];
-      v120 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v119 shieldArtworkSize]);
+      metrics12 = [(RouteStepItem *)selfCopy metrics];
+      v120 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [metrics12 shieldArtworkSize]);
       v300[2] = v120;
       v121 = [NSDictionary dictionaryWithObjects:v300 forKeys:v299 count:3];
       v122 = [v112 multiPartAttributedStringWithAttributes:v121];
-      v123 = [v122 attributedString];
-      cachedSecondaryText = v270->_cachedSecondaryText;
-      v270->_cachedSecondaryText = v123;
+      attributedString4 = [v122 attributedString];
+      cachedSecondaryText = selfCopy->_cachedSecondaryText;
+      selfCopy->_cachedSecondaryText = attributedString4;
 
-      v115 = v270;
+      v115 = selfCopy;
     }
 
     if (v115->_cachedShouldFlipPrimaryAndSecondaryText)
@@ -545,52 +545,52 @@ LABEL_72:
   }
 
 LABEL_84:
-  tertiaryText = v270->_tertiaryText;
-  v270->_tertiaryText = 0;
+  tertiaryText = selfCopy->_tertiaryText;
+  selfCopy->_tertiaryText = 0;
 
-  v127 = [(RouteStepItem *)v270 metrics];
-  v128 = [v127 tertiaryTextFontIsFixedSize];
+  metrics13 = [(RouteStepItem *)selfCopy metrics];
+  tertiaryTextFontIsFixedSize = [metrics13 tertiaryTextFontIsFixedSize];
 
-  v129 = [(RouteStepItem *)v270 metrics];
-  v130 = v129;
-  if (v128)
+  metrics14 = [(RouteStepItem *)selfCopy metrics];
+  v130 = metrics14;
+  if (tertiaryTextFontIsFixedSize)
   {
-    [v129 tertiaryTextFontSize];
+    [metrics14 tertiaryTextFontSize];
     v132 = v131;
-    v133 = [(RouteStepItem *)v270 metrics];
-    [v133 tertiaryTextFontWeight];
+    metrics15 = [(RouteStepItem *)selfCopy metrics];
+    [metrics15 tertiaryTextFontWeight];
     v261 = [UIFont systemFontOfSize:v132 weight:v134];
   }
 
   else
   {
-    v133 = [v129 tertiaryTextFontStyle];
-    v135 = [(RouteStepItem *)v270 metrics];
-    [v135 tertiaryTextFontWeight];
+    metrics15 = [metrics14 tertiaryTextFontStyle];
+    metrics16 = [(RouteStepItem *)selfCopy metrics];
+    [metrics16 tertiaryTextFontWeight];
     v137 = v136;
-    v138 = [(RouteStepItem *)v270 traitCollection];
-    v261 = [UIFont _maps_fontWithTextStyle:v133 weight:v138 compatibleWithTraitCollection:v137];
+    traitCollection3 = [(RouteStepItem *)selfCopy traitCollection];
+    v261 = [UIFont _maps_fontWithTextStyle:metrics15 weight:traitCollection3 compatibleWithTraitCollection:v137];
   }
 
-  v139 = [(RouteStepItem *)v270 state]== 0;
-  v140 = [(RouteStepItem *)v270 metrics];
-  v141 = v140;
+  v139 = [(RouteStepItem *)selfCopy state]== 0;
+  metrics17 = [(RouteStepItem *)selfCopy metrics];
+  primarySign6 = metrics17;
   if (v139)
   {
-    [v140 tertiaryTextDisabledTextColor];
+    [metrics17 tertiaryTextDisabledTextColor];
   }
 
   else
   {
-    [v140 tertiaryTextActiveTextColor];
+    [metrics17 tertiaryTextActiveTextColor];
   }
   v272 = ;
 
-  if (v270->_isMissedStep)
+  if (selfCopy->_isMissedStep)
   {
     v142 = objc_alloc_init(NSTextAttachment);
-    v143 = [(RouteStepItem *)v270 traitCollection];
-    v144 = [UIImage systemImageNamed:@"exclamationmark.circle.fill" compatibleWithTraitCollection:v143];
+    traitCollection4 = [(RouteStepItem *)selfCopy traitCollection];
+    v144 = [UIImage systemImageNamed:@"exclamationmark.circle.fill" compatibleWithTraitCollection:traitCollection4];
     v145 = +[UIColor systemYellowColor];
     v146 = [v144 imageWithTintColor:v145];
 
@@ -608,9 +608,9 @@ LABEL_84:
     v156 = [NSAttributedString alloc];
     v157 = +[NSBundle mainBundle];
     v158 = [v157 localizedStringForKey:@"[Directions] unbreakable space" value:@"localized string not found" table:0];
-    v141 = [v156 initWithString:v158];
+    primarySign6 = [v156 initWithString:v158];
 
-    [v155 appendAttributedString:v141];
+    [v155 appendAttributedString:primarySign6];
     v159 = +[NSBundle mainBundle];
     v160 = [v159 localizedStringForKey:@"[Directions] missed step description" value:@"localized string not found" table:0];
 
@@ -624,20 +624,20 @@ LABEL_84:
 
     [v155 appendAttributedString:v163];
     v164 = [v155 copy];
-    v165 = v270->_tertiaryText;
-    v270->_tertiaryText = v164;
+    v165 = selfCopy->_tertiaryText;
+    selfCopy->_tertiaryText = v164;
   }
 
-  else if (v257)
+  else if (chargingStationInfo)
   {
-    v166 = [(RouteStepManeuverItem *)v270 _combinedTertiaryTextForStepWithChargingStation:v266 font:v261 color:v272];
-    v142 = v270->_tertiaryText;
-    v270->_tertiaryText = v166;
+    v166 = [(RouteStepManeuverItem *)selfCopy _combinedTertiaryTextForStepWithChargingStation:v266 font:v261 color:v272];
+    v142 = selfCopy->_tertiaryText;
+    selfCopy->_tertiaryText = v166;
   }
 
   else
   {
-    if (![v255 count])
+    if (![roadDescriptions count])
     {
       goto LABEL_110;
     }
@@ -652,7 +652,7 @@ LABEL_84:
     v287 = 0u;
     v284 = 0u;
     v285 = 0u;
-    obj = v255;
+    obj = roadDescriptions;
     v167 = [obj countByEnumeratingWithState:&v284 objects:v296 count:16];
     if (v167)
     {
@@ -674,24 +674,24 @@ LABEL_84:
 
           v171 = [MKServerFormattedString alloc];
           v172 = [GEOComposedString alloc];
-          v173 = [v170 formattedDescription];
-          v174 = [v172 initWithGeoFormattedString:v173];
+          formattedDescription = [v170 formattedDescription];
+          v174 = [v172 initWithGeoFormattedString:formattedDescription];
           v175 = [v171 initWithComposedString:v174];
 
           v294 = NSForegroundColorAttributeName;
-          v176 = [v170 accentColor];
-          v177 = v176;
+          accentColor = [v170 accentColor];
+          v177 = accentColor;
           v178 = v272;
-          if (v176)
+          if (accentColor)
           {
-            v178 = v176;
+            v178 = accentColor;
           }
 
           v295 = v178;
           v179 = [NSDictionary dictionaryWithObjects:&v295 forKeys:&v294 count:1];
           v180 = [v175 multiPartAttributedStringWithAttributes:v179];
-          v181 = [v180 attributedString];
-          [(NSAttributedString *)v142 appendAttributedString:v181];
+          attributedString5 = [v180 attributedString];
+          [(NSAttributedString *)v142 appendAttributedString:attributedString5];
         }
 
         v167 = [obj countByEnumeratingWithState:&v284 objects:v296 count:16];
@@ -702,28 +702,28 @@ LABEL_84:
 
     v292 = NSFontAttributeName;
     v293 = v261;
-    v141 = [NSDictionary dictionaryWithObjects:&v293 forKeys:&v292 count:1];
-    [(NSAttributedString *)v142 addAttributes:v141 range:0, [(NSAttributedString *)v142 length]];
+    primarySign6 = [NSDictionary dictionaryWithObjects:&v293 forKeys:&v292 count:1];
+    [(NSAttributedString *)v142 addAttributes:primarySign6 range:0, [(NSAttributedString *)v142 length]];
 
-    objc_storeStrong(&v270->_tertiaryText, v142);
+    objc_storeStrong(&selfCopy->_tertiaryText, v142);
   }
 
 LABEL_110:
-  shieldImage = v270->_shieldImage;
-  v270->_shieldImage = 0;
+  shieldImage = selfCopy->_shieldImage;
+  selfCopy->_shieldImage = 0;
 
   if ([v266 isEVChargerStep])
   {
-    v141 = +[GEOFeatureStyleAttributes evChargerStyleAttributes];
-    v183 = [(RouteStepItem *)v270 metrics];
-    v184 = [v183 iconSize];
-    [(RouteStepItem *)v270 scale];
-    v185 = [MKIconManager imageForStyle:v141 size:v184 forScale:0 format:?];
-    v186 = v270->_shieldImage;
-    v270->_shieldImage = v185;
+    primarySign6 = +[GEOFeatureStyleAttributes evChargerStyleAttributes];
+    metrics18 = [(RouteStepItem *)selfCopy metrics];
+    iconSize = [metrics18 iconSize];
+    [(RouteStepItem *)selfCopy scale];
+    v185 = [MKIconManager imageForStyle:primarySign6 size:iconSize forScale:0 format:?];
+    v186 = selfCopy->_shieldImage;
+    selfCopy->_shieldImage = v185;
   }
 
-  else if (-[RouteStepItem context](v270, "context") != 1 && ([v262 maneuverType] == 12 || objc_msgSend(v262, "maneuverIsHighwayExit")))
+  else if (-[RouteStepItem context](selfCopy, "context") != 1 && ([geoStep maneuverType] == 12 || objc_msgSend(geoStep, "maneuverIsHighwayExit")))
   {
     v280 = 0;
     v281 = &v280;
@@ -741,27 +741,27 @@ LABEL_110:
     v273[3] = &unk_101660090;
     v273[4] = &v280;
     v273[5] = &v274;
-    [v262 shieldInfo:v273];
+    [geoStep shieldInfo:v273];
     if (*(v281 + 6))
     {
-      v141 = objc_opt_new();
-      [v141 setNewInterfaceEnabled:_UISolariumEnabled()];
-      [v141 setText:v275[5]];
+      primarySign6 = objc_opt_new();
+      [primarySign6 setNewInterfaceEnabled:_UISolariumEnabled()];
+      [primarySign6 setText:v275[5]];
       v187 = +[VKIconManager sharedManager];
       v188 = *(v281 + 6);
       v189 = v275[5];
-      [(RouteStepItem *)v270 scale];
+      [(RouteStepItem *)selfCopy scale];
       v191 = v190;
-      v192 = [(RouteStepItem *)v270 metrics];
-      v193 = [v192 shieldArtworkSize];
+      metrics19 = [(RouteStepItem *)selfCopy metrics];
+      shieldArtworkSize = [metrics19 shieldArtworkSize];
       *&v194 = v191;
-      v195 = [v187 imageForDataID:v188 text:v189 contentScale:v193 sizeGroup:v141 modifiers:v194];
+      v195 = [v187 imageForDataID:v188 text:v189 contentScale:shieldArtworkSize sizeGroup:primarySign6 modifiers:v194];
 
-      v196 = [v195 image];
+      image = [v195 image];
       [v195 contentScale];
-      v198 = [UIImage imageWithCGImage:v196 scale:0 orientation:v197];
-      v199 = v270->_shieldImage;
-      v270->_shieldImage = v198;
+      v198 = [UIImage imageWithCGImage:image scale:0 orientation:v197];
+      v199 = selfCopy->_shieldImage;
+      selfCopy->_shieldImage = v198;
     }
 
     _Block_object_dispose(&v274, 8);
@@ -769,17 +769,17 @@ LABEL_110:
     _Block_object_dispose(&v280, 8);
   }
 
-  maneuverArtwork = v270->_maneuverArtwork;
-  v270->_maneuverArtwork = 0;
+  maneuverArtwork = selfCopy->_maneuverArtwork;
+  selfCopy->_maneuverArtwork = 0;
 
-  if (v269)
+  if (guidanceSignInfo)
   {
-    v141 = [v269 primarySign];
-    v201 = [v141 junction];
-    v202 = [v201 drivingSide];
-    if ([v201 numElements])
+    primarySign6 = [guidanceSignInfo primarySign];
+    junction = [primarySign6 junction];
+    drivingSide = [junction drivingSide];
+    if ([junction numElements])
     {
-      v203 = [[MKJunction alloc] initWithJunction:v201];
+      v203 = [[MKJunction alloc] initWithJunction:junction];
     }
 
     else
@@ -788,56 +788,56 @@ LABEL_110:
     }
 
     v204 = [GuidanceManeuverArtwork alloc];
-    v205 = [v201 maneuverType];
-    v206 = [v141 artworkOverride];
-    v207 = [(GuidanceManeuverArtwork *)v204 initWithManeuver:v205 junction:v203 drivingSide:v202 artworkDataSource:v206];
-    v208 = v270->_maneuverArtwork;
-    v270->_maneuverArtwork = v207;
+    maneuverType = [junction maneuverType];
+    artworkOverride = [primarySign6 artworkOverride];
+    v207 = [(GuidanceManeuverArtwork *)v204 initWithManeuver:maneuverType junction:v203 drivingSide:drivingSide artworkDataSource:artworkOverride];
+    v208 = selfCopy->_maneuverArtwork;
+    selfCopy->_maneuverArtwork = v207;
   }
 
-  v209 = v270;
-  if (!v270->_shieldImage && !v270->_maneuverArtwork)
+  v209 = selfCopy;
+  if (!selfCopy->_shieldImage && !selfCopy->_maneuverArtwork)
   {
-    v210 = [v266 junction];
-    if (v210)
+    junction2 = [v266 junction];
+    if (junction2)
     {
       v211 = [MKJunction alloc];
-      v212 = [v266 junction];
-      v141 = [v211 initWithJunction:v212];
+      junction3 = [v266 junction];
+      primarySign6 = [v211 initWithJunction:junction3];
     }
 
     else
     {
-      v141 = 0;
+      primarySign6 = 0;
     }
 
-    v213 = [v266 drivingSide];
+    drivingSide2 = [v266 drivingSide];
     v214 = [GuidanceManeuverArtwork alloc];
-    v215 = [v266 maneuverType];
-    v216 = [v266 artworkOverride];
-    v217 = [(GuidanceManeuverArtwork *)v214 initWithManeuver:v215 junction:v141 drivingSide:v213 artworkDataSource:v216];
-    v218 = v270->_maneuverArtwork;
-    v270->_maneuverArtwork = v217;
+    maneuverType2 = [v266 maneuverType];
+    artworkOverride2 = [v266 artworkOverride];
+    v217 = [(GuidanceManeuverArtwork *)v214 initWithManeuver:maneuverType2 junction:primarySign6 drivingSide:drivingSide2 artworkDataSource:artworkOverride2];
+    v218 = selfCopy->_maneuverArtwork;
+    selfCopy->_maneuverArtwork = v217;
 
-    v209 = v270;
+    v209 = selfCopy;
   }
 
   if (v209->_isMissedStep)
   {
-    v141 = +[UIColor systemYellowColor];
-    v219 = [v141 colorWithAlphaComponent:0.150000006];
-    backgroundColor = v270->_backgroundColor;
-    v270->_backgroundColor = v219;
+    primarySign6 = +[UIColor systemYellowColor];
+    v219 = [primarySign6 colorWithAlphaComponent:0.150000006];
+    backgroundColor = selfCopy->_backgroundColor;
+    selfCopy->_backgroundColor = v219;
 LABEL_135:
 
     goto LABEL_136;
   }
 
-  v221 = [(RouteStepItem *)v209 state];
-  if (v221 == 2)
+  state = [(RouteStepItem *)v209 state];
+  if (state == 2)
   {
-    v141 = [(RouteStepItem *)v270 metrics];
-    backgroundColor = [v141 highlightColor];
+    primarySign6 = [(RouteStepItem *)selfCopy metrics];
+    backgroundColor = [primarySign6 highlightColor];
   }
 
   else
@@ -845,33 +845,33 @@ LABEL_135:
     backgroundColor = 0;
   }
 
-  objc_storeStrong(&v270->_backgroundColor, backgroundColor);
-  if (v221 == 2)
+  objc_storeStrong(&selfCopy->_backgroundColor, backgroundColor);
+  if (state == 2)
   {
     goto LABEL_135;
   }
 
 LABEL_136:
-  [(RouteStepItem *)v270 scale];
+  [(RouteStepItem *)selfCopy scale];
   v223 = v222;
-  v224 = [(RouteStepItem *)v270 metrics];
-  v225 = [v224 exitSignSize];
+  metrics20 = [(RouteStepItem *)selfCopy metrics];
+  exitSignSize = [metrics20 exitSignSize];
 
-  if (!v269)
+  if (!guidanceSignInfo)
   {
-    v231 = [v266 representativeSignGuidanceEvent];
-    v226 = [v231 signGuidance];
+    representativeSignGuidanceEvent = [v266 representativeSignGuidanceEvent];
+    signGuidance = [representativeSignGuidanceEvent signGuidance];
 
-    if (v226)
+    if (signGuidance)
     {
-      v228 = [v226 shieldName];
-      if ([v228 hasShield] && objc_msgSend(v228, "hasShieldType"))
+      shieldName = [signGuidance shieldName];
+      if ([shieldName hasShield] && objc_msgSend(shieldName, "hasShieldType"))
       {
-        v229 = [v228 shield];
+        shield = [shieldName shield];
         v232 = [RouteStepShieldDescriptor alloc];
-        v233 = [v228 shieldType];
+        shieldType = [shieldName shieldType];
         *&v234 = v223;
-        v235 = [(RouteStepShieldDescriptor *)v232 initWithDataId:v233 text:v229 contentScale:v225 sizeGroup:v229 vkIconModifierText:v229 accessibilityLabel:v234];
+        v235 = [(RouteStepShieldDescriptor *)v232 initWithDataId:shieldType text:shield contentScale:exitSignSize sizeGroup:shield vkIconModifierText:shield accessibilityLabel:v234];
 LABEL_146:
         v230 = v235;
         goto LABEL_150;
@@ -879,18 +879,18 @@ LABEL_146:
     }
 
 LABEL_156:
-    exitSignImage = v270->_exitSignImage;
-    v270->_exitSignImage = 0;
+    exitSignImage = selfCopy->_exitSignImage;
+    selfCopy->_exitSignImage = 0;
 
     v230 = 0;
     goto LABEL_157;
   }
 
-  v226 = [v269 primarySign];
-  v227 = [v226 shieldID];
-  v228 = [v226 shieldStringID];
-  v229 = [v226 shieldText];
-  if (!v227 && !v228)
+  signGuidance = [guidanceSignInfo primarySign];
+  shieldID = [signGuidance shieldID];
+  shieldName = [signGuidance shieldStringID];
+  shield = [signGuidance shieldText];
+  if (!shieldID && !shieldName)
   {
     v230 = 0;
     goto LABEL_150;
@@ -898,17 +898,17 @@ LABEL_156:
 
   v236 = [RouteStepShieldDescriptor alloc];
   v238 = v236;
-  if (v227)
+  if (shieldID)
   {
     *&v237 = v223;
-    v235 = [(RouteStepShieldDescriptor *)v236 initWithDataId:v227 text:v229 contentScale:v225 sizeGroup:v229 vkIconModifierText:v229 accessibilityLabel:v237];
+    v235 = [(RouteStepShieldDescriptor *)v236 initWithDataId:shieldID text:shield contentScale:exitSignSize sizeGroup:shield vkIconModifierText:shield accessibilityLabel:v237];
     goto LABEL_146;
   }
 
   v239 = +[NSBundle mainBundle];
   v240 = [v239 localizedStringForKey:@"[Directions] Exit AX" value:@"localized string not found" table:0];
   *&v241 = v223;
-  v230 = [(RouteStepShieldDescriptor *)v238 initWithName:v228 contentScale:v225 sizeGroup:v229 vkIconModifierText:v240 accessibilityLabel:v241];
+  v230 = [(RouteStepShieldDescriptor *)v238 initWithName:shieldName contentScale:exitSignSize sizeGroup:shield vkIconModifierText:v240 accessibilityLabel:v241];
 
 LABEL_150:
   if (!v230)
@@ -916,23 +916,23 @@ LABEL_150:
     goto LABEL_156;
   }
 
-  if (!v270->_cachedExitShieldDescriptor || ![(RouteStepShieldDescriptor *)v230 isEqualToShieldDescriptor:?])
+  if (!selfCopy->_cachedExitShieldDescriptor || ![(RouteStepShieldDescriptor *)v230 isEqualToShieldDescriptor:?])
   {
-    v242 = [(RouteStepShieldDescriptor *)v230 vkImage];
-    v243 = v242;
-    if (v242)
+    vkImage = [(RouteStepShieldDescriptor *)v230 vkImage];
+    v243 = vkImage;
+    if (vkImage)
     {
-      v244 = +[UIImage imageWithCGImage:scale:orientation:](UIImage, "imageWithCGImage:scale:orientation:", [v242 image], 0, v223);
-      v245 = v270->_exitSignImage;
-      v270->_exitSignImage = v244;
+      v244 = +[UIImage imageWithCGImage:scale:orientation:](UIImage, "imageWithCGImage:scale:orientation:", [vkImage image], 0, v223);
+      v245 = selfCopy->_exitSignImage;
+      selfCopy->_exitSignImage = v244;
 
-      v246 = [(RouteStepShieldDescriptor *)v230 accessibilityLabel];
-      [(UIImage *)v270->_exitSignImage setAccessibilityLabel:v246];
+      accessibilityLabel = [(RouteStepShieldDescriptor *)v230 accessibilityLabel];
+      [(UIImage *)selfCopy->_exitSignImage setAccessibilityLabel:accessibilityLabel];
     }
   }
 
 LABEL_157:
-  objc_storeStrong(&v270->_cachedExitShieldDescriptor, v230);
+  objc_storeStrong(&selfCopy->_cachedExitShieldDescriptor, v230);
   v248 = [*p_primaryText _maps_attributedStringWithExcessiveHeightCharacterSupport:1.2];
   v249 = *p_primaryText;
   *p_primaryText = v248;
@@ -941,60 +941,60 @@ LABEL_157:
   v251 = *p_secondaryText;
   *p_secondaryText = v250;
 
-  v252 = [(NSAttributedString *)v270->_tertiaryText _maps_attributedStringWithExcessiveHeightCharacterSupport:1.2];
-  v253 = v270->_tertiaryText;
-  v270->_tertiaryText = v252;
+  v252 = [(NSAttributedString *)selfCopy->_tertiaryText _maps_attributedStringWithExcessiveHeightCharacterSupport:1.2];
+  v253 = selfCopy->_tertiaryText;
+  selfCopy->_tertiaryText = v252;
 }
 
 - (MNGuidanceSignInfo)guidanceSignInfo
 {
-  v3 = [(RouteStepItem *)self userInfo];
+  userInfo = [(RouteStepItem *)self userInfo];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(RouteStepItem *)self userInfo];
+    userInfo2 = [(RouteStepItem *)self userInfo];
   }
 
   else
   {
-    v4 = 0;
+    userInfo2 = 0;
   }
 
-  return v4;
+  return userInfo2;
 }
 
 - (id)laneGuidanceInfo
 {
-  v3 = [(RouteStepItem *)self userInfo];
+  userInfo = [(RouteStepItem *)self userInfo];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(RouteStepItem *)self userInfo];
+    userInfo2 = [(RouteStepItem *)self userInfo];
   }
 
   else
   {
-    v4 = 0;
+    userInfo2 = 0;
   }
 
-  return v4;
+  return userInfo2;
 }
 
 - (id)distanceToManeuver
 {
-  v3 = [(RouteStepItem *)self userInfo];
+  userInfo = [(RouteStepItem *)self userInfo];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(RouteStepItem *)self userInfo];
+    userInfo2 = [(RouteStepItem *)self userInfo];
   }
 
   else
   {
-    v4 = 0;
+    userInfo2 = 0;
   }
 
-  return v4;
+  return userInfo2;
 }
 
 - (GuidanceManeuverArtwork)maneuverArtwork
@@ -1050,48 +1050,48 @@ LABEL_157:
   if (self->_computedContent)
   {
     v3 = objc_opt_class();
-    v4 = [(RouteStepManeuverItem *)self primaryText];
-    v5 = [v4 string];
-    v6 = [(RouteStepManeuverItem *)self secondaryText];
-    v7 = [v6 string];
-    v8 = [(RouteStepManeuverItem *)self tertiaryText];
-    v9 = [v8 string];
-    v10 = [NSString stringWithFormat:@"<%@: %p primaryText = %@; secondaryText = %@; tertiaryText = %@>", v3, self, v5, v7, v9];;
+    primaryText = [(RouteStepManeuverItem *)self primaryText];
+    string = [primaryText string];
+    secondaryText = [(RouteStepManeuverItem *)self secondaryText];
+    string2 = [secondaryText string];
+    tertiaryText = [(RouteStepManeuverItem *)self tertiaryText];
+    string3 = [tertiaryText string];
+    v10 = [NSString stringWithFormat:@"<%@: %p primaryText = %@; secondaryText = %@; tertiaryText = %@>", v3, self, string, string2, string3];;
   }
 
   else
   {
-    v11 = [(RouteStepManeuverItem *)self step];
-    v4 = [v11 contentsForContext:{-[RouteStepItem context](self, "context")}];
+    step = [(RouteStepManeuverItem *)self step];
+    primaryText = [step contentsForContext:{-[RouteStepItem context](self, "context")}];
 
     v12 = objc_opt_class();
-    v5 = [v4 stringForDistance:-1.0];
-    v6 = [v4 instruction];
-    v10 = [NSString stringWithFormat:@"<%@: %p primaryText = %@; secondaryText = %@; tertiaryText = (unknown)>", v12, self, v5, v6];;
+    string = [primaryText stringForDistance:-1.0];
+    secondaryText = [primaryText instruction];
+    v10 = [NSString stringWithFormat:@"<%@: %p primaryText = %@; secondaryText = %@; tertiaryText = (unknown)>", v12, self, string, secondaryText];;
   }
 
   return v10;
 }
 
-- (id)_evaluatedStringForInstructionString:(id)a3
+- (id)_evaluatedStringForInstructionString:(id)string
 {
-  v4 = a3;
-  v5 = [(RouteStepItem *)self route];
-  v6 = [(RouteStepManeuverItem *)self step];
-  v7 = [v5 legIndexForStepIndex:{objc_msgSend(v6, "stepIndex")}];
+  stringCopy = string;
+  route = [(RouteStepItem *)self route];
+  step = [(RouteStepManeuverItem *)self step];
+  v7 = [route legIndexForStepIndex:{objc_msgSend(step, "stepIndex")}];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = sub_100035E6C();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(RouteStepManeuverItem *)self step];
+      step2 = [(RouteStepManeuverItem *)self step];
       *buf = 138412290;
-      v15 = v9;
+      v15 = step2;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "Failed to get leg index for step: %@", buf, 0xCu);
     }
 
-    v10 = v4;
+    v10 = stringCopy;
   }
 
   else
@@ -1102,8 +1102,8 @@ LABEL_157:
     v13[3] = &unk_10164DD38;
     v13[4] = self;
     v13[5] = v7;
-    v11 = [v4 optionsWithArgumentHandler:v13];
-    v10 = [v4 composedStringWithOptions:v11];
+    v11 = [stringCopy optionsWithArgumentHandler:v13];
+    v10 = [stringCopy composedStringWithOptions:v11];
   }
 
   return v10;
@@ -1112,9 +1112,9 @@ LABEL_157:
 - (id)_instructionVariables
 {
   v3 = objc_opt_new();
-  v4 = [(RouteStepItem *)self route];
-  v5 = [(RouteStepManeuverItem *)self step];
-  v6 = [v4 legIndexForStepIndex:{objc_msgSend(v5, "stepIndex")}];
+  route = [(RouteStepItem *)self route];
+  step = [(RouteStepManeuverItem *)self step];
+  v6 = [route legIndexForStepIndex:{objc_msgSend(step, "stepIndex")}];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1124,29 +1124,29 @@ LABEL_157:
       goto LABEL_6;
     }
 
-    v8 = [(RouteStepManeuverItem *)self step];
+    step2 = [(RouteStepManeuverItem *)self step];
     v17 = 138412290;
-    v18 = v8;
+    v18 = step2;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Failed to get leg index for step: %@", &v17, 0xCu);
   }
 
   else
   {
-    v9 = [(RouteStepItem *)self route];
-    v10 = [v9 legs];
-    v7 = [v10 objectAtIndexedSubscript:v6];
+    route2 = [(RouteStepItem *)self route];
+    legs = [route2 legs];
+    v7 = [legs objectAtIndexedSubscript:v6];
 
-    v11 = [v7 destination];
-    v12 = [v11 navDisplayAddress];
-    [v3 setObject:v12 forKeyedSubscript:@"{Address}"];
+    destination = [v7 destination];
+    navDisplayAddress = [destination navDisplayAddress];
+    [v3 setObject:navDisplayAddress forKeyedSubscript:@"{Address}"];
 
-    v13 = [v7 destination];
-    v14 = [v13 navDisplayNameWithSpecialContacts:0];
+    destination2 = [v7 destination];
+    v14 = [destination2 navDisplayNameWithSpecialContacts:0];
     [v3 setObject:v14 forKeyedSubscript:@"{Name}"];
 
-    v8 = [(RouteStepManeuverItem *)self step];
-    v15 = [v8 maneuverRoadOrExitName];
-    [v3 setObject:v15 forKeyedSubscript:@"{Road}"];
+    step2 = [(RouteStepManeuverItem *)self step];
+    maneuverRoadOrExitName = [step2 maneuverRoadOrExitName];
+    [v3 setObject:maneuverRoadOrExitName forKeyedSubscript:@"{Road}"];
   }
 
 LABEL_6:
@@ -1154,21 +1154,21 @@ LABEL_6:
   return v3;
 }
 
-- (id)_signInstructionStringForStep:(id)a3
+- (id)_signInstructionStringForStep:(id)step
 {
-  v4 = a3;
-  v5 = [v4 representativeSignGuidanceEvent];
-  v6 = [v5 signGuidance];
+  stepCopy = step;
+  representativeSignGuidanceEvent = [stepCopy representativeSignGuidanceEvent];
+  signGuidance = [representativeSignGuidanceEvent signGuidance];
 
-  v7 = [v6 signDetails];
-  v8 = [v7 count];
+  signDetails = [signGuidance signDetails];
+  v8 = [signDetails count];
 
   if (v8)
   {
     v9 = [GEOComposedString alloc];
-    v10 = [v6 signDetails];
-    v11 = [v10 firstObject];
-    v12 = [v9 initWithGeoFormattedString:v11];
+    signDetails2 = [signGuidance signDetails];
+    firstObject = [signDetails2 firstObject];
+    v12 = [v9 initWithGeoFormattedString:firstObject];
 
     v13 = [(RouteStepManeuverItem *)self _evaluatedStringForInstructionString:v12];
   }
@@ -1179,29 +1179,29 @@ LABEL_6:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v16 = 138412290;
-      v17 = v4;
+      v17 = stepCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Missing sign guidance for step: %@", &v16, 0xCu);
     }
 
-    v13 = [(RouteStepManeuverItem *)self _listInstructionStringForStep:v4];
+    v13 = [(RouteStepManeuverItem *)self _listInstructionStringForStep:stepCopy];
   }
 
   return v13;
 }
 
-- (id)_signInstructionForStep:(id)a3
+- (id)_signInstructionForStep:(id)step
 {
-  v4 = a3;
-  v5 = [v4 representativeSignGuidanceEvent];
-  v6 = [v5 signGuidance];
+  stepCopy = step;
+  representativeSignGuidanceEvent = [stepCopy representativeSignGuidanceEvent];
+  signGuidance = [representativeSignGuidanceEvent signGuidance];
 
-  v7 = [v6 signDetails];
-  v8 = [v7 count];
+  signDetails = [signGuidance signDetails];
+  v8 = [signDetails count];
 
   if (v8)
   {
-    v9 = [v6 signDetails];
-    v10 = [v9 firstObject];
+    signDetails2 = [signGuidance signDetails];
+    firstObject = [signDetails2 firstObject];
   }
 
   else
@@ -1210,41 +1210,41 @@ LABEL_6:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = v4;
+      v14 = stepCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Missing sign guidance for step: %@", &v13, 0xCu);
     }
 
-    v10 = [(RouteStepManeuverItem *)self _listInstructionForStep:v4];
+    firstObject = [(RouteStepManeuverItem *)self _listInstructionForStep:stepCopy];
   }
 
-  return v10;
+  return firstObject;
 }
 
-- (id)_listInstructionStringForStep:(id)a3
+- (id)_listInstructionStringForStep:(id)step
 {
-  v4 = [a3 instructionStringsForListView];
-  v5 = [v4 firstObject];
-  v6 = [(RouteStepManeuverItem *)self _evaluatedStringForInstructionString:v5];
+  instructionStringsForListView = [step instructionStringsForListView];
+  firstObject = [instructionStringsForListView firstObject];
+  v6 = [(RouteStepManeuverItem *)self _evaluatedStringForInstructionString:firstObject];
 
   return v6;
 }
 
-- (id)_listInstructionForStep:(id)a3
+- (id)_listInstructionForStep:(id)step
 {
-  v3 = [a3 geoStep];
-  v4 = [v3 instructionsForListView];
-  v5 = [v4 firstObject];
+  geoStep = [step geoStep];
+  instructionsForListView = [geoStep instructionsForListView];
+  firstObject = [instructionsForListView firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-- (id)_combinedTertiaryTextForStepWithChargingStation:(id)a3 font:(id)a4 color:(id)a5
+- (id)_combinedTertiaryTextForStepWithChargingStation:(id)station font:(id)font color:(id)color
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 chargingStationInfo];
-  if (!v10)
+  stationCopy = station;
+  fontCopy = font;
+  colorCopy = color;
+  chargingStationInfo = [stationCopy chargingStationInfo];
+  if (!chargingStationInfo)
   {
     v45 = sub_10006D178();
     if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
@@ -1273,24 +1273,24 @@ LABEL_6:
     }
   }
 
-  v50 = [v7 attributedChargeStringForWaypointType:1 font:v8 textColor:v9 includeDaysAgo:0];
+  v50 = [stationCopy attributedChargeStringForWaypointType:1 font:fontCopy textColor:colorCopy includeDaysAgo:0];
   v11 = +[NSBundle mainBundle];
   v12 = [v11 localizedStringForKey:@"Directions_Driving_EV_charge_to" value:@"localized string not found" table:0];
-  [v10 batteryPercentageAfterCharging];
+  [chargingStationInfo batteryPercentageAfterCharging];
   v48 = [NSString stringWithFormat:v12, v13];
 
   v14 = objc_opt_new();
   v15 = [UIImage systemImageNamed:@"exclamationmark.circle.fill"];
-  [v8 pointSize];
+  [fontCopy pointSize];
   v16 = [UIImageSymbolConfiguration configurationWithPointSize:4 weight:0 scale:?];
   v17 = [v15 imageWithConfiguration:v16];
 
   v18 = [v17 imageWithRenderingMode:2];
-  v19 = [v18 _flatImageWithColor:v9];
+  v19 = [v18 _flatImageWithColor:colorCopy];
   v20 = [v19 imageWithRenderingMode:1];
 
   [v14 setImage:v20];
-  [v8 capHeight];
+  [fontCopy capHeight];
   v22 = v21;
   [v20 size];
   v24 = (v22 - v23) * 0.5;
@@ -1298,7 +1298,7 @@ LABEL_6:
   v26 = v25;
   [v20 size];
   [v14 setBounds:{0.0, v24, v26, v27}];
-  v49 = v7;
+  v49 = stationCopy;
   v28 = [NSAttributedString attributedStringWithAttachment:v14];
   v29 = [v28 mutableCopy];
 
@@ -1314,18 +1314,18 @@ LABEL_6:
   v34 = [[NSAttributedString alloc] initWithString:v33];
   [v29 appendAttributedString:v34];
 
-  [v10 chargingTime];
+  [chargingStationInfo chargingTime];
   v36 = [NSString _navigation_stringWithSeconds:v35 abbreviated:1];
   v37 = [[NSAttributedString alloc] initWithString:v36];
   [v29 appendAttributedString:v37];
 
-  v38 = [v29 string];
-  v39 = [v38 length];
+  string = [v29 string];
+  v39 = [string length];
 
   v51[0] = NSFontAttributeName;
   v51[1] = NSForegroundColorAttributeName;
-  v52[0] = v8;
-  v52[1] = v9;
+  v52[0] = fontCopy;
+  v52[1] = colorCopy;
   v40 = [NSDictionary dictionaryWithObjects:v52 forKeys:v51 count:2];
   [v29 addAttributes:v40 range:{0, v39}];
 
@@ -1339,11 +1339,11 @@ LABEL_6:
   return v43;
 }
 
-- (BOOL)_shouldResetOnUserInfo:(id)a3 changedTo:(id)a4
+- (BOOL)_shouldResetOnUserInfo:(id)info changedTo:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  if ((v6 == 0) != (v7 != 0))
+  infoCopy = info;
+  toCopy = to;
+  if ((infoCopy == 0) != (toCopy != 0))
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -1365,10 +1365,10 @@ LABEL_6:
           {
             if (isKindOfClass)
             {
-              v14 = [(RouteStepManeuverItem *)self step];
-              [v14 transportType];
+              step = [(RouteStepManeuverItem *)self step];
+              [step transportType];
 
-              v15 = sub_100C168BC(v6, v7);
+              v15 = sub_100C168BC(infoCopy, toCopy);
             }
 
             else
@@ -1377,9 +1377,9 @@ LABEL_6:
               {
                 if (v11)
                 {
-                  v16 = [v6 primarySign];
-                  v17 = [v7 primarySign];
-                  v12 = [v16 isEquivalentToSignDescription:v17] ^ 1;
+                  primarySign = [infoCopy primarySign];
+                  primarySign2 = [toCopy primarySign];
+                  v12 = [primarySign isEquivalentToSignDescription:primarySign2] ^ 1;
 
                   goto LABEL_9;
                 }
@@ -1387,7 +1387,7 @@ LABEL_6:
                 goto LABEL_8;
               }
 
-              v15 = [v6 isEquivalentToLaneInfo:v7];
+              v15 = [infoCopy isEquivalentToLaneInfo:toCopy];
             }
 
             LOBYTE(v12) = v15 ^ 1;
@@ -1405,18 +1405,18 @@ LABEL_9:
   return v12;
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v6 = self->super._userInfo;
-  v8 = v5;
+  v8 = infoCopy;
   if (v8 | v6)
   {
     v7 = [v6 isEqual:v8];
 
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->super._userInfo, a3);
+      objc_storeStrong(&self->super._userInfo, info);
       if ([(RouteStepManeuverItem *)self _shouldResetOnUserInfo:v6 changedTo:v8])
       {
         [(RouteStepManeuverItem *)self reset];
@@ -1425,21 +1425,21 @@ LABEL_9:
   }
 }
 
-- (RouteStepManeuverItem)initWithRouteStep:(id)a3 cellClass:(Class)a4 state:(unint64_t)a5 metrics:(id)a6 context:(int64_t)a7 route:(id)a8 scale:(double)a9 isMissedStep:(BOOL)a10
+- (RouteStepManeuverItem)initWithRouteStep:(id)step cellClass:(Class)class state:(unint64_t)state metrics:(id)metrics context:(int64_t)context route:(id)route scale:(double)scale isMissedStep:(BOOL)self0
 {
-  v18 = a3;
-  v19 = a6;
+  stepCopy = step;
+  metricsCopy = metrics;
   v23.receiver = self;
   v23.super_class = RouteStepManeuverItem;
-  v20 = [(RouteStepItem *)&v23 initWithCellClass:a4 state:a5 metrics:v19 context:a7 route:a8 scale:a9];
+  v20 = [(RouteStepItem *)&v23 initWithCellClass:class state:state metrics:metricsCopy context:context route:route scale:scale];
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_step, a3);
-    v21->_isMissedStep = a10;
-    [v19 imageAreaWidth];
+    objc_storeStrong(&v20->_step, step);
+    v21->_isMissedStep = missedStep;
+    [metricsCopy imageAreaWidth];
     [(RouteStepItem *)v21 setHairlineLeadingInset:?];
-    [v19 textTrailingMargin];
+    [metricsCopy textTrailingMargin];
     [(RouteStepItem *)v21 setHairlineTrailingInset:?];
   }
 

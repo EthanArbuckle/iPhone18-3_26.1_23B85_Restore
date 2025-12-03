@@ -1,7 +1,7 @@
 @interface CMFallStats
-- (CMFallStats)initWithBufferAndLength:(char *)a3 length:(unint64_t)a4;
-- (CMFallStats)initWithCoder:(id)a3;
-- (CMFallStats)initWithData:(id)a3;
+- (CMFallStats)initWithBufferAndLength:(char *)length length:(unint64_t)a4;
+- (CMFallStats)initWithCoder:(id)coder;
+- (CMFallStats)initWithData:(id)data;
 - (NSString)description;
 - (id)itemsIterator;
 - (void)_decodeMeta;
@@ -10,7 +10,7 @@
 
 @implementation CMFallStats
 
-- (CMFallStats)initWithCoder:(id)a3
+- (CMFallStats)initWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = CMFallStats;
@@ -18,16 +18,16 @@
   if (v4)
   {
     v5 = objc_opt_class();
-    v4->_data = objc_msgSend_decodeObjectOfClass_forKey_(a3, v6, v5, @"kCMFallStatsCodingKeyData");
+    v4->_data = objc_msgSend_decodeObjectOfClass_forKey_(coder, v6, v5, @"kCMFallStatsCodingKeyData");
     objc_msgSend__decodeMeta(v4, v7, v8);
   }
 
   return v4;
 }
 
-- (CMFallStats)initWithData:(id)a3
+- (CMFallStats)initWithData:(id)data
 {
-  if (!objc_msgSend_length(a3, a2, a3))
+  if (!objc_msgSend_length(data, a2, data))
   {
     return 0;
   }
@@ -37,16 +37,16 @@
   v7 = [(CMFallStats *)&v11 init];
   if (v7)
   {
-    v7->_data = objc_msgSend_copy(a3, v5, v6);
+    v7->_data = objc_msgSend_copy(data, v5, v6);
     objc_msgSend__decodeMeta(v7, v8, v9);
   }
 
   return v7;
 }
 
-- (CMFallStats)initWithBufferAndLength:(char *)a3 length:(unint64_t)a4
+- (CMFallStats)initWithBufferAndLength:(char *)length length:(unint64_t)a4
 {
-  if (!a3)
+  if (!length)
   {
     return 0;
   }
@@ -56,7 +56,7 @@
   v7 = [(CMFallStats *)&v11 init];
   if (v7)
   {
-    v7->_data = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], v6, a3, a4);
+    v7->_data = objc_msgSend_dataWithBytes_length_(MEMORY[0x1E695DEF0], v6, length, a4);
     objc_msgSend__decodeMeta(v7, v8, v9);
   }
 

@@ -1,37 +1,37 @@
 @interface SBActivationInfoViewController
-- (BOOL)_shouldGroupIMEIsForPrimary:(id)a3 secondary:(id)a4;
-- (SBActivationInfoViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)_shouldGroupIMEIsForPrimary:(id)primary secondary:(id)secondary;
+- (SBActivationInfoViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)_activationInfoCell;
-- (id)_backgroundViewForHeaderView:(id)a3;
-- (id)_formattedIMEI:(id)a3;
-- (id)_formattedString:(id)a3 withSpaceAfterDigits:(unint64_t)a4;
+- (id)_backgroundViewForHeaderView:(id)view;
+- (id)_formattedIMEI:(id)i;
+- (id)_formattedString:(id)string withSpaceAfterDigits:(unint64_t)digits;
 - (id)_processDeviceInfo;
-- (id)_processMobileEquipmentInfo:(id)a3 forSlot:(int64_t)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_adjustMobileEquipmentLayout:(id)a3;
+- (id)_processMobileEquipmentInfo:(id)info forSlot:(int64_t)slot;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_adjustMobileEquipmentLayout:(id)layout;
 - (void)_telephonyStateChanged;
 - (void)_updateMobileEquipmentInfo;
 - (void)dealloc;
 - (void)loadView;
-- (void)mobileEquipmentInfoDidChangeForStateProvider:(id)a3 slot:(int64_t)a4;
-- (void)subscriptionInfoDidChangeForStateProvider:(id)a3 slot:(int64_t)a4;
+- (void)mobileEquipmentInfoDidChangeForStateProvider:(id)provider slot:(int64_t)slot;
+- (void)subscriptionInfoDidChangeForStateProvider:(id)provider slot:(int64_t)slot;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SBActivationInfoViewController
 
-- (SBActivationInfoViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (SBActivationInfoViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = SBActivationInfoViewController;
-  v4 = [(SBActivationInfoViewController *)&v10 initWithNibName:a3 bundle:a4];
+  v4 = [(SBActivationInfoViewController *)&v10 initWithNibName:name bundle:bundle];
   if (v4)
   {
-    v5 = [SBApp telephonyStateProvider];
-    [v5 addObserver:v4];
+    telephonyStateProvider = [SBApp telephonyStateProvider];
+    [telephonyStateProvider addObserver:v4];
 
     v6 = MGCopyAnswer();
     if (v6)
@@ -55,8 +55,8 @@
 
 - (void)dealloc
 {
-  v3 = [SBApp telephonyStateProvider];
-  [v3 removeObserver:self];
+  telephonyStateProvider = [SBApp telephonyStateProvider];
+  [telephonyStateProvider removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SBActivationInfoViewController;
@@ -72,15 +72,15 @@
   self->_activationInfoTableView = v4;
 
   v6 = self->_activationInfoTableView;
-  v7 = [MEMORY[0x277D75348] clearColor];
-  [(UITableView *)v6 setBackgroundColor:v7];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(UITableView *)v6 setBackgroundColor:clearColor];
 
   [(UITableView *)self->_activationInfoTableView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(UITableView *)self->_activationInfoTableView setBounces:0];
   [(UITableView *)self->_activationInfoTableView setSectionFooterHeight:0.0];
   v8 = self->_activationInfoTableView;
-  v9 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [(UITableView *)v8 setSeparatorColor:v9];
+  primaryColor = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [(UITableView *)v8 setSeparatorColor:primaryColor];
 
   [(UITableView *)self->_activationInfoTableView setDataSource:self];
   [(UITableView *)self->_activationInfoTableView setDelegate:self];
@@ -92,15 +92,15 @@
 
   [(UIButton *)self->_regulatoryInfoButton setTranslatesAutoresizingMaskIntoConstraints:0];
   v12 = self->_regulatoryInfoButton;
-  v13 = [MEMORY[0x277CCA8D8] mainBundle];
-  v14 = [v13 localizedStringForKey:@"REGULATORY_INFO_BUTTON_LABEL" value:@"Regulatory" table:@"SpringBoard"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v14 = [mainBundle localizedStringForKey:@"REGULATORY_INFO_BUTTON_LABEL" value:@"Regulatory" table:@"SpringBoard"];
   [(UIButton *)v12 setTitle:v14 forState:0];
 
   if (_os_feature_enabled_impl())
   {
     v15 = self->_regulatoryInfoButton;
-    v16 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-    [(UIButton *)v15 setTintColor:v16];
+    primaryColor2 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+    [(UIButton *)v15 setTintColor:primaryColor2];
   }
 
   [(UIButton *)self->_regulatoryInfoButton sizeToFit];
@@ -114,9 +114,9 @@
   v22 = [v19 arrayWithArray:v21];
 
   v23 = [v18 isSharingIdentitySupportedWithError:0];
-  v24 = [v23 BOOLValue];
+  bOOLValue = [v23 BOOLValue];
 
-  if (v24)
+  if (bOOLValue)
   {
     v25 = [MEMORY[0x277D75220] buttonWithType:1];
     secureIntentButton = self->_secureIntentButton;
@@ -124,15 +124,15 @@
 
     [(UIButton *)self->_secureIntentButton setTranslatesAutoresizingMaskIntoConstraints:0];
     v27 = self->_secureIntentButton;
-    v28 = [MEMORY[0x277CCA8D8] mainBundle];
-    v29 = [v28 localizedStringForKey:@"SHARE_DEVICE_IDENTIFIERS_LABEL" value:@"Share Device Identifiers" table:@"SpringBoard"];
+    mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+    v29 = [mainBundle2 localizedStringForKey:@"SHARE_DEVICE_IDENTIFIERS_LABEL" value:@"Share Device Identifiers" table:@"SpringBoard"];
     [(UIButton *)v27 setTitle:v29 forState:0];
 
     if (_os_feature_enabled_impl())
     {
       v30 = self->_secureIntentButton;
-      v31 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-      [(UIButton *)v30 setTintColor:v31];
+      primaryColor3 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+      [(UIButton *)v30 setTintColor:primaryColor3];
     }
 
     [(UIButton *)self->_secureIntentButton sizeToFit];
@@ -147,32 +147,32 @@
   objc_storeStrong(&self->_containerView, v32);
   [(UIView *)self->_containerView systemLayoutSizeFittingSize:*MEMORY[0x277D76C78], *(MEMORY[0x277D76C78] + 8)];
   v34 = v33;
-  v35 = [(UITableView *)self->_activationInfoTableView heightAnchor];
+  heightAnchor = [(UITableView *)self->_activationInfoTableView heightAnchor];
   [(UITableView *)self->_activationInfoTableView contentSize];
-  v37 = [v35 constraintEqualToConstant:v34 + v36];
+  v37 = [heightAnchor constraintEqualToConstant:v34 + v36];
 
   LODWORD(v38) = 1132068864;
   [v37 setPriority:v38];
   objc_storeStrong(&self->_activationInfoTableViewHeight, v37);
-  v39 = [MEMORY[0x277D75418] currentDevice];
-  v40 = [v39 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v40 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
-    v41 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-    [v41 readableWidth];
+    mainScreen = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
+    [mainScreen readableWidth];
     v43 = v42;
   }
 
   else
   {
-    v41 = [MEMORY[0x277D759A0] mainScreen];
-    [v41 bounds];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen bounds];
     v43 = v44;
   }
 
-  v45 = [(UITableView *)self->_activationInfoTableView widthAnchor];
-  v46 = [v45 constraintEqualToConstant:v43];
+  widthAnchor = [(UITableView *)self->_activationInfoTableView widthAnchor];
+  v46 = [widthAnchor constraintEqualToConstant:v43];
 
   [(SBActivationInfoViewController *)self setView:self->_containerView];
   v47 = MEMORY[0x277CCAAD0];
@@ -182,11 +182,11 @@
   [v47 activateConstraints:v48];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBActivationInfoViewController;
-  [(SBActivationInfoViewController *)&v4 viewWillAppear:a3];
+  [(SBActivationInfoViewController *)&v4 viewWillAppear:appear];
   [(UITableView *)self->_activationInfoTableView reloadData];
 }
 
@@ -200,7 +200,7 @@
   [(NSLayoutConstraint *)activationInfoTableViewHeight setConstant:v4];
 }
 
-- (void)subscriptionInfoDidChangeForStateProvider:(id)a3 slot:(int64_t)a4
+- (void)subscriptionInfoDidChangeForStateProvider:(id)provider slot:(int64_t)slot
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -210,7 +210,7 @@
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)mobileEquipmentInfoDidChangeForStateProvider:(id)a3 slot:(int64_t)a4
+- (void)mobileEquipmentInfoDidChangeForStateProvider:(id)provider slot:(int64_t)slot
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -220,35 +220,35 @@
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSArray *)self->_mobileEquipmentInfo objectAtIndexedSubscript:a4];
+  v4 = [(NSArray *)self->_mobileEquipmentInfo objectAtIndexedSubscript:section];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"ACTIVATION_INFO_CELL_ID"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"ACTIVATION_INFO_CELL_ID"];
   v8 = v7;
   if (v7)
   {
-    v9 = v7;
+    _activationInfoCell = v7;
   }
 
   else
   {
-    v9 = [(SBActivationInfoViewController *)self _activationInfoCell];
+    _activationInfoCell = [(SBActivationInfoViewController *)self _activationInfoCell];
   }
 
-  v10 = v9;
+  v10 = _activationInfoCell;
 
-  v11 = [v6 section];
-  v12 = [v6 row];
+  section = [pathCopy section];
+  v12 = [pathCopy row];
 
-  v13 = [(NSArray *)self->_mobileEquipmentInfo objectAtIndexedSubscript:v11];
+  v13 = [(NSArray *)self->_mobileEquipmentInfo objectAtIndexedSubscript:section];
   v14 = MEMORY[0x277CCAC30];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
@@ -261,17 +261,17 @@
 
   v18 = [v17 objectAtIndexedSubscript:v12];
   v19 = [v15 objectForKeyedSubscript:v18];
-  v20 = [v10 textLabel];
-  [v20 setText:v18];
+  textLabel = [v10 textLabel];
+  [textLabel setText:v18];
 
-  v21 = [v10 detailTextLabel];
-  [v21 setAdjustsFontSizeToFitWidth:1];
+  detailTextLabel = [v10 detailTextLabel];
+  [detailTextLabel setAdjustsFontSizeToFitWidth:1];
 
-  v22 = [v10 detailTextLabel];
-  [v22 setMinimumScaleFactor:0.5];
+  detailTextLabel2 = [v10 detailTextLabel];
+  [detailTextLabel2 setMinimumScaleFactor:0.5];
 
-  v23 = [v10 detailTextLabel];
-  [v23 setText:v19];
+  detailTextLabel3 = [v10 detailTextLabel];
+  [detailTextLabel3 setText:v19];
 
   return v10;
 }
@@ -284,9 +284,9 @@ BOOL __66__SBActivationInfoViewController_tableView_cellForRowAtIndexPath___bloc
   return v3;
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = [a3 dequeueReusableHeaderFooterViewWithIdentifier:@"ACTIVATION_INFO_HEADER_ID"];
+  v6 = [view dequeueReusableHeaderFooterViewWithIdentifier:@"ACTIVATION_INFO_HEADER_ID"];
   if (!v6)
   {
     v6 = [objc_alloc(MEMORY[0x277D75B70]) initWithReuseIdentifier:@"ACTIVATION_INFO_HEADER_ID"];
@@ -295,14 +295,14 @@ BOOL __66__SBActivationInfoViewController_tableView_cellForRowAtIndexPath___bloc
   }
 
   v8 = @" ";
-  if (!a4)
+  if (!section)
   {
     v8 = 0;
   }
 
   v9 = v8;
-  v10 = [v6 textLabel];
-  [v10 setText:v9];
+  textLabel = [v6 textLabel];
+  [textLabel setText:v9];
 
   return v6;
 }
@@ -317,35 +317,35 @@ BOOL __66__SBActivationInfoViewController_tableView_cellForRowAtIndexPath___bloc
 
 - (void)_updateMobileEquipmentInfo
 {
-  v24 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v3 = +[SBTelephonyManager sharedTelephonyManager];
-  v4 = [v3 hasCellularData];
+  hasCellularData = [v3 hasCellularData];
 
-  if (v4)
+  if (hasCellularData)
   {
     v5 = +[SBTelephonyManager sharedTelephonyManager];
-    v6 = [v5 _primaryMobileEquipmentInfo];
+    _primaryMobileEquipmentInfo = [v5 _primaryMobileEquipmentInfo];
 
-    if (v6)
+    if (_primaryMobileEquipmentInfo)
     {
-      v7 = [(SBActivationInfoViewController *)self _processMobileEquipmentInfo:v6 forSlot:1];
-      [v24 addObject:v7];
+      v7 = [(SBActivationInfoViewController *)self _processMobileEquipmentInfo:_primaryMobileEquipmentInfo forSlot:1];
+      [array addObject:v7];
     }
 
     v8 = +[SBTelephonyManager sharedTelephonyManager];
-    v9 = [v8 _secondaryMobileEquipmentInfo];
+    _secondaryMobileEquipmentInfo = [v8 _secondaryMobileEquipmentInfo];
 
-    if (v9)
+    if (_secondaryMobileEquipmentInfo)
     {
-      v10 = [(SBActivationInfoViewController *)self _processMobileEquipmentInfo:v9 forSlot:2];
+      v10 = [(SBActivationInfoViewController *)self _processMobileEquipmentInfo:_secondaryMobileEquipmentInfo forSlot:2];
       if ([v10 count])
       {
-        [v24 addObject:v10];
+        [array addObject:v10];
       }
     }
 
-    [(SBActivationInfoViewController *)self _adjustMobileEquipmentLayout:v24];
-    if (v6 && ([v6 MEID], v11 = objc_claimAutoreleasedReturnValue(), meid = self->_meid, self->_meid = v11, meid, objc_msgSend(v6, "CSN"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "length"), v13, v15 = v6, v14) || v9 && (objc_msgSend(v9, "CSN"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "length"), v16, v15 = v9, v17))
+    [(SBActivationInfoViewController *)self _adjustMobileEquipmentLayout:array];
+    if (_primaryMobileEquipmentInfo && ([_primaryMobileEquipmentInfo MEID], v11 = objc_claimAutoreleasedReturnValue(), meid = self->_meid, self->_meid = v11, meid, objc_msgSend(_primaryMobileEquipmentInfo, "CSN"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "length"), v13, v15 = _primaryMobileEquipmentInfo, v14) || _secondaryMobileEquipmentInfo && (objc_msgSend(_secondaryMobileEquipmentInfo, "CSN"), v16 = objc_claimAutoreleasedReturnValue(), v17 = objc_msgSend(v16, "length"), v16, v15 = _secondaryMobileEquipmentInfo, v17))
     {
       v18 = [v15 CSN];
       eid = self->_eid;
@@ -353,12 +353,12 @@ BOOL __66__SBActivationInfoViewController_tableView_cellForRowAtIndexPath___bloc
     }
   }
 
-  v20 = [(SBActivationInfoViewController *)self _processDeviceInfo];
-  v21 = v24;
-  if (v20)
+  _processDeviceInfo = [(SBActivationInfoViewController *)self _processDeviceInfo];
+  v21 = array;
+  if (_processDeviceInfo)
   {
-    [v24 insertObject:v20 atIndex:0];
-    v21 = v24;
+    [array insertObject:_processDeviceInfo atIndex:0];
+    v21 = array;
   }
 
   v22 = [v21 copy];
@@ -366,68 +366,68 @@ BOOL __66__SBActivationInfoViewController_tableView_cellForRowAtIndexPath___bloc
   self->_mobileEquipmentInfo = v22;
 }
 
-- (id)_processMobileEquipmentInfo:(id)a3 forSlot:(int64_t)a4
+- (id)_processMobileEquipmentInfo:(id)info forSlot:(int64_t)slot
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a3;
-  v8 = [v6 dictionary];
-  v9 = [v7 IMEI];
-  v10 = [v7 ICCID];
-  v11 = [v7 isOnBootstrap];
+  infoCopy = info;
+  dictionary = [v6 dictionary];
+  iMEI = [infoCopy IMEI];
+  iCCID = [infoCopy ICCID];
+  isOnBootstrap = [infoCopy isOnBootstrap];
 
-  if (v9)
+  if (iMEI)
   {
-    if (a4 == 1)
+    if (slot == 1)
     {
-      v12 = @"IMEI";
+      slot = @"IMEI";
     }
 
     else
     {
-      v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"IMEI%ld", a4];
+      slot = [MEMORY[0x277CCACA8] stringWithFormat:@"IMEI%ld", slot];
     }
 
-    v13 = [(SBActivationInfoViewController *)self _formattedIMEI:v9];
+    v13 = [(SBActivationInfoViewController *)self _formattedIMEI:iMEI];
     if (![v13 length])
     {
-      v14 = [MEMORY[0x277CCA8D8] mainBundle];
-      v15 = [v14 localizedStringForKey:@"NO_NAME" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v15 = [mainBundle localizedStringForKey:@"NO_NAME" value:&stru_283094718 table:@"SpringBoard"];
 
       v13 = v15;
     }
 
-    [v8 setObject:v13 forKey:v12];
-    if (!((v10 == 0) | v11 & 1))
+    [dictionary setObject:v13 forKey:slot];
+    if (!((iCCID == 0) | isOnBootstrap & 1))
     {
-      v16 = [(SBActivationInfoViewController *)self _formattedICCID:v10];
+      v16 = [(SBActivationInfoViewController *)self _formattedICCID:iCCID];
       if ([v16 length])
       {
-        [v8 setObject:v16 forKey:@"ICCID"];
+        [dictionary setObject:v16 forKey:@"ICCID"];
       }
     }
   }
 
-  v17 = [v8 copy];
+  v17 = [dictionary copy];
 
   return v17;
 }
 
 - (id)_processDeviceInfo
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   serial = self->_serial;
   if (serial)
   {
     v5 = serial;
     if (![(NSString *)v5 length])
     {
-      v6 = [MEMORY[0x277CCA8D8] mainBundle];
-      v7 = [v6 localizedStringForKey:@"NO_NAME" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v7 = [mainBundle localizedStringForKey:@"NO_NAME" value:&stru_283094718 table:@"SpringBoard"];
 
       v5 = v7;
     }
 
-    [v3 setObject:v5 forKey:@"SN"];
+    [dictionary setObject:v5 forKey:@"SN"];
   }
 
   meid = self->_meid;
@@ -436,13 +436,13 @@ BOOL __66__SBActivationInfoViewController_tableView_cellForRowAtIndexPath___bloc
     v9 = meid;
     if (![(NSString *)v9 length])
     {
-      v10 = [MEMORY[0x277CCA8D8] mainBundle];
-      v11 = [v10 localizedStringForKey:@"NO_NAME" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+      v11 = [mainBundle2 localizedStringForKey:@"NO_NAME" value:&stru_283094718 table:@"SpringBoard"];
 
       v9 = v11;
     }
 
-    [v3 setObject:v9 forKey:@"MEID"];
+    [dictionary setObject:v9 forKey:@"MEID"];
   }
 
   if (self->_eid)
@@ -450,18 +450,18 @@ BOOL __66__SBActivationInfoViewController_tableView_cellForRowAtIndexPath___bloc
     v12 = [(SBActivationInfoViewController *)self _formattedEID:?];
     if (![v12 length])
     {
-      v13 = [MEMORY[0x277CCA8D8] mainBundle];
-      v14 = [v13 localizedStringForKey:@"NO_NAME" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+      v14 = [mainBundle3 localizedStringForKey:@"NO_NAME" value:&stru_283094718 table:@"SpringBoard"];
 
       v12 = v14;
     }
 
-    [v3 setObject:v12 forKey:@"EID"];
+    [dictionary setObject:v12 forKey:@"EID"];
   }
 
-  if ([v3 count])
+  if ([dictionary count])
   {
-    v15 = [v3 copy];
+    v15 = [dictionary copy];
   }
 
   else
@@ -472,14 +472,14 @@ BOOL __66__SBActivationInfoViewController_tableView_cellForRowAtIndexPath___bloc
   return v15;
 }
 
-- (void)_adjustMobileEquipmentLayout:(id)a3
+- (void)_adjustMobileEquipmentLayout:(id)layout
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count] == 2)
+  layoutCopy = layout;
+  if ([layoutCopy count] == 2)
   {
-    v5 = [v4 objectAtIndexedSubscript:0];
-    v6 = [v4 objectAtIndexedSubscript:1];
+    v5 = [layoutCopy objectAtIndexedSubscript:0];
+    v6 = [layoutCopy objectAtIndexedSubscript:1];
     if ([(SBActivationInfoViewController *)self _shouldGroupIMEIsForPrimary:v5 secondary:v6])
     {
       v7 = [v5 mutableCopy];
@@ -487,21 +487,21 @@ BOOL __66__SBActivationInfoViewController_tableView_cellForRowAtIndexPath___bloc
       v8 = [v7 copy];
       v10[0] = v8;
       v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-      [v4 setArray:v9];
+      [layoutCopy setArray:v9];
     }
   }
 }
 
-- (BOOL)_shouldGroupIMEIsForPrimary:(id)a3 secondary:(id)a4
+- (BOOL)_shouldGroupIMEIsForPrimary:(id)primary secondary:(id)secondary
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  secondaryCopy = secondary;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [a3 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  allKeys = [primary allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -512,7 +512,7 @@ LABEL_3:
     {
       if (*v22 != v9)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(allKeys);
       }
 
       if (![*(*(&v21 + 1) + 8 * v10) hasPrefix:@"IMEI"])
@@ -522,7 +522,7 @@ LABEL_3:
 
       if (v8 == ++v10)
       {
-        v8 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v21 objects:v26 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -541,8 +541,8 @@ LABEL_9:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v6 = [v5 allKeys];
-    v11 = [v6 countByEnumeratingWithState:&v17 objects:v25 count:16];
+    allKeys = [secondaryCopy allKeys];
+    v11 = [allKeys countByEnumeratingWithState:&v17 objects:v25 count:16];
     if (!v11)
     {
       v15 = 1;
@@ -557,7 +557,7 @@ LABEL_11:
     {
       if (*v18 != v13)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(allKeys);
       }
 
       if (![*(*(&v17 + 1) + 8 * v14) hasPrefix:@"IMEI"])
@@ -567,7 +567,7 @@ LABEL_11:
 
       if (v12 == ++v14)
       {
-        v12 = [v6 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        v12 = [allKeys countByEnumeratingWithState:&v17 objects:v25 count:16];
         v15 = 1;
         if (v12)
         {
@@ -588,50 +588,50 @@ LABEL_19:
 - (id)_activationInfoCell
 {
   v3 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:1 reuseIdentifier:@"ACTIVATION_INFO_CELL_ID"];
-  v4 = [MEMORY[0x277D75348] clearColor];
-  [v3 setBackgroundColor:v4];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v3 setBackgroundColor:clearColor];
 
   [v3 setSelectionStyle:0];
   v5 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
-  v6 = [v3 textLabel];
-  [v6 setFont:v5];
+  textLabel = [v3 textLabel];
+  [textLabel setFont:v5];
 
   v7 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76918]];
-  v8 = [v3 detailTextLabel];
-  [v8 setFont:v7];
+  detailTextLabel = [v3 detailTextLabel];
+  [detailTextLabel setFont:v7];
 
-  v9 = [v3 textLabel];
-  v10 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [v9 setTextColor:v10];
+  textLabel2 = [v3 textLabel];
+  primaryColor = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [textLabel2 setTextColor:primaryColor];
 
-  v11 = [v3 detailTextLabel];
-  v12 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
-  [v11 setTextColor:v12];
+  detailTextLabel2 = [v3 detailTextLabel];
+  primaryColor2 = [(_UILegibilitySettings *)self->_legibilitySettings primaryColor];
+  [detailTextLabel2 setTextColor:primaryColor2];
 
   return v3;
 }
 
-- (id)_backgroundViewForHeaderView:(id)a3
+- (id)_backgroundViewForHeaderView:(id)view
 {
   v3 = MEMORY[0x277D75D18];
-  v4 = a3;
+  viewCopy = view;
   v5 = [v3 alloc];
-  [v4 bounds];
+  [viewCopy bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
   v14 = [v5 initWithFrame:{v7, v9, v11, v13}];
-  v15 = [MEMORY[0x277D75348] clearColor];
-  [v14 setBackgroundColor:v15];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v14 setBackgroundColor:clearColor];
 
   return v14;
 }
 
-- (id)_formattedIMEI:(id)a3
+- (id)_formattedIMEI:(id)i
 {
-  v3 = [a3 mutableCopy];
+  v3 = [i mutableCopy];
   if ([v3 length] >= 3)
   {
     [v3 insertString:@" " atIndex:2];
@@ -650,29 +650,29 @@ LABEL_19:
   return v3;
 }
 
-- (id)_formattedString:(id)a3 withSpaceAfterDigits:(unint64_t)a4
+- (id)_formattedString:(id)string withSpaceAfterDigits:(unint64_t)digits
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  stringCopy = string;
+  v6 = stringCopy;
+  if (stringCopy)
   {
-    v7 = [v5 mutableCopy];
-    if ([v6 length] >= a4)
+    v7 = [stringCopy mutableCopy];
+    if ([v6 length] >= digits)
     {
       v8 = [v6 length];
-      if (v8 > a4)
+      if (v8 > digits)
       {
         v9 = v8;
-        v10 = a4;
-        v11 = a4;
+        digitsCopy = digits;
+        digitsCopy2 = digits;
         do
         {
-          [v7 insertString:@" " atIndex:v10];
-          v11 += a4;
-          v10 += a4 + 1;
+          [v7 insertString:@" " atIndex:digitsCopy];
+          digitsCopy2 += digits;
+          digitsCopy += digits + 1;
         }
 
-        while (v11 < v9);
+        while (digitsCopy2 < v9);
       }
     }
   }

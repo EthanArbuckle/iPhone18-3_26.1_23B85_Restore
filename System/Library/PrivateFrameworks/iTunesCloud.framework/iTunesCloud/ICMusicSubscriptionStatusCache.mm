@@ -1,20 +1,20 @@
 @interface ICMusicSubscriptionStatusCache
 + (ICMusicSubscriptionStatusCache)sharedCache;
 - (id)_init;
-- (id)_statusChangeUserInfoForUserIdentity:(id)a3 oldStatus:(id)a4 newStatus:(id)a5;
-- (void)_getCacheKeyForRequestContext:(id)a3 completion:(id)a4;
-- (void)_handleActiveAccountDidChangeNotification:(id)a3;
-- (void)_handlePhoneNumberDidChangeNotification:(id)a3;
-- (void)_handleSubscriptionStatusChangedDistributedNotification:(id)a3;
-- (void)_handleUserIdentityStoreDidChangeNotification:(id)a3;
-- (void)_loadPersistedCacheWithCompletion:(id)a3;
-- (void)_persistCachePostingGlobalNotification:(BOOL)a3;
-- (void)_postLocalChangeNotificationWithUserInfo:(id)a3;
+- (id)_statusChangeUserInfoForUserIdentity:(id)identity oldStatus:(id)status newStatus:(id)newStatus;
+- (void)_getCacheKeyForRequestContext:(id)context completion:(id)completion;
+- (void)_handleActiveAccountDidChangeNotification:(id)notification;
+- (void)_handlePhoneNumberDidChangeNotification:(id)notification;
+- (void)_handleSubscriptionStatusChangedDistributedNotification:(id)notification;
+- (void)_handleUserIdentityStoreDidChangeNotification:(id)notification;
+- (void)_loadPersistedCacheWithCompletion:(id)completion;
+- (void)_persistCachePostingGlobalNotification:(BOOL)notification;
+- (void)_postLocalChangeNotificationWithUserInfo:(id)info;
 - (void)dealloc;
-- (void)getCachedSubscriptionStatusResponseForRequestContext:(id)a3 completion:(id)a4;
-- (void)setCachedSubscriptionStatusResponse:(id)a3 forRequestContext:(id)a4 completion:(id)a5;
-- (void)setCachedSubscriptionStatusResponseNeedsReloadForAllRequestContextsWithCompletion:(id)a3;
-- (void)setCachedSubscriptionStatusResponseNeedsReloadForRequestContext:(id)a3 completion:(id)a4;
+- (void)getCachedSubscriptionStatusResponseForRequestContext:(id)context completion:(id)completion;
+- (void)setCachedSubscriptionStatusResponse:(id)response forRequestContext:(id)context completion:(id)completion;
+- (void)setCachedSubscriptionStatusResponseNeedsReloadForAllRequestContextsWithCompletion:(id)completion;
+- (void)setCachedSubscriptionStatusResponseNeedsReloadForRequestContext:(id)context completion:(id)completion;
 - (void)updateBaseCacheKey;
 @end
 
@@ -62,17 +62,17 @@ uint64_t __45__ICMusicSubscriptionStatusCache_sharedCache__block_invoke()
     v2->_isPhoneNumberAccessRestricted = [v9 isPhoneNumberAccessRestricted];
 
     v10 = +[ICDefaults standardDefaults];
-    v11 = [v10 lastKnownSubscriptionStatusBaseCacheKey];
+    lastKnownSubscriptionStatusBaseCacheKey = [v10 lastKnownSubscriptionStatusBaseCacheKey];
 
-    if (v11)
+    if (lastKnownSubscriptionStatusBaseCacheKey)
     {
-      v12 = [[ICMusicSubscriptionStatusCacheKey alloc] initWithDictionaryRepresentation:v11 requiringDSID:0];
+      v12 = [[ICMusicSubscriptionStatusCacheKey alloc] initWithDictionaryRepresentation:lastKnownSubscriptionStatusBaseCacheKey requiringDSID:0];
       baseCacheKey = v2->_baseCacheKey;
       v2->_baseCacheKey = v12;
     }
 
     [(ICMusicSubscriptionStatusCache *)v2 updateBaseCacheKey];
-    v14 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     if (v2->_isPhoneNumberAccessRestricted)
     {
       v15 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
@@ -86,17 +86,17 @@ uint64_t __45__ICMusicSubscriptionStatusCache_sharedCache__block_invoke()
     else
     {
       v15 = +[ICTelephonyController sharedController];
-      [v14 addObserver:v2 selector:sel__handlePhoneNumberDidChangeNotification_ name:@"ICTelephonyPhoneNumberDidChangeNotification" object:v15];
+      [defaultCenter addObserver:v2 selector:sel__handlePhoneNumberDidChangeNotification_ name:@"ICTelephonyPhoneNumberDidChangeNotification" object:v15];
     }
 
     v16 = +[ICUserIdentityStore defaultIdentityStore];
-    [v14 addObserver:v2 selector:sel__handleUserIdentityStoreDidChangeNotification_ name:@"ICUserIdentityStoreDidChangeNotification" object:v16];
+    [defaultCenter addObserver:v2 selector:sel__handleUserIdentityStoreDidChangeNotification_ name:@"ICUserIdentityStoreDidChangeNotification" object:v16];
 
     v17 = +[ICUserIdentityStore defaultIdentityStore];
-    [v14 addObserver:v2 selector:sel__handleActiveAccountDidChangeNotification_ name:@"ICActiveUserIdentityDidChangeNotification" object:v17];
+    [defaultCenter addObserver:v2 selector:sel__handleActiveAccountDidChangeNotification_ name:@"ICActiveUserIdentityDidChangeNotification" object:v17];
 
-    v18 = [MEMORY[0x1E696ABB0] defaultCenter];
-    [v18 addObserver:v2 selector:sel__handleSubscriptionStatusChangedDistributedNotification_ name:@"com.apple.itunescloud.ICMusicSubscriptionStatusDidChangeDistributedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696ABB0] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__handleSubscriptionStatusChangedDistributedNotification_ name:@"com.apple.itunescloud.ICMusicSubscriptionStatusDidChangeDistributedNotification" object:0];
 
     [(ICMusicSubscriptionStatusCache *)v2 _loadPersistedCacheWithCompletion:0];
   }
@@ -243,25 +243,25 @@ LABEL_20:
   dispatch_resume(*(*(a1 + 32) + 8));
 }
 
-- (id)_statusChangeUserInfoForUserIdentity:(id)a3 oldStatus:(id)a4 newStatus:(id)a5
+- (id)_statusChangeUserInfoForUserIdentity:(id)identity oldStatus:(id)status newStatus:(id)newStatus
 {
-  v7 = a4;
-  v8 = a5;
+  statusCopy = status;
+  newStatusCopy = newStatus;
   v9 = MEMORY[0x1E695DF90];
-  v10 = a3;
+  identityCopy = identity;
   v11 = [v9 dictionaryWithCapacity:3];
-  v12 = [v10 copy];
+  v12 = [identityCopy copy];
 
   [v11 setObject:v12 forKeyedSubscript:@"ICUserIdentityForMusicSubscriptionStatusDidChangeKey"];
-  if (v7)
+  if (statusCopy)
   {
-    v13 = [v7 copy];
+    v13 = [statusCopy copy];
     [v11 setObject:v13 forKeyedSubscript:@"ICOldStatusForMusicSubscriptionStatusDidChangeKey"];
   }
 
-  if (v8)
+  if (newStatusCopy)
   {
-    v14 = [v8 copy];
+    v14 = [newStatusCopy copy];
     [v11 setObject:v14 forKeyedSubscript:@"ICNewStatusForMusicSubscriptionStatusDidChangeKey"];
   }
 
@@ -270,16 +270,16 @@ LABEL_20:
   return v15;
 }
 
-- (void)_postLocalChangeNotificationWithUserInfo:(id)a3
+- (void)_postLocalChangeNotificationWithUserInfo:(id)info
 {
   calloutQueue = self->_calloutQueue;
-  v5 = a3;
+  infoCopy = info;
   dispatch_assert_queue_V2(calloutQueue);
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 postNotificationName:@"ICMusicSubscriptionStatusCacheDidChangeNotification" object:self userInfo:v5];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"ICMusicSubscriptionStatusCacheDidChangeNotification" object:self userInfo:infoCopy];
 }
 
-- (void)_persistCachePostingGlobalNotification:(BOOL)a3
+- (void)_persistCachePostingGlobalNotification:(BOOL)notification
 {
   v29 = *MEMORY[0x1E69E9840];
   v5 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{-[NSMutableDictionary count](self->_cachedSubscriptionStatusResponses, "count")}];
@@ -303,7 +303,7 @@ LABEL_20:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v26 = self;
+      selfCopy = self;
       v27 = 2114;
       v28 = v11;
       _os_log_impl(&dword_1B4491000, v12, OS_LOG_TYPE_ERROR, "%{public}@ Failed to load active account DSID to save. err=%{public}@", buf, 0x16u);
@@ -312,8 +312,8 @@ LABEL_20:
 
   v13 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:3];
   v14 = +[ICDeviceInfo currentDeviceInfo];
-  v15 = [v14 buildVersion];
-  [v13 setValue:v15 forKey:@"lastKnownOSVersion"];
+  buildVersion = [v14 buildVersion];
+  [v13 setValue:buildVersion forKey:@"lastKnownOSVersion"];
 
   if (v10)
   {
@@ -333,7 +333,7 @@ LABEL_20:
   v19[2] = __73__ICMusicSubscriptionStatusCache__persistCachePostingGlobalNotification___block_invoke_72;
   v19[3] = &unk_1E7BF7860;
   v20 = v13;
-  v21 = a3;
+  notificationCopy = notification;
   v18 = v13;
   dispatch_async(persistenceQueue, v19);
 }
@@ -365,17 +365,17 @@ void __73__ICMusicSubscriptionStatusCache__persistCachePostingGlobalNotification
   }
 }
 
-- (void)_loadPersistedCacheWithCompletion:(id)a3
+- (void)_loadPersistedCacheWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __68__ICMusicSubscriptionStatusCache__loadPersistedCacheWithCompletion___block_invoke;
   v7[3] = &unk_1E7BF9EC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 
@@ -680,30 +680,30 @@ void __68__ICMusicSubscriptionStatusCache__loadPersistedCacheWithCompletion___bl
   (*(v1 + 16))(v1, v2);
 }
 
-- (void)_getCacheKeyForRequestContext:(id)a3 completion:(id)a4
+- (void)_getCacheKeyForRequestContext:(id)context completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_accessQueue);
   v8 = [(ICMusicSubscriptionStatusCacheKey *)self->_baseCacheKey copy];
-  v9 = [v6 delegatedIdentity];
-  v10 = v9;
-  if (v9)
+  delegatedIdentity = [contextCopy delegatedIdentity];
+  v10 = delegatedIdentity;
+  if (delegatedIdentity)
   {
-    v11 = v9;
+    identity = delegatedIdentity;
   }
 
   else
   {
-    v11 = [v6 identity];
+    identity = [contextCopy identity];
   }
 
-  v12 = v11;
+  v12 = identity;
 
-  v13 = [v6 identityStore];
+  identityStore = [contextCopy identityStore];
   v24 = 0;
-  v14 = [v13 getPropertiesForUserIdentity:v12 error:&v24];
+  v14 = [identityStore getPropertiesForUserIdentity:v12 error:&v24];
   v15 = v24;
 
   if (v15)
@@ -712,21 +712,21 @@ void __68__ICMusicSubscriptionStatusCache__loadPersistedCacheWithCompletion___bl
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v26 = self;
+      selfCopy = self;
       v27 = 2114;
       v28 = v15;
       _os_log_impl(&dword_1B4491000, v16, OS_LOG_TYPE_ERROR, "%{public}@ Failed to load account properties to form the cache key with. err=%{public}@", buf, 0x16u);
     }
 
-    v7[2](v7, 0, v15);
+    completionCopy[2](completionCopy, 0, v15);
   }
 
   else
   {
-    v17 = [v14 DSID];
-    if (v17)
+    dSID = [v14 DSID];
+    if (dSID)
     {
-      [v8 setDSID:v17];
+      [v8 setDSID:dSID];
     }
 
     v18 = [[ICStoreRequestContext alloc] initWithBlock:&__block_literal_global_66];
@@ -737,7 +737,7 @@ void __68__ICMusicSubscriptionStatusCache__loadPersistedCacheWithCompletion___bl
     v20[3] = &unk_1E7BF9DB0;
     v21 = v8;
     v22 = 0;
-    v23 = v7;
+    v23 = completionCopy;
     [v19 getBagForRequestContext:v18 forceRefetch:0 withCompletionHandler:v20];
   }
 }
@@ -762,7 +762,7 @@ void __75__ICMusicSubscriptionStatusCache__getCacheKeyForRequestContext_completi
   [v3 setAllowsExpiredBags:1];
 }
 
-- (void)_handleSubscriptionStatusChangedDistributedNotification:(id)a3
+- (void)_handleSubscriptionStatusChangedDistributedNotification:(id)notification
 {
   v4 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -842,7 +842,7 @@ void __90__ICMusicSubscriptionStatusCache__handleSubscriptionStatusChangedDistri
 LABEL_16:
 }
 
-- (void)_handleActiveAccountDidChangeNotification:(id)a3
+- (void)_handleActiveAccountDidChangeNotification:(id)notification
 {
   v4 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -854,7 +854,7 @@ LABEL_16:
   [(ICMusicSubscriptionStatusCache *)self setCachedSubscriptionStatusResponseNeedsReloadForAllRequestContextsWithCompletion:&__block_literal_global_63];
 }
 
-- (void)_handleUserIdentityStoreDidChangeNotification:(id)a3
+- (void)_handleUserIdentityStoreDidChangeNotification:(id)notification
 {
   v4 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -866,7 +866,7 @@ LABEL_16:
   [(ICMusicSubscriptionStatusCache *)self updateBaseCacheKey];
 }
 
-- (void)_handlePhoneNumberDidChangeNotification:(id)a3
+- (void)_handlePhoneNumberDidChangeNotification:(id)notification
 {
   v4 = os_log_create("com.apple.amp.iTunesCloud", "Subscription");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -893,20 +893,20 @@ void __52__ICMusicSubscriptionStatusCache_updateBaseCacheKey__block_invoke_59(ui
   [v3 postNotificationName:@"ICMusicSubscriptionStatusCacheUnderlyingCachingPropertiesDidChangeNotification" object:*(a1 + 32)];
 }
 
-- (void)setCachedSubscriptionStatusResponseNeedsReloadForRequestContext:(id)a3 completion:(id)a4
+- (void)setCachedSubscriptionStatusResponseNeedsReloadForRequestContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __109__ICMusicSubscriptionStatusCache_setCachedSubscriptionStatusResponseNeedsReloadForRequestContext_completion___block_invoke;
   block[3] = &unk_1E7BF9E28;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = contextCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = contextCopy;
   dispatch_barrier_async(accessQueue, block);
 }
 
@@ -982,17 +982,17 @@ void __109__ICMusicSubscriptionStatusCache_setCachedSubscriptionStatusResponseNe
   dispatch_resume(*(*(a1 + 32) + 8));
 }
 
-- (void)setCachedSubscriptionStatusResponseNeedsReloadForAllRequestContextsWithCompletion:(id)a3
+- (void)setCachedSubscriptionStatusResponseNeedsReloadForAllRequestContextsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __116__ICMusicSubscriptionStatusCache_setCachedSubscriptionStatusResponseNeedsReloadForAllRequestContextsWithCompletion___block_invoke;
   v7[3] = &unk_1E7BF9EC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_barrier_async(accessQueue, v7);
 }
 
@@ -1044,15 +1044,15 @@ void __116__ICMusicSubscriptionStatusCache_setCachedSubscriptionStatusResponseNe
   [*(*(a1 + 32) + 48) setObject:v5 forKey:v6];
 }
 
-- (void)setCachedSubscriptionStatusResponse:(id)a3 forRequestContext:(id)a4 completion:(id)a5
+- (void)setCachedSubscriptionStatusResponse:(id)response forRequestContext:(id)context completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (([v9 isFinalResponse] & 1) == 0)
+  responseCopy = response;
+  contextCopy = context;
+  completionCopy = completion;
+  if (([responseCopy isFinalResponse] & 1) == 0)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"ICMusicSubscriptionStatusCache.m" lineNumber:120 description:{@"Caching a non final subscription status request is not allowed: %@.", v9}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMusicSubscriptionStatusCache.m" lineNumber:120 description:{@"Caching a non final subscription status request is not allowed: %@.", responseCopy}];
   }
 
   accessQueue = self->_accessQueue;
@@ -1061,12 +1061,12 @@ void __116__ICMusicSubscriptionStatusCache_setCachedSubscriptionStatusResponseNe
   block[2] = __99__ICMusicSubscriptionStatusCache_setCachedSubscriptionStatusResponse_forRequestContext_completion___block_invoke;
   block[3] = &unk_1E7BF9E78;
   block[4] = self;
-  v18 = v10;
-  v19 = v9;
-  v20 = v11;
-  v13 = v11;
-  v14 = v9;
-  v15 = v10;
+  v18 = contextCopy;
+  v19 = responseCopy;
+  v20 = completionCopy;
+  v13 = completionCopy;
+  v14 = responseCopy;
+  v15 = contextCopy;
   dispatch_barrier_async(accessQueue, block);
 }
 
@@ -1233,20 +1233,20 @@ uint64_t __99__ICMusicSubscriptionStatusCache_setCachedSubscriptionStatusRespons
   return result;
 }
 
-- (void)getCachedSubscriptionStatusResponseForRequestContext:(id)a3 completion:(id)a4
+- (void)getCachedSubscriptionStatusResponseForRequestContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   accessQueue = self->_accessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __98__ICMusicSubscriptionStatusCache_getCachedSubscriptionStatusResponseForRequestContext_completion___block_invoke;
   block[3] = &unk_1E7BF9E28;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = contextCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = contextCopy;
   dispatch_async(accessQueue, block);
 }
 
@@ -1313,18 +1313,18 @@ void __98__ICMusicSubscriptionStatusCache_getCachedSubscriptionStatusResponseFor
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v3 removeObserver:self name:@"com.apple.itunescloud.ICMusicSubscriptionStatusDidChangeDistributedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter removeObserver:self name:@"com.apple.itunescloud.ICMusicSubscriptionStatusDidChangeDistributedNotification" object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
   if (!self->_isPhoneNumberAccessRestricted)
   {
     v5 = +[ICTelephonyController sharedController];
-    [v4 removeObserver:self name:@"ICTelephonyPhoneNumberDidChangeNotification" object:v5];
+    [defaultCenter2 removeObserver:self name:@"ICTelephonyPhoneNumberDidChangeNotification" object:v5];
   }
 
   v6 = +[ICUserIdentityStore defaultIdentityStore];
-  [v4 removeObserver:self name:@"ICUserIdentityStoreDidChangeNotification" object:v6];
+  [defaultCenter2 removeObserver:self name:@"ICUserIdentityStoreDidChangeNotification" object:v6];
 
   v7.receiver = self;
   v7.super_class = ICMusicSubscriptionStatusCache;

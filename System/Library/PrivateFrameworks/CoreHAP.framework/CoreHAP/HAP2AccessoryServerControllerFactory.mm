@@ -1,15 +1,15 @@
 @interface HAP2AccessoryServerControllerFactory
-- (id)createControllerWithEncoding:(id)a3 secureTransport:(id)a4 operationQueue:(id)a5;
+- (id)createControllerWithEncoding:(id)encoding secureTransport:(id)transport operationQueue:(id)queue;
 @end
 
 @implementation HAP2AccessoryServerControllerFactory
 
-- (id)createControllerWithEncoding:(id)a3 secureTransport:(id)a4 operationQueue:(id)a5
+- (id)createControllerWithEncoding:(id)encoding secureTransport:(id)transport operationQueue:(id)queue
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[HAP2AccessoryServerController alloc] initWithEncoding:v9 secureTransport:v8 operationQueue:v7];
+  queueCopy = queue;
+  transportCopy = transport;
+  encodingCopy = encoding;
+  v10 = [[HAP2AccessoryServerController alloc] initWithEncoding:encodingCopy secureTransport:transportCopy operationQueue:queueCopy];
 
   return v10;
 }

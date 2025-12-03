@@ -1,42 +1,42 @@
 @interface LSBundleRecord
 - (BOOL)swc_isBuiltForDevelopment;
-- (BOOL)swc_linkedOnOrAfter:(id)a3;
+- (BOOL)swc_linkedOnOrAfter:(id)after;
 @end
 
 @implementation LSBundleRecord
 
-- (BOOL)swc_linkedOnOrAfter:(id)a3
+- (BOOL)swc_linkedOnOrAfter:(id)after
 {
-  v4 = a3;
+  afterCopy = after;
   v5 = +[LSApplicationWorkspace defaultWorkspace];
-  v6 = [(LSBundleRecord *)self SDKVersion];
-  v7 = [v5 isVersion:v6 greaterThanOrEqualToVersion:v4];
+  sDKVersion = [(LSBundleRecord *)self SDKVersion];
+  v7 = [v5 isVersion:sDKVersion greaterThanOrEqualToVersion:afterCopy];
 
   return v7;
 }
 
 - (BOOL)swc_isBuiltForDevelopment
 {
-  v3 = [(LSBundleRecord *)self isProfileValidated];
-  if (v3)
+  isProfileValidated = [(LSBundleRecord *)self isProfileValidated];
+  if (isProfileValidated)
   {
     if (([(LSBundleRecord *)self isUPPValidated]& 1) != 0)
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(isProfileValidated) = 0;
     }
 
     else if (objc_opt_respondsToSelector())
     {
-      LOBYTE(v3) = [(LSBundleRecord *)self isBeta]^ 1;
+      LOBYTE(isProfileValidated) = [(LSBundleRecord *)self isBeta]^ 1;
     }
 
     else
     {
-      LOBYTE(v3) = 1;
+      LOBYTE(isProfileValidated) = 1;
     }
   }
 
-  return v3;
+  return isProfileValidated;
 }
 
 @end

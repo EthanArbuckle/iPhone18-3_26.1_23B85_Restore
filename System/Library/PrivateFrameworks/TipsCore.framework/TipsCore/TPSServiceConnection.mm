@@ -1,5 +1,5 @@
 @interface TPSServiceConnection
-- (TPSServiceConnection)initWithServiceName:(id)a3;
+- (TPSServiceConnection)initWithServiceName:(id)name;
 - (id)connection;
 - (id)exportedInterface;
 - (id)remoteInterface;
@@ -8,16 +8,16 @@
 
 @implementation TPSServiceConnection
 
-- (TPSServiceConnection)initWithServiceName:(id)a3
+- (TPSServiceConnection)initWithServiceName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = TPSServiceConnection;
   v6 = [(TPSServiceConnection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serviceName, a3);
+    objc_storeStrong(&v6->_serviceName, name);
   }
 
   return v7;
@@ -36,8 +36,8 @@
   if (!connection)
   {
     v4 = [_TPSXPCConnection alloc];
-    v5 = [(TPSServiceConnection *)self serviceName];
-    v6 = [(_TPSXPCConnection *)v4 initWithMachServiceName:v5 options:4096];
+    serviceName = [(TPSServiceConnection *)self serviceName];
+    v6 = [(_TPSXPCConnection *)v4 initWithMachServiceName:serviceName options:4096];
     v7 = self->_connection;
     self->_connection = v6;
 
@@ -51,11 +51,11 @@
 
 - (id)exportedInterface
 {
-  v2 = [(TPSServiceConnection *)self exportedInterfaceInstance];
-  v3 = v2;
-  if (v2)
+  exportedInterfaceInstance = [(TPSServiceConnection *)self exportedInterfaceInstance];
+  v3 = exportedInterfaceInstance;
+  if (exportedInterfaceInstance)
   {
-    v4 = v2;
+    v4 = exportedInterfaceInstance;
   }
 
   else
@@ -70,11 +70,11 @@
 
 - (id)remoteInterface
 {
-  v2 = [(TPSServiceConnection *)self remoteInterfaceInstance];
-  v3 = v2;
-  if (v2)
+  remoteInterfaceInstance = [(TPSServiceConnection *)self remoteInterfaceInstance];
+  v3 = remoteInterfaceInstance;
+  if (remoteInterfaceInstance)
   {
-    v4 = v2;
+    v4 = remoteInterfaceInstance;
   }
 
   else

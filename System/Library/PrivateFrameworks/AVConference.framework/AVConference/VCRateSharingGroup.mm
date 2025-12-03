@@ -1,17 +1,17 @@
 @interface VCRateSharingGroup
-- (BOOL)deregisterRateSharingClient:(id)a3;
+- (BOOL)deregisterRateSharingClient:(id)client;
 - (BOOL)isSharingGroupEmpty;
 - (VCRateSharingGroup)init;
-- (VCRateSharingGroup)initWithIdentifier:(id)a3 useMediaQueue:(BOOL)a4;
-- (int)createMediaQueueWithIdentifier:(id)a3;
-- (int)registerRateSharingClient:(id)a3 forInterfaceType:(unsigned int)a4;
+- (VCRateSharingGroup)initWithIdentifier:(id)identifier useMediaQueue:(BOOL)queue;
+- (int)createMediaQueueWithIdentifier:(id)identifier;
+- (int)registerRateSharingClient:(id)client forInterfaceType:(unsigned int)type;
 - (unsigned)calculateMaxTargetBitrate;
-- (unsigned)countRateControllersForInterfaceType:(id)a3;
+- (unsigned)countRateControllersForInterfaceType:(id)type;
 - (void)dealloc;
-- (void)handleMediaQueueSizeExceedThresholdWithQueueSize:(double)a3 mediaQueueStreamId:(unsigned int)a4 type:(int)a5;
-- (void)setTargetBitrate:(unsigned int)a3 fromRateSharingClient:(id)a4;
-- (void)setVCMediaQueuePeakBitrateAndMaxTargetBitrate:(unsigned int)a3;
-- (void)updateShareProfileForInterfaceType:(id)a3;
+- (void)handleMediaQueueSizeExceedThresholdWithQueueSize:(double)size mediaQueueStreamId:(unsigned int)id type:(int)type;
+- (void)setTargetBitrate:(unsigned int)bitrate fromRateSharingClient:(id)client;
+- (void)setVCMediaQueuePeakBitrateAndMaxTargetBitrate:(unsigned int)bitrate;
+- (void)updateShareProfileForInterfaceType:(id)type;
 @end
 
 @implementation VCRateSharingGroup
@@ -38,21 +38,21 @@
   return v2;
 }
 
-- (VCRateSharingGroup)initWithIdentifier:(id)a3 useMediaQueue:(BOOL)a4
+- (VCRateSharingGroup)initWithIdentifier:(id)identifier useMediaQueue:(BOOL)queue
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!identifier)
   {
     [VCRateSharingGroup initWithIdentifier:v9 useMediaQueue:?];
     return v9[0];
   }
 
-  v4 = a4;
+  queueCopy = queue;
   v6 = [(VCRateSharingGroup *)self init];
   v7 = v6;
-  if (v6 && v4)
+  if (v6 && queueCopy)
   {
-    if (([(VCRateSharingGroup *)v6 createMediaQueueWithIdentifier:a3]& 0x80000000) == 0)
+    if (([(VCRateSharingGroup *)v6 createMediaQueueWithIdentifier:identifier]& 0x80000000) == 0)
     {
       VCMediaQueue_SetOneToOne(v7->_mediaQueue, 1);
       VCMediaQueue_Start(v7->_mediaQueue);
@@ -113,14 +113,14 @@
   return v7;
 }
 
-- (void)setVCMediaQueuePeakBitrateAndMaxTargetBitrate:(unsigned int)a3
+- (void)setVCMediaQueuePeakBitrateAndMaxTargetBitrate:(unsigned int)bitrate
 {
   v31 = *MEMORY[0x1E69E9840];
-  if (self->_maxBitrate < a3)
+  if (self->_maxBitrate < bitrate)
   {
-    if (!VCMediaQueue_SetPeakBitrate(self->_mediaQueue, a3))
+    if (!VCMediaQueue_SetPeakBitrate(self->_mediaQueue, bitrate))
     {
-      self->_maxBitrate = a3;
+      self->_maxBitrate = bitrate;
       return;
     }
 
@@ -143,7 +143,7 @@
           v23 = 2048;
           v24 = mediaQueue;
           v25 = 1024;
-          LODWORD(v26) = maxBitrate;
+          LODWORD(selfCopy) = maxBitrate;
           v10 = " [%s] %s:%d Peak bitrate set for mediaQueue=%p failed and _maxbitrate=%d did not change";
           v11 = v7;
           v12 = 44;
@@ -182,7 +182,7 @@ LABEL_14:
           v23 = 2112;
           v24 = v5;
           v25 = 2048;
-          v26 = self;
+          selfCopy = self;
           v27 = 2048;
           v28 = v15;
           v29 = 1024;
@@ -197,14 +197,14 @@ LABEL_14:
   }
 }
 
-- (void)setTargetBitrate:(unsigned int)a3 fromRateSharingClient:(id)a4
+- (void)setTargetBitrate:(unsigned int)bitrate fromRateSharingClient:(id)client
 {
-  if (a4)
+  if (client)
   {
-    v5 = *&a3;
+    v5 = *&bitrate;
     [(VCObject *)self lock];
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", a4];
-    -[NSMutableDictionary setObject:forKey:](self->_rateSharingClientTargetBitrateDict, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithInt:v5], v7);
+    client = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", client];
+    -[NSMutableDictionary setObject:forKey:](self->_rateSharingClientTargetBitrateDict, "setObject:forKey:", [MEMORY[0x1E696AD98] numberWithInt:v5], client);
     if (self->_maxBitrate != v5)
     {
       [(VCRateSharingGroup *)self setVCMediaQueuePeakBitrateAndMaxTargetBitrate:[(VCRateSharingGroup *)self calculateMaxTargetBitrate]];
@@ -214,7 +214,7 @@ LABEL_14:
   }
 }
 
-- (int)createMediaQueueWithIdentifier:(id)a3
+- (int)createMediaQueueWithIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
   memset(v12, 170, sizeof(v12));
@@ -222,7 +222,7 @@ LABEL_14:
   v9 = unk_1DBD45B18;
   v10 = xmmword_1DBD45B28;
   v11 = unk_1DBD45B38;
-  *&v12[24] = [a3 UTF8String];
+  *&v12[24] = [identifier UTF8String];
   v12[32] = [+[VCDefaults sharedInstance](VCDefaults mediaQueueDumpEnabled];
   v6[4] = *v12;
   v6[5] = *&v12[16];
@@ -256,11 +256,11 @@ uint64_t __53__VCRateSharingGroup_createMediaQueueWithIdentifier___block_invoke(
   return result;
 }
 
-- (void)handleMediaQueueSizeExceedThresholdWithQueueSize:(double)a3 mediaQueueStreamId:(unsigned int)a4 type:(int)a5
+- (void)handleMediaQueueSizeExceedThresholdWithQueueSize:(double)size mediaQueueStreamId:(unsigned int)id type:(int)type
 {
   v36[2] = *MEMORY[0x1E69E9840];
   v9 = objc_opt_class();
-  if (a5 == 1)
+  if (type == 1)
   {
     if (v9 == self)
     {
@@ -283,9 +283,9 @@ uint64_t __53__VCRateSharingGroup_createMediaQueueWithIdentifier___block_invoke(
       v30 = 1024;
       v31 = 150;
       v32 = 1024;
-      *v33 = a4;
+      *v33 = id;
       *&v33[4] = 2048;
-      *&v33[6] = a3;
+      *&v33[6] = size;
       v14 = " [%s] %s:%d VCMediaQueue size threshold exceeded for mediaQueueStreamId=%u queueSizeInSecond=%f - FLUSHING!";
       v15 = v13;
       v16 = 44;
@@ -326,9 +326,9 @@ uint64_t __53__VCRateSharingGroup_createMediaQueueWithIdentifier___block_invoke(
       *&v33[8] = 2048;
       *&v33[10] = self;
       *&v33[18] = 1024;
-      v34 = a4;
+      typeCopy = id;
       v35 = 2048;
-      *v36 = a3;
+      *v36 = size;
       v14 = " [%s] %s:%d %@(%p) VCMediaQueue size threshold exceeded for mediaQueueStreamId=%u queueSizeInSecond=%f - FLUSHING!";
       v15 = v23;
       v16 = 64;
@@ -336,7 +336,7 @@ uint64_t __53__VCRateSharingGroup_createMediaQueueWithIdentifier___block_invoke(
 
     _os_log_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_DEFAULT, v14, &v26, v16);
 LABEL_19:
-    VCMediaQueue_FlushPacketsInStream(self->_mediaQueue, a4, 1u);
+    VCMediaQueue_FlushPacketsInStream(self->_mediaQueue, id, 1u);
     return;
   }
 
@@ -361,11 +361,11 @@ LABEL_19:
     v30 = 1024;
     v31 = 154;
     v32 = 1024;
-    *v33 = a5;
+    *v33 = type;
     *&v33[4] = 1024;
-    *&v33[6] = a4;
+    *&v33[6] = id;
     *&v33[10] = 2048;
-    *&v33[12] = a3;
+    *&v33[12] = size;
     v19 = " [%s] %s:%d Should not handle media queue threshold exceeded with type=%d for mediaQueueStreamId=%u queueSize=%f!";
     v20 = v18;
     v21 = 50;
@@ -401,11 +401,11 @@ LABEL_25:
       *&v33[8] = 2048;
       *&v33[10] = self;
       *&v33[18] = 1024;
-      v34 = a5;
+      typeCopy = type;
       v35 = 1024;
-      LODWORD(v36[0]) = a4;
+      LODWORD(v36[0]) = id;
       WORD2(v36[0]) = 2048;
-      *(v36 + 6) = a3;
+      *(v36 + 6) = size;
       v19 = " [%s] %s:%d %@(%p) Should not handle media queue threshold exceeded with type=%d for mediaQueueStreamId=%u queueSize=%f!";
       v20 = v25;
       v21 = 70;
@@ -414,22 +414,22 @@ LABEL_25:
   }
 }
 
-- (int)registerRateSharingClient:(id)a3 forInterfaceType:(unsigned int)a4
+- (int)registerRateSharingClient:(id)client forInterfaceType:(unsigned int)type
 {
-  v4 = *&a4;
+  v4 = *&type;
   v37 = *MEMORY[0x1E69E9840];
-  if (a4 < 2)
+  if (type < 2)
   {
     ++self->_currentRateSharingClientID;
     [(VCObject *)self lock];
     if (-[NSMutableDictionary objectForKeyedSubscript:](self->_rateSharingClientMap, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4]))
     {
-      [-[NSMutableDictionary objectForKeyedSubscript:](self->_rateSharingClientMap objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v4)), "addObject:", a3}];
+      [-[NSMutableDictionary objectForKeyedSubscript:](self->_rateSharingClientMap objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v4)), "addObject:", client}];
     }
 
     else
     {
-      v8 = [MEMORY[0x1E695DF70] arrayWithObjects:{a3, 0}];
+      v8 = [MEMORY[0x1E695DF70] arrayWithObjects:{client, 0}];
       -[NSMutableDictionary setObject:forKeyedSubscript:](self->_rateSharingClientMap, "setObject:forKeyedSubscript:", v8, [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4]);
     }
 
@@ -457,7 +457,7 @@ LABEL_25:
       v26 = 1024;
       v27 = 174;
       v28 = 2048;
-      v29 = a3;
+      clientCopy = client;
       v30 = 1024;
       *v31 = currentRateSharingClientID;
       *&v31[4] = 1024;
@@ -499,11 +499,11 @@ LABEL_25:
       v26 = 1024;
       v27 = 174;
       v28 = 2112;
-      v29 = v9;
+      clientCopy = v9;
       v30 = 2048;
       *v31 = self;
       *&v31[8] = 2048;
-      v32 = a3;
+      clientCopy2 = client;
       v33 = 1024;
       v34 = v21;
       v35 = 1024;
@@ -554,11 +554,11 @@ LABEL_25:
         v26 = 1024;
         v27 = 161;
         v28 = 2112;
-        v29 = v6;
+        clientCopy = v6;
         v30 = 2048;
         *v31 = self;
         *&v31[8] = 1024;
-        LODWORD(v32) = v4;
+        LODWORD(clientCopy2) = v4;
         _os_log_error_impl(&dword_1DB56E000, v17, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Registering with an invalid interface type=%u", buf, 0x36u);
       }
     }
@@ -567,11 +567,11 @@ LABEL_25:
   return -1;
 }
 
-- (void)updateShareProfileForInterfaceType:(id)a3
+- (void)updateShareProfileForInterfaceType:(id)type
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = [(VCRateSharingGroup *)self countRateControllersForInterfaceType:?];
-  v6 = [(NSMutableDictionary *)self->_shareProfileDictionary objectForKeyedSubscript:a3];
+  v6 = [(NSMutableDictionary *)self->_shareProfileDictionary objectForKeyedSubscript:type];
   v7 = v6;
   if (v5 <= 1)
   {
@@ -589,7 +589,7 @@ LABEL_25:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [(NSMutableDictionary *)self->_rateSharingClientMap objectForKeyedSubscript:a3];
+  v9 = [(NSMutableDictionary *)self->_rateSharingClientMap objectForKeyedSubscript:type];
   v10 = [v9 countByEnumeratingWithState:&v18 objects:v17 count:16];
   if (v10)
   {
@@ -613,7 +613,7 @@ LABEL_25:
         block[3] = &unk_1E85F3E30;
         block[4] = v14;
         block[5] = self;
-        block[6] = a3;
+        block[6] = type;
         dispatch_async(delegateQueue, block);
         ++v13;
       }
@@ -634,12 +634,12 @@ uint64_t __57__VCRateSharingGroup_updateShareProfileForInterfaceType___block_inv
   return [v1 setShareProfile:v2];
 }
 
-- (unsigned)countRateControllersForInterfaceType:(id)a3
+- (unsigned)countRateControllersForInterfaceType:(id)type
 {
   v5 = [(NSMutableDictionary *)self->_rateSharingClientMap objectForKeyedSubscript:?];
   if (v5)
   {
-    LODWORD(v5) = [-[NSMutableDictionary objectForKeyedSubscript:](self->_rateSharingClientMap objectForKeyedSubscript:{a3), "count"}];
+    LODWORD(v5) = [-[NSMutableDictionary objectForKeyedSubscript:](self->_rateSharingClientMap objectForKeyedSubscript:{type), "count"}];
   }
 
   return v5;
@@ -685,7 +685,7 @@ uint64_t __57__VCRateSharingGroup_updateShareProfileForInterfaceType___block_inv
   return v6;
 }
 
-- (BOOL)deregisterRateSharingClient:(id)a3
+- (BOOL)deregisterRateSharingClient:(id)client
 {
   v48 = *MEMORY[0x1E69E9840];
   [(VCObject *)self lock];
@@ -713,12 +713,12 @@ uint64_t __57__VCRateSharingGroup_updateShareProfileForInterfaceType___block_inv
       }
 
       v10 = *(*(&v44 + 1) + 8 * i);
-      if ([-[NSMutableDictionary objectForKeyedSubscript:](self->_rateSharingClientMap objectForKeyedSubscript:{v10), "containsObject:", a3}])
+      if ([-[NSMutableDictionary objectForKeyedSubscript:](self->_rateSharingClientMap objectForKeyedSubscript:{v10), "containsObject:", client}])
       {
-        v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", a3];
-        v12 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_rateSharingClientTargetBitrateDict objectForKeyedSubscript:{v11), "intValue"}];
-        [(NSMutableDictionary *)self->_rateSharingClientTargetBitrateDict removeObjectForKey:v11];
-        [-[NSMutableDictionary objectForKeyedSubscript:](self->_rateSharingClientMap objectForKeyedSubscript:{v10), "removeObject:", a3}];
+        client = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", client];
+        v12 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_rateSharingClientTargetBitrateDict objectForKeyedSubscript:{client), "intValue"}];
+        [(NSMutableDictionary *)self->_rateSharingClientTargetBitrateDict removeObjectForKey:client];
+        [-[NSMutableDictionary objectForKeyedSubscript:](self->_rateSharingClientMap objectForKeyedSubscript:{v10), "removeObject:", client}];
         if (v12 == self->_maxBitrate)
         {
           [(VCRateSharingGroup *)self setVCMediaQueuePeakBitrateAndMaxTargetBitrate:[(VCRateSharingGroup *)self calculateMaxTargetBitrate]];
@@ -733,7 +733,7 @@ uint64_t __57__VCRateSharingGroup_updateShareProfileForInterfaceType___block_inv
             v21 = *MEMORY[0x1E6986650];
             if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
             {
-              v22 = [v10 unsignedIntValue];
+              unsignedIntValue = [v10 unsignedIntValue];
               *buf = 136316162;
               v30 = v20;
               v31 = 2080;
@@ -741,9 +741,9 @@ uint64_t __57__VCRateSharingGroup_updateShareProfileForInterfaceType___block_inv
               v33 = 1024;
               v34 = 226;
               v35 = 2048;
-              v36 = a3;
+              clientCopy = client;
               v37 = 1024;
-              LODWORD(v38) = v22;
+              LODWORD(selfCopy2) = unsignedIntValue;
               v17 = v21;
               v18 = " [%s] %s:%d De-registered rateSharingClient=%p for interface type=%u";
               v19 = 44;
@@ -767,7 +767,7 @@ LABEL_18:
             v15 = *MEMORY[0x1E6986650];
             if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
             {
-              v16 = [v10 unsignedIntValue];
+              unsignedIntValue2 = [v10 unsignedIntValue];
               *buf = 136316674;
               v30 = v14;
               v31 = 2080;
@@ -775,13 +775,13 @@ LABEL_18:
               v33 = 1024;
               v34 = 226;
               v35 = 2112;
-              v36 = v13;
+              clientCopy = v13;
               v37 = 2048;
-              v38 = self;
+              selfCopy2 = self;
               v39 = 2048;
-              v40 = a3;
+              clientCopy3 = client;
               v41 = 1024;
-              v42 = v16;
+              v42 = unsignedIntValue2;
               v17 = v15;
               v18 = " [%s] %s:%d %@(%p) De-registered rateSharingClient=%p for interface type=%u";
               v19 = 64;
@@ -843,11 +843,11 @@ LABEL_24:
         v33 = 1024;
         v34 = 230;
         v35 = 2112;
-        v36 = v24;
+        clientCopy = v24;
         v37 = 2048;
-        v38 = self;
+        selfCopy2 = self;
         v39 = 2048;
-        v40 = a3;
+        clientCopy3 = client;
         _os_log_error_impl(&dword_1DB56E000, v26, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) De-registering an unregistered rateSharingClient=%p", buf, 0x3Au);
       }
     }

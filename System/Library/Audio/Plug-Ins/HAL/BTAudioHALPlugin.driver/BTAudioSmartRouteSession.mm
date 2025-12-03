@@ -1,6 +1,6 @@
 @interface BTAudioSmartRouteSession
 - (BTAudioSmartRouteSession)init;
-- (BTAudioSmartRouteSession)initWithbundleID:(id)a3;
+- (BTAudioSmartRouteSession)initWithbundleID:(id)d;
 - (void)dealloc;
 @end
 
@@ -22,12 +22,12 @@
   [(BTAudioSmartRouteSession *)&v5 dealloc];
 }
 
-- (BTAudioSmartRouteSession)initWithbundleID:(id)a3
+- (BTAudioSmartRouteSession)initWithbundleID:(id)d
 {
   v8.receiver = self;
   v8.super_class = BTAudioSmartRouteSession;
   v4 = [(BTAudioSmartRouteSession *)&v8 init];
-  v5 = [[NSString alloc] initWithString:a3];
+  v5 = [[NSString alloc] initWithString:d];
   v4->_bundleID = v5;
   v6 = qword_D8520;
   if (os_log_type_enabled(qword_D8520, OS_LOG_TYPE_DEFAULT))

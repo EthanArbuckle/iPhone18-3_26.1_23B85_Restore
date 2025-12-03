@@ -1,28 +1,28 @@
 @interface TSCH3DLightShaderEffect
-+ (id)effectWithLightCount:(unint64_t)a3;
-+ (void)createStateInEffectsStates:(id)a3;
-+ (void)updatePackageState:(const void *)a3 effectsStates:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (TSCH3DLightShaderEffect)initWithLightCount:(unint64_t)a3;
-- (void)addVariables:(id)a3;
-- (void)uploadData:(id)a3 effectsStates:(id)a4;
-- (void)uploadLightDirectionalWithUploader:(id)a3 effectsStates:(id)a4;
-- (void)uploadLightPositionablesWithUploader:(id)a3 effectsStates:(id)a4;
++ (id)effectWithLightCount:(unint64_t)count;
++ (void)createStateInEffectsStates:(id)states;
++ (void)updatePackageState:(const void *)state effectsStates:(id)states;
+- (BOOL)isEqual:(id)equal;
+- (TSCH3DLightShaderEffect)initWithLightCount:(unint64_t)count;
+- (void)addVariables:(id)variables;
+- (void)uploadData:(id)data effectsStates:(id)states;
+- (void)uploadLightDirectionalWithUploader:(id)uploader effectsStates:(id)states;
+- (void)uploadLightPositionablesWithUploader:(id)uploader effectsStates:(id)states;
 @end
 
 @implementation TSCH3DLightShaderEffect
 
-+ (void)createStateInEffectsStates:(id)a3
++ (void)createStateInEffectsStates:(id)states
 {
-  v13 = a3;
+  statesCopy = states;
   v8 = objc_msgSend_effectState(TSCH3DLightShaderEffectState, v4, v5, v6, v7);
-  objc_msgSend_setState_forStateInfo_(v13, v9, v10, v11, v12, v8, a1);
+  objc_msgSend_setState_forStateInfo_(statesCopy, v9, v10, v11, v12, v8, self);
 }
 
-+ (void)updatePackageState:(const void *)a3 effectsStates:(id)a4
++ (void)updatePackageState:(const void *)state effectsStates:(id)states
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  statesCopy = states;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -43,11 +43,11 @@
         }
 
         v21 = objc_msgSend_effectClass(*(*(&v32 + 1) + 8 * v20), v14, v16, v17, v18);
-        v26 = objc_msgSend_stateForStateInfo_createIfNil_(v5, v22, v23, v24, v25, v21, 0);
+        v26 = objc_msgSend_stateForStateInfo_createIfNil_(statesCopy, v22, v23, v24, v25, v21, 0);
         v31 = v26;
         if (v26)
         {
-          objc_msgSend_setPackageState_(v26, v27, v28, v29, v30, a3);
+          objc_msgSend_setPackageState_(v26, v27, v28, v29, v30, state);
         }
 
         ++v20;
@@ -61,22 +61,22 @@
   }
 }
 
-+ (id)effectWithLightCount:(unint64_t)a3
++ (id)effectWithLightCount:(unint64_t)count
 {
-  v4 = [a1 alloc];
-  v9 = objc_msgSend_initWithLightCount_(v4, v5, v6, v7, v8, a3);
+  v4 = [self alloc];
+  v9 = objc_msgSend_initWithLightCount_(v4, v5, v6, v7, v8, count);
 
   return v9;
 }
 
-- (TSCH3DLightShaderEffect)initWithLightCount:(unint64_t)a3
+- (TSCH3DLightShaderEffect)initWithLightCount:(unint64_t)count
 {
-  if (a3 >= 9)
+  if (count >= 9)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "[TSCH3DLightShaderEffect initWithLightCount:]");
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCH3DLightShaderEffect.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v15, v16, v17, v18, v9, v14, 58, 0, "%lu exceeds max number of point lights %lu", a3, 8);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v15, v16, v17, v18, v9, v14, 58, 0, "%lu exceeds max number of point lights %lu", count, 8);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
   }
@@ -86,35 +86,35 @@
   result = [(TSCH3DLightShaderEffect *)&v24 init];
   if (result)
   {
-    result->_lightCount = a3;
+    result->_lightCount = count;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = TSCH3DLightShaderEffect;
-  v5 = [(TSCH3DShaderEffect *)&v7 isEqual:v4]&& self->_lightCount == v4[1];
+  v5 = [(TSCH3DShaderEffect *)&v7 isEqual:equalCopy]&& self->_lightCount == equalCopy[1];
 
   return v5;
 }
 
-- (void)addVariables:(id)a3
+- (void)addVariables:(id)variables
 {
-  v13 = a3;
+  variablesCopy = variables;
   v8 = objc_msgSend_variables(self, v4, v5, v6, v7);
-  objc_msgSend_addUniformsToShaderProgram_size_(v8, v9, v10, v11, v12, v13, self->_lightCount);
+  objc_msgSend_addUniformsToShaderProgram_size_(v8, v9, v10, v11, v12, variablesCopy, self->_lightCount);
 }
 
-- (void)uploadData:(id)a3 effectsStates:(id)a4
+- (void)uploadData:(id)data effectsStates:(id)states
 {
-  v6 = a3;
-  v117 = a4;
-  v12 = objc_msgSend_stateForStateInfo_createIfNil_(v117, v7, v8, v9, v10, self, 1);
-  v118 = v6;
+  dataCopy = data;
+  statesCopy = states;
+  v12 = objc_msgSend_stateForStateInfo_createIfNil_(statesCopy, v7, v8, v9, v10, self, 1);
+  v118 = dataCopy;
   if (!v12)
   {
     v16 = MEMORY[0x277D81150];
@@ -151,7 +151,7 @@
         objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v62, v70, v71, v72, v73, v63, v69, 95, 0, "invalid nil value for '%{public}s'", "light");
 
         v12 = v64;
-        v6 = v118;
+        dataCopy = v118;
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v74, v75, v76, v77);
       }
 
@@ -171,7 +171,7 @@
       }
 
       v121 = vmulq_n_f32(v87, *&v119);
-      objc_msgSend_uniform_vec4_(v6, v82, *v121.i64, v119, v86, v83, &v121);
+      objc_msgSend_uniform_vec4_(dataCopy, v82, *v121.i64, v119, v86, v83, &v121);
 
       v93 = objc_msgSend_variableAtIndex_name_(v52, v88, v89, v90, v91, i, @"DiffuseColor");
       if (v58)
@@ -187,7 +187,7 @@
       }
 
       v121 = vmulq_n_f32(v97, *&v119);
-      objc_msgSend_uniform_vec4_(v6, v92, *v121.i64, v119, v96, v93, &v121);
+      objc_msgSend_uniform_vec4_(dataCopy, v92, *v121.i64, v119, v96, v93, &v121);
 
       v103 = objc_msgSend_variableAtIndex_name_(v52, v98, v99, v100, v101, i, @"SpecularColor");
       if (v58)
@@ -203,7 +203,7 @@
       }
 
       v121 = vmulq_n_f32(v107, *&v119);
-      objc_msgSend_uniform_vec4_(v6, v102, *v121.i64, v119, v106, v103, &v121);
+      objc_msgSend_uniform_vec4_(dataCopy, v102, *v121.i64, v119, v106, v103, &v121);
 
       v113 = objc_msgSend_variableAtIndex_name_(v52, v108, v109, v110, v111, i, @"Attenuation");
       if (v58)
@@ -217,15 +217,15 @@
         v121.i64[0] = 0;
       }
 
-      objc_msgSend_uniform_vec3_(v6, v112, v114, v115, v116, v113, &v121);
+      objc_msgSend_uniform_vec3_(dataCopy, v112, v114, v115, v116, v113, &v121);
     }
   }
 }
 
-- (void)uploadLightPositionablesWithUploader:(id)a3 effectsStates:(id)a4
+- (void)uploadLightPositionablesWithUploader:(id)uploader effectsStates:(id)states
 {
-  v6 = a3;
-  v12 = objc_msgSend_stateForStateInfo_createIfNil_(a4, v7, v8, v9, v10, self, 1);
+  uploaderCopy = uploader;
+  v12 = objc_msgSend_stateForStateInfo_createIfNil_(states, v7, v8, v9, v10, self, 1);
   if (!v12)
   {
     v16 = MEMORY[0x277D81150];
@@ -252,7 +252,7 @@
     v122 = objc_msgSend_variables(self, v31, v33, v34, v35);
     v56 = objc_msgSend_packageState(v12, v51, v52, v53, v54);
     v60 = 0;
-    v121 = v6;
+    v121 = uploaderCopy;
     do
     {
       v61 = v12;
@@ -285,7 +285,7 @@
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v103, v104, v105, v106);
         v126 = 0;
         v125 = 0;
-        v6 = v121;
+        uploaderCopy = v121;
         v12 = v61;
       }
 
@@ -295,7 +295,7 @@
       v125 = v123;
       v126 = v124;
       v116 = objc_msgSend_variableAtIndex_name_(v122, v113, COERCE_DOUBLE(__PAIR64__(v123.u32[1], v124)), v114, v115, v60, @"Position");
-      objc_msgSend_uniform_vec3_(v6, v117, v118, v119, v120, v116, &v125);
+      objc_msgSend_uniform_vec3_(uploaderCopy, v117, v118, v119, v120, v116, &v125);
 
       ++v60;
     }
@@ -304,11 +304,11 @@
   }
 }
 
-- (void)uploadLightDirectionalWithUploader:(id)a3 effectsStates:(id)a4
+- (void)uploadLightDirectionalWithUploader:(id)uploader effectsStates:(id)states
 {
-  v6 = a3;
-  v12 = objc_msgSend_stateForStateInfo_createIfNil_(a4, v7, v8, v9, v10, self, 1);
-  v121 = v6;
+  uploaderCopy = uploader;
+  v12 = objc_msgSend_stateForStateInfo_createIfNil_(states, v7, v8, v9, v10, self, 1);
+  v121 = uploaderCopy;
   if (!v12)
   {
     v16 = MEMORY[0x277D81150];
@@ -365,7 +365,7 @@
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v104, v105, v106, v107);
         v123 = 0.0;
         v122 = 0.0;
-        v6 = v121;
+        uploaderCopy = v121;
       }
 
       v108 = objc_msgSend_coordinateSpace(v64, v89, v90, v91, v92);
@@ -375,7 +375,7 @@
       v122 = COERCE_DOUBLE(vmla_n_f32(vmla_n_f32(vmul_n_f32(v112[2], *(&v122 + 1)), *v112, *&v122), v112[4], v123));
       v123 = *&v113;
       v116 = objc_msgSend_variableAtIndex_name_(v51, v115, v113, *&v114, v122, i, @"Direction");
-      objc_msgSend_uniform_vec3_(v6, v117, v118, v119, v120, v116, &v122);
+      objc_msgSend_uniform_vec3_(uploaderCopy, v117, v118, v119, v120, v116, &v122);
 
       v12 = v62;
     }

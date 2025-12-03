@@ -1,13 +1,13 @@
 @interface ClientName
-+ (id)extractClientNameFromString:(id)a3;
-+ (id)extractClientNameFromUserAgent:(id)a3 allowAbbreviation:(BOOL)a4;
++ (id)extractClientNameFromString:(id)string;
++ (id)extractClientNameFromUserAgent:(id)agent allowAbbreviation:(BOOL)abbreviation;
 @end
 
 @implementation ClientName
 
-+ (id)extractClientNameFromUserAgent:(id)a3 allowAbbreviation:(BOOL)a4
++ (id)extractClientNameFromUserAgent:(id)agent allowAbbreviation:(BOOL)abbreviation
 {
-  if (a3)
+  if (agent)
   {
     v5 = sub_1C04F6750();
     v7 = v6;
@@ -20,7 +20,7 @@
   }
 
   swift_getObjCClassMetadata();
-  static ClientName.extractClientNameFromUserAgent(_:allowAbbreviation:)(v5, v7, a4);
+  static ClientName.extractClientNameFromUserAgent(_:allowAbbreviation:)(v5, v7, abbreviation);
   v9 = v8;
 
   if (v9)
@@ -36,9 +36,9 @@
   return v10;
 }
 
-+ (id)extractClientNameFromString:(id)a3
++ (id)extractClientNameFromString:(id)string
 {
-  if (a3)
+  if (string)
   {
     v3 = sub_1C04F6750();
     v5 = v4;

@@ -1,13 +1,13 @@
 @interface AppDelegate
-- (void)applicationDidFinishLaunching:(id)a3;
+- (void)applicationDidFinishLaunching:(id)launching;
 @end
 
 @implementation AppDelegate
 
-- (void)applicationDidFinishLaunching:(id)a3
+- (void)applicationDidFinishLaunching:(id)launching
 {
-  v3 = [MEMORY[0x277D28BF0] sharedProvider];
-  [v3 rebuildMenuIfNeededForPersona:3];
+  mEMORY[0x277D28BF0] = [MEMORY[0x277D28BF0] sharedProvider];
+  [mEMORY[0x277D28BF0] rebuildMenuIfNeededForPersona:3];
 }
 
 @end

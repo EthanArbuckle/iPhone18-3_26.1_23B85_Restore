@@ -1,21 +1,21 @@
 @interface SKUITrendingSearchPageView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SKUITrendingSearchPageView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SKUITrendingSearchPageView)initWithFrame:(CGRect)frame;
 - (SKUITrendingSearchPageViewDelegate)delegate;
 - (UIEdgeInsets)contentInset;
-- (void)_buttonAction:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setPage:(id)a3;
+- (void)_buttonAction:(id)action;
+- (void)setBackgroundColor:(id)color;
+- (void)setPage:(id)page;
 @end
 
 @implementation SKUITrendingSearchPageView
 
-- (SKUITrendingSearchPageView)initWithFrame:(CGRect)a3
+- (SKUITrendingSearchPageView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUITrendingSearchPageView initWithFrame:];
@@ -23,20 +23,20 @@
 
   v13.receiver = self;
   v13.super_class = SKUITrendingSearchPageView;
-  v8 = [(SKUITrendingSearchPageView *)&v13 initWithFrame:x, y, width, height];
-  if (v8)
+  height = [(SKUITrendingSearchPageView *)&v13 initWithFrame:x, y, width, height];
+  if (height)
   {
     v9 = [SKUITrendingSearchView alloc];
-    [(SKUITrendingSearchPageView *)v8 bounds];
+    [(SKUITrendingSearchPageView *)height bounds];
     v10 = [(SKUITrendingSearchView *)v9 initWithFrame:?];
-    trendingSearchView = v8->_trendingSearchView;
-    v8->_trendingSearchView = v10;
+    trendingSearchView = height->_trendingSearchView;
+    height->_trendingSearchView = v10;
 
-    [(SKUITrendingSearchView *)v8->_trendingSearchView setAutoresizingMask:18];
-    [(SKUITrendingSearchPageView *)v8 addSubview:v8->_trendingSearchView];
+    [(SKUITrendingSearchView *)height->_trendingSearchView setAutoresizingMask:18];
+    [(SKUITrendingSearchPageView *)height addSubview:height->_trendingSearchView];
   }
 
-  return v8;
+  return height;
 }
 
 - (UIEdgeInsets)contentInset
@@ -49,16 +49,16 @@
   return result;
 }
 
-- (void)setPage:(id)a3
+- (void)setPage:(id)page
 {
-  v5 = a3;
-  if (self->_page != v5)
+  pageCopy = page;
+  if (self->_page != pageCopy)
   {
-    objc_storeStrong(&self->_page, a3);
-    v6 = [MEMORY[0x277D75418] currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    objc_storeStrong(&self->_page, page);
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v7 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v8 = 0;
     }
@@ -66,24 +66,24 @@
     else
     {
       v9 = MEMORY[0x277D756B8];
-      v10 = [(SKUITrendingSearchPageView *)self page];
-      v11 = [v10 title];
-      v8 = [v9 SKUITrending_defaultLabelWithText:v11];
+      page = [(SKUITrendingSearchPageView *)self page];
+      title = [page title];
+      v8 = [v9 SKUITrending_defaultLabelWithText:title];
     }
 
     [(SKUITrendingSearchView *)self->_trendingSearchView setTrendingTitleView:v8];
     v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v13 = [(SKUITrendingSearchPage *)self->_page searches];
+    searches = [(SKUITrendingSearchPage *)self->_page searches];
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __38__SKUITrendingSearchPageView_setPage___block_invoke;
     v18 = &unk_2781FB940;
-    v19 = self;
+    selfCopy = self;
     v20 = v12;
     v14 = v12;
-    [v13 enumerateObjectsUsingBlock:&v15];
+    [searches enumerateObjectsUsingBlock:&v15];
 
-    [(SKUITrendingSearchView *)self->_trendingSearchView setTrendingSearchViews:v14, v15, v16, v17, v18, v19];
+    [(SKUITrendingSearchView *)self->_trendingSearchView setTrendingSearchViews:v14, v15, v16, v17, v18, selfCopy];
   }
 }
 
@@ -97,35 +97,35 @@ void __38__SKUITrendingSearchPageView_setPage___block_invoke(uint64_t a1, void *
   [*(a1 + 40) addObject:v5];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   trendingSearchView = self->_trendingSearchView;
-  v5 = a3;
-  [(SKUITrendingSearchView *)trendingSearchView setBackgroundColor:v5];
+  colorCopy = color;
+  [(SKUITrendingSearchView *)trendingSearchView setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SKUITrendingSearchPageView;
-  [(SKUITrendingSearchPageView *)&v6 setBackgroundColor:v5];
+  [(SKUITrendingSearchPageView *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   LODWORD(v3) = 1148846080;
   LODWORD(v4) = 1112014848;
-  [(SKUITrendingSearchView *)self->_trendingSearchView systemLayoutSizeFittingSize:a3.width withHorizontalFittingPriority:a3.height verticalFittingPriority:v3, v4];
+  [(SKUITrendingSearchView *)self->_trendingSearchView systemLayoutSizeFittingSize:fits.width withHorizontalFittingPriority:fits.height verticalFittingPriority:v3, v4];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (void)_buttonAction:(id)a3
+- (void)_buttonAction:(id)action
 {
   page = self->_page;
-  v5 = a3;
-  v6 = [(SKUITrendingSearchPage *)page searches];
-  v7 = [(SKUITrendingSearchView *)self->_trendingSearchView trendingSearchViews];
-  v8 = [v7 indexOfObjectIdenticalTo:v5];
+  actionCopy = action;
+  searches = [(SKUITrendingSearchPage *)page searches];
+  trendingSearchViews = [(SKUITrendingSearchView *)self->_trendingSearchView trendingSearchViews];
+  v8 = [trendingSearchViews indexOfObjectIdenticalTo:actionCopy];
 
-  v10 = [v6 objectAtIndex:v8];
+  v10 = [searches objectAtIndex:v8];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained trendingSearchPageView:self didSelectSearch:v10];

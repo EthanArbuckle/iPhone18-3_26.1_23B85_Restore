@@ -2,18 +2,18 @@
 + (id)sharedDaemon;
 - (NSString)description;
 - (SharingDaemon)init;
-- (id)arrayFromXPCObject:(id)a3;
-- (id)numberFromXPCObject:(id)a3;
-- (id)stringFromXPCObject:(id)a3;
-- (id)xpcArrayForSFNodeArray:(id)a3;
-- (id)xpcObjectForSFOperationResults:(id)a3;
+- (id)arrayFromXPCObject:(id)object;
+- (id)numberFromXPCObject:(id)object;
+- (id)stringFromXPCObject:(id)object;
+- (id)xpcArrayForSFNodeArray:(id)array;
+- (id)xpcObjectForSFOperationResults:(id)results;
 - (os_state_data_s)stateCapture;
 - (void)dealloc;
-- (void)handleBrowserMessage:(id)a3 forConnection:(id)a4;
-- (void)handleNewConnection:(id)a3;
-- (void)handleOperationMessage:(id)a3 forConnection:(id)a4;
-- (void)networkBrowser:(id)a3 nodesChangedForParent:(__SFNode *)a4 protocol:(id)a5 error:(int)a6;
-- (void)networkOperation:(id)a3 event:(int64_t)a4 withResults:(id)a5;
+- (void)handleBrowserMessage:(id)message forConnection:(id)connection;
+- (void)handleNewConnection:(id)connection;
+- (void)handleOperationMessage:(id)message forConnection:(id)connection;
+- (void)networkBrowser:(id)browser nodesChangedForParent:(__SFNode *)parent protocol:(id)protocol error:(int)error;
+- (void)networkOperation:(id)operation event:(int64_t)event withResults:(id)results;
 - (void)start;
 - (void)stop;
 @end
@@ -60,7 +60,7 @@
   NSAppendPrintF();
   v14 = 0;
   v3 = +[SDStatusMonitor sharedMonitor];
-  v11 = [v3 deviceInformation];
+  deviceInformation = [v3 deviceInformation];
   NSAppendPrintF();
   v4 = v14;
 
@@ -124,11 +124,11 @@
   [(SharingDaemon *)&v3 dealloc];
 }
 
-- (id)xpcObjectForSFOperationResults:(id)a3
+- (id)xpcObjectForSFOperationResults:(id)results
 {
-  v3 = a3;
+  resultsCopy = results;
   v4 = xpc_dictionary_create(0, 0, 0);
-  [v3 allKeys];
+  [resultsCopy allKeys];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -156,7 +156,7 @@
         }
 
         v10 = *(*(&v35 + 1) + 8 * v9);
-        v11 = [v3 objectForKeyedSubscript:{v10, key}];
+        v11 = [resultsCopy objectForKeyedSubscript:{v10, key}];
 
         v12 = _CFXPCCreateXPCObjectFromCFObject();
         if (([v10 isEqual:v8] & 1) != 0 || objc_msgSend(v10, "isEqual:", v33))
@@ -254,10 +254,10 @@ LABEL_15:
   return v4;
 }
 
-- (id)stringFromXPCObject:(id)a3
+- (id)stringFromXPCObject:(id)object
 {
-  v3 = a3;
-  if (!v3)
+  objectCopy = object;
+  if (!objectCopy)
   {
 LABEL_7:
     v5 = 0;
@@ -287,10 +287,10 @@ LABEL_8:
   return v5;
 }
 
-- (id)arrayFromXPCObject:(id)a3
+- (id)arrayFromXPCObject:(id)object
 {
-  v3 = a3;
-  if (!v3)
+  objectCopy = object;
+  if (!objectCopy)
   {
 LABEL_7:
     v5 = 0;
@@ -320,10 +320,10 @@ LABEL_8:
   return v5;
 }
 
-- (id)numberFromXPCObject:(id)a3
+- (id)numberFromXPCObject:(id)object
 {
-  v3 = a3;
-  if (!v3)
+  objectCopy = object;
+  if (!objectCopy)
   {
 LABEL_8:
     v5 = 0;
@@ -357,15 +357,15 @@ LABEL_9:
   return v5;
 }
 
-- (id)xpcArrayForSFNodeArray:(id)a3
+- (id)xpcArrayForSFNodeArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = xpc_array_create(0, 0);
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
@@ -397,35 +397,35 @@ LABEL_9:
   return v4;
 }
 
-- (void)networkBrowser:(id)a3 nodesChangedForParent:(__SFNode *)a4 protocol:(id)a5 error:(int)a6
+- (void)networkBrowser:(id)browser nodesChangedForParent:(__SFNode *)parent protocol:(id)protocol error:(int)error
 {
-  v11 = a3;
-  v12 = a5;
+  browserCopy = browser;
+  protocolCopy = protocol;
   v13 = daemon_log();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
-    v14 = [v11 kind];
+    kind = [browserCopy kind];
     v31 = 134218754;
-    v32 = v11;
+    v32 = browserCopy;
     v33 = 2112;
-    v34 = v14;
+    v34 = kind;
     v35 = 2048;
-    v36 = a4;
+    parentCopy = parent;
     v37 = 1024;
-    v38 = a6;
+    errorCopy = error;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "SFBrowserCallBack (<%p>{kind = %@}, node = %p, error = %d)", &v31, 0x26u);
   }
 
   v15 = xpc_dictionary_create(0, 0, 0);
-  v16 = [v11 isEntitled];
+  isEntitled = [browserCopy isEntitled];
 
-  if (!v16)
+  if (!isEntitled)
   {
-    v17 = [v11 kind];
-    v18 = [v17 isEqual:kSFBrowserKindAirDrop];
+    kind2 = [browserCopy kind];
+    v18 = [kind2 isEqual:kSFBrowserKindAirDrop];
     if (v18)
     {
-      v6 = [v11 connection];
+      connection = [browserCopy connection];
       has_entitlement = xpc_connection_has_entitlement();
     }
 
@@ -435,19 +435,19 @@ LABEL_9:
     }
 
     v20 = [NSNumber numberWithInt:has_entitlement];
-    [v11 setIsEntitled:v20];
+    [browserCopy setIsEntitled:v20];
 
     if (v18)
     {
     }
   }
 
-  v21 = [v11 isEntitled];
-  v22 = [v21 BOOLValue];
+  isEntitled2 = [browserCopy isEntitled];
+  bOOLValue = [isEntitled2 BOOLValue];
 
-  if (v22)
+  if (bOOLValue)
   {
-    v23 = [v11 childrenForNode:a4];
+    v23 = [browserCopy childrenForNode:parent];
     if (!v23)
     {
       goto LABEL_18;
@@ -465,20 +465,20 @@ LABEL_9:
     v24 = airdrop_log();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
-      sub_100177AA4(v11, v24);
+      sub_100177AA4(browserCopy, v24);
     }
 
     v23 = 0;
   }
 
 LABEL_18:
-  v25 = [v11 kind];
-  if (![v25 isEqual:kSFBrowserKindNetwork])
+  kind3 = [browserCopy kind];
+  if (![kind3 isEqual:kSFBrowserKindNetwork])
   {
-    v27 = v23;
+    sidebarChildren = v23;
 LABEL_24:
 
-    v23 = v27;
+    v23 = sidebarChildren;
     goto LABEL_25;
   }
 
@@ -489,14 +489,14 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v27 = [v11 sidebarChildren];
+  sidebarChildren = [browserCopy sidebarChildren];
 
-  if (v27)
+  if (sidebarChildren)
   {
-    v25 = [(SharingDaemon *)self xpcArrayForSFNodeArray:v27];
-    if (v25)
+    kind3 = [(SharingDaemon *)self xpcArrayForSFNodeArray:sidebarChildren];
+    if (kind3)
     {
-      xpc_dictionary_set_value(v15, "Sidebar", v25);
+      xpc_dictionary_set_value(v15, "Sidebar", kind3);
     }
 
     goto LABEL_24;
@@ -510,7 +510,7 @@ LABEL_25:
     xpc_dictionary_set_value(v15, "Node", v28);
   }
 
-  if (v12)
+  if (protocolCopy)
   {
     v29 = _CFXPCCreateXPCObjectFromCFObject();
     if (v29)
@@ -519,61 +519,61 @@ LABEL_25:
     }
   }
 
-  xpc_dictionary_set_int64(v15, "Error", a6);
-  v30 = [v11 connection];
-  xpc_connection_send_message(v30, v15);
+  xpc_dictionary_set_int64(v15, "Error", error);
+  connection2 = [browserCopy connection];
+  xpc_connection_send_message(connection2, v15);
 }
 
-- (void)networkOperation:(id)a3 event:(int64_t)a4 withResults:(id)a5
+- (void)networkOperation:(id)operation event:(int64_t)event withResults:(id)results
 {
-  v8 = a3;
-  v9 = a5;
+  operationCopy = operation;
+  resultsCopy = results;
   v10 = daemon_log();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
-    v11 = [v8 kind];
-    v12 = v11;
-    if ((a4 - 1) > 0xE)
+    kind = [operationCopy kind];
+    v12 = kind;
+    if ((event - 1) > 0xE)
     {
       v13 = @"?";
     }
 
     else
     {
-      v13 = off_1008D1FC8[a4 - 1];
+      v13 = off_1008D1FC8[event - 1];
     }
 
     *buf = 134218754;
-    v31 = v8;
+    v31 = operationCopy;
     v32 = 2112;
-    v33 = v11;
+    v33 = kind;
     v34 = 2112;
     v35 = v13;
     v36 = 2048;
-    v37 = v9;
+    v37 = resultsCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "SFOperationCallBack (<%p>{kind = %@}, event = %@, results = %p)", buf, 0x2Au);
   }
 
   v14 = xpc_dictionary_create(0, 0, 0);
-  v15 = [(SharingDaemon *)self xpcObjectForSFOperationResults:v9];
-  xpc_dictionary_set_uint64(v14, "Events", a4);
-  v16 = [v8 connection];
+  v15 = [(SharingDaemon *)self xpcObjectForSFOperationResults:resultsCopy];
+  xpc_dictionary_set_uint64(v14, "Events", event);
+  connection = [operationCopy connection];
   if (v15)
   {
-    if (a4 == 1)
+    if (event == 1)
     {
       v17 = kSFOperationHTTPServerConnectionKey;
-      v18 = [v9 objectForKeyedSubscript:kSFOperationHTTPServerConnectionKey];
+      v18 = [resultsCopy objectForKeyedSubscript:kSFOperationHTTPServerConnectionKey];
 
       if (v18)
       {
         v29 = v17;
         v19 = +[NSUUID UUID];
-        v20 = [v19 UUIDString];
+        uUIDString = [v19 UUIDString];
 
         v28 = kSFOperationContactsOnlyKey;
-        v21 = [v9 objectForKeyedSubscript:?];
-        xpc_dictionary_set_string(v15, "Operation", [v20 UTF8String]);
+        v21 = [resultsCopy objectForKeyedSubscript:?];
+        xpc_dictionary_set_string(v15, "Operation", [uUIDString UTF8String]);
         v22 = [SDNetworkOperation alloc];
         v23 = [(SDNetworkOperation *)v22 initWithKind:kSFOperationKindReceiver];
         v24 = v23;
@@ -582,12 +582,12 @@ LABEL_25:
           [(SDNetworkOperation *)v23 setProperty:v21 forKey:v28];
         }
 
-        [(SDNetworkOperation *)v24 setProperty:sub_10000C344(v16) forKey:kSFOperationBundleIDKey];
+        [(SDNetworkOperation *)v24 setProperty:sub_10000C344(connection) forKey:kSFOperationBundleIDKey];
         [(SDNetworkOperation *)v24 setProperty:v18 forKey:v29];
-        [(SDNetworkOperation *)v24 setProperty:v20 forKey:kSFOperationSessionIDKey];
-        [(NSMutableDictionary *)self->_exportedOperations setObject:v24 forKeyedSubscript:v20];
+        [(SDNetworkOperation *)v24 setProperty:uUIDString forKey:kSFOperationSessionIDKey];
+        [(NSMutableDictionary *)self->_exportedOperations setObject:v24 forKeyedSubscript:uUIDString];
         [(NSMutableSet *)self->_activeObjects addObject:v24];
-        [(SDNetworkOperation *)v24 setObjectKey:v20];
+        [(SDNetworkOperation *)v24 setObjectKey:uUIDString];
         [(SDNetworkOperation *)v24 setDelegate:self];
         [(SDNetworkOperation *)v24 resume];
       }
@@ -596,47 +596,47 @@ LABEL_25:
     xpc_dictionary_set_value(v14, "Results", v15);
   }
 
-  v25 = [v8 kind];
-  v26 = [v25 isEqualToString:kSFOperationKindController];
+  kind2 = [operationCopy kind];
+  v26 = [kind2 isEqualToString:kSFOperationKindController];
 
-  if (v26 && ![(SharingDaemon *)self canAccessAirDropSettings:v16])
+  if (v26 && ![(SharingDaemon *)self canAccessAirDropSettings:connection])
   {
     v27 = airdrop_log();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
-      sub_100177BA0(v16);
+      sub_100177BA0(connection);
     }
   }
 
   else
   {
-    xpc_connection_send_message(v16, v14);
+    xpc_connection_send_message(connection, v14);
   }
 }
 
-- (void)handleBrowserMessage:(id)a3 forConnection:(id)a4
+- (void)handleBrowserMessage:(id)message forConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  string = xpc_dictionary_get_string(v6, "Function");
+  messageCopy = message;
+  connectionCopy = connection;
+  string = xpc_dictionary_get_string(messageCopy, "Function");
   if (string)
   {
     v9 = string;
     if (!strcmp(string, "Create"))
     {
-      v10 = xpc_dictionary_get_value(v6, "Kind");
+      v10 = xpc_dictionary_get_value(messageCopy, "Kind");
       v11 = [(SharingDaemon *)self stringFromXPCObject:v10];
       if (v11)
       {
-        v13 = xpc_dictionary_get_value(v6, "Node");
+        v13 = xpc_dictionary_get_value(messageCopy, "Node");
         if (v13 && (v14 = _SFNodeCreateWithXPCObject()) != 0)
         {
           v15 = v14;
           v16 = [[SDNetworkBrowser alloc] initWithKind:v11 rootNode:v14];
-          xpc_connection_set_context(v7, v16);
+          xpc_connection_set_context(connectionCopy, v16);
           [(NSMutableSet *)self->_activeObjects addObject:v16];
-          [(SDNetworkBrowser *)v16 setConnection:v7];
-          [(SDNetworkBrowser *)v16 setBoostMessage:v6];
+          [(SDNetworkBrowser *)v16 setConnection:connectionCopy];
+          [(SDNetworkBrowser *)v16 setBoostMessage:messageCopy];
           [(SDNetworkBrowser *)v16 setDelegate:self];
           CFRelease(v15);
         }
@@ -663,7 +663,7 @@ LABEL_25:
       goto LABEL_45;
     }
 
-    v10 = xpc_connection_get_context(v7);
+    v10 = xpc_connection_get_context(connectionCopy);
     if (!v10)
     {
       v11 = daemon_log();
@@ -675,7 +675,7 @@ LABEL_25:
       goto LABEL_45;
     }
 
-    v11 = xpc_dictionary_get_value(v6, "Node");
+    v11 = xpc_dictionary_get_value(messageCopy, "Node");
     if (v11)
     {
       v12 = _SFNodeCreateWithXPCObject();
@@ -688,8 +688,8 @@ LABEL_25:
 
     if (!strcmp(v9, "OpenNode"))
     {
-      v18 = xpc_dictionary_get_value(v6, "Protocol");
-      uint64 = xpc_dictionary_get_uint64(v6, "Flags");
+      v18 = xpc_dictionary_get_value(messageCopy, "Protocol");
+      uint64 = xpc_dictionary_get_uint64(messageCopy, "Flags");
       v20 = [(SharingDaemon *)self stringFromXPCObject:v18];
       if ([v10 openNode:v12 forProtocol:v20 flags:uint64])
       {
@@ -747,7 +747,7 @@ LABEL_25:
     {
       if (!strcmp(v9, "SetMode"))
       {
-        [v10 setMode:xpc_dictionary_get_uint64(v6, "Mode")];
+        [v10 setMode:xpc_dictionary_get_uint64(messageCopy, "Mode")];
         if (!v12)
         {
           goto LABEL_45;
@@ -771,7 +771,7 @@ LABEL_44:
         goto LABEL_45;
       }
 
-      v17 = xpc_dictionary_get_dictionary(v6, "Options");
+      v17 = xpc_dictionary_get_dictionary(messageCopy, "Options");
       v18 = _CFXPCCreateCFObjectFromXPCObject();
 
       [v10 setOptions:v18];
@@ -789,11 +789,11 @@ LABEL_44:
 LABEL_46:
 }
 
-- (void)handleOperationMessage:(id)a3 forConnection:(id)a4
+- (void)handleOperationMessage:(id)message forConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  string = xpc_dictionary_get_string(v6, "Function");
+  messageCopy = message;
+  connectionCopy = connection;
+  string = xpc_dictionary_get_string(messageCopy, "Function");
   if (!string)
   {
     v10 = daemon_log();
@@ -808,10 +808,10 @@ LABEL_46:
   v9 = string;
   if (!strcmp(string, "Create"))
   {
-    v17 = xpc_dictionary_get_string(v6, "Operation");
+    v17 = xpc_dictionary_get_string(messageCopy, "Operation");
     if (!v17)
     {
-      v10 = xpc_dictionary_get_value(v6, "Kind");
+      v10 = xpc_dictionary_get_value(messageCopy, "Kind");
       v11 = [(SharingDaemon *)self stringFromXPCObject:v10];
       if (!v11)
       {
@@ -825,10 +825,10 @@ LABEL_46:
       }
 
       v14 = [[SDNetworkOperation alloc] initWithKind:v11];
-      xpc_connection_set_context(v7, v14);
+      xpc_connection_set_context(connectionCopy, v14);
       [(NSMutableSet *)self->_activeObjects addObject:v14];
-      [(SDNetworkOperation *)v14 setConnection:v7];
-      [(SDNetworkOperation *)v14 setBoostMessage:v6];
+      [(SDNetworkOperation *)v14 setConnection:connectionCopy];
+      [(SDNetworkOperation *)v14 setBoostMessage:messageCopy];
       [(SDNetworkOperation *)v14 setDelegate:self];
 LABEL_52:
 
@@ -842,9 +842,9 @@ LABEL_53:
 
     if (v10)
     {
-      xpc_connection_set_context(v7, v10);
-      [v10 setBoostMessage:v6];
-      [v10 setConnection:v7];
+      xpc_connection_set_context(connectionCopy, v10);
+      [v10 setBoostMessage:messageCopy];
+      [v10 setConnection:connectionCopy];
       goto LABEL_54;
     }
 
@@ -859,7 +859,7 @@ LABEL_23:
     goto LABEL_54;
   }
 
-  v10 = xpc_connection_get_context(v7);
+  v10 = xpc_connection_get_context(connectionCopy);
   if (!v10)
   {
     v20 = daemon_log();
@@ -878,7 +878,7 @@ LABEL_23:
 
   else if (!strcmp(v9, "SetProperty"))
   {
-    v11 = xpc_dictionary_get_value(v6, "Name");
+    v11 = xpc_dictionary_get_value(messageCopy, "Name");
     v12 = [(SharingDaemon *)self stringFromXPCObject:v11];
     if (!v12)
     {
@@ -892,7 +892,7 @@ LABEL_23:
     }
 
     v13 = v12;
-    v14 = xpc_dictionary_get_value(v6, "Value");
+    v14 = xpc_dictionary_get_value(messageCopy, "Value");
     if (v14)
     {
       if (CFEqual(v13, kSFOperationNodeKey))
@@ -901,12 +901,12 @@ LABEL_23:
 LABEL_10:
         v16 = v15;
 LABEL_39:
-        if ((CFEqual(v13, kSFOperationDiscoverableModeKey) || CFEqual(v13, kSFOperationLegacyModeEnabledKey) || CFEqual(v13, kSFOperationWirelessEnabledKey) || CFEqual(v13, kSFOperationBluetoothEnabledKey) || CFEqual(v13, kSFOperationWirelessAccessPointKey) || CFEqual(v13, kSFOperationAirplaneModeEnabledKey)) && ![(SharingDaemon *)self canAccessAirDropSettings:v7])
+        if ((CFEqual(v13, kSFOperationDiscoverableModeKey) || CFEqual(v13, kSFOperationLegacyModeEnabledKey) || CFEqual(v13, kSFOperationWirelessEnabledKey) || CFEqual(v13, kSFOperationBluetoothEnabledKey) || CFEqual(v13, kSFOperationWirelessAccessPointKey) || CFEqual(v13, kSFOperationAirplaneModeEnabledKey)) && ![(SharingDaemon *)self canAccessAirDropSettings:connectionCopy])
         {
           v26 = airdrop_log();
           if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
           {
-            sub_100177EE8(v7);
+            sub_100177EE8(connectionCopy);
           }
         }
 
@@ -962,17 +962,17 @@ LABEL_39:
 LABEL_54:
 }
 
-- (void)handleNewConnection:(id)a3
+- (void)handleNewConnection:(id)connection
 {
-  v4 = a3;
-  xpc_connection_set_target_queue(v4, &_dispatch_main_q);
+  connectionCopy = connection;
+  xpc_connection_set_target_queue(connectionCopy, &_dispatch_main_q);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10017699C;
   v6[3] = &unk_1008D1F48;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = connectionCopy;
+  selfCopy = self;
+  v5 = connectionCopy;
   xpc_connection_set_event_handler(v5, v6);
   xpc_connection_resume(v5);
 }
@@ -1005,9 +1005,9 @@ LABEL_54:
   v9 = daemon_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v7 deviceInformation];
+    deviceInformation = [v7 deviceInformation];
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v10;
+    *(&buf + 4) = deviceInformation;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Device Information: %@", &buf, 0xCu);
   }
 
@@ -1215,7 +1215,7 @@ LABEL_55:
     v62 = 3221225472;
     v63 = sub_1001774F0;
     v64 = &unk_1008CE488;
-    v65 = self;
+    selfCopy = self;
     self->_stateHandle = os_state_add_handler();
   }
 
@@ -1262,14 +1262,14 @@ LABEL_55:
   _Block_object_dispose(v67, 8);
   if (v57 && byte_100971A08 == 1)
   {
-    v59 = [v57 sharedInstance];
-    [v59 start];
+    sharedInstance = [v57 sharedInstance];
+    [sharedInstance start];
   }
 
   else
   {
-    v59 = daemon_log();
-    if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
+    sharedInstance = daemon_log();
+    if (os_log_type_enabled(sharedInstance, OS_LOG_TYPE_ERROR))
     {
       sub_100178250();
     }

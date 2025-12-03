@@ -1,5 +1,5 @@
 @interface MOSuggestionActivityRouteAssetView
-- (_TtC16MomentsUIService34MOSuggestionActivityRouteAssetView)initWithFrame:(CGRect)a3;
+- (_TtC16MomentsUIService34MOSuggestionActivityRouteAssetView)initWithFrame:(CGRect)frame;
 - (void)handleTraitChange;
 @end
 
@@ -8,11 +8,11 @@
 - (void)handleTraitChange
 {
   v2 = *((swift_isaMask & self->super.super.super.isa) + 0xC8);
-  v3 = self;
+  selfCopy = self;
   v2();
 }
 
-- (_TtC16MomentsUIService34MOSuggestionActivityRouteAssetView)initWithFrame:(CGRect)a3
+- (_TtC16MomentsUIService34MOSuggestionActivityRouteAssetView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

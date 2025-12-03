@@ -1,14 +1,14 @@
 @interface TSCHPresetImagerMixed
-- (void)p_drawShadowedContentIntoContext:(CGContext *)a3 size:(CGSize)a4 contentsScale:(double)a5 preset:(id)a6 target:(int)a7 shouldCache:(BOOL *)a8;
+- (void)p_drawShadowedContentIntoContext:(CGContext *)context size:(CGSize)size contentsScale:(double)scale preset:(id)preset target:(int)target shouldCache:(BOOL *)cache;
 @end
 
 @implementation TSCHPresetImagerMixed
 
-- (void)p_drawShadowedContentIntoContext:(CGContext *)a3 size:(CGSize)a4 contentsScale:(double)a5 preset:(id)a6 target:(int)a7 shouldCache:(BOOL *)a8
+- (void)p_drawShadowedContentIntoContext:(CGContext *)context size:(CGSize)size contentsScale:(double)scale preset:(id)preset target:(int)target shouldCache:(BOOL *)cache
 {
-  width = a4.width;
+  width = size.width;
   v117[16] = *MEMORY[0x277D85DE8];
-  v11 = a6;
+  presetCopy = preset;
   objc_msgSend_p_nativeSize(self, v12, v13, v14, v15);
   v17 = width / v16;
   v108 = sub_27628CE94(16.0, 11.0, 20.0, 34.0, v17);
@@ -28,8 +28,8 @@
   v32 = v31;
   v34 = v33;
   v36 = v35;
-  v105 = v11;
-  v38 = objc_msgSend_seriesStyles(v11, v37, v30, v31, v33);
+  v105 = presetCopy;
+  v38 = objc_msgSend_seriesStyles(presetCopy, v37, v30, v31, v33);
   v43 = objc_msgSend_objectAtIndexedSubscript_(v38, v39, v40, v41, v42, 0);
   v102 = v43;
   v103 = v38;
@@ -84,10 +84,10 @@
     v110[4] = self;
     v111 = v59;
     v112 = v65;
-    v113 = a3;
+    contextCopy = context;
     v69 = v65;
     v70 = v59;
-    objc_msgSend_renderInRoundedCornerClippedContext_forPreset_stroke_barRect_clipRect_isVertical_renderBlock_(self, v71, *&v107, *(&v107 + 1), *&v109, a3, v105, v70, 1, v110, *(&v109 + 1), v107, v109);
+    objc_msgSend_renderInRoundedCornerClippedContext_forPreset_stroke_barRect_clipRect_isVertical_renderBlock_(self, v71, *&v107, *(&v107 + 1), *&v109, context, v105, v70, 1, v110, *(&v109 + 1), v107, v109);
 
     v56 += 4;
   }
@@ -101,19 +101,19 @@
   v116[5] = v74;
   v116[6] = sub_27628CEA8(108.0, 81.0, v17);
   v116[7] = v75;
-  CGContextSaveGState(a3);
+  CGContextSaveGState(context);
   v80 = objc_msgSend_p_strokeFromStyle_specific_default_(self, v76, v77, v78, v79, v102, 1503, 0);
   v85 = objc_msgSend_mutableCopy(v80, v81, v82, v83, v84);
 
   objc_msgSend_setWidth_(v85, v86, 2.0, v87, v88);
   v89 = sub_2762A1ACC(v116, 4uLL, 0);
-  objc_msgSend_paintPath_wantsInteriorStroke_inContext_(v85, v90, v91, v92, v93, v89, 0, a3);
+  objc_msgSend_paintPath_wantsInteriorStroke_inContext_(v85, v90, v91, v92, v93, v89, 0, context);
   CGPathRelease(v89);
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 
-  if (a8)
+  if (cache)
   {
-    *a8 = hasAllResourcesForFill;
+    *cache = hasAllResourcesForFill;
   }
 }
 

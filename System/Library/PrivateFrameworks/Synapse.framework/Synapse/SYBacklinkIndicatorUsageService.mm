@@ -1,11 +1,11 @@
 @interface SYBacklinkIndicatorUsageService
 + (id)_listenerEndpoint;
 + (id)sharedInstance;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (SYBacklinkIndicatorUsageService)init;
 - (void)dealloc;
-- (void)didActivateBacklinkItemWithIdentifier:(id)a3;
-- (void)didDismissBacklinkItemWithIdentifier:(id)a3;
+- (void)didActivateBacklinkItemWithIdentifier:(id)identifier;
+- (void)didDismissBacklinkItemWithIdentifier:(id)identifier;
 @end
 
 @implementation SYBacklinkIndicatorUsageService
@@ -43,20 +43,20 @@ uint64_t __49__SYBacklinkIndicatorUsageService_sharedInstance__block_invoke()
       _os_log_impl(&dword_225901000, v3, OS_LOG_TYPE_DEFAULT, "Starting Backlink Manager Service", v8, 2u);
     }
 
-    v4 = [objc_opt_class() _testingDelegate];
+    _testingDelegate = [objc_opt_class() _testingDelegate];
 
-    if (v4)
+    if (_testingDelegate)
     {
-      v5 = [MEMORY[0x277CCAE98] anonymousListener];
+      anonymousListener = [MEMORY[0x277CCAE98] anonymousListener];
     }
 
     else
     {
-      v5 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:@"com.apple.synapse.backlink-indicator-usage"];
+      anonymousListener = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:@"com.apple.synapse.backlink-indicator-usage"];
     }
 
     listener = v2->_listener;
-    v2->_listener = v5;
+    v2->_listener = anonymousListener;
 
     [(NSXPCListener *)v2->_listener setDelegate:v2];
     [(NSXPCListener *)v2->_listener resume];
@@ -74,54 +74,54 @@ uint64_t __49__SYBacklinkIndicatorUsageService_sharedInstance__block_invoke()
   [(SYBacklinkIndicatorUsageService *)&v3 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  listenerCopy = listener;
+  connectionCopy = connection;
+  if (!connectionCopy)
   {
     [SYBacklinkIndicatorUsageService listener:a2 shouldAcceptNewConnection:self];
   }
 
   listener = self->_listener;
-  if (listener == v7)
+  if (listener == listenerCopy)
   {
     v10 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_2838F6750];
-    [v8 setExportedInterface:v10];
+    [connectionCopy setExportedInterface:v10];
   }
 
-  [v8 setExportedObject:self];
-  [v8 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
-  return listener == v7;
+  return listener == listenerCopy;
 }
 
-- (void)didActivateBacklinkItemWithIdentifier:(id)a3
+- (void)didActivateBacklinkItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v3 = [objc_opt_class() _testingDelegate];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  identifierCopy = identifier;
+  _testingDelegate = [objc_opt_class() _testingDelegate];
+  if (_testingDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v3 didActivateBacklinkItemWithIdentifier:v4];
+    [_testingDelegate didActivateBacklinkItemWithIdentifier:identifierCopy];
   }
 }
 
-- (void)didDismissBacklinkItemWithIdentifier:(id)a3
+- (void)didDismissBacklinkItemWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v3 = [objc_opt_class() _testingDelegate];
-  if (v3 && (objc_opt_respondsToSelector() & 1) != 0)
+  identifierCopy = identifier;
+  _testingDelegate = [objc_opt_class() _testingDelegate];
+  if (_testingDelegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v3 didDismissBacklinkItemWithIdentifier:v4];
+    [_testingDelegate didDismissBacklinkItemWithIdentifier:identifierCopy];
   }
 }
 
 + (id)_listenerEndpoint
 {
   v2 = +[SYBacklinkIndicatorUsageService sharedInstance];
-  v3 = [v2[1] endpoint];
+  endpoint = [v2[1] endpoint];
 
-  return v3;
+  return endpoint;
 }
 
 - (void)listener:(uint64_t)a1 shouldAcceptNewConnection:(uint64_t)a2 .cold.1(uint64_t a1, uint64_t a2)

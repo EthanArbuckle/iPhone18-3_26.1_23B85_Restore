@@ -1,20 +1,20 @@
 @interface NTKBigNumeralsAnalogStyleEditOption
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 @end
 
 @implementation NTKBigNumeralsAnalogStyleEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
   v4 = @"outline";
-  if (a3 != 1)
+  if (value != 1)
   {
     v4 = 0;
   }
 
-  if (a3)
+  if (value)
   {
     return v4;
   }
@@ -25,15 +25,15 @@
   }
 }
 
-+ (id)_nameLocalizationKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_nameLocalizationKeyForValue:(unint64_t)value forDevice:(id)device
 {
   v4 = @"EDIT_OPTION_LABEL_BIG_NUMERALS_STYLE_OUTLINE";
-  if (a3 != 1)
+  if (value != 1)
   {
     v4 = 0;
   }
 
-  if (a3)
+  if (value)
   {
     return v4;
   }

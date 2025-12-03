@@ -1,9 +1,9 @@
 @interface NTKEsterbrookSceneCoordinator
 - (NTKEsterbrookColorPalette)colorPalette;
 - (NTKEsterbrookSceneCoordinator)init;
-- (NTKEsterbrookSceneCoordinator)initWithFrame:(CGRect)a3 device:(id)a4 handsView:(id)a5 colorPalette:(id)a6 faceState:(id)a7 sourceConfiguration:(id)a8;
+- (NTKEsterbrookSceneCoordinator)initWithFrame:(CGRect)frame device:(id)device handsView:(id)view colorPalette:(id)palette faceState:(id)state sourceConfiguration:(id)configuration;
 - (NTKEsterbrookSceneCoordinatorDelegate)delegate;
-- (void)applyFaceState:(id)a3;
+- (void)applyFaceState:(id)state;
 - (void)cleanupAfterEditing;
 - (void)didTransitionToTritiumOff;
 - (void)didTransitionToTritiumOn;
@@ -11,24 +11,24 @@
 - (void)layoutForDateChange;
 - (void)prepareForEditing;
 - (void)prepareForTransitionToTritiumOn;
-- (void)prepareNextSceneForDisplayMode:(int64_t)a3;
-- (void)screenDidTurnOffWithAnimated:(BOOL)a3;
+- (void)prepareNextSceneForDisplayMode:(int64_t)mode;
+- (void)screenDidTurnOffWithAnimated:(BOOL)animated;
 - (void)screenWillTurnOnAnimated:;
-- (void)setColorPalette:(id)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setSceneView:(id)a3;
-- (void)setTimeOffset:(double)a3;
-- (void)setTritiumProgress:(double)a3;
-- (void)unloadSceneForDisplayMode:(int64_t)a3;
+- (void)setColorPalette:(id)palette;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setSceneView:(id)view;
+- (void)setTimeOffset:(double)offset;
+- (void)setTritiumProgress:(double)progress;
+- (void)unloadSceneForDisplayMode:(int64_t)mode;
 @end
 
 @implementation NTKEsterbrookSceneCoordinator
 
-- (void)setSceneView:(id)a3
+- (void)setSceneView:(id)view
 {
   v4 = *(self + OBJC_IVAR___NTKEsterbrookSceneCoordinator_sceneView);
-  *(self + OBJC_IVAR___NTKEsterbrookSceneCoordinator_sceneView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___NTKEsterbrookSceneCoordinator_sceneView) = view;
+  viewCopy = view;
 }
 
 - (NTKEsterbrookSceneCoordinatorDelegate)delegate
@@ -45,117 +45,117 @@
   return v2;
 }
 
-- (void)setColorPalette:(id)a3
+- (void)setColorPalette:(id)palette
 {
-  *(self + OBJC_IVAR___NTKEsterbrookSceneCoordinator_colorPalette) = a3;
+  *(self + OBJC_IVAR___NTKEsterbrookSceneCoordinator_colorPalette) = palette;
   swift_unknownObjectRetain_n();
-  v4 = self;
+  selfCopy = self;
   swift_unknownObjectRelease();
   sub_23BE0F96C();
   swift_unknownObjectRelease();
 }
 
-- (NTKEsterbrookSceneCoordinator)initWithFrame:(CGRect)a3 device:(id)a4 handsView:(id)a5 colorPalette:(id)a6 faceState:(id)a7 sourceConfiguration:(id)a8
+- (NTKEsterbrookSceneCoordinator)initWithFrame:(CGRect)frame device:(id)device handsView:(id)view colorPalette:(id)palette faceState:(id)state sourceConfiguration:(id)configuration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a4;
-  v17 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  deviceCopy = device;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  return sub_23BE0FD40(v16, a5, a6, a7, a8, x, y, width, height);
+  return sub_23BE0FD40(deviceCopy, view, palette, state, configuration, x, y, width, height);
 }
 
-- (void)applyFaceState:(id)a3
+- (void)applyFaceState:(id)state
 {
-  v4 = a3;
-  v5 = self;
-  sub_23BE10250(v4, 0);
+  stateCopy = state;
+  selfCopy = self;
+  sub_23BE10250(stateCopy, 0);
 }
 
-- (void)screenDidTurnOffWithAnimated:(BOOL)a3
+- (void)screenDidTurnOffWithAnimated:(BOOL)animated
 {
-  v3 = self;
+  selfCopy = self;
   sub_23BE12F58();
 }
 
-- (void)setTritiumProgress:(double)a3
+- (void)setTritiumProgress:(double)progress
 {
-  *(self + OBJC_IVAR___NTKEsterbrookSceneCoordinator_tritiumProgress) = a3;
+  *(self + OBJC_IVAR___NTKEsterbrookSceneCoordinator_tritiumProgress) = progress;
   v3 = *(self + OBJC_IVAR___NTKEsterbrookSceneCoordinator_sceneView);
-  *&v3[OBJC_IVAR___NTKEsterbrookSceneView_tritiumProgress] = a3;
-  v5 = self;
+  *&v3[OBJC_IVAR___NTKEsterbrookSceneView_tritiumProgress] = progress;
+  selfCopy = self;
   v4 = v3;
   sub_23BE05CF8();
 }
 
 - (void)didTransitionToTritiumOn
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BE117C4();
 }
 
 - (void)didTransitionToTritiumOff
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BE119C8();
 }
 
 - (void)prepareForTransitionToTritiumOn
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BE11BC8();
 }
 
 - (void)layoutForDateChange
 {
   v2 = *(self + OBJC_IVAR___NTKEsterbrookSceneCoordinator_sceneView);
-  v4 = self;
+  selfCopy = self;
   v3 = v2;
   sub_23BE09AC8(1);
 }
 
 - (void)handleSignificantTimeChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_23BE11D90();
 }
 
-- (void)prepareNextSceneForDisplayMode:(int64_t)a3
+- (void)prepareNextSceneForDisplayMode:(int64_t)mode
 {
-  v4 = self;
-  sub_23BE10DC4(a3);
+  selfCopy = self;
+  sub_23BE10DC4(mode);
 }
 
-- (void)unloadSceneForDisplayMode:(int64_t)a3
+- (void)unloadSceneForDisplayMode:(int64_t)mode
 {
   v4 = *(self + OBJC_IVAR___NTKEsterbrookSceneCoordinator_sceneView);
-  v6 = self;
+  selfCopy = self;
   v5 = v4;
-  sub_23BE083C0(a3);
+  sub_23BE083C0(mode);
 }
 
 - (void)prepareForEditing
 {
   *(self + OBJC_IVAR___NTKEsterbrookSceneCoordinator_isEditing) = 1;
-  v2 = self;
+  selfCopy = self;
   sub_23BE0F96C();
 }
 
 - (void)cleanupAfterEditing
 {
   *(self + OBJC_IVAR___NTKEsterbrookSceneCoordinator_isEditing) = 0;
-  v2 = self;
+  selfCopy = self;
   sub_23BE0F96C();
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v6 = sub_23BDE652C(&unk_27E1C8BA0);
   MEMORY[0x28223BE20](v6 - 8);
   v8 = &v14 - v7;
-  if (a3)
+  if (date)
   {
     sub_23BE32688();
     v9 = sub_23BE32698();
@@ -170,19 +170,19 @@
 
   v11 = OBJC_IVAR___NTKEsterbrookSceneCoordinator_overrideDate;
   swift_beginAccess();
-  v12 = self;
+  selfCopy = self;
   sub_23BE12B44(v8, self + v11);
   swift_endAccess();
-  v13 = *(v12 + OBJC_IVAR___NTKEsterbrookSceneCoordinator_sceneView);
+  v13 = *(selfCopy + OBJC_IVAR___NTKEsterbrookSceneCoordinator_sceneView);
   sub_23BE09AC8(1);
 
   sub_23BDF5A94(v8, &unk_27E1C8BA0);
 }
 
-- (void)setTimeOffset:(double)a3
+- (void)setTimeOffset:(double)offset
 {
   v3 = *(self + OBJC_IVAR___NTKEsterbrookSceneCoordinator_sceneView);
-  v4 = self;
+  selfCopy = self;
   v5 = v3;
   sub_23BE09AC8(1);
 }

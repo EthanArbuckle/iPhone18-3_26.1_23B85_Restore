@@ -1,6 +1,6 @@
 @interface IDSOffGridModeOptions
 - (IDSOffGridModeOptions)init;
-- (IDSOffGridModeOptions)initWithCoder:(id)a3;
+- (IDSOffGridModeOptions)initWithCoder:(id)coder;
 @end
 
 @implementation IDSOffGridModeOptions
@@ -12,11 +12,11 @@
   return [(IDSOffGridModeOptions *)&v3 init];
 }
 
-- (IDSOffGridModeOptions)initWithCoder:(id)a3
+- (IDSOffGridModeOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(IDSOffGridModeOptions);
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entry-point-source"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entry-point-source"];
 
   [(IDSOffGridModeOptions *)v5 setEntryPointSource:v6];
   return v5;

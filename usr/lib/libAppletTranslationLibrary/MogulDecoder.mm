@@ -1,16 +1,16 @@
 @interface MogulDecoder
-+ (id)decodeCardIssueDate:(id)a3;
-+ (id)decodeChargeAmountFlagValue:(id)a3;
-+ (id)decodePointsData:(id)a3 andWith:(id)a4;
-+ (id)decodeTransactionHistoryEntry:(id)a3;
-+ (id)getPurseBalance:(id)a3;
++ (id)decodeCardIssueDate:(id)date;
++ (id)decodeChargeAmountFlagValue:(id)value;
++ (id)decodePointsData:(id)data andWith:(id)with;
++ (id)decodeTransactionHistoryEntry:(id)entry;
++ (id)getPurseBalance:(id)balance;
 @end
 
 @implementation MogulDecoder
 
-+ (id)decodeCardIssueDate:(id)a3
++ (id)decodeCardIssueDate:(id)date
 {
-  v3 = [a3 u16BE:1];
+  v3 = [date u16BE:1];
   v4 = (v3 >> 5) & 0xF;
   v5 = (v3 >> 9) + 2000;
   v6 = v3 & 0x1F;
@@ -19,25 +19,25 @@
   return [v7 dateWithYear:v5 month:v4 day:v6];
 }
 
-+ (id)decodeTransactionHistoryEntry:(id)a3
++ (id)decodeTransactionHistoryEntry:(id)entry
 {
   v22[6] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isAll00])
+  entryCopy = entry;
+  if ([entryCopy isAll00])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [v4 u8:0];
-    v7 = [v4 u32BE:1];
-    v8 = [v4 u32BE:5];
-    v9 = [v4 u32BE:9];
-    v10 = [v4 u16BE:13];
+    v6 = [entryCopy u8:0];
+    v7 = [entryCopy u32BE:1];
+    v8 = [entryCopy u32BE:5];
+    v9 = [entryCopy u32BE:9];
+    v10 = [entryCopy u16BE:13];
     v11 = [MEMORY[0x277CBEAB8] dateWithYear:((v9 >> 21) & 0x7F) + 2000 month:(v9 >> 17) & 0xF day:(v9 >> 12) & 0x1F hour:(v9 >> 6) & 0x3F minute:v9 & 0x3F second:0];
-    v12 = [a1 decodeTransactionTypeCode:v6];
-    v13 = [a1 isTopUpTransactionType:v6];
+    v12 = [self decodeTransactionTypeCode:v6];
+    v13 = [self isTopUpTransactionType:v6];
     if (v7)
     {
       v14 = v13;
@@ -72,18 +72,18 @@
   return v5;
 }
 
-+ (id)getPurseBalance:(id)a3
++ (id)getPurseBalance:(id)balance
 {
-  v3 = *[a3 bytes];
+  v3 = *[balance bytes];
   v4 = MEMORY[0x277CCA980];
 
   return [v4 decimalNumberWithMantissa:v3 exponent:0 isNegative:0];
 }
 
-+ (id)decodePointsData:(id)a3 andWith:(id)a4
++ (id)decodePointsData:(id)data andWith:(id)with
 {
-  v5 = a4;
-  v6 = [a3 u8:0];
+  withCopy = with;
+  v6 = [data u8:0];
   v7 = 0;
   if (v6)
   {
@@ -93,15 +93,15 @@
     do
     {
       v10 = objc_opt_new();
-      v11 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v5, "s24BE:", v8)}];
+      v11 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(withCopy, "s24BE:", v8)}];
       [v10 setBalance:v11];
 
-      v12 = [v5 u16BE:v8 + 3];
-      v13 = [MEMORY[0x277CBEAB8] dateWithYear:(v12 >> 9) + 2000 month:(v12 >> 5) & 0xF day:v12 & 0x1F];
-      [v13 setHour:23];
-      [v13 setMinute:59];
-      [v13 setSecond:59];
-      [v10 setExpiration:v13];
+      v12 = [withCopy u16BE:v8 + 3];
+      0x1F = [MEMORY[0x277CBEAB8] dateWithYear:(v12 >> 9) + 2000 month:(v12 >> 5) & 0xF day:v12 & 0x1F];
+      [0x1F setHour:23];
+      [0x1F setMinute:59];
+      [0x1F setSecond:59];
+      [v10 setExpiration:0x1F];
       v14 = v9 & 1;
       if (v9)
       {
@@ -126,11 +126,11 @@
   return v7;
 }
 
-+ (id)decodeChargeAmountFlagValue:(id)a3
++ (id)decodeChargeAmountFlagValue:(id)value
 {
-  v3 = a3;
-  v4 = [v3 u8:6];
-  v5 = [v3 u8:5];
+  valueCopy = value;
+  v4 = [valueCopy u8:6];
+  v5 = [valueCopy u8:5];
 
   v6 = 0;
   if (v5 && v4)

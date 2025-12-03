@@ -1,8 +1,8 @@
 @interface CLPhotosUtilities
 + (CLPhotosUtilities)sharedInstance;
-- (id)_loadSharedAlbumsCloudIdentifiersFromLocalIdentifiers:(id)a3;
+- (id)_loadSharedAlbumsCloudIdentifiersFromLocalIdentifiers:(id)identifiers;
 - (id)_loadSharedAlbumsLocalIdentifiers;
-- (id)previewImageForSharedAlbum:(id)a3;
+- (id)previewImageForSharedAlbum:(id)album;
 - (id)sharedAlbums;
 @end
 
@@ -42,12 +42,12 @@
   return v3;
 }
 
-- (id)_loadSharedAlbumsCloudIdentifiersFromLocalIdentifiers:(id)a3
+- (id)_loadSharedAlbumsCloudIdentifiersFromLocalIdentifiers:(id)identifiers
 {
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = +[PHPhotoLibrary sharedPhotoLibrary];
-  v22 = v3;
-  v5 = [v4 cloudIdentifierMappingsForLocalIdentifiers:v3];
+  v22 = identifiersCopy;
+  v5 = [v4 cloudIdentifierMappingsForLocalIdentifiers:identifiersCopy];
 
   v6 = objc_opt_new();
   v23 = 0u;
@@ -71,49 +71,49 @@
 
         v12 = *(*(&v23 + 1) + 8 * i);
         v13 = [v7 objectForKey:v12];
-        v14 = [v13 error];
+        error = [v13 error];
 
-        if (v14)
+        if (error)
         {
-          v15 = CLFLogCommon();
-          if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+          cloudIdentifier3 = CLFLogCommon();
+          if (!os_log_type_enabled(cloudIdentifier3, OS_LOG_TYPE_ERROR))
           {
             goto LABEL_15;
           }
 
-          v16 = [v13 error];
+          error2 = [v13 error];
           *buf = 138412546;
           v28 = v12;
           v29 = 2112;
-          v30 = v16;
-          _os_log_error_impl(&dword_0, v15, OS_LOG_TYPE_ERROR, "Cloud ID Mapping for Local ID: %@, has an error: %@", buf, 0x16u);
+          v30 = error2;
+          _os_log_error_impl(&dword_0, cloudIdentifier3, OS_LOG_TYPE_ERROR, "Cloud ID Mapping for Local ID: %@, has an error: %@", buf, 0x16u);
           goto LABEL_12;
         }
 
-        v17 = [v13 cloudIdentifier];
-        if (v17)
+        cloudIdentifier = [v13 cloudIdentifier];
+        if (cloudIdentifier)
         {
-          v18 = v17;
-          v19 = [v13 cloudIdentifier];
-          v20 = [v19 stringValue];
+          v18 = cloudIdentifier;
+          cloudIdentifier2 = [v13 cloudIdentifier];
+          stringValue = [cloudIdentifier2 stringValue];
 
-          if (v20)
+          if (stringValue)
           {
-            v15 = [v13 cloudIdentifier];
-            v16 = [v15 stringValue];
-            [v6 setValue:v16 forKey:v12];
+            cloudIdentifier3 = [v13 cloudIdentifier];
+            error2 = [cloudIdentifier3 stringValue];
+            [v6 setValue:error2 forKey:v12];
 LABEL_12:
 
             goto LABEL_15;
           }
         }
 
-        v15 = CLFLogCommon();
-        if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+        cloudIdentifier3 = CLFLogCommon();
+        if (os_log_type_enabled(cloudIdentifier3, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
           v28 = v12;
-          _os_log_error_impl(&dword_0, v15, OS_LOG_TYPE_ERROR, "Cloud ID Mapping for Local ID: %@, has a nil cloud ID", buf, 0xCu);
+          _os_log_error_impl(&dword_0, cloudIdentifier3, OS_LOG_TYPE_ERROR, "Cloud ID Mapping for Local ID: %@, has a nil cloud ID", buf, 0xCu);
         }
 
 LABEL_15:
@@ -130,12 +130,12 @@ LABEL_15:
 
 - (id)sharedAlbums
 {
-  v3 = [(CLPhotosUtilities *)self _loadSharedAlbumsLocalIdentifiers];
+  _loadSharedAlbumsLocalIdentifiers = [(CLPhotosUtilities *)self _loadSharedAlbumsLocalIdentifiers];
   sharedAlbumsLocalIDMappings = self->_sharedAlbumsLocalIDMappings;
-  self->_sharedAlbumsLocalIDMappings = v3;
+  self->_sharedAlbumsLocalIDMappings = _loadSharedAlbumsLocalIdentifiers;
 
-  v5 = [(NSDictionary *)self->_sharedAlbumsLocalIDMappings allKeys];
-  v6 = [(CLPhotosUtilities *)self _loadSharedAlbumsCloudIdentifiersFromLocalIdentifiers:v5];
+  allKeys = [(NSDictionary *)self->_sharedAlbumsLocalIDMappings allKeys];
+  v6 = [(CLPhotosUtilities *)self _loadSharedAlbumsCloudIdentifiersFromLocalIdentifiers:allKeys];
   sharedAlbumsCloudIDMappings = self->_sharedAlbumsCloudIDMappings;
   self->_sharedAlbumsCloudIDMappings = v6;
 
@@ -177,7 +177,7 @@ LABEL_15:
 
   v13 = v12;
   _Block_object_dispose(&v26, 8);
-  v14 = [v12 sharedGuard];
+  sharedGuard = [v12 sharedGuard];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_2CC0;
@@ -185,7 +185,7 @@ LABEL_15:
   v19[4] = self;
   v15 = v8;
   v20 = v15;
-  [v14 authenticateForSubject:v11 completion:v19];
+  [sharedGuard authenticateForSubject:v11 completion:v19];
 
   v16 = v20;
   v17 = v15;
@@ -193,12 +193,12 @@ LABEL_15:
   return v15;
 }
 
-- (id)previewImageForSharedAlbum:(id)a3
+- (id)previewImageForSharedAlbum:(id)album
 {
-  v3 = a3;
+  albumCopy = album;
   v4 = objc_opt_new();
-  v5 = [v3 localIdentifier];
-  v28 = v5;
+  localIdentifier = [albumCopy localIdentifier];
+  v28 = localIdentifier;
   v6 = [NSArray arrayWithObjects:&v28 count:1];
   v7 = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:v6 options:0];
   v20[0] = _NSConcreteStackBlock;
@@ -228,13 +228,13 @@ LABEL_15:
     v25 = sub_26F4;
     v26 = 0;
     v14 = +[PHImageManager defaultManager];
-    v15 = [v12 firstObject];
+    firstObject = [v12 firstObject];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_336C;
     v19[3] = &unk_C768;
     v19[4] = &buf;
-    [v14 requestImageForAsset:v15 targetSize:0 contentMode:v13 options:v19 resultHandler:{256.0, 256.0}];
+    [v14 requestImageForAsset:firstObject targetSize:0 contentMode:v13 options:v19 resultHandler:{256.0, 256.0}];
 
     v16 = *(*(&buf + 1) + 40);
     _Block_object_dispose(&buf, 8);
@@ -245,9 +245,9 @@ LABEL_15:
     v13 = CLFLogCommon();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v17 = [v3 localIdentifier];
+      localIdentifier2 = [albumCopy localIdentifier];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v17;
+      *(&buf + 4) = localIdentifier2;
       _os_log_impl(&dword_0, v13, OS_LOG_TYPE_INFO, "No images found for shared album with Local ID: %@", &buf, 0xCu);
     }
 

@@ -1,35 +1,35 @@
 @interface _UIHIDEventSynchronizer
-- (id)initWithStrategy:(void *)a3 runLoop:(const void *)a4 outputEventsHandler:(const void *)a5 completionHandler:;
+- (id)initWithStrategy:(void *)strategy runLoop:(const void *)loop outputEventsHandler:(const void *)handler completionHandler:;
 - (uint64_t)_completeWithReason:(uint64_t)result;
-- (uint64_t)_processDigitizerEvent:(void *)a1;
-- (uint64_t)handleDigitizerEvent:(uint64_t)a1;
-- (void)_logPerformanceData:(uint64_t)a1;
-- (void)_renderEvents:(id)a3;
+- (uint64_t)_processDigitizerEvent:(void *)event;
+- (uint64_t)handleDigitizerEvent:(uint64_t)event;
+- (void)_logPerformanceData:(uint64_t)data;
+- (void)_renderEvents:(id)events;
 - (void)dealloc;
 @end
 
 @implementation _UIHIDEventSynchronizer
 
-- (id)initWithStrategy:(void *)a3 runLoop:(const void *)a4 outputEventsHandler:(const void *)a5 completionHandler:
+- (id)initWithStrategy:(void *)strategy runLoop:(const void *)loop outputEventsHandler:(const void *)handler completionHandler:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v16.receiver = a1;
+  v16.receiver = self;
   v16.super_class = _UIHIDEventSynchronizer;
   v9 = objc_msgSendSuper2(&v16, sel_init);
   v10 = v9;
   if (v9)
   {
     v9[1] = a2;
-    objc_storeStrong(v9 + 5, a3);
-    v11 = _Block_copy(a4);
+    objc_storeStrong(v9 + 5, strategy);
+    v11 = _Block_copy(loop);
     v12 = v10[3];
     v10[3] = v11;
 
-    v13 = _Block_copy(a5);
+    v13 = _Block_copy(handler);
     v14 = v10[4];
     v10[4] = v13;
   }
@@ -47,7 +47,7 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
       *buf = 134217984;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_ERROR, "[SYNCHRONIZER: %p] Decommissioned.", buf, 0xCu);
     }
   }
@@ -57,16 +57,16 @@
   [(_UIHIDEventSynchronizer *)&v5 dealloc];
 }
 
-- (uint64_t)handleDigitizerEvent:(uint64_t)a1
+- (uint64_t)handleDigitizerEvent:(uint64_t)event
 {
   v46 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!event)
   {
     return 0;
   }
 
   v4 = 0;
-  v5 = *(a1 + 16);
+  v5 = *(event + 16);
   if (v5 <= 1)
   {
     if (v5)
@@ -75,17 +75,17 @@
       {
         if (*__UILogGetCategoryCachedImpl("HIDEventSynchronization", &qword_1ED49C598))
         {
-          [(_UIHIDEventSynchronizer *)a1 _logPerformanceData:a2];
+          [(_UIHIDEventSynchronizer *)event _logPerformanceData:a2];
         }
 
-        if (*(a1 + 8) == 1)
+        if (*(event + 8) == 1)
         {
-          [(_UIHIDEventSynchronizer *)a1 _completeWithReason:?];
+          [(_UIHIDEventSynchronizer *)event _completeWithReason:?];
         }
 
-        else if ([(_UIHIDEventSynchronizer *)a1 _processDigitizerEvent:a2])
+        else if ([(_UIHIDEventSynchronizer *)event _processDigitizerEvent:a2])
         {
-          if (*(a1 + 88) && !*(a1 + 104) && *(a1 + 16) == 1)
+          if (*(event + 88) && !*(event + 104) && *(event + 16) == 1)
           {
             CategoryCachedImpl = __UILogGetCategoryCachedImpl("HIDEventSynchronization", &qword_1ED49C5C8);
             if (*CategoryCachedImpl)
@@ -93,7 +93,7 @@
               v31 = *(CategoryCachedImpl + 8);
               if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
               {
-                v32 = *(a1 + 88);
+                v32 = *(event + 88);
                 v33 = v31;
                 if (v32)
                 {
@@ -106,19 +106,19 @@
                 }
 
                 *buf = 134218240;
-                *&buf[4] = a1;
+                *&buf[4] = event;
                 *&buf[12] = 2048;
                 *&buf[14] = v34;
                 _os_log_impl(&dword_188A29000, v33, OS_LOG_TYPE_ERROR, "[SYNCHRONIZER: %p] Begin rendering. Filter state: %ld.", buf, 0x16u);
               }
             }
 
-            v22 = [MEMORY[0x1E6979330] displayLinkWithTarget:a1 selector:sel__renderEvents_];
-            v23 = *(a1 + 104);
-            *(a1 + 104) = v22;
+            v22 = [MEMORY[0x1E6979330] displayLinkWithTarget:event selector:sel__renderEvents_];
+            v23 = *(event + 104);
+            *(event + 104) = v22;
 
-            [*(a1 + 104) addToRunLoop:*(a1 + 40) forMode:*MEMORY[0x1E695DA28]];
-            *(a1 + 16) = 2;
+            [*(event + 104) addToRunLoop:*(event + 40) forMode:*MEMORY[0x1E695DA28]];
+            *(event + 16) = 2;
           }
 
           return 1;
@@ -137,7 +137,7 @@
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218242;
-        *&buf[4] = a1;
+        *&buf[4] = event;
         *&buf[12] = 2112;
         *&buf[14] = a2;
         _os_log_impl(&dword_188A29000, v28, OS_LOG_TYPE_ERROR, "[SYNCHRONIZER: %p] Processing initial HID event: %@.", buf, 0x16u);
@@ -157,12 +157,12 @@
     if (v36[3])
     {
       v10 = BKSHIDEventGetDigitizerAttributes();
-      *(a1 + 48) = _UIEventHIDHitTestPointForChild(v10);
-      *(a1 + 56) = v11;
+      *(event + 48) = _UIEventHIDHitTestPointForChild(v10);
+      *(event + 56) = v11;
 
       TimeStamp = IOHIDEventGetTimeStamp();
-      *(a1 + 64) = _UIMediaTimeForMachTime(TimeStamp);
-      v13 = *(a1 + 8);
+      *(event + 64) = _UIMediaTimeForMachTime(TimeStamp);
+      v13 = *(event + 8);
       if (v13 == 1)
       {
         v25 = __UILogGetCategoryCachedImpl("HIDEventSynchronization", &qword_1ED49C588);
@@ -172,7 +172,7 @@
           if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
           {
             *v39 = 134217984;
-            v40 = a1;
+            eventCopy4 = event;
             _os_log_impl(&dword_188A29000, v30, OS_LOG_TYPE_ERROR, "[SYNCHRONIZER: %p] Preparing for passthrough.", v39, 0xCu);
           }
         }
@@ -190,30 +190,30 @@
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
           {
             *v39 = 134217984;
-            v40 = a1;
+            eventCopy4 = event;
             _os_log_impl(&dword_188A29000, v29, OS_LOG_TYPE_ERROR, "[SYNCHRONIZER: %p] Preparing for synchronization.", v39, 0xCu);
           }
         }
 
         v15 = objc_alloc_init(_UIHIDPath);
-        v16 = *(a1 + 72);
-        *(a1 + 72) = v15;
+        v16 = *(event + 72);
+        *(event + 72) = v15;
 
         v17 = objc_alloc_init(_UIHIDPathCollection);
-        v18 = *(a1 + 80);
-        *(a1 + 80) = v17;
+        v18 = *(event + 80);
+        *(event + 80) = v17;
 
-        v19 = [[_UIHIDPathSynchronizationFilter alloc] initWithPosition:*(a1 + 56) timestamp:*(a1 + 64)];
-        v20 = *(a1 + 88);
-        *(a1 + 88) = v19;
+        v19 = [[_UIHIDPathSynchronizationFilter alloc] initWithPosition:*(event + 56) timestamp:*(event + 64)];
+        v20 = *(event + 88);
+        *(event + 88) = v19;
 
-        [*(a1 + 72) setDeliveryPhase:4];
-        *(a1 + 96) = 5;
-        [*(a1 + 72) updateWithHIDEvent:v36[3]];
-        [*(a1 + 80) updateWithHIDEvent:a2];
+        [*(event + 72) setDeliveryPhase:4];
+        *(event + 96) = 5;
+        [*(event + 72) updateWithHIDEvent:v36[3]];
+        [*(event + 80) updateWithHIDEvent:a2];
         v4 = 1;
 LABEL_36:
-        *(a1 + 16) = 1;
+        *(event + 16) = 1;
 LABEL_41:
         _Block_object_dispose(&v35, 8);
         return v4;
@@ -222,15 +222,15 @@ LABEL_41:
       v26 = *(__UILogGetCategoryCachedImpl("HIDEventSynchronization", &qword_1ED49C590) + 8);
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = *(a1 + 8);
+        v27 = *(event + 8);
         *v39 = 134218240;
-        v40 = a1;
+        eventCopy4 = event;
         v41 = 2048;
         v42 = v27;
         _os_log_impl(&dword_188A29000, v26, OS_LOG_TYPE_DEFAULT, "[SYNCHRONIZER: %p] Unknown synchronization strategy: %lu.", v39, 0x16u);
       }
 
-      [(_UIHIDEventSynchronizer *)a1 _completeWithReason:?];
+      [(_UIHIDEventSynchronizer *)event _completeWithReason:?];
     }
 
     else
@@ -239,13 +239,13 @@ LABEL_41:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         *v39 = 134218242;
-        v40 = a1;
+        eventCopy4 = event;
         v41 = 2112;
         v42 = a2;
         _os_log_impl(&dword_188A29000, v24, OS_LOG_TYPE_DEFAULT, "[SYNCHRONIZER: %p] Unable to find child digitizer event in the initial HID event: %@.", v39, 0x16u);
       }
 
-      [(_UIHIDEventSynchronizer *)a1 _completeWithReason:?];
+      [(_UIHIDEventSynchronizer *)event _completeWithReason:?];
     }
 
     v4 = 0;
@@ -263,7 +263,7 @@ LABEL_41:
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
           *buf = 134217984;
-          *&buf[4] = a1;
+          *&buf[4] = event;
           _os_log_impl(&dword_188A29000, v8, OS_LOG_TYPE_ERROR, "[SYNCHRONIZER: %p] event is received after synchronization session completed. Will pass through.", buf, 0xCu);
         }
       }
@@ -274,10 +274,10 @@ LABEL_41:
     return v4;
   }
 
-  return [(_UIHIDEventSynchronizer *)a1 _processDigitizerEvent:a2];
+  return [(_UIHIDEventSynchronizer *)event _processDigitizerEvent:a2];
 }
 
-- (uint64_t)_processDigitizerEvent:(void *)a1
+- (uint64_t)_processDigitizerEvent:(void *)event
 {
   v42 = *MEMORY[0x1E69E9840];
   v26 = 0;
@@ -288,7 +288,7 @@ LABEL_41:
   v25[1] = 3221225472;
   v25[2] = __50___UIHIDEventSynchronizer__processDigitizerEvent___block_invoke;
   v25[3] = &unk_1E70F3810;
-  v25[4] = a1;
+  v25[4] = event;
   v25[5] = &v26;
   _UIEventHIDEnumerateChildren(a2, 11, v25);
   if (!v27[3])
@@ -306,7 +306,7 @@ LABEL_41:
     }
 
     *buf = 134218242;
-    v31 = a1;
+    eventCopy3 = event;
     v32 = 2112;
     v33 = *&a2;
     v5 = "[SYNCHRONIZER: %p] Skipping event without relevant path id: %@";
@@ -316,7 +316,7 @@ LABEL_41:
     goto LABEL_5;
   }
 
-  if (a1[2] == 3)
+  if (event[2] == 3)
   {
     v4 = *(__UILogGetCategoryCachedImpl("HIDEventSynchronization", &qword_1ED49C5A8) + 8);
     if (!os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -327,7 +327,7 @@ LABEL_18:
     }
 
     *buf = 134217984;
-    v31 = a1;
+    eventCopy3 = event;
     v5 = "[SYNCHRONIZER: %p] We haven't finished synthesizing the output path, but are already receiving new input path. Passing the event through.";
     v6 = v4;
     v7 = OS_LOG_TYPE_DEFAULT;
@@ -355,7 +355,7 @@ LABEL_5:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         *buf = 134219264;
-        v31 = a1;
+        eventCopy3 = event;
         v32 = 2048;
         v33 = v22;
         v34 = 2048;
@@ -371,9 +371,9 @@ LABEL_5:
     }
   }
 
-  if (([(_UIHIDPathSynchronizationFilter *)a1[11] addInputEvent:?]& 1) == 0)
+  if (([(_UIHIDPathSynchronizationFilter *)event[11] addInputEvent:?]& 1) == 0)
   {
-    [(_UIHIDEventSynchronizer *)a1 _completeWithReason:?];
+    [(_UIHIDEventSynchronizer *)event _completeWithReason:?];
     goto LABEL_18;
   }
 
@@ -385,8 +385,8 @@ LABEL_5:
       v14 = 7;
     }
 
-    a1[12] = v14;
-    a1[2] = 3;
+    event[12] = v14;
+    event[2] = 3;
   }
 
   v15 = 1;
@@ -451,7 +451,7 @@ LABEL_19:
   return result;
 }
 
-- (void)_logPerformanceData:(uint64_t)a1
+- (void)_logPerformanceData:(uint64_t)data
 {
   v34 = *MEMORY[0x1E69E9840];
   v16 = 0;
@@ -472,7 +472,7 @@ LABEL_19:
 
     TimeStamp = IOHIDEventGetTimeStamp();
     v8 = _UIMediaTimeForMachTime(TimeStamp);
-    v9 = *(a1 + 64);
+    v9 = *(data + 64);
     Latency = IOHIDEventGetLatency();
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("HIDEventSynchronization", &_logPerformanceData____s_category);
     if (*CategoryCachedImpl)
@@ -481,9 +481,9 @@ LABEL_19:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 134219520;
-        v13 = *(a1 + 48);
-        v14 = *(a1 + 56);
-        v21 = a1;
+        v13 = *(data + 48);
+        v14 = *(data + 56);
+        dataCopy = data;
         v22 = 2048;
         v23 = v13;
         v24 = 2048;
@@ -504,7 +504,7 @@ LABEL_19:
   _Block_object_dispose(&v16, 8);
 }
 
-- (void)_renderEvents:(id)a3
+- (void)_renderEvents:(id)events
 {
   v27 = *MEMORY[0x1E69E9840];
   if (self)
@@ -541,7 +541,7 @@ LABEL_19:
         }
 
         v21 = 134218496;
-        v22 = self;
+        selfCopy2 = self;
         v23 = 2048;
         v24 = v4;
         v25 = 2048;
@@ -594,7 +594,7 @@ LABEL_19:
         }
 
         v21 = 134218240;
-        v22 = self;
+        selfCopy2 = self;
         v23 = 2048;
         v24 = *&v19;
         _os_log_impl(&dword_188A29000, v18, OS_LOG_TYPE_ERROR, "[SYNCHRONIZER: %p] Deliver rendered event. Filter state: %ld.", &v21, 0x16u);

@@ -13,11 +13,11 @@
 + (id)im_defaultTopicForEvents
 {
   v0 = +[IMMetrics defaultMetricsController];
-  v1 = [v0 topic];
+  topic = [v0 topic];
 
-  if ([v1 length])
+  if ([topic length])
   {
-    v2 = v1;
+    v2 = topic;
   }
 
   else
@@ -38,10 +38,10 @@
 - (id)shortDescription
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [a1 topic];
-  v4 = [a1 propertyForBodyKey:@"eventType"];
-  v5 = [a1 propertyForBodyKey:@"pageType"];
-  v6 = [v2 stringWithFormat:@"%@, %@, %@", v3, v4, v5];
+  topic = [self topic];
+  v4 = [self propertyForBodyKey:@"eventType"];
+  v5 = [self propertyForBodyKey:@"pageType"];
+  v6 = [v2 stringWithFormat:@"%@, %@, %@", topic, v4, v5];
 
   return v6;
 }
@@ -49,11 +49,11 @@
 + (id)im_eventWithDefaultTopic
 {
   v0 = +[IMMetrics defaultMetricsController];
-  v1 = [v0 topic];
+  topic = [v0 topic];
 
-  if ([v1 length])
+  if ([topic length])
   {
-    v2 = [objc_alloc(MEMORY[0x1E698CA08]) initWithTopic:v1];
+    v2 = [objc_alloc(MEMORY[0x1E698CA08]) initWithTopic:topic];
   }
 
   else
@@ -88,11 +88,11 @@
 + (id)im_eventWithDefaultTopicAndEventType:()IMMetrics
 {
   v3 = a3;
-  v4 = [MEMORY[0x1E698CA08] im_eventWithDefaultTopic];
-  v5 = v4;
-  if (v4)
+  im_eventWithDefaultTopic = [MEMORY[0x1E698CA08] im_eventWithDefaultTopic];
+  v5 = im_eventWithDefaultTopic;
+  if (im_eventWithDefaultTopic)
   {
-    [v4 setProperty:v3 forBodyKey:@"eventType"];
+    [im_eventWithDefaultTopic setProperty:v3 forBodyKey:@"eventType"];
   }
 
   return v5;

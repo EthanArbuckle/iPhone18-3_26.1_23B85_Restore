@@ -1,21 +1,21 @@
 @interface PKRewardsSummaryBarViewWrapper
-- (PKRewardsSummaryBarViewWrapper)initWithBarView:(id)a3 configuration:(id)a4;
+- (PKRewardsSummaryBarViewWrapper)initWithBarView:(id)view configuration:(id)configuration;
 - (void)layoutSubviews;
 @end
 
 @implementation PKRewardsSummaryBarViewWrapper
 
-- (PKRewardsSummaryBarViewWrapper)initWithBarView:(id)a3 configuration:(id)a4
+- (PKRewardsSummaryBarViewWrapper)initWithBarView:(id)view configuration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  configurationCopy = configuration;
   v14.receiver = self;
   v14.super_class = PKRewardsSummaryBarViewWrapper;
   v9 = [(PKRewardsSummaryBarViewWrapper *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_barView, a3);
+    objc_storeStrong(&v9->_barView, view);
     [(PKSegmentedBarView *)v10->_barView setRoundBaselineCorners:1];
     [(PKSegmentedBarView *)v10->_barView setUseSmallCornerRadius:0];
     [(PKSegmentedBarView *)v10->_barView setShowPlaceholder:1];
@@ -24,7 +24,7 @@
     [(PKSegmentedBarView *)barView setPlaceholderColor:v12];
 
     [(PKRewardsSummaryBarViewWrapper *)v10 addSubview:v10->_barView];
-    objc_storeStrong(&v10->_configuration, a4);
+    objc_storeStrong(&v10->_configuration, configuration);
   }
 
   return v10;

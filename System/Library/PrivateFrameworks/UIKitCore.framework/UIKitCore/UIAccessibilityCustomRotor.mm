@@ -19,8 +19,8 @@
   v8 = [(UIAccessibilityCustomRotor *)&v12 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E696AFB0] UUID];
-    [(UIAccessibilityCustomRotor *)v8 setUuid:v9];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    [(UIAccessibilityCustomRotor *)v8 setUuid:uUID];
 
     [(UIAccessibilityCustomRotor *)v8 setName:v6];
     [(UIAccessibilityCustomRotor *)v8 setItemSearchBlock:v7];
@@ -39,8 +39,8 @@
   v8 = [(UIAccessibilityCustomRotor *)&v12 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E696AFB0] UUID];
-    [(UIAccessibilityCustomRotor *)v8 setUuid:v9];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    [(UIAccessibilityCustomRotor *)v8 setUuid:uUID];
 
     [(UIAccessibilityCustomRotor *)v8 setAttributedName:v6];
     [(UIAccessibilityCustomRotor *)v8 setItemSearchBlock:v7];
@@ -56,8 +56,8 @@
   v9.super_class = UIAccessibilityCustomRotor;
   v5 = itemSearchBlock;
   v6 = [(UIAccessibilityCustomRotor *)&v9 init];
-  v7 = [MEMORY[0x1E696AFB0] UUID];
-  [(UIAccessibilityCustomRotor *)v6 setUuid:v7];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  [(UIAccessibilityCustomRotor *)v6 setUuid:uUID];
 
   [(UIAccessibilityCustomRotor *)v6 setSystemRotorType:type];
   [(UIAccessibilityCustomRotor *)v6 setItemSearchBlock:v5];
@@ -67,10 +67,10 @@
 
 - (NSString)name
 {
-  v2 = [(UIAccessibilityCustomRotor *)self attributedName];
-  v3 = [v2 string];
+  attributedName = [(UIAccessibilityCustomRotor *)self attributedName];
+  string = [attributedName string];
 
-  return v3;
+  return string;
 }
 
 - (void)setName:(NSString *)name

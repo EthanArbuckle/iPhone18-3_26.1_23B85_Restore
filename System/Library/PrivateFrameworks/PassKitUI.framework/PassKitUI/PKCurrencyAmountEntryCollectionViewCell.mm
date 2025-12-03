@@ -1,32 +1,32 @@
 @interface PKCurrencyAmountEntryCollectionViewCell
-- (BOOL)_inputIsValid:(id)a3;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKCurrencyAmountEntryCollectionViewCell)initWithFrame:(CGRect)a3;
+- (BOOL)_inputIsValid:(id)valid;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKCurrencyAmountEntryCollectionViewCell)initWithFrame:(CGRect)frame;
 - (PKCurrencyAmountEntryCollectionViewCellDelegate)delegate;
-- (id)_amountFromInput:(id)a3;
+- (id)_amountFromInput:(id)input;
 - (void)layoutSubviews;
-- (void)setCurrencyAmount:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setTitleColor:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)setCurrencyAmount:(id)amount;
+- (void)setTitle:(id)title;
+- (void)setTitleColor:(id)color;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation PKCurrencyAmountEntryCollectionViewCell
 
-- (PKCurrencyAmountEntryCollectionViewCell)initWithFrame:(CGRect)a3
+- (PKCurrencyAmountEntryCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = PKCurrencyAmountEntryCollectionViewCell;
-  v3 = [(PKCurrencyAmountEntryCollectionViewCell *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKCurrencyAmountEntryCollectionViewCell *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKCurrencyAmountEntryCollectionViewCell *)v3 contentView];
-    v6 = [MEMORY[0x1E69DC888] labelColor];
+    contentView = [(PKCurrencyAmountEntryCollectionViewCell *)v3 contentView];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
     titleColor = v4->_titleColor;
-    v4->_titleColor = v6;
+    v4->_titleColor = labelColor;
 
     v8 = objc_alloc(MEMORY[0x1E69DCC10]);
     v9 = [v8 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
@@ -41,7 +41,7 @@
     [(UILabel *)v11 setFont:v13];
 
     [(UILabel *)v4->_titleLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
-    [v5 addSubview:v4->_titleLabel];
+    [contentView addSubview:v4->_titleLabel];
     LODWORD(v11) = [(PKCurrencyAmountEntryCollectionViewCell *)v4 _shouldReverseLayoutDirection];
     v14 = objc_alloc_init(MEMORY[0x1E69DD0B0]);
     amountTextField = v4->_amountTextField;
@@ -65,17 +65,17 @@
 
     [(UITextField *)v4->_amountTextField setDelegate:v4];
     [(UITextField *)v4->_amountTextField setAccessibilityIdentifier:*MEMORY[0x1E69B9448]];
-    [v5 addSubview:v4->_amountTextField];
+    [contentView addSubview:v4->_amountTextField];
   }
 
   return v4;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = self->_title;
-  v6 = v4;
+  v6 = titleCopy;
   v10 = v6;
   if (v5 == v6)
   {
@@ -105,23 +105,23 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setTitleColor:(id)a3
+- (void)setTitleColor:(id)color
 {
-  objc_storeStrong(&self->_titleColor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_titleColor, color);
+  colorCopy = color;
   [(UILabel *)self->_titleLabel setTextColor:self->_titleColor];
 }
 
-- (void)setCurrencyAmount:(id)a3
+- (void)setCurrencyAmount:(id)amount
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  amountCopy = amount;
+  v6 = amountCopy;
+  if (amountCopy)
   {
-    v17 = v5;
-    if (!self->_currencyFormatter || ([v5 currency], v7 = objc_claimAutoreleasedReturnValue(), -[PKCurrencyAmount currency](self->_currencyAmount, "currency"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqualToString:", v8), v8, v7, v6 = v17, (v9 & 1) == 0))
+    v17 = amountCopy;
+    if (!self->_currencyFormatter || ([amountCopy currency], v7 = objc_claimAutoreleasedReturnValue(), -[PKCurrencyAmount currency](self->_currencyAmount, "currency"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v7, "isEqualToString:", v8), v8, v7, v6 = v17, (v9 & 1) == 0))
     {
-      v10 = [v6 currency];
+      currency = [v6 currency];
       v11 = PKMutableNumberFormatterForCurrencyCode();
       currencyFormatter = self->_currencyFormatter;
       self->_currencyFormatter = v11;
@@ -131,10 +131,10 @@ LABEL_9:
     v6 = v17;
     if ((v13 & 1) == 0)
     {
-      objc_storeStrong(&self->_currencyAmount, a3);
+      objc_storeStrong(&self->_currencyAmount, amount);
       v14 = self->_currencyFormatter;
-      v15 = [(PKCurrencyAmount *)self->_currencyAmount amount];
-      v16 = [(NSNumberFormatter *)v14 stringFromNumber:v15];
+      amount = [(PKCurrencyAmount *)self->_currencyAmount amount];
+      v16 = [(NSNumberFormatter *)v14 stringFromNumber:amount];
 
       [(UITextField *)self->_amountTextField setText:v16];
       v6 = v17;
@@ -142,10 +142,10 @@ LABEL_9:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  [(PKCurrencyAmountEntryCollectionViewCell *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  height = fits.height;
+  [(PKCurrencyAmountEntryCollectionViewCell *)self _layoutWithBounds:1 isTemplateLayout:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   v5 = v4;
   v7 = v6;
   v8 = _UISolariumFeatureFlagEnabled();
@@ -208,17 +208,17 @@ LABEL_9:
   [(UITextField *)amountTextField setTextColor:v13];
 
   [(UITextField *)self->_amountTextField setUserInteractionEnabled:self->_isEditable];
-  v14 = [(PKCurrencyAmountEntryCollectionViewCell *)self contentView];
-  [v14 bounds];
+  contentView = [(PKCurrencyAmountEntryCollectionViewCell *)self contentView];
+  [contentView bounds];
   [(PKCurrencyAmountEntryCollectionViewCell *)self _layoutWithBounds:0 isTemplateLayout:?];
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3 isTemplateLayout:(BOOL)a4
+- (CGSize)_layoutWithBounds:(CGRect)bounds isTemplateLayout:(BOOL)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if (_UISolariumFeatureFlagEnabled())
   {
     v10 = 20.0;
@@ -264,7 +264,7 @@ LABEL_9:
     v27 = slice.size.height;
     CGRectDivide(v43, &slice, &v43, 2.0, CGRectMinYEdge);
     CGRectDivide(v43, &slice, &v43, v20, CGRectMinYEdge);
-    if (a4)
+    if (layout)
     {
       goto LABEL_12;
     }
@@ -296,7 +296,7 @@ LABEL_9:
   v27 = v32;
   CGRectDivide(v43, &slice, &v43, 8.0, v28);
   v22 = v27;
-  if (!a4)
+  if (!layout)
   {
 LABEL_11:
     v34 = p_slice->size.width;
@@ -320,23 +320,23 @@ LABEL_12:
   return result;
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = [v4 text];
-  v7 = [(PKCurrencyAmountEntryCollectionViewCell *)self _amountFromInput:v5];
+  editingCopy = editing;
+  text = [editingCopy text];
+  v7 = [(PKCurrencyAmountEntryCollectionViewCell *)self _amountFromInput:text];
 
   v6 = [(NSNumberFormatter *)self->_currencyFormatter stringFromNumber:v7];
-  [v4 setText:v6];
+  [editingCopy setText:v6];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a5;
-  v10 = [a3 text];
-  v11 = [v10 stringByReplacingCharactersInRange:location withString:{length, v9}];
+  length = range.length;
+  location = range.location;
+  stringCopy = string;
+  text = [field text];
+  v11 = [text stringByReplacingCharactersInRange:location withString:{length, stringCopy}];
 
   v12 = [(PKCurrencyAmountEntryCollectionViewCell *)self _inputIsValid:v11];
   if (v12)
@@ -349,12 +349,12 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)_inputIsValid:(id)a3
+- (BOOL)_inputIsValid:(id)valid
 {
-  v4 = a3;
-  v5 = [(NSNumberFormatter *)self->_currencyFormatter maximumFractionDigits];
-  v6 = [(NSNumberFormatter *)self->_currencyFormatter currencySymbol];
-  v7 = [v4 stringByReplacingOccurrencesOfString:v6 withString:&stru_1F3BD7330];
+  validCopy = valid;
+  maximumFractionDigits = [(NSNumberFormatter *)self->_currencyFormatter maximumFractionDigits];
+  currencySymbol = [(NSNumberFormatter *)self->_currencyFormatter currencySymbol];
+  v7 = [validCopy stringByReplacingOccurrencesOfString:currencySymbol withString:&stru_1F3BD7330];
   v8 = [MEMORY[0x1E696AB90] decimalNumberWithString:v7];
   v9 = v8;
   if (v8)
@@ -367,9 +367,9 @@ LABEL_12:
     LOBYTE(v10) = 0;
   }
 
-  v11 = [v7 pk_posixStringDecimalPlaces];
-  v12 = v4;
-  v13 = v6;
+  pk_posixStringDecimalPlaces = [v7 pk_posixStringDecimalPlaces];
+  v12 = validCopy;
+  v13 = currencySymbol;
   v14 = v13;
   if (v13 == v12)
   {
@@ -402,7 +402,7 @@ LABEL_12:
     v18 = 0;
   }
 
-  if (v11 <= v5)
+  if (pk_posixStringDecimalPlaces <= maximumFractionDigits)
   {
     v19 = v10;
   }
@@ -417,16 +417,16 @@ LABEL_12:
   return v20 & 1;
 }
 
-- (id)_amountFromInput:(id)a3
+- (id)_amountFromInput:(id)input
 {
   currencyFormatter = self->_currencyFormatter;
-  v5 = a3;
-  v6 = [(NSNumberFormatter *)currencyFormatter currencySymbol];
-  v7 = [v5 containsString:v6];
+  inputCopy = input;
+  currencySymbol = [(NSNumberFormatter *)currencyFormatter currencySymbol];
+  v7 = [inputCopy containsString:currencySymbol];
 
   if (v7)
   {
-    v8 = [(NSNumberFormatter *)self->_currencyFormatter numberFromString:v5];
+    v8 = [(NSNumberFormatter *)self->_currencyFormatter numberFromString:inputCopy];
 
     v9 = MEMORY[0x1E696AB90];
     if (v8)
@@ -446,7 +446,7 @@ LABEL_12:
 
   else
   {
-    v10 = [MEMORY[0x1E696AB90] decimalNumberWithString:v5];
+    v10 = [MEMORY[0x1E696AB90] decimalNumberWithString:inputCopy];
   }
 
   return v10;

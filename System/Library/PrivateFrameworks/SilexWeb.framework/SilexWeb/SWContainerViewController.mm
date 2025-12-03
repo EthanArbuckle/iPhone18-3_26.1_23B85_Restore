@@ -5,78 +5,78 @@
 - (CGRect)inputAccessoryViewFrame;
 - (CGRect)keyboardFrame;
 - (NSURL)loadedURL;
-- (SWContainerViewController)initWithWebContentViewController:(id)a3 actionProvider:(id)a4 interactionProvider:(id)a5 errorProvider:(id)a6 failureProvider:(id)a7 navigationBarConfigurationProvider:(id)a8 configurationManager:(id)a9 presentationManager:(id)a10 scaleManager:(id)a11 snapshotManager:(id)a12 preferredSizeManager:(id)a13;
+- (SWContainerViewController)initWithWebContentViewController:(id)controller actionProvider:(id)provider interactionProvider:(id)interactionProvider errorProvider:(id)errorProvider failureProvider:(id)failureProvider navigationBarConfigurationProvider:(id)configurationProvider configurationManager:(id)manager presentationManager:(id)self0 scaleManager:(id)self1 snapshotManager:(id)self2 preferredSizeManager:(id)self3;
 - (SWMessageHandlerManager)messageHandlerManager;
 - (SWScriptsManager)scriptsManager;
 - (id)accessibilityElements;
 - (id)inputAccessoryView;
-- (void)addContentRuleList:(id)a3 identifier:(id)a4;
+- (void)addContentRuleList:(id)list identifier:(id)identifier;
 - (void)dealloc;
-- (void)handleKeyboardChange:(id)a3;
-- (void)handleKeyboardHide:(id)a3;
-- (void)handleKeyboardShow:(id)a3;
-- (void)loadHTMLString:(id)a3 baseURL:(id)a4;
-- (void)loadLocalDatastore:(id)a3 options:(unint64_t)a4 completion:(id)a5;
-- (void)loadURL:(id)a3;
-- (void)loadURL:(id)a3 cachePolicy:(unint64_t)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)handleKeyboardChange:(id)change;
+- (void)handleKeyboardHide:(id)hide;
+- (void)handleKeyboardShow:(id)show;
+- (void)loadHTMLString:(id)string baseURL:(id)l;
+- (void)loadLocalDatastore:(id)datastore options:(unint64_t)options completion:(id)completion;
+- (void)loadURL:(id)l;
+- (void)loadURL:(id)l cachePolicy:(unint64_t)policy;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)prewarm;
-- (void)reachabilityChanged:(id)a3;
-- (void)removeMenusForIdentifiers:(id)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setDeveloperSettings:(id)a3;
-- (void)setHiddenPocketEdges:(unint64_t)a3;
-- (void)setInputAccessoryView:(id)a3;
-- (void)setShortcutsBarWithLeadingGroups:(id)a3 trailingGroups:(id)a4;
-- (void)setTextInputTraits:(id)a3;
+- (void)reachabilityChanged:(id)changed;
+- (void)removeMenusForIdentifiers:(id)identifiers;
+- (void)setConfiguration:(id)configuration;
+- (void)setDeveloperSettings:(id)settings;
+- (void)setHiddenPocketEdges:(unint64_t)edges;
+- (void)setInputAccessoryView:(id)view;
+- (void)setShortcutsBarWithLeadingGroups:(id)groups trailingGroups:(id)trailingGroups;
+- (void)setTextInputTraits:(id)traits;
 - (void)updateConfiguration;
 - (void)updateReachability;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 - (void)webViewSetNeedsLayout;
 @end
 
 @implementation SWContainerViewController
 
-- (SWContainerViewController)initWithWebContentViewController:(id)a3 actionProvider:(id)a4 interactionProvider:(id)a5 errorProvider:(id)a6 failureProvider:(id)a7 navigationBarConfigurationProvider:(id)a8 configurationManager:(id)a9 presentationManager:(id)a10 scaleManager:(id)a11 snapshotManager:(id)a12 preferredSizeManager:(id)a13
+- (SWContainerViewController)initWithWebContentViewController:(id)controller actionProvider:(id)provider interactionProvider:(id)interactionProvider errorProvider:(id)errorProvider failureProvider:(id)failureProvider navigationBarConfigurationProvider:(id)configurationProvider configurationManager:(id)manager presentationManager:(id)self0 scaleManager:(id)self1 snapshotManager:(id)self2 preferredSizeManager:(id)self3
 {
-  v45 = a3;
-  v44 = a4;
-  v31 = a5;
-  v43 = a5;
-  v42 = a6;
-  v41 = a7;
-  v40 = a8;
-  v39 = a9;
-  v38 = a10;
-  v37 = a11;
-  v36 = a12;
-  v35 = a13;
+  controllerCopy = controller;
+  providerCopy = provider;
+  interactionProviderCopy = interactionProvider;
+  interactionProviderCopy2 = interactionProvider;
+  errorProviderCopy = errorProvider;
+  failureProviderCopy = failureProvider;
+  configurationProviderCopy = configurationProvider;
+  managerCopy = manager;
+  presentationManagerCopy = presentationManager;
+  scaleManagerCopy = scaleManager;
+  snapshotManagerCopy = snapshotManager;
+  sizeManagerCopy = sizeManager;
   v46.receiver = self;
   v46.super_class = SWContainerViewController;
   v18 = [(SWContainerViewController *)&v46 initWithNibName:0 bundle:0];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_webContentViewController, a3);
-    objc_storeStrong(&v19->_actionProvider, a4);
-    objc_storeStrong(&v19->_interactionProvider, v31);
-    objc_storeStrong(&v19->_errorProvider, a6);
-    objc_storeStrong(&v19->_failureProvider, a7);
-    objc_storeStrong(&v19->_navigationBarConfigurationProvider, a8);
-    objc_storeStrong(&v19->_configurationManager, a9);
-    objc_storeStrong(&v19->_presentationManager, a10);
+    objc_storeStrong(&v18->_webContentViewController, controller);
+    objc_storeStrong(&v19->_actionProvider, provider);
+    objc_storeStrong(&v19->_interactionProvider, interactionProviderCopy);
+    objc_storeStrong(&v19->_errorProvider, errorProvider);
+    objc_storeStrong(&v19->_failureProvider, failureProvider);
+    objc_storeStrong(&v19->_navigationBarConfigurationProvider, configurationProvider);
+    objc_storeStrong(&v19->_configurationManager, manager);
+    objc_storeStrong(&v19->_presentationManager, presentationManager);
     v20 = [[SWDeveloperSettings alloc] initWithAllowRemoteInspection:NFInternalBuild()];
     developerSettings = v19->_developerSettings;
     v19->_developerSettings = v20;
 
-    objc_storeStrong(&v19->_scaleManager, a11);
-    objc_storeStrong(&v19->_snapshotManager, a12);
-    objc_storeStrong(&v19->_preferredSizeManager, a13);
-    v22 = [v45 URLSchemeHandlerManager];
+    objc_storeStrong(&v19->_scaleManager, scaleManager);
+    objc_storeStrong(&v19->_snapshotManager, snapshotManager);
+    objc_storeStrong(&v19->_preferredSizeManager, sizeManager);
+    uRLSchemeHandlerManager = [controllerCopy URLSchemeHandlerManager];
     URLSchemeHandlerManager = v19->_URLSchemeHandlerManager;
-    v19->_URLSchemeHandlerManager = v22;
+    v19->_URLSchemeHandlerManager = uRLSchemeHandlerManager;
 
     *v32 = *(MEMORY[0x1E695F058] + 16);
     v34 = *MEMORY[0x1E695F058];
@@ -90,17 +90,17 @@
     v19->_isKeyboardVisible = 0;
     v19->_isPencilInputExpected = 0;
     v19->_networkStatus = 0;
-    v25 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v25 addObserver:v19 selector:sel_handleKeyboardShow_ name:*MEMORY[0x1E69DDF78] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v19 selector:sel_handleKeyboardShow_ name:*MEMORY[0x1E69DDF78] object:0];
 
-    v26 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v26 addObserver:v19 selector:sel_handleKeyboardChange_ name:*MEMORY[0x1E69DDF68] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v19 selector:sel_handleKeyboardChange_ name:*MEMORY[0x1E69DDF68] object:0];
 
-    v27 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v27 addObserver:v19 selector:sel_handleKeyboardHide_ name:*MEMORY[0x1E69DE078] object:0];
+    defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter3 addObserver:v19 selector:sel_handleKeyboardHide_ name:*MEMORY[0x1E69DE078] object:0];
 
-    v28 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v28 addObserver:v19 selector:sel_reachabilityChanged_ name:*MEMORY[0x1E69B6940] object:0];
+    defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter4 addObserver:v19 selector:sel_reachabilityChanged_ name:*MEMORY[0x1E69B6940] object:0];
 
     [objc_opt_class() addObserver:v19 forKeyPath:@"isPencilInputExpected" options:5 context:0];
     [(SWContainerViewController *)v19 updateReachability];
@@ -122,29 +122,29 @@
   v14.receiver = self;
   v14.super_class = SWContainerViewController;
   [(SWContainerViewController *)&v14 viewDidLoad];
-  v3 = [(SWContainerViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(SWContainerViewController *)self view];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view setBackgroundColor:clearColor];
 
-  v5 = [(SWContainerViewController *)self webContentViewController];
-  [(SWContainerViewController *)self addChildViewController:v5];
+  webContentViewController = [(SWContainerViewController *)self webContentViewController];
+  [(SWContainerViewController *)self addChildViewController:webContentViewController];
 
-  v6 = [(SWContainerViewController *)self view];
-  v7 = [(SWContainerViewController *)self webContentViewController];
-  v8 = [v7 view];
-  [v6 addSubview:v8];
+  view2 = [(SWContainerViewController *)self view];
+  webContentViewController2 = [(SWContainerViewController *)self webContentViewController];
+  view3 = [webContentViewController2 view];
+  [view2 addSubview:view3];
 
-  v9 = [(SWContainerViewController *)self webContentViewController];
-  [v9 didMoveToParentViewController:self];
+  webContentViewController3 = [(SWContainerViewController *)self webContentViewController];
+  [webContentViewController3 didMoveToParentViewController:self];
 
   objc_initWeak(&location, self);
-  v10 = [(SWContainerViewController *)self interactionProvider];
+  interactionProvider = [(SWContainerViewController *)self interactionProvider];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __40__SWContainerViewController_viewDidLoad__block_invoke;
   v11[3] = &unk_1E84DB960;
   objc_copyWeak(&v12, &location);
-  [v10 onChange:v11];
+  [interactionProvider onChange:v11];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -166,21 +166,21 @@ void __40__SWContainerViewController_viewDidLoad__block_invoke(uint64_t a1, void
   v6.receiver = self;
   v6.super_class = SWContainerViewController;
   [(SWContainerViewController *)&v6 viewDidLayoutSubviews];
-  v3 = [(SWContainerViewController *)self webContentViewController];
-  v4 = [v3 view];
-  v5 = [(SWContainerViewController *)self view];
-  [v5 bounds];
-  [v4 setFrame:?];
+  webContentViewController = [(SWContainerViewController *)self webContentViewController];
+  view = [webContentViewController view];
+  view2 = [(SWContainerViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  coordinatorCopy = coordinator;
   v11.receiver = self;
   v11.super_class = SWContainerViewController;
-  [(SWContainerViewController *)&v11 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  [(SWContainerViewController *)&v11 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   [(SWContainerViewController *)self setIsTransitioning:1];
   [(SWContainerViewController *)self updateConfiguration];
   objc_initWeak(&location, self);
@@ -189,7 +189,7 @@ void __40__SWContainerViewController_viewDidLoad__block_invoke(uint64_t a1, void
   v8[2] = __80__SWContainerViewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke;
   v8[3] = &unk_1E84DB988;
   objc_copyWeak(&v9, &location);
-  [v7 animateAlongsideTransition:0 completion:v8];
+  [coordinatorCopy animateAlongsideTransition:0 completion:v8];
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
@@ -205,105 +205,105 @@ void __80__SWContainerViewController_viewWillTransitionToSize_withTransitionCoor
 
 - (void)prewarm
 {
-  v2 = [(SWContainerViewController *)self webContentViewController];
-  [v2 prewarm];
+  webContentViewController = [(SWContainerViewController *)self webContentViewController];
+  [webContentViewController prewarm];
 }
 
 - (void)webViewSetNeedsLayout
 {
-  v2 = [(SWContainerViewController *)self webContentViewController];
-  [v2 webViewSetNeedsLayout];
+  webContentViewController = [(SWContainerViewController *)self webContentViewController];
+  [webContentViewController webViewSetNeedsLayout];
 }
 
 - (NSURL)loadedURL
 {
-  v2 = [(SWContainerViewController *)self webContentViewController];
-  v3 = [v2 URL];
+  webContentViewController = [(SWContainerViewController *)self webContentViewController];
+  v3 = [webContentViewController URL];
 
   return v3;
 }
 
-- (void)loadURL:(id)a3
+- (void)loadURL:(id)l
 {
-  v4 = a3;
-  v5 = [(SWContainerViewController *)self webContentViewController];
-  [v5 loadURL:v4];
+  lCopy = l;
+  webContentViewController = [(SWContainerViewController *)self webContentViewController];
+  [webContentViewController loadURL:lCopy];
 }
 
-- (void)loadURL:(id)a3 cachePolicy:(unint64_t)a4
+- (void)loadURL:(id)l cachePolicy:(unint64_t)policy
 {
-  v6 = a3;
-  v7 = [(SWContainerViewController *)self webContentViewController];
-  [v7 loadURL:v6 cachePolicy:a4];
+  lCopy = l;
+  webContentViewController = [(SWContainerViewController *)self webContentViewController];
+  [webContentViewController loadURL:lCopy cachePolicy:policy];
 }
 
-- (void)loadHTMLString:(id)a3 baseURL:(id)a4
+- (void)loadHTMLString:(id)string baseURL:(id)l
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SWContainerViewController *)self webContentViewController];
-  [v8 loadHTMLString:v7 baseURL:v6];
+  lCopy = l;
+  stringCopy = string;
+  webContentViewController = [(SWContainerViewController *)self webContentViewController];
+  [webContentViewController loadHTMLString:stringCopy baseURL:lCopy];
 }
 
-- (void)loadLocalDatastore:(id)a3 options:(unint64_t)a4 completion:(id)a5
+- (void)loadLocalDatastore:(id)datastore options:(unint64_t)options completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(SWContainerViewController *)self webContentViewController];
-  [v10 loadLocalDatastore:v9 options:a4 completion:v8];
+  completionCopy = completion;
+  datastoreCopy = datastore;
+  webContentViewController = [(SWContainerViewController *)self webContentViewController];
+  [webContentViewController loadLocalDatastore:datastoreCopy options:options completion:completionCopy];
 }
 
-- (void)setDeveloperSettings:(id)a3
+- (void)setDeveloperSettings:(id)settings
 {
-  objc_storeStrong(&self->_developerSettings, a3);
-  v5 = a3;
-  v7 = [(SWContainerViewController *)self webContentViewController];
-  v6 = [v5 allowRemoteInspection];
+  objc_storeStrong(&self->_developerSettings, settings);
+  settingsCopy = settings;
+  webContentViewController = [(SWContainerViewController *)self webContentViewController];
+  allowRemoteInspection = [settingsCopy allowRemoteInspection];
 
-  [v7 setAllowsRemoteInspection:v6];
+  [webContentViewController setAllowsRemoteInspection:allowRemoteInspection];
 }
 
 - (SWScriptsManager)scriptsManager
 {
-  v2 = [(SWContainerViewController *)self webContentViewController];
-  v3 = [v2 scriptsManager];
+  webContentViewController = [(SWContainerViewController *)self webContentViewController];
+  scriptsManager = [webContentViewController scriptsManager];
 
-  return v3;
+  return scriptsManager;
 }
 
-- (void)setInputAccessoryView:(id)a3
+- (void)setInputAccessoryView:(id)view
 {
-  v4 = a3;
-  v5 = [(SWContainerViewController *)self webContentViewController];
-  [v5 setInputAccessoryView:v4];
+  viewCopy = view;
+  webContentViewController = [(SWContainerViewController *)self webContentViewController];
+  [webContentViewController setInputAccessoryView:viewCopy];
 }
 
 - (id)inputAccessoryView
 {
-  v2 = [(SWContainerViewController *)self webContentViewController];
-  v3 = [v2 inputAccessoryView];
+  webContentViewController = [(SWContainerViewController *)self webContentViewController];
+  inputAccessoryView = [webContentViewController inputAccessoryView];
 
-  return v3;
+  return inputAccessoryView;
 }
 
-- (void)setTextInputTraits:(id)a3
+- (void)setTextInputTraits:(id)traits
 {
-  v4 = a3;
-  v5 = [(SWContainerViewController *)self webContentViewController];
-  [v5 setTextInputTraits:v4];
+  traitsCopy = traits;
+  webContentViewController = [(SWContainerViewController *)self webContentViewController];
+  [webContentViewController setTextInputTraits:traitsCopy];
 }
 
-- (void)setShortcutsBarWithLeadingGroups:(id)a3 trailingGroups:(id)a4
+- (void)setShortcutsBarWithLeadingGroups:(id)groups trailingGroups:(id)trailingGroups
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SWContainerViewController *)self webContentViewController];
-  [v8 setShortcutsBarWithLeadingGroups:v7 trailingGroups:v6];
+  trailingGroupsCopy = trailingGroups;
+  groupsCopy = groups;
+  webContentViewController = [(SWContainerViewController *)self webContentViewController];
+  [webContentViewController setShortcutsBarWithLeadingGroups:groupsCopy trailingGroups:trailingGroupsCopy];
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = [a3 copy];
+  v4 = [configuration copy];
   configuration = self->_configuration;
   self->_configuration = v4;
 
@@ -312,12 +312,12 @@ void __80__SWContainerViewController_viewWillTransitionToSize_withTransitionCoor
 
 - (void)updateConfiguration
 {
-  v3 = [(SWContainerViewController *)self configuration];
+  configuration = [(SWContainerViewController *)self configuration];
 
-  if (v3)
+  if (configuration)
   {
-    v4 = [(SWContainerViewController *)self configuration];
-    v5 = [SWConfiguration configurationWithContainerConfiguration:v4];
+    configuration2 = [(SWContainerViewController *)self configuration];
+    v5 = [SWConfiguration configurationWithContainerConfiguration:configuration2];
     v27 = [v5 mutableCopy];
 
     v6 = [SWKeyboardConfiguration alloc];
@@ -331,71 +331,71 @@ void __80__SWContainerViewController_viewWillTransitionToSize_withTransitionCoor
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    v23 = [MEMORY[0x1E69DCBE0] isSplit];
-    v24 = [MEMORY[0x1E69DCBE0] isFloating];
-    v25 = -[SWKeyboardConfiguration initWithKeyboardFrame:inputAccessoryViewFrame:isKeyboardSplit:isKeyboardFloating:isHardwareKeyboard:isKeyboardVisible:isPencilInputExpected:](v6, "initWithKeyboardFrame:inputAccessoryViewFrame:isKeyboardSplit:isKeyboardFloating:isHardwareKeyboard:isKeyboardVisible:isPencilInputExpected:", v23, v24, [MEMORY[0x1E69DCBB8] isInHardwareKeyboardMode], -[SWContainerViewController isKeyboardVisible](self, "isKeyboardVisible"), -[SWContainerViewController isPencilInputExpected](self, "isPencilInputExpected"), v8, v10, v12, v14, v16, v18, v20, v22);
+    isSplit = [MEMORY[0x1E69DCBE0] isSplit];
+    isFloating = [MEMORY[0x1E69DCBE0] isFloating];
+    v25 = -[SWKeyboardConfiguration initWithKeyboardFrame:inputAccessoryViewFrame:isKeyboardSplit:isKeyboardFloating:isHardwareKeyboard:isKeyboardVisible:isPencilInputExpected:](v6, "initWithKeyboardFrame:inputAccessoryViewFrame:isKeyboardSplit:isKeyboardFloating:isHardwareKeyboard:isKeyboardVisible:isPencilInputExpected:", isSplit, isFloating, [MEMORY[0x1E69DCBB8] isInHardwareKeyboardMode], -[SWContainerViewController isKeyboardVisible](self, "isKeyboardVisible"), -[SWContainerViewController isPencilInputExpected](self, "isPencilInputExpected"), v8, v10, v12, v14, v16, v18, v20, v22);
     [v27 setKeyboardConfiguration:v25];
     [v27 setNetworkStatus:{-[SWContainerViewController networkStatus](self, "networkStatus")}];
     [v27 setIsTransitioning:{-[SWContainerViewController isTransitioning](self, "isTransitioning")}];
-    v26 = [(SWContainerViewController *)self configurationManager];
-    [v26 setConfiguration:v27];
+    configurationManager = [(SWContainerViewController *)self configurationManager];
+    [configurationManager setConfiguration:v27];
   }
 }
 
 - (BOOL)focusShouldStartInputSession
 {
-  v2 = [(SWContainerViewController *)self webContentViewController];
-  v3 = [v2 focusShouldStartInputSession];
+  webContentViewController = [(SWContainerViewController *)self webContentViewController];
+  focusShouldStartInputSession = [webContentViewController focusShouldStartInputSession];
 
-  return v3;
+  return focusShouldStartInputSession;
 }
 
 - (SWMessageHandlerManager)messageHandlerManager
 {
-  v2 = [(SWContainerViewController *)self webContentViewController];
-  v3 = [v2 messageHandlerManager];
+  webContentViewController = [(SWContainerViewController *)self webContentViewController];
+  messageHandlerManager = [webContentViewController messageHandlerManager];
 
-  return v3;
+  return messageHandlerManager;
 }
 
 - (id)accessibilityElements
 {
-  v2 = [(SWContainerViewController *)self webContentViewController];
-  v3 = [v2 accessibilityElements];
+  webContentViewController = [(SWContainerViewController *)self webContentViewController];
+  accessibilityElements = [webContentViewController accessibilityElements];
 
-  return v3;
+  return accessibilityElements;
 }
 
-- (void)handleKeyboardChange:(id)a3
+- (void)handleKeyboardChange:(id)change
 {
-  v4 = a3;
-  v29 = [v4 userInfo];
-  v5 = [v29 objectForKey:*MEMORY[0x1E69DDFA0]];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [v4 object];
+  object = [changeCopy object];
 
-  v15 = [v14 coordinateSpace];
+  coordinateSpace = [object coordinateSpace];
 
   [(SWContainerViewController *)self setKeyboardFrame:v7, v9, v11, v13];
-  [(SWContainerViewController *)self setKeyboardCoordinateSpace:v15];
-  v16 = [(SWContainerViewController *)self webContentViewController];
-  v17 = [v16 inputAccessoryView];
+  [(SWContainerViewController *)self setKeyboardCoordinateSpace:coordinateSpace];
+  webContentViewController = [(SWContainerViewController *)self webContentViewController];
+  inputAccessoryView = [webContentViewController inputAccessoryView];
 
-  if (v17 && ([v17 superview], v18 = objc_claimAutoreleasedReturnValue(), v18, v18))
+  if (inputAccessoryView && ([inputAccessoryView superview], v18 = objc_claimAutoreleasedReturnValue(), v18, v18))
   {
-    v19 = [v17 coordinateSpace];
-    [v17 bounds];
+    coordinateSpace2 = [inputAccessoryView coordinateSpace];
+    [inputAccessoryView bounds];
     v21 = v20;
     v23 = v22;
     v25 = v24;
     v27 = v26;
-    v28 = [(SWContainerViewController *)self keyboardCoordinateSpace];
-    [v19 convertRect:v28 toCoordinateSpace:{v21, v23, v25, v27}];
+    keyboardCoordinateSpace = [(SWContainerViewController *)self keyboardCoordinateSpace];
+    [coordinateSpace2 convertRect:keyboardCoordinateSpace toCoordinateSpace:{v21, v23, v25, v27}];
     [(SWContainerViewController *)self setInputAccessoryViewFrame:?];
   }
 
@@ -409,13 +409,13 @@ void __80__SWContainerViewController_viewWillTransitionToSize_withTransitionCoor
 
 - (CGRect)convertedKeyboardFrame
 {
-  v3 = [(SWContainerViewController *)self keyboardCoordinateSpace];
-  if (v3 && (v4 = v3, [(SWContainerViewController *)self keyboardFrame], IsNull = CGRectIsNull(v20), v4, !IsNull))
+  keyboardCoordinateSpace = [(SWContainerViewController *)self keyboardCoordinateSpace];
+  if (keyboardCoordinateSpace && (v4 = keyboardCoordinateSpace, [(SWContainerViewController *)self keyboardFrame], IsNull = CGRectIsNull(v20), v4, !IsNull))
   {
-    v10 = [(SWContainerViewController *)self view];
-    v11 = [(SWContainerViewController *)self keyboardCoordinateSpace];
+    view = [(SWContainerViewController *)self view];
+    keyboardCoordinateSpace2 = [(SWContainerViewController *)self keyboardCoordinateSpace];
     [(SWContainerViewController *)self keyboardFrame];
-    [v11 convertRect:v10 toCoordinateSpace:?];
+    [keyboardCoordinateSpace2 convertRect:view toCoordinateSpace:?];
     v6 = v12;
     v7 = v13;
     v8 = v14;
@@ -443,13 +443,13 @@ void __80__SWContainerViewController_viewWillTransitionToSize_withTransitionCoor
 
 - (CGRect)convertedInputAccessoryViewFrame
 {
-  v3 = [(SWContainerViewController *)self keyboardCoordinateSpace];
-  if (v3 && (v4 = v3, [(SWContainerViewController *)self inputAccessoryViewFrame], IsEmpty = CGRectIsEmpty(v20), v4, !IsEmpty))
+  keyboardCoordinateSpace = [(SWContainerViewController *)self keyboardCoordinateSpace];
+  if (keyboardCoordinateSpace && (v4 = keyboardCoordinateSpace, [(SWContainerViewController *)self inputAccessoryViewFrame], IsEmpty = CGRectIsEmpty(v20), v4, !IsEmpty))
   {
-    v10 = [(SWContainerViewController *)self view];
-    v11 = [(SWContainerViewController *)self keyboardCoordinateSpace];
+    view = [(SWContainerViewController *)self view];
+    keyboardCoordinateSpace2 = [(SWContainerViewController *)self keyboardCoordinateSpace];
     [(SWContainerViewController *)self inputAccessoryViewFrame];
-    [v11 convertRect:v10 toCoordinateSpace:?];
+    [keyboardCoordinateSpace2 convertRect:view toCoordinateSpace:?];
     v6 = v12;
     v7 = v13;
     v8 = v14;
@@ -475,63 +475,63 @@ void __80__SWContainerViewController_viewWillTransitionToSize_withTransitionCoor
   return result;
 }
 
-- (void)handleKeyboardShow:(id)a3
+- (void)handleKeyboardShow:(id)show
 {
   [(SWContainerViewController *)self setIsKeyboardVisible:1];
 
   [(SWContainerViewController *)self updateConfiguration];
 }
 
-- (void)handleKeyboardHide:(id)a3
+- (void)handleKeyboardHide:(id)hide
 {
   [(SWContainerViewController *)self setIsKeyboardVisible:0];
 
   [(SWContainerViewController *)self updateConfiguration];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a4;
-  if ([a3 isEqualToString:@"isPencilInputExpected"] && objc_opt_class() == v8)
+  objectCopy = object;
+  if ([path isEqualToString:@"isPencilInputExpected"] && objc_opt_class() == objectCopy)
   {
     -[SWContainerViewController setIsPencilInputExpected:](self, "setIsPencilInputExpected:", [MEMORY[0x1E69DCEC8] isPencilInputExpected]);
     [(SWContainerViewController *)self updateConfiguration];
   }
 }
 
-- (void)removeMenusForIdentifiers:(id)a3
+- (void)removeMenusForIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = [(SWContainerViewController *)self webContentViewController];
-  [v5 removeMenusForIdentifiers:v4];
+  identifiersCopy = identifiers;
+  webContentViewController = [(SWContainerViewController *)self webContentViewController];
+  [webContentViewController removeMenusForIdentifiers:identifiersCopy];
 }
 
-- (void)setHiddenPocketEdges:(unint64_t)a3
+- (void)setHiddenPocketEdges:(unint64_t)edges
 {
-  v4 = [(SWContainerViewController *)self webContentViewController];
-  [v4 setHiddenPocketEdges:a3];
+  webContentViewController = [(SWContainerViewController *)self webContentViewController];
+  [webContentViewController setHiddenPocketEdges:edges];
 }
 
 - (void)updateReachability
 {
-  v3 = [MEMORY[0x1E69B6900] sharedInstance];
-  -[SWContainerViewController setNetworkStatus:](self, "setNetworkStatus:", [v3 currentReachabilityStatus]);
+  mEMORY[0x1E69B6900] = [MEMORY[0x1E69B6900] sharedInstance];
+  -[SWContainerViewController setNetworkStatus:](self, "setNetworkStatus:", [mEMORY[0x1E69B6900] currentReachabilityStatus]);
 }
 
-- (void)reachabilityChanged:(id)a3
+- (void)reachabilityChanged:(id)changed
 {
   [(SWContainerViewController *)self updateReachability];
 
   [(SWContainerViewController *)self updateConfiguration];
 }
 
-- (void)addContentRuleList:(id)a3 identifier:(id)a4
+- (void)addContentRuleList:(id)list identifier:(id)identifier
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(SWContainerViewController *)self webContentViewController];
-  v8 = [v9 contentRuleManager];
-  [v8 addContentRuleList:v7 identifier:v6];
+  identifierCopy = identifier;
+  listCopy = list;
+  webContentViewController = [(SWContainerViewController *)self webContentViewController];
+  contentRuleManager = [webContentViewController contentRuleManager];
+  [contentRuleManager addContentRuleList:listCopy identifier:identifierCopy];
 }
 
 - (CGRect)keyboardFrame

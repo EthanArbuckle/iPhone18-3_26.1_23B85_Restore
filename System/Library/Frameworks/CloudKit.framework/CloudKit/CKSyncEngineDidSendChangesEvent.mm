@@ -1,15 +1,15 @@
 @interface CKSyncEngineDidSendChangesEvent
-- (CKSyncEngineDidSendChangesEvent)initWithContext:(id)a3;
-- (void)CKDescribePropertiesUsing:(id)a3;
+- (CKSyncEngineDidSendChangesEvent)initWithContext:(id)context;
+- (void)CKDescribePropertiesUsing:(id)using;
 @end
 
 @implementation CKSyncEngineDidSendChangesEvent
 
-- (CKSyncEngineDidSendChangesEvent)initWithContext:(id)a3
+- (CKSyncEngineDidSendChangesEvent)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v23 = 0;
-  v6 = _CKCheckArgument("context", v5, 0, 0, 0, &v23);
+  v6 = _CKCheckArgument("context", contextCopy, 0, 0, 0, &v23);
   v7 = v23;
   if ((v6 & 1) == 0)
   {
@@ -25,24 +25,24 @@
 
   v22.receiver = self;
   v22.super_class = CKSyncEngineDidSendChangesEvent;
-  v8 = [(CKSyncEngineEvent *)&v22 initInternal];
-  v9 = v8;
-  if (v8)
+  initInternal = [(CKSyncEngineEvent *)&v22 initInternal];
+  v9 = initInternal;
+  if (initInternal)
   {
-    objc_storeStrong(v8 + 1, a3);
+    objc_storeStrong(initInternal + 1, context);
   }
 
   return v9;
 }
 
-- (void)CKDescribePropertiesUsing:(id)a3
+- (void)CKDescribePropertiesUsing:(id)using
 {
   v9.receiver = self;
   v9.super_class = CKSyncEngineDidSendChangesEvent;
-  v4 = a3;
-  [(CKSyncEngineEvent *)&v9 CKDescribePropertiesUsing:v4];
+  usingCopy = using;
+  [(CKSyncEngineEvent *)&v9 CKDescribePropertiesUsing:usingCopy];
   v7 = objc_msgSend_context(self, v5, v6, v9.receiver, v9.super_class);
-  objc_msgSend_addProperty_value_shouldRedact_(v4, v8, @"context", v7, 0);
+  objc_msgSend_addProperty_value_shouldRedact_(usingCopy, v8, @"context", v7, 0);
 }
 
 @end

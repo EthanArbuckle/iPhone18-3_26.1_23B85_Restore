@@ -1,12 +1,12 @@
 @interface ARObjectDetectionResultData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)tracingEntry;
-- (id)anchorsForCameraWithTransform:(double)a3 referenceOriginTransform:(double)a4 existingAnchors:(double)a5 anchorsToRemove:(float32x4_t)a6;
+- (id)anchorsForCameraWithTransform:(double)transform referenceOriginTransform:(double)originTransform existingAnchors:(double)anchors anchorsToRemove:(float32x4_t)remove;
 @end
 
 @implementation ARObjectDetectionResultData
 
-- (id)anchorsForCameraWithTransform:(double)a3 referenceOriginTransform:(double)a4 existingAnchors:(double)a5 anchorsToRemove:(float32x4_t)a6
+- (id)anchorsForCameraWithTransform:(double)transform referenceOriginTransform:(double)originTransform existingAnchors:(double)anchors anchorsToRemove:(float32x4_t)remove
 {
   v95 = *MEMORY[0x1E69E9840];
   v12 = a11;
@@ -34,8 +34,8 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v20 = [v19 identifier];
-          [v13 setObject:v19 forKey:v20];
+          identifier = [v19 identifier];
+          [v13 setObject:v19 forKey:identifier];
         }
       }
 
@@ -52,7 +52,7 @@
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
-  obj = [a1 detectedObjects];
+  obj = [self detectedObjects];
   v21 = [obj countByEnumeratingWithState:&v77 objects:v93 count:16];
   if (v21)
   {
@@ -72,9 +72,9 @@
         }
 
         v25 = *(*(&v77 + 1) + 8 * j);
-        v26 = [v25 referenceObject];
-        v27 = [v26 identifier];
-        v28 = [v13 objectForKeyedSubscript:v27];
+        referenceObject = [v25 referenceObject];
+        identifier2 = [referenceObject identifier];
+        v28 = [v13 objectForKeyedSubscript:identifier2];
 
         if (v28)
         {
@@ -84,12 +84,12 @@
         else
         {
           v30 = [ARObjectAnchor alloc];
-          v31 = [v25 referenceObject];
-          v29 = [(ARObjectAnchor *)v30 initWithReferenceObject:v31 transform:*&v58, *&v57, *&v56, *&v55];
+          referenceObject2 = [v25 referenceObject];
+          v29 = [(ARObjectAnchor *)v30 initWithReferenceObject:referenceObject2 transform:*&v58, *&v57, *&v56, *&v55];
         }
 
-        v32 = [v25 referenceObject];
-        [v32 referenceOriginTransform];
+        referenceObject3 = [v25 referenceObject];
+        [referenceObject3 referenceOriginTransform];
         v98 = __invert_f4(v97);
         v75 = v98.columns[1];
         v76 = v98.columns[0];
@@ -170,7 +170,7 @@
         v92 = 0u;
         do
         {
-          *(&v89 + v52) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a6, COERCE_FLOAT(*(&v85 + v52))), a7, *&v85.f32[v52 / 4], 1), a8, *(&v85 + v52), 2), a9, *(&v85 + v52), 3);
+          *(&v89 + v52) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(remove, COERCE_FLOAT(*(&v85 + v52))), a7, *&v85.f32[v52 / 4], 1), a8, *(&v85 + v52), 2), a9, *(&v85 + v52), 3);
           v52 += 16;
         }
 
@@ -191,16 +191,16 @@
   return v60;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 detectedObjects];
-    v7 = [(ARObjectDetectionResultData *)self detectedObjects];
-    if ([v6 isEqual:v7])
+    v5 = equalCopy;
+    detectedObjects = [v5 detectedObjects];
+    detectedObjects2 = [(ARObjectDetectionResultData *)self detectedObjects];
+    if ([detectedObjects isEqual:detectedObjects2])
     {
       [v5 timestamp];
       v9 = v8 == self->_timestamp;
@@ -227,8 +227,8 @@
   v21 = [v3 mutableCopy];
 
   v4 = objc_alloc(MEMORY[0x1E695DF70]);
-  v5 = [(ARObjectDetectionResultData *)self detectedObjects];
-  v6 = [v4 initWithCapacity:{objc_msgSend(v5, "count")}];
+  detectedObjects = [(ARObjectDetectionResultData *)self detectedObjects];
+  v6 = [v4 initWithCapacity:{objc_msgSend(detectedObjects, "count")}];
 
   v25 = 0u;
   v26 = 0u;
@@ -251,17 +251,17 @@
 
         v11 = *(*(&v23 + 1) + 8 * i);
         v12 = objc_opt_new();
-        v13 = [v11 referenceObject];
-        v14 = [v13 identifier];
-        [v12 setObject:v14 forKeyedSubscript:@"identifier"];
+        referenceObject = [v11 referenceObject];
+        identifier = [referenceObject identifier];
+        [v12 setObject:identifier forKeyedSubscript:@"identifier"];
 
-        v15 = [v11 referenceObject];
-        [v15 extent];
+        referenceObject2 = [v11 referenceObject];
+        [referenceObject2 extent];
         v16 = [ARQAHelper arrayWithVector3:?];
         [v12 setObject:v16 forKeyedSubscript:@"extent"];
 
-        v17 = [v11 referenceObject];
-        [v17 center];
+        referenceObject3 = [v11 referenceObject];
+        [referenceObject3 center];
         v18 = [ARQAHelper arrayWithVector3:?];
         [v12 setObject:v18 forKeyedSubscript:@"center"];
 

@@ -2,8 +2,8 @@
 - (NSString)destination;
 - (id)_metricsDictionary;
 - (unint64_t)eventSize;
-- (void)setDestination:(id)a3;
-- (void)setEventSize:(unint64_t)a3;
+- (void)setDestination:(id)destination;
+- (void)setEventSize:(unint64_t)size;
 @end
 
 @implementation RPNWActivityEventMetrics
@@ -11,10 +11,10 @@
 - (id)_metricsDictionary
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(RPNWActivityEventMetrics *)self destination];
-  if (v4)
+  destination = [(RPNWActivityEventMetrics *)self destination];
+  if (destination)
   {
-    [v3 setObject:v4 forKeyedSubscript:@"destination"];
+    [v3 setObject:destination forKeyedSubscript:@"destination"];
   }
 
   v5 = [NSNumber numberWithUnsignedLong:[(RPNWActivityEventMetrics *)self eventSize]];
@@ -60,9 +60,9 @@
   return v2;
 }
 
-- (void)setDestination:(id)a3
+- (void)setDestination:(id)destination
 {
-  v4 = a3;
+  destinationCopy = destination;
   sub_1000035B0();
   sub_100003DC8();
   v15 = v5;
@@ -70,7 +70,7 @@
   sub_10000D198(v6, v7, v8, v9, v10, v11, v12, v13, v14);
 }
 
-- (void)setEventSize:(unint64_t)a3
+- (void)setEventSize:(unint64_t)size
 {
   sub_1000035B0();
   sub_100003DC8();

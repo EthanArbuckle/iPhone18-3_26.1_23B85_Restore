@@ -1,19 +1,19 @@
 @interface PKSearchTagResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PKSearchTagResult)initWithCoder:(id)a3;
+- (PKSearchTagResult)initWithCoder:(id)coder;
 - (unint64_t)hash;
 @end
 
 @implementation PKSearchTagResult
 
-- (PKSearchTagResult)initWithCoder:(id)a3
+- (PKSearchTagResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKSearchTagResult *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"tag"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"tag"];
     tag = v5->_tag;
     v5->_tag = v6;
   }
@@ -34,14 +34,14 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     tag = self->_tag;
-    v6 = v4[1];
+    v6 = equalCopy[1];
     if (tag && v6)
     {
       v7 = [(PKPaymentTransactionTag *)tag isEqual:?];

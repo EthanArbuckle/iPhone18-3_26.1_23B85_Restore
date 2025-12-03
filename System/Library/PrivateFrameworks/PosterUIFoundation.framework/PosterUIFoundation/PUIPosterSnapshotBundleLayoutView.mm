@@ -1,6 +1,6 @@
 @interface PUIPosterSnapshotBundleLayoutView
 - (CGSize)intrinsicContentSize;
-- (void)setSnapshotBundle:(id)a3 animation:(unint64_t)a4;
+- (void)setSnapshotBundle:(id)bundle animation:(unint64_t)animation;
 @end
 
 @implementation PUIPosterSnapshotBundleLayoutView
@@ -14,31 +14,31 @@
   return result;
 }
 
-- (void)setSnapshotBundle:(id)a3 animation:(unint64_t)a4
+- (void)setSnapshotBundle:(id)bundle animation:(unint64_t)animation
 {
-  v7 = a3;
-  if ([(PUIPosterSnapshotBundle *)self->_snapshotBundle isEqual:v7])
+  bundleCopy = bundle;
+  if ([(PUIPosterSnapshotBundle *)self->_snapshotBundle isEqual:bundleCopy])
   {
     goto LABEL_20;
   }
 
   [(PFTFuture *)self->_loadSnapshotBundleFuture cancel];
-  objc_storeStrong(&self->_snapshotBundle, a3);
-  v8 = [v7 snapshotBundleUUID];
-  v9 = v8;
-  if (!v8)
+  objc_storeStrong(&self->_snapshotBundle, bundle);
+  snapshotBundleUUID = [bundleCopy snapshotBundleUUID];
+  uUID = snapshotBundleUUID;
+  if (!snapshotBundleUUID)
   {
-    v9 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
   }
 
-  objc_storeStrong(&self->_snapshotBundleUUID, v9);
-  v10 = v9;
-  if (!v8)
+  objc_storeStrong(&self->_snapshotBundleUUID, uUID);
+  v10 = uUID;
+  if (!snapshotBundleUUID)
   {
   }
 
-  v11 = [(PUIPosterSnapshotBundle *)self->_snapshotBundle posterProvider];
-  [(PUIPosterSnapshotBundleLayoutView *)self setAccessibilityIdentifier:v11];
+  posterProvider = [(PUIPosterSnapshotBundle *)self->_snapshotBundle posterProvider];
+  [(PUIPosterSnapshotBundleLayoutView *)self setAccessibilityIdentifier:posterProvider];
 
   v78[0] = 0;
   v78[1] = v78;
@@ -96,30 +96,30 @@
   v63 = 0;
   if ([MEMORY[0x1E69DD250] areAnimationsEnabled])
   {
-    if (a4 == 1)
+    if (animation == 1)
     {
-      v12 = [MEMORY[0x1E6979538] animation];
-      [v12 setDuration:0.33];
-      [v12 setType:*MEMORY[0x1E697A030]];
+      animation = [MEMORY[0x1E6979538] animation];
+      [animation setDuration:0.33];
+      [animation setType:*MEMORY[0x1E697A030]];
       v16 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
-      [v12 setTimingFunction:v16];
+      [animation setTimingFunction:v16];
 LABEL_15:
 
       goto LABEL_16;
     }
 
-    if (a4 == 2)
+    if (animation == 2)
     {
-      v12 = [MEMORY[0x1E6979538] animation];
-      [v12 setDuration:0.5];
-      [v12 setType:*MEMORY[0x1E697A030]];
+      animation = [MEMORY[0x1E6979538] animation];
+      [animation setDuration:0.5];
+      [animation setType:*MEMORY[0x1E697A030]];
       v13 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
-      [v12 setTimingFunction:v13];
+      [animation setTimingFunction:v13];
 
-      v14 = [(PUIPosterSnapshotBundleLayoutView *)self traitCollection];
-      v15 = [v14 userInterfaceStyle];
+      traitCollection = [(PUIPosterSnapshotBundleLayoutView *)self traitCollection];
+      userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-      if (v15 == 1)
+      if (userInterfaceStyle == 1)
       {
         [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB0]];
       }
@@ -129,19 +129,19 @@ LABEL_15:
         [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979ED0]];
       }
       v16 = ;
-      [v12 setTimingFunction:v16];
+      [animation setTimingFunction:v16];
       goto LABEL_15;
     }
   }
 
-  v12 = 0;
+  animation = 0;
 LABEL_16:
   v60[0] = MEMORY[0x1E69E9820];
   v60[1] = 3221225472;
   v60[2] = __65__PUIPosterSnapshotBundleLayoutView_setSnapshotBundle_animation___block_invoke;
   v60[3] = &unk_1E7854E90;
   v60[4] = self;
-  v17 = v12;
+  v17 = animation;
   v61 = v17;
   v18 = MEMORY[0x1AC5769F0](v60);
   v58[0] = MEMORY[0x1E69E9820];
@@ -176,23 +176,23 @@ LABEL_16:
   v57 = v62;
   v22 = MEMORY[0x1AC5769F0](v44);
   v23 = v22;
-  v33 = v7;
-  if (v7)
+  v33 = bundleCopy;
+  if (bundleCopy)
   {
     v24 = MEMORY[0x1E69C5258];
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
     v37[2] = __65__PUIPosterSnapshotBundleLayoutView_setSnapshotBundle_animation___block_invoke_4;
     v37[3] = &unk_1E7854F08;
-    v25 = v7;
+    v25 = bundleCopy;
     v38 = v25;
     v39 = v72;
     v40 = v68;
     v41 = v74;
     v42 = v76;
     v43 = v62;
-    v26 = [MEMORY[0x1E69C5268] offMainThreadScheduler];
-    v27 = [v24 futureWithBlock:v37 scheduler:v26];
+    offMainThreadScheduler = [MEMORY[0x1E69C5268] offMainThreadScheduler];
+    v27 = [v24 futureWithBlock:v37 scheduler:offMainThreadScheduler];
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __65__PUIPosterSnapshotBundleLayoutView_setSnapshotBundle_animation___block_invoke_5;
@@ -225,7 +225,7 @@ LABEL_16:
   _Block_object_dispose(v76, 8);
 
   _Block_object_dispose(v78, 8);
-  v7 = v33;
+  bundleCopy = v33;
 LABEL_20:
 }
 

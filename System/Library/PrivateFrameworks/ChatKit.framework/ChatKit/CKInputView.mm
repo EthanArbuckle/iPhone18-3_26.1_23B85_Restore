@@ -1,6 +1,6 @@
 @interface CKInputView
 + (CGSize)defaultContentSize;
-+ (CGSize)defaultContentSizeLargerThanKeyboard:(BOOL *)a3;
++ (CGSize)defaultContentSizeLargerThanKeyboard:(BOOL *)keyboard;
 - (CGSize)intrinsicContentSize;
 - (CGSize)lastContentSize;
 @end
@@ -36,31 +36,31 @@
 
 + (CGSize)defaultContentSize
 {
-  [a1 defaultContentSizeLargerThanKeyboard:0];
+  [self defaultContentSizeLargerThanKeyboard:0];
   result.height = v3;
   result.width = v2;
   return result;
 }
 
-+ (CGSize)defaultContentSizeLargerThanKeyboard:(BOOL *)a3
++ (CGSize)defaultContentSizeLargerThanKeyboard:(BOOL *)keyboard
 {
   v4 = CKNonFlatDeviceOrientation();
   [MEMORY[0x1E69DCBB8] sizeForInterfaceOrientation:v4 ignoreInputView:1];
   v6 = v5;
   if (v4 - 1 > 1 || ([MEMORY[0x1E69DC938] currentDevice], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "userInterfaceIdiom"), v7, (v8 & 0xFFFFFFFFFFFFFFFBLL) == 1))
   {
-    if (a3)
+    if (keyboard)
     {
       v9 = 0;
 LABEL_11:
-      *a3 = v9;
+      *keyboard = v9;
     }
   }
 
   else
   {
-    v10 = [MEMORY[0x1E69DD2E8] keyWindow];
-    [v10 safeAreaInsets];
+    keyWindow = [MEMORY[0x1E69DD2E8] keyWindow];
+    [keyWindow safeAreaInsets];
     v12 = v11 + 247.0;
 
     v13 = v12 <= v6;
@@ -69,7 +69,7 @@ LABEL_11:
       v6 = v12;
     }
 
-    if (a3)
+    if (keyboard)
     {
       v9 = !v13;
       goto LABEL_11;

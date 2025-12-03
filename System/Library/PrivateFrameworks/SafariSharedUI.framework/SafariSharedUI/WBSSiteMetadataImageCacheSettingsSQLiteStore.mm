@@ -11,12 +11,12 @@
 - (BOOL)_checkDatabaseIntegrity
 {
   v2 = [(WBSSQLiteDatabase *)self->_database fetchQuery:@"PRAGMA integrity_check(1)"];
-  v3 = [v2 nextObject];
-  v4 = [v3 stringAtIndex:0];
-  v5 = [v2 statement];
-  [v5 invalidate];
+  nextObject = [v2 nextObject];
+  v4 = [nextObject stringAtIndex:0];
+  statement = [v2 statement];
+  [statement invalidate];
 
-  if (!v3)
+  if (!nextObject)
   {
     v7 = WBS_LOG_CHANNEL_PREFIXSiteMetadata();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -49,18 +49,18 @@ LABEL_9:
 - (BOOL)_migrateToCurrentSchemaVersionifNeeded
 {
   v3 = SafariShared::WBSSQLiteDatabaseFetch<>(self->_database, @"PRAGMA user_version");
-  v4 = [v3 nextObject];
-  v5 = [v4 intAtIndex:0];
+  nextObject = [v3 nextObject];
+  v5 = [nextObject intAtIndex:0];
 
-  v6 = [v3 statement];
-  [v6 invalidate];
+  statement = [v3 statement];
+  [statement invalidate];
 
   if (v5)
   {
-    v7 = [objc_opt_class() databaseSchemaVersion];
-    if (v7 <= v5)
+    databaseSchemaVersion = [objc_opt_class() databaseSchemaVersion];
+    if (databaseSchemaVersion <= v5)
     {
-      v10 = 1;
+      _createNewDatabaseSchema = 1;
     }
 
     else
@@ -69,19 +69,19 @@ LABEL_9:
       do
       {
         v9 = [(WBSSiteMetadataImageCacheSettingsSQLiteStore *)self _statementsForMigrationToSchemaVersion:v8];
-        v10 = [(WBSSiteMetadataImageCacheSettingsSQLiteStore *)self _performMigrationStepToSchemaVersion:v8 withStatements:v9];
+        _createNewDatabaseSchema = [(WBSSiteMetadataImageCacheSettingsSQLiteStore *)self _performMigrationStepToSchemaVersion:v8 withStatements:v9];
       }
 
-      while (v7 != v8++ && v10);
+      while (databaseSchemaVersion != v8++ && _createNewDatabaseSchema);
     }
   }
 
   else
   {
-    v10 = [(WBSSiteMetadataImageCacheSettingsSQLiteStore *)self _createNewDatabaseSchema];
+    _createNewDatabaseSchema = [(WBSSiteMetadataImageCacheSettingsSQLiteStore *)self _createNewDatabaseSchema];
   }
 
-  return v10;
+  return _createNewDatabaseSchema;
 }
 
 void __58__WBSSiteMetadataImageCacheSettingsSQLiteStore_allEntries__block_invoke(uint64_t a1)
@@ -130,14 +130,14 @@ void __58__WBSSiteMetadataImageCacheSettingsSQLiteStore_allEntries__block_invoke
 
 - (id)allEntries
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   databaseQueue = self->_databaseQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __58__WBSSiteMetadataImageCacheSettingsSQLiteStore_allEntries__block_invoke;
   v7[3] = &unk_1E8282EA0;
   v7[4] = self;
-  v5 = v3;
+  v5 = array;
   v8 = v5;
   dispatch_sync(databaseQueue, v7);
 
@@ -159,13 +159,13 @@ void __58__WBSSiteMetadataImageCacheSettingsSQLiteStore_allEntries__block_invoke
 {
   v4 = *MEMORY[0x1E69E9840];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1C6968000, a2, OS_LOG_TYPE_ERROR, "Failed database integrity check: %@", &v2, 0xCu);
 }
 
 - (void)_createNewDatabaseSchema
 {
-  OUTLINED_FUNCTION_0_11(a1, a2, a3, 5.778e-34);
+  OUTLINED_FUNCTION_0_11(self, a2, a3, 5.778e-34);
   OUTLINED_FUNCTION_1_7(&dword_1C6968000, "Failed to create the cache_settings table: %@ (%d)", v4, v5);
 }
 

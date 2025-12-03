@@ -19,14 +19,14 @@
   remoteViewContainerViewController = self->_remoteViewContainerViewController;
   if (remoteViewContainerViewController)
   {
-    v4 = [(_UIResilientRemoteViewContainerViewController *)remoteViewContainerViewController remoteViewController];
-    [v4 setMediaPickerController:0];
+    remoteViewController = [(_UIResilientRemoteViewContainerViewController *)remoteViewContainerViewController remoteViewController];
+    [remoteViewController setMediaPickerController:0];
 
     [(_UIResilientRemoteViewContainerViewController *)self->_remoteViewContainerViewController willMoveToParentViewController:0];
     if ([(_UIResilientRemoteViewContainerViewController *)self->_remoteViewContainerViewController isViewLoaded])
     {
-      v5 = [(_UIResilientRemoteViewContainerViewController *)self->_remoteViewContainerViewController view];
-      [v5 removeFromSuperview];
+      view = [(_UIResilientRemoteViewContainerViewController *)self->_remoteViewContainerViewController view];
+      [view removeFromSuperview];
     }
 
     [(_UIResilientRemoteViewContainerViewController *)self->_remoteViewContainerViewController removeFromParentViewController];
@@ -39,10 +39,10 @@
 
 - (void)synchronizeSettings
 {
-  v5 = [(MPMediaPickerController_Appex *)self serviceController];
+  serviceController = [(MPMediaPickerController_Appex *)self serviceController];
   WeakRetained = objc_loadWeakRetained(&self->_mediaPickerController);
-  v4 = [WeakRetained configuration];
-  [v5 updateWithConfiguration:v4];
+  configuration = [WeakRetained configuration];
+  [serviceController updateWithConfiguration:configuration];
 }
 
 - (void)requestRemoteViewController
@@ -62,7 +62,7 @@
   v12 = __60__MPMediaPickerController_Appex_requestRemoteViewController__block_invoke_191;
   v13 = &unk_1E7680280;
   v17 = a2;
-  v14 = self;
+  selfCopy = self;
   v7 = WeakRetained;
   v15 = v7;
   v16 = &v18;

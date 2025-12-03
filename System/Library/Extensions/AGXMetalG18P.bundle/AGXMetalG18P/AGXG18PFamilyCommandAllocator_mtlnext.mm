@@ -1,11 +1,11 @@
 @interface AGXG18PFamilyCommandAllocator_mtlnext
-- (AGXG18PFamilyCommandAllocator_mtlnext)initWithDevice:(id)a3;
-- (AGXG18PFamilyCommandAllocator_mtlnext)initWithDevice:(id)a3 descriptor:(id)a4;
-- (AGXG18PFamilyCommandAllocator_mtlnext)initWithDeviceAndAliasToDevicePools:(id)a3;
+- (AGXG18PFamilyCommandAllocator_mtlnext)initWithDevice:(id)device;
+- (AGXG18PFamilyCommandAllocator_mtlnext)initWithDevice:(id)device descriptor:(id)descriptor;
+- (AGXG18PFamilyCommandAllocator_mtlnext)initWithDeviceAndAliasToDevicePools:(id)pools;
 - (unint64_t)allocatedSize;
 - (void)alertCommandBufferActivityStart;
 - (void)dealloc;
-- (void)initResourcePools:(id)a3;
+- (void)initResourcePools:(id)pools;
 - (void)reset;
 @end
 
@@ -103,11 +103,11 @@
   }
 }
 
-- (AGXG18PFamilyCommandAllocator_mtlnext)initWithDeviceAndAliasToDevicePools:(id)a3
+- (AGXG18PFamilyCommandAllocator_mtlnext)initWithDeviceAndAliasToDevicePools:(id)pools
 {
   v4.receiver = self;
   v4.super_class = AGXG18PFamilyCommandAllocator_mtlnext;
-  result = [(IOGPUMetal4CommandAllocator *)&v4 initWithDeviceAndAliasToDevicePools:a3];
+  result = [(IOGPUMetal4CommandAllocator *)&v4 initWithDeviceAndAliasToDevicePools:pools];
   if (result)
   {
     operator new();
@@ -116,38 +116,38 @@
   return result;
 }
 
-- (AGXG18PFamilyCommandAllocator_mtlnext)initWithDevice:(id)a3 descriptor:(id)a4
+- (AGXG18PFamilyCommandAllocator_mtlnext)initWithDevice:(id)device descriptor:(id)descriptor
 {
   v6.receiver = self;
   v6.super_class = AGXG18PFamilyCommandAllocator_mtlnext;
-  result = [(IOGPUMetal4CommandAllocator *)&v6 initWithDevice:a3 descriptor:a4];
+  result = [(IOGPUMetal4CommandAllocator *)&v6 initWithDevice:device descriptor:descriptor];
   if (result)
   {
-    [(AGXG18PFamilyCommandAllocator_mtlnext *)result initResourcePools:a3];
+    [(AGXG18PFamilyCommandAllocator_mtlnext *)result initResourcePools:device];
     operator new();
   }
 
   return result;
 }
 
-- (AGXG18PFamilyCommandAllocator_mtlnext)initWithDevice:(id)a3
+- (AGXG18PFamilyCommandAllocator_mtlnext)initWithDevice:(id)device
 {
   v5.receiver = self;
   v5.super_class = AGXG18PFamilyCommandAllocator_mtlnext;
   result = [(IOGPUMetal4CommandAllocator *)&v5 initWithDevice:?];
   if (result)
   {
-    [(AGXG18PFamilyCommandAllocator_mtlnext *)result initResourcePools:a3];
+    [(AGXG18PFamilyCommandAllocator_mtlnext *)result initResourcePools:device];
     operator new();
   }
 
   return result;
 }
 
-- (void)initResourcePools:(id)a3
+- (void)initResourcePools:(id)pools
 {
   v5 = *MEMORY[0x29EDCA608];
-  AGX::Device<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setupHWResourcePools(a3, v4);
+  AGX::Device<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::setupHWResourcePools(pools, v4);
   [(IOGPUMetal4CommandAllocator *)self setHwResourcePool:v4 count:44];
   self->commandBufferActivity = 0;
 }

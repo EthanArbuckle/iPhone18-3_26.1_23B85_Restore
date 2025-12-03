@@ -1,59 +1,59 @@
 @interface ICAccount
 + (BOOL)clearAccountForAppleCloudKitTable;
-+ (BOOL)hasModernAccountInContext:(id)a3;
++ (BOOL)hasModernAccountInContext:(id)context;
 + (BOOL)hidesCallNotesInCustomFolders;
 + (BOOL)hidesMathNotesInCustomFolders;
 + (BOOL)hidesSystemPaperNotesInCustomFolders;
 + (BOOL)isCloudKitAccountAvailable;
-+ (BOOL)isCloudKitAccountAvailableInContext:(id)a3;
-+ (ICAccount)accountWithIdentifier:(id)a3 context:(id)a4;
++ (BOOL)isCloudKitAccountAvailableInContext:(id)context;
++ (ICAccount)accountWithIdentifier:(id)identifier context:(id)context;
 + (ICAccountUtilities)accountUtilities;
-+ (id)accountsWithAccountType:(int)a3 context:(id)a4;
-+ (id)activeAccountWithUserRecordName:(id)a3 context:(id)a4;
-+ (id)allAccountIdentifiersInContext:(id)a3;
-+ (id)allAccountsInContext:(id)a3;
-+ (id)allActiveAccountsInContext:(id)a3 sortDescriptors:(id)a4 relationshipKeyPathsForPrefetching:(id)a5;
-+ (id)allActiveAccountsInContextSortedByAccountType:(id)a3;
-+ (id)allActiveAccountsInContextWithDefaultBeingFirstIfApplicable:(id)a3;
-+ (id)allActiveCloudKitAccountsInContext:(id)a3;
-+ (id)allCloudObjectIDsInContext:(id)a3 passingTest:(id)a4;
-+ (id)cloudKitAccountInContext:(id)a3;
-+ (id)cloudKitAccountWithIdentifier:(id)a3 context:(id)a4;
-+ (id)cloudKitIfMigratedElseLocalAccountInContext:(id)a3;
-+ (id)defaultAccountInContext:(id)a3;
-+ (id)existingCloudObjectForRecordID:(id)a3 accountID:(id)a4 context:(id)a5;
-+ (id)inMemoryAccountInContext:(id)a3;
-+ (id)localAccountInContext:(id)a3;
++ (id)accountsWithAccountType:(int)type context:(id)context;
++ (id)activeAccountWithUserRecordName:(id)name context:(id)context;
++ (id)allAccountIdentifiersInContext:(id)context;
++ (id)allAccountsInContext:(id)context;
++ (id)allActiveAccountsInContext:(id)context sortDescriptors:(id)descriptors relationshipKeyPathsForPrefetching:(id)prefetching;
++ (id)allActiveAccountsInContextSortedByAccountType:(id)type;
++ (id)allActiveAccountsInContextWithDefaultBeingFirstIfApplicable:(id)applicable;
++ (id)allActiveCloudKitAccountsInContext:(id)context;
++ (id)allCloudObjectIDsInContext:(id)context passingTest:(id)test;
++ (id)cloudKitAccountInContext:(id)context;
++ (id)cloudKitAccountWithIdentifier:(id)identifier context:(id)context;
++ (id)cloudKitIfMigratedElseLocalAccountInContext:(id)context;
++ (id)defaultAccountInContext:(id)context;
++ (id)existingCloudObjectForRecordID:(id)d accountID:(id)iD context:(id)context;
++ (id)inMemoryAccountInContext:(id)context;
++ (id)localAccountInContext:(id)context;
 + (id)localizedLocalAccountName;
 + (id)localizedLocalAccountNameMidSentence;
-+ (id)mostRecentSystemPaperNoteInManagedObjectContext:(id)a3;
-+ (id)newAccountWithIdentifier:(id)a3 type:(int)a4 context:(id)a5 persistentStore:(id)a6;
-+ (id)newLocalAccountInContext:(id)a3;
-+ (id)passwordProtectedNoteIdentifiersInAccountIdentifier:(id)a3 context:(id)a4;
-+ (id)standardFolderIdentifierWithPrefix:(id)a3 accountIdentifier:(id)a4 accountType:(int)a5;
-+ (unint64_t)numberOfCloudKitAccountsInContext:(id)a3 onlyMigrated:(BOOL)a4;
-+ (void)deleteAccount:(id)a3;
-+ (void)deleteAccountWithBatchDelete:(id)a3;
-+ (void)enumerateAllCloudObjectsInContext:(id)a3 batchSize:(unint64_t)a4 saveAfterBatch:(BOOL)a5 usingBlock:(id)a6;
++ (id)mostRecentSystemPaperNoteInManagedObjectContext:(id)context;
++ (id)newAccountWithIdentifier:(id)identifier type:(int)type context:(id)context persistentStore:(id)store;
++ (id)newLocalAccountInContext:(id)context;
++ (id)passwordProtectedNoteIdentifiersInAccountIdentifier:(id)identifier context:(id)context;
++ (id)standardFolderIdentifierWithPrefix:(id)prefix accountIdentifier:(id)identifier accountType:(int)type;
++ (unint64_t)numberOfCloudKitAccountsInContext:(id)context onlyMigrated:(BOOL)migrated;
++ (void)deleteAccount:(id)account;
++ (void)deleteAccountWithBatchDelete:(id)delete;
++ (void)enumerateAllCloudObjectsInContext:(id)context batchSize:(unint64_t)size saveAfterBatch:(BOOL)batch usingBlock:(id)block;
 + (void)initialize;
 + (void)initializeLocalAccountNamesInBackground;
-+ (void)localeDidChange:(id)a3;
-+ (void)setHidesCallNotesInCustomFolders:(BOOL)a3;
-+ (void)setHidesMathNotesInCustomFolders:(BOOL)a3;
-+ (void)setHidesSystemPaperNotesInCustomFolders:(BOOL)a3;
++ (void)localeDidChange:(id)change;
++ (void)setHidesCallNotesInCustomFolders:(BOOL)folders;
++ (void)setHidesMathNotesInCustomFolders:(BOOL)folders;
++ (void)setHidesSystemPaperNotesInCustomFolders:(BOOL)folders;
 - (BOOL)canPasswordProtectNotes;
 - (BOOL)containsSharedFolders;
-- (BOOL)hasAnyCustomFoldersIncludingSystem:(BOOL)a3;
+- (BOOL)hasAnyCustomFoldersIncludingSystem:(BOOL)system;
 - (BOOL)isDataSeparated;
 - (BOOL)isInICloudAccount;
 - (BOOL)isLocalAccount;
 - (BOOL)isManaged;
 - (BOOL)isPrimaryiCloudAccount;
 - (BOOL)isShowingDateHeaders;
-- (BOOL)mergeCloudKitRecord:(id)a3 accountID:(id)a4 approach:(int64_t)a5 mergeableFieldState:(id)a6;
+- (BOOL)mergeCloudKitRecord:(id)record accountID:(id)d approach:(int64_t)approach mergeableFieldState:(id)state;
 - (BOOL)needsToBePushedToCloud;
 - (BOOL)supportsDateHeaders;
-- (BOOL)visibleRootFoldersContainFolderWithTitle:(id)a3;
+- (BOOL)visibleRootFoldersContainFolderWithTitle:(id)title;
 - (CSSearchableItemAttributeSet)searchableItemAttributeSet;
 - (CSSearchableItemAttributeSet)userActivityContentAttributeSet;
 - (ICAccountProxy)accountProxy;
@@ -75,11 +75,11 @@
 - (id)exportableMediaDirectoryURL;
 - (id)fallbackImageDirectoryURL;
 - (id)fallbackPDFDirectoryURL;
-- (id)folderWithIdentifier:(id)a3;
+- (id)folderWithIdentifier:(id)identifier;
 - (id)ic_loggingIdentifier;
 - (id)ic_loggingValues;
 - (id)localizedNameMidSentence;
-- (id)makeCloudKitRecordForApproach:(int64_t)a3 mergeableFieldState:(id)a4;
+- (id)makeCloudKitRecordForApproach:(int64_t)approach mergeableFieldState:(id)state;
 - (id)mediaDirectoryURL;
 - (id)passwordProtectedNotes;
 - (id)predicateForCustomFolders;
@@ -92,10 +92,10 @@
 - (id)predicateForVisibleNotes;
 - (id)predicateForVisibleNotesIncludingTrash;
 - (id)previewImageDirectoryURL;
-- (id)replicaIDForBundleIdentifier:(id)a3;
+- (id)replicaIDForBundleIdentifier:(id)identifier;
 - (id)reservedAccountFolderTitles;
 - (id)searchableTextContent;
-- (id)standardFolderIdentifierWithPrefix:(id)a3;
+- (id)standardFolderIdentifierWithPrefix:(id)prefix;
 - (id)subFolderIdentifiersOrderedSet;
 - (id)subFolderOrderMergeableData;
 - (id)systemPaperBundlesDirectoryURL;
@@ -105,45 +105,45 @@
 - (id)temporaryDirectoryURL;
 - (id)uniqueUserParticipants;
 - (id)visibleFolders;
-- (id)visibleFoldersWithParent:(id)a3;
+- (id)visibleFoldersWithParent:(id)parent;
 - (id)visibleNoteContainerChildren;
 - (id)visibleNoteContainers;
 - (id)visibleNotes;
-- (id)visibleRootFolderWithTitle:(id)a3;
+- (id)visibleRootFolderWithTitle:(id)title;
 - (id)visibleSubFolders;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (signed)resolvedLockedNotesMode;
-- (unint64_t)indexOfCustomRootLevelFolder:(id)a3;
+- (unint64_t)indexOfCustomRootLevelFolder:(id)folder;
 - (unint64_t)visibleAttachmentsIncludingTrashCount;
 - (unint64_t)visibleCustomFoldersCount;
 - (unint64_t)visibleInCloudNotesIncludingTrashCount;
 - (unint64_t)visibleNotesCount;
 - (unint64_t)visibleNotesIncludingTrashCount;
 - (void)addTrashObserversIfNecessary;
-- (void)associateAppEntityWithSearchableItemAttributeSet:(id)a3;
+- (void)associateAppEntityWithSearchableItemAttributeSet:(id)set;
 - (void)awakeFromFetch;
 - (void)awakeFromInsert;
 - (void)createDefaultFolder;
 - (void)createStandardFolders;
 - (void)createTrashFolder;
 - (void)dealloc;
-- (void)deleteUnusedHashtagsWithStandardizedContent:(id)a3;
+- (void)deleteUnusedHashtagsWithStandardizedContent:(id)content;
 - (void)ensureCriticalPaperDirectoriesExist;
-- (void)managedObjectContextDidSave:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performBlockInPersonaContext:(id)a3;
-- (void)performBlockInPersonaContextIfNecessary:(id)a3;
+- (void)managedObjectContextDidSave:(id)save;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performBlockInPersonaContext:(id)context;
+- (void)performBlockInPersonaContextIfNecessary:(id)necessary;
 - (void)prepareForDeletion;
 - (void)removeTrashObserversIfNecessary;
-- (void)setAccountType:(int)a3;
-- (void)setDidChooseToMigrate:(BOOL)a3;
-- (void)setMarkedForDeletion:(BOOL)a3;
-- (void)setName:(id)a3;
-- (void)setResolvedLockedNotesMode:(signed __int16)a3;
-- (void)setSubFolderOrderMergeableData:(id)a3;
-- (void)setUserRecordName:(id)a3;
+- (void)setAccountType:(int)type;
+- (void)setDidChooseToMigrate:(BOOL)migrate;
+- (void)setMarkedForDeletion:(BOOL)deletion;
+- (void)setName:(id)name;
+- (void)setResolvedLockedNotesMode:(signed __int16)mode;
+- (void)setSubFolderOrderMergeableData:(id)data;
+- (void)setUserRecordName:(id)name;
 - (void)updateAccountNameForAccountListSorting;
-- (void)updateFullNameAndEmail:(id)a3;
+- (void)updateFullNameAndEmail:(id)email;
 - (void)updateSubFolderMergeableDataChangeCount;
 - (void)updateTrashFolderHiddenNoteContainerState;
 - (void)willTurnIntoFault;
@@ -153,18 +153,18 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v3 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     v4 = accountForAppleCloudKitTable;
-    accountForAppleCloudKitTable = v3;
+    accountForAppleCloudKitTable = weakToStrongObjectsMapTable;
 
-    v5 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable2 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     v6 = accountsForAppleCloudKitTable;
-    accountsForAppleCloudKitTable = v5;
+    accountsForAppleCloudKitTable = weakToStrongObjectsMapTable2;
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:a1 selector:sel_localeDidChange_ name:*MEMORY[0x277CBE620] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_localeDidChange_ name:*MEMORY[0x277CBE620] object:0];
   }
 }
 
@@ -202,8 +202,8 @@ LABEL_5:
   v5.receiver = self;
   v5.super_class = ICAccount;
   [(ICCloudSyncingObject *)&v5 awakeFromFetch];
-  v3 = [(ICAccount *)self identifier];
-  v4 = [v3 isEqualToString:@"LocalAccount"];
+  identifier = [(ICAccount *)self identifier];
+  v4 = [identifier isEqualToString:@"LocalAccount"];
 
   if (v4)
   {
@@ -215,11 +215,11 @@ LABEL_5:
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277CCA920]);
-  v4 = [(ICAccount *)self managedObjectContext];
-  v5 = [ICFolder predicateForVisibleFoldersInContext:v4];
+  managedObjectContext = [(ICAccount *)self managedObjectContext];
+  v5 = [ICFolder predicateForVisibleFoldersInContext:managedObjectContext];
   v10[0] = v5;
-  v6 = [(ICAccount *)self predicateForFolders];
-  v10[1] = v6;
+  predicateForFolders = [(ICAccount *)self predicateForFolders];
+  v10[1] = predicateForFolders;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
   v8 = [v3 initWithType:1 subpredicates:v7];
 
@@ -231,8 +231,8 @@ LABEL_5:
   trashFolder = self->_trashFolder;
   if (!trashFolder)
   {
-    v4 = [(ICAccount *)self trashFolderIdentifier];
-    v5 = [(ICAccount *)self folderWithIdentifier:v4];
+    trashFolderIdentifier = [(ICAccount *)self trashFolderIdentifier];
+    v5 = [(ICAccount *)self folderWithIdentifier:trashFolderIdentifier];
     v6 = self->_trashFolder;
     self->_trashFolder = v5;
 
@@ -257,9 +257,9 @@ LABEL_5:
 
 - (id)visibleFolders
 {
-  v3 = [(ICAccount *)self predicateForVisibleFolders];
-  v4 = [(ICAccount *)self managedObjectContext];
-  v5 = [ICFolder foldersMatchingPredicate:v3 context:v4];
+  predicateForVisibleFolders = [(ICAccount *)self predicateForVisibleFolders];
+  managedObjectContext = [(ICAccount *)self managedObjectContext];
+  v5 = [ICFolder foldersMatchingPredicate:predicateForVisibleFolders context:managedObjectContext];
 
   return v5;
 }
@@ -267,23 +267,23 @@ LABEL_5:
 - (id)predicateForFolders
 {
   v2 = MEMORY[0x277CCAC30];
-  v3 = [(ICAccount *)self identifier];
-  v4 = [v2 predicateWithFormat:@"account.identifier == %@", v3];
+  identifier = [(ICAccount *)self identifier];
+  v4 = [v2 predicateWithFormat:@"account.identifier == %@", identifier];
 
   return v4;
 }
 
 - (void)updateTrashFolderHiddenNoteContainerState
 {
-  v2 = [(ICAccount *)self trashFolder];
-  v3 = [v2 managedObjectContext];
+  trashFolder = [(ICAccount *)self trashFolder];
+  managedObjectContext = [trashFolder managedObjectContext];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __54__ICAccount_updateTrashFolderHiddenNoteContainerState__block_invoke;
   v5[3] = &unk_278194B00;
-  v6 = v2;
-  v4 = v2;
-  [v3 performBlockAndWait:v5];
+  v6 = trashFolder;
+  v4 = trashFolder;
+  [managedObjectContext performBlockAndWait:v5];
 }
 
 uint64_t __54__ICAccount_updateTrashFolderHiddenNoteContainerState__block_invoke(uint64_t a1)
@@ -309,8 +309,8 @@ uint64_t __54__ICAccount_updateTrashFolderHiddenNoteContainerState__block_invoke
   defaultFolder = self->_defaultFolder;
   if (!defaultFolder)
   {
-    v4 = [(ICAccount *)self defaultFolderIdentifier];
-    v5 = [(ICAccount *)self folderWithIdentifier:v4];
+    defaultFolderIdentifier = [(ICAccount *)self defaultFolderIdentifier];
+    v5 = [(ICAccount *)self folderWithIdentifier:defaultFolderIdentifier];
     v6 = self->_defaultFolder;
     self->_defaultFolder = v5;
 
@@ -321,9 +321,9 @@ uint64_t __54__ICAccount_updateTrashFolderHiddenNoteContainerState__block_invoke
       v7 = self->_defaultFolder;
     }
 
-    v8 = [(ICFolder *)v7 markedForDeletion];
+    markedForDeletion = [(ICFolder *)v7 markedForDeletion];
     defaultFolder = self->_defaultFolder;
-    if (v8)
+    if (markedForDeletion)
     {
       [(ICFolder *)defaultFolder setMarkedForDeletion:0];
       defaultFolder = self->_defaultFolder;
@@ -335,9 +335,9 @@ uint64_t __54__ICAccount_updateTrashFolderHiddenNoteContainerState__block_invoke
 
 - (unint64_t)visibleNotesIncludingTrashCount
 {
-  v3 = [(ICAccount *)self predicateForVisibleNotesIncludingTrash];
-  v4 = [(ICAccount *)self managedObjectContext];
-  v5 = [ICNote countOfNotesMatchingPredicate:v3 context:v4];
+  predicateForVisibleNotesIncludingTrash = [(ICAccount *)self predicateForVisibleNotesIncludingTrash];
+  managedObjectContext = [(ICAccount *)self managedObjectContext];
+  v5 = [ICNote countOfNotesMatchingPredicate:predicateForVisibleNotesIncludingTrash context:managedObjectContext];
 
   return v5;
 }
@@ -346,10 +346,10 @@ uint64_t __54__ICAccount_updateTrashFolderHiddenNoteContainerState__block_invoke
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCA920];
-  v4 = [(ICAccount *)self predicateForNotesInAccount];
-  v10[0] = v4;
-  v5 = [(ICAccount *)self managedObjectContext];
-  v6 = [ICNote predicateForVisibleNotesIncludingTrash:1 includingSystemPaper:1 includingMathNotes:1 includingCallNotes:1 inContext:v5];
+  predicateForNotesInAccount = [(ICAccount *)self predicateForNotesInAccount];
+  v10[0] = predicateForNotesInAccount;
+  managedObjectContext = [(ICAccount *)self managedObjectContext];
+  v6 = [ICNote predicateForVisibleNotesIncludingTrash:1 includingSystemPaper:1 includingMathNotes:1 includingCallNotes:1 inContext:managedObjectContext];
   v10[1] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
   v8 = [v3 andPredicateWithSubpredicates:v7];
@@ -398,18 +398,18 @@ LABEL_5:
   {
     if (![(ICAccount *)self didAddTrashObservers])
     {
-      v3 = [(ICAccount *)self trashFolder];
+      trashFolder = [(ICAccount *)self trashFolder];
 
-      if (v3)
+      if (trashFolder)
       {
-        v4 = [(ICAccount *)self trashFolder];
-        [v4 ic_addObserver:self forKeyPath:@"notes" context:compoundliteral explicitOptions:4];
+        trashFolder2 = [(ICAccount *)self trashFolder];
+        [trashFolder2 ic_addObserver:self forKeyPath:@"notes" context:compoundliteral explicitOptions:4];
 
         [(ICAccount *)self setDidAddTrashObservers:1];
-        v7 = [MEMORY[0x277CCAB98] defaultCenter];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
         v5 = *MEMORY[0x277CBE1B0];
-        v6 = [(ICAccount *)self managedObjectContext];
-        [v7 addObserver:self selector:sel_managedObjectContextDidSave_ name:v5 object:v6];
+        managedObjectContext = [(ICAccount *)self managedObjectContext];
+        [defaultCenter addObserver:self selector:sel_managedObjectContextDidSave_ name:v5 object:managedObjectContext];
       }
     }
   }
@@ -427,14 +427,14 @@ LABEL_5:
 {
   if ([(ICAccount *)self didAddTrashObservers])
   {
-    v3 = [(ICAccount *)self trashFolder];
-    [v3 ic_removeObserver:self forKeyPath:@"notes" context:compoundliteral];
+    trashFolder = [(ICAccount *)self trashFolder];
+    [trashFolder ic_removeObserver:self forKeyPath:@"notes" context:compoundliteral];
 
     [(ICAccount *)self setDidAddTrashObservers:0];
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
     v4 = *MEMORY[0x277CBE1B0];
-    v5 = [(ICAccount *)self managedObjectContext];
-    [v6 removeObserver:self name:v4 object:v5];
+    managedObjectContext = [(ICAccount *)self managedObjectContext];
+    [defaultCenter removeObserver:self name:v4 object:managedObjectContext];
   }
 }
 
@@ -453,55 +453,55 @@ LABEL_5:
 
 + (BOOL)hidesSystemPaperNotesInCustomFolders
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"ICAccountHidesSystemPaperNotesInCustomFolders"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"ICAccountHidesSystemPaperNotesInCustomFolders"];
 
   return v3;
 }
 
 + (BOOL)hidesMathNotesInCustomFolders
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"ICAccountHidesMathNotesInCustomFolders"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"ICAccountHidesMathNotesInCustomFolders"];
 
   return v3;
 }
 
 + (BOOL)hidesCallNotesInCustomFolders
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"ICAccountHidesCallNotesInCustomFolders"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"ICAccountHidesCallNotesInCustomFolders"];
 
   return v3;
 }
 
 - (BOOL)isShowingDateHeaders
 {
-  v2 = [(ICAccount *)self supportsDateHeaders];
-  if (v2)
+  supportsDateHeaders = [(ICAccount *)self supportsDateHeaders];
+  if (supportsDateHeaders)
   {
-    LOBYTE(v2) = [MEMORY[0x277D361C8] defaultDateHeadersType] == 2;
+    LOBYTE(supportsDateHeaders) = [MEMORY[0x277D361C8] defaultDateHeadersType] == 2;
   }
 
-  return v2;
+  return supportsDateHeaders;
 }
 
 - (BOOL)supportsDateHeaders
 {
-  v2 = [(ICNoteContainer *)self customNoteSortType];
-  v3 = [v2 resolvedCustomSortTypeOrder] != 3;
+  customNoteSortType = [(ICNoteContainer *)self customNoteSortType];
+  v3 = [customNoteSortType resolvedCustomSortTypeOrder] != 3;
 
   return v3;
 }
 
 - (id)predicateForVisibleNotes
 {
-  v3 = [(ICCloudSyncingObject *)self viewContext];
+  viewContext = [(ICCloudSyncingObject *)self viewContext];
   v4 = MEMORY[0x277CBEB18];
-  v5 = [(ICAccount *)self predicateForNotesInAccount];
-  v6 = [v4 arrayWithObject:v5];
+  predicateForNotesInAccount = [(ICAccount *)self predicateForNotesInAccount];
+  v6 = [v4 arrayWithObject:predicateForNotesInAccount];
 
-  v7 = +[ICNote predicateForVisibleNotesIncludingTrash:includingSystemPaper:includingMathNotes:includingCallNotes:inContext:](ICNote, "predicateForVisibleNotesIncludingTrash:includingSystemPaper:includingMathNotes:includingCallNotes:inContext:", 0, +[ICAccount hidesSystemPaperNotesInCustomFolders](ICAccount, "hidesSystemPaperNotesInCustomFolders") ^ 1, +[ICAccount hidesMathNotesInCustomFolders](ICAccount, "hidesMathNotesInCustomFolders") ^ 1, +[ICAccount hidesCallNotesInCustomFolders]^ 1, v3);
+  v7 = +[ICNote predicateForVisibleNotesIncludingTrash:includingSystemPaper:includingMathNotes:includingCallNotes:inContext:](ICNote, "predicateForVisibleNotesIncludingTrash:includingSystemPaper:includingMathNotes:includingCallNotes:inContext:", 0, +[ICAccount hidesSystemPaperNotesInCustomFolders](ICAccount, "hidesSystemPaperNotesInCustomFolders") ^ 1, +[ICAccount hidesMathNotesInCustomFolders](ICAccount, "hidesMathNotesInCustomFolders") ^ 1, +[ICAccount hidesCallNotesInCustomFolders]^ 1, viewContext);
   [v6 ic_addNonNilObject:v7];
 
   v8 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v6];
@@ -511,33 +511,33 @@ LABEL_5:
 
 - (BOOL)isLocalAccount
 {
-  v2 = [(ICAccount *)self identifier];
-  v3 = [v2 isEqualToString:@"LocalAccount"];
+  identifier = [(ICAccount *)self identifier];
+  v3 = [identifier isEqualToString:@"LocalAccount"];
 
   return v3;
 }
 
 - (id)mediaDirectoryURL
 {
-  v2 = [(ICAccount *)self accountFilesDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:*MEMORY[0x277D360D0] isDirectory:1];
+  accountFilesDirectoryURL = [(ICAccount *)self accountFilesDirectoryURL];
+  v3 = [accountFilesDirectoryURL URLByAppendingPathComponent:*MEMORY[0x277D360D0] isDirectory:1];
 
   return v3;
 }
 
 - (id)accountFilesDirectoryURL
 {
-  v3 = [objc_opt_class() accountUtilities];
-  v4 = [(ICAccount *)self identifier];
-  v5 = [v3 applicationDocumentsURLForAccountIdentifier:v4];
+  accountUtilities = [objc_opt_class() accountUtilities];
+  identifier = [(ICAccount *)self identifier];
+  v5 = [accountUtilities applicationDocumentsURLForAccountIdentifier:identifier];
 
-  v6 = [(ICAccount *)self identifier];
-  if (v6 && (v7 = v6, v8 = [(ICAccount *)self storeDataSeparately], v7, (v8 & 1) != 0))
+  identifier2 = [(ICAccount *)self identifier];
+  if (identifier2 && (v7 = identifier2, v8 = [(ICAccount *)self storeDataSeparately], v7, (v8 & 1) != 0))
   {
     v9 = [v5 URLByAppendingPathComponent:*MEMORY[0x277D360F0] isDirectory:1];
 
-    v10 = [(ICAccount *)self identifier];
-    v11 = [v9 URLByAppendingPathComponent:v10 isDirectory:1];
+    identifier3 = [(ICAccount *)self identifier];
+    v11 = [v9 URLByAppendingPathComponent:identifier3 isDirectory:1];
   }
 
   else
@@ -554,9 +554,9 @@ LABEL_5:
   v2 = _accountUtilities;
   if (!_accountUtilities)
   {
-    v3 = [MEMORY[0x277D36178] sharedInstance];
+    mEMORY[0x277D36178] = [MEMORY[0x277D36178] sharedInstance];
     v4 = _accountUtilities;
-    _accountUtilities = v3;
+    _accountUtilities = mEMORY[0x277D36178];
 
     v2 = _accountUtilities;
   }
@@ -566,8 +566,8 @@ LABEL_5:
 
 - (BOOL)isManaged
 {
-  v3 = [(ICAccount *)self identifier];
-  v4 = [v3 length];
+  identifier = [(ICAccount *)self identifier];
+  v4 = [identifier length];
 
   if (!v4)
   {
@@ -575,45 +575,45 @@ LABEL_5:
   }
 
   v5 = +[ICAccount accountUtilities];
-  v6 = [(ICAccount *)self identifier];
-  v7 = [v5 isManagedACAccountWithIdentifier:v6];
+  identifier2 = [(ICAccount *)self identifier];
+  v7 = [v5 isManagedACAccountWithIdentifier:identifier2];
 
   return v7;
 }
 
 - (BOOL)isPrimaryiCloudAccount
 {
-  v3 = [(ICAccount *)self identifier];
-  if ([v3 length])
+  identifier = [(ICAccount *)self identifier];
+  if ([identifier length])
   {
-    v4 = [(ICAccount *)self accountType];
+    accountType = [(ICAccount *)self accountType];
 
-    if (v4 != 1)
+    if (accountType != 1)
     {
       return 0;
     }
 
-    v3 = +[ICAccount accountUtilities];
-    v5 = [(ICAccount *)self identifier];
-    v6 = [v3 iCloudACAccountWithIdentifier:v5];
-    v7 = [v6 ic_isPrimaryAppleAccount];
+    identifier = +[ICAccount accountUtilities];
+    identifier2 = [(ICAccount *)self identifier];
+    v6 = [identifier iCloudACAccountWithIdentifier:identifier2];
+    ic_isPrimaryAppleAccount = [v6 ic_isPrimaryAppleAccount];
   }
 
   else
   {
-    v7 = 0;
+    ic_isPrimaryAppleAccount = 0;
   }
 
-  return v7;
+  return ic_isPrimaryAppleAccount;
 }
 
 - (NSString)searchIndexingIdentifier
 {
-  v2 = [(ICAccount *)self objectID];
-  v3 = [v2 URIRepresentation];
-  v4 = [v3 absoluteString];
+  objectID = [(ICAccount *)self objectID];
+  uRIRepresentation = [objectID URIRepresentation];
+  absoluteString = [uRIRepresentation absoluteString];
 
-  return v4;
+  return absoluteString;
 }
 
 - (CSSearchableItemAttributeSet)userActivityContentAttributeSet
@@ -625,19 +625,19 @@ LABEL_5:
 
 - (CSSearchableItemAttributeSet)searchableItemAttributeSet
 {
-  v3 = [(ICAccount *)self userActivityContentAttributeSet];
-  v4 = [(ICAccount *)self name];
-  if (![v4 length])
+  userActivityContentAttributeSet = [(ICAccount *)self userActivityContentAttributeSet];
+  name = [(ICAccount *)self name];
+  if (![name length])
   {
-    v5 = [(ICAccount *)self username];
+    username = [(ICAccount *)self username];
 
-    v4 = v5;
+    name = username;
   }
 
-  [v3 setDisplayName:v4];
-  [v3 setTextContent:v4];
-  [v3 setIc_searchResultType:3];
-  [v3 ic_populateValuesForSpecializedFields];
+  [userActivityContentAttributeSet setDisplayName:name];
+  [userActivityContentAttributeSet setTextContent:name];
+  [userActivityContentAttributeSet setIc_searchResultType:3];
+  [userActivityContentAttributeSet ic_populateValuesForSpecializedFields];
   if ([(ICAccount *)self isManaged])
   {
     v6 = &unk_282747AC0;
@@ -648,22 +648,22 @@ LABEL_5:
     v6 = &unk_282747AD8;
   }
 
-  [v3 setDataOwnerType:v6];
+  [userActivityContentAttributeSet setDataOwnerType:v6];
   if (objc_opt_respondsToSelector())
   {
-    [(ICAccount *)self associateAppEntityWithSearchableItemAttributeSet:v3];
+    [(ICAccount *)self associateAppEntityWithSearchableItemAttributeSet:userActivityContentAttributeSet];
   }
 
-  return v3;
+  return userActivityContentAttributeSet;
 }
 
 - (id)searchableTextContent
 {
-  v2 = [(ICAccount *)self name];
-  v3 = v2;
-  if (v2)
+  name = [(ICAccount *)self name];
+  v3 = name;
+  if (name)
   {
-    v4 = v2;
+    v4 = name;
   }
 
   else
@@ -678,8 +678,8 @@ LABEL_5:
 
 - (BOOL)isDataSeparated
 {
-  v3 = [(ICAccount *)self identifier];
-  v4 = [v3 length];
+  identifier = [(ICAccount *)self identifier];
+  v4 = [identifier length];
 
   if (!v4)
   {
@@ -687,33 +687,33 @@ LABEL_5:
   }
 
   v5 = +[ICAccount accountUtilities];
-  v6 = [(ICAccount *)self identifier];
-  v7 = [v5 iCloudACAccountWithIdentifier:v6];
+  identifier2 = [(ICAccount *)self identifier];
+  v7 = [v5 iCloudACAccountWithIdentifier:identifier2];
 
-  LOBYTE(v6) = [v7 ic_shouldCreateSeparatePersistentStore];
-  return v6;
+  LOBYTE(identifier2) = [v7 ic_shouldCreateSeparatePersistentStore];
+  return identifier2;
 }
 
 - (NSString)dsid
 {
   if (!self->_dsid)
   {
-    v3 = [(ICAccount *)self identifier];
-    if ([v3 length])
+    identifier = [(ICAccount *)self identifier];
+    if ([identifier length])
     {
-      v4 = [(ICAccount *)self accountType];
+      accountType = [(ICAccount *)self accountType];
 
-      if (v4 != 1)
+      if (accountType != 1)
       {
         goto LABEL_6;
       }
 
-      v3 = +[ICAccount accountUtilities];
-      v5 = [(ICAccount *)self identifier];
-      v6 = [v3 iCloudACAccountWithIdentifier:v5];
-      v7 = [v6 aa_personID];
+      identifier = +[ICAccount accountUtilities];
+      identifier2 = [(ICAccount *)self identifier];
+      v6 = [identifier iCloudACAccountWithIdentifier:identifier2];
+      aa_personID = [v6 aa_personID];
       dsid = self->_dsid;
-      self->_dsid = v7;
+      self->_dsid = aa_personID;
     }
   }
 
@@ -727,22 +727,22 @@ LABEL_6:
 {
   if (!self->_altDSID)
   {
-    v3 = [(ICAccount *)self identifier];
-    if ([v3 length])
+    identifier = [(ICAccount *)self identifier];
+    if ([identifier length])
     {
-      v4 = [(ICAccount *)self accountType];
+      accountType = [(ICAccount *)self accountType];
 
-      if (v4 != 1)
+      if (accountType != 1)
       {
         goto LABEL_6;
       }
 
-      v3 = +[ICAccount accountUtilities];
-      v5 = [(ICAccount *)self identifier];
-      v6 = [v3 iCloudACAccountWithIdentifier:v5];
-      v7 = [v6 aa_altDSID];
+      identifier = +[ICAccount accountUtilities];
+      identifier2 = [(ICAccount *)self identifier];
+      v6 = [identifier iCloudACAccountWithIdentifier:identifier2];
+      aa_altDSID = [v6 aa_altDSID];
       altDSID = self->_altDSID;
-      self->_altDSID = v7;
+      self->_altDSID = aa_altDSID;
     }
   }
 
@@ -756,22 +756,22 @@ LABEL_6:
 {
   if (!self->_username)
   {
-    v3 = [(ICAccount *)self identifier];
-    if ([v3 length])
+    identifier = [(ICAccount *)self identifier];
+    if ([identifier length])
     {
-      v4 = [(ICAccount *)self accountType];
+      accountType = [(ICAccount *)self accountType];
 
-      if (v4 != 1)
+      if (accountType != 1)
       {
         goto LABEL_6;
       }
 
-      v3 = +[ICAccount accountUtilities];
-      v5 = [(ICAccount *)self identifier];
-      v6 = [v3 iCloudACAccountWithIdentifier:v5];
-      v7 = [v6 username];
+      identifier = +[ICAccount accountUtilities];
+      identifier2 = [(ICAccount *)self identifier];
+      v6 = [identifier iCloudACAccountWithIdentifier:identifier2];
+      username = [v6 username];
       username = self->_username;
-      self->_username = v7;
+      self->_username = username;
     }
   }
 
@@ -784,13 +784,13 @@ LABEL_6:
 - (id)cacheKey
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(ICAccount *)self identifier];
-  v4 = [v2 stringWithFormat:@"%@:%@", v3, 0];
+  identifier = [(ICAccount *)self identifier];
+  v4 = [v2 stringWithFormat:@"%@:%@", identifier, 0];
 
   return v4;
 }
 
-+ (void)localeDidChange:(id)a3
++ (void)localeDidChange:(id)change
 {
   obj = objc_opt_class();
   objc_sync_enter(obj);
@@ -825,16 +825,16 @@ LABEL_6:
   [v3 removeMainKeyFromKeychainForObject:self];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  if (([(ICAccount *)self ic_didAddObserverForContext:a6 inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotesSupport/Ironcade/Shared/CoreData/ICAccount.m"]& 1) != 0)
+  changeCopy = change;
+  objectCopy = object;
+  pathCopy = path;
+  if (([(ICAccount *)self ic_didAddObserverForContext:context inScope:"/Library/Caches/com.apple.xbs/Sources/MobileNotesSupport/Ironcade/Shared/CoreData/ICAccount.m"]& 1) != 0)
   {
-    v13 = [(ICAccount *)self ic_shouldIgnoreObserveValue:v10 ofObject:v11 forKeyPath:v12];
+    v13 = [(ICAccount *)self ic_shouldIgnoreObserveValue:changeCopy ofObject:objectCopy forKeyPath:pathCopy];
 
-    if (a6 == compoundliteral && (v13 & 1) == 0)
+    if (context == compoundliteral && (v13 & 1) == 0)
     {
 
       [(ICAccount *)self updateTrashFolderHiddenNoteContainerState];
@@ -845,13 +845,13 @@ LABEL_6:
   {
     v14.receiver = self;
     v14.super_class = ICAccount;
-    [(ICAccount *)&v14 observeValueForKeyPath:v12 ofObject:v11 change:v10 context:a6];
+    [(ICAccount *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)setMarkedForDeletion:(BOOL)a3
+- (void)setMarkedForDeletion:(BOOL)deletion
 {
-  if (a3)
+  if (deletion)
   {
     v3 = os_log_create("com.apple.notes", "Accounts");
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -872,43 +872,43 @@ LABEL_6:
 
 - (id)accountDataCreateIfNecessary
 {
-  v3 = [(ICAccount *)self accountData];
+  accountData = [(ICAccount *)self accountData];
 
-  if (!v3)
+  if (!accountData)
   {
     v4 = [ICAccountData newAccountDataForAccount:self];
     [(ICAccount *)self setAccountData:v4];
   }
 
-  v5 = [(ICAccount *)self accountData];
-  v6 = [v5 markedForDeletion];
+  accountData2 = [(ICAccount *)self accountData];
+  markedForDeletion = [accountData2 markedForDeletion];
 
-  if (v6)
+  if (markedForDeletion)
   {
-    v7 = [(ICAccount *)self accountData];
-    [v7 setMarkedForDeletion:0];
+    accountData3 = [(ICAccount *)self accountData];
+    [accountData3 setMarkedForDeletion:0];
   }
 
   return [(ICAccount *)self accountData];
 }
 
-- (void)performBlockInPersonaContext:(id)a3
+- (void)performBlockInPersonaContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v6 = +[ICAccount accountUtilities];
-  v5 = [(ICAccount *)self identifier];
-  [v6 performBlockInPersonaContext:v4 forAccountIdentifier:v5];
+  identifier = [(ICAccount *)self identifier];
+  [v6 performBlockInPersonaContext:contextCopy forAccountIdentifier:identifier];
 }
 
-- (void)performBlockInPersonaContextIfNecessary:(id)a3
+- (void)performBlockInPersonaContextIfNecessary:(id)necessary
 {
-  v4 = a3;
+  necessaryCopy = necessary;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__ICAccount_performBlockInPersonaContextIfNecessary___block_invoke;
   v6[3] = &unk_278195F28;
-  v7 = v4;
-  v5 = v4;
+  v7 = necessaryCopy;
+  v5 = necessaryCopy;
   [(ICAccount *)self performBlockInPersonaContext:v6];
 }
 
@@ -925,16 +925,16 @@ uint64_t __53__ICAccount_performBlockInPersonaContextIfNecessary___block_invoke(
 
 - (void)createStandardFolders
 {
-  v7 = [a2 identifier];
-  *a1 = 138412290;
-  *a3 = v7;
-  _os_log_debug_impl(&dword_214D51000, a4, OS_LOG_TYPE_DEBUG, "Existing folder's account isn't deleted. Faulting it by checking its identifier: (%@)", a1, 0xCu);
+  identifier = [a2 identifier];
+  *self = 138412290;
+  *a3 = identifier;
+  _os_log_debug_impl(&dword_214D51000, a4, OS_LOG_TYPE_DEBUG, "Existing folder's account isn't deleted. Faulting it by checking its identifier: (%@)", self, 0xCu);
 }
 
 - (void)createDefaultFolder
 {
-  v3 = [(ICAccount *)self defaultFolderIdentifier];
-  v4 = [ICFolder newFolderWithIdentifier:v3 account:self];
+  defaultFolderIdentifier = [(ICAccount *)self defaultFolderIdentifier];
+  v4 = [ICFolder newFolderWithIdentifier:defaultFolderIdentifier account:self];
   defaultFolder = self->_defaultFolder;
   self->_defaultFolder = v4;
 
@@ -949,8 +949,8 @@ uint64_t __53__ICAccount_performBlockInPersonaContextIfNecessary___block_invoke(
 
 - (void)createTrashFolder
 {
-  v3 = [(ICAccount *)self trashFolderIdentifier];
-  v4 = [ICFolder newFolderWithIdentifier:v3 account:self];
+  trashFolderIdentifier = [(ICAccount *)self trashFolderIdentifier];
+  v4 = [ICFolder newFolderWithIdentifier:trashFolderIdentifier account:self];
   trashFolder = self->_trashFolder;
   self->_trashFolder = v4;
 
@@ -966,34 +966,34 @@ uint64_t __53__ICAccount_performBlockInPersonaContextIfNecessary___block_invoke(
   [(ICFolder *)v7 updateChangeCountWithReason:@"Created trash folder"];
 }
 
-- (id)standardFolderIdentifierWithPrefix:(id)a3
+- (id)standardFolderIdentifierWithPrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   v5 = objc_opt_class();
-  v6 = [(ICAccount *)self identifier];
-  v7 = [v5 standardFolderIdentifierWithPrefix:v4 accountIdentifier:v6 accountType:{-[ICAccount accountType](self, "accountType")}];
+  identifier = [(ICAccount *)self identifier];
+  v7 = [v5 standardFolderIdentifierWithPrefix:prefixCopy accountIdentifier:identifier accountType:{-[ICAccount accountType](self, "accountType")}];
 
   return v7;
 }
 
-+ (id)standardFolderIdentifierWithPrefix:(id)a3 accountIdentifier:(id)a4 accountType:(int)a5
++ (id)standardFolderIdentifierWithPrefix:(id)prefix accountIdentifier:(id)identifier accountType:(int)type
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v8)
+  prefixCopy = prefix;
+  identifierCopy = identifier;
+  v9 = identifierCopy;
+  if (identifierCopy)
   {
-    if (a5 == 1)
+    if (type == 1)
     {
       v10 = @"CloudKit";
     }
 
     else
     {
-      v10 = v8;
+      v10 = identifierCopy;
     }
 
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", v7, v10];
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", prefixCopy, v10];
   }
 
   else
@@ -1012,73 +1012,73 @@ uint64_t __53__ICAccount_performBlockInPersonaContextIfNecessary___block_invoke(
 
 - (NSString)localizedName
 {
-  v3 = [(ICAccount *)self identifier];
-  v4 = [v3 isEqualToString:@"InMemoryAccount"];
+  identifier = [(ICAccount *)self identifier];
+  v4 = [identifier isEqualToString:@"InMemoryAccount"];
 
   if (v4 || [(ICAccount *)self accountType]!= 3)
   {
-    v5 = [(ICAccount *)self name];
+    name = [(ICAccount *)self name];
   }
 
   else
   {
-    v5 = +[ICAccount localizedLocalAccountName];
+    name = +[ICAccount localizedLocalAccountName];
   }
 
-  return v5;
+  return name;
 }
 
 - (id)localizedNameMidSentence
 {
-  v3 = [(ICAccount *)self identifier];
-  v4 = [v3 isEqualToString:@"InMemoryAccount"];
+  identifier = [(ICAccount *)self identifier];
+  v4 = [identifier isEqualToString:@"InMemoryAccount"];
 
   if (v4 || [(ICAccount *)self accountType]!= 3)
   {
-    v5 = [(ICAccount *)self name];
+    name = [(ICAccount *)self name];
   }
 
   else
   {
-    v5 = +[ICAccount localizedLocalAccountNameMidSentence];
+    name = +[ICAccount localizedLocalAccountNameMidSentence];
   }
 
-  return v5;
+  return name;
 }
 
 - (NSPersistentStore)persistentStore
 {
-  v2 = [(ICAccount *)self objectID];
-  v3 = [v2 persistentStore];
+  objectID = [(ICAccount *)self objectID];
+  persistentStore = [objectID persistentStore];
 
-  return v3;
+  return persistentStore;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(ICAccount *)self accountType];
-    v7 = [v5 accountType];
-    v8 = [(ICAccount *)self accountType];
-    if (v6 == v7)
+    v5 = compareCopy;
+    accountType = [(ICAccount *)self accountType];
+    accountType2 = [v5 accountType];
+    accountType3 = [(ICAccount *)self accountType];
+    if (accountType == accountType2)
     {
-      if (v8 != 1)
+      if (accountType3 != 1)
       {
         goto LABEL_18;
       }
 
-      v9 = [MEMORY[0x277D36230] persistentStoreURL];
-      v10 = [(ICAccount *)self persistentStore];
-      v11 = [v10 URL];
-      v12 = [v11 isEqual:v9];
+      persistentStoreURL = [MEMORY[0x277D36230] persistentStoreURL];
+      persistentStore = [(ICAccount *)self persistentStore];
+      v11 = [persistentStore URL];
+      v12 = [v11 isEqual:persistentStoreURL];
 
-      v13 = [v5 persistentStore];
-      v14 = [v13 URL];
-      v15 = [v14 isEqual:v9];
+      persistentStore2 = [v5 persistentStore];
+      v14 = [persistentStore2 URL];
+      v15 = [v14 isEqual:persistentStoreURL];
 
       if (v12 && !v15)
       {
@@ -1091,9 +1091,9 @@ LABEL_19:
       if (v12 & 1 | ((v15 & 1) == 0))
       {
 LABEL_18:
-        v9 = [(ICAccount *)self name];
-        v18 = [v5 name];
-        v16 = [v9 localizedCaseInsensitiveCompare:v18];
+        persistentStoreURL = [(ICAccount *)self name];
+        name = [v5 name];
+        v16 = [persistentStoreURL localizedCaseInsensitiveCompare:name];
 
         goto LABEL_19;
       }
@@ -1101,7 +1101,7 @@ LABEL_18:
 
     else
     {
-      if (v8 == 1)
+      if (accountType3 == 1)
       {
         v16 = -1;
 LABEL_20:
@@ -1130,7 +1130,7 @@ LABEL_20:
     v17 = os_log_create("com.apple.notes", "Accounts");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      [(ICAccount *)self compare:v4, v17];
+      [(ICAccount *)self compare:compareCopy, v17];
     }
 
     v16 = 0;
@@ -1143,9 +1143,9 @@ LABEL_21:
 
 - (unint64_t)visibleCustomFoldersCount
 {
-  v3 = [(ICAccount *)self predicateForCustomFolders];
-  v4 = [(ICAccount *)self managedObjectContext];
-  v5 = [ICFolder countOfFoldersMatchingPredicate:v3 context:v4];
+  predicateForCustomFolders = [(ICAccount *)self predicateForCustomFolders];
+  managedObjectContext = [(ICAccount *)self managedObjectContext];
+  v5 = [ICFolder countOfFoldersMatchingPredicate:predicateForCustomFolders context:managedObjectContext];
 
   return v5;
 }
@@ -1157,8 +1157,8 @@ LABEL_21:
     return 0;
   }
 
-  v3 = [(ICAccount *)self visibleFolders];
-  v4 = [v3 ic_containsObjectPassingTest:&__block_literal_global_25];
+  visibleFolders = [(ICAccount *)self visibleFolders];
+  v4 = [visibleFolders ic_containsObjectPassingTest:&__block_literal_global_25];
 
   return v4;
 }
@@ -1166,40 +1166,40 @@ LABEL_21:
 - (id)customRootLevelFolders
 {
   v12[3] = *MEMORY[0x277D85DE8];
-  v3 = [(ICAccount *)self predicateForVisibleFolders];
-  v12[0] = v3;
+  predicateForVisibleFolders = [(ICAccount *)self predicateForVisibleFolders];
+  v12[0] = predicateForVisibleFolders;
   v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"parent == nil"];
   v12[1] = v4;
   v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"sortOrder == %d", 2];
   v12[2] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:3];
 
-  v7 = [(ICAccount *)self folders];
+  folders = [(ICAccount *)self folders];
   v8 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v6];
-  v9 = [v7 filteredSetUsingPredicate:v8];
+  v9 = [folders filteredSetUsingPredicate:v8];
 
-  v10 = [v9 allObjects];
+  allObjects = [v9 allObjects];
 
-  return v10;
+  return allObjects;
 }
 
-- (unint64_t)indexOfCustomRootLevelFolder:(id)a3
+- (unint64_t)indexOfCustomRootLevelFolder:(id)folder
 {
-  v4 = a3;
-  if ([v4 sortOrder] != 2)
+  folderCopy = folder;
+  if ([folderCopy sortOrder] != 2)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"folder.sortOrder == ICNoteContainerSortOrderFolder" functionName:"-[ICAccount indexOfCustomRootLevelFolder:]" simulateCrash:1 showAlert:0 format:@"Grabbing index of non-custom folder"];
   }
 
-  v5 = [(ICAccount *)self subFolderIdentifiersOrderedSet];
-  v6 = [v4 identifier];
-  v7 = [v5 indexOfObject:v6];
+  subFolderIdentifiersOrderedSet = [(ICAccount *)self subFolderIdentifiersOrderedSet];
+  identifier = [folderCopy identifier];
+  v7 = [subFolderIdentifiersOrderedSet indexOfObject:identifier];
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(ICAccount *)self customRootLevelFolders];
-    v9 = [v8 sortedArrayUsingSelector:sel_compare_];
-    v7 = [v9 indexOfObject:v4];
+    customRootLevelFolders = [(ICAccount *)self customRootLevelFolders];
+    v9 = [customRootLevelFolders sortedArrayUsingSelector:sel_compare_];
+    v7 = [v9 indexOfObject:folderCopy];
   }
 
   return v7;
@@ -1207,21 +1207,21 @@ LABEL_21:
 
 - (id)predicateForCustomFolders
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(ICAccount *)self predicateForVisibleFolders];
-  [v3 addObject:v4];
+  array = [MEMORY[0x277CBEB18] array];
+  predicateForVisibleFolders = [(ICAccount *)self predicateForVisibleFolders];
+  [array addObject:predicateForVisibleFolders];
 
   v5 = MEMORY[0x277CCAC30];
-  v6 = [(ICAccount *)self defaultFolderIdentifier];
-  v7 = [v5 predicateWithFormat:@"identifier != %@", v6];
-  [v3 addObject:v7];
+  defaultFolderIdentifier = [(ICAccount *)self defaultFolderIdentifier];
+  v7 = [v5 predicateWithFormat:@"identifier != %@", defaultFolderIdentifier];
+  [array addObject:v7];
 
   v8 = MEMORY[0x277CCAC30];
-  v9 = [(ICAccount *)self trashFolderIdentifier];
-  v10 = [v8 predicateWithFormat:@"identifier != %@", v9];
-  [v3 addObject:v10];
+  trashFolderIdentifier = [(ICAccount *)self trashFolderIdentifier];
+  v10 = [v8 predicateWithFormat:@"identifier != %@", trashFolderIdentifier];
+  [array addObject:v10];
 
-  v11 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v3];
+  v11 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:array];
 
   return v11;
 }
@@ -1230,8 +1230,8 @@ LABEL_21:
 {
   v8[2] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CCA920];
-  v3 = [(ICAccount *)self predicateForNotesInAccount];
-  v8[0] = v3;
+  predicateForNotesInAccount = [(ICAccount *)self predicateForNotesInAccount];
+  v8[0] = predicateForNotesInAccount;
   v4 = +[ICNote predicateForPinnedNotes];
   v8[1] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
@@ -1240,17 +1240,17 @@ LABEL_21:
   return v6;
 }
 
-- (id)visibleFoldersWithParent:(id)a3
+- (id)visibleFoldersWithParent:(id)parent
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  parentCopy = parent;
   v5 = [MEMORY[0x277CBEB58] set];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(ICAccount *)self visibleFolders];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  visibleFolders = [(ICAccount *)self visibleFolders];
+  v7 = [visibleFolders countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1261,19 +1261,19 @@ LABEL_21:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(visibleFolders);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        v12 = [v11 parent];
+        parent = [v11 parent];
 
-        if (v12 == v4)
+        if (parent == parentCopy)
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [visibleFolders countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -1282,9 +1282,9 @@ LABEL_21:
   return v5;
 }
 
-- (BOOL)visibleRootFoldersContainFolderWithTitle:(id)a3
+- (BOOL)visibleRootFoldersContainFolderWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = [(ICAccount *)self visibleFoldersWithParent:0];
   v6 = [v5 valueForKey:@"title"];
   v7 = [v6 mutableCopy];
@@ -1292,17 +1292,17 @@ LABEL_21:
   v8 = +[ICFolder reservedFolderTitles];
   [v7 unionSet:v8];
 
-  v9 = [(ICAccount *)self reservedAccountFolderTitles];
-  [v7 unionSet:v9];
+  reservedAccountFolderTitles = [(ICAccount *)self reservedAccountFolderTitles];
+  [v7 unionSet:reservedAccountFolderTitles];
 
-  LOBYTE(v9) = [v7 containsObject:v4];
-  return v9;
+  LOBYTE(reservedAccountFolderTitles) = [v7 containsObject:titleCopy];
+  return reservedAccountFolderTitles;
 }
 
-- (id)visibleRootFolderWithTitle:(id)a3
+- (id)visibleRootFolderWithTitle:(id)title
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  titleCopy = title;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1322,8 +1322,8 @@ LABEL_21:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 title];
-        v11 = [v10 isEqualToString:v4];
+        title = [v9 title];
+        v11 = [title isEqualToString:titleCopy];
 
         if (v11)
         {
@@ -1347,16 +1347,16 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)hasAnyCustomFoldersIncludingSystem:(BOOL)a3
+- (BOOL)hasAnyCustomFoldersIncludingSystem:(BOOL)system
 {
-  v3 = a3;
+  systemCopy = system;
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(ICAccount *)self visibleFolders];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  visibleFolders = [(ICAccount *)self visibleFolders];
+  v6 = [visibleFolders countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1367,21 +1367,21 @@ LABEL_11:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(visibleFolders);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        if (v3)
+        if (systemCopy)
         {
-          v11 = [(ICAccount *)self trashFolder];
-          if ([v10 isEqual:v11])
+          trashFolder = [(ICAccount *)self trashFolder];
+          if ([v10 isEqual:trashFolder])
           {
           }
 
           else
           {
-            v12 = [(ICAccount *)self defaultFolder];
-            v13 = [v10 isEqual:v12];
+            defaultFolder = [(ICAccount *)self defaultFolder];
+            v13 = [v10 isEqual:defaultFolder];
 
             if (!v13)
             {
@@ -1398,7 +1398,7 @@ LABEL_15:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [visibleFolders countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -1417,17 +1417,17 @@ LABEL_16:
 - (id)reservedAccountFolderTitles
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(ICAccount *)self allItemsFolderLocalizedTitle];
-  v4 = [v2 setWithObject:v3];
+  allItemsFolderLocalizedTitle = [(ICAccount *)self allItemsFolderLocalizedTitle];
+  v4 = [v2 setWithObject:allItemsFolderLocalizedTitle];
 
   return v4;
 }
 
 - (id)visibleNoteContainers
 {
-  v3 = [(ICAccount *)self visibleFolders];
-  v4 = [(ICAccount *)self accountProxy];
-  v5 = [v3 arrayByAddingObject:v4];
+  visibleFolders = [(ICAccount *)self visibleFolders];
+  accountProxy = [(ICAccount *)self accountProxy];
+  v5 = [visibleFolders arrayByAddingObject:accountProxy];
 
   return v5;
 }
@@ -1435,13 +1435,13 @@ LABEL_16:
 - (id)visibleNoteContainerChildren
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(ICAccount *)self visibleFolders];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  visibleFolders = [(ICAccount *)self visibleFolders];
+  v5 = [visibleFolders countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1452,38 +1452,38 @@ LABEL_16:
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(visibleFolders);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 parent];
-        if (v10)
+        parent = [v9 parent];
+        if (parent)
         {
         }
 
         else if (([v9 isHiddenNoteContainer] & 1) == 0)
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [visibleFolders countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
   }
 
-  v11 = [v3 sortedArrayUsingSelector:sel_compare_];
+  v11 = [array sortedArrayUsingSelector:sel_compare_];
   v12 = [v11 mutableCopy];
 
   v13 = [v12 count];
-  v14 = [(ICAccount *)self trashFolder];
-  v15 = [v12 containsObject:v14];
+  trashFolder = [(ICAccount *)self trashFolder];
+  v15 = [v12 containsObject:trashFolder];
 
   if (v13 - v15 >= 2)
   {
-    v16 = [(ICAccount *)self accountProxy];
-    [v12 insertObject:v16 atIndex:0];
+    accountProxy = [(ICAccount *)self accountProxy];
+    [v12 insertObject:accountProxy atIndex:0];
   }
 
   return v12;
@@ -1492,8 +1492,8 @@ LABEL_16:
 - (id)uniqueUserParticipants
 {
   v80[3] = *MEMORY[0x277D85DE8];
-  v3 = [(ICAccount *)self managedObjectContext];
-  v4 = [ICNote predicateForVisibleNotesInContext:v3];
+  managedObjectContext = [(ICAccount *)self managedObjectContext];
+  v4 = [ICNote predicateForVisibleNotesInContext:managedObjectContext];
 
   v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"folder.account == %@", self];
   v6 = [MEMORY[0x277CCAC30] predicateWithFormat:@"serverShareData != nil", self];
@@ -1506,8 +1506,8 @@ LABEL_16:
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v80 count:3];
   v9 = [v7 andPredicateWithSubpredicates:v8];
 
-  v10 = [(ICAccount *)self managedObjectContext];
-  v11 = [ICFolder predicateForVisibleFoldersInContext:v10];
+  managedObjectContext2 = [(ICAccount *)self managedObjectContext];
+  v11 = [ICFolder predicateForVisibleFoldersInContext:managedObjectContext2];
 
   v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"account == %@", self];
   v13 = MEMORY[0x277CCA920];
@@ -1523,10 +1523,10 @@ LABEL_16:
   v16 = +[ICNote fetchRequest];
   v62 = v9;
   [v16 setPredicate:v9];
-  v17 = [(ICAccount *)self managedObjectContext];
+  managedObjectContext3 = [(ICAccount *)self managedObjectContext];
   v76 = 0;
   v58 = v16;
-  v18 = [v17 executeFetchRequest:v16 error:&v76];
+  v18 = [managedObjectContext3 executeFetchRequest:v16 error:&v76];
   v19 = v76;
 
   if (v19)
@@ -1540,10 +1540,10 @@ LABEL_16:
 
   v21 = +[ICFolder fetchRequest];
   [v21 setPredicate:v15];
-  v22 = [(ICAccount *)self managedObjectContext];
+  managedObjectContext4 = [(ICAccount *)self managedObjectContext];
   v75 = v19;
   v56 = v21;
-  v23 = [v22 executeFetchRequest:v21 error:&v75];
+  v23 = [managedObjectContext4 executeFetchRequest:v21 error:&v75];
   v24 = v75;
 
   if (v24)
@@ -1563,7 +1563,7 @@ LABEL_16:
   [v26 addObjectsFromArray:v23];
   v53 = v26;
   v27 = [v26 ic_flatMap:&__block_literal_global_151];
-  v28 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
@@ -1584,22 +1584,22 @@ LABEL_16:
         }
 
         v33 = *(*(&v71 + 1) + 8 * i);
-        v34 = [v33 userIdentity];
-        v35 = [v34 userRecordID];
-        v36 = [v35 recordName];
+        userIdentity = [v33 userIdentity];
+        userRecordID = [userIdentity userRecordID];
+        recordName = [userRecordID recordName];
 
-        if (v36)
+        if (recordName)
         {
           v37 = MEMORY[0x277CCACA8];
-          v38 = [v33 ic_participantName];
-          v39 = [v37 stringWithFormat:@"%@_%@", v38, v36];
+          ic_participantName = [v33 ic_participantName];
+          v39 = [v37 stringWithFormat:@"%@_%@", ic_participantName, recordName];
 
-          v40 = [v28 allKeys];
-          v41 = [v40 containsObject:v39];
+          allKeys = [dictionary allKeys];
+          v41 = [allKeys containsObject:v39];
 
           if ((v41 & 1) == 0)
           {
-            [v28 setObject:v33 forKeyedSubscript:v39];
+            [dictionary setObject:v33 forKeyedSubscript:v39];
           }
         }
       }
@@ -1610,10 +1610,10 @@ LABEL_16:
     while (v30);
   }
 
-  v42 = [v28 allKeys];
-  v43 = [v42 sortedArrayUsingSelector:sel_localizedStandardCompare_];
+  allKeys2 = [dictionary allKeys];
+  v43 = [allKeys2 sortedArrayUsingSelector:sel_localizedStandardCompare_];
 
-  v44 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
@@ -1633,8 +1633,8 @@ LABEL_16:
           objc_enumerationMutation(v45);
         }
 
-        v50 = [v28 objectForKeyedSubscript:*(*(&v67 + 1) + 8 * j)];
-        [v44 ic_addNonNilObject:v50];
+        v50 = [dictionary objectForKeyedSubscript:*(*(&v67 + 1) + 8 * j)];
+        [array ic_addNonNilObject:v50];
       }
 
       v47 = [v45 countByEnumeratingWithState:&v67 objects:v77 count:16];
@@ -1643,7 +1643,7 @@ LABEL_16:
     while (v47);
   }
 
-  v51 = [v44 copy];
+  v51 = [array copy];
 
   return v51;
 }
@@ -1669,19 +1669,19 @@ uint64_t __35__ICAccount_uniqueUserParticipants__block_invoke_2(uint64_t a1, voi
 
 - (id)subFolderIdentifiersOrderedSet
 {
-  v3 = [(ICAccount *)self accountDataCreateIfNecessary];
-  v4 = [(ICAccount *)self accountData];
+  accountDataCreateIfNecessary = [(ICAccount *)self accountDataCreateIfNecessary];
+  accountData = [(ICAccount *)self accountData];
 
-  if (!v4)
+  if (!accountData)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((self.accountData) != nil)" functionName:"-[ICAccount subFolderIdentifiersOrderedSet]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "self.accountData"}];
   }
 
   v7.receiver = self;
   v7.super_class = ICAccount;
-  v5 = [(ICNoteContainer *)&v7 subFolderIdentifiersOrderedSet];
+  subFolderIdentifiersOrderedSet = [(ICNoteContainer *)&v7 subFolderIdentifiersOrderedSet];
 
-  return v5;
+  return subFolderIdentifiersOrderedSet;
 }
 
 - (ICAccountProxy)accountProxy
@@ -1699,29 +1699,29 @@ uint64_t __35__ICAccount_uniqueUserParticipants__block_invoke_2(uint64_t a1, voi
   return accountProxy;
 }
 
-- (id)folderWithIdentifier:(id)a3
+- (id)folderWithIdentifier:(id)identifier
 {
   v12[2] = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"identifier", a3];
-  v12[0] = v4;
+  identifier = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"identifier", identifier];
+  v12[0] = identifier;
   v5 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == %@", @"account", self];
   v12[1] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
 
   v7 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v6];
-  v8 = [(ICAccount *)self managedObjectContext];
-  v9 = [ICFolder foldersMatchingPredicate:v7 context:v8];
-  v10 = [v9 firstObject];
+  managedObjectContext = [(ICAccount *)self managedObjectContext];
+  v9 = [ICFolder foldersMatchingPredicate:v7 context:managedObjectContext];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
 - (id)allItemsFolderLocalizedTitle
 {
   v3 = __ICLocalizedFrameworkString_impl(@"All %@", @"All %@", 0, 1);
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(ICAccount *)self localizedNameMidSentence];
-  v6 = [v4 localizedStringWithFormat:v3, v5];
+  localizedNameMidSentence = [(ICAccount *)self localizedNameMidSentence];
+  v6 = [v4 localizedStringWithFormat:v3, localizedNameMidSentence];
 
   return v6;
 }
@@ -1729,20 +1729,20 @@ uint64_t __35__ICAccount_uniqueUserParticipants__block_invoke_2(uint64_t a1, voi
 - (id)allChildObjects
 {
   v66 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v48 = self;
-  v4 = [(ICAccount *)self folders];
-  v5 = [v4 allObjects];
+  array = [MEMORY[0x277CBEB18] array];
+  selfCopy = self;
+  folders = [(ICAccount *)self folders];
+  allObjects = [folders allObjects];
 
-  if (v5)
+  if (allObjects)
   {
-    [v3 addObjectsFromArray:v5];
+    [array addObjectsFromArray:allObjects];
     v61 = 0u;
     v62 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v38 = v5;
-    obj = [v5 copy];
+    v38 = allObjects;
+    obj = [allObjects copy];
     v41 = [obj countByEnumeratingWithState:&v59 objects:v65 count:16];
     if (v41)
     {
@@ -1757,32 +1757,32 @@ uint64_t __35__ICAccount_uniqueUserParticipants__block_invoke_2(uint64_t a1, voi
           }
 
           v7 = *(*(&v59 + 1) + 8 * i);
-          v8 = [v7 identifier];
-          v9 = [ICLegacyTombstone tombstoneIdentifierForObjectIdentifier:v8 type:2];
+          identifier = [v7 identifier];
+          v9 = [ICLegacyTombstone tombstoneIdentifierForObjectIdentifier:identifier type:2];
 
-          v10 = [(ICAccount *)v48 managedObjectContext];
+          managedObjectContext = [(ICAccount *)selfCopy managedObjectContext];
           v45 = v9;
-          v11 = [ICLegacyTombstone legacyTombstoneWithIdentifier:v9 context:v10];
+          v11 = [ICLegacyTombstone legacyTombstoneWithIdentifier:v9 context:managedObjectContext];
 
           if (v11)
           {
-            [v3 addObject:v11];
+            [array addObject:v11];
           }
 
-          v12 = [v7 notes];
-          v13 = [v12 allObjects];
+          notes = [v7 notes];
+          allObjects2 = [notes allObjects];
 
-          if (v13)
+          if (allObjects2)
           {
             v43 = v11;
             v44 = i;
-            [v3 addObjectsFromArray:v13];
+            [array addObjectsFromArray:allObjects2];
             v57 = 0u;
             v58 = 0u;
             v55 = 0u;
             v56 = 0u;
-            v42 = v13;
-            v46 = v13;
+            v42 = allObjects2;
+            v46 = allObjects2;
             v49 = [v46 countByEnumeratingWithState:&v55 objects:v64 count:16];
             if (v49)
             {
@@ -1797,27 +1797,27 @@ uint64_t __35__ICAccount_uniqueUserParticipants__block_invoke_2(uint64_t a1, voi
                   }
 
                   v15 = *(*(&v55 + 1) + 8 * j);
-                  v16 = [v15 identifier];
-                  v17 = [ICLegacyTombstone tombstoneIdentifierForObjectIdentifier:v16 type:2];
+                  identifier2 = [v15 identifier];
+                  v17 = [ICLegacyTombstone tombstoneIdentifierForObjectIdentifier:identifier2 type:2];
 
-                  v18 = [(ICAccount *)v48 managedObjectContext];
+                  managedObjectContext2 = [(ICAccount *)selfCopy managedObjectContext];
                   v50 = v17;
-                  v19 = [ICLegacyTombstone legacyTombstoneWithIdentifier:v17 context:v18];
+                  v19 = [ICLegacyTombstone legacyTombstoneWithIdentifier:v17 context:managedObjectContext2];
 
                   if (v19)
                   {
-                    [v3 addObject:v19];
+                    [array addObject:v19];
                   }
 
-                  v20 = [v15 attachments];
-                  v21 = [v20 allObjects];
+                  attachments = [v15 attachments];
+                  allObjects3 = [attachments allObjects];
 
-                  [v3 ic_addObjectsFromNonNilArray:v21];
+                  [array ic_addObjectsFromNonNilArray:allObjects3];
                   v53 = 0u;
                   v54 = 0u;
                   v51 = 0u;
                   v52 = 0u;
-                  v22 = v21;
+                  v22 = allObjects3;
                   v23 = [v22 countByEnumeratingWithState:&v51 objects:v63 count:16];
                   if (v23)
                   {
@@ -1833,21 +1833,21 @@ uint64_t __35__ICAccount_uniqueUserParticipants__block_invoke_2(uint64_t a1, voi
                         }
 
                         v27 = *(*(&v51 + 1) + 8 * k);
-                        v28 = [v27 media];
+                        media = [v27 media];
 
-                        if (v28)
+                        if (media)
                         {
-                          v29 = [v27 media];
-                          [v3 addObject:v29];
+                          media2 = [v27 media];
+                          [array addObject:media2];
                         }
 
-                        v30 = [v27 previewImages];
+                        previewImages = [v27 previewImages];
 
-                        if (v30)
+                        if (previewImages)
                         {
-                          v31 = [v27 previewImages];
-                          v32 = [v31 allObjects];
-                          [v3 addObjectsFromArray:v32];
+                          previewImages2 = [v27 previewImages];
+                          allObjects4 = [previewImages2 allObjects];
+                          [array addObjectsFromArray:allObjects4];
                         }
                       }
 
@@ -1857,9 +1857,9 @@ uint64_t __35__ICAccount_uniqueUserParticipants__block_invoke_2(uint64_t a1, voi
                     while (v24);
                   }
 
-                  v33 = [v15 inlineAttachments];
-                  v34 = [v33 allObjects];
-                  [v3 ic_addObjectsFromNonNilArray:v34];
+                  inlineAttachments = [v15 inlineAttachments];
+                  allObjects5 = [inlineAttachments allObjects];
+                  [array ic_addObjectsFromNonNilArray:allObjects5];
                 }
 
                 v49 = [v46 countByEnumeratingWithState:&v55 objects:v64 count:16];
@@ -1870,7 +1870,7 @@ uint64_t __35__ICAccount_uniqueUserParticipants__block_invoke_2(uint64_t a1, voi
 
             v11 = v43;
             i = v44;
-            v13 = v42;
+            allObjects2 = v42;
           }
         }
 
@@ -1880,32 +1880,32 @@ uint64_t __35__ICAccount_uniqueUserParticipants__block_invoke_2(uint64_t a1, voi
       while (v41);
     }
 
-    v5 = v38;
+    allObjects = v38;
   }
 
-  v35 = [(ICAccount *)v48 hashtags];
-  v36 = [v35 allObjects];
-  [v3 ic_addObjectsFromNonNilArray:v36];
+  hashtags = [(ICAccount *)selfCopy hashtags];
+  allObjects6 = [hashtags allObjects];
+  [array ic_addObjectsFromNonNilArray:allObjects6];
 
-  return v3;
+  return array;
 }
 
 - (id)accountFilesDirectoryURLInApplicationDataContainer
 {
-  v3 = [objc_opt_class() accountUtilities];
-  v4 = [(ICAccount *)self identifier];
-  v5 = [v3 applicationDataContainerURLForAccountIdentifier:v4];
+  accountUtilities = [objc_opt_class() accountUtilities];
+  identifier = [(ICAccount *)self identifier];
+  v5 = [accountUtilities applicationDataContainerURLForAccountIdentifier:identifier];
 
-  v6 = [(ICAccount *)self identifier];
+  identifier2 = [(ICAccount *)self identifier];
 
-  if (v6)
+  if (identifier2)
   {
     v7 = [v5 URLByAppendingPathComponent:@"Documents" isDirectory:1];
 
     v8 = [v7 URLByAppendingPathComponent:*MEMORY[0x277D360F0] isDirectory:1];
 
-    v9 = [(ICAccount *)self identifier];
-    v5 = [v8 URLByAppendingPathComponent:v9 isDirectory:1];
+    identifier3 = [(ICAccount *)self identifier];
+    v5 = [v8 URLByAppendingPathComponent:identifier3 isDirectory:1];
   }
 
   v10 = v5;
@@ -1915,45 +1915,45 @@ uint64_t __35__ICAccount_uniqueUserParticipants__block_invoke_2(uint64_t a1, voi
 
 - (id)fallbackImageDirectoryURL
 {
-  v2 = [(ICAccount *)self accountFilesDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:*MEMORY[0x277D360C0] isDirectory:1];
+  accountFilesDirectoryURL = [(ICAccount *)self accountFilesDirectoryURL];
+  v3 = [accountFilesDirectoryURL URLByAppendingPathComponent:*MEMORY[0x277D360C0] isDirectory:1];
 
   return v3;
 }
 
 - (id)fallbackPDFDirectoryURL
 {
-  v2 = [(ICAccount *)self accountFilesDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:*MEMORY[0x277D360C8] isDirectory:1];
+  accountFilesDirectoryURL = [(ICAccount *)self accountFilesDirectoryURL];
+  v3 = [accountFilesDirectoryURL URLByAppendingPathComponent:*MEMORY[0x277D360C8] isDirectory:1];
 
   return v3;
 }
 
 - (id)exportableMediaDirectoryURL
 {
-  v2 = [(ICAccount *)self accountFilesDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:*MEMORY[0x277D360B8] isDirectory:1];
+  accountFilesDirectoryURL = [(ICAccount *)self accountFilesDirectoryURL];
+  v3 = [accountFilesDirectoryURL URLByAppendingPathComponent:*MEMORY[0x277D360B8] isDirectory:1];
 
   return v3;
 }
 
 - (id)previewImageDirectoryURL
 {
-  v2 = [(ICAccount *)self accountFilesDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:*MEMORY[0x277D360E0] isDirectory:1];
+  accountFilesDirectoryURL = [(ICAccount *)self accountFilesDirectoryURL];
+  v3 = [accountFilesDirectoryURL URLByAppendingPathComponent:*MEMORY[0x277D360E0] isDirectory:1];
 
   return v3;
 }
 
-- (void)deleteUnusedHashtagsWithStandardizedContent:(id)a3
+- (void)deleteUnusedHashtagsWithStandardizedContent:(id)content
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contentCopy = content;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [contentCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1964,7 +1964,7 @@ uint64_t __35__ICAccount_uniqueUserParticipants__block_invoke_2(uint64_t a1, voi
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(contentCopy);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -1975,7 +1975,7 @@ uint64_t __35__ICAccount_uniqueUserParticipants__block_invoke_2(uint64_t a1, voi
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [contentCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -2022,16 +2022,16 @@ void __34__ICAccount_temporaryDirectoryURL__block_invoke(uint64_t a1)
 - (id)systemPaperTemporaryDirectoryURL
 {
   v3 = +[ICAccount accountUtilities];
-  v4 = [(ICAccount *)self identifier];
-  v5 = [v3 applicationDocumentsURLForAccountIdentifier:v4];
+  identifier = [(ICAccount *)self identifier];
+  v5 = [v3 applicationDocumentsURLForAccountIdentifier:identifier];
 
   v6 = [v5 URLByAppendingPathComponent:@"Library" isDirectory:1];
   v7 = [v6 URLByAppendingPathComponent:@"Caches" isDirectory:1];
   v8 = [v7 URLByAppendingPathComponent:*MEMORY[0x277D360D8] isDirectory:1];
 
-  v9 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v16 = 0;
-  v10 = [v9 createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:&v16];
+  v10 = [defaultManager createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:&v16];
   v11 = v16;
 
   if ((v10 & 1) == 0)
@@ -2042,10 +2042,10 @@ void __34__ICAccount_temporaryDirectoryURL__block_invoke(uint64_t a1)
       [ICAccount systemPaperTemporaryDirectoryURL];
     }
 
-    v13 = [MEMORY[0x277CCAA00] defaultManager];
-    v14 = [v13 temporaryDirectory];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+    temporaryDirectory = [defaultManager2 temporaryDirectory];
 
-    v8 = v14;
+    v8 = temporaryDirectory;
   }
 
   return v8;
@@ -2053,7 +2053,7 @@ void __34__ICAccount_temporaryDirectoryURL__block_invoke(uint64_t a1)
 
 - (void)ensureCriticalPaperDirectoriesExist
 {
-  v1 = [a1 ic_loggingIdentifier];
+  ic_loggingIdentifier = [self ic_loggingIdentifier];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_4_1();
   OUTLINED_FUNCTION_1_0();
@@ -2062,16 +2062,16 @@ void __34__ICAccount_temporaryDirectoryURL__block_invoke(uint64_t a1)
 
 - (id)systemPaperDirectoryURL
 {
-  v2 = [(ICAccount *)self accountFilesDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:*MEMORY[0x277D360D8] isDirectory:1];
+  accountFilesDirectoryURL = [(ICAccount *)self accountFilesDirectoryURL];
+  v3 = [accountFilesDirectoryURL URLByAppendingPathComponent:*MEMORY[0x277D360D8] isDirectory:1];
 
   return v3;
 }
 
 - (id)systemPaperBundlesDirectoryURL
 {
-  v2 = [(ICAccount *)self systemPaperDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:*MEMORY[0x277D360B0] isDirectory:1];
+  systemPaperDirectoryURL = [(ICAccount *)self systemPaperDirectoryURL];
+  v3 = [systemPaperDirectoryURL URLByAppendingPathComponent:*MEMORY[0x277D360B0] isDirectory:1];
 
   return v3;
 }
@@ -2079,23 +2079,23 @@ void __34__ICAccount_temporaryDirectoryURL__block_invoke(uint64_t a1)
 - (id)systemPaperNotes
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v3 = [(ICAccount *)self predicateForNotesInAccount];
-  v10[0] = v3;
+  predicateForNotesInAccount = [(ICAccount *)self predicateForNotesInAccount];
+  v10[0] = predicateForNotesInAccount;
   v4 = [MEMORY[0x277CCAC30] predicateWithFormat:@"isSystemPaper == YES"];
   v10[1] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
 
   v6 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v5];
-  v7 = [(ICAccount *)self managedObjectContext];
-  v8 = [ICNote notesMatchingPredicate:v6 context:v7];
+  managedObjectContext = [(ICAccount *)self managedObjectContext];
+  v8 = [ICNote notesMatchingPredicate:v6 context:managedObjectContext];
 
   return v8;
 }
 
-+ (id)mostRecentSystemPaperNoteInManagedObjectContext:(id)a3
++ (id)mostRecentSystemPaperNoteInManagedObjectContext:(id)context
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contextCopy = context;
   v4 = os_log_create("com.apple.notes", "Accounts");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -2109,7 +2109,7 @@ void __34__ICAccount_temporaryDirectoryURL__block_invoke(uint64_t a1)
   v5 = +[ICNote systemPaperNotesFetchRequest];
   [v5 setFetchLimit:1];
   v12 = 0;
-  v6 = [v3 executeFetchRequest:v5 error:&v12];
+  v6 = [contextCopy executeFetchRequest:v5 error:&v12];
 
   v7 = v12;
   if (v7)
@@ -2123,11 +2123,11 @@ void __34__ICAccount_temporaryDirectoryURL__block_invoke(uint64_t a1)
 
   if ([v6 count])
   {
-    v9 = [v6 firstObject];
+    firstObject = [v6 firstObject];
     v10 = os_log_create("com.apple.notes", "CoreData");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [ICAccount mostRecentSystemPaperNoteInManagedObjectContext:v9];
+      [ICAccount mostRecentSystemPaperNoteInManagedObjectContext:firstObject];
     }
   }
 
@@ -2139,54 +2139,54 @@ void __34__ICAccount_temporaryDirectoryURL__block_invoke(uint64_t a1)
       +[ICAccount mostRecentSystemPaperNoteInManagedObjectContext:];
     }
 
-    v9 = 0;
+    firstObject = 0;
   }
 
-  return v9;
+  return firstObject;
 }
 
-+ (void)setHidesSystemPaperNotesInCustomFolders:(BOOL)a3
++ (void)setHidesSystemPaperNotesInCustomFolders:(BOOL)folders
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"ICAccountHidesSystemPaperNotesInCustomFolders"];
+  foldersCopy = folders;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setBool:foldersCopy forKey:@"ICAccountHidesSystemPaperNotesInCustomFolders"];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:@"ICAccountHidesSystemPaperNotesInCustomFoldersDidChangeNotification" object:0 userInfo:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ICAccountHidesSystemPaperNotesInCustomFoldersDidChangeNotification" object:0 userInfo:0];
 }
 
-+ (void)setHidesMathNotesInCustomFolders:(BOOL)a3
++ (void)setHidesMathNotesInCustomFolders:(BOOL)folders
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"ICAccountHidesMathNotesInCustomFolders"];
+  foldersCopy = folders;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setBool:foldersCopy forKey:@"ICAccountHidesMathNotesInCustomFolders"];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:@"ICAccountHidesMathNotesInCustomFoldersDidChangeNotification" object:0 userInfo:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ICAccountHidesMathNotesInCustomFoldersDidChangeNotification" object:0 userInfo:0];
 }
 
-+ (void)setHidesCallNotesInCustomFolders:(BOOL)a3
++ (void)setHidesCallNotesInCustomFolders:(BOOL)folders
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v4 setBool:v3 forKey:@"ICAccountHidesCallNotesInCustomFolders"];
+  foldersCopy = folders;
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults setBool:foldersCopy forKey:@"ICAccountHidesCallNotesInCustomFolders"];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:@"ICAccountHidesCallNotesInCustomFoldersDidChangeNotification" object:0 userInfo:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ICAccountHidesCallNotesInCustomFoldersDidChangeNotification" object:0 userInfo:0];
 }
 
-- (void)updateFullNameAndEmail:(id)a3
+- (void)updateFullNameAndEmail:(id)email
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  emailCopy = email;
   if ([(ICAccount *)self accountType]== 1)
   {
     v5 = os_log_create("com.apple.notes", "Cloud");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(ICCloudSyncingObject *)self shortLoggingDescription];
+      shortLoggingDescription = [(ICCloudSyncingObject *)self shortLoggingDescription];
       *buf = 138412802;
-      v14 = v6;
+      v14 = shortLoggingDescription;
       v15 = 2080;
       v16 = "[ICAccount updateFullNameAndEmail:]";
       v17 = 1024;
@@ -2195,16 +2195,16 @@ void __34__ICAccount_temporaryDirectoryURL__block_invoke(uint64_t a1)
     }
 
     objc_initWeak(buf, self);
-    v7 = [(ICCloudSyncingObject *)self cloudContext];
-    v8 = [(ICAccount *)self identifier];
-    v9 = [v7 containerForAccountID:v8];
+    cloudContext = [(ICCloudSyncingObject *)self cloudContext];
+    identifier = [(ICAccount *)self identifier];
+    v9 = [cloudContext containerForAccountID:identifier];
 
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __36__ICAccount_updateFullNameAndEmail___block_invoke;
     v10[3] = &unk_278196B40;
     objc_copyWeak(&v12, buf);
-    v11 = v4;
+    v11 = emailCopy;
     [v9 fetchFullNameAndPrimaryEmailOnAccountWithCompletionHandler:v10];
 
     objc_destroyWeak(&v12);
@@ -2243,37 +2243,37 @@ void __36__ICAccount_updateFullNameAndEmail___block_invoke(uint64_t a1, void *a2
 
 - (signed)resolvedLockedNotesMode
 {
-  v3 = [(ICAccount *)self accountData];
-  if (!v3)
+  accountData = [(ICAccount *)self accountData];
+  if (!accountData)
   {
     return 1;
   }
 
-  v4 = v3;
-  v5 = [(ICAccount *)self accountData];
-  v6 = [v5 lockedNotesMode];
+  v4 = accountData;
+  accountData2 = [(ICAccount *)self accountData];
+  lockedNotesMode = [accountData2 lockedNotesMode];
 
-  if (!v6)
+  if (!lockedNotesMode)
   {
     return 1;
   }
 
-  v7 = [(ICAccount *)self accountData];
-  v8 = [v7 lockedNotesMode];
+  accountData3 = [(ICAccount *)self accountData];
+  lockedNotesMode2 = [accountData3 lockedNotesMode];
 
-  return v8;
+  return lockedNotesMode2;
 }
 
-- (void)setResolvedLockedNotesMode:(signed __int16)a3
+- (void)setResolvedLockedNotesMode:(signed __int16)mode
 {
-  v3 = a3;
-  v5 = [(ICAccount *)self accountData];
-  if (v5 && (v6 = v5, -[ICAccount accountData](self, "accountData"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 lockedNotesMode], v7, v6, v8 == v3))
+  modeCopy = mode;
+  accountData = [(ICAccount *)self accountData];
+  if (accountData && (v6 = accountData, -[ICAccount accountData](self, "accountData"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 lockedNotesMode], v7, v6, v8 == modeCopy))
   {
-    v9 = os_log_create("com.apple.notes", "Crypto");
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+    accountData2 = os_log_create("com.apple.notes", "Crypto");
+    if (os_log_type_enabled(accountData2, OS_LOG_TYPE_DEBUG))
     {
-      [(ICAccount *)self setResolvedLockedNotesMode:v3];
+      [(ICAccount *)self setResolvedLockedNotesMode:modeCopy];
     }
   }
 
@@ -2282,14 +2282,14 @@ void __36__ICAccount_updateFullNameAndEmail___block_invoke(uint64_t a1, void *a2
     v10 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      [(ICAccount *)self setResolvedLockedNotesMode:v3];
+      [(ICAccount *)self setResolvedLockedNotesMode:modeCopy];
     }
 
-    v11 = [(ICAccount *)self accountDataCreateIfNecessary];
-    [v11 setLockedNotesMode:v3];
+    accountDataCreateIfNecessary = [(ICAccount *)self accountDataCreateIfNecessary];
+    [accountDataCreateIfNecessary setLockedNotesMode:modeCopy];
 
-    v9 = [(ICAccount *)self accountData];
-    [v9 updateChangeCountWithReason:@"Set locked notes mode"];
+    accountData2 = [(ICAccount *)self accountData];
+    [accountData2 updateChangeCountWithReason:@"Set locked notes mode"];
   }
 }
 
@@ -2297,7 +2297,7 @@ void __36__ICAccount_updateFullNameAndEmail___block_invoke(uint64_t a1, void *a2
 {
   v12[3] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCA920];
-  v4 = [(ICAccount *)self predicateForNotesInAccount];
+  predicateForNotesInAccount = [(ICAccount *)self predicateForNotesInAccount];
   v5 = +[(ICCloudSyncingObject *)ICNote];
   v12[1] = v5;
   v6 = +[(ICCloudSyncingObject *)ICNote];
@@ -2305,35 +2305,35 @@ void __36__ICAccount_updateFullNameAndEmail___block_invoke(uint64_t a1, void *a2
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:3];
   v8 = [v3 andPredicateWithSubpredicates:v7];
 
-  v9 = [(ICAccount *)self managedObjectContext];
-  v10 = [ICNote notesMatchingPredicate:v8 context:v9];
+  managedObjectContext = [(ICAccount *)self managedObjectContext];
+  v10 = [ICNote notesMatchingPredicate:v8 context:managedObjectContext];
 
   return v10;
 }
 
 - (BOOL)canPasswordProtectNotes
 {
-  v3 = [MEMORY[0x277D77BF8] sharedManager];
-  v4 = [v3 currentUser];
-  v5 = [v4 userType];
+  mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+  currentUser = [mEMORY[0x277D77BF8] currentUser];
+  userType = [currentUser userType];
 
-  return [(ICAccount *)self accountType]!= 1 || v5 != 1;
+  return [(ICAccount *)self accountType]!= 1 || userType != 1;
 }
 
 - (id)visibleNotes
 {
-  v3 = [(ICAccount *)self predicateForVisibleNotes];
-  v4 = [(ICAccount *)self managedObjectContext];
-  v5 = [ICNote notesMatchingPredicate:v3 context:v4];
+  predicateForVisibleNotes = [(ICAccount *)self predicateForVisibleNotes];
+  managedObjectContext = [(ICAccount *)self managedObjectContext];
+  v5 = [ICNote notesMatchingPredicate:predicateForVisibleNotes context:managedObjectContext];
 
   return v5;
 }
 
 - (unint64_t)visibleNotesCount
 {
-  v3 = [(ICAccount *)self predicateForVisibleNotes];
-  v4 = [(ICAccount *)self managedObjectContext];
-  v5 = [ICNote countOfNotesMatchingPredicate:v3 context:v4];
+  predicateForVisibleNotes = [(ICAccount *)self predicateForVisibleNotes];
+  managedObjectContext = [(ICAccount *)self managedObjectContext];
+  v5 = [ICNote countOfNotesMatchingPredicate:predicateForVisibleNotes context:managedObjectContext];
 
   return v5;
 }
@@ -2342,30 +2342,30 @@ void __36__ICAccount_updateFullNameAndEmail___block_invoke(uint64_t a1, void *a2
 {
   v3 = MEMORY[0x277CCA920];
   v4 = MEMORY[0x277CBEA60];
-  v5 = [(ICAccount *)self predicateForVisibleNotesIncludingTrash];
+  predicateForVisibleNotesIncludingTrash = [(ICAccount *)self predicateForVisibleNotesIncludingTrash];
   v6 = +[ICCloudSyncingObject predicateForInCloudObjects];
-  v7 = [v4 arrayWithObjects:{v5, v6, 0}];
+  v7 = [v4 arrayWithObjects:{predicateForVisibleNotesIncludingTrash, v6, 0}];
   v8 = [v3 andPredicateWithSubpredicates:v7];
 
-  v9 = [(ICAccount *)self managedObjectContext];
-  v10 = [ICNote countOfNotesMatchingPredicate:v8 context:v9];
+  managedObjectContext = [(ICAccount *)self managedObjectContext];
+  v10 = [ICNote countOfNotesMatchingPredicate:v8 context:managedObjectContext];
 
   return v10;
 }
 
 - (unint64_t)visibleAttachmentsIncludingTrashCount
 {
-  v3 = [(ICAccount *)self predicateForVisibleAttachmentsIncludingTrash];
-  v4 = [(ICAccount *)self managedObjectContext];
-  v5 = [ICAttachment countOfAttachmentsMatchingPredicate:v3 context:v4];
+  predicateForVisibleAttachmentsIncludingTrash = [(ICAccount *)self predicateForVisibleAttachmentsIncludingTrash];
+  managedObjectContext = [(ICAccount *)self managedObjectContext];
+  v5 = [ICAttachment countOfAttachmentsMatchingPredicate:predicateForVisibleAttachmentsIncludingTrash context:managedObjectContext];
 
   return v5;
 }
 
-- (void)setAccountType:(int)a3
+- (void)setAccountType:(int)type
 {
-  v3 = *&a3;
-  if ([(ICAccount *)self accountType]!= a3)
+  v3 = *&type;
+  if ([(ICAccount *)self accountType]!= type)
   {
     [(ICAccount *)self willChangeValueForKey:@"accountType"];
     v5 = [MEMORY[0x277CCABB0] numberWithInt:v3];
@@ -2377,28 +2377,28 @@ void __36__ICAccount_updateFullNameAndEmail___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v6 = a3;
-  v4 = [(ICAccount *)self name];
-  v5 = [v4 isEqualToString:v6];
+  nameCopy = name;
+  name = [(ICAccount *)self name];
+  v5 = [name isEqualToString:nameCopy];
 
   if ((v5 & 1) == 0)
   {
     [(ICAccount *)self willChangeValueForKey:@"name"];
-    [(ICAccount *)self setPrimitiveValue:v6 forKey:@"name"];
+    [(ICAccount *)self setPrimitiveValue:nameCopy forKey:@"name"];
     [(ICAccount *)self didChangeValueForKey:@"name"];
     [(ICAccount *)self updateAccountNameForAccountListSorting];
   }
 }
 
-- (void)setDidChooseToMigrate:(BOOL)a3
+- (void)setDidChooseToMigrate:(BOOL)migrate
 {
-  v3 = a3;
-  if ([(ICAccount *)self didChooseToMigrate]!= a3)
+  migrateCopy = migrate;
+  if ([(ICAccount *)self didChooseToMigrate]!= migrate)
   {
     [(ICAccount *)self willChangeValueForKey:@"didChooseToMigrate"];
-    v5 = [MEMORY[0x277CCABB0] numberWithBool:v3];
+    v5 = [MEMORY[0x277CCABB0] numberWithBool:migrateCopy];
     [(ICAccount *)self setPrimitiveValue:v5 forKey:@"didChooseToMigrate"];
 
     [(ICAccount *)self didChangeValueForKey:@"didChooseToMigrate"];
@@ -2410,12 +2410,12 @@ void __36__ICAccount_updateFullNameAndEmail___block_invoke(uint64_t a1, void *a2
 - (void)updateAccountNameForAccountListSorting
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(ICAccount *)self localizedName];
-  v4 = v3;
+  localizedName = [(ICAccount *)self localizedName];
+  v4 = localizedName;
   v5 = &stru_2827172C0;
-  if (v3)
+  if (localizedName)
   {
-    v5 = v3;
+    v5 = localizedName;
   }
 
   v6 = v5;
@@ -2427,8 +2427,8 @@ void __36__ICAccount_updateFullNameAndEmail___block_invoke(uint64_t a1, void *a2
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [(ICAccount *)self ownerInverse];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  ownerInverse = [(ICAccount *)self ownerInverse];
+  v9 = [ownerInverse countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2440,18 +2440,18 @@ void __36__ICAccount_updateFullNameAndEmail___block_invoke(uint64_t a1, void *a2
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(ownerInverse);
         }
 
         v13 = *(*(&v15 + 1) + 8 * v12);
-        v14 = [(ICAccount *)self accountNameForAccountListSorting];
-        [v13 setAccountNameForAccountListSorting:v14];
+        accountNameForAccountListSorting = [(ICAccount *)self accountNameForAccountListSorting];
+        [v13 setAccountNameForAccountListSorting:accountNameForAccountListSorting];
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [ownerInverse countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -2462,10 +2462,10 @@ void __36__ICAccount_updateFullNameAndEmail___block_invoke(uint64_t a1, void *a2
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCA920];
-  v4 = [(ICAccount *)self predicateForAttachmentsInAccount];
-  v10[0] = v4;
-  v5 = [(ICAccount *)self managedObjectContext];
-  v6 = [(ICBaseAttachment *)ICAttachment predicateForVisibleAttachmentsInContext:v5];
+  predicateForAttachmentsInAccount = [(ICAccount *)self predicateForAttachmentsInAccount];
+  v10[0] = predicateForAttachmentsInAccount;
+  managedObjectContext = [(ICAccount *)self managedObjectContext];
+  v6 = [(ICBaseAttachment *)ICAttachment predicateForVisibleAttachmentsInContext:managedObjectContext];
   v10[1] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
   v8 = [v3 andPredicateWithSubpredicates:v7];
@@ -2477,10 +2477,10 @@ void __36__ICAccount_updateFullNameAndEmail___block_invoke(uint64_t a1, void *a2
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCA920];
-  v4 = [(ICAccount *)self predicateForAttachmentsInAccount];
-  v10[0] = v4;
-  v5 = [(ICAccount *)self managedObjectContext];
-  v6 = [(ICBaseAttachment *)ICAttachment predicateForVisibleAttachmentsIncludingTrashInContext:v5];
+  predicateForAttachmentsInAccount = [(ICAccount *)self predicateForAttachmentsInAccount];
+  v10[0] = predicateForAttachmentsInAccount;
+  managedObjectContext = [(ICAccount *)self managedObjectContext];
+  v6 = [(ICBaseAttachment *)ICAttachment predicateForVisibleAttachmentsIncludingTrashInContext:managedObjectContext];
   v10[1] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
   v8 = [v3 andPredicateWithSubpredicates:v7];
@@ -2492,31 +2492,31 @@ void __36__ICAccount_updateFullNameAndEmail___block_invoke(uint64_t a1, void *a2
 {
   v10[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCA920];
-  v4 = [(ICAccount *)self managedObjectContext];
-  v5 = [ICAttachment predicateForSearchableAttachmentsInContext:v4];
+  managedObjectContext = [(ICAccount *)self managedObjectContext];
+  v5 = [ICAttachment predicateForSearchableAttachmentsInContext:managedObjectContext];
   v10[0] = v5;
-  v6 = [(ICAccount *)self predicateForAttachmentsInAccount];
-  v10[1] = v6;
+  predicateForAttachmentsInAccount = [(ICAccount *)self predicateForAttachmentsInAccount];
+  v10[1] = predicateForAttachmentsInAccount;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
   v8 = [v3 andPredicateWithSubpredicates:v7];
 
   return v8;
 }
 
-- (void)managedObjectContextDidSave:(id)a3
+- (void)managedObjectContextDidSave:(id)save
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  saveCopy = save;
   if ([(ICCloudSyncingObject *)self hasContextOptions:1])
   {
-    v5 = [(ICAccount *)self managedObjectContext];
-    v6 = [v4 object];
-    v7 = [v5 isEqual:v6];
+    managedObjectContext = [(ICAccount *)self managedObjectContext];
+    object = [saveCopy object];
+    v7 = [managedObjectContext isEqual:object];
 
     if (v7)
     {
-      v8 = [v4 userInfo];
-      v9 = [v8 objectForKeyedSubscript:*MEMORY[0x277CBE308]];
+      userInfo = [saveCopy userInfo];
+      v9 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBE308]];
 
       v20 = 0u;
       v21 = 0u;
@@ -2538,10 +2538,10 @@ void __36__ICAccount_updateFullNameAndEmail___block_invoke(uint64_t a1, void *a2
             }
 
             v15 = *(*(&v18 + 1) + 8 * i);
-            v16 = [(ICAccount *)self trashFolder];
-            v17 = [v16 objectID];
+            trashFolder = [(ICAccount *)self trashFolder];
+            objectID = [trashFolder objectID];
 
-            if (v15 == v17)
+            if (v15 == objectID)
             {
               [(ICAccount *)self updateTrashFolderHiddenNoteContainerState];
               goto LABEL_13;
@@ -2571,14 +2571,14 @@ LABEL_13:
   v10 = __Block_byref_object_copy__22;
   v11 = __Block_byref_object_dispose__22;
   v12 = 0;
-  v3 = [(ICAccount *)self managedObjectContext];
+  managedObjectContext = [(ICAccount *)self managedObjectContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __33__ICAccount_ic_loggingIdentifier__block_invoke;
   v6[3] = &unk_278194DE8;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performBlockAndWait:v6];
+  [managedObjectContext performBlockAndWait:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -2598,18 +2598,18 @@ void __33__ICAccount_ic_loggingIdentifier__block_invoke(uint64_t a1)
 {
   v12.receiver = self;
   v12.super_class = ICAccount;
-  v3 = [(ICCloudSyncingObject *)&v12 ic_loggingValues];
-  v4 = [v3 mutableCopy];
+  ic_loggingValues = [(ICCloudSyncingObject *)&v12 ic_loggingValues];
+  v4 = [ic_loggingValues mutableCopy];
 
-  v5 = [(ICAccount *)self managedObjectContext];
+  managedObjectContext = [(ICAccount *)self managedObjectContext];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __29__ICAccount_ic_loggingValues__block_invoke;
   v9[3] = &unk_278194AD8;
   v6 = v4;
   v10 = v6;
-  v11 = self;
-  [v5 performBlockAndWait:v9];
+  selfCopy = self;
+  [managedObjectContext performBlockAndWait:v9];
 
   v7 = v6;
   return v6;
@@ -2685,46 +2685,46 @@ void __29__ICAccount_ic_loggingValues__block_invoke(uint64_t a1)
 
 - (id)visibleSubFolders
 {
-  v2 = [(ICAccount *)self customRootLevelFolders];
-  v3 = [v2 sortedArrayUsingSelector:sel_compare_];
+  customRootLevelFolders = [(ICAccount *)self customRootLevelFolders];
+  v3 = [customRootLevelFolders sortedArrayUsingSelector:sel_compare_];
 
   return v3;
 }
 
-- (void)setSubFolderOrderMergeableData:(id)a3
+- (void)setSubFolderOrderMergeableData:(id)data
 {
-  v4 = a3;
-  v5 = [(ICAccount *)self accountData];
-  [v5 setMergeableData:v4];
+  dataCopy = data;
+  accountData = [(ICAccount *)self accountData];
+  [accountData setMergeableData:dataCopy];
 }
 
 - (id)subFolderOrderMergeableData
 {
-  v2 = [(ICAccount *)self accountData];
-  v3 = [v2 mergeableData];
+  accountData = [(ICAccount *)self accountData];
+  mergeableData = [accountData mergeableData];
 
-  return v3;
+  return mergeableData;
 }
 
 - (void)updateSubFolderMergeableDataChangeCount
 {
-  v2 = [(ICAccount *)self accountData];
-  [v2 updateChangeCountWithReason:@"Updated subfolders"];
+  accountData = [(ICAccount *)self accountData];
+  [accountData updateChangeCountWithReason:@"Updated subfolders"];
 }
 
-- (void)setUserRecordName:(id)a3
+- (void)setUserRecordName:(id)name
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ICCloudSyncingObject *)self shortLoggingDescription];
+    shortLoggingDescription = [(ICCloudSyncingObject *)self shortLoggingDescription];
     v10 = 138413058;
-    v11 = v6;
+    v11 = shortLoggingDescription;
     v12 = 2112;
     v14 = 2080;
-    v13 = v4;
+    v13 = nameCopy;
     v15 = "[ICAccount setUserRecordName:]";
     v16 = 1024;
     v17 = 1474;
@@ -2735,32 +2735,32 @@ void __29__ICAccount_ic_loggingValues__block_invoke(uint64_t a1)
   [(ICAccount *)self willChangeValueForKey:v7];
 
   v8 = NSStringFromSelector(sel_userRecordName);
-  [(ICAccount *)self setPrimitiveValue:v4 forKey:v8];
+  [(ICAccount *)self setPrimitiveValue:nameCopy forKey:v8];
 
   v9 = NSStringFromSelector(sel_userRecordName);
   [(ICAccount *)self didChangeValueForKey:v9];
 }
 
-- (id)replicaIDForBundleIdentifier:(id)a3
+- (id)replicaIDForBundleIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICAccount *)self managedObjectContext];
-  v6 = [v5 concurrencyType];
+  identifierCopy = identifier;
+  managedObjectContext = [(ICAccount *)self managedObjectContext];
+  concurrencyType = [managedObjectContext concurrencyType];
 
-  if (v6 == 2)
+  if (concurrencyType == 2)
   {
-    v7 = [(ICAccount *)self replicaIDToBundleIdentifier];
+    replicaIDToBundleIdentifier = [(ICAccount *)self replicaIDToBundleIdentifier];
 
-    if (!v7)
+    if (!replicaIDToBundleIdentifier)
     {
-      v8 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v9 = [objc_opt_class() bundleIdentifiersWithReplicaID];
-      v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      bundleIdentifiersWithReplicaID = [objc_opt_class() bundleIdentifiersWithReplicaID];
+      v10 = [bundleIdentifiersWithReplicaID countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v10)
       {
         v11 = v10;
@@ -2771,26 +2771,26 @@ void __29__ICAccount_ic_loggingValues__block_invoke(uint64_t a1)
           {
             if (*v21 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(bundleIdentifiersWithReplicaID);
             }
 
             v14 = *(*(&v20 + 1) + 8 * i);
-            v15 = [MEMORY[0x277CCAD78] UUID];
-            [v8 setObject:v15 forKeyedSubscript:v14];
+            uUID = [MEMORY[0x277CCAD78] UUID];
+            [dictionary setObject:uUID forKeyedSubscript:v14];
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v11 = [bundleIdentifiersWithReplicaID countByEnumeratingWithState:&v20 objects:v24 count:16];
         }
 
         while (v11);
       }
 
-      v16 = [v8 copy];
+      v16 = [dictionary copy];
       [(ICAccount *)self setReplicaIDToBundleIdentifier:v16];
     }
 
-    v17 = [(ICAccount *)self replicaIDToBundleIdentifier];
-    v18 = [v17 objectForKeyedSubscript:v4];
+    replicaIDToBundleIdentifier2 = [(ICAccount *)self replicaIDToBundleIdentifier];
+    v18 = [replicaIDToBundleIdentifier2 objectForKeyedSubscript:identifierCopy];
   }
 
   else
@@ -2801,25 +2801,25 @@ void __29__ICAccount_ic_loggingValues__block_invoke(uint64_t a1)
   return v18;
 }
 
-+ (id)newAccountWithIdentifier:(id)a3 type:(int)a4 context:(id)a5 persistentStore:(id)a6
++ (id)newAccountWithIdentifier:(id)identifier type:(int)type context:(id)context persistentStore:(id)store
 {
-  v8 = *&a4;
-  v10 = a3;
-  v11 = a6;
-  if (a5)
+  v8 = *&type;
+  identifierCopy = identifier;
+  storeCopy = store;
+  if (context)
   {
-    v12 = [MEMORY[0x277CBE408] insertNewObjectForEntityForName:@"ICAccount" inManagedObjectContext:a5];
-    [v12 setIdentifier:v10];
+    v12 = [MEMORY[0x277CBE408] insertNewObjectForEntityForName:@"ICAccount" inManagedObjectContext:context];
+    [v12 setIdentifier:identifierCopy];
     [v12 setAccountType:v8];
-    if (v11)
+    if (storeCopy)
     {
-      v13 = v11;
+      v13 = storeCopy;
     }
 
     else
     {
       v15 = +[ICNoteContext sharedContext];
-      v13 = [v15 persistentStoreForAccountID:v10];
+      v13 = [v15 persistentStoreForAccountID:identifierCopy];
     }
 
     [v12 assignToPersistentStore:v13];
@@ -2840,10 +2840,10 @@ void __29__ICAccount_ic_loggingValues__block_invoke(uint64_t a1)
   return v12;
 }
 
-+ (id)newLocalAccountInContext:(id)a3
++ (id)newLocalAccountInContext:(id)context
 {
-  v4 = a3;
-  v5 = [a1 accountWithIdentifier:@"LocalAccount" context:v4];
+  contextCopy = context;
+  v5 = [self accountWithIdentifier:@"LocalAccount" context:contextCopy];
   if (v5)
   {
     v6 = v5;
@@ -2857,34 +2857,34 @@ void __29__ICAccount_ic_loggingValues__block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [MEMORY[0x277D77BF8] sharedManager];
-    v9 = [v8 currentUser];
+    mEMORY[0x277D77BF8] = [MEMORY[0x277D77BF8] sharedManager];
+    currentUser = [mEMORY[0x277D77BF8] currentUser];
 
-    if ([v9 userType] == 1 && !objc_msgSend(v9, "isTransientUser"))
+    if ([currentUser userType] == 1 && !objc_msgSend(currentUser, "isTransientUser"))
     {
 
       v6 = 0;
       goto LABEL_9;
     }
 
-    v6 = [a1 newAccountWithIdentifier:@"LocalAccount" type:3 context:v4];
+    v6 = [self newAccountWithIdentifier:@"LocalAccount" type:3 context:contextCopy];
     [v6 setDidChooseToMigrate:1];
   }
 
-  v10 = [a1 localizedLocalAccountName];
-  [v6 setName:v10];
+  localizedLocalAccountName = [self localizedLocalAccountName];
+  [v6 setName:localizedLocalAccountName];
 
 LABEL_9:
   return v6;
 }
 
-+ (id)inMemoryAccountInContext:(id)a3
++ (id)inMemoryAccountInContext:(id)context
 {
-  v4 = a3;
-  v5 = [a1 accountWithIdentifier:@"InMemoryAccount" context:v4];
+  contextCopy = context;
+  v5 = [self accountWithIdentifier:@"InMemoryAccount" context:contextCopy];
   if (!v5)
   {
-    v5 = [a1 newAccountWithIdentifier:@"InMemoryAccount" type:3 context:v4];
+    v5 = [self newAccountWithIdentifier:@"InMemoryAccount" type:3 context:contextCopy];
     [v5 setDidChooseToMigrate:1];
     [v5 setName:@"In-Memory"];
   }
@@ -2892,35 +2892,35 @@ LABEL_9:
   return v5;
 }
 
-+ (void)deleteAccount:(id)a3
++ (void)deleteAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = os_log_create("com.apple.notes", "Accounts");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [ICAccount(Management) deleteAccount:v3];
+    [ICAccount(Management) deleteAccount:accountCopy];
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:@"ICAccountWillBeDeletedNotification" object:v3];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ICAccountWillBeDeletedNotification" object:accountCopy];
 
-  [v3 removeAllObserversIfNecessary];
-  if ([v3 storeDataSeparately])
+  [accountCopy removeAllObserversIfNecessary];
+  if ([accountCopy storeDataSeparately])
   {
-    v6 = [v3 accountFilesDirectoryURL];
+    accountFilesDirectoryURL = [accountCopy accountFilesDirectoryURL];
   }
 
   else
   {
-    v6 = 0;
+    accountFilesDirectoryURL = 0;
   }
 
-  v7 = [v3 managedObjectContext];
-  [v7 deleteObject:v3];
+  managedObjectContext = [accountCopy managedObjectContext];
+  [managedObjectContext deleteObject:accountCopy];
 
-  if (v6)
+  if (accountFilesDirectoryURL)
   {
-    v8 = [ICFileUtilities coordinateDeleteItemAt:v6];
+    v8 = [ICFileUtilities coordinateDeleteItemAt:accountFilesDirectoryURL];
     if (v8)
     {
       v9 = os_log_create("com.apple.notes", "Accounts");
@@ -2931,32 +2931,32 @@ LABEL_9:
     }
   }
 
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 postNotificationName:@"ICAccountWasDeletedNotification" object:v3];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 postNotificationName:@"ICAccountWasDeletedNotification" object:accountCopy];
 }
 
-+ (void)deleteAccountWithBatchDelete:(id)a3
++ (void)deleteAccountWithBatchDelete:(id)delete
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
+  deleteCopy = delete;
+  identifier = [deleteCopy identifier];
   v6 = os_log_create("com.apple.notes", "Accounts");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v41 = v5;
+    v41 = identifier;
     _os_log_impl(&dword_214D51000, v6, OS_LOG_TYPE_INFO, "Deleting modern account with batch delete %@", buf, 0xCu);
   }
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 postNotificationName:@"ICAccountWillBeDeletedNotification" object:v4];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ICAccountWillBeDeletedNotification" object:deleteCopy];
 
-  [v4 removeAllObserversIfNecessary];
-  v8 = [v4 storeDataSeparately];
-  v37 = v5;
-  if (v8)
+  [deleteCopy removeAllObserversIfNecessary];
+  storeDataSeparately = [deleteCopy storeDataSeparately];
+  v37 = identifier;
+  if (storeDataSeparately)
   {
-    v35 = [v4 accountFilesDirectoryURL];
+    accountFilesDirectoryURL = [deleteCopy accountFilesDirectoryURL];
     v36 = 0;
     v33 = 0;
     v34 = 0;
@@ -2964,32 +2964,32 @@ LABEL_9:
 
   else
   {
-    v33 = [ICMedia mediaIdentifiersForAccount:v4];
-    v34 = [ICAttachmentPreviewImage attachmentPreviewImageIdentifiersForAccount:v4];
-    [ICAttachment attachmentIdentifiersForAccount:v4];
-    v36 = v35 = 0;
+    v33 = [ICMedia mediaIdentifiersForAccount:deleteCopy];
+    v34 = [ICAttachmentPreviewImage attachmentPreviewImageIdentifiersForAccount:deleteCopy];
+    [ICAttachment attachmentIdentifiersForAccount:deleteCopy];
+    v36 = accountFilesDirectoryURL = 0;
   }
 
   v9 = +[ICAuthenticationState sharedState];
-  [v9 removeMainKeysFromKeychainForAccount:v4];
+  [v9 removeMainKeysFromKeychainForAccount:deleteCopy];
 
   v10 = [objc_alloc(MEMORY[0x277CBE428]) initWithEntityName:@"ICAccount"];
   v11 = MEMORY[0x277CCAC30];
-  v12 = [v4 identifier];
-  v13 = [v11 predicateWithFormat:@"identifier == %@", v12];
+  identifier2 = [deleteCopy identifier];
+  v13 = [v11 predicateWithFormat:@"identifier == %@", identifier2];
   [v10 setPredicate:v13];
 
   v14 = [objc_alloc(MEMORY[0x277CBE360]) initWithFetchRequest:v10];
   [v14 setResultType:0];
   v15 = objc_autoreleasePoolPush();
-  v16 = [v4 managedObjectContext];
+  managedObjectContext = [deleteCopy managedObjectContext];
   v39 = 0;
-  v17 = [v16 executeRequest:v14 error:&v39];
+  v17 = [managedObjectContext executeRequest:v14 error:&v39];
   v18 = v39;
   if (v18)
   {
     v19 = v18;
-    v20 = a1;
+    selfCopy = self;
     v21 = os_log_create("com.apple.notes", "Accounts");
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -3002,11 +3002,11 @@ LABEL_9:
       +[ICAccount(Management) deleteAccountWithBatchDelete:];
     }
 
-    [v20 deleteAccount:v4];
+    [selfCopy deleteAccount:deleteCopy];
   }
 
   v38 = 0;
-  [v16 save:&v38];
+  [managedObjectContext save:&v38];
   v23 = v38;
   if (v23)
   {
@@ -3018,10 +3018,10 @@ LABEL_9:
   }
 
   objc_autoreleasePoolPop(v15);
-  if (v8)
+  if (storeDataSeparately)
   {
-    v25 = v35;
-    v26 = [ICFileUtilities coordinateDeleteItemAt:v35];
+    v25 = accountFilesDirectoryURL;
+    v26 = [ICFileUtilities coordinateDeleteItemAt:accountFilesDirectoryURL];
     v27 = v33;
     v28 = v34;
     v29 = v36;
@@ -3038,12 +3038,12 @@ LABEL_9:
   else
   {
     v27 = v33;
-    [ICMedia purgeMediaFilesForIdentifiers:v33 account:v4];
+    [ICMedia purgeMediaFilesForIdentifiers:v33 account:deleteCopy];
     v28 = v34;
-    [ICAttachmentPreviewImage purgePreviewImageFilesForIdentifiers:v34 account:v4];
+    [ICAttachmentPreviewImage purgePreviewImageFilesForIdentifiers:v34 account:deleteCopy];
     v29 = v36;
-    [ICAttachment purgeAttachmentFilesForIdentifiers:v36 account:v4];
-    v25 = v35;
+    [ICAttachment purgeAttachmentFilesForIdentifiers:v36 account:deleteCopy];
+    v25 = accountFilesDirectoryURL;
   }
 
   v31 = os_log_create("com.apple.notes", "Accounts");
@@ -3054,40 +3054,40 @@ LABEL_9:
     _os_log_impl(&dword_214D51000, v31, OS_LOG_TYPE_INFO, "Completed batch delete for modern account %@", buf, 0xCu);
   }
 
-  v32 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v32 postNotificationName:@"ICAccountWasDeletedNotification" object:v4];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 postNotificationName:@"ICAccountWasDeletedNotification" object:deleteCopy];
 }
 
-+ (ICAccount)accountWithIdentifier:(id)a3 context:(id)a4
++ (ICAccount)accountWithIdentifier:(id)identifier context:(id)context
 {
   v6 = MEMORY[0x277CCAC30];
-  v7 = a4;
-  v8 = [v6 predicateWithFormat:@"identifier == %@", a3];
-  v9 = [a1 accountsMatchingPredicate:v8 context:v7];
+  contextCopy = context;
+  identifier = [v6 predicateWithFormat:@"identifier == %@", identifier];
+  v9 = [self accountsMatchingPredicate:identifier context:contextCopy];
 
-  v10 = [v9 firstObject];
+  firstObject = [v9 firstObject];
 
-  return v10;
+  return firstObject;
 }
 
-+ (id)cloudKitAccountWithIdentifier:(id)a3 context:(id)a4
++ (id)cloudKitAccountWithIdentifier:(id)identifier context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 length];
+  identifierCopy = identifier;
+  contextCopy = context;
+  v8 = [identifierCopy length];
   v9 = 0;
-  if (v7 && v8)
+  if (contextCopy && v8)
   {
     if ([MEMORY[0x277D361D0] isRunningUnitTests])
     {
-      v9 = [a1 accountWithIdentifier:v6 context:v7];
+      v9 = [self accountWithIdentifier:identifierCopy context:contextCopy];
       goto LABEL_20;
     }
 
     v10 = accountsForAppleCloudKitTable;
     objc_sync_enter(v10);
-    v11 = [accountsForAppleCloudKitTable objectForKey:v7];
-    v12 = [v11 objectForKey:v6];
+    v11 = [accountsForAppleCloudKitTable objectForKey:contextCopy];
+    v12 = [v11 objectForKey:identifierCopy];
     v9 = v12;
     if (v12)
     {
@@ -3095,7 +3095,7 @@ LABEL_9:
     }
 
     v15 = +[ICAccount accountUtilities];
-    v16 = [v15 iCloudACAccountWithIdentifier:v6];
+    v16 = [v15 iCloudACAccountWithIdentifier:identifierCopy];
 
     if (![v16 ic_isNotesEnabled])
     {
@@ -3103,14 +3103,14 @@ LABEL_9:
       goto LABEL_18;
     }
 
-    v9 = [a1 accountWithIdentifier:v6 context:v7];
+    v9 = [self accountWithIdentifier:identifierCopy context:contextCopy];
 
     if (v9)
     {
 LABEL_6:
-      v13 = [v9 managedObjectContext];
+      managedObjectContext = [v9 managedObjectContext];
 
-      if (v13)
+      if (managedObjectContext)
       {
         if (([v9 isDeleted] & 1) == 0)
         {
@@ -3130,7 +3130,7 @@ LABEL_19:
 
       else
       {
-        v14 = [a1 accountWithIdentifier:v6 context:v7];
+        v14 = [self accountWithIdentifier:identifierCopy context:contextCopy];
       }
 
       v9 = v14;
@@ -3138,10 +3138,10 @@ LABEL_19:
 
 LABEL_14:
     v16 = [v11 mutableCopy];
-    [v16 setObject:v9 forKeyedSubscript:v6];
+    [v16 setObject:v9 forKeyedSubscript:identifierCopy];
     v17 = accountsForAppleCloudKitTable;
     v18 = [v16 copy];
-    [v17 setObject:v18 forKey:v7];
+    [v17 setObject:v18 forKey:contextCopy];
 
 LABEL_18:
     goto LABEL_19;
@@ -3152,10 +3152,10 @@ LABEL_20:
   return v9;
 }
 
-+ (id)cloudKitAccountInContext:(id)a3
++ (id)cloudKitAccountInContext:(id)context
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
@@ -3163,18 +3163,18 @@ LABEL_20:
   v46 = __Block_byref_object_dispose__22;
   v47 = 0;
   v5 = +[ICAccount accountUtilities];
-  v6 = [v5 primaryICloudACAccount];
+  primaryICloudACAccount = [v5 primaryICloudACAccount];
 
   v7 = os_log_create("com.apple.notes", "Accounts");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = [v6 identifier];
-    [(ICAccount(Management) *)v8 cloudKitAccountInContext:buf, v7];
+    identifier = [primaryICloudACAccount identifier];
+    [(ICAccount(Management) *)identifier cloudKitAccountInContext:buf, v7];
   }
 
   v9 = accountForAppleCloudKitTable;
   objc_sync_enter(v9);
-  v10 = [accountForAppleCloudKitTable objectForKey:v4];
+  v10 = [accountForAppleCloudKitTable objectForKey:contextCopy];
   v11 = v43[5];
   v43[5] = v10;
 
@@ -3182,8 +3182,8 @@ LABEL_20:
   v12 = v43[5];
   if (v12)
   {
-    v13 = [v12 managedObjectContext];
-    v14 = v13 == 0;
+    managedObjectContext = [v12 managedObjectContext];
+    v14 = managedObjectContext == 0;
 
     if (v14)
     {
@@ -3198,9 +3198,9 @@ LABEL_20:
       v32[2] = __50__ICAccount_Management__cloudKitAccountInContext___block_invoke_651;
       v32[3] = &unk_278196B68;
       v35 = &v42;
-      v36 = a1;
-      v33 = v6;
-      v34 = v4;
+      selfCopy = self;
+      v33 = primaryICloudACAccount;
+      v34 = contextCopy;
       [v34 performBlockAndWait:v32];
     }
 
@@ -3210,14 +3210,14 @@ LABEL_20:
       v29 = &v28;
       v30 = 0x2020000000;
       v31 = 0;
-      v15 = [v43[5] managedObjectContext];
+      managedObjectContext2 = [v43[5] managedObjectContext];
       v27[0] = MEMORY[0x277D85DD0];
       v27[1] = 3221225472;
       v27[2] = __50__ICAccount_Management__cloudKitAccountInContext___block_invoke_2;
       v27[3] = &unk_278196B90;
       v27[4] = &v28;
       v27[5] = &v42;
-      [v15 performBlockAndWait:v27];
+      [managedObjectContext2 performBlockAndWait:v27];
 
       if (*(v29 + 24) == 1)
       {
@@ -3235,10 +3235,10 @@ LABEL_20:
     }
   }
 
-  else if ([v6 ic_isNotesEnabled])
+  else if ([primaryICloudACAccount ic_isNotesEnabled])
   {
-    v18 = [v6 identifier];
-    if (v18)
+    identifier2 = [primaryICloudACAccount identifier];
+    if (identifier2)
     {
       v19 = os_log_create("com.apple.notes", "Accounts");
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -3251,9 +3251,9 @@ LABEL_20:
       v37[2] = __50__ICAccount_Management__cloudKitAccountInContext___block_invoke;
       v37[3] = &unk_278196B68;
       v40 = &v42;
-      v41 = a1;
-      v38 = v18;
-      v39 = v4;
+      selfCopy2 = self;
+      v38 = identifier2;
+      v39 = contextCopy;
       [v39 performBlockAndWait:v37];
     }
   }
@@ -3269,16 +3269,16 @@ LABEL_20:
 
   v22 = accountForAppleCloudKitTable;
   objc_sync_enter(v22);
-  [accountForAppleCloudKitTable setObject:v43[5] forKey:v4];
+  [accountForAppleCloudKitTable setObject:v43[5] forKey:contextCopy];
   objc_sync_exit(v22);
 
-  v23 = [v43[5] managedObjectContext];
+  managedObjectContext3 = [v43[5] managedObjectContext];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __50__ICAccount_Management__cloudKitAccountInContext___block_invoke_652;
   v26[3] = &unk_278196B18;
   v26[4] = &v42;
-  [v23 performBlockAndWait:v26];
+  [managedObjectContext3 performBlockAndWait:v26];
 
   v24 = v43[5];
   _Block_object_dispose(&v42, 8);
@@ -3320,10 +3320,10 @@ void __50__ICAccount_Management__cloudKitAccountInContext___block_invoke_652(uin
   }
 }
 
-+ (id)cloudKitIfMigratedElseLocalAccountInContext:(id)a3
++ (id)cloudKitIfMigratedElseLocalAccountInContext:(id)context
 {
-  v4 = a3;
-  v5 = [a1 cloudKitAccountInContext:v4];
+  contextCopy = context;
+  v5 = [self cloudKitAccountInContext:contextCopy];
   v6 = v5;
   if (v5 && [v5 didChooseToMigrate])
   {
@@ -3332,7 +3332,7 @@ void __50__ICAccount_Management__cloudKitAccountInContext___block_invoke_652(uin
 
   else
   {
-    v8 = [a1 allActiveCloudKitAccountsInContext:v4];
+    v8 = [self allActiveCloudKitAccountsInContext:contextCopy];
     if ([v8 count])
     {
       [v8 firstObject];
@@ -3340,7 +3340,7 @@ void __50__ICAccount_Management__cloudKitAccountInContext___block_invoke_652(uin
 
     else
     {
-      [a1 localAccountInContext:v4];
+      [self localAccountInContext:contextCopy];
     }
     v7 = ;
   }
@@ -3348,9 +3348,9 @@ void __50__ICAccount_Management__cloudKitAccountInContext___block_invoke_652(uin
   return v7;
 }
 
-+ (id)localAccountInContext:(id)a3
++ (id)localAccountInContext:(id)context
 {
-  v3 = [a1 accountWithIdentifier:@"LocalAccount" context:a3];
+  v3 = [self accountWithIdentifier:@"LocalAccount" context:context];
   v4 = v3;
   if (v3 && ([v3 didChooseToMigrate] & 1) == 0)
   {
@@ -3360,9 +3360,9 @@ void __50__ICAccount_Management__cloudKitAccountInContext___block_invoke_652(uin
   return v4;
 }
 
-+ (id)defaultAccountInContext:(id)a3
++ (id)defaultAccountInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = ICSettingsBundleID();
   CFPreferencesAppSynchronize(v5);
   v6 = ICSettingsBundleID();
@@ -3392,7 +3392,7 @@ void __50__ICAccount_Management__cloudKitAccountInContext___block_invoke_652(uin
 
   if (v7)
   {
-    v12 = [ICAccount accountWithIdentifier:v7 context:v4];
+    v12 = [ICAccount accountWithIdentifier:v7 context:contextCopy];
     v13 = v12;
     if (v12 && [v12 didChooseToMigrate])
     {
@@ -3407,7 +3407,7 @@ void __50__ICAccount_Management__cloudKitAccountInContext___block_invoke_652(uin
     v13 = 0;
   }
 
-  if (![v7 isEqualToString:*MEMORY[0x277D358F8]] || (objc_msgSend(a1, "localAccountInContext:", v4), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "didChooseToMigrate"), v15, !v16) || (objc_msgSend(a1, "localAccountInContext:", v4), (v14 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (![v7 isEqualToString:*MEMORY[0x277D358F8]] || (objc_msgSend(self, "localAccountInContext:", contextCopy), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "didChooseToMigrate"), v15, !v16) || (objc_msgSend(self, "localAccountInContext:", contextCopy), (v14 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v17 = os_log_create("com.apple.notes", "Accounts");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
@@ -3415,7 +3415,7 @@ void __50__ICAccount_Management__cloudKitAccountInContext___block_invoke_652(uin
       +[ICAccount(Management) defaultAccountInContext:];
     }
 
-    v14 = [a1 cloudKitIfMigratedElseLocalAccountInContext:v4];
+    v14 = [self cloudKitIfMigratedElseLocalAccountInContext:contextCopy];
   }
 
 LABEL_20:
@@ -3424,47 +3424,47 @@ LABEL_20:
   return v18;
 }
 
-+ (id)activeAccountWithUserRecordName:(id)a3 context:(id)a4
++ (id)activeAccountWithUserRecordName:(id)name context:(id)context
 {
   v16[1] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCAC30];
-  v7 = a4;
-  v8 = [v6 predicateWithFormat:@"didChooseToMigrate == YES && userRecordName == %@", a3];
+  contextCopy = context;
+  name = [v6 predicateWithFormat:@"didChooseToMigrate == YES && userRecordName == %@", name];
   v9 = MEMORY[0x277CCAC98];
   v10 = NSStringFromSelector(sel_accountType);
   v11 = [v9 sortDescriptorWithKey:v10 ascending:1];
 
   v16[0] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-  v13 = [a1 ic_objectsMatchingPredicate:v8 sortDescriptors:v12 context:v7];
+  v13 = [self ic_objectsMatchingPredicate:name sortDescriptors:v12 context:contextCopy];
 
-  v14 = [v13 firstObject];
+  firstObject = [v13 firstObject];
 
-  return v14;
+  return firstObject;
 }
 
-+ (id)allAccountsInContext:(id)a3
++ (id)allAccountsInContext:(id)context
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAC98];
-  v5 = a3;
+  contextCopy = context;
   v6 = [[v4 alloc] initWithKey:@"name" ascending:1];
   v10[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
 
-  v8 = [a1 ic_objectsMatchingPredicate:0 sortDescriptors:v7 context:v5];
+  v8 = [self ic_objectsMatchingPredicate:0 sortDescriptors:v7 context:contextCopy];
 
   return v8;
 }
 
-+ (id)allAccountIdentifiersInContext:(id)a3
++ (id)allAccountIdentifiersInContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = objc_autoreleasePoolPush();
   v5 = +[ICAccount fetchRequest];
   [v5 setResultType:2];
   [v5 setPropertiesToFetch:&unk_282747FB8];
-  v6 = [v3 executeFetchRequest:v5 error:0];
+  v6 = [contextCopy executeFetchRequest:v5 error:0];
   v7 = [v6 valueForKey:@"identifier"];
   if (v7)
   {
@@ -3481,34 +3481,34 @@ LABEL_20:
   return v8;
 }
 
-+ (id)passwordProtectedNoteIdentifiersInAccountIdentifier:(id)a3 context:(id)a4
++ (id)passwordProtectedNoteIdentifiersInAccountIdentifier:(id)identifier context:(id)context
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCAC30];
-  v6 = a4;
-  v7 = [v5 predicateWithFormat:@"folder.account.identifier == %@", a3];
-  v13[0] = v7;
+  contextCopy = context;
+  identifier = [v5 predicateWithFormat:@"folder.account.identifier == %@", identifier];
+  v13[0] = identifier;
   v8 = +[ICCloudSyncingObject predicateForPasswordProtectedObjects];
   v13[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
 
   v10 = [MEMORY[0x277CCA920] andPredicateWithSubpredicates:v9];
-  v11 = [ICNote noteIdentifiersMatchingPredicate:v10 context:v6];
+  v11 = [ICNote noteIdentifiersMatchingPredicate:v10 context:contextCopy];
 
   return v11;
 }
 
-+ (unint64_t)numberOfCloudKitAccountsInContext:(id)a3 onlyMigrated:(BOOL)a4
++ (unint64_t)numberOfCloudKitAccountsInContext:(id)context onlyMigrated:(BOOL)migrated
 {
-  v4 = a4;
+  migratedCopy = migrated;
   v5 = MEMORY[0x277CBE428];
-  v6 = a3;
+  contextCopy = context;
   v7 = [v5 fetchRequestWithEntityName:@"ICAccount"];
   v8 = MEMORY[0x277CBEB18];
   v9 = [MEMORY[0x277CCAC30] predicateWithFormat:@"accountType == %d", 1];
   v10 = [v8 arrayWithObjects:{v9, 0}];
 
-  if (v4)
+  if (migratedCopy)
   {
     v11 = [MEMORY[0x277CCAC30] predicateWithFormat:@"didChooseToMigrate == YES"];
     [v10 addObject:v11];
@@ -3518,7 +3518,7 @@ LABEL_20:
   [v7 setPredicate:v12];
 
   v18 = 0;
-  v13 = [v6 countForFetchRequest:v7 error:&v18];
+  v13 = [contextCopy countForFetchRequest:v7 error:&v18];
 
   v14 = v18;
   if (v14)
@@ -3538,24 +3538,24 @@ LABEL_20:
   return v13;
 }
 
-+ (id)allActiveAccountsInContextSortedByAccountType:(id)a3
++ (id)allActiveAccountsInContextSortedByAccountType:(id)type
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CCAC98];
-  v5 = a3;
+  typeCopy = type;
   v6 = [[v4 alloc] initWithKey:@"accountType" ascending:1];
   v10[0] = v6;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-  v8 = [a1 allActiveAccountsInContext:v5 sortDescriptors:v7 relationshipKeyPathsForPrefetching:0];
+  v8 = [self allActiveAccountsInContext:typeCopy sortDescriptors:v7 relationshipKeyPathsForPrefetching:0];
 
   return v8;
 }
 
-+ (id)allActiveAccountsInContextWithDefaultBeingFirstIfApplicable:(id)a3
++ (id)allActiveAccountsInContextWithDefaultBeingFirstIfApplicable:(id)applicable
 {
-  v4 = a3;
-  v5 = [a1 allActiveAccountsInContext:v4];
-  v6 = [ICAccount defaultAccountInContext:v4];
+  applicableCopy = applicable;
+  v5 = [self allActiveAccountsInContext:applicableCopy];
+  v6 = [ICAccount defaultAccountInContext:applicableCopy];
 
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
@@ -3564,13 +3564,13 @@ LABEL_20:
   v14 = v6;
   v7 = v6;
   v8 = [v5 ic_objectsPassingTest:v13];
-  v9 = [v8 firstObject];
+  firstObject = [v8 firstObject];
 
-  if (v9)
+  if (firstObject)
   {
     v10 = [v5 mutableCopy];
-    [v10 removeObject:v9];
-    [v10 insertObject:v9 atIndex:0];
+    [v10 removeObject:firstObject];
+    [v10 insertObject:firstObject atIndex:0];
     v11 = [v10 copy];
 
     v5 = v11;
@@ -3588,45 +3588,45 @@ uint64_t __85__ICAccount_Management__allActiveAccountsInContextWithDefaultBeingF
   return v5;
 }
 
-+ (id)allActiveAccountsInContext:(id)a3 sortDescriptors:(id)a4 relationshipKeyPathsForPrefetching:(id)a5
++ (id)allActiveAccountsInContext:(id)context sortDescriptors:(id)descriptors relationshipKeyPathsForPrefetching:(id)prefetching
 {
   v8 = MEMORY[0x277CCAC30];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  prefetchingCopy = prefetching;
+  descriptorsCopy = descriptors;
+  contextCopy = context;
   v12 = [v8 predicateWithFormat:@"accountType != %d || didChooseToMigrate == YES", 1];
-  v13 = [a1 ic_objectsMatchingPredicate:v12 sortDescriptors:v10 relationshipKeyPathsForPrefetching:v9 fetchLimit:0 context:v11];
+  v13 = [self ic_objectsMatchingPredicate:v12 sortDescriptors:descriptorsCopy relationshipKeyPathsForPrefetching:prefetchingCopy fetchLimit:0 context:contextCopy];
 
   return v13;
 }
 
-+ (id)allActiveCloudKitAccountsInContext:(id)a3
++ (id)allActiveCloudKitAccountsInContext:(id)context
 {
   v4 = MEMORY[0x277CCAC30];
-  v5 = a3;
+  contextCopy = context;
   v6 = [v4 predicateWithFormat:@"accountType == %d && didChooseToMigrate == YES", 1];
-  v7 = [a1 accountsMatchingPredicate:v6 context:v5];
+  v7 = [self accountsMatchingPredicate:v6 context:contextCopy];
 
   return v7;
 }
 
-+ (id)accountsWithAccountType:(int)a3 context:(id)a4
++ (id)accountsWithAccountType:(int)type context:(id)context
 {
-  v4 = *&a3;
+  v4 = *&type;
   v6 = MEMORY[0x277CCAC30];
-  v7 = a4;
+  contextCopy = context;
   v8 = [v6 predicateWithFormat:@"accountType == %d", v4];
-  v9 = [a1 accountsMatchingPredicate:v8 context:v7];
+  v9 = [self accountsMatchingPredicate:v8 context:contextCopy];
 
   return v9;
 }
 
 + (BOOL)isCloudKitAccountAvailable
 {
-  v3 = [MEMORY[0x277CCACC8] isMainThread];
+  isMainThread = [MEMORY[0x277CCACC8] isMainThread];
   v4 = +[ICNoteContext sharedContext];
   v5 = v4;
-  if (v3)
+  if (isMainThread)
   {
     [v4 managedObjectContext];
   }
@@ -3637,27 +3637,27 @@ uint64_t __85__ICAccount_Management__allActiveAccountsInContextWithDefaultBeingF
   }
   v6 = ;
 
-  v7 = [a1 isCloudKitAccountAvailableInContext:v6];
+  v7 = [self isCloudKitAccountAvailableInContext:v6];
   return v7;
 }
 
-+ (BOOL)isCloudKitAccountAvailableInContext:(id)a3
++ (BOOL)isCloudKitAccountAvailableInContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
   v4 = accountForAppleCloudKitTable;
   objc_sync_enter(v4);
-  v5 = [accountForAppleCloudKitTable objectEnumerator];
-  v6 = [v5 nextObject];
+  objectEnumerator = [accountForAppleCloudKitTable objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
 
-  if (v6)
+  if (nextObject)
   {
-    v7 = [v6 managedObjectContext];
+    managedObjectContext = [nextObject managedObjectContext];
 
-    if (v7)
+    if (managedObjectContext)
     {
       *(v20 + 24) = 1;
     }
@@ -3671,17 +3671,17 @@ uint64_t __85__ICAccount_Management__allActiveAccountsInContextWithDefaultBeingF
 
   v8 = accountsForAppleCloudKitTable;
   objc_sync_enter(v8);
-  v9 = [accountsForAppleCloudKitTable objectEnumerator];
-  v10 = [v9 nextObject];
+  objectEnumerator2 = [accountsForAppleCloudKitTable objectEnumerator];
+  nextObject2 = [objectEnumerator2 nextObject];
 
-  v11 = [v10 objectEnumerator];
-  v12 = [v11 nextObject];
+  objectEnumerator3 = [nextObject2 objectEnumerator];
+  nextObject3 = [objectEnumerator3 nextObject];
 
-  if (v12)
+  if (nextObject3)
   {
-    v13 = [v12 managedObjectContext];
+    managedObjectContext2 = [nextObject3 managedObjectContext];
 
-    if (v13)
+    if (managedObjectContext2)
     {
       *(v20 + 24) = 1;
     }
@@ -3701,7 +3701,7 @@ LABEL_9:
     v16[2] = __61__ICAccount_Management__isCloudKitAccountAvailableInContext___block_invoke;
     v16[3] = &unk_278194DE8;
     v18 = &v19;
-    v17 = v3;
+    v17 = contextCopy;
     [v17 performBlockAndWait:v16];
 
     v14 = *(v20 + 24);
@@ -3757,9 +3757,9 @@ unint64_t __61__ICAccount_Management__isCloudKitAccountAvailableInContext___bloc
   return v4;
 }
 
-+ (BOOL)hasModernAccountInContext:(id)a3
++ (BOOL)hasModernAccountInContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -3768,7 +3768,7 @@ unint64_t __61__ICAccount_Management__isCloudKitAccountAvailableInContext___bloc
   v7[1] = 3221225472;
   v7[2] = __51__ICAccount_Management__hasModernAccountInContext___block_invoke;
   v7[3] = &unk_278194D68;
-  v4 = v3;
+  v4 = contextCopy;
   v8 = v4;
   v9 = &v10;
   [v4 performBlockAndWait:v7];
@@ -3786,23 +3786,23 @@ void __51__ICAccount_Management__hasModernAccountInContext___block_invoke(uint64
 
 - (BOOL)isInICloudAccount
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(ICAccount *)self managedObjectContext];
+  managedObjectContext = [(ICAccount *)self managedObjectContext];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __40__ICAccount_CloudKit__isInICloudAccount__block_invoke;
   v5[3] = &unk_278194DE8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  [v3 performBlockAndWait:v5];
+  [managedObjectContext performBlockAndWait:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 uint64_t __40__ICAccount_CloudKit__isInICloudAccount__block_invoke(uint64_t a1)
@@ -3814,66 +3814,66 @@ uint64_t __40__ICAccount_CloudKit__isInICloudAccount__block_invoke(uint64_t a1)
 
 - (BOOL)needsToBePushedToCloud
 {
-  v3 = [(ICAccount *)self userRecordName];
-  if ([v3 length])
+  userRecordName = [(ICAccount *)self userRecordName];
+  if ([userRecordName length])
   {
     v6.receiver = self;
     v6.super_class = ICAccount;
-    v4 = [(ICCloudSyncingObject *)&v6 needsToBePushedToCloud];
+    needsToBePushedToCloud = [(ICCloudSyncingObject *)&v6 needsToBePushedToCloud];
   }
 
   else
   {
-    v4 = 0;
+    needsToBePushedToCloud = 0;
   }
 
-  return v4;
+  return needsToBePushedToCloud;
 }
 
-+ (id)existingCloudObjectForRecordID:(id)a3 accountID:(id)a4 context:(id)a5
++ (id)existingCloudObjectForRecordID:(id)d accountID:(id)iD context:(id)context
 {
-  v7 = a3;
-  v8 = [ICAccount cloudKitAccountWithIdentifier:a4 context:a5];
+  dCopy = d;
+  v8 = [ICAccount cloudKitAccountWithIdentifier:iD context:context];
   v9 = v8;
-  v10 = 0;
-  if (v7)
+  userRecordName = 0;
+  if (dCopy)
   {
     if (v8)
     {
-      v10 = [v8 userRecordName];
-      if (v10)
+      userRecordName = [v8 userRecordName];
+      if (userRecordName)
       {
-        v11 = [v9 userRecordName];
-        v12 = [v7 recordName];
-        v13 = [v11 isEqualToString:v12];
+        userRecordName2 = [v9 userRecordName];
+        recordName = [dCopy recordName];
+        v13 = [userRecordName2 isEqualToString:recordName];
 
         if (v13)
         {
-          v10 = v9;
+          userRecordName = v9;
         }
 
         else
         {
-          v10 = 0;
+          userRecordName = 0;
         }
       }
     }
   }
 
-  return v10;
+  return userRecordName;
 }
 
-+ (id)allCloudObjectIDsInContext:(id)a3 passingTest:(id)a4
++ (id)allCloudObjectIDsInContext:(id)context passingTest:(id)test
 {
-  v5 = a4;
-  v6 = [ICAccount allCloudKitAccountsInContext:a3];
+  testCopy = test;
+  v6 = [ICAccount allCloudKitAccountsInContext:context];
   if (v6)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __62__ICAccount_CloudKit__allCloudObjectIDsInContext_passingTest___block_invoke;
     v18[3] = &unk_2781975D0;
-    v19 = v5;
+    v19 = testCopy;
     v7 = [v6 ic_objectsPassingTest:v18];
     v8 = [v7 ic_compactMap:&__block_literal_global_36];
 
@@ -3908,23 +3908,23 @@ uint64_t __62__ICAccount_CloudKit__allCloudObjectIDsInContext_passingTest___bloc
   }
 }
 
-+ (void)enumerateAllCloudObjectsInContext:(id)a3 batchSize:(unint64_t)a4 saveAfterBatch:(BOOL)a5 usingBlock:(id)a6
++ (void)enumerateAllCloudObjectsInContext:(id)context batchSize:(unint64_t)size saveAfterBatch:(BOOL)batch usingBlock:(id)block
 {
-  v7 = a5;
-  v8 = a3;
-  v9 = a6;
-  v10 = [ICAccount allCloudKitAccountsInContext:v8];
+  batchCopy = batch;
+  contextCopy = context;
+  blockCopy = block;
+  v10 = [ICAccount allCloudKitAccountsInContext:contextCopy];
   if (v10)
   {
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __93__ICAccount_CloudKit__enumerateAllCloudObjectsInContext_batchSize_saveAfterBatch_usingBlock___block_invoke;
     v19[3] = &unk_278197618;
-    v20 = v9;
+    v20 = blockCopy;
     [v10 enumerateObjectsUsingBlock:v19];
-    if (v7)
+    if (batchCopy)
     {
-      [v8 ic_saveWithLogDescription:@"Saving after enumerating all accounts"];
+      [contextCopy ic_saveWithLogDescription:@"Saving after enumerating all accounts"];
     }
 
     v11 = v20;
@@ -3951,23 +3951,23 @@ uint64_t __93__ICAccount_CloudKit__enumerateAllCloudObjectsInContext_batchSize_s
   return result;
 }
 
-- (BOOL)mergeCloudKitRecord:(id)a3 accountID:(id)a4 approach:(int64_t)a5 mergeableFieldState:(id)a6
+- (BOOL)mergeCloudKitRecord:(id)record accountID:(id)d approach:(int64_t)approach mergeableFieldState:(id)state
 {
-  v10 = a3;
-  if (!a5)
+  recordCopy = record;
+  if (!approach)
   {
     v44.receiver = self;
     v44.super_class = ICAccount;
-    if (![(ICCloudSyncingObject *)&v44 mergeCloudKitRecord:v10 accountID:a4 approach:0 mergeableFieldState:a6])
+    if (![(ICCloudSyncingObject *)&v44 mergeCloudKitRecord:recordCopy accountID:d approach:0 mergeableFieldState:state])
     {
       goto LABEL_9;
     }
 
-    v14 = [v10 recordID];
-    v15 = [v14 recordName];
-    [(ICAccount *)self setUserRecordName:v15];
+    recordID = [recordCopy recordID];
+    recordName = [recordID recordName];
+    [(ICAccount *)self setUserRecordName:recordName];
 
-    v16 = [v10 objectForKeyedSubscript:@"DidChooseToMigrate"];
+    v16 = [recordCopy objectForKeyedSubscript:@"DidChooseToMigrate"];
     v17 = v16;
     if (!v16 || (v18 = [v16 BOOLValue], v18 == -[ICAccount didChooseToMigrate](self, "didChooseToMigrate")))
     {
@@ -3987,19 +3987,19 @@ uint64_t __93__ICAccount_CloudKit__enumerateAllCloudObjectsInContext_batchSize_s
       v21 = 1;
     }
 
-    v24 = [v10 objectForKeyedSubscript:@"DidFinishMigration"];
+    v24 = [recordCopy objectForKeyedSubscript:@"DidFinishMigration"];
     v25 = v24;
     if (v24)
     {
-      v26 = [v24 BOOLValue];
-      if (v26 != [(ICAccount *)self didFinishMigration])
+      bOOLValue = [v24 BOOLValue];
+      if (bOOLValue != [(ICAccount *)self didFinishMigration])
       {
         -[ICAccount setDidFinishMigration:](self, "setDidFinishMigration:", [v25 BOOLValue]);
         v21 = 1;
       }
     }
 
-    v27 = [v10 objectForKeyedSubscript:@"DidMigrateOnMac"];
+    v27 = [recordCopy objectForKeyedSubscript:@"DidMigrateOnMac"];
     v28 = v27;
     if (!v27 || (v29 = [v27 BOOLValue], v29 == -[ICAccount didMigrateOnMac](self, "didMigrateOnMac")))
     {
@@ -4018,9 +4018,9 @@ LABEL_24:
     }
 
     v30 = +[ICNoteContext sharedContext];
-    v31 = [v30 primaryICloudACAccount];
+    primaryICloudACAccount = [v30 primaryICloudACAccount];
 
-    if (v31)
+    if (primaryICloudACAccount)
     {
       v32 = os_log_create("com.apple.notes", "Accounts");
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
@@ -4028,20 +4028,20 @@ LABEL_24:
         [(ICAccount(CloudKit) *)v32 mergeCloudKitRecord:v33 accountID:v34 approach:v35 mergeableFieldState:v36, v37, v38, v39];
       }
 
-      v40 = [(ICAccount *)self didChooseToMigrate];
-      v41 = [(ICAccount *)self didFinishMigration];
-      v42 = [(ICAccount *)self didMigrateOnMac];
-      v43 = [v31 accountStore];
-      [ICMigrationUtilities saveDidChooseToMigrate:v40 didFinishMigration:v41 didMigrateOnMac:v42 toACAccount:v31 inStore:v43 completionHandler:0];
+      didChooseToMigrate = [(ICAccount *)self didChooseToMigrate];
+      didFinishMigration = [(ICAccount *)self didFinishMigration];
+      didMigrateOnMac = [(ICAccount *)self didMigrateOnMac];
+      accountStore = [primaryICloudACAccount accountStore];
+      [ICMigrationUtilities saveDidChooseToMigrate:didChooseToMigrate didFinishMigration:didFinishMigration didMigrateOnMac:didMigrateOnMac toACAccount:primaryICloudACAccount inStore:accountStore completionHandler:0];
     }
 
     goto LABEL_24;
   }
 
   v11 = MEMORY[0x277D36198];
-  v12 = [(ICAccount *)self className];
-  v13 = ICStringFromSyncingApproach(a5);
-  [v11 handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICAccount(CloudKit) mergeCloudKitRecord:accountID:approach:mergeableFieldState:]" simulateCrash:1 showAlert:0 format:{@"Object %@ does not support sync approach: %@", v12, v13}];
+  className = [(ICAccount *)self className];
+  v13 = ICStringFromSyncingApproach(approach);
+  [v11 handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICAccount(CloudKit) mergeCloudKitRecord:accountID:approach:mergeableFieldState:]" simulateCrash:1 showAlert:0 format:{@"Object %@ does not support sync approach: %@", className, v13}];
 
 LABEL_9:
   v22 = 0;
@@ -4050,13 +4050,13 @@ LABEL_10:
   return v22;
 }
 
-- (id)makeCloudKitRecordForApproach:(int64_t)a3 mergeableFieldState:(id)a4
+- (id)makeCloudKitRecordForApproach:(int64_t)approach mergeableFieldState:(id)state
 {
-  if (a3)
+  if (approach)
   {
     v6 = MEMORY[0x277D36198];
-    v7 = [(ICAccount *)self className:a3];
-    v8 = ICStringFromSyncingApproach(a3);
+    v7 = [(ICAccount *)self className:approach];
+    v8 = ICStringFromSyncingApproach(approach);
     [v6 handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICAccount(CloudKit) makeCloudKitRecordForApproach:mergeableFieldState:]" simulateCrash:1 showAlert:0 format:{@"Object %@ does not support sync approach: %@", v7, v8}];
 
     v9 = 0;
@@ -4066,20 +4066,20 @@ LABEL_10:
   {
     v20.receiver = self;
     v20.super_class = ICAccount;
-    v9 = [(ICCloudSyncingObject *)&v20 makeCloudKitRecordForApproach:0 mergeableFieldState:a4];
-    v10 = [(ICAccount *)self cryptoVerifier];
-    [v9 setObject:v10 forKeyedSubscript:@"CryptoVerifier"];
+    v9 = [(ICCloudSyncingObject *)&v20 makeCloudKitRecordForApproach:0 mergeableFieldState:state];
+    cryptoVerifier = [(ICAccount *)self cryptoVerifier];
+    [v9 setObject:cryptoVerifier forKeyedSubscript:@"CryptoVerifier"];
 
-    v11 = [(ICAccount *)self cryptoSalt];
-    [v9 setObject:v11 forKeyedSubscript:@"CryptoSalt"];
+    cryptoSalt = [(ICAccount *)self cryptoSalt];
+    [v9 setObject:cryptoSalt forKeyedSubscript:@"CryptoSalt"];
 
     v12 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[ICAccount cryptoIterationCount](self, "cryptoIterationCount")}];
     [v9 setObject:v12 forKeyedSubscript:@"CryptoIterationCount"];
 
-    v13 = [(ICCloudSyncingObject *)self passwordHint];
-    v14 = [v13 dataUsingEncoding:4];
-    v15 = [v9 encryptedValues];
-    [v15 setObject:v14 forKeyedSubscript:@"PasswordHint"];
+    passwordHint = [(ICCloudSyncingObject *)self passwordHint];
+    v14 = [passwordHint dataUsingEncoding:4];
+    encryptedValues = [v9 encryptedValues];
+    [encryptedValues setObject:v14 forKeyedSubscript:@"PasswordHint"];
 
     v16 = [MEMORY[0x277CCABB0] numberWithBool:{-[ICAccount didChooseToMigrate](self, "didChooseToMigrate")}];
     [v9 setObject:v16 forKeyedSubscript:@"DidChooseToMigrate"];
@@ -4094,11 +4094,11 @@ LABEL_10:
   return v9;
 }
 
-- (void)associateAppEntityWithSearchableItemAttributeSet:(id)a3
+- (void)associateAppEntityWithSearchableItemAttributeSet:(id)set
 {
-  v4 = a3;
-  v5 = self;
-  ICAccount.associateAppEntity(with:)(v4);
+  setCopy = set;
+  selfCopy = self;
+  ICAccount.associateAppEntity(with:)(setCopy);
 }
 
 - (void)setMarkedForDeletion:.cold.1()

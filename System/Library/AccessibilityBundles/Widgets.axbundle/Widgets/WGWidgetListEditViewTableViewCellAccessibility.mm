@@ -1,5 +1,5 @@
 @interface WGWidgetListEditViewTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsAddCell;
 - (BOOL)accessibilityActivate;
 - (CGPoint)accessibilityActivationPoint;
@@ -9,14 +9,14 @@
 
 @implementation WGWidgetListEditViewTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UITableViewCell" hasInstanceMethod:@"textLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WGWidgetListEditViewTableViewCell" hasInstanceMethod:@"showsDot" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"UITableViewCellAccessibility" hasInstanceMethod:@"_accessibilityCellEditingControl" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UITableViewCellAccessibility" hasInstanceMethod:@"_accessibilityCellReorderControl" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UITableViewCell" hasInstanceMethod:@"textLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UILabel" hasInstanceMethod:@"text" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WGWidgetListEditViewTableViewCell" hasInstanceMethod:@"showsDot" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"UITableViewCellAccessibility" hasInstanceMethod:@"_accessibilityCellEditingControl" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UITableViewCellAccessibility" hasInstanceMethod:@"_accessibilityCellReorderControl" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
@@ -62,9 +62,9 @@
 - (unint64_t)accessibilityTraits
 {
   v2 = *MEMORY[0x29EDC7F70];
-  v3 = [(WGWidgetListEditViewTableViewCellAccessibility *)self _axIsAddCell];
+  _axIsAddCell = [(WGWidgetListEditViewTableViewCellAccessibility *)self _axIsAddCell];
   v4 = *MEMORY[0x29EDC7510];
-  if (v3)
+  if (_axIsAddCell)
   {
     v4 = 0;
   }
@@ -87,14 +87,14 @@
 
   else
   {
-    v6 = [(WGWidgetListEditViewTableViewCellAccessibility *)self _privateAccessibilityCustomActions];
-    v7 = [v6 firstObject];
+    _privateAccessibilityCustomActions = [(WGWidgetListEditViewTableViewCellAccessibility *)self _privateAccessibilityCustomActions];
+    firstObject = [_privateAccessibilityCustomActions firstObject];
 
     v9 = 0;
     v10 = &v9;
     v11 = 0x2020000000;
     v12 = 0;
-    v4 = v7;
+    v4 = firstObject;
     AXPerformSafeBlock();
     v5 = *(v10 + 24);
 
@@ -164,8 +164,8 @@ LABEL_12:
 
 - (BOOL)_axIsAddCell
 {
-  v2 = [(WGWidgetListEditViewTableViewCellAccessibility *)self _privateAccessibilityCustomActions];
-  v3 = [v2 count] == 0;
+  _privateAccessibilityCustomActions = [(WGWidgetListEditViewTableViewCellAccessibility *)self _privateAccessibilityCustomActions];
+  v3 = [_privateAccessibilityCustomActions count] == 0;
 
   return v3;
 }

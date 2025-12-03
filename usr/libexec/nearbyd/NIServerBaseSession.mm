@@ -1,36 +1,36 @@
 @interface NIServerBaseSession
-- (NIServerBaseSession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5;
-- (NIServerDataResponse)processDCKMessage:(id)a3;
+- (NIServerBaseSession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error;
+- (NIServerDataResponse)processDCKMessage:(id)message;
 - (NIServerNumberResponse)isRangingLimitExceeded;
 - (NIServerSessionResourceManager)resourcesManager;
 - (basic_string<char,)uniqueIdentifierForEngine:(std::allocator<char>> *__return_ptr)retstr;
 - (duration<long)nominalCycleRate;
-- (id)_processCarKeyEvent:(id)a3;
-- (id)_processFindingEvent:(id)a3;
-- (id)_processSystemEvent:(id)a3;
-- (id)_setDebugURSK:(id)a3 transactionIdentifier:(unsigned int)a4;
-- (id)addObject:(id)a3;
+- (id)_processCarKeyEvent:(id)event;
+- (id)_processFindingEvent:(id)event;
+- (id)_processSystemEvent:(id)event;
+- (id)_setDebugURSK:(id)k transactionIdentifier:(unsigned int)identifier;
+- (id)addObject:(id)object;
 - (id)configure;
 - (id)deleteURSKs;
 - (id)disableAllServices;
-- (id)discoveryTokenFromIdentifier:(unint64_t)a3;
+- (id)discoveryTokenFromIdentifier:(unint64_t)identifier;
 - (id)getQueueForInputingData;
 - (id)lastConfiguration;
-- (id)objectFromIdentifier:(unint64_t)a3;
-- (id)pauseWithSource:(int64_t)a3;
+- (id)objectFromIdentifier:(unint64_t)identifier;
+- (id)pauseWithSource:(int64_t)source;
 - (id)printableState;
-- (id)removeObject:(id)a3;
+- (id)removeObject:(id)object;
 - (id)run;
-- (optional<unsigned)identifierFromDiscoveryToken:(id)a3;
+- (optional<unsigned)identifierFromDiscoveryToken:(id)token;
 - (void)invalidate;
-- (void)peerInactivityPeriodExceeded:(id)a3;
-- (void)prefetchAcwgUrsk:(unsigned int)a3;
-- (void)processAcwgM1Msg:(id)a3 withSessionTriggerReason:(int64_t)a4;
-- (void)processAcwgM3Msg:(id)a3;
-- (void)processAcwgRangingSessionResumeRequestMsg:(unsigned int)a3 withResumeTriggerReason:(int64_t)a4;
-- (void)processUpdatedLockState:(unsigned __int16)a3;
-- (void)serviceRequestDidUpdateStatus:(ServiceRequestStatusUpdate)a3;
-- (void)suspendAcwgRanging:(unsigned int)a3 withSuspendTriggerReason:(int64_t)a4;
+- (void)peerInactivityPeriodExceeded:(id)exceeded;
+- (void)prefetchAcwgUrsk:(unsigned int)ursk;
+- (void)processAcwgM1Msg:(id)msg withSessionTriggerReason:(int64_t)reason;
+- (void)processAcwgM3Msg:(id)msg;
+- (void)processAcwgRangingSessionResumeRequestMsg:(unsigned int)msg withResumeTriggerReason:(int64_t)reason;
+- (void)processUpdatedLockState:(unsigned __int16)state;
+- (void)serviceRequestDidUpdateStatus:(ServiceRequestStatusUpdate)status;
+- (void)suspendAcwgRanging:(unsigned int)ranging withSuspendTriggerReason:(int64_t)reason;
 @end
 
 @implementation NIServerBaseSession
@@ -42,14 +42,14 @@
   return WeakRetained;
 }
 
-- (NIServerBaseSession)initWithResourcesManager:(id)a3 configuration:(id)a4 error:(id *)a5
+- (NIServerBaseSession)initWithResourcesManager:(id)manager configuration:(id)configuration error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  managerCopy = manager;
+  configurationCopy = configuration;
+  v11 = configurationCopy;
+  if (managerCopy)
   {
-    if (v10)
+    if (configurationCopy)
     {
       goto LABEL_3;
     }
@@ -58,7 +58,7 @@ LABEL_8:
     v16 = +[NSAssertionHandler currentHandler];
     [v16 handleFailureInMethod:a2 object:self file:@"NIServerBaseSession.mm" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
 
-    if (a5)
+    if (error)
     {
       goto LABEL_4;
     }
@@ -75,7 +75,7 @@ LABEL_8:
   }
 
 LABEL_3:
-  if (a5)
+  if (error)
   {
     goto LABEL_4;
   }
@@ -92,7 +92,7 @@ LABEL_4:
   if (v12)
   {
     v12->_isVoucherSet = 0;
-    objc_storeWeak(&v12->_resourcesManager, v9);
+    objc_storeWeak(&v12->_resourcesManager, managerCopy);
   }
 
   return v13;
@@ -194,7 +194,7 @@ LABEL_4:
   abort();
 }
 
-- (id)pauseWithSource:(int64_t)a3
+- (id)pauseWithSource:(int64_t)source
 {
   v3 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
@@ -221,11 +221,11 @@ LABEL_4:
 - (id)disableAllServices
 {
   WeakRetained = objc_loadWeakRetained(&self->_resourcesManager);
-  v3 = [WeakRetained btResource];
-  [v3 stopAndClearState];
+  btResource = [WeakRetained btResource];
+  [btResource stopAndClearState];
 
-  v4 = [WeakRetained lifecycleSupervisor];
-  [v4 stoppedDiscoveringAllPeers];
+  lifecycleSupervisor = [WeakRetained lifecycleSupervisor];
+  [lifecycleSupervisor stoppedDiscoveringAllPeers];
 
   return 0;
 }
@@ -236,28 +236,28 @@ LABEL_4:
   v4 = qword_1009F9820;
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [WeakRetained serverSessionIdentifier];
+    serverSessionIdentifier = [WeakRetained serverSessionIdentifier];
     v10 = 138412290;
-    v11 = v5;
+    v11 = serverSessionIdentifier;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "#ses-base,Terminating NIServerBaseSession. Session identifier: %@", &v10, 0xCu);
   }
 
-  v6 = [(NIServerBaseSession *)self disableAllServices];
-  if (v6)
+  disableAllServices = [(NIServerBaseSession *)self disableAllServices];
+  if (disableAllServices)
   {
     v7 = qword_1009F9820;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v8 = [WeakRetained serverSessionIdentifier];
-      sub_1004BCA8C(v8, v6, &v10, v7);
+      serverSessionIdentifier2 = [WeakRetained serverSessionIdentifier];
+      sub_1004BCA8C(serverSessionIdentifier2, disableAllServices, &v10, v7);
     }
   }
 
-  v9 = [WeakRetained lifecycleSupervisor];
-  [v9 invalidateCalled];
+  lifecycleSupervisor = [WeakRetained lifecycleSupervisor];
+  [lifecycleSupervisor invalidateCalled];
 }
 
-- (id)addObject:(id)a3
+- (id)addObject:(id)object
 {
   v3 = [NIServerBaseSession deleteURSKs]_0();
 
@@ -274,14 +274,14 @@ LABEL_4:
   return v1;
 }
 
-- (id)removeObject:(id)a3
+- (id)removeObject:(id)object
 {
   v3 = [NIServerBaseSession deleteURSKs]_0();
 
   return v3;
 }
 
-- (NIServerDataResponse)processDCKMessage:(id)a3
+- (NIServerDataResponse)processDCKMessage:(id)message
 {
   v3 = [NIServerBaseSession deleteURSKs]_0();
   v4 = 0;
@@ -299,80 +299,80 @@ LABEL_4:
   return result;
 }
 
-- (id)_setDebugURSK:(id)a3 transactionIdentifier:(unsigned int)a4
+- (id)_setDebugURSK:(id)k transactionIdentifier:(unsigned int)identifier
 {
   v4 = [NIServerBaseSession deleteURSKs]_0();
 
   return v4;
 }
 
-- (id)_processCarKeyEvent:(id)a3
+- (id)_processCarKeyEvent:(id)event
 {
   v3 = [NIServerBaseSession deleteURSKs]_0();
 
   return v3;
 }
 
-- (id)_processFindingEvent:(id)a3
+- (id)_processFindingEvent:(id)event
 {
   v3 = [NIServerBaseSession deleteURSKs]_0();
 
   return v3;
 }
 
-- (id)_processSystemEvent:(id)a3
+- (id)_processSystemEvent:(id)event
 {
   v3 = [NIServerBaseSession deleteURSKs]_0();
 
   return v3;
 }
 
-- (void)processAcwgM1Msg:(id)a3 withSessionTriggerReason:(int64_t)a4
+- (void)processAcwgM1Msg:(id)msg withSessionTriggerReason:(int64_t)reason
 {
   WeakRetained = objc_loadWeakRetained(&self->_resourcesManager);
-  v5 = [WeakRetained remote];
+  remote = [WeakRetained remote];
   v6 = sub_1002FF95C(a2);
-  [v5 uwbSessionDidFailWithError:v6];
+  [remote uwbSessionDidFailWithError:v6];
 }
 
-- (void)processAcwgM3Msg:(id)a3
+- (void)processAcwgM3Msg:(id)msg
 {
   WeakRetained = objc_loadWeakRetained(&self->_resourcesManager);
-  v4 = [WeakRetained remote];
+  remote = [WeakRetained remote];
   v5 = sub_1002FF95C(a2);
-  [v4 uwbSessionDidFailWithError:v5];
+  [remote uwbSessionDidFailWithError:v5];
 }
 
-- (void)processAcwgRangingSessionResumeRequestMsg:(unsigned int)a3 withResumeTriggerReason:(int64_t)a4
+- (void)processAcwgRangingSessionResumeRequestMsg:(unsigned int)msg withResumeTriggerReason:(int64_t)reason
 {
   WeakRetained = objc_loadWeakRetained(&self->_resourcesManager);
-  v5 = [WeakRetained remote];
+  remote = [WeakRetained remote];
   v6 = sub_1002FF95C(a2);
-  [v5 uwbSessionDidFailWithError:v6];
+  [remote uwbSessionDidFailWithError:v6];
 }
 
-- (void)suspendAcwgRanging:(unsigned int)a3 withSuspendTriggerReason:(int64_t)a4
+- (void)suspendAcwgRanging:(unsigned int)ranging withSuspendTriggerReason:(int64_t)reason
 {
   WeakRetained = objc_loadWeakRetained(&self->_resourcesManager);
-  v5 = [WeakRetained remote];
+  remote = [WeakRetained remote];
   v6 = sub_1002FF95C(a2);
-  [v5 uwbSessionDidFailWithError:v6];
+  [remote uwbSessionDidFailWithError:v6];
 }
 
-- (void)prefetchAcwgUrsk:(unsigned int)a3
+- (void)prefetchAcwgUrsk:(unsigned int)ursk
 {
   WeakRetained = objc_loadWeakRetained(&self->_resourcesManager);
-  v4 = [WeakRetained remote];
+  remote = [WeakRetained remote];
   v5 = sub_1002FF95C(a2);
-  [v4 uwbSessionDidFailWithError:v5];
+  [remote uwbSessionDidFailWithError:v5];
 }
 
-- (void)processUpdatedLockState:(unsigned __int16)a3
+- (void)processUpdatedLockState:(unsigned __int16)state
 {
   WeakRetained = objc_loadWeakRetained(&self->_resourcesManager);
-  v4 = [WeakRetained remote];
+  remote = [WeakRetained remote];
   v5 = sub_1002FF95C(a2);
-  [v4 uwbSessionDidFailWithError:v5];
+  [remote uwbSessionDidFailWithError:v5];
 }
 
 - (id)getQueueForInputingData
@@ -406,48 +406,48 @@ LABEL_4:
   return v2;
 }
 
-- (void)serviceRequestDidUpdateStatus:(ServiceRequestStatusUpdate)a3
+- (void)serviceRequestDidUpdateStatus:(ServiceRequestStatusUpdate)status
 {
-  v3 = *&a3.var0;
+  v3 = *&status.var0;
   WeakRetained = objc_loadWeakRetained(&self->_resourcesManager);
-  v7 = [WeakRetained lifecycleSupervisor];
+  lifecycleSupervisor = [WeakRetained lifecycleSupervisor];
   v5 = HIDWORD(v3);
 
   if (v5 == 3)
   {
-    [v7 positioningSensorSessionStopped];
-    v6 = v7;
+    [lifecycleSupervisor positioningSensorSessionStopped];
+    v6 = lifecycleSupervisor;
   }
 
   else if (v5 == 5)
   {
-    [v7 positioningSensorSessionStarted];
-    v6 = v7;
+    [lifecycleSupervisor positioningSensorSessionStarted];
+    v6 = lifecycleSupervisor;
   }
 
   else
   {
-    v6 = v7;
+    v6 = lifecycleSupervisor;
     if (v5 == 6)
     {
-      [v7 stoppedDiscoveringAllPeers];
-      v6 = v7;
+      [lifecycleSupervisor stoppedDiscoveringAllPeers];
+      v6 = lifecycleSupervisor;
     }
   }
 }
 
-- (id)discoveryTokenFromIdentifier:(unint64_t)a3
+- (id)discoveryTokenFromIdentifier:(unint64_t)identifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_resourcesManager);
-  v5 = [WeakRetained btResource];
-  v6 = [v5 deviceCache];
-  v7 = [v6 deviceForIdentifier:a3];
+  btResource = [WeakRetained btResource];
+  deviceCache = [btResource deviceCache];
+  v7 = [deviceCache deviceForIdentifier:identifier];
 
   if (v7)
   {
     v8 = [NIDiscoveryToken alloc];
-    v9 = [v7 discoveryTokenData];
-    v10 = [(NIDiscoveryToken *)v8 initWithBytes:v9];
+    discoveryTokenData = [v7 discoveryTokenData];
+    v10 = [(NIDiscoveryToken *)v8 initWithBytes:discoveryTokenData];
   }
 
   else
@@ -463,20 +463,20 @@ LABEL_4:
   return v10;
 }
 
-- (optional<unsigned)identifierFromDiscoveryToken:(id)a3
+- (optional<unsigned)identifierFromDiscoveryToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   WeakRetained = objc_loadWeakRetained(&self->_resourcesManager);
-  v6 = [WeakRetained btResource];
-  v7 = [v6 deviceCache];
-  v8 = [v4 rawToken];
-  v9 = [v7 deviceForTokenData:v8];
+  btResource = [WeakRetained btResource];
+  deviceCache = [btResource deviceCache];
+  rawToken = [tokenCopy rawToken];
+  v9 = [deviceCache deviceForTokenData:rawToken];
 
   if (v9)
   {
-    v10 = [v9 u64Identifier];
-    v11 = v10 & 0xFFFFFFFFFFFFFF00;
-    v12 = v10;
+    u64Identifier = [v9 u64Identifier];
+    v11 = u64Identifier & 0xFFFFFFFFFFFFFF00;
+    v12 = u64Identifier;
     v13 = 1;
   }
 
@@ -494,12 +494,12 @@ LABEL_4:
   return result;
 }
 
-- (id)objectFromIdentifier:(unint64_t)a3
+- (id)objectFromIdentifier:(unint64_t)identifier
 {
   WeakRetained = objc_loadWeakRetained(&self->_resourcesManager);
-  v5 = [WeakRetained btResource];
-  v6 = [v5 deviceCache];
-  v7 = [v6 deviceForIdentifier:a3];
+  btResource = [WeakRetained btResource];
+  deviceCache = [btResource deviceCache];
+  v7 = [deviceCache deviceForIdentifier:identifier];
 
   if (v7)
   {
@@ -524,22 +524,22 @@ LABEL_4:
   v3 = v1;
   v9 = v2;
   WeakRetained = objc_loadWeakRetained((v3 + 24));
-  v6 = [WeakRetained serverSessionIdentifier];
+  serverSessionIdentifier = [WeakRetained serverSessionIdentifier];
 
-  if (!v6)
+  if (!serverSessionIdentifier)
   {
     __assert_rtn("[NIServerBaseSession uniqueIdentifierForEngine:]", "NIServerBaseSession.mm", 367, "identifier != nil");
   }
 
-  v7 = [v6 UUIDString];
-  sub_100004A08(retstr, [v7 UTF8String]);
+  uUIDString = [serverSessionIdentifier UUIDString];
+  sub_100004A08(retstr, [uUIDString UTF8String]);
 
   return result;
 }
 
-- (void)peerInactivityPeriodExceeded:(id)a3
+- (void)peerInactivityPeriodExceeded:(id)exceeded
 {
-  v3 = a3;
+  exceededCopy = exceeded;
   v4 = qword_1009F9820;
   if (os_log_type_enabled(qword_1009F9820, OS_LOG_TYPE_FAULT))
   {

@@ -1,13 +1,13 @@
 @interface SBHIDEventDispatchController
 + (id)sharedInstance;
 + (id)symbolicDeferringTokenForKeyboardFocus;
-+ (id)symbolicDeferringTokenForSystemGesturesInDisplayConfiguration:(id)a3;
++ (id)symbolicDeferringTokenForSystemGesturesInDisplayConfiguration:(id)configuration;
 + (id)symbolicDeferringTokenForSystemGesturesOnMainDisplay;
 - (SBHIDEventDispatchController)init;
 - (id)_keyCommandDispatchingRule;
-- (id)configureDispatchRootsForChamoisDisplay:(id)a3;
-- (id)configureDispatchRootsForContinuityDisplay:(id)a3;
-- (id)dispatchKeyboardUsagesToSystemEnvironment:(id)a3 reason:(id)a4;
+- (id)configureDispatchRootsForChamoisDisplay:(id)display;
+- (id)configureDispatchRootsForContinuityDisplay:(id)display;
+- (id)dispatchKeyboardUsagesToSystemEnvironment:(id)environment reason:(id)reason;
 - (void)_resetMainDeliveryRoot;
 @end
 
@@ -32,24 +32,24 @@ void __70__SBHIDEventDispatchController_symbolicDeferringTokenForKeyboardFocus__
   symbolicDeferringTokenForKeyboardFocus_token = v0;
 }
 
-+ (id)symbolicDeferringTokenForSystemGesturesInDisplayConfiguration:(id)a3
++ (id)symbolicDeferringTokenForSystemGesturesInDisplayConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ![v4 isMainDisplay])
+  configurationCopy = configuration;
+  v5 = configurationCopy;
+  if (configurationCopy && ![configurationCopy isMainDisplay])
   {
     v7 = MEMORY[0x277CF0650];
-    v8 = [v5 hardwareIdentifier];
-    v9 = [@"SBExternalDisplaySystemGestures-" stringByAppendingString:v8];
-    v6 = [v7 tokenForString:v9];
+    hardwareIdentifier = [v5 hardwareIdentifier];
+    v9 = [@"SBExternalDisplaySystemGestures-" stringByAppendingString:hardwareIdentifier];
+    symbolicDeferringTokenForSystemGesturesOnMainDisplay = [v7 tokenForString:v9];
   }
 
   else
   {
-    v6 = [a1 symbolicDeferringTokenForSystemGesturesOnMainDisplay];
+    symbolicDeferringTokenForSystemGesturesOnMainDisplay = [self symbolicDeferringTokenForSystemGesturesOnMainDisplay];
   }
 
-  return v6;
+  return symbolicDeferringTokenForSystemGesturesOnMainDisplay;
 }
 
 + (id)symbolicDeferringTokenForSystemGesturesOnMainDisplay
@@ -75,8 +75,8 @@ void __84__SBHIDEventDispatchController_symbolicDeferringTokenForSystemGesturesO
 {
   v11[3] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CF0690];
-  v4 = [MEMORY[0x277D66B00] systemKeyCommandOverlayEnvironment];
-  v5 = [v3 targetForDeferringEnvironment:v4];
+  systemKeyCommandOverlayEnvironment = [MEMORY[0x277D66B00] systemKeyCommandOverlayEnvironment];
+  v5 = [v3 targetForDeferringEnvironment:systemKeyCommandOverlayEnvironment];
   keyboardFocusDispatchingTarget = self->_keyboardFocusDispatchingTarget;
   v11[1] = v5;
   v11[2] = keyboardFocusDispatchingTarget;
@@ -116,9 +116,9 @@ void __46__SBHIDEventDispatchController_sharedInstance__block_invoke()
   v2 = [(SBHIDEventDispatchController *)&v97 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CF0668] sharedInstance];
+    mEMORY[0x277CF0668] = [MEMORY[0x277CF0668] sharedInstance];
     deliveryManager = v2->_deliveryManager;
-    v2->_deliveryManager = v3;
+    v2->_deliveryManager = mEMORY[0x277CF0668];
 
     v5 = MEMORY[0x277CF0690];
     v6 = +[SBHIDEventDispatchController symbolicDeferringTokenForSystemGesturesOnMainDisplay];
@@ -137,13 +137,13 @@ void __46__SBHIDEventDispatchController_sharedInstance__block_invoke()
     v15 = MEMORY[0x277CF0628];
     v16 = v2->_keyboardFocusDispatchingTarget;
     v17 = v13;
-    v18 = [v15 ui_cameraCaptureButtonEnvironment];
-    v19 = [v14 targetForDeferringEnvironment:v18];
+    ui_cameraCaptureButtonEnvironment = [v15 ui_cameraCaptureButtonEnvironment];
+    v19 = [v14 targetForDeferringEnvironment:ui_cameraCaptureButtonEnvironment];
 
-    LODWORD(v18) = _os_feature_enabled_impl();
+    LODWORD(ui_cameraCaptureButtonEnvironment) = _os_feature_enabled_impl();
     v20 = _SBHIDMediaKeyEventDescriptorSet();
     v21 = v20;
-    if (v18)
+    if (ui_cameraCaptureButtonEnvironment)
     {
       v22 = objc_alloc_init(MEMORY[0x277CF0750]);
       v23 = [MEMORY[0x277CF06D0] build:&__block_literal_global_109_0];
@@ -196,18 +196,18 @@ void __46__SBHIDEventDispatchController_sharedInstance__block_invoke()
     v84 = _SBHIDTrackpadPredicate();
     v90 = [MEMORY[0x277CF0688] ruleForDispatchingDiscreteEventsMatchingPredicate:v84 toTarget:v17];
     v38 = MEMORY[0x277CBEB98];
-    v39 = [MEMORY[0x277CF0698] builtinDisplay];
-    v40 = [MEMORY[0x277CF0698] nullDisplay];
-    v83 = [v38 setWithObjects:{v39, v40, 0}];
+    builtinDisplay = [MEMORY[0x277CF0698] builtinDisplay];
+    nullDisplay = [MEMORY[0x277CF0698] nullDisplay];
+    v83 = [v38 setWithObjects:{builtinDisplay, nullDisplay, 0}];
 
     v41 = _SBHIDSendersForDisplays(v83);
     [MEMORY[0x277CF0750] defaultSystemPredicate];
     v82 = v81 = v41;
     [v82 setSenderDescriptors:v41];
     v75 = [MEMORY[0x277CF0688] ruleForDispatchingDiscreteEventsMatchingPredicate:v82 toTarget:v17];
-    v79 = [MEMORY[0x277CF0750] defaultFocusPredicate];
-    [v79 setSenderDescriptors:v41];
-    v74 = [MEMORY[0x277CF0688] ruleForDispatchingDiscreteEventsMatchingPredicate:v79 toTarget:v16];
+    defaultFocusPredicate = [MEMORY[0x277CF0750] defaultFocusPredicate];
+    [defaultFocusPredicate setSenderDescriptors:v41];
+    v74 = [MEMORY[0x277CF0688] ruleForDispatchingDiscreteEventsMatchingPredicate:defaultFocusPredicate toTarget:v16];
     v42 = MEMORY[0x277CBEB98];
     v43 = [MEMORY[0x277CF0680] descriptorWithEventType:16];
     v44 = [v42 setWithObject:v43];
@@ -266,8 +266,8 @@ void __46__SBHIDEventDispatchController_sharedInstance__block_invoke()
     dispatchingAssertionForVoiceCommand = v2->_dispatchingAssertionForVoiceCommand;
     v2->_dispatchingAssertionForVoiceCommand = v66;
 
-    v68 = [(SBHIDEventDispatchController *)v2 _keyCommandDispatchingRule];
-    v69 = [(BKSHIDEventDeliveryManager *)v2->_deliveryManager dispatchKeyCommandsForReason:@"SB-KeyCommands" withRule:v68];
+    _keyCommandDispatchingRule = [(SBHIDEventDispatchController *)v2 _keyCommandDispatchingRule];
+    v69 = [(BKSHIDEventDeliveryManager *)v2->_deliveryManager dispatchKeyCommandsForReason:@"SB-KeyCommands" withRule:_keyCommandDispatchingRule];
     keyCommandDispatchingAssertion = v2->_keyCommandDispatchingAssertion;
     v2->_keyCommandDispatchingAssertion = v69;
   }
@@ -275,18 +275,18 @@ void __46__SBHIDEventDispatchController_sharedInstance__block_invoke()
   return v2;
 }
 
-- (id)configureDispatchRootsForChamoisDisplay:(id)a3
+- (id)configureDispatchRootsForChamoisDisplay:(id)display
 {
-  v5 = a3;
-  v6 = [v5 hardwareIdentifier];
-  if (!v6)
+  displayCopy = display;
+  hardwareIdentifier = [displayCopy hardwareIdentifier];
+  if (!hardwareIdentifier)
   {
     [SBHIDEventDispatchController configureDispatchRootsForChamoisDisplay:a2];
   }
 
-  v7 = v6;
+  v7 = hardwareIdentifier;
   v8 = MEMORY[0x277CF0690];
-  v9 = [SBHIDEventDispatchController symbolicDeferringTokenForSystemGesturesInDisplayConfiguration:v5];
+  v9 = [SBHIDEventDispatchController symbolicDeferringTokenForSystemGesturesInDisplayConfiguration:displayCopy];
   v10 = [v8 systemTargetWithDeferringToken:v9];
 
   v11 = MEMORY[0x277CBEB98];
@@ -334,19 +334,19 @@ void __72__SBHIDEventDispatchController_configureDispatchRootsForChamoisDisplay_
   [*(a1 + 32) _resetMainDeliveryRoot];
 }
 
-- (id)configureDispatchRootsForContinuityDisplay:(id)a3
+- (id)configureDispatchRootsForContinuityDisplay:(id)display
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 hardwareIdentifier];
-  if (!v6)
+  displayCopy = display;
+  hardwareIdentifier = [displayCopy hardwareIdentifier];
+  if (!hardwareIdentifier)
   {
     [SBHIDEventDispatchController configureDispatchRootsForContinuityDisplay:a2];
   }
 
-  v7 = v6;
+  v7 = hardwareIdentifier;
   v8 = MEMORY[0x277CF0690];
-  v9 = [SBHIDEventDispatchController symbolicDeferringTokenForSystemGesturesInDisplayConfiguration:v5];
+  v9 = [SBHIDEventDispatchController symbolicDeferringTokenForSystemGesturesInDisplayConfiguration:displayCopy];
   v24 = [v8 systemTargetWithDeferringToken:v9];
 
   v10 = MEMORY[0x277CBEB98];
@@ -356,13 +356,13 @@ void __72__SBHIDEventDispatchController_configureDispatchRootsForChamoisDisplay_
   v14 = [v10 setWithObject:v13];
 
   v15 = _SBHIDSendersForDisplays(v14);
-  v25 = v5;
-  v16 = [MEMORY[0x277CF0750] defaultSystemPredicate];
-  [v16 setSenderDescriptors:v15];
-  v17 = [MEMORY[0x277CF0688] ruleForDispatchingDiscreteEventsMatchingPredicate:v16 toTarget:v24];
-  v18 = [MEMORY[0x277CF0750] defaultFocusPredicate];
-  [v18 setSenderDescriptors:v15];
-  v19 = [MEMORY[0x277CF0688] ruleForDispatchingDiscreteEventsMatchingPredicate:v18 toTarget:v12];
+  v25 = displayCopy;
+  defaultSystemPredicate = [MEMORY[0x277CF0750] defaultSystemPredicate];
+  [defaultSystemPredicate setSenderDescriptors:v15];
+  v17 = [MEMORY[0x277CF0688] ruleForDispatchingDiscreteEventsMatchingPredicate:defaultSystemPredicate toTarget:v24];
+  defaultFocusPredicate = [MEMORY[0x277CF0750] defaultFocusPredicate];
+  [defaultFocusPredicate setSenderDescriptors:v15];
+  v19 = [MEMORY[0x277CF0688] ruleForDispatchingDiscreteEventsMatchingPredicate:defaultFocusPredicate toTarget:v12];
   deliveryManager = self->_deliveryManager;
   v26[0] = v17;
   v26[1] = v19;
@@ -372,10 +372,10 @@ void __72__SBHIDEventDispatchController_configureDispatchRootsForChamoisDisplay_
   return v22;
 }
 
-- (id)dispatchKeyboardUsagesToSystemEnvironment:(id)a3 reason:(id)a4
+- (id)dispatchKeyboardUsagesToSystemEnvironment:(id)environment reason:(id)reason
 {
-  v6 = a3;
-  v7 = a4;
+  environmentCopy = environment;
+  reasonCopy = reason;
   overrideKeyboardUsagesForSystemEnvironment = self->_overrideKeyboardUsagesForSystemEnvironment;
   if (!overrideKeyboardUsagesForSystemEnvironment)
   {
@@ -391,33 +391,33 @@ void __72__SBHIDEventDispatchController_configureDispatchRootsForChamoisDisplay_
     overrideKeyboardUsagesForSystemEnvironment = self->_overrideKeyboardUsagesForSystemEnvironment;
   }
 
-  v11 = [(BSCompoundAssertion *)overrideKeyboardUsagesForSystemEnvironment acquireForReason:v7 withContext:v6];
+  v11 = [(BSCompoundAssertion *)overrideKeyboardUsagesForSystemEnvironment acquireForReason:reasonCopy withContext:environmentCopy];
 
   return v11;
 }
 
 - (void)_resetMainDeliveryRoot
 {
-  v2 = self;
+  selfCopy = self;
   v41 = *MEMORY[0x277D85DE8];
   v3 = [(BKSHIDEventDeliveryManager *)self->_deliveryManager transactionAssertionWithReason:@"_resetMainDeliveryRoot"];
-  [(BSInvalidatable *)v2->_dispatchingAssertion invalidate];
-  dispatchingAssertion = v2->_dispatchingAssertion;
-  v2->_dispatchingAssertion = 0;
+  [(BSInvalidatable *)selfCopy->_dispatchingAssertion invalidate];
+  dispatchingAssertion = selfCopy->_dispatchingAssertion;
+  selfCopy->_dispatchingAssertion = 0;
 
-  if (v2->_overrideKeyboardUsagesRule)
+  if (selfCopy->_overrideKeyboardUsagesRule)
   {
-    v5 = [(NSArray *)v2->_dispatchingRulesForMainRoot mutableCopy];
-    [v5 removeObject:v2->_overrideKeyboardUsagesRule];
+    v5 = [(NSArray *)selfCopy->_dispatchingRulesForMainRoot mutableCopy];
+    [v5 removeObject:selfCopy->_overrideKeyboardUsagesRule];
     v6 = [v5 copy];
-    dispatchingRulesForMainRoot = v2->_dispatchingRulesForMainRoot;
-    v2->_dispatchingRulesForMainRoot = v6;
+    dispatchingRulesForMainRoot = selfCopy->_dispatchingRulesForMainRoot;
+    selfCopy->_dispatchingRulesForMainRoot = v6;
 
-    overrideKeyboardUsagesRule = v2->_overrideKeyboardUsagesRule;
-    v2->_overrideKeyboardUsagesRule = 0;
+    overrideKeyboardUsagesRule = selfCopy->_overrideKeyboardUsagesRule;
+    selfCopy->_overrideKeyboardUsagesRule = 0;
   }
 
-  if ([(BSCompoundAssertion *)v2->_overrideKeyboardUsagesForSystemEnvironment isActive])
+  if ([(BSCompoundAssertion *)selfCopy->_overrideKeyboardUsagesForSystemEnvironment isActive])
   {
     v28 = objc_alloc_init(MEMORY[0x277CF0750]);
     [v28 setSenderDescriptors:0];
@@ -426,8 +426,8 @@ void __72__SBHIDEventDispatchController_configureDispatchRootsForChamoisDisplay_
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v29 = v2;
-    obj = [(BSCompoundAssertion *)v2->_overrideKeyboardUsagesForSystemEnvironment orderedContext];
+    v29 = selfCopy;
+    obj = [(BSCompoundAssertion *)selfCopy->_overrideKeyboardUsagesForSystemEnvironment orderedContext];
     v10 = [obj countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v10)
     {
@@ -480,7 +480,7 @@ void __72__SBHIDEventDispatchController_configureDispatchRootsForChamoisDisplay_
     }
 
     [v28 setDescriptors:v9];
-    v2 = v29;
+    selfCopy = v29;
     v21 = [MEMORY[0x277CF0688] ruleForDispatchingDiscreteEventsMatchingPredicate:v28 toTarget:v29->_mainSystemDispatchingTarget];
     v22 = v29->_overrideKeyboardUsagesRule;
     v29->_overrideKeyboardUsagesRule = v21;
@@ -492,9 +492,9 @@ void __72__SBHIDEventDispatchController_configureDispatchRootsForChamoisDisplay_
     v29->_dispatchingRulesForMainRoot = v24;
   }
 
-  v26 = [(BKSHIDEventDeliveryManager *)v2->_deliveryManager dispatchDiscreteEventsForReason:@"SB-Default" withRules:v2->_dispatchingRulesForMainRoot];
-  v27 = v2->_dispatchingAssertion;
-  v2->_dispatchingAssertion = v26;
+  v26 = [(BKSHIDEventDeliveryManager *)selfCopy->_deliveryManager dispatchDiscreteEventsForReason:@"SB-Default" withRules:selfCopy->_dispatchingRulesForMainRoot];
+  v27 = selfCopy->_dispatchingAssertion;
+  selfCopy->_dispatchingAssertion = v26;
 
   [v3 invalidate];
 }

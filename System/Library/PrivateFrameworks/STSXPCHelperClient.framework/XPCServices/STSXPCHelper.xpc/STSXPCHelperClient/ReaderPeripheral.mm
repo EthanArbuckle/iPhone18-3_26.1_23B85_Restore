@@ -1,16 +1,16 @@
 @interface ReaderPeripheral
-- (BOOL)createGATTServer:(id)a3 serviceUUID:(id)a4 readerIdentCharacteristic:(id)a5;
+- (BOOL)createGATTServer:(id)server serviceUUID:(id)d readerIdentCharacteristic:(id)characteristic;
 @end
 
 @implementation ReaderPeripheral
 
-- (BOOL)createGATTServer:(id)a3 serviceUUID:(id)a4 readerIdentCharacteristic:(id)a5
+- (BOOL)createGATTServer:(id)server serviceUUID:(id)d readerIdentCharacteristic:(id)characteristic
 {
-  v8 = a3;
-  v9 = a5;
+  serverCopy = server;
+  characteristicCopy = characteristic;
   if (!self->_iso18Service)
   {
-    v11 = [CBUUID UUIDWithData:a4];
+    v11 = [CBUUID UUIDWithData:d];
     v14 = v11;
     if (v11)
     {
@@ -69,7 +69,7 @@
 
           v36 = [CBMutableCharacteristic alloc];
           v37 = [CBUUID UUIDWithString:@"00000008-A123-48CE-896B-4C76973373E6"];
-          v38 = [v36 initWithType:v37 properties:2 value:v9 permissions:1];
+          v38 = [v36 initWithType:v37 properties:2 value:characteristicCopy permissions:1];
 
           if (v38)
           {
@@ -110,7 +110,7 @@
           v51.receiver = self;
           v51.super_class = ReaderPeripheral;
           [(ISO18013_3_Peripheral *)&v51 setCharacteristics:v18];
-          [v8 addService:self->_iso18Service];
+          [serverCopy addService:self->_iso18Service];
           sub_10002483C(OS_LOG_TYPE_DEFAULT, 0, "[ReaderPeripheral createGATTServer:serviceUUID:readerIdentCharacteristic:]", 147, self, @"LE: done creating GATT", v47, v48, v50);
 
           v10 = 1;

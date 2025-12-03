@@ -1,55 +1,55 @@
 @interface InitiateSharing
 - (_TtC40com_apple_CloudSharingUI_AddParticipants15InitiateSharing)init;
-- (void)callForAddParticipantsToShare:(id)a3 containerSetupInfo:(id)a4 emailAddresses:(id)a5 phoneNumbers:(id)a6 reply:(id)a7;
-- (void)callForCloudKitAddToShare:(id)a3 containerSetupInfo:(id)a4 emailAddresses:(id)a5 phoneNumbers:(id)a6 accessType:(int64_t)a7 permissionType:(int64_t)a8 allowOthersToInvite:(BOOL)a9 reply:(id)aBlock;
-- (void)callForCurrentUserSharingStatus:(id)a3 reply:(id)a4;
-- (void)callForMailContent:(id)a3 share:(id)a4 fileURL:(id)a5 appName:(id)a6 appIconData:(id)a7 reply:(id)a8;
-- (void)callForSharingURLAddToShare:(id)a3 containerSetupInfo:(id)a4 emailAddresses:(id)a5 phoneNumbers:(id)a6 accessType:(int64_t)a7 permissionType:(int64_t)a8 allowOthersToInvite:(BOOL)a9 reply:(id)a10;
-- (void)callForUserNameAndEmail:(id)a3 containerSetupInfo:(id)a4 reply:(id)a5;
+- (void)callForAddParticipantsToShare:(id)share containerSetupInfo:(id)info emailAddresses:(id)addresses phoneNumbers:(id)numbers reply:(id)reply;
+- (void)callForCloudKitAddToShare:(id)share containerSetupInfo:(id)info emailAddresses:(id)addresses phoneNumbers:(id)numbers accessType:(int64_t)type permissionType:(int64_t)permissionType allowOthersToInvite:(BOOL)invite reply:(id)aBlock;
+- (void)callForCurrentUserSharingStatus:(id)status reply:(id)reply;
+- (void)callForMailContent:(id)content share:(id)share fileURL:(id)l appName:(id)name appIconData:(id)data reply:(id)reply;
+- (void)callForSharingURLAddToShare:(id)share containerSetupInfo:(id)info emailAddresses:(id)addresses phoneNumbers:(id)numbers accessType:(int64_t)type permissionType:(int64_t)permissionType allowOthersToInvite:(BOOL)invite reply:(id)self0;
+- (void)callForUserNameAndEmail:(id)email containerSetupInfo:(id)info reply:(id)reply;
 @end
 
 @implementation InitiateSharing
 
-- (void)callForCloudKitAddToShare:(id)a3 containerSetupInfo:(id)a4 emailAddresses:(id)a5 phoneNumbers:(id)a6 accessType:(int64_t)a7 permissionType:(int64_t)a8 allowOthersToInvite:(BOOL)a9 reply:(id)aBlock
+- (void)callForCloudKitAddToShare:(id)share containerSetupInfo:(id)info emailAddresses:(id)addresses phoneNumbers:(id)numbers accessType:(int64_t)type permissionType:(int64_t)permissionType allowOthersToInvite:(BOOL)invite reply:(id)aBlock
 {
   v15 = _Block_copy(aBlock);
   v16 = sub_10007B2AC();
   v17 = sub_10007B2AC();
   _Block_copy(v15);
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
-  sub_10003AA00(v18, v19, v16, v17, a7, a8, a9, v15);
+  shareCopy = share;
+  infoCopy = info;
+  selfCopy = self;
+  sub_10003AA00(shareCopy, infoCopy, v16, v17, type, permissionType, invite, v15);
   _Block_release(v15);
   _Block_release(v15);
 }
 
-- (void)callForSharingURLAddToShare:(id)a3 containerSetupInfo:(id)a4 emailAddresses:(id)a5 phoneNumbers:(id)a6 accessType:(int64_t)a7 permissionType:(int64_t)a8 allowOthersToInvite:(BOOL)a9 reply:(id)a10
+- (void)callForSharingURLAddToShare:(id)share containerSetupInfo:(id)info emailAddresses:(id)addresses phoneNumbers:(id)numbers accessType:(int64_t)type permissionType:(int64_t)permissionType allowOthersToInvite:(BOOL)invite reply:(id)self0
 {
-  v22 = a7;
-  v23 = a8;
+  typeCopy = type;
+  permissionTypeCopy = permissionType;
   v12 = sub_10007AC4C();
   v13 = *(v12 - 8);
   v14 = *(v13 + 64);
   __chkstk_darwin(v12);
-  v16 = &v22 - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v17 = _Block_copy(a10);
+  v16 = &typeCopy - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0);
+  v17 = _Block_copy(reply);
   sub_10007AC1C();
   v18 = sub_10007B2AC();
   v19 = sub_10007B2AC();
   _Block_copy(v17);
-  v20 = a4;
-  v21 = self;
-  sub_10003C284(v16, v20, v18, v19, v22, v23, a9, v17);
+  infoCopy = info;
+  selfCopy = self;
+  sub_10003C284(v16, infoCopy, v18, v19, typeCopy, permissionTypeCopy, invite, v17);
   _Block_release(v17);
   _Block_release(v17);
 
   (*(v13 + 8))(v16, v12);
 }
 
-- (void)callForMailContent:(id)a3 share:(id)a4 fileURL:(id)a5 appName:(id)a6 appIconData:(id)a7 reply:(id)a8
+- (void)callForMailContent:(id)content share:(id)share fileURL:(id)l appName:(id)name appIconData:(id)data reply:(id)reply
 {
-  v33 = self;
+  selfCopy = self;
   v12 = sub_1000057A0(&unk_10009ED10, &qword_10007D310);
   v13 = *(*(v12 - 8) + 64);
   __chkstk_darwin(v12 - 8);
@@ -59,9 +59,9 @@
   v18 = *(v17 + 64);
   __chkstk_darwin(v16);
   v20 = &v32 - ((v19 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v21 = _Block_copy(a8);
+  v21 = _Block_copy(reply);
   sub_10007AC1C();
-  if (a5)
+  if (l)
   {
     sub_10007AC1C();
     v22 = 0;
@@ -77,14 +77,14 @@
   v23(v15, v22, 1, v16);
   v24 = sub_10007B19C();
   v26 = v25;
-  v27 = a4;
-  v28 = a7;
-  v33 = v33;
+  shareCopy = share;
+  dataCopy = data;
+  selfCopy = selfCopy;
   v29 = sub_10007AC7C();
   v31 = v30;
 
   _Block_copy(v21);
-  sub_10003E1E0(v20, v27, v15, v24, v26, v29, v31, v21);
+  sub_10003E1E0(v20, shareCopy, v15, v24, v26, v29, v31, v21);
   _Block_release(v21);
   _Block_release(v21);
   sub_10003846C(v29, v31);
@@ -93,39 +93,39 @@
   (*(v17 + 8))(v20, v32);
 }
 
-- (void)callForCurrentUserSharingStatus:(id)a3 reply:(id)a4
+- (void)callForCurrentUserSharingStatus:(id)status reply:(id)reply
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(reply);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_10003FCD8(v7, v6);
+  statusCopy = status;
+  selfCopy = self;
+  sub_10003FCD8(statusCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)callForAddParticipantsToShare:(id)a3 containerSetupInfo:(id)a4 emailAddresses:(id)a5 phoneNumbers:(id)a6 reply:(id)a7
+- (void)callForAddParticipantsToShare:(id)share containerSetupInfo:(id)info emailAddresses:(id)addresses phoneNumbers:(id)numbers reply:(id)reply
 {
-  v10 = _Block_copy(a7);
+  v10 = _Block_copy(reply);
   v11 = sub_10007B2AC();
   v12 = sub_10007B2AC();
   _Block_copy(v10);
-  v13 = a3;
-  v14 = a4;
-  v15 = self;
-  sub_100040168(v13, v14, v11, v12, v10);
+  shareCopy = share;
+  infoCopy = info;
+  selfCopy = self;
+  sub_100040168(shareCopy, infoCopy, v11, v12, v10);
   _Block_release(v10);
   _Block_release(v10);
 }
 
-- (void)callForUserNameAndEmail:(id)a3 containerSetupInfo:(id)a4 reply:(id)a5
+- (void)callForUserNameAndEmail:(id)email containerSetupInfo:(id)info reply:(id)reply
 {
   v9 = sub_1000057A0(&unk_10009ED10, &qword_10007D310);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v18 - v11;
-  v13 = _Block_copy(a5);
-  if (a3)
+  v13 = _Block_copy(reply);
+  if (email)
   {
     sub_10007AC1C();
     v14 = sub_10007AC4C();
@@ -139,9 +139,9 @@
   }
 
   _Block_copy(v13);
-  v16 = a4;
-  v17 = self;
-  sub_10004406C(v12, a4, v13);
+  infoCopy = info;
+  selfCopy = self;
+  sub_10004406C(v12, info, v13);
   _Block_release(v13);
   _Block_release(v13);
 

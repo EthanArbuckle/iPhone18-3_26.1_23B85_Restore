@@ -1,23 +1,23 @@
 @interface AXInvertColors_AppStore
-+ (void)installCategories:(id)a3;
-+ (void)performValidations:(id)a3;
++ (void)installCategories:(id)categories;
++ (void)performValidations:(id)validations;
 @end
 
 @implementation AXInvertColors_AppStore
 
-+ (void)performValidations:(id)a3
++ (void)performValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AppStore.VideoView"];
-  [v3 validateClass:@"AppStore.AccountButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AppStore.VideoView"];
+  [validationsCopy validateClass:@"AppStore.AccountButton"];
 }
 
-+ (void)installCategories:(id)a3
++ (void)installCategories:(id)categories
 {
-  v3 = a3;
-  [v3 installSafeCategory:@"UberedCollectionViewControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"VideoViewInvertColorsAccessibility" canInteractWithTargetClass:1];
-  [v3 installSafeCategory:@"AppStoreAccountButtonInvertColorsAccessibility" canInteractWithTargetClass:1];
+  categoriesCopy = categories;
+  [categoriesCopy installSafeCategory:@"UberedCollectionViewControllerInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"VideoViewInvertColorsAccessibility" canInteractWithTargetClass:1];
+  [categoriesCopy installSafeCategory:@"AppStoreAccountButtonInvertColorsAccessibility" canInteractWithTargetClass:1];
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface SecEscrowPendingRecord
-+ (id)loadAllFromKeychain:(id *)a3;
-+ (id)loadFromKeychain:(id)a3 error:(id *)a4;
-- (BOOL)deleteFromKeychain:(id *)a3;
-- (BOOL)escrowAttemptedWithinLastSeconds:(double)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)readFrom:(id)a3;
-- (BOOL)saveToKeychain:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)loadAllFromKeychain:(id *)keychain;
++ (id)loadFromKeychain:(id)keychain error:(id *)error;
+- (BOOL)deleteFromKeychain:(id *)keychain;
+- (BOOL)escrowAttemptedWithinLastSeconds:(double)seconds;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)readFrom:(id)from;
+- (BOOL)saveToKeychain:(id *)keychain;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasCertCached:(BOOL)a3;
-- (void)setHasLastEscrowAttemptTime:(BOOL)a3;
-- (void)setHasTriggerRequestTime:(BOOL)a3;
-- (void)setHasUploadCompleted:(BOOL)a3;
-- (void)setHasUploadRetries:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasCertCached:(BOOL)cached;
+- (void)setHasLastEscrowAttemptTime:(BOOL)time;
+- (void)setHasTriggerRequestTime:(BOOL)time;
+- (void)setHasUploadCompleted:(BOOL)completed;
+- (void)setHasUploadRetries:(BOOL)retries;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SecEscrowPendingRecord
 
-- (BOOL)deleteFromKeychain:(id *)a3
+- (BOOL)deleteFromKeychain:(id *)keychain
 {
   v11[0] = kSecClass;
   v11[1] = kSecAttrAccessGroup;
@@ -31,8 +31,8 @@
   v12[2] = @"escrow-prerecord";
   v11[2] = kSecAttrServer;
   v11[3] = kSecAttrAccount;
-  v4 = [(SecEscrowPendingRecord *)self uuid];
-  v12[3] = v4;
+  uuid = [(SecEscrowPendingRecord *)self uuid];
+  v12[3] = uuid;
   v12[4] = &__kCFBooleanTrue;
   v11[4] = kSecUseDataProtectionKeychain;
   v11[5] = kSecAttrSynchronizable;
@@ -42,16 +42,16 @@
 
   v7 = SecItemDelete(v6);
   v8 = v7;
-  if (a3 && v7)
+  if (keychain && v7)
   {
     v9 = [NSString stringWithFormat:@"SecItemAdd: %d", v7];
-    *a3 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v8 description:v9];
+    *keychain = [NSError errorWithDomain:NSOSStatusErrorDomain code:v8 description:v9];
   }
 
   return v8 == 0;
 }
 
-- (BOOL)saveToKeychain:(id *)a3
+- (BOOL)saveToKeychain:(id *)keychain
 {
   v32[0] = kSecClass;
   v32[1] = kSecAttrAccessible;
@@ -62,15 +62,15 @@
   v33[2] = @"com.apple.sbd";
   v33[3] = @"escrow-prerecord";
   v32[4] = kSecAttrDescription;
-  v4 = [(SecEscrowPendingRecord *)self uuid];
-  v5 = [NSString stringWithFormat:@"Escrow Prerecord: %@", v4];
+  uuid = [(SecEscrowPendingRecord *)self uuid];
+  v5 = [NSString stringWithFormat:@"Escrow Prerecord: %@", uuid];
   v33[4] = v5;
   v32[5] = kSecAttrAccount;
-  v6 = [(SecEscrowPendingRecord *)self uuid];
-  v33[5] = v6;
+  uuid2 = [(SecEscrowPendingRecord *)self uuid];
+  v33[5] = uuid2;
   v32[6] = kSecValueData;
-  v7 = [(SecEscrowPendingRecord *)self data];
-  v33[6] = v7;
+  data = [(SecEscrowPendingRecord *)self data];
+  v33[6] = data;
   v33[7] = &__kCFBooleanTrue;
   v32[7] = kSecAttrIsInvisible;
   v32[8] = kSecUseDataProtectionKeychain;
@@ -126,7 +126,7 @@
         v24 = 0;
       }
 
-      v27 = a3;
+      keychainCopy2 = keychain;
     }
 
     else
@@ -134,15 +134,15 @@
       v26 = v10;
       v11 = [NSString stringWithFormat:@"SecItemAdd: %d", v10];
       v24 = [NSError errorWithDomain:NSOSStatusErrorDomain code:v26 description:v11];
-      v27 = a3;
+      keychainCopy2 = keychain;
     }
 
     v25 = v24 == 0;
-    if (v27 && v24)
+    if (keychainCopy2 && v24)
     {
       v28 = v24;
       v25 = 0;
-      *v27 = v24;
+      *keychainCopy2 = v24;
     }
   }
 
@@ -155,9 +155,9 @@
   return v25;
 }
 
-- (BOOL)escrowAttemptedWithinLastSeconds:(double)a3
+- (BOOL)escrowAttemptedWithinLastSeconds:(double)seconds
 {
-  v4 = [NSDate dateWithTimeIntervalSinceNow:-a3];
+  v4 = [NSDate dateWithTimeIntervalSinceNow:-seconds];
   [v4 timeIntervalSince1970];
   v6 = v5;
   v7 = [(SecEscrowPendingRecord *)self hasLastEscrowAttemptTime]&& [(SecEscrowPendingRecord *)self lastEscrowAttemptTime]>= (v6 * 1000.0);
@@ -165,7 +165,7 @@
   return v7;
 }
 
-+ (id)loadAllFromKeychain:(id *)a3
++ (id)loadAllFromKeychain:(id *)keychain
 {
   v32[0] = kSecClass;
   v32[1] = kSecAttrAccessGroup;
@@ -198,7 +198,7 @@
       CFRelease(v8);
     }
 
-    if (!a3)
+    if (!keychain)
     {
       v11 = 0;
       goto LABEL_22;
@@ -209,7 +209,7 @@
     v31 = v9;
     v10 = [NSDictionary dictionaryWithObjects:&v31 forKeys:&v30 count:1];
     [NSError errorWithDomain:NSOSStatusErrorDomain code:v7 userInfo:v10];
-    *a3 = v11 = 0;
+    *keychain = v11 = 0;
   }
 
   else
@@ -275,9 +275,9 @@ LABEL_22:
   return v11;
 }
 
-+ (id)loadFromKeychain:(id)a3 error:(id *)a4
++ (id)loadFromKeychain:(id)keychain error:(id *)error
 {
-  v5 = a3;
+  keychainCopy = keychain;
   v18[0] = kSecClass;
   v18[1] = kSecAttrAccessGroup;
   v19[0] = kSecClassInternetPassword;
@@ -285,7 +285,7 @@ LABEL_22:
   v18[2] = kSecAttrServer;
   v18[3] = kSecAttrAccount;
   v19[2] = @"escrow-prerecord";
-  v19[3] = v5;
+  v19[3] = keychainCopy;
   v18[4] = kSecMatchLimit;
   v18[5] = kSecAttrSynchronizable;
   v19[4] = kSecMatchLimitOne;
@@ -317,14 +317,14 @@ LABEL_22:
     CFRelease(v9);
   }
 
-  if (a4)
+  if (error)
   {
     v16 = NSLocalizedDescriptionKey;
     v9 = [NSString stringWithFormat:@"SecItemCopyMatching: %d", v10];
     v17 = v9;
     v11 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
     [NSError errorWithDomain:NSOSStatusErrorDomain code:v10 userInfo:v11];
-    *a4 = v12 = 0;
+    *error = v12 = 0;
 LABEL_7:
 
     goto LABEL_9;
@@ -336,34 +336,34 @@ LABEL_9:
   return v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 8))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 8))
   {
     [(SecEscrowPendingRecord *)self setUuid:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 76) & 0x10) != 0)
+  if ((*(fromCopy + 76) & 0x10) != 0)
   {
-    self->_certCached = *(v4 + 72);
+    self->_certCached = *(fromCopy + 72);
     *&self->_has |= 0x10u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(SecEscrowPendingRecord *)self setSerializedPrerecord:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 76);
+  v5 = *(fromCopy + 76);
   if (v5)
   {
-    self->_lastCloudServicesTriggerTime = *(v4 + 1);
+    self->_lastCloudServicesTriggerTime = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v5 = *(v4 + 76);
+    v5 = *(fromCopy + 76);
     if ((v5 & 2) == 0)
     {
 LABEL_9:
@@ -376,14 +376,14 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 76) & 2) == 0)
+  else if ((*(fromCopy + 76) & 2) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_lastEscrowAttemptTime = *(v4 + 2);
+  self->_lastEscrowAttemptTime = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v5 = *(v4 + 76);
+  v5 = *(fromCopy + 76);
   if ((v5 & 0x20) == 0)
   {
 LABEL_10:
@@ -396,32 +396,32 @@ LABEL_10:
   }
 
 LABEL_23:
-  self->_uploadCompleted = *(v4 + 73);
+  self->_uploadCompleted = *(fromCopy + 73);
   *&self->_has |= 0x20u;
-  if ((*(v4 + 76) & 8) != 0)
+  if ((*(fromCopy + 76) & 8) != 0)
   {
 LABEL_11:
-    self->_uploadRetries = *(v4 + 4);
+    self->_uploadRetries = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 
 LABEL_12:
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(SecEscrowPendingRecord *)self setAltDSID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 76) & 4) != 0)
+  if ((*(fromCopy + 76) & 4) != 0)
   {
-    self->_triggerRequestTime = *(v4 + 3);
+    self->_triggerRequestTime = *(fromCopy + 3);
     *&self->_has |= 4u;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(SecEscrowPendingRecord *)self setSerializedReason:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 }
 
@@ -503,16 +503,16 @@ LABEL_13:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(NSData *)self->_serializedReason hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_48;
   }
 
   uuid = self->_uuid;
-  if (uuid | *(v4 + 8))
+  if (uuid | *(equalCopy + 8))
   {
     if (![(NSString *)uuid isEqual:?])
     {
@@ -521,36 +521,36 @@ LABEL_13:
   }
 
   has = self->_has;
-  v7 = *(v4 + 76);
+  v7 = *(equalCopy + 76);
   if ((has & 0x10) != 0)
   {
-    if ((*(v4 + 76) & 0x10) == 0)
+    if ((*(equalCopy + 76) & 0x10) == 0)
     {
       goto LABEL_48;
     }
 
-    v9 = *(v4 + 72);
+    v9 = *(equalCopy + 72);
     if (self->_certCached)
     {
-      if ((*(v4 + 72) & 1) == 0)
+      if ((*(equalCopy + 72) & 1) == 0)
       {
         goto LABEL_48;
       }
     }
 
-    else if (*(v4 + 72))
+    else if (*(equalCopy + 72))
     {
       goto LABEL_48;
     }
   }
 
-  else if ((*(v4 + 76) & 0x10) != 0)
+  else if ((*(equalCopy + 76) & 0x10) != 0)
   {
     goto LABEL_48;
   }
 
   serializedPrerecord = self->_serializedPrerecord;
-  if (serializedPrerecord | *(v4 + 6))
+  if (serializedPrerecord | *(equalCopy + 6))
   {
     if (![(NSData *)serializedPrerecord isEqual:?])
     {
@@ -558,12 +558,12 @@ LABEL_13:
     }
 
     has = self->_has;
-    v7 = *(v4 + 76);
+    v7 = *(equalCopy + 76);
   }
 
   if (has)
   {
-    if ((v7 & 1) == 0 || self->_lastCloudServicesTriggerTime != *(v4 + 1))
+    if ((v7 & 1) == 0 || self->_lastCloudServicesTriggerTime != *(equalCopy + 1))
     {
       goto LABEL_48;
     }
@@ -576,7 +576,7 @@ LABEL_13:
 
   if ((has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_lastEscrowAttemptTime != *(v4 + 2))
+    if ((v7 & 2) == 0 || self->_lastEscrowAttemptTime != *(equalCopy + 2))
     {
       goto LABEL_48;
     }
@@ -594,16 +594,16 @@ LABEL_13:
       goto LABEL_48;
     }
 
-    v10 = *(v4 + 73);
+    v10 = *(equalCopy + 73);
     if (self->_uploadCompleted)
     {
-      if ((*(v4 + 73) & 1) == 0)
+      if ((*(equalCopy + 73) & 1) == 0)
       {
         goto LABEL_48;
       }
     }
 
-    else if (*(v4 + 73))
+    else if (*(equalCopy + 73))
     {
       goto LABEL_48;
     }
@@ -616,7 +616,7 @@ LABEL_13:
 
   if ((has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_uploadRetries != *(v4 + 4))
+    if ((v7 & 8) == 0 || self->_uploadRetries != *(equalCopy + 4))
     {
       goto LABEL_48;
     }
@@ -628,12 +628,12 @@ LABEL_13:
   }
 
   altDSID = self->_altDSID;
-  if (altDSID | *(v4 + 5))
+  if (altDSID | *(equalCopy + 5))
   {
     if ([(NSString *)altDSID isEqual:?])
     {
       has = self->_has;
-      v7 = *(v4 + 76);
+      v7 = *(equalCopy + 76);
       goto LABEL_39;
     }
 
@@ -645,7 +645,7 @@ LABEL_48:
 LABEL_39:
   if ((has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_triggerRequestTime != *(v4 + 3))
+    if ((v7 & 4) == 0 || self->_triggerRequestTime != *(equalCopy + 3))
     {
       goto LABEL_48;
     }
@@ -657,7 +657,7 @@ LABEL_39:
   }
 
   serializedReason = self->_serializedReason;
-  if (serializedReason | *(v4 + 7))
+  if (serializedReason | *(equalCopy + 7))
   {
     v13 = [(NSData *)serializedReason isEqual:?];
   }
@@ -672,10 +672,10 @@ LABEL_49:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uuid copyWithZone:zone];
   v7 = v5[8];
   v5[8] = v6;
 
@@ -685,7 +685,7 @@ LABEL_49:
     *(v5 + 76) |= 0x10u;
   }
 
-  v8 = [(NSData *)self->_serializedPrerecord copyWithZone:a3];
+  v8 = [(NSData *)self->_serializedPrerecord copyWithZone:zone];
   v9 = v5[6];
   v5[6] = v8;
 
@@ -737,7 +737,7 @@ LABEL_7:
   }
 
 LABEL_8:
-  v11 = [(NSString *)self->_altDSID copyWithZone:a3];
+  v11 = [(NSString *)self->_altDSID copyWithZone:zone];
   v12 = v5[5];
   v5[5] = v11;
 
@@ -747,40 +747,40 @@ LABEL_8:
     *(v5 + 76) |= 4u;
   }
 
-  v13 = [(NSData *)self->_serializedReason copyWithZone:a3];
+  v13 = [(NSData *)self->_serializedReason copyWithZone:zone];
   v14 = v5[7];
   v5[7] = v13;
 
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_uuid)
   {
-    [v4 setUuid:?];
-    v4 = v6;
+    [toCopy setUuid:?];
+    toCopy = v6;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    *(v4 + 72) = self->_certCached;
-    *(v4 + 76) |= 0x10u;
+    *(toCopy + 72) = self->_certCached;
+    *(toCopy + 76) |= 0x10u;
   }
 
   if (self->_serializedPrerecord)
   {
     [v6 setSerializedPrerecord:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = self->_lastCloudServicesTriggerTime;
-    *(v4 + 76) |= 1u;
+    *(toCopy + 1) = self->_lastCloudServicesTriggerTime;
+    *(toCopy + 76) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -799,8 +799,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  *(v4 + 2) = self->_lastEscrowAttemptTime;
-  *(v4 + 76) |= 2u;
+  *(toCopy + 2) = self->_lastEscrowAttemptTime;
+  *(toCopy + 76) |= 2u;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -814,56 +814,56 @@ LABEL_10:
   }
 
 LABEL_23:
-  *(v4 + 73) = self->_uploadCompleted;
-  *(v4 + 76) |= 0x20u;
+  *(toCopy + 73) = self->_uploadCompleted;
+  *(toCopy + 76) |= 0x20u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_11:
-    *(v4 + 4) = self->_uploadRetries;
-    *(v4 + 76) |= 8u;
+    *(toCopy + 4) = self->_uploadRetries;
+    *(toCopy + 76) |= 8u;
   }
 
 LABEL_12:
   if (self->_altDSID)
   {
     [v6 setAltDSID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 3) = self->_triggerRequestTime;
-    *(v4 + 76) |= 4u;
+    *(toCopy + 3) = self->_triggerRequestTime;
+    *(toCopy + 76) |= 4u;
   }
 
   if (self->_serializedReason)
   {
     [v6 setSerializedReason:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v12 = v4;
+  toCopy = to;
+  v12 = toCopy;
   if (self->_uuid)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
     certCached = self->_certCached;
     PBDataWriterWriteBOOLField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_serializedPrerecord)
   {
     PBDataWriterWriteDataField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   has = self->_has;
@@ -871,7 +871,7 @@ LABEL_12:
   {
     lastCloudServicesTriggerTime = self->_lastCloudServicesTriggerTime;
     PBDataWriterWriteUint64Field();
-    v4 = v12;
+    toCopy = v12;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -892,7 +892,7 @@ LABEL_9:
 
   lastEscrowAttemptTime = self->_lastEscrowAttemptTime;
   PBDataWriterWriteUint64Field();
-  v4 = v12;
+  toCopy = v12;
   has = self->_has;
   if ((has & 0x20) == 0)
   {
@@ -908,44 +908,44 @@ LABEL_10:
 LABEL_23:
   uploadCompleted = self->_uploadCompleted;
   PBDataWriterWriteBOOLField();
-  v4 = v12;
+  toCopy = v12;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_11:
     uploadRetries = self->_uploadRetries;
     PBDataWriterWriteUint64Field();
-    v4 = v12;
+    toCopy = v12;
   }
 
 LABEL_12:
   if (self->_altDSID)
   {
     PBDataWriterWriteStringField();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if ((*&self->_has & 4) != 0)
   {
     triggerRequestTime = self->_triggerRequestTime;
     PBDataWriterWriteUint64Field();
-    v4 = v12;
+    toCopy = v12;
   }
 
   if (self->_serializedReason)
   {
     PBDataWriterWriteDataField();
-    v4 = v12;
+    toCopy = v12;
   }
 }
 
-- (BOOL)readFrom:(id)a3
+- (BOOL)readFrom:(id)from
 {
-  v5 = [a3 position];
-  if (v5 < [a3 length])
+  position = [from position];
+  if (position < [from length])
   {
     do
     {
-      if ([a3 hasError])
+      if ([from hasError])
       {
         break;
       }
@@ -956,18 +956,18 @@ LABEL_12:
       while (1)
       {
         v61 = 0;
-        v9 = [a3 position] + 1;
-        if (v9 >= [a3 position] && (v10 = objc_msgSend(a3, "position") + 1, v10 <= objc_msgSend(a3, "length")))
+        v9 = [from position] + 1;
+        if (v9 >= [from position] && (v10 = objc_msgSend(from, "position") + 1, v10 <= objc_msgSend(from, "length")))
         {
-          v11 = [a3 data];
-          [v11 getBytes:&v61 range:{objc_msgSend(a3, "position"), 1}];
+          data = [from data];
+          [data getBytes:&v61 range:{objc_msgSend(from, "position"), 1}];
 
-          [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+          [from setPosition:{objc_msgSend(from, "position") + 1}];
         }
 
         else
         {
-          [a3 _setError];
+          [from _setError];
         }
 
         v8 |= (v61 & 0x7F) << v6;
@@ -985,9 +985,9 @@ LABEL_12:
         }
       }
 
-      v13 = [a3 hasError] ? 0 : v8;
+      v13 = [from hasError] ? 0 : v8;
 LABEL_15:
-      if (([a3 hasError] & 1) != 0 || (v13 & 7) == 4)
+      if (([from hasError] & 1) != 0 || (v13 & 7) == 4)
       {
         break;
       }
@@ -1018,18 +1018,18 @@ LABEL_89:
             while (1)
             {
               v65 = 0;
-              v34 = [a3 position] + 1;
-              if (v34 >= [a3 position] && (v35 = objc_msgSend(a3, "position") + 1, v35 <= objc_msgSend(a3, "length")))
+              v34 = [from position] + 1;
+              if (v34 >= [from position] && (v35 = objc_msgSend(from, "position") + 1, v35 <= objc_msgSend(from, "length")))
               {
-                v36 = [a3 data];
-                [v36 getBytes:&v65 range:{objc_msgSend(a3, "position"), 1}];
+                data2 = [from data];
+                [data2 getBytes:&v65 range:{objc_msgSend(from, "position"), 1}];
 
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               v33 |= (v65 & 0x7F) << v31;
@@ -1047,7 +1047,7 @@ LABEL_89:
               }
             }
 
-            if ([a3 hasError])
+            if ([from hasError])
             {
               v21 = 0;
             }
@@ -1069,18 +1069,18 @@ LABEL_96:
           while (1)
           {
             v62 = 0;
-            v40 = [a3 position] + 1;
-            if (v40 >= [a3 position] && (v41 = objc_msgSend(a3, "position") + 1, v41 <= objc_msgSend(a3, "length")))
+            v40 = [from position] + 1;
+            if (v40 >= [from position] && (v41 = objc_msgSend(from, "position") + 1, v41 <= objc_msgSend(from, "length")))
             {
-              v42 = [a3 data];
-              [v42 getBytes:&v62 range:{objc_msgSend(a3, "position"), 1}];
+              data3 = [from data];
+              [data3 getBytes:&v62 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v39 |= (v62 & 0x7F) << v37;
@@ -1098,7 +1098,7 @@ LABEL_96:
             }
           }
 
-          v30 = (v39 != 0) & ~[a3 hasError];
+          v30 = (v39 != 0) & ~[from hasError];
 LABEL_98:
           v57 = 73;
           goto LABEL_99;
@@ -1118,18 +1118,18 @@ LABEL_98:
             while (1)
             {
               v64 = 0;
-              v53 = [a3 position] + 1;
-              if (v53 >= [a3 position] && (v54 = objc_msgSend(a3, "position") + 1, v54 <= objc_msgSend(a3, "length")))
+              v53 = [from position] + 1;
+              if (v53 >= [from position] && (v54 = objc_msgSend(from, "position") + 1, v54 <= objc_msgSend(from, "length")))
               {
-                v55 = [a3 data];
-                [v55 getBytes:&v64 range:{objc_msgSend(a3, "position"), 1}];
+                data4 = [from data];
+                [data4 getBytes:&v64 range:{objc_msgSend(from, "position"), 1}];
 
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               v52 |= (v64 & 0x7F) << v50;
@@ -1147,7 +1147,7 @@ LABEL_98:
               }
             }
 
-            if ([a3 hasError])
+            if ([from hasError])
             {
               v21 = 0;
             }
@@ -1187,18 +1187,18 @@ LABEL_112:
           while (1)
           {
             v63 = 0;
-            v27 = [a3 position] + 1;
-            if (v27 >= [a3 position] && (v28 = objc_msgSend(a3, "position") + 1, v28 <= objc_msgSend(a3, "length")))
+            v27 = [from position] + 1;
+            if (v27 >= [from position] && (v28 = objc_msgSend(from, "position") + 1, v28 <= objc_msgSend(from, "length")))
             {
-              v29 = [a3 data];
-              [v29 getBytes:&v63 range:{objc_msgSend(a3, "position"), 1}];
+              data5 = [from data];
+              [data5 getBytes:&v63 range:{objc_msgSend(from, "position"), 1}];
 
-              [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+              [from setPosition:{objc_msgSend(from, "position") + 1}];
             }
 
             else
             {
-              [a3 _setError];
+              [from _setError];
             }
 
             v26 |= (v63 & 0x7F) << v24;
@@ -1216,7 +1216,7 @@ LABEL_112:
             }
           }
 
-          v30 = (v26 != 0) & ~[a3 hasError];
+          v30 = (v26 != 0) & ~[from hasError];
 LABEL_92:
           v57 = 72;
 LABEL_99:
@@ -1241,18 +1241,18 @@ LABEL_99:
             while (1)
             {
               v67 = 0;
-              v47 = [a3 position] + 1;
-              if (v47 >= [a3 position] && (v48 = objc_msgSend(a3, "position") + 1, v48 <= objc_msgSend(a3, "length")))
+              v47 = [from position] + 1;
+              if (v47 >= [from position] && (v48 = objc_msgSend(from, "position") + 1, v48 <= objc_msgSend(from, "length")))
               {
-                v49 = [a3 data];
-                [v49 getBytes:&v67 range:{objc_msgSend(a3, "position"), 1}];
+                data6 = [from data];
+                [data6 getBytes:&v67 range:{objc_msgSend(from, "position"), 1}];
 
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               v46 |= (v67 & 0x7F) << v44;
@@ -1270,7 +1270,7 @@ LABEL_99:
               }
             }
 
-            if ([a3 hasError])
+            if ([from hasError])
             {
               v21 = 0;
             }
@@ -1298,18 +1298,18 @@ LABEL_107:
             while (1)
             {
               v66 = 0;
-              v18 = [a3 position] + 1;
-              if (v18 >= [a3 position] && (v19 = objc_msgSend(a3, "position") + 1, v19 <= objc_msgSend(a3, "length")))
+              v18 = [from position] + 1;
+              if (v18 >= [from position] && (v19 = objc_msgSend(from, "position") + 1, v19 <= objc_msgSend(from, "length")))
               {
-                v20 = [a3 data];
-                [v20 getBytes:&v66 range:{objc_msgSend(a3, "position"), 1}];
+                data7 = [from data];
+                [data7 getBytes:&v66 range:{objc_msgSend(from, "position"), 1}];
 
-                [a3 setPosition:{objc_msgSend(a3, "position") + 1}];
+                [from setPosition:{objc_msgSend(from, "position") + 1}];
               }
 
               else
               {
-                [a3 _setError];
+                [from _setError];
               }
 
               v17 |= (v66 & 0x7F) << v15;
@@ -1327,7 +1327,7 @@ LABEL_107:
               }
             }
 
-            if ([a3 hasError])
+            if ([from hasError])
             {
               v21 = 0;
             }
@@ -1352,13 +1352,13 @@ LABEL_103:
       *&self->PBCodable_opaque[v23] = v22;
 
 LABEL_113:
-      v59 = [a3 position];
+      position2 = [from position];
     }
 
-    while (v59 < [a3 length]);
+    while (position2 < [from length]);
   }
 
-  LOBYTE(v56) = [a3 hasError] ^ 1;
+  LOBYTE(v56) = [from hasError] ^ 1;
   return v56;
 }
 
@@ -1461,15 +1461,15 @@ LABEL_12:
   v7.receiver = self;
   v7.super_class = SecEscrowPendingRecord;
   v3 = [(SecEscrowPendingRecord *)&v7 description];
-  v4 = [(SecEscrowPendingRecord *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SecEscrowPendingRecord *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)setHasTriggerRequestTime:(BOOL)a3
+- (void)setHasTriggerRequestTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 4;
   }
@@ -1482,9 +1482,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasUploadRetries:(BOOL)a3
+- (void)setHasUploadRetries:(BOOL)retries
 {
-  if (a3)
+  if (retries)
   {
     v3 = 8;
   }
@@ -1497,9 +1497,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasUploadCompleted:(BOOL)a3
+- (void)setHasUploadCompleted:(BOOL)completed
 {
-  if (a3)
+  if (completed)
   {
     v3 = 32;
   }
@@ -1512,9 +1512,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasLastEscrowAttemptTime:(BOOL)a3
+- (void)setHasLastEscrowAttemptTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 2;
   }
@@ -1527,9 +1527,9 @@ LABEL_12:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasCertCached:(BOOL)a3
+- (void)setHasCertCached:(BOOL)cached
 {
-  if (a3)
+  if (cached)
   {
     v3 = 16;
   }

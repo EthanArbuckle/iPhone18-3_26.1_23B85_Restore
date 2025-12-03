@@ -2,20 +2,20 @@
 - (NSArray)boundingBox;
 - (NSString)adapterIdentifier;
 - (VUWGalleryPersonalizationOptions)init;
-- (VUWGalleryPersonalizationOptions)initWithCoder:(id)a3;
-- (void)setAdapterIdentifier:(id)a3;
-- (void)setBoundingBox:(id)a3;
-- (void)setKeyObservation:(id)a3;
-- (void)setSeed:(id)a3;
+- (VUWGalleryPersonalizationOptions)initWithCoder:(id)coder;
+- (void)setAdapterIdentifier:(id)identifier;
+- (void)setBoundingBox:(id)box;
+- (void)setKeyObservation:(id)observation;
+- (void)setSeed:(id)seed;
 @end
 
 @implementation VUWGalleryPersonalizationOptions
 
-- (void)setSeed:(id)a3
+- (void)setSeed:(id)seed
 {
   v4 = *(self + OBJC_IVAR___VUWGalleryPersonalizationOptions_seed);
-  *(self + OBJC_IVAR___VUWGalleryPersonalizationOptions_seed) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___VUWGalleryPersonalizationOptions_seed) = seed;
+  seedCopy = seed;
 }
 
 - (NSArray)boundingBox
@@ -35,9 +35,9 @@
   return v2;
 }
 
-- (void)setBoundingBox:(id)a3
+- (void)setBoundingBox:(id)box
 {
-  if (a3)
+  if (box)
   {
     sub_1D2174E10(0, &qword_1EDC876F8);
     v4 = sub_1D2250AFC();
@@ -67,9 +67,9 @@
   return v2;
 }
 
-- (void)setAdapterIdentifier:(id)a3
+- (void)setAdapterIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_1D225095C();
   }
@@ -85,11 +85,11 @@
   v6[1] = v5;
 }
 
-- (void)setKeyObservation:(id)a3
+- (void)setKeyObservation:(id)observation
 {
   v4 = *(self + OBJC_IVAR___VUWGalleryPersonalizationOptions_keyObservation);
-  *(self + OBJC_IVAR___VUWGalleryPersonalizationOptions_keyObservation) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___VUWGalleryPersonalizationOptions_keyObservation) = observation;
+  observationCopy = observation;
 }
 
 - (VUWGalleryPersonalizationOptions)init
@@ -105,7 +105,7 @@
   return [(VUWGalleryPersonalizationOptions *)&v4 init];
 }
 
-- (VUWGalleryPersonalizationOptions)initWithCoder:(id)a3
+- (VUWGalleryPersonalizationOptions)initWithCoder:(id)coder
 {
   *(self + OBJC_IVAR___VUWGalleryPersonalizationOptions_seed) = 0;
   *(self + OBJC_IVAR___VUWGalleryPersonalizationOptions_boundingBox) = 0;

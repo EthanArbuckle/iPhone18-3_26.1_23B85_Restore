@@ -1,17 +1,17 @@
 @interface MFRoundedCornersStackView
-- (MFRoundedCornersStackView)initWithCoder:(id)a3;
-- (MFRoundedCornersStackView)initWithFrame:(CGRect)a3;
-- (void)mf_addArrangedSubviews:(id)a3;
+- (MFRoundedCornersStackView)initWithCoder:(id)coder;
+- (MFRoundedCornersStackView)initWithFrame:(CGRect)frame;
+- (void)mf_addArrangedSubviews:(id)subviews;
 - (void)updateRoundedCorners;
 @end
 
 @implementation MFRoundedCornersStackView
 
-- (MFRoundedCornersStackView)initWithFrame:(CGRect)a3
+- (MFRoundedCornersStackView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MFRoundedCornersStackView;
-  v3 = [(MFRoundedCornersStackView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFRoundedCornersStackView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -21,12 +21,12 @@
   return v4;
 }
 
-- (MFRoundedCornersStackView)initWithCoder:(id)a3
+- (MFRoundedCornersStackView)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = MFRoundedCornersStackView;
-  v5 = [(MFRoundedCornersStackView *)&v8 initWithCoder:v4];
+  v5 = [(MFRoundedCornersStackView *)&v8 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -36,15 +36,15 @@
   return v6;
 }
 
-- (void)mf_addArrangedSubviews:(id)a3
+- (void)mf_addArrangedSubviews:(id)subviews
 {
   v13 = *MEMORY[0x1E69E9840];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  subviewsCopy = subviews;
+  v5 = [subviewsCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v5)
   {
     v6 = *v9;
@@ -55,14 +55,14 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subviewsCopy);
         }
 
         [(MFRoundedCornersStackView *)self addArrangedSubview:*(*(&v8 + 1) + 8 * v7++), v8];
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [subviewsCopy countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -74,8 +74,8 @@
 - (void)updateRoundedCorners
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = [(MFRoundedCornersStackView *)self arrangedSubviews];
-  v4 = [v3 count];
+  arrangedSubviews = [(MFRoundedCornersStackView *)self arrangedSubviews];
+  v4 = [arrangedSubviews count];
 
   if (v4)
   {
@@ -83,8 +83,8 @@
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v5 = [(MFRoundedCornersStackView *)self arrangedSubviews];
-    v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    arrangedSubviews2 = [(MFRoundedCornersStackView *)self arrangedSubviews];
+    v6 = [arrangedSubviews2 countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v6)
     {
       v7 = *v23;
@@ -94,18 +94,18 @@
         {
           if (*v23 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(arrangedSubviews2);
           }
 
           v9 = *(*(&v22 + 1) + 8 * i);
-          v10 = [v9 layer];
-          [v10 setCornerRadius:0.0];
+          layer = [v9 layer];
+          [layer setCornerRadius:0.0];
 
-          v11 = [v9 layer];
-          [v11 setMaskedCorners:0];
+          layer2 = [v9 layer];
+          [layer2 setMaskedCorners:0];
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v6 = [arrangedSubviews2 countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v6);
@@ -120,8 +120,8 @@
     [(MFRoundedCornersStackView *)self cornerRadius];
     if (v13 > 0.0)
     {
-      v14 = [(MFRoundedCornersStackView *)self effectiveUserInterfaceLayoutDirection];
-      if (v14 == 1)
+      effectiveUserInterfaceLayoutDirection = [(MFRoundedCornersStackView *)self effectiveUserInterfaceLayoutDirection];
+      if (effectiveUserInterfaceLayoutDirection == 1)
       {
         v15 = 10;
       }
@@ -131,7 +131,7 @@
         v15 = 5;
       }
 
-      if (v14 == 1)
+      if (effectiveUserInterfaceLayoutDirection == 1)
       {
         v16 = 5;
       }
@@ -141,13 +141,13 @@
         v16 = 10;
       }
 
-      v17 = [(MFRoundedCornersStackView *)self arrangedSubviews];
-      v18 = [v17 firstObject];
-      v12[2](v12, v18, v15);
+      arrangedSubviews3 = [(MFRoundedCornersStackView *)self arrangedSubviews];
+      firstObject = [arrangedSubviews3 firstObject];
+      v12[2](v12, firstObject, v15);
 
-      v19 = [(MFRoundedCornersStackView *)self arrangedSubviews];
-      v20 = [v19 lastObject];
-      v12[2](v12, v20, v16);
+      arrangedSubviews4 = [(MFRoundedCornersStackView *)self arrangedSubviews];
+      lastObject = [arrangedSubviews4 lastObject];
+      v12[2](v12, lastObject, v16);
     }
   }
 }

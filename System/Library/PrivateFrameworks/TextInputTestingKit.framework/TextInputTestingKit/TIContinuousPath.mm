@@ -1,8 +1,8 @@
 @interface TIContinuousPath
 - (TIContinuousPath)init;
-- (TIContinuousPath)initWithCoder:(id)a3;
-- (TIContinuousPath)initWithJsonDictionary:(id)a3;
-- (TIContinuousPath)initWithTimeStamp:(double)a3;
+- (TIContinuousPath)initWithCoder:(id)coder;
+- (TIContinuousPath)initWithJsonDictionary:(id)dictionary;
+- (TIContinuousPath)initWithTimeStamp:(double)stamp;
 - (double)timeStamp;
 - (id)description;
 - (id)toJsonDictionary;
@@ -50,8 +50,8 @@
 - (id)toJsonDictionary
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -71,8 +71,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v12 + 1) + 8 * i) toJsonDictionary];
-        [v4 addObject:v10];
+        toJsonDictionary = [*(*(&v12 + 1) + 8 * i) toJsonDictionary];
+        [array addObject:toJsonDictionary];
       }
 
       v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -81,14 +81,14 @@
     while (v7);
   }
 
-  [v3 setObject:v4 forKeyedSubscript:@"samples"];
+  [dictionary setObject:array forKeyedSubscript:@"samples"];
 
-  return v3;
+  return dictionary;
 }
 
-- (TIContinuousPath)initWithCoder:(id)a3
+- (TIContinuousPath)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = TIContinuousPath;
   v5 = [(TIContinuousPath *)&v13 init];
@@ -97,7 +97,7 @@
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"samples"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"samples"];
     v10 = [v9 copy];
     samples = v5->_samples;
     v5->_samples = v10;
@@ -115,10 +115,10 @@
   return v4;
 }
 
-- (TIContinuousPath)initWithJsonDictionary:(id)a3
+- (TIContinuousPath)initWithJsonDictionary:(id)dictionary
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = TIContinuousPath;
   v5 = [(TIContinuousPath *)&v19 init];
@@ -128,7 +128,7 @@
     samples = v5->_samples;
     v5->_samples = v6;
 
-    v8 = [v4 objectForKey:@"samples"];
+    v8 = [dictionaryCopy objectForKey:@"samples"];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -180,7 +180,7 @@
   return v2;
 }
 
-- (TIContinuousPath)initWithTimeStamp:(double)a3
+- (TIContinuousPath)initWithTimeStamp:(double)stamp
 {
   v7.receiver = self;
   v7.super_class = TIContinuousPath;

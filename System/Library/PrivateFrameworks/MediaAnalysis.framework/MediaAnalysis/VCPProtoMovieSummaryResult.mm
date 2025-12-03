@@ -1,25 +1,25 @@
 @interface VCPProtoMovieSummaryResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoMovieSummaryResult
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   memset(&v23, 0, sizeof(v23));
-  CMTimeRangeMakeFromDictionary(&v23, v3);
-  v4 = [(__CFDictionary *)v3 objectForKeyedSubscript:@"quality"];
-  v5 = [(__CFDictionary *)v3 objectForKeyedSubscript:@"flags"];
+  CMTimeRangeMakeFromDictionary(&v23, dictionaryCopy);
+  v4 = [(__CFDictionary *)dictionaryCopy objectForKeyedSubscript:@"quality"];
+  v5 = [(__CFDictionary *)dictionaryCopy objectForKeyedSubscript:@"flags"];
   v6 = v5;
   if (v23.start.flags)
   {
@@ -37,7 +37,7 @@
         [v4 floatValue];
         [(VCPProtoMovieSummaryResult *)v7 setCurationScore:?];
         -[VCPProtoMovieSummaryResult setAutoPlayable:](v7, "setAutoPlayable:", ([v6 unsignedIntegerValue] >> 19) & 1);
-        v11 = [(__CFDictionary *)v3 objectForKeyedSubscript:@"attributes"];
+        v11 = [(__CFDictionary *)dictionaryCopy objectForKeyedSubscript:@"attributes"];
         if (v11)
         {
           v12 = objc_alloc_init(VCPProtoVideoKeyFrame);
@@ -82,11 +82,11 @@
 
 - (id)exportToLegacyDictionary
 {
-  v3 = [(VCPProtoMovieSummaryResult *)self timeRange];
-  v4 = v3;
-  if (v3)
+  timeRange = [(VCPProtoMovieSummaryResult *)self timeRange];
+  v4 = timeRange;
+  if (timeRange)
   {
-    [v3 timeRangeValue];
+    [timeRange timeRangeValue];
   }
 
   else
@@ -116,18 +116,18 @@
   v10 = [v9 numberWithFloat:?];
   [v6 setObject:v10 forKeyedSubscript:@"quality"];
 
-  v11 = [(VCPProtoMovieSummaryResult *)self keyFrame];
-  v12 = [(VCPProtoMovieSummaryResult *)self playbackCrop];
-  if (v11 | v12)
+  keyFrame = [(VCPProtoMovieSummaryResult *)self keyFrame];
+  playbackCrop = [(VCPProtoMovieSummaryResult *)self playbackCrop];
+  if (keyFrame | playbackCrop)
   {
-    v13 = [MEMORY[0x1E695DF90] dictionary];
-    if (v11)
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    if (keyFrame)
     {
-      v14 = [v11 timestamp];
-      v15 = v14;
-      if (v14)
+      timestamp = [keyFrame timestamp];
+      v15 = timestamp;
+      if (timestamp)
       {
-        [v14 timeValue];
+        [timestamp timeValue];
       }
 
       else
@@ -138,23 +138,23 @@
       *&range.start.value = *&v22.start.value;
       range.start.epoch = v22.start.epoch;
       v16 = CMTimeCopyAsDictionary(&range.start, 0);
-      [v13 setObject:v16 forKeyedSubscript:@"keyFrameTime"];
+      [dictionary setObject:v16 forKeyedSubscript:@"keyFrameTime"];
 
       v17 = MEMORY[0x1E696AD98];
-      [v11 curationScore];
+      [keyFrame curationScore];
       v18 = [v17 numberWithFloat:?];
-      [v13 setObject:v18 forKeyedSubscript:@"keyFrameScore"];
+      [dictionary setObject:v18 forKeyedSubscript:@"keyFrameScore"];
     }
 
-    if (v12)
+    if (playbackCrop)
     {
-      v19 = [(VCPProtoMovieSummaryResult *)self playbackCrop];
-      [v19 rectValue];
+      playbackCrop2 = [(VCPProtoMovieSummaryResult *)self playbackCrop];
+      [playbackCrop2 rectValue];
       v20 = NSStringFromRect(v25);
-      [v13 setObject:v20 forKeyedSubscript:@"bestPlaybackCrop"];
+      [dictionary setObject:v20 forKeyedSubscript:@"bestPlaybackCrop"];
     }
 
-    [v6 setObject:v13 forKeyedSubscript:{@"attributes", *&v22.start.value, v22.start.epoch}];
+    [v6 setObject:dictionary forKeyedSubscript:{@"attributes", *&v22.start.value, v22.start.epoch}];
   }
 
   return v6;
@@ -166,49 +166,49 @@
   v8.receiver = self;
   v8.super_class = VCPProtoMovieSummaryResult;
   v4 = [(VCPProtoMovieSummaryResult *)&v8 description];
-  v5 = [(VCPProtoMovieSummaryResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoMovieSummaryResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   timeRange = self->_timeRange;
   if (timeRange)
   {
-    v6 = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"timeRange"];
+    dictionaryRepresentation = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"timeRange"];
   }
 
   *&v4 = self->_curationScore;
   v7 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v7 forKey:@"curationScore"];
+  [dictionary setObject:v7 forKey:@"curationScore"];
 
   keyFrame = self->_keyFrame;
   if (keyFrame)
   {
-    v9 = [(VCPProtoVideoKeyFrame *)keyFrame dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"keyFrame"];
+    dictionaryRepresentation2 = [(VCPProtoVideoKeyFrame *)keyFrame dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"keyFrame"];
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:self->_autoPlayable];
-  [v3 setObject:v10 forKey:@"autoPlayable"];
+  [dictionary setObject:v10 forKey:@"autoPlayable"];
 
   playbackCrop = self->_playbackCrop;
   if (playbackCrop)
   {
-    v12 = [(VCPProtoBounds *)playbackCrop dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"playbackCrop"];
+    dictionaryRepresentation3 = [(VCPProtoBounds *)playbackCrop dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"playbackCrop"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteSubmessage();
   PBDataWriterWriteFloatField();
   if (self->_keyFrame)
@@ -223,56 +223,56 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setTimeRange:self->_timeRange];
-  v4 = v5;
-  v5[2] = self->_curationScore;
+  toCopy = to;
+  [toCopy setTimeRange:self->_timeRange];
+  v4 = toCopy;
+  toCopy[2] = self->_curationScore;
   if (self->_keyFrame)
   {
-    [v5 setKeyFrame:?];
-    v4 = v5;
+    [toCopy setKeyFrame:?];
+    v4 = toCopy;
   }
 
   *(v4 + 40) = self->_autoPlayable;
   if (self->_playbackCrop)
   {
-    [v5 setPlaybackCrop:?];
-    v4 = v5;
+    [toCopy setPlaybackCrop:?];
+    v4 = toCopy;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
   *(v5 + 8) = self->_curationScore;
-  v8 = [(VCPProtoVideoKeyFrame *)self->_keyFrame copyWithZone:a3];
+  v8 = [(VCPProtoVideoKeyFrame *)self->_keyFrame copyWithZone:zone];
   v9 = *(v5 + 16);
   *(v5 + 16) = v8;
 
   *(v5 + 40) = self->_autoPlayable;
-  v10 = [(VCPProtoBounds *)self->_playbackCrop copyWithZone:a3];
+  v10 = [(VCPProtoBounds *)self->_playbackCrop copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
   timeRange = self->_timeRange;
-  if (timeRange | *(v4 + 4))
+  if (timeRange | *(equalCopy + 4))
   {
     if (![(VCPProtoTimeRange *)timeRange isEqual:?])
     {
@@ -280,13 +280,13 @@
     }
   }
 
-  if (self->_curationScore != *(v4 + 2))
+  if (self->_curationScore != *(equalCopy + 2))
   {
     goto LABEL_9;
   }
 
   keyFrame = self->_keyFrame;
-  if (keyFrame | *(v4 + 2))
+  if (keyFrame | *(equalCopy + 2))
   {
     if (![(VCPProtoVideoKeyFrame *)keyFrame isEqual:?])
     {
@@ -296,7 +296,7 @@
 
   if (self->_autoPlayable)
   {
-    if ((*(v4 + 40) & 1) == 0)
+    if ((*(equalCopy + 40) & 1) == 0)
     {
 LABEL_9:
       v7 = 0;
@@ -304,13 +304,13 @@ LABEL_9:
     }
   }
 
-  else if (*(v4 + 40))
+  else if (*(equalCopy + 40))
   {
     goto LABEL_9;
   }
 
   playbackCrop = self->_playbackCrop;
-  if (playbackCrop | *(v4 + 3))
+  if (playbackCrop | *(equalCopy + 3))
   {
     v7 = [(VCPProtoBounds *)playbackCrop isEqual:?];
   }
@@ -362,12 +362,12 @@ LABEL_10:
   return v12 ^ v13 ^ [(VCPProtoBounds *)self->_playbackCrop hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   timeRange = self->_timeRange;
-  v6 = *(v4 + 4);
-  v11 = v4;
+  v6 = *(fromCopy + 4);
+  v11 = fromCopy;
   if (timeRange)
   {
     if (!v6)
@@ -388,11 +388,11 @@ LABEL_10:
     [(VCPProtoMovieSummaryResult *)self setTimeRange:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_7:
-  self->_curationScore = *(v4 + 2);
+  self->_curationScore = *(fromCopy + 2);
   keyFrame = self->_keyFrame;
-  v8 = *(v4 + 2);
+  v8 = *(fromCopy + 2);
   if (keyFrame)
   {
     if (!v8)
@@ -413,11 +413,11 @@ LABEL_7:
     [(VCPProtoMovieSummaryResult *)self setKeyFrame:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_13:
-  self->_autoPlayable = *(v4 + 40);
+  self->_autoPlayable = *(fromCopy + 40);
   playbackCrop = self->_playbackCrop;
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   if (playbackCrop)
   {
     if (!v10)
@@ -438,7 +438,7 @@ LABEL_13:
     [(VCPProtoMovieSummaryResult *)self setPlaybackCrop:?];
   }
 
-  v4 = v11;
+  fromCopy = v11;
 LABEL_19:
 }
 

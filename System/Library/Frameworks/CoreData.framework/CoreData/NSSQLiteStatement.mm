@@ -1,12 +1,12 @@
 @interface NSSQLiteStatement
-- (NSSQLiteStatement)initWithEntity:(id)a3 sqlString:(id)a4;
+- (NSSQLiteStatement)initWithEntity:(id)entity sqlString:(id)string;
 - (id)description;
-- (sqlite3_stmt)setCachedSQLiteStatement:(uint64_t)a3 forConnection:;
-- (uint64_t)addBindVariable:(uint64_t)a1;
-- (void)cacheFakeEntityForFetch:(uint64_t)a1;
+- (sqlite3_stmt)setCachedSQLiteStatement:(uint64_t)statement forConnection:;
+- (uint64_t)addBindVariable:(uint64_t)variable;
+- (void)cacheFakeEntityForFetch:(uint64_t)fetch;
 - (void)clearCaches:(void *)key;
 - (void)dealloc;
-- (void)setBindIntarrays:(uint64_t)a1;
+- (void)setBindIntarrays:(uint64_t)intarrays;
 @end
 
 @implementation NSSQLiteStatement
@@ -25,7 +25,7 @@
   [(NSSQLiteStatement *)&v3 dealloc];
 }
 
-- (NSSQLiteStatement)initWithEntity:(id)a3 sqlString:(id)a4
+- (NSSQLiteStatement)initWithEntity:(id)entity sqlString:(id)string
 {
   v9.receiver = self;
   v9.super_class = NSSQLiteStatement;
@@ -33,8 +33,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_entity = a3;
-    v6->_sqlString = [a4 copy];
+    v6->_entity = entity;
+    v6->_sqlString = [string copy];
   }
 
   return v7;
@@ -97,62 +97,62 @@ LABEL_10:
   }
 }
 
-- (uint64_t)addBindVariable:(uint64_t)a1
+- (uint64_t)addBindVariable:(uint64_t)variable
 {
-  if (!a1)
+  if (!variable)
   {
     return 0;
   }
 
-  v4 = *(a1 + 16);
+  v4 = *(variable + 16);
   if (!v4)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    *(a1 + 16) = v4;
+    *(variable + 16) = v4;
   }
 
   v5 = [v4 count];
-  [*(a1 + 16) addObject:a2];
+  [*(variable + 16) addObject:a2];
   [a2 setIndex:v5];
   return v5;
 }
 
-- (void)setBindIntarrays:(uint64_t)a1
+- (void)setBindIntarrays:(uint64_t)intarrays
 {
-  if (a1)
+  if (intarrays)
   {
-    if (*(a1 + 24) != a2)
+    if (*(intarrays + 24) != a2)
     {
       v4 = a2;
 
-      *(a1 + 24) = a2;
+      *(intarrays + 24) = a2;
     }
   }
 }
 
-- (void)cacheFakeEntityForFetch:(uint64_t)a1
+- (void)cacheFakeEntityForFetch:(uint64_t)fetch
 {
-  if (a1)
+  if (fetch)
   {
-    if (*(a1 + 48) != a2)
+    if (*(fetch + 48) != a2)
     {
       v4 = a2;
 
-      *(a1 + 48) = a2;
+      *(fetch + 48) = a2;
     }
   }
 }
 
-- (sqlite3_stmt)setCachedSQLiteStatement:(uint64_t)a3 forConnection:
+- (sqlite3_stmt)setCachedSQLiteStatement:(uint64_t)statement forConnection:
 {
   if (result)
   {
     v4 = result;
-    v5 = *(result + 9);
-    if (!v5)
+    statementCopy = *(result + 9);
+    if (!statementCopy)
     {
-      *(result + 9) = a3;
-      v5 = a3;
+      *(result + 9) = statement;
+      statementCopy = statement;
     }
 
     result = *(result + 8);
@@ -160,9 +160,9 @@ LABEL_10:
     {
       if (result)
       {
-        if (v5)
+        if (statementCopy)
         {
-          dispatch_assert_queue_V2(*(v5 + 8));
+          dispatch_assert_queue_V2(*(statementCopy + 8));
           result = *(v4 + 8);
         }
 

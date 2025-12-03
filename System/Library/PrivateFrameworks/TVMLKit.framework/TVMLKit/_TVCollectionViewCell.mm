@@ -1,6 +1,6 @@
 @interface _TVCollectionViewCell
 - (TVAuxiliaryViewSelecting)selectingView;
-- (UIEdgeInsets)selectionMarginsForSize:(CGSize)a3;
+- (UIEdgeInsets)selectionMarginsForSize:(CGSize)size;
 - (void)layoutSubviews;
 @end
 
@@ -11,10 +11,10 @@
   v4.receiver = self;
   v4.super_class = _TVCollectionViewCell;
   [(_TVCollectionViewCell *)&v4 layoutSubviews];
-  v3 = [(_TVCollectionViewCell *)self selectingView];
+  selectingView = [(_TVCollectionViewCell *)self selectingView];
   [(_TVCollectionViewCell *)self bounds];
-  [v3 setFrame:?];
-  [v3 layoutIfNeeded];
+  [selectingView setFrame:?];
+  [selectingView layoutIfNeeded];
 }
 
 - (TVAuxiliaryViewSelecting)selectingView
@@ -28,10 +28,10 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [(_TVCollectionViewCell *)self contentView];
-    v5 = [v4 subviews];
+    contentView = [(_TVCollectionViewCell *)self contentView];
+    subviews = [contentView subviews];
 
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v6 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -42,7 +42,7 @@
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(subviews);
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
@@ -53,7 +53,7 @@
           }
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [subviews countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v7)
         {
           continue;
@@ -71,10 +71,10 @@ LABEL_12:
   return v11;
 }
 
-- (UIEdgeInsets)selectionMarginsForSize:(CGSize)a3
+- (UIEdgeInsets)selectionMarginsForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   WeakRetained = objc_loadWeakRetained(&self->_selectingView);
   [WeakRetained selectionMarginsForSize:{width, height}];
   v7 = v6;

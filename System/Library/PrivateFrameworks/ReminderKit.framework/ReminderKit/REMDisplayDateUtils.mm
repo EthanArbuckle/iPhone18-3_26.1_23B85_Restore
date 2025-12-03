@@ -1,27 +1,27 @@
 @interface REMDisplayDateUtils
-+ (id)_displayDateWithDueDateComponents:(id)a3 alarms:(id)a4 hasAlarmDateComponents:(BOOL)a5 floatingDateComponents:(id)a6 nonFloatingDateComponents:(id)a7 displayDateUtils:(id)a8;
-+ (id)displayDateWithDueDateComponents:(id)a3 alarms:(id)a4;
++ (id)_displayDateWithDueDateComponents:(id)components alarms:(id)alarms hasAlarmDateComponents:(BOOL)dateComponents floatingDateComponents:(id)floatingDateComponents nonFloatingDateComponents:(id)nonFloatingDateComponents displayDateUtils:(id)utils;
++ (id)displayDateWithDueDateComponents:(id)components alarms:(id)alarms;
 - (REMDisplayDateUtilsDelegate)delegete;
-- (id)displayDateWithDueDateComponents:(id)a3 alarms:(id)a4;
-- (id)updateDisplayDateWithDueDateComponents:(id)a3 alarm:(id)a4 alarmsProviding:(id)a5;
+- (id)displayDateWithDueDateComponents:(id)components alarms:(id)alarms;
+- (id)updateDisplayDateWithDueDateComponents:(id)components alarm:(id)alarm alarmsProviding:(id)providing;
 @end
 
 @implementation REMDisplayDateUtils
 
-+ (id)_displayDateWithDueDateComponents:(id)a3 alarms:(id)a4 hasAlarmDateComponents:(BOOL)a5 floatingDateComponents:(id)a6 nonFloatingDateComponents:(id)a7 displayDateUtils:(id)a8
++ (id)_displayDateWithDueDateComponents:(id)components alarms:(id)alarms hasAlarmDateComponents:(BOOL)dateComponents floatingDateComponents:(id)floatingDateComponents nonFloatingDateComponents:(id)nonFloatingDateComponents displayDateUtils:(id)utils
 {
   v67 = *MEMORY[0x1E69E9840];
-  v55 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  v53 = a8;
-  v54 = [MEMORY[0x1E695DF70] array];
+  componentsCopy = components;
+  alarmsCopy = alarms;
+  floatingDateComponentsCopy = floatingDateComponents;
+  nonFloatingDateComponentsCopy = nonFloatingDateComponents;
+  utilsCopy = utils;
+  array = [MEMORY[0x1E695DF70] array];
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
-  obj = v12;
+  obj = alarmsCopy;
   v15 = [obj countByEnumeratingWithState:&v61 objects:v66 count:16];
   if (v15)
   {
@@ -41,20 +41,20 @@
         if ([v19 isOriginal])
         {
           v20 = objc_opt_class();
-          v21 = [v19 trigger];
-          v22 = REMDynamicCast(v20, v21);
+          trigger = [v19 trigger];
+          v22 = REMDynamicCast(v20, trigger);
 
           v23 = objc_opt_class();
-          v24 = [v19 trigger];
-          v25 = REMDynamicCast(v23, v24);
+          trigger2 = [v19 trigger];
+          v25 = REMDynamicCast(v23, trigger2);
 
           if (v22)
           {
-            v26 = [v22 dateComponents];
+            dateComponents = [v22 dateComponents];
 
-            if (v26)
+            if (dateComponents)
             {
-              v27 = [v22 dateComponents];
+              dateComponents2 = [v22 dateComponents];
               goto LABEL_10;
             }
           }
@@ -62,15 +62,15 @@
           if (v25)
           {
             [v25 timeInterval];
-            if (v55)
+            if (componentsCopy)
             {
-              if (v29 != 0.0 && ([v55 rem_isAllDayDateComponents] & 1) == 0)
+              if (v29 != 0.0 && ([componentsCopy rem_isAllDayDateComponents] & 1) == 0)
               {
                 [v25 timeInterval];
-                v27 = [v55 rem_dateComponentsByAddingTimeInterval:?];
+                dateComponents2 = [componentsCopy rem_dateComponentsByAddingTimeInterval:?];
 LABEL_10:
-                v28 = v27;
-                [v54 addObject:v27];
+                v28 = dateComponents2;
+                [array addObject:dateComponents2];
               }
             }
           }
@@ -87,13 +87,13 @@ LABEL_10:
     while (v30);
   }
 
-  if (a5 || [v54 count])
+  if (dateComponents || [array count])
   {
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v31 = v54;
+    v31 = array;
     v32 = [v31 countByEnumeratingWithState:&v57 objects:v65 count:16];
     if (!v32)
     {
@@ -112,42 +112,42 @@ LABEL_10:
         }
 
         v36 = *(*(&v57 + 1) + 8 * i);
-        v37 = [v36 timeZone];
+        timeZone = [v36 timeZone];
 
-        if (v37)
+        if (timeZone)
         {
-          if (!v14)
+          if (!nonFloatingDateComponentsCopy)
           {
             v39 = 0;
             v40 = v36;
-            v41 = v13;
+            v41 = floatingDateComponentsCopy;
 LABEL_36:
             v42 = v36;
 
-            v14 = v40;
-            v13 = v41;
+            nonFloatingDateComponentsCopy = v40;
+            floatingDateComponentsCopy = v41;
             continue;
           }
 
-          v38 = [v14 rem_compare:v36];
-          v39 = v14;
+          v38 = [nonFloatingDateComponentsCopy rem_compare:v36];
+          v39 = nonFloatingDateComponentsCopy;
           v40 = v36;
-          v41 = v13;
+          v41 = floatingDateComponentsCopy;
         }
 
         else
         {
-          if (!v13)
+          if (!floatingDateComponentsCopy)
           {
             v39 = 0;
-            v40 = v14;
+            v40 = nonFloatingDateComponentsCopy;
             v41 = v36;
             goto LABEL_36;
           }
 
-          v38 = [v13 rem_compare:v36];
-          v39 = v13;
-          v40 = v14;
+          v38 = [floatingDateComponentsCopy rem_compare:v36];
+          v39 = floatingDateComponentsCopy;
+          v40 = nonFloatingDateComponentsCopy;
           v41 = v36;
         }
 
@@ -162,40 +162,40 @@ LABEL_36:
       {
 LABEL_39:
 
-        v43 = [[REMDisplayDate alloc] initWithFloatingDateComponents:v13 nonFloatingDateComponents:v14];
+        v43 = [[REMDisplayDate alloc] initWithFloatingDateComponents:floatingDateComponentsCopy nonFloatingDateComponents:nonFloatingDateComponentsCopy];
         v44 = 1;
-        v45 = v55;
+        v45 = componentsCopy;
         goto LABEL_40;
       }
     }
   }
 
-  v45 = v55;
-  v48 = [v55 timeZone];
+  v45 = componentsCopy;
+  timeZone2 = [componentsCopy timeZone];
 
   v49 = [REMDisplayDate alloc];
-  if (v48)
+  if (timeZone2)
   {
     v50 = 0;
-    v51 = v55;
+    v51 = componentsCopy;
   }
 
   else
   {
-    v50 = v55;
+    v50 = componentsCopy;
     v51 = 0;
   }
 
   v43 = [(REMDisplayDate *)v49 initWithFloatingDateComponents:v50 nonFloatingDateComponents:v51];
   v44 = 0;
 LABEL_40:
-  if (v53)
+  if (utilsCopy)
   {
-    [v53 setIsCacheSet:1];
-    [v53 setDueDateComponents:v45];
-    [v53 setFloatingDateComponents:v13];
-    [v53 setNonFloatingDateComponents:v14];
-    [v53 setHasAlarmDateComponents:v44];
+    [utilsCopy setIsCacheSet:1];
+    [utilsCopy setDueDateComponents:v45];
+    [utilsCopy setFloatingDateComponents:floatingDateComponentsCopy];
+    [utilsCopy setNonFloatingDateComponents:nonFloatingDateComponentsCopy];
+    [utilsCopy setHasAlarmDateComponents:v44];
   }
 
   v46 = *MEMORY[0x1E69E9840];
@@ -203,64 +203,64 @@ LABEL_40:
   return v43;
 }
 
-+ (id)displayDateWithDueDateComponents:(id)a3 alarms:(id)a4
++ (id)displayDateWithDueDateComponents:(id)components alarms:(id)alarms
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_opt_class() _displayDateWithDueDateComponents:v6 alarms:v5 hasAlarmDateComponents:0 floatingDateComponents:0 nonFloatingDateComponents:0 displayDateUtils:0];
+  alarmsCopy = alarms;
+  componentsCopy = components;
+  v7 = [objc_opt_class() _displayDateWithDueDateComponents:componentsCopy alarms:alarmsCopy hasAlarmDateComponents:0 floatingDateComponents:0 nonFloatingDateComponents:0 displayDateUtils:0];
 
   return v7;
 }
 
-- (id)displayDateWithDueDateComponents:(id)a3 alarms:(id)a4
+- (id)displayDateWithDueDateComponents:(id)components alarms:(id)alarms
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [objc_opt_class() _displayDateWithDueDateComponents:v7 alarms:v6 hasAlarmDateComponents:0 floatingDateComponents:0 nonFloatingDateComponents:0 displayDateUtils:self];
+  alarmsCopy = alarms;
+  componentsCopy = components;
+  v8 = [objc_opt_class() _displayDateWithDueDateComponents:componentsCopy alarms:alarmsCopy hasAlarmDateComponents:0 floatingDateComponents:0 nonFloatingDateComponents:0 displayDateUtils:self];
 
   return v8;
 }
 
-- (id)updateDisplayDateWithDueDateComponents:(id)a3 alarm:(id)a4 alarmsProviding:(id)a5
+- (id)updateDisplayDateWithDueDateComponents:(id)components alarm:(id)alarm alarmsProviding:(id)providing
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(REMDisplayDateUtils *)self dueDateComponents];
-  if (v11 == v8)
+  componentsCopy = components;
+  alarmCopy = alarm;
+  providingCopy = providing;
+  dueDateComponents = [(REMDisplayDateUtils *)self dueDateComponents];
+  if (dueDateComponents == componentsCopy)
   {
     v13 = 1;
   }
 
   else
   {
-    v12 = [(REMDisplayDateUtils *)self dueDateComponents];
-    v13 = [v12 isEqual:v8];
+    dueDateComponents2 = [(REMDisplayDateUtils *)self dueDateComponents];
+    v13 = [dueDateComponents2 isEqual:componentsCopy];
   }
 
-  v14 = [(REMDisplayDateUtils *)self isCacheSet];
+  isCacheSet = [(REMDisplayDateUtils *)self isCacheSet];
   WeakRetained = objc_loadWeakRetained(&self->_delegete);
   v16 = WeakRetained;
-  if (v14 && (v13 & 1) != 0)
+  if (isCacheSet && (v13 & 1) != 0)
   {
     [WeakRetained invokeWithCache:1];
 
     v17 = objc_opt_class();
-    v26[0] = v9;
+    v26[0] = alarmCopy;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-    v19 = [(REMDisplayDateUtils *)self hasAlarmDateComponents];
-    v20 = [(REMDisplayDateUtils *)self floatingDateComponents];
-    v21 = [(REMDisplayDateUtils *)self nonFloatingDateComponents];
-    v22 = [v17 _displayDateWithDueDateComponents:v8 alarms:v18 hasAlarmDateComponents:v19 floatingDateComponents:v20 nonFloatingDateComponents:v21 displayDateUtils:self];
+    hasAlarmDateComponents = [(REMDisplayDateUtils *)self hasAlarmDateComponents];
+    floatingDateComponents = [(REMDisplayDateUtils *)self floatingDateComponents];
+    nonFloatingDateComponents = [(REMDisplayDateUtils *)self nonFloatingDateComponents];
+    v22 = [v17 _displayDateWithDueDateComponents:componentsCopy alarms:v18 hasAlarmDateComponents:hasAlarmDateComponents floatingDateComponents:floatingDateComponents nonFloatingDateComponents:nonFloatingDateComponents displayDateUtils:self];
   }
 
   else
   {
     [WeakRetained invokeWithCache:0];
 
-    v23 = [v10 alarms];
-    v22 = [(REMDisplayDateUtils *)self displayDateWithDueDateComponents:v8 alarms:v23];
+    alarms = [providingCopy alarms];
+    v22 = [(REMDisplayDateUtils *)self displayDateWithDueDateComponents:componentsCopy alarms:alarms];
   }
 
   v24 = *MEMORY[0x1E69E9840];

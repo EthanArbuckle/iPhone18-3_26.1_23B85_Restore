@@ -1,27 +1,27 @@
 @interface DOCSidebarItemCell
-- (BOOL)textFieldShouldBeginEditing:(id)a3;
+- (BOOL)textFieldShouldBeginEditing:(id)editing;
 - (void)ejectionStateDidChange;
-- (void)textFieldDidBeginEditing:(id)a3;
-- (void)textFieldDidEndEditing:(id)a3;
+- (void)textFieldDidBeginEditing:(id)editing;
+- (void)textFieldDidEndEditing:(id)editing;
 @end
 
 @implementation DOCSidebarItemCell
 
-- (void)textFieldDidBeginEditing:(id)a3
+- (void)textFieldDidBeginEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
+  editingCopy = editing;
+  selfCopy = self;
   specialized DOCSidebarItemCell.textFieldDidBeginEditing(_:)();
 }
 
-- (void)textFieldDidEndEditing:(id)a3
+- (void)textFieldDidEndEditing:(id)editing
 {
-  v4 = a3;
-  v5 = self;
-  DOCSidebarItemCell.textFieldDidEndEditing(_:)(v4);
+  editingCopy = editing;
+  selfCopy = self;
+  DOCSidebarItemCell.textFieldDidEndEditing(_:)(editingCopy);
 }
 
-- (BOOL)textFieldShouldBeginEditing:(id)a3
+- (BOOL)textFieldShouldBeginEditing:(id)editing
 {
   v4 = self + direct field offset for DOCSidebarItemCell.delegate;
   swift_beginAccess();
@@ -30,7 +30,7 @@
     v5 = *(v4 + 1);
     swift_getObjectType();
     v6 = *(v5 + 32);
-    v7 = self;
+    selfCopy = self;
     v8 = v6();
     swift_unknownObjectRelease();
   }
@@ -45,7 +45,7 @@
 
 - (void)ejectionStateDidChange
 {
-  v2 = self;
+  selfCopy = self;
   DOCSidebarItemCell.ejectionStateDidChange()();
 }
 

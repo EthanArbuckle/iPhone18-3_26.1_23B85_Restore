@@ -1,83 +1,83 @@
 @interface MNGuidanceEventFeedback
-- (MNGuidanceEventFeedback)initWithCoder:(id)a3;
-- (MNGuidanceEventFeedback)initWithEvent:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (MNGuidanceEventFeedback)initWithCoder:(id)coder;
+- (MNGuidanceEventFeedback)initWithEvent:(id)event;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MNGuidanceEventFeedback
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uniqueID = self->_uniqueID;
-  v5 = a3;
-  [v5 encodeObject:uniqueID forKey:@"_uniqueID"];
-  [v5 encodeObject:self->_routeID forKey:@"_routeID"];
-  [v5 encodeInteger:self->_stepID forKey:@"_stepID"];
-  [v5 encodeInteger:self->_enrouteNoticeIndex forKey:@"_enrouteNoticeIndex"];
-  [v5 encodeInteger:self->_eventIndex forKey:@"_eventIndex"];
-  [v5 encodeInteger:self->_type forKey:@"_type"];
-  [v5 encodeDouble:@"_startTime" forKey:self->_startTime];
-  [v5 encodeDouble:@"_endTime" forKey:self->_endTime];
-  [v5 encodeDouble:@"_maneuverTime" forKey:self->_maneuverTime];
-  [v5 encodeDouble:@"_startDistance" forKey:self->_startDistance];
-  [v5 encodeDouble:@"_endDistance" forKey:self->_endDistance];
-  [v5 encodeDouble:@"_vehicleSpeed" forKey:self->_vehicleSpeed];
-  [v5 encodeInteger:self->_trafficColor forKey:@"_trafficColor"];
-  [v5 encodeInteger:self->_selectedPrimaryStringIndex forKey:@"_selectedPrimaryStringIndex"];
-  [v5 encodeInteger:self->_selectedSecondaryStringIndex forKey:@"_selectedSecondaryStringIndex"];
-  [v5 encodeObject:self->_junctionViewImageIDs forKey:@"_junctionViewImageIDs"];
-  [v5 encodeObject:self->_enrouteNoticeIdentifier forKey:@"_enrouteNoticeIdentifier"];
-  [v5 encodeInteger:self->_trafficCameraType forKey:@"_trafficCameraType"];
-  [v5 encodeObject:self->_eventDescription forKey:@"_eventDescription"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uniqueID forKey:@"_uniqueID"];
+  [coderCopy encodeObject:self->_routeID forKey:@"_routeID"];
+  [coderCopy encodeInteger:self->_stepID forKey:@"_stepID"];
+  [coderCopy encodeInteger:self->_enrouteNoticeIndex forKey:@"_enrouteNoticeIndex"];
+  [coderCopy encodeInteger:self->_eventIndex forKey:@"_eventIndex"];
+  [coderCopy encodeInteger:self->_type forKey:@"_type"];
+  [coderCopy encodeDouble:@"_startTime" forKey:self->_startTime];
+  [coderCopy encodeDouble:@"_endTime" forKey:self->_endTime];
+  [coderCopy encodeDouble:@"_maneuverTime" forKey:self->_maneuverTime];
+  [coderCopy encodeDouble:@"_startDistance" forKey:self->_startDistance];
+  [coderCopy encodeDouble:@"_endDistance" forKey:self->_endDistance];
+  [coderCopy encodeDouble:@"_vehicleSpeed" forKey:self->_vehicleSpeed];
+  [coderCopy encodeInteger:self->_trafficColor forKey:@"_trafficColor"];
+  [coderCopy encodeInteger:self->_selectedPrimaryStringIndex forKey:@"_selectedPrimaryStringIndex"];
+  [coderCopy encodeInteger:self->_selectedSecondaryStringIndex forKey:@"_selectedSecondaryStringIndex"];
+  [coderCopy encodeObject:self->_junctionViewImageIDs forKey:@"_junctionViewImageIDs"];
+  [coderCopy encodeObject:self->_enrouteNoticeIdentifier forKey:@"_enrouteNoticeIdentifier"];
+  [coderCopy encodeInteger:self->_trafficCameraType forKey:@"_trafficCameraType"];
+  [coderCopy encodeObject:self->_eventDescription forKey:@"_eventDescription"];
 }
 
-- (MNGuidanceEventFeedback)initWithCoder:(id)a3
+- (MNGuidanceEventFeedback)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(MNGuidanceEventFeedback *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_uniqueID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_uniqueID"];
     uniqueID = v5->_uniqueID;
     v5->_uniqueID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_routeID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_routeID"];
     routeID = v5->_routeID;
     v5->_routeID = v8;
 
-    v5->_stepID = [v4 decodeIntegerForKey:@"_stepID"];
-    v5->_enrouteNoticeIndex = [v4 decodeIntegerForKey:@"_enrouteNoticeIndex"];
-    v5->_eventIndex = [v4 decodeIntegerForKey:@"_eventIndex"];
-    v5->_type = [v4 decodeIntegerForKey:@"_type"];
-    [v4 decodeDoubleForKey:@"_startTime"];
+    v5->_stepID = [coderCopy decodeIntegerForKey:@"_stepID"];
+    v5->_enrouteNoticeIndex = [coderCopy decodeIntegerForKey:@"_enrouteNoticeIndex"];
+    v5->_eventIndex = [coderCopy decodeIntegerForKey:@"_eventIndex"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"_type"];
+    [coderCopy decodeDoubleForKey:@"_startTime"];
     v5->_startTime = v10;
-    [v4 decodeDoubleForKey:@"_endTime"];
+    [coderCopy decodeDoubleForKey:@"_endTime"];
     v5->_endTime = v11;
-    [v4 decodeDoubleForKey:@"_maneuverTime"];
+    [coderCopy decodeDoubleForKey:@"_maneuverTime"];
     v5->_maneuverTime = v12;
-    [v4 decodeDoubleForKey:@"_startDistance"];
+    [coderCopy decodeDoubleForKey:@"_startDistance"];
     v5->_startDistance = v13;
-    [v4 decodeDoubleForKey:@"_endDistance"];
+    [coderCopy decodeDoubleForKey:@"_endDistance"];
     v5->_endDistance = v14;
-    [v4 decodeDoubleForKey:@"_vehicleSpeed"];
+    [coderCopy decodeDoubleForKey:@"_vehicleSpeed"];
     v5->_vehicleSpeed = v15;
-    v5->_trafficColor = [v4 decodeIntegerForKey:@"_trafficColor"];
-    v5->_selectedPrimaryStringIndex = [v4 decodeIntegerForKey:@"_selectedPrimaryStringIndex"];
-    v5->_selectedSecondaryStringIndex = [v4 decodeIntegerForKey:@"_selectedSecondaryStringIndex"];
+    v5->_trafficColor = [coderCopy decodeIntegerForKey:@"_trafficColor"];
+    v5->_selectedPrimaryStringIndex = [coderCopy decodeIntegerForKey:@"_selectedPrimaryStringIndex"];
+    v5->_selectedSecondaryStringIndex = [coderCopy decodeIntegerForKey:@"_selectedSecondaryStringIndex"];
     v16 = MEMORY[0x1E695DFD8];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"_junctionViewImageIDs"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"_junctionViewImageIDs"];
     junctionViewImageIDs = v5->_junctionViewImageIDs;
     v5->_junctionViewImageIDs = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_enrouteNoticeIdentifier"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_enrouteNoticeIdentifier"];
     enrouteNoticeIdentifier = v5->_enrouteNoticeIdentifier;
     v5->_enrouteNoticeIdentifier = v21;
 
-    v5->_trafficCameraType = [v4 decodeIntegerForKey:@"_trafficCameraType"];
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_eventDescription"];
+    v5->_trafficCameraType = [coderCopy decodeIntegerForKey:@"_trafficCameraType"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_eventDescription"];
     eventDescription = v5->_eventDescription;
     v5->_eventDescription = v23;
 
@@ -87,7 +87,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[MNGuidanceEventFeedback allocWithZone:?]];
   v5 = [(NSUUID *)self->_uniqueID copy];
@@ -127,9 +127,9 @@
   return v4;
 }
 
-- (MNGuidanceEventFeedback)initWithEvent:(id)a3
+- (MNGuidanceEventFeedback)initWithEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v18.receiver = self;
   v18.super_class = MNGuidanceEventFeedback;
   v5 = [(MNGuidanceEventFeedback *)&v18 init];
@@ -138,13 +138,13 @@
     goto LABEL_16;
   }
 
-  v6 = [v4 uniqueID];
+  uniqueID = [eventCopy uniqueID];
   v7 = *(v5 + 2);
-  *(v5 + 2) = v6;
+  *(v5 + 2) = uniqueID;
 
-  v8 = [v4 serverRouteID];
+  serverRouteID = [eventCopy serverRouteID];
   v9 = *(v5 + 3);
-  *(v5 + 3) = v8;
+  *(v5 + 3) = serverRouteID;
 
   *(v5 + 6) = 0x7FFFFFFFFFFFFFFFLL;
   v10.f64[0] = NAN;
@@ -152,32 +152,32 @@
   v11 = vnegq_f64(v10);
   *(v5 + 2) = v11;
   *(v5 + 120) = v11;
-  v12 = [v4 source];
-  switch(v12)
+  source = [eventCopy source];
+  switch(source)
   {
     case 3:
-      *(v5 + 5) = [v4 enrouteNoticeIndex];
+      *(v5 + 5) = [eventCopy enrouteNoticeIndex];
       goto LABEL_7;
     case 2:
 LABEL_7:
-      *(v5 + 6) = [v4 sourceIndex];
+      *(v5 + 6) = [eventCopy sourceIndex];
       break;
     case 1:
-      *(v5 + 4) = [v4 stepID];
+      *(v5 + 4) = [eventCopy stepID];
       goto LABEL_7;
   }
 
-  if ([v4 hasSpokenGuidance])
+  if ([eventCopy hasSpokenGuidance])
   {
     v13 = 2;
   }
 
-  else if ([v4 hasSignGuidance])
+  else if ([eventCopy hasSignGuidance])
   {
     v13 = 1;
   }
 
-  else if ([v4 hasJunctionView])
+  else if ([eventCopy hasJunctionView])
   {
     v13 = 4;
   }
@@ -188,7 +188,7 @@ LABEL_7:
   }
 
   *(v5 + 7) = v13;
-  v14 = [v4 description];
+  v14 = [eventCopy description];
   v15 = *(v5 + 19);
   *(v5 + 19) = v14;
 

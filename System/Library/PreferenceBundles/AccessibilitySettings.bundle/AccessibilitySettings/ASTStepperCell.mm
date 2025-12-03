@@ -1,17 +1,17 @@
 @interface ASTStepperCell
-- (ASTStepperCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (ASTStepperCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (ASTStepperCellDelegate)stepperDelegate;
-- (void)_stepperChanged:(id)a3;
+- (void)_stepperChanged:(id)changed;
 - (void)_updateLabel;
 @end
 
 @implementation ASTStepperCell
 
-- (ASTStepperCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (ASTStepperCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
   v63.receiver = self;
   v63.super_class = ASTStepperCell;
-  v5 = [(ASTStepperCell *)&v63 initWithStyle:a3 reuseIdentifier:a4 specifier:a5];
+  v5 = [(ASTStepperCell *)&v63 initWithStyle:style reuseIdentifier:identifier specifier:specifier];
   v6 = v5;
   if (v5)
   {
@@ -23,9 +23,9 @@
     [(UIStepper *)v6->_stepper setMinimumValue:1.0];
     [(UIStepper *)v6->_stepper setMaximumValue:8.0];
     v9 = +[AXSettings sharedInstance];
-    v60 = [v9 assistiveTouchMainScreenCustomization];
+    assistiveTouchMainScreenCustomization = [v9 assistiveTouchMainScreenCustomization];
 
-    -[UIStepper setValue:](v6->_stepper, "setValue:", [v60 count]);
+    -[UIStepper setValue:](v6->_stepper, "setValue:", [assistiveTouchMainScreenCustomization count]);
     [(UIStepper *)v6->_stepper setTranslatesAutoresizingMaskIntoConstraints:0];
     LODWORD(v10) = 1148846080;
     [(UIStepper *)v6->_stepper setContentCompressionResistancePriority:0 forAxis:v10];
@@ -34,15 +34,15 @@
     [(UIStepper *)v6->_stepper setStepValue:1.0];
     [(UIStepper *)v6->_stepper setUserInteractionEnabled:1];
     [(UIStepper *)v6->_stepper addTarget:v6 action:"_stepperChanged:" forControlEvents:4096];
-    v12 = [(ASTStepperCell *)v6 contentView];
-    [v12 addSubview:v6->_stepper];
+    contentView = [(ASTStepperCell *)v6 contentView];
+    [contentView addSubview:v6->_stepper];
 
     v13 = objc_alloc_init(UILabel);
     stepperLabel = v6->_stepperLabel;
     v6->_stepperLabel = v13;
 
-    v15 = [(ASTStepperCell *)v6 contentView];
-    [v15 addSubview:v6->_stepperLabel];
+    contentView2 = [(ASTStepperCell *)v6 contentView];
+    [contentView2 addSubview:v6->_stepperLabel];
 
     [(UILabel *)v6->_stepperLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     v16 = [UIFont preferredFontForTextStyle:UIFontTextStyleBody];
@@ -50,8 +50,8 @@
 
     [(UILabel *)v6->_stepperLabel setAdjustsFontForContentSizeCategory:1];
     [(UILabel *)v6->_stepperLabel setNumberOfLines:0];
-    v17 = [(ASTStepperCell *)v6 traitCollection];
-    -[UILabel setTextAlignment:](v6->_stepperLabel, "setTextAlignment:", 2 * ([v17 layoutDirection] != &dword_0 + 1));
+    traitCollection = [(ASTStepperCell *)v6 traitCollection];
+    -[UILabel setTextAlignment:](v6->_stepperLabel, "setTextAlignment:", 2 * ([traitCollection layoutDirection] != &dword_0 + 1));
 
     [(ASTStepperCell *)v6 _updateLabel];
     v18 = +[AXSettings sharedInstance];
@@ -63,52 +63,52 @@
     v62 = v19;
     [v18 registerUpdateBlock:v61 forRetrieveSelector:"assistiveTouchMainScreenCustomization" withListener:v19];
 
-    v58 = [(UILabel *)v6->_stepperLabel leadingAnchor];
-    v59 = [(ASTStepperCell *)v19 contentView];
-    v57 = [v59 leadingAnchor];
-    v56 = [v58 constraintEqualToAnchor:v57 constant:10.0];
+    leadingAnchor = [(UILabel *)v6->_stepperLabel leadingAnchor];
+    contentView3 = [(ASTStepperCell *)v19 contentView];
+    leadingAnchor2 = [contentView3 leadingAnchor];
+    v56 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:10.0];
     v64[0] = v56;
-    v55 = [(UIStepper *)v6->_stepper leadingAnchor];
-    v54 = [(UILabel *)v6->_stepperLabel trailingAnchor];
-    v53 = [v55 constraintEqualToAnchor:v54 constant:10.0];
+    leadingAnchor3 = [(UIStepper *)v6->_stepper leadingAnchor];
+    trailingAnchor = [(UILabel *)v6->_stepperLabel trailingAnchor];
+    v53 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:10.0];
     v64[1] = v53;
-    v52 = [(ASTStepperCell *)v19 contentView];
-    v51 = [v52 trailingAnchor];
-    v50 = [(UIStepper *)v6->_stepper trailingAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50 constant:10.0];
+    contentView4 = [(ASTStepperCell *)v19 contentView];
+    trailingAnchor2 = [contentView4 trailingAnchor];
+    trailingAnchor3 = [(UIStepper *)v6->_stepper trailingAnchor];
+    v49 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:10.0];
     v64[2] = v49;
-    v48 = [(UILabel *)v6->_stepperLabel centerYAnchor];
-    v47 = [(UIStepper *)v6->_stepper centerYAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47];
+    centerYAnchor = [(UILabel *)v6->_stepperLabel centerYAnchor];
+    centerYAnchor2 = [(UIStepper *)v6->_stepper centerYAnchor];
+    v46 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v64[3] = v46;
-    v44 = [(UILabel *)v6->_stepperLabel firstBaselineAnchor];
-    v45 = [(ASTStepperCell *)v19 contentView];
-    v43 = [v45 topAnchor];
-    v42 = [v44 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v43 multiplier:1.0];
+    firstBaselineAnchor = [(UILabel *)v6->_stepperLabel firstBaselineAnchor];
+    contentView5 = [(ASTStepperCell *)v19 contentView];
+    topAnchor = [contentView5 topAnchor];
+    v42 = [firstBaselineAnchor constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:topAnchor multiplier:1.0];
     v64[4] = v42;
-    v41 = [(ASTStepperCell *)v19 contentView];
-    v40 = [v41 bottomAnchor];
-    v39 = [(UILabel *)v6->_stepperLabel lastBaselineAnchor];
-    v38 = [v40 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v39 multiplier:1.0];
+    contentView6 = [(ASTStepperCell *)v19 contentView];
+    bottomAnchor = [contentView6 bottomAnchor];
+    lastBaselineAnchor = [(UILabel *)v6->_stepperLabel lastBaselineAnchor];
+    v38 = [bottomAnchor constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:lastBaselineAnchor multiplier:1.0];
     v64[5] = v38;
-    v35 = [(UIStepper *)v6->_stepper topAnchor];
-    v36 = [(ASTStepperCell *)v19 contentView];
-    v34 = [v36 topAnchor];
-    v33 = [v35 constraintGreaterThanOrEqualToAnchor:v34];
+    topAnchor2 = [(UIStepper *)v6->_stepper topAnchor];
+    contentView7 = [(ASTStepperCell *)v19 contentView];
+    topAnchor3 = [contentView7 topAnchor];
+    v33 = [topAnchor2 constraintGreaterThanOrEqualToAnchor:topAnchor3];
     v64[6] = v33;
-    v31 = [(UIStepper *)v6->_stepper bottomAnchor];
-    v32 = [(ASTStepperCell *)v19 contentView];
-    v30 = [v32 bottomAnchor];
-    v20 = [v31 constraintLessThanOrEqualToAnchor:v30];
+    bottomAnchor2 = [(UIStepper *)v6->_stepper bottomAnchor];
+    contentView8 = [(ASTStepperCell *)v19 contentView];
+    bottomAnchor3 = [contentView8 bottomAnchor];
+    v20 = [bottomAnchor2 constraintLessThanOrEqualToAnchor:bottomAnchor3];
     v64[7] = v20;
-    v21 = [(UIStepper *)v6->_stepper centerYAnchor];
-    v22 = [(ASTStepperCell *)v19 contentView];
-    v23 = [v22 centerYAnchor];
-    v24 = [v21 constraintEqualToAnchor:v23];
+    centerYAnchor3 = [(UIStepper *)v6->_stepper centerYAnchor];
+    contentView9 = [(ASTStepperCell *)v19 contentView];
+    centerYAnchor4 = [contentView9 centerYAnchor];
+    v24 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
     v64[8] = v24;
-    v25 = [(ASTStepperCell *)v19 contentView];
-    v26 = [v25 heightAnchor];
-    v27 = [v26 constraintGreaterThanOrEqualToConstant:UITableDefaultRowHeight];
+    contentView10 = [(ASTStepperCell *)v19 contentView];
+    heightAnchor = [contentView10 heightAnchor];
+    v27 = [heightAnchor constraintGreaterThanOrEqualToConstant:UITableDefaultRowHeight];
     v64[9] = v27;
     v37 = [NSArray arrayWithObjects:v64 count:10];
 
@@ -139,11 +139,11 @@ id __58__ASTStepperCell_initWithStyle_reuseIdentifier_specifier___block_invoke(u
   [(UILabel *)self->_stepperLabel setText:v5];
 }
 
-- (void)_stepperChanged:(id)a3
+- (void)_stepperChanged:(id)changed
 {
   [(ASTStepperCell *)self _updateLabel];
-  v4 = [(ASTStepperCell *)self stepperDelegate];
-  [v4 stepperCellCountChanged:self];
+  stepperDelegate = [(ASTStepperCell *)self stepperDelegate];
+  [stepperDelegate stepperCellCountChanged:self];
 }
 
 - (ASTStepperCellDelegate)stepperDelegate

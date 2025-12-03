@@ -1,5 +1,5 @@
 @interface AMSDHomeKitHomeUser
-- (AMSDHomeKitHomeUser)initWithUser:(id)a3;
+- (AMSDHomeKitHomeUser)initWithUser:(id)user;
 - (NSString)hashedDescription;
 - (NSString)name;
 - (NSUUID)identifier;
@@ -7,16 +7,16 @@
 
 @implementation AMSDHomeKitHomeUser
 
-- (AMSDHomeKitHomeUser)initWithUser:(id)a3
+- (AMSDHomeKitHomeUser)initWithUser:(id)user
 {
-  v5 = a3;
+  userCopy = user;
   v9.receiver = self;
   v9.super_class = AMSDHomeKitHomeUser;
   v6 = [(AMSDHomeKitHomeUser *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_user, a3);
+    objc_storeStrong(&v6->_user, user);
   }
 
   return v7;
@@ -24,26 +24,26 @@
 
 - (NSUUID)identifier
 {
-  v2 = [(AMSDHomeKitHomeUser *)self user];
-  v3 = [v2 uniqueIdentifier];
+  user = [(AMSDHomeKitHomeUser *)self user];
+  uniqueIdentifier = [user uniqueIdentifier];
 
-  return v3;
+  return uniqueIdentifier;
 }
 
 - (NSString)name
 {
-  v2 = [(AMSDHomeKitHomeUser *)self user];
-  v3 = [v2 name];
+  user = [(AMSDHomeKitHomeUser *)self user];
+  name = [user name];
 
-  return v3;
+  return name;
 }
 
 - (NSString)hashedDescription
 {
   v3 = objc_opt_class();
-  v4 = [(AMSDHomeKitHomeUser *)self name];
+  name = [(AMSDHomeKitHomeUser *)self name];
   v5 = AMSHashIfNeeded();
-  v6 = [(AMSDHomeKitHomeUser *)self identifier];
+  identifier = [(AMSDHomeKitHomeUser *)self identifier];
   v7 = AMSHashIfNeeded();
   v8 = [NSString stringWithFormat:@"<%@: %p name = %@ | identifier = %@>", v3, self, v5, v7];
 

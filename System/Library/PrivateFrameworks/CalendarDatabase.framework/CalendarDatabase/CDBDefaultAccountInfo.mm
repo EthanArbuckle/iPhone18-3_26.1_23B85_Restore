@@ -1,20 +1,20 @@
 @interface CDBDefaultAccountInfo
-- (BOOL)addressIsAccountOwner:(id)a3;
-- (BOOL)addressURLIsAccountOwner:(id)a3;
-- (CDBDefaultAccountInfo)initWithStore:(void *)a3;
+- (BOOL)addressIsAccountOwner:(id)owner;
+- (BOOL)addressURLIsAccountOwner:(id)owner;
+- (CDBDefaultAccountInfo)initWithStore:(void *)store;
 @end
 
 @implementation CDBDefaultAccountInfo
 
-- (CDBDefaultAccountInfo)initWithStore:(void *)a3
+- (CDBDefaultAccountInfo)initWithStore:(void *)store
 {
   v10.receiver = self;
   v10.super_class = CDBDefaultAccountInfo;
   v4 = [(CDBDefaultAccountInfo *)&v10 init];
   v5 = v4;
-  if (a3 && v4)
+  if (store && v4)
   {
-    v6 = CalStoreCopyCachedExternalInfo(a3);
+    v6 = CalStoreCopyCachedExternalInfo(store);
     v7 = [v6 objectForKeyedSubscript:@"ownerAddresses"];
     accountUserAddresses = v5->_accountUserAddresses;
     v5->_accountUserAddresses = v7;
@@ -23,10 +23,10 @@
   return v5;
 }
 
-- (BOOL)addressIsAccountOwner:(id)a3
+- (BOOL)addressIsAccountOwner:(id)owner
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DFF8] URLWithString:v4];
+  ownerCopy = owner;
+  v5 = [MEMORY[0x1E695DFF8] URLWithString:ownerCopy];
   if ([(CDBDefaultAccountInfo *)self addressURLIsAccountOwner:v5])
   {
     v6 = 1;
@@ -35,8 +35,8 @@
   else
   {
     v7 = MEMORY[0x1E695DFF8];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"mailto:%@", v4];
-    v9 = [v7 URLWithString:v8];
+    ownerCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"mailto:%@", ownerCopy];
+    v9 = [v7 URLWithString:ownerCopy];
 
     v6 = [(CDBDefaultAccountInfo *)self addressURLIsAccountOwner:v9];
   }
@@ -44,11 +44,11 @@
   return v6;
 }
 
-- (BOOL)addressURLIsAccountOwner:(id)a3
+- (BOOL)addressURLIsAccountOwner:(id)owner
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  ownerCopy = owner;
+  if (ownerCopy)
   {
     v13 = 0u;
     v14 = 0u;
@@ -68,7 +68,7 @@
             objc_enumerationMutation(v5);
           }
 
-          if ([MEMORY[0x1E6992078] compareAddressURL:v4 localString:{*(*(&v11 + 1) + 8 * i), v11}])
+          if ([MEMORY[0x1E6992078] compareAddressURL:ownerCopy localString:{*(*(&v11 + 1) + 8 * i), v11}])
           {
             LOBYTE(v6) = 1;
             goto LABEL_12;

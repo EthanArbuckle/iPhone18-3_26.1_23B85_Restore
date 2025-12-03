@@ -1,14 +1,14 @@
 @interface CNContact
 + (BOOL)_shouldRedactDescription;
-+ (BOOL)isContactUTIType:(id)a3;
-+ (BOOL)isCoreRecentsAcceptedIdentifier:(id)a3;
-+ (CNContact)contactWithArchivedData:(id)a3 error:(id *)a4;
-+ (CNContact)contactWithContact:(id)a3;
-+ (CNContact)contactWithDisplayName:(id)a3 emailOrPhoneNumber:(id)a4;
-+ (CNContact)contactWithDisplayName:(id)a3 handleStrings:(id)a4;
-+ (CNContact)contactWithIdentifier:(id)a3;
-+ (CNContact)contactWithIdentifierOnly:(id)a3;
-+ (CNContact)contactWithVCardData:(id)a3 error:(id *)a4;
++ (BOOL)isContactUTIType:(id)type;
++ (BOOL)isCoreRecentsAcceptedIdentifier:(id)identifier;
++ (CNContact)contactWithArchivedData:(id)data error:(id *)error;
++ (CNContact)contactWithContact:(id)contact;
++ (CNContact)contactWithDisplayName:(id)name emailOrPhoneNumber:(id)number;
++ (CNContact)contactWithDisplayName:(id)name handleStrings:(id)strings;
++ (CNContact)contactWithIdentifier:(id)identifier;
++ (CNContact)contactWithIdentifierOnly:(id)only;
++ (CNContact)contactWithVCardData:(id)data error:(id *)error;
 + (CNKeyDescriptor)descriptorForAllImageDataKeys;
 + (NSArray)readableTypeIdentifiersForItemProvider;
 + (NSArray)writableTypeIdentifiersForItemProvider;
@@ -20,94 +20,94 @@
 + (NSPredicate)predicateForContactsMatchingPhoneNumber:(CNPhoneNumber *)phoneNumber;
 + (NSPredicate)predicateForContactsWithIdentifiers:(NSArray *)identifiers;
 + (OS_os_log)os_log;
-+ (id)_contactWithContact:(id)a3 createNewInstance:(BOOL)a4 propertyDescriptions:(id)a5;
-+ (id)_shortHashForName:(id)a3;
++ (id)_contactWithContact:(id)contact createNewInstance:(BOOL)instance propertyDescriptions:(id)descriptions;
++ (id)_shortHashForName:(id)name;
 + (id)alwaysFetchedKeys;
 + (id)contact;
-+ (id)contactFromPerson:(void *)a3 keysToFetch:(id)a4 mutable:(BOOL)a5;
-+ (id)contactFromPublicABPerson:(void *)a3 keysToFetch:(id)a4 mutable:(BOOL)a5;
-+ (id)contactIdentifierFromSuggestionID:(id)a3;
-+ (id)contactPropertyKeyFromABPropertyID:(int)a3;
-+ (id)contactPropertyKeyFromPublicABPropertyID:(int)a3;
-+ (id)debugDescriptionForName:(id)a3;
++ (id)contactFromPerson:(void *)person keysToFetch:(id)fetch mutable:(BOOL)mutable;
++ (id)contactFromPublicABPerson:(void *)person keysToFetch:(id)fetch mutable:(BOOL)mutable;
++ (id)contactIdentifierFromSuggestionID:(id)d;
++ (id)contactPropertyKeyFromABPropertyID:(int)d;
++ (id)contactPropertyKeyFromPublicABPropertyID:(int)d;
++ (id)debugDescriptionForName:(id)name;
 + (id)descriptorForRequiredKeysForSearchableItem;
 + (id)emptyContact;
 + (id)identifierProvider;
-+ (id)makeContactAndMergeValuesFromAvailableKeysInContact:(id)a3;
++ (id)makeContactAndMergeValuesFromAvailableKeysInContact:(id)contact;
 + (id)makeIdentifierString;
-+ (id)newContactWithPropertyKeys:(id)a3 withValuesFromContact:(id)a4;
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5;
-+ (id)persistedContactWithIdentifierOnly:(id)a3;
++ (id)newContactWithPropertyKeys:(id)keys withValuesFromContact:(id)contact;
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error;
++ (id)persistedContactWithIdentifierOnly:(id)only;
 + (id)predicateForAllContacts;
-+ (id)predicateForContactMatchingEKParticipantWithName:(id)a3 emailAddress:(id)a4 URL:(id)a5 predicateDescription:(id)a6;
-+ (id)predicateForContactMatchingEmailAddress:(id)a3;
-+ (id)predicateForContactMatchingLabeledValueIdentifier:(id)a3;
-+ (id)predicateForContactMatchingMapString:(id)a3;
-+ (id)predicateForContactMatchingPhoneNumber:(id)a3;
-+ (id)predicateForContactMatchingPhoneNumberWithDigits:(id)a3 countryCode:(id)a4;
-+ (id)predicateForContactMatchingURLString:(id)a3;
-+ (id)predicateForContactsLinkedToContact:(id)a3;
-+ (id)predicateForContactsLinkedToContactWithIdentifier:(id)a3;
-+ (id)predicateForContactsMatchingEmailAddress:(id)a3 groupIdentifiers:(id)a4 limitToOneResult:(BOOL)a5;
-+ (id)predicateForContactsMatchingExternalUUIDs:(id)a3;
-+ (id)predicateForContactsMatchingFullTextSearch:(id)a3 containerIdentifiers:(id)a4 groupIdentifiers:(id)a5;
-+ (id)predicateForContactsMatchingHandleStrings:(id)a3;
-+ (id)predicateForContactsMatchingHandleStrings:(id)a3 inContainersWithIdentifiers:(id)a4;
-+ (id)predicateForContactsMatchingInstantMessageAddress:(id)a3;
-+ (id)predicateForContactsMatchingName:(id)a3 options:(unint64_t)a4;
-+ (id)predicateForContactsMatchingPhoneNumber:(id)a3 prefixHint:(id)a4;
-+ (id)predicateForContactsMatchingPhoneNumber:(id)a3 prefixHint:(id)a4 groupIdentifiers:(id)a5 limitToOneResult:(BOOL)a6;
-+ (id)predicateForContactsMatchingPostalAddress:(id)a3;
-+ (id)predicateForContactsMatchingPreferredChannel:(id)a3 limitOne:(BOOL)a4;
-+ (id)predicateForContactsMatchingSmartDialerString:(id)a3;
-+ (id)predicateForContactsMatchingSocialProfile:(id)a3;
-+ (id)predicateForContactsMatchingString:(id)a3 accountIdentifier:(id)a4 containerIdentifier:(id)a5 groupIdentifier:(id)a6;
++ (id)predicateForContactMatchingEKParticipantWithName:(id)name emailAddress:(id)address URL:(id)l predicateDescription:(id)description;
++ (id)predicateForContactMatchingEmailAddress:(id)address;
++ (id)predicateForContactMatchingLabeledValueIdentifier:(id)identifier;
++ (id)predicateForContactMatchingMapString:(id)string;
++ (id)predicateForContactMatchingPhoneNumber:(id)number;
++ (id)predicateForContactMatchingPhoneNumberWithDigits:(id)digits countryCode:(id)code;
++ (id)predicateForContactMatchingURLString:(id)string;
++ (id)predicateForContactsLinkedToContact:(id)contact;
++ (id)predicateForContactsLinkedToContactWithIdentifier:(id)identifier;
++ (id)predicateForContactsMatchingEmailAddress:(id)address groupIdentifiers:(id)identifiers limitToOneResult:(BOOL)result;
++ (id)predicateForContactsMatchingExternalUUIDs:(id)ds;
++ (id)predicateForContactsMatchingFullTextSearch:(id)search containerIdentifiers:(id)identifiers groupIdentifiers:(id)groupIdentifiers;
++ (id)predicateForContactsMatchingHandleStrings:(id)strings;
++ (id)predicateForContactsMatchingHandleStrings:(id)strings inContainersWithIdentifiers:(id)identifiers;
++ (id)predicateForContactsMatchingInstantMessageAddress:(id)address;
++ (id)predicateForContactsMatchingName:(id)name options:(unint64_t)options;
++ (id)predicateForContactsMatchingPhoneNumber:(id)number prefixHint:(id)hint;
++ (id)predicateForContactsMatchingPhoneNumber:(id)number prefixHint:(id)hint groupIdentifiers:(id)identifiers limitToOneResult:(BOOL)result;
++ (id)predicateForContactsMatchingPostalAddress:(id)address;
++ (id)predicateForContactsMatchingPreferredChannel:(id)channel limitOne:(BOOL)one;
++ (id)predicateForContactsMatchingSmartDialerString:(id)string;
++ (id)predicateForContactsMatchingSocialProfile:(id)profile;
++ (id)predicateForContactsMatchingString:(id)string accountIdentifier:(id)identifier containerIdentifier:(id)containerIdentifier groupIdentifier:(id)groupIdentifier;
 + (id)predicateForContactsMissingBackgroundColors;
-+ (id)predicateForContactsWithExternalIdentifiers:(id)a3;
-+ (id)predicateForContactsWithNonUnifiedIdentifiers:(id)a3;
-+ (id)predicateForContactsWithOrganizationName:(id)a3;
++ (id)predicateForContactsWithExternalIdentifiers:(id)identifiers;
++ (id)predicateForContactsWithNonUnifiedIdentifiers:(id)identifiers;
++ (id)predicateForContactsWithOrganizationName:(id)name;
 + (id)predicateForContactsWithWallpaperMetadata;
-+ (id)predicateForFaultFulfillmentForLegacyIdentifier:(unsigned int)a3 identifier:(id)a4;
-+ (id)predicateForLegacyIdentifier:(unsigned int)a3;
++ (id)predicateForFaultFulfillmentForLegacyIdentifier:(unsigned int)identifier identifier:(id)a4;
++ (id)predicateForLegacyIdentifier:(unsigned int)identifier;
 + (id)predicateForMeContact;
-+ (id)predicateForPreferredNameInContainersWithIdentifiers:(id)a3 groupsWithIdentifiers:(id)a4;
-+ (id)predicateForPreferredNameInRange:(_NSRange)a3;
-+ (id)predicateForSuggestionIdentifier:(unint64_t)a3;
++ (id)predicateForPreferredNameInContainersWithIdentifiers:(id)identifiers groupsWithIdentifiers:(id)withIdentifiers;
++ (id)predicateForPreferredNameInRange:(_NSRange)range;
++ (id)predicateForSuggestionIdentifier:(unint64_t)identifier;
 + (id)preferredImageComparator;
-+ (id)previewURLForContact:(id)a3;
-+ (id)storeInfoFromCoder:(id)a3 storeIdentifier:(id)a4 key:(id)a5;
-+ (id)suggestionIDFromContactIdentifier:(id)a3;
-+ (int)abPropertyIDfromContactPropertyKey:(id)a3;
-+ (int)publicABPropertyIDFromContactPropertyKey:(id)a3;
-- (BOOL)areAllAvailableKeysEqualToContact:(id)a3 ignoringIdentifiers:(BOOL)a4;
-- (BOOL)areAllPropertiesEqualToContactIgnoringIdentifiers:(id)a3;
++ (id)previewURLForContact:(id)contact;
++ (id)storeInfoFromCoder:(id)coder storeIdentifier:(id)identifier key:(id)key;
++ (id)suggestionIDFromContactIdentifier:(id)identifier;
++ (int)abPropertyIDfromContactPropertyKey:(id)key;
++ (int)publicABPropertyIDFromContactPropertyKey:(id)key;
+- (BOOL)areAllAvailableKeysEqualToContact:(id)contact ignoringIdentifiers:(BOOL)identifiers;
+- (BOOL)areAllPropertiesEqualToContactIgnoringIdentifiers:(id)identifiers;
 - (BOOL)areKeysAvailable:(NSArray *)keyDescriptors;
-- (BOOL)arePropertiesEqualToContact:(id)a3 ignoredProperties:(id)a4;
+- (BOOL)arePropertiesEqualToContact:(id)contact ignoredProperties:(id)properties;
 - (BOOL)hasChanges;
 - (BOOL)hasSuggestedProperties;
 - (BOOL)isCoreRecentsAccepted;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualIgnoringIdentifiers:(id)a3;
-- (BOOL)isEquivalent:(id)a3 ignoringProperties:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualIgnoringIdentifiers:(id)identifiers;
+- (BOOL)isEquivalent:(id)equivalent ignoringProperties:(id)properties;
 - (BOOL)isSuggested;
 - (BOOL)isSuggestedMe;
 - (BOOL)isUnified;
 - (BOOL)isUnifiedWithContactWithIdentifier:(NSString *)contactIdentifier;
-- (BOOL)isUnifiedWithContactsWithIdentifiers:(id)a3;
+- (BOOL)isUnifiedWithContactsWithIdentifiers:(id)identifiers;
 - (BOOL)isUsingSharedPhoto;
-- (BOOL)overwritePerson:(void *)a3 error:(id *)a4;
-- (BOOL)overwritePublicABPerson:(void *)a3;
+- (BOOL)overwritePerson:(void *)person error:(id *)error;
+- (BOOL)overwritePublicABPerson:(void *)person;
 - (BOOL)preferredForImage;
 - (BOOL)preferredForName;
-- (BOOL)updateNewPublicABPerson:(void *)a3 inAddressBook:(void *)a4;
+- (BOOL)updateNewPublicABPerson:(void *)person inAddressBook:(void *)book;
 - (CGRect)cropRect;
 - (CNActivityAlert)callAlert;
 - (CNActivityAlert)textAlert;
 - (CNContact)init;
-- (CNContact)initWithCoder:(id)a3;
-- (CNContact)initWithIdentifier:(id)a3;
-- (CNContact)initWithIdentifier:(id)a3 availableKeyDescriptor:(id)a4;
-- (CNContact)initWithIdentifier:(id)a3 persisted:(BOOL)a4;
+- (CNContact)initWithCoder:(id)coder;
+- (CNContact)initWithIdentifier:(id)identifier;
+- (CNContact)initWithIdentifier:(id)identifier availableKeyDescriptor:(id)descriptor;
+- (CNContact)initWithIdentifier:(id)identifier persisted:(BOOL)persisted;
 - (CNContactType)contactType;
 - (CNSensitiveContentConfiguration)sensitiveContentConfiguration;
 - (CNWallpaper)wallpaper;
@@ -184,19 +184,19 @@
 - (NSString)wallpaperURI;
 - (NSUUID)id;
 - (SGRecordId)suggestionRecordId;
-- (id)_filteredArrayForValidValues:(id)a3;
-- (id)_searchableItemIncludingInternalAttributes:(BOOL)a3;
+- (id)_filteredArrayForValidValues:(id)values;
+- (id)_searchableItemIncludingInternalAttributes:(BOOL)attributes;
 - (id)allLinkedIdentifiers;
-- (id)areKeysAvailable:(id)a3 useIgnorableKeys:(BOOL)a4 findMissingKeys:(BOOL)a5;
+- (id)areKeysAvailable:(id)available useIgnorableKeys:(BOOL)keys findMissingKeys:(BOOL)missingKeys;
 - (id)copyWithDistinctIdentifier;
-- (id)copyWithPropertyKeys:(id)a3;
+- (id)copyWithPropertyKeys:(id)keys;
 - (id)copyWithSelfAsSnapshot;
-- (id)diffToSnapshotAndReturnError:(id *)a3;
+- (id)diffToSnapshotAndReturnError:(id *)error;
 - (id)explicitDisplayName;
-- (id)linkedContactsFromStoreWithIdentifier:(id)a3;
+- (id)linkedContactsFromStoreWithIdentifier:(id)identifier;
 - (id)linkedIdentifierMap;
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)searchableItemAttributeSetForUserActivity;
 - (id)selfOrMutableCopy;
 - (id)shortDebugDescription;
@@ -204,11 +204,11 @@
 - (id)wallpaperMetadata;
 - (int64_t)sharedPhotoDisplayPreference;
 - (unint64_t)hash;
-- (void)_appendNameInBuilder:(id)a3;
-- (void)assertKeyIsAvailable:(id)a3;
-- (void)assertKeysAreAvailable:(id)a3;
-- (void)detachedPersonWithError:(id *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_appendNameInBuilder:(id)builder;
+- (void)assertKeyIsAvailable:(id)available;
+- (void)assertKeysAreAvailable:(id)available;
+- (void)detachedPersonWithError:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNContact
@@ -244,31 +244,31 @@ void __30__CNContact_alwaysFetchedKeys__block_invoke()
 
 - (NSString)identifier
 {
-  v3 = [(CNContact *)self internalIdentifier];
-  v4 = [(CNContact *)self storeIdentifier];
-  if (v4)
+  internalIdentifier = [(CNContact *)self internalIdentifier];
+  storeIdentifier = [(CNContact *)self storeIdentifier];
+  if (storeIdentifier)
   {
-    v5 = [CNContactStore storeClassWithIdentifier:v4];
+    v5 = [CNContactStore storeClassWithIdentifier:storeIdentifier];
     if (v5)
     {
       v6 = v5;
       if (objc_opt_respondsToSelector())
       {
-        v7 = [(objc_class *)v6 contactIdentifierFromInternalIdentifier:v3];
+        v7 = [(objc_class *)v6 contactIdentifierFromInternalIdentifier:internalIdentifier];
 
-        v3 = v7;
+        internalIdentifier = v7;
       }
     }
   }
 
-  return v3;
+  return internalIdentifier;
 }
 
 - (NSString)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNContact *)self identifier];
-  v5 = [v3 appendName:@"identifier" object:v4];
+  identifier = [(CNContact *)self identifier];
+  v5 = [v3 appendName:@"identifier" object:identifier];
 
   [(CNContact *)self _appendNameInBuilder:v3];
   if ([(CNContact *)self isKeyAvailable:@"organizationName"])
@@ -315,18 +315,18 @@ void __30__CNContact_alwaysFetchedKeys__block_invoke()
   }
 
   v13 = [v3 appendName:@"postalAddresses" object:postalAddresses];
-  v14 = [v3 build];
+  build = [v3 build];
 
-  return v14;
+  return build;
 }
 
 + (BOOL)_shouldRedactDescription
 {
-  v2 = [MEMORY[0x1E69966E8] currentEnvironment];
-  if ([v2 isInternalBuild])
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  if ([currentEnvironment isInternalBuild])
   {
-    v3 = [v2 userDefaults];
-    v4 = [v3 BOOLForKey:@"CNDisableContactDescriptionObfuscation"];
+    userDefaults = [currentEnvironment userDefaults];
+    v4 = [userDefaults BOOLForKey:@"CNDisableContactDescriptionObfuscation"];
 
     v5 = v4 ^ 1;
   }
@@ -341,18 +341,18 @@ void __30__CNContact_alwaysFetchedKeys__block_invoke()
 
 - (CNContact)init
 {
-  v3 = [objc_opt_class() makeIdentifier];
-  v4 = [(CNContact *)self initWithIdentifier:v3];
+  makeIdentifier = [objc_opt_class() makeIdentifier];
+  v4 = [(CNContact *)self initWithIdentifier:makeIdentifier];
 
   return v4;
 }
 
 + (id)makeIdentifierString
 {
-  v2 = [a1 identifierProvider];
-  v3 = [v2 makeIdentifier];
+  identifierProvider = [self identifierProvider];
+  makeIdentifier = [identifierProvider makeIdentifier];
 
-  return v3;
+  return makeIdentifier;
 }
 
 + (id)identifierProvider
@@ -1033,15 +1033,15 @@ LABEL_11:
   v4 = *(v3 - 8);
   MEMORY[0x1EEE9AC00]();
   v6 = &v12 - ((v5 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v7 = self;
-  v8 = [(CNContact *)v7 identifier];
-  if (!v8)
+  selfCopy = self;
+  identifier = [(CNContact *)selfCopy identifier];
+  if (!identifier)
   {
     sub_19565D28C();
-    v8 = sub_19565D27C();
+    identifier = sub_19565D27C();
   }
 
-  v9 = [objc_opt_self() uuidFromContactIdentifier_];
+  uuidFromContactIdentifier_ = [objc_opt_self() uuidFromContactIdentifier_];
 
   sub_19565CF8C();
   v10 = sub_19565CF7C();
@@ -1100,8 +1100,8 @@ LABEL_11:
     return 0;
   }
 
-  v3 = [(CNContact *)self linkedContacts];
-  v4 = [v3 count] > 1;
+  linkedContacts = [(CNContact *)self linkedContacts];
+  v4 = [linkedContacts count] > 1;
 
   return v4;
 }
@@ -3056,13 +3056,13 @@ LABEL_11:
 - (id)shortDebugDescription
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNContact *)self identifier];
-  v5 = [v3 appendName:@"identifier" object:v4];
+  identifier = [(CNContact *)self identifier];
+  v5 = [v3 appendName:@"identifier" object:identifier];
 
   [(CNContact *)self _appendNameInBuilder:v3];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 - (BOOL)preferredForName
@@ -3117,17 +3117,17 @@ LABEL_11:
 
 - (id)snapshot
 {
-  v2 = self;
+  selfCopy = self;
   snapshot = self->_snapshot;
-  v4 = [MEMORY[0x1E695DFB0] null];
-  if (snapshot != v4)
+  null = [MEMORY[0x1E695DFB0] null];
+  if (snapshot != null)
   {
-    v2 = v2->_snapshot;
+    selfCopy = selfCopy->_snapshot;
   }
 
-  v5 = v2;
+  v5 = selfCopy;
 
-  return v2;
+  return selfCopy;
 }
 
 + (id)predicateForAllContacts
@@ -3144,8 +3144,8 @@ LABEL_11:
 
 - (BOOL)isSuggested
 {
-  v5 = [(CNContact *)self storeIdentifier];
-  if (!v5)
+  storeIdentifier = [(CNContact *)self storeIdentifier];
+  if (!storeIdentifier)
   {
     v2 = +[CNSuggestedContactStore storeIdentifier];
     if (!v2)
@@ -3155,18 +3155,18 @@ LABEL_11:
     }
   }
 
-  v6 = [(CNContact *)self storeIdentifier];
+  storeIdentifier2 = [(CNContact *)self storeIdentifier];
   v7 = +[CNSuggestedContactStore storeIdentifier];
-  if (([v6 isEqual:v7] & 1) == 0)
+  if (([storeIdentifier2 isEqual:v7] & 1) == 0)
   {
-    v9 = [(CNContact *)self storeIdentifier];
-    if (v9 || (+[CNDonationMapper mapperIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    storeIdentifier3 = [(CNContact *)self storeIdentifier];
+    if (storeIdentifier3 || (+[CNDonationMapper mapperIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v10 = [(CNContact *)self storeIdentifier];
+      storeIdentifier4 = [(CNContact *)self storeIdentifier];
       v11 = +[CNDonationMapper mapperIdentifier];
-      v8 = [v10 isEqual:v11];
+      v8 = [storeIdentifier4 isEqual:v11];
 
-      if (v9)
+      if (storeIdentifier3)
       {
 
         goto LABEL_13;
@@ -3179,7 +3179,7 @@ LABEL_11:
     }
 
 LABEL_13:
-    if (v5)
+    if (storeIdentifier)
     {
       goto LABEL_15;
     }
@@ -3190,7 +3190,7 @@ LABEL_14:
   }
 
   v8 = 1;
-  if (!v5)
+  if (!storeIdentifier)
   {
     goto LABEL_14;
   }
@@ -3262,62 +3262,62 @@ void __66__CNContact_Spotlight__descriptorForRequiredKeysForSearchableItem__bloc
 - (id)searchableItemAttributeSetForUserActivity
 {
   v3 = [objc_alloc(getCSSearchableItemAttributeSetClass()) initWithItemContentType:@"public.contact"];
-  v4 = [(CNContact *)self identifier];
-  [v3 setRelatedUniqueIdentifier:v4];
+  identifier = [(CNContact *)self identifier];
+  [v3 setRelatedUniqueIdentifier:identifier];
 
   return v3;
 }
 
-- (id)_searchableItemIncludingInternalAttributes:(BOOL)a3
+- (id)_searchableItemIncludingInternalAttributes:(BOOL)attributes
 {
-  v70 = a3;
+  attributesCopy = attributes;
   v95[9] = *MEMORY[0x1E69E9840];
   v76 = [objc_alloc(getCSSearchableItemAttributeSetClass()) initWithItemContentType:@"public.contact"];
   context = objc_autoreleasePoolPush();
-  v77 = self;
+  selfCopy = self;
   v4 = [CNContactFormatter stringFromContact:self style:0];
   [v76 setDisplayName:v4];
 
-  v80 = [(CNContact *)v77 namePrefix];
-  v95[0] = v80;
-  v5 = [(CNContact *)v77 givenName];
-  v95[1] = v5;
-  v6 = [(CNContact *)v77 middleName];
-  v95[2] = v6;
-  v7 = [(CNContact *)v77 familyName];
-  v95[3] = v7;
-  v8 = [(CNContact *)v77 nameSuffix];
-  v95[4] = v8;
-  v9 = [(CNContact *)v77 nickname];
-  v95[5] = v9;
-  v10 = [(CNContact *)v77 phoneticFamilyName];
-  v95[6] = v10;
-  v11 = [(CNContact *)v77 phoneticGivenName];
-  v95[7] = v11;
-  v12 = [(CNContact *)v77 phoneticMiddleName];
-  v95[8] = v12;
+  namePrefix = [(CNContact *)selfCopy namePrefix];
+  v95[0] = namePrefix;
+  givenName = [(CNContact *)selfCopy givenName];
+  v95[1] = givenName;
+  middleName = [(CNContact *)selfCopy middleName];
+  v95[2] = middleName;
+  familyName = [(CNContact *)selfCopy familyName];
+  v95[3] = familyName;
+  nameSuffix = [(CNContact *)selfCopy nameSuffix];
+  v95[4] = nameSuffix;
+  nickname = [(CNContact *)selfCopy nickname];
+  v95[5] = nickname;
+  phoneticFamilyName = [(CNContact *)selfCopy phoneticFamilyName];
+  v95[6] = phoneticFamilyName;
+  phoneticGivenName = [(CNContact *)selfCopy phoneticGivenName];
+  v95[7] = phoneticGivenName;
+  phoneticMiddleName = [(CNContact *)selfCopy phoneticMiddleName];
+  v95[8] = phoneticMiddleName;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v95 count:9];
-  v14 = [(CNContact *)v77 _filteredArrayForValidValues:v13];
+  v14 = [(CNContact *)selfCopy _filteredArrayForValidValues:v13];
   [v76 setAlternateNames:v14];
 
-  v15 = [(CNContact *)v77 phoneNumbers];
-  v16 = [v15 valueForKey:@"value"];
+  phoneNumbers = [(CNContact *)selfCopy phoneNumbers];
+  v16 = [phoneNumbers valueForKey:@"value"];
   v17 = [v16 valueForKey:@"stringValue"];
-  v74 = [(CNContact *)v77 _filteredArrayForValidValues:v17];
+  v74 = [(CNContact *)selfCopy _filteredArrayForValidValues:v17];
 
-  v18 = [(CNContact *)v77 emailAddresses];
-  v19 = [v18 valueForKey:@"value"];
-  v73 = [(CNContact *)v77 _filteredArrayForValidValues:v19];
+  emailAddresses = [(CNContact *)selfCopy emailAddresses];
+  v19 = [emailAddresses valueForKey:@"value"];
+  v73 = [(CNContact *)selfCopy _filteredArrayForValidValues:v19];
 
-  v20 = [(CNContact *)v77 instantMessageAddresses];
-  v21 = [v20 valueForKey:@"value"];
+  instantMessageAddresses = [(CNContact *)selfCopy instantMessageAddresses];
+  v21 = [instantMessageAddresses valueForKey:@"value"];
   v22 = [v21 valueForKey:@"username"];
-  v72 = [(CNContact *)v77 _filteredArrayForValidValues:v22];
+  v72 = [(CNContact *)selfCopy _filteredArrayForValidValues:v22];
 
-  v23 = [(CNContact *)v77 socialProfiles];
-  v24 = [v23 valueForKey:@"value"];
+  socialProfiles = [(CNContact *)selfCopy socialProfiles];
+  v24 = [socialProfiles valueForKey:@"value"];
   v25 = [v24 valueForKey:@"username"];
-  v71 = [(CNContact *)v77 _filteredArrayForValidValues:v25];
+  v71 = [(CNContact *)selfCopy _filteredArrayForValidValues:v25];
 
   [v76 setPhoneNumbers:v74];
   [v76 setEmailAddresses:v73];
@@ -3327,63 +3327,63 @@ void __66__CNContact_Spotlight__descriptorForRequiredKeysForSearchableItem__bloc
   v94[2] = v72;
   v94[3] = v71;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v94 count:4];
-  v27 = [v26 _cn_flatten];
-  [v76 setAccountHandles:v27];
+  _cn_flatten = [v26 _cn_flatten];
+  [v76 setAccountHandles:_cn_flatten];
 
-  if (![(CNContact *)v77 isUnitTesting])
+  if (![(CNContact *)selfCopy isUnitTesting])
   {
-    v28 = [(CNContact *)v77 note];
-    [v76 setTextContent:v28];
+    note = [(CNContact *)selfCopy note];
+    [v76 setTextContent:note];
   }
 
-  v29 = [(CNContact *)v77 organizationName];
-  v93[0] = v29;
-  v30 = [(CNContact *)v77 departmentName];
-  v93[1] = v30;
+  organizationName = [(CNContact *)selfCopy organizationName];
+  v93[0] = organizationName;
+  departmentName = [(CNContact *)selfCopy departmentName];
+  v93[1] = departmentName;
   v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v93 count:2];
-  v32 = [(CNContact *)v77 _filteredArrayForValidValues:v31];
+  v32 = [(CNContact *)selfCopy _filteredArrayForValidValues:v31];
   [v76 setOrganizations:v32];
 
-  v33 = [(CNContact *)v77 jobTitle];
-  [v76 setRole:v33];
+  jobTitle = [(CNContact *)selfCopy jobTitle];
+  [v76 setRole:jobTitle];
 
-  v34 = [(CNContact *)v77 dates];
-  v35 = [v34 valueForKey:@"value"];
+  dates = [(CNContact *)selfCopy dates];
+  v35 = [dates valueForKey:@"value"];
   v36 = [v35 valueForKey:@"date"];
   v75 = [v36 mutableCopy];
 
-  v37 = [(CNContact *)v77 birthday];
-  v38 = [v37 date];
-  if (v38)
+  birthday = [(CNContact *)selfCopy birthday];
+  date = [birthday date];
+  if (date)
   {
-    [v75 addObject:v38];
+    [v75 addObject:date];
   }
 
   else
   {
-    v39 = [MEMORY[0x1E695DFB0] null];
-    [v75 addObject:v39];
+    null = [MEMORY[0x1E695DFB0] null];
+    [v75 addObject:null];
   }
 
-  v40 = [(CNContact *)v77 nonGregorianBirthday];
-  v41 = [v40 date];
-  if (v41)
+  nonGregorianBirthday = [(CNContact *)selfCopy nonGregorianBirthday];
+  date2 = [nonGregorianBirthday date];
+  if (date2)
   {
-    [v75 addObject:v41];
+    [v75 addObject:date2];
   }
 
   else
   {
-    v42 = [MEMORY[0x1E695DFB0] null];
-    [v75 addObject:v42];
+    null2 = [MEMORY[0x1E695DFB0] null];
+    [v75 addObject:null2];
   }
 
-  v43 = [(CNContact *)v77 _filteredArrayForValidValues:v75];
+  v43 = [(CNContact *)selfCopy _filteredArrayForValidValues:v75];
   [v76 setImportantDates:v43];
 
-  v81 = [MEMORY[0x1E695DF70] array];
-  v44 = [(CNContact *)v77 postalAddresses];
-  v45 = [v44 valueForKey:@"value"];
+  array = [MEMORY[0x1E695DF70] array];
+  postalAddresses = [(CNContact *)selfCopy postalAddresses];
+  v45 = [postalAddresses valueForKey:@"value"];
 
   v84 = 0u;
   v85 = 0u;
@@ -3404,22 +3404,22 @@ void __66__CNContact_Spotlight__descriptorForRequiredKeysForSearchableItem__bloc
         }
 
         v48 = *(*(&v82 + 1) + 8 * i);
-        v49 = [v48 street];
-        v91[0] = v49;
-        v50 = [v48 subLocality];
-        v91[1] = v50;
-        v51 = [v48 city];
-        v91[2] = v51;
-        v52 = [v48 subAdministrativeArea];
-        v91[3] = v52;
-        v53 = [v48 state];
-        v91[4] = v53;
-        v54 = [v48 postalCode];
-        v91[5] = v54;
-        v55 = [v48 country];
-        v91[6] = v55;
+        street = [v48 street];
+        v91[0] = street;
+        subLocality = [v48 subLocality];
+        v91[1] = subLocality;
+        city = [v48 city];
+        v91[2] = city;
+        subAdministrativeArea = [v48 subAdministrativeArea];
+        v91[3] = subAdministrativeArea;
+        state = [v48 state];
+        v91[4] = state;
+        postalCode = [v48 postalCode];
+        v91[5] = postalCode;
+        country = [v48 country];
+        v91[6] = country;
         v56 = [MEMORY[0x1E695DEC8] arrayWithObjects:v91 count:7];
-        [v81 addObjectsFromArray:v56];
+        [array addObjectsFromArray:v56];
       }
 
       v46 = [obj countByEnumeratingWithState:&v82 objects:v92 count:16];
@@ -3428,24 +3428,24 @@ void __66__CNContact_Spotlight__descriptorForRequiredKeysForSearchableItem__bloc
     while (v46);
   }
 
-  v57 = [(CNContact *)v77 urlAddresses];
-  v58 = [v57 valueForKey:@"value"];
-  [v81 addObjectsFromArray:v58];
+  urlAddresses = [(CNContact *)selfCopy urlAddresses];
+  v58 = [urlAddresses valueForKey:@"value"];
+  [array addObjectsFromArray:v58];
 
-  v59 = [(CNContact *)v77 _filteredArrayForValidValues:v81];
+  v59 = [(CNContact *)selfCopy _filteredArrayForValidValues:array];
   [v76 setAuthorAddresses:v59];
 
   v60 = +[CNDraggingContact availableDataRepresentationTypes];
   [v76 setProviderDataTypeIdentifiers:v60];
 
-  if (v70 && ![(CNContact *)v77 isUnitTesting])
+  if (attributesCopy && ![(CNContact *)selfCopy isUnitTesting])
   {
-    v61 = [(CNContact *)v77 creationDate];
-    [v76 setContentCreationDate:v61];
+    creationDate = [(CNContact *)selfCopy creationDate];
+    [v76 setContentCreationDate:creationDate];
   }
 
-  v62 = [(CNContact *)v77 identifier];
-  [CNEntitySpotlightIndexing associateAttributeSet:v76 withContactEntityIdentifiedBy:v62];
+  identifier = [(CNContact *)selfCopy identifier];
+  [CNEntitySpotlightIndexing associateAttributeSet:v76 withContactEntityIdentifiedBy:identifier];
 
   objc_autoreleasePoolPop(context);
   v87 = 0;
@@ -3467,22 +3467,22 @@ void __66__CNContact_Spotlight__descriptorForRequiredKeysForSearchableItem__bloc
   v64 = v63;
   _Block_object_dispose(&v87, 8);
   v65 = [v63 alloc];
-  v66 = [(CNContact *)v77 identifier];
-  v67 = [v65 initWithUniqueIdentifier:v66 domainIdentifier:@"contact" attributeSet:v76];
+  identifier2 = [(CNContact *)selfCopy identifier];
+  v67 = [v65 initWithUniqueIdentifier:identifier2 domainIdentifier:@"contact" attributeSet:v76];
 
   return v67;
 }
 
-- (id)_filteredArrayForValidValues:(id)a3
+- (id)_filteredArrayForValidValues:(id)values
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  valuesCopy = values;
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = valuesCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -3516,14 +3516,14 @@ void __66__CNContact_Spotlight__descriptorForRequiredKeysForSearchableItem__bloc
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
 LABEL_14:
-              [v4 addObject:v10];
+              [array addObject:v10];
               continue;
             }
 
             v11 = [(CNContact *)self _filteredArrayForValidValues:v10];
             if (([v11 isEqualToArray:MEMORY[0x1E695E0F0]] & 1) == 0)
             {
-              [v4 addObject:v11];
+              [array addObject:v11];
             }
           }
         }
@@ -3535,7 +3535,7 @@ LABEL_14:
     while (v7);
   }
 
-  return v4;
+  return array;
 }
 
 + (NSPredicate)predicateForContactsWithIdentifiers:(NSArray *)identifiers
@@ -3587,257 +3587,257 @@ LABEL_14:
   return v6;
 }
 
-+ (id)predicateForContactsMatchingName:(id)a3 options:(unint64_t)a4
++ (id)predicateForContactsMatchingName:(id)name options:(unint64_t)options
 {
-  v5 = a3;
-  v6 = [(CNContactWithNamePredicate *)[CNiOSABContactWithNamePredicate alloc] initWithName:v5 options:a4];
+  nameCopy = name;
+  v6 = [(CNContactWithNamePredicate *)[CNiOSABContactWithNamePredicate alloc] initWithName:nameCopy options:options];
 
   return v6;
 }
 
-+ (id)predicateForContactsWithOrganizationName:(id)a3
++ (id)predicateForContactsWithOrganizationName:(id)name
 {
-  v3 = a3;
-  v4 = [[CNiOSABOrganizationNameContactPredicate alloc] initWithOrganizationName:v3];
+  nameCopy = name;
+  v4 = [[CNiOSABOrganizationNameContactPredicate alloc] initWithOrganizationName:nameCopy];
 
   return v4;
 }
 
-+ (id)predicateForContactMatchingEmailAddress:(id)a3
++ (id)predicateForContactMatchingEmailAddress:(id)address
 {
-  v3 = a3;
-  v4 = [(CNEmailAddressContactPredicate *)[CNiOSABEmailAddressContactPredicate alloc] initWithEmailAddress:v3 returnMultipleResults:0];
+  addressCopy = address;
+  v4 = [(CNEmailAddressContactPredicate *)[CNiOSABEmailAddressContactPredicate alloc] initWithEmailAddress:addressCopy returnMultipleResults:0];
 
   return v4;
 }
 
-+ (id)predicateForContactsMatchingEmailAddress:(id)a3 groupIdentifiers:(id)a4 limitToOneResult:(BOOL)a5
++ (id)predicateForContactsMatchingEmailAddress:(id)address groupIdentifiers:(id)identifiers limitToOneResult:(BOOL)result
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = a3;
-  v9 = [(CNEmailAddressContactPredicate *)[CNiOSABEmailAddressContactPredicate alloc] initWithEmailAddress:v8 groupIdentifiers:v7 returnMultipleResults:!v5];
+  resultCopy = result;
+  identifiersCopy = identifiers;
+  addressCopy = address;
+  v9 = [(CNEmailAddressContactPredicate *)[CNiOSABEmailAddressContactPredicate alloc] initWithEmailAddress:addressCopy groupIdentifiers:identifiersCopy returnMultipleResults:!resultCopy];
 
   return v9;
 }
 
-+ (id)predicateForContactsMatchingPhoneNumber:(id)a3 prefixHint:(id)a4 groupIdentifiers:(id)a5 limitToOneResult:(BOOL)a6
++ (id)predicateForContactsMatchingPhoneNumber:(id)number prefixHint:(id)hint groupIdentifiers:(id)identifiers limitToOneResult:(BOOL)result
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [(CNPhoneNumberContactPredicate *)[CNiOSABPhoneNumberContactPredicate alloc] initWithPhoneNumber:v11 prefixHint:v10 groupIdentifiers:v9 returnMultipleResults:!a6];
+  identifiersCopy = identifiers;
+  hintCopy = hint;
+  numberCopy = number;
+  v12 = [(CNPhoneNumberContactPredicate *)[CNiOSABPhoneNumberContactPredicate alloc] initWithPhoneNumber:numberCopy prefixHint:hintCopy groupIdentifiers:identifiersCopy returnMultipleResults:!result];
 
   return v12;
 }
 
-+ (id)predicateForContactsMatchingHandleStrings:(id)a3
++ (id)predicateForContactsMatchingHandleStrings:(id)strings
 {
-  v3 = a3;
-  v4 = [(CNHandleStringsContactPredicate *)[CNiOSABHandleStringsContactPredicate alloc] initWithHandleStrings:v3 containerIdentifiers:0];
+  stringsCopy = strings;
+  v4 = [(CNHandleStringsContactPredicate *)[CNiOSABHandleStringsContactPredicate alloc] initWithHandleStrings:stringsCopy containerIdentifiers:0];
 
   return v4;
 }
 
-+ (id)predicateForContactsMatchingHandleStrings:(id)a3 inContainersWithIdentifiers:(id)a4
++ (id)predicateForContactsMatchingHandleStrings:(id)strings inContainersWithIdentifiers:(id)identifiers
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(CNHandleStringsContactPredicate *)[CNiOSABHandleStringsContactPredicate alloc] initWithHandleStrings:v6 containerIdentifiers:v5];
+  identifiersCopy = identifiers;
+  stringsCopy = strings;
+  v7 = [(CNHandleStringsContactPredicate *)[CNiOSABHandleStringsContactPredicate alloc] initWithHandleStrings:stringsCopy containerIdentifiers:identifiersCopy];
 
   return v7;
 }
 
-+ (id)predicateForContactsMatchingPostalAddress:(id)a3
++ (id)predicateForContactsMatchingPostalAddress:(id)address
 {
-  v3 = a3;
-  v4 = [[CNiOSABPostalAddressContactPredicate alloc] initWithPostalAddress:v3];
+  addressCopy = address;
+  v4 = [[CNiOSABPostalAddressContactPredicate alloc] initWithPostalAddress:addressCopy];
 
   return v4;
 }
 
-+ (id)predicateForContactsLinkedToContactWithIdentifier:(id)a3
++ (id)predicateForContactsLinkedToContactWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [(CNLinkedContactsPredicate *)[CNiOSABLinkedContactsPredicate alloc] initWithContactIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [(CNLinkedContactsPredicate *)[CNiOSABLinkedContactsPredicate alloc] initWithContactIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)predicateForContactsLinkedToContact:(id)a3
++ (id)predicateForContactsLinkedToContact:(id)contact
 {
-  v3 = a3;
-  v4 = [(CNLinkedContactsPredicate *)[CNiOSABLinkedContactsPredicate alloc] initWithContact:v3];
+  contactCopy = contact;
+  v4 = [(CNLinkedContactsPredicate *)[CNiOSABLinkedContactsPredicate alloc] initWithContact:contactCopy];
 
   return v4;
 }
 
-+ (id)predicateForContactsMatchingSmartDialerString:(id)a3
++ (id)predicateForContactsMatchingSmartDialerString:(id)string
 {
-  v3 = a3;
-  v4 = [[CNiOSABSmartDialerStringContactPredicate alloc] initWithString:v3];
+  stringCopy = string;
+  v4 = [[CNiOSABSmartDialerStringContactPredicate alloc] initWithString:stringCopy];
 
   return v4;
 }
 
-+ (id)predicateForContactsMatchingFullTextSearch:(id)a3 containerIdentifiers:(id)a4 groupIdentifiers:(id)a5
++ (id)predicateForContactsMatchingFullTextSearch:(id)search containerIdentifiers:(id)identifiers groupIdentifiers:(id)groupIdentifiers
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[CNiOSABFullTextSearchContactPredicate alloc] initWithSearchString:v9 containerIdentifiers:v8 groupIdentifiers:v7];
+  groupIdentifiersCopy = groupIdentifiers;
+  identifiersCopy = identifiers;
+  searchCopy = search;
+  v10 = [[CNiOSABFullTextSearchContactPredicate alloc] initWithSearchString:searchCopy containerIdentifiers:identifiersCopy groupIdentifiers:groupIdentifiersCopy];
 
   return v10;
 }
 
-+ (id)predicateForContactMatchingMapString:(id)a3
++ (id)predicateForContactMatchingMapString:(id)string
 {
-  v3 = a3;
-  v4 = [[CNiOSABMapDataContactPredicate alloc] initWithString:v3];
+  stringCopy = string;
+  v4 = [[CNiOSABMapDataContactPredicate alloc] initWithString:stringCopy];
 
   return v4;
 }
 
-+ (id)predicateForContactMatchingPhoneNumber:(id)a3
++ (id)predicateForContactMatchingPhoneNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   v4 = [CNiOSABPhoneNumberContactPredicate alloc];
-  v6 = [(CNPhoneNumberContactPredicate *)v4 initWithPhoneNumber:v3 returnMultipleResults:0, v5];
+  v6 = [(CNPhoneNumberContactPredicate *)v4 initWithPhoneNumber:numberCopy returnMultipleResults:0, v5];
 
   return v6;
 }
 
-+ (id)predicateForContactsMatchingPhoneNumber:(id)a3 prefixHint:(id)a4
++ (id)predicateForContactsMatchingPhoneNumber:(id)number prefixHint:(id)hint
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(CNPhoneNumberContactPredicate *)[CNiOSABPhoneNumberContactPredicate alloc] initWithPhoneNumber:v6 prefixHint:v5 returnMultipleResults:1];
+  hintCopy = hint;
+  numberCopy = number;
+  v7 = [(CNPhoneNumberContactPredicate *)[CNiOSABPhoneNumberContactPredicate alloc] initWithPhoneNumber:numberCopy prefixHint:hintCopy returnMultipleResults:1];
 
   return v7;
 }
 
-+ (id)predicateForContactMatchingPhoneNumberWithDigits:(id)a3 countryCode:(id)a4
++ (id)predicateForContactMatchingPhoneNumberWithDigits:(id)digits countryCode:(id)code
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(CNPhoneNumberContactPredicate *)[CNiOSABPhoneNumberContactPredicate alloc] initWithDigits:v6 countryCode:v5 returnMultipleResults:0];
+  codeCopy = code;
+  digitsCopy = digits;
+  v7 = [(CNPhoneNumberContactPredicate *)[CNiOSABPhoneNumberContactPredicate alloc] initWithDigits:digitsCopy countryCode:codeCopy returnMultipleResults:0];
 
   return v7;
 }
 
-+ (id)predicateForPreferredNameInRange:(_NSRange)a3
++ (id)predicateForPreferredNameInRange:(_NSRange)range
 {
-  v3 = [[CNiOSABPreferredNameContactsPredicate alloc] initWithRange:a3.location, a3.length];
+  v3 = [[CNiOSABPreferredNameContactsPredicate alloc] initWithRange:range.location, range.length];
 
   return v3;
 }
 
-+ (id)predicateForPreferredNameInContainersWithIdentifiers:(id)a3 groupsWithIdentifiers:(id)a4
++ (id)predicateForPreferredNameInContainersWithIdentifiers:(id)identifiers groupsWithIdentifiers:(id)withIdentifiers
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[CNiOSABPreferredNameInContainersAndGroupsPredicate alloc] initWithContainerIdentifiers:v6 groupIdentifiers:v5];
+  withIdentifiersCopy = withIdentifiers;
+  identifiersCopy = identifiers;
+  v7 = [[CNiOSABPreferredNameInContainersAndGroupsPredicate alloc] initWithContainerIdentifiers:identifiersCopy groupIdentifiers:withIdentifiersCopy];
 
   return v7;
 }
 
-+ (id)predicateForContactsMatchingString:(id)a3 accountIdentifier:(id)a4 containerIdentifier:(id)a5 groupIdentifier:(id)a6
++ (id)predicateForContactsMatchingString:(id)string accountIdentifier:(id)identifier containerIdentifier:(id)containerIdentifier groupIdentifier:(id)groupIdentifier
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[CNiOSABStringMatchContactPredicate alloc] initWithSearchString:v12 accountIdentifier:v11 containerIdentifier:v10 groupIdentifier:v9];
+  groupIdentifierCopy = groupIdentifier;
+  containerIdentifierCopy = containerIdentifier;
+  identifierCopy = identifier;
+  stringCopy = string;
+  v13 = [[CNiOSABStringMatchContactPredicate alloc] initWithSearchString:stringCopy accountIdentifier:identifierCopy containerIdentifier:containerIdentifierCopy groupIdentifier:groupIdentifierCopy];
 
   return v13;
 }
 
-+ (id)predicateForContactMatchingURLString:(id)a3
++ (id)predicateForContactMatchingURLString:(id)string
 {
-  v3 = a3;
-  v4 = [[CNiOSABURLContactPredicate alloc] initWithURLString:v3];
+  stringCopy = string;
+  v4 = [[CNiOSABURLContactPredicate alloc] initWithURLString:stringCopy];
 
   return v4;
 }
 
-+ (id)predicateForContactMatchingLabeledValueIdentifier:(id)a3
++ (id)predicateForContactMatchingLabeledValueIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[CNiOSABLabeledValueContactPredicate alloc] initWithLabeledValueIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[CNiOSABLabeledValueContactPredicate alloc] initWithLabeledValueIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)predicateForContactMatchingEKParticipantWithName:(id)a3 emailAddress:(id)a4 URL:(id)a5 predicateDescription:(id)a6
++ (id)predicateForContactMatchingEKParticipantWithName:(id)name emailAddress:(id)address URL:(id)l predicateDescription:(id)description
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[CNiOSABEKParticipantPredicate alloc] initWithName:v12 URL:v10 emailAddress:v11 customDescription:v9];
+  descriptionCopy = description;
+  lCopy = l;
+  addressCopy = address;
+  nameCopy = name;
+  v13 = [[CNiOSABEKParticipantPredicate alloc] initWithName:nameCopy URL:lCopy emailAddress:addressCopy customDescription:descriptionCopy];
 
   return v13;
 }
 
-+ (id)predicateForLegacyIdentifier:(unsigned int)a3
++ (id)predicateForLegacyIdentifier:(unsigned int)identifier
 {
-  v3 = [[CNiOSABContactLegacyIdentifierPredicate alloc] initWithLegacyIdentifier:*&a3];
+  v3 = [[CNiOSABContactLegacyIdentifierPredicate alloc] initWithLegacyIdentifier:*&identifier];
 
   return v3;
 }
 
-+ (id)predicateForContactsMatchingSocialProfile:(id)a3
++ (id)predicateForContactsMatchingSocialProfile:(id)profile
 {
-  v3 = a3;
-  v4 = [(CNSocialProfileContactPredicate *)[CNiOSABSocialProfileContactPredicate alloc] initWithSocialProfile:v3];
+  profileCopy = profile;
+  v4 = [(CNSocialProfileContactPredicate *)[CNiOSABSocialProfileContactPredicate alloc] initWithSocialProfile:profileCopy];
 
   return v4;
 }
 
-+ (id)predicateForContactsMatchingInstantMessageAddress:(id)a3
++ (id)predicateForContactsMatchingInstantMessageAddress:(id)address
 {
-  v3 = a3;
-  v4 = [[CNiOSABInstantMessageAddressContactPredicate alloc] initWithInstantMessageAddress:v3];
+  addressCopy = address;
+  v4 = [[CNiOSABInstantMessageAddressContactPredicate alloc] initWithInstantMessageAddress:addressCopy];
 
   return v4;
 }
 
-+ (id)predicateForContactsMatchingPreferredChannel:(id)a3 limitOne:(BOOL)a4
++ (id)predicateForContactsMatchingPreferredChannel:(id)channel limitOne:(BOOL)one
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [[CNiOSABPreferredChannelContactPredicate alloc] initWithPreferredChannel:v5 limitOne:v4];
+  oneCopy = one;
+  channelCopy = channel;
+  v6 = [[CNiOSABPreferredChannelContactPredicate alloc] initWithPreferredChannel:channelCopy limitOne:oneCopy];
 
   return v6;
 }
 
-+ (id)predicateForContactsMatchingExternalUUIDs:(id)a3
++ (id)predicateForContactsMatchingExternalUUIDs:(id)ds
 {
-  v3 = a3;
-  v4 = [(CNExternalUUIDContactPredicate *)[CNiOSABExternalUUIDContactPredicate alloc] initWithExternalUUIDs:v3];
+  dsCopy = ds;
+  v4 = [(CNExternalUUIDContactPredicate *)[CNiOSABExternalUUIDContactPredicate alloc] initWithExternalUUIDs:dsCopy];
 
   return v4;
 }
 
-+ (id)predicateForContactsWithExternalIdentifiers:(id)a3
++ (id)predicateForContactsWithExternalIdentifiers:(id)identifiers
 {
-  v3 = a3;
-  v4 = [(CNExternalIdentifierContactPredicate *)[CNiOSABExternalIdentifierContactPredicate alloc] initWithExternalIdentifiers:v3];
+  identifiersCopy = identifiers;
+  v4 = [(CNExternalIdentifierContactPredicate *)[CNiOSABExternalIdentifierContactPredicate alloc] initWithExternalIdentifiers:identifiersCopy];
 
   return v4;
 }
 
-+ (id)predicateForContactsWithNonUnifiedIdentifiers:(id)a3
++ (id)predicateForContactsWithNonUnifiedIdentifiers:(id)identifiers
 {
-  v3 = a3;
-  v4 = [[CNiOSABContactIdentifiersPredicate alloc] initWithIdentifiers:v3 ignoreUnifiedIdentifiers:1];
+  identifiersCopy = identifiers;
+  v4 = [[CNiOSABContactIdentifiersPredicate alloc] initWithIdentifiers:identifiersCopy ignoreUnifiedIdentifiers:1];
 
   return v4;
 }
 
-+ (id)predicateForFaultFulfillmentForLegacyIdentifier:(unsigned int)a3 identifier:(id)a4
++ (id)predicateForFaultFulfillmentForLegacyIdentifier:(unsigned int)identifier identifier:(id)a4
 {
-  v4 = *&a3;
+  v4 = *&identifier;
   v5 = a4;
   v6 = [[CNiOSABFaultFulfillmentPredicate alloc] initWithLegacyIdentifier:v4 identifier:v5];
 
@@ -3866,10 +3866,10 @@ void __56__CNContact_Predicates_Private__predicateForAllContacts__block_invoke()
   return v2;
 }
 
-- (void)detachedPersonWithError:(id *)a3
+- (void)detachedPersonWithError:(id *)error
 {
   v5 = ABPersonCreate();
-  if (![(CNContact *)self overwritePerson:v5 error:a3])
+  if (![(CNContact *)self overwritePerson:v5 error:error])
   {
     CFRelease(v5);
     return 0;
@@ -3883,33 +3883,33 @@ void __56__CNContact_Predicates_Private__predicateForAllContacts__block_invoke()
   return CFAutorelease(v5);
 }
 
-- (BOOL)overwritePerson:(void *)a3 error:(id *)a4
+- (BOOL)overwritePerson:(void *)person error:(id *)error
 {
   v7 = objc_alloc_init(CNiOSABDependentPropertiesUpdateContext);
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 1;
-  v8 = [(CNContact *)self keyVector];
+  keyVector = [(CNContact *)self keyVector];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __61__CNContact_iOSABLegacyCompatibility__overwritePerson_error___block_invoke;
   v16[3] = &unk_1E7413BC0;
   v16[4] = self;
-  v19 = a3;
+  personCopy = person;
   v9 = v7;
-  v20 = a4;
+  errorCopy = error;
   v17 = v9;
   v18 = &v21;
-  [v8 enumeratePropertiesUsingBlock:v16];
+  [keyVector enumeratePropertiesUsingBlock:v16];
 
   if (*(v22 + 24) == 1)
   {
     v10 = +[CNContactsEnvironment currentEnvironment];
-    v11 = [v10 loggerProvider];
-    v12 = [v11 contactsLogger];
+    loggerProvider = [v10 loggerProvider];
+    contactsLogger = [loggerProvider contactsLogger];
 
-    v13 = [(CNiOSABDependentPropertiesUpdateContext *)v9 flushPendingImageChangesToPerson:a3 logger:v12 error:a4];
+    v13 = [(CNiOSABDependentPropertiesUpdateContext *)v9 flushPendingImageChangesToPerson:person logger:contactsLogger error:error];
     *(v22 + 24) = v13;
 
     v14 = *(v22 + 24);
@@ -3952,15 +3952,15 @@ void __61__CNContact_iOSABLegacyCompatibility__overwritePerson_error___block_inv
 LABEL_6:
 }
 
-+ (id)contactFromPerson:(void *)a3 keysToFetch:(id)a4 mutable:(BOOL)a5
++ (id)contactFromPerson:(void *)person keysToFetch:(id)fetch mutable:(BOOL)mutable
 {
-  v5 = a5;
-  v7 = a4;
+  mutableCopy = mutable;
+  fetchCopy = fetch;
   v8 = +[CNContact alwaysFetchedKeys];
-  v9 = [v8 allObjects];
-  v10 = [v7 arrayByAddingObjectsFromArray:v9];
+  allObjects = [v8 allObjects];
+  v10 = [fetchCopy arrayByAddingObjectsFromArray:allObjects];
 
-  v11 = [CNiOSABConversions contactFromABPerson:a3 keysToConvert:v10 mutable:v5];
+  v11 = [CNiOSABConversions contactFromABPerson:person keysToConvert:v10 mutable:mutableCopy];
   if ([v11 hasBeenPersisted])
   {
     v12 = CPRecordCopyChangedProperties();
@@ -3973,8 +3973,8 @@ LABEL_6:
         v15 = Count;
         v16 = [v11 mutableCopy];
         v28 = v10;
-        v29 = v7;
-        v27 = v5;
+        v29 = fetchCopy;
+        v27 = mutableCopy;
         if (contactFromPerson_keysToFetch_mutable__cn_once_token_0 != -1)
         {
           +[CNContact(iOSABLegacyCompatibility) contactFromPerson:keysToFetch:mutable:];
@@ -3992,7 +3992,7 @@ LABEL_6:
           v30[1] = 3221225472;
           v30[2] = __77__CNContact_iOSABLegacyCompatibility__contactFromPerson_keysToFetch_mutable___block_invoke_3;
           v30[3] = &unk_1E7413C08;
-          v32 = a3;
+          personCopy = person;
           v33 = v20;
           v23 = v16;
           v31 = v23;
@@ -4017,7 +4017,7 @@ LABEL_6:
 
         v10 = v28;
 
-        v7 = v29;
+        fetchCopy = v29;
       }
 
       CFRelease(v13);
@@ -4074,14 +4074,14 @@ void __77__CNContact_iOSABLegacyCompatibility__contactFromPerson_keysToFetch_mut
   [v7 setCNValue:v6 onContact:*(a1 + 32)];
 }
 
-+ (id)contactPropertyKeyFromABPropertyID:(int)a3
++ (id)contactPropertyKeyFromABPropertyID:(int)d
 {
   v4 = +[CN allContactProperties];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __74__CNContact_iOSABLegacyCompatibility__contactPropertyKeyFromABPropertyID___block_invoke;
   v8[3] = &__block_descriptor_36_e8_B16__0_8l;
-  v9 = a3;
+  dCopy = d;
   v5 = [v4 _cn_firstObjectPassingTest:v8];
   v6 = [v5 key];
 
@@ -4101,11 +4101,11 @@ BOOL __74__CNContact_iOSABLegacyCompatibility__contactPropertyKeyFromABPropertyI
   return result;
 }
 
-+ (int)abPropertyIDfromContactPropertyKey:(id)a3
++ (int)abPropertyIDfromContactPropertyKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = +[CN contactPropertiesByKey];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  v5 = [v4 objectForKeyedSubscript:keyCopy];
 
   v7 = 0;
   [v5 abPropertyID:&v7];
@@ -4114,48 +4114,48 @@ BOOL __74__CNContact_iOSABLegacyCompatibility__contactPropertyKeyFromABPropertyI
   return v4;
 }
 
-- (BOOL)overwritePublicABPerson:(void *)a3
+- (BOOL)overwritePublicABPerson:(void *)person
 {
   ABSPublicABCNCompatibilityClass = getABSPublicABCNCompatibilityClass();
 
-  return [ABSPublicABCNCompatibilityClass overwritePublicABPerson:a3 withContact:self];
+  return [ABSPublicABCNCompatibilityClass overwritePublicABPerson:person withContact:self];
 }
 
-- (BOOL)updateNewPublicABPerson:(void *)a3 inAddressBook:(void *)a4
+- (BOOL)updateNewPublicABPerson:(void *)person inAddressBook:(void *)book
 {
   ABSPublicABCNCompatibilityClass = getABSPublicABCNCompatibilityClass();
 
-  return [ABSPublicABCNCompatibilityClass updateNewPublicABPerson:a3 withSavedContact:self inAddressBook:a4];
+  return [ABSPublicABCNCompatibilityClass updateNewPublicABPerson:person withSavedContact:self inAddressBook:book];
 }
 
-+ (id)contactFromPublicABPerson:(void *)a3 keysToFetch:(id)a4 mutable:(BOOL)a5
++ (id)contactFromPublicABPerson:(void *)person keysToFetch:(id)fetch mutable:(BOOL)mutable
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [getABSPublicABCNCompatibilityClass() contactFromPublicABPerson:a3 keysToFetch:v7 mutable:v5];
+  mutableCopy = mutable;
+  fetchCopy = fetch;
+  v8 = [getABSPublicABCNCompatibilityClass() contactFromPublicABPerson:person keysToFetch:fetchCopy mutable:mutableCopy];
 
   return v8;
 }
 
-+ (id)contactPropertyKeyFromPublicABPropertyID:(int)a3
++ (id)contactPropertyKeyFromPublicABPropertyID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   ABSPublicABCNCompatibilityClass = getABSPublicABCNCompatibilityClass();
 
   return [ABSPublicABCNCompatibilityClass contactPropertyKeyFromPublicABPropertyID:v3];
 }
 
-+ (int)publicABPropertyIDFromContactPropertyKey:(id)a3
++ (int)publicABPropertyIDFromContactPropertyKey:(id)key
 {
-  v3 = a3;
-  v4 = [getABSPublicABCNCompatibilityClass() publicABPropertyIDFromContactPropertyKey:v3];
+  keyCopy = key;
+  v4 = [getABSPublicABCNCompatibilityClass() publicABPropertyIDFromContactPropertyKey:keyCopy];
 
   return v4;
 }
 
-+ (BOOL)isCoreRecentsAcceptedIdentifier:(id)a3
++ (BOOL)isCoreRecentsAcceptedIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[CNCoreRecentsContactStore acceptedContactsDomainIdentifier];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -4185,7 +4185,7 @@ BOOL __74__CNContact_iOSABLegacyCompatibility__contactPropertyKeyFromABPropertyI
 
   if ([v8 length])
   {
-    v9 = [v3 hasPrefix:v8];
+    v9 = [identifierCopy hasPrefix:v8];
   }
 
   else
@@ -4216,8 +4216,8 @@ uint64_t __58__CNContact_CoreRecents__isCoreRecentsAcceptedIdentifier___block_in
 
 - (NSString)coreRecentsDomain
 {
-  v2 = [(CNContact *)self storeInfo];
-  v3 = [v2 objectForKey:CNRecentContactDomainKey];
+  storeInfo = [(CNContact *)self storeInfo];
+  v3 = [storeInfo objectForKey:CNRecentContactDomainKey];
 
   return v3;
 }
@@ -4225,8 +4225,8 @@ uint64_t __58__CNContact_CoreRecents__isCoreRecentsAcceptedIdentifier___block_in
 - (NSNumber)coreRecentsIdentifier
 {
   objc_opt_class();
-  v3 = [(CNContact *)self storeInfo];
-  v4 = [v3 objectForKeyedSubscript:CNRecentContactRecentIDKey];
+  storeInfo = [(CNContact *)self storeInfo];
+  v4 = [storeInfo objectForKeyedSubscript:CNRecentContactRecentIDKey];
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
@@ -4271,8 +4271,8 @@ uint64_t __58__CNContact_CoreRecents__isCoreRecentsAcceptedIdentifier___block_in
   }
 
   v5 = *v3;
-  v6 = [(CNContact *)self coreRecentsDomain];
-  v7 = [v6 isEqualToString:v5];
+  coreRecentsDomain = [(CNContact *)self coreRecentsDomain];
+  v7 = [coreRecentsDomain isEqualToString:v5];
 
   return v7;
 }
@@ -4522,104 +4522,104 @@ LABEL_11:
 
 - (NSDictionary)activityAlerts
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(CNContact *)self callAlert];
-  [v3 _cn_setNonNilObject:v4 forKey:@"callAlert"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  callAlert = [(CNContact *)self callAlert];
+  [dictionary _cn_setNonNilObject:callAlert forKey:@"callAlert"];
 
-  v5 = [(CNContact *)self textAlert];
-  [v3 _cn_setNonNilObject:v5 forKey:@"textAlert"];
+  textAlert = [(CNContact *)self textAlert];
+  [dictionary _cn_setNonNilObject:textAlert forKey:@"textAlert"];
 
-  return v3;
+  return dictionary;
 }
 
-+ (CNContact)contactWithIdentifier:(id)a3
++ (CNContact)contactWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithIdentifier:identifierCopy];
 
   return v5;
 }
 
-+ (CNContact)contactWithIdentifierOnly:(id)a3
++ (CNContact)contactWithIdentifierOnly:(id)only
 {
-  v4 = a3;
-  v5 = [a1 alloc];
+  onlyCopy = only;
+  v5 = [self alloc];
   v6 = [CNContactKeyVector keyVectorWithKey:@"identifier"];
-  v7 = [v5 initWithIdentifier:v4 availableKeyDescriptor:v6];
+  v7 = [v5 initWithIdentifier:onlyCopy availableKeyDescriptor:v6];
 
   return v7;
 }
 
 + (id)contact
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (CNContact)contactWithDisplayName:(id)a3 emailOrPhoneNumber:(id)a4
++ (CNContact)contactWithDisplayName:(id)name emailOrPhoneNumber:(id)number
 {
   v15 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  numberCopy = number;
+  v7 = numberCopy;
+  if (numberCopy)
   {
-    v14 = v6;
+    v14 = numberCopy;
     v8 = MEMORY[0x1E695DEC8];
-    v9 = a3;
+    nameCopy = name;
     v10 = [v8 arrayWithObjects:&v14 count:1];
-    v11 = [a1 contactWithDisplayName:v9 handleStrings:{v10, v14, v15}];
+    v11 = [self contactWithDisplayName:nameCopy handleStrings:{v10, v14, v15}];
   }
 
   else
   {
-    v12 = a3;
-    v11 = [a1 contactWithDisplayName:v12 handleStrings:MEMORY[0x1E695E0F0]];
+    nameCopy2 = name;
+    v11 = [self contactWithDisplayName:nameCopy2 handleStrings:MEMORY[0x1E695E0F0]];
   }
 
   return v11;
 }
 
-+ (CNContact)contactWithDisplayName:(id)a3 handleStrings:(id)a4
++ (CNContact)contactWithDisplayName:(id)name handleStrings:(id)strings
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 os_log];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
+  nameCopy = name;
+  stringsCopy = strings;
+  os_log = [self os_log];
+  if (os_log_type_enabled(os_log, OS_LOG_TYPE_DEBUG))
   {
     +[CNContact contactWithDisplayName:handleStrings:];
   }
 
-  v9 = [a1 os_log];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
+  os_log2 = [self os_log];
+  if (os_log_type_enabled(os_log2, OS_LOG_TYPE_DEBUG))
   {
-    [CNContact contactWithDisplayName:v6 handleStrings:v9];
+    [CNContact contactWithDisplayName:nameCopy handleStrings:os_log2];
   }
 
-  v10 = [a1 os_log];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+  os_log3 = [self os_log];
+  if (os_log_type_enabled(os_log3, OS_LOG_TYPE_DEBUG))
   {
-    [CNContact contactWithDisplayName:v7 handleStrings:v10];
+    [CNContact contactWithDisplayName:stringsCopy handleStrings:os_log3];
   }
 
   v11 = objc_alloc_init(CNMutableContact);
   if (((*(*MEMORY[0x1E6996568] + 16))() & 1) == 0)
   {
-    v12 = [MEMORY[0x1E6996790] componentsFromString:v6];
+    v12 = [MEMORY[0x1E6996790] componentsFromString:nameCopy];
     [v12 overrideComponentsInContact:v11];
   }
 
-  v13 = [MEMORY[0x1E6996728] classificationOfHandleStrings:v7];
+  v13 = [MEMORY[0x1E6996728] classificationOfHandleStrings:stringsCopy];
   v14 = [[CNContactClassifiedHandleStringInterpreter alloc] initWithHandleStringClassification:v13];
-  v15 = [(CNContactClassifiedHandleStringInterpreter *)v14 emailAddresses];
-  [(CNMutableContact *)v11 setEmailAddresses:v15];
+  emailAddresses = [(CNContactClassifiedHandleStringInterpreter *)v14 emailAddresses];
+  [(CNMutableContact *)v11 setEmailAddresses:emailAddresses];
 
-  v16 = [(CNContactClassifiedHandleStringInterpreter *)v14 phoneNumbers];
-  [(CNMutableContact *)v11 setPhoneNumbers:v16];
+  phoneNumbers = [(CNContactClassifiedHandleStringInterpreter *)v14 phoneNumbers];
+  [(CNMutableContact *)v11 setPhoneNumbers:phoneNumbers];
 
-  [a1 freezeIfInstancetypeIsImmutable:v11];
-  v17 = [a1 os_log];
-  if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
+  [self freezeIfInstancetypeIsImmutable:v11];
+  os_log4 = [self os_log];
+  if (os_log_type_enabled(os_log4, OS_LOG_TYPE_DEBUG))
   {
     +[CNContact contactWithDisplayName:handleStrings:];
   }
@@ -4627,20 +4627,20 @@ LABEL_11:
   return v11;
 }
 
-- (CNContact)initWithIdentifier:(id)a3
+- (CNContact)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[CNContactKeyVector keyVectorWithAllKeys];
-  v6 = [(CNContact *)self initWithIdentifier:v4 availableKeyDescriptor:v5];
+  v6 = [(CNContact *)self initWithIdentifier:identifierCopy availableKeyDescriptor:v5];
 
   return v6;
 }
 
-- (CNContact)initWithIdentifier:(id)a3 availableKeyDescriptor:(id)a4
+- (CNContact)initWithIdentifier:(id)identifier availableKeyDescriptor:(id)descriptor
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  identifierCopy = identifier;
+  descriptorCopy = descriptor;
+  if (!identifierCopy || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     if (CNGuardOSLog_cn_once_token_0_7 != -1)
     {
@@ -4659,11 +4659,11 @@ LABEL_11:
   v9 = [(CNContact *)&v43 init];
   if (v9)
   {
-    v10 = [v6 copy];
+    v10 = [identifierCopy copy];
     internalIdentifier = v9->_internalIdentifier;
     v9->_internalIdentifier = v10;
 
-    v12 = [v7 copy];
+    v12 = [descriptorCopy copy];
     availableKeyDescriptor = v9->_availableKeyDescriptor;
     v9->_availableKeyDescriptor = v12;
 
@@ -4720,11 +4720,11 @@ LABEL_11:
     linkedContacts = v9->_linkedContacts;
     v9->_linkedContacts = v37;
 
-    if ([v7 containsKey:@"creationDate"])
+    if ([descriptorCopy containsKey:@"creationDate"])
     {
-      v39 = [MEMORY[0x1E695DF00] date];
+      date = [MEMORY[0x1E695DF00] date];
       creationDate = v9->_creationDate;
-      v9->_creationDate = v39;
+      v9->_creationDate = date;
     }
 
     v41 = v9;
@@ -4733,20 +4733,20 @@ LABEL_11:
   return v9;
 }
 
-- (CNContact)initWithIdentifier:(id)a3 persisted:(BOOL)a4
+- (CNContact)initWithIdentifier:(id)identifier persisted:(BOOL)persisted
 {
-  v4 = a4;
-  v6 = a3;
+  persistedCopy = persisted;
+  identifierCopy = identifier;
   v7 = [CNContactKeyVector keyVectorWithKey:@"identifier"];
-  v8 = [(CNContact *)self initWithIdentifier:v6 availableKeyDescriptor:v7];
+  v8 = [(CNContact *)self initWithIdentifier:identifierCopy availableKeyDescriptor:v7];
 
   if (v8)
   {
-    if (v4)
+    if (persistedCopy)
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
       snapshot = v8->_snapshot;
-      v8->_snapshot = v9;
+      v8->_snapshot = null;
     }
 
     v11 = v8;
@@ -4755,23 +4755,23 @@ LABEL_11:
   return v8;
 }
 
-+ (id)persistedContactWithIdentifierOnly:(id)a3
++ (id)persistedContactWithIdentifierOnly:(id)only
 {
-  v3 = [CNContact contactWithIdentifierOnly:a3];
-  v4 = [MEMORY[0x1E695DFB0] null];
+  v3 = [CNContact contactWithIdentifierOnly:only];
+  null = [MEMORY[0x1E695DFB0] null];
   v5 = v3[67];
-  v3[67] = v4;
+  v3[67] = null;
 
   return v3;
 }
 
-+ (id)_contactWithContact:(id)a3 createNewInstance:(BOOL)a4 propertyDescriptions:(id)a5
++ (id)_contactWithContact:(id)contact createNewInstance:(BOOL)instance propertyDescriptions:(id)descriptions
 {
-  v6 = a4;
+  instanceCopy = instance;
   v56 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  if (v8)
+  contactCopy = contact;
+  descriptionsCopy = descriptions;
+  if (contactCopy)
   {
     goto LABEL_5;
   }
@@ -4784,7 +4784,7 @@ LABEL_11:
   if (os_log_type_enabled(CNGuardOSLog_cn_once_object_0_7, OS_LOG_TYPE_FAULT))
   {
     +[CNContact _contactWithContact:createNewInstance:propertyDescriptions:];
-    if (v9)
+    if (descriptionsCopy)
     {
       goto LABEL_10;
     }
@@ -4793,7 +4793,7 @@ LABEL_11:
   else
   {
 LABEL_5:
-    if (v9)
+    if (descriptionsCopy)
     {
       goto LABEL_10;
     }
@@ -4810,15 +4810,15 @@ LABEL_5:
   }
 
 LABEL_10:
-  v42 = a1;
-  if (v6)
+  selfCopy = self;
+  if (instanceCopy)
   {
-    [a1 makeIdentifier];
+    [self makeIdentifier];
   }
 
   else
   {
-    [v8 internalIdentifier];
+    [contactCopy internalIdentifier];
   }
   v10 = ;
   v11 = objc_alloc_init(CNMutableContactKeyVector);
@@ -4826,17 +4826,17 @@ LABEL_10:
   v51[1] = 3221225472;
   v51[2] = __72__CNContact__contactWithContact_createNewInstance_propertyDescriptions___block_invoke;
   v51[3] = &unk_1E74166D8;
-  v54 = v6;
-  v12 = v8;
+  v54 = instanceCopy;
+  v12 = contactCopy;
   v52 = v12;
   v13 = v11;
   v53 = v13;
-  [v9 enumerateObjectsUsingBlock:v51];
+  [descriptionsCopy enumerateObjectsUsingBlock:v51];
   v40 = v13;
   v41 = v10;
   v14 = [(CNContact *)[CNMutableContact alloc] initWithIdentifier:v10 availableKeyDescriptor:v13];
   v15 = +[CN alwaysFetchedProperties];
-  v16 = [v9 arrayByAddingObjectsFromArray:v15];
+  v16 = [descriptionsCopy arrayByAddingObjectsFromArray:v15];
 
   v17 = +[CN runtimeOnlyProperties];
   v18 = [v16 arrayByAddingObjectsFromArray:v17];
@@ -4866,26 +4866,26 @@ LABEL_10:
 
         if (v26)
         {
-          v27 = [v24 CNValueForContact:v12];
-          if (v6)
+          nilValue = [v24 CNValueForContact:v12];
+          if (instanceCopy)
           {
-            v28 = [v24 valueWithResetIdentifiers:v27];
+            v28 = [v24 valueWithResetIdentifiers:nilValue];
 
-            v27 = v28;
+            nilValue = v28;
           }
         }
 
         else
         {
-          if (!v6)
+          if (!instanceCopy)
           {
             continue;
           }
 
-          v27 = [v24 nilValue];
+          nilValue = [v24 nilValue];
         }
 
-        [v24 setCNValue:v27 onContact:v14];
+        [v24 setCNValue:nilValue onContact:v14];
       }
 
       v21 = [v19 countByEnumeratingWithState:&v47 objects:v55 count:16];
@@ -4900,15 +4900,15 @@ LABEL_10:
 
   if ([v12 isUnified])
   {
-    v31 = [v12 linkedContacts];
+    linkedContacts = [v12 linkedContacts];
     v43[0] = MEMORY[0x1E69E9820];
     v43[1] = 3221225472;
     v43[2] = __72__CNContact__contactWithContact_createNewInstance_propertyDescriptions___block_invoke_2;
     v43[3] = &unk_1E7416700;
-    v45 = v42;
-    v46 = v6;
+    v45 = selfCopy;
+    v46 = instanceCopy;
     v44 = v19;
-    v32 = [v31 _cn_map:v43];
+    v32 = [linkedContacts _cn_map:v43];
 
     [(CNMutableContact *)v14 setLinkedContacts:v32];
   }
@@ -4917,26 +4917,26 @@ LABEL_10:
   accountIdentifier = v14->super._accountIdentifier;
   v14->super._accountIdentifier = v33;
 
-  if (!v6)
+  if (!instanceCopy)
   {
-    v35 = [v12 storeIdentifier];
-    [(CNMutableContact *)v14 setStoreIdentifier:v35];
+    storeIdentifier = [v12 storeIdentifier];
+    [(CNMutableContact *)v14 setStoreIdentifier:storeIdentifier];
 
-    v36 = [v12 storeInfo];
-    [(CNMutableContact *)v14 setStoreInfo:v36];
+    storeInfo = [v12 storeInfo];
+    [(CNMutableContact *)v14 setStoreInfo:storeInfo];
   }
 
-  if ([v42 isSubclassOfClass:objc_opt_class()])
+  if ([selfCopy isSubclassOfClass:objc_opt_class()])
   {
-    v37 = v14;
+    freeze = v14;
   }
 
   else
   {
-    v37 = [(CNMutableContact *)v14 freeze];
+    freeze = [(CNMutableContact *)v14 freeze];
   }
 
-  v38 = v37;
+  v38 = freeze;
 
   return v38;
 }
@@ -4975,34 +4975,34 @@ uint64_t __25__CNContact_emptyContact__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-+ (CNContact)contactWithContact:(id)a3
++ (CNContact)contactWithContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v5 = +[CN allContactProperties];
-  v6 = [a1 _contactWithContact:v4 createNewInstance:0 propertyDescriptions:v5];
+  v6 = [self _contactWithContact:contactCopy createNewInstance:0 propertyDescriptions:v5];
 
   return v6;
 }
 
-+ (id)newContactWithPropertyKeys:(id)a3 withValuesFromContact:(id)a4
++ (id)newContactWithPropertyKeys:(id)keys withValuesFromContact:(id)contact
 {
-  v5 = a4;
+  contactCopy = contact;
   v6 = MEMORY[0x1E695DFA8];
-  v7 = a3;
+  keysCopy = keys;
   v8 = [v6 set];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __62__CNContact_newContactWithPropertyKeys_withValuesFromContact___block_invoke;
   v18 = &unk_1E7416750;
   v19 = v8;
-  v20 = v5;
-  v9 = v5;
+  v20 = contactCopy;
+  v9 = contactCopy;
   v10 = v8;
-  [v7 enumerateObjectsUsingBlock:&v15];
+  [keysCopy enumerateObjectsUsingBlock:&v15];
 
   v11 = objc_opt_class();
-  v12 = [v10 allObjects];
-  v13 = [v11 _contactWithContact:v9 createNewInstance:1 propertyDescriptions:v12];
+  allObjects = [v10 allObjects];
+  v13 = [v11 _contactWithContact:v9 createNewInstance:1 propertyDescriptions:allObjects];
 
   return v13;
 }
@@ -5051,23 +5051,23 @@ id __62__CNContact_newContactWithPropertyKeys_withValuesFromContact___block_invo
   return v6;
 }
 
-- (id)copyWithPropertyKeys:(id)a3
+- (id)copyWithPropertyKeys:(id)keys
 {
   v4 = MEMORY[0x1E695DFA8];
-  v5 = a3;
+  keysCopy = keys;
   v6 = [v4 set];
   v12 = MEMORY[0x1E69E9820];
   v13 = 3221225472;
   v14 = __34__CNContact_copyWithPropertyKeys___block_invoke;
   v15 = &unk_1E7416750;
-  v16 = self;
+  selfCopy = self;
   v17 = v6;
   v7 = v6;
-  [v5 enumerateObjectsUsingBlock:&v12];
+  [keysCopy enumerateObjectsUsingBlock:&v12];
 
   v8 = objc_opt_class();
-  v9 = [v7 allObjects];
-  v10 = [v8 _contactWithContact:self createNewInstance:0 propertyDescriptions:v9];
+  allObjects = [v7 allObjects];
+  v10 = [v8 _contactWithContact:self createNewInstance:0 propertyDescriptions:allObjects];
 
   return v10;
 }
@@ -5122,13 +5122,13 @@ id __34__CNContact_copyWithPropertyKeys___block_invoke_2(uint64_t a1, void *a2)
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [(CNContact *)CNMutableContact contactWithContact:self];
   snapshot = self->_snapshot;
-  v6 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
 
-  if (snapshot == v6)
+  if (snapshot == null)
   {
     [v4 setSnapshot:self];
   }
@@ -5139,9 +5139,9 @@ id __34__CNContact_copyWithPropertyKeys___block_invoke_2(uint64_t a1, void *a2)
 - (id)copyWithSelfAsSnapshot
 {
   v2 = [(CNContact *)self mutableCopy];
-  v3 = [v2 freezeWithSelfAsSnapshot];
+  freezeWithSelfAsSnapshot = [v2 freezeWithSelfAsSnapshot];
 
-  return v3;
+  return freezeWithSelfAsSnapshot;
 }
 
 - (id)selfOrMutableCopy
@@ -5151,18 +5151,18 @@ id __34__CNContact_copyWithPropertyKeys___block_invoke_2(uint64_t a1, void *a2)
   return v2;
 }
 
-+ (id)makeContactAndMergeValuesFromAvailableKeysInContact:(id)a3
++ (id)makeContactAndMergeValuesFromAvailableKeysInContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v5 = +[CN allContactProperties];
-  v6 = [a1 _contactWithContact:v4 createNewInstance:1 propertyDescriptions:v5];
+  v6 = [self _contactWithContact:contactCopy createNewInstance:1 propertyDescriptions:v5];
 
   return v6;
 }
 
-- (CNContact)initWithCoder:(id)a3
+- (CNContact)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(CNContact *)self init];
   if (v5)
   {
@@ -5172,8 +5172,8 @@ id __34__CNContact_copyWithPropertyKeys___block_invoke_2(uint64_t a1, void *a2)
     v8 = MEMORY[0x1E695DFD8];
     if (isKindOfClass)
     {
-      v9 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
-      v10 = [v4 decodeObjectOfClasses:v9 forKey:@"availableKeyDescriptor"];
+      allObjects = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
+      v10 = [coderCopy decodeObjectOfClasses:allObjects forKey:@"availableKeyDescriptor"];
       v11 = [v10 copy];
       availableKeyDescriptor = v6->_availableKeyDescriptor;
       v6->_availableKeyDescriptor = v11;
@@ -5184,14 +5184,14 @@ id __34__CNContact_copyWithPropertyKeys___block_invoke_2(uint64_t a1, void *a2)
       v14 = objc_opt_class();
       v15 = objc_opt_class();
       v16 = [v8 setWithObjects:{v14, v15, objc_opt_class(), 0}];
-      v17 = [v4 decodeObjectOfClasses:v16 forKey:@"availableKeys"];
-      v9 = [v17 allObjects];
+      v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"availableKeys"];
+      allObjects = [v17 allObjects];
 
-      if (!v9)
+      if (!allObjects)
       {
-        if ([v4 requiresSecureCoding])
+        if ([coderCopy requiresSecureCoding])
         {
-          v9 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"availableKeys_v2"];
+          allObjects = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"availableKeys_v2"];
         }
 
         else
@@ -5199,12 +5199,12 @@ id __34__CNContact_copyWithPropertyKeys___block_invoke_2(uint64_t a1, void *a2)
           v18 = MEMORY[0x1E695DFD8];
           v19 = objc_opt_class();
           v20 = [v18 setWithObjects:{v19, objc_opt_class(), 0}];
-          v21 = [v4 decodeObjectOfClasses:v20 forKey:@"availableKeys_v2"];
-          v9 = [v21 allObjects];
+          v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"availableKeys_v2"];
+          allObjects = [v21 allObjects];
         }
       }
 
-      v22 = [CNContactKeyVector keyVectorWithKeys:v9];
+      v22 = [CNContactKeyVector keyVectorWithKeys:allObjects];
       v10 = v6->_availableKeyDescriptor;
       v6->_availableKeyDescriptor = v22;
     }
@@ -5214,7 +5214,7 @@ id __34__CNContact_copyWithPropertyKeys___block_invoke_2(uint64_t a1, void *a2)
     v52[1] = 3221225472;
     v52[2] = __27__CNContact_initWithCoder___block_invoke;
     v52[3] = &unk_1E7413F08;
-    v24 = v4;
+    v24 = coderCopy;
     v53 = v24;
     v25 = v6;
     v54 = v25;
@@ -5280,9 +5280,9 @@ id __34__CNContact_copyWithPropertyKeys___block_invoke_2(uint64_t a1, void *a2)
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
@@ -5300,9 +5300,9 @@ id __34__CNContact_copyWithPropertyKeys___block_invoke_2(uint64_t a1, void *a2)
   v23[1] = 3221225472;
   v23[2] = __29__CNContact_encodeWithCoder___block_invoke;
   v23[3] = &unk_1E74167A0;
-  v8 = v4;
+  v8 = coderCopy;
   v24 = v8;
-  v25 = self;
+  selfCopy = self;
   v9 = v6;
   v26 = v9;
   [(CNContactKeyVector *)availableKeyDescriptor enumeratePropertiesUsingBlock:v23];
@@ -5313,51 +5313,51 @@ id __34__CNContact_copyWithPropertyKeys___block_invoke_2(uint64_t a1, void *a2)
   v20[3] = &unk_1E7416778;
   v11 = v8;
   v21 = v11;
-  v22 = self;
+  selfCopy2 = self;
   [v10 _cn_each:v20];
 
   if ((isKindOfClass & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AE30] processInfo];
-    v13 = [v12 environment];
-    v14 = [v13 objectForKeyedSubscript:@"CN_UNIT_TESTING"];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    environment = [processInfo environment];
+    v14 = [environment objectForKeyedSubscript:@"CN_UNIT_TESTING"];
     if ([v14 _cn_caseInsensitiveIsEqual:@"YES"] & 1) != 0 || (objc_msgSend(v14, "_cn_caseInsensitiveIsEqual:", @"Y") & 1) != 0 || (objc_msgSend(v14, "_cn_caseInsensitiveIsEqual:", @"TRUE") & 1) != 0 || (objc_msgSend(v14, "_cn_caseInsensitiveIsEqual:", @"T"))
     {
     }
 
     else
     {
-      v19 = [v14 integerValue];
+      integerValue = [v14 integerValue];
 
-      if (!v19)
+      if (!integerValue)
       {
         goto LABEL_17;
       }
     }
 
-    v15 = [(CNContact *)self _availableKeyEncodingStrategy];
-    if (v15 != 2)
+    _availableKeyEncodingStrategy = [(CNContact *)self _availableKeyEncodingStrategy];
+    if (_availableKeyEncodingStrategy != 2)
     {
-      if (v15 == 1)
+      if (_availableKeyEncodingStrategy == 1)
       {
-        v16 = [v9 allObjects];
+        allObjects = [v9 allObjects];
       }
 
       else
       {
-        v16 = [v9 copy];
+        allObjects = [v9 copy];
       }
 
-      v17 = v16;
+      allObjects2 = allObjects;
       v18 = @"availableKeys";
       goto LABEL_18;
     }
 
 LABEL_17:
-    v17 = [v9 allObjects];
+    allObjects2 = [v9 allObjects];
     v18 = @"availableKeys_v2";
 LABEL_18:
-    [v11 encodeObject:v17 forKey:v18];
+    [v11 encodeObject:allObjects2 forKey:v18];
 
     goto LABEL_19;
   }
@@ -5382,11 +5382,11 @@ void __29__CNContact_encodeWithCoder___block_invoke(void *a1, void *a2)
   [v6 addObject:v7];
 }
 
-+ (id)storeInfoFromCoder:(id)a3 storeIdentifier:(id)a4 key:(id)a5
++ (id)storeInfoFromCoder:(id)coder storeIdentifier:(id)identifier key:(id)key
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [CNContactStore storeClassWithIdentifier:a4];
+  coderCopy = coder;
+  keyCopy = key;
+  v9 = [CNContactStore storeClassWithIdentifier:identifier];
   if (v9)
   {
     v10 = MEMORY[0x1E695DFD8];
@@ -5400,37 +5400,37 @@ void __29__CNContact_encodeWithCoder___block_invoke(void *a1, void *a2)
 
     if (v12)
     {
-      v17 = [(objc_class *)v9 storeInfoClasses];
-      if (v17)
+      storeInfoClasses = [(objc_class *)v9 storeInfoClasses];
+      if (storeInfoClasses)
       {
-        v18 = v17;
-        v19 = [v15 setByAddingObjectsFromSet:v17];
+        v18 = storeInfoClasses;
+        v19 = [v15 setByAddingObjectsFromSet:storeInfoClasses];
 
         v15 = v19;
       }
     }
 
-    v9 = [v7 decodeObjectOfClasses:v15 forKey:v8];
+    v9 = [coderCopy decodeObjectOfClasses:v15 forKey:keyCopy];
   }
 
   return v9;
 }
 
-- (void)assertKeyIsAvailable:(id)a3
+- (void)assertKeyIsAvailable:(id)available
 {
-  if (![(CNContact *)self isKeyAvailable:a3])
+  if (![(CNContact *)self isKeyAvailable:available])
   {
 
     +[CNContact you_used_a_property_that_you_didnt_request_when_you_fetched_the_contact];
   }
 }
 
-- (void)assertKeysAreAvailable:(id)a3
+- (void)assertKeysAreAvailable:(id)available
 {
-  v5 = a3;
+  availableCopy = available;
   if (![(CNContact *)self areKeysAvailable:?])
   {
-    v4 = [v5 description];
+    v4 = [availableCopy description];
     [MEMORY[0x1E695DF30] raise:@"CNPropertyNotFetchedException" format:{@"Contact %p is missing some of the required key descriptors: %@", self, v4}];
   }
 }
@@ -5464,8 +5464,8 @@ void __26__CNContact_availableKeys__block_invoke(uint64_t a1, void *a2)
   v4 = contactIdentifier;
   if ((*(*MEMORY[0x1E6996570] + 16))() && [(CNContact *)self isUnified])
   {
-    v5 = [(CNContact *)self identifier];
-    v6 = [v5 isEqualToString:v4];
+    identifier = [(CNContact *)self identifier];
+    v6 = [identifier isEqualToString:v4];
 
     if (v6)
     {
@@ -5488,18 +5488,18 @@ void __26__CNContact_availableKeys__block_invoke(uint64_t a1, void *a2)
   return v7;
 }
 
-- (BOOL)isUnifiedWithContactsWithIdentifiers:(id)a3
+- (BOOL)isUnifiedWithContactsWithIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   if ([(CNContact *)self isUnified])
   {
-    if ([v4 count])
+    if ([identifiersCopy count])
     {
       v5 = MEMORY[0x1E695DFD8];
-      v6 = [(CNContact *)self allLinkedIdentifiers];
-      v7 = [v5 setWithArray:v6];
+      allLinkedIdentifiers = [(CNContact *)self allLinkedIdentifiers];
+      v7 = [v5 setWithArray:allLinkedIdentifiers];
 
-      v8 = [MEMORY[0x1E695DFD8] setWithArray:v4];
+      v8 = [MEMORY[0x1E695DFD8] setWithArray:identifiersCopy];
       v9 = [v8 isSubsetOfSet:v7];
     }
 
@@ -5520,13 +5520,13 @@ void __26__CNContact_availableKeys__block_invoke(uint64_t a1, void *a2)
 - (id)allLinkedIdentifiers
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(CNContact *)self identifier];
-  v5 = [v3 arrayWithObject:v4];
+  identifier = [(CNContact *)self identifier];
+  v5 = [v3 arrayWithObject:identifier];
 
   if ([(CNContact *)self isUnified])
   {
-    v6 = [(CNContact *)self linkedContacts];
-    v7 = [v6 _cn_map:&__block_literal_global_299];
+    linkedContacts = [(CNContact *)self linkedContacts];
+    v7 = [linkedContacts _cn_map:&__block_literal_global_299];
     [v5 addObjectsFromArray:v7];
   }
 
@@ -5547,24 +5547,24 @@ void __26__CNContact_availableKeys__block_invoke(uint64_t a1, void *a2)
 - (BOOL)areKeysAvailable:(NSArray *)keyDescriptors
 {
   v3 = [(CNContact *)self areKeysAvailable:keyDescriptors useIgnorableKeys:1 findMissingKeys:0];
-  v4 = [v3 first];
-  v5 = [v4 BOOLValue];
+  first = [v3 first];
+  bOOLValue = [first BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (id)areKeysAvailable:(id)a3 useIgnorableKeys:(BOOL)a4 findMissingKeys:(BOOL)a5
+- (id)areKeysAvailable:(id)available useIgnorableKeys:(BOOL)keys findMissingKeys:(BOOL)missingKeys
 {
-  v5 = a5;
+  missingKeysCopy = missingKeys;
   v50 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v33 = self;
-  v28 = v7;
+  availableCopy = available;
+  selfCopy = self;
+  v28 = availableCopy;
   if (self->_availableKeyDescriptor)
   {
-    v8 = v7;
-    v34 = v5;
-    if (v5)
+    v8 = availableCopy;
+    v34 = missingKeysCopy;
+    if (missingKeysCopy)
     {
       v32 = objc_alloc_init(CNMutableContactKeyVector);
     }
@@ -5596,7 +5596,7 @@ void __26__CNContact_availableKeys__block_invoke(uint64_t a1, void *a2)
           v14 = *(*(&v45 + 1) + 8 * i);
           if (_CNIsObject_CNKeyDescriptorPrivate(v14))
           {
-            if (a4)
+            if (keys)
             {
               [v14 _cn_ignorableKeys];
             }
@@ -5606,27 +5606,27 @@ void __26__CNContact_availableKeys__block_invoke(uint64_t a1, void *a2)
               +[CNContactKeyVector keyVector];
             }
             v15 = ;
-            v16 = [v14 _cn_requiredKeys];
-            v17 = [v16 keyVectorByRemovingKeysFromKeyVector:v15];
+            _cn_requiredKeys = [v14 _cn_requiredKeys];
+            v17 = [_cn_requiredKeys keyVectorByRemovingKeysFromKeyVector:v15];
 
-            if (([v17 isSubsetOfKeyVector:v33->_availableKeyDescriptor] & 1) == 0)
+            if (([v17 isSubsetOfKeyVector:selfCopy->_availableKeyDescriptor] & 1) == 0)
             {
               if (!v34)
               {
 
                 v12 = 0;
-                v23 = 0;
+                allObjects = 0;
                 goto LABEL_31;
               }
 
               [(CNMutableContactKeyVector *)v32 unionKeyVector:v17];
-              [(CNMutableContactKeyVector *)v32 minusKeyVector:v33->_availableKeyDescriptor];
+              [(CNMutableContactKeyVector *)v32 minusKeyVector:selfCopy->_availableKeyDescriptor];
               v12 = 0;
             }
 
-            v18 = [v14 _cn_optionalKeys];
+            _cn_optionalKeys = [v14 _cn_optionalKeys];
             v19 = +[CNContactKeyVector keyVector];
-            v20 = [v18 isEqualToKeyVector:v19];
+            v20 = [_cn_optionalKeys isEqualToKeyVector:v19];
 
             if ((v20 & 1) == 0)
             {
@@ -5638,7 +5638,7 @@ void __26__CNContact_availableKeys__block_invoke(uint64_t a1, void *a2)
               v37[1] = 3221225472;
               v37[2] = __63__CNContact_areKeysAvailable_useIgnorableKeys_findMissingKeys___block_invoke;
               v37[3] = &unk_1E74167D8;
-              v37[4] = v33;
+              v37[4] = selfCopy;
               v21 = v15;
               v38 = v21;
               v40 = &v41;
@@ -5661,7 +5661,7 @@ void __26__CNContact_availableKeys__block_invoke(uint64_t a1, void *a2)
             v12 = 0;
             if (!v34)
             {
-              v23 = 0;
+              allObjects = 0;
               goto LABEL_32;
             }
           }
@@ -5694,7 +5694,7 @@ LABEL_29:
       v36 = v24;
       obj = v24;
       [(CNContactKeyVector *)v32 enumeratePropertiesUsingBlock:v35];
-      v23 = [obj allObjects];
+      allObjects = [obj allObjects];
       v15 = v36;
 LABEL_31:
 
@@ -5703,17 +5703,17 @@ LABEL_32:
 
     else
     {
-      v23 = 0;
+      allObjects = 0;
     }
 
     v25 = MEMORY[0x1E69967A8];
     v26 = [MEMORY[0x1E696AD98] numberWithBool:v12 & 1];
-    v9 = [v25 pairWithFirst:v26 second:v23];
+    v9 = [v25 pairWithFirst:v26 second:allObjects];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E69967A8] pairWithFirst:MEMORY[0x1E695E118] second:{0, v7}];
+    v9 = [MEMORY[0x1E69967A8] pairWithFirst:MEMORY[0x1E695E118] second:{0, availableCopy}];
   }
 
   return v9;
@@ -5755,20 +5755,20 @@ void __63__CNContact_areKeysAvailable_useIgnorableKeys_findMissingKeys___block_i
   [v2 addObject:v3];
 }
 
-- (id)linkedContactsFromStoreWithIdentifier:(id)a3
+- (id)linkedContactsFromStoreWithIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CNContact *)self linkedContacts];
-  if ([v5 count])
+  identifierCopy = identifier;
+  linkedContacts = [(CNContact *)self linkedContacts];
+  if ([linkedContacts count])
   {
-    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(linkedContacts, "count")}];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v18 = v5;
-    v7 = v5;
+    v18 = linkedContacts;
+    v7 = linkedContacts;
     v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
@@ -5784,12 +5784,12 @@ void __63__CNContact_areKeysAvailable_useIgnorableKeys_findMissingKeys___block_i
           }
 
           v12 = *(*(&v19 + 1) + 8 * i);
-          v13 = [v12 storeIdentifier];
-          if (v4 | v13)
+          storeIdentifier = [v12 storeIdentifier];
+          if (identifierCopy | storeIdentifier)
           {
-            v14 = v13;
-            v15 = [v12 storeIdentifier];
-            v16 = [v15 isEqual:v4];
+            v14 = storeIdentifier;
+            storeIdentifier2 = [v12 storeIdentifier];
+            v16 = [storeIdentifier2 isEqual:identifierCopy];
 
             if (!v16)
             {
@@ -5806,7 +5806,7 @@ void __63__CNContact_areKeysAvailable_useIgnorableKeys_findMissingKeys___block_i
       while (v9);
     }
 
-    v5 = v18;
+    linkedContacts = v18;
   }
 
   else
@@ -5827,8 +5827,8 @@ void __63__CNContact_areKeysAvailable_useIgnorableKeys_findMissingKeys___block_i
 
 - (NSArray)termsOfAddress
 {
-  v2 = [(CNContact *)self addressingGrammars];
-  v3 = [v2 _cn_compactMap:&__block_literal_global_309];
+  addressingGrammars = [(CNContact *)self addressingGrammars];
+  v3 = [addressingGrammars _cn_compactMap:&__block_literal_global_309];
 
   return v3;
 }
@@ -5853,32 +5853,32 @@ void *__27__CNContact_termsOfAddress__block_invoke(uint64_t a1, void *a2)
 
 - (BOOL)hasChanges
 {
-  v2 = self;
-  v3 = [(CNContact *)self snapshot];
-  LOBYTE(v2) = [(CNContact *)v2 isEqual:v3];
+  selfCopy = self;
+  snapshot = [(CNContact *)self snapshot];
+  LOBYTE(selfCopy) = [(CNContact *)selfCopy isEqual:snapshot];
 
-  return v2 ^ 1;
+  return selfCopy ^ 1;
 }
 
-- (id)diffToSnapshotAndReturnError:(id *)a3
+- (id)diffToSnapshotAndReturnError:(id *)error
 {
-  v5 = [(CNContact *)self snapshot];
-  v6 = [CNContactDiff diffContact:v5 to:self error:a3];
+  snapshot = [(CNContact *)self snapshot];
+  v6 = [CNContactDiff diffContact:snapshot to:self error:error];
 
   return v6;
 }
 
-+ (id)debugDescriptionForName:(id)a3
++ (id)debugDescriptionForName:(id)name
 {
-  v4 = a3;
-  if ([a1 _shouldRedactDescription])
+  nameCopy = name;
+  if ([self _shouldRedactDescription])
   {
-    v5 = [a1 _shortHashForName:v4];
+    v5 = [self _shortHashForName:nameCopy];
   }
 
   else
   {
-    v5 = v4;
+    v5 = nameCopy;
   }
 
   v6 = v5;
@@ -5887,10 +5887,10 @@ void *__27__CNContact_termsOfAddress__block_invoke(uint64_t a1, void *a2)
   return v7;
 }
 
-- (void)_appendNameInBuilder:(id)a3
+- (void)_appendNameInBuilder:(id)builder
 {
-  v10 = a3;
-  v4 = [objc_opt_class() _shouldRedactDescription];
+  builderCopy = builder;
+  _shouldRedactDescription = [objc_opt_class() _shouldRedactDescription];
   if (![(CNContact *)self isKeyAvailable:@"givenName"])
   {
     v5 = @"(not fetched)";
@@ -5900,7 +5900,7 @@ void *__27__CNContact_termsOfAddress__block_invoke(uint64_t a1, void *a2)
       goto LABEL_13;
     }
 
-    if (v4)
+    if (_shouldRedactDescription)
     {
 LABEL_7:
       v6 = [objc_opt_class() _shortHashForName:self->_familyName];
@@ -5914,7 +5914,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v4)
+  if (_shouldRedactDescription)
   {
     v5 = [objc_opt_class() _shortHashForName:self->_givenName];
     if (![(CNContact *)self isKeyAvailable:@"familyName"])
@@ -5934,19 +5934,19 @@ LABEL_9:
 LABEL_12:
   v7 = @"(not fetched)";
 LABEL_13:
-  v8 = [v10 appendName:@"givenName" object:v5];
-  v9 = [v10 appendName:@"familyName" object:v7];
+  v8 = [builderCopy appendName:@"givenName" object:v5];
+  v9 = [builderCopy appendName:@"familyName" object:v7];
 }
 
-+ (id)_shortHashForName:(id)a3
++ (id)_shortHashForName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   if ((*(*MEMORY[0x1E6996570] + 16))())
   {
-    v4 = [v3 dataUsingEncoding:4];
-    v5 = [v4 _cn_md5Hash];
-    v6 = [v5 _cn_hexString];
-    v7 = [v6 length];
+    v4 = [nameCopy dataUsingEncoding:4];
+    _cn_md5Hash = [v4 _cn_md5Hash];
+    _cn_hexString = [_cn_md5Hash _cn_hexString];
+    v7 = [_cn_hexString length];
     if (v7 >= 8)
     {
       v8 = 8;
@@ -5957,7 +5957,7 @@ LABEL_13:
       v8 = v7;
     }
 
-    v9 = [v6 substringToIndex:v8];
+    v9 = [_cn_hexString substringToIndex:v8];
   }
 
   else
@@ -5968,16 +5968,16 @@ LABEL_13:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   if (isEqual__cn_once_token_13 != -1)
   {
     [CNContact isEqual:];
   }
 
   v5 = isEqual__cn_once_object_13;
-  v6 = v4;
+  v6 = equalCopy;
   v7 = MEMORY[0x1E69966F0];
   v8 = objc_opt_class();
   v25[0] = MEMORY[0x1E69E9820];
@@ -6086,11 +6086,11 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)isEquivalent:(id)a3 ignoringProperties:(id)a4
+- (BOOL)isEquivalent:(id)equivalent ignoringProperties:(id)properties
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  equivalentCopy = equivalent;
+  propertiesCopy = properties;
+  v8 = equivalentCopy;
   v9 = MEMORY[0x1E69966F0];
   v10 = objc_opt_class();
   v26[0] = MEMORY[0x1E69E9820];
@@ -6121,8 +6121,8 @@ LABEL_7:
   v19[3] = &unk_1E7416850;
   v19[4] = self;
   v20 = v13;
-  v21 = v7;
-  v15 = v7;
+  v21 = propertiesCopy;
+  v15 = propertiesCopy;
   v16 = v13;
   v17 = _Block_copy(v19);
   LOBYTE(self) = [v9 isObject:v16 kindOfClass:v10 andEqualToObject:self withBlocks:{v26, v12, v14, v17, 0}];
@@ -6188,21 +6188,21 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)areAllAvailableKeysEqualToContact:(id)a3 ignoringIdentifiers:(BOOL)a4
+- (BOOL)areAllAvailableKeysEqualToContact:(id)contact ignoringIdentifiers:(BOOL)identifiers
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CNContact *)self availableKeyDescriptor];
-  v8 = [v6 availableKeyDescriptor];
+  identifiersCopy = identifiers;
+  contactCopy = contact;
+  availableKeyDescriptor = [(CNContact *)self availableKeyDescriptor];
+  availableKeyDescriptor2 = [contactCopy availableKeyDescriptor];
 
-  if (v7 == v8)
+  if (availableKeyDescriptor == availableKeyDescriptor2)
   {
     v17 = 1;
   }
 
   else
   {
-    if (v4)
+    if (identifiersCopy)
     {
       if (areAllAvailableKeysEqualToContact_ignoringIdentifiers__cn_once_token_14 != -1)
       {
@@ -6210,29 +6210,29 @@ LABEL_7:
       }
 
       v9 = areAllAvailableKeysEqualToContact_ignoringIdentifiers__cn_once_object_14;
-      v10 = [(CNContact *)self keyVector];
-      v11 = [v10 mutableCopy];
+      keyVector = [(CNContact *)self keyVector];
+      keyVector3 = [keyVector mutableCopy];
 
-      v12 = [v6 keyVector];
-      v13 = [v12 mutableCopy];
+      keyVector2 = [contactCopy keyVector];
+      v13 = [keyVector2 mutableCopy];
 
-      [v11 minusKeyVector:v9];
+      [keyVector3 minusKeyVector:v9];
       [v13 minusKeyVector:v9];
 
-      v15 = v11;
+      v15 = keyVector3;
       v16 = v13;
     }
 
     else
     {
-      v11 = [(CNContact *)self keyVector];
-      v14 = [v6 keyVector];
-      v13 = v14;
-      v15 = v11;
-      v16 = v14;
+      keyVector3 = [(CNContact *)self keyVector];
+      keyVector4 = [contactCopy keyVector];
+      v13 = keyVector4;
+      v15 = keyVector3;
+      v16 = keyVector4;
     }
 
-    v17 = __67__CNContact_areAllAvailableKeysEqualToContact_ignoringIdentifiers___block_invoke(v14, v15, v16);
+    v17 = __67__CNContact_areAllAvailableKeysEqualToContact_ignoringIdentifiers___block_invoke(keyVector4, v15, v16);
   }
 
   return v17;
@@ -6274,11 +6274,11 @@ void __67__CNContact_areAllAvailableKeysEqualToContact_ignoringIdentifiers___blo
   areAllAvailableKeysEqualToContact_ignoringIdentifiers__cn_once_object_14 = v1;
 }
 
-- (BOOL)arePropertiesEqualToContact:(id)a3 ignoredProperties:(id)a4
+- (BOOL)arePropertiesEqualToContact:(id)contact ignoredProperties:(id)properties
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  contactCopy = contact;
+  propertiesCopy = properties;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -6299,12 +6299,12 @@ void __67__CNContact_areAllAvailableKeysEqualToContact_ignoringIdentifiers___blo
         }
 
         v13 = *(*(&v18 + 1) + 8 * i);
-        if (([v7 containsObject:v13] & 1) == 0)
+        if (([propertiesCopy containsObject:v13] & 1) == 0)
         {
           v14 = [v13 key];
           v15 = [(CNContact *)self isKeyAvailable:v14];
 
-          if (v15 && ![v13 isEqualForContact:self other:v6])
+          if (v15 && ![v13 isEqualForContact:self other:contactCopy])
           {
             v16 = 0;
             goto LABEL_13;
@@ -6328,10 +6328,10 @@ LABEL_13:
   return v16;
 }
 
-- (BOOL)areAllPropertiesEqualToContactIgnoringIdentifiers:(id)a3
+- (BOOL)areAllPropertiesEqualToContactIgnoringIdentifiers:(id)identifiers
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifiersCopy = identifiers;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -6355,7 +6355,7 @@ LABEL_13:
         v11 = [v10 key];
         v12 = [(CNContact *)self isKeyAvailable:v11];
 
-        if (v12 && ![(CNContact *)self isProperty:v10 equalToOtherIgnoreIdentifiers:v4])
+        if (v12 && ![(CNContact *)self isProperty:v10 equalToOtherIgnoreIdentifiers:identifiersCopy])
         {
           v13 = 0;
           goto LABEL_12;
@@ -6378,9 +6378,9 @@ LABEL_12:
   return v13;
 }
 
-- (BOOL)isEqualIgnoringIdentifiers:(id)a3
+- (BOOL)isEqualIgnoringIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   v5 = MEMORY[0x1E69966F0];
   v6 = objc_opt_class();
   v16[0] = MEMORY[0x1E69E9820];
@@ -6388,16 +6388,16 @@ LABEL_12:
   v16[2] = __40__CNContact_isEqualIgnoringIdentifiers___block_invoke;
   v16[3] = &unk_1E7412228;
   v16[4] = self;
-  v17 = v4;
+  v17 = identifiersCopy;
   aBlock = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __40__CNContact_isEqualIgnoringIdentifiers___block_invoke_2;
   v13 = &unk_1E7412228;
-  v14 = self;
+  selfCopy = self;
   v15 = v17;
   v7 = v17;
   v8 = _Block_copy(&aBlock);
-  LOBYTE(self) = [v5 isObject:v7 kindOfClass:v6 andEqualToObject:self withBlocks:{v16, v8, 0, aBlock, v11, v12, v13, v14}];
+  LOBYTE(self) = [v5 isObject:v7 kindOfClass:v6 andEqualToObject:self withBlocks:{v16, v8, 0, aBlock, v11, v12, v13, selfCopy}];
 
   return self;
 }
@@ -6550,31 +6550,31 @@ void __37__CNContact_preferredImageComparator__block_invoke()
 
 - (id)linkedIdentifierMap
 {
-  v3 = [(CNContact *)self snapshot];
-  v4 = [(CNContact *)self linkedContacts];
-  v5 = [CN identifierMapForUnifiedContact:v3 backingContacts:v4];
+  snapshot = [(CNContact *)self snapshot];
+  linkedContacts = [(CNContact *)self linkedContacts];
+  v5 = [CN identifierMapForUnifiedContact:snapshot backingContacts:linkedContacts];
 
   return v5;
 }
 
-+ (id)previewURLForContact:(id)a3
++ (id)previewURLForContact:(id)contact
 {
   v14[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E696AF20];
-  v4 = a3;
+  contactCopy = contact;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 isUnified];
+  isUnified = [contactCopy isUnified];
   v7 = @"NO";
-  if (v6)
+  if (isUnified)
   {
     v7 = @"YES";
   }
 
   v8 = v7;
   [v5 setScheme:@"addressbook"];
-  v9 = [v4 identifier];
+  identifier = [contactCopy identifier];
 
-  [v5 setHost:v9];
+  [v5 setHost:identifier];
   v10 = [MEMORY[0x1E696AF60] queryItemWithName:@"unify" value:v8];
 
   v14[0] = v10;
@@ -6588,8 +6588,8 @@ void __37__CNContact_preferredImageComparator__block_invoke()
 
 - (NSArray)relatedNames
 {
-  v2 = [(CNContact *)self contactRelations];
-  v3 = [v2 valueForKey:@"name"];
+  contactRelations = [(CNContact *)self contactRelations];
+  v3 = [contactRelations valueForKey:@"name"];
 
   return v3;
 }
@@ -6605,29 +6605,29 @@ void __37__CNContact_preferredImageComparator__block_invoke()
   return v2;
 }
 
-+ (id)objectWithItemProviderData:(id)a3 typeIdentifier:(id)a4 error:(id *)a5
++ (id)objectWithItemProviderData:(id)data typeIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if ([a1 isContactUTIType:v9])
+  dataCopy = data;
+  identifierCopy = identifier;
+  if ([self isContactUTIType:identifierCopy])
   {
-    v10 = [a1 contactWithArchivedData:v8 error:a5];
+    v10 = [self contactWithArchivedData:dataCopy error:error];
 LABEL_5:
     v11 = v10;
     goto LABEL_9;
   }
 
-  if ([a1 isVCardDataUTIType:v9])
+  if ([self isVCardDataUTIType:identifierCopy])
   {
-    v10 = [a1 contactWithVCardData:v8 error:a5];
+    v10 = [self contactWithVCardData:dataCopy error:error];
     goto LABEL_5;
   }
 
   v12 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:4866 userInfo:0];
-  if (a5)
+  if (error)
   {
     v12 = v12;
-    *a5 = v12;
+    *error = v12;
   }
 
   v11 = 0;
@@ -6636,29 +6636,29 @@ LABEL_9:
   return v11;
 }
 
-+ (BOOL)isContactUTIType:(id)a3
++ (BOOL)isContactUTIType:(id)type
 {
-  v3 = a3;
-  if (UTTypeConformsTo(v3, @"com.apple.contacts.contact"))
+  typeCopy = type;
+  if (UTTypeConformsTo(typeCopy, @"com.apple.contacts.contact"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = UTTypeConformsTo(v3, @"com.apple.contacts.contact.persisted") != 0;
+    v4 = UTTypeConformsTo(typeCopy, @"com.apple.contacts.contact.persisted") != 0;
   }
 
   return v4;
 }
 
-+ (CNContact)contactWithArchivedData:(id)a3 error:(id *)a4
++ (CNContact)contactWithArchivedData:(id)data error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E6996618];
-  v6 = a3;
+  dataCopy = data;
   v14 = 0;
-  v7 = [v5 decodeObjectOfClass:objc_opt_class() data:v6 error:&v14];
+  v7 = [v5 decodeObjectOfClass:objc_opt_class() data:dataCopy error:&v14];
 
   v8 = v14;
   v9 = v8;
@@ -6682,19 +6682,19 @@ LABEL_9:
     }
 
     v12 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:4864 userInfo:v11];
-    if (a4)
+    if (error)
     {
       v12 = v12;
-      *a4 = v12;
+      *error = v12;
     }
   }
 
   return v7;
 }
 
-+ (CNContact)contactWithVCardData:(id)a3 error:(id *)a4
++ (CNContact)contactWithVCardData:(id)data error:(id *)error
 {
-  v5 = [CNContactVCardSerialization contactsWithData:a3 error:?];
+  v5 = [CNContactVCardSerialization contactsWithData:data error:?];
   v6 = v5;
   if (v5)
   {
@@ -6704,7 +6704,7 @@ LABEL_9:
       goto LABEL_6;
     }
 
-    CNSetError(a4, 700, 0);
+    CNSetError(error, 700, 0);
   }
 
   v7 = 0;
@@ -6763,18 +6763,18 @@ LABEL_6:
   return v11;
 }
 
-- (id)loadDataWithTypeIdentifier:(id)a3 forItemProviderCompletionHandler:(id)a4
+- (id)loadDataWithTypeIdentifier:(id)identifier forItemProviderCompletionHandler:(id)handler
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([objc_opt_class() isContactUTIType:v6])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if ([objc_opt_class() isContactUTIType:identifierCopy])
   {
     v8 = [MEMORY[0x1E6996618] encodeObject:self error:0];
-    v7[2](v7, v8, 0);
+    handlerCopy[2](handlerCopy, v8, 0);
   }
 
-  else if ([objc_opt_class() isVCardDataUTIType:v6])
+  else if ([objc_opt_class() isVCardDataUTIType:identifierCopy])
   {
     v15[0] = self;
     v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
@@ -6792,28 +6792,28 @@ LABEL_6:
       v12 = v11;
     }
 
-    (v7)[2](v7, v10, v12);
+    (handlerCopy)[2](handlerCopy, v10, v12);
   }
 
   else
   {
-    v7[2](v7, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 
   return 0;
 }
 
-+ (id)contactIdentifierFromSuggestionID:(id)a3
++ (id)contactIdentifierFromSuggestionID:(id)d
 {
-  v3 = CNSuggestedContactFoundInBundle_block_invoke(a1, a3);
+  v3 = CNSuggestedContactFoundInBundle_block_invoke(self, d);
   v4 = [(CNContactStore *)CNSuggestedContactStore contactIdentifierFromInternalIdentifier:v3];
 
   return v4;
 }
 
-+ (id)suggestionIDFromContactIdentifier:(id)a3
++ (id)suggestionIDFromContactIdentifier:(id)identifier
 {
-  v3 = [(CNContactStore *)CNSuggestedContactStore internalIdentifierFromContactIdentifier:a3];
+  v3 = [(CNContactStore *)CNSuggestedContactStore internalIdentifierFromContactIdentifier:identifier];
   v4 = CNSuggestedContactFoundInBundle_block_invoke_2(v3, v3);
 
   return v4;
@@ -6821,8 +6821,8 @@ LABEL_6:
 
 - (BOOL)isSuggestedMe
 {
-  v4 = [(CNContact *)self storeIdentifier];
-  if (!v4)
+  storeIdentifier = [(CNContact *)self storeIdentifier];
+  if (!storeIdentifier)
   {
     v2 = +[CNDonationMapper mapperIdentifier];
     if (!v2)
@@ -6834,11 +6834,11 @@ LABEL_6:
     }
   }
 
-  v5 = [(CNContact *)self storeIdentifier];
+  storeIdentifier2 = [(CNContact *)self storeIdentifier];
   v6 = +[CNDonationMapper mapperIdentifier];
-  v7 = [v5 isEqual:v6];
+  v7 = [storeIdentifier2 isEqual:v6];
 
-  if (!v4)
+  if (!storeIdentifier)
   {
     goto LABEL_6;
   }
@@ -6850,16 +6850,16 @@ LABEL_7:
 
 - (SGRecordId)suggestionRecordId
 {
-  v2 = [(CNContact *)self storeInfo];
-  v3 = [v2 objectForKey:CNSuggestedContactRecordIdKey];
+  storeInfo = [(CNContact *)self storeInfo];
+  v3 = [storeInfo objectForKey:CNSuggestedContactRecordIdKey];
 
   return v3;
 }
 
 - (NSString)suggestionFoundInBundleId
 {
-  v2 = [(CNContact *)self storeInfo];
-  v3 = [v2 objectForKey:CNSuggestedContactFoundInBundle];
+  storeInfo = [(CNContact *)self storeInfo];
+  v3 = [storeInfo objectForKey:CNSuggestedContactFoundInBundle];
 
   return v3;
 }
@@ -6951,9 +6951,9 @@ LABEL_21:
   return v15;
 }
 
-+ (id)predicateForSuggestionIdentifier:(unint64_t)a3
++ (id)predicateForSuggestionIdentifier:(unint64_t)identifier
 {
-  v3 = [[CNSuggestedContactIdentifierPredicate alloc] initWithSuggestionIdentifier:a3];
+  v3 = [[CNSuggestedContactIdentifierPredicate alloc] initWithSuggestionIdentifier:identifier];
 
   return v3;
 }

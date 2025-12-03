@@ -34,7 +34,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000108C;
   block[3] = &unk_100010328;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100016CE8 != -1)
   {
     dispatch_once(&qword_100016CE8, block);
@@ -47,10 +47,10 @@
 
 - (BOOL)sosIsAvailable
 {
-  v2 = [(AppDeletionUISOSState *)self monitor];
-  v3 = [v2 getState];
+  monitor = [(AppDeletionUISOSState *)self monitor];
+  getState = [monitor getState];
 
-  v4 = [v3 isPermittedAtCurrentLocation:1];
+  v4 = [getState isPermittedAtCurrentLocation:1];
   v5 = sub_100003D54(off_100016A30);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {

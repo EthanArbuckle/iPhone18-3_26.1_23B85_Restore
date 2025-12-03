@@ -1,9 +1,9 @@
 @interface _PBFImageView
-- (BOOL)updateImage:(id)a3 imageSize:(CGSize)a4;
+- (BOOL)updateImage:(id)image imageSize:(CGSize)size;
 - (CGSize)imageSize;
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (_PBFImageView)init;
 - (void)layoutSubviews;
 @end
@@ -25,11 +25,11 @@
   return v3;
 }
 
-- (BOOL)updateImage:(id)a3 imageSize:(CGSize)a4
+- (BOOL)updateImage:(id)image imageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  imageCopy = image;
   imageView = self->_imageView;
   if (!imageView)
   {
@@ -48,12 +48,12 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v9 = [(UIImageView *)imageView image];
-  if (![v9 isEqual:v7])
+  image = [(UIImageView *)imageView image];
+  if (![image isEqual:imageCopy])
   {
 
 LABEL_11:
-    [(UIImageView *)self->_imageView setImage:v7];
+    [(UIImageView *)self->_imageView setImage:imageCopy];
     v19 = self->_imageView;
     [(UIImageView *)v19 frame];
     [(UIImageView *)v19 pui_setBoundsAndPositionFromFrame:?];
@@ -77,7 +77,7 @@ LABEL_13:
   return v15;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
   width = self->_imageSize.width;
   height = self->_imageSize.height;
@@ -86,7 +86,7 @@ LABEL_13:
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
   width = self->_imageSize.width;
   height = self->_imageSize.height;

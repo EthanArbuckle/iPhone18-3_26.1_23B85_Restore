@@ -1,14 +1,14 @@
 @interface TipPopoverPresentationConductor
 - (_TtC10TVRemoteUI31TipPopoverPresentationConductor)init;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation TipPopoverPresentationConductor
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   specialized TipPopoverPresentationConductor.presentationControllerDidDismiss(_:)();
 }
 

@@ -1,28 +1,28 @@
 @interface LACServiceXPCEndpointProvider
-- (LACServiceXPCEndpointProvider)initWithContextProvider:(id)a3;
-- (id)endpointForServiceWithIdentifier:(id)a3 error:(id *)a4;
+- (LACServiceXPCEndpointProvider)initWithContextProvider:(id)provider;
+- (id)endpointForServiceWithIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation LACServiceXPCEndpointProvider
 
-- (LACServiceXPCEndpointProvider)initWithContextProvider:(id)a3
+- (LACServiceXPCEndpointProvider)initWithContextProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = LACServiceXPCEndpointProvider;
   v6 = [(LACServiceXPCEndpointProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contextProvider, a3);
+    objc_storeStrong(&v6->_contextProvider, provider);
   }
 
   return v7;
 }
 
-- (id)endpointForServiceWithIdentifier:(id)a3 error:(id *)a4
+- (id)endpointForServiceWithIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -35,9 +35,9 @@
   v20 = __Block_byref_object_copy__1;
   v21 = __Block_byref_object_dispose__1;
   v22 = 0;
-  v7 = [(LACContextProviding *)self->_contextProvider createContext];
-  v8 = v7;
-  if (v7)
+  createContext = [(LACContextProviding *)self->_contextProvider createContext];
+  v8 = createContext;
+  if (createContext)
   {
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -45,8 +45,8 @@
     v13[3] = &unk_1E7A95D08;
     v15 = &v17;
     v16 = &v23;
-    v14 = v7;
-    [v14 bootstrapServiceType:v6 completionHandler:v13];
+    v14 = createContext;
+    [v14 bootstrapServiceType:identifierCopy completionHandler:v13];
     v9 = v14;
   }
 
@@ -57,9 +57,9 @@
     v18[5] = v10;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v18[5];
+    *error = v18[5];
   }
 
   v11 = v24[5];

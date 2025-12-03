@@ -1,45 +1,45 @@
 @interface TRIRolloutIdentifiers
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRolloutIdentifiers:(id)a3;
-- (TRIRolloutIdentifiers)initWithRolloutId:(id)a3 deploymentId:(int)a4 factorPackId:(id)a5 rampId:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRolloutIdentifiers:(id)identifiers;
+- (TRIRolloutIdentifiers)initWithRolloutId:(id)id deploymentId:(int)deploymentId factorPackId:(id)packId rampId:(id)rampId;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation TRIRolloutIdentifiers
 
-- (TRIRolloutIdentifiers)initWithRolloutId:(id)a3 deploymentId:(int)a4 factorPackId:(id)a5 rampId:(id)a6
+- (TRIRolloutIdentifiers)initWithRolloutId:(id)id deploymentId:(int)deploymentId factorPackId:(id)packId rampId:(id)rampId
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  idCopy = id;
+  packIdCopy = packId;
+  rampIdCopy = rampId;
   v17.receiver = self;
   v17.super_class = TRIRolloutIdentifiers;
   v14 = [(TRIRolloutIdentifiers *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_rolloutId, a3);
-    v15->_deploymentId = a4;
-    objc_storeStrong(&v15->_factorPackId, a5);
-    objc_storeStrong(&v15->_rampId, a6);
+    objc_storeStrong(&v14->_rolloutId, id);
+    v15->_deploymentId = deploymentId;
+    objc_storeStrong(&v15->_factorPackId, packId);
+    objc_storeStrong(&v15->_rampId, rampId);
   }
 
   return v15;
 }
 
-- (BOOL)isEqualToRolloutIdentifiers:(id)a3
+- (BOOL)isEqualToRolloutIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  identifiersCopy = identifiers;
+  v5 = identifiersCopy;
+  if (!identifiersCopy)
   {
     goto LABEL_12;
   }
 
   v6 = self->_rolloutId == 0;
-  v7 = [v4 rolloutId];
-  v8 = v7 != 0;
+  rolloutId = [identifiersCopy rolloutId];
+  v8 = rolloutId != 0;
 
   if (v6 == v8)
   {
@@ -49,8 +49,8 @@
   rolloutId = self->_rolloutId;
   if (rolloutId)
   {
-    v10 = [v5 rolloutId];
-    v11 = [(NSString *)rolloutId isEqual:v10];
+    rolloutId2 = [v5 rolloutId];
+    v11 = [(NSString *)rolloutId isEqual:rolloutId2];
 
     if (!v11)
     {
@@ -65,8 +65,8 @@
   }
 
   v13 = self->_factorPackId == 0;
-  v14 = [v5 factorPackId];
-  v15 = v14 != 0;
+  factorPackId = [v5 factorPackId];
+  v15 = factorPackId != 0;
 
   if (v13 == v15)
   {
@@ -76,8 +76,8 @@
   factorPackId = self->_factorPackId;
   if (factorPackId)
   {
-    v17 = [v5 factorPackId];
-    v18 = [(NSString *)factorPackId isEqual:v17];
+    factorPackId2 = [v5 factorPackId];
+    v18 = [(NSString *)factorPackId isEqual:factorPackId2];
 
     if (!v18)
     {
@@ -86,8 +86,8 @@
   }
 
   v19 = self->_rampId == 0;
-  v20 = [v5 rampId];
-  v21 = v20 != 0;
+  rampId = [v5 rampId];
+  v21 = rampId != 0;
 
   if (v19 == v21)
   {
@@ -100,8 +100,8 @@ LABEL_12:
     rampId = self->_rampId;
     if (rampId)
     {
-      v23 = [v5 rampId];
-      v24 = [(NSString *)rampId isEqual:v23];
+      rampId2 = [v5 rampId];
+      v24 = [(NSString *)rampId isEqual:rampId2];
     }
 
     else
@@ -113,18 +113,18 @@ LABEL_12:
   return v24 & 1;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIRolloutIdentifiers *)self isEqualToRolloutIdentifiers:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(TRIRolloutIdentifiers *)self isEqualToRolloutIdentifiers:v5];
   }
 
   return v6;

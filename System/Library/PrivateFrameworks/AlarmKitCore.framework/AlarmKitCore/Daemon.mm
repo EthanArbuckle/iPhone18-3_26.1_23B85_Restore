@@ -25,7 +25,7 @@
   if (v7)
   {
     v8 = *(v7 + 216);
-    v9 = self;
+    selfCopy = self;
 
     sub_22D72E600();
 
@@ -53,7 +53,7 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_22D71ED88();
 }
 

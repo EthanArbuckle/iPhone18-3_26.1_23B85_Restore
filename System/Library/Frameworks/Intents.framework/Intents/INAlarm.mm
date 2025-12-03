@@ -1,13 +1,13 @@
 @interface INAlarm
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INAlarm)initWithCoder:(id)a3;
-- (INAlarm)initWithIdentifier:(id)a3 dateTime:(id)a4 label:(id)a5 enabled:(id)a6 firing:(id)a7 alarmRepeatScheduleOptions:(unint64_t)a8 sleepAlarmAttribute:(id)a9;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INAlarm)initWithCoder:(id)coder;
+- (INAlarm)initWithIdentifier:(id)identifier dateTime:(id)time label:(id)label enabled:(id)enabled firing:(id)firing alarmRepeatScheduleOptions:(unint64_t)options sleepAlarmAttribute:(id)attribute;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INAlarm
@@ -27,54 +27,54 @@
   v24[0] = identifier;
   v23[1] = @"dateTime";
   dateTime = self->_dateTime;
-  v5 = dateTime;
+  null = dateTime;
   if (!dateTime)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v20 = v5;
-  v24[1] = v5;
+  v20 = null;
+  v24[1] = null;
   v23[2] = @"label";
   label = self->_label;
-  v7 = label;
+  null2 = label;
   if (!label)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v18 = v7;
-  v24[2] = v7;
+  v18 = null2;
+  v24[2] = null2;
   v23[3] = @"enabled";
   enabled = self->_enabled;
-  v9 = enabled;
+  null3 = enabled;
   if (!enabled)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[3] = v9;
+  v24[3] = null3;
   v23[4] = @"firing";
   firing = self->_firing;
-  v11 = firing;
+  null4 = firing;
   if (!firing)
   {
-    v11 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[4] = v11;
+  v24[4] = null4;
   v23[5] = @"alarmRepeatScheduleOptions";
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{self->_alarmRepeatScheduleOptions, v18}];
   v24[5] = v12;
   v23[6] = @"sleepAlarmAttribute";
   sleepAlarmAttribute = self->_sleepAlarmAttribute;
-  v14 = sleepAlarmAttribute;
+  null5 = sleepAlarmAttribute;
   if (!sleepAlarmAttribute)
   {
-    v14 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v24[6] = v14;
+  v24[6] = null5;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:7];
   if (!sleepAlarmAttribute)
   {
@@ -133,85 +133,85 @@ LABEL_19:
   return v15;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INAlarm;
   v6 = [(INAlarm *)&v11 description];
-  v7 = [(INAlarm *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INAlarm *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_identifier];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"identifier"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_identifier];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"identifier"];
 
-  v9 = [v6 encodeObject:self->_dateTime];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"dateTime"];
+  v9 = [encoderCopy encodeObject:self->_dateTime];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"dateTime"];
 
-  v10 = [v6 encodeObject:self->_label];
-  [v7 if_setObjectIfNonNil:v10 forKey:@"label"];
+  v10 = [encoderCopy encodeObject:self->_label];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"label"];
 
-  v11 = [v6 encodeObject:self->_enabled];
-  [v7 if_setObjectIfNonNil:v11 forKey:@"enabled"];
+  v11 = [encoderCopy encodeObject:self->_enabled];
+  [dictionary if_setObjectIfNonNil:v11 forKey:@"enabled"];
 
-  v12 = [v6 encodeObject:self->_firing];
-  [v7 if_setObjectIfNonNil:v12 forKey:@"firing"];
+  v12 = [encoderCopy encodeObject:self->_firing];
+  [dictionary if_setObjectIfNonNil:v12 forKey:@"firing"];
 
   v13 = INAlarmRepeatScheduleOptionsGetNames(self->_alarmRepeatScheduleOptions);
-  [v7 if_setObjectIfNonNil:v13 forKey:@"alarmRepeatScheduleOptions"];
+  [dictionary if_setObjectIfNonNil:v13 forKey:@"alarmRepeatScheduleOptions"];
 
-  v14 = [v6 encodeObject:self->_sleepAlarmAttribute];
+  v14 = [encoderCopy encodeObject:self->_sleepAlarmAttribute];
 
-  [v7 if_setObjectIfNonNil:v14 forKey:@"sleepAlarmAttribute"];
+  [dictionary if_setObjectIfNonNil:v14 forKey:@"sleepAlarmAttribute"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_dateTime forKey:@"dateTime"];
-  [v5 encodeObject:self->_label forKey:@"label"];
-  [v5 encodeObject:self->_enabled forKey:@"enabled"];
-  [v5 encodeObject:self->_firing forKey:@"firing"];
-  [v5 encodeInteger:self->_alarmRepeatScheduleOptions forKey:@"alarmRepeatScheduleOptions"];
-  [v5 encodeObject:self->_sleepAlarmAttribute forKey:@"sleepAlarmAttribute"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_dateTime forKey:@"dateTime"];
+  [coderCopy encodeObject:self->_label forKey:@"label"];
+  [coderCopy encodeObject:self->_enabled forKey:@"enabled"];
+  [coderCopy encodeObject:self->_firing forKey:@"firing"];
+  [coderCopy encodeInteger:self->_alarmRepeatScheduleOptions forKey:@"alarmRepeatScheduleOptions"];
+  [coderCopy encodeObject:self->_sleepAlarmAttribute forKey:@"sleepAlarmAttribute"];
 }
 
-- (INAlarm)initWithCoder:(id)a3
+- (INAlarm)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"identifier"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"identifier"];
 
-  v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"dateTime"];
-  v10 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"label"];
-  v11 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"enabled"];
-  v12 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"firing"];
-  v13 = [v5 decodeIntegerForKey:@"alarmRepeatScheduleOptions"];
-  v14 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"sleepAlarmAttribute"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateTime"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"label"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"enabled"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"firing"];
+  v13 = [coderCopy decodeIntegerForKey:@"alarmRepeatScheduleOptions"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sleepAlarmAttribute"];
 
   v15 = [(INAlarm *)self initWithIdentifier:v8 dateTime:v9 label:v10 enabled:v11 firing:v12 alarmRepeatScheduleOptions:v13 sleepAlarmAttribute:v14];
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
@@ -221,7 +221,7 @@ LABEL_19:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       identifier = self->_identifier;
       v12 = 0;
       if (identifier == v5->_identifier || [(NSString *)identifier isEqual:?])
@@ -273,41 +273,41 @@ LABEL_19:
   return v7 ^ v10;
 }
 
-- (INAlarm)initWithIdentifier:(id)a3 dateTime:(id)a4 label:(id)a5 enabled:(id)a6 firing:(id)a7 alarmRepeatScheduleOptions:(unint64_t)a8 sleepAlarmAttribute:(id)a9
+- (INAlarm)initWithIdentifier:(id)identifier dateTime:(id)time label:(id)label enabled:(id)enabled firing:(id)firing alarmRepeatScheduleOptions:(unint64_t)options sleepAlarmAttribute:(id)attribute
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
+  identifierCopy = identifier;
+  timeCopy = time;
+  labelCopy = label;
+  enabledCopy = enabled;
+  firingCopy = firing;
+  attributeCopy = attribute;
   v35.receiver = self;
   v35.super_class = INAlarm;
   v21 = [(INAlarm *)&v35 init];
   if (v21)
   {
-    v22 = [v15 copy];
+    v22 = [identifierCopy copy];
     identifier = v21->_identifier;
     v21->_identifier = v22;
 
-    v24 = [v16 copy];
+    v24 = [timeCopy copy];
     dateTime = v21->_dateTime;
     v21->_dateTime = v24;
 
-    v26 = [v17 copy];
+    v26 = [labelCopy copy];
     label = v21->_label;
     v21->_label = v26;
 
-    v28 = [v18 copy];
+    v28 = [enabledCopy copy];
     enabled = v21->_enabled;
     v21->_enabled = v28;
 
-    v30 = [v19 copy];
+    v30 = [firingCopy copy];
     firing = v21->_firing;
     v21->_firing = v30;
 
-    v21->_alarmRepeatScheduleOptions = a8;
-    v32 = [v20 copy];
+    v21->_alarmRepeatScheduleOptions = options;
+    v32 = [attributeCopy copy];
     sleepAlarmAttribute = v21->_sleepAlarmAttribute;
     v21->_sleepAlarmAttribute = v32;
   }
@@ -315,25 +315,25 @@ LABEL_19:
   return v21;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v7 = a3;
-  v8 = a5;
+  decoderCopy = decoder;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v26 = [v8 objectForKeyedSubscript:@"identifier"];
+    v26 = [fromCopy objectForKeyedSubscript:@"identifier"];
     v9 = objc_opt_class();
-    v10 = [v8 objectForKeyedSubscript:@"dateTime"];
-    v11 = [v7 decodeObjectOfClass:v9 from:v10];
+    v10 = [fromCopy objectForKeyedSubscript:@"dateTime"];
+    v11 = [decoderCopy decodeObjectOfClass:v9 from:v10];
 
     v12 = objc_opt_class();
-    v13 = [v8 objectForKeyedSubscript:@"label"];
-    v14 = [v7 decodeObjectOfClass:v12 from:v13];
+    v13 = [fromCopy objectForKeyedSubscript:@"label"];
+    v14 = [decoderCopy decodeObjectOfClass:v12 from:v13];
 
-    v15 = [v8 objectForKeyedSubscript:@"enabled"];
-    v16 = [v8 objectForKeyedSubscript:@"firing"];
-    v17 = [v8 objectForKeyedSubscript:@"alarmRepeatScheduleOptions"];
+    v15 = [fromCopy objectForKeyedSubscript:@"enabled"];
+    v16 = [fromCopy objectForKeyedSubscript:@"firing"];
+    v17 = [fromCopy objectForKeyedSubscript:@"alarmRepeatScheduleOptions"];
     if (v17)
     {
       objc_opt_class();
@@ -357,10 +357,10 @@ LABEL_19:
 
     v21 = INAlarmRepeatScheduleOptionsWithNames(v20);
     v22 = objc_opt_class();
-    v23 = [v8 objectForKeyedSubscript:@"sleepAlarmAttribute"];
-    v24 = [v7 decodeObjectOfClass:v22 from:v23];
+    v23 = [fromCopy objectForKeyedSubscript:@"sleepAlarmAttribute"];
+    v24 = [decoderCopy decodeObjectOfClass:v22 from:v23];
 
-    v19 = [[a1 alloc] initWithIdentifier:v26 dateTime:v11 label:v14 enabled:v15 firing:v16 alarmRepeatScheduleOptions:v21 sleepAlarmAttribute:v24];
+    v19 = [[self alloc] initWithIdentifier:v26 dateTime:v11 label:v14 enabled:v15 firing:v16 alarmRepeatScheduleOptions:v21 sleepAlarmAttribute:v24];
   }
 
   else

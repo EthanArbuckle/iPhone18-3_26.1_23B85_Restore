@@ -1,38 +1,38 @@
 @interface MSMMCSProtocol
-+ (id)computeItemIDForAsset:(id)a3;
-- (MSMMCSProtocol)initWithPersonID:(id)a3 path:(id)a4;
-- (void)_getItemDone:(unint64_t)a3 path:(id)a4 error:(id)a5;
-- (void)_putItemDone:(unint64_t)a3 putReceipt:(id)a4 error:(id)a5;
-- (void)deactivateRemoveAllFiles:(BOOL)a3;
++ (id)computeItemIDForAsset:(id)asset;
+- (MSMMCSProtocol)initWithPersonID:(id)d path:(id)path;
+- (void)_getItemDone:(unint64_t)done path:(id)path error:(id)error;
+- (void)_putItemDone:(unint64_t)done putReceipt:(id)receipt error:(id)error;
+- (void)deactivateRemoveAllFiles:(BOOL)files;
 - (void)dealloc;
-- (void)didFinishUsingAssets:(id)a3;
+- (void)didFinishUsingAssets:(id)assets;
 @end
 
 @implementation MSMMCSProtocol
 
-- (void)_putItemDone:(unint64_t)a3 putReceipt:(id)a4 error:(id)a5
+- (void)_putItemDone:(unint64_t)done putReceipt:(id)receipt error:(id)error
 {
-  v6 = a4;
-  v7 = a5;
+  receiptCopy = receipt;
+  errorCopy = error;
   __assert_rtn("[MSMMCSProtocol _putItemDone:putReceipt:error:]", "MSMMCSProtocol.m", 201, "0");
 }
 
-- (void)_getItemDone:(unint64_t)a3 path:(id)a4 error:(id)a5
+- (void)_getItemDone:(unint64_t)done path:(id)path error:(id)error
 {
-  v6 = a4;
-  v7 = a5;
+  pathCopy = path;
+  errorCopy = error;
   __assert_rtn("[MSMMCSProtocol _getItemDone:path:error:]", "MSMMCSProtocol.m", 197, "0");
 }
 
-- (void)didFinishUsingAssets:(id)a3
+- (void)didFinishUsingAssets:(id)assets
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetsCopy = assets;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [assetsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -44,11 +44,11 @@
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(assetsCopy);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * v8) metadata];
-        v10 = [v9 objectForKey:@"MSAssetMetadataItemID"];
+        metadata = [*(*(&v13 + 1) + 8 * v8) metadata];
+        v10 = [metadata objectForKey:@"MSAssetMetadataItemID"];
 
         if (v10)
         {
@@ -61,7 +61,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [assetsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -78,9 +78,9 @@
   [(MSMMCSProtocol *)&v3 dealloc];
 }
 
-- (void)deactivateRemoveAllFiles:(BOOL)a3
+- (void)deactivateRemoveAllFiles:(BOOL)files
 {
-  v3 = a3;
+  filesCopy = files;
   if (self->_engine)
   {
     MMCSEngineDestroy();
@@ -93,7 +93,7 @@
   engineDirPath = self->_engineDirPath;
   self->_engineDirPath = 0;
 
-  if (v3)
+  if (filesCopy)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -101,28 +101,28 @@
       _os_log_impl(&dword_245B99000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Removing database.", v9, 2u);
     }
 
-    v7 = [MEMORY[0x277CCAA00] defaultManager];
-    [v7 removeItemAtPath:self->_MMCSDirPath error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager removeItemAtPath:self->_MMCSDirPath error:0];
   }
 
   MMCSDirPath = self->_MMCSDirPath;
   self->_MMCSDirPath = 0;
 }
 
-- (MSMMCSProtocol)initWithPersonID:(id)a3 path:(id)a4
+- (MSMMCSProtocol)initWithPersonID:(id)d path:(id)path
 {
   v26[3] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  pathCopy = path;
   v24.receiver = self;
   v24.super_class = MSMMCSProtocol;
   v9 = [(MSMMCSProtocol *)&v24 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_MMCSDirPath, a4);
-    v11 = [MEMORY[0x277CCAA00] defaultManager];
-    [v11 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:0];
+    objc_storeStrong(&v9->_MMCSDirPath, path);
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager createDirectoryAtPath:pathCopy withIntermediateDirectories:1 attributes:0 error:0];
 
     v12 = *MEMORY[0x277D25450];
     v25[0] = *MEMORY[0x277D25448];
@@ -133,20 +133,20 @@
     v26[2] = MEMORY[0x277CBEC38];
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v26 forKeys:v25 count:3];
     v13 = [MEMORY[0x277CBEA60] arrayWithObject:*MEMORY[0x277CBE640]];
-    v14 = [MEMORY[0x277CBEBC0] fileURLWithPath:v8];
-    v15 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [v15 getCFRunLoop];
+    v14 = [MEMORY[0x277CBEBC0] fileURLWithPath:pathCopy];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [currentRunLoop getCFRunLoop];
     MSPlatform();
-    v16 = v8;
-    v17 = a3;
-    v19 = v18 = v7;
+    v16 = pathCopy;
+    dCopy2 = d;
+    v19 = v18 = dCopy;
     [v19 appBundleInfoString];
     v10->_engine = MMCSEngineCreate();
 
-    v7 = v18;
-    objc_storeStrong(&v10->_engineDirPath, a4);
-    v20 = v17;
-    v8 = v16;
+    dCopy = v18;
+    objc_storeStrong(&v10->_engineDirPath, path);
+    v20 = dCopy2;
+    pathCopy = v16;
     objc_storeStrong(&v10->_personID, v20);
   }
 
@@ -154,12 +154,12 @@
   return v10;
 }
 
-+ (id)computeItemIDForAsset:(id)a3
++ (id)computeItemIDForAsset:(id)asset
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 metadata];
-  v5 = [v4 objectForKey:@"MSAssetMetadataItemID"];
+  assetCopy = asset;
+  metadata = [assetCopy metadata];
+  v5 = [metadata objectForKey:@"MSAssetMetadataItemID"];
   if (!v5)
   {
     v6 = MEMORY[0x277CCABB0];
@@ -167,8 +167,8 @@
     if (!__masterManifest_1115)
     {
       v8 = MSPathMMCSMasterManifest();
-      v9 = [MEMORY[0x277CCAA00] defaultManager];
-      v10 = [v9 fileExistsAtPath:v8];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      v10 = [defaultManager fileExistsAtPath:v8];
 
       if (v10)
       {
@@ -220,9 +220,9 @@
     [v24 writeToFile:v25 atomically:1];
 
     v5 = [v6 numberWithUnsignedLongLong:v21];
-    v26 = [v4 mutableCopy];
+    v26 = [metadata mutableCopy];
     [v26 setObject:v5 forKey:@"MSAssetMetadataItemID"];
-    [v3 setMetadata:v26];
+    [assetCopy setMetadata:v26];
   }
 
   v27 = *MEMORY[0x277D85DE8];

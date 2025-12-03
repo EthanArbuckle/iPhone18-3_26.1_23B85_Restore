@@ -1,34 +1,34 @@
 @interface PKDynamicTemplateLayout
-- (PKDynamicTemplateLayout)initWithDictionary:(id)a3;
-- (id)anyLayoutImageNamed:(id)a3;
-- (id)anyLayoutLinkNamed:(id)a3;
-- (id)anyLayoutStringNamed:(id)a3;
-- (id)layoutImageNamed:(id)a3 passingTest:(id)a4;
+- (PKDynamicTemplateLayout)initWithDictionary:(id)dictionary;
+- (id)anyLayoutImageNamed:(id)named;
+- (id)anyLayoutLinkNamed:(id)named;
+- (id)anyLayoutStringNamed:(id)named;
+- (id)layoutImageNamed:(id)named passingTest:(id)test;
 - (id)layoutImages;
-- (id)layoutLinkNamed:(id)a3 passingTest:(id)a4;
+- (id)layoutLinkNamed:(id)named passingTest:(id)test;
 - (id)layoutLinks;
-- (id)layoutStringNamed:(id)a3 passingTest:(id)a4;
+- (id)layoutStringNamed:(id)named passingTest:(id)test;
 - (id)layoutStrings;
-- (void)_initWithLayoutDictionary:(id)a3;
+- (void)_initWithLayoutDictionary:(id)dictionary;
 @end
 
 @implementation PKDynamicTemplateLayout
 
-- (PKDynamicTemplateLayout)initWithDictionary:(id)a3
+- (PKDynamicTemplateLayout)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v8.receiver = self;
   v8.super_class = PKDynamicTemplateLayout;
   v5 = [(PKDynamicTemplateLayout *)&v8 init];
   if (v5)
   {
-    if (!v4 || ![v4 count])
+    if (!dictionaryCopy || ![dictionaryCopy count])
     {
       v6 = 0;
       goto LABEL_7;
     }
 
-    [(PKDynamicTemplateLayout *)v5 _initWithLayoutDictionary:v4];
+    [(PKDynamicTemplateLayout *)v5 _initWithLayoutDictionary:dictionaryCopy];
   }
 
   v6 = v5;
@@ -37,26 +37,26 @@ LABEL_7:
   return v6;
 }
 
-- (void)_initWithLayoutDictionary:(id)a3
+- (void)_initWithLayoutDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 PKStringForKey:@"cardTemplateIdentifier"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy PKStringForKey:@"cardTemplateIdentifier"];
   templateIdentifier = self->_templateIdentifier;
   self->_templateIdentifier = v5;
 
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   layoutImages = self->_layoutImages;
-  self->_layoutImages = v7;
+  self->_layoutImages = dictionary;
 
-  v9 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   layoutStrings = self->_layoutStrings;
-  self->_layoutStrings = v9;
+  self->_layoutStrings = dictionary2;
 
-  v11 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary3 = [MEMORY[0x1E695DF90] dictionary];
   layoutLinks = self->_layoutLinks;
-  self->_layoutLinks = v11;
+  self->_layoutLinks = dictionary3;
 
-  v31 = [v4 PKDictionaryForKey:@"assets"];
+  v31 = [dictionaryCopy PKDictionaryForKey:@"assets"];
 
   if (v31)
   {
@@ -110,86 +110,86 @@ LABEL_7:
   return v2;
 }
 
-- (id)anyLayoutStringNamed:(id)a3
+- (id)anyLayoutStringNamed:(id)named
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  namedCopy = named;
+  v5 = namedCopy;
+  if (namedCopy && [namedCopy length])
   {
     v6 = [(NSMutableDictionary *)self->_layoutStrings objectForKey:v5];
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
   }
 
   else
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
-  return v7;
+  return firstObject;
 }
 
-- (id)anyLayoutImageNamed:(id)a3
+- (id)anyLayoutImageNamed:(id)named
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  namedCopy = named;
+  v5 = namedCopy;
+  if (namedCopy && [namedCopy length])
   {
     v6 = [(NSMutableDictionary *)self->_layoutImages objectForKey:v5];
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
   }
 
   else
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
-  return v7;
+  return firstObject;
 }
 
-- (id)anyLayoutLinkNamed:(id)a3
+- (id)anyLayoutLinkNamed:(id)named
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  namedCopy = named;
+  v5 = namedCopy;
+  if (namedCopy && [namedCopy length])
   {
     v6 = [(NSMutableDictionary *)self->_layoutLinks objectForKey:v5];
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
   }
 
   else
   {
-    v7 = 0;
+    firstObject = 0;
   }
 
-  return v7;
+  return firstObject;
 }
 
-- (id)layoutStringNamed:(id)a3 passingTest:(id)a4
+- (id)layoutStringNamed:(id)named passingTest:(id)test
 {
   layoutStrings = self->_layoutStrings;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)layoutStrings objectForKey:a3];
-  v8 = [v7 pk_firstObjectPassingTest:v6];
+  testCopy = test;
+  v7 = [(NSMutableDictionary *)layoutStrings objectForKey:named];
+  v8 = [v7 pk_firstObjectPassingTest:testCopy];
 
   return v8;
 }
 
-- (id)layoutImageNamed:(id)a3 passingTest:(id)a4
+- (id)layoutImageNamed:(id)named passingTest:(id)test
 {
   layoutImages = self->_layoutImages;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)layoutImages objectForKey:a3];
-  v8 = [v7 pk_firstObjectPassingTest:v6];
+  testCopy = test;
+  v7 = [(NSMutableDictionary *)layoutImages objectForKey:named];
+  v8 = [v7 pk_firstObjectPassingTest:testCopy];
 
   return v8;
 }
 
-- (id)layoutLinkNamed:(id)a3 passingTest:(id)a4
+- (id)layoutLinkNamed:(id)named passingTest:(id)test
 {
   layoutLinks = self->_layoutLinks;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)layoutLinks objectForKey:a3];
-  v8 = [v7 pk_firstObjectPassingTest:v6];
+  testCopy = test;
+  v7 = [(NSMutableDictionary *)layoutLinks objectForKey:named];
+  v8 = [v7 pk_firstObjectPassingTest:testCopy];
 
   return v8;
 }

@@ -1,53 +1,53 @@
 @interface LNDeferredLocalizedString
-- (BOOL)isEqual:(id)a3;
-- (LNDeferredLocalizedString)initWithCoder:(id)a3;
-- (LNDeferredLocalizedString)initWithLocalizedKey:(id)a3 arguments:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNDeferredLocalizedString)initWithCoder:(id)coder;
+- (LNDeferredLocalizedString)initWithLocalizedKey:(id)key arguments:(id)arguments;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNDeferredLocalizedString
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNDeferredLocalizedString *)self localizedKey];
-  [v4 encodeObject:v5 forKey:@"localizedKey"];
+  coderCopy = coder;
+  localizedKey = [(LNDeferredLocalizedString *)self localizedKey];
+  [coderCopy encodeObject:localizedKey forKey:@"localizedKey"];
 
-  v6 = [(LNDeferredLocalizedString *)self arguments];
-  [v4 encodeObject:v6 forKey:@"arguments"];
+  arguments = [(LNDeferredLocalizedString *)self arguments];
+  [coderCopy encodeObject:arguments forKey:@"arguments"];
 }
 
-- (LNDeferredLocalizedString)initWithCoder:(id)a3
+- (LNDeferredLocalizedString)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedKey"];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"arguments"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"arguments"];
 
     if (v9)
     {
       self = [(LNDeferredLocalizedString *)self initWithLocalizedKey:v5 arguments:v9];
-      v10 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v10 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (id)description
@@ -55,30 +55,30 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNDeferredLocalizedString *)self localizedKey];
-  v7 = [(LNDeferredLocalizedString *)self arguments];
-  v8 = [v3 stringWithFormat:@"<%@: %p, localizedKey: %@, arguments: %@>", v5, self, v6, v7];
+  localizedKey = [(LNDeferredLocalizedString *)self localizedKey];
+  arguments = [(LNDeferredLocalizedString *)self arguments];
+  v8 = [v3 stringWithFormat:@"<%@: %p, localizedKey: %@, arguments: %@>", v5, self, localizedKey, arguments];
 
   return v8;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(LNDeferredLocalizedString *)self localizedKey];
-  v4 = [v3 hash];
-  v5 = [(LNDeferredLocalizedString *)self arguments];
-  v6 = [v5 hash];
+  localizedKey = [(LNDeferredLocalizedString *)self localizedKey];
+  v4 = [localizedKey hash];
+  arguments = [(LNDeferredLocalizedString *)self arguments];
+  v6 = [arguments hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -87,10 +87,10 @@ LABEL_20:
       goto LABEL_21;
     }
 
-    v7 = [(LNDeferredLocalizedString *)self localizedKey];
-    v8 = [(LNDeferredLocalizedString *)v6 localizedKey];
-    v9 = v7;
-    v10 = v8;
+    localizedKey = [(LNDeferredLocalizedString *)self localizedKey];
+    localizedKey2 = [(LNDeferredLocalizedString *)v6 localizedKey];
+    v9 = localizedKey;
+    v10 = localizedKey2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -117,10 +117,10 @@ LABEL_19:
       }
     }
 
-    v15 = [(LNDeferredLocalizedString *)self arguments];
-    v16 = [(LNDeferredLocalizedString *)v6 arguments];
-    v14 = v15;
-    v17 = v16;
+    arguments = [(LNDeferredLocalizedString *)self arguments];
+    arguments2 = [(LNDeferredLocalizedString *)v6 arguments];
+    v14 = arguments;
+    v17 = arguments2;
     v13 = v17;
     if (v14 == v17)
     {
@@ -145,14 +145,14 @@ LABEL_21:
   return v12;
 }
 
-- (LNDeferredLocalizedString)initWithLocalizedKey:(id)a3 arguments:(id)a4
+- (LNDeferredLocalizedString)initWithLocalizedKey:(id)key arguments:(id)arguments
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  keyCopy = key;
+  argumentsCopy = arguments;
+  v9 = argumentsCopy;
+  if (keyCopy)
   {
-    if (v8)
+    if (argumentsCopy)
     {
       goto LABEL_3;
     }
@@ -160,8 +160,8 @@ LABEL_21:
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"LNDeferredLocalizedString.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"localizedKey"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNDeferredLocalizedString.m" lineNumber:19 description:{@"Invalid parameter not satisfying: %@", @"localizedKey"}];
 
     if (v9)
     {
@@ -169,8 +169,8 @@ LABEL_21:
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"LNDeferredLocalizedString.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"arguments"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNDeferredLocalizedString.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"arguments"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -178,7 +178,7 @@ LABEL_3:
   v10 = [(LNDeferredLocalizedString *)&v19 init];
   if (v10)
   {
-    v11 = [v7 copy];
+    v11 = [keyCopy copy];
     localizedKey = v10->_localizedKey;
     v10->_localizedKey = v11;
 

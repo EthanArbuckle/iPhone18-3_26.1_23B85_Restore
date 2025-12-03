@@ -1,13 +1,13 @@
 @interface MicaLayerView
 - (CGSize)intrinsicContentSize;
-- (_TtC5Books13MicaLayerView)initWithCoder:(id)a3;
-- (_TtC5Books13MicaLayerView)initWithFrame:(CGRect)a3;
-- (void)micaPlayerDidChangePlaybackTime:(id)a3;
+- (_TtC5Books13MicaLayerView)initWithCoder:(id)coder;
+- (_TtC5Books13MicaLayerView)initWithFrame:(CGRect)frame;
+- (void)micaPlayerDidChangePlaybackTime:(id)time;
 @end
 
 @implementation MicaLayerView
 
-- (_TtC5Books13MicaLayerView)initWithCoder:(id)a3
+- (_TtC5Books13MicaLayerView)initWithCoder:(id)coder
 {
   result = sub_1007A38A4();
   __break(1u);
@@ -23,18 +23,18 @@
   return result;
 }
 
-- (_TtC5Books13MicaLayerView)initWithFrame:(CGRect)a3
+- (_TtC5Books13MicaLayerView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)micaPlayerDidChangePlaybackTime:(id)a3
+- (void)micaPlayerDidChangePlaybackTime:(id)time
 {
-  v5 = a3;
-  v6 = self;
-  sub_10065C924(a3);
+  timeCopy = time;
+  selfCopy = self;
+  sub_10065C924(time);
 }
 
 @end

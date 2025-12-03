@@ -7,14 +7,14 @@
 
 - (uint64_t)ML3NameOrderValue
 {
-  if (strcmp([a1 objCType], "{?=qq}"))
+  if (strcmp([self objCType], "{?=qq}"))
   {
     return 0;
   }
 
   v3[0] = 0;
   v3[1] = 0;
-  [a1 getValue:v3];
+  [self getValue:v3];
   return v3[0];
 }
 

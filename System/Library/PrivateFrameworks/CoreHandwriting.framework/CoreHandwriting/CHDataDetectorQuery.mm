@@ -1,17 +1,17 @@
 @interface CHDataDetectorQuery
-- (CHDataDetectorQuery)initWithRecognitionSession:(id)a3;
+- (CHDataDetectorQuery)initWithRecognitionSession:(id)session;
 - (NSArray)foundItems;
 - (void)q_updateQueryResult;
 @end
 
 @implementation CHDataDetectorQuery
 
-- (CHDataDetectorQuery)initWithRecognitionSession:(id)a3
+- (CHDataDetectorQuery)initWithRecognitionSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v19.receiver = self;
   v19.super_class = CHDataDetectorQuery;
-  v5 = [(CHQuery *)&v19 initWithRecognitionSession:v4];
+  v5 = [(CHQuery *)&v19 initWithRecognitionSession:sessionCopy];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DEC8]);
@@ -262,7 +262,7 @@ LABEL_46:
             v548 = &unk_1E6DDF450;
             v549 = v525;
             v550 = v527;
-            v551 = self;
+            selfCopy = self;
             v552 = v517;
             v224 = v223;
             v507 = v546;

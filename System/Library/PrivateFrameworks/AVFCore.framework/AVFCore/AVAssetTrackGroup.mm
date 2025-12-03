@@ -1,12 +1,12 @@
 @interface AVAssetTrackGroup
-- (AVAssetTrackGroup)initWithAsset:(id)a3 trackIDs:(id)a4;
-- (BOOL)isEqual:(id)a3;
+- (AVAssetTrackGroup)initWithAsset:(id)asset trackIDs:(id)ds;
+- (BOOL)isEqual:(id)equal;
 - (void)dealloc;
 @end
 
 @implementation AVAssetTrackGroup
 
-- (AVAssetTrackGroup)initWithAsset:(id)a3 trackIDs:(id)a4
+- (AVAssetTrackGroup)initWithAsset:(id)asset trackIDs:(id)ds
 {
   v9.receiver = self;
   v9.super_class = AVAssetTrackGroup;
@@ -18,8 +18,8 @@
     if (v7)
     {
       CFRetain(v7);
-      v6->_assetTrackGroup->assetComparisonToken = [a3 _comparisonToken];
-      v6->_assetTrackGroup->trackIDs = [a4 copy];
+      v6->_assetTrackGroup->assetComparisonToken = [asset _comparisonToken];
+      v6->_assetTrackGroup->trackIDs = [ds copy];
       if (!v6->_assetTrackGroup->trackIDs)
       {
         v6->_assetTrackGroup->trackIDs = objc_alloc_init(MEMORY[0x1E695DEC8]);
@@ -50,9 +50,9 @@
   [(AVAssetTrackGroup *)&v4 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     goto LABEL_8;
   }
@@ -67,12 +67,12 @@
   v5 = [-[AVAssetTrackGroup _assetComparisonToken](self "_assetComparisonToken")];
   if (v5)
   {
-    v6 = [(AVAssetTrackGroup *)self trackIDs];
-    v7 = [a3 trackIDs];
-    if (v6 != v7)
+    trackIDs = [(AVAssetTrackGroup *)self trackIDs];
+    trackIDs2 = [equal trackIDs];
+    if (trackIDs != trackIDs2)
     {
 
-      LOBYTE(v5) = [(NSArray *)v6 isEqual:v7];
+      LOBYTE(v5) = [(NSArray *)trackIDs isEqual:trackIDs2];
       return v5;
     }
 

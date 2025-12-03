@@ -1,84 +1,84 @@
 @interface CSDProviderBargeCall
-+ (id)callForChannelIdentity:(id)a3;
-+ (id)callForChannelIdentity:(id)a3 configuration:(id)a4;
-+ (id)callForChannelSource:(id)a3 joinAction:(id)a4;
-+ (id)defaultConfigurationWithProviderIdentifier:(id)a3;
++ (id)callForChannelIdentity:(id)identity;
++ (id)callForChannelIdentity:(id)identity configuration:(id)configuration;
++ (id)callForChannelSource:(id)source joinAction:(id)action;
++ (id)defaultConfigurationWithProviderIdentifier:(id)identifier;
 - (BOOL)_activeStandardCallExists;
 - (BOOL)isReceivingTransmission;
 - (BOOL)isSendingTransmission;
-- (CSDProviderBargeCall)initWithUUID:(id)a3 configuration:(id)a4;
+- (CSDProviderBargeCall)initWithUUID:(id)d configuration:(id)configuration;
 - (CSDProviderBargeCallDelegate)providerBargeCallDelegate;
 - (id)displayName;
 - (id)provider;
-- (void)_handlePushToTalkRecordingStateChanged:(id)a3;
-- (void)_handleRecordingStateChanged:(id)a3;
-- (void)audioApplicationMuteStatusChanged:(id)a3;
+- (void)_handlePushToTalkRecordingStateChanged:(id)changed;
+- (void)_handleRecordingStateChanged:(id)changed;
+- (void)audioApplicationMuteStatusChanged:(id)changed;
 - (void)deactivate;
 - (void)dealloc;
-- (void)disconnectWithReason:(int)a3;
-- (void)handleAudioSessionActivationStateChangedTo:(id)a3;
-- (void)playSoundForSoundType:(int64_t)a3 completion:(id)a4;
-- (void)playSoundForTransmissionState:(int64_t)a3 completion:(id)a4;
-- (void)setProviderSource:(id)a3;
-- (void)setTransmissionState:(int64_t)a3;
-- (void)startTransmissionWithOriginator:(int64_t)a3;
-- (void)stopTransmissionWithOriginator:(int64_t)a3;
+- (void)disconnectWithReason:(int)reason;
+- (void)handleAudioSessionActivationStateChangedTo:(id)to;
+- (void)playSoundForSoundType:(int64_t)type completion:(id)completion;
+- (void)playSoundForTransmissionState:(int64_t)state completion:(id)completion;
+- (void)setProviderSource:(id)source;
+- (void)setTransmissionState:(int64_t)state;
+- (void)startTransmissionWithOriginator:(int64_t)originator;
+- (void)stopTransmissionWithOriginator:(int64_t)originator;
 - (void)updateUplinkMuteState;
 @end
 
 @implementation CSDProviderBargeCall
 
-+ (id)callForChannelIdentity:(id)a3
++ (id)callForChannelIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [v4 applicationIdentifier];
-  v6 = [a1 defaultConfigurationWithProviderIdentifier:v5];
+  identityCopy = identity;
+  applicationIdentifier = [identityCopy applicationIdentifier];
+  v6 = [self defaultConfigurationWithProviderIdentifier:applicationIdentifier];
 
-  v7 = [a1 callForChannelIdentity:v4 configuration:v6];
+  v7 = [self callForChannelIdentity:identityCopy configuration:v6];
 
   return v7;
 }
 
-+ (id)callForChannelIdentity:(id)a3 configuration:(id)a4
++ (id)callForChannelIdentity:(id)identity configuration:(id)configuration
 {
-  v5 = a4;
-  v6 = a3;
+  configurationCopy = configuration;
+  identityCopy = identity;
   v7 = objc_alloc_init(CXCallUpdate);
   [v7 setSupportsHolding:1];
   v8 = [CSDProviderBargeCall alloc];
-  v9 = [v6 channelUUID];
+  channelUUID = [identityCopy channelUUID];
 
-  v10 = [(CSDProviderBargeCall *)v8 initWithUUID:v9 configuration:v5];
+  v10 = [(CSDProviderBargeCall *)v8 initWithUUID:channelUUID configuration:configurationCopy];
   [(CSDProviderCall *)v10 updateWithCallUpdate:v7];
 
   return v10;
 }
 
-+ (id)callForChannelSource:(id)a3 joinAction:(id)a4
++ (id)callForChannelSource:(id)source joinAction:(id)action
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 channelUpdate];
-  v9 = [v8 csd_callUpdate];
+  actionCopy = action;
+  sourceCopy = source;
+  channelUpdate = [actionCopy channelUpdate];
+  csd_callUpdate = [channelUpdate csd_callUpdate];
 
-  [v9 setSupportsHolding:1];
-  v10 = [v7 identifier];
-  v11 = [a1 defaultConfigurationWithProviderIdentifier:v10];
+  [csd_callUpdate setSupportsHolding:1];
+  identifier = [sourceCopy identifier];
+  v11 = [self defaultConfigurationWithProviderIdentifier:identifier];
 
-  [v11 setProviderSource:v7];
+  [v11 setProviderSource:sourceCopy];
   v12 = [CSDProviderBargeCall alloc];
-  v13 = [v6 channelUUID];
+  channelUUID = [actionCopy channelUUID];
 
-  v14 = [(CSDProviderBargeCall *)v12 initWithUUID:v13 configuration:v11];
-  [(CSDProviderCall *)v14 updateWithCallUpdate:v9];
+  v14 = [(CSDProviderBargeCall *)v12 initWithUUID:channelUUID configuration:v11];
+  [(CSDProviderCall *)v14 updateWithCallUpdate:csd_callUpdate];
 
   return v14;
 }
 
-+ (id)defaultConfigurationWithProviderIdentifier:(id)a3
++ (id)defaultConfigurationWithProviderIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [[CSDProviderCallConfiguration alloc] initWithProviderIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [[CSDProviderCallConfiguration alloc] initWithProviderIdentifier:identifierCopy];
 
   [(CSDProviderCallConfiguration *)v4 setEndpointOnCurrentDevice:1];
   [(CSDProviderCallConfiguration *)v4 setHeld:1];
@@ -89,13 +89,13 @@
   return v4;
 }
 
-- (CSDProviderBargeCall)initWithUUID:(id)a3 configuration:(id)a4
+- (CSDProviderBargeCall)initWithUUID:(id)d configuration:(id)configuration
 {
-  v6 = a4;
-  v7 = [a3 UUIDString];
+  configurationCopy = configuration;
+  uUIDString = [d UUIDString];
   v17.receiver = self;
   v17.super_class = CSDProviderBargeCall;
-  v8 = [(CSDProviderCall *)&v17 initWithUniqueProxyIdentifier:v7 configuration:v6];
+  v8 = [(CSDProviderCall *)&v17 initWithUniqueProxyIdentifier:uUIDString configuration:configurationCopy];
 
   if (v8)
   {
@@ -129,11 +129,11 @@
 
 - (id)displayName
 {
-  v2 = [(CSDProviderCall *)self callerNameFromNetwork];
-  v3 = v2;
-  if (v2)
+  callerNameFromNetwork = [(CSDProviderCall *)self callerNameFromNetwork];
+  v3 = callerNameFromNetwork;
+  if (callerNameFromNetwork)
   {
-    v4 = v2;
+    v4 = callerNameFromNetwork;
   }
 
   else
@@ -148,35 +148,35 @@
 
 - (id)provider
 {
-  v3 = [(CSDProviderBargeCall *)self providerBargeCallDelegate];
-  v4 = [(CSDProviderCall *)self providerIdentifier];
-  v5 = [v3 channelProviderForIdentifier:v4];
+  providerBargeCallDelegate = [(CSDProviderBargeCall *)self providerBargeCallDelegate];
+  providerIdentifier = [(CSDProviderCall *)self providerIdentifier];
+  v5 = [providerBargeCallDelegate channelProviderForIdentifier:providerIdentifier];
 
   return v5;
 }
 
-- (void)setProviderSource:(id)a3
+- (void)setProviderSource:(id)source
 {
-  v4 = a3;
-  v5 = [(CSDProviderCall *)self providerSource];
+  sourceCopy = source;
+  providerSource = [(CSDProviderCall *)self providerSource];
   v8.receiver = self;
   v8.super_class = CSDProviderBargeCall;
-  [(CSDProviderCall *)&v8 setProviderSource:v4];
+  [(CSDProviderCall *)&v8 setProviderSource:sourceCopy];
 
-  v6 = [(CSDProviderBargeCall *)self deferredTransmitStartAction];
-  v7 = v6;
-  if (v4 && !v5 && v6)
+  deferredTransmitStartAction = [(CSDProviderBargeCall *)self deferredTransmitStartAction];
+  v7 = deferredTransmitStartAction;
+  if (sourceCopy && !providerSource && deferredTransmitStartAction)
   {
     [(CSDProviderBargeCall *)self setDeferredTransmitStartAction:0];
     -[CSDProviderBargeCall startTransmissionWithOriginator:](self, "startTransmissionWithOriginator:", [v7 originator]);
   }
 }
 
-- (void)setTransmissionState:(int64_t)a3
+- (void)setTransmissionState:(int64_t)state
 {
   v4.receiver = self;
   v4.super_class = CSDProviderBargeCall;
-  [(CSDCall *)&v4 setTransmissionState:a3];
+  [(CSDCall *)&v4 setTransmissionState:state];
   [(CSDProviderBargeCall *)self updateUplinkMuteState];
 }
 
@@ -194,18 +194,18 @@
     return;
   }
 
-  v4 = [(CSDProviderBargeCall *)self provider];
+  provider = [(CSDProviderBargeCall *)self provider];
 
   if (![(CSDProviderBargeCall *)self isPlayingSystemSound])
   {
-    v9 = [(CSDProviderBargeCall *)self providerBargeCallDelegate];
-    if (v9 && (-[CSDProviderBargeCall channelSource](self, "channelSource"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v9 isAppForegroundForChannelSource:v10], v10, v11))
+    providerBargeCallDelegate = [(CSDProviderBargeCall *)self providerBargeCallDelegate];
+    if (providerBargeCallDelegate && (-[CSDProviderBargeCall channelSource](self, "channelSource"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [providerBargeCallDelegate isAppForegroundForChannelSource:v10], v10, v11))
     {
       v12 = sub_100004778();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v13 = @"NO";
-        if (v4)
+        if (provider)
         {
           v13 = @"YES";
         }
@@ -222,8 +222,8 @@ LABEL_25:
     {
       if (([(CSDCall *)self transmissionState]& 2) != 0 && ![(CSDProviderBargeCall *)self isSendingTransmission])
       {
-        v15 = [(CSDProviderCall *)self providerSource];
-        v16 = -[CSDProviderBargeCall _recordingClientPIDsContainsProcessIdentifier:](self, "_recordingClientPIDsContainsProcessIdentifier:", [v15 processIdentifier]);
+        providerSource = [(CSDProviderCall *)self providerSource];
+        v16 = -[CSDProviderBargeCall _recordingClientPIDsContainsProcessIdentifier:](self, "_recordingClientPIDsContainsProcessIdentifier:", [providerSource processIdentifier]);
 
         if ((v16 & 1) == 0)
         {
@@ -231,7 +231,7 @@ LABEL_25:
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
             v26 = @"NO";
-            if (v4)
+            if (provider)
             {
               v26 = @"YES";
             }
@@ -241,21 +241,21 @@ LABEL_25:
             _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "Muting PushToTalk provider uplink because the barge call is in a receiving only state. Provider configured: %@", v29, 0xCu);
           }
 
-          v27 = [(CSDProviderBargeCall *)self featureFlags];
-          v28 = [v27 sessionBasedMutingEnabled];
+          featureFlags = [(CSDProviderBargeCall *)self featureFlags];
+          sessionBasedMutingEnabled = [featureFlags sessionBasedMutingEnabled];
 
-          if (v28)
+          if (sessionBasedMutingEnabled)
           {
-            v20 = v4 != 0;
-            v21 = self;
+            v20 = provider != 0;
+            selfCopy3 = self;
             v22 = 1;
             goto LABEL_28;
           }
 
-          v23 = self;
+          selfCopy4 = self;
           v24 = 1;
 LABEL_31:
-          [(CSDProviderCall *)v23 setUnderlyingUplinkMuted:v24, *v29];
+          [(CSDProviderCall *)selfCopy4 setUnderlyingUplinkMuted:v24, *v29];
           goto LABEL_32;
         }
       }
@@ -264,7 +264,7 @@ LABEL_31:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         v17 = @"NO";
-        if (v4)
+        if (provider)
         {
           v17 = @"YES";
         }
@@ -276,22 +276,22 @@ LABEL_31:
       }
     }
 
-    v18 = [(CSDProviderBargeCall *)self featureFlags];
-    v19 = [v18 sessionBasedMutingEnabled];
+    featureFlags2 = [(CSDProviderBargeCall *)self featureFlags];
+    sessionBasedMutingEnabled2 = [featureFlags2 sessionBasedMutingEnabled];
 
-    if (v19)
+    if (sessionBasedMutingEnabled2)
     {
-      v20 = v4 != 0;
-      v21 = self;
+      v20 = provider != 0;
+      selfCopy3 = self;
       v22 = 0;
 LABEL_28:
-      [(CSDProviderCall *)v21 setUplinkMuted:v22 userInitiated:v20, *v29];
+      [(CSDProviderCall *)selfCopy3 setUplinkMuted:v22 userInitiated:v20, *v29];
 LABEL_32:
 
       return;
     }
 
-    v23 = self;
+    selfCopy4 = self;
     v24 = 0;
     goto LABEL_31;
   }
@@ -300,7 +300,7 @@ LABEL_32:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = @"NO";
-    if (v4)
+    if (provider)
     {
       v6 = @"YES";
     }
@@ -310,12 +310,12 @@ LABEL_32:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Muting PushToTalk provider uplink because a system sound is being played. Provider configured: %@", v29, 0xCu);
   }
 
-  v7 = [(CSDProviderBargeCall *)self featureFlags];
-  v8 = [v7 sessionBasedMutingEnabled];
+  featureFlags3 = [(CSDProviderBargeCall *)self featureFlags];
+  sessionBasedMutingEnabled3 = [featureFlags3 sessionBasedMutingEnabled];
 
-  if (v8)
+  if (sessionBasedMutingEnabled3)
   {
-    [(CSDProviderCall *)self setUplinkMuted:1 userInitiated:v4 != 0];
+    [(CSDProviderCall *)self setUplinkMuted:1 userInitiated:provider != 0];
   }
 
   else
@@ -335,20 +335,20 @@ LABEL_32:
 - (BOOL)isReceivingTransmission
 {
   v3 = objc_opt_class();
-  v4 = [(CSDCall *)self transmissionState];
+  transmissionState = [(CSDCall *)self transmissionState];
 
-  return [v3 isReceivingTransmission:v4];
+  return [v3 isReceivingTransmission:transmissionState];
 }
 
 - (BOOL)isSendingTransmission
 {
   v3 = objc_opt_class();
-  v4 = [(CSDCall *)self transmissionState];
+  transmissionState = [(CSDCall *)self transmissionState];
 
-  return [v3 isSendingTransmission:v4];
+  return [v3 isSendingTransmission:transmissionState];
 }
 
-- (void)startTransmissionWithOriginator:(int64_t)a3
+- (void)startTransmissionWithOriginator:(int64_t)originator
 {
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -357,10 +357,10 @@ LABEL_32:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received start transmission request for barge call.", buf, 2u);
   }
 
-  if (a3 == 1 && ![(CSDProviderCall *)self accessoryButtonEventsEnabled])
+  if (originator == 1 && ![(CSDProviderCall *)self accessoryButtonEventsEnabled])
   {
-    v6 = sub_100004778();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    providerBargeCallDelegate = sub_100004778();
+    if (os_log_type_enabled(providerBargeCallDelegate, OS_LOG_TYPE_DEFAULT))
     {
       *v14 = 0;
       v7 = "Ignoring barge call transmit request because the request originated from an accessory and accessory events are disabled for the call.";
@@ -371,21 +371,21 @@ LABEL_32:
 
   else if ([(CSDProviderBargeCall *)self isSendingTransmission])
   {
-    v6 = sub_100004778();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    providerBargeCallDelegate = sub_100004778();
+    if (os_log_type_enabled(providerBargeCallDelegate, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 0;
       v7 = "Ignoring barge call transmit request because we are already transmitting.";
       v8 = &v13;
 LABEL_17:
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, v7, v8, 2u);
+      _os_log_impl(&_mh_execute_header, providerBargeCallDelegate, OS_LOG_TYPE_DEFAULT, v7, v8, 2u);
     }
   }
 
   else if ([(CSDProviderBargeCall *)self isReceivingTransmission]&& [(CSDProviderCall *)self transmissionMode])
   {
-    v6 = sub_100004778();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    providerBargeCallDelegate = sub_100004778();
+    if (os_log_type_enabled(providerBargeCallDelegate, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 0;
       v7 = "Could not begin sending transmission because barge call was receiving a transmission and does not support full-duplex mode.";
@@ -396,23 +396,23 @@ LABEL_17:
 
   else
   {
-    v6 = [(CSDProviderBargeCall *)self providerBargeCallDelegate];
-    [v6 acquireIndefiniteProcessAssertionForCall:self];
+    providerBargeCallDelegate = [(CSDProviderBargeCall *)self providerBargeCallDelegate];
+    [providerBargeCallDelegate acquireIndefiniteProcessAssertionForCall:self];
     if ([(CSDProviderBargeCall *)self isOnHold])
     {
       [(CSDProviderCall *)self unhold];
     }
 
     v9 = [CXChannelTransmitStartAction alloc];
-    v10 = [(CSDProviderBargeCall *)self uniqueProxyIdentifierUUID];
-    v11 = [v9 initWithChannelUUID:v10];
+    uniqueProxyIdentifierUUID = [(CSDProviderBargeCall *)self uniqueProxyIdentifierUUID];
+    v11 = [v9 initWithChannelUUID:uniqueProxyIdentifierUUID];
 
-    [v11 setOriginator:a3];
-    [v6 performChannelAction:v11 forCall:self];
+    [v11 setOriginator:originator];
+    [providerBargeCallDelegate performChannelAction:v11 forCall:self];
   }
 }
 
-- (void)stopTransmissionWithOriginator:(int64_t)a3
+- (void)stopTransmissionWithOriginator:(int64_t)originator
 {
   v5 = sub_100004778();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -421,10 +421,10 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received stop transmission request for barge call.", buf, 2u);
   }
 
-  if (a3 == 1 && ![(CSDProviderCall *)self accessoryButtonEventsEnabled])
+  if (originator == 1 && ![(CSDProviderCall *)self accessoryButtonEventsEnabled])
   {
-    v6 = sub_100004778();
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    providerBargeCallDelegate = sub_100004778();
+    if (!os_log_type_enabled(providerBargeCallDelegate, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_14;
     }
@@ -437,8 +437,8 @@ LABEL_17:
 
   if (![(CSDProviderBargeCall *)self isSendingTransmission])
   {
-    v6 = sub_100004778();
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    providerBargeCallDelegate = sub_100004778();
+    if (!os_log_type_enabled(providerBargeCallDelegate, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_14;
     }
@@ -447,7 +447,7 @@ LABEL_17:
     v10 = "Ignoring barge call end transmit request because we are not transmitting.";
     v11 = &v12;
 LABEL_13:
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, v10, v11, 2u);
+    _os_log_impl(&_mh_execute_header, providerBargeCallDelegate, OS_LOG_TYPE_DEFAULT, v10, v11, 2u);
     goto LABEL_14;
   }
 
@@ -456,13 +456,13 @@ LABEL_13:
     [(CSDProviderCall *)self hold];
   }
 
-  v6 = [(CSDProviderBargeCall *)self providerBargeCallDelegate];
+  providerBargeCallDelegate = [(CSDProviderBargeCall *)self providerBargeCallDelegate];
   v7 = [CXChannelTransmitStopAction alloc];
-  v8 = [(CSDProviderBargeCall *)self uniqueProxyIdentifierUUID];
-  v9 = [v7 initWithChannelUUID:v8];
+  uniqueProxyIdentifierUUID = [(CSDProviderBargeCall *)self uniqueProxyIdentifierUUID];
+  v9 = [v7 initWithChannelUUID:uniqueProxyIdentifierUUID];
 
-  [v9 setOriginator:a3];
-  [v6 performChannelAction:v9 forCall:self];
+  [v9 setOriginator:originator];
+  [providerBargeCallDelegate performChannelAction:v9 forCall:self];
 
 LABEL_14:
 }
@@ -476,10 +476,10 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Deactivating PushToTalk barge call.", buf, 2u);
   }
 
-  v4 = [(CSDProviderBargeCall *)self isSendingTransmission];
+  isSendingTransmission = [(CSDProviderBargeCall *)self isSendingTransmission];
   [(CSDProviderCall *)self setActiveRemoteParticipant:0];
   [(CSDProviderBargeCall *)self setTransmissionState:1];
-  if (v4)
+  if (isSendingTransmission)
   {
     v5 = sub_100004778();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -488,29 +488,29 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Stopping transmission for PushToTalk barge call deactivation.", v10, 2u);
     }
 
-    v6 = [(CSDProviderBargeCall *)self providerBargeCallDelegate];
+    providerBargeCallDelegate = [(CSDProviderBargeCall *)self providerBargeCallDelegate];
     v7 = [CXChannelTransmitStopAction alloc];
-    v8 = [(CSDProviderBargeCall *)self uniqueProxyIdentifierUUID];
-    v9 = [v7 initWithChannelUUID:v8];
+    uniqueProxyIdentifierUUID = [(CSDProviderBargeCall *)self uniqueProxyIdentifierUUID];
+    v9 = [v7 initWithChannelUUID:uniqueProxyIdentifierUUID];
 
     [v9 setOriginator:3];
-    [v6 performChannelAction:v9 forCall:self];
+    [providerBargeCallDelegate performChannelAction:v9 forCall:self];
   }
 
   [(CSDProviderCall *)self hold];
   [(CSDProviderCall *)self setHeld:1];
 }
 
-- (void)disconnectWithReason:(int)a3
+- (void)disconnectWithReason:(int)reason
 {
   v10.receiver = self;
   v10.super_class = CSDProviderBargeCall;
   [(CSDProviderCall *)&v10 disconnectWithReason:?];
   v5 = [CXChannelLeaveAction alloc];
-  v6 = [(CSDProviderBargeCall *)self uniqueProxyIdentifierUUID];
-  v7 = [v5 initWithChannelUUID:v6];
+  uniqueProxyIdentifierUUID = [(CSDProviderBargeCall *)self uniqueProxyIdentifierUUID];
+  v7 = [v5 initWithChannelUUID:uniqueProxyIdentifierUUID];
 
-  if (a3 == 2)
+  if (reason == 2)
   {
     v8 = 2;
   }
@@ -521,41 +521,41 @@ LABEL_14:
   }
 
   [v7 setOriginator:v8];
-  v9 = [(CSDProviderBargeCall *)self providerBargeCallDelegate];
-  [v9 performChannelAction:v7 forCall:self];
+  providerBargeCallDelegate = [(CSDProviderBargeCall *)self providerBargeCallDelegate];
+  [providerBargeCallDelegate performChannelAction:v7 forCall:self];
 }
 
-- (void)_handleRecordingStateChanged:(id)a3
+- (void)_handleRecordingStateChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   objc_initWeak(&location, self);
-  v5 = [(CSDProviderBargeCall *)self queue];
+  queue = [(CSDProviderBargeCall *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000D5A6C;
   block[3] = &unk_10061A600;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = changedCopy;
+  v6 = changedCopy;
+  dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)_handlePushToTalkRecordingStateChanged:(id)a3
+- (void)_handlePushToTalkRecordingStateChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(CSDProviderCall *)self providerSource];
-  v6 = -[CSDProviderBargeCall _recordingClientPIDsNotification:containsProcessIdentifier:](self, "_recordingClientPIDsNotification:containsProcessIdentifier:", v4, [v5 processIdentifier]);
+  changedCopy = changed;
+  providerSource = [(CSDProviderCall *)self providerSource];
+  v6 = -[CSDProviderBargeCall _recordingClientPIDsNotification:containsProcessIdentifier:](self, "_recordingClientPIDsNotification:containsProcessIdentifier:", changedCopy, [providerSource processIdentifier]);
 
   if (v6)
   {
     if ([(CSDProviderBargeCall *)self isSendingTransmission])
     {
-      v7 = [(CSDCall *)self transmissionState];
+      transmissionState = [(CSDCall *)self transmissionState];
 
-      [(CSDProviderBargeCall *)self playSoundForTransmissionState:v7 completion:0];
+      [(CSDProviderBargeCall *)self playSoundForTransmissionState:transmissionState completion:0];
     }
   }
 
@@ -566,12 +566,12 @@ LABEL_14:
   }
 }
 
-- (void)playSoundForTransmissionState:(int64_t)a3 completion:(id)a4
+- (void)playSoundForTransmissionState:(int64_t)state completion:(id)completion
 {
-  v6 = a4;
-  if ((a3 & 8) != 0)
+  completionCopy = completion;
+  if ((state & 8) != 0)
   {
-    if ((a3 & 4) != 0)
+    if ((state & 4) != 0)
     {
       v8 = 20;
     }
@@ -581,7 +581,7 @@ LABEL_14:
       v8 = 21;
     }
 
-    [(CSDProviderBargeCall *)self playSoundForSoundType:v8 completion:v6];
+    [(CSDProviderBargeCall *)self playSoundForSoundType:v8 completion:completionCopy];
   }
 
   else
@@ -590,22 +590,22 @@ LABEL_14:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134217984;
-      v10 = a3;
+      stateCopy = state;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "There was no sound type found for transmission state %lu", &v9, 0xCu);
     }
   }
 }
 
-- (void)playSoundForSoundType:(int64_t)a3 completion:(id)a4
+- (void)playSoundForSoundType:(int64_t)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   [(CSDProviderBargeCall *)self setIsPlayingSystemSound:1];
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 0x14)
+  if ((type & 0xFFFFFFFFFFFFFFFELL) == 0x14)
   {
-    v7 = [(CSDProviderBargeCall *)self featureFlags];
-    v8 = [v7 sessionBasedMutingEnabled];
+    featureFlags = [(CSDProviderBargeCall *)self featureFlags];
+    sessionBasedMutingEnabled = [featureFlags sessionBasedMutingEnabled];
 
-    if (v8)
+    if (sessionBasedMutingEnabled)
     {
       [(CSDCall *)self setUplinkMuted:1];
     }
@@ -620,12 +620,12 @@ LABEL_14:
   v14 = 3221225472;
   v15 = sub_1000D5ED0;
   v16 = &unk_10061B030;
-  v17 = self;
-  v18 = v6;
-  v9 = v6;
+  selfCopy = self;
+  v18 = completionCopy;
+  v9 = completionCopy;
   v10 = objc_retainBlock(&v13);
   v11 = [(CSDProviderBargeCall *)self soundPlayer:v13];
-  v12 = [v11 attemptToPlaySoundType:a3 forCall:self completion:v10];
+  v12 = [v11 attemptToPlaySoundType:type forCall:self completion:v10];
 
   if ((v12 & 1) == 0)
   {
@@ -634,33 +634,33 @@ LABEL_14:
   }
 }
 
-- (void)handleAudioSessionActivationStateChangedTo:(id)a3
+- (void)handleAudioSessionActivationStateChangedTo:(id)to
 {
   v6.receiver = self;
   v6.super_class = CSDProviderBargeCall;
-  v4 = a3;
-  [(CSDProviderCall *)&v6 handleAudioSessionActivationStateChangedTo:v4];
+  toCopy = to;
+  [(CSDProviderCall *)&v6 handleAudioSessionActivationStateChangedTo:toCopy];
   if ([(CSDCall *)self transmissionState:v6.receiver]== 5)
   {
     [(CSDProviderBargeCall *)self playSoundForTransmissionState:[(CSDCall *)self transmissionState] completion:0];
   }
 
-  v5 = [(CSDProviderBargeCall *)self channelSource];
-  [v5 handleAudioSessionActivationStateChangedTo:v4];
+  channelSource = [(CSDProviderBargeCall *)self channelSource];
+  [channelSource handleAudioSessionActivationStateChangedTo:toCopy];
 }
 
-- (void)audioApplicationMuteStatusChanged:(id)a3
+- (void)audioApplicationMuteStatusChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(CSDProviderBargeCall *)self queue];
+  changedCopy = changed;
+  queue = [(CSDProviderBargeCall *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000D6140;
   v7[3] = &unk_100619D88;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = changedCopy;
+  selfCopy = self;
+  v6 = changedCopy;
+  dispatch_async(queue, v7);
 }
 
 - (CSDProviderBargeCallDelegate)providerBargeCallDelegate

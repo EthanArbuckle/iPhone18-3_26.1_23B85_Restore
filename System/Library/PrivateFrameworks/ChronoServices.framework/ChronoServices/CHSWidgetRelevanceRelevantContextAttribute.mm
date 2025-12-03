@@ -1,41 +1,41 @@
 @interface CHSWidgetRelevanceRelevantContextAttribute
-- (BOOL)isEqual:(id)a3;
-- (CHSWidgetRelevanceRelevantContextAttribute)initWithCoder:(id)a3;
-- (CHSWidgetRelevanceRelevantContextAttribute)initWithRelevantContext:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (CHSWidgetRelevanceRelevantContextAttribute)initWithCoder:(id)coder;
+- (CHSWidgetRelevanceRelevantContextAttribute)initWithRelevantContext:(id)context;
 - (id)description;
 @end
 
 @implementation CHSWidgetRelevanceRelevantContextAttribute
 
-- (CHSWidgetRelevanceRelevantContextAttribute)initWithRelevantContext:(id)a3
+- (CHSWidgetRelevanceRelevantContextAttribute)initWithRelevantContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = CHSWidgetRelevanceRelevantContextAttribute;
-  v5 = [(CHSWidgetRelevanceAttribute *)&v9 _init];
-  if (v5)
+  _init = [(CHSWidgetRelevanceAttribute *)&v9 _init];
+  if (_init)
   {
-    v6 = [v4 copy];
-    context = v5->_context;
-    v5->_context = v6;
+    v6 = [contextCopy copy];
+    context = _init->_context;
+    _init->_context = v6;
   }
 
-  return v5;
+  return _init;
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   v4 = [v3 appendObject:self->_context withName:@"context"];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -45,7 +45,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      context = v4->_context;
+      context = equalCopy->_context;
       v6 = self->_context;
       v7 = BSEqualObjects();
     }
@@ -59,15 +59,15 @@
   return v7;
 }
 
-- (CHSWidgetRelevanceRelevantContextAttribute)initWithCoder:(id)a3
+- (CHSWidgetRelevanceRelevantContextAttribute)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CHSWidgetRelevanceRelevantContextAttribute;
-  v5 = [(CHSWidgetRelevanceAttribute *)&v9 initWithCoder:v4];
+  v5 = [(CHSWidgetRelevanceAttribute *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"context"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"context"];
     context = v5->_context;
     v5->_context = v6;
   }

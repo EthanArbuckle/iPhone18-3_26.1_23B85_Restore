@@ -1,36 +1,36 @@
 @interface SRNotificationUsage
-+ (SRNotificationUsage)notificationUsageWithBundleIdentifier:(id)a3 eventType:(int64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (SRNotificationUsage)initWithCoder:(id)a3;
++ (SRNotificationUsage)notificationUsageWithBundleIdentifier:(id)identifier eventType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
+- (SRNotificationUsage)initWithCoder:(id)coder;
 - (id)sr_dictionaryRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRNotificationUsage
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeObject:-[SRNotificationUsage bundleIdentifier](self forKey:{"bundleIdentifier"), @"bundleIdentifier"}];
-  v6 = [(SRNotificationUsage *)self event];
+  [coder encodeObject:-[SRNotificationUsage bundleIdentifier](self forKey:{"bundleIdentifier"), @"bundleIdentifier"}];
+  event = [(SRNotificationUsage *)self event];
 
-  [a3 encodeInteger:v6 forKey:@"eventType"];
+  [coder encodeInteger:event forKey:@"eventType"];
 }
 
-- (SRNotificationUsage)initWithCoder:(id)a3
+- (SRNotificationUsage)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
-  v7 = [a3 decodeIntegerForKey:@"eventType"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  v7 = [coder decodeIntegerForKey:@"eventType"];
 
   v8 = objc_alloc_init(SRNotificationUsage);
   [(SRNotificationUsage *)v8 setBundleIdentifier:v6];
@@ -38,11 +38,11 @@
   return v8;
 }
 
-+ (SRNotificationUsage)notificationUsageWithBundleIdentifier:(id)a3 eventType:(int64_t)a4
++ (SRNotificationUsage)notificationUsageWithBundleIdentifier:(id)identifier eventType:(int64_t)type
 {
   v6 = objc_alloc_init(SRNotificationUsage);
-  [(SRNotificationUsage *)v6 setBundleIdentifier:a3];
-  [(SRNotificationUsage *)v6 setEvent:a4];
+  [(SRNotificationUsage *)v6 setBundleIdentifier:identifier];
+  [(SRNotificationUsage *)v6 setEvent:type];
 
   return v6;
 }
@@ -55,9 +55,9 @@
   [(SRNotificationUsage *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v12) = 1;
     return v12;
@@ -77,18 +77,18 @@
   bundleIdentifier = self->_bundleIdentifier;
   if (!bundleIdentifier)
   {
-    if (![a3 bundleIdentifier])
+    if (![equal bundleIdentifier])
     {
 LABEL_7:
       event = self->_event;
-      LOBYTE(v12) = event == [a3 event];
+      LOBYTE(v12) = event == [equal event];
       return v12;
     }
 
     bundleIdentifier = self->_bundleIdentifier;
   }
 
-  v12 = -[NSString isEqualToString:](bundleIdentifier, "isEqualToString:", [a3 bundleIdentifier]);
+  v12 = -[NSString isEqualToString:](bundleIdentifier, "isEqualToString:", [equal bundleIdentifier]);
   if (v12)
   {
     goto LABEL_7;

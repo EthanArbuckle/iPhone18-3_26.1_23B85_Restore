@@ -2,15 +2,15 @@
 - (LPSpecializationMetadata)specializationMetadata;
 - (NSURL)activityURL;
 - (_TtC4Maps30UserGuidesActivityDataProvider)init;
-- (id)thumbnailImageForSuggestedSize:(CGSize)a3;
-- (void)fetchHTMLTemplateWithCompletion:(id)a3;
+- (id)thumbnailImageForSuggestedSize:(CGSize)size;
+- (void)fetchHTMLTemplateWithCompletion:(id)completion;
 @end
 
 @implementation UserGuidesActivityDataProvider
 
-- (void)fetchHTMLTemplateWithCompletion:(id)a3
+- (void)fetchHTMLTemplateWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v7 = *&self->MUActivityDataProvider_opaque[OBJC_IVAR____TtC4Maps30UserGuidesActivityDataProvider_configuration];
@@ -27,11 +27,11 @@
   v11[2] = sub_100362F2C;
   v11[3] = &unk_101613910;
   v9 = _Block_copy(v11);
-  v10 = self;
+  selfCopy = self;
 
   swift_unknownObjectRetain();
 
-  [(UserGuidesActivityDataProvider *)v10 fetchActivityURLWithCompletion:v9];
+  [(UserGuidesActivityDataProvider *)selfCopy fetchActivityURLWithCompletion:v9];
 
   _Block_release(v9);
 }
@@ -44,11 +44,11 @@
   __chkstk_darwin(v6);
   v8 = &v20 - v7;
   v9 = *&self->MUActivityDataProvider_opaque[OBJC_IVAR____TtC4Maps30UserGuidesActivityDataProvider_configuration];
-  v10 = self;
-  v11 = [v9 fullSharingURL];
-  if (v11)
+  selfCopy = self;
+  fullSharingURL = [v9 fullSharingURL];
+  if (fullSharingURL)
   {
-    v12 = v11;
+    v12 = fullSharingURL;
     static URL._unconditionallyBridgeFromObjectiveC(_:)();
 
     v13 = type metadata accessor for URL();
@@ -80,18 +80,18 @@
 
 - (LPSpecializationMetadata)specializationMetadata
 {
-  v2 = self;
+  selfCopy = self;
   sub_10036375C();
   v4 = v3;
 
   return v4;
 }
 
-- (id)thumbnailImageForSuggestedSize:(CGSize)a3
+- (id)thumbnailImageForSuggestedSize:(CGSize)size
 {
-  v3 = [*&self->MUActivityDataProvider_opaque[OBJC_IVAR____TtC4Maps30UserGuidesActivityDataProvider_configuration] image];
+  image = [*&self->MUActivityDataProvider_opaque[OBJC_IVAR____TtC4Maps30UserGuidesActivityDataProvider_configuration] image];
 
-  return v3;
+  return image;
 }
 
 - (_TtC4Maps30UserGuidesActivityDataProvider)init

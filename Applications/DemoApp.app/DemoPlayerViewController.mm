@@ -1,8 +1,8 @@
 @interface DemoPlayerViewController
-- (void)_playerItemDidPlayToEndTime:(id)a3;
+- (void)_playerItemDidPlayToEndTime:(id)time;
 - (void)_prepareMovie;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation DemoPlayerViewController
@@ -12,32 +12,32 @@
   v8.receiver = self;
   v8.super_class = DemoPlayerViewController;
   [(DemoPlayerViewController *)&v8 loadView];
-  v3 = [(DemoPlayerViewController *)self view];
+  view = [(DemoPlayerViewController *)self view];
   v4 = +[UIColor blackColor];
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   v5 = [DemoPlayerView alloc];
-  [v3 bounds];
+  [view bounds];
   v6 = [(DemoPlayerView *)v5 initWithFrame:?];
   playerView = self->_playerView;
   self->_playerView = v6;
 
-  [v3 addSubview:self->_playerView];
+  [view addSubview:self->_playerView];
   self->_duration = NAN;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == &unk_100008B60)
+  if (context == &unk_100008B60)
   {
-    v7 = [(AVPlayer *)self->_player currentItem:a3];
+    v7 = [(AVPlayer *)self->_player currentItem:path];
     if (v7)
     {
       v8 = v7;
-      v9 = [(AVPlayer *)self->_player currentItem];
-      v10 = [v9 status];
+      currentItem = [(AVPlayer *)self->_player currentItem];
+      status = [currentItem status];
 
-      if (v10 == 1)
+      if (status == 1)
       {
         if (self->_sync)
         {
@@ -67,11 +67,11 @@
   {
     v17.receiver = self;
     v17.super_class = DemoPlayerViewController;
-    [(DemoPlayerViewController *)&v17 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(DemoPlayerViewController *)&v17 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)_playerItemDidPlayToEndTime:(id)a3
+- (void)_playerItemDidPlayToEndTime:(id)time
 {
   duration = self->_duration;
   v5 = 1.0;
@@ -133,7 +133,7 @@
   v10[2] = sub_100001488;
   v10[3] = &unk_100004190;
   v11 = [[AVURLAsset alloc] initWithURL:v5 options:0];
-  v12 = self;
+  selfCopy = self;
   v9 = v11;
   [v9 loadValuesAsynchronouslyForKeys:&off_100004320 completionHandler:v10];
 }

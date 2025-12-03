@@ -1,18 +1,18 @@
 @interface IHKBilateralGridUtils
-+ (CGImage)autoApplyGridBufferWithGridBuffer:(vImage_Buffer *)a3 image:(CGImage *)a4 assume_BGRA_sRGB:(BOOL)a5 gridStrength:(float)a6;
++ (CGImage)autoApplyGridBufferWithGridBuffer:(vImage_Buffer *)buffer image:(CGImage *)image assume_BGRA_sRGB:(BOOL)b gridStrength:(float)strength;
 - (_TtC21ImageHarmonizationKit21IHKBilateralGridUtils)init;
 @end
 
 @implementation IHKBilateralGridUtils
 
-+ (CGImage)autoApplyGridBufferWithGridBuffer:(vImage_Buffer *)a3 image:(CGImage *)a4 assume_BGRA_sRGB:(BOOL)a5 gridStrength:(float)a6
++ (CGImage)autoApplyGridBufferWithGridBuffer:(vImage_Buffer *)buffer image:(CGImage *)image assume_BGRA_sRGB:(BOOL)b gridStrength:(float)strength
 {
-  data = a3->data;
-  height = a3->height;
-  width = a3->width;
-  rowBytes = a3->rowBytes;
-  v12 = a4;
-  v13 = sub_254AE5050(data, height, width, rowBytes, v12, a5, a6);
+  data = buffer->data;
+  height = buffer->height;
+  width = buffer->width;
+  rowBytes = buffer->rowBytes;
+  imageCopy = image;
+  v13 = sub_254AE5050(data, height, width, rowBytes, imageCopy, b, strength);
 
   return v13;
 }

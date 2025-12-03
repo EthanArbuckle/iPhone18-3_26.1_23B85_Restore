@@ -6,7 +6,7 @@
 
 - (uint64_t)toolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleWeekdayRecurrenceRuleWeekdayWeekday
 {
-  LODWORD(result) = [a1 uint32Value];
+  LODWORD(result) = [self uint32Value];
   if (result >= 8)
   {
     return 0;

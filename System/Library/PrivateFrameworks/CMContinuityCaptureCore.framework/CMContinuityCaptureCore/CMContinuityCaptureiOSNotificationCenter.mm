@@ -1,15 +1,15 @@
 @interface CMContinuityCaptureiOSNotificationCenter
-- (BOOL)shouldDisplayNotification:(int64_t)a3;
-- (CMContinuityCaptureiOSNotificationCenter)initWithQueue:(id)a3;
-- (void)_scheduleNotification:(int64_t)a3 data:(id)a4;
-- (void)scheduleNotification:(int64_t)a3 data:(id)a4;
+- (BOOL)shouldDisplayNotification:(int64_t)notification;
+- (CMContinuityCaptureiOSNotificationCenter)initWithQueue:(id)queue;
+- (void)_scheduleNotification:(int64_t)notification data:(id)data;
+- (void)scheduleNotification:(int64_t)notification data:(id)data;
 @end
 
 @implementation CMContinuityCaptureiOSNotificationCenter
 
-- (void)scheduleNotification:(int64_t)a3 data:(id)a4
+- (void)scheduleNotification:(int64_t)notification data:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v9[0] = MEMORY[0x277D85DD0];
@@ -17,9 +17,9 @@
   v9[2] = __70__CMContinuityCaptureiOSNotificationCenter_scheduleNotification_data___block_invoke;
   v9[3] = &unk_278D5C770;
   objc_copyWeak(v11, &location);
-  v11[1] = a3;
-  v10 = v6;
-  v8 = v6;
+  v11[1] = notification;
+  v10 = dataCopy;
+  v8 = dataCopy;
   dispatch_async(queue, v9);
 
   objc_destroyWeak(v11);
@@ -37,55 +37,55 @@ void __70__CMContinuityCaptureiOSNotificationCenter_scheduleNotification_data___
   }
 }
 
-- (BOOL)shouldDisplayNotification:(int64_t)a3
+- (BOOL)shouldDisplayNotification:(int64_t)notification
 {
   dispatch_assert_queue_V2(self->_queue);
-  if (a3 != 12)
+  if (notification != 12)
   {
     v5 = CMContinuityCaptureLog(0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543618;
-      v8 = self;
+      selfCopy = self;
       v9 = 1024;
-      v10 = a3;
+      notificationCopy = notification;
       _os_log_impl(&dword_242545000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Unsupported Notification Type for iOS Platform. (Type: %d)", &v7, 0x12u);
     }
   }
 
-  return a3 == 12;
+  return notification == 12;
 }
 
-- (CMContinuityCaptureiOSNotificationCenter)initWithQueue:(id)a3
+- (CMContinuityCaptureiOSNotificationCenter)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = CMContinuityCaptureiOSNotificationCenter;
-  v6 = [(CMContinuityCaptureUserNotificationCenter *)&v10 initWithQueue:v5];
+  v6 = [(CMContinuityCaptureUserNotificationCenter *)&v10 initWithQueue:queueCopy];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)_scheduleNotification:(int64_t)a3 data:(id)a4
+- (void)_scheduleNotification:(int64_t)notification data:(id)data
 {
-  v6 = a4;
-  v7 = [(CMContinuityCaptureiOSNotificationCenter *)self shouldDisplayNotification:a3];
+  dataCopy = data;
+  v7 = [(CMContinuityCaptureiOSNotificationCenter *)self shouldDisplayNotification:notification];
   v8 = 0;
   v9 = 0;
   v10 = 0;
   v11 = 0;
-  if (!v6 || !v7)
+  if (!dataCopy || !v7)
   {
     goto LABEL_14;
   }
 
-  v10 = [v6 objectForKey:@"kContinuityCaptureNotificationKeyTitle"];
+  v10 = [dataCopy objectForKey:@"kContinuityCaptureNotificationKeyTitle"];
 
   if (!v10)
   {
@@ -96,7 +96,7 @@ LABEL_19:
     goto LABEL_14;
   }
 
-  v9 = [v6 objectForKey:@"kContinuityCaptureNotificationKeyBody"];
+  v9 = [dataCopy objectForKey:@"kContinuityCaptureNotificationKeyBody"];
 
   if (!v9)
   {
@@ -106,7 +106,7 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v8 = [v6 objectForKey:@"kContinuityCaptureNotificationKeyButtonTitle"];
+  v8 = [dataCopy objectForKey:@"kContinuityCaptureNotificationKeyButtonTitle"];
 
   if (!v8)
   {
@@ -115,20 +115,20 @@ LABEL_18:
   }
 
   dispatch_assert_queue_V2(self->_queue);
-  v12 = [v6 objectForKeyedSubscript:@"kContinuityCaptureNotificationKeyTitle"];
-  [v6 objectForKeyedSubscript:@"kContinuityCaptureNotificationKeyTitleArgs"];
+  v12 = [dataCopy objectForKeyedSubscript:@"kContinuityCaptureNotificationKeyTitle"];
+  [dataCopy objectForKeyedSubscript:@"kContinuityCaptureNotificationKeyTitleArgs"];
   objc_claimAutoreleasedReturnValue();
   v13 = OUTLINED_FUNCTION_0_6();
   v11 = CMContinuityCaptureCreateLocalizedString(v13, v14, v15, v16, v17, v18, v19, v20, *v44);
 
-  v21 = [v6 objectForKeyedSubscript:@"kContinuityCaptureNotificationKeyBody"];
-  [v6 objectForKeyedSubscript:@"kContinuityCaptureNotificationKeyBodyArgs"];
+  v21 = [dataCopy objectForKeyedSubscript:@"kContinuityCaptureNotificationKeyBody"];
+  [dataCopy objectForKeyedSubscript:@"kContinuityCaptureNotificationKeyBodyArgs"];
   objc_claimAutoreleasedReturnValue();
   v22 = OUTLINED_FUNCTION_0_6();
   v10 = CMContinuityCaptureCreateLocalizedString(v22, v23, v24, v25, v26, v27, v28, v29, *v44);
 
-  v30 = [v6 objectForKeyedSubscript:@"kContinuityCaptureNotificationKeyButtonTitle"];
-  [v6 objectForKeyedSubscript:@"kContinuityCaptureNotificationKeyButtonTitle"];
+  v30 = [dataCopy objectForKeyedSubscript:@"kContinuityCaptureNotificationKeyButtonTitle"];
+  [dataCopy objectForKeyedSubscript:@"kContinuityCaptureNotificationKeyButtonTitle"];
   objc_claimAutoreleasedReturnValue();
   v31 = OUTLINED_FUNCTION_0_6();
   v9 = CMContinuityCaptureCreateLocalizedString(v31, v32, v33, v34, v35, v36, v37, v38, *v44);

@@ -1,18 +1,18 @@
 @interface WFMutableNetworkProfile
-+ (id)mutableProfileForNetwork:(id)a3;
++ (id)mutableProfileForNetwork:(id)network;
 - (NSDictionary)enterpriseProfile;
-- (WFMutableNetworkProfile)initWithNetwork:(id)a3;
+- (WFMutableNetworkProfile)initWithNetwork:(id)network;
 - (void)dealloc;
 - (void)removePassword;
-- (void)setTLSIdentity:(__SecIdentity *)a3;
+- (void)setTLSIdentity:(__SecIdentity *)identity;
 @end
 
 @implementation WFMutableNetworkProfile
 
-+ (id)mutableProfileForNetwork:(id)a3
++ (id)mutableProfileForNetwork:(id)network
 {
-  v3 = a3;
-  v4 = [[WFMutableNetworkProfile alloc] initWithNetwork:v3];
+  networkCopy = network;
+  v4 = [[WFMutableNetworkProfile alloc] initWithNetwork:networkCopy];
 
   return v4;
 }
@@ -37,29 +37,29 @@
   enterpriseProfile = self->_enterpriseProfile;
   if (enterpriseProfile)
   {
-    v4 = enterpriseProfile;
+    enterpriseProfile = enterpriseProfile;
   }
 
   else
   {
     v35.receiver = self;
     v35.super_class = WFMutableNetworkProfile;
-    v4 = [(WFNetworkProfile *)&v35 enterpriseProfile];
+    enterpriseProfile = [(WFNetworkProfile *)&v35 enterpriseProfile];
   }
 
-  v5 = v4;
-  v6 = [(NSDictionary *)v4 objectForKey:@"EAPClientConfiguration"];
+  v5 = enterpriseProfile;
+  v6 = [(NSDictionary *)enterpriseProfile objectForKey:@"EAPClientConfiguration"];
   v7 = v6;
   if (v6)
   {
-    v8 = [v6 mutableCopy];
+    dictionary = [v6 mutableCopy];
     if (self->_TLSIdentity)
     {
       v9 = EAPSecIdentityHandleCreate();
       if (v9)
       {
         v10 = v9;
-        [v8 setObject:v9 forKey:@"TLSIdentityHandle"];
+        [dictionary setObject:v9 forKey:@"TLSIdentityHandle"];
         CFRelease(v10);
       }
 
@@ -75,11 +75,11 @@
         }
       }
 
-      v13 = [v8 objectForKey:@"AcceptEAPTypes"];
+      v13 = [dictionary objectForKey:@"AcceptEAPTypes"];
 
       if (v13)
       {
-        v14 = [v8 objectForKey:@"AcceptEAPTypes"];
+        v14 = [dictionary objectForKey:@"AcceptEAPTypes"];
         v15 = [v14 containsObject:&unk_288304828];
 
         if (v15)
@@ -91,38 +91,38 @@
             *buf = 136315394;
             v37 = "[WFMutableNetworkProfile enterpriseProfile]";
             v38 = 2112;
-            v39 = v8;
+            v39 = dictionary;
             _os_log_impl(&dword_273ECD000, v16, v17, "%s: accept EAP types already present %@", buf, 0x16u);
           }
         }
 
         else
         {
-          v18 = [v8 objectForKey:@"AcceptEAPTypes"];
+          v18 = [dictionary objectForKey:@"AcceptEAPTypes"];
           v19 = [v18 mutableCopy];
 
           [v19 addObject:&unk_288304828];
-          [v8 setObject:v19 forKey:@"AcceptEAPTypes"];
+          [dictionary setObject:v19 forKey:@"AcceptEAPTypes"];
         }
       }
 
       else
       {
-        [v8 setObject:&unk_288304E88 forKey:@"AcceptEAPTypes"];
+        [dictionary setObject:&unk_288304E88 forKey:@"AcceptEAPTypes"];
       }
     }
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
   }
 
-  v20 = [(WFMutableNetworkProfile *)self certificateChain];
+  certificateChain = [(WFMutableNetworkProfile *)self certificateChain];
 
   if (v5)
   {
-    v21 = v20 == 0;
+    v21 = certificateChain == 0;
   }
 
   else
@@ -132,21 +132,21 @@
 
   if (!v21)
   {
-    v22 = [(WFMutableNetworkProfile *)self certificateChain];
-    [v8 setObject:v22 forKey:@"TLSUserTrustProceedCertificateChain"];
+    certificateChain2 = [(WFMutableNetworkProfile *)self certificateChain];
+    [dictionary setObject:certificateChain2 forKey:@"TLSUserTrustProceedCertificateChain"];
 
-    [v8 setObject:MEMORY[0x277CBEC38] forKey:@"TLSSaveTrustExceptions"];
+    [dictionary setObject:MEMORY[0x277CBEC38] forKey:@"TLSSaveTrustExceptions"];
   }
 
-  v23 = [(WFMutableNetworkProfile *)self username];
-  if ([v23 length])
+  username = [(WFMutableNetworkProfile *)self username];
+  if ([username length])
   {
   }
 
   else
   {
-    v24 = [(WFMutableNetworkProfile *)self password];
-    v25 = [v24 length];
+    password = [(WFMutableNetworkProfile *)self password];
+    v25 = [password length];
 
     if (!v25)
     {
@@ -154,29 +154,29 @@
     }
   }
 
-  v26 = [(WFMutableNetworkProfile *)self username];
-  v27 = [v26 length];
+  username2 = [(WFMutableNetworkProfile *)self username];
+  v27 = [username2 length];
 
   if (v27)
   {
-    v28 = [(WFMutableNetworkProfile *)self username];
-    [v8 setObject:v28 forKey:@"UserName"];
+    username3 = [(WFMutableNetworkProfile *)self username];
+    [dictionary setObject:username3 forKey:@"UserName"];
   }
 
-  v29 = [(WFMutableNetworkProfile *)self password];
-  v30 = [v29 length];
+  password2 = [(WFMutableNetworkProfile *)self password];
+  v30 = [password2 length];
 
   if (v30)
   {
-    v31 = [(WFMutableNetworkProfile *)self password];
-    [v8 setObject:v31 forKey:@"UserPassword"];
+    password3 = [(WFMutableNetworkProfile *)self password];
+    [dictionary setObject:password3 forKey:@"UserPassword"];
   }
 
 LABEL_35:
-  if ([v8 count])
+  if ([dictionary count])
   {
     v32 = [(NSDictionary *)v5 mutableCopy];
-    [(NSDictionary *)v32 setObject:v8 forKey:@"EAPClientConfiguration"];
+    [(NSDictionary *)v32 setObject:dictionary forKey:@"EAPClientConfiguration"];
 
     v5 = v32;
   }
@@ -200,7 +200,7 @@ LABEL_35:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setTLSIdentity:(__SecIdentity *)a3
+- (void)setTLSIdentity:(__SecIdentity *)identity
 {
   TLSIdentity = self->_TLSIdentity;
   if (TLSIdentity)
@@ -208,39 +208,39 @@ LABEL_35:
     CFRelease(TLSIdentity);
   }
 
-  self->_TLSIdentity = a3;
-  if (a3)
+  self->_TLSIdentity = identity;
+  if (identity)
   {
 
-    CFRetain(a3);
+    CFRetain(identity);
   }
 }
 
-- (WFMutableNetworkProfile)initWithNetwork:(id)a3
+- (WFMutableNetworkProfile)initWithNetwork:(id)network
 {
-  v4 = a3;
+  networkCopy = network;
   v18.receiver = self;
   v18.super_class = WFMutableNetworkProfile;
-  v5 = [(WFNetworkProfile *)&v18 initWithNetwork:v4];
+  v5 = [(WFNetworkProfile *)&v18 initWithNetwork:networkCopy];
   if (v5)
   {
-    v6 = [v4 ssid];
+    ssid = [networkCopy ssid];
 
-    if (v6)
+    if (ssid)
     {
-      v7 = [v4 ssid];
+      ssid2 = [networkCopy ssid];
       ssid = v5->_ssid;
-      v5->_ssid = v7;
+      v5->_ssid = ssid2;
 
-      v5->_securityMode = [v4 securityMode];
-      v5->_securityModeExt = [v4 securityModeExt];
-      v9 = [v4 bssid];
+      v5->_securityMode = [networkCopy securityMode];
+      v5->_securityModeExt = [networkCopy securityModeExt];
+      bssid = [networkCopy bssid];
       bssid = v5->_bssid;
-      v5->_bssid = v9;
+      v5->_bssid = bssid;
 
-      v11 = [v4 attributes];
+      attributes = [networkCopy attributes];
       scanAttributes = v5->_scanAttributes;
-      v5->_scanAttributes = v11;
+      v5->_scanAttributes = attributes;
 
       v13 = [(NSDictionary *)v5->_scanAttributes objectForKey:*MEMORY[0x277D29850]];
       enterpriseProfile = v5->_enterpriseProfile;

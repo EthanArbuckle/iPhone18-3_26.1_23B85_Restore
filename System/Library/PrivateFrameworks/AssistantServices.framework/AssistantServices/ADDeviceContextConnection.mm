@@ -1,17 +1,17 @@
 @interface ADDeviceContextConnection
-- (ADDeviceContextConnection)initWithQueue:(id)a3 xpcConnection:(id)a4 delegate:(id)a5;
-- (id)_remoteServiceDelegateWithErrorHandler:(id)a3;
-- (void)_beginUpdateLocalDeviceContextWithReply:(id)a3;
+- (ADDeviceContextConnection)initWithQueue:(id)queue xpcConnection:(id)connection delegate:(id)delegate;
+- (id)_remoteServiceDelegateWithErrorHandler:(id)handler;
+- (void)_beginUpdateLocalDeviceContextWithReply:(id)reply;
 - (void)_clearXPCConnection;
 - (void)_endUpdateLocalDeviceContext;
 - (void)_handleXPCConnectionInterruption;
 - (void)_handleXPCConnectionInvalidation;
 - (void)_invalidate;
 - (void)dealloc;
-- (void)donateSerializedContextMapByPrivacyClass:(id)a3 withMetadataMap:(id)a4 forType:(id)a5 pushToRemote:(BOOL)a6 completion:(id)a7;
-- (void)getLocalDeviceContextWithReply:(id)a3;
+- (void)donateSerializedContextMapByPrivacyClass:(id)class withMetadataMap:(id)map forType:(id)type pushToRemote:(BOOL)remote completion:(id)completion;
+- (void)getLocalDeviceContextWithReply:(id)reply;
 - (void)invalidate;
-- (void)updateLocalDeviceContext:(id)a3;
+- (void)updateLocalDeviceContext:(id)context;
 @end
 
 @implementation ADDeviceContextConnection
@@ -26,7 +26,7 @@
     v6 = 136315650;
     v7 = "[ADDeviceContextConnection _endUpdateLocalDeviceContext]";
     v8 = 2048;
-    v9 = self;
+    selfCopy2 = self;
     v10 = 1024;
     v11 = 0;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s %p isUpdatingLocalDeviceContext = %d", &v6, 0x1Cu);
@@ -41,7 +41,7 @@
       v6 = 136315394;
       v7 = "[ADDeviceContextConnection _endUpdateLocalDeviceContext]";
       v8 = 2048;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s %p sending reply...", &v6, 0x16u);
       updateLocalDeviceContextReply = self->_updateLocalDeviceContextReply;
     }
@@ -50,10 +50,10 @@
   }
 }
 
-- (void)_beginUpdateLocalDeviceContextWithReply:(id)a3
+- (void)_beginUpdateLocalDeviceContextWithReply:(id)reply
 {
   queue = self->_queue;
-  v5 = a3;
+  replyCopy = reply;
   dispatch_assert_queue_V2(queue);
   self->_isUpdatingLocalDeviceContext = 1;
   v6 = AFSiriLogContextDaemon;
@@ -62,21 +62,21 @@
     v9 = 136315650;
     v10 = "[ADDeviceContextConnection _beginUpdateLocalDeviceContextWithReply:]";
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v13 = 1024;
     v14 = 1;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "%s %p isUpdatingLocalDeviceContext = %d", &v9, 0x1Cu);
   }
 
-  v7 = objc_retainBlock(v5);
+  v7 = objc_retainBlock(replyCopy);
 
   updateLocalDeviceContextReply = self->_updateLocalDeviceContextReply;
   self->_updateLocalDeviceContextReply = v7;
 }
 
-- (id)_remoteServiceDelegateWithErrorHandler:(id)a3
+- (id)_remoteServiceDelegateWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_isInvalid)
   {
@@ -87,7 +87,7 @@
       v10[1] = 3221225472;
       v10[2] = sub_10012C6BC;
       v10[3] = &unk_10051D2F0;
-      v11 = v4;
+      v11 = handlerCopy;
       v6 = [(NSXPCConnection *)xpcConnection remoteObjectProxyWithErrorHandler:v10];
       v7 = v11;
 LABEL_7:
@@ -102,19 +102,19 @@ LABEL_7:
     *buf = 136315394;
     v13 = "[ADDeviceContextConnection _remoteServiceDelegateWithErrorHandler:]";
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%s %p Ignored because the connection is invalidated.", buf, 0x16u);
-    if (v4)
+    if (handlerCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v4)
+  else if (handlerCopy)
   {
 LABEL_6:
     v7 = [AFError errorWithCode:23];
-    (*(v4 + 2))(v4, v7);
+    (*(handlerCopy + 2))(handlerCopy, v7);
     v6 = 0;
     goto LABEL_7;
   }
@@ -138,7 +138,7 @@ LABEL_10:
       v5 = 136315394;
       v6 = "[ADDeviceContextConnection _invalidate]";
       v7 = 2048;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s %p", &v5, 0x16u);
     }
 
@@ -163,7 +163,7 @@ LABEL_10:
       v6 = 136315650;
       v7 = "[ADDeviceContextConnection _clearXPCConnection]";
       v8 = 2048;
-      v9 = self;
+      selfCopy = self;
       v10 = 2112;
       v11 = xpcConnection;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s %p xpcConnection = %@", &v6, 0x20u);
@@ -186,7 +186,7 @@ LABEL_10:
     v5 = 136315650;
     v6 = "[ADDeviceContextConnection _handleXPCConnectionInterruption]";
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = xpcConnection;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s %p xpcConnection = %@", &v5, 0x20u);
@@ -205,7 +205,7 @@ LABEL_10:
     v5 = 136315650;
     v6 = "[ADDeviceContextConnection _handleXPCConnectionInvalidation]";
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = xpcConnection;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s %p xpcConnection = %@", &v5, 0x20u);
@@ -225,13 +225,13 @@ LABEL_10:
   dispatch_async(queue, block);
 }
 
-- (void)donateSerializedContextMapByPrivacyClass:(id)a3 withMetadataMap:(id)a4 forType:(id)a5 pushToRemote:(BOOL)a6 completion:(id)a7
+- (void)donateSerializedContextMapByPrivacyClass:(id)class withMetadataMap:(id)map forType:(id)type pushToRemote:(BOOL)remote completion:(id)completion
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  remoteCopy = remote;
+  classCopy = class;
+  mapCopy = map;
+  typeCopy = type;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v17 = WeakRetained;
@@ -243,30 +243,30 @@ LABEL_10:
       v19 = 136315394;
       v20 = "[ADDeviceContextConnection donateSerializedContextMapByPrivacyClass:withMetadataMap:forType:pushToRemote:completion:]";
       v21 = 2048;
-      v22 = self;
+      selfCopy = self;
       _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%s %p Ignored because the connection is invalidated.", &v19, 0x16u);
-      if (!v15)
+      if (!completionCopy)
       {
         goto LABEL_7;
       }
     }
 
-    else if (!v15)
+    else if (!completionCopy)
     {
       goto LABEL_7;
     }
 
-    v15[2](v15);
+    completionCopy[2](completionCopy);
     goto LABEL_7;
   }
 
-  [WeakRetained deviceContextConnection:self donateSerializedContextMapByPrivacyClass:v12 withMetadataMap:v13 forType:v14 pushToRemote:v8 completion:v15];
+  [WeakRetained deviceContextConnection:self donateSerializedContextMapByPrivacyClass:classCopy withMetadataMap:mapCopy forType:typeCopy pushToRemote:remoteCopy completion:completionCopy];
 LABEL_7:
 }
 
-- (void)getLocalDeviceContextWithReply:(id)a3
+- (void)getLocalDeviceContextWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   dispatch_assert_queue_V2(self->_queue);
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = WeakRetained;
@@ -278,20 +278,20 @@ LABEL_7:
       *buf = 136315394;
       v12 = "[ADDeviceContextConnection getLocalDeviceContextWithReply:]";
       v13 = 2048;
-      v14 = self;
+      selfCopy2 = self;
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%s %p Ignored because the connection is invalidated.", buf, 0x16u);
-      if (!v4)
+      if (!replyCopy)
       {
         goto LABEL_9;
       }
     }
 
-    else if (!v4)
+    else if (!replyCopy)
     {
       goto LABEL_9;
     }
 
-    v4[2](v4, 0);
+    replyCopy[2](replyCopy, 0);
     goto LABEL_9;
   }
 
@@ -300,7 +300,7 @@ LABEL_7:
     *buf = 136315394;
     v12 = "[ADDeviceContextConnection getLocalDeviceContextWithReply:]";
     v13 = 2048;
-    v14 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "%s %p", buf, 0x16u);
   }
 
@@ -310,7 +310,7 @@ LABEL_7:
   v8[2] = sub_10012CE90;
   v8[3] = &unk_100512920;
   objc_copyWeak(&v10, buf);
-  v9 = v4;
+  v9 = replyCopy;
   [v6 deviceContextConnection:self getLocalDeviceContextWithCompletion:v8];
 
   objc_destroyWeak(&v10);
@@ -318,33 +318,33 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)updateLocalDeviceContext:(id)a3
+- (void)updateLocalDeviceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10012D050;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = contextCopy;
+  v6 = contextCopy;
   dispatch_async(queue, v7);
 }
 
-- (ADDeviceContextConnection)initWithQueue:(id)a3 xpcConnection:(id)a4 delegate:(id)a5
+- (ADDeviceContextConnection)initWithQueue:(id)queue xpcConnection:(id)connection delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  queueCopy = queue;
+  connectionCopy = connection;
+  delegateCopy = delegate;
   v31.receiver = self;
   v31.super_class = ADDeviceContextConnection;
   v11 = [(ADDeviceContextConnection *)&v31 init];
   if (v11)
   {
-    if (v8)
+    if (queueCopy)
     {
-      v12 = v8;
+      v12 = queueCopy;
       queue = v11->_queue;
       v11->_queue = v12;
     }
@@ -359,8 +359,8 @@ LABEL_9:
       v11->_queue = v16;
     }
 
-    objc_storeWeak(&v11->_delegate, v10);
-    objc_storeStrong(&v11->_xpcConnection, a4);
+    objc_storeWeak(&v11->_delegate, delegateCopy);
+    objc_storeStrong(&v11->_xpcConnection, connection);
     [(NSXPCConnection *)v11->_xpcConnection _setQueue:v11->_queue];
     xpcConnection = v11->_xpcConnection;
     v18 = AFDeviceContextServiceDelegateGetXPCInterface();
@@ -416,7 +416,7 @@ LABEL_9:
     *buf = 136315394;
     v6 = "[ADDeviceContextConnection dealloc]";
     v7 = 2048;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s %p", buf, 0x16u);
   }
 

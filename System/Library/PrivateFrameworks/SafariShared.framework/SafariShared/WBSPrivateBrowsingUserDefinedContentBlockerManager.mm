@@ -2,9 +2,9 @@
 - (BOOL)hasContentBlockerWithActions;
 - (WBSUserDefinedContentBlockerManager)normalBrowsingUserDefinedContentBlockerManager;
 - (id)cachedGlobalContentBlockerActions;
-- (void)_setCachedGlobalContentBlockerActions:(id)a3;
-- (void)getGlobalContentBlockerWithCompletionHandler:(id)a3;
-- (void)globalContentBlockerWithCompletionHandler:(id)a3;
+- (void)_setCachedGlobalContentBlockerActions:(id)actions;
+- (void)getGlobalContentBlockerWithCompletionHandler:(id)handler;
+- (void)globalContentBlockerWithCompletionHandler:(id)handler;
 @end
 
 @implementation WBSPrivateBrowsingUserDefinedContentBlockerManager
@@ -19,27 +19,27 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_normalBrowsingUserDefinedContentBlockerManager);
-  v3 = [WeakRetained hasContentBlockerWithActions];
+  hasContentBlockerWithActions = [WeakRetained hasContentBlockerWithActions];
 
-  return v3;
+  return hasContentBlockerWithActions;
 }
 
-- (void)globalContentBlockerWithCompletionHandler:(id)a3
+- (void)globalContentBlockerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_normalBrowsingUserDefinedContentBlockerManager);
-  [WeakRetained globalContentBlockerWithCompletionHandler:v4];
+  [WeakRetained globalContentBlockerWithCompletionHandler:handlerCopy];
 }
 
 - (id)cachedGlobalContentBlockerActions
 {
   WeakRetained = objc_loadWeakRetained(&self->_normalBrowsingUserDefinedContentBlockerManager);
-  v3 = [WeakRetained cachedGlobalContentBlockerActions];
+  cachedGlobalContentBlockerActions = [WeakRetained cachedGlobalContentBlockerActions];
 
-  return v3;
+  return cachedGlobalContentBlockerActions;
 }
 
-- (void)_setCachedGlobalContentBlockerActions:(id)a3
+- (void)_setCachedGlobalContentBlockerActions:(id)actions
 {
   v3 = WBS_LOG_CHANNEL_PREFIXUserDefinedContentBlocker();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -48,11 +48,11 @@
   }
 }
 
-- (void)getGlobalContentBlockerWithCompletionHandler:(id)a3
+- (void)getGlobalContentBlockerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_normalBrowsingUserDefinedContentBlockerManager);
-  [WeakRetained getGlobalContentBlockerWithCompletionHandler:v4];
+  [WeakRetained getGlobalContentBlockerWithCompletionHandler:handlerCopy];
 }
 
 - (WBSUserDefinedContentBlockerManager)normalBrowsingUserDefinedContentBlockerManager

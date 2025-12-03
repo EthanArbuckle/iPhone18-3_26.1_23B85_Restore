@@ -56,15 +56,15 @@
   v3 = *(*(self + 6) + 16);
   if (v3 && (*(v3 + 24) & 1) == 0)
   {
-    v4 = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithInteger_];
+    initWithInteger_ = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithInteger_];
   }
 
   else
   {
-    v4 = 0;
+    initWithInteger_ = 0;
   }
 
-  return v4;
+  return initWithInteger_;
 }
 
 - (NSNumber)artworkHeight
@@ -72,15 +72,15 @@
   v3 = *(*(self + 6) + 16);
   if (v3 && (*(v3 + 40) & 1) == 0)
   {
-    v4 = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithInteger_];
+    initWithInteger_ = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithInteger_];
   }
 
   else
   {
-    v4 = 0;
+    initWithInteger_ = 0;
   }
 
-  return v4;
+  return initWithInteger_;
 }
 
 - (NSString)artworkTemplateURL

@@ -1,5 +1,5 @@
 @interface MRMigrationBehaviorResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
@@ -9,16 +9,16 @@
 
 - (id)dictionaryRepresentation
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(MRMigrationBehaviorResult *)v2 sourceUID];
-  [v3 setObject:v4 forKeyedSubscript:@"sourceUID"];
+  sourceUID = [(MRMigrationBehaviorResult *)selfCopy sourceUID];
+  [v3 setObject:sourceUID forKeyedSubscript:@"sourceUID"];
 
-  v5 = [(MRMigrationBehaviorResult *)v2 destinationUID];
-  [v3 setObject:v5 forKeyedSubscript:@"destinationUID"];
+  destinationUID = [(MRMigrationBehaviorResult *)selfCopy destinationUID];
+  [v3 setObject:destinationUID forKeyedSubscript:@"destinationUID"];
 
-  v6 = [(MRMigrationBehaviorResult *)v2 action]- 1;
+  v6 = [(MRMigrationBehaviorResult *)selfCopy action]- 1;
   if (v6 > 2)
   {
     v7 = @"None";
@@ -30,21 +30,21 @@
   }
 
   [v3 setObject:v7 forKeyedSubscript:@"action"];
-  v8 = [(MRMigrationBehaviorResult *)v2 reason];
-  [v3 setObject:v8 forKeyedSubscript:@"reason"];
+  reason = [(MRMigrationBehaviorResult *)selfCopy reason];
+  [v3 setObject:reason forKeyedSubscript:@"reason"];
 
-  v9 = [(MRMigrationBehaviorResult *)v2 error];
-  [v3 setObject:v9 forKeyedSubscript:@"error"];
+  error = [(MRMigrationBehaviorResult *)selfCopy error];
+  [v3 setObject:error forKeyedSubscript:@"error"];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -54,55 +54,55 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       sourceUID = self->_sourceUID;
-      v7 = [(MRMigrationBehaviorResult *)v5 sourceUID];
-      if (sourceUID == v7)
+      sourceUID = [(MRMigrationBehaviorResult *)v5 sourceUID];
+      if (sourceUID == sourceUID)
       {
         LOBYTE(v8) = 0;
       }
 
       else
       {
-        v8 = [(NSString *)sourceUID isEqual:v7]^ 1;
+        v8 = [(NSString *)sourceUID isEqual:sourceUID]^ 1;
       }
 
       destinationUID = self->_destinationUID;
-      v11 = [(MRMigrationBehaviorResult *)v5 destinationUID];
-      if (destinationUID == v11)
+      destinationUID = [(MRMigrationBehaviorResult *)v5 destinationUID];
+      if (destinationUID == destinationUID)
       {
         LOBYTE(v12) = 0;
       }
 
       else
       {
-        v12 = [(NSString *)destinationUID isEqual:v11]^ 1;
+        v12 = [(NSString *)destinationUID isEqual:destinationUID]^ 1;
       }
 
       reason = self->_reason;
-      v14 = [(MRMigrationBehaviorResult *)v5 reason];
-      if (reason == v14)
+      reason = [(MRMigrationBehaviorResult *)v5 reason];
+      if (reason == reason)
       {
         LOBYTE(v15) = 0;
       }
 
       else
       {
-        v15 = [(NSString *)reason isEqual:v14]^ 1;
+        v15 = [(NSString *)reason isEqual:reason]^ 1;
       }
 
       action = self->_action;
-      v17 = [(MRMigrationBehaviorResult *)v5 action];
+      action = [(MRMigrationBehaviorResult *)v5 action];
       error = self->_error;
-      v19 = [(MRMigrationBehaviorResult *)v5 error];
-      if (error == v19)
+      error = [(MRMigrationBehaviorResult *)v5 error];
+      if (error == error)
       {
         v20 = 1;
       }
 
       else
       {
-        v20 = [(NSError *)error isEqual:v19];
+        v20 = [(NSError *)error isEqual:error];
       }
 
       if (((v8 | v12) | v15))
@@ -112,7 +112,7 @@
 
       else
       {
-        v9 = (action == v17) & v20;
+        v9 = (action == action) & v20;
       }
     }
 
@@ -136,8 +136,8 @@
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(MRMigrationBehaviorResult *)self dictionaryRepresentation];
-  v6 = [v3 initWithFormat:@"<%@: %p> %@", v4, self, v5];
+  dictionaryRepresentation = [(MRMigrationBehaviorResult *)self dictionaryRepresentation];
+  v6 = [v3 initWithFormat:@"<%@: %p> %@", v4, self, dictionaryRepresentation];
 
   return v6;
 }

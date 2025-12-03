@@ -1,8 +1,8 @@
 @interface SleepRoomDataProvider
 - (_TtC20SleepHealthAppPlugin21SleepRoomDataProvider)init;
 - (void)dealloc;
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3;
-- (void)sleepStore:(id)a3 sleepFocusConfigurationDidUpdate:(id)a4;
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion;
+- (void)sleepStore:(id)store sleepFocusConfigurationDidUpdate:(id)update;
 @end
 
 @implementation SleepRoomDataProvider
@@ -17,7 +17,7 @@
 
   else
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   v5 = *(&self->super.isa + OBJC_IVAR____TtC20SleepHealthAppPlugin21SleepRoomDataProvider_sleepStore);
@@ -46,23 +46,23 @@
   return result;
 }
 
-- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)a3
+- (void)featureAvailabilityProvidingDidUpdateOnboardingCompletion:(id)completion
 {
   ObjectType = swift_getObjectType();
   sub_29E7544C8();
   v6[2] = self;
   v6[3] = ObjectType;
-  v5 = self;
+  selfCopy = self;
   sub_29E607C50(sub_29E6CB724, v6);
 }
 
-- (void)sleepStore:(id)a3 sleepFocusConfigurationDidUpdate:(id)a4
+- (void)sleepStore:(id)store sleepFocusConfigurationDidUpdate:(id)update
 {
   ObjectType = swift_getObjectType();
   sub_29E7544C8();
   v7[2] = self;
   v7[3] = ObjectType;
-  v6 = self;
+  selfCopy = self;
   sub_29E607C50(sub_29E6CB6FC, v7);
 }
 

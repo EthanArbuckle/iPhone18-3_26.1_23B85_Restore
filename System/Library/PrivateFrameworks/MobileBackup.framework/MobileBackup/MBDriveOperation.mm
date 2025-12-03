@@ -1,35 +1,35 @@
 @interface MBDriveOperation
-+ (id)stringForType:(int)a3;
-- (MBDriveOperation)initWithType:(int)a3 count:(int64_t)a4 size:(int64_t)a5 duration:(double)a6;
++ (id)stringForType:(int)type;
+- (MBDriveOperation)initWithType:(int)type count:(int64_t)count size:(int64_t)size duration:(double)duration;
 - (id)description;
 @end
 
 @implementation MBDriveOperation
 
-+ (id)stringForType:(int)a3
++ (id)stringForType:(int)type
 {
-  if (a3 > 6)
+  if (type > 6)
   {
     return 0;
   }
 
   else
   {
-    return off_1003BFC28[a3];
+    return off_1003BFC28[type];
   }
 }
 
-- (MBDriveOperation)initWithType:(int)a3 count:(int64_t)a4 size:(int64_t)a5 duration:(double)a6
+- (MBDriveOperation)initWithType:(int)type count:(int64_t)count size:(int64_t)size duration:(double)duration
 {
-  v8 = a4;
-  if (a4 < -1)
+  countCopy = count;
+  if (count < -1)
   {
     v13 = 112;
   }
 
   else
   {
-    if (a4 < 0x80000000)
+    if (count < 0x80000000)
     {
       goto LABEL_3;
     }
@@ -41,13 +41,13 @@
   [v14 handleFailureInMethod:a2 object:self file:@"MBDriveOperation.m" lineNumber:v13 description:@"Invalid count"];
 
 LABEL_3:
-  if (a5 <= -2)
+  if (size <= -2)
   {
     v15 = +[NSAssertionHandler currentHandler];
     [v15 handleFailureInMethod:a2 object:self file:@"MBDriveOperation.m" lineNumber:114 description:@"Invalid size"];
   }
 
-  if (a6 < 0.0)
+  if (duration < 0.0)
   {
     v16 = +[NSAssertionHandler currentHandler];
     [v16 handleFailureInMethod:a2 object:self file:@"MBDriveOperation.m" lineNumber:115 description:@"Negative duration"];
@@ -58,10 +58,10 @@ LABEL_3:
   result = [(MBDriveOperation *)&v17 init];
   if (result)
   {
-    result->_type = a3;
-    result->_count = v8;
-    result->_size = a5;
-    result->_duration = a6;
+    result->_type = type;
+    result->_count = countCopy;
+    result->_size = size;
+    result->_duration = duration;
   }
 
   return result;

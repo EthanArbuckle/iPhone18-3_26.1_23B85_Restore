@@ -1,40 +1,40 @@
 @interface HSServerStage
-+ (BOOL)matchesService:(id)a3;
-+ (id)clientWithService:(id)a3 directory:(id)a4 config:(const HSServerStageClientConfig *)a5;
-- (HSServerStage)initWithName:(id)a3 description:(id)a4 queue:(id)a5;
++ (BOOL)matchesService:(id)service;
++ (id)clientWithService:(id)service directory:(id)directory config:(const HSServerStageClientConfig *)config;
+- (HSServerStage)initWithName:(id)name description:(id)description queue:(id)queue;
 - (id)stages;
 - (void)_handleConnectionClosed;
 - (void)_handleConnectionOpened;
-- (void)addClient:(FileDescriptor *)a3 config:(id)a4;
+- (void)addClient:(FileDescriptor *)client config:(id)config;
 - (void)dealloc;
 @end
 
 @implementation HSServerStage
 
-+ (BOOL)matchesService:(id)a3
++ (BOOL)matchesService:(id)service
 {
-  v5 = a3;
-  if (!v5)
+  serviceCopy = service;
+  if (!serviceCopy)
   {
     v10 = +[NSAssertionHandler currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"HSServerStage.mm" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"service"}];
+    [v10 handleFailureInMethod:a2 object:self file:@"HSServerStage.mm" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"service"}];
   }
 
-  v6 = [v5 serviceProtocol];
-  v7 = [v6 isEqualToString:@"HSServerStage"];
+  serviceProtocol = [serviceCopy serviceProtocol];
+  v7 = [serviceProtocol isEqualToString:@"HSServerStage"];
 
-  v8 = (v7 & 1) != 0 && [v5 serviceVersion] == 0;
+  v8 = (v7 & 1) != 0 && [serviceCopy serviceVersion] == 0;
   return v8;
 }
 
-+ (id)clientWithService:(id)a3 directory:(id)a4 config:(const HSServerStageClientConfig *)a5
++ (id)clientWithService:(id)service directory:(id)directory config:(const HSServerStageClientConfig *)config
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  serviceCopy = service;
+  directoryCopy = directory;
+  v11 = directoryCopy;
+  if (serviceCopy)
   {
-    if (v10)
+    if (directoryCopy)
     {
       goto LABEL_3;
     }
@@ -43,7 +43,7 @@
   else
   {
     v16 = +[NSAssertionHandler currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"HSServerStage.mm" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"name"}];
+    [v16 handleFailureInMethod:a2 object:self file:@"HSServerStage.mm" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
     if (v11)
     {
@@ -52,10 +52,10 @@
   }
 
   v17 = +[NSAssertionHandler currentHandler];
-  [v17 handleFailureInMethod:a2 object:a1 file:@"HSServerStage.mm" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"directory"}];
+  [v17 handleFailureInMethod:a2 object:self file:@"HSServerStage.mm" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"directory"}];
 
 LABEL_3:
-  var1 = a5->var1;
+  var1 = config->var1;
   if (var1)
   {
     v21 = @"async";
@@ -80,7 +80,7 @@ LABEL_5:
     }
   }
 
-  [v11 openService:v9 config:v13];
+  [v11 openService:serviceCopy config:v13];
 LABEL_8:
   if (var1)
   {
@@ -99,7 +99,7 @@ LABEL_8:
 
   else
   {
-    v14 = [[HSObjectClient alloc] initWithSocket:v18 config:a5];
+    v14 = [[HSObjectClient alloc] initWithSocket:v18 config:config];
   }
 
   HSUtil::FileDescriptor::~FileDescriptor(v18);
@@ -107,14 +107,14 @@ LABEL_8:
   return v14;
 }
 
-- (HSServerStage)initWithName:(id)a3 description:(id)a4 queue:(id)a5
+- (HSServerStage)initWithName:(id)name description:(id)description queue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  nameCopy = name;
+  descriptionCopy = description;
+  queueCopy = queue;
+  if (nameCopy)
   {
-    if (v11)
+    if (descriptionCopy)
     {
       goto LABEL_3;
     }
@@ -123,7 +123,7 @@ LABEL_14:
     v19 = +[NSAssertionHandler currentHandler];
     [v19 handleFailureInMethod:a2 object:self file:@"HSServerStage.mm" lineNumber:47 description:{@"Invalid parameter not satisfying: %@", @"description"}];
 
-    if (v12)
+    if (queueCopy)
     {
       goto LABEL_4;
     }
@@ -134,13 +134,13 @@ LABEL_14:
   v18 = +[NSAssertionHandler currentHandler];
   [v18 handleFailureInMethod:a2 object:self file:@"HSServerStage.mm" lineNumber:46 description:{@"Invalid parameter not satisfying: %@", @"name"}];
 
-  if (!v11)
+  if (!descriptionCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_3:
-  if (v12)
+  if (queueCopy)
   {
     goto LABEL_4;
   }
@@ -150,8 +150,8 @@ LABEL_15:
   [v20 handleFailureInMethod:a2 object:self file:@"HSServerStage.mm" lineNumber:48 description:{@"Invalid parameter not satisfying: %@", @"queue"}];
 
 LABEL_4:
-  objc_storeStrong(&self->_name, a3);
-  objc_storeStrong(&self->_description, a4);
+  objc_storeStrong(&self->_name, name);
+  objc_storeStrong(&self->_description, description);
   v30.receiver = self;
   v30.super_class = HSServerStage;
   v13 = [(HSStage *)&v30 init];
@@ -159,7 +159,7 @@ LABEL_4:
   {
     objc_initWeak(&location, v13);
     objc_initWeak(&v25, v13);
-    v26 = v12;
+    v26 = queueCopy;
     v23[0] = _NSConcreteStackBlock;
     v23[1] = 3221225472;
     v23[2] = __48__HSServerStage_initWithName_description_queue___block_invoke;
@@ -313,13 +313,13 @@ void __48__HSServerStage_initWithName_description_queue___block_invoke_2(uint64_
         }
 
         v5 = *(*(&v17 + 1) + 8 * i);
-        v6 = [v5 consumers];
+        consumers = [v5 consumers];
         v7 = objc_opt_new();
         v24 = 0u;
         v25 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v8 = v6;
+        v8 = consumers;
         v9 = [v8 countByEnumeratingWithState:&v22 objects:v27 count:16];
         if (v9)
         {
@@ -362,19 +362,19 @@ void __48__HSServerStage_initWithName_description_queue___block_invoke_2(uint64_
 - (id)stages
 {
   HSUtil::ObjectLock::ObjectLock(v5, self);
-  v3 = [(NSMutableSet *)self->_state.stages allObjects];
+  allObjects = [(NSMutableSet *)self->_state.stages allObjects];
   HSUtil::ObjectLock::~ObjectLock(v5);
 
-  return v3;
+  return allObjects;
 }
 
-- (void)addClient:(FileDescriptor *)a3 config:(id)a4
+- (void)addClient:(FileDescriptor *)client config:(id)config
 {
-  v6 = a4;
+  configCopy = config;
   server = self->_server;
-  v8 = [v6 objectForKeyedSubscript:@"async"];
-  v9 = [v8 BOOLValue];
-  [(HSObjectServer *)server addClient:a3 config:&v9];
+  v8 = [configCopy objectForKeyedSubscript:@"async"];
+  bOOLValue = [v8 BOOLValue];
+  [(HSObjectServer *)server addClient:client config:&bOOLValue];
 }
 
 + (void)clientWithService:directory:config:.cold.1()

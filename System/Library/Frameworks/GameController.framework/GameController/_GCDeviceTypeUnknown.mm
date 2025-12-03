@@ -1,5 +1,5 @@
 @interface _GCDeviceTypeUnknown
-- (uint64_t)initWithIdentifier:(uint64_t)a1;
+- (uint64_t)initWithIdentifier:(uint64_t)identifier;
 - (void)dealloc;
 @end
 
@@ -12,14 +12,14 @@
   [(_GCDeviceTypeUnknown *)&v3 dealloc];
 }
 
-- (uint64_t)initWithIdentifier:(uint64_t)a1
+- (uint64_t)initWithIdentifier:(uint64_t)identifier
 {
-  if (a1)
+  if (identifier)
   {
-    *(a1 + 8) = [a2 copy];
+    *(identifier + 8) = [a2 copy];
   }
 
-  return a1;
+  return identifier;
 }
 
 @end

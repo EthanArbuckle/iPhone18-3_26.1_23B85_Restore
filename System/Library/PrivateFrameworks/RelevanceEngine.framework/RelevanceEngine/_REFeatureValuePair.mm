@@ -1,26 +1,26 @@
 @interface _REFeatureValuePair
-- (BOOL)isEqual:(id)a3;
-- (_REFeatureValuePair)initWithFeature:(id)a3 value:(unint64_t)a4 index:(unint64_t)a5 rootFeatures:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (_REFeatureValuePair)initWithFeature:(id)feature value:(unint64_t)value index:(unint64_t)index rootFeatures:(id)features;
 - (void)dealloc;
 @end
 
 @implementation _REFeatureValuePair
 
-- (_REFeatureValuePair)initWithFeature:(id)a3 value:(unint64_t)a4 index:(unint64_t)a5 rootFeatures:(id)a6
+- (_REFeatureValuePair)initWithFeature:(id)feature value:(unint64_t)value index:(unint64_t)index rootFeatures:(id)features
 {
-  v11 = a3;
-  v12 = a6;
+  featureCopy = feature;
+  featuresCopy = features;
   v16.receiver = self;
   v16.super_class = _REFeatureValuePair;
   v13 = [(_REFeatureValuePair *)&v16 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_feature, a3);
-    v14->_value = a4;
-    RERetainFeatureValueTaggedPointer(a4);
-    v14->_index = a5;
-    objc_storeStrong(&v14->_rootFeatures, a6);
+    objc_storeStrong(&v13->_feature, feature);
+    v14->_value = value;
+    RERetainFeatureValueTaggedPointer(value);
+    v14->_index = index;
+    objc_storeStrong(&v14->_rootFeatures, features);
   }
 
   return v14;
@@ -34,10 +34,10 @@
   [(_REFeatureValuePair *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v10 = 1;
   }
@@ -47,7 +47,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       feature = v5->_feature;
       v7 = self->_feature;
       v8 = v7;

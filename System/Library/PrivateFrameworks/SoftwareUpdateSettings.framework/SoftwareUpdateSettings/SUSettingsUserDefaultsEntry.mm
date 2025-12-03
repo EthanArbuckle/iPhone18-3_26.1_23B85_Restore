@@ -1,93 +1,93 @@
 @interface SUSettingsUserDefaultsEntry
-- (SUSettingsUserDefaultsEntry)initWithType:(int64_t)a3 key:(id)a4 description:(id)a5;
-- (id)initBoolEntryWithKey:(id)a3 description:(id)a4;
-- (id)initNumberEntryWithKey:(id)a3 description:(id)a4;
-- (id)initStringEntryWithKey:(id)a3 description:(id)a4;
+- (SUSettingsUserDefaultsEntry)initWithType:(int64_t)type key:(id)key description:(id)description;
+- (id)initBoolEntryWithKey:(id)key description:(id)description;
+- (id)initNumberEntryWithKey:(id)key description:(id)description;
+- (id)initStringEntryWithKey:(id)key description:(id)description;
 @end
 
 @implementation SUSettingsUserDefaultsEntry
 
-- (SUSettingsUserDefaultsEntry)initWithType:(int64_t)a3 key:(id)a4 description:(id)a5
+- (SUSettingsUserDefaultsEntry)initWithType:(int64_t)type key:(id)key description:(id)description
 {
-  v15 = self;
+  selfCopy = self;
   v14 = a2;
-  v13 = a3;
+  typeCopy = type;
   location = 0;
-  objc_storeStrong(&location, a4);
+  objc_storeStrong(&location, key);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
-  v5 = v15;
-  v15 = 0;
+  objc_storeStrong(&v11, description);
+  v5 = selfCopy;
+  selfCopy = 0;
   v10.receiver = v5;
   v10.super_class = SUSettingsUserDefaultsEntry;
   v9 = [(SUSettingsUserDefaultsEntry *)&v10 init];
-  v15 = v9;
-  objc_storeStrong(&v15, v9);
+  selfCopy = v9;
+  objc_storeStrong(&selfCopy, v9);
   if (v9)
   {
-    v15->_type = v13;
-    objc_storeStrong(&v15->_key, location);
-    objc_storeStrong(&v15->_entryDescription, v11);
+    selfCopy->_type = typeCopy;
+    objc_storeStrong(&selfCopy->_key, location);
+    objc_storeStrong(&selfCopy->_entryDescription, v11);
   }
 
-  v7 = MEMORY[0x277D82BE0](v15);
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (id)initBoolEntryWithKey:(id)a3 description:(id)a4
+- (id)initBoolEntryWithKey:(id)key description:(id)description
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v4 = v10;
-  v10 = 0;
-  v10 = [(SUSettingsUserDefaultsEntry *)v4 initWithType:0 key:location[0] description:v8];
-  v7 = MEMORY[0x277D82BE0](v10);
+  objc_storeStrong(&v8, description);
+  v4 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(SUSettingsUserDefaultsEntry *)v4 initWithType:0 key:location[0] description:v8];
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (id)initNumberEntryWithKey:(id)a3 description:(id)a4
+- (id)initNumberEntryWithKey:(id)key description:(id)description
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v4 = v10;
-  v10 = 0;
-  v10 = [(SUSettingsUserDefaultsEntry *)v4 initWithType:1 key:location[0] description:v8];
-  v7 = MEMORY[0x277D82BE0](v10);
+  objc_storeStrong(&v8, description);
+  v4 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(SUSettingsUserDefaultsEntry *)v4 initWithType:1 key:location[0] description:v8];
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (id)initStringEntryWithKey:(id)a3 description:(id)a4
+- (id)initStringEntryWithKey:(id)key description:(id)description
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, key);
   v8 = 0;
-  objc_storeStrong(&v8, a4);
-  v4 = v10;
-  v10 = 0;
-  v10 = [(SUSettingsUserDefaultsEntry *)v4 initWithType:2 key:location[0] description:v8];
-  v7 = MEMORY[0x277D82BE0](v10);
+  objc_storeStrong(&v8, description);
+  v4 = selfCopy;
+  selfCopy = 0;
+  selfCopy = [(SUSettingsUserDefaultsEntry *)v4 initWithType:2 key:location[0] description:v8];
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 

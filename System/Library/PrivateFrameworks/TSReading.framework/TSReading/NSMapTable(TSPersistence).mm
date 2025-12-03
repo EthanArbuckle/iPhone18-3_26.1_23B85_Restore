@@ -32,8 +32,8 @@
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = a1;
-    v6 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+    selfCopy = self;
+    v6 = [selfCopy countByEnumeratingWithState:&v11 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -44,10 +44,10 @@ LABEL_4:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
-        v10 = [v5 objectForKey:{*(*(&v11 + 1) + 8 * v9), v11}];
+        v10 = [selfCopy objectForKey:{*(*(&v11 + 1) + 8 * v9), v11}];
         v4[2](v4, v10, &v15);
 
         if (v15)
@@ -57,7 +57,7 @@ LABEL_4:
 
         if (v7 == ++v9)
         {
-          v7 = [v5 countByEnumeratingWithState:&v11 objects:v16 count:16];
+          v7 = [selfCopy countByEnumeratingWithState:&v11 objects:v16 count:16];
           if (v7)
           {
             goto LABEL_4;
@@ -81,8 +81,8 @@ LABEL_4:
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = a1;
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+    selfCopy = self;
+    v6 = [selfCopy countByEnumeratingWithState:&v12 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -93,11 +93,11 @@ LABEL_4:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(selfCopy);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
-        v11 = [v5 objectForKey:{v10, v12}];
+        v11 = [selfCopy objectForKey:{v10, v12}];
         v4[2](v4, v10, v11, &v16);
 
         if (v16)
@@ -107,7 +107,7 @@ LABEL_4:
 
         if (v7 == ++v9)
         {
-          v7 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+          v7 = [selfCopy countByEnumeratingWithState:&v12 objects:v17 count:16];
           if (v7)
           {
             goto LABEL_4;

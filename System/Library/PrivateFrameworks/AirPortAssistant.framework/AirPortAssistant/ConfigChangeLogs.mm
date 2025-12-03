@@ -1,12 +1,12 @@
 @interface ConfigChangeLogs
-+ (int)writeConfigChangeLog:(_BaseStation *)a3;
++ (int)writeConfigChangeLog:(_BaseStation *)log;
 @end
 
 @implementation ConfigChangeLogs
 
-+ (int)writeConfigChangeLog:(_BaseStation *)a3
++ (int)writeConfigChangeLog:(_BaseStation *)log
 {
-  if (a3)
+  if (log)
   {
     return 0;
   }

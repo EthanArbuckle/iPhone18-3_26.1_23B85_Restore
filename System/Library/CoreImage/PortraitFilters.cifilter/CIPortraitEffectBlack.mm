@@ -9,8 +9,8 @@
 - (id)_faceAndBodyFill_orient6;
 - (id)_faceProtect;
 - (id)_faceVignette;
-- (id)_getFocusRect:(id)a3;
-- (id)_offsetImage:(id)a3 inputDisparity:(id)a4 thresholdImage:(id)a5;
+- (id)_getFocusRect:(id)rect;
+- (id)_offsetImage:(id)image inputDisparity:(id)disparity thresholdImage:(id)thresholdImage;
 - (id)adaptiveNormalization2;
 - (id)adaptiveNormalizationAbsolute;
 - (id)adaptiveNormalizationGPU;
@@ -19,7 +19,7 @@
 - (id)outputImage;
 - (id)thresholdAndApplyMatte;
 - (id)thresholdMatte;
-- (unint64_t)_maxNumVerticesForImage:(id)a3 sigmaLuma:(id)a4 sigmaSpace:(id)a5;
+- (unint64_t)_maxNumVerticesForImage:(id)image sigmaLuma:(id)luma sigmaSpace:(id)space;
 - (void)setDefaults;
 - (void)setDefaultsAbsoluteDisparity;
 @end
@@ -432,14 +432,14 @@
   return qword_8D130;
 }
 
-- (id)_getFocusRect:(id)a3
+- (id)_getFocusRect:(id)rect
 {
-  if (!a3)
+  if (!rect)
   {
     return 0;
   }
 
-  result = [a3 objectForKey:kCGImagePropertyExifAuxDictionary];
+  result = [rect objectForKey:kCGImagePropertyExifAuxDictionary];
   if (result)
   {
     result = [result objectForKey:@"Regions"];
@@ -488,7 +488,7 @@
   return result;
 }
 
-- (id)_offsetImage:(id)a3 inputDisparity:(id)a4 thresholdImage:(id)a5
+- (id)_offsetImage:(id)image inputDisparity:(id)disparity thresholdImage:(id)thresholdImage
 {
   *&v60 = +[CIImage emptyImage];
   *(&v60 + 1) = v60;
@@ -504,15 +504,15 @@
   v58 = origin;
   v59 = size;
   memset(&v38, 0, sizeof(v38));
-  [a4 extent];
+  [disparity extent];
   v9 = v8;
-  [a4 extent];
+  [disparity extent];
   CGAffineTransformMakeScale(&v38, v9, v10);
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v11 = [a3 countByEnumeratingWithState:&v34 objects:v51 count:16];
+  v11 = [image countByEnumeratingWithState:&v34 objects:v51 count:16];
   if (v11)
   {
     v12 = v11;
@@ -524,7 +524,7 @@ LABEL_3:
     {
       if (*v35 != v14)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(image);
       }
 
       sub_4430C(*(*(&v34 + 1) + 8 * v15));
@@ -547,7 +547,7 @@ LABEL_3:
         v64 = CGRectApplyAffineTransform(v63, &v33);
         v49 = kCIInputExtentKey;
         v50 = [CIVector vectorWithCGRect:v64.origin.x, v64.origin.y, v64.size.width, v64.size.height];
-        *(&v60 + v13++) = [objc_msgSend(a4 imageByApplyingFilter:@"CIAreaAverage" withInputParameters:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v50, &v49, 1)), "imageByClampingToExtent"}];
+        *(&v60 + v13++) = [objc_msgSend(disparity imageByApplyingFilter:@"CIAreaAverage" withInputParameters:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", &v50, &v49, 1)), "imageByClampingToExtent"}];
         if (v13 == 4)
         {
           break;
@@ -556,7 +556,7 @@ LABEL_3:
 
       if (v12 == ++v15)
       {
-        v12 = [a3 countByEnumeratingWithState:&v34 objects:v51 count:16];
+        v12 = [image countByEnumeratingWithState:&v34 objects:v51 count:16];
         if (v12)
         {
           goto LABEL_3;
@@ -620,34 +620,34 @@ LABEL_3:
 
   v44 = [CIVector vectorWithX:v23 Y:v24 Z:v25 W:v22];
   [(NSNumber *)[(CIPortraitEffectBlack *)self inputAdaptiveThresholdFaceGroupRange] floatValue];
-  v45 = [CIVector vectorWithX:0.300000012 Y:4.0 Z:v26 W:sub_44480(a4)];
-  v46 = [(CIPortraitEffectBlack *)self inputAdaptiveThresholdFaceErrorMargin];
-  v27 = [(NSNumber *)[(CIPortraitEffectBlack *)self inputAdaptiveThresholdDoDisparityError] BOOLValue];
+  v45 = [CIVector vectorWithX:0.300000012 Y:4.0 Z:v26 W:sub_44480(disparity)];
+  inputAdaptiveThresholdFaceErrorMargin = [(CIPortraitEffectBlack *)self inputAdaptiveThresholdFaceErrorMargin];
+  bOOLValue = [(NSNumber *)[(CIPortraitEffectBlack *)self inputAdaptiveThresholdDoDisparityError] BOOLValue];
   v28 = &off_7A540;
-  if (v27)
+  if (bOOLValue)
   {
     v28 = &off_7A580;
   }
 
   v47 = v28;
-  v48 = [a5 imageByClampingToExtent];
+  imageByClampingToExtent = [thresholdImage imageByClampingToExtent];
   v29 = [NSArray arrayWithObjects:v41 count:11];
   v39 = kCIKernelOutputFormat;
   v40 = [NSNumber numberWithInt:kCIFormatRGBAh];
   return [objc_msgSend(v21 applyWithExtent:v29 arguments:+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary options:{"dictionaryWithObjects:forKeys:count:", &v40, &v39, 1), 0.0, 0.0, 1.0, 1.0), "imageByClampingToExtent"}];
 }
 
-- (unint64_t)_maxNumVerticesForImage:(id)a3 sigmaLuma:(id)a4 sigmaSpace:(id)a5
+- (unint64_t)_maxNumVerticesForImage:(id)image sigmaLuma:(id)luma sigmaSpace:(id)space
 {
   v5 = 221184;
-  if (a3)
+  if (image)
   {
-    [a3 extent];
+    [image extent];
     if (!CGRectIsInfinite(v11))
     {
-      [a3 extent];
+      [image extent];
       v8 = v7;
-      [a3 extent];
+      [image extent];
       return v9 * v8;
     }
   }
@@ -670,9 +670,9 @@ LABEL_3:
     goto LABEL_8;
   }
 
-  v4 = [(CIImage *)inputDisparity depthData];
-  v5 = v4;
-  if (!v4)
+  depthData = [(CIImage *)inputDisparity depthData];
+  v5 = depthData;
+  if (!depthData)
   {
 LABEL_8:
     v6 = 1;
@@ -688,7 +688,7 @@ LABEL_9:
   }
 
   v6 = 0;
-  if ([(AVDepthData *)v4 depthDataAccuracy]!= &dword_0 + 1)
+  if ([(AVDepthData *)depthData depthDataAccuracy]!= &dword_0 + 1)
   {
     goto LABEL_9;
   }
@@ -708,7 +708,7 @@ LABEL_11:
     }
   }
 
-  v577 = self;
+  selfCopy = self;
   if (qword_8D140 != -1)
   {
     sub_4B6DC();
@@ -747,7 +747,7 @@ LABEL_11:
     v547 = v19;
     [(CIImage *)self->inputMatte extent];
     v545 = v20;
-    v543 = [(CIPortraitEffectBlack *)self thresholdMatte];
+    thresholdMatte = [(CIPortraitEffectBlack *)self thresholdMatte];
     v21 = self->super.inputFaceLandmarkArray;
     if (v21 && [(NSArray *)v21 count])
     {
@@ -757,7 +757,7 @@ LABEL_11:
       v583 = 0u;
       obj = self->super.inputFaceLandmarkArray;
       v22 = 0;
-      v23 = [(NSArray *)v577->super.inputFaceLandmarkArray countByEnumeratingWithState:&v582 objects:v642 count:16];
+      v23 = [(NSArray *)selfCopy->super.inputFaceLandmarkArray countByEnumeratingWithState:&v582 objects:v642 count:16];
       if (v23)
       {
         v24 = 0;
@@ -808,11 +808,11 @@ LABEL_11:
             if (v29 && v31 && v33)
             {
               v34 = [LightingFacePoints alloc];
-              [(CIImage *)v577->super.inputImage extent];
+              [(CIImage *)selfCopy->super.inputImage extent];
               v35 = [(LightingFacePoints *)v34 initWithFaceLandmarkDictionary:v27 forImageRect:?];
               [(LightingFacePoints *)v35 faceWidth];
               v37 = v36;
-              [(CIImage *)v577->super.inputImage extent];
+              [(CIImage *)selfCopy->super.inputImage extent];
               v39 = v38;
               v40 = [objc_msgSend(v27 objectForKeyedSubscript:{@"orientation", "intValue"}];
               v22 = v40;
@@ -843,13 +843,13 @@ LABEL_11:
               v55 = v573;
               v56 = v571;
               v57 = [CIVector vectorWithX:v55 Y:v56];
-              v58 = [(CIPortraitEffectBlack *)v577 _faceVignette];
-              [(CIImage *)v577->super.inputImage extent];
+              _faceVignette = [(CIPortraitEffectBlack *)selfCopy _faceVignette];
+              [(CIImage *)selfCopy->super.inputImage extent];
               v641[0] = inputImage;
               v641[1] = v575;
               v641[2] = v57;
               v641[3] = v54;
-              v575 = [v58 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v641, 4), v59, v60, v61, v62}];
+              v575 = [_faceVignette applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v641, 4), v59, v60, v61, v62}];
 
               ++v24;
             }
@@ -869,9 +869,9 @@ LABEL_11:
       LODWORD(v23) = 0;
     }
 
-    v63 = [(CIImage *)v577->inputMatte imageByClampingToExtent];
+    imageByClampingToExtent = [(CIImage *)selfCopy->inputMatte imageByClampingToExtent];
     CGAffineTransformMakeScale(&v645, 0.5, 0.5);
-    v64 = [(CIImage *)v63 imageByApplyingTransform:&v645];
+    v64 = [(CIImage *)imageByClampingToExtent imageByApplyingTransform:&v645];
     if (v554)
     {
       v66 = 1.25;
@@ -880,9 +880,9 @@ LABEL_11:
 
     else
     {
-      v70 = [(NSNumber *)v577->inputUseAbsoluteDisparity BOOLValue];
+      bOOLValue = [(NSNumber *)selfCopy->inputUseAbsoluteDisparity BOOLValue];
       v65 = 1.0;
-      if (v70)
+      if (bOOLValue)
       {
         v66 = 1.25;
       }
@@ -893,7 +893,7 @@ LABEL_11:
       }
 
       LODWORD(v65) = 1091305472;
-      if (v70)
+      if (bOOLValue)
       {
         *&v65 = 13.75;
       }
@@ -921,7 +921,7 @@ LABEL_11:
 
     else
     {
-      [(NSNumber *)v577->super.inputScale floatValue];
+      [(NSNumber *)selfCopy->super.inputScale floatValue];
       v74 = [(CIImage *)v64 imageByApplyingGaussianBlurWithSigma:v76 * 8.0];
     }
 
@@ -957,12 +957,12 @@ LABEL_11:
     v84 = [(CIImage *)v77 imageByApplyingTransform:&v645];
     CGAffineTransformMakeScale(&v645, 2.0, 2.0);
     v85 = [(CIImage *)v83 imageByApplyingTransform:&v645];
-    [(CIImage *)v577->inputMatte extent];
-    v634[0] = v63;
+    [(CIImage *)selfCopy->inputMatte extent];
+    v634[0] = imageByClampingToExtent;
     v634[1] = v84;
     v634[2] = &off_7A540;
     v634[3] = &off_7A550;
-    v90 = [v543 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v634, 4), v86, v87, v88, v89}];
+    v90 = [thresholdMatte applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v634, 4), v86, v87, v88, v89}];
     v91 = v552;
     v92 = v549;
     v93 = v91 / v92;
@@ -978,12 +978,12 @@ LABEL_11:
     v100 = [(CIImage *)v85 imageByApplyingTransform:&v645];
     [(CIImage *)inputImage extent];
     v101 = [(CIImage *)v100 imageByCroppingToRect:?];
-    v102 = [(CIPortraitEffectBlack *)v577 thresholdAndApplyMatte];
+    thresholdAndApplyMatte = [(CIPortraitEffectBlack *)selfCopy thresholdAndApplyMatte];
     v103 = 0.5;
     v104 = 0.100000001;
     v105 = 1059481190;
     v106 = 2.20000005;
-    if ((v554 & 1) == 0 && ![(NSNumber *)v577->inputUseAbsoluteDisparity BOOLValue])
+    if ((v554 & 1) == 0 && ![(NSNumber *)selfCopy->inputUseAbsoluteDisparity BOOLValue])
     {
       v104 = 0.0;
       v106 = 1.75;
@@ -1003,10 +1003,10 @@ LABEL_11:
     v633[3] = v107;
     LODWORD(v108) = v105;
     v633[4] = [NSNumber numberWithFloat:v108];
-    v116 = [v102 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v633, 5), v109, v111, v113, v115}];
-    [(NSNumber *)v577->inputSharpenRadius floatValue];
+    v116 = [thresholdAndApplyMatte applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v633, 5), v109, v111, v113, v115}];
+    [(NSNumber *)selfCopy->inputSharpenRadius floatValue];
     v118 = v117;
-    [(NSNumber *)v577->super.inputScale floatValue];
+    [(NSNumber *)selfCopy->super.inputScale floatValue];
     *&v120 = v118 * v119;
     v632[0] = &off_7A5E0;
     v631[0] = @"inputSharpness";
@@ -1015,8 +1015,8 @@ LABEL_11:
     v121 = [v116 imageByApplyingFilter:@"CISharpenLuminance" withInputParameters:{+[NSDictionary dictionaryWithObjects:forKeys:count:](NSDictionary, "dictionaryWithObjects:forKeys:count:", v632, v631, 2)}];
     if (v23)
     {
-      v122 = [(CIPortraitEffectBlack *)v577 _applyVignette];
-      [(CIImage *)v577->super.inputImage extent];
+      _applyVignette = [(CIPortraitEffectBlack *)selfCopy _applyVignette];
+      [(CIImage *)selfCopy->super.inputImage extent];
       v124 = v123;
       v126 = v125;
       v128 = v127;
@@ -1025,12 +1025,12 @@ LABEL_11:
       v630[1] = v575;
       LODWORD(v123) = 1061997773;
       v630[2] = [NSNumber numberWithFloat:v123];
-      v121 = [v122 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v630, 3), v124, v126, v128, v130}];
+      v121 = [_applyVignette applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v630, 3), v124, v126, v128, v130}];
     }
 
-    [(NSNumber *)v577->super.inputScale floatValue];
+    [(NSNumber *)selfCopy->super.inputScale floatValue];
     v132 = v131;
-    [(NSNumber *)v577->inputGrainAmount floatValue];
+    [(NSNumber *)selfCopy->inputGrainAmount floatValue];
     *&v134 = v132 * v133;
     v628[0] = @"inputAmount";
     v135 = [NSNumber numberWithFloat:v134];
@@ -1176,11 +1176,11 @@ LABEL_148:
       if (v152 && v154 && v156)
       {
         v157 = [LightingFacePoints alloc];
-        [(CIImage *)v577->super.inputImage extent];
+        [(CIImage *)selfCopy->super.inputImage extent];
         v158 = [(LightingFacePoints *)v157 initWithFaceLandmarkDictionary:v150 forImageRect:?];
         [(LightingFacePoints *)v158 faceWidth];
         v160 = v159;
-        [(CIImage *)v577->super.inputImage extent];
+        [(CIImage *)selfCopy->super.inputImage extent];
         v162 = v161;
         v574 = [objc_msgSend(v150 objectForKeyedSubscript:{@"orientation", "intValue"}];
         if (v574 == 8 || v574 == 6)
@@ -1202,7 +1202,7 @@ LABEL_148:
         [(LightingFacePoints *)v158 faceHeight];
         v172 = v171;
         v173 = v170 * 0.5;
-        if ((v554 & 1) != 0 || [(NSNumber *)v577->inputUseAbsoluteDisparity BOOLValue])
+        if ((v554 & 1) != 0 || [(NSNumber *)selfCopy->inputUseAbsoluteDisparity BOOLValue])
         {
           v173 = v173 * 0.9;
         }
@@ -1216,13 +1216,13 @@ LABEL_148:
         v180 = v166;
         v181 = v168;
         v182 = [CIVector vectorWithX:v180 Y:v181];
-        v183 = [(CIPortraitEffectBlack *)v577 _faceVignette];
-        [(CIImage *)v577->super.inputImage extent];
+        _faceVignette2 = [(CIPortraitEffectBlack *)selfCopy _faceVignette];
+        [(CIImage *)selfCopy->super.inputImage extent];
         v624[0] = inputImage;
         v624[1] = v567;
         v624[2] = v182;
         v624[3] = v179;
-        v567 = [v183 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v624, 4), v184, v185, v186, v187}];
+        v567 = [_faceVignette2 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v624, 4), v184, v185, v186, v187}];
 
         v188 = [LightingFacePoints alloc];
         [(CIImage *)inputDepthMap extent];
@@ -1253,7 +1253,7 @@ LABEL_148:
         v548 = v202;
         v208 = [CIVector vectorWithX:(v206.__cosval * v206.__cosval) / ((v548 + v548) * v548) + (v206.__sinval * v206.__sinval) / ((v546 + v546) * v546) Y:(v207 / (v546 * 4.0 * v546) - v207 / (v548 * 4.0 * v548)) Z:(v206.__sinval * v206.__sinval) / ((v548 + v548) * v548) + (v206.__cosval * v206.__cosval) / ((v546 + v546) * v546) W:0.7];
         v209 = [CIVector vectorWithX:v556 Y:v204];
-        v210 = [(CIPortraitEffectBlack *)v577 _faceProtect];
+        _faceProtect = [(CIPortraitEffectBlack *)selfCopy _faceProtect];
         v622 = v553;
         v623 = [NSNumber numberWithInt:v550];
         v211 = [NSDictionary dictionaryWithObjects:&v623 forKeys:&v622 count:1];
@@ -1268,8 +1268,8 @@ LABEL_148:
         v621[3] = v208;
         LODWORD(v212) = 1028443341;
         v621[4] = [NSNumber numberWithFloat:v212];
-        v576 = [v210 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:"arrayWithObjects:count:" options:{v621, 5), v211, v213, v215, v217, v219}];
-        if ((v554 & 1) != 0 || [(NSNumber *)v577->inputUseAbsoluteDisparity BOOLValue])
+        v576 = [_faceProtect applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:"arrayWithObjects:count:" options:{v621, 5), v211, v213, v215, v217, v219}];
+        if ((v554 & 1) != 0 || [(NSNumber *)selfCopy->inputUseAbsoluteDisparity BOOLValue])
         {
           [(LightingFacePoints *)v189 centerChin];
           v559 = v220;
@@ -1304,7 +1304,7 @@ LABEL_148:
           v620[3] = v234;
           LODWORD(v238) = 1045220557;
           v620[4] = [NSNumber numberWithFloat:v238];
-          v576 = [v210 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:"arrayWithObjects:count:" options:{v620, 5), v211, v239, v241, v243, v245}];
+          v576 = [_faceProtect applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:"arrayWithObjects:count:" options:{v620, 5), v211, v239, v241, v243, v245}];
           v246 = *([(LightingFacePoints *)v189 rightKickLights]+ 4);
           v247 = *[(LightingFacePoints *)v189 leftKickLights];
           [(LightingFacePoints *)v189 centerNose];
@@ -1371,7 +1371,7 @@ LABEL_148:
           {
             if (v574 == 6)
             {
-              v287 = [(CIPortraitEffectBlack *)v577 _faceAndBodyFill_orient6];
+              _faceAndBodyFill_orient6 = [(CIPortraitEffectBlack *)selfCopy _faceAndBodyFill_orient6];
               [(LightingFacePoints *)v189 centerChin];
               v283 = v292;
               goto LABEL_141;
@@ -1382,7 +1382,7 @@ LABEL_148:
               goto LABEL_138;
             }
 
-            v287 = [(CIPortraitEffectBlack *)v577 _faceAndBodyFill_orient6];
+            _faceAndBodyFill_orient6 = [(CIPortraitEffectBlack *)selfCopy _faceAndBodyFill_orient6];
             [(LightingFacePoints *)v189 centerChin];
             v283 = v289;
 LABEL_137:
@@ -1393,7 +1393,7 @@ LABEL_137:
           {
             if (v574 == 1)
             {
-              v287 = [(CIPortraitEffectBlack *)v577 _faceAndBodyFill_orient1];
+              _faceAndBodyFill_orient6 = [(CIPortraitEffectBlack *)selfCopy _faceAndBodyFill_orient1];
               [(LightingFacePoints *)v189 centerChin];
               v284 = v291;
             }
@@ -1402,14 +1402,14 @@ LABEL_137:
             {
               if (v574 == 3)
               {
-                v287 = [(CIPortraitEffectBlack *)v577 _faceAndBodyFill_orient1];
+                _faceAndBodyFill_orient6 = [(CIPortraitEffectBlack *)selfCopy _faceAndBodyFill_orient1];
                 [(LightingFacePoints *)v189 centerChin];
                 v284 = v288;
                 goto LABEL_137;
               }
 
 LABEL_138:
-              v287 = [(CIPortraitEffectBlack *)v577 _faceAndBodyFill_orient6];
+              _faceAndBodyFill_orient6 = [(CIPortraitEffectBlack *)selfCopy _faceAndBodyFill_orient6];
             }
 
 LABEL_141:
@@ -1427,7 +1427,7 @@ LABEL_141:
           v617[2] = v285;
           v617[3] = v294;
           v617[4] = v293;
-          v555 = [v287 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:"arrayWithObjects:count:" options:{v617, 5), v295, v296, v297, v298, v299}];
+          v555 = [_faceAndBodyFill_orient6 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:"arrayWithObjects:count:" options:{v617, 5), v295, v296, v297, v298, v299}];
         }
 
         else
@@ -1457,9 +1457,9 @@ LABEL_149:
     v303 = [CIImage imageWithColor:v301];
     [(CIImage *)inputDepthMap extent];
     v555 = [(CIImage *)v303 imageByCroppingToRect:?];
-    [(CIImage *)v577->super.inputImage extent];
+    [(CIImage *)selfCopy->super.inputImage extent];
     v305 = v304;
-    [(CIImage *)v577->super.inputImage extent];
+    [(CIImage *)selfCopy->super.inputImage extent];
     v306 = v305 * 0.5;
     v308 = v307 * 0.5;
     v309 = v306;
@@ -1468,32 +1468,32 @@ LABEL_149:
     v312 = v308 * 0.3;
     v313 = [CIVector vectorWithX:1.0 / ((v310 + v310) * v310) + 0.0 / ((v312 + v312) * v312) Y:0.0 / (v312 * 4.0 * v312) - 0.0 / (v310 * 4.0 * v310) Z:0.0 / ((v310 + v310) * v310) + 1.0 / ((v312 + v312) * v312) W:0.7];
     v314 = [CIVector vectorWithX:v309 Y:v311];
-    v315 = [(CIPortraitEffectBlack *)v577 _faceVignette];
-    [(CIImage *)v577->super.inputImage extent];
+    _faceVignette3 = [(CIPortraitEffectBlack *)selfCopy _faceVignette];
+    [(CIImage *)selfCopy->super.inputImage extent];
     v616[0] = inputImage;
     v616[1] = v567;
     v616[2] = v314;
     v616[3] = v313;
-    v567 = [v315 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v616, 4), v316, v317, v318, v319}];
+    v567 = [_faceVignette3 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v616, 4), v316, v317, v318, v319}];
     v300 = 0;
   }
 
-  v320 = v577;
-  if (!v577->inputDisparity)
+  v320 = selfCopy;
+  if (!selfCopy->inputDisparity)
   {
     goto LABEL_224;
   }
 
   v566 = v300;
-  inputFocusRect = v577->inputFocusRect;
+  inputFocusRect = selfCopy->inputFocusRect;
   if (!inputFocusRect)
   {
-    inputFocusRect = [(CIPortraitEffectBlack *)v577 _getFocusRect:[(CIImage *)v577->super.inputImage properties]];
-    v320 = v577;
+    inputFocusRect = [(CIPortraitEffectBlack *)selfCopy _getFocusRect:[(CIImage *)selfCopy->super.inputImage properties]];
+    v320 = selfCopy;
     if (!inputFocusRect)
     {
       inputFocusRect = [CIVector vectorWithX:0.45 Y:0.45 Z:0.1 W:0.1];
-      v320 = v577;
+      v320 = selfCopy;
     }
   }
 
@@ -1505,7 +1505,7 @@ LABEL_149:
   {
     v561 = 0.0;
     v323 = 0.0;
-    v324 = v577;
+    v324 = selfCopy;
     goto LABEL_199;
   }
 
@@ -1525,15 +1525,15 @@ LABEL_149:
   vImageConvert_Planar16FtoPlanarF(&v645, &dest, 0);
   CGColorSpaceRelease(v326);
   v561 = *&v655.a;
-  v327 = v577->inputDisparity;
-  v328 = v577->super.inputFaceLandmarkArray;
-  [(NSNumber *)[(CIPortraitEffectBlack *)v577 inputFocalLengthNormalized] floatValue];
+  v327 = selfCopy->inputDisparity;
+  v328 = selfCopy->super.inputFaceLandmarkArray;
+  [(NSNumber *)[(CIPortraitEffectBlack *)selfCopy inputFocalLengthNormalized] floatValue];
   v330 = v329;
-  [(NSNumber *)[(CIPortraitEffectBlack *)v577 inputAdaptiveThresholdFaceGroupRange] floatValue];
+  [(NSNumber *)[(CIPortraitEffectBlack *)selfCopy inputAdaptiveThresholdFaceGroupRange] floatValue];
   v551 = v331;
-  [(NSNumber *)[(CIPortraitEffectBlack *)v577 inputAdaptiveThresholdFaceErrorMargin] floatValue];
+  [(NSNumber *)[(CIPortraitEffectBlack *)selfCopy inputAdaptiveThresholdFaceErrorMargin] floatValue];
   v572 = v332;
-  v333 = [(NSNumber *)[(CIPortraitEffectBlack *)v577 inputAdaptiveThresholdDoDisparityError] BOOLValue];
+  bOOLValue2 = [(NSNumber *)[(CIPortraitEffectBlack *)selfCopy inputAdaptiveThresholdDoDisparityError] BOOLValue];
   v646[1] = 0;
   v646[0] = 0;
   if (v330 <= 0.00000011921)
@@ -1542,7 +1542,7 @@ LABEL_149:
   }
 
   v323 = 0.0;
-  if (v333 && (v587 = 0u, v588 = 0u, memset(&dest, 0, sizeof(dest)), (v334 = [(NSArray *)v328 countByEnumeratingWithState:&dest objects:&v645 count:16]) != 0))
+  if (bOOLValue2 && (v587 = 0u, v588 = 0u, memset(&dest, 0, sizeof(dest)), (v334 = [(NSArray *)v328 countByEnumeratingWithState:&dest objects:&v645 count:16]) != 0))
   {
     v335 = 0;
     v336 = 0;
@@ -1664,7 +1664,7 @@ LABEL_161:
       v323 = v338 / v335;
     }
 
-    v324 = v577;
+    v324 = selfCopy;
     if (v354 >= 1)
     {
       if ((v561 - v323) >= 0.1)
@@ -1716,14 +1716,14 @@ LABEL_161:
 
   else
   {
-    v324 = v577;
+    v324 = selfCopy;
   }
 
   if (byte_8C879)
   {
 LABEL_199:
     v368 = [(CIPortraitEffectBlack *)v324 _offsetImage:v324->super.inputFaceLandmarkArray inputDisparity:v324->inputDisparity thresholdImage:objb];
-    v324 = v577;
+    v324 = selfCopy;
   }
 
   else
@@ -1731,53 +1731,53 @@ LABEL_199:
     v368 = 0;
   }
 
-  v369 = [(CIPortraitEffectBlack *)v324 _maxNumVerticesForImage:v324->inputDisparity sigmaLuma:v324->inputSigmaRLuma sigmaSpace:v324->inputSigmaS];
+  integerValue = [(CIPortraitEffectBlack *)v324 _maxNumVerticesForImage:v324->inputDisparity sigmaLuma:v324->inputSigmaRLuma sigmaSpace:v324->inputSigmaS];
   if (qword_8D148 != -1)
   {
     sub_4B6F0();
   }
 
-  v370 = v577;
+  v370 = selfCopy;
   if ((byte_8C87A & 1) == 0)
   {
-    v369 = [(NSNumber *)v577->inputMaxNumVertices integerValue];
-    v370 = v577;
+    integerValue = [(NSNumber *)selfCopy->inputMaxNumVertices integerValue];
+    v370 = selfCopy;
   }
 
   v613[0] = v370->inputDisparity;
   v612[0] = kCIInputDisparityImageKey;
   v612[1] = @"inputMaxNumVertices";
-  v371 = [NSNumber numberWithUnsignedLong:v369];
-  inputSigmaS = v577->inputSigmaS;
-  inputSigmaRLuma = v577->inputSigmaRLuma;
+  v371 = [NSNumber numberWithUnsignedLong:integerValue];
+  inputSigmaS = selfCopy->inputSigmaS;
+  inputSigmaRLuma = selfCopy->inputSigmaRLuma;
   v613[1] = v371;
   v612[2] = @"inputSigmaS";
   v612[3] = @"inputSigmaRLuma";
-  inputSigmaRChroma = v577->inputSigmaRChroma;
+  inputSigmaRChroma = selfCopy->inputSigmaRChroma;
   v613[2] = inputSigmaS;
   v613[3] = inputSigmaRLuma;
   v612[4] = @"inputSigmaRChroma";
   v612[5] = @"inputLambda";
-  inputLambda = v577->inputLambda;
-  inputMaxNumIterations = v577->inputMaxNumIterations;
+  inputLambda = selfCopy->inputLambda;
+  inputMaxNumIterations = selfCopy->inputMaxNumIterations;
   v613[4] = inputSigmaRChroma;
   v613[5] = inputLambda;
-  inputThresholdOffset = v577->inputThresholdOffset;
+  inputThresholdOffset = selfCopy->inputThresholdOffset;
   v612[6] = @"inputMaxNumIterations";
   v612[7] = @"inputThresholdOffset";
   v613[6] = inputMaxNumIterations;
   v613[7] = inputThresholdOffset;
-  inputFilterCut = v577->inputFilterCut;
-  inputBandRange = v577->inputBandRange;
+  inputFilterCut = selfCopy->inputFilterCut;
+  inputBandRange = selfCopy->inputBandRange;
   v612[8] = @"inputFilterCut";
   v612[9] = @"inputBandRange";
-  inputFeatherBandRange = v577->inputFeatherBandRange;
+  inputFeatherBandRange = selfCopy->inputFeatherBandRange;
   v613[8] = inputFilterCut;
   v613[9] = inputBandRange;
   v612[10] = @"inputFeatherBandRange";
   v612[11] = @"inputAdaptiveThresholdRange";
-  inputAdaptiveThresholdRange = v577->inputAdaptiveThresholdRange;
-  inputSigmaFallout = v577->inputSigmaFallout;
+  inputAdaptiveThresholdRange = selfCopy->inputAdaptiveThresholdRange;
+  inputSigmaFallout = selfCopy->inputSigmaFallout;
   v613[10] = inputFeatherBandRange;
   v613[11] = inputAdaptiveThresholdRange;
   v612[12] = @"inputSigmaFallout";
@@ -1790,7 +1790,7 @@ LABEL_199:
   v384 = [NSDictionary dictionaryWithObjects:&v611 forKeys:&v610 count:1];
   if (byte_8C879 != 1)
   {
-    v397 = [(CIPortraitEffectBlack *)v577 adaptiveNormalization2];
+    adaptiveNormalization2 = [(CIPortraitEffectBlack *)selfCopy adaptiveNormalization2];
     [(CIImage *)v383 extent];
     v399 = v398;
     v401 = v400;
@@ -1801,14 +1801,14 @@ LABEL_199:
     v607[1] = [NSNumber numberWithFloat:v398];
     *&v406 = v323;
     v607[2] = [NSNumber numberWithFloat:v406];
-    v607[3] = [(CIPortraitEffectBlack *)v577 inputAdaptiveThresholdZRangeConst];
-    v607[4] = [(CIPortraitEffectBlack *)v577 inputAdaptiveThresholdZRangeLinearDepth];
-    v607[5] = [(CIPortraitEffectBlack *)v577 inputAdaptiveThresholdConstOffset];
-    v607[6] = [(CIPortraitEffectBlack *)v577 inputAdaptiveThresholdLinearDepthOffset];
-    v396 = [v397 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:"arrayWithObjects:count:" options:{v607, 7), v384, v399, v401, v403, v405}];
+    v607[3] = [(CIPortraitEffectBlack *)selfCopy inputAdaptiveThresholdZRangeConst];
+    v607[4] = [(CIPortraitEffectBlack *)selfCopy inputAdaptiveThresholdZRangeLinearDepth];
+    v607[5] = [(CIPortraitEffectBlack *)selfCopy inputAdaptiveThresholdConstOffset];
+    v607[6] = [(CIPortraitEffectBlack *)selfCopy inputAdaptiveThresholdLinearDepthOffset];
+    v396 = [adaptiveNormalization2 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:"arrayWithObjects:count:" options:{v607, 7), v384, v399, v401, v403, v405}];
 LABEL_209:
     inputDepthMap = v396;
-    v320 = v577;
+    v320 = selfCopy;
     if (v566 <= 0)
     {
       goto LABEL_222;
@@ -1822,22 +1822,22 @@ LABEL_209:
 LABEL_215:
     [(NSNumber *)[(CIPortraitEffectBlack *)v320 inputAdaptiveThresholdZRangeConst] floatValue];
     v418 = v417;
-    [(NSNumber *)[(CIPortraitEffectBlack *)v577 inputAdaptiveThresholdConstOffset] floatValue];
+    [(NSNumber *)[(CIPortraitEffectBlack *)selfCopy inputAdaptiveThresholdConstOffset] floatValue];
     if (byte_8C879 == 1)
     {
       v420 = v419;
-      v421 = v577;
+      v421 = selfCopy;
       if ((v554 & 1) == 0)
       {
-        v422 = [(NSNumber *)v577->inputUseAbsoluteDisparity BOOLValue];
-        v421 = v577;
-        if (!v422)
+        bOOLValue3 = [(NSNumber *)selfCopy->inputUseAbsoluteDisparity BOOLValue];
+        v421 = selfCopy;
+        if (!bOOLValue3)
         {
           goto LABEL_221;
         }
       }
 
-      v423 = [(CIPortraitEffectBlack *)v421 adaptiveNormalizationAbsolute];
+      adaptiveNormalizationAbsolute = [(CIPortraitEffectBlack *)v421 adaptiveNormalizationAbsolute];
       [(CIImage *)v383 extent];
       v425 = v424;
       v427 = v426;
@@ -1847,18 +1847,18 @@ LABEL_215:
       v606[1] = v368;
       LODWORD(v424) = v418;
       v606[2] = [NSNumber numberWithFloat:v424];
-      v432 = [(CIPortraitEffectBlack *)v577 inputAdaptiveThresholdZRangeLinearDepth];
+      inputAdaptiveThresholdZRangeLinearDepth = [(CIPortraitEffectBlack *)selfCopy inputAdaptiveThresholdZRangeLinearDepth];
       v433 = v420 + -0.01;
       *&v433 = v433;
-      v606[3] = v432;
+      v606[3] = inputAdaptiveThresholdZRangeLinearDepth;
       v606[4] = [NSNumber numberWithFloat:v433];
       v606[5] = &off_7A730;
-      v434 = [v423 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:"arrayWithObjects:count:" options:{v606, 6), v384, v425, v427, v429, v431}];
+      v434 = [adaptiveNormalizationAbsolute applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:"arrayWithObjects:count:" options:{v606, 6), v384, v425, v427, v429, v431}];
     }
 
     else
     {
-      v435 = [(CIPortraitEffectBlack *)v577 adaptiveNormalization2];
+      adaptiveNormalization22 = [(CIPortraitEffectBlack *)selfCopy adaptiveNormalization2];
       [(CIImage *)v383 extent];
       v437 = v436;
       v439 = v438;
@@ -1869,11 +1869,11 @@ LABEL_215:
       v605[1] = [NSNumber numberWithFloat:v436];
       *&v444 = v323;
       v605[2] = [NSNumber numberWithFloat:v444];
-      v605[3] = [(CIPortraitEffectBlack *)v577 inputAdaptiveThresholdZRangeConst];
-      v605[4] = [(CIPortraitEffectBlack *)v577 inputAdaptiveThresholdZRangeLinearDepth];
-      v605[5] = [(CIPortraitEffectBlack *)v577 inputAdaptiveThresholdConstOffset];
-      v605[6] = [(CIPortraitEffectBlack *)v577 inputAdaptiveThresholdLinearDepthOffset];
-      v434 = [v435 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:"arrayWithObjects:count:" options:{v605, 7), v384, v437, v439, v441, v443}];
+      v605[3] = [(CIPortraitEffectBlack *)selfCopy inputAdaptiveThresholdZRangeConst];
+      v605[4] = [(CIPortraitEffectBlack *)selfCopy inputAdaptiveThresholdZRangeLinearDepth];
+      v605[5] = [(CIPortraitEffectBlack *)selfCopy inputAdaptiveThresholdConstOffset];
+      v605[6] = [(CIPortraitEffectBlack *)selfCopy inputAdaptiveThresholdLinearDepthOffset];
+      v434 = [adaptiveNormalization22 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:"arrayWithObjects:count:" options:{v605, 7), v384, v437, v439, v441, v443}];
     }
 
     v383 = v434;
@@ -1895,22 +1895,22 @@ LABEL_221:
     v458 = [[(CIImage *)v457 imageByClampingToExtent] imageByApplyingGaussianBlurWithSigma:2.5];
     [(CIImage *)v457 extent];
     v459 = [(CIImage *)v458 imageByCroppingToRect:?];
-    v460 = [(CIPortraitEffectBlack *)v577 blendDepth];
+    blendDepth = [(CIPortraitEffectBlack *)selfCopy blendDepth];
     [(CIImage *)inputDepthMap extent];
     v604[0] = inputDepthMap;
     v604[1] = v383;
     v604[2] = v457;
     v604[3] = v459;
     v604[4] = v555;
-    inputDepthMap = [v460 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:"arrayWithObjects:count:" options:{v604, 5), v384, v461, v462, v463, v464}];
-    v320 = v577;
+    inputDepthMap = [blendDepth applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:"arrayWithObjects:count:" options:{v604, 5), v384, v461, v462, v463, v464}];
+    v320 = selfCopy;
     goto LABEL_222;
   }
 
-  v385 = v577;
-  if ((v554 & 1) != 0 || (v386 = [(NSNumber *)v577->inputUseAbsoluteDisparity BOOLValue], v385 = v577, v386))
+  v385 = selfCopy;
+  if ((v554 & 1) != 0 || (v386 = [(NSNumber *)selfCopy->inputUseAbsoluteDisparity BOOLValue], v385 = selfCopy, v386))
   {
-    v387 = [(CIPortraitEffectBlack *)v385 adaptiveNormalizationAbsolute];
+    adaptiveNormalizationAbsolute2 = [(CIPortraitEffectBlack *)v385 adaptiveNormalizationAbsolute];
     [(CIImage *)v383 extent];
     v389 = v388;
     v391 = v390;
@@ -1918,15 +1918,15 @@ LABEL_221:
     v395 = v394;
     v609[0] = v383;
     v609[1] = v368;
-    v609[2] = [(CIPortraitEffectBlack *)v577 inputAdaptiveThresholdZRangeConst];
-    v609[3] = [(CIPortraitEffectBlack *)v577 inputAdaptiveThresholdZRangeLinearDepth];
-    v609[4] = [(CIPortraitEffectBlack *)v577 inputAdaptiveThresholdConstOffset];
-    v609[5] = [(CIPortraitEffectBlack *)v577 inputAdaptiveThresholdLinearDepthOffset];
-    v396 = [v387 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:"arrayWithObjects:count:" options:{v609, 6), v384, v389, v391, v393, v395}];
+    v609[2] = [(CIPortraitEffectBlack *)selfCopy inputAdaptiveThresholdZRangeConst];
+    v609[3] = [(CIPortraitEffectBlack *)selfCopy inputAdaptiveThresholdZRangeLinearDepth];
+    v609[4] = [(CIPortraitEffectBlack *)selfCopy inputAdaptiveThresholdConstOffset];
+    v609[5] = [(CIPortraitEffectBlack *)selfCopy inputAdaptiveThresholdLinearDepthOffset];
+    v396 = [adaptiveNormalizationAbsolute2 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:"arrayWithObjects:count:" options:{v609, 6), v384, v389, v391, v393, v395}];
     goto LABEL_209;
   }
 
-  v407 = [(CIPortraitEffectBlack *)v577 adaptiveNormalizationGPU];
+  adaptiveNormalizationGPU = [(CIPortraitEffectBlack *)selfCopy adaptiveNormalizationGPU];
   [(CIImage *)v383 extent];
   v409 = v408;
   v411 = v410;
@@ -1934,18 +1934,18 @@ LABEL_221:
   v415 = v414;
   v608[0] = v383;
   v608[1] = v368;
-  v608[2] = [(CIPortraitEffectBlack *)v577 inputAdaptiveThresholdZRangeConst];
-  v608[3] = [(CIPortraitEffectBlack *)v577 inputAdaptiveThresholdZRangeLinearDepth];
-  v608[4] = [(CIPortraitEffectBlack *)v577 inputAdaptiveThresholdConstOffset];
-  v608[5] = [(CIPortraitEffectBlack *)v577 inputAdaptiveThresholdLinearDepthOffset];
-  inputDepthMap = [v407 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:"arrayWithObjects:count:" options:{v608, 6), v384, v409, v411, v413, v415}];
-  v320 = v577;
+  v608[2] = [(CIPortraitEffectBlack *)selfCopy inputAdaptiveThresholdZRangeConst];
+  v608[3] = [(CIPortraitEffectBlack *)selfCopy inputAdaptiveThresholdZRangeLinearDepth];
+  v608[4] = [(CIPortraitEffectBlack *)selfCopy inputAdaptiveThresholdConstOffset];
+  v608[5] = [(CIPortraitEffectBlack *)selfCopy inputAdaptiveThresholdLinearDepthOffset];
+  inputDepthMap = [adaptiveNormalizationGPU applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:"arrayWithObjects:count:" options:{v608, 6), v384, v409, v411, v413, v415}];
+  v320 = selfCopy;
   if (v566 > 0)
   {
 LABEL_214:
-    v416 = [(NSNumber *)v320->inputUseAbsoluteDisparity BOOLValue];
-    v320 = v577;
-    if (v416)
+    bOOLValue4 = [(NSNumber *)v320->inputUseAbsoluteDisparity BOOLValue];
+    v320 = selfCopy;
+    if (bOOLValue4)
     {
       goto LABEL_215;
     }
@@ -1954,11 +1954,11 @@ LABEL_214:
 LABEL_222:
   if (v320->inputDisparity)
   {
-    v465 = [(CIPortraitEffectBlack *)v320 invertRed];
+    invertRed = [(CIPortraitEffectBlack *)v320 invertRed];
     [(CIImage *)inputDepthMap extent];
     v603 = inputDepthMap;
-    inputDepthMap = [v465 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &v603, 1), v466, v467, v468, v469}];
-    v320 = v577;
+    inputDepthMap = [invertRed applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", &v603, 1), v466, v467, v468, v469}];
+    v320 = selfCopy;
   }
 
 LABEL_224:
@@ -1966,17 +1966,17 @@ LABEL_224:
   v471 = v470;
   [(CIImage *)inputDepthMap extent];
   v473 = v472;
-  [(CIImage *)v577->super.inputImage extent];
+  [(CIImage *)selfCopy->super.inputImage extent];
   v475 = v474;
   [(CIImage *)inputDepthMap extent];
   v478 = v477;
-  if (!v577->inputDisparity)
+  if (!selfCopy->inputDisparity)
   {
     CGAffineTransformMakeScale(&v645, 0.5, 0.5);
     inputDepthMap = [(CIImage *)inputDepthMap imageByApplyingTransform:&v645 highQualityDownsample:1];
   }
 
-  if ((v554 & 1) != 0 || (v479 = [(NSNumber *)v577->inputUseAbsoluteDisparity BOOLValue], v476 = 0.0, v479))
+  if ((v554 & 1) != 0 || (v479 = [(NSNumber *)selfCopy->inputUseAbsoluteDisparity BOOLValue], v476 = 0.0, v479))
   {
     LODWORD(v476) = 0.25;
   }
@@ -1986,8 +1986,8 @@ LABEL_224:
   v600 = [NSNumber numberWithFloat:v476];
   v602 = [(CIImage *)inputDepthMap imageByApplyingFilter:@"CIExposureAdjust" withInputParameters:[NSDictionary dictionaryWithObjects:&v600 forKeys:&v599 count:1]];
   v480 = [(CIImage *)v576 imageByApplyingFilter:@"CIMultiplyBlendMode" withInputParameters:[NSDictionary dictionaryWithObjects:&v602 forKeys:&v601 count:1]];
-  v481 = [(CIImage *)inputDepthMap imageByClampingToExtent];
-  if ((v554 & 1) != 0 || [(NSNumber *)v577->inputUseAbsoluteDisparity BOOLValue])
+  imageByClampingToExtent2 = [(CIImage *)inputDepthMap imageByClampingToExtent];
+  if ((v554 & 1) != 0 || [(NSNumber *)selfCopy->inputUseAbsoluteDisparity BOOLValue])
   {
     v483 = 0.5;
   }
@@ -2000,8 +2000,8 @@ LABEL_224:
   v597 = @"inputRadius";
   *&v482 = v483;
   v598 = [NSNumber numberWithFloat:v482];
-  v484 = [[(CIImage *)v481 imageByApplyingFilter:@"CICheapMorphology" withInputParameters:[NSDictionary dictionaryWithObjects:&v597 forKeys:1 count:?]], "imageByApplyingGaussianBlurWithSigma:", v483];
-  v486 = v484;
+  v483 = [[(CIImage *)imageByClampingToExtent2 imageByApplyingFilter:@"CICheapMorphology" withInputParameters:[NSDictionary dictionaryWithObjects:&v597 forKeys:1 count:?]], "imageByApplyingGaussianBlurWithSigma:", v483];
+  v486 = v483;
   if (v574)
   {
     v487 = v574 == 8 || v574 == 6;
@@ -2016,7 +2016,7 @@ LABEL_224:
     v595[1] = @"inputAngle";
     v596[1] = [NSNumber numberWithFloat:v485];
     v488 = [(CIImage *)v486 imageByApplyingFilter:@"CIMotionBlur" withInputParameters:[NSDictionary dictionaryWithObjects:v596 forKeys:v595 count:2]];
-    if ((v554 & 1) != 0 || (v489 = [(NSNumber *)v577->inputUseAbsoluteDisparity BOOLValue], v490 = 4.0, v489))
+    if ((v554 & 1) != 0 || (v489 = [(NSNumber *)selfCopy->inputUseAbsoluteDisparity BOOLValue], v490 = 4.0, v489))
     {
       v490 = 8.0;
     }
@@ -2026,7 +2026,7 @@ LABEL_224:
 
   else
   {
-    v491 = [(CIImage *)v484 imageByApplyingGaussianBlurWithSigma:8.0];
+    v491 = [(CIImage *)v483 imageByApplyingGaussianBlurWithSigma:8.0];
   }
 
   v492 = v491;
@@ -2045,21 +2045,21 @@ LABEL_224:
   v502 = [(CIImage *)v486 imageByApplyingTransform:&v645];
   [(CIImage *)inputImage extent];
   v503 = [(CIImage *)v502 imageByCroppingToRect:?];
-  v504 = [(CIImage *)v480 imageByClampingToExtent];
+  imageByClampingToExtent3 = [(CIImage *)v480 imageByClampingToExtent];
   CGAffineTransformMakeScale(&v645, v498, v499);
-  v505 = [(CIImage *)v504 imageByApplyingTransform:&v645];
+  v505 = [(CIImage *)imageByClampingToExtent3 imageByApplyingTransform:&v645];
   [(CIImage *)inputImage extent];
   v506 = [(CIImage *)v505 imageByCroppingToRect:?];
-  v507 = [(CIImage *)v555 imageByClampingToExtent];
+  imageByClampingToExtent4 = [(CIImage *)v555 imageByClampingToExtent];
   CGAffineTransformMakeScale(&v645, v498, v499);
-  v508 = [(CIImage *)v507 imageByApplyingTransform:&v645];
+  v508 = [(CIImage *)imageByClampingToExtent4 imageByApplyingTransform:&v645];
   [(CIImage *)inputImage extent];
   v509 = [(CIImage *)v508 imageByCroppingToRect:?];
   if (v541)
   {
     v510 = v509;
-    v511 = [(CIPortraitEffectBlack *)v577 _CIRefineBlackDepth];
-    if ((v554 & 1) != 0 || [(NSNumber *)v577->inputUseAbsoluteDisparity BOOLValue])
+    _CIRefineBlackDepth = [(CIPortraitEffectBlack *)selfCopy _CIRefineBlackDepth];
+    if ((v554 & 1) != 0 || [(NSNumber *)selfCopy->inputUseAbsoluteDisparity BOOLValue])
     {
       v512 = 1.0;
       v513 = 1.14999998;
@@ -2074,27 +2074,27 @@ LABEL_224:
     }
 
     v515 = [CIVector vectorWithX:v514 Y:v513 Z:v512];
-    [(CIImage *)v577->super.inputImage extent];
+    [(CIImage *)selfCopy->super.inputImage extent];
     v594[0] = inputImage;
     v594[1] = v501;
     v594[2] = v503;
     v594[3] = v506;
     v594[4] = v515;
     v594[5] = v510;
-    inputImage = [v511 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v594, 6), v516, v517, v518, v519}];
+    inputImage = [_CIRefineBlackDepth applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v594, 6), v516, v517, v518, v519}];
   }
 
-  [(NSNumber *)v577->inputSharpenRadius floatValue];
+  [(NSNumber *)selfCopy->inputSharpenRadius floatValue];
   v521 = v520;
-  [(NSNumber *)v577->super.inputScale floatValue];
+  [(NSNumber *)selfCopy->super.inputScale floatValue];
   *&v523 = v521 * v522;
   v592[1] = @"inputRadius";
   v593[0] = &off_7A5E0;
   v592[0] = @"inputSharpness";
   v593[1] = [NSNumber numberWithFloat:v523];
   v524 = [(CIImage *)inputImage imageByApplyingFilter:@"CISharpenLuminance" withInputParameters:[NSDictionary dictionaryWithObjects:v593 forKeys:v592 count:2]];
-  v525 = [(CIPortraitEffectBlack *)v577 _applyVignette];
-  if ((v554 & 1) != 0 || [(NSNumber *)v577->inputUseAbsoluteDisparity BOOLValue])
+  _applyVignette2 = [(CIPortraitEffectBlack *)selfCopy _applyVignette];
+  if ((v554 & 1) != 0 || [(NSNumber *)selfCopy->inputUseAbsoluteDisparity BOOLValue])
   {
     v526 = *"33s?";
   }
@@ -2104,7 +2104,7 @@ LABEL_224:
     v526 = 1061997773;
   }
 
-  [(CIImage *)v577->super.inputImage extent];
+  [(CIImage *)selfCopy->super.inputImage extent];
   v528 = v527;
   v530 = v529;
   v532 = v531;
@@ -2113,10 +2113,10 @@ LABEL_224:
   v591[1] = v567;
   LODWORD(v527) = v526;
   v591[2] = [NSNumber numberWithFloat:v527];
-  v535 = [v525 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v591, 3), v528, v530, v532, v534}];
-  [(NSNumber *)v577->super.inputScale floatValue];
+  v535 = [_applyVignette2 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v591, 3), v528, v530, v532, v534}];
+  [(NSNumber *)selfCopy->super.inputScale floatValue];
   LODWORD(v528) = v536;
-  [(NSNumber *)v577->inputGrainAmount floatValue];
+  [(NSNumber *)selfCopy->inputGrainAmount floatValue];
   *&v538 = *&v528 * v537;
   v589[0] = @"inputAmount";
   v539 = [NSNumber numberWithFloat:v538];

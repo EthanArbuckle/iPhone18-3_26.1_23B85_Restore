@@ -1,6 +1,6 @@
 @interface SBMomentsUISceneController
 + (id)_setupInfo;
-- (void)setDefaultPresenter:(id)a3;
+- (void)setDefaultPresenter:(id)presenter;
 @end
 
 @implementation SBMomentsUISceneController
@@ -25,15 +25,15 @@
   return v2;
 }
 
-- (void)setDefaultPresenter:(id)a3
+- (void)setDefaultPresenter:(id)presenter
 {
-  v4 = a3;
+  presenterCopy = presenter;
   v5.receiver = self;
   v5.super_class = SBMomentsUISceneController;
-  [(SBSystemUISceneController *)&v5 setDefaultPresenter:v4];
+  [(SBSystemUISceneController *)&v5 setDefaultPresenter:presenterCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v4 setPresentingDelegate:self];
+    [presenterCopy setPresentingDelegate:self];
   }
 }
 

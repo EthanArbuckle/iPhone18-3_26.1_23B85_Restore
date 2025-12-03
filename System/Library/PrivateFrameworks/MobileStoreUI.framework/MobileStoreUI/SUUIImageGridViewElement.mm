@@ -1,22 +1,22 @@
 @interface SUUIImageGridViewElement
 - (CGSize)size;
-- (SUUIImageGridViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUIImageGridViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 - (UIEdgeInsets)contentInset;
 - (int64_t)columnCount;
 @end
 
 @implementation SUUIImageGridViewElement
 
-- (SUUIImageGridViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUIImageGridViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v15.receiver = self;
   v15.super_class = SUUIImageGridViewElement;
-  v9 = [(SUUIViewElement *)&v15 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v15 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"height"];
-    v11 = [v8 getAttribute:@"width"];
+    v10 = [elementCopy getAttribute:@"height"];
+    v11 = [elementCopy getAttribute:@"width"];
     if ([v10 length] && objc_msgSend(v11, "length"))
     {
       [v10 doubleValue];
@@ -31,24 +31,24 @@
 
 - (int64_t)columnCount
 {
-  v2 = [(SUUIImageGridViewElement *)self style];
-  v3 = [v2 columnCount];
+  style = [(SUUIImageGridViewElement *)self style];
+  columnCount = [style columnCount];
 
-  if (v3 <= 1)
+  if (columnCount <= 1)
   {
     return 1;
   }
 
   else
   {
-    return v3;
+    return columnCount;
   }
 }
 
 - (UIEdgeInsets)contentInset
 {
-  v2 = [(SUUIImageGridViewElement *)self style];
-  [v2 elementPadding];
+  style = [(SUUIImageGridViewElement *)self style];
+  [style elementPadding];
   v4 = v3;
   v6 = v5;
   v8 = v7;

@@ -1,20 +1,20 @@
 @interface MTPlayerItemList
-- (MTPlayerItemList)initWithPlayerItems:(id)a3;
+- (MTPlayerItemList)initWithPlayerItems:(id)items;
 - (id)metricsContentIdentifier;
 @end
 
 @implementation MTPlayerItemList
 
-- (MTPlayerItemList)initWithPlayerItems:(id)a3
+- (MTPlayerItemList)initWithPlayerItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v8.receiver = self;
   v8.super_class = MTPlayerItemList;
   v5 = [(MTPlayerItemList *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MTPlayerItemList *)v5 setPlayerItems:v4];
+    [(MTPlayerItemList *)v5 setPlayerItems:itemsCopy];
   }
 
   return v6;
@@ -23,22 +23,22 @@
 - (id)metricsContentIdentifier
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(MTPlayerItemList *)self playerItems];
-  v5 = [v4 count];
+  playerItems = [(MTPlayerItemList *)self playerItems];
+  v5 = [playerItems count];
 
   if (v5)
   {
     v6 = 0;
     do
     {
-      v7 = [(MTPlayerItemList *)self playerItems];
-      v8 = [v7 objectAtIndex:v6];
+      playerItems2 = [(MTPlayerItemList *)self playerItems];
+      v8 = [playerItems2 objectAtIndex:v6];
 
-      v9 = [v8 metricsContentIdentifier];
-      v10 = v9;
-      if (v9)
+      metricsContentIdentifier = [v8 metricsContentIdentifier];
+      v10 = metricsContentIdentifier;
+      if (metricsContentIdentifier)
       {
-        v11 = v9;
+        v11 = metricsContentIdentifier;
       }
 
       else
@@ -52,8 +52,8 @@
       [v3 setObject:v12 forKey:v13];
 
       ++v6;
-      v14 = [(MTPlayerItemList *)self playerItems];
-      v15 = [v14 count];
+      playerItems3 = [(MTPlayerItemList *)self playerItems];
+      v15 = [playerItems3 count];
     }
 
     while (v15 > v6);

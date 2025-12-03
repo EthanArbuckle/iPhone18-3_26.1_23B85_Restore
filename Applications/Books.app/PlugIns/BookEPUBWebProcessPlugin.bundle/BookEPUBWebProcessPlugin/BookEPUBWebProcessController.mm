@@ -1,19 +1,19 @@
 @interface BookEPUBWebProcessController
 - (BookEPUBWebProcessPlugin)webProcessPlugin;
-- (void)enableAXWithIdentifier:(id)a3;
-- (void)registerFontFamily:(id)a3 completion:(id)a4;
-- (void)updateAXCurrentReadingStateWithMessage:(id)a3 forValue:(id)a4;
+- (void)enableAXWithIdentifier:(id)identifier;
+- (void)registerFontFamily:(id)family completion:(id)completion;
+- (void)updateAXCurrentReadingStateWithMessage:(id)message forValue:(id)value;
 @end
 
 @implementation BookEPUBWebProcessController
 
-- (void)registerFontFamily:(id)a3 completion:(id)a4
+- (void)registerFontFamily:(id)family completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  familyCopy = family;
+  completionCopy = completion;
   v23[0] = kCTFontFamilyNameAttribute;
   v23[1] = kCTFontDownloadedAttribute;
-  v24[0] = v5;
+  v24[0] = familyCopy;
   v24[1] = &__kCFBooleanTrue;
   v7 = [NSDictionary dictionaryWithObjects:v24 forKeys:v23 count:2];
   v8 = CTFontDescriptorCreateWithAttributes(v7);
@@ -22,7 +22,7 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = v5;
+    v22 = familyCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "Attempting registration for #fontFamily '%{public}@'", buf, 0xCu);
   }
 
@@ -32,7 +32,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v22 = v5;
+      v22 = familyCopy;
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_ERROR, "Failed to get font descriptor for #fontFamily:'%{public}@'", buf, 0xCu);
     }
   }
@@ -43,10 +43,10 @@
   v16[1] = 3221225472;
   v16[2] = sub_9F58;
   v16[3] = &unk_20860;
-  v12 = v5;
+  v12 = familyCopy;
   v17 = v12;
   v19 = v8;
-  v13 = v6;
+  v13 = completionCopy;
   v18 = v13;
   matched = CTFontDescriptorMatchFontDescriptorsWithProgressHandler(v11, 0, v16);
 
@@ -65,24 +65,24 @@
   }
 }
 
-- (void)enableAXWithIdentifier:(id)a3
+- (void)enableAXWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BookEPUBWebProcessController *)self webProcessPlugin];
+  identifierCopy = identifier;
+  webProcessPlugin = [(BookEPUBWebProcessController *)self webProcessPlugin];
   v6 = _BookEPUBWebProcessPluginLog();
   v7 = v6;
-  if (v5)
+  if (webProcessPlugin)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v5;
+      v10 = webProcessPlugin;
       _os_log_impl(&dword_0, v7, OS_LOG_TYPE_DEFAULT, "Enabling AX on:%@", &v9, 0xCu);
     }
 
     v8 = +[BEAccessibilityManager sharedInstance];
-    [BEAXWebContentUtilities setWebProcessPlugin:v5];
-    [v5 setBe_identifier:v4];
+    [BEAXWebContentUtilities setWebProcessPlugin:webProcessPlugin];
+    [webProcessPlugin setBe_identifier:identifierCopy];
   }
 
   else
@@ -95,15 +95,15 @@
   }
 }
 
-- (void)updateAXCurrentReadingStateWithMessage:(id)a3 forValue:(id)a4
+- (void)updateAXCurrentReadingStateWithMessage:(id)message forValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BookEPUBWebProcessController *)self webProcessPlugin];
-  v9 = v8;
-  if (v8)
+  messageCopy = message;
+  valueCopy = value;
+  webProcessPlugin = [(BookEPUBWebProcessController *)self webProcessPlugin];
+  v9 = webProcessPlugin;
+  if (webProcessPlugin)
   {
-    [v8 updateCurrentReadingState:v7 forKeyPath:v6];
+    [webProcessPlugin updateCurrentReadingState:valueCopy forKeyPath:messageCopy];
   }
 
   else

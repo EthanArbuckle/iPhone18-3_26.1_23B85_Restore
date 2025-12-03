@@ -3,36 +3,36 @@
 - (NSString)label;
 - (PFTScheduler)workScheduler;
 - (PLKImageGenerator)init;
-- (PLKImageGenerator)initWithImageGenerator:(id)a3;
+- (PLKImageGenerator)initWithImageGenerator:(id)generator;
 - (double)averageTimeIntervalForGeneration;
-- (id)imageForObject:(id)a3;
-- (id)imageForObject:(id)a3 context:(id)a4;
-- (id)imageFutureForObject:(id)a3 context:(id)a4;
+- (id)imageForObject:(id)object;
+- (id)imageForObject:(id)object context:(id)context;
+- (id)imageFutureForObject:(id)object context:(id)context;
 - (unint64_t)numberOfBytesGenerated;
-- (void)_registerCreatedImage:(id)a3 startDate:(id)a4 numberOfBytes:(unint64_t *)a5 userInfo:(id)a6;
-- (void)appendDescriptionToFormatter:(id)a3;
-- (void)setLabel:(id)a3;
-- (void)setWorkScheduler:(id)a3;
+- (void)_registerCreatedImage:(id)image startDate:(id)date numberOfBytes:(unint64_t *)bytes userInfo:(id)info;
+- (void)appendDescriptionToFormatter:(id)formatter;
+- (void)setLabel:(id)label;
+- (void)setWorkScheduler:(id)scheduler;
 @end
 
 @implementation PLKImageGenerator
 
 - (PFTScheduler)workScheduler
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  workScheduler = v2->_workScheduler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  workScheduler = selfCopy->_workScheduler;
   if (!workScheduler)
   {
-    v4 = [objc_opt_class() defaultWorkScheduler];
-    v5 = v2->_workScheduler;
-    v2->_workScheduler = v4;
+    defaultWorkScheduler = [objc_opt_class() defaultWorkScheduler];
+    v5 = selfCopy->_workScheduler;
+    selfCopy->_workScheduler = defaultWorkScheduler;
 
-    workScheduler = v2->_workScheduler;
+    workScheduler = selfCopy->_workScheduler;
   }
 
   v6 = workScheduler;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -44,21 +44,21 @@
   return 0;
 }
 
-- (PLKImageGenerator)initWithImageGenerator:(id)a3
+- (PLKImageGenerator)initWithImageGenerator:(id)generator
 {
-  v4 = a3;
+  generatorCopy = generator;
   v17.receiver = self;
   v17.super_class = PLKImageGenerator;
   v5 = [(PLKImageGenerator *)&v17 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [generatorCopy copy];
     imageGenerator = v5->_imageGenerator;
     v5->_imageGenerator = v6;
 
-    v8 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     statisticsMapTable = v5->_statisticsMapTable;
-    v5->_statisticsMapTable = v8;
+    v5->_statisticsMapTable = weakToStrongObjectsMapTable;
 
     v10 = objc_alloc_init(MEMORY[0x277CCABD8]);
     statisticsOperationQueue = v5->_statisticsOperationQueue;
@@ -83,53 +83,53 @@
 
 - (NSString)label
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_label;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_label;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v10 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (!v10)
+  labelCopy = label;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!labelCopy)
   {
     v5 = objc_opt_class();
-    v10 = NSStringFromClass(v5);
+    labelCopy = NSStringFromClass(v5);
   }
 
-  v6 = [v10 copy];
-  label = v4->_label;
-  v4->_label = v6;
+  v6 = [labelCopy copy];
+  label = selfCopy->_label;
+  selfCopy->_label = v6;
 
-  statisticsOperationQueue = v4->_statisticsOperationQueue;
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-StatisticsCollectionQueue-%@", objc_opt_class(), v10];
-  [(NSOperationQueue *)statisticsOperationQueue setName:v9];
+  statisticsOperationQueue = selfCopy->_statisticsOperationQueue;
+  labelCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-StatisticsCollectionQueue-%@", objc_opt_class(), labelCopy];
+  [(NSOperationQueue *)statisticsOperationQueue setName:labelCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setWorkScheduler:(id)a3
+- (void)setWorkScheduler:(id)scheduler
 {
-  v8 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = v8;
-  if (!v8)
+  schedulerCopy = scheduler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  defaultWorkScheduler = schedulerCopy;
+  if (!schedulerCopy)
   {
-    v5 = [objc_opt_class() defaultWorkScheduler];
+    defaultWorkScheduler = [objc_opt_class() defaultWorkScheduler];
   }
 
-  v9 = v5;
-  v6 = [MEMORY[0x277D3EC60] offMainThreadSchedulerWithBackgroundScheduler:v5];
-  workScheduler = v4->_workScheduler;
-  v4->_workScheduler = v6;
+  v9 = defaultWorkScheduler;
+  v6 = [MEMORY[0x277D3EC60] offMainThreadSchedulerWithBackgroundScheduler:defaultWorkScheduler];
+  workScheduler = selfCopy->_workScheduler;
+  selfCopy->_workScheduler = v6;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSString)description
@@ -139,7 +139,7 @@
   v8 = 3221225472;
   v9 = __32__PLKImageGenerator_description__block_invoke;
   v10 = &unk_27835B920;
-  v11 = self;
+  selfCopy = self;
   v12 = v3;
   v4 = v3;
   [v4 appendProem:self block:&v7];
@@ -148,27 +148,27 @@
   return v5;
 }
 
-- (id)imageForObject:(id)a3
+- (id)imageForObject:(id)object
 {
-  v3 = [(PLKImageGenerator *)self imageFutureForObject:a3 context:0];
+  v3 = [(PLKImageGenerator *)self imageFutureForObject:object context:0];
   v4 = [v3 result:0];
 
   return v4;
 }
 
-- (id)imageForObject:(id)a3 context:(id)a4
+- (id)imageForObject:(id)object context:(id)context
 {
-  v4 = [(PLKImageGenerator *)self imageFutureForObject:a3 context:a4];
+  v4 = [(PLKImageGenerator *)self imageFutureForObject:object context:context];
   v5 = [v4 result:0];
 
   return v5;
 }
 
-- (id)imageFutureForObject:(id)a3 context:(id)a4
+- (id)imageFutureForObject:(id)object context:(id)context
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  contextCopy = context;
   v8 = PLKLogRendering();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
 
@@ -177,32 +177,32 @@
     v10 = PLKLogCaching();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v25 = [(PLKImageGenerator *)self label];
-      v26 = v25;
+      label = [(PLKImageGenerator *)self label];
+      v26 = label;
       v27 = &stru_282F9B218;
       *buf = 138413058;
-      if (v25)
+      if (label)
       {
-        v27 = v25;
+        v27 = label;
       }
 
       v36 = v27;
       v37 = 2048;
-      v38 = self;
+      selfCopy = self;
       v39 = 2112;
-      v40 = v6;
+      v40 = objectCopy;
       v41 = 2112;
-      v42 = v7;
+      v42 = contextCopy;
       _os_log_debug_impl(&dword_21E5D5000, v10, OS_LOG_TYPE_DEBUG, "[PLKImageGenerator(%@%p) imageFutureForObject:%@]", buf, 0x2Au);
     }
   }
 
   v11 = MEMORY[0x223D5FAC0](self->_imageGenerator);
-  v12 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v13 = _os_activity_create(&dword_21E5D5000, "-[PLKImageGenerator imageFutureForObject:context:", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
   v14 = [MEMORY[0x277D3EC38] activityWrapping:v13];
 
-  v15 = [v14 track];
+  track = [v14 track];
 
   v16 = MEMORY[0x277D3EC50];
   v30[0] = MEMORY[0x277D85DD0];
@@ -211,14 +211,14 @@
   v30[3] = &unk_27835B948;
   v17 = v11;
   v34 = v17;
-  v18 = v6;
+  v18 = objectCopy;
   v31 = v18;
-  v19 = v7;
+  v19 = contextCopy;
   v32 = v19;
-  v20 = v15;
+  v20 = track;
   v33 = v20;
-  v21 = [(PLKImageGenerator *)self workScheduler];
-  v22 = [v16 futureWithBlock:v30 scheduler:v21];
+  workScheduler = [(PLKImageGenerator *)self workScheduler];
+  v22 = [v16 futureWithBlock:v30 scheduler:workScheduler];
 
   if ([(PLKImageGenerator *)self collectStatistics])
   {
@@ -227,7 +227,7 @@
     v28[2] = __50__PLKImageGenerator_imageFutureForObject_context___block_invoke_2;
     v28[3] = &unk_27835B970;
     v28[4] = self;
-    v29 = v12;
+    v29 = date;
     [v22 addSuccessBlock:v28];
   }
 
@@ -416,11 +416,11 @@ void __53__PLKImageGenerator_averageTimeIntervalForGeneration__block_invoke(uint
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerCreatedImage:(id)a3 startDate:(id)a4 numberOfBytes:(unint64_t *)a5 userInfo:(id)a6
+- (void)_registerCreatedImage:(id)image startDate:(id)date numberOfBytes:(unint64_t *)bytes userInfo:(id)info
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  imageCopy = image;
+  dateCopy = date;
+  infoCopy = info;
   if ([(PLKImageGenerator *)self collectStatistics])
   {
     statisticScheduler = self->_statisticScheduler;
@@ -428,11 +428,11 @@ void __53__PLKImageGenerator_averageTimeIntervalForGeneration__block_invoke(uint
     v14[1] = 3221225472;
     v14[2] = __76__PLKImageGenerator__registerCreatedImage_startDate_numberOfBytes_userInfo___block_invoke;
     v14[3] = &unk_27835BA10;
-    v19 = a5;
-    v15 = v10;
-    v16 = v11;
-    v17 = v12;
-    v18 = self;
+    bytesCopy = bytes;
+    v15 = imageCopy;
+    v16 = dateCopy;
+    v17 = infoCopy;
+    selfCopy = self;
     [(PFTScheduler *)statisticScheduler performBlock:v14];
   }
 }
@@ -473,20 +473,20 @@ size_t __76__PLKImageGenerator__registerCreatedImage_startDate_numberOfBytes_use
   return CGImageGetHeight(v1) * BytesPerRow;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v7 = a3;
-  v4 = [(PLKImageGenerator *)self numberOfBytesGenerated];
+  formatterCopy = formatter;
+  numberOfBytesGenerated = [(PLKImageGenerator *)self numberOfBytesGenerated];
   if (appendDescriptionToFormatter__onceToken != -1)
   {
     [PLKImageGenerator appendDescriptionToFormatter:];
   }
 
-  v5 = [appendDescriptionToFormatter__byteCountFormatter stringFromByteCount:v4];
-  [v7 appendString:v5 withName:@"liveBytesGenerated"];
+  v5 = [appendDescriptionToFormatter__byteCountFormatter stringFromByteCount:numberOfBytesGenerated];
+  [formatterCopy appendString:v5 withName:@"liveBytesGenerated"];
 
   [(PLKImageGenerator *)self averageTimeIntervalForGeneration];
-  v6 = [v7 appendTimeInterval:@"averageTimeIntervalForGeneration" withName:1 decomposeUnits:?];
+  v6 = [formatterCopy appendTimeInterval:@"averageTimeIntervalForGeneration" withName:1 decomposeUnits:?];
 }
 
 uint64_t __50__PLKImageGenerator_appendDescriptionToFormatter___block_invoke()

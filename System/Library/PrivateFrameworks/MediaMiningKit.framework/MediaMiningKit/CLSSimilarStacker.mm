@@ -1,62 +1,62 @@
 @interface CLSSimilarStacker
-+ (id)distanceBlockWithMetric:(unint64_t)a3 sceneprintGetterBlock:(id)a4;
-- (CLSSimilarStacker)initWithSimilarityModelClass:(Class)a3;
-- (double)distanceBetweenItem:(id)a3 andItem:(id)a4;
-- (double)distanceThresholdForSimilarity:(int64_t)a3 similarityModel:(id)a4;
-- (double)distanceThresholdForSimilarity:(int64_t)a3 withSimilarityModelVersion:(unint64_t)a4;
-- (id)_similarityModelForVersion:(unint64_t)a3;
-- (id)adaptiveStackSimilarItems:(id)a3 progressBlock:(id)a4;
-- (id)stackSimilarItems:(id)a3 withSimilarity:(int64_t)a4 timestampSupport:(BOOL)a5 progressBlock:(id)a6;
-- (void)overrideDistanceThreshold:(double)a3 forSimilarity:(int64_t)a4;
++ (id)distanceBlockWithMetric:(unint64_t)metric sceneprintGetterBlock:(id)block;
+- (CLSSimilarStacker)initWithSimilarityModelClass:(Class)class;
+- (double)distanceBetweenItem:(id)item andItem:(id)andItem;
+- (double)distanceThresholdForSimilarity:(int64_t)similarity similarityModel:(id)model;
+- (double)distanceThresholdForSimilarity:(int64_t)similarity withSimilarityModelVersion:(unint64_t)version;
+- (id)_similarityModelForVersion:(unint64_t)version;
+- (id)adaptiveStackSimilarItems:(id)items progressBlock:(id)block;
+- (id)stackSimilarItems:(id)items withSimilarity:(int64_t)similarity timestampSupport:(BOOL)support progressBlock:(id)block;
+- (void)overrideDistanceThreshold:(double)threshold forSimilarity:(int64_t)similarity;
 @end
 
 @implementation CLSSimilarStacker
 
-- (id)_similarityModelForVersion:(unint64_t)a3
+- (id)_similarityModelForVersion:(unint64_t)version
 {
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
   v6 = [(NSMutableDictionary *)self->_similarityModelByVersion objectForKeyedSubscript:v5];
   if (!v6)
   {
-    v6 = [objc_alloc(objc_opt_class()) initWithSceneAnalysisVersion:a3];
+    v6 = [objc_alloc(objc_opt_class()) initWithSceneAnalysisVersion:version];
     [(NSMutableDictionary *)self->_similarityModelByVersion setObject:v6 forKeyedSubscript:v5];
   }
 
   return v6;
 }
 
-- (void)overrideDistanceThreshold:(double)a3 forSimilarity:(int64_t)a4
+- (void)overrideDistanceThreshold:(double)threshold forSimilarity:(int64_t)similarity
 {
-  if (a4 <= 4)
+  if (similarity <= 4)
   {
-    *(&self->_distanceThresholdForIdenticalSimilarity + a4) = a3;
+    *(&self->_distanceThresholdForIdenticalSimilarity + similarity) = threshold;
   }
 }
 
-- (double)distanceThresholdForSimilarity:(int64_t)a3 withSimilarityModelVersion:(unint64_t)a4
+- (double)distanceThresholdForSimilarity:(int64_t)similarity withSimilarityModelVersion:(unint64_t)version
 {
-  v6 = [(CLSSimilarStacker *)self _similarityModelForVersion:a4];
-  [(CLSSimilarStacker *)self distanceThresholdForSimilarity:a3 similarityModel:v6];
+  v6 = [(CLSSimilarStacker *)self _similarityModelForVersion:version];
+  [(CLSSimilarStacker *)self distanceThresholdForSimilarity:similarity similarityModel:v6];
   v8 = v7;
 
   return v8;
 }
 
-- (double)distanceThresholdForSimilarity:(int64_t)a3 similarityModel:(id)a4
+- (double)distanceThresholdForSimilarity:(int64_t)similarity similarityModel:(id)model
 {
-  v6 = a4;
-  v7 = v6;
+  modelCopy = model;
+  v7 = modelCopy;
   distanceThresholdForIdenticalSimilarityWithPeople = 0.0;
-  if (a3 <= 1)
+  if (similarity <= 1)
   {
-    if (a3)
+    if (similarity)
     {
-      if (a3 == 1)
+      if (similarity == 1)
       {
         distanceThresholdForIdenticalSimilarityWithPeople = self->_distanceThresholdForIdenticalSimilarityWithPeople;
         if (distanceThresholdForIdenticalSimilarityWithPeople < 0.0)
         {
-          [v6 identicalSimilarityWithPeopleDistanceThreshold];
+          [modelCopy identicalSimilarityWithPeopleDistanceThreshold];
           goto LABEL_17;
         }
       }
@@ -67,7 +67,7 @@
       distanceThresholdForIdenticalSimilarityWithPeople = self->_distanceThresholdForIdenticalSimilarity;
       if (distanceThresholdForIdenticalSimilarityWithPeople < 0.0)
       {
-        [v6 identicalSimilarityDistanceThreshold];
+        [modelCopy identicalSimilarityDistanceThreshold];
         goto LABEL_17;
       }
     }
@@ -75,13 +75,13 @@
 
   else
   {
-    switch(a3)
+    switch(similarity)
     {
       case 2:
         distanceThresholdForIdenticalSimilarityWithPeople = self->_distanceThresholdForSemanticalSimilarity;
         if (distanceThresholdForIdenticalSimilarityWithPeople < 0.0)
         {
-          [v6 semanticalSimilarityDistanceThreshold];
+          [modelCopy semanticalSimilarityDistanceThreshold];
           goto LABEL_17;
         }
 
@@ -90,7 +90,7 @@
         distanceThresholdForIdenticalSimilarityWithPeople = self->_distanceThresholdForSemanticalSimilarityWithPeople;
         if (distanceThresholdForIdenticalSimilarityWithPeople < 0.0)
         {
-          [v6 semanticalSimilarityWithPeopleDistanceThreshold];
+          [modelCopy semanticalSimilarityWithPeopleDistanceThreshold];
           goto LABEL_17;
         }
 
@@ -99,7 +99,7 @@
         distanceThresholdForIdenticalSimilarityWithPeople = self->_distanceThresholdForSemanticalSimilarityWithPersons;
         if (distanceThresholdForIdenticalSimilarityWithPeople < 0.0)
         {
-          [v6 semanticalSimilarityWithPersonDistanceThreshold];
+          [modelCopy semanticalSimilarityWithPersonDistanceThreshold];
 LABEL_17:
           distanceThresholdForIdenticalSimilarityWithPeople = v9;
         }
@@ -111,27 +111,27 @@ LABEL_17:
   return distanceThresholdForIdenticalSimilarityWithPeople;
 }
 
-- (double)distanceBetweenItem:(id)a3 andItem:(id)a4
+- (double)distanceBetweenItem:(id)item andItem:(id)andItem
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[CLSSimilarStacker _similarityModelForVersion:](self, "_similarityModelForVersion:", [v7 clsSimilarityModelVersion]);
+  andItemCopy = andItem;
+  itemCopy = item;
+  v8 = -[CLSSimilarStacker _similarityModelForVersion:](self, "_similarityModelForVersion:", [itemCopy clsSimilarityModelVersion]);
   v9 = [objc_opt_class() distanceBlockWithMetric:objc_msgSend(v8 sceneprintGetterBlock:{"metric"), self->_sceneprintGetterBlock}];
-  v10 = (v9)[2](v9, v7, v6);
+  v10 = (v9)[2](v9, itemCopy, andItemCopy);
 
   return v10;
 }
 
-- (id)adaptiveStackSimilarItems:(id)a3 progressBlock:(id)a4
+- (id)adaptiveStackSimilarItems:(id)items progressBlock:(id)block
 {
   v40 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 count];
-  v9 = [v6 firstObject];
-  v10 = [v9 clsSimilarityModelVersion];
+  itemsCopy = items;
+  blockCopy = block;
+  v8 = [itemsCopy count];
+  firstObject = [itemsCopy firstObject];
+  clsSimilarityModelVersion = [firstObject clsSimilarityModelVersion];
 
-  v11 = [(CLSSimilarStacker *)self _similarityModelForVersion:v10];
+  v11 = [(CLSSimilarStacker *)self _similarityModelForVersion:clsSimilarityModelVersion];
   v33 = [objc_opt_class() distanceBlockWithMetric:objc_msgSend(v11 sceneprintGetterBlock:{"metric"), self->_sceneprintGetterBlock}];
   v12 = [objc_alloc(MEMORY[0x277D3AC30]) initWithDistanceBlock:v33];
   [v12 setMinimumNumberOfObjects:1];
@@ -150,7 +150,7 @@ LABEL_17:
     v22 = v17;
     v23 = (v20 + v21) * 0.5;
     [v12 setMaximumDistance:v16 + v23 * v19];
-    v17 = [v12 performWithDataset:v6 progressBlock:v7];
+    v17 = [v12 performWithDataset:itemsCopy progressBlock:blockCopy];
 
     if ([v17 count] <= (v23 * v18) / 3)
     {
@@ -188,8 +188,8 @@ LABEL_17:
           objc_enumerationMutation(v25);
         }
 
-        v30 = [*(*(&v35 + 1) + 8 * i) objects];
-        [v24 addObject:v30];
+        objects = [*(*(&v35 + 1) + 8 * i) objects];
+        [v24 addObject:objects];
       }
 
       v27 = [v25 countByEnumeratingWithState:&v35 objects:v39 count:16];
@@ -198,38 +198,38 @@ LABEL_17:
     while (v27);
   }
 
-  v31 = [(CLSSimilarStacker *)self similarGroupComparator];
-  [v24 sortWithOptions:16 usingComparator:v31];
+  similarGroupComparator = [(CLSSimilarStacker *)self similarGroupComparator];
+  [v24 sortWithOptions:16 usingComparator:similarGroupComparator];
 
   return v24;
 }
 
-- (id)stackSimilarItems:(id)a3 withSimilarity:(int64_t)a4 timestampSupport:(BOOL)a5 progressBlock:(id)a6
+- (id)stackSimilarItems:(id)items withSimilarity:(int64_t)similarity timestampSupport:(BOOL)support progressBlock:(id)block
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a6;
-  v11 = [v9 count];
+  itemsCopy = items;
+  blockCopy = block;
+  v11 = [itemsCopy count];
   if (v11)
   {
     if (v11 == 1)
     {
-      v41[0] = v9;
+      v41[0] = itemsCopy;
       v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:1];
     }
 
     else
     {
-      v27 = a4;
-      v28 = self;
-      v29 = v10;
+      similarityCopy = similarity;
+      selfCopy = self;
+      v29 = blockCopy;
       v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v36 = 0u;
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v30 = v9;
-      v14 = v9;
+      v30 = itemsCopy;
+      v14 = itemsCopy;
       v15 = [v14 countByEnumeratingWithState:&v36 objects:v40 count:16];
       if (v15)
       {
@@ -245,7 +245,7 @@ LABEL_17:
             }
 
             v19 = *(*(&v36 + 1) + 8 * i);
-            v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v19, "clsSimilarityModelVersion", v27, v28, v29)}];
+            v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v19, "clsSimilarityModelVersion", similarityCopy, selfCopy, v29)}];
             v21 = [v13 objectForKeyedSubscript:v20];
             if (!v21)
             {
@@ -273,20 +273,20 @@ LABEL_17:
       v31[1] = 3221225472;
       v31[2] = __85__CLSSimilarStacker_stackSimilarItems_withSimilarity_timestampSupport_progressBlock___block_invoke;
       v31[3] = &unk_2788A79E8;
-      v31[4] = v28;
-      v34 = v27;
-      v10 = v29;
+      v31[4] = selfCopy;
+      v34 = similarityCopy;
+      blockCopy = v29;
       v33 = v29;
       v23 = v22;
       v32 = v23;
       [v13 enumerateKeysAndObjectsUsingBlock:v31];
-      v24 = [(CLSSimilarStacker *)v28 similarGroupComparator];
-      [v23 sortWithOptions:16 usingComparator:v24];
+      similarGroupComparator = [(CLSSimilarStacker *)selfCopy similarGroupComparator];
+      [v23 sortWithOptions:16 usingComparator:similarGroupComparator];
 
       v25 = v32;
       v12 = v23;
 
-      v9 = v30;
+      itemsCopy = v30;
     }
   }
 
@@ -364,7 +364,7 @@ uint64_t __43__CLSSimilarStacker_similarGroupComparator__block_invoke(uint64_t a
   return v9;
 }
 
-- (CLSSimilarStacker)initWithSimilarityModelClass:(Class)a3
+- (CLSSimilarStacker)initWithSimilarityModelClass:(Class)class
 {
   v14.receiver = self;
   v14.super_class = CLSSimilarStacker;
@@ -372,7 +372,7 @@ uint64_t __43__CLSSimilarStacker_similarGroupComparator__block_invoke(uint64_t a
   v5 = v4;
   if (v4)
   {
-    v4->_similarityModelClass = a3;
+    v4->_similarityModelClass = class;
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
     similarityModelByVersion = v5->_similarityModelByVersion;
     v5->_similarityModelByVersion = v6;
@@ -387,11 +387,11 @@ uint64_t __43__CLSSimilarStacker_similarGroupComparator__block_invoke(uint64_t a
   return v5;
 }
 
-+ (id)distanceBlockWithMetric:(unint64_t)a3 sceneprintGetterBlock:(id)a4
++ (id)distanceBlockWithMetric:(unint64_t)metric sceneprintGetterBlock:(id)block
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 == 1)
+  blockCopy = block;
+  v6 = blockCopy;
+  if (metric == 1)
   {
     v7 = v11;
     v11[0] = MEMORY[0x277D85DD0];
@@ -400,7 +400,7 @@ uint64_t __43__CLSSimilarStacker_similarGroupComparator__block_invoke(uint64_t a
     goto LABEL_5;
   }
 
-  if (!a3)
+  if (!metric)
   {
     v7 = v12;
     v12[0] = MEMORY[0x277D85DD0];
@@ -409,7 +409,7 @@ uint64_t __43__CLSSimilarStacker_similarGroupComparator__block_invoke(uint64_t a
 LABEL_5:
     v7[2] = v8;
     v7[3] = &unk_2788A7A10;
-    v7[4] = v5;
+    v7[4] = blockCopy;
     v9 = _Block_copy(v7);
 
     goto LABEL_7;

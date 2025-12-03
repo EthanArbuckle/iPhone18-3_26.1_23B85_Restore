@@ -1,62 +1,62 @@
 @interface HMAccessoryInfoProtoWifiNetworkInfoEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRequiresPassword:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRequiresPassword:(BOOL)password;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMAccessoryInfoProtoWifiNetworkInfoEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v6 = v4;
-  if (*(v4 + 1))
+  fromCopy = from;
+  v6 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)self setMacAddress:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)self setNetworkSSID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)self setNetworkGatewayIPAddress:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)self setNetworkBSSID:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)self setNetworkGatewayMacAddress:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  v5 = *(v4 + 60);
+  v5 = *(fromCopy + 60);
   if (v5)
   {
-    self->_networkRSSI = *(v4 + 10);
+    self->_networkRSSI = *(fromCopy + 10);
     *&self->_has |= 1u;
-    v5 = *(v4 + 60);
+    v5 = *(fromCopy + 60);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_requiresPassword = *(v4 + 56);
+    self->_requiresPassword = *(fromCopy + 56);
     *&self->_has |= 2u;
   }
 }
@@ -92,16 +92,16 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_19;
   }
 
   macAddress = self->_macAddress;
-  if (macAddress | *(v4 + 1))
+  if (macAddress | *(equalCopy + 1))
   {
     if (![(NSString *)macAddress isEqual:?])
     {
@@ -110,7 +110,7 @@ LABEL_3:
   }
 
   networkSSID = self->_networkSSID;
-  if (networkSSID | *(v4 + 6))
+  if (networkSSID | *(equalCopy + 6))
   {
     if (![(NSString *)networkSSID isEqual:?])
     {
@@ -119,7 +119,7 @@ LABEL_3:
   }
 
   networkGatewayIPAddress = self->_networkGatewayIPAddress;
-  if (networkGatewayIPAddress | *(v4 + 3))
+  if (networkGatewayIPAddress | *(equalCopy + 3))
   {
     if (![(NSString *)networkGatewayIPAddress isEqual:?])
     {
@@ -128,7 +128,7 @@ LABEL_3:
   }
 
   networkBSSID = self->_networkBSSID;
-  if (networkBSSID | *(v4 + 2))
+  if (networkBSSID | *(equalCopy + 2))
   {
     if (![(NSString *)networkBSSID isEqual:?])
     {
@@ -137,7 +137,7 @@ LABEL_3:
   }
 
   networkGatewayMacAddress = self->_networkGatewayMacAddress;
-  if (networkGatewayMacAddress | *(v4 + 4))
+  if (networkGatewayMacAddress | *(equalCopy + 4))
   {
     if (![(NSString *)networkGatewayMacAddress isEqual:?])
     {
@@ -147,21 +147,21 @@ LABEL_3:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_networkRSSI != *(v4 + 10))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_networkRSSI != *(equalCopy + 10))
     {
       goto LABEL_19;
     }
   }
 
-  else if (*(v4 + 60))
+  else if (*(equalCopy + 60))
   {
     goto LABEL_19;
   }
 
-  v10 = (*(v4 + 60) & 2) == 0;
+  v10 = (*(equalCopy + 60) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0)
+    if ((*(equalCopy + 60) & 2) == 0)
     {
 LABEL_19:
       v10 = 0;
@@ -170,13 +170,13 @@ LABEL_19:
 
     if (self->_requiresPassword)
     {
-      if ((*(v4 + 56) & 1) == 0)
+      if ((*(equalCopy + 56) & 1) == 0)
       {
         goto LABEL_19;
       }
     }
 
-    else if (*(v4 + 56))
+    else if (*(equalCopy + 56))
     {
       goto LABEL_19;
     }
@@ -189,26 +189,26 @@ LABEL_20:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_macAddress copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_macAddress copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(NSString *)self->_networkSSID copyWithZone:a3];
+  v8 = [(NSString *)self->_networkSSID copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
-  v10 = [(NSString *)self->_networkGatewayIPAddress copyWithZone:a3];
+  v10 = [(NSString *)self->_networkGatewayIPAddress copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
-  v12 = [(NSString *)self->_networkBSSID copyWithZone:a3];
+  v12 = [(NSString *)self->_networkBSSID copyWithZone:zone];
   v13 = *(v5 + 16);
   *(v5 + 16) = v12;
 
-  v14 = [(NSString *)self->_networkGatewayMacAddress copyWithZone:a3];
+  v14 = [(NSString *)self->_networkGatewayMacAddress copyWithZone:zone];
   v15 = *(v5 + 32);
   *(v5 + 32) = v14;
 
@@ -229,87 +229,87 @@ LABEL_20:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_macAddress)
   {
-    [v4 setMacAddress:?];
-    v4 = v6;
+    [toCopy setMacAddress:?];
+    toCopy = v6;
   }
 
   if (self->_networkSSID)
   {
     [v6 setNetworkSSID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_networkGatewayIPAddress)
   {
     [v6 setNetworkGatewayIPAddress:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_networkBSSID)
   {
     [v6 setNetworkBSSID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_networkGatewayMacAddress)
   {
     [v6 setNetworkGatewayMacAddress:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 10) = self->_networkRSSI;
-    *(v4 + 60) |= 1u;
+    *(toCopy + 10) = self->_networkRSSI;
+    *(toCopy + 60) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 56) = self->_requiresPassword;
-    *(v4 + 60) |= 2u;
+    *(toCopy + 56) = self->_requiresPassword;
+    *(toCopy + 60) |= 2u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_macAddress)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_networkSSID)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_networkGatewayIPAddress)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_networkBSSID)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_networkGatewayMacAddress)
   {
     PBDataWriterWriteStringField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -317,7 +317,7 @@ LABEL_20:
   {
     networkRSSI = self->_networkRSSI;
     PBDataWriterWriteInt32Field();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -325,18 +325,18 @@ LABEL_20:
   {
     requiresPassword = self->_requiresPassword;
     PBDataWriterWriteBOOLField();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   macAddress = self->_macAddress;
   if (macAddress)
   {
-    [v3 setObject:macAddress forKey:@"macAddress"];
+    [dictionary setObject:macAddress forKey:@"macAddress"];
   }
 
   networkSSID = self->_networkSSID;
@@ -387,15 +387,15 @@ LABEL_20:
   v8.receiver = self;
   v8.super_class = HMAccessoryInfoProtoWifiNetworkInfoEvent;
   v4 = [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)&v8 description];
-  v5 = [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMAccessoryInfoProtoWifiNetworkInfoEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasRequiresPassword:(BOOL)a3
+- (void)setHasRequiresPassword:(BOOL)password
 {
-  if (a3)
+  if (password)
   {
     v3 = 2;
   }

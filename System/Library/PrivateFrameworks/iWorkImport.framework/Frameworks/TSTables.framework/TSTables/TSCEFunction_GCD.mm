@@ -1,15 +1,15 @@
 @interface TSCEFunction_GCD
-+ (TSUDecimal)GCDFunction:(const TSUDecimal *)a3 number2:(const TSUDecimal *)a4;
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (TSUDecimal)GCDFunction:(const TSUDecimal *)function number2:(const TSUDecimal *)number2;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_GCD
 
-+ (TSUDecimal)GCDFunction:(const TSUDecimal *)a3 number2:(const TSUDecimal *)a4
++ (TSUDecimal)GCDFunction:(const TSUDecimal *)function number2:(const TSUDecimal *)number2
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = *a3;
-  v11 = *a4;
+  v4 = *function;
+  v11 = *number2;
   v12 = v4;
   TSUDecimal::trunc(&v12);
   TSUDecimal::trunc(&v11);
@@ -72,25 +72,25 @@
   return result;
 }
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v7 = **a5;
+  v7 = **arguments;
   v79[0] = 0;
-  v9 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v7, v8, a3, a4, 0, 1, v79);
+  v9 = objc_msgSend_asGrid_functionSpec_argumentIndex_applyPreferredFormat_outError_(v7, v8, context, spec, 0, 1, v79);
   v10 = v79[0];
   if (v10)
   {
     v14 = v10;
-    v15 = objc_msgSend_raiseErrorOrConvert_(a3, v11, v10, v12, v13);
+    v15 = objc_msgSend_raiseErrorOrConvert_(context, v11, v10, v12, v13);
   }
 
   else
   {
     TSUDecimal::operator=();
     v20 = objc_msgSend_count(v9, v16, v17, v18, v19);
-    v25 = a3;
-    v72[0] = v25;
-    v72[1] = a4;
+    contextCopy = context;
+    v72[0] = contextCopy;
+    v72[1] = spec;
     v73 = 0;
     v74[0] = 0;
     *(v74 + 7) = 0;
@@ -116,14 +116,14 @@
           v69 = v27;
           v41 = v29;
           v71 = 0;
-          v42 = objc_msgSend_asNumber_outError_(v30, v39, v25, &v71, v40);
+          v42 = objc_msgSend_asNumber_outError_(v30, v39, contextCopy, &v71, v40);
           v14 = v71;
           *&v70[0] = objc_msgSend_decimalRepresentation(v42, v43, v44, v45, v46);
           *(&v70[0] + 1) = v47;
 
           if (v14)
           {
-            v15 = objc_msgSend_raiseErrorOrConvert_(v25, v48, v14, v49, v50);
+            v15 = objc_msgSend_raiseErrorOrConvert_(contextCopy, v48, v14, v49, v50);
 LABEL_27:
 
             goto LABEL_21;
@@ -133,7 +133,7 @@ LABEL_27:
           if (TSUDecimal::operator<())
           {
             v65 = objc_msgSend_numberSmallerThanZeroError(TSCEError, v51, v52, v53, v54);
-            v15 = objc_msgSend_raiseErrorOrConvert_(v25, v66, v65, v67, v68);
+            v15 = objc_msgSend_raiseErrorOrConvert_(contextCopy, v66, v65, v67, v68);
 
             goto LABEL_27;
           }
@@ -162,7 +162,7 @@ LABEL_27:
 LABEL_16:
       if (v9)
       {
-        objc_msgSend_formatWithContext_(v9, v21, v25, v23, v24);
+        objc_msgSend_formatWithContext_(v9, v21, contextCopy, v23, v24);
       }
 
       else
@@ -176,9 +176,9 @@ LABEL_16:
     else
     {
 LABEL_15:
-      v57 = objc_msgSend_functionName(a4, v21, v22, v23, v24);
+      v57 = objc_msgSend_functionName(spec, v21, v22, v23, v24);
       v60 = objc_msgSend_noSuitableArgumentsFoundErrorForFunctionName_requiredType_(TSCEError, v58, v57, 5, v59);
-      v15 = objc_msgSend_raiseErrorOrConvert_(v25, v61, v60, v62, v63);
+      v15 = objc_msgSend_raiseErrorOrConvert_(contextCopy, v61, v60, v62, v63);
     }
 
     v14 = 0;

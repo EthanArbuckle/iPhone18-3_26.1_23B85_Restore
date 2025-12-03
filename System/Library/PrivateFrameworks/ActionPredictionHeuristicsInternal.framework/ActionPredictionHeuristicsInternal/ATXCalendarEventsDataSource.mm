@@ -1,42 +1,42 @@
 @interface ATXCalendarEventsDataSource
-- (ATXCalendarEventsDataSource)initWithDevice:(id)a3;
-- (id)eventsFromStartDate:(id)a3 endDate:(id)a4 category:(id)a5 reason:(id)a6;
-- (id)eventsFromStartDate:(id)a3 endDate:(id)a4 reason:(id)a5;
-- (void)calendarEventsFromStartDate:(id)a3 toEndDate:(id)a4 callback:(id)a5;
-- (void)visibleCalendarsWithCallback:(id)a3;
+- (ATXCalendarEventsDataSource)initWithDevice:(id)device;
+- (id)eventsFromStartDate:(id)date endDate:(id)endDate category:(id)category reason:(id)reason;
+- (id)eventsFromStartDate:(id)date endDate:(id)endDate reason:(id)reason;
+- (void)calendarEventsFromStartDate:(id)date toEndDate:(id)endDate callback:(id)callback;
+- (void)visibleCalendarsWithCallback:(id)callback;
 @end
 
 @implementation ATXCalendarEventsDataSource
 
-- (ATXCalendarEventsDataSource)initWithDevice:(id)a3
+- (ATXCalendarEventsDataSource)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = ATXCalendarEventsDataSource;
   v6 = [(ATXCalendarEventsDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-- (void)calendarEventsFromStartDate:(id)a3 toEndDate:(id)a4 callback:(id)a5
+- (void)calendarEventsFromStartDate:(id)date toEndDate:(id)endDate callback:(id)callback
 {
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  callbackCopy = callback;
   if (ATXHeuristicCanLearnFromApp(&unk_2850BA428))
   {
-    v11 = [(ATXHeuristicDevice *)self->_device eventStore];
-    v12 = [(ATXHeuristicDevice *)self->_device visibleCalendarsInCurrentFocus];
-    v25 = [v12 _pas_filteredArrayWithTest:&__block_literal_global_16];
-    v24 = [v11 predicateForEventsWithStartDate:v8 endDate:v9 calendars:?];
-    v13 = [v11 eventsMatchingPredicate:?];
-    [v9 timeIntervalSinceDate:v8];
+    eventStore = [(ATXHeuristicDevice *)self->_device eventStore];
+    visibleCalendarsInCurrentFocus = [(ATXHeuristicDevice *)self->_device visibleCalendarsInCurrentFocus];
+    v25 = [visibleCalendarsInCurrentFocus _pas_filteredArrayWithTest:&__block_literal_global_16];
+    v24 = [eventStore predicateForEventsWithStartDate:dateCopy endDate:endDateCopy calendars:?];
+    v13 = [eventStore eventsMatchingPredicate:?];
+    [endDateCopy timeIntervalSinceDate:dateCopy];
     v15 = vcvtpd_u64_f64(v14 / 86400.0 * 50.0);
     v16 = __atxlog_handle_heuristic();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -46,15 +46,15 @@
       v33 = 2048;
       v34 = [v13 count];
       v35 = 2048;
-      v36 = v11;
+      v36 = eventStore;
       v37 = 2048;
-      v38 = [v12 count];
+      v38 = [visibleCalendarsInCurrentFocus count];
       _os_log_impl(&dword_23E3EA000, v16, OS_LOG_TYPE_DEFAULT, "Fetching calendar events with limit count of: %ld; actual count: %ld; event store: %p; visible calendars: %ld", buf, 0x2Au);
     }
 
     v17 = objc_opt_new();
     v18 = objc_autoreleasePoolPush();
-    v26 = v12;
+    v26 = visibleCalendarsInCurrentFocus;
     if (_ContactCache_onceToken != -1)
     {
       [ATXCalendarEventsDataSource calendarEventsFromStartDate:toEndDate:callback:];
@@ -74,7 +74,7 @@
     [v13 enumerateObjectsUsingBlock:v27];
 
     objc_autoreleasePoolPop(v18);
-    v10[2](v10, v20, 0);
+    callbackCopy[2](callbackCopy, v20, 0);
   }
 
   else
@@ -87,7 +87,7 @@
       _os_log_impl(&dword_23E3EA000, v22, OS_LOG_TYPE_DEFAULT, "Events data source is not learnable for %{public}@", buf, 0xCu);
     }
 
-    v10[2](v10, MEMORY[0x277CBEBF8], 0);
+    callbackCopy[2](callbackCopy, MEMORY[0x277CBEBF8], 0);
   }
 
   v23 = *MEMORY[0x277D85DE8];
@@ -150,19 +150,19 @@ void __78__ATXCalendarEventsDataSource_calendarEventsFromStartDate_toEndDate_cal
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)visibleCalendarsWithCallback:(id)a3
+- (void)visibleCalendarsWithCallback:(id)callback
 {
-  v6 = a3;
+  callbackCopy = callback;
   if (ATXHeuristicCanLearnFromApp(&unk_2850BA440))
   {
-    v4 = [(ATXHeuristicDevice *)self->_device visibleCalendarsInCurrentFocus];
-    v5 = [v4 _pas_mappedArrayWithTransform:&__block_literal_global_31];
-    v6[2](v6, v5, 0);
+    visibleCalendarsInCurrentFocus = [(ATXHeuristicDevice *)self->_device visibleCalendarsInCurrentFocus];
+    v5 = [visibleCalendarsInCurrentFocus _pas_mappedArrayWithTransform:&__block_literal_global_31];
+    callbackCopy[2](callbackCopy, v5, 0);
   }
 
   else
   {
-    v6[2](v6, MEMORY[0x277CBEBF8], 0);
+    callbackCopy[2](callbackCopy, MEMORY[0x277CBEBF8], 0);
   }
 }
 
@@ -217,42 +217,42 @@ LABEL_12:
   return v6;
 }
 
-- (id)eventsFromStartDate:(id)a3 endDate:(id)a4 reason:(id)a5
+- (id)eventsFromStartDate:(id)date endDate:(id)endDate reason:(id)reason
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dateCopy = date;
+  endDateCopy = endDate;
+  reasonCopy = reason;
   if (ATXHeuristicCanLearnFromApp(&unk_2850BA458))
   {
-    v11 = [(ATXHeuristicDevice *)self->_device eventStore];
-    v12 = [(ATXHeuristicDevice *)self->_device visibleCalendarsRegardlessOfFocus];
-    v13 = [v12 _pas_filteredArrayWithTest:&__block_literal_global_43_0];
-    v14 = [v11 predicateForEventsWithStartDate:v8 endDate:v9 calendars:v13];
-    v15 = [v11 eventsMatchingPredicate:v14];
+    eventStore = [(ATXHeuristicDevice *)self->_device eventStore];
+    visibleCalendarsRegardlessOfFocus = [(ATXHeuristicDevice *)self->_device visibleCalendarsRegardlessOfFocus];
+    v13 = [visibleCalendarsRegardlessOfFocus _pas_filteredArrayWithTest:&__block_literal_global_43_0];
+    v14 = [eventStore predicateForEventsWithStartDate:dateCopy endDate:endDateCopy calendars:v13];
+    v15 = [eventStore eventsMatchingPredicate:v14];
     v16 = __atxlog_handle_context_heuristic();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138413058;
-      v20 = v8;
+      v20 = dateCopy;
       v21 = 2112;
-      v22 = v9;
+      v22 = endDateCopy;
       v23 = 2048;
       v24 = [v15 count];
       v25 = 2114;
-      v26 = v10;
+      v26 = reasonCopy;
       _os_log_impl(&dword_23E3EA000, v16, OS_LOG_TYPE_DEFAULT, "Fetching calendar events start: %@, end: %@ count: %ld reason: %{public}@", &v19, 0x2Au);
     }
   }
 
   else
   {
-    v11 = __atxlog_handle_heuristic();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    eventStore = __atxlog_handle_heuristic();
+    if (os_log_type_enabled(eventStore, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138543362;
       v20 = @"com.apple.mobilecal";
-      _os_log_impl(&dword_23E3EA000, v11, OS_LOG_TYPE_DEFAULT, "Events data source is not learnable for %{public}@", &v19, 0xCu);
+      _os_log_impl(&dword_23E3EA000, eventStore, OS_LOG_TYPE_DEFAULT, "Events data source is not learnable for %{public}@", &v19, 0xCu);
     }
 
     v15 = MEMORY[0x277CBEBF8];
@@ -273,20 +273,20 @@ uint64_t __44__ATXCalendarEventsDataSource_sortEkEvents___block_invoke(uint64_t 
   return v7;
 }
 
-- (id)eventsFromStartDate:(id)a3 endDate:(id)a4 category:(id)a5 reason:(id)a6
+- (id)eventsFromStartDate:(id)date endDate:(id)endDate category:(id)category reason:(id)reason
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [(ATXCalendarEventsDataSource *)self eventsFromStartDate:v10 endDate:a4 reason:a6];
+  dateCopy = date;
+  categoryCopy = category;
+  v12 = [(ATXCalendarEventsDataSource *)self eventsFromStartDate:dateCopy endDate:endDate reason:reason];
   v13 = MEMORY[0x277CCAC30];
   v19 = MEMORY[0x277D85DD0];
   v20 = 3221225472;
   v21 = __75__ATXCalendarEventsDataSource_eventsFromStartDate_endDate_category_reason___block_invoke;
   v22 = &unk_278C3D340;
-  v23 = v11;
-  v24 = v10;
-  v14 = v10;
-  v15 = v11;
+  v23 = categoryCopy;
+  v24 = dateCopy;
+  v14 = dateCopy;
+  v15 = categoryCopy;
   v16 = [v13 predicateWithBlock:&v19];
   v17 = [v12 filteredArrayUsingPredicate:{v16, v19, v20, v21, v22}];
 

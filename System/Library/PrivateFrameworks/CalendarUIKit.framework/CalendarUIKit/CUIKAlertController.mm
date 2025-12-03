@@ -1,34 +1,34 @@
 @interface CUIKAlertController
-+ (id)alertControllerWithTitle:(id)a3 message:(id)a4;
-- (CUIKAlertController)initWithTitle:(id)a3 message:(id)a4;
++ (id)alertControllerWithTitle:(id)title message:(id)message;
+- (CUIKAlertController)initWithTitle:(id)title message:(id)message;
 - (NSArray)actions;
-- (int64_t)_actionStyleForActionStyle:(int64_t)a3;
-- (void)presentFromSource:(id)a3;
+- (int64_t)_actionStyleForActionStyle:(int64_t)style;
+- (void)presentFromSource:(id)source;
 @end
 
 @implementation CUIKAlertController
 
-+ (id)alertControllerWithTitle:(id)a3 message:(id)a4
++ (id)alertControllerWithTitle:(id)title message:(id)message
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithTitle:v7 message:v6];
+  messageCopy = message;
+  titleCopy = title;
+  v8 = [[self alloc] initWithTitle:titleCopy message:messageCopy];
 
   return v8;
 }
 
-- (CUIKAlertController)initWithTitle:(id)a3 message:(id)a4
+- (CUIKAlertController)initWithTitle:(id)title message:(id)message
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  messageCopy = message;
   v14.receiver = self;
   v14.super_class = CUIKAlertController;
   v9 = [(CUIKAlertController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_title, a3);
-    objc_storeStrong(&v10->_message, a4);
+    objc_storeStrong(&v9->_title, title);
+    objc_storeStrong(&v10->_message, message);
     v11 = objc_opt_new();
     actions = v10->_actions;
     v10->_actions = v11;
@@ -44,18 +44,18 @@
   return v2;
 }
 
-- (void)presentFromSource:(id)a3
+- (void)presentFromSource:(id)source
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sourceCopy = source;
+  v5 = sourceCopy;
+  if (sourceCopy)
   {
-    v19 = v4;
+    v19 = sourceCopy;
     v6 = MEMORY[0x1E69DC650];
-    v7 = [(CUIKAlertController *)self title];
-    v8 = [(CUIKAlertController *)self message];
-    v9 = [v6 alertControllerWithTitle:v7 message:v8 preferredStyle:1];
+    title = [(CUIKAlertController *)self title];
+    message = [(CUIKAlertController *)self message];
+    v9 = [v6 alertControllerWithTitle:title message:message preferredStyle:1];
 
     v24 = 0u;
     v25 = 0u;
@@ -78,14 +78,14 @@
 
           v14 = *(*(&v22 + 1) + 8 * i);
           v15 = MEMORY[0x1E69DC648];
-          v16 = [v14 title];
+          title2 = [v14 title];
           v17 = -[CUIKAlertController _actionStyleForActionStyle:](self, "_actionStyleForActionStyle:", [v14 style]);
           v21[0] = MEMORY[0x1E69E9820];
           v21[1] = 3221225472;
           v21[2] = __41__CUIKAlertController_presentFromSource___block_invoke;
           v21[3] = &unk_1E8399F60;
           v21[4] = v14;
-          v18 = [v15 actionWithTitle:v16 style:v17 handler:v21];
+          v18 = [v15 actionWithTitle:title2 style:v17 handler:v21];
           [v9 addAction:v18];
         }
 
@@ -106,16 +106,16 @@ void __41__CUIKAlertController_presentFromSource___block_invoke(uint64_t a1)
   v2[2](v2, *(a1 + 32));
 }
 
-- (int64_t)_actionStyleForActionStyle:(int64_t)a3
+- (int64_t)_actionStyleForActionStyle:(int64_t)style
 {
-  if (a3 == 2)
+  if (style == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 == 1;
+    return style == 1;
   }
 }
 

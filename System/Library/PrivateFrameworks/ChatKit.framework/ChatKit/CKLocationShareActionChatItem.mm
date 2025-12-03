@@ -11,16 +11,16 @@
 - (id)loadTranscriptText
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 transcriptEmphasizedFontAttributes];
+  transcriptEmphasizedFontAttributes = [v3 transcriptEmphasizedFontAttributes];
 
-  v5 = [(CKLocationShareActionChatItem *)self sender];
-  v6 = [(CKLocationShareActionChatItem *)self handle];
-  v7 = [v5 name];
-  v8 = v7;
+  sender = [(CKLocationShareActionChatItem *)self sender];
+  handle = [(CKLocationShareActionChatItem *)self handle];
+  name = [sender name];
+  v8 = name;
   v9 = &stru_1F04268F8;
-  if (v7)
+  if (name)
   {
-    v10 = v7;
+    v10 = name;
   }
 
   else
@@ -30,11 +30,11 @@
 
   v11 = v10;
 
-  v12 = [v6 name];
-  v13 = v12;
-  if (v12)
+  name2 = [handle name];
+  v13 = name2;
+  if (name2)
   {
-    v14 = v12;
+    v14 = name2;
   }
 
   else
@@ -44,18 +44,18 @@
 
   v15 = v14;
 
-  v16 = [(CKLocationShareActionChatItem *)self actionType];
-  v17 = [(CKLocationShareActionChatItem *)self direction];
-  if (v16 != 1)
+  actionType = [(CKLocationShareActionChatItem *)self actionType];
+  direction = [(CKLocationShareActionChatItem *)self direction];
+  if (actionType != 1)
   {
-    if (v16)
+    if (actionType)
     {
       goto LABEL_23;
     }
 
-    if (v17)
+    if (direction)
     {
-      if (v17 == 1)
+      if (direction == 1)
       {
         v18 = @"LOCATION_START_YOU_STATUS";
 LABEL_15:
@@ -66,10 +66,10 @@ LABEL_19:
         v22 = [v21 localizedStringForKey:v18 value:&stru_1F04268F8 table:@"ChatKit"];
         v23 = [v20 stringWithFormat:v22, v19];
 
-        v24 = [MEMORY[0x1E69DC668] sharedApplication];
-        v25 = [v24 userInterfaceLayoutDirection];
+        mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+        userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-        if (v25 == 1)
+        if (userInterfaceLayoutDirection == 1)
         {
           v26 = @"\u200F";
         }
@@ -93,13 +93,13 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (!v17)
+  if (!direction)
   {
     v18 = @"LOCATION_YOU_STOP_STATUS";
     goto LABEL_18;
   }
 
-  if (v17 == 1)
+  if (direction == 1)
   {
     v18 = @"LOCATION_STOP_YOU_STATUS";
     goto LABEL_15;
@@ -110,47 +110,47 @@ LABEL_23:
   [v27 replaceCharactersInRange:0 withString:{0, @" "}];
   v28 = objc_alloc_init(MEMORY[0x1E69DB7F0]);
   v29 = +[CKUIBehavior sharedBehaviors];
-  v30 = [v29 locationShareActionIcon];
-  [v28 setImage:v30];
+  locationShareActionIcon = [v29 locationShareActionIcon];
+  [v28 setImage:locationShareActionIcon];
 
   v31 = [MEMORY[0x1E696AAB0] attributedStringWithAttachment:v28];
   [v27 insertAttributedString:v31 atIndex:0];
 
-  [v27 addAttributes:v4 range:{0, objc_msgSend(v27, "length")}];
+  [v27 addAttributes:transcriptEmphasizedFontAttributes range:{0, objc_msgSend(v27, "length")}];
 
   return v27;
 }
 
 - (int64_t)actionType
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 actionType];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  actionType = [iMChatItem actionType];
 
-  return v3;
+  return actionType;
 }
 
 - (int64_t)direction
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 direction];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  direction = [iMChatItem direction];
 
-  return v3;
+  return direction;
 }
 
 - (id)sender
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 sender];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  sender = [iMChatItem sender];
 
-  return v3;
+  return sender;
 }
 
 - (id)handle
 {
-  v2 = [(CKChatItem *)self IMChatItem];
-  v3 = [v2 otherHandle];
+  iMChatItem = [(CKChatItem *)self IMChatItem];
+  otherHandle = [iMChatItem otherHandle];
 
-  return v3;
+  return otherHandle;
 }
 
 @end

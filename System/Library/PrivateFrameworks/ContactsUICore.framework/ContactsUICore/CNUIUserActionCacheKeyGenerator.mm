@@ -1,14 +1,14 @@
 @interface CNUIUserActionCacheKeyGenerator
-+ (id)descriptionOfActionType:(id)a3;
-+ (id)fingerprintOfEmailAddresses:(id)a3;
-+ (id)fingerprintOfInstantMessageAddresses:(id)a3;
-+ (id)fingerprintOfPhoneNumbers:(id)a3;
-+ (id)fingerprintOfPostalAddresses:(id)a3;
-+ (id)fingerprintOfSocialProfiles:(id)a3;
-+ (id)handlesForActionType:(id)a3 contact:(id)a4;
-+ (id)keyForContact:(id)a3 actionType:(id)a4;
++ (id)descriptionOfActionType:(id)type;
++ (id)fingerprintOfEmailAddresses:(id)addresses;
++ (id)fingerprintOfInstantMessageAddresses:(id)addresses;
++ (id)fingerprintOfPhoneNumbers:(id)numbers;
++ (id)fingerprintOfPostalAddresses:(id)addresses;
++ (id)fingerprintOfSocialProfiles:(id)profiles;
++ (id)handlesForActionType:(id)type contact:(id)contact;
++ (id)keyForContact:(id)contact actionType:(id)type;
 + (id)os_log;
-+ (unint64_t)propertiesForActionType:(id)a3;
++ (unint64_t)propertiesForActionType:(id)type;
 @end
 
 @implementation CNUIUserActionCacheKeyGenerator
@@ -32,109 +32,109 @@ uint64_t __41__CNUIUserActionCacheKeyGenerator_os_log__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)keyForContact:(id)a3 actionType:(id)a4
++ (id)keyForContact:(id)contact actionType:(id)type
 {
-  v6 = a4;
-  v7 = [a1 handlesForActionType:v6 contact:a3];
-  v8 = [MEMORY[0x1E6996840] Trim];
-  v9 = [v7 _cn_map:v8];
+  typeCopy = type;
+  v7 = [self handlesForActionType:typeCopy contact:contact];
+  trim = [MEMORY[0x1E6996840] Trim];
+  v9 = [v7 _cn_map:trim];
 
   if ([v9 count])
   {
     v10 = [v9 componentsJoinedByString:{@", "}];
-    v11 = [MEMORY[0x1E696AD60] string];
-    v12 = [a1 descriptionOfActionType:v6];
-    [(__CFString *)v11 appendString:v12];
+    string = [MEMORY[0x1E696AD60] string];
+    v12 = [self descriptionOfActionType:typeCopy];
+    [(__CFString *)string appendString:v12];
 
-    [(__CFString *)v11 appendString:@"["];
-    [(__CFString *)v11 appendString:v10];
-    [(__CFString *)v11 appendString:@"]"];
+    [(__CFString *)string appendString:@"["];
+    [(__CFString *)string appendString:v10];
+    [(__CFString *)string appendString:@"]"];
   }
 
   else
   {
-    v11 = &stru_1F162C170;
+    string = &stru_1F162C170;
   }
 
-  return v11;
+  return string;
 }
 
-+ (id)descriptionOfActionType:(id)a3
++ (id)descriptionOfActionType:(id)type
 {
-  v3 = a3;
-  if ([*MEMORY[0x1E695C170] isEqualToString:v3])
+  typeCopy = type;
+  if ([*MEMORY[0x1E695C170] isEqualToString:typeCopy])
   {
-    v4 = @"Mail";
+    typeCopy = @"Mail";
   }
 
-  else if ([*MEMORY[0x1E695C178] isEqualToString:v3])
+  else if ([*MEMORY[0x1E695C178] isEqualToString:typeCopy])
   {
-    v4 = @"Message";
+    typeCopy = @"Message";
   }
 
-  else if ([*MEMORY[0x1E695C150] isEqualToString:v3])
+  else if ([*MEMORY[0x1E695C150] isEqualToString:typeCopy])
   {
-    v4 = @"AudioCall";
+    typeCopy = @"AudioCall";
   }
 
-  else if ([*MEMORY[0x1E695C1B8] isEqualToString:v3])
+  else if ([*MEMORY[0x1E695C1B8] isEqualToString:typeCopy])
   {
-    v4 = @"VideoCall";
+    typeCopy = @"VideoCall";
   }
 
-  else if ([*MEMORY[0x1E695C190] isEqualToString:v3])
+  else if ([*MEMORY[0x1E695C190] isEqualToString:typeCopy])
   {
-    v4 = @"TTY";
+    typeCopy = @"TTY";
   }
 
-  else if ([*MEMORY[0x1E695C1A8] isEqualToString:v3])
+  else if ([*MEMORY[0x1E695C1A8] isEqualToString:typeCopy])
   {
-    v4 = @"TTYRelay";
+    typeCopy = @"TTYRelay";
   }
 
-  else if ([*MEMORY[0x1E695C188] isEqualToString:v3])
+  else if ([*MEMORY[0x1E695C188] isEqualToString:typeCopy])
   {
-    v4 = @"Pay";
+    typeCopy = @"Pay";
   }
 
-  else if ([*MEMORY[0x1E695C160] isEqualToString:v3])
+  else if ([*MEMORY[0x1E695C160] isEqualToString:typeCopy])
   {
-    v4 = @"Directions";
+    typeCopy = @"Directions";
   }
 
-  else if ([*MEMORY[0x1E695C168] isEqualToString:v3])
+  else if ([*MEMORY[0x1E695C168] isEqualToString:typeCopy])
   {
-    v4 = @"Expanse";
+    typeCopy = @"Expanse";
   }
 
   else
   {
-    v5 = [objc_opt_class() os_log];
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
+    os_log = [objc_opt_class() os_log];
+    if (os_log_type_enabled(os_log, OS_LOG_TYPE_FAULT))
     {
-      [(CNUIUserActionCacheKeyGenerator *)v3 descriptionOfActionType:v5];
+      [(CNUIUserActionCacheKeyGenerator *)typeCopy descriptionOfActionType:os_log];
     }
 
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"UnknownActionType(%@)", v3];
+    typeCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"UnknownActionType(%@)", typeCopy];
   }
 
-  return v4;
+  return typeCopy;
 }
 
-+ (id)handlesForActionType:(id)a3 contact:(id)a4
++ (id)handlesForActionType:(id)type contact:(id)contact
 {
-  v6 = a4;
+  contactCopy = contact;
   v7 = MEMORY[0x1E695DF70];
-  v8 = a3;
-  v9 = [v7 array];
-  v10 = [a1 propertiesForActionType:v8];
+  typeCopy = type;
+  array = [v7 array];
+  v10 = [self propertiesForActionType:typeCopy];
 
   if (v10)
   {
-    v14 = [v6 phoneNumbers];
-    v15 = [a1 fingerprintOfPhoneNumbers:v14];
+    phoneNumbers = [contactCopy phoneNumbers];
+    v15 = [self fingerprintOfPhoneNumbers:phoneNumbers];
 
-    [v9 addObjectsFromArray:v15];
+    [array addObjectsFromArray:v15];
     if ((v10 & 2) == 0)
     {
 LABEL_3:
@@ -152,10 +152,10 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v16 = [v6 emailAddresses];
-  v17 = [a1 fingerprintOfEmailAddresses:v16];
+  emailAddresses = [contactCopy emailAddresses];
+  v17 = [self fingerprintOfEmailAddresses:emailAddresses];
 
-  [v9 addObjectsFromArray:v17];
+  [array addObjectsFromArray:v17];
   if ((v10 & 4) == 0)
   {
 LABEL_4:
@@ -168,10 +168,10 @@ LABEL_4:
   }
 
 LABEL_12:
-  v18 = [v6 postalAddresses];
-  v19 = [a1 fingerprintOfPostalAddresses:v18];
+  postalAddresses = [contactCopy postalAddresses];
+  v19 = [self fingerprintOfPostalAddresses:postalAddresses];
 
-  [v9 addObjectsFromArray:v19];
+  [array addObjectsFromArray:v19];
   if ((v10 & 8) == 0)
   {
 LABEL_5:
@@ -184,61 +184,61 @@ LABEL_5:
   }
 
 LABEL_13:
-  v20 = [v6 socialProfiles];
-  v21 = [a1 fingerprintOfSocialProfiles:v20];
+  socialProfiles = [contactCopy socialProfiles];
+  v21 = [self fingerprintOfSocialProfiles:socialProfiles];
 
-  [v9 addObjectsFromArray:v21];
+  [array addObjectsFromArray:v21];
   if ((v10 & 0x10) != 0)
   {
 LABEL_6:
-    v11 = [v6 instantMessageAddresses];
-    v12 = [a1 fingerprintOfInstantMessageAddresses:v11];
+    instantMessageAddresses = [contactCopy instantMessageAddresses];
+    v12 = [self fingerprintOfInstantMessageAddresses:instantMessageAddresses];
 
-    [v9 addObjectsFromArray:v12];
+    [array addObjectsFromArray:v12];
   }
 
 LABEL_7:
 
-  return v9;
+  return array;
 }
 
-+ (unint64_t)propertiesForActionType:(id)a3
++ (unint64_t)propertiesForActionType:(id)type
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([*MEMORY[0x1E695C170] isEqualToString:v3])
+  typeCopy = type;
+  if ([*MEMORY[0x1E695C170] isEqualToString:typeCopy])
   {
     v4 = 2;
   }
 
   else
   {
-    if (([*MEMORY[0x1E695C178] isEqualToString:v3] & 1) == 0 && (objc_msgSend(*MEMORY[0x1E695C150], "isEqualToString:", v3) & 1) == 0 && (objc_msgSend(*MEMORY[0x1E695C1B8], "isEqualToString:", v3) & 1) == 0)
+    if (([*MEMORY[0x1E695C178] isEqualToString:typeCopy] & 1) == 0 && (objc_msgSend(*MEMORY[0x1E695C150], "isEqualToString:", typeCopy) & 1) == 0 && (objc_msgSend(*MEMORY[0x1E695C1B8], "isEqualToString:", typeCopy) & 1) == 0)
     {
-      if ([*MEMORY[0x1E695C190] isEqualToString:v3] & 1) != 0 || (objc_msgSend(*MEMORY[0x1E695C1A8], "isEqualToString:", v3))
+      if ([*MEMORY[0x1E695C190] isEqualToString:typeCopy] & 1) != 0 || (objc_msgSend(*MEMORY[0x1E695C1A8], "isEqualToString:", typeCopy))
       {
         v4 = 1;
         goto LABEL_7;
       }
 
-      if ([*MEMORY[0x1E695C188] isEqualToString:v3])
+      if ([*MEMORY[0x1E695C188] isEqualToString:typeCopy])
       {
         v4 = 3;
         goto LABEL_7;
       }
 
-      if ([*MEMORY[0x1E695C160] isEqualToString:v3])
+      if ([*MEMORY[0x1E695C160] isEqualToString:typeCopy])
       {
         v4 = 4;
         goto LABEL_7;
       }
 
-      if (([*MEMORY[0x1E695C168] isEqualToString:v3] & 1) == 0)
+      if (([*MEMORY[0x1E695C168] isEqualToString:typeCopy] & 1) == 0)
       {
         v6 = MEMORY[0x1E695DF30];
         v7 = *MEMORY[0x1E695D930];
         v11 = @"action-type";
-        v12[0] = v3;
+        v12[0] = typeCopy;
         v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
         v9 = [v6 exceptionWithName:v7 reason:@"CNActionType not handled" userInfo:v8];
         v10 = v9;
@@ -255,44 +255,44 @@ LABEL_7:
   return v4;
 }
 
-+ (id)fingerprintOfPhoneNumbers:(id)a3
++ (id)fingerprintOfPhoneNumbers:(id)numbers
 {
   v3 = MEMORY[0x1E695CEE0];
-  v4 = a3;
-  v5 = [v3 Value];
-  v6 = [v4 _cn_map:v5];
+  numbersCopy = numbers;
+  value = [v3 Value];
+  v6 = [numbersCopy _cn_map:value];
 
-  v7 = [MEMORY[0x1E695CF50] StringValue];
-  v8 = [v6 _cn_map:v7];
+  stringValue = [MEMORY[0x1E695CF50] StringValue];
+  v8 = [v6 _cn_map:stringValue];
 
   v9 = [v8 sortedArrayUsingSelector:sel_localizedStandardCompare_];
 
-  v10 = [v9 _cn_distinctObjects];
+  _cn_distinctObjects = [v9 _cn_distinctObjects];
 
-  v11 = [MEMORY[0x1E6996840] IsNotEmpty];
-  v12 = [v10 _cn_filter:v11];
+  isNotEmpty = [MEMORY[0x1E6996840] IsNotEmpty];
+  v12 = [_cn_distinctObjects _cn_filter:isNotEmpty];
 
   return v12;
 }
 
-+ (id)fingerprintOfEmailAddresses:(id)a3
++ (id)fingerprintOfEmailAddresses:(id)addresses
 {
   v3 = MEMORY[0x1E695CEE0];
-  v4 = a3;
-  v5 = [v3 Value];
-  v6 = [v4 _cn_map:v5];
+  addressesCopy = addresses;
+  value = [v3 Value];
+  v6 = [addressesCopy _cn_map:value];
 
   v7 = [v6 sortedArrayUsingSelector:sel_localizedStandardCompare_];
 
-  v8 = [v7 _cn_distinctObjects];
+  _cn_distinctObjects = [v7 _cn_distinctObjects];
 
-  v9 = [MEMORY[0x1E6996840] IsNotEmpty];
-  v10 = [v8 _cn_filter:v9];
+  isNotEmpty = [MEMORY[0x1E6996840] IsNotEmpty];
+  v10 = [_cn_distinctObjects _cn_filter:isNotEmpty];
 
   return v10;
 }
 
-+ (id)fingerprintOfPostalAddresses:(id)a3
++ (id)fingerprintOfPostalAddresses:(id)addresses
 {
   v21[4] = *MEMORY[0x1E69E9840];
   v3 = *MEMORY[0x1E695CC00];
@@ -302,12 +302,12 @@ LABEL_7:
   v21[2] = *MEMORY[0x1E695CC28];
   v21[3] = v4;
   v5 = MEMORY[0x1E695DEC8];
-  v6 = a3;
+  addressesCopy = addresses;
   v7 = [v5 arrayWithObjects:v21 count:4];
-  v8 = [MEMORY[0x1E695CEE0] Value];
-  v9 = [v6 _cn_map:v8];
+  value = [MEMORY[0x1E695CEE0] Value];
+  v9 = [addressesCopy _cn_map:value];
 
-  v10 = [v9 _cn_distinctObjects];
+  _cn_distinctObjects = [v9 _cn_distinctObjects];
 
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
@@ -315,9 +315,9 @@ LABEL_7:
   v19 = &unk_1E76E7E30;
   v20 = v7;
   v11 = v7;
-  v12 = [v10 _cn_flatMap:&v16];
-  v13 = [MEMORY[0x1E6996840] IsNotEmpty];
-  v14 = [v12 _cn_filter:v13];
+  v12 = [_cn_distinctObjects _cn_flatMap:&v16];
+  isNotEmpty = [MEMORY[0x1E6996840] IsNotEmpty];
+  v14 = [v12 _cn_filter:isNotEmpty];
 
   return v14;
 }
@@ -337,42 +337,42 @@ id __64__CNUIUserActionCacheKeyGenerator_fingerprintOfPostalAddresses___block_in
   return v6;
 }
 
-+ (id)fingerprintOfSocialProfiles:(id)a3
++ (id)fingerprintOfSocialProfiles:(id)profiles
 {
   v3 = MEMORY[0x1E695CEE0];
-  v4 = a3;
-  v5 = [v3 Value];
-  v6 = [v4 _cn_map:v5];
+  profilesCopy = profiles;
+  value = [v3 Value];
+  v6 = [profilesCopy _cn_map:value];
 
-  v7 = [MEMORY[0x1E695CFA0] Username];
-  v8 = [v6 _cn_compactMap:v7];
+  username = [MEMORY[0x1E695CFA0] Username];
+  v8 = [v6 _cn_compactMap:username];
 
   v9 = [v8 sortedArrayUsingSelector:sel_localizedStandardCompare_];
 
-  v10 = [v9 _cn_distinctObjects];
+  _cn_distinctObjects = [v9 _cn_distinctObjects];
 
-  v11 = [MEMORY[0x1E6996840] IsNotEmpty];
-  v12 = [v10 _cn_filter:v11];
+  isNotEmpty = [MEMORY[0x1E6996840] IsNotEmpty];
+  v12 = [_cn_distinctObjects _cn_filter:isNotEmpty];
 
   return v12;
 }
 
-+ (id)fingerprintOfInstantMessageAddresses:(id)a3
++ (id)fingerprintOfInstantMessageAddresses:(id)addresses
 {
   v3 = MEMORY[0x1E695CEE0];
-  v4 = a3;
-  v5 = [v3 Value];
-  v6 = [v4 _cn_map:v5];
+  addressesCopy = addresses;
+  value = [v3 Value];
+  v6 = [addressesCopy _cn_map:value];
 
-  v7 = [MEMORY[0x1E695CED8] Username];
-  v8 = [v6 _cn_compactMap:v7];
+  username = [MEMORY[0x1E695CED8] Username];
+  v8 = [v6 _cn_compactMap:username];
 
   v9 = [v8 sortedArrayUsingSelector:sel_localizedStandardCompare_];
 
-  v10 = [v9 _cn_distinctObjects];
+  _cn_distinctObjects = [v9 _cn_distinctObjects];
 
-  v11 = [MEMORY[0x1E6996840] IsNotEmpty];
-  v12 = [v10 _cn_filter:v11];
+  isNotEmpty = [MEMORY[0x1E6996840] IsNotEmpty];
+  v12 = [_cn_distinctObjects _cn_filter:isNotEmpty];
 
   return v12;
 }

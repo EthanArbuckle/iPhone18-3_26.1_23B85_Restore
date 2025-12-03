@@ -1,48 +1,48 @@
 @interface SBFloatingDockView
-+ (CGSize)maximumIconSizeWithIconImageInfo:(SBIconImageInfo *)a3;
-+ (double)contentHeightForBounds:(CGRect)a3 mainPlatterViewFrame:(CGRect)a4;
-+ (double)maximumDockContinuousCornerRadiusWithIconImageInfo:(SBIconImageInfo *)a3;
-+ (double)maximumInterIconSpacingWithIconImageInfo:(SBIconImageInfo *)a3;
-+ (double)maximumPlatterHeightWithIconImageInfo:(SBIconImageInfo *)a3;
-+ (void)getMetrics:(id *)a3 forBounds:(CGRect)a4 layoutScale:(double)a5 numberOfUserIcons:(unint64_t)a6 numberOfRecentIcons:(unint64_t)a7 numberOfUtilitiesIcons:(unint64_t)a8 displayAccessoryIconView:(BOOL)a9 paddingEdgeInsets:(UIEdgeInsets)a10 referenceIconSize:(CGSize)a11 maximumIconSize:(CGSize)a12 referenceInterIconSpacing:(double)a13 maximumInterIconSpacing:(double)a14 platterVerticalMargin:(double)a15 editing:(BOOL)a16;
++ (CGSize)maximumIconSizeWithIconImageInfo:(SBIconImageInfo *)info;
++ (double)contentHeightForBounds:(CGRect)bounds mainPlatterViewFrame:(CGRect)frame;
++ (double)maximumDockContinuousCornerRadiusWithIconImageInfo:(SBIconImageInfo *)info;
++ (double)maximumInterIconSpacingWithIconImageInfo:(SBIconImageInfo *)info;
++ (double)maximumPlatterHeightWithIconImageInfo:(SBIconImageInfo *)info;
++ (void)getMetrics:(id *)metrics forBounds:(CGRect)bounds layoutScale:(double)scale numberOfUserIcons:(unint64_t)icons numberOfRecentIcons:(unint64_t)recentIcons numberOfUtilitiesIcons:(unint64_t)utilitiesIcons displayAccessoryIconView:(BOOL)view paddingEdgeInsets:(UIEdgeInsets)self0 referenceIconSize:(CGSize)self1 maximumIconSize:(CGSize)self2 referenceInterIconSpacing:(double)self3 maximumInterIconSpacing:(double)self4 platterVerticalMargin:(double)self5 editing:(BOOL)self6;
 - (BOOL)_shouldDisplayAccessoryIconView;
 - (BOOL)hasPlatterShadow;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)platterFrame;
 - (CGSize)maximumEditingIconSize;
 - (CGSize)maximumIconSize;
-- (SBFloatingDockView)initWithFrame:(CGRect)a3;
+- (SBFloatingDockView)initWithFrame:(CGRect)frame;
 - (SBFloatingDockViewDelegate)delegate;
 - (SBIconImageInfo)_iconImageInfo;
 - (UIEdgeInsets)paddingEdgeInsets;
 - (UIEdgeInsets)platterShadowOutsets;
-- (UIEdgeInsets)platterShadowOutsetsForBounds:(CGRect)a3;
+- (UIEdgeInsets)platterShadowOutsetsForBounds:(CGRect)bounds;
 - (double)_referenceInterIconSpacing;
 - (double)contentHeight;
-- (double)contentHeightForBounds:(CGRect)a3;
+- (double)contentHeightForBounds:(CGRect)bounds;
 - (double)currentDockContinuousCornerRadius;
-- (double)iconContentScaleForNumberOfUserIcons:(unint64_t)a3 numberOfUtilitiesIcons:(unint64_t)a4;
+- (double)iconContentScaleForNumberOfUserIcons:(unint64_t)icons numberOfUtilitiesIcons:(unint64_t)utilitiesIcons;
 - (double)interIconSpacing;
 - (double)maximumDockContinuousCornerRadius;
 - (double)maximumInterIconSpacing;
 - (double)maximumPlatterHeight;
 - (void)_updateBackgroundUserInterfaceStyle;
 - (void)bounce;
-- (void)enumerateIconListViewsUsingBlock:(id)a3;
-- (void)getMetrics:(id *)a3 forBounds:(CGRect)a4;
+- (void)enumerateIconListViewsUsingBlock:(id)block;
+- (void)getMetrics:(id *)metrics forBounds:(CGRect)bounds;
 - (void)layoutSubviews;
-- (void)setAccessoryIconView:(id)a3;
-- (void)setAccessoryIconViewVisible:(BOOL)a3;
-- (void)setEditing:(BOOL)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)setHasPlatterShadow:(BOOL)a3;
-- (void)setMaximumEditingIconSize:(CGSize)a3;
-- (void)setMinimumUserIconSpaces:(unint64_t)a3;
-- (void)setMinimumUtilitiesIconSpaces:(unint64_t)a3;
-- (void)setPaddingEdgeInsets:(UIEdgeInsets)a3;
-- (void)setRecentIconListView:(id)a3;
-- (void)setUserIconListView:(id)a3;
-- (void)setUtilitiesIconListView:(id)a3;
+- (void)setAccessoryIconView:(id)view;
+- (void)setAccessoryIconViewVisible:(BOOL)visible;
+- (void)setEditing:(BOOL)editing;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)setHasPlatterShadow:(BOOL)shadow;
+- (void)setMaximumEditingIconSize:(CGSize)size;
+- (void)setMinimumUserIconSpaces:(unint64_t)spaces;
+- (void)setMinimumUtilitiesIconSpaces:(unint64_t)spaces;
+- (void)setPaddingEdgeInsets:(UIEdgeInsets)insets;
+- (void)setRecentIconListView:(id)view;
+- (void)setUserIconListView:(id)view;
+- (void)setUtilitiesIconListView:(id)view;
 - (void)updateMainPlatterMetrics;
 @end
 
@@ -50,13 +50,13 @@
 
 - (SBIconImageInfo)_iconImageInfo
 {
-  v4 = [(SBFloatingDockView *)self userIconListView];
-  v5 = [v4 iconLocation];
-  v6 = [v4 layoutProvider];
-  v7 = [v6 layoutForIconLocation:v5];
+  userIconListView = [(SBFloatingDockView *)self userIconListView];
+  iconLocation = [userIconListView iconLocation];
+  layoutProvider = [userIconListView layoutProvider];
+  v7 = [layoutProvider layoutForIconLocation:iconLocation];
   [v7 iconImageInfo];
-  v8 = [(SBFloatingDockView *)self traitCollection];
-  [v8 displayScale];
+  traitCollection = [(SBFloatingDockView *)self traitCollection];
+  [traitCollection displayScale];
 
   return result;
 }
@@ -85,10 +85,10 @@
   return accessoryIconView & 1;
 }
 
-+ (double)maximumDockContinuousCornerRadiusWithIconImageInfo:(SBIconImageInfo *)a3
++ (double)maximumDockContinuousCornerRadiusWithIconImageInfo:(SBIconImageInfo *)info
 {
   v4 = v3;
-  [a1 maximumInterIconSpacingWithIconImageInfo:a3];
+  [self maximumInterIconSpacingWithIconImageInfo:info];
   return v4 + v5;
 }
 
@@ -107,16 +107,16 @@
 
 - (double)currentDockContinuousCornerRadius
 {
-  v2 = [(SBFloatingDockView *)self mainPlatterView];
-  [v2 currentContinuousCornerRadius];
+  mainPlatterView = [(SBFloatingDockView *)self mainPlatterView];
+  [mainPlatterView currentContinuousCornerRadius];
   v4 = v3;
 
   return v4;
 }
 
-+ (double)maximumInterIconSpacingWithIconImageInfo:(SBIconImageInfo *)a3
++ (double)maximumInterIconSpacingWithIconImageInfo:(SBIconImageInfo *)info
 {
-  [a1 _referenceInterIconSpacingWithIconImageInfo:a3];
+  [self _referenceInterIconSpacingWithIconImageInfo:info];
 
   UIFloorToScale();
   return result;
@@ -135,15 +135,15 @@
   return result;
 }
 
-+ (double)maximumPlatterHeightWithIconImageInfo:(SBIconImageInfo *)a3
++ (double)maximumPlatterHeightWithIconImageInfo:(SBIconImageInfo *)info
 {
   v7 = v6;
   v8 = v5;
   v9 = v4;
   v10 = v3;
-  [a1 maximumInterIconSpacingWithIconImageInfo:a3];
+  [self maximumInterIconSpacingWithIconImageInfo:info];
   v13 = v12;
-  [a1 maximumIconSizeWithIconImageInfo:{v10, v9, v8, v7}];
+  [self maximumIconSizeWithIconImageInfo:{v10, v9, v8, v7}];
   return v13 + v13 + v14;
 }
 
@@ -160,7 +160,7 @@
   return result;
 }
 
-+ (CGSize)maximumIconSizeWithIconImageInfo:(SBIconImageInfo *)a3
++ (CGSize)maximumIconSizeWithIconImageInfo:(SBIconImageInfo *)info
 {
   UIFloorToScale();
   v4 = v3;
@@ -197,12 +197,12 @@
   return result;
 }
 
-- (SBFloatingDockView)initWithFrame:(CGRect)a3
+- (SBFloatingDockView)initWithFrame:(CGRect)frame
 {
   v30[2] = *MEMORY[0x1E69E9840];
   v29.receiver = self;
   v29.super_class = SBFloatingDockView;
-  v3 = [(SBFloatingDockView *)&v29 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBFloatingDockView *)&v29 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -217,11 +217,11 @@
     v4->_touchReceivingView = v10;
 
     v12 = v4->_touchReceivingView;
-    v13 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIView *)v12 setBackgroundColor:v13];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIView *)v12 setBackgroundColor:clearColor];
 
-    v14 = [(UIView *)v4->_touchReceivingView layer];
-    [v14 setHitTestsAsOpaque:1];
+    layer = [(UIView *)v4->_touchReceivingView layer];
+    [layer setHitTestsAsOpaque:1];
 
     [(SBFloatingDockView *)v4 addSubview:v4->_touchReceivingView];
     v15 = objc_alloc_init(SBFloatingDockPlatterView);
@@ -245,8 +245,8 @@
     [(UIView *)v4->_glassContainerView addSubview:v22];
     objc_storeStrong(&v4->_utilitiesDividerView, v22);
     v4->_accessoryIconViewVisible = 1;
-    v23 = [(SBFloatingDockView *)v4 layer];
-    [v23 setAllowsGroupBlending:0];
+    layer2 = [(SBFloatingDockView *)v4 layer];
+    [layer2 setAllowsGroupBlending:0];
 
     v24 = objc_opt_self();
     v30[0] = v24;
@@ -262,16 +262,16 @@
   return v4;
 }
 
-- (void)setUserIconListView:(id)a3
+- (void)setUserIconListView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   userIconListView = self->_userIconListView;
-  if (userIconListView != v5)
+  if (userIconListView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(SBDockIconListView *)userIconListView removeFromSuperview];
     [(SBIconListView *)self->_userIconListView removeLayoutObserver:self];
-    objc_storeStrong(&self->_userIconListView, a3);
+    objc_storeStrong(&self->_userIconListView, view);
     if (v8)
     {
       [(SBDockIconListView *)v8 setAccessibilityIdentifier:@"user icon list view"];
@@ -279,29 +279,29 @@
       [(SBIconListView *)v8 setAutomaticallyAdjustsLayoutMetricsToFit:0];
       [(SBIconListView *)v8 addLayoutObserver:self];
       [(SBIconListView *)v8 setUsesGlassGroup:0];
-      v7 = [(SBFloatingDockView *)self glassContainerView];
-      [v7 addSubview:v8];
+      glassContainerView = [(SBFloatingDockView *)self glassContainerView];
+      [glassContainerView addSubview:v8];
 
       [(SBFloatingDockView *)self setNeedsLayout];
     }
 
     userIconListView = [(SBFloatingDockView *)self updateMainPlatterMetrics];
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](userIconListView, v5);
+  MEMORY[0x1EEE66BB8](userIconListView, viewCopy);
 }
 
-- (void)setUtilitiesIconListView:(id)a3
+- (void)setUtilitiesIconListView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   utilitiesIconListView = self->_utilitiesIconListView;
-  if (utilitiesIconListView != v5)
+  if (utilitiesIconListView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(SBDockIconListView *)utilitiesIconListView removeFromSuperview];
     [(SBIconListView *)self->_utilitiesIconListView removeLayoutObserver:self];
-    objc_storeStrong(&self->_utilitiesIconListView, a3);
+    objc_storeStrong(&self->_utilitiesIconListView, view);
     if (v8)
     {
       [(SBDockIconListView *)v8 setAccessibilityIdentifier:@"utilities icon list view"];
@@ -309,17 +309,17 @@
       [(SBIconListView *)v8 setAutomaticallyAdjustsLayoutMetricsToFit:0];
       [(SBIconListView *)v8 addLayoutObserver:self];
       [(SBIconListView *)v8 setUsesGlassGroup:0];
-      v7 = [(SBFloatingDockView *)self glassContainerView];
-      [v7 addSubview:v8];
+      glassContainerView = [(SBFloatingDockView *)self glassContainerView];
+      [glassContainerView addSubview:v8];
 
       [(SBFloatingDockView *)self setNeedsLayout];
     }
 
     utilitiesIconListView = [(SBFloatingDockView *)self updateMainPlatterMetrics];
-    v5 = v8;
+    viewCopy = v8;
   }
 
-  MEMORY[0x1EEE66BB8](utilitiesIconListView, v5);
+  MEMORY[0x1EEE66BB8](utilitiesIconListView, viewCopy);
 }
 
 - (void)updateMainPlatterMetrics
@@ -333,27 +333,27 @@
   [(SBFloatingDockPlatterView *)v4 setMaximumContinuousCornerRadius:?];
 }
 
-- (void)setAccessoryIconView:(id)a3
+- (void)setAccessoryIconView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   accessoryIconView = self->_accessoryIconView;
-  if (accessoryIconView != v5)
+  if (accessoryIconView != viewCopy)
   {
     [(SBIconView *)accessoryIconView removeFromSuperview];
-    objc_storeStrong(&self->_accessoryIconView, a3);
-    if (v5)
+    objc_storeStrong(&self->_accessoryIconView, view);
+    if (viewCopy)
     {
-      [(SBIconView *)v5 setAccessibilityIdentifier:@"Dock accessory icon view"];
-      v7 = [(SBFloatingDockView *)self glassContainerView];
-      [v7 addSubview:v5];
+      [(SBIconView *)viewCopy setAccessibilityIdentifier:@"Dock accessory icon view"];
+      glassContainerView = [(SBFloatingDockView *)self glassContainerView];
+      [glassContainerView addSubview:viewCopy];
 
       if ([(SBFloatingDockView *)self _shouldDisplayAccessoryIconView])
       {
         [(SBFloatingDockView *)self bounds:0];
         [(SBFloatingDockView *)self getMetrics:&v8 forBounds:?];
-        [(SBIconView *)v5 setIconContentScale:0.001];
+        [(SBIconView *)viewCopy setIconContentScale:0.001];
         UIRectGetCenter();
-        [(SBIconView *)v5 setCenter:?];
+        [(SBIconView *)viewCopy setCenter:?];
       }
     }
 
@@ -361,13 +361,13 @@
   }
 }
 
-- (void)setAccessoryIconViewVisible:(BOOL)a3
+- (void)setAccessoryIconViewVisible:(BOOL)visible
 {
-  if (self->_accessoryIconViewVisible != a3)
+  if (self->_accessoryIconViewVisible != visible)
   {
     v10 = v3;
     v11 = v4;
-    self->_accessoryIconViewVisible = a3;
+    self->_accessoryIconViewVisible = visible;
     if ([(SBFloatingDockView *)self _shouldDisplayAccessoryIconView])
     {
       accessoryIconView = self->_accessoryIconView;
@@ -384,37 +384,37 @@
   }
 }
 
-- (void)setRecentIconListView:(id)a3
+- (void)setRecentIconListView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   recentIconListView = self->_recentIconListView;
-  if (recentIconListView != v5)
+  if (recentIconListView != viewCopy)
   {
-    v8 = v5;
+    v8 = viewCopy;
     [(SBDockIconListView *)recentIconListView removeFromSuperview];
-    objc_storeStrong(&self->_recentIconListView, a3);
-    v5 = v8;
+    objc_storeStrong(&self->_recentIconListView, view);
+    viewCopy = v8;
     if (v8)
     {
       [(SBDockIconListView *)v8 setAccessibilityIdentifier:@"Recent icon list view"];
       [(SBIconListView *)v8 setLayoutInsetsMode:2];
       [(SBIconListView *)v8 setAutomaticallyAdjustsLayoutMetricsToFit:0];
       [(SBIconListView *)v8 setUsesGlassGroup:0];
-      v7 = [(SBFloatingDockView *)self glassContainerView];
-      [v7 addSubview:v8];
+      glassContainerView = [(SBFloatingDockView *)self glassContainerView];
+      [glassContainerView addSubview:v8];
 
       recentIconListView = [(SBFloatingDockView *)self setNeedsLayout];
-      v5 = v8;
+      viewCopy = v8;
     }
   }
 
-  MEMORY[0x1EEE66BB8](recentIconListView, v5);
+  MEMORY[0x1EEE66BB8](recentIconListView, viewCopy);
 }
 
-- (void)enumerateIconListViewsUsingBlock:(id)a3
+- (void)enumerateIconListViewsUsingBlock:(id)block
 {
   v9[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v9[0] = [(SBFloatingDockView *)self userIconListView];
   v9[1] = [(SBFloatingDockView *)self utilitiesIconListView];
   [(SBFloatingDockView *)self recentIconListView];
@@ -422,7 +422,7 @@
   do
   {
     v8 = 0;
-    v4[2](v4, v9[v5], &v8);
+    blockCopy[2](blockCopy, v9[v5], &v8);
     if (v8)
     {
       break;
@@ -435,56 +435,56 @@
   }
 }
 
-- (void)setMinimumUserIconSpaces:(unint64_t)a3
+- (void)setMinimumUserIconSpaces:(unint64_t)spaces
 {
-  if (self->_minimumUserIconSpaces != a3)
+  if (self->_minimumUserIconSpaces != spaces)
   {
-    self->_minimumUserIconSpaces = a3;
+    self->_minimumUserIconSpaces = spaces;
     [(SBFloatingDockView *)self setNeedsLayout];
   }
 }
 
-- (void)setMinimumUtilitiesIconSpaces:(unint64_t)a3
+- (void)setMinimumUtilitiesIconSpaces:(unint64_t)spaces
 {
-  if (self->_minimumUtilitiesIconSpaces != a3)
+  if (self->_minimumUtilitiesIconSpaces != spaces)
   {
-    self->_minimumUtilitiesIconSpaces = a3;
+    self->_minimumUtilitiesIconSpaces = spaces;
     [(SBFloatingDockView *)self setNeedsLayout];
   }
 }
 
-- (void)setPaddingEdgeInsets:(UIEdgeInsets)a3
+- (void)setPaddingEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_paddingEdgeInsets.top, v3), vceqq_f64(*&self->_paddingEdgeInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_paddingEdgeInsets = a3;
+    self->_paddingEdgeInsets = insets;
     [(SBFloatingDockView *)self setNeedsLayout];
   }
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    self->_editing = a3;
+    self->_editing = editing;
     [(SBFloatingDockView *)self setNeedsLayout];
   }
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
     v8[7] = v4;
     v8[8] = v5;
-    v6 = a4;
-    self->_editing = a3;
+    animatedCopy = animated;
+    self->_editing = editing;
     [(SBFloatingDockView *)self setNeedsLayout];
-    if (v6)
+    if (animatedCopy)
     {
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
@@ -496,11 +496,11 @@
   }
 }
 
-- (void)setMaximumEditingIconSize:(CGSize)a3
+- (void)setMaximumEditingIconSize:(CGSize)size
 {
-  if (a3.width != self->_maximumEditingIconSize.width || a3.height != self->_maximumEditingIconSize.height)
+  if (size.width != self->_maximumEditingIconSize.width || size.height != self->_maximumEditingIconSize.height)
   {
-    self->_maximumEditingIconSize = a3;
+    self->_maximumEditingIconSize = size;
     if ([(SBFloatingDockView *)self isEditing])
     {
 
@@ -511,8 +511,8 @@
 
 - (CGRect)platterFrame
 {
-  v2 = [(SBFloatingDockView *)self mainPlatterView];
-  [v2 frame];
+  mainPlatterView = [(SBFloatingDockView *)self mainPlatterView];
+  [mainPlatterView frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -531,23 +531,23 @@
 
 - (BOOL)hasPlatterShadow
 {
-  v2 = [(SBFloatingDockView *)self mainPlatterView];
-  v3 = [v2 hasShadow];
+  mainPlatterView = [(SBFloatingDockView *)self mainPlatterView];
+  hasShadow = [mainPlatterView hasShadow];
 
-  return v3;
+  return hasShadow;
 }
 
-- (void)setHasPlatterShadow:(BOOL)a3
+- (void)setHasPlatterShadow:(BOOL)shadow
 {
-  v3 = a3;
-  v4 = [(SBFloatingDockView *)self mainPlatterView];
-  [v4 setHasShadow:v3];
+  shadowCopy = shadow;
+  mainPlatterView = [(SBFloatingDockView *)self mainPlatterView];
+  [mainPlatterView setHasShadow:shadowCopy];
 }
 
 - (UIEdgeInsets)platterShadowOutsets
 {
-  v2 = [(SBFloatingDockView *)self mainPlatterView];
-  [v2 shadowOutsets];
+  mainPlatterView = [(SBFloatingDockView *)self mainPlatterView];
+  [mainPlatterView shadowOutsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -564,17 +564,17 @@
   return result;
 }
 
-- (UIEdgeInsets)platterShadowOutsetsForBounds:(CGRect)a3
+- (UIEdgeInsets)platterShadowOutsetsForBounds:(CGRect)bounds
 {
   memset(v25, 0, sizeof(v25));
-  [(SBFloatingDockView *)self getMetrics:v25 forBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SBFloatingDockView *)self getMetrics:v25 forBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   BSRectWithSize();
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(SBFloatingDockView *)self mainPlatterView];
-  [v12 shadowOutsetsForBounds:{v5, v7, v9, v11}];
+  mainPlatterView = [(SBFloatingDockView *)self mainPlatterView];
+  [mainPlatterView shadowOutsetsForBounds:{v5, v7, v9, v11}];
   v14 = v13;
   v16 = v15;
   v18 = v17;
@@ -591,13 +591,13 @@
   return result;
 }
 
-+ (double)contentHeightForBounds:(CGRect)a3 mainPlatterViewFrame:(CGRect)a4
++ (double)contentHeightForBounds:(CGRect)bounds mainPlatterViewFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  MaxY = CGRectGetMaxY(a3);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  MaxY = CGRectGetMaxY(bounds);
   v10.origin.x = x;
   v10.origin.y = y;
   v10.size.width = width;
@@ -613,39 +613,39 @@
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(SBFloatingDockView *)self mainPlatterView];
-  [v12 frame];
+  mainPlatterView = [(SBFloatingDockView *)self mainPlatterView];
+  [mainPlatterView frame];
   [v3 contentHeightForBounds:v5 mainPlatterViewFrame:{v7, v9, v11, v13, v14, v15, v16}];
   v18 = v17;
 
   return v18;
 }
 
-- (double)contentHeightForBounds:(CGRect)a3
+- (double)contentHeightForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
   v9 = 0u;
   memset(v8, 0, sizeof(v8));
-  [(SBFloatingDockView *)self getMetrics:v8 forBounds:a3.origin.x];
+  [(SBFloatingDockView *)self getMetrics:v8 forBounds:bounds.origin.x];
   [objc_opt_class() contentHeightForBounds:x mainPlatterViewFrame:{y, width, height, v9, v10}];
   return result;
 }
 
-- (double)iconContentScaleForNumberOfUserIcons:(unint64_t)a3 numberOfUtilitiesIcons:(unint64_t)a4
+- (double)iconContentScaleForNumberOfUserIcons:(unint64_t)icons numberOfUtilitiesIcons:(unint64_t)utilitiesIcons
 {
-  v7 = [(SBFloatingDockView *)self recentIconListView];
-  v8 = [v7 displayedModel];
-  v9 = [v8 numberOfIcons];
+  recentIconListView = [(SBFloatingDockView *)self recentIconListView];
+  displayedModel = [recentIconListView displayedModel];
+  numberOfIcons = [displayedModel numberOfIcons];
 
-  v10 = [(SBFloatingDockView *)self traitCollection];
-  [v10 displayScale];
+  traitCollection = [(SBFloatingDockView *)self traitCollection];
+  [traitCollection displayScale];
   v37 = v11;
 
   v39 = 0u;
@@ -656,7 +656,7 @@
   v36 = v13;
   v34 = v15;
   v17 = v16;
-  v18 = [(SBFloatingDockView *)self _shouldDisplayAccessoryIconView];
+  _shouldDisplayAccessoryIconView = [(SBFloatingDockView *)self _shouldDisplayAccessoryIconView];
   [(SBFloatingDockView *)self _referenceIconSize];
   v20 = v19;
   v22 = v21;
@@ -668,7 +668,7 @@
   [(SBFloatingDockView *)self maximumInterIconSpacing];
   v30 = v29;
   [(SBFloatingDockView *)self platterVerticalMargin];
-  [v12 getMetrics:v38 forBounds:a3 layoutScale:v9 numberOfUserIcons:a4 numberOfRecentIcons:v18 numberOfUtilitiesIcons:-[SBFloatingDockView isEditing](self displayAccessoryIconView:"isEditing") paddingEdgeInsets:v36 referenceIconSize:v35 maximumIconSize:v34 referenceInterIconSpacing:v17 maximumInterIconSpacing:v37 platterVerticalMargin:*&self->_paddingEdgeInsets.top editing:{*&self->_paddingEdgeInsets.left, *&self->_paddingEdgeInsets.bottom, *&self->_paddingEdgeInsets.right, v20, v22, v24, v26, v28, v30, v31}];
+  [v12 getMetrics:v38 forBounds:icons layoutScale:numberOfIcons numberOfUserIcons:utilitiesIcons numberOfRecentIcons:_shouldDisplayAccessoryIconView numberOfUtilitiesIcons:-[SBFloatingDockView isEditing](self displayAccessoryIconView:"isEditing") paddingEdgeInsets:v36 referenceIconSize:v35 maximumIconSize:v34 referenceInterIconSpacing:v17 maximumInterIconSpacing:v37 platterVerticalMargin:*&self->_paddingEdgeInsets.top editing:{*&self->_paddingEdgeInsets.left, *&self->_paddingEdgeInsets.bottom, *&self->_paddingEdgeInsets.right, v20, v22, v24, v26, v28, v30, v31}];
   v32 = *&v39;
 
   return v32;
@@ -690,43 +690,43 @@
   return result;
 }
 
-- (void)getMetrics:(id *)a3 forBounds:(CGRect)a4
+- (void)getMetrics:(id *)metrics forBounds:(CGRect)bounds
 {
-  v40 = [(SBFloatingDockView *)self userIconListView];
-  v6 = [(SBFloatingDockView *)self recentIconListView];
-  v7 = [(SBFloatingDockView *)self utilitiesIconListView];
-  v8 = [v40 displayedModel];
-  v9 = [v8 numberOfIcons];
+  userIconListView = [(SBFloatingDockView *)self userIconListView];
+  recentIconListView = [(SBFloatingDockView *)self recentIconListView];
+  utilitiesIconListView = [(SBFloatingDockView *)self utilitiesIconListView];
+  displayedModel = [userIconListView displayedModel];
+  numberOfIcons = [displayedModel numberOfIcons];
 
-  v10 = [(SBFloatingDockView *)self minimumUserIconSpaces];
-  if (v9 <= v10)
+  minimumUserIconSpaces = [(SBFloatingDockView *)self minimumUserIconSpaces];
+  if (numberOfIcons <= minimumUserIconSpaces)
   {
-    v11 = v10;
+    v11 = minimumUserIconSpaces;
   }
 
   else
   {
-    v11 = v9;
+    v11 = numberOfIcons;
   }
 
-  v12 = [v6 displayedModel];
-  v13 = [v12 numberOfIcons];
+  displayedModel2 = [recentIconListView displayedModel];
+  numberOfIcons2 = [displayedModel2 numberOfIcons];
 
-  v14 = [v7 displayedModel];
-  v15 = [v14 numberOfIcons];
+  displayedModel3 = [utilitiesIconListView displayedModel];
+  numberOfIcons3 = [displayedModel3 numberOfIcons];
 
-  v16 = [(SBFloatingDockView *)self minimumUtilitiesIconSpaces];
-  if (v15 <= v16)
+  minimumUtilitiesIconSpaces = [(SBFloatingDockView *)self minimumUtilitiesIconSpaces];
+  if (numberOfIcons3 <= minimumUtilitiesIconSpaces)
   {
-    v17 = v16;
+    v17 = minimumUtilitiesIconSpaces;
   }
 
   else
   {
-    v17 = v15;
+    v17 = numberOfIcons3;
   }
 
-  v18 = [(SBFloatingDockView *)self _shouldDisplayAccessoryIconView];
+  _shouldDisplayAccessoryIconView = [(SBFloatingDockView *)self _shouldDisplayAccessoryIconView];
   top = self->_paddingEdgeInsets.top;
   v37 = *&self->_paddingEdgeInsets.left;
   right = self->_paddingEdgeInsets.right;
@@ -742,22 +742,22 @@
   v30 = v29;
   [(SBFloatingDockView *)self platterVerticalMargin];
   v32 = v31;
-  v33 = [(SBFloatingDockView *)self traitCollection];
-  [v33 displayScale];
+  traitCollection = [(SBFloatingDockView *)self traitCollection];
+  [traitCollection displayScale];
   v35 = v34;
 
-  [objc_opt_class() getMetrics:a3 forBounds:v11 layoutScale:v13 numberOfUserIcons:v17 numberOfRecentIcons:v18 numberOfUtilitiesIcons:-[SBFloatingDockView isEditing](self displayAccessoryIconView:"isEditing") paddingEdgeInsets:a4.origin.x referenceIconSize:a4.origin.y maximumIconSize:a4.size.width referenceInterIconSpacing:a4.size.height maximumInterIconSpacing:v35 platterVerticalMargin:*&top editing:{v37, *&right, v20, v22, v26, v28, v24, v30, v32}];
+  [objc_opt_class() getMetrics:metrics forBounds:v11 layoutScale:numberOfIcons2 numberOfUserIcons:v17 numberOfRecentIcons:_shouldDisplayAccessoryIconView numberOfUtilitiesIcons:-[SBFloatingDockView isEditing](self displayAccessoryIconView:"isEditing") paddingEdgeInsets:bounds.origin.x referenceIconSize:bounds.origin.y maximumIconSize:bounds.size.width referenceInterIconSpacing:bounds.size.height maximumInterIconSpacing:v35 platterVerticalMargin:*&top editing:{v37, *&right, v20, v22, v26, v28, v24, v30, v32}];
 }
 
-+ (void)getMetrics:(id *)a3 forBounds:(CGRect)a4 layoutScale:(double)a5 numberOfUserIcons:(unint64_t)a6 numberOfRecentIcons:(unint64_t)a7 numberOfUtilitiesIcons:(unint64_t)a8 displayAccessoryIconView:(BOOL)a9 paddingEdgeInsets:(UIEdgeInsets)a10 referenceIconSize:(CGSize)a11 maximumIconSize:(CGSize)a12 referenceInterIconSpacing:(double)a13 maximumInterIconSpacing:(double)a14 platterVerticalMargin:(double)a15 editing:(BOOL)a16
++ (void)getMetrics:(id *)metrics forBounds:(CGRect)bounds layoutScale:(double)scale numberOfUserIcons:(unint64_t)icons numberOfRecentIcons:(unint64_t)recentIcons numberOfUtilitiesIcons:(unint64_t)utilitiesIcons displayAccessoryIconView:(BOOL)view paddingEdgeInsets:(UIEdgeInsets)self0 referenceIconSize:(CGSize)self1 maximumIconSize:(CGSize)self2 referenceInterIconSpacing:(double)self3 maximumInterIconSpacing:(double)self4 platterVerticalMargin:(double)self5 editing:(BOOL)self6
 {
-  v16 = a9;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v27 = a12.width;
-  if (CGRectIsEmpty(a4))
+  viewCopy = view;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v27 = iconSize.width;
+  if (CGRectIsEmpty(bounds))
   {
     v182 = *MEMORY[0x1E695F058];
     rect = *(MEMORY[0x1E695F058] + 8);
@@ -767,7 +767,7 @@
 
   else
   {
-    [a1 minimumPlatterMargin];
+    [self minimumPlatterMargin];
     v30 = v29;
     v194.origin.x = x;
     v194.origin.y = y;
@@ -780,9 +780,9 @@
     v170 = v195.size.height;
   }
 
-  if (a6)
+  if (icons)
   {
-    v31 = a6 - 1;
+    v31 = icons - 1;
   }
 
   else
@@ -790,9 +790,9 @@
     v31 = 0;
   }
 
-  if (a7)
+  if (recentIcons)
   {
-    v32 = a7 - 1;
+    v32 = recentIcons - 1;
   }
 
   else
@@ -800,9 +800,9 @@
     v32 = 0;
   }
 
-  if (a8)
+  if (utilitiesIcons)
   {
-    v33 = a8 - 1;
+    v33 = utilitiesIcons - 1;
   }
 
   else
@@ -810,18 +810,18 @@
     v33 = 0;
   }
 
-  if (a8 | a7)
+  if (utilitiesIcons | recentIcons)
   {
     v34 = 1;
   }
 
   else
   {
-    v34 = v16;
+    v34 = viewCopy;
   }
 
-  v35 = !v16;
-  if (a8 | a7)
+  v35 = !viewCopy;
+  if (utilitiesIcons | recentIcons)
   {
     v35 = 1;
   }
@@ -835,10 +835,10 @@
 
   if (!v35)
   {
-    v37 = v16;
+    v37 = viewCopy;
   }
 
-  if (a6)
+  if (icons)
   {
     v38 = v37;
   }
@@ -848,18 +848,18 @@
     v38 = 0;
   }
 
-  v39 = a7 != 0;
-  if (a8)
+  v39 = recentIcons != 0;
+  if (utilitiesIcons)
   {
     v40 = 1;
   }
 
   else
   {
-    v40 = v16;
+    v40 = viewCopy;
   }
 
-  if (a8)
+  if (utilitiesIcons)
   {
     v41 = 2;
   }
@@ -869,9 +869,9 @@
     v41 = 1;
   }
 
-  if (a8)
+  if (utilitiesIcons)
   {
-    v42 = v16;
+    v42 = viewCopy;
   }
 
   else
@@ -889,8 +889,8 @@
     v43 = 0;
   }
 
-  v44 = (a6 != 0) & ((a8 | a7) != 0);
-  if (a6 != 0 && (a8 | a7) != 0)
+  v44 = (icons != 0) & ((utilitiesIcons | recentIcons) != 0);
+  if (icons != 0 && (utilitiesIcons | recentIcons) != 0)
   {
     v45 = 2;
   }
@@ -900,7 +900,7 @@
     v45 = 1;
   }
 
-  if (v39 && a8 != 0)
+  if (v39 && utilitiesIcons != 0)
   {
     v44 = v45;
   }
@@ -914,18 +914,18 @@
     v27 = v47;
   }
 
-  else if (a11.width <= a12.width)
+  else if (size.width <= iconSize.width)
   {
     v48 = 1.0;
     goto LABEL_49;
   }
 
   v48 = 1.0;
-  if (v27 / a11.width != 1.0)
+  if (v27 / size.width != 1.0)
   {
-    v165 = v27 / a11.width;
+    v165 = v27 / size.width;
     UIFloorToScale();
-    a14 = v49;
+    iconSpacing = v49;
     goto LABEL_50;
   }
 
@@ -933,9 +933,9 @@ LABEL_49:
   v165 = v48;
 LABEL_50:
   v174 = v27;
-  if (a6)
+  if (icons)
   {
-    v50 = a14 * v31 + a6 * v27;
+    v50 = iconSpacing * v31 + icons * v27;
   }
 
   else
@@ -943,9 +943,9 @@ LABEL_50:
     v50 = 0.0;
   }
 
-  if (a7)
+  if (recentIcons)
   {
-    v51 = a14 * v32 + a7 * v27;
+    v51 = iconSpacing * v32 + recentIcons * v27;
   }
 
   else
@@ -953,10 +953,10 @@ LABEL_50:
     v51 = 0.0;
   }
 
-  v52 = a14 * v33 + a8 * v27;
-  if (v16)
+  v52 = iconSpacing * v33 + utilitiesIcons * v27;
+  if (viewCopy)
   {
-    v53 = v27 * v16;
+    v53 = v27 * viewCopy;
   }
 
   else
@@ -968,9 +968,9 @@ LABEL_50:
   v55 = BSFloatGreaterThanFloat();
   v176 = v53;
   v56 = BSFloatGreaterThanFloat();
-  if (a8)
+  if (utilitiesIcons)
   {
-    v57 = a14 * v33 + a8 * v27;
+    v57 = iconSpacing * v33 + utilitiesIcons * v27;
   }
 
   else
@@ -981,7 +981,7 @@ LABEL_50:
   v180 = v57;
   amount = v50;
   v58 = v50 + v46;
-  if (a8)
+  if (utilitiesIcons)
   {
     v59 = 1;
   }
@@ -994,27 +994,27 @@ LABEL_50:
   v60 = v59 | v56;
   if ((v54 & (v59 | v56)) != 0)
   {
-    v58 = v58 + v38 * a14;
+    v58 = v58 + v38 * iconSpacing;
   }
 
   v162 = v51;
   if (v55)
   {
     v58 = v51 + v58;
-    if (!((a8 != 0) | v56 & 1))
+    if (!((utilitiesIcons != 0) | v56 & 1))
     {
       goto LABEL_73;
     }
 
-    v58 = v58 + v43 * a14;
+    v58 = v58 + v43 * iconSpacing;
   }
 
-  if (a8)
+  if (utilitiesIcons)
   {
     v58 = v52 + v58;
     if (v56)
     {
-      v58 = v58 + v166 * a14;
+      v58 = v58 + v166 * iconSpacing;
     }
   }
 
@@ -1040,25 +1040,25 @@ LABEL_73:
   v197.origin.y = rect;
   v197.size.width = v172;
   v197.size.height = v170;
-  v64 = CGRectGetMaxY(v197) - v174 - a14;
-  v65 = a15;
-  if (a15 <= 0.0)
+  v64 = CGRectGetMaxY(v197) - v174 - iconSpacing;
+  iconSpacingCopy = margin;
+  if (margin <= 0.0)
   {
-    v65 = a14;
+    iconSpacingCopy = iconSpacing;
   }
 
-  v198.origin.y = v64 - v65;
+  v198.origin.y = v64 - iconSpacingCopy;
   v198.origin.x = v63;
   v198.size.width = v61;
   v198.size.height = v174;
-  v199 = CGRectInset(v198, -a14, -a14);
+  v199 = CGRectInset(v198, -iconSpacing, -iconSpacing);
   v66 = v199.origin.x;
-  v67 = a14;
+  iconSpacingCopy2 = iconSpacing;
   v68 = v199.origin.y;
   v69 = v199.size.width;
   v70 = v199.size.height;
-  v187 = v67;
-  v71 = v67 * 6.0 + v174 * 4.0 + 1.0;
+  v187 = iconSpacingCopy2;
+  v71 = iconSpacingCopy2 * 6.0 + v174 * 4.0 + 1.0;
   if (BSFloatLessThanFloat())
   {
     v200.origin.x = v66;
@@ -1083,10 +1083,10 @@ LABEL_73:
   }
 
   v77 = v187 + v187 + v61;
-  v78 = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
-  v79 = v78 != 1;
+  userInterfaceLayoutDirection = [*MEMORY[0x1E69DDA98] userInterfaceLayoutDirection];
+  v79 = userInterfaceLayoutDirection != 1;
   memset(&slice, 0, sizeof(slice));
-  v80 = 2 * (v78 == 1);
+  v80 = 2 * (userInterfaceLayoutDirection == 1);
   memset(&remainder, 0, sizeof(remainder));
   v201.origin.x = v187 + v72;
   v201.origin.y = v187;
@@ -1114,7 +1114,7 @@ LABEL_73:
       v99 = v72;
       v100 = v187 + v187 + v61;
       v101 = v187 + v174 + v187;
-      if (v78 == 1)
+      if (userInterfaceLayoutDirection == 1)
       {
         MinX = CGRectGetMinX(*&v99);
       }
@@ -1143,7 +1143,7 @@ LABEL_73:
       v95 = v191.size.height;
       v85 = v183;
       v86 = v185;
-      if (v78 == 1)
+      if (userInterfaceLayoutDirection == 1)
       {
         MaxX = CGRectGetMaxX(*&v92);
         v97 = v187;
@@ -1181,7 +1181,7 @@ LABEL_73:
       v88 = v191.origin.y;
       v89 = v191.size.width;
       v90 = v191.size.height;
-      if (v78 == 1)
+      if (userInterfaceLayoutDirection == 1)
       {
         v91 = CGRectGetMaxX(*&v87);
       }
@@ -1209,7 +1209,7 @@ LABEL_73:
   if (v180 <= 0.0)
   {
     v110 = v187;
-    if (v78 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v112 = CGRectGetMaxX(*&v106);
     }
@@ -1226,7 +1226,7 @@ LABEL_73:
   else
   {
     v110 = v187;
-    if (v78 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v111 = CGRectGetMaxX(*&v106);
     }
@@ -1253,7 +1253,7 @@ LABEL_73:
     v124 = v114;
     v125 = v181;
     v126 = v115;
-    if (v78 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v127 = CGRectGetMaxX(*&v123);
     }
@@ -1281,7 +1281,7 @@ LABEL_73:
     v205.size.width = v61;
     v205.size.height = v174;
     CGRectDivide(v205, &v189, &remainder, v162, (2 * v79));
-    if (a8)
+    if (utilitiesIcons)
     {
       v116 = v110;
     }
@@ -1296,7 +1296,7 @@ LABEL_73:
     v119 = v114;
     v120 = v181;
     v121 = v115;
-    if (v78 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v122 = v116 + CGRectGetMaxX(*&v118);
     }
@@ -1316,7 +1316,7 @@ LABEL_73:
   v133 = v189.origin.y;
   v134 = v189.size.width;
   v135 = v189.size.height;
-  if (v78 == 1)
+  if (userInterfaceLayoutDirection == 1)
   {
     v136 = v110 + CGRectGetMaxX(*&v132);
   }
@@ -1353,7 +1353,7 @@ LABEL_73:
       v141 = v167;
       v138 = amounta;
       v142 = v181;
-      if (!a8)
+      if (!utilitiesIcons)
       {
         v140 = v191.origin.x;
         v141 = v191.origin.y;
@@ -1362,7 +1362,7 @@ LABEL_73:
       }
     }
 
-    if (v78 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v145 = CGRectGetMaxX(*(&v138 - 3));
       v207.origin.y = 0.0;
@@ -1413,48 +1413,48 @@ LABEL_73:
   v155 = CGRectGetMaxX(v188);
   v156 = CGRectGetMaxX(slice);
   size = v188.size;
-  a3->var0.origin = v188.origin;
-  a3->var0.size = size;
-  a3->var1.top = v150;
-  a3->var1.left = v152;
-  a3->var1.bottom = v154;
-  a3->var1.right = v155 - v156;
+  metrics->var0.origin = v188.origin;
+  metrics->var0.size = size;
+  metrics->var1.top = v150;
+  metrics->var1.left = v152;
+  metrics->var1.bottom = v154;
+  metrics->var1.right = v155 - v156;
   v158 = v189.size;
-  a3->var2.origin = v189.origin;
-  a3->var2.size = v158;
+  metrics->var2.origin = v189.origin;
+  metrics->var2.size = v158;
   v159 = v190.size;
-  a3->var3.origin = v190.origin;
-  a3->var3.size = v159;
-  a3->var7.origin.x = v117;
-  a3->var7.origin.y = v167;
-  a3->var7.size.width = v181;
-  a3->var7.size.height = amounta;
+  metrics->var3.origin = v190.origin;
+  metrics->var3.size = v159;
+  metrics->var7.origin.x = v117;
+  metrics->var7.origin.y = v167;
+  metrics->var7.size.width = v181;
+  metrics->var7.size.height = amounta;
   v160 = v191.size;
-  a3->var5.origin = v191.origin;
-  a3->var5.size = v160;
-  a3->var6.origin.x = v175;
-  a3->var6.origin.y = v137;
-  a3->var6.size.width = v139;
-  a3->var6.size.height = v143;
-  a3->var8.origin.x = v163;
-  a3->var8.origin.y = v184;
-  a3->var8.size.width = v186;
-  a3->var8.size.height = v164;
-  a3->var9.origin.x = 0.0;
-  a3->var9.origin.y = 0.0;
-  a3->var9.size.width = v186;
-  a3->var9.size.height = v164;
-  a3->var10 = v165;
-  a3->var11 = v187;
+  metrics->var5.origin = v191.origin;
+  metrics->var5.size = v160;
+  metrics->var6.origin.x = v175;
+  metrics->var6.origin.y = v137;
+  metrics->var6.size.width = v139;
+  metrics->var6.size.height = v143;
+  metrics->var8.origin.x = v163;
+  metrics->var8.origin.y = v184;
+  metrics->var8.size.width = v186;
+  metrics->var8.size.height = v164;
+  metrics->var9.origin.x = 0.0;
+  metrics->var9.origin.y = 0.0;
+  metrics->var9.size.width = v186;
+  metrics->var9.size.height = v164;
+  metrics->var10 = v165;
+  metrics->var11 = v187;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v8.receiver = self;
   v8.super_class = SBFloatingDockView;
-  if ([(SBFloatingDockView *)&v8 pointInside:a4 withEvent:?])
+  if ([(SBFloatingDockView *)&v8 pointInside:event withEvent:?])
   {
     return 1;
   }
@@ -1498,58 +1498,58 @@ LABEL_73:
       [(SBFloatingDockView *)self getMetrics:&v32 forBounds:v4, v6, v8, v10];
       if (BSFloatGreaterThanFloat())
       {
-        v31 = [(SBFloatingDockView *)self mainPlatterView];
-        v30 = [(SBFloatingDockView *)self glassContainerView];
-        [v31 sbf_setBoundsAndPositionFromFrame:{v46, v47}];
+        mainPlatterView = [(SBFloatingDockView *)self mainPlatterView];
+        glassContainerView = [(SBFloatingDockView *)self glassContainerView];
+        [mainPlatterView sbf_setBoundsAndPositionFromFrame:{v46, v47}];
         [(UIView *)self->_touchReceivingView sbf_setBoundsAndPositionFromFrame:*&v46 + self->_paddingEdgeInsets.left, *(&v46 + 1) + self->_paddingEdgeInsets.top, *&v47 - (self->_paddingEdgeInsets.left + self->_paddingEdgeInsets.right), *(&v47 + 1) - (self->_paddingEdgeInsets.top + self->_paddingEdgeInsets.bottom)];
-        [v30 sbf_setBoundsAndPositionFromFrame:{v48, v49}];
-        v29 = [(SBFloatingDockView *)self recentDividerView];
-        [v29 sbf_setBoundsAndPositionFromFrame:{v42, v43}];
-        v11 = [v29 layer];
-        v12 = [MEMORY[0x1E69DC888] systemYellowColor];
-        [v11 setBorderColor:{objc_msgSend(v12, "CGColor")}];
+        [glassContainerView sbf_setBoundsAndPositionFromFrame:{v48, v49}];
+        recentDividerView = [(SBFloatingDockView *)self recentDividerView];
+        [recentDividerView sbf_setBoundsAndPositionFromFrame:{v42, v43}];
+        layer = [recentDividerView layer];
+        systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+        [layer setBorderColor:{objc_msgSend(systemYellowColor, "CGColor")}];
 
-        v13 = [(SBFloatingDockView *)self utilitiesDividerView];
-        [v13 sbf_setBoundsAndPositionFromFrame:{v44, v45}];
-        v14 = [v13 layer];
-        v15 = [MEMORY[0x1E69DC888] systemRedColor];
-        [v14 setBorderColor:{objc_msgSend(v15, "CGColor")}];
+        utilitiesDividerView = [(SBFloatingDockView *)self utilitiesDividerView];
+        [utilitiesDividerView sbf_setBoundsAndPositionFromFrame:{v44, v45}];
+        layer2 = [utilitiesDividerView layer];
+        systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+        [layer2 setBorderColor:{objc_msgSend(systemRedColor, "CGColor")}];
 
         v16 = v50[1];
-        v17 = [(SBFloatingDockView *)self userIconListView];
-        [v17 setIconContentScale:v50[0]];
-        [v17 setIconSpacing:{v16, v16}];
-        [v17 sbf_setBoundsAndPositionFromFrame:{*&v32.origin, *&v32.size}];
-        v18 = [(SBFloatingDockView *)self recentIconListView];
-        [v18 setIconContentScale:v50[0]];
-        [v18 setIconSpacing:{v16, v16}];
-        [v18 sbf_setBoundsAndPositionFromFrame:{*&v35.origin, *&v35.size}];
-        v19 = [(SBFloatingDockView *)self utilitiesIconListView];
-        [v19 setIconContentScale:v50[0]];
-        [v19 setIconSpacing:{v16, v16}];
-        [v19 sbf_setBoundsAndPositionFromFrame:{v36, v37}];
-        v20 = [(SBFloatingDockView *)self accessoryIconView];
-        [v20 setIconContentScale:v50[0]];
+        userIconListView = [(SBFloatingDockView *)self userIconListView];
+        [userIconListView setIconContentScale:v50[0]];
+        [userIconListView setIconSpacing:{v16, v16}];
+        [userIconListView sbf_setBoundsAndPositionFromFrame:{*&v32.origin, *&v32.size}];
+        recentIconListView = [(SBFloatingDockView *)self recentIconListView];
+        [recentIconListView setIconContentScale:v50[0]];
+        [recentIconListView setIconSpacing:{v16, v16}];
+        [recentIconListView sbf_setBoundsAndPositionFromFrame:{*&v35.origin, *&v35.size}];
+        utilitiesIconListView = [(SBFloatingDockView *)self utilitiesIconListView];
+        [utilitiesIconListView setIconContentScale:v50[0]];
+        [utilitiesIconListView setIconSpacing:{v16, v16}];
+        [utilitiesIconListView sbf_setBoundsAndPositionFromFrame:{v36, v37}];
+        accessoryIconView = [(SBFloatingDockView *)self accessoryIconView];
+        [accessoryIconView setIconContentScale:v50[0]];
         UIRectGetCenter();
-        [v20 setCenter:?];
-        if (v18)
+        [accessoryIconView setCenter:?];
+        if (recentIconListView)
         {
-          v21 = v18;
+          v21 = recentIconListView;
         }
 
         else
         {
-          v21 = v17;
+          v21 = userIconListView;
         }
 
         [v21 cursorHitTestingInsetsForIconSpacing:{v16, v16}];
-        [v20 setCursorHitTestPadding:?];
+        [accessoryIconView setCursorHitTestPadding:?];
         CGRectGetWidth(v32);
         v22 = BSFloatGreaterThanFloat();
         CGRectGetWidth(v35);
         v23 = BSFloatGreaterThanFloat();
-        v24 = [v19 displayedModel];
-        v25 = [v24 numberOfIcons] != 0;
+        displayedModel = [utilitiesIconListView displayedModel];
+        v25 = [displayedModel numberOfIcons] != 0;
 
         if ((v22 & v23) != 0)
         {
@@ -1561,7 +1561,7 @@ LABEL_73:
           v26 = 0.0;
         }
 
-        [v29 setAlpha:v26];
+        [recentDividerView setAlpha:v26];
         if (((v22 | v23) & v25) != 0)
         {
           v27 = 1.0;
@@ -1572,10 +1572,10 @@ LABEL_73:
           v27 = 0.0;
         }
 
-        [v13 setAlpha:v27];
+        [utilitiesDividerView setAlpha:v27];
         [(SBFloatingDockView *)self setIconContentScale:v50[0]];
-        v28 = [(SBFloatingDockView *)self delegate];
-        [v28 floatingDockViewMainPlatterDidChangeFrame:self];
+        delegate = [(SBFloatingDockView *)self delegate];
+        [delegate floatingDockViewMainPlatterDidChangeFrame:self];
       }
     }
   }
@@ -1584,7 +1584,7 @@ LABEL_73:
 - (void)bounce
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v2 = [(SBFloatingDockView *)self mainPlatterView];
+  mainPlatterView = [(SBFloatingDockView *)self mainPlatterView];
   v3 = [MEMORY[0x1E69794A8] animationWithKeyPath:@"transform.scale.xy"];
   [v3 setAdditive:1];
   [v3 setFromValue:&unk_1F3DB2AE8];
@@ -1606,11 +1606,11 @@ LABEL_73:
   [v5 setBeginTime:0.07];
   [v5 setDuration:0.91];
   [v5 setFillMode:v4];
-  v6 = [MEMORY[0x1E6979308] animation];
+  animation = [MEMORY[0x1E6979308] animation];
   v14[0] = v3;
   v14[1] = v5;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:2];
-  [v6 setAnimations:v7];
+  [animation setAnimations:v7];
 
   [v3 duration];
   v9 = v8;
@@ -1623,17 +1623,17 @@ LABEL_73:
     v13 = v9;
   }
 
-  [v6 setDuration:v13];
-  [v2 addAnimation:v6 forKey:@"SBFloatingDockView-bounce"];
+  [animation setDuration:v13];
+  [mainPlatterView addAnimation:animation forKey:@"SBFloatingDockView-bounce"];
 }
 
 - (void)_updateBackgroundUserInterfaceStyle
 {
-  v6 = [(SBFloatingDockView *)self traitCollection];
-  v3 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:v6];
-  v4 = [(SBFloatingDockPlatterView *)self->_mainPlatterView traitOverrides];
+  traitCollection = [(SBFloatingDockView *)self traitCollection];
+  v3 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:traitCollection];
+  traitOverrides = [(SBFloatingDockPlatterView *)self->_mainPlatterView traitOverrides];
   v5 = objc_opt_self();
-  [v4 setObject:v3 forTrait:v5];
+  [traitOverrides setObject:v3 forTrait:v5];
 }
 
 - (SBFloatingDockViewDelegate)delegate

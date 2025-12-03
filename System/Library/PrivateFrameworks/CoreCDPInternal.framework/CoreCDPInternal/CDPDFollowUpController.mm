@@ -1,22 +1,22 @@
 @interface CDPDFollowUpController
 + (id)_identifiersAllowedForTelemetry;
-+ (id)analyticsEventWithEventName:(id)a3 context:(id)a4 identifier:(id)a5;
++ (id)analyticsEventWithEventName:(id)name context:(id)context identifier:(id)identifier;
 + (id)sharedInstance;
-- (BOOL)_clearFollowUpForContext:(id)a3 error:(id *)a4;
-- (BOOL)_postFollowUpItem:(id)a3 context:(id)a4 error:(id *)a5;
-- (BOOL)clearFollowUpWithContext:(id)a3 error:(id *)a4;
-- (BOOL)hasPendingFollowUpWithUniqueIdentifier:(id)a3;
-- (BOOL)postFollowUpItemForContext:(id)a3 error:(id *)a4;
+- (BOOL)_clearFollowUpForContext:(id)context error:(id *)error;
+- (BOOL)_postFollowUpItem:(id)item context:(id)context error:(id *)error;
+- (BOOL)clearFollowUpWithContext:(id)context error:(id *)error;
+- (BOOL)hasPendingFollowUpWithUniqueIdentifier:(id)identifier;
+- (BOOL)postFollowUpItemForContext:(id)context error:(id *)error;
 - (CDPDFollowUpController)init;
-- (id)_cdpRepairContext:(id)a3;
-- (id)_followUpControllerForContext:(id)a3;
-- (id)_hasSOSActiveDeviceForAltDSID:(id)a3;
+- (id)_cdpRepairContext:(id)context;
+- (id)_followUpControllerForContext:(id)context;
+- (id)_hasSOSActiveDeviceForAltDSID:(id)d;
 - (id)_makeAAFLFollowUpController;
-- (id)_rkMismatchHealingContext:(id)a3;
-- (id)_sosCompatibilityModeContext:(id)a3;
+- (id)_rkMismatchHealingContext:(id)context;
+- (id)_sosCompatibilityModeContext:(id)context;
 - (id)informativeText;
 - (void)dealloc;
-- (void)securityLevelChangedForAccountContext:(id)a3;
+- (void)securityLevelChangedForAccountContext:(id)context;
 @end
 
 @implementation CDPDFollowUpController
@@ -83,91 +83,91 @@ uint64_t __57__CDPDFollowUpController__identifiersAllowedForTelemetry__block_inv
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)_postFollowUpItem:(id)a3 context:(id)a4 error:(id *)a5
+- (BOOL)_postFollowUpItem:(id)item context:(id)context error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  itemCopy = item;
+  contextCopy = context;
   v10 = objc_opt_class();
   v11 = *MEMORY[0x277CE45D0];
-  v12 = [v8 uniqueIdentifier];
-  v13 = [v10 analyticsEventWithEventName:v11 context:v9 identifier:v12];
+  uniqueIdentifier = [itemCopy uniqueIdentifier];
+  v13 = [v10 analyticsEventWithEventName:v11 context:contextCopy identifier:uniqueIdentifier];
 
-  v14 = [objc_opt_class() _identifiersAllowedForTelemetry];
-  v15 = [v8 uniqueIdentifier];
-  v16 = [v14 containsObject:v15];
+  _identifiersAllowedForTelemetry = [objc_opt_class() _identifiersAllowedForTelemetry];
+  uniqueIdentifier2 = [itemCopy uniqueIdentifier];
+  v16 = [_identifiersAllowedForTelemetry containsObject:uniqueIdentifier2];
 
   if (v16)
   {
-    v17 = [v8 uniqueIdentifier];
-    [v13 setObject:v17 forKeyedSubscript:*MEMORY[0x277CFD680]];
+    uniqueIdentifier3 = [itemCopy uniqueIdentifier];
+    [v13 setObject:uniqueIdentifier3 forKeyedSubscript:*MEMORY[0x277CFD680]];
   }
 
   else
   {
-    v17 = _CDPLogSystem();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_FAULT))
+    uniqueIdentifier3 = _CDPLogSystem();
+    if (os_log_type_enabled(uniqueIdentifier3, OS_LOG_TYPE_FAULT))
     {
-      [CDPDFollowUpController _postFollowUpItem:v8 context:v17 error:?];
+      [CDPDFollowUpController _postFollowUpItem:itemCopy context:uniqueIdentifier3 error:?];
     }
   }
 
-  v18 = [(CDPDFollowUpController *)self _followUpControllerForContext:v9];
+  v18 = [(CDPDFollowUpController *)self _followUpControllerForContext:contextCopy];
   v25 = 0;
-  v19 = [v18 postFollowUpItem:v8 error:&v25];
+  v19 = [v18 postFollowUpItem:itemCopy error:&v25];
   v20 = v25;
 
   v21 = [MEMORY[0x277CCABB0] numberWithBool:v19];
   [v13 setObject:v21 forKeyedSubscript:*MEMORY[0x277CFD6C0]];
 
   [v13 populateUnderlyingErrorsStartingWithRootError:v20];
-  v22 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-  [v22 sendEvent:v13];
+  rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+  [rtcAnalyticsReporter sendEvent:v13];
 
-  if (a5)
+  if (error)
   {
     v23 = v20;
-    *a5 = v20;
+    *error = v20;
   }
 
   return v19;
 }
 
-- (BOOL)_clearFollowUpForContext:(id)a3 error:(id *)a4
+- (BOOL)_clearFollowUpForContext:(id)context error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(CDPDFollowUpFactory *)self->_followUpFactory identifierForContext:v6];
+  contextCopy = context;
+  v7 = [(CDPDFollowUpFactory *)self->_followUpFactory identifierForContext:contextCopy];
   v8 = _CDPLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
     v24 = v7;
     v25 = 2112;
-    v26 = v6;
+    v26 = contextCopy;
     _os_log_impl(&dword_24510B000, v8, OS_LOG_TYPE_DEFAULT, "Clearing a follow up: (%@) - %@", buf, 0x16u);
   }
 
   if (v7)
   {
-    v9 = [objc_opt_class() analyticsEventWithEventName:*MEMORY[0x277CE4568] context:v6 identifier:v7];
-    v10 = [(CDPDFollowUpController *)self _followUpControllerForContext:v6];
+    v9 = [objc_opt_class() analyticsEventWithEventName:*MEMORY[0x277CE4568] context:contextCopy identifier:v7];
+    v10 = [(CDPDFollowUpController *)self _followUpControllerForContext:contextCopy];
     v22 = v7;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v22 count:1];
     v21 = 0;
     v12 = [v10 clearPendingFollowUpItemsWithUniqueIdentifiers:v11 error:&v21];
     v13 = v21;
 
-    if (a4)
+    if (error)
     {
       v14 = v13;
-      *a4 = v13;
+      *error = v13;
     }
 
     v15 = [MEMORY[0x277CCABB0] numberWithBool:v12];
     [v9 setObject:v15 forKeyedSubscript:*MEMORY[0x277CFD6C0]];
 
-    v16 = [objc_opt_class() _identifiersAllowedForTelemetry];
-    LODWORD(v15) = [v16 containsObject:v7];
+    _identifiersAllowedForTelemetry = [objc_opt_class() _identifiersAllowedForTelemetry];
+    LODWORD(v15) = [_identifiersAllowedForTelemetry containsObject:v7];
 
     if (v15)
     {
@@ -184,14 +184,14 @@ uint64_t __57__CDPDFollowUpController__identifiersAllowedForTelemetry__block_inv
     }
 
     [v9 populateUnderlyingErrorsStartingWithRootError:v13];
-    v18 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-    [v18 sendEvent:v9];
+    rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+    [rtcAnalyticsReporter sendEvent:v9];
   }
 
-  else if (a4)
+  else if (error)
   {
     _CDPStateError();
-    *a4 = LOBYTE(v12) = 0;
+    *error = LOBYTE(v12) = 0;
   }
 
   else
@@ -203,34 +203,34 @@ uint64_t __57__CDPDFollowUpController__identifiersAllowedForTelemetry__block_inv
   return v12;
 }
 
-- (BOOL)postFollowUpItemForContext:(id)a3 error:(id *)a4
+- (BOOL)postFollowUpItemForContext:(id)context error:(id *)error
 {
   v101 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  contextCopy = context;
   if ([MEMORY[0x277CFD560] hasFullCDPSupport] && -[CDPDFollowUpController _isNotAudioAccessory](self, "_isNotAudioAccessory"))
   {
     v7 = _CDPLogSystem();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v100 = v6;
+      v100 = contextCopy;
       _os_log_impl(&dword_24510B000, v7, OS_LOG_TYPE_DEFAULT, "Processing request for context: %@", buf, 0xCu);
     }
 
-    v8 = [(CDPDFollowUpController *)self followUpFactory];
-    v9 = [v8 followUpItemWithContext:v6];
+    followUpFactory = [(CDPDFollowUpController *)self followUpFactory];
+    v9 = [followUpFactory followUpItemWithContext:contextCopy];
 
     if (v9)
     {
-      v10 = [v6 followUpType];
-      if ([v10 isEqualToString:*MEMORY[0x277CFD438]])
+      followUpType = [contextCopy followUpType];
+      if ([followUpType isEqualToString:*MEMORY[0x277CFD438]])
       {
       }
 
       else
       {
-        v14 = [v6 followUpType];
-        v15 = [v14 isEqualToString:*MEMORY[0x277CFD440]];
+        followUpType2 = [contextCopy followUpType];
+        v15 = [followUpType2 isEqualToString:*MEMORY[0x277CFD440]];
 
         if (!v15)
         {
@@ -238,64 +238,64 @@ uint64_t __57__CDPDFollowUpController__identifiersAllowedForTelemetry__block_inv
         }
       }
 
-      v16 = [MEMORY[0x277CFD4F8] sharedInstance];
-      v17 = [v16 hasLocalSecret];
+      mEMORY[0x277CFD4F8] = [MEMORY[0x277CFD4F8] sharedInstance];
+      hasLocalSecret = [mEMORY[0x277CFD4F8] hasLocalSecret];
 
-      if (v17)
+      if (hasLocalSecret)
       {
 LABEL_16:
         if ([MEMORY[0x277CFD560] isInternalBuild])
         {
-          v18 = [(CDPDFollowUpController *)self informativeText];
-          v19 = [v9 informativeText];
-          v20 = [v19 stringByAppendingString:v18];
+          informativeText = [(CDPDFollowUpController *)self informativeText];
+          informativeText2 = [v9 informativeText];
+          v20 = [informativeText2 stringByAppendingString:informativeText];
           [v9 setInformativeText:v20];
 
-          v21 = [v9 notification];
-          v22 = [v21 informativeText];
-          v23 = [v22 stringByAppendingString:v18];
-          v24 = [v9 notification];
-          [v24 setInformativeText:v23];
+          notification = [v9 notification];
+          informativeText3 = [notification informativeText];
+          v23 = [informativeText3 stringByAppendingString:informativeText];
+          notification2 = [v9 notification];
+          [notification2 setInformativeText:v23];
         }
 
-        v25 = [(CDPDFollowUpController *)self followUpController];
+        followUpController = [(CDPDFollowUpController *)self followUpController];
         v98 = @"RepairCDPState";
         v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v98 count:1];
-        [v25 clearPendingFollowUpItemsWithUniqueIdentifiers:v26 error:a4];
+        [followUpController clearPendingFollowUpItemsWithUniqueIdentifiers:v26 error:error];
 
-        if (([v6 isDefaultRepairOrSOSCompatibilityFollowUp] & 1) == 0)
+        if (([contextCopy isDefaultRepairOrSOSCompatibilityFollowUp] & 1) == 0)
         {
-          v11 = [(CDPDFollowUpController *)self _postFollowUpItem:v9 context:v6 error:a4];
+          v11 = [(CDPDFollowUpController *)self _postFollowUpItem:v9 context:contextCopy error:error];
           goto LABEL_11;
         }
 
         v85 = objc_alloc_init(MEMORY[0x277CBEB18]);
         v81 = objc_alloc_init(MEMORY[0x277CBEB18]);
-        v27 = [v6 altDSID];
+        altDSID = [contextCopy altDSID];
 
-        if (!v27)
+        if (!altDSID)
         {
-          v28 = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
-          v29 = [v28 altDSID];
-          [v6 setAltDSID:v29];
+          contextForPrimaryAccount = [MEMORY[0x277CFD4A8] contextForPrimaryAccount];
+          altDSID2 = [contextForPrimaryAccount altDSID];
+          [contextCopy setAltDSID:altDSID2];
         }
 
         v30 = MEMORY[0x277CFD498];
-        v31 = [v6 altDSID];
-        v32 = [v30 syncingStatusForAltDSID:v31];
+        altDSID3 = [contextCopy altDSID];
+        v32 = [v30 syncingStatusForAltDSID:altDSID3];
 
         v33 = MEMORY[0x277CFD540];
-        v34 = [v6 altDSID];
-        v35 = [v33 syncingStatusForAltDSID:v34];
+        altDSID4 = [contextCopy altDSID];
+        v35 = [v33 syncingStatusForAltDSID:altDSID4];
 
-        v36 = [v6 altDSID];
-        v83 = [(CDPDFollowUpController *)self _hasSOSActiveDeviceForAltDSID:v36];
+        altDSID5 = [contextCopy altDSID];
+        v83 = [(CDPDFollowUpController *)self _hasSOSActiveDeviceForAltDSID:altDSID5];
 
-        v37 = [v6 altDSID];
-        v38 = [(CDPDFollowUpController *)self _sosCompatibilityModeContext:v37];
+        altDSID6 = [contextCopy altDSID];
+        v38 = [(CDPDFollowUpController *)self _sosCompatibilityModeContext:altDSID6];
 
-        v39 = [v6 altDSID];
-        v40 = [(CDPDFollowUpController *)self _cdpRepairContext:v39];
+        altDSID7 = [contextCopy altDSID];
+        v40 = [(CDPDFollowUpController *)self _cdpRepairContext:altDSID7];
 
         v84 = v40;
         v80 = v35;
@@ -345,8 +345,8 @@ LABEL_42:
                 _os_log_impl(&dword_24510B000, v53, OS_LOG_TYPE_DEFAULT, "_handleCDPRepairCFUPosting - tearing down RK Mismatch healing CFU to post CDP Repair CFU", buf, 2u);
               }
 
-              v54 = [v6 altDSID];
-              v55 = [(CDPDFollowUpController *)self _rkMismatchHealingContext:v54];
+              altDSID8 = [contextCopy altDSID];
+              v55 = [(CDPDFollowUpController *)self _rkMismatchHealingContext:altDSID8];
 
               [v47 addObject:v55];
             }
@@ -372,11 +372,11 @@ LABEL_42:
                   }
 
                   v61 = *(*(&v86 + 1) + 8 * i);
-                  v62 = [v6 telemetryFlowID];
-                  [v61 setTelemetryFlowID:v62];
+                  telemetryFlowID = [contextCopy telemetryFlowID];
+                  [v61 setTelemetryFlowID:telemetryFlowID];
 
-                  v63 = [v6 telemetryDeviceSessionID];
-                  [v61 setTelemetryDeviceSessionID:v63];
+                  telemetryDeviceSessionID = [contextCopy telemetryDeviceSessionID];
+                  [v61 setTelemetryDeviceSessionID:telemetryDeviceSessionID];
 
                   [(CDPDFollowUpController *)self clearFollowUpWithContext:v61 error:0];
                 }
@@ -388,17 +388,17 @@ LABEL_42:
             }
 
             v64 = v85;
-            v65 = [v85 firstObject];
+            firstObject = [v85 firstObject];
 
-            if (v65)
+            if (firstObject)
             {
-              v66 = [v85 firstObject];
-              v67 = [(CDPDFollowUpController *)self followUpFactory];
-              v68 = [v67 followUpItemWithContext:v66];
+              firstObject2 = [v85 firstObject];
+              followUpFactory2 = [(CDPDFollowUpController *)self followUpFactory];
+              v68 = [followUpFactory2 followUpItemWithContext:firstObject2];
 
-              v69 = [v66 followUpType];
+              followUpType3 = [firstObject2 followUpType];
               v70 = *MEMORY[0x277CFD468];
-              if ([v69 isEqualToString:*MEMORY[0x277CFD468]])
+              if ([followUpType3 isEqualToString:*MEMORY[0x277CFD468]])
               {
                 v71 = +[CDPDOctagonTrustProxyImpl octagonIsSOSFeatureEnabled];
 
@@ -421,7 +421,7 @@ LABEL_42:
               {
               }
 
-              v11 = [(CDPDFollowUpController *)self _postFollowUpItem:v68 context:v66 error:a4];
+              v11 = [(CDPDFollowUpController *)self _postFollowUpItem:v68 context:firstObject2 error:error];
 
               v64 = v85;
             }
@@ -432,13 +432,13 @@ LABEL_42:
               v70 = *MEMORY[0x277CFD468];
             }
 
-            v74 = [v6 followUpType];
-            if ([v74 isEqualToString:v70] && v80 != 1)
+            followUpType4 = [contextCopy followUpType];
+            if ([followUpType4 isEqualToString:v70] && v80 != 1)
             {
               v75 = v83;
-              v76 = [v83 BOOLValue];
+              bOOLValue = [v83 BOOLValue];
 
-              v11 |= v76 ^ 1;
+              v11 |= bOOLValue ^ 1;
               v73 = 1;
               goto LABEL_67;
             }
@@ -523,10 +523,10 @@ LABEL_67:
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       _CDPStateError();
-      *a4 = v11 = 0;
+      *error = v11 = 0;
       goto LABEL_11;
     }
   }
@@ -557,67 +557,67 @@ LABEL_11:
   return v3;
 }
 
-- (id)_sosCompatibilityModeContext:(id)a3
+- (id)_sosCompatibilityModeContext:(id)context
 {
   v3 = MEMORY[0x277CFD4D8];
-  v4 = a3;
-  v5 = [v3 contextForSOSCompatibilityMode];
-  [v5 setAltDSID:v4];
+  contextCopy = context;
+  contextForSOSCompatibilityMode = [v3 contextForSOSCompatibilityMode];
+  [contextForSOSCompatibilityMode setAltDSID:contextCopy];
 
-  return v5;
+  return contextForSOSCompatibilityMode;
 }
 
-- (id)_cdpRepairContext:(id)a3
+- (id)_cdpRepairContext:(id)context
 {
   v3 = MEMORY[0x277CFD4D8];
-  v4 = a3;
-  v5 = [v3 contextForStateRepair];
-  [v5 setAltDSID:v4];
+  contextCopy = context;
+  contextForStateRepair = [v3 contextForStateRepair];
+  [contextForStateRepair setAltDSID:contextCopy];
 
-  return v5;
+  return contextForStateRepair;
 }
 
-- (id)_rkMismatchHealingContext:(id)a3
+- (id)_rkMismatchHealingContext:(id)context
 {
   v3 = MEMORY[0x277CFD4D8];
-  v4 = a3;
-  v5 = [v3 contextForRecoveryKeyMismatchHealing];
-  [v5 setAltDSID:v4];
+  contextCopy = context;
+  contextForRecoveryKeyMismatchHealing = [v3 contextForRecoveryKeyMismatchHealing];
+  [contextForRecoveryKeyMismatchHealing setAltDSID:contextCopy];
 
-  return v5;
+  return contextForRecoveryKeyMismatchHealing;
 }
 
-- (id)_hasSOSActiveDeviceForAltDSID:(id)a3
+- (id)_hasSOSActiveDeviceForAltDSID:(id)d
 {
   v3 = MEMORY[0x277CF0130];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 authKitAccountWithAltDSID:v4];
+  dCopy = d;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance authKitAccountWithAltDSID:dCopy];
 
-  v7 = [v5 hasSOSActiveDeviceForAccount:v6];
+  v7 = [sharedInstance hasSOSActiveDeviceForAccount:v6];
 
   return v7;
 }
 
-- (BOOL)clearFollowUpWithContext:(id)a3 error:(id *)a4
+- (BOOL)clearFollowUpWithContext:(id)context error:(id *)error
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 followUpType];
+  contextCopy = context;
+  followUpType = [contextCopy followUpType];
 
-  if (v7)
+  if (followUpType)
   {
-    v8 = [v6 followUpType];
-    v9 = [v8 isEqualToString:*MEMORY[0x277CFD470]];
+    followUpType2 = [contextCopy followUpType];
+    v9 = [followUpType2 isEqualToString:*MEMORY[0x277CFD470]];
 
-    v10 = [(CDPDFollowUpController *)self _clearFollowUpForContext:v6 error:a4];
+    v10 = [(CDPDFollowUpController *)self _clearFollowUpForContext:contextCopy error:error];
     if (v9)
     {
-      v11 = [(CDPDFollowUpController *)self followUpController];
+      followUpController = [(CDPDFollowUpController *)self followUpController];
       v16[0] = @"RepairCDPState";
       v12 = 1;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:1];
-      [v11 clearPendingFollowUpItemsWithUniqueIdentifiers:v13 error:a4];
+      [followUpController clearPendingFollowUpItemsWithUniqueIdentifiers:v13 error:error];
     }
 
     else
@@ -626,10 +626,10 @@ LABEL_11:
     }
   }
 
-  else if (a4)
+  else if (error)
   {
     _CDPStateError();
-    *a4 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else
@@ -643,14 +643,14 @@ LABEL_11:
 
 - (id)informativeText
 {
-  v2 = [MEMORY[0x277CCAE80] currentConnection];
-  if (v2)
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  if (currentConnection)
   {
     v3 = MEMORY[0x277CCACA8];
     v4 = [MEMORY[0x277CFD508] builderForKey:@"KEYCHAIN_FOLLOWUP_INTERNAL_BLAME"];
-    v5 = [v4 localizedString];
-    v6 = [v2 processName];
-    v7 = [v3 stringWithValidatedFormat:v5 validFormatSpecifiers:@"%@" error:0, v6];
+    localizedString = [v4 localizedString];
+    processName = [currentConnection processName];
+    v7 = [v3 stringWithValidatedFormat:localizedString validFormatSpecifiers:@"%@" error:0, processName];
   }
 
   else
@@ -661,10 +661,10 @@ LABEL_11:
   return v7;
 }
 
-- (void)securityLevelChangedForAccountContext:(id)a3
+- (void)securityLevelChangedForAccountContext:(id)context
 {
-  v4 = a3;
-  if ([v4 isSharediPad])
+  contextCopy = context;
+  if ([contextCopy isSharediPad])
   {
     v5 = _CDPLogSystem();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -674,57 +674,57 @@ LABEL_11:
     }
   }
 
-  else if ([v4 isHSA2Account])
+  else if ([contextCopy isHSA2Account])
   {
-    v6 = [MEMORY[0x277CFD4D8] contextForStateRepair];
-    [v6 setRepairType:1];
-    v7 = [v4 altDSID];
-    [v6 setAltDSID:v7];
+    contextForStateRepair = [MEMORY[0x277CFD4D8] contextForStateRepair];
+    [contextForStateRepair setRepairType:1];
+    altDSID = [contextCopy altDSID];
+    [contextForStateRepair setAltDSID:altDSID];
 
-    [(CDPDFollowUpController *)self postFollowUpItemForContext:v6 error:0];
+    [(CDPDFollowUpController *)self postFollowUpItemForContext:contextForStateRepair error:0];
   }
 }
 
-- (id)_followUpControllerForContext:(id)a3
+- (id)_followUpControllerForContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 followUpType];
-  v6 = [v5 isEqualToString:*MEMORY[0x277CFD460]];
+  contextCopy = context;
+  followUpType = [contextCopy followUpType];
+  v6 = [followUpType isEqualToString:*MEMORY[0x277CFD460]];
 
   if (v6)
   {
-    v7 = [objc_alloc(MEMORY[0x277CFE500]) initWithClientIdentifier:@"com.apple.purplebuddy"];
+    _makeAAFLFollowUpController = [objc_alloc(MEMORY[0x277CFE500]) initWithClientIdentifier:@"com.apple.purplebuddy"];
     goto LABEL_8;
   }
 
-  v8 = [v4 followUpType];
-  if ([v8 isEqualToString:*MEMORY[0x277CFD470]])
+  followUpType2 = [contextCopy followUpType];
+  if ([followUpType2 isEqualToString:*MEMORY[0x277CFD470]])
   {
 
 LABEL_6:
-    v7 = [(CDPDFollowUpController *)self _makeAAFLFollowUpController];
+    _makeAAFLFollowUpController = [(CDPDFollowUpController *)self _makeAAFLFollowUpController];
     goto LABEL_8;
   }
 
-  v9 = [v4 followUpType];
-  v10 = [v9 isEqualToString:*MEMORY[0x277CFD448]];
+  followUpType3 = [contextCopy followUpType];
+  v10 = [followUpType3 isEqualToString:*MEMORY[0x277CFD448]];
 
   if (v10)
   {
     goto LABEL_6;
   }
 
-  v7 = [(CDPDFollowUpController *)self followUpController];
+  _makeAAFLFollowUpController = [(CDPDFollowUpController *)self followUpController];
 LABEL_8:
-  v11 = v7;
+  v11 = _makeAAFLFollowUpController;
 
   return v11;
 }
 
-- (BOOL)hasPendingFollowUpWithUniqueIdentifier:(id)a3
+- (BOOL)hasPendingFollowUpWithUniqueIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   followUpController = self->_followUpController;
   v22 = 0;
   v6 = [(FLFollowUpController *)followUpController pendingFollowUpItems:&v22];
@@ -760,8 +760,8 @@ LABEL_8:
             objc_enumerationMutation(v10);
           }
 
-          v14 = [*(*(&v18 + 1) + 8 * i) uniqueIdentifier];
-          v15 = [v4 isEqualToString:v14];
+          uniqueIdentifier = [*(*(&v18 + 1) + 8 * i) uniqueIdentifier];
+          v15 = [identifierCopy isEqualToString:uniqueIdentifier];
 
           if (v15)
           {
@@ -769,7 +769,7 @@ LABEL_8:
             if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v24 = v4;
+              v24 = identifierCopy;
               _os_log_impl(&dword_24510B000, v11, OS_LOG_TYPE_DEFAULT, "Found CFU with uniqueIdentifier %@", buf, 0xCu);
             }
 
@@ -806,22 +806,22 @@ LABEL_20:
   return v11;
 }
 
-+ (id)analyticsEventWithEventName:(id)a3 context:(id)a4 identifier:(id)a5
++ (id)analyticsEventWithEventName:(id)name context:(id)context identifier:(id)identifier
 {
-  v7 = a4;
-  v8 = a5;
+  contextCopy = context;
+  identifierCopy = identifier;
   v9 = MEMORY[0x277CE44C8];
-  v10 = a3;
+  nameCopy = name;
   v11 = objc_alloc_init(v9);
-  v12 = [v7 telemetryFlowID];
-  [v11 setFlowID:v12];
+  telemetryFlowID = [contextCopy telemetryFlowID];
+  [v11 setFlowID:telemetryFlowID];
 
-  v13 = [objc_opt_class() _identifiersAllowedForTelemetry];
-  LODWORD(v12) = [v13 containsObject:v8];
+  _identifiersAllowedForTelemetry = [objc_opt_class() _identifiersAllowedForTelemetry];
+  LODWORD(telemetryFlowID) = [_identifiersAllowedForTelemetry containsObject:identifierCopy];
 
-  if (v12)
+  if (telemetryFlowID)
   {
-    [v11 setCfuType:v8];
+    [v11 setCfuType:identifierCopy];
   }
 
   else
@@ -835,8 +835,8 @@ LABEL_20:
 
   v15 = MEMORY[0x277CE44D8];
   v16 = *MEMORY[0x277CFD930];
-  v17 = [v7 altDSID];
-  v18 = [v15 analyticsEventWithName:v10 eventCategory:v16 followupAnalyticsData:v11 altDSID:v17];
+  altDSID = [contextCopy altDSID];
+  v18 = [v15 analyticsEventWithName:nameCopy eventCategory:v16 followupAnalyticsData:v11 altDSID:altDSID];
 
   return v18;
 }

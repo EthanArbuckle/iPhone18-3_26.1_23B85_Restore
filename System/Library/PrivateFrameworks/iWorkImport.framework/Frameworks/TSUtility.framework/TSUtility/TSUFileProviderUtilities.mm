@@ -1,15 +1,15 @@
 @interface TSUFileProviderUtilities
-+ (BOOL)isPausedWithSandboxedURL:(id)a3 isPaused:(BOOL *)a4 error:(id *)a5;
-+ (BOOL)pauseSyncSynchronouslyOnSandboxedURL:(id)a3 error:(id *)a4;
-+ (BOOL)pauseSyncSynchronouslyOnSandboxedURL:(id)a3 uuid:(id)a4 error:(id *)a5;
-+ (void)didUpdateAlternateContentsDocumentForSandboxedURL:(id)a3 completionQueue:(id)a4 completion:(id)a5;
-+ (void)fetchLatestVersionURLOfPausedSandboxedURL:(id)a3 completionQueue:(id)a4 completion:(id)a5;
++ (BOOL)isPausedWithSandboxedURL:(id)l isPaused:(BOOL *)paused error:(id *)error;
++ (BOOL)pauseSyncSynchronouslyOnSandboxedURL:(id)l error:(id *)error;
++ (BOOL)pauseSyncSynchronouslyOnSandboxedURL:(id)l uuid:(id)uuid error:(id *)error;
++ (void)didUpdateAlternateContentsDocumentForSandboxedURL:(id)l completionQueue:(id)queue completion:(id)completion;
++ (void)fetchLatestVersionURLOfPausedSandboxedURL:(id)l completionQueue:(id)queue completion:(id)completion;
 + (void)initialize;
-+ (void)pauseSyncOnSandboxedURL:(id)a3 completionQueue:(id)a4 completion:(id)a5;
-+ (void)pauseSyncOnSandboxedURL:(id)a3 completionQueue:(id)a4 uuid:(id)a5 completion:(id)a6;
-+ (void)resumeSyncOnSandboxedURL:(id)a3 preserveLocalChanges:(BOOL)a4 completionQueue:(id)a5 completion:(id)a6;
-+ (void)resumeSyncOnSandboxedURL:(id)a3 preserveLocalChanges:(BOOL)a4 completionQueue:(id)a5 uuid:(id)a6 completion:(id)a7;
-+ (void)setAlternateContentsURL:(id)a3 onSandboxedURL:(id)a4 completionQueue:(id)a5 completion:(id)a6;
++ (void)pauseSyncOnSandboxedURL:(id)l completionQueue:(id)queue completion:(id)completion;
++ (void)pauseSyncOnSandboxedURL:(id)l completionQueue:(id)queue uuid:(id)uuid completion:(id)completion;
++ (void)resumeSyncOnSandboxedURL:(id)l preserveLocalChanges:(BOOL)changes completionQueue:(id)queue completion:(id)completion;
++ (void)resumeSyncOnSandboxedURL:(id)l preserveLocalChanges:(BOOL)changes completionQueue:(id)queue uuid:(id)uuid completion:(id)completion;
++ (void)setAlternateContentsURL:(id)l onSandboxedURL:(id)rL completionQueue:(id)queue completion:(id)completion;
 - (TSUFileProviderUtilities)init;
 @end
 
@@ -39,24 +39,24 @@
   }
 }
 
-+ (void)setAlternateContentsURL:(id)a3 onSandboxedURL:(id)a4 completionQueue:(id)a5 completion:(id)a6
++ (void)setAlternateContentsURL:(id)l onSandboxedURL:(id)rL completionQueue:(id)queue completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
+  lCopy = l;
+  rLCopy = rL;
+  queueCopy = queue;
+  completionCopy = completion;
+  v13 = completionCopy;
   v14 = off_280A63DB8;
   if (off_280A63DB8)
   {
-    v15 = [v10 URL];
+    v15 = [rLCopy URL];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = sub_2770D10CC;
     v20[3] = &unk_27A702EC0;
-    v21 = v11;
-    v22 = v9;
-    v23 = v10;
+    v21 = queueCopy;
+    v22 = lCopy;
+    v23 = rLCopy;
     v24 = v13;
     v14(v15, v22, v20);
 
@@ -65,12 +65,12 @@
 
   else
   {
-    if (!v12)
+    if (!completionCopy)
     {
       goto LABEL_4;
     }
 
-    if (!v11)
+    if (!queueCopy)
     {
       v17 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3328 userInfo:0];
       (v13)[2](v13, v17);
@@ -82,30 +82,30 @@
     v18[1] = 3221225472;
     v18[2] = sub_2770D1280;
     v18[3] = &unk_27A702350;
-    v19 = v12;
-    dispatch_async(v11, v18);
+    v19 = completionCopy;
+    dispatch_async(queueCopy, v18);
     v16 = v19;
   }
 
 LABEL_4:
 }
 
-+ (void)didUpdateAlternateContentsDocumentForSandboxedURL:(id)a3 completionQueue:(id)a4 completion:(id)a5
++ (void)didUpdateAlternateContentsDocumentForSandboxedURL:(id)l completionQueue:(id)queue completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
+  lCopy = l;
+  queueCopy = queue;
+  completionCopy = completion;
+  v10 = completionCopy;
   v11 = off_280A63DC0;
   if (off_280A63DC0)
   {
-    v12 = [v7 URL];
+    v12 = [lCopy URL];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = sub_2770D15A8;
     v17[3] = &unk_27A702EE8;
-    v18 = v8;
-    v19 = v7;
+    v18 = queueCopy;
+    v19 = lCopy;
     v20 = v10;
     v11(v12, v17);
 
@@ -114,12 +114,12 @@ LABEL_4:
 
   else
   {
-    if (!v9)
+    if (!completionCopy)
     {
       goto LABEL_4;
     }
 
-    if (!v8)
+    if (!queueCopy)
     {
       v14 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:3328 userInfo:0];
       (v10)[2](v10, v14);
@@ -131,28 +131,28 @@ LABEL_4:
     block[1] = 3221225472;
     block[2] = sub_2770D1748;
     block[3] = &unk_27A702350;
-    v16 = v9;
-    dispatch_async(v8, block);
+    v16 = completionCopy;
+    dispatch_async(queueCopy, block);
     v13 = v16;
   }
 
 LABEL_4:
 }
 
-+ (BOOL)pauseSyncSynchronouslyOnSandboxedURL:(id)a3 error:(id *)a4
++ (BOOL)pauseSyncSynchronouslyOnSandboxedURL:(id)l error:(id *)error
 {
   v6 = MEMORY[0x277CCAD78];
-  v7 = a3;
-  v8 = [v6 UUID];
-  LOBYTE(a4) = [a1 pauseSyncSynchronouslyOnSandboxedURL:v7 uuid:v8 error:a4];
+  lCopy = l;
+  uUID = [v6 UUID];
+  LOBYTE(error) = [self pauseSyncSynchronouslyOnSandboxedURL:lCopy uuid:uUID error:error];
 
-  return a4;
+  return error;
 }
 
-+ (BOOL)pauseSyncSynchronouslyOnSandboxedURL:(id)a3 uuid:(id)a4 error:(id *)a5
++ (BOOL)pauseSyncSynchronouslyOnSandboxedURL:(id)l uuid:(id)uuid error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  uuidCopy = uuid;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -173,12 +173,12 @@ LABEL_4:
   v18 = &v19;
   v12 = v10;
   v16 = v12;
-  [a1 pauseSyncOnSandboxedURL:v8 completionQueue:v11 uuid:v9 completion:v15];
+  [self pauseSyncOnSandboxedURL:lCopy completionQueue:v11 uuid:uuidCopy completion:v15];
 
   dispatch_semaphore_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
-  if (a5)
+  if (error)
   {
-    *a5 = v20[5];
+    *error = v20[5];
   }
 
   v13 = *(v26 + 24);
@@ -189,22 +189,22 @@ LABEL_4:
   return v13;
 }
 
-+ (void)pauseSyncOnSandboxedURL:(id)a3 completionQueue:(id)a4 completion:(id)a5
++ (void)pauseSyncOnSandboxedURL:(id)l completionQueue:(id)queue completion:(id)completion
 {
   v8 = MEMORY[0x277CCAD78];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v8 UUID];
-  [a1 pauseSyncOnSandboxedURL:v11 completionQueue:v10 uuid:v12 completion:v9];
+  completionCopy = completion;
+  queueCopy = queue;
+  lCopy = l;
+  uUID = [v8 UUID];
+  [self pauseSyncOnSandboxedURL:lCopy completionQueue:queueCopy uuid:uUID completion:completionCopy];
 }
 
-+ (void)pauseSyncOnSandboxedURL:(id)a3 completionQueue:(id)a4 uuid:(id)a5 completion:(id)a6
++ (void)pauseSyncOnSandboxedURL:(id)l completionQueue:(id)queue uuid:(id)uuid completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  lCopy = l;
+  queueCopy = queue;
+  uuidCopy = uuid;
+  completionCopy = completion;
   if (([objc_opt_class() isPauseSyncAPIAvailable] & 1) == 0)
   {
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUFileProviderUtilities pauseSyncOnSandboxedURL:completionQueue:uuid:completion:]"];
@@ -214,42 +214,42 @@ LABEL_4:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v15 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   if (TSUCollaborationPauseResumeSyncCat_init_token != -1)
   {
     sub_277114C48();
   }
 
-  v16 = [v9 URL];
+  v16 = [lCopy URL];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = sub_2770D1E34;
   v17[3] = &unk_27A702F38;
-  v18 = v9;
-  v19 = v11;
-  v21 = v12;
-  v20 = v10;
-  [v15 pauseSyncForUbiquitousItemAtURL:v16 completionHandler:v17];
+  v18 = lCopy;
+  v19 = uuidCopy;
+  v21 = completionCopy;
+  v20 = queueCopy;
+  [defaultManager pauseSyncForUbiquitousItemAtURL:v16 completionHandler:v17];
 }
 
-+ (void)resumeSyncOnSandboxedURL:(id)a3 preserveLocalChanges:(BOOL)a4 completionQueue:(id)a5 completion:(id)a6
++ (void)resumeSyncOnSandboxedURL:(id)l preserveLocalChanges:(BOOL)changes completionQueue:(id)queue completion:(id)completion
 {
-  v7 = a4;
+  changesCopy = changes;
   v10 = MEMORY[0x277CCAD78];
-  v11 = a6;
-  v12 = a5;
-  v13 = a3;
-  v14 = [v10 UUID];
-  [a1 resumeSyncOnSandboxedURL:v13 preserveLocalChanges:v7 completionQueue:v12 uuid:v14 completion:v11];
+  completionCopy = completion;
+  queueCopy = queue;
+  lCopy = l;
+  uUID = [v10 UUID];
+  [self resumeSyncOnSandboxedURL:lCopy preserveLocalChanges:changesCopy completionQueue:queueCopy uuid:uUID completion:completionCopy];
 }
 
-+ (void)resumeSyncOnSandboxedURL:(id)a3 preserveLocalChanges:(BOOL)a4 completionQueue:(id)a5 uuid:(id)a6 completion:(id)a7
++ (void)resumeSyncOnSandboxedURL:(id)l preserveLocalChanges:(BOOL)changes completionQueue:(id)queue uuid:(id)uuid completion:(id)completion
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  changesCopy = changes;
+  lCopy = l;
+  queueCopy = queue;
+  uuidCopy = uuid;
+  completionCopy = completion;
   if (([objc_opt_class() isPauseSyncAPIAvailable] & 1) == 0)
   {
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUFileProviderUtilities resumeSyncOnSandboxedURL:preserveLocalChanges:completionQueue:uuid:completion:]"];
@@ -259,14 +259,14 @@ LABEL_4:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v17 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   if (TSUCollaborationPauseResumeSyncCat_init_token != -1)
   {
     sub_277114CC0();
   }
 
-  v18 = [v11 URL];
-  if (v10)
+  v18 = [lCopy URL];
+  if (changesCopy)
   {
     v19 = 0;
   }
@@ -280,16 +280,16 @@ LABEL_4:
   v20[1] = 3221225472;
   v20[2] = sub_2770D2518;
   v20[3] = &unk_27A702F38;
-  v21 = v11;
-  v22 = v13;
-  v24 = v14;
-  v23 = v12;
-  [v17 resumeSyncForUbiquitousItemAtURL:v18 withBehavior:v19 completionHandler:v20];
+  v21 = lCopy;
+  v22 = uuidCopy;
+  v24 = completionCopy;
+  v23 = queueCopy;
+  [defaultManager resumeSyncForUbiquitousItemAtURL:v18 withBehavior:v19 completionHandler:v20];
 }
 
-+ (BOOL)isPausedWithSandboxedURL:(id)a3 isPaused:(BOOL *)a4 error:(id *)a5
++ (BOOL)isPausedWithSandboxedURL:(id)l isPaused:(BOOL *)paused error:(id *)error
 {
-  v7 = [a3 URL];
+  v7 = [l URL];
   v16 = 0;
   v8 = *MEMORY[0x277CBE978];
   v15 = 0;
@@ -301,7 +301,7 @@ LABEL_4:
   {
     if (TSUCollaborationPauseResumeSyncCat_init_token == -1)
     {
-      if (!a5)
+      if (!error)
       {
         goto LABEL_13;
       }
@@ -310,7 +310,7 @@ LABEL_4:
     else
     {
       sub_277114D38();
-      if (!a5)
+      if (!error)
       {
         goto LABEL_13;
       }
@@ -318,7 +318,7 @@ LABEL_4:
 
     v13 = v11;
     v12 = 0;
-    *a5 = v11;
+    *error = v11;
     goto LABEL_14;
   }
 
@@ -326,11 +326,11 @@ LABEL_4:
   {
     if (TSUCollaborationPauseResumeSyncCat_init_token == -1)
     {
-      if (a5)
+      if (error)
       {
 LABEL_9:
         [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:4 userInfo:0];
-        *a5 = v12 = 0;
+        *error = v12 = 0;
         goto LABEL_14;
       }
     }
@@ -338,7 +338,7 @@ LABEL_9:
     else
     {
       sub_277114D60();
-      if (a5)
+      if (error)
       {
         goto LABEL_9;
       }
@@ -349,18 +349,18 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  *a4 = [v10 BOOLValue];
+  *paused = [v10 BOOLValue];
   v12 = 1;
 LABEL_14:
 
   return v12;
 }
 
-+ (void)fetchLatestVersionURLOfPausedSandboxedURL:(id)a3 completionQueue:(id)a4 completion:(id)a5
++ (void)fetchLatestVersionURLOfPausedSandboxedURL:(id)l completionQueue:(id)queue completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  lCopy = l;
+  queueCopy = queue;
+  completionCopy = completion;
   if (([objc_opt_class() isPauseSyncAPIAvailable] & 1) == 0)
   {
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSUFileProviderUtilities fetchLatestVersionURLOfPausedSandboxedURL:completionQueue:completion:]"];
@@ -370,24 +370,24 @@ LABEL_14:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v12 = [MEMORY[0x277CCAA00] defaultManager];
-  v13 = [MEMORY[0x277CCAD78] UUID];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   if (TSUCollaborationPauseResumeSyncCat_init_token != -1)
   {
     sub_277114D88();
   }
 
-  v14 = [v7 URL];
+  v14 = [lCopy URL];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = sub_2770D2D14;
   v16[3] = &unk_27A702F60;
-  v17 = v7;
-  v15 = v13;
+  v17 = lCopy;
+  v15 = uUID;
   v18 = v15;
-  v20 = v9;
-  v19 = v8;
-  [v12 fetchLatestRemoteVersionOfItemAtURL:v14 completionHandler:v16];
+  v20 = completionCopy;
+  v19 = queueCopy;
+  [defaultManager fetchLatestRemoteVersionOfItemAtURL:v14 completionHandler:v16];
 }
 
 @end

@@ -1,32 +1,32 @@
 @interface SCNMTLTessellator
-- ($7A7BD8EC73F1DE0C75AE87F164959927)_pipelineStateHashForMeshElement:(id)a3 patchType:(unsigned __int8)a4;
-- (SCNMTLTessellator)initWithGeometry:(__C3DGeometry *)a3 resourceManager:(id)a4;
-- (id)newPipelineStateConfiguratorForMeshElement:(id)a3 patchType:(unsigned __int8)a4 device:(id)a5;
-- (unsigned)pipelineStateHashForMeshElement:(id)a3 patchType:(unsigned __int8)a4;
-- (void)constrainedEdgeLengthTessellationDrawMeshElement:(id)a3 forMesh:(id)a4 instanceCount:(unint64_t)a5 renderContext:(id)a6;
+- ($7A7BD8EC73F1DE0C75AE87F164959927)_pipelineStateHashForMeshElement:(id)element patchType:(unsigned __int8)type;
+- (SCNMTLTessellator)initWithGeometry:(__C3DGeometry *)geometry resourceManager:(id)manager;
+- (id)newPipelineStateConfiguratorForMeshElement:(id)element patchType:(unsigned __int8)type device:(id)device;
+- (unsigned)pipelineStateHashForMeshElement:(id)element patchType:(unsigned __int8)type;
+- (void)constrainedEdgeLengthTessellationDrawMeshElement:(id)element forMesh:(id)mesh instanceCount:(unint64_t)count renderContext:(id)context;
 - (void)dealloc;
-- (void)draw:(id *)a3;
-- (void)screenSpaceAdaptiveTessellationDrawMeshElement:(id)a3 forMesh:(id)a4 instanceCount:(unint64_t)a5 renderContext:(id)a6;
-- (void)subdivisionSurfaceTessellationDraw:(id *)a3;
-- (void)uniformTessellationDrawMeshElement:(id)a3 forMesh:(id)a4 instanceCount:(unint64_t)a5 renderContext:(id)a6;
-- (void)update:(id *)a3;
-- (void)updateConstrainedEdgeLengthTessellator:(id *)a3 parameters:(id *)a4;
-- (void)updateScreenSpaceAdaptiveTessellator:(id *)a3 parameters:(id *)a4;
-- (void)updateSubdivisionSurfaceTessellator:(id *)a3 parameters:(id *)a4;
-- (void)updateUniformTessellator:(id *)a3;
+- (void)draw:(id *)draw;
+- (void)screenSpaceAdaptiveTessellationDrawMeshElement:(id)element forMesh:(id)mesh instanceCount:(unint64_t)count renderContext:(id)context;
+- (void)subdivisionSurfaceTessellationDraw:(id *)draw;
+- (void)uniformTessellationDrawMeshElement:(id)element forMesh:(id)mesh instanceCount:(unint64_t)count renderContext:(id)context;
+- (void)update:(id *)update;
+- (void)updateConstrainedEdgeLengthTessellator:(id *)tessellator parameters:(id *)parameters;
+- (void)updateScreenSpaceAdaptiveTessellator:(id *)tessellator parameters:(id *)parameters;
+- (void)updateSubdivisionSurfaceTessellator:(id *)tessellator parameters:(id *)parameters;
+- (void)updateUniformTessellator:(id *)tessellator;
 @end
 
 @implementation SCNMTLTessellator
 
-- (SCNMTLTessellator)initWithGeometry:(__C3DGeometry *)a3 resourceManager:(id)a4
+- (SCNMTLTessellator)initWithGeometry:(__C3DGeometry *)geometry resourceManager:(id)manager
 {
   v7.receiver = self;
   v7.super_class = SCNMTLTessellator;
   result = [(SCNMTLTessellator *)&v7 init];
   if (result)
   {
-    result->_geometry = a3;
-    result->_resourceManager = a4;
+    result->_geometry = geometry;
+    result->_resourceManager = manager;
     *&result->_cachedTessellator.tessellationPartitionMode = 0;
     result->_cachedTessellator.parameters = 0;
     *&result->_cachedTessellator.type = 0;
@@ -42,7 +42,7 @@
   [(SCNMTLTessellator *)&v3 dealloc];
 }
 
-- ($7A7BD8EC73F1DE0C75AE87F164959927)_pipelineStateHashForMeshElement:(id)a3 patchType:(unsigned __int8)a4
+- ($7A7BD8EC73F1DE0C75AE87F164959927)_pipelineStateHashForMeshElement:(id)element patchType:(unsigned __int8)type
 {
   type = self->_cachedTessellator.type;
   if ((type - 1) < 3)
@@ -79,18 +79,18 @@ LABEL_6:
   if ((type - 1) < 3)
   {
 LABEL_11:
-    v10 = [(SCNMTLMesh *)a3 elements];
-    if (v10 == 1)
+    elements = [(SCNMTLMesh *)element elements];
+    if (elements == 1)
     {
       v9 = (*&v9 | 0x20);
     }
 
-    else if (v10)
+    else if (elements)
     {
       v11 = scn_default_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        [SCNMTLTessellator _pipelineStateHashForMeshElement:a3 patchType:v11];
+        [SCNMTLTessellator _pipelineStateHashForMeshElement:element patchType:v11];
       }
     }
 
@@ -125,35 +125,35 @@ LABEL_23:
   return v9;
 }
 
-- (unsigned)pipelineStateHashForMeshElement:(id)a3 patchType:(unsigned __int8)a4
+- (unsigned)pipelineStateHashForMeshElement:(id)element patchType:(unsigned __int8)type
 {
-  if ((a4 - 1) <= 1u && self->_cachedTessellator.type == 4)
+  if ((type - 1) <= 1u && self->_cachedTessellator.type == 4)
   {
     return 0;
   }
 
   else
   {
-    return [(SCNMTLTessellator *)self _pipelineStateHashForMeshElement:a3 patchType:v4, v5];
+    return [(SCNMTLTessellator *)self _pipelineStateHashForMeshElement:element patchType:v4, v5];
   }
 }
 
-- (id)newPipelineStateConfiguratorForMeshElement:(id)a3 patchType:(unsigned __int8)a4 device:(id)a5
+- (id)newPipelineStateConfiguratorForMeshElement:(id)element patchType:(unsigned __int8)type device:(id)device
 {
-  if ((a4 - 1) <= 1u && self->_cachedTessellator.type == 4)
+  if ((type - 1) <= 1u && self->_cachedTessellator.type == 4)
   {
     return 0;
   }
 
   v13 = v5;
   v14 = v6;
-  v9 = [(SCNMTLTessellator *)self _pipelineStateHashForMeshElement:a3 patchType:?];
+  v9 = [(SCNMTLTessellator *)self _pipelineStateHashForMeshElement:element patchType:?];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __81__SCNMTLTessellator_newPipelineStateConfiguratorForMeshElement_patchType_device___block_invoke;
   v11[3] = &unk_278302250;
   v12 = v9;
-  v11[4] = a5;
+  v11[4] = device;
   return _Block_copy(v11);
 }
 
@@ -170,7 +170,7 @@ uint64_t __81__SCNMTLTessellator_newPipelineStateConfiguratorForMeshElement_patc
   return [a2 setMaxTessellationFactor:v4];
 }
 
-- (void)update:(id *)a3
+- (void)update:(id *)update
 {
   v15 = 0uLL;
   v16 = 0;
@@ -209,24 +209,24 @@ uint64_t __81__SCNMTLTessellator_newPipelineStateConfiguratorForMeshElement_patc
     {
       case 2:
         v14 = v16;
-        v8 = *&a3->var2;
-        v11 = *&a3->var0;
+        v8 = *&update->var2;
+        v11 = *&update->var0;
         v12 = v8;
         v13 = v15;
         [(SCNMTLTessellator *)self updateScreenSpaceAdaptiveTessellator:&v13 parameters:&v11];
         break;
       case 3:
         v14 = v16;
-        v9 = *&a3->var2;
-        v11 = *&a3->var0;
+        v9 = *&update->var2;
+        v11 = *&update->var0;
         v12 = v9;
         v13 = v15;
         [(SCNMTLTessellator *)self updateConstrainedEdgeLengthTessellator:&v13 parameters:&v11];
         break;
       case 4:
         v14 = v16;
-        v7 = *&a3->var2;
-        v11 = *&a3->var0;
+        v7 = *&update->var2;
+        v11 = *&update->var0;
         v12 = v7;
         v13 = v15;
         [(SCNMTLTessellator *)self updateSubdivisionSurfaceTessellator:&v13 parameters:&v11];
@@ -238,7 +238,7 @@ uint64_t __81__SCNMTLTessellator_newPipelineStateConfiguratorForMeshElement_patc
   p_cachedTessellator[1].n128_u64[0] = v16;
 }
 
-- (void)draw:(id *)a3
+- (void)draw:(id *)draw
 {
   v10 = 0uLL;
   v11 = 0;
@@ -262,33 +262,33 @@ uint64_t __81__SCNMTLTessellator_newPipelineStateConfiguratorForMeshElement_patc
       }
     }
 
-    [(SCNMTLTessellator *)self uniformTessellationDrawMeshElement:a3->var3 forMesh:a3->var1 instanceCount:a3->var4 renderContext:a3->var5];
+    [(SCNMTLTessellator *)self uniformTessellationDrawMeshElement:draw->var3 forMesh:draw->var1 instanceCount:draw->var4 renderContext:draw->var5];
     return;
   }
 
   switch(v10.n128_u8[0])
   {
     case 2u:
-      [(SCNMTLTessellator *)self screenSpaceAdaptiveTessellationDrawMeshElement:a3->var3 forMesh:a3->var1 instanceCount:a3->var4 renderContext:a3->var5, v5];
+      [(SCNMTLTessellator *)self screenSpaceAdaptiveTessellationDrawMeshElement:draw->var3 forMesh:draw->var1 instanceCount:draw->var4 renderContext:draw->var5, v5];
       break;
     case 3u:
-      [(SCNMTLTessellator *)self constrainedEdgeLengthTessellationDrawMeshElement:a3->var3 forMesh:a3->var1 instanceCount:a3->var4 renderContext:a3->var5, v5];
+      [(SCNMTLTessellator *)self constrainedEdgeLengthTessellationDrawMeshElement:draw->var3 forMesh:draw->var1 instanceCount:draw->var4 renderContext:draw->var5, v5];
       break;
     case 4u:
-      v6 = *&a3->var2;
-      v8[0] = *&a3->var0;
+      v6 = *&draw->var2;
+      v8[0] = *&draw->var0;
       v8[1] = v6;
-      v8[2] = *&a3->var4;
-      v9 = *&a3->var6;
+      v8[2] = *&draw->var4;
+      v9 = *&draw->var6;
       [(SCNMTLTessellator *)self subdivisionSurfaceTessellationDraw:v8];
       break;
   }
 }
 
-- (void)updateUniformTessellator:(id *)a3
+- (void)updateUniformTessellator:(id *)tessellator
 {
-  var0 = a3->var4.var0.var0;
-  var1 = a3->var4.var0.var1;
+  var0 = tessellator->var4.var0.var0;
+  var1 = tessellator->var4.var0.var1;
   v6 = HIWORD(LODWORD(var0)) & 0x8000;
   v7 = (LODWORD(var0) >> 23);
   v8 = v7 - 112;
@@ -370,7 +370,7 @@ uint64_t __81__SCNMTLTessellator_newPipelineStateConfiguratorForMeshElement_patc
   tessellationFactorBuffer = self->_tessellationFactorBuffer;
   if (tessellationFactorBuffer)
   {
-    if (*&a3->var4 != *&self->_cachedTessellator.parameters)
+    if (*&tessellator->var4 != *&self->_cachedTessellator.parameters)
     {
       *[(MTLBuffer *)tessellationFactorBuffer contents]= v25;
     }
@@ -382,32 +382,32 @@ uint64_t __81__SCNMTLTessellator_newPipelineStateConfiguratorForMeshElement_patc
   }
 }
 
-- (void)uniformTessellationDrawMeshElement:(id)a3 forMesh:(id)a4 instanceCount:(unint64_t)a5 renderContext:(id)a6
+- (void)uniformTessellationDrawMeshElement:(id)element forMesh:(id)mesh instanceCount:(unint64_t)count renderContext:(id)context
 {
-  v10 = [(SCNMTLRenderContext *)a6 renderEncoder];
+  renderEncoder = [(SCNMTLRenderContext *)context renderEncoder];
   *&v11 = self->_cachedTessellator.tessellationFactorScale;
-  [*(v10 + 3392) setTessellationFactorScale:v11];
-  [*(v10 + 3392) setTessellationFactorBuffer:self->_tessellationFactorBuffer offset:0 instanceStride:0];
+  [*(renderEncoder + 3392) setTessellationFactorScale:v11];
+  [*(renderEncoder + 3392) setTessellationFactorBuffer:self->_tessellationFactorBuffer offset:0 instanceStride:0];
 
-  [(SCNMTLRenderContext *)a6 _drawPatchForMeshElement:a3 instanceCount:a5];
+  [(SCNMTLRenderContext *)context _drawPatchForMeshElement:element instanceCount:count];
 }
 
-- (void)updateScreenSpaceAdaptiveTessellator:(id *)a3 parameters:(id *)a4
+- (void)updateScreenSpaceAdaptiveTessellator:(id *)tessellator parameters:(id *)parameters
 {
   v82 = *MEMORY[0x277D85DE8];
-  var0 = a4->var0;
-  v6 = [(SCNMTLRenderContext *)a4->var1 resourceComputeEncoder];
-  bzero(v6, 0x678uLL);
-  v7 = v6[207];
-  v52 = self;
+  var0 = parameters->var0;
+  resourceComputeEncoder = [(SCNMTLRenderContext *)parameters->var1 resourceComputeEncoder];
+  bzero(resourceComputeEncoder, 0x678uLL);
+  v7 = resourceComputeEncoder[207];
+  selfCopy = self;
   if (!self->_tessellationFactorBuffer)
   {
     v77 = 0u;
     v78 = 0u;
     v75 = 0u;
     v76 = 0u;
-    v8 = [(SCNMTLMesh *)var0 elements];
-    v9 = [v8 countByEnumeratingWithState:&v75 objects:v81 count:16];
+    elements = [(SCNMTLMesh *)var0 elements];
+    v9 = [elements countByEnumeratingWithState:&v75 objects:v81 count:16];
     if (v9)
     {
       v10 = 0;
@@ -418,25 +418,25 @@ uint64_t __81__SCNMTLTessellator_newPipelineStateConfiguratorForMeshElement_patc
         {
           if (*v76 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(elements);
           }
 
           v10 += [(SCNMTLMeshElement *)*(*(&v75 + 1) + 8 * i) primitiveCount];
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v75 objects:v81 count:16];
+        v9 = [elements countByEnumeratingWithState:&v75 objects:v81 count:16];
       }
 
       while (v9);
       v9 = 24 * v10;
     }
 
-    v52->_tessellationFactorBuffer = [-[SCNMTLOpenSubdivComputeEvaluator computeEvaluator](v52->_resourceManager) newBufferWithLength:v9 options:32];
+    selfCopy->_tessellationFactorBuffer = [-[SCNMTLOpenSubdivComputeEvaluator computeEvaluator](selfCopy->_resourceManager) newBufferWithLength:v9 options:32];
   }
 
-  v13 = [(SCNMTLResourceManager *)var0 commandQueue];
-  v43 = [objc_msgSend(v13 "attributes")];
-  v42 = [objc_msgSend(v13 "layouts")];
+  commandQueue = [(SCNMTLResourceManager *)var0 commandQueue];
+  v43 = [objc_msgSend(commandQueue "attributes")];
+  v42 = [objc_msgSend(commandQueue "layouts")];
   [v7 pushDebugGroup:@"Compute SCNGeometryScreenSpaceAdaptiveTessellator tessellation factors"];
   v73 = 0u;
   v74 = 0u;
@@ -461,10 +461,10 @@ uint64_t __81__SCNMTLTessellator_newPipelineStateConfiguratorForMeshElement_patc
         }
 
         v16 = *(*(&v71 + 1) + 8 * j);
-        v17 = [(SCNMTLMesh *)v16 elements];
-        if (v17)
+        elements2 = [(SCNMTLMesh *)v16 elements];
+        if (elements2)
         {
-          if (v17 == 1)
+          if (elements2 == 1)
           {
             v18 = @"compute_tessellation_factors_screeenspace_adaptive_uint32";
           }
@@ -487,17 +487,17 @@ uint64_t __81__SCNMTLTessellator_newPipelineStateConfiguratorForMeshElement_patc
           v18 = @"compute_tessellation_factors_screeenspace_adaptive_uint16";
         }
 
-        v21 = [(SCNMTLOpenSubdivComputeEvaluator *)[(SCNMTLResourceManager *)v52->_resourceManager computePipelineStateForKernel:v18] computeEvaluator];
-        v22 = [(SCNMTLMeshElement *)v16 primitiveCount];
-        v51 = [-[SCNMTLMeshElement indexBuffer](v16) buffer];
-        v50 = [-[SCNMTLMeshElement indexBuffer](v16) offset];
-        v49 = [(SCNMTLResourceManager *)v16 libraryManager];
+        computeEvaluator = [(SCNMTLOpenSubdivComputeEvaluator *)[(SCNMTLResourceManager *)selfCopy->_resourceManager computePipelineStateForKernel:v18] computeEvaluator];
+        primitiveCount = [(SCNMTLMeshElement *)v16 primitiveCount];
+        buffer = [-[SCNMTLMeshElement indexBuffer](v16) buffer];
+        offset = [-[SCNMTLMeshElement indexBuffer](v16) offset];
+        libraryManager = [(SCNMTLResourceManager *)v16 libraryManager];
         v48 = [-[SCNMTLMesh buffers](v44) objectAtIndexedSubscript:{objc_msgSend(v43, "bufferIndex") - 18}];
-        v23 = [v42 stride];
-        v24 = [v21 threadExecutionWidth];
-        v25 = [(SCNMTLRenderContext *)a4->var1 engineContext];
-        Viewport = C3DEngineContextGetViewport(v25);
-        v27 = a3->var4.var0.var0;
+        stride = [v42 stride];
+        threadExecutionWidth = [computeEvaluator threadExecutionWidth];
+        engineContext = [(SCNMTLRenderContext *)parameters->var1 engineContext];
+        Viewport = C3DEngineContextGetViewport(engineContext);
+        v27 = tessellator->var4.var0.var0;
         v69 = 0u;
         v70 = 0u;
         v67 = 0u;
@@ -513,9 +513,9 @@ uint64_t __81__SCNMTLTessellator_newPipelineStateConfiguratorForMeshElement_patc
         v60 = 0u;
         v57 = 0u;
         v58 = 0u;
-        LODWORD(v57) = v22;
-        BYTE4(v57) = v23;
-        var2 = a4->var2;
+        LODWORD(v57) = primitiveCount;
+        BYTE4(v57) = stride;
+        var2 = parameters->var2;
         v29 = *var2;
         v30 = *(var2 + 1);
         v31 = *(var2 + 3);
@@ -539,17 +539,17 @@ uint64_t __81__SCNMTLTessellator_newPipelineStateConfiguratorForMeshElement_patc
         v67 = v36;
         LODWORD(v70) = Viewport.n128_u32[0];
         v7 = v41;
-        [v41 setComputePipelineState:v21];
-        [v41 setBuffer:v52->_tessellationFactorBuffer offset:24 * v14 atIndex:0];
-        [v41 setBuffer:v51 offset:v49 + v50 atIndex:1];
+        [v41 setComputePipelineState:computeEvaluator];
+        [v41 setBuffer:selfCopy->_tessellationFactorBuffer offset:24 * v14 atIndex:0];
+        [v41 setBuffer:buffer offset:libraryManager + offset atIndex:1];
         [v41 setBuffer:v48 offset:0 atIndex:2];
         [v41 setBytes:&v57 length:224 atIndex:3];
-        v55 = (v22 + v24 - 1) / v24;
+        v55 = (primitiveCount + threadExecutionWidth - 1) / threadExecutionWidth;
         v56 = v39;
-        v53 = v24;
+        v53 = threadExecutionWidth;
         v54 = v39;
         [v41 dispatchThreadgroups:&v55 threadsPerThreadgroup:&v53];
-        v14 += v22;
+        v14 += primitiveCount;
       }
 
       v47 = [obj countByEnumeratingWithState:&v71 objects:v80 count:16];
@@ -561,15 +561,15 @@ uint64_t __81__SCNMTLTessellator_newPipelineStateConfiguratorForMeshElement_patc
   [v7 popDebugGroup];
 }
 
-- (void)screenSpaceAdaptiveTessellationDrawMeshElement:(id)a3 forMesh:(id)a4 instanceCount:(unint64_t)a5 renderContext:(id)a6
+- (void)screenSpaceAdaptiveTessellationDrawMeshElement:(id)element forMesh:(id)mesh instanceCount:(unint64_t)count renderContext:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [(SCNMTLMesh *)a4 elements];
-  v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  elements = [(SCNMTLMesh *)mesh elements];
+  v11 = [elements countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -581,11 +581,11 @@ LABEL_3:
     {
       if (*v20 != v14)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(elements);
       }
 
       v16 = *(*(&v19 + 1) + 8 * v15);
-      if (v16 == a3)
+      if (v16 == element)
       {
         break;
       }
@@ -593,7 +593,7 @@ LABEL_3:
       v13 += [(SCNMTLMeshElement *)v16 primitiveCount];
       if (v12 == ++v15)
       {
-        v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v12 = [elements countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v12)
         {
           goto LABEL_3;
@@ -609,20 +609,20 @@ LABEL_3:
     v13 = 0;
   }
 
-  v17 = [(SCNMTLRenderContext *)a6 renderEncoder];
+  renderEncoder = [(SCNMTLRenderContext *)context renderEncoder];
   *&v18 = self->_cachedTessellator.tessellationFactorScale;
-  [*(v17 + 3392) setTessellationFactorScale:{v18, v19}];
-  [*(v17 + 3392) setTessellationFactorBuffer:self->_tessellationFactorBuffer offset:24 * v13 instanceStride:0];
-  [(SCNMTLRenderContext *)a6 _drawPatchForMeshElement:a3 instanceCount:a5];
+  [*(renderEncoder + 3392) setTessellationFactorScale:{v18, v19}];
+  [*(renderEncoder + 3392) setTessellationFactorBuffer:self->_tessellationFactorBuffer offset:24 * v13 instanceStride:0];
+  [(SCNMTLRenderContext *)context _drawPatchForMeshElement:element instanceCount:count];
 }
 
-- (void)updateConstrainedEdgeLengthTessellator:(id *)a3 parameters:(id *)a4
+- (void)updateConstrainedEdgeLengthTessellator:(id *)tessellator parameters:(id *)parameters
 {
   v56 = *MEMORY[0x277D85DE8];
-  var0 = a4->var0;
+  var0 = parameters->var0;
   if (self->_tessellationFactorBuffer)
   {
-    if (a3->var4.var0.var0 == self->_cachedTessellator.parameters.uniform.edgeTessellationFactor)
+    if (tessellator->var4.var0.var0 == self->_cachedTessellator.parameters.uniform.edgeTessellationFactor)
     {
       return;
     }
@@ -634,8 +634,8 @@ LABEL_3:
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v8 = [(SCNMTLMesh *)var0 elements];
-    v9 = [v8 countByEnumeratingWithState:&v49 objects:v55 count:16];
+    elements = [(SCNMTLMesh *)var0 elements];
+    v9 = [elements countByEnumeratingWithState:&v49 objects:v55 count:16];
     if (v9)
     {
       v10 = 0;
@@ -646,13 +646,13 @@ LABEL_3:
         {
           if (*v50 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(elements);
           }
 
           v10 += [(SCNMTLMeshElement *)*(*(&v49 + 1) + 8 * i) primitiveCount];
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v49 objects:v55 count:16];
+        v9 = [elements countByEnumeratingWithState:&v49 objects:v55 count:16];
       }
 
       while (v9);
@@ -662,14 +662,14 @@ LABEL_3:
     self->_tessellationFactorBuffer = [-[SCNMTLOpenSubdivComputeEvaluator computeEvaluator](self->_resourceManager) newBufferWithLength:v9 options:32];
   }
 
-  v34 = self;
-  v35 = a3;
-  v13 = [(SCNMTLRenderContext *)a4->var1 resourceComputeEncoder];
-  bzero(v13, 0x678uLL);
-  v14 = v13[207];
-  v15 = [(SCNMTLResourceManager *)var0 commandQueue];
-  v32 = [objc_msgSend(v15 "attributes")];
-  v31 = [objc_msgSend(v15 "layouts")];
+  selfCopy = self;
+  tessellatorCopy = tessellator;
+  resourceComputeEncoder = [(SCNMTLRenderContext *)parameters->var1 resourceComputeEncoder];
+  bzero(resourceComputeEncoder, 0x678uLL);
+  v14 = resourceComputeEncoder[207];
+  commandQueue = [(SCNMTLResourceManager *)var0 commandQueue];
+  v32 = [objc_msgSend(commandQueue "attributes")];
+  v31 = [objc_msgSend(commandQueue "layouts")];
   [v14 pushDebugGroup:@"Compute kC3DGeometryTessellatorTypeConstrainedEdgeLength tessellation factors"];
   v47 = 0u;
   v48 = 0u;
@@ -693,10 +693,10 @@ LABEL_3:
         }
 
         v18 = *(*(&v45 + 1) + 8 * j);
-        v19 = [(SCNMTLMesh *)v18 elements];
-        if (v19)
+        elements2 = [(SCNMTLMesh *)v18 elements];
+        if (elements2)
         {
-          if (v19 == 1)
+          if (elements2 == 1)
           {
             v20 = @"compute_tessellation_factors_constrained_edge_uint32";
           }
@@ -719,28 +719,28 @@ LABEL_3:
           v20 = @"compute_tessellation_factors_constrained_edge_uint16";
         }
 
-        v23 = [(SCNMTLOpenSubdivComputeEvaluator *)[(SCNMTLResourceManager *)v34->_resourceManager computePipelineStateForKernel:v20] computeEvaluator];
-        v24 = [(SCNMTLMeshElement *)v18 primitiveCount];
-        v39 = [-[SCNMTLMeshElement indexBuffer](v18) buffer];
-        v38 = [-[SCNMTLMeshElement indexBuffer](v18) offset];
-        v37 = [(SCNMTLResourceManager *)v18 libraryManager];
+        computeEvaluator = [(SCNMTLOpenSubdivComputeEvaluator *)[(SCNMTLResourceManager *)selfCopy->_resourceManager computePipelineStateForKernel:v20] computeEvaluator];
+        primitiveCount = [(SCNMTLMeshElement *)v18 primitiveCount];
+        buffer = [-[SCNMTLMeshElement indexBuffer](v18) buffer];
+        offset = [-[SCNMTLMeshElement indexBuffer](v18) offset];
+        libraryManager = [(SCNMTLResourceManager *)v18 libraryManager];
         v25 = [-[SCNMTLMesh buffers](v33) objectAtIndexedSubscript:{objc_msgSend(v32, "bufferIndex") - 18}];
-        v26 = [v31 stride];
-        v27 = [v23 threadExecutionWidth];
-        v44[0] = v24;
-        v44[1] = v26;
-        v44[2] = LODWORD(v35->var4.var0.var0);
-        [v14 setComputePipelineState:v23];
-        [v14 setBuffer:v34->_tessellationFactorBuffer offset:24 * v16 atIndex:0];
-        [v14 setBuffer:v39 offset:v37 + v38 atIndex:1];
+        stride = [v31 stride];
+        threadExecutionWidth = [computeEvaluator threadExecutionWidth];
+        v44[0] = primitiveCount;
+        v44[1] = stride;
+        v44[2] = LODWORD(tessellatorCopy->var4.var0.var0);
+        [v14 setComputePipelineState:computeEvaluator];
+        [v14 setBuffer:selfCopy->_tessellationFactorBuffer offset:24 * v16 atIndex:0];
+        [v14 setBuffer:buffer offset:libraryManager + offset atIndex:1];
         [v14 setBuffer:v25 offset:0 atIndex:2];
         [v14 setBytes:v44 length:12 atIndex:3];
-        v42 = (v24 + v27 - 1) / v27;
+        v42 = (primitiveCount + threadExecutionWidth - 1) / threadExecutionWidth;
         v43 = v29;
-        v40 = v27;
+        v40 = threadExecutionWidth;
         v41 = v29;
         [v14 dispatchThreadgroups:&v42 threadsPerThreadgroup:&v40];
-        v16 += v24;
+        v16 += primitiveCount;
       }
 
       v36 = [obj countByEnumeratingWithState:&v45 objects:v54 count:16];
@@ -752,15 +752,15 @@ LABEL_3:
   [v14 popDebugGroup];
 }
 
-- (void)constrainedEdgeLengthTessellationDrawMeshElement:(id)a3 forMesh:(id)a4 instanceCount:(unint64_t)a5 renderContext:(id)a6
+- (void)constrainedEdgeLengthTessellationDrawMeshElement:(id)element forMesh:(id)mesh instanceCount:(unint64_t)count renderContext:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [(SCNMTLMesh *)a4 elements];
-  v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  elements = [(SCNMTLMesh *)mesh elements];
+  v11 = [elements countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -772,11 +772,11 @@ LABEL_3:
     {
       if (*v20 != v14)
       {
-        objc_enumerationMutation(v10);
+        objc_enumerationMutation(elements);
       }
 
       v16 = *(*(&v19 + 1) + 8 * v15);
-      if (v16 == a3)
+      if (v16 == element)
       {
         break;
       }
@@ -784,7 +784,7 @@ LABEL_3:
       v13 += [(SCNMTLMeshElement *)v16 primitiveCount];
       if (v12 == ++v15)
       {
-        v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v12 = [elements countByEnumeratingWithState:&v19 objects:v23 count:16];
         if (v12)
         {
           goto LABEL_3;
@@ -800,18 +800,18 @@ LABEL_3:
     v13 = 0;
   }
 
-  v17 = [(SCNMTLRenderContext *)a6 renderEncoder];
+  renderEncoder = [(SCNMTLRenderContext *)context renderEncoder];
   *&v18 = self->_cachedTessellator.tessellationFactorScale;
-  [*(v17 + 3392) setTessellationFactorScale:{v18, v19}];
-  [*(v17 + 3392) setTessellationFactorBuffer:self->_tessellationFactorBuffer offset:24 * v13 instanceStride:0];
-  [(SCNMTLRenderContext *)a6 _drawPatchForMeshElement:a3 instanceCount:a5];
+  [*(renderEncoder + 3392) setTessellationFactorScale:{v18, v19}];
+  [*(renderEncoder + 3392) setTessellationFactorBuffer:self->_tessellationFactorBuffer offset:24 * v13 instanceStride:0];
+  [(SCNMTLRenderContext *)context _drawPatchForMeshElement:element instanceCount:count];
 }
 
-- (void)updateSubdivisionSurfaceTessellator:(id *)a3 parameters:(id *)a4
+- (void)updateSubdivisionSurfaceTessellator:(id *)tessellator parameters:(id *)parameters
 {
   GPUContext = C3DGeometryOpenSubdivGetGPUContext(self->_geometry, 0, 0);
-  GPUContext[1] = a3->var1;
-  v8 = [(SCNMTLMesh *)a4->var0 bufferForAttribute:?];
+  GPUContext[1] = tessellator->var1;
+  v8 = [(SCNMTLMesh *)parameters->var0 bufferForAttribute:?];
   lastFramePositionBuffer = self->_lastFramePositionBuffer;
   if (lastFramePositionBuffer)
   {
@@ -825,12 +825,12 @@ LABEL_3:
 
   v11 = !v10;
   self->_lastFramePositionBuffer = v8;
-  v12 = a4->var4 | v11;
+  v12 = parameters->var4 | v11;
   if (v12)
   {
-    C3DSubdivisionOsdGPUSynchroniseCoarseMeshForDeformers(GPUContext, v8, a4->var1, a4->var3);
+    C3DSubdivisionOsdGPUSynchroniseCoarseMeshForDeformers(GPUContext, v8, parameters->var1, parameters->var3);
 LABEL_10:
-    C3DSubdivisionOsdGPUComputeTessellationFactors(GPUContext, a4->var1, a4->var2, a4->var3, v13);
+    C3DSubdivisionOsdGPUComputeTessellationFactors(GPUContext, parameters->var1, parameters->var2, parameters->var3, v13);
     goto LABEL_11;
   }
 
@@ -840,21 +840,21 @@ LABEL_10:
   }
 
 LABEL_11:
-  v14 = [(SCNMTLRenderContext *)a4->var1 engineContext];
-  AuthoringEnvironment = C3DEngineContextGetAuthoringEnvironment(v14, 0);
+  engineContext = [(SCNMTLRenderContext *)parameters->var1 engineContext];
+  AuthoringEnvironment = C3DEngineContextGetAuthoringEnvironment(engineContext, 0);
   if (AuthoringEnvironment && (C3DAuthoringEnvironmentGetDisplayMask(AuthoringEnvironment) & 0x4000) != 0)
   {
     geometry = self->_geometry;
-    var0 = a4->var0;
-    var1 = a4->var1;
+    var0 = parameters->var0;
+    var1 = parameters->var1;
 
     C3DGeometryOpenSubdivGPUUpdateAuthoringEnvironmentData(geometry, var0, var1, v12 & 1);
   }
 }
 
-- (void)subdivisionSurfaceTessellationDraw:(id *)a3
+- (void)subdivisionSurfaceTessellationDraw:(id *)draw
 {
-  v5 = [C3DMeshGetMeshElements(a3->var0 0)];
+  v5 = [C3DMeshGetMeshElements(draw->var0 0)];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v6 = 0;
@@ -866,9 +866,9 @@ LABEL_11:
   }
 
   GPUContext = C3DGeometryOpenSubdivGetGPUContext(self->_geometry, 0, 0);
-  var5 = a3->var5;
-  var6 = a3->var6;
-  var4 = a3->var4;
+  var5 = draw->var5;
+  var6 = draw->var6;
+  var4 = draw->var4;
 
   C3DSubdivisionOsdGPUDraw(GPUContext, var5, var6, v6, var4);
 }

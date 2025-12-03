@@ -8,14 +8,14 @@
 - (int64_t)secondShownOption;
 - (int64_t)selectedOption;
 - (void)log;
-- (void)logWith:(int64_t)a3;
-- (void)setAppleSupport:(BOOL)a3;
-- (void)setAutocomplete:(BOOL)a3;
-- (void)setFirstShownOption:(int64_t)a3;
-- (void)setSavedContact:(BOOL)a3;
-- (void)setSecondShownOption:(int64_t)a3;
-- (void)setSelectedOption:(int64_t)a3;
-- (void)updateForDialerResultPressed:(int64_t)a3 savedContact:(BOOL)a4;
+- (void)logWith:(int64_t)with;
+- (void)setAppleSupport:(BOOL)support;
+- (void)setAutocomplete:(BOOL)autocomplete;
+- (void)setFirstShownOption:(int64_t)option;
+- (void)setSavedContact:(BOOL)contact;
+- (void)setSecondShownOption:(int64_t)option;
+- (void)setSelectedOption:(int64_t)option;
+- (void)updateForDialerResultPressed:(int64_t)pressed savedContact:(BOOL)contact;
 @end
 
 @implementation MPDialerInterceptReporter
@@ -34,11 +34,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setAppleSupport:(BOOL)a3
+- (void)setAppleSupport:(BOOL)support
 {
   v5 = OBJC_IVAR___MPDialerInterceptReporter_appleSupport;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = support;
 }
 
 - (BOOL)autocomplete
@@ -48,11 +48,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setAutocomplete:(BOOL)a3
+- (void)setAutocomplete:(BOOL)autocomplete
 {
   v5 = OBJC_IVAR___MPDialerInterceptReporter_autocomplete;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = autocomplete;
 }
 
 - (BOOL)savedContact
@@ -62,11 +62,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setSavedContact:(BOOL)a3
+- (void)setSavedContact:(BOOL)contact
 {
   v5 = OBJC_IVAR___MPDialerInterceptReporter_savedContact;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = contact;
 }
 
 - (int64_t)selectedOption
@@ -76,11 +76,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setSelectedOption:(int64_t)a3
+- (void)setSelectedOption:(int64_t)option
 {
   v5 = OBJC_IVAR___MPDialerInterceptReporter_selectedOption;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = option;
 }
 
 - (int64_t)firstShownOption
@@ -90,11 +90,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setFirstShownOption:(int64_t)a3
+- (void)setFirstShownOption:(int64_t)option
 {
   v5 = OBJC_IVAR___MPDialerInterceptReporter_firstShownOption;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = option;
 }
 
 - (int64_t)secondShownOption
@@ -104,31 +104,31 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setSecondShownOption:(int64_t)a3
+- (void)setSecondShownOption:(int64_t)option
 {
   v5 = OBJC_IVAR___MPDialerInterceptReporter_secondShownOption;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = option;
 }
 
-- (void)updateForDialerResultPressed:(int64_t)a3 savedContact:(BOOL)a4
+- (void)updateForDialerResultPressed:(int64_t)pressed savedContact:(BOOL)contact
 {
-  v6 = self;
-  sub_2472C(a3, a4);
+  selfCopy = self;
+  sub_2472C(pressed, contact);
 }
 
-- (void)logWith:(int64_t)a3
+- (void)logWith:(int64_t)with
 {
-  v4 = self;
-  sub_24A04(a3);
+  selfCopy = self;
+  sub_24A04(with);
 }
 
 - (void)log
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2D798();
   v4 = swift_allocObject();
-  *(v4 + 16) = v2;
+  *(v4 + 16) = selfCopy;
   v7[4] = sub_2611C;
   v7[5] = v4;
   v7[0] = _NSConcreteStackBlock;
@@ -136,7 +136,7 @@
   v7[2] = sub_24C5C;
   v7[3] = &block_descriptor_38;
   v5 = _Block_copy(v7);
-  v6 = v2;
+  v6 = selfCopy;
 
   AnalyticsSendEventLazy();
 

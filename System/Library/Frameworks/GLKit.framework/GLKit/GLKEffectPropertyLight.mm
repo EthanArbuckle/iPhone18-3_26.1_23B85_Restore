@@ -1,8 +1,8 @@
 @interface GLKEffectPropertyLight
-+ (void)setStaticMasksWithVshRoot:(id)a3 fshRoot:(id)a4;
++ (void)setStaticMasksWithVshRoot:(id)root fshRoot:(id)fshRoot;
 - (GLKBigInt_s)allFshMasks;
 - (GLKBigInt_s)allVshMasks;
-- (GLKEffectPropertyLight)initWithTransform:(id)a3 lightingType:(int)a4 firstLight:(unsigned __int8)a5;
+- (GLKEffectPropertyLight)initWithTransform:(id)transform lightingType:(int)type firstLight:(unsigned __int8)light;
 - (GLKVector3)spotDirection;
 - (GLKVector4)ambientColor;
 - (GLKVector4)diffuseColor;
@@ -20,12 +20,12 @@
 - (void)setDiffuseColor:(GLKVector4)diffuseColor;
 - (void)setEnabled:(GLBOOLean)enabled;
 - (void)setGLDefaults;
-- (void)setLightIndex:(int)a3;
-- (void)setLightingType:(int)a3;
+- (void)setLightIndex:(int)index;
+- (void)setLightingType:(int)type;
 - (void)setLinearAttenuation:(GLfloat)linearAttenuation;
-- (void)setNormalizedSpotDirectionEye:(_GLKVector3)a3;
+- (void)setNormalizedSpotDirectionEye:(_GLKVector3)eye;
 - (void)setPosition:(GLKVector4)position;
-- (void)setPositionEye:(_GLKVector4)a3;
+- (void)setPositionEye:(_GLKVector4)eye;
 - (void)setQuadraticAttenuation:(GLfloat)quadraticAttenuation;
 - (void)setShaderBindings;
 - (void)setSpecularColor:(GLKVector4)specularColor;
@@ -36,7 +36,7 @@
 
 @implementation GLKEffectPropertyLight
 
-- (GLKEffectPropertyLight)initWithTransform:(id)a3 lightingType:(int)a4 firstLight:(unsigned __int8)a5
+- (GLKEffectPropertyLight)initWithTransform:(id)transform lightingType:(int)type firstLight:(unsigned __int8)light
 {
   v11.receiver = self;
   v11.super_class = GLKEffectPropertyLight;
@@ -44,7 +44,7 @@
   v9 = v8;
   if (v8)
   {
-    [(GLKEffectPropertyLight *)v8 setTransform:a3];
+    [(GLKEffectPropertyLight *)v8 setTransform:transform];
     v9->_enabled = 0;
     v9->_quadraticAttenuationLoc = -1;
     v9->_linearAttenuationLoc = -1;
@@ -59,9 +59,9 @@
     v9->_positionEyeLoc = -1;
     v9->_normalizeLoc = -1;
     v9->_lightIndex = -1;
-    v9->_lightingType = a4;
+    v9->_lightingType = type;
     v9->_effectDirtyUniforms = 0;
-    v9->_firstLight = a5;
+    v9->_firstLight = light;
     [(GLKEffectPropertyLight *)v9 setGLDefaults];
   }
 
@@ -294,13 +294,13 @@
   v43 = v3;
   v45 = v7;
   v41 = v20;
-  v21 = [(GLKEffectProperty *)self masksInitialized];
+  masksInitialized = [(GLKEffectProperty *)self masksInitialized];
   v20 = v41;
   v3 = v43;
   v7 = v45;
   v5 = v47;
   v6 = v49;
-  if (!v21)
+  if (!masksInitialized)
   {
 LABEL_12:
     self->_position.x = v3;
@@ -310,12 +310,12 @@ LABEL_12:
     self->_positionEye = v20;
     _vPositionEyeMask(*(self->super._prv + 4));
     _modelviewMatrixMask(*(self->super._prv + 4));
-    v22 = [(GLKEffectPropertyLight *)self isSpot];
+    isSpot = [(GLKEffectPropertyLight *)self isSpot];
     prv = self->super._prv;
     v24 = *prv;
     lightIndex = self->_lightIndex;
     v26 = &qword_27DF405E0;
-    if (v22)
+    if (isSpot)
     {
       v27 = &qword_27DF405E0;
     }
@@ -325,7 +325,7 @@ LABEL_12:
       v27 = &unk_27DF40610;
     }
 
-    if (v22)
+    if (isSpot)
     {
       v28 = &qword_27DF40730;
     }
@@ -335,7 +335,7 @@ LABEL_12:
       v28 = &unk_27DF40760;
     }
 
-    if (v22)
+    if (isSpot)
     {
       v26 = &unk_27DF40610;
       v29 = &unk_27DF40760;
@@ -430,11 +430,11 @@ LABEL_32:
   }
 }
 
-- (void)setLightingType:(int)a3
+- (void)setLightingType:(int)type
 {
-  if (self->_lightingType != a3 || ![(GLKEffectProperty *)self masksInitialized])
+  if (self->_lightingType != type || ![(GLKEffectProperty *)self masksInitialized])
   {
-    self->_lightingType = a3;
+    self->_lightingType = type;
     _lightStateChanged(*(self->super._prv + 4));
 
     _setMasks(self);
@@ -498,10 +498,10 @@ LABEL_32:
     self->_spotCutoffDegrees = spotCutoff;
     v5 = spotCutoff * 0.0174532925;
     self->_spotCutoff = v5;
-    v6 = [(GLKEffectPropertyLight *)self isSpot];
+    isSpot = [(GLKEffectPropertyLight *)self isSpot];
     lightIndex = self->_lightIndex;
     v8 = &qword_27DF405E0;
-    if (v6)
+    if (isSpot)
     {
       v9 = &qword_27DF405E0;
     }
@@ -511,7 +511,7 @@ LABEL_32:
       v9 = &unk_27DF40610;
     }
 
-    if (v6)
+    if (isSpot)
     {
       v10 = &qword_27DF40730;
     }
@@ -521,7 +521,7 @@ LABEL_32:
       v10 = &unk_27DF40760;
     }
 
-    if (v6)
+    if (isSpot)
     {
       v8 = &unk_27DF40610;
       v11 = &unk_27DF40760;
@@ -542,7 +542,7 @@ LABEL_32:
   }
 }
 
-+ (void)setStaticMasksWithVshRoot:(id)a3 fshRoot:(id)a4
++ (void)setStaticMasksWithVshRoot:(id)root fshRoot:(id)fshRoot
 {
   v6 = 0;
   v7 = &unk_27DF40708;
@@ -550,9 +550,9 @@ LABEL_32:
   do
   {
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"lighting%d", v6];
-    *(v8 - 1) = [GLKShaderBlockNode maskForLabel:v9 root:a3 index:v6];
+    *(v8 - 1) = [GLKShaderBlockNode maskForLabel:v9 root:root index:v6];
     *v8 = v10;
-    *(v7 - 1) = [GLKShaderBlockNode maskForLabel:v9 root:a4 index:v6];
+    *(v7 - 1) = [GLKShaderBlockNode maskForLabel:v9 root:fshRoot index:v6];
     *v7 = v11;
     ++v6;
     v7 += 2;
@@ -568,7 +568,7 @@ LABEL_32:
     v16 = v12;
     do
     {
-      *(v16 - 1) = [GLKShaderBlockNode maskForLabel:v15 root:a3 index:v14];
+      *(v16 - 1) = [GLKShaderBlockNode maskForLabel:v15 root:root index:v14];
       *v16 = v17;
       ++v14;
       v16 += 2;
@@ -586,7 +586,7 @@ LABEL_32:
     v22 = v18;
     do
     {
-      *(v22 - 1) = [GLKShaderBlockNode maskForLabel:v21 root:a4 index:v20];
+      *(v22 - 1) = [GLKShaderBlockNode maskForLabel:v21 root:fshRoot index:v20];
       *v22 = v23;
       ++v20;
       v22 += 2;
@@ -687,17 +687,17 @@ LABEL_32:
   }
 }
 
-- (void)setLightIndex:(int)a3
+- (void)setLightIndex:(int)index
 {
-  if (self->_lightIndex != a3)
+  if (self->_lightIndex != index)
   {
     v3 = 0;
-    self->_lightIndex = a3;
+    self->_lightIndex = index;
     v4 = 0;
     self->_allVshMasks = 0u;
     do
     {
-      v4 = vorrq_s8(v4, *&_staticVshMasks_0[2 * a3 + v3]);
+      v4 = vorrq_s8(v4, *&_staticVshMasks_0[2 * index + v3]);
       self->_allVshMasks = v4;
       v3 += 6;
     }
@@ -708,7 +708,7 @@ LABEL_32:
     self->_allFshMasks = 0u;
     do
     {
-      v6 = vorrq_s8(v6, *&_staticFshMasks[2 * a3 + v5]);
+      v6 = vorrq_s8(v6, *&_staticFshMasks[2 * index + v5]);
       self->_allFshMasks = v6;
       v5 += 6;
     }
@@ -785,7 +785,7 @@ LABEL_32:
   return result;
 }
 
-- (void)setPositionEye:(_GLKVector4)a3
+- (void)setPositionEye:(_GLKVector4)eye
 {
   self->_positionEye.x = v3;
   self->_positionEye.y = v4;
@@ -846,7 +846,7 @@ LABEL_32:
   return result;
 }
 
-- (void)setNormalizedSpotDirectionEye:(_GLKVector3)a3
+- (void)setNormalizedSpotDirectionEye:(_GLKVector3)eye
 {
   self->_normalizedSpotDirectionEye.x = v3;
   self->_normalizedSpotDirectionEye.y = v4;

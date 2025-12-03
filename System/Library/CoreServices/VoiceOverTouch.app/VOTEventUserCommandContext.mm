@@ -1,22 +1,22 @@
 @interface VOTEventUserCommandContext
-+ (VOTEventUserCommandContext)contextWithCommand:(id)a3 gesture:(id)a4 keyChord:(id)a5 resolver:(id)a6;
++ (VOTEventUserCommandContext)contextWithCommand:(id)command gesture:(id)gesture keyChord:(id)chord resolver:(id)resolver;
 @end
 
 @implementation VOTEventUserCommandContext
 
-+ (VOTEventUserCommandContext)contextWithCommand:(id)a3 gesture:(id)a4 keyChord:(id)a5 resolver:(id)a6
++ (VOTEventUserCommandContext)contextWithCommand:(id)command gesture:(id)gesture keyChord:(id)chord resolver:(id)resolver
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  resolverCopy = resolver;
+  chordCopy = chord;
+  gestureCopy = gesture;
+  commandCopy = command;
   v13 = objc_alloc_init(VOTEventUserCommandContext);
-  [(VOTEventUserCommandContext *)v13 setCommand:v12];
+  [(VOTEventUserCommandContext *)v13 setCommand:commandCopy];
 
-  [(VOTEventUserCommandContext *)v13 setGesture:v11];
-  [(VOTEventUserCommandContext *)v13 setKeyChord:v10];
+  [(VOTEventUserCommandContext *)v13 setGesture:gestureCopy];
+  [(VOTEventUserCommandContext *)v13 setKeyChord:chordCopy];
 
-  [(VOTEventUserCommandContext *)v13 setResolver:v9];
+  [(VOTEventUserCommandContext *)v13 setResolver:resolverCopy];
 
   return v13;
 }

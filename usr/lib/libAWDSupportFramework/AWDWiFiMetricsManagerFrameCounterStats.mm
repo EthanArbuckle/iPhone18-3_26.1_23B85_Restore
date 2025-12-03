@@ -1,13 +1,13 @@
 @interface AWDWiFiMetricsManagerFrameCounterStats
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDWiFiMetricsManagerFrameCounterStats
@@ -34,52 +34,52 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_timestamp), @"timestamp"}];
   }
 
   rxControl = self->_rxControl;
   if (rxControl)
   {
-    [v3 setObject:-[AWDControlFrames dictionaryRepresentation](rxControl forKey:{"dictionaryRepresentation"), @"rxControl"}];
+    [dictionary setObject:-[AWDControlFrames dictionaryRepresentation](rxControl forKey:{"dictionaryRepresentation"), @"rxControl"}];
   }
 
   txControl = self->_txControl;
   if (txControl)
   {
-    [v3 setObject:-[AWDControlFrames dictionaryRepresentation](txControl forKey:{"dictionaryRepresentation"), @"txControl"}];
+    [dictionary setObject:-[AWDControlFrames dictionaryRepresentation](txControl forKey:{"dictionaryRepresentation"), @"txControl"}];
   }
 
   rxData = self->_rxData;
   if (rxData)
   {
-    [v3 setObject:-[AWDDataFrames dictionaryRepresentation](rxData forKey:{"dictionaryRepresentation"), @"rxData"}];
+    [dictionary setObject:-[AWDDataFrames dictionaryRepresentation](rxData forKey:{"dictionaryRepresentation"), @"rxData"}];
   }
 
   txData = self->_txData;
   if (txData)
   {
-    [v3 setObject:-[AWDDataFrames dictionaryRepresentation](txData forKey:{"dictionaryRepresentation"), @"txData"}];
+    [dictionary setObject:-[AWDDataFrames dictionaryRepresentation](txData forKey:{"dictionaryRepresentation"), @"txData"}];
   }
 
   rxManagement = self->_rxManagement;
   if (rxManagement)
   {
-    [v3 setObject:-[AWDManagementFrames dictionaryRepresentation](rxManagement forKey:{"dictionaryRepresentation"), @"rxManagement"}];
+    [dictionary setObject:-[AWDManagementFrames dictionaryRepresentation](rxManagement forKey:{"dictionaryRepresentation"), @"rxManagement"}];
   }
 
   txManagement = self->_txManagement;
   if (txManagement)
   {
-    [v3 setObject:-[AWDManagementFrames dictionaryRepresentation](txManagement forKey:{"dictionaryRepresentation"), @"txManagement"}];
+    [dictionary setObject:-[AWDManagementFrames dictionaryRepresentation](txManagement forKey:{"dictionaryRepresentation"), @"txManagement"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -119,49 +119,49 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_timestamp;
-    *(a3 + 64) |= 1u;
+    *(to + 1) = self->_timestamp;
+    *(to + 64) |= 1u;
   }
 
   if (self->_rxControl)
   {
-    [a3 setRxControl:?];
+    [to setRxControl:?];
   }
 
   if (self->_txControl)
   {
-    [a3 setTxControl:?];
+    [to setTxControl:?];
   }
 
   if (self->_rxData)
   {
-    [a3 setRxData:?];
+    [to setRxData:?];
   }
 
   if (self->_txData)
   {
-    [a3 setTxData:?];
+    [to setTxData:?];
   }
 
   if (self->_rxManagement)
   {
-    [a3 setRxManagement:?];
+    [to setRxManagement:?];
   }
 
   if (self->_txManagement)
   {
 
-    [a3 setTxManagement:?];
+    [to setTxManagement:?];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -169,32 +169,32 @@
     *(v5 + 64) |= 1u;
   }
 
-  *(v6 + 16) = [(AWDControlFrames *)self->_rxControl copyWithZone:a3];
-  *(v6 + 40) = [(AWDControlFrames *)self->_txControl copyWithZone:a3];
+  *(v6 + 16) = [(AWDControlFrames *)self->_rxControl copyWithZone:zone];
+  *(v6 + 40) = [(AWDControlFrames *)self->_txControl copyWithZone:zone];
 
-  *(v6 + 24) = [(AWDDataFrames *)self->_rxData copyWithZone:a3];
-  *(v6 + 48) = [(AWDDataFrames *)self->_txData copyWithZone:a3];
+  *(v6 + 24) = [(AWDDataFrames *)self->_rxData copyWithZone:zone];
+  *(v6 + 48) = [(AWDDataFrames *)self->_txData copyWithZone:zone];
 
-  *(v6 + 32) = [(AWDManagementFrames *)self->_rxManagement copyWithZone:a3];
-  *(v6 + 56) = [(AWDManagementFrames *)self->_txManagement copyWithZone:a3];
+  *(v6 + 32) = [(AWDManagementFrames *)self->_rxManagement copyWithZone:zone];
+  *(v6 + 56) = [(AWDManagementFrames *)self->_txManagement copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 64);
+    v6 = *(equal + 64);
     if (*&self->_has)
     {
-      if ((*(a3 + 64) & 1) == 0 || self->_timestamp != *(a3 + 1))
+      if ((*(equal + 64) & 1) == 0 || self->_timestamp != *(equal + 1))
       {
         goto LABEL_19;
       }
     }
 
-    else if (*(a3 + 64))
+    else if (*(equal + 64))
     {
 LABEL_19:
       LOBYTE(v5) = 0;
@@ -202,22 +202,22 @@ LABEL_19:
     }
 
     rxControl = self->_rxControl;
-    if (!(rxControl | *(a3 + 2)) || (v5 = [(AWDControlFrames *)rxControl isEqual:?]) != 0)
+    if (!(rxControl | *(equal + 2)) || (v5 = [(AWDControlFrames *)rxControl isEqual:?]) != 0)
     {
       txControl = self->_txControl;
-      if (!(txControl | *(a3 + 5)) || (v5 = [(AWDControlFrames *)txControl isEqual:?]) != 0)
+      if (!(txControl | *(equal + 5)) || (v5 = [(AWDControlFrames *)txControl isEqual:?]) != 0)
       {
         rxData = self->_rxData;
-        if (!(rxData | *(a3 + 3)) || (v5 = [(AWDDataFrames *)rxData isEqual:?]) != 0)
+        if (!(rxData | *(equal + 3)) || (v5 = [(AWDDataFrames *)rxData isEqual:?]) != 0)
         {
           txData = self->_txData;
-          if (!(txData | *(a3 + 6)) || (v5 = [(AWDDataFrames *)txData isEqual:?]) != 0)
+          if (!(txData | *(equal + 6)) || (v5 = [(AWDDataFrames *)txData isEqual:?]) != 0)
           {
             rxManagement = self->_rxManagement;
-            if (!(rxManagement | *(a3 + 4)) || (v5 = [(AWDManagementFrames *)rxManagement isEqual:?]) != 0)
+            if (!(rxManagement | *(equal + 4)) || (v5 = [(AWDManagementFrames *)rxManagement isEqual:?]) != 0)
             {
               txManagement = self->_txManagement;
-              if (txManagement | *(a3 + 7))
+              if (txManagement | *(equal + 7))
               {
 
                 LOBYTE(v5) = [(AWDManagementFrames *)txManagement isEqual:?];
@@ -257,16 +257,16 @@ LABEL_19:
   return v6 ^ v8 ^ [(AWDManagementFrames *)self->_txManagement hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 64))
+  if (*(from + 64))
   {
-    self->_timestamp = *(a3 + 1);
+    self->_timestamp = *(from + 1);
     *&self->_has |= 1u;
   }
 
   rxControl = self->_rxControl;
-  v6 = *(a3 + 2);
+  v6 = *(from + 2);
   if (rxControl)
   {
     if (v6)
@@ -281,7 +281,7 @@ LABEL_19:
   }
 
   txControl = self->_txControl;
-  v8 = *(a3 + 5);
+  v8 = *(from + 5);
   if (txControl)
   {
     if (v8)
@@ -296,7 +296,7 @@ LABEL_19:
   }
 
   rxData = self->_rxData;
-  v10 = *(a3 + 3);
+  v10 = *(from + 3);
   if (rxData)
   {
     if (v10)
@@ -311,7 +311,7 @@ LABEL_19:
   }
 
   txData = self->_txData;
-  v12 = *(a3 + 6);
+  v12 = *(from + 6);
   if (txData)
   {
     if (v12)
@@ -326,7 +326,7 @@ LABEL_19:
   }
 
   rxManagement = self->_rxManagement;
-  v14 = *(a3 + 4);
+  v14 = *(from + 4);
   if (rxManagement)
   {
     if (v14)
@@ -341,7 +341,7 @@ LABEL_19:
   }
 
   txManagement = self->_txManagement;
-  v16 = *(a3 + 7);
+  v16 = *(from + 7);
   if (txManagement)
   {
     if (v16)

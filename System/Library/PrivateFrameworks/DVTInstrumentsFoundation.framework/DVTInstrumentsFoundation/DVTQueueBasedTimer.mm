@@ -1,5 +1,5 @@
 @interface DVTQueueBasedTimer
-- (DVTQueueBasedTimer)initWithInterval:(double)a3 qos:(unsigned int)a4 block:(id)a5;
+- (DVTQueueBasedTimer)initWithInterval:(double)interval qos:(unsigned int)qos block:(id)block;
 - (id).cxx_construct;
 - (void)_runBlock;
 - (void)pause;
@@ -10,23 +10,23 @@
 
 @implementation DVTQueueBasedTimer
 
-- (DVTQueueBasedTimer)initWithInterval:(double)a3 qos:(unsigned int)a4 block:(id)a5
+- (DVTQueueBasedTimer)initWithInterval:(double)interval qos:(unsigned int)qos block:(id)block
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  blockCopy = block;
   v17.receiver = self;
   v17.super_class = DVTQueueBasedTimer;
   v9 = [(DVTQueueBasedTimer *)&v17 init];
   if (v9)
   {
     snprintf(__str, 0x80uLL, "com.apple.instruments.kperf.timer.%llu", atomic_fetch_add(&qword_27EE84400, 1uLL));
-    v10 = dispatch_queue_attr_make_with_qos_class(0, a4, 0);
+    v10 = dispatch_queue_attr_make_with_qos_class(0, qos, 0);
     v11 = dispatch_queue_create(__str, v10);
     v12 = *(v9 + 1);
     *(v9 + 1) = v11;
 
-    *(v9 + 3) = a3;
-    v13 = _Block_copy(v8);
+    *(v9 + 3) = interval;
+    v13 = _Block_copy(blockCopy);
     v14 = *(v9 + 4);
     *(v9 + 4) = v13;
 

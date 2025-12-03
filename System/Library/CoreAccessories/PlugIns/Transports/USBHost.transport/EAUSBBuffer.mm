@@ -1,28 +1,28 @@
 @interface EAUSBBuffer
 - (AccessoryEAInterface)eaInterface;
-- (EAUSBBuffer)initWithSession:(id)a3 bufferSize:(unint64_t)a4;
+- (EAUSBBuffer)initWithSession:(id)session bufferSize:(unint64_t)size;
 - (unint64_t)dataLength;
 - (unint64_t)writeSpaceRemaining;
 - (void)attemptWrite;
 - (void)dealloc;
-- (void)moveReadPtr:(unint64_t)a3;
-- (void)moveWritePtr:(unint64_t)a3;
+- (void)moveReadPtr:(unint64_t)ptr;
+- (void)moveWritePtr:(unint64_t)ptr;
 - (void)reset;
 @end
 
 @implementation EAUSBBuffer
 
-- (EAUSBBuffer)initWithSession:(id)a3 bufferSize:(unint64_t)a4
+- (EAUSBBuffer)initWithSession:(id)session bufferSize:(unint64_t)size
 {
-  v6 = a3;
+  sessionCopy = session;
   v9.receiver = self;
   v9.super_class = EAUSBBuffer;
   v7 = [(EAUSBBuffer *)&v9 init];
   if (v7)
   {
-    v7->_bufPtr = malloc_type_malloc(a4, 0x100004077774924uLL);
-    objc_storeWeak(&v7->_eaInterface, v6);
-    v7->_bufferLength = a4;
+    v7->_bufPtr = malloc_type_malloc(size, 0x100004077774924uLL);
+    objc_storeWeak(&v7->_eaInterface, sessionCopy);
+    v7->_bufferLength = size;
     [(EAUSBBuffer *)v7 reset];
   }
 
@@ -73,12 +73,12 @@
   }
 }
 
-- (void)moveReadPtr:(unint64_t)a3
+- (void)moveReadPtr:(unint64_t)ptr
 {
   readPtr = self->_readPtr;
   if (readPtr)
   {
-    writePtr = &readPtr[a3];
+    writePtr = &readPtr[ptr];
     if (writePtr > self->_writePtr)
     {
       writePtr = self->_writePtr;
@@ -88,9 +88,9 @@
   }
 }
 
-- (void)moveWritePtr:(unint64_t)a3
+- (void)moveWritePtr:(unint64_t)ptr
 {
-  if (a3)
+  if (ptr)
   {
     bufPtr = self->_bufPtr;
     if (!self->_readPtr)
@@ -99,9 +99,9 @@
     }
 
     v4 = &bufPtr[self->_bufferLength];
-    if (&self->_writePtr[a3] < v4)
+    if (&self->_writePtr[ptr] < v4)
     {
-      v4 = &self->_writePtr[a3];
+      v4 = &self->_writePtr[ptr];
     }
 
     self->_writePtr = v4;

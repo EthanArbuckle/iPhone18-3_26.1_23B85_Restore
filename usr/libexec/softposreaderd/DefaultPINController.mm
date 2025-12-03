@@ -1,14 +1,14 @@
 @interface DefaultPINController
-- (void)recordingStateDidChange:(id)a3;
+- (void)recordingStateDidChange:(id)change;
 @end
 
 @implementation DefaultPINController
 
-- (void)recordingStateDidChange:(id)a3
+- (void)recordingStateDidChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
 
-  sub_1000D497C(v3);
+  sub_1000D497C(changeCopy);
 }
 
 @end

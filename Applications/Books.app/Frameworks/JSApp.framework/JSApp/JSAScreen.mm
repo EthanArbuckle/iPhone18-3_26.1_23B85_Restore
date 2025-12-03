@@ -10,8 +10,8 @@
 - (BOOL)supportsWideGamut
 {
   v2 = sub_7F41C(self);
-  v3 = [v2 traitCollection];
-  v4 = [v3 displayGamut] == &dword_0 + 1;
+  traitCollection = [v2 traitCollection];
+  v4 = [traitCollection displayGamut] == &dword_0 + 1;
 
   return v4;
 }

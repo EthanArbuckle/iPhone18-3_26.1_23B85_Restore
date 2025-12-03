@@ -1,24 +1,24 @@
 @interface MTUserDefaults
-+ (id)_localNotificationForDistributedNotification:(id)a3;
++ (id)_localNotificationForDistributedNotification:(id)notification;
 + (id)sharedUserDefaults;
-- (BOOL)BOOLForKey:(id)a3 exists:(BOOL *)a4;
-- (MTUserDefaults)initWithUserDefaults:(id)a3;
-- (double)timeIntervalForKey:(id)a3 exists:(BOOL *)a4;
-- (double)timeIntervalForKey:(id)a3 isValid:(id)a4 defaultValue:(double)a5;
-- (float)floatForKey:(id)a3 exists:(BOOL *)a4;
-- (id)objectForKey:(id)a3 defaultValue:(id)a4;
-- (int64_t)integerForKey:(id)a3 exists:(BOOL *)a4;
-- (int64_t)integerForKey:(id)a3 isValid:(id)a4 defaultValue:(int64_t)a5;
-- (void)_cleanupObserversForNotification:(id)a3;
-- (void)_postNotification:(id)a3;
-- (void)distributedNotificationPosted:(id)a3;
-- (void)registerNotification:(id)a3 observer:(id)a4;
+- (BOOL)BOOLForKey:(id)key exists:(BOOL *)exists;
+- (MTUserDefaults)initWithUserDefaults:(id)defaults;
+- (double)timeIntervalForKey:(id)key exists:(BOOL *)exists;
+- (double)timeIntervalForKey:(id)key isValid:(id)valid defaultValue:(double)value;
+- (float)floatForKey:(id)key exists:(BOOL *)exists;
+- (id)objectForKey:(id)key defaultValue:(id)value;
+- (int64_t)integerForKey:(id)key exists:(BOOL *)exists;
+- (int64_t)integerForKey:(id)key isValid:(id)valid defaultValue:(int64_t)value;
+- (void)_cleanupObserversForNotification:(id)notification;
+- (void)_postNotification:(id)notification;
+- (void)distributedNotificationPosted:(id)posted;
+- (void)registerNotification:(id)notification observer:(id)observer;
 - (void)removeAllObjects;
-- (void)setFloat:(float)a3 forKey:(id)a4 notification:(id)a5;
-- (void)setInteger:(int64_t)a3 forKey:(id)a4 notification:(id)a5;
-- (void)setObject:(id)a3 forKey:(id)a4 notification:(id)a5;
-- (void)setTimeInterval:(double)a3 forKey:(id)a4 notification:(id)a5;
-- (void)unregisterNotification:(id)a3 observer:(id)a4;
+- (void)setFloat:(float)float forKey:(id)key notification:(id)notification;
+- (void)setInteger:(int64_t)integer forKey:(id)key notification:(id)notification;
+- (void)setObject:(id)object forKey:(id)key notification:(id)notification;
+- (void)setTimeInterval:(double)interval forKey:(id)key notification:(id)notification;
+- (void)unregisterNotification:(id)notification observer:(id)observer;
 @end
 
 @implementation MTUserDefaults
@@ -58,9 +58,9 @@ void __36__MTUserDefaults_sharedUserDefaults__block_invoke()
   return v3;
 }
 
-- (MTUserDefaults)initWithUserDefaults:(id)a3
+- (MTUserDefaults)initWithUserDefaults:(id)defaults
 {
-  v5 = a3;
+  defaultsCopy = defaults;
   v13.receiver = self;
   v13.super_class = MTUserDefaults;
   v6 = [(MTUserDefaults *)&v13 init];
@@ -72,7 +72,7 @@ void __36__MTUserDefaults_sharedUserDefaults__block_invoke()
       [(MTUserDefaults *)v6 initWithUserDefaults:v7];
     }
 
-    objc_storeStrong(&v6->_userDefaults, a3);
+    objc_storeStrong(&v6->_userDefaults, defaults);
     v8 = objc_opt_new();
     observers = v6->_observers;
     v6->_observers = v8;
@@ -85,23 +85,23 @@ void __36__MTUserDefaults_sharedUserDefaults__block_invoke()
   return v6;
 }
 
-- (void)setFloat:(float)a3 forKey:(id)a4 notification:(id)a5
+- (void)setFloat:(float)float forKey:(id)key notification:(id)notification
 {
   v8 = MEMORY[0x1E696AD98];
-  v9 = a5;
-  v10 = a4;
-  *&v11 = a3;
+  notificationCopy = notification;
+  keyCopy = key;
+  *&v11 = float;
   v12 = [v8 numberWithFloat:v11];
-  [(MTUserDefaults *)self setObject:v12 forKey:v10 notification:v9];
+  [(MTUserDefaults *)self setObject:v12 forKey:keyCopy notification:notificationCopy];
 }
 
-- (float)floatForKey:(id)a3 exists:(BOOL *)a4
+- (float)floatForKey:(id)key exists:(BOOL *)exists
 {
-  v5 = [(MTUserDefaults *)self objectForKey:a3];
+  v5 = [(MTUserDefaults *)self objectForKey:key];
   v6 = v5;
-  if (a4)
+  if (exists)
   {
-    *a4 = v5 != 0;
+    *exists = v5 != 0;
   }
 
   [v5 floatValue];
@@ -110,72 +110,72 @@ void __36__MTUserDefaults_sharedUserDefaults__block_invoke()
   return v8;
 }
 
-- (BOOL)BOOLForKey:(id)a3 exists:(BOOL *)a4
+- (BOOL)BOOLForKey:(id)key exists:(BOOL *)exists
 {
-  v5 = [(MTUserDefaults *)self objectForKey:a3];
+  v5 = [(MTUserDefaults *)self objectForKey:key];
   v6 = v5;
-  if (a4)
+  if (exists)
   {
-    *a4 = v5 != 0;
+    *exists = v5 != 0;
   }
 
-  v7 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v7;
+  return bOOLValue;
 }
 
-- (void)setInteger:(int64_t)a3 forKey:(id)a4 notification:(id)a5
+- (void)setInteger:(int64_t)integer forKey:(id)key notification:(id)notification
 {
   v8 = MEMORY[0x1E696AD98];
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 numberWithInteger:a3];
-  [(MTUserDefaults *)self setObject:v11 forKey:v10 notification:v9];
+  notificationCopy = notification;
+  keyCopy = key;
+  v11 = [v8 numberWithInteger:integer];
+  [(MTUserDefaults *)self setObject:v11 forKey:keyCopy notification:notificationCopy];
 }
 
-- (int64_t)integerForKey:(id)a3 exists:(BOOL *)a4
+- (int64_t)integerForKey:(id)key exists:(BOOL *)exists
 {
-  v5 = [(MTUserDefaults *)self objectForKey:a3];
+  v5 = [(MTUserDefaults *)self objectForKey:key];
   v6 = v5;
-  if (a4)
+  if (exists)
   {
-    *a4 = v5 != 0;
+    *exists = v5 != 0;
   }
 
-  v7 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
-  return v7;
+  return integerValue;
 }
 
-- (int64_t)integerForKey:(id)a3 isValid:(id)a4 defaultValue:(int64_t)a5
+- (int64_t)integerForKey:(id)key isValid:(id)valid defaultValue:(int64_t)value
 {
-  v8 = a4;
+  validCopy = valid;
   v12 = 0;
-  v9 = [(MTUserDefaults *)self integerForKey:a3 exists:&v12];
-  if (v12 != 1 || (v10 = v9, (v8[2](v8, v9) & 1) == 0))
+  v9 = [(MTUserDefaults *)self integerForKey:key exists:&v12];
+  if (v12 != 1 || (valueCopy = v9, (validCopy[2](validCopy, v9) & 1) == 0))
   {
-    v10 = a5;
+    valueCopy = value;
   }
 
-  return v10;
+  return valueCopy;
 }
 
-- (void)setTimeInterval:(double)a3 forKey:(id)a4 notification:(id)a5
+- (void)setTimeInterval:(double)interval forKey:(id)key notification:(id)notification
 {
   v8 = MEMORY[0x1E696AD98];
-  v9 = a5;
-  v10 = a4;
-  v11 = [v8 numberWithDouble:a3];
-  [(MTUserDefaults *)self setObject:v11 forKey:v10 notification:v9];
+  notificationCopy = notification;
+  keyCopy = key;
+  v11 = [v8 numberWithDouble:interval];
+  [(MTUserDefaults *)self setObject:v11 forKey:keyCopy notification:notificationCopy];
 }
 
-- (double)timeIntervalForKey:(id)a3 exists:(BOOL *)a4
+- (double)timeIntervalForKey:(id)key exists:(BOOL *)exists
 {
-  v5 = [(MTUserDefaults *)self objectForKey:a3];
+  v5 = [(MTUserDefaults *)self objectForKey:key];
   v6 = v5;
-  if (a4)
+  if (exists)
   {
-    *a4 = v5 != 0;
+    *exists = v5 != 0;
   }
 
   [v5 doubleValue];
@@ -184,24 +184,24 @@ void __36__MTUserDefaults_sharedUserDefaults__block_invoke()
   return v8;
 }
 
-- (double)timeIntervalForKey:(id)a3 isValid:(id)a4 defaultValue:(double)a5
+- (double)timeIntervalForKey:(id)key isValid:(id)valid defaultValue:(double)value
 {
-  v8 = a4;
+  validCopy = valid;
   v12 = 0;
-  [(MTUserDefaults *)self timeIntervalForKey:a3 exists:&v12];
-  if (v12 != 1 || (v10 = v9, (v8[2](v8) & 1) == 0))
+  [(MTUserDefaults *)self timeIntervalForKey:key exists:&v12];
+  if (v12 != 1 || (valueCopy = v9, (validCopy[2](validCopy) & 1) == 0))
   {
-    v10 = a5;
+    valueCopy = value;
   }
 
-  return v10;
+  return valueCopy;
 }
 
-- (id)objectForKey:(id)a3 defaultValue:(id)a4
+- (id)objectForKey:(id)key defaultValue:(id)value
 {
   userDefaults = self->_userDefaults;
-  v6 = a4;
-  v7 = [(NSUserDefaults *)userDefaults objectForKey:a3];
+  valueCopy = value;
+  v7 = [(NSUserDefaults *)userDefaults objectForKey:key];
   v8 = v7;
   if (v7)
   {
@@ -210,7 +210,7 @@ void __36__MTUserDefaults_sharedUserDefaults__block_invoke()
 
   else
   {
-    v9 = v6;
+    v9 = valueCopy;
   }
 
   v10 = v9;
@@ -218,12 +218,12 @@ void __36__MTUserDefaults_sharedUserDefaults__block_invoke()
   return v9;
 }
 
-- (void)setObject:(id)a3 forKey:(id)a4 notification:(id)a5
+- (void)setObject:(id)object forKey:(id)key notification:(id)notification
 {
   userDefaults = self->_userDefaults;
-  v9 = a5;
-  [(NSUserDefaults *)userDefaults setObject:a3 forKey:a4];
-  [(MTUserDefaults *)self _postNotification:v9];
+  notificationCopy = notification;
+  [(NSUserDefaults *)userDefaults setObject:object forKey:key];
+  [(MTUserDefaults *)self _postNotification:notificationCopy];
 }
 
 - (void)removeAllObjects
@@ -233,10 +233,10 @@ void __36__MTUserDefaults_sharedUserDefaults__block_invoke()
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSUserDefaults *)self->_userDefaults dictionaryRepresentation];
-  v4 = [v3 allKeys];
+  dictionaryRepresentation = [(NSUserDefaults *)self->_userDefaults dictionaryRepresentation];
+  allKeys = [dictionaryRepresentation allKeys];
 
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -248,7 +248,7 @@ void __36__MTUserDefaults_sharedUserDefaults__block_invoke()
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         if (*(*(&v10 + 1) + 8 * v8))
@@ -260,7 +260,7 @@ void __36__MTUserDefaults_sharedUserDefaults__block_invoke()
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -269,37 +269,37 @@ void __36__MTUserDefaults_sharedUserDefaults__block_invoke()
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_postNotification:(id)a3
+- (void)_postNotification:(id)notification
 {
-  v4 = a3;
-  if (v4)
+  notificationCopy = notification;
+  if (notificationCopy)
   {
     v5 = MTLogForCategory(0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      [(MTUserDefaults *)self _postNotification:v4, v5];
+      [(MTUserDefaults *)self _postNotification:notificationCopy, v5];
     }
 
-    v6 = [MEMORY[0x1E696ABB0] defaultCenter];
-    v7 = [objc_opt_class() _distributedNotificationForLocalNotification:v4];
-    [v6 postNotificationName:v7 object:0];
+    defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+    v7 = [objc_opt_class() _distributedNotificationForLocalNotification:notificationCopy];
+    [defaultCenter postNotificationName:v7 object:0];
   }
 }
 
-- (void)registerNotification:(id)a3 observer:(id)a4
+- (void)registerNotification:(id)notification observer:(id)observer
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  observerCopy = observer;
   v8 = MTLogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543874;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
-    v19 = v7;
+    v19 = observerCopy;
     v20 = 2114;
-    v21 = v6;
+    v21 = notificationCopy;
     _os_log_debug_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_DEBUG, "%{public}@ registering %{public}@ for %{public}@", buf, 0x20u);
   }
 
@@ -309,10 +309,10 @@ void __36__MTUserDefaults_sharedUserDefaults__block_invoke()
   v13[2] = __48__MTUserDefaults_registerNotification_observer___block_invoke;
   v13[3] = &unk_1E7B0C9A0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = notificationCopy;
+  v15 = observerCopy;
+  v10 = observerCopy;
+  v11 = notificationCopy;
   [(NAScheduler *)serializer performBlock:v13];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -340,10 +340,10 @@ void __48__MTUserDefaults_registerNotification_observer___block_invoke(void *a1)
   }
 }
 
-- (void)distributedNotificationPosted:(id)a3
+- (void)distributedNotificationPosted:(id)posted
 {
-  v4 = [a3 name];
-  v5 = [objc_opt_class() _localNotificationForDistributedNotification:v4];
+  name = [posted name];
+  v5 = [objc_opt_class() _localNotificationForDistributedNotification:name];
   serializer = self->_serializer;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -439,20 +439,20 @@ void __48__MTUserDefaults_distributedNotificationPosted___block_invoke(uint64_t 
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)unregisterNotification:(id)a3 observer:(id)a4
+- (void)unregisterNotification:(id)notification observer:(id)observer
 {
   v22 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  observerCopy = observer;
   v8 = MTLogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138543874;
-    v17 = self;
+    selfCopy = self;
     v18 = 2114;
-    v19 = v7;
+    v19 = observerCopy;
     v20 = 2114;
-    v21 = v6;
+    v21 = notificationCopy;
     _os_log_debug_impl(&dword_1B1F9F000, v8, OS_LOG_TYPE_DEBUG, "%{public}@ unregistering %{public}@ for %{public}@", buf, 0x20u);
   }
 
@@ -462,10 +462,10 @@ void __48__MTUserDefaults_distributedNotificationPosted___block_invoke(uint64_t 
   v13[2] = __50__MTUserDefaults_unregisterNotification_observer___block_invoke;
   v13[3] = &unk_1E7B0C9A0;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v10 = v7;
-  v11 = v6;
+  v14 = notificationCopy;
+  v15 = observerCopy;
+  v10 = observerCopy;
+  v11 = notificationCopy;
   [(NAScheduler *)serializer performBlock:v13];
 
   v12 = *MEMORY[0x1E69E9840];
@@ -478,38 +478,38 @@ void __50__MTUserDefaults_unregisterNotification_observer___block_invoke(uint64_
   [*(a1 + 32) _cleanupObserversForNotification:*(a1 + 40)];
 }
 
-- (void)_cleanupObserversForNotification:(id)a3
+- (void)_cleanupObserversForNotification:(id)notification
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  notificationCopy = notification;
+  v5 = notificationCopy;
+  if (notificationCopy)
   {
-    v11 = v4;
-    v6 = [(NSMutableDictionary *)self->_observers objectForKeyedSubscript:v4];
-    v7 = [v6 allObjects];
-    v8 = [v7 count];
+    v11 = notificationCopy;
+    v6 = [(NSMutableDictionary *)self->_observers objectForKeyedSubscript:notificationCopy];
+    allObjects = [v6 allObjects];
+    v8 = [allObjects count];
 
     v5 = v11;
     if (!v8)
     {
-      v9 = [MEMORY[0x1E696ABB0] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
       v10 = [objc_opt_class() _distributedNotificationForLocalNotification:v11];
-      [v9 removeObserver:self name:v10 object:0];
+      [defaultCenter removeObserver:self name:v10 object:0];
 
-      v4 = [(NSMutableDictionary *)self->_observers removeObjectForKey:v11];
+      notificationCopy = [(NSMutableDictionary *)self->_observers removeObjectForKey:v11];
       v5 = v11;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](notificationCopy, v5);
 }
 
-+ (id)_localNotificationForDistributedNotification:(id)a3
++ (id)_localNotificationForDistributedNotification:(id)notification
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"Distributed"])
+  notificationCopy = notification;
+  if ([notificationCopy hasPrefix:@"Distributed"])
   {
-    v4 = [v3 substringFromIndex:{objc_msgSend(@"Distributed", "length")}];
+    v4 = [notificationCopy substringFromIndex:{objc_msgSend(@"Distributed", "length")}];
   }
 
   else

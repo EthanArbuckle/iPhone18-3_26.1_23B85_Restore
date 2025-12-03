@@ -1,59 +1,59 @@
 @interface HAP2Lock
-+ (id)lockWithName:(id)a3;
++ (id)lockWithName:(id)name;
 + (id)new;
 - (HAP2Lock)init;
-- (HAP2Lock)initWithLock:(id)a3 name:(id)a4;
+- (HAP2Lock)initWithLock:(id)lock name:(id)name;
 - (NSString)name;
-- (void)performBlock:(id)a3;
+- (void)performBlock:(id)block;
 @end
 
 @implementation HAP2Lock
 
-- (void)performBlock:(id)a3
+- (void)performBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HAP2Lock *)self internalLock];
-  [v5 lock];
+  blockCopy = block;
+  internalLock = [(HAP2Lock *)self internalLock];
+  [internalLock lock];
 
-  [(HAP2Lock *)self _performBlock:v4 allowRecursive:0];
-  v6 = [(HAP2Lock *)self internalLock];
-  [v6 unlock];
+  [(HAP2Lock *)self _performBlock:blockCopy allowRecursive:0];
+  internalLock2 = [(HAP2Lock *)self internalLock];
+  [internalLock2 unlock];
 }
 
 - (NSString)name
 {
-  v3 = [(HAP2Lock *)self internalLock];
+  internalLock = [(HAP2Lock *)self internalLock];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(HAP2Lock *)self internalLock];
-    v6 = [v5 name];
+    internalLock2 = [(HAP2Lock *)self internalLock];
+    name = [internalLock2 name];
   }
 
   else
   {
-    v6 = 0;
+    name = 0;
   }
 
-  return v6;
+  return name;
 }
 
-- (HAP2Lock)initWithLock:(id)a3 name:(id)a4
+- (HAP2Lock)initWithLock:(id)lock name:(id)name
 {
-  v7 = a3;
-  v8 = a4;
+  lockCopy = lock;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = HAP2Lock;
   v9 = [(HAP2Lock *)&v11 init];
   if (v9)
   {
-    if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (nameCopy && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      [v7 setName:v8];
+      [lockCopy setName:nameCopy];
     }
 
-    objc_storeStrong(&v9->_internalLock, a3);
+    objc_storeStrong(&v9->_internalLock, lock);
     atomic_store(0, &v9->_lockCount);
   }
 
@@ -73,11 +73,11 @@
   objc_exception_throw(v7);
 }
 
-+ (id)lockWithName:(id)a3
++ (id)lockWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_opt_new();
-  v5 = [objc_alloc(objc_opt_class()) initWithLock:v4 name:v3];
+  v5 = [objc_alloc(objc_opt_class()) initWithLock:v4 name:nameCopy];
 
   return v5;
 }

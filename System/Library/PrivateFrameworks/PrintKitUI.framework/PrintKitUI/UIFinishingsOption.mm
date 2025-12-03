@@ -1,60 +1,60 @@
 @interface UIFinishingsOption
 - (BOOL)shouldShow;
 - (NSArray)printerFinishingOptions;
-- (UIFinishingsOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4;
+- (UIFinishingsOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller;
 - (UITableView)finishingOptionsTableView;
 - (id)summaryString;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (id)title;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)clearFinishingOptions;
 - (void)currentPrinterChanged;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)updateFromPrintInfo;
 @end
 
 @implementation UIFinishingsOption
 
-- (UIFinishingsOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4
+- (UIFinishingsOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller
 {
   v17.receiver = self;
   v17.super_class = UIFinishingsOption;
-  v4 = [(UIPrintOption *)&v17 initWithPrintInfo:a3 printPanelViewController:a4];
+  v4 = [(UIPrintOption *)&v17 initWithPrintInfo:info printPanelViewController:controller];
   v5 = v4;
   if (v4)
   {
-    v6 = [(UIPrintOption *)v4 printInfo];
-    [v6 addObserver:v5 forKeyPath:0x2871AF150 options:0 context:0];
+    printInfo = [(UIPrintOption *)v4 printInfo];
+    [printInfo addObserver:v5 forKeyPath:0x2871AF150 options:0 context:0];
 
-    v7 = [(UIPrintOption *)v5 printInfo];
-    [v7 addObserver:v5 forKeyPath:0x2871AF370 options:0 context:0];
+    printInfo2 = [(UIPrintOption *)v5 printInfo];
+    [printInfo2 addObserver:v5 forKeyPath:0x2871AF370 options:0 context:0];
 
-    v8 = [(UIPrintOption *)v5 printInfo];
-    [v8 addObserver:v5 forKeyPath:0x2871AF390 options:0 context:0];
+    printInfo3 = [(UIPrintOption *)v5 printInfo];
+    [printInfo3 addObserver:v5 forKeyPath:0x2871AF390 options:0 context:0];
 
-    v9 = [(UIPrintOption *)v5 printInfo];
-    [v9 addObserver:v5 forKeyPath:0x2871AF3B0 options:0 context:0];
+    printInfo4 = [(UIPrintOption *)v5 printInfo];
+    [printInfo4 addObserver:v5 forKeyPath:0x2871AF3B0 options:0 context:0];
 
-    v10 = [(UIPrintOption *)v5 printInfo];
-    [v10 addObserver:v5 forKeyPath:0x2871AF3D0 options:0 context:0];
+    printInfo5 = [(UIPrintOption *)v5 printInfo];
+    [printInfo5 addObserver:v5 forKeyPath:0x2871AF3D0 options:0 context:0];
 
-    v11 = [(UIPrintOption *)v5 printInfo];
-    [v11 addObserver:v5 forKeyPath:0x2871AF3F0 options:0 context:0];
+    printInfo6 = [(UIPrintOption *)v5 printInfo];
+    [printInfo6 addObserver:v5 forKeyPath:0x2871AF3F0 options:0 context:0];
 
-    v12 = [(UIPrintOption *)v5 printInfo];
-    [v12 addObserver:v5 forKeyPath:0x2871AF410 options:0 context:0];
+    printInfo7 = [(UIPrintOption *)v5 printInfo];
+    [printInfo7 addObserver:v5 forKeyPath:0x2871AF410 options:0 context:0];
 
-    v13 = [(UIPrintOption *)v5 printInfo];
-    [v13 addObserver:v5 forKeyPath:0x2871AF430 options:0 context:0];
+    printInfo8 = [(UIPrintOption *)v5 printInfo];
+    [printInfo8 addObserver:v5 forKeyPath:0x2871AF430 options:0 context:0];
 
-    v14 = [(UIPrintOption *)v5 printInfo];
-    [v14 addObserver:v5 forKeyPath:0x2871AF450 options:0 context:0];
+    printInfo9 = [(UIPrintOption *)v5 printInfo];
+    [printInfo9 addObserver:v5 forKeyPath:0x2871AF450 options:0 context:0];
 
-    v15 = [(UIPrintOption *)v5 printInfo];
-    [v15 addObserver:v5 forKeyPath:0x2871AF470 options:0 context:0];
+    printInfo10 = [(UIPrintOption *)v5 printInfo];
+    [printInfo10 addObserver:v5 forKeyPath:0x2871AF470 options:0 context:0];
   }
 
   return v5;
@@ -62,51 +62,51 @@
 
 - (void)dealloc
 {
-  v3 = [(UIPrintOption *)self printInfo];
-  [v3 removeObserver:self forKeyPath:0x2871AF150];
+  printInfo = [(UIPrintOption *)self printInfo];
+  [printInfo removeObserver:self forKeyPath:0x2871AF150];
 
-  v4 = [(UIPrintOption *)self printInfo];
-  [v4 removeObserver:self forKeyPath:0x2871AF370];
+  printInfo2 = [(UIPrintOption *)self printInfo];
+  [printInfo2 removeObserver:self forKeyPath:0x2871AF370];
 
-  v5 = [(UIPrintOption *)self printInfo];
-  [v5 removeObserver:self forKeyPath:0x2871AF390];
+  printInfo3 = [(UIPrintOption *)self printInfo];
+  [printInfo3 removeObserver:self forKeyPath:0x2871AF390];
 
-  v6 = [(UIPrintOption *)self printInfo];
-  [v6 removeObserver:self forKeyPath:0x2871AF3B0];
+  printInfo4 = [(UIPrintOption *)self printInfo];
+  [printInfo4 removeObserver:self forKeyPath:0x2871AF3B0];
 
-  v7 = [(UIPrintOption *)self printInfo];
-  [v7 removeObserver:self forKeyPath:0x2871AF3D0];
+  printInfo5 = [(UIPrintOption *)self printInfo];
+  [printInfo5 removeObserver:self forKeyPath:0x2871AF3D0];
 
-  v8 = [(UIPrintOption *)self printInfo];
-  [v8 removeObserver:self forKeyPath:0x2871AF3F0];
+  printInfo6 = [(UIPrintOption *)self printInfo];
+  [printInfo6 removeObserver:self forKeyPath:0x2871AF3F0];
 
-  v9 = [(UIPrintOption *)self printInfo];
-  [v9 removeObserver:self forKeyPath:0x2871AF410];
+  printInfo7 = [(UIPrintOption *)self printInfo];
+  [printInfo7 removeObserver:self forKeyPath:0x2871AF410];
 
-  v10 = [(UIPrintOption *)self printInfo];
-  [v10 removeObserver:self forKeyPath:0x2871AF430];
+  printInfo8 = [(UIPrintOption *)self printInfo];
+  [printInfo8 removeObserver:self forKeyPath:0x2871AF430];
 
-  v11 = [(UIPrintOption *)self printInfo];
-  [v11 removeObserver:self forKeyPath:0x2871AF450];
+  printInfo9 = [(UIPrintOption *)self printInfo];
+  [printInfo9 removeObserver:self forKeyPath:0x2871AF450];
 
-  v12 = [(UIPrintOption *)self printInfo];
-  [v12 removeObserver:self forKeyPath:0x2871AF470];
+  printInfo10 = [(UIPrintOption *)self printInfo];
+  [printInfo10 removeObserver:self forKeyPath:0x2871AF470];
 
   v13.receiver = self;
   v13.super_class = UIFinishingsOption;
   [(UIFinishingsOption *)&v13 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a3;
+  pathCopy = path;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __69__UIFinishingsOption_observeValueForKeyPath_ofObject_change_context___block_invoke;
   v9[3] = &unk_279A9BF78;
-  v10 = v7;
-  v11 = self;
-  v8 = v7;
+  v10 = pathCopy;
+  selfCopy = self;
+  v8 = pathCopy;
   dispatch_async(MEMORY[0x277D85CD0], v9);
 }
 
@@ -124,21 +124,21 @@ void __69__UIFinishingsOption_observeValueForKeyPath_ofObject_change_context___b
 
 - (BOOL)shouldShow
 {
-  v3 = [(UIPrintOption *)self printInfo];
-  v4 = [v3 currentPrinter];
-  v5 = [v4 printerInfoDict];
-  if (v5)
+  printInfo = [(UIPrintOption *)self printInfo];
+  currentPrinter = [printInfo currentPrinter];
+  printerInfoDict = [currentPrinter printerInfoDict];
+  if (printerInfoDict)
   {
-    v6 = [(UIFinishingsOption *)self finishingTemplatesOption];
-    if ([v6 shouldShow])
+    finishingTemplatesOption = [(UIFinishingsOption *)self finishingTemplatesOption];
+    if ([finishingTemplatesOption shouldShow])
     {
       v7 = 1;
     }
 
     else
     {
-      v8 = [(UIFinishingsOption *)self printerFinishingOptions];
-      v7 = [v8 count] != 0;
+      printerFinishingOptions = [(UIFinishingsOption *)self printerFinishingOptions];
+      v7 = [printerFinishingOptions count] != 0;
     }
   }
 
@@ -152,66 +152,66 @@ void __69__UIFinishingsOption_observeValueForKeyPath_ofObject_change_context___b
 
 - (void)currentPrinterChanged
 {
-  v3 = [(UIPrintOption *)self printInfo];
-  [v3 setFinishingOption:0];
+  printInfo = [(UIPrintOption *)self printInfo];
+  [printInfo setFinishingOption:0];
 
   [(UIFinishingsOption *)self setPrinterFinishingOptions:0];
   v4 = [UIPrintFinishingTemplatesOption alloc];
-  v8 = [(UIPrintOption *)self printInfo];
-  v5 = [(UIPrintOption *)self printPanelViewController];
-  v6 = [(UIFinishingsOption *)self finishingOptionsTableView];
-  v7 = [(UIPrintFinishingTemplatesOption *)v4 initWithPrintInfo:v8 printPanelViewController:v5 finishingOptionsTableView:v6];
+  printInfo2 = [(UIPrintOption *)self printInfo];
+  printPanelViewController = [(UIPrintOption *)self printPanelViewController];
+  finishingOptionsTableView = [(UIFinishingsOption *)self finishingOptionsTableView];
+  v7 = [(UIPrintFinishingTemplatesOption *)v4 initWithPrintInfo:printInfo2 printPanelViewController:printPanelViewController finishingOptionsTableView:finishingOptionsTableView];
   [(UIFinishingsOption *)self setFinishingTemplatesOption:v7];
 }
 
 - (void)updateFromPrintInfo
 {
-  v3 = [(UIFinishingsOption *)self summaryString];
-  [(UIPrintOption *)self setSummary:v3];
+  summaryString = [(UIFinishingsOption *)self summaryString];
+  [(UIPrintOption *)self setSummary:summaryString];
 
-  v4 = [(UIFinishingsOption *)self finishingOptionsTableView];
-  [v4 reloadData];
+  finishingOptionsTableView = [(UIFinishingsOption *)self finishingOptionsTableView];
+  [finishingOptionsTableView reloadData];
 }
 
 - (NSArray)printerFinishingOptions
 {
-  v2 = self;
+  selfCopy = self;
   v374 = *MEMORY[0x277D85DE8];
   if (self->_printerFinishingOptions)
   {
     goto LABEL_136;
   }
 
-  v3 = [(UIPrintOption *)self printInfo];
-  v4 = [v3 currentPrinter];
-  v5 = [v4 printerInfoDict];
+  printInfo = [(UIPrintOption *)self printInfo];
+  currentPrinter = [printInfo currentPrinter];
+  printerInfoDict = [currentPrinter printerInfoDict];
 
-  if (!v5)
+  if (!printerInfoDict)
   {
     goto LABEL_136;
   }
 
-  v367 = [MEMORY[0x277CBEB18] array];
-  v6 = [(UIPrintOption *)v2 printInfo];
-  v7 = [v6 currentPrinter];
-  v8 = [v7 printerFinishingOptions];
+  array = [MEMORY[0x277CBEB18] array];
+  printInfo2 = [(UIPrintOption *)selfCopy printInfo];
+  currentPrinter2 = [printInfo2 currentPrinter];
+  printerFinishingOptions = [currentPrinter2 printerFinishingOptions];
 
-  v365 = v2;
-  v366 = v8;
-  if (v8)
+  v365 = selfCopy;
+  v366 = printerFinishingOptions;
+  if (printerFinishingOptions)
   {
     v9 = [MEMORY[0x277CBEB18] arrayWithCapacity:0];
     v10 = 0x277CCA000uLL;
     v11 = [MEMORY[0x277CCABB0] numberWithInteger:4];
-    v12 = v8;
-    if ([v8 containsObject:v11])
+    v12 = printerFinishingOptions;
+    if ([printerFinishingOptions containsObject:v11])
     {
     }
 
     else
     {
       v13 = [MEMORY[0x277CCABB0] numberWithInteger:20];
-      v14 = [v8 containsObject:v13];
+      v14 = [printerFinishingOptions containsObject:v13];
 
       if (!v14)
       {
@@ -439,10 +439,10 @@ LABEL_37:
       v115 = [UIPrinterFinishingOption alloc];
       v116 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v117 = [v116 localizedStringForKey:@"Staple" value:@"Staple" table:@"Localizable"];
-      v118 = [(UIPrintOption *)v365 printPanelViewController];
-      v119 = [(UIFinishingsOption *)v365 finishingOptionsTableView];
-      v120 = [(UIPrinterFinishingOption *)v115 initWithTitle:v117 finishingType:0 viewType:v114 optionChoices:v9 printPanelViewController:v118 finishingOptionsTableView:v119];
-      [v367 addObject:v120];
+      printPanelViewController = [(UIPrintOption *)v365 printPanelViewController];
+      finishingOptionsTableView = [(UIFinishingsOption *)v365 finishingOptionsTableView];
+      v120 = [(UIPrinterFinishingOption *)v115 initWithTitle:v117 finishingType:0 viewType:v114 optionChoices:v9 printPanelViewController:printPanelViewController finishingOptionsTableView:finishingOptionsTableView];
+      [array addObject:v120];
 
       v12 = v366;
     }
@@ -657,10 +657,10 @@ LABEL_52:
           v230 = [UIPrinterFinishingOption alloc];
           v231 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v232 = [v231 localizedStringForKey:@"Punch" value:@"Punch" table:@"Localizable"];
-          v233 = [(UIPrintOption *)v365 printPanelViewController];
-          v234 = [(UIFinishingsOption *)v365 finishingOptionsTableView];
-          v235 = [(UIPrinterFinishingOption *)v230 initWithTitle:v232 finishingType:1 viewType:v229 optionChoices:v121 printPanelViewController:v233 finishingOptionsTableView:v234];
-          [v367 addObject:v235];
+          printPanelViewController2 = [(UIPrintOption *)v365 printPanelViewController];
+          finishingOptionsTableView2 = [(UIFinishingsOption *)v365 finishingOptionsTableView];
+          v235 = [(UIPrinterFinishingOption *)v230 initWithTitle:v232 finishingType:1 viewType:v229 optionChoices:v121 printPanelViewController:printPanelViewController2 finishingOptionsTableView:finishingOptionsTableView2];
+          [array addObject:v235];
 
           v12 = v366;
         }
@@ -814,10 +814,10 @@ LABEL_52:
           v308 = [UIPrinterFinishingOption alloc];
           v309 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v310 = [v309 localizedStringForKey:@"Fold" value:@"Fold" table:@"Localizable"];
-          v311 = [(UIPrintOption *)v365 printPanelViewController];
-          v312 = [(UIFinishingsOption *)v365 finishingOptionsTableView];
-          v313 = [(UIPrinterFinishingOption *)v308 initWithTitle:v310 finishingType:2 viewType:v307 optionChoices:v236 printPanelViewController:v311 finishingOptionsTableView:v312];
-          [v367 addObject:v313];
+          printPanelViewController3 = [(UIPrintOption *)v365 printPanelViewController];
+          finishingOptionsTableView3 = [(UIFinishingsOption *)v365 finishingOptionsTableView];
+          v313 = [(UIPrinterFinishingOption *)v308 initWithTitle:v310 finishingType:2 viewType:v307 optionChoices:v236 printPanelViewController:printPanelViewController3 finishingOptionsTableView:finishingOptionsTableView3];
+          [array addObject:v313];
 
           v12 = v366;
         }
@@ -839,10 +839,10 @@ LABEL_52:
           v10 = 0x277CCA000;
           v322 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v323 = [v322 localizedStringForKey:@"Laminate" value:@"Laminate" table:@"Localizable"];
-          v324 = [(UIPrintOption *)v365 printPanelViewController];
-          v325 = [(UIFinishingsOption *)v365 finishingOptionsTableView];
-          v326 = [(UIPrinterFinishingOption *)v321 initWithTitle:v323 finishingType:3 viewType:0 optionChoices:v316 printPanelViewController:v324 finishingOptionsTableView:v325];
-          [v367 addObject:v326];
+          printPanelViewController4 = [(UIPrintOption *)v365 printPanelViewController];
+          finishingOptionsTableView4 = [(UIFinishingsOption *)v365 finishingOptionsTableView];
+          v326 = [(UIPrinterFinishingOption *)v321 initWithTitle:v323 finishingType:3 viewType:0 optionChoices:v316 printPanelViewController:printPanelViewController4 finishingOptionsTableView:finishingOptionsTableView4];
+          [array addObject:v326];
 
           v236 = v316;
         }
@@ -863,18 +863,18 @@ LABEL_52:
           v334 = [UIPrinterFinishingOption alloc];
           v335 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
           v336 = [v335 localizedStringForKey:@"Coat" value:@"Coat" table:@"Localizable"];
-          v2 = v365;
-          v337 = [(UIPrintOption *)v365 printPanelViewController];
-          v338 = [(UIFinishingsOption *)v365 finishingOptionsTableView];
-          v339 = [(UIPrinterFinishingOption *)v334 initWithTitle:v336 finishingType:4 viewType:0 optionChoices:v329 printPanelViewController:v337 finishingOptionsTableView:v338];
-          [v367 addObject:v339];
+          selfCopy = v365;
+          printPanelViewController5 = [(UIPrintOption *)v365 printPanelViewController];
+          finishingOptionsTableView5 = [(UIFinishingsOption *)v365 finishingOptionsTableView];
+          v339 = [(UIPrinterFinishingOption *)v334 initWithTitle:v336 finishingType:4 viewType:0 optionChoices:v329 printPanelViewController:printPanelViewController5 finishingOptionsTableView:finishingOptionsTableView5];
+          [array addObject:v339];
 
           v236 = v329;
         }
 
         else
         {
-          v2 = v365;
+          selfCopy = v365;
         }
 
         goto LABEL_118;
@@ -910,19 +910,19 @@ LABEL_52:
   }
 
 LABEL_118:
-  v340 = [(UIPrintOption *)v2 printInfo];
-  v341 = [v340 currentPrinter];
-  v342 = [v341 outputBins];
+  printInfo3 = [(UIPrintOption *)selfCopy printInfo];
+  currentPrinter3 = [printInfo3 currentPrinter];
+  outputBins = [currentPrinter3 outputBins];
 
-  if (v342)
+  if (outputBins)
   {
     v343 = [MEMORY[0x277CBEB18] arrayWithCapacity:0];
     v369 = 0u;
     v370 = 0u;
     v371 = 0u;
     v372 = 0u;
-    v364 = v342;
-    obj = v342;
+    v364 = outputBins;
+    obj = outputBins;
     v344 = [obj countByEnumeratingWithState:&v369 objects:v373 count:16];
     if (v344)
     {
@@ -963,24 +963,24 @@ LABEL_118:
       while (v345);
     }
 
-    v2 = v365;
+    selfCopy = v365;
     if ([v343 count] >= 2)
     {
       v355 = [UIPrinterFinishingOption alloc];
       v356 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v357 = [v356 localizedStringForKey:@"Output Bins" value:@"Output Bins" table:@"Localizable"];
-      v358 = [(UIPrintOption *)v365 printPanelViewController];
-      v359 = [(UIFinishingsOption *)v365 finishingOptionsTableView];
-      v360 = [(UIPrinterFinishingOption *)v355 initWithTitle:v357 finishingType:6 viewType:1 optionChoices:v343 printPanelViewController:v358 finishingOptionsTableView:v359];
-      [v367 addObject:v360];
+      printPanelViewController6 = [(UIPrintOption *)v365 printPanelViewController];
+      finishingOptionsTableView6 = [(UIFinishingsOption *)v365 finishingOptionsTableView];
+      v360 = [(UIPrinterFinishingOption *)v355 initWithTitle:v357 finishingType:6 viewType:1 optionChoices:v343 printPanelViewController:printPanelViewController6 finishingOptionsTableView:finishingOptionsTableView6];
+      [array addObject:v360];
     }
 
-    v342 = v364;
+    outputBins = v364;
   }
 
-  if ([v367 count])
+  if ([array count])
   {
-    v361 = v367;
+    v361 = array;
   }
 
   else
@@ -988,39 +988,39 @@ LABEL_118:
     v361 = 0;
   }
 
-  objc_storeStrong(&v2->_printerFinishingOptions, v361);
+  objc_storeStrong(&selfCopy->_printerFinishingOptions, v361);
 
 LABEL_136:
-  printerFinishingOptions = v2->_printerFinishingOptions;
+  printerFinishingOptions = selfCopy->_printerFinishingOptions;
 
   return printerFinishingOptions;
 }
 
 - (void)clearFinishingOptions
 {
-  v3 = [(UIPrintOption *)self printInfo];
-  [v3 setFinishingTemplate:0];
+  printInfo = [(UIPrintOption *)self printInfo];
+  [printInfo setFinishingTemplate:0];
 
-  v4 = [(UIPrintOption *)self printInfo];
-  [v4 setStaple:0];
+  printInfo2 = [(UIPrintOption *)self printInfo];
+  [printInfo2 setStaple:0];
 
-  v5 = [(UIPrintOption *)self printInfo];
-  [v5 setPunch:0];
+  printInfo3 = [(UIPrintOption *)self printInfo];
+  [printInfo3 setPunch:0];
 
-  v6 = [(UIPrintOption *)self printInfo];
-  [v6 setFold:0];
+  printInfo4 = [(UIPrintOption *)self printInfo];
+  [printInfo4 setFold:0];
 
-  v7 = [(UIPrintOption *)self printInfo];
-  [v7 setLaminate:0];
+  printInfo5 = [(UIPrintOption *)self printInfo];
+  [printInfo5 setLaminate:0];
 
-  v8 = [(UIPrintOption *)self printInfo];
-  [v8 setCoat:0];
+  printInfo6 = [(UIPrintOption *)self printInfo];
+  [printInfo6 setCoat:0];
 
-  v9 = [(UIPrintOption *)self printInfo];
-  [v9 setOutputBin:0];
+  printInfo7 = [(UIPrintOption *)self printInfo];
+  [printInfo7 setOutputBin:0];
 
-  v10 = [(UIPrintOption *)self printInfo];
-  [v10 setPageStackOrder:0];
+  printInfo8 = [(UIPrintOption *)self printInfo];
+  [printInfo8 setPageStackOrder:0];
 }
 
 - (UITableView)finishingOptionsTableView
@@ -1052,30 +1052,30 @@ LABEL_136:
 - (id)summaryString
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(UIPrintOption *)self printInfo];
-  v4 = [v3 finishingOption];
+  printInfo = [(UIPrintOption *)self printInfo];
+  finishingOption = [printInfo finishingOption];
 
-  if (v4 == 1)
+  if (finishingOption == 1)
   {
-    v5 = [(UIFinishingsOption *)self finishingTemplatesOption];
-    v14 = [v5 summary];
+    finishingTemplatesOption = [(UIFinishingsOption *)self finishingTemplatesOption];
+    summary = [finishingTemplatesOption summary];
     goto LABEL_18;
   }
 
-  if (v4 != 2)
+  if (finishingOption != 2)
   {
-    v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v14 = [v5 localizedStringForKey:@"No finishing chosen" value:@"No finishing chosen" table:@"Localizable"];
+    finishingTemplatesOption = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
+    summary = [finishingTemplatesOption localizedStringForKey:@"No finishing chosen" value:@"No finishing chosen" table:@"Localizable"];
     goto LABEL_18;
   }
 
-  v5 = [MEMORY[0x277CCAB68] stringWithCapacity:0];
+  finishingTemplatesOption = [MEMORY[0x277CCAB68] stringWithCapacity:0];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = [(UIFinishingsOption *)self printerFinishingOptions];
-  v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  printerFinishingOptions = [(UIFinishingsOption *)self printerFinishingOptions];
+  v7 = [printerFinishingOptions countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1086,34 +1086,34 @@ LABEL_136:
       {
         if (*v19 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(printerFinishingOptions);
         }
 
-        v11 = [*(*(&v18 + 1) + 8 * i) summary];
-        if (v11)
+        summary2 = [*(*(&v18 + 1) + 8 * i) summary];
+        if (summary2)
         {
-          if ([v5 length])
+          if ([finishingTemplatesOption length])
           {
             v12 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
             v13 = [v12 localizedStringForKey:@" • " value:@" • " table:@"Localizable"];
-            [v5 appendString:v13];
+            [finishingTemplatesOption appendString:v13];
           }
 
-          [v5 appendString:v11];
+          [finishingTemplatesOption appendString:summary2];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v8 = [printerFinishingOptions countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v8);
   }
 
-  if ([v5 length])
+  if ([finishingTemplatesOption length])
   {
-    v14 = v5;
+    summary = finishingTemplatesOption;
 LABEL_18:
-    v15 = v14;
+    v15 = summary;
     goto LABEL_19;
   }
 
@@ -1125,10 +1125,10 @@ LABEL_19:
   return v15;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(UIPrintOption *)self printInfo];
-  if ([v3 finishingOption])
+  printInfo = [(UIPrintOption *)self printInfo];
+  if ([printInfo finishingOption])
   {
     v4 = 2;
   }
@@ -1141,29 +1141,29 @@ LABEL_19:
   return v4;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
-    v5 = [(UIPrintOption *)self printInfo];
-    if ([v5 finishingOption] == 1)
+    printInfo = [(UIPrintOption *)self printInfo];
+    if ([printInfo finishingOption] == 1)
     {
       v6 = 1;
     }
 
     else
     {
-      v12 = [(UIFinishingsOption *)self printerFinishingOptions];
-      v6 = [v12 count];
+      printerFinishingOptions = [(UIFinishingsOption *)self printerFinishingOptions];
+      v6 = [printerFinishingOptions count];
     }
   }
 
   else
   {
-    v7 = [(UIFinishingsOption *)self finishingTemplatesOption];
-    v8 = [v7 shouldShow];
+    finishingTemplatesOption = [(UIFinishingsOption *)self finishingTemplatesOption];
+    shouldShow = [finishingTemplatesOption shouldShow];
 
-    if (v8)
+    if (shouldShow)
     {
       v9 = 2;
     }
@@ -1173,8 +1173,8 @@ LABEL_19:
       v9 = 1;
     }
 
-    v10 = [(UIFinishingsOption *)self printerFinishingOptions];
-    v11 = [v10 count];
+    printerFinishingOptions2 = [(UIFinishingsOption *)self printerFinishingOptions];
+    v11 = [printerFinishingOptions2 count];
 
     if (v11)
     {
@@ -1190,69 +1190,69 @@ LABEL_19:
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 section])
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    v8 = [(UIPrintOption *)self printInfo];
-    v9 = [v8 finishingOption];
+    printInfo = [(UIPrintOption *)self printInfo];
+    finishingOption = [printInfo finishingOption];
 
-    if (v9 == 1)
+    if (finishingOption == 1)
     {
-      v10 = [(UIFinishingsOption *)self finishingTemplatesOption];
-      [v10 finishingTempletesTableViewCell];
+      finishingTemplatesOption = [(UIFinishingsOption *)self finishingTemplatesOption];
+      [finishingTemplatesOption finishingTempletesTableViewCell];
     }
 
     else
     {
-      v20 = [(UIFinishingsOption *)self printerFinishingOptions];
-      v10 = [v20 objectAtIndex:{objc_msgSend(v7, "row")}];
+      printerFinishingOptions = [(UIFinishingsOption *)self printerFinishingOptions];
+      finishingTemplatesOption = [printerFinishingOptions objectAtIndex:{objc_msgSend(pathCopy, "row")}];
 
-      [v10 printerFinishingOptionTableViewCell];
+      [finishingTemplatesOption printerFinishingOptionTableViewCell];
     }
     v11 = ;
   }
 
   else
   {
-    v11 = [v6 dequeueReusableCellWithIdentifier:@"UIPrintOptionCell"];
+    v11 = [viewCopy dequeueReusableCellWithIdentifier:@"UIPrintOptionCell"];
     if (!v11)
     {
       v11 = [[UIPrintOptionCell alloc] initWithStyle:0 reuseIdentifier:@"UIPrintOptionCell"];
     }
 
-    v10 = [MEMORY[0x277D756E0] cellConfiguration];
-    if ([v7 row])
+    finishingTemplatesOption = [MEMORY[0x277D756E0] cellConfiguration];
+    if ([pathCopy row])
     {
-      if ([v7 row] == 1)
+      if ([pathCopy row] == 1)
       {
-        v12 = [(UIFinishingsOption *)self finishingTemplatesOption];
-        v13 = [v12 shouldShow];
+        finishingTemplatesOption2 = [(UIFinishingsOption *)self finishingTemplatesOption];
+        shouldShow = [finishingTemplatesOption2 shouldShow];
 
-        v14 = [(UIPrintOption *)self printInfo];
-        v15 = [v14 finishingOption];
+        printInfo2 = [(UIPrintOption *)self printInfo];
+        finishingOption2 = [printInfo2 finishingOption];
 
         v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v17 = v16;
-        if (v13)
+        if (shouldShow)
         {
-          v18 = v15 == 1;
+          v18 = finishingOption2 == 1;
           v19 = @"Finishing Templates";
         }
 
         else
         {
-          v18 = v15 == 2;
+          v18 = finishingOption2 == 2;
           v19 = @"Printer Options";
         }
       }
 
       else
       {
-        v22 = [(UIPrintOption *)self printInfo];
-        v18 = [v22 finishingOption] == 2;
+        printInfo3 = [(UIPrintOption *)self printInfo];
+        v18 = [printInfo3 finishingOption] == 2;
 
         v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
         v17 = v16;
@@ -1262,8 +1262,8 @@ LABEL_19:
 
     else
     {
-      v21 = [(UIPrintOption *)self printInfo];
-      v18 = [v21 finishingOption] == 0;
+      printInfo4 = [(UIPrintOption *)self printInfo];
+      v18 = [printInfo4 finishingOption] == 0;
 
       v16 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v17 = v16;
@@ -1271,10 +1271,10 @@ LABEL_19:
     }
 
     v23 = [v16 localizedStringForKey:v19 value:v19 table:@"Localizable"];
-    [v10 setText:v23];
+    [finishingTemplatesOption setText:v23];
 
     [(UIPrintOptionCell *)v11 setSelectionStyle:3];
-    [(UIPrintOptionCell *)v11 setContentConfiguration:v10];
+    [(UIPrintOptionCell *)v11 setContentConfiguration:finishingTemplatesOption];
     if (v18)
     {
       v24 = 3;
@@ -1291,26 +1291,26 @@ LABEL_19:
   return v11;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v13 = a3;
-  v6 = a4;
-  if ([v6 section])
+  viewCopy = view;
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    v7 = [v13 cellForRowAtIndexPath:v6];
-    [v7 printOptionCellTapped];
-    [v7 setSelected:0];
+    finishingTemplatesOption = [viewCopy cellForRowAtIndexPath:pathCopy];
+    [finishingTemplatesOption printOptionCellTapped];
+    [finishingTemplatesOption setSelected:0];
   }
 
   else
   {
     [(UIFinishingsOption *)self clearFinishingOptions];
-    if ([v6 row])
+    if ([pathCopy row])
     {
-      if ([v6 row] == 1)
+      if ([pathCopy row] == 1)
       {
-        v7 = [(UIFinishingsOption *)self finishingTemplatesOption];
-        if ([v7 shouldShow])
+        finishingTemplatesOption = [(UIFinishingsOption *)self finishingTemplatesOption];
+        if ([finishingTemplatesOption shouldShow])
         {
           v8 = 1;
         }
@@ -1320,31 +1320,31 @@ LABEL_19:
           v8 = 2;
         }
 
-        v9 = [(UIPrintOption *)self printInfo];
-        [v9 setFinishingOption:v8];
+        printInfo = [(UIPrintOption *)self printInfo];
+        [printInfo setFinishingOption:v8];
 
         goto LABEL_12;
       }
 
-      v10 = [(UIPrintOption *)self printInfo];
-      v7 = v10;
+      printInfo2 = [(UIPrintOption *)self printInfo];
+      finishingTemplatesOption = printInfo2;
       v11 = 2;
     }
 
     else
     {
-      v10 = [(UIPrintOption *)self printInfo];
-      v7 = v10;
+      printInfo2 = [(UIPrintOption *)self printInfo];
+      finishingTemplatesOption = printInfo2;
       v11 = 0;
     }
 
-    [v10 setFinishingOption:v11];
+    [printInfo2 setFinishingOption:v11];
   }
 
 LABEL_12:
 
-  v12 = [(UIFinishingsOption *)self summaryString];
-  [(UIPrintOption *)self setSummary:v12];
+  summaryString = [(UIFinishingsOption *)self summaryString];
+  [(UIPrintOption *)self setSummary:summaryString];
 }
 
 @end

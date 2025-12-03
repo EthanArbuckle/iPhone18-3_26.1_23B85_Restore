@@ -1,15 +1,15 @@
 @interface CKDPRecordDeleteRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPluginFields:(id)a3;
-- (void)addPublicKeys:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPluginFields:(id)fields;
+- (void)addPublicKeys:(id)keys;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPRecordDeleteRequest
@@ -26,40 +26,40 @@
   return v3;
 }
 
-- (void)addPluginFields:(id)a3
+- (void)addPluginFields:(id)fields
 {
-  v4 = a3;
+  fieldsCopy = fields;
   pluginFields = self->_pluginFields;
-  v8 = v4;
+  v8 = fieldsCopy;
   if (!pluginFields)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_pluginFields;
     self->_pluginFields = v6;
 
-    v4 = v8;
+    fieldsCopy = v8;
     pluginFields = self->_pluginFields;
   }
 
-  objc_msgSend_addObject_(pluginFields, v4, v4);
+  objc_msgSend_addObject_(pluginFields, fieldsCopy, fieldsCopy);
 }
 
-- (void)addPublicKeys:(id)a3
+- (void)addPublicKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   publicKeys = self->_publicKeys;
-  v8 = v4;
+  v8 = keysCopy;
   if (!publicKeys)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_publicKeys;
     self->_publicKeys = v6;
 
-    v4 = v8;
+    keysCopy = v8;
     publicKeys = self->_publicKeys;
   }
 
-  objc_msgSend_addObject_(publicKeys, v4, v4);
+  objc_msgSend_addObject_(publicKeys, keysCopy, keysCopy);
 }
 
 - (id)description
@@ -145,10 +145,10 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_recordIdentifier)
   {
     PBDataWriterWriteSubmessage();
@@ -232,24 +232,24 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v26 = a3;
+  toCopy = to;
   recordIdentifier = self->_recordIdentifier;
   if (recordIdentifier)
   {
-    objc_msgSend_setRecordIdentifier_(v26, v4, recordIdentifier);
+    objc_msgSend_setRecordIdentifier_(toCopy, v4, recordIdentifier);
   }
 
   etag = self->_etag;
   if (etag)
   {
-    objc_msgSend_setEtag_(v26, v4, etag);
+    objc_msgSend_setEtag_(toCopy, v4, etag);
   }
 
   if (objc_msgSend_pluginFieldsCount(self, v4, etag))
   {
-    objc_msgSend_clearPluginFields(v26, v7, v8);
+    objc_msgSend_clearPluginFields(toCopy, v7, v8);
     v11 = objc_msgSend_pluginFieldsCount(self, v9, v10);
     if (v11)
     {
@@ -257,20 +257,20 @@
       for (i = 0; i != v12; ++i)
       {
         v14 = objc_msgSend_pluginFieldsAtIndex_(self, v7, i);
-        objc_msgSend_addPluginFields_(v26, v15, v14);
+        objc_msgSend_addPluginFields_(toCopy, v15, v14);
       }
     }
   }
 
   if (*&self->_has)
   {
-    v26[40] = self->_participantKeyLost;
-    v26[44] |= 1u;
+    toCopy[40] = self->_participantKeyLost;
+    toCopy[44] |= 1u;
   }
 
   if (objc_msgSend_publicKeysCount(self, v7, v8))
   {
-    objc_msgSend_clearPublicKeys(v26, v16, v17);
+    objc_msgSend_clearPublicKeys(toCopy, v16, v17);
     v20 = objc_msgSend_publicKeysCount(self, v18, v19);
     if (v20)
     {
@@ -278,23 +278,23 @@
       for (j = 0; j != v22; ++j)
       {
         v24 = objc_msgSend_publicKeysAtIndex_(self, v21, j);
-        objc_msgSend_addPublicKeys_(v26, v25, v24);
+        objc_msgSend_addPublicKeys_(toCopy, v25, v24);
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v47 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_recordIdentifier, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_recordIdentifier, v11, zone);
   v13 = *(v10 + 32);
   *(v10 + 32) = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_etag, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_etag, v14, zone);
   v16 = *(v10 + 8);
   *(v10 + 8) = v15;
 
@@ -318,7 +318,7 @@
           objc_enumerationMutation(v17);
         }
 
-        v24 = objc_msgSend_copyWithZone_(*(*(&v41 + 1) + 8 * v23), v20, a3);
+        v24 = objc_msgSend_copyWithZone_(*(*(&v41 + 1) + 8 * v23), v20, zone);
         objc_msgSend_addPluginFields_(v10, v25, v24);
 
         ++v23;
@@ -357,7 +357,7 @@
           objc_enumerationMutation(v26);
         }
 
-        v33 = objc_msgSend_copyWithZone_(*(*(&v37 + 1) + 8 * v32), v29, a3, v37);
+        v33 = objc_msgSend_copyWithZone_(*(*(&v37 + 1) + 8 * v32), v29, zone, v37);
         objc_msgSend_addPublicKeys_(v10, v34, v33);
 
         ++v32;
@@ -374,17 +374,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_13;
   }
 
   recordIdentifier = self->_recordIdentifier;
-  v9 = v4[4];
+  v9 = equalCopy[4];
   if (recordIdentifier | v9)
   {
     if (!objc_msgSend_isEqual_(recordIdentifier, v7, v9))
@@ -394,7 +394,7 @@
   }
 
   etag = self->_etag;
-  v11 = v4[1];
+  v11 = equalCopy[1];
   if (etag | v11)
   {
     if (!objc_msgSend_isEqual_(etag, v7, v11))
@@ -404,7 +404,7 @@
   }
 
   pluginFields = self->_pluginFields;
-  v13 = v4[2];
+  v13 = equalCopy[2];
   if (pluginFields | v13)
   {
     if (!objc_msgSend_isEqual_(pluginFields, v7, v13))
@@ -413,18 +413,18 @@
     }
   }
 
-  v14 = *(v4 + 44);
+  v14 = *(equalCopy + 44);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  if ((*(v4 + 44) & 1) == 0)
+  if ((*(equalCopy + 44) & 1) == 0)
   {
     goto LABEL_13;
   }
 
-  v14 = *(v4 + 40);
+  v14 = *(equalCopy + 40);
   if (!self->_participantKeyLost)
   {
 LABEL_9:
@@ -438,14 +438,14 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if ((v4[5] & 1) == 0)
+  if ((equalCopy[5] & 1) == 0)
   {
     goto LABEL_13;
   }
 
 LABEL_10:
   publicKeys = self->_publicKeys;
-  v16 = v4[3];
+  v16 = equalCopy[3];
   if (publicKeys | v16)
   {
     isEqual = objc_msgSend_isEqual_(publicKeys, v7, v16);
@@ -479,12 +479,12 @@ LABEL_14:
   return v7 ^ v4 ^ v10 ^ v13 ^ objc_msgSend_hash(self->_publicKeys, v11, v12);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  fromCopy = from;
   recordIdentifier = self->_recordIdentifier;
-  v7 = *(v5 + 4);
+  v7 = *(fromCopy + 4);
   if (recordIdentifier)
   {
     if (v7)
@@ -498,7 +498,7 @@ LABEL_14:
     objc_msgSend_setRecordIdentifier_(self, v4, v7);
   }
 
-  v8 = *(v5 + 1);
+  v8 = *(fromCopy + 1);
   if (v8)
   {
     objc_msgSend_setEtag_(self, v4, v8);
@@ -508,7 +508,7 @@ LABEL_14:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = *(v5 + 2);
+  v9 = *(fromCopy + 2);
   v11 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v10, &v28, v33, 16);
   if (v11)
   {
@@ -532,9 +532,9 @@ LABEL_14:
     while (v13);
   }
 
-  if (*(v5 + 44))
+  if (*(fromCopy + 44))
   {
-    self->_participantKeyLost = *(v5 + 40);
+    self->_participantKeyLost = *(fromCopy + 40);
     *&self->_has |= 1u;
   }
 
@@ -542,7 +542,7 @@ LABEL_14:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v16 = *(v5 + 3);
+  v16 = *(fromCopy + 3);
   v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(v16, v17, &v24, v32, 16);
   if (v18)
   {

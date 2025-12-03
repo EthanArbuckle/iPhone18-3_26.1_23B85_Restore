@@ -1,36 +1,36 @@
 @interface DMFPrioritizedPolicy
-+ (id)prioritizedPoliciesForAppPolicy:(id)a3 appCategoryPolicy:(id)a4 bundleIdentifiers:(id)a5 categoryPolicy:(id)a6 categoryIdentifiers:(id)a7 webPolicy:(id)a8 webCategoryPolicy:(id)a9 webDomains:(id)a10;
-+ (int64_t)arbitratePolicyForPrioritizedPolicies:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (DMFPrioritizedPolicy)initWithEffectivePolicy:(id)a3 identifier:(id)a4 excludableIdentifiers:(id)a5;
-- (int64_t)compare:(id)a3;
++ (id)prioritizedPoliciesForAppPolicy:(id)policy appCategoryPolicy:(id)categoryPolicy bundleIdentifiers:(id)identifiers categoryPolicy:(id)a6 categoryIdentifiers:(id)categoryIdentifiers webPolicy:(id)webPolicy webCategoryPolicy:(id)webCategoryPolicy webDomains:(id)self0;
++ (int64_t)arbitratePolicyForPrioritizedPolicies:(id)policies;
+- (BOOL)isEqual:(id)equal;
+- (DMFPrioritizedPolicy)initWithEffectivePolicy:(id)policy identifier:(id)identifier excludableIdentifiers:(id)identifiers;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation DMFPrioritizedPolicy
 
-- (DMFPrioritizedPolicy)initWithEffectivePolicy:(id)a3 identifier:(id)a4 excludableIdentifiers:(id)a5
+- (DMFPrioritizedPolicy)initWithEffectivePolicy:(id)policy identifier:(id)identifier excludableIdentifiers:(id)identifiers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  policyCopy = policy;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
   v16.receiver = self;
   v16.super_class = DMFPrioritizedPolicy;
   v11 = [(DMFPrioritizedPolicy *)&v16 init];
   if (v11)
   {
-    v12 = [v8 type];
-    v13 = [v12 isEqualToString:@"websites"];
+    type = [policyCopy type];
+    v13 = [type isEqualToString:@"websites"];
 
     if (v13)
     {
-      v11->_policy = [v8 policyForHostName:v9];
-      v14 = [v8 priorityForHostName:v9];
+      v11->_policy = [policyCopy policyForHostName:identifierCopy];
+      v14 = [policyCopy priorityForHostName:identifierCopy];
     }
 
     else
     {
-      v11->_policy = [v8 policyForIdentifier:v9 excludableIdentifiers:v10];
-      v14 = [v8 priorityForIdentifier:v9];
+      v11->_policy = [policyCopy policyForIdentifier:identifierCopy excludableIdentifiers:identifiersCopy];
+      v14 = [policyCopy priorityForIdentifier:identifierCopy];
     }
 
     v11->_priority = v14;
@@ -39,29 +39,29 @@
   return v11;
 }
 
-+ (int64_t)arbitratePolicyForPrioritizedPolicies:(id)a3
++ (int64_t)arbitratePolicyForPrioritizedPolicies:(id)policies
 {
-  v3 = [a3 sortedArrayUsingSelector:sel_compare_];
-  v4 = [v3 firstObject];
-  v5 = [v4 policy];
+  v3 = [policies sortedArrayUsingSelector:sel_compare_];
+  firstObject = [v3 firstObject];
+  policy = [firstObject policy];
 
-  return v5;
+  return policy;
 }
 
-+ (id)prioritizedPoliciesForAppPolicy:(id)a3 appCategoryPolicy:(id)a4 bundleIdentifiers:(id)a5 categoryPolicy:(id)a6 categoryIdentifiers:(id)a7 webPolicy:(id)a8 webCategoryPolicy:(id)a9 webDomains:(id)a10
++ (id)prioritizedPoliciesForAppPolicy:(id)policy appCategoryPolicy:(id)categoryPolicy bundleIdentifiers:(id)identifiers categoryPolicy:(id)a6 categoryIdentifiers:(id)categoryIdentifiers webPolicy:(id)webPolicy webCategoryPolicy:(id)webCategoryPolicy webDomains:(id)self0
 {
   v84 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v71 = a4;
-  v16 = a5;
+  policyCopy = policy;
+  categoryPolicyCopy = categoryPolicy;
+  identifiersCopy = identifiers;
   v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v74 = a9;
-  v20 = a10;
+  categoryIdentifiersCopy = categoryIdentifiers;
+  webPolicyCopy = webPolicy;
+  webCategoryPolicyCopy = webCategoryPolicy;
+  domainsCopy = domains;
   v21 = objc_opt_new();
-  v22 = v15;
-  v23 = v16;
+  v22 = policyCopy;
+  v23 = identifiersCopy;
   v24 = v23;
   v78 = v22;
   obj = v23;
@@ -99,7 +99,7 @@
 
   v30 = v21;
   v31 = v17;
-  v32 = v18;
+  v32 = categoryIdentifiersCopy;
   v33 = v32;
   v77 = v31;
   if (v31)
@@ -134,8 +134,8 @@
   }
 
   v39 = v30;
-  v40 = v19;
-  v41 = v20;
+  v40 = webPolicyCopy;
+  v41 = domainsCopy;
   v42 = v41;
   if (v40)
   {
@@ -181,7 +181,7 @@
   }
 
   v49 = v39;
-  v50 = v71;
+  v50 = categoryPolicyCopy;
   v51 = v33;
   v52 = v48;
   if (v50)
@@ -227,7 +227,7 @@
   }
 
   v59 = v49;
-  v60 = v74;
+  v60 = webCategoryPolicyCopy;
   v61 = v51;
   v62 = v58;
   if (v60)
@@ -267,10 +267,10 @@
   return v68;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -278,30 +278,30 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(DMFPrioritizedPolicy *)self isEqualToPrioritizedPolicy:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(DMFPrioritizedPolicy *)self isEqualToPrioritizedPolicy:equalCopy];
   }
 
   return v5;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(DMFPrioritizedPolicy *)self priority];
-  if (v5 >= [v4 priority])
+  compareCopy = compare;
+  priority = [(DMFPrioritizedPolicy *)self priority];
+  if (priority >= [compareCopy priority])
   {
-    v7 = [(DMFPrioritizedPolicy *)self priority];
-    if (v7 > [v4 priority])
+    priority2 = [(DMFPrioritizedPolicy *)self priority];
+    if (priority2 > [compareCopy priority])
     {
       v6 = 1;
       goto LABEL_7;
     }
 
-    v8 = [(DMFPrioritizedPolicy *)self policy];
-    if (v8 <= [v4 policy])
+    policy = [(DMFPrioritizedPolicy *)self policy];
+    if (policy <= [compareCopy policy])
     {
-      v9 = [(DMFPrioritizedPolicy *)self policy];
-      v6 = v9 < [v4 policy];
+      policy2 = [(DMFPrioritizedPolicy *)self policy];
+      v6 = policy2 < [compareCopy policy];
       goto LABEL_7;
     }
   }

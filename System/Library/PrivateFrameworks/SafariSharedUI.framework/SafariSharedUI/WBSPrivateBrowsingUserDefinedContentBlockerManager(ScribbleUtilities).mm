@@ -20,10 +20,10 @@
   v25 = v10;
   v11 = v9;
   v26 = v11;
-  v23.receiver = a1;
+  v23.receiver = self;
   v23.super_class = &off_1F46B0D60;
   objc_msgSendSuper2(&v23, sel_getAllPaintingAvoidanceSelectorsThatApplyToHost_completionHandler_, v7, v24);
-  v12 = [a1 normalBrowsingUserDefinedContentBlockerManager];
+  normalBrowsingUserDefinedContentBlockerManager = [self normalBrowsingUserDefinedContentBlockerManager];
   dispatch_group_enter(v11);
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
@@ -33,7 +33,7 @@
   v21 = v13;
   v22 = v11;
   v14 = v11;
-  [v12 getAllPaintingAvoidanceSelectorsThatApplyToHost:v7 completionHandler:v20];
+  [normalBrowsingUserDefinedContentBlockerManager getAllPaintingAvoidanceSelectorsThatApplyToHost:v7 completionHandler:v20];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
@@ -48,20 +48,20 @@
 
 - (void)clearAllEditsForContentBlocker:()ScribbleUtilities
 {
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &off_1F46B0D60;
   v4 = a3;
   objc_msgSendSuper2(&v10, sel_clearAllEditsForContentBlocker_, v4);
-  v5 = [a1 normalBrowsingUserDefinedContentBlockerManager];
-  v6 = [v4 host];
+  normalBrowsingUserDefinedContentBlockerManager = [self normalBrowsingUserDefinedContentBlockerManager];
+  host = [v4 host];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __104__WBSPrivateBrowsingUserDefinedContentBlockerManager_ScribbleUtilities__clearAllEditsForContentBlocker___block_invoke;
   v8[3] = &unk_1E8285B28;
-  v9 = v5;
-  v7 = v5;
-  [v7 contentBlockerForHost:v6 createIfNeeded:0 completionHandler:v8];
+  v9 = normalBrowsingUserDefinedContentBlockerManager;
+  v7 = normalBrowsingUserDefinedContentBlockerManager;
+  [v7 contentBlockerForHost:host createIfNeeded:0 completionHandler:v8];
 }
 
 @end

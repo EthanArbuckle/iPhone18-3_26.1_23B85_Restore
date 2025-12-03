@@ -1,10 +1,10 @@
 @interface PUWallpaperShuffleConfigurationViewController
-- (_TtC15PhotosUIPrivate45PUWallpaperShuffleConfigurationViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC15PhotosUIPrivate45PUWallpaperShuffleConfigurationViewController)initWithPhotoLibrary:(id)a3 style:(int64_t)a4 posterConfiguration:(id)a5 centerMedia:(id)a6;
+- (_TtC15PhotosUIPrivate45PUWallpaperShuffleConfigurationViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC15PhotosUIPrivate45PUWallpaperShuffleConfigurationViewController)initWithPhotoLibrary:(id)library style:(int64_t)style posterConfiguration:(id)configuration centerMedia:(id)media;
 - (_TtP15PhotosUIPrivate53PUWallpaperShuffleConfigurationViewControllerDelegate_)delegate;
-- (void)presentationControllerWillDismiss:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)presentationControllerWillDismiss:(id)dismiss;
+- (void)setDelegate:(id)delegate;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PUWallpaperShuffleConfigurationViewController
@@ -16,43 +16,43 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1B3728FA4();
 }
 
-- (_TtC15PhotosUIPrivate45PUWallpaperShuffleConfigurationViewController)initWithPhotoLibrary:(id)a3 style:(int64_t)a4 posterConfiguration:(id)a5 centerMedia:(id)a6
+- (_TtC15PhotosUIPrivate45PUWallpaperShuffleConfigurationViewController)initWithPhotoLibrary:(id)library style:(int64_t)style posterConfiguration:(id)configuration centerMedia:(id)media
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  return sub_1B37291D0(v9, a4, a5, a6);
+  libraryCopy = library;
+  configurationCopy = configuration;
+  mediaCopy = media;
+  return sub_1B37291D0(libraryCopy, style, configuration, media);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1B3729934(a3);
+  selfCopy = self;
+  sub_1B3729934(appear);
 }
 
-- (_TtC15PhotosUIPrivate45PUWallpaperShuffleConfigurationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15PhotosUIPrivate45PUWallpaperShuffleConfigurationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1B3C9C5E8();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   PUWallpaperShuffleConfigurationViewController.init(nibName:bundle:)();
 }
 
-- (void)presentationControllerWillDismiss:(id)a3
+- (void)presentationControllerWillDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
-  PUWallpaperShuffleConfigurationViewController.presentationControllerWillDismiss(_:)(v4);
+  dismissCopy = dismiss;
+  selfCopy = self;
+  PUWallpaperShuffleConfigurationViewController.presentationControllerWillDismiss(_:)(dismissCopy);
 }
 
 @end

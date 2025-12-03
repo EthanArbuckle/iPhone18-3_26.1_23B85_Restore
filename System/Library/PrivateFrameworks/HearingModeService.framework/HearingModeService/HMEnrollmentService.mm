@@ -1,6 +1,6 @@
 @interface HMEnrollmentService
-- (BOOL)_isAudiogramValid:(id)a3;
-- (HMEnrollmentService)initWithDeviceAddress:(id)a3;
+- (BOOL)_isAudiogramValid:(id)valid;
+- (HMEnrollmentService)initWithDeviceAddress:(id)address;
 - (NSArray)invalidAudiograms;
 - (NSArray)validAudiograms;
 - (float)getAmplification;
@@ -8,30 +8,30 @@
 - (float)getBeamFormer;
 - (float)getNoiseSuppression;
 - (float)getTone;
-- (void)_accessoryReceivedHearingModeSettings:(id)a3;
+- (void)_accessoryReceivedHearingModeSettings:(id)settings;
 - (void)_accessorySendHearingModeSettings;
 - (void)_activate;
-- (void)_audiogramsQueryHandler:(id)a3 results:(id)a4 error:(id)a5;
-- (void)_getHearingModeSettings:(id *)a3 fromAudiogram:(id)a4;
+- (void)_audiogramsQueryHandler:(id)handler results:(id)results error:(id)error;
+- (void)_getHearingModeSettings:(id *)settings fromAudiogram:(id)audiogram;
 - (void)_invalidate;
 - (void)_startAudiogramQuery;
 - (void)activate;
 - (void)invalidate;
 - (void)resetTunings;
-- (void)setAmplification:(float)a3;
-- (void)setBalance:(float)a3;
-- (void)setBeamFormer:(float)a3;
-- (void)setNoiseSuppression:(float)a3;
-- (void)setSelectedAudiogram:(id)a3;
-- (void)setTone:(float)a3;
-- (void)triggerOnDemandFaultCheckWithCompletionHandler:(id)a3;
+- (void)setAmplification:(float)amplification;
+- (void)setBalance:(float)balance;
+- (void)setBeamFormer:(float)former;
+- (void)setNoiseSuppression:(float)suppression;
+- (void)setSelectedAudiogram:(id)audiogram;
+- (void)setTone:(float)tone;
+- (void)triggerOnDemandFaultCheckWithCompletionHandler:(id)handler;
 @end
 
 @implementation HMEnrollmentService
 
-- (HMEnrollmentService)initWithDeviceAddress:(id)a3
+- (HMEnrollmentService)initWithDeviceAddress:(id)address
 {
-  v5 = a3;
+  addressCopy = address;
   v10.receiver = self;
   v10.super_class = HMEnrollmentService;
   v6 = [(HMEnrollmentService *)&v10 init];
@@ -39,7 +39,7 @@
   if (v6)
   {
     objc_storeStrong(&v6->_dispatchQueue, MEMORY[0x277D85CD0]);
-    objc_storeStrong(&v7->_bluetoothDeviceAddress, a3);
+    objc_storeStrong(&v7->_bluetoothDeviceAddress, address);
     v7->_amplification = 0.5;
     *&v7->_tone = 0x3F0000003F000000;
     v8 = v7;
@@ -78,7 +78,7 @@
     v7 = 3221225472;
     v8 = __32__HMEnrollmentService__activate__block_invoke;
     v9 = &unk_2796EE978;
-    v10 = self;
+    selfCopy = self;
     v3 = v4;
     v11 = v3;
     [(HMAccessoryManager *)self->_accessoryManager setSettingsUpdateHandler:&v6];
@@ -87,7 +87,7 @@
       [HMEnrollmentService _activate];
     }
 
-    [(HMAccessoryManager *)v3 activateWithBluetoothDeviceAddress:self->_bluetoothDeviceAddress, v6, v7, v8, v9, v10];
+    [(HMAccessoryManager *)v3 activateWithBluetoothDeviceAddress:self->_bluetoothDeviceAddress, v6, v7, v8, v9, selfCopy];
   }
 }
 
@@ -152,199 +152,199 @@ uint64_t __32__HMEnrollmentService__activate__block_invoke_2(uint64_t result)
 
 - (NSArray)validAudiograms
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_validAudiograms;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_validAudiograms;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSArray)invalidAudiograms
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_invalidAudiograms;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_invalidAudiograms;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (float)getAmplification
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  amplification = v2->_amplification;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  amplification = selfCopy->_amplification;
+  objc_sync_exit(selfCopy);
 
   return amplification;
 }
 
-- (void)setAmplification:(float)a3
+- (void)setAmplification:(float)amplification
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v4->_amplification = a3;
-  dispatchQueue = v4->_dispatchQueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_amplification = amplification;
+  dispatchQueue = selfCopy->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __40__HMEnrollmentService_setAmplification___block_invoke;
   block[3] = &unk_2796EE5C0;
-  block[4] = v4;
+  block[4] = selfCopy;
   dispatch_async(dispatchQueue, block);
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (float)getBalance
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  balance = v2->_balance;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  balance = selfCopy->_balance;
+  objc_sync_exit(selfCopy);
 
   return balance;
 }
 
-- (void)setBalance:(float)a3
+- (void)setBalance:(float)balance
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v4->_balance = a3;
-  dispatchQueue = v4->_dispatchQueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_balance = balance;
+  dispatchQueue = selfCopy->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__HMEnrollmentService_setBalance___block_invoke;
   block[3] = &unk_2796EE5C0;
-  block[4] = v4;
+  block[4] = selfCopy;
   dispatch_async(dispatchQueue, block);
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (float)getBeamFormer
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  beamFormer = v2->_beamFormer;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  beamFormer = selfCopy->_beamFormer;
+  objc_sync_exit(selfCopy);
 
   return beamFormer;
 }
 
-- (void)setBeamFormer:(float)a3
+- (void)setBeamFormer:(float)former
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v4->_beamFormer = a3;
-  dispatchQueue = v4->_dispatchQueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_beamFormer = former;
+  dispatchQueue = selfCopy->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__HMEnrollmentService_setBeamFormer___block_invoke;
   block[3] = &unk_2796EE5C0;
-  block[4] = v4;
+  block[4] = selfCopy;
   dispatch_async(dispatchQueue, block);
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (float)getNoiseSuppression
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  noiseSuppression = v2->_noiseSuppression;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  noiseSuppression = selfCopy->_noiseSuppression;
+  objc_sync_exit(selfCopy);
 
   return noiseSuppression;
 }
 
-- (void)setNoiseSuppression:(float)a3
+- (void)setNoiseSuppression:(float)suppression
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v4->_noiseSuppression = a3;
-  dispatchQueue = v4->_dispatchQueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_noiseSuppression = suppression;
+  dispatchQueue = selfCopy->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__HMEnrollmentService_setNoiseSuppression___block_invoke;
   block[3] = &unk_2796EE5C0;
-  block[4] = v4;
+  block[4] = selfCopy;
   dispatch_async(dispatchQueue, block);
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)setSelectedAudiogram:(id)a3
+- (void)setSelectedAudiogram:(id)audiogram
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  selectedAudiogram = v5->_selectedAudiogram;
-  v5->_selectedAudiogram = v4;
-  v7 = v4;
+  audiogramCopy = audiogram;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selectedAudiogram = selfCopy->_selectedAudiogram;
+  selfCopy->_selectedAudiogram = audiogramCopy;
+  v7 = audiogramCopy;
 
-  v5->_amplification = 0.5;
-  *&v5->_tone = 0x3F0000003F000000;
-  dispatchQueue = v5->_dispatchQueue;
+  selfCopy->_amplification = 0.5;
+  *&selfCopy->_tone = 0x3F0000003F000000;
+  dispatchQueue = selfCopy->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __44__HMEnrollmentService_setSelectedAudiogram___block_invoke;
   block[3] = &unk_2796EE5C0;
-  block[4] = v5;
+  block[4] = selfCopy;
   dispatch_async(dispatchQueue, block);
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (float)getTone
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  tone = v2->_tone;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  tone = selfCopy->_tone;
+  objc_sync_exit(selfCopy);
 
   return tone;
 }
 
-- (void)setTone:(float)a3
+- (void)setTone:(float)tone
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v4->_tone = a3;
-  dispatchQueue = v4->_dispatchQueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_tone = tone;
+  dispatchQueue = selfCopy->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __31__HMEnrollmentService_setTone___block_invoke;
   block[3] = &unk_2796EE5C0;
-  block[4] = v4;
+  block[4] = selfCopy;
   dispatch_async(dispatchQueue, block);
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)triggerOnDemandFaultCheckWithCompletionHandler:(id)a3
+- (void)triggerOnDemandFaultCheckWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__HMEnrollmentService_triggerOnDemandFaultCheckWithCompletionHandler___block_invoke;
   v7[3] = &unk_2796EE5E8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
 - (void)resetTunings
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  *&v2->_tone = xmmword_251F84A20;
-  v2->_noiseSuppression = 0.0;
-  dispatchQueue = v2->_dispatchQueue;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  *&selfCopy->_tone = xmmword_251F84A20;
+  selfCopy->_noiseSuppression = 0.0;
+  dispatchQueue = selfCopy->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __35__HMEnrollmentService_resetTunings__block_invoke;
   block[3] = &unk_2796EE5C0;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(dispatchQueue, block);
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_accessorySendHearingModeSettings
@@ -368,14 +368,14 @@ uint64_t __32__HMEnrollmentService__activate__block_invoke_2(uint64_t result)
   }
 
   LODWORD(v33[0]) = 6554113;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = v5->_selectedAudiogram;
-  objc_sync_exit(v5);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = selfCopy->_selectedAudiogram;
+  objc_sync_exit(selfCopy);
 
   if (v6)
   {
-    [(HMEnrollmentService *)v5 _getHearingModeSettings:v33 fromAudiogram:v6];
+    [(HMEnrollmentService *)selfCopy _getHearingModeSettings:v33 fromAudiogram:v6];
   }
 
   if (gLogCategory_HMEnrollmentService <= 30)
@@ -393,11 +393,11 @@ uint64_t __32__HMEnrollmentService__activate__block_invoke_2(uint64_t result)
     }
   }
 
-  [(HMEnrollmentService *)v5 getTone];
+  [(HMEnrollmentService *)selfCopy getTone];
   v10 = v9;
-  [(HMEnrollmentService *)v5 getBalance];
+  [(HMEnrollmentService *)selfCopy getBalance];
   v12 = v11;
-  [(HMEnrollmentService *)v5 getAmplification];
+  [(HMEnrollmentService *)selfCopy getAmplification];
   v14 = v13;
   if (gLogCategory_HMEnrollmentService <= 30 && (gLogCategory_HMEnrollmentService != -1 || _LogCategory_Initialize()))
   {
@@ -423,9 +423,9 @@ uint64_t __32__HMEnrollmentService__activate__block_invoke_2(uint64_t result)
   v20 = fmaxf(fminf(v15, 1.0), -1.0);
   *(&v34 + 4) = __PAIR64__(LODWORD(v20), LODWORD(v18));
   *(&v37 + 4) = __PAIR64__(LODWORD(v20), LODWORD(v19));
-  beamFormer = v5->_beamFormer;
+  beamFormer = selfCopy->_beamFormer;
   *(&v37 + 3) = beamFormer;
-  noiseSuppression = v5->_noiseSuppression;
+  noiseSuppression = selfCopy->_noiseSuppression;
   *(&v34 + 3) = beamFormer;
   *&v35 = noiseSuppression;
   v38 = noiseSuppression;
@@ -461,14 +461,14 @@ LABEL_26:
   currentConfig = self->_currentConfig;
   self->_currentConfig = v24;
 
-  [(HMAccessoryManager *)v5->_accessoryManager writeHearingModeSetting:self->_currentConfig];
+  [(HMAccessoryManager *)selfCopy->_accessoryManager writeHearingModeSetting:self->_currentConfig];
 }
 
-- (void)_accessoryReceivedHearingModeSettings:(id)a3
+- (void)_accessoryReceivedHearingModeSettings:(id)settings
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  settingsCopy = settings;
+  v5 = settingsCopy;
+  if (settingsCopy)
   {
     v35 = 0;
     v33 = 0u;
@@ -476,7 +476,7 @@ LABEL_26:
     v31 = 0u;
     v32 = 0u;
     memset(v30, 0, sizeof(v30));
-    [v4 getBytes:v30 length:100];
+    [settingsCopy getBytes:v30 length:100];
     if (BYTE1(v30[0]) == 2)
     {
       v6 = LOBYTE(v30[0]);
@@ -503,14 +503,14 @@ LABEL_26:
       v14 = (v13 + 1.0) * 0.5;
       v15 = (v12 + 1.0) * 0.5;
       v16 = (v11 + 1.0) * 0.5;
-      v17 = self;
-      objc_sync_enter(v17);
-      v17->_tone = v16;
-      v17->_balance = v15;
-      v17->_amplification = v14;
-      v17->_beamFormer = v8;
-      v17->_noiseSuppression = v7;
-      objc_sync_exit(v17);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      selfCopy->_tone = v16;
+      selfCopy->_balance = v15;
+      selfCopy->_amplification = v14;
+      selfCopy->_beamFormer = v8;
+      selfCopy->_noiseSuppression = v7;
+      objc_sync_exit(selfCopy);
 
       if (gLogCategory_HMEnrollmentService <= 30)
       {
@@ -531,7 +531,7 @@ LABEL_26:
           if (gLogCategory_HMEnrollmentService <= 30 && (gLogCategory_HMEnrollmentService != -1 || _LogCategory_Initialize()))
           {
             v28 = v8;
-            noiseSuppression = v17->_noiseSuppression;
+            noiseSuppression = selfCopy->_noiseSuppression;
             v26 = v14;
             v27 = v15;
             v24 = v10;
@@ -544,8 +544,8 @@ LABEL_26:
       }
 
       v20 = [v5 mutableCopy];
-      currentConfig = v17->_currentConfig;
-      v17->_currentConfig = v20;
+      currentConfig = selfCopy->_currentConfig;
+      selfCopy->_currentConfig = v20;
     }
 
     else if (gLogCategory_HMEnrollmentService <= 90 && (gLogCategory_HMEnrollmentService != -1 || _LogCategory_Initialize()))
@@ -560,9 +560,9 @@ LABEL_26:
   }
 }
 
-- (void)_getHearingModeSettings:(id *)a3 fromAudiogram:(id)a4
+- (void)_getHearingModeSettings:(id *)settings fromAudiogram:(id)audiogram
 {
-  v72 = [HMAudiogramUtility frequencyToHearingDecibelLevelMapFromAudiogram:a4];
+  v72 = [HMAudiogramUtility frequencyToHearingDecibelLevelMapFromAudiogram:audiogram];
   if (v72)
   {
     v5 = +[HMAudiogramUtility frequencyBins];
@@ -570,73 +570,73 @@ LABEL_26:
     v7 = [v72 objectForKey:v6];
     v8 = [v7 objectForKey:@"left"];
     [v8 floatValue];
-    a3->var3.var0 = v9;
+    settings->var3.var0 = v9;
 
     v10 = [v5 objectAtIndexedSubscript:0];
     v11 = [v72 objectForKey:v10];
     v12 = [v11 objectForKey:@"right"];
     [v12 floatValue];
-    a3->var4.var0 = v13;
+    settings->var4.var0 = v13;
 
     v14 = [v5 objectAtIndexedSubscript:1];
     v15 = [v72 objectForKey:v14];
     v16 = [v15 objectForKey:@"left"];
     [v16 floatValue];
-    a3->var3.var1 = v17;
+    settings->var3.var1 = v17;
 
     v18 = [v5 objectAtIndexedSubscript:1];
     v19 = [v72 objectForKey:v18];
     v20 = [v19 objectForKey:@"right"];
     [v20 floatValue];
-    a3->var4.var1 = v21;
+    settings->var4.var1 = v21;
 
     v22 = [v5 objectAtIndexedSubscript:2];
     v23 = [v72 objectForKey:v22];
     v24 = [v23 objectForKey:@"left"];
     [v24 floatValue];
-    a3->var3.var2 = v25;
+    settings->var3.var2 = v25;
 
     v26 = [v5 objectAtIndexedSubscript:2];
     v27 = [v72 objectForKey:v26];
     v28 = [v27 objectForKey:@"right"];
     [v28 floatValue];
-    a3->var4.var2 = v29;
+    settings->var4.var2 = v29;
 
     v30 = [v5 objectAtIndexedSubscript:3];
     v31 = [v72 objectForKey:v30];
     v32 = [v31 objectForKey:@"left"];
     [v32 floatValue];
-    a3->var3.var3 = v33;
+    settings->var3.var3 = v33;
 
     v34 = [v5 objectAtIndexedSubscript:3];
     v35 = [v72 objectForKey:v34];
     v36 = [v35 objectForKey:@"right"];
     [v36 floatValue];
-    a3->var4.var3 = v37;
+    settings->var4.var3 = v37;
 
     v38 = [v5 objectAtIndexedSubscript:5];
     v39 = [v72 objectForKey:v38];
     v40 = [v39 objectForKey:@"left"];
     [v40 floatValue];
-    a3->var3.var5 = v41;
+    settings->var3.var5 = v41;
 
     v42 = [v5 objectAtIndexedSubscript:5];
     v43 = [v72 objectForKey:v42];
     v44 = [v43 objectForKey:@"right"];
     [v44 floatValue];
-    a3->var4.var5 = v45;
+    settings->var4.var5 = v45;
 
     v46 = [v5 objectAtIndexedSubscript:7];
     v47 = [v72 objectForKey:v46];
     v48 = [v47 objectForKey:@"left"];
     [v48 floatValue];
-    a3->var3.var7 = v49;
+    settings->var3.var7 = v49;
 
     v50 = [v5 objectAtIndexedSubscript:7];
     v51 = [v72 objectForKey:v50];
     v52 = [v51 objectForKey:@"right"];
     [v52 floatValue];
-    a3->var4.var7 = v53;
+    settings->var4.var7 = v53;
 
     v54 = [v5 objectAtIndexedSubscript:4];
     v55 = [v72 objectForKey:v54];
@@ -645,19 +645,19 @@ LABEL_26:
     {
       v56 = [v55 objectForKey:@"left"];
       [v56 floatValue];
-      a3->var3.var4 = v57;
+      settings->var3.var4 = v57;
 
       v58 = [v55 objectForKey:@"right"];
       [v58 floatValue];
-      a3->var4.var4 = v59;
+      settings->var4.var4 = v59;
 
       goto LABEL_8;
     }
 
-    var4 = (a3->var3.var3 + a3->var3.var5) * 0.5;
-    a3->var3.var4 = var4;
-    v61 = (a3->var4.var3 + a3->var4.var5) * 0.5;
-    a3->var4.var4 = v61;
+    var4 = (settings->var3.var3 + settings->var3.var5) * 0.5;
+    settings->var3.var4 = var4;
+    v61 = (settings->var4.var3 + settings->var4.var5) * 0.5;
+    settings->var4.var4 = v61;
     if (gLogCategory_HMEnrollmentService <= 30)
     {
       if (gLogCategory_HMEnrollmentService != -1)
@@ -671,8 +671,8 @@ LABEL_6:
 
       if (_LogCategory_Initialize())
       {
-        var4 = a3->var3.var4;
-        v61 = a3->var4.var4;
+        var4 = settings->var3.var4;
+        v61 = settings->var4.var4;
         goto LABEL_6;
       }
     }
@@ -685,17 +685,17 @@ LABEL_8:
     {
       v64 = [v63 objectForKey:@"left"];
       [v64 floatValue];
-      a3->var3.var6 = v65;
+      settings->var3.var6 = v65;
 
       v66 = [v63 objectForKey:@"right"];
       [v66 floatValue];
-      a3->var4.var6 = v67;
+      settings->var4.var6 = v67;
     }
 
     else
     {
-      a3->var3.var6 = (a3->var3.var5 + a3->var3.var7) * 0.5;
-      a3->var4.var6 = (a3->var4.var5 + a3->var4.var7) * 0.5;
+      settings->var3.var6 = (settings->var3.var5 + settings->var3.var7) * 0.5;
+      settings->var4.var6 = (settings->var4.var5 + settings->var4.var7) * 0.5;
       if (gLogCategory_HMEnrollmentService <= 30)
       {
         if (gLogCategory_HMEnrollmentService == -1)
@@ -705,8 +705,8 @@ LABEL_8:
             goto LABEL_14;
           }
 
-          var6 = a3->var3.var6;
-          v69 = a3->var4.var6;
+          var6 = settings->var3.var6;
+          v69 = settings->var4.var6;
         }
 
         LogPrintF();
@@ -724,7 +724,7 @@ LABEL_15:
 
 - (void)_startAudiogramQuery
 {
-  v3 = [MEMORY[0x277CCD720] audiogramSampleType];
+  audiogramSampleType = [MEMORY[0x277CCD720] audiogramSampleType];
   v4 = objc_alloc_init(MEMORY[0x277CCD4D8]);
   v5 = objc_alloc(MEMORY[0x277CCD8D0]);
   v7[0] = MEMORY[0x277D85DD0];
@@ -732,7 +732,7 @@ LABEL_15:
   v7[2] = __43__HMEnrollmentService__startAudiogramQuery__block_invoke;
   v7[3] = &unk_2796EE9C8;
   v7[4] = self;
-  v6 = [v5 initWithSampleType:v3 predicate:0 limit:0 sortDescriptors:0 resultsHandler:v7];
+  v6 = [v5 initWithSampleType:audiogramSampleType predicate:0 limit:0 sortDescriptors:0 resultsHandler:v7];
   if (gLogCategory_HMEnrollmentService <= 30 && (gLogCategory_HMEnrollmentService != -1 || _LogCategory_Initialize()))
   {
     [HMEnrollmentService _startAudiogramQuery];
@@ -762,13 +762,13 @@ void __43__HMEnrollmentService__startAudiogramQuery__block_invoke(uint64_t a1, v
   dispatch_async(v11, v15);
 }
 
-- (void)_audiogramsQueryHandler:(id)a3 results:(id)a4 error:(id)a5
+- (void)_audiogramsQueryHandler:(id)handler results:(id)results error:(id)error
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  handlerCopy = handler;
+  resultsCopy = results;
+  errorCopy = error;
+  if (errorCopy)
   {
     if (gLogCategory_HMEnrollmentService <= 30 && (gLogCategory_HMEnrollmentService != -1 || _LogCategory_Initialize()))
     {
@@ -778,7 +778,7 @@ void __43__HMEnrollmentService__startAudiogramQuery__block_invoke(uint64_t a1, v
     audiogramsAvailableHandler = self->_audiogramsAvailableHandler;
     if (audiogramsAvailableHandler)
     {
-      (*(audiogramsAvailableHandler + 2))(audiogramsAvailableHandler, MEMORY[0x277CBEBF8], MEMORY[0x277CBEBF8], v10);
+      (*(audiogramsAvailableHandler + 2))(audiogramsAvailableHandler, MEMORY[0x277CBEBF8], MEMORY[0x277CBEBF8], errorCopy);
     }
   }
 
@@ -800,15 +800,15 @@ void __43__HMEnrollmentService__startAudiogramQuery__block_invoke(uint64_t a1, v
       *p_invalidAudiograms = v15;
     }
 
-    v17 = self;
-    objc_sync_enter(v17);
-    objc_storeStrong(&v17->_audiograms, a4);
-    v29 = v8;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    objc_storeStrong(&selfCopy->_audiograms, results);
+    v29 = handlerCopy;
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v18 = v17->_audiograms;
+    v18 = selfCopy->_audiograms;
     v19 = [(NSArray *)v18 countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v19)
     {
@@ -823,7 +823,7 @@ void __43__HMEnrollmentService__startAudiogramQuery__block_invoke(uint64_t a1, v
           }
 
           v22 = *(*(&v30 + 1) + 8 * i);
-          if ([(HMEnrollmentService *)v17 _isAudiogramValid:v22])
+          if ([(HMEnrollmentService *)selfCopy _isAudiogramValid:v22])
           {
             v23 = p_validAudiograms;
           }
@@ -842,15 +842,15 @@ void __43__HMEnrollmentService__startAudiogramQuery__block_invoke(uint64_t a1, v
       while (v19);
     }
 
-    v8 = v29;
-    objc_sync_exit(v17);
+    handlerCopy = v29;
+    objc_sync_exit(selfCopy);
 
     if (gLogCategory_HMEnrollmentService <= 30 && (gLogCategory_HMEnrollmentService != -1 || _LogCategory_Initialize()))
     {
       [HMEnrollmentService _audiogramsQueryHandler:p_invalidAudiograms results:? error:?];
     }
 
-    v25 = v17->_audiogramsAvailableHandler;
+    v25 = selfCopy->_audiogramsAvailableHandler;
     if (v25)
     {
       v26 = [*p_validAudiograms copy];
@@ -862,10 +862,10 @@ void __43__HMEnrollmentService__startAudiogramQuery__block_invoke(uint64_t a1, v
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isAudiogramValid:(id)a3
+- (BOOL)_isAudiogramValid:(id)valid
 {
-  v3 = a3;
-  v4 = [HMAudiogramUtility frequencyToHearingDecibelLevelMapFromAudiogram:v3];
+  validCopy = valid;
+  v4 = [HMAudiogramUtility frequencyToHearingDecibelLevelMapFromAudiogram:validCopy];
   if (!v4)
   {
     [HMEnrollmentService _isAudiogramValid:?];
@@ -884,7 +884,7 @@ void __43__HMEnrollmentService__startAudiogramQuery__block_invoke(uint64_t a1, v
   v34[3] = &unk_2796EE9F0;
   v6 = v4;
   v35 = v6;
-  v7 = v3;
+  v7 = validCopy;
   v36 = v7;
   v37 = &v38;
   [v5 enumerateObjectsUsingBlock:v34];
@@ -935,9 +935,9 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v20 = [v7 sourceRevision];
-      v21 = [v20 source];
-      v22 = [v21 name];
+      sourceRevision = [v7 sourceRevision];
+      source = [sourceRevision source];
+      name = [source name];
       v23 = [v10 description];
       v24 = [v11 description];
       LogPrintF();
@@ -950,9 +950,9 @@ LABEL_17:
         goto LABEL_17;
       }
 
-      v20 = [v7 sourceRevision];
-      v21 = [v20 source];
-      v22 = [v21 name];
+      sourceRevision = [v7 sourceRevision];
+      source = [sourceRevision source];
+      name = [source name];
       v23 = [v9 description];
       v24 = [v10 description];
       LogPrintF();

@@ -1,7 +1,7 @@
 @interface CKVAdministratorFactory
 + (id)sharedAdministratorFactory;
 - (CKVAdministratorFactory)init;
-- (CKVAdministratorFactory)initWithServiceProvider:(id)a3;
+- (CKVAdministratorFactory)initWithServiceProvider:(id)provider;
 - (id)administrator;
 @end
 
@@ -10,8 +10,8 @@
 - (id)administrator
 {
   v3 = [CKVocabularyAdministrator alloc];
-  v4 = [(CKVAdminServiceProvider *)self->_serviceProvider adminService];
-  v5 = [(CKVocabularyAdministrator *)v3 initWithAdminService:v4 queue:self->_queue];
+  adminService = [(CKVAdminServiceProvider *)self->_serviceProvider adminService];
+  v5 = [(CKVocabularyAdministrator *)v3 initWithAdminService:adminService queue:self->_queue];
 
   return v5;
 }
@@ -22,10 +22,10 @@
   objc_exception_throw(v2);
 }
 
-- (CKVAdministratorFactory)initWithServiceProvider:(id)a3
+- (CKVAdministratorFactory)initWithServiceProvider:(id)provider
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  providerCopy = provider;
   v14.receiver = self;
   v14.super_class = CKVAdministratorFactory;
   v6 = [(CKVAdministratorFactory *)&v14 init];
@@ -35,7 +35,7 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v6->_serviceProvider, a3);
+  objc_storeStrong(&v6->_serviceProvider, provider);
   if (v7->_serviceProvider)
   {
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);

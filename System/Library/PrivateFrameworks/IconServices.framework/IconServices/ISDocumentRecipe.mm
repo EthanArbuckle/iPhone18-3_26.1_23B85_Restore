@@ -9,7 +9,7 @@
 - (id)hintedTextFontSize;
 - (id)hintedTextRect;
 - (id)iconSpecification;
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4;
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale;
 - (id)pageResource;
 @end
 
@@ -76,10 +76,10 @@ uint64_t __35__ISDocumentRecipe_hintedPaperRect__block_invoke_2()
 - (id)hintedBadgeRect
 {
   v3 = [(ISDocumentRecipe *)self platform]& 0x3C;
-  v4 = [(ISDocumentRecipe *)self badgeWithSymbol];
+  badgeWithSymbol = [(ISDocumentRecipe *)self badgeWithSymbol];
   if (v3)
   {
-    if (v4)
+    if (badgeWithSymbol)
     {
       if (hintedBadgeRect_onceToken_110 != -1)
       {
@@ -100,7 +100,7 @@ uint64_t __35__ISDocumentRecipe_hintedPaperRect__block_invoke_2()
     }
   }
 
-  else if (v4)
+  else if (badgeWithSymbol)
   {
     if (hintedBadgeRect_onceToken_118 != -1)
     {
@@ -298,9 +298,9 @@ uint64_t __38__ISDocumentRecipe_hintedTextFontSize__block_invoke_2()
 
 - (id)hintedSymbolFontSize
 {
-  v3 = [(ISDocumentRecipe *)self hasText];
+  hasText = [(ISDocumentRecipe *)self hasText];
   v4 = [(ISDocumentRecipe *)self platform]& 0x3C;
-  if (v3)
+  if (hasText)
   {
     if (v4)
     {
@@ -501,9 +501,9 @@ uint64_t __38__ISDocumentRecipe_hintedShadowSpread__block_invoke()
     v2 = @"document/solarium/page";
   }
 
-  v3 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
-  v4 = [v3 assetCatalogURL];
-  v5 = [ISAssetCatalogResource assetCatalogResourceWithURL:v4 imageName:v2 error:0];
+  iconFoundationFrameworkBundle = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
+  assetCatalogURL = [iconFoundationFrameworkBundle assetCatalogURL];
+  v5 = [ISAssetCatalogResource assetCatalogResourceWithURL:assetCatalogURL imageName:v2 error:0];
 
   return v5;
 }
@@ -520,33 +520,33 @@ uint64_t __38__ISDocumentRecipe_hintedShadowSpread__block_invoke()
     v2 = @"document/solarium/page-fold";
   }
 
-  v3 = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
-  v4 = [v3 assetCatalogURL];
-  v5 = [ISAssetCatalogResource assetCatalogResourceWithURL:v4 imageName:v2 error:0];
+  iconFoundationFrameworkBundle = [MEMORY[0x1E69A8960] iconFoundationFrameworkBundle];
+  assetCatalogURL = [iconFoundationFrameworkBundle assetCatalogURL];
+  v5 = [ISAssetCatalogResource assetCatalogResourceWithURL:assetCatalogURL imageName:v2 error:0];
 
   return v5;
 }
 
-- (id)layerTreeForSize:(CGSize)a3 scale:(double)a4
+- (id)layerTreeForSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = [(ISDocumentRecipe *)self hintedPaperRect:a3.width];
+  height = size.height;
+  width = size.width;
+  v7 = [(ISDocumentRecipe *)self hintedPaperRect:size.width];
   [v7 hintedRectForSize:{width, height}];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  v16 = [(ISDocumentRecipe *)self hintedBadgeRect];
-  [v16 hintedRectForSize:{width, height}];
+  hintedBadgeRect = [(ISDocumentRecipe *)self hintedBadgeRect];
+  [hintedBadgeRect hintedRectForSize:{width, height}];
   v50 = v18;
   v51 = v17;
   v52 = v19;
   v21 = v20;
 
-  v22 = [(ISDocumentRecipe *)self hintedTextRect];
-  [v22 hintedRectForSize:{width, height}];
+  hintedTextRect = [(ISDocumentRecipe *)self hintedTextRect];
+  [hintedTextRect hintedRectForSize:{width, height}];
   v48 = v24;
   v49 = v23;
   v46 = v26;
@@ -558,8 +558,8 @@ uint64_t __38__ISDocumentRecipe_hintedShadowSpread__block_invoke()
   v28 = objc_alloc_init(ISContentLayer);
   [(ISLayer *)v28 setName:@"background layer"];
   [(ISLayer *)v28 setSize:width, height];
-  v29 = [(ISDocumentRecipe *)self pageResource];
-  [(ISContentLayer *)v28 setContent:v29];
+  pageResource = [(ISDocumentRecipe *)self pageResource];
+  [(ISContentLayer *)v28 setContent:pageResource];
 
   if ([(ISDocumentRecipe *)self hasBespokeBackground])
   {
@@ -567,9 +567,9 @@ uint64_t __38__ISDocumentRecipe_hintedShadowSpread__block_invoke()
     [(ISLayer *)v30 setName:@"suppliedBackground layer"];
     [(ISLayer *)v30 setSize:width, height];
     [(ISContentLayer *)v30 setContent:@"kISBackgroundResourceKey"];
-    v31 = [(ISDocumentRecipe *)self treatLikeSymbol];
+    treatLikeSymbol = [(ISDocumentRecipe *)self treatLikeSymbol];
     v32 = off_1E77C5FC0;
-    if (!v31)
+    if (!treatLikeSymbol)
     {
       v32 = off_1E77C5F88;
     }
@@ -598,8 +598,8 @@ uint64_t __38__ISDocumentRecipe_hintedShadowSpread__block_invoke()
   {
     v37 = objc_alloc_init(ISSymbolLayer);
     [(ISSymbolLayer *)v37 setSymbol:@"kISBadgeResourceKey"];
-    v38 = [(ISDocumentRecipe *)self hintedSymbolFontSize];
-    [v38 hintedFloatForSize:{width, height}];
+    hintedSymbolFontSize = [(ISDocumentRecipe *)self hintedSymbolFontSize];
+    [hintedSymbolFontSize hintedFloatForSize:{width, height}];
     [(ISSymbolLayer *)v37 setFontSize:?];
 
     [(ISLayer *)v37 setSize:width, height];
@@ -633,8 +633,8 @@ uint64_t __38__ISDocumentRecipe_hintedShadowSpread__block_invoke()
     [(ISLayer *)v41 setName:@"text layer"];
     [(ISLayer *)v41 setFrame:v49, v48, v47, v46];
     [(ISTextLayer *)v41 setText:@"kISTextResourceKey"];
-    v42 = [(ISDocumentRecipe *)self hintedTextFontSize];
-    [v42 hintedFloatForSize:{width, height}];
+    hintedTextFontSize = [(ISDocumentRecipe *)self hintedTextFontSize];
+    [hintedTextFontSize hintedFloatForSize:{width, height}];
     [(ISTextLayer *)v41 setFontSize:?];
 
     [(ISLayer *)v36 addSublayer:v41];
@@ -643,8 +643,8 @@ uint64_t __38__ISDocumentRecipe_hintedShadowSpread__block_invoke()
   v43 = objc_alloc_init(ISContentLayer);
   [(ISLayer *)v43 setName:@"page fold layer"];
   [(ISLayer *)v43 setSize:width, height];
-  v44 = [(ISDocumentRecipe *)self curlResource];
-  [(ISContentLayer *)v43 setContent:v44];
+  curlResource = [(ISDocumentRecipe *)self curlResource];
+  [(ISContentLayer *)v43 setContent:curlResource];
 
   [(ISLayer *)v27 addSublayer:v43];
 

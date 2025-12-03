@@ -1,8 +1,8 @@
 @interface PersistedTranslation
-- (PersistedTranslation)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (PersistedTranslation)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (double)ttsPlaybackRateDouble;
 - (void).cxx_construct;
-- (void)setTtsPlaybackRateDouble:(double)a3;
+- (void)setTtsPlaybackRateDouble:(double)double;
 @end
 
 @implementation PersistedTranslation
@@ -14,21 +14,21 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setTtsPlaybackRateDouble:(double)a3
+- (void)setTtsPlaybackRateDouble:(double)double
 {
   v5 = OBJC_IVAR___PersistedTranslation_ttsPlaybackRateDouble;
   swift_beginAccess();
-  *(&self->super.super.isa + v5) = a3;
-  v6 = self;
+  *(&self->super.super.isa + v5) = double;
+  selfCopy = self;
   sub_26F397258();
   sub_26F397108();
 }
 
-- (PersistedTranslation)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (PersistedTranslation)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for PersistedTranslation();
-  return [(PersistedTranslation *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(PersistedTranslation *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 - (void).cxx_construct

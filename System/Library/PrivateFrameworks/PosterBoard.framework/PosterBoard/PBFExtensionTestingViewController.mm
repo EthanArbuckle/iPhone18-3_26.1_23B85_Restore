@@ -1,7 +1,7 @@
 @interface PBFExtensionTestingViewController
 - (PBFExtensionTestingViewController)init;
-- (void)_variantSelectorValueChanged:(id)a3;
-- (void)presentPage:(id)a3;
+- (void)_variantSelectorValueChanged:(id)changed;
+- (void)presentPage:(id)page;
 - (void)viewDidLoad;
 @end
 
@@ -50,11 +50,11 @@
   v35.receiver = self;
   v35.super_class = PBFExtensionTestingViewController;
   [(PBFExtensionTestingViewController *)&v35 viewDidLoad];
-  v3 = [(PBFExtensionTestingViewController *)self view];
+  view = [(PBFExtensionTestingViewController *)self view];
   if (MEMORY[0x21CEF7340]("[PBFExtensionTestingViewController viewDidLoad]"))
   {
-    v4 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [v3 setBackgroundColor:v4];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [view setBackgroundColor:systemBackgroundColor];
 
     v5 = [objc_alloc(MEMORY[0x277D75A08]) initWithItems:&unk_282D0A270];
     variantSelector = self->_variantSelector;
@@ -69,38 +69,38 @@
 
     [(UINavigationBar *)self->_barView setTranslucent:0];
     [(UINavigationBar *)self->_barView setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v3 addSubview:self->_variantSelector];
-    [v3 addSubview:self->_barView];
+    [view addSubview:self->_variantSelector];
+    [view addSubview:self->_barView];
     v25 = MEMORY[0x277CCAAD0];
-    v34 = [(UINavigationBar *)self->_barView centerXAnchor];
-    v33 = [v3 centerXAnchor];
-    v32 = [v34 constraintEqualToAnchor:v33];
+    centerXAnchor = [(UINavigationBar *)self->_barView centerXAnchor];
+    centerXAnchor2 = [view centerXAnchor];
+    v32 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v36[0] = v32;
-    v31 = [(UINavigationBar *)self->_barView widthAnchor];
-    v30 = [v3 widthAnchor];
-    v29 = [v31 constraintEqualToAnchor:v30];
+    widthAnchor = [(UINavigationBar *)self->_barView widthAnchor];
+    widthAnchor2 = [view widthAnchor];
+    v29 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
     v36[1] = v29;
-    v28 = [(UISegmentedControl *)self->_variantSelector centerXAnchor];
-    v27 = [v3 centerXAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    centerXAnchor3 = [(UISegmentedControl *)self->_variantSelector centerXAnchor];
+    centerXAnchor4 = [view centerXAnchor];
+    v26 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
     v36[2] = v26;
-    v24 = [(UISegmentedControl *)self->_variantSelector leadingAnchor];
-    v23 = [v3 leadingAnchor];
-    v22 = [v24 constraintGreaterThanOrEqualToAnchor:v23 constant:10.0];
+    leadingAnchor = [(UISegmentedControl *)self->_variantSelector leadingAnchor];
+    leadingAnchor2 = [view leadingAnchor];
+    v22 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2 constant:10.0];
     v36[3] = v22;
-    v21 = [(UISegmentedControl *)self->_variantSelector trailingAnchor];
-    v20 = [v3 trailingAnchor];
-    v19 = [v21 constraintLessThanOrEqualToAnchor:v20 constant:-10.0];
+    trailingAnchor = [(UISegmentedControl *)self->_variantSelector trailingAnchor];
+    trailingAnchor2 = [view trailingAnchor];
+    v19 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2 constant:-10.0];
     v36[4] = v19;
-    v18 = [v3 safeAreaLayoutGuide];
-    v9 = [v18 bottomAnchor];
-    v10 = [(UISegmentedControl *)self->_variantSelector bottomAnchor];
-    v11 = [v9 constraintEqualToSystemSpacingBelowAnchor:v10 multiplier:1.0];
+    safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+    bottomAnchor = [safeAreaLayoutGuide bottomAnchor];
+    bottomAnchor2 = [(UISegmentedControl *)self->_variantSelector bottomAnchor];
+    v11 = [bottomAnchor constraintEqualToSystemSpacingBelowAnchor:bottomAnchor2 multiplier:1.0];
     v36[5] = v11;
-    v12 = [v3 safeAreaLayoutGuide];
-    v13 = [v12 topAnchor];
-    v14 = [(UINavigationBar *)self->_barView topAnchor];
-    v15 = [v13 constraintEqualToSystemSpacingBelowAnchor:v14 multiplier:1.0];
+    safeAreaLayoutGuide2 = [view safeAreaLayoutGuide];
+    topAnchor = [safeAreaLayoutGuide2 topAnchor];
+    topAnchor2 = [(UINavigationBar *)self->_barView topAnchor];
+    v15 = [topAnchor constraintEqualToSystemSpacingBelowAnchor:topAnchor2 multiplier:1.0];
     v36[6] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:7];
     [v25 activateConstraints:v16];
@@ -110,32 +110,32 @@
 
   else
   {
-    v17 = [MEMORY[0x277D75348] clearColor];
-    [v3 setBackgroundColor:v17];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [view setBackgroundColor:clearColor];
   }
 }
 
-- (void)presentPage:(id)a3
+- (void)presentPage:(id)page
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self->_presentedViewController != v5 && MEMORY[0x21CEF7340]("[PBFExtensionTestingViewController presentPage:]"))
+  pageCopy = page;
+  if (self->_presentedViewController != pageCopy && MEMORY[0x21CEF7340]("[PBFExtensionTestingViewController presentPage:]"))
   {
     [(PBFExtensionTestingViewController *)self bs_removeChildViewController:self->_presentedViewController animated:1 transitionBlock:0];
-    [(PBFExtensionTestingViewController *)self bs_addChildViewController:v5 animated:1 transitionBlock:0];
-    objc_storeStrong(&self->_presentedViewController, a3);
-    v6 = [(UIViewController *)v5 navigationItem];
-    v7 = v6;
-    if (v6)
+    [(PBFExtensionTestingViewController *)self bs_addChildViewController:pageCopy animated:1 transitionBlock:0];
+    objc_storeStrong(&self->_presentedViewController, page);
+    navigationItem = [(UIViewController *)pageCopy navigationItem];
+    v7 = navigationItem;
+    if (navigationItem)
     {
-      v8 = v6;
+      v8 = navigationItem;
     }
 
     else
     {
       v9 = objc_alloc(MEMORY[0x277D757A8]);
-      v10 = [(UIViewController *)v5 title];
-      v8 = [v9 initWithTitle:v10];
+      title = [(UIViewController *)pageCopy title];
+      v8 = [v9 initWithTitle:title];
     }
 
     v30 = v8;
@@ -145,43 +145,43 @@
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:1];
     [(UINavigationBar *)barView setItems:v12];
 
-    v13 = [(PBFExtensionTestingViewController *)self view];
-    v14 = [(UIViewController *)self->_presentedViewController view];
-    [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
+    view = [(PBFExtensionTestingViewController *)self view];
+    view2 = [(UIViewController *)self->_presentedViewController view];
+    [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
     v24 = MEMORY[0x277CCAAD0];
-    v29 = [v14 topAnchor];
-    v28 = [(UINavigationBar *)self->_barView bottomAnchor];
-    v27 = [v29 constraintEqualToAnchor:v28];
+    topAnchor = [view2 topAnchor];
+    bottomAnchor = [(UINavigationBar *)self->_barView bottomAnchor];
+    v27 = [topAnchor constraintEqualToAnchor:bottomAnchor];
     v31[0] = v27;
-    v26 = [v14 leftAnchor];
-    v23 = v13;
-    v25 = [v13 leftAnchor];
-    v15 = [v26 constraintEqualToAnchor:v25];
+    leftAnchor = [view2 leftAnchor];
+    v23 = view;
+    leftAnchor2 = [view leftAnchor];
+    v15 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v31[1] = v15;
-    v16 = [v14 bottomAnchor];
-    v17 = [(UISegmentedControl *)self->_variantSelector topAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    bottomAnchor2 = [view2 bottomAnchor];
+    topAnchor2 = [(UISegmentedControl *)self->_variantSelector topAnchor];
+    v18 = [bottomAnchor2 constraintEqualToAnchor:topAnchor2];
     v31[2] = v18;
-    v19 = [v14 rightAnchor];
-    v20 = [v13 rightAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    rightAnchor = [view2 rightAnchor];
+    rightAnchor2 = [view rightAnchor];
+    v21 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v31[3] = v21;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:4];
     [v24 activateConstraints:v22];
   }
 }
 
-- (void)_variantSelectorValueChanged:(id)a3
+- (void)_variantSelectorValueChanged:(id)changed
 {
-  v4 = [a3 selectedSegmentIndex];
-  if (v4 > 4)
+  selectedSegmentIndex = [changed selectedSegmentIndex];
+  if (selectedSegmentIndex > 4)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = *(&self->super.super.super.isa + *off_2782C6DD0[v4]);
+    v5 = *(&self->super.super.super.isa + *off_2782C6DD0[selectedSegmentIndex]);
   }
 
   v6 = v5;

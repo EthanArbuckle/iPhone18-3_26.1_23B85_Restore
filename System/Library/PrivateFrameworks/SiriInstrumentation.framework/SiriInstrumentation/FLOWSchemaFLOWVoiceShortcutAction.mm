@@ -1,25 +1,25 @@
 @interface FLOWSchemaFLOWVoiceShortcutAction
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWVoiceShortcutAction)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWVoiceShortcutAction)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWVoiceShortcutAction)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWVoiceShortcutAction)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWVoiceShortcutAction
 
-- (FLOWSchemaFLOWVoiceShortcutAction)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWVoiceShortcutAction)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v16.receiver = self;
   v16.super_class = FLOWSchemaFLOWVoiceShortcutAction;
   v5 = [(FLOWSchemaFLOWVoiceShortcutAction *)&v16 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"appId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"appId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -27,7 +27,7 @@
       [(FLOWSchemaFLOWVoiceShortcutAction *)v5 setAppId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"intentCategory"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"intentCategory"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,7 +35,7 @@
       [(FLOWSchemaFLOWVoiceShortcutAction *)v5 setIntentCategory:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"intentName"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"intentName"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -43,7 +43,7 @@
       [(FLOWSchemaFLOWVoiceShortcutAction *)v5 setIntentName:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"intentNLDomain"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"intentNLDomain"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,30 +57,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWVoiceShortcutAction)initWithJSON:(id)a3
+- (FLOWSchemaFLOWVoiceShortcutAction)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWVoiceShortcutAction *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWVoiceShortcutAction *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWVoiceShortcutAction *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -93,38 +93,38 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_appId)
   {
-    v4 = [(FLOWSchemaFLOWVoiceShortcutAction *)self appId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"appId"];
+    appId = [(FLOWSchemaFLOWVoiceShortcutAction *)self appId];
+    v5 = [appId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"appId"];
   }
 
   if (self->_intentCategory)
   {
-    v6 = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentCategory];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"intentCategory"];
+    intentCategory = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentCategory];
+    v7 = [intentCategory copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"intentCategory"];
   }
 
   if (self->_intentNLDomain)
   {
-    v8 = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentNLDomain];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"intentNLDomain"];
+    intentNLDomain = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentNLDomain];
+    v9 = [intentNLDomain copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"intentNLDomain"];
   }
 
   if (self->_intentName)
   {
-    v10 = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentName];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"intentName"];
+    intentName = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentName];
+    v11 = [intentName copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"intentName"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -135,28 +135,28 @@
   return v4 ^ v5 ^ [(NSString *)self->_intentNLDomain hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
-  v5 = [(FLOWSchemaFLOWVoiceShortcutAction *)self appId];
-  v6 = [v4 appId];
-  if ((v5 != 0) == (v6 == 0))
+  appId = [(FLOWSchemaFLOWVoiceShortcutAction *)self appId];
+  appId2 = [equalCopy appId];
+  if ((appId != 0) == (appId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v7 = [(FLOWSchemaFLOWVoiceShortcutAction *)self appId];
-  if (v7)
+  appId3 = [(FLOWSchemaFLOWVoiceShortcutAction *)self appId];
+  if (appId3)
   {
-    v8 = v7;
-    v9 = [(FLOWSchemaFLOWVoiceShortcutAction *)self appId];
-    v10 = [v4 appId];
-    v11 = [v9 isEqual:v10];
+    v8 = appId3;
+    appId4 = [(FLOWSchemaFLOWVoiceShortcutAction *)self appId];
+    appId5 = [equalCopy appId];
+    v11 = [appId4 isEqual:appId5];
 
     if (!v11)
     {
@@ -168,20 +168,20 @@
   {
   }
 
-  v5 = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentCategory];
-  v6 = [v4 intentCategory];
-  if ((v5 != 0) == (v6 == 0))
+  appId = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentCategory];
+  appId2 = [equalCopy intentCategory];
+  if ((appId != 0) == (appId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v12 = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentCategory];
-  if (v12)
+  intentCategory = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentCategory];
+  if (intentCategory)
   {
-    v13 = v12;
-    v14 = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentCategory];
-    v15 = [v4 intentCategory];
-    v16 = [v14 isEqual:v15];
+    v13 = intentCategory;
+    intentCategory2 = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentCategory];
+    intentCategory3 = [equalCopy intentCategory];
+    v16 = [intentCategory2 isEqual:intentCategory3];
 
     if (!v16)
     {
@@ -193,20 +193,20 @@
   {
   }
 
-  v5 = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentName];
-  v6 = [v4 intentName];
-  if ((v5 != 0) == (v6 == 0))
+  appId = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentName];
+  appId2 = [equalCopy intentName];
+  if ((appId != 0) == (appId2 == 0))
   {
     goto LABEL_21;
   }
 
-  v17 = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentName];
-  if (v17)
+  intentName = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentName];
+  if (intentName)
   {
-    v18 = v17;
-    v19 = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentName];
-    v20 = [v4 intentName];
-    v21 = [v19 isEqual:v20];
+    v18 = intentName;
+    intentName2 = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentName];
+    intentName3 = [equalCopy intentName];
+    v21 = [intentName2 isEqual:intentName3];
 
     if (!v21)
     {
@@ -218,12 +218,12 @@
   {
   }
 
-  v5 = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentNLDomain];
-  v6 = [v4 intentNLDomain];
-  if ((v5 != 0) != (v6 == 0))
+  appId = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentNLDomain];
+  appId2 = [equalCopy intentNLDomain];
+  if ((appId != 0) != (appId2 == 0))
   {
-    v22 = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentNLDomain];
-    if (!v22)
+    intentNLDomain = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentNLDomain];
+    if (!intentNLDomain)
     {
 
 LABEL_25:
@@ -231,10 +231,10 @@ LABEL_25:
       goto LABEL_23;
     }
 
-    v23 = v22;
-    v24 = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentNLDomain];
-    v25 = [v4 intentNLDomain];
-    v26 = [v24 isEqual:v25];
+    v23 = intentNLDomain;
+    intentNLDomain2 = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentNLDomain];
+    intentNLDomain3 = [equalCopy intentNLDomain];
+    v26 = [intentNLDomain2 isEqual:intentNLDomain3];
 
     if (v26)
     {
@@ -254,37 +254,37 @@ LABEL_23:
   return v27;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(FLOWSchemaFLOWVoiceShortcutAction *)self appId];
+  toCopy = to;
+  appId = [(FLOWSchemaFLOWVoiceShortcutAction *)self appId];
 
-  if (v4)
+  if (appId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentCategory];
+  intentCategory = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentCategory];
 
-  if (v5)
+  if (intentCategory)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentName];
+  intentName = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentName];
 
-  if (v6)
+  if (intentName)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentNLDomain];
+  intentNLDomain = [(FLOWSchemaFLOWVoiceShortcutAction *)self intentNLDomain];
 
-  v8 = v9;
-  if (v7)
+  v8 = toCopy;
+  if (intentNLDomain)
   {
     PBDataWriterWriteStringField();
-    v8 = v9;
+    v8 = toCopy;
   }
 }
 

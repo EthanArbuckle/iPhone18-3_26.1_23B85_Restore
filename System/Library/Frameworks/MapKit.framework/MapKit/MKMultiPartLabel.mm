@@ -1,39 +1,39 @@
 @interface MKMultiPartLabel
 + (id)_formattedStringsCache;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MKMultiPartLabel)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MKMultiPartLabel)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)textInset;
-- (id)_addDefaultAttributesToAttributedString:(id)a3;
-- (id)_attributedAdjustedMultiPartStringFromString:(id)a3;
+- (id)_addDefaultAttributesToAttributedString:(id)string;
+- (id)_attributedAdjustedMultiPartStringFromString:(id)string;
 - (id)_textAttributes;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (int64_t)lineBreakMode;
 - (unint64_t)numberOfLines;
 - (void)_eliminateUnnecessarySeparators;
 - (void)_setupTextView;
 - (void)_updateColorsForCurrentState;
 - (void)_updateStrings;
-- (void)_updateTextViewTextAndInvalidateLayout:(id)a3;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)_updateTextViewTextAndInvalidateLayout:(id)layout;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)layoutSubviews;
-- (void)setContentCompressionResistancePriority:(float)a3 forAxis:(int64_t)a4;
-- (void)setContentHuggingPriority:(float)a3 forAxis:(int64_t)a4;
-- (void)setFont:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setHighlightedTextColor:(id)a3;
-- (void)setLineBreakMode:(int64_t)a3;
-- (void)setMultiPartString:(id)a3;
-- (void)setNumberOfLines:(unint64_t)a3;
-- (void)setText:(id)a3;
-- (void)setTextColor:(id)a3;
+- (void)setContentCompressionResistancePriority:(float)priority forAxis:(int64_t)axis;
+- (void)setContentHuggingPriority:(float)priority forAxis:(int64_t)axis;
+- (void)setFont:(id)font;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setHighlightedTextColor:(id)color;
+- (void)setLineBreakMode:(int64_t)mode;
+- (void)setMultiPartString:(id)string;
+- (void)setNumberOfLines:(unint64_t)lines;
+- (void)setText:(id)text;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation MKMultiPartLabel
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UITextView *)self->_textView sizeThatFits:a3.width, a3.height];
+  [(UITextView *)self->_textView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -59,34 +59,34 @@
   return result;
 }
 
-- (void)setContentHuggingPriority:(float)a3 forAxis:(int64_t)a4
+- (void)setContentHuggingPriority:(float)priority forAxis:(int64_t)axis
 {
   v8.receiver = self;
   v8.super_class = MKMultiPartLabel;
   [MKMultiPartLabel setContentHuggingPriority:sel_setContentHuggingPriority_forAxis_ forAxis:?];
-  *&v7 = a3;
-  [(UITextView *)self->_textView setContentHuggingPriority:a4 forAxis:v7];
+  *&v7 = priority;
+  [(UITextView *)self->_textView setContentHuggingPriority:axis forAxis:v7];
 }
 
-- (void)setContentCompressionResistancePriority:(float)a3 forAxis:(int64_t)a4
+- (void)setContentCompressionResistancePriority:(float)priority forAxis:(int64_t)axis
 {
   v8.receiver = self;
   v8.super_class = MKMultiPartLabel;
   [MKMultiPartLabel setContentCompressionResistancePriority:sel_setContentCompressionResistancePriority_forAxis_ forAxis:?];
-  *&v7 = a3;
-  [(UITextView *)self->_textView setContentCompressionResistancePriority:a4 forAxis:v7];
+  *&v7 = priority;
+  [(UITextView *)self->_textView setContentCompressionResistancePriority:axis forAxis:v7];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = MKMultiPartLabel;
-  v5 = [(MKMultiPartLabel *)&v8 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(MKMultiPartLabel *)&v8 hitTest:event withEvent:test.x, test.y];
   if (v5 == self->_textView)
   {
-    v6 = self;
+    selfCopy = self;
 
-    v5 = v6;
+    v5 = selfCopy;
   }
 
   return v5;
@@ -104,26 +104,26 @@
 
 - (void)_eliminateUnnecessarySeparators
 {
-  v2 = self;
+  selfCopy = self;
   v61 = *MEMORY[0x1E69E9840];
-  v54 = [(UITextView *)self->_textView textLayoutManager];
-  v3 = [(UITextView *)v2->_textView _mk_layoutFragments];
-  v4 = [(MKMultiPartLabel *)v2 data];
-  v5 = [v4 currentSeparatorIndex];
+  textLayoutManager = [(UITextView *)self->_textView textLayoutManager];
+  _mk_layoutFragments = [(UITextView *)selfCopy->_textView _mk_layoutFragments];
+  data = [(MKMultiPartLabel *)selfCopy data];
+  currentSeparatorIndex = [data currentSeparatorIndex];
 
-  v6 = [(MKMultiPartLabel *)v2 data];
-  v7 = [v6 separators];
-  v8 = [v7 count];
+  data2 = [(MKMultiPartLabel *)selfCopy data];
+  separators = [data2 separators];
+  v8 = [separators count];
 
-  if (v5 < v8)
+  if (currentSeparatorIndex < v8)
   {
-    v49 = v3;
-    v50 = v2;
+    v49 = _mk_layoutFragments;
+    v50 = selfCopy;
     do
     {
-      v9 = [(MKMultiPartLabel *)v2 data];
-      v10 = [v9 separators];
-      v11 = [v10 objectAtIndexedSubscript:v5];
+      data3 = [(MKMultiPartLabel *)selfCopy data];
+      separators2 = [data3 separators];
+      v11 = [separators2 objectAtIndexedSubscript:currentSeparatorIndex];
 
       [v11 range];
       if (!v12 || [v11 range] == 0x7FFFFFFFFFFFFFFFLL)
@@ -132,32 +132,32 @@
         goto LABEL_27;
       }
 
-      v13 = [v54 documentRange];
-      v14 = [v13 location];
-      v15 = [v54 locationFromLocation:v14 withOffset:{objc_msgSend(v11, "range")}];
+      documentRange = [textLayoutManager documentRange];
+      location = [documentRange location];
+      v15 = [textLayoutManager locationFromLocation:location withOffset:{objc_msgSend(v11, "range")}];
 
-      v16 = [v54 documentRange];
-      v17 = [v16 location];
-      v18 = [v11 range];
-      v20 = [v54 locationFromLocation:v17 withOffset:v19 + v18 - 1];
+      documentRange2 = [textLayoutManager documentRange];
+      location2 = [documentRange2 location];
+      range = [v11 range];
+      v20 = [textLayoutManager locationFromLocation:location2 withOffset:v19 + range - 1];
 
       v55 = v15;
-      v21 = _mk_layoutFragmentForLocationInFragments(v15, v3);
-      v51 = _mk_layoutFragmentForLocationInFragments(v20, v3);
+      v21 = _mk_layoutFragmentForLocationInFragments(v15, _mk_layoutFragments);
+      v51 = _mk_layoutFragmentForLocationInFragments(v20, _mk_layoutFragments);
       v52 = v21;
       if (v21 != v51)
       {
-        v22 = [(MKMultiPartLabel *)v2 data];
-        v23 = [v22 replaceSeparatorAtIndex:v5 withString:@"\n"];
+        data4 = [(MKMultiPartLabel *)selfCopy data];
+        v23 = [data4 replaceSeparatorAtIndex:currentSeparatorIndex withString:@"\n"];
 
         if (v23)
         {
-          v24 = [(MKMultiPartLabel *)v2 data];
-          v25 = [v24 attributedString];
-          [(MKMultiPartLabel *)v2 _updateTextViewTextAndInvalidateLayout:v25];
+          data5 = [(MKMultiPartLabel *)selfCopy data];
+          attributedString = [data5 attributedString];
+          [(MKMultiPartLabel *)selfCopy _updateTextViewTextAndInvalidateLayout:attributedString];
         }
 
-        ++v5;
+        ++currentSeparatorIndex;
         v26 = 1;
         goto LABEL_26;
       }
@@ -166,7 +166,7 @@
       v59 = 0u;
       v56 = 0u;
       v57 = 0u;
-      obj = v3;
+      obj = _mk_layoutFragments;
       v27 = [obj countByEnumeratingWithState:&v56 objects:v60 count:16];
       if (!v27)
       {
@@ -186,20 +186,20 @@
           }
 
           v31 = *(*(&v56 + 1) + 8 * i);
-          v32 = [v31 rangeInElement];
-          v33 = [v32 location];
-          v34 = [v33 compare:v55];
+          rangeInElement = [v31 rangeInElement];
+          location3 = [rangeInElement location];
+          v34 = [location3 compare:v55];
 
-          v35 = [v31 rangeInElement];
-          v36 = [v35 endLocation];
-          v37 = [v54 locationFromLocation:v36 withOffset:-1];
+          rangeInElement2 = [v31 rangeInElement];
+          endLocation = [rangeInElement2 endLocation];
+          v37 = [textLayoutManager locationFromLocation:endLocation withOffset:-1];
 
           v38 = [v37 compare:v20];
           if (!v34)
           {
-            v2 = v50;
-            v39 = [(MKMultiPartLabel *)v50 data];
-            v40 = [v39 replaceSeparatorAtIndex:v5 withString:&stru_1F15B23C0];
+            selfCopy = v50;
+            data6 = [(MKMultiPartLabel *)v50 data];
+            v40 = [data6 replaceSeparatorAtIndex:currentSeparatorIndex withString:&stru_1F15B23C0];
 
             if (v40)
             {
@@ -211,20 +211,20 @@
 
           if (!v38)
           {
-            v2 = v50;
-            v46 = [(MKMultiPartLabel *)v50 data];
-            v47 = [v46 replaceSeparatorAtIndex:v5 withString:@"\n"];
+            selfCopy = v50;
+            data7 = [(MKMultiPartLabel *)v50 data];
+            v47 = [data7 replaceSeparatorAtIndex:currentSeparatorIndex withString:@"\n"];
 
             if (v47)
             {
 LABEL_22:
-              v41 = [(MKMultiPartLabel *)v2 data];
-              v42 = [v41 attributedString];
-              [(MKMultiPartLabel *)v2 _updateTextViewTextAndInvalidateLayout:v42];
+              data8 = [(MKMultiPartLabel *)selfCopy data];
+              attributedString2 = [data8 attributedString];
+              [(MKMultiPartLabel *)selfCopy _updateTextViewTextAndInvalidateLayout:attributedString2];
             }
 
 LABEL_23:
-            ++v5;
+            ++currentSeparatorIndex;
 
             v26 = 1;
             goto LABEL_24;
@@ -241,9 +241,9 @@ LABEL_23:
       }
 
       v26 = 0;
-      v2 = v50;
+      selfCopy = v50;
 LABEL_24:
-      v3 = v49;
+      _mk_layoutFragments = v49;
 LABEL_25:
 
 LABEL_26:
@@ -253,17 +253,17 @@ LABEL_26:
       }
 
 LABEL_27:
-      ++v5;
-      v43 = [(MKMultiPartLabel *)v2 data];
-      v44 = [v43 separators];
-      v45 = [v44 count];
+      ++currentSeparatorIndex;
+      data9 = [(MKMultiPartLabel *)selfCopy data];
+      separators3 = [data9 separators];
+      v45 = [separators3 count];
     }
 
-    while (v5 < v45);
+    while (currentSeparatorIndex < v45);
   }
 
-  v48 = [(MKMultiPartLabel *)v2 data];
-  [v48 setCurrentSeparatorIndex:v5];
+  data10 = [(MKMultiPartLabel *)selfCopy data];
+  [data10 setCurrentSeparatorIndex:currentSeparatorIndex];
 }
 
 - (void)layoutSubviews
@@ -282,12 +282,12 @@ LABEL_27:
     p_previousBounds->size.width = v10;
     p_previousBounds->size.height = v11;
     [(UITextView *)self->_textView setAttributedText:0];
-    v12 = [(MKMultiPartLabel *)self data];
-    [v12 reset];
+    data = [(MKMultiPartLabel *)self data];
+    [data reset];
 
-    v13 = [(MKMultiPartLabel *)self data];
-    v14 = [v13 attributedString];
-    [(MKMultiPartLabel *)self _updateTextViewTextAndInvalidateLayout:v14];
+    data2 = [(MKMultiPartLabel *)self data];
+    attributedString = [data2 attributedString];
+    [(MKMultiPartLabel *)self _updateTextViewTextAndInvalidateLayout:attributedString];
   }
 
   v36.receiver = self;
@@ -299,18 +299,18 @@ LABEL_27:
     [(MKMultiPartLabel *)self bounds];
     if (v16 != 0.0 && [(MKMultiPartLabel *)self numberOfLines]!= 1)
     {
-      v17 = [(MKMultiPartLabel *)self data];
-      v18 = [(_MKMultiPartLabelCacheKey *)v17 components];
-      if ([v18 count] == 1)
+      data3 = [(MKMultiPartLabel *)self data];
+      components = [(_MKMultiPartLabelCacheKey *)data3 components];
+      if ([components count] == 1)
       {
 LABEL_14:
 
         return;
       }
 
-      v19 = [(MKMultiPartLabel *)self data];
-      v20 = [v19 attributedString];
-      v21 = [v20 length];
+      data4 = [(MKMultiPartLabel *)self data];
+      attributedString2 = [data4 attributedString];
+      v21 = [attributedString2 length];
 
       if (!v21)
       {
@@ -318,41 +318,41 @@ LABEL_14:
       }
 
       v22 = [_MKMultiPartLabelCacheKey alloc];
-      v23 = [(_MKMultiPartLabelMetrics *)self->_data originalAttributedString];
+      originalAttributedString = [(_MKMultiPartLabelMetrics *)self->_data originalAttributedString];
       [(MKMultiPartLabel *)self bounds];
-      v17 = [(_MKMultiPartLabelCacheKey *)v22 initWithAttributedString:v23 size:v24, v25];
+      data3 = [(_MKMultiPartLabelCacheKey *)v22 initWithAttributedString:originalAttributedString size:v24, v25];
 
-      v18 = [objc_opt_class() _formattedStringsCache];
-      v26 = [v18 objectForKey:v17];
+      components = [objc_opt_class() _formattedStringsCache];
+      v26 = [components objectForKey:data3];
       if (v26)
       {
         [(UITextView *)self->_textView setAttributedText:v26];
-        v27 = [(MKMultiPartLabel *)self data];
-        v28 = [v27 separators];
-        v29 = [v28 count];
-        v30 = [(MKMultiPartLabel *)self data];
-        [v30 setCurrentSeparatorIndex:v29];
+        data5 = [(MKMultiPartLabel *)self data];
+        separators = [data5 separators];
+        v29 = [separators count];
+        data6 = [(MKMultiPartLabel *)self data];
+        [data6 setCurrentSeparatorIndex:v29];
       }
 
       else
       {
         [(MKMultiPartLabel *)self _eliminateUnnecessarySeparators];
-        v31 = [(MKMultiPartLabel *)self data];
-        v32 = [v31 currentSeparatorIndex];
-        v33 = [(MKMultiPartLabel *)self data];
-        v34 = [v33 separators];
-        v35 = [v34 count];
+        data7 = [(MKMultiPartLabel *)self data];
+        currentSeparatorIndex = [data7 currentSeparatorIndex];
+        data8 = [(MKMultiPartLabel *)self data];
+        separators2 = [data8 separators];
+        v35 = [separators2 count];
 
-        if (v32 < v35)
+        if (currentSeparatorIndex < v35)
         {
 LABEL_13:
 
           goto LABEL_14;
         }
 
-        v27 = [(MKMultiPartLabel *)self data];
-        v28 = [v27 attributedString];
-        [v18 setObject:v28 forKey:v17];
+        data5 = [(MKMultiPartLabel *)self data];
+        separators = [data5 attributedString];
+        [components setObject:separators forKey:data3];
       }
 
       goto LABEL_13;
@@ -360,44 +360,44 @@ LABEL_13:
   }
 }
 
-- (id)_addDefaultAttributesToAttributedString:(id)a3
+- (id)_addDefaultAttributesToAttributedString:(id)string
 {
   v4 = MEMORY[0x1E696AD40];
-  v5 = a3;
+  stringCopy = string;
   v6 = [v4 alloc];
-  v7 = [v5 string];
-  v8 = [(MKMultiPartLabel *)self _textAttributes];
-  v9 = [v6 initWithString:v7 attributes:v8];
+  string = [stringCopy string];
+  _textAttributes = [(MKMultiPartLabel *)self _textAttributes];
+  v9 = [v6 initWithString:string attributes:_textAttributes];
 
-  v10 = [v5 length];
+  v10 = [stringCopy length];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __60__MKMultiPartLabel__addDefaultAttributesToAttributedString___block_invoke;
   v13[3] = &unk_1E76C9A78;
   v11 = v9;
   v14 = v11;
-  [v5 enumerateAttributesInRange:0 options:v10 usingBlock:{0, v13}];
+  [stringCopy enumerateAttributesInRange:0 options:v10 usingBlock:{0, v13}];
 
   return v11;
 }
 
-- (id)_attributedAdjustedMultiPartStringFromString:(id)a3
+- (id)_attributedAdjustedMultiPartStringFromString:(id)string
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  stringCopy = string;
+  v5 = stringCopy;
+  if (stringCopy)
   {
     v6 = MEMORY[0x1E695DF70];
-    v7 = [v4 components];
-    v8 = [v6 arrayWithCapacity:{objc_msgSend(v7, "count")}];
+    components = [stringCopy components];
+    v8 = [v6 arrayWithCapacity:{objc_msgSend(components, "count")}];
 
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v9 = [v5 components];
-    v10 = [v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    components2 = [v5 components];
+    v10 = [components2 countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v10)
     {
       v11 = v10;
@@ -408,29 +408,29 @@ LABEL_13:
         {
           if (*v31 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(components2);
           }
 
           v14 = [(MKMultiPartLabel *)self _addDefaultAttributesToAttributedString:*(*(&v30 + 1) + 8 * i)];
           [v8 addObject:v14];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v30 objects:v35 count:16];
+        v11 = [components2 countByEnumeratingWithState:&v30 objects:v35 count:16];
       }
 
       while (v11);
     }
 
     v15 = MEMORY[0x1E695DF70];
-    v16 = [v5 separators];
-    v17 = [v15 arrayWithCapacity:{objc_msgSend(v16, "count")}];
+    separators = [v5 separators];
+    v17 = [v15 arrayWithCapacity:{objc_msgSend(separators, "count")}];
 
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v18 = [v5 separators];
-    v19 = [v18 countByEnumeratingWithState:&v26 objects:v34 count:16];
+    separators2 = [v5 separators];
+    v19 = [separators2 countByEnumeratingWithState:&v26 objects:v34 count:16];
     if (v19)
     {
       v20 = v19;
@@ -441,14 +441,14 @@ LABEL_13:
         {
           if (*v27 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(separators2);
           }
 
           v23 = [(MKMultiPartLabel *)self _addDefaultAttributesToAttributedString:*(*(&v26 + 1) + 8 * j)];
           [v17 addObject:v23];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v26 objects:v34 count:16];
+        v20 = [separators2 countByEnumeratingWithState:&v26 objects:v34 count:16];
       }
 
       while (v20);
@@ -465,20 +465,20 @@ LABEL_13:
   return v24;
 }
 
-- (void)_updateTextViewTextAndInvalidateLayout:(id)a3
+- (void)_updateTextViewTextAndInvalidateLayout:(id)layout
 {
-  v16 = a3;
-  if (v16)
+  layoutCopy = layout;
+  if (layoutCopy)
   {
-    v3 = [(UITextView *)self->_textView attributedText];
-    if ([v16 isEqual:v3])
+    attributedText = [(UITextView *)self->_textView attributedText];
+    if ([layoutCopy isEqual:attributedText])
     {
 LABEL_16:
 
       goto LABEL_17;
     }
 
-    if ([v16 length])
+    if ([layoutCopy length])
     {
 
       goto LABEL_9;
@@ -490,26 +490,26 @@ LABEL_16:
     goto LABEL_9;
   }
 
-  v5 = [(UITextView *)self->_textView attributedText];
-  v6 = [v5 length];
+  attributedText2 = [(UITextView *)self->_textView attributedText];
+  v6 = [attributedText2 length];
 
-  if (v16)
+  if (layoutCopy)
   {
   }
 
   if (v6)
   {
 LABEL_9:
-    v7 = [(UITextView *)self->_textView attributedText];
-    v8 = [v7 string];
+    attributedText3 = [(UITextView *)self->_textView attributedText];
+    string = [attributedText3 string];
 
-    [(UITextView *)self->_textView setAttributedText:v16];
+    [(UITextView *)self->_textView setAttributedText:layoutCopy];
     v9 = [(NSDictionary *)self->_cachedTextAttributes mutableCopy];
     [v9 removeObjectForKey:*MEMORY[0x1E69DB650]];
-    v10 = [v16 string];
-    v3 = v8;
-    v11 = v10;
-    if (v3 | v11 && (v12 = [v3 isEqual:v11], v11, v3, !v12))
+    string2 = [layoutCopy string];
+    attributedText = string;
+    v11 = string2;
+    if (attributedText | v11 && (v12 = [attributedText isEqual:v11], v11, attributedText, !v12))
     {
     }
 
@@ -555,16 +555,16 @@ LABEL_17:
   {
   }
 
-  v4 = [(MKMultiPartLabel *)self data];
-  v5 = [v4 attributedString];
-  [(MKMultiPartLabel *)self _updateTextViewTextAndInvalidateLayout:v5];
+  data = [(MKMultiPartLabel *)self data];
+  attributedString = [data attributedString];
+  [(MKMultiPartLabel *)self _updateTextViewTextAndInvalidateLayout:attributedString];
 }
 
-- (void)setMultiPartString:(id)a3
+- (void)setMultiPartString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   multiPartString = self->_multiPartString;
-  v11 = v5;
+  v11 = stringCopy;
   v7 = multiPartString;
   v8 = v11;
   if (v11 | v7)
@@ -574,7 +574,7 @@ LABEL_17:
     v8 = v11;
     if ((v9 & 1) == 0)
     {
-      objc_storeStrong(&self->_multiPartString, a3);
+      objc_storeStrong(&self->_multiPartString, string);
       data = self->_data;
       self->_data = 0;
 
@@ -584,9 +584,9 @@ LABEL_17:
   }
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = [MKMultiPartAttributedString multiPartAttributedStringWithString:?];
   }
@@ -605,26 +605,26 @@ LABEL_17:
   cachedTextAttributes = self->_cachedTextAttributes;
   if (!cachedTextAttributes)
   {
-    v4 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-    v5 = [v4 mutableCopy];
+    defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+    v5 = [defaultParagraphStyle mutableCopy];
 
     [v5 setAlignment:{-[MKMultiPartLabel textAlignment](self, "textAlignment")}];
     [v5 setLineBreakMode:{-[MKMultiPartLabel lineBreakMode](self, "lineBreakMode")}];
     v6 = [MEMORY[0x1E695DF90] dictionaryWithObject:v5 forKey:*MEMORY[0x1E69DB688]];
-    v7 = [(UITextView *)self->_textView textColor];
+    textColor = [(UITextView *)self->_textView textColor];
 
-    if (v7)
+    if (textColor)
     {
-      v8 = [(UITextView *)self->_textView textColor];
-      [v6 setObject:v8 forKeyedSubscript:*MEMORY[0x1E69DB650]];
+      textColor2 = [(UITextView *)self->_textView textColor];
+      [v6 setObject:textColor2 forKeyedSubscript:*MEMORY[0x1E69DB650]];
     }
 
-    v9 = [(MKMultiPartLabel *)self font];
+    font = [(MKMultiPartLabel *)self font];
 
-    if (v9)
+    if (font)
     {
-      v10 = [(MKMultiPartLabel *)self font];
-      [v6 setObject:v10 forKeyedSubscript:*MEMORY[0x1E69DB648]];
+      font2 = [(MKMultiPartLabel *)self font];
+      [v6 setObject:font2 forKeyedSubscript:*MEMORY[0x1E69DB648]];
     }
 
     v11 = [v6 copy];
@@ -639,16 +639,16 @@ LABEL_17:
 
 - (int64_t)lineBreakMode
 {
-  v2 = [(UITextView *)self->_textView textContainer];
-  v3 = [v2 lineBreakMode];
+  textContainer = [(UITextView *)self->_textView textContainer];
+  lineBreakMode = [textContainer lineBreakMode];
 
-  return v3;
+  return lineBreakMode;
 }
 
-- (void)setLineBreakMode:(int64_t)a3
+- (void)setLineBreakMode:(int64_t)mode
 {
-  v5 = [(UITextView *)self->_textView textContainer];
-  [v5 setLineBreakMode:a3];
+  textContainer = [(UITextView *)self->_textView textContainer];
+  [textContainer setLineBreakMode:mode];
 
   cachedTextAttributes = self->_cachedTextAttributes;
   self->_cachedTextAttributes = 0;
@@ -658,63 +658,63 @@ LABEL_17:
 
 - (unint64_t)numberOfLines
 {
-  v2 = [(UITextView *)self->_textView textContainer];
-  v3 = [v2 maximumNumberOfLines];
+  textContainer = [(UITextView *)self->_textView textContainer];
+  maximumNumberOfLines = [textContainer maximumNumberOfLines];
 
-  return v3;
+  return maximumNumberOfLines;
 }
 
-- (void)setNumberOfLines:(unint64_t)a3
+- (void)setNumberOfLines:(unint64_t)lines
 {
-  v4 = [(UITextView *)self->_textView textContainer];
-  [v4 setMaximumNumberOfLines:a3];
+  textContainer = [(UITextView *)self->_textView textContainer];
+  [textContainer setMaximumNumberOfLines:lines];
 }
 
 - (void)_updateColorsForCurrentState
 {
-  v3 = [(MKMultiPartLabel *)self highlightedTextColor];
-  if (v3)
+  highlightedTextColor = [(MKMultiPartLabel *)self highlightedTextColor];
+  if (highlightedTextColor)
   {
-    v4 = v3;
+    v4 = highlightedTextColor;
     if ([(MKMultiPartLabel *)self isHighlighted])
     {
 
 LABEL_5:
-      v6 = [(MKMultiPartLabel *)self highlightedTextColor];
+      highlightedTextColor2 = [(MKMultiPartLabel *)self highlightedTextColor];
       goto LABEL_7;
     }
 
-    v5 = [(MKMultiPartLabel *)self isFocused];
+    isFocused = [(MKMultiPartLabel *)self isFocused];
 
-    if (v5)
+    if (isFocused)
     {
       goto LABEL_5;
     }
   }
 
-  v6 = [(MKMultiPartLabel *)self textColor];
+  highlightedTextColor2 = [(MKMultiPartLabel *)self textColor];
 LABEL_7:
-  v7 = v6;
-  [(UITextView *)self->_textView setTextColor:v6];
+  v7 = highlightedTextColor2;
+  [(UITextView *)self->_textView setTextColor:highlightedTextColor2];
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v7 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = MKMultiPartLabel;
-  [(MKMultiPartLabel *)&v12 didUpdateFocusInContext:v7 withAnimationCoordinator:a4];
-  v8 = [v7 previouslyFocusedView];
-  if (v8 == self || ([v7 nextFocusedView], v9 = objc_claimAutoreleasedReturnValue(), v4 = v9, v9 == self))
+  [(MKMultiPartLabel *)&v12 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  previouslyFocusedView = [contextCopy previouslyFocusedView];
+  if (previouslyFocusedView == self || ([contextCopy nextFocusedView], v9 = objc_claimAutoreleasedReturnValue(), v4 = v9, v9 == self))
   {
-    v10 = [v7 previouslyFocusedView];
-    v11 = [v7 nextFocusedView];
+    previouslyFocusedView2 = [contextCopy previouslyFocusedView];
+    nextFocusedView = [contextCopy nextFocusedView];
 
-    if (v8 != self)
+    if (previouslyFocusedView != self)
     {
     }
 
-    if (v10 != v11)
+    if (previouslyFocusedView2 != nextFocusedView)
     {
       [(MKMultiPartLabel *)self _updateColorsForCurrentState];
     }
@@ -725,11 +725,11 @@ LABEL_7:
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     [(MKMultiPartLabel *)self _updateColorsForCurrentState];
     cachedTextAttributes = self->_cachedTextAttributes;
     self->_cachedTextAttributes = 0;
@@ -738,18 +738,18 @@ LABEL_7:
   }
 }
 
-- (void)setHighlightedTextColor:(id)a3
+- (void)setHighlightedTextColor:(id)color
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_highlightedTextColor != v5)
+  colorCopy = color;
+  v6 = colorCopy;
+  if (self->_highlightedTextColor != colorCopy)
   {
-    v9 = v5;
-    v7 = [(UIColor *)v5 isEqual:?];
+    v9 = colorCopy;
+    v7 = [(UIColor *)colorCopy isEqual:?];
     v6 = v9;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_highlightedTextColor, a3);
+      objc_storeStrong(&self->_highlightedTextColor, color);
       [(MKMultiPartLabel *)self _updateColorsForCurrentState];
       cachedTextAttributes = self->_cachedTextAttributes;
       self->_cachedTextAttributes = 0;
@@ -760,19 +760,19 @@ LABEL_7:
   }
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  v4 = a3;
-  if (self->_textColor != v4)
+  colorCopy = color;
+  if (self->_textColor != colorCopy)
   {
-    obj = v4;
-    if (([(UIColor *)v4 isEqual:?]& 1) == 0)
+    obj = colorCopy;
+    if (([(UIColor *)colorCopy isEqual:?]& 1) == 0)
     {
       v5 = obj;
       if (!obj)
       {
-        v6 = [MEMORY[0x1E69DCC10] _defaultAttributes];
-        obja = [v6 objectForKeyedSubscript:*MEMORY[0x1E69DB650]];
+        _defaultAttributes = [MEMORY[0x1E69DCC10] _defaultAttributes];
+        obja = [_defaultAttributes objectForKeyedSubscript:*MEMORY[0x1E69DB650]];
 
         v5 = obja;
       }
@@ -786,23 +786,23 @@ LABEL_7:
       [(MKMultiPartLabel *)self _updateStrings];
     }
 
-    v4 = obj;
+    colorCopy = obj;
   }
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
-  if (self->_font != v4)
+  fontCopy = font;
+  if (self->_font != fontCopy)
   {
-    obj = v4;
-    if (([(UIFont *)v4 isEqual:?]& 1) == 0)
+    obj = fontCopy;
+    if (([(UIFont *)fontCopy isEqual:?]& 1) == 0)
     {
       v5 = obj;
       if (!obj)
       {
-        v6 = [MEMORY[0x1E69DCC10] _defaultAttributes];
-        obja = [v6 objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
+        _defaultAttributes = [MEMORY[0x1E69DCC10] _defaultAttributes];
+        obja = [_defaultAttributes objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
 
         v5 = obja;
       }
@@ -816,7 +816,7 @@ LABEL_7:
       [(MKMultiPartLabel *)self _updateStrings];
     }
 
-    v4 = obj;
+    fontCopy = obj;
   }
 }
 
@@ -833,62 +833,62 @@ LABEL_7:
   [(UITextView *)self->_textView setAdjustsFontForContentSizeCategory:1];
   [(UITextView *)self->_textView setEditable:0];
   [(UITextView *)self->_textView setSelectable:0];
-  v6 = [(UITextView *)self->_textView textContainer];
-  [v6 setLineFragmentPadding:0.0];
+  textContainer = [(UITextView *)self->_textView textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
-  v7 = [(UITextView *)self->_textView textContainer];
-  [v7 setWidthTracksTextView:1];
+  textContainer2 = [(UITextView *)self->_textView textContainer];
+  [textContainer2 setWidthTracksTextView:1];
 
-  v8 = [(UITextView *)self->_textView textContainer];
-  [v8 setHeightTracksTextView:1];
+  textContainer3 = [(UITextView *)self->_textView textContainer];
+  [textContainer3 setHeightTracksTextView:1];
 
-  v9 = [MEMORY[0x1E69DC888] clearColor];
-  [(UITextView *)self->_textView setBackgroundColor:v9];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UITextView *)self->_textView setBackgroundColor:clearColor];
 
   [(MKMultiPartLabel *)self addSubview:self->_textView];
   [(MKMultiPartLabel *)self setTextAlignment:4];
   [(MKMultiPartLabel *)self setLineBreakMode:0];
   v10 = objc_alloc(MEMORY[0x1E69DCA40]);
   v11 = [v10 initForTextStyle:*MEMORY[0x1E69DDCF8]];
-  v12 = [MEMORY[0x1E69DCC10] _defaultAttributes];
-  v13 = [v12 objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
+  _defaultAttributes = [MEMORY[0x1E69DCC10] _defaultAttributes];
+  v13 = [_defaultAttributes objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
 
   v14 = [v11 scaledFontForFont:v13];
   [(MKMultiPartLabel *)self setFont:v14];
 
-  v15 = [MEMORY[0x1E69DCC10] _defaultAttributes];
-  v16 = [v15 objectForKeyedSubscript:*MEMORY[0x1E69DB650]];
+  _defaultAttributes2 = [MEMORY[0x1E69DCC10] _defaultAttributes];
+  v16 = [_defaultAttributes2 objectForKeyedSubscript:*MEMORY[0x1E69DB650]];
 
   [(MKMultiPartLabel *)self setTextColor:v16];
-  v17 = [(MKMultiPartLabel *)self textColor];
-  [(UITextView *)self->_textView setTextColor:v17];
+  textColor = [(MKMultiPartLabel *)self textColor];
+  [(UITextView *)self->_textView setTextColor:textColor];
 
   v27 = MEMORY[0x1E696ACD8];
-  v31 = [(UITextView *)self->_textView topAnchor];
-  v30 = [(MKMultiPartLabel *)self topAnchor];
-  v29 = [v31 constraintEqualToAnchor:v30];
+  topAnchor = [(UITextView *)self->_textView topAnchor];
+  topAnchor2 = [(MKMultiPartLabel *)self topAnchor];
+  v29 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v32[0] = v29;
-  v28 = [(UITextView *)self->_textView bottomAnchor];
-  v18 = [(MKMultiPartLabel *)self bottomAnchor];
-  v19 = [v28 constraintEqualToAnchor:v18];
+  bottomAnchor = [(UITextView *)self->_textView bottomAnchor];
+  bottomAnchor2 = [(MKMultiPartLabel *)self bottomAnchor];
+  v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v32[1] = v19;
-  v20 = [(UITextView *)self->_textView leadingAnchor];
-  v21 = [(MKMultiPartLabel *)self leadingAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  leadingAnchor = [(UITextView *)self->_textView leadingAnchor];
+  leadingAnchor2 = [(MKMultiPartLabel *)self leadingAnchor];
+  v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v32[2] = v22;
-  v23 = [(UITextView *)self->_textView trailingAnchor];
-  v24 = [(MKMultiPartLabel *)self trailingAnchor];
-  v25 = [v23 constraintEqualToAnchor:v24];
+  trailingAnchor = [(UITextView *)self->_textView trailingAnchor];
+  trailingAnchor2 = [(MKMultiPartLabel *)self trailingAnchor];
+  v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v32[3] = v25;
   v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:4];
   [v27 activateConstraints:v26];
 }
 
-- (MKMultiPartLabel)initWithFrame:(CGRect)a3
+- (MKMultiPartLabel)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MKMultiPartLabel;
-  v3 = [(MKMultiPartLabel *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MKMultiPartLabel *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

@@ -1,14 +1,14 @@
 @interface CNContactChangesFetcher
-- (void)setIdentifiers:(uint64_t)a1;
+- (void)setIdentifiers:(uint64_t)identifiers;
 @end
 
 @implementation CNContactChangesFetcher
 
-- (void)setIdentifiers:(uint64_t)a1
+- (void)setIdentifiers:(uint64_t)identifiers
 {
-  if (a1)
+  if (identifiers)
   {
-    objc_storeStrong((a1 + 16), a2);
+    objc_storeStrong((identifiers + 16), a2);
   }
 }
 

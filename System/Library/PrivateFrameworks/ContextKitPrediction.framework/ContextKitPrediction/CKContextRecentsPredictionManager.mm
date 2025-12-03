@@ -1,25 +1,25 @@
 @interface CKContextRecentsPredictionManager
 - (CKContextRecentsPredictionManager)init;
 - (CKContextRecentsPredictionManagerDelegate)delegate;
-- (id)_localizedStringForKey:(id)a3;
-- (id)_modeForModeIdentifier:(id)a3 withConfigurations:(id)a4;
-- (id)_oftenUsedStringForMode:(id)a3;
-- (id)_recentlyUsedStringForMode:(id)a3;
-- (id)_recentsEligibleForDonationMatchingMode:(id)a3 fromRecents:(id)a4 uuidsToCounts:(id)a5;
+- (id)_localizedStringForKey:(id)key;
+- (id)_modeForModeIdentifier:(id)identifier withConfigurations:(id)configurations;
+- (id)_oftenUsedStringForMode:(id)mode;
+- (id)_recentlyUsedStringForMode:(id)mode;
+- (id)_recentsEligibleForDonationMatchingMode:(id)mode fromRecents:(id)recents uuidsToCounts:(id)counts;
 - (id)_retrieveModeConfigurations;
-- (id)_userFacingReasonStringForRecentWithNumberOfInstances:(unint64_t)a3 mode:(id)a4;
-- (id)eligiblePredictionsMatchingMode:(id)a3 forRecents:(id)a4 uuidsToCounts:(id)a5;
-- (int64_t)_suggestionConfidenceForRecent:(id)a3 withCount:(unint64_t)a4;
+- (id)_userFacingReasonStringForRecentWithNumberOfInstances:(unint64_t)instances mode:(id)mode;
+- (id)eligiblePredictionsMatchingMode:(id)mode forRecents:(id)recents uuidsToCounts:(id)counts;
+- (int64_t)_suggestionConfidenceForRecent:(id)recent withCount:(unint64_t)count;
 - (void)_clearSuggestions;
 - (void)_createClientModelIfNecessary;
 - (void)_createDoNotDisturbServiceIfNecessary;
-- (void)_handleModeChangeToModeWithUUIDString:(id)a3 forCache:(id)a4;
+- (void)_handleModeChangeToModeWithUUIDString:(id)string forCache:(id)cache;
 - (void)_retrieveModeConfigurations;
-- (void)_updateBlendingLayerWithSuggestions:(id)a3;
+- (void)_updateBlendingLayerWithSuggestions:(id)suggestions;
 - (void)dealloc;
-- (void)didInitiatePruningMaintenanceTaskForCache:(id)a3 existingRecentsUUIDs:(id)a4;
-- (void)modeDidChangeToModeWithUUIDString:(id)a3 forCache:(id)a4;
-- (void)retrievePredictionsForMode:(id)a3 withReply:(id)a4;
+- (void)didInitiatePruningMaintenanceTaskForCache:(id)cache existingRecentsUUIDs:(id)ds;
+- (void)modeDidChangeToModeWithUUIDString:(id)string forCache:(id)cache;
+- (void)retrievePredictionsForMode:(id)mode withReply:(id)reply;
 - (void)startContributingPredictions;
 - (void)stopContributingPredictions;
 @end
@@ -105,16 +105,16 @@
   }
 }
 
-- (void)didInitiatePruningMaintenanceTaskForCache:(id)a3 existingRecentsUUIDs:(id)a4
+- (void)didInitiatePruningMaintenanceTaskForCache:(id)cache existingRecentsUUIDs:(id)ds
 {
-  v8 = a4;
+  dsCopy = ds;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
     v7 = objc_loadWeakRetained(&self->_delegate);
-    [v7 didInitiatePruningMaintenanceTaskForManager:self existingRecentsUUIDs:v8];
+    [v7 didInitiatePruningMaintenanceTaskForManager:self existingRecentsUUIDs:dsCopy];
   }
 }
 
@@ -129,44 +129,44 @@
   [(ATXProactiveSuggestionClientModel *)self->_clientModel updateSuggestions:0];
 }
 
-- (void)modeDidChangeToModeWithUUIDString:(id)a3 forCache:(id)a4
+- (void)modeDidChangeToModeWithUUIDString:(id)string forCache:(id)cache
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  cacheCopy = cache;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v24 = v6;
+    v24 = stringCopy;
     _os_log_impl(&dword_244167000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Mode did change to mode with identifier: %@", buf, 0xCu);
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  suggestionsContributionBlock = v8->_suggestionsContributionBlock;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  suggestionsContributionBlock = selfCopy->_suggestionsContributionBlock;
   if (suggestionsContributionBlock)
   {
     dispatch_block_cancel(suggestionsContributionBlock);
-    v10 = v8->_suggestionsContributionBlock;
-    v8->_suggestionsContributionBlock = 0;
+    v10 = selfCopy->_suggestionsContributionBlock;
+    selfCopy->_suggestionsContributionBlock = 0;
 
-    suggestionDonationTransaction = v8->_suggestionDonationTransaction;
-    v8->_suggestionDonationTransaction = 0;
+    suggestionDonationTransaction = selfCopy->_suggestionDonationTransaction;
+    selfCopy->_suggestionDonationTransaction = 0;
   }
 
-  objc_initWeak(buf, v8);
+  objc_initWeak(buf, selfCopy);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __80__CKContextRecentsPredictionManager_modeDidChangeToModeWithUUIDString_forCache___block_invoke;
   block[3] = &unk_278E06CD0;
   objc_copyWeak(&v22, buf);
-  v12 = v6;
+  v12 = stringCopy;
   v20 = v12;
-  v13 = v7;
+  v13 = cacheCopy;
   v21 = v13;
   v14 = dispatch_block_create(0, block);
-  v15 = v8->_suggestionsContributionBlock;
-  v8->_suggestionsContributionBlock = v14;
+  v15 = selfCopy->_suggestionsContributionBlock;
+  selfCopy->_suggestionsContributionBlock = v14;
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -175,11 +175,11 @@
   }
 
   v16 = dispatch_time(0, 10000000000);
-  dispatch_after(v16, v8->_suggestionReportingQueue, v8->_suggestionsContributionBlock);
+  dispatch_after(v16, selfCopy->_suggestionReportingQueue, selfCopy->_suggestionsContributionBlock);
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(buf);
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -205,20 +205,20 @@ void __80__CKContextRecentsPredictionManager_modeDidChangeToModeWithUUIDString_f
   }
 }
 
-- (void)_handleModeChangeToModeWithUUIDString:(id)a3 forCache:(id)a4
+- (void)_handleModeChangeToModeWithUUIDString:(id)string forCache:(id)cache
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  cacheCopy = cache;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = stringCopy;
     _os_log_impl(&dword_244167000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "Handling mode change to mode: %@", buf, 0xCu);
   }
 
   [(CKContextRecentsPredictionManager *)self _clearSuggestions];
-  if ([v6 length])
+  if ([stringCopy length])
   {
     objc_initWeak(buf, self);
     recentsCache = self->_recentsCache;
@@ -227,8 +227,8 @@ void __80__CKContextRecentsPredictionManager_modeDidChangeToModeWithUUIDString_f
     v11[2] = __84__CKContextRecentsPredictionManager__handleModeChangeToModeWithUUIDString_forCache___block_invoke;
     v11[3] = &unk_278E06CF8;
     objc_copyWeak(&v14, buf);
-    v12 = v6;
-    v13 = self;
+    v12 = stringCopy;
+    selfCopy = self;
     [(CKContextRecentsCache *)recentsCache retrieveRecentsForPredictionWithReply:v11];
 
     objc_destroyWeak(&v14);
@@ -512,11 +512,11 @@ void __84__CKContextRecentsPredictionManager__handleModeChangeToModeWithUUIDStri
   v54 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateBlendingLayerWithSuggestions:(id)a3
+- (void)_updateBlendingLayerWithSuggestions:(id)suggestions
 {
   clientModel = self->_clientModel;
-  v5 = a3;
-  v6 = [v5 count];
+  suggestionsCopy = suggestions;
+  v6 = [suggestionsCopy count];
   if (v6 >= 2)
   {
     v7 = 2;
@@ -527,7 +527,7 @@ void __84__CKContextRecentsPredictionManager__handleModeChangeToModeWithUUIDStri
     v7 = v6;
   }
 
-  v8 = [v5 subarrayWithRange:{0, v7}];
+  v8 = [suggestionsCopy subarrayWithRange:{0, v7}];
 
   [(ATXProactiveSuggestionClientModel *)clientModel updateSuggestions:v8 completionHandler:&__block_literal_global];
   objc_initWeak(&location, self);
@@ -569,29 +569,29 @@ void __73__CKContextRecentsPredictionManager__updateBlendingLayerWithSuggestions
   }
 }
 
-- (id)_userFacingReasonStringForRecentWithNumberOfInstances:(unint64_t)a3 mode:(id)a4
+- (id)_userFacingReasonStringForRecentWithNumberOfInstances:(unint64_t)instances mode:(id)mode
 {
-  v6 = a4;
-  v7 = [v6 name];
-  v8 = [v7 length];
+  modeCopy = mode;
+  name = [modeCopy name];
+  v8 = [name length];
 
   if (v8)
   {
-    if (a3 > 4)
+    if (instances > 4)
     {
-      [(CKContextRecentsPredictionManager *)self _oftenUsedStringForMode:v6];
+      [(CKContextRecentsPredictionManager *)self _oftenUsedStringForMode:modeCopy];
     }
 
     else
     {
-      [(CKContextRecentsPredictionManager *)self _recentlyUsedStringForMode:v6];
+      [(CKContextRecentsPredictionManager *)self _recentlyUsedStringForMode:modeCopy];
     }
     v9 = ;
   }
 
   else
   {
-    if (a3 > 4)
+    if (instances > 4)
     {
       v10 = @"Often used during this Focus";
     }
@@ -609,25 +609,25 @@ void __73__CKContextRecentsPredictionManager__updateBlendingLayerWithSuggestions
   return v11;
 }
 
-- (id)_oftenUsedStringForMode:(id)a3
+- (id)_oftenUsedStringForMode:(id)mode
 {
-  v5 = a3;
-  v6 = [v5 semanticType];
-  if (v6 <= 3)
+  modeCopy = mode;
+  semanticType = [modeCopy semanticType];
+  if (semanticType <= 3)
   {
-    if (v6 <= 0)
+    if (semanticType <= 0)
     {
-      if (v6 == -1)
+      if (semanticType == -1)
       {
         v8 = MEMORY[0x277CCACA8];
         v9 = [(CKContextRecentsPredictionManager *)self _localizedStringForKey:@"Often used during %@ Focus"];
-        v10 = [v5 name];
-        v3 = [v8 stringWithFormat:v9, v10];
+        name = [modeCopy name];
+        v3 = [v8 stringWithFormat:v9, name];
 
         goto LABEL_25;
       }
 
-      if (v6)
+      if (semanticType)
       {
         goto LABEL_25;
       }
@@ -635,12 +635,12 @@ void __73__CKContextRecentsPredictionManager__updateBlendingLayerWithSuggestions
       v7 = @"Often used during Do Not Disturb";
     }
 
-    else if (v6 == 1)
+    else if (semanticType == 1)
     {
       v7 = @"Often used during Sleep Focus";
     }
 
-    else if (v6 == 2)
+    else if (semanticType == 2)
     {
       v7 = @"Often used during Driving Focus";
     }
@@ -651,9 +651,9 @@ void __73__CKContextRecentsPredictionManager__updateBlendingLayerWithSuggestions
     }
   }
 
-  else if (v6 > 6)
+  else if (semanticType > 6)
   {
-    switch(v6)
+    switch(semanticType)
     {
       case 7:
         v7 = @"Often used during Gaming Focus";
@@ -669,12 +669,12 @@ void __73__CKContextRecentsPredictionManager__updateBlendingLayerWithSuggestions
     }
   }
 
-  else if (v6 == 4)
+  else if (semanticType == 4)
   {
     v7 = @"Often used during Work Focus";
   }
 
-  else if (v6 == 5)
+  else if (semanticType == 5)
   {
     v7 = @"Often used during Personal Focus";
   }
@@ -690,25 +690,25 @@ LABEL_25:
   return v3;
 }
 
-- (id)_recentlyUsedStringForMode:(id)a3
+- (id)_recentlyUsedStringForMode:(id)mode
 {
-  v5 = a3;
-  v6 = [v5 semanticType];
-  if (v6 <= 3)
+  modeCopy = mode;
+  semanticType = [modeCopy semanticType];
+  if (semanticType <= 3)
   {
-    if (v6 <= 0)
+    if (semanticType <= 0)
     {
-      if (v6 == -1)
+      if (semanticType == -1)
       {
         v8 = MEMORY[0x277CCACA8];
         v9 = [(CKContextRecentsPredictionManager *)self _localizedStringForKey:@"Recently used during %@ Focus"];
-        v10 = [v5 name];
-        v3 = [v8 stringWithFormat:v9, v10];
+        name = [modeCopy name];
+        v3 = [v8 stringWithFormat:v9, name];
 
         goto LABEL_25;
       }
 
-      if (v6)
+      if (semanticType)
       {
         goto LABEL_25;
       }
@@ -716,12 +716,12 @@ LABEL_25:
       v7 = @"Recently used during Do Not Disturb";
     }
 
-    else if (v6 == 1)
+    else if (semanticType == 1)
     {
       v7 = @"Recently used during Sleep Focus";
     }
 
-    else if (v6 == 2)
+    else if (semanticType == 2)
     {
       v7 = @"Recently used during Driving Focus";
     }
@@ -732,9 +732,9 @@ LABEL_25:
     }
   }
 
-  else if (v6 > 6)
+  else if (semanticType > 6)
   {
-    switch(v6)
+    switch(semanticType)
     {
       case 7:
         v7 = @"Recently used during Gaming Focus";
@@ -750,12 +750,12 @@ LABEL_25:
     }
   }
 
-  else if (v6 == 4)
+  else if (semanticType == 4)
   {
     v7 = @"Recently used during Work Focus";
   }
 
-  else if (v6 == 5)
+  else if (semanticType == 5)
   {
     v7 = @"Recently used during Personal Focus";
   }
@@ -771,17 +771,17 @@ LABEL_25:
   return v3;
 }
 
-- (int64_t)_suggestionConfidenceForRecent:(id)a3 withCount:(unint64_t)a4
+- (int64_t)_suggestionConfidenceForRecent:(id)recent withCount:(unint64_t)count
 {
-  v5 = a3;
-  if (a4 < 0xB)
+  recentCopy = recent;
+  if (count < 0xB)
   {
     v7 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG);
-    if (a4 < 6)
+    if (count < 6)
     {
       if (v7)
       {
-        [CKContextRecentsPredictionManager _suggestionConfidenceForRecent:v5 withCount:?];
+        [CKContextRecentsPredictionManager _suggestionConfidenceForRecent:recentCopy withCount:?];
       }
 
       v6 = 2;
@@ -791,7 +791,7 @@ LABEL_25:
     {
       if (v7)
       {
-        [CKContextRecentsPredictionManager _suggestionConfidenceForRecent:v5 withCount:?];
+        [CKContextRecentsPredictionManager _suggestionConfidenceForRecent:recentCopy withCount:?];
       }
 
       v6 = 3;
@@ -802,7 +802,7 @@ LABEL_25:
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
-      [CKContextRecentsPredictionManager _suggestionConfidenceForRecent:v5 withCount:?];
+      [CKContextRecentsPredictionManager _suggestionConfidenceForRecent:recentCopy withCount:?];
     }
 
     v6 = 4;
@@ -811,14 +811,14 @@ LABEL_25:
   return v6;
 }
 
-- (id)eligiblePredictionsMatchingMode:(id)a3 forRecents:(id)a4 uuidsToCounts:(id)a5
+- (id)eligiblePredictionsMatchingMode:(id)mode forRecents:(id)recents uuidsToCounts:(id)counts
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 count])
+  modeCopy = mode;
+  recentsCopy = recents;
+  countsCopy = counts;
+  if ([recentsCopy count])
   {
-    v11 = [(CKContextRecentsPredictionManager *)self _recentsEligibleForDonationMatchingMode:v8 fromRecents:v9 uuidsToCounts:v10];
+    v11 = [(CKContextRecentsPredictionManager *)self _recentsEligibleForDonationMatchingMode:modeCopy fromRecents:recentsCopy uuidsToCounts:countsCopy];
   }
 
   else
@@ -829,15 +829,15 @@ LABEL_25:
   return v11;
 }
 
-- (void)retrievePredictionsForMode:(id)a3 withReply:(id)a4
+- (void)retrievePredictionsForMode:(id)mode withReply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  modeCopy = mode;
+  replyCopy = reply;
+  if (replyCopy)
   {
-    if ([v6 length])
+    if ([modeCopy length])
     {
-      v8 = v6;
+      v8 = modeCopy;
       if ([v8 isEqualToString:@"Custom"] & 1) == 0 && (objc_msgSend(v8, "isEqualToString:", @"Unknown") & 1) == 0 && (objc_msgSend(v8, "isEqualToString:", @"Default") & 1) == 0 && ((objc_msgSend(v8, "isEqualToString:", @"Home") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"Working") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"Exercising") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"Driving") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"Bedtime") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"Gaming") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"Reading") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"Traveling") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"Learning") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"Streaming") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"ScreenSharing") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"ScreenRecording") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"AirPlayMirroring") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"Mindfulness") & 1) != 0 || (objc_msgSend(v8, "isEqualToString:", @"ReduceInterruptions")))
       {
 
@@ -848,7 +848,7 @@ LABEL_25:
         v10[2] = __74__CKContextRecentsPredictionManager_retrievePredictionsForMode_withReply___block_invoke;
         v10[3] = &unk_278E06D68;
         objc_copyWeak(&v13, &location);
-        v12 = v7;
+        v12 = replyCopy;
         v11 = v8;
         [(CKContextRecentsCache *)recentsCache retrieveRecentsForPredictionWithReply:v10];
 
@@ -858,7 +858,7 @@ LABEL_25:
       }
     }
 
-    (*(v7 + 2))(v7, MEMORY[0x277CBEBF8]);
+    (*(replyCopy + 2))(replyCopy, MEMORY[0x277CBEBF8]);
   }
 
 LABEL_8:
@@ -882,16 +882,16 @@ void __74__CKContextRecentsPredictionManager_retrievePredictionsForMode_withRepl
   }
 }
 
-- (id)_recentsEligibleForDonationMatchingMode:(id)a3 fromRecents:(id)a4 uuidsToCounts:(id)a5
+- (id)_recentsEligibleForDonationMatchingMode:(id)mode fromRecents:(id)recents uuidsToCounts:(id)counts
 {
   v79 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v62 = a5;
+  modeCopy = mode;
+  recentsCopy = recents;
+  countsCopy = counts;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v72 = v7;
+    v72 = modeCopy;
     _os_log_impl(&dword_244167000, MEMORY[0x277D86220], OS_LOG_TYPE_INFO, "🔮 Finding recents eligible prediction for mode: %@", buf, 0xCu);
   }
 
@@ -900,7 +900,7 @@ void __74__CKContextRecentsPredictionManager_retrievePredictionsForMode_withRepl
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v10 = v8;
+  v10 = recentsCopy;
   v11 = [v10 countByEnumeratingWithState:&v67 objects:v78 count:16];
   if (v11)
   {
@@ -916,8 +916,8 @@ void __74__CKContextRecentsPredictionManager_retrievePredictionsForMode_withRepl
         }
 
         v15 = *(*(&v67 + 1) + 8 * i);
-        v16 = [v15 modeIdentifier];
-        v17 = [v16 isEqualToString:v7];
+        modeIdentifier = [v15 modeIdentifier];
+        v17 = [modeIdentifier isEqualToString:modeCopy];
 
         if (v17)
         {
@@ -934,10 +934,10 @@ void __74__CKContextRecentsPredictionManager_retrievePredictionsForMode_withRepl
   if ([v9 count])
   {
     v55 = v10;
-    v18 = [v9 firstObject];
+    firstObject = [v9 firstObject];
     v19 = MEMORY[0x277CBEAA8];
-    v54 = v18;
-    [v18 absoluteTimestamp];
+    v54 = firstObject;
+    [firstObject absoluteTimestamp];
     v58 = [v19 dateWithTimeIntervalSinceReferenceDate:?];
     v56 = v9;
     v57 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -967,41 +967,41 @@ void __74__CKContextRecentsPredictionManager_retrievePredictionsForMode_withRepl
         v25 = *(*(&v63 + 1) + 8 * j);
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
-          v26 = [v25 associatedBundleId];
+          associatedBundleId = [v25 associatedBundleId];
           v27 = MEMORY[0x277CBEAA8];
           [v25 absoluteTimestamp];
           v28 = [v27 dateWithTimeIntervalSinceReferenceDate:?];
           *buf = 138412802;
-          v72 = v7;
+          v72 = modeCopy;
           v73 = 2112;
-          v74 = v26;
+          v74 = associatedBundleId;
           v75 = 2112;
           v76 = v28;
           _os_log_impl(&dword_244167000, v22, OS_LOG_TYPE_INFO, "Considering recent for mode: %@ from bundle: %@, date: %@", buf, 0x20u);
         }
 
-        v29 = [v25 uuid];
-        v30 = [v62 objectForKeyedSubscript:v29];
-        v31 = [v30 unsignedIntValue];
-        v32 = v31;
+        uuid = [v25 uuid];
+        v30 = [countsCopy objectForKeyedSubscript:uuid];
+        unsignedIntValue = [v30 unsignedIntValue];
+        v32 = unsignedIntValue;
 
-        if (v31 - 33 > 0xFFFFFFDF)
+        if (unsignedIntValue - 33 > 0xFFFFFFDF)
         {
           v33 = objc_alloc(MEMORY[0x277CCAE58]);
-          v34 = [v25 userActivityData];
-          v35 = [v33 _initWithUserActivityData:v34];
+          userActivityData = [v25 userActivityData];
+          v35 = [v33 _initWithUserActivityData:userActivityData];
 
           if (v35)
           {
-            v36 = [v35 isEligibleForPrediction];
-            v37 = [v35 isEligibleForPublicIndexing];
-            if (v36 & 1) != 0 || (v37)
+            isEligibleForPrediction = [v35 isEligibleForPrediction];
+            isEligibleForPublicIndexing = [v35 isEligibleForPublicIndexing];
+            if (isEligibleForPrediction & 1) != 0 || (isEligibleForPublicIndexing)
             {
-              if (((v36 ^ 1) & v37) != 1 || v32 > 4)
+              if (((isEligibleForPrediction ^ 1) & isEligibleForPublicIndexing) != 1 || v32 > 4)
               {
-                v41 = [v35 expirationDate];
-                v42 = [MEMORY[0x277CBEAA8] date];
-                if (v41 && ([v41 earlierDate:v42], v43 = objc_claimAutoreleasedReturnValue(), v43, v43 == v41))
+                expirationDate = [v35 expirationDate];
+                date = [MEMORY[0x277CBEAA8] date];
+                if (expirationDate && ([expirationDate earlierDate:date], v43 = objc_claimAutoreleasedReturnValue(), v43, v43 == expirationDate))
                 {
                   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
                   {
@@ -1012,8 +1012,8 @@ void __74__CKContextRecentsPredictionManager_retrievePredictionsForMode_withRepl
 
                 else
                 {
-                  v44 = [v25 associatedBundleId];
-                  if ([v44 length] && !objc_msgSend(kBundleIdentifiersToNotSuggest, "containsObject:", v44))
+                  associatedBundleId2 = [v25 associatedBundleId];
+                  if ([associatedBundleId2 length] && !objc_msgSend(kBundleIdentifiersToNotSuggest, "containsObject:", associatedBundleId2))
                   {
                     v59 = MEMORY[0x277CBEAA8];
                     [v25 absoluteTimestamp];
@@ -1072,7 +1072,7 @@ LABEL_41:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
           *buf = 134217984;
-          v72 = v31;
+          v72 = unsignedIntValue;
           _os_log_impl(&dword_244167000, v22, OS_LOG_TYPE_INFO, "--- rejecting due to occurence count: %lu", buf, 0xCu);
         }
       }
@@ -1110,12 +1110,12 @@ LABEL_61:
   return v51;
 }
 
-- (id)_localizedStringForKey:(id)a3
+- (id)_localizedStringForKey:(id)key
 {
   v3 = MEMORY[0x277CCA8D8];
-  v4 = a3;
+  keyCopy = key;
   v5 = [v3 bundleWithPath:@"/System/Library/PrivateFrameworks/ContextKitPrediction.framework"];
-  v6 = [v5 localizedStringForKey:v4 value:v4 table:0];
+  v6 = [v5 localizedStringForKey:keyCopy value:keyCopy table:0];
 
   return v6;
 }
@@ -1189,11 +1189,11 @@ LABEL_61:
   return v8;
 }
 
-- (id)_modeForModeIdentifier:(id)a3 withConfigurations:(id)a4
+- (id)_modeForModeIdentifier:(id)identifier withConfigurations:(id)configurations
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 length] && (objc_msgSend(v6, "allKeys"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v8))
+  identifierCopy = identifier;
+  configurationsCopy = configurations;
+  if ([identifierCopy length] && (objc_msgSend(configurationsCopy, "allKeys"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v8))
   {
     v17 = 0;
     v18 = &v17;
@@ -1205,20 +1205,20 @@ LABEL_61:
     v12 = 3221225472;
     v13 = __79__CKContextRecentsPredictionManager__modeForModeIdentifier_withConfigurations___block_invoke;
     v14 = &unk_278E06D90;
-    v15 = v5;
+    v15 = identifierCopy;
     v16 = &v17;
-    [v6 enumerateKeysAndObjectsUsingBlock:&v11];
-    v9 = [v18[5] mode];
+    [configurationsCopy enumerateKeysAndObjectsUsingBlock:&v11];
+    mode = [v18[5] mode];
 
     _Block_object_dispose(&v17, 8);
   }
 
   else
   {
-    v9 = 0;
+    mode = 0;
   }
 
-  return v9;
+  return mode;
 }
 
 void __79__CKContextRecentsPredictionManager__modeForModeIdentifier_withConfigurations___block_invoke(uint64_t a1, uint64_t a2, void *a3, _BYTE *a4)

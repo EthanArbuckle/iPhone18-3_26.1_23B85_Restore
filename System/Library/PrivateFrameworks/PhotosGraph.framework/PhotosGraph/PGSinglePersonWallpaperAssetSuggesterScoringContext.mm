@@ -1,13 +1,13 @@
 @interface PGSinglePersonWallpaperAssetSuggesterScoringContext
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation PGSinglePersonWallpaperAssetSuggesterScoringContext
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v6 = 1;
   }

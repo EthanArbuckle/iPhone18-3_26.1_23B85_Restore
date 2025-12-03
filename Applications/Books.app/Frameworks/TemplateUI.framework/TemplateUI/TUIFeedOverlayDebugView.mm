@@ -1,22 +1,22 @@
 @interface TUIFeedOverlayDebugView
 - (TUIFeedOverlayDebugViewDelegate)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)_updateDebugButtons;
 - (void)layoutSubviews;
-- (void)setRenderModel:(id)a3;
+- (void)setRenderModel:(id)model;
 @end
 
 @implementation TUIFeedOverlayDebugView
 
-- (void)setRenderModel:(id)a3
+- (void)setRenderModel:(id)model
 {
-  v5 = a3;
-  if (self->_renderModel != v5)
+  modelCopy = model;
+  if (self->_renderModel != modelCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_renderModel, a3);
+    v6 = modelCopy;
+    objc_storeStrong(&self->_renderModel, model);
     [(TUIFeedOverlayDebugView *)self setNeedsLayout];
-    v5 = v6;
+    modelCopy = v6;
   }
 }
 
@@ -28,11 +28,11 @@
   [(TUIFeedOverlayDebugView *)self _updateDebugButtons];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = TUIFeedOverlayDebugView;
-  v5 = [(TUIFeedOverlayDebugView *)&v7 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(TUIFeedOverlayDebugView *)&v7 hitTest:event withEvent:test.x, test.y];
   if (v5 == self)
   {
 
@@ -50,19 +50,19 @@
   v13[3] = &unk_25DE30;
   v13[4] = self;
   [UIView performWithoutAnimation:v13];
-  v3 = [(_TUIFeedSectionDebug *)self->_debug button];
-  [v3 setHidden:{-[_TUIFeedSectionDebug showButton](self->_debug, "showButton") ^ 1}];
+  button = [(_TUIFeedSectionDebug *)self->_debug button];
+  [button setHidden:{-[_TUIFeedSectionDebug showButton](self->_debug, "showButton") ^ 1}];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained feedOverlayDebugViewController];
-  v6 = [v5 view];
-  [v6 safeAreaInsets];
+  feedOverlayDebugViewController = [WeakRetained feedOverlayDebugViewController];
+  view = [feedOverlayDebugViewController view];
+  [view safeAreaInsets];
   v8 = v7;
   v10 = v9;
 
-  [v3 bounds];
+  [button bounds];
   v12 = v11;
-  [v3 bounds];
-  [v3 setFrame:{v10 + 5.0, v8 + 5.0, v12}];
+  [button bounds];
+  [button setFrame:{v10 + 5.0, v8 + 5.0, v12}];
 }
 
 - (TUIFeedOverlayDebugViewDelegate)delegate

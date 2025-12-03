@@ -1,36 +1,36 @@
 @interface AMSRatingSystem
-+ (id)ratingSystemWithDictionary:(id)a3;
-- (AMSRatingSystem)initWithDictionary:(id)a3;
++ (id)ratingSystemWithDictionary:(id)dictionary;
+- (AMSRatingSystem)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation AMSRatingSystem
 
-- (AMSRatingSystem)initWithDictionary:(id)a3
+- (AMSRatingSystem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v18.receiver = self;
   v18.super_class = AMSRatingSystem;
   v5 = [(AMSRatingSystem *)&v18 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"id"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"id"];
     ratingSystemID = v5->_ratingSystemID;
     v5->_ratingSystemID = v6;
 
-    v8 = [v4 valueForKeyPath:@"attributes.kind"];
+    v8 = [dictionaryCopy valueForKeyPath:@"attributes.kind"];
     kind = v5->_kind;
     v5->_kind = v8;
 
-    v10 = [v4 valueForKeyPath:@"attributes.label"];
+    v10 = [dictionaryCopy valueForKeyPath:@"attributes.label"];
     label = v5->_label;
     v5->_label = v10;
 
-    v12 = [v4 valueForKeyPath:@"attributes.types"];
+    v12 = [dictionaryCopy valueForKeyPath:@"attributes.types"];
     types = v5->_types;
     v5->_types = v12;
 
-    v14 = [v4 valueForKeyPath:@"relationships.ratings.data"];
+    v14 = [dictionaryCopy valueForKeyPath:@"relationships.ratings.data"];
     v15 = [v14 ams_mapWithTransformIgnoresNil:&__block_literal_global_123];
     contentRatings = v5->_contentRatings;
     v5->_contentRatings = v15;
@@ -39,10 +39,10 @@
   return v5;
 }
 
-+ (id)ratingSystemWithDictionary:(id)a3
++ (id)ratingSystemWithDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [[AMSRatingSystem alloc] initWithDictionary:v3];
+  dictionaryCopy = dictionary;
+  v4 = [[AMSRatingSystem alloc] initWithDictionary:dictionaryCopy];
 
   return v4;
 }
@@ -50,20 +50,20 @@
 - (id)description
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(AMSRatingSystem *)self kind];
-  [v3 ams_setNullableObject:v4 forKey:@"kind"];
+  kind = [(AMSRatingSystem *)self kind];
+  [v3 ams_setNullableObject:kind forKey:@"kind"];
 
-  v5 = [(AMSRatingSystem *)self ratingSystemID];
-  [v3 ams_setNullableObject:v5 forKey:@"id"];
+  ratingSystemID = [(AMSRatingSystem *)self ratingSystemID];
+  [v3 ams_setNullableObject:ratingSystemID forKey:@"id"];
 
-  v6 = [(AMSRatingSystem *)self label];
-  [v3 ams_setNullableObject:v6 forKey:@"label"];
+  label = [(AMSRatingSystem *)self label];
+  [v3 ams_setNullableObject:label forKey:@"label"];
 
-  v7 = [(AMSRatingSystem *)self types];
-  [v3 ams_setNullableObject:v7 forKey:@"types"];
+  types = [(AMSRatingSystem *)self types];
+  [v3 ams_setNullableObject:types forKey:@"types"];
 
-  v8 = [(AMSRatingSystem *)self contentRatings];
-  [v3 ams_setNullableObject:v8 forKey:@"contentRatings"];
+  contentRatings = [(AMSRatingSystem *)self contentRatings];
+  [v3 ams_setNullableObject:contentRatings forKey:@"contentRatings"];
 
   v9 = [self ams_generateDescriptionWithSubObjects:v3];
 

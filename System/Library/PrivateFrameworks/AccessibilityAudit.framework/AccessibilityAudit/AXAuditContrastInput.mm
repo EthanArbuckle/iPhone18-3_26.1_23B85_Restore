@@ -22,12 +22,12 @@
 - (id)description
 {
   v3 = objc_alloc_init(MEMORY[0x277CCAB68]);
-  v4 = [(AXAuditContrastInput *)self identifier];
-  v5 = [(__CFString *)v4 length];
+  identifier = [(AXAuditContrastInput *)self identifier];
+  v5 = [(__CFString *)identifier length];
   v6 = &stru_284FBB130;
   if (v5)
   {
-    v6 = v4;
+    v6 = identifier;
   }
 
   v7 = v6;
@@ -44,20 +44,20 @@
     [v3 appendString:@" Enhanced "];
   }
 
-  v10 = [(AXAuditContrastInput *)self foregroundHexColorValue];
+  foregroundHexColorValue = [(AXAuditContrastInput *)self foregroundHexColorValue];
 
-  if (v10)
+  if (foregroundHexColorValue)
   {
-    v11 = [(AXAuditContrastInput *)self foregroundHexColorValue];
-    [v3 appendFormat:@"ForegroundColor: %@", v11];
+    foregroundHexColorValue2 = [(AXAuditContrastInput *)self foregroundHexColorValue];
+    [v3 appendFormat:@"ForegroundColor: %@", foregroundHexColorValue2];
   }
 
-  v12 = [(AXAuditContrastInput *)self backgroundHexColorValue];
+  backgroundHexColorValue = [(AXAuditContrastInput *)self backgroundHexColorValue];
 
-  if (v12)
+  if (backgroundHexColorValue)
   {
-    v13 = [(AXAuditContrastInput *)self backgroundHexColorValue];
-    [v3 appendFormat:@"BackgroundColor: %@", v13];
+    backgroundHexColorValue2 = [(AXAuditContrastInput *)self backgroundHexColorValue];
+    [v3 appendFormat:@"BackgroundColor: %@", backgroundHexColorValue2];
   }
 
   [(AXAuditContrastInput *)self fontSize];

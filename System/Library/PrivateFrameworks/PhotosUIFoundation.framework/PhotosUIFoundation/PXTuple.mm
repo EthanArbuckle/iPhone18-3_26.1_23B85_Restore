@@ -1,7 +1,7 @@
 @interface PXTuple
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (PXTuple)init;
-- (PXTuple)initWithObjects:(id)a3;
+- (PXTuple)initWithObjects:(id)objects;
 - (id)description;
 @end
 
@@ -12,24 +12,24 @@
   v8.receiver = self;
   v8.super_class = PXTuple;
   v3 = [(PXTuple *)&v8 description];
-  v4 = [(PXTuple *)self objects];
-  v5 = [v4 description];
+  objects = [(PXTuple *)self objects];
+  v5 = [objects description];
   v6 = [v3 stringByAppendingFormat:@" %@", v5];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PXTuple *)self objects];
-    v7 = [v5 objects];
+    v5 = equalCopy;
+    objects = [(PXTuple *)self objects];
+    objects2 = [v5 objects];
 
-    v8 = [v6 isEqual:v7];
+    v8 = [objects isEqual:objects2];
   }
 
   else
@@ -40,14 +40,14 @@
   return v8;
 }
 
-- (PXTuple)initWithObjects:(id)a3
+- (PXTuple)initWithObjects:(id)objects
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (![v5 count])
+  objectsCopy = objects;
+  if (![objectsCopy count])
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXTuple.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"[objects count] > 0"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXTuple.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"[objects count] > 0"}];
   }
 
   v22.receiver = self;
@@ -55,12 +55,12 @@
   v6 = [(PXTuple *)&v22 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+    v7 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(objectsCopy, "count")}];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v8 = v5;
+    v8 = objectsCopy;
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v23 count:16];
     if (v9)
     {
@@ -102,8 +102,8 @@
 
 - (PXTuple)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXTuple.m" lineNumber:18 description:{@"%s is not available as initializer", "-[PXTuple init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXTuple.m" lineNumber:18 description:{@"%s is not available as initializer", "-[PXTuple init]"}];
 
   abort();
 }

@@ -2,7 +2,7 @@
 - (BOOL)allowsConnections;
 - (BOOL)canAspectRatioLockBeChangedByUser;
 - (BOOL)canInspectGeometry;
-- (BOOL)descendentWrappablesContainsWrappable:(id)a3;
+- (BOOL)descendentWrappablesContainsWrappable:(id)wrappable;
 - (BOOL)resizeMayChangeAspectRatio;
 - (BOOL)shouldBeIncludedInParentFrameForCulling;
 - (BOOL)shouldDisplayGuides;
@@ -11,20 +11,20 @@
 - (BOOL)supportsParentFlipping;
 - (BOOL)supportsRotation;
 - (CGRect)alignmentFrame;
-- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)a3;
+- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)transform;
 - (CGRect)boundsForStandardKnobs;
 - (CGRect)clipRect;
 - (CGRect)computeBoundsForStandardKnobs;
 - (CGRect)frameForMiniFormatterPositioning;
 - (CGRect)rectInRootForCalculatingActivityLineEndpoint;
-- (CGRect)rectInRootForPresentingAnnotationPopoverForSelectionPath:(id)a3;
-- (CGRect)rectInRootForSelectionPath:(id)a3;
+- (CGRect)rectInRootForPresentingAnnotationPopoverForSelectionPath:(id)path;
+- (CGRect)rectInRootForSelectionPath:(id)path;
 - (CGSize)minimumSize;
-- (id)additionalDependenciesForChildLayout:(id)a3;
+- (id)additionalDependenciesForChildLayout:(id)layout;
 - (id)childInfosForChildLayouts;
-- (id)commandForSettingAspectRatioLocked:(BOOL)a3;
-- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)a3;
-- (id)commandToFlipWithOrientation:(int)a3;
+- (id)commandForSettingAspectRatioLocked:(BOOL)locked;
+- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)transform;
+- (id)commandToFlipWithOrientation:(int)orientation;
 - (id)computeInfoGeometryDuringResize;
 - (id)computeLayoutGeometry;
 - (id)computeWrapPath;
@@ -33,24 +33,24 @@
 - (id)i_wrapPath;
 - (id)layoutGeometryFromInfo;
 - (id)layoutsForProvidingGuidesForChildLayouts;
-- (id)p_childWrapPathsFrom:(id)a3 inDescendents:(id)a4;
+- (id)p_childWrapPathsFrom:(id)from inDescendents:(id)descendents;
 - (id)p_groupItem;
 - (id)p_groupedChildren;
 - (id)pathForClippingConnectionLines;
 - (id)reliedOnLayouts;
 - (id)visibleGeometries;
-- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)a3;
+- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)commands;
 - (void)endDynamicOperation;
 - (void)i_clearInvalidationCache;
 - (void)invalidate;
 - (void)p_createDynamicCopies;
 - (void)p_destroyDynamicCopies;
-- (void)processChangedProperty:(unint64_t)a3;
-- (void)setDynamicGeometry:(id)a3;
-- (void)takeFreeTransformFromTracker:(id)a3;
-- (void)takeRotationFromTracker:(id)a3;
-- (void)takeSizeFromTracker:(id)a3;
-- (void)transferLayoutGeometryToInfo:(id)a3 withAdditionalTransform:(CGAffineTransform *)a4 assertIfInDocument:(BOOL)a5;
+- (void)processChangedProperty:(unint64_t)property;
+- (void)setDynamicGeometry:(id)geometry;
+- (void)takeFreeTransformFromTracker:(id)tracker;
+- (void)takeRotationFromTracker:(id)tracker;
+- (void)takeSizeFromTracker:(id)tracker;
+- (void)transferLayoutGeometryToInfo:(id)info withAdditionalTransform:(CGAffineTransform *)transform assertIfInDocument:(BOOL)document;
 - (void)updateChildrenFromInfo;
 - (void)updateLayoutGeometryInPreparationForPartitioning;
 @end
@@ -67,8 +67,8 @@
 - (id)p_groupItem
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasLayout *)self info];
-  v5 = sub_100013F00(v3, v4);
+  info = [(CRLCanvasLayout *)self info];
+  v5 = sub_100013F00(v3, info);
 
   return v5;
 }
@@ -79,11 +79,11 @@
   v29 = 0u;
   v30 = 0u;
   v28 = 0u;
-  v4 = [(CRLCanvasAbstractLayout *)self geometry];
-  v5 = v4;
-  if (v4)
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  v5 = geometry;
+  if (geometry)
   {
-    [v4 transform];
+    [geometry transform];
   }
 
   else
@@ -97,8 +97,8 @@
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = [(CRLCanvasAbstractLayout *)self children];
-  v7 = [v6 countByEnumeratingWithState:&v24 objects:v32 count:16];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  v7 = [children countByEnumeratingWithState:&v24 objects:v32 count:16];
   if (v7)
   {
     v8 = v7;
@@ -109,15 +109,15 @@
       {
         if (*v25 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(children);
         }
 
-        v11 = [*(*(&v24 + 1) + 8 * i) visibleGeometries];
+        visibleGeometries = [*(*(&v24 + 1) + 8 * i) visibleGeometries];
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v12 = [v11 countByEnumeratingWithState:&v20 objects:v31 count:16];
+        v12 = [visibleGeometries countByEnumeratingWithState:&v20 objects:v31 count:16];
         if (v12)
         {
           v13 = v12;
@@ -128,7 +128,7 @@
             {
               if (*v21 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(visibleGeometries);
               }
 
               v16 = *(*(&v20 + 1) + 8 * j);
@@ -139,14 +139,14 @@
               [v3 addObject:v17];
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v20 objects:v31 count:16];
+            v13 = [visibleGeometries countByEnumeratingWithState:&v20 objects:v31 count:16];
           }
 
           while (v13);
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v24 objects:v32 count:16];
+      v8 = [children countByEnumeratingWithState:&v24 objects:v32 count:16];
     }
 
     while (v8);
@@ -159,36 +159,36 @@
 {
   v78.receiver = self;
   v78.super_class = CRLGroupLayout;
-  v3 = [(CRLCanvasLayout *)&v78 childInfosForChildLayouts];
-  v4 = [(CRLCanvasLayout *)self layoutController];
-  v5 = [v4 canvas];
-  v6 = [v5 canvasController];
-  v7 = [v6 additionalChildInfosForLayout:self];
+  childInfosForChildLayouts = [(CRLCanvasLayout *)&v78 childInfosForChildLayouts];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  canvas = [layoutController canvas];
+  canvasController = [canvas canvasController];
+  v7 = [canvasController additionalChildInfosForLayout:self];
 
   if ([v7 count])
   {
-    v8 = [v3 arrayByAddingObjectsFromArray:v7];
+    v8 = [childInfosForChildLayouts arrayByAddingObjectsFromArray:v7];
 
-    v3 = v8;
+    childInfosForChildLayouts = v8;
   }
 
-  v9 = [(CRLGroupLayout *)self p_groupItem];
-  v10 = [v9 childItems];
-  v11 = [v3 arrayByAddingObjectsFromArray:v10];
+  p_groupItem = [(CRLGroupLayout *)self p_groupItem];
+  childItems = [p_groupItem childItems];
+  v11 = [childInfosForChildLayouts arrayByAddingObjectsFromArray:childItems];
 
-  v12 = [(CRLGroupLayout *)self p_groupItem];
+  p_groupItem2 = [(CRLGroupLayout *)self p_groupItem];
   v13 = v11;
   v59 = v13;
-  if (([v12 isFreehandDrawing] & 1) == 0)
+  if (([p_groupItem2 isFreehandDrawing] & 1) == 0)
   {
     v76 = 0u;
     v77 = 0u;
     v75 = 0u;
     v54 = v7;
-    v55 = v12;
-    if (v12)
+    v55 = p_groupItem2;
+    if (p_groupItem2)
     {
-      [v12 transformInRoot];
+      [p_groupItem2 transformInRoot];
     }
 
     else
@@ -244,10 +244,10 @@ LABEL_32:
             goto LABEL_33;
           }
 
-          v25 = [v24 supportsParentRotation];
-          if ((v25 | v19))
+          supportsParentRotation = [v24 supportsParentRotation];
+          if ((supportsParentRotation | v19))
           {
-            if (v25)
+            if (supportsParentRotation)
             {
               goto LABEL_32;
             }
@@ -255,11 +255,11 @@ LABEL_32:
 
           else
           {
-            v39 = [v24 geometry];
-            v40 = v39;
-            if (v39)
+            geometry = [v24 geometry];
+            v40 = geometry;
+            if (geometry)
             {
-              [v39 transform];
+              [geometry transform];
             }
 
             else
@@ -277,8 +277,8 @@ LABEL_32:
             }
           }
 
-          v26 = [(CRLCanvasLayout *)self layoutController];
-          v27 = [v26 layoutsForInfo:v24];
+          layoutController2 = [(CRLCanvasLayout *)self layoutController];
+          v27 = [layoutController2 layoutsForInfo:v24];
 
           v63 = 0u;
           v64 = 0u;
@@ -300,17 +300,17 @@ LABEL_18:
               }
 
               v33 = *(*(&v61 + 1) + 8 * v32);
-              v34 = [v33 parent];
-              v35 = [v34 parent];
+              parent = [v33 parent];
+              v34Parent = [parent parent];
 
-              if (v35 == self)
+              if (v34Parent == self)
               {
                 break;
               }
 
-              v36 = [v33 parent];
+              parent2 = [v33 parent];
 
-              if (v36 == self)
+              if (parent2 == self)
               {
                 goto LABEL_25;
               }
@@ -328,8 +328,8 @@ LABEL_18:
             }
 
             v42 = objc_opt_class();
-            v43 = [v33 parent];
-            v38 = sub_100014370(v42, v43);
+            parent3 = [v33 parent];
+            v38 = sub_100014370(v42, parent3);
 
             if (!v38)
             {
@@ -337,8 +337,8 @@ LABEL_18:
             }
 
             v44 = objc_opt_class();
-            v45 = [(CRLCounterRotateInfo *)v38 info];
-            v46 = sub_100013F00(v44, v45);
+            info = [(CRLCounterRotateInfo *)v38 info];
+            v46 = sub_100013F00(v44, info);
 
             v17 = v58;
             v16 = v59;
@@ -402,7 +402,7 @@ LABEL_33:
 
     v48 = [v16 count];
     v7 = v54;
-    v12 = v55;
+    p_groupItem2 = v55;
     if (v48 != [v17 count])
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -440,21 +440,21 @@ LABEL_33:
 
 - (BOOL)canInspectGeometry
 {
-  v3 = [(CRLCanvasLayout *)self layoutController];
-  v4 = [v3 canvas];
-  v5 = [v4 canvasController];
+  layoutController = [(CRLCanvasLayout *)self layoutController];
+  canvas = [layoutController canvas];
+  canvasController = [canvas canvasController];
 
   if ([(CRLCanvasLayout *)self isInTopLevelContainerForEditing])
   {
-    v6 = 1;
+    hasSelectedInfosInMultipleContainers = 1;
   }
 
   else
   {
-    v6 = [v5 hasSelectedInfosInMultipleContainers];
+    hasSelectedInfosInMultipleContainers = [canvasController hasSelectedInfosInMultipleContainers];
   }
 
-  return v6;
+  return hasSelectedInfosInMultipleContainers;
 }
 
 - (id)layoutGeometryFromInfo
@@ -467,10 +467,10 @@ LABEL_33:
 
   else
   {
-    v5 = [(CRLCanvasLayout *)self info];
-    v6 = [v5 geometry];
+    info = [(CRLCanvasLayout *)self info];
+    geometry = [info geometry];
 
-    if (![v6 widthValid] || (objc_msgSend(v6, "heightValid") & 1) == 0)
+    if (![geometry widthValid] || (objc_msgSend(geometry, "heightValid") & 1) == 0)
     {
       v7 = +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -482,11 +482,11 @@ LABEL_33:
       if (os_log_type_enabled(off_1019EDA68, OS_LOG_TYPE_ERROR))
       {
         v21 = v8;
-        v27 = [v6 widthValid];
-        v26 = [v6 heightValid];
-        v29 = [(CRLGroupLayout *)self p_groupItem];
-        v28 = [v29 childItems];
-        v25 = [v28 count];
+        widthValid = [geometry widthValid];
+        heightValid = [geometry heightValid];
+        p_groupItem = [(CRLGroupLayout *)self p_groupItem];
+        childItems = [p_groupItem childItems];
+        v25 = [childItems count];
         v22 = NSStringFromCGRect(*(&self->_dynamicLayoutGeometry + 2));
         v23 = objc_opt_class();
         v24 = NSStringFromClass(v23);
@@ -499,9 +499,9 @@ LABEL_33:
         v36 = 1024;
         v37 = 156;
         v38 = 1024;
-        v39 = v27;
+        v39 = widthValid;
         v40 = 1024;
-        v41 = v26;
+        v41 = heightValid;
         v42 = 2048;
         v43 = v25;
         v44 = 2114;
@@ -509,7 +509,7 @@ LABEL_33:
         v46 = 2114;
         v47 = v24;
         v48 = 2114;
-        v49 = v6;
+        v49 = geometry;
         _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "#Assert *** Assertion failure #%u: %{public}s %{public}s:%d Invalid info geom! wV: %d hV: %d. numChildren: %zi boundsForStandardKnobs %{public}@ %{public}@ geom: %{public}@", buf, 0x56u);
       }
 
@@ -526,18 +526,18 @@ LABEL_33:
 
       v10 = [NSString stringWithUTF8String:"[CRLGroupLayout layoutGeometryFromInfo]"];
       v11 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/BoardItems/CRLGroupLayout.m"];
-      v12 = [v6 widthValid];
-      v13 = [v6 heightValid];
-      v14 = [(CRLGroupLayout *)self p_groupItem];
-      v15 = [v14 childItems];
-      v16 = [v15 count];
+      widthValid2 = [geometry widthValid];
+      heightValid2 = [geometry heightValid];
+      p_groupItem2 = [(CRLGroupLayout *)self p_groupItem];
+      childItems2 = [p_groupItem2 childItems];
+      v16 = [childItems2 count];
       v17 = NSStringFromCGRect(*(&self->_dynamicLayoutGeometry + 2));
       v18 = objc_opt_class();
       v19 = NSStringFromClass(v18);
-      [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:156 isFatal:0 description:"Invalid info geom! wV: %d hV: %d. numChildren: %zi boundsForStandardKnobs %{public}@ %{public}@ geom: %{public}@", v12, v13, v16, v17, v19, v6];
+      [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:156 isFatal:0 description:"Invalid info geom! wV: %d hV: %d. numChildren: %zi boundsForStandardKnobs %{public}@ %{public}@ geom: %{public}@", widthValid2, heightValid2, v16, v17, v19, geometry];
     }
 
-    v3 = [[CRLCanvasLayoutGeometry alloc] initWithInfoGeometry:v6];
+    v3 = [[CRLCanvasLayoutGeometry alloc] initWithInfoGeometry:geometry];
   }
 
   return v3;
@@ -545,16 +545,16 @@ LABEL_33:
 
 - (id)reliedOnLayouts
 {
-  v2 = [(CRLGroupLayout *)self p_groupedChildren];
-  v3 = [v2 set];
+  p_groupedChildren = [(CRLGroupLayout *)self p_groupedChildren];
+  v3 = [p_groupedChildren set];
 
   return v3;
 }
 
-- (id)additionalDependenciesForChildLayout:(id)a3
+- (id)additionalDependenciesForChildLayout:(id)layout
 {
-  v5 = self;
-  v3 = [NSArray arrayWithObjects:&v5 count:1];
+  selfCopy = self;
+  v3 = [NSArray arrayWithObjects:&selfCopy count:1];
 
   return v3;
 }
@@ -569,8 +569,8 @@ LABEL_33:
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = [(CRLGroupLayout *)self p_groupedChildren];
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  p_groupedChildren = [(CRLGroupLayout *)self p_groupedChildren];
+  v7 = [p_groupedChildren countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v7)
   {
     v8 = v7;
@@ -582,7 +582,7 @@ LABEL_33:
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(p_groupedChildren);
         }
 
         v11 = *(*(&v25 + 1) + 8 * v10);
@@ -591,8 +591,8 @@ LABEL_33:
         v14 = v13;
         if (!v13 || ([v13 p_groupItem], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "isEffectivelyEmpty"), v15, (v16 & 1) == 0))
         {
-          v17 = [v11 pureGeometry];
-          [v17 frame];
+          pureGeometry = [v11 pureGeometry];
+          [pureGeometry frame];
           v34.origin.x = x;
           v34.origin.y = y;
           v34.size.width = width;
@@ -608,7 +608,7 @@ LABEL_33:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v8 = [p_groupedChildren countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v8);
@@ -650,10 +650,10 @@ LABEL_33:
   return [(CRLGroupLayout *)self layoutGeometryFromInfo];
 }
 
-- (CGRect)rectInRootForSelectionPath:(id)a3
+- (CGRect)rectInRootForSelectionPath:(id)path
 {
-  v3 = [(CRLCanvasLayout *)self pureGeometryInRoot];
-  [v3 frame];
+  pureGeometryInRoot = [(CRLCanvasLayout *)self pureGeometryInRoot];
+  [pureGeometryInRoot frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -670,24 +670,24 @@ LABEL_33:
   return result;
 }
 
-- (void)processChangedProperty:(unint64_t)a3
+- (void)processChangedProperty:(unint64_t)property
 {
-  if (a3 == 7)
+  if (property == 7)
   {
-    v5 = [(CRLCanvasLayout *)self info];
-    v6 = [v5 isFreehandDrawing];
+    info = [(CRLCanvasLayout *)self info];
+    isFreehandDrawing = [info isFreehandDrawing];
 
-    if (v6)
+    if (isFreehandDrawing)
     {
       goto LABEL_14;
     }
 
-    v7 = [(CRLCanvasLayout *)self info];
-    v8 = [v7 geometry];
-    v9 = v8;
-    if (v8)
+    info2 = [(CRLCanvasLayout *)self info];
+    geometry = [info2 geometry];
+    v9 = geometry;
+    if (geometry)
     {
-      [v8 transform];
+      [geometry transform];
     }
 
     else
@@ -698,11 +698,11 @@ LABEL_33:
     }
 
     v10 = sub_1001399C0(&v17);
-    v11 = [(CRLCanvasAbstractLayout *)self geometry];
-    v12 = v11;
-    if (v11)
+    geometry2 = [(CRLCanvasAbstractLayout *)self geometry];
+    v12 = geometry2;
+    if (geometry2)
     {
-      [v11 transform];
+      [geometry2 transform];
     }
 
     else
@@ -730,7 +730,7 @@ LABEL_33:
     goto LABEL_3;
   }
 
-  if (a3 == 4)
+  if (property == 4)
   {
 LABEL_3:
     [(CRLCanvasLayout *)self invalidateChildren];
@@ -739,7 +739,7 @@ LABEL_3:
 LABEL_14:
   v16.receiver = self;
   v16.super_class = CRLGroupLayout;
-  [(CRLCanvasLayout *)&v16 processChangedProperty:a3];
+  [(CRLCanvasLayout *)&v16 processChangedProperty:property];
 }
 
 - (CGRect)boundsForStandardKnobs
@@ -767,8 +767,8 @@ LABEL_14:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v7 = [(CRLCanvasAbstractLayout *)self children];
-  v8 = [v7 countByEnumeratingWithState:&v36 objects:v41 count:16];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  v8 = [children countByEnumeratingWithState:&v36 objects:v41 count:16];
   if (v8)
   {
     v9 = v8;
@@ -780,13 +780,13 @@ LABEL_14:
       {
         if (*v37 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(children);
         }
 
         v12 = *(*(&v36 + 1) + 8 * v11);
         v13 = objc_opt_class();
-        v14 = [v12 info];
-        v15 = sub_100014370(v13, v14);
+        info = [v12 info];
+        v15 = sub_100014370(v13, info);
 
         if (!v15 || ([v15 isEffectivelyEmpty] & 1) == 0)
         {
@@ -808,7 +808,7 @@ LABEL_14:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v36 objects:v41 count:16];
+      v9 = [children countByEnumeratingWithState:&v36 objects:v41 count:16];
     }
 
     while (v9);
@@ -869,14 +869,14 @@ LABEL_14:
 
 - (void)updateLayoutGeometryInPreparationForPartitioning
 {
-  v3 = [(CRLGroupLayout *)self p_groupItem];
-  v4 = [v3 isEffectivelyEmpty];
+  p_groupItem = [(CRLGroupLayout *)self p_groupItem];
+  isEffectivelyEmpty = [p_groupItem isEffectivelyEmpty];
 
-  if ((v4 & 1) == 0)
+  if ((isEffectivelyEmpty & 1) == 0)
   {
-    v5 = [(CRLGroupLayout *)self p_groupedChildren];
-    v6 = [v5 array];
-    v7 = [v6 arrayByAddingObject:self];
+    p_groupedChildren = [(CRLGroupLayout *)self p_groupedChildren];
+    array = [p_groupedChildren array];
+    v7 = [array arrayByAddingObject:self];
     v8 = [NSSet setWithArray:v7];
 
     v55 = 0u;
@@ -907,8 +907,8 @@ LABEL_14:
       while (v11);
     }
 
-    v14 = [(CRLCanvasLayout *)self layoutController];
-    [v14 validateLayoutWithDependencies:self];
+    layoutController = [(CRLCanvasLayout *)self layoutController];
+    [layoutController validateLayoutWithDependencies:self];
 
     x = CGRectNull.origin.x;
     y = CGRectNull.origin.y;
@@ -918,8 +918,8 @@ LABEL_14:
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v19 = [(CRLGroupLayout *)self p_groupedChildren];
-    v20 = [v19 countByEnumeratingWithState:&v49 objects:v58 count:16];
+    p_groupedChildren2 = [(CRLGroupLayout *)self p_groupedChildren];
+    v20 = [p_groupedChildren2 countByEnumeratingWithState:&v49 objects:v58 count:16];
     if (v20)
     {
       v21 = v20;
@@ -930,7 +930,7 @@ LABEL_14:
         {
           if (*v50 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(p_groupedChildren2);
           }
 
           [*(*(&v49 + 1) + 8 * j) frameForCulling];
@@ -945,7 +945,7 @@ LABEL_14:
           height = v61.size.height;
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v49 objects:v58 count:16];
+        v21 = [p_groupedChildren2 countByEnumeratingWithState:&v49 objects:v58 count:16];
       }
 
       while (v21);
@@ -953,8 +953,8 @@ LABEL_14:
 
     v24 = fmax(width, 1.0);
     v25 = fmax(height, 1.0);
-    v26 = [(CRLCanvasAbstractLayout *)self geometry];
-    [v26 size];
+    geometry = [(CRLCanvasAbstractLayout *)self geometry];
+    [geometry size];
     v28 = v27;
     v30 = v29;
 
@@ -966,11 +966,11 @@ LABEL_14:
     t1 = v48;
     CGAffineTransformConcat(&v47, &t1, &t2);
     v48 = v47;
-    v33 = [(CRLCanvasAbstractLayout *)self geometry];
-    v34 = v33;
-    if (v33)
+    geometry2 = [(CRLCanvasAbstractLayout *)self geometry];
+    v34 = geometry2;
+    if (geometry2)
     {
-      [v33 fullTransform];
+      [geometry2 fullTransform];
     }
 
     else
@@ -987,8 +987,8 @@ LABEL_14:
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v36 = [(CRLCanvasAbstractLayout *)self children];
-    v37 = [v36 countByEnumeratingWithState:&v41 objects:v57 count:16];
+    children = [(CRLCanvasAbstractLayout *)self children];
+    v37 = [children countByEnumeratingWithState:&v41 objects:v57 count:16];
     if (v37)
     {
       v38 = v37;
@@ -999,13 +999,13 @@ LABEL_14:
         {
           if (*v42 != v39)
           {
-            objc_enumerationMutation(v36);
+            objc_enumerationMutation(children);
           }
 
           [*(*(&v41 + 1) + 8 * k) offsetGeometryBy:{sub_10011F340(x, y, -1.0)}];
         }
 
-        v38 = [v36 countByEnumeratingWithState:&v41 objects:v57 count:16];
+        v38 = [children countByEnumeratingWithState:&v41 objects:v57 count:16];
       }
 
       while (v38);
@@ -1024,14 +1024,14 @@ LABEL_14:
   return CGRectApplyAffineTransform(v4, &v3);
 }
 
-- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)a3
+- (CGRect)baseFrameForFrameForCullingWithAdditionalTransform:(CGAffineTransform *)transform
 {
-  v4 = [(CRLCanvasLayout *)self pureGeometry];
-  [v4 frame];
-  v5 = *&a3->c;
-  *&v14.a = *&a3->a;
+  pureGeometry = [(CRLCanvasLayout *)self pureGeometry];
+  [pureGeometry frame];
+  v5 = *&transform->c;
+  *&v14.a = *&transform->a;
   *&v14.c = v5;
-  *&v14.tx = *&a3->tx;
+  *&v14.tx = *&transform->tx;
   v16 = CGRectApplyAffineTransform(v15, &v14);
   x = v16.origin.x;
   y = v16.origin.y;
@@ -1051,13 +1051,13 @@ LABEL_14:
 
 - (BOOL)shouldBeIncludedInParentFrameForCulling
 {
-  v2 = [(CRLGroupLayout *)self p_groupItem];
-  v3 = [v2 isEffectivelyEmpty];
+  p_groupItem = [(CRLGroupLayout *)self p_groupItem];
+  isEffectivelyEmpty = [p_groupItem isEffectivelyEmpty];
 
-  return v3 ^ 1;
+  return isEffectivelyEmpty ^ 1;
 }
 
-- (CGRect)rectInRootForPresentingAnnotationPopoverForSelectionPath:(id)a3
+- (CGRect)rectInRootForPresentingAnnotationPopoverForSelectionPath:(id)path
 {
   [(CRLGroupLayout *)self boundsForStandardKnobs];
 
@@ -1069,9 +1069,9 @@ LABEL_14:
   return result;
 }
 
-- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)a3
+- (void)beginDynamicOperationWithRealTimeCommands:(BOOL)commands
 {
-  v3 = a3;
+  commandsCopy = commands;
   if ([(CRLGroupLayout *)self resizeMayChangeAspectRatio])
   {
     v5 = 1;
@@ -1086,36 +1086,36 @@ LABEL_14:
   [(CRLGroupLayout *)self p_createDynamicCopies];
   v6.receiver = self;
   v6.super_class = CRLGroupLayout;
-  [(CRLCanvasLayout *)&v6 beginDynamicOperationWithRealTimeCommands:v3];
+  [(CRLCanvasLayout *)&v6 beginDynamicOperationWithRealTimeCommands:commandsCopy];
 }
 
 - (id)computeInfoGeometryDuringResize
 {
-  v2 = [(CRLCanvasAbstractLayout *)self geometry];
-  v3 = [v2 infoGeometry];
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  infoGeometry = [geometry infoGeometry];
 
-  return v3;
+  return infoGeometry;
 }
 
-- (void)takeRotationFromTracker:(id)a3
+- (void)takeRotationFromTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v11.receiver = self;
   v11.super_class = CRLGroupLayout;
-  [(CRLCanvasLayout *)&v11 takeRotationFromTracker:v4];
+  [(CRLCanvasLayout *)&v11 takeRotationFromTracker:trackerCopy];
   v9 = 0u;
   v10 = 0u;
   v8 = 0u;
-  if (v4)
+  if (trackerCopy)
   {
-    [v4 rotateTransform];
+    [trackerCopy rotateTransform];
   }
 
-  v5 = [(CRLCanvasLayout *)self originalGeometry];
+  originalGeometry = [(CRLCanvasLayout *)self originalGeometry];
   v7[0] = v8;
   v7[1] = v9;
   v7[2] = v10;
-  v6 = [v5 geometryByTransformingBy:v7];
+  v6 = [originalGeometry geometryByTransformingBy:v7];
 
   [(CRLGroupLayout *)self setDynamicGeometry:v6];
   [(CRLCanvasLayout *)self invalidatePosition];
@@ -1123,10 +1123,10 @@ LABEL_14:
 
 - (BOOL)canAspectRatioLockBeChangedByUser
 {
-  v2 = [(CRLCanvasLayout *)self info];
-  v3 = [v2 canAspectRatioLockBeChangedByUser];
+  info = [(CRLCanvasLayout *)self info];
+  canAspectRatioLockBeChangedByUser = [info canAspectRatioLockBeChangedByUser];
 
-  return v3;
+  return canAspectRatioLockBeChangedByUser;
 }
 
 - (BOOL)resizeMayChangeAspectRatio
@@ -1134,8 +1134,8 @@ LABEL_14:
   v2 = *(&self->_cachedGroupedChildren + 6);
   if (!v2)
   {
-    v5 = [(CRLCanvasLayout *)self info];
-    if (([v5 aspectRatioLocked] & 1) != 0 || !objc_msgSend(v5, "canAspectRatioLockBeChangedByUser"))
+    info = [(CRLCanvasLayout *)self info];
+    if (([info aspectRatioLocked] & 1) != 0 || !objc_msgSend(info, "canAspectRatioLockBeChangedByUser"))
     {
       v3 = 0;
     }
@@ -1146,8 +1146,8 @@ LABEL_14:
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v6 = [v5 allNestedChildrenItemsIncludingGroups];
-      v7 = [v6 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      allNestedChildrenItemsIncludingGroups = [info allNestedChildrenItemsIncludingGroups];
+      v7 = [allNestedChildrenItemsIncludingGroups countByEnumeratingWithState:&v26 objects:v31 count:16];
       if (v7)
       {
         v8 = v7;
@@ -1158,7 +1158,7 @@ LABEL_7:
         {
           if (*v27 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allNestedChildrenItemsIncludingGroups);
           }
 
           if ([*(*(&v26 + 1) + 8 * v10) aspectRatioLocked])
@@ -1168,7 +1168,7 @@ LABEL_7:
 
           if (v8 == ++v10)
           {
-            v8 = [v6 countByEnumeratingWithState:&v26 objects:v31 count:16];
+            v8 = [allNestedChildrenItemsIncludingGroups countByEnumeratingWithState:&v26 objects:v31 count:16];
             if (v8)
             {
               goto LABEL_7;
@@ -1179,14 +1179,14 @@ LABEL_7:
         }
       }
 
-      if (([v5 isFreehandDrawing] & 1) == 0)
+      if (([info isFreehandDrawing] & 1) == 0)
       {
         v24 = 0u;
         v25 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v6 = [(CRLGroupLayout *)self p_groupedChildren];
-        v11 = [v6 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        allNestedChildrenItemsIncludingGroups = [(CRLGroupLayout *)self p_groupedChildren];
+        v11 = [allNestedChildrenItemsIncludingGroups countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (!v11)
         {
           v3 = 1;
@@ -1201,11 +1201,11 @@ LABEL_18:
         {
           if (*v23 != v13)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allNestedChildrenItemsIncludingGroups);
           }
 
           v15 = *(*(&v22 + 1) + 8 * v14);
-          v16 = [v15 info];
+          info2 = [v15 info];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1214,14 +1214,14 @@ LABEL_18:
             break;
           }
 
-          v18 = [v15 info];
+          info3 = [v15 info];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v19 = [v15 info];
-            v20 = [v19 isFreehandDrawing];
+            info4 = [v15 info];
+            isFreehandDrawing = [info4 isFreehandDrawing];
 
-            if ((v20 & 1) == 0 && ![v15 resizeMayChangeAspectRatio])
+            if ((isFreehandDrawing & 1) == 0 && ![v15 resizeMayChangeAspectRatio])
             {
               break;
             }
@@ -1233,7 +1233,7 @@ LABEL_18:
 
           if (v12 == ++v14)
           {
-            v12 = [v6 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v12 = [allNestedChildrenItemsIncludingGroups countByEnumeratingWithState:&v22 objects:v30 count:16];
             v3 = 1;
             if (v12)
             {
@@ -1262,26 +1262,26 @@ LABEL_32:
   return v2 == 1;
 }
 
-- (id)commandForSettingAspectRatioLocked:(BOOL)a3
+- (id)commandForSettingAspectRatioLocked:(BOOL)locked
 {
   v35.receiver = self;
   v35.super_class = CRLGroupLayout;
   v5 = [(CRLCanvasLayout *)&v35 commandForSettingAspectRatioLocked:?];
   v6 = objc_opt_class();
-  v7 = [(CRLCanvasLayout *)self info];
-  v8 = sub_100014370(v6, v7);
+  info = [(CRLCanvasLayout *)self info];
+  v8 = sub_100014370(v6, info);
 
   v9 = objc_alloc_init(_TtC8Freeform15CRLCommandGroup);
   [(CRLCommandGroup *)v9 addCommand:v5];
-  if (!a3)
+  if (!locked)
   {
     v29 = v5;
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v10 = [v8 allNestedChildrenItemsIncludingGroups];
-    v11 = [v10 countByEnumeratingWithState:&v31 objects:v44 count:16];
+    allNestedChildrenItemsIncludingGroups = [v8 allNestedChildrenItemsIncludingGroups];
+    v11 = [allNestedChildrenItemsIncludingGroups countByEnumeratingWithState:&v31 objects:v44 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1295,7 +1295,7 @@ LABEL_32:
         {
           if (*v32 != v14)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(allNestedChildrenItemsIncludingGroups);
           }
 
           v16 = *(*(&v31 + 1) + 8 * v15);
@@ -1362,7 +1362,7 @@ LABEL_32:
         }
 
         while (v12 != v15);
-        v12 = [v10 countByEnumeratingWithState:&v31 objects:v44 count:16];
+        v12 = [allNestedChildrenItemsIncludingGroups countByEnumeratingWithState:&v31 objects:v44 count:16];
       }
 
       while (v12);
@@ -1377,40 +1377,40 @@ LABEL_32:
 - (BOOL)shouldSnapWhileResizing
 {
   [(CRLCanvasAbstractLayout *)self transformInRoot];
-  v3 = [(CRLCanvasLayout *)self pureGeometry];
-  [v3 size];
+  pureGeometry = [(CRLCanvasLayout *)self pureGeometry];
+  [pureGeometry size];
   v6 = sub_100139A98(&v8, v4, v5);
 
   return v6;
 }
 
-- (void)takeSizeFromTracker:(id)a3
+- (void)takeSizeFromTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v20.receiver = self;
   v20.super_class = CRLGroupLayout;
-  [(CRLCanvasLayout *)&v20 takeSizeFromTracker:v4];
+  [(CRLCanvasLayout *)&v20 takeSizeFromTracker:trackerCopy];
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
-  if (v4)
+  if (trackerCopy)
   {
-    [v4 transformForLayout:self];
+    [trackerCopy transformForLayout:self];
   }
 
-  v5 = [(CRLCanvasLayout *)self originalGeometry];
+  originalGeometry = [(CRLCanvasLayout *)self originalGeometry];
   v16[0] = v17;
   v16[1] = v18;
   v16[2] = v19;
-  v6 = [v5 geometryByTransformingBy:v16];
+  v6 = [originalGeometry geometryByTransformingBy:v16];
 
   [(CRLGroupLayout *)self setDynamicGeometry:v6];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [(CRLGroupLayout *)self p_groupedChildren];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v21 count:16];
+  p_groupedChildren = [(CRLGroupLayout *)self p_groupedChildren];
+  v8 = [p_groupedChildren countByEnumeratingWithState:&v12 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1421,13 +1421,13 @@ LABEL_32:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(p_groupedChildren);
         }
 
-        [*(*(&v12 + 1) + 8 * i) takeSizeFromTracker:v4];
+        [*(*(&v12 + 1) + 8 * i) takeSizeFromTracker:trackerCopy];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v21 count:16];
+      v9 = [p_groupedChildren countByEnumeratingWithState:&v12 objects:v21 count:16];
     }
 
     while (v9);
@@ -1441,13 +1441,13 @@ LABEL_32:
 {
   v3 = *(&self->_boundsForStandardKnobs.size.width + 2);
   v38 = *(&self->_boundsForStandardKnobs.origin.y + 2);
-  v4 = [(CRLGroupLayout *)self resizeMayChangeAspectRatio];
+  resizeMayChangeAspectRatio = [(CRLGroupLayout *)self resizeMayChangeAspectRatio];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v5 = [(CRLGroupLayout *)self p_groupedChildren];
-  v6 = [v5 countByEnumeratingWithState:&v40 objects:v44 count:16];
+  p_groupedChildren = [(CRLGroupLayout *)self p_groupedChildren];
+  v6 = [p_groupedChildren countByEnumeratingWithState:&v40 objects:v44 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1460,17 +1460,17 @@ LABEL_32:
       {
         if (*v41 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(p_groupedChildren);
         }
 
         v12 = *(*(&v40 + 1) + 8 * i);
         [v12 minimumSize];
         v14 = v13;
         v16 = v15;
-        if ((v4 & 1) == 0)
+        if ((resizeMayChangeAspectRatio & 1) == 0)
         {
-          v17 = [v12 pureGeometry];
-          [v17 size];
+          pureGeometry = [v12 pureGeometry];
+          [pureGeometry size];
           sub_100121C3C(v14, v16, v18, v19);
         }
 
@@ -1478,11 +1478,11 @@ LABEL_32:
         v22 = v21;
         v24 = v23;
         v26 = v25;
-        v27 = [v12 pureGeometry];
-        v28 = v27;
-        if (v27)
+        pureGeometry2 = [v12 pureGeometry];
+        v28 = pureGeometry2;
+        if (pureGeometry2)
         {
-          [v27 transform];
+          [pureGeometry2 transform];
         }
 
         else
@@ -1498,8 +1498,8 @@ LABEL_32:
         width = v47.size.width;
         height = v47.size.height;
 
-        v31 = [v12 pureGeometry];
-        [v31 frame];
+        pureGeometry3 = [v12 pureGeometry];
+        [pureGeometry3 frame];
         v33 = v32;
         v35 = v34;
 
@@ -1514,7 +1514,7 @@ LABEL_32:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v40 objects:v44 count:16];
+      v7 = [p_groupedChildren countByEnumeratingWithState:&v40 objects:v44 count:16];
     }
 
     while (v7);
@@ -1533,33 +1533,33 @@ LABEL_32:
   return result;
 }
 
-- (void)takeFreeTransformFromTracker:(id)a3
+- (void)takeFreeTransformFromTracker:(id)tracker
 {
-  v4 = a3;
+  trackerCopy = tracker;
   v20.receiver = self;
   v20.super_class = CRLGroupLayout;
-  [(CRLCanvasLayout *)&v20 takeFreeTransformFromTracker:v4];
+  [(CRLCanvasLayout *)&v20 takeFreeTransformFromTracker:trackerCopy];
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
-  if (v4)
+  if (trackerCopy)
   {
-    [v4 freeTransformForLayout:self];
+    [trackerCopy freeTransformForLayout:self];
   }
 
-  v5 = [(CRLCanvasLayout *)self originalGeometry];
+  originalGeometry = [(CRLCanvasLayout *)self originalGeometry];
   v16[0] = v17;
   v16[1] = v18;
   v16[2] = v19;
-  v6 = [v5 geometryByTransformingBy:v16];
+  v6 = [originalGeometry geometryByTransformingBy:v16];
 
   [(CRLGroupLayout *)self setDynamicGeometry:v6];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [(CRLGroupLayout *)self p_groupedChildren];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v21 count:16];
+  p_groupedChildren = [(CRLGroupLayout *)self p_groupedChildren];
+  v8 = [p_groupedChildren countByEnumeratingWithState:&v12 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1570,19 +1570,19 @@ LABEL_32:
       {
         if (*v13 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(p_groupedChildren);
         }
 
-        [*(*(&v12 + 1) + 8 * i) takeFreeTransformFromTracker:v4];
+        [*(*(&v12 + 1) + 8 * i) takeFreeTransformFromTracker:trackerCopy];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v12 objects:v21 count:16];
+      v9 = [p_groupedChildren countByEnumeratingWithState:&v12 objects:v21 count:16];
     }
 
     while (v9);
   }
 
-  if ([v4 isResizing])
+  if ([trackerCopy isResizing])
   {
     [(CRLCanvasLayout *)self invalidateFrame];
     [(CRLCanvasLayout *)self invalidateChildren];
@@ -1640,10 +1640,10 @@ LABEL_32:
 
 - (BOOL)shouldDisplayGuides
 {
-  v3 = [(CRLGroupLayout *)self p_groupItem];
-  v4 = [v3 isEffectivelyEmpty];
+  p_groupItem = [(CRLGroupLayout *)self p_groupItem];
+  isEffectivelyEmpty = [p_groupItem isEffectivelyEmpty];
 
-  if (v4)
+  if (isEffectivelyEmpty)
   {
     return 0;
   }
@@ -1655,27 +1655,27 @@ LABEL_32:
 
 - (id)layoutsForProvidingGuidesForChildLayouts
 {
-  v2 = [(CRLGroupLayout *)self p_groupedChildren];
-  v3 = [v2 array];
+  p_groupedChildren = [(CRLGroupLayout *)self p_groupedChildren];
+  array = [p_groupedChildren array];
 
-  return v3;
+  return array;
 }
 
 - (BOOL)allowsConnections
 {
-  v2 = [(CRLCanvasLayout *)self info];
-  v3 = [v2 childInfos];
-  if ([v3 count])
+  info = [(CRLCanvasLayout *)self info];
+  childInfos = [info childInfos];
+  if ([childInfos count])
   {
-    v4 = 1;
+    isFreehandDrawing = 1;
   }
 
   else
   {
-    v4 = [v2 isFreehandDrawing];
+    isFreehandDrawing = [info isFreehandDrawing];
   }
 
-  return v4;
+  return isFreehandDrawing;
 }
 
 - (BOOL)supportsRotation
@@ -1684,8 +1684,8 @@ LABEL_32:
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v2 = [(CRLCanvasAbstractLayout *)self children];
-  v3 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  v3 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1696,23 +1696,23 @@ LABEL_32:
       {
         if (*v14 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(children);
         }
 
         v7 = *(*(&v13 + 1) + 8 * i);
         v8 = objc_opt_class();
-        v9 = [v7 info];
-        v10 = sub_100014370(v8, v9);
+        info = [v7 info];
+        v10 = sub_100014370(v8, info);
 
-        LODWORD(v9) = [v10 supportsParentRotation];
-        if (!v9)
+        LODWORD(info) = [v10 supportsParentRotation];
+        if (!info)
         {
           v11 = 0;
           goto LABEL_11;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v4 = [children countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v4)
       {
         continue;
@@ -1734,8 +1734,8 @@ LABEL_11:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(CRLCanvasAbstractLayout *)self children];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  v3 = [children countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1746,7 +1746,7 @@ LABEL_11:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(children);
         }
 
         if (![*(*(&v9 + 1) + 8 * i) supportsParentFlipping])
@@ -1756,7 +1756,7 @@ LABEL_11:
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [children countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -1785,8 +1785,8 @@ LABEL_11:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(CRLGroupLayout *)self p_groupedChildren];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v15 count:16];
+  p_groupedChildren = [(CRLGroupLayout *)self p_groupedChildren];
+  v4 = [p_groupedChildren countByEnumeratingWithState:&v10 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1797,7 +1797,7 @@ LABEL_11:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(p_groupedChildren);
         }
 
         if (![*(*(&v10 + 1) + 8 * i) supportsParentFlipping])
@@ -1807,7 +1807,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v15 count:16];
+      v5 = [p_groupedChildren countByEnumeratingWithState:&v10 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -1823,10 +1823,10 @@ LABEL_13:
   return v8;
 }
 
-- (id)commandToFlipWithOrientation:(int)a3
+- (id)commandToFlipWithOrientation:(int)orientation
 {
   [(CRLGroupLayout *)self boundsForStandardKnobs];
-  if (a3)
+  if (orientation)
   {
     MidY = CGRectGetMidY(*&v5);
     v10 = MidY + MidY;
@@ -1845,11 +1845,11 @@ LABEL_13:
   }
 
   v34 = 0uLL;
-  v15 = [(CRLCanvasAbstractLayout *)self geometry];
-  v16 = v15;
-  if (v15)
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  v16 = geometry;
+  if (geometry)
   {
-    [v15 transform];
+    [geometry transform];
   }
 
   else
@@ -1868,38 +1868,38 @@ LABEL_13:
   v26 = *&v33.d;
   ty = v33.ty;
 
-  v19 = [(CRLCanvasLayout *)self info];
-  v20 = [v19 geometry];
+  info = [(CRLCanvasLayout *)self info];
+  geometry2 = [info geometry];
   *v32 = a;
   *(v32 + 8) = v34;
   *(&v32[1] + 8) = v26;
   *(&v32[2] + 1) = ty;
-  v21 = [v20 geometryByAppendingTransform:v32];
+  v21 = [geometry2 geometryByAppendingTransform:v32];
 
   v22 = [_TtC8Freeform25CRLCommandSetInfoGeometry alloc];
-  v23 = [(CRLGroupLayout *)self boardItem];
-  v24 = [(CRLCommandSetInfoGeometry *)v22 initWithBoardItem:v23 geometry:v21];
+  boardItem = [(CRLGroupLayout *)self boardItem];
+  v24 = [(CRLCommandSetInfoGeometry *)v22 initWithBoardItem:boardItem geometry:v21];
 
   return v24;
 }
 
-- (id)p_childWrapPathsFrom:(id)a3 inDescendents:(id)a4
+- (id)p_childWrapPathsFrom:(id)from inDescendents:(id)descendents
 {
-  v5 = a3;
-  v6 = a4;
+  fromCopy = from;
+  descendentsCopy = descendents;
   v7 = objc_alloc_init(NSMutableArray);
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v8 = v5;
+  v8 = fromCopy;
   v9 = [v8 countByEnumeratingWithState:&v34 objects:v39 count:16];
   if (v9)
   {
     v10 = v9;
     v11 = *v35;
     v24 = v8;
-    v25 = v6;
+    v25 = descendentsCopy;
     do
     {
       for (i = 0; i != v10; i = i + 1)
@@ -1913,13 +1913,13 @@ LABEL_13:
         objc_opt_class();
         if ((objc_opt_isKindOfClass() & 1) != 0 || [v13 conformsToProtocol:&OBJC_PROTOCOL___CRLCanvasWrappable])
         {
-          if (![v6 containsObject:v13])
+          if (![descendentsCopy containsObject:v13])
           {
             continue;
           }
 
-          v14 = [v13 i_wrapPath];
-          v15 = [v14 copy];
+          i_wrapPath = [v13 i_wrapPath];
+          v15 = [i_wrapPath copy];
 
           if (v13)
           {
@@ -1944,8 +1944,8 @@ LABEL_13:
             continue;
           }
 
-          v16 = [v13 children];
-          v17 = [(CRLGroupLayout *)self p_childWrapPathsFrom:v16 inDescendents:v6];
+          children = [v13 children];
+          v17 = [(CRLGroupLayout *)self p_childWrapPathsFrom:children inDescendents:descendentsCopy];
 
           v29 = 0u;
           v30 = 0u;
@@ -1990,7 +1990,7 @@ LABEL_13:
           }
 
           v8 = v24;
-          v6 = v25;
+          descendentsCopy = v25;
         }
       }
 
@@ -2005,13 +2005,13 @@ LABEL_13:
 
 - (id)computeWrapPath
 {
-  v3 = [(CRLGroupLayout *)self descendentWrappables];
-  v4 = [[NSHashTable alloc] initWithOptions:512 capacity:{objc_msgSend(v3, "count")}];
+  descendentWrappables = [(CRLGroupLayout *)self descendentWrappables];
+  v4 = [[NSHashTable alloc] initWithOptions:512 capacity:{objc_msgSend(descendentWrappables, "count")}];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = descendentWrappables;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -2035,8 +2035,8 @@ LABEL_13:
     while (v7);
   }
 
-  v10 = [(CRLCanvasAbstractLayout *)self children];
-  v11 = [(CRLGroupLayout *)self p_childWrapPathsFrom:v10 inDescendents:v4];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  v11 = [(CRLGroupLayout *)self p_childWrapPathsFrom:children inDescendents:v4];
 
   v12 = [CRLBezierPath uniteBezierPaths:v11];
 
@@ -2047,18 +2047,18 @@ LABEL_13:
 {
   if (!*(&self->_boundsForStandardKnobs.size.height + 2))
   {
-    v3 = [(CRLCanvasAbstractLayout *)self children];
-    if ([v3 count])
+    children = [(CRLCanvasAbstractLayout *)self children];
+    if ([children count])
     {
-      v4 = [(CRLGroupLayout *)self p_groupItem];
-      v5 = [v4 isEffectivelyEmpty];
+      p_groupItem = [(CRLGroupLayout *)self p_groupItem];
+      isEffectivelyEmpty = [p_groupItem isEffectivelyEmpty];
 
-      if ((v5 & 1) == 0)
+      if ((isEffectivelyEmpty & 1) == 0)
       {
-        v6 = [(CRLGroupLayout *)self computeWrapPath];
+        computeWrapPath = [(CRLGroupLayout *)self computeWrapPath];
 LABEL_7:
         v7 = *(&self->_boundsForStandardKnobs.size.height + 2);
-        *(&self->_boundsForStandardKnobs.size.height + 2) = v6;
+        *(&self->_boundsForStandardKnobs.size.height + 2) = computeWrapPath;
 
         goto LABEL_8;
       }
@@ -2069,7 +2069,7 @@ LABEL_7:
     }
 
     [(CRLGroupLayout *)self boundsForStandardKnobs];
-    v6 = [CRLBezierPath bezierPathWithRect:?];
+    computeWrapPath = [CRLBezierPath bezierPathWithRect:?];
     goto LABEL_7;
   }
 
@@ -2084,8 +2084,8 @@ LABEL_8:
   v3 = *(&self->_cachedWrapPath + 2);
   if (!v3)
   {
-    v4 = [(CRLGroupLayout *)self i_wrapPath];
-    v5 = [CRLBezierPath exteriorOfBezierPath:v4];
+    i_wrapPath = [(CRLGroupLayout *)self i_wrapPath];
+    v5 = [CRLBezierPath exteriorOfBezierPath:i_wrapPath];
     v6 = *(&self->_cachedWrapPath + 2);
     *(&self->_cachedWrapPath + 2) = v5;
 
@@ -2102,11 +2102,11 @@ LABEL_8:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CRLCanvasAbstractLayout *)self geometryInRoot];
-  v12 = v11;
-  if (v11)
+  geometryInRoot = [(CRLCanvasAbstractLayout *)self geometryInRoot];
+  v12 = geometryInRoot;
+  if (geometryInRoot)
   {
-    [v11 transform];
+    [geometryInRoot transform];
   }
 
   else
@@ -2135,46 +2135,46 @@ LABEL_8:
   return result;
 }
 
-- (void)transferLayoutGeometryToInfo:(id)a3 withAdditionalTransform:(CGAffineTransform *)a4 assertIfInDocument:(BOOL)a5
+- (void)transferLayoutGeometryToInfo:(id)info withAdditionalTransform:(CGAffineTransform *)transform assertIfInDocument:(BOOL)document
 {
-  v5 = a5;
-  v8 = a3;
+  documentCopy = document;
+  infoCopy = info;
   v27.receiver = self;
   v27.super_class = CRLGroupLayout;
-  v9 = *&a4->c;
-  *&v26.a = *&a4->a;
+  v9 = *&transform->c;
+  *&v26.a = *&transform->a;
   *&v26.c = v9;
-  *&v26.tx = *&a4->tx;
-  [(CRLCanvasLayout *)&v27 transferLayoutGeometryToInfo:v8 withAdditionalTransform:&v26 assertIfInDocument:v5];
-  v10 = [(CRLGroupLayout *)self p_groupItem];
-  v11 = [v10 childItems];
+  *&v26.tx = *&transform->tx;
+  [(CRLCanvasLayout *)&v27 transferLayoutGeometryToInfo:infoCopy withAdditionalTransform:&v26 assertIfInDocument:documentCopy];
+  p_groupItem = [(CRLGroupLayout *)self p_groupItem];
+  childItems = [p_groupItem childItems];
 
   v12 = objc_opt_class();
-  v13 = sub_100014370(v12, v8);
+  v13 = sub_100014370(v12, infoCopy);
   memset(&v26, 0, sizeof(v26));
   [(CRLGroupLayout *)self boundsForStandardKnobs];
   v15 = -v14;
   [(CRLGroupLayout *)self boundsForStandardKnobs];
   CGAffineTransformMakeTranslation(&v26, v15, -v16);
-  v17 = [v11 count];
+  v17 = [childItems count];
   if (v17)
   {
     v18 = v17;
     for (i = 0; i != v18; ++i)
     {
-      v20 = [(CRLCanvasLayout *)self layoutController];
-      v21 = [v11 objectAtIndexedSubscript:i];
-      v22 = [v20 layoutForInfo:v21];
+      layoutController = [(CRLCanvasLayout *)self layoutController];
+      v21 = [childItems objectAtIndexedSubscript:i];
+      v22 = [layoutController layoutForInfo:v21];
 
-      v23 = [v13 childItems];
-      v24 = [v23 objectAtIndexedSubscript:i];
+      childItems2 = [v13 childItems];
+      v24 = [childItems2 objectAtIndexedSubscript:i];
       v25 = v26;
-      [v22 transferLayoutGeometryToInfo:v24 withAdditionalTransform:&v25 assertIfInDocument:v5];
+      [v22 transferLayoutGeometryToInfo:v24 withAdditionalTransform:&v25 assertIfInDocument:documentCopy];
     }
   }
 }
 
-- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)a3
+- (id)commandToClampModelToLayoutSizeWithAdditionalTransform:(CGAffineTransform *)transform
 {
   v5 = objc_alloc_init(_TtC8Freeform15CRLCommandGroup);
   v6 = *(&self->_boundsForStandardKnobs.origin.y + 2);
@@ -2183,10 +2183,10 @@ LABEL_8:
   *(&self->_dynamicLayoutGeometry + 2) = CGPointZero;
   v30.receiver = self;
   v30.super_class = CRLGroupLayout;
-  v7 = *&a3->c;
-  v27 = *&a3->a;
+  v7 = *&transform->c;
+  v27 = *&transform->a;
   v28 = v7;
-  v29 = *&a3->tx;
+  v29 = *&transform->tx;
   v8 = [(CRLCanvasLayout *)&v30 commandToClampModelToLayoutSizeWithAdditionalTransform:&v27];
   v9 = v32;
   *(&self->_dynamicLayoutGeometry + 2) = v31;
@@ -2200,8 +2200,8 @@ LABEL_8:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v10 = [(CRLGroupLayout *)self p_groupedChildren];
-  v11 = [v10 countByEnumeratingWithState:&v23 objects:v33 count:16];
+  p_groupedChildren = [(CRLGroupLayout *)self p_groupedChildren];
+  v11 = [p_groupedChildren countByEnumeratingWithState:&v23 objects:v33 count:16];
   if (v11)
   {
     v12 = v11;
@@ -2215,7 +2215,7 @@ LABEL_8:
       {
         if (*v24 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(p_groupedChildren);
         }
 
         v15 = *(*(&v23 + 1) + 8 * i);
@@ -2229,7 +2229,7 @@ LABEL_8:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v23 objects:v33 count:16];
+      v12 = [p_groupedChildren countByEnumeratingWithState:&v23 objects:v33 count:16];
     }
 
     while (v12);
@@ -2253,15 +2253,15 @@ LABEL_8:
 - (id)descendentWrappables
 {
   v3 = [NSMutableArray alloc];
-  v4 = [(CRLCanvasAbstractLayout *)self children];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  v5 = [v3 initWithCapacity:{objc_msgSend(children, "count")}];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [(CRLCanvasAbstractLayout *)self children];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  children2 = [(CRLCanvasAbstractLayout *)self children];
+  v7 = [children2 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2272,7 +2272,7 @@ LABEL_8:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(children2);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
@@ -2283,12 +2283,12 @@ LABEL_8:
 
         if ([v11 conformsToProtocol:&OBJC_PROTOCOL___CRLCanvasWrappableParent])
         {
-          v12 = [v11 descendentWrappables];
-          [v5 addObjectsFromArray:v12];
+          descendentWrappables = [v11 descendentWrappables];
+          [v5 addObjectsFromArray:descendentWrappables];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [children2 countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -2297,12 +2297,12 @@ LABEL_8:
   return v5;
 }
 
-- (BOOL)descendentWrappablesContainsWrappable:(id)a3
+- (BOOL)descendentWrappablesContainsWrappable:(id)wrappable
 {
-  v4 = a3;
-  v5 = [v4 parent];
+  wrappableCopy = wrappable;
+  parent = [wrappableCopy parent];
 
-  if (v5 == self)
+  if (parent == self)
   {
     v16 = 1;
   }
@@ -2310,13 +2310,13 @@ LABEL_8:
   else
   {
     v6 = objc_opt_class();
-    v7 = sub_100014370(v6, v4);
+    v7 = sub_100014370(v6, wrappableCopy);
     v8 = [(CRLCanvasAbstractLayout *)self childLayoutContainingPossibleDescendentLayout:v7];
     v15 = sub_1003035DC(v8, 1, v9, v10, v11, v12, v13, v14, &OBJC_PROTOCOL___CRLCanvasWrappableParent);
 
     if (v15)
     {
-      v16 = [v15 descendentWrappablesContainsWrappable:v4];
+      v16 = [v15 descendentWrappablesContainsWrappable:wrappableCopy];
     }
 
     else
@@ -2359,19 +2359,19 @@ LABEL_8:
     [CRLAssertionHandler handleFailureInFunction:v4 file:v5 lineNumber:774 isFatal:0 description:"expected nil value for '%{public}s'", "_dynamicLayoutGeometry"];
   }
 
-  v6 = [(CRLCanvasAbstractLayout *)self geometry];
-  v7 = [v6 copy];
+  geometry = [(CRLCanvasAbstractLayout *)self geometry];
+  v7 = [geometry copy];
   v8 = *(&self->super.mInfoGeometryBeforeDynamicOperation + 2);
   *(&self->super.mInfoGeometryBeforeDynamicOperation + 2) = v7;
 }
 
-- (void)setDynamicGeometry:(id)a3
+- (void)setDynamicGeometry:(id)geometry
 {
   v7.receiver = self;
   v7.super_class = CRLGroupLayout;
-  v4 = a3;
-  [(CRLCanvasLayout *)&v7 setDynamicGeometry:v4];
-  v5 = [v4 copy];
+  geometryCopy = geometry;
+  [(CRLCanvasLayout *)&v7 setDynamicGeometry:geometryCopy];
+  v5 = [geometryCopy copy];
 
   v6 = *(&self->super.mInfoGeometryBeforeDynamicOperation + 2);
   *(&self->super.mInfoGeometryBeforeDynamicOperation + 2) = v5;
@@ -2416,8 +2416,8 @@ LABEL_8:
 
 - (id)p_groupedChildren
 {
-  v2 = [(CRLCanvasAbstractLayout *)self children];
-  v3 = [NSOrderedSet orderedSetWithArray:v2];
+  children = [(CRLCanvasAbstractLayout *)self children];
+  v3 = [NSOrderedSet orderedSetWithArray:children];
 
   return v3;
 }

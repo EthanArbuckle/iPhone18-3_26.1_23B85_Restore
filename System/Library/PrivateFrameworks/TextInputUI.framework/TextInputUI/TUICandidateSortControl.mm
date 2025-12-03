@@ -1,44 +1,44 @@
 @interface TUICandidateSortControl
 - (CGRect)segmentedControlFrame;
-- (TUICandidateSortControl)initWithCoder:(id)a3;
-- (TUICandidateSortControl)initWithFrame:(CGRect)a3;
+- (TUICandidateSortControl)initWithCoder:(id)coder;
+- (TUICandidateSortControl)initWithFrame:(CGRect)frame;
 - (double)segmentedControlWidth;
 - (int64_t)selectedIndex;
 - (void)commonInit;
 - (void)layoutSubviews;
-- (void)setSelectedIndex:(int64_t)a3;
-- (void)setStyle:(id)a3;
-- (void)setTitles:(id)a3;
+- (void)setSelectedIndex:(int64_t)index;
+- (void)setStyle:(id)style;
+- (void)setTitles:(id)titles;
 @end
 
 @implementation TUICandidateSortControl
 
-- (void)setSelectedIndex:(int64_t)a3
+- (void)setSelectedIndex:(int64_t)index
 {
-  v4 = [(TUICandidateSortControl *)self segmentedControl];
-  [v4 setSelectedSegmentIndex:a3];
+  segmentedControl = [(TUICandidateSortControl *)self segmentedControl];
+  [segmentedControl setSelectedSegmentIndex:index];
 }
 
 - (int64_t)selectedIndex
 {
-  v2 = [(TUICandidateSortControl *)self segmentedControl];
-  v3 = [v2 selectedSegmentIndex];
+  segmentedControl = [(TUICandidateSortControl *)self segmentedControl];
+  selectedSegmentIndex = [segmentedControl selectedSegmentIndex];
 
-  return v3;
+  return selectedSegmentIndex;
 }
 
-- (void)setTitles:(id)a3
+- (void)setTitles:(id)titles
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([(NSArray *)self->_titles isEqual:v4]& 1) == 0)
+  titlesCopy = titles;
+  if (([(NSArray *)self->_titles isEqual:titlesCopy]& 1) == 0)
   {
-    v5 = [v4 copy];
+    v5 = [titlesCopy copy];
     titles = self->_titles;
     self->_titles = v5;
 
     [(UISegmentedControl *)self->_segmentedControl removeAllSegments];
-    v7 = [v4 count];
+    v7 = [titlesCopy count];
     segmentedControl = self->_segmentedControl;
     if (v7 > 1)
     {
@@ -88,44 +88,44 @@
   }
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
   v23[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (([(TUICandidateViewStyle *)self->_style isEqual:v5]& 1) == 0)
+  styleCopy = style;
+  if (([(TUICandidateViewStyle *)self->_style isEqual:styleCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_style, a3);
-    if (v5)
+    objc_storeStrong(&self->_style, style);
+    if (styleCopy)
     {
-      v6 = [(TUICandidateSortControl *)self segmentedControl];
+      segmentedControl = [(TUICandidateSortControl *)self segmentedControl];
       v21 = *MEMORY[0x1E69DB648];
       v7 = v21;
-      v8 = [v5 sortControlFont];
-      v23[0] = v8;
+      sortControlFont = [styleCopy sortControlFont];
+      v23[0] = sortControlFont;
       v22 = *MEMORY[0x1E69DB650];
       v9 = v22;
-      v10 = [v5 textColor];
-      v23[1] = v10;
+      textColor = [styleCopy textColor];
+      v23[1] = textColor;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v21 count:2];
-      [v6 setTitleTextAttributes:v11 forState:0];
+      [segmentedControl setTitleTextAttributes:v11 forState:0];
 
-      v12 = [(TUICandidateSortControl *)self segmentedControl];
+      segmentedControl2 = [(TUICandidateSortControl *)self segmentedControl];
       v19[0] = v7;
-      v13 = [v5 sortControlFont];
+      sortControlFont2 = [styleCopy sortControlFont];
       v19[1] = v9;
-      v20[0] = v13;
-      v14 = [v5 textColor];
-      v20[1] = v14;
+      v20[0] = sortControlFont2;
+      textColor2 = [styleCopy textColor];
+      v20[1] = textColor2;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:2];
-      [v12 setTitleTextAttributes:v15 forState:4];
+      [segmentedControl2 setTitleTextAttributes:v15 forState:4];
     }
 
-    v16 = [v5 sortControlColor];
-    v17 = [(TUICandidateSortControl *)self segmentedControl];
-    [v17 setTintColor:v16];
+    sortControlColor = [styleCopy sortControlColor];
+    segmentedControl3 = [(TUICandidateSortControl *)self segmentedControl];
+    [segmentedControl3 setTintColor:sortControlColor];
 
-    v18 = [v5 sortControlBackgroundColor];
-    [(TUICandidateSortControl *)self setBackgroundColor:v18];
+    sortControlBackgroundColor = [styleCopy sortControlBackgroundColor];
+    [(TUICandidateSortControl *)self setBackgroundColor:sortControlBackgroundColor];
 
     [(TUICandidateSortControl *)self setNeedsLayout];
   }
@@ -135,18 +135,18 @@
 {
   [(TUICandidateSortControl *)self bounds];
   Width = CGRectGetWidth(v16);
-  v4 = [(TUICandidateSortControl *)self style];
-  [v4 sortControlPadding];
+  style = [(TUICandidateSortControl *)self style];
+  [style sortControlPadding];
   v6 = Width - v5;
-  v7 = [(TUICandidateSortControl *)self style];
-  [v7 sortControlPadding];
+  style2 = [(TUICandidateSortControl *)self style];
+  [style2 sortControlPadding];
   v9 = v6 - v8;
 
-  v10 = [(TUICandidateSortControl *)self style];
+  style3 = [(TUICandidateSortControl *)self style];
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(TUICandidateSortControl *)self style];
-    v12 = [v11 performSelector:sel_maximizeSortControlWidthWithPadding];
+    style4 = [(TUICandidateSortControl *)self style];
+    v12 = [style4 performSelector:sel_maximizeSortControlWidthWithPadding];
 
     if (v12)
     {
@@ -217,27 +217,27 @@
   [(UISegmentedControl *)self->_segmentedControl setFrame:?];
   [(TUICandidateSortControl *)self bounds];
   MidX = CGRectGetMidX(v17);
-  v4 = [(TUICandidateSortControl *)self style];
-  [v4 sortControlPadding];
+  style = [(TUICandidateSortControl *)self style];
+  [style sortControlPadding];
   v6 = v5;
-  v7 = [(TUICandidateSortControl *)self style];
-  [v7 sortControlPadding];
+  style2 = [(TUICandidateSortControl *)self style];
+  [style2 sortControlPadding];
   v9 = MidX + (v6 - v8) * 0.5;
   [(TUICandidateSortControl *)self bounds];
   MidY = CGRectGetMidY(v18);
-  v11 = [(TUICandidateSortControl *)self style];
-  [v11 sortControlPadding];
+  style3 = [(TUICandidateSortControl *)self style];
+  [style3 sortControlPadding];
   v13 = v12;
-  v14 = [(TUICandidateSortControl *)self style];
-  [v14 sortControlPadding];
+  style4 = [(TUICandidateSortControl *)self style];
+  [style4 sortControlPadding];
   [(UISegmentedControl *)self->_segmentedControl setCenter:v9, MidY + (v13 - v15) * 0.5];
 }
 
-- (TUICandidateSortControl)initWithCoder:(id)a3
+- (TUICandidateSortControl)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = TUICandidateSortControl;
-  v3 = [(TUICandidateSortControl *)&v6 initWithCoder:a3];
+  v3 = [(TUICandidateSortControl *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -247,11 +247,11 @@
   return v4;
 }
 
-- (TUICandidateSortControl)initWithFrame:(CGRect)a3
+- (TUICandidateSortControl)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = TUICandidateSortControl;
-  v3 = [(TUICandidateSortControl *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(TUICandidateSortControl *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

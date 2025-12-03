@@ -1,28 +1,28 @@
 @interface CCToolKitToolTypedValuePrimitiveValueRecurrenceRule
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
 - (CCToolKitToolTypedValuePrimitiveValueDateComponentsCalendar)calendar;
-- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRule)initWithCalendar:(id)a3 frequency:(unsigned int)a4 interval:(id)a5 end:(id)a6 matchingPolicy:(unsigned int)a7 repeatedTimePolicy:(unsigned int)a8 months:(id)a9 daysOfTheYear:(id)a10 daysOfTheMonth:(id)a11 weeks:(id)a12 weekdays:(id)a13 hours:(id)a14 minutes:(id)a15 seconds:(id)a16 setPositions:(id)a17 error:(id *)a18;
-- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRule)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRule)initWithCalendar:(id)calendar frequency:(unsigned int)frequency interval:(id)interval end:(id)end matchingPolicy:(unsigned int)policy repeatedTimePolicy:(unsigned int)timePolicy months:(id)months daysOfTheYear:(id)self0 daysOfTheMonth:(id)self1 weeks:(id)self2 weekdays:(id)self3 hours:(id)self4 minutes:(id)self5 seconds:(id)self6 setPositions:(id)self7 error:(id *)self8;
+- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRule)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleEnd)end;
 - (NSArray)months;
 - (NSArray)weekdays;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolTypedValuePrimitiveValueRecurrenceRule
 
-- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRule)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRule)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v283 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v273[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"calendar"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"calendar"];
     if (v9)
     {
       v273[0] = 0;
@@ -41,20 +41,20 @@ LABEL_173:
       v9 = v10;
     }
 
-    v13 = [v6 objectForKeyedSubscript:@"frequency"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"frequency"];
     v12 = v13;
     if (v13)
     {
-      v213 = [v13 unsignedIntegerValue];
+      unsignedIntegerValue = [v13 unsignedIntegerValue];
     }
 
     else
     {
-      v213 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    v10 = [v6 objectForKeyedSubscript:@"interval"];
-    v15 = [v6 objectForKeyedSubscript:@"end"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"interval"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"end"];
     if (v15)
     {
       v16 = v15;
@@ -80,35 +80,35 @@ LABEL_172:
       v20 = 0;
     }
 
-    v21 = [v6 objectForKeyedSubscript:@"matchingPolicy"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"matchingPolicy"];
     v22 = v21;
-    v214 = a4;
+    errorCopy = error;
     if (v21)
     {
-      v185 = [v21 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v21 unsignedIntegerValue];
     }
 
     else
     {
-      v185 = 0;
+      unsignedIntegerValue2 = 0;
     }
 
-    v23 = [v6 objectForKeyedSubscript:@"repeatedTimePolicy"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"repeatedTimePolicy"];
     v216 = v20;
     if (v23)
     {
       v24 = v23;
-      v184 = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleEnd *)v23 unsignedIntegerValue];
+      unsignedIntegerValue3 = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRuleRecurrenceRuleEnd *)v23 unsignedIntegerValue];
     }
 
     else
     {
       v24 = 0;
-      v184 = 0;
+      unsignedIntegerValue3 = 0;
     }
 
     v215 = v22;
-    v25 = [v6 objectForKeyedSubscript:@"months"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"months"];
     v217 = v24;
     if (v25)
     {
@@ -139,7 +139,7 @@ LABEL_171:
 
       v181 = v31;
       v209 = v28;
-      v186 = v6;
+      v186 = dictionaryCopy;
       v218 = objc_opt_new();
       v267 = 0u;
       v268 = 0u;
@@ -181,7 +181,7 @@ LABEL_171:
               CCSetError();
 
               v14 = 0;
-              v6 = v186;
+              dictionaryCopy = v186;
               v28 = v209;
               v16 = v216;
               v31 = v181;
@@ -197,7 +197,7 @@ LABEL_171:
         while (v34);
       }
 
-      v6 = v186;
+      dictionaryCopy = v186;
       v10 = v29;
       v12 = v27;
       v9 = v209;
@@ -210,8 +210,8 @@ LABEL_171:
       v42 = v8;
     }
 
-    v43 = [v6 objectForKeyedSubscript:@"daysOfTheYear"];
-    v183 = self;
+    v43 = [dictionaryCopy objectForKeyedSubscript:@"daysOfTheYear"];
+    selfCopy = self;
     if (v43)
     {
       v44 = v43;
@@ -237,7 +237,7 @@ LABEL_65:
       v193 = v10;
       v201 = v12;
       v210 = v9;
-      v187 = v6;
+      v187 = dictionaryCopy;
       v48 = objc_opt_new();
       v261 = 0u;
       v262 = 0u;
@@ -272,7 +272,7 @@ LABEL_65:
 
               v14 = 0;
               v57 = v49;
-              v6 = v187;
+              dictionaryCopy = v187;
               v29 = v193;
               v27 = v201;
               v28 = v210;
@@ -296,7 +296,7 @@ LABEL_65:
       }
 
       v42 = v47;
-      v6 = v187;
+      dictionaryCopy = v187;
       v10 = v193;
       v12 = v201;
       v9 = v210;
@@ -308,7 +308,7 @@ LABEL_65:
       v57 = 0;
     }
 
-    v59 = [v6 objectForKeyedSubscript:@"daysOfTheMonth"];
+    v59 = [dictionaryCopy objectForKeyedSubscript:@"daysOfTheMonth"];
     if (v59)
     {
       v60 = v59;
@@ -331,7 +331,7 @@ LABEL_169:
 
 LABEL_170:
         v31 = v47;
-        self = v183;
+        self = selfCopy;
         v32 = v218;
         goto LABEL_171;
       }
@@ -340,7 +340,7 @@ LABEL_170:
       v194 = v10;
       v202 = v12;
       v211 = v9;
-      v188 = v6;
+      v188 = dictionaryCopy;
       v63 = objc_opt_new();
       v255 = 0u;
       v256 = 0u;
@@ -375,7 +375,7 @@ LABEL_170:
 
               v14 = 0;
               v85 = v64;
-              v6 = v188;
+              dictionaryCopy = v188;
               v10 = v194;
               v27 = v202;
               v28 = v211;
@@ -401,7 +401,7 @@ LABEL_170:
       }
 
       v42 = v47;
-      v6 = v188;
+      dictionaryCopy = v188;
       v10 = v194;
       v12 = v202;
       v9 = v211;
@@ -414,7 +414,7 @@ LABEL_170:
       v172 = 0;
     }
 
-    v72 = [v6 objectForKeyedSubscript:@"weeks"];
+    v72 = [dictionaryCopy objectForKeyedSubscript:@"weeks"];
     v212 = v9;
     if (v72)
     {
@@ -516,7 +516,7 @@ LABEL_168:
       v182 = 0;
     }
 
-    v86 = [v6 objectForKeyedSubscript:@"weekdays"];
+    v86 = [dictionaryCopy objectForKeyedSubscript:@"weekdays"];
     if (v86)
     {
       v87 = v86;
@@ -549,7 +549,7 @@ LABEL_167:
       v178 = v57;
       v196 = v90;
       v204 = v88;
-      v93 = v6;
+      v93 = dictionaryCopy;
       v180 = objc_opt_new();
       v243 = 0u;
       v244 = 0u;
@@ -592,7 +592,7 @@ LABEL_167:
 
               v14 = 0;
               v119 = v94;
-              v6 = v93;
+              dictionaryCopy = v93;
               v12 = v204;
               v9 = v212;
               v10 = v196;
@@ -611,7 +611,7 @@ LABEL_167:
         while (v96);
       }
 
-      v6 = v93;
+      dictionaryCopy = v93;
       v12 = v204;
       v9 = v212;
       v10 = v196;
@@ -625,7 +625,7 @@ LABEL_167:
     }
 
     v105 = v172;
-    v106 = [v6 objectForKeyedSubscript:@"hours"];
+    v106 = [dictionaryCopy objectForKeyedSubscript:@"hours"];
     v179 = v57;
     if (v106)
     {
@@ -646,7 +646,7 @@ LABEL_167:
 
       v197 = v10;
       v205 = v12;
-      v189 = v6;
+      v189 = dictionaryCopy;
       v171 = objc_opt_new();
       v237 = 0u;
       v238 = 0u;
@@ -681,7 +681,7 @@ LABEL_167:
 
               v14 = 0;
               v136 = v110;
-              v6 = v189;
+              dictionaryCopy = v189;
               v10 = v197;
               v12 = v205;
               v9 = v212;
@@ -707,7 +707,7 @@ LABEL_167:
       }
 
       v47 = v109;
-      v6 = v189;
+      dictionaryCopy = v189;
       v10 = v197;
       v12 = v205;
       v9 = v212;
@@ -720,7 +720,7 @@ LABEL_167:
       v171 = 0;
     }
 
-    v120 = [v6 objectForKeyedSubscript:@"minutes"];
+    v120 = [dictionaryCopy objectForKeyedSubscript:@"minutes"];
     if (v120)
     {
       v121 = v120;
@@ -753,7 +753,7 @@ LABEL_166:
       v173 = v105;
       v198 = v10;
       v206 = v12;
-      v190 = v6;
+      v190 = dictionaryCopy;
       v124 = objc_opt_new();
       v231 = 0u;
       v232 = 0u;
@@ -791,7 +791,7 @@ LABEL_166:
 
               v14 = 0;
               v137 = v125;
-              v6 = v190;
+              dictionaryCopy = v190;
               v10 = v198;
               v12 = v206;
               v9 = v212;
@@ -801,9 +801,9 @@ LABEL_166:
               goto LABEL_164;
             }
 
-            v135 = [v133 longLongValue];
+            longLongValue = [v133 longLongValue];
             v124 = v132;
-            [v132 appendInt64Value:v135];
+            [v132 appendInt64Value:longLongValue];
             ++v130;
             v131 = v129;
           }
@@ -825,7 +825,7 @@ LABEL_166:
       }
 
       v47 = v129;
-      v6 = v190;
+      dictionaryCopy = v190;
       v10 = v198;
       v12 = v206;
       v9 = v212;
@@ -838,7 +838,7 @@ LABEL_166:
       v124 = 0;
     }
 
-    v138 = [v6 objectForKeyedSubscript:@"seconds"];
+    v138 = [dictionaryCopy objectForKeyedSubscript:@"seconds"];
     v168 = v124;
     if (v138)
     {
@@ -865,7 +865,7 @@ LABEL_144:
       v174 = v105;
       v199 = v10;
       v207 = v12;
-      v191 = v6;
+      v191 = dictionaryCopy;
       v170 = objc_opt_new();
       v225 = 0u;
       v226 = 0u;
@@ -901,7 +901,7 @@ LABEL_144:
               CCSetError();
 
               v14 = 0;
-              v6 = v191;
+              dictionaryCopy = v191;
               v10 = v199;
               v12 = v207;
               v9 = v212;
@@ -932,7 +932,7 @@ LABEL_144:
       }
 
       v47 = v147;
-      v6 = v191;
+      dictionaryCopy = v191;
       v10 = v199;
       v12 = v207;
       v9 = v212;
@@ -946,7 +946,7 @@ LABEL_144:
       v170 = 0;
     }
 
-    [v6 objectForKeyedSubscript:@"setPositions"];
+    [dictionaryCopy objectForKeyedSubscript:@"setPositions"];
     v167 = v16 = v216;
     if (v167)
     {
@@ -967,7 +967,7 @@ LABEL_144:
 
       v175 = v105;
       v208 = v12;
-      v192 = v6;
+      v192 = dictionaryCopy;
       v154 = objc_opt_new();
       v219 = 0u;
       v220 = 0u;
@@ -1003,7 +1003,7 @@ LABEL_144:
               v164 = v155;
 
               v14 = 0;
-              v6 = v192;
+              dictionaryCopy = v192;
               v10 = v200;
               v12 = v208;
               v9 = v212;
@@ -1030,7 +1030,7 @@ LABEL_144:
         }
       }
 
-      v6 = v192;
+      dictionaryCopy = v192;
       v10 = v200;
       v12 = v208;
       v9 = v212;
@@ -1047,7 +1047,7 @@ LABEL_144:
     }
 
     v136 = v171;
-    v14 = [[CCToolKitToolTypedValuePrimitiveValueRecurrenceRule alloc] initWithCalendar:v9 frequency:v213 interval:v10 end:v16 matchingPolicy:v185 repeatedTimePolicy:v184 months:v218 daysOfTheYear:v57 daysOfTheMonth:v175 weeks:v182 weekdays:v180 hours:v171 minutes:v124 seconds:v170 setPositions:v154 error:v214];
+    v14 = [[CCToolKitToolTypedValuePrimitiveValueRecurrenceRule alloc] initWithCalendar:v9 frequency:unsignedIntegerValue interval:v10 end:v16 matchingPolicy:unsignedIntegerValue2 repeatedTimePolicy:unsignedIntegerValue3 months:v218 daysOfTheYear:v57 daysOfTheMonth:v175 weeks:v182 weekdays:v180 hours:v171 minutes:v124 seconds:v170 setPositions:v154 error:errorCopy];
     v164 = v154;
     v105 = v175;
 LABEL_162:
@@ -1073,9 +1073,9 @@ LABEL_174:
   v3 = objc_opt_new();
   if (self->_calendar)
   {
-    v4 = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRule *)self calendar];
-    v5 = [v4 jsonDictionary];
-    [v3 setObject:v5 forKeyedSubscript:@"calendar"];
+    calendar = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRule *)self calendar];
+    jsonDictionary = [calendar jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"calendar"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CCToolKitToolTypedValuePrimitiveValueRecurrenceRule frequency](self, "frequency")}];
@@ -1090,8 +1090,8 @@ LABEL_174:
   if (self->_end)
   {
     v8 = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRule *)self end];
-    v9 = [v8 jsonDictionary];
-    [v3 setObject:v9 forKeyedSubscript:@"end"];
+    jsonDictionary2 = [v8 jsonDictionary];
+    [v3 setObject:jsonDictionary2 forKeyedSubscript:@"end"];
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CCToolKitToolTypedValuePrimitiveValueRecurrenceRule matchingPolicy](self, "matchingPolicy")}];
@@ -1107,8 +1107,8 @@ LABEL_174:
     v72 = 0u;
     v73 = 0u;
     v74 = 0u;
-    v13 = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRule *)self months];
-    v14 = [v13 countByEnumeratingWithState:&v71 objects:v76 count:16];
+    months = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRule *)self months];
+    v14 = [months countByEnumeratingWithState:&v71 objects:v76 count:16];
     if (v14)
     {
       v15 = v14;
@@ -1119,14 +1119,14 @@ LABEL_174:
         {
           if (*v72 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(months);
           }
 
-          v18 = [*(*(&v71 + 1) + 8 * i) jsonDictionary];
-          [v12 addObject:v18];
+          jsonDictionary3 = [*(*(&v71 + 1) + 8 * i) jsonDictionary];
+          [v12 addObject:jsonDictionary3];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v71 objects:v76 count:16];
+        v15 = [months countByEnumeratingWithState:&v71 objects:v76 count:16];
       }
 
       while (v15);
@@ -1138,14 +1138,14 @@ LABEL_174:
   if (self->_daysOfTheYear)
   {
     v19 = objc_opt_new();
-    v20 = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRule *)self daysOfTheYear];
+    daysOfTheYear = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRule *)self daysOfTheYear];
     v69[0] = MEMORY[0x1E69E9820];
     v69[1] = 3221225472;
     v69[2] = __69__CCToolKitToolTypedValuePrimitiveValueRecurrenceRule_jsonDictionary__block_invoke;
     v69[3] = &unk_1E73E8EF0;
     v70 = v19;
     v21 = v19;
-    [v20 enumerateInt64ValuesWithBlock:v69];
+    [daysOfTheYear enumerateInt64ValuesWithBlock:v69];
 
     [v3 setObject:v21 forKeyedSubscript:@"daysOfTheYear"];
   }
@@ -1153,14 +1153,14 @@ LABEL_174:
   if (self->_daysOfTheMonth)
   {
     v22 = objc_opt_new();
-    v23 = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRule *)self daysOfTheMonth];
+    daysOfTheMonth = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRule *)self daysOfTheMonth];
     v67[0] = MEMORY[0x1E69E9820];
     v67[1] = 3221225472;
     v67[2] = __69__CCToolKitToolTypedValuePrimitiveValueRecurrenceRule_jsonDictionary__block_invoke_2;
     v67[3] = &unk_1E73E8EF0;
     v68 = v22;
     v24 = v22;
-    [v23 enumerateInt64ValuesWithBlock:v67];
+    [daysOfTheMonth enumerateInt64ValuesWithBlock:v67];
 
     [v3 setObject:v24 forKeyedSubscript:@"daysOfTheMonth"];
   }
@@ -1168,14 +1168,14 @@ LABEL_174:
   if (self->_weeks)
   {
     v25 = objc_opt_new();
-    v26 = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRule *)self weeks];
+    weeks = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRule *)self weeks];
     v65[0] = MEMORY[0x1E69E9820];
     v65[1] = 3221225472;
     v65[2] = __69__CCToolKitToolTypedValuePrimitiveValueRecurrenceRule_jsonDictionary__block_invoke_3;
     v65[3] = &unk_1E73E8EF0;
     v66 = v25;
     v27 = v25;
-    [v26 enumerateInt64ValuesWithBlock:v65];
+    [weeks enumerateInt64ValuesWithBlock:v65];
 
     [v3 setObject:v27 forKeyedSubscript:@"weeks"];
   }
@@ -1187,8 +1187,8 @@ LABEL_174:
     v62 = 0u;
     v63 = 0u;
     v64 = 0u;
-    v29 = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRule *)self weekdays];
-    v30 = [v29 countByEnumeratingWithState:&v61 objects:v75 count:16];
+    weekdays = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRule *)self weekdays];
+    v30 = [weekdays countByEnumeratingWithState:&v61 objects:v75 count:16];
     if (v30)
     {
       v31 = v30;
@@ -1199,14 +1199,14 @@ LABEL_174:
         {
           if (*v62 != v32)
           {
-            objc_enumerationMutation(v29);
+            objc_enumerationMutation(weekdays);
           }
 
-          v34 = [*(*(&v61 + 1) + 8 * j) jsonDictionary];
-          [v28 addObject:v34];
+          jsonDictionary4 = [*(*(&v61 + 1) + 8 * j) jsonDictionary];
+          [v28 addObject:jsonDictionary4];
         }
 
-        v31 = [v29 countByEnumeratingWithState:&v61 objects:v75 count:16];
+        v31 = [weekdays countByEnumeratingWithState:&v61 objects:v75 count:16];
       }
 
       while (v31);
@@ -1218,14 +1218,14 @@ LABEL_174:
   if (self->_hours)
   {
     v35 = objc_opt_new();
-    v36 = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRule *)self hours];
+    hours = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRule *)self hours];
     v59[0] = MEMORY[0x1E69E9820];
     v59[1] = 3221225472;
     v59[2] = __69__CCToolKitToolTypedValuePrimitiveValueRecurrenceRule_jsonDictionary__block_invoke_4;
     v59[3] = &unk_1E73E8EF0;
     v60 = v35;
     v37 = v35;
-    [v36 enumerateInt64ValuesWithBlock:v59];
+    [hours enumerateInt64ValuesWithBlock:v59];
 
     [v3 setObject:v37 forKeyedSubscript:@"hours"];
   }
@@ -1233,14 +1233,14 @@ LABEL_174:
   if (self->_minutes)
   {
     v38 = objc_opt_new();
-    v39 = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRule *)self minutes];
+    minutes = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRule *)self minutes];
     v57[0] = MEMORY[0x1E69E9820];
     v57[1] = 3221225472;
     v57[2] = __69__CCToolKitToolTypedValuePrimitiveValueRecurrenceRule_jsonDictionary__block_invoke_5;
     v57[3] = &unk_1E73E8EF0;
     v58 = v38;
     v40 = v38;
-    [v39 enumerateInt64ValuesWithBlock:v57];
+    [minutes enumerateInt64ValuesWithBlock:v57];
 
     [v3 setObject:v40 forKeyedSubscript:@"minutes"];
   }
@@ -1248,14 +1248,14 @@ LABEL_174:
   if (self->_seconds)
   {
     v41 = objc_opt_new();
-    v42 = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRule *)self seconds];
+    seconds = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRule *)self seconds];
     v55[0] = MEMORY[0x1E69E9820];
     v55[1] = 3221225472;
     v55[2] = __69__CCToolKitToolTypedValuePrimitiveValueRecurrenceRule_jsonDictionary__block_invoke_6;
     v55[3] = &unk_1E73E8EF0;
     v56 = v41;
     v43 = v41;
-    [v42 enumerateInt64ValuesWithBlock:v55];
+    [seconds enumerateInt64ValuesWithBlock:v55];
 
     [v3 setObject:v43 forKeyedSubscript:@"seconds"];
   }
@@ -1263,14 +1263,14 @@ LABEL_174:
   if (self->_setPositions)
   {
     v44 = objc_opt_new();
-    v45 = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRule *)self setPositions];
+    setPositions = [(CCToolKitToolTypedValuePrimitiveValueRecurrenceRule *)self setPositions];
     v50 = MEMORY[0x1E69E9820];
     v51 = 3221225472;
     v52 = __69__CCToolKitToolTypedValuePrimitiveValueRecurrenceRule_jsonDictionary__block_invoke_7;
     v53 = &unk_1E73E8EF0;
     v54 = v44;
     v46 = v44;
-    [v45 enumerateInt64ValuesWithBlock:&v50];
+    [setPositions enumerateInt64ValuesWithBlock:&v50];
 
     [v3 setObject:v46 forKeyedSubscript:{@"setPositions", v50, v51, v52, v53}];
   }
@@ -1331,15 +1331,15 @@ void __69__CCToolKitToolTypedValuePrimitiveValueRecurrenceRule_jsonDictionary__b
   [v2 addObject:v3];
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v23 = a3;
+  blockCopy = block;
   if (self->_calendar)
   {
     v5 = objc_alloc(MEMORY[0x1E69939F0]);
     v6 = *MEMORY[0x1E69939A8];
     v7 = [v5 initWithFieldType:v6 subMessageValue:self->_calendar];
-    v23[2](v23, v7);
+    blockCopy[2](blockCopy, v7);
   }
 
   else
@@ -1348,81 +1348,81 @@ void __69__CCToolKitToolTypedValuePrimitiveValueRecurrenceRule_jsonDictionary__b
   }
 
   v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 enumValue:self->_frequency];
-  v23[2](v23, v8);
+  blockCopy[2](blockCopy, v8);
 
   if (self->_hasInterval)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 int64Value:self->_interval];
-    v23[2](v23, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
   if (self->_end)
   {
     v10 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_end];
-    v23[2](v23, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
   v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 enumValue:self->_matchingPolicy];
-  v23[2](v23, v11);
+  blockCopy[2](blockCopy, v11);
 
   v12 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 enumValue:self->_repeatedTimePolicy];
-  v23[2](v23, v12);
+  blockCopy[2](blockCopy, v12);
 
   if (self->_months)
   {
     v13 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 repeatedSubMessageValue:self->_months];
-    v23[2](v23, v13);
+    blockCopy[2](blockCopy, v13);
   }
 
   if (self->_daysOfTheYear)
   {
     v14 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 repeatedInt64Value:self->_daysOfTheYear];
-    v23[2](v23, v14);
+    blockCopy[2](blockCopy, v14);
   }
 
   if (self->_daysOfTheMonth)
   {
     v15 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 repeatedInt64Value:self->_daysOfTheMonth];
-    v23[2](v23, v15);
+    blockCopy[2](blockCopy, v15);
   }
 
   if (self->_weeks)
   {
     v16 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 repeatedInt64Value:self->_weeks];
-    v23[2](v23, v16);
+    blockCopy[2](blockCopy, v16);
   }
 
   if (self->_weekdays)
   {
     v17 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 repeatedSubMessageValue:self->_weekdays];
-    v23[2](v23, v17);
+    blockCopy[2](blockCopy, v17);
   }
 
   if (self->_hours)
   {
     v18 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 repeatedInt64Value:self->_hours];
-    v23[2](v23, v18);
+    blockCopy[2](blockCopy, v18);
   }
 
   if (self->_minutes)
   {
     v19 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 repeatedInt64Value:self->_minutes];
-    v23[2](v23, v19);
+    blockCopy[2](blockCopy, v19);
   }
 
   if (self->_seconds)
   {
     v20 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 repeatedInt64Value:self->_seconds];
-    v23[2](v23, v20);
+    blockCopy[2](blockCopy, v20);
   }
 
-  v21 = v23;
+  v21 = blockCopy;
   if (self->_setPositions)
   {
     v22 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 repeatedInt64Value:self->_setPositions];
-    v23[2](v23, v22);
+    blockCopy[2](blockCopy, v22);
 
-    v21 = v23;
+    v21 = blockCopy;
   }
 }
 
@@ -1454,11 +1454,11 @@ void __69__CCToolKitToolTypedValuePrimitiveValueRecurrenceRule_jsonDictionary__b
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v95 = a4;
-  v96 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v96];
+  errorCopy = error;
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   if (*&v5[*MEMORY[0x1E6993AB8]] >= *&v5[*MEMORY[0x1E6993AB0]])
@@ -1787,7 +1787,7 @@ LABEL_94:
 
           v65 = v101;
 LABEL_84:
-          [v65 addObject:{v64, v95}];
+          [v65 addObject:{v64, errorCopy}];
 LABEL_85:
 
           continue;
@@ -1930,13 +1930,13 @@ LABEL_107:
   {
     CCSetError();
     v87 = 0;
-    v88 = v96;
+    v88 = dataCopy;
   }
 
   else
   {
     v89 = MEMORY[0x1E6993AA8];
-    v88 = v96;
+    v88 = dataCopy;
     if (*&v5[*MEMORY[0x1E6993AA8]])
     {
       v90 = objc_opt_class();
@@ -1957,23 +1957,23 @@ LABEL_107:
   return v87;
 }
 
-- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRule)initWithCalendar:(id)a3 frequency:(unsigned int)a4 interval:(id)a5 end:(id)a6 matchingPolicy:(unsigned int)a7 repeatedTimePolicy:(unsigned int)a8 months:(id)a9 daysOfTheYear:(id)a10 daysOfTheMonth:(id)a11 weeks:(id)a12 weekdays:(id)a13 hours:(id)a14 minutes:(id)a15 seconds:(id)a16 setPositions:(id)a17 error:(id *)a18
+- (CCToolKitToolTypedValuePrimitiveValueRecurrenceRule)initWithCalendar:(id)calendar frequency:(unsigned int)frequency interval:(id)interval end:(id)end matchingPolicy:(unsigned int)policy repeatedTimePolicy:(unsigned int)timePolicy months:(id)months daysOfTheYear:(id)self0 daysOfTheMonth:(id)self1 weeks:(id)self2 weekdays:(id)self3 hours:(id)self4 minutes:(id)self5 seconds:(id)self6 setPositions:(id)self7 error:(id *)self8
 {
   v109 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  v87 = a5;
-  v21 = a6;
-  v22 = a9;
-  v86 = a10;
-  v85 = a11;
-  v83 = a12;
-  v84 = a13;
-  v79 = a14;
-  v78 = a15;
-  v82 = a16;
-  v80 = a17;
+  calendarCopy = calendar;
+  intervalCopy = interval;
+  endCopy = end;
+  monthsCopy = months;
+  yearCopy = year;
+  monthCopy = month;
+  weeksCopy = weeks;
+  weekdaysCopy = weekdays;
+  hoursCopy = hours;
+  minutesCopy = minutes;
+  secondsCopy = seconds;
+  positionsCopy = positions;
   v23 = objc_opt_new();
-  if (v20)
+  if (calendarCopy)
   {
     objc_opt_class();
     v106 = 0;
@@ -1983,14 +1983,14 @@ LABEL_107:
     {
       CCSetError();
       v31 = 0;
-      v32 = v22;
-      v27 = v21;
+      v32 = monthsCopy;
+      v27 = endCopy;
 LABEL_62:
-      v28 = v87;
+      v28 = intervalCopy;
       goto LABEL_63;
     }
 
-    v26 = [v20 data];
+    data = [calendarCopy data];
     CCPBDataWriterWriteDataField();
   }
 
@@ -1999,9 +1999,9 @@ LABEL_62:
     v25 = 0;
   }
 
-  v27 = v21;
-  v28 = v87;
-  if (a4)
+  v27 = endCopy;
+  v28 = intervalCopy;
+  if (frequency)
   {
     v105 = v25;
     v29 = CCValidateEnumField();
@@ -2016,7 +2016,7 @@ LABEL_62:
     }
 
     CCPBDataWriterWriteUint32Field();
-    if (!v87)
+    if (!intervalCopy)
     {
 LABEL_8:
       v25 = v30;
@@ -2027,7 +2027,7 @@ LABEL_8:
   else
   {
     v30 = v25;
-    if (!v87)
+    if (!intervalCopy)
     {
       goto LABEL_8;
     }
@@ -2040,11 +2040,11 @@ LABEL_8:
 
   if (v33)
   {
-    [v87 longLongValue];
+    [intervalCopy longLongValue];
     CCPBDataWriterWriteInt64Field();
 LABEL_13:
-    v32 = v22;
-    if (v21)
+    v32 = monthsCopy;
+    if (endCopy)
     {
       objc_opt_class();
       v103 = v25;
@@ -2056,7 +2056,7 @@ LABEL_13:
         goto LABEL_49;
       }
 
-      v36 = [v21 data];
+      data2 = [endCopy data];
       CCPBDataWriterWriteDataField();
     }
 
@@ -2065,7 +2065,7 @@ LABEL_13:
       v35 = v25;
     }
 
-    if (a7)
+    if (policy)
     {
       v102 = v35;
       v37 = CCValidateEnumField();
@@ -2084,7 +2084,7 @@ LABEL_13:
       v25 = v35;
     }
 
-    if (a8)
+    if (timePolicy)
     {
       v101 = v25;
       v38 = CCValidateEnumField();
@@ -2096,7 +2096,7 @@ LABEL_13:
       }
 
       CCPBDataWriterWriteUint32Field();
-      if (!v22)
+      if (!monthsCopy)
       {
         goto LABEL_27;
       }
@@ -2105,13 +2105,13 @@ LABEL_13:
     else
     {
       v35 = v25;
-      if (!v22)
+      if (!monthsCopy)
       {
 LABEL_27:
         v25 = v35;
 LABEL_38:
         v46 = 0x1E6993000uLL;
-        if (!v86)
+        if (!yearCopy)
         {
           v35 = v25;
           goto LABEL_42;
@@ -2127,7 +2127,7 @@ LABEL_38:
           CCPBDataWriterWriteRepeatedInt64Field();
           v46 = 0x1E6993000;
 LABEL_42:
-          if (!v85)
+          if (!monthCopy)
           {
             v25 = v35;
             goto LABEL_46;
@@ -2144,7 +2144,7 @@ LABEL_42:
             CCPBDataWriterWriteRepeatedInt64Field();
             v46 = 0x1E6993000;
 LABEL_46:
-            if (!v83)
+            if (!weeksCopy)
             {
               v35 = v25;
               goto LABEL_51;
@@ -2161,7 +2161,7 @@ LABEL_46:
               CCPBDataWriterWriteRepeatedInt64Field();
               v46 = 0x1E6993000;
 LABEL_51:
-              if (!v84)
+              if (!weekdaysCopy)
               {
                 v25 = v35;
                 goto LABEL_66;
@@ -2174,12 +2174,12 @@ LABEL_51:
 
               if (v52)
               {
-                v77 = v20;
+                v77 = calendarCopy;
                 v90 = 0u;
                 v91 = 0u;
                 v88 = 0u;
                 v89 = 0u;
-                v53 = v84;
+                v53 = weekdaysCopy;
                 v54 = [v53 countByEnumeratingWithState:&v88 objects:v107 count:16];
                 if (v54)
                 {
@@ -2194,7 +2194,7 @@ LABEL_51:
                         objc_enumerationMutation(v53);
                       }
 
-                      v58 = [*(*(&v88 + 1) + 8 * i) data];
+                      data3 = [*(*(&v88 + 1) + 8 * i) data];
                       CCPBDataWriterWriteDataField();
                     }
 
@@ -2204,14 +2204,14 @@ LABEL_51:
                   while (v55);
                 }
 
-                v20 = v77;
-                v32 = v22;
-                v27 = v21;
+                calendarCopy = v77;
+                v32 = monthsCopy;
+                v27 = endCopy;
                 v46 = 0x1E6993000;
 LABEL_66:
-                v60 = v78;
-                v59 = v79;
-                if (v79)
+                v60 = minutesCopy;
+                v59 = hoursCopy;
+                if (hoursCopy)
                 {
                   v63 = *(v46 + 2624);
                   objc_opt_class();
@@ -2232,7 +2232,7 @@ LABEL_66:
                   v65 = v25;
                 }
 
-                if (v78)
+                if (minutesCopy)
                 {
                   v66 = *(v46 + 2624);
                   objc_opt_class();
@@ -2256,7 +2256,7 @@ LABEL_82:
                   v25 = v65;
                 }
 
-                if (!v82)
+                if (!secondsCopy)
                 {
                   v65 = v25;
                   goto LABEL_79;
@@ -2272,7 +2272,7 @@ LABEL_82:
                   CCPBDataWriterWriteRepeatedInt64Field();
                   v46 = 0x1E6993000;
 LABEL_79:
-                  if (!v80)
+                  if (!positionsCopy)
                   {
                     v25 = v65;
                     goto LABEL_85;
@@ -2287,9 +2287,9 @@ LABEL_79:
                   {
                     CCPBDataWriterWriteRepeatedInt64Field();
 LABEL_85:
-                    v28 = v87;
-                    v72 = [v23 immutableData];
-                    v31 = [(CCItemMessage *)self initWithData:v72 error:a18];
+                    v28 = intervalCopy;
+                    immutableData = [v23 immutableData];
+                    v31 = [(CCItemMessage *)self initWithData:immutableData error:error];
 
                     self = v31;
                     goto LABEL_64;
@@ -2303,7 +2303,7 @@ LABEL_77:
                 v31 = 0;
                 v25 = v65;
 LABEL_83:
-                v28 = v87;
+                v28 = intervalCopy;
                 goto LABEL_64;
               }
 
@@ -2337,12 +2337,12 @@ LABEL_49:
       goto LABEL_61;
     }
 
-    v76 = v20;
+    v76 = calendarCopy;
     v98 = 0u;
     v99 = 0u;
     v96 = 0u;
     v97 = 0u;
-    v40 = v22;
+    v40 = monthsCopy;
     v41 = [v40 countByEnumeratingWithState:&v96 objects:v108 count:16];
     if (v41)
     {
@@ -2357,7 +2357,7 @@ LABEL_49:
             objc_enumerationMutation(v40);
           }
 
-          v45 = [*(*(&v96 + 1) + 8 * j) data];
+          data4 = [*(*(&v96 + 1) + 8 * j) data];
           CCPBDataWriterWriteDataField();
         }
 
@@ -2367,19 +2367,19 @@ LABEL_49:
       while (v42);
     }
 
-    v20 = v76;
-    v32 = v22;
-    v27 = v21;
+    calendarCopy = v76;
+    v32 = monthsCopy;
+    v27 = endCopy;
     goto LABEL_38;
   }
 
   CCSetError();
   v31 = 0;
 LABEL_18:
-  v32 = v22;
+  v32 = monthsCopy;
 LABEL_63:
-  v60 = v78;
-  v59 = v79;
+  v60 = minutesCopy;
+  v59 = hoursCopy;
 LABEL_64:
 
   v61 = *MEMORY[0x1E69E9840];

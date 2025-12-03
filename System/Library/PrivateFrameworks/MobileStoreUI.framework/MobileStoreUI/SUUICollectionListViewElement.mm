@@ -1,15 +1,15 @@
 @interface SUUICollectionListViewElement
-- (SUUICollectionListViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
+- (SUUICollectionListViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
 @end
 
 @implementation SUUICollectionListViewElement
 
-- (SUUICollectionListViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUICollectionListViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
   v19 = *MEMORY[0x277D85DE8];
   v17.receiver = self;
   v17.super_class = SUUICollectionListViewElement;
-  v5 = [(SUUIViewElement *)&v17 initWithDOMElement:a3 parent:a4 elementFactory:a5];
+  v5 = [(SUUIViewElement *)&v17 initWithDOMElement:element parent:parent elementFactory:factory];
   v6 = v5;
   if (v5)
   {

@@ -2,7 +2,7 @@
 - (UIMailConversationContext)init;
 - (id)infoDictionary;
 - (id)inputContextHistoryRepresentation;
-- (id)stringForMailSubtype:(int64_t)a3;
+- (id)stringForMailSubtype:(int64_t)subtype;
 @end
 
 @implementation UIMailConversationContext
@@ -26,13 +26,13 @@
   v17 = *MEMORY[0x1E69E9840];
   v15.receiver = self;
   v15.super_class = UIMailConversationContext;
-  v3 = [(UIConversationContext *)&v15 inputContextHistoryRepresentation];
+  inputContextHistoryRepresentation = [(UIConversationContext *)&v15 inputContextHistoryRepresentation];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(UIConversationContext *)self entries];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  entries = [(UIConversationContext *)self entries];
+  v5 = [entries countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -43,20 +43,20 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(entries);
         }
 
-        v9 = [*(*(&v11 + 1) + 8 * i) inputContextEntryRepresentation];
-        [v3 addEntry:v9];
+        inputContextEntryRepresentation = [*(*(&v11 + 1) + 8 * i) inputContextEntryRepresentation];
+        [inputContextHistoryRepresentation addEntry:inputContextEntryRepresentation];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v6 = [entries countByEnumeratingWithState:&v11 objects:v16 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return inputContextHistoryRepresentation;
 }
 
 - (id)infoDictionary
@@ -64,13 +64,13 @@
   v15[2] = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = UIMailConversationContext;
-  v3 = [(UIConversationContext *)&v13 infoDictionary];
-  v4 = [v3 mutableCopy];
+  infoDictionary = [(UIConversationContext *)&v13 infoDictionary];
+  v4 = [infoDictionary mutableCopy];
 
-  v5 = [(UIConversationContext *)self entries];
-  v6 = [v5 lastObject];
+  entries = [(UIConversationContext *)self entries];
+  lastObject = [entries lastObject];
 
-  v7 = -[UIMailConversationContext stringForMailSubtype:](self, "stringForMailSubtype:", [v6 kind]);
+  v7 = -[UIMailConversationContext stringForMailSubtype:](self, "stringForMailSubtype:", [lastObject kind]);
   v14[0] = @"hasCustomSignature";
   v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[UIMailConversationContext responseHasCustomSignature](self, "responseHasCustomSignature")}];
   v14[1] = @"messageCategorySubtype";
@@ -79,27 +79,27 @@
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:2];
   [v4 addEntriesFromDictionary:v9];
 
-  v10 = [(UIMailConversationContext *)self responseSubject];
+  responseSubject = [(UIMailConversationContext *)self responseSubject];
 
-  if (v10)
+  if (responseSubject)
   {
-    v11 = [(UIMailConversationContext *)self responseSubject];
-    [v4 setObject:v11 forKey:@"subject"];
+    responseSubject2 = [(UIMailConversationContext *)self responseSubject];
+    [v4 setObject:responseSubject2 forKey:@"subject"];
   }
 
   return v4;
 }
 
-- (id)stringForMailSubtype:(int64_t)a3
+- (id)stringForMailSubtype:(int64_t)subtype
 {
-  if ((a3 - 1) > 4)
+  if ((subtype - 1) > 4)
   {
     return @"none";
   }
 
   else
   {
-    return off_1E710AE08[a3 - 1];
+    return off_1E710AE08[subtype - 1];
   }
 }
 

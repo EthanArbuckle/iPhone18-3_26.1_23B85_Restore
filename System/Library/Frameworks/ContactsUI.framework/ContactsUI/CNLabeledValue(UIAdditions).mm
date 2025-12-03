@@ -13,10 +13,10 @@
 
 - (id)localizedLabel
 {
-  v1 = [a1 label];
-  if (v1)
+  label = [self label];
+  if (label)
   {
-    v2 = [MEMORY[0x1E695CEE0] localizedStringForLabel:v1];
+    v2 = [MEMORY[0x1E695CEE0] localizedStringForLabel:label];
   }
 
   else
@@ -38,12 +38,12 @@
 
   if ([v3 isEqualToString:@"birthdays"])
   {
-    v4 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v5 = [v4 calendarIdentifier];
-    v12[0] = v5;
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    calendarIdentifier = [currentCalendar calendarIdentifier];
+    v12[0] = calendarIdentifier;
     v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-    v7 = [MEMORY[0x1E6996B48] availableAlternateCalendars];
-    v8 = [v6 arrayByAddingObjectsFromArray:v7];
+    availableAlternateCalendars = [MEMORY[0x1E6996B48] availableAlternateCalendars];
+    v8 = [v6 arrayByAddingObjectsFromArray:availableAlternateCalendars];
 
     if (v8)
     {
@@ -81,17 +81,17 @@ LABEL_8:
 + (id)allCustomLabels
 {
   v2 = MEMORY[0x1E695DFD8];
-  v3 = [a1 defaultLabels];
-  v4 = [v2 setWithArray:v3];
+  defaultLabels = [self defaultLabels];
+  v4 = [v2 setWithArray:defaultLabels];
 
   v5 = MEMORY[0x1E695DFA8];
-  v6 = [a1 allLabels];
-  v7 = [v5 setWithArray:v6];
+  allLabels = [self allLabels];
+  v7 = [v5 setWithArray:allLabels];
 
   [v7 minusSet:v4];
-  v8 = [v7 allObjects];
+  allObjects = [v7 allObjects];
 
-  return v8;
+  return allObjects;
 }
 
 + (id)allLabels
@@ -117,7 +117,7 @@ LABEL_8:
 + (id)localizedDisplayStringForLabel:()UIAdditions propertyName:
 {
   v6 = a4;
-  v7 = [a1 localizedStringForLabel:a3];
+  v7 = [self localizedStringForLabel:a3];
   if ((*(*MEMORY[0x1E6996568] + 16))())
   {
     v8 = CNUILocalizedStringForPropertyWithFormatKey(@"LOWERCASE_LABEL", v6);

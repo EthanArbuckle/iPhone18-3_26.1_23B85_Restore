@@ -7,26 +7,26 @@
 - (id)contextMetadata
 {
   v2 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:3];
-  v3 = [a1 _className];
+  _className = [self _className];
   v4 = +[_CDContextQueries intentClassKey];
-  [v2 setObject:v3 forKeyedSubscript:v4];
+  [v2 setObject:_className forKeyedSubscript:v4];
 
-  v5 = [a1 domain];
+  domain = [self domain];
 
-  if (v5)
+  if (domain)
   {
-    v6 = [a1 domain];
-    v7 = [v6 copy];
+    domain2 = [self domain];
+    v7 = [domain2 copy];
     v8 = +[_CDContextQueries intentTypeKey];
     [v2 setObject:v7 forKeyedSubscript:v8];
   }
 
-  v9 = [a1 verb];
+  verb = [self verb];
 
-  if (v9)
+  if (verb)
   {
-    v10 = [a1 verb];
-    v11 = [v10 copy];
+    verb2 = [self verb];
+    v11 = [verb2 copy];
     v12 = +[_CDContextQueries intentVerbKey];
     [v2 setObject:v11 forKeyedSubscript:v12];
   }

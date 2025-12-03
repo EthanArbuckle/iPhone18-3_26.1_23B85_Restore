@@ -6,12 +6,12 @@
 - (IOSChromeViewController)chrome;
 - (MapsActionController)init;
 - (NavActionCoordination)navActionCoordinator;
-- (void)_applyActivity:(id)a3 assumedSourceFidelity:(unint64_t)a4 source:(int64_t)a5;
-- (void)applyRichMapsActivity:(id)a3;
-- (void)applyRichMapsActivityOrWaitForLocation:(id)a3;
-- (void)entryPointsCoordinator:(id)a3 didMergedRichMapsActivity:(id)a4;
-- (void)entryPointsCoordinator:(id)a3 performErrorAction:(id)a4;
-- (void)getUserLocationIfneededFor:(id)a3;
+- (void)_applyActivity:(id)activity assumedSourceFidelity:(unint64_t)fidelity source:(int64_t)source;
+- (void)applyRichMapsActivity:(id)activity;
+- (void)applyRichMapsActivityOrWaitForLocation:(id)location;
+- (void)entryPointsCoordinator:(id)coordinator didMergedRichMapsActivity:(id)activity;
+- (void)entryPointsCoordinator:(id)coordinator performErrorAction:(id)action;
+- (void)getUserLocationIfneededFor:(id)for;
 - (void)navigationEnded;
 @end
 
@@ -27,9 +27,9 @@
 - (BOOL)isNavigationTurnByTurnOrStepping
 {
   WeakRetained = objc_loadWeakRetained(&self->_appCoordinator);
-  v3 = [WeakRetained isNavigationTurnByTurnOrStepping];
+  isNavigationTurnByTurnOrStepping = [WeakRetained isNavigationTurnByTurnOrStepping];
 
-  return v3;
+  return isNavigationTurnByTurnOrStepping;
 }
 
 - (AppCoordinator)appCoordinator
@@ -39,28 +39,28 @@
   return WeakRetained;
 }
 
-- (void)_applyActivity:(id)a3 assumedSourceFidelity:(unint64_t)a4 source:(int64_t)a5
+- (void)_applyActivity:(id)activity assumedSourceFidelity:(unint64_t)fidelity source:(int64_t)source
 {
-  v8 = a3;
-  v9 = [(MapsActionController *)self appStateManager];
-  [v9 setMapsActivity:v8 assumedSourceFidelity:a4 source:a5];
+  activityCopy = activity;
+  appStateManager = [(MapsActionController *)self appStateManager];
+  [appStateManager setMapsActivity:activityCopy assumedSourceFidelity:fidelity source:source];
 }
 
-- (void)applyRichMapsActivity:(id)a3
+- (void)applyRichMapsActivity:(id)activity
 {
-  v4 = a3;
-  if (v4)
+  activityCopy = activity;
+  if (activityCopy)
   {
     v5 = sub_100005610();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [v4 shortDescription];
+      shortDescription = [activityCopy shortDescription];
       *buf = 138412290;
-      v38 = v6;
+      v38 = shortDescription;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "MapsActionController : applyRichMapsActivity %@", buf, 0xCu);
     }
 
-    if ([v4 isTestingAction])
+    if ([activityCopy isTestingAction])
     {
       v7 = sub_100005610();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -69,8 +69,8 @@
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "MapsActionController : applyRichMapsActivity Resetting UI for Testing Action", buf, 2u);
       }
 
-      v8 = [(MapsActionController *)self chrome];
-      [v8 resetForTestingAction];
+      chrome = [(MapsActionController *)self chrome];
+      [chrome resetForTestingAction];
 
       v9 = sub_100005610();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -80,7 +80,7 @@
       }
     }
 
-    if ([v4 needsUIReset])
+    if ([activityCopy needsUIReset])
     {
       v10 = sub_100005610();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -89,22 +89,22 @@
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "MapsActionController : applyRichMapsActivity resetting UI", buf, 2u);
       }
 
-      v11 = [(MapsActionController *)self chrome];
-      [v11 resetForLaunchURLWithOptions:0];
+      chrome2 = [(MapsActionController *)self chrome];
+      [chrome2 resetForLaunchURLWithOptions:0];
     }
 
-    v12 = [v4 action];
-    v13 = [v4 mapsActivity];
-    if (v13)
+    action = [activityCopy action];
+    mapsActivity = [activityCopy mapsActivity];
+    if (mapsActivity)
     {
       v14 = +[NSUUID UUID];
-      v15 = [v14 UUIDString];
+      uUIDString = [v14 UUIDString];
 
       v16 = sub_100005610();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v38 = v15;
+        v38 = uUIDString;
         _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "MapsActionController: apply (tag %@)", buf, 0xCu);
       }
 
@@ -113,26 +113,26 @@
       v32 = 3221225472;
       v33 = sub_100D1ABB0;
       v34 = &unk_101661A90;
-      v18 = v15;
+      v18 = uUIDString;
       v35 = v18;
-      v19 = v13;
+      v19 = mapsActivity;
       v36 = v19;
       dispatch_async(v17, &v31);
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v20 = v12;
+        v20 = action;
         -[MapsActionController _applyActivity:assumedSourceFidelity:source:](self, "_applyActivity:assumedSourceFidelity:source:", v19, [v20 fidelity], objc_msgSend(v20, "source"));
         v21 = +[GEOPlatform sharedPlatform];
-        v22 = [v21 isInternalInstall];
+        isInternalInstall = [v21 isInternalInstall];
 
-        if (v22)
+        if (isInternalInstall)
         {
           v23 = objc_autoreleasePoolPush();
           v24 = [v19 description];
           v25 = [v24 dataUsingEncoding:4];
-          v26 = [v25 bzip2CompressedData];
+          bzip2CompressedData = [v25 bzip2CompressedData];
 
           objc_autoreleasePoolPop(v23);
           v27 = +[NSUserDefaults standardUserDefaults];
@@ -141,7 +141,7 @@
           [v27 setObject:v29 forKey:@"dateLastUserActivity"];
 
           v30 = +[NSUserDefaults standardUserDefaults];
-          [v30 setObject:v26 forKey:@"lastUserActivityData"];
+          [v30 setObject:bzip2CompressedData forKey:@"lastUserActivityData"];
         }
       }
 
@@ -151,20 +151,20 @@
       }
     }
 
-    [(MapsActionController *)self _performAction:v12];
+    [(MapsActionController *)self _performAction:action];
     self->_isRestoringState = 0;
   }
 }
 
-- (void)getUserLocationIfneededFor:(id)a3
+- (void)getUserLocationIfneededFor:(id)for
 {
-  v4 = a3;
+  forCopy = for;
   v5 = sub_100005610();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 shortDescription];
+    shortDescription = [forCopy shortDescription];
     *buf = 138412290;
-    v26 = v6;
+    v26 = shortDescription;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "MapsActionController : Wait Location for %@ ", buf, 0xCu);
   }
 
@@ -173,8 +173,8 @@
   GEOConfigGetDouble();
   v10 = v9;
   v11 = +[MKLocationManager sharedLocationManager];
-  v12 = [v4 action];
-  [v12 userLocationDesiredAccuracy];
+  action = [forCopy action];
+  [action userLocationDesiredAccuracy];
   v14 = v13;
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
@@ -182,35 +182,35 @@
   v20 = &unk_101651708;
   v23 = v8;
   v24 = v10;
-  v21 = v4;
-  v22 = self;
-  v15 = v4;
+  v21 = forCopy;
+  selfCopy = self;
+  v15 = forCopy;
   v16 = [v11 singleLocationUpdateWithDesiredAccuracy:&v17 handler:v14 timeout:v8 maxLocationAge:v10];
   [v16 start];
 }
 
-- (void)applyRichMapsActivityOrWaitForLocation:(id)a3
+- (void)applyRichMapsActivityOrWaitForLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   v5 = sub_100005610();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 shortDescription];
+    shortDescription = [locationCopy shortDescription];
     v11 = 138412290;
-    v12 = v6;
+    v12 = shortDescription;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "MapsActionController : applyRichMapsActivityOrWaitForLocation for %@ ", &v11, 0xCu);
   }
 
   v7 = +[MKLocationManager sharedLocationManager];
-  v8 = [v7 isAuthorizedForPreciseLocation];
+  isAuthorizedForPreciseLocation = [v7 isAuthorizedForPreciseLocation];
 
-  if (!v8)
+  if (!isAuthorizedForPreciseLocation)
   {
     goto LABEL_8;
   }
 
-  v9 = [v4 action];
-  if (![v9 needsUserLocation])
+  action = [locationCopy action];
+  if (![action needsUserLocation])
   {
     BOOL = GEOConfigGetBOOL();
 
@@ -220,12 +220,12 @@
     }
 
 LABEL_8:
-    [(MapsActionController *)self applyRichMapsActivity:v4];
+    [(MapsActionController *)self applyRichMapsActivity:locationCopy];
     goto LABEL_9;
   }
 
 LABEL_7:
-  [(MapsActionController *)self getUserLocationIfneededFor:v4];
+  [(MapsActionController *)self getUserLocationIfneededFor:locationCopy];
 LABEL_9:
 }
 
@@ -236,9 +236,9 @@ LABEL_9:
     v3 = sub_100005610();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(RichMapsActivity *)self->_pendingActivityToApplyAfterNavEnd shortDescription];
+      shortDescription = [(RichMapsActivity *)self->_pendingActivityToApplyAfterNavEnd shortDescription];
       *buf = 138412290;
-      v8 = v4;
+      v8 = shortDescription;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "MapsActionController : navigationEnded for pending %@ ", buf, 0xCu);
     }
 
@@ -252,35 +252,35 @@ LABEL_9:
   }
 }
 
-- (void)entryPointsCoordinator:(id)a3 didMergedRichMapsActivity:(id)a4
+- (void)entryPointsCoordinator:(id)coordinator didMergedRichMapsActivity:(id)activity
 {
-  v6 = a4;
-  if (v6)
+  activityCopy = activity;
+  if (activityCopy)
   {
     self->_isRestoringState = 1;
     v7 = +[UIApplication sharedMapsDelegate];
     [v7 dismissCurrentInterruption];
 
-    v8 = [v6 action];
+    action = [activityCopy action];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [(MapsActionController *)self isNavigationTurnByTurnOrStepping]&& ([v8 isCompatibleWithNavigation]& 1) == 0)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [(MapsActionController *)self isNavigationTurnByTurnOrStepping]&& ([action isCompatibleWithNavigation]& 1) == 0)
     {
       v9 = +[MNNavigationService sharedService];
-      v10 = [v9 route];
-      v11 = [v10 destination];
+      route = [v9 route];
+      destination = [route destination];
 
-      v12 = [v6 mapsActivity];
-      v13 = [v12 directionsPlan];
-      v14 = [v13 planningWaypoints];
-      v15 = [v14 lastObject];
-      v16 = [v15 waypoint];
+      mapsActivity = [activityCopy mapsActivity];
+      directionsPlan = [mapsActivity directionsPlan];
+      planningWaypoints = [directionsPlan planningWaypoints];
+      lastObject = [planningWaypoints lastObject];
+      waypoint = [lastObject waypoint];
 
-      if (v11)
+      if (destination)
       {
-        if (v16)
+        if (waypoint)
         {
-          v17 = [v11 mapItemStorage];
-          v18 = [v16 mapItemStorage];
+          mapItemStorage = [destination mapItemStorage];
+          mapItemStorage2 = [waypoint mapItemStorage];
           IsEqualToMapItemForPurpose = GEOMapItemIsEqualToMapItemForPurpose();
 
           if (IsEqualToMapItemForPurpose)
@@ -288,12 +288,12 @@ LABEL_9:
             v20 = sub_100005610();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
             {
-              v21 = [v11 shortDescription];
-              v22 = [v16 shortDescription];
+              shortDescription = [destination shortDescription];
+              shortDescription2 = [waypoint shortDescription];
               *buf = 138412546;
-              v35 = v21;
+              selfCopy2 = shortDescription;
               v36 = 2112;
-              v37 = v22;
+              v37 = shortDescription2;
               _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "MapsActionController: Skipping application of route restoration, currentDestination: %@, restorationDestination: %@", buf, 0x16u);
             }
 
@@ -303,22 +303,22 @@ LABEL_9:
       }
     }
 
-    if ([(MapsActionController *)self isNavigationTurnByTurnOrStepping]&& ([v8 isCompatibleWithNavigation]& 1) == 0)
+    if ([(MapsActionController *)self isNavigationTurnByTurnOrStepping]&& ([action isCompatibleWithNavigation]& 1) == 0)
     {
-      objc_storeStrong(&self->_pendingActivityToApplyAfterNavEnd, a4);
+      objc_storeStrong(&self->_pendingActivityToApplyAfterNavEnd, activity);
       v24 = sub_100005610();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
-        v25 = [(RichMapsActivity *)self->_pendingActivityToApplyAfterNavEnd shortDescription];
+        shortDescription3 = [(RichMapsActivity *)self->_pendingActivityToApplyAfterNavEnd shortDescription];
         *buf = 138412290;
-        v35 = v25;
+        selfCopy2 = shortDescription3;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "MapsActionController: NavigatingOrStepping is running for pending %@ ", buf, 0xCu);
       }
 
-      v26 = [v8 forceEndNavigation];
+      forceEndNavigation = [action forceEndNavigation];
       v27 = sub_100005610();
       v28 = os_log_type_enabled(v27, OS_LOG_TYPE_INFO);
-      if (v26)
+      if (forceEndNavigation)
       {
         if (v28)
         {
@@ -343,8 +343,8 @@ LABEL_9:
         v31[1] = 3221225472;
         v31[2] = sub_100D1B700;
         v31[3] = &unk_1016516E0;
-        v32 = v6;
-        v33 = self;
+        v32 = activityCopy;
+        selfCopy = self;
         [v30 interruptApplicationWithKind:7 userInfo:0 completionHandler:v31];
       }
     }
@@ -358,90 +358,90 @@ LABEL_9:
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "MapsActionController: call applyRichMapsActivityOrWaitForLocation", buf, 2u);
       }
 
-      [(MapsActionController *)self applyRichMapsActivityOrWaitForLocation:v6];
+      [(MapsActionController *)self applyRichMapsActivityOrWaitForLocation:activityCopy];
     }
   }
 
   else
   {
-    v8 = sub_100005610();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    action = sub_100005610();
+    if (os_log_type_enabled(action, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v35 = self;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "MapsActionController:  %@ didMergedRichMapsActivity richMapsActivity is nil", buf, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&_mh_execute_header, action, OS_LOG_TYPE_ERROR, "MapsActionController:  %@ didMergedRichMapsActivity richMapsActivity is nil", buf, 0xCu);
     }
   }
 
 LABEL_19:
 }
 
-- (void)entryPointsCoordinator:(id)a3 performErrorAction:(id)a4
+- (void)entryPointsCoordinator:(id)coordinator performErrorAction:(id)action
 {
-  v5 = a4;
+  actionCopy = action;
   v6 = sub_100005610();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = actionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "MapsActionController: performErrorAction %@", &v7, 0xCu);
   }
 
-  [(MapsActionController *)self _performAction:v5];
+  [(MapsActionController *)self _performAction:actionCopy];
 }
 
 - (AppStateManager)appStateManager
 {
   WeakRetained = objc_loadWeakRetained(&self->_appCoordinator);
-  v3 = [WeakRetained appStateManager];
+  appStateManager = [WeakRetained appStateManager];
 
-  return v3;
+  return appStateManager;
 }
 
 - (NavActionCoordination)navActionCoordinator
 {
-  v2 = [(MapsActionController *)self chrome];
-  v3 = [v2 topContext];
+  chrome = [(MapsActionController *)self chrome];
+  topContext = [chrome topContext];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 actionCoordinator];
+    actionCoordinator = [topContext actionCoordinator];
   }
 
   else
   {
-    v4 = 0;
+    actionCoordinator = 0;
   }
 
-  return v4;
+  return actionCoordinator;
 }
 
 - (ActionCoordination)coordinator
 {
-  v2 = [(MapsActionController *)self chrome];
-  v3 = [v2 topContext];
+  chrome = [(MapsActionController *)self chrome];
+  topContext = [chrome topContext];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 actionCoordinator];
+    actionCoordinator = [topContext actionCoordinator];
   }
 
   else
   {
-    v4 = 0;
+    actionCoordinator = 0;
   }
 
-  return v4;
+  return actionCoordinator;
 }
 
 - (IOSChromeViewController)chrome
 {
   WeakRetained = objc_loadWeakRetained(&self->_appCoordinator);
-  v3 = [WeakRetained chromeViewController];
+  chromeViewController = [WeakRetained chromeViewController];
 
-  return v3;
+  return chromeViewController;
 }
 
 @end

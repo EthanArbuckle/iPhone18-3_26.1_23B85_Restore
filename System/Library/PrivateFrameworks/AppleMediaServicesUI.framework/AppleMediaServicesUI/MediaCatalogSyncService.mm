@@ -1,5 +1,5 @@
 @interface MediaCatalogSyncService
-- (void)fetchPageURLsForTopic:(id)a3 clientIdentifier:(id)a4 completion:(id)a5;
+- (void)fetchPageURLsForTopic:(id)topic clientIdentifier:(id)identifier completion:(id)completion;
 - (void)handleDaemonStartup;
 @end
 
@@ -11,9 +11,9 @@
   sub_100092D48();
 }
 
-- (void)fetchPageURLsForTopic:(id)a3 clientIdentifier:(id)a4 completion:(id)a5
+- (void)fetchPageURLsForTopic:(id)topic clientIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = _Block_copy(a5);
+  v5 = _Block_copy(completion);
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();

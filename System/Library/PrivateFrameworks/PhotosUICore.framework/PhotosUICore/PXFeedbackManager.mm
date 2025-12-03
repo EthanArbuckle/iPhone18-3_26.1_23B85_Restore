@@ -1,30 +1,30 @@
 @interface PXFeedbackManager
 + (id)sharedManager;
 - (PXFeedbackManager)init;
-- (id)provideUserFeedbackFromDictionary:(id)a3 forFeedbackType:(unint64_t)a4;
-- (void)removeFeedbackEntry:(id)a3;
+- (id)provideUserFeedbackFromDictionary:(id)dictionary forFeedbackType:(unint64_t)type;
+- (void)removeFeedbackEntry:(id)entry;
 @end
 
 @implementation PXFeedbackManager
 
-- (void)removeFeedbackEntry:(id)a3
+- (void)removeFeedbackEntry:(id)entry
 {
-  if (a3)
+  if (entry)
   {
-    v4 = a3;
-    v5 = [(PXFeedbackManager *)self feedbackCollector];
-    [v5 removeFeedbackEntry:v4];
+    entryCopy = entry;
+    feedbackCollector = [(PXFeedbackManager *)self feedbackCollector];
+    [feedbackCollector removeFeedbackEntry:entryCopy];
   }
 }
 
-- (id)provideUserFeedbackFromDictionary:(id)a3 forFeedbackType:(unint64_t)a4
+- (id)provideUserFeedbackFromDictionary:(id)dictionary forFeedbackType:(unint64_t)type
 {
-  v6 = a3;
-  self->_feedbackCollectionType = a4;
-  if (v6)
+  dictionaryCopy = dictionary;
+  self->_feedbackCollectionType = type;
+  if (dictionaryCopy)
   {
-    v7 = [(PXFeedbackManager *)self feedbackCollector];
-    v8 = [v7 feedbackEntryFromDictionary:v6];
+    feedbackCollector = [(PXFeedbackManager *)self feedbackCollector];
+    v8 = [feedbackCollector feedbackEntryFromDictionary:dictionaryCopy];
 
     if (v8)
     {

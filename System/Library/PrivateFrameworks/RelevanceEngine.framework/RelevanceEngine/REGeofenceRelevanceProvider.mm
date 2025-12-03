@@ -1,9 +1,9 @@
 @interface REGeofenceRelevanceProvider
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (REGeofenceRelevanceProvider)init;
-- (REGeofenceRelevanceProvider)initWithDictionary:(id)a3;
-- (REGeofenceRelevanceProvider)initWithRegion:(id)a3 bundleIdentifier:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (REGeofenceRelevanceProvider)initWithDictionary:(id)dictionary;
+- (REGeofenceRelevanceProvider)initWithRegion:(id)region bundleIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryEncoding;
 @end
@@ -18,18 +18,18 @@
   return v4;
 }
 
-- (REGeofenceRelevanceProvider)initWithRegion:(id)a3 bundleIdentifier:(id)a4
+- (REGeofenceRelevanceProvider)initWithRegion:(id)region bundleIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  regionCopy = region;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = REGeofenceRelevanceProvider;
   v9 = [(RERelevanceProvider *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_region, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_region, region);
+    v11 = [identifierCopy copy];
     bundleIdentifier = v10->_bundleIdentifier;
     v10->_bundleIdentifier = v11;
   }
@@ -37,14 +37,14 @@
   return v10;
 }
 
-- (REGeofenceRelevanceProvider)initWithDictionary:(id)a3
+- (REGeofenceRelevanceProvider)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"latitude"];
-  v6 = [v4 objectForKeyedSubscript:@"longitude"];
-  v7 = [v4 objectForKeyedSubscript:@"radius"];
-  v8 = [v4 objectForKeyedSubscript:@"bundleIdentifier"];
-  v9 = [v4 objectForKeyedSubscript:@"region_name"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"latitude"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"longitude"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"radius"];
+  v8 = [dictionaryCopy objectForKeyedSubscript:@"bundleIdentifier"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"region_name"];
 
   v10 = &stru_283B97458;
   if (v9)
@@ -54,7 +54,7 @@
 
   v11 = v10;
 
-  v12 = 0;
+  selfCopy = 0;
   if (v5 && v6)
   {
     [v5 doubleValue];
@@ -75,51 +75,51 @@
     v19 = [objc_alloc(MEMORY[0x277CBFBC8]) initWithCenter:v11 radius:v14 identifier:{v16, v18}];
     self = [(REGeofenceRelevanceProvider *)self initWithRegion:v19 bundleIdentifier:v8];
 
-    v12 = self;
+    selfCopy = self;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (id)dictionaryEncoding
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = MEMORY[0x277CCABB0];
   [(CLCircularRegion *)self->_region center];
   v5 = [v4 numberWithDouble:?];
-  [v3 setObject:v5 forKeyedSubscript:@"latitude"];
+  [dictionary setObject:v5 forKeyedSubscript:@"latitude"];
 
   v6 = MEMORY[0x277CCABB0];
   [(CLCircularRegion *)self->_region center];
   v8 = [v6 numberWithDouble:v7];
-  [v3 setObject:v8 forKeyedSubscript:@"longitude"];
+  [dictionary setObject:v8 forKeyedSubscript:@"longitude"];
 
   v9 = MEMORY[0x277CCABB0];
   [(CLCircularRegion *)self->_region radius];
   v10 = [v9 numberWithDouble:?];
-  [v3 setObject:v10 forKeyedSubscript:@"radius"];
+  [dictionary setObject:v10 forKeyedSubscript:@"radius"];
 
-  [v3 setObject:self->_bundleIdentifier forKeyedSubscript:@"bundleIdentifier"];
-  v11 = [(CLCircularRegion *)self->_region identifier];
-  [v3 setObject:v11 forKeyedSubscript:@"region_name"];
+  [dictionary setObject:self->_bundleIdentifier forKeyedSubscript:@"bundleIdentifier"];
+  identifier = [(CLCircularRegion *)self->_region identifier];
+  [dictionary setObject:identifier forKeyedSubscript:@"region_name"];
 
-  return v3;
+  return dictionary;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = REGeofenceRelevanceProvider;
-  v4 = [(RERelevanceProvider *)&v6 copyWithZone:a3];
+  v4 = [(RERelevanceProvider *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 4, self->_region);
   objc_storeStrong(v4 + 5, self->_bundleIdentifier);
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -128,9 +128,9 @@
   {
     v11.receiver = self;
     v11.super_class = REGeofenceRelevanceProvider;
-    if ([(RERelevanceProvider *)&v11 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    if ([(RERelevanceProvider *)&v11 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = [(CLCircularRegion *)self->_region isEqual:v5->_region];
       bundleIdentifier = self->_bundleIdentifier;
       if (bundleIdentifier == v5->_bundleIdentifier)

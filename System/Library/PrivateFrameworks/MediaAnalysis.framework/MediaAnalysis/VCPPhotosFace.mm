@@ -1,45 +1,45 @@
 @interface VCPPhotosFace
-+ (BOOL)_isColocatingAnimalObservation:(id)a3 withFaceObservations:(id)a4 orTorsoObservations:(id)a5;
-+ (double)_calculateIoUBetweenObservation:(id)a3 andObservation:(id)a4;
-+ (double)_calculateOverlappingBetweenFaceObservation:(id)a3 andBodyObservation:(id)a4;
-+ (id)_animalBodiesOnlyFromAnimalBodyObservations:(id)a3 matchedBody:(set<unsigned)long sourceWidth:(std:(std:(unint64_t)a5 :(unint64_t)a6 allocator<unsigned long>> *)a4 :(id)a7 less<unsigned)long> sourceHeight:(int)a8 visionRequests:processingVersion:;
-+ (id)_animalHeadsBodiesFromAnimalHeadObservations:(id)a3 animalBodyObservations:(id)a4 matchedHead:(void *)a5 matchedBody:(void *)a6 sourceWidth:(unint64_t)a7 sourceHeight:(unint64_t)a8 visionRequests:(id)a9 processingVersion:(int)a10;
-+ (id)_animalHeadsOnlyFromAnimalHeadObservations:(id)a3 matchedHead:(set<unsigned)long sourceWidth:(std:(std:(unint64_t)a5 :(unint64_t)a6 allocator<unsigned long>> *)a4 :(id)a7 less<unsigned)long> sourceHeight:(int)a8 visionRequests:processingVersion:;
-+ (id)_animalImageprintWrapperFromObservation:(id)a3 visionRequests:(id)a4 processingVersion:(int)a5;
-+ (id)_filterAnimalObservations:(id)a3 colocatingWithFaceObservations:(id)a4 orHumanObservations:(id)a5;
-+ (id)_peopleFacesOnlyFromFaceObservations:(id)a3 matchedFace:(set<unsigned)long sourceWidth:(std:(std:(unint64_t)a5 :(unint64_t)a6 allocator<unsigned long>> *)a4 :(id)a7 less<unsigned)long> sourceHeight:(id)a8 visionRequests:(id)a9 blurScorePerFace:(id)a10 exposureScorePerFace:(int)a11 tooSmallFaceObservations:processingVersion:;
-+ (id)_peopleFacesTorsosFromFaceObservations:(id)a3 humanObservations:(id)a4 matchedFace:(void *)a5 matchedTorso:(void *)a6 sourceWidth:(unint64_t)a7 sourceHeight:(unint64_t)a8 visionRequests:(id)a9 blurScorePerFace:(id)a10 exposureScorePerFace:(id)a11 tooSmallFaceObservations:(id)a12 processingVersion:(int)a13;
-+ (id)_peopleTorsosOnlyFromHumanObservations:(id)a3 matchedTorso:(set<unsigned)long sourceWidth:(std:(std:(unint64_t)a5 :(unint64_t)a6 allocator<unsigned long>> *)a4 :(id)a7 less<unsigned)long> sourceHeight:(int)a8 visionRequests:processingVersion:;
-+ (id)faceFromAnimalHeadObservation:(id)a3 animalBodyObservation:(id)a4 animalLabel:(id)a5 sourceWidth:(unint64_t)a6 sourceHeight:(unint64_t)a7 visionRequests:(id)a8 processingVersion:(int)a9;
-+ (id)faceFromFaceObservation:(id)a3 humanObservation:(id)a4 sourceWidth:(unint64_t)a5 sourceHeight:(unint64_t)a6 visionRequests:(id)a7 processingVersion:(int)a8 force:(BOOL)a9 andError:(id *)a10;
-+ (id)faceFromPHFace:(id)a3 copyOption:(int64_t)a4;
-+ (id)faceWithLocalIdentifier:(id)a3;
-+ (id)facesFromFaceObservations:(id)a3 humanObservations:(id)a4 animalHeadObservations:(id)a5 animalBodyObservations:(id)a6 sourceWidth:(unint64_t)a7 sourceHeight:(unint64_t)a8 visionRequests:(id)a9 blurScorePerFace:(id)a10 exposureScorePerFace:(id)a11 tooSmallFaceObservations:(id)a12 processingVersion:(int)a13 animalResults:(id *)a14;
-+ (id)facesFromFaceObservations:(id)a3 humanObservations:(id)a4 animalObservations:(id)i sourceWidth:(unint64_t)a6 sourceHeight:(unint64_t)a7 visionRequests:(id)a8 blurScorePerFace:(id)a9 exposureScorePerFace:(id)a10 tooSmallFaceObservations:(id)a11 processingVersion:(int)a12;
-+ (id)facesFromPHFetchResult:(id)a3 copyOption:(int64_t)a4;
-+ (uint64_t)facesFromFaceObservations:(uint64_t)a3 humanObservations:(char)a4 animalObservations:sourceWidth:sourceHeight:visionRequests:blurScorePerFace:exposureScorePerFace:tooSmallFaceObservations:processingVersion:;
-- (BOOL)setCenterAndSizeFromNormalizedFaceRect:(CGRect)a3;
++ (BOOL)_isColocatingAnimalObservation:(id)observation withFaceObservations:(id)observations orTorsoObservations:(id)torsoObservations;
++ (double)_calculateIoUBetweenObservation:(id)observation andObservation:(id)andObservation;
++ (double)_calculateOverlappingBetweenFaceObservation:(id)observation andBodyObservation:(id)bodyObservation;
++ (id)_animalBodiesOnlyFromAnimalBodyObservations:(id)observations matchedBody:(set<unsigned)long sourceWidth:(std:(std:(unint64_t)width :(unint64_t)a6 allocator<unsigned long>> *)a4 :(id)a7 less<unsigned)long> sourceHeight:(int)height visionRequests:processingVersion:;
++ (id)_animalHeadsBodiesFromAnimalHeadObservations:(id)observations animalBodyObservations:(id)bodyObservations matchedHead:(void *)head matchedBody:(void *)body sourceWidth:(unint64_t)width sourceHeight:(unint64_t)height visionRequests:(id)requests processingVersion:(int)self0;
++ (id)_animalHeadsOnlyFromAnimalHeadObservations:(id)observations matchedHead:(set<unsigned)long sourceWidth:(std:(std:(unint64_t)width :(unint64_t)a6 allocator<unsigned long>> *)a4 :(id)a7 less<unsigned)long> sourceHeight:(int)height visionRequests:processingVersion:;
++ (id)_animalImageprintWrapperFromObservation:(id)observation visionRequests:(id)requests processingVersion:(int)version;
++ (id)_filterAnimalObservations:(id)observations colocatingWithFaceObservations:(id)faceObservations orHumanObservations:(id)humanObservations;
++ (id)_peopleFacesOnlyFromFaceObservations:(id)observations matchedFace:(set<unsigned)long sourceWidth:(std:(std:(unint64_t)width :(unint64_t)a6 allocator<unsigned long>> *)a4 :(id)a7 less<unsigned)long> sourceHeight:(id)height visionRequests:(id)requests blurScorePerFace:(id)self0 exposureScorePerFace:(int)self1 tooSmallFaceObservations:processingVersion:;
++ (id)_peopleFacesTorsosFromFaceObservations:(id)observations humanObservations:(id)humanObservations matchedFace:(void *)face matchedTorso:(void *)torso sourceWidth:(unint64_t)width sourceHeight:(unint64_t)height visionRequests:(id)requests blurScorePerFace:(id)self0 exposureScorePerFace:(id)self1 tooSmallFaceObservations:(id)self2 processingVersion:(int)self3;
++ (id)_peopleTorsosOnlyFromHumanObservations:(id)observations matchedTorso:(set<unsigned)long sourceWidth:(std:(std:(unint64_t)width :(unint64_t)a6 allocator<unsigned long>> *)a4 :(id)a7 less<unsigned)long> sourceHeight:(int)height visionRequests:processingVersion:;
++ (id)faceFromAnimalHeadObservation:(id)observation animalBodyObservation:(id)bodyObservation animalLabel:(id)label sourceWidth:(unint64_t)width sourceHeight:(unint64_t)height visionRequests:(id)requests processingVersion:(int)version;
++ (id)faceFromFaceObservation:(id)observation humanObservation:(id)humanObservation sourceWidth:(unint64_t)width sourceHeight:(unint64_t)height visionRequests:(id)requests processingVersion:(int)version force:(BOOL)force andError:(id *)self0;
++ (id)faceFromPHFace:(id)face copyOption:(int64_t)option;
++ (id)faceWithLocalIdentifier:(id)identifier;
++ (id)facesFromFaceObservations:(id)observations humanObservations:(id)humanObservations animalHeadObservations:(id)headObservations animalBodyObservations:(id)bodyObservations sourceWidth:(unint64_t)width sourceHeight:(unint64_t)height visionRequests:(id)requests blurScorePerFace:(id)self0 exposureScorePerFace:(id)self1 tooSmallFaceObservations:(id)self2 processingVersion:(int)self3 animalResults:(id *)self4;
++ (id)facesFromFaceObservations:(id)observations humanObservations:(id)humanObservations animalObservations:(id)i sourceWidth:(unint64_t)width sourceHeight:(unint64_t)height visionRequests:(id)requests blurScorePerFace:(id)face exposureScorePerFace:(id)self0 tooSmallFaceObservations:(id)self1 processingVersion:(int)self2;
++ (id)facesFromPHFetchResult:(id)result copyOption:(int64_t)option;
++ (uint64_t)facesFromFaceObservations:(uint64_t)observations humanObservations:(char)humanObservations animalObservations:sourceWidth:sourceHeight:visionRequests:blurScorePerFace:exposureScorePerFace:tooSmallFaceObservations:processingVersion:;
+- (BOOL)setCenterAndSizeFromNormalizedFaceRect:(CGRect)rect;
 - (CGRect)gazeRect;
 - (CGRect)normalizedBodyRect;
 - (CGRect)normalizedFaceRect;
-- (VCPPhotosFace)initWithLocalIdentifier:(id)a3;
+- (VCPPhotosFace)initWithLocalIdentifier:(id)identifier;
 - (id)gist;
-- (int64_t)qualityMeasureWithCountOfFacesOnAsset:(unint64_t)a3;
-- (void)replaceCoordinatesAndFeaturesFromDetectedFace:(id)a3;
+- (int64_t)qualityMeasureWithCountOfFacesOnAsset:(unint64_t)asset;
+- (void)replaceCoordinatesAndFeaturesFromDetectedFace:(id)face;
 @end
 
 @implementation VCPPhotosFace
 
-- (VCPPhotosFace)initWithLocalIdentifier:(id)a3
+- (VCPPhotosFace)initWithLocalIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = VCPPhotosFace;
   v6 = [(VCPPhotosFace *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_localIdentifier, a3);
+    objc_storeStrong(&v6->_localIdentifier, identifier);
     v7->_sourceWidth = 0;
     v7->_sourceHeight = 0;
     v7->_detectionType = 1;
@@ -77,22 +77,22 @@
   return v7;
 }
 
-+ (id)faceWithLocalIdentifier:(id)a3
++ (id)faceWithLocalIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithLocalIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [objc_alloc(objc_opt_class()) initWithLocalIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)faceFromFaceObservation:(id)a3 humanObservation:(id)a4 sourceWidth:(unint64_t)a5 sourceHeight:(unint64_t)a6 visionRequests:(id)a7 processingVersion:(int)a8 force:(BOOL)a9 andError:(id *)a10
++ (id)faceFromFaceObservation:(id)observation humanObservation:(id)humanObservation sourceWidth:(unint64_t)width sourceHeight:(unint64_t)height visionRequests:(id)requests processingVersion:(int)version force:(BOOL)force andError:(id *)self0
 {
-  v10 = *&a8;
+  v10 = *&version;
   v192[1] = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v171 = a7;
-  if (!(v15 | v16))
+  observationCopy = observation;
+  humanObservationCopy = humanObservation;
+  requestsCopy = requests;
+  if (!(observationCopy | humanObservationCopy))
   {
     v28 = MEMORY[0x1E696ABC0];
     v191 = *MEMORY[0x1E696A578];
@@ -100,13 +100,13 @@
     v192[0] = v17;
     v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v192 forKeys:&v191 count:1];
     [v28 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v29];
-    *a10 = v30 = 0;
+    *error = v30 = 0;
     goto LABEL_35;
   }
 
   v17 = [VCPPhotosFace faceWithLocalIdentifier:0];
-  [v17 setSourceWidth:a5];
-  [v17 setSourceHeight:a6];
+  [v17 setSourceWidth:width];
+  [v17 setSourceHeight:height];
   [v17 setManual:0];
   [v17 setAlgorithmVersion:v10];
   [v17 setDetectionType:1];
@@ -114,22 +114,22 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __131__VCPPhotosFace_faceFromFaceObservation_humanObservation_sourceWidth_sourceHeight_visionRequests_processingVersion_force_andError___block_invoke;
   aBlock[3] = &unk_1E834CEE8;
-  v175 = v171;
+  v175 = requestsCopy;
   v18 = _Block_copy(aBlock);
   v19 = objc_opt_class();
   v168 = v18[2](v18, v19);
-  v20 = [v15 uuid];
-  v169 = __131__VCPPhotosFace_faceFromFaceObservation_humanObservation_sourceWidth_sourceHeight_visionRequests_processingVersion_force_andError___block_invoke_2(v20, v20, v168);
+  uuid = [observationCopy uuid];
+  v169 = __131__VCPPhotosFace_faceFromFaceObservation_humanObservation_sourceWidth_sourceHeight_visionRequests_processingVersion_force_andError___block_invoke_2(uuid, uuid, v168);
 
-  v21 = [v169 faceprint];
-  if (!v21)
+  faceprint = [v169 faceprint];
+  if (!faceprint)
   {
     goto LABEL_9;
   }
 
-  v170 = v21;
-  [v21 confidence];
-  if (v22 < 0.2 && !a9)
+  v170 = faceprint;
+  [faceprint confidence];
+  if (v22 < 0.2 && !force)
   {
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
     {
@@ -174,28 +174,28 @@ LABEL_9:
 LABEL_15:
   v35 = objc_opt_class();
   v167 = v18[2](v18, v35);
-  v36 = [v16 uuid];
-  v166 = __131__VCPPhotosFace_faceFromFaceObservation_humanObservation_sourceWidth_sourceHeight_visionRequests_processingVersion_force_andError___block_invoke_2(v36, v36, v167);
+  uuid2 = [humanObservationCopy uuid];
+  v166 = __131__VCPPhotosFace_faceFromFaceObservation_humanObservation_sourceWidth_sourceHeight_visionRequests_processingVersion_force_andError___block_invoke_2(uuid2, uuid2, v167);
 
-  v165 = [v166 torsoprint];
-  if (v170 | v165)
+  torsoprint = [v166 torsoprint];
+  if (v170 | torsoprint)
   {
     v173 = 0;
-    v163 = [objc_alloc(MEMORY[0x1E6984520]) initWithFaceprint:v170 torsoprint:v165];
+    v163 = [objc_alloc(MEMORY[0x1E6984520]) initWithFaceprint:v170 torsoprint:torsoprint];
     v37 = [v163 serializeStateAndReturnError:&v173];
     v38 = v173;
     v162 = v37;
     v164 = v38;
     if (!v37 || v38)
     {
-      if (a10)
+      if (error)
       {
         v58 = MEMORY[0x1E696ABC0];
         v180 = *MEMORY[0x1E696A578];
         v59 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[VCPPhotosFace] Unable to serialize faceTorsoprint - %@", v38];
         v181 = v59;
         v60 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v181 forKeys:&v180 count:1];
-        *a10 = [v58 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v60];
+        *error = [v58 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v60];
       }
     }
 
@@ -205,9 +205,9 @@ LABEL_15:
       [v17 setImageprintWrapper:v39];
 
       [v17 setVuObservationID:0];
-      if (v16)
+      if (humanObservationCopy)
       {
-        [v16 boundingBox];
+        [humanObservationCopy boundingBox];
         v41 = v40;
         v43 = v42;
         v45 = v44;
@@ -234,18 +234,18 @@ LABEL_32:
         goto LABEL_33;
       }
 
-      [v15 boundingBox];
+      [observationCopy boundingBox];
       v49 = v48;
       v51 = v50;
       v53 = v52;
       v55 = v54;
       if ([v17 setCenterAndSizeFromNormalizedFaceRect:?])
       {
-        v56 = [v15 roll];
-        v157 = v56;
-        if (v56)
+        roll = [observationCopy roll];
+        v157 = roll;
+        if (roll)
         {
-          [v56 doubleValue];
+          [roll doubleValue];
           [v17 setRoll:?];
         }
 
@@ -261,14 +261,14 @@ LABEL_32:
 
         v65 = objc_opt_class();
         v155 = v18[2](v18, v65);
-        v66 = [v15 uuid];
-        v160 = __131__VCPPhotosFace_faceFromFaceObservation_humanObservation_sourceWidth_sourceHeight_visionRequests_processingVersion_force_andError___block_invoke_2(v66, v66, v155);
+        uuid3 = [observationCopy uuid];
+        v160 = __131__VCPPhotosFace_faceFromFaceObservation_humanObservation_sourceWidth_sourceHeight_visionRequests_processingVersion_force_andError___block_invoke_2(uuid3, uuid3, v155);
 
-        v67 = [v160 faceCaptureQuality];
-        v156 = v67;
-        if (v67)
+        faceCaptureQuality = [v160 faceCaptureQuality];
+        v156 = faceCaptureQuality;
+        if (faceCaptureQuality)
         {
-          [v67 doubleValue];
+          [faceCaptureQuality doubleValue];
           [v17 setQuality:?];
         }
 
@@ -282,7 +282,7 @@ LABEL_32:
           }
         }
 
-        v68 = [v15 yaw];
+        v68 = [observationCopy yaw];
         v154 = v68;
         if (v68)
         {
@@ -302,14 +302,14 @@ LABEL_32:
 
         v69 = objc_opt_class();
         v152 = v18[2](v18, v69);
-        v70 = [v15 uuid];
-        v159 = __131__VCPPhotosFace_faceFromFaceObservation_humanObservation_sourceWidth_sourceHeight_visionRequests_processingVersion_force_andError___block_invoke_2(v70, v70, v152);
+        uuid4 = [observationCopy uuid];
+        v159 = __131__VCPPhotosFace_faceFromFaceObservation_humanObservation_sourceWidth_sourceHeight_visionRequests_processingVersion_force_andError___block_invoke_2(uuid4, uuid4, v152);
 
-        v71 = [v159 expressionsAndConfidence];
-        v153 = v71;
-        if (v71)
+        expressionsAndConfidence = [v159 expressionsAndConfidence];
+        v153 = expressionsAndConfidence;
+        if (expressionsAndConfidence)
         {
-          v72 = [v71 objectForKeyedSubscript:*MEMORY[0x1E69848D8]];
+          v72 = [expressionsAndConfidence objectForKeyedSubscript:*MEMORY[0x1E69848D8]];
           v73 = v72;
           if (v72)
           {
@@ -333,77 +333,77 @@ LABEL_32:
 
         v76 = objc_opt_class();
         v151 = v18[2](v18, v76);
-        v77 = [v15 uuid];
-        v158 = __131__VCPPhotosFace_faceFromFaceObservation_humanObservation_sourceWidth_sourceHeight_visionRequests_processingVersion_force_andError___block_invoke_2(v77, v77, v151);
+        uuid5 = [observationCopy uuid];
+        v158 = __131__VCPPhotosFace_faceFromFaceObservation_humanObservation_sourceWidth_sourceHeight_visionRequests_processingVersion_force_andError___block_invoke_2(uuid5, uuid5, v151);
 
-        v78 = [v158 faceAttributes];
-        v161 = v78;
-        if (v78)
+        faceAttributes = [v158 faceAttributes];
+        v161 = faceAttributes;
+        if (faceAttributes)
         {
-          v79 = [v78 ageCategory];
-          v80 = [v79 label];
-          v81 = [v80 identifier];
-          [v17 setAgeType:{+[VCPFaceUtils mad_PHValueFromVNAgeCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNAgeCategoryLabel:", v81)}];
+          ageCategory = [faceAttributes ageCategory];
+          label = [ageCategory label];
+          identifier = [label identifier];
+          [v17 setAgeType:{+[VCPFaceUtils mad_PHValueFromVNAgeCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNAgeCategoryLabel:", identifier)}];
 
-          v82 = [v161 VN7exwFFmQF0AI9P7FjBljwEFu7QYUGCYE];
-          v83 = [v82 label];
-          v84 = [v83 identifier];
-          [v17 setSexType:{+[VCPFaceUtils mad_PHValueFromVNSexCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNSexCategoryLabel:", v84)}];
+          vN7exwFFmQF0AI9P7FjBljwEFu7QYUGCYE = [v161 VN7exwFFmQF0AI9P7FjBljwEFu7QYUGCYE];
+          label2 = [vN7exwFFmQF0AI9P7FjBljwEFu7QYUGCYE label];
+          identifier2 = [label2 identifier];
+          [v17 setSexType:{+[VCPFaceUtils mad_PHValueFromVNSexCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNSexCategoryLabel:", identifier2)}];
 
-          v85 = [v161 eyesCategory];
-          v86 = [v85 label];
-          v87 = [v86 identifier];
-          [v17 setEyesState:{+[VCPFaceUtils mad_PHValueFromVNEyesCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNEyesCategoryLabel:", v87)}];
+          eyesCategory = [v161 eyesCategory];
+          label3 = [eyesCategory label];
+          identifier3 = [label3 identifier];
+          [v17 setEyesState:{+[VCPFaceUtils mad_PHValueFromVNEyesCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNEyesCategoryLabel:", identifier3)}];
 
-          v88 = [v161 smilingCategory];
-          v89 = [v88 label];
-          v90 = [v89 identifier];
-          [v17 setSmileType:{+[VCPFaceUtils mad_PHValueFromVNSmilingCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNSmilingCategoryLabel:", v90)}];
+          smilingCategory = [v161 smilingCategory];
+          label4 = [smilingCategory label];
+          identifier4 = [label4 identifier];
+          [v17 setSmileType:{+[VCPFaceUtils mad_PHValueFromVNSmilingCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNSmilingCategoryLabel:", identifier4)}];
 
-          v91 = [v161 faceHairCategory];
-          v92 = [v91 label];
-          v93 = [v92 identifier];
-          [v17 setFacialHairType:{+[VCPFaceUtils mad_PHValueFromVNFaceHairCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNFaceHairCategoryLabel:", v93)}];
+          faceHairCategory = [v161 faceHairCategory];
+          label5 = [faceHairCategory label];
+          identifier5 = [label5 identifier];
+          [v17 setFacialHairType:{+[VCPFaceUtils mad_PHValueFromVNFaceHairCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNFaceHairCategoryLabel:", identifier5)}];
 
-          v94 = [v161 hairColorCategory];
-          v95 = [v94 label];
-          v96 = [v95 identifier];
-          [v17 setHairColorType:{+[VCPFaceUtils mad_PHValueFromVNHairColorCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNHairColorCategoryLabel:", v96)}];
+          hairColorCategory = [v161 hairColorCategory];
+          label6 = [hairColorCategory label];
+          identifier6 = [label6 identifier];
+          [v17 setHairColorType:{+[VCPFaceUtils mad_PHValueFromVNHairColorCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNHairColorCategoryLabel:", identifier6)}];
 
-          v97 = [v161 glassesCategory];
-          v98 = [v97 label];
-          v99 = [v98 identifier];
-          [v17 setGlassesType:{+[VCPFaceUtils mad_PHValueFromVNGlassesCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNGlassesCategoryLabel:", v99)}];
+          glassesCategory = [v161 glassesCategory];
+          label7 = [glassesCategory label];
+          identifier7 = [label7 identifier];
+          [v17 setGlassesType:{+[VCPFaceUtils mad_PHValueFromVNGlassesCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNGlassesCategoryLabel:", identifier7)}];
 
-          v100 = [v161 VN4UfLbvVUqMvYV8bbGFQcxg5yRLm8ekI1];
-          v101 = [v100 label];
-          v102 = [v101 identifier];
-          [v17 setExpressionType:{+[VCPFaceUtils mad_PHValueFromVNExpressionCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNExpressionCategoryLabel:", v102)}];
+          vN4UfLbvVUqMvYV8bbGFQcxg5yRLm8ekI1 = [v161 VN4UfLbvVUqMvYV8bbGFQcxg5yRLm8ekI1];
+          label8 = [vN4UfLbvVUqMvYV8bbGFQcxg5yRLm8ekI1 label];
+          identifier8 = [label8 identifier];
+          [v17 setExpressionType:{+[VCPFaceUtils mad_PHValueFromVNExpressionCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNExpressionCategoryLabel:", identifier8)}];
 
-          v103 = [v161 VN7fiLHgGnvqPqG63cfDUCK4Xm8obUuWoP];
-          v104 = [v103 label];
-          v105 = [v104 identifier];
-          [v17 setHeadgearType:{+[VCPFaceUtils mad_PHValueFromVNHeadgearCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNHeadgearCategoryLabel:", v105)}];
+          vN7fiLHgGnvqPqG63cfDUCK4Xm8obUuWoP = [v161 VN7fiLHgGnvqPqG63cfDUCK4Xm8obUuWoP];
+          label9 = [vN7fiLHgGnvqPqG63cfDUCK4Xm8obUuWoP label];
+          identifier9 = [label9 identifier];
+          [v17 setHeadgearType:{+[VCPFaceUtils mad_PHValueFromVNHeadgearCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNHeadgearCategoryLabel:", identifier9)}];
 
-          v106 = [v161 VN2riiZbQrloRhCzYW56f0rk4N3ROe151S];
-          v107 = [v106 label];
-          v108 = [v107 identifier];
-          [v17 setHairType:{+[VCPFaceUtils mad_PHValueFromVNFaceHairCategoryV2Label:](VCPFaceUtils, "mad_PHValueFromVNFaceHairCategoryV2Label:", v108)}];
+          vN2riiZbQrloRhCzYW56f0rk4N3ROe151S = [v161 VN2riiZbQrloRhCzYW56f0rk4N3ROe151S];
+          label10 = [vN2riiZbQrloRhCzYW56f0rk4N3ROe151S label];
+          identifier10 = [label10 identifier];
+          [v17 setHairType:{+[VCPFaceUtils mad_PHValueFromVNFaceHairCategoryV2Label:](VCPFaceUtils, "mad_PHValueFromVNFaceHairCategoryV2Label:", identifier10)}];
 
-          v109 = [v161 VNpLorzxnyAlLcPFNcKhgoNCmy9b5BRWyk];
-          v110 = [v109 label];
-          v111 = [v110 identifier];
-          [v17 setPoseType:{+[VCPFaceUtils mad_PHValueFromVNPoseCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNPoseCategoryLabel:", v111)}];
+          vNpLorzxnyAlLcPFNcKhgoNCmy9b5BRWyk = [v161 VNpLorzxnyAlLcPFNcKhgoNCmy9b5BRWyk];
+          label11 = [vNpLorzxnyAlLcPFNcKhgoNCmy9b5BRWyk label];
+          identifier11 = [label11 identifier];
+          [v17 setPoseType:{+[VCPFaceUtils mad_PHValueFromVNPoseCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNPoseCategoryLabel:", identifier11)}];
 
-          v112 = [v161 VN3iT1YRjjnIuELobV1olJiO1vvItN6Kdq];
-          v113 = [v112 label];
-          v114 = [v113 identifier];
-          [v17 setSkintoneType:{+[VCPFaceUtils mad_PHValueFromVNSkintoneCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNSkintoneCategoryLabel:", v114)}];
+          vN3iT1YRjjnIuELobV1olJiO1vvItN6Kdq = [v161 VN3iT1YRjjnIuELobV1olJiO1vvItN6Kdq];
+          label12 = [vN3iT1YRjjnIuELobV1olJiO1vvItN6Kdq label];
+          identifier12 = [label12 identifier];
+          [v17 setSkintoneType:{+[VCPFaceUtils mad_PHValueFromVNSkintoneCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNSkintoneCategoryLabel:", identifier12)}];
 
-          v115 = [v161 VN1uMyFtnYEWjbrdx3yAuDndKkPeyzNJhB];
-          v116 = [v115 label];
-          v117 = [v116 identifier];
-          [v17 setEthnicityType:{+[VCPFaceUtils mad_PHValueFromVNEthnicityCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNEthnicityCategoryLabel:", v117)}];
+          vN1uMyFtnYEWjbrdx3yAuDndKkPeyzNJhB = [v161 VN1uMyFtnYEWjbrdx3yAuDndKkPeyzNJhB];
+          label13 = [vN1uMyFtnYEWjbrdx3yAuDndKkPeyzNJhB label];
+          identifier13 = [label13 identifier];
+          [v17 setEthnicityType:{+[VCPFaceUtils mad_PHValueFromVNEthnicityCategoryLabel:](VCPFaceUtils, "mad_PHValueFromVNEthnicityCategoryLabel:", identifier13)}];
 
           v118 = [v17 eyesState] == 1;
         }
@@ -423,11 +423,11 @@ LABEL_32:
         [v17 setIsRightEyeClosed:v118];
         v119 = objc_opt_class();
         v150 = v18[2](v18, v119);
-        v120 = [v15 uuid];
-        v121 = __131__VCPPhotosFace_faceFromFaceObservation_humanObservation_sourceWidth_sourceHeight_visionRequests_processingVersion_force_andError___block_invoke_2(v120, v120, v150);
+        uuid6 = [observationCopy uuid];
+        v121 = __131__VCPPhotosFace_faceFromFaceObservation_humanObservation_sourceWidth_sourceHeight_visionRequests_processingVersion_force_andError___block_invoke_2(uuid6, uuid6, v150);
 
-        v122 = [v121 gaze];
-        v123 = v122 == 0;
+        gaze = [v121 gaze];
+        v123 = gaze == 0;
 
         if (v123)
         {
@@ -440,34 +440,34 @@ LABEL_32:
 
         else
         {
-          v124 = [v121 gaze];
-          v125 = [v124 gazeMask];
-          [v17 setHasFaceMask:v125 != 0];
+          gaze2 = [v121 gaze];
+          gazeMask = [gaze2 gazeMask];
+          [v17 setHasFaceMask:gazeMask != 0];
 
-          v126 = [v121 gaze];
-          [v17 setGazeType:{+[VCPFaceUtils mad_PHValueFromVNFaceGazeDirection:](VCPFaceUtils, "mad_PHValueFromVNFaceGazeDirection:", objc_msgSend(v126, "direction"))}];
+          gaze3 = [v121 gaze];
+          [v17 setGazeType:{+[VCPFaceUtils mad_PHValueFromVNFaceGazeDirection:](VCPFaceUtils, "mad_PHValueFromVNFaceGazeDirection:", objc_msgSend(gaze3, "direction"))}];
 
-          v127 = [v121 gaze];
-          [v127 location];
+          gaze4 = [v121 gaze];
+          [gaze4 location];
           [v17 setGazeCenterX:?];
 
-          v128 = [v121 gaze];
-          [v128 location];
+          gaze5 = [v121 gaze];
+          [gaze5 location];
           [v17 setGazeCenterY:v129];
 
-          v130 = [v121 gaze];
-          [v130 locationBounds];
+          gaze6 = [v121 gaze];
+          [gaze6 locationBounds];
           [v17 setGazeRect:?];
 
-          v131 = [v121 gaze];
-          [v131 horizontalAngle];
+          gaze7 = [v121 gaze];
+          [gaze7 horizontalAngle];
           [v17 setGazeAngle:?];
 
           if ([v17 hasFaceMask])
           {
-            v132 = [v121 gaze];
-            v133 = [v132 gazeMask];
-            cf = [v133 pixelBuffer];
+            gaze8 = [v121 gaze];
+            gazeMask2 = [gaze8 gazeMask];
+            cf = [gazeMask2 pixelBuffer];
 
             v134 = cf;
             if (cf)
@@ -583,14 +583,14 @@ LABEL_101:
       v62 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[VCPPhotosFace] Unable to determine normalized face bounding { { %f, %f } { %f, %f } }", v49, v51, v53, v55];
       v179 = v62;
       v63 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v179 forKeys:&v178 count:1];
-      *a10 = [v61 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v63];
+      *error = [v61 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:v63];
     }
 
     v30 = 0;
     goto LABEL_32;
   }
 
-  if (a10)
+  if (error)
   {
     v57 = MEMORY[0x1E696ABC0];
     v182 = *MEMORY[0x1E696A578];
@@ -598,7 +598,7 @@ LABEL_101:
     v183 = v163;
     v164 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v183 forKeys:&v182 count:1];
     [v57 errorWithDomain:*MEMORY[0x1E696A768] code:-18 userInfo:?];
-    *a10 = v30 = 0;
+    *error = v30 = 0;
 LABEL_33:
 
     goto LABEL_34;
@@ -706,23 +706,23 @@ LABEL_11:
   return v6;
 }
 
-+ (id)facesFromFaceObservations:(id)a3 humanObservations:(id)a4 animalObservations:(id)i sourceWidth:(unint64_t)a6 sourceHeight:(unint64_t)a7 visionRequests:(id)a8 blurScorePerFace:(id)a9 exposureScorePerFace:(id)a10 tooSmallFaceObservations:(id)a11 processingVersion:(int)a12
++ (id)facesFromFaceObservations:(id)observations humanObservations:(id)humanObservations animalObservations:(id)i sourceWidth:(unint64_t)width sourceHeight:(unint64_t)height visionRequests:(id)requests blurScorePerFace:(id)face exposureScorePerFace:(id)self0 tooSmallFaceObservations:(id)self1 processingVersion:(int)self2
 {
-  v16 = a10;
+  perFaceCopy = perFace;
   v244 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v18 = a4;
+  observationsCopy = observations;
+  humanObservationsCopy = humanObservations;
   v214 = i;
-  v19 = a8;
-  v213 = a9;
-  v212 = a10;
-  v206 = a11;
-  v207 = [MEMORY[0x1E695DF70] array];
+  requestsCopy = requests;
+  faceCopy = face;
+  perFaceCopy2 = perFace;
+  faceObservationsCopy = faceObservations;
+  array = [MEMORY[0x1E695DF70] array];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __201__VCPPhotosFace_facesFromFaceObservations_humanObservations_animalObservations_sourceWidth_sourceHeight_visionRequests_blurScorePerFace_exposureScorePerFace_tooSmallFaceObservations_processingVersion___block_invoke;
   aBlock[3] = &unk_1E834CEE8;
-  v215 = v19;
+  v215 = requestsCopy;
   v235 = v215;
   v209 = _Block_copy(aBlock);
   v233[0] = 0;
@@ -746,34 +746,34 @@ LABEL_11:
     v226 = 0;
     v227 = 0;
     v218 = 0xBFB999999999999ALL;
-    while (v54 < [v17 count])
+    while (v54 < [observationsCopy count])
     {
-      for (i = 0; i < [v18 count]; i = i + 1)
+      for (i = 0; i < [humanObservationsCopy count]; i = i + 1)
       {
-        v55 = [v17 objectAtIndexedSubscript:v54];
-        v56 = [v18 objectAtIndexedSubscript:i];
-        [a1 _calculateOverlappingBetweenFaceObservation:v55 andBodyObservation:v56];
+        v55 = [observationsCopy objectAtIndexedSubscript:v54];
+        v56 = [humanObservationsCopy objectAtIndexedSubscript:i];
+        [self _calculateOverlappingBetweenFaceObservation:v55 andBodyObservation:v56];
         v58 = v57;
 
-        v59 = [v17 objectAtIndexedSubscript:v54];
+        v59 = [observationsCopy objectAtIndexedSubscript:v54];
         [v59 boundingBox];
         v61 = v60;
-        v62 = [v17 objectAtIndexedSubscript:v54];
+        v62 = [observationsCopy objectAtIndexedSubscript:v54];
         [v62 boundingBox];
         v64 = v63;
 
-        v65 = [v17 objectAtIndexedSubscript:v54];
+        v65 = [observationsCopy objectAtIndexedSubscript:v54];
         [v65 boundingBox];
         v67 = v66;
 
-        v68 = [v18 objectAtIndexedSubscript:i];
+        v68 = [humanObservationsCopy objectAtIndexedSubscript:i];
         [v68 boundingBox];
         v70 = v69;
-        v71 = [v18 objectAtIndexedSubscript:i];
+        v71 = [humanObservationsCopy objectAtIndexedSubscript:i];
         [v71 boundingBox];
         v73 = v72;
 
-        v74 = [v18 objectAtIndexedSubscript:i];
+        v74 = [humanObservationsCopy objectAtIndexedSubscript:i];
         [v74 boundingBox];
         v76 = v75;
 
@@ -823,11 +823,11 @@ LABEL_11:
           *v87 = v82;
           *(v87 + 8) = v54;
           *(v87 + 16) = i;
-          v16 = 24 * v84 + 24;
+          perFaceCopy = 24 * v84 + 24;
           memcpy((24 * v84 - (v226 - __p)), __p, v226 - __p);
           v88 = __p;
           __p = (24 * v84 - (v226 - __p));
-          v226 = v16;
+          v226 = perFaceCopy;
           v227 = 0;
           if (v88)
           {
@@ -838,12 +838,12 @@ LABEL_11:
         else
         {
           *v226 = v82;
-          v16 = (v83 + 6);
+          perFaceCopy = (v83 + 6);
           *(v83 + 1) = v54;
           *(v83 + 2) = i;
         }
 
-        v226 = v16;
+        v226 = perFaceCopy;
       }
 
       ++v54;
@@ -883,7 +883,7 @@ LABEL_113:
           break;
         }
 
-        v16 = *(v94 + 1);
+        perFaceCopy = *(v94 + 1);
         v95 = *(v94 + 2);
         v96 = v233[0];
         if (!v233[0])
@@ -895,8 +895,8 @@ LABEL_113:
         do
         {
           v98 = v96[4];
-          v30 = v98 >= v16;
-          v99 = v98 < v16;
+          v30 = v98 >= perFaceCopy;
+          v99 = v98 < perFaceCopy;
           if (v30)
           {
             v97 = v96;
@@ -906,7 +906,7 @@ LABEL_113:
         }
 
         while (v96);
-        if (v97 == v233 || v16 < v97[4])
+        if (v97 == v233 || perFaceCopy < v97[4])
         {
 LABEL_81:
           v100 = v231[0];
@@ -933,11 +933,11 @@ LABEL_81:
           if (v101 == v231 || v95 < v101[4])
           {
 LABEL_89:
-            v104 = [v17 objectAtIndexedSubscript:v16];
-            v105 = [v18 objectAtIndexedSubscript:v95];
+            v104 = [observationsCopy objectAtIndexedSubscript:perFaceCopy];
+            v105 = [humanObservationsCopy objectAtIndexedSubscript:v95];
             v224 = 0;
             LOBYTE(v204) = 0;
-            [a1 faceFromFaceObservation:v104 humanObservation:v105 sourceWidth:a6 sourceHeight:a7 visionRequests:v215 processingVersion:a12 force:v204 andError:&v224];
+            [self faceFromFaceObservation:v104 humanObservation:v105 sourceWidth:width sourceHeight:height visionRequests:v215 processingVersion:version force:v204 andError:&v224];
             v12 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
             v106 = v224;
 
@@ -945,11 +945,11 @@ LABEL_89:
             {
               if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
               {
-                [v17 objectAtIndexedSubscript:v16];
-                *&v16 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-                v109 = [v18 objectAtIndexedSubscript:v95];
+                [observationsCopy objectAtIndexedSubscript:perFaceCopy];
+                *&perFaceCopy = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
+                v109 = [humanObservationsCopy objectAtIndexedSubscript:v95];
                 *buf = 138412802;
-                v237 = *&v16;
+                v237 = *&perFaceCopy;
                 v238 = 2112;
                 v239 = v109;
                 v240 = 2112;
@@ -960,12 +960,12 @@ LABEL_89:
 
             else
             {
-              v107 = [v17 objectAtIndexedSubscript:v16];
-              [*&v12 setIsTooSmall:{objc_msgSend(v206, "containsObject:", v107)}];
+              v107 = [observationsCopy objectAtIndexedSubscript:perFaceCopy];
+              [*&v12 setIsTooSmall:{objc_msgSend(faceObservationsCopy, "containsObject:", v107)}];
 
-              if (v213)
+              if (faceCopy)
               {
-                v218 = [v213 objectAtIndexedSubscript:v16];
+                v218 = [faceCopy objectAtIndexedSubscript:perFaceCopy];
                 [v218 doubleValue];
               }
 
@@ -975,13 +975,13 @@ LABEL_89:
               }
 
               [*&v12 setBlurScore:v108];
-              if (v213)
+              if (faceCopy)
               {
               }
 
-              if (v212)
+              if (perFaceCopy2)
               {
-                i = [v212 objectAtIndexedSubscript:v16];
+                i = [perFaceCopy2 objectAtIndexedSubscript:perFaceCopy];
                 [i doubleValue];
               }
 
@@ -991,25 +991,25 @@ LABEL_89:
               }
 
               [*&v12 setExposureScore:v110];
-              if (v212)
+              if (perFaceCopy2)
               {
               }
 
-              [*&v12 setQualityMeasure:{objc_msgSend(*&v12, "qualityMeasureWithCountOfFacesOnAsset:", objc_msgSend(v17, "count"))}];
-              v111 = [*&v12 imageprintWrapper];
-              v112 = v111 == 0;
+              [*&v12 setQualityMeasure:{objc_msgSend(*&v12, "qualityMeasureWithCountOfFacesOnAsset:", objc_msgSend(observationsCopy, "count"))}];
+              imageprintWrapper = [*&v12 imageprintWrapper];
+              v112 = imageprintWrapper == 0;
 
               if (v112)
               {
                 if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
                 {
-                  [v17 objectAtIndexedSubscript:v16];
-                  *&v16 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-                  v114 = [v18 objectAtIndexedSubscript:v95];
+                  [observationsCopy objectAtIndexedSubscript:perFaceCopy];
+                  *&perFaceCopy = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
+                  v114 = [humanObservationsCopy objectAtIndexedSubscript:v95];
                   *buf = 138412802;
                   v237 = v12;
                   v238 = 2112;
-                  v239 = v16;
+                  v239 = perFaceCopy;
                   v240 = 2112;
                   v241 = v114;
                   _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT, "[PhotosFace] Fail to generate VCPPhotosFace %@ from %@ and %@ - invalid imageprint", buf, 0x20u);
@@ -1018,18 +1018,18 @@ LABEL_89:
 
               else
               {
-                [v207 addObject:*&v12];
+                [array addObject:*&v12];
                 std::__tree<unsigned long>::__emplace_unique_key_args<unsigned long,unsigned long const&>(&v232, __p + 3 * v93 + 1);
                 std::__tree<unsigned long>::__emplace_unique_key_args<unsigned long,unsigned long const&>(&v230, __p + 3 * v93 + 2);
                 if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
                 {
-                  [v17 objectAtIndexedSubscript:v16];
-                  *&v16 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-                  v113 = [v18 objectAtIndexedSubscript:v95];
+                  [observationsCopy objectAtIndexedSubscript:perFaceCopy];
+                  *&perFaceCopy = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
+                  v113 = [humanObservationsCopy objectAtIndexedSubscript:v95];
                   *buf = 138412802;
                   v237 = v12;
                   v238 = 2112;
-                  v239 = v16;
+                  v239 = perFaceCopy;
                   v240 = 2112;
                   v241 = v113;
                   _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[PhotosFace] Generate VCPPhotosFace %@ from %@ and %@", buf, 0x20u);
@@ -1056,25 +1056,25 @@ LABEL_89:
 
   v21 = 0;
   v22 = MEMORY[0x1E69E9C10];
-  v16 = 2112;
+  perFaceCopy = 2112;
   while (1)
   {
     __p = v21;
-    if (v21 >= [v17 count])
+    if (v21 >= [observationsCopy count])
     {
       break;
     }
 
-    v23 = [v17 objectAtIndexedSubscript:__p];
-    v24 = [v23 groupId];
-    v25 = v24 == 0;
+    v23 = [observationsCopy objectAtIndexedSubscript:__p];
+    groupId = [v23 groupId];
+    v25 = groupId == 0;
 
     if (!v25)
     {
       for (j = 0; ; j = v229 + 1)
       {
         v229 = j;
-        if (j >= [v18 count])
+        if (j >= [humanObservationsCopy count])
         {
           break;
         }
@@ -1103,37 +1103,37 @@ LABEL_89:
         if (v28 == v231 || v229 < v28[4])
         {
 LABEL_223:
-          v32 = [v18 objectAtIndexedSubscript:v229];
-          v33 = [v32 groupId];
-          v34 = v33 == 0;
+          v32 = [humanObservationsCopy objectAtIndexedSubscript:v229];
+          groupId2 = [v32 groupId];
+          v34 = groupId2 == 0;
 
           if (!v34)
           {
-            v35 = [v17 objectAtIndexedSubscript:__p];
-            v36 = [v35 groupId];
-            v37 = [v18 objectAtIndexedSubscript:v229];
+            v35 = [observationsCopy objectAtIndexedSubscript:__p];
+            groupId3 = [v35 groupId];
+            v37 = [humanObservationsCopy objectAtIndexedSubscript:v229];
             [v37 groupId];
             v12 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-            v38 = [v36 isEqual:*&v12];
+            v38 = [groupId3 isEqual:*&v12];
 
             if (v38)
             {
-              v39 = [v17 objectAtIndexedSubscript:__p];
-              v40 = [v18 objectAtIndexedSubscript:v229];
+              v39 = [observationsCopy objectAtIndexedSubscript:__p];
+              v40 = [humanObservationsCopy objectAtIndexedSubscript:v229];
               v228 = 0;
               LOBYTE(v204) = 0;
-              [a1 faceFromFaceObservation:v39 humanObservation:v40 sourceWidth:a6 sourceHeight:a7 visionRequests:v215 processingVersion:a12 force:v204 andError:&v228];
+              [self faceFromFaceObservation:v39 humanObservation:v40 sourceWidth:width sourceHeight:height visionRequests:v215 processingVersion:version force:v204 andError:&v228];
               v41 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
               v42 = v228;
 
               if (v41 != 0.0 && !v42)
               {
-                v45 = [v17 objectAtIndexedSubscript:__p];
-                [*&v41 setIsTooSmall:{objc_msgSend(v206, "containsObject:", v45)}];
+                v45 = [observationsCopy objectAtIndexedSubscript:__p];
+                [*&v41 setIsTooSmall:{objc_msgSend(faceObservationsCopy, "containsObject:", v45)}];
 
-                if (v213)
+                if (faceCopy)
                 {
-                  v210 = [v213 objectAtIndexedSubscript:__p];
+                  v210 = [faceCopy objectAtIndexedSubscript:__p];
                   [v210 doubleValue];
                 }
 
@@ -1143,13 +1143,13 @@ LABEL_223:
                 }
 
                 [*&v41 setBlurScore:v46];
-                if (v213)
+                if (faceCopy)
                 {
                 }
 
-                if (v212)
+                if (perFaceCopy2)
                 {
-                  v208 = [v212 objectAtIndexedSubscript:__p];
+                  v208 = [perFaceCopy2 objectAtIndexedSubscript:__p];
                   [v208 doubleValue];
                 }
 
@@ -1159,20 +1159,20 @@ LABEL_223:
                 }
 
                 [*&v41 setExposureScore:v47];
-                if (v212)
+                if (perFaceCopy2)
                 {
                 }
 
-                [*&v41 setQualityMeasure:{objc_msgSend(*&v41, "qualityMeasureWithCountOfFacesOnAsset:", objc_msgSend(v17, "count"))}];
-                v48 = [*&v41 imageprintWrapper];
-                v49 = v48 == 0;
+                [*&v41 setQualityMeasure:{objc_msgSend(*&v41, "qualityMeasureWithCountOfFacesOnAsset:", objc_msgSend(observationsCopy, "count"))}];
+                imageprintWrapper2 = [*&v41 imageprintWrapper];
+                v49 = imageprintWrapper2 == 0;
 
                 if (v49)
                 {
                   if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
                   {
-                    v52 = [v17 objectAtIndexedSubscript:__p];
-                    v53 = [v18 objectAtIndexedSubscript:v229];
+                    v52 = [observationsCopy objectAtIndexedSubscript:__p];
+                    v53 = [humanObservationsCopy objectAtIndexedSubscript:v229];
                     *buf = 138412802;
                     v237 = v41;
                     v238 = 2112;
@@ -1185,11 +1185,11 @@ LABEL_223:
 
                 else
                 {
-                  [v207 addObject:*&v41];
+                  [array addObject:*&v41];
                   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
                   {
-                    v50 = [v17 objectAtIndexedSubscript:__p];
-                    v51 = [v18 objectAtIndexedSubscript:v229];
+                    v50 = [observationsCopy objectAtIndexedSubscript:__p];
+                    v51 = [humanObservationsCopy objectAtIndexedSubscript:v229];
                     *buf = 138412802;
                     v237 = v41;
                     v238 = 2112;
@@ -1208,9 +1208,9 @@ LABEL_223:
 
               if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
               {
-                [v17 objectAtIndexedSubscript:__p];
+                [observationsCopy objectAtIndexedSubscript:__p];
                 v43 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-                v44 = [v18 objectAtIndexedSubscript:v229];
+                v44 = [humanObservationsCopy objectAtIndexedSubscript:v229];
                 *buf = 138412802;
                 v237 = v43;
                 v238 = 2112;
@@ -1229,7 +1229,7 @@ LABEL_223:
   }
 
 LABEL_115:
-  for (k = 0; k < [v17 count]; ++k)
+  for (k = 0; k < [observationsCopy count]; ++k)
   {
     v116 = v233[0];
     if (!v233[0])
@@ -1255,10 +1255,10 @@ LABEL_115:
     if (v117 == v233 || k < v117[4])
     {
 LABEL_125:
-      v120 = [v17 objectAtIndexedSubscript:k];
+      v120 = [observationsCopy objectAtIndexedSubscript:k];
       v223 = 0;
       LOBYTE(v204) = 0;
-      [a1 faceFromFaceObservation:v120 humanObservation:0 sourceWidth:a6 sourceHeight:a7 visionRequests:v215 processingVersion:a12 force:v204 andError:&v223];
+      [self faceFromFaceObservation:v120 humanObservation:0 sourceWidth:width sourceHeight:height visionRequests:v215 processingVersion:version force:v204 andError:&v223];
       v121 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
       v122 = v223;
 
@@ -1266,7 +1266,7 @@ LABEL_125:
       {
         if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
         {
-          [v17 objectAtIndexedSubscript:k];
+          [observationsCopy objectAtIndexedSubscript:k];
           v125 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
           *buf = 138412546;
           v237 = v125;
@@ -1278,12 +1278,12 @@ LABEL_125:
 
       else
       {
-        v123 = [v17 objectAtIndexedSubscript:k];
-        [*&v121 setIsTooSmall:{objc_msgSend(v206, "containsObject:", v123)}];
+        v123 = [observationsCopy objectAtIndexedSubscript:k];
+        [*&v121 setIsTooSmall:{objc_msgSend(faceObservationsCopy, "containsObject:", v123)}];
 
-        if (v213)
+        if (faceCopy)
         {
-          [v213 objectAtIndexedSubscript:k];
+          [faceCopy objectAtIndexedSubscript:k];
           v12 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
           [*&v12 doubleValue];
         }
@@ -1294,15 +1294,15 @@ LABEL_125:
         }
 
         [*&v121 setBlurScore:v124];
-        if (v213)
+        if (faceCopy)
         {
         }
 
-        if (v212)
+        if (perFaceCopy2)
         {
-          [v212 objectAtIndexedSubscript:k];
-          *&v16 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-          [v16 doubleValue];
+          [perFaceCopy2 objectAtIndexedSubscript:k];
+          *&perFaceCopy = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
+          [perFaceCopy doubleValue];
         }
 
         else
@@ -1311,19 +1311,19 @@ LABEL_125:
         }
 
         [*&v121 setExposureScore:v126];
-        if (v212)
+        if (perFaceCopy2)
         {
         }
 
-        [*&v121 setQualityMeasure:{objc_msgSend(*&v121, "qualityMeasureWithCountOfFacesOnAsset:", objc_msgSend(v17, "count"))}];
-        v127 = [*&v121 imageprintWrapper];
-        v128 = v127 == 0;
+        [*&v121 setQualityMeasure:{objc_msgSend(*&v121, "qualityMeasureWithCountOfFacesOnAsset:", objc_msgSend(observationsCopy, "count"))}];
+        imageprintWrapper3 = [*&v121 imageprintWrapper];
+        v128 = imageprintWrapper3 == 0;
 
         if (v128)
         {
           if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
           {
-            v130 = [v17 objectAtIndexedSubscript:k];
+            v130 = [observationsCopy objectAtIndexedSubscript:k];
             *buf = 138412546;
             v237 = v121;
             v238 = 2112;
@@ -1334,10 +1334,10 @@ LABEL_125:
 
         else
         {
-          [v207 addObject:*&v121];
+          [array addObject:*&v121];
           if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
           {
-            v129 = [v17 objectAtIndexedSubscript:k];
+            v129 = [observationsCopy objectAtIndexedSubscript:k];
             *buf = 138412546;
             v237 = v121;
             v238 = 2112;
@@ -1349,7 +1349,7 @@ LABEL_125:
     }
   }
 
-  for (m = 0; m < [v18 count]; ++m)
+  for (m = 0; m < [humanObservationsCopy count]; ++m)
   {
     v132 = v231[0];
     if (!v231[0])
@@ -1375,13 +1375,13 @@ LABEL_125:
     if (v133 == v231 || m < v133[4])
     {
 LABEL_159:
-      v219 = [v18 objectAtIndexedSubscript:m];
+      v219 = [humanObservationsCopy objectAtIndexedSubscript:m];
       [VCPPhotosFace faceWithLocalIdentifier:0];
       v136 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-      [*&v136 setSourceWidth:a6];
-      [*&v136 setSourceHeight:a7];
+      [*&v136 setSourceWidth:width];
+      [*&v136 setSourceHeight:height];
       [*&v136 setManual:0];
-      [*&v136 setAlgorithmVersion:a12];
+      [*&v136 setAlgorithmVersion:version];
       [*&v136 setDetectionType:1];
       [v219 boundingBox];
       v138 = v137;
@@ -1402,28 +1402,28 @@ LABEL_159:
       [*&v136 setBodyCenterY:CGRectGetMidY(v247)];
       v145 = objc_opt_class();
       v146 = v209[2](v209, v145);
-      v147 = [v219 uuid];
-      v148 = __201__VCPPhotosFace_facesFromFaceObservations_humanObservations_animalObservations_sourceWidth_sourceHeight_visionRequests_blurScorePerFace_exposureScorePerFace_tooSmallFaceObservations_processingVersion___block_invoke_2(v147, v147, v146);
+      uuid = [v219 uuid];
+      v148 = __201__VCPPhotosFace_facesFromFaceObservations_humanObservations_animalObservations_sourceWidth_sourceHeight_visionRequests_blurScorePerFace_exposureScorePerFace_tooSmallFaceObservations_processingVersion___block_invoke_2(uuid, uuid, v146);
 
-      v149 = [v148 torsoprint];
-      if (v149)
+      torsoprint = [v148 torsoprint];
+      if (torsoprint)
       {
-        v150 = [objc_alloc(MEMORY[0x1E6984520]) initWithFaceprint:0 torsoprint:v149];
+        v150 = [objc_alloc(MEMORY[0x1E6984520]) initWithFaceprint:0 torsoprint:torsoprint];
         v222 = 0;
         v151 = [v150 serializeStateAndReturnError:&v222];
         v211 = COERCE_DOUBLE(v222);
         if (v151)
         {
-          v152 = [VCPVNImageprintWrapper wrapperWithImageprintType:0 version:a12 andData:v151];
+          v152 = [VCPVNImageprintWrapper wrapperWithImageprintType:0 version:version andData:v151];
           [*&v136 setImageprintWrapper:v152];
 
           [*&v136 setVuObservationID:0];
-          v153 = [*&v136 imageprintWrapper];
-          LOBYTE(v152) = v153 == 0;
+          imageprintWrapper4 = [*&v136 imageprintWrapper];
+          LOBYTE(v152) = imageprintWrapper4 == 0;
 
           if ((v152 & 1) == 0)
           {
-            [v207 addObject:*&v136];
+            [array addObject:*&v136];
             if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412546;
@@ -1466,25 +1466,25 @@ LABEL_171:
   {
     [v214 objectAtIndexedSubscript:n];
     v159 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-    if (![a1 _isColocatingAnimalObservation:*&v159 withFaceObservations:v17 orTorsoObservations:v18])
+    if (![self _isColocatingAnimalObservation:*&v159 withFaceObservations:observationsCopy orTorsoObservations:humanObservationsCopy])
     {
       [VCPPhotosFace faceWithLocalIdentifier:0];
       v160 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-      [*&v160 setSourceWidth:a6];
-      [*&v160 setSourceHeight:a7];
+      [*&v160 setSourceWidth:width];
+      [*&v160 setSourceHeight:height];
       [*&v160 setManual:0];
-      [*&v160 setAlgorithmVersion:a12];
-      v161 = [*&v159 labels];
-      v162 = [v161 firstObject];
-      v163 = [v162 identifier];
+      [*&v160 setAlgorithmVersion:version];
+      labels = [*&v159 labels];
+      firstObject = [labels firstObject];
+      identifier = [firstObject identifier];
 
-      if ([v163 isEqualToString:@"Dog"])
+      if ([identifier isEqualToString:@"Dog"])
       {
         v164 = 3;
         goto LABEL_185;
       }
 
-      if ([v163 isEqualToString:@"Cat"])
+      if ([identifier isEqualToString:@"Cat"])
       {
         v164 = 4;
 LABEL_185:
@@ -1513,9 +1513,9 @@ LABEL_185:
           v249.size.width = v178;
           v249.size.height = v180;
           [*&v160 setBodyCenterY:CGRectGetMidY(v249)];
-          v181 = [*&v159 animalprint];
-          v182 = v181;
-          if (!v181)
+          animalprint = [*&v159 animalprint];
+          v182 = animalprint;
+          if (!animalprint)
           {
             if (MediaAnalysisLogLevel() < 3 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
             {
@@ -1532,7 +1532,7 @@ LABEL_209:
             goto LABEL_214;
           }
 
-          [v181 confidence];
+          [animalprint confidence];
           if (v183 < 0.4)
           {
             if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
@@ -1569,19 +1569,19 @@ LABEL_209:
           v199 = COERCE_DOUBLE(v221);
           if (v198)
           {
-            v200 = [VCPVNImageprintWrapper wrapperWithImageprintType:1 version:a12 andData:v198];
+            v200 = [VCPVNImageprintWrapper wrapperWithImageprintType:1 version:version andData:v198];
             [*&v160 setImageprintWrapper:v200];
 
             [*&v160 setVuObservationID:0];
-            v201 = [*&v160 imageprintWrapper];
-            v202 = v201 == 0;
+            imageprintWrapper5 = [*&v160 imageprintWrapper];
+            v202 = imageprintWrapper5 == 0;
 
             if (v202)
             {
               goto LABEL_214;
             }
 
-            [v207 addObject:*&v160];
+            [array addObject:*&v160];
             if (MediaAnalysisLogLevel() < 7 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
             {
               goto LABEL_214;
@@ -1661,7 +1661,7 @@ LABEL_216:
   std::__tree<unsigned long>::destroy(&v230, v231[0]);
   std::__tree<unsigned long>::destroy(&v232, v233[0]);
 
-  return v207;
+  return array;
 }
 
 id __201__VCPPhotosFace_facesFromFaceObservations_humanObservations_animalObservations_sourceWidth_sourceHeight_visionRequests_blurScorePerFace_exposureScorePerFace_tooSmallFaceObservations_processingVersion___block_invoke(uint64_t a1)
@@ -1757,37 +1757,37 @@ LABEL_11:
   return v6;
 }
 
-+ (id)_peopleFacesTorsosFromFaceObservations:(id)a3 humanObservations:(id)a4 matchedFace:(void *)a5 matchedTorso:(void *)a6 sourceWidth:(unint64_t)a7 sourceHeight:(unint64_t)a8 visionRequests:(id)a9 blurScorePerFace:(id)a10 exposureScorePerFace:(id)a11 tooSmallFaceObservations:(id)a12 processingVersion:(int)a13
++ (id)_peopleFacesTorsosFromFaceObservations:(id)observations humanObservations:(id)humanObservations matchedFace:(void *)face matchedTorso:(void *)torso sourceWidth:(unint64_t)width sourceHeight:(unint64_t)height visionRequests:(id)requests blurScorePerFace:(id)self0 exposureScorePerFace:(id)self1 tooSmallFaceObservations:(id)self2 processingVersion:(int)self3
 {
   v74 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v64 = a9;
-  v61 = a10;
-  v60 = a11;
-  v57 = a12;
-  v54 = [MEMORY[0x1E695DF70] array];
+  observationsCopy = observations;
+  humanObservationsCopy = humanObservations;
+  requestsCopy = requests;
+  perFaceCopy = perFace;
+  scorePerFaceCopy = scorePerFace;
+  faceObservationsCopy = faceObservations;
+  array = [MEMORY[0x1E695DF70] array];
   v18 = 0;
-  v55 = a6;
-  v19 = a6 + 8;
+  torsoCopy = torso;
+  v19 = torso + 8;
   while (1)
   {
     v67 = v18;
-    if (v18 >= [v16 count])
+    if (v18 >= [observationsCopy count])
     {
       break;
     }
 
-    v20 = [v16 objectAtIndexedSubscript:v67];
-    v21 = [v20 groupId];
-    v22 = v21 == 0;
+    v20 = [observationsCopy objectAtIndexedSubscript:v67];
+    groupId = [v20 groupId];
+    v22 = groupId == 0;
 
     if (!v22)
     {
       for (i = 0; ; i = v66 + 1)
       {
         v66 = i;
-        if (i >= [v17 count])
+        if (i >= [humanObservationsCopy count])
         {
           break;
         }
@@ -1816,35 +1816,35 @@ LABEL_11:
         if (v25 == v19 || v66 < v25[4])
         {
 LABEL_47:
-          v29 = [v17 objectAtIndexedSubscript:v66];
-          v30 = [v29 groupId];
-          v31 = v30 == 0;
+          v29 = [humanObservationsCopy objectAtIndexedSubscript:v66];
+          groupId2 = [v29 groupId];
+          v31 = groupId2 == 0;
 
           if (!v31)
           {
-            v32 = [v16 objectAtIndexedSubscript:v67];
-            v33 = [v32 groupId];
-            v34 = [v17 objectAtIndexedSubscript:v66];
-            v35 = [v34 groupId];
-            v36 = [v33 isEqual:v35];
+            v32 = [observationsCopy objectAtIndexedSubscript:v67];
+            groupId3 = [v32 groupId];
+            v34 = [humanObservationsCopy objectAtIndexedSubscript:v66];
+            groupId4 = [v34 groupId];
+            v36 = [groupId3 isEqual:groupId4];
 
             if (v36)
             {
-              v37 = [v16 objectAtIndexedSubscript:v67];
-              v38 = [v17 objectAtIndexedSubscript:v66];
+              v37 = [observationsCopy objectAtIndexedSubscript:v67];
+              v38 = [humanObservationsCopy objectAtIndexedSubscript:v66];
               v65 = 0;
               LOBYTE(v53) = 0;
-              v39 = [a1 faceFromFaceObservation:v37 humanObservation:v38 sourceWidth:a7 sourceHeight:a8 visionRequests:v64 processingVersion:a13 force:v53 andError:&v65];
+              v39 = [self faceFromFaceObservation:v37 humanObservation:v38 sourceWidth:width sourceHeight:height visionRequests:requestsCopy processingVersion:version force:v53 andError:&v65];
               v40 = v65;
 
               if (v39 && !v40)
               {
-                v43 = [v16 objectAtIndexedSubscript:v67];
-                [v39 setIsTooSmall:{objc_msgSend(v57, "containsObject:", v43)}];
+                v43 = [observationsCopy objectAtIndexedSubscript:v67];
+                [v39 setIsTooSmall:{objc_msgSend(faceObservationsCopy, "containsObject:", v43)}];
 
-                if (v61)
+                if (perFaceCopy)
                 {
-                  v59 = [v61 objectAtIndexedSubscript:v67];
+                  v59 = [perFaceCopy objectAtIndexedSubscript:v67];
                   [v59 doubleValue];
                 }
 
@@ -1854,13 +1854,13 @@ LABEL_47:
                 }
 
                 [v39 setBlurScore:v44];
-                if (v61)
+                if (perFaceCopy)
                 {
                 }
 
-                if (v60)
+                if (scorePerFaceCopy)
                 {
-                  v58 = [v60 objectAtIndexedSubscript:v67];
+                  v58 = [scorePerFaceCopy objectAtIndexedSubscript:v67];
                   [v58 doubleValue];
                 }
 
@@ -1870,20 +1870,20 @@ LABEL_47:
                 }
 
                 [v39 setExposureScore:v45];
-                if (v60)
+                if (scorePerFaceCopy)
                 {
                 }
 
-                [v39 setQualityMeasure:{objc_msgSend(v39, "qualityMeasureWithCountOfFacesOnAsset:", objc_msgSend(v16, "count"))}];
-                v46 = [v39 imageprintWrapper];
-                v47 = v46 == 0;
+                [v39 setQualityMeasure:{objc_msgSend(v39, "qualityMeasureWithCountOfFacesOnAsset:", objc_msgSend(observationsCopy, "count"))}];
+                imageprintWrapper = [v39 imageprintWrapper];
+                v47 = imageprintWrapper == 0;
 
                 if (v47)
                 {
                   if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
                   {
-                    v50 = [v16 objectAtIndexedSubscript:v67];
-                    v51 = [v17 objectAtIndexedSubscript:v66];
+                    v50 = [observationsCopy objectAtIndexedSubscript:v67];
+                    v51 = [humanObservationsCopy objectAtIndexedSubscript:v66];
                     *buf = 138412802;
                     v69 = v39;
                     v70 = 2112;
@@ -1896,11 +1896,11 @@ LABEL_47:
 
                 else
                 {
-                  [v54 addObject:v39];
+                  [array addObject:v39];
                   if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
                   {
-                    v48 = [v16 objectAtIndexedSubscript:v67];
-                    v49 = [v17 objectAtIndexedSubscript:v66];
+                    v48 = [observationsCopy objectAtIndexedSubscript:v67];
+                    v49 = [humanObservationsCopy objectAtIndexedSubscript:v66];
                     *buf = 138412802;
                     v69 = v39;
                     v70 = 2112;
@@ -1911,16 +1911,16 @@ LABEL_47:
                   }
                 }
 
-                std::__tree<unsigned long>::__emplace_unique_key_args<unsigned long,unsigned long const&>(a5, &v67);
-                std::__tree<unsigned long>::__emplace_unique_key_args<unsigned long,unsigned long const&>(v55, &v66);
+                std::__tree<unsigned long>::__emplace_unique_key_args<unsigned long,unsigned long const&>(face, &v67);
+                std::__tree<unsigned long>::__emplace_unique_key_args<unsigned long,unsigned long const&>(torsoCopy, &v66);
 
                 break;
               }
 
               if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
               {
-                v41 = [v16 objectAtIndexedSubscript:v67];
-                v42 = [v17 objectAtIndexedSubscript:v66];
+                v41 = [observationsCopy objectAtIndexedSubscript:v67];
+                v42 = [humanObservationsCopy objectAtIndexedSubscript:v66];
                 *buf = 138412802;
                 v69 = v41;
                 v70 = 2112;
@@ -1938,21 +1938,21 @@ LABEL_47:
     v18 = v67 + 1;
   }
 
-  return v54;
+  return array;
 }
 
-+ (id)_peopleFacesOnlyFromFaceObservations:(id)a3 matchedFace:(set<unsigned)long sourceWidth:(std:(std:(unint64_t)a5 :(unint64_t)a6 allocator<unsigned long>> *)a4 :(id)a7 less<unsigned)long> sourceHeight:(id)a8 visionRequests:(id)a9 blurScorePerFace:(id)a10 exposureScorePerFace:(int)a11 tooSmallFaceObservations:processingVersion:
++ (id)_peopleFacesOnlyFromFaceObservations:(id)observations matchedFace:(set<unsigned)long sourceWidth:(std:(std:(unint64_t)width :(unint64_t)a6 allocator<unsigned long>> *)a4 :(id)a7 less<unsigned)long> sourceHeight:(id)height visionRequests:(id)requests blurScorePerFace:(id)self0 exposureScorePerFace:(int)self1 tooSmallFaceObservations:processingVersion:
 {
   v49 = *MEMORY[0x1E69E9840];
-  v15 = a3;
+  observationsCopy = observations;
   v42 = a7;
-  v43 = a8;
-  v16 = a9;
-  v38 = a10;
-  v37 = [MEMORY[0x1E695DF70] array];
+  heightCopy = height;
+  requestsCopy = requests;
+  faceCopy = face;
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0;
   p_var1 = &a4->var0.var1;
-  while (v17 < [v15 count])
+  while (v17 < [observationsCopy count])
   {
     var0 = p_var1->var0;
     if (!p_var1->var0)
@@ -1978,17 +1978,17 @@ LABEL_47:
     if (v20 == p_var1 || v17 < v20[4].var0)
     {
 LABEL_11:
-      v24 = [v15 objectAtIndexedSubscript:v17];
+      v24 = [observationsCopy objectAtIndexedSubscript:v17];
       v44 = 0;
       LOBYTE(v36) = 0;
-      v25 = [a1 faceFromFaceObservation:v24 humanObservation:0 sourceWidth:a5 sourceHeight:a6 visionRequests:v42 processingVersion:a11 force:v36 andError:&v44];
+      v25 = [self faceFromFaceObservation:v24 humanObservation:0 sourceWidth:width sourceHeight:a6 visionRequests:v42 processingVersion:perFace force:v36 andError:&v44];
       v26 = v44;
 
       if (!v25 || v26)
       {
         if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
         {
-          v29 = [v15 objectAtIndexedSubscript:v17];
+          v29 = [observationsCopy objectAtIndexedSubscript:v17];
           *buf = 138412546;
           v46 = v29;
           v47 = 2112;
@@ -1999,12 +1999,12 @@ LABEL_11:
 
       else
       {
-        v27 = [v15 objectAtIndexedSubscript:v17];
-        [v25 setIsTooSmall:{objc_msgSend(v38, "containsObject:", v27)}];
+        v27 = [observationsCopy objectAtIndexedSubscript:v17];
+        [v25 setIsTooSmall:{objc_msgSend(faceCopy, "containsObject:", v27)}];
 
-        if (v43)
+        if (heightCopy)
         {
-          a4 = [v43 objectAtIndexedSubscript:v17];
+          a4 = [heightCopy objectAtIndexedSubscript:v17];
           unk_1F4A1D7C8(a4, "doubleValue");
         }
 
@@ -2014,13 +2014,13 @@ LABEL_11:
         }
 
         [v25 setBlurScore:v28];
-        if (v43)
+        if (heightCopy)
         {
         }
 
-        if (v16)
+        if (requestsCopy)
         {
-          v11 = [v16 objectAtIndexedSubscript:v17];
+          v11 = [requestsCopy objectAtIndexedSubscript:v17];
           [v11 doubleValue];
         }
 
@@ -2030,19 +2030,19 @@ LABEL_11:
         }
 
         [v25 setExposureScore:v30];
-        if (v16)
+        if (requestsCopy)
         {
         }
 
-        [v25 setQualityMeasure:{objc_msgSend(v25, "qualityMeasureWithCountOfFacesOnAsset:", objc_msgSend(v15, "count"))}];
-        v31 = [v25 imageprintWrapper];
-        v32 = v31 == 0;
+        [v25 setQualityMeasure:{objc_msgSend(v25, "qualityMeasureWithCountOfFacesOnAsset:", objc_msgSend(observationsCopy, "count"))}];
+        imageprintWrapper = [v25 imageprintWrapper];
+        v32 = imageprintWrapper == 0;
 
         if (v32)
         {
           if (MediaAnalysisLogLevel() >= 4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
           {
-            v34 = [v15 objectAtIndexedSubscript:v17];
+            v34 = [observationsCopy objectAtIndexedSubscript:v17];
             *buf = 138412546;
             v46 = v25;
             v47 = 2112;
@@ -2053,10 +2053,10 @@ LABEL_11:
 
         else
         {
-          [v37 addObject:v25];
+          [array addObject:v25];
           if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
           {
-            v33 = [v15 objectAtIndexedSubscript:v17];
+            v33 = [observationsCopy objectAtIndexedSubscript:v17];
             *buf = 138412546;
             v46 = v25;
             v47 = 2112;
@@ -2070,14 +2070,14 @@ LABEL_11:
     ++v17;
   }
 
-  return v37;
+  return array;
 }
 
-+ (id)_peopleTorsosOnlyFromHumanObservations:(id)a3 matchedTorso:(set<unsigned)long sourceWidth:(std:(std:(unint64_t)a5 :(unint64_t)a6 allocator<unsigned long>> *)a4 :(id)a7 less<unsigned)long> sourceHeight:(int)a8 visionRequests:processingVersion:
++ (id)_peopleTorsosOnlyFromHumanObservations:(id)observations matchedTorso:(set<unsigned)long sourceWidth:(std:(std:(unint64_t)width :(unint64_t)a6 allocator<unsigned long>> *)a4 :(id)a7 less<unsigned)long> sourceHeight:(int)height visionRequests:processingVersion:
 {
-  v44 = *&a8;
+  v44 = *&height;
   v57 = *MEMORY[0x1E69E9840];
-  v48 = a3;
+  observationsCopy = observations;
   v10 = a7;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -2086,10 +2086,10 @@ LABEL_11:
   v42 = v10;
   v52 = v42;
   v47 = _Block_copy(aBlock);
-  v43 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0;
   p_var1 = &a4->var0.var1;
-  while (v11 < [v48 count])
+  while (v11 < [observationsCopy count])
   {
     var0 = p_var1->var0;
     if (!p_var1->var0)
@@ -2115,9 +2115,9 @@ LABEL_11:
     if (v13 == p_var1 || v11 < v13[4].var0)
     {
 LABEL_11:
-      v17 = [v48 objectAtIndexedSubscript:v11];
+      v17 = [observationsCopy objectAtIndexedSubscript:v11];
       v18 = [VCPPhotosFace faceWithLocalIdentifier:0];
-      [v18 setSourceWidth:a5];
+      [v18 setSourceWidth:width];
       [v18 setSourceHeight:a6];
       [v18 setManual:0];
       [v18 setAlgorithmVersion:v44];
@@ -2141,13 +2141,13 @@ LABEL_11:
       [v18 setBodyCenterY:CGRectGetMidY(v60)];
       v27 = objc_opt_class();
       v28 = v47[2](v47, v27);
-      v29 = [v17 uuid];
-      v30 = __127__VCPPhotosFace__peopleTorsosOnlyFromHumanObservations_matchedTorso_sourceWidth_sourceHeight_visionRequests_processingVersion___block_invoke_2(v29, v29, v28);
+      uuid = [v17 uuid];
+      v30 = __127__VCPPhotosFace__peopleTorsosOnlyFromHumanObservations_matchedTorso_sourceWidth_sourceHeight_visionRequests_processingVersion___block_invoke_2(uuid, uuid, v28);
 
-      v31 = [v30 torsoprint];
-      if (v31)
+      torsoprint = [v30 torsoprint];
+      if (torsoprint)
       {
-        v32 = [objc_alloc(MEMORY[0x1E6984520]) initWithFaceprint:0 torsoprint:v31];
+        v32 = [objc_alloc(MEMORY[0x1E6984520]) initWithFaceprint:0 torsoprint:torsoprint];
         v50 = 0;
         v33 = [v32 serializeStateAndReturnError:&v50];
         v34 = v50;
@@ -2157,12 +2157,12 @@ LABEL_11:
           [v18 setImageprintWrapper:v35];
 
           [v18 setVuObservationID:0];
-          v36 = [v18 imageprintWrapper];
-          LOBYTE(v35) = v36 == 0;
+          imageprintWrapper = [v18 imageprintWrapper];
+          LOBYTE(v35) = imageprintWrapper == 0;
 
           if ((v35 & 1) == 0)
           {
-            [v43 addObject:v18];
+            [array addObject:v18];
             if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412546;
@@ -2201,7 +2201,7 @@ LABEL_23:
     ++v11;
   }
 
-  return v43;
+  return array;
 }
 
 id __127__VCPPhotosFace__peopleTorsosOnlyFromHumanObservations_matchedTorso_sourceWidth_sourceHeight_visionRequests_processingVersion___block_invoke(uint64_t a1)
@@ -2297,21 +2297,21 @@ LABEL_11:
   return v6;
 }
 
-+ (id)_filterAnimalObservations:(id)a3 colocatingWithFaceObservations:(id)a4 orHumanObservations:(id)a5
++ (id)_filterAnimalObservations:(id)observations colocatingWithFaceObservations:(id)faceObservations orHumanObservations:(id)humanObservations
 {
   v20 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E696AD50] indexSet];
+  observationsCopy = observations;
+  faceObservationsCopy = faceObservations;
+  humanObservationsCopy = humanObservations;
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
   v12 = 0;
   v13 = MEMORY[0x1E69E9C10];
   *&v14 = 138412290;
   v17 = v14;
-  while (v12 < [v8 count])
+  while (v12 < [observationsCopy count])
   {
-    v15 = [v8 objectAtIndexedSubscript:v12];
-    if ([a1 _isColocatingAnimalObservation:v15 withFaceObservations:v9 orTorsoObservations:v10])
+    v15 = [observationsCopy objectAtIndexedSubscript:v12];
+    if ([self _isColocatingAnimalObservation:v15 withFaceObservations:faceObservationsCopy orTorsoObservations:humanObservationsCopy])
     {
       if (MediaAnalysisLogLevel() >= 5 && os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
@@ -2320,36 +2320,36 @@ LABEL_11:
         _os_log_impl(&dword_1C9B70000, v13, OS_LOG_TYPE_DEFAULT, "[PhotosFace] Ignoring co-locating animalObservation %@", buf, 0xCu);
       }
 
-      [v11 addIndex:v12];
+      [indexSet addIndex:v12];
     }
 
     ++v12;
   }
 
-  return v11;
+  return indexSet;
 }
 
-+ (id)_animalImageprintWrapperFromObservation:(id)a3 visionRequests:(id)a4 processingVersion:(int)a5
++ (id)_animalImageprintWrapperFromObservation:(id)observation visionRequests:(id)requests processingVersion:(int)version
 {
-  v5 = *&a5;
+  v5 = *&version;
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  observationCopy = observation;
+  requestsCopy = requests;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __90__VCPPhotosFace__animalImageprintWrapperFromObservation_visionRequests_processingVersion___block_invoke;
   aBlock[3] = &unk_1E834CEE8;
-  v9 = v8;
+  v9 = requestsCopy;
   v30 = v9;
   v10 = _Block_copy(aBlock);
   v11 = objc_opt_class();
   v12 = v10[2](v10, v11);
-  v13 = [v7 uuid];
-  v14 = __90__VCPPhotosFace__animalImageprintWrapperFromObservation_visionRequests_processingVersion___block_invoke_2(v13, v13, v12);
+  uuid = [observationCopy uuid];
+  v14 = __90__VCPPhotosFace__animalImageprintWrapperFromObservation_visionRequests_processingVersion___block_invoke_2(uuid, uuid, v12);
 
-  v15 = [v14 animalprint];
-  v16 = v15;
-  if (!v15)
+  animalprint = [v14 animalprint];
+  v16 = animalprint;
+  if (!animalprint)
   {
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -2360,7 +2360,7 @@ LABEL_11:
     goto LABEL_9;
   }
 
-  [v15 confidence];
+  [animalprint confidence];
   if (v17 < 0.4)
   {
     if (MediaAnalysisLogLevel() >= 6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
@@ -2512,26 +2512,26 @@ LABEL_11:
   return v6;
 }
 
-+ (id)faceFromAnimalHeadObservation:(id)a3 animalBodyObservation:(id)a4 animalLabel:(id)a5 sourceWidth:(unint64_t)a6 sourceHeight:(unint64_t)a7 visionRequests:(id)a8 processingVersion:(int)a9
++ (id)faceFromAnimalHeadObservation:(id)observation animalBodyObservation:(id)bodyObservation animalLabel:(id)label sourceWidth:(unint64_t)width sourceHeight:(unint64_t)height visionRequests:(id)requests processingVersion:(int)version
 {
   v54 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
+  observationCopy = observation;
+  bodyObservationCopy = bodyObservation;
+  labelCopy = label;
+  requestsCopy = requests;
   v19 = [VCPPhotosFace faceWithLocalIdentifier:0];
-  [v19 setSourceWidth:a6];
-  [v19 setSourceHeight:a7];
+  [v19 setSourceWidth:width];
+  [v19 setSourceHeight:height];
   [v19 setManual:0];
-  [v19 setAlgorithmVersion:a9];
-  if ([v17 isEqualToString:*MEMORY[0x1E6984898]])
+  [v19 setAlgorithmVersion:version];
+  if ([labelCopy isEqualToString:*MEMORY[0x1E6984898]])
   {
     v20 = 3;
   }
 
   else
   {
-    if (![v17 isEqualToString:*MEMORY[0x1E6984890]])
+    if (![labelCopy isEqualToString:*MEMORY[0x1E6984890]])
     {
       if (MediaAnalysisLogLevel() < 4 || !os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEFAULT))
       {
@@ -2550,9 +2550,9 @@ LABEL_11:
   }
 
   [v19 setDetectionType:v20];
-  if (v16)
+  if (bodyObservationCopy)
   {
-    [v16 boundingBox];
+    [bodyObservationCopy boundingBox];
     v22 = v21;
     v24 = v23;
     v26 = v25;
@@ -2569,29 +2569,29 @@ LABEL_11:
     v57.size.width = v26;
     v57.size.height = v28;
     [v19 setBodyCenterY:CGRectGetMidY(v57)];
-    v29 = [a1 _animalImageprintWrapperFromObservation:v16 visionRequests:v18 processingVersion:a9];
+    v29 = [self _animalImageprintWrapperFromObservation:bodyObservationCopy visionRequests:requestsCopy processingVersion:version];
     [v19 setImageprintWrapper:v29];
 
     [v19 setVuObservationID:0];
   }
 
-  if (!v15)
+  if (!observationCopy)
   {
     goto LABEL_11;
   }
 
-  [v15 boundingBox];
+  [observationCopy boundingBox];
   v31 = v30;
   v33 = v32;
   v35 = v34;
   v37 = v36;
   if ([v19 setCenterAndSizeFromNormalizedFaceRect:?])
   {
-    v38 = [v19 imageprintWrapper];
+    imageprintWrapper = [v19 imageprintWrapper];
 
-    if (!v38)
+    if (!imageprintWrapper)
     {
-      v39 = [a1 _animalImageprintWrapperFromObservation:v15 visionRequests:v18 processingVersion:a9];
+      v39 = [self _animalImageprintWrapperFromObservation:observationCopy visionRequests:requestsCopy processingVersion:version];
       [v19 setImageprintWrapper:v39];
 
       [v19 setVuObservationID:0];
@@ -2627,25 +2627,25 @@ LABEL_20:
   return v40;
 }
 
-+ (id)_animalHeadsBodiesFromAnimalHeadObservations:(id)a3 animalBodyObservations:(id)a4 matchedHead:(void *)a5 matchedBody:(void *)a6 sourceWidth:(unint64_t)a7 sourceHeight:(unint64_t)a8 visionRequests:(id)a9 processingVersion:(int)a10
++ (id)_animalHeadsBodiesFromAnimalHeadObservations:(id)observations animalBodyObservations:(id)bodyObservations matchedHead:(void *)head matchedBody:(void *)body sourceWidth:(unint64_t)width sourceHeight:(unint64_t)height visionRequests:(id)requests processingVersion:(int)self0
 {
   v64 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v53 = a9;
-  v49 = [MEMORY[0x1E695DF70] array];
+  observationsCopy = observations;
+  bodyObservationsCopy = bodyObservations;
+  requestsCopy = requests;
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0;
-  v54 = a6;
-  v15 = a6 + 8;
+  bodyCopy = body;
+  v15 = body + 8;
   v16 = MEMORY[0x1E69E9C10];
 LABEL_2:
   v57 = v14;
-  if (v14 < [v12 count])
+  if (v14 < [observationsCopy count])
   {
     for (i = 0; ; i = v56 + 1)
     {
       v56 = i;
-      if (i >= [v13 count])
+      if (i >= [bodyObservationsCopy count])
       {
 LABEL_30:
         v14 = v57 + 1;
@@ -2676,24 +2676,24 @@ LABEL_30:
       if (v19 == v15 || v56 < v19[4])
       {
 LABEL_13:
-        v23 = [v12 objectAtIndexedSubscript:v57];
-        v24 = [v23 groupId];
-        if (!v24)
+        identifier = [observationsCopy objectAtIndexedSubscript:v57];
+        groupId = [identifier groupId];
+        if (!groupId)
         {
           goto LABEL_22;
         }
 
-        v25 = [v13 objectAtIndexedSubscript:v56];
-        v26 = [v25 groupId];
-        v27 = v26 == 0;
+        v25 = [bodyObservationsCopy objectAtIndexedSubscript:v56];
+        groupId2 = [v25 groupId];
+        v27 = groupId2 == 0;
 
         if (!v27)
         {
-          v28 = [v12 objectAtIndexedSubscript:v57];
-          v29 = [v28 groupId];
-          v30 = [v13 objectAtIndexedSubscript:v56];
-          v31 = [v30 groupId];
-          v32 = [v29 isEqual:v31];
+          v28 = [observationsCopy objectAtIndexedSubscript:v57];
+          groupId3 = [v28 groupId];
+          v30 = [bodyObservationsCopy objectAtIndexedSubscript:v56];
+          groupId4 = [v30 groupId];
+          v32 = [groupId3 isEqual:groupId4];
 
           if (v32)
           {
@@ -2706,37 +2706,37 @@ LABEL_23:
       ;
     }
 
-    v33 = [v12 objectAtIndexedSubscript:v57];
-    v34 = [v33 labels];
-    v35 = [v34 firstObject];
-    v23 = [v35 identifier];
+    v33 = [observationsCopy objectAtIndexedSubscript:v57];
+    labels = [v33 labels];
+    firstObject = [labels firstObject];
+    identifier = [firstObject identifier];
 
-    v36 = [v13 objectAtIndexedSubscript:v56];
-    v37 = [v36 labels];
-    v38 = [v37 firstObject];
-    v39 = [v38 identifier];
+    v36 = [bodyObservationsCopy objectAtIndexedSubscript:v56];
+    labels2 = [v36 labels];
+    firstObject2 = [labels2 firstObject];
+    identifier2 = [firstObject2 identifier];
 
-    if ([v23 containsString:v39] & 1) != 0 || (objc_msgSend(v39, "containsString:", v23))
+    if ([identifier containsString:identifier2] & 1) != 0 || (objc_msgSend(identifier2, "containsString:", identifier))
     {
-      v40 = [v12 objectAtIndexedSubscript:v57];
-      v41 = [v13 objectAtIndexedSubscript:v56];
-      LODWORD(v48) = a10;
-      v42 = [a1 faceFromAnimalHeadObservation:v40 animalBodyObservation:v41 animalLabel:v39 sourceWidth:a7 sourceHeight:a8 visionRequests:v53 processingVersion:v48];
+      v40 = [observationsCopy objectAtIndexedSubscript:v57];
+      v41 = [bodyObservationsCopy objectAtIndexedSubscript:v56];
+      LODWORD(v48) = version;
+      v42 = [self faceFromAnimalHeadObservation:v40 animalBodyObservation:v41 animalLabel:identifier2 sourceWidth:width sourceHeight:height visionRequests:requestsCopy processingVersion:v48];
 
       if (v42)
       {
-        v43 = [v42 imageprintWrapper];
-        v44 = v43 == 0;
+        imageprintWrapper = [v42 imageprintWrapper];
+        v44 = imageprintWrapper == 0;
 
         if (!v44)
         {
-          std::__tree<unsigned long>::__emplace_unique_key_args<unsigned long,unsigned long const&>(a5, &v57);
-          std::__tree<unsigned long>::__emplace_unique_key_args<unsigned long,unsigned long const&>(v54, &v56);
-          [v49 addObject:v42];
+          std::__tree<unsigned long>::__emplace_unique_key_args<unsigned long,unsigned long const&>(head, &v57);
+          std::__tree<unsigned long>::__emplace_unique_key_args<unsigned long,unsigned long const&>(bodyCopy, &v56);
+          [array addObject:v42];
           if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
           {
-            v45 = [v12 objectAtIndexedSubscript:v57];
-            v46 = [v13 objectAtIndexedSubscript:v56];
+            v45 = [observationsCopy objectAtIndexedSubscript:v57];
+            v46 = [bodyObservationsCopy objectAtIndexedSubscript:v56];
             *buf = 138412802;
             v59 = v42;
             v60 = 2112;
@@ -2748,8 +2748,8 @@ LABEL_23:
         }
       }
 
-      std::__tree<unsigned long>::__emplace_unique_key_args<unsigned long,unsigned long const&>(a5, &v57);
-      std::__tree<unsigned long>::__emplace_unique_key_args<unsigned long,unsigned long const&>(v54, &v56);
+      std::__tree<unsigned long>::__emplace_unique_key_args<unsigned long,unsigned long const&>(head, &v57);
+      std::__tree<unsigned long>::__emplace_unique_key_args<unsigned long,unsigned long const&>(bodyCopy, &v56);
 
       goto LABEL_30;
     }
@@ -2757,9 +2757,9 @@ LABEL_23:
     if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v59 = v23;
+      v59 = identifier;
       v60 = 2112;
-      v61 = v39;
+      v61 = identifier2;
       _os_log_impl(&dword_1C9B70000, v16, OS_LOG_TYPE_DEBUG, "[PhotosFace] headLabel (%@) and bodyLabel (%@) do not match", buf, 0x16u);
     }
 
@@ -2767,18 +2767,18 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  return v49;
+  return array;
 }
 
-+ (id)_animalBodiesOnlyFromAnimalBodyObservations:(id)a3 matchedBody:(set<unsigned)long sourceWidth:(std:(std:(unint64_t)a5 :(unint64_t)a6 allocator<unsigned long>> *)a4 :(id)a7 less<unsigned)long> sourceHeight:(int)a8 visionRequests:processingVersion:
++ (id)_animalBodiesOnlyFromAnimalBodyObservations:(id)observations matchedBody:(set<unsigned)long sourceWidth:(std:(std:(unint64_t)width :(unint64_t)a6 allocator<unsigned long>> *)a4 :(id)a7 less<unsigned)long> sourceHeight:(int)height visionRequests:processingVersion:
 {
   v39 = *MEMORY[0x1E69E9840];
-  v13 = a3;
+  observationsCopy = observations;
   v34 = a7;
-  v32 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v14 = 0;
   p_var1 = &a4->var0.var1;
-  while (v14 < [v13 count])
+  while (v14 < [observationsCopy count])
   {
     var0 = p_var1->var0;
     if (!p_var1->var0)
@@ -2804,26 +2804,26 @@ LABEL_22:
     if (v17 == p_var1 || v14 < v17[4].var0)
     {
 LABEL_11:
-      v21 = [v13 objectAtIndexedSubscript:v14];
-      v22 = [v21 labels];
-      v23 = [v22 firstObject];
-      v24 = [v23 identifier];
+      v21 = [observationsCopy objectAtIndexedSubscript:v14];
+      labels = [v21 labels];
+      firstObject = [labels firstObject];
+      identifier = [firstObject identifier];
 
-      v25 = [v13 objectAtIndexedSubscript:v14];
-      LODWORD(v31) = a8;
-      v26 = [a1 faceFromAnimalHeadObservation:0 animalBodyObservation:v25 animalLabel:v24 sourceWidth:a5 sourceHeight:a6 visionRequests:v34 processingVersion:v31];
+      v25 = [observationsCopy objectAtIndexedSubscript:v14];
+      LODWORD(v31) = height;
+      v26 = [self faceFromAnimalHeadObservation:0 animalBodyObservation:v25 animalLabel:identifier sourceWidth:width sourceHeight:a6 visionRequests:v34 processingVersion:v31];
 
       if (v26)
       {
-        v27 = [v26 imageprintWrapper];
-        v28 = v27 == 0;
+        imageprintWrapper = [v26 imageprintWrapper];
+        v28 = imageprintWrapper == 0;
 
         if (!v28)
         {
-          [v32 addObject:v26];
+          [array addObject:v26];
           if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
           {
-            v29 = [v13 objectAtIndexedSubscript:v14];
+            v29 = [observationsCopy objectAtIndexedSubscript:v14];
             *buf = 138412546;
             v36 = v26;
             v37 = 2112;
@@ -2837,22 +2837,22 @@ LABEL_11:
     ++v14;
   }
 
-  return v32;
+  return array;
 }
 
-+ (id)_animalHeadsOnlyFromAnimalHeadObservations:(id)a3 matchedHead:(set<unsigned)long sourceWidth:(std:(std:(unint64_t)a5 :(unint64_t)a6 allocator<unsigned long>> *)a4 :(id)a7 less<unsigned)long> sourceHeight:(int)a8 visionRequests:processingVersion:
++ (id)_animalHeadsOnlyFromAnimalHeadObservations:(id)observations matchedHead:(set<unsigned)long sourceWidth:(std:(std:(unint64_t)width :(unint64_t)a6 allocator<unsigned long>> *)a4 :(id)a7 less<unsigned)long> sourceHeight:(int)height visionRequests:processingVersion:
 {
   v47 = *MEMORY[0x1E69E9840];
-  v11 = a3;
+  observationsCopy = observations;
   v42 = a7;
-  v36 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0;
   p_var1 = &a4->var0.var1;
   v14 = *MEMORY[0x1E6984888];
   v38 = *MEMORY[0x1E6984880];
   v37 = *MEMORY[0x1E6984890];
   v15 = *MEMORY[0x1E6984898];
-  while (v12 < [v11 count])
+  while (v12 < [observationsCopy count])
   {
     var0 = p_var1->var0;
     if (!p_var1->var0)
@@ -2878,31 +2878,31 @@ LABEL_11:
     if (v17 == p_var1 || v12 < v17[4].var0)
     {
 LABEL_11:
-      v21 = [v11 objectAtIndexedSubscript:v12];
-      v22 = [v21 labels];
-      v23 = [v22 firstObject];
-      v24 = [v23 identifier];
+      v21 = [observationsCopy objectAtIndexedSubscript:v12];
+      labels = [v21 labels];
+      firstObject = [labels firstObject];
+      identifier = [firstObject identifier];
 
-      v25 = [v24 isEqualToString:v14];
+      v25 = [identifier isEqualToString:v14];
       v26 = v15;
-      if (v25 & 1) != 0 || (v27 = [v24 isEqualToString:v38], v26 = v37, (v27))
+      if (v25 & 1) != 0 || (v27 = [identifier isEqualToString:v38], v26 = v37, (v27))
       {
         v28 = v26;
-        v29 = [v11 objectAtIndexedSubscript:v12];
-        LODWORD(v35) = a8;
-        v30 = [a1 faceFromAnimalHeadObservation:v29 animalBodyObservation:0 animalLabel:v28 sourceWidth:a5 sourceHeight:a6 visionRequests:v42 processingVersion:v35];
+        v29 = [observationsCopy objectAtIndexedSubscript:v12];
+        LODWORD(v35) = height;
+        v30 = [self faceFromAnimalHeadObservation:v29 animalBodyObservation:0 animalLabel:v28 sourceWidth:width sourceHeight:a6 visionRequests:v42 processingVersion:v35];
 
         if (v30)
         {
-          v31 = [v30 imageprintWrapper];
-          v32 = v31 == 0;
+          imageprintWrapper = [v30 imageprintWrapper];
+          v32 = imageprintWrapper == 0;
 
           if (!v32)
           {
-            [v36 addObject:v30];
+            [array addObject:v30];
             if (MediaAnalysisLogLevel() >= 7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG))
             {
-              v33 = [v11 objectAtIndexedSubscript:v12];
+              v33 = [observationsCopy objectAtIndexedSubscript:v12];
               *buf = 138412546;
               v44 = v30;
               v45 = 2112;
@@ -2923,44 +2923,44 @@ LABEL_11:
     ++v12;
   }
 
-  return v36;
+  return array;
 }
 
-+ (id)facesFromFaceObservations:(id)a3 humanObservations:(id)a4 animalHeadObservations:(id)a5 animalBodyObservations:(id)a6 sourceWidth:(unint64_t)a7 sourceHeight:(unint64_t)a8 visionRequests:(id)a9 blurScorePerFace:(id)a10 exposureScorePerFace:(id)a11 tooSmallFaceObservations:(id)a12 processingVersion:(int)a13 animalResults:(id *)a14
++ (id)facesFromFaceObservations:(id)observations humanObservations:(id)humanObservations animalHeadObservations:(id)headObservations animalBodyObservations:(id)bodyObservations sourceWidth:(unint64_t)width sourceHeight:(unint64_t)height visionRequests:(id)requests blurScorePerFace:(id)self0 exposureScorePerFace:(id)self1 tooSmallFaceObservations:(id)self2 processingVersion:(int)self3 animalResults:(id *)self4
 {
   v70[4] = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v20 = a4;
-  v55 = a5;
-  v53 = a6;
-  v21 = a1;
-  v22 = a9;
-  v23 = a10;
+  observationsCopy = observations;
+  humanObservationsCopy = humanObservations;
+  headObservationsCopy = headObservations;
+  bodyObservationsCopy = bodyObservations;
+  selfCopy = self;
+  requestsCopy = requests;
+  faceCopy = face;
   v68[0] = 0;
   v68[1] = 0;
   v66[1] = 0;
   v67 = v68;
   v65 = v66;
   v66[0] = 0;
-  LODWORD(v40) = a13;
-  v50 = a11;
-  v51 = a12;
-  v49 = v23;
-  v54 = v19;
-  v41 = v20;
-  v47 = [v21 _peopleFacesTorsosFromFaceObservations:v19 humanObservations:v20 matchedFace:&v67 matchedTorso:&v65 sourceWidth:a7 sourceHeight:a8 visionRequests:v22 blurScorePerFace:v23 exposureScorePerFace:v50 tooSmallFaceObservations:v51 processingVersion:v40];
+  LODWORD(v40) = version;
+  perFaceCopy = perFace;
+  faceObservationsCopy = faceObservations;
+  v49 = faceCopy;
+  v54 = observationsCopy;
+  v41 = humanObservationsCopy;
+  v47 = [selfCopy _peopleFacesTorsosFromFaceObservations:observationsCopy humanObservations:humanObservationsCopy matchedFace:&v67 matchedTorso:&v65 sourceWidth:width sourceHeight:height visionRequests:requestsCopy blurScorePerFace:faceCopy exposureScorePerFace:perFaceCopy tooSmallFaceObservations:faceObservationsCopy processingVersion:v40];
   std::set<unsigned long>::set[abi:ne200100](v64, &v67);
-  LODWORD(v39) = a13;
-  v46 = [v21 _peopleFacesOnlyFromFaceObservations:v19 matchedFace:v64 sourceWidth:a7 sourceHeight:a8 visionRequests:v22 blurScorePerFace:v23 exposureScorePerFace:v50 tooSmallFaceObservations:v51 processingVersion:v39];
+  LODWORD(v39) = version;
+  v46 = [selfCopy _peopleFacesOnlyFromFaceObservations:observationsCopy matchedFace:v64 sourceWidth:width sourceHeight:height visionRequests:requestsCopy blurScorePerFace:faceCopy exposureScorePerFace:perFaceCopy tooSmallFaceObservations:faceObservationsCopy processingVersion:v39];
   std::__tree<unsigned long>::destroy(v64, v64[1]);
   std::set<unsigned long>::set[abi:ne200100](v63, &v65);
-  v45 = [v21 _peopleTorsosOnlyFromHumanObservations:v20 matchedTorso:v63 sourceWidth:a7 sourceHeight:a8 visionRequests:v22 processingVersion:a13];
+  v45 = [selfCopy _peopleTorsosOnlyFromHumanObservations:humanObservationsCopy matchedTorso:v63 sourceWidth:width sourceHeight:height visionRequests:requestsCopy processingVersion:version];
   std::__tree<unsigned long>::destroy(v63, v63[1]);
-  v42 = [v21 _filterAnimalObservations:v55 colocatingWithFaceObservations:v19 orHumanObservations:v20];
-  v48 = [v21 _filterAnimalObservations:v53 colocatingWithFaceObservations:v19 orHumanObservations:v20];
-  v24 = [MEMORY[0x1E695DF70] arrayWithArray:v55];
-  v25 = [MEMORY[0x1E695DF70] arrayWithArray:v53];
-  v52 = v22;
+  v42 = [selfCopy _filterAnimalObservations:headObservationsCopy colocatingWithFaceObservations:observationsCopy orHumanObservations:humanObservationsCopy];
+  v48 = [selfCopy _filterAnimalObservations:bodyObservationsCopy colocatingWithFaceObservations:observationsCopy orHumanObservations:humanObservationsCopy];
+  v24 = [MEMORY[0x1E695DF70] arrayWithArray:headObservationsCopy];
+  v25 = [MEMORY[0x1E695DF70] arrayWithArray:bodyObservationsCopy];
+  v52 = requestsCopy;
   [v24 removeObjectsAtIndexes:v42];
   [v25 removeObjectsAtIndexes:v48];
   v61 = 0;
@@ -2969,29 +2969,29 @@ LABEL_11:
   v60 = &v61;
   v58 = v59;
   v59[0] = 0;
-  LODWORD(v38) = a13;
-  v37 = v22;
-  v26 = v21;
-  v27 = [v21 _animalHeadsBodiesFromAnimalHeadObservations:v24 animalBodyObservations:v25 matchedHead:&v60 matchedBody:&v58 sourceWidth:a7 sourceHeight:a8 visionRequests:v37 processingVersion:v38];
+  LODWORD(v38) = version;
+  v37 = requestsCopy;
+  v26 = selfCopy;
+  v27 = [selfCopy _animalHeadsBodiesFromAnimalHeadObservations:v24 animalBodyObservations:v25 matchedHead:&v60 matchedBody:&v58 sourceWidth:width sourceHeight:height visionRequests:v37 processingVersion:v38];
   std::set<unsigned long>::set[abi:ne200100](v57, &v60);
-  v44 = [v26 _animalHeadsOnlyFromAnimalHeadObservations:v24 matchedHead:v57 sourceWidth:a7 sourceHeight:a8 visionRequests:v52 processingVersion:a13];
+  v44 = [v26 _animalHeadsOnlyFromAnimalHeadObservations:v24 matchedHead:v57 sourceWidth:width sourceHeight:height visionRequests:v52 processingVersion:version];
   std::__tree<unsigned long>::destroy(v57, v57[1]);
   std::set<unsigned long>::set[abi:ne200100](v56, &v58);
-  v28 = [v26 _animalBodiesOnlyFromAnimalBodyObservations:v25 matchedBody:v56 sourceWidth:a7 sourceHeight:a8 visionRequests:v52 processingVersion:a13];
+  v28 = [v26 _animalBodiesOnlyFromAnimalBodyObservations:v25 matchedBody:v56 sourceWidth:width sourceHeight:height visionRequests:v52 processingVersion:version];
   std::__tree<unsigned long>::destroy(v56, v56[1]);
-  v29 = [MEMORY[0x1E695DF70] array];
-  [v29 addObjectsFromArray:v47];
-  [v29 addObjectsFromArray:v46];
-  [v29 addObjectsFromArray:v45];
-  [v29 addObjectsFromArray:v27];
-  [v29 addObjectsFromArray:v44];
-  [v29 addObjectsFromArray:v28];
+  array = [MEMORY[0x1E695DF70] array];
+  [array addObjectsFromArray:v47];
+  [array addObjectsFromArray:v46];
+  [array addObjectsFromArray:v45];
+  [array addObjectsFromArray:v27];
+  [array addObjectsFromArray:v44];
+  [array addObjectsFromArray:v28];
   v69[0] = @"NumberOfPetsGenerated";
   v30 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v27, "count") + objc_msgSend(v28, "count")}];
   v70[0] = v30;
   v69[1] = @"NumberOfPetsGeneratedWithHeadOnly";
   v31 = MEMORY[0x1E696AD98];
-  v32 = [v55 count];
+  v32 = [headObservationsCopy count];
   v33 = [v31 numberWithUnsignedLong:v32 - v62];
   v70[1] = v33;
   v69[2] = @"NumberOfPetsGeneratedWithBodyOnly";
@@ -3000,7 +3000,7 @@ LABEL_11:
   v69[3] = @"NumberOfPetsGeneratedWithHeadAndBody";
   v35 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v27, "count")}];
   v70[3] = v35;
-  *a14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v70 forKeys:v69 count:4];
+  *results = [MEMORY[0x1E695DF20] dictionaryWithObjects:v70 forKeys:v69 count:4];
 
   std::__tree<unsigned long>::destroy(&v58, v59[0]);
   std::__tree<unsigned long>::destroy(&v60, v61);
@@ -3008,27 +3008,27 @@ LABEL_11:
   std::__tree<unsigned long>::destroy(&v65, v66[0]);
   std::__tree<unsigned long>::destroy(&v67, v68[0]);
 
-  return v29;
+  return array;
 }
 
-+ (id)faceFromPHFace:(id)a3 copyOption:(int64_t)a4
++ (id)faceFromPHFace:(id)face copyOption:(int64_t)option
 {
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  faceCopy = face;
+  v7 = faceCopy;
+  if (!faceCopy)
   {
     v9 = 0;
     goto LABEL_12;
   }
 
-  v8 = [v6 localIdentifier];
-  v9 = [a1 faceWithLocalIdentifier:v8];
+  localIdentifier = [faceCopy localIdentifier];
+  v9 = [self faceWithLocalIdentifier:localIdentifier];
 
-  switch(a4)
+  switch(option)
   {
     case 0:
-      v19 = [v7 personLocalIdentifier];
-      [v9 setPersonLocalIdentifier:v19];
+      personLocalIdentifier = [v7 personLocalIdentifier];
+      [v9 setPersonLocalIdentifier:personLocalIdentifier];
 
       [v9 setDetectionType:{objc_msgSend(v7, "detectionType")}];
       [v9 setSourceWidth:{objc_msgSend(v7, "sourceWidth")}];
@@ -3061,8 +3061,8 @@ LABEL_11:
       [v9 setHidden:{objc_msgSend(v7, "isHidden")}];
       [v9 setIsInTrash:{objc_msgSend(v7, "isInTrash")}];
       [v9 setManual:{objc_msgSend(v7, "manual")}];
-      v20 = [v7 adjustmentVersion];
-      [v9 setAdjustmentVersion:v20];
+      adjustmentVersion = [v7 adjustmentVersion];
+      [v9 setAdjustmentVersion:adjustmentVersion];
 
       [v9 setNameSource:{objc_msgSend(v7, "nameSource")}];
       [v9 setTrainingType:{objc_msgSend(v7, "trainingType")}];
@@ -3100,8 +3100,8 @@ LABEL_11:
       [v9 setHidden:{objc_msgSend(v7, "isHidden")}];
       [v9 setIsInTrash:{objc_msgSend(v7, "isInTrash")}];
       [v9 setManual:{objc_msgSend(v7, "manual")}];
-      v10 = [v7 adjustmentVersion];
-      [v9 setAdjustmentVersion:v10];
+      adjustmentVersion2 = [v7 adjustmentVersion];
+      [v9 setAdjustmentVersion:adjustmentVersion2];
 
       break;
     case 2:
@@ -3112,40 +3112,40 @@ LABEL_11:
 
   [v9 setNameSource:{objc_msgSend(v7, "nameSource")}];
   [v9 setTrainingType:{objc_msgSend(v7, "trainingType")}];
-  v11 = [v7 personLocalIdentifier];
-  [v9 setPersonLocalIdentifier:v11];
+  personLocalIdentifier2 = [v7 personLocalIdentifier];
+  [v9 setPersonLocalIdentifier:personLocalIdentifier2];
 
   [v9 setVuObservationID:{objc_msgSend(v7, "vuObservationID")}];
   [v9 setQualityMeasure:{objc_msgSend(v7, "qualityMeasure")}];
-  v12 = [v7 faceClusteringProperties];
-  v13 = [v12 faceprint];
-  if (v13)
+  faceClusteringProperties = [v7 faceClusteringProperties];
+  faceprint = [faceClusteringProperties faceprint];
+  if (faceprint)
   {
     v14 = [v9 detectionType] != 1;
-    v15 = [v13 faceprintVersion];
-    v16 = [v13 faceprintData];
-    v17 = [VCPVNImageprintWrapper wrapperWithImageprintType:v14 version:v15 andData:v16];
+    faceprintVersion = [faceprint faceprintVersion];
+    faceprintData = [faceprint faceprintData];
+    v17 = [VCPVNImageprintWrapper wrapperWithImageprintType:v14 version:faceprintVersion andData:faceprintData];
     [v9 setImageprintWrapper:v17];
   }
 
-  v18 = [v12 groupingIdentifier];
-  [v9 setGroupingIdentifier:v18];
+  groupingIdentifier = [faceClusteringProperties groupingIdentifier];
+  [v9 setGroupingIdentifier:groupingIdentifier];
 
 LABEL_12:
 
   return v9;
 }
 
-+ (id)facesFromPHFetchResult:(id)a3 copyOption:(int64_t)a4
++ (id)facesFromPHFetchResult:(id)result copyOption:(int64_t)option
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] array];
+  resultCopy = result;
+  array = [MEMORY[0x1E695DF70] array];
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = v5;
+  v7 = resultCopy;
   v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
@@ -3159,10 +3159,10 @@ LABEL_12:
           objc_enumerationMutation(v7);
         }
 
-        v11 = [objc_opt_class() faceFromPHFace:*(*(&v13 + 1) + 8 * i) copyOption:{a4, v13}];
+        v11 = [objc_opt_class() faceFromPHFace:*(*(&v13 + 1) + 8 * i) copyOption:{option, v13}];
         if (v11)
         {
-          [v6 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -3172,86 +3172,86 @@ LABEL_12:
     while (v8);
   }
 
-  return v6;
+  return array;
 }
 
-- (void)replaceCoordinatesAndFeaturesFromDetectedFace:(id)a3
+- (void)replaceCoordinatesAndFeaturesFromDetectedFace:(id)face
 {
-  v26 = a3;
-  self->_sourceWidth = [v26 sourceWidth];
-  self->_sourceHeight = [v26 sourceHeight];
-  self->_detectionType = [v26 detectionType];
-  [v26 centerX];
+  faceCopy = face;
+  self->_sourceWidth = [faceCopy sourceWidth];
+  self->_sourceHeight = [faceCopy sourceHeight];
+  self->_detectionType = [faceCopy detectionType];
+  [faceCopy centerX];
   self->_centerX = v4;
-  [v26 centerY];
+  [faceCopy centerY];
   self->_centerY = v5;
-  [v26 size];
+  [faceCopy size];
   self->_size = v6;
-  [v26 bodyWidth];
+  [faceCopy bodyWidth];
   self->_bodyWidth = v7;
-  [v26 bodyHeight];
+  [faceCopy bodyHeight];
   self->_bodyHeight = v8;
-  [v26 bodyCenterX];
+  [faceCopy bodyCenterX];
   self->_bodyCenterX = v9;
-  [v26 bodyCenterY];
+  [faceCopy bodyCenterY];
   self->_bodyCenterY = v10;
-  self->_hasSmile = [v26 hasSmile];
-  [v26 blurScore];
+  self->_hasSmile = [faceCopy hasSmile];
+  [faceCopy blurScore];
   self->_blurScore = v11;
-  [v26 exposureScore];
+  [faceCopy exposureScore];
   self->_exposureScore = v12;
-  self->_isLeftEyeClosed = [v26 isLeftEyeClosed];
-  self->_isRightEyeClosed = [v26 isRightEyeClosed];
-  [v26 poseYaw];
+  self->_isLeftEyeClosed = [faceCopy isLeftEyeClosed];
+  self->_isRightEyeClosed = [faceCopy isRightEyeClosed];
+  [faceCopy poseYaw];
   self->_poseYaw = v13;
-  self->_algorithmVersion = [v26 algorithmVersion];
-  self->_qualityMeasure = [v26 qualityMeasure];
-  self->_isTooSmall = [v26 isTooSmall];
-  v14 = [v26 groupingIdentifier];
+  self->_algorithmVersion = [faceCopy algorithmVersion];
+  self->_qualityMeasure = [faceCopy qualityMeasure];
+  self->_isTooSmall = [faceCopy isTooSmall];
+  groupingIdentifier = [faceCopy groupingIdentifier];
   groupingIdentifier = self->_groupingIdentifier;
-  self->_groupingIdentifier = v14;
+  self->_groupingIdentifier = groupingIdentifier;
 
-  self->_ageType = [v26 ageType];
-  self->_sexType = [v26 sexType];
-  self->_eyesState = [v26 eyesState];
-  self->_smileType = [v26 smileType];
-  self->_facialHairType = [v26 facialHairType];
-  self->_hairColorType = [v26 hairColorType];
-  self->_glassesType = [v26 glassesType];
-  self->_expressionType = [v26 expressionType];
-  self->_headgearType = [v26 headgearType];
-  self->_hairType = [v26 hairType];
-  self->_poseType = [v26 poseType];
-  self->_skintoneType = [v26 skintoneType];
-  self->_ethnicityType = [v26 ethnicityType];
-  self->_hasFaceMask = [v26 hasFaceMask];
-  self->_gazeType = [v26 gazeType];
-  [v26 gazeCenterX];
+  self->_ageType = [faceCopy ageType];
+  self->_sexType = [faceCopy sexType];
+  self->_eyesState = [faceCopy eyesState];
+  self->_smileType = [faceCopy smileType];
+  self->_facialHairType = [faceCopy facialHairType];
+  self->_hairColorType = [faceCopy hairColorType];
+  self->_glassesType = [faceCopy glassesType];
+  self->_expressionType = [faceCopy expressionType];
+  self->_headgearType = [faceCopy headgearType];
+  self->_hairType = [faceCopy hairType];
+  self->_poseType = [faceCopy poseType];
+  self->_skintoneType = [faceCopy skintoneType];
+  self->_ethnicityType = [faceCopy ethnicityType];
+  self->_hasFaceMask = [faceCopy hasFaceMask];
+  self->_gazeType = [faceCopy gazeType];
+  [faceCopy gazeCenterX];
   self->_gazeCenterX = v16;
-  [v26 gazeCenterY];
+  [faceCopy gazeCenterY];
   self->_gazeCenterY = v17;
-  [v26 gazeRect];
+  [faceCopy gazeRect];
   self->_gazeRect.origin.x = v18;
   self->_gazeRect.origin.y = v19;
   self->_gazeRect.size.width = v20;
   self->_gazeRect.size.height = v21;
-  [v26 gazeAngle];
+  [faceCopy gazeAngle];
   self->_gazeAngle = v22;
-  [v26 gazeConfidence];
+  [faceCopy gazeConfidence];
   self->_gazeConfidence = v23;
-  [v26 roll];
+  [faceCopy roll];
   self->_roll = v24;
-  [v26 quality];
+  [faceCopy quality];
   self->_quality = v25;
 }
 
-- (BOOL)setCenterAndSizeFromNormalizedFaceRect:(CGRect)a3
+- (BOOL)setCenterAndSizeFromNormalizedFaceRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  self->_centerX = CGRectGetMidX(a3);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  self->_centerX = CGRectGetMidX(rect);
   v13.origin.x = x;
   v13.origin.y = y;
   v13.size.width = width;
@@ -3388,7 +3388,7 @@ LABEL_12:
 - (id)gist
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(VCPPhotosFace *)self localIdentifier];
+  localIdentifier = [(VCPPhotosFace *)self localIdentifier];
   if ([(VCPPhotosFace *)self manual])
   {
     v5 = @"-manual";
@@ -3399,7 +3399,7 @@ LABEL_12:
     v5 = &stru_1F496CB30;
   }
 
-  v6 = [(VCPPhotosFace *)self personLocalIdentifier];
+  personLocalIdentifier = [(VCPPhotosFace *)self personLocalIdentifier];
   if ([(VCPPhotosFace *)self detectionType]== 1)
   {
     v7 = @"Human";
@@ -3410,8 +3410,8 @@ LABEL_12:
     v7 = @"Animal";
   }
 
-  v8 = [(VCPPhotosFace *)self imageprintWrapper];
-  v9 = [v8 version];
+  imageprintWrapper = [(VCPPhotosFace *)self imageprintWrapper];
+  version = [imageprintWrapper version];
   [(VCPPhotosFace *)self centerX];
   v11 = v10;
   [(VCPPhotosFace *)self centerY];
@@ -3427,20 +3427,20 @@ LABEL_12:
   [(VCPPhotosFace *)self bodyHeight];
   v23 = v22;
   [(VCPPhotosFace *)self quality];
-  v25 = [v3 stringWithFormat:@"%@%@ (%@) %@ v%d (%.2f, %.2f, %.2f) (%.2f, %.2f, %.2f, %.2f) quality: %.2f source dimension: %ld*%ld", v4, v5, v6, v7, v9, v11, v13, v15, v17, v19, v21, v23, v24, -[VCPPhotosFace sourceWidth](self, "sourceWidth"), -[VCPPhotosFace sourceHeight](self, "sourceHeight")];
+  v25 = [v3 stringWithFormat:@"%@%@ (%@) %@ v%d (%.2f, %.2f, %.2f) (%.2f, %.2f, %.2f, %.2f) quality: %.2f source dimension: %ld*%ld", localIdentifier, v5, personLocalIdentifier, v7, version, v11, v13, v15, v17, v19, v21, v23, v24, -[VCPPhotosFace sourceWidth](self, "sourceWidth"), -[VCPPhotosFace sourceHeight](self, "sourceHeight")];
 
   return v25;
 }
 
-+ (double)_calculateOverlappingBetweenFaceObservation:(id)a3 andBodyObservation:(id)a4
++ (double)_calculateOverlappingBetweenFaceObservation:(id)observation andBodyObservation:(id)bodyObservation
 {
-  v5 = a4;
-  [a3 boundingBox];
+  bodyObservationCopy = bodyObservation;
+  [observation boundingBox];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  [v5 boundingBox];
+  [bodyObservationCopy boundingBox];
   v22.origin.x = v14;
   v22.origin.y = v15;
   v22.size.width = v16;
@@ -3455,15 +3455,15 @@ LABEL_12:
   return v18;
 }
 
-+ (double)_calculateIoUBetweenObservation:(id)a3 andObservation:(id)a4
++ (double)_calculateIoUBetweenObservation:(id)observation andObservation:(id)andObservation
 {
-  v5 = a4;
-  [a3 boundingBox];
+  andObservationCopy = andObservation;
+  [observation boundingBox];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  [v5 boundingBox];
+  [andObservationCopy boundingBox];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -3493,17 +3493,17 @@ LABEL_12:
   return v22;
 }
 
-+ (BOOL)_isColocatingAnimalObservation:(id)a3 withFaceObservations:(id)a4 orTorsoObservations:(id)a5
++ (BOOL)_isColocatingAnimalObservation:(id)observation withFaceObservations:(id)observations orTorsoObservations:(id)torsoObservations
 {
   v43 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  observationCopy = observation;
+  observationsCopy = observations;
+  torsoObservationsCopy = torsoObservations;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v11 = v9;
+  v11 = observationsCopy;
   v12 = [v11 countByEnumeratingWithState:&v31 objects:v42 count:16];
   if (v12)
   {
@@ -3518,7 +3518,7 @@ LABEL_12:
         }
 
         v15 = *(*(&v31 + 1) + 8 * i);
-        [a1 _calculateIoUBetweenObservation:v8 andObservation:v15];
+        [self _calculateIoUBetweenObservation:observationCopy andObservation:v15];
         v17 = v16;
         if (v16 > 0.699999988)
         {
@@ -3527,7 +3527,7 @@ LABEL_12:
             *buf = 134218498;
             v37 = v17;
             v38 = 2112;
-            v39 = v8;
+            v39 = observationCopy;
             v40 = 2112;
             v41 = v15;
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[PhotosFace] IoU %f %@ %@", buf, 0x20u);
@@ -3553,7 +3553,7 @@ LABEL_12:
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v18 = v10;
+  v18 = torsoObservationsCopy;
   v19 = [v18 countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v19)
   {
@@ -3568,7 +3568,7 @@ LABEL_12:
         }
 
         v22 = *(*(&v27 + 1) + 8 * j);
-        [a1 _calculateIoUBetweenObservation:v8 andObservation:{v22, v27}];
+        [self _calculateIoUBetweenObservation:observationCopy andObservation:{v22, v27}];
         v24 = v23;
         if (v23 > 0.699999988)
         {
@@ -3577,7 +3577,7 @@ LABEL_12:
             *buf = 134218498;
             v37 = v24;
             v38 = 2112;
-            v39 = v8;
+            v39 = observationCopy;
             v40 = 2112;
             v41 = v22;
             _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_DEBUG, "[PhotosFace] IoU %f %@ %@", buf, 0x20u);
@@ -3604,7 +3604,7 @@ LABEL_26:
   return v25;
 }
 
-- (int64_t)qualityMeasureWithCountOfFacesOnAsset:(unint64_t)a3
+- (int64_t)qualityMeasureWithCountOfFacesOnAsset:(unint64_t)asset
 {
   sourceWidth = self->_sourceWidth;
   if (sourceWidth <= self->_sourceHeight)
@@ -3632,7 +3632,7 @@ LABEL_26:
     }
   }
 
-  if (a3)
+  if (asset)
   {
     size = self->_size;
     v7 = size > 0.5 || size < 0.1;
@@ -3650,13 +3650,13 @@ LABEL_26:
 
     v10 = (1.0 - self->_blurScore) * 5.0;
     v11 = v4 * (v9 * (v5 * (v8 * v10)));
-    v12 = 3;
-    if (a3 < 3)
+    assetCopy = 3;
+    if (asset < 3)
     {
-      v12 = a3;
+      assetCopy = asset;
     }
 
-    v13 = (PFFaceCountPenalties[v12 - 1] * v11) * 100.0;
+    v13 = (PFFaceCountPenalties[assetCopy - 1] * v11) * 100.0;
   }
 
   else
@@ -3685,7 +3685,7 @@ LABEL_26:
   return result;
 }
 
-+ (uint64_t)facesFromFaceObservations:(uint64_t)a3 humanObservations:(char)a4 animalObservations:sourceWidth:sourceHeight:visionRequests:blurScorePerFace:exposureScorePerFace:tooSmallFaceObservations:processingVersion:
++ (uint64_t)facesFromFaceObservations:(uint64_t)observations humanObservations:(char)humanObservations animalObservations:sourceWidth:sourceHeight:visionRequests:blurScorePerFace:exposureScorePerFace:tooSmallFaceObservations:processingVersion:
 {
   v7 = result;
   while (2)
@@ -3861,7 +3861,7 @@ LABEL_26:
           {
             v134 = v9 + 24;
             v136 = v9 == a2 || v134 == a2;
-            if (a4)
+            if (humanObservations)
             {
               if (!v136)
               {
@@ -3952,7 +3952,7 @@ LABEL_138:
             return result;
           }
 
-          if (!a3)
+          if (!observations)
           {
             if (v9 != a2)
             {
@@ -4447,9 +4447,9 @@ LABEL_37:
             }
           }
 
-          --a3;
+          --observations;
           v86 = *v9;
-          if ((a4 & 1) != 0 || *(v9 - 24) > v86)
+          if ((humanObservations & 1) != 0 || *(v9 - 24) > v86)
           {
             break;
           }
@@ -4538,7 +4538,7 @@ LABEL_37:
             *(v7 + 16) = *(v9 - 8);
           }
 
-          a4 = 0;
+          humanObservations = 0;
           *(v9 - 24) = v86;
           *(v9 - 16) = v105;
         }
@@ -4638,8 +4638,8 @@ LABEL_37:
         }
 
 LABEL_87:
-        result = std::__introsort<std::_ClassicAlgPolicy,+[VCPPhotosFace facesFromFaceObservations:humanObservations:animalObservations:sourceWidth:sourceHeight:visionRequests:blurScorePerFace:exposureScorePerFace:tooSmallFaceObservations:processingVersion:]::$_0 &,std::tuple<float,unsigned long,unsigned long> *,false>(v7, v9 - 24, a3, a4 & 1);
-        a4 = 0;
+        result = std::__introsort<std::_ClassicAlgPolicy,+[VCPPhotosFace facesFromFaceObservations:humanObservations:animalObservations:sourceWidth:sourceHeight:visionRequests:blurScorePerFace:exposureScorePerFace:tooSmallFaceObservations:processingVersion:]::$_0 &,std::tuple<float,unsigned long,unsigned long> *,false>(v7, v9 - 24, observations, humanObservations & 1);
+        humanObservations = 0;
       }
 
       v100 = std::__insertion_sort_incomplete[abi:ne200100]<std::_ClassicAlgPolicy,+[VCPPhotosFace facesFromFaceObservations:humanObservations:animalObservations:sourceWidth:sourceHeight:visionRequests:blurScorePerFace:exposureScorePerFace:tooSmallFaceObservations:processingVersion:]::$_0 &,std::tuple<float,unsigned long,unsigned long> *>(v7, v9 - 24);

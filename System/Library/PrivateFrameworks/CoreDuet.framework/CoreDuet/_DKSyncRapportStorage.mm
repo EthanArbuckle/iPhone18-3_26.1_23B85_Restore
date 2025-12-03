@@ -1,6 +1,6 @@
 @interface _DKSyncRapportStorage
 - (_DKSyncRapportStorage)init;
-- (void)registerRequestIDsWithClient:(id)a3;
+- (void)registerRequestIDsWithClient:(id)client;
 - (void)start;
 @end
 
@@ -21,9 +21,9 @@
   return v2;
 }
 
-- (void)registerRequestIDsWithClient:(id)a3
+- (void)registerRequestIDsWithClient:(id)client
 {
-  v3 = a3;
+  clientCopy = client;
   v4 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D930] reason:@"Should not be called" userInfo:0];
   objc_exception_throw(v4);
 }

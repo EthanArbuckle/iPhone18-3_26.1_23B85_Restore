@@ -1,23 +1,23 @@
 @interface REHTTPRequest
 - (NSData)bodyData;
-- (REHTTPRequest)initWithConnect:(id)a3 request:(_CFHTTPServerRequest *)a4;
-- (id)responseWithStatusCode:(int64_t)a3;
+- (REHTTPRequest)initWithConnect:(id)connect request:(_CFHTTPServerRequest *)request;
+- (id)responseWithStatusCode:(int64_t)code;
 - (void)dealloc;
 @end
 
 @implementation REHTTPRequest
 
-- (REHTTPRequest)initWithConnect:(id)a3 request:(_CFHTTPServerRequest *)a4
+- (REHTTPRequest)initWithConnect:(id)connect request:(_CFHTTPServerRequest *)request
 {
-  v7 = a3;
+  connectCopy = connect;
   v28.receiver = self;
   v28.super_class = REHTTPRequest;
   v8 = [(REHTTPRequest *)&v28 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_connection, a3);
-    v9->_request = CFRetain(a4);
+    objc_storeStrong(&v8->_connection, connect);
+    v9->_request = CFRetain(request);
     v10 = *MEMORY[0x277CBAC40];
     v11 = _CFHTTPServerRequestCopyProperty();
     url = v9->_url;
@@ -50,9 +50,9 @@
     stream = v9->_stream;
     v9->_stream = v23;
 
-    v25 = [MEMORY[0x277CBEB28] data];
+    data = [MEMORY[0x277CBEB28] data];
     bodyData = v9->_bodyData;
-    v9->_bodyData = v25;
+    v9->_bodyData = data;
   }
 
   return v9;
@@ -72,9 +72,9 @@
   [(REHTTPRequest *)&v4 dealloc];
 }
 
-- (id)responseWithStatusCode:(int64_t)a3
+- (id)responseWithStatusCode:(int64_t)code
 {
-  v3 = [[REHTTPResponse alloc] initWithRequest:self statusCode:a3];
+  v3 = [[REHTTPResponse alloc] initWithRequest:self statusCode:code];
 
   return v3;
 }

@@ -1,26 +1,26 @@
 @interface WCRBlockPage
-+ (id)_allowedWebSitesHTML:(id)a3;
-+ (id)_css:(id)a3;
-+ (id)_fileContentWithName:(id)a3 inLanguage:(id)a4 extension:(id)a5;
-+ (id)_javascript:(id)a3;
-+ (id)_xssSafeStringFromString:(id)a3;
-+ (id)blockPageForUser:(id)a3 inLanguage:(id)a4 withUserVisibleURLString:(id)a5 withFormPostToURLString:(id)a6 withFormRestrictedPageURLString:(id)a7 withFormRestrictedPageTitle:(id)a8 withAllowedWebsites:(id)a9 isAllowedWebsitesOnlyBlock:(BOOL)a10 isNetworkAccount:(BOOL)a11 allowsOverrides:(BOOL)a12;
-+ (id)createBlockPageFromTemplate:(id)a3 inLanguage:(id)a4 withUserVisibleURLString:(id)a5 isAllowedWebsitesOnlyBlock:(BOOL)a6 withAllowedWebsites:(id)a7 withFormPostToURLString:(id)a8 withFormRestrictedPageURLString:(id)a9 withFormRestrictedPageTitle:(id)a10;
++ (id)_allowedWebSitesHTML:(id)l;
++ (id)_css:(id)_css;
++ (id)_fileContentWithName:(id)name inLanguage:(id)language extension:(id)extension;
++ (id)_javascript:(id)_javascript;
++ (id)_xssSafeStringFromString:(id)string;
++ (id)blockPageForUser:(id)user inLanguage:(id)language withUserVisibleURLString:(id)string withFormPostToURLString:(id)lString withFormRestrictedPageURLString:(id)rLString withFormRestrictedPageTitle:(id)title withAllowedWebsites:(id)websites isAllowedWebsitesOnlyBlock:(BOOL)self0 isNetworkAccount:(BOOL)self1 allowsOverrides:(BOOL)self2;
++ (id)createBlockPageFromTemplate:(id)template inLanguage:(id)language withUserVisibleURLString:(id)string isAllowedWebsitesOnlyBlock:(BOOL)block withAllowedWebsites:(id)websites withFormPostToURLString:(id)lString withFormRestrictedPageURLString:(id)rLString withFormRestrictedPageTitle:(id)self0;
 @end
 
 @implementation WCRBlockPage
 
-+ (id)blockPageForUser:(id)a3 inLanguage:(id)a4 withUserVisibleURLString:(id)a5 withFormPostToURLString:(id)a6 withFormRestrictedPageURLString:(id)a7 withFormRestrictedPageTitle:(id)a8 withAllowedWebsites:(id)a9 isAllowedWebsitesOnlyBlock:(BOOL)a10 isNetworkAccount:(BOOL)a11 allowsOverrides:(BOOL)a12
++ (id)blockPageForUser:(id)user inLanguage:(id)language withUserVisibleURLString:(id)string withFormPostToURLString:(id)lString withFormRestrictedPageURLString:(id)rLString withFormRestrictedPageTitle:(id)title withAllowedWebsites:(id)websites isAllowedWebsitesOnlyBlock:(BOOL)self0 isNetworkAccount:(BOOL)self1 allowsOverrides:(BOOL)self2
 {
-  v16 = a4;
-  v34 = a5;
-  v33 = a6;
-  v36 = a7;
-  v35 = a8;
-  v17 = a9;
-  if (v16)
+  languageCopy = language;
+  stringCopy = string;
+  lStringCopy = lString;
+  rLStringCopy = rLString;
+  titleCopy = title;
+  websitesCopy = websites;
+  if (languageCopy)
   {
-    v18 = v16;
+    v18 = languageCopy;
   }
 
   else
@@ -30,13 +30,13 @@
 
   v19 = [MEMORY[0x277CCAB68] stringWithString:@"blockpage-macOS"];
   v20 = v19;
-  if (a11)
+  if (account)
   {
     [v19 appendString:@"-net"];
-    if (!a10)
+    if (!block)
     {
 LABEL_6:
-      if (a12)
+      if (overrides)
       {
         goto LABEL_8;
       }
@@ -45,13 +45,13 @@ LABEL_6:
     }
   }
 
-  else if (!a10)
+  else if (!block)
   {
     goto LABEL_6;
   }
 
   [v20 appendString:@"-wl"];
-  if (!a12)
+  if (!overrides)
   {
 LABEL_7:
     v21 = [MEMORY[0x277CCAB68] stringWithString:@"blockpage-macOS-nooverride"];
@@ -71,9 +71,9 @@ LABEL_8:
     v26 = v37;
     if (v25)
     {
-      v28 = v33;
-      v27 = v34;
-      v29 = [objc_opt_class() createBlockPageFromTemplate:v25 inLanguage:v18 withUserVisibleURLString:v34 isAllowedWebsitesOnlyBlock:a10 withAllowedWebsites:v17 withFormPostToURLString:v33 withFormRestrictedPageURLString:v36 withFormRestrictedPageTitle:v35];
+      v28 = lStringCopy;
+      v27 = stringCopy;
+      v29 = [objc_opt_class() createBlockPageFromTemplate:v25 inLanguage:v18 withUserVisibleURLString:stringCopy isAllowedWebsitesOnlyBlock:block withAllowedWebsites:websitesCopy withFormPostToURLString:lStringCopy withFormRestrictedPageURLString:rLStringCopy withFormRestrictedPageTitle:titleCopy];
     }
 
     else
@@ -82,8 +82,8 @@ LABEL_8:
       [WCRLogging log:v31 withType:1];
 
       v29 = 0;
-      v28 = v33;
-      v27 = v34;
+      v28 = lStringCopy;
+      v27 = stringCopy;
     }
   }
 
@@ -93,21 +93,21 @@ LABEL_8:
     [WCRLogging log:v30 withType:1];
 
     v29 = 0;
-    v28 = v33;
-    v27 = v34;
+    v28 = lStringCopy;
+    v27 = stringCopy;
   }
 
   return v29;
 }
 
-+ (id)_fileContentWithName:(id)a3 inLanguage:(id)a4 extension:(id)a5
++ (id)_fileContentWithName:(id)name inLanguage:(id)language extension:(id)extension
 {
-  v7 = a3;
+  nameCopy = name;
   v8 = MEMORY[0x277CCA8D8];
-  v9 = a5;
-  v10 = a4;
+  extensionCopy = extension;
+  languageCopy = language;
   v11 = [v8 bundleForClass:objc_opt_class()];
-  v12 = [v11 URLForResource:v7 withExtension:v9 subdirectory:0 localization:v10];
+  v12 = [v11 URLForResource:nameCopy withExtension:extensionCopy subdirectory:0 localization:languageCopy];
 
   if (v12)
   {
@@ -116,15 +116,15 @@ LABEL_8:
     v14 = v18;
     if (!v13)
     {
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"error loading file with name %@. Error: %@", v7, v14];
+      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"error loading file with name %@. Error: %@", nameCopy, v14];
       [WCRLogging log:v15 withType:1];
     }
   }
 
   else
   {
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error finding file with name %@", v7];
-    [WCRLogging log:v16 withType:1];
+    nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Error finding file with name %@", nameCopy];
+    [WCRLogging log:nameCopy withType:1];
 
     v13 = 0;
   }
@@ -132,26 +132,26 @@ LABEL_8:
   return v13;
 }
 
-+ (id)_css:(id)a3
++ (id)_css:(id)_css
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _fileContentWithName:@"blockpage_style-macOS" inLanguage:v3 extension:@"css"];
+  _cssCopy = _css;
+  v4 = [objc_opt_class() _fileContentWithName:@"blockpage_style-macOS" inLanguage:_cssCopy extension:@"css"];
 
   return v4;
 }
 
-+ (id)_javascript:(id)a3
++ (id)_javascript:(id)_javascript
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _fileContentWithName:@"blockpage_script" inLanguage:v3 extension:@"js"];
+  _javascriptCopy = _javascript;
+  v4 = [objc_opt_class() _fileContentWithName:@"blockpage_script" inLanguage:_javascriptCopy extension:@"js"];
 
   return v4;
 }
 
-+ (id)_xssSafeStringFromString:(id)a3
++ (id)_xssSafeStringFromString:(id)string
 {
-  v3 = a3;
-  v4 = [v3 stringByReplacingOccurrencesOfString:@"&" withString:@"&amp" options:2 range:{0, objc_msgSend(v3, "length")}];;
+  stringCopy = string;
+  v4 = [stringCopy stringByReplacingOccurrencesOfString:@"&" withString:@"&amp" options:2 range:{0, objc_msgSend(stringCopy, "length")}];;
 
   v5 = [v4 stringByReplacingOccurrencesOfString:@"<" withString:@"&lt" options:2 range:{0, objc_msgSend(v4, "length")}];;
 
@@ -164,16 +164,16 @@ LABEL_8:
   return v8;
 }
 
-+ (id)_allowedWebSitesHTML:(id)a3
++ (id)_allowedWebSitesHTML:(id)l
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAB68] string];
+  lCopy = l;
+  string = [MEMORY[0x277CCAB68] string];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v3;
+  obj = lCopy;
   v5 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v5)
   {
@@ -228,7 +228,7 @@ LABEL_11:
           v13 = v17;
         }
 
-        [v4 appendFormat:@"<a href=%@>%@</a><br>", v10, v13];
+        [string appendFormat:@"<a href=%@>%@</a><br>", v10, v13];
       }
 
       v6 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -239,20 +239,20 @@ LABEL_11:
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return string;
 }
 
-+ (id)createBlockPageFromTemplate:(id)a3 inLanguage:(id)a4 withUserVisibleURLString:(id)a5 isAllowedWebsitesOnlyBlock:(BOOL)a6 withAllowedWebsites:(id)a7 withFormPostToURLString:(id)a8 withFormRestrictedPageURLString:(id)a9 withFormRestrictedPageTitle:(id)a10
++ (id)createBlockPageFromTemplate:(id)template inLanguage:(id)language withUserVisibleURLString:(id)string isAllowedWebsitesOnlyBlock:(BOOL)block withAllowedWebsites:(id)websites withFormPostToURLString:(id)lString withFormRestrictedPageURLString:(id)rLString withFormRestrictedPageTitle:(id)self0
 {
-  v12 = a6;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  if (!v16)
+  blockCopy = block;
+  templateCopy = template;
+  languageCopy = language;
+  stringCopy = string;
+  websitesCopy = websites;
+  lStringCopy = lString;
+  rLStringCopy = rLString;
+  titleCopy = title;
+  if (!templateCopy)
   {
     v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"block page is nil"];
     [WCRLogging log:v35 withType:1];
@@ -260,12 +260,12 @@ LABEL_11:
     goto LABEL_22;
   }
 
-  v40 = v12;
-  v41 = v19;
-  v23 = v16;
-  if (v18)
+  v40 = blockCopy;
+  v41 = websitesCopy;
+  v23 = templateCopy;
+  if (stringCopy)
     v24 = {;
-    v25 = [a1 _xssSafeStringFromString:v24];
+    v25 = [self _xssSafeStringFromString:v24];
 
     if (v25)
     {
@@ -280,7 +280,7 @@ LABEL_11:
     v27 = [v23 stringByReplacingOccurrencesOfString:@"USER_VISIBLE_RESTRICTED_URL_NO_LOC" withString:v26];
 
     v23 = v27;
-    if (!v20)
+    if (!lStringCopy)
     {
       goto LABEL_8;
     }
@@ -288,20 +288,20 @@ LABEL_11:
 
   else
   {
-    v18 = 0;
-    if (!v20)
+    stringCopy = 0;
+    if (!lStringCopy)
     {
       goto LABEL_8;
     }
   }
 
-  v28 = [v23 stringByReplacingOccurrencesOfString:@"SEND_FORM_TO_URL_NO_LOC" withString:v20];
+  v28 = [v23 stringByReplacingOccurrencesOfString:@"SEND_FORM_TO_URL_NO_LOC" withString:lStringCopy];
 
   v23 = v28;
 LABEL_8:
-  if (v21)
+  if (rLStringCopy)
   {
-    v29 = v21;
+    v29 = rLStringCopy;
   }
 
   else
@@ -311,9 +311,9 @@ LABEL_8:
 
   v30 = [v23 stringByReplacingOccurrencesOfString:@"PAGE_TO_OVERRIDE_URL_NO_LOC" withString:v29];
 
-  if (v22)
+  if (titleCopy)
   {
-    v31 = v22;
+    v31 = titleCopy;
   }
 
   else
@@ -331,8 +331,8 @@ LABEL_8:
     v32 = v34;
   }
 
-  v35 = [objc_opt_class() _javascript:v17];
-  v36 = [objc_opt_class() _css:v17];
+  v35 = [objc_opt_class() _javascript:languageCopy];
+  v36 = [objc_opt_class() _css:languageCopy];
   if (v35)
   {
     v37 = [v32 stringByReplacingOccurrencesOfString:@"INCLUDE_JAVASCRIPT_FILE_NO_LOC" withString:v35];
@@ -347,7 +347,7 @@ LABEL_8:
     v32 = v38;
   }
 
-  v19 = v41;
+  websitesCopy = v41;
 
 LABEL_22:
 

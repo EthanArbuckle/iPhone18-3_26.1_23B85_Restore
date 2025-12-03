@@ -1,54 +1,54 @@
 @interface TSCHCustomDataFormatter
-+ (id)dataFormatterWithCustomFormat:(id)a3 customFormatListKey:(id)a4 formatType:(unsigned int)a5;
-- (BOOL)isCompatibleWithDataFormatter:(id)a3;
-- (TSCHCustomDataFormatter)initWithCustomFormat:(id)a3 customFormatListKey:(id)a4 formatType:(unsigned int)a5;
-- (id)chartFormattedInspectorStringForValue:(id)a3 locale:(id)a4;
-- (id)chartFormattedStringForValue:(id)a3 locale:(id)a4;
++ (id)dataFormatterWithCustomFormat:(id)format customFormatListKey:(id)key formatType:(unsigned int)type;
+- (BOOL)isCompatibleWithDataFormatter:(id)formatter;
+- (TSCHCustomDataFormatter)initWithCustomFormat:(id)format customFormatListKey:(id)key formatType:(unsigned int)type;
+- (id)chartFormattedInspectorStringForValue:(id)value locale:(id)locale;
+- (id)chartFormattedStringForValue:(id)value locale:(id)locale;
 - (id)convertToPersistableStyleObject;
-- (id)convertToSupportedClientFormatObjectWithLocale:(id)a3;
-- (id)p_stringForValue:(id)a3 locale:(id)a4;
+- (id)convertToSupportedClientFormatObjectWithLocale:(id)locale;
+- (id)p_stringForValue:(id)value locale:(id)locale;
 @end
 
 @implementation TSCHCustomDataFormatter
 
-+ (id)dataFormatterWithCustomFormat:(id)a3 customFormatListKey:(id)a4 formatType:(unsigned int)a5
++ (id)dataFormatterWithCustomFormat:(id)format customFormatListKey:(id)key formatType:(unsigned int)type
 {
-  v5 = *&a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [a1 alloc];
-  v15 = objc_msgSend_initWithCustomFormat_customFormatListKey_formatType_(v10, v11, v12, v13, v14, v9, v8, v5);
+  v5 = *&type;
+  keyCopy = key;
+  formatCopy = format;
+  v10 = [self alloc];
+  v15 = objc_msgSend_initWithCustomFormat_customFormatListKey_formatType_(v10, v11, v12, v13, v14, formatCopy, keyCopy, v5);
 
   return v15;
 }
 
-- (TSCHCustomDataFormatter)initWithCustomFormat:(id)a3 customFormatListKey:(id)a4 formatType:(unsigned int)a5
+- (TSCHCustomDataFormatter)initWithCustomFormat:(id)format customFormatListKey:(id)key formatType:(unsigned int)type
 {
-  v9 = a3;
-  v10 = a4;
+  formatCopy = format;
+  keyCopy = key;
   v14.receiver = self;
   v14.super_class = TSCHCustomDataFormatter;
   v11 = [(TSCHCustomDataFormatter *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_customFormat, a3);
-    objc_storeStrong(&v12->_customFormatListKey, a4);
-    v12->_formatType = a5;
+    objc_storeStrong(&v11->_customFormat, format);
+    objc_storeStrong(&v12->_customFormatListKey, key);
+    v12->_formatType = type;
   }
 
   return v12;
 }
 
-- (id)p_stringForValue:(id)a3 locale:(id)a4
+- (id)p_stringForValue:(id)value locale:(id)locale
 {
-  v6 = a3;
-  v8 = a4;
-  if (v6)
+  valueCopy = value;
+  localeCopy = locale;
+  if (valueCopy)
   {
     if (self->_formatType == 272)
     {
-      v12 = objc_msgSend_NSDateConvertedFromGridValue_(TSCHChartGridValue, v7, v9, v10, v11, v6);
+      v12 = objc_msgSend_NSDateConvertedFromGridValue_(TSCHChartGridValue, v7, v9, v10, v11, valueCopy);
       v17 = objc_msgSend_customFormat(self, v13, v14, v15, v16);
       v22 = objc_msgSend_defaultFormatData(v17, v18, v19, v20, v21);
 
@@ -59,8 +59,8 @@
     else
     {
       v12 = objc_msgSend_customFormat(self, v7, v9, v10, v11);
-      objc_msgSend_doubleValue(v6, v44, v45, v46, v47);
-      v28 = objc_msgSend_formattedBodyStringForDoubleValue_customFormatListKey_formatType_locale_(v12, v48, v49, v50, v51, self->_customFormatListKey, self->_formatType, v8);
+      objc_msgSend_doubleValue(valueCopy, v44, v45, v46, v47);
+      v28 = objc_msgSend_formattedBodyStringForDoubleValue_customFormatListKey_formatType_locale_(v12, v48, v49, v50, v51, self->_customFormatListKey, self->_formatType, localeCopy);
     }
   }
 
@@ -78,11 +78,11 @@
   return v28;
 }
 
-- (id)chartFormattedStringForValue:(id)a3 locale:(id)a4
+- (id)chartFormattedStringForValue:(id)value locale:(id)locale
 {
-  if (a3)
+  if (value)
   {
-    v8 = objc_msgSend_p_stringForValue_locale_(self, a2, v5, v6, v7, a3, a4);
+    v8 = objc_msgSend_p_stringForValue_locale_(self, a2, v5, v6, v7, value, locale);
   }
 
   else
@@ -93,17 +93,17 @@
   return v8;
 }
 
-- (id)chartFormattedInspectorStringForValue:(id)a3 locale:(id)a4
+- (id)chartFormattedInspectorStringForValue:(id)value locale:(id)locale
 {
-  if (a3)
+  if (value)
   {
-    v7 = objc_msgSend_p_stringForValue_locale_(self, a2, v4, v5, v6, a3, a4);
+    v7 = objc_msgSend_p_stringForValue_locale_(self, a2, v4, v5, v6, value, locale);
   }
 
   else
   {
     v8 = MEMORY[0x277D81150];
-    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, "[TSCHCustomDataFormatter chartFormattedInspectorStringForValue:locale:]", a4);
+    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v4, v5, v6, "[TSCHCustomDataFormatter chartFormattedInspectorStringForValue:locale:]", locale);
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHDataFormatter.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v15, v16, v17, v18, v9, v14, 137, 0, "invalid nil value for '%{public}s'", "object");
 
@@ -114,17 +114,17 @@
   return v7;
 }
 
-- (BOOL)isCompatibleWithDataFormatter:(id)a3
+- (BOOL)isCompatibleWithDataFormatter:(id)formatter
 {
-  v4 = a3;
+  formatterCopy = formatter;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
   v10 = objc_msgSend_customFormat(self, v6, v7, v8, v9);
   v15 = objc_msgSend_customFormat(v5, v11, v12, v13, v14);
-  LOBYTE(v4) = v10 == v15;
+  LOBYTE(formatterCopy) = v10 == v15;
 
-  return v4;
+  return formatterCopy;
 }
 
 - (id)convertToPersistableStyleObject
@@ -136,9 +136,9 @@
   return v11;
 }
 
-- (id)convertToSupportedClientFormatObjectWithLocale:(id)a3
+- (id)convertToSupportedClientFormatObjectWithLocale:(id)locale
 {
-  v5 = a3;
+  localeCopy = locale;
   if (self->_formatType != 272)
   {
     v9 = MEMORY[0x277D81150];
@@ -149,7 +149,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v20, v21, v22, v23);
   }
 
-  v25 = objc_msgSend_defaultDateFormat_(TSCHMutableTimeBasedFormat, v4, v6, v7, v8, v5);
+  v25 = objc_msgSend_defaultDateFormat_(TSCHMutableTimeBasedFormat, v4, v6, v7, v8, localeCopy);
   if (self->_formatType == 272)
   {
     v29 = objc_msgSend_customFormat(self, v24, v26, v27, v28);

@@ -6,12 +6,12 @@
 
 + (double)defaultSideMarginForDoubleButton
 {
-  v2 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v2 bounds];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen bounds];
   v4 = v3;
 
-  v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v5 bounds];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen2 bounds];
   v7 = v6;
 
   if (v4 >= v7)

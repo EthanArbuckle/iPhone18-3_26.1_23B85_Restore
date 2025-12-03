@@ -1,26 +1,26 @@
 @interface _SFPBTextColumn
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBTextColumn)initWithDictionary:(id)a3;
-- (_SFPBTextColumn)initWithFacade:(id)a3;
-- (_SFPBTextColumn)initWithJSON:(id)a3;
+- (_SFPBTextColumn)initWithDictionary:(id)dictionary;
+- (_SFPBTextColumn)initWithFacade:(id)facade;
+- (_SFPBTextColumn)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)addSections:(id)a3;
-- (void)setSections:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addSections:(id)sections;
+- (void)setSections:(id)sections;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBTextColumn
 
-- (_SFPBTextColumn)initWithFacade:(id)a3
+- (_SFPBTextColumn)initWithFacade:(id)facade
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBTextColumn *)self init];
   if (v5)
   {
-    v6 = [v4 sections];
-    if (v6)
+    sections = [facadeCopy sections];
+    if (sections)
     {
       v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -34,8 +34,8 @@
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [v4 sections];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    sections2 = [facadeCopy sections];
+    v9 = [sections2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = v9;
@@ -46,7 +46,7 @@
         {
           if (*v18 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(sections2);
           }
 
           v13 = [[_SFPBTextColumnSection alloc] initWithFacade:*(*(&v17 + 1) + 8 * i)];
@@ -56,7 +56,7 @@
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v10 = [sections2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v10);
@@ -70,16 +70,16 @@
   return v5;
 }
 
-- (_SFPBTextColumn)initWithDictionary:(id)a3
+- (_SFPBTextColumn)initWithDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = _SFPBTextColumn;
   v5 = [(_SFPBTextColumn *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"sections"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"sections"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -130,30 +130,30 @@
   return v5;
 }
 
-- (_SFPBTextColumn)initWithJSON:(id)a3
+- (_SFPBTextColumn)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBTextColumn *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBTextColumn *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBTextColumn *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -167,10 +167,10 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_sections count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -190,16 +190,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -209,26 +209,26 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"sections"];
+    [dictionary setObject:array forKeyedSubscript:@"sections"];
   }
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_SFPBTextColumn *)self sections];
-    v6 = [v4 sections];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    sections = [(_SFPBTextColumn *)self sections];
+    sections2 = [equalCopy sections];
+    v7 = sections2;
+    if ((sections != 0) != (sections2 == 0))
     {
-      v8 = [(_SFPBTextColumn *)self sections];
-      if (!v8)
+      sections3 = [(_SFPBTextColumn *)self sections];
+      if (!sections3)
       {
 
 LABEL_10:
@@ -236,10 +236,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_SFPBTextColumn *)self sections];
-      v11 = [v4 sections];
-      v12 = [v10 isEqual:v11];
+      v9 = sections3;
+      sections4 = [(_SFPBTextColumn *)self sections];
+      sections5 = [equalCopy sections];
+      v12 = [sections4 isEqual:sections5];
 
       if (v12)
       {
@@ -258,16 +258,16 @@ LABEL_8:
   return v13;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_SFPBTextColumn *)self sections];
+  toCopy = to;
+  sections = [(_SFPBTextColumn *)self sections];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v6 = [sections countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -279,7 +279,7 @@ LABEL_8:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(sections);
         }
 
         v10 = *(*(&v12 + 1) + 8 * v9);
@@ -288,7 +288,7 @@ LABEL_8:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [sections countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -297,27 +297,27 @@ LABEL_8:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addSections:(id)a3
+- (void)addSections:(id)sections
 {
-  v4 = a3;
+  sectionsCopy = sections;
   sections = self->_sections;
-  v8 = v4;
+  v8 = sectionsCopy;
   if (!sections)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_sections;
-    self->_sections = v6;
+    self->_sections = array;
 
-    v4 = v8;
+    sectionsCopy = v8;
     sections = self->_sections;
   }
 
-  [(NSArray *)sections addObject:v4];
+  [(NSArray *)sections addObject:sectionsCopy];
 }
 
-- (void)setSections:(id)a3
+- (void)setSections:(id)sections
 {
-  v4 = [a3 copy];
+  v4 = [sections copy];
   sections = self->_sections;
   self->_sections = v4;
 

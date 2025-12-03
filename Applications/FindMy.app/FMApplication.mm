@@ -1,5 +1,5 @@
 @interface FMApplication
-- (BOOL)runTest:(id)a3 options:(id)a4;
+- (BOOL)runTest:(id)test options:(id)options;
 - (_TtC6FindMy13FMApplication)init;
 - (id)_extendLaunchTest;
 @end
@@ -20,14 +20,14 @@
   return v2;
 }
 
-- (BOOL)runTest:(id)a3 options:(id)a4
+- (BOOL)runTest:(id)test options:(id)options
 {
-  v4 = a4;
-  if (!a3)
+  optionsCopy = options;
+  if (!test)
   {
     v6 = 0;
     v8 = 0;
-    if (!a4)
+    if (!options)
     {
       goto LABEL_4;
     }
@@ -37,15 +37,15 @@
 
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
-  if (v4)
+  if (optionsCopy)
   {
 LABEL_3:
-    v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
+    optionsCopy = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
 LABEL_4:
-  v9 = self;
-  v10 = sub_100457FF8(v6, v8, v4);
+  selfCopy = self;
+  v10 = sub_100457FF8(v6, v8, optionsCopy);
 
   return v10 & 1;
 }

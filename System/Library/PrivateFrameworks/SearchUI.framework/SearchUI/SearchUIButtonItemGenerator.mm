@@ -1,22 +1,22 @@
 @interface SearchUIButtonItemGenerator
 - (SearchUIButtonItemGeneratorViewDelegate)delegate;
 - (SearchUIFeedbackDelegate)feedbackDelegate;
-- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)a3 completion:(id)a4;
+- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)item completion:(id)completion;
 @end
 
 @implementation SearchUIButtonItemGenerator
 
-- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)a3 completion:(id)a4
+- (void)generateSearchUIButtonItemsWithSFButtonItem:(id)item completion:(id)completion
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 command];
+  itemCopy = item;
+  completionCopy = completion;
+  command = [itemCopy command];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 applicationBundleIdentifier];
-    v10 = [SearchUIUtilities isAppInstalledWithBundleId:v9];
+    applicationBundleIdentifier = [command applicationBundleIdentifier];
+    v10 = [SearchUIUtilities isAppInstalledWithBundleId:applicationBundleIdentifier];
 
     if (!v10)
     {
@@ -31,8 +31,8 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v8 applicationBundleIdentifier];
-      v12 = [SearchUIUtilities isAppInstalledWithBundleId:v11];
+      applicationBundleIdentifier2 = [command applicationBundleIdentifier];
+      v12 = [SearchUIUtilities isAppInstalledWithBundleId:applicationBundleIdentifier2];
 
       if (v12)
       {
@@ -40,11 +40,11 @@ LABEL_10:
       }
     }
 
-    else if (v8)
+    else if (command)
     {
-      v13 = [(SearchUIButtonItemGenerator *)self feedbackDelegate];
-      v14 = [SearchUIUtilities environmentForDelegate:v13];
-      v15 = [SearchUICommandHandler hasValidHandlerForCommand:v8 rowModel:0 environment:v14];
+      feedbackDelegate = [(SearchUIButtonItemGenerator *)self feedbackDelegate];
+      v14 = [SearchUIUtilities environmentForDelegate:feedbackDelegate];
+      v15 = [SearchUICommandHandler hasValidHandlerForCommand:command rowModel:0 environment:v14];
 
       if (!v15)
       {
@@ -53,12 +53,12 @@ LABEL_10:
     }
   }
 
-  v16 = [[SearchUIButtonItem alloc] initWithSFButtonItem:v6];
+  v16 = [[SearchUIButtonItem alloc] initWithSFButtonItem:itemCopy];
   v18[0] = v16;
   v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
 
 LABEL_11:
-  v7[2](v7, v17, 1);
+  completionCopy[2](completionCopy, v17, 1);
 }
 
 - (SearchUIButtonItemGeneratorViewDelegate)delegate

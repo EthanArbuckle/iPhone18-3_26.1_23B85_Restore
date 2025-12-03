@@ -1,6 +1,6 @@
 @interface PXWallpaperTipsHelper_Swift
 + (PXWallpaperTipsHelper_Swift)shared;
-+ (void)dismissTip:(id)a3;
++ (void)dismissTip:(id)tip;
 + (void)removeAllPresentationDelegates;
 + (void)startObservingTips;
 - (PXWallpaperTipsHelper_Swift)init;
@@ -31,9 +31,9 @@
   }
 }
 
-+ (void)dismissTip:(id)a3
++ (void)dismissTip:(id)tip
 {
-  v3 = _Block_copy(a3);
+  v3 = _Block_copy(tip);
   sub_1A42F4DDC(v3);
 
   _Block_release(v3);

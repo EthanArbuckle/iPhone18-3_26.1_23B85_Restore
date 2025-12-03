@@ -1,9 +1,9 @@
 @interface CTSweetgumPlansInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CTSweetgumPlansInfo)init;
-- (CTSweetgumPlansInfo)initWithCoder:(id)a3;
+- (CTSweetgumPlansInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTSweetgumPlansInfo
@@ -26,21 +26,21 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTSweetgumPlansInfo *)self planGroups];
-  [v3 appendFormat:@" planGroups=%@", v4];
+  planGroups = [(CTSweetgumPlansInfo *)self planGroups];
+  [v3 appendFormat:@" planGroups=%@", planGroups];
 
-  v5 = [(CTSweetgumPlansInfo *)self morePlansURL];
-  [v3 appendFormat:@", morePlansURL=%@", v5];
+  morePlansURL = [(CTSweetgumPlansInfo *)self morePlansURL];
+  [v3 appendFormat:@", morePlansURL=%@", morePlansURL];
 
   [v3 appendString:@">"];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (v6 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
@@ -50,25 +50,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(CTSweetgumPlansInfo *)self planGroups];
-      v8 = [(CTSweetgumPlansInfo *)v6 planGroups];
-      if (v7 == v8 || (-[CTSweetgumPlansInfo planGroups](self, "planGroups"), v3 = objc_claimAutoreleasedReturnValue(), -[CTSweetgumPlansInfo planGroups](v6, "planGroups"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqualToArray:v4]))
+      planGroups = [(CTSweetgumPlansInfo *)self planGroups];
+      planGroups2 = [(CTSweetgumPlansInfo *)equalCopy planGroups];
+      if (planGroups == planGroups2 || (-[CTSweetgumPlansInfo planGroups](self, "planGroups"), v3 = objc_claimAutoreleasedReturnValue(), -[CTSweetgumPlansInfo planGroups](equalCopy, "planGroups"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqualToArray:v4]))
       {
-        v10 = [(CTSweetgumPlansInfo *)self morePlansURL];
-        v11 = [(CTSweetgumPlansInfo *)v6 morePlansURL];
-        if (v10 == v11)
+        morePlansURL = [(CTSweetgumPlansInfo *)self morePlansURL];
+        morePlansURL2 = [(CTSweetgumPlansInfo *)equalCopy morePlansURL];
+        if (morePlansURL == morePlansURL2)
         {
           v9 = 1;
         }
 
         else
         {
-          v12 = [(CTSweetgumPlansInfo *)self morePlansURL];
-          v13 = [(CTSweetgumPlansInfo *)v6 morePlansURL];
-          v9 = [v12 isEqualToString:v13];
+          morePlansURL3 = [(CTSweetgumPlansInfo *)self morePlansURL];
+          morePlansURL4 = [(CTSweetgumPlansInfo *)equalCopy morePlansURL];
+          v9 = [morePlansURL3 isEqualToString:morePlansURL4];
         }
 
-        if (v7 == v8)
+        if (planGroups == planGroups2)
         {
           goto LABEL_13;
         }
@@ -91,17 +91,17 @@ LABEL_14:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   planGroups = self->_planGroups;
-  v5 = a3;
-  [v5 encodeObject:planGroups forKey:@"planGroups"];
-  [v5 encodeObject:self->_morePlansURL forKey:@"morePlansURL"];
+  coderCopy = coder;
+  [coderCopy encodeObject:planGroups forKey:@"planGroups"];
+  [coderCopy encodeObject:self->_morePlansURL forKey:@"morePlansURL"];
 }
 
-- (CTSweetgumPlansInfo)initWithCoder:(id)a3
+- (CTSweetgumPlansInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = CTSweetgumPlansInfo;
   v5 = [(CTSweetgumPlansInfo *)&v14 init];
@@ -110,11 +110,11 @@ LABEL_14:
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"planGroups"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"planGroups"];
     planGroups = v5->_planGroups;
     v5->_planGroups = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"morePlansURL"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"morePlansURL"];
     morePlansURL = v5->_morePlansURL;
     v5->_morePlansURL = v11;
   }

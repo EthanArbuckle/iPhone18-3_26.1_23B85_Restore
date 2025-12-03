@@ -1,20 +1,20 @@
 @interface CAFSingleSelectImageSettingObservable
 - (NSString)description;
-- (void)automakerSettingService:(id)a3 didUpdateCategory:(unsigned __int8)a4;
-- (void)automakerSettingService:(id)a3 didUpdateProminenceInfo:(id)a4;
-- (void)automakerSettingService:(id)a3 didUpdateSortOrder:(unsigned __int8)a4;
-- (void)serviceDidFinishGroupUpdate:(id)a3;
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5;
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
-- (void)singleSelectImageSettingService:(id)a3 didUpdateCurrentUserVisibleValue:(unsigned __int8)a4;
-- (void)singleSelectImageSettingService:(id)a3 didUpdateUserVisibleDetailedDescription:(id)a4;
+- (void)automakerSettingService:(id)service didUpdateCategory:(unsigned __int8)category;
+- (void)automakerSettingService:(id)service didUpdateProminenceInfo:(id)info;
+- (void)automakerSettingService:(id)service didUpdateSortOrder:(unsigned __int8)order;
+- (void)serviceDidFinishGroupUpdate:(id)update;
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate;
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values;
+- (void)singleSelectImageSettingService:(id)service didUpdateCurrentUserVisibleValue:(unsigned __int8)value;
+- (void)singleSelectImageSettingService:(id)service didUpdateUserVisibleDetailedDescription:(id)description;
 @end
 
 @implementation CAFSingleSelectImageSettingObservable
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CAFSingleSelectImageSettingObservable.description.getter();
   v5 = v4;
 
@@ -23,62 +23,62 @@
   return v6;
 }
 
-- (void)automakerSettingService:(id)a3 didUpdateSortOrder:(unsigned __int8)a4
+- (void)automakerSettingService:(id)service didUpdateSortOrder:(unsigned __int8)order
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFSingleSelectImageSettingObservable.automakerSettingService(_:didUpdateSortOrder:)();
 }
 
-- (void)automakerSettingService:(id)a3 didUpdateCategory:(unsigned __int8)a4
+- (void)automakerSettingService:(id)service didUpdateCategory:(unsigned __int8)category
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFSingleSelectImageSettingObservable.automakerSettingService(_:didUpdateCategory:)();
 }
 
-- (void)automakerSettingService:(id)a3 didUpdateProminenceInfo:(id)a4
+- (void)automakerSettingService:(id)service didUpdateProminenceInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CAFSingleSelectImageSettingObservable.automakerSettingService(_:didUpdateProminenceInfo:)(v8, a4);
+  serviceCopy = service;
+  infoCopy = info;
+  selfCopy = self;
+  CAFSingleSelectImageSettingObservable.automakerSettingService(_:didUpdateProminenceInfo:)(selfCopy, info);
 }
 
-- (void)singleSelectImageSettingService:(id)a3 didUpdateCurrentUserVisibleValue:(unsigned __int8)a4
+- (void)singleSelectImageSettingService:(id)service didUpdateCurrentUserVisibleValue:(unsigned __int8)value
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFSingleSelectImageSettingObservable.singleSelectImageSettingService(_:didUpdateCurrentUserVisibleValue:)();
 }
 
-- (void)singleSelectImageSettingService:(id)a3 didUpdateUserVisibleDetailedDescription:(id)a4
+- (void)singleSelectImageSettingService:(id)service didUpdateUserVisibleDetailedDescription:(id)description
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  CAFSingleSelectImageSettingObservable.singleSelectImageSettingService(_:didUpdateUserVisibleDetailedDescription:)(v8, a4);
+  serviceCopy = service;
+  descriptionCopy = description;
+  selfCopy = self;
+  CAFSingleSelectImageSettingObservable.singleSelectImageSettingService(_:didUpdateUserVisibleDetailedDescription:)(selfCopy, description);
 }
 
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = self;
-  CAFSingleSelectImageSettingObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(v11, v10, a5);
+  updateCopy = update;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  CAFSingleSelectImageSettingObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(selfCopy, v10, groupUpdate);
 }
 
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  CAFSingleSelectImageSettingObservable.serviceDidUpdate(_:receivedAllValues:)(v7, a4);
+  updateCopy = update;
+  selfCopy = self;
+  CAFSingleSelectImageSettingObservable.serviceDidUpdate(_:receivedAllValues:)(selfCopy, values);
 }
 
-- (void)serviceDidFinishGroupUpdate:(id)a3
+- (void)serviceDidFinishGroupUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   CAFSingleSelectImageSettingObservable.serviceDidFinishGroupUpdate(_:)();
 }
 

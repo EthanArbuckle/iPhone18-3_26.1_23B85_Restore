@@ -1,15 +1,15 @@
 @interface GetNetworkInfoReportGenerator
-- (GetNetworkInfoReportGenerator)initWithQueue:(id)a3;
+- (GetNetworkInfoReportGenerator)initWithQueue:(id)queue;
 - (void)setDefaults;
 @end
 
 @implementation GetNetworkInfoReportGenerator
 
-- (GetNetworkInfoReportGenerator)initWithQueue:(id)a3
+- (GetNetworkInfoReportGenerator)initWithQueue:(id)queue
 {
   v7.receiver = self;
   v7.super_class = GetNetworkInfoReportGenerator;
-  v3 = [(NetworkDiagnosticsReportGenerator *)&v7 initWithQueue:a3];
+  v3 = [(NetworkDiagnosticsReportGenerator *)&v7 initWithQueue:queue];
   v4 = v3;
   if (v3)
   {
@@ -24,8 +24,8 @@
 - (void)setDefaults
 {
   v3 = +[ABCAdministrator sharedInstance];
-  v4 = [v3 configurationManager];
-  -[GetNetworkInfoReportGenerator setGNISensitiveOption:](self, "setGNISensitiveOption:", [v4 autoBugCaptureSensitivePayloads]);
+  configurationManager = [v3 configurationManager];
+  -[GetNetworkInfoReportGenerator setGNISensitiveOption:](self, "setGNISensitiveOption:", [configurationManager autoBugCaptureSensitivePayloads]);
 
   [(GetNetworkInfoReportGenerator *)self setGNISysConfigOption:1];
 

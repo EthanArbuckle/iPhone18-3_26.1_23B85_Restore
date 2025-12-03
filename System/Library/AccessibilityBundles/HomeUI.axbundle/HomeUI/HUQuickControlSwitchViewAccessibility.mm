@@ -1,5 +1,5 @@
 @interface HUQuickControlSwitchViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityActivate;
 - (CGRect)accessibilityFrame;
 - (id)_accessibilityControlItem;
@@ -12,18 +12,18 @@
 
 @implementation HUQuickControlSwitchViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUQuickControlSwitchView" hasInstanceMethod:@"wellView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlSwitchView" hasInstanceVariable:@"_switchValue" withType:"CGFloat"];
-  [v3 validateClass:@"HUQuickControlSwitchView" hasInstanceMethod:@"setSwitchValue:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"_HUQuickControlSingleControlHostView"];
-  [v3 validateClass:@"HUQuickControlSingleControlViewController" hasInstanceMethod:@"controlItem" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HFPrimaryStateControlItem" hasInstanceMethod:@"primaryStateCharacteristicType" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HFItem" hasInstanceMethod:@"latestResults" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlElasticSliderInteractionCoordinator" hasInstanceMethod:@"_updateModelValue:roundValue:notifyDelegate:" withFullSignature:{"v", "{?=dd}", "B", "B", 0}];
-  [v3 validateClass:@"HUQuickControlElasticSliderInteractionCoordinator" hasInstanceMethod:@"setActiveGestureValueType:" withFullSignature:{"v", "Q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUQuickControlSwitchView" hasInstanceMethod:@"wellView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlSwitchView" hasInstanceVariable:@"_switchValue" withType:"CGFloat"];
+  [validationsCopy validateClass:@"HUQuickControlSwitchView" hasInstanceMethod:@"setSwitchValue:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"_HUQuickControlSingleControlHostView"];
+  [validationsCopy validateClass:@"HUQuickControlSingleControlViewController" hasInstanceMethod:@"controlItem" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HFPrimaryStateControlItem" hasInstanceMethod:@"primaryStateCharacteristicType" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HFItem" hasInstanceMethod:@"latestResults" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlElasticSliderInteractionCoordinator" hasInstanceMethod:@"_updateModelValue:roundValue:notifyDelegate:" withFullSignature:{"v", "{?=dd}", "B", "B", 0}];
+  [validationsCopy validateClass:@"HUQuickControlElasticSliderInteractionCoordinator" hasInstanceMethod:@"setActiveGestureValueType:" withFullSignature:{"v", "Q", 0}];
 }
 
 - (CGRect)accessibilityFrame
@@ -91,9 +91,9 @@ void __70__HUQuickControlSwitchViewAccessibility__accessibilitySetSwitchValue___
 - (id)_accessibilitySingleControlHostViewController
 {
   v2 = [(HUQuickControlSwitchViewAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_11 startWithSelf:0];
-  v3 = [v2 _accessibilityViewController];
+  _accessibilityViewController = [v2 _accessibilityViewController];
 
-  return v3;
+  return _accessibilityViewController;
 }
 
 uint64_t __86__HUQuickControlSwitchViewAccessibility__accessibilitySingleControlHostViewController__block_invoke(uint64_t a1, void *a2)
@@ -107,8 +107,8 @@ uint64_t __86__HUQuickControlSwitchViewAccessibility__accessibilitySingleControl
 
 - (id)_accessibilityControlItem
 {
-  v2 = [(HUQuickControlSwitchViewAccessibility *)self _accessibilitySingleControlHostViewController];
-  v3 = [v2 safeValueForKey:@"controlItem"];
+  _accessibilitySingleControlHostViewController = [(HUQuickControlSwitchViewAccessibility *)self _accessibilitySingleControlHostViewController];
+  v3 = [_accessibilitySingleControlHostViewController safeValueForKey:@"controlItem"];
 
   return v3;
 }
@@ -116,8 +116,8 @@ uint64_t __86__HUQuickControlSwitchViewAccessibility__accessibilitySingleControl
 - (id)_accessibilityControlName
 {
   objc_opt_class();
-  v3 = [(HUQuickControlSwitchViewAccessibility *)self _accessibilityControlItem];
-  v4 = [v3 safeValueForKey:@"latestResults"];
+  _accessibilityControlItem = [(HUQuickControlSwitchViewAccessibility *)self _accessibilityControlItem];
+  v4 = [_accessibilityControlItem safeValueForKey:@"latestResults"];
   v5 = __UIAccessibilityCastAsClass();
 
   objc_opt_class();
@@ -129,8 +129,8 @@ uint64_t __86__HUQuickControlSwitchViewAccessibility__accessibilitySingleControl
 
 - (id)_accessibilityStateForPrimaryCharacteristic
 {
-  v3 = [(HUQuickControlSwitchViewAccessibility *)self _accessibilityControlItem];
-  v4 = [v3 safeValueForKey:@"primaryStateCharacteristicType"];
+  _accessibilityControlItem = [(HUQuickControlSwitchViewAccessibility *)self _accessibilityControlItem];
+  v4 = [_accessibilityControlItem safeValueForKey:@"primaryStateCharacteristicType"];
 
   if (([v4 isEqualToString:*MEMORY[0x29EDBB0A0]] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", *MEMORY[0x29EDBB0B8]))
   {

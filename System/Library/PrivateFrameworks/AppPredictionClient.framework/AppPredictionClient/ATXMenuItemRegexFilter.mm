@@ -1,7 +1,7 @@
 @interface ATXMenuItemRegexFilter
 + (id)sharedInstance;
 - (ATXMenuItemRegexFilter)init;
-- (BOOL)shouldFilterOutAction:(id)a3;
+- (BOOL)shouldFilterOutAction:(id)action;
 @end
 
 @implementation ATXMenuItemRegexFilter
@@ -35,15 +35,15 @@ void __40__ATXMenuItemRegexFilter_sharedInstance__block_invoke()
   return [(ATXRegexFilter *)&v3 initWithAssetName:@"ATXMenuItemRegexFilter"];
 }
 
-- (BOOL)shouldFilterOutAction:(id)a3
+- (BOOL)shouldFilterOutAction:(id)action
 {
-  v4 = a3;
-  if ([v4 actionType] == 6)
+  actionCopy = action;
+  if ([actionCopy actionType] == 6)
   {
-    v5 = [v4 bundleId];
-    v6 = [v4 menuItemPath];
-    v7 = [ATXMenuItemRegexFilter joinComponentsOfMenuItemPath:v6];
-    v8 = [(ATXRegexFilter *)self shouldFilterOutBundleId:v5 andAttribute:v7];
+    bundleId = [actionCopy bundleId];
+    menuItemPath = [actionCopy menuItemPath];
+    v7 = [ATXMenuItemRegexFilter joinComponentsOfMenuItemPath:menuItemPath];
+    v8 = [(ATXRegexFilter *)self shouldFilterOutBundleId:bundleId andAttribute:v7];
   }
 
   else

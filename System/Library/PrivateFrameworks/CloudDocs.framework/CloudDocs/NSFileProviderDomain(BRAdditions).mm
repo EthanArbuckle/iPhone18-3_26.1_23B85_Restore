@@ -7,8 +7,8 @@
 
 - (uint64_t)br_isCiconiaDomain
 {
-  v1 = [a1 identifier];
-  v2 = [v1 hasPrefix:@"Ciconia-"];
+  identifier = [self identifier];
+  v2 = [identifier hasPrefix:@"Ciconia-"];
 
   return v2;
 }
@@ -24,14 +24,14 @@
   {
     v5 = v4;
     v6 = MEMORY[0x1E69673E0];
-    v7 = [a1 identifier];
-    v8 = [BRFileProviderHelper br_getProviderDomainIDForDomainIdentifier:v7 dataSeparated:v3 & 1];
+    identifier = [self identifier];
+    v8 = [BRFileProviderHelper br_getProviderDomainIDForDomainIdentifier:identifier dataSeparated:v3 & 1];
     v21 = 0;
     v9 = [v6 providerDomainWithID:v8 cachePolicy:0 error:&v21];
     v10 = v21;
 
-    v11 = [v9 storageURLs];
-    v12 = [v11 count];
+    storageURLs = [v9 storageURLs];
+    v12 = [storageURLs count];
 
     if (v12)
     {
@@ -45,7 +45,7 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
         *buf = v20.n128_u32[0];
-        v23 = a1;
+        selfCopy = self;
         v24 = 2112;
         v25 = v10;
         v26 = 2112;
@@ -58,20 +58,20 @@
     v3 = 1;
     if ((v5 & 1) == 0)
     {
-      v17 = 0;
+      fp_volumeUUID = 0;
       goto LABEL_10;
     }
   }
 
-  v15 = [v9 storageURLs];
-  v16 = [v15 objectAtIndexedSubscript:0];
+  storageURLs2 = [v9 storageURLs];
+  v16 = [storageURLs2 objectAtIndexedSubscript:0];
 
-  v17 = [v16 fp_volumeUUID];
+  fp_volumeUUID = [v16 fp_volumeUUID];
 
 LABEL_10:
   v18 = *MEMORY[0x1E69E9840];
 
-  return v17;
+  return fp_volumeUUID;
 }
 
 @end

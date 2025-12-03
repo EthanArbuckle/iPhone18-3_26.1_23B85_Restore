@@ -1,6 +1,6 @@
 @interface SBPrivacyPreflightController
 - (SBPrivacyPreflightController)init;
-- (void)preflightLaunchForApplication:(id)a3 sceneIdentifier:(id)a4 withCompletionHandler:(id)a5;
+- (void)preflightLaunchForApplication:(id)application sceneIdentifier:(id)identifier withCompletionHandler:(id)handler;
 @end
 
 @implementation SBPrivacyPreflightController
@@ -25,21 +25,21 @@
   return v2;
 }
 
-- (void)preflightLaunchForApplication:(id)a3 sceneIdentifier:(id)a4 withCompletionHandler:(id)a5
+- (void)preflightLaunchForApplication:(id)application sceneIdentifier:(id)identifier withCompletionHandler:(id)handler
 {
-  v12 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v12)
+  applicationCopy = application;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (applicationCopy)
   {
-    if (v9)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
     [SBPrivacyPreflightController preflightLaunchForApplication:a2 sceneIdentifier:self withCompletionHandler:?];
-    if (v10)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -48,13 +48,13 @@ LABEL_10:
   }
 
   [SBPrivacyPreflightController preflightLaunchForApplication:a2 sceneIdentifier:self withCompletionHandler:?];
-  if (!v9)
+  if (!identifierCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (v10)
+  if (handlerCopy)
   {
     goto LABEL_4;
   }
@@ -65,11 +65,11 @@ LABEL_4:
   v11 = [(NSMutableDictionary *)self->_applicationPreflightControllers objectForKey:?];
   if (!v11)
   {
-    v11 = [[SBApplicationPrivacyPreflightController alloc] initWithPreflightManager:self->_privacyPreflightManager applicationIdentity:v12];
-    [(NSMutableDictionary *)self->_applicationPreflightControllers setObject:v11 forKey:v12];
+    v11 = [[SBApplicationPrivacyPreflightController alloc] initWithPreflightManager:self->_privacyPreflightManager applicationIdentity:applicationCopy];
+    [(NSMutableDictionary *)self->_applicationPreflightControllers setObject:v11 forKey:applicationCopy];
   }
 
-  [(SBApplicationPrivacyPreflightController *)v11 addPendingCompletion:v10 forSceneIdentifier:v9];
+  [(SBApplicationPrivacyPreflightController *)v11 addPendingCompletion:handlerCopy forSceneIdentifier:identifierCopy];
 }
 
 - (void)preflightLaunchForApplication:(uint64_t)a1 sceneIdentifier:(uint64_t)a2 withCompletionHandler:.cold.1(uint64_t a1, uint64_t a2)

@@ -6,18 +6,18 @@
 - (id)_dictionaryRepresentation;
 - (id)_metadata;
 - (id)_typedBackingStore;
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4;
-- (void)_setMetadata:(id)a3;
-- (void)setCarName:(id)a3;
-- (void)setDefroster:(int64_t)a3;
-- (void)setEnable:(id)a3;
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id;
+- (void)_setMetadata:(id)metadata;
+- (void)setCarName:(id)name;
+- (void)setDefroster:(int64_t)defroster;
+- (void)setEnable:(id)enable;
 @end
 
 @implementation INSetDefrosterSettingsInCarIntent
 
-- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)a3 containingAppBundleId:(id)a4
+- (void)_redactForMissingPrivacyEntitlementOptions:(unint64_t)options containingAppBundleId:(id)id
 {
-  v6 = [(INSetDefrosterSettingsInCarIntent *)self _typedBackingStore:a3];
+  v6 = [(INSetDefrosterSettingsInCarIntent *)self _typedBackingStore:options];
   v5 = [v6 copy];
   [(INIntent *)self setBackingStore:v5];
 }
@@ -26,43 +26,43 @@
 {
   v14[3] = *MEMORY[0x1E69E9840];
   v13[0] = @"enable";
-  v3 = [(INSetDefrosterSettingsInCarIntent *)self enable];
-  v4 = v3;
-  if (!v3)
+  enable = [(INSetDefrosterSettingsInCarIntent *)self enable];
+  null = enable;
+  if (!enable)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[0] = v4;
+  v14[0] = null;
   v13[1] = @"defroster";
-  v5 = [(INSetDefrosterSettingsInCarIntent *)self defroster];
-  if ((v5 - 1) > 2)
+  defroster = [(INSetDefrosterSettingsInCarIntent *)self defroster];
+  if ((defroster - 1) > 2)
   {
     v6 = @"unknown";
   }
 
   else
   {
-    v6 = off_1E7282658[v5 - 1];
+    v6 = off_1E7282658[defroster - 1];
   }
 
   v7 = v6;
   v14[1] = v7;
   v13[2] = @"carName";
-  v8 = [(INSetDefrosterSettingsInCarIntent *)self carName];
-  v9 = v8;
-  if (!v8)
+  carName = [(INSetDefrosterSettingsInCarIntent *)self carName];
+  null2 = carName;
+  if (!carName)
   {
-    v9 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v14[2] = v9;
+  v14[2] = null2;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:3];
-  if (!v8)
+  if (!carName)
   {
   }
 
-  if (!v3)
+  if (!enable)
   {
   }
 
@@ -71,49 +71,49 @@
   return v10;
 }
 
-- (void)setCarName:(id)a3
+- (void)setCarName:(id)name
 {
-  v4 = a3;
-  v6 = [(INSetDefrosterSettingsInCarIntent *)self _typedBackingStore];
-  v5 = INIntentSlotValueTransformToDataString(v4);
+  nameCopy = name;
+  _typedBackingStore = [(INSetDefrosterSettingsInCarIntent *)self _typedBackingStore];
+  v5 = INIntentSlotValueTransformToDataString(nameCopy);
 
-  [v6 setCarName:v5];
+  [_typedBackingStore setCarName:v5];
 }
 
 - (INSpeakableString)carName
 {
-  v2 = [(INSetDefrosterSettingsInCarIntent *)self _typedBackingStore];
-  v3 = [v2 carName];
-  v4 = INIntentSlotValueTransformFromDataString(v3);
+  _typedBackingStore = [(INSetDefrosterSettingsInCarIntent *)self _typedBackingStore];
+  carName = [_typedBackingStore carName];
+  v4 = INIntentSlotValueTransformFromDataString(carName);
 
   return v4;
 }
 
-- (void)setDefroster:(int64_t)a3
+- (void)setDefroster:(int64_t)defroster
 {
-  v3 = a3 - 1;
-  v4 = [(INSetDefrosterSettingsInCarIntent *)self _typedBackingStore];
-  v5 = v4;
+  v3 = defroster - 1;
+  _typedBackingStore = [(INSetDefrosterSettingsInCarIntent *)self _typedBackingStore];
+  v5 = _typedBackingStore;
   if (v3 > 2)
   {
-    [v4 setHasDefroster:0];
+    [_typedBackingStore setHasDefroster:0];
   }
 
   else
   {
-    [v4 setDefroster:?];
+    [_typedBackingStore setDefroster:?];
   }
 }
 
 - (INCarDefroster)defroster
 {
-  v3 = [(INSetDefrosterSettingsInCarIntent *)self _typedBackingStore];
-  v4 = [v3 hasDefroster];
-  v5 = [(INSetDefrosterSettingsInCarIntent *)self _typedBackingStore];
-  v6 = [v5 defroster];
-  if (((v6 - 1 < 3) & v4) != 0)
+  _typedBackingStore = [(INSetDefrosterSettingsInCarIntent *)self _typedBackingStore];
+  hasDefroster = [_typedBackingStore hasDefroster];
+  _typedBackingStore2 = [(INSetDefrosterSettingsInCarIntent *)self _typedBackingStore];
+  defroster = [_typedBackingStore2 defroster];
+  if (((defroster - 1 < 3) & hasDefroster) != 0)
   {
-    v7 = v6;
+    v7 = defroster;
   }
 
   else
@@ -124,29 +124,29 @@
   return v7;
 }
 
-- (void)setEnable:(id)a3
+- (void)setEnable:(id)enable
 {
-  v5 = a3;
-  v4 = [(INSetDefrosterSettingsInCarIntent *)self _typedBackingStore];
-  if (v5)
+  enableCopy = enable;
+  _typedBackingStore = [(INSetDefrosterSettingsInCarIntent *)self _typedBackingStore];
+  if (enableCopy)
   {
-    [v4 setEnable:{objc_msgSend(v5, "BOOLValue")}];
+    [_typedBackingStore setEnable:{objc_msgSend(enableCopy, "BOOLValue")}];
   }
 
   else
   {
-    [v4 setHasEnable:0];
+    [_typedBackingStore setHasEnable:0];
   }
 }
 
 - (NSNumber)enable
 {
-  v3 = [(INSetDefrosterSettingsInCarIntent *)self _typedBackingStore];
-  if ([v3 hasEnable])
+  _typedBackingStore = [(INSetDefrosterSettingsInCarIntent *)self _typedBackingStore];
+  if ([_typedBackingStore hasEnable])
   {
     v4 = MEMORY[0x1E696AD98];
-    v5 = [(INSetDefrosterSettingsInCarIntent *)self _typedBackingStore];
-    v6 = [v4 numberWithBool:{objc_msgSend(v5, "enable")}];
+    _typedBackingStore2 = [(INSetDefrosterSettingsInCarIntent *)self _typedBackingStore];
+    v6 = [v4 numberWithBool:{objc_msgSend(_typedBackingStore2, "enable")}];
   }
 
   else
@@ -175,28 +175,28 @@
   return v11;
 }
 
-- (void)_setMetadata:(id)a3
+- (void)_setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(INSetDefrosterSettingsInCarIntent *)self _typedBackingStore];
-  [v5 setIntentMetadata:v4];
+  metadataCopy = metadata;
+  _typedBackingStore = [(INSetDefrosterSettingsInCarIntent *)self _typedBackingStore];
+  [_typedBackingStore setIntentMetadata:metadataCopy];
 }
 
 - (id)_metadata
 {
-  v2 = [(INSetDefrosterSettingsInCarIntent *)self _typedBackingStore];
-  v3 = [v2 intentMetadata];
+  _typedBackingStore = [(INSetDefrosterSettingsInCarIntent *)self _typedBackingStore];
+  intentMetadata = [_typedBackingStore intentMetadata];
 
-  return v3;
+  return intentMetadata;
 }
 
 - (id)_typedBackingStore
 {
-  v2 = [(INIntent *)self backingStore];
+  backingStore = [(INIntent *)self backingStore];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = backingStore;
   }
 
   else

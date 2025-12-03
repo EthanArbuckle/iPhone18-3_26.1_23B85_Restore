@@ -17,8 +17,8 @@
 
     else
     {
-      v9 = [v3 propertyListDictionary];
-      v7 = [objc_alloc(MEMORY[0x1E69C0910]) initWithPropertyListDictionary:v9];
+      propertyListDictionary = [v3 propertyListDictionary];
+      v7 = [objc_alloc(MEMORY[0x1E69C0910]) initWithPropertyListDictionary:propertyListDictionary];
     }
   }
 

@@ -1,33 +1,33 @@
 @interface OSLogPreferencesSubsystem
-- (BOOL)_signpostAllowStreamingForCategory:(id)a3;
-- (BOOL)_signpostBacktracesEnabledForCategory:(id)a3;
-- (BOOL)_signpostEnabledForCategory:(id)a3;
-- (BOOL)_signpostPersistedForCategory:(id)a3;
+- (BOOL)_signpostAllowStreamingForCategory:(id)category;
+- (BOOL)_signpostBacktracesEnabledForCategory:(id)category;
+- (BOOL)_signpostEnabledForCategory:(id)category;
+- (BOOL)_signpostPersistedForCategory:(id)category;
 - (BOOL)isLocked;
 - (NSArray)categories;
-- (OSLogPreferencesSubsystem)initWithName:(id)a3;
-- (id)_levelPrefsForCategory:(id)a3;
-- (id)_prefsForCategory:(id)a3;
-- (int64_t)_defaultEnabledLevelForCategory:(id)a3;
-- (int64_t)_defaultPersistedLevelForCategory:(id)a3;
-- (int64_t)_enabledLevelForCategory:(id)a3;
-- (int64_t)_persistedLevelForCategory:(id)a3;
+- (OSLogPreferencesSubsystem)initWithName:(id)name;
+- (id)_levelPrefsForCategory:(id)category;
+- (id)_prefsForCategory:(id)category;
+- (int64_t)_defaultEnabledLevelForCategory:(id)category;
+- (int64_t)_defaultPersistedLevelForCategory:(id)category;
+- (int64_t)_enabledLevelForCategory:(id)category;
+- (int64_t)_persistedLevelForCategory:(id)category;
 - (int64_t)effectiveEnabledLevel;
 - (int64_t)effectivePersistedLevel;
-- (void)_resetCategory:(id)a3;
-- (void)_setEnabledLevel:(int64_t)a3 forCategory:(id)a4;
-- (void)_setPersistedLevel:(int64_t)a3 forCategory:(id)a4;
+- (void)_resetCategory:(id)category;
+- (void)_setEnabledLevel:(int64_t)level forCategory:(id)category;
+- (void)_setPersistedLevel:(int64_t)level forCategory:(id)category;
 - (void)reset;
 - (void)resetAll;
-- (void)setEnabledLevel:(int64_t)a3;
-- (void)setPersistedLevel:(int64_t)a3;
+- (void)setEnabledLevel:(int64_t)level;
+- (void)setPersistedLevel:(int64_t)level;
 @end
 
 @implementation OSLogPreferencesSubsystem
 
-- (void)_resetCategory:(id)a3
+- (void)_resetCategory:(id)category
 {
-  [(NSMutableDictionary *)self->_prefs removeObjectForKey:a3];
+  [(NSMutableDictionary *)self->_prefs removeObjectForKey:category];
   if ([(NSMutableDictionary *)self->_prefs count])
   {
     prefs = self->_prefs;
@@ -47,31 +47,31 @@
   }
 }
 
-- (void)_setPersistedLevel:(int64_t)a3 forCategory:(id)a4
+- (void)_setPersistedLevel:(int64_t)level forCategory:(id)category
 {
-  v6 = [(OSLogPreferencesSubsystem *)self _levelPrefsForCategory:a4];
-  if (a3 > 4)
+  v6 = [(OSLogPreferencesSubsystem *)self _levelPrefsForCategory:category];
+  if (level > 4)
   {
     v7 = @"inherit";
   }
 
   else
   {
-    v7 = off_2787AEBC8[a3];
+    v7 = off_2787AEBC8[level];
   }
 
   v9 = v6;
   [v6 setObject:v7 forKey:@"Persist"];
-  if (_LevelForKey(v9, @"Enable") < a3)
+  if (_LevelForKey(v9, @"Enable") < level)
   {
-    if (a3 > 4)
+    if (level > 4)
     {
       v8 = @"inherit";
     }
 
     else
     {
-      v8 = off_2787AEBC8[a3];
+      v8 = off_2787AEBC8[level];
     }
 
     [v9 setObject:v8 forKey:@"Enable"];
@@ -80,31 +80,31 @@
   _OSLogInstallPreferences(3u, self->_name, self->_prefs);
 }
 
-- (void)_setEnabledLevel:(int64_t)a3 forCategory:(id)a4
+- (void)_setEnabledLevel:(int64_t)level forCategory:(id)category
 {
-  v6 = [(OSLogPreferencesSubsystem *)self _levelPrefsForCategory:a4];
-  if (a3 > 4)
+  v6 = [(OSLogPreferencesSubsystem *)self _levelPrefsForCategory:category];
+  if (level > 4)
   {
     v7 = @"inherit";
   }
 
   else
   {
-    v7 = off_2787AEBC8[a3];
+    v7 = off_2787AEBC8[level];
   }
 
   v9 = v6;
   [v6 setObject:v7 forKey:@"Enable"];
-  if (_LevelForKey(v9, @"Persist") > a3)
+  if (_LevelForKey(v9, @"Persist") > level)
   {
-    if (a3 > 4)
+    if (level > 4)
     {
       v8 = @"inherit";
     }
 
     else
     {
-      v8 = off_2787AEBC8[a3];
+      v8 = off_2787AEBC8[level];
     }
 
     [v9 setObject:v8 forKey:@"Persist"];
@@ -113,151 +113,151 @@
   _OSLogInstallPreferences(3u, self->_name, self->_prefs);
 }
 
-- (id)_levelPrefsForCategory:(id)a3
+- (id)_levelPrefsForCategory:(id)category
 {
-  v3 = [(OSLogPreferencesSubsystem *)self _prefsForCategory:a3];
-  v4 = [v3 objectForKey:@"Level"];
-  if (!v4)
+  v3 = [(OSLogPreferencesSubsystem *)self _prefsForCategory:category];
+  dictionary = [v3 objectForKey:@"Level"];
+  if (!dictionary)
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    [v3 setObject:v4 forKey:@"Level"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [v3 setObject:dictionary forKey:@"Level"];
   }
 
-  return v4;
+  return dictionary;
 }
 
-- (id)_prefsForCategory:(id)a3
+- (id)_prefsForCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   prefs = self->_prefs;
   if (!prefs)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v7 = self->_prefs;
-    self->_prefs = v6;
+    self->_prefs = dictionary;
 
     prefs = self->_prefs;
   }
 
-  v8 = [(NSMutableDictionary *)prefs objectForKey:v4];
-  if (!v8)
+  dictionary2 = [(NSMutableDictionary *)prefs objectForKey:categoryCopy];
+  if (!dictionary2)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
-    [(NSMutableDictionary *)self->_prefs setObject:v8 forKey:v4];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    [(NSMutableDictionary *)self->_prefs setObject:dictionary2 forKey:categoryCopy];
   }
 
-  return v8;
+  return dictionary2;
 }
 
-- (BOOL)_signpostAllowStreamingForCategory:(id)a3
+- (BOOL)_signpostAllowStreamingForCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_prefs objectForKeyedSubscript:v4];
+  categoryCopy = category;
+  v5 = [(NSMutableDictionary *)self->_prefs objectForKeyedSubscript:categoryCopy];
   v6 = [v5 objectForKeyedSubscript:@"Signpost-Allow-Streaming"];
 
-  if (v6 || (-[NSDictionary objectForKeyedSubscript:](self->_systemPrefs, "objectForKeyedSubscript:", v4), v7 = objc_claimAutoreleasedReturnValue(), [v7 objectForKeyedSubscript:@"Signpost-Allow-Streaming"], v6 = objc_claimAutoreleasedReturnValue(), v7, v6))
+  if (v6 || (-[NSDictionary objectForKeyedSubscript:](self->_systemPrefs, "objectForKeyedSubscript:", categoryCopy), v7 = objc_claimAutoreleasedReturnValue(), [v7 objectForKeyedSubscript:@"Signpost-Allow-Streaming"], v6 = objc_claimAutoreleasedReturnValue(), v7, v6))
   {
-    v8 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v8 = 1;
+    bOOLValue = 1;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-- (BOOL)_signpostBacktracesEnabledForCategory:(id)a3
+- (BOOL)_signpostBacktracesEnabledForCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_prefs objectForKey:v4];
+  categoryCopy = category;
+  v5 = [(NSMutableDictionary *)self->_prefs objectForKey:categoryCopy];
   v6 = [v5 objectForKey:@"Signpost-Backtraces-Enabled"];
 
-  if (v6 || (-[NSDictionary objectForKey:](self->_systemPrefs, "objectForKey:", v4), v7 = objc_claimAutoreleasedReturnValue(), [v7 objectForKey:@"Signpost-Backtraces-Enabled"], v6 = objc_claimAutoreleasedReturnValue(), v7, v6))
+  if (v6 || (-[NSDictionary objectForKey:](self->_systemPrefs, "objectForKey:", categoryCopy), v7 = objc_claimAutoreleasedReturnValue(), [v7 objectForKey:@"Signpost-Backtraces-Enabled"], v6 = objc_claimAutoreleasedReturnValue(), v7, v6))
   {
-    v8 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v8 = [v4 isEqualToString:@"DynamicStackTracing"];
+    bOOLValue = [categoryCopy isEqualToString:@"DynamicStackTracing"];
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-- (BOOL)_signpostPersistedForCategory:(id)a3
+- (BOOL)_signpostPersistedForCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_prefs objectForKey:v4];
+  categoryCopy = category;
+  v5 = [(NSMutableDictionary *)self->_prefs objectForKey:categoryCopy];
   v6 = [v5 objectForKey:@"Signpost-Persisted"];
 
-  if (v6 || (-[NSDictionary objectForKey:](self->_systemPrefs, "objectForKey:", v4), v7 = objc_claimAutoreleasedReturnValue(), [v7 objectForKey:@"Signpost-Persisted"], v6 = objc_claimAutoreleasedReturnValue(), v7, v6))
+  if (v6 || (-[NSDictionary objectForKey:](self->_systemPrefs, "objectForKey:", categoryCopy), v7 = objc_claimAutoreleasedReturnValue(), [v7 objectForKey:@"Signpost-Persisted"], v6 = objc_claimAutoreleasedReturnValue(), v7, v6))
   {
-    v8 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v8 = 0;
+    bOOLValue = 0;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
-- (BOOL)_signpostEnabledForCategory:(id)a3
+- (BOOL)_signpostEnabledForCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_prefs objectForKey:v4];
+  categoryCopy = category;
+  v5 = [(NSMutableDictionary *)self->_prefs objectForKey:categoryCopy];
   v6 = [v5 objectForKey:@"Signpost-Enabled"];
 
-  if (v6 || (-[NSDictionary objectForKey:](self->_systemPrefs, "objectForKey:", v4), v7 = objc_claimAutoreleasedReturnValue(), [v7 objectForKey:@"Signpost-Enabled"], v6 = objc_claimAutoreleasedReturnValue(), v7, v6))
+  if (v6 || (-[NSDictionary objectForKey:](self->_systemPrefs, "objectForKey:", categoryCopy), v7 = objc_claimAutoreleasedReturnValue(), [v7 objectForKey:@"Signpost-Enabled"], v6 = objc_claimAutoreleasedReturnValue(), v7, v6))
   {
     LOBYTE(v8) = [v6 BOOLValue];
   }
 
-  else if ([v4 isEqualToString:@"DynamicTracing"])
+  else if ([categoryCopy isEqualToString:@"DynamicTracing"])
   {
     LOBYTE(v8) = 0;
   }
 
   else
   {
-    v8 = [v4 isEqualToString:@"DynamicStackTracing"] ^ 1;
+    v8 = [categoryCopy isEqualToString:@"DynamicStackTracing"] ^ 1;
   }
 
   return v8;
 }
 
-- (int64_t)_persistedLevelForCategory:(id)a3
+- (int64_t)_persistedLevelForCategory:(id)category
 {
-  v3 = [(NSMutableDictionary *)self->_prefs objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_prefs objectForKey:category];
   v4 = [v3 objectForKey:@"Level"];
 
   v5 = _LevelForKey(v4, @"Persist");
   return v5;
 }
 
-- (int64_t)_enabledLevelForCategory:(id)a3
+- (int64_t)_enabledLevelForCategory:(id)category
 {
-  v3 = [(NSMutableDictionary *)self->_prefs objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_prefs objectForKey:category];
   v4 = [v3 objectForKey:@"Level"];
 
   v5 = _LevelForKey(v4, @"Enable");
   return v5;
 }
 
-- (int64_t)_defaultPersistedLevelForCategory:(id)a3
+- (int64_t)_defaultPersistedLevelForCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_internalPrefs objectForKey:v4];
+  categoryCopy = category;
+  v5 = [(NSDictionary *)self->_internalPrefs objectForKey:categoryCopy];
   v6 = [v5 objectForKey:@"Level"];
 
   v7 = _LevelForKey(v6, @"Persist");
   if (v7 == 1)
   {
-    v8 = [(NSDictionary *)self->_systemPrefs objectForKey:v4];
+    v8 = [(NSDictionary *)self->_systemPrefs objectForKey:categoryCopy];
     v9 = [v8 objectForKey:@"Level"];
 
     v10 = _LevelForKey(v9, @"Persist");
@@ -272,16 +272,16 @@
   return v10;
 }
 
-- (int64_t)_defaultEnabledLevelForCategory:(id)a3
+- (int64_t)_defaultEnabledLevelForCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->_internalPrefs objectForKey:v4];
+  categoryCopy = category;
+  v5 = [(NSDictionary *)self->_internalPrefs objectForKey:categoryCopy];
   v6 = [v5 objectForKey:@"Level"];
 
   v7 = _LevelForKey(v6, @"Enable");
   if (v7 == 1)
   {
-    v8 = [(NSDictionary *)self->_systemPrefs objectForKey:v4];
+    v8 = [(NSDictionary *)self->_systemPrefs objectForKey:categoryCopy];
     v9 = [v8 objectForKey:@"Level"];
 
     v10 = _LevelForKey(v9, @"Enable");
@@ -318,21 +318,21 @@
   }
 }
 
-- (void)setPersistedLevel:(int64_t)a3
+- (void)setPersistedLevel:(int64_t)level
 {
   if (![(OSLogPreferencesSubsystem *)self isLocked])
   {
 
-    [(OSLogPreferencesSubsystem *)self _setPersistedLevel:a3 forCategory:@"DEFAULT-OPTIONS"];
+    [(OSLogPreferencesSubsystem *)self _setPersistedLevel:level forCategory:@"DEFAULT-OPTIONS"];
   }
 }
 
-- (void)setEnabledLevel:(int64_t)a3
+- (void)setEnabledLevel:(int64_t)level
 {
   if (![(OSLogPreferencesSubsystem *)self isLocked])
   {
 
-    [(OSLogPreferencesSubsystem *)self _setEnabledLevel:a3 forCategory:@"DEFAULT-OPTIONS"];
+    [(OSLogPreferencesSubsystem *)self _setEnabledLevel:level forCategory:@"DEFAULT-OPTIONS"];
   }
 }
 
@@ -345,9 +345,9 @@
     if (result == 1)
     {
       v4 = +[OSLogPreferencesManager sharedManager];
-      v5 = [v4 persistedLevel];
+      persistedLevel = [v4 persistedLevel];
 
-      return v5;
+      return persistedLevel;
     }
   }
 
@@ -363,9 +363,9 @@
     if (result == 1)
     {
       v4 = +[OSLogPreferencesManager sharedManager];
-      v5 = [v4 enabledLevel];
+      enabledLevel = [v4 enabledLevel];
 
-      return v5;
+      return enabledLevel;
     }
   }
 
@@ -382,13 +382,13 @@
 
 - (NSArray)categories
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   systemPrefs = self->_systemPrefs;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __39__OSLogPreferencesSubsystem_categories__block_invoke;
   v17[3] = &unk_2787AEB60;
-  v5 = v3;
+  v5 = array;
   v18 = v5;
   [(NSDictionary *)systemPrefs enumerateKeysAndObjectsUsingBlock:v17];
   internalPrefs = self->_internalPrefs;
@@ -440,19 +440,19 @@ void __39__OSLogPreferencesSubsystem_categories__block_invoke_3(uint64_t a1, voi
   }
 }
 
-- (OSLogPreferencesSubsystem)initWithName:(id)a3
+- (OSLogPreferencesSubsystem)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v38.receiver = self;
   v38.super_class = OSLogPreferencesSubsystem;
   v5 = [(OSLogPreferencesSubsystem *)&v38 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = v4;
+    v8 = nameCopy;
     v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:_os_trace_app_cryptex_sysprefsdir_path()];
     v10 = [v9 stringByAppendingPathComponent:@"Subsystems"];
     v11 = [v10 stringByAppendingPathComponent:v8];

@@ -1,20 +1,20 @@
 @interface SKSetupClient
 - (SKSetupClient)init;
-- (void)_activateBLEWithCompletion:(id)a3;
-- (void)_activateNANContinueWithError:(id)a3;
-- (void)_activateNANWithCompletion:(id)a3;
-- (void)_activateOOBWithCompletion:(id)a3;
-- (void)_activateWithCompletion:(id)a3;
-- (void)_completeWithError:(id)a3;
+- (void)_activateBLEWithCompletion:(id)completion;
+- (void)_activateNANContinueWithError:(id)error;
+- (void)_activateNANWithCompletion:(id)completion;
+- (void)_activateOOBWithCompletion:(id)completion;
+- (void)_activateWithCompletion:(id)completion;
+- (void)_completeWithError:(id)error;
 - (void)_invalidate;
 - (void)_invalidateSteps;
 - (void)_invalidated;
 - (void)_prepareSteps;
 - (void)_prepareStepsOSRecovery;
 - (void)_run;
-- (void)_setupConnectionCommon:(id)a3;
-- (void)activateWithCompletion:(id)a3;
-- (void)tryPassword:(id)a3;
+- (void)_setupConnectionCommon:(id)common;
+- (void)activateWithCompletion:(id)completion;
+- (void)tryPassword:(id)password;
 @end
 
 @implementation SKSetupClient
@@ -43,9 +43,9 @@
         goto LABEL_14;
       }
 
-      v6 = [(SKSetupBase *)self _runSteps];
+      _runSteps = [(SKSetupBase *)self _runSteps];
       v5 = self->super._runState;
-      if (v6)
+      if (_runSteps)
       {
         goto LABEL_12;
       }
@@ -91,9 +91,9 @@ LABEL_17:
         return;
       }
 
-      v4 = [(SKConnection *)self->super._skCnx state];
+      state = [(SKConnection *)self->super._skCnx state];
       v5 = self->super._runState;
-      if (v4 != 1)
+      if (state != 1)
       {
         goto LABEL_14;
       }
@@ -112,17 +112,17 @@ LABEL_12:
   }
 }
 
-- (void)tryPassword:(id)a3
+- (void)tryPassword:(id)password
 {
-  v4 = a3;
+  passwordCopy = password;
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__SKSetupClient_tryPassword___block_invoke;
   v7[3] = &unk_279BB8648;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = passwordCopy;
+  v6 = passwordCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
@@ -185,8 +185,8 @@ LABEL_8:
 - (void)_prepareStepsOSRecovery
 {
   v3 = objc_alloc_init(SKStepBasicConfigClient);
-  v4 = [(SKSetupClient *)self clientConfig];
-  [(SKStepBasicConfigClient *)v3 setClientConfig:v4];
+  clientConfig = [(SKSetupClient *)self clientConfig];
+  [(SKStepBasicConfigClient *)v3 setClientConfig:clientConfig];
 
   [(SKStepBasicConfigClient *)v3 setDispatchQueue:self->super._dispatchQueue];
   [(SKStepBasicConfigClient *)v3 setSkMessaging:self];
@@ -275,12 +275,12 @@ LABEL_7:
   [(SKSetupBase *)&v4 _invalidateSteps];
 }
 
-- (void)_completeWithError:(id)a3
+- (void)_completeWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   var0 = self->super._ucat->var0;
-  v15 = v4;
-  if (v4)
+  v15 = errorCopy;
+  if (errorCopy)
   {
     if (var0 <= 60)
     {
@@ -404,40 +404,40 @@ LABEL_12:
   [(SKSetupBase *)&v8 _invalidate];
 }
 
-- (void)_setupConnectionCommon:(id)a3
+- (void)_setupConnectionCommon:(id)common
 {
-  v4 = a3;
-  [v4 setClientMode:1];
-  [v4 setConditionalPersistent:{-[SKSetupBase conditionalPersistent](self, "conditionalPersistent")}];
-  [v4 setDispatchQueue:self->super._dispatchQueue];
-  [v4 setPassword:self->super._password];
-  [v4 setPersistentPairing:{-[SKSetupBase persistentPairing](self, "persistentPairing")}];
-  [v4 setReversePairing:{-[SKSetupBase reversePairing](self, "reversePairing")}];
+  commonCopy = common;
+  [commonCopy setClientMode:1];
+  [commonCopy setConditionalPersistent:{-[SKSetupBase conditionalPersistent](self, "conditionalPersistent")}];
+  [commonCopy setDispatchQueue:self->super._dispatchQueue];
+  [commonCopy setPassword:self->super._password];
+  [commonCopy setPersistentPairing:{-[SKSetupBase persistentPairing](self, "persistentPairing")}];
+  [commonCopy setReversePairing:{-[SKSetupBase reversePairing](self, "reversePairing")}];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __40__SKSetupClient__setupConnectionCommon___block_invoke;
   v25[3] = &unk_279BB8370;
   v25[4] = self;
-  [v4 setAuthCompletionHandler:v25];
+  [commonCopy setAuthCompletionHandler:v25];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __40__SKSetupClient__setupConnectionCommon___block_invoke_2;
   v24[3] = &unk_279BB83C0;
   v24[4] = self;
-  [v4 setAuthPromptHandler:v24];
+  [commonCopy setAuthPromptHandler:v24];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __40__SKSetupClient__setupConnectionCommon___block_invoke_3;
   v23[3] = &unk_279BB83E8;
   v23[4] = self;
-  [v4 setAuthShowPasswordHandler:v23];
+  [commonCopy setAuthShowPasswordHandler:v23];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __40__SKSetupClient__setupConnectionCommon___block_invoke_4;
   v20[3] = &unk_279BB8838;
-  v5 = v4;
+  v5 = commonCopy;
   v21 = v5;
-  v22 = self;
+  selfCopy = self;
   [v5 setErrorHandler:v20];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
@@ -445,7 +445,7 @@ LABEL_12:
   v17[3] = &unk_279BB8648;
   v6 = v5;
   v18 = v6;
-  v19 = self;
+  selfCopy2 = self;
   [v6 setInvalidationHandler:v17];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -459,14 +459,14 @@ LABEL_12:
   v13[3] = &unk_279BB8438;
   v7 = v6;
   v14 = v7;
-  v15 = self;
+  selfCopy3 = self;
   [v7 setReceivedEventHandler:v13];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __40__SKSetupClient__setupConnectionCommon___block_invoke_8;
   v10[3] = &unk_279BB8810;
   v11 = v7;
-  v12 = self;
+  selfCopy4 = self;
   v8 = v7;
   [v8 setReceivedRequestHandler:v10];
   v9[0] = MEMORY[0x277D85DD0];
@@ -635,9 +635,9 @@ void *__40__SKSetupClient__setupConnectionCommon___block_invoke_8(uint64_t a1, u
   return result;
 }
 
-- (void)_activateOOBWithCompletion:(id)a3
+- (void)_activateOOBWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x3032000000;
@@ -650,7 +650,7 @@ void *__40__SKSetupClient__setupConnectionCommon___block_invoke_8(uint64_t a1, u
   v13[3] = &unk_279BB8500;
   v15 = v16;
   v13[4] = self;
-  v5 = v4;
+  v5 = completionCopy;
   v14 = v5;
   v6 = MEMORY[0x26676A4C0](v13);
   v7 = objc_alloc_init(SKConnection);
@@ -810,10 +810,10 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)_activateNANContinueWithError:(id)a3
+- (void)_activateNANContinueWithError:(id)error
 {
-  v4 = a3;
-  if (!v4)
+  errorCopy = error;
+  if (!errorCopy)
   {
     v5 = self->super._skCnx;
     if (!v5)
@@ -856,7 +856,7 @@ LABEL_9:
 
   if (v5)
   {
-    (v5->_authThrottleDeadlineTicks)(v5, v4);
+    (v5->_authThrottleDeadlineTicks)(v5, errorCopy);
   }
 
 LABEL_10:
@@ -983,9 +983,9 @@ LABEL_23:
 LABEL_16:
 }
 
-- (void)_activateNANWithCompletion:(id)a3
+- (void)_activateNANWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -998,15 +998,15 @@ LABEL_16:
   v18[3] = &unk_279BB8500;
   v20 = &v21;
   v18[4] = self;
-  v5 = v4;
+  v5 = completionCopy;
   v19 = v5;
   v6 = MEMORY[0x26676A4C0](v18);
   v7 = objc_alloc_init(SKConnection);
   objc_storeStrong(&self->super._skCnx, v7);
   [(SKConnection *)v7 setClientMode:1];
   [(SKConnection *)v7 setPassword:self->super._password];
-  v8 = [(SKDevice *)self->super._peerDevice identifier];
-  if (v8)
+  identifier = [(SKDevice *)self->super._peerDevice identifier];
+  if (identifier)
   {
     v9 = objc_alloc_init(MEMORY[0x277D028A8]);
     objc_storeStrong(&self->_nanSubscriber, v9);
@@ -1021,7 +1021,7 @@ LABEL_16:
     v17[1] = 3221225472;
     v17[2] = __44__SKSetupClient__activateNANWithCompletion___block_invoke_2;
     v17[3] = &unk_279BB8320;
-    v17[4] = v8;
+    v17[4] = identifier;
     v17[5] = self;
     [v9 setEndpointFoundHandler:v17];
     v16[0] = MEMORY[0x277D85DD0];
@@ -1030,7 +1030,7 @@ LABEL_16:
     v16[3] = &unk_279BB8348;
     v16[4] = v9;
     v16[5] = self;
-    v16[6] = v8;
+    v16[6] = identifier;
     v16[7] = v7;
     [v9 setReceiveHandler:v16];
     v15[0] = MEMORY[0x277D85DD0];
@@ -1327,9 +1327,9 @@ LABEL_6:
   return MEMORY[0x2821F96F8](v3, v4);
 }
 
-- (void)_activateBLEWithCompletion:(id)a3
+- (void)_activateBLEWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -1342,7 +1342,7 @@ LABEL_6:
   v16[3] = &unk_279BB8500;
   v18 = &v19;
   v16[4] = self;
-  v5 = v4;
+  v5 = completionCopy;
   v17 = v5;
   v6 = MEMORY[0x26676A4C0](v16);
   v7 = objc_alloc_init(SKConnection);
@@ -1514,9 +1514,9 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v33 = 0;
   v34 = &v33;
   v35 = 0x3032000000;
@@ -1529,7 +1529,7 @@ LABEL_18:
   v30[3] = &unk_279BB8500;
   v32 = &v33;
   v30[4] = self;
-  v5 = v4;
+  v5 = completionCopy;
   v31 = v5;
   v6 = MEMORY[0x26676A4C0](v30);
   if (self->super._activateCalled || self->super._invalidateCalled)
@@ -1570,9 +1570,9 @@ LABEL_24:
     controlFlags = self->super._controlFlags;
     v13 = CUPrintFlags32();
     peerDevice = self->super._peerDevice;
-    v15 = [(SKSetupBase *)self reversePairing];
+    reversePairing = [(SKSetupBase *)self reversePairing];
     v16 = "no";
-    if (v15)
+    if (reversePairing)
     {
       v16 = "yes";
     }
@@ -1673,17 +1673,17 @@ LABEL_7:
   return v8();
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatchQueue = self->super._dispatchQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__SKSetupClient_activateWithCompletion___block_invoke;
   v7[3] = &unk_279BB82D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(dispatchQueue, v7);
 }
 

@@ -45,55 +45,55 @@
     return 0;
   }
 
-  v0 = [getAXSettingsClass() sharedInstance];
-  v1 = [v0 assistiveTouchActionsBySoundAction];
-  v2 = [v1 count];
+  sharedInstance = [getAXSettingsClass() sharedInstance];
+  assistiveTouchActionsBySoundAction = [sharedInstance assistiveTouchActionsBySoundAction];
+  v2 = [assistiveTouchActionsBySoundAction count];
 
   if (v2 && AXDeviceSupportsOnDeviceEyeTracking())
   {
-    v3 = [v0 assistiveTouchMouseOnDeviceEyeTrackingEnabled];
+    assistiveTouchMouseOnDeviceEyeTrackingEnabled = [sharedInstance assistiveTouchMouseOnDeviceEyeTrackingEnabled];
   }
 
   else
   {
-    v3 = 0;
+    assistiveTouchMouseOnDeviceEyeTrackingEnabled = 0;
   }
 
-  return v3;
+  return assistiveTouchMouseOnDeviceEyeTrackingEnabled;
 }
 
 - (uint64_t)shouldBeListeningForSoundActions
 {
-  if ([a1 _shouldActivateVoiceTriggerSupportForSwitchControl] & 1) != 0 || (objc_msgSend(a1, "_shouldActivateVoiceTriggerSupportForVoiceOver") & 1) != 0 || (objc_msgSend(a1, "_shouldActivateVoiceTriggerSupportForSystem"))
+  if ([self _shouldActivateVoiceTriggerSupportForSwitchControl] & 1) != 0 || (objc_msgSend(self, "_shouldActivateVoiceTriggerSupportForVoiceOver") & 1) != 0 || (objc_msgSend(self, "_shouldActivateVoiceTriggerSupportForSystem"))
   {
     return 1;
   }
 
-  return [a1 _shouldActiveVoiceTriggerSupportForAssistiveTouch];
+  return [self _shouldActiveVoiceTriggerSupportForAssistiveTouch];
 }
 
 - (BOOL)shouldBeListeningForSoundRecognitionSystemSounds
 {
-  if ([a1 soundDetectionState] != 2)
+  if ([self soundDetectionState] != 2)
   {
     return 0;
   }
 
-  v2 = [a1 enabledSoundDetectionTypes];
-  v3 = [v2 count] != 0;
+  enabledSoundDetectionTypes = [self enabledSoundDetectionTypes];
+  v3 = [enabledSoundDetectionTypes count] != 0;
 
   return v3;
 }
 
 - (BOOL)shouldBeListeningForSoundRecognitionCustomSounds
 {
-  if ([a1 soundDetectionState] != 2)
+  if ([self soundDetectionState] != 2)
   {
     return 0;
   }
 
-  v2 = [a1 enabledKShotDetectorIdentifiers];
-  v3 = [v2 count] != 0;
+  enabledKShotDetectorIdentifiers = [self enabledKShotDetectorIdentifiers];
+  v3 = [enabledKShotDetectorIdentifiers count] != 0;
 
   return v3;
 }
@@ -101,54 +101,54 @@
 - (void)addKShotDetector:()AXSoundDetectionUIAdditions
 {
   v4 = a3;
-  v5 = [a1 decodedKShotDetectors];
-  v7 = [v5 mutableCopy];
+  decodedKShotDetectors = [self decodedKShotDetectors];
+  v7 = [decodedKShotDetectors mutableCopy];
 
-  v6 = [v4 identifier];
-  [v7 setObject:v4 forKey:v6];
+  identifier = [v4 identifier];
+  [v7 setObject:v4 forKey:identifier];
 
-  [a1 encodeAndSaveKShotDetectors:v7];
+  [self encodeAndSaveKShotDetectors:v7];
 }
 
 - (void)updateKShotDetector:()AXSoundDetectionUIAdditions
 {
   v4 = a3;
-  v5 = [a1 decodedKShotDetectors];
-  v7 = [v5 mutableCopy];
+  decodedKShotDetectors = [self decodedKShotDetectors];
+  v7 = [decodedKShotDetectors mutableCopy];
 
-  v6 = [v4 identifier];
-  [v7 setObject:v4 forKey:v6];
+  identifier = [v4 identifier];
+  [v7 setObject:v4 forKey:identifier];
 
-  [a1 encodeAndSaveKShotDetectors:v7];
+  [self encodeAndSaveKShotDetectors:v7];
 }
 
 - (void)removeKShotDetector:()AXSoundDetectionUIAdditions
 {
   v4 = a3;
-  v5 = [a1 decodedKShotDetectors];
-  v7 = [v5 mutableCopy];
+  decodedKShotDetectors = [self decodedKShotDetectors];
+  v7 = [decodedKShotDetectors mutableCopy];
 
-  v6 = [v4 identifier];
-  [v7 removeObjectForKey:v6];
+  identifier = [v4 identifier];
+  [v7 removeObjectForKey:identifier];
 
-  [a1 deleteTrainingFilesForDetector:v4];
-  [a1 deleteModelForDetector:v4];
+  [self deleteTrainingFilesForDetector:v4];
+  [self deleteModelForDetector:v4];
 
-  [a1 encodeAndSaveKShotDetectors:v7];
+  [self encodeAndSaveKShotDetectors:v7];
 }
 
 - (void)removeAllKShotDetectors
 {
-  v2 = [MEMORY[0x277CBEAC0] dictionary];
-  v3 = [a1 encodeKShotDetectors:v2];
+  dictionary = [MEMORY[0x277CBEAC0] dictionary];
+  v3 = [self encodeKShotDetectors:dictionary];
 
-  [a1 setKShotDetectors:v3];
+  [self setKShotDetectors:v3];
 }
 
 - (id)decodedKShotDetectors
 {
-  v2 = [a1 kShotDetectors];
-  v3 = [a1 decodeKShotDetectors:v2];
+  kShotDetectors = [self kShotDetectors];
+  v3 = [self decodeKShotDetectors:kShotDetectors];
 
   return v3;
 }
@@ -158,15 +158,15 @@
   v5 = a3;
   if ([v5 isCustom])
   {
-    [a1 setKShotDetectorIsEnabled:v5 isEnabled:1];
+    [self setKShotDetectorIsEnabled:v5 isEnabled:1];
   }
 
   else
   {
-    v4 = [v5 identifier];
+    identifier = [v5 identifier];
 
-    [a1 addSoundDetectionType:v4];
-    v5 = v4;
+    [self addSoundDetectionType:identifier];
+    v5 = identifier;
   }
 }
 
@@ -175,15 +175,15 @@
   v5 = a3;
   if ([v5 isCustom])
   {
-    [a1 setKShotDetectorIsEnabled:v5 isEnabled:1];
+    [self setKShotDetectorIsEnabled:v5 isEnabled:1];
   }
 
   else
   {
-    v4 = [v5 identifier];
+    identifier = [v5 identifier];
 
-    [a1 addSoundDetectionType:v4];
-    v5 = v4;
+    [self addSoundDetectionType:identifier];
+    v5 = identifier;
   }
 }
 
@@ -192,20 +192,20 @@
   v7 = a3;
   if ([v7 isCustom])
   {
-    [a1 setKShotDetectorIsEnabled:v7 isEnabled:a4];
+    [self setKShotDetectorIsEnabled:v7 isEnabled:a4];
   }
 
   else
   {
-    v6 = [v7 identifier];
+    identifier = [v7 identifier];
     if (a4)
     {
-      [a1 addSoundDetectionType:v6];
+      [self addSoundDetectionType:identifier];
     }
 
     else
     {
-      [a1 removeSoundDetectionType:v6];
+      [self removeSoundDetectionType:identifier];
     }
   }
 }
@@ -213,62 +213,62 @@
 - (void)setKShotDetectorIsEnabled:()AXSoundDetectionUIAdditions isEnabled:
 {
   v6 = a3;
-  v7 = [a1 enabledKShotDetectorIdentifiers];
-  v9 = [v7 mutableCopy];
+  enabledKShotDetectorIdentifiers = [self enabledKShotDetectorIdentifiers];
+  v9 = [enabledKShotDetectorIdentifiers mutableCopy];
 
-  v8 = [v6 identifier];
+  identifier = [v6 identifier];
 
   if (a4)
   {
-    [v9 addObject:v8];
+    [v9 addObject:identifier];
   }
 
   else
   {
-    [v9 removeObject:v8];
+    [v9 removeObject:identifier];
   }
 
-  [a1 setEnabledKShotDetectorIdentifiers:v9];
+  [self setEnabledKShotDetectorIdentifiers:v9];
 }
 
 - (void)setKShotDetectorModelFailed:()AXSoundDetectionUIAdditions modelFailed:
 {
   v6 = a3;
-  v7 = [a1 decodedKShotDetectors];
-  v10 = [v7 mutableCopy];
+  decodedKShotDetectors = [self decodedKShotDetectors];
+  v10 = [decodedKShotDetectors mutableCopy];
 
-  v8 = [v6 identifier];
+  identifier = [v6 identifier];
 
-  v9 = [v10 objectForKey:v8];
+  v9 = [v10 objectForKey:identifier];
   [v9 setModelFailed:a4];
 
-  [a1 encodeAndSaveKShotDetectors:v10];
+  [self encodeAndSaveKShotDetectors:v10];
 }
 
 - (void)editKShotDetectorName:()AXSoundDetectionUIAdditions newName:
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 decodedKShotDetectors];
-  v11 = [v8 mutableCopy];
+  decodedKShotDetectors = [self decodedKShotDetectors];
+  v11 = [decodedKShotDetectors mutableCopy];
 
-  v9 = [v7 identifier];
+  identifier = [v7 identifier];
 
-  v10 = [v11 objectForKey:v9];
+  v10 = [v11 objectForKey:identifier];
   [v10 setName:v6];
 
-  [a1 encodeAndSaveKShotDetectors:v11];
+  [self encodeAndSaveKShotDetectors:v11];
 }
 
 - (id)decodeKShotDetectors:()AXSoundDetectionUIAdditions
 {
   v21[3] = *MEMORY[0x277D85DE8];
   v3 = a3;
-  v4 = [MEMORY[0x277CBEA90] data];
+  data = [MEMORY[0x277CBEA90] data];
 
-  if (v4 == v3)
+  if (data == v3)
   {
-    v15 = [MEMORY[0x277CBEAC0] dictionary];
+    dictionary = [MEMORY[0x277CBEAC0] dictionary];
   }
 
   else
@@ -291,7 +291,7 @@
     v13 = v12;
     if (v11)
     {
-      v14 = v11;
+      dictionary2 = v11;
     }
 
     else
@@ -305,15 +305,15 @@
         }
       }
 
-      v14 = [MEMORY[0x277CBEAC0] dictionary];
+      dictionary2 = [MEMORY[0x277CBEAC0] dictionary];
     }
 
-    v15 = v14;
+    dictionary = dictionary2;
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return dictionary;
 }
 
 - (id)encodeKShotDetectors:()AXSoundDetectionUIAdditions
@@ -335,29 +335,29 @@
 
 - (void)encodeAndSaveKShotDetectors:()AXSoundDetectionUIAdditions
 {
-  v2 = [a1 encodeKShotDetectors:?];
-  [a1 setKShotDetectors:v2];
+  v2 = [self encodeKShotDetectors:?];
+  [self setKShotDetectors:v2];
 }
 
 - (id)kShotSoundRecordingsForDetector:()AXSoundDetectionUIAdditions
 {
   v4 = a3;
-  v5 = [a1 kShotSoundRecordings];
-  v6 = [v4 identifier];
+  kShotSoundRecordings = [self kShotSoundRecordings];
+  identifier = [v4 identifier];
 
-  v7 = [v5 objectForKeyedSubscript:v6];
+  v7 = [kShotSoundRecordings objectForKeyedSubscript:identifier];
 
   if (v7)
   {
-    v8 = v7;
+    array = v7;
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
   }
 
-  v9 = v8;
+  v9 = array;
 
   return v9;
 }
@@ -389,26 +389,26 @@
 - (id)detectorForIdentifier:()AXSoundDetectionUIAdditions
 {
   v4 = a3;
-  v5 = [a1 decodedKShotDetectors];
-  v6 = [v5 objectForKey:v4];
+  decodedKShotDetectors = [self decodedKShotDetectors];
+  v6 = [decodedKShotDetectors objectForKey:v4];
 
   return v6;
 }
 
 - (uint64_t)hasCustomToneForKshotDetector:()AXSoundDetectionUIAdditions
 {
-  v3 = [a3 identifier];
-  if (v3)
+  identifier = [a3 identifier];
+  if (identifier)
   {
-    v4 = [MEMORY[0x277D71F78] sharedToneManager];
-    v5 = [v4 defaultToneIdentifierForAlertType:29 topic:v3];
+    mEMORY[0x277D71F78] = [MEMORY[0x277D71F78] sharedToneManager];
+    v5 = [mEMORY[0x277D71F78] defaultToneIdentifierForAlertType:29 topic:identifier];
 
-    v6 = [MEMORY[0x277D71F78] sharedToneManager];
-    v7 = [v6 currentToneIdentifierForAlertType:29 topic:v3];
+    mEMORY[0x277D71F78]2 = [MEMORY[0x277D71F78] sharedToneManager];
+    v7 = [mEMORY[0x277D71F78]2 currentToneIdentifierForAlertType:29 topic:identifier];
 
-    v8 = [v7 lowercaseString];
-    v9 = [v5 lowercaseString];
-    v10 = [v8 isEqualToString:v9] ^ 1;
+    lowercaseString = [v7 lowercaseString];
+    lowercaseString2 = [v5 lowercaseString];
+    v10 = [lowercaseString isEqualToString:lowercaseString2] ^ 1;
   }
 
   else
@@ -427,18 +427,18 @@
 
 - (uint64_t)hasCustomHapticForKshotDetector:()AXSoundDetectionUIAdditions
 {
-  v3 = [a3 identifier];
-  if (v3)
+  identifier = [a3 identifier];
+  if (identifier)
   {
-    v4 = [MEMORY[0x277D71F88] sharedVibrationManager];
-    v5 = [v4 defaultVibrationIdentifierForAlertType:29 topic:v3];
+    mEMORY[0x277D71F88] = [MEMORY[0x277D71F88] sharedVibrationManager];
+    v5 = [mEMORY[0x277D71F88] defaultVibrationIdentifierForAlertType:29 topic:identifier];
 
-    v6 = [MEMORY[0x277D71F88] sharedVibrationManager];
-    v7 = [v6 currentVibrationIdentifierForAlertType:29 topic:v3];
+    mEMORY[0x277D71F88]2 = [MEMORY[0x277D71F88] sharedVibrationManager];
+    v7 = [mEMORY[0x277D71F88]2 currentVibrationIdentifierForAlertType:29 topic:identifier];
 
-    v8 = [v7 lowercaseString];
-    v9 = [v5 lowercaseString];
-    v10 = [v8 isEqualToString:v9] ^ 1;
+    lowercaseString = [v7 lowercaseString];
+    lowercaseString2 = [v5 lowercaseString];
+    v10 = [lowercaseString isEqualToString:lowercaseString2] ^ 1;
   }
 
   else
@@ -458,14 +458,14 @@
 - (void)deleteRecordingLinksForDetector:()AXSoundDetectionUIAdditions
 {
   v4 = a3;
-  v5 = [a1 kShotSoundRecordings];
-  v8 = [v5 mutableCopy];
+  kShotSoundRecordings = [self kShotSoundRecordings];
+  v8 = [kShotSoundRecordings mutableCopy];
 
-  v6 = [MEMORY[0x277CBEA60] array];
-  v7 = [v4 identifier];
+  array = [MEMORY[0x277CBEA60] array];
+  identifier = [v4 identifier];
 
-  [v8 setObject:v6 forKey:v7];
-  [a1 setKShotSoundRecordings:v8];
+  [v8 setObject:array forKey:identifier];
+  [self setKShotSoundRecordings:v8];
 }
 
 - (uint64_t)deleteTrainingFilesForDetector:()AXSoundDetectionUIAdditions
@@ -473,30 +473,30 @@
   v26 = *MEMORY[0x277D85DE8];
   v4 = a3;
   v5 = [MEMORY[0x277CBEBC0] fileURLWithPath:@"/var/mobile/Library/Accessibility/SoundDetectionKShot/TrainingFiles"];
-  v6 = [v4 identifier];
-  v7 = [v5 URLByAppendingPathComponent:v6];
+  identifier = [v4 identifier];
+  v7 = [v5 URLByAppendingPathComponent:identifier];
 
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v7 path];
-  v10 = [v8 fileExistsAtPath:v9];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v7 path];
+  v10 = [defaultManager fileExistsAtPath:path];
 
   if (v10)
   {
     v21 = 0;
-    v11 = [v8 removeItemAtURL:v7 error:&v21];
+    v11 = [defaultManager removeItemAtURL:v7 error:&v21];
     v12 = v21;
     v13 = v12;
     if (v11)
     {
-      [a1 deleteRecordingLinksForDetector:v4];
+      [self deleteRecordingLinksForDetector:v4];
       v14 = AXLogUltron();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        v15 = [v4 name];
+        name = [v4 name];
         *buf = 138412546;
         v23 = v5;
         v24 = 2112;
-        v25 = v15;
+        v25 = name;
         _os_log_impl(&dword_23D62D000, v14, OS_LOG_TYPE_INFO, "Deleted training files at path: %@ for detector: %@", buf, 0x16u);
       }
 
@@ -527,9 +527,9 @@
     v16 = 1;
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v17 = [v4 name];
+      name2 = [v4 name];
       *buf = 138412290;
-      v23 = v17;
+      v23 = name2;
       _os_log_impl(&dword_23D62D000, v13, OS_LOG_TYPE_INFO, "No need to delete training files for detector: %@, since the directory does not exist", buf, 0xCu);
     }
   }
@@ -542,11 +542,11 @@ LABEL_13:
 - (void)disableKShotDetector:()AXSoundDetectionUIAdditions
 {
   v4 = a3;
-  v5 = [a1 enabledKShotDetectorIdentifiers];
-  v6 = [v5 mutableCopy];
+  enabledKShotDetectorIdentifiers = [self enabledKShotDetectorIdentifiers];
+  v6 = [enabledKShotDetectorIdentifiers mutableCopy];
 
   [v6 removeObject:v4];
-  [a1 setEnabledKShotDetectorIdentifiers:v6];
+  [self setEnabledKShotDetectorIdentifiers:v6];
 }
 
 - (uint64_t)deleteModelForDetector:()AXSoundDetectionUIAdditions
@@ -554,18 +554,18 @@ LABEL_13:
   v26 = *MEMORY[0x277D85DE8];
   v3 = a3;
   v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:*MEMORY[0x277CE6ED0]];
-  v5 = [v3 identifier];
-  v6 = [v5 stringByAppendingString:@".mlmodel"];
+  identifier = [v3 identifier];
+  v6 = [identifier stringByAppendingString:@".mlmodel"];
 
   v7 = [v4 URLByAppendingPathComponent:v6];
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v7 path];
-  v10 = [v8 fileExistsAtPath:v9];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v7 path];
+  v10 = [defaultManager fileExistsAtPath:path];
 
   if (v10)
   {
     v21 = 0;
-    v11 = [v8 removeItemAtURL:v7 error:&v21];
+    v11 = [defaultManager removeItemAtURL:v7 error:&v21];
     v12 = v21;
     v13 = v12;
     if (v11)
@@ -573,11 +573,11 @@ LABEL_13:
       v14 = AXLogUltron();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        v15 = [v3 name];
+        name = [v3 name];
         *buf = 138412546;
         v23 = v4;
         v24 = 2112;
-        v25 = v15;
+        v25 = name;
         _os_log_impl(&dword_23D62D000, v14, OS_LOG_TYPE_INFO, "Deleted model at path: %@ for detector: %@", buf, 0x16u);
       }
 
@@ -608,9 +608,9 @@ LABEL_13:
     v16 = 1;
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v17 = [v3 name];
+      name2 = [v3 name];
       *buf = 138412290;
-      v23 = v17;
+      v23 = name2;
       _os_log_impl(&dword_23D62D000, v13, OS_LOG_TYPE_INFO, "No need to delete model for detector: %@, since the model does not exist", buf, 0xCu);
     }
   }

@@ -1,26 +1,26 @@
 @interface BMSiriQueryResult
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (BMSiriQueryResult)initWithCoder:(id)a3;
-- (BMSiriQueryResult)initWithProto:(id)a3;
-- (BMSiriQueryResult)initWithProtoData:(id)a3;
-- (BMSiriQueryResult)initWithQID:(id)a3 domain:(id)a4 confidence:(double)a5;
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (BMSiriQueryResult)initWithCoder:(id)coder;
+- (BMSiriQueryResult)initWithProto:(id)proto;
+- (BMSiriQueryResult)initWithProtoData:(id)data;
+- (BMSiriQueryResult)initWithQID:(id)d domain:(id)domain confidence:(double)confidence;
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (id)encodeAsProto;
 - (id)json;
 - (id)jsonDict;
 - (id)proto;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMSiriQueryResult
 
-- (BMSiriQueryResult)initWithQID:(id)a3 domain:(id)a4 confidence:(double)a5
+- (BMSiriQueryResult)initWithQID:(id)d domain:(id)domain confidence:(double)confidence
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  dCopy = d;
+  domainCopy = domain;
+  if (!domainCopy)
   {
     [BMSiriQueryResult initWithQID:domain:confidence:];
   }
@@ -31,20 +31,20 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_qid, a3);
-    objc_storeStrong(&v12->_domain, a4);
-    v12->_confidence = a5;
+    objc_storeStrong(&v11->_qid, d);
+    objc_storeStrong(&v12->_domain, domain);
+    v12->_confidence = confidence;
   }
 
   return v12;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  v6 = a3;
-  if (a4 == 2)
+  dataCopy = data;
+  if (version == 2)
   {
-    v7 = [[a1 alloc] initWithProtoData:v6];
+    v7 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else
@@ -66,14 +66,14 @@
   v11[3] = *MEMORY[0x1E69E9840];
   v10[0] = @"qid";
   qid = self->_qid;
-  v4 = qid;
+  null = qid;
   if (!qid)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   domain = self->_domain;
-  v11[0] = v4;
+  v11[0] = null;
   v11[1] = domain;
   v10[1] = @"domain";
   v10[2] = @"confidence";
@@ -93,9 +93,9 @@
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(BMSiriQueryResult *)self jsonDict];
+  jsonDict = [(BMSiriQueryResult *)self jsonDict];
   v8 = 0;
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:&v8];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:&v8];
   v5 = v8;
 
   if (!v4)
@@ -110,58 +110,58 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(BMSiriQueryResult *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"dat"];
+  coderCopy = coder;
+  encodeAsProto = [(BMSiriQueryResult *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"dat"];
 }
 
-- (BMSiriQueryResult)initWithCoder:(id)a3
+- (BMSiriQueryResult)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E69C5D78];
-  v5 = a3;
-  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:v5 expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
+  coderCopy = coder;
+  v6 = [v4 robustDecodeObjectOfClass:objc_opt_class() forKey:@"dat" withCoder:coderCopy expectNonNull:1 errorDomain:@"BMStreamErrorDomain" errorCode:2 logHandle:0];
 
   if (v6)
   {
     self = [(BMSiriQueryResult *)self initWithProtoData:v6];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(BMSiriQueryResult *)self proto];
-  v3 = [v2 data];
+  proto = [(BMSiriQueryResult *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (BMSiriQueryResult)initWithProto:(id)a3
+- (BMSiriQueryResult)initWithProto:(id)proto
 {
-  v4 = a3;
-  if (v4)
+  protoCopy = proto;
+  if (protoCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = protoCopy;
       if ([v5 hasDomain]&& ([v5 hasConfidence]& 1) != 0)
       {
         v6 = [v5 qid];
-        v7 = [v5 domain];
+        domain = [v5 domain];
         [v5 confidence];
-        self = [(BMSiriQueryResult *)self initWithQID:v6 domain:v7 confidence:?];
+        self = [(BMSiriQueryResult *)self initWithQID:v6 domain:domain confidence:?];
 
-        v8 = self;
+        selfCopy = self;
 LABEL_13:
 
         goto LABEL_14;
@@ -183,33 +183,33 @@ LABEL_13:
       }
     }
 
-    v8 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
-  v8 = 0;
+  selfCopy = 0;
 LABEL_14:
 
-  return v8;
+  return selfCopy;
 }
 
-- (BMSiriQueryResult)initWithProtoData:(id)a3
+- (BMSiriQueryResult)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[BMPBSiriQueryResult alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[BMPBSiriQueryResult alloc] initWithData:dataCopy];
 
     self = [(BMSiriQueryResult *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -218,8 +218,8 @@ LABEL_14:
   v4 = [(BMSiriQueryResult *)self qid];
   [v3 setQid:v4];
 
-  v5 = [(BMSiriQueryResult *)self domain];
-  [v3 setDomain:v5];
+  domain = [(BMSiriQueryResult *)self domain];
+  [v3 setDomain:domain];
 
   [(BMSiriQueryResult *)self confidence];
   [v3 setConfidence:?];
@@ -236,9 +236,9 @@ LABEL_14:
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -246,7 +246,7 @@ LABEL_14:
     goto LABEL_18;
   }
 
-  v7 = v6;
+  v7 = equalCopy;
   v8 = v7;
   qid = self->_qid;
   v10 = qid;
@@ -274,8 +274,8 @@ LABEL_14:
   v11 = 1;
 LABEL_10:
   domain = self->_domain;
-  v14 = [v8 domain];
-  if ([(NSString *)domain isEqualToString:v14])
+  domain = [v8 domain];
+  if ([(NSString *)domain isEqualToString:domain])
   {
     confidence = self->_confidence;
     [v8 confidence];
@@ -301,12 +301,12 @@ LABEL_18:
   return v12;
 }
 
-- (BOOL)isCompleteWithContext:(id)a3 error:(id *)a4
+- (BOOL)isCompleteWithContext:(id)context error:(id *)error
 {
   domain = self->_domain;
-  if (a4 && !domain)
+  if (error && !domain)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithDomain:@"BMStreamErrorDomain" code:3 userInfo:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithDomain:@"BMStreamErrorDomain" code:3 userInfo:0];
   }
 
   return domain != 0;

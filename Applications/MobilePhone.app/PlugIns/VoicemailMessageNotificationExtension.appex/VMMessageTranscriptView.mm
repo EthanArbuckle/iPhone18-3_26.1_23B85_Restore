@@ -7,13 +7,13 @@
 - (double)titleLabelFirstBaselineLayoutConstraintConstant;
 - (void)_refreshAttributedText;
 - (void)commonInit;
-- (void)handleFeedbackTextViewTapGesture:(id)a3;
-- (void)handleSuggestionsTapGesture:(id)a3;
-- (void)handleTextViewTapGesture:(id)a3;
+- (void)handleFeedbackTextViewTapGesture:(id)gesture;
+- (void)handleSuggestionsTapGesture:(id)gesture;
+- (void)handleTextViewTapGesture:(id)gesture;
 - (void)loadConstraints;
-- (void)openFeedbackURL:(id)a3;
-- (void)setHideAccessoryViews:(BOOL)a3;
-- (void)setViewModel:(id)a3;
+- (void)openFeedbackURL:(id)l;
+- (void)setHideAccessoryViews:(BOOL)views;
+- (void)setViewModel:(id)model;
 - (void)tintColorDidChange;
 - (void)updateConstraintsConstants;
 - (void)updateQuickActionsStackView;
@@ -103,14 +103,14 @@
   [(VMMessageTranscriptView *)self textViewLineHeight];
   [(UITextView *)self->_textView setLineHeight:?];
   [(UITextView *)self->_textView setScrollEnabled:0];
-  v26 = [(UITextView *)self->_textView textContainer];
-  [v26 setLineBreakMode:4];
+  textContainer = [(UITextView *)self->_textView textContainer];
+  [textContainer setLineBreakMode:4];
 
-  v27 = [(UITextView *)self->_textView textContainer];
-  [v27 setLineFragmentPadding:0.0];
+  textContainer2 = [(UITextView *)self->_textView textContainer];
+  [textContainer2 setLineFragmentPadding:0.0];
 
-  v28 = [(UITextView *)self->_textView textContainer];
-  [v28 setMaximumNumberOfLines:0];
+  textContainer3 = [(UITextView *)self->_textView textContainer];
+  [textContainer3 setMaximumNumberOfLines:0];
 
   [(UITextView *)self->_textView setTextContainerInset:UIEdgeInsetsZero.top, left, bottom, right];
   [(UITextView *)self->_textView setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -143,11 +143,11 @@
 
   [(UITextView *)self->_feedbackTextView setScrollEnabled:0];
   [(UITextView *)self->_feedbackTextView setSelectable:0];
-  v35 = [(UITextView *)self->_feedbackTextView textContainer];
-  [v35 setLineFragmentPadding:0.0];
+  textContainer4 = [(UITextView *)self->_feedbackTextView textContainer];
+  [textContainer4 setLineFragmentPadding:0.0];
 
-  v36 = [(UITextView *)self->_feedbackTextView textContainer];
-  [v36 setMaximumNumberOfLines:0];
+  textContainer5 = [(UITextView *)self->_feedbackTextView textContainer];
+  [textContainer5 setMaximumNumberOfLines:0];
 
   [(UITextView *)self->_feedbackTextView setTextContainerInset:UIEdgeInsetsZero.top, left, bottom, right];
   [(UITextView *)self->_feedbackTextView setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -159,8 +159,8 @@
   v49 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v38 = [(UITextView *)self->_feedbackTextView gestureRecognizers];
-  v39 = [v38 countByEnumeratingWithState:&v46 objects:v51 count:16];
+  gestureRecognizers = [(UITextView *)self->_feedbackTextView gestureRecognizers];
+  v39 = [gestureRecognizers countByEnumeratingWithState:&v46 objects:v51 count:16];
   if (v39)
   {
     v40 = v39;
@@ -171,7 +171,7 @@
       {
         if (*v47 != v41)
         {
-          objc_enumerationMutation(v38);
+          objc_enumerationMutation(gestureRecognizers);
         }
 
         v43 = *(*(&v46 + 1) + 8 * i);
@@ -182,7 +182,7 @@
         }
       }
 
-      v40 = [v38 countByEnumeratingWithState:&v46 objects:v51 count:16];
+      v40 = [gestureRecognizers countByEnumeratingWithState:&v46 objects:v51 count:16];
     }
 
     while (v40);
@@ -199,33 +199,33 @@
 
 - (void)loadConstraints
 {
-  v3 = [(VMMessageTranscriptView *)self indicatorView];
-  v4 = [v3 topAnchor];
-  v5 = [(VMMessageTranscriptView *)self topAnchor];
+  indicatorView = [(VMMessageTranscriptView *)self indicatorView];
+  topAnchor = [indicatorView topAnchor];
+  topAnchor2 = [(VMMessageTranscriptView *)self topAnchor];
   [(VMMessageTranscriptView *)self indicatorViewTopLayoutConstraintConstant];
-  v6 = [v4 constraintEqualToAnchor:v5 constant:?];
+  v6 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
 
   v7 = NSStringFromSelector("indicatorViewTopLayoutConstraint");
   [v6 setIdentifier:v7];
 
   [v6 setActive:1];
   [(VMMessageTranscriptView *)self setIndicatorViewTopLayoutConstraint:v6];
-  v8 = [(VMMessageTranscriptView *)self indicatorView];
-  v9 = [v8 centerXAnchor];
-  v10 = [(VMMessageTranscriptView *)self centerXAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  indicatorView2 = [(VMMessageTranscriptView *)self indicatorView];
+  centerXAnchor = [indicatorView2 centerXAnchor];
+  centerXAnchor2 = [(VMMessageTranscriptView *)self centerXAnchor];
+  v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
 
   v12 = NSStringFromSelector("indicatorViewCenterXLayoutConstraint");
   [v11 setIdentifier:v12];
 
   [v11 setActive:1];
   [(VMMessageTranscriptView *)self setIndicatorViewCenterXLayoutConstraint:v11];
-  v13 = [(VMMessageTranscriptView *)self titleLabel];
-  v14 = [v13 firstBaselineAnchor];
-  v15 = [(VMMessageTranscriptView *)self indicatorView];
-  v16 = [v15 bottomAnchor];
+  titleLabel = [(VMMessageTranscriptView *)self titleLabel];
+  firstBaselineAnchor = [titleLabel firstBaselineAnchor];
+  indicatorView3 = [(VMMessageTranscriptView *)self indicatorView];
+  bottomAnchor = [indicatorView3 bottomAnchor];
   [(VMMessageTranscriptView *)self titleLabelFirstBaselineLayoutConstraintConstant];
-  v17 = [v14 constraintEqualToAnchor:v16 constant:?];
+  v17 = [firstBaselineAnchor constraintEqualToAnchor:bottomAnchor constant:?];
 
   v18 = NSStringFromSelector("titleLabelTopLayoutConstraint");
   [v17 setIdentifier:v18];
@@ -234,11 +234,11 @@
   [v17 setPriority:v19];
   [v17 setActive:1];
   [(VMMessageTranscriptView *)self setTitleLabelTopLayoutConstraint:v17];
-  v20 = [(VMMessageTranscriptView *)self titleLabel];
-  v21 = [v20 firstBaselineAnchor];
-  v22 = [(VMMessageTranscriptView *)self topAnchor];
+  titleLabel2 = [(VMMessageTranscriptView *)self titleLabel];
+  firstBaselineAnchor2 = [titleLabel2 firstBaselineAnchor];
+  topAnchor3 = [(VMMessageTranscriptView *)self topAnchor];
   [(VMMessageTranscriptView *)self titleLabelFirstBaselineLayoutConstraintConstant];
-  v23 = [v21 constraintEqualToAnchor:v22 constant:?];
+  v23 = [firstBaselineAnchor2 constraintEqualToAnchor:topAnchor3 constant:?];
 
   v24 = NSStringFromSelector("titleLabelFirstBaselineLayoutConstraint");
   [v23 setIdentifier:v24];
@@ -247,52 +247,52 @@
   [v23 setPriority:v25];
   [v23 setActive:1];
   [(VMMessageTranscriptView *)self setTitleLabelFirstBaselineLayoutConstraint:v23];
-  v26 = [(VMMessageTranscriptView *)self titleLabel];
-  v27 = [v26 leadingAnchor];
-  v28 = [(VMMessageTranscriptView *)self leadingAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
+  titleLabel3 = [(VMMessageTranscriptView *)self titleLabel];
+  leadingAnchor = [titleLabel3 leadingAnchor];
+  leadingAnchor2 = [(VMMessageTranscriptView *)self leadingAnchor];
+  v29 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
   v30 = NSStringFromSelector("titleLabelLeadingLayoutConstraint");
   [v29 setIdentifier:v30];
 
   [v29 setActive:1];
   [(VMMessageTranscriptView *)self setTitleLabelLeadingLayoutConstraint:v29];
-  v31 = [(VMMessageTranscriptView *)self trailingAnchor];
-  v32 = [(VMMessageTranscriptView *)self titleLabel];
-  v33 = [v32 trailingAnchor];
-  v34 = [v31 constraintGreaterThanOrEqualToAnchor:v33];
+  trailingAnchor = [(VMMessageTranscriptView *)self trailingAnchor];
+  titleLabel4 = [(VMMessageTranscriptView *)self titleLabel];
+  trailingAnchor2 = [titleLabel4 trailingAnchor];
+  v34 = [trailingAnchor constraintGreaterThanOrEqualToAnchor:trailingAnchor2];
 
   v35 = NSStringFromSelector("titleLabelTrailingLayoutConstraint");
   [v34 setIdentifier:v35];
 
   [v34 setActive:1];
   [(VMMessageTranscriptView *)self setTitleLabelTrailingLayoutConstraint:v34];
-  v36 = [(VMMessageTranscriptView *)self textView];
-  v37 = [v36 leadingAnchor];
-  v38 = [(VMMessageTranscriptView *)self leadingAnchor];
-  v39 = [v37 constraintEqualToAnchor:v38];
+  textView = [(VMMessageTranscriptView *)self textView];
+  leadingAnchor3 = [textView leadingAnchor];
+  leadingAnchor4 = [(VMMessageTranscriptView *)self leadingAnchor];
+  v39 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
 
   v40 = NSStringFromSelector("textViewLeadingLayoutConstraint");
   [v39 setIdentifier:v40];
 
   [v39 setActive:1];
   [(VMMessageTranscriptView *)self setTextViewLeadingLayoutConstraint:v39];
-  v41 = [(VMMessageTranscriptView *)self trailingAnchor];
-  v42 = [(VMMessageTranscriptView *)self textView];
-  v43 = [v42 trailingAnchor];
-  v44 = [v41 constraintEqualToAnchor:v43];
+  trailingAnchor3 = [(VMMessageTranscriptView *)self trailingAnchor];
+  textView2 = [(VMMessageTranscriptView *)self textView];
+  trailingAnchor4 = [textView2 trailingAnchor];
+  v44 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
 
   v45 = NSStringFromSelector("textViewTrailingLayoutConstraint");
   [v44 setIdentifier:v45];
 
   [v44 setActive:1];
   [(VMMessageTranscriptView *)self setTextViewTrailingLayoutConstraint:v44];
-  v46 = [(VMMessageTranscriptView *)self textView];
-  v47 = [v46 firstBaselineAnchor];
-  v48 = [(VMMessageTranscriptView *)self titleLabel];
-  v49 = [v48 lastBaselineAnchor];
+  textView3 = [(VMMessageTranscriptView *)self textView];
+  firstBaselineAnchor3 = [textView3 firstBaselineAnchor];
+  titleLabel5 = [(VMMessageTranscriptView *)self titleLabel];
+  lastBaselineAnchor = [titleLabel5 lastBaselineAnchor];
   [(VMMessageTranscriptView *)self textViewFirstBaselineLayoutConstraintConstant];
-  v50 = [v47 constraintEqualToAnchor:v49 constant:?];
+  v50 = [firstBaselineAnchor3 constraintEqualToAnchor:lastBaselineAnchor constant:?];
 
   LODWORD(v51) = 1148829696;
   [v50 setPriority:v51];
@@ -301,23 +301,23 @@
 
   [v50 setActive:1];
   [(VMMessageTranscriptView *)self setTextViewFirstBaselineLayoutConstraint:v50];
-  v53 = [(VMMessageTranscriptView *)self feedbackTextView];
-  v54 = [v53 topAnchor];
-  v55 = [(VMMessageTranscriptView *)self textView];
-  v56 = [v55 lastBaselineAnchor];
+  feedbackTextView = [(VMMessageTranscriptView *)self feedbackTextView];
+  topAnchor4 = [feedbackTextView topAnchor];
+  textView4 = [(VMMessageTranscriptView *)self textView];
+  lastBaselineAnchor2 = [textView4 lastBaselineAnchor];
   [(VMMessageTranscriptView *)self textViewLastBaselineLayoutConstraintConstant];
-  v57 = [v54 constraintGreaterThanOrEqualToAnchor:v56 constant:?];
+  v57 = [topAnchor4 constraintGreaterThanOrEqualToAnchor:lastBaselineAnchor2 constant:?];
 
   v58 = NSStringFromSelector("textViewLastBaselineLayoutConstraint");
   [v57 setIdentifier:v58];
 
   [v57 setActive:1];
   [(VMMessageTranscriptView *)self setTextViewLastBaselineLayoutConstraint:v57];
-  v59 = [(VMMessageTranscriptView *)self textView];
-  v60 = [v59 firstBaselineAnchor];
-  v61 = [(VMMessageTranscriptView *)self topAnchor];
+  textView5 = [(VMMessageTranscriptView *)self textView];
+  firstBaselineAnchor4 = [textView5 firstBaselineAnchor];
+  topAnchor5 = [(VMMessageTranscriptView *)self topAnchor];
   [(VMMessageTranscriptView *)self textViewFirstBaselineLayoutConstraintConstant];
-  v62 = [v60 constraintEqualToAnchor:v61 constant:?];
+  v62 = [firstBaselineAnchor4 constraintEqualToAnchor:topAnchor5 constant:?];
 
   LODWORD(v63) = 1.0;
   [v62 setPriority:v63];
@@ -326,109 +326,109 @@
 
   [v62 setActive:1];
   [(VMMessageTranscriptView *)self setTextViewFirstBaselineWithoutAccessoryViewsLayoutConstraint:v62];
-  v65 = [(VMMessageTranscriptView *)self featureFlags];
-  LOBYTE(v59) = [v65 smartVoicemailActionsEnabled];
+  featureFlags = [(VMMessageTranscriptView *)self featureFlags];
+  LOBYTE(textView5) = [featureFlags smartVoicemailActionsEnabled];
 
-  if (v59)
+  if (textView5)
   {
-    v66 = [(VMMessageTranscriptView *)self feedbackTextView];
-    v67 = [v66 leadingAnchor];
-    v68 = [(VMMessageTranscriptView *)self leadingAnchor];
-    v69 = [v67 constraintEqualToAnchor:v68];
+    feedbackTextView2 = [(VMMessageTranscriptView *)self feedbackTextView];
+    leadingAnchor5 = [feedbackTextView2 leadingAnchor];
+    leadingAnchor6 = [(VMMessageTranscriptView *)self leadingAnchor];
+    v69 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
 
     v70 = NSStringFromSelector("feedbackTextViewLeadingLayoutConstraint");
     [v69 setIdentifier:v70];
 
     [v69 setActive:1];
     [(VMMessageTranscriptView *)self setFeedbackTextViewLeadingLayoutConstraint:v69];
-    v71 = [(VMMessageTranscriptView *)self trailingAnchor];
-    v72 = [(VMMessageTranscriptView *)self feedbackTextView];
-    v73 = [v72 trailingAnchor];
-    v74 = [v71 constraintEqualToAnchor:v73];
+    trailingAnchor5 = [(VMMessageTranscriptView *)self trailingAnchor];
+    feedbackTextView3 = [(VMMessageTranscriptView *)self feedbackTextView];
+    trailingAnchor6 = [feedbackTextView3 trailingAnchor];
+    v74 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
 
     v75 = NSStringFromSelector("feedbackTextViewTrailingLayoutConstraint");
     [v74 setIdentifier:v75];
 
     [v74 setActive:1];
     [(VMMessageTranscriptView *)self setFeedbackTextViewTrailingLayoutConstraint:v74];
-    v76 = [(VMMessageTranscriptView *)self feedbackTextView];
-    v77 = [v76 topAnchor];
-    v78 = [(VMMessageTranscriptView *)self textView];
-    v79 = [v78 bottomAnchor];
+    feedbackTextView4 = [(VMMessageTranscriptView *)self feedbackTextView];
+    topAnchor6 = [feedbackTextView4 topAnchor];
+    textView6 = [(VMMessageTranscriptView *)self textView];
+    bottomAnchor2 = [textView6 bottomAnchor];
     [(VMMessageTranscriptView *)self textViewLastBaselineLayoutConstraintConstant];
-    v80 = [v77 constraintEqualToAnchor:v79 constant:?];
+    v80 = [topAnchor6 constraintEqualToAnchor:bottomAnchor2 constant:?];
 
     v81 = NSStringFromSelector("feedbackTextViewTopLayoutConstraint");
     [v80 setIdentifier:v81];
 
     [v80 setActive:1];
     [(VMMessageTranscriptView *)self setFeedbackTextViewTopLayoutConstraint:v80];
-    v82 = [(VMMessageTranscriptView *)self suggestionsLabel];
-    v83 = [v82 leadingAnchor];
-    v84 = [(VMMessageTranscriptView *)self leadingAnchor];
-    v85 = [v83 constraintEqualToAnchor:v84];
+    suggestionsLabel = [(VMMessageTranscriptView *)self suggestionsLabel];
+    leadingAnchor7 = [suggestionsLabel leadingAnchor];
+    leadingAnchor8 = [(VMMessageTranscriptView *)self leadingAnchor];
+    v85 = [leadingAnchor7 constraintEqualToAnchor:leadingAnchor8];
 
     v86 = NSStringFromSelector("suggestionsLabelLeadingLayoutConstraint");
     [v85 setIdentifier:v86];
 
     [v85 setActive:1];
     [(VMMessageTranscriptView *)self setSuggestionsLabelLeadingLayoutConstraint:v85];
-    v87 = [(VMMessageTranscriptView *)self trailingAnchor];
-    v88 = [(VMMessageTranscriptView *)self suggestionsLabel];
-    v89 = [v88 trailingAnchor];
-    v90 = [v87 constraintEqualToAnchor:v89];
+    trailingAnchor7 = [(VMMessageTranscriptView *)self trailingAnchor];
+    suggestionsLabel2 = [(VMMessageTranscriptView *)self suggestionsLabel];
+    trailingAnchor8 = [suggestionsLabel2 trailingAnchor];
+    v90 = [trailingAnchor7 constraintEqualToAnchor:trailingAnchor8];
 
     v91 = NSStringFromSelector("suggestionsLabelTrailingLayoutConstraint");
     [v90 setIdentifier:v91];
 
     [v90 setActive:1];
     [(VMMessageTranscriptView *)self setSuggestionsLabelTrailingLayoutConstraint:v90];
-    v92 = [(VMMessageTranscriptView *)self suggestionsLabel];
-    v93 = [v92 topAnchor];
-    v94 = [(VMMessageTranscriptView *)self feedbackTextView];
-    v95 = [v94 bottomAnchor];
-    v96 = [v93 constraintEqualToAnchor:v95 constant:30.0];
+    suggestionsLabel3 = [(VMMessageTranscriptView *)self suggestionsLabel];
+    topAnchor7 = [suggestionsLabel3 topAnchor];
+    feedbackTextView5 = [(VMMessageTranscriptView *)self feedbackTextView];
+    bottomAnchor3 = [feedbackTextView5 bottomAnchor];
+    v96 = [topAnchor7 constraintEqualToAnchor:bottomAnchor3 constant:30.0];
 
     v97 = NSStringFromSelector("suggestionsLabelTopLayoutConstraint");
     [v96 setIdentifier:v97];
 
     [v96 setActive:1];
     [(VMMessageTranscriptView *)self setSuggestionsLabelTopLayoutConstraint:v96];
-    v98 = [(VMMessageTranscriptView *)self appSuggestionStackView];
-    v99 = [v98 leadingAnchor];
-    v100 = [(VMMessageTranscriptView *)self leadingAnchor];
-    v101 = [v99 constraintEqualToAnchor:v100];
+    appSuggestionStackView = [(VMMessageTranscriptView *)self appSuggestionStackView];
+    leadingAnchor9 = [appSuggestionStackView leadingAnchor];
+    leadingAnchor10 = [(VMMessageTranscriptView *)self leadingAnchor];
+    v101 = [leadingAnchor9 constraintEqualToAnchor:leadingAnchor10];
 
     v102 = NSStringFromSelector("appSuggestionStackViewLeadingLayoutConstraint");
     [v101 setIdentifier:v102];
 
     [v101 setActive:1];
     [(VMMessageTranscriptView *)self setAppSuggestionStackViewLeadingLayoutConstraint:v101];
-    v103 = [(VMMessageTranscriptView *)self trailingAnchor];
-    v104 = [(VMMessageTranscriptView *)self appSuggestionStackView];
-    v105 = [v104 trailingAnchor];
-    v106 = [v103 constraintEqualToAnchor:v105];
+    trailingAnchor9 = [(VMMessageTranscriptView *)self trailingAnchor];
+    appSuggestionStackView2 = [(VMMessageTranscriptView *)self appSuggestionStackView];
+    trailingAnchor10 = [appSuggestionStackView2 trailingAnchor];
+    v106 = [trailingAnchor9 constraintEqualToAnchor:trailingAnchor10];
 
     v107 = NSStringFromSelector("appSuggestionStackViewTrailingLayoutConstraint");
     [v106 setIdentifier:v107];
 
     [v106 setActive:1];
     [(VMMessageTranscriptView *)self setAppSuggestionStackViewTrailingLayoutConstraint:v106];
-    v108 = [(VMMessageTranscriptView *)self appSuggestionStackView];
-    v109 = [v108 topAnchor];
-    v110 = [(VMMessageTranscriptView *)self suggestionsLabel];
-    v111 = [v110 bottomAnchor];
-    v112 = [v109 constraintEqualToAnchor:v111 constant:30.0];
+    appSuggestionStackView3 = [(VMMessageTranscriptView *)self appSuggestionStackView];
+    topAnchor8 = [appSuggestionStackView3 topAnchor];
+    suggestionsLabel4 = [(VMMessageTranscriptView *)self suggestionsLabel];
+    bottomAnchor4 = [suggestionsLabel4 bottomAnchor];
+    v112 = [topAnchor8 constraintEqualToAnchor:bottomAnchor4 constant:30.0];
 
     v113 = NSStringFromSelector("appSuggestionStackViewTopLayoutConstraint");
     [v112 setIdentifier:v113];
 
     [v112 setActive:1];
     [(VMMessageTranscriptView *)self setAppSuggestionStackViewTopLayoutConstraint:v112];
-    v114 = [(VMMessageTranscriptView *)self bottomAnchor];
-    v115 = [(VMMessageTranscriptView *)self appSuggestionStackView];
-    v116 = [v115 bottomAnchor];
-    v117 = [v114 constraintEqualToAnchor:v116];
+    bottomAnchor5 = [(VMMessageTranscriptView *)self bottomAnchor];
+    appSuggestionStackView4 = [(VMMessageTranscriptView *)self appSuggestionStackView];
+    bottomAnchor6 = [appSuggestionStackView4 bottomAnchor];
+    v117 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
 
     v118 = NSStringFromSelector("appSuggestionStackViewBottomLayoutConstraint");
     [v117 setIdentifier:v118];
@@ -439,11 +439,11 @@
 
   else
   {
-    v119 = [(VMMessageTranscriptView *)self bottomAnchor];
-    v120 = [(VMMessageTranscriptView *)self textView];
-    v121 = [v120 lastBaselineAnchor];
+    bottomAnchor7 = [(VMMessageTranscriptView *)self bottomAnchor];
+    textView7 = [(VMMessageTranscriptView *)self textView];
+    lastBaselineAnchor3 = [textView7 lastBaselineAnchor];
     [(VMMessageTranscriptView *)self textViewFirstBaselineLayoutConstraintConstant];
-    v122 = [v119 constraintEqualToAnchor:v121 constant:?];
+    v122 = [bottomAnchor7 constraintEqualToAnchor:lastBaselineAnchor3 constant:?];
 
     LODWORD(v123) = 1.0;
     [v122 setPriority:v123];
@@ -452,34 +452,34 @@
 
     [v122 setActive:1];
     [(VMMessageTranscriptView *)self setTextViewBottomLayoutConstraint:v122];
-    v125 = [(VMMessageTranscriptView *)self feedbackTextView];
-    v126 = [v125 leadingAnchor];
-    v127 = [(VMMessageTranscriptView *)self leadingAnchor];
-    v128 = [v126 constraintGreaterThanOrEqualToAnchor:v127];
+    feedbackTextView6 = [(VMMessageTranscriptView *)self feedbackTextView];
+    leadingAnchor11 = [feedbackTextView6 leadingAnchor];
+    leadingAnchor12 = [(VMMessageTranscriptView *)self leadingAnchor];
+    v128 = [leadingAnchor11 constraintGreaterThanOrEqualToAnchor:leadingAnchor12];
 
     v129 = NSStringFromSelector("feedbackTextViewLeadingLayoutConstraint");
     [v128 setIdentifier:v129];
 
     [v128 setActive:1];
     [(VMMessageTranscriptView *)self setFeedbackTextViewLeadingLayoutConstraint:v128];
-    v130 = [(VMMessageTranscriptView *)self trailingAnchor];
-    v131 = [(VMMessageTranscriptView *)self feedbackTextView];
-    v132 = [v131 trailingAnchor];
-    v133 = [v130 constraintGreaterThanOrEqualToAnchor:v132];
+    trailingAnchor11 = [(VMMessageTranscriptView *)self trailingAnchor];
+    feedbackTextView7 = [(VMMessageTranscriptView *)self feedbackTextView];
+    trailingAnchor12 = [feedbackTextView7 trailingAnchor];
+    v133 = [trailingAnchor11 constraintGreaterThanOrEqualToAnchor:trailingAnchor12];
 
     v134 = NSStringFromSelector("feedbackTextViewTrailingLayoutConstraint");
     [v133 setIdentifier:v134];
 
     [v133 setActive:1];
     [(VMMessageTranscriptView *)self setFeedbackTextViewTrailingLayoutConstraint:v133];
-    v135 = [(VMMessageTranscriptView *)self textViewLastBaselineLayoutConstraint];
-    [(VMMessageTranscriptView *)self setFeedbackTextViewTopLayoutConstraint:v135];
+    textViewLastBaselineLayoutConstraint = [(VMMessageTranscriptView *)self textViewLastBaselineLayoutConstraint];
+    [(VMMessageTranscriptView *)self setFeedbackTextViewTopLayoutConstraint:textViewLastBaselineLayoutConstraint];
 
-    v136 = [(VMMessageTranscriptView *)self bottomAnchor];
-    v137 = [(VMMessageTranscriptView *)self feedbackTextView];
-    v138 = [v137 lastBaselineAnchor];
+    bottomAnchor8 = [(VMMessageTranscriptView *)self bottomAnchor];
+    feedbackTextView8 = [(VMMessageTranscriptView *)self feedbackTextView];
+    lastBaselineAnchor4 = [feedbackTextView8 lastBaselineAnchor];
     [(VMMessageTranscriptView *)self textViewFirstBaselineLayoutConstraintConstant];
-    v117 = [v136 constraintEqualToAnchor:v138 constant:?];
+    v117 = [bottomAnchor8 constraintEqualToAnchor:lastBaselineAnchor4 constant:?];
 
     v139 = NSStringFromSelector("feedbackTextViewBottomLayoutConstraint");
     [v117 setIdentifier:v139];
@@ -501,173 +501,173 @@
   [(VMMessageTranscriptView *)self _refreshAttributedText];
   [(VMMessageTranscriptView *)self titleLabelFirstBaselineLayoutConstraintConstant];
   v4 = v3;
-  v5 = [(VMMessageTranscriptView *)self titleLabelFirstBaselineLayoutConstraint];
-  [v5 setConstant:v4];
+  titleLabelFirstBaselineLayoutConstraint = [(VMMessageTranscriptView *)self titleLabelFirstBaselineLayoutConstraint];
+  [titleLabelFirstBaselineLayoutConstraint setConstant:v4];
 
   [(VMMessageTranscriptView *)self indicatorViewTopLayoutConstraintConstant];
   v7 = v6;
-  v8 = [(VMMessageTranscriptView *)self indicatorViewTopLayoutConstraint];
-  [v8 setConstant:v7];
+  indicatorViewTopLayoutConstraint = [(VMMessageTranscriptView *)self indicatorViewTopLayoutConstraint];
+  [indicatorViewTopLayoutConstraint setConstant:v7];
 
   [(VMMessageTranscriptView *)self textViewFirstBaselineLayoutConstraintConstant];
   v10 = v9;
-  v11 = [(VMMessageTranscriptView *)self textViewFirstBaselineLayoutConstraint];
-  [v11 setConstant:v10];
+  textViewFirstBaselineLayoutConstraint = [(VMMessageTranscriptView *)self textViewFirstBaselineLayoutConstraint];
+  [textViewFirstBaselineLayoutConstraint setConstant:v10];
 
   [(VMMessageTranscriptView *)self textViewLastBaselineLayoutConstraintConstant];
   v13 = v12;
-  v14 = [(VMMessageTranscriptView *)self textViewLastBaselineLayoutConstraint];
-  [v14 setConstant:v13];
+  textViewLastBaselineLayoutConstraint = [(VMMessageTranscriptView *)self textViewLastBaselineLayoutConstraint];
+  [textViewLastBaselineLayoutConstraint setConstant:v13];
 
   [(VMMessageTranscriptView *)self textViewLineHeight];
   v16 = v15;
-  v17 = [(VMMessageTranscriptView *)self textView];
-  [v17 setLineHeight:v16];
+  textView = [(VMMessageTranscriptView *)self textView];
+  [textView setLineHeight:v16];
 
   [(VMMessageTranscriptView *)self bounds];
   Width = CGRectGetWidth(v42);
-  v19 = [(VMMessageTranscriptView *)self feedbackTextView];
-  [v19 _setPreferredMaxLayoutWidth:Width];
+  feedbackTextView = [(VMMessageTranscriptView *)self feedbackTextView];
+  [feedbackTextView _setPreferredMaxLayoutWidth:Width];
 
-  v20 = [(VMMessageTranscriptView *)self feedbackTextView];
-  [v20 _preferredMaxLayoutWidth];
+  feedbackTextView2 = [(VMMessageTranscriptView *)self feedbackTextView];
+  [feedbackTextView2 _preferredMaxLayoutWidth];
   v22 = v21;
-  v23 = [(VMMessageTranscriptView *)self textView];
-  [v23 _setPreferredMaxLayoutWidth:v22];
+  textView2 = [(VMMessageTranscriptView *)self textView];
+  [textView2 _setPreferredMaxLayoutWidth:v22];
 
-  v24 = [(VMMessageTranscriptView *)self feedbackTextView];
-  [v24 _preferredMaxLayoutWidth];
+  feedbackTextView3 = [(VMMessageTranscriptView *)self feedbackTextView];
+  [feedbackTextView3 _preferredMaxLayoutWidth];
   v26 = v25;
-  v27 = [(VMMessageTranscriptView *)self titleLabel];
-  [v27 setPreferredMaxLayoutWidth:v26];
+  titleLabel = [(VMMessageTranscriptView *)self titleLabel];
+  [titleLabel setPreferredMaxLayoutWidth:v26];
 
   v28 = [(VMMessageTranscriptView *)self isAccessiblityConstraintsEnabled]^ 1;
-  v29 = [(VMMessageTranscriptView *)self titleLabel];
-  [v29 setNumberOfLines:v28];
+  titleLabel2 = [(VMMessageTranscriptView *)self titleLabel];
+  [titleLabel2 setNumberOfLines:v28];
 
-  v30 = [(VMMessageTranscriptView *)self feedbackTextView];
-  [v30 sizeToFit];
+  feedbackTextView4 = [(VMMessageTranscriptView *)self feedbackTextView];
+  [feedbackTextView4 sizeToFit];
 
-  v31 = [(VMMessageTranscriptView *)self textView];
-  [v31 sizeToFit];
+  textView3 = [(VMMessageTranscriptView *)self textView];
+  [textView3 sizeToFit];
 
-  v32 = [(VMMessageTranscriptView *)self titleLabel];
-  [v32 sizeToFit];
+  titleLabel3 = [(VMMessageTranscriptView *)self titleLabel];
+  [titleLabel3 sizeToFit];
 
-  v33 = [(VMMessageTranscriptView *)self featureFlags];
-  LODWORD(v29) = [v33 smartVoicemailActionsEnabled];
+  featureFlags = [(VMMessageTranscriptView *)self featureFlags];
+  LODWORD(titleLabel2) = [featureFlags smartVoicemailActionsEnabled];
 
-  if (v29)
+  if (titleLabel2)
   {
     [(VMMessageTranscriptView *)self titleLabelFirstBaselineLayoutConstraintConstant];
     v35 = v34;
-    v36 = [(VMMessageTranscriptView *)self suggestionsLabelFirstBaselineLayoutConstraint];
-    [v36 setConstant:v35];
+    suggestionsLabelFirstBaselineLayoutConstraint = [(VMMessageTranscriptView *)self suggestionsLabelFirstBaselineLayoutConstraint];
+    [suggestionsLabelFirstBaselineLayoutConstraint setConstant:v35];
 
     [(VMMessageTranscriptView *)self bounds];
     v37 = CGRectGetWidth(v43);
-    v38 = [(VMMessageTranscriptView *)self suggestionsLabel];
-    [v38 setPreferredMaxLayoutWidth:v37];
+    suggestionsLabel = [(VMMessageTranscriptView *)self suggestionsLabel];
+    [suggestionsLabel setPreferredMaxLayoutWidth:v37];
 
-    v39 = [(VMMessageTranscriptView *)self appSuggestionStackViewTopLayoutConstraint];
-    [v39 setConstant:30.0];
+    appSuggestionStackViewTopLayoutConstraint = [(VMMessageTranscriptView *)self appSuggestionStackViewTopLayoutConstraint];
+    [appSuggestionStackViewTopLayoutConstraint setConstant:30.0];
 
-    v40 = [(VMMessageTranscriptView *)self appSuggestionStackView];
-    [v40 sizeToFit];
+    appSuggestionStackView = [(VMMessageTranscriptView *)self appSuggestionStackView];
+    [appSuggestionStackView sizeToFit];
   }
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
-  if (self->_viewModel != v5)
+  modelCopy = model;
+  if (self->_viewModel != modelCopy)
   {
-    v27 = v5;
-    objc_storeStrong(&self->_viewModel, a3);
+    v27 = modelCopy;
+    objc_storeStrong(&self->_viewModel, model);
     [(VMMessageTranscriptViewModel *)self->_viewModel setTintColorDelegate:self];
     [(VMMessageTranscriptView *)self _refreshAttributedText];
-    v6 = [(VMMessageTranscriptViewModel *)v27 isTranscribing];
-    v7 = [(VMMessageTranscriptView *)self indicatorView];
-    [v7 setHidden:v6 ^ 1];
+    isTranscribing = [(VMMessageTranscriptViewModel *)v27 isTranscribing];
+    indicatorView = [(VMMessageTranscriptView *)self indicatorView];
+    [indicatorView setHidden:isTranscribing ^ 1];
 
-    v8 = [(VMMessageTranscriptView *)self featureFlags];
-    LODWORD(v7) = [v8 voicemailSearchEnabled];
+    featureFlags = [(VMMessageTranscriptView *)self featureFlags];
+    LODWORD(indicatorView) = [featureFlags voicemailSearchEnabled];
 
-    v9 = [(VMMessageTranscriptViewModel *)v27 isTranscribing];
-    v10 = v7 | v9;
-    if (v7 && (v9 & 1) == 0)
+    isTranscribing2 = [(VMMessageTranscriptViewModel *)v27 isTranscribing];
+    hideAccessoryViews = indicatorView | isTranscribing2;
+    if (indicatorView && (isTranscribing2 & 1) == 0)
     {
-      v10 = [(VMMessageTranscriptView *)self hideAccessoryViews];
+      hideAccessoryViews = [(VMMessageTranscriptView *)self hideAccessoryViews];
     }
 
-    v11 = [(VMMessageTranscriptView *)self feedbackTextView];
-    [v11 setHidden:v10 & 1];
+    feedbackTextView = [(VMMessageTranscriptView *)self feedbackTextView];
+    [feedbackTextView setHidden:hideAccessoryViews & 1];
 
-    LODWORD(v11) = [(VMMessageTranscriptViewModel *)v27 isTranscribing];
-    v12 = [(VMMessageTranscriptView *)self indicatorView];
-    v13 = v12;
-    if (v11)
+    LODWORD(feedbackTextView) = [(VMMessageTranscriptViewModel *)v27 isTranscribing];
+    indicatorView2 = [(VMMessageTranscriptView *)self indicatorView];
+    v13 = indicatorView2;
+    if (feedbackTextView)
     {
-      [v12 startAnimating];
+      [indicatorView2 startAnimating];
       v14 = 1.0;
       v15 = 999.0;
     }
 
     else
     {
-      [v12 stopAnimating];
+      [indicatorView2 stopAnimating];
       v15 = 1.0;
       v14 = 999.0;
     }
 
-    v16 = [(VMMessageTranscriptView *)self titleLabelFirstBaselineLayoutConstraint];
+    titleLabelFirstBaselineLayoutConstraint = [(VMMessageTranscriptView *)self titleLabelFirstBaselineLayoutConstraint];
     *&v17 = v14;
-    [v16 setPriority:v17];
+    [titleLabelFirstBaselineLayoutConstraint setPriority:v17];
 
-    v18 = [(VMMessageTranscriptView *)self titleLabelTopLayoutConstraint];
+    titleLabelTopLayoutConstraint = [(VMMessageTranscriptView *)self titleLabelTopLayoutConstraint];
     *&v19 = v15;
-    [v18 setPriority:v19];
+    [titleLabelTopLayoutConstraint setPriority:v19];
 
-    v20 = [(VMMessageTranscriptView *)self featureFlags];
-    v21 = [v20 smartVoicemailActionsEnabled];
+    featureFlags2 = [(VMMessageTranscriptView *)self featureFlags];
+    smartVoicemailActionsEnabled = [featureFlags2 smartVoicemailActionsEnabled];
 
-    if (v21)
+    if (smartVoicemailActionsEnabled)
     {
-      v22 = [(VMMessageTranscriptView *)self suggestionsLabelFirstBaselineLayoutConstraint];
+      suggestionsLabelFirstBaselineLayoutConstraint = [(VMMessageTranscriptView *)self suggestionsLabelFirstBaselineLayoutConstraint];
       LODWORD(v23) = 1.0;
-      [v22 setPriority:v23];
+      [suggestionsLabelFirstBaselineLayoutConstraint setPriority:v23];
 
-      v24 = [(VMMessageTranscriptView *)self suggestionsLabelTopLayoutConstraint];
+      suggestionsLabelTopLayoutConstraint = [(VMMessageTranscriptView *)self suggestionsLabelTopLayoutConstraint];
       LODWORD(v25) = 1148829696;
-      [v24 setPriority:v25];
+      [suggestionsLabelTopLayoutConstraint setPriority:v25];
 
-      v26 = [(VMMessageTranscriptViewModel *)self->_viewModel quickActionSuggestions];
+      quickActionSuggestions = [(VMMessageTranscriptViewModel *)self->_viewModel quickActionSuggestions];
 
-      if (v26)
+      if (quickActionSuggestions)
       {
         [(VMMessageTranscriptView *)self updateQuickActionsStackView];
       }
     }
 
     [(VMMessageTranscriptView *)self setNeedsUpdateConstraints];
-    v5 = v27;
+    modelCopy = v27;
   }
 }
 
-- (void)setHideAccessoryViews:(BOOL)a3
+- (void)setHideAccessoryViews:(BOOL)views
 {
-  if (self->_hideAccessoryViews != a3)
+  if (self->_hideAccessoryViews != views)
   {
-    v4 = a3;
-    self->_hideAccessoryViews = a3;
-    if (a3)
+    viewsCopy = views;
+    self->_hideAccessoryViews = views;
+    if (views)
     {
-      v6 = [(VMMessageTranscriptView *)self featureFlags];
-      v7 = [v6 voicemailSearchEnabled];
+      featureFlags = [(VMMessageTranscriptView *)self featureFlags];
+      voicemailSearchEnabled = [featureFlags voicemailSearchEnabled];
 
       v8 = 1.0;
       v9 = 999.0;
-      if (v7)
+      if (voicemailSearchEnabled)
       {
         [(VMMessageTranscriptView *)self loadConstraints];
       }
@@ -679,23 +679,23 @@
       v8 = 999.0;
     }
 
-    v10 = [(VMMessageTranscriptView *)self titleLabel];
-    [v10 setHidden:v4];
+    titleLabel = [(VMMessageTranscriptView *)self titleLabel];
+    [titleLabel setHidden:viewsCopy];
 
-    v11 = [(VMMessageTranscriptView *)self feedbackTextView];
-    [v11 setHidden:v4];
+    feedbackTextView = [(VMMessageTranscriptView *)self feedbackTextView];
+    [feedbackTextView setHidden:viewsCopy];
 
-    v12 = [(VMMessageTranscriptView *)self textViewFirstBaselineWithoutAccessoryViewsLayoutConstraint];
+    textViewFirstBaselineWithoutAccessoryViewsLayoutConstraint = [(VMMessageTranscriptView *)self textViewFirstBaselineWithoutAccessoryViewsLayoutConstraint];
     *&v13 = v9;
-    [v12 setPriority:v13];
+    [textViewFirstBaselineWithoutAccessoryViewsLayoutConstraint setPriority:v13];
 
-    v14 = [(VMMessageTranscriptView *)self textViewBottomLayoutConstraint];
+    textViewBottomLayoutConstraint = [(VMMessageTranscriptView *)self textViewBottomLayoutConstraint];
     *&v15 = v9;
-    [v14 setPriority:v15];
+    [textViewBottomLayoutConstraint setPriority:v15];
 
-    v17 = [(VMMessageTranscriptView *)self textViewFirstBaselineLayoutConstraint];
+    textViewFirstBaselineLayoutConstraint = [(VMMessageTranscriptView *)self textViewFirstBaselineLayoutConstraint];
     *&v16 = v8;
-    [v17 setPriority:v16];
+    [textViewFirstBaselineLayoutConstraint setPriority:v16];
   }
 }
 
@@ -708,8 +708,8 @@
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(VMMessageTranscriptViewModel *)self->_viewModel quickActionSuggestions];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  quickActionSuggestions = [(VMMessageTranscriptViewModel *)self->_viewModel quickActionSuggestions];
+  v5 = [quickActionSuggestions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -721,7 +721,7 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(quickActionSuggestions);
         }
 
         v9 = *(*(&v14 + 1) + 8 * v8);
@@ -731,18 +731,18 @@
         [v10 setConfiguration:v3];
         [(VMMessageTranscriptView *)self bounds];
         Width = CGRectGetWidth(v19);
-        v12 = [v10 titleLabel];
-        [v12 setPreferredMaxLayoutWidth:Width];
+        titleLabel = [v10 titleLabel];
+        [titleLabel setPreferredMaxLayoutWidth:Width];
 
         [v10 setContentHorizontalAlignment:1];
-        v13 = [(VMMessageTranscriptView *)self appSuggestionStackView];
-        [v13 addArrangedSubview:v10];
+        appSuggestionStackView = [(VMMessageTranscriptView *)self appSuggestionStackView];
+        [appSuggestionStackView addArrangedSubview:v10];
 
         v8 = v8 + 1;
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [quickActionSuggestions countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -753,12 +753,12 @@
 {
   if (PHVoicemailFeedbackReportingAvailable())
   {
-    v3 = [(VMMessageTranscriptView *)self feedbackTextView];
-    v4 = [v3 attributedText];
-    if ([v4 length])
+    feedbackTextView = [(VMMessageTranscriptView *)self feedbackTextView];
+    attributedText = [feedbackTextView attributedText];
+    if ([attributedText length])
     {
-      v5 = [(VMMessageTranscriptView *)self viewModel];
-      v6 = [v5 donated] ^ 1;
+      viewModel = [(VMMessageTranscriptView *)self viewModel];
+      v6 = [viewModel donated] ^ 1;
     }
 
     else
@@ -775,40 +775,40 @@
   return v6;
 }
 
-- (void)handleSuggestionsTapGesture:(id)a3
+- (void)handleSuggestionsTapGesture:(id)gesture
 {
-  v9 = a3;
-  v4 = [(VMMessageTranscriptView *)self delegate];
+  gestureCopy = gesture;
+  delegate = [(VMMessageTranscriptView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(VMMessageTranscriptView *)self delegate];
-    v7 = [v9 titleLabel];
-    v8 = [v7 text];
-    [v6 messageTranscriptView:self suggestionsDidReceiveTapGesture:v8];
+    delegate2 = [(VMMessageTranscriptView *)self delegate];
+    titleLabel = [gestureCopy titleLabel];
+    text = [titleLabel text];
+    [delegate2 messageTranscriptView:self suggestionsDidReceiveTapGesture:text];
   }
 }
 
-- (void)handleFeedbackTextViewTapGesture:(id)a3
+- (void)handleFeedbackTextViewTapGesture:(id)gesture
 {
-  v15 = a3;
+  gestureCopy = gesture;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v15;
+    v4 = gestureCopy;
     if ([v4 state] == 3)
     {
-      v5 = [(VMMessageTranscriptView *)self feedbackTextView];
-      [v4 locationInView:v5];
+      feedbackTextView = [(VMMessageTranscriptView *)self feedbackTextView];
+      [v4 locationInView:feedbackTextView];
       v7 = v6;
       v9 = v8;
 
-      v10 = [(VMMessageTranscriptView *)self feedbackTextView];
-      v11 = [v10 closestPositionToPoint:{v7, v9}];
+      feedbackTextView2 = [(VMMessageTranscriptView *)self feedbackTextView];
+      v11 = [feedbackTextView2 closestPositionToPoint:{v7, v9}];
 
-      v12 = [(VMMessageTranscriptView *)self feedbackTextView];
-      v13 = [v12 textStylingAtPosition:v11 inDirection:0];
+      feedbackTextView3 = [(VMMessageTranscriptView *)self feedbackTextView];
+      v13 = [feedbackTextView3 textStylingAtPosition:v11 inDirection:0];
       v14 = [v13 objectForKey:NSLinkAttributeName];
 
       if (v14)
@@ -821,32 +821,32 @@
   _objc_release_x1();
 }
 
-- (void)handleTextViewTapGesture:(id)a3
+- (void)handleTextViewTapGesture:(id)gesture
 {
-  v8 = a3;
+  gestureCopy = gesture;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v8;
-    v5 = [(VMMessageTranscriptView *)self delegate];
+    v4 = gestureCopy;
+    delegate = [(VMMessageTranscriptView *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(VMMessageTranscriptView *)self delegate];
-      [v7 messageTranscriptView:self didReceiveTapGesture:v4];
+      delegate2 = [(VMMessageTranscriptView *)self delegate];
+      [delegate2 messageTranscriptView:self didReceiveTapGesture:v4];
     }
   }
 
   _objc_release_x1();
 }
 
-- (void)openFeedbackURL:(id)a3
+- (void)openFeedbackURL:(id)l
 {
-  v25 = [a3 absoluteString];
+  absoluteString = [l absoluteString];
   v4 = +[VMMessageTranscriptViewModel neutralFeedbackURL];
-  v5 = [v4 absoluteString];
-  v6 = [v25 isEqualToString:v5];
+  absoluteString2 = [v4 absoluteString];
+  v6 = [absoluteString isEqualToString:absoluteString2];
 
   if (v6)
   {
@@ -856,8 +856,8 @@
   else
   {
     v8 = +[VMMessageTranscriptViewModel negativeFeedbackURL];
-    v9 = [v8 absoluteString];
-    v10 = [v25 isEqualToString:v9];
+    absoluteString3 = [v8 absoluteString];
+    v10 = [absoluteString isEqualToString:absoluteString3];
 
     if (v10)
     {
@@ -867,8 +867,8 @@
     else
     {
       v11 = +[VMMessageTranscriptViewModel positiveFeedbackURL];
-      v12 = [v11 absoluteString];
-      v13 = [v25 isEqualToString:v12];
+      absoluteString4 = [v11 absoluteString];
+      v13 = [absoluteString isEqualToString:absoluteString4];
 
       if (v13)
       {
@@ -882,18 +882,18 @@
     }
   }
 
-  v14 = [(VMMessageTranscriptView *)self delegate];
+  delegate = [(VMMessageTranscriptView *)self delegate];
   v15 = objc_opt_respondsToSelector();
 
   if (v15)
   {
-    v16 = [(VMMessageTranscriptView *)self delegate];
-    [v16 messageTranscriptView:self didReportFeedback:v7];
+    delegate2 = [(VMMessageTranscriptView *)self delegate];
+    [delegate2 messageTranscriptView:self didReportFeedback:v7];
   }
 
-  v17 = [(VMMessageTranscriptView *)self feedbackTextView];
-  v18 = [v17 attributedText];
-  v19 = [v18 mutableCopy];
+  feedbackTextView = [(VMMessageTranscriptView *)self feedbackTextView];
+  attributedText = [feedbackTextView attributedText];
+  v19 = [attributedText mutableCopy];
 
   v20 = [v19 length];
   v21 = +[NSBundle mainBundle];
@@ -901,11 +901,11 @@
   [v19 replaceCharactersInRange:0 withString:{v20, v22}];
 
   [v19 removeAttribute:NSLinkAttributeName range:{0, objc_msgSend(v19, "length")}];
-  v23 = [(VMMessageTranscriptView *)self feedbackTextView];
-  [v23 setAttributedText:v19];
+  feedbackTextView2 = [(VMMessageTranscriptView *)self feedbackTextView];
+  [feedbackTextView2 setAttributedText:v19];
 
-  v24 = [(VMMessageTranscriptView *)self feedbackTextView];
-  [v24 sizeToFit];
+  feedbackTextView3 = [(VMMessageTranscriptView *)self feedbackTextView];
+  [feedbackTextView3 sizeToFit];
 }
 
 - (double)textViewFirstBaselineLayoutConstraintConstant
@@ -938,8 +938,8 @@
 - (double)titleLabelFirstBaselineLayoutConstraintConstant
 {
   v2 = +[UIFont voicemailCaptionRegularFont];
-  v3 = [v2 fontDescriptor];
-  v4 = [v3 objectForKey:UIFontDescriptorTextStyleAttribute];
+  fontDescriptor = [v2 fontDescriptor];
+  v4 = [fontDescriptor objectForKey:UIFontDescriptorTextStyleAttribute];
 
   if (v4)
   {
@@ -966,25 +966,25 @@
 
 - (void)_refreshAttributedText
 {
-  v3 = [(VMMessageTranscriptView *)self viewModel];
-  v4 = [v3 localizedAttributedFeedbackText];
-  v5 = [(VMMessageTranscriptView *)self feedbackTextView];
-  [v5 setAttributedText:v4];
+  viewModel = [(VMMessageTranscriptView *)self viewModel];
+  localizedAttributedFeedbackText = [viewModel localizedAttributedFeedbackText];
+  feedbackTextView = [(VMMessageTranscriptView *)self feedbackTextView];
+  [feedbackTextView setAttributedText:localizedAttributedFeedbackText];
 
-  v6 = [(VMMessageTranscriptView *)self viewModel];
-  v7 = [v6 localizedAttributedText];
-  v8 = [(VMMessageTranscriptView *)self textView];
-  [v8 setAttributedText:v7];
+  viewModel2 = [(VMMessageTranscriptView *)self viewModel];
+  localizedAttributedText = [viewModel2 localizedAttributedText];
+  textView = [(VMMessageTranscriptView *)self textView];
+  [textView setAttributedText:localizedAttributedText];
 
-  v9 = [(VMMessageTranscriptView *)self viewModel];
-  v10 = [v9 localizedAttributedTitle];
-  v11 = [(VMMessageTranscriptView *)self titleLabel];
-  [v11 setAttributedText:v10];
+  viewModel3 = [(VMMessageTranscriptView *)self viewModel];
+  localizedAttributedTitle = [viewModel3 localizedAttributedTitle];
+  titleLabel = [(VMMessageTranscriptView *)self titleLabel];
+  [titleLabel setAttributedText:localizedAttributedTitle];
 
-  v14 = [(VMMessageTranscriptView *)self viewModel];
-  v12 = [v14 localizedAttributedFollowUpSuggestionsText];
-  v13 = [(VMMessageTranscriptView *)self suggestionsLabel];
-  [v13 setAttributedText:v12];
+  viewModel4 = [(VMMessageTranscriptView *)self viewModel];
+  localizedAttributedFollowUpSuggestionsText = [viewModel4 localizedAttributedFollowUpSuggestionsText];
+  suggestionsLabel = [(VMMessageTranscriptView *)self suggestionsLabel];
+  [suggestionsLabel setAttributedText:localizedAttributedFollowUpSuggestionsText];
 }
 
 - (VMMessageTranscriptViewDelegate)delegate

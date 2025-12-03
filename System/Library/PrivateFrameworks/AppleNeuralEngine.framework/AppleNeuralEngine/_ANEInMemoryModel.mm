@@ -1,14 +1,14 @@
 @interface _ANEInMemoryModel
-+ (id)inMemoryModelWithDescriptor:(id)a3;
++ (id)inMemoryModelWithDescriptor:(id)descriptor;
 + (void)initialize;
 - (BOOL)compiledModelExists;
-- (_ANEInMemoryModel)initWithDesctiptor:(id)a3;
+- (_ANEInMemoryModel)initWithDesctiptor:(id)desctiptor;
 - (id)localModelPath;
 - (id)saveModelFiles;
 - (void)dealloc;
 - (void)purgeCompiledModel;
 - (void)saveModelFiles;
-- (void)unmapIOSurfacesWithRequest:(id)a3;
+- (void)unmapIOSurfacesWithRequest:(id)request;
 @end
 
 @implementation _ANEInMemoryModel
@@ -20,25 +20,25 @@
   MEMORY[0x1EEE66BB8]();
 }
 
-- (_ANEInMemoryModel)initWithDesctiptor:(id)a3
+- (_ANEInMemoryModel)initWithDesctiptor:(id)desctiptor
 {
-  v6 = a3;
+  desctiptorCopy = desctiptor;
   v22.receiver = self;
   v22.super_class = _ANEInMemoryModel;
   v7 = [(_ANEInMemoryModel *)&v22 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_descriptor, a3);
-    v9 = [v6 hexStringIdentifier];
+    objc_storeStrong(&v7->_descriptor, desctiptor);
+    hexStringIdentifier = [desctiptorCopy hexStringIdentifier];
     hexStringIdentifier = v8->_hexStringIdentifier;
-    v8->_hexStringIdentifier = v9;
+    v8->_hexStringIdentifier = hexStringIdentifier;
 
-    v8->_isMILModel = [v6 isMILModel];
+    v8->_isMILModel = [desctiptorCopy isMILModel];
     modelAttributes = v8->_modelAttributes;
     v8->_modelAttributes = MEMORY[0x1E695E0F8];
 
-    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", objc_msgSend(v6, "hash")];
+    v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu", objc_msgSend(desctiptorCopy, "hash")];
     [v12 UTF8String];
     v13 = kdebug_trace_string();
     v8->_string_id = v13;
@@ -58,15 +58,15 @@
 
     v8->_perfStatsMask = 0;
     v8->_state = 0;
-    v16 = [v6 optionsPlist];
-    v17 = v16;
-    if (v16)
+    optionsPlist = [desctiptorCopy optionsPlist];
+    v17 = optionsPlist;
+    if (optionsPlist)
     {
-      v16 = +[_ANEStrings defaultANECIROptionsFileName];
+      optionsPlist = +[_ANEStrings defaultANECIROptionsFileName];
     }
 
     compilerOptionsFileName = v8->_compilerOptionsFileName;
-    v8->_compilerOptionsFileName = v16;
+    v8->_compilerOptionsFileName = optionsPlist;
 
     v19 = +[_ANEClient sharedConnection];
     sharedConnection = v8->_sharedConnection;
@@ -99,8 +99,8 @@
 - (id)localModelPath
 {
   v3 = NSTemporaryDirectory();
-  v4 = [(_ANEInMemoryModel *)self hexStringIdentifier];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  hexStringIdentifier = [(_ANEInMemoryModel *)self hexStringIdentifier];
+  v5 = [v3 stringByAppendingPathComponent:hexStringIdentifier];
 
   return v5;
 }
@@ -108,18 +108,18 @@
 - (id)saveModelFiles
 {
   v56 = *MEMORY[0x1E69E9840];
-  v4 = [(_ANEInMemoryModel *)self modelURL];
+  modelURL = [(_ANEInMemoryModel *)self modelURL];
 
-  if (v4)
+  if (modelURL)
   {
-    v5 = [(_ANEInMemoryModel *)self modelURL];
+    modelURL2 = [(_ANEInMemoryModel *)self modelURL];
     goto LABEL_33;
   }
 
-  v6 = [(_ANEInMemoryModel *)self localModelPath];
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  localModelPath = [(_ANEInMemoryModel *)self localModelPath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v48 = 0;
-  v8 = [v7 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v48];
+  v8 = [defaultManager createDirectoryAtPath:localModelPath withIntermediateDirectories:1 attributes:0 error:&v48];
   v9 = v48;
   if ((v8 & 1) == 0)
   {
@@ -130,42 +130,42 @@
       *buf = 138412802;
       v51 = v40;
       v52 = 2112;
-      v53 = v6;
+      v53 = localModelPath;
       v54 = 2112;
       v55 = v9;
       _os_log_error_impl(&dword_1AD246000, v11, OS_LOG_TYPE_ERROR, "%@: createDirectoryAtPath:... failed tmp=%@ : lErr=%@", buf, 0x20u);
     }
 
-    v5 = 0;
+    modelURL2 = 0;
     goto LABEL_32;
   }
 
   v10 = +[_ANEStrings defaultANECIRFileName];
-  v11 = [v6 stringByAppendingPathComponent:v10];
+  v11 = [localModelPath stringByAppendingPathComponent:v10];
 
-  v12 = [(_ANEInMemoryModel *)self descriptor];
-  v13 = [v12 networkText];
-  v14 = [v13 writeToFile:v11 atomically:1];
+  descriptor = [(_ANEInMemoryModel *)self descriptor];
+  networkText = [descriptor networkText];
+  v14 = [networkText writeToFile:v11 atomically:1];
 
   if (v14)
   {
-    v15 = [(_ANEInMemoryModel *)self compilerOptionsFileName];
+    compilerOptionsFileName = [(_ANEInMemoryModel *)self compilerOptionsFileName];
 
-    if (!v15)
+    if (!compilerOptionsFileName)
     {
 LABEL_8:
       v41 = v11;
       v42 = v9;
-      v43 = v7;
-      v21 = [(_ANEInMemoryModel *)self descriptor];
-      v22 = [v21 weights];
-      v23 = [v22 allKeys];
+      v43 = defaultManager;
+      descriptor2 = [(_ANEInMemoryModel *)self descriptor];
+      weights = [descriptor2 weights];
+      allKeys = [weights allKeys];
 
       v46 = 0u;
       v47 = 0u;
       v44 = 0u;
       v45 = 0u;
-      v17 = v23;
+      v17 = allKeys;
       v24 = [v17 countByEnumeratingWithState:&v44 objects:v49 count:16];
       if (v24)
       {
@@ -181,15 +181,15 @@ LABEL_8:
             }
 
             v28 = *(*(&v44 + 1) + 8 * i);
-            v29 = [(_ANEInMemoryModel *)self descriptor];
-            v30 = [v29 weights];
-            v31 = [v30 objectForKeyedSubscript:v28];
+            descriptor3 = [(_ANEInMemoryModel *)self descriptor];
+            weights2 = [descriptor3 weights];
+            v31 = [weights2 objectForKeyedSubscript:v28];
 
-            v32 = [v31 allKeys];
-            v33 = [v32 firstObject];
+            allKeys2 = [v31 allKeys];
+            firstObject = [allKeys2 firstObject];
 
-            v34 = [v31 objectForKeyedSubscript:v33];
-            v35 = [v6 stringByAppendingPathComponent:v33];
+            v34 = [v31 objectForKeyedSubscript:firstObject];
+            v35 = [localModelPath stringByAppendingPathComponent:firstObject];
             if (([v34 writeToFile:v35 atomically:1] & 1) == 0)
             {
               v36 = +[_ANELog common];
@@ -198,7 +198,7 @@ LABEL_8:
                 [_ANEInMemoryModel saveModelFiles];
               }
 
-              v5 = 0;
+              modelURL2 = 0;
               goto LABEL_26;
             }
           }
@@ -213,26 +213,26 @@ LABEL_8:
         }
       }
 
-      v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:v6 isDirectory:1];
-      if (v5)
+      modelURL2 = [MEMORY[0x1E695DFF8] fileURLWithPath:localModelPath isDirectory:1];
+      if (modelURL2)
       {
-        [(_ANEInMemoryModel *)self setModelURL:v5];
+        [(_ANEInMemoryModel *)self setModelURL:modelURL2];
         [(_ANEInMemoryModel *)self setDescriptor:0];
       }
 
 LABEL_26:
       v9 = v42;
-      v7 = v43;
+      defaultManager = v43;
       v11 = v41;
       goto LABEL_31;
     }
 
-    v16 = [(_ANEInMemoryModel *)self compilerOptionsFileName];
-    v17 = [v6 stringByAppendingPathComponent:v16];
+    compilerOptionsFileName2 = [(_ANEInMemoryModel *)self compilerOptionsFileName];
+    v17 = [localModelPath stringByAppendingPathComponent:compilerOptionsFileName2];
 
-    v18 = [(_ANEInMemoryModel *)self descriptor];
-    v19 = [v18 optionsPlist];
-    v20 = [v19 writeToFile:v17 atomically:1];
+    descriptor4 = [(_ANEInMemoryModel *)self descriptor];
+    optionsPlist = [descriptor4 optionsPlist];
+    v20 = [optionsPlist writeToFile:v17 atomically:1];
 
     if (v20)
     {
@@ -256,56 +256,56 @@ LABEL_26:
     }
   }
 
-  v5 = 0;
+  modelURL2 = 0;
 LABEL_31:
 
 LABEL_32:
 LABEL_33:
   v38 = *MEMORY[0x1E69E9840];
 
-  return v5;
+  return modelURL2;
 }
 
-+ (id)inMemoryModelWithDescriptor:(id)a3
++ (id)inMemoryModelWithDescriptor:(id)descriptor
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDesctiptor:v4];
+  descriptorCopy = descriptor;
+  v5 = [[self alloc] initWithDesctiptor:descriptorCopy];
 
   return v5;
 }
 
 - (BOOL)compiledModelExists
 {
-  v3 = [(_ANEInMemoryModel *)self hexStringIdentifier];
+  hexStringIdentifier = [(_ANEInMemoryModel *)self hexStringIdentifier];
   if (os_log_type_enabled(gLogger, OS_LOG_TYPE_DEBUG))
   {
     [_ANEInMemoryModel loadWithQoS:options:error:];
   }
 
-  v4 = [(_ANEInMemoryModel *)self sharedConnection];
-  v5 = [v4 compiledModelExistsMatchingHash:v3];
+  sharedConnection = [(_ANEInMemoryModel *)self sharedConnection];
+  v5 = [sharedConnection compiledModelExistsMatchingHash:hexStringIdentifier];
 
   return v5;
 }
 
 - (void)purgeCompiledModel
 {
-  v3 = [(_ANEInMemoryModel *)self hexStringIdentifier];
+  hexStringIdentifier = [(_ANEInMemoryModel *)self hexStringIdentifier];
   if (os_log_type_enabled(gLogger, OS_LOG_TYPE_DEBUG))
   {
     [_ANEInMemoryModel loadWithQoS:options:error:];
   }
 
-  v4 = [(_ANEInMemoryModel *)self sharedConnection];
-  [v4 purgeCompiledModelMatchingHash:v3];
+  sharedConnection = [(_ANEInMemoryModel *)self sharedConnection];
+  [sharedConnection purgeCompiledModelMatchingHash:hexStringIdentifier];
 }
 
-- (void)unmapIOSurfacesWithRequest:(id)a3
+- (void)unmapIOSurfacesWithRequest:(id)request
 {
-  v4 = a3;
-  v6 = [(_ANEInMemoryModel *)self sharedConnection];
-  v5 = [(_ANEInMemoryModel *)self model];
-  [v6 unmapIOSurfacesWithModel:v5 request:v4];
+  requestCopy = request;
+  sharedConnection = [(_ANEInMemoryModel *)self sharedConnection];
+  model = [(_ANEInMemoryModel *)self model];
+  [sharedConnection unmapIOSurfacesWithModel:model request:requestCopy];
 }
 
 - (void)initWithDesctiptor:(const char *)a1 .cold.1(const char *a1)

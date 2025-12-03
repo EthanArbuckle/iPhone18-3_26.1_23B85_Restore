@@ -1,10 +1,10 @@
 @interface MTLToolsObjectCache
 - (MTLToolsObjectCache)init;
 - (id).cxx_construct;
-- (id)getCachedObjectForKey:(id)a3;
-- (id)getCachedObjectForKey:(id)a3 onMiss:(id)a4;
+- (id)getCachedObjectForKey:(id)key;
+- (id)getCachedObjectForKey:(id)key onMiss:(id)miss;
 - (void)dealloc;
-- (void)removeKey:(id)a3;
+- (void)removeKey:(id)key;
 @end
 
 @implementation MTLToolsObjectCache
@@ -23,9 +23,9 @@
   return v2;
 }
 
-- (void)removeKey:(id)a3
+- (void)removeKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     os_unfair_lock_lock(&self->_listLock);
     var0 = self->_keyRemoveList.var0;
@@ -62,7 +62,7 @@
       }
 
       v13 = (8 * v9);
-      *v13 = a3;
+      *v13 = key;
       v7 = (8 * v9 + 8);
       v14 = self->_keyRemoveList.__begin_;
       v15 = (self->_keyRemoveList.var0 - v14);
@@ -80,7 +80,7 @@
 
     else
     {
-      *var0 = a3;
+      *var0 = key;
       v7 = var0 + 1;
     }
 
@@ -124,31 +124,31 @@
   }
 }
 
-- (id)getCachedObjectForKey:(id)a3
+- (id)getCachedObjectForKey:(id)key
 {
-  v3 = a3;
-  if (a3)
+  keyCopy = key;
+  if (key)
   {
     v5 = objc_autoreleasePoolPush();
     std::recursive_mutex::lock(&self->_lock);
-    v3 = [(NSMapTable *)self->_map objectForKey:v3];
+    keyCopy = [(NSMapTable *)self->_map objectForKey:keyCopy];
     std::recursive_mutex::unlock(&self->_lock);
     objc_autoreleasePoolPop(v5);
   }
 
-  return v3;
+  return keyCopy;
 }
 
-- (id)getCachedObjectForKey:(id)a3 onMiss:(id)a4
+- (id)getCachedObjectForKey:(id)key onMiss:(id)miss
 {
-  if (!a3)
+  if (!key)
   {
     return 0;
   }
 
   v7 = objc_autoreleasePoolPush();
   std::recursive_mutex::lock(&self->_lock);
-  v8 = [(NSMapTable *)self->_map objectForKey:a3];
+  v8 = [(NSMapTable *)self->_map objectForKey:key];
   if (v8)
   {
     v9 = v8;
@@ -156,8 +156,8 @@
 
   else
   {
-    v9 = (*(a4 + 2))(a4);
-    [(NSMapTable *)self->_map setObject:v9 forKey:a3];
+    v9 = (*(miss + 2))(miss);
+    [(NSMapTable *)self->_map setObject:v9 forKey:key];
   }
 
   std::recursive_mutex::unlock(&self->_lock);

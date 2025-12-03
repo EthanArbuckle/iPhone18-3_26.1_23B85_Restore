@@ -1,15 +1,15 @@
 @interface NINearbyAccessoryConfiguration
 - (BOOL)dataExchangeDisabledAndUsingParameterOverrides;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NINearbyAccessoryConfiguration)initWithAccessoryData:(NSData *)accessoryData bluetoothPeerIdentifier:(NSUUID *)identifier error:(NSError *)error;
-- (NINearbyAccessoryConfiguration)initWithCoder:(id)a3;
+- (NINearbyAccessoryConfiguration)initWithCoder:(id)coder;
 - (NINearbyAccessoryConfiguration)initWithData:(NSData *)data error:(NSError *)error;
-- (NINearbyAccessoryConfiguration)initWithDataExchangeDisabledAndUsingParameterOverrides:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NINearbyAccessoryConfiguration)initWithDataExchangeDisabledAndUsingParameterOverrides:(id)overrides;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionInternal;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NINearbyAccessoryConfiguration
@@ -25,19 +25,19 @@
 
   v39.receiver = self;
   v39.super_class = NINearbyAccessoryConfiguration;
-  v8 = [(NIConfiguration *)&v39 initInternal];
-  if (!v8)
+  initInternal = [(NIConfiguration *)&v39 initInternal];
+  if (!initInternal)
   {
     goto LABEL_22;
   }
 
   v9 = v7;
-  v10 = [(NSData *)v7 bytes];
+  bytes = [(NSData *)v7 bytes];
   v11 = [(NSData *)v7 length];
   __p = 0;
   v37 = 0;
   v38 = 0;
-  sub_1000069DC(&__p, v10, v10 + v11, v11);
+  sub_1000069DC(&__p, bytes, bytes + v11, v11);
   v12 = v37 - __p;
   if ((v37 - __p) < 0x14)
   {
@@ -130,15 +130,15 @@ LABEL_53:
   {
     v30 = v46;
     v31 = [(NSData *)v7 copy];
-    v32 = v8[4];
-    v8[4] = v31;
+    v32 = initInternal[4];
+    initInternal[4] = v31;
 
     v33 = [[NIDiscoveryToken alloc] initWithDeviceAddress:v30];
-    v34 = v8[6];
-    v8[6] = v33;
+    v34 = initInternal[6];
+    initInternal[6] = v33;
 
-    *(v8 + 40) = 0;
-    v8[9] = 0;
+    *(initInternal + 40) = 0;
+    initInternal[9] = 0;
     v13 = 1;
     goto LABEL_19;
   }
@@ -169,7 +169,7 @@ LABEL_19:
   }
 
 LABEL_22:
-  v21 = v8;
+  v21 = initInternal;
 LABEL_24:
 
   return v21;
@@ -215,10 +215,10 @@ LABEL_3:
   return v13;
 }
 
-- (NINearbyAccessoryConfiguration)initWithDataExchangeDisabledAndUsingParameterOverrides:(id)a3
+- (NINearbyAccessoryConfiguration)initWithDataExchangeDisabledAndUsingParameterOverrides:(id)overrides
 {
-  v5 = a3;
-  if (!v5)
+  overridesCopy = overrides;
+  if (!overridesCopy)
   {
     v21 = +[NSAssertionHandler currentHandler];
     [v21 handleFailureInMethod:a2 object:self file:@"NIConfiguration.mm" lineNumber:769 description:{@"Invalid parameter not satisfying: %@", @"parameterOverrides"}];
@@ -226,36 +226,36 @@ LABEL_3:
 
   v23.receiver = self;
   v23.super_class = NINearbyAccessoryConfiguration;
-  v6 = [(NIConfiguration *)&v23 initInternal];
-  if (v6)
+  initInternal = [(NIConfiguration *)&v23 initInternal];
+  if (initInternal)
   {
     v7 = objc_opt_new();
     [v7 setObject:&__kCFBooleanTrue forKey:@"DisableDataExchangeAndUseParameterOverrides"];
-    [v7 addEntriesFromDictionary:v5];
-    objc_storeStrong(&v6->_debugParameters, v7);
-    v8 = [(NSDictionary *)v6->_debugParameters objectForKeyedSubscript:@"UWBSessionIdOverride"];
-    v9 = [v8 unsignedLongLongValue];
-    v10 = [(NSDictionary *)v6->_debugParameters objectForKeyedSubscript:@"LocalAddressOverride"];
-    v11 = [v10 unsignedLongLongValue];
-    v12 = [(NSDictionary *)v6->_debugParameters objectForKeyedSubscript:@"PeerAddressOverride"];
-    v13 = (v9 << 32) | (v11 << 16) | [v12 unsignedLongLongValue];
+    [v7 addEntriesFromDictionary:overridesCopy];
+    objc_storeStrong(&initInternal->_debugParameters, v7);
+    v8 = [(NSDictionary *)initInternal->_debugParameters objectForKeyedSubscript:@"UWBSessionIdOverride"];
+    unsignedLongLongValue = [v8 unsignedLongLongValue];
+    v10 = [(NSDictionary *)initInternal->_debugParameters objectForKeyedSubscript:@"LocalAddressOverride"];
+    unsignedLongLongValue2 = [v10 unsignedLongLongValue];
+    v12 = [(NSDictionary *)initInternal->_debugParameters objectForKeyedSubscript:@"PeerAddressOverride"];
+    v13 = (unsignedLongLongValue << 32) | (unsignedLongLongValue2 << 16) | [v12 unsignedLongLongValue];
 
     v22 = v13;
     v14 = [NSData dataWithBytes:&v22 length:8];
-    rawData = v6->_rawData;
-    v6->_rawData = v14;
+    rawData = initInternal->_rawData;
+    initInternal->_rawData = v14;
 
     v16 = [NIDiscoveryToken alloc];
-    v17 = [(NSDictionary *)v6->_debugParameters objectForKeyedSubscript:@"PeerAddressOverride"];
+    v17 = [(NSDictionary *)initInternal->_debugParameters objectForKeyedSubscript:@"PeerAddressOverride"];
     v18 = -[NIDiscoveryToken initWithDeviceAddress:](v16, "initWithDeviceAddress:", [v17 unsignedShortValue]);
-    accessoryDiscoveryToken = v6->_accessoryDiscoveryToken;
-    v6->_accessoryDiscoveryToken = v18;
+    accessoryDiscoveryToken = initInternal->_accessoryDiscoveryToken;
+    initInternal->_accessoryDiscoveryToken = v18;
 
-    v6->_cameraAssistanceEnabled = 0;
-    v6->_backgroundMode = 0;
+    initInternal->_cameraAssistanceEnabled = 0;
+    initInternal->_backgroundMode = 0;
   }
 
-  return v6;
+  return initInternal;
 }
 
 - (BOOL)dataExchangeDisabledAndUsingParameterOverrides
@@ -266,12 +266,12 @@ LABEL_3:
   }
 
   v3 = [(NSDictionary *)self->_debugParameters objectForKeyedSubscript:@"DisableDataExchangeAndUseParameterOverrides"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v13.receiver = self;
   v13.super_class = NINearbyAccessoryConfiguration;
@@ -279,11 +279,11 @@ LABEL_3:
   [v5 setBluetoothDeviceIdentifier:self->_bluetoothDeviceIdentifier];
   [v5 setCameraAssistanceEnabled:self->_cameraAssistanceEnabled];
   [v5 setBackgroundMode:self->_backgroundMode];
-  v6 = [(NSData *)self->_rawData copyWithZone:a3];
+  v6 = [(NSData *)self->_rawData copyWithZone:zone];
   v7 = v5[4];
   v5[4] = v6;
 
-  v8 = [(NIDiscoveryToken *)self->_accessoryDiscoveryToken copyWithZone:a3];
+  v8 = [(NIDiscoveryToken *)self->_accessoryDiscoveryToken copyWithZone:zone];
   v9 = v5[6];
   v5[6] = v8;
 
@@ -297,26 +297,26 @@ LABEL_3:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = NINearbyAccessoryConfiguration;
-  [(NIConfiguration *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_rawData forKey:@"rawData"];
-  [v4 encodeObject:self->_accessoryDiscoveryToken forKey:@"accessoryDiscoveryToken"];
-  [v4 encodeObject:self->_bluetoothDeviceIdentifier forKey:@"bluetoothDeviceIdentifier"];
-  [v4 encodeObject:self->_debugParameters forKey:@"debugParameters"];
-  [v4 encodeBool:self->_cameraAssistanceEnabled forKey:@"cameraAssistanceEnabled"];
-  [v4 encodeInteger:self->_backgroundMode forKey:@"backgroundMode"];
+  [(NIConfiguration *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_rawData forKey:@"rawData"];
+  [coderCopy encodeObject:self->_accessoryDiscoveryToken forKey:@"accessoryDiscoveryToken"];
+  [coderCopy encodeObject:self->_bluetoothDeviceIdentifier forKey:@"bluetoothDeviceIdentifier"];
+  [coderCopy encodeObject:self->_debugParameters forKey:@"debugParameters"];
+  [coderCopy encodeBool:self->_cameraAssistanceEnabled forKey:@"cameraAssistanceEnabled"];
+  [coderCopy encodeInteger:self->_backgroundMode forKey:@"backgroundMode"];
 }
 
-- (NINearbyAccessoryConfiguration)initWithCoder:(id)a3
+- (NINearbyAccessoryConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  obj = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessoryDiscoveryToken"];
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rawData"];
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bluetoothDeviceIdentifier"];
+  coderCopy = coder;
+  obj = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessoryDiscoveryToken"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rawData"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bluetoothDeviceIdentifier"];
   v21 = objc_opt_class();
   v6 = [NSArray arrayWithObjects:&v21 count:1];
   v7 = [NSSet setWithArray:v6];
@@ -327,12 +327,12 @@ LABEL_3:
   v8 = [NSArray arrayWithObjects:v20 count:3];
   v9 = [NSSet setWithArray:v8];
 
-  v10 = [v4 decodeDictionaryWithKeysOfClasses:v7 objectsOfClasses:v9 forKey:@"debugParameters"];
-  v11 = [v4 decodeBoolForKey:@"cameraAssistanceEnabled"];
-  v12 = [v4 decodeIntegerForKey:@"backgroundMode"];
+  v10 = [coderCopy decodeDictionaryWithKeysOfClasses:v7 objectsOfClasses:v9 forKey:@"debugParameters"];
+  v11 = [coderCopy decodeBoolForKey:@"cameraAssistanceEnabled"];
+  v12 = [coderCopy decodeIntegerForKey:@"backgroundMode"];
   v19.receiver = self;
   v19.super_class = NINearbyAccessoryConfiguration;
-  v13 = [(NIConfiguration *)&v19 initWithCoder:v4];
+  v13 = [(NIConfiguration *)&v19 initWithCoder:coderCopy];
   v14 = v13;
   if (v13)
   {
@@ -357,13 +357,13 @@ LABEL_3:
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     if (v5 == self)
     {
@@ -373,11 +373,11 @@ LABEL_3:
     else
     {
       rawData = self->_rawData;
-      v8 = [(NINearbyAccessoryConfiguration *)v5 accessoryConfigData];
-      v9 = [(NSData *)rawData isEqualToData:v8];
+      accessoryConfigData = [(NINearbyAccessoryConfiguration *)v5 accessoryConfigData];
+      v9 = [(NSData *)rawData isEqualToData:accessoryConfigData];
 
-      v10 = [(NINearbyAccessoryConfiguration *)v6 bluetoothDeviceIdentifier];
-      if (v10)
+      bluetoothDeviceIdentifier = [(NINearbyAccessoryConfiguration *)v6 bluetoothDeviceIdentifier];
+      if (bluetoothDeviceIdentifier)
       {
         v11 = 0;
       }
@@ -387,17 +387,17 @@ LABEL_3:
         v11 = self->_bluetoothDeviceIdentifier == 0;
       }
 
-      v13 = [(NINearbyAccessoryConfiguration *)v6 bluetoothDeviceIdentifier];
-      v14 = [v13 isEqual:self->_bluetoothDeviceIdentifier];
+      bluetoothDeviceIdentifier2 = [(NINearbyAccessoryConfiguration *)v6 bluetoothDeviceIdentifier];
+      v14 = [bluetoothDeviceIdentifier2 isEqual:self->_bluetoothDeviceIdentifier];
 
       cameraAssistanceEnabled = self->_cameraAssistanceEnabled;
-      v16 = [(NINearbyAccessoryConfiguration *)v6 isCameraAssistanceEnabled];
+      isCameraAssistanceEnabled = [(NINearbyAccessoryConfiguration *)v6 isCameraAssistanceEnabled];
       backgroundMode = self->_backgroundMode;
-      v24 = [(NINearbyAccessoryConfiguration *)v6 backgroundMode];
+      backgroundMode = [(NINearbyAccessoryConfiguration *)v6 backgroundMode];
       v25 = backgroundMode;
-      v18 = [(NINearbyAccessoryConfiguration *)v6 debugParameters];
+      debugParameters = [(NINearbyAccessoryConfiguration *)v6 debugParameters];
       v19 = v9;
-      if (v18)
+      if (debugParameters)
       {
         v23 = 0;
       }
@@ -407,13 +407,13 @@ LABEL_3:
         v23 = self->_debugParameters == 0;
       }
 
-      v20 = [(NINearbyAccessoryConfiguration *)v6 debugParameters];
-      v21 = [v20 isEqualToDictionary:self->_debugParameters];
+      debugParameters2 = [(NINearbyAccessoryConfiguration *)v6 debugParameters];
+      v21 = [debugParameters2 isEqualToDictionary:self->_debugParameters];
 
       v12 = 0;
-      if ((v19 & (v11 | v14)) == 1 && cameraAssistanceEnabled == v16)
+      if ((v19 & (v11 | v14)) == 1 && cameraAssistanceEnabled == isCameraAssistanceEnabled)
       {
-        v12 = (v25 == v24) & (v23 | v21);
+        v12 = (v25 == backgroundMode) & (v23 | v21);
       }
     }
   }
@@ -438,8 +438,8 @@ LABEL_3:
   v3 = [NSMutableString alloc];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(NINearbyAccessoryConfiguration *)self descriptionInternal];
-  v7 = [v3 initWithFormat:@"<%@: %@>", v5, v6];
+  descriptionInternal = [(NINearbyAccessoryConfiguration *)self descriptionInternal];
+  v7 = [v3 initWithFormat:@"<%@: %@>", v5, descriptionInternal];
 
   return v7;
 }
@@ -450,8 +450,8 @@ LABEL_3:
   accessoryDiscoveryToken = self->_accessoryDiscoveryToken;
   if (accessoryDiscoveryToken)
   {
-    v5 = [(NIDiscoveryToken *)accessoryDiscoveryToken descriptionInternal];
-    [v3 appendFormat:@"Device Token: %@", v5];
+    descriptionInternal = [(NIDiscoveryToken *)accessoryDiscoveryToken descriptionInternal];
+    [v3 appendFormat:@"Device Token: %@", descriptionInternal];
   }
 
   else
@@ -462,8 +462,8 @@ LABEL_3:
   bluetoothDeviceIdentifier = self->_bluetoothDeviceIdentifier;
   if (bluetoothDeviceIdentifier)
   {
-    v7 = [(NSUUID *)bluetoothDeviceIdentifier UUIDString];
-    [v3 appendFormat:@", Bluetooth Device: %@", v7];
+    uUIDString = [(NSUUID *)bluetoothDeviceIdentifier UUIDString];
+    [v3 appendFormat:@", Bluetooth Device: %@", uUIDString];
   }
 
   else

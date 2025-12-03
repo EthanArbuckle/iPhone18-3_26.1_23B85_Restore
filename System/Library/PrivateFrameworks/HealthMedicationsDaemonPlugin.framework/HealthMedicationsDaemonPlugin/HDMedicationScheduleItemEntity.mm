@@ -1,11 +1,11 @@
 @interface HDMedicationScheduleItemEntity
-+ (BOOL)deleteMedicationScheduleItemsWithPredicate:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (BOOL)enumerateItemsWithPredicate:(id)a3 orderingTerms:(id)a4 transaction:(id)a5 error:(id *)a6 enumerationHandler:(id)a7;
-+ (BOOL)updateNotification:(BOOL)a3 itemIdentifier:(id)a4 transaction:(id)a5 error:(id *)a6;
-+ (id)insertMedicationScheduleItem:(id)a3 transaction:(id)a4 error:(id *)a5;
++ (BOOL)deleteMedicationScheduleItemsWithPredicate:(id)predicate transaction:(id)transaction error:(id *)error;
++ (BOOL)enumerateItemsWithPredicate:(id)predicate orderingTerms:(id)terms transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler;
++ (BOOL)updateNotification:(BOOL)notification itemIdentifier:(id)identifier transaction:(id)transaction error:(id *)error;
++ (id)insertMedicationScheduleItem:(id)item transaction:(id)transaction error:(id *)error;
 + (id)medicationScheduleItemEntityPropertiesForModel;
 + (id)medicationScheduleItemFromRow:error:;
-+ (id)medicationScheduleItemWithIdentifier:(id)a3 transaction:(id)a4 error:(id *)a5;
++ (id)medicationScheduleItemWithIdentifier:(id)identifier transaction:(id)transaction error:(id *)error;
 @end
 
 @implementation HDMedicationScheduleItemEntity
@@ -36,37 +36,37 @@
   return v3;
 }
 
-+ (id)medicationScheduleItemWithIdentifier:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)medicationScheduleItemWithIdentifier:(id)identifier transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  transactionCopy = transaction;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__8;
   v23 = __Block_byref_object_dispose__8;
   v24 = 0;
-  v10 = [v9 databaseForEntityClass:a1];
+  v10 = [transactionCopy databaseForEntityClass:self];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __89__HDMedicationScheduleItemEntity_medicationScheduleItemWithIdentifier_transaction_error___block_invoke;
   v18[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v18[4] = a1;
+  v18[4] = self;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __89__HDMedicationScheduleItemEntity_medicationScheduleItemWithIdentifier_transaction_error___block_invoke_2;
   v16[3] = &unk_2796CE028;
-  v11 = v8;
+  v11 = identifierCopy;
   v17 = v11;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __89__HDMedicationScheduleItemEntity_medicationScheduleItemWithIdentifier_transaction_error___block_invoke_3;
   v15[3] = &unk_2796CE050;
   v15[4] = &v19;
-  v15[5] = a1;
-  LODWORD(a5) = [v10 executeCachedStatementForKey:&medicationScheduleItemWithIdentifier_transaction_error__lookupKey error:a5 SQLGenerator:v18 bindingHandler:v16 enumerationHandler:v15];
+  v15[5] = self;
+  LODWORD(error) = [v10 executeCachedStatementForKey:&medicationScheduleItemWithIdentifier_transaction_error__lookupKey error:error SQLGenerator:v18 bindingHandler:v16 enumerationHandler:v15];
 
-  if (a5)
+  if (error)
   {
     v12 = v20[5];
   }
@@ -104,25 +104,25 @@ uint64_t __89__HDMedicationScheduleItemEntity_medicationScheduleItemWithIdentifi
   return 0;
 }
 
-+ (BOOL)enumerateItemsWithPredicate:(id)a3 orderingTerms:(id)a4 transaction:(id)a5 error:(id *)a6 enumerationHandler:(id)a7
++ (BOOL)enumerateItemsWithPredicate:(id)predicate orderingTerms:(id)terms transaction:(id)transaction error:(id *)error enumerationHandler:(id)handler
 {
-  v12 = a7;
-  v13 = a4;
-  v14 = a3;
-  v15 = [a5 databaseForEntityClass:a1];
-  v16 = [a1 queryWithDatabase:v15 predicate:v14 limit:0 orderingTerms:v13 groupBy:0];
+  handlerCopy = handler;
+  termsCopy = terms;
+  predicateCopy = predicate;
+  v15 = [transaction databaseForEntityClass:self];
+  v16 = [self queryWithDatabase:v15 predicate:predicateCopy limit:0 orderingTerms:termsCopy groupBy:0];
 
   v17 = +[HDMedicationScheduleItemEntity medicationScheduleItemEntityPropertiesForModel];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __113__HDMedicationScheduleItemEntity_enumerateItemsWithPredicate_orderingTerms_transaction_error_enumerationHandler___block_invoke;
   v20[3] = &unk_2796CE078;
-  v21 = v12;
-  v22 = a1;
-  v18 = v12;
-  LOBYTE(a6) = [v16 enumeratePersistentIDsAndProperties:v17 error:a6 enumerationHandler:v20];
+  v21 = handlerCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
+  LOBYTE(error) = [v16 enumeratePersistentIDsAndProperties:v17 error:error enumerationHandler:v20];
 
-  return a6;
+  return error;
 }
 
 uint64_t __113__HDMedicationScheduleItemEntity_enumerateItemsWithPredicate_orderingTerms_transaction_error_enumerationHandler___block_invoke(uint64_t a1)
@@ -134,18 +134,18 @@ uint64_t __113__HDMedicationScheduleItemEntity_enumerateItemsWithPredicate_order
   return v4;
 }
 
-+ (id)insertMedicationScheduleItem:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)insertMedicationScheduleItem:(id)item transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = [a4 databaseForEntityClass:a1];
+  itemCopy = item;
+  v9 = [transaction databaseForEntityClass:self];
   v10 = +[HDMedicationScheduleItemEntity medicationScheduleItemEntityPropertiesForModel];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __81__HDMedicationScheduleItemEntity_insertMedicationScheduleItem_transaction_error___block_invoke;
   v14[3] = &unk_2796CDFD8;
-  v15 = v8;
-  v11 = v8;
-  v12 = [a1 insertOrReplaceEntity:1 database:v9 properties:v10 error:a5 bindingHandler:v14];
+  v15 = itemCopy;
+  v11 = itemCopy;
+  v12 = [self insertOrReplaceEntity:1 database:v9 properties:v10 error:error bindingHandler:v14];
 
   return v12;
 }
@@ -163,34 +163,34 @@ void __81__HDMedicationScheduleItemEntity_insertMedicationScheduleItem_transacti
   HDSQLiteBindSecureCodingObjectToProperty();
 }
 
-+ (BOOL)updateNotification:(BOOL)a3 itemIdentifier:(id)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)updateNotification:(BOOL)notification itemIdentifier:(id)identifier transaction:(id)transaction error:(id *)error
 {
   v19[1] = *MEMORY[0x277D85DE8];
   v10 = MEMORY[0x277D10B18];
-  v11 = a5;
-  v12 = [v10 predicateWithProperty:@"identifier" equalToValue:a4];
+  transactionCopy = transaction;
+  v12 = [v10 predicateWithProperty:@"identifier" equalToValue:identifier];
   v19[0] = @"notification_sent";
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
-  v14 = [v11 databaseForEntityClass:objc_opt_class()];
+  v14 = [transactionCopy databaseForEntityClass:objc_opt_class()];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __86__HDMedicationScheduleItemEntity_updateNotification_itemIdentifier_transaction_error___block_invoke;
   v17[3] = &__block_descriptor_33_e34_v16__0__HDSQLiteStatementBinder__8l;
-  v18 = a3;
-  LOBYTE(a6) = [a1 updateProperties:v13 predicate:v12 database:v14 error:a6 bindingHandler:v17];
+  notificationCopy = notification;
+  LOBYTE(error) = [self updateProperties:v13 predicate:v12 database:v14 error:error bindingHandler:v17];
 
   v15 = *MEMORY[0x277D85DE8];
-  return a6;
+  return error;
 }
 
-+ (BOOL)deleteMedicationScheduleItemsWithPredicate:(id)a3 transaction:(id)a4 error:(id *)a5
++ (BOOL)deleteMedicationScheduleItemsWithPredicate:(id)predicate transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = [a4 databaseForEntityClass:a1];
-  LOBYTE(a5) = [a1 deleteEntitiesInDatabase:v9 predicate:v8 error:a5];
+  predicateCopy = predicate;
+  v9 = [transaction databaseForEntityClass:self];
+  LOBYTE(error) = [self deleteEntitiesInDatabase:v9 predicate:predicateCopy error:error];
 
-  return a5;
+  return error;
 }
 
 @end

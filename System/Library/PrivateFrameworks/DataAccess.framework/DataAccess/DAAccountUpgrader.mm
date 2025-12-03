@@ -3,7 +3,7 @@
 + (void)_notifyDaHolidaySubCalAccount;
 + (void)_updateFacebookAccountAuthenticationTypes;
 + (void)_upgradeDAAccounts;
-+ (void)upgradeAccounts:(BOOL)a3;
++ (void)upgradeAccounts:(BOOL)accounts;
 @end
 
 @implementation DAAccountUpgrader
@@ -165,8 +165,8 @@
             v33 = 0u;
             v34 = 0u;
             v35 = 0u;
-            v11 = [v10 childAccounts];
-            v12 = [v11 countByEnumeratingWithState:&v32 objects:v42 count:16];
+            childAccounts = [v10 childAccounts];
+            v12 = [childAccounts countByEnumeratingWithState:&v32 objects:v42 count:16];
             if (v12)
             {
               v13 = v12;
@@ -177,12 +177,12 @@
                 {
                   if (*v33 != v14)
                   {
-                    objc_enumerationMutation(v11);
+                    objc_enumerationMutation(childAccounts);
                   }
 
                   v16 = *(*(&v32 + 1) + 8 * i);
-                  v17 = [v16 authenticationType];
-                  v18 = [v17 isEqualToString:v8];
+                  authenticationType = [v16 authenticationType];
+                  v18 = [authenticationType isEqualToString:v8];
 
                   if ((v18 & 1) == 0)
                   {
@@ -191,9 +191,9 @@
                     v19 = DALoggingwithCategory();
                     if (os_log_type_enabled(v19, v7))
                     {
-                      v20 = [v16 identifier];
+                      identifier = [v16 identifier];
                       *buf = 138412290;
-                      v41 = v20;
+                      v41 = identifier;
                       _os_log_impl(&dword_24844D000, v19, v7, "Saving child account %@", buf, 0xCu);
                     }
 
@@ -207,7 +207,7 @@
                   }
                 }
 
-                v13 = [v11 countByEnumeratingWithState:&v32 objects:v42 count:16];
+                v13 = [childAccounts countByEnumeratingWithState:&v32 objects:v42 count:16];
               }
 
               while (v13);
@@ -363,12 +363,12 @@ LABEL_6:
           v15 = DALoggingwithCategory();
           if (os_log_type_enabled(v15, v4))
           {
-            v16 = [v13 accountDescription];
-            v17 = [v13 publicDescription];
+            accountDescription = [v13 accountDescription];
+            publicDescription = [v13 publicDescription];
             *v39 = 138412546;
-            v40 = v16;
+            v40 = accountDescription;
             v41 = 2114;
-            v42 = v17;
+            v42 = publicDescription;
             _os_log_impl(&dword_24844D000, v15, v4, "Account %@ (%{public}@) was upgraded. Saving account.", v39, 0x16u);
           }
 
@@ -380,9 +380,9 @@ LABEL_6:
             v20 = DALoggingwithCategory();
             if (os_log_type_enabled(v20, type))
             {
-              v21 = [v13 accountID];
+              accountID = [v13 accountID];
               *v39 = 138543618;
-              v40 = v21;
+              v40 = accountID;
               v41 = 2112;
               v42 = v19;
               _os_log_impl(&dword_24844D000, v20, type, "Error saving account %{public}@: %@", v39, 0x16u);
@@ -439,9 +439,9 @@ uint64_t __39__DAAccountUpgrader__upgradeDAAccounts__block_invoke_2(uint64_t a1,
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.dataaccess.checkHolidayCalendarAccount", 0, 0, 1u);
 }
 
-+ (void)upgradeAccounts:(BOOL)a3
++ (void)upgradeAccounts:(BOOL)accounts
 {
-  v3 = a3;
+  accountsCopy = accounts;
   v5 = DALoggingwithCategory();
   v6 = MEMORY[0x277D03988];
   v7 = *(MEMORY[0x277D03988] + 5);
@@ -451,7 +451,7 @@ uint64_t __39__DAAccountUpgrader__upgradeDAAccounts__block_invoke_2(uint64_t a1,
     _os_log_impl(&dword_24844D000, v5, v7, "DAD: DataAccess Migrator Request For Performing Asynchronous Data Migration", v17, 2u);
   }
 
-  if (v3)
+  if (accountsCopy)
   {
     v8 = DALoggingwithCategory();
     v9 = *(v6 + 6);
@@ -461,7 +461,7 @@ uint64_t __39__DAAccountUpgrader__upgradeDAAccounts__block_invoke_2(uint64_t a1,
       _os_log_impl(&dword_24844D000, v8, v9, "DAAccountMigrator: Starting Exchange Credential Move to Apple Access Group", v17, 2u);
     }
 
-    [a1 _moveExchangeCredentialsToAppleAccessGroup];
+    [self _moveExchangeCredentialsToAppleAccessGroup];
     v10 = DALoggingwithCategory();
     if (os_log_type_enabled(v10, v9))
     {
@@ -469,7 +469,7 @@ uint64_t __39__DAAccountUpgrader__upgradeDAAccounts__block_invoke_2(uint64_t a1,
       _os_log_impl(&dword_24844D000, v10, v9, "DAAccountMigrator: Starting Update Facebook Authentication types.", v17, 2u);
     }
 
-    [a1 _updateFacebookAccountAuthenticationTypes];
+    [self _updateFacebookAccountAuthenticationTypes];
     v11 = DALoggingwithCategory();
     if (os_log_type_enabled(v11, v9))
     {
@@ -477,7 +477,7 @@ uint64_t __39__DAAccountUpgrader__upgradeDAAccounts__block_invoke_2(uint64_t a1,
       _os_log_impl(&dword_24844D000, v11, v9, "DAAccountMigrator: Starting Upgrade DAAccount types.", v17, 2u);
     }
 
-    [a1 _upgradeDAAccounts];
+    [self _upgradeDAAccounts];
     v12 = DALoggingwithCategory();
     if (os_log_type_enabled(v12, v9))
     {
@@ -485,7 +485,7 @@ uint64_t __39__DAAccountUpgrader__upgradeDAAccounts__block_invoke_2(uint64_t a1,
       _os_log_impl(&dword_24844D000, v12, v9, "DAAccountMigrator: Writing Device specificID.", v17, 2u);
     }
 
-    [a1 _writeDeviceSpecificID];
+    [self _writeDeviceSpecificID];
   }
 
   else
@@ -507,7 +507,7 @@ uint64_t __39__DAAccountUpgrader__upgradeDAAccounts__block_invoke_2(uint64_t a1,
     _os_log_impl(&dword_24844D000, v14, v9, "DAAccountMigrator: Posting HolidaySubCal Account Check Notification.", v17, 2u);
   }
 
-  [a1 _notifyDaHolidaySubCalAccount];
+  [self _notifyDaHolidaySubCalAccount];
   v15 = DALoggingwithCategory();
   if (os_log_type_enabled(v15, v9))
   {

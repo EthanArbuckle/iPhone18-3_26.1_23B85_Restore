@@ -1,30 +1,30 @@
 @interface _SVXSpeakableNamespaceDomainOccurrenceProvider
-+ (id)providerForDomain:(id)a3;
-- (id)stringForExpression:(id)a3;
++ (id)providerForDomain:(id)domain;
+- (id)stringForExpression:(id)expression;
 @end
 
 @implementation _SVXSpeakableNamespaceDomainOccurrenceProvider
 
-- (id)stringForExpression:(id)a3
+- (id)stringForExpression:(id)expression
 {
-  v4 = a3;
-  v5 = [(_SVXSpeakableNamespaceDomainOccurrenceProvider *)self deferredMessageKeys];
-  v6 = [v5 containsObject:v4];
+  expressionCopy = expression;
+  deferredMessageKeys = [(_SVXSpeakableNamespaceDomainOccurrenceProvider *)self deferredMessageKeys];
+  v6 = [deferredMessageKeys containsObject:expressionCopy];
 
   if (v6)
   {
     ++self->_count;
   }
 
-  v7 = [v4 copy];
+  v7 = [expressionCopy copy];
 
   return v7;
 }
 
-+ (id)providerForDomain:(id)a3
++ (id)providerForDomain:(id)domain
 {
   v3 = *MEMORY[0x277D489A8];
-  if ([a3 isEqualToString:*MEMORY[0x277D489A8]])
+  if ([domain isEqualToString:*MEMORY[0x277D489A8]])
   {
     v4 = objc_opt_new();
     [v4 setDomain:v3];

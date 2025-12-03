@@ -1,44 +1,44 @@
 @interface TSTStrokeOrderedLayerToken
-+ (id)tokenWithStroke:(id)a3 range:(TSTSimpleRange)a4 order:(int)a5 majorStrokeLayerToken:(id)a6 minorStrokeLayerToken:(id)a7;
++ (id)tokenWithStroke:(id)stroke range:(TSTSimpleRange)range order:(int)order majorStrokeLayerToken:(id)token minorStrokeLayerToken:(id)layerToken;
 - (TSTSimpleRange)range;
-- (TSTStrokeOrderedLayerToken)initWithStroke:(id)a3 range:(TSTSimpleRange)a4 order:(int)a5 majorStrokeLayerToken:(id)a6 minorStrokeLayerToken:(id)a7;
+- (TSTStrokeOrderedLayerToken)initWithStroke:(id)stroke range:(TSTSimpleRange)range order:(int)order majorStrokeLayerToken:(id)token minorStrokeLayerToken:(id)layerToken;
 @end
 
 @implementation TSTStrokeOrderedLayerToken
 
-+ (id)tokenWithStroke:(id)a3 range:(TSTSimpleRange)a4 order:(int)a5 majorStrokeLayerToken:(id)a6 minorStrokeLayerToken:(id)a7
++ (id)tokenWithStroke:(id)stroke range:(TSTSimpleRange)range order:(int)order majorStrokeLayerToken:(id)token minorStrokeLayerToken:(id)layerToken
 {
-  v8 = *&a5;
-  length = a4.length;
-  origin = a4.origin;
-  v12 = a7;
-  v13 = a6;
-  v14 = a3;
+  v8 = *&order;
+  length = range.length;
+  origin = range.origin;
+  layerTokenCopy = layerToken;
+  tokenCopy = token;
+  strokeCopy = stroke;
   v15 = [TSTStrokeOrderedLayerToken alloc];
-  v17 = objc_msgSend_initWithStroke_range_order_majorStrokeLayerToken_minorStrokeLayerToken_(v15, v16, v14, origin, length, v8, v13, v12);
+  v17 = objc_msgSend_initWithStroke_range_order_majorStrokeLayerToken_minorStrokeLayerToken_(v15, v16, strokeCopy, origin, length, v8, tokenCopy, layerTokenCopy);
 
   return v17;
 }
 
-- (TSTStrokeOrderedLayerToken)initWithStroke:(id)a3 range:(TSTSimpleRange)a4 order:(int)a5 majorStrokeLayerToken:(id)a6 minorStrokeLayerToken:(id)a7
+- (TSTStrokeOrderedLayerToken)initWithStroke:(id)stroke range:(TSTSimpleRange)range order:(int)order majorStrokeLayerToken:(id)token minorStrokeLayerToken:(id)layerToken
 {
-  length = a4.length;
-  origin = a4.origin;
-  v14 = a3;
-  v15 = a6;
-  v16 = a7;
+  length = range.length;
+  origin = range.origin;
+  strokeCopy = stroke;
+  tokenCopy = token;
+  layerTokenCopy = layerToken;
   v20.receiver = self;
   v20.super_class = TSTStrokeOrderedLayerToken;
   v17 = [(TSTStrokeOrderedLayerToken *)&v20 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_stroke, a3);
+    objc_storeStrong(&v17->_stroke, stroke);
     v18->_range.origin = origin;
     v18->_range.length = length;
-    v18->_order = a5;
-    objc_storeStrong(&v18->_majorStrokeLayerToken, a6);
-    objc_storeStrong(&v18->_minorStrokeLayerToken, a7);
+    v18->_order = order;
+    objc_storeStrong(&v18->_majorStrokeLayerToken, token);
+    objc_storeStrong(&v18->_minorStrokeLayerToken, layerToken);
   }
 
   return v18;

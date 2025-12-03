@@ -1,51 +1,51 @@
 @interface PLCoalitionDataObject
 - (id)description;
 - (void)dealloc;
-- (void)setLaunchdName:(id)a3;
+- (void)setLaunchdName:(id)name;
 @end
 
 @implementation PLCoalitionDataObject
 
-- (void)setLaunchdName:(id)a3
+- (void)setLaunchdName:(id)name
 {
-  v6 = a3;
-  if ([v6 containsString:@"/"])
+  nameCopy = name;
+  if ([nameCopy containsString:@"/"])
   {
-    v4 = [v6 lastPathComponent];
+    lastPathComponent = [nameCopy lastPathComponent];
   }
 
   else
   {
-    v4 = v6;
+    lastPathComponent = nameCopy;
   }
 
   launchdName = self->_launchdName;
-  self->_launchdName = v4;
+  self->_launchdName = lastPathComponent;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(PLCoalitionDataObject *)self coalitionID];
-  v5 = [(PLCoalitionDataObject *)self launchdName];
-  v6 = [(PLCoalitionDataObject *)self bundleID];
-  v7 = [v3 stringWithFormat:@"ID: %llu\nLaunchdName: %@\nBundleID: %@\n", v4, v5, v6];
+  coalitionID = [(PLCoalitionDataObject *)self coalitionID];
+  launchdName = [(PLCoalitionDataObject *)self launchdName];
+  bundleID = [(PLCoalitionDataObject *)self bundleID];
+  v7 = [v3 stringWithFormat:@"ID: %llu\nLaunchdName: %@\nBundleID: %@\n", coalitionID, launchdName, bundleID];
 
   return v7;
 }
 
 - (void)dealloc
 {
-  v3 = [(PLCoalitionDataObject *)self coalStruct];
+  coalStruct = [(PLCoalitionDataObject *)self coalStruct];
 
-  if (v3)
+  if (coalStruct)
   {
-    v4 = [(PLCoalitionDataObject *)self coalStruct];
-    v5 = [v4 pointerValue];
+    coalStruct2 = [(PLCoalitionDataObject *)self coalStruct];
+    pointerValue = [coalStruct2 pointerValue];
 
-    if (v5)
+    if (pointerValue)
     {
-      free(v5);
+      free(pointerValue);
     }
   }
 

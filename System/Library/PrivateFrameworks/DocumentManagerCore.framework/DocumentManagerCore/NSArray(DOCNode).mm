@@ -17,7 +17,7 @@
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a1;
+  obj = self;
   v4 = [obj countByEnumeratingWithState:&v17 objects:v23 count:16];
   if (v4)
   {

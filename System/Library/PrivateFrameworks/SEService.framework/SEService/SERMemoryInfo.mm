@@ -1,22 +1,22 @@
 @interface SERMemoryInfo
 - (_TtC9SEService13SERMemoryInfo)init;
-- (_TtC9SEService13SERMemoryInfo)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC9SEService13SERMemoryInfo)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SERMemoryInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1C7C6F460(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1C7C6F460(coderCopy);
 }
 
-- (_TtC9SEService13SERMemoryInfo)initWithCoder:(id)a3
+- (_TtC9SEService13SERMemoryInfo)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_1C7C74448(v3);
+  coderCopy = coder;
+  v4 = sub_1C7C74448(coderCopy);
 
   return v4;
 }

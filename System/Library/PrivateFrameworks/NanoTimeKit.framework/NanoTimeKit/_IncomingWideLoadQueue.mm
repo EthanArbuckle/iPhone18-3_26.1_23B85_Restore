@@ -1,15 +1,15 @@
 @interface _IncomingWideLoadQueue
-- (BOOL)addIncomingPart:(id)a3;
-- (_IncomingWideLoadQueue)initWithPartialMessageTemplate:(id)a3;
+- (BOOL)addIncomingPart:(id)part;
+- (_IncomingWideLoadQueue)initWithPartialMessageTemplate:(id)template;
 - (id)getWideLoad;
 - (void)dealloc;
 @end
 
 @implementation _IncomingWideLoadQueue
 
-- (_IncomingWideLoadQueue)initWithPartialMessageTemplate:(id)a3
+- (_IncomingWideLoadQueue)initWithPartialMessageTemplate:(id)template
 {
-  v4 = a3;
+  templateCopy = template;
   v18.receiver = self;
   v18.super_class = _IncomingWideLoadQueue;
   v5 = [(_IncomingWideLoadQueue *)&v18 init];
@@ -18,26 +18,26 @@
     goto LABEL_5;
   }
 
-  if ([v4 isPartial] && objc_msgSend(v4, "numberOfParts"))
+  if ([templateCopy isPartial] && objc_msgSend(templateCopy, "numberOfParts"))
   {
-    v6 = [v4 wideLoadId];
+    wideLoadId = [templateCopy wideLoadId];
     wideLoadId = v5->_wideLoadId;
-    v5->_wideLoadId = v6;
+    v5->_wideLoadId = wideLoadId;
 
-    v8 = [(NSUUID *)v5->_wideLoadId UUIDString];
-    v9 = [NSString stringWithFormat:@"Incoming-%@.data", v8];
+    uUIDString = [(NSUUID *)v5->_wideLoadId UUIDString];
+    v9 = [NSString stringWithFormat:@"Incoming-%@.data", uUIDString];
 
     v10 = sub_10002F050();
     v11 = [v10 stringByAppendingPathComponent:v9];
     tempFilePath = v5->_tempFilePath;
     v5->_tempFilePath = v11;
 
-    v5->_maxPartSize = [v4 maxPartSize];
-    v5->_partsExpected = [v4 numberOfParts];
+    v5->_maxPartSize = [templateCopy maxPartSize];
+    v5->_partsExpected = [templateCopy numberOfParts];
     v5->_partsAdded = 0;
-    v13 = [v4 copyWithoutPayload];
+    copyWithoutPayload = [templateCopy copyWithoutPayload];
     wideLoadMessageTemplate = v5->_wideLoadMessageTemplate;
-    v5->_wideLoadMessageTemplate = v13;
+    v5->_wideLoadMessageTemplate = copyWithoutPayload;
 
     [(NTKDSyncMessage *)v5->_wideLoadMessageTemplate setWideLoadId:0];
     [(NTKDSyncMessage *)v5->_wideLoadMessageTemplate setNumberOfParts:0];
@@ -71,10 +71,10 @@ LABEL_9:
   [(_IncomingWideLoadQueue *)&v4 dealloc];
 }
 
-- (BOOL)addIncomingPart:(id)a3
+- (BOOL)addIncomingPart:(id)part
 {
-  v4 = a3;
-  if (![v4 isPartial] || !objc_msgSend(v4, "numberOfParts"))
+  partCopy = part;
+  if (![partCopy isPartial] || !objc_msgSend(partCopy, "numberOfParts"))
   {
     v9 = _NTKLoggingObjectForDomain();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -108,7 +108,7 @@ LABEL_9:
     maxPartSize = 4608000;
   }
 
-  if (![v4 getPayloadDataIntoFile:self->_tempFilePath toOffset:{objc_msgSend(v4, "partNumber") * maxPartSize}])
+  if (![partCopy getPayloadDataIntoFile:self->_tempFilePath toOffset:{objc_msgSend(partCopy, "partNumber") * maxPartSize}])
   {
 LABEL_12:
     v8 = 0;
@@ -126,10 +126,10 @@ LABEL_13:
 {
   if ([(_IncomingWideLoadQueue *)self isFull])
   {
-    v3 = [(NTKDSyncMessage *)self->_wideLoadMessageTemplate copyWithoutPayload];
-    if ([v3 setPayloadDataFromFile:self->_tempFilePath])
+    copyWithoutPayload = [(NTKDSyncMessage *)self->_wideLoadMessageTemplate copyWithoutPayload];
+    if ([copyWithoutPayload setPayloadDataFromFile:self->_tempFilePath])
     {
-      v4 = v3;
+      v4 = copyWithoutPayload;
     }
 
     else

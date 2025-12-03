@@ -18,27 +18,27 @@
 
 - (NSData)_URLArchive
 {
-  v2 = [a1 baseURL];
+  baseURL = [self baseURL];
   v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:3];
-  if (v2)
+  if (baseURL)
   {
-    [v3 addObject:{objc_msgSend(a1, "relativeString")}];
-    v4 = [v2 absoluteString];
+    [v3 addObject:{objc_msgSend(self, "relativeString")}];
+    absoluteString = [baseURL absoluteString];
   }
 
   else
   {
-    [v3 addObject:{objc_msgSend(a1, "absoluteString")}];
-    v4 = &stru_1EEEFDF90;
+    [v3 addObject:{objc_msgSend(self, "absoluteString")}];
+    absoluteString = &stru_1EEEFDF90;
   }
 
-  [v3 addObject:v4];
+  [v3 addObject:absoluteString];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [a1 _NSItemProviderArchive_customArchiveDictionary];
-    if (v5)
+    _NSItemProviderArchive_customArchiveDictionary = [self _NSItemProviderArchive_customArchiveDictionary];
+    if (_NSItemProviderArchive_customArchiveDictionary)
     {
-      [v3 addObject:v5];
+      [v3 addObject:_NSItemProviderArchive_customArchiveDictionary];
     }
   }
 
@@ -123,8 +123,8 @@
     if (v26)
     {
       v20 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v26];
-      v27 = [v20 scheme];
-      if (v20 && [v27 length] && (objc_msgSend(v20, "isFileURL") & 1) == 0)
+      scheme = [v20 scheme];
+      if (v20 && [scheme length] && (objc_msgSend(v20, "isFileURL") & 1) == 0)
       {
         v32 = 0;
       }
@@ -176,29 +176,29 @@ LABEL_31:
 
 - (void)writableTypeIdentifiersForItemProvider
 {
-  v2 = [MEMORY[0x1E695DF70] array];
-  if ([a1 isFileURL])
+  array = [MEMORY[0x1E695DF70] array];
+  if ([self isFileURL])
   {
-    [v2 addObject:off_1ED4398B0[0]()];
+    [array addObject:off_1ED4398B0[0]()];
   }
 
-  [v2 addObject:_MergedGlobals_89[0]()];
-  return v2;
+  [array addObject:_MergedGlobals_89[0]()];
+  return array;
 }
 
 - (uint64_t)loadDataWithTypeIdentifier:()NSItemProvider forItemProviderCompletionHandler:
 {
   if (([a3 isEqualToString:off_1ED4398B0[0]()] & 1) != 0 || objc_msgSend(a3, "isEqualToString:", _MergedGlobals_89[0]()))
   {
-    v7 = [a1 _URLArchive];
+    _URLArchive = [self _URLArchive];
   }
 
   else
   {
-    v7 = 0;
+    _URLArchive = 0;
   }
 
-  (*(a4 + 16))(a4, v7, 0);
+  (*(a4 + 16))(a4, _URLArchive, 0);
   return 0;
 }
 

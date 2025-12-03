@@ -1,11 +1,11 @@
 @interface CNCFPreferencesPrimitiveUserDefaults
-- (BOOL)primitiveBoolValueForKey:(id)a3 keyExists:(BOOL *)a4;
-- (CNCFPreferencesPrimitiveUserDefaults)initWithApplicationID:(id)a3;
+- (BOOL)primitiveBoolValueForKey:(id)key keyExists:(BOOL *)exists;
+- (CNCFPreferencesPrimitiveUserDefaults)initWithApplicationID:(id)d;
 - (__CFString)CFApplicationID;
-- (id)primitiveObjectForKey:(id)a3;
-- (int64_t)primitiveIntegerValueForKey:(id)a3 keyExists:(BOOL *)a4;
-- (void)primitiveRemoveObjectForKey:(id)a3;
-- (void)setPrimitiveObject:(id)a3 forKey:(id)a4;
+- (id)primitiveObjectForKey:(id)key;
+- (int64_t)primitiveIntegerValueForKey:(id)key keyExists:(BOOL *)exists;
+- (void)primitiveRemoveObjectForKey:(id)key;
+- (void)setPrimitiveObject:(id)object forKey:(id)key;
 - (void)setupAutosync;
 @end
 
@@ -24,15 +24,15 @@
   }
 }
 
-- (CNCFPreferencesPrimitiveUserDefaults)initWithApplicationID:(id)a3
+- (CNCFPreferencesPrimitiveUserDefaults)initWithApplicationID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = CNCFPreferencesPrimitiveUserDefaults;
   v5 = [(CNCFPreferencesPrimitiveUserDefaults *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     applicationID = v5->_applicationID;
     v5->_applicationID = v6;
 
@@ -43,40 +43,40 @@
   return v5;
 }
 
-- (id)primitiveObjectForKey:(id)a3
+- (id)primitiveObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = CFPreferencesCopyAppValue(v4, [(CNCFPreferencesPrimitiveUserDefaults *)self CFApplicationID]);
+  keyCopy = key;
+  v5 = CFPreferencesCopyAppValue(keyCopy, [(CNCFPreferencesPrimitiveUserDefaults *)self CFApplicationID]);
 
   return v5;
 }
 
-- (void)setPrimitiveObject:(id)a3 forKey:(id)a4
+- (void)setPrimitiveObject:(id)object forKey:(id)key
 {
-  v6 = a4;
-  value = a3;
-  CFPreferencesSetAppValue(v6, value, [(CNCFPreferencesPrimitiveUserDefaults *)self CFApplicationID]);
+  keyCopy = key;
+  value = object;
+  CFPreferencesSetAppValue(keyCopy, value, [(CNCFPreferencesPrimitiveUserDefaults *)self CFApplicationID]);
 }
 
-- (int64_t)primitiveIntegerValueForKey:(id)a3 keyExists:(BOOL *)a4
+- (int64_t)primitiveIntegerValueForKey:(id)key keyExists:(BOOL *)exists
 {
-  v6 = a3;
-  AppIntegerValue = CFPreferencesGetAppIntegerValue(v6, [(CNCFPreferencesPrimitiveUserDefaults *)self CFApplicationID], a4);
+  keyCopy = key;
+  AppIntegerValue = CFPreferencesGetAppIntegerValue(keyCopy, [(CNCFPreferencesPrimitiveUserDefaults *)self CFApplicationID], exists);
 
   return AppIntegerValue;
 }
 
-- (BOOL)primitiveBoolValueForKey:(id)a3 keyExists:(BOOL *)a4
+- (BOOL)primitiveBoolValueForKey:(id)key keyExists:(BOOL *)exists
 {
-  v6 = a3;
-  LODWORD(a4) = CFPreferencesGetAppBooleanValue(v6, [(CNCFPreferencesPrimitiveUserDefaults *)self CFApplicationID], a4);
+  keyCopy = key;
+  LODWORD(exists) = CFPreferencesGetAppBooleanValue(keyCopy, [(CNCFPreferencesPrimitiveUserDefaults *)self CFApplicationID], exists);
 
-  return a4 != 0;
+  return exists != 0;
 }
 
-- (void)primitiveRemoveObjectForKey:(id)a3
+- (void)primitiveRemoveObjectForKey:(id)key
 {
-  key = a3;
+  key = key;
   CFPreferencesSetAppValue(key, 0, [(CNCFPreferencesPrimitiveUserDefaults *)self CFApplicationID]);
 }
 

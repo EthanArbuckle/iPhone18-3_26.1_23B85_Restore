@@ -1,16 +1,16 @@
 @interface HUWheelColorWheelSpace
-- ($01BB1521EC52D44A8E7628F5261DCEC8)colorForCoordinate:(id)a3;
-- ($F24F406B2B787EFB06265DBA3D28CBD5)coordinateForColor:(id)a3 isValid:(BOOL *)a4;
+- ($01BB1521EC52D44A8E7628F5261DCEC8)colorForCoordinate:(id)coordinate;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)coordinateForColor:(id)color isValid:(BOOL *)valid;
 @end
 
 @implementation HUWheelColorWheelSpace
 
-- ($01BB1521EC52D44A8E7628F5261DCEC8)colorForCoordinate:(id)a3
+- ($01BB1521EC52D44A8E7628F5261DCEC8)colorForCoordinate:(id)coordinate
 {
-  var1 = a3.var1;
-  if (a3.var0 < 0.0 || a3.var0 > 1.0)
+  var1 = coordinate.var1;
+  if (coordinate.var0 < 0.0 || coordinate.var0 > 1.0)
   {
-    NSLog(&cfstr_InputCoordinat.isa, a2, *&a3.var0);
+    NSLog(&cfstr_InputCoordinat.isa, a2, *&coordinate.var0);
   }
 
   v5 = 0.0;
@@ -32,12 +32,12 @@
   return result;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)coordinateForColor:(id)a3 isValid:(BOOL *)a4
+- ($F24F406B2B787EFB06265DBA3D28CBD5)coordinateForColor:(id)color isValid:(BOOL *)valid
 {
   HFConvertRGBToHSB();
-  if (a4)
+  if (valid)
   {
-    *a4 = 1;
+    *valid = 1;
   }
 
   v5 = fmax(pow(0.0, 0.454545455), 0.08);

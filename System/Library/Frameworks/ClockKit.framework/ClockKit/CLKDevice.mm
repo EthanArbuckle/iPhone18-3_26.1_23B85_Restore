@@ -1,48 +1,48 @@
 @interface CLKDevice
-+ (CGRect)screenBoundsForSizeClass:(unint64_t)a3;
++ (CGRect)screenBoundsForSizeClass:(unint64_t)class;
 + (CLKDevice)currentDevice;
-+ (double)screenCornerRadiusForSizeClass:(unint64_t)a3;
-+ (id)_cachedDeviceForUUID:(id)a3;
-+ (id)_createCurrentDeviceWithPDRDevice:(id)a3;
++ (double)screenCornerRadiusForSizeClass:(unint64_t)class;
++ (id)_cachedDeviceForUUID:(id)d;
++ (id)_createCurrentDeviceWithPDRDevice:(id)device;
 + (id)activePDRDevice;
-+ (id)deviceForDescriptor:(id)a3;
-+ (id)deviceForNRDevice:(id)a3 forced:(BOOL)a4;
-+ (id)deviceForPDRDevice:(id)a3 forced:(BOOL)a4;
-+ (id)deviceForPairingID:(id)a3 forced:(BOOL)a4;
-+ (id)pdrDeviceForPairingID:(id)a3;
-+ (unsigned)_pdrCapabilityFromNRDeviceCapability:(id)a3;
-+ (unsigned)_uint32FromHexString:(id)a3;
-+ (void)_deviceDidBecomeActive:(id)a3;
-+ (void)_handlePDRDeviceChanged:(id)a3;
-+ (void)_removeCachedDeviceForUUID:(id)a3;
++ (id)deviceForDescriptor:(id)descriptor;
++ (id)deviceForNRDevice:(id)device forced:(BOOL)forced;
++ (id)deviceForPDRDevice:(id)device forced:(BOOL)forced;
++ (id)deviceForPairingID:(id)d forced:(BOOL)forced;
++ (id)pdrDeviceForPairingID:(id)d;
++ (unsigned)_pdrCapabilityFromNRDeviceCapability:(id)capability;
++ (unsigned)_uint32FromHexString:(id)string;
++ (void)_deviceDidBecomeActive:(id)active;
++ (void)_handlePDRDeviceChanged:(id)changed;
++ (void)_removeCachedDeviceForUUID:(id)d;
 + (void)activePDRDevice;
-+ (void)enumerateSizeClasses:(id)a3;
++ (void)enumerateSizeClasses:(id)classes;
 + (void)initialize;
 + (void)resetCurrentDevice;
-+ (void)setCurrentDevice:(id)a3;
++ (void)setCurrentDevice:(id)device;
 - (BOOL)_checkUpdateFlushCapabilitiesCache_locked;
 - (BOOL)_queryAndCacheNanoRegistryDeviceCapabilities;
-- (BOOL)_supportsCapabilityUncached:(unsigned int)a3;
+- (BOOL)_supportsCapabilityUncached:(unsigned int)uncached;
 - (BOOL)hasRichMediaComplications;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExplorer;
 - (BOOL)isLocked;
 - (BOOL)isRunningGraceOrLater;
 - (BOOL)isTinker;
-- (BOOL)supportsCapability:(id)a3;
+- (BOOL)supportsCapability:(id)capability;
 - (BOOL)supportsCharon;
-- (BOOL)supportsPDRCapability:(unsigned int)a3;
+- (BOOL)supportsPDRCapability:(unsigned int)capability;
 - (BOOL)supportsPolaris;
 - (BOOL)supportsUrsa;
 - (BOOL)unlockedSinceBoot;
 - (CGRect)screenBounds;
-- (CLKDevice)initWithPDRDevice:(id)a3;
-- (CLKDevice)initWithSizeClass:(unint64_t)a3;
+- (CLKDevice)initWithPDRDevice:(id)device;
+- (CLKDevice)initWithSizeClass:(unint64_t)class;
 - (CLKDeviceDescriptor)descriptor;
 - (NRDevice)nrDevice;
 - (id)description;
 - (int64_t)productFamilyType;
-- (int64_t)productTypeFromProductTypeString:(id)a3;
+- (int64_t)productTypeFromProductTypeString:(id)string;
 - (int64_t)retrieveProductType;
 - (unint64_t)version;
 - (void)_loadDeviceInfo;
@@ -50,7 +50,7 @@
 - (void)customCompanionSetup;
 - (void)dealloc;
 - (void)handleDeviceDidPairNotification;
-- (void)updateKeybagLockStateCacheWithState:(int)a3;
+- (void)updateKeybagLockStateCacheWithState:(int)state;
 - (void)updateTinkerState;
 @end
 
@@ -58,16 +58,16 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    v3 = [MEMORY[0x277CCAC38] processInfo];
-    v4 = [v3 processName];
-    v5 = [v4 isEqualToString:@"Bridge"];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
+    v5 = [processName isEqualToString:@"Bridge"];
 
     if ((v5 & 1) == 0)
     {
-      v6 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v6 addObserver:a1 selector:sel__deviceDidBecomeActive_ name:*MEMORY[0x277D37C08] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:self selector:sel__deviceDidBecomeActive_ name:*MEMORY[0x277D37C08] object:0];
     }
   }
 }
@@ -93,7 +93,7 @@
       v4 = 0;
     }
 
-    v5 = [a1 _createCurrentDeviceWithPDRDevice:v4];
+    v5 = [self _createCurrentDeviceWithPDRDevice:v4];
     v6 = __currentDevice;
     __currentDevice = v5;
 
@@ -110,7 +110,7 @@
 {
   v7 = *MEMORY[0x277D85DE8];
   v3 = 138412546;
-  v4 = a1;
+  selfCopy = self;
   v5 = 1024;
   v6 = a2;
   _os_log_error_impl(&dword_23702D000, log, OS_LOG_TYPE_ERROR, "Gizmo(%@) has invalid size class! %d", &v3, 0x12u);
@@ -124,9 +124,9 @@
     nrDevice = self->_nrDevice;
     if (!nrDevice)
     {
-      v4 = [MEMORY[0x277D2BCF8] sharedInstance];
-      v5 = [(CLKDevice *)self pairingID];
-      v6 = [v4 deviceForPairingID:v5];
+      mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+      pairingID = [(CLKDevice *)self pairingID];
+      v6 = [mEMORY[0x277D2BCF8] deviceForPairingID:pairingID];
       v7 = self->_nrDevice;
       self->_nrDevice = v6;
 
@@ -150,8 +150,8 @@
   v10 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_protectedLock);
   isTinker = self->_isTinker;
-  v4 = [(CLKDevice *)self pdrDevice];
-  v5 = [v4 valueForProperty:*MEMORY[0x277D37BB0]];
+  pdrDevice = [(CLKDevice *)self pdrDevice];
+  v5 = [pdrDevice valueForProperty:*MEMORY[0x277D37BB0]];
   self->_isTinker = [v5 BOOLValue];
 
   v6 = self->_isTinker;
@@ -172,8 +172,8 @@
 
 - (int64_t)retrieveProductType
 {
-  v3 = [(CLKDevice *)self pdrDevice];
-  v4 = [v3 valueForProperty:*MEMORY[0x277D37BE8]];
+  pdrDevice = [(CLKDevice *)self pdrDevice];
+  v4 = [pdrDevice valueForProperty:*MEMORY[0x277D37BE8]];
 
   v5 = [(CLKDevice *)self productTypeFromProductTypeString:v4];
   return v5;
@@ -210,7 +210,7 @@
 
   [(CLKDevice *)self _queryAndCacheNanoRegistryDeviceCapabilities];
   objc_initWeak(&location, self);
-  v5 = [MEMORY[0x277D37B40] pairedDeviceDidChangeCapabilities];
+  pairedDeviceDidChangeCapabilities = [MEMORY[0x277D37B40] pairedDeviceDidChangeCapabilities];
   v6 = MEMORY[0x277D85CD0];
   v7 = MEMORY[0x277D85CD0];
   v8[0] = MEMORY[0x277D85DD0];
@@ -218,7 +218,7 @@
   v8[2] = __33__CLKDevice_customCompanionSetup__block_invoke;
   v8[3] = &unk_278A1F218;
   objc_copyWeak(&v9, &location);
-  notify_register_dispatch(v5, &self->_pairedDeviceCapabilitiesChangeNotificationToken, v6, v8);
+  notify_register_dispatch(pairedDeviceDidChangeCapabilities, &self->_pairedDeviceCapabilitiesChangeNotificationToken, v6, v8);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -269,9 +269,9 @@
 
   else
   {
-    v18 = [(CLKDevice *)self pdrDevice];
+    pdrDevice = [(CLKDevice *)self pdrDevice];
 
-    if (v18)
+    if (pdrDevice)
     {
       v19 = [(CLKDevice *)self supportsPDRCapability:2876656872];
       goto LABEL_26;
@@ -299,9 +299,9 @@ LABEL_26:
 
   else
   {
-    v23 = [(CLKDevice *)self pdrDevice];
+    pdrDevice2 = [(CLKDevice *)self pdrDevice];
 
-    if (v23)
+    if (pdrDevice2)
     {
       v24 = [(CLKDevice *)self supportsPDRCapability:4273717761];
       goto LABEL_37;
@@ -318,9 +318,9 @@ LABEL_37:
 
   supportsCharon = self->_supportsCharon;
   CLKInternalBuild();
-  v26 = [(CLKDevice *)self pdrDevice];
+  pdrDevice3 = [(CLKDevice *)self pdrDevice];
 
-  if (v26)
+  if (pdrDevice3)
   {
     v27 = [(CLKDevice *)self supportsPDRCapability:3847477697];
   }
@@ -342,8 +342,8 @@ LABEL_37:
   }
 
   runningGraceOrLater = self->_runningGraceOrLater;
-  v30 = [(CLKDevice *)self pdrDevice];
-  if (v30)
+  pdrDevice4 = [(CLKDevice *)self pdrDevice];
+  if (pdrDevice4)
   {
     v31 = [(CLKDevice *)self supportsPDRCapability:2289945074];
   }
@@ -441,12 +441,12 @@ LABEL_54:
 - (BOOL)_checkUpdateFlushCapabilitiesCache_locked
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = [(NSMutableDictionary *)self->_supportedCapabilitiesCache allKeys];
+  allKeys = [(NSMutableDictionary *)self->_supportedCapabilitiesCache allKeys];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  v4 = [allKeys countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v4)
   {
     v6 = v4;
@@ -460,15 +460,15 @@ LABEL_54:
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
         v11 = [(NSMutableDictionary *)self->_supportedCapabilitiesCache objectForKeyedSubscript:v10, v18];
-        v12 = [v11 BOOLValue];
+        bOOLValue = [v11 BOOLValue];
 
         v13 = -[CLKDevice _supportsCapabilityUncached:](self, "_supportsCapabilityUncached:", [v10 unsignedIntValue]);
-        if (v12 != v13)
+        if (bOOLValue != v13)
         {
           v14 = v13;
           v15 = [MEMORY[0x277CCABB0] numberWithBool:v13];
@@ -488,7 +488,7 @@ LABEL_54:
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v19 objects:v27 count:16];
     }
 
     while (v6);
@@ -510,10 +510,10 @@ LABEL_54:
   return version;
 }
 
-- (CLKDevice)initWithPDRDevice:(id)a3
+- (CLKDevice)initWithPDRDevice:(id)device
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  deviceCopy = device;
   v12.receiver = self;
   v12.super_class = CLKDevice;
   v6 = [(CLKDevice *)&v12 init];
@@ -524,16 +524,16 @@ LABEL_54:
     v8 = CLKLoggingObjectForDomain(0);
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [CLKDevice CLKDeviceUUIDForPDRDevice:v5];
+      v9 = [CLKDevice CLKDeviceUUIDForPDRDevice:deviceCopy];
       *buf = 138543362;
       v14 = v9;
       _os_log_impl(&dword_23702D000, v8, OS_LOG_TYPE_DEFAULT, "Creating a CLKDevice. pdrDevice: %{public}@", buf, 0xCu);
     }
 
-    objc_storeStrong(&v7->_pdrDevice, a3);
+    objc_storeStrong(&v7->_pdrDevice, device);
     [(CLKDevice *)v7 _loadDeviceInfo];
-    v10 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v10 addObserver:v7 selector:sel_handleDeviceDidPairNotification name:*MEMORY[0x277D37C18] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_handleDeviceDidPairNotification name:*MEMORY[0x277D37C18] object:0];
 
     [(CLKDevice *)v7 customCompanionSetup];
   }
@@ -541,10 +541,10 @@ LABEL_54:
   return v7;
 }
 
-+ (id)deviceForDescriptor:(id)a3
++ (id)deviceForDescriptor:(id)descriptor
 {
-  v4 = [a3 pairingID];
-  v5 = [a1 deviceForPairingID:v4];
+  pairingID = [descriptor pairingID];
+  v5 = [self deviceForPairingID:pairingID];
 
   return v5;
 }
@@ -552,16 +552,16 @@ LABEL_54:
 - (CLKDeviceDescriptor)descriptor
 {
   v3 = [CLKDeviceDescriptor alloc];
-  v4 = [(CLKDevice *)self pairingID];
-  v5 = [(CLKDeviceDescriptor *)v3 initWithPairingID:v4];
+  pairingID = [(CLKDevice *)self pairingID];
+  v5 = [(CLKDeviceDescriptor *)v3 initWithPairingID:pairingID];
 
   return v5;
 }
 
-+ (id)_createCurrentDeviceWithPDRDevice:(id)a3
++ (id)_createCurrentDeviceWithPDRDevice:(id)device
 {
-  v4 = a3;
-  if (!v4)
+  deviceCopy = device;
+  if (!deviceCopy)
   {
     v5 = CLKLoggingObjectForDomain(0);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -570,29 +570,29 @@ LABEL_54:
     }
   }
 
-  v6 = [a1 deviceForPDRDevice:v4 forced:1];
+  v6 = [self deviceForPDRDevice:deviceCopy forced:1];
 
   return v6;
 }
 
-+ (void)setCurrentDevice:(id)a3
++ (void)setCurrentDevice:(id)device
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  deviceCopy = device;
   v4 = CLKLoggingObjectForDomain(0);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 pairingID];
+    pairingID = [deviceCopy pairingID];
     v7 = 138543618;
-    v8 = v3;
+    v8 = deviceCopy;
     v9 = 2114;
-    v10 = v5;
+    v10 = pairingID;
     _os_log_impl(&dword_23702D000, v4, OS_LOG_TYPE_DEFAULT, "Setting new current device. %{public}@, %{public}@", &v7, 0x16u);
   }
 
   os_unfair_lock_lock(&__deviceLock);
   v6 = __currentDevice;
-  __currentDevice = v3;
+  __currentDevice = deviceCopy;
 
   os_unfair_lock_unlock(&__deviceLock);
 }
@@ -629,14 +629,14 @@ LABEL_54:
     _os_log_impl(&dword_23702D000, v5, OS_LOG_TYPE_DEFAULT, "Resetting current device with pdrDevice %{public}@ - isNil:%lu hasEntitlement:%lu", &v8, 0x20u);
   }
 
-  v7 = [a1 _createCurrentDeviceWithPDRDevice:v4];
-  [a1 setCurrentDevice:v7];
+  v7 = [self _createCurrentDeviceWithPDRDevice:v4];
+  [self setCurrentDevice:v7];
 }
 
-+ (void)enumerateSizeClasses:(id)a3
++ (void)enumerateSizeClasses:(id)classes
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  classesCopy = classes;
   v12 = 0;
   v8 = 0u;
   v9 = 0u;
@@ -661,7 +661,7 @@ LABEL_3:
         break;
       }
 
-      v3[2](v3, [*(*(&v8 + 1) + 8 * v7++) integerValue], &v12);
+      classesCopy[2](classesCopy, [*(*(&v8 + 1) + 8 * v7++) integerValue], &v12);
       if (v5 == v7)
       {
         v5 = [&unk_284A35140 countByEnumeratingWithState:&v8 objects:v13 count:16];
@@ -712,9 +712,9 @@ void __33__CLKDevice_customCompanionSetup__block_invoke(uint64_t a1)
   v3 = CLKLoggingObjectForDomain(0);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CLKDevice *)self pairingID];
+    pairingID = [(CLKDevice *)self pairingID];
     *buf = 138412290;
-    v7 = v4;
+    v7 = pairingID;
     _os_log_impl(&dword_23702D000, v3, OS_LOG_TYPE_DEFAULT, "Received device paired notification: %@", buf, 0xCu);
   }
 
@@ -749,11 +749,11 @@ uint64_t __44__CLKDevice_handleDeviceDidPairNotification__block_invoke(uint64_t 
   return [*(a1 + 32) updateTinkerState];
 }
 
-+ (void)_deviceDidBecomeActive:(id)a3
++ (void)_deviceDidBecomeActive:(id)active
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D37C28]];
+  userInfo = [active userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D37C28]];
 
   v6 = CLKLoggingObjectForDomain(0);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -764,13 +764,13 @@ uint64_t __44__CLKDevice_handleDeviceDidPairNotification__block_invoke(uint64_t 
     _os_log_impl(&dword_23702D000, v6, OS_LOG_TYPE_DEFAULT, "new PDRDevice became active - %{public}@", &v8, 0xCu);
   }
 
-  [a1 _handlePDRDeviceChanged:v5];
+  [self _handlePDRDeviceChanged:v5];
 }
 
-+ (void)_handlePDRDeviceChanged:(id)a3
++ (void)_handlePDRDeviceChanged:(id)changed
 {
-  v4 = [a1 _createCurrentDeviceWithPDRDevice:a3];
-  [a1 setCurrentDevice:v4];
+  v4 = [self _createCurrentDeviceWithPDRDevice:changed];
+  [self setCurrentDevice:v4];
 
   v5 = MEMORY[0x277D85CD0];
 
@@ -805,31 +805,31 @@ void __30__CLKDevice_updateTinkerState__block_invoke()
   [v0 postNotificationName:@"CLKActiveDeviceChangedTinkerState" object:0];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 pdrDevice];
-    if (v5)
+    pdrDevice = [equalCopy pdrDevice];
+    if (pdrDevice)
     {
     }
 
     else
     {
-      v7 = [(CLKDevice *)self pdrDevice];
+      pdrDevice2 = [(CLKDevice *)self pdrDevice];
 
-      if (!v7)
+      if (!pdrDevice2)
       {
         v6 = 1;
         goto LABEL_7;
       }
     }
 
-    v8 = [v4 pdrDevice];
-    v9 = [(CLKDevice *)self pdrDevice];
-    v6 = [v8 isEqual:v9];
+    pdrDevice3 = [equalCopy pdrDevice];
+    pdrDevice4 = [(CLKDevice *)self pdrDevice];
+    v6 = [pdrDevice3 isEqual:pdrDevice4];
   }
 
   else
@@ -842,35 +842,35 @@ LABEL_7:
   return v6;
 }
 
-- (int64_t)productTypeFromProductTypeString:(id)a3
+- (int64_t)productTypeFromProductTypeString:(id)string
 {
-  v3 = a3;
-  if (v3)
+  stringCopy = string;
+  if (stringCopy)
   {
     if (productTypeFromProductTypeString__onceToken != -1)
     {
       [CLKDevice productTypeFromProductTypeString:];
     }
 
-    v4 = [productTypeFromProductTypeString__mapping objectForKeyedSubscript:v3];
+    v4 = [productTypeFromProductTypeString__mapping objectForKeyedSubscript:stringCopy];
     v5 = v4;
     if (v4)
     {
-      v6 = [v4 integerValue];
+      integerValue = [v4 integerValue];
     }
 
     else
     {
-      v6 = -1;
+      integerValue = -1;
     }
   }
 
   else
   {
-    v6 = -1;
+    integerValue = -1;
   }
 
-  return v6;
+  return integerValue;
 }
 
 void __46__CLKDevice_productTypeFromProductTypeString___block_invoke()
@@ -941,9 +941,9 @@ void __46__CLKDevice_productTypeFromProductTypeString___block_invoke()
   return supportsCharon;
 }
 
-+ (unsigned)_uint32FromHexString:(id)a3
++ (unsigned)_uint32FromHexString:(id)string
 {
-  if (!a3)
+  if (!string)
   {
     return 0;
   }
@@ -964,11 +964,11 @@ void __46__CLKDevice_productTypeFromProductTypeString___block_invoke()
   return v4;
 }
 
-+ (unsigned)_pdrCapabilityFromNRDeviceCapability:(id)a3
++ (unsigned)_pdrCapabilityFromNRDeviceCapability:(id)capability
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  capabilityCopy = capability;
+  if (capabilityCopy)
   {
     if (_pdrCapabilityFromNRDeviceCapability__onceToken != -1)
     {
@@ -976,7 +976,7 @@ void __46__CLKDevice_productTypeFromProductTypeString___block_invoke()
     }
 
     os_unfair_lock_lock(&_pdrCapabilityFromNRDeviceCapability____lock);
-    v5 = [_pdrCapabilityFromNRDeviceCapability____lookup objectForKey:v4];
+    v5 = [_pdrCapabilityFromNRDeviceCapability____lookup objectForKey:capabilityCopy];
     v6 = v5;
     if (v5)
     {
@@ -985,14 +985,14 @@ void __46__CLKDevice_productTypeFromProductTypeString___block_invoke()
 
     else
     {
-      v8 = [v4 UUIDString];
-      v9 = [v8 componentsSeparatedByString:@"-"];
-      v10 = [v9 firstObject];
+      uUIDString = [capabilityCopy UUIDString];
+      v9 = [uUIDString componentsSeparatedByString:@"-"];
+      firstObject = [v9 firstObject];
 
-      v7 = [a1 _uint32FromHexString:v10];
+      v7 = [self _uint32FromHexString:firstObject];
       v11 = _pdrCapabilityFromNRDeviceCapability____lookup;
       v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v7];
-      [v11 setObject:v12 forKey:v4];
+      [v11 setObject:v12 forKey:capabilityCopy];
     }
 
     os_unfair_lock_unlock(&_pdrCapabilityFromNRDeviceCapability____lock);
@@ -1000,7 +1000,7 @@ void __46__CLKDevice_productTypeFromProductTypeString___block_invoke()
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412546;
-      v16 = v4;
+      v16 = capabilityCopy;
       v17 = 1024;
       v18 = v7;
       _os_log_impl(&dword_23702D000, v13, OS_LOG_TYPE_DEFAULT, "NR Capability: %@ - %08x", &v15, 0x12u);
@@ -1024,9 +1024,9 @@ uint64_t __50__CLKDevice__pdrCapabilityFromNRDeviceCapability___block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (BOOL)supportsPDRCapability:(unsigned int)a3
+- (BOOL)supportsPDRCapability:(unsigned int)capability
 {
-  v3 = *&a3;
+  v3 = *&capability;
   os_unfair_lock_lock(&self->_capabilitiesLock);
   supportedCapabilitiesCache = self->_supportedCapabilitiesCache;
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v3];
@@ -1053,19 +1053,19 @@ uint64_t __50__CLKDevice__pdrCapabilityFromNRDeviceCapability___block_invoke()
   return v8;
 }
 
-- (BOOL)supportsCapability:(id)a3
+- (BOOL)supportsCapability:(id)capability
 {
-  v4 = [CLKDevice _pdrCapabilityFromNRDeviceCapability:a3];
+  v4 = [CLKDevice _pdrCapabilityFromNRDeviceCapability:capability];
 
   return [(CLKDevice *)self supportsPDRCapability:v4];
 }
 
-- (BOOL)_supportsCapabilityUncached:(unsigned int)a3
+- (BOOL)_supportsCapabilityUncached:(unsigned int)uncached
 {
   pdrDevice = self->_pdrDevice;
   if (pdrDevice)
   {
-    return [(PDRDevice *)pdrDevice supportsCapability:*&a3];
+    return [(PDRDevice *)pdrDevice supportsCapability:*&uncached];
   }
 
   else
@@ -1083,8 +1083,8 @@ uint64_t __50__CLKDevice__pdrCapabilityFromNRDeviceCapability___block_invoke()
 
   if (_CLKDeviceHasNanoRegistryEntitlement_hasEntitlement == 1)
   {
-    v2 = [MEMORY[0x277D37B50] sharedInstance];
-    v3 = [v2 getActivePairedDeviceIncludingAltAccount];
+    mEMORY[0x277D37B50] = [MEMORY[0x277D37B50] sharedInstance];
+    getActivePairedDeviceIncludingAltAccount = [mEMORY[0x277D37B50] getActivePairedDeviceIncludingAltAccount];
   }
 
   else
@@ -1095,15 +1095,15 @@ uint64_t __50__CLKDevice__pdrCapabilityFromNRDeviceCapability___block_invoke()
       +[(CLKDevice *)v4];
     }
 
-    v3 = 0;
+    getActivePairedDeviceIncludingAltAccount = 0;
   }
 
-  return v3;
+  return getActivePairedDeviceIncludingAltAccount;
 }
 
-+ (id)pdrDeviceForPairingID:(id)a3
++ (id)pdrDeviceForPairingID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1112,47 +1112,47 @@ uint64_t __50__CLKDevice__pdrCapabilityFromNRDeviceCapability___block_invoke()
 
   else
   {
-    v5 = [MEMORY[0x277D37B50] sharedInstance];
-    v4 = [v5 deviceForPairingID:v3];
+    mEMORY[0x277D37B50] = [MEMORY[0x277D37B50] sharedInstance];
+    v4 = [mEMORY[0x277D37B50] deviceForPairingID:dCopy];
   }
 
   return v4;
 }
 
-+ (id)deviceForPDRDevice:(id)a3 forced:(BOOL)a4
++ (id)deviceForPDRDevice:(id)device forced:(BOOL)forced
 {
-  v4 = a4;
-  v6 = [a3 pairingID];
-  v7 = [a1 deviceForPairingID:v6 forced:v4];
+  forcedCopy = forced;
+  pairingID = [device pairingID];
+  v7 = [self deviceForPairingID:pairingID forced:forcedCopy];
 
   return v7;
 }
 
-+ (id)deviceForPairingID:(id)a3 forced:(BOOL)a4
++ (id)deviceForPairingID:(id)d forced:(BOOL)forced
 {
-  v8 = a3;
-  v9 = v8;
-  if (a4)
+  dCopy = d;
+  v9 = dCopy;
+  if (forced)
   {
-    if (v8)
+    if (dCopy)
     {
-      [a1 _removeCachedDeviceForUUID:v8];
+      [self _removeCachedDeviceForUUID:dCopy];
 LABEL_12:
-      v16 = a1;
+      selfCopy2 = self;
       v17 = v9;
 LABEL_15:
-      v18 = [v16 _cachedDeviceForUUID:v17];
+      currentDevice4 = [selfCopy2 _cachedDeviceForUUID:v17];
       goto LABEL_16;
     }
 
 LABEL_14:
-    v16 = a1;
+    selfCopy2 = self;
     v17 = 0;
     goto LABEL_15;
   }
 
-  v10 = [a1 currentDevice];
-  if (!v10)
+  currentDevice = [self currentDevice];
+  if (!currentDevice)
   {
     if (v9)
     {
@@ -1162,23 +1162,23 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v11 = v10;
+  v11 = currentDevice;
   if (!v9)
   {
-    v4 = [a1 currentDevice];
-    v12 = [v4 pairingID];
-    if (!v12)
+    currentDevice2 = [self currentDevice];
+    pairingID = [currentDevice2 pairingID];
+    if (!pairingID)
     {
 
       goto LABEL_20;
     }
 
-    v5 = v12;
+    v5 = pairingID;
   }
 
-  v13 = [a1 currentDevice];
-  v14 = [v13 pairingID];
-  v15 = [v9 isEqual:v14];
+  currentDevice3 = [self currentDevice];
+  pairingID2 = [currentDevice3 pairingID];
+  v15 = [v9 isEqual:pairingID2];
 
   if (v9)
   {
@@ -1199,9 +1199,9 @@ LABEL_14:
   }
 
 LABEL_20:
-  v18 = [a1 currentDevice];
+  currentDevice4 = [self currentDevice];
 LABEL_16:
-  v19 = v18;
+  v19 = currentDevice4;
 
   return v19;
 }
@@ -1240,13 +1240,13 @@ LABEL_16:
   return v3 == 3 || MKBDeviceUnlockedSinceBoot() == 1;
 }
 
-- (void)updateKeybagLockStateCacheWithState:(int)a3
+- (void)updateKeybagLockStateCacheWithState:(int)state
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __49__CLKDevice_updateKeybagLockStateCacheWithState___block_invoke;
   v3[3] = &unk_278A1F240;
-  v4 = a3;
+  stateCopy = state;
   v3[4] = self;
   dispatch_async(MEMORY[0x277D85CD0], v3);
 }
@@ -1262,13 +1262,13 @@ void __49__CLKDevice_updateKeybagLockStateCacheWithState___block_invoke(uint64_t
   }
 }
 
-+ (id)_cachedDeviceForUUID:(id)a3
++ (id)_cachedDeviceForUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&lock);
   if (cachedDevices)
   {
-    if (v4)
+    if (dCopy)
     {
       goto LABEL_3;
     }
@@ -1280,20 +1280,20 @@ void __49__CLKDevice_updateKeybagLockStateCacheWithState___block_invoke(uint64_t
     v9 = cachedDevices;
     cachedDevices = v8;
 
-    if (v4)
+    if (dCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v4 = [MEMORY[0x277CBEB68] null];
+  dCopy = [MEMORY[0x277CBEB68] null];
 LABEL_3:
-  v5 = [cachedDevices objectForKeyedSubscript:v4];
+  v5 = [cachedDevices objectForKeyedSubscript:dCopy];
   if (!v5)
   {
-    v6 = [a1 pdrDeviceForPairingID:v4];
+    v6 = [self pdrDeviceForPairingID:dCopy];
     v5 = [[CLKDevice alloc] initWithPDRDevice:v6];
-    [cachedDevices setObject:v5 forKeyedSubscript:v4];
+    [cachedDevices setObject:v5 forKeyedSubscript:dCopy];
   }
 
   os_unfair_lock_unlock(&lock);
@@ -1301,22 +1301,22 @@ LABEL_3:
   return v5;
 }
 
-+ (void)_removeCachedDeviceForUUID:(id)a3
++ (void)_removeCachedDeviceForUUID:(id)d
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  dCopy = d;
+  if (dCopy)
   {
     os_unfair_lock_lock(&lock);
     if (cachedDevices)
     {
-      [cachedDevices removeObjectForKey:v3];
+      [cachedDevices removeObjectForKey:dCopy];
       v4 = CLKLoggingObjectForDomain(0);
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
-        v5 = [v3 UUIDString];
+        uUIDString = [dCopy UUIDString];
         v6 = 138412290;
-        v7 = v5;
+        v7 = uUIDString;
         _os_log_impl(&dword_23702D000, v4, OS_LOG_TYPE_DEFAULT, "Purged CLKDevice with UUID %@", &v6, 0xCu);
       }
     }
@@ -1325,11 +1325,11 @@ LABEL_3:
   }
 }
 
-+ (id)deviceForNRDevice:(id)a3 forced:(BOOL)a4
++ (id)deviceForNRDevice:(id)device forced:(BOOL)forced
 {
-  v4 = a4;
-  v6 = [a3 valueForProperty:*MEMORY[0x277D2BBB8]];
-  v7 = [a1 deviceForPairingID:v6 forced:v4];
+  forcedCopy = forced;
+  v6 = [device valueForProperty:*MEMORY[0x277D2BBB8]];
+  v7 = [self deviceForPairingID:v6 forced:forcedCopy];
 
   return v7;
 }
@@ -1390,14 +1390,14 @@ void __24__CLKDevice_description__block_invoke_3(uint64_t a1, void *a2)
   description___cachedDescription = v6;
 }
 
-+ (CGRect)screenBoundsForSizeClass:(unint64_t)a3
++ (CGRect)screenBoundsForSizeClass:(unint64_t)class
 {
-  if (a3 > 4)
+  if (class > 4)
   {
-    if (a3 <= 6)
+    if (class <= 6)
     {
       v3 = *MEMORY[0x277CBF348];
-      if (a3 == 5)
+      if (class == 5)
       {
         v4 = 242.0;
         v6 = 198.0;
@@ -1412,7 +1412,7 @@ void __24__CLKDevice_description__block_invoke_3(uint64_t a1, void *a2)
       goto LABEL_23;
     }
 
-    if (a3 == 7)
+    if (class == 7)
     {
       v3 = *MEMORY[0x277CBF348];
       v4 = 223.0;
@@ -1420,9 +1420,9 @@ void __24__CLKDevice_description__block_invoke_3(uint64_t a1, void *a2)
       goto LABEL_23;
     }
 
-    if (a3 != 8)
+    if (class != 8)
     {
-      if (a3 == 9)
+      if (class == 9)
       {
         v3 = *MEMORY[0x277CBF348];
         v4 = 257.0;
@@ -1440,11 +1440,11 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if (a3 <= 1)
+  if (class <= 1)
   {
-    if (a3)
+    if (class)
     {
-      if (a3 == 1)
+      if (class == 1)
       {
         v3 = *MEMORY[0x277CBF348];
         v4 = 195.0;
@@ -1460,10 +1460,10 @@ LABEL_22:
     goto LABEL_22;
   }
 
-  if (a3 != 2)
+  if (class != 2)
   {
     v3 = *MEMORY[0x277CBF348];
-    if (a3 == 3)
+    if (class == 3)
     {
       v4 = 224.0;
       v5 = 0x4067000000000000;
@@ -1490,12 +1490,12 @@ LABEL_23:
   return result;
 }
 
-+ (double)screenCornerRadiusForSizeClass:(unint64_t)a3
++ (double)screenCornerRadiusForSizeClass:(unint64_t)class
 {
   result = 28.0;
-  if (a3 <= 9)
+  if (class <= 9)
   {
-    return dbl_2370A49D0[a3];
+    return dbl_2370A49D0[class];
   }
 
   return result;
@@ -1514,12 +1514,12 @@ LABEL_23:
   return result;
 }
 
-- (CLKDevice)initWithSizeClass:(unint64_t)a3
+- (CLKDevice)initWithSizeClass:(unint64_t)class
 {
   result = [(CLKDevice *)self initWithPDRDevice:0];
   if (result)
   {
-    result->_sizeClass = a3;
+    result->_sizeClass = class;
   }
 
   return result;

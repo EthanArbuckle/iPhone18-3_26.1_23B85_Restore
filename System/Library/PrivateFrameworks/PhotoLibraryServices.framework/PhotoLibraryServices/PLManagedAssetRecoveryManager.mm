@@ -1,45 +1,45 @@
 @interface PLManagedAssetRecoveryManager
 + (id)_irisesWithZeroVideoCpDuration;
 + (id)_predicateForAdjustedAssetsWithMissingResources;
-- (BOOL)_fixIrisWithZeroVideoComplementDuration:(id)a3 usingExistingVideoComplementAtPath:(id)a4 error:(id *)a5;
-- (BOOL)_fixRawUTIForAsset:(id)a3 error:(id *)a4;
-- (PLManagedAssetRecoveryManager)initWithLibraryServicesManager:(id)a3;
-- (id)_loadObjectWithObjectID:(id)a3 managedObjectContext:(id)a4;
-- (id)_newPhotoLibraryWithName:(const char *)a3 nonSyncable:(BOOL)a4;
-- (id)_recoveryStatesToProcessForAttributes:(id)a3;
-- (void)_downloadResources:(id)a3 forAsset:(id)a4 usingCloudPhotoLibraryManager:(id)a5 completionHandler:(id)a6;
-- (void)_fixDimensionsForAsset:(id)a3 cloudPhotoLibraryManager:(id)a4 completionBlock:(id)a5;
-- (void)_fixIrisWithZeroVideoComplementDuration:(id)a3 cloudPhotoLibraryManager:(id)a4 completionBlock:(id)a5;
-- (void)_fixMissingFullSizeAdjustedResources:(id)a3 cloudPhotoLibraryManager:(id)a4 recoveryState:(unint64_t)a5 usingSyncableLibrary:(id)a6 completionBlock:(id)a7;
-- (void)_fixOriginalAssetDimensionsForAsset:(id)a3 cloudPhotoLibraryManager:(id)a4 completionBlock:(id)a5;
-- (void)_generateMissingFullSizeAdjustedResourcesForAsset:(id)a3 recipesToGenerate:(id)a4 cloudPhotoLibraryManager:(id)a5 recoveryState:(unint64_t)a6 usingSyncableLibrary:(id)a7 completionBlock:(id)a8;
-- (void)_performAssetRecoveryTaskForInconsistentState:(id)a3 state:(unint64_t)a4 cloudPhotoLibraryManager:(id)a5 usingSyncableLibrary:(id)a6 completionBlock:(id)a7;
-- (void)_performTransactionOnLibrary:(id)a3 withObjectID:(id)a4 usingBlock:(id)a5 completionBlock:(id)a6;
-- (void)_recoverNextAssetWithEnumerator:(id)a3 cloudPhotoLibraryManager:(id)a4 transaction:(id)a5 usingNonSyncableLibrary:(id)a6 andSyncableLibrary:(id)a7;
-- (void)_recoverNextRecoveryState:(id)a3 forAsset:(id)a4 cloudPhotoLibraryManager:(id)a5 usingSyncableLibrary:(id)a6 completionBlock:(id)a7;
-- (void)_setCloudRecoveryState:(unint64_t)a3 forAssetsWithFetchRequestPredicate:(id)a4 resultsFilterPredicate:(id)a5 usingNonSyncableLibrary:(id)a6;
-- (void)_startRecoveryUsingCloudPhotoLibraryManager:(id)a3 transaction:(id)a4;
+- (BOOL)_fixIrisWithZeroVideoComplementDuration:(id)duration usingExistingVideoComplementAtPath:(id)path error:(id *)error;
+- (BOOL)_fixRawUTIForAsset:(id)asset error:(id *)error;
+- (PLManagedAssetRecoveryManager)initWithLibraryServicesManager:(id)manager;
+- (id)_loadObjectWithObjectID:(id)d managedObjectContext:(id)context;
+- (id)_newPhotoLibraryWithName:(const char *)name nonSyncable:(BOOL)syncable;
+- (id)_recoveryStatesToProcessForAttributes:(id)attributes;
+- (void)_downloadResources:(id)resources forAsset:(id)asset usingCloudPhotoLibraryManager:(id)manager completionHandler:(id)handler;
+- (void)_fixDimensionsForAsset:(id)asset cloudPhotoLibraryManager:(id)manager completionBlock:(id)block;
+- (void)_fixIrisWithZeroVideoComplementDuration:(id)duration cloudPhotoLibraryManager:(id)manager completionBlock:(id)block;
+- (void)_fixMissingFullSizeAdjustedResources:(id)resources cloudPhotoLibraryManager:(id)manager recoveryState:(unint64_t)state usingSyncableLibrary:(id)library completionBlock:(id)block;
+- (void)_fixOriginalAssetDimensionsForAsset:(id)asset cloudPhotoLibraryManager:(id)manager completionBlock:(id)block;
+- (void)_generateMissingFullSizeAdjustedResourcesForAsset:(id)asset recipesToGenerate:(id)generate cloudPhotoLibraryManager:(id)manager recoveryState:(unint64_t)state usingSyncableLibrary:(id)library completionBlock:(id)block;
+- (void)_performAssetRecoveryTaskForInconsistentState:(id)state state:(unint64_t)a4 cloudPhotoLibraryManager:(id)manager usingSyncableLibrary:(id)library completionBlock:(id)block;
+- (void)_performTransactionOnLibrary:(id)library withObjectID:(id)d usingBlock:(id)block completionBlock:(id)completionBlock;
+- (void)_recoverNextAssetWithEnumerator:(id)enumerator cloudPhotoLibraryManager:(id)manager transaction:(id)transaction usingNonSyncableLibrary:(id)library andSyncableLibrary:(id)syncableLibrary;
+- (void)_recoverNextRecoveryState:(id)state forAsset:(id)asset cloudPhotoLibraryManager:(id)manager usingSyncableLibrary:(id)library completionBlock:(id)block;
+- (void)_setCloudRecoveryState:(unint64_t)state forAssetsWithFetchRequestPredicate:(id)predicate resultsFilterPredicate:(id)filterPredicate usingNonSyncableLibrary:(id)library;
+- (void)_startRecoveryUsingCloudPhotoLibraryManager:(id)manager transaction:(id)transaction;
 - (void)identifyAssetsWithInconsistentAdjustedFullSizeRenderDeferredProcessing;
 - (void)identifyAssetsWithInconsistentCloudState;
-- (void)startRecoveryUsingCloudPhotoLibraryManager:(id)a3 transaction:(id)a4 shouldIdentifyInconsistentAssets:(BOOL)a5;
+- (void)startRecoveryUsingCloudPhotoLibraryManager:(id)manager transaction:(id)transaction shouldIdentifyInconsistentAssets:(BOOL)assets;
 @end
 
 @implementation PLManagedAssetRecoveryManager
 
-- (void)_generateMissingFullSizeAdjustedResourcesForAsset:(id)a3 recipesToGenerate:(id)a4 cloudPhotoLibraryManager:(id)a5 recoveryState:(unint64_t)a6 usingSyncableLibrary:(id)a7 completionBlock:(id)a8
+- (void)_generateMissingFullSizeAdjustedResourcesForAsset:(id)asset recipesToGenerate:(id)generate cloudPhotoLibraryManager:(id)manager recoveryState:(unint64_t)state usingSyncableLibrary:(id)library completionBlock:(id)block
 {
   v58 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v37 = a5;
-  v15 = a7;
-  v35 = a8;
+  assetCopy = asset;
+  generateCopy = generate;
+  managerCopy = manager;
+  libraryCopy = library;
+  blockCopy = block;
   v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v17 = v14;
+  v17 = generateCopy;
   v18 = [v17 countByEnumeratingWithState:&v47 objects:v57 count:16];
   if (v18)
   {
@@ -54,7 +54,7 @@
           objc_enumerationMutation(v17);
         }
 
-        v22 = [*(*(&v47 + 1) + 8 * i) chooseIngredientsFrom:v13 version:2];
+        v22 = [*(*(&v47 + 1) + 8 * i) chooseIngredientsFrom:assetCopy version:2];
         if (v22)
         {
           [v16 addEntriesFromDictionary:v22];
@@ -75,48 +75,48 @@
   v46 = v23;
   v34 = v23;
   [v16 enumerateKeysAndObjectsUsingBlock:v45];
-  v24 = [v13 objectID];
-  v25 = [v13 uuid];
+  objectID = [assetCopy objectID];
+  uuid = [assetCopy uuid];
   v26 = PLBackendGetLog();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
   {
-    v27 = [v16 allKeys];
+    allKeys = [v16 allKeys];
     *buf = 138543874;
-    v52 = v27;
+    v52 = allKeys;
     v53 = 2114;
     v54 = v17;
     v55 = 2114;
-    v56 = v25;
+    v56 = uuid;
     _os_log_impl(&dword_19BF1F000, v26, OS_LOG_TYPE_DEFAULT, "Attempting to download non-locally available ingredients: %{public}@ for missing recipes: %{public}@ for asset: %{public}@", buf, 0x20u);
   }
 
-  if (a6 == 0x40000000)
+  if (state == 0x40000000)
   {
-    v28 = v15;
-    v29 = v15;
+    v28 = libraryCopy;
+    photoLibrary = libraryCopy;
   }
 
   else
   {
-    v29 = [v13 photoLibrary];
-    v28 = v15;
+    photoLibrary = [assetCopy photoLibrary];
+    v28 = libraryCopy;
   }
 
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __177__PLManagedAssetRecoveryManager__generateMissingFullSizeAdjustedResourcesForAsset_recipesToGenerate_cloudPhotoLibraryManager_recoveryState_usingSyncableLibrary_completionBlock___block_invoke_226;
   v38[3] = &unk_1E756FD10;
-  v39 = v29;
-  v40 = self;
-  v41 = v24;
-  v42 = v25;
-  v43 = v35;
-  v44 = a6;
-  v30 = v35;
-  v31 = v25;
-  v32 = v24;
-  v33 = v29;
-  [(PLManagedAssetRecoveryManager *)self _downloadResources:v34 forAsset:v13 usingCloudPhotoLibraryManager:v37 completionHandler:v38];
+  v39 = photoLibrary;
+  selfCopy = self;
+  v41 = objectID;
+  v42 = uuid;
+  v43 = blockCopy;
+  stateCopy = state;
+  v30 = blockCopy;
+  v31 = uuid;
+  v32 = objectID;
+  v33 = photoLibrary;
+  [(PLManagedAssetRecoveryManager *)self _downloadResources:v34 forAsset:assetCopy usingCloudPhotoLibraryManager:managerCopy completionHandler:v38];
 }
 
 void __177__PLManagedAssetRecoveryManager__generateMissingFullSizeAdjustedResourcesForAsset_recipesToGenerate_cloudPhotoLibraryManager_recoveryState_usingSyncableLibrary_completionBlock___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -287,26 +287,26 @@ void __177__PLManagedAssetRecoveryManager__generateMissingFullSizeAdjustedResour
   }
 }
 
-- (void)_fixMissingFullSizeAdjustedResources:(id)a3 cloudPhotoLibraryManager:(id)a4 recoveryState:(unint64_t)a5 usingSyncableLibrary:(id)a6 completionBlock:(id)a7
+- (void)_fixMissingFullSizeAdjustedResources:(id)resources cloudPhotoLibraryManager:(id)manager recoveryState:(unint64_t)state usingSyncableLibrary:(id)library completionBlock:(id)block
 {
   v63 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  if (!v15)
+  resourcesCopy = resources;
+  managerCopy = manager;
+  libraryCopy = library;
+  blockCopy = block;
+  if (!libraryCopy)
   {
-    v39 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v39 handleFailureInMethod:a2 object:self file:@"PLManagedAssetRecoveryManager.m" lineNumber:851 description:{@"Invalid parameter not satisfying: %@", @"syncableLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLManagedAssetRecoveryManager.m" lineNumber:851 description:{@"Invalid parameter not satisfying: %@", @"syncableLibrary"}];
   }
 
-  v17 = [v13 uuid];
-  if (a5 == 0x40000000)
+  uuid = [resourcesCopy uuid];
+  if (state == 0x40000000)
   {
-    if ([v13 deferredProcessingNeeded] == 9)
+    if ([resourcesCopy deferredProcessingNeeded] == 9)
     {
       v60 = 0;
-      v18 = [v13 renderableAdjustmentDictionary:0 error:&v60];
+      v18 = [resourcesCopy renderableAdjustmentDictionary:0 error:&v60];
       v19 = v60;
       if (v18)
       {
@@ -314,22 +314,22 @@ void __177__PLManagedAssetRecoveryManager__generateMissingFullSizeAdjustedResour
         if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v62 = v17;
+          v62 = uuid;
           _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_DEFAULT, "Generating un-rendered deferred adjustment resources for asset: %{public}@", buf, 0xCu);
         }
 
-        v21 = [PLResourceGenerator expectedLocalResourceRecipesForAsset:v13 versions:&unk_1F0FBFE08];
+        v21 = [PLResourceGenerator expectedLocalResourceRecipesForAsset:resourcesCopy versions:&unk_1F0FBFE08];
         if ([v21 count])
         {
           v41 = v19;
-          v22 = v17;
-          v23 = [v21 array];
-          v24 = [v23 _pl_map:&__block_literal_global_203];
+          v22 = uuid;
+          array = [v21 array];
+          v24 = [array _pl_map:&__block_literal_global_203];
 
-          v25 = [v13 persistedAdjustedResources];
+          persistedAdjustedResources = [resourcesCopy persistedAdjustedResources];
           v40 = v24;
           v26 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K = %d AND %K IN %@", @"remoteAvailability", 1, @"recipeID", v24];
-          v27 = [v25 filteredSetUsingPredicate:v26];
+          v27 = [persistedAdjustedResources filteredSetUsingPredicate:v26];
 
           v28 = [v27 count];
           if (v28 == [v21 count])
@@ -339,41 +339,41 @@ void __177__PLManagedAssetRecoveryManager__generateMissingFullSizeAdjustedResour
             v46[2] = __146__PLManagedAssetRecoveryManager__fixMissingFullSizeAdjustedResources_cloudPhotoLibraryManager_recoveryState_usingSyncableLibrary_completionBlock___block_invoke_2;
             v46[3] = &unk_1E756FC98;
             v46[4] = self;
-            v47 = v13;
+            v47 = resourcesCopy;
             v48 = v27;
             v49 = v22;
-            v50 = v15;
-            v53 = v16;
+            v50 = libraryCopy;
+            v53 = blockCopy;
             v51 = v21;
-            v52 = v14;
+            v52 = managerCopy;
             v54 = 0x40000000;
             [v52 fetchResourcesForAsset:v47 completionHandler:v46];
           }
 
           else
           {
-            [(PLManagedAssetRecoveryManager *)self _generateMissingFullSizeAdjustedResourcesForAsset:v13 recipesToGenerate:v21 cloudPhotoLibraryManager:v14 recoveryState:0x40000000 usingSyncableLibrary:v15 completionBlock:v16];
+            [(PLManagedAssetRecoveryManager *)self _generateMissingFullSizeAdjustedResourcesForAsset:resourcesCopy recipesToGenerate:v21 cloudPhotoLibraryManager:managerCopy recoveryState:0x40000000 usingSyncableLibrary:libraryCopy completionBlock:blockCopy];
           }
 
-          v17 = v22;
+          uuid = v22;
           v38 = v40;
           v19 = v41;
         }
 
         else
         {
-          v37 = [v13 objectID];
+          objectID = [resourcesCopy objectID];
           v44[0] = MEMORY[0x1E69E9820];
           v44[1] = 3221225472;
           v44[2] = __146__PLManagedAssetRecoveryManager__fixMissingFullSizeAdjustedResources_cloudPhotoLibraryManager_recoveryState_usingSyncableLibrary_completionBlock___block_invoke_222;
           v44[3] = &unk_1E756FC48;
-          v45 = v17;
+          v45 = uuid;
           v42[0] = MEMORY[0x1E69E9820];
           v42[1] = 3221225472;
           v42[2] = __146__PLManagedAssetRecoveryManager__fixMissingFullSizeAdjustedResources_cloudPhotoLibraryManager_recoveryState_usingSyncableLibrary_completionBlock___block_invoke_223;
           v42[3] = &unk_1E7576AA0;
-          v43 = v16;
-          [(PLManagedAssetRecoveryManager *)self _performTransactionOnLibrary:v15 withObjectID:v37 usingBlock:v44 completionBlock:v42];
+          v43 = blockCopy;
+          [(PLManagedAssetRecoveryManager *)self _performTransactionOnLibrary:libraryCopy withObjectID:objectID usingBlock:v44 completionBlock:v42];
 
           v38 = v45;
         }
@@ -381,19 +381,19 @@ void __177__PLManagedAssetRecoveryManager__generateMissingFullSizeAdjustedResour
 
       else
       {
-        v36 = [v13 objectID];
+        objectID2 = [resourcesCopy objectID];
         v57[0] = MEMORY[0x1E69E9820];
         v57[1] = 3221225472;
         v57[2] = __146__PLManagedAssetRecoveryManager__fixMissingFullSizeAdjustedResources_cloudPhotoLibraryManager_recoveryState_usingSyncableLibrary_completionBlock___block_invoke;
         v57[3] = &unk_1E756FC00;
-        v58 = v17;
+        v58 = uuid;
         v59 = v19;
         v55[0] = MEMORY[0x1E69E9820];
         v55[1] = 3221225472;
         v55[2] = __146__PLManagedAssetRecoveryManager__fixMissingFullSizeAdjustedResources_cloudPhotoLibraryManager_recoveryState_usingSyncableLibrary_completionBlock___block_invoke_198;
         v55[3] = &unk_1E7576AA0;
-        v56 = v16;
-        [(PLManagedAssetRecoveryManager *)self _performTransactionOnLibrary:v15 withObjectID:v36 usingBlock:v57 completionBlock:v55];
+        v56 = blockCopy;
+        [(PLManagedAssetRecoveryManager *)self _performTransactionOnLibrary:libraryCopy withObjectID:objectID2 usingBlock:v57 completionBlock:v55];
 
         v21 = v58;
       }
@@ -405,47 +405,47 @@ void __177__PLManagedAssetRecoveryManager__generateMissingFullSizeAdjustedResour
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v62 = v17;
+        v62 = uuid;
         _os_log_impl(&dword_19BF1F000, v34, OS_LOG_TYPE_DEFAULT, "Deferred processing state no longer AdjustmentFailure, skipping repair for asset: %{public}@", buf, 0xCu);
       }
 
-      (*(v16 + 2))(v16, 1, 0);
+      (*(blockCopy + 2))(blockCopy, 1, 0);
     }
   }
 
   else
   {
-    v29 = v14;
+    v29 = managerCopy;
     v30 = PLBackendGetLog();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v62 = v17;
+      v62 = uuid;
       _os_log_impl(&dword_19BF1F000, v30, OS_LOG_TYPE_DEFAULT, "Generating missing full size render resources for asset: %{public}@", buf, 0xCu);
     }
 
-    v31 = [PLResourceGenerator expectedLocalResourceRecipesForAsset:v13 versions:&unk_1F0FBFE08];
+    v31 = [PLResourceGenerator expectedLocalResourceRecipesForAsset:resourcesCopy versions:&unk_1F0FBFE08];
     v32 = [MEMORY[0x1E695DFD8] setWithArray:&unk_1F0FBFE08];
-    v33 = [PLResourceGenerator locallyUnavailableRecipesFromRecipes:v31 versions:v32 asset:v13];
+    v33 = [PLResourceGenerator locallyUnavailableRecipesFromRecipes:v31 versions:v32 asset:resourcesCopy];
 
     if ([v33 count])
     {
-      v14 = v29;
-      [(PLManagedAssetRecoveryManager *)self _generateMissingFullSizeAdjustedResourcesForAsset:v13 recipesToGenerate:v33 cloudPhotoLibraryManager:v29 recoveryState:a5 usingSyncableLibrary:v15 completionBlock:v16];
+      managerCopy = v29;
+      [(PLManagedAssetRecoveryManager *)self _generateMissingFullSizeAdjustedResourcesForAsset:resourcesCopy recipesToGenerate:v33 cloudPhotoLibraryManager:v29 recoveryState:state usingSyncableLibrary:libraryCopy completionBlock:blockCopy];
     }
 
     else
     {
       v35 = PLBackendGetLog();
-      v14 = v29;
+      managerCopy = v29;
       if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v62 = v17;
+        v62 = uuid;
         _os_log_impl(&dword_19BF1F000, v35, OS_LOG_TYPE_DEFAULT, "No non-local recipes to generate, skipping repair for asset: %{public}@", buf, 0xCu);
       }
 
-      (*(v16 + 2))(v16, 1, 0);
+      (*(blockCopy + 2))(blockCopy, 1, 0);
     }
   }
 }
@@ -677,27 +677,27 @@ uint64_t __146__PLManagedAssetRecoveryManager__fixMissingFullSizeAdjustedResourc
   return [v2 numberWithUnsignedInt:v3];
 }
 
-- (void)_performTransactionOnLibrary:(id)a3 withObjectID:(id)a4 usingBlock:(id)a5 completionBlock:(id)a6
+- (void)_performTransactionOnLibrary:(id)library withObjectID:(id)d usingBlock:(id)block completionBlock:(id)completionBlock
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(PLManagedAssetRecoveryManager *)self workQueue];
+  libraryCopy = library;
+  dCopy = d;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  workQueue = [(PLManagedAssetRecoveryManager *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __102__PLManagedAssetRecoveryManager__performTransactionOnLibrary_withObjectID_usingBlock_completionBlock___block_invoke;
   block[3] = &unk_1E756FBD8;
-  v20 = v10;
-  v21 = self;
-  v22 = v11;
-  v23 = v12;
-  v24 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
-  dispatch_async(v14, block);
+  v20 = libraryCopy;
+  selfCopy = self;
+  v22 = dCopy;
+  v23 = blockCopy;
+  v24 = completionBlockCopy;
+  v15 = completionBlockCopy;
+  v16 = blockCopy;
+  v17 = dCopy;
+  v18 = libraryCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __102__PLManagedAssetRecoveryManager__performTransactionOnLibrary_withObjectID_usingBlock_completionBlock___block_invoke(uint64_t a1)
@@ -745,18 +745,18 @@ void __102__PLManagedAssetRecoveryManager__performTransactionOnLibrary_withObjec
   }
 }
 
-- (BOOL)_fixIrisWithZeroVideoComplementDuration:(id)a3 usingExistingVideoComplementAtPath:(id)a4 error:(id *)a5
+- (BOOL)_fixIrisWithZeroVideoComplementDuration:(id)duration usingExistingVideoComplementAtPath:(id)path error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:v8 isDirectory:0];
-  v10 = [v7 uuid];
+  durationCopy = duration;
+  pathCopy = path;
+  v9 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:0];
+  uuid = [durationCopy uuid];
   v11 = PLBackendGetLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    *&buf[4] = v10;
+    *&buf[4] = uuid;
     *&buf[12] = 2114;
     *&buf[14] = v9;
     _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "Getting live photo photo metadata: %{public}@ url: %{public}@", buf, 0x16u);
@@ -771,7 +771,7 @@ void __102__PLManagedAssetRecoveryManager__performTransactionOnLibrary_withObjec
   if (v13)
   {
     v16 = PFVideoComplementMetadataForVideoAtPath();
-    v17 = [v16 pairingIdentifier];
+    pairingIdentifier = [v16 pairingIdentifier];
     if (v16)
     {
       [v16 videoDuration];
@@ -784,14 +784,14 @@ void __102__PLManagedAssetRecoveryManager__performTransactionOnLibrary_withObjec
       memset(v22, 0, sizeof(v22));
     }
 
-    [v7 updatePhotoIrisMetadataWithMediaGroupUUID:v17 videoDuration:buf stillDisplayTime:v22];
+    [durationCopy updatePhotoIrisMetadataWithMediaGroupUUID:pairingIdentifier videoDuration:buf stillDisplayTime:v22];
 
-    [v7 persistMetadataToFilesystem];
+    [durationCopy persistMetadataToFilesystem];
     v20 = PLBackendGetLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      *&buf[4] = v10;
+      *&buf[4] = uuid;
       _os_log_impl(&dword_19BF1F000, v20, OS_LOG_TYPE_DEFAULT, "Live photo metadata is fixed using the attributes of the original video complement: %{public}@", buf, 0xCu);
     }
   }
@@ -802,46 +802,46 @@ void __102__PLManagedAssetRecoveryManager__performTransactionOnLibrary_withObjec
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      *&buf[4] = v10;
+      *&buf[4] = uuid;
       *&buf[12] = 2112;
       *&buf[14] = v15;
       _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_ERROR, "Failed to read the file size of the video complement: %{public}@ %@", buf, 0x16u);
     }
 
-    if (a5)
+    if (error)
     {
       v19 = v15;
-      *a5 = v15;
+      *error = v15;
     }
   }
 
   return v13;
 }
 
-- (void)_fixIrisWithZeroVideoComplementDuration:(id)a3 cloudPhotoLibraryManager:(id)a4 completionBlock:(id)a5
+- (void)_fixIrisWithZeroVideoComplementDuration:(id)duration cloudPhotoLibraryManager:(id)manager completionBlock:(id)block
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 uuid];
+  durationCopy = duration;
+  managerCopy = manager;
+  blockCopy = block;
+  uuid = [durationCopy uuid];
   v12 = PLBackendGetLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v34 = v11;
+    v34 = uuid;
     _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "Fixing live photo with zero length videoCpDurationValue for asset: %{public}@", buf, 0xCu);
   }
 
-  v13 = [v8 masterResourceForCPLType:18];
+  v13 = [durationCopy masterResourceForCPLType:18];
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 cplFileURL];
-    v16 = [v15 path];
+    cplFileURL = [v13 cplFileURL];
+    path = [cplFileURL path];
 
-    v17 = [MEMORY[0x1E696AC08] defaultManager];
-    v18 = [v17 fileExistsAtPath:v16];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v18 = [defaultManager fileExistsAtPath:path];
 
     v19 = PLBackendGetLog();
     v20 = os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT);
@@ -850,14 +850,14 @@ void __102__PLManagedAssetRecoveryManager__performTransactionOnLibrary_withObjec
       if (v20)
       {
         *buf = 138543362;
-        v34 = v11;
+        v34 = uuid;
         _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEFAULT, "Fixing video complement locally for asset: %{public}@", buf, 0xCu);
       }
 
       v25 = 0;
-      v21 = [(PLManagedAssetRecoveryManager *)self _fixIrisWithZeroVideoComplementDuration:v8 usingExistingVideoComplementAtPath:v16 error:&v25];
+      v21 = [(PLManagedAssetRecoveryManager *)self _fixIrisWithZeroVideoComplementDuration:durationCopy usingExistingVideoComplementAtPath:path error:&v25];
       v22 = v25;
-      v10[2](v10, v21, v22);
+      blockCopy[2](blockCopy, v21, v22);
     }
 
     else
@@ -865,7 +865,7 @@ void __102__PLManagedAssetRecoveryManager__performTransactionOnLibrary_withObjec
       if (v20)
       {
         *buf = 138543362;
-        v34 = v11;
+        v34 = uuid;
         _os_log_impl(&dword_19BF1F000, v19, OS_LOG_TYPE_DEFAULT, "Downloading original video complement for asset: %{public}@", buf, 0xCu);
       }
 
@@ -875,12 +875,12 @@ void __102__PLManagedAssetRecoveryManager__performTransactionOnLibrary_withObjec
       v26[1] = 3221225472;
       v26[2] = __114__PLManagedAssetRecoveryManager__fixIrisWithZeroVideoComplementDuration_cloudPhotoLibraryManager_completionBlock___block_invoke;
       v26[3] = &unk_1E756FBB0;
-      v27 = v8;
-      v28 = v11;
-      v29 = self;
-      v30 = v16;
-      v31 = v10;
-      [(PLManagedAssetRecoveryManager *)self _downloadResources:v24 forAsset:v27 usingCloudPhotoLibraryManager:v9 completionHandler:v26];
+      v27 = durationCopy;
+      v28 = uuid;
+      selfCopy = self;
+      v30 = path;
+      v31 = blockCopy;
+      [(PLManagedAssetRecoveryManager *)self _downloadResources:v24 forAsset:v27 usingCloudPhotoLibraryManager:managerCopy completionHandler:v26];
 
       v22 = v27;
     }
@@ -892,11 +892,11 @@ void __102__PLManagedAssetRecoveryManager__performTransactionOnLibrary_withObjec
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v34 = v11;
+      v34 = uuid;
       _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_ERROR, "Original video complement cloud resource is not available for asset: %{public}@", buf, 0xCu);
     }
 
-    v10[2](v10, 0, 0);
+    blockCopy[2](blockCopy, 0, 0);
   }
 }
 
@@ -980,58 +980,58 @@ uint64_t __114__PLManagedAssetRecoveryManager__fixIrisWithZeroVideoComplementDur
   return (*(a1[8] + 16))();
 }
 
-- (BOOL)_fixRawUTIForAsset:(id)a3 error:(id *)a4
+- (BOOL)_fixRawUTIForAsset:(id)asset error:(id *)error
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 uuid];
-  v6 = [v4 uniformTypeIdentifier];
-  v7 = [PLManagedAsset preferredFileExtensionForType:v6];
+  assetCopy = asset;
+  uuid = [assetCopy uuid];
+  uniformTypeIdentifier = [assetCopy uniformTypeIdentifier];
+  v7 = [PLManagedAsset preferredFileExtensionForType:uniformTypeIdentifier];
 
   v8 = PLBackendGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v4 filename];
-    v10 = [v9 pathExtension];
+    filename = [assetCopy filename];
+    pathExtension = [filename pathExtension];
     *buf = 138543874;
-    v17 = v5;
+    v17 = uuid;
     v18 = 2114;
-    v19 = v10;
+    v19 = pathExtension;
     v20 = 2114;
     v21 = v7;
     _os_log_impl(&dword_19BF1F000, v8, OS_LOG_TYPE_DEFAULT, "Fixing wrong file extension for RAW asset: %{public}@. Changing extension from %{public}@ to %{public}@", buf, 0x20u);
   }
 
   v11 = MEMORY[0x1E696AEC0];
-  v12 = [v4 filename];
-  v13 = [v12 stringByDeletingPathExtension];
-  v14 = [v11 stringWithFormat:@"%@.%@", v13, v7];
-  [v4 setFilename:v14];
+  filename2 = [assetCopy filename];
+  stringByDeletingPathExtension = [filename2 stringByDeletingPathExtension];
+  v14 = [v11 stringWithFormat:@"%@.%@", stringByDeletingPathExtension, v7];
+  [assetCopy setFilename:v14];
 
   return 1;
 }
 
-- (void)_fixOriginalAssetDimensionsForAsset:(id)a3 cloudPhotoLibraryManager:(id)a4 completionBlock:(id)a5
+- (void)_fixOriginalAssetDimensionsForAsset:(id)asset cloudPhotoLibraryManager:(id)manager completionBlock:(id)block
 {
   v39[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 uuid];
+  assetCopy = asset;
+  managerCopy = manager;
+  blockCopy = block;
+  uuid = [assetCopy uuid];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __110__PLManagedAssetRecoveryManager__fixOriginalAssetDimensionsForAsset_cloudPhotoLibraryManager_completionBlock___block_invoke;
   aBlock[3] = &unk_1E7578128;
-  v12 = v8;
+  v12 = assetCopy;
   v34 = v12;
-  v13 = v11;
+  v13 = uuid;
   v35 = v13;
-  v36 = v10;
+  v36 = blockCopy;
   v14 = _Block_copy(aBlock);
-  v15 = [v12 imageProperties];
-  if (v15)
+  imageProperties = [v12 imageProperties];
+  if (imageProperties)
   {
-    [v12 setOriginalSizeAndOrientationFromImageProperties:v15];
+    [v12 setOriginalSizeAndOrientationFromImageProperties:imageProperties];
     v14[2](v14, 1, 0);
   }
 
@@ -1041,19 +1041,19 @@ uint64_t __114__PLManagedAssetRecoveryManager__fixIrisWithZeroVideoComplementDur
     v17 = v16;
     if (v16)
     {
-      v18 = [v16 unorientedWidth];
-      v19 = [v17 unorientedHeight];
-      if (v18 && (v20 = v19) != 0)
+      unorientedWidth = [v16 unorientedWidth];
+      unorientedHeight = [v17 unorientedHeight];
+      if (unorientedWidth && (v20 = unorientedHeight) != 0)
       {
-        [v12 setOriginalWidth:v18];
+        [v12 setOriginalWidth:unorientedWidth];
         [v12 setOriginalHeight:v20];
         v14[2](v14, 1, 0);
       }
 
       else if ([v17 isLocallyAvailable] && (objc_msgSend(v17, "fileURL"), v22 = objc_claimAutoreleasedReturnValue(), v22, v22))
       {
-        v23 = [v17 fileURL];
-        [PLManagedAsset sizeOfImageAtURL:v23 outOrientation:0];
+        fileURL = [v17 fileURL];
+        [PLManagedAsset sizeOfImageAtURL:fileURL outOrientation:0];
         v25 = v24;
         [v12 setOriginalWidth:v26];
         [v12 setOriginalHeight:v25];
@@ -1072,7 +1072,7 @@ uint64_t __114__PLManagedAssetRecoveryManager__fixIrisWithZeroVideoComplementDur
         v30 = v17;
         v32 = v14;
         v31 = v13;
-        [(PLManagedAssetRecoveryManager *)self _downloadResources:v27 forAsset:v29 usingCloudPhotoLibraryManager:v9 completionHandler:v28];
+        [(PLManagedAssetRecoveryManager *)self _downloadResources:v27 forAsset:v29 usingCloudPhotoLibraryManager:managerCopy completionHandler:v28];
       }
     }
 
@@ -1232,18 +1232,18 @@ LABEL_9:
   }
 }
 
-- (void)_fixDimensionsForAsset:(id)a3 cloudPhotoLibraryManager:(id)a4 completionBlock:(id)a5
+- (void)_fixDimensionsForAsset:(id)asset cloudPhotoLibraryManager:(id)manager completionBlock:(id)block
 {
   v38 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 uuid];
+  assetCopy = asset;
+  managerCopy = manager;
+  blockCopy = block;
+  uuid = [assetCopy uuid];
   v12 = PLBackendGetLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v11;
+    *(&buf + 4) = uuid;
     _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_DEFAULT, "Attempting to fix image dimensions for the asset: %{public}@", &buf, 0xCu);
   }
 
@@ -1255,12 +1255,12 @@ LABEL_9:
   aBlock[1] = 3221225472;
   aBlock[2] = __97__PLManagedAssetRecoveryManager__fixDimensionsForAsset_cloudPhotoLibraryManager_completionBlock___block_invoke;
   aBlock[3] = &unk_1E756FB38;
-  v13 = v8;
+  v13 = assetCopy;
   v31 = v13;
   p_buf = &buf;
-  v14 = v11;
+  v14 = uuid;
   v32 = v14;
-  v33 = v10;
+  v33 = blockCopy;
   v15 = _Block_copy(aBlock);
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
@@ -1270,8 +1270,8 @@ LABEL_9:
   v25 = v16;
   v17 = v15;
   v29 = v17;
-  v26 = self;
-  v18 = v9;
+  selfCopy = self;
+  v18 = managerCopy;
   v27 = v18;
   v19 = v14;
   v28 = v19;
@@ -1509,24 +1509,24 @@ LABEL_9:
   return (*(*(a1 + 56) + 16))(*(a1 + 56), *(*(*(a1 + 64) + 8) + 24));
 }
 
-- (void)_downloadResources:(id)a3 forAsset:(id)a4 usingCloudPhotoLibraryManager:(id)a5 completionHandler:(id)a6
+- (void)_downloadResources:(id)resources forAsset:(id)asset usingCloudPhotoLibraryManager:(id)manager completionHandler:(id)handler
 {
   v115 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v58 = a5;
-  v52 = v10;
-  v53 = a6;
-  if ([v10 count])
+  resourcesCopy = resources;
+  assetCopy = asset;
+  managerCopy = manager;
+  v52 = resourcesCopy;
+  handlerCopy = handler;
+  if ([resourcesCopy count])
   {
-    v51 = self;
-    v57 = [v11 uuid];
+    selfCopy = self;
+    uuid = [assetCopy uuid];
     v61 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v98 = 0u;
     v99 = 0u;
     v100 = 0u;
     v101 = 0u;
-    obj = v10;
+    obj = resourcesCopy;
     v12 = 0;
     v13 = [obj countByEnumeratingWithState:&v98 objects:v114 count:16];
     if (v13)
@@ -1541,30 +1541,30 @@ LABEL_9:
             objc_enumerationMutation(obj);
           }
 
-          v16 = [*(*(&v98 + 1) + 8 * i) cplType];
+          cplType = [*(*(&v98 + 1) + 8 * i) cplType];
           v17 = +[PLInternalResource originalCPLResourceTypesForMaster];
-          v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v16];
+          v18 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:cplType];
           v19 = [v17 containsObject:v18];
 
           if (v19)
           {
-            [v11 rm_cplMasterResourceForResourceType:v16];
+            [assetCopy rm_cplMasterResourceForResourceType:cplType];
           }
 
           else
           {
-            [v11 rm_cplResourceForResourceType:v16];
+            [assetCopy rm_cplResourceForResourceType:cplType];
           }
           v20 = ;
           if (v20)
           {
-            v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v16];
+            v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:cplType];
             [v61 setObject:v20 forKeyedSubscript:v21];
 
-            v22 = [v20 identity];
-            v23 = [v22 fileSize];
+            identity = [v20 identity];
+            fileSize = [identity fileSize];
 
-            v12 += v23;
+            v12 += fileSize;
           }
         }
 
@@ -1577,24 +1577,24 @@ LABEL_9:
     v24 = [v61 count];
     if (v24 >= [obj count])
     {
-      v31 = [(PLVolumeInfo *)v51->_volumeInfo availableSpace];
-      v32 = [(PLVolumeInfo *)v51->_volumeInfo nearLowDiskThreshold];
-      v33 = v31 - v12;
-      if (v31 - v12 < v32 || (v34 = v51->_totalDownloadedResourceBytes) != 0 && v34 + v12 >= v51->_resourceDownloadBytesLimit)
+      availableSpace = [(PLVolumeInfo *)selfCopy->_volumeInfo availableSpace];
+      nearLowDiskThreshold = [(PLVolumeInfo *)selfCopy->_volumeInfo nearLowDiskThreshold];
+      v33 = availableSpace - v12;
+      if (availableSpace - v12 < nearLowDiskThreshold || (v34 = selfCopy->_totalDownloadedResourceBytes) != 0 && v34 + v12 >= selfCopy->_resourceDownloadBytesLimit)
       {
         v44 = PLBackendGetLog();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
         {
-          totalDownloadedResourceBytes = v51->_totalDownloadedResourceBytes;
-          resourceDownloadBytesLimit = v51->_resourceDownloadBytesLimit;
+          totalDownloadedResourceBytes = selfCopy->_totalDownloadedResourceBytes;
+          resourceDownloadBytesLimit = selfCopy->_resourceDownloadBytesLimit;
           v47 = @"no";
-          if (v33 < v32)
+          if (v33 < nearLowDiskThreshold)
           {
             v47 = @"yes";
           }
 
           *buf = 138544386;
-          *&buf[4] = v57;
+          *&buf[4] = uuid;
           *&buf[12] = 2048;
           *&buf[14] = v12;
           *&buf[22] = 2048;
@@ -1607,15 +1607,15 @@ LABEL_9:
         }
 
         v48 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PLManagedAssetRecoveryManager" code:1 userInfo:0];
-        v49 = [(PLManagedAssetRecoveryManager *)v51 workQueue];
+        workQueue = [(PLManagedAssetRecoveryManager *)selfCopy workQueue];
         v92[0] = MEMORY[0x1E69E9820];
         v92[1] = 3221225472;
         v92[2] = __109__PLManagedAssetRecoveryManager__downloadResources_forAsset_usingCloudPhotoLibraryManager_completionHandler___block_invoke_163;
         v92[3] = &unk_1E7577C08;
-        v94 = v53;
+        v94 = handlerCopy;
         v93 = v48;
         v50 = v48;
-        dispatch_async(v49, v92);
+        dispatch_async(workQueue, v92);
       }
 
       else
@@ -1647,7 +1647,7 @@ LABEL_9:
           *v105 = 134218498;
           v106 = v36;
           v107 = 2114;
-          v108 = v57;
+          v108 = uuid;
           v109 = 2114;
           v110 = v61;
           _os_log_impl(&dword_19BF1F000, v35, OS_LOG_TYPE_DEFAULT, "Downloading %lu resources for asset: %{public}@, resources: %{public}@", v105, 0x20u);
@@ -1657,12 +1657,12 @@ LABEL_9:
         v86 = 0u;
         v83 = 0u;
         v84 = 0u;
-        v37 = [v61 allValues];
-        v38 = [v37 countByEnumeratingWithState:&v83 objects:v104 count:16];
+        allValues = [v61 allValues];
+        v38 = [allValues countByEnumeratingWithState:&v83 objects:v104 count:16];
         if (v38)
         {
           obja = *v84;
-          v54 = v37;
+          v54 = allValues;
           do
           {
             for (j = 0; j != v38; ++j)
@@ -1678,7 +1678,7 @@ LABEL_9:
               v78[1] = 3221225472;
               v78[2] = __109__PLManagedAssetRecoveryManager__downloadResources_forAsset_usingCloudPhotoLibraryManager_completionHandler___block_invoke_165;
               v78[3] = &unk_1E756FA98;
-              v41 = v57;
+              v41 = uuid;
               v79 = v41;
               v81 = v90;
               v82 = buf;
@@ -1695,17 +1695,17 @@ LABEL_9:
               v77 = v87;
               v72 = v61;
               v73 = v42;
-              [v58 downloadResource:v40 options:v55 clientBundleID:0 proposedTaskIdentifier:0 taskDidBeginHandler:v78 progressBlock:0 completionHandler:v70];
+              [managerCopy downloadResource:v40 options:v55 clientBundleID:0 proposedTaskIdentifier:0 taskDidBeginHandler:v78 progressBlock:0 completionHandler:v70];
             }
 
-            v37 = v54;
+            allValues = v54;
             v38 = [v54 countByEnumeratingWithState:&v83 objects:v104 count:16];
           }
 
           while (v38);
         }
 
-        v43 = [(PLManagedAssetRecoveryManager *)v51 workQueue];
+        workQueue2 = [(PLManagedAssetRecoveryManager *)selfCopy workQueue];
         v62[0] = MEMORY[0x1E69E9820];
         v62[1] = 3221225472;
         v62[2] = __109__PLManagedAssetRecoveryManager__downloadResources_forAsset_usingCloudPhotoLibraryManager_completionHandler___block_invoke_170;
@@ -1714,10 +1714,10 @@ LABEL_9:
         v67 = v87;
         v68 = v90;
         v69 = buf;
-        v63 = v57;
-        v64 = v51;
-        v65 = v53;
-        dispatch_group_notify(group, v43, v62);
+        v63 = uuid;
+        v64 = selfCopy;
+        v65 = handlerCopy;
+        dispatch_group_notify(group, workQueue2, v62);
 
         _Block_object_dispose(v87, 8);
         _Block_object_dispose(v88, 8);
@@ -1733,34 +1733,34 @@ LABEL_9:
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        *&buf[4] = v57;
+        *&buf[4] = uuid;
         _os_log_impl(&dword_19BF1F000, v25, OS_LOG_TYPE_ERROR, "Recovery manager download failed to create CPLResources for all requested resources for asset: %{public}@", buf, 0xCu);
       }
 
       v26 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PLManagedAssetRecoveryManager" code:3 userInfo:0];
-      v27 = [(PLManagedAssetRecoveryManager *)v51 workQueue];
+      workQueue3 = [(PLManagedAssetRecoveryManager *)selfCopy workQueue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __109__PLManagedAssetRecoveryManager__downloadResources_forAsset_usingCloudPhotoLibraryManager_completionHandler___block_invoke_156;
       block[3] = &unk_1E7577C08;
-      v97 = v53;
+      v97 = handlerCopy;
       v96 = v26;
       v28 = v26;
-      dispatch_async(v27, block);
+      dispatch_async(workQueue3, block);
     }
 
-    v30 = v57;
+    v30 = uuid;
   }
 
   else
   {
-    v29 = [(PLManagedAssetRecoveryManager *)self workQueue];
+    workQueue4 = [(PLManagedAssetRecoveryManager *)self workQueue];
     v102[0] = MEMORY[0x1E69E9820];
     v102[1] = 3221225472;
     v102[2] = __109__PLManagedAssetRecoveryManager__downloadResources_forAsset_usingCloudPhotoLibraryManager_completionHandler___block_invoke;
     v102[3] = &unk_1E7576AA0;
-    v103 = v53;
-    dispatch_async(v29, v102);
+    v103 = handlerCopy;
+    dispatch_async(workQueue4, v102);
 
     v30 = v103;
   }
@@ -1889,18 +1889,18 @@ uint64_t __109__PLManagedAssetRecoveryManager__downloadResources_forAsset_usingC
   return (*(a1[6] + 16))();
 }
 
-- (void)_performAssetRecoveryTaskForInconsistentState:(id)a3 state:(unint64_t)a4 cloudPhotoLibraryManager:(id)a5 usingSyncableLibrary:(id)a6 completionBlock:(id)a7
+- (void)_performAssetRecoveryTaskForInconsistentState:(id)state state:(unint64_t)a4 cloudPhotoLibraryManager:(id)manager usingSyncableLibrary:(id)library completionBlock:(id)block
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  stateCopy = state;
+  managerCopy = manager;
+  libraryCopy = library;
+  blockCopy = block;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __147__PLManagedAssetRecoveryManager__performAssetRecoveryTaskForInconsistentState_state_cloudPhotoLibraryManager_usingSyncableLibrary_completionBlock___block_invoke;
   aBlock[3] = &unk_1E7576FA8;
-  v16 = v12;
-  v25 = v15;
+  v16 = stateCopy;
+  v25 = blockCopy;
   v26 = a4;
   v24 = v16;
   v17 = _Block_copy(aBlock);
@@ -1913,7 +1913,7 @@ uint64_t __109__PLManagedAssetRecoveryManager__downloadResources_forAsset_usingC
         v21 = *(v17 + 2);
         goto LABEL_15;
       case 1uLL:
-        [(PLManagedAssetRecoveryManager *)self _fixDimensionsForAsset:v16 cloudPhotoLibraryManager:v13 completionBlock:v17];
+        [(PLManagedAssetRecoveryManager *)self _fixDimensionsForAsset:v16 cloudPhotoLibraryManager:managerCopy completionBlock:v17];
         break;
       case 2uLL:
         v22 = 0;
@@ -1931,7 +1931,7 @@ uint64_t __109__PLManagedAssetRecoveryManager__downloadResources_forAsset_usingC
     {
       if (a4 == 4)
       {
-        [(PLManagedAssetRecoveryManager *)self _fixIrisWithZeroVideoComplementDuration:v16 cloudPhotoLibraryManager:v13 completionBlock:v17];
+        [(PLManagedAssetRecoveryManager *)self _fixIrisWithZeroVideoComplementDuration:v16 cloudPhotoLibraryManager:managerCopy completionBlock:v17];
         goto LABEL_18;
       }
 
@@ -1946,7 +1946,7 @@ uint64_t __109__PLManagedAssetRecoveryManager__downloadResources_forAsset_usingC
     if (a4 == 0x40000000)
     {
 LABEL_13:
-      [(PLManagedAssetRecoveryManager *)self _fixMissingFullSizeAdjustedResources:v16 cloudPhotoLibraryManager:v13 recoveryState:a4 usingSyncableLibrary:v14 completionBlock:v17];
+      [(PLManagedAssetRecoveryManager *)self _fixMissingFullSizeAdjustedResources:v16 cloudPhotoLibraryManager:managerCopy recoveryState:a4 usingSyncableLibrary:libraryCopy completionBlock:v17];
       goto LABEL_18;
     }
 
@@ -2015,36 +2015,36 @@ void __147__PLManagedAssetRecoveryManager__performAssetRecoveryTaskForInconsiste
   }
 }
 
-- (void)_recoverNextRecoveryState:(id)a3 forAsset:(id)a4 cloudPhotoLibraryManager:(id)a5 usingSyncableLibrary:(id)a6 completionBlock:(id)a7
+- (void)_recoverNextRecoveryState:(id)state forAsset:(id)asset cloudPhotoLibraryManager:(id)manager usingSyncableLibrary:(id)library completionBlock:(id)block
 {
   v51 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 nextObject];
-  v18 = v17;
-  if (v17)
+  stateCopy = state;
+  assetCopy = asset;
+  managerCopy = manager;
+  libraryCopy = library;
+  blockCopy = block;
+  nextObject = [stateCopy nextObject];
+  v18 = nextObject;
+  if (nextObject)
   {
-    v19 = [v17 integerValue];
+    integerValue = [nextObject integerValue];
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
     v44[2] = __130__PLManagedAssetRecoveryManager__recoverNextRecoveryState_forAsset_cloudPhotoLibraryManager_usingSyncableLibrary_completionBlock___block_invoke;
     v44[3] = &unk_1E756FA48;
     v44[4] = self;
-    v45 = v13;
-    v46 = v12;
-    v47 = v14;
-    v48 = v15;
-    v49 = v16;
-    v20 = v16;
-    [(PLManagedAssetRecoveryManager *)self _performAssetRecoveryTaskForInconsistentState:v13 state:v19 cloudPhotoLibraryManager:v47 usingSyncableLibrary:v48 completionBlock:v44];
+    v45 = assetCopy;
+    v46 = stateCopy;
+    v47 = managerCopy;
+    v48 = libraryCopy;
+    v49 = blockCopy;
+    v20 = blockCopy;
+    [(PLManagedAssetRecoveryManager *)self _performAssetRecoveryTaskForInconsistentState:assetCopy state:integerValue cloudPhotoLibraryManager:v47 usingSyncableLibrary:v48 completionBlock:v44];
   }
 
   else
   {
-    v32 = v14;
+    v32 = managerCopy;
     v21 = [(NSMutableArray *)self->_recoveryErrors count]== 0;
     v40 = 0u;
     v41 = 0u;
@@ -2055,7 +2055,7 @@ void __147__PLManagedAssetRecoveryManager__performAssetRecoveryTaskForInconsiste
     if (v23)
     {
       v24 = v23;
-      v31 = v15;
+      v31 = libraryCopy;
       v25 = *v41;
 LABEL_5:
       v26 = 0;
@@ -2085,7 +2085,7 @@ LABEL_5:
         }
       }
 
-      v15 = v31;
+      libraryCopy = v31;
     }
 
     else
@@ -2093,25 +2093,25 @@ LABEL_5:
       v27 = 0;
     }
 
-    v28 = [v13 photoLibrary];
+    photoLibrary = [assetCopy photoLibrary];
     v36[0] = MEMORY[0x1E69E9820];
     v36[1] = 3221225472;
     v36[2] = __130__PLManagedAssetRecoveryManager__recoverNextRecoveryState_forAsset_cloudPhotoLibraryManager_usingSyncableLibrary_completionBlock___block_invoke_4;
     v36[3] = &unk_1E7571418;
-    v37 = v13;
+    v37 = assetCopy;
     v38 = v21;
     v39 = v27;
     v33[0] = MEMORY[0x1E69E9820];
     v33[1] = 3221225472;
     v33[2] = __130__PLManagedAssetRecoveryManager__recoverNextRecoveryState_forAsset_cloudPhotoLibraryManager_usingSyncableLibrary_completionBlock___block_invoke_5;
     v33[3] = &unk_1E756FA70;
-    v34 = v16;
+    v34 = blockCopy;
     v35 = v21;
-    v29 = v16;
-    v30 = v13;
-    [v28 performTransactionAndWait:v36 completionHandler:v33];
+    v29 = blockCopy;
+    v30 = assetCopy;
+    [photoLibrary performTransactionAndWait:v36 completionHandler:v33];
 
-    v14 = v32;
+    managerCopy = v32;
   }
 }
 
@@ -2209,19 +2209,19 @@ void __130__PLManagedAssetRecoveryManager__recoverNextRecoveryState_forAsset_clo
   [v2 performBlockAndWait:v8];
 }
 
-- (void)_recoverNextAssetWithEnumerator:(id)a3 cloudPhotoLibraryManager:(id)a4 transaction:(id)a5 usingNonSyncableLibrary:(id)a6 andSyncableLibrary:(id)a7
+- (void)_recoverNextAssetWithEnumerator:(id)enumerator cloudPhotoLibraryManager:(id)manager transaction:(id)transaction usingNonSyncableLibrary:(id)library andSyncableLibrary:(id)syncableLibrary
 {
   v63 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v12 nextObject];
-  if (v17)
+  enumeratorCopy = enumerator;
+  managerCopy = manager;
+  transactionCopy = transaction;
+  libraryCopy = library;
+  syncableLibraryCopy = syncableLibrary;
+  nextObject = [enumeratorCopy nextObject];
+  if (nextObject)
   {
-    v18 = [v15 managedObjectContext];
-    v19 = [(PLManagedAssetRecoveryManager *)self _loadObjectWithObjectID:v17 managedObjectContext:v18];
+    managedObjectContext = [libraryCopy managedObjectContext];
+    v19 = [(PLManagedAssetRecoveryManager *)self _loadObjectWithObjectID:nextObject managedObjectContext:managedObjectContext];
 
     if (!v19)
     {
@@ -2229,86 +2229,86 @@ void __130__PLManagedAssetRecoveryManager__recoverNextRecoveryState_forAsset_clo
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v62 = v17;
+        v62 = nextObject;
         _os_log_impl(&dword_19BF1F000, v28, OS_LOG_TYPE_DEFAULT, "Skipping recovery of deleted asset: %{public}@", buf, 0xCu);
       }
 
-      v29 = [(PLManagedAssetRecoveryManager *)self workQueue];
+      workQueue = [(PLManagedAssetRecoveryManager *)self workQueue];
       v43[0] = MEMORY[0x1E69E9820];
       v43[1] = 3221225472;
       v43[2] = __145__PLManagedAssetRecoveryManager__recoverNextAssetWithEnumerator_cloudPhotoLibraryManager_transaction_usingNonSyncableLibrary_andSyncableLibrary___block_invoke_149;
       v43[3] = &unk_1E7571070;
       v44 = 0;
-      v45 = self;
-      v46 = v12;
-      v47 = v13;
-      v48 = v14;
-      v49 = v15;
-      v50 = v16;
-      dispatch_async(v29, v43);
+      selfCopy = self;
+      v46 = enumeratorCopy;
+      v47 = managerCopy;
+      v48 = transactionCopy;
+      v49 = libraryCopy;
+      v50 = syncableLibraryCopy;
+      dispatch_async(workQueue, v43);
 
       v30 = v44;
       goto LABEL_14;
     }
 
-    v20 = [v19 uuid];
+    uuid = [v19 uuid];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __145__PLManagedAssetRecoveryManager__recoverNextAssetWithEnumerator_cloudPhotoLibraryManager_transaction_usingNonSyncableLibrary_andSyncableLibrary___block_invoke;
     aBlock[3] = &unk_1E756FA20;
     aBlock[4] = self;
-    v36 = v20;
+    v36 = uuid;
     v37 = v19;
     v54 = v36;
     v21 = v19;
     v55 = v21;
-    v56 = v12;
-    v40 = v13;
-    v22 = v13;
+    v56 = enumeratorCopy;
+    v40 = managerCopy;
+    v22 = managerCopy;
     v57 = v22;
-    v58 = v14;
-    v39 = v15;
-    v59 = v15;
-    v38 = v16;
-    v23 = v16;
+    v58 = transactionCopy;
+    v39 = libraryCopy;
+    v59 = libraryCopy;
+    v38 = syncableLibraryCopy;
+    v23 = syncableLibraryCopy;
     v60 = v23;
     v24 = _Block_copy(aBlock);
-    v25 = [v21 additionalAttributes];
-    if ([v25 cloudStateRecoveryAttemptsCount] < 10)
+    additionalAttributes = [v21 additionalAttributes];
+    if ([additionalAttributes cloudStateRecoveryAttemptsCount] < 10)
     {
       [v21 photoLibrary];
-      v31 = v35 = v14;
+      v31 = v35 = transactionCopy;
       v51[0] = MEMORY[0x1E69E9820];
       v51[1] = 3221225472;
       v51[2] = __145__PLManagedAssetRecoveryManager__recoverNextAssetWithEnumerator_cloudPhotoLibraryManager_transaction_usingNonSyncableLibrary_andSyncableLibrary___block_invoke_3;
       v51[3] = &unk_1E75781E8;
-      v32 = v25;
+      v32 = additionalAttributes;
       v52 = v32;
       [v31 performTransactionAndWait:v51];
 
-      v14 = v35;
+      transactionCopy = v35;
       if (![v32 hasConsistentCloudState])
       {
         v33 = [(PLManagedAssetRecoveryManager *)self _recoveryStatesToProcessForAttributes:v32];
-        v34 = [v33 objectEnumerator];
-        [(PLManagedAssetRecoveryManager *)self _recoverNextRecoveryState:v34 forAsset:v21 cloudPhotoLibraryManager:v22 usingSyncableLibrary:v23 completionBlock:v24];
+        objectEnumerator = [v33 objectEnumerator];
+        [(PLManagedAssetRecoveryManager *)self _recoverNextRecoveryState:objectEnumerator forAsset:v21 cloudPhotoLibraryManager:v22 usingSyncableLibrary:v23 completionBlock:v24];
 
-        v14 = v35;
+        transactionCopy = v35;
         goto LABEL_13;
       }
     }
 
-    else if (([v25 hasConsistentCloudState] & 1) == 0)
+    else if (([additionalAttributes hasConsistentCloudState] & 1) == 0)
     {
       v26 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"PLManagedAssetRecoveryManager" code:2 userInfo:0];
       v24[2](v24, 0, v26);
 
 LABEL_13:
-      v13 = v40;
+      managerCopy = v40;
       v19 = v37;
 
-      v16 = v38;
-      v15 = v39;
+      syncableLibraryCopy = v38;
+      libraryCopy = v39;
       v30 = v36;
 LABEL_14:
 
@@ -2319,14 +2319,14 @@ LABEL_14:
     goto LABEL_13;
   }
 
-  v27 = [(PLManagedAssetRecoveryManager *)self workQueue];
+  workQueue2 = [(PLManagedAssetRecoveryManager *)self workQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __145__PLManagedAssetRecoveryManager__recoverNextAssetWithEnumerator_cloudPhotoLibraryManager_transaction_usingNonSyncableLibrary_andSyncableLibrary___block_invoke_3_151;
   block[3] = &unk_1E7578848;
   block[4] = self;
-  v42 = v14;
-  dispatch_async(v27, block);
+  v42 = transactionCopy;
+  dispatch_async(workQueue2, block);
 
 LABEL_15:
 }
@@ -2467,10 +2467,10 @@ void __145__PLManagedAssetRecoveryManager__recoverNextAssetWithEnumerator_cloudP
   [v2 performBlockAndWait:v8];
 }
 
-- (id)_recoveryStatesToProcessForAttributes:(id)a3
+- (id)_recoveryStatesToProcessForAttributes:(id)attributes
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  attributesCopy = attributes;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v11 = 0u;
   v12 = 0u;
@@ -2491,7 +2491,7 @@ void __145__PLManagedAssetRecoveryManager__recoverNextAssetWithEnumerator_cloudP
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        if ([v3 hasCloudRecoveryStateFlagSet:{objc_msgSend(v9, "integerValue")}])
+        if ([attributesCopy hasCloudRecoveryStateFlagSet:{objc_msgSend(v9, "integerValue")}])
         {
           [v4 addObject:v9];
         }
@@ -2506,20 +2506,20 @@ void __145__PLManagedAssetRecoveryManager__recoverNextAssetWithEnumerator_cloudP
   return v4;
 }
 
-- (id)_loadObjectWithObjectID:(id)a3 managedObjectContext:(id)a4
+- (id)_loadObjectWithObjectID:(id)d managedObjectContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 objectRegisteredForID:v5];
+  dCopy = d;
+  contextCopy = context;
+  v7 = [contextCopy objectRegisteredForID:dCopy];
   if (v7)
   {
     v8 = v7;
-    [v6 refreshObject:v7 mergeChanges:{objc_msgSend(v7, "hasChanges")}];
+    [contextCopy refreshObject:v7 mergeChanges:{objc_msgSend(v7, "hasChanges")}];
   }
 
   else
   {
-    v8 = [v6 existingObjectWithID:v5 error:0];
+    v8 = [contextCopy existingObjectWithID:dCopy error:0];
   }
 
   if ([v8 isDeleted])
@@ -2537,22 +2537,22 @@ void __145__PLManagedAssetRecoveryManager__recoverNextAssetWithEnumerator_cloudP
   return v9;
 }
 
-- (void)_setCloudRecoveryState:(unint64_t)a3 forAssetsWithFetchRequestPredicate:(id)a4 resultsFilterPredicate:(id)a5 usingNonSyncableLibrary:(id)a6
+- (void)_setCloudRecoveryState:(unint64_t)state forAssetsWithFetchRequestPredicate:(id)predicate resultsFilterPredicate:(id)filterPredicate usingNonSyncableLibrary:(id)library
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  predicateCopy = predicate;
+  filterPredicateCopy = filterPredicate;
+  libraryCopy = library;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __138__PLManagedAssetRecoveryManager__setCloudRecoveryState_forAssetsWithFetchRequestPredicate_resultsFilterPredicate_usingNonSyncableLibrary___block_invoke;
   v15[3] = &unk_1E7576168;
-  v16 = v9;
-  v17 = v11;
-  v18 = v10;
-  v19 = a3;
-  v12 = v10;
-  v13 = v11;
-  v14 = v9;
+  v16 = predicateCopy;
+  v17 = libraryCopy;
+  v18 = filterPredicateCopy;
+  stateCopy = state;
+  v12 = filterPredicateCopy;
+  v13 = libraryCopy;
+  v14 = predicateCopy;
   [v13 performTransactionAndWait:v15];
 }
 
@@ -2698,10 +2698,10 @@ LABEL_12:
   }
 }
 
-- (void)_startRecoveryUsingCloudPhotoLibraryManager:(id)a3 transaction:(id)a4
+- (void)_startRecoveryUsingCloudPhotoLibraryManager:(id)manager transaction:(id)transaction
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  transactionCopy = transaction;
   v8 = PLBackendGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2723,13 +2723,13 @@ LABEL_12:
   v17[2] = __89__PLManagedAssetRecoveryManager__startRecoveryUsingCloudPhotoLibraryManager_transaction___block_invoke;
   v17[3] = &unk_1E75730F8;
   v18 = v11;
-  v19 = self;
-  v20 = v6;
-  v21 = v7;
+  selfCopy = self;
+  v20 = managerCopy;
+  v21 = transactionCopy;
   v22 = v12;
   v13 = v12;
-  v14 = v7;
-  v15 = v6;
+  v14 = transactionCopy;
+  v15 = managerCopy;
   v16 = v11;
   [v16 performBlockAndWait:v17];
 }
@@ -2807,61 +2807,61 @@ LABEL_10:
 LABEL_12:
 }
 
-- (id)_newPhotoLibraryWithName:(const char *)a3 nonSyncable:(BOOL)a4
+- (id)_newPhotoLibraryWithName:(const char *)name nonSyncable:(BOOL)syncable
 {
-  v4 = a4;
+  syncableCopy = syncable;
   v17 = *MEMORY[0x1E69E9840];
   v7 = objc_alloc_init(PLPhotoLibraryOptions);
   [(PLPhotoLibraryOptions *)v7 setRequiredState:6];
   [(PLPhotoLibraryOptions *)v7 setRefreshesAfterSave:0];
   [(PLPhotoLibraryOptions *)v7 setAutomaticallyPinToFirstFetch:0];
-  v8 = [(PLLibraryServicesManager *)self->_lsm libraryBundle];
+  libraryBundle = [(PLLibraryServicesManager *)self->_lsm libraryBundle];
   v14 = 0;
-  v9 = [PLPhotoLibrary newPhotoLibraryWithName:a3 loadedFromBundle:v8 options:v7 error:&v14];
+  v9 = [PLPhotoLibrary newPhotoLibraryWithName:name loadedFromBundle:libraryBundle options:v7 error:&v14];
   v10 = v14;
 
   if (!v9)
   {
-    v12 = PLBackendSharingGetLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    managedObjectContext2 = PLBackendSharingGetLog();
+    if (os_log_type_enabled(managedObjectContext2, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v16 = v10;
-      _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "Error creating context: %@", buf, 0xCu);
+      _os_log_impl(&dword_19BF1F000, managedObjectContext2, OS_LOG_TYPE_ERROR, "Error creating context: %@", buf, 0xCu);
     }
 
     goto LABEL_6;
   }
 
-  if (v4)
+  if (syncableCopy)
   {
-    v11 = [v9 managedObjectContext];
-    [v11 setChangeSource:1];
+    managedObjectContext = [v9 managedObjectContext];
+    [managedObjectContext setChangeSource:1];
 
-    v12 = [v9 managedObjectContext];
-    [v12 setLocalOnlyDelete:1];
+    managedObjectContext2 = [v9 managedObjectContext];
+    [managedObjectContext2 setLocalOnlyDelete:1];
 LABEL_6:
   }
 
   return v9;
 }
 
-- (void)startRecoveryUsingCloudPhotoLibraryManager:(id)a3 transaction:(id)a4 shouldIdentifyInconsistentAssets:(BOOL)a5
+- (void)startRecoveryUsingCloudPhotoLibraryManager:(id)manager transaction:(id)transaction shouldIdentifyInconsistentAssets:(BOOL)assets
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(PLManagedAssetRecoveryManager *)self workQueue];
+  managerCopy = manager;
+  transactionCopy = transaction;
+  workQueue = [(PLManagedAssetRecoveryManager *)self workQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __121__PLManagedAssetRecoveryManager_startRecoveryUsingCloudPhotoLibraryManager_transaction_shouldIdentifyInconsistentAssets___block_invoke;
   v13[3] = &unk_1E7576310;
-  v16 = a5;
+  assetsCopy = assets;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = managerCopy;
+  v15 = transactionCopy;
+  v11 = transactionCopy;
+  v12 = managerCopy;
+  dispatch_async(workQueue, v13);
 }
 
 void __121__PLManagedAssetRecoveryManager_startRecoveryUsingCloudPhotoLibraryManager_transaction_shouldIdentifyInconsistentAssets___block_invoke(uint64_t a1)
@@ -2895,8 +2895,8 @@ void __121__PLManagedAssetRecoveryManager_startRecoveryUsingCloudPhotoLibraryMan
 - (void)identifyAssetsWithInconsistentAdjustedFullSizeRenderDeferredProcessing
 {
   v4 = [(PLManagedAssetRecoveryManager *)self _newPhotoLibraryWithName:"[PLManagedAssetRecoveryManager identifyAssetsWithInconsistentAdjustedFullSizeRenderDeferredProcessing]" nonSyncable:1];
-  v3 = [objc_opt_class() _predicateForAdjustedAssetsFailedDeferredRendering];
-  [(PLManagedAssetRecoveryManager *)self _setCloudRecoveryState:0x40000000 forAssetsWithFetchRequestPredicate:v3 resultsFilterPredicate:0 usingNonSyncableLibrary:v4];
+  _predicateForAdjustedAssetsFailedDeferredRendering = [objc_opt_class() _predicateForAdjustedAssetsFailedDeferredRendering];
+  [(PLManagedAssetRecoveryManager *)self _setCloudRecoveryState:0x40000000 forAssetsWithFetchRequestPredicate:_predicateForAdjustedAssetsFailedDeferredRendering resultsFilterPredicate:0 usingNonSyncableLibrary:v4];
 }
 
 - (void)identifyAssetsWithInconsistentCloudState
@@ -2909,25 +2909,25 @@ void __121__PLManagedAssetRecoveryManager_startRecoveryUsingCloudPhotoLibraryMan
     _os_log_impl(&dword_19BF1F000, v4, OS_LOG_TYPE_DEFAULT, "Identifying assets in inconsistent cloud state", buf, 2u);
   }
 
-  v5 = [objc_opt_class() _imagesWithZeroWidthHeightPredicate];
-  [(PLManagedAssetRecoveryManager *)self _setCloudRecoveryState:1 forAssetsWithFetchRequestPredicate:v5 resultsFilterPredicate:0 usingNonSyncableLibrary:v3];
+  _imagesWithZeroWidthHeightPredicate = [objc_opt_class() _imagesWithZeroWidthHeightPredicate];
+  [(PLManagedAssetRecoveryManager *)self _setCloudRecoveryState:1 forAssetsWithFetchRequestPredicate:_imagesWithZeroWidthHeightPredicate resultsFilterPredicate:0 usingNonSyncableLibrary:v3];
 
   v6 = MEMORY[0x1E696AE18];
-  v7 = [*MEMORY[0x1E6982F88] identifier];
-  v8 = [v6 predicateWithFormat:@"%K UTI-CONFORMS-TO %@", @"uniformTypeIdentifier", v7];
+  identifier = [*MEMORY[0x1E6982F88] identifier];
+  v8 = [v6 predicateWithFormat:@"%K UTI-CONFORMS-TO %@", @"uniformTypeIdentifier", identifier];
 
-  v9 = [objc_opt_class() _assetsWithJPGFilenameAndRawPrimaryImageResourcePredicate];
-  [(PLManagedAssetRecoveryManager *)self _setCloudRecoveryState:2 forAssetsWithFetchRequestPredicate:v9 resultsFilterPredicate:v8 usingNonSyncableLibrary:v3];
+  _assetsWithJPGFilenameAndRawPrimaryImageResourcePredicate = [objc_opt_class() _assetsWithJPGFilenameAndRawPrimaryImageResourcePredicate];
+  [(PLManagedAssetRecoveryManager *)self _setCloudRecoveryState:2 forAssetsWithFetchRequestPredicate:_assetsWithJPGFilenameAndRawPrimaryImageResourcePredicate resultsFilterPredicate:v8 usingNonSyncableLibrary:v3];
 
-  v10 = [objc_opt_class() _irisesWithZeroVideoCpDuration];
-  [(PLManagedAssetRecoveryManager *)self _setCloudRecoveryState:4 forAssetsWithFetchRequestPredicate:v10 resultsFilterPredicate:0 usingNonSyncableLibrary:v3];
+  _irisesWithZeroVideoCpDuration = [objc_opt_class() _irisesWithZeroVideoCpDuration];
+  [(PLManagedAssetRecoveryManager *)self _setCloudRecoveryState:4 forAssetsWithFetchRequestPredicate:_irisesWithZeroVideoCpDuration resultsFilterPredicate:0 usingNonSyncableLibrary:v3];
 
   v11 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_65916];
-  v12 = [objc_opt_class() _predicateForAdjustedAssetsWithMissingResources];
-  [(PLManagedAssetRecoveryManager *)self _setCloudRecoveryState:8 forAssetsWithFetchRequestPredicate:v12 resultsFilterPredicate:v11 usingNonSyncableLibrary:v3];
+  _predicateForAdjustedAssetsWithMissingResources = [objc_opt_class() _predicateForAdjustedAssetsWithMissingResources];
+  [(PLManagedAssetRecoveryManager *)self _setCloudRecoveryState:8 forAssetsWithFetchRequestPredicate:_predicateForAdjustedAssetsWithMissingResources resultsFilterPredicate:v11 usingNonSyncableLibrary:v3];
 
-  v13 = [objc_opt_class() _predicateForAdjustedAssetsFailedDeferredRendering];
-  [(PLManagedAssetRecoveryManager *)self _setCloudRecoveryState:0x40000000 forAssetsWithFetchRequestPredicate:v13 resultsFilterPredicate:0 usingNonSyncableLibrary:v3];
+  _predicateForAdjustedAssetsFailedDeferredRendering = [objc_opt_class() _predicateForAdjustedAssetsFailedDeferredRendering];
+  [(PLManagedAssetRecoveryManager *)self _setCloudRecoveryState:0x40000000 forAssetsWithFetchRequestPredicate:_predicateForAdjustedAssetsFailedDeferredRendering resultsFilterPredicate:0 usingNonSyncableLibrary:v3];
 }
 
 BOOL __73__PLManagedAssetRecoveryManager_identifyAssetsWithInconsistentCloudState__block_invoke(uint64_t a1, void *a2)
@@ -3002,16 +3002,16 @@ uint64_t __73__PLManagedAssetRecoveryManager_identifyAssetsWithInconsistentCloud
   return v3;
 }
 
-- (PLManagedAssetRecoveryManager)initWithLibraryServicesManager:(id)a3
+- (PLManagedAssetRecoveryManager)initWithLibraryServicesManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v34.receiver = self;
   v34.super_class = PLManagedAssetRecoveryManager;
   v6 = [(PLManagedAssetRecoveryManager *)&v34 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lsm, a3);
+    objc_storeStrong(&v6->_lsm, manager);
     v8 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v9 = dispatch_queue_attr_make_with_qos_class(v8, QOS_CLASS_BACKGROUND, 0);
     v10 = dispatch_queue_create("com.apple.assetsd.periodicmaintenance.managedAssetRecoveryManager.workQueue", v9);
@@ -3019,14 +3019,14 @@ uint64_t __73__PLManagedAssetRecoveryManager_identifyAssetsWithInconsistentCloud
     v7->_workQueue = v10;
 
     v12 = objc_alloc(MEMORY[0x1E69BF330]);
-    v13 = [v5 pathManager];
-    v14 = [v13 photoDirectoryWithType:1];
+    pathManager = [managerCopy pathManager];
+    v14 = [pathManager photoDirectoryWithType:1];
     v15 = [v12 initWithPath:v14];
     volumeInfo = v7->_volumeInfo;
     v7->_volumeInfo = v15;
 
-    v17 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v18 = [v17 integerForKey:@"PLRecoveryManagerResourceDownloadLimitMB"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v18 = [standardUserDefaults integerForKey:@"PLRecoveryManagerResourceDownloadLimitMB"];
 
     v19 = v18 << 20;
     if (!v18)
@@ -3102,11 +3102,11 @@ id __64__PLManagedAssetRecoveryManager_initWithLibraryServicesManager___block_in
 {
   v19[3] = *MEMORY[0x1E69E9840];
   v2 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithObjects:{&unk_1F0FBD510, &unk_1F0FBD528, 0}];
-  v3 = [MEMORY[0x1E6994B90] imageDerivativeTypes];
-  [v2 unionSet:v3];
+  imageDerivativeTypes = [MEMORY[0x1E6994B90] imageDerivativeTypes];
+  [v2 unionSet:imageDerivativeTypes];
 
-  v4 = [MEMORY[0x1E6994B90] videoDerivativeTypes];
-  [v2 unionSet:v4];
+  videoDerivativeTypes = [MEMORY[0x1E6994B90] videoDerivativeTypes];
+  [v2 unionSet:videoDerivativeTypes];
 
   v17 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K IN %@ AND %K != %u AND %K == %u", @"kind", &unk_1F0FBFDC0, @"kindSubtype", 101, @"deferredProcessingNeeded", 0];
   v5 = [PLManagedAsset predicateForAdjustedAssetsWithKeyPathToAsset:0];

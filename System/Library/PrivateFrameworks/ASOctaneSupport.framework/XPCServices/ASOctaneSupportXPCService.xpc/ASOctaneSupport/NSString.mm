@@ -1,5 +1,5 @@
 @interface NSString
-+ (id)skan_versionStringFromSKAdNetworkVersion:(int64_t)a3;
++ (id)skan_versionStringFromSKAdNetworkVersion:(int64_t)version;
 - (int64_t)skan_version;
 @end
 
@@ -17,54 +17,54 @@
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = 0;
+    integerValue = 0;
   }
 
-  return v5;
+  return integerValue;
 }
 
-+ (id)skan_versionStringFromSKAdNetworkVersion:(int64_t)a3
++ (id)skan_versionStringFromSKAdNetworkVersion:(int64_t)version
 {
   v3 = @"2.2";
   v4 = @"3.0";
   v5 = @"4.0";
-  if (a3 != 400)
+  if (version != 400)
   {
     v5 = 0;
   }
 
-  if (a3 != 300)
+  if (version != 300)
   {
     v4 = v5;
   }
 
-  if (a3 != 202)
+  if (version != 202)
   {
     v3 = v4;
   }
 
   v6 = @"2.1";
-  if (a3 != 201)
+  if (version != 201)
   {
     v6 = 0;
   }
 
-  if (a3 == 200)
+  if (version == 200)
   {
     v6 = @"2.0";
   }
 
-  if (a3 == 100)
+  if (version == 100)
   {
     v6 = @"1.0";
   }
 
-  if (a3 <= 201)
+  if (version <= 201)
   {
     return v6;
   }

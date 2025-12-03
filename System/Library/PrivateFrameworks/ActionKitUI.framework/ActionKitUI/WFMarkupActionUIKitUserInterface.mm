@@ -1,24 +1,24 @@
 @interface WFMarkupActionUIKitUserInterface
 - (id)editedItems;
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4;
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3;
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)finishWithError:(id)a3;
-- (void)previewController:(id)a3 didSaveEditedCopyOfPreviewItem:(id)a4 atURL:(id)a5;
-- (void)showWithPreviewItems:(id)a3 completionHandler:(id)a4;
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index;
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)finishWithError:(id)error;
+- (void)previewController:(id)controller didSaveEditedCopyOfPreviewItem:(id)item atURL:(id)l;
+- (void)showWithPreviewItems:(id)items completionHandler:(id)handler;
 @end
 
 @implementation WFMarkupActionUIKitUserInterface
 
 - (id)editedItems
 {
-  v3 = [(WFMarkupActionUIKitUserInterface *)self previewItems];
+  previewItems = [(WFMarkupActionUIKitUserInterface *)self previewItems];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__WFMarkupActionUIKitUserInterface_editedItems__block_invoke;
   v6[3] = &unk_278C36AA8;
   v6[4] = self;
-  v4 = [v3 if_compactMap:v6];
+  v4 = [previewItems if_compactMap:v6];
 
   return v4;
 }
@@ -46,12 +46,12 @@ id __47__WFMarkupActionUIKitUserInterface_editedItems__block_invoke(uint64_t a1,
   return v9;
 }
 
-- (void)previewController:(id)a3 didSaveEditedCopyOfPreviewItem:(id)a4 atURL:(id)a5
+- (void)previewController:(id)controller didSaveEditedCopyOfPreviewItem:(id)item atURL:(id)l
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(WFMarkupActionUIKitUserInterface *)self editedPreviewItems];
-  v12 = v7;
+  itemCopy = item;
+  lCopy = l;
+  editedPreviewItems = [(WFMarkupActionUIKitUserInterface *)self editedPreviewItems];
+  v12 = itemCopy;
   if (v12)
   {
     objc_opt_class();
@@ -73,37 +73,37 @@ id __47__WFMarkupActionUIKitUserInterface_editedItems__block_invoke(uint64_t a1,
 
   v11 = v10;
 
-  [v9 setObject:v8 forKey:v11];
+  [editedPreviewItems setObject:lCopy forKey:v11];
 }
 
-- (id)previewController:(id)a3 previewItemAtIndex:(int64_t)a4
+- (id)previewController:(id)controller previewItemAtIndex:(int64_t)index
 {
-  v5 = [(WFMarkupActionUIKitUserInterface *)self previewItems];
-  v6 = [v5 objectAtIndexedSubscript:a4];
+  previewItems = [(WFMarkupActionUIKitUserInterface *)self previewItems];
+  v6 = [previewItems objectAtIndexedSubscript:index];
 
   return v6;
 }
 
-- (int64_t)numberOfPreviewItemsInPreviewController:(id)a3
+- (int64_t)numberOfPreviewItemsInPreviewController:(id)controller
 {
-  v3 = [(WFMarkupActionUIKitUserInterface *)self previewItems];
-  v4 = [v3 count];
+  previewItems = [(WFMarkupActionUIKitUserInterface *)self previewItems];
+  v4 = [previewItems count];
 
   return v4;
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __76__WFMarkupActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFMarkupActionUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 
@@ -118,30 +118,30 @@ uint64_t __76__WFMarkupActionUIKitUserInterface_cancelPresentationWithCompletion
   return v4();
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(WFMarkupActionUIKitUserInterface *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(WFMarkupActionUIKitUserInterface *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    v5 = [(WFMarkupActionUIKitUserInterface *)self completionHandler];
-    v6 = [(WFMarkupActionUIKitUserInterface *)self editedItems];
-    (v5)[2](v5, v6, v7);
+    completionHandler2 = [(WFMarkupActionUIKitUserInterface *)self completionHandler];
+    editedItems = [(WFMarkupActionUIKitUserInterface *)self editedItems];
+    (completionHandler2)[2](completionHandler2, editedItems, errorCopy);
   }
 
   [(WFMarkupActionUIKitUserInterface *)self setCompletionHandler:0];
 }
 
-- (void)showWithPreviewItems:(id)a3 completionHandler:(id)a4
+- (void)showWithPreviewItems:(id)items completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  itemsCopy = items;
+  handlerCopy = handler;
+  v9 = handlerCopy;
+  if (!itemsCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFMarkupActionUIKitUserInterface.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"previewItems"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFMarkupActionUIKitUserInterface.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"previewItems"}];
 
     if (v9)
     {
@@ -149,22 +149,22 @@ uint64_t __76__WFMarkupActionUIKitUserInterface_cancelPresentationWithCompletion
     }
 
 LABEL_5:
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFMarkupActionUIKitUserInterface.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFMarkupActionUIKitUserInterface.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_3;
   }
 
-  if (!v8)
+  if (!handlerCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v10 = [v7 if_map:&__block_literal_global_2773];
+  v10 = [itemsCopy if_map:&__block_literal_global_2773];
   [(WFMarkupActionUIKitUserInterface *)self setPreviewItems:v10];
 
-  v11 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  v11 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   [(WFMarkupActionUIKitUserInterface *)self setEditedPreviewItems:v11];
 
   [(WFMarkupActionUIKitUserInterface *)self setCompletionHandler:v9];

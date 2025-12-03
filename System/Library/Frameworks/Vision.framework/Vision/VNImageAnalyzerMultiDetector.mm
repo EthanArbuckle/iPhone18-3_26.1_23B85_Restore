@@ -1,61 +1,61 @@
 @interface VNImageAnalyzerMultiDetector
-+ (BOOL)_getAssociatedBoundingBoxGeneratorClass:(Class *)a3 options:(id *)a4 forConfigurationOptions:(id)a5 error:(id *)a6;
-+ (Class)detectorClassForConfigurationOptions:(id)a3 error:(id *)a4;
-+ (id)_inferenceDescriptorForOptions:(id)a3 error:(id *)a4;
-+ (id)_newInferenceDescriptorForModel:(unint64_t)a3 configuredWithOptions:(id)a4 error:(id *)a5;
-+ (id)_newSaliencyHeatmapBoundingBoxGeneratorOptionsForOptions:(id)a3;
-+ (id)_saliencyHeatmapBoundingBoxGeneratorTypeForOriginatingRequestSpecifier:(id)a3;
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3;
++ (BOOL)_getAssociatedBoundingBoxGeneratorClass:(Class *)class options:(id *)options forConfigurationOptions:(id)configurationOptions error:(id *)error;
++ (Class)detectorClassForConfigurationOptions:(id)options error:(id *)error;
++ (id)_inferenceDescriptorForOptions:(id)options error:(id *)error;
++ (id)_newInferenceDescriptorForModel:(unint64_t)model configuredWithOptions:(id)options error:(id *)error;
++ (id)_newSaliencyHeatmapBoundingBoxGeneratorOptionsForOptions:(id)options;
++ (id)_saliencyHeatmapBoundingBoxGeneratorTypeForOriginatingRequestSpecifier:(id)specifier;
++ (id)computeStagesToBindForConfigurationOptions:(id)options;
 + (id)configurationOptionKeysForDetectorKey;
-+ (id)disallowedListForModel:(unint64_t)a3;
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4;
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4;
-+ (shared_ptr<vision::mod::ImageClassifier_HierarchicalModel>)createHierarchicalModelForInferenceDescriptor:(id)a3 error:(id *)a4;
-+ (shared_ptr<vision::mod::ImageClassifier_HierarchicalModel>)createHierarchicalModelForMultiDetectorModel:(unint64_t)a3 error:(id *)a4;
-+ (unint64_t)modelForRequestClass:(Class)a3 revision:(unint64_t)a4;
-+ (void)recordDefaultConfigurationOptionsInDictionary:(id)a3;
-- (BOOL)canBehaveAsDetectorOfClass:(Class)a3 withConfiguration:(id)a4;
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4;
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9;
++ (id)disallowedListForModel:(unint64_t)model;
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error;
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error;
++ (shared_ptr<vision::mod::ImageClassifier_HierarchicalModel>)createHierarchicalModelForInferenceDescriptor:(id)descriptor error:(id *)error;
++ (shared_ptr<vision::mod::ImageClassifier_HierarchicalModel>)createHierarchicalModelForMultiDetectorModel:(unint64_t)model error:(id *)error;
++ (unint64_t)modelForRequestClass:(Class)class revision:(unint64_t)revision;
++ (void)recordDefaultConfigurationOptionsInDictionary:(id)dictionary;
+- (BOOL)canBehaveAsDetectorOfClass:(Class)class withConfiguration:(id)configuration;
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error;
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler;
 - (BOOL)hasObjDetNet;
-- (BOOL)shouldBeReplacedByDetectorOfClass:(Class)a3 withConfiguration:(id)a4;
-- (BOOL)warmUpSession:(id)a3 withOptions:(id)a4 error:(id *)a5;
-- (VNImageAnalyzerMultiDetector)initWithConfigurationOptions:(id)a3;
+- (BOOL)shouldBeReplacedByDetectorOfClass:(Class)class withConfiguration:(id)configuration;
+- (BOOL)warmUpSession:(id)session withOptions:(id)options error:(id *)error;
+- (VNImageAnalyzerMultiDetector)initWithConfigurationOptions:(id)options;
 - (id).cxx_construct;
-- (id)_observationsForScenes:(void *)a3 entityNet:(void *)a4 junk:(void *)a5 VNVYvzEtX1JlUdu8xx5qhDI:(void *)a6 landmark:(void *)a7 sceneprints:(void *)a8 compressedSceneprint:(double)a9 fingerprints:(double)a10 aesthetics:(double)a11 saliencyA:(double)a12 saliencyO:(double)a13 recognizeObjects:(double)a14 VN5kJNH3eYuyaLxNpZr5Z7zi:(void *)a15 VNdGg5skzXHSAENO6T3enHE:(void *)a16 cityNatureGating:(void *)a17 photosAdjustments:(void *)a18 pixelBuffer:(void *)a19 withOptions:(void *)a20 originalImageSize:(void *)a21 regionOfInterest:(void *)a22 qosClass:(void *)a23 warningRecorder:(uint64_t)a24 error:(void *)a25;
-- (id)_processFullImagePixelBuffer:(const __CVBuffer *)a3 options:(id)a4 regionOfInterest:(CGRect)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
-- (id)_processLastAnalysisForCityNatureConfiguration:(void *)a3 error:;
-- (id)_processLastAnalysisForPhotosAdjustmentsConfiguration:(void *)a3 error:;
-- (id)_processLastAnalysisForRecognizeObjectsConfiguration:(uint64_t)a1 error:(void *)a2;
-- (id)_processLastAnalysisForSaliencyOConfiguration:(void *)a3 regionOfInterest:(uint64_t)a4 originalImageSize:(void *)a5 options:(void *)a6 qosClass:(double)a7 warningRecorder:(double)a8 error:(double)a9;
-- (id)_processLastAnalysisForSignificantEventConfiguration:(void *)a3 error:;
-- (id)_processLastAnalysisForVN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:(void *)a3 error:;
-- (id)_processSaliencyTensor:(double)a3 regionOfInterest:(double)a4 originalImageSize:(double)a5 options:(double)a6 saliencyConfiguration:(uint64_t)a7 saliencyGeneratorType:(int8x16_t *)a8 startCode:(void *)a9 finishCode:(void *)a10 qosClass:(void *)a11 warningRecorder:(uint64_t)a12 error:(uint64_t)a13;
-- (id)allCityNatureIdentifiersWithOptions:(id)a3 error:(id *)a4;
-- (id)allJunkIdentifiersForOptions:(id)a3 error:(id *)a4;
-- (id)allRecognizedObjectsIdentifiersWithOptions:(id)a3 error:(id *)a4;
-- (id)allSceneIdentifiersWithOptions:(id)a3 error:(id *)a4;
-- (id)allSignificantEventIdentifiersWithOptions:(id)a3 error:(id *)a4;
-- (id)allVN5kJNH3eYuyaLxNpZr5Z7ziIdentifiersWithOptions:(id)a3 error:(id *)a4;
+- (id)_observationsForScenes:(void *)scenes entityNet:(void *)net junk:(void *)junk VNVYvzEtX1JlUdu8xx5qhDI:(void *)i landmark:(void *)landmark sceneprints:(void *)sceneprints compressedSceneprint:(double)sceneprint fingerprints:(double)self0 aesthetics:(double)self1 saliencyA:(double)self2 saliencyO:(double)self3 recognizeObjects:(double)self4 VN5kJNH3eYuyaLxNpZr5Z7zi:(void *)self5 VNdGg5skzXHSAENO6T3enHE:(void *)self6 cityNatureGating:(void *)self7 photosAdjustments:(void *)self8 pixelBuffer:(void *)self9 withOptions:(void *)options originalImageSize:(void *)size regionOfInterest:(void *)interest qosClass:(void *)class warningRecorder:(uint64_t)recorder error:(void *)error;
+- (id)_processFullImagePixelBuffer:(const __CVBuffer *)buffer options:(id)options regionOfInterest:(CGRect)interest qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
+- (id)_processLastAnalysisForCityNatureConfiguration:(void *)configuration error:;
+- (id)_processLastAnalysisForPhotosAdjustmentsConfiguration:(void *)configuration error:;
+- (id)_processLastAnalysisForRecognizeObjectsConfiguration:(uint64_t)configuration error:(void *)error;
+- (id)_processLastAnalysisForSaliencyOConfiguration:(void *)configuration regionOfInterest:(uint64_t)interest originalImageSize:(void *)size options:(void *)options qosClass:(double)class warningRecorder:(double)recorder error:(double)error;
+- (id)_processLastAnalysisForSignificantEventConfiguration:(void *)configuration error:;
+- (id)_processLastAnalysisForVN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:(void *)configuration error:;
+- (id)_processSaliencyTensor:(double)tensor regionOfInterest:(double)interest originalImageSize:(double)size options:(double)options saliencyConfiguration:(uint64_t)configuration saliencyGeneratorType:(int8x16_t *)type startCode:(void *)code finishCode:(void *)self0 qosClass:(void *)self1 warningRecorder:(uint64_t)self2 error:(uint64_t)self3;
+- (id)allCityNatureIdentifiersWithOptions:(id)options error:(id *)error;
+- (id)allJunkIdentifiersForOptions:(id)options error:(id *)error;
+- (id)allRecognizedObjectsIdentifiersWithOptions:(id)options error:(id *)error;
+- (id)allSceneIdentifiersWithOptions:(id)options error:(id *)error;
+- (id)allSignificantEventIdentifiersWithOptions:(id)options error:(id *)error;
+- (id)allVN5kJNH3eYuyaLxNpZr5Z7ziIdentifiersWithOptions:(id)options error:(id *)error;
 - (id)description;
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8;
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9;
-- (id)sceneLabelOperationPointsForOriginatingRequestSpecifier:(id)a3 error:(id *)a4;
-- (uint64_t)_analysisTypeForScenes:(void *)a1 entityNet:(void *)a2 junk:(void *)a3 VNVYvzEtX1JlUdu8xx5qhDI:(void *)a4 landmark:(void *)a5 sceneprints:(void *)a6 compressedSceneprint:(void *)a7 fingerprints:(void *)a8 aesthetics:(void *)a9 saliencyA:(void *)a10 saliencyO:(void *)a11 recognizeObjects:(void *)a12 VN5kJNH3eYuyaLxNpZr5Z7zi:(void *)a13 VNdGg5skzXHSAENO6T3enHE:(void *)a14 cityNatureGating:(void *)a15 photosAdjustments:(void *)a16;
-- (uint64_t)_performAnalysis:(uint64_t)a3 pixelBuffer:(uint64_t)a4 error:;
-- (uint64_t)_populateLeafSceneObservations:(void *)a3 hierarchySceneObservations:(void *)a4 fromLastAnalysisForSceneConfiguration:(void *)a5 error:;
-- (uint64_t)_processSceneIdentifier:(void *)a3 withConfidence:(void *)a4 disallowedList:(void *)a5 operationPoints:(void *)a6 originatingRequestSpecifier:(unint64_t *)a7 observationsArray:(uint64_t)a8 optionalTopN:(float)a9 error:;
-- (void)_VN5kJNH3eYuyaLxNpZr5Z7ziCustomClassifierAndReturnError:(void *)a3;
-- (void)_VNVYvzEtX1JlUdu8xx5qhDICustomClassifierAndReturnError:(void *)a3;
-- (void)_VNdGg5skzXHSAENO6T3enHECustomClassifierForOriginatingRequestSpecifier:(void *)a3;
-- (void)_cityNatureCustomClassifierAndReturnError:(void *)a3;
-- (void)_configureSlidersAdjustmentsInImageAnalyzerOptions:(uint64_t)a1 forConfigurationOptions:(uint64_t)a2;
-- (void)_getImageCropAndScaleOption:(int32x2_t *)a3 networkRequiredInputImageSize:(void *)a4 forOptions:;
-- (void)_isNotConfiguredWithBooleanOptionNamed:(void *)a3 butRequiredByOptions:;
-- (void)_junkCustomClassifiersAndReturnError:(void *)a3;
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler;
+- (id)sceneLabelOperationPointsForOriginatingRequestSpecifier:(id)specifier error:(id *)error;
+- (uint64_t)_analysisTypeForScenes:(void *)scenes entityNet:(void *)net junk:(void *)junk VNVYvzEtX1JlUdu8xx5qhDI:(void *)i landmark:(void *)landmark sceneprints:(void *)sceneprints compressedSceneprint:(void *)sceneprint fingerprints:(void *)fingerprints aesthetics:(void *)aesthetics saliencyA:(void *)scenes0 saliencyO:(void *)scenes1 recognizeObjects:(void *)scenes2 VN5kJNH3eYuyaLxNpZr5Z7zi:(void *)scenes3 VNdGg5skzXHSAENO6T3enHE:(void *)scenes4 cityNatureGating:(void *)scenes5 photosAdjustments:(void *)scenes6;
+- (uint64_t)_performAnalysis:(uint64_t)analysis pixelBuffer:(uint64_t)buffer error:;
+- (uint64_t)_populateLeafSceneObservations:(void *)observations hierarchySceneObservations:(void *)sceneObservations fromLastAnalysisForSceneConfiguration:(void *)configuration error:;
+- (uint64_t)_processSceneIdentifier:(void *)identifier withConfidence:(void *)confidence disallowedList:(void *)list operationPoints:(void *)points originatingRequestSpecifier:(unint64_t *)specifier observationsArray:(uint64_t)array optionalTopN:(float)n error:;
+- (void)_VN5kJNH3eYuyaLxNpZr5Z7ziCustomClassifierAndReturnError:(void *)error;
+- (void)_VNVYvzEtX1JlUdu8xx5qhDICustomClassifierAndReturnError:(void *)error;
+- (void)_VNdGg5skzXHSAENO6T3enHECustomClassifierForOriginatingRequestSpecifier:(void *)specifier;
+- (void)_cityNatureCustomClassifierAndReturnError:(void *)error;
+- (void)_configureSlidersAdjustmentsInImageAnalyzerOptions:(uint64_t)options forConfigurationOptions:(uint64_t)configurationOptions;
+- (void)_getImageCropAndScaleOption:(int32x2_t *)option networkRequiredInputImageSize:(void *)size forOptions:;
+- (void)_isNotConfiguredWithBooleanOptionNamed:(void *)named butRequiredByOptions:;
+- (void)_junkCustomClassifiersAndReturnError:(void *)error;
 - (void)_lastAnalysisSceneClassifications;
-- (void)_loadCustomClassifierWithDescriptor:(void *)a3 error:(void *)a4;
-- (void)_potentialLandmarksCustomClassifierAndReturnError:(void *)a3;
+- (void)_loadCustomClassifierWithDescriptor:(void *)descriptor error:(void *)error;
+- (void)_potentialLandmarksCustomClassifierAndReturnError:(void *)error;
 @end
 
 @implementation VNImageAnalyzerMultiDetector
@@ -87,9 +87,9 @@
   return self;
 }
 
-- (id)allCityNatureIdentifiersWithOptions:(id)a3 error:(id *)a4
+- (id)allCityNatureIdentifiersWithOptions:(id)options error:(id *)error
 {
-  [(VNImageAnalyzerMultiDetector *)&v6 _cityNatureCustomClassifierAndReturnError:a4];
+  [(VNImageAnalyzerMultiDetector *)&v6 _cityNatureCustomClassifierAndReturnError:error];
   if (v6)
   {
     v4 = _knownIdentifiersForCustomClassifier(*(v6 + 312), *(v6 + 320));
@@ -108,12 +108,12 @@
   return v4;
 }
 
-- (void)_cityNatureCustomClassifierAndReturnError:(void *)a3
+- (void)_cityNatureCustomClassifierAndReturnError:(void *)error
 {
   if (!a2)
   {
-    *a1 = 0;
-    a1[1] = 0;
+    *self = 0;
+    self[1] = 0;
     return;
   }
 
@@ -123,8 +123,8 @@
     goto LABEL_12;
   }
 
-  v7 = [*(a2 + 80) cityNatureCustomClassifierDescriptor];
-  [(VNImageAnalyzerMultiDetector *)&v12 _loadCustomClassifierWithDescriptor:a2 error:v7, a3];
+  cityNatureCustomClassifierDescriptor = [*(a2 + 80) cityNatureCustomClassifierDescriptor];
+  [(VNImageAnalyzerMultiDetector *)&v12 _loadCustomClassifierWithDescriptor:a2 error:cityNatureCustomClassifierDescriptor, error];
 
   v8 = v12;
   if (v12)
@@ -151,8 +151,8 @@
 
   else
   {
-    *a1 = 0;
-    a1[1] = 0;
+    *self = 0;
+    self[1] = 0;
     v9 = v13;
     if (!v13)
     {
@@ -170,41 +170,41 @@ LABEL_10:
   v5 = *(a2 + 248);
 LABEL_12:
   v11 = *(a2 + 256);
-  *a1 = v5;
-  a1[1] = v11;
+  *self = v5;
+  self[1] = v11;
   if (v11)
   {
     atomic_fetch_add_explicit((v11 + 8), 1uLL, memory_order_relaxed);
   }
 }
 
-- (void)_loadCustomClassifierWithDescriptor:(void *)a3 error:(void *)a4
+- (void)_loadCustomClassifierWithDescriptor:(void *)descriptor error:(void *)error
 {
   v112[20] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  descriptorCopy = descriptor;
+  if (descriptorCopy)
   {
-    v87 = v6;
-    v7 = [v6 modelFileURL];
-    v8 = [v7 VisionCoreFileSystemPathAndReturnError:a4];
+    v87 = descriptorCopy;
+    modelFileURL = [descriptorCopy modelFileURL];
+    v8 = [modelFileURL VisionCoreFileSystemPathAndReturnError:error];
 
     if (!v8)
     {
-      *a1 = 0;
-      a1[1] = 0;
+      *self = 0;
+      self[1] = 0;
 LABEL_206:
 
-      v6 = v87;
+      descriptorCopy = v87;
       goto LABEL_207;
     }
 
-    v9 = [v87 labelsFileURL];
-    v10 = [v9 VisionCoreFileSystemPathAndReturnError:a4];
+    labelsFileURL = [v87 labelsFileURL];
+    v10 = [labelsFileURL VisionCoreFileSystemPathAndReturnError:error];
 
     if (!v10)
     {
-      *a1 = 0;
-      a1[1] = 0;
+      *self = 0;
+      self[1] = 0;
 LABEL_205:
 
       goto LABEL_206;
@@ -212,18 +212,18 @@ LABEL_205:
 
     v79 = v10;
     [v87 inputBlobName];
-    v78 = v84 = a4;
-    v11 = [v87 outputBlobName];
+    v78 = v84 = error;
+    outputBlobName = [v87 outputBlobName];
     v12 = *(a2 + 64);
     v13 = *(a2 + 68);
     v14 = v8;
     v15 = v10;
     v16 = v78;
-    v82 = v11;
+    v82 = outputBlobName;
     v83 = v14;
     v80 = v15;
     v81 = v16;
-    v85 = [v14 lastPathComponent];
+    lastPathComponent = [v14 lastPathComponent];
     std::string::basic_string[abi:ne200100]<0>(&v96, [v14 UTF8String]);
     v17 = v16;
     std::string::basic_string[abi:ne200100]<0>(&v95, [v16 UTF8String]);
@@ -231,8 +231,8 @@ LABEL_205:
     std::string::basic_string[abi:ne200100]<0>(&v94, [v82 UTF8String]);
     v19 = v15;
     std::string::basic_string[abi:ne200100]<0>(&v93, [v15 UTF8String]);
-    v20 = v85;
-    std::string::basic_string[abi:ne200100]<0>(&v92, [v85 UTF8String]);
+    v20 = lastPathComponent;
+    std::string::basic_string[abi:ne200100]<0>(&v92, [lastPathComponent UTF8String]);
     std::string::basic_string[abi:ne200100]<0>(&v91, "");
     std::string::basic_string[abi:ne200100]<0>(&v90, "");
     memset(__p, 0, sizeof(__p));
@@ -1037,7 +1037,7 @@ LABEL_226:
           *v109 = 0;
           v89 = v33;
           std::unique_ptr<vision::mod::ImageAnalyzer_CustomClassifier>::~unique_ptr[abi:ne200100](v109);
-          *a1 = v33;
+          *self = v33;
           operator new();
         }
 
@@ -1060,28 +1060,28 @@ LABEL_202:
       *v84 = VNErrorForCVMLStatus(v34);
     }
 
-    *a1 = 0;
-    a1[1] = 0;
+    *self = 0;
+    self[1] = 0;
     std::unique_ptr<vision::mod::ImageAnalyzer_CustomClassifier>::~unique_ptr[abi:ne200100](&v89);
     vision::mod::ImageAnalyzer_CustomClassifierOptions::~ImageAnalyzer_CustomClassifierOptions(__p);
 
     goto LABEL_205;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [VNError errorForInvalidModelWithLocalizedDescription:@"custom classifier descriptor not provided"];
-    v6 = 0;
+    *error = [VNError errorForInvalidModelWithLocalizedDescription:@"custom classifier descriptor not provided"];
+    descriptorCopy = 0;
   }
 
-  *a1 = 0;
-  a1[1] = 0;
+  *self = 0;
+  self[1] = 0;
 LABEL_207:
 }
 
-- (id)allSignificantEventIdentifiersWithOptions:(id)a3 error:(id *)a4
+- (id)allSignificantEventIdentifiersWithOptions:(id)options error:(id *)error
 {
-  [(VNImageAnalyzerMultiDetector *)&v6 _VNdGg5skzXHSAENO6T3enHECustomClassifierForOriginatingRequestSpecifier:a4];
+  [(VNImageAnalyzerMultiDetector *)&v6 _VNdGg5skzXHSAENO6T3enHECustomClassifierForOriginatingRequestSpecifier:error];
   if (v6)
   {
     v4 = _knownIdentifiersForCustomClassifier(*(v6 + 312), *(v6 + 320));
@@ -1100,12 +1100,12 @@ LABEL_207:
   return v4;
 }
 
-- (void)_VNdGg5skzXHSAENO6T3enHECustomClassifierForOriginatingRequestSpecifier:(void *)a3
+- (void)_VNdGg5skzXHSAENO6T3enHECustomClassifierForOriginatingRequestSpecifier:(void *)specifier
 {
   if (!a2)
   {
-    *a1 = 0;
-    a1[1] = 0;
+    *self = 0;
+    self[1] = 0;
     return;
   }
 
@@ -1115,8 +1115,8 @@ LABEL_207:
     goto LABEL_12;
   }
 
-  v7 = [*(a2 + 80) VNdGg5skzXHSAENO6T3enHECustomClassifierDescriptor];
-  [(VNImageAnalyzerMultiDetector *)&v12 _loadCustomClassifierWithDescriptor:a2 error:v7, a3];
+  vNdGg5skzXHSAENO6T3enHECustomClassifierDescriptor = [*(a2 + 80) VNdGg5skzXHSAENO6T3enHECustomClassifierDescriptor];
+  [(VNImageAnalyzerMultiDetector *)&v12 _loadCustomClassifierWithDescriptor:a2 error:vNdGg5skzXHSAENO6T3enHECustomClassifierDescriptor, specifier];
 
   v8 = v12;
   if (v12)
@@ -1143,8 +1143,8 @@ LABEL_207:
 
   else
   {
-    *a1 = 0;
-    a1[1] = 0;
+    *self = 0;
+    self[1] = 0;
     v9 = v13;
     if (!v13)
     {
@@ -1162,17 +1162,17 @@ LABEL_10:
   v5 = *(a2 + 232);
 LABEL_12:
   v11 = *(a2 + 240);
-  *a1 = v5;
-  a1[1] = v11;
+  *self = v5;
+  self[1] = v11;
   if (v11)
   {
     atomic_fetch_add_explicit((v11 + 8), 1uLL, memory_order_relaxed);
   }
 }
 
-- (id)allVN5kJNH3eYuyaLxNpZr5Z7ziIdentifiersWithOptions:(id)a3 error:(id *)a4
+- (id)allVN5kJNH3eYuyaLxNpZr5Z7ziIdentifiersWithOptions:(id)options error:(id *)error
 {
-  [(VNImageAnalyzerMultiDetector *)&v6 _VN5kJNH3eYuyaLxNpZr5Z7ziCustomClassifierAndReturnError:a4];
+  [(VNImageAnalyzerMultiDetector *)&v6 _VN5kJNH3eYuyaLxNpZr5Z7ziCustomClassifierAndReturnError:error];
   if (v6)
   {
     v4 = _knownIdentifiersForCustomClassifier(*(v6 + 312), *(v6 + 320));
@@ -1191,12 +1191,12 @@ LABEL_12:
   return v4;
 }
 
-- (void)_VN5kJNH3eYuyaLxNpZr5Z7ziCustomClassifierAndReturnError:(void *)a3
+- (void)_VN5kJNH3eYuyaLxNpZr5Z7ziCustomClassifierAndReturnError:(void *)error
 {
   if (!a2)
   {
-    *a1 = 0;
-    a1[1] = 0;
+    *self = 0;
+    self[1] = 0;
     return;
   }
 
@@ -1206,8 +1206,8 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v7 = [*(a2 + 80) VN5kJNH3eYuyaLxNpZr5Z7ziCustomClassifierDescriptor];
-  [(VNImageAnalyzerMultiDetector *)&v12 _loadCustomClassifierWithDescriptor:a2 error:v7, a3];
+  vN5kJNH3eYuyaLxNpZr5Z7ziCustomClassifierDescriptor = [*(a2 + 80) VN5kJNH3eYuyaLxNpZr5Z7ziCustomClassifierDescriptor];
+  [(VNImageAnalyzerMultiDetector *)&v12 _loadCustomClassifierWithDescriptor:a2 error:vN5kJNH3eYuyaLxNpZr5Z7ziCustomClassifierDescriptor, error];
 
   v8 = v12;
   if (v12)
@@ -1234,8 +1234,8 @@ LABEL_12:
 
   else
   {
-    *a1 = 0;
-    a1[1] = 0;
+    *self = 0;
+    self[1] = 0;
     v9 = v13;
     if (!v13)
     {
@@ -1253,23 +1253,23 @@ LABEL_10:
   v5 = *(a2 + 216);
 LABEL_12:
   v11 = *(a2 + 224);
-  *a1 = v5;
-  a1[1] = v11;
+  *self = v5;
+  self[1] = v11;
   if (v11)
   {
     atomic_fetch_add_explicit((v11 + 8), 1uLL, memory_order_relaxed);
   }
 }
 
-- (id)allRecognizedObjectsIdentifiersWithOptions:(id)a3 error:(id *)a4
+- (id)allRecognizedObjectsIdentifiersWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNImageAnalyzerMultiDetectorOption_RecognizeObjectsConfiguration" inOptions:v6 error:a4];
+  optionsCopy = options;
+  v7 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNImageAnalyzerMultiDetectorOption_RecognizeObjectsConfiguration" inOptions:optionsCopy error:error];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 observationsRecipient];
-    v10 = [v9 originatingRequestSpecifier];
+    observationsRecipient = [v7 observationsRecipient];
+    originatingRequestSpecifier = [observationsRecipient originatingRequestSpecifier];
 
     v11 = std::__hash_table<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,std::vector<std::string>>,std::__unordered_map_hasher<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,std::vector<std::string>>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::__unordered_map_equal<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,std::vector<std::string>>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::allocator<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,std::vector<std::string>>>>::find<vision::mod::ImageAnalyzer_AnalysisType>(self->_imageAnalyzer.__ptr_ + 108, [v8 labelsListType]);
     if (!v11)
@@ -1281,7 +1281,7 @@ LABEL_12:
     v34 = 0;
     v35 = 0;
     std::vector<std::string>::__init_with_size[abi:ne200100]<std::string*,std::string*>(&v33, v11[3], v11[4], 0xAAAAAAAAAAAAAAABLL * ((v11[4] - v11[3]) >> 3));
-    if ([v10 specifiesRequestClass:objc_opt_class() withAnyRevision:{1, 3737841667, 0}])
+    if ([originatingRequestSpecifier specifiesRequestClass:objc_opt_class() withAnyRevision:{1, 3737841667, 0}])
     {
       v12 = v33;
       v13 = v34;
@@ -1391,7 +1391,7 @@ LABEL_29:
     }
 
 LABEL_30:
-    v23 = [v8 disallowedList];
+    disallowedList = [v8 disallowedList];
     v24 = objc_alloc(MEMORY[0x1E695DF70]);
     v20 = [v24 initWithCapacity:0xAAAAAAAAAAAAAAABLL * (v34 - v33)];
     v25 = v33;
@@ -1405,7 +1405,7 @@ LABEL_30:
       }
 
       v29 = [v27 initWithUTF8String:v28];
-      if (_isAcceptableClassificationIdentifier(v29, v23))
+      if (_isAcceptableClassificationIdentifier(v29, disallowedList))
       {
         [v20 addObject:v29];
       }
@@ -1423,10 +1423,10 @@ LABEL_30:
   return v20;
 }
 
-- (id)allJunkIdentifiersForOptions:(id)a3 error:(id *)a4
+- (id)allJunkIdentifiersForOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  [(VNImageAnalyzerMultiDetector *)&v15 _junkCustomClassifiersAndReturnError:a4];
+  optionsCopy = options;
+  [(VNImageAnalyzerMultiDetector *)&v15 _junkCustomClassifiersAndReturnError:error];
   v7 = v15;
   if (v15)
   {
@@ -1472,12 +1472,12 @@ LABEL_30:
   return v8;
 }
 
-- (void)_junkCustomClassifiersAndReturnError:(void *)a3
+- (void)_junkCustomClassifiersAndReturnError:(void *)error
 {
   if (!a2)
   {
-    *a1 = 0;
-    a1[1] = 0;
+    *self = 0;
+    self[1] = 0;
     return;
   }
 
@@ -1487,13 +1487,13 @@ LABEL_30:
     goto LABEL_13;
   }
 
-  v7 = [*(a2 + 80) junkLeafCustomClassifierDescriptor];
-  [(VNImageAnalyzerMultiDetector *)&v13 _loadCustomClassifierWithDescriptor:a2 error:v7, a3];
+  junkLeafCustomClassifierDescriptor = [*(a2 + 80) junkLeafCustomClassifierDescriptor];
+  [(VNImageAnalyzerMultiDetector *)&v13 _loadCustomClassifierWithDescriptor:a2 error:junkLeafCustomClassifierDescriptor, error];
 
   if (v13)
   {
-    v8 = [*(a2 + 80) junkHierarchicalCustomClassifierDescriptor];
-    [(VNImageAnalyzerMultiDetector *)&v11 _loadCustomClassifierWithDescriptor:a2 error:v8, a3];
+    junkHierarchicalCustomClassifierDescriptor = [*(a2 + 80) junkHierarchicalCustomClassifierDescriptor];
+    [(VNImageAnalyzerMultiDetector *)&v11 _loadCustomClassifierWithDescriptor:a2 error:junkHierarchicalCustomClassifierDescriptor, error];
 
     v9 = v11 != 0;
     if (v11)
@@ -1501,8 +1501,8 @@ LABEL_30:
       operator new();
     }
 
-    *a1 = 0;
-    a1[1] = 0;
+    *self = 0;
+    self[1] = 0;
     if (v12)
     {
       std::__shared_weak_count::__release_shared[abi:ne200100](v12);
@@ -1512,8 +1512,8 @@ LABEL_30:
   else
   {
     v9 = 0;
-    *a1 = 0;
-    a1[1] = 0;
+    *self = 0;
+    self[1] = 0;
   }
 
   if (v14)
@@ -1526,8 +1526,8 @@ LABEL_30:
     v5 = *(a2 + 160);
 LABEL_13:
     v10 = *(a2 + 168);
-    *a1 = v5;
-    a1[1] = v10;
+    *self = v5;
+    self[1] = v10;
     if (v10)
     {
       atomic_fetch_add_explicit((v10 + 8), 1uLL, memory_order_relaxed);
@@ -1535,16 +1535,16 @@ LABEL_13:
   }
 }
 
-- (id)sceneLabelOperationPointsForOriginatingRequestSpecifier:(id)a3 error:(id *)a4
+- (id)sceneLabelOperationPointsForOriginatingRequestSpecifier:(id)specifier error:(id *)error
 {
-  v4 = [(_VNImageAnalyzerMultiDetectorSceneOperationPointsCache *)self->_operationPointsCache sceneLabelOperationPointsForOriginatingRequestSpecifier:a3 error:a4];
+  v4 = [(_VNImageAnalyzerMultiDetectorSceneOperationPointsCache *)self->_operationPointsCache sceneLabelOperationPointsForOriginatingRequestSpecifier:specifier error:error];
 
   return v4;
 }
 
-- (id)allSceneIdentifiersWithOptions:(id)a3 error:(id *)a4
+- (id)allSceneIdentifiersWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v56 = 0;
   v57 = &v56;
@@ -1560,24 +1560,24 @@ LABEL_13:
   v8 = v7;
   v54 = v8;
   v9 = _Block_copy(aBlock);
-  v10 = [v6 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_SceneConfigurations"];
-  v11 = [v6 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_EntityNetConfiguration"];
+  v10 = [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_SceneConfigurations"];
+  v11 = [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_EntityNetConfiguration"];
   v12 = v11;
   if (v10)
   {
-    if (![VNValidationUtilities validateArray:v10 named:@"VNImageAnalyzerMultiDetectorOption_SceneConfigurations" hasElementsOfClass:objc_opt_class() requiredMinimumCount:1 allowedMaximumCount:1 error:a4])
+    if (![VNValidationUtilities validateArray:v10 named:@"VNImageAnalyzerMultiDetectorOption_SceneConfigurations" hasElementsOfClass:objc_opt_class() requiredMinimumCount:1 allowedMaximumCount:1 error:error])
     {
       v44 = 0;
       goto LABEL_52;
     }
 
     v49 = v12;
-    v48 = [v10 firstObject];
-    v13 = [v48 disallowedList];
+    firstObject = [v10 firstObject];
+    disallowedList = [firstObject disallowedList];
     v14 = v57[5];
-    v57[5] = v13;
+    v57[5] = disallowedList;
 
-    v47 = [v48 labelsListType];
+    labelsListType = [firstObject labelsListType];
     ptr = self->_defaultSceneClassificationHierarchicalModel.__ptr_;
     *__p = 0u;
     v51 = 0u;
@@ -1654,14 +1654,14 @@ LABEL_25:
     }
 
     v24 = self->_imageAnalyzer.__ptr_;
-    v25 = std::__hash_table<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,std::vector<std::string>>,std::__unordered_map_hasher<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,std::vector<std::string>>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::__unordered_map_equal<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,std::vector<std::string>>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::allocator<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,std::vector<std::string>>>>::find<vision::mod::ImageAnalyzer_AnalysisType>(v24 + 108, v47);
+    v25 = std::__hash_table<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,std::vector<std::string>>,std::__unordered_map_hasher<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,std::vector<std::string>>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::__unordered_map_equal<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,std::vector<std::string>>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::allocator<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,std::vector<std::string>>>>::find<vision::mod::ImageAnalyzer_AnalysisType>(v24 + 108, labelsListType);
     if (!v25)
     {
       std::__throw_out_of_range[abi:ne200100]("unordered_map::at: key not found");
     }
 
     v26 = v25;
-    DisallowedLabels = vision::mod::ImageAnalyzer::getDisallowedLabels(v24, v47);
+    DisallowedLabels = vision::mod::ImageAnalyzer::getDisallowedLabels(v24, labelsListType);
     v29 = v26[3];
     v28 = v26[4];
     if (v29 != v28)
@@ -1721,9 +1721,9 @@ LABEL_25:
     v49 = v11;
     if (v11)
     {
-      v36 = [v11 disallowedList];
+      disallowedList2 = [v11 disallowedList];
       v37 = v57[5];
-      v57[5] = v36;
+      v57[5] = disallowedList2;
 
       v38 = std::__hash_table<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,std::vector<std::string>>,std::__unordered_map_hasher<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,std::vector<std::string>>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::__unordered_map_equal<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,std::vector<std::string>>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::allocator<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,std::vector<std::string>>>>::find<vision::mod::ImageAnalyzer_AnalysisType>(self->_imageAnalyzer.__ptr_ + 108, [v49 labelsListType]);
       if (!v38)
@@ -1778,41 +1778,41 @@ void __69__VNImageAnalyzerMultiDetector_allSceneIdentifiersWithOptions_error___b
   return v3 != 0;
 }
 
-- (id)_processFullImagePixelBuffer:(const __CVBuffer *)a3 options:(id)a4 regionOfInterest:(CGRect)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)_processFullImagePixelBuffer:(const __CVBuffer *)buffer options:(id)options regionOfInterest:(CGRect)interest qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v55 = *MEMORY[0x1E69E9840];
-  v53 = a3;
-  v17 = a4;
-  v47 = a7;
-  v48 = [(VNDetector *)self validatedImageBufferFromOptions:v17 error:a8];
+  bufferCopy = buffer;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  v48 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   if (v48)
   {
-    v38 = [v17 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_SceneConfigurations"];
-    v37 = [v17 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_EntityNetConfiguration"];
-    v36 = [v17 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_SceneprintConfigurations"];
-    v35 = [v17 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_CompressedSceneprintConfiguration"];
-    v34 = [v17 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_AestheticsConfiguration"];
-    v39 = [v17 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_SaliencyAConfiguration"];
-    v40 = [v17 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_SaliencyOConfiguration"];
-    v41 = [v17 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_RecognizeObjectsConfiguration"];
-    v42 = [v17 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_VN1JC7R3k4455fKQz0dY1VhQConfiguration"];
-    v43 = [v17 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_ImageFingerprintsConfiguration"];
-    v44 = [v17 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_JunkConfiguration"];
-    v45 = [v17 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_VNVYvzEtX1JlUdu8xx5qhDIConfiguration"];
-    v46 = [v17 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_PotentialLandmarkConfiguration"];
-    v18 = [v17 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_VN5kJNH3eYuyaLxNpZr5Z7ziConfiguration"];
-    v19 = [v17 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_VN6Mb1ME89lyW3HpahkEygIGConfiguration"];
-    v20 = [v17 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_CityNatureGatingConfiguration"];
-    v21 = [v17 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorProcessingOption_TilingIsRequired"];
-    v22 = [v21 BOOLValue];
+    v38 = [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_SceneConfigurations"];
+    v37 = [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_EntityNetConfiguration"];
+    v36 = [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_SceneprintConfigurations"];
+    v35 = [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_CompressedSceneprintConfiguration"];
+    v34 = [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_AestheticsConfiguration"];
+    v39 = [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_SaliencyAConfiguration"];
+    v40 = [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_SaliencyOConfiguration"];
+    v41 = [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_RecognizeObjectsConfiguration"];
+    v42 = [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_VN1JC7R3k4455fKQz0dY1VhQConfiguration"];
+    v43 = [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_ImageFingerprintsConfiguration"];
+    v44 = [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_JunkConfiguration"];
+    v45 = [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_VNVYvzEtX1JlUdu8xx5qhDIConfiguration"];
+    v46 = [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_PotentialLandmarkConfiguration"];
+    v18 = [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_VN5kJNH3eYuyaLxNpZr5Z7ziConfiguration"];
+    v19 = [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_VN6Mb1ME89lyW3HpahkEygIGConfiguration"];
+    v20 = [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_CityNatureGatingConfiguration"];
+    v21 = [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorProcessingOption_TilingIsRequired"];
+    bOOLValue = [v21 BOOLValue];
 
-    v23 = [v48 width];
-    v24 = [v48 height];
-    if (v22)
+    width = [v48 width];
+    height = [v48 height];
+    if (bOOLValue)
     {
       v25 = 0;
     }
@@ -1822,15 +1822,15 @@ void __69__VNImageAnalyzerMultiDetector_allSceneIdentifiersWithOptions_error___b
       v25 = v38;
     }
 
-    v26 = [(VNImageAnalyzerMultiDetector *)self _observationsForScenes:v25 entityNet:v37 junk:v44 VNVYvzEtX1JlUdu8xx5qhDI:v45 landmark:v46 sceneprints:v36 compressedSceneprint:v35 fingerprints:v23 aesthetics:v24 saliencyA:x saliencyO:y recognizeObjects:width VN5kJNH3eYuyaLxNpZr5Z7zi:height VNdGg5skzXHSAENO6T3enHE:v43 cityNatureGating:v34 photosAdjustments:v39 pixelBuffer:v40 withOptions:v41 originalImageSize:v18 regionOfInterest:v19 qosClass:v20 warningRecorder:v42 error:&v53, v17, a6, v47, a8];
-    v27 = v26;
-    if (v26)
+    error = [(VNImageAnalyzerMultiDetector *)self _observationsForScenes:v25 entityNet:v37 junk:v44 VNVYvzEtX1JlUdu8xx5qhDI:v45 landmark:v46 sceneprints:v36 compressedSceneprint:v35 fingerprints:width aesthetics:height saliencyA:x saliencyO:y recognizeObjects:width VN5kJNH3eYuyaLxNpZr5Z7zi:height VNdGg5skzXHSAENO6T3enHE:v43 cityNatureGating:v34 photosAdjustments:v39 pixelBuffer:v40 withOptions:v41 originalImageSize:v18 regionOfInterest:v19 qosClass:v20 warningRecorder:v42 error:&bufferCopy, optionsCopy, class, recorderCopy, error];
+    v27 = error;
+    if (error)
     {
       v51 = 0u;
       v52 = 0u;
       v49 = 0u;
       v50 = 0u;
-      v28 = v26;
+      v28 = error;
       v29 = [v28 countByEnumeratingWithState:&v49 objects:v54 count:16];
       if (v29)
       {
@@ -1844,7 +1844,7 @@ void __69__VNImageAnalyzerMultiDetector_allSceneIdentifiersWithOptions_error___b
               objc_enumerationMutation(v28);
             }
 
-            [(VNDetector *)self recordImageCropQuickLookInfoFromOptions:v17 toObservation:*(*(&v49 + 1) + 8 * i)];
+            [(VNDetector *)self recordImageCropQuickLookInfoFromOptions:optionsCopy toObservation:*(*(&v49 + 1) + 8 * i)];
           }
 
           v29 = [v28 countByEnumeratingWithState:&v49 objects:v54 count:16];
@@ -1870,68 +1870,68 @@ void __69__VNImageAnalyzerMultiDetector_allSceneIdentifiersWithOptions_error___b
   return v32;
 }
 
-- (id)_observationsForScenes:(void *)a3 entityNet:(void *)a4 junk:(void *)a5 VNVYvzEtX1JlUdu8xx5qhDI:(void *)a6 landmark:(void *)a7 sceneprints:(void *)a8 compressedSceneprint:(double)a9 fingerprints:(double)a10 aesthetics:(double)a11 saliencyA:(double)a12 saliencyO:(double)a13 recognizeObjects:(double)a14 VN5kJNH3eYuyaLxNpZr5Z7zi:(void *)a15 VNdGg5skzXHSAENO6T3enHE:(void *)a16 cityNatureGating:(void *)a17 photosAdjustments:(void *)a18 pixelBuffer:(void *)a19 withOptions:(void *)a20 originalImageSize:(void *)a21 regionOfInterest:(void *)a22 qosClass:(void *)a23 warningRecorder:(uint64_t)a24 error:(void *)a25
+- (id)_observationsForScenes:(void *)scenes entityNet:(void *)net junk:(void *)junk VNVYvzEtX1JlUdu8xx5qhDI:(void *)i landmark:(void *)landmark sceneprints:(void *)sceneprints compressedSceneprint:(double)sceneprint fingerprints:(double)self0 aesthetics:(double)self1 saliencyA:(double)self2 saliencyO:(double)self3 recognizeObjects:(double)self4 VN5kJNH3eYuyaLxNpZr5Z7zi:(void *)self5 VNdGg5skzXHSAENO6T3enHE:(void *)self6 cityNatureGating:(void *)self7 photosAdjustments:(void *)self8 pixelBuffer:(void *)self9 withOptions:(void *)options originalImageSize:(void *)size regionOfInterest:(void *)interest qosClass:(void *)class warningRecorder:(uint64_t)recorder error:(void *)error
 {
   v321 = *MEMORY[0x1E69E9840];
   v261 = a2;
-  v260 = a3;
-  v259 = a4;
-  v258 = a5;
-  v257 = a6;
-  v262 = a7;
-  v34 = a8;
-  v35 = a15;
-  v36 = a16;
-  v37 = a17;
-  v38 = a18;
-  v39 = a19;
-  v40 = a20;
-  v41 = a21;
-  v42 = a22;
-  v43 = a23;
-  v254 = a25;
+  scenesCopy = scenes;
+  netCopy = net;
+  junkCopy = junk;
+  iCopy = i;
+  landmarkCopy = landmark;
+  sceneprintsCopy = sceneprints;
+  z7ziCopy = z7zi;
+  eCopy = e;
+  gatingCopy = gating;
+  adjustmentsCopy = adjustments;
+  bufferCopy = buffer;
+  optionsCopy = options;
+  sizeCopy = size;
+  interestCopy = interest;
+  classCopy = class;
+  errorCopy = error;
   v247 = a27;
-  v248 = v38;
-  v255 = v35;
-  v256 = v34;
-  v249 = v37;
-  v250 = v36;
-  v245 = v40;
-  v246 = v39;
-  v243 = v42;
-  v244 = v41;
-  v242 = v43;
-  if (!a1)
+  v248 = adjustmentsCopy;
+  v255 = z7ziCopy;
+  v256 = sceneprintsCopy;
+  v249 = gatingCopy;
+  v250 = eCopy;
+  v245 = optionsCopy;
+  v246 = bufferCopy;
+  v243 = interestCopy;
+  v244 = sizeCopy;
+  v242 = classCopy;
+  if (!self)
   {
     goto LABEL_55;
   }
 
-  v44 = [VNImageAnalyzerMultiDetector _analysisTypeForScenes:v261 entityNet:v260 junk:v259 VNVYvzEtX1JlUdu8xx5qhDI:v258 landmark:v257 sceneprints:v262 compressedSceneprint:v34 fingerprints:v35 aesthetics:v36 saliencyA:v37 saliencyO:v38 recognizeObjects:v39 VN5kJNH3eYuyaLxNpZr5Z7zi:v40 VNdGg5skzXHSAENO6T3enHE:v41 cityNatureGating:v42 photosAdjustments:v43];
+  v44 = [VNImageAnalyzerMultiDetector _analysisTypeForScenes:v261 entityNet:scenesCopy junk:netCopy VNVYvzEtX1JlUdu8xx5qhDI:junkCopy landmark:iCopy sceneprints:landmarkCopy compressedSceneprint:sceneprintsCopy fingerprints:z7ziCopy aesthetics:eCopy saliencyA:gatingCopy saliencyO:adjustmentsCopy recognizeObjects:bufferCopy VN5kJNH3eYuyaLxNpZr5Z7zi:optionsCopy VNdGg5skzXHSAENO6T3enHE:sizeCopy cityNatureGating:interestCopy photosAdjustments:classCopy];
   if (!v44)
   {
-    v86 = MEMORY[0x1E695E0F0];
+    fingerprints = MEMORY[0x1E695E0F0];
     goto LABEL_291;
   }
 
-  if (![(VNImageAnalyzerMultiDetector *)a1 _performAnalysis:v44 pixelBuffer:a24 error:a28])
+  if (![(VNImageAnalyzerMultiDetector *)self _performAnalysis:v44 pixelBuffer:recorder error:a28])
   {
 LABEL_55:
-    v86 = 0;
+    fingerprints = 0;
     goto LABEL_291;
   }
 
   v232 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v45 = [v262 count];
-  if (!v34 && !v45)
+  v45 = [landmarkCopy count];
+  if (!sceneprintsCopy && !v45)
   {
     goto LABEL_63;
   }
 
-  v46 = v262;
-  v224 = v34;
-  v222 = v254;
+  v46 = landmarkCopy;
+  v224 = sceneprintsCopy;
+  v222 = errorCopy;
   v251 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  vision::mod::ImageAnalyzer::getSceneRepresentation(&v317, *(a1 + 112));
+  vision::mod::ImageAnalyzer::getSceneRepresentation(&v317, *(self + 112));
   vision::mod::ImageAnalyzer_Tensor1D<float>::getVectorFromTensor(&__p, &v317);
   vision::mod::ImageAnalyzer_Tensor1D<float>::~ImageAnalyzer_Tensor1D(&v317);
   memset(v312, 0, sizeof(v312));
@@ -1953,10 +1953,10 @@ LABEL_55:
         }
 
         v49 = *(v312[1] + 8 * i);
-        v263 = [v49 observationsRecipient];
-        v268 = [v263 originatingRequestSpecifier];
-        [v268 requestClassCode];
-        [v268 requestRevision];
+        observationsRecipient = [v49 observationsRecipient];
+        originatingRequestSpecifier = [observationsRecipient originatingRequestSpecifier];
+        [originatingRequestSpecifier requestClassCode];
+        [originatingRequestSpecifier requestRevision];
         kdebug_trace();
         v50 = v302;
         v51 = __p;
@@ -1970,9 +1970,9 @@ LABEL_55:
         v54 = objc_alloc_init(MEMORY[0x1E695DF70]);
         if ([v53 length])
         {
-          v55 = [v49 includeLabelsAndConfidences];
+          includeLabelsAndConfidences = [v49 includeLabelsAndConfidences];
           v56 = MEMORY[0x1E695E0F8];
-          if (v55)
+          if (includeLabelsAndConfidences)
           {
             [(VNImageAnalyzerMultiDetector *)&v308 _lastAnalysisSceneClassifications];
             v57 = objc_alloc(MEMORY[0x1E695DF90]);
@@ -2028,7 +2028,7 @@ LABEL_55:
             }
           }
 
-          v68 = [*(a1 + 80) VNSceneprintFromData:v53 labelsAndConfidences:v56 originatingRequestSpecifier:v268 error:a28];
+          v68 = [*(self + 80) VNSceneprintFromData:v53 labelsAndConfidences:v56 originatingRequestSpecifier:originatingRequestSpecifier error:a28];
           if (!v68)
           {
 
@@ -2039,13 +2039,13 @@ LABEL_57:
           v69 = [VNSceneObservation alloc];
           v315[0] = v68;
           v70 = [MEMORY[0x1E695DEC8] arrayWithObjects:v315 count:1];
-          v71 = [(VNSceneObservation *)v69 initWithOriginatingRequestSpecifier:v268 sceneprints:v70];
+          v71 = [(VNSceneObservation *)v69 initWithOriginatingRequestSpecifier:originatingRequestSpecifier sceneprints:v70];
 
           [v54 addObject:v71];
         }
 
         kdebug_trace();
-        [v263 receiveObservations:v54];
+        [observationsRecipient receiveObservations:v54];
         [v251 addObjectsFromArray:v54];
       }
 
@@ -2061,22 +2061,22 @@ LABEL_57:
 
   if (v224)
   {
-    v72 = [v224 observationsRecipient];
-    v73 = [v72 originatingRequestSpecifier];
-    [v73 requestClassCode];
-    v74 = [v73 requestRevision];
+    observationsRecipient2 = [v224 observationsRecipient];
+    originatingRequestSpecifier2 = [observationsRecipient2 originatingRequestSpecifier];
+    [originatingRequestSpecifier2 requestClassCode];
+    requestRevision = [originatingRequestSpecifier2 requestRevision];
     kdebug_trace();
-    if (v74 != 3737841666)
+    if (requestRevision != 3737841666)
     {
       if (a28)
       {
-        *a28 = [VNError errorForUnsupportedRevision:v74 ofRequestClass:objc_opt_class()];
+        *a28 = [VNError errorForUnsupportedRevision:requestRevision ofRequestClass:objc_opt_class()];
       }
 
       goto LABEL_322;
     }
 
-    v75 = *(a1 + 176);
+    v75 = *(self + 176);
     if (v75)
     {
 LABEL_317:
@@ -2093,8 +2093,8 @@ LABEL_317:
       goto LABEL_322;
     }
 
-    v76 = [*(a1 + 80) pca256FileURL];
-    v77 = [v76 VisionCoreFileSystemPathAndReturnError:0];
+    pca256FileURL = [*(self + 80) pca256FileURL];
+    v77 = [pca256FileURL VisionCoreFileSystemPathAndReturnError:0];
     v78 = v77;
     if (!v77)
     {
@@ -2107,14 +2107,14 @@ LABEL_317:
       v81 = 0;
 LABEL_314:
 
-      v210 = *(a1 + 176);
-      *(a1 + 176) = v81;
+      v210 = *(self + 176);
+      *(self + 176) = v81;
       if (v210)
       {
         std::default_delete<vision::mod::ImageAnalyzer_PCA>::operator()[abi:ne200100](v210);
       }
 
-      v75 = *(a1 + 176);
+      v75 = *(self + 176);
       if (v75)
       {
         goto LABEL_317;
@@ -2123,7 +2123,7 @@ LABEL_314:
 LABEL_322:
 
 LABEL_58:
-      v86 = 0;
+      fingerprints = 0;
       goto LABEL_59;
     }
 
@@ -2269,7 +2269,7 @@ LABEL_301:
     goto LABEL_304;
   }
 
-  v86 = v251;
+  fingerprints = v251;
 LABEL_59:
   if (__p)
   {
@@ -2277,23 +2277,23 @@ LABEL_59:
     operator delete(__p);
   }
 
-  if (!v86)
+  if (!fingerprints)
   {
     goto LABEL_290;
   }
 
-  [v232 addObjectsFromArray:v86];
+  [v232 addObjectsFromArray:fingerprints];
 
 LABEL_63:
   if (v255)
   {
     [v255 observationsRecipient];
-    v264 = [objc_claimAutoreleasedReturnValue() originatingRequestSpecifier];
-    [v264 requestClassCode];
-    [v264 requestRevision];
+    originatingRequestSpecifier3 = [objc_claimAutoreleasedReturnValue() originatingRequestSpecifier];
+    [originatingRequestSpecifier3 requestClassCode];
+    [originatingRequestSpecifier3 requestRevision];
     kdebug_trace();
     memset(&v308, 0, sizeof(v308));
-    v87 = *(a1 + 112);
+    v87 = *(self + 112);
     LODWORD(v306[0]) = 1024;
     v312[0] = v306;
     if (*(std::__hash_table<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,BOOL>,std::__unordered_map_hasher<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,BOOL>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::__unordered_map_equal<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,BOOL>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::allocator<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,BOOL>>>::__emplace_unique_key_args<vision::mod::ImageAnalyzer_AnalysisType,std::piecewise_construct_t const&,std::tuple<vision::mod::ImageAnalyzer_AnalysisType&&>,std::tuple<>>((v87 + 824), 0x400u) + 20))
@@ -2335,13 +2335,13 @@ LABEL_63:
           }
 
           v93 = *(v312[1] + 8 * j);
-          v94 = [v93 observationsRecipient];
-          v95 = [v94 originatingRequestSpecifier];
-          [v95 requestClassCode];
-          [v95 requestRevision];
+          observationsRecipient3 = [v93 observationsRecipient];
+          originatingRequestSpecifier4 = [observationsRecipient3 originatingRequestSpecifier];
+          [originatingRequestSpecifier4 requestClassCode];
+          [originatingRequestSpecifier4 requestRevision];
           kdebug_trace();
           v96 = objc_alloc_init(MEMORY[0x1E695DF70]);
-          if (([(VNImageAnalyzerMultiDetector *)a1 _populateLeafSceneObservations:v96 hierarchySceneObservations:v96 fromLastAnalysisForSceneConfiguration:v93 error:a28]& 1) == 0)
+          if (([(VNImageAnalyzerMultiDetector *)self _populateLeafSceneObservations:v96 hierarchySceneObservations:v96 fromLastAnalysisForSceneConfiguration:v93 error:a28]& 1) == 0)
           {
 
             v100 = 0;
@@ -2352,8 +2352,8 @@ LABEL_63:
           [v96 sortWithOptions:16 usingComparator:&__block_literal_global_128];
 
           kdebug_trace();
-          v98 = [v93 observationsRecipient];
-          [v98 receiveObservations:v96];
+          observationsRecipient4 = [v93 observationsRecipient];
+          [observationsRecipient4 receiveObservations:v96];
 
           if (v90)
           {
@@ -2390,25 +2390,25 @@ LABEL_80:
     [v232 addObjectsFromArray:v100];
   }
 
-  if (v260)
+  if (scenesCopy)
   {
-    v101 = v260;
-    v252 = [v101 observationsRecipient];
-    v266 = [v252 originatingRequestSpecifier];
-    [v266 requestClassCode];
-    [v266 requestRevision];
+    v101 = scenesCopy;
+    observationsRecipient5 = [v101 observationsRecipient];
+    originatingRequestSpecifier5 = [observationsRecipient5 originatingRequestSpecifier];
+    [originatingRequestSpecifier5 requestClassCode];
+    [originatingRequestSpecifier5 requestRevision];
     kdebug_trace();
-    v102 = v266;
-    v103 = [a1 sceneLabelOperationPointsForOriginatingRequestSpecifier:v266 error:a28];
+    v102 = originatingRequestSpecifier5;
+    v103 = [self sceneLabelOperationPointsForOriginatingRequestSpecifier:originatingRequestSpecifier5 error:a28];
     if (v103)
     {
-      v270 = [v101 disallowedList];
+      disallowedList = [v101 disallowedList];
       v239 = v101;
       [v101 minimumConfidence];
       v105 = v104;
-      v106 = [v101 maximumLabels];
-      v107 = *(a1 + 112);
-      v306[0] = v106;
+      maximumLabels = [v101 maximumLabels];
+      v107 = *(self + 112);
+      v306[0] = maximumLabels;
       memset(v312, 0, sizeof(v312));
       LODWORD(v313) = 1065353216;
       LODWORD(v309.__r_.__value_.__l.__data_) = 4096;
@@ -2437,8 +2437,8 @@ LABEL_80:
         vision::mod::ImageAnalyzer_PostProcessor::process(v110 + 3, &v309, &v317);
       }
 
-      v111 = *(a1 + 128);
-      for (k = *(a1 + 136); v111 != k; ++v111)
+      v111 = *(self + 128);
+      for (k = *(self + 136); v111 != k; ++v111)
       {
         v113 = *v111;
         if (v109)
@@ -2468,7 +2468,7 @@ LABEL_80:
       }
 
       v101 = v239;
-      v102 = v266;
+      v102 = originatingRequestSpecifier5;
       if (v309.__r_.__value_.__r.__words[0])
       {
         v309.__r_.__value_.__l.__size_ = v309.__r_.__value_.__r.__words[0];
@@ -2492,7 +2492,7 @@ LABEL_80:
 
           v122 = [v120 initWithUTF8String:v121];
           v123 = v306[0] == 0x7FFFFFFFFFFFFFFFLL ? 0 : v306;
-          v124 = [(VNImageAnalyzerMultiDetector *)a1 _processSceneIdentifier:v122 withConfidence:v270 disallowedList:v103 operationPoints:v266 originatingRequestSpecifier:v117 observationsArray:v123 optionalTopN:a28 error:v119];
+          v124 = [(VNImageAnalyzerMultiDetector *)self _processSceneIdentifier:v122 withConfidence:disallowedList disallowedList:v103 operationPoints:originatingRequestSpecifier5 originatingRequestSpecifier:v117 observationsArray:v123 optionalTopN:a28 error:v119];
 
           if (!v124)
           {
@@ -2516,7 +2516,7 @@ LABEL_106:
         [v117 sortWithOptions:16 usingComparator:&__block_literal_global_128];
 
         kdebug_trace();
-        [v252 receiveObservations:v117];
+        [observationsRecipient5 receiveObservations:v117];
         v126 = v117;
       }
 
@@ -2542,19 +2542,19 @@ LABEL_106:
     [v232 addObjectsFromArray:v126];
   }
 
-  if (v259)
+  if (netCopy)
   {
-    v236 = v259;
-    v240 = [v236 observationsRecipient];
-    v128 = [v240 originatingRequestSpecifier];
-    [v128 requestClassCode];
-    [v128 requestRevision];
+    v236 = netCopy;
+    observationsRecipient6 = [v236 observationsRecipient];
+    originatingRequestSpecifier6 = [observationsRecipient6 originatingRequestSpecifier];
+    [originatingRequestSpecifier6 requestClassCode];
+    [originatingRequestSpecifier6 requestRevision];
     kdebug_trace();
-    [(VNImageAnalyzerMultiDetector *)&v309 _junkCustomClassifiersAndReturnError:a1, a28];
+    [(VNImageAnalyzerMultiDetector *)&v309 _junkCustomClassifiersAndReturnError:self, a28];
     v129 = v309.__r_.__value_.__r.__words[0];
     if (v309.__r_.__value_.__r.__words[0])
     {
-      vision::mod::ImageAnalyzer::getSceneRepresentation(&v317, *(a1 + 112));
+      vision::mod::ImageAnalyzer::getSceneRepresentation(&v317, *(self + 112));
       v130 = objc_alloc_init(MEMORY[0x1E695DF70]);
       if (*v129 != v129[1])
       {
@@ -2572,7 +2572,7 @@ LABEL_106:
       [v130 sortWithOptions:16 usingComparator:&__block_literal_global_128];
 
       kdebug_trace();
-      [v240 receiveObservations:v130];
+      [observationsRecipient6 receiveObservations:v130];
       v133 = v130;
 
       vision::mod::ImageAnalyzer_Tensor1D<float>::~ImageAnalyzer_Tensor1D(&v317);
@@ -2596,13 +2596,13 @@ LABEL_106:
     [v232 addObjectsFromArray:v133];
   }
 
-  if (v258)
+  if (junkCopy)
   {
-    v134 = v258;
-    [(VNImageAnalyzerMultiDetector *)v312 _VNVYvzEtX1JlUdu8xx5qhDICustomClassifierAndReturnError:a1, a28];
+    v134 = junkCopy;
+    [(VNImageAnalyzerMultiDetector *)v312 _VNVYvzEtX1JlUdu8xx5qhDICustomClassifierAndReturnError:self, a28];
     if (v312[0])
     {
-      vision::mod::ImageAnalyzer::getSceneRepresentation(&v317, *(a1 + 112));
+      vision::mod::ImageAnalyzer::getSceneRepresentation(&v317, *(self + 112));
       v309.__r_.__value_.__r.__words[0] = 0;
       vision::mod::ImageAnalyzer_CustomClassifier::performInference();
     }
@@ -2615,17 +2615,17 @@ LABEL_106:
 LABEL_134:
 
 LABEL_289:
-    v86 = 0;
+    fingerprints = 0;
     goto LABEL_290;
   }
 
-  if (v257)
+  if (iCopy)
   {
-    v134 = v257;
-    [(VNImageAnalyzerMultiDetector *)&v309 _potentialLandmarksCustomClassifierAndReturnError:a1, a28];
+    v134 = iCopy;
+    [(VNImageAnalyzerMultiDetector *)&v309 _potentialLandmarksCustomClassifierAndReturnError:self, a28];
     if (v309.__r_.__value_.__r.__words[0])
     {
-      vision::mod::ImageAnalyzer::getSceneRepresentation(&v317, *(a1 + 112));
+      vision::mod::ImageAnalyzer::getSceneRepresentation(&v317, *(self + 112));
       v308.__begin_ = 0;
       vision::mod::ImageAnalyzer_CustomClassifier::performInference();
     }
@@ -2641,12 +2641,12 @@ LABEL_289:
   if (v250)
   {
     v271 = v250;
-    v135 = [v271 observationsRecipient];
-    v136 = [v135 originatingRequestSpecifier];
-    [v136 requestClassCode];
-    [v136 requestRevision];
+    observationsRecipient7 = [v271 observationsRecipient];
+    originatingRequestSpecifier7 = [observationsRecipient7 originatingRequestSpecifier];
+    [originatingRequestSpecifier7 requestClassCode];
+    [originatingRequestSpecifier7 requestRevision];
     kdebug_trace();
-    v137 = *(a1 + 112);
+    v137 = *(self + 112);
     LODWORD(v312[0]) = 8;
     v317.i64[0] = v312;
     if (*(std::__hash_table<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,BOOL>,std::__unordered_map_hasher<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,BOOL>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::__unordered_map_equal<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,BOOL>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::allocator<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,BOOL>>>::__emplace_unique_key_args<vision::mod::ImageAnalyzer_AnalysisType,std::piecewise_construct_t const&,std::tuple<vision::mod::ImageAnalyzer_AnalysisType&&>,std::tuple<>>((v137 + 824), 8u) + 20) != 1)
@@ -2662,7 +2662,7 @@ LABEL_289:
     vision::mod::ImageAnalyzer_Tensor1D<float>::ImageAnalyzer_Tensor1D(&v317, (v138 + 3), 0);
     v140 = vision::mod::ImageAnalyzer_Tensor1D<float>::operator[](&v317, 0, v139);
     vision::mod::ImageAnalyzer_Tensor1D<float>::~ImageAnalyzer_Tensor1D(&v317);
-    v141 = *(a1 + 112);
+    v141 = *(self + 112);
     memset(v312, 0, sizeof(v312));
     LODWORD(v313) = 1065353216;
     LODWORD(v309.__r_.__value_.__l.__data_) = 4;
@@ -3004,7 +3004,7 @@ LABEL_289:
     LODWORD(v195) = v157;
     LODWORD(v196) = v159;
     LODWORD(v197) = v161;
-    v199 = [VNImageAestheticsObservation observationForOriginatingRequestSpecifier:v136 overallAestheticScore:a28 wellFramedSubjectScore:v191 wellChosenBackgroundScore:v192 tastefullyBlurredScore:v193 sharplyFocusedSubjectScore:v194 wellTimedShotScore:v195 pleasantLightingScore:v196 pleasantReflectionsScore:v197 harmoniousColorScore:v198 livelyColorScore:__PAIR64__(v253 pleasantSymmetryScore:v267) pleasantPatternScore:__PAIR64__(v237 immersivenessScore:v241) pleasantPerspectiveScore:__PAIR64__(v225 pleasantPostProcessingScore:obja) noiseScore:__PAIR64__(v221 failureScore:v223) pleasantCompositionScore:__PAIR64__(v219 interestingSubjectScore:v220) intrusiveObjectPresenceScore:__PAIR64__(v187 pleasantCameraTiltScore:v218) lowKeyLightingScore:v215 error:?];
+    v199 = [VNImageAestheticsObservation observationForOriginatingRequestSpecifier:originatingRequestSpecifier7 overallAestheticScore:a28 wellFramedSubjectScore:v191 wellChosenBackgroundScore:v192 tastefullyBlurredScore:v193 sharplyFocusedSubjectScore:v194 wellTimedShotScore:v195 pleasantLightingScore:v196 pleasantReflectionsScore:v197 harmoniousColorScore:v198 livelyColorScore:__PAIR64__(v253 pleasantSymmetryScore:v267) pleasantPatternScore:__PAIR64__(v237 immersivenessScore:v241) pleasantPerspectiveScore:__PAIR64__(v225 pleasantPostProcessingScore:obja) noiseScore:__PAIR64__(v221 failureScore:v223) pleasantCompositionScore:__PAIR64__(v219 interestingSubjectScore:v220) intrusiveObjectPresenceScore:__PAIR64__(v187 pleasantCameraTiltScore:v218) lowKeyLightingScore:v215 error:?];
     if (v274 < 0)
     {
       operator delete(v273[0]);
@@ -3115,7 +3115,7 @@ LABEL_289:
       kdebug_trace();
       v317.i64[0] = v199;
       v200 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v317 count:1];
-      [v135 receiveObservations:v200];
+      [observationsRecipient7 receiveObservations:v200];
       v201 = v200;
     }
 
@@ -3143,10 +3143,10 @@ LABEL_289:
   if (v249)
   {
     v203 = v249;
-    v204 = v254;
+    v204 = errorCopy;
     v205 = v247;
-    vision::mod::ImageAnalyzer::getSceneSaliency(&v317, *(a1 + 112));
-    v206 = [(VNImageAnalyzerMultiDetector *)a11 _processSaliencyTensor:a12 regionOfInterest:a13 originalImageSize:a14 options:a9 saliencyConfiguration:a10 saliencyGeneratorType:a1 startCode:&v317 finishCode:v204 qosClass:v203 warningRecorder:@"VNAttentionBasedSaliencyHeatmapBoundingBoxGeneratorType" error:723845552, 723845556, a26, v205, a28];
+    vision::mod::ImageAnalyzer::getSceneSaliency(&v317, *(self + 112));
+    v206 = [(VNImageAnalyzerMultiDetector *)aesthetics _processSaliencyTensor:a regionOfInterest:o originalImageSize:objects options:sceneprint saliencyConfiguration:fingerprints saliencyGeneratorType:self startCode:&v317 finishCode:v204 qosClass:v203 warningRecorder:@"VNAttentionBasedSaliencyHeatmapBoundingBoxGeneratorType" error:723845552, 723845556, a26, v205, a28];
     free(v319);
     free(v320);
 
@@ -3160,70 +3160,70 @@ LABEL_289:
 
   if (v248)
   {
-    v86 = [(VNImageAnalyzerMultiDetector *)a1 _processLastAnalysisForSaliencyOConfiguration:v248 regionOfInterest:v254 originalImageSize:a26 options:v247 qosClass:a28 warningRecorder:a11 error:a12, a13, a14, a9, a10];
-    if (!v86)
+    fingerprints = [(VNImageAnalyzerMultiDetector *)self _processLastAnalysisForSaliencyOConfiguration:v248 regionOfInterest:errorCopy originalImageSize:a26 options:v247 qosClass:a28 warningRecorder:aesthetics error:a, o, objects, sceneprint, fingerprints];
+    if (!fingerprints)
     {
       goto LABEL_290;
     }
 
-    [v232 addObjectsFromArray:v86];
+    [v232 addObjectsFromArray:fingerprints];
   }
 
   if (v246)
   {
-    v86 = [VNImageAnalyzerMultiDetector _processLastAnalysisForRecognizeObjectsConfiguration:a1 error:v246];
-    if (!v86)
+    fingerprints = [VNImageAnalyzerMultiDetector _processLastAnalysisForRecognizeObjectsConfiguration:self error:v246];
+    if (!fingerprints)
     {
       goto LABEL_290;
     }
 
-    [v232 addObjectsFromArray:v86];
+    [v232 addObjectsFromArray:fingerprints];
   }
 
   if (v245)
   {
-    v86 = [(VNImageAnalyzerMultiDetector *)a1 _processLastAnalysisForVN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:v245 error:a28];
-    if (!v86)
+    fingerprints = [(VNImageAnalyzerMultiDetector *)self _processLastAnalysisForVN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:v245 error:a28];
+    if (!fingerprints)
     {
       goto LABEL_290;
     }
 
-    [v232 addObjectsFromArray:v86];
+    [v232 addObjectsFromArray:fingerprints];
   }
 
   if (v244)
   {
-    v86 = [(VNImageAnalyzerMultiDetector *)a1 _processLastAnalysisForSignificantEventConfiguration:v244 error:a28];
-    if (!v86)
+    fingerprints = [(VNImageAnalyzerMultiDetector *)self _processLastAnalysisForSignificantEventConfiguration:v244 error:a28];
+    if (!fingerprints)
     {
       goto LABEL_290;
     }
 
-    [v232 addObjectsFromArray:v86];
+    [v232 addObjectsFromArray:fingerprints];
   }
 
   if (v243)
   {
-    v86 = [(VNImageAnalyzerMultiDetector *)a1 _processLastAnalysisForCityNatureConfiguration:v243 error:a28];
-    if (!v86)
+    fingerprints = [(VNImageAnalyzerMultiDetector *)self _processLastAnalysisForCityNatureConfiguration:v243 error:a28];
+    if (!fingerprints)
     {
       goto LABEL_290;
     }
 
-    [v232 addObjectsFromArray:v86];
+    [v232 addObjectsFromArray:fingerprints];
   }
 
   if (!v242)
   {
 LABEL_288:
-    v86 = v232;
+    fingerprints = v232;
     goto LABEL_290;
   }
 
-  v86 = [(VNImageAnalyzerMultiDetector *)a1 _processLastAnalysisForPhotosAdjustmentsConfiguration:v242 error:a28];
-  if (v86)
+  fingerprints = [(VNImageAnalyzerMultiDetector *)self _processLastAnalysisForPhotosAdjustmentsConfiguration:v242 error:a28];
+  if (fingerprints)
   {
-    [v232 addObjectsFromArray:v86];
+    [v232 addObjectsFromArray:fingerprints];
 
     goto LABEL_288;
   }
@@ -3232,33 +3232,33 @@ LABEL_290:
 
 LABEL_291:
 
-  return v86;
+  return fingerprints;
 }
 
-- (uint64_t)_analysisTypeForScenes:(void *)a1 entityNet:(void *)a2 junk:(void *)a3 VNVYvzEtX1JlUdu8xx5qhDI:(void *)a4 landmark:(void *)a5 sceneprints:(void *)a6 compressedSceneprint:(void *)a7 fingerprints:(void *)a8 aesthetics:(void *)a9 saliencyA:(void *)a10 saliencyO:(void *)a11 recognizeObjects:(void *)a12 VN5kJNH3eYuyaLxNpZr5Z7zi:(void *)a13 VNdGg5skzXHSAENO6T3enHE:(void *)a14 cityNatureGating:(void *)a15 photosAdjustments:(void *)a16
+- (uint64_t)_analysisTypeForScenes:(void *)scenes entityNet:(void *)net junk:(void *)junk VNVYvzEtX1JlUdu8xx5qhDI:(void *)i landmark:(void *)landmark sceneprints:(void *)sceneprints compressedSceneprint:(void *)sceneprint fingerprints:(void *)fingerprints aesthetics:(void *)aesthetics saliencyA:(void *)scenes0 saliencyO:(void *)scenes1 recognizeObjects:(void *)scenes2 VN5kJNH3eYuyaLxNpZr5Z7zi:(void *)scenes3 VNdGg5skzXHSAENO6T3enHE:(void *)scenes4 cityNatureGating:(void *)scenes5 photosAdjustments:(void *)scenes6
 {
   v59 = *MEMORY[0x1E69E9840];
-  v38 = a1;
-  v39 = a2;
-  v46 = a3;
-  v47 = a4;
-  v48 = a5;
-  v37 = a6;
-  v41 = a7;
-  v40 = a8;
-  v42 = a9;
-  v43 = a10;
-  v44 = a11;
-  v45 = a12;
-  v23 = a13;
-  v24 = a14;
-  v25 = a15;
-  v26 = a16;
+  scenesCopy = scenes;
+  netCopy = net;
+  junkCopy = junk;
+  iCopy = i;
+  landmarkCopy = landmark;
+  sceneprintsCopy = sceneprints;
+  sceneprintCopy = sceneprint;
+  fingerprintsCopy = fingerprints;
+  aestheticsCopy = aesthetics;
+  aCopy = a;
+  oCopy = o;
+  objectsCopy = objects;
+  z7ziCopy = z7zi;
+  eCopy = e;
+  gatingCopy = gating;
+  adjustmentsCopy = adjustments;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v27 = v38;
+  v27 = scenesCopy;
   v28 = 0;
   v29 = [v27 countByEnumeratingWithState:&v53 objects:v58 count:16];
   if (v29)
@@ -3282,26 +3282,26 @@ LABEL_291:
     while (v29);
   }
 
-  if (v46)
+  if (junkCopy)
   {
-    v28 = [v46 analysisTypes] | v28;
+    v28 = [junkCopy analysisTypes] | v28;
   }
 
-  if (v47)
+  if (iCopy)
   {
-    v28 = [v47 analysisTypes] | v28;
+    v28 = [iCopy analysisTypes] | v28;
   }
 
-  if (v48)
+  if (landmarkCopy)
   {
-    v28 = [v48 analysisTypes] | v28;
+    v28 = [landmarkCopy analysisTypes] | v28;
   }
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v32 = v37;
+  v32 = sceneprintsCopy;
   v33 = [v32 countByEnumeratingWithState:&v49 objects:v57 count:16];
   if (v33)
   {
@@ -3324,76 +3324,76 @@ LABEL_291:
     while (v33);
   }
 
-  if (v41)
+  if (sceneprintCopy)
   {
-    v28 = [v41 analysisTypes] | v28;
+    v28 = [sceneprintCopy analysisTypes] | v28;
   }
 
-  if (v23)
+  if (z7ziCopy)
   {
-    v28 = [v23 analysisTypes] | v28;
+    v28 = [z7ziCopy analysisTypes] | v28;
   }
 
-  if (v24)
+  if (eCopy)
   {
-    v28 = [v24 analysisTypes] | v28;
+    v28 = [eCopy analysisTypes] | v28;
   }
 
-  if (v25)
+  if (gatingCopy)
   {
-    v28 = [v25 analysisTypes] | v28;
+    v28 = [gatingCopy analysisTypes] | v28;
   }
 
-  if (v39)
+  if (netCopy)
   {
-    v28 = [v39 analysisTypes] | v28;
+    v28 = [netCopy analysisTypes] | v28;
   }
 
-  if (v40)
+  if (fingerprintsCopy)
   {
-    v28 = [v40 analysisTypes] | v28;
+    v28 = [fingerprintsCopy analysisTypes] | v28;
   }
 
-  if (v42)
+  if (aestheticsCopy)
   {
-    v28 = [v42 analysisTypes] | v28;
+    v28 = [aestheticsCopy analysisTypes] | v28;
   }
 
-  if (v43)
+  if (aCopy)
   {
-    v28 = [v43 analysisTypes] | v28;
+    v28 = [aCopy analysisTypes] | v28;
   }
 
-  if (v44)
+  if (oCopy)
   {
-    v28 = [v44 analysisTypes] | v28;
+    v28 = [oCopy analysisTypes] | v28;
   }
 
-  if (v45)
+  if (objectsCopy)
   {
-    v28 = [v45 analysisTypes] | v28;
+    v28 = [objectsCopy analysisTypes] | v28;
   }
 
-  if (v26)
+  if (adjustmentsCopy)
   {
-    v28 = [v26 analysisTypes] | v28;
+    v28 = [adjustmentsCopy analysisTypes] | v28;
   }
 
   return v28;
 }
 
-- (uint64_t)_performAnalysis:(uint64_t)a3 pixelBuffer:(uint64_t)a4 error:
+- (uint64_t)_performAnalysis:(uint64_t)analysis pixelBuffer:(uint64_t)buffer error:
 {
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __67__VNImageAnalyzerMultiDetector__performAnalysis_pixelBuffer_error___block_invoke;
   aBlock[3] = &unk_1E77B5158;
   v9 = a2;
-  aBlock[4] = a1;
-  aBlock[5] = a3;
+  aBlock[4] = self;
+  aBlock[5] = analysis;
   v5 = _Block_copy(aBlock);
   kdebug_trace();
-  v6 = VNExecuteBlock(v5, a4);
+  v6 = VNExecuteBlock(v5, buffer);
   if (v6)
   {
     kdebug_trace();
@@ -3402,12 +3402,12 @@ LABEL_291:
   return v6;
 }
 
-- (id)_processLastAnalysisForSaliencyOConfiguration:(void *)a3 regionOfInterest:(uint64_t)a4 originalImageSize:(void *)a5 options:(void *)a6 qosClass:(double)a7 warningRecorder:(double)a8 error:(double)a9
+- (id)_processLastAnalysisForSaliencyOConfiguration:(void *)configuration regionOfInterest:(uint64_t)interest originalImageSize:(void *)size options:(void *)options qosClass:(double)class warningRecorder:(double)recorder error:(double)error
 {
   v23 = a2;
-  v24 = a3;
-  v25 = a5;
-  v26 = *(a1 + 112);
+  configurationCopy = configuration;
+  sizeCopy = size;
+  v26 = *(self + 112);
   v34 = 128;
   v35 = &v34;
   if (*(std::__hash_table<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,BOOL>,std::__unordered_map_hasher<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,BOOL>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::__unordered_map_equal<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,BOOL>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::allocator<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,BOOL>>>::__emplace_unique_key_args<vision::mod::ImageAnalyzer_AnalysisType,std::piecewise_construct_t const&,std::tuple<vision::mod::ImageAnalyzer_AnalysisType&&>,std::tuple<>>((v26 + 824), 0x80u) + 20) != 1)
@@ -3421,28 +3421,28 @@ LABEL_291:
   v35 = &v34;
   v27 = std::__hash_table<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,espresso_buffer_t>,std::__unordered_map_hasher<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,espresso_buffer_t>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::__unordered_map_equal<vision::mod::ImageAnalyzer_AnalysisType,std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,espresso_buffer_t>,std::equal_to<vision::mod::ImageAnalyzer_AnalysisType>,std::hash<vision::mod::ImageAnalyzer_AnalysisType>,true>,std::allocator<std::__hash_value_type<vision::mod::ImageAnalyzer_AnalysisType,espresso_buffer_t>>>::__emplace_unique_key_args<vision::mod::ImageAnalyzer_AnalysisType,std::piecewise_construct_t const&,std::tuple<vision::mod::ImageAnalyzer_AnalysisType&&>,std::tuple<>>((v26 + 784), 0x80u);
   vision::mod::ImageAnalyzer_Tensor2D::ImageAnalyzer_Tensor2D(v31, (v27 + 3));
-  v28 = [(VNImageAnalyzerMultiDetector *)a7 _processSaliencyTensor:a8 regionOfInterest:a9 originalImageSize:a10 options:a11 saliencyConfiguration:a12 saliencyGeneratorType:a1 startCode:v31 finishCode:v24 qosClass:v23 warningRecorder:@"VNObjectnessBasedSaliencyHeatmapBoundingBoxGeneratorType" error:723845584, 723845588, a4, v25, a6];
+  options = [(VNImageAnalyzerMultiDetector *)class _processSaliencyTensor:recorder regionOfInterest:error originalImageSize:a10 options:a11 saliencyConfiguration:a12 saliencyGeneratorType:self startCode:v31 finishCode:configurationCopy qosClass:v23 warningRecorder:@"VNObjectnessBasedSaliencyHeatmapBoundingBoxGeneratorType" error:723845584, 723845588, interest, sizeCopy, options];
   free(v32);
   free(v33);
 
-  return v28;
+  return options;
 }
 
-- (id)_processLastAnalysisForRecognizeObjectsConfiguration:(uint64_t)a1 error:(void *)a2
+- (id)_processLastAnalysisForRecognizeObjectsConfiguration:(uint64_t)configuration error:(void *)error
 {
   v205[1] = *MEMORY[0x1E69E9840];
-  v163 = a2;
-  v162 = [v163 observationsRecipient];
-  v166 = [v162 originatingRequestSpecifier];
-  [v166 requestClassCode];
-  v2 = [v166 requestRevision];
+  errorCopy = error;
+  observationsRecipient = [errorCopy observationsRecipient];
+  originatingRequestSpecifier = [observationsRecipient originatingRequestSpecifier];
+  [originatingRequestSpecifier requestClassCode];
+  requestRevision = [originatingRequestSpecifier requestRevision];
   kdebug_trace();
   kdebug_trace();
-  v164 = v2;
-  v3 = *(a1 + 112);
-  [v163 minimumDetectionConfidence];
+  v164 = requestRevision;
+  v3 = *(configuration + 112);
+  [errorCopy minimumDetectionConfidence];
   v5 = v4;
-  [v163 nonMaximumSuppressionThreshold];
+  [errorCopy nonMaximumSuppressionThreshold];
   v183 = 0u;
   v184 = 0u;
   v185 = 1065353216;
@@ -4270,7 +4270,7 @@ LABEL_190:
     }
 
 LABEL_198:
-    v178 = [v163 disallowedList];
+    disallowedList = [errorCopy disallowedList];
     for (ii = v184; ii; ii = *ii)
     {
       if (ii[6] != ii[5])
@@ -4283,7 +4283,7 @@ LABEL_198:
         }
 
         v145 = [v143 initWithUTF8String:v144];
-        if (_isAcceptableClassificationIdentifier(v145, v178))
+        if (_isAcceptableClassificationIdentifier(v145, disallowedList))
         {
           v147 = ii[5];
           v146 = ii[6];
@@ -4305,14 +4305,14 @@ LABEL_198:
             v152 = *v147;
             v153 = [VNClassificationObservation alloc];
             *&v154 = v152;
-            v155 = [(VNClassificationObservation *)v153 initWithOriginatingRequestSpecifier:v166 identifier:v145 confidence:v154];
+            v155 = [(VNClassificationObservation *)v153 initWithOriginatingRequestSpecifier:originatingRequestSpecifier identifier:v145 confidence:v154];
             v156 = [VNRecognizedObjectObservation alloc];
             v205[0] = v155;
             v157 = [MEMORY[0x1E695DEC8] arrayWithObjects:v205 count:1];
             *&v158 = v152;
-            v159 = [(VNRecognizedObjectObservation *)v156 initWithOriginatingRequestSpecifier:v166 boundingBox:v157 confidence:0 labels:0 segmentationMask:x groupId:y, width, height, v158];
+            v158 = [(VNRecognizedObjectObservation *)v156 initWithOriginatingRequestSpecifier:originatingRequestSpecifier boundingBox:v157 confidence:0 labels:0 segmentationMask:x groupId:y, width, height, v158];
 
-            [v182 addObject:v159];
+            [v182 addObject:v158];
             v147 += 5;
           }
         }
@@ -4324,25 +4324,25 @@ LABEL_198:
   }
 
   kdebug_trace();
-  [v162 receiveObservations:v182];
+  [observationsRecipient receiveObservations:v182];
   std::__hash_table<std::__hash_value_type<std::string,std::vector<float>>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,std::vector<float>>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,std::vector<float>>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,std::vector<float>>>>::~__hash_table(&v183);
 
   return v182;
 }
 
-- (id)_processLastAnalysisForVN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:(void *)a3 error:
+- (id)_processLastAnalysisForVN5kJNH3eYuyaLxNpZr5Z7ziConfiguration:(void *)configuration error:
 {
   v5 = a2;
-  v6 = [v5 observationsRecipient];
-  v7 = [v6 originatingRequestSpecifier];
-  [v7 requestClassCode];
-  [v7 requestRevision];
+  observationsRecipient = [v5 observationsRecipient];
+  originatingRequestSpecifier = [observationsRecipient originatingRequestSpecifier];
+  [originatingRequestSpecifier requestClassCode];
+  [originatingRequestSpecifier requestRevision];
   kdebug_trace();
-  [(VNImageAnalyzerMultiDetector *)&v11 _VN5kJNH3eYuyaLxNpZr5Z7ziCustomClassifierAndReturnError:a1, a3];
+  [(VNImageAnalyzerMultiDetector *)&v11 _VN5kJNH3eYuyaLxNpZr5Z7ziCustomClassifierAndReturnError:self, configuration];
   v8 = v11;
   if (v11)
   {
-    vision::mod::ImageAnalyzer::getSceneRepresentation(v10, *(a1 + 112));
+    vision::mod::ImageAnalyzer::getSceneRepresentation(v10, *(self + 112));
     vision::mod::ImageAnalyzer_CustomClassifier::performInference();
   }
 
@@ -4354,19 +4354,19 @@ LABEL_198:
   return v8;
 }
 
-- (id)_processLastAnalysisForSignificantEventConfiguration:(void *)a3 error:
+- (id)_processLastAnalysisForSignificantEventConfiguration:(void *)configuration error:
 {
   v5 = a2;
-  v6 = [v5 observationsRecipient];
-  v7 = [v6 originatingRequestSpecifier];
-  [v7 requestClassCode];
-  [v7 requestRevision];
+  observationsRecipient = [v5 observationsRecipient];
+  originatingRequestSpecifier = [observationsRecipient originatingRequestSpecifier];
+  [originatingRequestSpecifier requestClassCode];
+  [originatingRequestSpecifier requestRevision];
   kdebug_trace();
-  [(VNImageAnalyzerMultiDetector *)&v11 _VNdGg5skzXHSAENO6T3enHECustomClassifierForOriginatingRequestSpecifier:a1, a3];
+  [(VNImageAnalyzerMultiDetector *)&v11 _VNdGg5skzXHSAENO6T3enHECustomClassifierForOriginatingRequestSpecifier:self, configuration];
   v8 = v11;
   if (v11)
   {
-    vision::mod::ImageAnalyzer::getSceneRepresentation(v10, *(a1 + 112));
+    vision::mod::ImageAnalyzer::getSceneRepresentation(v10, *(self + 112));
     vision::mod::ImageAnalyzer_CustomClassifier::performInference();
   }
 
@@ -4378,19 +4378,19 @@ LABEL_198:
   return v8;
 }
 
-- (id)_processLastAnalysisForCityNatureConfiguration:(void *)a3 error:
+- (id)_processLastAnalysisForCityNatureConfiguration:(void *)configuration error:
 {
   v5 = a2;
-  v6 = [v5 observationsRecipient];
-  v7 = [v6 originatingRequestSpecifier];
-  [v7 requestClassCode];
-  [v7 requestRevision];
+  observationsRecipient = [v5 observationsRecipient];
+  originatingRequestSpecifier = [observationsRecipient originatingRequestSpecifier];
+  [originatingRequestSpecifier requestClassCode];
+  [originatingRequestSpecifier requestRevision];
   kdebug_trace();
-  [(VNImageAnalyzerMultiDetector *)&v11 _cityNatureCustomClassifierAndReturnError:a1, a3];
+  [(VNImageAnalyzerMultiDetector *)&v11 _cityNatureCustomClassifierAndReturnError:self, configuration];
   v8 = v11;
   if (v11)
   {
-    vision::mod::ImageAnalyzer::getSceneRepresentation(v10, *(a1 + 112));
+    vision::mod::ImageAnalyzer::getSceneRepresentation(v10, *(self + 112));
     vision::mod::ImageAnalyzer_CustomClassifier::performInference();
   }
 
@@ -4402,18 +4402,18 @@ LABEL_198:
   return v8;
 }
 
-- (id)_processLastAnalysisForPhotosAdjustmentsConfiguration:(void *)a3 error:
+- (id)_processLastAnalysisForPhotosAdjustmentsConfiguration:(void *)configuration error:
 {
   v42[1] = *MEMORY[0x1E69E9840];
   v34 = a2;
-  v5 = [*(a1 + 80) sliderNetBlobNamePrefix];
-  if (v5)
+  sliderNetBlobNamePrefix = [*(self + 80) sliderNetBlobNamePrefix];
+  if (sliderNetBlobNamePrefix)
   {
-    v6 = v5;
-    v33 = v5;
-    v35 = [v5 length];
+    v6 = sliderNetBlobNamePrefix;
+    v33 = sliderNetBlobNamePrefix;
+    v35 = [sliderNetBlobNamePrefix length];
     std::string::basic_string[abi:ne200100]<0>(__p, [v6 UTF8String]);
-    vision::mod::ImageAnalyzer::getSlidersAdjustments(v37, *(a1 + 112));
+    vision::mod::ImageAnalyzer::getSlidersAdjustments(v37, *(self + 112));
     v7 = objc_alloc(MEMORY[0x1E695DF90]);
     v36 = [v7 initWithCapacity:v39];
     for (i = v38; i; i = *i)
@@ -4521,12 +4521,12 @@ LABEL_15:
       [v36 setObject:v17 forKey:v16];
     }
 
-    v28 = [v34 observationsRecipient];
-    v29 = [v28 originatingRequestSpecifier];
-    v30 = [[VN1vLyVSh30UQ26TGBoV8MHv alloc] initWithOriginatingRequestSpecifier:v29 adjustments:v36];
+    observationsRecipient = [v34 observationsRecipient];
+    originatingRequestSpecifier = [observationsRecipient originatingRequestSpecifier];
+    v30 = [[VN1vLyVSh30UQ26TGBoV8MHv alloc] initWithOriginatingRequestSpecifier:originatingRequestSpecifier adjustments:v36];
     v42[0] = v30;
     v31 = [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:1];
-    [v28 receiveObservations:v31];
+    [observationsRecipient receiveObservations:v31];
 
     std::__hash_table<std::__hash_value_type<std::string,std::vector<float>>,std::__unordered_map_hasher<std::string,std::__hash_value_type<std::string,std::vector<float>>,std::hash<std::string>,std::equal_to<std::string>,true>,std::__unordered_map_equal<std::string,std::__hash_value_type<std::string,std::vector<float>>,std::equal_to<std::string>,std::hash<std::string>,true>,std::allocator<std::__hash_value_type<std::string,std::vector<float>>>>::~__hash_table(v37);
     if (v41 < 0)
@@ -4537,13 +4537,13 @@ LABEL_15:
     goto LABEL_35;
   }
 
-  if (a3)
+  if (configuration)
   {
     v33 = 0;
     [VNError errorForDataUnavailableWithLocalizedDescription:@"adjustments prefix is not available"];
-    *a3 = v31 = 0;
+    *configuration = v31 = 0;
 LABEL_35:
-    v5 = v33;
+    sliderNetBlobNamePrefix = v33;
     goto LABEL_36;
   }
 
@@ -4553,32 +4553,32 @@ LABEL_36:
   return v31;
 }
 
-- (id)_processSaliencyTensor:(double)a3 regionOfInterest:(double)a4 originalImageSize:(double)a5 options:(double)a6 saliencyConfiguration:(uint64_t)a7 saliencyGeneratorType:(int8x16_t *)a8 startCode:(void *)a9 finishCode:(void *)a10 qosClass:(void *)a11 warningRecorder:(uint64_t)a12 error:(uint64_t)a13
+- (id)_processSaliencyTensor:(double)tensor regionOfInterest:(double)interest originalImageSize:(double)size options:(double)options saliencyConfiguration:(uint64_t)configuration saliencyGeneratorType:(int8x16_t *)type startCode:(void *)code finishCode:(void *)self0 qosClass:(void *)self1 warningRecorder:(uint64_t)self2 error:(uint64_t)self3
 {
   v50[1] = *MEMORY[0x1E69E9840];
-  v45 = a9;
-  v25 = a10;
-  v44 = a11;
-  v41 = v25;
+  codeCopy = code;
+  finishCodeCopy = finishCode;
+  classCopy = class;
+  v41 = finishCodeCopy;
   v42 = a15;
-  v43 = [v25 observationsRecipient];
-  v26 = [v43 originatingRequestSpecifier];
-  [v26 requestClassCode];
-  [v26 requestRevision];
+  observationsRecipient = [finishCodeCopy observationsRecipient];
+  originatingRequestSpecifier = [observationsRecipient originatingRequestSpecifier];
+  [originatingRequestSpecifier requestClassCode];
+  [originatingRequestSpecifier requestRevision];
   kdebug_trace();
   v48 = 0;
   memset(v47, 0, sizeof(v47));
-  vision::mod::ImageAnalyzer_Tensor2D::getVImageBufferFromTensor(v47, a8, &v48);
+  vision::mod::ImageAnalyzer_Tensor2D::getVImageBufferFromTensor(v47, type, &v48);
   v46 = 0;
   DeepCopyCVPixelBufferFromVImageBuffer = ImageProcessing_createDeepCopyCVPixelBufferFromVImageBuffer(v47, v48, &v46);
   if (DeepCopyCVPixelBufferFromVImageBuffer)
   {
     v28 = DeepCopyCVPixelBufferFromVImageBuffer;
-    v29 = [VNValidationUtilities requiredSessionInOptions:v45 error:a16];
+    v29 = [VNValidationUtilities requiredSessionInOptions:codeCopy error:a16];
     if (v29)
     {
-      v30 = [objc_opt_class() _newSaliencyHeatmapBoundingBoxGeneratorOptionsForOptions:v45];
-      v40 = [v29 detectorOfType:v44 configuredWithOptions:v30 error:a16];
+      v30 = [objc_opt_class() _newSaliencyHeatmapBoundingBoxGeneratorOptionsForOptions:codeCopy];
+      v40 = [v29 detectorOfType:classCopy configuredWithOptions:v30 error:a16];
       if (v40)
       {
         v31 = [VNImageBuffer alloc];
@@ -4587,25 +4587,25 @@ LABEL_36:
         v32 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:1];
         [v30 setObject:v32 forKeyedSubscript:@"VNDetectorProcessOption_InputImageBuffers"];
 
-        [v30 setObject:v26 forKeyedSubscript:@"VNDetectorOption_OriginatingRequestSpecifier"];
-        if ([v26 observationProvidesBoundsNormalizedToROI])
+        [v30 setObject:originatingRequestSpecifier forKeyedSubscript:@"VNDetectorOption_OriginatingRequestSpecifier"];
+        if ([originatingRequestSpecifier observationProvidesBoundsNormalizedToROI])
         {
-          v34 = 0.0;
+          selfCopy = 0.0;
         }
 
         else
         {
-          v34 = a1;
+          selfCopy = self;
         }
 
-        v35 = [v40 processUsingQualityOfServiceClass:a14 options:v30 regionOfInterest:0 warningRecorder:a16 error:0 progressHandler:v34];
+        v35 = [v40 processUsingQualityOfServiceClass:a14 options:v30 regionOfInterest:0 warningRecorder:a16 error:0 progressHandler:selfCopy];
         if (v35)
         {
-          v36 = [[VNSaliencyImageObservation alloc] initWithOriginatingRequestSpecifier:v26 rawSaliencyImage:v28 originalImageSize:v35 salientObjectBoundingBoxes:a3 * a5, a4 * a6];
+          options = [[VNSaliencyImageObservation alloc] initWithOriginatingRequestSpecifier:originatingRequestSpecifier rawSaliencyImage:v28 originalImageSize:v35 salientObjectBoundingBoxes:tensor * size, interest * options];
           kdebug_trace();
-          v49 = v36;
+          v49 = options;
           v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v49 count:1];
-          [v43 receiveObservations:v37];
+          [observationsRecipient receiveObservations:v37];
         }
 
         else
@@ -4642,12 +4642,12 @@ LABEL_36:
   return v37;
 }
 
-- (void)_potentialLandmarksCustomClassifierAndReturnError:(void *)a3
+- (void)_potentialLandmarksCustomClassifierAndReturnError:(void *)error
 {
   if (!a2)
   {
-    *a1 = 0;
-    a1[1] = 0;
+    *self = 0;
+    self[1] = 0;
     return;
   }
 
@@ -4657,8 +4657,8 @@ LABEL_36:
     goto LABEL_12;
   }
 
-  v7 = [*(a2 + 80) potentialLandmarksCustomClassifierDescriptor];
-  [(VNImageAnalyzerMultiDetector *)&v12 _loadCustomClassifierWithDescriptor:a2 error:v7, a3];
+  potentialLandmarksCustomClassifierDescriptor = [*(a2 + 80) potentialLandmarksCustomClassifierDescriptor];
+  [(VNImageAnalyzerMultiDetector *)&v12 _loadCustomClassifierWithDescriptor:a2 error:potentialLandmarksCustomClassifierDescriptor, error];
 
   v8 = v12;
   if (v12)
@@ -4685,8 +4685,8 @@ LABEL_36:
 
   else
   {
-    *a1 = 0;
-    a1[1] = 0;
+    *self = 0;
+    self[1] = 0;
     v9 = v13;
     if (!v13)
     {
@@ -4704,20 +4704,20 @@ LABEL_10:
   v5 = *(a2 + 200);
 LABEL_12:
   v11 = *(a2 + 208);
-  *a1 = v5;
-  a1[1] = v11;
+  *self = v5;
+  self[1] = v11;
   if (v11)
   {
     atomic_fetch_add_explicit((v11 + 8), 1uLL, memory_order_relaxed);
   }
 }
 
-- (void)_VNVYvzEtX1JlUdu8xx5qhDICustomClassifierAndReturnError:(void *)a3
+- (void)_VNVYvzEtX1JlUdu8xx5qhDICustomClassifierAndReturnError:(void *)error
 {
   if (!a2)
   {
-    *a1 = 0;
-    a1[1] = 0;
+    *self = 0;
+    self[1] = 0;
     return;
   }
 
@@ -4727,8 +4727,8 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v7 = [*(a2 + 80) VNVYvzEtX1JlUdu8xx5qhDICustomClassifierDescriptor];
-  [(VNImageAnalyzerMultiDetector *)&v12 _loadCustomClassifierWithDescriptor:a2 error:v7, a3];
+  vNVYvzEtX1JlUdu8xx5qhDICustomClassifierDescriptor = [*(a2 + 80) VNVYvzEtX1JlUdu8xx5qhDICustomClassifierDescriptor];
+  [(VNImageAnalyzerMultiDetector *)&v12 _loadCustomClassifierWithDescriptor:a2 error:vNVYvzEtX1JlUdu8xx5qhDICustomClassifierDescriptor, error];
 
   v8 = v12;
   if (v12)
@@ -4755,8 +4755,8 @@ LABEL_12:
 
   else
   {
-    *a1 = 0;
-    a1[1] = 0;
+    *self = 0;
+    self[1] = 0;
     v9 = v13;
     if (!v13)
     {
@@ -4774,55 +4774,55 @@ LABEL_10:
   v5 = *(a2 + 184);
 LABEL_12:
   v11 = *(a2 + 192);
-  *a1 = v5;
-  a1[1] = v11;
+  *self = v5;
+  self[1] = v11;
   if (v11)
   {
     atomic_fetch_add_explicit((v11 + 8), 1uLL, memory_order_relaxed);
   }
 }
 
-- (uint64_t)_processSceneIdentifier:(void *)a3 withConfidence:(void *)a4 disallowedList:(void *)a5 operationPoints:(void *)a6 originatingRequestSpecifier:(unint64_t *)a7 observationsArray:(uint64_t)a8 optionalTopN:(float)a9 error:
+- (uint64_t)_processSceneIdentifier:(void *)identifier withConfidence:(void *)confidence disallowedList:(void *)list operationPoints:(void *)points originatingRequestSpecifier:(unint64_t *)specifier observationsArray:(uint64_t)array optionalTopN:(float)n error:
 {
   v17 = a2;
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  if (!a1)
+  identifierCopy = identifier;
+  confidenceCopy = confidence;
+  listCopy = list;
+  pointsCopy = points;
+  if (!self)
   {
     v29 = 0;
     goto LABEL_36;
   }
 
-  if (_isAcceptableClassificationIdentifier(v17, v18))
+  if (_isAcceptableClassificationIdentifier(v17, identifierCopy))
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __167__VNImageAnalyzerMultiDetector__processSceneIdentifier_withConfidence_disallowedList_operationPoints_originatingRequestSpecifier_observationsArray_optionalTopN_error___block_invoke;
     aBlock[3] = &unk_1E77B5180;
-    v46 = v19;
+    v46 = confidenceCopy;
     v47 = v17;
-    v48 = v20;
-    v49 = a9;
+    v48 = listCopy;
+    nCopy = n;
     v22 = _Block_copy(aBlock);
-    if (a7)
+    if (specifier)
     {
-      v43 = *a7;
+      v43 = *specifier;
       v44 = v22;
-      v23 = [v21 count];
+      v23 = [pointsCopy count];
       v24 = v44;
       if (v23)
       {
-        v25 = [v21 lastObject];
-        [v25 confidence];
-        if (v26 < a9)
+        lastObject = [pointsCopy lastObject];
+        [lastObject confidence];
+        if (v26 < n)
         {
-          v42 = [v21 firstObject];
-          if (v23 >= 3 && ([v42 confidence], v27 >= a9))
+          firstObject = [pointsCopy firstObject];
+          if (v23 >= 3 && ([firstObject confidence], v27 >= n))
           {
-            v40 = v20;
-            v41 = v19;
+            v40 = listCopy;
+            v41 = confidenceCopy;
             v31 = flsl(v23);
             v32 = 0;
             v33 = 0;
@@ -4832,13 +4832,13 @@ LABEL_12:
               v28 = v32 + v34 / 2;
               if (v28 < v23)
               {
-                v35 = [v21 objectAtIndex:v32 + v34 / 2];
+                v35 = [pointsCopy objectAtIndex:v32 + v34 / 2];
                 [v35 confidence];
                 v37 = v36;
 
-                if (v37 >= a9)
+                if (v37 >= n)
                 {
-                  if (v37 <= a9)
+                  if (v37 <= n)
                   {
                     goto LABEL_32;
                   }
@@ -4860,8 +4860,8 @@ LABEL_12:
             while (!v38);
             v28 = v32 + (v33 >> 31);
 LABEL_32:
-            v20 = v40;
-            v19 = v41;
+            listCopy = v40;
+            confidenceCopy = v41;
             v24 = v44;
             if (v28 == 0x7FFFFFFFFFFFFFFFLL)
             {
@@ -4874,7 +4874,7 @@ LABEL_32:
             v28 = 0;
           }
 
-          v29 = v24[2](v24, a8);
+          v29 = v24[2](v24, array);
           if (!v29)
           {
 LABEL_34:
@@ -4882,10 +4882,10 @@ LABEL_34:
             goto LABEL_35;
           }
 
-          [v21 insertObject:v29 atIndex:v28];
+          [pointsCopy insertObject:v29 atIndex:v28];
           if (v23 + 1 > v43)
           {
-            [v21 removeObjectAtIndex:v23];
+            [pointsCopy removeObjectAtIndex:v23];
           }
 
 LABEL_33:
@@ -4895,11 +4895,11 @@ LABEL_33:
 
         if (v23 < v43)
         {
-          v30 = (*(v44 + 2))(v44, a8);
+          v30 = (*(v44 + 2))(v44, array);
           if (v30)
           {
-            v42 = v30;
-            [v21 addObject:?];
+            firstObject = v30;
+            [pointsCopy addObject:?];
             goto LABEL_33;
           }
 
@@ -4913,11 +4913,11 @@ LABEL_35:
         goto LABEL_36;
       }
 
-      v25 = (*(v44 + 2))(v44, a8);
-      if (v25)
+      lastObject = (*(v44 + 2))(v44, array);
+      if (lastObject)
       {
 LABEL_15:
-        [v21 addObject:v25];
+        [pointsCopy addObject:lastObject];
         goto LABEL_21;
       }
     }
@@ -4925,8 +4925,8 @@ LABEL_15:
     else
     {
       v24 = v22;
-      v25 = (*(v22 + 2))(v22, a8);
-      if (v25)
+      lastObject = (*(v22 + 2))(v22, array);
+      if (lastObject)
       {
         goto LABEL_15;
       }
@@ -4967,43 +4967,43 @@ LABEL_5:
   return v6;
 }
 
-- (uint64_t)_populateLeafSceneObservations:(void *)a3 hierarchySceneObservations:(void *)a4 fromLastAnalysisForSceneConfiguration:(void *)a5 error:
+- (uint64_t)_populateLeafSceneObservations:(void *)observations hierarchySceneObservations:(void *)sceneObservations fromLastAnalysisForSceneConfiguration:(void *)configuration error:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  v11 = [v10 observationsRecipient];
-  v12 = [v11 originatingRequestSpecifier];
+  observationsCopy = observations;
+  sceneObservationsCopy = sceneObservations;
+  observationsRecipient = [sceneObservationsCopy observationsRecipient];
+  originatingRequestSpecifier = [observationsRecipient originatingRequestSpecifier];
 
-  [v12 requestClassCode];
-  v13 = [v12 requestRevision];
+  [originatingRequestSpecifier requestClassCode];
+  requestRevision = [originatingRequestSpecifier requestRevision];
   kdebug_trace();
-  [v10 minimumConfidence];
+  [sceneObservationsCopy minimumConfidence];
   v15 = v14;
-  v16 = [v10 maximumLeafLabels];
-  v17 = v16 & 0x7FFFFFFFFFFFFFFFLL;
-  if ((v16 & 0x7FFFFFFFFFFFFFFFLL) == 0x7FFFFFFFFFFFFFFFLL)
+  maximumLeafLabels = [sceneObservationsCopy maximumLeafLabels];
+  v17 = maximumLeafLabels & 0x7FFFFFFFFFFFFFFFLL;
+  if ((maximumLeafLabels & 0x7FFFFFFFFFFFFFFFLL) == 0x7FFFFFFFFFFFFFFFLL)
   {
     v18 = -1;
   }
 
   else
   {
-    v18 = v16;
+    v18 = maximumLeafLabels;
   }
 
   v64 = v18;
-  v19 = [[_VNImageAnalyzerMultiDetectorSceneOperationPointsProvider alloc] initWithOperationPointsCache:a1[19] originatingRequestSpecifier:v12];
-  v20 = [(_VNImageAnalyzerMultiDetectorSceneOperationPointsProvider *)v19 operationPointsAndReturnError:a5];
+  v19 = [[_VNImageAnalyzerMultiDetectorSceneOperationPointsProvider alloc] initWithOperationPointsCache:self[19] originatingRequestSpecifier:originatingRequestSpecifier];
+  v20 = [(_VNImageAnalyzerMultiDetectorSceneOperationPointsProvider *)v19 operationPointsAndReturnError:configuration];
   if (v20)
   {
-    v46 = v13;
+    v46 = requestRevision;
     v48 = v19;
-    v49 = v12;
-    v50 = v9;
+    v49 = originatingRequestSpecifier;
+    v50 = observationsCopy;
     v51 = v8;
     v47 = v20;
-    v21 = [v10 disallowedList];
+    disallowedList = [sceneObservationsCopy disallowedList];
     if (v17 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v22 = 0;
@@ -5014,8 +5014,8 @@ LABEL_5:
       v22 = &v64;
     }
 
-    v52 = v21;
-    v23 = v12;
+    v52 = disallowedList;
+    v23 = originatingRequestSpecifier;
     v24 = v20;
     v25 = objc_alloc_init(MEMORY[0x1E695DF70]);
     [(VNImageAnalyzerMultiDetector *)&v66 _lastAnalysisSceneClassifications];
@@ -5044,7 +5044,7 @@ LABEL_15:
             }
 
             v31 = [v29 initWithUTF8String:v30];
-            v32 = [(VNImageAnalyzerMultiDetector *)a1 _processSceneIdentifier:v31 withConfidence:v52 disallowedList:v24 operationPoints:v23 originatingRequestSpecifier:v25 observationsArray:v22 optionalTopN:a5 error:v28];
+            v32 = [(VNImageAnalyzerMultiDetector *)self _processSceneIdentifier:v31 withConfidence:v52 disallowedList:v24 operationPoints:v23 originatingRequestSpecifier:v25 observationsArray:v22 optionalTopN:configuration error:v28];
 
             if ((v32 & 1) == 0)
             {
@@ -5063,7 +5063,7 @@ LABEL_15:
       v33 = 0;
     }
 
-    v9 = v50;
+    observationsCopy = v50;
     v8 = v51;
     if (v67)
     {
@@ -5073,24 +5073,24 @@ LABEL_15:
     if (v33)
     {
       [v51 addObjectsFromArray:v33];
-      v34 = a1[12];
-      v35 = a1[13];
+      v34 = self[12];
+      v35 = self[13];
       if (v35)
       {
         atomic_fetch_add_explicit(&v35->__shared_owners_, 1uLL, memory_order_relaxed);
       }
 
-      v36 = [v10 customHierarchy];
-      v37 = v36;
-      if (!v36)
+      customHierarchy = [sceneObservationsCopy customHierarchy];
+      v37 = customHierarchy;
+      if (!customHierarchy)
       {
 LABEL_27:
 
-        v39 = [v10 maximumHierarchicalLabels];
+        maximumHierarchicalLabels = [sceneObservationsCopy maximumHierarchicalLabels];
         v40 = 0x7FFFFFFFLL;
-        if (v39 <= 0x7FFFFFFE)
+        if (maximumHierarchicalLabels <= 0x7FFFFFFE)
         {
-          v40 = v39;
+          v40 = maximumHierarchicalLabels;
         }
 
         if (!v40)
@@ -5102,7 +5102,7 @@ LABEL_27:
         aBlock[1] = 3321888768;
         aBlock[2] = __134__VNImageAnalyzerMultiDetector__populateLeafSceneObservations_hierarchySceneObservations_fromLastAnalysisForSceneConfiguration_error___block_invoke;
         aBlock[3] = &unk_1F1974780;
-        aBlock[4] = a1;
+        aBlock[4] = self;
         v59 = v34;
         v60 = v35;
         if (v35)
@@ -5110,7 +5110,7 @@ LABEL_27:
           atomic_fetch_add_explicit(&v35->__shared_owners_, 1uLL, memory_order_relaxed);
         }
 
-        v63 = v39 > 0x7FFFFFFE;
+        v63 = maximumHierarchicalLabels > 0x7FFFFFFE;
         v61 = v40;
         v62 = v15;
         v55 = v52;
@@ -5118,7 +5118,7 @@ LABEL_27:
         v57 = v24;
         v58 = v50;
         v41 = _Block_copy(aBlock);
-        v42 = VNExecuteBlock(v41, a5);
+        v42 = VNExecuteBlock(v41, configuration);
         if ((v42 & 1) == 0)
         {
           v65 = 0;
@@ -5145,10 +5145,10 @@ LABEL_37:
         goto LABEL_45;
       }
 
-      if ([v36 requestRevision] == v46)
+      if ([customHierarchy requestRevision] == v46)
       {
         v45 = v33;
-        [v37 hierarchicalModelAndReturnError:a5];
+        [v37 hierarchicalModelAndReturnError:configuration];
         v34 = v66;
         v38 = v67;
         v66 = 0;
@@ -5170,10 +5170,10 @@ LABEL_37:
         }
       }
 
-      else if (a5)
+      else if (configuration)
       {
         v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"custom hierarchy created for revision %lu cannot be used with a detector for revision %lu", objc_msgSend(v37, "requestRevision"), v46];
-        *a5 = [VNError errorForInvalidOperationWithLocalizedDescription:v43];
+        *configuration = [VNError errorForInvalidOperationWithLocalizedDescription:v43];
       }
 
       v65 = 0;
@@ -5195,7 +5195,7 @@ LABEL_45:
 LABEL_46:
 
     v19 = v48;
-    v12 = v49;
+    originatingRequestSpecifier = v49;
     v20 = v47;
     goto LABEL_47;
   }
@@ -5523,8 +5523,8 @@ LABEL_14:
     }
 
     v34 = *(a2 + 280);
-    *a1 = v4;
-    a1[1] = v34;
+    *self = v4;
+    self[1] = v34;
     if (v34)
     {
       atomic_fetch_add_explicit((v34 + 8), 1uLL, memory_order_relaxed);
@@ -5535,8 +5535,8 @@ LABEL_14:
 
   else
   {
-    *a1 = 0;
-    a1[1] = 0;
+    *self = 0;
+    self[1] = 0;
   }
 }
 
@@ -5557,15 +5557,15 @@ uint64_t __67__VNImageAnalyzerMultiDetector__performAnalysis_pixelBuffer_error__
   return 1;
 }
 
-- (id)processRegionOfInterest:(CGRect)a3 croppedPixelBuffer:(const __CVBuffer *)a4 options:(id)a5 qosClass:(unsigned int)a6 warningRecorder:(id)a7 error:(id *)a8 progressHandler:(id)a9
+- (id)processRegionOfInterest:(CGRect)interest croppedPixelBuffer:(const __CVBuffer *)buffer options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v18 = a5;
-  v19 = a7;
-  v20 = a9;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
   v45 = 0;
   v46 = &v45;
   v47 = 0x3032000000;
@@ -5578,35 +5578,35 @@ uint64_t __67__VNImageAnalyzerMultiDetector__performAnalysis_pixelBuffer_error__
   v42 = __Block_byref_object_copy__27407;
   v43 = __Block_byref_object_dispose__27408;
   v44 = 0;
-  v21 = [(VNDetector *)self synchronizationQueue];
+  synchronizationQueue = [(VNDetector *)self synchronizationQueue];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __130__VNImageAnalyzerMultiDetector_processRegionOfInterest_croppedPixelBuffer_options_qosClass_warningRecorder_error_progressHandler___block_invoke;
   v28[3] = &unk_1E77B5310;
   v32 = &v45;
   v28[4] = self;
-  v38 = a6;
-  v22 = v18;
+  classCopy = class;
+  v22 = optionsCopy;
   v29 = v22;
   v34 = x;
   v35 = y;
   v36 = width;
   v37 = height;
-  v23 = v19;
+  v23 = recorderCopy;
   v30 = v23;
   v33 = &v39;
-  v24 = v20;
+  v24 = handlerCopy;
   v31 = v24;
-  [v21 dispatchSyncByPreservingQueueCapacity:v28];
+  [synchronizationQueue dispatchSyncByPreservingQueueCapacity:v28];
   v25 = v46[5];
   if (v25)
   {
     v26 = v25;
   }
 
-  else if (a8)
+  else if (error)
   {
-    *a8 = v40[5];
+    *error = v40[5];
   }
 
   _Block_object_dispose(&v39, 8);
@@ -5634,14 +5634,14 @@ void __130__VNImageAnalyzerMultiDetector_processRegionOfInterest_croppedPixelBuf
   *(v12 + 40) = v11;
 }
 
-- (BOOL)createRegionOfInterestCrop:(CGRect)a3 options:(id)a4 qosClass:(unsigned int)a5 warningRecorder:(id)a6 pixelBuffer:(__CVBuffer *)a7 error:(id *)a8 progressHandler:(id)a9
+- (BOOL)createRegionOfInterestCrop:(CGRect)crop options:(id)options qosClass:(unsigned int)class warningRecorder:(id)recorder pixelBuffer:(__CVBuffer *)buffer error:(id *)error progressHandler:(id)handler
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a4;
-  v17 = [(VNDetector *)self validatedImageBufferFromOptions:v16 error:a8];
+  height = crop.size.height;
+  width = crop.size.width;
+  y = crop.origin.y;
+  x = crop.origin.x;
+  optionsCopy = options;
+  v17 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   if (!v17)
   {
     LOBYTE(v27) = 0;
@@ -5650,7 +5650,7 @@ void __130__VNImageAnalyzerMultiDetector_processRegionOfInterest_croppedPixelBuf
 
   v39 = 2;
   v38 = vneg_f32(0x3F0000003FLL);
-  [(VNImageAnalyzerMultiDetector *)self _getImageCropAndScaleOption:&v38 networkRequiredInputImageSize:v16 forOptions:?];
+  [(VNImageAnalyzerMultiDetector *)self _getImageCropAndScaleOption:&v38 networkRequiredInputImageSize:optionsCopy forOptions:?];
   v42.origin.x = 0.0;
   v42.origin.y = 0.0;
   v42.size.width = 1.0;
@@ -5661,7 +5661,7 @@ void __130__VNImageAnalyzerMultiDetector_processRegionOfInterest_croppedPixelBuf
   v41.size.height = height;
   v18 = CGRectEqualToRect(v41, v42);
   v19 = v18;
-  v35 = a7;
+  bufferCopy = buffer;
   if (v18)
   {
     v20 = &v37;
@@ -5680,14 +5680,14 @@ void __130__VNImageAnalyzerMultiDetector_processRegionOfInterest_croppedPixelBuf
   v21 = v39;
   v22 = v38;
   v36 = v17;
-  v23 = v16;
+  v23 = optionsCopy;
   v24 = v23;
   if (self)
   {
     v25 = [v23 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorProcessingOption_SkipInputImageScaling"];
-    v26 = [v25 BOOLValue];
+    bOOLValue = [v25 BOOLValue];
 
-    if (!v26)
+    if (!bOOLValue)
     {
       v29 = [v24 mutableCopy];
       [v29 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"VNImageBufferOption_CreateFromPixelBufferPool"];
@@ -5697,15 +5697,15 @@ void __130__VNImageAnalyzerMultiDetector_processRegionOfInterest_croppedPixelBuf
       v28 = v36;
       v27 = [v36 cropAndScaleBufferWithWidth:*&v22.i32[1] height:*v22.i32 cropRect:cachedInferenceImagePixelFormatType format:v21 imageCropAndScaleOption:v29 options:&v40 error:x calculatedNormalizedOriginOffset:y calculatedScaleX:width calculatedScaleY:height pixelBufferRepsCacheKey:{0, 0, 0, v34}];
       v31 = v40;
-      if (a8 && !v27)
+      if (error && !v27)
       {
-        *a8 = [VNError errorWithCode:9 message:@"Failed to scale the input image" underlyingError:v31];
+        *error = [VNError errorWithCode:9 message:@"Failed to scale the input image" underlyingError:v31];
       }
 
       goto LABEL_16;
     }
 
-    v27 = [v36 croppedBufferWithWidth:width height:height format:self->_cachedInferenceImagePixelFormatType cropRect:v24 options:a8 error:v20 pixelBufferRepsCacheKey:{x, y, width, height}];
+    v27 = [v36 croppedBufferWithWidth:width height:height format:self->_cachedInferenceImagePixelFormatType cropRect:v24 options:error error:v20 pixelBufferRepsCacheKey:{x, y, width, height}];
   }
 
   else
@@ -5719,7 +5719,7 @@ LABEL_16:
   if (v19)
   {
     v32 = v37;
-    *v35 = v27;
+    *bufferCopy = v27;
     if (v27)
     {
       [(VNDetector *)self recordImageCropQuickLookInfoToOptions:v24 cacheKey:v32 imageBuffer:v28];
@@ -5730,7 +5730,7 @@ LABEL_16:
   else
   {
     v32 = 0;
-    *v35 = v27;
+    *bufferCopy = v27;
     LOBYTE(v27) = v27 != 0;
   }
 
@@ -5738,28 +5738,28 @@ LABEL_21:
   return v27;
 }
 
-- (void)_getImageCropAndScaleOption:(int32x2_t *)a3 networkRequiredInputImageSize:(void *)a4 forOptions:
+- (void)_getImageCropAndScaleOption:(int32x2_t *)option networkRequiredInputImageSize:(void *)size forOptions:
 {
-  v7 = a4;
-  if (a1)
+  sizeCopy = size;
+  if (self)
   {
-    v8 = *(a1 + 112);
+    v8 = *(self + 112);
     v9 = v8[24].u8[1];
-    *a3 = vrev64_s32(vcvt_f32_f64(vcvtq_f64_u64(v8[42])));
-    v15 = v7;
-    v10 = [v7 objectForKeyedSubscript:@"VNDetectorProcessOption_ImageCropAndScaleOption"];
+    *option = vrev64_s32(vcvt_f32_f64(vcvtq_f64_u64(v8[42])));
+    v15 = sizeCopy;
+    v10 = [sizeCopy objectForKeyedSubscript:@"VNDetectorProcessOption_ImageCropAndScaleOption"];
     v11 = v10;
     if (v10)
     {
-      v12 = [v10 unsignedIntegerValue];
+      unsignedIntegerValue = [v10 unsignedIntegerValue];
     }
 
     else
     {
-      v12 = 2;
+      unsignedIntegerValue = 2;
     }
 
-    if (v12 == 2)
+    if (unsignedIntegerValue == 2)
     {
       v13 = v9;
     }
@@ -5771,7 +5771,7 @@ LABEL_21:
 
     if (v13)
     {
-      v14 = v12;
+      v14 = unsignedIntegerValue;
     }
 
     else
@@ -5781,24 +5781,24 @@ LABEL_21:
 
     *a2 = v14;
 
-    v7 = v15;
+    sizeCopy = v15;
   }
 }
 
-- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)a3 options:(id)a4 regionOfInterest:(CGRect)a5 warningRecorder:(id)a6 error:(id *)a7 progressHandler:(id)a8
+- (id)internalProcessUsingQualityOfServiceClass:(unsigned int)class options:(id)options regionOfInterest:(CGRect)interest warningRecorder:(id)recorder error:(id *)error progressHandler:(id)handler
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v302 = *MEMORY[0x1E69E9840];
-  v16 = a4;
-  v179 = a6;
-  v178 = a8;
+  optionsCopy = options;
+  recorderCopy = recorder;
+  handlerCopy = handler;
   val = self;
-  v204 = v16;
-  v176 = a7;
-  v17 = [(VNDetector *)self validatedImageBufferFromOptions:v16 error:a7];
+  v204 = optionsCopy;
+  errorCopy = error;
+  v17 = [(VNDetector *)self validatedImageBufferFromOptions:optionsCopy error:error];
   v177 = v17;
   if (!v17)
   {
@@ -5808,13 +5808,13 @@ LABEL_21:
 
   v297 = 2;
   v296 = vneg_f32(0x3F0000003FLL);
-  [(VNImageAnalyzerMultiDetector *)self _getImageCropAndScaleOption:&v296 networkRequiredInputImageSize:v16 forOptions:?];
+  [(VNImageAnalyzerMultiDetector *)self _getImageCropAndScaleOption:&v296 networkRequiredInputImageSize:optionsCopy forOptions:?];
   v202 = x;
-  v18 = [v17 width];
-  v19 = [v17 height];
-  v195 = v18;
+  width = [v17 width];
+  height = [v17 height];
+  v195 = width;
   v20 = height;
-  v191 = v19;
+  v191 = height;
   v21 = height * v191;
   v22 = v296.f32[1];
   v23 = v296.f32[0];
@@ -5861,15 +5861,15 @@ LABEL_21:
       v28 = *&v24 / v27;
     }
 
-    VNRecordImageTooSmallWarningWithImageMinimumShortDimension(v179, v28);
+    VNRecordImageTooSmallWarningWithImageMinimumShortDimension(recorderCopy, v28);
   }
 
-  v29 = [v16 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_SceneConfigurations"];
+  v29 = [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_SceneConfigurations"];
   v173 = v29;
   if (*&v24 > v26 || v29 == 0)
   {
     v36 = 0;
-    v194 = 0;
+    tiles = 0;
     v32 = v20;
     v35 = v202;
   }
@@ -5878,20 +5878,20 @@ LABEL_21:
   {
     v31 = (v22 / v23);
     v32 = v20;
-    v33 = [VNRegionOfInterestTiling tilingForRegionOfInterest:v18 inPixelWidth:v19 height:self->_inputImageTilingOptions tileAspectRatio:v202 options:y, v187, v20, v31];
-    v34 = [v33 tileCount];
+    v33 = [VNRegionOfInterestTiling tilingForRegionOfInterest:width inPixelWidth:height height:self->_inputImageTilingOptions tileAspectRatio:v202 options:y, v187, v20, v31];
+    tileCount = [v33 tileCount];
     v35 = v202;
-    v36 = v34 > 1;
-    if (v34 < 2)
+    v36 = tileCount > 1;
+    if (tileCount < 2)
     {
-      v194 = 0;
+      tiles = 0;
     }
 
     else
     {
-      v194 = [v33 tiles];
-      v37 = [v33 tileColumnsCount];
-      v38 = [v33 tileRowsCount];
+      tiles = [v33 tiles];
+      tileColumnsCount = [v33 tileColumnsCount];
+      tileRowsCount = [v33 tileRowsCount];
       v295 = 0u;
       v294 = 0u;
       v293 = 0u;
@@ -5910,7 +5910,7 @@ LABEL_21:
               objc_enumerationMutation(v39);
             }
 
-            VNRecordImageTilingWarning(*(*(&v292 + 1) + 8 * i), v37, v38);
+            VNRecordImageTilingWarning(*(*(&v292 + 1) + 8 * i), tileColumnsCount, tileRowsCount);
           }
 
           v40 = [v39 countByEnumeratingWithState:&v292 objects:v301 count:16];
@@ -5940,10 +5940,10 @@ LABEL_21:
   v285 = 0;
   objc_initWeak(&location, val);
   v44 = objc_opt_class();
-  v45 = [v44 VNClassCode];
-  v171 = [v44 detectorCropCreationAsyncTasksQueue];
+  vNClassCode = [v44 VNClassCode];
+  detectorCropCreationAsyncTasksQueue = [v44 detectorCropCreationAsyncTasksQueue];
   v201 = dispatch_group_create();
-  v170 = [v44 detectorCropProcessingAsyncTasksQueue];
+  detectorCropProcessingAsyncTasksQueue = [v44 detectorCropProcessingAsyncTasksQueue];
   v169 = dispatch_group_create();
   v281[0] = 0;
   v281[1] = v281;
@@ -5968,36 +5968,36 @@ LABEL_21:
   block[3] = &unk_1E77B51D0;
   objc_copyWeak(v274, &location);
   v272 = v281;
-  v275 = v45;
+  v275 = vNClassCode;
   v47 = v169;
   v267 = v47;
-  v276 = a3;
+  classCopy = class;
   *&v274[1] = v35 * v195;
   *&v274[2] = y * v191;
   v274[3] = *&v199;
   v274[4] = *&v197;
   v48 = v46;
   v268 = v48;
-  v49 = v179;
+  v49 = recorderCopy;
   v269 = v49;
   v273 = v278;
-  v50 = v178;
+  v50 = handlerCopy;
   v271 = v50;
   v277 = v36;
-  v200 = v171;
+  v200 = detectorCropCreationAsyncTasksQueue;
   v270 = v200;
-  v51 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, a3, 0, block);
+  v51 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, class, 0, block);
   v249[0] = MEMORY[0x1E69E9820];
   v249[1] = 3221225472;
   v249[2] = __137__VNImageAnalyzerMultiDetector_internalProcessUsingQualityOfServiceClass_options_regionOfInterest_warningRecorder_error_progressHandler___block_invoke_3;
   v249[3] = &unk_1E77B5248;
   objc_copyWeak(v262, &location);
   v257 = v281;
-  v263 = a3;
+  classCopy2 = class;
   v174 = v51;
   v255 = v174;
-  v189 = v45;
-  v264 = v45;
+  v189 = vNClassCode;
+  v264 = vNClassCode;
   v203 = v47;
   v250 = v203;
   v258 = v279;
@@ -6017,9 +6017,9 @@ LABEL_21:
   v196 = v172;
   v253 = v196;
   v265 = v36;
-  v198 = v170;
+  v198 = detectorCropProcessingAsyncTasksQueue;
   v254 = v198;
-  v175 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, a3, 0, v249);
+  v175 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, class, 0, v249);
   if (!v36)
   {
     VNValidatedLog(1, @"Performing createScaledFullImageForProcessingBlock; %@", v52, v53, v54, v55, v56, v57, val);
@@ -6027,7 +6027,7 @@ LABEL_21:
     VNValidatedLog(1, @"Performing processScaledFullImagePixelBufferBlock; %@", v150, v151, v152, v153, v154, v155, val);
     v175[2]();
     VNValidatedLog(1, @"Finish processing createScaledFullImageForProcessingBlock and processScaledFullImagePixelBufferBlock. currentDetector: %@", v156, v157, v158, v159, v160, v161, val);
-    if ([VNValidationUtilities validateAsyncStatusResults:v196 error:v176])
+    if ([VNValidationUtilities validateAsyncStatusResults:v196 error:errorCopy])
     {
       v25 = v287[5];
     }
@@ -6045,20 +6045,20 @@ LABEL_21:
   VNValidatedLog(1, @"Scheduling processScaledFullImagePixelBufferBlock; %@", v58, v59, v60, v61, v62, v63, val);
   [v198 dispatchGroupAsyncByPreservingQueueCapacity:v203 block:v175];
   v64 = [_VNImageAnalyzerMultiDetectorTilingSceneConfiguration alloc];
-  v65 = [v173 firstObject];
-  v66 = [v65 observationsRecipient];
-  v181 = [(_VNImageAnalyzerMultiDetectorTilingSceneConfiguration *)v64 initWithObservationsRecipient:v66];
+  firstObject = [v173 firstObject];
+  observationsRecipient = [firstObject observationsRecipient];
+  v181 = [(_VNImageAnalyzerMultiDetectorTilingSceneConfiguration *)v64 initWithObservationsRecipient:observationsRecipient];
 
   v186 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v188 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v192 = [v194 count];
+  v192 = [tiles count];
   kdebug_trace();
   VNValidatedLog(1, @"Start processing chunksProcessingGroup. currentDetector: %@", v67, v68, v69, v70, v71, v72, val);
   if (v192)
   {
     for (j = 0; j != v192; ++j)
     {
-      v80 = [v194 objectAtIndexedSubscript:j];
+      v80 = [tiles objectAtIndexedSubscript:j];
       [v80 pixelCropRect];
       v82 = v81;
       v84 = v83;
@@ -6081,12 +6081,12 @@ LABEL_21:
       v235[2] = __137__VNImageAnalyzerMultiDetector_internalProcessUsingQualityOfServiceClass_options_regionOfInterest_warningRecorder_error_progressHandler___block_invoke_6;
       v235[3] = &unk_1E77B5270;
       objc_copyWeak(v243, &location);
-      v244 = v45;
+      v244 = vNClassCode;
       v241 = v247;
       v243[1] = j;
       v90 = v201;
       v236 = v90;
-      v245 = a3;
+      classCopy3 = class;
       v243[2] = v82;
       v243[3] = v84;
       v243[4] = v86;
@@ -6098,16 +6098,16 @@ LABEL_21:
       v240 = v182;
       v92 = v200;
       v239 = v92;
-      v93 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, a3, 0, v235);
+      v93 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, class, 0, v235);
       v220[0] = MEMORY[0x1E69E9820];
       v220[1] = 3221225472;
       v220[2] = __137__VNImageAnalyzerMultiDetector_internalProcessUsingQualityOfServiceClass_options_regionOfInterest_warningRecorder_error_progressHandler___block_invoke_8;
       v220[3] = &unk_1E77B52E8;
       objc_copyWeak(v232, &location);
       v229 = v247;
-      v233 = a3;
+      classCopy4 = class;
       v94 = v93;
-      v234 = v45;
+      v234 = vNClassCode;
       v228 = v94;
       v232[1] = j;
       v95 = v203;
@@ -6121,13 +6121,13 @@ LABEL_21:
       v226 = v196;
       v96 = v198;
       v227 = v96;
-      v97 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, a3, 0, v220);
+      v97 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, class, 0, v220);
       VNValidatedLog(1, @"Scheduling createTileCropForProcessingBlock. currentDetector: %@", v98, v99, v100, v101, v102, v103, val);
       [v92 dispatchGroupAsyncByPreservingQueueCapacity:v90 block:v94];
       VNValidatedLog(1, @"Scheduling processTileBlock. currentDetector: %@", v104, v105, v106, v107, v108, v109, val);
       [v96 dispatchGroupAsyncByPreservingQueueCapacity:v95 block:v97];
 
-      v45 = v189;
+      vNClassCode = v189;
       objc_destroyWeak(v232);
 
       objc_destroyWeak(v243);
@@ -6137,7 +6137,7 @@ LABEL_21:
   }
 
   VNValidatedLog(1, @"Waiting for cropCreationGroup. currentDetector: %@; group: %@", v73, v74, v75, v76, v77, v78, val);
-  if (([v200 dispatchGroupWait:v201 error:v176] & 1) == 0)
+  if (([v200 dispatchGroupWait:v201 error:errorCopy] & 1) == 0)
   {
     v162 = @"Timed out waiting for image analyzer cropCreationGroup when processing full image and %lu tiles. currentDetector: %@; group: %@";
 LABEL_86:
@@ -6146,7 +6146,7 @@ LABEL_86:
   }
 
   VNValidatedLog(1, @"Waiting for cropProcessingGroup. currentDetector: %@; group: %@", v110, v111, v112, v113, v114, v115, val);
-  if (([v198 dispatchGroupWait:v203 error:v176] & 1) == 0)
+  if (([v198 dispatchGroupWait:v203 error:errorCopy] & 1) == 0)
   {
     v162 = @"Timed out waiting for image analyzer cropProcessingGroup when processing full image and %lu tiles. currentDetector: %@; group: %@";
     goto LABEL_86;
@@ -6154,10 +6154,10 @@ LABEL_86:
 
   VNValidatedLog(1, @"Finish processing cropCreationGroup and cropCreationGroup. currentDetector: %@; cropCreationGroup: %@; cropProcessingGroup: %@", v110, v111, v112, v113, v114, v115, val);
   kdebug_trace();
-  if ([VNValidationUtilities validateAsyncStatusResults:v196 error:v176])
+  if ([VNValidationUtilities validateAsyncStatusResults:v196 error:errorCopy])
   {
-    v190 = [v186 allValues];
-    v167 = [v188 allValues];
+    allValues = [v186 allValues];
+    allValues2 = [v188 allValues];
     v218 = 0u;
     v219 = 0u;
     v216 = 0u;
@@ -6178,29 +6178,29 @@ LABEL_43:
         }
 
         v117 = *(*(&v216 + 1) + 8 * v183);
-        v180 = [v117 observationsRecipient];
-        v118 = [v180 originatingRequestSpecifier];
-        v206 = v118;
-        v119 = [(VNImageAnalyzerMultiDetector *)val sceneLabelOperationPointsForOriginatingRequestSpecifier:v118 error:v176];
+        observationsRecipient2 = [v117 observationsRecipient];
+        originatingRequestSpecifier = [observationsRecipient2 originatingRequestSpecifier];
+        v206 = originatingRequestSpecifier;
+        v119 = [(VNImageAnalyzerMultiDetector *)val sceneLabelOperationPointsForOriginatingRequestSpecifier:originatingRequestSpecifier error:errorCopy];
         if (!v119)
         {
           goto LABEL_94;
         }
 
-        v120 = [v117 disallowedList];
+        disallowedList = [v117 disallowedList];
         [v117 minimumConfidence];
         v122 = v121;
         v193 = objc_alloc_init(MEMORY[0x1E695DF70]);
-        v123 = [v117 maximumLeafLabels];
-        v124 = v123 & 0x7FFFFFFFFFFFFFFFLL;
-        if ((v123 & 0x7FFFFFFFFFFFFFFFLL) == 0x7FFFFFFFFFFFFFFFLL)
+        maximumLeafLabels = [v117 maximumLeafLabels];
+        v124 = maximumLeafLabels & 0x7FFFFFFFFFFFFFFFLL;
+        if ((maximumLeafLabels & 0x7FFFFFFFFFFFFFFFLL) == 0x7FFFFFFFFFFFFFFFLL)
         {
           v125 = -1;
         }
 
         else
         {
-          v125 = v123;
+          v125 = maximumLeafLabels;
         }
 
         v247[0] = v125;
@@ -6211,7 +6211,7 @@ LABEL_43:
           v215 = 0u;
           v212 = 0u;
           v213 = 0u;
-          v127 = v190;
+          v127 = allValues;
           v128 = [v127 countByEnumeratingWithState:&v212 objects:v299 count:16];
           v164 = v117;
           if (v128)
@@ -6241,8 +6241,8 @@ LABEL_55:
               v134 = v133;
               if (v133 >= v122)
               {
-                v135 = [v132 identifier];
-                v136 = [(VNImageAnalyzerMultiDetector *)val _processSceneIdentifier:v135 withConfidence:v120 disallowedList:v119 operationPoints:v206 originatingRequestSpecifier:v126 observationsArray:v130 optionalTopN:v176 error:v134];
+                identifier = [v132 identifier];
+                v136 = [(VNImageAnalyzerMultiDetector *)val _processSceneIdentifier:identifier withConfidence:disallowedList disallowedList:v119 operationPoints:v206 originatingRequestSpecifier:v126 observationsArray:v130 optionalTopN:errorCopy error:v134];
 
                 if ((v136 & 1) == 0)
                 {
@@ -6267,12 +6267,12 @@ LABEL_55:
           v117 = v164;
         }
 
-        v137 = [v117 maximumHierarchicalLabels];
-        v138 = v137;
+        maximumHierarchicalLabels = [v117 maximumHierarchicalLabels];
+        v138 = maximumHierarchicalLabels;
         v139 = 0x7FFFFFFFLL;
-        if (v137 <= 0x7FFFFFFE)
+        if (maximumHierarchicalLabels <= 0x7FFFFFFE)
         {
-          v139 = v137;
+          v139 = maximumHierarchicalLabels;
         }
 
         v246[0] = v139;
@@ -6283,7 +6283,7 @@ LABEL_55:
           v211 = 0u;
           v208 = 0u;
           v209 = 0u;
-          v127 = v167;
+          v127 = allValues2;
           v140 = [v127 countByEnumeratingWithState:&v208 objects:v298 count:16];
           if (v140)
           {
@@ -6312,8 +6312,8 @@ LABEL_70:
               v146 = v145;
               if (v145 >= v122)
               {
-                v147 = [v144 identifier];
-                v148 = [(VNImageAnalyzerMultiDetector *)val _processSceneIdentifier:v147 withConfidence:v120 disallowedList:v119 operationPoints:v206 originatingRequestSpecifier:v126 observationsArray:v142 optionalTopN:v176 error:v146];
+                identifier2 = [v144 identifier];
+                v148 = [(VNImageAnalyzerMultiDetector *)val _processSceneIdentifier:identifier2 withConfidence:disallowedList disallowedList:v119 operationPoints:v206 originatingRequestSpecifier:v126 observationsArray:v142 optionalTopN:errorCopy error:v146];
 
                 if ((v148 & 1) == 0)
                 {
@@ -6335,7 +6335,7 @@ LABEL_70:
 
 LABEL_93:
 
-            v118 = v206;
+            originatingRequestSpecifier = v206;
 LABEL_94:
 
             v25 = 0;
@@ -6350,7 +6350,7 @@ LABEL_77:
         v149 = &__block_literal_global_128;
         [v193 sortWithOptions:16 usingComparator:&__block_literal_global_128];
 
-        [v180 receiveObservations:v193];
+        [observationsRecipient2 receiveObservations:v193];
         [v287[5] addObjectsFromArray:v193];
 
         if (++v183 == v165)
@@ -6819,12 +6819,12 @@ BOOL __137__VNImageAnalyzerMultiDetector_internalProcessUsingQualityOfServiceCla
   return *(*(*(a1 + 72) + 8) + 40) != 0;
 }
 
-- (BOOL)completeInitializationForSession:(id)a3 error:(id *)a4
+- (BOOL)completeInitializationForSession:(id)session error:(id *)error
 {
-  v6 = a3;
+  sessionCopy = session;
   v88.receiver = self;
   v88.super_class = VNImageAnalyzerMultiDetector;
-  if ([(VNDetector *)&v88 completeInitializationForSession:v6 error:a4])
+  if ([(VNDetector *)&v88 completeInitializationForSession:sessionCopy error:error])
   {
     v7 = objc_alloc_init(VNRegionOfInterestTilingOptions);
     inputImageTilingOptions = self->_inputImageTilingOptions;
@@ -6845,7 +6845,7 @@ BOOL __137__VNImageAnalyzerMultiDetector_internalProcessUsingQualityOfServiceCla
 
     self->_model = __str.__r_.__value_.__r.__words[0];
     v65 = objc_opt_class();
-    v9 = [v65 _newInferenceDescriptorForModel:self->_model configuredWithOptions:v67 error:a4];
+    v9 = [v65 _newInferenceDescriptorForModel:self->_model configuredWithOptions:v67 error:error];
     inferenceDescriptor = self->_inferenceDescriptor;
     self->_inferenceDescriptor = v9;
 
@@ -6855,14 +6855,14 @@ BOOL __137__VNImageAnalyzerMultiDetector_internalProcessUsingQualityOfServiceCla
       goto LABEL_63;
     }
 
-    v12 = [(VisionCoreSceneNetInferenceNetworkDescriptor *)v11 onlyInputImage];
-    self->_cachedInferenceImagePixelFormatType = [v12 pixelFormatType];
+    onlyInputImage = [(VisionCoreSceneNetInferenceNetworkDescriptor *)v11 onlyInputImage];
+    self->_cachedInferenceImagePixelFormatType = [onlyInputImage pixelFormatType];
 
     v13 = [[_VNImageAnalyzerMultiDetectorSceneOperationPointsCache alloc] initWithInferenceNetworkDescriptor:self->_inferenceDescriptor];
     operationPointsCache = self->_operationPointsCache;
     self->_operationPointsCache = v13;
 
-    v15 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStageMain" error:a4];
+    v15 = [(VNDetector *)self boundComputeDeviceForComputeStage:@"VNComputeStageMain" error:error];
     if (!v15)
     {
 LABEL_62:
@@ -6871,7 +6871,7 @@ LABEL_63:
       goto LABEL_64;
     }
 
-    v64 = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor modelPathForComputeDevice:v15 error:a4];
+    v64 = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor modelPathForComputeDevice:v15 error:error];
     if (!v64)
     {
       v20 = 0;
@@ -6881,15 +6881,15 @@ LABEL_61:
     }
 
     vision::mod::ImageAnalyzer_Options::ImageAnalyzer_Options(&__str);
-    v16 = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor analyzerName];
-    std::string::__assign_external(&__str, [v16 UTF8String]);
+    analyzerName = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor analyzerName];
+    std::string::__assign_external(&__str, [analyzerName UTF8String]);
 
     v74 = [VNEspressoHelpers espressoDeviceIDForComputeDevice:v15];
     v73 = [VNEspressoHelpers espressoStorageTypeForComputeDevice:v15];
     v71 = [VNEspressoHelpers espressoEngineForComputeDevice:v15];
     v72 = 0;
-    v17 = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor inputImageBlobName];
-    std::string::__assign_external(&v76, [v17 UTF8String]);
+    inputImageBlobName = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor inputImageBlobName];
+    std::string::__assign_external(&v76, [inputImageBlobName UTF8String]);
 
     cachedInferenceImagePixelFormatType = self->_cachedInferenceImagePixelFormatType;
     if (cachedInferenceImagePixelFormatType <= 1094862673)
@@ -6928,47 +6928,47 @@ LABEL_22:
     v75 = v19;
     v85 = 256;
     v21 = [v67 objectForKeyedSubscript:@"VNDetectorInitOption_MemoryPoolId"];
-    v87 = [v21 unsignedLongLongValue];
+    unsignedLongLongValue = [v21 unsignedLongLongValue];
 
-    v22 = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor shouldInitializeAdditionalModelHeads];
-    v23 = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor sceneRepresentationBlobName];
-    v24 = v23;
-    if (v23)
+    shouldInitializeAdditionalModelHeads = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor shouldInitializeAdditionalModelHeads];
+    sceneRepresentationBlobName = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor sceneRepresentationBlobName];
+    v24 = sceneRepresentationBlobName;
+    if (sceneRepresentationBlobName)
     {
-      std::string::__assign_external(&v77, [v23 UTF8String]);
+      std::string::__assign_external(&v77, [sceneRepresentationBlobName UTF8String]);
     }
 
-    v25 = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor sceneLabelsFileURL];
-    v26 = [v25 VisionCoreFileSystemPathAndReturnError:0];
+    sceneLabelsFileURL = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor sceneLabelsFileURL];
+    v26 = [sceneLabelsFileURL VisionCoreFileSystemPathAndReturnError:0];
 
     v63 = v26;
     if (v26)
     {
-      v27 = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor sceneClassificationLabelsBlobName];
-      std::string::__assign_external(&v79, [v27 UTF8String]);
+      sceneClassificationLabelsBlobName = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor sceneClassificationLabelsBlobName];
+      std::string::__assign_external(&v79, [sceneClassificationLabelsBlobName UTF8String]);
     }
 
-    v28 = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor aestheticsLabelsFileURL];
-    v29 = [v28 VisionCoreFileSystemPathAndReturnError:0];
+    aestheticsLabelsFileURL = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor aestheticsLabelsFileURL];
+    v29 = [aestheticsLabelsFileURL VisionCoreFileSystemPathAndReturnError:0];
 
     v61 = v29;
     if (v29)
     {
-      v30 = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor aestheticsScoresBlobName];
-      std::string::__assign_external(&v81, [v30 UTF8String]);
+      aestheticsScoresBlobName = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor aestheticsScoresBlobName];
+      std::string::__assign_external(&v81, [aestheticsScoresBlobName UTF8String]);
 
-      v31 = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor aestheticsAttributesBlobName];
-      std::string::__assign_external(&v80, [v31 UTF8String]);
+      aestheticsAttributesBlobName = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor aestheticsAttributesBlobName];
+      std::string::__assign_external(&v80, [aestheticsAttributesBlobName UTF8String]);
     }
 
-    v58 = v22;
-    v32 = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor saliencyAHeatMapBlobName];
-    v62 = v32;
-    if (v32)
+    v58 = shouldInitializeAdditionalModelHeads;
+    saliencyAHeatMapBlobName = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor saliencyAHeatMapBlobName];
+    v62 = saliencyAHeatMapBlobName;
+    if (saliencyAHeatMapBlobName)
     {
-      std::string::__assign_external(v82, [v32 UTF8String]);
+      std::string::__assign_external(v82, [saliencyAHeatMapBlobName UTF8String]);
       v33 = [objc_opt_class() _newSaliencyHeatmapBoundingBoxGeneratorOptionsForOptions:v67];
-      v34 = [v6 detectorOfType:@"VNAttentionBasedSaliencyHeatmapBoundingBoxGeneratorType" configuredWithOptions:v33 error:a4];
+      v34 = [sessionCopy detectorOfType:@"VNAttentionBasedSaliencyHeatmapBoundingBoxGeneratorType" configuredWithOptions:v33 error:error];
 
       v35 = v62;
       if (!v34)
@@ -6983,13 +6983,13 @@ LABEL_60:
       }
     }
 
-    v36 = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor saliencyOHeatMapBlobName];
-    v60 = v36;
-    if (v36)
+    saliencyOHeatMapBlobName = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor saliencyOHeatMapBlobName];
+    v60 = saliencyOHeatMapBlobName;
+    if (saliencyOHeatMapBlobName)
     {
-      std::string::__assign_external(v83, [v36 UTF8String]);
+      std::string::__assign_external(v83, [saliencyOHeatMapBlobName UTF8String]);
       v37 = [objc_opt_class() _newSaliencyHeatmapBoundingBoxGeneratorOptionsForOptions:v67];
-      v38 = [v6 detectorOfType:@"VNObjectnessBasedSaliencyHeatmapBoundingBoxGeneratorType" configuredWithOptions:v37 error:a4];
+      v38 = [sessionCopy detectorOfType:@"VNObjectnessBasedSaliencyHeatmapBoundingBoxGeneratorType" configuredWithOptions:v37 error:error];
 
       v39 = v60;
       if (!v38)
@@ -7004,19 +7004,19 @@ LABEL_59:
       }
     }
 
-    v40 = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor entityNetLabelsFileURL];
-    v57 = v40;
-    if (v40)
+    entityNetLabelsFileURL = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor entityNetLabelsFileURL];
+    v57 = entityNetLabelsFileURL;
+    if (entityNetLabelsFileURL)
     {
-      v41 = [v40 VisionCoreFileSystemPathAndReturnError:a4];
+      v41 = [entityNetLabelsFileURL VisionCoreFileSystemPathAndReturnError:error];
       if (!v41)
       {
         goto LABEL_58;
       }
 
       v56 = v41;
-      v42 = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor entityNetLabelsBlobName];
-      std::string::__assign_external(&v84, [v42 UTF8String]);
+      entityNetLabelsBlobName = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor entityNetLabelsBlobName];
+      std::string::__assign_external(&v84, [entityNetLabelsBlobName UTF8String]);
     }
 
     else
@@ -7026,8 +7026,8 @@ LABEL_59:
 
     if (v58)
     {
-      v45 = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor objectDetectorLabelsFileURL];
-      v46 = [v45 VisionCoreFileSystemPathAndReturnError:a4];
+      objectDetectorLabelsFileURL = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor objectDetectorLabelsFileURL];
+      v46 = [objectDetectorLabelsFileURL VisionCoreFileSystemPathAndReturnError:error];
 
       v59 = v46;
       if (!v46)
@@ -7046,8 +7046,8 @@ LABEL_58:
 
       if (self->_model == 1)
       {
-        v47 = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor objectDetectorOutputBlobBaseName];
-        std::string::__assign_external(v86, [v47 UTF8String]);
+        objectDetectorOutputBlobBaseName = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor objectDetectorOutputBlobBaseName];
+        std::string::__assign_external(v86, [objectDetectorOutputBlobBaseName UTF8String]);
 
         _configureImageAnalyzerOptionsForSceneNetV3ObjDetNet(&__str);
       }
@@ -7064,7 +7064,7 @@ LABEL_58:
 
     if (v65)
     {
-      [v65 createHierarchicalModelForInferenceDescriptor:self->_inferenceDescriptor error:a4];
+      [v65 createHierarchicalModelForInferenceDescriptor:self->_inferenceDescriptor error:error];
       v48 = *__p;
     }
 
@@ -7096,17 +7096,17 @@ LABEL_58:
     if (ptr)
     {
 LABEL_53:
-      v51 = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor fingerprintsHasherFileURL];
-      v52 = [v51 VisionCoreFileSystemPathAndReturnError:0];
+      fingerprintsHasherFileURL = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor fingerprintsHasherFileURL];
+      v52 = [fingerprintsHasherFileURL VisionCoreFileSystemPathAndReturnError:0];
 
       if (v52)
       {
-        v53 = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor fingerprintsOutputBlobName];
-        std::string::__assign_external(&v78, [v53 UTF8String]);
+        fingerprintsOutputBlobName = [(VisionCoreSceneNetInferenceNetworkDescriptor *)self->_inferenceDescriptor fingerprintsOutputBlobName];
+        std::string::__assign_external(&v78, [fingerprintsOutputBlobName UTF8String]);
       }
 
       v69 = 8576;
-      vision::mod::ImageAnalyzer::createImageAnalyzer(__p, &v69, [v64 UTF8String], objc_msgSend(v63, "UTF8String"), objc_msgSend(v61, "UTF8String"), 0, objc_msgSend(v59, "UTF8String"), objc_msgSend(v56, "UTF8String"), &__str, v15, v6);
+      vision::mod::ImageAnalyzer::createImageAnalyzer(__p, &v69, [v64 UTF8String], objc_msgSend(v63, "UTF8String"), objc_msgSend(v61, "UTF8String"), 0, objc_msgSend(v59, "UTF8String"), objc_msgSend(v56, "UTF8String"), &__str, v15, sessionCopy);
     }
 
     v54 = v59;
@@ -7118,17 +7118,17 @@ LABEL_64:
   return 0;
 }
 
-- (void)_configureSlidersAdjustmentsInImageAnalyzerOptions:(uint64_t)a1 forConfigurationOptions:(uint64_t)a2
+- (void)_configureSlidersAdjustmentsInImageAnalyzerOptions:(uint64_t)options forConfigurationOptions:(uint64_t)configurationOptions
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (options)
   {
-    std::vector<std::string>::clear[abi:ne200100]((a2 + 336));
-    v4 = [*(a1 + 80) sliderNetBlobNamePrefix];
-    v5 = v4;
-    if (v4)
+    std::vector<std::string>::clear[abi:ne200100]((configurationOptions + 336));
+    sliderNetBlobNamePrefix = [*(options + 80) sliderNetBlobNamePrefix];
+    v5 = sliderNetBlobNamePrefix;
+    if (sliderNetBlobNamePrefix)
     {
-      std::string::basic_string[abi:ne200100]<0>(&v19, [v4 UTF8String]);
+      std::string::basic_string[abi:ne200100]<0>(&v19, [sliderNetBlobNamePrefix UTF8String]);
       [objc_opt_class() allPhotosAdjustmentKeys];
       v17 = 0u;
       v18 = 0u;
@@ -7160,10 +7160,10 @@ LABEL_64:
             }
 
             v11 = v10;
-            v12 = [v10 UTF8String];
-            v13 = strlen(v12);
-            std::string::append(&__p, v12, v13);
-            std::vector<std::string>::push_back[abi:ne200100](a2 + 336, &__p);
+            uTF8String = [v10 UTF8String];
+            v13 = strlen(uTF8String);
+            std::string::append(&__p, uTF8String, v13);
+            std::vector<std::string>::push_back[abi:ne200100](configurationOptions + 336, &__p);
             if (SHIBYTE(__p.__r_.__value_.__r.__words[2]) < 0)
             {
               operator delete(__p.__r_.__value_.__l.__data_);
@@ -7187,11 +7187,11 @@ LABEL_64:
   }
 }
 
-- (VNImageAnalyzerMultiDetector)initWithConfigurationOptions:(id)a3
+- (VNImageAnalyzerMultiDetector)initWithConfigurationOptions:(id)options
 {
   v4.receiver = self;
   v4.super_class = VNImageAnalyzerMultiDetector;
-  result = [(VNDetector *)&v4 initWithConfigurationOptions:a3];
+  result = [(VNDetector *)&v4 initWithConfigurationOptions:options];
   if (result)
   {
     result->_cachedAllSceneClassificationsFromLastAnalysisAccessLock._os_unfair_lock_opaque = 0;
@@ -7200,19 +7200,19 @@ LABEL_64:
   return result;
 }
 
-- (BOOL)warmUpSession:(id)a3 withOptions:(id)a4 error:(id *)a5
+- (BOOL)warmUpSession:(id)session withOptions:(id)options error:(id *)error
 {
   v53 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  sessionCopy = session;
+  optionsCopy = options;
   v51.receiver = self;
   v51.super_class = VNImageAnalyzerMultiDetector;
-  if (![(VNDetector *)&v51 warmUpSession:v8 withOptions:v9 error:a5])
+  if (![(VNDetector *)&v51 warmUpSession:sessionCopy withOptions:optionsCopy error:error])
   {
     goto LABEL_39;
   }
 
-  v10 = [v9 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_JunkConfiguration"];
+  v10 = [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_JunkConfiguration"];
   v11 = v10 == 0;
 
   if (v11)
@@ -7220,7 +7220,7 @@ LABEL_64:
     goto LABEL_6;
   }
 
-  [(VNImageAnalyzerMultiDetector *)&v49 _junkCustomClassifiersAndReturnError:a5];
+  [(VNImageAnalyzerMultiDetector *)&v49 _junkCustomClassifiersAndReturnError:error];
   v12 = v49;
   if (v50)
   {
@@ -7230,7 +7230,7 @@ LABEL_64:
   if (v12)
   {
 LABEL_6:
-    [v9 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_SceneConfigurations"];
+    [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_SceneConfigurations"];
     v47 = 0u;
     v48 = 0u;
     v45 = 0u;
@@ -7248,13 +7248,13 @@ LABEL_6:
             objc_enumerationMutation(v13);
           }
 
-          v17 = [*(*(&v45 + 1) + 8 * i) observationsRecipient];
-          v18 = [v17 originatingRequestSpecifier];
+          observationsRecipient = [*(*(&v45 + 1) + 8 * i) observationsRecipient];
+          originatingRequestSpecifier = [observationsRecipient originatingRequestSpecifier];
 
-          v19 = [(VNImageAnalyzerMultiDetector *)self sceneLabelOperationPointsForOriginatingRequestSpecifier:v18 error:a5];
-          LOBYTE(v17) = v19 == 0;
+          v19 = [(VNImageAnalyzerMultiDetector *)self sceneLabelOperationPointsForOriginatingRequestSpecifier:originatingRequestSpecifier error:error];
+          LOBYTE(observationsRecipient) = v19 == 0;
 
-          if (v17)
+          if (observationsRecipient)
           {
 
             LOBYTE(v40) = 0;
@@ -7277,14 +7277,14 @@ LABEL_6:
     aBlock[2] = __64__VNImageAnalyzerMultiDetector_warmUpSession_withOptions_error___block_invoke;
     aBlock[3] = &unk_1E77B51A8;
     aBlock[4] = self;
-    v20 = v9;
+    v20 = optionsCopy;
     v43 = v20;
-    v44 = v8;
+    v44 = sessionCopy;
     v21 = _Block_copy(aBlock);
     v22 = [v20 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_SaliencyAConfiguration"];
     v23 = v22 == 0;
 
-    if (!v23 && (v21[2](v21, @"VNAttentionBasedSaliencyHeatmapBoundingBoxGeneratorType", a5) & 1) == 0)
+    if (!v23 && (v21[2](v21, @"VNAttentionBasedSaliencyHeatmapBoundingBoxGeneratorType", error) & 1) == 0)
     {
       goto LABEL_41;
     }
@@ -7292,7 +7292,7 @@ LABEL_6:
     v24 = [v20 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorOption_SaliencyOConfiguration"];
     v25 = v24 == 0;
 
-    if (!v25 && !v21[2](v21, @"VNObjectnessBasedSaliencyHeatmapBoundingBoxGeneratorType", a5))
+    if (!v25 && !v21[2](v21, @"VNObjectnessBasedSaliencyHeatmapBoundingBoxGeneratorType", error))
     {
       goto LABEL_41;
     }
@@ -7302,7 +7302,7 @@ LABEL_6:
 
     if (!v27)
     {
-      [(VNImageAnalyzerMultiDetector *)&v49 _VNVYvzEtX1JlUdu8xx5qhDICustomClassifierAndReturnError:a5];
+      [(VNImageAnalyzerMultiDetector *)&v49 _VNVYvzEtX1JlUdu8xx5qhDICustomClassifierAndReturnError:error];
       v28 = v49;
       if (v50)
       {
@@ -7320,7 +7320,7 @@ LABEL_6:
 
     if (!v30)
     {
-      [(VNImageAnalyzerMultiDetector *)&v49 _potentialLandmarksCustomClassifierAndReturnError:a5];
+      [(VNImageAnalyzerMultiDetector *)&v49 _potentialLandmarksCustomClassifierAndReturnError:error];
       v31 = v49;
       if (v50)
       {
@@ -7338,7 +7338,7 @@ LABEL_6:
 
     if (!v33)
     {
-      [(VNImageAnalyzerMultiDetector *)&v49 _VN5kJNH3eYuyaLxNpZr5Z7ziCustomClassifierAndReturnError:a5];
+      [(VNImageAnalyzerMultiDetector *)&v49 _VN5kJNH3eYuyaLxNpZr5Z7ziCustomClassifierAndReturnError:error];
       v34 = v49;
       if (v50)
       {
@@ -7359,7 +7359,7 @@ LABEL_6:
       goto LABEL_34;
     }
 
-    [(VNImageAnalyzerMultiDetector *)&v49 _VNdGg5skzXHSAENO6T3enHECustomClassifierForOriginatingRequestSpecifier:a5];
+    [(VNImageAnalyzerMultiDetector *)&v49 _VNdGg5skzXHSAENO6T3enHECustomClassifierForOriginatingRequestSpecifier:error];
     v37 = v49;
     if (v50)
     {
@@ -7377,7 +7377,7 @@ LABEL_34:
         goto LABEL_38;
       }
 
-      [(VNImageAnalyzerMultiDetector *)&v49 _cityNatureCustomClassifierAndReturnError:a5];
+      [(VNImageAnalyzerMultiDetector *)&v49 _cityNatureCustomClassifierAndReturnError:error];
       v40 = v49;
       if (v50)
       {
@@ -7428,19 +7428,19 @@ uint64_t __64__VNImageAnalyzerMultiDetector_warmUpSession_withOptions_error___bl
   return v9;
 }
 
-- (BOOL)shouldBeReplacedByDetectorOfClass:(Class)a3 withConfiguration:(id)a4
+- (BOOL)shouldBeReplacedByDetectorOfClass:(Class)class withConfiguration:(id)configuration
 {
-  v6 = a4;
-  if (objc_opt_class() == a3)
+  configurationCopy = configuration;
+  if (objc_opt_class() == class)
   {
-    if (([(VNImageAnalyzerMultiDetector *)self _isNotConfiguredWithBooleanOptionNamed:v6 butRequiredByOptions:?]& 1) != 0)
+    if (([(VNImageAnalyzerMultiDetector *)self _isNotConfiguredWithBooleanOptionNamed:configurationCopy butRequiredByOptions:?]& 1) != 0)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = [(VNImageAnalyzerMultiDetector *)self _isNotConfiguredWithBooleanOptionNamed:v6 butRequiredByOptions:?];
+      v7 = [(VNImageAnalyzerMultiDetector *)self _isNotConfiguredWithBooleanOptionNamed:configurationCopy butRequiredByOptions:?];
     }
   }
 
@@ -7452,38 +7452,38 @@ uint64_t __64__VNImageAnalyzerMultiDetector_warmUpSession_withOptions_error___bl
   return v7;
 }
 
-- (void)_isNotConfiguredWithBooleanOptionNamed:(void *)a3 butRequiredByOptions:
+- (void)_isNotConfiguredWithBooleanOptionNamed:(void *)named butRequiredByOptions:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = v6;
-  if (a1)
+  namedCopy = named;
+  v7 = namedCopy;
+  if (self)
   {
-    v8 = [v6 objectForKey:v5];
-    v9 = [v8 BOOLValue];
+    v8 = [namedCopy objectForKey:v5];
+    bOOLValue = [v8 BOOLValue];
 
-    if (v9)
+    if (bOOLValue)
     {
-      v10 = [a1 configurationOptions];
-      v11 = [v10 objectForKey:v5];
-      v12 = [v11 BOOLValue];
+      configurationOptions = [self configurationOptions];
+      v11 = [configurationOptions objectForKey:v5];
+      bOOLValue2 = [v11 BOOLValue];
 
-      a1 = (v12 ^ 1u);
+      self = (bOOLValue2 ^ 1u);
     }
 
     else
     {
-      a1 = 0;
+      self = 0;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)canBehaveAsDetectorOfClass:(Class)a3 withConfiguration:(id)a4
+- (BOOL)canBehaveAsDetectorOfClass:(Class)class withConfiguration:(id)configuration
 {
-  v6 = a4;
-  if (objc_opt_class() != a3 || ([(VNImageAnalyzerMultiDetector *)self _isNotConfiguredWithBooleanOptionNamed:v6 butRequiredByOptions:?]& 1) != 0 || ([(VNImageAnalyzerMultiDetector *)self _isNotConfiguredWithBooleanOptionNamed:v6 butRequiredByOptions:?]& 1) != 0)
+  configurationCopy = configuration;
+  if (objc_opt_class() != class || ([(VNImageAnalyzerMultiDetector *)self _isNotConfiguredWithBooleanOptionNamed:configurationCopy butRequiredByOptions:?]& 1) != 0 || ([(VNImageAnalyzerMultiDetector *)self _isNotConfiguredWithBooleanOptionNamed:configurationCopy butRequiredByOptions:?]& 1) != 0)
   {
     v7 = 0;
   }
@@ -7492,7 +7492,7 @@ uint64_t __64__VNImageAnalyzerMultiDetector_warmUpSession_withOptions_error___bl
   {
     v9.receiver = self;
     v9.super_class = VNImageAnalyzerMultiDetector;
-    v7 = [(VNDetector *)&v9 canBehaveAsDetectorOfClass:a3 withConfiguration:v6];
+    v7 = [(VNDetector *)&v9 canBehaveAsDetectorOfClass:class withConfiguration:configurationCopy];
   }
 
   return v7;
@@ -7509,20 +7509,20 @@ uint64_t __64__VNImageAnalyzerMultiDetector_warmUpSession_withOptions_error___bl
   return v4;
 }
 
-+ (id)supportedImageSizeSetForOptions:(id)a3 error:(id *)a4
++ (id)supportedImageSizeSetForOptions:(id)options error:(id *)error
 {
-  v6 = [a1 _inferenceDescriptorForOptions:a3 error:?];
+  v6 = [self _inferenceDescriptorForOptions:options error:?];
   v7 = v6;
   if (v6)
   {
     v8 = [v6 URL];
-    v9 = [v8 VisionCoreFileSystemPathAndReturnError:a4];
+    v9 = [v8 VisionCoreFileSystemPathAndReturnError:error];
 
     if (v9)
     {
-      v10 = [v7 inputImageBlobName];
-      v11 = [v7 onlyInputImage];
-      v12 = [a1 supportedImageSizeSetForEspressoModelAtPath:v9 inputImageBlobName:v10 analysisPixelFormatType:objc_msgSend(v11 error:{"pixelFormatType"), a4}];
+      inputImageBlobName = [v7 inputImageBlobName];
+      onlyInputImage = [v7 onlyInputImage];
+      v12 = [self supportedImageSizeSetForEspressoModelAtPath:v9 inputImageBlobName:inputImageBlobName analysisPixelFormatType:objc_msgSend(onlyInputImage error:{"pixelFormatType"), error}];
     }
 
     else
@@ -7539,14 +7539,14 @@ uint64_t __64__VNImageAnalyzerMultiDetector_warmUpSession_withOptions_error___bl
   return v12;
 }
 
-+ (shared_ptr<vision::mod::ImageClassifier_HierarchicalModel>)createHierarchicalModelForMultiDetectorModel:(unint64_t)a3 error:(id *)a4
++ (shared_ptr<vision::mod::ImageClassifier_HierarchicalModel>)createHierarchicalModelForMultiDetectorModel:(unint64_t)model error:(id *)error
 {
   v8 = v4;
-  v12 = [a1 fullyPopulatedConfigurationOptionsWithOverridingOptions:MEMORY[0x1E695E0F8] populateComputeDevice:1];
-  v9 = [a1 _newInferenceDescriptorForModel:a3 configuredWithOptions:? error:?];
+  v12 = [self fullyPopulatedConfigurationOptionsWithOverridingOptions:MEMORY[0x1E695E0F8] populateComputeDevice:1];
+  v9 = [self _newInferenceDescriptorForModel:model configuredWithOptions:? error:?];
   if (v9)
   {
-    [a1 createHierarchicalModelForInferenceDescriptor:v9 error:a4];
+    [self createHierarchicalModelForInferenceDescriptor:v9 error:error];
   }
 
   else
@@ -7560,17 +7560,17 @@ uint64_t __64__VNImageAnalyzerMultiDetector_warmUpSession_withOptions_error___bl
   return result;
 }
 
-+ (shared_ptr<vision::mod::ImageClassifier_HierarchicalModel>)createHierarchicalModelForInferenceDescriptor:(id)a3 error:(id *)a4
++ (shared_ptr<vision::mod::ImageClassifier_HierarchicalModel>)createHierarchicalModelForInferenceDescriptor:(id)descriptor error:(id *)error
 {
   v6 = v4;
-  v7 = a3;
-  v8 = [v7 sceneLabelsFileURL];
-  v9 = [v8 VisionCoreFileSystemPathAndReturnError:a4];
+  descriptorCopy = descriptor;
+  sceneLabelsFileURL = [descriptorCopy sceneLabelsFileURL];
+  v9 = [sceneLabelsFileURL VisionCoreFileSystemPathAndReturnError:error];
 
   if (v9)
   {
-    v10 = [v7 sceneLabelRelationshipsFileURL];
-    v11 = [v10 VisionCoreFileSystemPathAndReturnError:a4];
+    sceneLabelRelationshipsFileURL = [descriptorCopy sceneLabelRelationshipsFileURL];
+    v11 = [sceneLabelRelationshipsFileURL VisionCoreFileSystemPathAndReturnError:error];
 
     if (v11)
     {
@@ -7590,7 +7590,7 @@ uint64_t __64__VNImageAnalyzerMultiDetector_warmUpSession_withOptions_error___bl
       v19 = &v20;
       v18 = v11;
       v12 = _Block_copy(aBlock);
-      if (VNExecuteBlock(v12, a4))
+      if (VNExecuteBlock(v12, error))
       {
         v13 = v21[7];
         *v6 = v21[6];
@@ -7735,9 +7735,9 @@ void __84__VNImageAnalyzerMultiDetector_createHierarchicalModelForInferenceDescr
   std::allocate_shared[abi:ne200100]<vision::mod::ImageClassifier_HierarchicalModel,std::allocator<vision::mod::ImageClassifier_HierarchicalModel>,char const*,decltype(nullptr),std::vector<std::pair<std::string,BOOL>> &,0>();
 }
 
-+ (id)disallowedListForModel:(unint64_t)a3
++ (id)disallowedListForModel:(unint64_t)model
 {
-  if (a3 == 1)
+  if (model == 1)
   {
     v5 = +[VNDisallowedList sceneNetV3];
   }
@@ -7750,7 +7750,7 @@ void __84__VNImageAnalyzerMultiDetector_createHierarchicalModelForInferenceDescr
   return v5;
 }
 
-+ (unint64_t)modelForRequestClass:(Class)a3 revision:(unint64_t)a4
++ (unint64_t)modelForRequestClass:(Class)class revision:(unint64_t)revision
 {
   if (+[VNImageAnalyzerMultiDetector modelForRequestClass:revision:]::onceToken != -1)
   {
@@ -7758,7 +7758,7 @@ void __84__VNImageAnalyzerMultiDetector_createHierarchicalModelForInferenceDescr
   }
 
   v6 = +[VNImageAnalyzerMultiDetector modelForRequestClass:revision:]::ourModelMap;
-  v7 = VNRequestClassFromClientSubclass(a3);
+  v7 = VNRequestClassFromClientSubclass(class);
   v10 = *(v6 + 8);
   v9 = (v6 + 8);
   v8 = v10;
@@ -7773,7 +7773,7 @@ void __84__VNImageAnalyzerMultiDetector_createHierarchicalModelForInferenceDescr
     v12 = v8[4];
     if (v7 == v12)
     {
-      v13 = v8[5] < a4;
+      v13 = v8[5] < revision;
     }
 
     else
@@ -7792,7 +7792,7 @@ void __84__VNImageAnalyzerMultiDetector_createHierarchicalModelForInferenceDescr
   }
 
   while (v8);
-  if (v11 == v9 || ((v16 = v11[4], v16 != v7) ? (v17 = v7 < v16) : (v17 = v11[5] > a4), v17))
+  if (v11 == v9 || ((v16 = v11[4], v16 != v7) ? (v17 = v7 < v16) : (v17 = v11[5] > revision), v17))
   {
 LABEL_20:
     v11 = v9;
@@ -7809,32 +7809,32 @@ LABEL_20:
   }
 }
 
-+ (Class)detectorClassForConfigurationOptions:(id)a3 error:(id *)a4
++ (Class)detectorClassForConfigurationOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v7 = objc_alloc(MEMORY[0x1E695DFD8]);
-  v8 = [v6 allKeys];
-  v9 = [v7 initWithArray:v8];
+  allKeys = [optionsCopy allKeys];
+  v9 = [v7 initWithArray:allKeys];
 
-  v10 = [a1 configurationOptionKeysForDetectorKey];
-  if ([v10 isSubsetOfSet:v9])
+  configurationOptionKeysForDetectorKey = [self configurationOptionKeysForDetectorKey];
+  if ([configurationOptionKeysForDetectorKey isSubsetOfSet:v9])
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = &OBJC_METACLASS___VNImageAnalyzerMultiDetector;
-    a4 = objc_msgSendSuper2(&v14, sel_detectorClassForConfigurationOptions_error_, v6, a4);
+    error = objc_msgSendSuper2(&v14, sel_detectorClassForConfigurationOptions_error_, optionsCopy, error);
   }
 
-  else if (a4)
+  else if (error)
   {
-    v11 = [v10 mutableCopy];
+    v11 = [configurationOptionKeysForDetectorKey mutableCopy];
     [v11 minusSet:v9];
-    v12 = [v11 anyObject];
-    *a4 = [VNError errorForMissingOptionNamed:v12];
+    anyObject = [v11 anyObject];
+    *error = [VNError errorForMissingOptionNamed:anyObject];
 
-    a4 = 0;
+    error = 0;
   }
 
-  return a4;
+  return error;
 }
 
 + (id)configurationOptionKeysForDetectorKey
@@ -7843,7 +7843,7 @@ LABEL_20:
   block[1] = 3221225472;
   block[2] = __69__VNImageAnalyzerMultiDetector_configurationOptionKeysForDetectorKey__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNImageAnalyzerMultiDetector configurationOptionKeysForDetectorKey]::onceToken != -1)
   {
     dispatch_once(&+[VNImageAnalyzerMultiDetector configurationOptionKeysForDetectorKey]::onceToken, block);
@@ -7867,19 +7867,19 @@ void __69__VNImageAnalyzerMultiDetector_configurationOptionKeysForDetectorKey__b
   +[VNImageAnalyzerMultiDetector configurationOptionKeysForDetectorKey]::configurationOptionKeys = v3;
 }
 
-+ (void)recordDefaultConfigurationOptionsInDictionary:(id)a3
++ (void)recordDefaultConfigurationOptionsInDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5.receiver = a1;
+  dictionaryCopy = dictionary;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___VNImageAnalyzerMultiDetector;
-  objc_msgSendSuper2(&v5, sel_recordDefaultConfigurationOptionsInDictionary_, v4);
-  [v4 setObject:&unk_1F19C1978 forKeyedSubscript:@"VNImageAnalyzerMultiDetectorInitializationOption_Model"];
+  objc_msgSendSuper2(&v5, sel_recordDefaultConfigurationOptionsInDictionary_, dictionaryCopy);
+  [dictionaryCopy setObject:&unk_1F19C1978 forKeyedSubscript:@"VNImageAnalyzerMultiDetectorInitializationOption_Model"];
 }
 
-+ (id)supportedComputeStageDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeStageDevicesForOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [VNValidationUtilities originatingRequestSpecifierInOptions:v6 error:a4];
+  optionsCopy = options;
+  v7 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   if (v7)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -7888,7 +7888,7 @@ void __69__VNImageAnalyzerMultiDetector_configurationOptionKeysForDetectorKey__b
 
     v16 = 0;
     v17 = 0;
-    LOBYTE(v9) = [a1 _getAssociatedBoundingBoxGeneratorClass:&v17 options:&v16 forConfigurationOptions:v6 error:a4];
+    LOBYTE(v9) = [self _getAssociatedBoundingBoxGeneratorClass:&v17 options:&v16 forConfigurationOptions:optionsCopy error:error];
     v10 = v16;
     if (v9)
     {
@@ -7901,7 +7901,7 @@ LABEL_8:
         goto LABEL_10;
       }
 
-      v11 = [v17 supportedComputeStageDevicesForOptions:v6 error:a4];
+      v11 = [v17 supportedComputeStageDevicesForOptions:optionsCopy error:error];
       v12 = v11;
       if (v11)
       {
@@ -7922,7 +7922,7 @@ LABEL_10:
   return v14;
 }
 
-+ (id)computeStagesToBindForConfigurationOptions:(id)a3
++ (id)computeStagesToBindForConfigurationOptions:(id)options
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v5[0] = @"VNComputeStageMain";
@@ -7931,38 +7931,38 @@ LABEL_10:
   return v3;
 }
 
-+ (BOOL)_getAssociatedBoundingBoxGeneratorClass:(Class *)a3 options:(id *)a4 forConfigurationOptions:(id)a5 error:(id *)a6
++ (BOOL)_getAssociatedBoundingBoxGeneratorClass:(Class *)class options:(id *)options forConfigurationOptions:(id)configurationOptions error:(id *)error
 {
-  v10 = a5;
-  v11 = [VNValidationUtilities originatingRequestSpecifierInOptions:v10 error:a6];
+  configurationOptionsCopy = configurationOptions;
+  v11 = [VNValidationUtilities originatingRequestSpecifierInOptions:configurationOptionsCopy error:error];
   if (v11)
   {
-    v12 = [a1 _saliencyHeatmapBoundingBoxGeneratorTypeForOriginatingRequestSpecifier:v11];
+    v12 = [self _saliencyHeatmapBoundingBoxGeneratorTypeForOriginatingRequestSpecifier:v11];
     if (v12)
     {
       v19 = 0;
-      v13 = [a1 _newSaliencyHeatmapBoundingBoxGeneratorOptionsForOptions:v10];
-      v14 = [VNDetector detectorClassAndConfigurationOptions:&v19 forDetectorType:v12 options:v13 error:a6];
+      v13 = [self _newSaliencyHeatmapBoundingBoxGeneratorOptionsForOptions:configurationOptionsCopy];
+      v14 = [VNDetector detectorClassAndConfigurationOptions:&v19 forDetectorType:v12 options:v13 error:error];
       v15 = v19;
 
       v16 = v14 != 0;
       if (v14)
       {
-        *a3 = v14;
-        if (a4)
+        *class = v14;
+        if (options)
         {
           v17 = v15;
-          *a4 = v15;
+          *options = v15;
         }
       }
     }
 
     else
     {
-      *a3 = 0;
-      if (a4)
+      *class = 0;
+      if (options)
       {
-        *a4 = 0;
+        *options = 0;
       }
 
       v16 = 1;
@@ -7977,11 +7977,11 @@ LABEL_10:
   return v16;
 }
 
-+ (id)_newSaliencyHeatmapBoundingBoxGeneratorOptionsForOptions:(id)a3
++ (id)_newSaliencyHeatmapBoundingBoxGeneratorOptionsForOptions:(id)options
 {
-  v3 = a3;
-  v4 = [v3 mutableCopy];
-  v5 = [v3 objectForKeyedSubscript:@"VNDetectorOption_ComputeStageDeviceAssignments"];
+  optionsCopy = options;
+  v4 = [optionsCopy mutableCopy];
+  v5 = [optionsCopy objectForKeyedSubscript:@"VNDetectorOption_ComputeStageDeviceAssignments"];
   if ([v5 count])
   {
     v6 = objc_alloc(MEMORY[0x1E695DF20]);
@@ -7994,10 +7994,10 @@ LABEL_10:
   return v4;
 }
 
-+ (id)_saliencyHeatmapBoundingBoxGeneratorTypeForOriginatingRequestSpecifier:(id)a3
++ (id)_saliencyHeatmapBoundingBoxGeneratorTypeForOriginatingRequestSpecifier:(id)specifier
 {
-  v3 = a3;
-  if ([v3 specifiesRequestClass:objc_opt_class()])
+  specifierCopy = specifier;
+  if ([specifierCopy specifiesRequestClass:objc_opt_class()])
   {
     v4 = VNAttentionBasedSaliencyHeatmapBoundingBoxGeneratorType;
 LABEL_5:
@@ -8005,7 +8005,7 @@ LABEL_5:
     goto LABEL_7;
   }
 
-  if ([v3 specifiesRequestClass:objc_opt_class()])
+  if ([specifierCopy specifiesRequestClass:objc_opt_class()])
   {
     v4 = VNObjectnessBasedSaliencyHeatmapBoundingBoxGeneratorType;
     goto LABEL_5;
@@ -8017,33 +8017,33 @@ LABEL_7:
   return v5;
 }
 
-+ (id)_inferenceDescriptorForOptions:(id)a3 error:(id *)a4
++ (id)_inferenceDescriptorForOptions:(id)options error:(id *)error
 {
-  v6 = a3;
-  v7 = [VNValidationUtilities originatingRequestSpecifierInOptions:v6 error:a4];
+  optionsCopy = options;
+  v7 = [VNValidationUtilities originatingRequestSpecifierInOptions:optionsCopy error:error];
   v8 = v7;
   if (!v7)
   {
     goto LABEL_7;
   }
 
-  v9 = [v7 requestClassAndReturnError:a4];
+  v9 = [v7 requestClassAndReturnError:error];
   if (!v9)
   {
     goto LABEL_7;
   }
 
-  v10 = [a1 modelForRequestClass:v9 revision:{objc_msgSend(v8, "requestRevision")}];
+  v10 = [self modelForRequestClass:v9 revision:{objc_msgSend(v8, "requestRevision")}];
   if (v10)
   {
-    v11 = [a1 _newInferenceDescriptorForModel:v10 configuredWithOptions:v6 error:a4];
+    v11 = [self _newInferenceDescriptorForModel:v10 configuredWithOptions:optionsCopy error:error];
     goto LABEL_8;
   }
 
-  if (a4)
+  if (error)
   {
     [VNError errorForUnsupportedRequestSpecifier:v8];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
   }
 
   else
@@ -8057,16 +8057,16 @@ LABEL_8:
   return v11;
 }
 
-+ (id)_newInferenceDescriptorForModel:(unint64_t)a3 configuredWithOptions:(id)a4 error:(id *)a5
++ (id)_newInferenceDescriptorForModel:(unint64_t)model configuredWithOptions:(id)options error:(id *)error
 {
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorInitializationOption_RequireObjDetNet"];
-  v9 = [v8 BOOLValue];
+  optionsCopy = options;
+  v8 = [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorInitializationOption_RequireObjDetNet"];
+  bOOLValue = [v8 BOOLValue];
 
-  v10 = [v7 objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorInitializationOption_RequireSliderNet"];
-  v11 = [v10 BOOLValue];
+  v10 = [optionsCopy objectForKeyedSubscript:@"VNImageAnalyzerMultiDetectorInitializationOption_RequireSliderNet"];
+  bOOLValue2 = [v10 BOOLValue];
 
-  v12 = [MEMORY[0x1E69DF978] descriptorForModel:a3 requireObjDetNet:v9 requireSliderNet:v11 error:a5];
+  v12 = [MEMORY[0x1E69DF978] descriptorForModel:model requireObjDetNet:bOOLValue requireSliderNet:bOOLValue2 error:error];
   v13 = v12;
   if (v12)
   {

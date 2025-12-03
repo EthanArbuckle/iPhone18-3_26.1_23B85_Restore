@@ -1,16 +1,16 @@
 @interface LaunchViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)viewDidLoad;
 @end
 
 @implementation LaunchViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"LaunchViewController" hasInstanceMethod:@"videoController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"LaunchViewController" hasInstanceMethod:@"bottomVideoController" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"LaunchViewController" hasInstanceMethod:@"videoController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"LaunchViewController" hasInstanceMethod:@"bottomVideoController" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -22,21 +22,21 @@
   v3 = [(LaunchViewControllerAccessibility *)self safeValueForKey:@"videoController"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 view];
+  view = [v4 view];
 
-  [v5 setIsAccessibilityElement:1];
+  [view setIsAccessibilityElement:1];
   v6 = accessibilityJellyfishLocalizedString(@"splash.video");
-  [v5 setAccessibilityLabel:v6];
+  [view setAccessibilityLabel:v6];
 
   objc_opt_class();
   v7 = [(LaunchViewControllerAccessibility *)self safeValueForKey:@"bottomVideoController"];
   v8 = __UIAccessibilityCastAsClass();
 
-  v9 = [v8 view];
+  view2 = [v8 view];
 
-  [v9 setIsAccessibilityElement:1];
+  [view2 setIsAccessibilityElement:1];
   v10 = accessibilityJellyfishLocalizedString(@"splash.bottom.video");
-  [v9 setAccessibilityLabel:v10];
+  [view2 setAccessibilityLabel:v10];
 
   v11 = [(LaunchViewControllerAccessibility *)self safeUIViewForKey:@"view"];
   [v11 setAccessibilityViewIsModal:1];

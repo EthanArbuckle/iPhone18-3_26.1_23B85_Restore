@@ -1,5 +1,5 @@
 @interface HomePodSetupIconContentView
-- (_TtC14HDSViewService27HomePodSetupIconContentView)initWithFrame:(CGRect)a3;
+- (_TtC14HDSViewService27HomePodSetupIconContentView)initWithFrame:(CGRect)frame;
 - (void)updateConstraints;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)updateConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_100047FCC();
 }
 
-- (_TtC14HDSViewService27HomePodSetupIconContentView)initWithFrame:(CGRect)a3
+- (_TtC14HDSViewService27HomePodSetupIconContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

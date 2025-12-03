@@ -1,16 +1,16 @@
 @interface BKCustomAnimationPropertiesView
-- (BKCustomAnimationPropertiesView)initWithFrame:(CGRect)a3;
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (void)addAnimatablePropertyWithKey:(id)a3;
+- (BKCustomAnimationPropertiesView)initWithFrame:(CGRect)frame;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (void)addAnimatablePropertyWithKey:(id)key;
 @end
 
 @implementation BKCustomAnimationPropertiesView
 
-- (BKCustomAnimationPropertiesView)initWithFrame:(CGRect)a3
+- (BKCustomAnimationPropertiesView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = BKCustomAnimationPropertiesView;
-  v3 = [(BKCustomAnimationPropertiesView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BKCustomAnimationPropertiesView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[NSMutableSet set];
@@ -21,27 +21,27 @@
   return v3;
 }
 
-- (void)addAnimatablePropertyWithKey:(id)a3
+- (void)addAnimatablePropertyWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [(BKCustomAnimationPropertiesView *)self animatableKeys];
-  [v5 addObject:v4];
+  keyCopy = key;
+  animatableKeys = [(BKCustomAnimationPropertiesView *)self animatableKeys];
+  [animatableKeys addObject:keyCopy];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v8.receiver = self;
   v8.super_class = BKCustomAnimationPropertiesView;
-  if ([(BKCustomAnimationPropertiesView *)&v8 _shouldAnimatePropertyWithKey:v4])
+  if ([(BKCustomAnimationPropertiesView *)&v8 _shouldAnimatePropertyWithKey:keyCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(BKCustomAnimationPropertiesView *)self animatableKeys];
-    v5 = [v6 containsObject:v4];
+    animatableKeys = [(BKCustomAnimationPropertiesView *)self animatableKeys];
+    v5 = [animatableKeys containsObject:keyCopy];
   }
 
   return v5;

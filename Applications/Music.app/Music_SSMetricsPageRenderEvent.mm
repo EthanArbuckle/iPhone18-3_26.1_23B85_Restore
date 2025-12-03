@@ -1,6 +1,6 @@
 @interface Music_SSMetricsPageRenderEvent
 - (_TtC9MusicCore30Music_SSMetricsPageRenderEvent)init;
-- (_TtC9MusicCore30Music_SSMetricsPageRenderEvent)initWithBodyDictionary:(id)a3;
+- (_TtC9MusicCore30Music_SSMetricsPageRenderEvent)initWithBodyDictionary:(id)dictionary;
 @end
 
 @implementation Music_SSMetricsPageRenderEvent
@@ -12,7 +12,7 @@
   return [(Music_SSMetricsPageRenderEvent *)&v3 init];
 }
 
-- (_TtC9MusicCore30Music_SSMetricsPageRenderEvent)initWithBodyDictionary:(id)a3
+- (_TtC9MusicCore30Music_SSMetricsPageRenderEvent)initWithBodyDictionary:(id)dictionary
 {
   ObjectType = swift_getObjectType();
   static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();

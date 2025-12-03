@@ -1,23 +1,23 @@
 @interface HROnboardingAtrialFibrillationLimitationViewController
 + (id)makeSpeedBumpItem;
-- (id)initForOnboarding:(BOOL)a3 upgradingFromAlgorithmVersion:(int64_t)a4;
+- (id)initForOnboarding:(BOOL)onboarding upgradingFromAlgorithmVersion:(int64_t)version;
 - (void)viewControllerDidLeaveAdaptiveModal;
 - (void)viewControllerWillEnterAdaptiveModal;
 @end
 
 @implementation HROnboardingAtrialFibrillationLimitationViewController
 
-- (id)initForOnboarding:(BOOL)a3 upgradingFromAlgorithmVersion:(int64_t)a4
+- (id)initForOnboarding:(BOOL)onboarding upgradingFromAlgorithmVersion:(int64_t)version
 {
-  v5 = a3;
+  onboardingCopy = onboarding;
   v7 = +[HROnboardingAtrialFibrillationLimitationViewController makeSpeedBumpItem];
   v11.receiver = self;
   v11.super_class = HROnboardingAtrialFibrillationLimitationViewController;
-  v8 = [(HRSpeedBumpViewController *)&v11 initWithSpeedBumpItem:v7 onboarding:v5 upgradingFromAlgorithmVersion:a4];
+  v8 = [(HRSpeedBumpViewController *)&v11 initWithSpeedBumpItem:v7 onboarding:onboardingCopy upgradingFromAlgorithmVersion:version];
 
   if (v8)
   {
-    v9 = !v5;
+    v9 = !onboardingCopy;
   }
 
   else
@@ -87,8 +87,8 @@
   v5 = [v4 actionWithHandler:&v8];
   v6 = [v3 initWithBarButtonSystemItem:0 primaryAction:{v5, v8, v9, v10, v11}];
 
-  v7 = [(HROnboardingAtrialFibrillationLimitationViewController *)self navigationItem];
-  [v7 setLeftBarButtonItem:v6];
+  navigationItem = [(HROnboardingAtrialFibrillationLimitationViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v6];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -102,8 +102,8 @@ void __94__HROnboardingAtrialFibrillationLimitationViewController_viewController
 
 - (void)viewControllerDidLeaveAdaptiveModal
 {
-  v2 = [(HROnboardingAtrialFibrillationLimitationViewController *)self navigationItem];
-  [v2 setLeftBarButtonItem:0];
+  navigationItem = [(HROnboardingAtrialFibrillationLimitationViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0];
 }
 
 @end

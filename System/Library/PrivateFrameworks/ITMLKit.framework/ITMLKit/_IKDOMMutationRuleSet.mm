@@ -1,18 +1,18 @@
 @interface _IKDOMMutationRuleSet
-- (_IKDOMMutationRuleSet)initWithMutationRules:(id)a3;
+- (_IKDOMMutationRuleSet)initWithMutationRules:(id)rules;
 @end
 
 @implementation _IKDOMMutationRuleSet
 
-- (_IKDOMMutationRuleSet)initWithMutationRules:(id)a3
+- (_IKDOMMutationRuleSet)initWithMutationRules:(id)rules
 {
-  v4 = a3;
+  rulesCopy = rules;
   v9.receiver = self;
   v9.super_class = _IKDOMMutationRuleSet;
   v5 = [(_IKDOMMutationRuleSet *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [rulesCopy copy];
     mutationRules = v5->_mutationRules;
     v5->_mutationRules = v6;
   }

@@ -1,19 +1,19 @@
 @interface MPUBorderView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MPUBorderView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MPUBorderView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)resizableImageCapInsets;
 - (double)requiredOutsetForDropShadow;
-- (void)drawRect:(CGRect)a3;
-- (void)setBorderConfiguration:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setBorderConfiguration:(id)configuration;
 @end
 
 @implementation MPUBorderView
 
-- (MPUBorderView)initWithFrame:(CGRect)a3
+- (MPUBorderView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MPUBorderView;
-  v3 = [(MPUBorderView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MPUBorderView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -26,9 +26,9 @@
   return v4;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(MPUBorderView *)self requiredOutsetForDropShadow:a3.width];
+  [(MPUBorderView *)self requiredOutsetForDropShadow:fits.width];
   v5 = v4 + v4;
   [(MPUBorderConfiguration *)self->_borderConfiguration borderWidth];
   v7 = v5 + v6 * 2.0 + 1.0;
@@ -38,30 +38,30 @@
   return result;
 }
 
-- (void)setBorderConfiguration:(id)a3
+- (void)setBorderConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   borderConfiguration = self->_borderConfiguration;
-  if (borderConfiguration != v4)
+  if (borderConfiguration != configurationCopy)
   {
-    v9 = v4;
-    borderConfiguration = [borderConfiguration isEqual:v4];
-    v4 = v9;
+    v9 = configurationCopy;
+    borderConfiguration = [borderConfiguration isEqual:configurationCopy];
+    configurationCopy = v9;
     if ((borderConfiguration & 1) == 0)
     {
       v6 = [v9 copy];
       v7 = self->_borderConfiguration;
       self->_borderConfiguration = v6;
 
-      if (!self->_hidesWhenFullyTransparent || (v8 = [(MPUBorderConfiguration *)self->_borderConfiguration isFullyTransparent], borderConfiguration = [(MPUBorderView *)self setHidden:v8], v4 = v9, !v8))
+      if (!self->_hidesWhenFullyTransparent || (v8 = [(MPUBorderConfiguration *)self->_borderConfiguration isFullyTransparent], borderConfiguration = [(MPUBorderView *)self setHidden:v8], configurationCopy = v9, !v8))
       {
         borderConfiguration = [(MPUBorderView *)self setNeedsDisplay];
-        v4 = v9;
+        configurationCopy = v9;
       }
     }
   }
 
-  MEMORY[0x2821F96F8](borderConfiguration, v4);
+  MEMORY[0x2821F96F8](borderConfiguration, configurationCopy);
 }
 
 - (double)requiredOutsetForDropShadow
@@ -88,9 +88,9 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(MPUBorderView *)self requiredOutsetForDropShadow:a3.origin.x];
+  [(MPUBorderView *)self requiredOutsetForDropShadow:rect.origin.x];
   v5 = v4;
   [(MPUBorderView *)self bounds];
   v54 = CGRectInset(v53, v5, v5);
@@ -100,9 +100,9 @@
   height = v54.size.height;
   [(MPUBorderConfiguration *)self->_borderConfiguration borderWidth];
   v11 = v10;
-  v51 = [(MPUBorderConfiguration *)self->_borderConfiguration fillColor];
+  fillColor = [(MPUBorderConfiguration *)self->_borderConfiguration fillColor];
   [(MPUBorderConfiguration *)self->_borderConfiguration fillAlpha];
-  if (v51)
+  if (fillColor)
   {
     v13 = v12 <= 0.00000011920929;
   }
@@ -114,7 +114,7 @@
 
   if (!v13)
   {
-    v14 = [v51 colorWithAlphaComponent:?];
+    v14 = [fillColor colorWithAlphaComponent:?];
     [v14 setFill];
 
     v55.origin.x = x;
@@ -125,10 +125,10 @@
     UIRectFillUsingBlendMode(v56, kCGBlendModeNormal);
   }
 
-  v15 = [(MPUBorderConfiguration *)self->_borderConfiguration borderColor];
+  borderColor = [(MPUBorderConfiguration *)self->_borderConfiguration borderColor];
   [(MPUBorderConfiguration *)self->_borderConfiguration borderAlpha];
   v17 = v16;
-  if (v15)
+  if (borderColor)
   {
     v18 = v11 <= 0.00000011920929;
   }
@@ -151,19 +151,19 @@
     [v20 appendPath:v22];
 
     [v20 setUsesEvenOddFillRule:1];
-    v23 = [v15 colorWithAlphaComponent:v17];
+    v23 = [borderColor colorWithAlphaComponent:v17];
     [v23 setFill];
 
     [v20 fillWithBlendMode:0 alpha:1.0];
   }
 
-  v24 = [(MPUBorderConfiguration *)self->_borderConfiguration dropShadowColor];
+  dropShadowColor = [(MPUBorderConfiguration *)self->_borderConfiguration dropShadowColor];
   [(MPUBorderConfiguration *)self->_borderConfiguration dropShadowAlpha];
   v26 = v25;
   [(MPUBorderConfiguration *)self->_borderConfiguration dropShadowWidth];
   v28 = v27;
-  v29 = [(MPUBorderConfiguration *)self->_borderConfiguration dropShadowEdges];
-  if (v24)
+  dropShadowEdges = [(MPUBorderConfiguration *)self->_borderConfiguration dropShadowEdges];
+  if (dropShadowColor)
   {
     v30 = v28 <= 0.00000011920929;
   }
@@ -173,10 +173,10 @@
     v30 = 1;
   }
 
-  if (!v30 && v26 > 0.00000011920929 && v29 != 0)
+  if (!v30 && v26 > 0.00000011920929 && dropShadowEdges != 0)
   {
-    v33 = v29;
-    v34 = [v24 colorWithAlphaComponent:v26];
+    v33 = dropShadowEdges;
+    v34 = [dropShadowColor colorWithAlphaComponent:v26];
     [v34 setFill];
 
     if (v33)

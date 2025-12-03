@@ -50,33 +50,33 @@
 - (id)jfx_deviceCharacteristicsDict
 {
   v20 = *MEMORY[0x277D85DE8];
-  v0 = [MEMORY[0x277D759A0] mainScreen];
-  v1 = [MEMORY[0x277D75418] currentDevice];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
   memset(&v19, 0, 512);
   if (uname(&v19) < 0)
   {
-    v2 = [v1 model];
+    model = [currentDevice model];
   }
 
   else
   {
-    v2 = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:v19.machine];
+    model = [objc_alloc(MEMORY[0x277CCACA8]) initWithUTF8String:v19.machine];
   }
 
-  v16 = v2;
-  v3 = [v1 systemVersion];
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v1, "jfx_numberOfCPU")}];
-  v5 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v1, "jfx_memorySize")}];
-  [v0 bounds];
+  v16 = model;
+  systemVersion = [currentDevice systemVersion];
+  v4 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(currentDevice, "jfx_numberOfCPU")}];
+  v5 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(currentDevice, "jfx_memorySize")}];
+  [mainScreen bounds];
   NSStringFromCGRect(v22);
-  v7 = v6 = v0;
+  v7 = v6 = mainScreen;
   v8 = MEMORY[0x277CCABB0];
   [v6 scale];
   *&v9 = v9;
   v10 = [v8 numberWithFloat:v9];
   v11 = MEMORY[0x277CCABB0];
-  v12 = [MEMORY[0x277D75418] currentDevice];
-  v13 = [v11 numberWithInteger:{objc_msgSend(v12, "userInterfaceIdiom")}];
+  currentDevice2 = [MEMORY[0x277D75418] currentDevice];
+  v13 = [v11 numberWithInteger:{objc_msgSend(currentDevice2, "userInterfaceIdiom")}];
 
   v17[0] = @"cores";
   v17[1] = @"memory";
@@ -89,7 +89,7 @@
   v17[4] = @"screenScale";
   v17[5] = @"systemVersion";
   v18[4] = v10;
-  v18[5] = v3;
+  v18[5] = systemVersion;
   v17[6] = @"uiIdiom";
   v18[6] = v13;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:7];
@@ -103,7 +103,7 @@
   block[1] = 3221225472;
   block[2] = __42__UIDevice_JFX__jfx_hasDepthCapableCamera__block_invoke;
   block[3] = &unk_278D79D20;
-  block[4] = a1;
+  block[4] = self;
   if (jfx_hasDepthCapableCamera_onceToken != -1)
   {
     dispatch_once(&jfx_hasDepthCapableCamera_onceToken, block);
@@ -118,7 +118,7 @@
   block[1] = 3221225472;
   block[2] = __44__UIDevice_JFX__jfx_hasTrueDepthFrontCamera__block_invoke;
   block[3] = &unk_278D79D20;
-  block[4] = a1;
+  block[4] = self;
   if (jfx_hasTrueDepthFrontCamera_onceToken != -1)
   {
     dispatch_once(&jfx_hasTrueDepthFrontCamera_onceToken, block);
@@ -133,7 +133,7 @@
   block[1] = 3221225472;
   block[2] = __60__UIDevice_JFX__jfx_hasTrueDepthFrontCameraCustomZoomFormat__block_invoke;
   block[3] = &unk_278D79D20;
-  block[4] = a1;
+  block[4] = self;
   if (jfx_hasTrueDepthFrontCameraCustomZoomFormat_onceToken != -1)
   {
     dispatch_once(&jfx_hasTrueDepthFrontCameraCustomZoomFormat_onceToken, block);
@@ -148,7 +148,7 @@
   block[1] = 3221225472;
   block[2] = __38__UIDevice_JFX__jfx_hasDualBackCamera__block_invoke;
   block[3] = &unk_278D79D20;
-  block[4] = a1;
+  block[4] = self;
   if (jfx_hasDualBackCamera_onceToken != -1)
   {
     dispatch_once(&jfx_hasDualBackCamera_onceToken, block);
@@ -163,7 +163,7 @@
   block[1] = 3221225472;
   block[2] = __33__UIDevice_JFX__jfx_hasHDRCamera__block_invoke;
   block[3] = &unk_278D79D20;
-  block[4] = a1;
+  block[4] = self;
   if (jfx_hasHDRCamera_onceToken != -1)
   {
     dispatch_once(&jfx_hasHDRCamera_onceToken, block);
@@ -178,7 +178,7 @@
   block[1] = 3221225472;
   block[2] = __38__UIDevice_JFX__jfx_displayColorSpace__block_invoke;
   block[3] = &unk_278D79D20;
-  block[4] = a1;
+  block[4] = self;
   if (jfx_displayColorSpace_onceToken != -1)
   {
     dispatch_once(&jfx_displayColorSpace_onceToken, block);
@@ -190,19 +190,19 @@
 - (id)jfx_recommendedDisplayColorSpaceForColorSpace:()JFX
 {
   v4 = a3;
-  v5 = [a1 jfx_displayColorSpace];
-  if ([v5 isHDRSpace])
+  jfx_displayColorSpace = [self jfx_displayColorSpace];
+  if ([jfx_displayColorSpace isHDRSpace])
   {
     if ([v4 isHDRSpace])
     {
-      v6 = v5;
+      p3d65GammaColorSpace = jfx_displayColorSpace;
       goto LABEL_9;
     }
   }
 
   else
   {
-    if (![v5 isWideGamutSpace])
+    if (![jfx_displayColorSpace isWideGamutSpace])
     {
       goto LABEL_8;
     }
@@ -210,7 +210,7 @@
     if ([v4 isHDRSpace])
     {
 LABEL_7:
-      v6 = [MEMORY[0x277D415E0] p3d65GammaColorSpace];
+      p3d65GammaColorSpace = [MEMORY[0x277D415E0] p3d65GammaColorSpace];
       goto LABEL_9;
     }
   }
@@ -221,9 +221,9 @@ LABEL_7:
   }
 
 LABEL_8:
-  v6 = [MEMORY[0x277D415E0] rec709GammaColorSpace];
+  p3d65GammaColorSpace = [MEMORY[0x277D415E0] rec709GammaColorSpace];
 LABEL_9:
-  v7 = v6;
+  v7 = p3d65GammaColorSpace;
 
   return v7;
 }
@@ -240,23 +240,23 @@ LABEL_9:
 
 - (uint64_t)jfx_supportsHDR
 {
-  v2 = [MEMORY[0x277D759A0] mainScreen];
-  v3 = [v2 traitCollection];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  traitCollection = [mainScreen traitCollection];
 
-  v4 = [v3 displayGamut];
+  displayGamut = [traitCollection displayGamut];
   v5 = [MEMORY[0x277CE6598] availableHDRModes] & 6;
-  v6 = [a1 jfx_memorySize];
-  if (v4 != 1 || v5 == 0 || v6 < 2684354561)
+  jfx_memorySize = [self jfx_memorySize];
+  if (displayGamut != 1 || v5 == 0 || jfx_memorySize < 2684354561)
   {
-    v9 = 0;
+    jfx_supportsHDRExport = 0;
   }
 
   else
   {
-    v9 = [a1 jfx_supportsHDRExport];
+    jfx_supportsHDRExport = [self jfx_supportsHDRExport];
   }
 
-  return v9;
+  return jfx_supportsHDRExport;
 }
 
 - (id)jfx_getCaptureDeviceForType:()JFX

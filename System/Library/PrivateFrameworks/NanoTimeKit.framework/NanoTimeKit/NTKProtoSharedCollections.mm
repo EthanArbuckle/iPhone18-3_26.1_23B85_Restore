@@ -1,34 +1,34 @@
 @interface NTKProtoSharedCollections
-+ (id)protoBufferFromSharedCollections:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)protoBufferFromSharedCollections:(id)collections;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)sharedCollectionsDictionary;
-- (void)addCollections:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addCollections:(id)collections;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NTKProtoSharedCollections
 
-- (void)addCollections:(id)a3
+- (void)addCollections:(id)collections
 {
-  v4 = a3;
+  collectionsCopy = collections;
   collections = self->_collections;
-  v8 = v4;
+  v8 = collectionsCopy;
   if (!collections)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_collections;
     self->_collections = v6;
 
-    v4 = v8;
+    collectionsCopy = v8;
     collections = self->_collections;
   }
 
-  [(NSMutableArray *)collections addObject:v4];
+  [(NSMutableArray *)collections addObject:collectionsCopy];
 }
 
 - (id)description
@@ -37,8 +37,8 @@
   v8.receiver = self;
   v8.super_class = NTKProtoSharedCollections;
   v4 = [(NTKProtoSharedCollections *)&v8 description];
-  v5 = [(NTKProtoSharedCollections *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NTKProtoSharedCollections *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -46,7 +46,7 @@
 - (id)dictionaryRepresentation
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([(NSMutableArray *)self->_collections count])
   {
     v4 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSMutableArray count](self->_collections, "count")}];
@@ -69,8 +69,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v12 + 1) + 8 * i) dictionaryRepresentation];
+          [v4 addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -79,16 +79,16 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKey:@"collections"];
+    [dictionary setObject:v4 forKey:@"collections"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -121,29 +121,29 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if ([(NTKProtoSharedCollections *)self collectionsCount])
   {
-    [v8 clearCollections];
-    v4 = [(NTKProtoSharedCollections *)self collectionsCount];
-    if (v4)
+    [toCopy clearCollections];
+    collectionsCount = [(NTKProtoSharedCollections *)self collectionsCount];
+    if (collectionsCount)
     {
-      v5 = v4;
+      v5 = collectionsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(NTKProtoSharedCollections *)self collectionsAtIndex:i];
-        [v8 addCollections:v7];
+        [toCopy addCollections:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -164,7 +164,7 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{a3, v13}];
+        v11 = [*(*(&v13 + 1) + 8 * v10) copyWithZone:{zone, v13}];
         [v5 addCollections:v11];
 
         ++v10;
@@ -180,13 +180,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     collections = self->_collections;
-    if (collections | v4[1])
+    if (collections | equalCopy[1])
     {
       v6 = [(NSMutableArray *)collections isEqual:?];
     }
@@ -205,14 +205,14 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
@@ -239,9 +239,9 @@
   }
 }
 
-+ (id)protoBufferFromSharedCollections:(id)a3
++ (id)protoBufferFromSharedCollections:(id)collections
 {
-  v3 = a3;
+  collectionsCopy = collections;
   v4 = objc_alloc_init(NTKProtoSharedCollections);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -249,7 +249,7 @@
   v7[3] = &unk_278781A98;
   v5 = v4;
   v8 = v5;
-  [v3 enumerateKeysAndObjectsUsingBlock:v7];
+  [collectionsCopy enumerateKeysAndObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -264,14 +264,14 @@ void __75__NTKProtoSharedCollections_NTKAdditons__protoBufferFromSharedCollectio
 - (id)sharedCollectionsDictionary
 {
   v3 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{-[NTKProtoSharedCollections collectionsCount](self, "collectionsCount")}];
-  v4 = [(NTKProtoSharedCollections *)self collections];
+  collections = [(NTKProtoSharedCollections *)self collections];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __69__NTKProtoSharedCollections_NTKAdditons__sharedCollectionsDictionary__block_invoke;
   v12[3] = &unk_278789088;
   v5 = v3;
   v13 = v5;
-  [v4 enumerateObjectsUsingBlock:v12];
+  [collections enumerateObjectsUsingBlock:v12];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;

@@ -1,38 +1,38 @@
 @interface HDSPSleepStorage
 + (id)standardConfiguration;
-- (BOOL)_removeObjectProperties:(id)a3 error:(id *)a4;
-- (BOOL)_saveObject:(id)a3 error:(id *)a4;
-- (BOOL)_saveObjectChanges:(id)a3 versionKey:(id)a4 currentVersion:(unint64_t)a5 error:(id *)a6;
+- (BOOL)_removeObjectProperties:(id)properties error:(id *)error;
+- (BOOL)_saveObject:(id)object error:(id *)error;
+- (BOOL)_saveObjectChanges:(id)changes versionKey:(id)key currentVersion:(unint64_t)version error:(id *)error;
 - (BOOL)needsMigration;
-- (BOOL)removeSleepEventRecordWithError:(id *)a3;
-- (BOOL)removeSleepScheduleWithError:(id *)a3;
-- (BOOL)removeSleepSettingsWithError:(id *)a3;
-- (BOOL)saveSleepEventRecord:(id)a3 error:(id *)a4;
-- (BOOL)saveSleepEventRecordChanges:(id)a3 error:(id *)a4;
-- (BOOL)saveSleepSchedule:(id)a3 error:(id *)a4;
-- (BOOL)saveSleepScheduleChanges:(id)a3 error:(id *)a4;
-- (BOOL)saveSleepScheduleModel:(id)a3 error:(id *)a4;
-- (BOOL)saveSleepSettings:(id)a3 error:(id *)a4;
-- (BOOL)saveSleepSettingsChanges:(id)a3 error:(id *)a4;
+- (BOOL)removeSleepEventRecordWithError:(id *)error;
+- (BOOL)removeSleepScheduleWithError:(id *)error;
+- (BOOL)removeSleepSettingsWithError:(id *)error;
+- (BOOL)saveSleepEventRecord:(id)record error:(id *)error;
+- (BOOL)saveSleepEventRecordChanges:(id)changes error:(id *)error;
+- (BOOL)saveSleepSchedule:(id)schedule error:(id *)error;
+- (BOOL)saveSleepScheduleChanges:(id)changes error:(id *)error;
+- (BOOL)saveSleepScheduleModel:(id)model error:(id *)error;
+- (BOOL)saveSleepSettings:(id)settings error:(id *)error;
+- (BOOL)saveSleepSettingsChanges:(id)changes error:(id *)error;
 - (HDSPEnvironment)environment;
-- (HDSPSleepStorage)initWithEnvironment:(id)a3;
-- (HDSPSleepStorage)initWithEnvironment:(id)a3 configuration:(id)a4 syncedDefaults:(id)a5;
+- (HDSPSleepStorage)initWithEnvironment:(id)environment;
+- (HDSPSleepStorage)initWithEnvironment:(id)environment configuration:(id)configuration syncedDefaults:(id)defaults;
 - (NSString)sourceIdentifier;
-- (id)_loadObjectOfClass:(Class)a3 allowedClasses:(id)a4 propertiesToLoad:(id)a5 error:(id *)a6;
+- (id)_loadObjectOfClass:(Class)class allowedClasses:(id)classes propertiesToLoad:(id)load error:(id *)error;
 - (id)diagnosticDescription;
-- (id)loadSleepEventRecord:(id *)a3;
-- (id)loadSleepSchedule:(id *)a3;
-- (id)loadSleepScheduleModel:(id *)a3;
-- (id)loadSleepSettings:(id *)a3;
-- (id)notificationListener:(id)a3 didReceiveNotificationWithName:(id)a4;
+- (id)loadSleepEventRecord:(id *)record;
+- (id)loadSleepSchedule:(id *)schedule;
+- (id)loadSleepScheduleModel:(id *)model;
+- (id)loadSleepSettings:(id *)settings;
+- (id)notificationListener:(id)listener didReceiveNotificationWithName:(id)name;
 - (unint64_t)cloudStorageDataVersion;
 - (unint64_t)dataVersion;
 - (unint64_t)localDataVersion;
-- (void)environmentWillBecomeReady:(id)a3;
-- (void)performInitialSyncWithCompletion:(id)a3;
+- (void)environmentWillBecomeReady:(id)ready;
+- (void)performInitialSyncWithCompletion:(id)completion;
 - (void)resetCloudStorage;
 - (void)saveDataVersion;
-- (void)syncedUserDefaultsDidChangeExternally:(id)a3;
+- (void)syncedUserDefaultsDidChangeExternally:(id)externally;
 @end
 
 @implementation HDSPSleepStorage
@@ -88,36 +88,36 @@
   return v34;
 }
 
-- (HDSPSleepStorage)initWithEnvironment:(id)a3
+- (HDSPSleepStorage)initWithEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = [objc_opt_class() standardConfiguration];
-  v6 = [[HDSPSyncedDefaults alloc] initWithEnvironment:v4 configuration:v5];
-  v7 = [(HDSPSleepStorage *)self initWithEnvironment:v4 configuration:v5 syncedDefaults:v6];
+  environmentCopy = environment;
+  standardConfiguration = [objc_opt_class() standardConfiguration];
+  v6 = [[HDSPSyncedDefaults alloc] initWithEnvironment:environmentCopy configuration:standardConfiguration];
+  v7 = [(HDSPSleepStorage *)self initWithEnvironment:environmentCopy configuration:standardConfiguration syncedDefaults:v6];
 
   return v7;
 }
 
-- (HDSPSleepStorage)initWithEnvironment:(id)a3 configuration:(id)a4 syncedDefaults:(id)a5
+- (HDSPSleepStorage)initWithEnvironment:(id)environment configuration:(id)configuration syncedDefaults:(id)defaults
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  environmentCopy = environment;
+  configurationCopy = configuration;
+  defaultsCopy = defaults;
   v19.receiver = self;
   v19.super_class = HDSPSleepStorage;
   v11 = [(HDSPSleepStorage *)&v19 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_environment, v8);
+    objc_storeWeak(&v11->_environment, environmentCopy);
     v13 = objc_alloc(MEMORY[0x277D624A0]);
-    v14 = [v8 defaultCallbackScheduler];
-    v15 = [v13 initWithCallbackScheduler:v14];
+    defaultCallbackScheduler = [environmentCopy defaultCallbackScheduler];
+    v15 = [v13 initWithCallbackScheduler:defaultCallbackScheduler];
     observers = v12->_observers;
     v12->_observers = v15;
 
-    objc_storeStrong(&v12->_syncedDefaults, a5);
-    objc_storeStrong(&v12->_configuration, a4);
+    objc_storeStrong(&v12->_syncedDefaults, defaults);
+    objc_storeStrong(&v12->_configuration, configuration);
     v17 = v12;
   }
 
@@ -126,24 +126,24 @@
 
 - (unint64_t)dataVersion
 {
-  v2 = [(HDSPSleepStorage *)self syncedDefaults];
-  v3 = [v2 hksp_integerForKey:@"DataVersion"];
+  syncedDefaults = [(HDSPSleepStorage *)self syncedDefaults];
+  v3 = [syncedDefaults hksp_integerForKey:@"DataVersion"];
 
   return v3;
 }
 
 - (unint64_t)cloudStorageDataVersion
 {
-  v2 = [(HDSPSleepStorage *)self syncedDefaults];
-  v3 = [v2 hksp_integerForKey:@"CloudStorageDataVersion"];
+  syncedDefaults = [(HDSPSleepStorage *)self syncedDefaults];
+  v3 = [syncedDefaults hksp_integerForKey:@"CloudStorageDataVersion"];
 
   return v3;
 }
 
 - (unint64_t)localDataVersion
 {
-  v2 = [(HDSPSleepStorage *)self syncedDefaults];
-  v3 = [v2 hksp_integerForKey:@"LocalDataVersion"];
+  syncedDefaults = [(HDSPSleepStorage *)self syncedDefaults];
+  v3 = [syncedDefaults hksp_integerForKey:@"LocalDataVersion"];
 
   return v3;
 }
@@ -156,17 +156,17 @@
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v4 = [WeakRetained behavior];
-  v5 = [v4 features];
-  v6 = [v5 sleepCloudKitSync] && !-[HDSPSleepStorage cloudStorageDataVersion](self, "cloudStorageDataVersion") || -[HDSPSleepStorage localDataVersion](self, "localDataVersion") == 0;
+  behavior = [WeakRetained behavior];
+  features = [behavior features];
+  v6 = [features sleepCloudKitSync] && !-[HDSPSleepStorage cloudStorageDataVersion](self, "cloudStorageDataVersion") || -[HDSPSleepStorage localDataVersion](self, "localDataVersion") == 0;
 
   return v6;
 }
 
-- (void)performInitialSyncWithCompletion:(id)a3
+- (void)performInitialSyncWithCompletion:(id)completion
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -176,8 +176,8 @@
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] performing initial sync", &v9, 0xCu);
   }
 
-  v7 = [(HDSPSleepStorage *)self syncedDefaults];
-  [v7 hdsp_forceSynchronizeWithCompletion:v4];
+  syncedDefaults = [(HDSPSleepStorage *)self syncedDefaults];
+  [syncedDefaults hdsp_forceSynchronizeWithCompletion:completionCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -194,13 +194,13 @@
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] saving data version", &v7, 0xCu);
   }
 
-  v5 = [(HDSPSleepStorage *)self syncedDefaults];
-  [v5 saveDataVersion];
+  syncedDefaults = [(HDSPSleepStorage *)self syncedDefaults];
+  [syncedDefaults saveDataVersion];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)loadSleepSchedule:(id *)a3
+- (id)loadSleepSchedule:(id *)schedule
 {
   v17 = *MEMORY[0x277D85DE8];
   v5 = HKSPLogForCategory();
@@ -214,57 +214,57 @@
 
   v7 = objc_opt_class();
   v8 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
-  v9 = [MEMORY[0x277D624F8] innerClasses];
-  v10 = [v8 setByAddingObjectsFromSet:v9];
+  innerClasses = [MEMORY[0x277D624F8] innerClasses];
+  v10 = [v8 setByAddingObjectsFromSet:innerClasses];
   v11 = HKSPSleepScheduleProperties();
-  v12 = [(HDSPSleepStorage *)self _loadObjectOfClass:v7 allowedClasses:v10 propertiesToLoad:v11 error:a3];
+  v12 = [(HDSPSleepStorage *)self _loadObjectOfClass:v7 allowedClasses:v10 propertiesToLoad:v11 error:schedule];
 
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-- (BOOL)saveSleepSchedule:(id)a3 error:(id *)a4
+- (BOOL)saveSleepSchedule:(id)schedule error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  scheduleCopy = schedule;
   v7 = HKSPLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543618;
     v13 = objc_opt_class();
     v14 = 2114;
-    v15 = v6;
+    v15 = scheduleCopy;
     v8 = v13;
     _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] persisting schedule %{public}@", &v12, 0x16u);
   }
 
-  v9 = [(HDSPSleepStorage *)self _saveObject:v6 error:a4];
+  v9 = [(HDSPSleepStorage *)self _saveObject:scheduleCopy error:error];
   v10 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (BOOL)saveSleepScheduleChanges:(id)a3 error:(id *)a4
+- (BOOL)saveSleepScheduleChanges:(id)changes error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  changesCopy = changes;
   v7 = HKSPLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543618;
     v13 = objc_opt_class();
     v14 = 2114;
-    v15 = v6;
+    v15 = changesCopy;
     v8 = v13;
     _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] persisting schedule changes %{public}@", &v12, 0x16u);
   }
 
-  v9 = [(HDSPSleepStorage *)self _saveObjectChanges:v6 versionKey:*MEMORY[0x277D62150] currentVersion:1 error:a4];
+  v9 = [(HDSPSleepStorage *)self _saveObjectChanges:changesCopy versionKey:*MEMORY[0x277D62150] currentVersion:1 error:error];
   v10 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (BOOL)removeSleepScheduleWithError:(id *)a3
+- (BOOL)removeSleepScheduleWithError:(id *)error
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = HKSPLogForCategory();
@@ -277,13 +277,13 @@
   }
 
   v7 = HKSPSleepScheduleProperties();
-  v8 = [(HDSPSleepStorage *)self _removeObjectProperties:v7 error:a3];
+  v8 = [(HDSPSleepStorage *)self _removeObjectProperties:v7 error:error];
 
   v9 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-- (id)loadSleepSettings:(id *)a3
+- (id)loadSleepSettings:(id *)settings
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = HKSPLogForCategory();
@@ -298,54 +298,54 @@
   v7 = objc_opt_class();
   v8 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
   v9 = HKSPSleepSettingsPropertiesForPersist();
-  v10 = [(HDSPSleepStorage *)self _loadObjectOfClass:v7 allowedClasses:v8 propertiesToLoad:v9 error:a3];
+  v10 = [(HDSPSleepStorage *)self _loadObjectOfClass:v7 allowedClasses:v8 propertiesToLoad:v9 error:settings];
 
   v11 = *MEMORY[0x277D85DE8];
 
   return v10;
 }
 
-- (BOOL)saveSleepSettings:(id)a3 error:(id *)a4
+- (BOOL)saveSleepSettings:(id)settings error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  settingsCopy = settings;
   v7 = HKSPLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543618;
     v13 = objc_opt_class();
     v14 = 2114;
-    v15 = v6;
+    v15 = settingsCopy;
     v8 = v13;
     _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] persisting settings %{public}@", &v12, 0x16u);
   }
 
-  v9 = [(HDSPSleepStorage *)self _saveObject:v6 error:a4];
+  v9 = [(HDSPSleepStorage *)self _saveObject:settingsCopy error:error];
   v10 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (BOOL)saveSleepSettingsChanges:(id)a3 error:(id *)a4
+- (BOOL)saveSleepSettingsChanges:(id)changes error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  changesCopy = changes;
   v7 = HKSPLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543618;
     v13 = objc_opt_class();
     v14 = 2114;
-    v15 = v6;
+    v15 = changesCopy;
     v8 = v13;
     _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] persisting settings changes %{public}@", &v12, 0x16u);
   }
 
-  v9 = [(HDSPSleepStorage *)self _saveObjectChanges:v6 versionKey:*MEMORY[0x277D62168] currentVersion:11 error:a4];
+  v9 = [(HDSPSleepStorage *)self _saveObjectChanges:changesCopy versionKey:*MEMORY[0x277D62168] currentVersion:11 error:error];
   v10 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (BOOL)removeSleepSettingsWithError:(id *)a3
+- (BOOL)removeSleepSettingsWithError:(id *)error
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = HKSPLogForCategory();
@@ -358,13 +358,13 @@
   }
 
   v7 = HKSPSleepSettingsPropertiesForPersist();
-  v8 = [(HDSPSleepStorage *)self _removeObjectProperties:v7 error:a3];
+  v8 = [(HDSPSleepStorage *)self _removeObjectProperties:v7 error:error];
 
   v9 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-- (id)loadSleepEventRecord:(id *)a3
+- (id)loadSleepEventRecord:(id *)record
 {
   v18 = *MEMORY[0x277D85DE8];
   v5 = HKSPLogForCategory();
@@ -379,7 +379,7 @@
   v7 = objc_opt_class();
   v8 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
   v9 = HKSPSleepEventRecordProperties();
-  v10 = [(HDSPSleepStorage *)self _loadObjectOfClass:v7 allowedClasses:v8 propertiesToLoad:v9 error:a3];
+  v10 = [(HDSPSleepStorage *)self _loadObjectOfClass:v7 allowedClasses:v8 propertiesToLoad:v9 error:record];
 
   if (!v10)
   {
@@ -401,47 +401,47 @@
   return v10;
 }
 
-- (BOOL)saveSleepEventRecord:(id)a3 error:(id *)a4
+- (BOOL)saveSleepEventRecord:(id)record error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  recordCopy = record;
   v7 = HKSPLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543618;
     v13 = objc_opt_class();
     v14 = 2114;
-    v15 = v6;
+    v15 = recordCopy;
     v8 = v13;
     _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] persisting event record %{public}@", &v12, 0x16u);
   }
 
-  v9 = [(HDSPSleepStorage *)self _saveObject:v6 error:a4];
+  v9 = [(HDSPSleepStorage *)self _saveObject:recordCopy error:error];
   v10 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (BOOL)saveSleepEventRecordChanges:(id)a3 error:(id *)a4
+- (BOOL)saveSleepEventRecordChanges:(id)changes error:(id *)error
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  changesCopy = changes;
   v7 = HKSPLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 138543618;
     v13 = objc_opt_class();
     v14 = 2114;
-    v15 = v6;
+    v15 = changesCopy;
     v8 = v13;
     _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] persisting event record changes %{public}@", &v12, 0x16u);
   }
 
-  v9 = [(HDSPSleepStorage *)self _saveObjectChanges:v6 versionKey:*MEMORY[0x277D62078] currentVersion:1 error:a4];
+  v9 = [(HDSPSleepStorage *)self _saveObjectChanges:changesCopy versionKey:*MEMORY[0x277D62078] currentVersion:1 error:error];
   v10 = *MEMORY[0x277D85DE8];
   return v9;
 }
 
-- (BOOL)removeSleepEventRecordWithError:(id *)a3
+- (BOOL)removeSleepEventRecordWithError:(id *)error
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = HKSPLogForCategory();
@@ -454,13 +454,13 @@
   }
 
   v7 = HKSPSleepEventRecordProperties();
-  v8 = [(HDSPSleepStorage *)self _removeObjectProperties:v7 error:a3];
+  v8 = [(HDSPSleepStorage *)self _removeObjectProperties:v7 error:error];
 
   v9 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-- (id)loadSleepScheduleModel:(id *)a3
+- (id)loadSleepScheduleModel:(id *)model
 {
   v27 = *MEMORY[0x277D85DE8];
   v5 = HKSPLogForCategory();
@@ -478,11 +478,11 @@
   v9 = v8;
   if (v8)
   {
-    if (a3)
+    if (model)
     {
       v10 = v8;
       v11 = 0;
-      *a3 = v9;
+      *model = v9;
     }
 
     else
@@ -499,11 +499,11 @@
     v14 = v13;
     if (v13)
     {
-      if (a3)
+      if (model)
       {
         v15 = v13;
         v11 = 0;
-        *a3 = v14;
+        *model = v14;
       }
 
       else
@@ -520,11 +520,11 @@
       v18 = v17;
       if (v17)
       {
-        if (a3)
+        if (model)
         {
           v19 = v17;
           v11 = 0;
-          *a3 = v18;
+          *model = v18;
         }
 
         else
@@ -545,10 +545,10 @@
   return v11;
 }
 
-- (BOOL)saveSleepScheduleModel:(id)a3 error:(id *)a4
+- (BOOL)saveSleepScheduleModel:(id)model error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  modelCopy = model;
   v7 = HKSPLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -558,23 +558,23 @@
     _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] persisting model", buf, 0xCu);
   }
 
-  v9 = [v6 sleepSchedule];
+  sleepSchedule = [modelCopy sleepSchedule];
   v24 = 0;
-  v10 = [(HDSPSleepStorage *)self saveSleepSchedule:v9 error:&v24];
+  v10 = [(HDSPSleepStorage *)self saveSleepSchedule:sleepSchedule error:&v24];
   v11 = v24;
 
-  v12 = [v6 sleepSettings];
+  sleepSettings = [modelCopy sleepSettings];
   v23 = 0;
-  v13 = [(HDSPSleepStorage *)self saveSleepSettings:v12 error:&v23];
+  v13 = [(HDSPSleepStorage *)self saveSleepSettings:sleepSettings error:&v23];
   v14 = v23;
 
-  v15 = [v6 sleepEventRecord];
+  sleepEventRecord = [modelCopy sleepEventRecord];
 
   v22 = 0;
-  v16 = [(HDSPSleepStorage *)self saveSleepEventRecord:v15 error:&v22];
+  v16 = [(HDSPSleepStorage *)self saveSleepEventRecord:sleepEventRecord error:&v22];
   v17 = v22;
 
-  if (a4)
+  if (error)
   {
     if (v14)
     {
@@ -596,22 +596,22 @@
       v19 = v18;
     }
 
-    *a4 = v19;
+    *error = v19;
   }
 
   v20 = *MEMORY[0x277D85DE8];
   return v10 && v13 && v16;
 }
 
-- (id)_loadObjectOfClass:(Class)a3 allowedClasses:(id)a4 propertiesToLoad:(id)a5 error:(id *)a6
+- (id)_loadObjectOfClass:(Class)class allowedClasses:(id)classes propertiesToLoad:(id)load error:(id *)error
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a5;
-  v12 = [(HDSPSleepStorage *)self syncedDefaults];
+  classesCopy = classes;
+  loadCopy = load;
+  syncedDefaults = [(HDSPSleepStorage *)self syncedDefaults];
   v13 = HKSPPropertyIdentifiersForProperties();
 
-  v14 = [v12 hksp_dictionaryRepresentationForKeys:v13];
+  v14 = [syncedDefaults hksp_dictionaryRepresentationForKeys:v13];
 
   if ([v14 count])
   {
@@ -620,9 +620,9 @@
     v35[0] = v14;
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:&v34 count:1];
 
-    v17 = [objc_alloc(MEMORY[0x277D62450]) initWithAllowedClasses:v10 serializedDictionary:v16];
+    v17 = [objc_alloc(MEMORY[0x277D62450]) initWithAllowedClasses:classesCopy serializedDictionary:v16];
     v27 = 0;
-    v18 = [v17 deserializeObjectOfClass:a3 error:&v27];
+    v18 = [v17 deserializeObjectOfClass:class error:&v27];
     v19 = v27;
     if (v19)
     {
@@ -633,17 +633,17 @@
         *buf = 138543874;
         v29 = v25;
         v30 = 2114;
-        v31 = a3;
+        classCopy2 = class;
         v32 = 2114;
         v33 = v19;
         v26 = v25;
         _os_log_error_impl(&dword_269B11000, v20, OS_LOG_TYPE_ERROR, "[%{public}@] failed deserialization of class %{public}@ with error %{public}@", buf, 0x20u);
       }
 
-      if (a6)
+      if (error)
       {
         v21 = v19;
-        *a6 = v19;
+        *error = v19;
       }
     }
   }
@@ -656,7 +656,7 @@
       *buf = 138543618;
       v29 = objc_opt_class();
       v30 = 2114;
-      v31 = a3;
+      classCopy2 = class;
       v22 = v29;
       _os_log_impl(&dword_269B11000, v16, OS_LOG_TYPE_DEFAULT, "[%{public}@] nothing persisted for properties of class %{public}@", buf, 0x16u);
     }
@@ -669,47 +669,47 @@
   return v18;
 }
 
-- (BOOL)_saveObject:(id)a3 error:(id *)a4
+- (BOOL)_saveObject:(id)object error:(id *)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  objectCopy = object;
   v7 = objc_alloc_init(MEMORY[0x277D62458]);
   v8 = v7;
-  if (!v6)
+  if (!objectCopy)
   {
     [v7 serializedDictionary];
     goto LABEL_5;
   }
 
   v34 = 0;
-  v9 = [v7 serialize:v6 error:&v34];
+  v9 = [v7 serialize:objectCopy error:&v34];
   v10 = v34;
   v11 = v10;
   if (v9)
   {
     [v8 serializedDictionary];
     v12 = LABEL_5:;
-    v13 = [v12 hksp_serializedProperties];
-    v14 = [v13 mutableCopy];
+    hksp_serializedProperties = [v12 hksp_serializedProperties];
+    v14 = [hksp_serializedProperties mutableCopy];
 
-    v15 = [(HDSPSleepStorage *)self syncedDefaults];
-    [v15 hksp_saveDictionary:v14];
+    syncedDefaults = [(HDSPSleepStorage *)self syncedDefaults];
+    [syncedDefaults hksp_saveDictionary:v14];
 
-    v16 = [v8 serializedDictionary];
-    v17 = [v16 hksp_serializedClassName];
+    serializedDictionary = [v8 serializedDictionary];
+    hksp_serializedClassName = [serializedDictionary hksp_serializedClassName];
 
-    v18 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration keySetForIdentifier:v17];
-    v19 = [v18 keysToPersist];
+    v18 = [(HDSPSyncedDefaultsConfiguration *)self->_configuration keySetForIdentifier:hksp_serializedClassName];
+    keysToPersist = [v18 keysToPersist];
     v20 = MEMORY[0x277CBEB98];
-    v21 = [v14 allKeys];
-    v22 = [v20 setWithArray:v21];
-    v23 = [v19 na_setByRemovingObjectsFromSet:v22];
+    allKeys = [v14 allKeys];
+    v22 = [v20 setWithArray:allKeys];
+    v23 = [keysToPersist na_setByRemovingObjectsFromSet:v22];
 
-    v24 = [(HDSPSleepStorage *)self syncedDefaults];
-    [v24 hksp_removeObjectsForKeys:v23];
+    syncedDefaults2 = [(HDSPSleepStorage *)self syncedDefaults];
+    [syncedDefaults2 hksp_removeObjectsForKeys:v23];
 
-    v25 = [(HDSPSleepStorage *)self syncedDefaults];
-    [v25 hksp_synchronize];
+    syncedDefaults3 = [(HDSPSleepStorage *)self syncedDefaults];
+    [syncedDefaults3 hksp_synchronize];
 
     v26 = 1;
     v11 = v33;
@@ -728,11 +728,11 @@
     _os_log_error_impl(&dword_269B11000, v27, OS_LOG_TYPE_ERROR, "[%{public}@] failed serialization with error %{public}@", buf, 0x16u);
   }
 
-  if (a4)
+  if (error)
   {
     v28 = v11;
     v26 = 0;
-    *a4 = v11;
+    *error = v11;
   }
 
   else
@@ -746,11 +746,11 @@ LABEL_11:
   return v26;
 }
 
-- (BOOL)_saveObjectChanges:(id)a3 versionKey:(id)a4 currentVersion:(unint64_t)a5 error:(id *)a6
+- (BOOL)_saveObjectChanges:(id)changes versionKey:(id)key currentVersion:(unint64_t)version error:(id *)error
 {
   v51 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  changesCopy = changes;
+  keyCopy = key;
   v43 = 0;
   v44 = &v43;
   v45 = 0x2020000000;
@@ -763,7 +763,7 @@ LABEL_11:
   v42 = 0;
   v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v13 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v14 = [v10 changes];
+  changes = [changesCopy changes];
   v29 = MEMORY[0x277D85DD0];
   v30 = 3221225472;
   v31 = __71__HDSPSleepStorage__saveObjectChanges_versionKey_currentVersion_error___block_invoke;
@@ -774,22 +774,22 @@ LABEL_11:
   v36 = &v43;
   v16 = v13;
   v34 = v16;
-  [v14 na_each:&v29];
+  [changes na_each:&v29];
 
   if (*(v44 + 24) == 1)
   {
     v17 = [(HDSPSleepStorage *)self syncedDefaults:v29];
-    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
-    [v17 hksp_setObject:v18 forKey:v11];
+    v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:version];
+    [v17 hksp_setObject:v18 forKey:keyCopy];
 
-    v19 = [(HDSPSleepStorage *)self syncedDefaults];
-    [v19 hksp_saveDictionary:v15];
+    syncedDefaults = [(HDSPSleepStorage *)self syncedDefaults];
+    [syncedDefaults hksp_saveDictionary:v15];
 
-    v20 = [(HDSPSleepStorage *)self syncedDefaults];
-    [v20 hksp_removeObjectsForKeys:v16];
+    syncedDefaults2 = [(HDSPSleepStorage *)self syncedDefaults];
+    [syncedDefaults2 hksp_removeObjectsForKeys:v16];
 
-    v21 = [(HDSPSleepStorage *)self syncedDefaults];
-    [v21 hksp_synchronize];
+    syncedDefaults3 = [(HDSPSleepStorage *)self syncedDefaults];
+    [syncedDefaults3 hksp_synchronize];
   }
 
   else
@@ -807,9 +807,9 @@ LABEL_11:
       _os_log_error_impl(&dword_269B11000, v22, OS_LOG_TYPE_ERROR, "[%{public}@] failed serialization with error %{public}@", buf, 0x16u);
     }
 
-    if (a6)
+    if (error)
     {
-      *a6 = v38[5];
+      *error = v38[5];
     }
   }
 
@@ -888,23 +888,23 @@ LABEL_12:
 LABEL_13:
 }
 
-- (BOOL)_removeObjectProperties:(id)a3 error:(id *)a4
+- (BOOL)_removeObjectProperties:(id)properties error:(id *)error
 {
-  v5 = a3;
-  v6 = [(HDSPSleepStorage *)self syncedDefaults];
+  propertiesCopy = properties;
+  syncedDefaults = [(HDSPSleepStorage *)self syncedDefaults];
   v7 = HKSPPropertyIdentifiersForProperties();
 
-  [v6 hksp_removeObjectsForKeys:v7];
-  v8 = [(HDSPSleepStorage *)self syncedDefaults];
-  [v8 hksp_synchronize];
+  [syncedDefaults hksp_removeObjectsForKeys:v7];
+  syncedDefaults2 = [(HDSPSleepStorage *)self syncedDefaults];
+  [syncedDefaults2 hksp_synchronize];
 
   return 1;
 }
 
-- (void)environmentWillBecomeReady:(id)a3
+- (void)environmentWillBecomeReady:(id)ready
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  readyCopy = ready;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -914,14 +914,14 @@ LABEL_13:
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] environmentWillBecomeReady", &v11, 0xCu);
   }
 
-  v7 = [v4 diagnostics];
-  [v7 addProvider:self];
+  diagnostics = [readyCopy diagnostics];
+  [diagnostics addProvider:self];
 
-  v8 = [v4 notificationListener];
+  notificationListener = [readyCopy notificationListener];
 
-  [v8 addObserver:self];
-  v9 = [(HDSPSleepStorage *)self syncedDefaults];
-  [v9 hdsp_setExternalChangeDelegate:self];
+  [notificationListener addObserver:self];
+  syncedDefaults = [(HDSPSleepStorage *)self syncedDefaults];
+  [syncedDefaults hdsp_setExternalChangeDelegate:self];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -938,13 +938,13 @@ LABEL_13:
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] resetting Cloud storage", &v7, 0xCu);
   }
 
-  v5 = [(HDSPSleepStorage *)self syncedDefaults];
-  [v5 resetCloudData];
+  syncedDefaults = [(HDSPSleepStorage *)self syncedDefaults];
+  [syncedDefaults resetCloudData];
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)syncedUserDefaultsDidChangeExternally:(id)a3
+- (void)syncedUserDefaultsDidChangeExternally:(id)externally
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();
@@ -973,11 +973,11 @@ LABEL_13:
   return NSStringFromClass(v2);
 }
 
-- (id)notificationListener:(id)a3 didReceiveNotificationWithName:(id)a4
+- (id)notificationListener:(id)listener didReceiveNotificationWithName:(id)name
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  if ([v5 isEqualToString:@"com.apple.sleepd.cloudkit.reset"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"com.apple.sleepd.cloudkit.reset"])
   {
     v6 = HKSPLogForCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -985,45 +985,45 @@ LABEL_13:
       *v11 = 138543618;
       *&v11[4] = objc_opt_class();
       *&v11[12] = 2114;
-      *&v11[14] = v5;
+      *&v11[14] = nameCopy;
       v7 = *&v11[4];
       _os_log_impl(&dword_269B11000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] received %{public}@", v11, 0x16u);
     }
 
-    if ([v5 isEqualToString:@"com.apple.sleepd.cloudkit.reset"])
+    if ([nameCopy isEqualToString:@"com.apple.sleepd.cloudkit.reset"])
     {
       [(HDSPSleepStorage *)self resetCloudStorage];
     }
   }
 
-  v8 = [MEMORY[0x277D2C900] futureWithNoResult];
+  futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
 
   v9 = *MEMORY[0x277D85DE8];
 
-  return v8;
+  return futureWithNoResult;
 }
 
 - (id)diagnosticDescription
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v4 = [WeakRetained behavior];
-  v5 = [v4 features];
-  v6 = [v5 sleepCloudKitSync];
+  behavior = [WeakRetained behavior];
+  features = [behavior features];
+  sleepCloudKitSync = [features sleepCloudKitSync];
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(HDSPSleepStorage *)self syncedDefaults];
-  v9 = [v8 localDefaultsDictionaryRepresentation];
-  v10 = v9;
-  if (v6)
+  syncedDefaults = [(HDSPSleepStorage *)self syncedDefaults];
+  localDefaultsDictionaryRepresentation = [syncedDefaults localDefaultsDictionaryRepresentation];
+  v10 = localDefaultsDictionaryRepresentation;
+  if (sleepCloudKitSync)
   {
-    v11 = [(HDSPSleepStorage *)self syncedDefaults];
-    v12 = [v11 cloudKitDefaultsDictionaryRepresentation];
-    v13 = [v7 stringWithFormat:@"Local Data: %@\nCloudKit Data %@", v10, v12];
+    syncedDefaults2 = [(HDSPSleepStorage *)self syncedDefaults];
+    cloudKitDefaultsDictionaryRepresentation = [syncedDefaults2 cloudKitDefaultsDictionaryRepresentation];
+    v13 = [v7 stringWithFormat:@"Local Data: %@\nCloudKit Data %@", v10, cloudKitDefaultsDictionaryRepresentation];
   }
 
   else
   {
-    v13 = [v7 stringWithFormat:@"Data: %@", v9];
+    v13 = [v7 stringWithFormat:@"Data: %@", localDefaultsDictionaryRepresentation];
   }
 
   return v13;

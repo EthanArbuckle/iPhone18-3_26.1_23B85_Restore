@@ -1,11 +1,11 @@
 @interface SUImageDataProvider
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseData:(id)a3 returningError:(id *)a4;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseData:(id)data returningError:(id *)error;
 - (CGSize)finalSize;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)newImageFromImage:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)newImageFromImage:(id)image;
 - (unint64_t)hash;
-- (void)_getFinalSize:(CGSize *)a3 imageFrame:(CGRect *)a4 forImage:(id)a5 withModifier:(id)a6;
+- (void)_getFinalSize:(CGSize *)size imageFrame:(CGRect *)frame forImage:(id)image withModifier:(id)modifier;
 - (void)dealloc;
 @end
 
@@ -20,11 +20,11 @@
   [(SUImageDataProvider *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SUImageDataProvider;
-  v4 = [(ISDataProvider *)&v8 copyWithZone:a3];
+  v4 = [(ISDataProvider *)&v8 copyWithZone:zone];
   v4[14] = [(SUImageDataProvider *)self fillColor];
   [(SUImageDataProvider *)self finalSize];
   v4[15] = v5;
@@ -41,7 +41,7 @@
   return [(NSString *)v3 hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -49,7 +49,7 @@
     return 0;
   }
 
-  if (!-[UIColor isEqual:](-[SUImageDataProvider fillColor](self, "fillColor"), "isEqual:", [a3 fillColor]))
+  if (!-[UIColor isEqual:](-[SUImageDataProvider fillColor](self, "fillColor"), "isEqual:", [equal fillColor]))
   {
     return 0;
   }
@@ -57,32 +57,32 @@
   [(SUImageDataProvider *)self finalSize];
   v6 = v5;
   v8 = v7;
-  [a3 finalSize];
+  [equal finalSize];
   if (v6 != v10 || v8 != v9)
   {
     return 0;
   }
 
-  v11 = [(SUImageDataProvider *)self modifier];
-  v12 = [a3 modifier];
+  modifier = [(SUImageDataProvider *)self modifier];
+  modifier2 = [equal modifier];
 
-  return [(SUImageModifier *)v11 isEqual:v12];
+  return [(SUImageModifier *)modifier isEqual:modifier2];
 }
 
-- (id)newImageFromImage:(id)a3
+- (id)newImageFromImage:(id)image
 {
-  if (!a3)
+  if (!image)
   {
     return 0;
   }
 
-  v3 = a3;
-  v5 = [(SUImageDataProvider *)self modifier];
-  v6 = v3;
-  if (v5)
+  imageCopy = image;
+  modifier = [(SUImageDataProvider *)self modifier];
+  v6 = imageCopy;
+  if (modifier)
   {
 
-    v3 = [(SUImageModifier *)v5 newImageForImage:v3];
+    imageCopy = [(SUImageModifier *)modifier newImageForImage:imageCopy];
   }
 
   [(SUImageDataProvider *)self finalSize];
@@ -91,23 +91,23 @@
   v32 = v7;
   v33 = v9;
   v31.origin = *MEMORY[0x1E695F058];
-  [v3 size];
+  [imageCopy size];
   v31.size.width = v11;
   v31.size.height = v12;
   if (v8 == *MEMORY[0x1E695F060] && v10 == *(MEMORY[0x1E695F060] + 8))
   {
-    [v3 size];
+    [imageCopy size];
     v32 = v14;
     v33 = v15;
   }
 
-  [(SUImageDataProvider *)self _getFinalSize:&v32 imageFrame:&v31 forImage:v3 withModifier:v5];
+  [(SUImageDataProvider *)self _getFinalSize:&v32 imageFrame:&v31 forImage:imageCopy withModifier:modifier];
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   if (DeviceRGB)
   {
     v17 = DeviceRGB;
-    v18 = [(SUImageDataProvider *)self fillColor];
-    if (!v18 || v18 == [MEMORY[0x1E69DC888] clearColor])
+    fillColor = [(SUImageDataProvider *)self fillColor];
+    if (!fillColor || fillColor == [MEMORY[0x1E69DC888] clearColor])
     {
       v19 = 8194;
     }
@@ -130,9 +130,9 @@
       CGContextScaleCTM(v25, v22, v22);
       CGAffineTransformMakeScale(&v30, v22, v22);
       CGContextSetBaseCTM();
-      if (v18)
+      if (fillColor)
       {
-        CGContextSetFillColorWithColor(v25, [(UIColor *)v18 CGColor]);
+        CGContextSetFillColorWithColor(v25, [(UIColor *)fillColor CGColor]);
         CGContextSetCompositeOperation();
         v34.size.width = v32;
         v34.size.height = v33;
@@ -141,10 +141,10 @@
         CGContextFillRect(v25, v34);
       }
 
-      [(SUImageModifier *)v5 drawBeforeImageForContext:v25 imageFrame:*&v31.origin finalSize:v31.size.width, v31.size.height, v32, v33];
-      v26 = [v3 CGImage];
-      CGContextDrawImage(v25, v31, v26);
-      [(SUImageModifier *)v5 drawAfterImageForContext:v25 imageFrame:*&v31.origin finalSize:v31.size.width, v31.size.height, v32, v33];
+      [(SUImageModifier *)modifier drawBeforeImageForContext:v25 imageFrame:*&v31.origin finalSize:v31.size.width, v31.size.height, v32, v33];
+      cGImage = [imageCopy CGImage];
+      CGContextDrawImage(v25, v31, cGImage);
+      [(SUImageModifier *)modifier drawAfterImageForContext:v25 imageFrame:*&v31.origin finalSize:v31.size.width, v31.size.height, v32, v33];
       Image = CGBitmapContextCreateImage(v25);
       if (Image)
       {
@@ -177,9 +177,9 @@
   return v20;
 }
 
-- (BOOL)parseData:(id)a3 returningError:(id *)a4
+- (BOOL)parseData:(id)data returningError:(id *)error
 {
-  v5 = CGImageSourceCreateWithData(a3, 0);
+  v5 = CGImageSourceCreateWithData(data, 0);
   if (!v5)
   {
     return 0;
@@ -222,24 +222,24 @@
   return v13;
 }
 
-- (void)_getFinalSize:(CGSize *)a3 imageFrame:(CGRect *)a4 forImage:(id)a5 withModifier:(id)a6
+- (void)_getFinalSize:(CGSize *)size imageFrame:(CGRect *)frame forImage:(id)image withModifier:(id)modifier
 {
-  width = a3->width;
-  height = a3->height;
-  x = a4->origin.x;
-  y = a4->origin.y;
-  v15 = a4->size.width;
-  v14 = a4->size.height;
-  if ([a6 scalesImage])
+  width = size->width;
+  height = size->height;
+  x = frame->origin.x;
+  y = frame->origin.y;
+  v15 = frame->size.width;
+  v14 = frame->size.height;
+  if ([modifier scalesImage])
   {
-    v16 = a6;
+    modifierCopy2 = modifier;
     v17 = width;
     v18 = height;
 LABEL_16:
-    [v16 finalSizeForSize:v17 originalSize:{v18, width, height}];
+    [modifierCopy2 finalSizeForSize:v17 originalSize:{v18, width, height}];
     v20 = v33;
     v22 = v34;
-    [a6 imageFrameForImage:a5 currentFrame:x finalSize:{y, v15, v14, v33, v34}];
+    [modifier imageFrameForImage:image currentFrame:x finalSize:{y, v15, v14, v33, v34}];
     x = v35;
     y = v36;
     v15 = v37;
@@ -247,12 +247,12 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a6)
+  if (modifier)
   {
-    [a6 finalSizeForSize:width originalSize:{height, width, height}];
+    [modifier finalSizeForSize:width originalSize:{height, width, height}];
     v20 = v19;
     v22 = v21;
-    [a6 imageFrameForImage:a5 currentFrame:x finalSize:{y, v15, v14, v19, v21}];
+    [modifier imageFrameForImage:image currentFrame:x finalSize:{y, v15, v14, v19, v21}];
     x = v23;
     y = v24;
     v15 = v25;
@@ -267,16 +267,16 @@ LABEL_16:
 
   if (v20 == *MEMORY[0x1E695F060] && v22 == *(MEMORY[0x1E695F060] + 8))
   {
-    [a5 size];
+    [image size];
     v20 = v31;
     v22 = v32;
-    if (!a6)
+    if (!modifier)
     {
       goto LABEL_17;
     }
 
 LABEL_15:
-    v16 = a6;
+    modifierCopy2 = modifier;
     v17 = v20;
     v18 = v22;
     goto LABEL_16;
@@ -292,18 +292,18 @@ LABEL_15:
   v14 = ceilf(v29);
   v30 = v15 * v28;
   v15 = ceilf(v30);
-  if (a6)
+  if (modifier)
   {
     goto LABEL_15;
   }
 
 LABEL_17:
-  a3->width = v20;
-  a3->height = v22;
-  a4->origin.x = x;
-  a4->origin.y = y;
-  a4->size.width = v15;
-  a4->size.height = v14;
+  size->width = v20;
+  size->height = v22;
+  frame->origin.x = x;
+  frame->origin.y = y;
+  frame->size.width = v15;
+  frame->size.height = v14;
 }
 
 - (CGSize)finalSize

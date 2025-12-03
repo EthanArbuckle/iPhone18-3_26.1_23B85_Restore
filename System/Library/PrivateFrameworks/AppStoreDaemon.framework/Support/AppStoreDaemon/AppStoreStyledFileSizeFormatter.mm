@@ -1,13 +1,13 @@
 @interface AppStoreStyledFileSizeFormatter
-+ (id)fileSize:(double)a3;
++ (id)fileSize:(double)size;
 - (_TtC9appstored31AppStoreStyledFileSizeFormatter)init;
 @end
 
 @implementation AppStoreStyledFileSizeFormatter
 
-+ (id)fileSize:(double)a3
++ (id)fileSize:(double)size
 {
-  sub_10018FE5C(a3);
+  sub_10018FE5C(size);
   v3 = String._bridgeToObjectiveC()();
 
   return v3;

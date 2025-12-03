@@ -1,110 +1,110 @@
 @interface HUSoftwareUpdateLicenseViewController
-- (HUSoftwareUpdateLicenseViewController)initWithDocument:(id)a3;
-- (HUSoftwareUpdateLicenseViewController)initWithURL:(id)a3;
+- (HUSoftwareUpdateLicenseViewController)initWithDocument:(id)document;
+- (HUSoftwareUpdateLicenseViewController)initWithURL:(id)l;
 - (WKWebView)webView;
-- (id)_evaluateHeight:(id)a3;
-- (id)_initWithWebViewController:(id)a3;
+- (id)_evaluateHeight:(id)height;
+- (id)_initWithWebViewController:(id)controller;
 - (id)hu_preloadContent;
 - (id)loadLicense;
-- (void)_agreeToTerms:(id)a3;
-- (void)_disagreeToTerms:(id)a3;
-- (void)_emailTermsAndConditions:(id)a3;
+- (void)_agreeToTerms:(id)terms;
+- (void)_disagreeToTerms:(id)terms;
+- (void)_emailTermsAndConditions:(id)conditions;
 - (void)loadView;
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5;
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation HUSoftwareUpdateLicenseViewController
 
-- (HUSoftwareUpdateLicenseViewController)initWithURL:(id)a3
+- (HUSoftwareUpdateLicenseViewController)initWithURL:(id)l
 {
-  v5 = a3;
-  if (!v5)
+  lCopy = l;
+  if (!lCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateLicenseViewController.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"URL"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateLicenseViewController.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"URL"}];
   }
 
-  v6 = [[HUWebViewController alloc] initWithURL:v5];
+  v6 = [[HUWebViewController alloc] initWithURL:lCopy];
   v7 = [(HUSoftwareUpdateLicenseViewController *)self _initWithWebViewController:v6];
 
   return v7;
 }
 
-- (HUSoftwareUpdateLicenseViewController)initWithDocument:(id)a3
+- (HUSoftwareUpdateLicenseViewController)initWithDocument:(id)document
 {
-  v5 = a3;
-  if (!v5)
+  documentCopy = document;
+  if (!documentCopy)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateLicenseViewController.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"document"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateLicenseViewController.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"document"}];
   }
 
-  v6 = [[HUWebViewController alloc] initWithDocument:v5];
+  v6 = [[HUWebViewController alloc] initWithDocument:documentCopy];
   v7 = [(HUSoftwareUpdateLicenseViewController *)self _initWithWebViewController:v6];
 
   return v7;
 }
 
-- (id)_initWithWebViewController:(id)a3
+- (id)_initWithWebViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v39.receiver = self;
   v39.super_class = HUSoftwareUpdateLicenseViewController;
   v6 = [(HUSoftwareUpdateLicenseViewController *)&v39 init];
   p_isa = &v6->super.super.super.isa;
   if (v6)
   {
-    objc_storeStrong(&v6->_webViewController, a3);
+    objc_storeStrong(&v6->_webViewController, controller);
     [p_isa[132] setShowsShareButton:0];
-    v8 = [p_isa webViewController];
-    [v8 setZoomEnabled:0];
+    webViewController = [p_isa webViewController];
+    [webViewController setZoomEnabled:0];
 
-    [p_isa addChildViewController:v5];
-    [v5 didMoveToParentViewController:p_isa];
-    v9 = [p_isa webView];
-    [v9 setAutoresizingMask:18];
+    [p_isa addChildViewController:controllerCopy];
+    [controllerCopy didMoveToParentViewController:p_isa];
+    webView = [p_isa webView];
+    [webView setAutoresizingMask:18];
 
-    v10 = [p_isa webView];
-    [v10 setUIDelegate:p_isa];
+    webView2 = [p_isa webView];
+    [webView2 setUIDelegate:p_isa];
 
-    v11 = [p_isa webView];
-    [v11 _setLayoutMode:4];
+    webView3 = [p_isa webView];
+    [webView3 _setLayoutMode:4];
 
-    v12 = [p_isa webView];
-    v13 = [v12 scrollView];
-    v14 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [v13 setBackgroundColor:v14];
+    webView4 = [p_isa webView];
+    scrollView = [webView4 scrollView];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [scrollView setBackgroundColor:systemBackgroundColor];
 
-    v15 = [p_isa webView];
-    v16 = [v15 scrollView];
-    [v16 _setShowsBackgroundShadow:0];
+    webView5 = [p_isa webView];
+    scrollView2 = [webView5 scrollView];
+    [scrollView2 _setShowsBackgroundShadow:0];
 
-    v17 = [p_isa webView];
-    v18 = [v17 scrollView];
-    [v18 setDecelerationRate:0.998];
+    webView6 = [p_isa webView];
+    scrollView3 = [webView6 scrollView];
+    [scrollView3 setDecelerationRate:0.998];
 
-    v19 = [p_isa webView];
-    v20 = [v19 scrollView];
-    [v20 setScrollEnabled:0];
+    webView7 = [p_isa webView];
+    scrollView4 = [webView7 scrollView];
+    [scrollView4 setScrollEnabled:0];
 
-    v21 = [p_isa webView];
-    v22 = [v21 scrollView];
-    [v22 setDelegate:p_isa];
+    webView8 = [p_isa webView];
+    scrollView5 = [webView8 scrollView];
+    [scrollView5 setDelegate:p_isa];
 
     v23 = [MEMORY[0x277D75220] buttonWithType:1];
     v24 = p_isa[129];
     p_isa[129] = v23;
 
-    v25 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-    [p_isa[129] setBackgroundColor:v25];
+    secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+    [p_isa[129] setBackgroundColor:secondarySystemBackgroundColor];
 
     v26 = p_isa[129];
-    v27 = [MEMORY[0x277D75348] hf_keyColor];
-    [v26 setTitleColor:v27 forState:0];
+    hf_keyColor = [MEMORY[0x277D75348] hf_keyColor];
+    [v26 setTitleColor:hf_keyColor forState:0];
 
     v28 = p_isa[129];
     v29 = _HULocalizedStringWithDefaultValue(@"HUSoftwareUpdateLicenseViewControllerEmailButtonTitle", @"HUSoftwareUpdateLicenseViewControllerEmailButtonTitle", 1);
@@ -120,17 +120,17 @@
     v31 = p_isa[128];
     p_isa[128] = v30;
 
-    v32 = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
-    [p_isa[128] setBackgroundColor:v32];
+    systemGroupedBackgroundColor = [MEMORY[0x277D75348] systemGroupedBackgroundColor];
+    [p_isa[128] setBackgroundColor:systemGroupedBackgroundColor];
 
     v33 = p_isa[128];
-    v34 = [p_isa retainCopyOfTermsButton];
-    [v33 addSubview:v34];
+    retainCopyOfTermsButton = [p_isa retainCopyOfTermsButton];
+    [v33 addSubview:retainCopyOfTermsButton];
 
     v35 = p_isa[128];
-    v36 = [p_isa webViewController];
-    v37 = [v36 view];
-    [v35 addSubview:v37];
+    webViewController2 = [p_isa webViewController];
+    view = [webViewController2 view];
+    [v35 addSubview:view];
   }
 
   return p_isa;
@@ -139,14 +139,14 @@
 - (id)hu_preloadContent
 {
   objc_initWeak(&location, self);
-  v3 = [(HUSoftwareUpdateLicenseViewController *)self webViewController];
-  v4 = [v3 hu_preloadContent];
+  webViewController = [(HUSoftwareUpdateLicenseViewController *)self webViewController];
+  hu_preloadContent = [webViewController hu_preloadContent];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__HUSoftwareUpdateLicenseViewController_hu_preloadContent__block_invoke;
   v7[3] = &unk_277DBD948;
   objc_copyWeak(&v8, &location);
-  v5 = [v4 flatMap:v7];
+  v5 = [hu_preloadContent flatMap:v7];
   objc_destroyWeak(&v8);
 
   objc_destroyWeak(&location);
@@ -164,8 +164,8 @@ id __58__HUSoftwareUpdateLicenseViewController_hu_preloadContent__block_invoke(u
 
 - (void)loadView
 {
-  v3 = [(HUSoftwareUpdateLicenseViewController *)self scrollView];
-  [(HUSoftwareUpdateLicenseViewController *)self setView:v3];
+  scrollView = [(HUSoftwareUpdateLicenseViewController *)self scrollView];
+  [(HUSoftwareUpdateLicenseViewController *)self setView:scrollView];
 }
 
 - (void)viewWillLayoutSubviews
@@ -173,15 +173,15 @@ id __58__HUSoftwareUpdateLicenseViewController_hu_preloadContent__block_invoke(u
   v8.receiver = self;
   v8.super_class = HUSoftwareUpdateLicenseViewController;
   [(HUSoftwareUpdateLicenseViewController *)&v8 viewWillLayoutSubviews];
-  v3 = [(HUSoftwareUpdateLicenseViewController *)self view];
-  [v3 bounds];
+  view = [(HUSoftwareUpdateLicenseViewController *)self view];
+  [view bounds];
   v5 = v4;
 
-  v6 = [(HUSoftwareUpdateLicenseViewController *)self retainCopyOfTermsButton];
-  [v6 sizeToFit];
+  retainCopyOfTermsButton = [(HUSoftwareUpdateLicenseViewController *)self retainCopyOfTermsButton];
+  [retainCopyOfTermsButton sizeToFit];
 
-  v7 = [(HUSoftwareUpdateLicenseViewController *)self retainCopyOfTermsButton];
-  [v7 setFrame:{0.0, 32.0, v5, 38.0}];
+  retainCopyOfTermsButton2 = [(HUSoftwareUpdateLicenseViewController *)self retainCopyOfTermsButton];
+  [retainCopyOfTermsButton2 setFrame:{0.0, 32.0, v5, 38.0}];
 }
 
 - (void)viewDidLayoutSubviews
@@ -189,32 +189,32 @@ id __58__HUSoftwareUpdateLicenseViewController_hu_preloadContent__block_invoke(u
   v30.receiver = self;
   v30.super_class = HUSoftwareUpdateLicenseViewController;
   [(HUSoftwareUpdateLicenseViewController *)&v30 viewDidLayoutSubviews];
-  v3 = [(HUSoftwareUpdateLicenseViewController *)self view];
-  [v3 bounds];
+  view = [(HUSoftwareUpdateLicenseViewController *)self view];
+  [view bounds];
   v5 = v4;
 
-  v6 = [(HUSoftwareUpdateLicenseViewController *)self navigationController];
-  v7 = [v6 toolbar];
-  [v7 bounds];
+  navigationController = [(HUSoftwareUpdateLicenseViewController *)self navigationController];
+  toolbar = [navigationController toolbar];
+  [toolbar bounds];
   v9 = v8 + 32.0;
 
-  v10 = [(HUSoftwareUpdateLicenseViewController *)self webViewController];
-  v11 = [v10 view];
-  [v11 frame];
+  webViewController = [(HUSoftwareUpdateLicenseViewController *)self webViewController];
+  view2 = [webViewController view];
+  [view2 frame];
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  v18 = [(HUSoftwareUpdateLicenseViewController *)self view];
-  [v18 frame];
+  view3 = [(HUSoftwareUpdateLicenseViewController *)self view];
+  [view3 frame];
   v20 = v19;
 
-  v21 = [(HUSoftwareUpdateLicenseViewController *)self webViewController];
-  v22 = [v21 view];
-  [v22 setFrame:{v13, v15, v20, v17}];
+  webViewController2 = [(HUSoftwareUpdateLicenseViewController *)self webViewController];
+  view4 = [webViewController2 view];
+  [view4 setFrame:{v13, v15, v20, v17}];
 
-  v23 = [(HUSoftwareUpdateLicenseViewController *)self webView];
-  v24 = [(HUSoftwareUpdateLicenseViewController *)self _evaluateHeight:v23];
+  webView = [(HUSoftwareUpdateLicenseViewController *)self webView];
+  v24 = [(HUSoftwareUpdateLicenseViewController *)self _evaluateHeight:webView];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __62__HUSoftwareUpdateLicenseViewController_viewDidLayoutSubviews__block_invoke;
@@ -224,11 +224,11 @@ id __58__HUSoftwareUpdateLicenseViewController_hu_preloadContent__block_invoke(u
   *&v29[6] = v9;
   v25 = [v24 addSuccessBlock:v29];
 
-  v26 = [(HUSoftwareUpdateLicenseViewController *)self webView];
-  [v26 frame];
+  webView2 = [(HUSoftwareUpdateLicenseViewController *)self webView];
+  [webView2 frame];
   v27 = CGRectGetMaxY(v31) + 32.0;
-  v28 = [(HUSoftwareUpdateLicenseViewController *)self scrollView];
-  [v28 setContentSize:{v5, v27}];
+  scrollView = [(HUSoftwareUpdateLicenseViewController *)self scrollView];
+  [scrollView setContentSize:{v5, v27}];
 }
 
 void __62__HUSoftwareUpdateLicenseViewController_viewDidLayoutSubviews__block_invoke(uint64_t a1, void *a2)
@@ -280,13 +280,13 @@ void __62__HUSoftwareUpdateLicenseViewController_viewDidLayoutSubviews__block_in
   [(HUSoftwareUpdateLicenseViewController *)self setToolbarItems:v11];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = HUSoftwareUpdateLicenseViewController;
-  [(HUSoftwareUpdateLicenseViewController *)&v5 viewWillAppear:a3];
-  v4 = [(HUSoftwareUpdateLicenseViewController *)self navigationController];
-  [v4 setToolbarHidden:0];
+  [(HUSoftwareUpdateLicenseViewController *)&v5 viewWillAppear:appear];
+  navigationController = [(HUSoftwareUpdateLicenseViewController *)self navigationController];
+  [navigationController setToolbarHidden:0];
 }
 
 - (id)loadLicense
@@ -338,41 +338,41 @@ void __52__HUSoftwareUpdateLicenseViewController_loadLicense__block_invoke_2(uin
   [v6 finishWithResult:v7];
 }
 
-- (void)_agreeToTerms:(id)a3
+- (void)_agreeToTerms:(id)terms
 {
-  v5 = [(HUSoftwareUpdateLicenseViewController *)self agreeHandler];
+  agreeHandler = [(HUSoftwareUpdateLicenseViewController *)self agreeHandler];
 
-  if (!v5)
+  if (!agreeHandler)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateLicenseViewController.m" lineNumber:179 description:@"Agree handler must be set before presenting HUSoftwareUpdateLicenseViewController"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateLicenseViewController.m" lineNumber:179 description:@"Agree handler must be set before presenting HUSoftwareUpdateLicenseViewController"];
   }
 
-  v7 = [(HUSoftwareUpdateLicenseViewController *)self agreeHandler];
-  v7[2]();
+  agreeHandler2 = [(HUSoftwareUpdateLicenseViewController *)self agreeHandler];
+  agreeHandler2[2]();
 }
 
-- (void)_disagreeToTerms:(id)a3
+- (void)_disagreeToTerms:(id)terms
 {
-  v5 = [(HUSoftwareUpdateLicenseViewController *)self disagreeHandler];
+  disagreeHandler = [(HUSoftwareUpdateLicenseViewController *)self disagreeHandler];
 
-  if (!v5)
+  if (!disagreeHandler)
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateLicenseViewController.m" lineNumber:185 description:@"Disagree handler must be set before presenting HUSoftwareUpdateLicenseViewController"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateLicenseViewController.m" lineNumber:185 description:@"Disagree handler must be set before presenting HUSoftwareUpdateLicenseViewController"];
   }
 
-  v7 = [(HUSoftwareUpdateLicenseViewController *)self disagreeHandler];
-  v7[2]();
+  disagreeHandler2 = [(HUSoftwareUpdateLicenseViewController *)self disagreeHandler];
+  disagreeHandler2[2]();
 }
 
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error
 {
-  v7 = a5;
-  if (v7)
+  errorCopy = error;
+  if (errorCopy)
   {
-    v6 = [MEMORY[0x277D14640] sharedHandler];
-    [v6 handleError:v7];
+    mEMORY[0x277D14640] = [MEMORY[0x277D14640] sharedHandler];
+    [mEMORY[0x277D14640] handleError:errorCopy];
   }
 
   else
@@ -381,26 +381,26 @@ void __52__HUSoftwareUpdateLicenseViewController_loadLicense__block_invoke_2(uin
   }
 }
 
-- (void)_emailTermsAndConditions:(id)a3
+- (void)_emailTermsAndConditions:(id)conditions
 {
   v5 = objc_alloc_init(MEMORY[0x277CD6878]);
-  v4 = [(HUSoftwareUpdateLicenseViewController *)self license];
-  [v5 setMessageBody:v4 isHTML:1];
+  license = [(HUSoftwareUpdateLicenseViewController *)self license];
+  [v5 setMessageBody:license isHTML:1];
 
   [v5 setMailComposeDelegate:self];
   [(HUSoftwareUpdateLicenseViewController *)self presentViewController:v5 animated:1 completion:0];
 }
 
-- (id)_evaluateHeight:(id)a3
+- (id)_evaluateHeight:(id)height
 {
-  v3 = a3;
+  heightCopy = height;
   v4 = MEMORY[0x277D2C900];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __57__HUSoftwareUpdateLicenseViewController__evaluateHeight___block_invoke;
   v8[3] = &unk_277DB7580;
-  v9 = v3;
-  v5 = v3;
+  v9 = heightCopy;
+  v5 = heightCopy;
   v6 = [v4 futureWithBlock:v8];
 
   return v6;
@@ -442,10 +442,10 @@ void __57__HUSoftwareUpdateLicenseViewController__evaluateHeight___block_invoke_
 
 - (WKWebView)webView
 {
-  v2 = [(HUSoftwareUpdateLicenseViewController *)self webViewController];
-  v3 = [v2 webView];
+  webViewController = [(HUSoftwareUpdateLicenseViewController *)self webViewController];
+  webView = [webViewController webView];
 
-  return v3;
+  return webView;
 }
 
 @end

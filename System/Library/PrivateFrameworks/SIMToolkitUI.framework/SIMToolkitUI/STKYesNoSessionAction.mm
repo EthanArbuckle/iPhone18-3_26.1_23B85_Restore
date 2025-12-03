@@ -1,21 +1,21 @@
 @interface STKYesNoSessionAction
-- (STKYesNoSessionAction)initWithBehavior:(id)a3 inputData:(id)a4 response:(id)a5;
+- (STKYesNoSessionAction)initWithBehavior:(id)behavior inputData:(id)data response:(id)response;
 @end
 
 @implementation STKYesNoSessionAction
 
-- (STKYesNoSessionAction)initWithBehavior:(id)a3 inputData:(id)a4 response:(id)a5
+- (STKYesNoSessionAction)initWithBehavior:(id)behavior inputData:(id)data response:(id)response
 {
-  v8 = a5;
+  responseCopy = response;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __61__STKYesNoSessionAction_initWithBehavior_inputData_response___block_invoke;
   v13[3] = &unk_279B4C368;
-  v14 = v8;
+  v14 = responseCopy;
   v12.receiver = self;
   v12.super_class = STKYesNoSessionAction;
-  v9 = v8;
-  v10 = [(STKSessionAction *)&v12 initWithBehavior:a3 data:a4 responseBlock:v13];
+  v9 = responseCopy;
+  v10 = [(STKSessionAction *)&v12 initWithBehavior:behavior data:data responseBlock:v13];
 
   return v10;
 }

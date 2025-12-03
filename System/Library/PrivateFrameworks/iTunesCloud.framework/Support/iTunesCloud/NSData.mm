@@ -1,31 +1,31 @@
 @interface NSData
-+ (id)mappedDataWithContentsOfTemporaryFileURL:(id)a3 error:(id *)a4;
-+ (id)stringByMD5HashingString:(id)a3;
-+ (id)stringFromDigestData:(id)a3;
-- (id)_dataByDeflatingWithNoZipHeaderWithCompression:(unint64_t)a3;
++ (id)mappedDataWithContentsOfTemporaryFileURL:(id)l error:(id *)error;
++ (id)stringByMD5HashingString:(id)string;
++ (id)stringFromDigestData:(id)data;
+- (id)_dataByDeflatingWithNoZipHeaderWithCompression:(unint64_t)compression;
 - (id)_dataByInflatingWithNoZipHeader;
 @end
 
 @implementation NSData
 
-- (id)_dataByDeflatingWithNoZipHeaderWithCompression:(unint64_t)a3
+- (id)_dataByDeflatingWithNoZipHeaderWithCompression:(unint64_t)compression
 {
-  v4 = self;
-  if ([(NSData *)v4 length]>= 0xFFFFFFFF)
+  selfCopy = self;
+  if ([(NSData *)selfCopy length]>= 0xFFFFFFFF)
   {
-    NSLog(@"ERROR: unable to zip large data of size ~%.3f GB", [(NSData *)v4 length]/ 1000000000.0);
+    NSLog(@"ERROR: unable to zip large data of size ~%.3f GB", [(NSData *)selfCopy length]/ 1000000000.0);
     v5 = 0;
     goto LABEL_23;
   }
 
-  v6 = [(NSData *)v4 bytes];
-  v7 = [(NSData *)v4 length];
+  bytes = [(NSData *)selfCopy bytes];
+  v7 = [(NSData *)selfCopy length];
   v8 = [[NSMutableData alloc] initWithCapacity:(v7 >> 1) + 1];
   v5 = 0;
-  if (v6 && v7)
+  if (bytes && v7)
   {
     memset(&strm, 0, sizeof(strm));
-    if (a3 == 1)
+    if (compression == 1)
     {
       v9 = 1;
     }
@@ -36,7 +36,7 @@
     }
 
     strm.avail_out = 0x4000;
-    if (a3 == 2)
+    if (compression == 2)
     {
       v10 = 9;
     }
@@ -55,7 +55,7 @@
     else
     {
       strm.avail_in = v7;
-      strm.next_in = v6;
+      strm.next_in = bytes;
       do
       {
         if (!strm.avail_out)
@@ -120,18 +120,18 @@ LABEL_23:
 
 - (id)_dataByInflatingWithNoZipHeader
 {
-  v2 = self;
-  if ([(NSData *)v2 length]>> 32)
+  selfCopy = self;
+  if ([(NSData *)selfCopy length]>> 32)
   {
-    NSLog(@"ERROR: unable to zip large data of size ~%.3f GB", [(NSData *)v2 length]/ 1000000000.0);
+    NSLog(@"ERROR: unable to zip large data of size ~%.3f GB", [(NSData *)selfCopy length]/ 1000000000.0);
 LABEL_3:
     v3 = 0;
     goto LABEL_11;
   }
 
   memset(&strm.avail_in, 0, 104);
-  strm.avail_in = [(NSData *)v2 length];
-  strm.next_in = [(NSData *)v2 bytes];
+  strm.avail_in = [(NSData *)selfCopy length];
+  strm.next_in = [(NSData *)selfCopy bytes];
   v3 = 0;
   if (!inflateInit2_(&strm, -15, "1.2.12", 112))
   {
@@ -169,12 +169,12 @@ LABEL_11:
   return v3;
 }
 
-+ (id)stringByMD5HashingString:(id)a3
++ (id)stringByMD5HashingString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   memset(v56, 0, sizeof(v56));
   CC_MD5_Init(v56);
-  v4 = v3;
+  v4 = stringCopy;
   CC_MD5_Update(v56, [v4 UTF8String], objc_msgSend(v4, "length"));
 
   memset(&v57[8], 0, 64);
@@ -419,11 +419,11 @@ LABEL_49:
   return v52;
 }
 
-+ (id)stringFromDigestData:(id)a3
++ (id)stringFromDigestData:(id)data
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  v5 = [v3 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v5 = [dataCopy length];
   v6 = 2 * v5;
   v7 = malloc_type_calloc(2 * v5, 1uLL, 0x100004077774924uLL);
   if (v5 >= 1)
@@ -431,8 +431,8 @@ LABEL_49:
     v8 = v7 + 1;
     do
     {
-      *(v8 - 1) = a0123456789abcd[*v4 >> 4];
-      v9 = *v4++;
+      *(v8 - 1) = a0123456789abcd[*bytes >> 4];
+      v9 = *bytes++;
       *v8 = a0123456789abcd[v9 & 0xF];
       v8 += 2;
       --v5;
@@ -446,11 +446,11 @@ LABEL_49:
   return v10;
 }
 
-+ (id)mappedDataWithContentsOfTemporaryFileURL:(id)a3 error:(id *)a4
++ (id)mappedDataWithContentsOfTemporaryFileURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  v6 = [NSData dataWithContentsOfURL:v5 options:1 error:a4];
-  v7 = [[ICDDeleteOnDeallocTemporaryFile alloc] initWithTemporaryFileURL:v5];
+  lCopy = l;
+  v6 = [NSData dataWithContentsOfURL:lCopy options:1 error:error];
+  v7 = [[ICDDeleteOnDeallocTemporaryFile alloc] initWithTemporaryFileURL:lCopy];
 
   if (v7)
   {

@@ -1,16 +1,16 @@
 @interface _INPBAddTasksIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBAddTasksIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBAddTasksIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsWarnings:(id)a3;
+- (int)StringAsWarnings:(id)warnings;
 - (unint64_t)hash;
-- (void)addAddedTasks:(id)a3;
-- (void)addWarnings:(int)a3;
+- (void)addAddedTasks:(id)tasks;
+- (void)addWarnings:(int)warnings;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAddedTasks:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAddedTasks:(id)tasks;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBAddTasksIntentResponse
@@ -18,10 +18,10 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_addedTasks count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -41,8 +41,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -51,12 +51,12 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"addedTasks"];
+    [dictionary setObject:array forKeyedSubscript:@"addedTasks"];
   }
 
-  v11 = [(_INPBAddTasksIntentResponse *)self modifiedTaskList];
-  v12 = [v11 dictionaryRepresentation];
-  [v3 setObject:v12 forKeyedSubscript:@"modifiedTaskList"];
+  modifiedTaskList = [(_INPBAddTasksIntentResponse *)self modifiedTaskList];
+  dictionaryRepresentation2 = [modifiedTaskList dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"modifiedTaskList"];
 
   if (self->_warnings.count)
   {
@@ -85,12 +85,12 @@
       while (v14 < [(_INPBAddTasksIntentResponse *)self warningsCount]);
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"warnings"];
+    [dictionary setObject:v13 forKeyedSubscript:@"warnings"];
   }
 
   v17 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -100,28 +100,28 @@
   return v4 ^ PBRepeatedInt32Hash();
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_INPBAddTasksIntentResponse *)self addedTasks];
-  v6 = [v4 addedTasks];
-  if ((v5 != 0) == (v6 == 0))
+  addedTasks = [(_INPBAddTasksIntentResponse *)self addedTasks];
+  addedTasks2 = [equalCopy addedTasks];
+  if ((addedTasks != 0) == (addedTasks2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_INPBAddTasksIntentResponse *)self addedTasks];
-  if (v7)
+  addedTasks3 = [(_INPBAddTasksIntentResponse *)self addedTasks];
+  if (addedTasks3)
   {
-    v8 = v7;
-    v9 = [(_INPBAddTasksIntentResponse *)self addedTasks];
-    v10 = [v4 addedTasks];
-    v11 = [v9 isEqual:v10];
+    v8 = addedTasks3;
+    addedTasks4 = [(_INPBAddTasksIntentResponse *)self addedTasks];
+    addedTasks5 = [equalCopy addedTasks];
+    v11 = [addedTasks4 isEqual:addedTasks5];
 
     if (!v11)
     {
@@ -133,12 +133,12 @@
   {
   }
 
-  v5 = [(_INPBAddTasksIntentResponse *)self modifiedTaskList];
-  v6 = [v4 modifiedTaskList];
-  if ((v5 != 0) != (v6 == 0))
+  addedTasks = [(_INPBAddTasksIntentResponse *)self modifiedTaskList];
+  addedTasks2 = [equalCopy modifiedTaskList];
+  if ((addedTasks != 0) != (addedTasks2 == 0))
   {
-    v12 = [(_INPBAddTasksIntentResponse *)self modifiedTaskList];
-    if (!v12)
+    modifiedTaskList = [(_INPBAddTasksIntentResponse *)self modifiedTaskList];
+    if (!modifiedTaskList)
     {
 
 LABEL_15:
@@ -146,10 +146,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_INPBAddTasksIntentResponse *)self modifiedTaskList];
-    v15 = [v4 modifiedTaskList];
-    v16 = [v14 isEqual:v15];
+    v13 = modifiedTaskList;
+    modifiedTaskList2 = [(_INPBAddTasksIntentResponse *)self modifiedTaskList];
+    modifiedTaskList3 = [equalCopy modifiedTaskList];
+    v16 = [modifiedTaskList2 isEqual:modifiedTaskList3];
 
     if (v16)
     {
@@ -169,41 +169,41 @@ LABEL_13:
   return IsEqual;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBAddTasksIntentResponse allocWithZone:](_INPBAddTasksIntentResponse init];
-  v6 = [(NSArray *)self->_addedTasks copyWithZone:a3];
+  v6 = [(NSArray *)self->_addedTasks copyWithZone:zone];
   [(_INPBAddTasksIntentResponse *)v5 setAddedTasks:v6];
 
-  v7 = [(_INPBTaskList *)self->_modifiedTaskList copyWithZone:a3];
+  v7 = [(_INPBTaskList *)self->_modifiedTaskList copyWithZone:zone];
   [(_INPBAddTasksIntentResponse *)v5 setModifiedTaskList:v7];
 
   PBRepeatedInt32Copy();
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBAddTasksIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBAddTasksIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBAddTasksIntentResponse)initWithCoder:(id)a3
+- (_INPBAddTasksIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBAddTasksIntentResponse *)self initWithData:v6];
+    self = [(_INPBAddTasksIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -214,10 +214,10 @@ LABEL_13:
   [(_INPBAddTasksIntentResponse *)&v3 dealloc];
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -250,11 +250,11 @@ LABEL_13:
     while (v7);
   }
 
-  v11 = [(_INPBAddTasksIntentResponse *)self modifiedTaskList];
+  modifiedTaskList = [(_INPBAddTasksIntentResponse *)self modifiedTaskList];
 
-  if (v11)
+  if (modifiedTaskList)
   {
-    v12 = [(_INPBAddTasksIntentResponse *)self modifiedTaskList];
+    modifiedTaskList2 = [(_INPBAddTasksIntentResponse *)self modifiedTaskList];
     PBDataWriterWriteSubmessage();
   }
 
@@ -275,30 +275,30 @@ LABEL_13:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (int)StringAsWarnings:(id)a3
+- (int)StringAsWarnings:(id)warnings
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN"])
+  warningsCopy = warnings;
+  if ([warningsCopy isEqualToString:@"UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LOCATION_SERVICES_DISABLED"])
+  else if ([warningsCopy isEqualToString:@"LOCATION_SERVICES_DISABLED"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"FLAGGED_NOT_ALLOWED"])
+  else if ([warningsCopy isEqualToString:@"FLAGGED_NOT_ALLOWED"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CONTACT_TRIGGER_NOT_ALLOWED"])
+  else if ([warningsCopy isEqualToString:@"CONTACT_TRIGGER_NOT_ALLOWED"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"NOT_UPGRADED_TO_CLOUDKIT"])
+  else if ([warningsCopy isEqualToString:@"NOT_UPGRADED_TO_CLOUDKIT"])
   {
     v4 = 4;
   }
@@ -311,35 +311,35 @@ LABEL_13:
   return v4;
 }
 
-- (void)addWarnings:(int)a3
+- (void)addWarnings:(int)warnings
 {
-  if (a3 != 0x7FFFFFFF)
+  if (warnings != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }
 }
 
-- (void)addAddedTasks:(id)a3
+- (void)addAddedTasks:(id)tasks
 {
-  v4 = a3;
+  tasksCopy = tasks;
   addedTasks = self->_addedTasks;
-  v8 = v4;
+  v8 = tasksCopy;
   if (!addedTasks)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_addedTasks;
-    self->_addedTasks = v6;
+    self->_addedTasks = array;
 
-    v4 = v8;
+    tasksCopy = v8;
     addedTasks = self->_addedTasks;
   }
 
-  [(NSArray *)addedTasks addObject:v4];
+  [(NSArray *)addedTasks addObject:tasksCopy];
 }
 
-- (void)setAddedTasks:(id)a3
+- (void)setAddedTasks:(id)tasks
 {
-  v4 = [a3 mutableCopy];
+  v4 = [tasks mutableCopy];
   addedTasks = self->_addedTasks;
   self->_addedTasks = v4;
 

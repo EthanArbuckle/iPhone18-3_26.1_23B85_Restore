@@ -6,13 +6,13 @@
 
 - (id)_hd_cloudKitErrorRequiringUserActionFromCKErrorDomain
 {
-  if (a1)
+  if (self)
   {
-    if ([a1 code] == 110)
+    if ([self code] == 110)
     {
       v2 = MEMORY[0x277CCA9B8];
-      v3 = [a1 userInfo];
-      v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+      userInfo = [self userInfo];
+      v4 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
       v5 = @"Manatee container is unavailable, device is in CFU state";
       v6 = v2;
       v7 = 706;
@@ -22,44 +22,44 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    if ([a1 code] == 4 || objc_msgSend(a1, "code") == 3 || objc_msgSend(a1, "code") == 34)
+    if ([self code] == 4 || objc_msgSend(self, "code") == 3 || objc_msgSend(self, "code") == 34)
     {
       v8 = MEMORY[0x277CCA9B8];
-      v3 = [a1 userInfo];
-      v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+      userInfo = [self userInfo];
+      v4 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
       v5 = @"Network failure during Cloud Sync Operation";
       v6 = v8;
       v7 = 704;
       goto LABEL_8;
     }
 
-    if ([a1 code] == 25)
+    if ([self code] == 25)
     {
       v11 = MEMORY[0x277CCA9B8];
-      v3 = [a1 userInfo];
-      v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+      userInfo = [self userInfo];
+      v4 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
       v5 = @"iCloud Quota Exceeded during Cloud Sync Operation";
       v6 = v11;
       v7 = 705;
       goto LABEL_8;
     }
 
-    if ([a1 code] == 33)
+    if ([self code] == 33)
     {
       v12 = MEMORY[0x277CCA9B8];
-      v3 = [a1 userInfo];
-      v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+      userInfo = [self userInfo];
+      v4 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
       v5 = @"The participant may need HSA2 verification";
       v6 = v12;
       v7 = 731;
       goto LABEL_8;
     }
 
-    if ([a1 code] == 9)
+    if ([self code] == 9)
     {
       v13 = MEMORY[0x277CCA9B8];
-      v3 = [a1 userInfo];
-      v4 = [v3 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+      userInfo = [self userInfo];
+      v4 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
       v5 = @"The user needs to login again into iCloud or accept new user terms and conditions.";
       v6 = v13;
       v7 = 735;

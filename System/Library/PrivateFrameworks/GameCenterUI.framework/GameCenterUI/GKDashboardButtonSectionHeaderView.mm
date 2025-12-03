@@ -1,33 +1,33 @@
 @interface GKDashboardButtonSectionHeaderView
-+ (CGSize)platformSizeForTitle:(id)a3;
-+ (CGSize)platformSizeForTitle:(id)a3 buttonTitle:(id)a4;
++ (CGSize)platformSizeForTitle:(id)title;
++ (CGSize)platformSizeForTitle:(id)title buttonTitle:(id)buttonTitle;
 + (double)defaultHeight;
-+ (double)widthForTitle:(id)a3 buttonTitle:(id)a4;
++ (double)widthForTitle:(id)title buttonTitle:(id)buttonTitle;
 - (CGSize)intrinsicContentSize;
 - (UIMenu)buttonMenu;
 - (void)awakeFromNib;
-- (void)buttonPressed:(id)a3;
+- (void)buttonPressed:(id)pressed;
 - (void)prepareForReuse;
-- (void)setAttributedButtonTitle:(id)a3;
-- (void)setButtonHidden:(BOOL)a3;
-- (void)setButtonMenu:(id)a3;
-- (void)setButtonTitle:(id)a3;
+- (void)setAttributedButtonTitle:(id)title;
+- (void)setButtonHidden:(BOOL)hidden;
+- (void)setButtonMenu:(id)menu;
+- (void)setButtonTitle:(id)title;
 @end
 
 @implementation GKDashboardButtonSectionHeaderView
 
 + (double)defaultHeight
 {
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = &OBJC_METACLASS___GKDashboardButtonSectionHeaderView;
   objc_msgSendSuper2(&v8, sel_defaultHeight);
   v3 = v2;
-  v4 = [MEMORY[0x277D75C80] currentTraitCollection];
-  v5 = [v4 preferredContentSizeCategory];
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+  preferredContentSizeCategory = [currentTraitCollection preferredContentSizeCategory];
 
-  if (UIContentSizeCategoryIsAccessibilityCategory(v5))
+  if (UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory))
   {
-    if ([v5 isEqualToString:*MEMORY[0x277D767E8]])
+    if ([preferredContentSizeCategory isEqualToString:*MEMORY[0x277D767E8]])
     {
       v6 = 3.1;
 LABEL_10:
@@ -35,25 +35,25 @@ LABEL_10:
       goto LABEL_11;
     }
 
-    if ([v5 isEqualToString:*MEMORY[0x277D767F0]])
+    if ([preferredContentSizeCategory isEqualToString:*MEMORY[0x277D767F0]])
     {
       v6 = 2.75;
       goto LABEL_10;
     }
 
-    if ([v5 isEqualToString:*MEMORY[0x277D767F8]])
+    if ([preferredContentSizeCategory isEqualToString:*MEMORY[0x277D767F8]])
     {
       v6 = 2.35;
       goto LABEL_10;
     }
 
-    if ([v5 isEqualToString:*MEMORY[0x277D76800]])
+    if ([preferredContentSizeCategory isEqualToString:*MEMORY[0x277D76800]])
     {
       v6 = 1.9;
       goto LABEL_10;
     }
 
-    if ([v5 isEqualToString:*MEMORY[0x277D76808]])
+    if ([preferredContentSizeCategory isEqualToString:*MEMORY[0x277D76808]])
     {
       v3 = v3 * 1.6;
     }
@@ -64,34 +64,34 @@ LABEL_11:
   return v3;
 }
 
-+ (CGSize)platformSizeForTitle:(id)a3
++ (CGSize)platformSizeForTitle:(id)title
 {
-  [a1 platformSizeForTitle:a3 buttonTitle:0];
+  [self platformSizeForTitle:title buttonTitle:0];
   result.height = v4;
   result.width = v3;
   return result;
 }
 
-+ (double)widthForTitle:(id)a3 buttonTitle:(id)a4
++ (double)widthForTitle:(id)title buttonTitle:(id)buttonTitle
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__GKDashboardButtonSectionHeaderView_widthForTitle_buttonTitle___block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   v5 = widthForTitle_buttonTitle__onceToken;
-  v6 = a4;
-  v7 = a3;
+  buttonTitleCopy = buttonTitle;
+  titleCopy = title;
   if (v5 != -1)
   {
     dispatch_once(&widthForTitle_buttonTitle__onceToken, block);
   }
 
-  [widthForTitle_buttonTitle__sSectionHeaderView setTitle:v7];
+  [widthForTitle_buttonTitle__sSectionHeaderView setTitle:titleCopy];
 
-  if (v6)
+  if (buttonTitleCopy)
   {
-    v8 = v6;
+    v8 = buttonTitleCopy;
   }
 
   else
@@ -112,10 +112,10 @@ uint64_t __64__GKDashboardButtonSectionHeaderView_widthForTitle_buttonTitle___bl
   return MEMORY[0x2821F96F8]();
 }
 
-+ (CGSize)platformSizeForTitle:(id)a3 buttonTitle:(id)a4
++ (CGSize)platformSizeForTitle:(id)title buttonTitle:(id)buttonTitle
 {
   v4 = *MEMORY[0x277CBF3A8];
-  [a1 defaultHeight];
+  [self defaultHeight];
   v6 = v5;
   v7 = v4;
   result.height = v6;
@@ -133,38 +133,38 @@ uint64_t __64__GKDashboardButtonSectionHeaderView_widthForTitle_buttonTitle___bl
   v3 = objc_alloc_init(MEMORY[0x277D75500]);
   [(GKDashboardButtonSectionHeaderView *)self setFocusGuide:v3];
 
-  v4 = [(GKDashboardButtonSectionHeaderView *)self focusGuide];
-  [(GKDashboardButtonSectionHeaderView *)self addLayoutGuide:v4];
+  focusGuide = [(GKDashboardButtonSectionHeaderView *)self focusGuide];
+  [(GKDashboardButtonSectionHeaderView *)self addLayoutGuide:focusGuide];
 
-  v5 = [(GKDashboardButtonSectionHeaderView *)self button];
-  v11[0] = v5;
+  button = [(GKDashboardButtonSectionHeaderView *)self button];
+  v11[0] = button;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
-  v7 = [(GKDashboardButtonSectionHeaderView *)self focusGuide];
-  [v7 setPreferredFocusEnvironments:v6];
+  focusGuide2 = [(GKDashboardButtonSectionHeaderView *)self focusGuide];
+  [focusGuide2 setPreferredFocusEnvironments:v6];
 
   v8 = MEMORY[0x277CCAAD0];
-  v9 = [(GKDashboardButtonSectionHeaderView *)self focusGuide];
-  [v8 _gkInstallEdgeConstraintsForLayoutGuide:v9 containedWithinParentView:self];
+  focusGuide3 = [(GKDashboardButtonSectionHeaderView *)self focusGuide];
+  [v8 _gkInstallEdgeConstraintsForLayoutGuide:focusGuide3 containedWithinParentView:self];
 }
 
-- (void)setButtonHidden:(BOOL)a3
+- (void)setButtonHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(GKDashboardButtonSectionHeaderView *)self button];
-  [v4 setHidden:v3];
+  hiddenCopy = hidden;
+  button = [(GKDashboardButtonSectionHeaderView *)self button];
+  [button setHidden:hiddenCopy];
 }
 
-- (void)setButtonTitle:(id)a3
+- (void)setButtonTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = MEMORY[0x277D75D18];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__GKDashboardButtonSectionHeaderView_setButtonTitle___block_invoke;
   v7[3] = &unk_279669E48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = titleCopy;
+  v6 = titleCopy;
   [v5 performWithoutAnimation:v7];
 }
 
@@ -177,17 +177,17 @@ void __53__GKDashboardButtonSectionHeaderView_setButtonTitle___block_invoke(uint
   [v3 layoutIfNeeded];
 }
 
-- (void)setAttributedButtonTitle:(id)a3
+- (void)setAttributedButtonTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = MEMORY[0x277D75D18];
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __63__GKDashboardButtonSectionHeaderView_setAttributedButtonTitle___block_invoke;
   v11 = &unk_279669E48;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v13 = titleCopy;
+  v6 = titleCopy;
   [v5 performWithoutAnimation:&v8];
   v7 = [(GKDashboardButtonSectionHeaderView *)self button:v8];
   [v7 setAccessibilityIdentifier:@"GKDashBoardButtonSectionHeaderView.ButtonTitle"];
@@ -202,22 +202,22 @@ void __63__GKDashboardButtonSectionHeaderView_setAttributedButtonTitle___block_i
   [v3 layoutIfNeeded];
 }
 
-- (void)setButtonMenu:(id)a3
+- (void)setButtonMenu:(id)menu
 {
-  v4 = a3;
-  v5 = [(GKDashboardButtonSectionHeaderView *)self button];
-  [v5 setMenu:v4];
+  menuCopy = menu;
+  button = [(GKDashboardButtonSectionHeaderView *)self button];
+  [button setMenu:menuCopy];
 
-  v6 = [(GKDashboardButtonSectionHeaderView *)self button];
-  [v6 setContextMenuIsPrimary:v4 != 0];
+  button2 = [(GKDashboardButtonSectionHeaderView *)self button];
+  [button2 setContextMenuIsPrimary:menuCopy != 0];
 }
 
 - (UIMenu)buttonMenu
 {
-  v2 = [(GKDashboardButtonSectionHeaderView *)self button];
-  v3 = [v2 menu];
+  button = [(GKDashboardButtonSectionHeaderView *)self button];
+  menu = [button menu];
 
-  return v3;
+  return menu;
 }
 
 - (CGSize)intrinsicContentSize
@@ -230,8 +230,8 @@ void __63__GKDashboardButtonSectionHeaderView_setAttributedButtonTitle___block_i
   [(UIButton *)self->_button intrinsicContentSize];
   v8 = v7;
   v10 = v9;
-  v11 = [(GKDashboardButtonSectionHeaderView *)self stackView];
-  [v11 spacing];
+  stackView = [(GKDashboardButtonSectionHeaderView *)self stackView];
+  [stackView spacing];
   v13 = v8 + v12;
   [(NSLayoutConstraint *)self->_rightMarginConstraint constant];
   v15 = v4 + v13 + v14;
@@ -252,16 +252,16 @@ void __63__GKDashboardButtonSectionHeaderView_setAttributedButtonTitle___block_i
   return result;
 }
 
-- (void)buttonPressed:(id)a3
+- (void)buttonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   buttonTarget = self->_buttonTarget;
   if (buttonTarget)
   {
     buttonAction = self->_buttonAction;
     if (buttonAction)
     {
-      [buttonTarget performSelector:buttonAction withObject:v4];
+      [buttonTarget performSelector:buttonAction withObject:pressedCopy];
     }
   }
 

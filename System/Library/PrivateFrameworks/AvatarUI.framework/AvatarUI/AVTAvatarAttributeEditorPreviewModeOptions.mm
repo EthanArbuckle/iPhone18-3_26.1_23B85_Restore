@@ -1,21 +1,21 @@
 @interface AVTAvatarAttributeEditorPreviewModeOptions
-- (AVTAvatarAttributeEditorPreviewModeOptions)initWithFramingMode:(id)a3 bodyPosePack:(id)a4;
+- (AVTAvatarAttributeEditorPreviewModeOptions)initWithFramingMode:(id)mode bodyPosePack:(id)pack;
 @end
 
 @implementation AVTAvatarAttributeEditorPreviewModeOptions
 
-- (AVTAvatarAttributeEditorPreviewModeOptions)initWithFramingMode:(id)a3 bodyPosePack:(id)a4
+- (AVTAvatarAttributeEditorPreviewModeOptions)initWithFramingMode:(id)mode bodyPosePack:(id)pack
 {
-  v7 = a3;
-  v8 = a4;
+  modeCopy = mode;
+  packCopy = pack;
   v12.receiver = self;
   v12.super_class = AVTAvatarAttributeEditorPreviewModeOptions;
   v9 = [(AVTAvatarAttributeEditorPreviewModeOptions *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_framingMode, a3);
-    objc_storeStrong(&v10->_bodyPosePack, a4);
+    objc_storeStrong(&v9->_framingMode, mode);
+    objc_storeStrong(&v10->_bodyPosePack, pack);
   }
 
   return v10;

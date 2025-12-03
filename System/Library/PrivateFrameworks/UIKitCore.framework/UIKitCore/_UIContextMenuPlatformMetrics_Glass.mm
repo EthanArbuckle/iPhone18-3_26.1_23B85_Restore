@@ -50,8 +50,8 @@
 
     [(_UIContextMenuPlatformMetrics *)v3 setItemSeparatorHeight:0.0];
     [(_UIContextMenuPlatformMetrics *)v3 setItemSeparatorBackgroundEffect:0];
-    v6 = [(_UIContextMenuPlatformMetrics *)v3 sectionSeparatorColor];
-    [(_UIContextMenuPlatformMetrics *)v3 setItemSeparatorColor:v6];
+    sectionSeparatorColor = [(_UIContextMenuPlatformMetrics *)v3 sectionSeparatorColor];
+    [(_UIContextMenuPlatformMetrics *)v3 setItemSeparatorColor:sectionSeparatorColor];
 
     [(_UIContextMenuPlatformMetrics *)v3 setItemTopToFirstBaseline:27.0];
     [(_UIContextMenuPlatformMetrics *)v3 setItemBaselineToBaseline:17.0];

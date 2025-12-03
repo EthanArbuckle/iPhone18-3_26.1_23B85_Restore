@@ -1,21 +1,21 @@
 @interface VCPVideoKeyFrameResult
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)timeStamp;
-- (VCPVideoKeyFrameResult)initWithTime:(id *)a3 andScore:(float)a4;
+- (VCPVideoKeyFrameResult)initWithTime:(id *)time andScore:(float)score;
 @end
 
 @implementation VCPVideoKeyFrameResult
 
-- (VCPVideoKeyFrameResult)initWithTime:(id *)a3 andScore:(float)a4
+- (VCPVideoKeyFrameResult)initWithTime:(id *)time andScore:(float)score
 {
   v8.receiver = self;
   v8.super_class = VCPVideoKeyFrameResult;
   result = [(VCPVideoKeyFrameResult *)&v8 init];
   if (result)
   {
-    v7 = *&a3->var0;
-    *&result->_timeStamp.flags = a3->var3;
+    v7 = *&time->var0;
+    *&result->_timeStamp.flags = time->var3;
     *(&result->_score + 1) = v7;
-    result->_score = a4;
+    result->_score = score;
   }
 
   return result;

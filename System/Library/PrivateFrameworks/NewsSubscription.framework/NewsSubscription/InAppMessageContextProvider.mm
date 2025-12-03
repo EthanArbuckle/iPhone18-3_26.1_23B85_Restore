@@ -8,28 +8,28 @@
 - (id)viewControllerForModalPresentation
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 sharedApplication];
-  v6 = [v5 key_window];
+  selfCopy = self;
+  sharedApplication = [v3 sharedApplication];
+  key_window = [sharedApplication key_window];
 
-  if (v6)
+  if (key_window)
   {
-    v7 = [v6 rootViewController];
+    rootViewController = [key_window rootViewController];
 
-    if (v7)
+    if (rootViewController)
     {
-      v6 = sub_1D78B60B4();
+      key_window = sub_1D78B60B4();
 
-      v4 = v7;
+      selfCopy = rootViewController;
     }
 
     else
     {
-      v6 = 0;
+      key_window = 0;
     }
   }
 
-  return v6;
+  return key_window;
 }
 
 - (_TtC16NewsSubscriptionP33_2BC9D414A52E1C4290962E677FF5534227InAppMessageContextProvider)init

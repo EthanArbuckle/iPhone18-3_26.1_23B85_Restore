@@ -1,8 +1,8 @@
 @interface TSPDataBookmarkContext
-- (BOOL)bookmarkDataNeedsWriteForData:(id)a3;
-- (BOOL)isEncryptedDataStorate:(id)a3;
+- (BOOL)bookmarkDataNeedsWriteForData:(id)data;
+- (BOOL)isEncryptedDataStorate:(id)storate;
 - (TSPDataBookmarkContext)init;
-- (id)makeBookmarkDataForData:(id)a3 filename:(id)a4 options:(unint64_t)a5 error:(id *)a6;
+- (id)makeBookmarkDataForData:(id)data filename:(id)filename options:(unint64_t)options error:(id *)error;
 @end
 
 @implementation TSPDataBookmarkContext
@@ -36,16 +36,16 @@
   return v4;
 }
 
-- (id)makeBookmarkDataForData:(id)a3 filename:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (id)makeBookmarkDataForData:(id)data filename:(id)filename options:(unint64_t)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v16 = objc_msgSend_storage(v10, v12, v13);
+  dataCopy = data;
+  filenameCopy = filename;
+  v16 = objc_msgSend_storage(dataCopy, v12, v13);
   if (v16)
   {
-    if (!v11)
+    if (!filenameCopy)
     {
-      v11 = objc_msgSend_filename(v10, v14, v15);
+      filenameCopy = objc_msgSend_filename(dataCopy, v14, v15);
     }
 
     v32 = 0;
@@ -60,17 +60,17 @@
     v24 = sub_276A61488;
     v25 = &unk_27A6E5248;
     v30 = &v32;
-    v26 = self;
-    v11 = v11;
-    v27 = v11;
+    selfCopy = self;
+    filenameCopy = filenameCopy;
+    v27 = filenameCopy;
     v28 = v16;
-    v31 = a6;
-    v29 = v10;
+    errorCopy = error;
+    v29 = dataCopy;
     dispatch_sync(queue, &v22);
     v19 = v33[5];
     if (v19)
     {
-      v20 = objc_msgSend_bookmarkDataWithOptions_includingResourceValuesForKeys_relativeToURL_error_(v19, v18, a5, 0, 0, a6, v22, v23, v24, v25, v26, v27, v28);
+      v20 = objc_msgSend_bookmarkDataWithOptions_includingResourceValuesForKeys_relativeToURL_error_(v19, v18, options, 0, 0, error, v22, v23, v24, v25, selfCopy, v27, v28);
     }
 
     else
@@ -89,10 +89,10 @@
   return v20;
 }
 
-- (BOOL)bookmarkDataNeedsWriteForData:(id)a3
+- (BOOL)bookmarkDataNeedsWriteForData:(id)data
 {
-  v4 = a3;
-  v7 = objc_msgSend_storage(v4, v5, v6);
+  dataCopy = data;
+  v7 = objc_msgSend_storage(dataCopy, v5, v6);
   if (v7)
   {
     v17 = 0;
@@ -106,7 +106,7 @@
     block[3] = &unk_27A6E2C00;
     v16 = &v17;
     block[4] = self;
-    v15 = v4;
+    v15 = dataCopy;
     dispatch_sync(queue, block);
     if (*(v18 + 24) == 1 && (objc_msgSend_isEncryptedDataStorate_(self, v9, v7) & 1) == 0 && (objc_opt_respondsToSelector() & 1) != 0)
     {
@@ -132,12 +132,12 @@
   return v11 & 1;
 }
 
-- (BOOL)isEncryptedDataStorate:(id)a3
+- (BOOL)isEncryptedDataStorate:(id)storate
 {
-  v3 = a3;
+  storateCopy = storate;
   if (objc_opt_respondsToSelector())
   {
-    v6 = objc_msgSend_decryptionInfo(v3, v4, v5);
+    v6 = objc_msgSend_decryptionInfo(storateCopy, v4, v5);
     v7 = v6 != 0;
   }
 

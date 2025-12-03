@@ -1,39 +1,39 @@
 @interface PXPhotosGridActionMenuController
-- (BOOL)shouldAllowPerformanceOfActionType:(id)a3;
-- (PXPhotosGridActionMenuController)initWithActionManagers:(id)a3;
-- (PXPhotosGridActionMenuController)initWithActionManagers:(id)a3 viewModel:(id)a4;
+- (BOOL)shouldAllowPerformanceOfActionType:(id)type;
+- (PXPhotosGridActionMenuController)initWithActionManagers:(id)managers;
+- (PXPhotosGridActionMenuController)initWithActionManagers:(id)managers viewModel:(id)model;
 - (id)availableActionTypes;
 - (id)availableDestructiveActionTypes;
 - (id)availableInternalActionTypes;
-- (void)customizeActions:(id)a3 withActionTypes:(id)a4;
+- (void)customizeActions:(id)actions withActionTypes:(id)types;
 - (void)updateActions;
 @end
 
 @implementation PXPhotosGridActionMenuController
 
-- (BOOL)shouldAllowPerformanceOfActionType:(id)a3
+- (BOOL)shouldAllowPerformanceOfActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(PXPhotosGridActionMenuController *)self viewModel];
-  v6 = [v5 currentLens];
-  v7 = [v6 allowsActionType:v4];
+  typeCopy = type;
+  viewModel = [(PXPhotosGridActionMenuController *)self viewModel];
+  currentLens = [viewModel currentLens];
+  v7 = [currentLens allowsActionType:typeCopy];
 
   return v7;
 }
 
-- (void)customizeActions:(id)a3 withActionTypes:(id)a4
+- (void)customizeActions:(id)actions withActionTypes:(id)types
 {
-  v11 = a4;
-  v7 = a3;
-  v8 = [(PXPhotosGridActionMenuController *)self actionMenuCustomizer];
-  if (!v8)
+  typesCopy = types;
+  actionsCopy = actions;
+  actionMenuCustomizer = [(PXPhotosGridActionMenuController *)self actionMenuCustomizer];
+  if (!actionMenuCustomizer)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXPhotosGridActionMenuController.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"actionMenuCustomizer != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridActionMenuController.m" lineNumber:97 description:{@"Invalid parameter not satisfying: %@", @"actionMenuCustomizer != nil"}];
   }
 
-  v9 = [v8 customizedActions:v7 actionTypes:v11];
-  [v7 setArray:v9];
+  v9 = [actionMenuCustomizer customizedActions:actionsCopy actionTypes:typesCopy];
+  [actionsCopy setArray:v9];
 }
 
 - (id)availableDestructiveActionTypes
@@ -66,10 +66,10 @@
 - (id)availableActionTypes
 {
   v12[9] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ((MEMORY[0x1A590D320]() & 1) == 0)
   {
-    [v3 addObject:*off_1E77220D0];
+    [array addObject:*off_1E77220D0];
   }
 
   v4 = *off_1E7721D70;
@@ -86,25 +86,25 @@
   v12[7] = v7;
   v12[8] = *off_1E7721D80;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:9];
-  [v3 addObjectsFromArray:v8];
+  [array addObjectsFromArray:v8];
 
-  v9 = [(PXPhotosGridActionMenuController *)self additionalActionTypes];
+  additionalActionTypes = [(PXPhotosGridActionMenuController *)self additionalActionTypes];
 
-  if (v9)
+  if (additionalActionTypes)
   {
-    v10 = [(PXPhotosGridActionMenuController *)self additionalActionTypes];
-    [v3 addObjectsFromArray:v10];
+    additionalActionTypes2 = [(PXPhotosGridActionMenuController *)self additionalActionTypes];
+    [array addObjectsFromArray:additionalActionTypes2];
   }
 
-  return v3;
+  return array;
 }
 
 - (void)updateActions
 {
   v3 = [PXPhotosGridActionMenuCustomizer alloc];
-  v4 = [(PXPhotosGridActionMenuController *)self viewModel];
-  v5 = [(PXActionMenuController *)self excludedActionTypes];
-  v6 = [(PXPhotosGridActionMenuCustomizer *)v3 initWithViewModel:v4 excludedActionTypes:v5];
+  viewModel = [(PXPhotosGridActionMenuController *)self viewModel];
+  excludedActionTypes = [(PXActionMenuController *)self excludedActionTypes];
+  v6 = [(PXPhotosGridActionMenuCustomizer *)v3 initWithViewModel:viewModel excludedActionTypes:excludedActionTypes];
   [(PXPhotosGridActionMenuController *)self setActionMenuCustomizer:v6];
 
   v7.receiver = self;
@@ -112,26 +112,26 @@
   [(PXActionMenuController *)&v7 updateActions];
 }
 
-- (PXPhotosGridActionMenuController)initWithActionManagers:(id)a3 viewModel:(id)a4
+- (PXPhotosGridActionMenuController)initWithActionManagers:(id)managers viewModel:(id)model
 {
-  v7 = a4;
+  modelCopy = model;
   v11.receiver = self;
   v11.super_class = PXPhotosGridActionMenuController;
-  v8 = [(PXActionMenuController *)&v11 initWithActionManagers:a3];
+  v8 = [(PXActionMenuController *)&v11 initWithActionManagers:managers];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_viewModel, a4);
+    objc_storeStrong(&v8->_viewModel, model);
   }
 
   return v9;
 }
 
-- (PXPhotosGridActionMenuController)initWithActionManagers:(id)a3
+- (PXPhotosGridActionMenuController)initWithActionManagers:(id)managers
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXPhotosGridActionMenuController.m" lineNumber:32 description:{@"%s is not available as initializer", "-[PXPhotosGridActionMenuController initWithActionManagers:]"}];
+  managersCopy = managers;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridActionMenuController.m" lineNumber:32 description:{@"%s is not available as initializer", "-[PXPhotosGridActionMenuController initWithActionManagers:]"}];
 
   abort();
 }

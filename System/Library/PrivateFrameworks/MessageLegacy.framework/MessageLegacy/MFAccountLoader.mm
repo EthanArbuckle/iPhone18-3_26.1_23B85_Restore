@@ -1,21 +1,21 @@
 @interface MFAccountLoader
-+ (BOOL)loadBundleForAccountClassString:(id)a3 error:(id *)a4;
-+ (Class)_accountClassForString:(id)a3 error:(id *)a4;
-+ (Class)accountClassForPersistentAccount:(id)a3 error:(id *)a4;
-+ (id)_accountClassStringWithPersistentAccount:(id)a3 error:(id *)a4;
-+ (id)_bundlePathForAccountClassString:(id)a3;
-+ (id)accountWithAccountTypeIdentifier:(id)a3 error:(id *)a4;
-+ (id)accountWithPersistentAccount:(id)a3 error:(id *)a4;
++ (BOOL)loadBundleForAccountClassString:(id)string error:(id *)error;
++ (Class)_accountClassForString:(id)string error:(id *)error;
++ (Class)accountClassForPersistentAccount:(id)account error:(id *)error;
++ (id)_accountClassStringWithPersistentAccount:(id)account error:(id *)error;
++ (id)_bundlePathForAccountClassString:(id)string;
++ (id)accountWithAccountTypeIdentifier:(id)identifier error:(id *)error;
++ (id)accountWithPersistentAccount:(id)account error:(id *)error;
 @end
 
 @implementation MFAccountLoader
 
-+ (id)accountWithPersistentAccount:(id)a3 error:(id *)a4
++ (id)accountWithPersistentAccount:(id)account error:(id *)error
 {
-  result = [MFAccountLoader accountClassForPersistentAccount:a3 error:a4];
+  result = [MFAccountLoader accountClassForPersistentAccount:account error:error];
   if (result)
   {
-    v6 = [[result alloc] initWithPersistentAccount:a3];
+    v6 = [[result alloc] initWithPersistentAccount:account];
 
     return v6;
   }
@@ -23,60 +23,60 @@
   return result;
 }
 
-+ (Class)accountClassForPersistentAccount:(id)a3 error:(id *)a4
++ (Class)accountClassForPersistentAccount:(id)account error:(id *)error
 {
-  if (!a3)
+  if (!account)
   {
     return 0;
   }
 
-  v6 = [a1 _accountClassStringWithPersistentAccount:? error:?];
+  v6 = [self _accountClassStringWithPersistentAccount:? error:?];
   if (!v6)
   {
     return 0;
   }
 
-  return [a1 _accountClassForString:v6 error:a4];
+  return [self _accountClassForString:v6 error:error];
 }
 
-+ (id)_accountClassStringWithPersistentAccount:(id)a3 error:(id *)a4
++ (id)_accountClassStringWithPersistentAccount:(id)account error:(id *)error
 {
-  if (!a3)
+  if (!account)
   {
     return 0;
   }
 
-  result = [a3 accountPropertyForKey:@"Class"];
-  if (a4)
+  result = [account accountPropertyForKey:@"Class"];
+  if (error)
   {
     if (!result)
     {
       v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MFAccountLoaderErrorDomain" code:1 userInfo:0];
       result = 0;
-      *a4 = v6;
+      *error = v6;
     }
   }
 
   return result;
 }
 
-+ (Class)_accountClassForString:(id)a3 error:(id *)a4
++ (Class)_accountClassForString:(id)string error:(id *)error
 {
-  if (!a3)
+  if (!string)
   {
     goto LABEL_6;
   }
 
-  result = NSClassFromString(a3);
+  result = NSClassFromString(string);
   if (result)
   {
     return result;
   }
 
-  if ([a1 loadBundleForAccountClassString:a3 error:a4])
+  if ([self loadBundleForAccountClassString:string error:error])
   {
-    result = NSClassFromString(a3);
-    if (!a4)
+    result = NSClassFromString(string);
+    if (!error)
     {
       return result;
     }
@@ -86,7 +86,7 @@
   {
 LABEL_6:
     result = 0;
-    if (!a4)
+    if (!error)
     {
       return result;
     }
@@ -94,7 +94,7 @@ LABEL_6:
 
   if (!result)
   {
-    if (*a4)
+    if (*error)
     {
       return 0;
     }
@@ -103,28 +103,28 @@ LABEL_6:
     {
       v8 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MFAccountLoaderErrorDomain" code:2 userInfo:0];
       result = 0;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
   return result;
 }
 
-+ (BOOL)loadBundleForAccountClassString:(id)a3 error:(id *)a4
++ (BOOL)loadBundleForAccountClassString:(id)string error:(id *)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!string)
   {
     goto LABEL_7;
   }
 
-  v6 = [a1 _bundlePathForAccountClassString:?];
+  v6 = [self _bundlePathForAccountClassString:?];
   if (!v6)
   {
-    if (a4)
+    if (error)
     {
       v8 = 0;
-      *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"MFAccountLoaderErrorDomain" code:3 userInfo:0];
+      *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"MFAccountLoaderErrorDomain" code:3 userInfo:0];
       goto LABEL_14;
     }
 
@@ -134,7 +134,7 @@ LABEL_7:
   }
 
   v7 = v6;
-  objc_sync_enter(a1);
+  objc_sync_enter(self);
   if ([0 containsObject:v7])
   {
     v8 = 1;
@@ -143,7 +143,7 @@ LABEL_7:
   else
   {
     v9 = [MEMORY[0x277CCA8D8] bundleWithPath:v7];
-    if (v9 && [v9 loadAndReturnError:a4])
+    if (v9 && [v9 loadAndReturnError:error])
     {
       [0 addObject:v7];
       v10 = MFLogGeneral();
@@ -162,33 +162,33 @@ LABEL_7:
     }
   }
 
-  objc_sync_exit(a1);
+  objc_sync_exit(self);
 LABEL_14:
   v11 = *MEMORY[0x277D85DE8];
   return v8;
 }
 
-+ (id)_bundlePathForAccountClassString:(id)a3
++ (id)_bundlePathForAccountClassString:(id)string
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__MFAccountLoader__bundlePathForAccountClassString___block_invoke;
   block[3] = &unk_2798B61C0;
-  block[4] = a1;
+  block[4] = self;
   if (_bundlePathForAccountClassString__onceToken == -1)
   {
-    if (a3)
+    if (string)
     {
-      return [_bundlePathForAccountClassString__sAccountClassToBundlePathMap objectForKey:a3];
+      return [_bundlePathForAccountClassString__sAccountClassToBundlePathMap objectForKey:string];
     }
   }
 
   else
   {
     dispatch_once(&_bundlePathForAccountClassString__onceToken, block);
-    if (a3)
+    if (string)
     {
-      return [_bundlePathForAccountClassString__sAccountClassToBundlePathMap objectForKey:a3];
+      return [_bundlePathForAccountClassString__sAccountClassToBundlePathMap objectForKey:string];
     }
   }
 
@@ -296,7 +296,7 @@ uint64_t __52__MFAccountLoader__bundlePathForAccountClassString___block_invoke(u
   return result;
 }
 
-+ (id)accountWithAccountTypeIdentifier:(id)a3 error:(id *)a4
++ (id)accountWithAccountTypeIdentifier:(id)identifier error:(id *)error
 {
   v13[6] = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277CB8C40];
@@ -314,10 +314,10 @@ uint64_t __52__MFAccountLoader__bundlePathForAccountClassString___block_invoke(u
   v12[5] = v8;
   v13[4] = @"POPAccount";
   v13[5] = @"SMTPAccount";
-  v9 = [objc_msgSend(MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:{6), "objectForKeyedSubscript:", a3}];
+  v9 = [objc_msgSend(MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:{6), "objectForKeyedSubscript:", identifier}];
   if (v9)
   {
-    v9 = [a1 _accountClassForString:v9 error:a4];
+    v9 = [self _accountClassForString:v9 error:error];
     if (v9)
     {
       v9 = objc_alloc_init(v9);

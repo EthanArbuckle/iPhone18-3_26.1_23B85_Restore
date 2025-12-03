@@ -28,16 +28,16 @@
 
 - (BOOL)isCompactWidth
 {
-  v2 = [(TSDLayoutController *)self th_traitsCache];
+  th_traitsCache = [(TSDLayoutController *)self th_traitsCache];
 
-  return [v2 isCompactWidth];
+  return [th_traitsCache isCompactWidth];
 }
 
 - (BOOL)isCompactHeight
 {
-  v2 = [(TSDLayoutController *)self th_traitsCache];
+  th_traitsCache = [(TSDLayoutController *)self th_traitsCache];
 
-  return [v2 isCompactHeight];
+  return [th_traitsCache isCompactHeight];
 }
 
 @end

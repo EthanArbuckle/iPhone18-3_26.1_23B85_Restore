@@ -1,10 +1,10 @@
 @interface ASTConnectedDevicesController
 - (ASTConnectedDevicesController)init;
-- (id)_nameForCustomizableMouse:(id)a3;
+- (id)_nameForCustomizableMouse:(id)mouse;
 - (id)specifiers;
-- (void)centralManagerDidUpdateState:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)centralManagerDidUpdateState:(id)state;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ASTConnectedDevicesController
@@ -25,17 +25,17 @@
     if (AXIsInternalInstall())
     {
       v6 = +[AXSettings sharedInstance];
-      v7 = [v6 assistiveTouchInternalOnlyPearlTrackingEnabled];
+      assistiveTouchInternalOnlyPearlTrackingEnabled = [v6 assistiveTouchInternalOnlyPearlTrackingEnabled];
     }
 
     else
     {
-      v7 = 0;
+      assistiveTouchInternalOnlyPearlTrackingEnabled = 0;
     }
 
     v8 = [NSMutableSet setWithObject:&off_279F90];
     v9 = v8;
-    if (v7)
+    if (assistiveTouchInternalOnlyPearlTrackingEnabled)
     {
       [v8 addObject:&off_279FA8];
     }
@@ -55,25 +55,25 @@
   return v2;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = ASTConnectedDevicesController;
-  [(ASTConnectedDevicesController *)&v6 viewWillAppear:a3];
-  v4 = [(ASTConnectedDevicesController *)self motionTrackingInputManager];
-  [v4 setDelegate:self];
+  [(ASTConnectedDevicesController *)&v6 viewWillAppear:appear];
+  motionTrackingInputManager = [(ASTConnectedDevicesController *)self motionTrackingInputManager];
+  [motionTrackingInputManager setDelegate:self];
 
-  v5 = [(ASTConnectedDevicesController *)self motionTrackingInputManager];
-  [v5 startMonitoring];
+  motionTrackingInputManager2 = [(ASTConnectedDevicesController *)self motionTrackingInputManager];
+  [motionTrackingInputManager2 startMonitoring];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = ASTConnectedDevicesController;
-  [(ASTConnectedDevicesController *)&v5 viewWillDisappear:a3];
-  v4 = [(ASTConnectedDevicesController *)self motionTrackingInputManager];
-  [v4 stopMonitoring];
+  [(ASTConnectedDevicesController *)&v5 viewWillDisappear:disappear];
+  motionTrackingInputManager = [(ASTConnectedDevicesController *)self motionTrackingInputManager];
+  [motionTrackingInputManager stopMonitoring];
 }
 
 - (id)specifiers
@@ -87,26 +87,26 @@
   v67 = OBJC_IVAR___PSListController__specifiers;
   v72 = +[NSMutableArray array];
   v4 = +[NSMutableArray array];
-  v5 = [(ASTConnectedDevicesController *)self mouseEventListener];
-  v6 = [v5 discoveredMouseDevices];
-  v7 = [NSMutableArray arrayWithArray:v6];
+  mouseEventListener = [(ASTConnectedDevicesController *)self mouseEventListener];
+  discoveredMouseDevices = [mouseEventListener discoveredMouseDevices];
+  v7 = [NSMutableArray arrayWithArray:discoveredMouseDevices];
 
   [v4 axSafelyAddObjectsFromArray:v7];
-  v8 = [(ASTConnectedDevicesController *)self centralManager];
+  centralManager = [(ASTConnectedDevicesController *)self centralManager];
   v9 = [CBUUID UUIDWithString:CBUUIDHumanInterfaceDeviceServiceString];
   v103 = v9;
   v10 = [NSArray arrayWithObjects:&v103 count:1];
-  v11 = [v8 retrieveConnectedPeripheralsWithServices:v10];
+  v11 = [centralManager retrieveConnectedPeripheralsWithServices:v10];
   connectedPeripherals = self->_connectedPeripherals;
   self->_connectedPeripherals = v11;
 
   v13 = +[BluetoothManager sharedInstance];
-  v14 = [v13 connectedDevices];
+  connectedDevices = [v13 connectedDevices];
   connectedBluetoothDevices = self->_connectedBluetoothDevices;
-  self->_connectedBluetoothDevices = v14;
+  self->_connectedBluetoothDevices = connectedDevices;
 
-  v16 = [(ASTConnectedDevicesController *)self motionTrackingInputManager];
-  [v16 compatibleInputs];
+  motionTrackingInputManager = [(ASTConnectedDevicesController *)self motionTrackingInputManager];
+  [motionTrackingInputManager compatibleInputs];
   v18 = v17 = self;
   v19 = [NSMutableArray arrayWithArray:v18];
 
@@ -174,15 +174,15 @@ LABEL_9:
           }
 
           v28 = v27;
-          v29 = [v79 vendorId];
-          v30 = [v28 vendorID];
-          v31 = [v30 unsignedIntegerValue];
+          vendorId = [v79 vendorId];
+          vendorID = [v28 vendorID];
+          unsignedIntegerValue = [vendorID unsignedIntegerValue];
 
-          v32 = [v79 productId];
-          v33 = [v28 productID];
-          v34 = [v33 unsignedIntegerValue];
+          productId = [v79 productId];
+          productID = [v28 productID];
+          unsignedIntegerValue2 = [productID unsignedIntegerValue];
 
-          if (v29 == v31 && v32 == v34)
+          if (vendorId == unsignedIntegerValue && productId == unsignedIntegerValue2)
           {
             break;
           }
@@ -267,11 +267,11 @@ LABEL_24:
         {
           v48 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [obj indexOfObject:v45]);
           v49 = [v70 objectForKeyedSubscript:v48];
-          v50 = [v49 unsignedIntegerValue];
+          unsignedIntegerValue3 = [v49 unsignedIntegerValue];
 
-          if (v50 < [v76 count])
+          if (unsignedIntegerValue3 < [v76 count])
           {
-            v51 = [v76 objectAtIndexedSubscript:v50];
+            v51 = [v76 objectAtIndexedSubscript:unsignedIntegerValue3];
             v98[0] = @"AX_CUSTOMIZABLE_MOUSE_KEY";
             v98[1] = @"AX_CUSTOMIZABLE_MOUSE_IS_CONNECTED_KEY";
             v99[0] = v45;
@@ -307,8 +307,8 @@ LABEL_38:
       if (objc_opt_isKindOfClass())
       {
         v53 = v45;
-        v54 = [v53 name];
-        v55 = [PSSpecifier preferenceSpecifierNamed:v54 target:v39 set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
+        name = [v53 name];
+        v55 = [PSSpecifier preferenceSpecifierNamed:name target:v39 set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
 
         v94 = @"AX_EYE_TRACKER_KEY";
         v95 = v53;
@@ -329,9 +329,9 @@ LABEL_45:
   v57 = [PSSpecifier groupSpecifierWithName:0];
   v58 = settingsLocString(@"BluetoothDevicesFooterText", @"HandSettings");
   v59 = +[AXSettings sharedInstance];
-  v60 = [v59 laserEnabled];
+  laserEnabled = [v59 laserEnabled];
 
-  if (v60)
+  if (laserEnabled)
   {
     v61 = settingsLocString(@"BluetoothDevicesFooterText", @"Accessibility-hello");
 
@@ -403,16 +403,16 @@ id __43__ASTConnectedDevicesController_specifiers__block_invoke(uint64_t a1, voi
   return v11;
 }
 
-- (id)_nameForCustomizableMouse:(id)a3
+- (id)_nameForCustomizableMouse:(id)mouse
 {
-  v4 = a3;
+  mouseCopy = mouse;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v31 = self;
-  v5 = [(ASTConnectedDevicesController *)self connectedPeripherals];
-  v6 = [v5 countByEnumeratingWithState:&v36 objects:v45 count:16];
+  selfCopy = self;
+  connectedPeripherals = [(ASTConnectedDevicesController *)self connectedPeripherals];
+  v6 = [connectedPeripherals countByEnumeratingWithState:&v36 objects:v45 count:16];
   if (v6)
   {
     v7 = v6;
@@ -423,19 +423,19 @@ id __43__ASTConnectedDevicesController_specifiers__block_invoke(uint64_t a1, voi
       {
         if (*v37 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(connectedPeripherals);
         }
 
         v10 = *(*(&v36 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v11 UUIDString];
-        v13 = [v4 identifier];
-        v14 = [v12 isEqualToString:v13];
+        identifier = [v10 identifier];
+        uUIDString = [identifier UUIDString];
+        identifier2 = [mouseCopy identifier];
+        v14 = [uUIDString isEqualToString:identifier2];
 
         if (v14)
         {
-          v15 = [v10 name];
-          v16 = [v15 length];
+          name = [v10 name];
+          v16 = [name length];
 
           if (v16)
           {
@@ -445,20 +445,20 @@ id __43__ASTConnectedDevicesController_specifiers__block_invoke(uint64_t a1, voi
               *buf = 138412546;
               v42 = v10;
               v43 = 2112;
-              v44 = v4;
+              v44 = mouseCopy;
               _os_log_impl(&dword_0, v27, OS_LOG_TYPE_INFO, "Using peripheral name (%@) for customizableMouse (%@)", buf, 0x16u);
             }
 
             v28 = v10;
 LABEL_27:
-            v26 = [v28 name];
+            name2 = [v28 name];
 
             goto LABEL_28;
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v36 objects:v45 count:16];
+      v7 = [connectedPeripherals countByEnumeratingWithState:&v36 objects:v45 count:16];
       if (v7)
       {
         continue;
@@ -472,8 +472,8 @@ LABEL_27:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v5 = [(ASTConnectedDevicesController *)v31 connectedBluetoothDevices];
-  v17 = [v5 countByEnumeratingWithState:&v32 objects:v40 count:16];
+  connectedPeripherals = [(ASTConnectedDevicesController *)selfCopy connectedBluetoothDevices];
+  v17 = [connectedPeripherals countByEnumeratingWithState:&v32 objects:v40 count:16];
   if (v17)
   {
     v18 = v17;
@@ -484,18 +484,18 @@ LABEL_27:
       {
         if (*v33 != v19)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(connectedPeripherals);
         }
 
         v21 = *(*(&v32 + 1) + 8 * j);
-        v22 = [v21 vendorId];
-        if ([v4 vendorId] == v22)
+        vendorId = [v21 vendorId];
+        if ([mouseCopy vendorId] == vendorId)
         {
-          v23 = [v21 productId];
-          if ([v4 productId] == v23)
+          productId = [v21 productId];
+          if ([mouseCopy productId] == productId)
           {
-            v24 = [v21 name];
-            v25 = [v24 length];
+            name3 = [v21 name];
+            v25 = [name3 length];
 
             if (v25)
             {
@@ -505,7 +505,7 @@ LABEL_27:
                 *buf = 138412546;
                 v42 = v21;
                 v43 = 2112;
-                v44 = v4;
+                v44 = mouseCopy;
                 _os_log_impl(&dword_0, v29, OS_LOG_TYPE_INFO, "Using device name (%@) for customizableMouse (%@)", buf, 0x16u);
               }
 
@@ -516,7 +516,7 @@ LABEL_27:
         }
       }
 
-      v18 = [v5 countByEnumeratingWithState:&v32 objects:v40 count:16];
+      v18 = [connectedPeripherals countByEnumeratingWithState:&v32 objects:v40 count:16];
       if (v18)
       {
         continue;
@@ -526,15 +526,15 @@ LABEL_27:
     }
   }
 
-  v26 = [v4 name];
+  name2 = [mouseCopy name];
 LABEL_28:
 
-  return v26;
+  return name2;
 }
 
-- (void)centralManagerDidUpdateState:(id)a3
+- (void)centralManagerDidUpdateState:(id)state
 {
-  if ([a3 state] == &dword_4 + 1)
+  if ([state state] == &dword_4 + 1)
   {
 
     [(ASTConnectedDevicesController *)self reloadSpecifiers];

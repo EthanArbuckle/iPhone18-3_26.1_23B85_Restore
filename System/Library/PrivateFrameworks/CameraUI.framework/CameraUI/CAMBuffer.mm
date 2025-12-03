@@ -3,30 +3,30 @@
 - (BOOL)isEnabled;
 - (CAMBuffer)init;
 - (NSArray)bufferedValues;
-- (id)_addObserver:(id)a3 onMainQueue:(BOOL)a4;
+- (id)_addObserver:(id)observer onMainQueue:(BOOL)queue;
 - (id)currentValue;
 - (id)firstBufferedValue;
 - (id)lastBufferedValue;
 - (void)_bufferQueueEvaluateObservances;
-- (void)_bufferQueueFulfillAndEvaluateWithChange:(id)a3;
-- (void)_bufferQueueFulfillObservancesWithChange:(id)a3;
-- (void)_bufferQueueSetupObservance:(id)a3;
-- (void)_bufferQueueTeardownObservance:(id)a3;
-- (void)_bufferQueueTeardownObservances:(id)a3;
+- (void)_bufferQueueFulfillAndEvaluateWithChange:(id)change;
+- (void)_bufferQueueFulfillObservancesWithChange:(id)change;
+- (void)_bufferQueueSetupObservance:(id)observance;
+- (void)_bufferQueueTeardownObservance:(id)observance;
+- (void)_bufferQueueTeardownObservances:(id)observances;
 - (void)_emitBufferedValues;
 - (void)dealloc;
-- (void)disableUntil:(id)a3;
-- (void)disableUntilKeyPath:(id)a3 ofObject:(id)a4 evaluates:(id)a5;
-- (void)disableUntilNotification:(id)a3 fromObject:(id)a4 usingNotificationCenter:(id)a5;
-- (void)disableWhile:(id)a3;
-- (void)disableWhileKeyPath:(id)a3 ofObject:(id)a4 evaluates:(id)a5;
-- (void)disableWhileNotification:(id)a3 fromObject:(id)a4 usingNotificationCenter:(id)a5;
-- (void)handleObservedNotification:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)push:(id)a3;
+- (void)disableUntil:(id)until;
+- (void)disableUntilKeyPath:(id)path ofObject:(id)object evaluates:(id)evaluates;
+- (void)disableUntilNotification:(id)notification fromObject:(id)object usingNotificationCenter:(id)center;
+- (void)disableWhile:(id)while;
+- (void)disableWhileKeyPath:(id)path ofObject:(id)object evaluates:(id)evaluates;
+- (void)disableWhileNotification:(id)notification fromObject:(id)object usingNotificationCenter:(id)center;
+- (void)handleObservedNotification:(id)notification;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)push:(id)push;
 - (void)reevaluate;
-- (void)removeObserverForKey:(id)a3;
-- (void)replaceWith:(id)a3;
+- (void)removeObserverForKey:(id)key;
+- (void)replaceWith:(id)with;
 @end
 
 @implementation CAMBuffer
@@ -113,26 +113,26 @@ void __20__CAMBuffer_dealloc__block_invoke(uint64_t a1)
   v10 = 0;
   if ([(CAMBuffer *)self _isBufferQueue])
   {
-    v3 = [(CAMBuffer *)self isBufferQueueEnabled];
-    *(v8 + 24) = v3;
+    isBufferQueueEnabled = [(CAMBuffer *)self isBufferQueueEnabled];
+    *(v8 + 24) = isBufferQueueEnabled;
   }
 
   else
   {
-    v4 = [(CAMBuffer *)self _bufferQueue];
+    _bufferQueue = [(CAMBuffer *)self _bufferQueue];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __22__CAMBuffer_isEnabled__block_invoke;
     v6[3] = &unk_1E76FAFF0;
     v6[4] = self;
     v6[5] = &v7;
-    dispatch_sync(v4, v6);
+    dispatch_sync(_bufferQueue, v6);
 
-    v3 = *(v8 + 24);
+    isBufferQueueEnabled = *(v8 + 24);
   }
 
   _Block_object_dispose(&v7, 8);
-  return v3 & 1;
+  return isBufferQueueEnabled & 1;
 }
 
 uint64_t __22__CAMBuffer_isEnabled__block_invoke(uint64_t a1)
@@ -142,17 +142,17 @@ uint64_t __22__CAMBuffer_isEnabled__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_bufferQueueFulfillObservancesWithChange:(id)a3
+- (void)_bufferQueueFulfillObservancesWithChange:(id)change
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CAMBuffer *)self _bufferQueueObservances];
+  changeCopy = change;
+  _bufferQueueObservances = [(CAMBuffer *)self _bufferQueueObservances];
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v5;
+  v7 = _bufferQueueObservances;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -168,12 +168,12 @@ uint64_t __22__CAMBuffer_isEnabled__block_invoke(uint64_t a1)
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        [v12 fulfillWithChange:{v4, v16}];
-        v13 = [v12 isEnabled];
-        v14 = [v12 isRemovedOnceEnabled];
-        if (v13)
+        [v12 fulfillWithChange:{changeCopy, v16}];
+        isEnabled = [v12 isEnabled];
+        isRemovedOnceEnabled = [v12 isRemovedOnceEnabled];
+        if (isEnabled)
         {
-          v15 = v14 == 0;
+          v15 = isRemovedOnceEnabled == 0;
         }
 
         else
@@ -198,8 +198,8 @@ uint64_t __22__CAMBuffer_isEnabled__block_invoke(uint64_t a1)
 
 - (void)_bufferQueueEvaluateObservances
 {
-  v3 = [(CAMBuffer *)self _bufferQueueObservances];
-  if ([v3 indexOfObjectPassingTest:&__block_literal_global_60] == 0x7FFFFFFFFFFFFFFFLL)
+  _bufferQueueObservances = [(CAMBuffer *)self _bufferQueueObservances];
+  if ([_bufferQueueObservances indexOfObjectPassingTest:&__block_literal_global_60] == 0x7FFFFFFFFFFFFFFFLL)
   {
     [(CAMBuffer *)self setBufferQueueEnabled:1];
     [(CAMBuffer *)self _emitBufferedValues];
@@ -237,60 +237,60 @@ uint64_t __44__CAMBuffer__bufferQueueEvaluateObservances__block_invoke(uint64_t 
   return v6;
 }
 
-- (void)_bufferQueueFulfillAndEvaluateWithChange:(id)a3
+- (void)_bufferQueueFulfillAndEvaluateWithChange:(id)change
 {
-  [(CAMBuffer *)self _bufferQueueFulfillObservancesWithChange:a3];
+  [(CAMBuffer *)self _bufferQueueFulfillObservancesWithChange:change];
 
   [(CAMBuffer *)self _bufferQueueEvaluateObservances];
 }
 
 - (void)reevaluate
 {
-  v3 = [(CAMBuffer *)self _bufferQueue];
+  _bufferQueue = [(CAMBuffer *)self _bufferQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __23__CAMBuffer_reevaluate__block_invoke;
   block[3] = &unk_1E76F77B0;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(_bufferQueue, block);
 }
 
-- (void)_bufferQueueSetupObservance:(id)a3
+- (void)_bufferQueueSetupObservance:(id)observance
 {
-  v4 = a3;
-  [v4 setupObservanceForBuffer:self];
-  v5 = [(CAMBuffer *)self _bufferQueueObservances];
-  [v5 addObject:v4];
+  observanceCopy = observance;
+  [observanceCopy setupObservanceForBuffer:self];
+  _bufferQueueObservances = [(CAMBuffer *)self _bufferQueueObservances];
+  [_bufferQueueObservances addObject:observanceCopy];
 }
 
-- (void)_bufferQueueTeardownObservance:(id)a3
+- (void)_bufferQueueTeardownObservance:(id)observance
 {
-  v4 = a3;
-  [v4 teardownObservanceForBuffer:self];
-  v5 = [(CAMBuffer *)self _bufferQueueObservances];
-  [v5 removeObject:v4];
+  observanceCopy = observance;
+  [observanceCopy teardownObservanceForBuffer:self];
+  _bufferQueueObservances = [(CAMBuffer *)self _bufferQueueObservances];
+  [_bufferQueueObservances removeObject:observanceCopy];
 }
 
-- (void)_bufferQueueTeardownObservances:(id)a3
+- (void)_bufferQueueTeardownObservances:(id)observances
 {
-  v4 = a3;
-  [v4 makeObjectsPerformSelector:sel_teardownObservanceForBuffer_ withObject:self];
-  v5 = [(CAMBuffer *)self _bufferQueueObservances];
-  [v5 removeObjectsInArray:v4];
+  observancesCopy = observances;
+  [observancesCopy makeObjectsPerformSelector:sel_teardownObservanceForBuffer_ withObject:self];
+  _bufferQueueObservances = [(CAMBuffer *)self _bufferQueueObservances];
+  [_bufferQueueObservances removeObjectsInArray:observancesCopy];
 }
 
-- (void)disableWhile:(id)a3
+- (void)disableWhile:(id)while
 {
-  v4 = a3;
-  v5 = [(CAMBuffer *)self _bufferQueue];
+  whileCopy = while;
+  _bufferQueue = [(CAMBuffer *)self _bufferQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __26__CAMBuffer_disableWhile___block_invoke;
   v7[3] = &unk_1E76F83B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = whileCopy;
+  v6 = whileCopy;
+  dispatch_sync(_bufferQueue, v7);
 }
 
 void __26__CAMBuffer_disableWhile___block_invoke(uint64_t a1)
@@ -300,24 +300,24 @@ void __26__CAMBuffer_disableWhile___block_invoke(uint64_t a1)
   [*(a1 + 32) _bufferQueueFulfillAndEvaluateWithChange:0];
 }
 
-- (void)disableWhileKeyPath:(id)a3 ofObject:(id)a4 evaluates:(id)a5
+- (void)disableWhileKeyPath:(id)path ofObject:(id)object evaluates:(id)evaluates
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CAMBuffer *)self _bufferQueue];
+  pathCopy = path;
+  objectCopy = object;
+  evaluatesCopy = evaluates;
+  _bufferQueue = [(CAMBuffer *)self _bufferQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __52__CAMBuffer_disableWhileKeyPath_ofObject_evaluates___block_invoke;
   v15[3] = &unk_1E76FB560;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_sync(v11, v15);
+  v16 = pathCopy;
+  v17 = objectCopy;
+  selfCopy = self;
+  v19 = evaluatesCopy;
+  v12 = evaluatesCopy;
+  v13 = objectCopy;
+  v14 = pathCopy;
+  dispatch_sync(_bufferQueue, v15);
 }
 
 void __52__CAMBuffer_disableWhileKeyPath_ofObject_evaluates___block_invoke(uint64_t a1)
@@ -328,24 +328,24 @@ void __52__CAMBuffer_disableWhileKeyPath_ofObject_evaluates___block_invoke(uint6
   [*(a1 + 48) _bufferQueueFulfillAndEvaluateWithChange:v2];
 }
 
-- (void)disableWhileNotification:(id)a3 fromObject:(id)a4 usingNotificationCenter:(id)a5
+- (void)disableWhileNotification:(id)notification fromObject:(id)object usingNotificationCenter:(id)center
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CAMBuffer *)self _bufferQueue];
+  notificationCopy = notification;
+  objectCopy = object;
+  centerCopy = center;
+  _bufferQueue = [(CAMBuffer *)self _bufferQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __73__CAMBuffer_disableWhileNotification_fromObject_usingNotificationCenter___block_invoke;
   v15[3] = &unk_1E76F8230;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v19 = self;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_sync(v11, v15);
+  v16 = notificationCopy;
+  v17 = objectCopy;
+  v18 = centerCopy;
+  selfCopy = self;
+  v12 = centerCopy;
+  v13 = objectCopy;
+  v14 = notificationCopy;
+  dispatch_sync(_bufferQueue, v15);
 }
 
 void __73__CAMBuffer_disableWhileNotification_fromObject_usingNotificationCenter___block_invoke(uint64_t a1)
@@ -355,18 +355,18 @@ void __73__CAMBuffer_disableWhileNotification_fromObject_usingNotificationCenter
   [*(a1 + 56) _bufferQueueEvaluateObservances];
 }
 
-- (void)disableUntil:(id)a3
+- (void)disableUntil:(id)until
 {
-  v4 = a3;
-  v5 = [(CAMBuffer *)self _bufferQueue];
+  untilCopy = until;
+  _bufferQueue = [(CAMBuffer *)self _bufferQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __26__CAMBuffer_disableUntil___block_invoke;
   v7[3] = &unk_1E76F83B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = untilCopy;
+  v6 = untilCopy;
+  dispatch_sync(_bufferQueue, v7);
 }
 
 void __26__CAMBuffer_disableUntil___block_invoke(uint64_t a1)
@@ -376,24 +376,24 @@ void __26__CAMBuffer_disableUntil___block_invoke(uint64_t a1)
   [*(a1 + 32) _bufferQueueFulfillAndEvaluateWithChange:0];
 }
 
-- (void)disableUntilKeyPath:(id)a3 ofObject:(id)a4 evaluates:(id)a5
+- (void)disableUntilKeyPath:(id)path ofObject:(id)object evaluates:(id)evaluates
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CAMBuffer *)self _bufferQueue];
+  pathCopy = path;
+  objectCopy = object;
+  evaluatesCopy = evaluates;
+  _bufferQueue = [(CAMBuffer *)self _bufferQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __52__CAMBuffer_disableUntilKeyPath_ofObject_evaluates___block_invoke;
   v15[3] = &unk_1E76FB560;
-  v16 = v8;
-  v17 = v9;
-  v18 = self;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_sync(v11, v15);
+  v16 = pathCopy;
+  v17 = objectCopy;
+  selfCopy = self;
+  v19 = evaluatesCopy;
+  v12 = evaluatesCopy;
+  v13 = objectCopy;
+  v14 = pathCopy;
+  dispatch_sync(_bufferQueue, v15);
 }
 
 void __52__CAMBuffer_disableUntilKeyPath_ofObject_evaluates___block_invoke(uint64_t a1)
@@ -404,24 +404,24 @@ void __52__CAMBuffer_disableUntilKeyPath_ofObject_evaluates___block_invoke(uint6
   [*(a1 + 48) _bufferQueueFulfillAndEvaluateWithChange:v2];
 }
 
-- (void)disableUntilNotification:(id)a3 fromObject:(id)a4 usingNotificationCenter:(id)a5
+- (void)disableUntilNotification:(id)notification fromObject:(id)object usingNotificationCenter:(id)center
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CAMBuffer *)self _bufferQueue];
+  notificationCopy = notification;
+  objectCopy = object;
+  centerCopy = center;
+  _bufferQueue = [(CAMBuffer *)self _bufferQueue];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __73__CAMBuffer_disableUntilNotification_fromObject_usingNotificationCenter___block_invoke;
   v15[3] = &unk_1E76F8230;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v19 = self;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
-  dispatch_sync(v11, v15);
+  v16 = notificationCopy;
+  v17 = objectCopy;
+  v18 = centerCopy;
+  selfCopy = self;
+  v12 = centerCopy;
+  v13 = objectCopy;
+  v14 = notificationCopy;
+  dispatch_sync(_bufferQueue, v15);
 }
 
 void __73__CAMBuffer_disableUntilNotification_fromObject_usingNotificationCenter___block_invoke(uint64_t a1)
@@ -435,18 +435,18 @@ void __73__CAMBuffer_disableUntilNotification_fromObject_usingNotificationCenter
 {
   v35 = *MEMORY[0x1E69E9840];
   v21 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v3 = [(CAMBuffer *)self _bufferQueueBufferedValues];
-  v20 = [(CAMBuffer *)self _bufferQueueObservers];
+  _bufferQueueBufferedValues = [(CAMBuffer *)self _bufferQueueBufferedValues];
+  _bufferQueueObservers = [(CAMBuffer *)self _bufferQueueObservers];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v3;
+  obj = _bufferQueueBufferedValues;
   v19 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v19)
   {
     v18 = *v30;
-    v17 = self;
+    selfCopy = self;
 LABEL_3:
     v4 = 0;
     while (1)
@@ -467,7 +467,7 @@ LABEL_3:
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v6 = v20;
+      v6 = _bufferQueueObservers;
       v7 = [v6 countByEnumeratingWithState:&v25 objects:v33 count:16];
       if (v7)
       {
@@ -486,9 +486,9 @@ LABEL_3:
             v11 = [v6 objectForKeyedSubscript:*(*(&v25 + 1) + 8 * v10)];
             v12 = _Block_copy(v11);
             v13 = objc_getAssociatedObject(v12, _shouldEmitValuesOnMainQueueKey);
-            v14 = [v13 BOOLValue];
+            bOOLValue = [v13 BOOLValue];
 
-            if (v14)
+            if (bOOLValue)
             {
               block[0] = MEMORY[0x1E69E9820];
               block[1] = 3221225472;
@@ -515,8 +515,8 @@ LABEL_3:
         while (v8);
       }
 
-      self = v17;
-      [(CAMBuffer *)v17 setBufferQueueCurrentValue:v5];
+      self = selfCopy;
+      [(CAMBuffer *)selfCopy setBufferQueueCurrentValue:v5];
       [v21 addObject:v5];
       v4 = v22 + 1;
       if (v22 + 1 == v19)
@@ -535,10 +535,10 @@ LABEL_3:
   [obj removeObjectsInArray:v21];
 }
 
-- (void)push:(id)a3
+- (void)push:(id)push
 {
-  v4 = [a3 copyWithZone:0];
-  v5 = [(CAMBuffer *)self _bufferQueue];
+  v4 = [push copyWithZone:0];
+  _bufferQueue = [(CAMBuffer *)self _bufferQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __18__CAMBuffer_push___block_invoke;
@@ -546,7 +546,7 @@ LABEL_3:
   v7[4] = self;
   v8 = v4;
   v6 = v4;
-  dispatch_sync(v5, v7);
+  dispatch_sync(_bufferQueue, v7);
 }
 
 void __18__CAMBuffer_push___block_invoke(uint64_t a1)
@@ -559,10 +559,10 @@ void __18__CAMBuffer_push___block_invoke(uint64_t a1)
   }
 }
 
-- (void)replaceWith:(id)a3
+- (void)replaceWith:(id)with
 {
-  v4 = [a3 copyWithZone:0];
-  v5 = [(CAMBuffer *)self _bufferQueue];
+  v4 = [with copyWithZone:0];
+  _bufferQueue = [(CAMBuffer *)self _bufferQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __25__CAMBuffer_replaceWith___block_invoke;
@@ -570,7 +570,7 @@ void __18__CAMBuffer_push___block_invoke(uint64_t a1)
   v7[4] = self;
   v8 = v4;
   v6 = v4;
-  dispatch_sync(v5, v7);
+  dispatch_sync(_bufferQueue, v7);
 }
 
 void __25__CAMBuffer_replaceWith___block_invoke(uint64_t a1)
@@ -594,21 +594,21 @@ void __25__CAMBuffer_replaceWith___block_invoke(uint64_t a1)
   v14 = 0;
   if ([(CAMBuffer *)self _isBufferQueue])
   {
-    v3 = [(CAMBuffer *)self bufferQueueCurrentValue];
+    bufferQueueCurrentValue = [(CAMBuffer *)self bufferQueueCurrentValue];
     v4 = v10[5];
-    v10[5] = v3;
+    v10[5] = bufferQueueCurrentValue;
   }
 
   else
   {
-    v5 = [(CAMBuffer *)self _bufferQueue];
+    _bufferQueue = [(CAMBuffer *)self _bufferQueue];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __25__CAMBuffer_currentValue__block_invoke;
     v8[3] = &unk_1E76FAFF0;
     v8[4] = self;
     v8[5] = &v9;
-    dispatch_sync(v5, v8);
+    dispatch_sync(_bufferQueue, v8);
   }
 
   v6 = v10[5];
@@ -629,23 +629,23 @@ uint64_t __25__CAMBuffer_currentValue__block_invoke(uint64_t a1)
 
 - (BOOL)isBufferEmpty
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(CAMBuffer *)self _bufferQueue];
+  _bufferQueue = [(CAMBuffer *)self _bufferQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __26__CAMBuffer_isBufferEmpty__block_invoke;
   v5[3] = &unk_1E76FAFF0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(_bufferQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __26__CAMBuffer_isBufferEmpty__block_invoke(uint64_t a1)
@@ -662,14 +662,14 @@ void __26__CAMBuffer_isBufferEmpty__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__31;
   v11 = __Block_byref_object_dispose__31;
   v12 = 0;
-  v3 = [(CAMBuffer *)self _bufferQueue];
+  _bufferQueue = [(CAMBuffer *)self _bufferQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __31__CAMBuffer_firstBufferedValue__block_invoke;
   v6[3] = &unk_1E76FAFF0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(_bufferQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -694,14 +694,14 @@ void __31__CAMBuffer_firstBufferedValue__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__31;
   v11 = __Block_byref_object_dispose__31;
   v12 = 0;
-  v3 = [(CAMBuffer *)self _bufferQueue];
+  _bufferQueue = [(CAMBuffer *)self _bufferQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __30__CAMBuffer_lastBufferedValue__block_invoke;
   v6[3] = &unk_1E76FAFF0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(_bufferQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -726,14 +726,14 @@ void __30__CAMBuffer_lastBufferedValue__block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy__31;
   v11 = __Block_byref_object_dispose__31;
   v12 = 0;
-  v3 = [(CAMBuffer *)self _bufferQueue];
+  _bufferQueue = [(CAMBuffer *)self _bufferQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __27__CAMBuffer_bufferedValues__block_invoke;
   v6[3] = &unk_1E76FAFF0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(_bufferQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -750,31 +750,31 @@ void __27__CAMBuffer_bufferedValues__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (id)_addObserver:(id)a3 onMainQueue:(BOOL)a4
+- (id)_addObserver:(id)observer onMainQueue:(BOOL)queue
 {
-  v4 = a4;
+  queueCopy = queue;
   v6 = MEMORY[0x1E696AFB0];
-  v7 = a3;
-  v8 = [v6 UUID];
-  v9 = [v8 UUIDString];
+  observerCopy = observer;
+  uUID = [v6 UUID];
+  uUIDString = [uUID UUIDString];
 
-  v10 = [v7 copy];
+  v10 = [observerCopy copy];
   v11 = _Block_copy(v10);
   v12 = _shouldEmitValuesOnMainQueueKey;
-  v13 = [MEMORY[0x1E696AD98] numberWithBool:v4];
+  v13 = [MEMORY[0x1E696AD98] numberWithBool:queueCopy];
   objc_setAssociatedObject(v11, v12, v13, 1);
 
-  v14 = [(CAMBuffer *)self _bufferQueue];
+  _bufferQueue = [(CAMBuffer *)self _bufferQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __38__CAMBuffer__addObserver_onMainQueue___block_invoke;
   block[3] = &unk_1E76FCD08;
   block[4] = self;
   v22 = v10;
-  v15 = v9;
+  v15 = uUIDString;
   v21 = v15;
   v16 = v10;
-  dispatch_sync(v14, block);
+  dispatch_sync(_bufferQueue, block);
 
   v17 = v21;
   v18 = v15;
@@ -789,18 +789,18 @@ void __38__CAMBuffer__addObserver_onMainQueue___block_invoke(uint64_t a1)
   [v3 setObject:v2 forKey:*(a1 + 40)];
 }
 
-- (void)removeObserverForKey:(id)a3
+- (void)removeObserverForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(CAMBuffer *)self _bufferQueue];
+  keyCopy = key;
+  _bufferQueue = [(CAMBuffer *)self _bufferQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__CAMBuffer_removeObserverForKey___block_invoke;
   v7[3] = &unk_1E76F7960;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = keyCopy;
+  v6 = keyCopy;
+  dispatch_sync(_bufferQueue, v7);
 }
 
 void __34__CAMBuffer_removeObserverForKey___block_invoke(uint64_t a1)
@@ -809,24 +809,24 @@ void __34__CAMBuffer_removeObserverForKey___block_invoke(uint64_t a1)
   [v2 removeObjectForKey:*(a1 + 40)];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(CAMBuffer *)self _bufferQueue];
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  _bufferQueue = [(CAMBuffer *)self _bufferQueue];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __60__CAMBuffer_observeValueForKeyPath_ofObject_change_context___block_invoke;
   v16[3] = &unk_1E76F8230;
-  v17 = v9;
-  v18 = v10;
-  v19 = v11;
-  v20 = self;
-  v13 = v11;
-  v14 = v10;
-  v15 = v9;
-  dispatch_sync(v12, v16);
+  v17 = pathCopy;
+  v18 = objectCopy;
+  v19 = changeCopy;
+  selfCopy = self;
+  v13 = changeCopy;
+  v14 = objectCopy;
+  v15 = pathCopy;
+  dispatch_sync(_bufferQueue, v16);
 }
 
 void __60__CAMBuffer_observeValueForKeyPath_ofObject_change_context___block_invoke(uint64_t a1)
@@ -835,18 +835,18 @@ void __60__CAMBuffer_observeValueForKeyPath_ofObject_change_context___block_invo
   [*(a1 + 56) _bufferQueueFulfillAndEvaluateWithChange:v2];
 }
 
-- (void)handleObservedNotification:(id)a3
+- (void)handleObservedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(CAMBuffer *)self _bufferQueue];
+  notificationCopy = notification;
+  _bufferQueue = [(CAMBuffer *)self _bufferQueue];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__CAMBuffer_handleObservedNotification___block_invoke;
   v7[3] = &unk_1E76F7960;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_sync(_bufferQueue, v7);
 }
 
 void __40__CAMBuffer_handleObservedNotification___block_invoke(uint64_t a1)

@@ -1,28 +1,28 @@
 @interface MRTextEditingAttributes
-- (MRTextEditingAttributes)initWithTitle:(id)a3 prompt:(id)a4;
+- (MRTextEditingAttributes)initWithTitle:(id)title prompt:(id)prompt;
 - (_MRTextInputTraits)inputTraits;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)_copyWithZone:(objc_class *)a3 usingConcreteClass:;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)_copyWithZone:(objc_class *)zone usingConcreteClass:;
 @end
 
 @implementation MRTextEditingAttributes
 
-- (MRTextEditingAttributes)initWithTitle:(id)a3 prompt:(id)a4
+- (MRTextEditingAttributes)initWithTitle:(id)title prompt:(id)prompt
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  promptCopy = prompt;
   v14.receiver = self;
   v14.super_class = MRTextEditingAttributes;
   v8 = [(MRTextEditingAttributes *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [titleCopy copy];
     title = v8->_title;
     v8->_title = v9;
 
-    v11 = [v7 copy];
+    v11 = [promptCopy copy];
     prompt = v8->_prompt;
     v8->_prompt = v11;
   }
@@ -52,7 +52,7 @@
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 
@@ -77,27 +77,27 @@
   return self;
 }
 
-- (void)_copyWithZone:(objc_class *)a3 usingConcreteClass:
+- (void)_copyWithZone:(objc_class *)zone usingConcreteClass:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v4 = objc_alloc_init(a3);
-  v5 = [a1[1] copy];
+  v4 = objc_alloc_init(zone);
+  v5 = [self[1] copy];
   v6 = v4[1];
   v4[1] = v5;
 
-  v7 = [a1[2] copy];
+  v7 = [self[2] copy];
   v8 = v4[2];
   v4[2] = v7;
 
-  memcpy(v4 + 3, a1 + 3, 0x88uLL);
+  memcpy(v4 + 3, self + 3, 0x88uLL);
   return v4;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
 

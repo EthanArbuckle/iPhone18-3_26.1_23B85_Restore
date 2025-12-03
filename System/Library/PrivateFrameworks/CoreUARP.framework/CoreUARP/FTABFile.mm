@@ -1,30 +1,30 @@
 @interface FTABFile
-+ (id)longTagName:(id)a3;
-- (BOOL)addSubfileWithTagName:(id)a3 contentsOfURL:(id)a4;
-- (BOOL)addSubfileWithTagName:(id)a3 subfileData:(id)a4;
-- (BOOL)configureFileHandleWriteDestinationForURL:(id)a3;
++ (id)longTagName:(id)name;
+- (BOOL)addSubfileWithTagName:(id)name contentsOfURL:(id)l;
+- (BOOL)addSubfileWithTagName:(id)name subfileData:(id)data;
+- (BOOL)configureFileHandleWriteDestinationForURL:(id)l;
 - (BOOL)initFile;
 - (BOOL)parseFileData;
-- (BOOL)writeBytes:(const void *)a3 length:(unint64_t)a4;
-- (BOOL)writeBytes:(const void *)a3 length:(unint64_t)a4 handle:(id)a5;
-- (BOOL)writeSubfileToURL:(id)a3 tag:(id)a4;
+- (BOOL)writeBytes:(const void *)bytes length:(unint64_t)length;
+- (BOOL)writeBytes:(const void *)bytes length:(unint64_t)length handle:(id)handle;
+- (BOOL)writeSubfileToURL:(id)l tag:(id)tag;
 - (BOOL)writeToDestination;
-- (BOOL)writeToURL:(id)a3;
+- (BOOL)writeToURL:(id)l;
 - (FTABFile)init;
-- (FTABFile)initWithContentsOfURL:(id)a3;
-- (FTABFile)initWithData:(id)a3;
+- (FTABFile)initWithContentsOfURL:(id)l;
+- (FTABFile)initWithData:(id)data;
 - (NSString)bverString;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)createFileHandleForWritingToURL:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)createFileHandleForWritingToURL:(id)l;
 - (id)description;
-- (id)subfileWithTag:(id)a3;
+- (id)subfileWithTag:(id)tag;
 - (id)writeToData;
-- (void)addSubfiles:(id)a3;
+- (void)addSubfiles:(id)subfiles;
 - (void)configureDataWriteDestination;
 - (void)parseFileData;
-- (void)removeSubfileWithTag:(id)a3;
-- (void)setBootNonce:(id)a3;
-- (void)setManifest:(id)a3;
+- (void)removeSubfileWithTag:(id)tag;
+- (void)setBootNonce:(id)nonce;
+- (void)setManifest:(id)manifest;
 - (void)writeToDestination;
 @end
 
@@ -58,55 +58,55 @@
   return v6;
 }
 
-+ (id)longTagName:(id)a3
++ (id)longTagName:(id)name
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"acib"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"acib"])
   {
     v4 = @"ACIBT";
   }
 
-  else if ([v3 isEqualToString:@"aopf"])
+  else if ([nameCopy isEqualToString:@"aopf"])
   {
     v4 = @"AOP";
   }
 
-  else if ([v3 isEqualToString:@"lpda"])
+  else if ([nameCopy isEqualToString:@"lpda"])
   {
     v4 = @"LeapBinsDigestsArray";
   }
 
-  else if ([v3 isEqualToString:@"phyb"])
+  else if ([nameCopy isEqualToString:@"phyb"])
   {
     v4 = @"PhyBlueTooth";
   }
 
-  else if ([v3 isEqualToString:@"rkof"])
+  else if ([nameCopy isEqualToString:@"rkof"])
   {
     v4 = @"RTKitOSFeature";
   }
 
-  else if ([v3 isEqualToString:@"rkos"])
+  else if ([nameCopy isEqualToString:@"rkos"])
   {
     v4 = @"RTKitOS";
   }
 
-  else if ([v3 isEqualToString:@"rrko"])
+  else if ([nameCopy isEqualToString:@"rrko"])
   {
     v4 = @"RestoreRTKitOS";
   }
 
-  else if ([v3 isEqualToString:@"rtpf"])
+  else if ([nameCopy isEqualToString:@"rtpf"])
   {
     v4 = @"RTP";
   }
 
-  else if ([v3 isEqualToString:@"sbd1"])
+  else if ([nameCopy isEqualToString:@"sbd1"])
   {
     v4 = @"SoftwareBinaryDsp1";
   }
 
-  else if ([v3 isEqualToString:@"sbd2"])
+  else if ([nameCopy isEqualToString:@"sbd2"])
   {
     v4 = @"SoftwareBinaryDsp2";
   }
@@ -119,9 +119,9 @@
   return v4;
 }
 
-- (FTABFile)initWithContentsOfURL:(id)a3
+- (FTABFile)initWithContentsOfURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v14.receiver = self;
   v14.super_class = FTABFile;
   v6 = [(FTABFile *)&v14 init];
@@ -131,7 +131,7 @@
   }
 
   v13 = 0;
-  v7 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v5 options:1 error:&v13];
+  v7 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy options:1 error:&v13];
   v8 = v13;
   fileData = v6->_fileData;
   v6->_fileData = v7;
@@ -155,7 +155,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  objc_storeStrong(&v6->_url, a3);
+  objc_storeStrong(&v6->_url, l);
 
 LABEL_5:
   v10 = v6;
@@ -164,13 +164,13 @@ LABEL_10:
   return v10;
 }
 
-- (FTABFile)initWithData:(id)a3
+- (FTABFile)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = FTABFile;
   v5 = [(FTABFile *)&v10 init];
-  if (v5 && (v6 = [v4 copy], fileData = v5->_fileData, v5->_fileData = v6, fileData, !-[FTABFile initFile](v5, "initFile")))
+  if (v5 && (v6 = [dataCopy copy], fileData = v5->_fileData, v5->_fileData = v6, fileData, !-[FTABFile initFile](v5, "initFile")))
   {
     v8 = 0;
   }
@@ -187,9 +187,9 @@ LABEL_10:
 {
   self->_filePointer = [(NSData *)self->_fileData bytes];
   self->_fileLength = [(NSData *)self->_fileData length];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   subFileArray = self->_subFileArray;
-  self->_subFileArray = v3;
+  self->_subFileArray = array;
 
   return [(FTABFile *)self parseFileData];
 }
@@ -210,9 +210,9 @@ LABEL_10:
 
     v2->_filePointer = [(NSData *)v2->_fileData bytes];
     v2->_fileLength = [(NSData *)v2->_fileData length];
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     subFileArray = v2->_subFileArray;
-    v2->_subFileArray = v6;
+    v2->_subFileArray = array;
 
     v8 = [MEMORY[0x277CBEA90] dataWithBytes:&kFTABMagicLowercase length:8];
     magic = v2->_magic;
@@ -339,10 +339,10 @@ LABEL_26:
   return 0;
 }
 
-- (id)subfileWithTag:(id)a3
+- (id)subfileWithTag:(id)tag
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tagCopy = tag;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -363,7 +363,7 @@ LABEL_26:
 
         v9 = *(*(&v14 + 1) + 8 * i);
         v10 = [v9 tag];
-        v11 = [v10 isEqual:v4];
+        v11 = [v10 isEqual:tagCopy];
 
         if (v11)
         {
@@ -389,9 +389,9 @@ LABEL_11:
   return v6;
 }
 
-- (void)removeSubfileWithTag:(id)a3
+- (void)removeSubfileWithTag:(id)tag
 {
-  v4 = [(FTABFile *)self subfileWithTag:a3];
+  v4 = [(FTABFile *)self subfileWithTag:tag];
   if (v4)
   {
     [(NSMutableArray *)self->_subFileArray removeObject:v4];
@@ -403,16 +403,16 @@ LABEL_11:
 - (id)description
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = v3;
+  string = [MEMORY[0x277CCAB68] string];
+  v4 = string;
   if (self->_url)
   {
-    [v3 appendFormat:@"FTAB %@:\n", self->_url];
+    [string appendFormat:@"FTAB %@:\n", self->_url];
   }
 
   else
   {
-    [v3 appendFormat:@"FTAB:\n", v16];
+    [string appendFormat:@"FTAB:\n", v16];
   }
 
   [v4 appendFormat:@"\tGeneration: 0x%08x\n", self->_generation];
@@ -482,16 +482,16 @@ LABEL_11:
   return v13;
 }
 
-- (BOOL)addSubfileWithTagName:(id)a3 contentsOfURL:(id)a4
+- (BOOL)addSubfileWithTagName:(id)name contentsOfURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  lCopy = l;
   v13 = 0;
-  v8 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v7 options:1 error:&v13];
+  v8 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy options:1 error:&v13];
   v9 = v13;
   if (v8)
   {
-    v10 = [(FTABFile *)self addSubfileWithTagName:v6 subfileData:v8];
+    v10 = [(FTABFile *)self addSubfileWithTagName:nameCopy subfileData:v8];
   }
 
   else
@@ -508,30 +508,30 @@ LABEL_11:
   return v10;
 }
 
-- (BOOL)addSubfileWithTagName:(id)a3 subfileData:(id)a4
+- (BOOL)addSubfileWithTagName:(id)name subfileData:(id)data
 {
-  v6 = a4;
-  v7 = a3;
-  [(FTABFile *)self removeSubfileWithTag:v7];
+  dataCopy = data;
+  nameCopy = name;
+  [(FTABFile *)self removeSubfileWithTag:nameCopy];
   v8 = [FTABSubfile alloc];
-  v9 = [v6 bytes];
-  v10 = [v6 length];
+  bytes = [dataCopy bytes];
+  v10 = [dataCopy length];
 
-  v11 = [(FTABSubfile *)v8 initWithTag:v7 dataPointer:v9 dataLength:v10];
+  v11 = [(FTABSubfile *)v8 initWithTag:nameCopy dataPointer:bytes dataLength:v10];
   [(NSMutableArray *)self->_subFileArray addObject:v11];
 
   return 1;
 }
 
-- (void)addSubfiles:(id)a3
+- (void)addSubfiles:(id)subfiles
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  subfilesCopy = subfiles;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [subfilesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -543,7 +543,7 @@ LABEL_11:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(subfilesCopy);
         }
 
         v9 = [*(*(&v11 + 1) + 8 * v8) tag];
@@ -553,49 +553,49 @@ LABEL_11:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [subfilesCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  [(NSMutableArray *)self->_subFileArray addObjectsFromArray:v4];
+  [(NSMutableArray *)self->_subFileArray addObjectsFromArray:subfilesCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setManifest:(id)a3
+- (void)setManifest:(id)manifest
 {
-  v4 = a3;
-  v5 = [[FTABSubfile alloc] initWithTag:@"Manifest" data:v4];
+  manifestCopy = manifest;
+  v5 = [[FTABSubfile alloc] initWithTag:@"Manifest" data:manifestCopy];
 
   manifest = self->_manifest;
   self->_manifest = v5;
 }
 
-- (void)setBootNonce:(id)a3
+- (void)setBootNonce:(id)nonce
 {
-  v6 = a3;
-  if ([v6 length] == 8)
+  nonceCopy = nonce;
+  if ([nonceCopy length] == 8)
   {
-    v4 = [v6 copy];
+    v4 = [nonceCopy copy];
     bootNonce = self->_bootNonce;
     self->_bootNonce = v4;
   }
 }
 
-- (id)createFileHandleForWritingToURL:(id)a3
+- (id)createFileHandleForWritingToURL:(id)l
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5];
+  lCopy = l;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [lCopy path];
+  v6 = [defaultManager fileExistsAtPath:path];
 
   if (v6)
   {
-    v7 = [v3 path];
+    path2 = [lCopy path];
     v18 = 0;
-    v8 = [v4 removeItemAtPath:v7 error:&v18];
+    v8 = [defaultManager removeItemAtPath:path2 error:&v18];
     v9 = v18;
 
     if ((v8 & 1) == 0)
@@ -603,23 +603,23 @@ LABEL_11:
       v15 = os_log_create("com.apple.accessoryupdater.ftab", "writing");
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        [FTABFile createFileHandleForWritingToURL:v3];
+        [FTABFile createFileHandleForWritingToURL:lCopy];
       }
 
       goto LABEL_14;
     }
   }
 
-  v10 = [MEMORY[0x277CCAA00] defaultManager];
-  v11 = [v3 path];
-  v12 = [v10 createFileAtPath:v11 contents:0 attributes:0];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  path3 = [lCopy path];
+  v12 = [defaultManager2 createFileAtPath:path3 contents:0 attributes:0];
 
   if ((v12 & 1) == 0)
   {
     v9 = os_log_create("com.apple.accessoryupdater.ftab", "writing");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [FTABFile createFileHandleForWritingToURL:v3];
+      [FTABFile createFileHandleForWritingToURL:lCopy];
     }
 
 LABEL_14:
@@ -628,7 +628,7 @@ LABEL_14:
   }
 
   v17 = 0;
-  v13 = [MEMORY[0x277CCA9F8] fileHandleForWritingToURL:v3 error:&v17];
+  v13 = [MEMORY[0x277CCA9F8] fileHandleForWritingToURL:lCopy error:&v17];
   v9 = v17;
   if (!v13)
   {
@@ -644,13 +644,13 @@ LABEL_15:
   return v13;
 }
 
-- (BOOL)configureFileHandleWriteDestinationForURL:(id)a3
+- (BOOL)configureFileHandleWriteDestinationForURL:(id)l
 {
   dataWriteDestination = self->_dataWriteDestination;
   self->_dataWriteDestination = 0;
-  v5 = a3;
+  lCopy = l;
 
-  v6 = [(FTABFile *)self createFileHandleForWritingToURL:v5];
+  v6 = [(FTABFile *)self createFileHandleForWritingToURL:lCopy];
 
   fileHandleWriteDestination = self->_fileHandleWriteDestination;
   self->_fileHandleWriteDestination = v6;
@@ -663,20 +663,20 @@ LABEL_15:
   fileHandleWriteDestination = self->_fileHandleWriteDestination;
   self->_fileHandleWriteDestination = 0;
 
-  v4 = [MEMORY[0x277CBEB28] data];
+  data = [MEMORY[0x277CBEB28] data];
   dataWriteDestination = self->_dataWriteDestination;
-  self->_dataWriteDestination = v4;
+  self->_dataWriteDestination = data;
 
   MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)writeBytes:(const void *)a3 length:(unint64_t)a4
+- (BOOL)writeBytes:(const void *)bytes length:(unint64_t)length
 {
   fileHandleWriteDestination = self->_fileHandleWriteDestination;
   if (fileHandleWriteDestination)
   {
 
-    LOBYTE(dataWriteDestination) = [(NSFileHandle *)fileHandleWriteDestination writeBytes:a3 length:a4];
+    LOBYTE(dataWriteDestination) = [(NSFileHandle *)fileHandleWriteDestination writeBytes:bytes length:length];
   }
 
   else
@@ -684,7 +684,7 @@ LABEL_15:
     dataWriteDestination = self->_dataWriteDestination;
     if (dataWriteDestination)
     {
-      [(NSMutableData *)dataWriteDestination appendBytes:a3 length:a4, v4, v5];
+      [(NSMutableData *)dataWriteDestination appendBytes:bytes length:length, v4, v5];
       LOBYTE(dataWriteDestination) = 1;
     }
   }
@@ -705,17 +705,17 @@ LABEL_15:
   if (manifest)
   {
     v5 = v3 + 48;
-    v6 = [(FTABSubfile *)manifest dataLength];
+    dataLength = [(FTABSubfile *)manifest dataLength];
   }
 
   else
   {
-    v6 = 0;
+    dataLength = 0;
     v5 = 0;
   }
 
   v38 = v5;
-  v39 = v6;
+  v39 = dataLength;
   v41 = *[(NSData *)self->_magic bytes];
   LODWORD(v42) = [(NSMutableArray *)self->_subFileArray count];
   if (![(FTABFile *)self writeBytes:v37 length:48])
@@ -738,7 +738,7 @@ LABEL_15:
   if (v8)
   {
     v9 = v8;
-    v10 = v3 + v6 + 48;
+    v10 = v3 + dataLength + 48;
     v11 = *v32;
     while (2)
     {
@@ -851,12 +851,12 @@ LABEL_32:
   return v21;
 }
 
-- (BOOL)writeToURL:(id)a3
+- (BOOL)writeToURL:(id)l
 {
-  v4 = a3;
-  if ([(FTABFile *)self configureFileHandleWriteDestinationForURL:v4])
+  lCopy = l;
+  if ([(FTABFile *)self configureFileHandleWriteDestinationForURL:lCopy])
   {
-    v5 = [(FTABFile *)self writeToDestination];
+    writeToDestination = [(FTABFile *)self writeToDestination];
     fileHandleWriteDestination = self->_fileHandleWriteDestination;
     self->_fileHandleWriteDestination = 0;
   }
@@ -866,13 +866,13 @@ LABEL_32:
     v7 = os_log_create("com.apple.accessoryupdater.ftab", "writing");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [FTABFile writeToURL:v4];
+      [FTABFile writeToURL:lCopy];
     }
 
-    v5 = 0;
+    writeToDestination = 0;
   }
 
-  return v5;
+  return writeToDestination;
 }
 
 - (id)writeToData
@@ -886,14 +886,14 @@ LABEL_32:
   return v3;
 }
 
-- (BOOL)writeSubfileToURL:(id)a3 tag:(id)a4
+- (BOOL)writeSubfileToURL:(id)l tag:(id)tag
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FTABFile *)self subfileWithTag:v7];
+  lCopy = l;
+  tagCopy = tag;
+  v8 = [(FTABFile *)self subfileWithTag:tagCopy];
   if (v8)
   {
-    v9 = [(FTABFile *)self createFileHandleForWritingToURL:v6];
+    v9 = [(FTABFile *)self createFileHandleForWritingToURL:lCopy];
     if (v9)
     {
       v10 = [v9 writeBytes:objc_msgSend(v8 length:{"dataPointer"), objc_msgSend(v8, "dataLength")}];
@@ -919,20 +919,20 @@ LABEL_32:
   return v10;
 }
 
-- (BOOL)writeBytes:(const void *)a3 length:(unint64_t)a4 handle:(id)a5
+- (BOOL)writeBytes:(const void *)bytes length:(unint64_t)length handle:(id)handle
 {
   v7 = MEMORY[0x277CBEA90];
-  v8 = a5;
-  v9 = [v7 dataWithBytes:a3 length:a4];
-  LOBYTE(a3) = [v8 ftabWriteData:v9 error:0];
+  handleCopy = handle;
+  v9 = [v7 dataWithBytes:bytes length:length];
+  LOBYTE(bytes) = [handleCopy ftabWriteData:v9 error:0];
 
-  return a3;
+  return bytes;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(FTABFile *)self writeToData];
-  v4 = [[FTABFile alloc] initWithData:v3];
+  writeToData = [(FTABFile *)self writeToData];
+  v4 = [[FTABFile alloc] initWithData:writeToData];
 
   return v4;
 }
@@ -995,7 +995,7 @@ LABEL_32:
 - (void)writeToDestination
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = [a1 tag];
+  v1 = [self tag];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_0_6(&dword_247AA7000, v2, v3, "Failed to write '%@'", v4, v5, v6, v7, v9);
 

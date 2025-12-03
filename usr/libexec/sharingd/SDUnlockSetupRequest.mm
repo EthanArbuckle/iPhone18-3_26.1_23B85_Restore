@@ -1,21 +1,21 @@
 @interface SDUnlockSetupRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasRemoteNeedsLTK:(BOOL)a3;
-- (void)setHasVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasRemoteNeedsLTK:(BOOL)k;
+- (void)setHasVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SDUnlockSetupRequest
 
-- (void)setHasVersion:(BOOL)a3
+- (void)setHasVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasRemoteNeedsLTK:(BOOL)a3
+- (void)setHasRemoteNeedsLTK:(BOOL)k
 {
-  if (a3)
+  if (k)
   {
     v3 = 4;
   }
@@ -48,8 +48,8 @@
   v7.receiver = self;
   v7.super_class = SDUnlockSetupRequest;
   v3 = [(SDUnlockSetupRequest *)&v7 description];
-  v4 = [(SDUnlockSetupRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(SDUnlockSetupRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -93,9 +93,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -127,46 +127,46 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[7] = self->_version;
-    *(v4 + 36) |= 2u;
+    toCopy[7] = self->_version;
+    *(toCopy + 36) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[6] = self->_sessionID;
-    *(v4 + 36) |= 1u;
+    toCopy[6] = self->_sessionID;
+    *(toCopy + 36) |= 1u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_longTermKey)
   {
-    [v4 setLongTermKey:?];
-    v4 = v6;
+    [toCopy setLongTermKey:?];
+    toCopy = v6;
   }
 
   if (self->_ltkHash)
   {
     [v6 setLtkHash:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    *(v4 + 32) = self->_remoteNeedsLTK;
-    *(v4 + 36) |= 4u;
+    *(toCopy + 32) = self->_remoteNeedsLTK;
+    *(toCopy + 36) |= 4u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -182,11 +182,11 @@
     *(v5 + 36) |= 1u;
   }
 
-  v8 = [(NSData *)self->_longTermKey copyWithZone:a3];
+  v8 = [(NSData *)self->_longTermKey copyWithZone:zone];
   v9 = v6[1];
   v6[1] = v8;
 
-  v10 = [(NSData *)self->_ltkHash copyWithZone:a3];
+  v10 = [(NSData *)self->_ltkHash copyWithZone:zone];
   v11 = v6[2];
   v6[2] = v10;
 
@@ -199,49 +199,49 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(equalCopy + 36);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_version != *(v4 + 7))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_version != *(equalCopy + 7))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_18;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_sessionID != *(v4 + 6))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_sessionID != *(equalCopy + 6))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 36))
+  else if (*(equalCopy + 36))
   {
     goto LABEL_18;
   }
 
   longTermKey = self->_longTermKey;
-  if (longTermKey | *(v4 + 1) && ![(NSData *)longTermKey isEqual:?])
+  if (longTermKey | *(equalCopy + 1) && ![(NSData *)longTermKey isEqual:?])
   {
     goto LABEL_18;
   }
 
   ltkHash = self->_ltkHash;
-  if (ltkHash | *(v4 + 2))
+  if (ltkHash | *(equalCopy + 2))
   {
     if (![(NSData *)ltkHash isEqual:?])
     {
@@ -249,10 +249,10 @@
     }
   }
 
-  v8 = (*(v4 + 36) & 4) == 0;
+  v8 = (*(equalCopy + 36) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0)
+    if ((*(equalCopy + 36) & 4) == 0)
     {
 LABEL_18:
       v8 = 0;
@@ -261,13 +261,13 @@ LABEL_18:
 
     if (self->_remoteNeedsLTK)
     {
-      if ((*(v4 + 32) & 1) == 0)
+      if ((*(equalCopy + 32) & 1) == 0)
       {
         goto LABEL_18;
       }
     }
 
-    else if (*(v4 + 32))
+    else if (*(equalCopy + 32))
     {
       goto LABEL_18;
     }
@@ -319,39 +319,39 @@ LABEL_6:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 36);
+  fromCopy = from;
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) != 0)
   {
-    self->_version = *(v4 + 7);
+    self->_version = *(fromCopy + 7);
     *&self->_has |= 2u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
   }
 
   if (v5)
   {
-    self->_sessionID = *(v4 + 6);
+    self->_sessionID = *(fromCopy + 6);
     *&self->_has |= 1u;
   }
 
-  v6 = v4;
-  if (*(v4 + 1))
+  v6 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(SDUnlockSetupRequest *)self setLongTermKey:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(SDUnlockSetupRequest *)self setLtkHash:?];
-    v4 = v6;
+    fromCopy = v6;
   }
 
-  if ((*(v4 + 36) & 4) != 0)
+  if ((*(fromCopy + 36) & 4) != 0)
   {
-    self->_remoteNeedsLTK = *(v4 + 32);
+    self->_remoteNeedsLTK = *(fromCopy + 32);
     *&self->_has |= 4u;
   }
 }

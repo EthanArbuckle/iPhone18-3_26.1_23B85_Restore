@@ -1,39 +1,39 @@
 @interface PKAppletSubcredentialManagementSession
-+ (id)createSessionWithDelegate:(id)a3;
-- (id)trackSubcredential:(id)a3 deviceData:(id)a4 attestation:(id)a5;
-- (id)trackSubcredential:(id)a3 encryptedContainer:(id)a4 withReceipt:(id)a5;
-- (void)accountAttestationRequestForCredential:(id)a3 completion:(id)a4;
-- (void)accountAttestationRequestForManufacturer:(id)a3 completion:(id)a4;
-- (void)commitUpgradeForKeyWithCredential:(id)a3 versionType:(unint64_t)a4 version:(unint64_t)a5 completion:(id)a6;
-- (void)credentialDidActivateWithCredential:(id)a3 completion:(id)a4;
-- (void)deleteCredential:(id)a3 completionHandler:(id)a4;
-- (void)hasUpgradeAvailableForKeyWithCredential:(id)a3 versionType:(unint64_t)a4 versions:(id)a5 completion:(id)a6;
-- (void)immobilizerTokensCountForCredential:(id)a3 completion:(id)a4;
-- (void)listCredentialsWithCompletion:(id)a3;
-- (void)listReceivedSharingInvitationsWithCompletion:(id)a3;
-- (void)listSharingInvitationsForKeyIdentifier:(id)a3 withCompletion:(id)a4;
-- (void)preWarmForManufacturer:(id)a3 completion:(id)a4;
-- (void)removeSharedCredentialsWithIdentifiers:(id)a3 credential:(id)a4 completion:(id)a5;
-- (void)rescindInvitations:(id)a3 onCredential:(id)a4 withCompletion:(id)a5;
-- (void)revertUpgradeForKeyWithCredential:(id)a3 versionType:(unint64_t)a4 version:(unint64_t)a5 completion:(id)a6;
-- (void)revokeSharedCredentials:(id)a3 onCredential:(id)a4 withCompletion:(id)a5;
-- (void)revokeSharesWithGroupIdentifiers:(id)a3 shouldCascade:(BOOL)a4 credential:(id)a5 completion:(id)a6;
-- (void)setAccountAttestation:(id)a3 forUpgradeCredential:(id)a4 withCompletion:(id)a5;
-- (void)signData:(id)a3 auth:(id)a4 bundleIdentifier:(id)a5 nonce:(id)a6 credential:(id)a7 completion:(id)a8;
-- (void)updateCredentialConfigurationForCredential:(id)a3 configuration:(id)a4 completion:(id)a5;
-- (void)upgradeKeyWithCredential:(id)a3 versionType:(unint64_t)a4 version:(unint64_t)a5 upgradeInformation:(id)a6 completion:(id)a7;
++ (id)createSessionWithDelegate:(id)delegate;
+- (id)trackSubcredential:(id)subcredential deviceData:(id)data attestation:(id)attestation;
+- (id)trackSubcredential:(id)subcredential encryptedContainer:(id)container withReceipt:(id)receipt;
+- (void)accountAttestationRequestForCredential:(id)credential completion:(id)completion;
+- (void)accountAttestationRequestForManufacturer:(id)manufacturer completion:(id)completion;
+- (void)commitUpgradeForKeyWithCredential:(id)credential versionType:(unint64_t)type version:(unint64_t)version completion:(id)completion;
+- (void)credentialDidActivateWithCredential:(id)credential completion:(id)completion;
+- (void)deleteCredential:(id)credential completionHandler:(id)handler;
+- (void)hasUpgradeAvailableForKeyWithCredential:(id)credential versionType:(unint64_t)type versions:(id)versions completion:(id)completion;
+- (void)immobilizerTokensCountForCredential:(id)credential completion:(id)completion;
+- (void)listCredentialsWithCompletion:(id)completion;
+- (void)listReceivedSharingInvitationsWithCompletion:(id)completion;
+- (void)listSharingInvitationsForKeyIdentifier:(id)identifier withCompletion:(id)completion;
+- (void)preWarmForManufacturer:(id)manufacturer completion:(id)completion;
+- (void)removeSharedCredentialsWithIdentifiers:(id)identifiers credential:(id)credential completion:(id)completion;
+- (void)rescindInvitations:(id)invitations onCredential:(id)credential withCompletion:(id)completion;
+- (void)revertUpgradeForKeyWithCredential:(id)credential versionType:(unint64_t)type version:(unint64_t)version completion:(id)completion;
+- (void)revokeSharedCredentials:(id)credentials onCredential:(id)credential withCompletion:(id)completion;
+- (void)revokeSharesWithGroupIdentifiers:(id)identifiers shouldCascade:(BOOL)cascade credential:(id)credential completion:(id)completion;
+- (void)setAccountAttestation:(id)attestation forUpgradeCredential:(id)credential withCompletion:(id)completion;
+- (void)signData:(id)data auth:(id)auth bundleIdentifier:(id)identifier nonce:(id)nonce credential:(id)credential completion:(id)completion;
+- (void)updateCredentialConfigurationForCredential:(id)credential configuration:(id)configuration completion:(id)completion;
+- (void)upgradeKeyWithCredential:(id)credential versionType:(unint64_t)type version:(unint64_t)version upgradeInformation:(id)information completion:(id)completion;
 @end
 
 @implementation PKAppletSubcredentialManagementSession
 
-+ (id)createSessionWithDelegate:(id)a3
++ (id)createSessionWithDelegate:(id)delegate
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKDASession *)[PKAppletSubcredentialManagementSession alloc] initWithDelegate:v4];
+  delegateCopy = delegate;
+  v5 = [(PKDASession *)[PKAppletSubcredentialManagementSession alloc] initWithDelegate:delegateCopy];
 
-  v6 = [MEMORY[0x1E699A138] sharedManager];
-  v7 = [v6 createManagementSessionWithDelegate:v5];
+  mEMORY[0x1E699A138] = [MEMORY[0x1E699A138] sharedManager];
+  v7 = [mEMORY[0x1E699A138] createManagementSessionWithDelegate:v5];
 
   if (v7)
   {
@@ -42,7 +42,7 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 134217984;
-      v13 = a1;
+      selfCopy = self;
       _os_log_impl(&dword_1AD337000, v8, OS_LOG_TYPE_DEFAULT, "Starting management session: %p", &v12, 0xCu);
     }
 
@@ -65,20 +65,20 @@
   return v9;
 }
 
-- (void)listCredentialsWithCompletion:(id)a3
+- (void)listCredentialsWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     if ([(PKDASession *)self state]== 2)
     {
-      v5 = [(PKDASession *)self session];
+      session = [(PKDASession *)self session];
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __72__PKAppletSubcredentialManagementSession_listCredentialsWithCompletion___block_invoke;
       v7[3] = &unk_1E79C5440;
-      v8 = v4;
-      [v5 listKeysWithHandler:v7];
+      v8 = completionCopy;
+      [session listKeysWithHandler:v7];
     }
 
     else
@@ -90,7 +90,7 @@
         _os_log_impl(&dword_1AD337000, v6, OS_LOG_TYPE_DEFAULT, "Session is in invalid state for enumeration operation", buf, 2u);
       }
 
-      (*(v4 + 2))(v4, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -165,12 +165,12 @@ void __72__PKAppletSubcredentialManagementSession_listCredentialsWithCompletion_
   }
 }
 
-- (void)revokeSharedCredentials:(id)a3 onCredential:(id)a4 withCompletion:(id)a5
+- (void)revokeSharedCredentials:(id)credentials onCredential:(id)credential withCompletion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  credentialsCopy = credentials;
+  credentialCopy = credential;
+  completionCopy = completion;
   if ([(PKDASession *)self state]== 2)
   {
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -178,7 +178,7 @@ void __72__PKAppletSubcredentialManagementSession_listCredentialsWithCompletion_
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v12 = v8;
+    v12 = credentialsCopy;
     v13 = [v12 countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v13)
     {
@@ -194,8 +194,8 @@ void __72__PKAppletSubcredentialManagementSession_listCredentialsWithCompletion_
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v23 + 1) + 8 * v16) identifier];
-          [v11 safelyAddObject:v17];
+          identifier = [*(*(&v23 + 1) + 8 * v16) identifier];
+          [v11 safelyAddObject:identifier];
 
           ++v16;
         }
@@ -207,14 +207,14 @@ void __72__PKAppletSubcredentialManagementSession_listCredentialsWithCompletion_
       while (v14);
     }
 
-    v18 = [(PKDASession *)self session];
-    v19 = [v9 identifier];
+    session = [(PKDASession *)self session];
+    identifier2 = [credentialCopy identifier];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __94__PKAppletSubcredentialManagementSession_revokeSharedCredentials_onCredential_withCompletion___block_invoke;
     v21[3] = &unk_1E79DC470;
-    v22 = v10;
-    [v18 revokeKeysWithIdentifiers:v11 sharedByOwnerKeyWithIdentifier:v19 callback:v21];
+    v22 = completionCopy;
+    [session revokeKeysWithIdentifiers:v11 sharedByOwnerKeyWithIdentifier:identifier2 callback:v21];
 
     goto LABEL_14;
   }
@@ -226,10 +226,10 @@ void __72__PKAppletSubcredentialManagementSession_listCredentialsWithCompletion_
     _os_log_impl(&dword_1AD337000, v20, OS_LOG_TYPE_DEFAULT, "Session is in invalid state for revoke operation", buf, 2u);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:0];
-    (*(v10 + 2))(v10, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
 LABEL_14:
   }
 }
@@ -283,27 +283,27 @@ LABEL_10:
   }
 }
 
-- (void)revokeSharesWithGroupIdentifiers:(id)a3 shouldCascade:(BOOL)a4 credential:(id)a5 completion:(id)a6
+- (void)revokeSharesWithGroupIdentifiers:(id)identifiers shouldCascade:(BOOL)cascade credential:(id)credential completion:(id)completion
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  cascadeCopy = cascade;
+  identifiersCopy = identifiers;
+  credentialCopy = credential;
+  completionCopy = completion;
   if ([(PKDASession *)self state]== 2)
   {
-    if (v8)
+    if (cascadeCopy)
     {
       v13 = 0;
     }
 
     else
     {
-      v13 = v10;
+      v13 = identifiersCopy;
     }
 
-    if (v8)
+    if (cascadeCopy)
     {
-      v14 = v10;
+      v14 = identifiersCopy;
     }
 
     else
@@ -313,14 +313,14 @@ LABEL_10:
 
     v15 = v14;
     v16 = v13;
-    v17 = [(PKDASession *)self session];
-    v18 = [v11 identifier];
+    session = [(PKDASession *)self session];
+    identifier = [credentialCopy identifier];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __111__PKAppletSubcredentialManagementSession_revokeSharesWithGroupIdentifiers_shouldCascade_credential_completion___block_invoke;
     v21[3] = &unk_1E79DC470;
-    v22 = v12;
-    [v17 revokeNodesWithGroupIdentifiers:v16 treesWithGroupIdentifier:v15 authorizedByKeyWithIdentifier:v18 callback:v21];
+    v22 = completionCopy;
+    [session revokeNodesWithGroupIdentifiers:v16 treesWithGroupIdentifier:v15 authorizedByKeyWithIdentifier:identifier callback:v21];
 
     v19 = v22;
     goto LABEL_13;
@@ -333,10 +333,10 @@ LABEL_10:
     _os_log_impl(&dword_1AD337000, v20, OS_LOG_TYPE_DEFAULT, "Session is in invalid state for revoke operation", buf, 2u);
   }
 
-  if (v12)
+  if (completionCopy)
   {
     v19 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:0];
-    (*(v12 + 2))(v12, 0, v19);
+    (*(completionCopy + 2))(completionCopy, 0, v19);
 LABEL_13:
   }
 }
@@ -390,12 +390,12 @@ LABEL_10:
   }
 }
 
-- (void)rescindInvitations:(id)a3 onCredential:(id)a4 withCompletion:(id)a5
+- (void)rescindInvitations:(id)invitations onCredential:(id)credential withCompletion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  invitationsCopy = invitations;
+  credentialCopy = credential;
+  completionCopy = completion;
   if ([(PKDASession *)self state]== 2)
   {
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -403,7 +403,7 @@ LABEL_10:
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v12 = v8;
+    v12 = invitationsCopy;
     v13 = [v12 countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v13)
     {
@@ -419,10 +419,10 @@ LABEL_10:
             objc_enumerationMutation(v12);
           }
 
-          v17 = [*(*(&v23 + 1) + 8 * v16) identifier];
-          if (v17)
+          identifier = [*(*(&v23 + 1) + 8 * v16) identifier];
+          if (identifier)
           {
-            [v11 addObject:v17];
+            [v11 addObject:identifier];
           }
 
           ++v16;
@@ -435,14 +435,14 @@ LABEL_10:
       while (v14);
     }
 
-    v18 = [(PKDASession *)self session];
-    v19 = [v9 identifier];
+    session = [(PKDASession *)self session];
+    identifier2 = [credentialCopy identifier];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __89__PKAppletSubcredentialManagementSession_rescindInvitations_onCredential_withCompletion___block_invoke;
     v21[3] = &unk_1E79C4450;
-    v22 = v10;
-    [v18 cancelInvitationsWithIdentifiers:v11 sentByOwnerKeyWithIdentifier:v19 callback:v21];
+    v22 = completionCopy;
+    [session cancelInvitationsWithIdentifiers:v11 sentByOwnerKeyWithIdentifier:identifier2 callback:v21];
 
     goto LABEL_16;
   }
@@ -454,10 +454,10 @@ LABEL_10:
     _os_log_impl(&dword_1AD337000, v20, OS_LOG_TYPE_DEFAULT, "Session is in invalid state for revoke operation", buf, 2u);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v11 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:0];
-    (*(v10 + 2))(v10, v11);
+    (*(completionCopy + 2))(completionCopy, v11);
 LABEL_16:
   }
 }
@@ -484,17 +484,17 @@ void __89__PKAppletSubcredentialManagementSession_rescindInvitations_onCredentia
   }
 }
 
-- (id)trackSubcredential:(id)a3 encryptedContainer:(id)a4 withReceipt:(id)a5
+- (id)trackSubcredential:(id)subcredential encryptedContainer:(id)container withReceipt:(id)receipt
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  subcredentialCopy = subcredential;
+  containerCopy = container;
+  receiptCopy = receipt;
   if ([(PKDASession *)self state]== 2)
   {
-    v11 = PKDAAlishaKeyEncryptedRequestFromSubcredentialEncryptedRequest(v9);
-    v12 = [(PKDASession *)self session];
-    v13 = [v8 identifier];
-    v14 = [v12 setTrackingReceipt:v10 vehicleMobilizationData:v11 forKeyWithIdentifier:v13];
+    v11 = PKDAAlishaKeyEncryptedRequestFromSubcredentialEncryptedRequest(containerCopy);
+    session = [(PKDASession *)self session];
+    identifier = [subcredentialCopy identifier];
+    v14 = [session setTrackingReceipt:receiptCopy vehicleMobilizationData:v11 forKeyWithIdentifier:identifier];
   }
 
   else
@@ -512,16 +512,16 @@ void __89__PKAppletSubcredentialManagementSession_rescindInvitations_onCredentia
   return v14;
 }
 
-- (id)trackSubcredential:(id)a3 deviceData:(id)a4 attestation:(id)a5
+- (id)trackSubcredential:(id)subcredential deviceData:(id)data attestation:(id)attestation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  subcredentialCopy = subcredential;
+  dataCopy = data;
+  attestationCopy = attestation;
   if ([(PKDASession *)self state]== 2)
   {
-    v11 = [(PKDASession *)self session];
-    v12 = [v8 identifier];
-    v13 = [v11 setTrackingReceipt:v10 decryptedDeviceData:v9 forKeyWithIdentifier:v12];
+    session = [(PKDASession *)self session];
+    identifier = [subcredentialCopy identifier];
+    v13 = [session setTrackingReceipt:attestationCopy decryptedDeviceData:dataCopy forKeyWithIdentifier:identifier];
   }
 
   else
@@ -539,37 +539,37 @@ void __89__PKAppletSubcredentialManagementSession_rescindInvitations_onCredentia
   return v13;
 }
 
-- (void)signData:(id)a3 auth:(id)a4 bundleIdentifier:(id)a5 nonce:(id)a6 credential:(id)a7 completion:(id)a8
+- (void)signData:(id)data auth:(id)auth bundleIdentifier:(id)identifier nonce:(id)nonce credential:(id)credential completion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (v19)
+  dataCopy = data;
+  authCopy = auth;
+  identifierCopy = identifier;
+  nonceCopy = nonce;
+  credentialCopy = credential;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if ([(PKDASession *)self state]== 2)
     {
-      v20 = [v16 dataUsingEncoding:4];
-      v25 = [v17 dataUsingEncoding:4];
-      v21 = [v18 identifier];
+      v20 = [identifierCopy dataUsingEncoding:4];
+      v25 = [nonceCopy dataUsingEncoding:4];
+      identifier = [credentialCopy identifier];
       v22 = PKLogFacilityTypeGetObject(0x17uLL);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v29 = v21;
+        v29 = identifier;
         _os_log_impl(&dword_1AD337000, v22, OS_LOG_TYPE_DEFAULT, "Requesting data signing for key identifier: %@", buf, 0xCu);
       }
 
-      v23 = [(PKDASession *)self session];
+      session = [(PKDASession *)self session];
       v26[0] = MEMORY[0x1E69E9820];
       v26[1] = 3221225472;
       v26[2] = __101__PKAppletSubcredentialManagementSession_signData_auth_bundleIdentifier_nonce_credential_completion___block_invoke;
       v26[3] = &unk_1E79E10F0;
-      v27 = v19;
-      [v23 signAppData:v14 appBundleIdentifier:v20 nonce:v25 auth:v15 keyIdentifier:v21 callback:v26];
+      v27 = completionCopy;
+      [session signAppData:dataCopy appBundleIdentifier:v20 nonce:v25 auth:authCopy keyIdentifier:identifier callback:v26];
     }
 
     else
@@ -582,7 +582,7 @@ void __89__PKAppletSubcredentialManagementSession_rescindInvitations_onCredentia
       }
 
       v20 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:0];
-      (*(v19 + 2))(v19, 0, 0, v20);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v20);
     }
   }
 }
@@ -604,33 +604,33 @@ void __101__PKAppletSubcredentialManagementSession_signData_auth_bundleIdentifie
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)immobilizerTokensCountForCredential:(id)a3 completion:(id)a4
+- (void)immobilizerTokensCountForCredential:(id)credential completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  credentialCopy = credential;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if ([(PKDASession *)self state]== 2)
     {
-      v8 = [v6 identifier];
+      identifier = [credentialCopy identifier];
       v9 = PKLogFacilityTypeGetObject(0x17uLL);
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v17 = v8;
+        v17 = identifier;
         _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Requesting immo token count for credential: %@", buf, 0xCu);
       }
 
-      v10 = [(PKDASession *)self session];
+      session = [(PKDASession *)self session];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __89__PKAppletSubcredentialManagementSession_immobilizerTokensCountForCredential_completion___block_invoke;
       v13[3] = &unk_1E79E1118;
-      v14 = v8;
-      v15 = v7;
-      v11 = v8;
-      [v10 countImmobilizerTokensForKeyWithIdentifier:v11 callback:v13];
+      v14 = identifier;
+      v15 = completionCopy;
+      v11 = identifier;
+      [session countImmobilizerTokensForKeyWithIdentifier:v11 callback:v13];
     }
 
     else
@@ -642,7 +642,7 @@ void __101__PKAppletSubcredentialManagementSession_signData_auth_bundleIdentifie
         _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "Session is in invalid state for token count operation", buf, 2u);
       }
 
-      (*(v7 + 2))(v7, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 }
@@ -666,35 +666,35 @@ uint64_t __89__PKAppletSubcredentialManagementSession_immobilizerTokensCountForC
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)removeSharedCredentialsWithIdentifiers:(id)a3 credential:(id)a4 completion:(id)a5
+- (void)removeSharedCredentialsWithIdentifiers:(id)identifiers credential:(id)credential completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  credentialCopy = credential;
+  completionCopy = completion;
   if ([(PKDASession *)self state]== 2)
   {
-    v11 = [v9 identifier];
+    identifier = [credentialCopy identifier];
     v12 = PKLogFacilityTypeGetObject(0x17uLL);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v21 = v11;
+      v21 = identifier;
       v22 = 2112;
-      v23 = v8;
+      v23 = identifiersCopy;
       _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "Removing shared credentials from KML (%@): %@", buf, 0x16u);
     }
 
-    v13 = [(PKDASession *)self session];
-    v14 = [v8 allObjects];
+    session = [(PKDASession *)self session];
+    allObjects = [identifiersCopy allObjects];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __103__PKAppletSubcredentialManagementSession_removeSharedCredentialsWithIdentifiers_credential_completion___block_invoke;
     v17[3] = &unk_1E79C4C70;
-    v18 = v11;
-    v19 = v10;
-    v15 = v11;
-    [v13 removeSharedKeysWithIdentifiers:v14 ownerKeyWithIdentifier:v15 callback:v17];
+    v18 = identifier;
+    v19 = completionCopy;
+    v15 = identifier;
+    [session removeSharedKeysWithIdentifiers:allObjects ownerKeyWithIdentifier:v15 callback:v17];
 
     goto LABEL_9;
   }
@@ -706,10 +706,10 @@ uint64_t __89__PKAppletSubcredentialManagementSession_immobilizerTokensCountForC
     _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "Session is in invalid state for token count operation", buf, 2u);
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:0];
-    (*(v10 + 2))(v10, v15);
+    (*(completionCopy + 2))(completionCopy, v15);
 LABEL_9:
   }
 }
@@ -736,18 +736,18 @@ void __103__PKAppletSubcredentialManagementSession_removeSharedCredentialsWithId
   }
 }
 
-- (void)listSharingInvitationsForKeyIdentifier:(id)a3 withCompletion:(id)a4
+- (void)listSharingInvitationsForKeyIdentifier:(id)identifier withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKDASession *)self session];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  session = [(PKDASession *)self session];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __96__PKAppletSubcredentialManagementSession_listSharingInvitationsForKeyIdentifier_withCompletion___block_invoke;
   v10[3] = &unk_1E79C5440;
-  v11 = v6;
-  v9 = v6;
-  [v8 listSharingInvitationsForKeyIdentifier:v7 callback:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [session listSharingInvitationsForKeyIdentifier:identifierCopy callback:v10];
 }
 
 void __96__PKAppletSubcredentialManagementSession_listSharingInvitationsForKeyIdentifier_withCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -840,20 +840,20 @@ void __96__PKAppletSubcredentialManagementSession_listSharingInvitationsForKeyId
   }
 }
 
-- (void)listReceivedSharingInvitationsWithCompletion:(id)a3
+- (void)listReceivedSharingInvitationsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x1E695DFA8]);
-  v6 = [(PKDASession *)self session];
+  session = [(PKDASession *)self session];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __87__PKAppletSubcredentialManagementSession_listReceivedSharingInvitationsWithCompletion___block_invoke;
   v9[3] = &unk_1E79C9BC8;
   v10 = v5;
-  v11 = v4;
+  v11 = completionCopy;
   v7 = v5;
-  v8 = v4;
-  [v6 listReceivedSharingInvitationsWithCallback:v9];
+  v8 = completionCopy;
+  [session listReceivedSharingInvitationsWithCallback:v9];
 }
 
 void __87__PKAppletSubcredentialManagementSession_listReceivedSharingInvitationsWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -939,14 +939,14 @@ void __87__PKAppletSubcredentialManagementSession_listReceivedSharingInvitations
   }
 }
 
-- (void)deleteCredential:(id)a3 completionHandler:(id)a4
+- (void)deleteCredential:(id)credential completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  credentialCopy = credential;
+  handlerCopy = handler;
   if ([(PKDASession *)self state]== 2)
   {
-    v8 = [(PKDASession *)self session];
-    [v8 deleteKey:v6 completionHandler:v7];
+    session = [(PKDASession *)self session];
+    [session deleteKey:credentialCopy completionHandler:handlerCopy];
   }
 
   else
@@ -958,31 +958,31 @@ void __87__PKAppletSubcredentialManagementSession_listReceivedSharingInvitations
       _os_log_impl(&dword_1AD337000, v9, OS_LOG_TYPE_DEFAULT, "Session is in invalid state for revoke operation", v10, 2u);
     }
 
-    if (v7)
+    if (handlerCopy)
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 }
 
-- (void)accountAttestationRequestForManufacturer:(id)a3 completion:(id)a4
+- (void)accountAttestationRequestForManufacturer:(id)manufacturer completion:(id)completion
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  manufacturerCopy = manufacturer;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if ([(PKDASession *)self state]== 2)
     {
-      v8 = [(PKDASession *)self session];
+      session = [(PKDASession *)self session];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __94__PKAppletSubcredentialManagementSession_accountAttestationRequestForManufacturer_completion___block_invoke;
       v13[3] = &unk_1E79E1140;
-      v15 = v7;
+      v15 = completionCopy;
       v13[4] = self;
-      v14 = v6;
-      [v8 preWarmForManufacturer:v14 callback:v13];
+      v14 = manufacturerCopy;
+      [session preWarmForManufacturer:v14 callback:v13];
 
       v9 = v15;
     }
@@ -1001,7 +1001,7 @@ void __87__PKAppletSubcredentialManagementSession_listReceivedSharingInvitations
       v18[0] = @"Session not active";
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
       v12 = [v11 errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:v9];
-      (*(v7 + 2))(v7, 0, v12);
+      (*(completionCopy + 2))(completionCopy, 0, v12);
     }
   }
 }
@@ -1067,24 +1067,24 @@ void __94__PKAppletSubcredentialManagementSession_accountAttestationRequestForMa
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)accountAttestationRequestForCredential:(id)a3 completion:(id)a4
+- (void)accountAttestationRequestForCredential:(id)credential completion:(id)completion
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  credentialCopy = credential;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if ([(PKDASession *)self state]== 2)
     {
-      v8 = [(PKDASession *)self session];
-      v9 = [v6 identifier];
+      session = [(PKDASession *)self session];
+      identifier = [credentialCopy identifier];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __92__PKAppletSubcredentialManagementSession_accountAttestationRequestForCredential_completion___block_invoke;
       v14[3] = &unk_1E79DC448;
-      v15 = v6;
-      v16 = v7;
-      [v8 requestBindingAttestationDataForKeyWithIdentifier:v9 callback:v14];
+      v15 = credentialCopy;
+      v16 = completionCopy;
+      [session requestBindingAttestationDataForKeyWithIdentifier:identifier callback:v14];
 
       v10 = v15;
     }
@@ -1103,7 +1103,7 @@ void __94__PKAppletSubcredentialManagementSession_accountAttestationRequestForMa
       v19[0] = @"Session not active";
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
       v13 = [v12 errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:v10];
-      (*(v7 + 2))(v7, 0, v13);
+      (*(completionCopy + 2))(completionCopy, 0, v13);
     }
   }
 }
@@ -1138,12 +1138,12 @@ void __92__PKAppletSubcredentialManagementSession_accountAttestationRequestForCr
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)setAccountAttestation:(id)a3 forUpgradeCredential:(id)a4 withCompletion:(id)a5
+- (void)setAccountAttestation:(id)attestation forUpgradeCredential:(id)credential withCompletion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  completionCopy = completion;
+  credentialCopy = credential;
+  attestationCopy = attestation;
   if ([(PKDASession *)self state]!= 2)
   {
     v12 = PKLogFacilityTypeGetObject(0x17uLL);
@@ -1155,27 +1155,27 @@ void __92__PKAppletSubcredentialManagementSession_accountAttestationRequestForCr
       _os_log_impl(&dword_1AD337000, v12, OS_LOG_TYPE_DEFAULT, "Session is in invalid state for %@", buf, 0xCu);
     }
 
-    if (v9)
+    if (completionCopy)
     {
       v14 = MEMORY[0x1E696ABC0];
       v22 = *MEMORY[0x1E696A278];
       v23 = @"Session not active";
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
       v16 = [v14 errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:v15];
-      v9[2](v9, v16);
+      completionCopy[2](completionCopy, v16);
     }
   }
 
-  v17 = [(PKDASession *)self session];
-  v18 = [v10 identifier];
+  session = [(PKDASession *)self session];
+  identifier = [credentialCopy identifier];
 
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __100__PKAppletSubcredentialManagementSession_setAccountAttestation_forUpgradeCredential_withCompletion___block_invoke;
   v20[3] = &unk_1E79C4450;
-  v21 = v9;
-  v19 = v9;
-  [v17 setBindingAttestation:v11 forKeyWithIdentifier:v18 callback:v20];
+  v21 = completionCopy;
+  v19 = completionCopy;
+  [session setBindingAttestation:attestationCopy forKeyWithIdentifier:identifier callback:v20];
 }
 
 uint64_t __100__PKAppletSubcredentialManagementSession_setAccountAttestation_forUpgradeCredential_withCompletion___block_invoke(uint64_t a1)
@@ -1189,23 +1189,23 @@ uint64_t __100__PKAppletSubcredentialManagementSession_setAccountAttestation_for
   return result;
 }
 
-- (void)preWarmForManufacturer:(id)a3 completion:(id)a4
+- (void)preWarmForManufacturer:(id)manufacturer completion:(id)completion
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  manufacturerCopy = manufacturer;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if ([(PKDASession *)self state]== 2)
     {
-      v8 = [(PKDASession *)self session];
+      session = [(PKDASession *)self session];
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __76__PKAppletSubcredentialManagementSession_preWarmForManufacturer_completion___block_invoke;
       v13[3] = &unk_1E79C4C70;
-      v14 = v6;
-      v15 = v7;
-      [v8 preWarmForManufacturer:v14 callback:v13];
+      v14 = manufacturerCopy;
+      v15 = completionCopy;
+      [session preWarmForManufacturer:v14 callback:v13];
 
       v9 = v14;
     }
@@ -1224,7 +1224,7 @@ uint64_t __100__PKAppletSubcredentialManagementSession_setAccountAttestation_for
       v18[0] = @"Session not active";
       v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
       v12 = [v11 errorWithDomain:@"PKPassKitErrorDomain" code:-1 userInfo:v9];
-      (*(v7 + 2))(v7, v12);
+      (*(completionCopy + 2))(completionCopy, v12);
     }
   }
 }
@@ -1250,22 +1250,22 @@ void __76__PKAppletSubcredentialManagementSession_preWarmForManufacturer_complet
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)credentialDidActivateWithCredential:(id)a3 completion:(id)a4
+- (void)credentialDidActivateWithCredential:(id)credential completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  credentialCopy = credential;
+  completionCopy = completion;
   if ([(PKDASession *)self state]== 2)
   {
-    v9 = [(PKDASession *)self session];
-    v10 = [v7 identifier];
+    session = [(PKDASession *)self session];
+    identifier = [credentialCopy identifier];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __89__PKAppletSubcredentialManagementSession_credentialDidActivateWithCredential_completion___block_invoke;
     v13[3] = &unk_1E79C4C70;
-    v14 = v7;
-    v15 = v8;
-    [v9 handleActivationForKeyWithIdentifier:v10 callback:v13];
+    v14 = credentialCopy;
+    v15 = completionCopy;
+    [session handleActivationForKeyWithIdentifier:identifier callback:v13];
   }
 
   else
@@ -1279,9 +1279,9 @@ void __76__PKAppletSubcredentialManagementSession_preWarmForManufacturer_complet
       _os_log_impl(&dword_1AD337000, v11, OS_LOG_TYPE_DEFAULT, "Session is in invalid state for %@", buf, 0xCu);
     }
 
-    if (v8)
+    if (completionCopy)
     {
-      (*(v8 + 2))(v8, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -1311,20 +1311,20 @@ void __89__PKAppletSubcredentialManagementSession_credentialDidActivateWithCrede
   }
 }
 
-- (void)updateCredentialConfigurationForCredential:(id)a3 configuration:(id)a4 completion:(id)a5
+- (void)updateCredentialConfigurationForCredential:(id)credential configuration:(id)configuration completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  credentialCopy = credential;
+  configurationCopy = configuration;
+  completionCopy = completion;
   if ([(PKDASession *)self state]== 2)
   {
-    v12 = [v9 entitlement];
-    v13 = [v12 activeCapabilityRole];
+    entitlement = [credentialCopy entitlement];
+    activeCapabilityRole = [entitlement activeCapabilityRole];
 
-    if (v13)
+    if (activeCapabilityRole)
     {
-      v14 = [objc_alloc(MEMORY[0x1E699A100]) initWithKeyRole:v13];
+      v14 = [objc_alloc(MEMORY[0x1E699A100]) initWithKeyRole:activeCapabilityRole];
     }
 
     else
@@ -1332,15 +1332,15 @@ void __89__PKAppletSubcredentialManagementSession_credentialDidActivateWithCrede
       v14 = 0;
     }
 
-    v17 = [(PKDASession *)self session];
-    v18 = [v9 identifier];
+    session = [(PKDASession *)self session];
+    identifier = [credentialCopy identifier];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __110__PKAppletSubcredentialManagementSession_updateCredentialConfigurationForCredential_configuration_completion___block_invoke;
     v19[3] = &unk_1E79C4C70;
-    v20 = v9;
-    v21 = v11;
-    [v17 updateConfiguration:v10 forKeyWithIdentifier:v18 additionalConfigurationData:v14 completionHandler:v19];
+    v20 = credentialCopy;
+    v21 = completionCopy;
+    [session updateConfiguration:configurationCopy forKeyWithIdentifier:identifier additionalConfigurationData:v14 completionHandler:v19];
   }
 
   else
@@ -1354,9 +1354,9 @@ void __89__PKAppletSubcredentialManagementSession_credentialDidActivateWithCrede
       _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "Session is in invalid state for %@", buf, 0xCu);
     }
 
-    if (v11)
+    if (completionCopy)
     {
-      (*(v11 + 2))(v11, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -1386,22 +1386,22 @@ void __110__PKAppletSubcredentialManagementSession_updateCredentialConfiguration
   }
 }
 
-- (void)hasUpgradeAvailableForKeyWithCredential:(id)a3 versionType:(unint64_t)a4 versions:(id)a5 completion:(id)a6
+- (void)hasUpgradeAvailableForKeyWithCredential:(id)credential versionType:(unint64_t)type versions:(id)versions completion:(id)completion
 {
   v23 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  credentialCopy = credential;
+  versionsCopy = versions;
+  completionCopy = completion;
   if ([(PKDASession *)self state]== 2)
   {
-    v14 = [(PKDASession *)self session];
-    v15 = [v11 identifier];
+    session = [(PKDASession *)self session];
+    identifier = [credentialCopy identifier];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __114__PKAppletSubcredentialManagementSession_hasUpgradeAvailableForKeyWithCredential_versionType_versions_completion___block_invoke;
     v18[3] = &unk_1E79E1168;
-    v19 = v13;
-    [v14 hasUpgradeAvailableForKeyWithIdentifier:v15 versionType:2 * (a4 != 1) versions:v12 completionHandler:v18];
+    v19 = completionCopy;
+    [session hasUpgradeAvailableForKeyWithIdentifier:identifier versionType:2 * (type != 1) versions:versionsCopy completionHandler:v18];
   }
 
   else
@@ -1415,13 +1415,13 @@ void __110__PKAppletSubcredentialManagementSession_updateCredentialConfiguration
       _os_log_impl(&dword_1AD337000, v16, OS_LOG_TYPE_DEFAULT, "Session is in invalid state for %@", buf, 0xCu);
     }
 
-    if (v13)
+    if (completionCopy)
     {
-      *buf = a4;
+      *buf = type;
       buf[8] = 0;
       v21 = 0;
       v22 = 0;
-      (*(v13 + 2))(v13, buf, 0);
+      (*(completionCopy + 2))(completionCopy, buf, 0);
     }
   }
 }
@@ -1449,17 +1449,17 @@ void __114__PKAppletSubcredentialManagementSession_hasUpgradeAvailableForKeyWith
   (*(v3 + 16))(v3, &v9, v6);
 }
 
-- (void)upgradeKeyWithCredential:(id)a3 versionType:(unint64_t)a4 version:(unint64_t)a5 upgradeInformation:(id)a6 completion:(id)a7
+- (void)upgradeKeyWithCredential:(id)credential versionType:(unint64_t)type version:(unint64_t)version upgradeInformation:(id)information completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
+  credentialCopy = credential;
+  informationCopy = information;
+  completionCopy = completion;
   if ([(PKDASession *)self state]== 2)
   {
-    v16 = [(PKDASession *)self session];
-    v17 = [v13 identifier];
-    [v16 upgradeKeyWithIdentifier:v17 versionType:2 * (a4 != 1) version:a5 upgradeInformation:v14 completionHandler:v15];
+    session = [(PKDASession *)self session];
+    identifier = [credentialCopy identifier];
+    [session upgradeKeyWithIdentifier:identifier versionType:2 * (type != 1) version:version upgradeInformation:informationCopy completionHandler:completionCopy];
   }
 
   else
@@ -1473,23 +1473,23 @@ void __114__PKAppletSubcredentialManagementSession_hasUpgradeAvailableForKeyWith
       _os_log_impl(&dword_1AD337000, v18, OS_LOG_TYPE_DEFAULT, "Session is in invalid state for %@", &v20, 0xCu);
     }
 
-    if (v15)
+    if (completionCopy)
     {
-      v15[2](v15, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
 
-- (void)commitUpgradeForKeyWithCredential:(id)a3 versionType:(unint64_t)a4 version:(unint64_t)a5 completion:(id)a6
+- (void)commitUpgradeForKeyWithCredential:(id)credential versionType:(unint64_t)type version:(unint64_t)version completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
+  credentialCopy = credential;
+  completionCopy = completion;
   if ([(PKDASession *)self state]== 2)
   {
-    v13 = [(PKDASession *)self session];
-    v14 = [v11 identifier];
-    [v13 commitUpgradeForKeyWithIdentifier:v14 versionType:2 * (a4 != 1) version:a5 completionHandler:v12];
+    session = [(PKDASession *)self session];
+    identifier = [credentialCopy identifier];
+    [session commitUpgradeForKeyWithIdentifier:identifier versionType:2 * (type != 1) version:version completionHandler:completionCopy];
   }
 
   else
@@ -1503,23 +1503,23 @@ void __114__PKAppletSubcredentialManagementSession_hasUpgradeAvailableForKeyWith
       _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "Session is in invalid state for %@", &v17, 0xCu);
     }
 
-    if (v12)
+    if (completionCopy)
     {
-      v12[2](v12, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
 
-- (void)revertUpgradeForKeyWithCredential:(id)a3 versionType:(unint64_t)a4 version:(unint64_t)a5 completion:(id)a6
+- (void)revertUpgradeForKeyWithCredential:(id)credential versionType:(unint64_t)type version:(unint64_t)version completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a6;
+  credentialCopy = credential;
+  completionCopy = completion;
   if ([(PKDASession *)self state]== 2)
   {
-    v13 = [(PKDASession *)self session];
-    v14 = [v11 identifier];
-    [v13 revertUpgradeForKeyWithIdentifier:v14 versionType:2 * (a4 != 1) version:a5 completionHandler:v12];
+    session = [(PKDASession *)self session];
+    identifier = [credentialCopy identifier];
+    [session revertUpgradeForKeyWithIdentifier:identifier versionType:2 * (type != 1) version:version completionHandler:completionCopy];
   }
 
   else
@@ -1533,9 +1533,9 @@ void __114__PKAppletSubcredentialManagementSession_hasUpgradeAvailableForKeyWith
       _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "Session is in invalid state for %@", &v17, 0xCu);
     }
 
-    if (v12)
+    if (completionCopy)
     {
-      v12[2](v12, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }

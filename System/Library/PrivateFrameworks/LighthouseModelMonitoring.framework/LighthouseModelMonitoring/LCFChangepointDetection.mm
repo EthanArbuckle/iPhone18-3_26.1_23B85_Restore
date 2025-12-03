@@ -1,23 +1,23 @@
 @interface LCFChangepointDetection
-+ (id)_generateFeatureDictionaryForFeatureStore:(id)a3 featureNames:(id)a4 labelName:(id)a5 timestampName:(id)a6;
-+ (id)convertFeatureStoreToEvents:(id)a3 featureNames:(id)a4 labelName:(id)a5 valueName:(id)a6 timestampName:(id)a7;
++ (id)_generateFeatureDictionaryForFeatureStore:(id)store featureNames:(id)names labelName:(id)name timestampName:(id)timestampName;
++ (id)convertFeatureStoreToEvents:(id)events featureNames:(id)names labelName:(id)name valueName:(id)valueName timestampName:(id)timestampName;
 @end
 
 @implementation LCFChangepointDetection
 
-+ (id)convertFeatureStoreToEvents:(id)a3 featureNames:(id)a4 labelName:(id)a5 valueName:(id)a6 timestampName:(id)a7
++ (id)convertFeatureStoreToEvents:(id)events featureNames:(id)names labelName:(id)name valueName:(id)valueName timestampName:(id)timestampName
 {
   v38 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  v26 = [LCFChangepointDetection _generateFeatureDictionaryForFeatureStore:a3 featureNames:v11 labelName:a5 timestampName:v13];
+  namesCopy = names;
+  valueNameCopy = valueName;
+  timestampNameCopy = timestampName;
+  v26 = [LCFChangepointDetection _generateFeatureDictionaryForFeatureStore:events featureNames:namesCopy labelName:name timestampName:timestampNameCopy];
   v27 = objc_opt_new();
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  obj = v11;
+  obj = namesCopy;
   v28 = [obj countByEnumeratingWithState:&v31 objects:v37 count:16];
   if (v28)
   {
@@ -35,16 +35,16 @@
         v30 = v14;
         v29 = *(*(&v31 + 1) + 8 * v14);
         v15 = [v26 objectForKeyedSubscript:?];
-        v16 = [v26 objectForKeyedSubscript:v13];
+        v16 = [v26 objectForKeyedSubscript:timestampNameCopy];
         v17 = objc_opt_new();
         if ([v15 count])
         {
           v18 = 0;
           do
           {
-            v35[0] = v12;
+            v35[0] = valueNameCopy;
             v19 = [v15 objectAtIndexedSubscript:v18];
-            v35[1] = v13;
+            v35[1] = timestampNameCopy;
             v36[0] = v19;
             v20 = [v16 objectAtIndexedSubscript:v18];
             v36[1] = v20;
@@ -74,26 +74,26 @@
   return v27;
 }
 
-+ (id)_generateFeatureDictionaryForFeatureStore:(id)a3 featureNames:(id)a4 labelName:(id)a5 timestampName:(id)a6
++ (id)_generateFeatureDictionaryForFeatureStore:(id)store featureNames:(id)names labelName:(id)name timestampName:(id)timestampName
 {
   v58 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v49 = a6;
-  v12 = [v9 getMultiArrayFeatureVectors:v10 vectorName:@"vector" srcLabelName:v11 destLabelName:v11 option:0];
-  v13 = [v9 getFeatureVectorTimestamps];
-  if ([v12 count] && (v14 = objc_msgSend(v12, "count"), v14 == objc_msgSend(v13, "count")))
+  storeCopy = store;
+  namesCopy = names;
+  nameCopy = name;
+  timestampNameCopy = timestampName;
+  v12 = [storeCopy getMultiArrayFeatureVectors:namesCopy vectorName:@"vector" srcLabelName:nameCopy destLabelName:nameCopy option:0];
+  getFeatureVectorTimestamps = [storeCopy getFeatureVectorTimestamps];
+  if ([v12 count] && (v14 = objc_msgSend(v12, "count"), v14 == objc_msgSend(getFeatureVectorTimestamps, "count")))
   {
-    v47 = v11;
-    v48 = v13;
+    v47 = nameCopy;
+    v48 = getFeatureVectorTimestamps;
     v15 = objc_opt_new();
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v45 = v10;
-    v16 = v10;
+    v45 = namesCopy;
+    v16 = namesCopy;
     v17 = [v16 countByEnumeratingWithState:&v53 objects:v57 count:16];
     if (v17)
     {
@@ -120,11 +120,11 @@
     }
 
     v23 = objc_opt_new();
-    v11 = v47;
+    nameCopy = v47;
     [v15 setObject:v23 forKeyedSubscript:v47];
 
     v24 = objc_opt_new();
-    [v15 setObject:v24 forKeyedSubscript:v49];
+    [v15 setObject:v24 forKeyedSubscript:timestampNameCopy];
 
     if ([v12 count] < 1)
     {
@@ -140,19 +140,19 @@ LABEL_17:
       {
         v26 = [v12 featuresAtIndex:v25];
         v27 = [v26 featureValueForName:@"vector"];
-        v28 = [v27 multiArrayValue];
+        multiArrayValue = [v27 multiArrayValue];
 
         v51 = [v48 objectAtIndexedSubscript:v25];
         v52 = v26;
-        v29 = [v26 featureValueForName:v11];
-        v50 = [v29 int64Value];
+        v29 = [v26 featureValueForName:nameCopy];
+        int64Value = [v29 int64Value];
 
-        v30 = [v28 dataPointer];
-        v31 = [v28 shape];
-        v32 = [v31 objectAtIndexedSubscript:0];
-        v33 = [v32 longLongValue];
+        dataPointer = [multiArrayValue dataPointer];
+        shape = [multiArrayValue shape];
+        v32 = [shape objectAtIndexedSubscript:0];
+        longLongValue = [v32 longLongValue];
 
-        if (v33 != [v16 count])
+        if (longLongValue != [v16 count])
         {
           break;
         }
@@ -163,7 +163,7 @@ LABEL_17:
           do
           {
             v35 = [v16 objectAtIndexedSubscript:v34];
-            v36 = *(v30 + 8 * v34);
+            v36 = *(dataPointer + 8 * v34);
             v37 = [v15 objectForKeyedSubscript:v35];
             v38 = [MEMORY[0x277CCABB0] numberWithDouble:v36];
             [v37 addObject:v38];
@@ -174,12 +174,12 @@ LABEL_17:
           while ([v16 count] > v34);
         }
 
-        v11 = v47;
+        nameCopy = v47;
         v39 = [v15 objectForKeyedSubscript:v47];
-        v40 = [MEMORY[0x277CCABB0] numberWithDouble:v50];
+        v40 = [MEMORY[0x277CCABB0] numberWithDouble:int64Value];
         [v39 addObject:v40];
 
-        v41 = [v15 objectForKeyedSubscript:v49];
+        v41 = [v15 objectForKeyedSubscript:timestampNameCopy];
         [v41 addObject:v51];
 
         ++v25;
@@ -194,9 +194,9 @@ LABEL_17:
       v12 = v46;
     }
 
-    v13 = v48;
+    getFeatureVectorTimestamps = v48;
 
-    v10 = v45;
+    namesCopy = v45;
   }
 
   else

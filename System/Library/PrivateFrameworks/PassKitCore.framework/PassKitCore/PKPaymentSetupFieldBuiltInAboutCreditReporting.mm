@@ -1,20 +1,20 @@
 @interface PKPaymentSetupFieldBuiltInAboutCreditReporting
-- (PKPaymentSetupFieldBuiltInAboutCreditReporting)initWithIdentifier:(id)a3 type:(unint64_t)a4;
+- (PKPaymentSetupFieldBuiltInAboutCreditReporting)initWithIdentifier:(id)identifier type:(unint64_t)type;
 @end
 
 @implementation PKPaymentSetupFieldBuiltInAboutCreditReporting
 
-- (PKPaymentSetupFieldBuiltInAboutCreditReporting)initWithIdentifier:(id)a3 type:(unint64_t)a4
+- (PKPaymentSetupFieldBuiltInAboutCreditReporting)initWithIdentifier:(id)identifier type:(unint64_t)type
 {
   v30.receiver = self;
   v30.super_class = PKPaymentSetupFieldBuiltInAboutCreditReporting;
-  v4 = [(PKPaymentSetupField *)&v30 initWithIdentifier:@"aboutCreditReporting" type:a4];
+  v4 = [(PKPaymentSetupField *)&v30 initWithIdentifier:@"aboutCreditReporting" type:type];
   if (v4)
   {
     v5 = +[PKPaymentWebService sharedService];
-    v6 = [v5 context];
+    context = [v5 context];
     v7 = PKPassKitBundle();
-    v8 = [v6 applyServicePreferredLanguageForFeatureIdentifier:2 mainLanguageBundle:v7];
+    v8 = [context applyServicePreferredLanguageForFeatureIdentifier:2 mainLanguageBundle:v7];
 
     v13 = PKLocalizedApplyFeatureString(@"VERIFY_SSN_FOOTER", 2, v8, 0, v9, v10, v11, v12, v30.receiver);
     [(PKPaymentSetupField *)v4 setDefaultValue:v13];

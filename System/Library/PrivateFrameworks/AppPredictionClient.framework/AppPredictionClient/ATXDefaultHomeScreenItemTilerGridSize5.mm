@@ -1,6 +1,6 @@
 @interface ATXDefaultHomeScreenItemTilerGridSize5
-- (BOOL)_addTwoSmallWidgets:(id)a3;
-- (BOOL)_shouldAllowAlternatePodTypeAsBackupForTilingBlueprint:(id)a3;
+- (BOOL)_addTwoSmallWidgets:(id)widgets;
+- (BOOL)_shouldAllowAlternatePodTypeAsBackupForTilingBlueprint:(id)blueprint;
 - (id)_tilingBlueprint;
 - (id)tiledHomeScreenItems;
 - (void)_tilingBlueprint;
@@ -11,37 +11,37 @@
 - (id)tiledHomeScreenItems
 {
   v3 = objc_opt_new();
-  v4 = [(ATXDefaultHomeScreenItemTilerGridSize5 *)self _tilingBlueprint];
-  if (v4)
+  _tilingBlueprint = [(ATXDefaultHomeScreenItemTilerGridSize5 *)self _tilingBlueprint];
+  if (_tilingBlueprint)
   {
-    v5 = [(ATXDefaultHomeScreenItemTilerGridSize5 *)self _shouldAllowAlternatePodTypeAsBackupForTilingBlueprint:v4];
+    v5 = [(ATXDefaultHomeScreenItemTilerGridSize5 *)self _shouldAllowAlternatePodTypeAsBackupForTilingBlueprint:_tilingBlueprint];
     if ([(ATXDefaultHomeScreenItemTilerPodBuilder *)self targetNumberOfSuggestions])
     {
-      v6 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self targetNumberOfSuggestions];
+      targetNumberOfSuggestions = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self targetNumberOfSuggestions];
     }
 
     else
     {
-      v6 = 10;
+      targetNumberOfSuggestions = 10;
     }
 
     v7 = 0;
     do
     {
-      if ([v3 count] >= v6 && (v7 & 1) == 0 || (v7 & 1) == 0 && !-[ATXDefaultHomeScreenItemTilerGridSize5 _addTwoSmallWidgets:](self, "_addTwoSmallWidgets:", v3))
+      if ([v3 count] >= targetNumberOfSuggestions && (v7 & 1) == 0 || (v7 & 1) == 0 && !-[ATXDefaultHomeScreenItemTilerGridSize5 _addTwoSmallWidgets:](self, "_addTwoSmallWidgets:", v3))
       {
         break;
       }
 
-      v8 = [v4 objectAtIndexedSubscript:{v7 % objc_msgSend(v4, "count")}];
-      v9 = [v8 integerValue];
+      v8 = [_tilingBlueprint objectAtIndexedSubscript:{v7 % objc_msgSend(_tilingBlueprint, "count")}];
+      integerValue = [v8 integerValue];
 
       if (v7 == 0 && v5)
       {
         v7 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self addFirstPod:v3];
       }
 
-      v10 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self addPod:v3 podType:v9 allowAlternatePodTypeAsBackup:v5 podsAdded:v7];
+      v10 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self addPod:v3 podType:integerValue allowAlternatePodTypeAsBackup:v5 podsAdded:v7];
       v7 += v10;
     }
 
@@ -77,49 +77,49 @@
   return 0;
 }
 
-- (BOOL)_shouldAllowAlternatePodTypeAsBackupForTilingBlueprint:(id)a3
+- (BOOL)_shouldAllowAlternatePodTypeAsBackupForTilingBlueprint:(id)blueprint
 {
-  v3 = a3;
-  if ([v3 isEqualToArray:&unk_1F3E60720])
+  blueprintCopy = blueprint;
+  if ([blueprintCopy isEqualToArray:&unk_1F3E60720])
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToArray:&unk_1F3E60738];
+    v4 = [blueprintCopy isEqualToArray:&unk_1F3E60738];
   }
 
   return v4;
 }
 
-- (BOOL)_addTwoSmallWidgets:(id)a3
+- (BOOL)_addTwoSmallWidgets:(id)widgets
 {
-  v4 = a3;
+  widgetsCopy = widgets;
   if ((-[ATXDefaultHomeScreenItemTilerPodBuilder widgetFamilyMask](self, "widgetFamilyMask") & 2) != 0 && (-[ATXDefaultHomeScreenItemTilerPodBuilder defaultWidgetsSmall](self, "defaultWidgetsSmall"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 count], v5, v6 >= 2))
   {
-    v7 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self tilerHelper];
-    v8 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self defaultWidgetsSmall];
-    v9 = [v7 filterForNextUnusedWidgetDescriptor:v8];
+    tilerHelper = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self tilerHelper];
+    defaultWidgetsSmall = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self defaultWidgetsSmall];
+    v9 = [tilerHelper filterForNextUnusedWidgetDescriptor:defaultWidgetsSmall];
 
-    v10 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self tilerHelper];
-    v11 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self defaultWidgetsSmall];
-    v12 = [v10 filterForNextUnusedWidgetDescriptor:v11];
+    tilerHelper2 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self tilerHelper];
+    defaultWidgetsSmall2 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self defaultWidgetsSmall];
+    v12 = [tilerHelper2 filterForNextUnusedWidgetDescriptor:defaultWidgetsSmall2];
 
     if (v9 && v12)
     {
-      [v4 addObject:v9];
-      [v4 addObject:v12];
+      [widgetsCopy addObject:v9];
+      [widgetsCopy addObject:v12];
       v13 = 1;
     }
 
     else
     {
-      v14 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self tilerHelper];
-      [v14 unmarkWidgetAsUsed:v9];
+      tilerHelper3 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self tilerHelper];
+      [tilerHelper3 unmarkWidgetAsUsed:v9];
 
-      v15 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self tilerHelper];
-      [v15 unmarkWidgetAsUsed:v12];
+      tilerHelper4 = [(ATXDefaultHomeScreenItemTilerPodBuilder *)self tilerHelper];
+      [tilerHelper4 unmarkWidgetAsUsed:v12];
 
       v13 = 0;
     }
@@ -137,7 +137,7 @@
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 134217984;
-  v4 = [a1 widgetFamilyMask];
+  widgetFamilyMask = [self widgetFamilyMask];
   _os_log_error_impl(&dword_1BF549000, a2, OS_LOG_TYPE_ERROR, "ATXDefaultHomeScreenItemTilerGridSize5: no tiling blueprint for the requested size family: %lu", &v3, 0xCu);
 }
 

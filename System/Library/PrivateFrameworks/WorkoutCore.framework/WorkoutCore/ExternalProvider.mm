@@ -1,14 +1,14 @@
 @interface ExternalProvider
-+ (id)deserializeFromPersistence:(id)a3;
++ (id)deserializeFromPersistence:(id)persistence;
 - (id)serialize;
 @end
 
 @implementation ExternalProvider
 
-+ (id)deserializeFromPersistence:(id)a3
++ (id)deserializeFromPersistence:(id)persistence
 {
-  v3 = a3;
-  static ExternalProvider.deserialize(from:)(v3, v12);
+  persistenceCopy = persistence;
+  static ExternalProvider.deserialize(from:)(persistenceCopy, v12);
 
   v4 = v13;
   if (v13)

@@ -1,29 +1,29 @@
 @interface PTPCPassiveCollectionConfig
-- (PTPCPassiveCollectionConfig)initWithName:(id)a3 collectMSS:(BOOL)a4 collectAppInFocus:(BOOL)a5 collectLoggingPerfPowerMetrics:(BOOL)a6 collectLoggingHangs:(BOOL)a7 collectLoggingUserInteraction:(BOOL)a8 collectLoggingMetalFramePacing:(BOOL)a9 collectLoggingScrolling:(BOOL)a10 collectLoggingAppLaunch:(BOOL)a11;
+- (PTPCPassiveCollectionConfig)initWithName:(id)name collectMSS:(BOOL)s collectAppInFocus:(BOOL)focus collectLoggingPerfPowerMetrics:(BOOL)metrics collectLoggingHangs:(BOOL)hangs collectLoggingUserInteraction:(BOOL)interaction collectLoggingMetalFramePacing:(BOOL)pacing collectLoggingScrolling:(BOOL)self0 collectLoggingAppLaunch:(BOOL)self1;
 - (id)debugDescription;
 - (id)loggingDataCategoryNames;
 @end
 
 @implementation PTPCPassiveCollectionConfig
 
-- (PTPCPassiveCollectionConfig)initWithName:(id)a3 collectMSS:(BOOL)a4 collectAppInFocus:(BOOL)a5 collectLoggingPerfPowerMetrics:(BOOL)a6 collectLoggingHangs:(BOOL)a7 collectLoggingUserInteraction:(BOOL)a8 collectLoggingMetalFramePacing:(BOOL)a9 collectLoggingScrolling:(BOOL)a10 collectLoggingAppLaunch:(BOOL)a11
+- (PTPCPassiveCollectionConfig)initWithName:(id)name collectMSS:(BOOL)s collectAppInFocus:(BOOL)focus collectLoggingPerfPowerMetrics:(BOOL)metrics collectLoggingHangs:(BOOL)hangs collectLoggingUserInteraction:(BOOL)interaction collectLoggingMetalFramePacing:(BOOL)pacing collectLoggingScrolling:(BOOL)self0 collectLoggingAppLaunch:(BOOL)self1
 {
-  v18 = a3;
+  nameCopy = name;
   v22.receiver = self;
   v22.super_class = PTPCPassiveCollectionConfig;
   v19 = [(PTPCPassiveCollectionConfig *)&v22 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_name, a3);
-    v20->_collectMSS = a4;
-    v20->_collectAppInFocus = a5;
-    v20->_collectLoggingPerfPowerMetrics = a6;
-    v20->_collectLoggingHangs = a7;
-    v20->_collectLoggingUserInteraction = a8;
-    v20->_collectLoggingMetalFramePacing = a9;
-    v20->_collectLoggingScrolling = a10;
-    v20->_collectLoggingAppLaunch = a11;
+    objc_storeStrong(&v19->_name, name);
+    v20->_collectMSS = s;
+    v20->_collectAppInFocus = focus;
+    v20->_collectLoggingPerfPowerMetrics = metrics;
+    v20->_collectLoggingHangs = hangs;
+    v20->_collectLoggingUserInteraction = interaction;
+    v20->_collectLoggingMetalFramePacing = pacing;
+    v20->_collectLoggingScrolling = scrolling;
+    v20->_collectLoggingAppLaunch = launch;
   }
 
   return v20;
@@ -67,7 +67,7 @@
 
 - (id)debugDescription
 {
-  v23 = [(PTPCPassiveCollectionConfig *)self name];
+  name = [(PTPCPassiveCollectionConfig *)self name];
   if ([(PTPCPassiveCollectionConfig *)self collectMSS])
   {
     v3 = @"YES";
@@ -156,15 +156,15 @@
   }
 
   v18 = v17;
-  v19 = [(PTPCPassiveCollectionConfig *)self loggingDataCategoryNames];
-  v20 = v19;
+  loggingDataCategoryNames = [(PTPCPassiveCollectionConfig *)self loggingDataCategoryNames];
+  v20 = loggingDataCategoryNames;
   v21 = @"-";
-  if (v19)
+  if (loggingDataCategoryNames)
   {
-    v21 = v19;
+    v21 = loggingDataCategoryNames;
   }
 
-  v24 = [NSString stringWithFormat:@"Collection configuration name %@:\nCollect MSS: %@\nCollect App InFocus: %@\nCollect PerfPowerMetrics (Logging): %@\nCollect Hangs (Logging): %@\nCollect User Interaction (Logging): %@\nCollect Metal FramePacing (Logging): %@\nCollect Scrolling (Logging): %@\nCollect AppLaunch (Logging): %@\nLogging data categories: %@", v23, v4, v6, v8, v10, v12, v14, v16, v18, v21];
+  v24 = [NSString stringWithFormat:@"Collection configuration name %@:\nCollect MSS: %@\nCollect App InFocus: %@\nCollect PerfPowerMetrics (Logging): %@\nCollect Hangs (Logging): %@\nCollect User Interaction (Logging): %@\nCollect Metal FramePacing (Logging): %@\nCollect Scrolling (Logging): %@\nCollect AppLaunch (Logging): %@\nLogging data categories: %@", name, v4, v6, v8, v10, v12, v14, v16, v18, v21];
 
   return v24;
 }

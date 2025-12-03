@@ -1,21 +1,21 @@
 @interface PVEffectRegistryEntry
-- (PVEffectRegistryEntry)initWithClass:(Class)a3 andProperties:(id)a4;
+- (PVEffectRegistryEntry)initWithClass:(Class)class andProperties:(id)properties;
 - (void)dealloc;
 @end
 
 @implementation PVEffectRegistryEntry
 
-- (PVEffectRegistryEntry)initWithClass:(Class)a3 andProperties:(id)a4
+- (PVEffectRegistryEntry)initWithClass:(Class)class andProperties:(id)properties
 {
-  v7 = a4;
+  propertiesCopy = properties;
   v11.receiver = self;
   v11.super_class = PVEffectRegistryEntry;
   v8 = [(PVEffectRegistryEntry *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_effectClass = a3;
-    objc_storeStrong(&v8->_effectProperties, a4);
+    v8->_effectClass = class;
+    objc_storeStrong(&v8->_effectProperties, properties);
   }
 
   return v9;

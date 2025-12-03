@@ -1,24 +1,24 @@
 @interface BLSAlwaysOnSession
-- (BLSAlwaysOnSession)initWithEnvironment:(id)a3;
+- (BLSAlwaysOnSession)initWithEnvironment:(id)environment;
 - (BLSBacklightSceneEnvironment)environment;
 - (NSString)description;
-- (id)specifierForPresentationDate:(id)a3;
-- (void)desiredFidelityForDateInterval:(id)a3 timelines:(id)a4 withCompletion:(id)a5;
-- (void)performFrameSpecifiersRequest:(id)a3 timelines:(id)a4;
+- (id)specifierForPresentationDate:(id)date;
+- (void)desiredFidelityForDateInterval:(id)interval timelines:(id)timelines withCompletion:(id)completion;
+- (void)performFrameSpecifiersRequest:(id)request timelines:(id)timelines;
 @end
 
 @implementation BLSAlwaysOnSession
 
-- (BLSAlwaysOnSession)initWithEnvironment:(id)a3
+- (BLSAlwaysOnSession)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v10.receiver = self;
   v10.super_class = BLSAlwaysOnSession;
   v5 = [(BLSAlwaysOnSession *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_environment, v4);
+    objc_storeWeak(&v5->_environment, environmentCopy);
     v7 = objc_alloc_init(BLSFrameSpecifierModel);
     model = v6->_model;
     v6->_model = v7;
@@ -33,33 +33,33 @@
   v4 = [v3 appendObject:self->_model withName:@"model"];
   WeakRetained = objc_loadWeakRetained(&self->_environment);
   v6 = MEMORY[0x277CCACA8];
-  v7 = [WeakRetained identifier];
-  v8 = [v6 stringWithFormat:@"<%p:%@>", WeakRetained, v7];
+  identifier = [WeakRetained identifier];
+  v8 = [v6 stringWithFormat:@"<%p:%@>", WeakRetained, identifier];
   [v3 appendString:v8 withName:@"environment"];
 
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
-- (id)specifierForPresentationDate:(id)a3
+- (id)specifierForPresentationDate:(id)date
 {
-  v4 = a3;
-  v5 = [(BLSAlwaysOnSession *)self model];
-  v6 = [v5 specifierAtPresentationDate:v4];
+  dateCopy = date;
+  model = [(BLSAlwaysOnSession *)self model];
+  v6 = [model specifierAtPresentationDate:dateCopy];
 
   return v6;
 }
 
-- (void)desiredFidelityForDateInterval:(id)a3 timelines:(id)a4 withCompletion:(id)a5
+- (void)desiredFidelityForDateInterval:(id)interval timelines:(id)timelines withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(BLSAlwaysOnSession *)self environment];
-  if (v9)
+  intervalCopy = interval;
+  timelinesCopy = timelines;
+  completionCopy = completion;
+  environment = [(BLSAlwaysOnSession *)self environment];
+  if (timelinesCopy)
   {
-    v12 = [BLSAlwaysOnTimeline requestedFidelityForTimelines:v9 inDateInterval:v8];
+    v12 = [BLSAlwaysOnTimeline requestedFidelityForTimelines:timelinesCopy inDateInterval:intervalCopy];
     v13 = bls_scenes_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
@@ -72,57 +72,57 @@
     v13 = bls_environment_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
     {
-      [BLSAlwaysOnSession desiredFidelityForDateInterval:v11 timelines:? withCompletion:?];
+      [BLSAlwaysOnSession desiredFidelityForDateInterval:environment timelines:? withCompletion:?];
     }
 
     v12 = 1;
   }
 
-  v10[2](v10, v12);
+  completionCopy[2](completionCopy, v12);
 }
 
-- (void)performFrameSpecifiersRequest:(id)a3 timelines:(id)a4
+- (void)performFrameSpecifiersRequest:(id)request timelines:(id)timelines
 {
   v45[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BLSAlwaysOnSession *)self environment];
-  v9 = [v6 dateInterval];
-  v10 = [v6 previousPresentationDate];
-  v11 = [(BLSAlwaysOnSession *)self specifierForPresentationDate:v10];
+  requestCopy = request;
+  timelinesCopy = timelines;
+  environment = [(BLSAlwaysOnSession *)self environment];
+  dateInterval = [requestCopy dateInterval];
+  previousPresentationDate = [requestCopy previousPresentationDate];
+  v11 = [(BLSAlwaysOnSession *)self specifierForPresentationDate:previousPresentationDate];
   v38 = v11;
-  if (v7)
+  if (timelinesCopy)
   {
     v12 = v11;
-    v37 = v10;
-    v13 = [v6 shouldReset];
-    if (v13)
+    v37 = previousPresentationDate;
+    shouldReset = [requestCopy shouldReset];
+    if (shouldReset)
     {
       v14 = objc_alloc_init(BLSFrameSpecifierModel);
       [(BLSAlwaysOnSession *)self setModel:v14];
     }
 
-    v15 = [BLSAlwaysOnTimeline constructFrameSpecifiersForTimelines:v7 dateInterval:v9 shouldConstructStartSpecifier:v13 framesPerSecond:v12 previousSpecifier:30.0];
-    v16 = [(BLSAlwaysOnSession *)self model];
-    [v16 addSpecifiers:v15];
+    v15 = [BLSAlwaysOnTimeline constructFrameSpecifiersForTimelines:timelinesCopy dateInterval:dateInterval shouldConstructStartSpecifier:shouldReset framesPerSecond:v12 previousSpecifier:30.0];
+    model = [(BLSAlwaysOnSession *)self model];
+    [model addSpecifiers:v15];
 
     v17 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-10.0];
-    v18 = [v9 startDate];
-    v19 = [v18 isBeforeDate:v17];
+    startDate = [dateInterval startDate];
+    v19 = [startDate isBeforeDate:v17];
 
     if (v19)
     {
-      v20 = bls_environment_log();
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+      model2 = bls_environment_log();
+      if (os_log_type_enabled(model2, OS_LOG_TYPE_ERROR))
       {
-        [BLSAlwaysOnSession performFrameSpecifiersRequest:v9 timelines:?];
+        [BLSAlwaysOnSession performFrameSpecifiersRequest:dateInterval timelines:?];
       }
     }
 
     else
     {
-      v20 = [(BLSAlwaysOnSession *)self model];
-      [v20 purgeAllButOneSpecifiersBeforeDate:v17];
+      model2 = [(BLSAlwaysOnSession *)self model];
+      [model2 purgeAllButOneSpecifiersBeforeDate:v17];
     }
 
     v23 = [v15 bs_map:&__block_literal_global_7];
@@ -135,7 +135,7 @@
     else
     {
       v25 = v24;
-      [v9 duration];
+      [dateInterval duration];
       if (v25 / v26 <= 4.0)
       {
         v27 = OS_LOG_TYPE_INFO;
@@ -150,27 +150,27 @@
     v28 = bls_scenes_log();
     if (os_log_type_enabled(v28, v27))
     {
-      v34 = [(BLSAlwaysOnSession *)self model];
-      v29 = v9;
-      v30 = [v34 specifierCount];
+      model3 = [(BLSAlwaysOnSession *)self model];
+      v29 = dateInterval;
+      specifierCount = [model3 specifierCount];
       [v23 bls_boundedDescriptionWithMax:8 transformer:&__block_literal_global_16];
-      v31 = v36 = v7;
+      v31 = v36 = timelinesCopy;
       [v15 bls_boundedDescriptionWithMax:1];
-      v32 = v35 = v8;
+      v32 = v35 = environment;
       *buf = 134218498;
-      v40 = v30;
-      v9 = v29;
+      v40 = specifierCount;
+      dateInterval = v29;
       v41 = 2114;
       v42 = v31;
       v43 = 2114;
       v44 = v32;
       _os_log_impl(&dword_21FE25000, v28, v27, "performFrameSpecifiersRequest model.specifierCount:%lu dateSpecifers:%{public}@ for frameSpecifiers:%{public}@", buf, 0x20u);
 
-      v8 = v35;
-      v7 = v36;
+      environment = v35;
+      timelinesCopy = v36;
     }
 
-    v10 = v37;
+    previousPresentationDate = v37;
   }
 
   else
@@ -178,7 +178,7 @@
     v21 = bls_environment_log();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_FAULT))
     {
-      [BLSAlwaysOnSession performFrameSpecifiersRequest:v8 timelines:?];
+      [BLSAlwaysOnSession performFrameSpecifiersRequest:environment timelines:?];
     }
 
     v22 = [BLSAlwaysOnDateSpecifier alloc];
@@ -188,7 +188,7 @@
     v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v45 count:1];
   }
 
-  [v6 completeWithDateSpecifiers:v23];
+  [requestCopy completeWithDateSpecifiers:v23];
 
   v33 = *MEMORY[0x277D85DE8];
 }

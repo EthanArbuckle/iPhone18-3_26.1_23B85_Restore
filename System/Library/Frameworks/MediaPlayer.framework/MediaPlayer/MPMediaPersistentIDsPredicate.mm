@@ -1,16 +1,16 @@
 @interface MPMediaPersistentIDsPredicate
-+ (id)predicateWithPersistentIDs:(const int64_t *)a3 count:(unint64_t)a4 shouldContain:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
-- (MPMediaPersistentIDsPredicate)initWithCoder:(id)a3;
-- (MPMediaPersistentIDsPredicate)initWithProtobufferDecodableObject:(id)a3 library:(id)a4;
++ (id)predicateWithPersistentIDs:(const int64_t *)ds count:(unint64_t)count shouldContain:(BOOL)contain;
+- (BOOL)isEqual:(id)equal;
+- (MPMediaPersistentIDsPredicate)initWithCoder:(id)coder;
+- (MPMediaPersistentIDsPredicate)initWithProtobufferDecodableObject:(id)object library:(id)library;
 - (NSString)description;
 - (id)ML3PredicateForContainer;
 - (id)ML3PredicateForTrack;
-- (id)_ML3PredicateForEntityClass:(Class)a3;
-- (id)protobufferEncodableObjectFromLibrary:(id)a3;
+- (id)_ML3PredicateForEntityClass:(Class)class;
+- (id)protobufferEncodableObjectFromLibrary:(id)library;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPMediaPersistentIDsPredicate
@@ -29,17 +29,17 @@
   return [(MPMediaPersistentIDsPredicate *)self _ML3PredicateForEntityClass:v3];
 }
 
-- (id)_ML3PredicateForEntityClass:(Class)a3
+- (id)_ML3PredicateForEntityClass:(Class)class
 {
   v4 = MEMORY[0x1E69B3500];
-  v5 = [(MPMediaPersistentIDsPredicate *)self persistentIDs];
+  persistentIDs = [(MPMediaPersistentIDsPredicate *)self persistentIDs];
   v6 = [(MPMediaPersistentIDsPredicate *)self count];
-  v7 = [(MPMediaPersistentIDsPredicate *)self shouldContain];
+  shouldContain = [(MPMediaPersistentIDsPredicate *)self shouldContain];
 
-  return [v4 predicateWithPersistentIDs:v5 count:v6 shouldContain:v7];
+  return [v4 predicateWithPersistentIDs:persistentIDs count:v6 shouldContain:shouldContain];
 }
 
-- (id)protobufferEncodableObjectFromLibrary:(id)a3
+- (id)protobufferEncodableObjectFromLibrary:(id)library
 {
   v4 = objc_alloc_init(MPPPersistentIDsPredicate);
   [(MPPPersistentIDsPredicate *)v4 setShouldContain:self->_shouldContain];
@@ -63,14 +63,14 @@
   return v8;
 }
 
-- (MPMediaPersistentIDsPredicate)initWithProtobufferDecodableObject:(id)a3 library:(id)a4
+- (MPMediaPersistentIDsPredicate)initWithProtobufferDecodableObject:(id)object library:(id)library
 {
-  v6 = a3;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"MPMediaQuery.m" lineNumber:1838 description:{@"Cannot decode object of type %@", objc_opt_class()}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaQuery.m" lineNumber:1838 description:{@"Cannot decode object of type %@", objc_opt_class()}];
   }
 
   v13.receiver = self;
@@ -78,13 +78,13 @@
   v7 = [(MPMediaPersistentIDsPredicate *)&v13 init];
   if (v7)
   {
-    v8 = [v6 persistentIDsPredicate];
-    v7->_shouldContain = [v8 shouldContain];
-    v9 = [v8 persistentIDsCount];
-    v7->_count = v9;
-    v10 = malloc_type_malloc(8 * v9, 0x100004000313F17uLL);
+    persistentIDsPredicate = [objectCopy persistentIDsPredicate];
+    v7->_shouldContain = [persistentIDsPredicate shouldContain];
+    persistentIDsCount = [persistentIDsPredicate persistentIDsCount];
+    v7->_count = persistentIDsCount;
+    v10 = malloc_type_malloc(8 * persistentIDsCount, 0x100004000313F17uLL);
     v7->_persistentIDs = v10;
-    memcpy(v10, [v8 persistentIDs], 8 * v7->_count);
+    memcpy(v10, [persistentIDsPredicate persistentIDs], 8 * v7->_count);
   }
 
   return v7;
@@ -97,12 +97,12 @@
   return self->_count ^ [(MPMediaPersistentIDsPredicate *)&v3 hash]^ self->_shouldContain;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = MPMediaPersistentIDsPredicate;
-  v6 = [(MPMediaPersistentIDsPredicate *)&v8 isEqual:v4]&& (count = self->_count, count == *(v4 + 3)) && self->_shouldContain == v4[16] && memcmp(self->_persistentIDs, *(v4 + 1), 8 * count) == 0;
+  v6 = [(MPMediaPersistentIDsPredicate *)&v8 isEqual:equalCopy]&& (count = self->_count, count == *(equalCopy + 3)) && self->_shouldContain == equalCopy[16] && memcmp(self->_persistentIDs, *(equalCopy + 1), 8 * count) == 0;
 
   return v6;
 }
@@ -124,10 +124,10 @@
   return [v3 stringWithFormat:@"<%@ %p> should%@ contain %lu persistent IDs", v4, self, v5, self->_count];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeBool:self->_shouldContain forKey:@"shouldContain"];
+  coderCopy = coder;
+  [coderCopy encodeBool:self->_shouldContain forKey:@"shouldContain"];
   if (self->_count)
   {
     v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:?];
@@ -145,21 +145,21 @@
       while (v5 < self->_count);
     }
 
-    [v7 encodeObject:v4 forKey:@"persistentIDs"];
+    [coderCopy encodeObject:v4 forKey:@"persistentIDs"];
   }
 }
 
-- (MPMediaPersistentIDsPredicate)initWithCoder:(id)a3
+- (MPMediaPersistentIDsPredicate)initWithCoder:(id)coder
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = MPMediaPersistentIDsPredicate;
   v5 = [(MPMediaPersistentIDsPredicate *)&v19 init];
   if (v5)
   {
-    v5->_shouldContain = [v4 decodeBoolForKey:@"shouldContain"];
-    v6 = [v4 decodePropertyListForKey:@"persistentIDs"];
+    v5->_shouldContain = [coderCopy decodeBoolForKey:@"shouldContain"];
+    v6 = [coderCopy decodePropertyListForKey:@"persistentIDs"];
     if (_NSIsNSArray() && [v6 count])
     {
       v5->_persistentIDs = malloc_type_malloc(8 * [v6 count], 0x100004000313F17uLL);
@@ -220,16 +220,16 @@
   [(MPMediaPersistentIDsPredicate *)&v4 dealloc];
 }
 
-+ (id)predicateWithPersistentIDs:(const int64_t *)a3 count:(unint64_t)a4 shouldContain:(BOOL)a5
++ (id)predicateWithPersistentIDs:(const int64_t *)ds count:(unint64_t)count shouldContain:(BOOL)contain
 {
   v8 = objc_alloc_init(MPMediaPersistentIDsPredicate);
-  v8->_shouldContain = a5;
-  if (a4)
+  v8->_shouldContain = contain;
+  if (count)
   {
-    v9 = malloc_type_malloc(8 * a4, 0x6B62C079uLL);
+    v9 = malloc_type_malloc(8 * count, 0x6B62C079uLL);
     v8->_persistentIDs = v9;
-    memcpy(v9, a3, 8 * a4);
-    v8->_count = a4;
+    memcpy(v9, ds, 8 * count);
+    v8->_count = count;
   }
 
   return v8;

@@ -1,7 +1,7 @@
 @interface LKRecoverEMCSOperation
 - (LKRecoverEMCSOperation)init;
 - (id)dictionary;
-- (void)setRecoveredKeychainItemCount:(int64_t)a3;
+- (void)setRecoveredKeychainItemCount:(int64_t)count;
 @end
 
 @implementation LKRecoverEMCSOperation
@@ -19,11 +19,11 @@
   return result;
 }
 
-- (void)setRecoveredKeychainItemCount:(int64_t)a3
+- (void)setRecoveredKeychainItemCount:(int64_t)count
 {
-  if (self->_recoveredKeychainItemCount != a3)
+  if (self->_recoveredKeychainItemCount != count)
   {
-    self->_recoveredKeychainItemCount = a3;
+    self->_recoveredKeychainItemCount = count;
   }
 }
 
@@ -31,8 +31,8 @@
 {
   v8.receiver = self;
   v8.super_class = LKRecoverEMCSOperation;
-  v3 = [(LKOperation *)&v8 dictionary];
-  v4 = [v3 mutableCopy];
+  dictionary = [(LKOperation *)&v8 dictionary];
+  v4 = [dictionary mutableCopy];
 
   v5 = [MEMORY[0x277CCABB0] numberWithDouble:{-[LKRecoverEMCSOperation recoveredKeychainItemCount](self, "recoveredKeychainItemCount")}];
   [v4 setObject:v5 forKeyedSubscript:@"recoveredKeychainItemCount"];

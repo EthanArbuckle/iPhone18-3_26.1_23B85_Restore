@@ -1,29 +1,29 @@
 @interface SBSASecureFlipBookRenderingContext
 - (BOOL)transitionInProgress;
-- (id)copyBySettingActiveComponentsToStates:(id)a3;
-- (id)copyBySettingActiveConfigurationName:(id)a3;
-- (id)copyBySettingActiveSecureElementIdentity:(id)a3;
-- (id)copyBySettingAppliedComponentsToStates:(id)a3;
-- (id)copyBySettingComponentToSecureTransitionMapping:(id)a3;
-- (id)copyBySettingRequestedComponentsToStates:(id)a3;
-- (id)copyBySettingTransitionInProgress:(BOOL)a3;
-- (void)_setActiveComponentsToStates:(id)a3;
-- (void)_setActiveConfigurationName:(id)a3;
-- (void)_setActiveSecureElementIdentity:(id)a3;
-- (void)_setAppliedComponentsToStates:(id)a3;
-- (void)_setComponentToSecureTransitionMapping:(id)a3;
-- (void)_setRequestedComponentsToStates:(id)a3;
-- (void)_setTransitionInProgress:(BOOL)a3;
+- (id)copyBySettingActiveComponentsToStates:(id)states;
+- (id)copyBySettingActiveConfigurationName:(id)name;
+- (id)copyBySettingActiveSecureElementIdentity:(id)identity;
+- (id)copyBySettingAppliedComponentsToStates:(id)states;
+- (id)copyBySettingComponentToSecureTransitionMapping:(id)mapping;
+- (id)copyBySettingRequestedComponentsToStates:(id)states;
+- (id)copyBySettingTransitionInProgress:(BOOL)progress;
+- (void)_setActiveComponentsToStates:(id)states;
+- (void)_setActiveConfigurationName:(id)name;
+- (void)_setActiveSecureElementIdentity:(id)identity;
+- (void)_setAppliedComponentsToStates:(id)states;
+- (void)_setComponentToSecureTransitionMapping:(id)mapping;
+- (void)_setRequestedComponentsToStates:(id)states;
+- (void)_setTransitionInProgress:(BOOL)progress;
 @end
 
 @implementation SBSASecureFlipBookRenderingContext
 
-- (void)_setActiveSecureElementIdentity:(id)a3
+- (void)_setActiveSecureElementIdentity:(id)identity
 {
   backingDictionary = self->super._backingDictionary;
-  if (a3)
+  if (identity)
   {
-    v5 = [a3 copy];
+    v5 = [identity copy];
     [(NSMutableDictionary *)backingDictionary setObject:v5 forKey:@"activeSecureElementIdentity"];
   }
 
@@ -35,26 +35,26 @@
   }
 }
 
-- (id)copyBySettingActiveSecureElementIdentity:(id)a3
+- (id)copyBySettingActiveSecureElementIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __79__SBSASecureFlipBookRenderingContext_copyBySettingActiveSecureElementIdentity___block_invoke;
   v8[3] = &unk_2783B2DA8;
-  v9 = v4;
-  v5 = v4;
+  v9 = identityCopy;
+  v5 = identityCopy;
   v6 = [(SBSAAbstractDictionaryBackedContext *)self copyWithBlock:v8];
 
   return v6;
 }
 
-- (void)_setActiveConfigurationName:(id)a3
+- (void)_setActiveConfigurationName:(id)name
 {
   backingDictionary = self->super._backingDictionary;
-  if (a3)
+  if (name)
   {
-    v5 = [a3 copy];
+    v5 = [name copy];
     [(NSMutableDictionary *)backingDictionary setObject:v5 forKey:@"activeConfigurationName"];
   }
 
@@ -66,26 +66,26 @@
   }
 }
 
-- (id)copyBySettingActiveConfigurationName:(id)a3
+- (id)copyBySettingActiveConfigurationName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __75__SBSASecureFlipBookRenderingContext_copyBySettingActiveConfigurationName___block_invoke;
   v8[3] = &unk_2783B2DA8;
-  v9 = v4;
-  v5 = v4;
+  v9 = nameCopy;
+  v5 = nameCopy;
   v6 = [(SBSAAbstractDictionaryBackedContext *)self copyWithBlock:v8];
 
   return v6;
 }
 
-- (void)_setComponentToSecureTransitionMapping:(id)a3
+- (void)_setComponentToSecureTransitionMapping:(id)mapping
 {
   backingDictionary = self->super._backingDictionary;
-  if (a3)
+  if (mapping)
   {
-    v5 = [a3 copy];
+    v5 = [mapping copy];
     [(NSMutableDictionary *)backingDictionary setObject:v5 forKey:@"componentToSecureTransitionMapping"];
   }
 
@@ -97,26 +97,26 @@
   }
 }
 
-- (id)copyBySettingComponentToSecureTransitionMapping:(id)a3
+- (id)copyBySettingComponentToSecureTransitionMapping:(id)mapping
 {
-  v4 = a3;
+  mappingCopy = mapping;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __86__SBSASecureFlipBookRenderingContext_copyBySettingComponentToSecureTransitionMapping___block_invoke;
   v8[3] = &unk_2783B2DA8;
-  v9 = v4;
-  v5 = v4;
+  v9 = mappingCopy;
+  v5 = mappingCopy;
   v6 = [(SBSAAbstractDictionaryBackedContext *)self copyWithBlock:v8];
 
   return v6;
 }
 
-- (void)_setRequestedComponentsToStates:(id)a3
+- (void)_setRequestedComponentsToStates:(id)states
 {
   backingDictionary = self->super._backingDictionary;
-  if (a3)
+  if (states)
   {
-    v5 = [a3 copy];
+    v5 = [states copy];
     [(NSMutableDictionary *)backingDictionary setObject:v5 forKey:@"requestedComponentsToStates"];
   }
 
@@ -128,26 +128,26 @@
   }
 }
 
-- (id)copyBySettingRequestedComponentsToStates:(id)a3
+- (id)copyBySettingRequestedComponentsToStates:(id)states
 {
-  v4 = a3;
+  statesCopy = states;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __79__SBSASecureFlipBookRenderingContext_copyBySettingRequestedComponentsToStates___block_invoke;
   v8[3] = &unk_2783B2DA8;
-  v9 = v4;
-  v5 = v4;
+  v9 = statesCopy;
+  v5 = statesCopy;
   v6 = [(SBSAAbstractDictionaryBackedContext *)self copyWithBlock:v8];
 
   return v6;
 }
 
-- (void)_setAppliedComponentsToStates:(id)a3
+- (void)_setAppliedComponentsToStates:(id)states
 {
   backingDictionary = self->super._backingDictionary;
-  if (a3)
+  if (states)
   {
-    v5 = [a3 copy];
+    v5 = [states copy];
     [(NSMutableDictionary *)backingDictionary setObject:v5 forKey:@"appliedComponentsToStates"];
   }
 
@@ -159,26 +159,26 @@
   }
 }
 
-- (id)copyBySettingAppliedComponentsToStates:(id)a3
+- (id)copyBySettingAppliedComponentsToStates:(id)states
 {
-  v4 = a3;
+  statesCopy = states;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __77__SBSASecureFlipBookRenderingContext_copyBySettingAppliedComponentsToStates___block_invoke;
   v8[3] = &unk_2783B2DA8;
-  v9 = v4;
-  v5 = v4;
+  v9 = statesCopy;
+  v5 = statesCopy;
   v6 = [(SBSAAbstractDictionaryBackedContext *)self copyWithBlock:v8];
 
   return v6;
 }
 
-- (void)_setActiveComponentsToStates:(id)a3
+- (void)_setActiveComponentsToStates:(id)states
 {
   backingDictionary = self->super._backingDictionary;
-  if (a3)
+  if (states)
   {
-    v5 = [a3 copy];
+    v5 = [states copy];
     [(NSMutableDictionary *)backingDictionary setObject:v5 forKey:@"activeComponentsToStates"];
   }
 
@@ -190,24 +190,24 @@
   }
 }
 
-- (id)copyBySettingActiveComponentsToStates:(id)a3
+- (id)copyBySettingActiveComponentsToStates:(id)states
 {
-  v4 = a3;
+  statesCopy = states;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __76__SBSASecureFlipBookRenderingContext_copyBySettingActiveComponentsToStates___block_invoke;
   v8[3] = &unk_2783B2DA8;
-  v9 = v4;
-  v5 = v4;
+  v9 = statesCopy;
+  v5 = statesCopy;
   v6 = [(SBSAAbstractDictionaryBackedContext *)self copyWithBlock:v8];
 
   return v6;
 }
 
-- (void)_setTransitionInProgress:(BOOL)a3
+- (void)_setTransitionInProgress:(BOOL)progress
 {
   backingDictionary = self->super._backingDictionary;
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:progress];
   [(NSMutableDictionary *)backingDictionary setObject:v4 forKey:@"transitionInProgress"];
 }
 
@@ -220,13 +220,13 @@
   return v4;
 }
 
-- (id)copyBySettingTransitionInProgress:(BOOL)a3
+- (id)copyBySettingTransitionInProgress:(BOOL)progress
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __72__SBSASecureFlipBookRenderingContext_copyBySettingTransitionInProgress___block_invoke;
   v4[3] = &__block_descriptor_33_e8_v16__0_8l;
-  v5 = a3;
+  progressCopy = progress;
   return [(SBSAAbstractDictionaryBackedContext *)self copyWithBlock:v4];
 }
 

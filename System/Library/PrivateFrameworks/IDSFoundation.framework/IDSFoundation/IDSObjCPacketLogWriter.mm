@@ -1,29 +1,29 @@
 @interface IDSObjCPacketLogWriter
 - (IDSObjCPacketLogWriter)init;
-- (void)writeData:(id)a3;
+- (void)writeData:(id)data;
 @end
 
 @implementation IDSObjCPacketLogWriter
 
-- (void)writeData:(id)a3
+- (void)writeData:(id)data
 {
-  v3 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
-    v4 = self;
-    v5 = v3;
-    v3 = sub_1A7E21A10();
+    selfCopy = self;
+    v5 = dataCopy;
+    dataCopy = sub_1A7E21A10();
     v7 = v6;
   }
 
   else
   {
-    v8 = self;
+    selfCopy2 = self;
     v7 = 0xF000000000000000;
   }
 
-  sub_1A7CC63B0(v3, v7);
-  sub_1A7B1516C(v3, v7);
+  sub_1A7CC63B0(dataCopy, v7);
+  sub_1A7B1516C(dataCopy, v7);
 }
 
 - (IDSObjCPacketLogWriter)init

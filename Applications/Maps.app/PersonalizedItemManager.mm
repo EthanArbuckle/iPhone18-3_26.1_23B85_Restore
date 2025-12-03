@@ -7,22 +7,22 @@
 - (PersonalizedItemClientRankingFunction)_clientRankingFunction;
 - (PersonalizedItemManager)init;
 - (PersonalizedItemPriorityFunction)_priorityFunction;
-- (id)_itemsFilteredBySearchableString:(id)a3 predicate:(id)a4;
-- (id)itemsContainingSearchableString:(id)a3;
-- (id)itemsMatchingSearchableString:(id)a3;
-- (void)_gatherItemsWithShouldCancel:(id)a3 completion:(id)a4;
+- (id)_itemsFilteredBySearchableString:(id)string predicate:(id)predicate;
+- (id)itemsContainingSearchableString:(id)string;
+- (id)itemsMatchingSearchableString:(id)string;
+- (void)_gatherItemsWithShouldCancel:(id)cancel completion:(id)completion;
 - (void)_recalculateIfNeeded;
 - (void)_setNeedsRecalculation;
-- (void)addItemSource:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)fetchAllItems:(id)a3;
-- (void)fetchItemsGroups:(id)a3;
-- (void)removeItemSource:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setClientRankingFunction:(id)a3;
-- (void)setItemSources:(id)a3;
-- (void)setPriorityFunction:(id)a3;
-- (void)setUpdatesPaused:(BOOL)a3;
+- (void)addItemSource:(id)source;
+- (void)addObserver:(id)observer;
+- (void)fetchAllItems:(id)items;
+- (void)fetchItemsGroups:(id)groups;
+- (void)removeItemSource:(id)source;
+- (void)removeObserver:(id)observer;
+- (void)setClientRankingFunction:(id)function;
+- (void)setItemSources:(id)sources;
+- (void)setPriorityFunction:(id)function;
+- (void)setUpdatesPaused:(BOOL)paused;
 @end
 
 @implementation PersonalizedItemManager
@@ -206,16 +206,16 @@
   _Block_object_dispose(v26, 8);
 }
 
-- (id)_itemsFilteredBySearchableString:(id)a3 predicate:(id)a4
+- (id)_itemsFilteredBySearchableString:(id)string predicate:(id)predicate
 {
-  v5 = a4;
+  predicateCopy = predicate;
   v6 = +[NSMutableArray array];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = [(PersonalizedItemManager *)self allItems];
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allItems = [(PersonalizedItemManager *)self allItems];
+  v8 = [allItems countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -226,24 +226,24 @@
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allItems);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 searchableStrings];
-        v14 = [v13 filteredArrayUsingPredicate:v5];
+        searchableStrings = [v12 searchableStrings];
+        v14 = [searchableStrings filteredArrayUsingPredicate:predicateCopy];
         if ([v14 count])
         {
-          v15 = [v12 mapItem];
+          mapItem = [v12 mapItem];
 
-          if (v15)
+          if (mapItem)
           {
             [v6 addObject:v12];
           }
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [allItems countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
@@ -254,28 +254,28 @@
   return v16;
 }
 
-- (id)itemsContainingSearchableString:(id)a3
+- (id)itemsContainingSearchableString:(id)string
 {
-  v4 = a3;
-  v5 = [NSPredicate predicateWithFormat:@"SELF contains[cdl] %@", v4];
-  v6 = [(PersonalizedItemManager *)self _itemsFilteredBySearchableString:v4 predicate:v5];
+  stringCopy = string;
+  stringCopy = [NSPredicate predicateWithFormat:@"SELF contains[cdl] %@", stringCopy];
+  v6 = [(PersonalizedItemManager *)self _itemsFilteredBySearchableString:stringCopy predicate:stringCopy];
 
   return v6;
 }
 
-- (id)itemsMatchingSearchableString:(id)a3
+- (id)itemsMatchingSearchableString:(id)string
 {
-  v4 = a3;
-  v5 = [NSPredicate predicateWithFormat:@"SELF LIKE[cdl] %@", v4];
-  v6 = [(PersonalizedItemManager *)self _itemsFilteredBySearchableString:v4 predicate:v5];
+  stringCopy = string;
+  stringCopy = [NSPredicate predicateWithFormat:@"SELF LIKE[cdl] %@", stringCopy];
+  v6 = [(PersonalizedItemManager *)self _itemsFilteredBySearchableString:stringCopy predicate:stringCopy];
 
   return v6;
 }
 
-- (void)_gatherItemsWithShouldCancel:(id)a3 completion:(id)a4
+- (void)_gatherItemsWithShouldCancel:(id)cancel completion:(id)completion
 {
-  v6 = a3;
-  v117 = a4;
+  cancelCopy = cancel;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v171 = 0;
   v172 = &v171;
@@ -291,11 +291,11 @@
   block[5] = &v171;
   block[4] = self;
   dispatch_sync(lock, block);
-  v123 = v6;
-  LODWORD(v6) = (v6[2])(v6);
+  v123 = cancelCopy;
+  LODWORD(cancelCopy) = (cancelCopy[2])(cancelCopy);
   v8 = sub_100039D48();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_INFO);
-  if (v6)
+  if (cancelCopy)
   {
     if (v9)
     {
@@ -303,7 +303,7 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Cancelling gather items before starting", buf, 2u);
     }
 
-    (*(v117 + 2))(v117, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
     goto LABEL_172;
   }
 
@@ -312,25 +312,25 @@
     goto LABEL_12;
   }
 
-  v10 = self;
+  selfCopy = self;
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
   if (objc_opt_respondsToSelector())
   {
-    v13 = [(PersonalizedItemManager *)v10 performSelector:"accessibilityIdentifier"];
+    v13 = [(PersonalizedItemManager *)selfCopy performSelector:"accessibilityIdentifier"];
     v14 = v13;
     if (v13 && ([v13 isEqualToString:v12] & 1) == 0)
     {
-      v15 = [NSString stringWithFormat:@"%@<%p, %@>", v12, v10, v14];
+      selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v12, selfCopy, v14];
 
       goto LABEL_11;
     }
   }
 
-  v15 = [NSString stringWithFormat:@"%@<%p>", v12, v10];
+  selfCopy = [NSString stringWithFormat:@"%@<%p>", v12, selfCopy];
 LABEL_11:
 
-  v16 = v15;
+  v16 = selfCopy;
   *buf = 138412290;
   v193 = v16;
   _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%@ Starting to gather items...", buf, 0xCu);
@@ -434,24 +434,24 @@ LABEL_31:
 LABEL_35:
 
             v37 = [v26 componentsJoinedByString:{@", "}];
-            v38 = [NSString stringWithFormat:@"<%p> [%@]", v26, v37];
+            v132 = [NSString stringWithFormat:@"<%p> [%@]", v26, v37];
 
             goto LABEL_38;
           }
         }
       }
 
-      v38 = [NSString stringWithFormat:@"<%p> (empty)", v132];
+      v132 = [NSString stringWithFormat:@"<%p> (empty)", v132];
     }
 
     else
     {
-      v38 = @"<nil>";
+      v132 = @"<nil>";
     }
 
 LABEL_38:
 
-    v39 = v38;
+    v39 = v132;
     *v190 = 138412290;
     v191 = v39;
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "- Sorted sources: %@", v190, 0xCu);
@@ -484,8 +484,8 @@ LABEL_38:
       }
 
       v120 = *(*(&v163 + 1) + 8 * v116);
-      v41 = [v120 allItems];
-      v42 = [v41 copy];
+      allItems = [v120 allItems];
+      v42 = [allItems copy];
 
       v43 = [v42 count];
       v44 = sub_100039D48();
@@ -602,12 +602,12 @@ LABEL_65:
             }
 
             (v115[2])();
-            (*(v117 + 2))(v117, 0, 0);
+            (*(completionCopy + 2))(completionCopy, 0, 0);
 
             goto LABEL_171;
           }
 
-          v124 = [v126 keys];
+          keys = [v126 keys];
           if ([v120 sourceType] == 1)
           {
             v58 = [NSMutableSet setWithObject:v126];
@@ -616,7 +616,7 @@ LABEL_65:
             v158 = 0u;
             v155 = 0u;
             v156 = 0u;
-            v59 = v124;
+            v59 = keys;
             v60 = [v59 countByEnumeratingWithState:&v155 objects:v187 count:16];
             if (v60)
             {
@@ -653,7 +653,7 @@ LABEL_65:
           v154 = 0u;
           v151 = 0u;
           v152 = 0u;
-          v128 = v124;
+          v128 = keys;
           v66 = [v128 countByEnumeratingWithState:&v151 objects:v186 count:16];
           if (!v66)
           {
@@ -887,7 +887,7 @@ LABEL_139:
           }
 
           (v115[2])();
-          (*(v117 + 2))(v117, 0, 0);
+          (*(completionCopy + 2))(completionCopy, 0, 0);
           goto LABEL_171;
         }
 
@@ -931,10 +931,10 @@ LABEL_139:
         }
 
         [v98 sortUsingComparator:&stru_101631ED8];
-        v105 = [v98 firstObject];
-        if (v105)
+        firstObject = [v98 firstObject];
+        if (firstObject)
         {
-          [v97 addObject:v105];
+          [v97 addObject:firstObject];
         }
 
         v106 = [[PersonalizedCompoundItem alloc] initWithItems:v97];
@@ -972,7 +972,7 @@ LABEL_139:
   v122 = [NSArray arrayWithObjects:&v181 count:1];
 
   (v115[2])();
-  (*(v117 + 2))(v117, obj, v122);
+  (*(completionCopy + 2))(completionCopy, obj, v122);
 LABEL_171:
 
 LABEL_172:
@@ -998,31 +998,31 @@ LABEL_172:
   return v3;
 }
 
-- (void)fetchItemsGroups:(id)a3
+- (void)fetchItemsGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   lock = self->_lock;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100A13AE0;
   v7[3] = &unk_101661090;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = groupsCopy;
+  v6 = groupsCopy;
   dispatch_sync(lock, v7);
 }
 
-- (void)fetchAllItems:(id)a3
+- (void)fetchAllItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   lock = self->_lock;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100A13CA8;
   v7[3] = &unk_101661090;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = itemsCopy;
+  v6 = itemsCopy;
   dispatch_sync(lock, v7);
 }
 
@@ -1070,35 +1070,35 @@ LABEL_172:
   return v3;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   lock = self->_lock;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100A14168;
   v7[3] = &unk_101661A90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(lock, v7);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   lock = self->_lock;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100A1420C;
   v7[3] = &unk_101661A90;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(lock, v7);
 }
 
-- (void)setUpdatesPaused:(BOOL)a3
+- (void)setUpdatesPaused:(BOOL)paused
 {
   v7 = 0;
   v8 = &v7;
@@ -1109,7 +1109,7 @@ LABEL_172:
   block[1] = 3221225472;
   block[2] = sub_100A142EC;
   block[3] = &unk_1016613E0;
-  v6 = a3;
+  pausedCopy = paused;
   block[4] = self;
   block[5] = &v7;
   dispatch_sync(lock, block);
@@ -1121,30 +1121,30 @@ LABEL_172:
   _Block_object_dispose(&v7, 8);
 }
 
-- (void)setItemSources:(id)a3
+- (void)setItemSources:(id)sources
 {
-  v4 = &__NSArray0__struct;
-  if (a3)
+  sourcesCopy = &__NSArray0__struct;
+  if (sources)
   {
-    v4 = a3;
+    sourcesCopy = sources;
   }
 
-  v5 = v4;
+  v5 = sourcesCopy;
   lock = self->_lock;
   v8 = _NSConcreteStackBlock;
   v9 = 3221225472;
   v10 = sub_100A14494;
   v11 = &unk_101661A90;
   v12 = v5;
-  v13 = self;
+  selfCopy = self;
   v7 = v5;
   dispatch_sync(lock, &v8);
   [(PersonalizedItemManager *)self _setNeedsRecalculation:v8];
 }
 
-- (void)removeItemSource:(id)a3
+- (void)removeItemSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -1156,7 +1156,7 @@ LABEL_172:
   block[3] = &unk_101660778;
   v9 = &v10;
   block[4] = self;
-  v6 = v4;
+  v6 = sourceCopy;
   v8 = v6;
   dispatch_sync(lock, block);
   if (*(v11 + 24) == 1)
@@ -1167,11 +1167,11 @@ LABEL_172:
   _Block_object_dispose(&v10, 8);
 }
 
-- (void)addItemSource:(id)a3
+- (void)addItemSource:(id)source
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  sourceCopy = source;
+  v5 = sourceCopy;
+  if (sourceCopy)
   {
     v10 = 0;
     v11 = &v10;
@@ -1184,7 +1184,7 @@ LABEL_172:
     block[3] = &unk_101660778;
     v9 = &v10;
     block[4] = self;
-    v8 = v4;
+    v8 = sourceCopy;
     dispatch_sync(lock, block);
     if ((v11[3] & 1) == 0)
     {
@@ -1217,12 +1217,12 @@ LABEL_172:
   return v3;
 }
 
-- (void)setPriorityFunction:(id)a3
+- (void)setPriorityFunction:(id)function
 {
-  v4 = a3;
-  if (!v4)
+  functionCopy = function;
+  if (!functionCopy)
   {
-    v4 = +[PersonalizedItemPriorityFunction defaultPriorityFunctionForCompoundItemResolution];
+    functionCopy = +[PersonalizedItemPriorityFunction defaultPriorityFunctionForCompoundItemResolution];
   }
 
   v10 = 0;
@@ -1235,7 +1235,7 @@ LABEL_172:
   block[2] = sub_100A15328;
   block[3] = &unk_101660778;
   block[4] = self;
-  v6 = v4;
+  v6 = functionCopy;
   v8 = v6;
   v9 = &v10;
   dispatch_sync(lock, block);
@@ -1269,9 +1269,9 @@ LABEL_172:
   return v3;
 }
 
-- (void)setClientRankingFunction:(id)a3
+- (void)setClientRankingFunction:(id)function
 {
-  v4 = a3;
+  functionCopy = function;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -1282,7 +1282,7 @@ LABEL_172:
   block[2] = sub_100A1556C;
   block[3] = &unk_101660778;
   block[4] = self;
-  v6 = v4;
+  v6 = functionCopy;
   v8 = v6;
   v9 = &v10;
   dispatch_sync(lock, block);

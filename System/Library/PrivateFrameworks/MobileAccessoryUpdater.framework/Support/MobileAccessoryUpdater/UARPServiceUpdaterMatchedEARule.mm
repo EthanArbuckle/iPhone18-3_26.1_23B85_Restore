@@ -1,22 +1,22 @@
 @interface UARPServiceUpdaterMatchedEARule
-- (BOOL)isEqual:(id)a3;
-- (UARPServiceUpdaterMatchedEARule)initWithCoder:(id)a3;
-- (UARPServiceUpdaterMatchedEARule)initWithEAIdentifier:(id)a3 accessorySerialNumber:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (UARPServiceUpdaterMatchedEARule)initWithCoder:(id)coder;
+- (UARPServiceUpdaterMatchedEARule)initWithEAIdentifier:(id)identifier accessorySerialNumber:(id)number;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UARPServiceUpdaterMatchedEARule
 
-- (UARPServiceUpdaterMatchedEARule)initWithEAIdentifier:(id)a3 accessorySerialNumber:(id)a4
+- (UARPServiceUpdaterMatchedEARule)initWithEAIdentifier:(id)identifier accessorySerialNumber:(id)number
 {
   v8.receiver = self;
   v8.super_class = UARPServiceUpdaterMatchedEARule;
   v6 = [(UARPServiceUpdaterMatchedEARule *)&v8 init];
   if (v6)
   {
-    v6->_eaIdentifier = [a3 copy];
-    v6->_accessorySerialNumber = [a4 copy];
+    v6->_eaIdentifier = [identifier copy];
+    v6->_accessorySerialNumber = [number copy];
   }
 
   return v6;
@@ -29,39 +29,39 @@
   [(UARPServiceUpdaterMatchedEARule *)&v3 dealloc];
 }
 
-- (UARPServiceUpdaterMatchedEARule)initWithCoder:(id)a3
+- (UARPServiceUpdaterMatchedEARule)initWithCoder:(id)coder
 {
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
 
   return [(UARPServiceUpdaterMatchedEARule *)self initWithEAIdentifier:v5 accessorySerialNumber:v6];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_eaIdentifier forKey:@"identifier"];
+  [coder encodeObject:self->_eaIdentifier forKey:@"identifier"];
   accessorySerialNumber = self->_accessorySerialNumber;
 
-  [a3 encodeObject:accessorySerialNumber forKey:@"serialNumber"];
+  [coder encodeObject:accessorySerialNumber forKey:@"serialNumber"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (self == a3)
+    if (self == equal)
     {
       LOBYTE(v5) = 1;
     }
 
     else
     {
-      v5 = [(NSString *)self->_eaIdentifier isEqual:*(a3 + 1)];
+      v5 = [(NSString *)self->_eaIdentifier isEqual:*(equal + 1)];
       if (v5)
       {
         accessorySerialNumber = self->_accessorySerialNumber;
-        v7 = *(a3 + 2);
+        v7 = *(equal + 2);
 
         LOBYTE(v5) = [(NSString *)accessorySerialNumber isEqual:v7];
       }

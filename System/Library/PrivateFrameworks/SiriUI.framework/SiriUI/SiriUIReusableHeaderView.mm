@@ -1,21 +1,21 @@
 @interface SiriUIReusableHeaderView
 + (id)reuseIdentifier;
-- (SiriUIReusableHeaderView)initWithFrame:(CGRect)a3;
+- (SiriUIReusableHeaderView)initWithFrame:(CGRect)frame;
 - (SiriUISnippetViewController)snippetViewController;
-- (double)desiredHeightForWidth:(double)a3;
-- (void)_configureHeaderLabelForBounds:(CGRect)a3;
+- (double)desiredHeightForWidth:(double)width;
+- (void)_configureHeaderLabelForBounds:(CGRect)bounds;
 - (void)layoutSubviews;
-- (void)setSnippetViewController:(id)a3;
-- (void)setTitleText:(id)a3;
+- (void)setSnippetViewController:(id)controller;
+- (void)setTitleText:(id)text;
 @end
 
 @implementation SiriUIReusableHeaderView
 
-- (SiriUIReusableHeaderView)initWithFrame:(CGRect)a3
+- (SiriUIReusableHeaderView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = SiriUIReusableHeaderView;
-  v3 = [(SiriUIReusableHeaderView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriUIReusableHeaderView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[SiriUIContentButton button];
@@ -23,9 +23,9 @@
     *(v3 + 71) = v4;
 
     [v3 addSubview:*(v3 + 71)];
-    v6 = [MEMORY[0x277D60108] labelWithHeaderFont];
+    labelWithHeaderFont = [MEMORY[0x277D60108] labelWithHeaderFont];
     v7 = *(v3 + 62);
-    *(v3 + 62) = v6;
+    *(v3 + 62) = labelWithHeaderFont;
 
     [v3 addSubview:*(v3 + 62)];
     v8 = objc_alloc(MEMORY[0x277D755E8]);
@@ -79,34 +79,34 @@
   [(UIImageView *)self->_chevronView setFrame:v6, v16, v18, v20];
   [(SiriUIReusableHeaderView *)self bounds];
   [(SiriUIReusableHeaderView *)self _configureHeaderLabelForBounds:?];
-  v22 = [(SiriUIReusableHeaderView *)self titleTextColor];
+  titleTextColor = [(SiriUIReusableHeaderView *)self titleTextColor];
 
-  if (v22)
+  if (titleTextColor)
   {
     headerLabel = self->_headerLabel;
-    v24 = [(SiriUIReusableHeaderView *)self titleTextColor];
-    [(UILabel *)headerLabel setTextColor:v24];
+    titleTextColor2 = [(SiriUIReusableHeaderView *)self titleTextColor];
+    [(UILabel *)headerLabel setTextColor:titleTextColor2];
   }
 }
 
-- (void)_configureHeaderLabelForBounds:(CGRect)a3
+- (void)_configureHeaderLabelForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
+  height = bounds.size.height;
   v31[1] = *MEMORY[0x277D85DE8];
   top = self->_contentInsets.top;
   bottom = self->_contentInsets.bottom;
-  v7 = a3.size.width - (self->_contentInsets.left + self->_contentInsets.right);
+  v7 = bounds.size.width - (self->_contentInsets.left + self->_contentInsets.right);
   headerLabel = self->_headerLabel;
-  v9 = [MEMORY[0x277D74300] siriui_headerFont];
-  [(UILabel *)headerLabel setFont:v9];
+  siriui_headerFont = [MEMORY[0x277D74300] siriui_headerFont];
+  [(UILabel *)headerLabel setFont:siriui_headerFont];
 
   [(UILabel *)self->_headerLabel setNumberOfLines:1];
-  v10 = [(UILabel *)self->_headerLabel text];
-  v11 = v10;
+  text = [(UILabel *)self->_headerLabel text];
+  v11 = text;
   v12 = &stru_2879FFD58;
-  if (v10)
+  if (text)
   {
-    v12 = v10;
+    v12 = text;
   }
 
   v13 = v12;
@@ -125,33 +125,33 @@
   [(UILabel *)self->_headerLabel sizeThatFits:1.79769313e308, 1.79769313e308];
   if (v19 <= v7)
   {
-    v22 = [MEMORY[0x277D759A0] mainScreen];
-    [v22 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
   }
 
   else
   {
     v20 = self->_headerLabel;
-    v21 = [MEMORY[0x277D74300] siriui_dynamicHeaderFont];
-    [(UILabel *)v20 setFont:v21];
+    siriui_dynamicHeaderFont = [MEMORY[0x277D74300] siriui_dynamicHeaderFont];
+    [(UILabel *)v20 setFont:siriui_dynamicHeaderFont];
 
     [(UILabel *)self->_headerLabel setNumberOfLines:3];
-    v22 = objc_alloc_init(MEMORY[0x277D74240]);
-    [v22 setLineSpacing:0.0];
-    [v22 setMaximumLineHeight:36.0];
-    [v22 setMinimumLineHeight:36.0];
-    [v22 setAlignment:1];
+    mainScreen = objc_alloc_init(MEMORY[0x277D74240]);
+    [mainScreen setLineSpacing:0.0];
+    [mainScreen setMaximumLineHeight:36.0];
+    [mainScreen setMinimumLineHeight:36.0];
+    [mainScreen setAlignment:1];
     LODWORD(v23) = 1.0;
-    [v22 setHyphenationFactor:v23];
+    [mainScreen setHyphenationFactor:v23];
     v24 = objc_alloc(MEMORY[0x277CCA898]);
     v28 = v16;
-    v29 = v22;
+    v29 = mainScreen;
     v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
     v26 = [v24 initWithString:v13 attributes:v25];
 
     [(UILabel *)self->_headerLabel setAttributedText:v26];
-    v27 = [MEMORY[0x277D759A0] mainScreen];
-    [v27 scale];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 scale];
 
     [(UILabel *)self->_headerLabel sizeThatFits:v7, height - (top + bottom)];
   }
@@ -160,14 +160,14 @@
   [(UILabel *)self->_headerLabel setFrame:?];
 }
 
-- (double)desiredHeightForWidth:(double)a3
+- (double)desiredHeightForWidth:(double)width
 {
-  [(SiriUIReusableHeaderView *)self _configureHeaderLabelForBounds:0.0, 0.0, a3, 1.79769313e308];
+  [(SiriUIReusableHeaderView *)self _configureHeaderLabelForBounds:0.0, 0.0, width, 1.79769313e308];
   [(UILabel *)self->_headerLabel frame];
   v5 = v4;
-  v6 = [(UILabel *)self->_headerLabel numberOfLines];
+  numberOfLines = [(UILabel *)self->_headerLabel numberOfLines];
   result = v5 + 103.0 + -72.0;
-  if (v6 == 1)
+  if (numberOfLines == 1)
   {
     return 72.0;
   }
@@ -175,20 +175,20 @@
   return result;
 }
 
-- (void)setSnippetViewController:(id)a3
+- (void)setSnippetViewController:(id)controller
 {
-  obj = a3;
+  obj = controller;
   WeakRetained = objc_loadWeakRetained(&self->_snippetViewController);
 
   v6 = obj;
   if (WeakRetained != obj)
   {
     v7 = objc_storeWeak(&self->_snippetViewController, obj);
-    v8 = [obj headerPunchOut];
+    headerPunchOut = [obj headerPunchOut];
 
-    [(UIButton *)self->_headerAreaButton setEnabled:v8 != 0];
+    [(UIButton *)self->_headerAreaButton setEnabled:headerPunchOut != 0];
     chevronView = self->_chevronView;
-    if (v8)
+    if (headerPunchOut)
     {
       v10 = objc_loadWeakRetained(&self->_snippetViewController);
       -[UIImageView setHidden:](chevronView, "setHidden:", [v10 showHeaderChevron] ^ 1);
@@ -205,18 +205,18 @@
   MEMORY[0x2821F96F8](v5, v6);
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v8 = a3;
-  objc_storeStrong(&self->_titleText, a3);
+  textCopy = text;
+  objc_storeStrong(&self->_titleText, text);
   [(UILabel *)self->_headerLabel setText:self->_titleText];
-  v5 = [(SiriUIReusableHeaderView *)self titleTextColor];
+  titleTextColor = [(SiriUIReusableHeaderView *)self titleTextColor];
 
-  if (v5)
+  if (titleTextColor)
   {
     headerLabel = self->_headerLabel;
-    v7 = [(SiriUIReusableHeaderView *)self titleTextColor];
-    [(UILabel *)headerLabel setTextColor:v7];
+    titleTextColor2 = [(SiriUIReusableHeaderView *)self titleTextColor];
+    [(UILabel *)headerLabel setTextColor:titleTextColor2];
   }
 
   [(SiriUIReusableHeaderView *)self setNeedsLayout];

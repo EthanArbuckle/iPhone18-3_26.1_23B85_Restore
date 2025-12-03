@@ -1,18 +1,18 @@
 @interface MUPlaceRibbonView
 - (BOOL)contentIsWiderThanView;
 - (BOOL)hasContent;
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
-- (MUPlaceRibbonView)initWithFrame:(CGRect)a3;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
+- (MUPlaceRibbonView)initWithFrame:(CGRect)frame;
 - (MUPlaceRibbonViewDelegate)delegate;
 - (MUScrollAnalyticActionObserving)analyticsDelegate;
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5;
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index;
 - (id)_visibleRibbonItemViews;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier;
 - (void)_setupCollectionView;
 - (void)_updateAppearance;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setViewModels:(id)a3;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setViewModels:(id)models;
 @end
 
 @implementation MUPlaceRibbonView
@@ -31,23 +31,23 @@
   return WeakRetained;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4 itemIdentifier:(id)a5
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path itemIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  pathCopy = path;
+  identifierCopy = identifier;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
-    v12 = [(MUPlaceRibbonView *)self delegate];
-    v13 = [v12 ribbonView:self shouldShowRibbonItem:v11];
+    v11 = identifierCopy;
+    delegate = [(MUPlaceRibbonView *)self delegate];
+    v13 = [delegate ribbonView:self shouldShowRibbonItem:v11];
 
     if (v13)
     {
       v14 = objc_opt_class();
       v15 = NSStringFromClass(v14);
-      v16 = [v8 dequeueReusableCellWithReuseIdentifier:v15 forIndexPath:v9];
+      v16 = [viewCopy dequeueReusableCellWithReuseIdentifier:v15 forIndexPath:pathCopy];
 
       [v11 setShouldCenterContents:{-[MUPlaceRibbonView contentIsWiderThanView](self, "contentIsWiderThanView") ^ 1}];
       [v16 setViewModel:v11];
@@ -112,12 +112,12 @@ void __74__MUPlaceRibbonView_collectionView_cellForItemAtIndexPath_itemIdentifie
   }
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = [a5 item];
-  if (v6 <= [(NSArray *)self->_viewModels count])
+  item = [path item];
+  if (item <= [(NSArray *)self->_viewModels count])
   {
-    v9 = [(NSArray *)self->_viewModels objectAtIndexedSubscript:v6];
+    v9 = [(NSArray *)self->_viewModels objectAtIndexedSubscript:item];
     [(MUPlaceRibbonItemView *)self->_sizingView setViewModel:v9];
 
     [(UIView *)self->_sizingView _mapsui_fittingSize];
@@ -138,9 +138,9 @@ void __74__MUPlaceRibbonView_collectionView_cellForItemAtIndexPath_itemIdentifie
   return result;
 }
 
-- (UIEdgeInsets)collectionView:(id)a3 layout:(id)a4 insetForSectionAtIndex:(int64_t)a5
+- (UIEdgeInsets)collectionView:(id)view layout:(id)layout insetForSectionAtIndex:(int64_t)index
 {
-  [a3 frame];
+  [view frame];
   Width = CGRectGetWidth(v12);
   totalContentWidth = self->_totalContentWidth;
   if (totalContentWidth >= Width)
@@ -163,11 +163,11 @@ void __74__MUPlaceRibbonView_collectionView_cellForItemAtIndexPath_itemIdentifie
   return result;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
   x = self->_beginAnalyticsScrollingPoint.x;
-  v6 = a5->x;
-  v7 = [(MUPlaceRibbonView *)self analyticsDelegate:a3];
+  v6 = offset->x;
+  v7 = [(MUPlaceRibbonView *)self analyticsDelegate:dragging];
   v8 = v7;
   if (x <= v6)
   {
@@ -180,10 +180,10 @@ void __74__MUPlaceRibbonView_collectionView_cellForItemAtIndexPath_itemIdentifie
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   p_beginAnalyticsScrollingPoint = &self->_beginAnalyticsScrollingPoint;
-  [a3 contentOffset];
+  [dragging contentOffset];
   p_beginAnalyticsScrollingPoint->x = v4;
   p_beginAnalyticsScrollingPoint->y = v5;
 }
@@ -221,11 +221,11 @@ uint64_t __44__MUPlaceRibbonView__visibleRibbonItemViews__block_invoke(uint64_t 
 
 - (BOOL)hasContent
 {
-  v2 = self;
-  v3 = [(MUPlaceRibbonView *)self _visibleRibbonItemViews];
-  LOBYTE(v2) = v2->_minimumThresholdOfItems <= [v3 count];
+  selfCopy = self;
+  _visibleRibbonItemViews = [(MUPlaceRibbonView *)self _visibleRibbonItemViews];
+  LOBYTE(selfCopy) = selfCopy->_minimumThresholdOfItems <= [_visibleRibbonItemViews count];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)_updateAppearance
@@ -287,12 +287,12 @@ uint64_t __44__MUPlaceRibbonView__visibleRibbonItemViews__block_invoke(uint64_t 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setViewModels:(id)a3
+- (void)setViewModels:(id)models
 {
-  v6 = a3;
+  modelsCopy = models;
   if (![(NSArray *)self->_viewModels isEqualToArray:?])
   {
-    v4 = [v6 copy];
+    v4 = [modelsCopy copy];
     viewModels = self->_viewModels;
     self->_viewModels = v4;
 
@@ -321,8 +321,8 @@ uint64_t __44__MUPlaceRibbonView__visibleRibbonItemViews__block_invoke(uint64_t 
   contentCollectionView = self->_contentCollectionView;
   self->_contentCollectionView = v8;
 
-  v10 = [MEMORY[0x1E69DC888] clearColor];
-  [(UICollectionView *)self->_contentCollectionView setBackgroundColor:v10];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(UICollectionView *)self->_contentCollectionView setBackgroundColor:clearColor];
 
   [(UICollectionView *)self->_contentCollectionView setShowsHorizontalScrollIndicator:0];
   [(UICollectionView *)self->_contentCollectionView setDelegate:self];
@@ -344,27 +344,27 @@ uint64_t __44__MUPlaceRibbonView__visibleRibbonItemViews__block_invoke(uint64_t 
   v21 = self->_contentCollectionView;
   [(UICollectionView *)v21 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MUPlaceRibbonView *)self addSubview:v21];
-  v22 = [(UICollectionView *)v21 heightAnchor];
-  v23 = [v22 constraintEqualToConstant:0.0];
+  heightAnchor = [(UICollectionView *)v21 heightAnchor];
+  v23 = [heightAnchor constraintEqualToConstant:0.0];
   heightConstraint = self->_heightConstraint;
   self->_heightConstraint = v23;
 
   v35 = MEMORY[0x1E696ACD8];
-  v40 = [(UICollectionView *)v21 leadingAnchor];
-  v39 = [(MUPlaceRibbonView *)self leadingAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  leadingAnchor = [(UICollectionView *)v21 leadingAnchor];
+  leadingAnchor2 = [(MUPlaceRibbonView *)self leadingAnchor];
+  v38 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v42[0] = v38;
-  v37 = [(UICollectionView *)v21 trailingAnchor];
-  v36 = [(MUPlaceRibbonView *)self trailingAnchor];
-  v25 = [v37 constraintEqualToAnchor:v36];
+  trailingAnchor = [(UICollectionView *)v21 trailingAnchor];
+  trailingAnchor2 = [(MUPlaceRibbonView *)self trailingAnchor];
+  v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v42[1] = v25;
-  v26 = [(UICollectionView *)v21 topAnchor];
-  v27 = [(MUPlaceRibbonView *)self topAnchor];
-  v28 = [v26 constraintEqualToAnchor:v27];
+  topAnchor = [(UICollectionView *)v21 topAnchor];
+  topAnchor2 = [(MUPlaceRibbonView *)self topAnchor];
+  v28 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v42[2] = v28;
-  v29 = [(UICollectionView *)v21 bottomAnchor];
-  v30 = [(MUPlaceRibbonView *)self bottomAnchor];
-  v31 = [v29 constraintEqualToAnchor:v30];
+  bottomAnchor = [(UICollectionView *)v21 bottomAnchor];
+  bottomAnchor2 = [(MUPlaceRibbonView *)self bottomAnchor];
+  v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v32 = self->_heightConstraint;
   v42[3] = v31;
   v42[4] = v32;
@@ -374,11 +374,11 @@ uint64_t __44__MUPlaceRibbonView__visibleRibbonItemViews__block_invoke(uint64_t 
   v34 = *MEMORY[0x1E69E9840];
 }
 
-- (MUPlaceRibbonView)initWithFrame:(CGRect)a3
+- (MUPlaceRibbonView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = MUPlaceRibbonView;
-  v3 = [(MUPlaceRibbonView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUPlaceRibbonView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v3->_minimumThresholdOfItems = GEOConfigGetUInteger();

@@ -1,9 +1,9 @@
 @interface MetricsIdentifierCloudDataController
-- (id)createRecordForKey:(id)a3 recordType:(id)a4;
+- (id)createRecordForKey:(id)key recordType:(id)type;
 - (id)identifierRecordType;
 - (id)identifierStoreRecordType;
-- (id)keyForRecordIdentifier:(id)a3;
-- (id)recordIdentifierForKey:(id)a3;
+- (id)keyForRecordIdentifier:(id)identifier;
+- (id)recordIdentifierForKey:(id)key;
 @end
 
 @implementation MetricsIdentifierCloudDataController
@@ -22,7 +22,7 @@
   return v2;
 }
 
-- (id)createRecordForKey:(id)a3 recordType:(id)a4
+- (id)createRecordForKey:(id)key recordType:(id)type
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   static String._unconditionallyBridgeFromObjectiveC(_:)();
@@ -33,11 +33,11 @@
   return v5;
 }
 
-- (id)keyForRecordIdentifier:(id)a3
+- (id)keyForRecordIdentifier:(id)identifier
 {
   swift_unknownObjectRetain();
 
-  sub_100178D80(a3);
+  sub_100178D80(identifier);
   v5 = v4;
   swift_unknownObjectRelease();
 
@@ -54,7 +54,7 @@
   return v6;
 }
 
-- (id)recordIdentifierForKey:(id)a3
+- (id)recordIdentifierForKey:(id)key
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
 

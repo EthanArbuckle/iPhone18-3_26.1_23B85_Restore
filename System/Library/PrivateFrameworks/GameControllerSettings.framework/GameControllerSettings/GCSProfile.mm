@@ -1,21 +1,21 @@
 @interface GCSProfile
 + (GCSProfile)defaultProfile;
-+ (GCSProfile)profileWithName:(id)a3;
++ (GCSProfile)profileWithName:(id)name;
 + (NSUUID)defaultProfileUUID;
-+ (id)adhocProfileForController:(id)a3 gameBundleIdentifier:(id)a4;
++ (id)adhocProfileForController:(id)controller gameBundleIdentifier:(id)identifier;
 + (id)archivalClasses;
-+ (id)elementMappingsFrom:(id)a3 for:(id)a4;
++ (id)elementMappingsFrom:(id)from for:(id)for;
 + (id)newBaseProfile;
 + (id)profile;
 - (GCSJSONObject)jsonObject;
-- (GCSProfile)initWithCoder:(id)a3;
-- (GCSProfile)initWithJSONObject:(id)a3;
-- (GCSProfile)initWithUUID:(id)a3 name:(id)a4 persistentControllerIdentifier:(id)a5 gameBundleIdentifier:(id)a6 baseProfile:(BOOL)a7 customizable:(BOOL)a8 sfSymbolsName:(id)a9 elementMappings:(id)a10 hapticFeedbackOverride:(BOOL)a11 hapticStrength:(double)a12 doublePressShareGesture:(int64_t)a13 longPressShareGesture:(int64_t)a14 lightbarOverride:(BOOL)a15 lightbarCustomColorEnabled:(BOOL)a16 lightbarColor:(int64_t)a17;
+- (GCSProfile)initWithCoder:(id)coder;
+- (GCSProfile)initWithJSONObject:(id)object;
+- (GCSProfile)initWithUUID:(id)d name:(id)name persistentControllerIdentifier:(id)identifier gameBundleIdentifier:(id)bundleIdentifier baseProfile:(BOOL)profile customizable:(BOOL)customizable sfSymbolsName:(id)symbolsName elementMappings:(id)self0 hapticFeedbackOverride:(BOOL)self1 hapticStrength:(double)self2 doublePressShareGesture:(int64_t)self3 longPressShareGesture:(int64_t)self4 lightbarOverride:(BOOL)self5 lightbarCustomColorEnabled:(BOOL)self6 lightbarColor:(int64_t)self7;
 - (NSString)name;
 - (id)anonymizedCopy;
 - (id)description;
-- (id)elementMappingsWithJSONDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)elementMappingsWithJSONDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCSProfile
@@ -45,44 +45,44 @@
 {
   v2 = MEMORY[0x277CCACA8];
   name = self->_name;
-  v4 = [(NSUUID *)self->_uuid UUIDString];
-  v5 = [v2 stringWithFormat:@"<GCSProfile %@ (%@)>", name, v4];
+  uUIDString = [(NSUUID *)self->_uuid UUIDString];
+  v5 = [v2 stringWithFormat:@"<GCSProfile %@ (%@)>", name, uUIDString];
 
   return v5;
 }
 
-- (GCSProfile)initWithUUID:(id)a3 name:(id)a4 persistentControllerIdentifier:(id)a5 gameBundleIdentifier:(id)a6 baseProfile:(BOOL)a7 customizable:(BOOL)a8 sfSymbolsName:(id)a9 elementMappings:(id)a10 hapticFeedbackOverride:(BOOL)a11 hapticStrength:(double)a12 doublePressShareGesture:(int64_t)a13 longPressShareGesture:(int64_t)a14 lightbarOverride:(BOOL)a15 lightbarCustomColorEnabled:(BOOL)a16 lightbarColor:(int64_t)a17
+- (GCSProfile)initWithUUID:(id)d name:(id)name persistentControllerIdentifier:(id)identifier gameBundleIdentifier:(id)bundleIdentifier baseProfile:(BOOL)profile customizable:(BOOL)customizable sfSymbolsName:(id)symbolsName elementMappings:(id)self0 hapticFeedbackOverride:(BOOL)self1 hapticStrength:(double)self2 doublePressShareGesture:(int64_t)self3 longPressShareGesture:(int64_t)self4 lightbarOverride:(BOOL)self5 lightbarCustomColorEnabled:(BOOL)self6 lightbarColor:(int64_t)self7
 {
-  v23 = a3;
-  v34 = a4;
-  v33 = a5;
-  v32 = a6;
-  v24 = a9;
-  v25 = a10;
+  dCopy = d;
+  nameCopy = name;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  symbolsNameCopy = symbolsName;
+  mappingsCopy = mappings;
   v35.receiver = self;
   v35.super_class = GCSProfile;
   v26 = [(GCSProfile *)&v35 init];
   if (v26)
   {
-    v27 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     modifiedDate = v26->_modifiedDate;
-    v26->_modifiedDate = v27;
+    v26->_modifiedDate = date;
 
-    objc_storeStrong(&v26->_uuid, a3);
-    objc_storeStrong(&v26->_name, a4);
-    objc_storeStrong(&v26->_persistentControllerIdentifier, a5);
-    objc_storeStrong(&v26->_gameBundleIdentifier, a6);
-    v26->_baseProfile = a7;
-    v26->_customizable = a8;
-    objc_storeStrong(&v26->_sfSymbolsName, a9);
-    objc_storeStrong(&v26->_elementMappings, a10);
-    v26->_hapticFeedbackOverride = a11;
-    v26->_hapticStrength = a12;
-    v26->_doublePressShareGesture = a13;
-    v26->_longPressShareGesture = a14;
-    v26->_lightbarOverride = a15;
-    v26->_lightbarCustomColorEnabled = a16;
-    v26->_lightbarColor = a17;
+    objc_storeStrong(&v26->_uuid, d);
+    objc_storeStrong(&v26->_name, name);
+    objc_storeStrong(&v26->_persistentControllerIdentifier, identifier);
+    objc_storeStrong(&v26->_gameBundleIdentifier, bundleIdentifier);
+    v26->_baseProfile = profile;
+    v26->_customizable = customizable;
+    objc_storeStrong(&v26->_sfSymbolsName, symbolsName);
+    objc_storeStrong(&v26->_elementMappings, mappings);
+    v26->_hapticFeedbackOverride = override;
+    v26->_hapticStrength = strength;
+    v26->_doublePressShareGesture = gesture;
+    v26->_longPressShareGesture = shareGesture;
+    v26->_lightbarOverride = lightbarOverride;
+    v26->_lightbarCustomColorEnabled = enabled;
+    v26->_lightbarColor = color;
   }
 
   return v26;
@@ -106,8 +106,8 @@
 - (id)anonymizedCopy
 {
   v3 = [GCSProfile alloc];
-  v4 = [(GCSProfile *)self jsonObject];
-  v5 = [(GCSProfile *)v3 initWithJSONObject:v4];
+  jsonObject = [(GCSProfile *)self jsonObject];
+  v5 = [(GCSProfile *)v3 initWithJSONObject:jsonObject];
 
   name = v5->_name;
   v5->_name = @"Profile";
@@ -115,23 +115,23 @@
   return v5;
 }
 
-+ (id)elementMappingsFrom:(id)a3 for:(id)a4
++ (id)elementMappingsFrom:(id)from for:(id)for
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  fromCopy = from;
+  forCopy = for;
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v6;
+  obj = forCopy;
   v8 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v36;
-    v31 = v5;
+    v31 = fromCopy;
     do
     {
       for (i = 0; i != v9; ++i)
@@ -142,25 +142,25 @@
         }
 
         v12 = *(*(&v35 + 1) + 8 * i);
-        v13 = [v12 name];
-        v14 = [v5 objectForKey:v13];
-        v15 = [v14 mappingKey];
-        v16 = v15;
-        if (v15)
+        name = [v12 name];
+        v14 = [fromCopy objectForKey:name];
+        mappingKey = [v14 mappingKey];
+        v16 = mappingKey;
+        if (mappingKey)
         {
-          v17 = v15;
+          name2 = mappingKey;
         }
 
         else
         {
-          v17 = [v12 name];
+          name2 = [v12 name];
         }
 
-        v34 = v17;
+        v34 = name2;
 
         if ([v12 kind] == 2)
         {
-          v18 = [v5 objectForKey:v13];
+          v18 = [fromCopy objectForKey:name];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -179,18 +179,18 @@
           [v20 invertVertically];
           [v20 swapAxes];
 
-          v5 = v31;
+          fromCopy = v31;
           v21 = v34;
-          v22 = [GCSDirectionPadMapping initWithElementKey:v33 mappingKey:"initWithElementKey:mappingKey:remappingOrder:invertHorizontally:invertVertically:swapAxes:" remappingOrder:v13 invertHorizontally:? invertVertically:? swapAxes:?];
+          v22 = [GCSDirectionPadMapping initWithElementKey:v33 mappingKey:"initWithElementKey:mappingKey:remappingOrder:invertHorizontally:invertVertically:swapAxes:" remappingOrder:name invertHorizontally:? invertVertically:? swapAxes:?];
         }
 
         else
         {
           v23 = [GCSElementMapping alloc];
-          v24 = [v12 remappingKey];
+          remappingKey = [v12 remappingKey];
           v25 = v23;
           v21 = v34;
-          v22 = [(GCSElementMapping *)v25 initWithElementKey:v13 mappingKey:v34 remappingOrder:v24];
+          v22 = [(GCSElementMapping *)v25 initWithElementKey:name mappingKey:v34 remappingOrder:remappingKey];
         }
 
         [v7 addObject:v22];
@@ -246,31 +246,31 @@ BOOL __38__GCSProfile_elementMappingsFrom_for___block_invoke(uint64_t a1, void *
   return v7;
 }
 
-+ (GCSProfile)profileWithName:(id)a3
++ (GCSProfile)profileWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = +[GCSProfile profile];
   v5 = v4[2];
-  v4[2] = v3;
+  v4[2] = nameCopy;
 
   return v4;
 }
 
-+ (id)adhocProfileForController:(id)a3 gameBundleIdentifier:(id)a4
++ (id)adhocProfileForController:(id)controller gameBundleIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = a3;
+  identifierCopy = identifier;
+  controllerCopy = controller;
   v7 = +[GCSProfile profile];
   v8 = v7[2];
   v7[2] = @"-";
 
-  v9 = [v6 persistentIdentifier];
+  persistentIdentifier = [controllerCopy persistentIdentifier];
 
   v10 = v7[5];
-  v7[5] = v9;
+  v7[5] = persistentIdentifier;
 
   v11 = v7[6];
-  v7[6] = v5;
+  v7[6] = identifierCopy;
 
   return v7;
 }
@@ -287,37 +287,37 @@ BOOL __38__GCSProfile_elementMappingsFrom_for___block_invoke(uint64_t a1, void *
   return [v2 setWithObjects:{v3, v4, v5, v6, v7, v8, objc_opt_class(), 0}];
 }
 
-- (GCSProfile)initWithCoder:(id)a3
+- (GCSProfile)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v27.receiver = self;
   v27.super_class = GCSProfile;
   v5 = [(GCSProfile *)&v27 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_modifiedDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_modifiedDate"];
     modifiedDate = v5->_modifiedDate;
     v5->_modifiedDate = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_uuid"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
     name = v5->_name;
     v5->_name = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_persistentControllerIdentifier"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_persistentControllerIdentifier"];
     persistentControllerIdentifier = v5->_persistentControllerIdentifier;
     v5->_persistentControllerIdentifier = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_gameBundleIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_gameBundleIdentifier"];
     gameBundleIdentifier = v5->_gameBundleIdentifier;
     v5->_gameBundleIdentifier = v14;
 
-    v5->_baseProfile = [v4 decodeBoolForKey:@"_baseProfile"];
-    v5->_customizable = [v4 decodeBoolForKey:@"_customizable"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_sfSymbolsName"];
+    v5->_baseProfile = [coderCopy decodeBoolForKey:@"_baseProfile"];
+    v5->_customizable = [coderCopy decodeBoolForKey:@"_customizable"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_sfSymbolsName"];
     sfSymbolsName = v5->_sfSymbolsName;
     v5->_sfSymbolsName = v16;
 
@@ -326,28 +326,28 @@ BOOL __38__GCSProfile_elementMappingsFrom_for___block_invoke(uint64_t a1, void *
     v20 = objc_opt_class();
     v21 = objc_opt_class();
     v22 = [v18 setWithObjects:{v19, v20, v21, objc_opt_class(), 0}];
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"_elementMappings"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"_elementMappings"];
     elementMappings = v5->_elementMappings;
     v5->_elementMappings = v23;
 
-    v5->_hapticFeedbackOverride = [v4 decodeBoolForKey:@"_hapticFeedbackOverride"];
-    [v4 decodeDoubleForKey:@"_hapticStrength"];
+    v5->_hapticFeedbackOverride = [coderCopy decodeBoolForKey:@"_hapticFeedbackOverride"];
+    [coderCopy decodeDoubleForKey:@"_hapticStrength"];
     v5->_hapticStrength = v25;
-    v5->_doublePressShareGesture = [v4 decodeInt64ForKey:@"_doublePressShareGesture_ios"];
-    v5->_longPressShareGesture = [v4 decodeInt64ForKey:@"_longPressShareGesture_ios"];
-    v5->_lightbarOverride = [v4 decodeBoolForKey:@"_lightbarOverride"];
-    v5->_lightbarCustomColorEnabled = [v4 decodeBoolForKey:@"_lightbarCustomColorEnabled"];
-    v5->_lightbarColor = [v4 decodeInt64ForKey:@"_lightbarColor"];
+    v5->_doublePressShareGesture = [coderCopy decodeInt64ForKey:@"_doublePressShareGesture_ios"];
+    v5->_longPressShareGesture = [coderCopy decodeInt64ForKey:@"_longPressShareGesture_ios"];
+    v5->_lightbarOverride = [coderCopy decodeBoolForKey:@"_lightbarOverride"];
+    v5->_lightbarCustomColorEnabled = [coderCopy decodeBoolForKey:@"_lightbarCustomColorEnabled"];
+    v5->_lightbarColor = [coderCopy decodeInt64ForKey:@"_lightbarColor"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
-  [v7 encodeObject:self->_modifiedDate forKey:@"_modifiedDate"];
-  [v7 encodeObject:self->_uuid forKey:@"_uuid"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_modifiedDate forKey:@"_modifiedDate"];
+  [coderCopy encodeObject:self->_uuid forKey:@"_uuid"];
   name = self->_name;
   v5 = _GCFConvertStringToLocalizedString();
   LODWORD(name) = [(NSString *)name isEqualToString:v5];
@@ -358,26 +358,26 @@ BOOL __38__GCSProfile_elementMappingsFrom_for___block_invoke(uint64_t a1, void *
     self->_name = @"GCS_PROFILE_DEFAULT";
   }
 
-  [v7 encodeObject:self->_name forKey:@"_name"];
-  [v7 encodeObject:self->_persistentControllerIdentifier forKey:@"_persistentControllerIdentifier"];
-  [v7 encodeObject:self->_gameBundleIdentifier forKey:@"_gameBundleIdentifier"];
-  [v7 encodeBool:self->_baseProfile forKey:@"_baseProfile"];
-  [v7 encodeBool:self->_customizable forKey:@"_customizable"];
-  [v7 encodeObject:self->_sfSymbolsName forKey:@"_sfSymbolsName"];
-  [v7 encodeObject:self->_elementMappings forKey:@"_elementMappings"];
-  [v7 encodeBool:self->_hapticFeedbackOverride forKey:@"_hapticFeedbackOverride"];
-  [v7 encodeDouble:@"_hapticStrength" forKey:self->_hapticStrength];
-  [v7 encodeInt64:self->_doublePressShareGesture forKey:@"_doublePressShareGesture_ios"];
-  [v7 encodeInt64:self->_longPressShareGesture forKey:@"_longPressShareGesture_ios"];
-  [v7 encodeBool:self->_lightbarOverride forKey:@"_lightbarOverride"];
-  [v7 encodeBool:self->_lightbarCustomColorEnabled forKey:@"_lightbarCustomColorEnabled"];
-  [v7 encodeInt64:self->_lightbarColor forKey:@"_lightbarColor"];
+  [coderCopy encodeObject:self->_name forKey:@"_name"];
+  [coderCopy encodeObject:self->_persistentControllerIdentifier forKey:@"_persistentControllerIdentifier"];
+  [coderCopy encodeObject:self->_gameBundleIdentifier forKey:@"_gameBundleIdentifier"];
+  [coderCopy encodeBool:self->_baseProfile forKey:@"_baseProfile"];
+  [coderCopy encodeBool:self->_customizable forKey:@"_customizable"];
+  [coderCopy encodeObject:self->_sfSymbolsName forKey:@"_sfSymbolsName"];
+  [coderCopy encodeObject:self->_elementMappings forKey:@"_elementMappings"];
+  [coderCopy encodeBool:self->_hapticFeedbackOverride forKey:@"_hapticFeedbackOverride"];
+  [coderCopy encodeDouble:@"_hapticStrength" forKey:self->_hapticStrength];
+  [coderCopy encodeInt64:self->_doublePressShareGesture forKey:@"_doublePressShareGesture_ios"];
+  [coderCopy encodeInt64:self->_longPressShareGesture forKey:@"_longPressShareGesture_ios"];
+  [coderCopy encodeBool:self->_lightbarOverride forKey:@"_lightbarOverride"];
+  [coderCopy encodeBool:self->_lightbarCustomColorEnabled forKey:@"_lightbarCustomColorEnabled"];
+  [coderCopy encodeInt64:self->_lightbarColor forKey:@"_lightbarColor"];
 }
 
-- (id)elementMappingsWithJSONDictionary:(id)a3
+- (id)elementMappingsWithJSONDictionary:(id)dictionary
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [a3 _gcs_dictionaryForJSONKey:@"elementMappings"];
+  v3 = [dictionary _gcs_dictionaryForJSONKey:@"elementMappings"];
   v18 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
   v19 = 0u;
   v20 = 0u;
@@ -436,13 +436,13 @@ BOOL __38__GCSProfile_elementMappingsFrom_for___block_invoke(uint64_t a1, void *
   return v18;
 }
 
-- (GCSProfile)initWithJSONObject:(id)a3
+- (GCSProfile)initWithJSONObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
     v35.receiver = self;
     v35.super_class = GCSProfile;
     v6 = [(GCSProfile *)&v35 init];
@@ -452,16 +452,16 @@ BOOL __38__GCSProfile_elementMappingsFrom_for___block_invoke(uint64_t a1, void *
       v8 = v7;
       if (v7)
       {
-        v9 = v7;
+        date = v7;
       }
 
       else
       {
-        v9 = [MEMORY[0x277CBEAA8] date];
+        date = [MEMORY[0x277CBEAA8] date];
       }
 
       modifiedDate = v6->_modifiedDate;
-      v6->_modifiedDate = v9;
+      v6->_modifiedDate = date;
 
       v12 = [v5 _gcs_uuidForJSONKey:@"uuid"];
       uuid = v6->_uuid;
@@ -518,15 +518,15 @@ BOOL __38__GCSProfile_elementMappingsFrom_for___block_invoke(uint64_t a1, void *
 
     self = v6;
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (GCSJSONObject)jsonObject
@@ -544,12 +544,12 @@ BOOL __38__GCSProfile_elementMappingsFrom_for___block_invoke(uint64_t a1, void *
 
   v6 = MEMORY[0x277CBEB38];
   v28[0] = @"modifiedDate";
-  v27 = [(NSDate *)self->_modifiedDate jsonObject];
-  v29[0] = v27;
+  jsonObject = [(NSDate *)self->_modifiedDate jsonObject];
+  v29[0] = jsonObject;
   v28[1] = @"uuid";
-  v26 = [(NSUUID *)self->_uuid jsonObject];
+  jsonObject2 = [(NSUUID *)self->_uuid jsonObject];
   v7 = self->_name;
-  v29[1] = v26;
+  v29[1] = jsonObject2;
   v29[2] = v7;
   v28[2] = @"name";
   v28[3] = @"isBaseProfile";

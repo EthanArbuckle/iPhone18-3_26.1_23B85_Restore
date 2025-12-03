@@ -1,8 +1,8 @@
 @interface ISInternationalCalendarController
 - (ISInternationalCalendarController)init;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation ISInternationalCalendarController
@@ -48,29 +48,29 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v16.receiver = self;
   v16.super_class = ISInternationalCalendarController;
-  v6 = a4;
-  v7 = [(ISInternationalCalendarController *)&v16 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [v7 specifier];
-  v9 = [v8 propertyForKey:PSValueKey];
+  pathCopy = path;
+  v7 = [(ISInternationalCalendarController *)&v16 tableView:view cellForRowAtIndexPath:pathCopy];
+  specifier = [v7 specifier];
+  v9 = [specifier propertyForKey:PSValueKey];
 
-  v10 = [v6 section];
-  if (v10 == &dword_0 + 1)
+  section = [pathCopy section];
+  if (section == &dword_0 + 1)
   {
-    v11 = [(ISInternationalCalendarController *)self localeRepresentation];
-    v12 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v11 calendarDirectionality]);
-    v13 = [v9 isEqualToNumber:v12];
+    localeRepresentation = [(ISInternationalCalendarController *)self localeRepresentation];
+    calendarIdentifier = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [localeRepresentation calendarDirectionality]);
+    v13 = [v9 isEqualToNumber:calendarIdentifier];
     goto LABEL_5;
   }
 
-  if (!v10)
+  if (!section)
   {
-    v11 = [(ISInternationalCalendarController *)self localeRepresentation];
-    v12 = [v11 calendarIdentifier];
-    v13 = [v9 isEqualToString:v12];
+    localeRepresentation = [(ISInternationalCalendarController *)self localeRepresentation];
+    calendarIdentifier = [localeRepresentation calendarIdentifier];
+    v13 = [v9 isEqualToString:calendarIdentifier];
 LABEL_5:
     v14 = v13;
 
@@ -84,34 +84,34 @@ LABEL_7:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 cellForRowAtIndexPath:v6];
-  v9 = [v8 specifier];
-  v10 = [v9 propertyForKey:PSValueKey];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
+  specifier = [v8 specifier];
+  v10 = [specifier propertyForKey:PSValueKey];
 
-  v11 = [v6 section];
-  if (v11 == &dword_0 + 1)
+  section = [pathCopy section];
+  if (section == &dword_0 + 1)
   {
-    v13 = [v10 unsignedIntegerValue];
-    v12 = [(ISInternationalCalendarController *)self localeRepresentation];
-    [v12 setCalendarDirectionality:v13];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
+    localeRepresentation = [(ISInternationalCalendarController *)self localeRepresentation];
+    [localeRepresentation setCalendarDirectionality:unsignedIntegerValue];
     goto LABEL_5;
   }
 
-  if (!v11)
+  if (!section)
   {
-    v12 = [(ISInternationalCalendarController *)self localeRepresentation];
-    [v12 setCalendarIdentifier:v10];
+    localeRepresentation = [(ISInternationalCalendarController *)self localeRepresentation];
+    [localeRepresentation setCalendarIdentifier:v10];
 LABEL_5:
   }
 
   v14.receiver = self;
   v14.super_class = ISInternationalCalendarController;
-  [(ISInternationalCalendarController *)&v14 tableView:v7 didSelectRowAtIndexPath:v6];
-  [v7 reloadData];
+  [(ISInternationalCalendarController *)&v14 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
+  [viewCopy reloadData];
 }
 
 @end

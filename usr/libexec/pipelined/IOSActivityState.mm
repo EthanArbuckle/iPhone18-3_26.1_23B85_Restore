@@ -1,6 +1,6 @@
 @interface IOSActivityState
 - (IOSActivityState)init;
-- (IOSActivityState)initWithMotionActivityManager:(id)a3 andHandler:(id)a4;
+- (IOSActivityState)initWithMotionActivityManager:(id)manager andHandler:(id)handler;
 - (void)start;
 @end
 
@@ -26,18 +26,18 @@
   return 0;
 }
 
-- (IOSActivityState)initWithMotionActivityManager:(id)a3 andHandler:(id)a4
+- (IOSActivityState)initWithMotionActivityManager:(id)manager andHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  handlerCopy = handler;
   v12.receiver = self;
   v12.super_class = IOSActivityState;
   v9 = [(IOSActivityState *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_motionActivityManager, a3);
-    objc_storeStrong(&v10->_motionEventProcessor, a4);
+    objc_storeStrong(&v9->_motionActivityManager, manager);
+    objc_storeStrong(&v10->_motionEventProcessor, handler);
     operator new();
   }
 

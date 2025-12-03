@@ -3,7 +3,7 @@
 - (MALog)init;
 - (void)dealloc;
 - (void)deleteExpiredLogFiles;
-- (void)logMessage:(id)a3 toSyslog:(BOOL)a4;
+- (void)logMessage:(id)message toSyslog:(BOOL)syslog;
 @end
 
 @implementation MALog
@@ -72,13 +72,13 @@ uint64_t __16__MALog_dealloc__block_invoke(uint64_t a1)
 
 - (void)deleteExpiredLogFiles
 {
-  v3 = [(MALog *)self queue];
+  queue = [(MALog *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3254779904;
   block[2] = __30__MALog_deleteExpiredLogFiles__block_invoke;
   block[3] = &__block_descriptor_40_e8_32s_e5_v8__0l;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 void __30__MALog_deleteExpiredLogFiles__block_invoke(uint64_t a1)
@@ -208,19 +208,19 @@ LABEL_20:
 LABEL_24:
 }
 
-- (void)logMessage:(id)a3 toSyslog:(BOOL)a4
+- (void)logMessage:(id)message toSyslog:(BOOL)syslog
 {
-  v6 = a3;
-  v7 = [(MALog *)self queue];
+  messageCopy = message;
+  queue = [(MALog *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3254779904;
   block[2] = __29__MALog_logMessage_toSyslog___block_invoke;
   block[3] = &__block_descriptor_49_e8_32s40s_e5_v8__0l;
-  v11 = a4;
+  syslogCopy = syslog;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_async(v7, block);
+  v10 = messageCopy;
+  v8 = messageCopy;
+  dispatch_async(queue, block);
 }
 
 void __29__MALog_logMessage_toSyslog___block_invoke(uint64_t a1)

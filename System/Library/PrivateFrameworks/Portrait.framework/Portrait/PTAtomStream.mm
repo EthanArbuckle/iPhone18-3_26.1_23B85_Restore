@@ -1,59 +1,59 @@
 @interface PTAtomStream
 - (BOOL)hasAtom;
-- (PTAtomStream)initWithByteStream:(id)a3 offset:(unint64_t)a4;
-- (PTAtomStream)initWithParent:(id)a3 offset:(unint64_t)a4;
-- (id)_errorForReadPastLimit:(unint64_t)a3 size:(unint64_t)a4 offset:(unint64_t)a5;
+- (PTAtomStream)initWithByteStream:(id)stream offset:(unint64_t)offset;
+- (PTAtomStream)initWithParent:(id)parent offset:(unint64_t)offset;
+- (id)_errorForReadPastLimit:(unint64_t)limit size:(unint64_t)size offset:(unint64_t)offset;
 - (id)debugDescription;
 - (uint64_t)_readAtomHeader;
 - (void)_debugLogAtomReaderState;
-- (void)_debugLogBytes:(const void *)a3 size:(unint64_t)a4 offset:(unint64_t)a5;
+- (void)_debugLogBytes:(const void *)bytes size:(unint64_t)size offset:(unint64_t)offset;
 - (void)_readAtomHeader;
-- (void)_readBytes:(void *)a3 size:(unint64_t)a4 offset:(unint64_t)a5;
+- (void)_readBytes:(void *)bytes size:(unint64_t)size offset:(unint64_t)offset;
 - (void)_setEndOfStream;
 - (void)_setErrorForByteStreamIfNeeded;
 - (void)advanceToNextAtom;
-- (void)readCurrentAtomDataBytes:(void *)a3 size:(unint64_t)a4 offset:(unint64_t)a5;
+- (void)readCurrentAtomDataBytes:(void *)bytes size:(unint64_t)size offset:(unint64_t)offset;
 - (void)readCurrentAtomVersionAndFlags;
-- (void)setError:(id)a3;
+- (void)setError:(id)error;
 @end
 
 @implementation PTAtomStream
 
-- (PTAtomStream)initWithByteStream:(id)a3 offset:(unint64_t)a4
+- (PTAtomStream)initWithByteStream:(id)stream offset:(unint64_t)offset
 {
-  v7 = a3;
+  streamCopy = stream;
   v11.receiver = self;
   v11.super_class = PTAtomStream;
   v8 = [(PTAtomStream *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_byteStream, a3);
-    v9->_globalAtomOffset = a4;
-    v9->_globalEndOffset = [v7 size];
+    objc_storeStrong(&v8->_byteStream, stream);
+    v9->_globalAtomOffset = offset;
+    v9->_globalEndOffset = [streamCopy size];
     [(PTAtomStream *)v9 _readAtomHeader];
   }
 
   return v9;
 }
 
-- (PTAtomStream)initWithParent:(id)a3 offset:(unint64_t)a4
+- (PTAtomStream)initWithParent:(id)parent offset:(unint64_t)offset
 {
-  v7 = a3;
+  parentCopy = parent;
   v14.receiver = self;
   v14.super_class = PTAtomStream;
   v8 = [(PTAtomStream *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_parentStream, a3);
-    v10 = [v7 byteStream];
+    objc_storeStrong(&v8->_parentStream, parent);
+    byteStream = [parentCopy byteStream];
     byteStream = v9->_byteStream;
-    v9->_byteStream = v10;
+    v9->_byteStream = byteStream;
 
-    v9->_globalAtomOffset = [v7 globalAtomDataOffset] + a4;
-    v12 = [v7 globalAtomOffset];
-    v9->_globalEndOffset = [v7 atomSize] + v12;
+    v9->_globalAtomOffset = [parentCopy globalAtomDataOffset] + offset;
+    globalAtomOffset = [parentCopy globalAtomOffset];
+    v9->_globalEndOffset = [parentCopy atomSize] + globalAtomOffset;
     [(PTAtomStream *)v9 _readAtomHeader];
   }
 
@@ -62,8 +62,8 @@
 
 - (BOOL)hasAtom
 {
-  v3 = [(PTAtomStream *)self error];
-  if (v3)
+  error = [(PTAtomStream *)self error];
+  if (error)
   {
     LOBYTE(v4) = 0;
   }
@@ -98,11 +98,11 @@
   }
 }
 
-- (void)readCurrentAtomDataBytes:(void *)a3 size:(unint64_t)a4 offset:(unint64_t)a5
+- (void)readCurrentAtomDataBytes:(void *)bytes size:(unint64_t)size offset:(unint64_t)offset
 {
   if (!self->_error)
   {
-    [(PTAtomStream *)self _readBytes:a3 size:a4 offset:[(PTAtomStream *)self globalAtomDataOffset]+ a5];
+    [(PTAtomStream *)self _readBytes:bytes size:size offset:[(PTAtomStream *)self globalAtomDataOffset]+ offset];
     [(PTAtomStream *)self _debugLogAtomReaderState];
 
     [(PTAtomStream *)self _setErrorForByteStreamIfNeeded];
@@ -133,14 +133,14 @@
   }
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v6 = a3;
-  objc_storeStrong(&self->_error, a3);
+  errorCopy = error;
+  objc_storeStrong(&self->_error, error);
   parentStream = self->_parentStream;
   if (parentStream)
   {
-    [(PTAtomStream *)parentStream setError:v6];
+    [(PTAtomStream *)parentStream setError:errorCopy];
   }
 }
 
@@ -160,22 +160,22 @@
   }
 
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(PTAtomStream *)self globalAtomOffset];
-  v9 = [(PTAtomStream *)self atomSize];
-  v10 = [(PTAtomStream *)self atomDataOffset];
-  v11 = [(PTAtomStream *)self atomDataSize];
-  v12 = [(PTAtomStream *)self error];
-  if (v12)
+  globalAtomOffset = [(PTAtomStream *)self globalAtomOffset];
+  atomSize = [(PTAtomStream *)self atomSize];
+  atomDataOffset = [(PTAtomStream *)self atomDataOffset];
+  atomDataSize = [(PTAtomStream *)self atomDataSize];
+  error = [(PTAtomStream *)self error];
+  if (error)
   {
-    v13 = [v7 stringWithFormat:@"atom%@: { offset: %lu, size: %lu }, data: { offset: %lu, size: %lu }%@", v6, v8, v9, v10, v11, &stru_2837D16E8];
+    v13 = [v7 stringWithFormat:@"atom%@: { offset: %lu, size: %lu }, data: { offset: %lu, size: %lu }%@", v6, globalAtomOffset, atomSize, atomDataOffset, atomDataSize, &stru_2837D16E8];
   }
 
   else
   {
     v14 = MEMORY[0x277CCACA8];
-    v15 = [(PTAtomStream *)self error];
-    v16 = [v14 stringWithFormat:@" (%@)", v15];
-    v13 = [v7 stringWithFormat:@"atom%@: { offset: %lu, size: %lu }, data: { offset: %lu, size: %lu }%@", v6, v8, v9, v10, v11, v16];
+    error2 = [(PTAtomStream *)self error];
+    v16 = [v14 stringWithFormat:@" (%@)", error2];
+    v13 = [v7 stringWithFormat:@"atom%@: { offset: %lu, size: %lu }, data: { offset: %lu, size: %lu }%@", v6, globalAtomOffset, atomSize, atomDataOffset, atomDataSize, v16];
   }
 
   return v13;
@@ -199,13 +199,13 @@
   }
 }
 
-- (void)_readBytes:(void *)a3 size:(unint64_t)a4 offset:(unint64_t)a5
+- (void)_readBytes:(void *)bytes size:(unint64_t)size offset:(unint64_t)offset
 {
-  if (a5 + a4 <= self->_globalEndOffset)
+  if (offset + size <= self->_globalEndOffset)
   {
-    [(PTByteStream *)self->_byteStream readBytes:a3 size:a4 offset:a5];
+    [(PTByteStream *)self->_byteStream readBytes:bytes size:size offset:offset];
 
-    [(PTAtomStream *)self _debugLogBytes:a3 size:a4 offset:a5];
+    [(PTAtomStream *)self _debugLogBytes:bytes size:size offset:offset];
   }
 
   else
@@ -217,20 +217,20 @@
 
 - (void)_setErrorForByteStreamIfNeeded
 {
-  v3 = [(PTByteStream *)self->_byteStream error];
+  error = [(PTByteStream *)self->_byteStream error];
 
-  if (v3)
+  if (error)
   {
-    v5 = [(PTByteStream *)self->_byteStream error];
-    v4 = [(PTAtomStream *)self _errorForByteStreamError:v5];
+    error2 = [(PTByteStream *)self->_byteStream error];
+    v4 = [(PTAtomStream *)self _errorForByteStreamError:error2];
     [(PTAtomStream *)self setError:v4];
   }
 }
 
-- (id)_errorForReadPastLimit:(unint64_t)a3 size:(unint64_t)a4 offset:(unint64_t)a5
+- (id)_errorForReadPastLimit:(unint64_t)limit size:(unint64_t)size offset:(unint64_t)offset
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"attempt to read past end %lu (offset %lu size %lu)", a3, a5, a4];;
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"attempt to read past end %lu (offset %lu size %lu)", limit, offset, size];;
   v6 = MEMORY[0x277CCA9B8];
   v7 = *MEMORY[0x277CCA590];
   v11 = *MEMORY[0x277CCA450];
@@ -241,7 +241,7 @@
   return v9;
 }
 
-- (void)_debugLogBytes:(const void *)a3 size:(unint64_t)a4 offset:(unint64_t)a5
+- (void)_debugLogBytes:(const void *)bytes size:(unint64_t)size offset:(unint64_t)offset
 {
   v14 = *MEMORY[0x277D85DE8];
   if (PTSerializationDebugIsEnabled())
@@ -249,9 +249,9 @@
     v8 = _PTLogSystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v9 = NSStringFromBytes(a3, a4);
+      v9 = NSStringFromBytes(bytes, size);
       v10 = 134218242;
-      v11 = a5;
+      offsetCopy = offset;
       v12 = 2112;
       v13 = v9;
       _os_log_debug_impl(&dword_2243FB000, v8, OS_LOG_TYPE_DEBUG, "r[%zd]: %@", &v10, 0x16u);
@@ -262,7 +262,7 @@
 - (void)_debugLogAtomReaderState
 {
   v6 = *MEMORY[0x277D85DE8];
-  v3 = [a1 debugDescription];
+  v3 = [self debugDescription];
   v4 = 138412290;
   v5 = v3;
   _os_log_debug_impl(&dword_2243FB000, a2, OS_LOG_TYPE_DEBUG, "%@", &v4, 0xCu);
@@ -272,22 +272,22 @@
 {
   v5[1] = *MEMORY[0x277D85DE8];
   v5[0] = 0;
-  [a1 _readBytes:v5 size:8 offset:*(a1 + 72)];
-  v2 = [a1 error];
+  [self _readBytes:v5 size:8 offset:*(self + 72)];
+  error = [self error];
 
-  if (!v2)
+  if (!error)
   {
     v3 = bswap32(v5[0]);
-    *(a1 + 12) = bswap32(HIDWORD(v5[0]));
-    *(a1 + 56) = v3;
-    *(a1 + 64) = 8;
-    *(a1 + 9) = 0;
-    *(a1 + 32) = 0;
-    *(a1 + 40) = 0;
+    *(self + 12) = bswap32(HIDWORD(v5[0]));
+    *(self + 56) = v3;
+    *(self + 64) = 8;
+    *(self + 9) = 0;
+    *(self + 32) = 0;
+    *(self + 40) = 0;
   }
 
-  [a1 _debugLogAtomReaderState];
-  return [a1 _setErrorForByteStreamIfNeeded];
+  [self _debugLogAtomReaderState];
+  return [self _setErrorForByteStreamIfNeeded];
 }
 
 @end

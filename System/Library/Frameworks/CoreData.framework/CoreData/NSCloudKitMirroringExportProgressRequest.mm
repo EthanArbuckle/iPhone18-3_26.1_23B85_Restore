@@ -1,17 +1,17 @@
 @interface NSCloudKitMirroringExportProgressRequest
-- (NSCloudKitMirroringExportProgressRequest)initWithOptions:(id)a3 completionBlock:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NSCloudKitMirroringExportProgressRequest)initWithOptions:(id)options completionBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)setObjectIDsToFetch:(id)a3;
+- (void)setObjectIDsToFetch:(id)fetch;
 @end
 
 @implementation NSCloudKitMirroringExportProgressRequest
 
-- (NSCloudKitMirroringExportProgressRequest)initWithOptions:(id)a3 completionBlock:(id)a4
+- (NSCloudKitMirroringExportProgressRequest)initWithOptions:(id)options completionBlock:(id)block
 {
   v6.receiver = self;
   v6.super_class = NSCloudKitMirroringExportProgressRequest;
-  v4 = [(NSCloudKitMirroringRequest *)&v6 initWithOptions:a3 completionBlock:a4];
+  v4 = [(NSCloudKitMirroringRequest *)&v6 initWithOptions:options completionBlock:block];
   if (v4)
   {
     v4->_objectIDsToFetch = NSSet_EmptySet;
@@ -28,15 +28,15 @@
   [(NSCloudKitMirroringRequest *)&v3 dealloc];
 }
 
-- (void)setObjectIDsToFetch:(id)a3
+- (void)setObjectIDsToFetch:(id)fetch
 {
   objectIDsToFetch = self->_objectIDsToFetch;
-  if (objectIDsToFetch != a3)
+  if (objectIDsToFetch != fetch)
   {
 
-    if (a3)
+    if (fetch)
     {
-      v6 = [a3 copy];
+      v6 = [fetch copy];
     }
 
     else
@@ -48,11 +48,11 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = NSCloudKitMirroringExportProgressRequest;
-  v4 = [(NSCloudKitMirroringRequest *)&v6 copyWithZone:a3];
+  v4 = [(NSCloudKitMirroringRequest *)&v6 copyWithZone:zone];
 
   v4[10] = self->_objectIDsToFetch;
   return v4;

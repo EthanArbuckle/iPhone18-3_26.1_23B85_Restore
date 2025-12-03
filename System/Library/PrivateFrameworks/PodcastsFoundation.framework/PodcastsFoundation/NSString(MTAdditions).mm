@@ -14,25 +14,25 @@
 
 - (id)stringBySmartlyStrippingHTML
 {
-  v1 = [a1 stringByRemovingNewlineCharacters];
-  v2 = [v1 stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n<br>"];
+  stringByRemovingNewlineCharacters = [self stringByRemovingNewlineCharacters];
+  v2 = [stringByRemovingNewlineCharacters stringByReplacingOccurrencesOfString:@"<br>" withString:@"\n<br>"];
 
   v3 = [v2 stringByReplacingOccurrencesOfString:@"<br/>" withString:@"\n"];
 
   v4 = [v3 stringByReplacingOccurrencesOfString:@"<p>" withString:@"\n\n<p>"];
 
-  v5 = [v4 stringByStrippingHTML];
+  stringByStrippingHTML = [v4 stringByStrippingHTML];
 
-  return v5;
+  return stringByStrippingHTML;
 }
 
 - (__CFString)stringByRemovingNewlineCharacters
 {
   v24[2] = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x1E696AB08] newlineCharacterSet];
-    v3 = [a1 componentsSeparatedByCharactersInSet:v2];
+    newlineCharacterSet = [MEMORY[0x1E696AB08] newlineCharacterSet];
+    v3 = [self componentsSeparatedByCharactersInSet:newlineCharacterSet];
 
     v4 = [v3 count];
     if (v4 == 1)
@@ -43,7 +43,7 @@
     else
     {
       v6 = v4;
-      v7 = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
+      whitespaceCharacterSet = [MEMORY[0x1E696AB08] whitespaceCharacterSet];
       v8 = [v3 objectAtIndex:0];
       v9 = [(__CFString *)v8 length];
       v10 = &stru_1F548B930;
@@ -61,10 +61,10 @@
         {
           v13 = [(__CFString *)v5 characterAtIndex:[(__CFString *)v5 length]- 1];
           v14 = [v12 characterAtIndex:0];
-          if ([v7 characterIsMember:v13] && objc_msgSend(v7, "characterIsMember:", v14))
+          if ([whitespaceCharacterSet characterIsMember:v13] && objc_msgSend(whitespaceCharacterSet, "characterIsMember:", v14))
           {
-            v15 = [(__CFString *)v5 stringByTrimmingCharactersInSet:v7];
-            v16 = [v12 stringByTrimmingCharactersInSet:v7];
+            v15 = [(__CFString *)v5 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
+            v16 = [v12 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
             v24[0] = v15;
             v24[1] = v16;
             v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
@@ -73,7 +73,7 @@
             v5 = v15;
           }
 
-          else if ([v7 characterIsMember:v13] & 1) != 0 || (objc_msgSend(v7, "characterIsMember:", v14))
+          else if ([whitespaceCharacterSet characterIsMember:v13] & 1) != 0 || (objc_msgSend(whitespaceCharacterSet, "characterIsMember:", v14))
           {
             v18 = [(__CFString *)v5 stringByAppendingString:v12];
           }
@@ -112,15 +112,15 @@
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__0;
   v25 = __Block_byref_object_dispose__0;
-  v5 = a1;
-  v26 = v5;
+  selfCopy = self;
+  v26 = selfCopy;
   if (v4)
   {
-    v6 = v5;
-    v7 = [v5 length];
+    v6 = selfCopy;
+    v7 = [selfCopy length];
     if (v7 > [v4 length])
     {
-      v8 = [v4 words];
+      words = [v4 words];
       v20[0] = 0;
       v20[1] = v20;
       v20[2] = 0x2020000000;
@@ -136,7 +136,7 @@
       v13[1] = 3221225472;
       v13[2] = __54__NSString_MTAdditions__cleanedTitleStringWithPrefix___block_invoke;
       v13[3] = &unk_1E8569C90;
-      v10 = v8;
+      v10 = words;
       v16 = v20;
       v17 = &v21;
       v14 = v10;
@@ -157,15 +157,15 @@
 
 - (id)words
 {
-  v2 = [MEMORY[0x1E695DF70] array];
-  v3 = [a1 length];
+  array = [MEMORY[0x1E695DF70] array];
+  v3 = [self length];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __30__NSString_MTAdditions__words__block_invoke;
   v6[3] = &unk_1E8569CB8;
-  v4 = v2;
+  v4 = array;
   v7 = v4;
-  [a1 enumerateSubstringsInRange:0 options:v3 usingBlock:{1027, v6}];
+  [self enumerateSubstringsInRange:0 options:v3 usingBlock:{1027, v6}];
 
   return v4;
 }
@@ -182,7 +182,7 @@
     v5 = 2;
   }
 
-  return [a1 stringWithDuration:v5 unitsStyle:a3 includeTimeRemainingPhrase:?];
+  return [self stringWithDuration:v5 unitsStyle:a3 includeTimeRemainingPhrase:?];
 }
 
 + (id)stringWithDuration:()MTAdditions unitsStyle:includeTimeRemainingPhrase:
@@ -261,7 +261,7 @@ LABEL_16:
     v22 = v23;
   }
 
-  if (a5 && [a1 mt_isEnglish])
+  if (a5 && [self mt_isEnglish])
   {
     v24 = [v22 stringByReplacingOccurrencesOfString:@"remaining" withString:@"left"];
 
@@ -295,8 +295,8 @@ LABEL_27:
 
 - (id)pf_localizedStringByFoldingWithOptions:()MTAdditions
 {
-  v5 = [MEMORY[0x1E695DF58] currentLocale];
-  v6 = [a1 stringByFoldingWithOptions:a3 locale:v5];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v6 = [self stringByFoldingWithOptions:a3 locale:currentLocale];
 
   return v6;
 }

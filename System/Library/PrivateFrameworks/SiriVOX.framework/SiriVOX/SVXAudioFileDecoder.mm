@@ -1,19 +1,19 @@
 @interface SVXAudioFileDecoder
-- (double)audioPlaybackDuration:(id)a3;
+- (double)audioPlaybackDuration:(id)duration;
 @end
 
 @implementation SVXAudioFileDecoder
 
-- (double)audioPlaybackDuration:(id)a3
+- (double)audioPlaybackDuration:(id)duration
 {
-  if (!a3)
+  if (!duration)
   {
     return 0.0;
   }
 
   outAudioFile = 0;
   v3 = 0.0;
-  if (!AudioFileOpenWithCallbacks(a3, _audioFileReadData, 0, _audioFileGetDataSize, 0, 0, &outAudioFile))
+  if (!AudioFileOpenWithCallbacks(duration, _audioFileReadData, 0, _audioFileGetDataSize, 0, 0, &outAudioFile))
   {
     outPropertyData = 0.0;
     ioDataSize = 8;

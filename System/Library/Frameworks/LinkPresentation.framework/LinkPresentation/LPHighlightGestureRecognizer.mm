@@ -30,9 +30,9 @@
 
 - (CGPoint)_locationInWindow
 {
-  v3 = [(LPHighlightGestureRecognizer *)self view];
-  v4 = [v3 window];
-  [(LPHighlightGestureRecognizer *)self locationInView:v4];
+  view = [(LPHighlightGestureRecognizer *)self view];
+  window = [view window];
+  [(LPHighlightGestureRecognizer *)self locationInView:window];
   v6 = v5;
   v8 = v7;
 

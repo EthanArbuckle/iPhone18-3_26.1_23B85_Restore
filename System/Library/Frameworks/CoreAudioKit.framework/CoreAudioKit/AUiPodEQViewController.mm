@@ -1,7 +1,7 @@
 @interface AUiPodEQViewController
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5;
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5;
-- (void)priv_eventListener:(void *)a3 event:(const AudioUnitEvent *)a4 value:(float)a5;
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component;
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component;
+- (void)priv_eventListener:(void *)listener event:(const AudioUnitEvent *)event value:(float)value;
 - (void)synchronizeUIWithParameterValues;
 - (void)viewDidLoad;
 @end
@@ -81,11 +81,11 @@ LABEL_12:
   }
 }
 
-- (void)priv_eventListener:(void *)a3 event:(const AudioUnitEvent *)a4 value:(float)a5
+- (void)priv_eventListener:(void *)listener event:(const AudioUnitEvent *)event value:(float)value
 {
-  if (a4->mEventType == kAudioUnitEvent_PropertyChange)
+  if (event->mEventType == kAudioUnitEvent_PropertyChange)
   {
-    if (a4->mArgument.mParameter.mParameterID == 36)
+    if (event->mArgument.mParameter.mParameterID == 36)
     {
       outData = 0uLL;
       ioDataSize = 16;
@@ -106,19 +106,19 @@ LABEL_12:
   {
     v6.receiver = self;
     v6.super_class = AUiPodEQViewController;
-    [AUAppleViewControllerBase priv_eventListener:sel_priv_eventListener_event_value_ event:a3 value:?];
+    [AUAppleViewControllerBase priv_eventListener:sel_priv_eventListener_event_value_ event:listener value:?];
   }
 }
 
-- (id)pickerView:(id)a3 titleForRow:(int64_t)a4 forComponent:(int64_t)a5
+- (id)pickerView:(id)view titleForRow:(int64_t)row forComponent:(int64_t)component
 {
-  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", a4, a5, a4];
+  v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", row, component, row];
   v6 = [AUAppleViewControllerBase getLocalizedString:v5];
 
   return v6;
 }
 
-- (void)pickerView:(id)a3 didSelectRow:(int64_t)a4 inComponent:(int64_t)a5
+- (void)pickerView:(id)view didSelectRow:(int64_t)row inComponent:(int64_t)component
 {
   v18 = *MEMORY[0x277D85DE8];
   outData = 0;
@@ -135,9 +135,9 @@ LABEL_12:
 
   if (!v7)
   {
-    if (CFArrayGetCount(outData) > a4)
+    if (CFArrayGetCount(outData) > row)
     {
-      ValueAtIndex = CFArrayGetValueAtIndex(outData, a4);
+      ValueAtIndex = CFArrayGetValueAtIndex(outData, row);
       if (ValueAtIndex)
       {
         v9 = AudioUnitSetProperty(self->super.AU, 0x24u, 0, 0, ValueAtIndex, 0x10u);
@@ -148,7 +148,7 @@ LABEL_12:
           if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
           {
             *buf = 67109376;
-            v15 = a4;
+            rowCopy = row;
             v16 = 1024;
             v17 = v10;
             _os_log_impl(&dword_2370FF000, v11, OS_LOG_TYPE_ERROR, "Unable to set preset %d: %d, [AUiPodEQViewController pickerView:didSelectRow:inComponent:]", buf, 0xEu);

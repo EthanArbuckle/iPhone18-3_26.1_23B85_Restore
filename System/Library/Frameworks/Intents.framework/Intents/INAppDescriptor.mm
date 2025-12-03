@@ -1,113 +1,113 @@
 @interface INAppDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInstalled;
-- (INAppDescriptor)descriptorWithExtensionBundleIdentifier:(id)a3;
-- (INAppDescriptor)descriptorWithRecord:(id)a3;
-- (INAppDescriptor)initWithApplicationRecord:(id)a3;
-- (INAppDescriptor)initWithCoder:(id)a3;
-- (INAppDescriptor)initWithLocalizedName:(id)a3 bundleIdentifier:(id)a4 extensionBundleIdentifier:(id)a5 counterpartIdentifiers:(id)a6 teamIdentifier:(id)a7 supportedIntents:(id)a8 bundleURL:(id)a9 documentTypes:(id)a10;
+- (INAppDescriptor)descriptorWithExtensionBundleIdentifier:(id)identifier;
+- (INAppDescriptor)descriptorWithRecord:(id)record;
+- (INAppDescriptor)initWithApplicationRecord:(id)record;
+- (INAppDescriptor)initWithCoder:(id)coder;
+- (INAppDescriptor)initWithLocalizedName:(id)name bundleIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier counterpartIdentifiers:(id)identifiers teamIdentifier:(id)teamIdentifier supportedIntents:(id)intents bundleURL:(id)l documentTypes:(id)self0;
 - (LSApplicationRecord)applicationRecord;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INAppDescriptor
 
 - (unint64_t)hash
 {
-  v3 = [(INAppDescriptor *)self localizedName];
-  v4 = [v3 hash];
-  v5 = [(INAppDescriptor *)self bundleIdentifier];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(INAppDescriptor *)self extensionBundleIdentifier];
-  v8 = [v7 hash];
-  v9 = [(INAppDescriptor *)self counterpartIdentifiers];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(INAppDescriptor *)self teamIdentifier];
-  v12 = [v11 hash];
-  v13 = [(INAppDescriptor *)self supportedIntents];
-  v14 = v12 ^ [v13 hash];
-  v15 = [(INAppDescriptor *)self documentTypes];
-  v16 = v14 ^ [v15 hash];
+  localizedName = [(INAppDescriptor *)self localizedName];
+  v4 = [localizedName hash];
+  bundleIdentifier = [(INAppDescriptor *)self bundleIdentifier];
+  v6 = [bundleIdentifier hash] ^ v4;
+  extensionBundleIdentifier = [(INAppDescriptor *)self extensionBundleIdentifier];
+  v8 = [extensionBundleIdentifier hash];
+  counterpartIdentifiers = [(INAppDescriptor *)self counterpartIdentifiers];
+  v10 = v6 ^ v8 ^ [counterpartIdentifiers hash];
+  teamIdentifier = [(INAppDescriptor *)self teamIdentifier];
+  v12 = [teamIdentifier hash];
+  supportedIntents = [(INAppDescriptor *)self supportedIntents];
+  v14 = v12 ^ [supportedIntents hash];
+  documentTypes = [(INAppDescriptor *)self documentTypes];
+  v16 = v14 ^ [documentTypes hash];
 
   return v10 ^ v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
-  v4 = [(INAppDescriptor *)self localizedName];
-  [v12 encodeObject:v4 forKey:@"localizedName"];
+  coderCopy = coder;
+  localizedName = [(INAppDescriptor *)self localizedName];
+  [coderCopy encodeObject:localizedName forKey:@"localizedName"];
 
-  v5 = [(INAppDescriptor *)self bundleIdentifier];
-  [v12 encodeObject:v5 forKey:@"bundleIdentifier"];
+  bundleIdentifier = [(INAppDescriptor *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 
-  v6 = [(INAppDescriptor *)self extensionBundleIdentifier];
-  [v12 encodeObject:v6 forKey:@"extensionBundleIdentifier"];
+  extensionBundleIdentifier = [(INAppDescriptor *)self extensionBundleIdentifier];
+  [coderCopy encodeObject:extensionBundleIdentifier forKey:@"extensionBundleIdentifier"];
 
-  v7 = [(INAppDescriptor *)self counterpartIdentifiers];
-  [v12 encodeObject:v7 forKey:@"counterpartIdentifiers"];
+  counterpartIdentifiers = [(INAppDescriptor *)self counterpartIdentifiers];
+  [coderCopy encodeObject:counterpartIdentifiers forKey:@"counterpartIdentifiers"];
 
-  v8 = [(INAppDescriptor *)self teamIdentifier];
-  [v12 encodeObject:v8 forKey:@"teamIdentifier"];
+  teamIdentifier = [(INAppDescriptor *)self teamIdentifier];
+  [coderCopy encodeObject:teamIdentifier forKey:@"teamIdentifier"];
 
-  v9 = [(INAppDescriptor *)self supportedIntents];
-  [v12 encodeObject:v9 forKey:@"supportedIntents"];
+  supportedIntents = [(INAppDescriptor *)self supportedIntents];
+  [coderCopy encodeObject:supportedIntents forKey:@"supportedIntents"];
 
-  v10 = [(INAppDescriptor *)self bundleURL];
-  [v12 encodeObject:v10 forKey:@"bundleURL"];
+  bundleURL = [(INAppDescriptor *)self bundleURL];
+  [coderCopy encodeObject:bundleURL forKey:@"bundleURL"];
 
-  v11 = [(INAppDescriptor *)self documentTypes];
-  [v12 encodeObject:v11 forKey:@"documentTypes"];
+  documentTypes = [(INAppDescriptor *)self documentTypes];
+  [coderCopy encodeObject:documentTypes forKey:@"documentTypes"];
 
-  [v12 encodeBool:-[INAppDescriptor requiresUserConfirmation](self forKey:{"requiresUserConfirmation"), @"requiresUserConfirmation"}];
+  [coderCopy encodeBool:-[INAppDescriptor requiresUserConfirmation](self forKey:{"requiresUserConfirmation"), @"requiresUserConfirmation"}];
 }
 
-- (INAppDescriptor)initWithCoder:(id)a3
+- (INAppDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
-  v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
-  v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
+  coderCopy = coder;
+  v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedName"];
+  v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extensionBundleIdentifier"];
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v22 = [v4 decodeObjectOfClasses:v7 forKey:@"counterpartIdentifiers"];
+  v22 = [coderCopy decodeObjectOfClasses:v7 forKey:@"counterpartIdentifiers"];
 
-  v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"teamIdentifier"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"teamIdentifier"];
   v8 = MEMORY[0x1E695DFD8];
   v9 = objc_opt_class();
   v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-  v11 = [v4 decodeObjectOfClasses:v10 forKey:@"supportedIntents"];
+  v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"supportedIntents"];
 
-  v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleURL"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleURL"];
   v12 = MEMORY[0x1E695DFD8];
   v13 = objc_opt_class();
   v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-  v15 = [v4 decodeObjectOfClasses:v14 forKey:@"documentTypes"];
+  v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"documentTypes"];
 
   v16 = v11;
   v17 = [(INAppDescriptor *)self initWithLocalizedName:v25 bundleIdentifier:v24 extensionBundleIdentifier:v23 counterpartIdentifiers:v22 teamIdentifier:v21 supportedIntents:v11 bundleURL:v20 documentTypes:v15];
-  v18 = [v4 decodeBoolForKey:@"requiresUserConfirmation"];
+  v18 = [coderCopy decodeBoolForKey:@"requiresUserConfirmation"];
 
   [(INAppDescriptor *)v17 setRequiresUserConfirmation:v18];
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v7) = 1;
   }
 
   else
   {
-    if ([(INAppDescriptor *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(INAppDescriptor *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
+      v5 = equalCopy;
       if (v5)
       {
         objc_opt_class();
@@ -129,10 +129,10 @@
 
       v8 = v6;
 
-      v9 = [(INAppDescriptor *)self localizedName];
-      v10 = [(INAppDescriptor *)v8 localizedName];
-      v11 = v9;
-      v12 = v10;
+      localizedName = [(INAppDescriptor *)self localizedName];
+      localizedName2 = [(INAppDescriptor *)v8 localizedName];
+      v11 = localizedName;
+      v12 = localizedName2;
       v13 = v12;
       if (v11 == v12)
       {
@@ -159,10 +159,10 @@ LABEL_64:
         }
       }
 
-      v17 = [(INAppDescriptor *)self bundleIdentifier];
-      v18 = [(INAppDescriptor *)v8 bundleIdentifier];
-      v15 = v17;
-      v19 = v18;
+      bundleIdentifier = [(INAppDescriptor *)self bundleIdentifier];
+      bundleIdentifier2 = [(INAppDescriptor *)v8 bundleIdentifier];
+      v15 = bundleIdentifier;
+      v19 = bundleIdentifier2;
       v14 = v19;
       if (v15 == v19)
       {
@@ -189,10 +189,10 @@ LABEL_63:
         }
       }
 
-      v23 = [(INAppDescriptor *)self extensionBundleIdentifier];
-      v24 = [(INAppDescriptor *)v8 extensionBundleIdentifier];
-      v21 = v23;
-      v25 = v24;
+      extensionBundleIdentifier = [(INAppDescriptor *)self extensionBundleIdentifier];
+      extensionBundleIdentifier2 = [(INAppDescriptor *)v8 extensionBundleIdentifier];
+      v21 = extensionBundleIdentifier;
+      v25 = extensionBundleIdentifier2;
       v20 = v25;
       v56 = v21;
       if (v21 == v25)
@@ -217,10 +217,10 @@ LABEL_63:
       }
 
       v55 = v20;
-      v27 = [(INAppDescriptor *)self counterpartIdentifiers];
-      v28 = [(INAppDescriptor *)v8 counterpartIdentifiers];
-      v29 = v27;
-      v30 = v28;
+      counterpartIdentifiers = [(INAppDescriptor *)self counterpartIdentifiers];
+      counterpartIdentifiers2 = [(INAppDescriptor *)v8 counterpartIdentifiers];
+      v29 = counterpartIdentifiers;
+      v30 = counterpartIdentifiers2;
       v53 = v30;
       v54 = v29;
       if (v29 == v30)
@@ -264,10 +264,10 @@ LABEL_62:
         }
       }
 
-      v33 = [(INAppDescriptor *)self teamIdentifier];
-      v34 = [(INAppDescriptor *)v8 teamIdentifier];
-      v29 = v33;
-      v35 = v34;
+      teamIdentifier = [(INAppDescriptor *)self teamIdentifier];
+      teamIdentifier2 = [(INAppDescriptor *)v8 teamIdentifier];
+      v29 = teamIdentifier;
+      v35 = teamIdentifier2;
       v51 = v29;
       v52 = v35;
       if (v29 != v35)
@@ -290,10 +290,10 @@ LABEL_62:
             }
 
 LABEL_40:
-            v38 = [(INAppDescriptor *)self supportedIntents];
-            v39 = [(INAppDescriptor *)v8 supportedIntents];
-            v40 = v38;
-            v41 = v39;
+            supportedIntents = [(INAppDescriptor *)self supportedIntents];
+            supportedIntents2 = [(INAppDescriptor *)v8 supportedIntents];
+            v40 = supportedIntents;
+            v41 = supportedIntents2;
             v49 = v41;
             v50 = v40;
             if (v40 == v41)
@@ -333,9 +333,9 @@ LABEL_57:
             }
 
             v44 = [(INAppDescriptor *)self documentTypes:v49];
-            v45 = [(INAppDescriptor *)v8 documentTypes];
+            documentTypes = [(INAppDescriptor *)v8 documentTypes];
             v40 = v44;
-            v46 = v45;
+            v46 = documentTypes;
             v47 = v46;
             if (v40 == v46)
             {
@@ -391,13 +391,13 @@ LABEL_65:
 
 - (BOOL)isInstalled
 {
-  v3 = [(INAppDescriptor *)self extensionBundleIdentifier];
+  extensionBundleIdentifier = [(INAppDescriptor *)self extensionBundleIdentifier];
 
-  if (v3)
+  if (extensionBundleIdentifier)
   {
     v4 = objc_alloc(MEMORY[0x1E69635D0]);
-    v5 = [(INAppDescriptor *)self extensionBundleIdentifier];
-    v6 = [v4 initWithBundleIdentifier:v5 error:0];
+    extensionBundleIdentifier2 = [(INAppDescriptor *)self extensionBundleIdentifier];
+    v6 = [v4 initWithBundleIdentifier:extensionBundleIdentifier2 error:0];
 
     if (v6)
     {
@@ -405,31 +405,31 @@ LABEL_65:
     }
   }
 
-  v8 = [(INAppDescriptor *)self applicationRecord];
-  v9 = v8;
-  if (v8)
+  applicationRecord = [(INAppDescriptor *)self applicationRecord];
+  v9 = applicationRecord;
+  if (applicationRecord)
   {
-    v10 = [v8 applicationState];
-    v7 = [v10 isInstalled];
+    applicationState = [applicationRecord applicationState];
+    isInstalled = [applicationState isInstalled];
   }
 
   else
   {
-    v7 = 0;
+    isInstalled = 0;
   }
 
-  return v7;
+  return isInstalled;
 }
 
 - (LSApplicationRecord)applicationRecord
 {
-  v3 = [(INAppDescriptor *)self bundleURL];
+  bundleURL = [(INAppDescriptor *)self bundleURL];
 
-  if (!v3 || (v4 = objc_alloc(MEMORY[0x1E69635F8]), -[INAppDescriptor bundleURL](self, "bundleURL"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v4 initWithURL:v5 allowPlaceholder:0 error:0], v5, !v6))
+  if (!bundleURL || (v4 = objc_alloc(MEMORY[0x1E69635F8]), -[INAppDescriptor bundleURL](self, "bundleURL"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v4 initWithURL:v5 allowPlaceholder:0 error:0], v5, !v6))
   {
     v7 = objc_alloc(MEMORY[0x1E69635F8]);
-    v8 = [(INAppDescriptor *)self bundleIdentifier];
-    v6 = [v7 initWithBundleIdentifier:v8 allowPlaceholder:0 error:0];
+    bundleIdentifier = [(INAppDescriptor *)self bundleIdentifier];
+    v6 = [v7 initWithBundleIdentifier:bundleIdentifier allowPlaceholder:0 error:0];
   }
 
   return v6;
@@ -441,94 +441,94 @@ LABEL_65:
   v15.receiver = self;
   v15.super_class = INAppDescriptor;
   v4 = [(INAppDescriptor *)&v15 description];
-  v5 = [(INAppDescriptor *)self localizedName];
-  v6 = [(INAppDescriptor *)self bundleIdentifier];
-  v7 = [(INAppDescriptor *)self extensionBundleIdentifier];
-  v8 = [(INAppDescriptor *)self teamIdentifier];
-  v9 = [(INAppDescriptor *)self supportedIntents];
-  v10 = [(INAppDescriptor *)self counterpartIdentifiers];
-  v11 = [(INAppDescriptor *)self bundleURL];
-  v12 = [(INAppDescriptor *)self documentTypes];
-  v13 = [v3 stringWithFormat:@"%@: localizedName: %@, bundleId: %@, extensionBundleId: %@, teamId: %@, intents: %@, counterpartIds: %@, bundleURL: %@, documentTypes: %@", v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  localizedName = [(INAppDescriptor *)self localizedName];
+  bundleIdentifier = [(INAppDescriptor *)self bundleIdentifier];
+  extensionBundleIdentifier = [(INAppDescriptor *)self extensionBundleIdentifier];
+  teamIdentifier = [(INAppDescriptor *)self teamIdentifier];
+  supportedIntents = [(INAppDescriptor *)self supportedIntents];
+  counterpartIdentifiers = [(INAppDescriptor *)self counterpartIdentifiers];
+  bundleURL = [(INAppDescriptor *)self bundleURL];
+  documentTypes = [(INAppDescriptor *)self documentTypes];
+  v13 = [v3 stringWithFormat:@"%@: localizedName: %@, bundleId: %@, extensionBundleId: %@, teamId: %@, intents: %@, counterpartIds: %@, bundleURL: %@, documentTypes: %@", v4, localizedName, bundleIdentifier, extensionBundleIdentifier, teamIdentifier, supportedIntents, counterpartIdentifiers, bundleURL, documentTypes];
 
   return v13;
 }
 
-- (INAppDescriptor)descriptorWithRecord:(id)a3
+- (INAppDescriptor)descriptorWithRecord:(id)record
 {
-  v4 = self;
-  v5 = a3;
-  v6 = [v5 localizedName];
-  v7 = [v5 bundleIdentifier];
-  v8 = [(INAppDescriptor *)v4 extensionBundleIdentifier];
-  v9 = [v5 in_counterpartIdentifiers];
-  v10 = [v5 teamIdentifier];
-  v11 = [v5 in_supportedIntents];
-  v12 = [v5 URL];
-  v13 = [v5 in_documentTypes];
+  selfCopy = self;
+  recordCopy = record;
+  localizedName = [recordCopy localizedName];
+  bundleIdentifier = [recordCopy bundleIdentifier];
+  extensionBundleIdentifier = [(INAppDescriptor *)selfCopy extensionBundleIdentifier];
+  in_counterpartIdentifiers = [recordCopy in_counterpartIdentifiers];
+  teamIdentifier = [recordCopy teamIdentifier];
+  in_supportedIntents = [recordCopy in_supportedIntents];
+  v12 = [recordCopy URL];
+  in_documentTypes = [recordCopy in_documentTypes];
 
-  v14 = [(INAppDescriptor *)v4 initWithLocalizedName:v6 bundleIdentifier:v7 extensionBundleIdentifier:v8 counterpartIdentifiers:v9 teamIdentifier:v10 supportedIntents:v11 bundleURL:v12 documentTypes:v13];
+  v14 = [(INAppDescriptor *)selfCopy initWithLocalizedName:localizedName bundleIdentifier:bundleIdentifier extensionBundleIdentifier:extensionBundleIdentifier counterpartIdentifiers:in_counterpartIdentifiers teamIdentifier:teamIdentifier supportedIntents:in_supportedIntents bundleURL:v12 documentTypes:in_documentTypes];
 
   return v14;
 }
 
-- (INAppDescriptor)descriptorWithExtensionBundleIdentifier:(id)a3
+- (INAppDescriptor)descriptorWithExtensionBundleIdentifier:(id)identifier
 {
-  v4 = self;
-  v5 = a3;
-  v6 = [(INAppDescriptor *)v4 localizedName];
-  v7 = [(INAppDescriptor *)v4 bundleIdentifier];
-  v8 = [(INAppDescriptor *)v4 counterpartIdentifiers];
-  v9 = [(INAppDescriptor *)v4 teamIdentifier];
-  v10 = [(INAppDescriptor *)v4 supportedIntents];
-  v11 = [(INAppDescriptor *)v4 bundleURL];
-  v12 = [(INAppDescriptor *)v4 documentTypes];
-  v13 = [(INAppDescriptor *)v4 initWithLocalizedName:v6 bundleIdentifier:v7 extensionBundleIdentifier:v5 counterpartIdentifiers:v8 teamIdentifier:v9 supportedIntents:v10 bundleURL:v11 documentTypes:v12];
+  selfCopy = self;
+  identifierCopy = identifier;
+  localizedName = [(INAppDescriptor *)selfCopy localizedName];
+  bundleIdentifier = [(INAppDescriptor *)selfCopy bundleIdentifier];
+  counterpartIdentifiers = [(INAppDescriptor *)selfCopy counterpartIdentifiers];
+  teamIdentifier = [(INAppDescriptor *)selfCopy teamIdentifier];
+  supportedIntents = [(INAppDescriptor *)selfCopy supportedIntents];
+  bundleURL = [(INAppDescriptor *)selfCopy bundleURL];
+  documentTypes = [(INAppDescriptor *)selfCopy documentTypes];
+  v13 = [(INAppDescriptor *)selfCopy initWithLocalizedName:localizedName bundleIdentifier:bundleIdentifier extensionBundleIdentifier:identifierCopy counterpartIdentifiers:counterpartIdentifiers teamIdentifier:teamIdentifier supportedIntents:supportedIntents bundleURL:bundleURL documentTypes:documentTypes];
 
   return v13;
 }
 
-- (INAppDescriptor)initWithLocalizedName:(id)a3 bundleIdentifier:(id)a4 extensionBundleIdentifier:(id)a5 counterpartIdentifiers:(id)a6 teamIdentifier:(id)a7 supportedIntents:(id)a8 bundleURL:(id)a9 documentTypes:(id)a10
+- (INAppDescriptor)initWithLocalizedName:(id)name bundleIdentifier:(id)identifier extensionBundleIdentifier:(id)bundleIdentifier counterpartIdentifiers:(id)identifiers teamIdentifier:(id)teamIdentifier supportedIntents:(id)intents bundleURL:(id)l documentTypes:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
+  nameCopy = name;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  identifiersCopy = identifiers;
+  teamIdentifierCopy = teamIdentifier;
+  intentsCopy = intents;
+  lCopy = l;
+  typesCopy = types;
   v41.receiver = self;
   v41.super_class = INAppDescriptor;
   v24 = [(INAppDescriptor *)&v41 init];
   if (v24)
   {
-    v25 = [v16 copy];
+    v25 = [nameCopy copy];
     localizedName = v24->_localizedName;
     v24->_localizedName = v25;
 
-    v27 = [v17 copy];
+    v27 = [identifierCopy copy];
     bundleIdentifier = v24->_bundleIdentifier;
     v24->_bundleIdentifier = v27;
 
-    v29 = [v18 copy];
+    v29 = [bundleIdentifierCopy copy];
     extensionBundleIdentifier = v24->_extensionBundleIdentifier;
     v24->_extensionBundleIdentifier = v29;
 
-    v31 = [v19 copy];
+    v31 = [identifiersCopy copy];
     counterpartIdentifiers = v24->_counterpartIdentifiers;
     v24->_counterpartIdentifiers = v31;
 
-    v33 = [v20 copy];
+    v33 = [teamIdentifierCopy copy];
     teamIdentifier = v24->_teamIdentifier;
     v24->_teamIdentifier = v33;
 
-    v35 = [v21 copy];
+    v35 = [intentsCopy copy];
     supportedIntents = v24->_supportedIntents;
     v24->_supportedIntents = v35;
 
-    objc_storeStrong(&v24->_bundleURL, a9);
-    v37 = [v23 copy];
+    objc_storeStrong(&v24->_bundleURL, l);
+    v37 = [typesCopy copy];
     documentTypes = v24->_documentTypes;
     v24->_documentTypes = v37;
 
@@ -538,18 +538,18 @@ LABEL_65:
   return v24;
 }
 
-- (INAppDescriptor)initWithApplicationRecord:(id)a3
+- (INAppDescriptor)initWithApplicationRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 localizedName];
-  v6 = [v4 bundleIdentifier];
-  v7 = [v4 in_counterpartIdentifiers];
-  v8 = [v4 teamIdentifier];
-  v9 = [v4 in_supportedIntents];
-  v10 = [v4 URL];
-  v11 = [v4 in_documentTypes];
+  recordCopy = record;
+  localizedName = [recordCopy localizedName];
+  bundleIdentifier = [recordCopy bundleIdentifier];
+  in_counterpartIdentifiers = [recordCopy in_counterpartIdentifiers];
+  teamIdentifier = [recordCopy teamIdentifier];
+  in_supportedIntents = [recordCopy in_supportedIntents];
+  v10 = [recordCopy URL];
+  in_documentTypes = [recordCopy in_documentTypes];
 
-  v12 = [(INAppDescriptor *)self initWithLocalizedName:v5 bundleIdentifier:v6 extensionBundleIdentifier:0 counterpartIdentifiers:v7 teamIdentifier:v8 supportedIntents:v9 bundleURL:v10 documentTypes:v11];
+  v12 = [(INAppDescriptor *)self initWithLocalizedName:localizedName bundleIdentifier:bundleIdentifier extensionBundleIdentifier:0 counterpartIdentifiers:in_counterpartIdentifiers teamIdentifier:teamIdentifier supportedIntents:in_supportedIntents bundleURL:v10 documentTypes:in_documentTypes];
   return v12;
 }
 

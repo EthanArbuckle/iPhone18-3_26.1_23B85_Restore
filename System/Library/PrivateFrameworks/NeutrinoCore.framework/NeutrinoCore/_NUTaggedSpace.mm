@@ -1,14 +1,14 @@
 @interface _NUTaggedSpace
 - (BOOL)hasTransform;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTaggedImageSpace:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTaggedImageSpace:(id)space;
 - (_NUTaggedSpace)init;
-- (_NUTaggedSpace)initWithSpace:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (_NUTaggedSpace)initWithSpace:(id)space;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)tagNodes;
 - (unint64_t)hash;
-- (void)mergeSpace:(id)a3;
+- (void)mergeSpace:(id)space;
 @end
 
 @implementation _NUTaggedSpace
@@ -36,8 +36,8 @@
           objc_enumerationMutation(v4);
         }
 
-        v9 = [*(*(&v15 + 1) + 8 * i) name];
-        [v3 addObject:v9];
+        name = [*(*(&v15 + 1) + 8 * i) name];
+        [v3 addObject:name];
       }
 
       v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -54,16 +54,16 @@
   return v13;
 }
 
-- (BOOL)isEqualToTaggedImageSpace:(id)a3
+- (BOOL)isEqualToTaggedImageSpace:(id)space
 {
-  v4 = a3;
+  spaceCopy = space;
   space = self->_space;
-  v6 = [v4 space];
-  if ([(NUSpace *)space isEqual:v6])
+  space = [spaceCopy space];
+  if ([(NUSpace *)space isEqual:space])
   {
     tagNodes = self->_tagNodes;
-    v8 = [v4 tagNodes];
-    v9 = [(NSMutableArray *)tagNodes isEqualToArray:v8];
+    tagNodes = [spaceCopy tagNodes];
+    v9 = [(NSMutableArray *)tagNodes isEqualToArray:tagNodes];
   }
 
   else
@@ -74,11 +74,11 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_NUTaggedSpace *)self isEqualToTaggedImageSpace:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(_NUTaggedSpace *)self isEqualToTaggedImageSpace:equalCopy];
 
   return v5;
 }
@@ -90,11 +90,11 @@
   return [(_NUTaggedSpace *)&v3 hash];
 }
 
-- (void)mergeSpace:(id)a3
+- (void)mergeSpace:(id)space
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  spaceCopy = space;
+  if (!spaceCopy)
   {
     v7 = NUAssertLogger_9883();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -115,8 +115,8 @@
         v14 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v15 = MEMORY[0x1E696AF00];
         v16 = v14;
-        v17 = [v15 callStackSymbols];
-        v18 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v15 callStackSymbols];
+        v18 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v25 = v14;
         v26 = 2114;
@@ -127,8 +127,8 @@
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v25 = v13;
       _os_log_error_impl(&dword_1C0184000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -138,9 +138,9 @@
   }
 
   tagNodes = self->_tagNodes;
-  v23 = v4;
-  v6 = [v4 tagNodes];
-  [(NSMutableArray *)tagNodes addObjectsFromArray:v6];
+  v23 = spaceCopy;
+  tagNodes = [spaceCopy tagNodes];
+  [(NSMutableArray *)tagNodes addObjectsFromArray:tagNodes];
 }
 
 - (id)tagNodes
@@ -152,13 +152,13 @@
 
 - (BOOL)hasTransform
 {
-  v2 = [(NUSpace *)self->_space transformStack];
-  v3 = [v2 count] != 0;
+  transformStack = [(NUSpace *)self->_space transformStack];
+  v3 = [transformStack count] != 0;
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [(NUSpace *)self->_space copy];
   v6 = [[_NUTaggedSpace allocWithZone:?], "initWithSpace:", v5];
@@ -167,11 +167,11 @@
   return v6;
 }
 
-- (_NUTaggedSpace)initWithSpace:(id)a3
+- (_NUTaggedSpace)initWithSpace:(id)space
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  spaceCopy = space;
+  if (!spaceCopy)
   {
     v12 = NUAssertLogger_9883();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -192,8 +192,8 @@
         v19 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v20 = MEMORY[0x1E696AF00];
         v21 = v19;
-        v22 = [v20 callStackSymbols];
-        v23 = [v22 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v20 callStackSymbols];
+        v23 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v30 = v19;
         v31 = 2114;
@@ -204,8 +204,8 @@
 
     else if (v16)
     {
-      v17 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v18 = [v17 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v18 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v18;
       _os_log_error_impl(&dword_1C0184000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -214,14 +214,14 @@
     _NUAssertFailHandler("[_NUTaggedSpace initWithSpace:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/NUGeometrySpaceMap.m", 54, @"Invalid parameter not satisfying: %s", v24, v25, v26, v27, "space");
   }
 
-  v6 = v5;
+  v6 = spaceCopy;
   v28.receiver = self;
   v28.super_class = _NUTaggedSpace;
   v7 = [(_NUTaggedSpace *)&v28 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_space, a3);
+    objc_storeStrong(&v7->_space, space);
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     tagNodes = v8->_tagNodes;
     v8->_tagNodes = v9;
@@ -276,8 +276,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -293,8 +293,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;

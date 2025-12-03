@@ -1,18 +1,18 @@
 @interface WCM_Server
-+ (id)allocWithZone:(_NSZone *)a3;
++ (id)allocWithZone:(_NSZone *)zone;
 + (id)singleton;
 - (WCM_Server)init;
-- (id)getSessionFor:(int)a3;
-- (id)getSessionSync:(int)a3;
-- (void)addSessionToList:(id)a3;
+- (id)getSessionFor:(int)for;
+- (id)getSessionSync:(int)sync;
+- (void)addSessionToList:(id)list;
 - (void)dealloc;
 - (void)enterTestMode;
 - (void)existingSessions;
 - (void)exitTestMode;
-- (void)handleConnection:(id)a3;
-- (void)handleEvent:(id)a3;
-- (void)handleXPCEvent:(id)a3;
-- (void)removeSessionFromList:(id)a3;
+- (void)handleConnection:(id)connection;
+- (void)handleEvent:(id)event;
+- (void)handleXPCEvent:(id)event;
+- (void)removeSessionFromList:(id)list;
 - (void)startService;
 @end
 
@@ -23,7 +23,7 @@
   result = qword_1002B7E68;
   if (!qword_1002B7E68)
   {
-    v4.receiver = a1;
+    v4.receiver = self;
     v4.super_class = &OBJC_METACLASS___WCM_Server;
     result = [objc_msgSendSuper2(&v4 allocWithZone:{0), "init"}];
     qword_1002B7E68 = result;
@@ -32,11 +32,11 @@
   return result;
 }
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  v3 = [a1 singleton];
+  singleton = [self singleton];
 
-  return v3;
+  return singleton;
 }
 
 - (WCM_Server)init
@@ -100,7 +100,7 @@
   xpc_connection_resume(self->mConnection);
 }
 
-- (void)handleEvent:(id)a3
+- (void)handleEvent:(id)event
 {
   mQueue = self->mQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -108,65 +108,65 @@
   v4[2] = sub_1000866DC;
   v4[3] = &unk_10023DC80;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = event;
   dispatch_async(mQueue, v4);
 }
 
-- (void)handleXPCEvent:(id)a3
+- (void)handleXPCEvent:(id)event
 {
-  type = xpc_get_type(a3);
-  [WCM_Logging logLevel:2 message:@"WCM_Server: Handling XPC Event : %@", a3];
+  type = xpc_get_type(event);
+  [WCM_Logging logLevel:2 message:@"WCM_Server: Handling XPC Event : %@", event];
   if (type == &_xpc_type_connection)
   {
     [WCM_Logging logLevel:2 message:@"WCM_Server: Handling XPC Connection Event"];
 
-    [(WCM_Server *)self handleConnection:a3];
+    [(WCM_Server *)self handleConnection:event];
   }
 
   else if (type == &_xpc_type_error)
   {
-    [WCM_Logging logLevel:0 message:@"WCM_Server: XPC server error: %s", xpc_dictionary_get_string(a3, _xpc_error_key_description)];
+    [WCM_Logging logLevel:0 message:@"WCM_Server: XPC server error: %s", xpc_dictionary_get_string(event, _xpc_error_key_description)];
   }
 
   else if (type == &_xpc_type_dictionary)
   {
-    [WCM_Logging logLevel:2 message:@"Received new message %@", a3];
+    [WCM_Logging logLevel:2 message:@"Received new message %@", event];
   }
 
   else
   {
-    v6 = xpc_copy_description(a3);
+    v6 = xpc_copy_description(event);
     [WCM_Logging logLevel:0 message:@"Unexpected XPC server event: %s", v6];
 
     free(v6);
   }
 }
 
-- (void)handleConnection:(id)a3
+- (void)handleConnection:(id)connection
 {
   if (!self->testMode)
   {
     v6 = objc_alloc_init(WCM_Session);
-    [(WCM_Session *)v6 initWithConnection:a3];
+    [(WCM_Session *)v6 initWithConnection:connection];
     [(WCM_Server *)self addSessionToList:v6];
   }
 }
 
-- (void)addSessionToList:(id)a3
+- (void)addSessionToList:(id)list
 {
-  [(NSMutableArray *)self->mClientSessions addObject:a3];
+  [(NSMutableArray *)self->mClientSessions addObject:list];
 
   [(WCM_Server *)self existingSessions];
 }
 
-- (void)removeSessionFromList:(id)a3
+- (void)removeSessionFromList:(id)list
 {
-  [(NSMutableArray *)self->mClientSessions removeObject:a3];
+  [(NSMutableArray *)self->mClientSessions removeObject:list];
 
   [(WCM_Server *)self existingSessions];
 }
 
-- (id)getSessionFor:(int)a3
+- (id)getSessionFor:(int)for
 {
   v8 = 0;
   v9 = &v8;
@@ -179,7 +179,7 @@
   block[1] = 3221225472;
   block[2] = sub_100086A20;
   block[3] = &unk_10023F958;
-  v7 = a3;
+  forCopy = for;
   block[4] = self;
   block[5] = &v8;
   dispatch_async(mQueue, block);
@@ -188,7 +188,7 @@
   return v4;
 }
 
-- (id)getSessionSync:(int)a3
+- (id)getSessionSync:(int)sync
 {
   [(WCM_Server *)self existingSessions];
   v14 = 0u;
@@ -214,7 +214,7 @@ LABEL_3:
     }
 
     v10 = *(*(&v12 + 1) + 8 * v9);
-    if ([v10 getProcessId] == a3)
+    if ([v10 getProcessId] == sync)
     {
       return v10;
     }

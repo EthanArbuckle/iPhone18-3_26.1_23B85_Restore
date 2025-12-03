@@ -1,19 +1,19 @@
 @interface HMDPrimaryResidentChangeMonitor
 + (id)logCategory;
 - (BOOL)dataSourceHasResidentDevices;
-- (HMDPrimaryResidentChangeMonitor)initWithIdentifier:(id)a3 notificationCenter:(id)a4;
+- (HMDPrimaryResidentChangeMonitor)initWithIdentifier:(id)identifier notificationCenter:(id)center;
 - (HMDPrimaryResidentChangeMonitorDataSource)dataSource;
 - (id)confirmedPrimaryResidentDevice;
 - (id)logIdentifier;
-- (void)configureWithHome:(id)a3;
+- (void)configureWithHome:(id)home;
 - (void)notifyChangeToConfirmedPrimaryResidentDeviceIdentifier;
 - (void)notifyChangeToHasResidentDevices;
 - (void)notifyChangeToIsCurrentPrimaryResident;
-- (void)refreshConfirmedPrimaryResidentDeviceIdentifierWithDevice:(id)a3;
-- (void)refreshCurrentDevicePrimaryResidentWithDevice:(id)a3;
+- (void)refreshConfirmedPrimaryResidentDeviceIdentifierWithDevice:(id)device;
+- (void)refreshCurrentDevicePrimaryResidentWithDevice:(id)device;
 - (void)refreshHasResidentDevices;
 - (void)refreshMonitor;
-- (void)registerForNotificationsWithHome:(id)a3;
+- (void)registerForNotificationsWithHome:(id)home;
 @end
 
 @implementation HMDPrimaryResidentChangeMonitor
@@ -27,23 +27,23 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDPrimaryResidentChangeMonitor *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMDPrimaryResidentChangeMonitor *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (void)notifyChangeToHasResidentDevices
 {
-  v3 = [(HMDPrimaryResidentChangeMonitor *)self notificationCenter];
-  [v3 postNotificationName:@"HMDPrimaryResidentChangeMonitorHasResidentDevicesChangeNotification" object:self];
+  notificationCenter = [(HMDPrimaryResidentChangeMonitor *)self notificationCenter];
+  [notificationCenter postNotificationName:@"HMDPrimaryResidentChangeMonitorHasResidentDevicesChangeNotification" object:self];
 }
 
 - (void)notifyChangeToConfirmedPrimaryResidentDeviceIdentifier
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -54,8 +54,8 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDPrimaryResidentChangeMonitor *)v4 notificationCenter];
-  [v7 postNotificationName:@"HMDPrimaryResidentChangeMonitorConfirmedDeviceIdentifierChangeNotification" object:v4];
+  notificationCenter = [(HMDPrimaryResidentChangeMonitor *)selfCopy notificationCenter];
+  [notificationCenter postNotificationName:@"HMDPrimaryResidentChangeMonitorConfirmedDeviceIdentifierChangeNotification" object:selfCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -64,7 +64,7 @@
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -75,8 +75,8 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDPrimaryResidentChangeMonitor *)v4 notificationCenter];
-  [v7 postNotificationName:@"HMDPrimaryResidentChangeMonitorIsCurrentDeviceChangeNotification" object:v4];
+  notificationCenter = [(HMDPrimaryResidentChangeMonitor *)selfCopy notificationCenter];
+  [notificationCenter postNotificationName:@"HMDPrimaryResidentChangeMonitorIsCurrentDeviceChangeNotification" object:selfCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -84,17 +84,17 @@
 - (BOOL)dataSourceHasResidentDevices
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPrimaryResidentChangeMonitor *)self dataSource];
-  v4 = v3;
-  if (v3)
+  dataSource = [(HMDPrimaryResidentChangeMonitor *)self dataSource];
+  v4 = dataSource;
+  if (dataSource)
   {
-    v5 = [v3 hasResidentDevicesForPrimaryResidentChangeMonitor:self];
+    v5 = [dataSource hasResidentDevicesForPrimaryResidentChangeMonitor:self];
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -115,17 +115,17 @@
 - (id)confirmedPrimaryResidentDevice
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPrimaryResidentChangeMonitor *)self dataSource];
-  v4 = v3;
-  if (v3)
+  dataSource = [(HMDPrimaryResidentChangeMonitor *)self dataSource];
+  v4 = dataSource;
+  if (dataSource)
   {
-    v5 = [v3 confirmedPrimaryResidentDeviceForPrimaryResidentChangeMonitor:self];
+    v5 = [dataSource confirmedPrimaryResidentDeviceForPrimaryResidentChangeMonitor:self];
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -147,11 +147,11 @@
 - (void)refreshHasResidentDevices
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPrimaryResidentChangeMonitor *)self dataSourceHasResidentDevices];
-  if (v3 != [(HMDPrimaryResidentChangeMonitor *)self hasResidentDevices])
+  dataSourceHasResidentDevices = [(HMDPrimaryResidentChangeMonitor *)self dataSourceHasResidentDevices];
+  if (dataSourceHasResidentDevices != [(HMDPrimaryResidentChangeMonitor *)self hasResidentDevices])
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -165,35 +165,35 @@
     }
 
     objc_autoreleasePoolPop(v4);
-    [(HMDPrimaryResidentChangeMonitor *)v5 setHasResidentDevices:v3];
-    [(HMDPrimaryResidentChangeMonitor *)v5 notifyChangeToHasResidentDevices];
+    [(HMDPrimaryResidentChangeMonitor *)selfCopy setHasResidentDevices:dataSourceHasResidentDevices];
+    [(HMDPrimaryResidentChangeMonitor *)selfCopy notifyChangeToHasResidentDevices];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)refreshConfirmedPrimaryResidentDeviceIdentifierWithDevice:(id)a3
+- (void)refreshConfirmedPrimaryResidentDeviceIdentifierWithDevice:(id)device
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  deviceCopy = device;
+  v5 = deviceCopy;
+  if (deviceCopy)
   {
-    v6 = [v4 identifier];
+    identifier = [deviceCopy identifier];
   }
 
   else
   {
-    v6 = 0;
+    identifier = 0;
   }
 
-  v7 = [(HMDPrimaryResidentChangeMonitor *)self confirmedPrimaryResidentDeviceIdentifier];
+  confirmedPrimaryResidentDeviceIdentifier = [(HMDPrimaryResidentChangeMonitor *)self confirmedPrimaryResidentDeviceIdentifier];
   v8 = HMFEqualObjects();
 
   if ((v8 & 1) == 0)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -201,29 +201,29 @@
       v14 = 138543874;
       v15 = v12;
       v16 = 2112;
-      v17 = v6;
+      v17 = identifier;
       v18 = 2112;
       v19 = v5;
       _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Updating confirmed primary resident device identifier: %@ using device: %@", &v14, 0x20u);
     }
 
     objc_autoreleasePoolPop(v9);
-    [(HMDPrimaryResidentChangeMonitor *)v10 setConfirmedPrimaryResidentDeviceIdentifier:v6];
-    [(HMDPrimaryResidentChangeMonitor *)v10 notifyChangeToConfirmedPrimaryResidentDeviceIdentifier];
+    [(HMDPrimaryResidentChangeMonitor *)selfCopy setConfirmedPrimaryResidentDeviceIdentifier:identifier];
+    [(HMDPrimaryResidentChangeMonitor *)selfCopy notifyChangeToConfirmedPrimaryResidentDeviceIdentifier];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)refreshCurrentDevicePrimaryResidentWithDevice:(id)a3
+- (void)refreshCurrentDevicePrimaryResidentWithDevice:(id)device
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  deviceCopy = device;
+  v5 = deviceCopy;
+  if (deviceCopy)
   {
-    v6 = [v4 isCurrentDevice];
-    if (v6 == [(HMDPrimaryResidentChangeMonitor *)self isCurrentDevicePrimaryResident])
+    isCurrentDevice = [deviceCopy isCurrentDevice];
+    if (isCurrentDevice == [(HMDPrimaryResidentChangeMonitor *)self isCurrentDevicePrimaryResident])
     {
       goto LABEL_9;
     }
@@ -236,11 +236,11 @@
       goto LABEL_9;
     }
 
-    v6 = 0;
+    isCurrentDevice = 0;
   }
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -256,8 +256,8 @@
   }
 
   objc_autoreleasePoolPop(v7);
-  [(HMDPrimaryResidentChangeMonitor *)v8 setIsCurrentDevicePrimaryResident:v6];
-  [(HMDPrimaryResidentChangeMonitor *)v8 notifyChangeToIsCurrentPrimaryResident];
+  [(HMDPrimaryResidentChangeMonitor *)selfCopy setIsCurrentDevicePrimaryResident:isCurrentDevice];
+  [(HMDPrimaryResidentChangeMonitor *)selfCopy notifyChangeToIsCurrentPrimaryResident];
 LABEL_9:
 
   v12 = *MEMORY[0x277D85DE8];
@@ -265,44 +265,44 @@ LABEL_9:
 
 - (void)refreshMonitor
 {
-  v3 = [(HMDPrimaryResidentChangeMonitor *)self confirmedPrimaryResidentDevice];
-  [(HMDPrimaryResidentChangeMonitor *)self refreshCurrentDevicePrimaryResidentWithDevice:v3];
-  [(HMDPrimaryResidentChangeMonitor *)self refreshConfirmedPrimaryResidentDeviceIdentifierWithDevice:v3];
+  confirmedPrimaryResidentDevice = [(HMDPrimaryResidentChangeMonitor *)self confirmedPrimaryResidentDevice];
+  [(HMDPrimaryResidentChangeMonitor *)self refreshCurrentDevicePrimaryResidentWithDevice:confirmedPrimaryResidentDevice];
+  [(HMDPrimaryResidentChangeMonitor *)self refreshConfirmedPrimaryResidentDeviceIdentifierWithDevice:confirmedPrimaryResidentDevice];
   [(HMDPrimaryResidentChangeMonitor *)self refreshHasResidentDevices];
 }
 
-- (void)registerForNotificationsWithHome:(id)a3
+- (void)registerForNotificationsWithHome:(id)home
 {
-  v4 = a3;
-  v6 = [(HMDPrimaryResidentChangeMonitor *)self notificationCenter];
-  [v6 addObserver:self selector:sel_handlePrimaryResidentChangedNotification_ name:@"HMDResidentDeviceManagerAddResidentNotification" object:0];
-  [v6 addObserver:self selector:sel_handlePrimaryResidentChangedNotification_ name:@"HMDResidentDeviceManagerRemoveResidentNotification" object:0];
-  [v6 addObserver:self selector:sel_handlePrimaryResidentChangedNotification_ name:@"HMDResidentDeviceConfirmedStateChangedNotification" object:0];
-  [v6 addObserver:self selector:sel_handlePrimaryResidentChangedNotification_ name:@"HMDResidentDeviceManagerUpdateResidentNotification" object:0];
-  v5 = [v4 residentDeviceManager];
+  homeCopy = home;
+  notificationCenter = [(HMDPrimaryResidentChangeMonitor *)self notificationCenter];
+  [notificationCenter addObserver:self selector:sel_handlePrimaryResidentChangedNotification_ name:@"HMDResidentDeviceManagerAddResidentNotification" object:0];
+  [notificationCenter addObserver:self selector:sel_handlePrimaryResidentChangedNotification_ name:@"HMDResidentDeviceManagerRemoveResidentNotification" object:0];
+  [notificationCenter addObserver:self selector:sel_handlePrimaryResidentChangedNotification_ name:@"HMDResidentDeviceConfirmedStateChangedNotification" object:0];
+  [notificationCenter addObserver:self selector:sel_handlePrimaryResidentChangedNotification_ name:@"HMDResidentDeviceManagerUpdateResidentNotification" object:0];
+  residentDeviceManager = [homeCopy residentDeviceManager];
 
-  [v6 addObserver:self selector:sel_handlePrimaryResidentChangedNotification_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:v5];
+  [notificationCenter addObserver:self selector:sel_handlePrimaryResidentChangedNotification_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:residentDeviceManager];
 }
 
-- (void)configureWithHome:(id)a3
+- (void)configureWithHome:(id)home
 {
-  [(HMDPrimaryResidentChangeMonitor *)self registerForNotificationsWithHome:a3];
+  [(HMDPrimaryResidentChangeMonitor *)self registerForNotificationsWithHome:home];
 
   [(HMDPrimaryResidentChangeMonitor *)self refreshMonitor];
 }
 
-- (HMDPrimaryResidentChangeMonitor)initWithIdentifier:(id)a3 notificationCenter:(id)a4
+- (HMDPrimaryResidentChangeMonitor)initWithIdentifier:(id)identifier notificationCenter:(id)center
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  centerCopy = center;
+  if (!identifierCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = centerCopy;
+  if (!centerCopy)
   {
 LABEL_7:
     v14 = _HMFPreconditionFailure();
@@ -315,8 +315,8 @@ LABEL_7:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_identifier, a3);
-    objc_storeStrong(&v11->_notificationCenter, a4);
+    objc_storeStrong(&v10->_identifier, identifier);
+    objc_storeStrong(&v11->_notificationCenter, center);
     confirmedPrimaryResidentDeviceIdentifier = v11->_confirmedPrimaryResidentDeviceIdentifier;
     v11->_confirmedPrimaryResidentDeviceIdentifier = 0;
   }

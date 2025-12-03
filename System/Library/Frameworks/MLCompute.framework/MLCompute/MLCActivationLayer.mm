@@ -27,10 +27,10 @@
 + (MLCActivationLayer)tanhLayer;
 + (MLCActivationLayer)tanhShrinkLayer;
 + (MLCActivationLayer)thresholdLayerWithThreshold:(float)threshold replacement:(float)replacement;
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5;
-- (MLCActivationLayer)initWithDescriptor:(id)a3;
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor;
+- (MLCActivationLayer)initWithDescriptor:(id)descriptor;
 - (id)description;
-- (id)resultTensorFromSources:(id)a3;
+- (id)resultTensorFromSources:(id)sources;
 - (id)summarizedDOTDescription;
 @end
 
@@ -39,7 +39,7 @@
 + (MLCActivationLayer)reluLayer
 {
   v3 = [MLCActivationDescriptor descriptorWithType:1 a:0.0];
-  v4 = [[a1 alloc] initWithDescriptor:v3];
+  v4 = [[self alloc] initWithDescriptor:v3];
 
   return v4;
 }
@@ -48,7 +48,7 @@
 {
   LODWORD(v2) = 6.0;
   v4 = [MLCActivationDescriptor descriptorWithType:10 a:0.0 b:v2];
-  v5 = [[a1 alloc] initWithDescriptor:v4];
+  v5 = [[self alloc] initWithDescriptor:v4];
 
   return v5;
 }
@@ -57,7 +57,7 @@
 {
   LODWORD(v2) = 1008981770;
   v4 = [MLCActivationDescriptor descriptorWithType:1 a:v2];
-  v5 = [[a1 alloc] initWithDescriptor:v4];
+  v5 = [[self alloc] initWithDescriptor:v4];
 
   return v5;
 }
@@ -65,7 +65,7 @@
 + (MLCActivationLayer)leakyReLULayerWithNegativeSlope:(float)negativeSlope
 {
   v4 = [MLCActivationDescriptor descriptorWithType:1 a:?];
-  v5 = [[a1 alloc] initWithDescriptor:v4];
+  v5 = [[self alloc] initWithDescriptor:v4];
 
   return v5;
 }
@@ -73,7 +73,7 @@
 + (MLCActivationLayer)linearLayerWithScale:(float)scale bias:(float)bias
 {
   v5 = [MLCActivationDescriptor descriptorWithType:"descriptorWithType:a:b:" a:2 b:?];
-  v6 = [[a1 alloc] initWithDescriptor:v5];
+  v6 = [[self alloc] initWithDescriptor:v5];
 
   return v6;
 }
@@ -81,7 +81,7 @@
 + (MLCActivationLayer)sigmoidLayer
 {
   v3 = [MLCActivationDescriptor descriptorWithType:3];
-  v4 = [[a1 alloc] initWithDescriptor:v3];
+  v4 = [[self alloc] initWithDescriptor:v3];
 
   return v4;
 }
@@ -91,7 +91,7 @@
   LODWORD(v2) = 1045220557;
   LODWORD(v3) = 0.5;
   v5 = [MLCActivationDescriptor descriptorWithType:4 a:v2 b:v3];
-  v6 = [[a1 alloc] initWithDescriptor:v5];
+  v6 = [[self alloc] initWithDescriptor:v5];
 
   return v6;
 }
@@ -101,7 +101,7 @@
   LODWORD(v2) = 1.0;
   LODWORD(v3) = 1.0;
   v5 = [MLCActivationDescriptor descriptorWithType:5 a:v2 b:v3];
-  v6 = [[a1 alloc] initWithDescriptor:v5];
+  v6 = [[self alloc] initWithDescriptor:v5];
 
   return v6;
 }
@@ -109,7 +109,7 @@
 + (MLCActivationLayer)absoluteLayer
 {
   v3 = [MLCActivationDescriptor descriptorWithType:6];
-  v4 = [[a1 alloc] initWithDescriptor:v3];
+  v4 = [[self alloc] initWithDescriptor:v3];
 
   return v4;
 }
@@ -119,7 +119,7 @@
   LODWORD(v2) = 1.0;
   LODWORD(v3) = 1.0;
   v5 = [MLCActivationDescriptor descriptorWithType:7 a:v2 b:v3];
-  v6 = [[a1 alloc] initWithDescriptor:v5];
+  v6 = [[self alloc] initWithDescriptor:v5];
 
   return v6;
 }
@@ -127,7 +127,7 @@
 + (MLCActivationLayer)softSignLayer
 {
   v3 = [MLCActivationDescriptor descriptorWithType:8];
-  v4 = [[a1 alloc] initWithDescriptor:v3];
+  v4 = [[self alloc] initWithDescriptor:v3];
 
   return v4;
 }
@@ -136,7 +136,7 @@
 {
   LODWORD(v2) = 1.0;
   v4 = [MLCActivationDescriptor descriptorWithType:9 a:v2];
-  v5 = [[a1 alloc] initWithDescriptor:v4];
+  v5 = [[self alloc] initWithDescriptor:v4];
 
   return v5;
 }
@@ -144,7 +144,7 @@
 + (MLCActivationLayer)eluLayerWithA:(float)a
 {
   v4 = [MLCActivationDescriptor descriptorWithType:9 a:?];
-  v5 = [[a1 alloc] initWithDescriptor:v4];
+  v5 = [[self alloc] initWithDescriptor:v4];
 
   return v5;
 }
@@ -152,7 +152,7 @@
 + (MLCActivationLayer)relunLayerWithA:(float)a b:(float)b
 {
   v5 = [MLCActivationDescriptor descriptorWithType:"descriptorWithType:a:b:" a:10 b:?];
-  v6 = [[a1 alloc] initWithDescriptor:v5];
+  v6 = [[self alloc] initWithDescriptor:v5];
 
   return v6;
 }
@@ -160,7 +160,7 @@
 + (MLCActivationLayer)logSigmoidLayer
 {
   v3 = [MLCActivationDescriptor descriptorWithType:11];
-  v4 = [[a1 alloc] initWithDescriptor:v3];
+  v4 = [[self alloc] initWithDescriptor:v3];
 
   return v4;
 }
@@ -168,7 +168,7 @@
 + (MLCActivationLayer)seluLayer
 {
   v3 = [MLCActivationDescriptor descriptorWithType:12];
-  v4 = [[a1 alloc] initWithDescriptor:v3];
+  v4 = [[self alloc] initWithDescriptor:v3];
 
   return v4;
 }
@@ -177,7 +177,7 @@
 {
   LODWORD(v2) = 1.0;
   v4 = [MLCActivationDescriptor descriptorWithType:13 a:v2];
-  v5 = [[a1 alloc] initWithDescriptor:v4];
+  v5 = [[self alloc] initWithDescriptor:v4];
 
   return v5;
 }
@@ -185,7 +185,7 @@
 + (MLCActivationLayer)celuLayerWithA:(float)a
 {
   v4 = [MLCActivationDescriptor descriptorWithType:13 a:?];
-  v5 = [[a1 alloc] initWithDescriptor:v4];
+  v5 = [[self alloc] initWithDescriptor:v4];
 
   return v5;
 }
@@ -194,7 +194,7 @@
 {
   LODWORD(v2) = 0.5;
   v4 = [MLCActivationDescriptor descriptorWithType:14 a:v2];
-  v5 = [[a1 alloc] initWithDescriptor:v4];
+  v5 = [[self alloc] initWithDescriptor:v4];
 
   return v5;
 }
@@ -202,7 +202,7 @@
 + (MLCActivationLayer)hardShrinkLayerWithA:(float)a
 {
   v4 = [MLCActivationDescriptor descriptorWithType:14 a:?];
-  v5 = [[a1 alloc] initWithDescriptor:v4];
+  v5 = [[self alloc] initWithDescriptor:v4];
 
   return v5;
 }
@@ -211,7 +211,7 @@
 {
   LODWORD(v2) = 0.5;
   v4 = [MLCActivationDescriptor descriptorWithType:15 a:v2];
-  v5 = [[a1 alloc] initWithDescriptor:v4];
+  v5 = [[self alloc] initWithDescriptor:v4];
 
   return v5;
 }
@@ -219,7 +219,7 @@
 + (MLCActivationLayer)softShrinkLayerWithA:(float)a
 {
   v4 = [MLCActivationDescriptor descriptorWithType:15 a:?];
-  v5 = [[a1 alloc] initWithDescriptor:v4];
+  v5 = [[self alloc] initWithDescriptor:v4];
 
   return v5;
 }
@@ -227,7 +227,7 @@
 + (MLCActivationLayer)tanhShrinkLayer
 {
   v3 = [MLCActivationDescriptor descriptorWithType:16 a:0.0];
-  v4 = [[a1 alloc] initWithDescriptor:v3];
+  v4 = [[self alloc] initWithDescriptor:v3];
 
   return v4;
 }
@@ -235,7 +235,7 @@
 + (MLCActivationLayer)thresholdLayerWithThreshold:(float)threshold replacement:(float)replacement
 {
   v5 = [MLCActivationDescriptor descriptorWithType:"descriptorWithType:a:b:" a:17 b:?];
-  v6 = [[a1 alloc] initWithDescriptor:v5];
+  v6 = [[self alloc] initWithDescriptor:v5];
 
   return v6;
 }
@@ -245,7 +245,7 @@
   LODWORD(v2) = *"*BL?";
   LODWORD(v3) = 1027024659;
   v5 = [MLCActivationDescriptor descriptorWithType:18 a:v2 b:v3];
-  v6 = [[a1 alloc] initWithDescriptor:v5];
+  v6 = [[self alloc] initWithDescriptor:v5];
 
   return v6;
 }
@@ -253,7 +253,7 @@
 + (MLCActivationLayer)hardSwishLayer
 {
   v3 = [MLCActivationDescriptor descriptorWithType:19];
-  v4 = [[a1 alloc] initWithDescriptor:v3];
+  v4 = [[self alloc] initWithDescriptor:v3];
 
   return v4;
 }
@@ -261,7 +261,7 @@
 + (MLCActivationLayer)clampLayerWithMinValue:(float)minValue maxValue:(float)maxValue
 {
   v5 = [MLCActivationDescriptor descriptorWithType:"descriptorWithType:a:b:" a:20 b:?];
-  v6 = [[a1 alloc] initWithDescriptor:v5];
+  v6 = [[self alloc] initWithDescriptor:v5];
 
   return v6;
 }
@@ -269,38 +269,38 @@
 + (MLCActivationLayer)layerWithDescriptor:(MLCActivationDescriptor *)descriptor
 {
   v4 = descriptor;
-  v5 = [[a1 alloc] initWithDescriptor:v4];
+  v5 = [[self alloc] initWithDescriptor:v4];
 
   return v5;
 }
 
-- (MLCActivationLayer)initWithDescriptor:(id)a3
+- (MLCActivationLayer)initWithDescriptor:(id)descriptor
 {
-  v5 = a3;
+  descriptorCopy = descriptor;
   v9.receiver = self;
   v9.super_class = MLCActivationLayer;
   v6 = [(MLCLayer *)&v9 initWithLabel:@"Activation"];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_descriptor, a3);
+    objc_storeStrong(&v6->_descriptor, descriptor);
   }
 
   return v7;
 }
 
-- (BOOL)compileForDevice:(id)a3 sourceTensors:(id)a4 resultTensor:(id)a5
+- (BOOL)compileForDevice:(id)device sourceTensors:(id)tensors resultTensor:(id)tensor
 {
   v41 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [(MLCActivationLayer *)self descriptor];
-  v13 = [v10 objectAtIndexedSubscript:0];
-  v14 = [v13 descriptor];
-  v15 = [v14 dataType];
+  deviceCopy = device;
+  tensorsCopy = tensors;
+  tensorCopy = tensor;
+  descriptor = [(MLCActivationLayer *)self descriptor];
+  v13 = [tensorsCopy objectAtIndexedSubscript:0];
+  descriptor2 = [v13 descriptor];
+  dataType = [descriptor2 dataType];
 
-  if (![(MLCLayer *)MLCActivationLayer supportsDataType:v15 onDevice:v9])
+  if (![(MLCLayer *)MLCActivationLayer supportsDataType:dataType onDevice:deviceCopy])
   {
     v23 = +[MLCLog framework];
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -309,24 +309,24 @@
       *buf = 138412802;
       v36 = v32;
       v37 = 1024;
-      v38 = v15;
+      v38 = dataType;
       v39 = 2112;
-      v40 = v9;
+      v40 = deviceCopy;
       _os_log_error_impl(&dword_238C1D000, v23, OS_LOG_TYPE_ERROR, "%@: activation layer with data type = %d is not supported on a device = %@", buf, 0x1Cu);
     }
 
     goto LABEL_20;
   }
 
-  v16 = [(MLCLayer *)self fusedLayers];
-  v17 = [v16 count];
+  fusedLayers = [(MLCLayer *)self fusedLayers];
+  v17 = [fusedLayers count];
 
   if (v17)
   {
     v34 = 0;
     *buf = 0;
-    v18 = [(MLCLayer *)self fusedLayers];
-    v19 = [v18 mutableCopy];
+    fusedLayers2 = [(MLCLayer *)self fusedLayers];
+    v19 = [fusedLayers2 mutableCopy];
 
     if ([MLCPatternMatcher canTransformToReLUNFromLayer:self stopGradientTensorList:0 fusedLayers:v19 alpha:buf beta:&v34])
     {
@@ -363,11 +363,11 @@
 
     v25 = v22;
 
-    v12 = v25;
+    descriptor = v25;
   }
 
-  v26 = [v9 computeEngine];
-  v19 = [v26 neuronLayerWithDescriptor:v12];
+  computeEngine = [deviceCopy computeEngine];
+  v19 = [computeEngine neuronLayerWithDescriptor:descriptor];
 
   if (!v19 || ![v19 count])
   {
@@ -384,45 +384,45 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v27 = [v9 computeEngine];
-  v28 = [v27 compileLayerDeviceOps:v19 sourceTensors:v10 resultTensor:v11];
+  computeEngine2 = [deviceCopy computeEngine];
+  v28 = [computeEngine2 compileLayerDeviceOps:v19 sourceTensors:tensorsCopy resultTensor:tensorCopy];
 
   v33.receiver = self;
   v33.super_class = MLCActivationLayer;
-  [(MLCLayer *)&v33 bindDevice:v9 deviceOps:v19];
+  [(MLCLayer *)&v33 bindDevice:deviceCopy deviceOps:v19];
 
 LABEL_21:
   v30 = *MEMORY[0x277D85DE8];
   return v28;
 }
 
-- (id)resultTensorFromSources:(id)a3
+- (id)resultTensorFromSources:(id)sources
 {
-  v3 = a3;
+  sourcesCopy = sources;
   v4 = [MEMORY[0x277CBEBF8] mutableCopy];
   for (i = 0; ; ++i)
   {
-    v6 = [v3 objectAtIndexedSubscript:0];
-    v7 = [v6 descriptor];
-    v8 = [v7 shape];
-    v9 = [v8 count];
+    v6 = [sourcesCopy objectAtIndexedSubscript:0];
+    descriptor = [v6 descriptor];
+    shape = [descriptor shape];
+    v9 = [shape count];
 
     if (i >= v9)
     {
       break;
     }
 
-    v10 = [v3 objectAtIndexedSubscript:0];
-    v11 = [v10 descriptor];
-    v12 = [v11 shape];
-    v13 = [v12 objectAtIndexedSubscript:i];
+    v10 = [sourcesCopy objectAtIndexedSubscript:0];
+    descriptor2 = [v10 descriptor];
+    shape2 = [descriptor2 shape];
+    v13 = [shape2 objectAtIndexedSubscript:i];
     [v4 setObject:v13 atIndexedSubscript:i];
   }
 
   v14 = [v4 copy];
-  v15 = [v3 objectAtIndexedSubscript:0];
-  v16 = [v15 descriptor];
-  v17 = +[MLCTensorDescriptor descriptorWithShape:dataType:](MLCTensorDescriptor, "descriptorWithShape:dataType:", v14, [v16 dataType]);
+  v15 = [sourcesCopy objectAtIndexedSubscript:0];
+  descriptor3 = [v15 descriptor];
+  v17 = +[MLCTensorDescriptor descriptorWithShape:dataType:](MLCTensorDescriptor, "descriptorWithShape:dataType:", v14, [descriptor3 dataType]);
 
   v18 = [MLCTensor tensorWithDescriptor:v17];
 
@@ -434,19 +434,19 @@ LABEL_21:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCActivationLayer *)self descriptor];
-  [v6 a];
+  descriptor = [(MLCActivationLayer *)self descriptor];
+  [descriptor a];
   v8 = v7;
-  v9 = [(MLCActivationLayer *)self descriptor];
-  [v9 b];
+  descriptor2 = [(MLCActivationLayer *)self descriptor];
+  [descriptor2 b];
   v11 = v10;
-  v12 = [(MLCActivationLayer *)self descriptor];
-  [v12 c];
+  descriptor3 = [(MLCActivationLayer *)self descriptor];
+  [descriptor3 c];
   v14 = v13;
-  v15 = [(MLCActivationLayer *)self descriptor];
-  v16 = [(MLCLayer *)self conditionalTreeNode];
-  v17 = [(MLCLayer *)self resultTensors];
-  v18 = [v3 stringWithFormat:@"%@: { a=%f : b=%f : c=%f : descriptor=%@ : conditionalTreeNode=%@ : resultTensor=%@ }", v5, *&v8, *&v11, *&v14, v15, v16, v17];
+  descriptor4 = [(MLCActivationLayer *)self descriptor];
+  conditionalTreeNode = [(MLCLayer *)self conditionalTreeNode];
+  resultTensors = [(MLCLayer *)self resultTensors];
+  v18 = [v3 stringWithFormat:@"%@: { a=%f : b=%f : c=%f : descriptor=%@ : conditionalTreeNode=%@ : resultTensor=%@ }", v5, *&v8, *&v11, *&v14, descriptor4, conditionalTreeNode, resultTensors];
 
   return v18;
 }
@@ -456,18 +456,18 @@ LABEL_21:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(MLCLayer *)self layerID];
-  v7 = [(MLCActivationLayer *)self descriptor];
-  v8 = MLCActivationTypeDebugDescription([v7 activationType]);
-  v9 = [(MLCActivationLayer *)self descriptor];
-  [v9 a];
+  layerID = [(MLCLayer *)self layerID];
+  descriptor = [(MLCActivationLayer *)self descriptor];
+  v8 = MLCActivationTypeDebugDescription([descriptor activationType]);
+  descriptor2 = [(MLCActivationLayer *)self descriptor];
+  [descriptor2 a];
   v11 = v10;
-  v12 = [(MLCActivationLayer *)self descriptor];
-  [v12 b];
+  descriptor3 = [(MLCActivationLayer *)self descriptor];
+  [descriptor3 b];
   v14 = v13;
-  v15 = [(MLCActivationLayer *)self descriptor];
-  [v15 c];
-  v17 = [v3 stringWithFormat:@"<%@ (%lu)<BR /><FONT POINT-SIZE=10>Activation Type: %@<BR />a: %.03f    b: %.03f    c: %.03f</FONT>>", v5, v6, v8, *&v11, *&v14, v16];
+  descriptor4 = [(MLCActivationLayer *)self descriptor];
+  [descriptor4 c];
+  v17 = [v3 stringWithFormat:@"<%@ (%lu)<BR /><FONT POINT-SIZE=10>Activation Type: %@<BR />a: %.03f    b: %.03f    c: %.03f</FONT>>", v5, layerID, v8, *&v11, *&v14, v16];
 
   return v17;
 }

@@ -1,7 +1,7 @@
 @interface ICSETableViewItem
-+ (void)configureTableViewNibs:(id)a3;
++ (void)configureTableViewNibs:(id)nibs;
 - (BOOL)isChecked;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSelectable;
 - (ICFolder)selectedFolder;
 - (ICNote)selectedNote;
@@ -35,16 +35,16 @@
 
   else if ([(ICSETableViewItem *)self isInFolderList]&& ([(ICSETableViewItem *)self folderListItem], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = [(ICSETableViewItem *)self folderListItem];
-    v6 = [v5 level] - 1;
+    folderListItem = [(ICSETableViewItem *)self folderListItem];
+    v6 = [folderListItem level] - 1;
 
     v3 = v6 * 33.0 + 53.0;
   }
 
   else
   {
-    v7 = [(ICSETableViewItem *)self folder];
-    if (v7)
+    folder = [(ICSETableViewItem *)self folder];
+    if (folder)
     {
 
       v3 = 53.0;
@@ -52,9 +52,9 @@
 
     else
     {
-      v8 = [(ICSETableViewItem *)self isAccountFolder];
+      isAccountFolder = [(ICSETableViewItem *)self isAccountFolder];
       v3 = 53.0;
-      if (!v8)
+      if (!isAccountFolder)
       {
         v3 = 41.0;
       }
@@ -78,107 +78,107 @@
     goto LABEL_8;
   }
 
-  v3 = [(ICSETableViewItem *)self note];
-  v4 = [v3 isPasswordProtected];
+  note = [(ICSETableViewItem *)self note];
+  isPasswordProtected = [note isPasswordProtected];
 
-  if (v4)
+  if (isPasswordProtected)
   {
     goto LABEL_8;
   }
 
-  v5 = [(ICSETableViewItem *)self note];
-  if (!v5)
+  note2 = [(ICSETableViewItem *)self note];
+  if (!note2)
   {
     goto LABEL_5;
   }
 
-  v6 = v5;
-  v7 = [(ICSETableViewItem *)self note];
-  v8 = [v7 isEditable];
+  v6 = note2;
+  note3 = [(ICSETableViewItem *)self note];
+  isEditable = [note3 isEditable];
 
-  if (!v8)
+  if (!isEditable)
   {
 LABEL_8:
-    v12 = 0;
+    isSystemFolder = 0;
   }
 
   else
   {
 LABEL_5:
-    v9 = [(ICSETableViewItem *)self folder];
-    if (v9)
+    folder = [(ICSETableViewItem *)self folder];
+    if (folder)
     {
-      v10 = v9;
-      v11 = [(ICSETableViewItem *)self folder];
-      if ([v11 canMoveAddOrDeleteContents])
+      v10 = folder;
+      folder2 = [(ICSETableViewItem *)self folder];
+      if ([folder2 canMoveAddOrDeleteContents])
       {
-        v12 = 1;
+        isSystemFolder = 1;
       }
 
       else
       {
-        v14 = [(ICSETableViewItem *)self folder];
-        v12 = [v14 isSystemFolder];
+        folder3 = [(ICSETableViewItem *)self folder];
+        isSystemFolder = [folder3 isSystemFolder];
       }
     }
 
     else
     {
-      v12 = 1;
+      isSystemFolder = 1;
     }
   }
 
-  return v12 & 1;
+  return isSystemFolder & 1;
 }
 
 - (BOOL)isChecked
 {
-  v3 = [(ICSETableViewItem *)self note];
-  v4 = [(ICSETableViewItem *)self selectedNote];
-  v5 = [(ICSETableViewItem *)self selectedFolder];
-  v6 = [(ICSETableViewItem *)self account];
-  if (v4)
+  note = [(ICSETableViewItem *)self note];
+  selectedNote = [(ICSETableViewItem *)self selectedNote];
+  selectedFolder = [(ICSETableViewItem *)self selectedFolder];
+  account = [(ICSETableViewItem *)self account];
+  if (selectedNote)
   {
-    v7 = v4;
+    v7 = selectedNote;
   }
 
   else
   {
-    v7 = v5;
+    v7 = selectedFolder;
   }
 
-  v8 = [v7 account];
-  v9 = [(ICSETableViewItem *)self note];
+  account2 = [v7 account];
+  note2 = [(ICSETableViewItem *)self note];
 
-  if (v9)
+  if (note2)
   {
-    v10 = v3;
-    v11 = v4;
+    v10 = note;
+    v11 = selectedNote;
 LABEL_6:
-    LOBYTE(v12) = [v10 isEqual:v11];
+    LOBYTE(isAccountPicker) = [v10 isEqual:v11];
     goto LABEL_7;
   }
 
-  v14 = [(ICSETableViewItem *)self account];
-  if (!v14)
+  account3 = [(ICSETableViewItem *)self account];
+  if (!account3)
   {
-    LOBYTE(v12) = 0;
+    LOBYTE(isAccountPicker) = 0;
     goto LABEL_7;
   }
 
-  v15 = v14;
-  v12 = [(ICSETableViewItem *)self isAccountPicker];
+  v15 = account3;
+  isAccountPicker = [(ICSETableViewItem *)self isAccountPicker];
 
-  if (v12)
+  if (isAccountPicker)
   {
-    v10 = v8;
-    v11 = v6;
+    v10 = account2;
+    v11 = account;
     goto LABEL_6;
   }
 
 LABEL_7:
 
-  return v12;
+  return isAccountPicker;
 }
 
 - (UIImage)image
@@ -194,10 +194,10 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v5 = [(ICSETableViewItem *)self note];
-  v6 = [v5 isPasswordProtected];
+  note = [(ICSETableViewItem *)self note];
+  isPasswordProtected = [note isPasswordProtected];
 
-  if (v6)
+  if (isPasswordProtected)
   {
     v7 = @"lock.fill";
 LABEL_7:
@@ -205,13 +205,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v9 = [(ICSETableViewItem *)self note];
-  if ([v9 isSharedViaICloud])
+  note2 = [(ICSETableViewItem *)self note];
+  if ([note2 isSharedViaICloud])
   {
-    v10 = [(ICSETableViewItem *)self noteContainer];
-    v11 = [v10 isSharedViaICloud];
+    noteContainer = [(ICSETableViewItem *)self noteContainer];
+    isSharedViaICloud = [noteContainer isSharedViaICloud];
 
-    if ((v11 & 1) == 0)
+    if ((isSharedViaICloud & 1) == 0)
     {
       v7 = @"person.crop.circle";
       goto LABEL_7;
@@ -222,17 +222,17 @@ LABEL_7:
   {
   }
 
-  v12 = [(ICSETableViewItem *)self folder];
-  if (v12)
+  folder = [(ICSETableViewItem *)self folder];
+  if (folder)
   {
 
 LABEL_19:
-    v13 = [(ICSETableViewItem *)self folder];
-    v14 = [v13 systemImageName];
-    v15 = v14;
-    if (v14)
+    folder2 = [(ICSETableViewItem *)self folder];
+    systemImageName = [folder2 systemImageName];
+    v15 = systemImageName;
+    if (systemImageName)
     {
-      v16 = v14;
+      v16 = systemImageName;
     }
 
     else
@@ -271,15 +271,15 @@ LABEL_9:
 {
   if ([(ICSETableViewItem *)self isSearchResult])
   {
-    v3 = [(ICSETableViewItem *)self note];
+    note = [(ICSETableViewItem *)self note];
 
-    if (v3)
+    if (note)
     {
       return @"SearchResultNoteCell";
     }
 
-    v5 = [(ICSETableViewItem *)self folder];
-    if (v5 || [(ICSETableViewItem *)self isSystemPaperFolder])
+    folder = [(ICSETableViewItem *)self folder];
+    if (folder || [(ICSETableViewItem *)self isSystemPaperFolder])
     {
 
       return @"SearchResultFolderCell";
@@ -300,25 +300,25 @@ LABEL_9:
   return @"NoteCell";
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 note];
-    v7 = [(ICSETableViewItem *)self note];
-    if (v6 == v7)
+    v5 = equalCopy;
+    note = [v5 note];
+    note2 = [(ICSETableViewItem *)self note];
+    if (note == note2)
     {
       v10 = 1;
     }
 
     else
     {
-      v8 = [v5 folder];
-      v9 = [(ICSETableViewItem *)self folder];
-      v10 = v8 == v9;
+      folder = [v5 folder];
+      folder2 = [(ICSETableViewItem *)self folder];
+      v10 = folder == folder2;
     }
   }
 
@@ -332,30 +332,30 @@ LABEL_9:
 
 - (unint64_t)hash
 {
-  v3 = [(ICSETableViewItem *)self note];
-  v4 = [v3 hash];
-  v5 = [(ICSETableViewItem *)self folder];
-  v6 = [v5 hash];
+  note = [(ICSETableViewItem *)self note];
+  v4 = [note hash];
+  folder = [(ICSETableViewItem *)self folder];
+  v6 = [folder hash];
   v14 = sub_1000111EC(v4, v7, v8, v9, v10, v11, v12, v13, v6);
 
   return v14;
 }
 
-+ (void)configureTableViewNibs:(id)a3
++ (void)configureTableViewNibs:(id)nibs
 {
-  v3 = a3;
+  nibsCopy = nibs;
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [UINib nibWithNibName:@"ICSETableViewCell" bundle:v4];
 
-  [v3 registerNib:v5 forCellReuseIdentifier:@"NoteCell"];
+  [nibsCopy registerNib:v5 forCellReuseIdentifier:@"NoteCell"];
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [UINib nibWithNibName:@"ICSEFolderSearchResultTableViewCell" bundle:v6];
 
-  [v3 registerNib:v7 forCellReuseIdentifier:@"SearchResultFolderCell"];
+  [nibsCopy registerNib:v7 forCellReuseIdentifier:@"SearchResultFolderCell"];
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = [UINib nibWithNibName:@"ICSENoteSearchResultTableViewCell" bundle:v8];
 
-  [v3 registerNib:v9 forCellReuseIdentifier:@"SearchResultNoteCell"];
+  [nibsCopy registerNib:v9 forCellReuseIdentifier:@"SearchResultNoteCell"];
 }
 
 - (ICNote)selectedNote

@@ -1,10 +1,10 @@
 @interface InclusionProof
 + (id)descriptor;
-- (id)mapLeafWithError:(id *)a3;
-- (unint64_t)verifyWithError:(id *)a3;
-- (void)setFollowUp:(id)a3;
-- (void)setMetadataValue:(id)a3 key:(id)a4;
-- (void)setOptInServer:(id)a3;
+- (id)mapLeafWithError:(id *)error;
+- (unint64_t)verifyWithError:(id *)error;
+- (void)setFollowUp:(id)up;
+- (void)setMetadataValue:(id)value key:(id)key;
+- (void)setOptInServer:(id)server;
 @end
 
 @implementation InclusionProof
@@ -23,54 +23,54 @@
   return v2;
 }
 
-- (void)setOptInServer:(id)a3
+- (void)setOptInServer:(id)server
 {
-  if (a3)
+  if (server)
   {
-    objc_setAssociatedObject(self, @"optInServerKey", a3, 1);
+    objc_setAssociatedObject(self, @"optInServerKey", server, 1);
   }
 }
 
-- (void)setFollowUp:(id)a3
+- (void)setFollowUp:(id)up
 {
-  if (a3)
+  if (up)
   {
-    objc_setAssociatedObject(self, @"followUpKey", a3, 1);
+    objc_setAssociatedObject(self, @"followUpKey", up, 1);
   }
 }
 
-- (void)setMetadataValue:(id)a3 key:(id)a4
+- (void)setMetadataValue:(id)value key:(id)key
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9)
+  valueCopy = value;
+  keyCopy = key;
+  if (valueCopy)
   {
-    v7 = [(InclusionProof *)self metadata];
-    v8 = [v7 mutableCopy];
+    metadata = [(InclusionProof *)self metadata];
+    v8 = [metadata mutableCopy];
 
     if (!v8)
     {
       v8 = objc_alloc_init(NSMutableDictionary);
     }
 
-    [v8 setObject:v9 forKeyedSubscript:v6];
+    [v8 setObject:valueCopy forKeyedSubscript:keyCopy];
     [(InclusionProof *)self setMetadata:v8];
   }
 }
 
-- (id)mapLeafWithError:(id *)a3
+- (id)mapLeafWithError:(id *)error
 {
   if (-[InclusionProof hasMapEntry](self, "hasMapEntry") && (-[InclusionProof mapEntry](self, "mapEntry"), v5 = objc_claimAutoreleasedReturnValue(), [v5 mapLeaf], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, v6))
   {
-    v7 = [(InclusionProof *)self mapEntry];
-    v8 = [v7 mapLeaf];
-    v9 = [IdsMapLeaf parseFromData:v8 error:a3];
+    mapEntry = [(InclusionProof *)self mapEntry];
+    mapLeaf = [mapEntry mapLeaf];
+    v9 = [IdsMapLeaf parseFromData:mapLeaf error:error];
 
     if (!v9)
     {
-      if (a3)
+      if (error)
       {
-        *a3 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-142 underlyingError:*a3 description:?];
+        *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-142 underlyingError:*error description:?];
       }
 
       if (qword_10039CA88 != -1)
@@ -81,9 +81,9 @@
       v10 = qword_10039CA90;
       if (os_log_type_enabled(qword_10039CA90, OS_LOG_TYPE_ERROR))
       {
-        if (a3)
+        if (error)
         {
-          v11 = *a3;
+          v11 = *error;
         }
 
         else
@@ -100,9 +100,9 @@
 
   else
   {
-    if (a3)
+    if (error)
     {
-      *a3 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-16 description:@"KT Inclusion proof missing map leaf"];
+      *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-16 description:@"KT Inclusion proof missing map leaf"];
     }
 
     if (qword_10039CA88 != -1)
@@ -123,7 +123,7 @@
   return v9;
 }
 
-- (unint64_t)verifyWithError:(id *)a3
+- (unint64_t)verifyWithError:(id *)error
 {
   if ([(InclusionProof *)self hasMapEntry]&& ([(InclusionProof *)self mapEntry], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
@@ -134,104 +134,104 @@
 
     else
     {
-      v6 = [(InclusionProof *)self index];
-      if (v6)
+      index = [(InclusionProof *)self index];
+      if (index)
       {
-        v7 = v6;
-        v8 = [(InclusionProof *)self index];
-        v9 = [v8 length];
+        v7 = index;
+        index2 = [(InclusionProof *)self index];
+        v9 = [index2 length];
 
         if (v9)
         {
-          v10 = [(InclusionProof *)self index];
+          index3 = [(InclusionProof *)self index];
           v11 = [TransparencyMapEntryVerifier alloc];
-          v12 = [(InclusionProof *)self verifier];
-          v13 = [v12 keyBag];
-          v14 = [v13 appSthKeyStore];
-          v58 = v10;
-          v15 = [(TransparencyMapEntryVerifier *)v11 initWithPositon:v10 trustedKeyStore:v14];
+          verifier = [(InclusionProof *)self verifier];
+          keyBag = [verifier keyBag];
+          appSthKeyStore = [keyBag appSthKeyStore];
+          v58 = index3;
+          v15 = [(TransparencyMapEntryVerifier *)v11 initWithPositon:index3 trustedKeyStore:appSthKeyStore];
 
           v16 = [TransparencyLogEntryVerifier alloc];
-          v17 = [(InclusionProof *)self verifier];
-          v18 = [v17 keyBag];
-          v19 = [v18 appSthKeyStore];
-          v56 = [(TransparencyLogEntryVerifier *)v16 initWithTrustedKeyStore:v19];
+          verifier2 = [(InclusionProof *)self verifier];
+          keyBag2 = [verifier2 keyBag];
+          appSthKeyStore2 = [keyBag2 appSthKeyStore];
+          v56 = [(TransparencyLogEntryVerifier *)v16 initWithTrustedKeyStore:appSthKeyStore2];
 
           v20 = [TransparencyLogEntryVerifier alloc];
-          v21 = [(InclusionProof *)self verifier];
-          v22 = [v21 keyBag];
-          v23 = [v22 tltKeyStore];
-          v24 = [(TransparencyLogEntryVerifier *)v20 initWithTrustedKeyStore:v23];
+          verifier3 = [(InclusionProof *)self verifier];
+          keyBag3 = [verifier3 keyBag];
+          tltKeyStore = [keyBag3 tltKeyStore];
+          v24 = [(TransparencyLogEntryVerifier *)v20 initWithTrustedKeyStore:tltKeyStore];
 
-          v25 = [(InclusionProof *)self dataStore];
-          v26 = [(InclusionProof *)self mapEntry];
+          dataStore = [(InclusionProof *)self dataStore];
+          mapEntry = [(InclusionProof *)self mapEntry];
           v57 = v15;
-          [v26 setVerifier:v15];
+          [mapEntry setVerifier:v15];
 
-          v27 = [(InclusionProof *)self mapEntry];
-          [v27 setDataStore:v25];
+          mapEntry2 = [(InclusionProof *)self mapEntry];
+          [mapEntry2 setDataStore:dataStore];
 
-          v28 = [(InclusionProof *)self mapEntry];
-          v29 = [(InclusionProof *)self metadata];
+          mapEntry3 = [(InclusionProof *)self mapEntry];
+          metadata = [(InclusionProof *)self metadata];
           v30 = kTransparencyResponseMetadataKeyServerHint;
-          v31 = [v29 objectForKeyedSubscript:kTransparencyResponseMetadataKeyServerHint];
-          [v28 setMetadataValue:v31 key:v30];
+          v31 = [metadata objectForKeyedSubscript:kTransparencyResponseMetadataKeyServerHint];
+          [mapEntry3 setMetadataValue:v31 key:v30];
 
-          v32 = [(InclusionProof *)self mapEntry];
-          v33 = [(InclusionProof *)self verifier];
-          v34 = [v33 keyBag];
-          v35 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v34 patLogBeginningMs]);
-          v36 = [v35 stringValue];
-          [v32 setMetadataValue:v36 key:@"overrideLogBeginTime"];
+          mapEntry4 = [(InclusionProof *)self mapEntry];
+          verifier4 = [(InclusionProof *)self verifier];
+          keyBag4 = [verifier4 keyBag];
+          v35 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [keyBag4 patLogBeginningMs]);
+          stringValue = [v35 stringValue];
+          [mapEntry4 setMetadataValue:stringValue key:@"overrideLogBeginTime"];
 
           if ([(InclusionProof *)self hasPerApplicationTreeEntry]&& ([(InclusionProof *)self perApplicationTreeEntry], v37 = objc_claimAutoreleasedReturnValue(), v37, v37))
           {
-            v38 = [(InclusionProof *)self perApplicationTreeEntry];
+            perApplicationTreeEntry = [(InclusionProof *)self perApplicationTreeEntry];
             v39 = v56;
-            [v38 setVerifier:v56];
-            [v38 setDataStore:v25];
-            v40 = [(InclusionProof *)self metadata];
-            v41 = [v40 objectForKeyedSubscript:v30];
-            [v38 setMetadataValue:v41 key:v30];
+            [perApplicationTreeEntry setVerifier:v56];
+            [perApplicationTreeEntry setDataStore:dataStore];
+            metadata2 = [(InclusionProof *)self metadata];
+            v41 = [metadata2 objectForKeyedSubscript:v30];
+            [perApplicationTreeEntry setMetadataValue:v41 key:v30];
 
-            v42 = [(InclusionProof *)self optInServer];
-            [v38 setOptInServer:v42];
+            optInServer = [(InclusionProof *)self optInServer];
+            [perApplicationTreeEntry setOptInServer:optInServer];
 
-            v43 = [(InclusionProof *)self followUp];
-            [v38 setFollowUp:v43];
+            followUp = [(InclusionProof *)self followUp];
+            [perApplicationTreeEntry setFollowUp:followUp];
 
             if ([(InclusionProof *)self hasTopLevelTreeEntry]&& ([(InclusionProof *)self topLevelTreeEntry], v44 = objc_claimAutoreleasedReturnValue(), v44, v44))
             {
-              v45 = [(InclusionProof *)self topLevelTreeEntry];
-              [v45 setVerifier:v24];
-              [v45 setDataStore:v25];
-              v46 = [(InclusionProof *)self metadata];
-              v47 = [v46 objectForKeyedSubscript:v30];
-              [v45 setMetadataValue:v47 key:v30];
+              topLevelTreeEntry = [(InclusionProof *)self topLevelTreeEntry];
+              [topLevelTreeEntry setVerifier:v24];
+              [topLevelTreeEntry setDataStore:dataStore];
+              metadata3 = [(InclusionProof *)self metadata];
+              v47 = [metadata3 objectForKeyedSubscript:v30];
+              [topLevelTreeEntry setMetadataValue:v47 key:v30];
 
-              v48 = [(InclusionProof *)self optInServer];
-              [v45 setOptInServer:v48];
+              optInServer2 = [(InclusionProof *)self optInServer];
+              [topLevelTreeEntry setOptInServer:optInServer2];
 
-              v49 = [(InclusionProof *)self followUp];
-              [v45 setFollowUp:v49];
+              followUp2 = [(InclusionProof *)self followUp];
+              [topLevelTreeEntry setFollowUp:followUp2];
             }
 
             else
             {
-              v45 = 0;
+              topLevelTreeEntry = 0;
             }
           }
 
           else
           {
-            v38 = 0;
-            v45 = 0;
+            perApplicationTreeEntry = 0;
+            topLevelTreeEntry = 0;
             v39 = v56;
           }
 
-          v53 = [(InclusionProof *)self verifier];
-          v54 = [(InclusionProof *)self mapEntry];
-          v55 = [v53 verifyInclusionProofWithMapEntry:v54 perAppLogEntry:v38 topLevelTreeEntry:v45 error:a3];
+          verifier5 = [(InclusionProof *)self verifier];
+          mapEntry5 = [(InclusionProof *)self mapEntry];
+          v55 = [verifier5 verifyInclusionProofWithMapEntry:mapEntry5 perAppLogEntry:perApplicationTreeEntry topLevelTreeEntry:topLevelTreeEntry error:error];
 
           return v55;
         }
@@ -246,9 +246,9 @@
     v50 = -10;
   }
 
-  if (a3)
+  if (error)
   {
-    *a3 = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:v50 description:@"KT Inclusion proof data required for verification"];
+    *error = [TransparencyError errorWithDomain:kTransparencyErrorDecode code:v50 description:@"KT Inclusion proof data required for verification"];
   }
 
   if (qword_10039CA88 != -1)

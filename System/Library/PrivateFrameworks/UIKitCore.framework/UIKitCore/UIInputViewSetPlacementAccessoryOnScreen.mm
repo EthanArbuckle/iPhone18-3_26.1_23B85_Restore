@@ -1,25 +1,25 @@
 @interface UIInputViewSetPlacementAccessoryOnScreen
-- (CGRect)remoteIntrinsicContentSizeForInputViewInSet:(id)a3 includingIAV:(BOOL)a4;
-- (id)applicatorInfoForOwner:(id)a3;
-- (id)verticalConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5;
+- (CGRect)remoteIntrinsicContentSizeForInputViewInSet:(id)set includingIAV:(BOOL)v;
+- (id)applicatorInfoForOwner:(id)owner;
+- (id)verticalConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView;
 @end
 
 @implementation UIInputViewSetPlacementAccessoryOnScreen
 
-- (id)verticalConstraintForInputViewSet:(id)a3 hostView:(id)a4 containerView:(id)a5
+- (id)verticalConstraintForInputViewSet:(id)set hostView:(id)view containerView:(id)containerView
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 _rootInputWindowController];
-  v12 = [v11 placement];
+  setCopy = set;
+  viewCopy = view;
+  containerViewCopy = containerView;
+  _rootInputWindowController = [containerViewCopy _rootInputWindowController];
+  placement = [_rootInputWindowController placement];
 
-  v13 = [v12 subPlacements];
-  v14 = [v13 firstObject];
+  subPlacements = [placement subPlacements];
+  firstObject = [subPlacements firstObject];
 
-  if (v14 == self)
+  if (firstObject == self)
   {
-    v17 = v9;
+    v17 = viewCopy;
     if (!v17)
     {
       goto LABEL_16;
@@ -28,25 +28,25 @@
 
   else
   {
-    v15 = [v8 inputAccessoryView];
-    v16 = v15;
-    if (v15)
+    inputAccessoryView = [setCopy inputAccessoryView];
+    v16 = inputAccessoryView;
+    if (inputAccessoryView)
     {
-      v17 = v15;
+      v17 = inputAccessoryView;
     }
 
     else
     {
-      v18 = [v8 inputView];
-      v19 = v18;
-      if (v18)
+      inputView = [setCopy inputView];
+      v19 = inputView;
+      if (inputView)
       {
-        v20 = v18;
+        v20 = inputView;
       }
 
       else
       {
-        v20 = v9;
+        v20 = viewCopy;
       }
 
       v17 = v20;
@@ -58,11 +58,11 @@
     }
   }
 
-  if ([v17 isDescendantOfView:v10])
+  if ([v17 isDescendantOfView:containerViewCopy])
   {
     v21 = MEMORY[0x1E69977A0];
-    v22 = [v8 inputAccessoryView];
-    if (v22)
+    inputAccessoryView2 = [setCopy inputAccessoryView];
+    if (inputAccessoryView2)
     {
       v23 = 4;
     }
@@ -72,7 +72,7 @@
       v23 = 3;
     }
 
-    v24 = [v21 constraintWithItem:v10 attribute:4 relatedBy:0 toItem:v17 attribute:v23 multiplier:1.0 constant:0.0];
+    v24 = [v21 constraintWithItem:containerViewCopy attribute:4 relatedBy:0 toItem:v17 attribute:v23 multiplier:1.0 constant:0.0];
 
     goto LABEL_17;
   }
@@ -84,27 +84,27 @@ LABEL_17:
   return v24;
 }
 
-- (CGRect)remoteIntrinsicContentSizeForInputViewInSet:(id)a3 includingIAV:(BOOL)a4
+- (CGRect)remoteIntrinsicContentSizeForInputViewInSet:(id)set includingIAV:(BOOL)v
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
+  vCopy = v;
+  setCopy = set;
+  v6 = setCopy;
   v7 = *MEMORY[0x1E695F060];
   v8 = *(MEMORY[0x1E695F060] + 8);
-  if (v4)
+  if (vCopy)
   {
-    v9 = [v5 inputAccessoryView];
+    inputAccessoryView = [setCopy inputAccessoryView];
 
-    if (v9)
+    if (inputAccessoryView)
     {
-      v10 = [v6 inputAccessoryView];
-      [v10 intrinsicContentSize];
+      inputAccessoryView2 = [v6 inputAccessoryView];
+      [inputAccessoryView2 intrinsicContentSize];
       v12 = v11;
 
       if (v12 == -1.0)
       {
-        v13 = [v6 inputAccessoryView];
-        [v13 frame];
+        inputAccessoryView3 = [v6 inputAccessoryView];
+        [inputAccessoryView3 frame];
         v12 = v14;
       }
 
@@ -126,21 +126,21 @@ LABEL_17:
   return result;
 }
 
-- (id)applicatorInfoForOwner:(id)a3
+- (id)applicatorInfoForOwner:(id)owner
 {
   v22[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 inputViewSet];
-  if ([v5 isInputViewPlaceholder])
+  ownerCopy = owner;
+  inputViewSet = [ownerCopy inputViewSet];
+  if ([inputViewSet isInputViewPlaceholder])
   {
-    v6 = [v4 inputViewSet];
-    v7 = [v6 inputAccessoryView];
+    inputViewSet2 = [ownerCopy inputViewSet];
+    inputAccessoryView = [inputViewSet2 inputAccessoryView];
 
-    if (v7)
+    if (inputAccessoryView)
     {
-      v8 = [v4 hostView];
-      v9 = [v8 _rootInputWindowController];
-      [v9 keyboardSizeFromExternalUpdate];
+      hostView = [ownerCopy hostView];
+      _rootInputWindowController = [hostView _rootInputWindowController];
+      [_rootInputWindowController keyboardSizeFromExternalUpdate];
       v11 = v10;
 
       if (v11 > 0.0)
@@ -171,7 +171,7 @@ LABEL_17:
 
   v19.receiver = self;
   v19.super_class = UIInputViewSetPlacementAccessoryOnScreen;
-  v17 = [(UIInputViewSetPlacement *)&v19 applicatorInfoForOwner:v4];
+  v17 = [(UIInputViewSetPlacement *)&v19 applicatorInfoForOwner:ownerCopy];
 LABEL_7:
 
   return v17;

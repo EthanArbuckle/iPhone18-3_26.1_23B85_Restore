@@ -1,17 +1,17 @@
 @interface HDDemoDataReproductiveHealthSampleGenerator
 - (HDDemoDataReproductiveHealthSampleGenerator)init;
-- (HDDemoDataReproductiveHealthSampleGenerator)initWithCoder:(id)a3;
-- (id)_computeFirstRunCycleFactorSamplesForDemoPerson:(void *)a1 targetDate:(void *)a2;
-- (int64_t)_computeNextLuteinizingHormoneSurgeForDemoPerson:(id)a3 atTime:(double)a4;
-- (int64_t)cycleDayIndexAtTime:(double)a3 demoPerson:(id)a4;
-- (uint64_t)menstrualFlowForDemoPerson:(void *)a3 withSampleDate:;
-- (void)addMenstruationSampleForDemoPersonFromWatch:(void *)a1 date:(uint64_t)a2 flow:(uint64_t)a3 objectCollection:(void *)a4;
-- (void)addSymptomSampleForDemoPersonFromWatch:(void *)a3 date:categoryType:objectCollection:;
-- (void)completeOnboardingForDemoPerson:(void *)a1;
-- (void)encodeWithCoder:(id)a3;
-- (void)generateFirstRunObjectsForDemoPerson:(id)a3 firstDate:(id)a4 objectCollection:(id)a5;
-- (void)generateObjectsForDemoPerson:(id)a3 fromTime:(double)a4 toTime:(double)a5 currentDate:(id)a6 objectCollection:(id)a7;
-- (void)setupWithDemoDataGenerator:(id)a3;
+- (HDDemoDataReproductiveHealthSampleGenerator)initWithCoder:(id)coder;
+- (id)_computeFirstRunCycleFactorSamplesForDemoPerson:(void *)person targetDate:(void *)date;
+- (int64_t)_computeNextLuteinizingHormoneSurgeForDemoPerson:(id)person atTime:(double)time;
+- (int64_t)cycleDayIndexAtTime:(double)time demoPerson:(id)person;
+- (uint64_t)menstrualFlowForDemoPerson:(void *)person withSampleDate:;
+- (void)addMenstruationSampleForDemoPersonFromWatch:(void *)watch date:(uint64_t)date flow:(uint64_t)flow objectCollection:(void *)collection;
+- (void)addSymptomSampleForDemoPersonFromWatch:(void *)watch date:categoryType:objectCollection:;
+- (void)completeOnboardingForDemoPerson:(void *)person;
+- (void)encodeWithCoder:(id)coder;
+- (void)generateFirstRunObjectsForDemoPerson:(id)person firstDate:(id)date objectCollection:(id)collection;
+- (void)generateObjectsForDemoPerson:(id)person fromTime:(double)time toTime:(double)toTime currentDate:(id)date objectCollection:(id)collection;
+- (void)setupWithDemoDataGenerator:(id)generator;
 @end
 
 @implementation HDDemoDataReproductiveHealthSampleGenerator
@@ -30,53 +30,53 @@
   return result;
 }
 
-- (HDDemoDataReproductiveHealthSampleGenerator)initWithCoder:(id)a3
+- (HDDemoDataReproductiveHealthSampleGenerator)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HDDemoDataReproductiveHealthSampleGenerator;
-  v5 = [(HDDemoDataBaseSampleGenerator *)&v9 initWithCoder:v4];
+  v5 = [(HDDemoDataBaseSampleGenerator *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"HDDemoDataReproductiveHealthSampleHelperNextSexualActivitySampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataReproductiveHealthSampleHelperNextSexualActivitySampleTimeKey"];
     v5->_nextSexualActivitySampleTime = v6;
-    [v4 decodeDoubleForKey:@"HDDemoDataReproductiveHealthSampleHelperNextCycleDaySampleTimeKey"];
+    [coderCopy decodeDoubleForKey:@"HDDemoDataReproductiveHealthSampleHelperNextCycleDaySampleTimeKey"];
     v5->_nextCycleDaySampleTime = v7;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HDDemoDataReproductiveHealthSampleGenerator;
-  v4 = a3;
-  [(HDDemoDataBaseSampleGenerator *)&v5 encodeWithCoder:v4];
-  [v4 encodeDouble:@"HDDemoDataReproductiveHealthSampleHelperNextSexualActivitySampleTimeKey" forKey:{self->_nextSexualActivitySampleTime, v5.receiver, v5.super_class}];
-  [v4 encodeDouble:@"HDDemoDataReproductiveHealthSampleHelperNextCycleDaySampleTimeKey" forKey:self->_nextCycleDaySampleTime];
+  coderCopy = coder;
+  [(HDDemoDataBaseSampleGenerator *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeDouble:@"HDDemoDataReproductiveHealthSampleHelperNextSexualActivitySampleTimeKey" forKey:{self->_nextSexualActivitySampleTime, v5.receiver, v5.super_class}];
+  [coderCopy encodeDouble:@"HDDemoDataReproductiveHealthSampleHelperNextCycleDaySampleTimeKey" forKey:self->_nextCycleDaySampleTime];
 }
 
-- (void)generateFirstRunObjectsForDemoPerson:(id)a3 firstDate:(id)a4 objectCollection:(id)a5
+- (void)generateFirstRunObjectsForDemoPerson:(id)person firstDate:(id)date objectCollection:(id)collection
 {
   v117[16] = *MEMORY[0x277D85DE8];
   v8 = MEMORY[0x277CCDD30];
-  v9 = a5;
-  v10 = a4;
-  v89 = a3;
-  v11 = [v8 sharedBehavior];
-  LODWORD(a3) = [v11 isAppleWatch];
+  collectionCopy = collection;
+  dateCopy = date;
+  personCopy = person;
+  sharedBehavior = [v8 sharedBehavior];
+  LODWORD(person) = [sharedBehavior isAppleWatch];
 
-  if (a3)
+  if (person)
   {
-    v12 = v89;
-    v87 = v10;
-    v13 = v10;
-    v14 = v9;
+    v12 = personCopy;
+    v87 = dateCopy;
+    v13 = dateCopy;
+    v14 = collectionCopy;
     if (self && [v12 biologicalSex] != 2)
     {
       v83 = v12;
-      v85 = v9;
+      v85 = collectionCopy;
       [HDDemoDataReproductiveHealthSampleGenerator completeOnboardingForDemoPerson:?];
       v15 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:&unk_283CAE6B0];
       v16 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:&unk_283CAE6C8];
@@ -293,29 +293,29 @@
         [v14 addObjectsFromWatch:v60];
       }
 
-      v9 = v85;
+      collectionCopy = v85;
     }
 
-    v10 = v87;
+    dateCopy = v87;
   }
 
   else
   {
-    v61 = v89;
-    v62 = v10;
-    obja = v9;
+    v61 = personCopy;
+    v62 = dateCopy;
+    obja = collectionCopy;
     if (self)
     {
-      v63 = [(HDDemoDataBaseSampleGenerator *)self profile];
+      profile = [(HDDemoDataBaseSampleGenerator *)self profile];
 
-      if (!v63)
+      if (!profile)
       {
-        v79 = [MEMORY[0x277CCA890] currentHandler];
-        [v79 handleFailureInMethod:sel_generatePhoneFirstRunSampleForDemoPerson_firstDate_objectCollection_ object:self file:@"HDDemoDataReproductiveHealthSampleGenerator.m" lineNumber:99 description:@"HDProfile must be set"];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:sel_generatePhoneFirstRunSampleForDemoPerson_firstDate_objectCollection_ object:self file:@"HDDemoDataReproductiveHealthSampleGenerator.m" lineNumber:99 description:@"HDProfile must be set"];
       }
 
-      v64 = [v61 birthDateComponents];
-      v65 = HDDemoData_ageBetweenNSDateComponentsAndDate(v64, v62);
+      birthDateComponents = [v61 birthDateComponents];
+      v65 = HDDemoData_ageBetweenNSDateComponentsAndDate(birthDateComponents, v62);
 
       if (v65 >= 11)
       {
@@ -328,8 +328,8 @@
 
         if ([v66 compare:v62] == -1)
         {
-          v86 = v9;
-          v88 = v10;
+          v86 = collectionCopy;
+          v88 = dateCopy;
           v68 = 0;
           v69 = *MEMORY[0x277CCC4F0];
           do
@@ -358,7 +358,7 @@
           }
 
           while ([v67 compare:v62] == -1);
-          v10 = v88;
+          dateCopy = v88;
           if (v68)
           {
             v77 = [HDDemoDataReproductiveHealthSampleGenerator _computeFirstRunCycleFactorSamplesForDemoPerson:v61 targetDate:v68];
@@ -368,7 +368,7 @@
             }
           }
 
-          v9 = v86;
+          collectionCopy = v86;
         }
 
         else
@@ -382,29 +382,29 @@
   v78 = *MEMORY[0x277D85DE8];
 }
 
-- (void)completeOnboardingForDemoPerson:(void *)a1
+- (void)completeOnboardingForDemoPerson:(void *)person
 {
   v49[4] = *MEMORY[0x277D85DE8];
   v2 = objc_alloc(MEMORY[0x277CCD740]);
   v3 = *MEMORY[0x277CCC090];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [v2 initWithFeatureIdentifier:v3 version:2 completionDate:v4 countryCode:0 countryCodeProvenance:0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = [v2 initWithFeatureIdentifier:v3 version:2 completionDate:date countryCode:0 countryCodeProvenance:0];
 
-  v35 = a1;
-  v6 = [a1 profile];
-  v7 = [v6 onboardingCompletionManager];
+  personCopy = person;
+  profile = [person profile];
+  onboardingCompletionManager = [profile onboardingCompletionManager];
   v41 = 0;
-  LOBYTE(v4) = [v7 insertOnboardingCompletion:v5 error:&v41];
+  LOBYTE(date) = [onboardingCompletionManager insertOnboardingCompletion:v5 error:&v41];
   v8 = v41;
 
-  if (v4)
+  if (date)
   {
     v31 = v8;
     v32 = v5;
-    v9 = [MEMORY[0x277CBEAF8] currentLocale];
-    v34 = [v9 countryCode];
+    currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+    countryCode = [currentLocale countryCode];
 
-    v10 = [MEMORY[0x277CBEAA8] date];
+    date2 = [MEMORY[0x277CBEAA8] date];
     v11 = *MEMORY[0x277CCC098];
     v49[0] = *MEMORY[0x277CCC0A0];
     v49[1] = v11;
@@ -432,11 +432,11 @@
           }
 
           v17 = *(*(&v37 + 1) + 8 * v16);
-          v18 = [objc_alloc(MEMORY[0x277CCD740]) initWithFeatureIdentifier:v17 version:1 completionDate:v10 countryCode:v34 countryCodeProvenance:102];
-          v19 = [v35 profile];
-          v20 = [v19 onboardingCompletionManager];
+          v18 = [objc_alloc(MEMORY[0x277CCD740]) initWithFeatureIdentifier:v17 version:1 completionDate:date2 countryCode:countryCode countryCodeProvenance:102];
+          profile2 = [personCopy profile];
+          onboardingCompletionManager2 = [profile2 onboardingCompletionManager];
           v36 = 0;
-          v21 = [v20 insertOnboardingCompletion:v18 error:&v36];
+          v21 = [onboardingCompletionManager2 insertOnboardingCompletion:v18 error:&v36];
           v22 = v36;
 
           if ((v21 & 1) == 0)
@@ -502,18 +502,18 @@ uint64_t __115__HDDemoDataReproductiveHealthSampleGenerator_generatePhoneFirstRu
   return MEMORY[0x2821F96F8]();
 }
 
-- (uint64_t)menstrualFlowForDemoPerson:(void *)a3 withSampleDate:
+- (uint64_t)menstrualFlowForDemoPerson:(void *)person withSampleDate:
 {
-  v5 = a3;
-  if (a1)
+  personCopy = person;
+  if (self)
   {
     v6 = MEMORY[0x277CBEA80];
     v7 = a2;
-    v8 = [v6 currentCalendar];
-    v9 = [v8 components:16 fromDate:v5];
+    currentCalendar = [v6 currentCalendar];
+    v9 = [currentCalendar components:16 fromDate:personCopy];
 
-    v10 = [v7 biologicalSex];
-    if (v10 == 2)
+    biologicalSex = [v7 biologicalSex];
+    if (biologicalSex == 2)
     {
       v11 = [v9 day];
     }
@@ -533,8 +533,8 @@ uint64_t __115__HDDemoDataReproductiveHealthSampleGenerator_generatePhoneFirstRu
 
       else
       {
-        v19 = [MEMORY[0x277CBEA80] currentCalendar];
-        v20 = [v19 components:8 fromDate:v5];
+        currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+        v20 = [currentCalendar2 components:8 fromDate:personCopy];
 
         if (([v20 month] & 1) == 0)
         {
@@ -555,11 +555,11 @@ uint64_t __115__HDDemoDataReproductiveHealthSampleGenerator_generatePhoneFirstRu
   return v11;
 }
 
-- (id)_computeFirstRunCycleFactorSamplesForDemoPerson:(void *)a1 targetDate:(void *)a2
+- (id)_computeFirstRunCycleFactorSamplesForDemoPerson:(void *)person targetDate:(void *)date
 {
-  v3 = a1;
-  v4 = a2;
-  if ([v3 biologicalSex] == 2)
+  personCopy = person;
+  dateCopy = date;
+  if ([personCopy biologicalSex] == 2)
   {
     v5 = 0;
   }
@@ -568,10 +568,10 @@ uint64_t __115__HDDemoDataReproductiveHealthSampleGenerator_generatePhoneFirstRu
   {
     v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:2];
     v6 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(&unk_283CB05E8, "intValue") - 280}];
-    v7 = [v4 dateByAddingTimeInterval:{(86400 * objc_msgSend(v6, "intValue"))}];
-    v8 = [v4 dateByAddingTimeInterval:{(86400 * objc_msgSend(&unk_283CB05E8, "intValue"))}];
-    v9 = [v3 birthDateComponents];
-    v10 = HDDemoData_ageBetweenNSDateComponentsAndDate(v9, v7);
+    v7 = [dateCopy dateByAddingTimeInterval:{(86400 * objc_msgSend(v6, "intValue"))}];
+    v8 = [dateCopy dateByAddingTimeInterval:{(86400 * objc_msgSend(&unk_283CB05E8, "intValue"))}];
+    birthDateComponents = [personCopy birthDateComponents];
+    v10 = HDDemoData_ageBetweenNSDateComponentsAndDate(birthDateComponents, v7);
 
     if (v10 >= 21)
     {
@@ -580,16 +580,16 @@ uint64_t __115__HDDemoDataReproductiveHealthSampleGenerator_generatePhoneFirstRu
       [v5 addObject:v12];
     }
 
-    v13 = [v4 dateByAddingTimeInterval:{(86400 * objc_msgSend(&unk_283CB0600, "intValue"))}];
-    v14 = [v3 birthDateComponents];
-    v15 = HDDemoData_ageBetweenNSDateComponentsAndDate(v14, v13);
+    v13 = [dateCopy dateByAddingTimeInterval:{(86400 * objc_msgSend(&unk_283CB0600, "intValue"))}];
+    birthDateComponents2 = [personCopy birthDateComponents];
+    v15 = HDDemoData_ageBetweenNSDateComponentsAndDate(birthDateComponents2, v13);
 
     if (v15 >= 18)
     {
       v16 = [MEMORY[0x277CCD0C0] categoryTypeForIdentifier:*MEMORY[0x277CCB938]];
       v17 = MEMORY[0x277CCD0B0];
-      v18 = [MEMORY[0x277CBEAA8] distantFuture];
-      v19 = [v17 categorySampleWithType:v16 value:1 startDate:v13 endDate:v18];
+      distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+      v19 = [v17 categorySampleWithType:v16 value:1 startDate:v13 endDate:distantFuture];
 
       [v5 addObject:v19];
     }
@@ -598,39 +598,39 @@ uint64_t __115__HDDemoDataReproductiveHealthSampleGenerator_generatePhoneFirstRu
   return v5;
 }
 
-- (void)addMenstruationSampleForDemoPersonFromWatch:(void *)a1 date:(uint64_t)a2 flow:(uint64_t)a3 objectCollection:(void *)a4
+- (void)addMenstruationSampleForDemoPersonFromWatch:(void *)watch date:(uint64_t)date flow:(uint64_t)flow objectCollection:(void *)collection
 {
   v17[1] = *MEMORY[0x277D85DE8];
   v7 = MEMORY[0x277CCD0C0];
   v8 = *MEMORY[0x277CCBA28];
-  v9 = a4;
-  v10 = a1;
+  collectionCopy = collection;
+  watchCopy = watch;
   v11 = [v7 categoryTypeForIdentifier:v8];
   v16 = *MEMORY[0x277CCC4F0];
-  v12 = [MEMORY[0x277CCABB0] numberWithBool:a2 == 0];
+  v12 = [MEMORY[0x277CCABB0] numberWithBool:date == 0];
   v17[0] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:&v16 count:1];
 
-  v14 = [MEMORY[0x277CCD0B0] categorySampleWithType:v11 value:a3 startDate:v10 endDate:v10 metadata:v13];
+  v14 = [MEMORY[0x277CCD0B0] categorySampleWithType:v11 value:flow startDate:watchCopy endDate:watchCopy metadata:v13];
 
-  [v9 addObjectFromWatch:v14];
+  [collectionCopy addObjectFromWatch:v14];
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSymptomSampleForDemoPersonFromWatch:(void *)a3 date:categoryType:objectCollection:
+- (void)addSymptomSampleForDemoPersonFromWatch:(void *)watch date:categoryType:objectCollection:
 {
   v5 = MEMORY[0x277CCD0B0];
-  v6 = a3;
-  v7 = [v5 categorySampleWithType:a2 value:0 startDate:a1 endDate:a1];
-  [v6 addObjectFromWatch:v7];
+  watchCopy = watch;
+  v7 = [v5 categorySampleWithType:a2 value:0 startDate:self endDate:self];
+  [watchCopy addObjectFromWatch:v7];
 }
 
-- (void)setupWithDemoDataGenerator:(id)a3
+- (void)setupWithDemoDataGenerator:(id)generator
 {
-  v4 = a3;
+  generatorCopy = generator;
   v11.receiver = self;
   v11.super_class = HDDemoDataReproductiveHealthSampleGenerator;
-  [(HDDemoDataBaseSampleGenerator *)&v11 setupWithDemoDataGenerator:v4];
+  [(HDDemoDataBaseSampleGenerator *)&v11 setupWithDemoDataGenerator:generatorCopy];
   basalBodyTempMultiplierTable = self->_basalBodyTempMultiplierTable;
   self->_basalBodyTempMultiplierTable = &unk_283CAE728;
 
@@ -639,46 +639,46 @@ uint64_t __115__HDDemoDataReproductiveHealthSampleGenerator_generatePhoneFirstRu
 
   if (![(HDDemoDataBaseSampleGenerator *)self createdFromNSKeyedUnarchiver])
   {
-    v7 = [v4 statisticsSampleGenerator];
-    v8 = [v4 demoPerson];
-    [v8 genericSampleTimeNoiseStdDev];
-    [v7 computeNoiseFromTime:0.0 stdDev:v9];
+    statisticsSampleGenerator = [generatorCopy statisticsSampleGenerator];
+    demoPerson = [generatorCopy demoPerson];
+    [demoPerson genericSampleTimeNoiseStdDev];
+    [statisticsSampleGenerator computeNoiseFromTime:0.0 stdDev:v9];
     self->_nextSexualActivitySampleTime = v10 + 0.923611111;
   }
 }
 
-- (void)generateObjectsForDemoPerson:(id)a3 fromTime:(double)a4 toTime:(double)a5 currentDate:(id)a6 objectCollection:(id)a7
+- (void)generateObjectsForDemoPerson:(id)person fromTime:(double)time toTime:(double)toTime currentDate:(id)date objectCollection:(id)collection
 {
   v198[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
+  personCopy = person;
+  dateCopy = date;
+  collectionCopy = collection;
   v194.receiver = self;
   v194.super_class = HDDemoDataReproductiveHealthSampleGenerator;
-  [(HDDemoDataBaseSampleGenerator *)&v194 generateObjectsForDemoPerson:v11 fromTime:v12 toTime:v13 currentDate:a5 objectCollection:a5];
+  [(HDDemoDataBaseSampleGenerator *)&v194 generateObjectsForDemoPerson:personCopy fromTime:dateCopy toTime:collectionCopy currentDate:toTime objectCollection:toTime];
   if (qword_27D86C0D8 != -1)
   {
     dispatch_once(&qword_27D86C0D8, &__block_literal_global_369);
   }
 
-  v14 = [v12 dateByAddingTimeInterval:-86400.0];
-  v15 = v11;
+  v14 = [dateCopy dateByAddingTimeInterval:-86400.0];
+  v15 = personCopy;
   if (self)
   {
-    v16 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-    v17 = [v16 currentDateFromCurrentTime:a5];
+    demoDataGenerator = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+    v17 = [demoDataGenerator currentDateFromCurrentTime:toTime];
 
-    v18 = [v15 birthDateComponents];
-    v19 = HDDemoData_ageBetweenNSDateComponentsAndDate(v18, v17);
+    birthDateComponents = [v15 birthDateComponents];
+    v19 = HDDemoData_ageBetweenNSDateComponentsAndDate(birthDateComponents, v17);
 
-    if (v19 < 18 || self->_nextSexualActivitySampleTime > a5)
+    if (v19 < 18 || self->_nextSexualActivitySampleTime > toTime)
     {
       goto LABEL_20;
     }
 
-    v20 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-    v21 = [v20 statisticsSampleGenerator];
-    [v21 computeNoiseFromTime:a5 stdDev:0.00694444444];
+    demoDataGenerator2 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+    statisticsSampleGenerator = [demoDataGenerator2 statisticsSampleGenerator];
+    [statisticsSampleGenerator computeNoiseFromTime:toTime stdDev:0.00694444444];
     self->_nextSexualActivitySampleTime = v22 + 1.0 + self->_nextSexualActivitySampleTime;
 
     [v15 sexualActivityProbabilityPercentage];
@@ -705,59 +705,59 @@ LABEL_12:
       }
 
       v192 = v14;
-      v31 = v13;
-      v32 = v12;
-      v33 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-      v34 = [v33 currentDateFromCurrentTime:a5];
+      v31 = collectionCopy;
+      v32 = dateCopy;
+      demoDataGenerator3 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+      v34 = [demoDataGenerator3 currentDateFromCurrentTime:toTime];
 
-      v35 = [v30 birthDateComponents];
-      v36 = HDDemoData_ageBetweenNSDateComponentsAndDate(v35, v34);
+      birthDateComponents2 = [v30 birthDateComponents];
+      v36 = HDDemoData_ageBetweenNSDateComponentsAndDate(birthDateComponents2, v34);
 
       if (v36 <= 10)
       {
 
-        v12 = v32;
-        v13 = v31;
+        dateCopy = v32;
+        collectionCopy = v31;
         v14 = v192;
         goto LABEL_12;
       }
 
-      v124 = [(HDDemoDataReproductiveHealthSampleGenerator *)self _computeNextLuteinizingHormoneSurgeForDemoPerson:v30 atTime:a5];
+      v124 = [(HDDemoDataReproductiveHealthSampleGenerator *)self _computeNextLuteinizingHormoneSurgeForDemoPerson:v30 atTime:toTime];
 
-      v12 = v32;
-      v13 = v31;
+      dateCopy = v32;
+      collectionCopy = v31;
       v14 = v192;
-      if (a5 == v124 && ([v30 sexualActivityIsTryingToConceive] & 1) != 0)
+      if (toTime == v124 && ([v30 sexualActivityIsTryingToConceive] & 1) != 0)
       {
         goto LABEL_14;
       }
     }
 
 LABEL_13:
-    v37 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-    v38 = [v37 statisticsSampleGenerator];
-    [v38 pseudoRandomDoubleFromTime:a5 * 5.0];
+    demoDataGenerator4 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+    statisticsSampleGenerator2 = [demoDataGenerator4 statisticsSampleGenerator];
+    [statisticsSampleGenerator2 pseudoRandomDoubleFromTime:toTime * 5.0];
     v40 = v39;
 
     if (v40 < v24)
     {
 LABEL_14:
-      v41 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-      v42 = [v41 statisticsSampleGenerator];
-      [v42 pseudoRandomDoubleFromTime:a5 * 6.0];
+      demoDataGenerator5 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+      statisticsSampleGenerator3 = [demoDataGenerator5 statisticsSampleGenerator];
+      [statisticsSampleGenerator3 pseudoRandomDoubleFromTime:toTime * 6.0];
       v44 = v43;
 
       if (v44 < 0.1)
       {
-        v45 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-        v46 = [v45 statisticsSampleGenerator];
-        [v46 computeNoiseFromTime:a5 stdDev:0.0104166667];
+        demoDataGenerator6 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+        statisticsSampleGenerator4 = [demoDataGenerator6 statisticsSampleGenerator];
+        [statisticsSampleGenerator4 computeNoiseFromTime:toTime stdDev:0.0104166667];
         self->_nextSexualActivitySampleTime = self->_nextSexualActivitySampleTime - (v47 + 0.958333333);
       }
 
-      v48 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-      v49 = [v48 statisticsSampleGenerator];
-      [v49 pseudoRandomDoubleFromTime:a5 * 7.0];
+      demoDataGenerator7 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+      statisticsSampleGenerator5 = [demoDataGenerator7 statisticsSampleGenerator];
+      [statisticsSampleGenerator5 pseudoRandomDoubleFromTime:toTime * 7.0];
       v51 = v50;
 
       if (v51 >= v28)
@@ -767,9 +767,9 @@ LABEL_14:
 
       else
       {
-        v52 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-        v53 = [v52 statisticsSampleGenerator];
-        [v53 pseudoRandomDoubleFromTime:a5 * 3.0];
+        demoDataGenerator8 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+        statisticsSampleGenerator6 = [demoDataGenerator8 statisticsSampleGenerator];
+        [statisticsSampleGenerator6 pseudoRandomDoubleFromTime:toTime * 3.0];
         v55 = v54;
 
         if (v55 >= v26)
@@ -800,7 +800,7 @@ LABEL_22:
   v58 = v57;
   if (v57)
   {
-    v59 = [v57 intValue];
+    intValue = [v57 intValue];
     if ([v58 intValue] == 1)
     {
       v60 = 0;
@@ -809,20 +809,20 @@ LABEL_22:
     else
     {
       v197 = *MEMORY[0x277CCC508];
-      v61 = [MEMORY[0x277CCABB0] numberWithBool:v59 == 3];
+      v61 = [MEMORY[0x277CCABB0] numberWithBool:intValue == 3];
       v198[0] = v61;
       v60 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v198 forKeys:&v197 count:1];
     }
 
     v62 = [MEMORY[0x277CCD0B0] categorySampleWithType:qword_27D86C0A0 value:0 startDate:v14 endDate:v14 metadata:v60];
-    [v13 addObjectFromPhone:v62];
+    [collectionCopy addObjectFromPhone:v62];
   }
 
-  v63 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-  v64 = [v63 currentDateFromCurrentTime:a5];
+  demoDataGenerator9 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+  v64 = [demoDataGenerator9 currentDateFromCurrentTime:toTime];
 
-  v65 = [v15 birthDateComponents];
-  v66 = HDDemoData_ageBetweenNSDateComponentsAndDate(v65, v64);
+  birthDateComponents3 = [v15 birthDateComponents];
+  v66 = HDDemoData_ageBetweenNSDateComponentsAndDate(birthDateComponents3, v64);
 
   if ([v15 biologicalSex] == 1 && v66 >= 12)
   {
@@ -832,21 +832,21 @@ LABEL_22:
     v68 = v67;
     if (self)
     {
-      v69 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-      v70 = [v69 currentDateFromCurrentTime:a5];
+      demoDataGenerator10 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+      v70 = [demoDataGenerator10 currentDateFromCurrentTime:toTime];
 
-      v71 = [v68 birthDateComponents];
-      v72 = HDDemoData_ageBetweenNSDateComponentsAndDate(v71, v70);
+      birthDateComponents4 = [v68 birthDateComponents];
+      v72 = HDDemoData_ageBetweenNSDateComponentsAndDate(birthDateComponents4, v70);
 
       if (v72 < 21)
       {
         goto LABEL_35;
       }
 
-      v73 = a5 - a5;
-      v74 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-      v75 = [v74 statisticsSampleGenerator];
-      [v75 pseudoRandomDoubleFromTime:a5];
+      v73 = toTime - toTime;
+      demoDataGenerator11 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+      statisticsSampleGenerator7 = [demoDataGenerator11 statisticsSampleGenerator];
+      [statisticsSampleGenerator7 pseudoRandomDoubleFromTime:toTime];
       v77 = v76 * 3.0 + 4.0;
 
       v78 = v77 / 24.0;
@@ -854,15 +854,15 @@ LABEL_22:
       v80 = v73 - v79;
       if (v73 >= v78 && v80 < v78)
       {
-        v83 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-        v84 = [v83 vitalsSampleGenerator];
-        [v84 _computeBodyTempInCelsiusForDemoPerson:v68 atTime:0 addNoise:a5];
+        demoDataGenerator12 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+        vitalsSampleGenerator = [demoDataGenerator12 vitalsSampleGenerator];
+        [vitalsSampleGenerator _computeBodyTempInCelsiusForDemoPerson:v68 atTime:0 addNoise:toTime];
         v86 = v85;
 
-        v87 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-        v88 = [v87 statisticsSampleGenerator];
+        demoDataGenerator13 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+        statisticsSampleGenerator8 = [demoDataGenerator13 statisticsSampleGenerator];
         [v68 bodyTempSampleNoiseStdDev];
-        [v88 computeNoiseFromTime:a5 stdDev:v89];
+        [statisticsSampleGenerator8 computeNoiseFromTime:toTime stdDev:v89];
         v91 = v90;
 
         v82 = [MEMORY[0x277CCABB0] numberWithDouble:((v86 + v91) * 100.0) / 100.0];
@@ -880,28 +880,28 @@ LABEL_35:
         v93 = qword_27D86C098;
         [v82 doubleValue];
         v94 = [v92 quantityWithUnit:v93 doubleValue:?];
-        v95 = [MEMORY[0x277CCD800] quantitySampleWithType:qword_27D86C0A8 quantity:v94 startDate:v12 endDate:v12];
-        [v13 addObjectFromPhone:v95];
+        v95 = [MEMORY[0x277CCD800] quantitySampleWithType:qword_27D86C0A8 quantity:v94 startDate:dateCopy endDate:dateCopy];
+        [collectionCopy addObjectFromPhone:v95];
       }
 
       v190 = v82;
       v96 = v68;
       if ([v96 biologicalSex] != 2 && (objc_msgSend(v96, "biologicalSex") != 1 || objc_msgSend(v96, "sexualActivityIsTryingToConceive")))
       {
-        v99 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-        v100 = [v99 currentDateFromCurrentTime:a5];
+        demoDataGenerator14 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+        v100 = [demoDataGenerator14 currentDateFromCurrentTime:toTime];
 
-        v101 = [v96 birthDateComponents];
+        birthDateComponents5 = [v96 birthDateComponents];
         v187 = v100;
-        v102 = HDDemoData_ageBetweenNSDateComponentsAndDate(v101, v100);
+        v102 = HDDemoData_ageBetweenNSDateComponentsAndDate(birthDateComponents5, v100);
 
         if (v102 >= 11)
         {
-          v182 = v12;
-          v103 = a5 - a5;
-          v104 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-          v105 = [MEMORY[0x277CBEA80] currentCalendar];
-          v106 = [v104 isDemoDataTimeInWeekend:v105 calendar:a5];
+          v182 = dateCopy;
+          v103 = toTime - toTime;
+          demoDataGenerator15 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+          currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+          v106 = [demoDataGenerator15 isDemoDataTimeInWeekend:currentCalendar calendar:toTime];
 
           if (v106)
           {
@@ -915,46 +915,46 @@ LABEL_35:
           v186 = ;
           [v186 wakeUpTime];
           v108 = v107 + 0.00763888889;
-          v109 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-          v110 = [v109 statisticsSampleGenerator];
+          demoDataGenerator16 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+          statisticsSampleGenerator9 = [demoDataGenerator16 statisticsSampleGenerator];
           [v96 genericSampleTimeNoiseStdDev];
-          [v110 computeNoiseFromTime:a5 stdDev:v111 * 0.5];
+          [statisticsSampleGenerator9 computeNoiseFromTime:toTime stdDev:v111 * 0.5];
           v113 = v108 + v112;
 
           [v96 timeIncrement];
           v97 = 0;
-          v12 = v182;
+          dateCopy = v182;
           if (v103 >= v113 && v103 - v114 < v113)
           {
             v179 = v58;
-            v115 = v13;
+            v115 = collectionCopy;
             [v96 menstrualPeriodFrequency];
             v117 = v116;
-            v118 = [(NSArray *)self->_cervicalMucusTable objectAtIndexedSubscript:[(HDDemoDataReproductiveHealthSampleGenerator *)self cycleDayIndexAtTime:v96 demoPerson:a5]];
-            v119 = [v118 intValue];
-            v120 = v119;
+            v118 = [(NSArray *)self->_cervicalMucusTable objectAtIndexedSubscript:[(HDDemoDataReproductiveHealthSampleGenerator *)self cycleDayIndexAtTime:v96 demoPerson:toTime]];
+            intValue2 = [v118 intValue];
+            v120 = intValue2;
 
-            if ((v119 & 0xFFFFFFFE) == 2)
+            if ((intValue2 & 0xFFFFFFFE) == 2)
             {
-              v121 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
-              v122 = [v121 statisticsSampleGenerator];
-              [v122 pseudoRandomDoubleFromTime:a5];
+              demoDataGenerator17 = [(HDDemoDataBaseSampleGenerator *)self demoDataGenerator];
+              statisticsSampleGenerator10 = [demoDataGenerator17 statisticsSampleGenerator];
+              [statisticsSampleGenerator10 pseudoRandomDoubleFromTime:toTime];
               v120 = vcvtpd_s64_f64(v120 - v123);
             }
 
-            if (a5 % v117 > v117 / 2 + 3)
+            if (toTime % v117 > v117 / 2 + 3)
             {
-              v13 = v115;
+              collectionCopy = v115;
               v58 = v179;
-              v12 = v182;
+              dateCopy = v182;
               v97 = 0;
             }
 
             else
             {
-              v13 = v115;
+              collectionCopy = v115;
               v58 = v179;
-              v12 = v182;
+              dateCopy = v182;
               v97 = 0;
               if (v120)
               {
@@ -977,11 +977,11 @@ LABEL_35:
 
         v14 = v193;
         v98 = [MEMORY[0x277CCD0B0] categorySampleWithType:qword_27D86C0B0 value:objc_msgSend(v97 startDate:"intValue") endDate:{v193, v193}];
-        [v13 addObjectFromPhone:v98];
+        [collectionCopy addObjectFromPhone:v98];
 LABEL_64:
 
 LABEL_65:
-        if (self->_nextCycleDaySampleTime <= a5)
+        if (self->_nextCycleDaySampleTime <= toTime)
         {
           v125 = [(HDDemoDataReproductiveHealthSampleGenerator *)self menstrualFlowForDemoPerson:v68 withSampleDate:v14];
           if (v126 != 0xFFFFFFFF80000000)
@@ -993,7 +993,7 @@ LABEL_65:
             v129 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v196 forKeys:&v195 count:1];
 
             v130 = [MEMORY[0x277CCD0B0] categorySampleWithType:qword_27D86C0B8 value:v127 startDate:v193 endDate:v193 metadata:v129];
-            [v13 addObjectFromPhone:v130];
+            [collectionCopy addObjectFromPhone:v130];
 
             v14 = v193;
           }
@@ -1010,12 +1010,12 @@ LABEL_65:
           else
           {
             v180 = v58;
-            v183 = v12;
-            v134 = v13;
+            v183 = dateCopy;
+            v134 = collectionCopy;
             v135 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:&unk_283CAE758];
             v136 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:&unk_283CAE770];
-            v137 = [MEMORY[0x277CBEA80] currentCalendar];
-            v138 = [v137 components:16 fromDate:v132];
+            currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+            v138 = [currentCalendar2 components:16 fromDate:v132];
 
             v139 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v138, "day")}];
             v140 = [v135 containsObject:v139];
@@ -1041,48 +1041,48 @@ LABEL_65:
               }
             }
 
-            v13 = v134;
+            collectionCopy = v134;
             v58 = v180;
-            v12 = v183;
+            dateCopy = v183;
             v131 = v185;
           }
 
-          v189 = v13;
+          v189 = collectionCopy;
 
           v143 = v133;
           v144 = v143;
           if (v143)
           {
             v145 = [MEMORY[0x277CCD0B0] categorySampleWithType:qword_27D86C0C0 value:objc_msgSend(v143 startDate:"intValue") endDate:{v132, v132}];
-            [v13 addObjectFromPhone:v145];
+            [collectionCopy addObjectFromPhone:v145];
           }
 
           v184 = v144;
-          v146 = [MEMORY[0x277CCDD30] sharedBehavior];
-          v147 = [v146 isAppleWatch];
+          mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+          isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-          if ((v147 & 1) == 0)
+          if ((isAppleWatch & 1) == 0)
           {
             v148 = MEMORY[0x277CBEA80];
             v149 = v132;
             v150 = v131;
-            v151 = [v148 currentCalendar];
-            v152 = [v151 components:16 fromDate:v149];
+            currentCalendar3 = [v148 currentCalendar];
+            v152 = [currentCalendar3 components:16 fromDate:v149];
 
-            v153 = [v150 biologicalSex];
+            biologicalSex = [v150 biologicalSex];
             v154 = &unk_283CB07C8;
-            if (v153 != 2)
+            if (biologicalSex != 2)
             {
               v181 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:&unk_283CAE7D0];
               v155 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v152, "day")}];
               v156 = v149;
               v157 = v152;
               v158 = v58;
-              v159 = v12;
+              v159 = dateCopy;
               v160 = [v181 containsObject:v155];
 
               v161 = v160 == 0;
-              v12 = v159;
+              dateCopy = v159;
               v58 = v158;
               v152 = v157;
               v149 = v156;
@@ -1102,16 +1102,16 @@ LABEL_65:
             v131 = v185;
           }
 
-          v164 = v12;
+          v164 = dateCopy;
           v165 = MEMORY[0x277CBEA80];
           v166 = v132;
           v167 = v131;
-          v168 = [v165 currentCalendar];
-          v169 = [v168 components:16 fromDate:v166];
+          currentCalendar4 = [v165 currentCalendar];
+          v169 = [currentCalendar4 components:16 fromDate:v166];
 
-          v170 = [v167 biologicalSex];
+          biologicalSex2 = [v167 biologicalSex];
           v171 = &unk_283CB07C8;
-          if (v170 != 2)
+          if (biologicalSex2 != 2)
           {
             v172 = [objc_alloc(MEMORY[0x277CBEB98]) initWithArray:&unk_283CAE7E8];
             v173 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v169, "day")}];
@@ -1124,16 +1124,16 @@ LABEL_65:
           }
 
           v175 = v171;
-          v13 = v189;
+          collectionCopy = v189;
           if ([v175 isEqualToNumber:&unk_283CB06A8])
           {
             v176 = [MEMORY[0x277CCD0B0] categorySampleWithType:qword_27D86C0D0 value:0 startDate:v166 endDate:v166];
             [v189 addObjectFromPhone:v176];
           }
 
-          self->_nextCycleDaySampleTime = a5 + 1.0;
+          self->_nextCycleDaySampleTime = toTime + 1.0;
 
-          v12 = v164;
+          dateCopy = v164;
           v14 = v193;
           v97 = v188;
         }
@@ -1198,24 +1198,24 @@ uint64_t __121__HDDemoDataReproductiveHealthSampleGenerator_generateObjectsForDe
   return MEMORY[0x2821F96F8]();
 }
 
-- (int64_t)cycleDayIndexAtTime:(double)a3 demoPerson:(id)a4
+- (int64_t)cycleDayIndexAtTime:(double)time demoPerson:(id)person
 {
-  v6 = a4;
-  v7 = [(HDDemoDataReproductiveHealthSampleGenerator *)self _computeNextLuteinizingHormoneSurgeForDemoPerson:v6 atTime:a3]+ 1;
-  [v6 menstrualPeriodFrequency];
+  personCopy = person;
+  v7 = [(HDDemoDataReproductiveHealthSampleGenerator *)self _computeNextLuteinizingHormoneSurgeForDemoPerson:personCopy atTime:time]+ 1;
+  [personCopy menstrualPeriodFrequency];
   v9 = v8;
 
-  return a3 % v9 + v7 / v9 * v9 - v7 + 15;
+  return time % v9 + v7 / v9 * v9 - v7 + 15;
 }
 
-- (int64_t)_computeNextLuteinizingHormoneSurgeForDemoPerson:(id)a3 atTime:(double)a4
+- (int64_t)_computeNextLuteinizingHormoneSurgeForDemoPerson:(id)person atTime:(double)time
 {
-  v5 = a3;
-  [v5 menstrualPeriodFrequency];
+  personCopy = person;
+  [personCopy menstrualPeriodFrequency];
   v7 = (v6 * 0.5 + -1.0);
-  [v5 menstrualPeriodFrequency];
-  v9 = (a4 / v8);
-  [v5 menstrualPeriodFrequency];
+  [personCopy menstrualPeriodFrequency];
+  v9 = (time / v8);
+  [personCopy menstrualPeriodFrequency];
   v11 = v10;
 
   return (v11 * v9) + v7;

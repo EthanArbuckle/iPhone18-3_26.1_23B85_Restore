@@ -1,53 +1,53 @@
 @interface ULServiceDescriptor
-- (BOOL)isEqual:(id)a3;
-- (ULServiceDescriptor)initWithCoder:(id)a3;
-- (ULServiceDescriptor)initWithServiceIdentifier:(id)a3 serviceType:(unint64_t)a4 locationTypes:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (ULServiceDescriptor)initWithCoder:(id)coder;
+- (ULServiceDescriptor)initWithServiceIdentifier:(id)identifier serviceType:(unint64_t)type locationTypes:(id)types;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ULServiceDescriptor
 
-- (ULServiceDescriptor)initWithServiceIdentifier:(id)a3 serviceType:(unint64_t)a4 locationTypes:(id)a5
+- (ULServiceDescriptor)initWithServiceIdentifier:(id)identifier serviceType:(unint64_t)type locationTypes:(id)types
 {
-  v9 = a3;
-  v10 = a5;
+  identifierCopy = identifier;
+  typesCopy = types;
   v14.receiver = self;
   v14.super_class = ULServiceDescriptor;
   v11 = [(ULServiceDescriptor *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_serviceIdentifier, a3);
-    v12->_serviceType = a4;
-    objc_storeStrong(&v12->_locationTypes, a5);
+    objc_storeStrong(&v11->_serviceIdentifier, identifier);
+    v12->_serviceType = type;
+    objc_storeStrong(&v12->_locationTypes, types);
   }
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(NSUUID *)self->_serviceIdentifier copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(NSUUID *)self->_serviceIdentifier copyWithZone:zone];
   serviceType = self->_serviceType;
-  v8 = [(NSArray *)self->_locationTypes copyWithZone:a3];
+  v8 = [(NSArray *)self->_locationTypes copyWithZone:zone];
   v9 = [v5 initWithServiceIdentifier:v6 serviceType:serviceType locationTypes:v8];
 
   return v9;
 }
 
-- (ULServiceDescriptor)initWithCoder:(id)a3
+- (ULServiceDescriptor)initWithCoder:(id)coder
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = ULServiceDescriptor;
   v5 = [(ULServiceDescriptor *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceIdentifier"];
     if (v6)
     {
       v7 = objc_opt_self();
@@ -60,7 +60,7 @@
       v19[1] = objc_opt_class();
       v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
       v11 = [v9 setWithArray:v10];
-      v6 = [v4 decodeObjectOfClasses:v11 forKey:@"locationTypes"];
+      v6 = [coderCopy decodeObjectOfClasses:v11 forKey:@"locationTypes"];
 
       if (v6)
       {
@@ -69,13 +69,13 @@
         locationTypes = v5->_locationTypes;
         v5->_locationTypes = v12;
 
-        v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serviceType"];
+        v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serviceType"];
         v6 = v14;
         if (v14)
         {
-          v15 = [(ULServiceDescriptor *)v14 unsignedIntValue];
+          unsignedIntValue = [(ULServiceDescriptor *)v14 unsignedIntValue];
 
-          v5->_serviceType = v15;
+          v5->_serviceType = unsignedIntValue;
           v6 = v5;
         }
       }
@@ -91,14 +91,14 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   locationTypes = self->_locationTypes;
-  v5 = a3;
-  [v5 encodeObject:locationTypes forKey:@"locationTypes"];
-  [v5 encodeObject:self->_serviceIdentifier forKey:@"serviceIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:locationTypes forKey:@"locationTypes"];
+  [coderCopy encodeObject:self->_serviceIdentifier forKey:@"serviceIdentifier"];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_serviceType];
-  [v5 encodeObject:v6 forKey:@"serviceType"];
+  [coderCopy encodeObject:v6 forKey:@"serviceType"];
 }
 
 - (id)description
@@ -127,33 +127,33 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(ULServiceDescriptor *)self serviceType];
-    if (v6 == [v5 serviceType])
+    v5 = equalCopy;
+    serviceType = [(ULServiceDescriptor *)self serviceType];
+    if (serviceType == [v5 serviceType])
     {
-      v7 = [(ULServiceDescriptor *)self locationTypes];
-      v8 = [v5 locationTypes];
-      if ([v7 isEqual:v8])
+      locationTypes = [(ULServiceDescriptor *)self locationTypes];
+      locationTypes2 = [v5 locationTypes];
+      if ([locationTypes isEqual:locationTypes2])
       {
 
         goto LABEL_8;
       }
 
-      v10 = [(ULServiceDescriptor *)self locationTypes];
-      v11 = [v5 locationTypes];
+      locationTypes3 = [(ULServiceDescriptor *)self locationTypes];
+      locationTypes4 = [v5 locationTypes];
 
-      if (v10 == v11)
+      if (locationTypes3 == locationTypes4)
       {
 LABEL_8:
-        v12 = [(ULServiceDescriptor *)self serviceIdentifier];
-        v13 = [v5 serviceIdentifier];
-        if ([v12 isEqual:v13])
+        serviceIdentifier = [(ULServiceDescriptor *)self serviceIdentifier];
+        serviceIdentifier2 = [v5 serviceIdentifier];
+        if ([serviceIdentifier isEqual:serviceIdentifier2])
         {
 
           v9 = 1;
@@ -161,9 +161,9 @@ LABEL_8:
 
         else
         {
-          v14 = [(ULServiceDescriptor *)self serviceIdentifier];
-          v15 = [v5 serviceIdentifier];
-          v9 = v14 == v15;
+          serviceIdentifier3 = [(ULServiceDescriptor *)self serviceIdentifier];
+          serviceIdentifier4 = [v5 serviceIdentifier];
+          v9 = serviceIdentifier3 == serviceIdentifier4;
         }
 
         goto LABEL_11;

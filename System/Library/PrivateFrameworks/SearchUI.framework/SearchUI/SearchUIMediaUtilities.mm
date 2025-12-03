@@ -1,48 +1,48 @@
 @interface SearchUIMediaUtilities
-+ (BOOL)bundleIdentifierSupportsOpenIntent:(id)a3;
-+ (BOOL)bundleIdentifierSupportsPlayIntent:(id)a3;
-+ (BOOL)isCurrentMedia:(id)a3;
-+ (BOOL)isMediaItem:(id)a3 equalToMediaItem:(id)a4;
-+ (BOOL)isNowPlayingMedia:(id)a3;
++ (BOOL)bundleIdentifierSupportsOpenIntent:(id)intent;
++ (BOOL)bundleIdentifierSupportsPlayIntent:(id)intent;
++ (BOOL)isCurrentMedia:(id)media;
++ (BOOL)isMediaItem:(id)item equalToMediaItem:(id)mediaItem;
++ (BOOL)isNowPlayingMedia:(id)media;
 + (id)appsThatSupportSearchIntents;
 + (id)backingItemForMediaMetadataCache;
-+ (id)cardSectionsForListenToCardSection:(id)a3;
-+ (id)fallbackPunchoutWithMetadata:(id)a3 forBundleIdentifier:(id)a4;
++ (id)cardSectionsForListenToCardSection:(id)section;
++ (id)fallbackPunchoutWithMetadata:(id)metadata forBundleIdentifier:(id)identifier;
 + (id)generateAppsThatSupportSearchIntents;
 + (id)localAudioCache;
-+ (id)mediaDestinationsForMediaMetadata:(id)a3;
-+ (id)mediaSearchForMetadata:(id)a3;
++ (id)mediaDestinationsForMediaMetadata:(id)metadata;
++ (id)mediaSearchForMetadata:(id)metadata;
 + (id)musicPlayer;
 + (id)musicPlayerQueue;
 + (id)musicStatusCache;
-+ (id)supportedIntentsForApp:(id)a3;
-+ (void)canPlayAppleMusicWithCompletionHandler:(id)a3;
-+ (void)dispatchOnMusicQueueIfNecessary:(id)a3;
-+ (void)getMusicUserDisclosureApprovalStatusWithCompletionHandler:(id)a3;
++ (id)supportedIntentsForApp:(id)app;
++ (void)canPlayAppleMusicWithCompletionHandler:(id)handler;
++ (void)dispatchOnMusicQueueIfNecessary:(id)necessary;
++ (void)getMusicUserDisclosureApprovalStatusWithCompletionHandler:(id)handler;
 + (void)initializeQueuesAndNotifications;
 + (void)pausePlayback;
-+ (void)playCoreSpotlightMedia:(id)a3;
-+ (void)playMedia:(id)a3;
-+ (void)predictionForMediaMetadata:(id)a3 completion:(id)a4;
++ (void)playCoreSpotlightMedia:(id)media;
++ (void)playMedia:(id)media;
++ (void)predictionForMediaMetadata:(id)metadata completion:(id)completion;
 + (void)prewarmMediaLibrary;
 + (void)resetMediaApps;
 + (void)resetPlayer;
 + (void)resumePlayback;
-+ (void)updateBackingItemForMediaMetadata:(id)a3;
++ (void)updateBackingItemForMediaMetadata:(id)metadata;
 @end
 
 @implementation SearchUIMediaUtilities
 
-+ (id)fallbackPunchoutWithMetadata:(id)a3 forBundleIdentifier:(id)a4
++ (id)fallbackPunchoutWithMetadata:(id)metadata forBundleIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [a3 mediaPunchouts];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  mediaPunchouts = [metadata mediaPunchouts];
+  v7 = [mediaPunchouts countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -52,12 +52,12 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(mediaPunchouts);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 bundleIdentifier];
-        v12 = [v11 isEqualToString:v5];
+        bundleIdentifier = [v10 bundleIdentifier];
+        v12 = [bundleIdentifier isEqualToString:identifierCopy];
 
         if (v12)
         {
@@ -66,7 +66,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [mediaPunchouts countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -81,19 +81,19 @@ LABEL_11:
   return v7;
 }
 
-+ (id)mediaSearchForMetadata:(id)a3
++ (id)mediaSearchForMetadata:(id)metadata
 {
-  if (a3)
+  if (metadata)
   {
     v3 = MEMORY[0x1E696E8F0];
-    v4 = a3;
+    metadataCopy = metadata;
     v5 = [v3 alloc];
-    v6 = [v4 mediaType];
-    v7 = [v4 mediaName];
-    v8 = [v4 artistName];
-    v9 = [v4 albumName];
+    mediaType = [metadataCopy mediaType];
+    mediaName = [metadataCopy mediaName];
+    artistName = [metadataCopy artistName];
+    albumName = [metadataCopy albumName];
 
-    v10 = [v5 initWithMediaType:v6 sortOrder:0 mediaName:v7 artistName:v8 albumName:v9 genreNames:0 moodNames:0 releaseDate:0 reference:0 mediaIdentifier:0];
+    v10 = [v5 initWithMediaType:mediaType sortOrder:0 mediaName:mediaName artistName:artistName albumName:albumName genreNames:0 moodNames:0 releaseDate:0 reference:0 mediaIdentifier:0];
   }
 
   else
@@ -104,10 +104,10 @@ LABEL_11:
   return v10;
 }
 
-+ (BOOL)bundleIdentifierSupportsPlayIntent:(id)a3
++ (BOOL)bundleIdentifierSupportsPlayIntent:(id)intent
 {
-  v3 = a3;
-  v4 = [objc_opt_class() supportedIntentsForApp:v3];
+  intentCopy = intent;
+  v4 = [objc_opt_class() supportedIntentsForApp:intentCopy];
 
   v5 = [MEMORY[0x1E696E950] description];
   v6 = [v4 containsObject:v5];
@@ -115,10 +115,10 @@ LABEL_11:
   return v6;
 }
 
-+ (BOOL)bundleIdentifierSupportsOpenIntent:(id)a3
++ (BOOL)bundleIdentifierSupportsOpenIntent:(id)intent
 {
-  v3 = a3;
-  v4 = [objc_opt_class() supportedIntentsForApp:v3];
+  intentCopy = intent;
+  v4 = [objc_opt_class() supportedIntentsForApp:intentCopy];
 
   v5 = [MEMORY[0x1E696E9C8] description];
   v6 = [v4 containsObject:v5];
@@ -126,23 +126,23 @@ LABEL_11:
   return v6;
 }
 
-+ (id)supportedIntentsForApp:(id)a3
++ (id)supportedIntentsForApp:(id)app
 {
   v3 = MEMORY[0x1E69635F8];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithBundleIdentifier:v4 allowPlaceholder:1 error:0];
+  appCopy = app;
+  v5 = [[v3 alloc] initWithBundleIdentifier:appCopy allowPlaceholder:1 error:0];
 
   v6 = [MEMORY[0x1E696E728] appInfoWithApplicationRecord:v5];
-  v7 = [v6 supportedIntents];
+  supportedIntents = [v6 supportedIntents];
 
-  return v7;
+  return supportedIntents;
 }
 
-+ (void)predictionForMediaMetadata:(id)a3 completion:(id)a4
++ (void)predictionForMediaMetadata:(id)metadata completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = predictionForMediaMetadata_completion__onceToken;
-  v7 = a3;
+  metadataCopy = metadata;
   if (v6 != -1)
   {
     +[SearchUIMediaUtilities predictionForMediaMetadata:completion:];
@@ -153,9 +153,9 @@ LABEL_11:
   v10[1] = 3221225472;
   v10[2] = __64__SearchUIMediaUtilities_predictionForMediaMetadata_completion___block_invoke_2;
   v10[3] = &unk_1E85B4538;
-  v11 = v5;
-  v9 = v5;
-  [v8 getObjectForKey:v7 completionHandler:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [v8 getObjectForKey:metadataCopy completionHandler:v10];
 }
 
 uint64_t __64__SearchUIMediaUtilities_predictionForMediaMetadata_completion___block_invoke()
@@ -165,17 +165,17 @@ uint64_t __64__SearchUIMediaUtilities_predictionForMediaMetadata_completion___bl
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (id)mediaDestinationsForMediaMetadata:(id)a3
++ (id)mediaDestinationsForMediaMetadata:(id)metadata
 {
   v50 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  metadataCopy = metadata;
   v5 = objc_opt_new();
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v6 = [a1 appsThatSupportSearchIntents];
-  v7 = [v6 countByEnumeratingWithState:&v43 objects:v49 count:16];
+  appsThatSupportSearchIntents = [self appsThatSupportSearchIntents];
+  v7 = [appsThatSupportSearchIntents countByEnumeratingWithState:&v43 objects:v49 count:16];
   if (v7)
   {
     v8 = v7;
@@ -186,7 +186,7 @@ uint64_t __64__SearchUIMediaUtilities_predictionForMediaMetadata_completion___bl
       {
         if (*v44 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(appsThatSupportSearchIntents);
         }
 
         v11 = *(*(&v43 + 1) + 8 * i);
@@ -197,7 +197,7 @@ uint64_t __64__SearchUIMediaUtilities_predictionForMediaMetadata_completion___bl
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v43 objects:v49 count:16];
+      v8 = [appsThatSupportSearchIntents countByEnumeratingWithState:&v43 objects:v49 count:16];
     }
 
     while (v8);
@@ -207,8 +207,8 @@ uint64_t __64__SearchUIMediaUtilities_predictionForMediaMetadata_completion___bl
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v13 = [v4 mediaPunchouts];
-  v14 = [v13 countByEnumeratingWithState:&v39 objects:v48 count:16];
+  mediaPunchouts = [metadataCopy mediaPunchouts];
+  v14 = [mediaPunchouts countByEnumeratingWithState:&v39 objects:v48 count:16];
   if (v14)
   {
     v15 = v14;
@@ -219,39 +219,39 @@ uint64_t __64__SearchUIMediaUtilities_predictionForMediaMetadata_completion___bl
       {
         if (*v40 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(mediaPunchouts);
         }
 
         v18 = *(*(&v39 + 1) + 8 * j);
-        v19 = [v18 bundleIdentifier];
-        if (([v5 containsObject:v19] & 1) == 0)
+        bundleIdentifier = [v18 bundleIdentifier];
+        if (([v5 containsObject:bundleIdentifier] & 1) == 0)
         {
-          v20 = [v18 bundleIdentifier];
-          v21 = [SearchUIUtilities isAppInstalledWithBundleId:v20];
+          bundleIdentifier2 = [v18 bundleIdentifier];
+          v21 = [SearchUIUtilities isAppInstalledWithBundleId:bundleIdentifier2];
 
           if (!v21)
           {
             continue;
           }
 
-          v19 = [v18 bundleIdentifier];
-          [v5 addObject:v19];
+          bundleIdentifier = [v18 bundleIdentifier];
+          [v5 addObject:bundleIdentifier];
         }
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v39 objects:v48 count:16];
+      v15 = [mediaPunchouts countByEnumeratingWithState:&v39 objects:v48 count:16];
     }
 
     while (v15);
   }
 
-  v22 = [v4 bundleIdentifiersToExclude];
+  bundleIdentifiersToExclude = [metadataCopy bundleIdentifiersToExclude];
 
-  if (v22)
+  if (bundleIdentifiersToExclude)
   {
     v23 = MEMORY[0x1E695DFD8];
-    v24 = [v4 bundleIdentifiersToExclude];
-    v25 = [v23 setWithArray:v24];
+    bundleIdentifiersToExclude2 = [metadataCopy bundleIdentifiersToExclude];
+    v25 = [v23 setWithArray:bundleIdentifiersToExclude2];
     [v5 minusSet:v25];
   }
 
@@ -278,7 +278,7 @@ uint64_t __64__SearchUIMediaUtilities_predictionForMediaMetadata_completion___bl
         v32 = *(*(&v35 + 1) + 8 * k);
         v33 = objc_opt_new();
         [v33 setAppBundleIdentifier:{v32, v35}];
-        [v33 setMediaMetadata:v4];
+        [v33 setMediaMetadata:metadataCopy];
         [v26 addObject:v33];
       }
 
@@ -291,17 +291,17 @@ uint64_t __64__SearchUIMediaUtilities_predictionForMediaMetadata_completion___bl
   return v26;
 }
 
-+ (id)cardSectionsForListenToCardSection:(id)a3
++ (id)cardSectionsForListenToCardSection:(id)section
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sectionCopy = section;
   v5 = objc_opt_new();
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = [v4 mediaMetadata];
-  v7 = [a1 mediaDestinationsForMediaMetadata:v6];
+  mediaMetadata = [sectionCopy mediaMetadata];
+  v7 = [self mediaDestinationsForMediaMetadata:mediaMetadata];
 
   obj = v7;
   v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -320,19 +320,19 @@ uint64_t __64__SearchUIMediaUtilities_predictionForMediaMetadata_completion___bl
 
         v12 = *(*(&v25 + 1) + 8 * i);
         v13 = objc_opt_new();
-        v14 = [v4 cardSectionId];
-        [v13 setCardSectionId:v14];
+        cardSectionId = [sectionCopy cardSectionId];
+        [v13 setCardSectionId:cardSectionId];
 
-        v15 = [v12 image];
-        [v13 setImage:v15];
+        image = [v12 image];
+        [v13 setImage:image];
 
         v16 = MEMORY[0x1E69CA3A0];
-        v17 = [v12 title];
-        v18 = [v16 textWithString:v17];
+        title = [v12 title];
+        v18 = [v16 textWithString:title];
         [v13 setLeadingText:v18];
 
-        v19 = [v12 command];
-        [v13 setCommand:v19];
+        command = [v12 command];
+        [v13 setCommand:command];
 
         [v5 addObject:v13];
       }
@@ -343,15 +343,15 @@ uint64_t __64__SearchUIMediaUtilities_predictionForMediaMetadata_completion___bl
     while (v9);
   }
 
-  if ([v5 count] || (objc_msgSend(v4, "fallbackCardSection"), v20 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v20, (isKindOfClass & 1) == 0))
+  if ([v5 count] || (objc_msgSend(sectionCopy, "fallbackCardSection"), v20 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v20, (isKindOfClass & 1) == 0))
   {
     [v5 sortUsingComparator:&__block_literal_global_206];
   }
 
   else
   {
-    v22 = [v4 fallbackCardSection];
-    [v5 addObject:v22];
+    fallbackCardSection = [sectionCopy fallbackCardSection];
+    [v5 addObject:fallbackCardSection];
   }
 
   return v5;
@@ -376,7 +376,7 @@ uint64_t __61__SearchUIMediaUtilities_cardSectionsForListenToCardSection___block
   block[1] = 3221225472;
   block[2] = __58__SearchUIMediaUtilities_initializeQueuesAndNotifications__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initializeQueuesAndNotifications_onceToken != -1)
   {
     dispatch_once(&initializeQueuesAndNotifications_onceToken, block);
@@ -397,14 +397,14 @@ void __58__SearchUIMediaUtilities_initializeQueuesAndNotifications__block_invoke
 
 + (void)prewarmMediaLibrary
 {
-  [a1 initializeQueuesAndNotifications];
+  [self initializeQueuesAndNotifications];
 
-  [a1 resetMediaApps];
+  [self resetMediaApps];
 }
 
 + (id)appsThatSupportSearchIntents
 {
-  [a1 initializeQueuesAndNotifications];
+  [self initializeQueuesAndNotifications];
   v3 = appsThatSupportSearch;
   if (!appsThatSupportSearch)
   {
@@ -419,7 +419,7 @@ void __58__SearchUIMediaUtilities_initializeQueuesAndNotifications__block_invoke
     v7[2] = __54__SearchUIMediaUtilities_appsThatSupportSearchIntents__block_invoke;
     v7[3] = &unk_1E85B45A8;
     v7[4] = &v8;
-    v7[5] = a1;
+    v7[5] = self;
     dispatch_sync(searchUI_mediaQueue, v7);
     v4 = appsThatSupportSearch;
     if (!appsThatSupportSearch)
@@ -457,7 +457,7 @@ uint64_t __54__SearchUIMediaUtilities_appsThatSupportSearchIntents__block_invoke
   block[1] = 3221225472;
   block[2] = __40__SearchUIMediaUtilities_resetMediaApps__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   dispatch_async(searchUI_mediaQueue, block);
 }
 
@@ -499,14 +499,14 @@ void __40__SearchUIMediaUtilities_resetMediaApps__block_invoke(uint64_t a1)
 
         v6 = *(*(&v15 + 1) + 8 * i);
         v7 = [MEMORY[0x1E696E728] appInfoWithApplicationRecord:v6];
-        v8 = [v7 supportedIntents];
+        supportedIntents = [v7 supportedIntents];
         v9 = [MEMORY[0x1E696E9C8] description];
-        v10 = [v8 containsObject:v9];
+        v10 = [supportedIntents containsObject:v9];
 
         if (v10)
         {
-          v11 = [v6 bundleIdentifier];
-          [v13 addObject:v11];
+          bundleIdentifier = [v6 bundleIdentifier];
+          [v13 addObject:bundleIdentifier];
         }
       }
 
@@ -538,25 +538,25 @@ uint64_t __41__SearchUIMediaUtilities_localAudioCache__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)isNowPlayingMedia:(id)a3
++ (BOOL)isNowPlayingMedia:(id)media
 {
-  v4 = a3;
-  v5 = [a1 isCurrentMedia:v4];
-  v6 = [a1 backingItemForMediaMetadataCache];
-  v7 = [v6 objectForKey:v4];
+  mediaCopy = media;
+  v5 = [self isCurrentMedia:mediaCopy];
+  backingItemForMediaMetadataCache = [self backingItemForMediaMetadataCache];
+  v7 = [backingItemForMediaMetadataCache objectForKey:mediaCopy];
 
   if (!v7 || _searchUIPlayState == 1)
   {
-    v9 = [a1 isPlaying];
+    isPlaying = [self isPlaying];
   }
 
   else
   {
-    v8 = [a1 musicStatusCache];
-    v9 = [v8 playbackState] == 1;
+    musicStatusCache = [self musicStatusCache];
+    isPlaying = [musicStatusCache playbackState] == 1;
   }
 
-  return v5 & v9;
+  return v5 & isPlaying;
 }
 
 + (void)pausePlayback
@@ -565,8 +565,8 @@ uint64_t __41__SearchUIMediaUtilities_localAudioCache__block_invoke()
   v2[1] = 3221225472;
   v2[2] = __39__SearchUIMediaUtilities_pausePlayback__block_invoke;
   v2[3] = &__block_descriptor_40_e5_v8__0l;
-  v2[4] = a1;
-  [a1 dispatchOnMusicQueueIfNecessary:v2];
+  v2[4] = self;
+  [self dispatchOnMusicQueueIfNecessary:v2];
 }
 
 void __39__SearchUIMediaUtilities_pausePlayback__block_invoke(uint64_t a1)
@@ -581,8 +581,8 @@ void __39__SearchUIMediaUtilities_pausePlayback__block_invoke(uint64_t a1)
   v2[1] = 3221225472;
   v2[2] = __40__SearchUIMediaUtilities_resumePlayback__block_invoke;
   v2[3] = &__block_descriptor_40_e5_v8__0l;
-  v2[4] = a1;
-  [a1 dispatchOnMusicQueueIfNecessary:v2];
+  v2[4] = self;
+  [self dispatchOnMusicQueueIfNecessary:v2];
 }
 
 void __40__SearchUIMediaUtilities_resumePlayback__block_invoke(uint64_t a1)
@@ -591,20 +591,20 @@ void __40__SearchUIMediaUtilities_resumePlayback__block_invoke(uint64_t a1)
   [v1 play];
 }
 
-+ (void)playMedia:(id)a3
++ (void)playMedia:(id)media
 {
-  v4 = a3;
-  v5 = [v4 mediaIdentifier];
-  v6 = [v4 mediaType];
-  if (v5)
+  mediaCopy = media;
+  mediaIdentifier = [mediaCopy mediaIdentifier];
+  mediaType = [mediaCopy mediaType];
+  if (mediaIdentifier)
   {
-    v7 = v6;
-    if ([a1 isCurrentMedia:v4])
+    v7 = mediaType;
+    if ([self isCurrentMedia:mediaCopy])
     {
-      v8 = [a1 isPlaying];
+      isPlaying = [self isPlaying];
       if (v7 == 100)
       {
-        if ((v8 & 1) == 0)
+        if ((isPlaying & 1) == 0)
         {
           +[_TtC8SearchUI26SearchUIVoicemailUtilities resumeVoicemail];
           goto LABEL_22;
@@ -615,15 +615,15 @@ LABEL_7:
         v20[1] = 3221225472;
         v20[2] = __36__SearchUIMediaUtilities_playMedia___block_invoke;
         v20[3] = &unk_1E85B3B30;
-        v21 = v5;
+        v21 = mediaIdentifier;
         [_TtC8SearchUI26SearchUIVoicemailUtilities playVoicemailWithIdentifier:v21 completionHandler:v20];
 
         goto LABEL_22;
       }
 
-      if ((v8 & 1) == 0)
+      if ((isPlaying & 1) == 0)
       {
-        [a1 resumePlayback];
+        [self resumePlayback];
         goto LABEL_22;
       }
     }
@@ -638,11 +638,11 @@ LABEL_7:
 
     if (v10)
     {
-      v11 = [v4 mediaIdentifier];
+      mediaIdentifier2 = [mediaCopy mediaIdentifier];
       _searchUIPlayState = 1;
-      if ([a1 isCoreSpotlightMedia:v11])
+      if ([self isCoreSpotlightMedia:mediaIdentifier2])
       {
-        [a1 playCoreSpotlightMedia:v4];
+        [self playCoreSpotlightMedia:mediaCopy];
       }
 
       else if (v7)
@@ -651,20 +651,20 @@ LABEL_7:
         v16[1] = 3221225472;
         v16[2] = __36__SearchUIMediaUtilities_playMedia___block_invoke_222;
         v16[3] = &unk_1E85B45D0;
-        v17 = v11;
-        v18 = v4;
-        v19 = a1;
+        v17 = mediaIdentifier2;
+        v18 = mediaCopy;
+        selfCopy = self;
         [SearchUIMusicUtilities playMusicItemWithMediaMetadata:v18 completionHandler:v16];
       }
     }
 
     else
     {
-      v11 = objc_opt_new();
+      mediaIdentifier2 = objc_opt_new();
       v12 = [SearchUIUtilities bundleIdentifierForApp:11];
-      [v11 setApplicationBundleIdentifier:v12];
+      [mediaIdentifier2 setApplicationBundleIdentifier:v12];
 
-      v13 = [SearchUICommandHandler handlerForCommand:v11 environment:0];
+      v13 = [SearchUICommandHandler handlerForCommand:mediaIdentifier2 environment:0];
       if ([MEMORY[0x1E69D9240] isMacOS])
       {
         v14 = 3;
@@ -675,14 +675,14 @@ LABEL_7:
         v14 = 2;
       }
 
-      [v13 performCommand:v11 triggerEvent:v14 environment:0];
+      [v13 performCommand:mediaIdentifier2 triggerEvent:v14 environment:0];
       v15 = SearchUIGeneralLog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
-        [(SearchUIMediaUtilities *)v5 playMedia:v4, v15];
+        [(SearchUIMediaUtilities *)mediaIdentifier playMedia:mediaCopy, v15];
       }
 
-      [a1 resetPlayer];
+      [self resetPlayer];
     }
   }
 
@@ -728,8 +728,8 @@ void __36__SearchUIMediaUtilities_playMedia___block_invoke_222(uint64_t a1, void
   v2[1] = 3221225472;
   v2[2] = __37__SearchUIMediaUtilities_resetPlayer__block_invoke;
   v2[3] = &__block_descriptor_40_e5_v8__0l;
-  v2[4] = a1;
-  [a1 dispatchOnMusicQueueIfNecessary:v2];
+  v2[4] = self;
+  [self dispatchOnMusicQueueIfNecessary:v2];
 }
 
 void __37__SearchUIMediaUtilities_resetPlayer__block_invoke(uint64_t a1)
@@ -744,19 +744,19 @@ void __37__SearchUIMediaUtilities_resetPlayer__block_invoke(uint64_t a1)
   [v3 postNotificationName:@"SearchUIMusicDidResetNotification" object:0];
 }
 
-+ (void)playCoreSpotlightMedia:(id)a3
++ (void)playCoreSpotlightMedia:(id)media
 {
-  v4 = a3;
-  v5 = [v4 mediaIdentifier];
-  v6 = [a1 localAudioCache];
+  mediaCopy = media;
+  mediaIdentifier = [mediaCopy mediaIdentifier];
+  localAudioCache = [self localAudioCache];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __49__SearchUIMediaUtilities_playCoreSpotlightMedia___block_invoke;
   v8[3] = &unk_1E85B4620;
-  v9 = v4;
-  v10 = a1;
-  v7 = v4;
-  [v6 getObjectForKey:v5 completionHandler:v8];
+  v9 = mediaCopy;
+  selfCopy = self;
+  v7 = mediaCopy;
+  [localAudioCache getObjectForKey:mediaIdentifier completionHandler:v8];
 }
 
 void __49__SearchUIMediaUtilities_playCoreSpotlightMedia___block_invoke(uint64_t a1, void *a2)
@@ -860,21 +860,21 @@ uint64_t __49__SearchUIMediaUtilities_playCoreSpotlightMedia___block_invoke_4(ui
   }
 }
 
-+ (void)updateBackingItemForMediaMetadata:(id)a3
++ (void)updateBackingItemForMediaMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [a1 musicStatusCache];
-  v6 = [v5 nowPlayingItem];
+  metadataCopy = metadata;
+  musicStatusCache = [self musicStatusCache];
+  nowPlayingItem = [musicStatusCache nowPlayingItem];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__SearchUIMediaUtilities_updateBackingItemForMediaMetadata___block_invoke;
   v9[3] = &unk_1E85B2900;
-  v11 = v4;
-  v12 = a1;
-  v10 = v6;
-  v7 = v4;
-  v8 = v6;
+  v11 = metadataCopy;
+  selfCopy = self;
+  v10 = nowPlayingItem;
+  v7 = metadataCopy;
+  v8 = nowPlayingItem;
   [SearchUIUtilities dispatchMainIfNecessary:v9];
 }
 
@@ -898,23 +898,23 @@ void __60__SearchUIMediaUtilities_updateBackingItemForMediaMetadata___block_invo
   _searchUIPlayState = v5;
 }
 
-+ (void)getMusicUserDisclosureApprovalStatusWithCompletionHandler:(id)a3
++ (void)getMusicUserDisclosureApprovalStatusWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   if (getMusicUserDisclosureApprovalStatusWithCompletionHandler__onceToken != -1)
   {
     +[SearchUIMediaUtilities getMusicUserDisclosureApprovalStatusWithCompletionHandler:];
   }
 
   v4 = getMusicUserDisclosureApprovalStatusWithCompletionHandler__musicDisclosureStatusCache;
-  v5 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __84__SearchUIMediaUtilities_getMusicUserDisclosureApprovalStatusWithCompletionHandler___block_invoke_2;
   v7[3] = &unk_1E85B4648;
-  v8 = v3;
-  v6 = v3;
-  [v4 getObjectForKey:v5 completionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [v4 getObjectForKey:null completionHandler:v7];
 }
 
 uint64_t __84__SearchUIMediaUtilities_getMusicUserDisclosureApprovalStatusWithCompletionHandler___block_invoke()
@@ -952,23 +952,23 @@ uint64_t __42__SearchUIMediaUtilities_musicStatusCache__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)canPlayAppleMusicWithCompletionHandler:(id)a3
++ (void)canPlayAppleMusicWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   if (canPlayAppleMusicWithCompletionHandler__onceToken != -1)
   {
     +[SearchUIMediaUtilities canPlayAppleMusicWithCompletionHandler:];
   }
 
   v4 = canPlayAppleMusicWithCompletionHandler__subscriptionStatusCache;
-  v5 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__SearchUIMediaUtilities_canPlayAppleMusicWithCompletionHandler___block_invoke_2;
   v7[3] = &unk_1E85B4648;
-  v8 = v3;
-  v6 = v3;
-  [v4 getObjectForKey:v5 completionHandler:v7];
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  [v4 getObjectForKey:null completionHandler:v7];
 }
 
 uint64_t __65__SearchUIMediaUtilities_canPlayAppleMusicWithCompletionHandler___block_invoke()
@@ -1021,7 +1021,7 @@ void __42__SearchUIMediaUtilities_musicPlayerQueue__block_invoke()
       +[SearchUIMediaUtilities musicPlayer];
     }
 
-    v3 = [MEMORY[0x1E69707E8] applicationQueuePlayer];
+    applicationQueuePlayer = [MEMORY[0x1E69707E8] applicationQueuePlayer];
   }
 
   else
@@ -1030,16 +1030,16 @@ void __42__SearchUIMediaUtilities_musicPlayerQueue__block_invoke()
     block[1] = 3221225472;
     block[2] = __37__SearchUIMediaUtilities_musicPlayer__block_invoke_2;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (musicPlayer_onceToken_247 != -1)
     {
       dispatch_once(&musicPlayer_onceToken_247, block);
     }
 
-    v3 = musicPlayer_musicPlayerController;
+    applicationQueuePlayer = musicPlayer_musicPlayerController;
   }
 
-  return v3;
+  return applicationQueuePlayer;
 }
 
 void __37__SearchUIMediaUtilities_musicPlayer__block_invoke_2(uint64_t a1)
@@ -1055,24 +1055,24 @@ void __37__SearchUIMediaUtilities_musicPlayer__block_invoke_2(uint64_t a1)
   musicPlayer_musicPlayerController = v6;
 }
 
-+ (BOOL)isCurrentMedia:(id)a3
++ (BOOL)isCurrentMedia:(id)media
 {
-  v4 = a3;
-  v7 = [a1 backingItemForMediaMetadataCache];
-  v5 = [v7 objectForKey:v4];
+  mediaCopy = media;
+  backingItemForMediaMetadataCache = [self backingItemForMediaMetadataCache];
+  v5 = [backingItemForMediaMetadataCache objectForKey:mediaCopy];
 
-  v6 = [a1 currentMedia];
-  LODWORD(v7) = [v6 isEqual:v4];
+  currentMedia = [self currentMedia];
+  LODWORD(backingItemForMediaMetadataCache) = [currentMedia isEqual:mediaCopy];
 
-  if (!v7 && v5 && _searchUIPlayState != 1)
+  if (!backingItemForMediaMetadataCache && v5 && _searchUIPlayState != 1)
   {
-    v7 = [a1 musicStatusCache];
-    v8 = [v7 nowPlayingItem];
+    backingItemForMediaMetadataCache = [self musicStatusCache];
+    nowPlayingItem = [backingItemForMediaMetadataCache nowPlayingItem];
 
-    LOBYTE(v7) = [a1 isMediaItem:v8 equalToMediaItem:v5];
+    LOBYTE(backingItemForMediaMetadataCache) = [self isMediaItem:nowPlayingItem equalToMediaItem:v5];
   }
 
-  return v7;
+  return backingItemForMediaMetadataCache;
 }
 
 + (id)backingItemForMediaMetadataCache
@@ -1094,14 +1094,14 @@ uint64_t __58__SearchUIMediaUtilities_backingItemForMediaMetadataCache__block_in
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)isMediaItem:(id)a3 equalToMediaItem:(id)a4
++ (BOOL)isMediaItem:(id)item equalToMediaItem:(id)mediaItem
 {
-  v5 = a3;
-  v6 = a4;
+  itemCopy = item;
+  mediaItemCopy = mediaItem;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
+    v7 = itemCopy;
   }
 
   else
@@ -1113,7 +1113,7 @@ uint64_t __58__SearchUIMediaUtilities_backingItemForMediaMetadataCache__block_in
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v6;
+    v9 = mediaItemCopy;
   }
 
   else
@@ -1134,22 +1134,22 @@ uint64_t __58__SearchUIMediaUtilities_backingItemForMediaMetadataCache__block_in
 
   if (v11)
   {
-    v14 = [v5 isEqual:v6];
+    v14 = [itemCopy isEqual:mediaItemCopy];
   }
 
   else
   {
-    v12 = [v8 modelObject];
-    v13 = [v10 modelObject];
-    v14 = [v12 isEqual:v13];
+    modelObject = [v8 modelObject];
+    modelObject2 = [v10 modelObject];
+    v14 = [modelObject isEqual:modelObject2];
   }
 
-  return (v5 == v6) | v14 & 1;
+  return (itemCopy == mediaItemCopy) | v14 & 1;
 }
 
-+ (void)dispatchOnMusicQueueIfNecessary:(id)a3
++ (void)dispatchOnMusicQueueIfNecessary:(id)necessary
 {
-  block = a3;
+  block = necessary;
   if ([MEMORY[0x1E69D9240] isMacOS])
   {
     [SearchUIUtilities dispatchMainIfNecessary:block];

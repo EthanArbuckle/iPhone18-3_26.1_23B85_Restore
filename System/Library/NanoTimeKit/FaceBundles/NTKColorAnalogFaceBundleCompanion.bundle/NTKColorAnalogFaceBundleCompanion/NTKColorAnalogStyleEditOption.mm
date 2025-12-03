@@ -1,5 +1,5 @@
 @interface NTKColorAnalogStyleEditOption
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 - (int64_t)swatchStyle;
@@ -7,30 +7,30 @@
 
 @implementation NTKColorAnalogStyleEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 2)
+  if (value > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_10498[a3];
+    return off_10498[value];
   }
 }
 
 - (id)localizedName
 {
-  v2 = [(NTKColorAnalogStyleEditOption *)self style];
-  if (v2 > 2)
+  style = [(NTKColorAnalogStyleEditOption *)self style];
+  if (style > 2)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = off_104B0[v2];
+    v3 = off_104B0[style];
   }
 
   return [NTKColorAnalogFaceBundle localizedStringForKey:v3 comment:@"Dial Style"];
@@ -50,10 +50,10 @@
 
 - (int64_t)swatchStyle
 {
-  v2 = [(NTKColorAnalogStyleEditOption *)self device];
-  v3 = [v2 deviceCategory];
+  device = [(NTKColorAnalogStyleEditOption *)self device];
+  deviceCategory = [device deviceCategory];
 
-  if (v3 == &dword_0 + 1)
+  if (deviceCategory == &dword_0 + 1)
   {
     return 1;
   }

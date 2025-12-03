@@ -1,22 +1,22 @@
 @interface TSPTemporaryDataStorage
-- (TSPTemporaryDataStorage)initWithURL:(id)a3 decryptionKey:(id)a4;
+- (TSPTemporaryDataStorage)initWithURL:(id)l decryptionKey:(id)key;
 - (void)dealloc;
-- (void)performIOChannelReadWithAccessor:(id)a3;
-- (void)performReadWithAccessor:(id)a3;
+- (void)performIOChannelReadWithAccessor:(id)accessor;
+- (void)performReadWithAccessor:(id)accessor;
 @end
 
 @implementation TSPTemporaryDataStorage
 
-- (TSPTemporaryDataStorage)initWithURL:(id)a3 decryptionKey:(id)a4
+- (TSPTemporaryDataStorage)initWithURL:(id)l decryptionKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
-  if (([v7 isFileURL] & 1) == 0)
+  lCopy = l;
+  keyCopy = key;
+  if (([lCopy isFileURL] & 1) == 0)
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPTemporaryDataStorage initWithURL:decryptionKey:]"];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPTemporaryDataStorage.mm"];
-    [v9 handleFailureInFunction:v10 file:v11 lineNumber:29 description:@"Expected a file URL"];
+    [currentHandler handleFailureInFunction:v10 file:v11 lineNumber:29 description:@"Expected a file URL"];
   }
 
   v16.receiver = self;
@@ -25,8 +25,8 @@
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_URL, a3);
-    objc_storeStrong(&v13->_decryptionKey, a4);
+    objc_storeStrong(&v12->_URL, l);
+    objc_storeStrong(&v13->_decryptionKey, key);
     v14 = v13;
   }
 
@@ -37,17 +37,17 @@
 {
   if (!self->_isMissingData)
   {
-    v3 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     URL = self->_URL;
     v12 = 0;
-    v5 = [v3 removeItemAtURL:URL error:&v12];
+    v5 = [defaultManager removeItemAtURL:URL error:&v12];
     v6 = v12;
     if ((v5 & 1) == 0)
     {
-      v7 = [(NSURL *)self->_URL path];
-      v8 = [v7 stringByDeletingLastPathComponent];
+      path = [(NSURL *)self->_URL path];
+      stringByDeletingLastPathComponent = [path stringByDeletingLastPathComponent];
 
-      if ([v3 fileExistsAtPath:v8])
+      if ([defaultManager fileExistsAtPath:stringByDeletingLastPathComponent])
       {
         v9 = self->_URL;
         v10 = v6;
@@ -61,9 +61,9 @@
   [(TSPTemporaryDataStorage *)&v11 dealloc:v9];
 }
 
-- (void)performReadWithAccessor:(id)a3
+- (void)performReadWithAccessor:(id)accessor
 {
-  v4 = a3;
+  accessorCopy = accessor;
   if (self->_isMissingData)
   {
     URL = 0;
@@ -74,20 +74,20 @@
     URL = self->_URL;
   }
 
-  v6 = v4;
-  (*(v4 + 2))(v4, URL);
+  v6 = accessorCopy;
+  (*(accessorCopy + 2))(accessorCopy, URL);
 }
 
-- (void)performIOChannelReadWithAccessor:(id)a3
+- (void)performIOChannelReadWithAccessor:(id)accessor
 {
-  v4 = a3;
+  accessorCopy = accessor;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60__TSPTemporaryDataStorage_performIOChannelReadWithAccessor___block_invoke;
   v6[3] = &unk_279D471F8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = accessorCopy;
+  v5 = accessorCopy;
   [(TSPTemporaryDataStorage *)self performReadWithAccessor:v6];
 }
 

@@ -1,11 +1,11 @@
 @interface WBSCloudHistoryPushAgentProxy
 - (WBSCloudHistoryPushAgentProxy)init;
-- (id)queryMemoryFootprintWithError:(id *)a3;
+- (id)queryMemoryFootprintWithError:(id *)error;
 - (void)acknowledgePendingPushNotifications;
 - (void)clearAcknowledgedPushNotifications;
 - (void)dealloc;
-- (void)getPushNotifications:(id)a3;
-- (void)queryMemoryFootprint:(id)a3;
+- (void)getPushNotifications:(id)notifications;
+- (void)queryMemoryFootprint:(id)footprint;
 @end
 
 @implementation WBSCloudHistoryPushAgentProxy
@@ -39,14 +39,14 @@
   [(WBSCloudHistoryPushAgentProxy *)&v3 dealloc];
 }
 
-- (void)getPushNotifications:(id)a3
+- (void)getPushNotifications:(id)notifications
 {
-  v5 = a3;
-  v4 = [(NSXPCConnection *)self->_agentConnection remoteObjectProxy];
-  [v4 getPushNotifications:v5];
+  notificationsCopy = notifications;
+  remoteObjectProxy = [(NSXPCConnection *)self->_agentConnection remoteObjectProxy];
+  [remoteObjectProxy getPushNotifications:notificationsCopy];
 }
 
-- (id)queryMemoryFootprintWithError:(id *)a3
+- (id)queryMemoryFootprintWithError:(id *)error
 {
   v17 = 0;
   v18 = &v17;
@@ -75,9 +75,9 @@
   v9[5] = &v11;
   [v6 queryMemoryFootprint:v9];
 
-  if (a3)
+  if (error)
   {
-    *a3 = v12[5];
+    *error = v12[5];
   }
 
   v7 = v18[5];
@@ -102,14 +102,14 @@ void __63__WBSCloudHistoryPushAgentProxy_queryMemoryFootprintWithError___block_i
   *(v9 + 40) = v6;
 }
 
-- (void)queryMemoryFootprint:(id)a3
+- (void)queryMemoryFootprint:(id)footprint
 {
-  v4 = a3;
+  footprintCopy = footprint;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__WBSCloudHistoryPushAgentProxy_queryMemoryFootprint___block_invoke;
   v8[3] = &unk_1E7FB7E48;
-  v5 = v4;
+  v5 = footprintCopy;
   v9 = v5;
   v6 = MEMORY[0x1BFB13CE0](v8);
   v7 = [(NSXPCConnection *)self->_agentConnection remoteObjectProxyWithErrorHandler:v6];
@@ -118,14 +118,14 @@ void __63__WBSCloudHistoryPushAgentProxy_queryMemoryFootprintWithError___block_i
 
 - (void)acknowledgePendingPushNotifications
 {
-  v2 = [(NSXPCConnection *)self->_agentConnection remoteObjectProxy];
-  [v2 acknowledgePendingPushNotifications];
+  remoteObjectProxy = [(NSXPCConnection *)self->_agentConnection remoteObjectProxy];
+  [remoteObjectProxy acknowledgePendingPushNotifications];
 }
 
 - (void)clearAcknowledgedPushNotifications
 {
-  v2 = [(NSXPCConnection *)self->_agentConnection remoteObjectProxy];
-  [v2 clearAcknowledgedPushNotifications];
+  remoteObjectProxy = [(NSXPCConnection *)self->_agentConnection remoteObjectProxy];
+  [remoteObjectProxy clearAcknowledgedPushNotifications];
 }
 
 @end

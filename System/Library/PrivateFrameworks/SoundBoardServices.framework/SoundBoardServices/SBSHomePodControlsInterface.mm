@@ -1,7 +1,7 @@
 @interface SBSHomePodControlsInterface
-- (SBSHomePodControlsInterface)initWithTarget:(id)a3;
+- (SBSHomePodControlsInterface)initWithTarget:(id)target;
 - (void)dealloc;
-- (void)getAllSyncedAlarmsAndTimers:(id)a3;
+- (void)getAllSyncedAlarmsAndTimers:(id)timers;
 @end
 
 @implementation SBSHomePodControlsInterface
@@ -14,9 +14,9 @@
   [(SBSHomePodControlsInterface *)&v3 dealloc];
 }
 
-- (void)getAllSyncedAlarmsAndTimers:(id)a3
+- (void)getAllSyncedAlarmsAndTimers:(id)timers
 {
-  if (a3)
+  if (timers)
   {
     sbProxy = self->_sbProxy;
 
@@ -36,22 +36,22 @@
   }
 }
 
-- (SBSHomePodControlsInterface)initWithTarget:(id)a3
+- (SBSHomePodControlsInterface)initWithTarget:(id)target
 {
-  v4 = a3;
+  targetCopy = target;
   v9.receiver = self;
   v9.super_class = SBSHomePodControlsInterface;
   v5 = [(SBSHomePodControlsInterface *)&v9 init];
   if (v5)
   {
-    if ([v4 isEqualToString:@"localhost"])
+    if ([targetCopy isEqualToString:@"localhost"])
     {
       [SBSUtils createProxyConnectionForXPCWithExportedObject:0 connection:&v5->_sbConnection];
     }
 
     else
     {
-      [SBSUtils createProxyConnectionForRapportTarget:v4];
+      [SBSUtils createProxyConnectionForRapportTarget:targetCopy];
     }
     v6 = ;
     sbProxy = v5->_sbProxy;

@@ -1,26 +1,26 @@
 @interface CPLScopeUpdateTask
-- (BOOL)shouldProcessScope:(id)a3 inTransaction:(id)a4;
-- (id)enumerateScopesForTaskInTransaction:(id)a3;
-- (id)newScopedTaskWithScope:(id)a3 session:(id)a4 transportScope:(id)a5 clientCacheIdentifier:(id)a6;
-- (void)taskDidFinishWithError:(id)a3;
+- (BOOL)shouldProcessScope:(id)scope inTransaction:(id)transaction;
+- (id)enumerateScopesForTaskInTransaction:(id)transaction;
+- (id)newScopedTaskWithScope:(id)scope session:(id)session transportScope:(id)transportScope clientCacheIdentifier:(id)identifier;
+- (void)taskDidFinishWithError:(id)error;
 @end
 
 @implementation CPLScopeUpdateTask
 
-- (void)taskDidFinishWithError:(id)a3
+- (void)taskDidFinishWithError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
     v9.receiver = self;
     v9.super_class = CPLScopeUpdateTask;
-    [(CPLEngineSyncTask *)&v9 taskDidFinishWithError:v4];
+    [(CPLEngineSyncTask *)&v9 taskDidFinishWithError:errorCopy];
   }
 
   else
   {
-    v5 = [(CPLEngineSyncTask *)self engineLibrary];
-    v6 = [v5 store];
+    engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+    store = [engineLibrary store];
 
     v15[0] = 0;
     v15[1] = v15;
@@ -30,9 +30,9 @@
     v11[1] = 3221225472;
     v11[2] = __45__CPLScopeUpdateTask_taskDidFinishWithError___block_invoke;
     v11[3] = &unk_1E86200A8;
-    v7 = v6;
+    v7 = store;
     v12 = v7;
-    v13 = self;
+    selfCopy = self;
     v14 = v15;
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -273,17 +273,17 @@ LABEL_33:
   return v24;
 }
 
-- (id)newScopedTaskWithScope:(id)a3 session:(id)a4 transportScope:(id)a5 clientCacheIdentifier:(id)a6
+- (id)newScopedTaskWithScope:(id)scope session:(id)session transportScope:(id)transportScope clientCacheIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
+  scopeCopy = scope;
+  identifierCopy = identifier;
+  transportScopeCopy = transportScope;
+  sessionCopy = session;
   v14 = [CPLScopeUpdateScopeTask alloc];
-  v15 = [(CPLEngineSyncTask *)self engineLibrary];
-  v16 = [(CPLScopeUpdateScopeTask *)v14 initWithEngineLibrary:v15 session:v13 clientCacheIdentifier:v11 scope:v10 transportScope:v12];
+  engineLibrary = [(CPLEngineSyncTask *)self engineLibrary];
+  v16 = [(CPLScopeUpdateScopeTask *)v14 initWithEngineLibrary:engineLibrary session:sessionCopy clientCacheIdentifier:identifierCopy scope:scopeCopy transportScope:transportScopeCopy];
 
-  if (+[CPLScopeChange supportsStagingScopeForScopeWithType:](CPLScopeChange, "supportsStagingScopeForScopeWithType:", [v10 scopeType]))
+  if (+[CPLScopeChange supportsStagingScopeForScopeWithType:](CPLScopeChange, "supportsStagingScopeForScopeWithType:", [scopeCopy scopeType]))
   {
     possibleStagedScopes = self->_possibleStagedScopes;
     if (!possibleStagedScopes)
@@ -295,29 +295,29 @@ LABEL_33:
       possibleStagedScopes = self->_possibleStagedScopes;
     }
 
-    v20 = [v10 scopeIdentifier];
-    [(NSMutableSet *)possibleStagedScopes addObject:v20];
+    scopeIdentifier = [scopeCopy scopeIdentifier];
+    [(NSMutableSet *)possibleStagedScopes addObject:scopeIdentifier];
   }
 
   return v16;
 }
 
-- (BOOL)shouldProcessScope:(id)a3 inTransaction:(id)a4
+- (BOOL)shouldProcessScope:(id)scope inTransaction:(id)transaction
 {
-  v6 = a3;
+  scopeCopy = scope;
   v9.receiver = self;
   v9.super_class = CPLScopeUpdateTask;
-  v7 = -[CPLEngineMultiscopeSyncTask shouldProcessScope:inTransaction:](&v9, sel_shouldProcessScope_inTransaction_, v6, a4) || [v6 scopeType] == 0;
+  v7 = -[CPLEngineMultiscopeSyncTask shouldProcessScope:inTransaction:](&v9, sel_shouldProcessScope_inTransaction_, scopeCopy, transaction) || [scopeCopy scopeType] == 0;
 
   return v7;
 }
 
-- (id)enumerateScopesForTaskInTransaction:(id)a3
+- (id)enumerateScopesForTaskInTransaction:(id)transaction
 {
-  v3 = [(CPLEngineMultiscopeSyncTask *)self scopes];
-  v4 = [v3 enumeratorForScopesNeedingUpdateFromTransport];
+  scopes = [(CPLEngineMultiscopeSyncTask *)self scopes];
+  enumeratorForScopesNeedingUpdateFromTransport = [scopes enumeratorForScopesNeedingUpdateFromTransport];
 
-  return v4;
+  return enumeratorForScopesNeedingUpdateFromTransport;
 }
 
 @end

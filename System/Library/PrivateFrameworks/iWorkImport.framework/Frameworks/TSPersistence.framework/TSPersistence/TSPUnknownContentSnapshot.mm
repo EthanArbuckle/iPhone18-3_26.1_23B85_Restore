@@ -1,11 +1,11 @@
 @interface TSPUnknownContentSnapshot
 - (TSPUnknownContentSnapshot)init;
-- (TSPUnknownContentSnapshot)initWithMessages:(id)a3 preserveFields:(id)a4 preserveUntilModifiedFields:(id)a5 shouldIncludePreserveUntilModifiedFieldsInKnownFieldRuleEnumeration:(BOOL)a6;
+- (TSPUnknownContentSnapshot)initWithMessages:(id)messages preserveFields:(id)fields preserveUntilModifiedFields:(id)modifiedFields shouldIncludePreserveUntilModifiedFieldsInKnownFieldRuleEnumeration:(BOOL)enumeration;
 - (id)newFieldTree;
-- (id)newUnknownContentSnapshotWithMessages:(id)a3;
-- (void)enumerateKnownFieldRulesUsingBlock:(id)a3;
-- (void)saveToArchiver:(id)a3;
-- (void)updateMessageInfo:(void *)a3;
+- (id)newUnknownContentSnapshotWithMessages:(id)messages;
+- (void)enumerateKnownFieldRulesUsingBlock:(id)block;
+- (void)saveToArchiver:(id)archiver;
+- (void)updateMessageInfo:(void *)info;
 @end
 
 @implementation TSPUnknownContentSnapshot
@@ -26,33 +26,33 @@
   objc_exception_throw(v13);
 }
 
-- (TSPUnknownContentSnapshot)initWithMessages:(id)a3 preserveFields:(id)a4 preserveUntilModifiedFields:(id)a5 shouldIncludePreserveUntilModifiedFieldsInKnownFieldRuleEnumeration:(BOOL)a6
+- (TSPUnknownContentSnapshot)initWithMessages:(id)messages preserveFields:(id)fields preserveUntilModifiedFields:(id)modifiedFields shouldIncludePreserveUntilModifiedFieldsInKnownFieldRuleEnumeration:(BOOL)enumeration
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  messagesCopy = messages;
+  fieldsCopy = fields;
+  modifiedFieldsCopy = modifiedFields;
   v17.receiver = self;
   v17.super_class = TSPUnknownContentSnapshot;
   v14 = [(TSPUnknownContentSnapshot *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_messages, a3);
-    objc_storeStrong(&v15->_preserveFields, a4);
-    objc_storeStrong(&v15->_preserveUntilModifiedFields, a5);
-    v15->_shouldIncludePreserveUntilModifiedFieldsInKnownFieldRuleEnumeration = a6;
+    objc_storeStrong(&v14->_messages, messages);
+    objc_storeStrong(&v15->_preserveFields, fields);
+    objc_storeStrong(&v15->_preserveUntilModifiedFields, modifiedFields);
+    v15->_shouldIncludePreserveUntilModifiedFieldsInKnownFieldRuleEnumeration = enumeration;
   }
 
   return v15;
 }
 
-- (id)newUnknownContentSnapshotWithMessages:(id)a3
+- (id)newUnknownContentSnapshotWithMessages:(id)messages
 {
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6) || objc_msgSend_count(self->_preserveFields, v7, v8) || objc_msgSend_count(self->_preserveUntilModifiedFields, v9, v10))
+  messagesCopy = messages;
+  if (objc_msgSend_count(messagesCopy, v5, v6) || objc_msgSend_count(self->_preserveFields, v7, v8) || objc_msgSend_count(self->_preserveUntilModifiedFields, v9, v10))
   {
     v11 = [TSPUnknownContentSnapshot alloc];
-    shouldIncludePreserveUntilModifiedFieldsInKnownFieldRuleEnumeration = objc_msgSend_initWithMessages_preserveFields_preserveUntilModifiedFields_shouldIncludePreserveUntilModifiedFieldsInKnownFieldRuleEnumeration_(v11, v12, v4, self->_preserveFields, self->_preserveUntilModifiedFields, self->_shouldIncludePreserveUntilModifiedFieldsInKnownFieldRuleEnumeration);
+    shouldIncludePreserveUntilModifiedFieldsInKnownFieldRuleEnumeration = objc_msgSend_initWithMessages_preserveFields_preserveUntilModifiedFields_shouldIncludePreserveUntilModifiedFieldsInKnownFieldRuleEnumeration_(v11, v12, messagesCopy, self->_preserveFields, self->_preserveUntilModifiedFields, self->_shouldIncludePreserveUntilModifiedFieldsInKnownFieldRuleEnumeration);
   }
 
   else
@@ -137,14 +137,14 @@
   return v6;
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v8 = a3;
+  archiverCopy = archiver;
   v6 = objc_msgSend_newFieldTree(self, v4, v5);
-  objc_msgSend_saveToArchiver_(v6, v7, v8);
+  objc_msgSend_saveToArchiver_(v6, v7, archiverCopy);
 }
 
-- (void)updateMessageInfo:(void *)a3
+- (void)updateMessageInfo:(void *)info
 {
   v28 = *MEMORY[0x277D85DE8];
   v22 = 0u;
@@ -166,7 +166,7 @@
           objc_enumerationMutation(v5);
         }
 
-        objc_msgSend_updateMessageInfo_(*(*(&v22 + 1) + 8 * v10++), v7, a3);
+        objc_msgSend_updateMessageInfo_(*(*(&v22 + 1) + 8 * v10++), v7, info);
       }
 
       while (v8 != v10);
@@ -195,7 +195,7 @@
           objc_enumerationMutation(v11);
         }
 
-        objc_msgSend_updateMessageInfo_(*(*(&v18 + 1) + 8 * v16++), v13, a3, v18);
+        objc_msgSend_updateMessageInfo_(*(*(&v18 + 1) + 8 * v16++), v13, info, v18);
       }
 
       while (v14 != v16);
@@ -208,11 +208,11 @@
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enumerateKnownFieldRulesUsingBlock:(id)a3
+- (void)enumerateKnownFieldRulesUsingBlock:(id)block
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  blockCopy = block;
+  if (!blockCopy)
   {
     goto LABEL_33;
   }
@@ -221,7 +221,7 @@
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v32 = self;
+  selfCopy = self;
   obj = self->_messages;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v5, &v37, v41, 16);
   if (!v8)
@@ -288,7 +288,7 @@ LABEL_30:
 
       else
       {
-        if (v19 != 1 || !v32->_shouldIncludePreserveUntilModifiedFieldsInKnownFieldRuleEnumeration)
+        if (v19 != 1 || !selfCopy->_shouldIncludePreserveUntilModifiedFieldsInKnownFieldRuleEnumeration)
         {
           goto LABEL_26;
         }
@@ -322,7 +322,7 @@ LABEL_30:
       v33 = v20;
       v34 = v21;
       v35 = v26;
-      v4[2](v4, v25, &v33, v15, &v36);
+      blockCopy[2](blockCopy, v25, &v33, v15, &v36);
 
       v16 = v36;
     }

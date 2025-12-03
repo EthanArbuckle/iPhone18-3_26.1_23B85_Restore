@@ -1,19 +1,19 @@
 @interface NCCSensorStatusViewModelHelper
-- (void)observeDataFromStatusDomain:(id)a3 completion:(id)a4;
+- (void)observeDataFromStatusDomain:(id)domain completion:(id)completion;
 @end
 
 @implementation NCCSensorStatusViewModelHelper
 
-- (void)observeDataFromStatusDomain:(id)a3 completion:(id)a4
+- (void)observeDataFromStatusDomain:(id)domain completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__NCCSensorStatusViewModelHelper_observeDataFromStatusDomain_completion___block_invoke;
   v7[3] = &unk_27992F238;
-  v8 = v5;
-  v6 = v5;
-  [a3 observeDataWithBlock:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [domain observeDataWithBlock:v7];
 }
 
 void __73__NCCSensorStatusViewModelHelper_observeDataFromStatusDomain_completion___block_invoke(uint64_t a1)

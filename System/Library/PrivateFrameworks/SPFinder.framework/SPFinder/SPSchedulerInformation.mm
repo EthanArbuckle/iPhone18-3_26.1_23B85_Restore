@@ -1,24 +1,24 @@
 @interface SPSchedulerInformation
-- (SPSchedulerInformation)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (SPSchedulerInformation)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPSchedulerInformation
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[SPSchedulerInformation advertisementCount](self forKey:{"advertisementCount"), @"advertisementCount"}];
-  [v4 encodeInteger:-[SPSchedulerInformation priorityCount](self forKey:{"priorityCount"), @"priorityCount"}];
-  [v4 encodeInteger:-[SPSchedulerInformation lowBatteryCount](self forKey:{"lowBatteryCount"), @"lowBatteryCount"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[SPSchedulerInformation advertisementCount](self forKey:{"advertisementCount"), @"advertisementCount"}];
+  [coderCopy encodeInteger:-[SPSchedulerInformation priorityCount](self forKey:{"priorityCount"), @"priorityCount"}];
+  [coderCopy encodeInteger:-[SPSchedulerInformation lowBatteryCount](self forKey:{"lowBatteryCount"), @"lowBatteryCount"}];
 }
 
-- (SPSchedulerInformation)initWithCoder:(id)a3
+- (SPSchedulerInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  -[SPSchedulerInformation setAdvertisementCount:](self, "setAdvertisementCount:", [v4 decodeIntegerForKey:@"advertisementCount"]);
-  -[SPSchedulerInformation setPriorityCount:](self, "setPriorityCount:", [v4 decodeIntegerForKey:@"priorityCount"]);
-  v5 = [v4 decodeIntegerForKey:@"lowBatteryCount"];
+  coderCopy = coder;
+  -[SPSchedulerInformation setAdvertisementCount:](self, "setAdvertisementCount:", [coderCopy decodeIntegerForKey:@"advertisementCount"]);
+  -[SPSchedulerInformation setPriorityCount:](self, "setPriorityCount:", [coderCopy decodeIntegerForKey:@"priorityCount"]);
+  v5 = [coderCopy decodeIntegerForKey:@"lowBatteryCount"];
 
   [(SPSchedulerInformation *)self setLowBatteryCount:v5];
   return self;

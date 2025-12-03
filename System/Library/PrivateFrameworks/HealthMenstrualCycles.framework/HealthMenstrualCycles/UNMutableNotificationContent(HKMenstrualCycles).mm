@@ -10,7 +10,7 @@
   v13 = a6;
   v14 = a4;
   v15 = a3;
-  v16 = objc_alloc_init(a1);
+  v16 = objc_alloc_init(self);
   [v16 setBody:v14];
 
   [v16 setCategoryIdentifier:v15];

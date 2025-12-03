@@ -1,19 +1,19 @@
 @interface FindMyDeviceUserNotificationsXPCServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (void)addNotificationRequest:(id)a3 completion:(id)a4;
-- (void)removeNotificationWithIdentifier:(id)a3 completion:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (void)addNotificationRequest:(id)request completion:(id)completion;
+- (void)removeNotificationWithIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation FindMyDeviceUserNotificationsXPCServer
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = sub_1000020EC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v5;
+    v12 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Received new XPC connection %@", buf, 0xCu);
   }
 
@@ -21,17 +21,17 @@
   v8 = [NSSet setWithObjects:v7, objc_opt_class(), 0];
   v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___FindMyDeviceUserNotificationsXPCInterface];
   [v9 setClasses:v8 forSelector:"addNotificationRequest:completion:" argumentIndex:0 ofReply:1];
-  [v5 setExportedInterface:v9];
-  [v5 setExportedObject:self];
-  [v5 resume];
+  [connectionCopy setExportedInterface:v9];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (void)addNotificationRequest:(id)a3 completion:(id)a4
+- (void)addNotificationRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = sub_1000020EC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -45,14 +45,14 @@
 
   if (v10 && ([&__kCFBooleanTrue isEqual:v10] & 1) != 0)
   {
-    v11 = [v6 locationTitle];
+    locationTitle = [requestCopy locationTitle];
 
-    if (v11)
+    if (locationTitle)
     {
       v12 = [CLLocation alloc];
-      [v6 latitude];
+      [requestCopy latitude];
       v14 = v13;
-      [v6 longitude];
+      [requestCopy longitude];
       v16 = [v12 initWithLatitude:v14 longitude:v15];
       v17 = objc_alloc_init(CLGeocoder);
       v18 = dispatch_group_create();
@@ -83,14 +83,14 @@
       v22 = dispatch_group_wait(v20, v21);
       if (v22 || !*(*(&buf + 1) + 40))
       {
-        v23 = sub_1000020EC();
-        if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+        locationMessage = sub_1000020EC();
+        if (os_log_type_enabled(locationMessage, OS_LOG_TYPE_DEFAULT))
         {
           *v45 = 138412546;
           v46 = v16;
           v47 = 2048;
           v48 = v22;
-          _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEFAULT, "unable to get placemark for %@ %ld", v45, 0x16u);
+          _os_log_impl(&_mh_execute_header, locationMessage, OS_LOG_TYPE_DEFAULT, "unable to get placemark for %@ %ld", v45, 0x16u);
         }
       }
 
@@ -100,23 +100,23 @@
         if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
         {
           v32 = *(*(&buf + 1) + 40);
-          v33 = [v32 name];
+          name = [v32 name];
           *v45 = 138412546;
           v46 = v32;
           v47 = 2112;
-          v48 = v33;
+          v48 = name;
           _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "reverseGeocodeLocation successful %@ %@", v45, 0x16u);
         }
 
-        v34 = [v6 locationTitle];
-        v35 = [*(*(&buf + 1) + 40) name];
-        v36 = [v34 stringByReplacingOccurrencesOfString:@"<location>" withString:v35];
-        [v6 setTitle:v36];
+        locationTitle2 = [requestCopy locationTitle];
+        name2 = [*(*(&buf + 1) + 40) name];
+        v36 = [locationTitle2 stringByReplacingOccurrencesOfString:@"<location>" withString:name2];
+        [requestCopy setTitle:v36];
 
-        v23 = [v6 locationMessage];
-        v37 = [*(*(&buf + 1) + 40) name];
-        v38 = [v23 stringByReplacingOccurrencesOfString:@"<location>" withString:v37];
-        [v6 setBody:v38];
+        locationMessage = [requestCopy locationMessage];
+        name3 = [*(*(&buf + 1) + 40) name];
+        v38 = [locationMessage stringByReplacingOccurrencesOfString:@"<location>" withString:name3];
+        [requestCopy setBody:v38];
       }
 
       _Block_object_dispose(&buf, 8);
@@ -126,8 +126,8 @@
     block[1] = 3221225472;
     block[2] = sub_10000183C;
     block[3] = &unk_100008C70;
-    v40 = v6;
-    v41 = v7;
+    v40 = requestCopy;
+    v41 = completionCopy;
     dispatch_async(&_dispatch_main_q, block);
 
     v25 = v40;
@@ -160,17 +160,17 @@
       sub_1000031A8(v25, v30);
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, v29);
+      (*(completionCopy + 2))(completionCopy, v29);
     }
   }
 }
 
-- (void)removeNotificationWithIdentifier:(id)a3 completion:(id)a4
+- (void)removeNotificationWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = sub_1000020EC();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -188,7 +188,7 @@
     block[1] = 3221225472;
     block[2] = sub_100001F48;
     block[3] = &unk_100008C98;
-    v19 = v6;
+    v19 = identifierCopy;
     dispatch_async(&_dispatch_main_q, block);
     v11 = v19;
   }
@@ -220,9 +220,9 @@
       sub_1000031A8(v11, v17);
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, v16);
+      completionCopy[2](completionCopy, v16);
     }
   }
 }

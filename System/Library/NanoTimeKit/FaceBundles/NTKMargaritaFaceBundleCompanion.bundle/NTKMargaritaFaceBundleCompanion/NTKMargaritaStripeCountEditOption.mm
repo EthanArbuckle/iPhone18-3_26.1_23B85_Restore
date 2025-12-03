@@ -1,6 +1,6 @@
 @interface NTKMargaritaStripeCountEditOption
 + (id)__allOrderedValues;
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (unint64_t)count;
 @end
@@ -9,11 +9,11 @@
 
 - (unint64_t)count
 {
-  v3 = [objc_opt_class() _maxStripeCount];
+  _maxStripeCount = [objc_opt_class() _maxStripeCount];
   result = [(NTKMargaritaStripeCountEditOption *)self _value];
-  if (result >= v3)
+  if (result >= _maxStripeCount)
   {
-    return v3;
+    return _maxStripeCount;
   }
 
   return result;
@@ -21,18 +21,18 @@
 
 + (id)__allOrderedValues
 {
-  [a1 _maxStripeCount];
+  [self _maxStripeCount];
   v2 = _EnumValueRange();
-  v3 = [v2 reverseObjectEnumerator];
-  v4 = [v3 allObjects];
+  reverseObjectEnumerator = [v2 reverseObjectEnumerator];
+  allObjects = [reverseObjectEnumerator allObjects];
 
-  return v4;
+  return allObjects;
 }
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  v4 = [NSNumber numberWithUnsignedInteger:a3, a4];
-  v5 = [v4 description];
+  device = [NSNumber numberWithUnsignedInteger:value, device];
+  v5 = [device description];
 
   return v5;
 }

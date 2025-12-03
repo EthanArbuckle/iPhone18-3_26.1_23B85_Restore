@@ -1,25 +1,25 @@
 @interface WFRunWorkflowAction
-- (BOOL)canOfferSuggestionsForParameterWithKey:(id)a3;
-- (BOOL)workflowController:(id)a3 handleUnsupportedEnvironmentForAction:(id)a4 currentState:(id)a5 completionHandler:(id)a6;
+- (BOOL)canOfferSuggestionsForParameterWithKey:(id)key;
+- (BOOL)workflowController:(id)controller handleUnsupportedEnvironmentForAction:(id)action currentState:(id)state completionHandler:(id)handler;
 - (WFWorkflowController)workflowController;
-- (id)contentDestinationWithError:(id *)a3;
-- (id)getWorkflowWithError:(id *)a3;
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5;
+- (id)contentDestinationWithError:(id *)error;
+- (id)getWorkflowWithError:(id *)error;
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name;
 - (id)workflowNameFromParameter;
 - (void)beginPersistentModeForSpotlightWhenReady;
 - (void)beginPersistentModeIfReady;
 - (void)cancel;
-- (void)endPersistentModeWithError:(id)a3;
-- (void)fetchSuggestedEntitiesForParameterWithKey:(id)a3 completionHandler:(id)a4;
-- (void)getHandoffWorkflowControllerState:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)performWithSandboxExtensions:(id)a3;
-- (void)runAsynchronouslyWithInput:(id)a3;
-- (void)setHandoffWorkflowControllerState:(id)a3;
+- (void)endPersistentModeWithError:(id)error;
+- (void)fetchSuggestedEntitiesForParameterWithKey:(id)key completionHandler:(id)handler;
+- (void)getHandoffWorkflowControllerState:(id)state;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)performWithSandboxExtensions:(id)extensions;
+- (void)runAsynchronouslyWithInput:(id)input;
+- (void)setHandoffWorkflowControllerState:(id)state;
 - (void)stop;
-- (void)workflowController:(id)a3 didFinishRunningWithError:(id)a4 cancelled:(BOOL)a5;
-- (void)workflowController:(id)a3 didRunAction:(id)a4 error:(id)a5;
-- (void)workflowController:(id)a3 prepareToRunAction:(id)a4 withInput:(id)a5 completionHandler:(id)a6;
+- (void)workflowController:(id)controller didFinishRunningWithError:(id)error cancelled:(BOOL)cancelled;
+- (void)workflowController:(id)controller didRunAction:(id)action error:(id)error;
+- (void)workflowController:(id)controller prepareToRunAction:(id)action withInput:(id)input completionHandler:(id)handler;
 @end
 
 @implementation WFRunWorkflowAction
@@ -31,22 +31,22 @@
   return WeakRetained;
 }
 
-- (void)fetchSuggestedEntitiesForParameterWithKey:(id)a3 completionHandler:(id)a4
+- (void)fetchSuggestedEntitiesForParameterWithKey:(id)key completionHandler:(id)handler
 {
-  v11 = a4;
-  v6 = [(WFAction *)self systemEntityCollectionIdentifierForDisambiguatingParameterWithKey:a3];
+  handlerCopy = handler;
+  v6 = [(WFAction *)self systemEntityCollectionIdentifierForDisambiguatingParameterWithKey:key];
   if (v6)
   {
     v7 = +[WFDatabaseProxy defaultDatabase];
     v8 = [v7 collectionWithIdentifier:v6 error:0];
     v9 = [v7 sortedVisibleWorkflowsInCollection:v8 error:0];
     v10 = [v9 if_map:&__block_literal_global_252];
-    v11[2](v11, v10, 0);
+    handlerCopy[2](handlerCopy, v10, 0);
   }
 
   else
   {
-    v11[2](v11, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 }
 
@@ -80,18 +80,18 @@ id __83__WFRunWorkflowAction_fetchSuggestedEntitiesForParameterWithKey_completio
   return v17;
 }
 
-- (BOOL)canOfferSuggestionsForParameterWithKey:(id)a3
+- (BOOL)canOfferSuggestionsForParameterWithKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == @"WFWorkflow")
+  keyCopy = key;
+  v5 = keyCopy;
+  if (keyCopy == @"WFWorkflow")
   {
     v6 = 1;
   }
 
-  else if (v4)
+  else if (keyCopy)
   {
-    v6 = [(__CFString *)v4 isEqualToString:@"WFWorkflow"];
+    v6 = [(__CFString *)keyCopy isEqualToString:@"WFWorkflow"];
   }
 
   else
@@ -114,57 +114,57 @@ id __83__WFRunWorkflowAction_fetchSuggestedEntitiesForParameterWithKey_completio
   return v8;
 }
 
-- (id)smartPromptWithContentDescription:(id)a3 contentDestination:(id)a4 workflowName:(id)a5
+- (id)smartPromptWithContentDescription:(id)description contentDestination:(id)destination workflowName:(id)name
 {
   v5 = MEMORY[0x1E696AEC0];
-  v6 = a5;
+  nameCopy = name;
   v7 = WFLocalizedString(@"Allow “%1$@” to run another shortcut?");
-  v8 = [v5 localizedStringWithFormat:v7, v6];
+  nameCopy = [v5 localizedStringWithFormat:v7, nameCopy];
 
-  return v8;
+  return nameCopy;
 }
 
-- (BOOL)workflowController:(id)a3 handleUnsupportedEnvironmentForAction:(id)a4 currentState:(id)a5 completionHandler:(id)a6
+- (BOOL)workflowController:(id)controller handleUnsupportedEnvironmentForAction:(id)action currentState:(id)state completionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(WFAction *)self userInterface];
-  v15 = [(WFAction *)self runningDelegate];
-  v16 = [v13 runSource];
+  stateCopy = state;
+  handlerCopy = handler;
+  actionCopy = action;
+  controllerCopy = controller;
+  userInterface = [(WFAction *)self userInterface];
+  runningDelegate = [(WFAction *)self runningDelegate];
+  runSource = [controllerCopy runSource];
 
-  v17 = WFRemoteExecuteActionIfApplicable(v12, v10, v14, v15, v16, v11);
+  v17 = WFRemoteExecuteActionIfApplicable(actionCopy, stateCopy, userInterface, runningDelegate, runSource, handlerCopy);
   if ((v17 & 1) == 0)
   {
-    [(WFRunWorkflowAction *)self setHandoffWorkflowControllerState:v10];
+    [(WFRunWorkflowAction *)self setHandoffWorkflowControllerState:stateCopy];
   }
 
   return v17;
 }
 
-- (void)workflowController:(id)a3 didFinishRunningWithError:(id)a4 cancelled:(BOOL)a5
+- (void)workflowController:(id)controller didFinishRunningWithError:(id)error cancelled:(BOOL)cancelled
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  [(WFRunWorkflowAction *)self endPersistentModeWithError:v9];
-  v10 = [(WFAction *)self userInterface];
+  cancelledCopy = cancelled;
+  controllerCopy = controller;
+  errorCopy = error;
+  [(WFRunWorkflowAction *)self endPersistentModeWithError:errorCopy];
+  userInterface = [(WFAction *)self userInterface];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(WFAction *)self userInterface];
-    v13 = [v12 dialogTransformer];
-    [v13 setCurrentAction:self];
+    userInterface2 = [(WFAction *)self userInterface];
+    dialogTransformer = [userInterface2 dialogTransformer];
+    [dialogTransformer setCurrentAction:self];
 
-    v14 = [(WFAction *)self userInterface];
-    v15 = [v14 dialogTransformer];
-    v16 = [(WFAction *)self workflow];
-    [v15 setWorkflow:v16];
+    userInterface3 = [(WFAction *)self userInterface];
+    dialogTransformer2 = [userInterface3 dialogTransformer];
+    workflow = [(WFAction *)self workflow];
+    [dialogTransformer2 setWorkflow:workflow];
   }
 
-  if (v5)
+  if (cancelledCopy)
   {
     v18.receiver = self;
     v18.super_class = WFRunWorkflowAction;
@@ -173,55 +173,55 @@ id __83__WFRunWorkflowAction_fetchSuggestedEntitiesForParameterWithKey_completio
 
   else
   {
-    v17 = [v8 output];
-    [(WFAction *)self setOutput:v17];
+    output = [controllerCopy output];
+    [(WFAction *)self setOutput:output];
 
-    [(WFAction *)self finishRunningWithError:v9];
+    [(WFAction *)self finishRunningWithError:errorCopy];
   }
 }
 
-- (void)workflowController:(id)a3 didRunAction:(id)a4 error:(id)a5
+- (void)workflowController:(id)controller didRunAction:(id)action error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  actionCopy = action;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = [MEMORY[0x1E69E0C70] sharedManager];
+    mEMORY[0x1E69E0C70] = [MEMORY[0x1E69E0C70] sharedManager];
     v12 = 0;
-    v10 = [v9 retakeResignedExtensionsWithReason:@"Run Workflow finished Run Workflow" error:&v12];
+    v10 = [mEMORY[0x1E69E0C70] retakeResignedExtensionsWithReason:@"Run Workflow finished Run Workflow" error:&v12];
     v11 = v12;
 
     if ((v10 & 1) == 0)
     {
-      [v6 stopWithError:v11];
+      [controllerCopy stopWithError:v11];
     }
   }
 }
 
-- (void)workflowController:(id)a3 prepareToRunAction:(id)a4 withInput:(id)a5 completionHandler:(id)a6
+- (void)workflowController:(id)controller prepareToRunAction:(id)action withInput:(id)input completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a6;
-  v10 = [(WFAction *)self userInterface];
+  actionCopy = action;
+  handlerCopy = handler;
+  userInterface = [(WFAction *)self userInterface];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(WFAction *)self userInterface];
-    v13 = [v12 dialogTransformer];
-    [v13 setCurrentAction:v8];
+    userInterface2 = [(WFAction *)self userInterface];
+    dialogTransformer = [userInterface2 dialogTransformer];
+    [dialogTransformer setCurrentAction:actionCopy];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = [MEMORY[0x1E69E0C70] sharedManager];
-    [v14 resignIssuedExtensionsWithReason:@"Run Workflow running Run Workflow"];
+    mEMORY[0x1E69E0C70] = [MEMORY[0x1E69E0C70] sharedManager];
+    [mEMORY[0x1E69E0C70] resignIssuedExtensionsWithReason:@"Run Workflow running Run Workflow"];
 
-    v9[2](v9);
+    handlerCopy[2](handlerCopy);
   }
 
   else
@@ -232,17 +232,17 @@ id __83__WFRunWorkflowAction_fetchSuggestedEntitiesForParameterWithKey_completio
       v16 = [MEMORY[0x1E695DFD8] setWithObjects:{objc_opt_class(), 0}];
     }
 
-    v17 = [v8 resourceManager];
-    v18 = [v17 resourceObjectsOfClasses:v16];
+    resourceManager = [actionCopy resourceManager];
+    v18 = [resourceManager resourceObjectsOfClasses:v16];
     v19 = [v18 if_compactMap:&__block_literal_global_238_60907];
 
-    v20 = [MEMORY[0x1E69E0C70] sharedManager];
+    mEMORY[0x1E69E0C70]2 = [MEMORY[0x1E69E0C70] sharedManager];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __89__WFRunWorkflowAction_workflowController_prepareToRunAction_withInput_completionHandler___block_invoke_2;
     v21[3] = &unk_1E837D0D0;
-    v22 = v9;
-    [v20 requestSandboxExtensionForRunningActionWithAccessResources:v19 completion:v21];
+    v22 = handlerCopy;
+    [mEMORY[0x1E69E0C70]2 requestSandboxExtensionForRunningActionWithAccessResources:v19 completion:v21];
   }
 }
 
@@ -263,31 +263,31 @@ id __89__WFRunWorkflowAction_workflowController_prepareToRunAction_withInput_com
   return v2;
 }
 
-- (void)getHandoffWorkflowControllerState:(id)a3
+- (void)getHandoffWorkflowControllerState:(id)state
 {
-  v9 = a3;
-  v4 = [(WFAction *)self processedParameters];
-  v5 = [v4 objectForKey:@"WFHandoffWorkflowControllerState"];
+  stateCopy = state;
+  processedParameters = [(WFAction *)self processedParameters];
+  v5 = [processedParameters objectForKey:@"WFHandoffWorkflowControllerState"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v6 = MEMORY[0x1E696ACD0];
     v7 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
-    v8 = [v6 wf_securelyUnarchiveObjectWithData:v5 allowedClasses:v7 completionHandler:v9];
+    v8 = [v6 wf_securelyUnarchiveObjectWithData:v5 allowedClasses:v7 completionHandler:stateCopy];
   }
 
   else
   {
-    v9[2](v9, 0);
+    stateCopy[2](stateCopy, 0);
   }
 }
 
-- (void)setHandoffWorkflowControllerState:(id)a3
+- (void)setHandoffWorkflowControllerState:(id)state
 {
-  v9 = [MEMORY[0x1E696ACC8] wf_securelyArchivedDataWithRootObject:a3 deletionResponsibility:1];
-  v4 = [(WFAction *)self processedParameters];
-  v5 = [v4 mutableCopy];
+  v9 = [MEMORY[0x1E696ACC8] wf_securelyArchivedDataWithRootObject:state deletionResponsibility:1];
+  processedParameters = [(WFAction *)self processedParameters];
+  v5 = [processedParameters mutableCopy];
   v6 = v5;
   if (v5)
   {
@@ -305,13 +305,13 @@ id __89__WFRunWorkflowAction_workflowController_prepareToRunAction_withInput_com
   [(WFAction *)self setProcessedParameters:v8];
 }
 
-- (id)getWorkflowWithError:(id *)a3
+- (id)getWorkflowWithError:(id *)error
 {
   v35 = *MEMORY[0x1E69E9840];
   v4 = [(WFAction *)self parameterValueForKey:@"WFWorkflow" ofClass:objc_opt_class()];
   if (!v4)
   {
-    if (!a3)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -324,15 +324,15 @@ id __89__WFRunWorkflowAction_workflowController_prepareToRunAction_withInput_com
     v9 = WFLocalizedString(@"Make sure a valid shortcut is selected in the Run Shortcut action.");
     v26[1] = v9;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:2];
-    *a3 = [v10 errorWithDomain:@"WFActionErrorDomain" code:5 userInfo:v11];
+    *error = [v10 errorWithDomain:@"WFActionErrorDomain" code:5 userInfo:v11];
 
 LABEL_14:
-    a3 = 0;
+    error = 0;
     goto LABEL_15;
   }
 
   v5 = +[WFDatabaseProxy defaultDatabase];
-  v6 = [v5 workflowRecordForDescriptor:v4 error:a3];
+  v6 = [v5 workflowRecordForDescriptor:v4 error:error];
   v7 = objc_opt_class();
   v8 = v6;
   if (v8 && (objc_opt_isKindOfClass() & 1) == 0)
@@ -362,7 +362,7 @@ LABEL_14:
 
   if (!v9)
   {
-    if (!a3)
+    if (!error)
     {
       v9 = 0;
       goto LABEL_15;
@@ -375,58 +375,58 @@ LABEL_14:
     v23[1] = *MEMORY[0x1E696A578];
     v16 = MEMORY[0x1E696AEC0];
     v17 = WFLocalizedString(@"An occurred while preparing “%@” to run.");
-    v18 = [v4 name];
-    v19 = [v16 stringWithFormat:v17, v18];
+    name = [v4 name];
+    v19 = [v16 stringWithFormat:v17, name];
     v24[1] = v19;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:2];
-    *a3 = [v14 errorWithDomain:@"WFActionErrorDomain" code:5 userInfo:v20];
+    *error = [v14 errorWithDomain:@"WFActionErrorDomain" code:5 userInfo:v20];
 
     v9 = 0;
     goto LABEL_14;
   }
 
-  a3 = [[WFWorkflow alloc] initWithRecord:v9 reference:v4 storageProvider:0 migrateIfNecessary:1 environment:0 error:a3];
+  error = [[WFWorkflow alloc] initWithRecord:v9 reference:v4 storageProvider:0 migrateIfNecessary:1 environment:0 error:error];
 LABEL_15:
 
 LABEL_16:
   v21 = *MEMORY[0x1E69E9840];
 
-  return a3;
+  return error;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (WFRunWorkflowActionProgressContext == a6)
+  if (WFRunWorkflowActionProgressContext == context)
   {
-    v7 = [(WFRunWorkflowAction *)self workflowController:a3];
-    v11 = [v7 progress];
+    v7 = [(WFRunWorkflowAction *)self workflowController:path];
+    progress = [v7 progress];
 
-    [v11 fractionCompleted];
+    [progress fractionCompleted];
     v9 = (v8 * 100.0);
-    v10 = [(WFAction *)self progress];
-    [v10 setCompletedUnitCount:v9];
+    progress2 = [(WFAction *)self progress];
+    [progress2 setCompletedUnitCount:v9];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = WFRunWorkflowAction;
-    [(WFRunWorkflowAction *)&v12 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(WFRunWorkflowAction *)&v12 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
-- (void)endPersistentModeWithError:(id)a3
+- (void)endPersistentModeWithError:(id)error
 {
   v16 = *MEMORY[0x1E69E9840];
   if ([(WFRunWorkflowAction *)self hasBegunPersistentMode])
   {
-    v13 = [(WFRunWorkflowAction *)self userInterfaceForPersistentMode];
-    v5 = [v13 dialogTransformer];
-    v6 = [v5 userInterfacePresenter];
-    v7 = [MEMORY[0x1E696AD98] numberWithInt:a3 == 0];
-    v8 = [(WFRunWorkflowAction *)self workflowController];
-    v9 = [v8 runningContext];
-    [v6 completePersistentModeWithSuccess:v7 runningContext:v9 completionHandler:&__block_literal_global_60950];
+    userInterfaceForPersistentMode = [(WFRunWorkflowAction *)self userInterfaceForPersistentMode];
+    dialogTransformer = [userInterfaceForPersistentMode dialogTransformer];
+    userInterfacePresenter = [dialogTransformer userInterfacePresenter];
+    v7 = [MEMORY[0x1E696AD98] numberWithInt:error == 0];
+    workflowController = [(WFRunWorkflowAction *)self workflowController];
+    runningContext = [workflowController runningContext];
+    [userInterfacePresenter completePersistentModeWithSuccess:v7 runningContext:runningContext completionHandler:&__block_literal_global_60950];
 
     v10 = *MEMORY[0x1E69E9840];
   }
@@ -511,33 +511,33 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v22 = [(WFAction *)self userInterface];
-  v8 = [v22 dialogTransformer];
-  if (v8)
+  userInterface = [(WFAction *)self userInterface];
+  dialogTransformer = [userInterface dialogTransformer];
+  if (dialogTransformer)
   {
-    v9 = v8;
-    v10 = [(WFRunWorkflowAction *)self workflowController];
-    v11 = [v10 runningContext];
+    v9 = dialogTransformer;
+    workflowController = [(WFRunWorkflowAction *)self workflowController];
+    runningContext = [workflowController runningContext];
 
-    if (v11)
+    if (runningContext)
     {
-      v12 = [(WFAction *)self userInterface];
-      [(WFRunWorkflowAction *)self setUserInterfaceForPersistentMode:v12];
+      userInterface2 = [(WFAction *)self userInterface];
+      [(WFRunWorkflowAction *)self setUserInterfaceForPersistentMode:userInterface2];
 
-      v13 = [(WFRunWorkflowAction *)self userInterfaceForPersistentMode];
-      v14 = [v13 dialogTransformer];
-      v15 = [v14 userInterfacePresenter];
-      v16 = [(WFRunWorkflowAction *)self workflowController];
-      v17 = [v16 runningContext];
-      v18 = [(WFAction *)self userInterface];
-      v19 = [v18 dialogTransformer];
-      v20 = [v19 standaloneActionAttribution];
+      userInterfaceForPersistentMode = [(WFRunWorkflowAction *)self userInterfaceForPersistentMode];
+      dialogTransformer2 = [userInterfaceForPersistentMode dialogTransformer];
+      userInterfacePresenter = [dialogTransformer2 userInterfacePresenter];
+      workflowController2 = [(WFRunWorkflowAction *)self workflowController];
+      runningContext2 = [workflowController2 runningContext];
+      userInterface3 = [(WFAction *)self userInterface];
+      dialogTransformer3 = [userInterface3 dialogTransformer];
+      standaloneActionAttribution = [dialogTransformer3 standaloneActionAttribution];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __49__WFRunWorkflowAction_beginPersistentModeIfReady__block_invoke;
       v23[3] = &unk_1E837E5E0;
       v23[4] = self;
-      [v15 beginPersistentModeWithRunningContext:v17 attribution:v20 completionHandler:v23];
+      [userInterfacePresenter beginPersistentModeWithRunningContext:runningContext2 attribution:standaloneActionAttribution completionHandler:v23];
     }
 
     goto LABEL_7;
@@ -578,7 +578,7 @@ void __49__WFRunWorkflowAction_beginPersistentModeIfReady__block_invoke(uint64_t
   [(WFRunWorkflowAction *)self beginPersistentModeIfReady];
 }
 
-- (id)contentDestinationWithError:(id *)a3
+- (id)contentDestinationWithError:(id *)error
 {
   v21 = *MEMORY[0x1E69E9840];
   v4 = [(WFAction *)self parameterValueForKey:@"WFWorkflow" ofClass:objc_opt_class()];
@@ -589,17 +589,17 @@ void __49__WFRunWorkflowAction_beginPersistentModeIfReady__block_invoke(uint64_t
     goto LABEL_12;
   }
 
-  v5 = [v4 identifier];
-  v6 = [(WFAction *)self runningDelegate];
+  identifier = [v4 identifier];
+  runningDelegate = [(WFAction *)self runningDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(WFAction *)self runningDelegate];
-    v9 = [v8 currentRunningContextForAction:self];
-    v10 = [v9 workflowIdentifier];
+    runningDelegate2 = [(WFAction *)self runningDelegate];
+    v9 = [runningDelegate2 currentRunningContextForAction:self];
+    workflowIdentifier = [v9 workflowIdentifier];
 
-    if ([v5 isEqualToString:v10])
+    if ([identifier isEqualToString:workflowIdentifier])
     {
       v11 = getWFSecurityLogObject();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -616,8 +616,8 @@ void __49__WFRunWorkflowAction_beginPersistentModeIfReady__block_invoke(uint64_t
 
   v13 = objc_alloc(MEMORY[0x1E696E720]);
   v14 = [v13 initWithBundleIdentifier:*MEMORY[0x1E69E0FB0]];
-  v15 = [MEMORY[0x1E696E748] sharedResolver];
-  v16 = [v15 resolvedAppMatchingDescriptor:v14];
+  mEMORY[0x1E696E748] = [MEMORY[0x1E696E748] sharedResolver];
+  v16 = [mEMORY[0x1E696E748] resolvedAppMatchingDescriptor:v14];
 
   v12 = [MEMORY[0x1E6996C90] locationWithAppDescriptor:v16 promptingBehaviour:1];
 
@@ -652,9 +652,9 @@ LABEL_12:
 
   v4 = v3;
 
-  v5 = [v4 name];
+  name = [v4 name];
 
-  return v5;
+  return name;
 }
 
 - (void)cancel
@@ -667,34 +667,34 @@ LABEL_12:
 
 - (void)stop
 {
-  v2 = [(WFRunWorkflowAction *)self workflowController];
-  [v2 stop];
+  workflowController = [(WFRunWorkflowAction *)self workflowController];
+  [workflowController stop];
 }
 
-- (void)performWithSandboxExtensions:(id)a3
+- (void)performWithSandboxExtensions:(id)extensions
 {
-  v3 = a3;
-  v4 = [MEMORY[0x1E69E0C70] sharedManager];
+  extensionsCopy = extensions;
+  mEMORY[0x1E69E0C70] = [MEMORY[0x1E69E0C70] sharedManager];
   v5 = [MEMORY[0x1E69E0C78] all];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__WFRunWorkflowAction_performWithSandboxExtensions___block_invoke;
   v7[3] = &unk_1E837D068;
-  v8 = v3;
-  v6 = v3;
-  [v4 performWithSandboxExtensions:v5 asynchronousBlock:v7];
+  v8 = extensionsCopy;
+  v6 = extensionsCopy;
+  [mEMORY[0x1E69E0C70] performWithSandboxExtensions:v5 asynchronousBlock:v7];
 }
 
-- (void)runAsynchronouslyWithInput:(id)a3
+- (void)runAsynchronouslyWithInput:(id)input
 {
-  v4 = a3;
+  inputCopy = input;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __50__WFRunWorkflowAction_runAsynchronouslyWithInput___block_invoke;
   v6[3] = &unk_1E837D040;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = inputCopy;
+  v5 = inputCopy;
   [(WFRunWorkflowAction *)self performWithSandboxExtensions:v6];
 }
 

@@ -6,22 +6,22 @@
 - (NSArray)homesToWhichWeCanAddHomeAutomations;
 - (NSArray)homesToWhichWeHaveAdminAccess;
 - (WFHomeManager)init;
-- (id)homeNamed:(id)a3;
-- (id)homeWithIdentifier:(id)a3;
+- (id)homeNamed:(id)named;
+- (id)homeWithIdentifier:(id)identifier;
 - (id)primaryHome;
-- (id)sceneNamed:(id)a3 inHome:(id)a4;
-- (id)serviceWithIdentifier:(id)a3 inHome:(id)a4;
+- (id)sceneNamed:(id)named inHome:(id)home;
+- (id)serviceWithIdentifier:(id)identifier inHome:(id)home;
 - (unint64_t)status;
-- (void)_setHomes:(id)a3;
-- (void)addEventObserver:(id)a3;
-- (void)applicationContext:(id)a3 applicationStateDidChange:(int64_t)a4;
+- (void)_setHomes:(id)homes;
+- (void)addEventObserver:(id)observer;
+- (void)applicationContext:(id)context applicationStateDidChange:(int64_t)change;
 - (void)cacheHomeSceneNames;
 - (void)dealloc;
-- (void)ensureHomesAreLoadedWithCompletionHandler:(id)a3;
-- (void)homeManager:(id)a3 didUpdateHH2State:(BOOL)a4;
-- (void)homeManagerDidUpdateHomes:(id)a3;
+- (void)ensureHomesAreLoadedWithCompletionHandler:(id)handler;
+- (void)homeManager:(id)manager didUpdateHH2State:(BOOL)state;
+- (void)homeManagerDidUpdateHomes:(id)homes;
 - (void)reloadData;
-- (void)removeEventObserver:(id)a3;
+- (void)removeEventObserver:(id)observer;
 @end
 
 @implementation WFHomeManager
@@ -56,16 +56,16 @@ void __30__WFHomeManager_sharedManager__block_invoke()
     homes = v2->_homes;
     v2->_homes = MEMORY[0x1E695E0F0];
 
-    v5 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     eventObservers = v3->_eventObservers;
-    v3->_eventObservers = v5;
+    v3->_eventObservers = weakObjectsHashTable;
 
     v7 = dispatch_group_create();
     loadHomesGroup = v3->_loadHomesGroup;
     v3->_loadHomesGroup = v7;
 
-    v9 = [MEMORY[0x1E6996CA8] sharedContext];
-    [v9 addApplicationStateObserver:v3 forEvent:3];
+    mEMORY[0x1E6996CA8] = [MEMORY[0x1E6996CA8] sharedContext];
+    [mEMORY[0x1E6996CA8] addApplicationStateObserver:v3 forEvent:3];
 
     v10 = v3;
   }
@@ -78,9 +78,9 @@ void __30__WFHomeManager_sharedManager__block_invoke()
   if (!self->_loading)
   {
     v3 = objc_opt_new();
-    v4 = [v3 status];
+    status = [v3 status];
 
-    if (v4 == 4)
+    if (status == 4)
     {
       if (!self->_homeManager)
       {
@@ -99,27 +99,27 @@ void __30__WFHomeManager_sharedManager__block_invoke()
   }
 }
 
-- (void)applicationContext:(id)a3 applicationStateDidChange:(int64_t)a4
+- (void)applicationContext:(id)context applicationStateDidChange:(int64_t)change
 {
-  if (a4 == 3)
+  if (change == 3)
   {
     [(WFHomeManager *)self reloadData];
   }
 }
 
-- (void)homeManager:(id)a3 didUpdateHH2State:(BOOL)a4
+- (void)homeManager:(id)manager didUpdateHH2State:(BOOL)state
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (state)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(WFHomeManager *)self eventObservers:a3];
-    v6 = [v5 allObjects];
+    v5 = [(WFHomeManager *)self eventObservers:manager];
+    allObjects = [v5 allObjects];
 
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v7 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -131,7 +131,7 @@ void __30__WFHomeManager_sharedManager__block_invoke()
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allObjects);
           }
 
           v11 = *(*(&v13 + 1) + 8 * v10);
@@ -144,7 +144,7 @@ void __30__WFHomeManager_sharedManager__block_invoke()
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [allObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v8);
@@ -154,11 +154,11 @@ void __30__WFHomeManager_sharedManager__block_invoke()
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
   *&self->_hasLoadedHomes = 1;
-  v4 = [a3 homes];
-  [(WFHomeManager *)self _setHomes:v4];
+  homes = [homes homes];
+  [(WFHomeManager *)self _setHomes:homes];
 
   loadHomesGroup = self->_loadHomesGroup;
 
@@ -173,8 +173,8 @@ void __30__WFHomeManager_sharedManager__block_invoke()
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v4 = [(WFHomeManager *)self homes];
-  v5 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  homes = [(WFHomeManager *)self homes];
+  v5 = [homes countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v5)
   {
     v6 = v5;
@@ -186,7 +186,7 @@ void __30__WFHomeManager_sharedManager__block_invoke()
       {
         if (*v23 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(homes);
         }
 
         v9 = *(*(&v22 + 1) + 8 * v8);
@@ -194,8 +194,8 @@ void __30__WFHomeManager_sharedManager__block_invoke()
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v10 = [v9 actionSets];
-        v11 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        actionSets = [v9 actionSets];
+        v11 = [actionSets countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v11)
         {
           v12 = v11;
@@ -207,17 +207,17 @@ void __30__WFHomeManager_sharedManager__block_invoke()
             {
               if (*v19 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(actionSets);
               }
 
-              v15 = [*(*(&v18 + 1) + 8 * v14) name];
-              [v3 addObject:v15];
+              name = [*(*(&v18 + 1) + 8 * v14) name];
+              [v3 addObject:name];
 
               ++v14;
             }
 
             while (v12 != v14);
-            v12 = [v10 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v12 = [actionSets countByEnumeratingWithState:&v18 objects:v26 count:16];
           }
 
           while (v12);
@@ -227,32 +227,32 @@ void __30__WFHomeManager_sharedManager__block_invoke()
       }
 
       while (v8 != v6);
-      v6 = [v4 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v6 = [homes countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v6);
   }
 
-  v16 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-  [v16 setObject:v3 forKey:@"WFKnownHomeSceneNames"];
+  systemShortcutsUserDefaults = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+  [systemShortcutsUserDefaults setObject:v3 forKey:@"WFKnownHomeSceneNames"];
 
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (id)serviceWithIdentifier:(id)a3 inHome:(id)a4
+- (id)serviceWithIdentifier:(id)identifier inHome:(id)home
 {
   v49 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  identifierCopy = identifier;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v6 = [(WFHomeManager *)self homes];
-  v7 = [v6 countByEnumeratingWithState:&v42 objects:v48 count:16];
+  homes = [(WFHomeManager *)self homes];
+  v7 = [homes countByEnumeratingWithState:&v42 objects:v48 count:16];
   if (v7)
   {
     v8 = *v43;
-    v32 = v6;
+    v32 = homes;
     v29 = *v43;
     do
     {
@@ -262,7 +262,7 @@ void __30__WFHomeManager_sharedManager__block_invoke()
       {
         if (*v43 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(homes);
         }
 
         v10 = *(*(&v42 + 1) + 8 * v9);
@@ -270,13 +270,13 @@ void __30__WFHomeManager_sharedManager__block_invoke()
         v39 = 0u;
         v40 = 0u;
         v41 = 0u;
-        v11 = [v10 serviceGroups];
-        v31 = [v11 countByEnumeratingWithState:&v38 objects:v47 count:16];
+        serviceGroups = [v10 serviceGroups];
+        v31 = [serviceGroups countByEnumeratingWithState:&v38 objects:v47 count:16];
         if (v31)
         {
           v12 = *v39;
           v27 = v9;
-          v33 = v11;
+          v33 = serviceGroups;
           v30 = *v39;
           do
           {
@@ -285,7 +285,7 @@ void __30__WFHomeManager_sharedManager__block_invoke()
             {
               if (*v39 != v12)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(serviceGroups);
               }
 
               v14 = *(*(&v38 + 1) + 8 * v13);
@@ -293,8 +293,8 @@ void __30__WFHomeManager_sharedManager__block_invoke()
               v35 = 0u;
               v36 = 0u;
               v37 = 0u;
-              v15 = [v14 services];
-              v16 = [v15 countByEnumeratingWithState:&v34 objects:v46 count:16];
+              services = [v14 services];
+              v16 = [services countByEnumeratingWithState:&v34 objects:v46 count:16];
               if (v16)
               {
                 v17 = v16;
@@ -305,24 +305,24 @@ void __30__WFHomeManager_sharedManager__block_invoke()
                   {
                     if (*v35 != v18)
                     {
-                      objc_enumerationMutation(v15);
+                      objc_enumerationMutation(services);
                     }
 
                     v20 = *(*(&v34 + 1) + 8 * i);
-                    v21 = [v20 uniqueIdentifier];
-                    v22 = [v21 UUIDString];
-                    v23 = [v22 isEqualToString:v5];
+                    uniqueIdentifier = [v20 uniqueIdentifier];
+                    uUIDString = [uniqueIdentifier UUIDString];
+                    v23 = [uUIDString isEqualToString:identifierCopy];
 
                     if (v23)
                     {
                       v24 = v20;
 
-                      v6 = v32;
+                      homes = v32;
                       goto LABEL_26;
                     }
                   }
 
-                  v17 = [v15 countByEnumeratingWithState:&v34 objects:v46 count:16];
+                  v17 = [services countByEnumeratingWithState:&v34 objects:v46 count:16];
                   if (v17)
                   {
                     continue;
@@ -333,8 +333,8 @@ void __30__WFHomeManager_sharedManager__block_invoke()
               }
 
               ++v13;
-              v6 = v32;
-              v11 = v33;
+              homes = v32;
+              serviceGroups = v33;
               v12 = v30;
             }
 
@@ -351,7 +351,7 @@ void __30__WFHomeManager_sharedManager__block_invoke()
       }
 
       while (v9 != v28);
-      v7 = [v6 countByEnumeratingWithState:&v42 objects:v48 count:16];
+      v7 = [homes countByEnumeratingWithState:&v42 objects:v48 count:16];
       v8 = v29;
       v24 = 0;
     }
@@ -371,20 +371,20 @@ LABEL_26:
   return v24;
 }
 
-- (id)sceneNamed:(id)a3 inHome:(id)a4
+- (id)sceneNamed:(id)named inHome:(id)home
 {
-  v5 = a3;
-  v6 = [a4 actionSets];
+  namedCopy = named;
+  actionSets = [home actionSets];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __35__WFHomeManager_sceneNamed_inHome___block_invoke;
   v11[3] = &unk_1E8373690;
-  v12 = v5;
-  v7 = v5;
-  v8 = [v6 if_objectsPassingTest:v11];
-  v9 = [v8 firstObject];
+  v12 = namedCopy;
+  v7 = namedCopy;
+  v8 = [actionSets if_objectsPassingTest:v11];
+  firstObject = [v8 firstObject];
 
-  return v9;
+  return firstObject;
 }
 
 BOOL __35__WFHomeManager_sceneNamed_inHome___block_invoke(uint64_t a1, void *a2)
@@ -397,27 +397,27 @@ BOOL __35__WFHomeManager_sceneNamed_inHome___block_invoke(uint64_t a1, void *a2)
 
 - (id)primaryHome
 {
-  v2 = [(WFHomeManager *)self homes];
-  v3 = [v2 if_objectsPassingTest:&__block_literal_global_205];
-  v4 = [v3 firstObject];
+  homes = [(WFHomeManager *)self homes];
+  v3 = [homes if_objectsPassingTest:&__block_literal_global_205];
+  firstObject = [v3 firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (id)homeWithIdentifier:(id)a3
+- (id)homeWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(WFHomeManager *)self homes];
+  identifierCopy = identifier;
+  homes = [(WFHomeManager *)self homes];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __36__WFHomeManager_homeWithIdentifier___block_invoke;
   v10[3] = &unk_1E8373668;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 if_objectsPassingTest:v10];
-  v8 = [v7 firstObject];
+  v11 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [homes if_objectsPassingTest:v10];
+  firstObject = [v7 firstObject];
 
-  return v8;
+  return firstObject;
 }
 
 uint64_t __36__WFHomeManager_homeWithIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -428,20 +428,20 @@ uint64_t __36__WFHomeManager_homeWithIdentifier___block_invoke(uint64_t a1, void
   return v4;
 }
 
-- (id)homeNamed:(id)a3
+- (id)homeNamed:(id)named
 {
-  v4 = a3;
-  v5 = [(WFHomeManager *)self homes];
+  namedCopy = named;
+  homes = [(WFHomeManager *)self homes];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __27__WFHomeManager_homeNamed___block_invoke;
   v10[3] = &unk_1E8373668;
-  v11 = v4;
-  v6 = v4;
-  v7 = [v5 if_objectsPassingTest:v10];
-  v8 = [v7 firstObject];
+  v11 = namedCopy;
+  v6 = namedCopy;
+  v7 = [homes if_objectsPassingTest:v10];
+  firstObject = [v7 firstObject];
 
-  return v8;
+  return firstObject;
 }
 
 BOOL __27__WFHomeManager_homeNamed___block_invoke(uint64_t a1, void *a2)
@@ -454,8 +454,8 @@ BOOL __27__WFHomeManager_homeNamed___block_invoke(uint64_t a1, void *a2)
 
 - (NSArray)homesToWhichWeCanAddHomeAutomations
 {
-  v2 = [(WFHomeManager *)self homesToWhichWeHaveAdminAccess];
-  v3 = [v2 if_objectsPassingTest:&__block_literal_global_203];
+  homesToWhichWeHaveAdminAccess = [(WFHomeManager *)self homesToWhichWeHaveAdminAccess];
+  v3 = [homesToWhichWeHaveAdminAccess if_objectsPassingTest:&__block_literal_global_203];
 
   return v3;
 }
@@ -476,8 +476,8 @@ BOOL __52__WFHomeManager_homesToWhichWeCanAddHomeAutomations__block_invoke(uint6
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = [(WFHomeManager *)self homes];
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  homes = [(WFHomeManager *)self homes];
+  v5 = [homes countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -488,12 +488,12 @@ BOOL __52__WFHomeManager_homesToWhichWeCanAddHomeAutomations__block_invoke(uint6
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(homes);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 currentUser];
-        v11 = [v9 homeAccessControlForUser:v10];
+        currentUser = [v9 currentUser];
+        v11 = [v9 homeAccessControlForUser:currentUser];
 
         if ([v11 isAdministrator])
         {
@@ -501,7 +501,7 @@ BOOL __52__WFHomeManager_homesToWhichWeCanAddHomeAutomations__block_invoke(uint6
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [homes countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -514,29 +514,29 @@ BOOL __52__WFHomeManager_homesToWhichWeCanAddHomeAutomations__block_invoke(uint6
 
 - (unint64_t)status
 {
-  v2 = [(WFHomeManager *)self homeManager];
-  v3 = [v2 status];
+  homeManager = [(WFHomeManager *)self homeManager];
+  status = [homeManager status];
 
-  return (v3 & 0x31) != 0;
+  return (status & 0x31) != 0;
 }
 
-- (void)removeEventObserver:(id)a3
+- (void)removeEventObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(WFHomeManager *)self eventObservers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  eventObservers = [(WFHomeManager *)self eventObservers];
+  [eventObservers removeObject:observerCopy];
 }
 
-- (void)addEventObserver:(id)a3
+- (void)addEventObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(WFHomeManager *)self eventObservers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  eventObservers = [(WFHomeManager *)self eventObservers];
+  [eventObservers addObject:observerCopy];
 }
 
-- (void)ensureHomesAreLoadedWithCompletionHandler:(id)a3
+- (void)ensureHomesAreLoadedWithCompletionHandler:(id)handler
 {
-  block = a3;
+  block = handler;
   if ([(WFHomeManager *)self hasLoadedHomes])
   {
     block[2]();
@@ -556,8 +556,8 @@ BOOL __52__WFHomeManager_homesToWhichWeCanAddHomeAutomations__block_invoke(uint6
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(WFHomeManager *)self homesToWhichWeHaveAdminAccess];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  homesToWhichWeHaveAdminAccess = [(WFHomeManager *)self homesToWhichWeHaveAdminAccess];
+  v3 = [homesToWhichWeHaveAdminAccess countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = *v12;
@@ -567,12 +567,12 @@ BOOL __52__WFHomeManager_homesToWhichWeCanAddHomeAutomations__block_invoke(uint6
       {
         if (*v12 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(homesToWhichWeHaveAdminAccess);
         }
 
         v6 = *(*(&v11 + 1) + 8 * i);
-        v7 = [v6 currentUser];
-        v8 = [v6 homeAccessControlForUser:v7];
+        currentUser = [v6 currentUser];
+        v8 = [v6 homeAccessControlForUser:currentUser];
 
         if (([v8 isAccessAllowed] & 1) == 0 && objc_msgSend(v8, "accessNotAllowedReasonCode") == 8)
         {
@@ -582,7 +582,7 @@ BOOL __52__WFHomeManager_homesToWhichWeCanAddHomeAutomations__block_invoke(uint6
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v3 = [homesToWhichWeHaveAdminAccess countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v3)
       {
         continue;
@@ -598,13 +598,13 @@ LABEL_12:
   return v3;
 }
 
-- (void)_setHomes:(id)a3
+- (void)_setHomes:(id)homes
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (([v4 isEqualToArray:self->_homes] & 1) == 0)
+  homesCopy = homes;
+  if (([homesCopy isEqualToArray:self->_homes] & 1) == 0)
   {
-    v5 = [v4 copy];
+    v5 = [homesCopy copy];
     homes = self->_homes;
     self->_homes = v5;
 
@@ -613,10 +613,10 @@ LABEL_12:
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [(WFHomeManager *)self eventObservers];
-    v8 = [v7 allObjects];
+    eventObservers = [(WFHomeManager *)self eventObservers];
+    allObjects = [eventObservers allObjects];
 
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    v9 = [allObjects countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v9)
     {
       v10 = v9;
@@ -628,7 +628,7 @@ LABEL_12:
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allObjects);
           }
 
           v13 = *(*(&v15 + 1) + 8 * v12);
@@ -641,7 +641,7 @@ LABEL_12:
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v10 = [allObjects countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v10);
@@ -653,8 +653,8 @@ LABEL_12:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E6996CA8] sharedContext];
-  [v3 removeApplicationStateObserver:self forEvent:3];
+  mEMORY[0x1E6996CA8] = [MEMORY[0x1E6996CA8] sharedContext];
+  [mEMORY[0x1E6996CA8] removeApplicationStateObserver:self forEvent:3];
 
   v4.receiver = self;
   v4.super_class = WFHomeManager;
@@ -663,8 +663,8 @@ LABEL_12:
 
 + (id)cachedHomeSceneNames
 {
-  v2 = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
-  v3 = [v2 arrayForKey:@"WFKnownHomeSceneNames"];
+  systemShortcutsUserDefaults = [MEMORY[0x1E695E000] systemShortcutsUserDefaults];
+  v3 = [systemShortcutsUserDefaults arrayForKey:@"WFKnownHomeSceneNames"];
 
   return v3;
 }
@@ -673,9 +673,9 @@ LABEL_12:
 {
   v12 = *MEMORY[0x1E69E9840];
   v2 = [MEMORY[0x1E695DFF8] URLWithString:@"com.apple.Home-private://homeHubUpdate"];
-  v3 = [MEMORY[0x1E6963608] defaultWorkspace];
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
   v7 = 0;
-  [v3 openSensitiveURL:v2 withOptions:0 error:&v7];
+  [defaultWorkspace openSensitiveURL:v2 withOptions:0 error:&v7];
   v4 = v7;
 
   if (v4)

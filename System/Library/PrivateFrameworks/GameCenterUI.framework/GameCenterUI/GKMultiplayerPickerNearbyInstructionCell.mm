@@ -1,6 +1,6 @@
 @interface GKMultiplayerPickerNearbyInstructionCell
-+ (double)itemHeightFitting:(CGSize)a3 inTraitEnvironment:(id)a4;
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4;
++ (double)itemHeightFitting:(CGSize)fitting inTraitEnvironment:(id)environment;
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in;
 - (void)layoutSubviews;
 @end
 
@@ -8,14 +8,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   GKMultiplayerPickerNearbyInstructionCell.layoutSubviews()();
 }
 
-- (JUMeasurements)measurementsWithFitting:(CGSize)a3 in:(id)a4
+- (JUMeasurements)measurementsWithFitting:(CGSize)fitting in:(id)in
 {
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   GKMultiplayerPickerNearbyInstructionCell.measurements(fitting:in:)();
   v7 = v6;
   v9 = v8;
@@ -34,7 +34,7 @@
   return result;
 }
 
-+ (double)itemHeightFitting:(CGSize)a3 inTraitEnvironment:(id)a4
++ (double)itemHeightFitting:(CGSize)fitting inTraitEnvironment:(id)environment
 {
   swift_getObjCClassMetadata();
   v4 = swift_unknownObjectRetain();

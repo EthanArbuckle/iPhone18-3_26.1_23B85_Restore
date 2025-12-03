@@ -1,14 +1,14 @@
 @interface SKGEntityEdge
-+ (id)edgeFromEntity:(id)a3 toNode:(id)a4;
++ (id)edgeFromEntity:(id)entity toNode:(id)node;
 @end
 
 @implementation SKGEntityEdge
 
-+ (id)edgeFromEntity:(id)a3 toNode:(id)a4
++ (id)edgeFromEntity:(id)entity toNode:(id)node
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [(SKGEdge *)[SKGEntityEdge alloc] initWithSourceNode:v5 targetNode:v6];
+  entityCopy = entity;
+  nodeCopy = node;
+  v7 = [(SKGEdge *)[SKGEntityEdge alloc] initWithSourceNode:entityCopy targetNode:nodeCopy];
 
   return v7;
 }

@@ -1,8 +1,8 @@
 @interface MCFeatureFlagsPayload
 + (id)typeStrings;
 - (BOOL)isAllowedToWriteFeatureFlags;
-- (MCFeatureFlagsPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
-- (id)invalidConfigurationErrorWithUnderlyingError:(id)a3;
+- (MCFeatureFlagsPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
+- (id)invalidConfigurationErrorWithUnderlyingError:(id)error;
 - (id)payloadDescriptionKeyValueSections;
 - (id)stubDictionary;
 - (id)title;
@@ -24,46 +24,46 @@
 - (BOOL)isAllowedToWriteFeatureFlags
 {
   v8 = 0;
-  v3 = [(MCPayload *)self profile];
-  v4 = [v3 signatureVersion];
+  profile = [(MCPayload *)self profile];
+  signatureVersion = [profile signatureVersion];
 
-  v5 = [(MCPayload *)self profile];
-  v6 = [v5 signerCertificates];
-  [MCProfile evaluateTrustOfCertificateChain:v6 signatureVersion:v4 outIsAllowedToWriteDefaults:&v8];
+  profile2 = [(MCPayload *)self profile];
+  signerCertificates = [profile2 signerCertificates];
+  [MCProfile evaluateTrustOfCertificateChain:signerCertificates signatureVersion:signatureVersion outIsAllowedToWriteDefaults:&v8];
 
-  LOBYTE(v5) = v8;
-  return v5;
+  LOBYTE(profile2) = v8;
+  return profile2;
 }
 
-- (id)invalidConfigurationErrorWithUnderlyingError:(id)a3
+- (id)invalidConfigurationErrorWithUnderlyingError:(id)error
 {
   v4 = MEMORY[0x1E696ABC0];
-  v5 = a3;
-  v6 = [(MCPayload *)self identifier];
-  v14 = MCErrorArray(@"ERROR_FEATURE_FLAGS_INVALID_CONFIGURATION_P_ID", v7, v8, v9, v10, v11, v12, v13, v6);
-  v15 = [v4 MCErrorWithDomain:@"MCFeatureFlagsErrorDomain" code:58001 descriptionArray:v14 underlyingError:v5 errorType:@"MCFatalError"];
+  errorCopy = error;
+  identifier = [(MCPayload *)self identifier];
+  v14 = MCErrorArray(@"ERROR_FEATURE_FLAGS_INVALID_CONFIGURATION_P_ID", v7, v8, v9, v10, v11, v12, v13, identifier);
+  v15 = [v4 MCErrorWithDomain:@"MCFeatureFlagsErrorDomain" code:58001 descriptionArray:v14 underlyingError:errorCopy errorType:@"MCFatalError"];
 
   return v15;
 }
 
-- (MCFeatureFlagsPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCFeatureFlagsPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v182 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v163.receiver = self;
   v163.super_class = MCFeatureFlagsPayload;
-  v10 = [(MCPayload *)&v163 initWithDictionary:v8 profile:v9 outError:a5];
+  v10 = [(MCPayload *)&v163 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   if (!v10)
   {
     goto LABEL_73;
   }
 
-  v118 = a5;
-  v11 = [MEMORY[0x1E695DF90] dictionary];
+  errorCopy = error;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v12 = 0x1E695D000uLL;
   v162 = 0;
-  v13 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"Features" isRequired:0 outError:&v162];
+  v13 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"Features" isRequired:0 outError:&v162];
   v14 = v162;
   if (v14)
   {
@@ -72,8 +72,8 @@
     goto LABEL_64;
   }
 
-  v117 = v11;
-  v16 = [MEMORY[0x1E695DF70] array];
+  v117 = dictionary;
+  array = [MEMORY[0x1E695DF70] array];
   v158 = 0u;
   v159 = 0u;
   v160 = 0u;
@@ -87,10 +87,10 @@
     goto LABEL_32;
   }
 
-  v114 = v9;
+  v114 = profileCopy;
   v15 = 0;
   v124 = *v159;
-  v119 = v16;
+  v119 = array;
 LABEL_6:
   v18 = 0;
 LABEL_7:
@@ -114,7 +114,7 @@ LABEL_7:
       v127 = v21;
       v42 = obj;
       v15 = v22;
-      v9 = v114;
+      profileCopy = v114;
 
       goto LABEL_62;
     }
@@ -129,11 +129,11 @@ LABEL_7:
       v15 = v26;
       v128 = v21;
       v42 = obj;
-      v9 = v114;
+      profileCopy = v114;
       goto LABEL_61;
     }
 
-    v27 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v152 = 0u;
     v153 = 0u;
     v154 = 0u;
@@ -184,7 +184,7 @@ LABEL_14:
       {
         v15 = v38;
 
-        v16 = v119;
+        array = v119;
         v21 = v126;
         goto LABEL_28;
       }
@@ -194,14 +194,14 @@ LABEL_14:
       v179[0] = v34;
       v179[1] = v37;
       v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v179 forKeys:v178 count:2];
-      [v27 addObject:v39];
+      [array2 addObject:v39];
 
       ++v10->_featureFlagCount;
       if (v29 == ++v31)
       {
         v29 = [v131 countByEnumeratingWithState:&v152 objects:v180 count:16];
         v15 = 0;
-        v16 = v119;
+        array = v119;
         v21 = v126;
         if (v29)
         {
@@ -213,9 +213,9 @@ LABEL_28:
         v176[0] = @"Domain";
         v176[1] = @"Features";
         v177[0] = v21;
-        v177[1] = v27;
+        v177[1] = array2;
         v40 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v177 forKeys:v176 count:2];
-        [v16 addObject:v40];
+        [array addObject:v40];
 
         v18 = v129 + 1;
         v12 = 0x1E695D000;
@@ -236,7 +236,7 @@ LABEL_28:
 
     v15 = [(MCFeatureFlagsPayload *)v10 invalidConfigurationErrorWithUnderlyingError:0];
 LABEL_26:
-    v16 = v119;
+    array = v119;
     v21 = v126;
     goto LABEL_28;
   }
@@ -246,21 +246,21 @@ LABEL_26:
   v15 = v44;
 LABEL_37:
 
-  v9 = v114;
+  profileCopy = v114;
   if (v15)
   {
     goto LABEL_63;
   }
 
 LABEL_32:
-  if ([v16 count])
+  if ([array count])
   {
-    [v117 setObject:v16 forKey:@"Features"];
+    [v117 setObject:array forKey:@"Features"];
   }
 
   v41 = *(v12 + 3784);
   v149 = 0;
-  v42 = [v8 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"Disclosures" isRequired:0 outError:&v149];
+  v42 = [dictionaryCopy MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"Disclosures" isRequired:0 outError:&v149];
   v43 = v149;
   if (v43)
   {
@@ -268,17 +268,17 @@ LABEL_32:
     goto LABEL_62;
   }
 
-  v120 = v16;
-  v115 = v9;
-  v116 = v8;
-  v45 = [MEMORY[0x1E695DF70] array];
+  v120 = array;
+  v115 = profileCopy;
+  v116 = dictionaryCopy;
+  array3 = [MEMORY[0x1E695DF70] array];
   v145 = 0u;
   v146 = 0u;
   v147 = 0u;
   v148 = 0u;
   v132 = v42;
   v46 = [v132 countByEnumeratingWithState:&v145 objects:v175 count:16];
-  v128 = v45;
+  v128 = array3;
   if (!v46)
   {
     v58 = 0;
@@ -302,7 +302,7 @@ LABEL_32:
       {
         v58 = [(MCFeatureFlagsPayload *)v10 invalidConfigurationErrorWithUnderlyingError:0];
 LABEL_57:
-        v45 = v128;
+        array3 = v128;
         goto LABEL_58;
       }
 
@@ -341,7 +341,7 @@ LABEL_56:
 
     v47 = [v132 countByEnumeratingWithState:&v145 objects:v175 count:16];
     v58 = 0;
-    v45 = v128;
+    array3 = v128;
     if (v47)
     {
       continue;
@@ -353,31 +353,31 @@ LABEL_56:
 LABEL_58:
   v42 = v132;
 
-  if ([v45 count])
+  if ([array3 count])
   {
-    [v117 setObject:v45 forKey:@"Disclosures"];
+    [v117 setObject:array3 forKey:@"Disclosures"];
   }
 
   v142 = v58;
-  v8 = v116;
+  dictionaryCopy = v116;
   v25 = [v116 MCValidateAndRemoveObjectOfClass:objc_opt_class() withKey:@"Subscriptions" isRequired:0 outError:&v142];
   v15 = v142;
 
-  v9 = v115;
-  v16 = v120;
+  profileCopy = v115;
+  array = v120;
   if (v15)
   {
     goto LABEL_61;
   }
 
-  v72 = [MEMORY[0x1E695DF70] array];
+  array4 = [MEMORY[0x1E695DF70] array];
   v138 = 0u;
   v139 = 0u;
   v140 = 0u;
   v141 = 0u;
   v25 = v25;
   v123 = [v25 countByEnumeratingWithState:&v138 objects:v172 count:16];
-  v130 = v72;
+  v130 = array4;
   if (!v123)
   {
     v15 = 0;
@@ -401,7 +401,7 @@ LABEL_58:
       {
         v15 = [(MCFeatureFlagsPayload *)v10 invalidConfigurationErrorWithUnderlyingError:0];
 LABEL_96:
-        v72 = v130;
+        array4 = v130;
         v42 = v132;
         goto LABEL_97;
       }
@@ -475,7 +475,7 @@ LABEL_93:
     }
 
     v15 = 0;
-    v72 = v130;
+    array4 = v130;
     v42 = v132;
     v123 = [v25 countByEnumeratingWithState:&v138 objects:v172 count:16];
     if (v123)
@@ -488,24 +488,24 @@ LABEL_93:
 
 LABEL_97:
 
-  if ([v72 count])
+  if ([array4 count])
   {
-    [v117 setObject:v72 forKey:@"Subscriptions"];
+    [v117 setObject:array4 forKey:@"Subscriptions"];
   }
 
-  v89 = [(MCPayload *)v10 profile];
-  v90 = [v89 isStub];
+  profile = [(MCPayload *)v10 profile];
+  isStub = [profile isStub];
 
-  v9 = v115;
-  v8 = v116;
-  if (v90)
+  profileCopy = v115;
+  dictionaryCopy = v116;
+  if (isStub)
   {
 LABEL_100:
-    v16 = v120;
+    array = v120;
     if (!v15)
     {
       v91 = [v117 copy];
-      v92 = 0;
+      mCCopyAsPrimaryError = 0;
       featureFlagsConfiguration = v10->_featureFlagsConfiguration;
       v10->_featureFlagsConfiguration = v91;
       goto LABEL_108;
@@ -526,10 +526,10 @@ LABEL_100:
       }
 
       v105 = MEMORY[0x1E696ABC0];
-      v96 = [v115 friendlyName];
-      v104 = MCErrorArray(@"ERROR_PROFILE_DEFAULTS_BAD_SIGNATURE_P_ID", v106, v107, v108, v109, v110, v111, v112, v96);
+      friendlyName = [v115 friendlyName];
+      v104 = MCErrorArray(@"ERROR_PROFILE_DEFAULTS_BAD_SIGNATURE_P_ID", v106, v107, v108, v109, v110, v111, v112, friendlyName);
       v113 = [v105 MCErrorWithDomain:@"MCFeatureFlagsErrorDomain" code:58000 descriptionArray:v104 errorType:@"MCFatalError"];
-      v92 = [v113 MCCopyAsPrimaryError];
+      mCCopyAsPrimaryError = [v113 MCCopyAsPrimaryError];
 
       v15 = v113;
     }
@@ -537,17 +537,17 @@ LABEL_100:
     else
     {
       v95 = MEMORY[0x1E696ABC0];
-      v96 = [(MCPayload *)v10 identifier];
-      v104 = MCErrorArray(@"ERROR_FEATURE_FLAGS_INVALID_CONFIGURATION_P_ID", v97, v98, v99, v100, v101, v102, v103, v96);
-      v92 = [v95 MCErrorWithDomain:@"MCFeatureFlagsErrorDomain" code:58001 descriptionArray:v104 underlyingError:featureFlagsConfiguration errorType:@"MCFatalError"];
+      friendlyName = [(MCPayload *)v10 identifier];
+      v104 = MCErrorArray(@"ERROR_FEATURE_FLAGS_INVALID_CONFIGURATION_P_ID", v97, v98, v99, v100, v101, v102, v103, friendlyName);
+      mCCopyAsPrimaryError = [v95 MCErrorWithDomain:@"MCFeatureFlagsErrorDomain" code:58001 descriptionArray:v104 underlyingError:featureFlagsConfiguration errorType:@"MCFatalError"];
     }
 
-    v16 = v120;
+    array = v120;
     v42 = v132;
 LABEL_108:
 
-    v15 = v92;
-    v72 = v130;
+    v15 = mCCopyAsPrimaryError;
+    array4 = v130;
   }
 
 LABEL_61:
@@ -559,10 +559,10 @@ LABEL_63:
 LABEL_64:
     v59 = [(MCPayload *)v10 malformedPayloadErrorWithError:v15];
     v60 = v59;
-    if (v118)
+    if (errorCopy)
     {
       v61 = v59;
-      *v118 = v60;
+      *errorCopy = v60;
     }
 
     v62 = _MCLogObjects;
@@ -571,28 +571,28 @@ LABEL_64:
       v63 = v62;
       v64 = objc_opt_class();
       v65 = v64;
-      v66 = [v60 MCVerboseDescription];
+      mCVerboseDescription = [v60 MCVerboseDescription];
       *buf = 138543618;
       v165 = v64;
       v166 = 2114;
-      v167 = v66;
+      v167 = mCVerboseDescription;
       _os_log_impl(&dword_1A795B000, v63, OS_LOG_TYPE_ERROR, "%{public}@ Can't parse payload: %{public}@", buf, 0x16u);
     }
 
     v10 = 0;
   }
 
-  if ([v8 count])
+  if ([dictionaryCopy count])
   {
     v67 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_INFO))
     {
       v68 = v67;
-      v69 = [(MCPayload *)v10 friendlyName];
+      friendlyName2 = [(MCPayload *)v10 friendlyName];
       *buf = 138543618;
-      v165 = v69;
+      v165 = friendlyName2;
       v166 = 2114;
-      v167 = v8;
+      v167 = dictionaryCopy;
       _os_log_impl(&dword_1A795B000, v68, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
     }
   }
@@ -606,25 +606,25 @@ LABEL_73:
 {
   v6.receiver = self;
   v6.super_class = MCFeatureFlagsPayload;
-  v3 = [(MCPayload *)&v6 stubDictionary];
-  v4 = [(MCFeatureFlagsPayload *)self featureFlagsConfiguration];
-  [v3 addEntriesFromDictionary:v4];
+  stubDictionary = [(MCPayload *)&v6 stubDictionary];
+  featureFlagsConfiguration = [(MCFeatureFlagsPayload *)self featureFlagsConfiguration];
+  [stubDictionary addEntriesFromDictionary:featureFlagsConfiguration];
 
-  return v3;
+  return stubDictionary;
 }
 
 - (id)verboseDescription
 {
   v8.receiver = self;
   v8.super_class = MCFeatureFlagsPayload;
-  v3 = [(MCPayload *)&v8 verboseDescription];
-  v4 = [v3 mutableCopy];
+  verboseDescription = [(MCPayload *)&v8 verboseDescription];
+  v4 = [verboseDescription mutableCopy];
 
-  v5 = [(MCFeatureFlagsPayload *)self featureFlagsConfiguration];
-  v6 = v5;
-  if (v5)
+  featureFlagsConfiguration = [(MCFeatureFlagsPayload *)self featureFlagsConfiguration];
+  v6 = featureFlagsConfiguration;
+  if (featureFlagsConfiguration)
   {
-    [v4 appendFormat:@"\nconfiguration: %@", v5];
+    [v4 appendFormat:@"\nconfiguration: %@", featureFlagsConfiguration];
   }
 
   return v4;
@@ -642,10 +642,10 @@ LABEL_73:
 - (id)payloadDescriptionKeyValueSections
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v2 = [(MCFeatureFlagsPayload *)self featureFlagsConfiguration];
-  v3 = [v2 objectForKeyedSubscript:@"Disclosures"];
-  v4 = [v2 objectForKeyedSubscript:@"Features"];
-  v5 = [v2 objectForKeyedSubscript:@"Subscriptions"];
+  featureFlagsConfiguration = [(MCFeatureFlagsPayload *)self featureFlagsConfiguration];
+  v3 = [featureFlagsConfiguration objectForKeyedSubscript:@"Disclosures"];
+  v4 = [featureFlagsConfiguration objectForKeyedSubscript:@"Features"];
+  v5 = [featureFlagsConfiguration objectForKeyedSubscript:@"Subscriptions"];
   v6 = objc_opt_new();
   v26 = v3;
   if (v4)

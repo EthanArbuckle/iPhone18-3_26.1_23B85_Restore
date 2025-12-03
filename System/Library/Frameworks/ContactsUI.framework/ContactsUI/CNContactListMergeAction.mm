@@ -2,7 +2,7 @@
 + (id)descriptorForRequiredKeys;
 + (id)log;
 - (BOOL)executeAction;
-- (BOOL)mergeWillRequireLinkingForContacts:(id)a3;
+- (BOOL)mergeWillRequireLinkingForContacts:(id)contacts;
 - (void)performAction;
 - (void)performUndoAction;
 - (void)showMergeFailureAlert;
@@ -54,8 +54,8 @@ uint64_t __31__CNContactListMergeAction_log__block_invoke()
   v9 = [v6 actionWithTitle:v8 style:0 handler:0];
   [v11 addAction:v9];
 
-  v10 = [(CNContactListAction *)self delegate];
-  [v10 action:self presentViewController:v11];
+  delegate = [(CNContactListAction *)self delegate];
+  [delegate action:self presentViewController:v11];
 }
 
 - (void)performUndoAction
@@ -65,34 +65,34 @@ uint64_t __31__CNContactListMergeAction_log__block_invoke()
   v4 = objc_alloc_init(MEMORY[0x1E695CF88]);
   [v3 setIgnoresGuardianRestrictions:1];
   [v4 setIgnoresGuardianRestrictions:1];
-  v5 = [(CNContactListMergeAction *)self mergeUnifyActionHelper];
-  v6 = [v5 applyUndoTo:v3 and:v4];
+  mergeUnifyActionHelper = [(CNContactListMergeAction *)self mergeUnifyActionHelper];
+  v6 = [mergeUnifyActionHelper applyUndoTo:v3 and:v4];
 
   if (v6)
   {
-    v7 = [(CNContactListAction *)self configuration];
-    v8 = [v7 contactStore];
+    configuration = [(CNContactListAction *)self configuration];
+    contactStore = [configuration contactStore];
     v17 = 0;
-    v9 = [v8 executeSaveRequest:v3 error:&v17];
+    v9 = [contactStore executeSaveRequest:v3 error:&v17];
     v10 = v17;
 
     v11 = 0;
     if (v9 && (-[CNContactListAction configuration](self, "configuration"), v12 = objc_claimAutoreleasedReturnValue(), [v12 contactStore], v13 = objc_claimAutoreleasedReturnValue(), v16 = 0, v14 = objc_msgSend(v13, "executeSaveRequest:error:", v4, &v16), v11 = v16, v13, v12, (v14 & 1) != 0))
     {
-      v15 = [(CNContactListAction *)self delegate];
-      [v15 actionDidFinish:self];
+      delegate = [(CNContactListAction *)self delegate];
+      [delegate actionDidFinish:self];
     }
 
     else
     {
-      v15 = [objc_opt_class() log];
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      delegate = [objc_opt_class() log];
+      if (os_log_type_enabled(delegate, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
         v19 = v10;
         v20 = 2112;
         v21 = v11;
-        _os_log_error_impl(&dword_199A75000, v15, OS_LOG_TYPE_ERROR, "Failed to undo merge contacts action: %@ | %@", buf, 0x16u);
+        _os_log_error_impl(&dword_199A75000, delegate, OS_LOG_TYPE_ERROR, "Failed to undo merge contacts action: %@ | %@", buf, 0x16u);
       }
     }
   }
@@ -108,16 +108,16 @@ uint64_t __31__CNContactListMergeAction_log__block_invoke()
   }
 }
 
-- (BOOL)mergeWillRequireLinkingForContacts:(id)a3
+- (BOOL)mergeWillRequireLinkingForContacts:(id)contacts
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __63__CNContactListMergeAction_mergeWillRequireLinkingForContacts___block_invoke;
   v7[3] = &unk_1E74E4648;
   v7[4] = self;
-  v3 = [a3 _cn_groupBy:v7];
-  v4 = [v3 allKeys];
-  v5 = [v4 count] > 1;
+  v3 = [contacts _cn_groupBy:v7];
+  allKeys = [v3 allKeys];
+  v5 = [allKeys count] > 1;
 
   return v5;
 }
@@ -151,40 +151,40 @@ __CFString *__63__CNContactListMergeAction_mergeWillRequireLinkingForContacts___
 {
   v51 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695CF88]);
-  v4 = [(CNContactListMergeAction *)self mergeUnifyActionHelper];
+  mergeUnifyActionHelper = [(CNContactListMergeAction *)self mergeUnifyActionHelper];
 
-  if (!v4)
+  if (!mergeUnifyActionHelper)
   {
     v5 = [_TtC10ContactsUI33ContactListMergeUnifyActionHelper alloc];
-    v6 = [(CNContactListAction *)self configuration];
-    v7 = [v6 contactStore];
-    v8 = [(ContactListMergeUnifyActionHelper *)v5 initWithContactStore:v7];
+    configuration = [(CNContactListAction *)self configuration];
+    contactStore = [configuration contactStore];
+    v8 = [(ContactListMergeUnifyActionHelper *)v5 initWithContactStore:contactStore];
     [(CNContactListMergeAction *)self setMergeUnifyActionHelper:v8];
   }
 
-  v9 = [(CNContactListMergeAction *)self groupsAndContainersSaveManager];
+  groupsAndContainersSaveManager = [(CNContactListMergeAction *)self groupsAndContainersSaveManager];
 
-  if (!v9)
+  if (!groupsAndContainersSaveManager)
   {
     v10 = [CNUIGroupsAndContainersSaveManager alloc];
-    v11 = [(CNContactListAction *)self configuration];
-    v12 = [v11 contactStore];
-    v13 = [(CNContactListAction *)self configuration];
-    v14 = [v13 contactViewCache];
-    v15 = [(CNUIGroupsAndContainersSaveManager *)v10 initWithContactStore:v12 contactViewCache:v14];
+    configuration2 = [(CNContactListAction *)self configuration];
+    contactStore2 = [configuration2 contactStore];
+    configuration3 = [(CNContactListAction *)self configuration];
+    contactViewCache = [configuration3 contactViewCache];
+    v15 = [(CNUIGroupsAndContainersSaveManager *)v10 initWithContactStore:contactStore2 contactViewCache:contactViewCache];
     [(CNContactListMergeAction *)self setGroupsAndContainersSaveManager:v15];
   }
 
   v16 = objc_alloc(MEMORY[0x1E695DF90]);
-  v17 = [(CNContactListAction *)self contacts];
-  v41 = [v16 initWithCapacity:{objc_msgSend(v17, "count")}];
+  contacts = [(CNContactListAction *)self contacts];
+  v41 = [v16 initWithCapacity:{objc_msgSend(contacts, "count")}];
 
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v18 = [(CNContactListAction *)self contacts];
-  v19 = [v18 countByEnumeratingWithState:&v44 objects:v50 count:16];
+  contacts2 = [(CNContactListAction *)self contacts];
+  v19 = [contacts2 countByEnumeratingWithState:&v44 objects:v50 count:16];
   if (v19)
   {
     v20 = v19;
@@ -196,41 +196,41 @@ __CFString *__63__CNContactListMergeAction_mergeWillRequireLinkingForContacts___
       {
         if (*v45 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(contacts2);
         }
 
         v24 = *(*(&v44 + 1) + 8 * i);
-        v25 = [(CNContactListMergeAction *)self groupsAndContainersSaveManager];
-        v26 = [v25 parentGroupsForContact:v24];
+        groupsAndContainersSaveManager2 = [(CNContactListMergeAction *)self groupsAndContainersSaveManager];
+        v26 = [groupsAndContainersSaveManager2 parentGroupsForContact:v24];
 
         if (((*(v22 + 16))(v22, v26) & 1) == 0)
         {
-          v27 = [v24 identifier];
-          [v41 setObject:v26 forKeyedSubscript:v27];
+          identifier = [v24 identifier];
+          [v41 setObject:v26 forKeyedSubscript:identifier];
         }
       }
 
-      v20 = [v18 countByEnumeratingWithState:&v44 objects:v50 count:16];
+      v20 = [contacts2 countByEnumeratingWithState:&v44 objects:v50 count:16];
     }
 
     while (v20);
   }
 
-  v28 = [(CNContactListMergeAction *)self mergeUnifyActionHelper];
-  v29 = [(CNContactListAction *)self contacts];
-  v30 = [(CNContactListAction *)self contacts];
+  mergeUnifyActionHelper2 = [(CNContactListMergeAction *)self mergeUnifyActionHelper];
+  contacts3 = [(CNContactListAction *)self contacts];
+  contacts4 = [(CNContactListAction *)self contacts];
   v43[0] = MEMORY[0x1E69E9820];
   v43[1] = 3221225472;
   v43[2] = __41__CNContactListMergeAction_executeAction__block_invoke;
   v43[3] = &unk_1E74E78A8;
   v43[4] = self;
-  v31 = [v30 _cn_map:v43];
-  [v28 mergeContacts:v29 withContainerIdentifiers:v31 withContactIDToParentGroupsDict:v41];
+  v31 = [contacts4 _cn_map:v43];
+  [mergeUnifyActionHelper2 mergeContacts:contacts3 withContainerIdentifiers:v31 withContactIDToParentGroupsDict:v41];
 
-  v32 = [(CNContactListMergeAction *)self mergeUnifyActionHelper];
-  LOBYTE(v29) = [v32 applyMergeResultToSaveRequest:v40];
+  mergeUnifyActionHelper3 = [(CNContactListMergeAction *)self mergeUnifyActionHelper];
+  LOBYTE(contacts3) = [mergeUnifyActionHelper3 applyMergeResultToSaveRequest:v40];
 
-  if ((v29 & 1) == 0)
+  if ((contacts3 & 1) == 0)
   {
     v37 = [objc_opt_class() log];
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -244,10 +244,10 @@ __CFString *__63__CNContactListMergeAction_mergeWillRequireLinkingForContacts___
 
   v33 = 1;
   [v40 setIgnoresGuardianRestrictions:1];
-  v34 = [(CNContactListAction *)self configuration];
-  v35 = [v34 contactStore];
+  configuration4 = [(CNContactListAction *)self configuration];
+  contactStore3 = [configuration4 contactStore];
   v42 = 0;
-  v36 = [v35 executeSaveRequest:v40 error:&v42];
+  v36 = [contactStore3 executeSaveRequest:v40 error:&v42];
   v37 = v42;
 
   if ((v36 & 1) == 0)
@@ -294,8 +294,8 @@ __CFString *__41__CNContactListMergeAction_executeAction__block_invoke(uint64_t 
 
 - (void)performAction
 {
-  v3 = [(CNContactListAction *)self contacts];
-  v4 = [(CNContactListMergeAction *)self mergeWillRequireLinkingForContacts:v3];
+  contacts = [(CNContactListAction *)self contacts];
+  v4 = [(CNContactListMergeAction *)self mergeWillRequireLinkingForContacts:contacts];
 
   v5 = MEMORY[0x1E696AEC0];
   v6 = CNContactsUIBundle();
@@ -321,8 +321,8 @@ __CFString *__41__CNContactListMergeAction_executeAction__block_invoke(uint64_t 
   }
 
   v10 = [v6 localizedStringForKey:v8 value:&stru_1F0CE7398 table:@"Localized"];
-  v11 = [(CNContactListAction *)self contacts];
-  v12 = [v11 count];
+  contacts2 = [(CNContactListAction *)self contacts];
+  v12 = [contacts2 count];
 
   if (v12 <= 1)
   {
@@ -340,8 +340,8 @@ __CFString *__41__CNContactListMergeAction_executeAction__block_invoke(uint64_t 
   v16 = MEMORY[0x1E696AEC0];
   v17 = CNContactsUIBundle();
   v18 = [v17 localizedStringForKey:v9 value:&stru_1F0CE7398 table:@"Localized"];
-  v19 = [(CNContactListAction *)self contacts];
-  v20 = [v19 count];
+  contacts3 = [(CNContactListAction *)self contacts];
+  v20 = [contacts3 count];
 
   if (v20 <= 1)
   {
@@ -369,8 +369,8 @@ __CFString *__41__CNContactListMergeAction_executeAction__block_invoke(uint64_t 
   v27 = [v24 actionWithTitle:v26 style:1 handler:&__block_literal_global_28];
   [v15 addAction:v27];
 
-  v28 = [(CNContactListAction *)self delegate];
-  [v28 action:self presentViewController:v15];
+  delegate = [(CNContactListAction *)self delegate];
+  [delegate action:self presentViewController:v15];
 }
 
 void __41__CNContactListMergeAction_performAction__block_invoke(uint64_t a1)

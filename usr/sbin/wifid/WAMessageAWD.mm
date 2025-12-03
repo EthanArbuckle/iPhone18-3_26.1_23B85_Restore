@@ -1,22 +1,22 @@
 @interface WAMessageAWD
-- (id)_valuesForRepeatedField:(id)a3;
+- (id)_valuesForRepeatedField:(id)field;
 - (id)dictionaryRepresentation;
 @end
 
 @implementation WAMessageAWD
 
-- (id)_valuesForRepeatedField:(id)a3
+- (id)_valuesForRepeatedField:(id)field
 {
   v4 = +[NSMutableArray array];
-  if ([objc_msgSend(a3 "repeatableValues")])
+  if ([objc_msgSend(field "repeatableValues")])
   {
     v5 = 0;
     do
     {
-      [v4 addObject:{objc_msgSend(objc_msgSend(a3, "repeatableValues"), "objectAtIndex:", v5++)}];
+      [v4 addObject:{objc_msgSend(objc_msgSend(field, "repeatableValues"), "objectAtIndex:", v5++)}];
     }
 
-    while (v5 < [objc_msgSend(a3 "repeatableValues")]);
+    while (v5 < [objc_msgSend(field "repeatableValues")]);
   }
 
   return v4;
@@ -49,53 +49,53 @@
         }
 
         v10 = *(*(&v24 + 1) + 8 * v9);
-        v11 = [v10 type];
-        if (v11 <= 4)
+        type = [v10 type];
+        if (type <= 4)
         {
-          if (v11 > 2)
+          if (type > 2)
           {
-            if (v11 == 3)
+            if (type == 3)
             {
               if (![v10 isRepeatable])
               {
-                v18 = [v8[455] numberWithInt:{objc_msgSend(v10, "int32Value")}];
+                stringValue = [v8[455] numberWithInt:{objc_msgSend(v10, "int32Value")}];
                 goto LABEL_39;
               }
             }
 
             else if (![v10 isRepeatable])
             {
-              v18 = [v8[455] numberWithLongLong:{objc_msgSend(v10, "int64Value")}];
+              stringValue = [v8[455] numberWithLongLong:{objc_msgSend(v10, "int64Value")}];
               goto LABEL_39;
             }
 
 LABEL_38:
-            v18 = [(WAMessageAWD *)self _valuesForRepeatedField:v10];
+            stringValue = [(WAMessageAWD *)self _valuesForRepeatedField:v10];
             goto LABEL_39;
           }
 
-          if (v11 == 1)
+          if (type == 1)
           {
             if (![v10 isRepeatable])
             {
               v19 = v8[455];
               [v10 doubleValue];
-              v18 = [v19 numberWithDouble:?];
+              stringValue = [v19 numberWithDouble:?];
               goto LABEL_39;
             }
 
             goto LABEL_38;
           }
 
-          if (v11 == 2)
+          if (type == 2)
           {
             if (![v10 isRepeatable])
             {
               v17 = v8[455];
               [v10 floatValue];
-              v18 = [v17 numberWithFloat:?];
+              stringValue = [v17 numberWithFloat:?];
 LABEL_39:
-              [v3 setValue:v18 forKey:{objc_msgSend(v10, "key")}];
+              [v3 setValue:stringValue forKey:{objc_msgSend(v10, "key")}];
               goto LABEL_40;
             }
 
@@ -107,61 +107,61 @@ LABEL_42:
           goto LABEL_40;
         }
 
-        if (v11 <= 6)
+        if (type <= 6)
         {
-          if (v11 == 5)
+          if (type == 5)
           {
             if (![v10 isRepeatable])
             {
-              v18 = [v8[455] numberWithUnsignedInt:{objc_msgSend(v10, "uint32Value")}];
+              stringValue = [v8[455] numberWithUnsignedInt:{objc_msgSend(v10, "uint32Value")}];
               goto LABEL_39;
             }
           }
 
           else if (![v10 isRepeatable])
           {
-            v18 = [v8[455] numberWithUnsignedLongLong:{objc_msgSend(v10, "uint64Value")}];
+            stringValue = [v8[455] numberWithUnsignedLongLong:{objc_msgSend(v10, "uint64Value")}];
             goto LABEL_39;
           }
 
           goto LABEL_38;
         }
 
-        if (v11 == 7)
+        if (type == 7)
         {
           if (![v10 isRepeatable])
           {
-            v18 = [v8[455] numberWithBool:{objc_msgSend(v10, "BOOLValue")}];
+            stringValue = [v8[455] numberWithBool:{objc_msgSend(v10, "BOOLValue")}];
             goto LABEL_39;
           }
 
           goto LABEL_38;
         }
 
-        if (v11 == 8)
+        if (type == 8)
         {
           if (![v10 isRepeatable])
           {
-            v18 = [v10 stringValue];
+            stringValue = [v10 stringValue];
             goto LABEL_39;
           }
 
           goto LABEL_38;
         }
 
-        if (v11 != 10)
+        if (type != 10)
         {
           goto LABEL_42;
         }
 
         if (![v10 isRepeatable])
         {
-          v18 = [objc_msgSend(v10 "subMessageValue")];
+          stringValue = [objc_msgSend(v10 "subMessageValue")];
           goto LABEL_39;
         }
 
         v12 = v8;
-        v13 = self;
+        selfCopy = self;
         v14 = +[NSMutableArray array];
         if ([objc_msgSend(v10 "repeatableValues")])
         {
@@ -182,7 +182,7 @@ LABEL_42:
         }
 
         [v3 setValue:v14 forKey:{objc_msgSend(v10, "key")}];
-        self = v13;
+        self = selfCopy;
         v8 = v12;
         v4 = v23;
 LABEL_40:

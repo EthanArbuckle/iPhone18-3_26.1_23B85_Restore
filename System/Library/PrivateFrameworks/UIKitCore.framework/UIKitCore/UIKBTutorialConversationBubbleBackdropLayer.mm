@@ -1,7 +1,7 @@
 @interface UIKBTutorialConversationBubbleBackdropLayer
 - (UIKBTutorialConversationBubbleBackdropLayer)init;
 - (void)_updateBackgroundColor;
-- (void)setUserInterfaceStyle:(int64_t)a3;
+- (void)setUserInterfaceStyle:(int64_t)style;
 @end
 
 @implementation UIKBTutorialConversationBubbleBackdropLayer
@@ -36,11 +36,11 @@
   return v3;
 }
 
-- (void)setUserInterfaceStyle:(int64_t)a3
+- (void)setUserInterfaceStyle:(int64_t)style
 {
-  if (self->_userInterfaceStyle != a3)
+  if (self->_userInterfaceStyle != style)
   {
-    self->_userInterfaceStyle = a3;
+    self->_userInterfaceStyle = style;
     [(UIKBTutorialConversationBubbleBackdropLayer *)self _updateBackgroundColor];
   }
 }

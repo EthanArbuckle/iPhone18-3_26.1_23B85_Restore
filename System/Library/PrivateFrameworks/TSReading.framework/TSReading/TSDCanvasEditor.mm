@@ -1,52 +1,52 @@
 @interface TSDCanvasEditor
-+ (BOOL)physicalKeyboardIsSender:(id)a3;
-+ (id)canvasSelectionWithInfos:(id)a3;
-+ (id)canvasSelectionWithInfos:(id)a3 andContainer:(id)a4;
++ (BOOL)physicalKeyboardIsSender:(id)sender;
++ (id)canvasSelectionWithInfos:(id)infos;
++ (id)canvasSelectionWithInfos:(id)infos andContainer:(id)container;
 - (BOOL)canDeleteComment;
-- (BOOL)canGroupWithSender:(id)a3;
-- (BOOL)canSelectAllWithSender:(id)a3;
-- (BOOL)canUngroupWithSender:(id)a3;
-- (BOOL)canvasEditorCanCopyWithSender:(id)a3;
-- (BOOL)canvasEditorCanCutWithSender:(id)a3;
-- (BOOL)canvasEditorCanDeleteWithSender:(id)a3;
-- (BOOL)isRepSelectable:(id)a3;
-- (BOOL)isSelectedInfo:(id)a3;
+- (BOOL)canGroupWithSender:(id)sender;
+- (BOOL)canSelectAllWithSender:(id)sender;
+- (BOOL)canUngroupWithSender:(id)sender;
+- (BOOL)canvasEditorCanCopyWithSender:(id)sender;
+- (BOOL)canvasEditorCanCutWithSender:(id)sender;
+- (BOOL)canvasEditorCanDeleteWithSender:(id)sender;
+- (BOOL)isRepSelectable:(id)selectable;
+- (BOOL)isSelectedInfo:(id)info;
 - (BOOL)shouldPushNewEditorForNewSelection;
-- (CGRect)firstRectForRange:(_NSRange)a3;
+- (CGRect)firstRectForRange:(_NSRange)range;
 - (Class)editorClassForSelection;
 - (NSSet)infosForSelectAllInRoot;
-- (TSDCanvasEditor)initWithInteractiveCanvasController:(id)a3;
+- (TSDCanvasEditor)initWithInteractiveCanvasController:(id)controller;
 - (TSPObject)modelForSelection;
 - (UIView)inputView;
 - (_NSRange)editRange;
 - (_NSRange)markedRange;
-- (_NSRange)rangeOfWordEnclosingCharIndex:(unint64_t)a3 backward:(BOOL)a4;
-- (id)canvasSelectionWithInfos:(id)a3 andContainer:(id)a4;
+- (_NSRange)rangeOfWordEnclosingCharIndex:(unint64_t)index backward:(BOOL)backward;
+- (id)canvasSelectionWithInfos:(id)infos andContainer:(id)container;
 - (id)drawables;
 - (id)editorToPopToOnEndEditing;
 - (id)keyCommands;
-- (id)p_filterNonDisplayedInfos:(id)a3;
-- (id)p_nextInfoInTabSequence:(int)a3;
+- (id)p_filterNonDisplayedInfos:(id)infos;
+- (id)p_nextInfoInTabSequence:(int)sequence;
 - (id)p_spatiallySortedDrawables;
 - (id)pasteboardController;
-- (int)canPerformEditorAction:(SEL)a3 withSender:(id)a4;
+- (int)canPerformEditorAction:(SEL)action withSender:(id)sender;
 - (unint64_t)countOfDrawables;
-- (void)beginAutomaticTextEditingIfNeededForPoint:(CGPoint)a3;
+- (void)beginAutomaticTextEditingIfNeededForPoint:(CGPoint)point;
 - (void)canvasInfosDidChange;
-- (void)connectWithConnectionLine:(id)a3;
+- (void)connectWithConnectionLine:(id)line;
 - (void)dealloc;
-- (void)insertBacktab:(id)a3;
-- (void)insertTab:(id)a3;
-- (void)insertText:(id)a3;
-- (void)p_notifyRepsForSelectionChangeFrom:(id)a3 to:(id)a4;
-- (void)repWasCreated:(id)a3;
-- (void)scrollToBeginningOfDocument:(id)a3;
-- (void)scrollToEndOfDocument:(id)a3;
-- (void)selectAll:(id)a3;
-- (void)setSelection:(id)a3 withFlags:(unint64_t)a4;
-- (void)setSelectionToInfo:(id)a3;
-- (void)setSelectionToInfos:(id)a3;
-- (void)setSelectionToRep:(id)a3;
+- (void)insertBacktab:(id)backtab;
+- (void)insertTab:(id)tab;
+- (void)insertText:(id)text;
+- (void)p_notifyRepsForSelectionChangeFrom:(id)from to:(id)to;
+- (void)repWasCreated:(id)created;
+- (void)scrollToBeginningOfDocument:(id)document;
+- (void)scrollToEndOfDocument:(id)document;
+- (void)selectAll:(id)all;
+- (void)setSelection:(id)selection withFlags:(unint64_t)flags;
+- (void)setSelectionToInfo:(id)info;
+- (void)setSelectionToInfos:(id)infos;
+- (void)setSelectionToRep:(id)rep;
 @end
 
 @implementation TSDCanvasEditor
@@ -64,9 +64,9 @@
   return result;
 }
 
-- (void)insertText:(id)a3
+- (void)insertText:(id)text
 {
-  if ([a3 isEqualToString:@"\t"])
+  if ([text isEqualToString:@"\t"])
   {
 
     [(TSDCanvasEditor *)self insertTab:0];
@@ -91,7 +91,7 @@
   return result;
 }
 
-- (CGRect)firstRectForRange:(_NSRange)a3
+- (CGRect)firstRectForRange:(_NSRange)range
 {
   v3 = *MEMORY[0x277CBF3A0];
   v4 = *(MEMORY[0x277CBF3A0] + 8);
@@ -104,7 +104,7 @@
   return result;
 }
 
-- (_NSRange)rangeOfWordEnclosingCharIndex:(unint64_t)a3 backward:(BOOL)a4
+- (_NSRange)rangeOfWordEnclosingCharIndex:(unint64_t)index backward:(BOOL)backward
 {
   v4 = 0;
   v5 = 0;
@@ -113,51 +113,51 @@
   return result;
 }
 
-+ (id)canvasSelectionWithInfos:(id)a3
++ (id)canvasSelectionWithInfos:(id)infos
 {
   v4 = objc_opt_class();
 
-  return [v4 canvasSelectionWithInfos:a3 andContainer:0];
+  return [v4 canvasSelectionWithInfos:infos andContainer:0];
 }
 
-+ (id)canvasSelectionWithInfos:(id)a3 andContainer:(id)a4
++ (id)canvasSelectionWithInfos:(id)infos andContainer:(id)container
 {
-  v6 = [a1 canvasEditorHelperClass];
+  canvasEditorHelperClass = [self canvasEditorHelperClass];
 
-  return [v6 canvasSelectionWithInfos:a3 andContainer:a4];
+  return [canvasEditorHelperClass canvasSelectionWithInfos:infos andContainer:container];
 }
 
-- (id)canvasSelectionWithInfos:(id)a3 andContainer:(id)a4
+- (id)canvasSelectionWithInfos:(id)infos andContainer:(id)container
 {
-  v6 = [(TSDCanvasEditor *)self canvasEditorHelper];
+  canvasEditorHelper = [(TSDCanvasEditor *)self canvasEditorHelper];
 
-  return [(TSDCanvasEditorHelper *)v6 canvasSelectionWithInfos:a3 andContainer:a4];
+  return [(TSDCanvasEditorHelper *)canvasEditorHelper canvasSelectionWithInfos:infos andContainer:container];
 }
 
-- (void)setSelectionToInfo:(id)a3
+- (void)setSelectionToInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
-    a3 = [MEMORY[0x277CBEB98] setWithObject:?];
+    info = [MEMORY[0x277CBEB98] setWithObject:?];
   }
 
-  v4 = [(TSDCanvasEditor *)self canvasSelectionWithInfos:a3];
+  v4 = [(TSDCanvasEditor *)self canvasSelectionWithInfos:info];
 
   [(TSDCanvasEditor *)self setSelection:v4];
 }
 
-- (void)setSelectionToInfos:(id)a3
+- (void)setSelectionToInfos:(id)infos
 {
-  v4 = [(TSDCanvasEditor *)self canvasSelectionWithInfos:a3];
+  v4 = [(TSDCanvasEditor *)self canvasSelectionWithInfos:infos];
 
   [(TSDCanvasEditor *)self setSelection:v4];
 }
 
-- (BOOL)isRepSelectable:(id)a3
+- (BOOL)isRepSelectable:(id)selectable
 {
-  v4 = [(TSDCanvasEditor *)self canvasEditorHelper];
+  canvasEditorHelper = [(TSDCanvasEditor *)self canvasEditorHelper];
 
-  return [(TSDCanvasEditorHelper *)v4 isRepSelectable:a3];
+  return [(TSDCanvasEditorHelper *)canvasEditorHelper isRepSelectable:selectable];
 }
 
 - (id)keyCommands
@@ -183,12 +183,12 @@ id __30__TSDCanvasEditor_keyCommands__block_invoke()
 
 - (BOOL)canDeleteComment
 {
-  v2 = [(TSDCanvasEditor *)self canvasEditorHelper];
+  canvasEditorHelper = [(TSDCanvasEditor *)self canvasEditorHelper];
 
-  return [(TSDCanvasEditorHelper *)v2 canDeleteComment];
+  return [(TSDCanvasEditorHelper *)canvasEditorHelper canDeleteComment];
 }
 
-- (TSDCanvasEditor)initWithInteractiveCanvasController:(id)a3
+- (TSDCanvasEditor)initWithInteractiveCanvasController:(id)controller
 {
   v7.receiver = self;
   v7.super_class = TSDCanvasEditor;
@@ -196,7 +196,7 @@ id __30__TSDCanvasEditor_keyCommands__block_invoke()
   v5 = v4;
   if (v4)
   {
-    v4->mInteractiveCanvasController = a3;
+    v4->mInteractiveCanvasController = controller;
     v4->mCanvasEditorHelper = [objc_alloc(objc_msgSend(objc_opt_class() "canvasEditorHelperClass"))];
   }
 
@@ -210,27 +210,27 @@ id __30__TSDCanvasEditor_keyCommands__block_invoke()
   [(TSDCanvasEditor *)&v3 dealloc];
 }
 
-- (BOOL)isSelectedInfo:(id)a3
+- (BOOL)isSelectedInfo:(id)info
 {
-  v4 = [(TSDCanvasSelection *)[(TSDCanvasEditor *)self canvasSelection] infos];
+  infos = [(TSDCanvasSelection *)[(TSDCanvasEditor *)self canvasSelection] infos];
 
-  return [(NSSet *)v4 containsObject:a3];
+  return [(NSSet *)infos containsObject:info];
 }
 
 - (TSPObject)modelForSelection
 {
-  v2 = [(TSDInteractiveCanvasController *)self->mInteractiveCanvasController objectContext];
+  objectContext = [(TSDInteractiveCanvasController *)self->mInteractiveCanvasController objectContext];
 
-  return [(TSPObjectContext *)v2 documentObject];
+  return [(TSPObjectContext *)objectContext documentObject];
 }
 
 - (void)canvasInfosDidChange
 {
-  v3 = [(TSDCanvasSelection *)self->mSelection infos];
-  if ([(NSSet *)v3 count])
+  infos = [(TSDCanvasSelection *)self->mSelection infos];
+  if ([(NSSet *)infos count])
   {
-    v4 = [(TSDCanvasEditor *)self p_filterNonDisplayedInfos:v3];
-    if (v4 != v3)
+    v4 = [(TSDCanvasEditor *)self p_filterNonDisplayedInfos:infos];
+    if (v4 != infos)
     {
       v5 = [(TSDCanvasEditor *)self canvasSelectionWithInfos:v4];
 
@@ -239,16 +239,16 @@ id __30__TSDCanvasEditor_keyCommands__block_invoke()
   }
 }
 
-- (void)repWasCreated:(id)a3
+- (void)repWasCreated:(id)created
 {
-  if ([a3 isSelectedIgnoringLocking])
+  if ([created isSelectedIgnoringLocking])
   {
 
-    [a3 becameSelected];
+    [created becameSelected];
   }
 }
 
-- (id)p_filterNonDisplayedInfos:(id)a3
+- (id)p_filterNonDisplayedInfos:(id)infos
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -257,12 +257,12 @@ id __30__TSDCanvasEditor_keyCommands__block_invoke()
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [infos countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (!v7)
   {
 
 LABEL_14:
-    return a3;
+    return infos;
   }
 
   v8 = v7;
@@ -274,7 +274,7 @@ LABEL_14:
     {
       if (*v15 != v10)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(infos);
       }
 
       v12 = *(*(&v14 + 1) + 8 * i);
@@ -289,7 +289,7 @@ LABEL_14:
       }
     }
 
-    v8 = [a3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    v8 = [infos countByEnumeratingWithState:&v14 objects:v18 count:16];
   }
 
   while (v8);
@@ -304,32 +304,32 @@ LABEL_14:
 
 - (Class)editorClassForSelection
 {
-  v3 = [(TSDCanvasEditor *)self canvasEditorHelper];
+  canvasEditorHelper = [(TSDCanvasEditor *)self canvasEditorHelper];
   mSelection = self->mSelection;
 
-  return [(TSDCanvasEditorHelper *)v3 editorClassForSelection:mSelection];
+  return [(TSDCanvasEditorHelper *)canvasEditorHelper editorClassForSelection:mSelection];
 }
 
 - (id)editorToPopToOnEndEditing
 {
-  v3 = [(TSDCanvasEditor *)self canvasEditorHelper];
+  canvasEditorHelper = [(TSDCanvasEditor *)self canvasEditorHelper];
   mSelection = self->mSelection;
 
-  return [(TSDCanvasEditorHelper *)v3 editorToPopToOnEndEditingForSelection:mSelection];
+  return [(TSDCanvasEditorHelper *)canvasEditorHelper editorToPopToOnEndEditingForSelection:mSelection];
 }
 
 - (unint64_t)countOfDrawables
 {
-  v2 = [(TSDCanvasEditor *)self drawables];
+  drawables = [(TSDCanvasEditor *)self drawables];
 
-  return [v2 count];
+  return [drawables count];
 }
 
 - (id)drawables
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDCanvasEditor drawables]"];
-  [v2 handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasEditor.m"), 470, @"subclass responsibility"}];
+  [currentHandler handleFailureInFunction:v3 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasEditor.m"), 470, @"subclass responsibility"}];
   return 0;
 }
 
@@ -344,9 +344,9 @@ LABEL_14:
   return mSelection;
 }
 
-- (void)setSelection:(id)a3 withFlags:(unint64_t)a4
+- (void)setSelection:(id)selection withFlags:(unint64_t)flags
 {
-  v6 = [(TSDCanvasEditor *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDCanvasEditor *)self interactiveCanvasController];
   objc_opt_class();
   v7 = TSUDynamicCast();
   if (v7 != self->mSelection)
@@ -354,92 +354,92 @@ LABEL_14:
     v8 = v7;
     if (![(TSDCanvasSelection *)v7 isEqual:?])
     {
-      [-[TSDCanvasLayerHosting asiOSCVC](-[TSDInteractiveCanvasController layerHost](v6 "layerHost")];
+      [-[TSDCanvasLayerHosting asiOSCVC](-[TSDInteractiveCanvasController layerHost](interactiveCanvasController "layerHost")];
       mSelection = self->mSelection;
       self->mSelection = v8;
       [(TSDCanvasEditorHelper *)[(TSDCanvasEditor *)self canvasEditorHelper] notifyRepsForSelectionChangeFrom:[(TSDCanvasSelection *)mSelection infos] to:[(TSDCanvasSelection *)self->mSelection infos]];
 
-      [(TSDEditorController *)[(TSDInteractiveCanvasController *)v6 editorController] editorDidChangeSelection:self withSelectionFlags:a4];
-      v10 = [(TSDCanvasEditor *)self canvasEditorHelper];
+      [(TSDEditorController *)[(TSDInteractiveCanvasController *)interactiveCanvasController editorController] editorDidChangeSelection:self withSelectionFlags:flags];
+      canvasEditorHelper = [(TSDCanvasEditor *)self canvasEditorHelper];
       v11 = self->mSelection;
 
-      [(TSDCanvasEditorHelper *)v10 pushNewEditorForSelection:v11];
+      [(TSDCanvasEditorHelper *)canvasEditorHelper pushNewEditorForSelection:v11];
     }
   }
 }
 
-- (void)setSelectionToRep:(id)a3
+- (void)setSelectionToRep:(id)rep
 {
-  v4 = [(TSDCanvasEditorHelper *)[(TSDCanvasEditor *)self canvasEditorHelper] canvasSelectionFromRep:a3];
+  v4 = [(TSDCanvasEditorHelper *)[(TSDCanvasEditor *)self canvasEditorHelper] canvasSelectionFromRep:rep];
 
   [(TSDCanvasEditor *)self setSelection:v4];
 }
 
 - (id)pasteboardController
 {
-  v2 = [(TSDCanvasEditor *)self documentRoot];
+  documentRoot = [(TSDCanvasEditor *)self documentRoot];
 
-  return [v2 pasteboardController];
+  return [documentRoot pasteboardController];
 }
 
-- (void)beginAutomaticTextEditingIfNeededForPoint:(CGPoint)a3
+- (void)beginAutomaticTextEditingIfNeededForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(TSDCanvasEditor *)self interactiveCanvasController];
-  [(TSDInteractiveCanvasController *)v5 convertBoundsToUnscaledPoint:x, y];
-  v6 = [(TSDInteractiveCanvasController *)v5 hitRep:0 withGesture:&__block_literal_global_81 passingTest:?];
+  y = point.y;
+  x = point.x;
+  interactiveCanvasController = [(TSDCanvasEditor *)self interactiveCanvasController];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController convertBoundsToUnscaledPoint:x, y];
+  v6 = [(TSDInteractiveCanvasController *)interactiveCanvasController hitRep:0 withGesture:&__block_literal_global_81 passingTest:?];
   if ((objc_opt_respondsToSelector() & 1) != 0 && ([v6 isEditing] & 1) == 0)
   {
 
-    [(TSDInteractiveCanvasController *)v5 beginEditingRep:v6];
+    [(TSDInteractiveCanvasController *)interactiveCanvasController beginEditingRep:v6];
   }
 }
 
-+ (BOOL)physicalKeyboardIsSender:(id)a3
++ (BOOL)physicalKeyboardIsSender:(id)sender
 {
-  v4 = [a1 canvasEditorHelperClass];
+  canvasEditorHelperClass = [self canvasEditorHelperClass];
 
-  return [v4 physicalKeyboardIsSender:a3];
+  return [canvasEditorHelperClass physicalKeyboardIsSender:sender];
 }
 
-- (BOOL)canvasEditorCanDeleteWithSender:(id)a3
+- (BOOL)canvasEditorCanDeleteWithSender:(id)sender
 {
-  v3 = [(TSDCanvasEditor *)self canvasSelection];
-  if (v3)
+  canvasSelection = [(TSDCanvasEditor *)self canvasSelection];
+  if (canvasSelection)
   {
-    LOBYTE(v3) = [(TSDCanvasSelection *)v3 unlockedInfoCount]!= 0;
+    LOBYTE(canvasSelection) = [(TSDCanvasSelection *)canvasSelection unlockedInfoCount]!= 0;
   }
 
-  return v3;
+  return canvasSelection;
 }
 
-- (BOOL)canvasEditorCanCopyWithSender:(id)a3
+- (BOOL)canvasEditorCanCopyWithSender:(id)sender
 {
-  v3 = [(TSDCanvasEditor *)self canvasSelection];
-  if (v3)
+  canvasSelection = [(TSDCanvasEditor *)self canvasSelection];
+  if (canvasSelection)
   {
-    LOBYTE(v3) = [(TSDCanvasSelection *)v3 unlockedInfoCount]!= 0;
+    LOBYTE(canvasSelection) = [(TSDCanvasSelection *)canvasSelection unlockedInfoCount]!= 0;
   }
 
-  return v3;
+  return canvasSelection;
 }
 
-- (BOOL)canvasEditorCanCutWithSender:(id)a3
+- (BOOL)canvasEditorCanCutWithSender:(id)sender
 {
   v5 = [(TSDCanvasEditor *)self canvasEditorCanDeleteWithSender:?];
   if (v5)
   {
 
-    LOBYTE(v5) = [(TSDCanvasEditor *)self canvasEditorCanCopyWithSender:a3];
+    LOBYTE(v5) = [(TSDCanvasEditor *)self canvasEditorCanCopyWithSender:sender];
   }
 
   return v5;
 }
 
-- (BOOL)canSelectAllWithSender:(id)a3
+- (BOOL)canSelectAllWithSender:(id)sender
 {
-  if (!-[TSDCanvasSelection infoCount](-[TSDCanvasEditor canvasSelection](self, "canvasSelection"), "infoCount") || (v5 = [objc_opt_class() physicalKeyboardIsSender:a3]) != 0)
+  if (!-[TSDCanvasSelection infoCount](-[TSDCanvasEditor canvasSelection](self, "canvasSelection"), "infoCount") || (v5 = [objc_opt_class() physicalKeyboardIsSender:sender]) != 0)
   {
     LOBYTE(v5) = [(TSDCanvasEditor *)self countOfDrawables]!= 0;
   }
@@ -447,12 +447,12 @@ LABEL_14:
   return v5;
 }
 
-- (BOOL)canGroupWithSender:(id)a3
+- (BOOL)canGroupWithSender:(id)sender
 {
   v17 = *MEMORY[0x277D85DE8];
   v4 = [(TSDCanvasSelection *)self->mSelection infosOfClass:objc_opt_class()];
-  v5 = [(TSDCanvasSelection *)self->mSelection infoCount];
-  if (v5 == [v4 count])
+  infoCount = [(TSDCanvasSelection *)self->mSelection infoCount];
+  if (infoCount == [v4 count])
   {
     v14 = 0u;
     v15 = 0u;
@@ -501,15 +501,15 @@ LABEL_14:
   return v6;
 }
 
-- (BOOL)canUngroupWithSender:(id)a3
+- (BOOL)canUngroupWithSender:(id)sender
 {
-  v4 = [(TSDCanvasEditor *)self canvasEditorHelper];
+  canvasEditorHelper = [(TSDCanvasEditor *)self canvasEditorHelper];
   mSelection = self->mSelection;
 
-  return [(TSDCanvasEditorHelper *)v4 canUngroupWithSelection:mSelection];
+  return [(TSDCanvasEditorHelper *)canvasEditorHelper canUngroupWithSelection:mSelection];
 }
 
-- (int)canPerformEditorAction:(SEL)a3 withSender:(id)a4
+- (int)canPerformEditorAction:(SEL)action withSender:(id)sender
 {
   v8[10] = *MEMORY[0x277D85DE8];
   v8[0] = sel_deleteBackward_;
@@ -522,11 +522,11 @@ LABEL_14:
   v8[7] = sel_insertBacktab_;
   v8[8] = sel_scrollToBeginningOfDocument_;
   v8[9] = sel_scrollToEndOfDocument_;
-  result = [(TSDCanvasEditorHelper *)[(TSDCanvasEditor *)self canvasEditorHelper] canPerformEditorAction:a3 withSender:a4];
+  result = [(TSDCanvasEditorHelper *)[(TSDCanvasEditor *)self canvasEditorHelper] canPerformEditorAction:action withSender:sender];
   if (!result)
   {
     v7 = 0;
-    while (!sel_isEqual(a3, v8[v7]))
+    while (!sel_isEqual(action, v8[v7]))
     {
       if (++v7 == 10)
       {
@@ -537,12 +537,12 @@ LABEL_14:
 
     result = 1;
 LABEL_8:
-    if (sel_select_ == a3)
+    if (sel_select_ == action)
     {
       return -1;
     }
 
-    else if (sel_addOrShowComment_ == a3)
+    else if (sel_addOrShowComment_ == action)
     {
       if ([(TSDCanvasEditor *)self canAddOrShowComment])
       {
@@ -562,40 +562,40 @@ LABEL_8:
 - (NSSet)infosForSelectAllInRoot
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [(TSDCanvasEditor *)self drawables];
+  drawables = [(TSDCanvasEditor *)self drawables];
 
-  return [v2 setWithArray:v3];
+  return [v2 setWithArray:drawables];
 }
 
-- (void)selectAll:(id)a3
+- (void)selectAll:(id)all
 {
-  v4 = [(TSDInteractiveCanvasController *)[(TSDCanvasEditor *)self interactiveCanvasController] topLevelContainerRepForEditing];
-  if (v4)
+  topLevelContainerRepForEditing = [(TSDInteractiveCanvasController *)[(TSDCanvasEditor *)self interactiveCanvasController] topLevelContainerRepForEditing];
+  if (topLevelContainerRepForEditing)
   {
-    v5 = [MEMORY[0x277CBEB98] setWithArray:{-[TSDContainerInfo childInfos](-[TSDContainerRep containerInfo](v4, "containerInfo"), "childInfos")}];
+    infosForSelectAllInRoot = [MEMORY[0x277CBEB98] setWithArray:{-[TSDContainerInfo childInfos](-[TSDContainerRep containerInfo](topLevelContainerRepForEditing, "containerInfo"), "childInfos")}];
   }
 
   else
   {
-    v5 = [(TSDCanvasEditor *)self infosForSelectAllInRoot];
+    infosForSelectAllInRoot = [(TSDCanvasEditor *)self infosForSelectAllInRoot];
   }
 
-  [(TSDCanvasEditor *)self setSelectionToInfos:v5];
-  v6 = [(TSDCanvasLayerHosting *)[(TSDInteractiveCanvasController *)self->mInteractiveCanvasController layerHost] asiOSCVC];
+  [(TSDCanvasEditor *)self setSelectionToInfos:infosForSelectAllInRoot];
+  asiOSCVC = [(TSDCanvasLayerHosting *)[(TSDInteractiveCanvasController *)self->mInteractiveCanvasController layerHost] asiOSCVC];
   mSelection = self->mSelection;
 
-  [v6 showEditMenuForSelection:mSelection];
+  [asiOSCVC showEditMenuForSelection:mSelection];
 }
 
-- (void)connectWithConnectionLine:(id)a3
+- (void)connectWithConnectionLine:(id)line
 {
-  v3 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDCanvasEditor connectWithConnectionLine:]"];
-  [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasEditor.m"), 1029, @"Abstract method"}];
+  [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasEditor.m"), 1029, @"Abstract method"}];
   objc_exception_throw([MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE658] reason:objc_msgSend(MEMORY[0x277CCACA8] userInfo:{"stringWithFormat:", @"%@: %s", @"Abstract method", "-[TSDCanvasEditor connectWithConnectionLine:]"), 0}]);
 }
 
-- (id)p_nextInfoInTabSequence:(int)a3
+- (id)p_nextInfoInTabSequence:(int)sequence
 {
   result = [(TSDCanvasEditor *)self countOfDrawables];
   if (!result)
@@ -603,26 +603,26 @@ LABEL_8:
     return result;
   }
 
-  v6 = [(TSDCanvasEditor *)self canvasSelection];
-  v7 = [(TSDCanvasSelection *)v6 infoCount];
+  canvasSelection = [(TSDCanvasEditor *)self canvasSelection];
+  infoCount = [(TSDCanvasSelection *)canvasSelection infoCount];
   v8 = [-[TSDCanvasEditor p_spatiallySortedDrawables](self "p_spatiallySortedDrawables")];
   v9 = v8;
-  if (!a3 && !v7)
+  if (!sequence && !infoCount)
   {
 
     return [v8 firstObject];
   }
 
-  if (a3 == 1 && !v7)
+  if (sequence == 1 && !infoCount)
   {
 
     return [v8 lastObject];
   }
 
-  v10 = [(TSDCanvasEditor *)self countOfDrawables];
-  if (v10 - 1 >= 2)
+  countOfDrawables = [(TSDCanvasEditor *)self countOfDrawables];
+  if (countOfDrawables - 1 >= 2)
   {
-    v11 = v10 - 2;
+    v11 = countOfDrawables - 2;
     do
     {
       v12 = [objc_msgSend(v9 objectAtIndex:{v11 + 1), "geometry"}];
@@ -654,41 +654,41 @@ LABEL_8:
     while (v11-- > 1);
   }
 
-  if (v7 == 1)
+  if (infoCount == 1)
   {
-    v27 = [v9 indexOfObject:{-[NSSet anyObject](-[TSDCanvasSelection infos](v6, "infos"), "anyObject")}];
+    v27 = [v9 indexOfObject:{-[NSSet anyObject](-[TSDCanvasSelection infos](canvasSelection, "infos"), "anyObject")}];
   }
 
   else
   {
     v28 = [(NSArray *)[(NSSet *)[(TSDCanvasSelection *)[(TSDCanvasEditor *)self canvasSelection] infos] allObjects] mutableCopy];
     [v28 sortUsingComparator:&__block_literal_global_452];
-    if (a3 == 1)
+    if (sequence == 1)
     {
-      v29 = [v28 firstObject];
+      firstObject = [v28 firstObject];
     }
 
     else
     {
-      v29 = [v28 lastObject];
+      firstObject = [v28 lastObject];
     }
 
-    v27 = [v9 indexOfObject:v29];
+    v27 = [v9 indexOfObject:firstObject];
   }
 
   if (v27 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v30 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v31 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDCanvasEditor p_nextInfoInTabSequence:]"];
-    [v30 handleFailureInFunction:v31 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasEditor.m"), 1140, @"couldn't find selected info in all drawables!"}];
+    [currentHandler handleFailureInFunction:v31 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDCanvasEditor.m"), 1140, @"couldn't find selected info in all drawables!"}];
     goto LABEL_28;
   }
 
-  if (a3 != 1 || v27)
+  if (sequence != 1 || v27)
   {
 LABEL_28:
-    v32 = [(TSDCanvasEditor *)self countOfDrawables];
-    if (a3 == 1)
+    countOfDrawables2 = [(TSDCanvasEditor *)self countOfDrawables];
+    if (sequence == 1)
     {
       v33 = v27 - 1;
     }
@@ -698,7 +698,7 @@ LABEL_28:
       v33 = v27 + 1;
     }
 
-    v34 = v33 % v32;
+    v34 = v33 % countOfDrawables2;
     goto LABEL_35;
   }
 
@@ -712,46 +712,46 @@ LABEL_35:
 
 - (id)p_spatiallySortedDrawables
 {
-  v2 = [(TSDCanvasEditor *)self drawables];
+  drawables = [(TSDCanvasEditor *)self drawables];
 
-  return [v2 sortedArrayUsingComparator:&__block_literal_global_452];
+  return [drawables sortedArrayUsingComparator:&__block_literal_global_452];
 }
 
-- (void)insertTab:(id)a3
+- (void)insertTab:(id)tab
 {
   v4 = [(TSDCanvasEditor *)self p_nextInfoInTabSequence:0];
 
   [(TSDCanvasEditor *)self setSelectionToInfo:v4];
 }
 
-- (void)insertBacktab:(id)a3
+- (void)insertBacktab:(id)backtab
 {
   v4 = [(TSDCanvasEditor *)self p_nextInfoInTabSequence:1];
 
   [(TSDCanvasEditor *)self setSelectionToInfo:v4];
 }
 
-- (void)scrollToBeginningOfDocument:(id)a3
+- (void)scrollToBeginningOfDocument:(id)document
 {
-  v3 = [(TSDCanvasEditor *)self interactiveCanvasController];
-  [-[TSDCanvasLayerHosting canvasLayer](-[TSDInteractiveCanvasController layerHost](v3 "layerHost")];
+  interactiveCanvasController = [(TSDCanvasEditor *)self interactiveCanvasController];
+  [-[TSDCanvasLayerHosting canvasLayer](-[TSDInteractiveCanvasController layerHost](interactiveCanvasController "layerHost")];
   v5 = v4;
-  [(TSDInteractiveCanvasController *)v3 contentOffset];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController contentOffset];
   v7 = v6;
-  [(TSDInteractiveCanvasController *)v3 viewScale];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController viewScale];
 
-  [(TSDInteractiveCanvasController *)v3 setContentOffset:0 animated:v7, v5 / v8];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController setContentOffset:0 animated:v7, v5 / v8];
 }
 
-- (void)scrollToEndOfDocument:(id)a3
+- (void)scrollToEndOfDocument:(id)document
 {
-  v3 = [(TSDCanvasEditor *)self interactiveCanvasController];
-  [(TSDCanvasView *)[(TSDInteractiveCanvasController *)v3 canvasView] bounds];
+  interactiveCanvasController = [(TSDCanvasEditor *)self interactiveCanvasController];
+  [(TSDCanvasView *)[(TSDInteractiveCanvasController *)interactiveCanvasController canvasView] bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [(TSDInteractiveCanvasController *)v3 contentOffset];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController contentOffset];
   v13 = v12;
   v16.origin.x = v5;
   v16.origin.y = v7;
@@ -759,14 +759,14 @@ LABEL_35:
   v16.size.height = v11;
   MaxY = CGRectGetMaxY(v16);
 
-  [(TSDInteractiveCanvasController *)v3 setContentOffset:0 animated:v13, MaxY];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController setContentOffset:0 animated:v13, MaxY];
 }
 
-- (void)p_notifyRepsForSelectionChangeFrom:(id)a3 to:(id)a4
+- (void)p_notifyRepsForSelectionChangeFrom:(id)from to:(id)to
 {
-  v6 = [(TSDCanvasEditor *)self canvasEditorHelper];
+  canvasEditorHelper = [(TSDCanvasEditor *)self canvasEditorHelper];
 
-  [(TSDCanvasEditorHelper *)v6 notifyRepsForSelectionChangeFrom:a3 to:a4];
+  [(TSDCanvasEditorHelper *)canvasEditorHelper notifyRepsForSelectionChangeFrom:from to:to];
 }
 
 @end

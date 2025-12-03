@@ -1,22 +1,22 @@
 @interface BWStillImageProcessingPlan
-- (BWStillImageProcessingPlan)initWithSettings:(id)a3;
+- (BWStillImageProcessingPlan)initWithSettings:(id)settings;
 - (id)description;
-- (id)lastAddedInputForSequenceNumber:(unsigned int)a3 portType:(id)a4 bufferType:(unint64_t)a5;
-- (void)addInput:(id)a3 sequenceNumber:(unsigned int)a4 portType:(id)a5 bufferType:(unint64_t)a6;
-- (void)addInput:(id)a3 sequenceNumber:(unsigned int)a4 portType:(id)a5 bufferTypes:(id)a6;
+- (id)lastAddedInputForSequenceNumber:(unsigned int)number portType:(id)type bufferType:(unint64_t)bufferType;
+- (void)addInput:(id)input sequenceNumber:(unsigned int)number portType:(id)type bufferType:(unint64_t)bufferType;
+- (void)addInput:(id)input sequenceNumber:(unsigned int)number portType:(id)type bufferTypes:(id)types;
 - (void)dealloc;
 @end
 
 @implementation BWStillImageProcessingPlan
 
-- (BWStillImageProcessingPlan)initWithSettings:(id)a3
+- (BWStillImageProcessingPlan)initWithSettings:(id)settings
 {
   v6.receiver = self;
   v6.super_class = BWStillImageProcessingPlan;
   v4 = [(BWStillImageProcessingPlan *)&v6 init];
   if (v4)
   {
-    v4->_settings = a3;
+    v4->_settings = settings;
     v4->_inputsByBufferTypeByPortTypeBySequenceNumber = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
 
@@ -30,14 +30,14 @@
   [(BWStillImageProcessingPlan *)&v3 dealloc];
 }
 
-- (void)addInput:(id)a3 sequenceNumber:(unsigned int)a4 portType:(id)a5 bufferTypes:(id)a6
+- (void)addInput:(id)input sequenceNumber:(unsigned int)number portType:(id)type bufferTypes:(id)types
 {
-  v8 = *&a4;
+  v8 = *&number;
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v11 = [a6 countByEnumeratingWithState:&v16 objects:v15 count:16];
+  v11 = [types countByEnumeratingWithState:&v16 objects:v15 count:16];
   if (v11)
   {
     v12 = v11;
@@ -49,24 +49,24 @@
       {
         if (*v17 != v13)
         {
-          objc_enumerationMutation(a6);
+          objc_enumerationMutation(types);
         }
 
-        -[BWStillImageProcessingPlan addInput:sequenceNumber:portType:bufferType:](self, "addInput:sequenceNumber:portType:bufferType:", a3, v8, a5, [*(*(&v16 + 1) + 8 * v14++) intValue]);
+        -[BWStillImageProcessingPlan addInput:sequenceNumber:portType:bufferType:](self, "addInput:sequenceNumber:portType:bufferType:", input, v8, type, [*(*(&v16 + 1) + 8 * v14++) intValue]);
       }
 
       while (v12 != v14);
-      v12 = [a6 countByEnumeratingWithState:&v16 objects:v15 count:16];
+      v12 = [types countByEnumeratingWithState:&v16 objects:v15 count:16];
     }
 
     while (v12);
   }
 }
 
-- (id)lastAddedInputForSequenceNumber:(unsigned int)a3 portType:(id)a4 bufferType:(unint64_t)a5
+- (id)lastAddedInputForSequenceNumber:(unsigned int)number portType:(id)type bufferType:(unint64_t)bufferType
 {
-  v6 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_inputsByBufferTypeByPortTypeBySequenceNumber objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", *&a3)), "objectForKeyedSubscript:", a4}];
-  v7 = [v6 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedLongLong:", a5)}];
+  v6 = [-[NSMutableDictionary objectForKeyedSubscript:](self->_inputsByBufferTypeByPortTypeBySequenceNumber objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", *&number)), "objectForKeyedSubscript:", type}];
+  v7 = [v6 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedLongLong:", bufferType)}];
 
   return [v7 lastObject];
 }
@@ -75,7 +75,7 @@
 {
   v3 = MEMORY[0x1E696AD60];
   v4 = objc_opt_class();
-  v5 = [(BWStillImageCaptureSettings *)[(BWStillImageSettings *)self->_settings captureSettings] settingsID];
+  settingsID = [(BWStillImageCaptureSettings *)[(BWStillImageSettings *)self->_settings captureSettings] settingsID];
   v6 = BWPhotoEncoderStringFromEncodingScheme([(BWStillImageCaptureSettings *)[(BWStillImageSettings *)self->_settings captureSettings] captureType]);
   v7 = [(NSMutableDictionary *)self->_inputsByBufferTypeByPortTypeBySequenceNumber count];
   v8 = &stru_1F216A3D0;
@@ -84,7 +84,7 @@
     v8 = @" Empty plan (processing on-demand)";
   }
 
-  v9 = [v3 stringWithFormat:@"<%@ %p>: captureID:%lld, captureType=%@%@", v4, self, v5, v6, v8];
+  v9 = [v3 stringWithFormat:@"<%@ %p>: captureID:%lld, captureType=%@%@", v4, self, settingsID, v6, v8];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
@@ -94,7 +94,7 @@
   if (v29)
   {
     v27 = *v54;
-    v28 = self;
+    selfCopy = self;
     do
     {
       v10 = 0;
@@ -153,9 +153,9 @@
                       objc_enumerationMutation(v15);
                     }
 
-                    v17 = [*(*(&v43 + 1) + 8 * i) intValue];
-                    [v9 appendFormat:@"\n\t\t[%@]", BWStillImageBufferTypeToShortString(v17)];
-                    v18 = [v15 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedLongLong:", v17)}];
+                    intValue = [*(*(&v43 + 1) + 8 * i) intValue];
+                    [v9 appendFormat:@"\n\t\t[%@]", BWStillImageBufferTypeToShortString(intValue)];
+                    v18 = [v15 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedLongLong:", intValue)}];
                     v38 = 0u;
                     v39 = 0u;
                     v40 = 0u;
@@ -207,7 +207,7 @@
         }
 
         v10 = v30 + 1;
-        self = v28;
+        self = selfCopy;
       }
 
       while (v30 + 1 != v29);
@@ -220,33 +220,33 @@
   return [v9 copy];
 }
 
-- (void)addInput:(id)a3 sequenceNumber:(unsigned int)a4 portType:(id)a5 bufferType:(unint64_t)a6
+- (void)addInput:(id)input sequenceNumber:(unsigned int)number portType:(id)type bufferType:(unint64_t)bufferType
 {
-  if (a3 && a5)
+  if (input && type)
   {
-    v8 = *&a4;
-    v11 = -[NSMutableDictionary objectForKeyedSubscript:](self->_inputsByBufferTypeByPortTypeBySequenceNumber, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&a4]);
-    if (!v11)
+    v8 = *&number;
+    dictionary = -[NSMutableDictionary objectForKeyedSubscript:](self->_inputsByBufferTypeByPortTypeBySequenceNumber, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedInt:*&number]);
+    if (!dictionary)
     {
-      v11 = [MEMORY[0x1E695DF90] dictionary];
-      -[NSMutableDictionary setObject:forKeyedSubscript:](self->_inputsByBufferTypeByPortTypeBySequenceNumber, "setObject:forKeyedSubscript:", v11, [MEMORY[0x1E696AD98] numberWithUnsignedInt:v8]);
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      -[NSMutableDictionary setObject:forKeyedSubscript:](self->_inputsByBufferTypeByPortTypeBySequenceNumber, "setObject:forKeyedSubscript:", dictionary, [MEMORY[0x1E696AD98] numberWithUnsignedInt:v8]);
     }
 
-    v12 = [v11 objectForKeyedSubscript:a5];
-    if (!v12)
+    dictionary2 = [dictionary objectForKeyedSubscript:type];
+    if (!dictionary2)
     {
-      v12 = [MEMORY[0x1E695DF90] dictionary];
-      [v11 setObject:v12 forKeyedSubscript:a5];
+      dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+      [dictionary setObject:dictionary2 forKeyedSubscript:type];
     }
 
-    v13 = [v12 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedLongLong:", a6)}];
-    if (!v13)
+    array = [dictionary2 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedLongLong:", bufferType)}];
+    if (!array)
     {
-      v13 = [MEMORY[0x1E695DF70] array];
-      [v12 setObject:v13 forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedLongLong:", a6)}];
+      array = [MEMORY[0x1E695DF70] array];
+      [dictionary2 setObject:array forKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedLongLong:", bufferType)}];
     }
 
-    [v13 addObject:a3];
+    [array addObject:input];
   }
 }
 

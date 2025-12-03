@@ -1,9 +1,9 @@
 @interface TDDistiller
-- (BOOL)_distillColorDefinitions:(id)a3;
-- (BOOL)_distillCursorFacetDefinitions:(id)a3;
-- (BOOL)_distillFonts:(id)a3;
-- (BOOL)_distillNamedElements:(id)a3;
-- (BOOL)_setupWithOutputPath:(id)a3 attemptIncremental:(BOOL)a4;
+- (BOOL)_distillColorDefinitions:(id)definitions;
+- (BOOL)_distillCursorFacetDefinitions:(id)definitions;
+- (BOOL)_distillFonts:(id)fonts;
+- (BOOL)_distillNamedElements:(id)elements;
+- (BOOL)_setupWithOutputPath:(id)path attemptIncremental:(BOOL)incremental;
 - (BOOL)assetStoreWriteToDisk;
 - (BOOL)distillCatalogGlobals;
 - (BOOL)distillCursorFacetDefinitions;
@@ -14,99 +14,99 @@
 - (BOOL)distillNamedElements;
 - (BOOL)distillRenditions;
 - (BOOL)distillThemeAppearances;
-- (BOOL)setAsset:(id)a3 withKey:(const _renditionkeytoken *)a4 fromRenditionSpec:(id)a5;
+- (BOOL)setAsset:(id)asset withKey:(const _renditionkeytoken *)key fromRenditionSpec:(id)spec;
 - (id)_copyStandardEffectDefinitions;
-- (id)_filterRenditions:(id)a3;
-- (id)_keyDataFromKey:(const _renditionkeytoken *)a3;
-- (id)_keySpecsToRemoveFromKeySpecs:(id)a3;
-- (id)_productionForRenditionSpec:(id)a3;
-- (id)_renditionsFromProductions:(id)a3 error:(id *)a4;
-- (id)_renditionsWithError:(id *)a3;
+- (id)_filterRenditions:(id)renditions;
+- (id)_keyDataFromKey:(const _renditionkeytoken *)key;
+- (id)_keySpecsToRemoveFromKeySpecs:(id)specs;
+- (id)_productionForRenditionSpec:(id)spec;
+- (id)_renditionsFromProductions:(id)productions error:(id *)error;
+- (id)_renditionsWithError:(id *)error;
 - (id)dateOfLastDistill;
 - (id)documentPath;
 - (id)keyFormatData;
 - (uint64_t)cancelDistill;
-- (unint64_t)_removeRenditionsWithKeySpecs:(id)a3;
-- (void)_accumulateErrorDescription:(id)a3;
-- (void)_distill:(id)a3;
-- (void)_distillChanges:(id)a3;
-- (void)_logError:(id)a3;
-- (void)_logErrorAndAccumulateDescription:(id)a3;
-- (void)_logExtra:(id)a3;
-- (void)_logInfo:(id)a3;
-- (void)_logWarning:(id)a3;
-- (void)_resetDocumentUuid:(id)a3;
+- (unint64_t)_removeRenditionsWithKeySpecs:(id)specs;
+- (void)_accumulateErrorDescription:(id)description;
+- (void)_distill:(id)_distill;
+- (void)_distillChanges:(id)changes;
+- (void)_logError:(id)error;
+- (void)_logErrorAndAccumulateDescription:(id)description;
+- (void)_logExtra:(id)extra;
+- (void)_logInfo:(id)info;
+- (void)_logWarning:(id)warning;
+- (void)_resetDocumentUuid:(id)uuid;
 - (void)cancelDistill;
 - (void)dealloc;
 - (void)markDistillationAsFinished;
-- (void)saveAndDistillWithCompletionHandler:(id)a3;
-- (void)setFileCompression:(int)a3;
+- (void)saveAndDistillWithCompletionHandler:(id)handler;
+- (void)setFileCompression:(int)compression;
 - (void)waitUntilFinished;
 @end
 
 @implementation TDDistiller
 
-- (void)setFileCompression:(int)a3
+- (void)setFileCompression:(int)compression
 {
-  self->_fileCompression = a3;
-  if (a3 == 1)
+  self->_fileCompression = compression;
+  if (compression == 1)
   {
     [MEMORY[0x277D02668] setFileEncoding:0];
   }
 }
 
-- (void)_logError:(id)a3
+- (void)_logError:(id)error
 {
-  v4 = [(TDDistiller *)self logger];
+  logger = [(TDDistiller *)self logger];
 
-  [(TDLogger *)v4 logError:a3];
+  [(TDLogger *)logger logError:error];
 }
 
-- (void)_logWarning:(id)a3
+- (void)_logWarning:(id)warning
 {
-  v4 = [(TDDistiller *)self logger];
+  logger = [(TDDistiller *)self logger];
 
-  [(TDLogger *)v4 logWarning:a3];
+  [(TDLogger *)logger logWarning:warning];
 }
 
-- (void)_logInfo:(id)a3
+- (void)_logInfo:(id)info
 {
-  v4 = [(TDDistiller *)self logger];
+  logger = [(TDDistiller *)self logger];
 
-  [(TDLogger *)v4 logInfo:a3];
+  [(TDLogger *)logger logInfo:info];
 }
 
-- (void)_logExtra:(id)a3
+- (void)_logExtra:(id)extra
 {
-  v4 = [(TDDistiller *)self logger];
+  logger = [(TDDistiller *)self logger];
 
-  [(TDLogger *)v4 logExtra:a3];
+  [(TDLogger *)logger logExtra:extra];
 }
 
-- (void)_accumulateErrorDescription:(id)a3
+- (void)_accumulateErrorDescription:(id)description
 {
   if ([(NSString *)[(TDDistiller *)self accumulatedErrorDescription] length])
   {
-    a3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ -- %@", a3, -[TDDistiller accumulatedErrorDescription](self, "accumulatedErrorDescription")];
+    description = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ -- %@", description, -[TDDistiller accumulatedErrorDescription](self, "accumulatedErrorDescription")];
   }
 
-  [(TDDistiller *)self setAccumulatedErrorDescription:a3];
+  [(TDDistiller *)self setAccumulatedErrorDescription:description];
 }
 
-- (void)_logErrorAndAccumulateDescription:(id)a3
+- (void)_logErrorAndAccumulateDescription:(id)description
 {
   [(TDDistiller *)self _logError:?];
 
-  [(TDDistiller *)self _accumulateErrorDescription:a3];
+  [(TDDistiller *)self _accumulateErrorDescription:description];
 }
 
-- (BOOL)_setupWithOutputPath:(id)a3 attemptIncremental:(BOOL)a4
+- (BOOL)_setupWithOutputPath:(id)path attemptIncremental:(BOOL)incremental
 {
   self->_assetStoreVersionNumber = 17;
-  if (!a4)
+  if (!incremental)
   {
-    -[TDDistiller _logInfo:](self, "_logInfo:", [MEMORY[0x277CCACA8] stringWithFormat:@"AttemptingIncremental %d isIncremental %d on document %@", 0, 0, a3]);
-    self->_assetStore = [objc_alloc(MEMORY[0x277D02680]) initWithPath:a3];
+    -[TDDistiller _logInfo:](self, "_logInfo:", [MEMORY[0x277CCACA8] stringWithFormat:@"AttemptingIncremental %d isIncremental %d on document %@", 0, 0, path]);
+    self->_assetStore = [objc_alloc(MEMORY[0x277D02680]) initWithPath:path];
 LABEL_9:
     self->_renditionEntries = objc_alloc_init(MEMORY[0x277CBEB18]);
     v12 = objc_alloc(MEMORY[0x277CBEA60]);
@@ -118,35 +118,35 @@ LABEL_9:
   if ([objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")])
   {
     [(TDDistiller *)self setIncremental:1];
-    -[TDDistiller _logInfo:](self, "_logInfo:", [MEMORY[0x277CCACA8] stringWithFormat:@"AttemptingIncremental %d isIncremental %d on document %@", 1, 1, a3]);
-    self->_assetStore = [[TDProMergeableCommonAssetStorage alloc] initWithPath:a3];
+    -[TDDistiller _logInfo:](self, "_logInfo:", [MEMORY[0x277CCACA8] stringWithFormat:@"AttemptingIncremental %d isIncremental %d on document %@", 1, 1, path]);
+    self->_assetStore = [[TDProMergeableCommonAssetStorage alloc] initWithPath:path];
     if (-[CoreThemeDocument pathToRepresentedDocument](self->_document, "pathToRepresentedDocument") && ([-[CUIMutableCommonAssetStorage uuid](self->_assetStore "uuid")] & 1) == 0)
     {
-      v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"Definition (%@) and CAR (%@) files do not match.", -[CoreThemeDocument pathToRepresentedDocument](self->_document, "pathToRepresentedDocument"), a3];
+      path = [MEMORY[0x277CCACA8] stringWithFormat:@"Definition (%@) and CAR (%@) files do not match.", -[CoreThemeDocument pathToRepresentedDocument](self->_document, "pathToRepresentedDocument"), path];
     }
 
     else
     {
-      v6 = [(CoreThemeDocument *)self->_document colorSpaceID];
-      if (v6 == [(CUIMutableCommonAssetStorage *)self->_assetStore colorSpaceID])
+      colorSpaceID = [(CoreThemeDocument *)self->_document colorSpaceID];
+      if (colorSpaceID == [(CUIMutableCommonAssetStorage *)self->_assetStore colorSpaceID])
       {
-        v7 = [(CUIMutableCommonAssetStorage *)self->_assetStore storageVersion];
-        v8 = [(CUIMutableCommonAssetStorage *)self->_assetStore schemaVersion];
-        v9 = [(TDDistiller *)self assetStoreVersionNumber];
+        storageVersion = [(CUIMutableCommonAssetStorage *)self->_assetStore storageVersion];
+        schemaVersion = [(CUIMutableCommonAssetStorage *)self->_assetStore schemaVersion];
+        assetStoreVersionNumber = [(TDDistiller *)self assetStoreVersionNumber];
         v10 = [(CoreThemeDocument *)self->_document metadatumForKey:@"CoreThemeSchemaVersion"];
         if (v10)
         {
-          v11 = [v10 unsignedIntValue];
+          unsignedIntValue = [v10 unsignedIntValue];
         }
 
         else
         {
-          v11 = 1;
+          unsignedIntValue = 1;
         }
 
-        if (v7 == v9 && v8 == v11)
+        if (storageVersion == assetStoreVersionNumber && schemaVersion == unsignedIntValue)
         {
-          v15 = [(CUIMutableCommonAssetStorage *)self->_assetStore distilledInCoreUIVersion];
+          distilledInCoreUIVersion = [(CUIMutableCommonAssetStorage *)self->_assetStore distilledInCoreUIVersion];
           v16 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:{-[CUIMutableCommonAssetStorage storageTimestamp](self->_assetStore, "storageTimestamp")}];
           v17 = [objc_msgSend(MEMORY[0x277CCAA00] "defaultManager")];
           v18 = [v17 objectForKey:*MEMORY[0x277CCA1C0]];
@@ -156,20 +156,20 @@ LABEL_9:
             v19 = v18;
           }
 
-          NSLog(&cfstr_PerformingIncr.isa, a3, v19, v15, v16);
+          NSLog(&cfstr_PerformingIncr.isa, path, v19, distilledInCoreUIVersion, v16);
           goto LABEL_9;
         }
 
-        v14 = @"Definition and CAR version numbers do not match.";
+        path = @"Definition and CAR version numbers do not match.";
       }
 
       else
       {
-        v14 = @"Definition and CAR color spaces do not match.";
+        path = @"Definition and CAR color spaces do not match.";
       }
     }
 
-    [(TDDistiller *)self _logError:v14];
+    [(TDDistiller *)self _logError:path];
     [(TDDistiller *)self setIncremental:0];
 
     result = 0;
@@ -185,19 +185,19 @@ LABEL_9:
   return result;
 }
 
-- (id)_keySpecsToRemoveFromKeySpecs:(id)a3
+- (id)_keySpecsToRemoveFromKeySpecs:(id)specs
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
-  if ([a3 count])
+  array = [MEMORY[0x277CBEB18] array];
+  if ([specs count])
   {
-    if ([(CoreThemeDocument *)self->_document countOfRenditionsMatchingRenditionKeySpecs:a3])
+    if ([(CoreThemeDocument *)self->_document countOfRenditionsMatchingRenditionKeySpecs:specs])
     {
       v15 = 0u;
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v6 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [specs countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         v7 = v6;
@@ -208,17 +208,17 @@ LABEL_9:
           {
             if (*v14 != v8)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(specs);
             }
 
             v10 = *(*(&v13 + 1) + 8 * i);
             if (![(CoreThemeDocument *)self->_document countOfRenditionsMatchingRenditionKeySpec:v10])
             {
-              [v5 addObject:v10];
+              [array addObject:v10];
             }
           }
 
-          v7 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v7 = [specs countByEnumeratingWithState:&v13 objects:v17 count:16];
         }
 
         while (v7);
@@ -227,19 +227,19 @@ LABEL_9:
 
     else
     {
-      [v5 addObjectsFromArray:a3];
+      [array addObjectsFromArray:specs];
     }
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v5;
+  return array;
 }
 
 - (id)documentPath
 {
-  v2 = [(TDPersistentDocument *)self->_document fileURL];
+  fileURL = [(TDPersistentDocument *)self->_document fileURL];
 
-  return [(NSURL *)v2 path];
+  return [(NSURL *)fileURL path];
 }
 
 - (void)dealloc
@@ -256,14 +256,14 @@ LABEL_9:
 
 - (id)keyFormatData
 {
-  v2 = [(CoreThemeDocument *)self->_document renditionKeyFormat];
+  renditionKeyFormat = [(CoreThemeDocument *)self->_document renditionKeyFormat];
   v3 = MEMORY[0x277CBEA90];
-  v4 = v2->var2 + 3;
+  v4 = renditionKeyFormat->var2 + 3;
 
   return [v3 dataWithBytes:? length:?];
 }
 
-- (id)_keyDataFromKey:(const _renditionkeytoken *)a3
+- (id)_keyDataFromKey:(const _renditionkeytoken *)key
 {
   v14 = *MEMORY[0x277D85DE8];
   *v13 = 0u;
@@ -298,22 +298,22 @@ LABEL_9:
   return result;
 }
 
-- (id)_filterRenditions:(id)a3
+- (id)_filterRenditions:(id)renditions
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = [MEMORY[0x277CCAB58] indexSet];
-  v5 = [a3 count];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
+  v5 = [renditions count];
   if (v5)
   {
     v6 = v5;
     for (i = 0; i != v6; ++i)
     {
-      v8 = [a3 objectAtIndex:i];
+      v8 = [renditions objectAtIndex:i];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v9 = [v8 mipLevels];
-        v10 = [v9 filteredSetUsingPredicate:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithFormat:", @"(face != nil) AND (face.identifier != 0)"}];
+        mipLevels = [v8 mipLevels];
+        v10 = [mipLevels filteredSetUsingPredicate:{objc_msgSend(MEMORY[0x277CCAC30], "predicateWithFormat:", @"(face != nil) AND (face.identifier != 0)"}];
         if ([v10 count])
         {
           v21 = 0u;
@@ -335,10 +335,10 @@ LABEL_9:
                   objc_enumerationMutation(v10);
                 }
 
-                v15 = [a3 indexOfObject:{objc_msgSend(*(*(&v19 + 1) + 8 * v14), "textureImage")}];
+                v15 = [renditions indexOfObject:{objc_msgSend(*(*(&v19 + 1) + 8 * v14), "textureImage")}];
                 if (v15 != 0x7FFFFFFFFFFFFFFFLL)
                 {
-                  [v4 addIndex:v15];
+                  [indexSet addIndex:v15];
                 }
 
                 ++v14;
@@ -355,37 +355,37 @@ LABEL_9:
     }
   }
 
-  if ([v4 count])
+  if ([indexSet count])
   {
-    v16 = [a3 mutableCopy];
-    [v16 removeObjectsAtIndexes:v4];
-    a3 = v16;
+    v16 = [renditions mutableCopy];
+    [v16 removeObjectsAtIndexes:indexSet];
+    renditions = v16;
   }
 
   v17 = *MEMORY[0x277D85DE8];
-  return a3;
+  return renditions;
 }
 
-- (id)_renditionsWithError:(id *)a3
+- (id)_renditionsWithError:(id *)error
 {
-  v4 = [(CoreThemeDocument *)self->_document objectsForEntity:@"RenditionSpec" withPredicate:0 sortDescriptors:0 error:a3];
-  v5 = [(CoreThemeDocument *)self->_document renditionKeyFormat];
+  v4 = [(CoreThemeDocument *)self->_document objectsForEntity:@"RenditionSpec" withPredicate:0 sortDescriptors:0 error:error];
+  renditionKeyFormat = [(CoreThemeDocument *)self->_document renditionKeyFormat];
   v6 = [(TDDistiller *)self _filterRenditions:v4];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __36__TDDistiller__renditionsWithError___block_invoke;
   v11[3] = &__block_descriptor_40_e11_q24__0_8_16l;
-  v11[4] = v5;
+  v11[4] = renditionKeyFormat;
   v7 = [v6 sortedArrayUsingComparator:v11];
-  v8 = [MEMORY[0x277CBEB18] array];
-  __midpointQuickPermuteInRange(v7, 0, [v7 count], v8);
-  v9 = [v8 count];
+  array = [MEMORY[0x277CBEB18] array];
+  __midpointQuickPermuteInRange(v7, 0, [v7 count], array);
+  v9 = [array count];
   if (v9 != [v7 count])
   {
     [TDDistiller _renditionsWithError:];
   }
 
-  return v8;
+  return array;
 }
 
 uint64_t __36__TDDistiller__renditionsWithError___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -397,15 +397,15 @@ uint64_t __36__TDDistiller__renditionsWithError___block_invoke(uint64_t a1, void
   return MEMORY[0x282157470](v5, v6, v7);
 }
 
-- (id)_renditionsFromProductions:(id)a3 error:(id *)a4
+- (id)_renditionsFromProductions:(id)productions error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v6 = [productions countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v6)
   {
     v7 = v6;
@@ -416,42 +416,42 @@ uint64_t __36__TDDistiller__renditionsWithError___block_invoke(uint64_t a1, void
       {
         if (*v18 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(productions);
         }
 
         v10 = *(*(&v17 + 1) + 8 * i);
         v11 = MEMORY[0x277CCA918];
         v12 = [MEMORY[0x277CCA9C0] expressionForKeyPath:@"production"];
-        [v5 addObject:{objc_msgSend(v11, "predicateWithLeftExpression:rightExpression:modifier:type:options:", v12, objc_msgSend(MEMORY[0x277CCA9C0], "expressionForConstantValue:", v10), 0, 4, 0)}];
+        [array addObject:{objc_msgSend(v11, "predicateWithLeftExpression:rightExpression:modifier:type:options:", v12, objc_msgSend(MEMORY[0x277CCA9C0], "expressionForConstantValue:", v10), 0, 4, 0)}];
       }
 
-      v7 = [a3 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v7 = [productions countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v7);
   }
 
-  result = -[TDDistiller _filterRenditions:](self, "_filterRenditions:", -[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:error:](self->_document, "objectsForEntity:withPredicate:sortDescriptors:error:", @"RenditionSpec", [MEMORY[0x277CCA920] orPredicateWithSubpredicates:v5], 0, a4));
+  result = -[TDDistiller _filterRenditions:](self, "_filterRenditions:", -[CoreThemeDocument objectsForEntity:withPredicate:sortDescriptors:error:](self->_document, "objectsForEntity:withPredicate:sortDescriptors:error:", @"RenditionSpec", [MEMORY[0x277CCA920] orPredicateWithSubpredicates:array], 0, error));
   v14 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (BOOL)setAsset:(id)a3 withKey:(const _renditionkeytoken *)a4 fromRenditionSpec:(id)a5
+- (BOOL)setAsset:(id)asset withKey:(const _renditionkeytoken *)key fromRenditionSpec:(id)spec
 {
   assetStore = self->_assetStore;
-  v7 = [(TDDistiller *)self _keyDataFromKey:a4];
+  v7 = [(TDDistiller *)self _keyDataFromKey:key];
 
-  return [(CUIMutableCommonAssetStorage *)assetStore setAsset:a3 forKey:v7];
+  return [(CUIMutableCommonAssetStorage *)assetStore setAsset:asset forKey:v7];
 }
 
-- (unint64_t)_removeRenditionsWithKeySpecs:(id)a3
+- (unint64_t)_removeRenditionsWithKeySpecs:(id)specs
 {
   v18 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [specs countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -463,7 +463,7 @@ uint64_t __36__TDDistiller__renditionsWithError___block_invoke(uint64_t a1, void
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(specs);
         }
 
         v10 = -[TDDistiller _keyDataFromKey:](self, "_keyDataFromKey:", [*(*(&v13 + 1) + 8 * i) key]);
@@ -474,7 +474,7 @@ uint64_t __36__TDDistiller__renditionsWithError___block_invoke(uint64_t a1, void
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [specs countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -489,15 +489,15 @@ uint64_t __36__TDDistiller__renditionsWithError___block_invoke(uint64_t a1, void
   return v7;
 }
 
-- (id)_productionForRenditionSpec:(id)a3
+- (id)_productionForRenditionSpec:(id)spec
 {
-  v5 = [a3 production];
-  if (!v5)
+  production = [spec production];
+  if (!production)
   {
-    -[TDDistiller _logWarning:](self, "_logWarning:", [MEMORY[0x277CCACA8] stringWithFormat:@"WARNING: Found a rendition spec not associated with any element production: %@", a3]);
+    -[TDDistiller _logWarning:](self, "_logWarning:", [MEMORY[0x277CCACA8] stringWithFormat:@"WARNING: Found a rendition spec not associated with any element production: %@", spec]);
   }
 
-  return v5;
+  return production;
 }
 
 - (BOOL)distillRenditions
@@ -538,15 +538,15 @@ uint64_t __36__TDDistiller__renditionsWithError___block_invoke(uint64_t a1, void
 
         v10 = objc_autoreleasePoolPush();
         v11 = [v5 objectAtIndex:v9];
-        v12 = [v11 keySpec];
-        if (!-[TDDistiller setAsset:withKey:fromRenditionSpec:](self, "setAsset:withKey:fromRenditionSpec:", 0, [v12 key], v11))
+        keySpec = [v11 keySpec];
+        if (!-[TDDistiller setAsset:withKey:fromRenditionSpec:](self, "setAsset:withKey:fromRenditionSpec:", 0, [keySpec key], v11))
         {
-          -[TDDistiller _logErrorAndAccumulateDescription:](self, "_logErrorAndAccumulateDescription:", [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: couldnot write key to file\n%@\n", objc_msgSend(v12, "keyDescription")]);
+          -[TDDistiller _logErrorAndAccumulateDescription:](self, "_logErrorAndAccumulateDescription:", [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: couldnot write key to file\n%@\n", objc_msgSend(keySpec, "keyDescription")]);
 
           goto LABEL_20;
         }
 
-        [v12 key];
+        [keySpec key];
         CUIRenditionKeyCopy();
         CUIRenditionKeyStandardize();
         v13 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:v27 length:4 * CUIRenditionKeyTokenCount()];
@@ -565,7 +565,7 @@ uint64_t __36__TDDistiller__renditionsWithError___block_invoke(uint64_t a1, void
         }
       }
 
-      -[TDDistiller _logErrorAndAccumulateDescription:](self, "_logErrorAndAccumulateDescription:", [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Identical key for two renditions\n\n%@\n", objc_msgSend(v12, "keyDescription")]);
+      -[TDDistiller _logErrorAndAccumulateDescription:](self, "_logErrorAndAccumulateDescription:", [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Identical key for two renditions\n\n%@\n", objc_msgSend(keySpec, "keyDescription")]);
 
 LABEL_20:
       [(TDRenditionsDistiller *)v25 enqueueAbortFlag];
@@ -581,8 +581,8 @@ LABEL_9:
       v14 = v25;
       [(TDRenditionsDistiller *)v25 enqueueLastRenditionFlag];
       v15 = [-[CoreThemeDocument mocOrganizer](self->_document "mocOrganizer")];
-      v16 = [(TDRenditionsDistiller *)v25 nextCSIDataInfoFromQueue];
-      if (v16 && (v17 = v16, ![(TDDistiller *)self isCancelled]))
+      nextCSIDataInfoFromQueue = [(TDRenditionsDistiller *)v25 nextCSIDataInfoFromQueue];
+      if (nextCSIDataInfoFromQueue && (v17 = nextCSIDataInfoFromQueue, ![(TDDistiller *)self isCancelled]))
       {
         while (1)
         {
@@ -597,10 +597,10 @@ LABEL_9:
           v7 = -[TDDistiller setAsset:withKey:fromRenditionSpec:](self, "setAsset:withKey:fromRenditionSpec:", v19, [objc_msgSend(v20 "keySpec")], v20);
           objc_autoreleasePoolPop(v18);
           v14 = v25;
-          v21 = [(TDRenditionsDistiller *)v25 nextCSIDataInfoFromQueue];
-          if (v21)
+          nextCSIDataInfoFromQueue2 = [(TDRenditionsDistiller *)v25 nextCSIDataInfoFromQueue];
+          if (nextCSIDataInfoFromQueue2)
           {
-            v17 = v21;
+            v17 = nextCSIDataInfoFromQueue2;
             if (![(TDDistiller *)self isCancelled])
             {
               continue;
@@ -760,8 +760,8 @@ LABEL_12:
       goto LABEL_3;
     }
 
-    v9 = [v7 firstObject];
-    v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:objc_msgSend(v9 requiringSecureCoding:"dictionaryForArchiving") error:{0, 0}];
+    firstObject = [v7 firstObject];
+    v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:objc_msgSend(firstObject requiringSecureCoding:"dictionaryForArchiving") error:{0, 0}];
     if (v10)
     {
       [(CUIMutableCommonAssetStorage *)self->_assetStore setCatalogGlobalData:v10];
@@ -773,14 +773,14 @@ LABEL_3:
   return v5 == 0;
 }
 
-- (BOOL)_distillColorDefinitions:(id)a3
+- (BOOL)_distillColorDefinitions:(id)definitions
 {
   v23 = *MEMORY[0x277D85DE8];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v4 = [definitions countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -793,7 +793,7 @@ LABEL_3:
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(definitions);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
@@ -808,7 +808,7 @@ LABEL_3:
       }
 
       v6 = v16 + v5;
-      v5 = [a3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [definitions countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v5);
@@ -843,14 +843,14 @@ LABEL_3:
   return v5;
 }
 
-- (BOOL)_distillFonts:(id)a3
+- (BOOL)_distillFonts:(id)fonts
 {
   v25 = *MEMORY[0x277D85DE8];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [a3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v4 = [fonts countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -863,23 +863,23 @@ LABEL_3:
       {
         if (*v21 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(fonts);
         }
 
         v9 = *(*(&v20 + 1) + 8 * i);
         v10 = objc_autoreleasePoolPush();
-        v11 = [v9 postscriptName];
+        postscriptName = [v9 postscriptName];
         v12 = [objc_msgSend(v9 "selector")];
         [objc_msgSend(v9 "baselineOffset")];
         v14 = v13;
-        -[TDDistiller _logExtra:](self, "_logExtra:", [MEMORY[0x277CCACA8] stringWithFormat:@"Writing font %@ for %@", v11, v12]);
+        -[TDDistiller _logExtra:](self, "_logExtra:", [MEMORY[0x277CCACA8] stringWithFormat:@"Writing font %@ for %@", postscriptName, v12]);
         LODWORD(v15) = v14;
-        [(CUIMutableCommonAssetStorage *)self->_assetStore setFontName:v11 baselineOffset:v12 forFontSelector:v15];
+        [(CUIMutableCommonAssetStorage *)self->_assetStore setFontName:postscriptName baselineOffset:v12 forFontSelector:v15];
         objc_autoreleasePoolPop(v10);
       }
 
       v6 = v18 + v5;
-      v5 = [a3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v5 = [fonts countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v5);
@@ -955,9 +955,9 @@ LABEL_3:
 
 - (id)_copyStandardEffectDefinitions
 {
-  v2 = [(CoreThemeDocument *)self->_document targetPlatform];
+  targetPlatform = [(CoreThemeDocument *)self->_document targetPlatform];
   v3 = objc_alloc(MEMORY[0x277CBEB18]);
-  if (v2)
+  if (targetPlatform)
   {
 
     return [v3 initWithCapacity:0];
@@ -996,14 +996,14 @@ LABEL_3:
   }
 }
 
-- (BOOL)_distillNamedElements:(id)a3
+- (BOOL)_distillNamedElements:(id)elements
 {
   v23 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v17 objects:v22 count:16];
+  v5 = [elements countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1015,7 +1015,7 @@ LABEL_3:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(elements);
         }
 
         v9 = *(*(&v17 + 1) + 8 * v8);
@@ -1046,13 +1046,13 @@ LABEL_3:
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v17 objects:v22 count:16];
+      v6 = [elements countByEnumeratingWithState:&v17 objects:v22 count:16];
     }
 
     while (v6);
   }
 
-  -[TDDistiller _logInfo:](self, "_logInfo:", [MEMORY[0x277CCACA8] stringWithFormat:@"Successfully stored %ld asset name entries.", objc_msgSend(a3, "count")]);
+  -[TDDistiller _logInfo:](self, "_logInfo:", [MEMORY[0x277CCACA8] stringWithFormat:@"Successfully stored %ld asset name entries.", objc_msgSend(elements, "count")]);
   v14 = *MEMORY[0x277D85DE8];
   return 1;
 }
@@ -1067,40 +1067,40 @@ LABEL_3:
   return [(TDDistiller *)self _distillNamedElements:v5];
 }
 
-- (BOOL)_distillCursorFacetDefinitions:(id)a3
+- (BOOL)_distillCursorFacetDefinitions:(id)definitions
 {
   v5 = objc_autoreleasePoolPush();
-  if ([a3 count])
+  if ([definitions count])
   {
-    v14 = a3;
+    definitionsCopy = definitions;
     v15 = v5;
-    v6 = [a3 objectEnumerator];
-    v7 = [v6 nextObject];
-    if (v7)
+    objectEnumerator = [definitions objectEnumerator];
+    nextObject = [objectEnumerator nextObject];
+    if (nextObject)
     {
-      v8 = v7;
+      nextObject2 = nextObject;
       do
       {
         v9 = -1.0;
         v10 = -1.0;
-        if ([objc_msgSend(objc_msgSend(v8 "entity")])
+        if ([objc_msgSend(objc_msgSend(nextObject2 "entity")])
         {
-          v10 = [objc_msgSend(v8 valueForKey:{@"hotSpotX", "integerValue"}];
-          v9 = [objc_msgSend(v8 valueForKey:{@"hotSpotY", "integerValue"}];
+          v10 = [objc_msgSend(nextObject2 valueForKey:{@"hotSpotX", "integerValue"}];
+          v9 = [objc_msgSend(nextObject2 valueForKey:{@"hotSpotY", "integerValue"}];
         }
 
-        MaximumSizeOfFileSystemRepresentation = CFStringGetMaximumSizeOfFileSystemRepresentation([v8 valueForKey:@"facetName"]);
+        MaximumSizeOfFileSystemRepresentation = CFStringGetMaximumSizeOfFileSystemRepresentation([nextObject2 valueForKey:@"facetName"]);
         v12 = malloc_type_malloc(MaximumSizeOfFileSystemRepresentation, 0xE1B83578uLL);
-        CFStringGetFileSystemRepresentation([v8 valueForKey:@"facetName"], v12, MaximumSizeOfFileSystemRepresentation);
-        -[CUIMutableCommonAssetStorage setRenditionKey:hotSpot:forName:](self->_assetStore, "setRenditionKey:hotSpot:forName:", [objc_msgSend(v8 valueForKey:{@"keySpec", "key"}], v12, v10, v9);
+        CFStringGetFileSystemRepresentation([nextObject2 valueForKey:@"facetName"], v12, MaximumSizeOfFileSystemRepresentation);
+        -[CUIMutableCommonAssetStorage setRenditionKey:hotSpot:forName:](self->_assetStore, "setRenditionKey:hotSpot:forName:", [objc_msgSend(nextObject2 valueForKey:{@"keySpec", "key"}], v12, v10, v9);
         free(v12);
-        v8 = [v6 nextObject];
+        nextObject2 = [objectEnumerator nextObject];
       }
 
-      while (v8);
+      while (nextObject2);
     }
 
-    -[TDDistiller _logInfo:](self, "_logInfo:", [MEMORY[0x277CCACA8] stringWithFormat:@"Successfully stored %ld facet definitions", objc_msgSend(v14, "count")]);
+    -[TDDistiller _logInfo:](self, "_logInfo:", [MEMORY[0x277CCACA8] stringWithFormat:@"Successfully stored %ld facet definitions", objc_msgSend(definitionsCopy, "count")]);
     v5 = v15;
   }
 
@@ -1125,7 +1125,7 @@ LABEL_3:
   else
   {
     v7 = [v5 count];
-    v8 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
     if (v7 >= 1)
     {
       for (i = 0; i != v7; ++i)
@@ -1133,25 +1133,25 @@ LABEL_3:
         v10 = [objc_msgSend(objc_msgSend(v5 objectAtIndex:{i), "valueForKey:", @"cursorProductions", "objectEnumerator"}];
         while (1)
         {
-          v11 = [v10 nextObject];
-          if (!v11)
+          nextObject = [v10 nextObject];
+          if (!nextObject)
           {
             break;
           }
 
-          if ([objc_msgSend(v11 valueForKey:{@"isActive", "BOOLValue"}])
+          if ([objc_msgSend(nextObject valueForKey:{@"isActive", "BOOLValue"}])
           {
             goto LABEL_11;
           }
         }
 
-        [v8 addIndex:i];
+        [indexSet addIndex:i];
 LABEL_11:
         ;
       }
     }
 
-    [v5 removeObjectsAtIndexes:v8];
+    [v5 removeObjectsAtIndexes:indexSet];
     v12 = [v5 count];
     v13 = v12 - 1;
     if (v12 > 1)
@@ -1199,17 +1199,17 @@ LABEL_22:
 - (void)markDistillationAsFinished
 {
   [(TDDistiller *)self setFinished:1];
-  v3 = [(TDDistiller *)self completionHandler];
-  if (v3)
+  completionHandler = [(TDDistiller *)self completionHandler];
+  if (completionHandler)
   {
-    v4 = v3;
+    v4 = completionHandler;
     if ([(NSString *)[(TDDistiller *)self accumulatedErrorDescription] length])
     {
       v5 = MEMORY[0x277CCA9B8];
       v6 = CoreThemeDefinitionErrorDomain[0];
       v7 = MEMORY[0x277CBEAC0];
-      v8 = [(TDDistiller *)self accumulatedErrorDescription];
-      v9 = [v5 errorWithDomain:v6 code:0 userInfo:{objc_msgSend(v7, "dictionaryWithObjectsAndKeys:", v8, *MEMORY[0x277CCA450], 0)}];
+      accumulatedErrorDescription = [(TDDistiller *)self accumulatedErrorDescription];
+      v9 = [v5 errorWithDomain:v6 code:0 userInfo:{objc_msgSend(v7, "dictionaryWithObjectsAndKeys:", accumulatedErrorDescription, *MEMORY[0x277CCA450], 0)}];
     }
 
     else
@@ -1224,10 +1224,10 @@ LABEL_22:
   [(TDDistiller *)self setAccumulatedErrorDescription:0];
 }
 
-- (void)_resetDocumentUuid:(id)a3
+- (void)_resetDocumentUuid:(id)uuid
 {
   [(TDDistiller *)self _logExtra:@"Setting document uuid."];
-  [(CoreThemeDocument *)self->_document setUuid:a3];
+  [(CoreThemeDocument *)self->_document setUuid:uuid];
   if ([(TDPersistentDocument *)self->_document fileURL])
   {
     document = self->_document;
@@ -1244,12 +1244,12 @@ LABEL_22:
   }
 
   v3 = MEMORY[0x277CBEAA8];
-  v4 = [(CUIMutableCommonAssetStorage *)self->_assetStore storageTimestamp];
+  storageTimestamp = [(CUIMutableCommonAssetStorage *)self->_assetStore storageTimestamp];
 
-  return [v3 dateWithTimeIntervalSince1970:v4];
+  return [v3 dateWithTimeIntervalSince1970:storageTimestamp];
 }
 
-- (void)_distillChanges:(id)a3
+- (void)_distillChanges:(id)changes
 {
   [(TDDistiller *)self _logExtra:@"CAR exists. Beginning incremental distill"];
   v11 = 0;
@@ -1258,11 +1258,11 @@ LABEL_22:
   v14 = 1;
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
-    v5 = [MEMORY[0x277CCACC8] currentThread];
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
     v6 = MEMORY[0x277CCACA8];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    [v5 setName:{objc_msgSend(v6, "stringWithFormat:", @"%@.%@", v8, NSStringFromSelector(a2))}];
+    [currentThread setName:{objc_msgSend(v6, "stringWithFormat:", @"%@.%@", v8, NSStringFromSelector(a2))}];
   }
 
   v9 = [-[CoreThemeDocument mocOrganizer](self->_document "mocOrganizer")];
@@ -1570,15 +1570,15 @@ LABEL_30:
 
 - (BOOL)assetStoreWriteToDisk
 {
-  v3 = [(CoreThemeDocument *)self->_document targetPlatform];
-  v4 = [(CoreThemeDocument *)self->_document majorVersion];
-  v5 = [(CoreThemeDocument *)self->_document minorVersion];
-  v6 = [(CoreThemeDocument *)self->_document patchVersion];
-  if (v3 != 4)
+  targetPlatform = [(CoreThemeDocument *)self->_document targetPlatform];
+  majorVersion = [(CoreThemeDocument *)self->_document majorVersion];
+  minorVersion = [(CoreThemeDocument *)self->_document minorVersion];
+  patchVersion = [(CoreThemeDocument *)self->_document patchVersion];
+  if (targetPlatform != 4)
   {
-    if (v3)
+    if (targetPlatform)
     {
-      if (v3 <= 3 && (v4 < 9 || v4 == 9 && v5 <= 2))
+      if (targetPlatform <= 3 && (majorVersion < 9 || majorVersion == 9 && minorVersion <= 2))
       {
 LABEL_18:
         [(CUIMutableCommonAssetStorage *)self->_assetStore setEnableLargeCarKeyWorkaround:1];
@@ -1587,13 +1587,13 @@ LABEL_18:
 
     else
     {
-      v7 = v5 < 12 && v4 < 11;
-      if (v6 >= 5)
+      v7 = minorVersion < 12 && majorVersion < 11;
+      if (patchVersion >= 5)
       {
         v7 = 0;
       }
 
-      v8 = v5 < 11 && v4 < 11;
+      v8 = minorVersion < 11 && majorVersion < 11;
       if (v7 || v8)
       {
         goto LABEL_18;
@@ -1610,7 +1610,7 @@ LABEL_18:
   return v9;
 }
 
-- (void)_distill:(id)a3
+- (void)_distill:(id)_distill
 {
   v21 = *MEMORY[0x277D85DE8];
   v16 = 0;
@@ -1621,11 +1621,11 @@ LABEL_18:
   v6 = objc_autoreleasePoolPush();
   if (([MEMORY[0x277CCACC8] isMainThread] & 1) == 0)
   {
-    v7 = [MEMORY[0x277CCACC8] currentThread];
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
     v8 = MEMORY[0x277CCACA8];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
-    [v7 setName:{objc_msgSend(v8, "stringWithFormat:", @"%@.%@", v10, NSStringFromSelector(a2))}];
+    [currentThread setName:{objc_msgSend(v8, "stringWithFormat:", @"%@.%@", v10, NSStringFromSelector(a2))}];
   }
 
   [(TDDistiller *)self _logExtra:@"Beginning clean distill."];
@@ -1888,7 +1888,7 @@ LABEL_33:
   return result;
 }
 
-- (void)saveAndDistillWithCompletionHandler:(id)a3
+- (void)saveAndDistillWithCompletionHandler:(id)handler
 {
   v6 = 0;
   v7 = 0;
@@ -1915,9 +1915,9 @@ LABEL_33:
   if (v7)
   {
 LABEL_7:
-    if (a3)
+    if (handler)
     {
-      (*(a3 + 2))(a3, 0);
+      (*(handler + 2))(handler, 0);
       [(TDDistiller *)self setFinished:1];
       [(TDDistiller *)self setSuccessful:0];
     }
@@ -1925,7 +1925,7 @@ LABEL_7:
 
   else
   {
-    [(TDDistiller *)self setCompletionHandler:a3];
+    [(TDDistiller *)self setCompletionHandler:handler];
     if ([(TDDistiller *)self isIncremental])
     {
       v5 = sel__distillChanges_;
@@ -1942,16 +1942,16 @@ LABEL_7:
 
 - (void)waitUntilFinished
 {
-  v3 = [MEMORY[0x277CBEAA8] distantFuture];
-  v4 = [objc_alloc(MEMORY[0x277CBEBB8]) initWithFireDate:v3 interval:self target:sel_waitTimerDidFire_ selector:0 userInfo:0 repeats:0.0];
-  v5 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [v5 addTimer:v4 forMode:@"DistillWaitRunLoopMode"];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+  v4 = [objc_alloc(MEMORY[0x277CBEBB8]) initWithFireDate:distantFuture interval:self target:sel_waitTimerDidFire_ selector:0 userInfo:0 repeats:0.0];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  [currentRunLoop addTimer:v4 forMode:@"DistillWaitRunLoopMode"];
   -[TDDistiller setCallbackThread:](self, "setCallbackThread:", [MEMORY[0x277CCACC8] currentThread]);
   if (![(TDDistiller *)self isFinished])
   {
     do
     {
-      [v5 runMode:@"DistillWaitRunLoopMode" beforeDate:v3];
+      [currentRunLoop runMode:@"DistillWaitRunLoopMode" beforeDate:distantFuture];
     }
 
     while (![(TDDistiller *)self isFinished]);
@@ -1959,9 +1959,9 @@ LABEL_7:
 
   [v4 invalidate];
 
-  v6 = [(TDDistiller *)self logger];
+  logger = [(TDDistiller *)self logger];
 
-  [(TDLogger *)v6 waitForLoggingToComplete];
+  [(TDLogger *)logger waitForLoggingToComplete];
 }
 
 - (void)cancelDistill
@@ -1988,9 +1988,9 @@ uint64_t __24__TDDistiller__distill___block_invoke_cold_1()
 - (uint64_t)cancelDistill
 {
   OUTLINED_FUNCTION_2();
-  v2 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
 
-  return [v2 handleFailureInMethod:v1 object:v0 file:@"TDDistiller.m" lineNumber:1601 description:@"Cancelling incremental distill is not implemented."];
+  return [currentHandler handleFailureInMethod:v1 object:v0 file:@"TDDistiller.m" lineNumber:1601 description:@"Cancelling incremental distill is not implemented."];
 }
 
 @end

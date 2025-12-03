@@ -1,18 +1,18 @@
 @interface EKCalendarRemoveExtraInfoEditItem
-- (id)cellForSubitemAtIndex:(unint64_t)a3;
+- (id)cellForSubitemAtIndex:(unint64_t)index;
 - (id)footerTitle;
 - (id)headerTitle;
-- (void)_stripAlertsChanged:(id)a3;
-- (void)_stripAttachmentsChanged:(id)a3;
+- (void)_stripAlertsChanged:(id)changed;
+- (void)_stripAttachmentsChanged:(id)changed;
 @end
 
 @implementation EKCalendarRemoveExtraInfoEditItem
 
-- (id)cellForSubitemAtIndex:(unint64_t)a3
+- (id)cellForSubitemAtIndex:(unint64_t)index
 {
   v5 = objc_alloc_init(EKUITableViewCell);
   [(EKUITableViewCell *)v5 setSelectionStyle:0];
-  if (a3 == 1)
+  if (index == 1)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69DCFD0]);
     [v6 setOn:{-[EKCalendar stripAttachments](self->super._calendar, "stripAttachments")}];
@@ -24,7 +24,7 @@
 
   else
   {
-    if (a3)
+    if (index)
     {
       goto LABEL_6;
     }
@@ -38,13 +38,13 @@
   }
 
   [(EKUITableViewCell *)v5 setAccessoryView:v6];
-  v9 = [(EKUITableViewCell *)v5 textLabel];
-  [v9 setNumberOfLines:0];
+  textLabel = [(EKUITableViewCell *)v5 textLabel];
+  [textLabel setNumberOfLines:0];
 
   v10 = EventKitUIBundle();
   v11 = [v10 localizedStringForKey:v8 value:&stru_1F4EF6790 table:0];
-  v12 = [(EKUITableViewCell *)v5 textLabel];
-  [v12 setText:v11];
+  textLabel2 = [(EKUITableViewCell *)v5 textLabel];
+  [textLabel2 setText:v11];
 
   [(EKUITableViewCell *)v5 setAccessibilityIdentifier:v7];
 LABEL_6:
@@ -68,18 +68,18 @@ LABEL_6:
   return v3;
 }
 
-- (void)_stripAlertsChanged:(id)a3
+- (void)_stripAlertsChanged:(id)changed
 {
-  -[EKCalendar setStripAlarms:](self->super._calendar, "setStripAlarms:", [a3 isOn]);
-  v4 = [(EKCalendarEditItem *)self delegate];
-  [v4 calendarItemStartedEditing:self];
+  -[EKCalendar setStripAlarms:](self->super._calendar, "setStripAlarms:", [changed isOn]);
+  delegate = [(EKCalendarEditItem *)self delegate];
+  [delegate calendarItemStartedEditing:self];
 }
 
-- (void)_stripAttachmentsChanged:(id)a3
+- (void)_stripAttachmentsChanged:(id)changed
 {
-  -[EKCalendar setStripAttachments:](self->super._calendar, "setStripAttachments:", [a3 isOn]);
-  v4 = [(EKCalendarEditItem *)self delegate];
-  [v4 calendarItemStartedEditing:self];
+  -[EKCalendar setStripAttachments:](self->super._calendar, "setStripAttachments:", [changed isOn]);
+  delegate = [(EKCalendarEditItem *)self delegate];
+  [delegate calendarItemStartedEditing:self];
 }
 
 @end

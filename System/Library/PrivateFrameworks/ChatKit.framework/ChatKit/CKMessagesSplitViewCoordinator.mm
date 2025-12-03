@@ -1,21 +1,21 @@
 @interface CKMessagesSplitViewCoordinator
-+ (id)newWithSplitViewController:(id)a3;
++ (id)newWithSplitViewController:(id)controller;
 - (BOOL)isInspectorVisible;
-- (CKMessagesSplitViewCoordinator)initWithSplitViewController:(id)a3;
+- (CKMessagesSplitViewCoordinator)initWithSplitViewController:(id)controller;
 - (UISplitViewController)splitViewController;
 - (double)_calculateConversationListColumnWidth;
-- (double)_macConvertLegacySidebarWidthToModernWidth:(double)a3;
+- (double)_macConvertLegacySidebarWidthToModernWidth:(double)width;
 - (double)_primaryColumnWidth;
-- (double)_sanitizeProposedConversationListWidth:(double)a3;
-- (double)constrainedPrimaryColumnWidthForResizeWidth:(double)a3;
+- (double)_sanitizeProposedConversationListWidth:(double)width;
+- (double)constrainedPrimaryColumnWidthForResizeWidth:(double)width;
 - (void)dismissInspectorColumn;
 - (void)persistColumnWidths;
-- (void)presentViewControllerInInspector:(id)a3;
-- (void)setColumnResizeParams:(id *)a3;
+- (void)presentViewControllerInInspector:(id)inspector;
+- (void)setColumnResizeParams:(id *)params;
 - (void)setInspectorColumnSizes;
-- (void)setSearchPresented:(BOOL)a3;
-- (void)setViewControllerInInspector:(id)a3;
-- (void)splitViewControllerWillBeginResizingColumn:(int64_t)a3;
+- (void)setSearchPresented:(BOOL)presented;
+- (void)setViewControllerInInspector:(id)inspector;
+- (void)splitViewControllerWillBeginResizingColumn:(int64_t)column;
 - (void)updateColumnWidths;
 @end
 
@@ -23,19 +23,19 @@
 
 - (BOOL)isInspectorVisible
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isModernSplitViewControllerEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernSplitViewControllerEnabled = [mEMORY[0x1E69A8070] isModernSplitViewControllerEnabled];
 
-  if (!v4)
+  if (!isModernSplitViewControllerEnabled)
   {
     return 0;
   }
 
-  v5 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
-  v6 = [v5 viewControllerForColumn:4];
+  splitViewController = [(CKMessagesSplitViewCoordinator *)self splitViewController];
+  v6 = [splitViewController viewControllerForColumn:4];
 
-  v7 = [v6 parentViewController];
-  if (v7)
+  parentViewController = [v6 parentViewController];
+  if (parentViewController)
   {
     v8 = v6 == 0;
   }
@@ -57,44 +57,44 @@
   return WeakRetained;
 }
 
-- (CKMessagesSplitViewCoordinator)initWithSplitViewController:(id)a3
+- (CKMessagesSplitViewCoordinator)initWithSplitViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = CKMessagesSplitViewCoordinator;
   v5 = [(CKMessagesSplitViewCoordinator *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(CKMessagesSplitViewCoordinator *)v5 setSplitViewController:v4];
+    [(CKMessagesSplitViewCoordinator *)v5 setSplitViewController:controllerCopy];
   }
 
   return v6;
 }
 
-+ (id)newWithSplitViewController:(id)a3
++ (id)newWithSplitViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSplitViewController:v4];
+  controllerCopy = controller;
+  v5 = [[self alloc] initWithSplitViewController:controllerCopy];
 
   return v5;
 }
 
-- (void)presentViewControllerInInspector:(id)a3
+- (void)presentViewControllerInInspector:(id)inspector
 {
-  v8 = a3;
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isModernSplitViewControllerEnabled];
+  inspectorCopy = inspector;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernSplitViewControllerEnabled = [mEMORY[0x1E69A8070] isModernSplitViewControllerEnabled];
 
-  if (v5)
+  if (isModernSplitViewControllerEnabled)
   {
-    if (v8)
+    if (inspectorCopy)
     {
-      v6 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
-      [v6 ck_setInspectorColumnViewController:v8];
+      splitViewController = [(CKMessagesSplitViewCoordinator *)self splitViewController];
+      [splitViewController ck_setInspectorColumnViewController:inspectorCopy];
 
-      v7 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
-      [v7 showColumn:4];
+      splitViewController2 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
+      [splitViewController2 showColumn:4];
     }
 
     else
@@ -104,26 +104,26 @@
   }
 }
 
-- (void)setViewControllerInInspector:(id)a3
+- (void)setViewControllerInInspector:(id)inspector
 {
-  v8 = a3;
-  v4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v5 = [v4 isModernSplitViewControllerEnabled];
+  inspectorCopy = inspector;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernSplitViewControllerEnabled = [mEMORY[0x1E69A8070] isModernSplitViewControllerEnabled];
 
-  v6 = v8;
-  if (v5)
+  v6 = inspectorCopy;
+  if (isModernSplitViewControllerEnabled)
   {
-    if (v8)
+    if (inspectorCopy)
     {
       if ([(CKMessagesSplitViewCoordinator *)self isInspectorVisible])
       {
-        v7 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
-        [v7 ck_setInspectorColumnViewController:v8];
+        splitViewController = [(CKMessagesSplitViewCoordinator *)self splitViewController];
+        [splitViewController ck_setInspectorColumnViewController:inspectorCopy];
       }
 
       else
       {
-        [(CKMessagesSplitViewCoordinator *)self presentViewControllerInInspector:v8];
+        [(CKMessagesSplitViewCoordinator *)self presentViewControllerInInspector:inspectorCopy];
       }
     }
 
@@ -132,22 +132,22 @@
       [(CKMessagesSplitViewCoordinator *)self dismissInspectorColumn];
     }
 
-    v6 = v8;
+    v6 = inspectorCopy;
   }
 }
 
 - (void)dismissInspectorColumn
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isModernSplitViewControllerEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernSplitViewControllerEnabled = [mEMORY[0x1E69A8070] isModernSplitViewControllerEnabled];
 
-  if (v4)
+  if (isModernSplitViewControllerEnabled)
   {
-    v5 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
-    [v5 hideColumn:4];
+    splitViewController = [(CKMessagesSplitViewCoordinator *)self splitViewController];
+    [splitViewController hideColumn:4];
 
-    v6 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
-    [v6 ck_setInspectorColumnViewController:0];
+    splitViewController2 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
+    [splitViewController2 ck_setInspectorColumnViewController:0];
   }
 }
 
@@ -166,17 +166,17 @@
     v11 = v12;
   }
 
-  v13 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
-  [v13 setMinimumPrimaryColumnWidth:v11];
+  splitViewController = [(CKMessagesSplitViewCoordinator *)self splitViewController];
+  [splitViewController setMinimumPrimaryColumnWidth:v11];
 
-  v14 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
-  [v14 setPreferredPrimaryColumnWidth:v11];
+  splitViewController2 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
+  [splitViewController2 setPreferredPrimaryColumnWidth:v11];
 
   v15 = +[CKUIBehavior sharedBehaviors];
   [v15 maxConversationListWidth];
   v17 = v16;
-  v18 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
-  [v18 setMaximumPrimaryColumnWidth:v17];
+  splitViewController3 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
+  [splitViewController3 setMaximumPrimaryColumnWidth:v17];
 
   [(CKMessagesSplitViewCoordinator *)self setInspectorColumnSizes];
 }
@@ -185,8 +185,8 @@
 {
   if (CKIsRunningInMacCatalyst())
   {
-    v3 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
-    [v3 primaryColumnWidth];
+    splitViewController = [(CKMessagesSplitViewCoordinator *)self splitViewController];
+    [splitViewController primaryColumnWidth];
     [(CKMessagesSplitViewCoordinator *)self _sanitizeProposedConversationListWidth:?];
     v5 = v4;
 
@@ -194,48 +194,48 @@
   }
 }
 
-- (void)setSearchPresented:(BOOL)a3
+- (void)setSearchPresented:(BOOL)presented
 {
-  v3 = a3;
-  if (CKIsRunningInMacCatalyst() && self->_searchPresented != v3)
+  presentedCopy = presented;
+  if (CKIsRunningInMacCatalyst() && self->_searchPresented != presentedCopy)
   {
-    self->_searchPresented = v3;
+    self->_searchPresented = presentedCopy;
 
     [(CKMessagesSplitViewCoordinator *)self updateColumnWidths];
   }
 }
 
-- (double)constrainedPrimaryColumnWidthForResizeWidth:(double)a3
+- (double)constrainedPrimaryColumnWidthForResizeWidth:(double)width
 {
   if (CKIsRunningInMacCatalyst())
   {
     v41 = 0uLL;
     v42 = 0;
     [(CKMessagesSplitViewCoordinator *)self columnResizeParams];
-    v5 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
-    [v5 primaryColumnWidth];
+    splitViewController = [(CKMessagesSplitViewCoordinator *)self splitViewController];
+    [splitViewController primaryColumnWidth];
     v7 = v6;
     v8 = +[CKUIBehavior sharedBehaviors];
     [v8 minConversationListWidth];
     v10 = v9;
     v11 = v7 == v9;
 
-    v12 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
-    [v12 primaryColumnWidth];
+    splitViewController2 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
+    [splitViewController2 primaryColumnWidth];
     v14 = v13;
     v15 = +[CKUIBehavior sharedBehaviors];
     [v15 snapToMinConversationListWidth];
     v17 = v16;
     v18 = v14 == v16;
 
-    if (!v11 && (BYTE1(v42) == v18 ? (v19 = v42 == a3 >= 0.0) : (v19 = 0), v19))
+    if (!v11 && (BYTE1(v42) == v18 ? (v19 = v42 == width >= 0.0) : (v19 = 0), v19))
     {
-      v20 = *&v41 + vabdd_f64(a3, *(&v41 + 1));
+      v20 = *&v41 + vabdd_f64(width, *(&v41 + 1));
     }
 
     else
     {
-      v20 = vabdd_f64(a3, *(&v41 + 1));
+      v20 = vabdd_f64(width, *(&v41 + 1));
     }
 
     *&v41 = v20;
@@ -246,7 +246,7 @@
     if (v7 == v10)
     {
       v24 = +[CKUIBehavior sharedBehaviors];
-      if (v23 < *&v41 && a3 >= 0.0)
+      if (v23 < *&v41 && width >= 0.0)
       {
         goto LABEL_12;
       }
@@ -256,15 +256,15 @@
     {
       if (v14 != v17)
       {
-        if (a3 >= 0.0 || v23 >= *&v41 || (+[CKUIBehavior sharedBehaviors](CKUIBehavior, "sharedBehaviors"), v32 = objc_claimAutoreleasedReturnValue(), [v32 snapToMinConversationListWidth], v34 = v33, v32, v34 <= a3))
+        if (width >= 0.0 || v23 >= *&v41 || (+[CKUIBehavior sharedBehaviors](CKUIBehavior, "sharedBehaviors"), v32 = objc_claimAutoreleasedReturnValue(), [v32 snapToMinConversationListWidth], v34 = v33, v32, v34 <= width))
         {
           v37 = +[CKUIBehavior sharedBehaviors];
           [v37 snapToMinConversationListWidth];
-          v31 = v38;
+          widthCopy2 = v38;
 
-          if (v31 <= a3)
+          if (widthCopy2 <= width)
           {
-            v31 = a3;
+            widthCopy2 = width;
           }
 
           goto LABEL_26;
@@ -277,24 +277,24 @@
 
       v27 = +[CKUIBehavior sharedBehaviors];
       v24 = v27;
-      if (a3 >= 0.0)
+      if (width >= 0.0)
       {
         [v27 snapToMinConversationListWidth];
         v29 = v28;
 
-        v30 = v29 <= a3;
-        v31 = a3;
+        v30 = v29 <= width;
+        widthCopy2 = width;
         if (v30)
         {
 LABEL_26:
-          *(&v41 + 1) = a3;
-          LOBYTE(v42) = a3 >= 0.0;
+          *(&v41 + 1) = width;
+          LOBYTE(v42) = width >= 0.0;
           BYTE1(v42) = v18;
           BYTE2(v42) = v11;
           v39 = v41;
           v40 = v42;
           [(CKMessagesSplitViewCoordinator *)self setColumnResizeParams:&v39];
-          return v31;
+          return widthCopy2;
         }
 
         v25 = +[CKUIBehavior sharedBehaviors];
@@ -309,7 +309,7 @@ LABEL_12:
 LABEL_13:
         [v25 snapToMinConversationListWidth];
 LABEL_25:
-        v31 = v26;
+        widthCopy2 = v26;
 
         goto LABEL_26;
       }
@@ -321,32 +321,32 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  return a3;
+  return width;
 }
 
-- (void)splitViewControllerWillBeginResizingColumn:(int64_t)a3
+- (void)splitViewControllerWillBeginResizingColumn:(int64_t)column
 {
-  if (!a3)
+  if (!column)
   {
     v8 = +[CKUIBehavior sharedBehaviors];
     [v8 minConversationListWidth];
     v6 = v5;
-    v7 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
-    [v7 setMinimumPrimaryColumnWidth:v6];
+    splitViewController = [(CKMessagesSplitViewCoordinator *)self splitViewController];
+    [splitViewController setMinimumPrimaryColumnWidth:v6];
   }
 }
 
 - (double)_primaryColumnWidth
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
-  [v3 preferredPrimaryColumnWidth];
+  splitViewController = [(CKMessagesSplitViewCoordinator *)self splitViewController];
+  [splitViewController preferredPrimaryColumnWidth];
   v5 = v4;
 
-  v6 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
-  v7 = [v6 isViewLoaded];
+  splitViewController2 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
+  isViewLoaded = [splitViewController2 isViewLoaded];
 
-  if (v7)
+  if (isViewLoaded)
   {
     if (CKIsRunningInMacCatalyst())
     {
@@ -412,14 +412,14 @@ LABEL_24:
   [v3 conversationListWidthForInterfaceOrientation:v2];
   v5 = v4;
 
-  v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-  v7 = [v6 __ck_isFullscreen];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  __ck_isFullscreen = [mainScreen __ck_isFullscreen];
 
   v8 = +[CKUIBehavior sharedBehaviors];
   [v8 minConversationListWidth];
   v10 = v9;
 
-  if (v7)
+  if (__ck_isFullscreen)
   {
     v11 = v5;
   }
@@ -442,7 +442,7 @@ LABEL_24:
       v19 = 2048;
       v20 = v5;
       v21 = 1024;
-      v22 = v7;
+      v22 = __ck_isFullscreen;
       v23 = 2048;
       v24 = v10;
       _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "_calculateConversationListColumnWidth columnWidth: %f, orientation: %@, widthForCurrentOrientation: %f, isFullScreen: %{BOOL}d, minConversationListWidth: %f", &v15, 0x30u);
@@ -452,7 +452,7 @@ LABEL_24:
   return v11;
 }
 
-- (double)_macConvertLegacySidebarWidthToModernWidth:(double)a3
+- (double)_macConvertLegacySidebarWidthToModernWidth:(double)width
 {
   v4 = +[CKUIBehavior sharedBehaviors];
   [v4 defaultConversationListWidth];
@@ -469,7 +469,7 @@ LABEL_24:
 
   v10 = +[CKUIBehavior sharedBehaviors];
   v11 = v10;
-  if (v9 > a3)
+  if (v9 > width)
   {
     [v10 minConversationListWidth];
 LABEL_10:
@@ -483,9 +483,9 @@ LABEL_10:
   v11 = +[CKUIBehavior sharedBehaviors];
   [v11 snapToMinConversationListWidth];
   v6 = v15;
-  if (v14 != a3)
+  if (v14 != width)
   {
-    if (v15 >= a3)
+    if (v15 >= width)
     {
     }
 
@@ -495,9 +495,9 @@ LABEL_10:
       [v16 maxConversationListWidth];
       v18 = v17;
 
-      if (v18 > a3)
+      if (v18 > width)
       {
-        return a3;
+        return width;
       }
     }
 
@@ -511,24 +511,24 @@ LABEL_11:
   return v6;
 }
 
-- (double)_sanitizeProposedConversationListWidth:(double)a3
+- (double)_sanitizeProposedConversationListWidth:(double)width
 {
   v4 = +[CKUIBehavior sharedBehaviors];
   [v4 minConversationListWidth];
-  v6 = v5;
+  widthCopy = v5;
 
-  if (v6 <= a3)
+  if (widthCopy <= width)
   {
-    v6 = a3;
+    widthCopy = width;
   }
 
   v7 = +[CKUIBehavior sharedBehaviors];
   [v7 maxConversationListWidth];
   v9 = v8;
 
-  if (v6 < v9)
+  if (widthCopy < v9)
   {
-    v9 = v6;
+    v9 = widthCopy;
   }
 
   if (CKIsRunningInMacCatalyst())
@@ -548,50 +548,50 @@ LABEL_11:
 
 - (void)setInspectorColumnSizes
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isModernSplitViewControllerEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isModernSplitViewControllerEnabled = [mEMORY[0x1E69A8070] isModernSplitViewControllerEnabled];
 
-  if (v4)
+  if (isModernSplitViewControllerEnabled)
   {
-    v5 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
+    splitViewController = [(CKMessagesSplitViewCoordinator *)self splitViewController];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
+      splitViewController2 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
       v8 = +[CKUIBehavior sharedBehaviors];
       [v8 minInspectorColumnWidth];
-      [v7 setMinimumInspectorColumnWidth:?];
+      [splitViewController2 setMinimumInspectorColumnWidth:?];
     }
 
-    v9 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
+    splitViewController3 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
+      splitViewController4 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
       v12 = +[CKUIBehavior sharedBehaviors];
       [v12 maxInspectorColumnWidth];
-      [v11 setMaximumInspectorColumnWidth:?];
+      [splitViewController4 setMaximumInspectorColumnWidth:?];
     }
 
-    v13 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
+    splitViewController5 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
     v14 = objc_opt_respondsToSelector();
 
     if (v14)
     {
-      v16 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
+      splitViewController6 = [(CKMessagesSplitViewCoordinator *)self splitViewController];
       v15 = +[CKUIBehavior sharedBehaviors];
       [v15 defaultInspectorColumnWidth];
-      [v16 setPreferredInspectorColumnWidth:?];
+      [splitViewController6 setPreferredInspectorColumnWidth:?];
     }
   }
 }
 
-- (void)setColumnResizeParams:(id *)a3
+- (void)setColumnResizeParams:(id *)params
 {
-  v3 = *&a3->var0;
-  *&self->_columnResizeParams.proposedPreviouslyIncreasing = *&a3->var2;
+  v3 = *&params->var0;
+  *&self->_columnResizeParams.proposedPreviouslyIncreasing = *&params->var2;
   *&self->_columnResizeParams.currentDragDistance = v3;
 }
 

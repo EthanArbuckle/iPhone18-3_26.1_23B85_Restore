@@ -4,16 +4,16 @@
 - (id)debugStatus;
 - (void)_postInit;
 - (void)_updateABGroupKey;
-- (void)recordAssetInfo:(id)a3;
-- (void)recordFindResultsMsec:(double)a3 queryType:(unint64_t)a4 requestType:(unint64_t)a5 indexId:(id)a6;
-- (void)recordInputLength:(unint64_t)a3 languageTag:(id)a4 languageSupported:(BOOL)a5 requestType:(unint64_t)a6 indexId:(id)a7;
-- (void)recordQueryEngagementWithUserInputLength:(unint64_t)a3 completionLength:(unint64_t)a4 result:(id)a5 rank:(unint64_t)a6 indexId:(id)a7 requestType:(unint64_t)a8 logType:(unint64_t)a9;
-- (void)recordQueryEventWithLuceneResultCount:(unint64_t)a3 error:(id)a4 requestType:(unint64_t)a5 indexId:(id)a6;
-- (void)recordQueryLuceneMsec:(double)a3 queryType:(unint64_t)a4 requestType:(unint64_t)a5 indexId:(id)a6;
-- (void)recordResultsShownWithUserInputLength:(unint64_t)a3 count:(unint64_t)a4 couldHaveShown:(unint64_t)a5 topicIds:(id)a6 serverOverride:(BOOL)a7 indexId:(id)a8 requestType:(unint64_t)a9 logType:(unint64_t)a10;
-- (void)recordSlowFindResults:(BOOL)a3 requestType:(unint64_t)a4 indexId:(id)a5 coldEngine:(BOOL)a6;
-- (void)recordTransactionSuccessfulWithUserInputLength:(unint64_t)a3 completionLength:(unint64_t)a4 indexId:(id)a5 requestType:(unint64_t)a6 logType:(unint64_t)a7;
-- (void)recordURLLookupSucceeded:(unint64_t)a3 bundleId:(BOOL)a4 indexId:(id)a5 requestType:(unint64_t)a6;
+- (void)recordAssetInfo:(id)info;
+- (void)recordFindResultsMsec:(double)msec queryType:(unint64_t)type requestType:(unint64_t)requestType indexId:(id)id;
+- (void)recordInputLength:(unint64_t)length languageTag:(id)tag languageSupported:(BOOL)supported requestType:(unint64_t)type indexId:(id)id;
+- (void)recordQueryEngagementWithUserInputLength:(unint64_t)length completionLength:(unint64_t)completionLength result:(id)result rank:(unint64_t)rank indexId:(id)id requestType:(unint64_t)type logType:(unint64_t)logType;
+- (void)recordQueryEventWithLuceneResultCount:(unint64_t)count error:(id)error requestType:(unint64_t)type indexId:(id)id;
+- (void)recordQueryLuceneMsec:(double)msec queryType:(unint64_t)type requestType:(unint64_t)requestType indexId:(id)id;
+- (void)recordResultsShownWithUserInputLength:(unint64_t)length count:(unint64_t)count couldHaveShown:(unint64_t)shown topicIds:(id)ids serverOverride:(BOOL)override indexId:(id)id requestType:(unint64_t)type logType:(unint64_t)self0;
+- (void)recordSlowFindResults:(BOOL)results requestType:(unint64_t)type indexId:(id)id coldEngine:(BOOL)engine;
+- (void)recordTransactionSuccessfulWithUserInputLength:(unint64_t)length completionLength:(unint64_t)completionLength indexId:(id)id requestType:(unint64_t)type logType:(unint64_t)logType;
+- (void)recordURLLookupSucceeded:(unint64_t)succeeded bundleId:(BOOL)id indexId:(id)indexId requestType:(unint64_t)type;
 @end
 
 @implementation MetricsLogging
@@ -51,9 +51,9 @@
   v10 = 0u;
   v11 = 0u;
   v4 = +[ContextConfiguration sharedInstance];
-  v5 = [v4 matchedABGroups];
+  matchedABGroups = [v4 matchedABGroups];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [matchedABGroups countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -65,7 +65,7 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(matchedABGroups);
         }
 
         [v3 appendFormat:@"_%@", *(*(&v10 + 1) + 8 * v9)];
@@ -73,7 +73,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [matchedABGroups countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
@@ -94,146 +94,146 @@
   return v3;
 }
 
-- (void)recordFindResultsMsec:(double)a3 queryType:(unint64_t)a4 requestType:(unint64_t)a5 indexId:(id)a6
+- (void)recordFindResultsMsec:(double)msec queryType:(unint64_t)type requestType:(unint64_t)requestType indexId:(id)id
 {
-  v10 = a6;
+  idCopy = id;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [(MetricsLogging *)self abGroupLoggingKey];
+    abGroupLoggingKey = [(MetricsLogging *)self abGroupLoggingKey];
     v13 = 134219010;
-    v14 = a3;
+    msecCopy = msec;
     v15 = 2112;
-    v16 = v10;
+    v16 = idCopy;
     v17 = 2112;
-    v18 = v12;
+    v18 = abGroupLoggingKey;
     v19 = 2048;
-    v20 = a4;
+    typeCopy = type;
     v21 = 2048;
-    v22 = a5;
+    requestTypeCopy = requestType;
     _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "recordFindResultsMsec:%f indexId:%@ ab:%@ queryType:%lu requestType:%li", &v13, 0x34u);
   }
 
-  if (a5 == 15 || a5 == 1)
+  if (requestType == 15 || requestType == 1)
   {
     v11 = 104;
-    if (a4 - 1 < 3)
+    if (type - 1 < 3)
     {
-      v11 = 4 * (a4 - 1) + 108;
+      v11 = 4 * (type - 1) + 108;
     }
 
     atomic_fetch_add((self + v11), 1u);
   }
 }
 
-- (void)recordQueryLuceneMsec:(double)a3 queryType:(unint64_t)a4 requestType:(unint64_t)a5 indexId:(id)a6
+- (void)recordQueryLuceneMsec:(double)msec queryType:(unint64_t)type requestType:(unint64_t)requestType indexId:(id)id
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v11 = [(MetricsLogging *)self abGroupLoggingKey];
+    abGroupLoggingKey = [(MetricsLogging *)self abGroupLoggingKey];
     v12 = 134219010;
-    v13 = a3;
+    msecCopy = msec;
     v14 = 2112;
-    v15 = a6;
+    idCopy = id;
     v16 = 2112;
-    v17 = v11;
+    v17 = abGroupLoggingKey;
     v18 = 2048;
-    v19 = a4;
+    typeCopy = type;
     v20 = 2048;
-    v21 = a5;
+    requestTypeCopy = requestType;
     _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "recordQueryLuceneMsec:%f indexId:%@ ab:%@ queryType:%lu requestType:%li", &v12, 0x34u);
   }
 }
 
-- (void)recordInputLength:(unint64_t)a3 languageTag:(id)a4 languageSupported:(BOOL)a5 requestType:(unint64_t)a6 indexId:(id)a7
+- (void)recordInputLength:(unint64_t)length languageTag:(id)tag languageSupported:(BOOL)supported requestType:(unint64_t)type indexId:(id)id
 {
-  v12 = a4;
-  v13 = a7;
+  tagCopy = tag;
+  idCopy = id;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v15 = [(MetricsLogging *)self abGroupLoggingKey];
+    abGroupLoggingKey = [(MetricsLogging *)self abGroupLoggingKey];
     v16 = 134218754;
-    v17 = a3;
+    lengthCopy = length;
     v18 = 2112;
-    v19 = v13;
+    v19 = idCopy;
     v20 = 2112;
-    v21 = v15;
+    v21 = abGroupLoggingKey;
     v22 = 2048;
-    v23 = a6;
+    typeCopy = type;
     _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "recordInputLength:%lu indexId:%@ ab:%@ requestType:%li", &v16, 0x2Au);
   }
 
-  v14 = a6 == 15 || a6 == 1;
-  if (v14 && !a5)
+  v14 = type == 15 || type == 1;
+  if (v14 && !supported)
   {
     atomic_fetch_add(&self->countSafariLanguageNotSupported, 1u);
   }
 }
 
-- (void)recordQueryEventWithLuceneResultCount:(unint64_t)a3 error:(id)a4 requestType:(unint64_t)a5 indexId:(id)a6
+- (void)recordQueryEventWithLuceneResultCount:(unint64_t)count error:(id)error requestType:(unint64_t)type indexId:(id)id
 {
-  v10 = a4;
-  v11 = a6;
+  errorCopy = error;
+  idCopy = id;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [(MetricsLogging *)self abGroupLoggingKey];
+    abGroupLoggingKey = [(MetricsLogging *)self abGroupLoggingKey];
     v13 = 134219010;
-    v14 = a3;
+    countCopy = count;
     v15 = 2112;
-    v16 = v10;
+    v16 = errorCopy;
     v17 = 2112;
-    v18 = v11;
+    v18 = idCopy;
     v19 = 2112;
-    v20 = v12;
+    v20 = abGroupLoggingKey;
     v21 = 2048;
-    v22 = a5;
+    typeCopy = type;
     _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "recordQueryEventWithLuceneResultCount:%lu error:%@, indexId:%@ ab:%@ requestType:%li", &v13, 0x34u);
   }
 
-  if (a5 == 15 || a5 == 1)
+  if (type == 15 || type == 1)
   {
     atomic_fetch_add(&self->countSafariQueryEvents, 1u);
   }
 }
 
-- (void)recordResultsShownWithUserInputLength:(unint64_t)a3 count:(unint64_t)a4 couldHaveShown:(unint64_t)a5 topicIds:(id)a6 serverOverride:(BOOL)a7 indexId:(id)a8 requestType:(unint64_t)a9 logType:(unint64_t)a10
+- (void)recordResultsShownWithUserInputLength:(unint64_t)length count:(unint64_t)count couldHaveShown:(unint64_t)shown topicIds:(id)ids serverOverride:(BOOL)override indexId:(id)id requestType:(unint64_t)type logType:(unint64_t)self0
 {
-  v11 = a7;
-  v16 = a6;
-  v17 = a8;
+  overrideCopy = override;
+  idsCopy = ids;
+  idCopy = id;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [(MetricsLogging *)self abGroupLoggingKey];
+    abGroupLoggingKey = [(MetricsLogging *)self abGroupLoggingKey];
     v21 = 134219778;
-    v22 = a3;
+    lengthCopy = length;
     v23 = 2048;
-    v24 = a4;
+    countCopy = count;
     v25 = 2048;
-    v26 = a5;
+    shownCopy = shown;
     v27 = 1024;
-    v28 = v11;
+    v28 = overrideCopy;
     v29 = 2112;
-    v30 = v17;
+    v30 = idCopy;
     v31 = 2112;
-    v32 = v18;
+    v32 = abGroupLoggingKey;
     v33 = 2048;
-    v34 = a9;
+    typeCopy = type;
     v35 = 2048;
-    v36 = a10;
+    logTypeCopy = logType;
     _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "recordResultsShownWithUserInputLength:%lu count:%lu/%lu serverOverride:%i indexId:%@ ab:%@ requestType:%lu logType:%lu", &v21, 0x4Eu);
 
-    if (a10)
+    if (logType)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    if (a9 == 15)
+    if (type == 15)
     {
       atomic_fetch_add(&self->countSafariLikelyUnsolicitedResultsShownCalled, 1u);
-      if (a4)
+      if (count)
       {
         atomic_fetch_add(&self->countSafariLikelyUnsolicitedResultsShownSomething, 1u);
-        if (!a3)
+        if (!length)
         {
           goto LABEL_3;
         }
@@ -243,9 +243,9 @@ LABEL_5:
 
       else
       {
-        if (!a5)
+        if (!shown)
         {
-          if (!a3)
+          if (!length)
           {
             goto LABEL_3;
           }
@@ -255,7 +255,7 @@ LABEL_5:
         }
 
         atomic_fetch_add(&self->countSafariLikelyUnsolicitedResultsShownSuppressed, 1u);
-        if (!a3)
+        if (!length)
         {
           goto LABEL_3;
         }
@@ -268,16 +268,16 @@ LABEL_5:
 
     else
     {
-      if (a9 != 1)
+      if (type != 1)
       {
         goto LABEL_3;
       }
 
       atomic_fetch_add(&self->countSafariResultsShownCalled, 1u);
-      if (a4)
+      if (count)
       {
         atomic_fetch_add(&self->countSafariResultsShownSomething, 1u);
-        if (!a3)
+        if (!length)
         {
           goto LABEL_3;
         }
@@ -287,9 +287,9 @@ LABEL_5:
 
       else
       {
-        if (!a5)
+        if (!shown)
         {
-          if (!a3)
+          if (!length)
           {
             goto LABEL_3;
           }
@@ -299,7 +299,7 @@ LABEL_5:
         }
 
         atomic_fetch_add(&self->countSafariResultsShownSuppressed, 1u);
-        if (!a3)
+        if (!length)
         {
           goto LABEL_3;
         }
@@ -316,7 +316,7 @@ LABEL_22:
     goto LABEL_3;
   }
 
-  if (!a10)
+  if (!logType)
   {
     goto LABEL_5;
   }
@@ -324,44 +324,44 @@ LABEL_22:
 LABEL_3:
 }
 
-- (void)recordQueryEngagementWithUserInputLength:(unint64_t)a3 completionLength:(unint64_t)a4 result:(id)a5 rank:(unint64_t)a6 indexId:(id)a7 requestType:(unint64_t)a8 logType:(unint64_t)a9
+- (void)recordQueryEngagementWithUserInputLength:(unint64_t)length completionLength:(unint64_t)completionLength result:(id)result rank:(unint64_t)rank indexId:(id)id requestType:(unint64_t)type logType:(unint64_t)logType
 {
-  v15 = a5;
-  v16 = a7;
+  resultCopy = result;
+  idCopy = id;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [(MetricsLogging *)self abGroupLoggingKey];
+    abGroupLoggingKey = [(MetricsLogging *)self abGroupLoggingKey];
     v19 = 134219522;
-    v20 = a3;
+    lengthCopy = length;
     v21 = 2048;
-    v22 = a4;
+    completionLengthCopy = completionLength;
     v23 = 2048;
-    v24 = a6;
+    rankCopy = rank;
     v25 = 2112;
-    v26 = v16;
+    v26 = idCopy;
     v27 = 2112;
-    v28 = v18;
+    v28 = abGroupLoggingKey;
     v29 = 2048;
-    v30 = a8;
+    typeCopy = type;
     v31 = 2048;
-    v32 = a9;
+    logTypeCopy = logType;
     _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "recordQueryEngagementWithUserInputLength:%lu completionLength:%lu, rank:%lu, indexId:%@ ab:%@ requestType:%lu logType:%lu", &v19, 0x48u);
   }
 
-  if (a8 == 15)
+  if (type == 15)
   {
     atomic_fetch_add(&self->countSafariLikelyUnsolicitedEngagements, 1u);
-    if (a3)
+    if (length)
     {
       v17 = 96;
       goto LABEL_9;
     }
   }
 
-  else if (a8 == 1)
+  else if (type == 1)
   {
     atomic_fetch_add(&self->countSafariEngagements, 1u);
-    if (a3)
+    if (length)
     {
       v17 = 56;
 LABEL_9:
@@ -370,41 +370,41 @@ LABEL_9:
   }
 }
 
-- (void)recordTransactionSuccessfulWithUserInputLength:(unint64_t)a3 completionLength:(unint64_t)a4 indexId:(id)a5 requestType:(unint64_t)a6 logType:(unint64_t)a7
+- (void)recordTransactionSuccessfulWithUserInputLength:(unint64_t)length completionLength:(unint64_t)completionLength indexId:(id)id requestType:(unint64_t)type logType:(unint64_t)logType
 {
-  v12 = a5;
+  idCopy = id;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [(MetricsLogging *)self abGroupLoggingKey];
+    abGroupLoggingKey = [(MetricsLogging *)self abGroupLoggingKey];
     v15 = 134219266;
-    v16 = a3;
+    lengthCopy = length;
     v17 = 2048;
-    v18 = a4;
+    completionLengthCopy = completionLength;
     v19 = 2112;
-    v20 = v12;
+    v20 = idCopy;
     v21 = 2112;
-    v22 = v14;
+    v22 = abGroupLoggingKey;
     v23 = 2048;
-    v24 = a6;
+    typeCopy = type;
     v25 = 2048;
-    v26 = a7;
+    logTypeCopy = logType;
     _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "recordTransactionSuccessfulWithUserInputLength:%lu completionLength:%lu indexId:%@ ab:%@ requestType:%lu logType:%lu", &v15, 0x3Eu);
   }
 
-  if (a6 == 15)
+  if (type == 15)
   {
     atomic_fetch_add(&self->countSafariLikelyUnsolicitedTransactionSuccessful, 1u);
-    if (a3)
+    if (length)
     {
       v13 = 100;
       goto LABEL_9;
     }
   }
 
-  else if (a6 == 1)
+  else if (type == 1)
   {
     atomic_fetch_add(&self->countSafariTransactionSuccessful, 1u);
-    if (a3)
+    if (length)
     {
       v13 = 60;
 LABEL_9:
@@ -413,44 +413,44 @@ LABEL_9:
   }
 }
 
-- (void)recordAssetInfo:(id)a3
+- (void)recordAssetInfo:(id)info
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(MetricsLogging *)self abGroupLoggingKey];
+    abGroupLoggingKey = [(MetricsLogging *)self abGroupLoggingKey];
     v6 = 138412546;
-    v7 = a3;
+    infoCopy = info;
     v8 = 2112;
-    v9 = v5;
+    v9 = abGroupLoggingKey;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "recordAssetInfo: %@ ab:%@", &v6, 0x16u);
   }
 }
 
-- (void)recordSlowFindResults:(BOOL)a3 requestType:(unint64_t)a4 indexId:(id)a5 coldEngine:(BOOL)a6
+- (void)recordSlowFindResults:(BOOL)results requestType:(unint64_t)type indexId:(id)id coldEngine:(BOOL)engine
 {
-  v6 = a6;
-  v8 = a3;
-  v10 = a5;
+  engineCopy = engine;
+  resultsCopy = results;
+  idCopy = id;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [(MetricsLogging *)self abGroupLoggingKey];
+    abGroupLoggingKey = [(MetricsLogging *)self abGroupLoggingKey];
     v13[0] = 67110146;
-    v13[1] = v8;
+    v13[1] = resultsCopy;
     v14 = 2112;
-    v15 = v10;
+    v15 = idCopy;
     v16 = 2112;
-    v17 = v12;
+    v17 = abGroupLoggingKey;
     v18 = 2048;
-    v19 = a4;
+    typeCopy = type;
     v20 = 1024;
-    v21 = v6;
+    v21 = engineCopy;
     _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "recordSlowFindResults: hard timeout reached?=%i indexId:%@ ab:%@ requestType:%li cold:%i", v13, 0x2Cu);
   }
 
-  if (a4 == 15 || a4 == 1)
+  if (type == 15 || type == 1)
   {
     v11 = 16;
-    if (v8)
+    if (resultsCopy)
     {
       v11 = 20;
     }
@@ -459,34 +459,34 @@ LABEL_9:
   }
 }
 
-- (void)recordURLLookupSucceeded:(unint64_t)a3 bundleId:(BOOL)a4 indexId:(id)a5 requestType:(unint64_t)a6
+- (void)recordURLLookupSucceeded:(unint64_t)succeeded bundleId:(BOOL)id indexId:(id)indexId requestType:(unint64_t)type
 {
-  v7 = a4;
-  v10 = a5;
+  idCopy = id;
+  indexIdCopy = indexId;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [(MetricsLogging *)self abGroupLoggingKey];
+    abGroupLoggingKey = [(MetricsLogging *)self abGroupLoggingKey];
     v13 = 134219010;
-    v14 = a3;
+    succeededCopy = succeeded;
     v15 = 1024;
-    v16 = v7;
+    v16 = idCopy;
     v17 = 2112;
-    v18 = v10;
+    v18 = indexIdCopy;
     v19 = 2112;
-    v20 = v12;
+    v20 = abGroupLoggingKey;
     v21 = 2048;
-    v22 = a6;
+    typeCopy = type;
     _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "recordURLLookupSucceeded: success=%lu bundleId:%i indexId:%@ ab:%@ requestType:%li", &v13, 0x30u);
   }
 
-  if (a6 == 15)
+  if (type == 15)
   {
 LABEL_6:
     atomic_fetch_add(&self->countSafariURLLookupTotal, 1u);
-    if (a3)
+    if (succeeded)
     {
       atomic_fetch_add(&self->countSafariURLLookupSuccess, 1u);
-      if (a3 == 2)
+      if (succeeded == 2)
       {
         v11 = 128;
 LABEL_9:
@@ -498,9 +498,9 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (a6 != 6)
+  if (type != 6)
   {
-    if (a6 != 1)
+    if (type != 1)
     {
       goto LABEL_10;
     }
@@ -508,13 +508,13 @@ LABEL_9:
     goto LABEL_6;
   }
 
-  if (v7)
+  if (idCopy)
   {
     atomic_fetch_add(&self->countDHURLLookupBundleTotal, 1u);
-    if (a3)
+    if (succeeded)
     {
       atomic_fetch_add(&self->countDHURLLookupBundleSuccess, 1u);
-      if (a3 == 2)
+      if (succeeded == 2)
       {
         v11 = 140;
         goto LABEL_9;
@@ -525,10 +525,10 @@ LABEL_9:
   else
   {
     atomic_fetch_add(&self->countDHURLLookupWebTotal, 1u);
-    if (a3)
+    if (succeeded)
     {
       atomic_fetch_add(&self->countDHURLLookupWebSuccess, 1u);
-      if (a3 == 2)
+      if (succeeded == 2)
       {
         v11 = 152;
         goto LABEL_9;

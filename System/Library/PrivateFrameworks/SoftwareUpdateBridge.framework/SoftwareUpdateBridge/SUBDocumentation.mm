@@ -1,18 +1,18 @@
 @interface SUBDocumentation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)preferredPhoneLanguages;
 - (NSData)licenseAgreement;
 - (NSData)releaseNotes;
 - (NSData)releaseNotesSummary;
 - (NSString)currentPhoneLanguage;
 - (NSString)humanReadableUpdateName;
-- (SUBDocumentation)initWithCoder:(id)a3;
-- (SUBDocumentation)initWithDocumentationBundleURL:(id)a3;
-- (SUBDocumentation)initWithMAAsset:(id)a3;
-- (id)_resourceFromBundle:(id)a3 forKey:(id)a4;
+- (SUBDocumentation)initWithCoder:(id)coder;
+- (SUBDocumentation)initWithDocumentationBundleURL:(id)l;
+- (SUBDocumentation)initWithMAAsset:(id)asset;
+- (id)_resourceFromBundle:(id)bundle forKey:(id)key;
 - (id)summary;
 - (void)_loadBundleResources;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUBDocumentation
@@ -20,9 +20,9 @@
 - (NSString)currentPhoneLanguage
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = [(SUBDocumentation *)self preferredPhoneLanguages];
-  v3 = v2;
-  if (v2 && [v2 count])
+  preferredPhoneLanguages = [(SUBDocumentation *)self preferredPhoneLanguages];
+  v3 = preferredPhoneLanguages;
+  if (preferredPhoneLanguages && [preferredPhoneLanguages count])
   {
     v4 = softwareupdatebridge_log;
     if (os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT))
@@ -57,8 +57,8 @@
 - (NSArray)preferredPhoneLanguages
 {
   v13 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEAF8] preferredLanguages];
-  v3 = [v2 count];
+  preferredLanguages = [MEMORY[0x277CBEAF8] preferredLanguages];
+  v3 = [preferredLanguages count];
   v4 = softwareupdatebridge_log;
   v5 = os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT);
   if (v3)
@@ -69,7 +69,7 @@
     }
 
     v11 = 138543362;
-    v12 = v2;
+    v12 = preferredLanguages;
     v6 = "[SUBDocumentation] : Preferred languages are %{public}@";
     v7 = v4;
     v8 = 12;
@@ -92,19 +92,19 @@
 LABEL_7:
   v9 = *MEMORY[0x277D85DE8];
 
-  return v2;
+  return preferredLanguages;
 }
 
-- (SUBDocumentation)initWithDocumentationBundleURL:(id)a3
+- (SUBDocumentation)initWithDocumentationBundleURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = SUBDocumentation;
   v6 = [(SUBDocumentation *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_documentationBundleURL, a3);
+    objc_storeStrong(&v6->_documentationBundleURL, l);
     suCoreParsedDocumentation = v7->_suCoreParsedDocumentation;
     v7->_suCoreParsedDocumentation = 0;
   }
@@ -112,18 +112,18 @@ LABEL_7:
   return v7;
 }
 
-- (SUBDocumentation)initWithMAAsset:(id)a3
+- (SUBDocumentation)initWithMAAsset:(id)asset
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assetCopy = asset;
   v15.receiver = self;
   v15.super_class = SUBDocumentation;
   v5 = [(SUBDocumentation *)&v15 init];
   if (v5)
   {
-    v6 = [v4 getLocalUrl];
+    getLocalUrl = [assetCopy getLocalUrl];
     documentationBundleURL = v5->_documentationBundleURL;
-    v5->_documentationBundleURL = v6;
+    v5->_documentationBundleURL = getLocalUrl;
 
     v8 = softwareupdatebridge_log;
     if (os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT))
@@ -132,7 +132,7 @@ LABEL_7:
       _os_log_impl(&dword_26AB06000, v8, OS_LOG_TYPE_DEFAULT, "[SUBDocumentation]: Calling SUCoreDocumentation alloc on maDocAsset", buf, 2u);
     }
 
-    v9 = [objc_alloc(MEMORY[0x277D64188]) initWithDocumentationAsset:v4];
+    v9 = [objc_alloc(MEMORY[0x277D64188]) initWithDocumentationAsset:assetCopy];
     suCoreParsedDocumentation = v5->_suCoreParsedDocumentation;
     v5->_suCoreParsedDocumentation = v9;
 
@@ -150,39 +150,39 @@ LABEL_7:
   return v5;
 }
 
-- (SUBDocumentation)initWithCoder:(id)a3
+- (SUBDocumentation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = SUBDocumentation;
   v5 = [(SUBDocumentation *)&v21 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"documentationBundleURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"documentationBundleURL"];
     documentationBundleURL = v5->_documentationBundleURL;
     v5->_documentationBundleURL = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"releaseNotesSummary"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"releaseNotesSummary"];
     releaseNotesSummary = v5->_releaseNotesSummary;
     v5->_releaseNotesSummary = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"releaseNotes"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"releaseNotes"];
     releaseNotes = v5->_releaseNotes;
     v5->_releaseNotes = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"licenseAgreement"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"licenseAgreement"];
     licenseAgreement = v5->_licenseAgreement;
     v5->_licenseAgreement = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HumanReadableUpdateName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HumanReadableUpdateName"];
     humanReadableUpdateName = v5->_humanReadableUpdateName;
     v5->_humanReadableUpdateName = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suCoreParsedDocAsset"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suCoreParsedDocAsset"];
     suCoreParsedDocumentation = v5->_suCoreParsedDocumentation;
     v5->_suCoreParsedDocumentation = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"suIconImage"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"suIconImage"];
     preferencesIcon = v5->_preferencesIcon;
     v5->_preferencesIcon = v18;
   }
@@ -190,17 +190,17 @@ LABEL_7:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   documentationBundleURL = self->_documentationBundleURL;
-  v5 = a3;
-  [v5 encodeObject:documentationBundleURL forKey:@"documentationBundleURL"];
-  [v5 encodeObject:self->_releaseNotesSummary forKey:@"releaseNotesSummary"];
-  [v5 encodeObject:self->_releaseNotes forKey:@"releaseNotes"];
-  [v5 encodeObject:self->_licenseAgreement forKey:@"licenseAgreement"];
-  [v5 encodeObject:self->_humanReadableUpdateName forKey:@"HumanReadableUpdateName"];
-  [v5 encodeObject:self->_suCoreParsedDocumentation forKey:@"suCoreParsedDocAsset"];
-  [v5 encodeObject:self->_preferencesIcon forKey:@"suIconImage"];
+  coderCopy = coder;
+  [coderCopy encodeObject:documentationBundleURL forKey:@"documentationBundleURL"];
+  [coderCopy encodeObject:self->_releaseNotesSummary forKey:@"releaseNotesSummary"];
+  [coderCopy encodeObject:self->_releaseNotes forKey:@"releaseNotes"];
+  [coderCopy encodeObject:self->_licenseAgreement forKey:@"licenseAgreement"];
+  [coderCopy encodeObject:self->_humanReadableUpdateName forKey:@"HumanReadableUpdateName"];
+  [coderCopy encodeObject:self->_suCoreParsedDocumentation forKey:@"suCoreParsedDocAsset"];
+  [coderCopy encodeObject:self->_preferencesIcon forKey:@"suIconImage"];
 }
 
 - (NSString)humanReadableUpdateName
@@ -268,10 +268,10 @@ LABEL_7:
   return licenseAgreement;
 }
 
-- (id)_resourceFromBundle:(id)a3 forKey:(id)a4
+- (id)_resourceFromBundle:(id)bundle forKey:(id)key
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = CFBundleCopyResourceURLInDirectory(a3, a4, @"html", 0);
+  v4 = CFBundleCopyResourceURLInDirectory(bundle, key, @"html", 0);
   if (v4)
   {
     v5 = softwareupdatebridge_log;
@@ -314,8 +314,8 @@ LABEL_7:
       _os_log_impl(&dword_26AB06000, v4, OS_LOG_TYPE_DEFAULT, "[SUBDocumentation]: Loading bundle resources", buf, 2u);
     }
 
-    v6 = [(SUBDocumentation *)self currentPhoneLanguage];
-    v7 = [(SUBDocumentation *)v6 isEqualToString:self->_phoneLanguage];
+    currentPhoneLanguage = [(SUBDocumentation *)self currentPhoneLanguage];
+    v7 = [(SUBDocumentation *)currentPhoneLanguage isEqualToString:self->_phoneLanguage];
     v8 = softwareupdatebridge_log;
     v9 = os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT);
     if (v7)
@@ -323,7 +323,7 @@ LABEL_7:
       if (v9)
       {
         *buf = 138543362;
-        v39 = v6;
+        selfCopy = currentPhoneLanguage;
         _os_log_impl(&dword_26AB06000, v8, OS_LOG_TYPE_DEFAULT, "[SUBDocumentation] : documentation language in use is same as the current language: %{public}@", buf, 0xCu);
       }
 
@@ -335,14 +335,14 @@ LABEL_38:
     if (v9)
     {
       *buf = 138412290;
-      v39 = v6;
+      selfCopy = currentPhoneLanguage;
       _os_log_impl(&dword_26AB06000, v8, OS_LOG_TYPE_DEFAULT, "[SUBDocumentation] : Setting language %@ for documentation language", buf, 0xCu);
     }
 
-    [(SUBDocumentation *)self setPhoneLanguage:v6];
+    [(SUBDocumentation *)self setPhoneLanguage:currentPhoneLanguage];
     v10 = *MEMORY[0x277CBECE8];
-    v11 = [(SUBDocumentation *)self documentationBundleURL];
-    v12 = CFBundleCreate(v10, v11);
+    documentationBundleURL = [(SUBDocumentation *)self documentationBundleURL];
+    v12 = CFBundleCreate(v10, documentationBundleURL);
 
     if (!v12)
     {
@@ -350,19 +350,19 @@ LABEL_38:
       if (os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT))
       {
         v27 = v26;
-        v28 = [(SUBDocumentation *)self documentationBundleURL];
-        v29 = [v28 absoluteString];
+        documentationBundleURL2 = [(SUBDocumentation *)self documentationBundleURL];
+        absoluteString = [documentationBundleURL2 absoluteString];
         *buf = 138543362;
-        v39 = v29;
+        selfCopy = absoluteString;
         _os_log_impl(&dword_26AB06000, v27, OS_LOG_TYPE_DEFAULT, "[SUBDocumentation] : Unable to create bundle from documentationBundleURL(%{public}@)", buf, 0xCu);
       }
 
       goto LABEL_38;
     }
 
-    v13 = [(SUBDocumentation *)self suCoreParsedDocumentation];
+    suCoreParsedDocumentation = [(SUBDocumentation *)self suCoreParsedDocumentation];
 
-    if (!v13)
+    if (!suCoreParsedDocumentation)
     {
 LABEL_33:
       [(SUBDocumentation *)self setHumanReadableUpdateName:0];
@@ -388,7 +388,7 @@ LABEL_33:
       if (os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v39 = self;
+        selfCopy = self;
         _os_log_impl(&dword_26AB06000, v35, OS_LOG_TYPE_DEFAULT, "[SUBDocumentation] : %{public}@", buf, 0xCu);
       }
 
@@ -404,11 +404,11 @@ LABEL_33:
       _os_log_impl(&dword_26AB06000, v14, OS_LOG_TYPE_DEFAULT, "[SUBDocumentation]: SUCore Parsed doc exists. Attempting to extract image", buf, 2u);
     }
 
-    v15 = [(SUBDocumentation *)self suCoreParsedDocumentation];
-    v16 = [v15 softwareUpdateIconImagePath];
+    suCoreParsedDocumentation2 = [(SUBDocumentation *)self suCoreParsedDocumentation];
+    softwareUpdateIconImagePath = [suCoreParsedDocumentation2 softwareUpdateIconImagePath];
 
-    v17 = [MEMORY[0x277CCAA00] defaultManager];
-    v18 = [v17 fileExistsAtPath:v16];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v18 = [defaultManager fileExistsAtPath:softwareUpdateIconImagePath];
     v19 = softwareupdatebridge_log;
     v20 = os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT);
     if (v18)
@@ -416,12 +416,12 @@ LABEL_33:
       if (v20)
       {
         *buf = 138543362;
-        v39 = v16;
+        selfCopy = softwareUpdateIconImagePath;
         _os_log_impl(&dword_26AB06000, v19, OS_LOG_TYPE_DEFAULT, "[SUBDocumentation]: SoftwareUpdateIcon found at path %{public}@", buf, 0xCu);
       }
 
       v37 = 0;
-      v21 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:v16 options:1 error:&v37];
+      v21 = [objc_alloc(MEMORY[0x277CBEA90]) initWithContentsOfFile:softwareUpdateIconImagePath options:1 error:&v37];
       v22 = v37;
       v23 = v22;
       if (v21 && !v22)
@@ -433,7 +433,7 @@ LABEL_33:
       if (os_log_type_enabled(softwareupdatebridge_log, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v39 = v16;
+        selfCopy = softwareUpdateIconImagePath;
         v40 = 2114;
         v41 = v23;
         _os_log_impl(&dword_26AB06000, v24, OS_LOG_TYPE_DEFAULT, "[SUBDocumentation]: Failed to read contents of icon file at %{public}@. Error: %{public}@", buf, 0x16u);
@@ -459,7 +459,7 @@ LABEL_32:
     else if (v20)
     {
       *buf = 138543362;
-      v39 = v16;
+      selfCopy = softwareUpdateIconImagePath;
       _os_log_impl(&dword_26AB06000, v19, OS_LOG_TYPE_DEFAULT, "[SUBDocumentation]: SoftwareUpdateIcon file *not* found at path %{public}@", buf, 0xCu);
     }
 
@@ -483,10 +483,10 @@ LABEL_39:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -496,9 +496,9 @@ LABEL_39:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(SUBDocumentation *)v4 documentationBundleURL];
-      v6 = [(SUBDocumentation *)self documentationBundleURL];
-      v7 = [v5 isEqual:v6];
+      documentationBundleURL = [(SUBDocumentation *)equalCopy documentationBundleURL];
+      documentationBundleURL2 = [(SUBDocumentation *)self documentationBundleURL];
+      v7 = [documentationBundleURL isEqual:documentationBundleURL2];
     }
 
     else
@@ -513,10 +513,10 @@ LABEL_39:
 - (id)summary
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(SUBDocumentation *)self humanReadableUpdateName];
-  v5 = [(SUBDocumentation *)self releaseNotesSummary];
+  humanReadableUpdateName = [(SUBDocumentation *)self humanReadableUpdateName];
+  releaseNotesSummary = [(SUBDocumentation *)self releaseNotesSummary];
   v6 = @"Null";
-  if (v5)
+  if (releaseNotesSummary)
   {
     v7 = @"valid";
   }
@@ -526,8 +526,8 @@ LABEL_39:
     v7 = @"Null";
   }
 
-  v8 = [(SUBDocumentation *)self releaseNotes];
-  if (v8)
+  releaseNotes = [(SUBDocumentation *)self releaseNotes];
+  if (releaseNotes)
   {
     v9 = @"valid";
   }
@@ -537,21 +537,21 @@ LABEL_39:
     v9 = @"Null";
   }
 
-  v10 = [(SUBDocumentation *)self licenseAgreement];
-  if (v10)
+  licenseAgreement = [(SUBDocumentation *)self licenseAgreement];
+  if (licenseAgreement)
   {
     v6 = @"valid";
   }
 
-  v11 = [(SUBDocumentation *)self documentationBundleURL];
-  v12 = [(SUBDocumentation *)self preferencesIcon];
+  documentationBundleURL = [(SUBDocumentation *)self documentationBundleURL];
+  preferencesIcon = [(SUBDocumentation *)self preferencesIcon];
   v13 = @"YES";
-  if (!v12)
+  if (!preferencesIcon)
   {
     v13 = @"NO";
   }
 
-  v14 = [v3 initWithFormat:@"Update name: %@ releaseNotesSummary:%@ releaseNotes:%@ licenseAgreement:%@, localBundleURL: %@ UIIconPresent: %@", v4, v7, v9, v6, v11, v13];
+  v14 = [v3 initWithFormat:@"Update name: %@ releaseNotesSummary:%@ releaseNotes:%@ licenseAgreement:%@, localBundleURL: %@ UIIconPresent: %@", humanReadableUpdateName, v7, v9, v6, documentationBundleURL, v13];
 
   return v14;
 }

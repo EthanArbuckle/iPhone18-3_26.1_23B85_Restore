@@ -1,39 +1,39 @@
 @interface POTokenHelper
-+ (BOOL)tokenIsAccessKey:(id)a3;
-+ (id)dataToHex:(id)a3;
-+ (id)parseUserNameFromMailboxData:(id)a3;
-- (BOOL)canTokenIdLogin:(id)a3 pubKeyHash:(id)a4;
-- (BOOL)insertTokenForUser:(id)a3;
-- (BOOL)retrieveCertAndKeyForTokenId:(id)a3 context:(id)a4 certificate:(__SecCertificate *)a5 privateKey:(__SecKey *)a6;
-- (BOOL)waitForTokenAvailable:(id)a3;
-- (POTokenHelper)initWithIdentifierProvider:(id)a3;
-- (id)base64URLtokenHashForUser:(id)a3;
-- (id)findInfoForTokenId:(id)a3;
-- (id)findTokenIdForSmartCardAMUser:(id)a3 tokenHash:(id *)a4;
-- (id)findTokenIdForSmartCardBoundUser:(id)a3 tokenHash:(id *)a4;
++ (BOOL)tokenIsAccessKey:(id)key;
++ (id)dataToHex:(id)hex;
++ (id)parseUserNameFromMailboxData:(id)data;
+- (BOOL)canTokenIdLogin:(id)login pubKeyHash:(id)hash;
+- (BOOL)insertTokenForUser:(id)user;
+- (BOOL)retrieveCertAndKeyForTokenId:(id)id context:(id)context certificate:(__SecCertificate *)certificate privateKey:(__SecKey *)key;
+- (BOOL)waitForTokenAvailable:(id)available;
+- (POTokenHelper)initWithIdentifierProvider:(id)provider;
+- (id)base64URLtokenHashForUser:(id)user;
+- (id)findInfoForTokenId:(id)id;
+- (id)findTokenIdForSmartCardAMUser:(id)user tokenHash:(id *)hash;
+- (id)findTokenIdForSmartCardBoundUser:(id)user tokenHash:(id *)hash;
 - (id)getDriverConfiguration;
 - (id)getTokenInfo;
-- (id)tokenHashDataForUser:(id)a3;
-- (id)tokenHashForUser:(id)a3;
+- (id)tokenHashDataForUser:(id)user;
+- (id)tokenHashForUser:(id)user;
 - (void)getDriverConfiguration;
 - (void)getTokenInfo;
 - (void)postAHPCacheRefreshNotification;
 - (void)removeAllTokens;
-- (void)removeTokenForUser:(id)a3;
+- (void)removeTokenForUser:(id)user;
 @end
 
 @implementation POTokenHelper
 
-- (POTokenHelper)initWithIdentifierProvider:(id)a3
+- (POTokenHelper)initWithIdentifierProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = POTokenHelper;
   v6 = [(POTokenHelper *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_userIdentifierProvider, a3);
+    objc_storeStrong(&v6->_userIdentifierProvider, provider);
   }
 
   return v7;
@@ -41,59 +41,59 @@
 
 - (id)getDriverConfiguration
 {
-  v2 = [MEMORY[0x277CC5620] driverConfigurations];
+  driverConfigurations = [MEMORY[0x277CC5620] driverConfigurations];
   v3 = PO_LOG_POTokenHelper();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
     [POTokenHelper getDriverConfiguration];
   }
 
-  v4 = [v2 objectForKeyedSubscript:@"com.apple.platformsso"];
+  v4 = [driverConfigurations objectForKeyedSubscript:@"com.apple.platformsso"];
 
   return v4;
 }
 
-- (BOOL)insertTokenForUser:(id)a3
+- (BOOL)insertTokenForUser:(id)user
 {
   v146 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  userCopy = user;
   v5 = PO_LOG_POTokenHelper();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v141 = "[POTokenHelper insertTokenForUser:]";
     v142 = 2114;
-    v143 = v4;
+    v143 = userCopy;
     v144 = 2112;
-    v145 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v5, OS_LOG_TYPE_DEFAULT, "%s userName = %{public}@ on %@", buf, 0x20u);
   }
 
   v6 = [POConfigurationCoreManager alloc];
-  v7 = [(POTokenHelper *)self userIdentifierProvider];
-  v8 = [(POConfigurationCoreManager *)v6 initWithUserName:v4 identifierProvider:v7 sharedOnly:1];
+  userIdentifierProvider = [(POTokenHelper *)self userIdentifierProvider];
+  v8 = [(POConfigurationCoreManager *)v6 initWithUserName:userCopy identifierProvider:userIdentifierProvider sharedOnly:1];
 
-  v9 = [(POConfigurationCoreManager *)v8 currentUserConfiguration];
-  v10 = v9;
-  if (v9)
+  currentUserConfiguration = [(POConfigurationCoreManager *)v8 currentUserConfiguration];
+  v10 = currentUserConfiguration;
+  if (currentUserConfiguration)
   {
-    if ([v9 userDecryptionCertificate])
+    if ([currentUserConfiguration userDecryptionCertificate])
     {
-      v11 = [v10 userDecryptionKeyHash];
+      userDecryptionKeyHash = [v10 userDecryptionKeyHash];
 
-      if (v11)
+      if (userDecryptionKeyHash)
       {
-        v12 = [v10 userUnlockData];
+        userUnlockData = [v10 userUnlockData];
 
-        v13 = [(POTokenHelper *)self getDriverConfiguration];
-        v14 = v13;
-        if (!v13)
+        getDriverConfiguration = [(POTokenHelper *)self getDriverConfiguration];
+        v14 = getDriverConfiguration;
+        if (!getDriverConfiguration)
         {
           v128[0] = MEMORY[0x277D85DD0];
           v128[1] = 3221225472;
           v128[2] = __36__POTokenHelper_insertTokenForUser___block_invoke;
           v128[3] = &unk_279A3DC48;
-          v129 = v4;
+          v129 = userCopy;
           v78 = __36__POTokenHelper_insertTokenForUser___block_invoke(v128);
           LOBYTE(v64) = 0;
           v26 = v129;
@@ -106,10 +106,10 @@ LABEL_44:
         v127 = 0u;
         v124 = 0u;
         v125 = 0u;
-        v15 = [v13 tokenConfigurations];
-        v16 = [v15 allKeys];
+        tokenConfigurations = [getDriverConfiguration tokenConfigurations];
+        allKeys = [tokenConfigurations allKeys];
 
-        v17 = [v16 countByEnumeratingWithState:&v124 objects:v139 count:16];
+        v17 = [allKeys countByEnumeratingWithState:&v124 objects:v139 count:16];
         if (v17)
         {
           v18 = v17;
@@ -120,32 +120,32 @@ LABEL_44:
             {
               if (*v125 != v19)
               {
-                objc_enumerationMutation(v16);
+                objc_enumerationMutation(allKeys);
               }
 
               [v14 removeTokenConfigurationForTokenInstanceID:*(*(&v124 + 1) + 8 * i)];
             }
 
-            v18 = [v16 countByEnumeratingWithState:&v124 objects:v139 count:16];
+            v18 = [allKeys countByEnumeratingWithState:&v124 objects:v139 count:16];
           }
 
           while (v18);
         }
 
-        [v14 removeTokenConfigurationForTokenInstanceID:v4];
-        v21 = [v10 userDecryptionKeyHash];
-        v22 = [POTokenHelper dataToHex:v21];
+        [v14 removeTokenConfigurationForTokenInstanceID:userCopy];
+        userDecryptionKeyHash2 = [v10 userDecryptionKeyHash];
+        v22 = [POTokenHelper dataToHex:userDecryptionKeyHash2];
         [v14 removeTokenConfigurationForTokenInstanceID:v22];
 
-        v23 = [v14 tokenConfigurations];
-        v24 = [v10 userDecryptionKeyHash];
-        v25 = [POTokenHelper dataToHex:v24];
-        v26 = [v23 objectForKeyedSubscript:v25];
+        tokenConfigurations2 = [v14 tokenConfigurations];
+        userDecryptionKeyHash3 = [v10 userDecryptionKeyHash];
+        v25 = [POTokenHelper dataToHex:userDecryptionKeyHash3];
+        v26 = [tokenConfigurations2 objectForKeyedSubscript:v25];
 
         if (!v26)
         {
-          v27 = [v10 userDecryptionKeyHash];
-          v28 = [POTokenHelper dataToHex:v27];
+          userDecryptionKeyHash4 = [v10 userDecryptionKeyHash];
+          v28 = [POTokenHelper dataToHex:userDecryptionKeyHash4];
           v26 = [v14 addTokenConfigurationForTokenInstanceID:v28];
 
           if (!v26)
@@ -164,41 +164,41 @@ LABEL_43:
           }
         }
 
-        if (!v12)
+        if (!userUnlockData)
         {
           v79 = objc_alloc_init(POMutableTokenConfigJWTBody);
-          [(POMutableTokenConfigJWTBody *)v79 setUserName:v4];
-          v80 = [v10 userLoginConfiguration];
-          v81 = [v80 loginUserName];
-          v82 = v81;
-          if (v81)
+          [(POMutableTokenConfigJWTBody *)v79 setUserName:userCopy];
+          userLoginConfiguration = [v10 userLoginConfiguration];
+          loginUserName = [userLoginConfiguration loginUserName];
+          v82 = loginUserName;
+          if (loginUserName)
           {
-            v83 = v81;
+            v83 = loginUserName;
           }
 
           else
           {
-            v83 = v4;
+            v83 = userCopy;
           }
 
           [(POMutableTokenConfigJWTBody *)v79 setLoginUserName:v83];
 
-          v84 = [(_POJWTBodyBase *)v79 dataRepresentation];
-          [v26 setConfigurationData:v84];
+          dataRepresentation = [(_POJWTBodyBase *)v79 dataRepresentation];
+          [v26 setConfigurationData:dataRepresentation];
 
-          v85 = [v10 userDecryptionCertificate];
+          userDecryptionCertificate = [v10 userDecryptionCertificate];
           v86 = objc_alloc(MEMORY[0x277CC5628]);
           v87 = MEMORY[0x277CCACA8];
-          v88 = [v10 uniqueIdentifier];
-          v89 = [v87 stringWithFormat:@"certificate:%@", v88];
-          v90 = [v86 initWithCertificate:v85 objectID:v89];
+          uniqueIdentifier = [v10 uniqueIdentifier];
+          v89 = [v87 stringWithFormat:@"certificate:%@", uniqueIdentifier];
+          v90 = [v86 initWithCertificate:userDecryptionCertificate objectID:v89];
 
           v91 = objc_alloc(MEMORY[0x277CC5630]);
-          v92 = [v10 userDecryptionKeyHash];
-          v93 = [v91 initWithCertificate:v85 objectID:v92];
+          userDecryptionKeyHash5 = [v10 userDecryptionKeyHash];
+          v93 = [v91 initWithCertificate:userDecryptionCertificate objectID:userDecryptionKeyHash5];
 
-          v94 = [v10 userDecryptionKeyHash];
-          v95 = [POTokenHelper dataToHex:v94];
+          userDecryptionKeyHash6 = [v10 userDecryptionKeyHash];
+          v95 = [POTokenHelper dataToHex:userDecryptionKeyHash6];
           [v93 setLabel:v95];
 
           [v93 setSuitableForLogin:1];
@@ -227,33 +227,33 @@ LABEL_37:
         }
 
         v30 = objc_alloc_init(POMutableTokenConfigJWTBody);
-        v31 = [v10 userUnlockData];
-        [(POMutableTokenConfigJWTBody *)v30 setUnlockData:v31];
+        userUnlockData2 = [v10 userUnlockData];
+        [(POMutableTokenConfigJWTBody *)v30 setUnlockData:userUnlockData2];
 
-        v32 = [v10 userUnlockHash];
-        v33 = [POTokenHelper dataToHex:v32];
+        userUnlockHash = [v10 userUnlockHash];
+        v33 = [POTokenHelper dataToHex:userUnlockHash];
         [(POMutableTokenConfigJWTBody *)v30 setUnlockHash:v33];
 
-        v34 = [v10 unlockTokenId];
-        [(POMutableTokenConfigJWTBody *)v30 setIdpTokenId:v34];
+        unlockTokenId = [v10 unlockTokenId];
+        [(POMutableTokenConfigJWTBody *)v30 setIdpTokenId:unlockTokenId];
 
         v113 = v30;
-        v35 = [(_POJWTBodyBase *)v30 dataRepresentation];
-        [v26 setConfigurationData:v35];
+        dataRepresentation2 = [(_POJWTBodyBase *)v30 dataRepresentation];
+        [v26 setConfigurationData:dataRepresentation2];
 
-        v36 = [v10 userDecryptionCertificate];
+        userDecryptionCertificate2 = [v10 userDecryptionCertificate];
         v37 = objc_alloc(MEMORY[0x277CC5628]);
         v38 = MEMORY[0x277CCACA8];
-        v39 = [v10 uniqueIdentifier];
-        v40 = [v38 stringWithFormat:@"certificate:%@", v39];
-        v41 = [v37 initWithCertificate:v36 objectID:v40];
+        uniqueIdentifier2 = [v10 uniqueIdentifier];
+        v40 = [v38 stringWithFormat:@"certificate:%@", uniqueIdentifier2];
+        v41 = [v37 initWithCertificate:userDecryptionCertificate2 objectID:v40];
 
         v42 = objc_alloc(MEMORY[0x277CC5630]);
-        v43 = [v10 userDecryptionKeyHash];
-        v44 = [v42 initWithCertificate:v36 objectID:v43];
+        userDecryptionKeyHash7 = [v10 userDecryptionKeyHash];
+        v44 = [v42 initWithCertificate:userDecryptionCertificate2 objectID:userDecryptionKeyHash7];
 
-        v45 = [v10 userDecryptionKeyHash];
-        [v44 setApplicationTag:v45];
+        userDecryptionKeyHash8 = [v10 userDecryptionKeyHash];
+        [v44 setApplicationTag:userDecryptionKeyHash8];
 
         [v44 setSuitableForLogin:1];
         [v44 setCanDecrypt:1];
@@ -273,15 +273,15 @@ LABEL_37:
         v47 = [MEMORY[0x277CBEA60] arrayWithObjects:v136 count:2];
         [v26 setKeychainItems:v47];
 
-        v48 = [v14 tokenConfigurations];
-        v49 = [v10 userUnlockHash];
-        v50 = [POTokenHelper dataToHex:v49];
-        v51 = [v48 objectForKeyedSubscript:v50];
+        tokenConfigurations3 = [v14 tokenConfigurations];
+        userUnlockHash2 = [v10 userUnlockHash];
+        v50 = [POTokenHelper dataToHex:userUnlockHash2];
+        v51 = [tokenConfigurations3 objectForKeyedSubscript:v50];
 
         if (!v51)
         {
-          v52 = [v10 userUnlockHash];
-          v53 = [POTokenHelper dataToHex:v52];
+          userUnlockHash3 = [v10 userUnlockHash];
+          v53 = [POTokenHelper dataToHex:userUnlockHash3];
           v51 = [v14 addTokenConfigurationForTokenInstanceID:v53];
 
           if (!v51)
@@ -299,29 +299,29 @@ LABEL_37:
         }
 
         v54 = objc_alloc_init(POMutableTokenConfigJWTBody);
-        [(POMutableTokenConfigJWTBody *)v54 setUserName:v4];
-        v55 = [v10 userLoginConfiguration];
-        v56 = [v55 loginUserName];
-        v57 = v56;
-        if (v56)
+        [(POMutableTokenConfigJWTBody *)v54 setUserName:userCopy];
+        userLoginConfiguration2 = [v10 userLoginConfiguration];
+        loginUserName2 = [userLoginConfiguration2 loginUserName];
+        v57 = loginUserName2;
+        if (loginUserName2)
         {
-          v58 = v56;
+          v58 = loginUserName2;
         }
 
         else
         {
-          v58 = v4;
+          v58 = userCopy;
         }
 
         [(POMutableTokenConfigJWTBody *)v54 setLoginUserName:v58];
 
-        v59 = [(_POJWTBodyBase *)v54 dataRepresentation];
-        [v51 setConfigurationData:v59];
+        dataRepresentation3 = [(_POJWTBodyBase *)v54 dataRepresentation];
+        [v51 setConfigurationData:dataRepresentation3];
 
-        v60 = [v10 userUnlockCertificate];
-        if (v60)
+        userUnlockCertificate = [v10 userUnlockCertificate];
+        if (userUnlockCertificate)
         {
-          v61 = SecCertificateCopyKey(v60);
+          v61 = SecCertificateCopyKey(userUnlockCertificate);
           if (v61)
           {
             v62 = v61;
@@ -351,8 +351,8 @@ LABEL_37:
                 v72 = [(__CFDictionary *)v110 objectForKeyedSubscript:*MEMORY[0x277CDC018]];
                 [v68 setKeySizeInBits:{objc_msgSend(v72, "unsignedIntegerValue")}];
 
-                v73 = [v10 userUnlockHash];
-                v74 = [POTokenHelper dataToHex:v73];
+                userUnlockHash4 = [v10 userUnlockHash];
+                v74 = [POTokenHelper dataToHex:userUnlockHash4];
                 [v68 setLabel:v74];
 
                 [v68 setCanDecrypt:1];
@@ -516,41 +516,41 @@ id __36__POTokenHelper_insertTokenForUser___block_invoke_78()
   return v0;
 }
 
-- (void)removeTokenForUser:(id)a3
+- (void)removeTokenForUser:(id)user
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  userCopy = user;
   v5 = PO_LOG_POTokenHelper();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 136315650;
     v18 = "[POTokenHelper removeTokenForUser:]";
     v19 = 2114;
-    v20 = v4;
+    v20 = userCopy;
     v21 = 2112;
-    v22 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v5, OS_LOG_TYPE_DEFAULT, "%s userName = %{public}@ on %@", &v17, 0x20u);
   }
 
-  v6 = [(POTokenHelper *)self getDriverConfiguration];
-  v7 = v6;
-  if (v6)
+  getDriverConfiguration = [(POTokenHelper *)self getDriverConfiguration];
+  v7 = getDriverConfiguration;
+  if (getDriverConfiguration)
   {
-    [v6 removeTokenConfigurationForTokenInstanceID:v4];
+    [getDriverConfiguration removeTokenConfigurationForTokenInstanceID:userCopy];
     v8 = [POConfigurationCoreManager alloc];
-    v9 = [(POTokenHelper *)self userIdentifierProvider];
-    v10 = [(POConfigurationCoreManager *)v8 initWithUserName:v4 identifierProvider:v9 sharedOnly:1];
+    userIdentifierProvider = [(POTokenHelper *)self userIdentifierProvider];
+    v10 = [(POConfigurationCoreManager *)v8 initWithUserName:userCopy identifierProvider:userIdentifierProvider sharedOnly:1];
 
-    v11 = [v10 currentUserConfiguration];
-    v12 = v11;
-    if (v11)
+    currentUserConfiguration = [v10 currentUserConfiguration];
+    v12 = currentUserConfiguration;
+    if (currentUserConfiguration)
     {
-      v13 = [v11 userDecryptionKeyHash];
+      userDecryptionKeyHash = [currentUserConfiguration userDecryptionKeyHash];
 
-      if (v13)
+      if (userDecryptionKeyHash)
       {
-        v14 = [v12 userDecryptionKeyHash];
-        v15 = [POTokenHelper dataToHex:v14];
+        userDecryptionKeyHash2 = [v12 userDecryptionKeyHash];
+        v15 = [POTokenHelper dataToHex:userDecryptionKeyHash2];
         [v7 removeTokenConfigurationForTokenInstanceID:v15];
       }
     }
@@ -575,45 +575,45 @@ id __36__POTokenHelper_insertTokenForUser___block_invoke_78()
   _os_log_debug_impl(v0, v1, v2, v3, v4, 2u);
 }
 
-- (id)tokenHashForUser:(id)a3
+- (id)tokenHashForUser:(id)user
 {
-  v3 = [(POTokenHelper *)self tokenHashDataForUser:a3];
+  v3 = [(POTokenHelper *)self tokenHashDataForUser:user];
   v4 = [POTokenHelper dataToHex:v3];
 
   return v4;
 }
 
-- (id)base64URLtokenHashForUser:(id)a3
+- (id)base64URLtokenHashForUser:(id)user
 {
-  v3 = [(POTokenHelper *)self tokenHashDataForUser:a3];
-  v4 = [v3 psso_base64URLEncodedString];
+  v3 = [(POTokenHelper *)self tokenHashDataForUser:user];
+  psso_base64URLEncodedString = [v3 psso_base64URLEncodedString];
 
-  return v4;
+  return psso_base64URLEncodedString;
 }
 
-- (id)tokenHashDataForUser:(id)a3
+- (id)tokenHashDataForUser:(id)user
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  userCopy = user;
   v5 = PO_LOG_POTokenHelper();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v16 = 136315650;
     v17 = "[POTokenHelper tokenHashDataForUser:]";
     v18 = 2114;
-    v19 = v4;
+    v19 = userCopy;
     v20 = 2112;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v5, OS_LOG_TYPE_DEFAULT, "%s userName = %{public}@ on %@", &v16, 0x20u);
   }
 
   v6 = [POConfigurationCoreManager alloc];
-  v7 = [(POTokenHelper *)self userIdentifierProvider];
-  v8 = [(POConfigurationCoreManager *)v6 initWithUserName:v4 identifierProvider:v7 sharedOnly:1];
+  userIdentifierProvider = [(POTokenHelper *)self userIdentifierProvider];
+  v8 = [(POConfigurationCoreManager *)v6 initWithUserName:userCopy identifierProvider:userIdentifierProvider sharedOnly:1];
 
-  v9 = [(POConfigurationCoreManager *)v8 currentUserConfiguration];
-  v10 = v9;
-  if (v9 && [v9 userDecryptionCertificate] && (objc_msgSend(v10, "userDecryptionKeyHash"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+  currentUserConfiguration = [(POConfigurationCoreManager *)v8 currentUserConfiguration];
+  v10 = currentUserConfiguration;
+  if (currentUserConfiguration && [currentUserConfiguration userDecryptionCertificate] && (objc_msgSend(v10, "userDecryptionKeyHash"), v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
   {
     if ([v10 userDecryptionCertificate])
     {
@@ -645,21 +645,21 @@ LABEL_11:
   return v12;
 }
 
-+ (id)dataToHex:(id)a3
++ (id)dataToHex:(id)hex
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  hexCopy = hex;
+  v4 = hexCopy;
+  if (hexCopy)
   {
-    v5 = [v3 length];
+    v5 = [hexCopy length];
     v6 = [MEMORY[0x277CCAB68] stringWithCapacity:2 * v5];
-    v7 = [v4 bytes];
+    bytes = [v4 bytes];
     if ([v4 length])
     {
       v8 = 0;
       do
       {
-        [v6 appendFormat:@"%02lX", *(v7 + v8++)];
+        [v6 appendFormat:@"%02lX", *(bytes + v8++)];
       }
 
       while (v8 < [v4 length]);
@@ -674,29 +674,29 @@ LABEL_11:
   return v6;
 }
 
-+ (BOOL)tokenIsAccessKey:(id)a3
++ (BOOL)tokenIsAccessKey:(id)key
 {
-  v3 = [a3 lowercaseString];
-  v4 = [@"com.apple.PlatformSSO.AccessKey" lowercaseString];
-  v5 = [v3 hasPrefix:v4];
+  lowercaseString = [key lowercaseString];
+  lowercaseString2 = [@"com.apple.PlatformSSO.AccessKey" lowercaseString];
+  v5 = [lowercaseString hasPrefix:lowercaseString2];
 
   return v5;
 }
 
-+ (id)parseUserNameFromMailboxData:(id)a3
++ (id)parseUserNameFromMailboxData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = PO_LOG_POTokenHelper();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(POTokenHelper *)a1 parseUserNameFromMailboxData:v4, v5];
+    [(POTokenHelper *)self parseUserNameFromMailboxData:dataCopy, v5];
   }
 
-  if ([v4 length] <= 0x1000)
+  if ([dataCopy length] <= 0x1000)
   {
-    v8 = [MEMORY[0x277CC55F8] recordFromData:v4];
+    v8 = [MEMORY[0x277CC55F8] recordFromData:dataCopy];
     v6 = v8;
-    if (!v4)
+    if (!dataCopy)
     {
       v11 = PO_LOG_POTokenHelper();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -709,25 +709,25 @@ LABEL_11:
     }
 
     v9 = MEMORY[0x277CC55F8];
-    v10 = [v8 value];
-    v11 = [v9 sequenceOfRecordsFromData:v10];
+    value = [v8 value];
+    v11 = [v9 sequenceOfRecordsFromData:value];
 
     v12 = [v11 objectAtIndexedSubscript:0];
     if ([v12 tag] == 128)
     {
-      v13 = [v12 value];
-      v14 = [v13 length];
+      value2 = [v12 value];
+      v14 = [value2 length];
 
       if (v14 < 0x81)
       {
         v16 = objc_alloc(MEMORY[0x277CCACA8]);
-        v15 = [v12 value];
-        v7 = [v16 initWithData:v15 encoding:4];
+        value3 = [v12 value];
+        v7 = [v16 initWithData:value3 encoding:4];
         goto LABEL_19;
       }
 
-      v15 = PO_LOG_POTokenHelper();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      value3 = PO_LOG_POTokenHelper();
+      if (os_log_type_enabled(value3, OS_LOG_TYPE_ERROR))
       {
         +[POTokenHelper parseUserNameFromMailboxData:];
       }
@@ -735,8 +735,8 @@ LABEL_11:
 
     else
     {
-      v15 = PO_LOG_POTokenHelper();
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      value3 = PO_LOG_POTokenHelper();
+      if (os_log_type_enabled(value3, OS_LOG_TYPE_ERROR))
       {
         +[POTokenHelper parseUserNameFromMailboxData:];
       }
@@ -752,7 +752,7 @@ LABEL_20:
   v6 = PO_LOG_POTokenHelper();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [POTokenHelper parseUserNameFromMailboxData:v4];
+    [POTokenHelper parseUserNameFromMailboxData:dataCopy];
   }
 
   v7 = 0;
@@ -761,32 +761,32 @@ LABEL_21:
   return v7;
 }
 
-- (BOOL)retrieveCertAndKeyForTokenId:(id)a3 context:(id)a4 certificate:(__SecCertificate *)a5 privateKey:(__SecKey *)a6
+- (BOOL)retrieveCertAndKeyForTokenId:(id)id context:(id)context certificate:(__SecCertificate *)certificate privateKey:(__SecKey *)key
 {
   v20 = *MEMORY[0x277D85DE8];
-  v9 = a3;
+  idCopy = id;
   v10 = PO_LOG_POTokenHelper();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 136315650;
     v15 = "[POTokenHelper retrieveCertAndKeyForTokenId:context:certificate:privateKey:]";
     v16 = 2114;
-    v17 = v9;
+    v17 = idCopy;
     v18 = 2112;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25E8B1000, v10, OS_LOG_TYPE_DEFAULT, "%s tokenName = %{public}@ on %@", &v14, 0x20u);
   }
 
-  if (*a5)
+  if (*certificate)
   {
-    CFRelease(*a5);
-    *a5 = 0;
+    CFRelease(*certificate);
+    *certificate = 0;
   }
 
-  if (*a6)
+  if (*key)
   {
-    CFRelease(*a6);
-    *a6 = 0;
+    CFRelease(*key);
+    *key = 0;
   }
 
   v11 = PO_LOG_POTokenHelper();
@@ -799,9 +799,9 @@ LABEL_21:
   return 0;
 }
 
-- (id)findTokenIdForSmartCardBoundUser:(id)a3 tokenHash:(id *)a4
+- (id)findTokenIdForSmartCardBoundUser:(id)user tokenHash:(id *)hash
 {
-  v4 = a3;
+  userCopy = user;
   v5 = PO_LOG_POTokenHelper();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -811,9 +811,9 @@ LABEL_21:
   return 0;
 }
 
-- (id)findTokenIdForSmartCardAMUser:(id)a3 tokenHash:(id *)a4
+- (id)findTokenIdForSmartCardAMUser:(id)user tokenHash:(id *)hash
 {
-  v4 = a3;
+  userCopy = user;
   v5 = PO_LOG_POTokenHelper();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -823,9 +823,9 @@ LABEL_21:
   return 0;
 }
 
-- (id)findInfoForTokenId:(id)a3
+- (id)findInfoForTokenId:(id)id
 {
-  v3 = a3;
+  idCopy = id;
   v4 = PO_LOG_POTokenHelper();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -835,12 +835,12 @@ LABEL_21:
   return 0;
 }
 
-- (BOOL)canTokenIdLogin:(id)a3 pubKeyHash:(id)a4
+- (BOOL)canTokenIdLogin:(id)login pubKeyHash:(id)hash
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [objc_alloc(MEMORY[0x277CC5600]) initWithTokenID:v5];
+  loginCopy = login;
+  hashCopy = hash;
+  v7 = [objc_alloc(MEMORY[0x277CC5600]) initWithTokenID:loginCopy];
   v8 = [v7 sessionWithLAContext:0 error:0];
 
   if (v8)
@@ -849,12 +849,12 @@ LABEL_21:
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v9 = [v8 keys];
-    v10 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+    keys = [v8 keys];
+    v10 = [keys countByEnumeratingWithState:&v23 objects:v27 count:16];
     if (v10)
     {
       v11 = v10;
-      v22 = v5;
+      v22 = loginCopy;
       v12 = *v24;
       v13 = *MEMORY[0x277CDBF28];
       while (2)
@@ -863,15 +863,15 @@ LABEL_21:
         {
           if (*v24 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(keys);
           }
 
           v15 = *(*(&v23 + 1) + 8 * i);
           if ([v15 keyUsage])
           {
-            v16 = [v15 keychainAttributes];
-            v17 = [v16 objectForKeyedSubscript:v13];
-            v18 = [v17 isEqual:v6];
+            keychainAttributes = [v15 keychainAttributes];
+            v17 = [keychainAttributes objectForKeyedSubscript:v13];
+            v18 = [v17 isEqual:hashCopy];
 
             if (v18)
             {
@@ -881,7 +881,7 @@ LABEL_21:
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v23 objects:v27 count:16];
+        v11 = [keys countByEnumeratingWithState:&v23 objects:v27 count:16];
         if (v11)
         {
           continue;
@@ -892,7 +892,7 @@ LABEL_21:
 
       v19 = 0;
 LABEL_14:
-      v5 = v22;
+      loginCopy = v22;
     }
 
     else
@@ -930,9 +930,9 @@ LABEL_14:
   return 0;
 }
 
-- (BOOL)waitForTokenAvailable:(id)a3
+- (BOOL)waitForTokenAvailable:(id)available
 {
-  v3 = a3;
+  availableCopy = available;
   v4 = PO_LOG_POTokenHelper();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {

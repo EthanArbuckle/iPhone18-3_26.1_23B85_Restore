@@ -1,28 +1,28 @@
 @interface NURenderView
 - (BOOL)hasTransitionAnimation;
-- (CGRect)convertRectToImage:(CGRect)a3;
-- (NURenderView)initWithCoder:(id)a3;
-- (NURenderView)initWithFrame:(CGRect)a3;
-- (void)animationDidStart:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (CGRect)convertRectToImage:(CGRect)image;
+- (NURenderView)initWithCoder:(id)coder;
+- (NURenderView)initWithFrame:(CGRect)frame;
+- (void)animationDidStart:(id)start;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)layoutSubviews;
 - (void)renderFrameReachedTargetSize;
-- (void)setGeometry:(id)a3;
-- (void)transitionToSize:(CGSize)a3 duration:(double)a4 animationCurve:(id)a5 completion:(id)a6;
-- (void)transitionToSize:(CGSize)a3 offset:(CGPoint)a4 duration:(double)a5 animationCurve:(id)a6 completion:(id)a7;
-- (void)willMoveToWindow:(id)a3;
+- (void)setGeometry:(id)geometry;
+- (void)transitionToSize:(CGSize)size duration:(double)duration animationCurve:(id)curve completion:(id)completion;
+- (void)transitionToSize:(CGSize)size offset:(CGPoint)offset duration:(double)duration animationCurve:(id)curve completion:(id)completion;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation NURenderView
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
+  finishedCopy = finished;
   v20 = *MEMORY[0x277D85DE8];
   geometryAnimationLayer = self->_geometryAnimationLayer;
-  v7 = a3;
+  stopCopy = stop;
   v8 = [(CALayer *)geometryAnimationLayer animationForKey:@"NUTransitionAnimationKey"];
-  v9 = [v8 isEqual:v7];
+  v9 = [v8 isEqual:stopCopy];
 
   if (v9)
   {
@@ -38,14 +38,14 @@
     {
       shouldRemoveAnimation = self->_shouldRemoveAnimation;
       v17[0] = 67109376;
-      v17[1] = v4;
+      v17[1] = finishedCopy;
       v18 = 1024;
       v19 = shouldRemoveAnimation;
       _os_log_debug_impl(&dword_25BD29000, v12, OS_LOG_TYPE_DEBUG, "[NURenderView animationDidStop:finished:] - finished: %d shouldRemoveAnimation: %d", v17, 0xEu);
     }
 
     self->_transitionAnimationInFlight = 0;
-    if (self->_shouldRemoveAnimation && v4)
+    if (self->_shouldRemoveAnimation && finishedCopy)
     {
       v14 = [(CALayer *)self->_geometryAnimationLayer animationForKey:@"NUTransitionAnimationKey"];
 
@@ -69,12 +69,12 @@
   }
 }
 
-- (void)animationDidStart:(id)a3
+- (void)animationDidStart:(id)start
 {
   geometryAnimationLayer = self->_geometryAnimationLayer;
-  v5 = a3;
+  startCopy = start;
   v6 = [(CALayer *)geometryAnimationLayer animationForKey:@"NUTransitionAnimationKey"];
-  v7 = [v6 isEqual:v5];
+  v7 = [v6 isEqual:startCopy];
 
   if (v7)
   {
@@ -83,12 +83,12 @@
   }
 }
 
-- (void)transitionToSize:(CGSize)a3 offset:(CGPoint)a4 duration:(double)a5 animationCurve:(id)a6 completion:(id)a7
+- (void)transitionToSize:(CGSize)size offset:(CGPoint)offset duration:(double)duration animationCurve:(id)curve completion:(id)completion
 {
-  y = a4.y;
-  x = a4.x;
-  v12 = a6;
-  v13 = a7;
+  y = offset.y;
+  x = offset.x;
+  curveCopy = curve;
+  completionCopy = completion;
   [(NURenderView *)self frame];
   NUPixelSizeFromCGSize();
   NUPixelSizeFromCGSize();
@@ -123,22 +123,22 @@
     v30 = v27;
   }
 
-  if (a5 <= 0.0)
+  if (duration <= 0.0)
   {
     [(CALayer *)self->_geometryAnimationLayer removeAllAnimations];
     v27 = v30;
     [(CALayer *)self->_geometryAnimationLayer setSublayerTransform:&v27];
-    if (v13)
+    if (completionCopy)
     {
-      v13[2](v13);
+      completionCopy[2](completionCopy);
     }
   }
 
   else
   {
     v21 = [MEMORY[0x277CD9E10] animationWithKeyPath:@"sublayerTransform"];
-    [v21 setDuration:a5];
-    [v21 setTimingFunction:v12];
+    [v21 setDuration:duration];
+    [v21 setTimingFunction:curveCopy];
     v27 = v30;
     v22 = [MEMORY[0x277CCAE60] valueWithCATransform3D:&v27];
     [v21 setToValue:v22];
@@ -152,7 +152,7 @@
     v24[1] = 3221225472;
     v24[2] = __75__NURenderView_transitionToSize_offset_duration_animationCurve_completion___block_invoke;
     v24[3] = &unk_279974038;
-    v25 = v13;
+    v25 = completionCopy;
     [v23 setCompletionBlock:v24];
     [(CALayer *)self->_geometryAnimationLayer addAnimation:v21 forKey:@"NUTransitionAnimationKey"];
     [MEMORY[0x277CD9FF0] commit];
@@ -170,30 +170,30 @@ uint64_t __75__NURenderView_transitionToSize_offset_duration_animationCurve_comp
   return result;
 }
 
-- (void)transitionToSize:(CGSize)a3 duration:(double)a4 animationCurve:(id)a5 completion:(id)a6
+- (void)transitionToSize:(CGSize)size duration:(double)duration animationCurve:(id)curve completion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
-  v11 = a6;
-  v14 = a5;
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
+  curveCopy = curve;
   [(NURenderView *)self frame];
-  [(NURenderView *)self transitionToSize:v14 offset:v11 duration:width animationCurve:height completion:(v12 - width) * -0.5, (v13 - height) * -0.5, a4];
+  [(NURenderView *)self transitionToSize:curveCopy offset:completionCopy duration:width animationCurve:height completion:(v12 - width) * -0.5, (v13 - height) * -0.5, duration];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
-  v4 = [a3 screen];
-  v5 = v4;
-  if (v4)
+  screen = [window screen];
+  v5 = screen;
+  if (screen)
   {
-    [v4 scale];
+    [screen scale];
     v7 = v6;
   }
 
   else
   {
-    v8 = [MEMORY[0x277D759A0] mainScreen];
-    [v8 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v7 = v9;
   }
 
@@ -207,14 +207,14 @@ uint64_t __75__NURenderView_transitionToSize_offset_duration_animationCurve_comp
   [MEMORY[0x277CD9FF0] commit];
 }
 
-- (CGRect)convertRectToImage:(CGRect)a3
+- (CGRect)convertRectToImage:(CGRect)image
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(NURenderView *)self layer];
-  [v8 convertRect:self->_containerLayer toLayer:{x, y, width, height}];
+  height = image.size.height;
+  width = image.size.width;
+  y = image.origin.y;
+  x = image.origin.x;
+  layer = [(NURenderView *)self layer];
+  [layer convertRect:self->_containerLayer toLayer:{x, y, width, height}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -351,25 +351,25 @@ LABEL_16:
   return v3;
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
-  v4 = a3;
-  v5 = [(NURenderView *)self geometry];
-  [v4 size];
-  [v5 size];
+  geometryCopy = geometry;
+  geometry = [(NURenderView *)self geometry];
+  [geometryCopy size];
+  [geometry size];
   if ((NUPixelSizeEqualToSize() & 1) == 0)
   {
-    [v4 size];
+    [geometryCopy size];
     NUPixelSizeToCGSize();
     v7 = v6;
     v9 = v8;
-    v10 = [(NURenderView *)self window];
-    v11 = [v10 screen];
+    window = [(NURenderView *)self window];
+    screen = [window screen];
 
     v12 = 1.0;
-    if (v11)
+    if (screen)
     {
-      [v11 scale];
+      [screen scale];
     }
 
     v13 = 1.0 / v12;
@@ -388,14 +388,14 @@ LABEL_16:
   }
 
   geometry = self->_geometry;
-  self->_geometry = v4;
+  self->_geometry = geometryCopy;
 }
 
 - (void)layoutSubviews
 {
-  v3 = [(NURenderView *)self window];
+  window = [(NURenderView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(NURenderView *)self bounds];
     v5 = v4;
@@ -411,11 +411,11 @@ LABEL_16:
   }
 }
 
-- (NURenderView)initWithCoder:(id)a3
+- (NURenderView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = NURenderView;
-  v3 = [(NURenderView *)&v6 initWithCoder:a3];
+  v3 = [(NURenderView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -425,11 +425,11 @@ LABEL_16:
   return v4;
 }
 
-- (NURenderView)initWithFrame:(CGRect)a3
+- (NURenderView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = NURenderView;
-  v3 = [(NURenderView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NURenderView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

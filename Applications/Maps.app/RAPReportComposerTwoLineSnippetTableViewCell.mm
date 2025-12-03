@@ -1,39 +1,39 @@
 @interface RAPReportComposerTwoLineSnippetTableViewCell
 + (id)measuringCell;
-- (RAPReportComposerTwoLineSnippetTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (double)preferredHeightInTableView:(id)a3;
+- (RAPReportComposerTwoLineSnippetTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (double)preferredHeightInTableView:(id)view;
 - (void)_recreateConstraints;
 - (void)_updateLeftRightConstraints;
 - (void)didMoveToSuperview;
 - (void)layoutMarginsDidChange;
-- (void)setThirdLineAccessoryView:(id)a3;
-- (void)updateTextWithReplacements:(id)a3;
+- (void)setThirdLineAccessoryView:(id)view;
+- (void)updateTextWithReplacements:(id)replacements;
 @end
 
 @implementation RAPReportComposerTwoLineSnippetTableViewCell
 
-- (double)preferredHeightInTableView:(id)a3
+- (double)preferredHeightInTableView:(id)view
 {
-  [a3 bounds];
+  [view bounds];
   v5 = v4;
-  v6 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self contentView];
-  [v6 systemLayoutSizeFittingSize:{v5, 0.0}];
+  contentView = [(RAPReportComposerTwoLineSnippetTableViewCell *)self contentView];
+  [contentView systemLayoutSizeFittingSize:{v5, 0.0}];
   v8 = v7;
 
   return v8;
 }
 
-- (void)updateTextWithReplacements:(id)a3
+- (void)updateTextWithReplacements:(id)replacements
 {
-  v15 = a3;
-  v4 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self attributedStringFormat];
-  v5 = [v4 string];
-  v6 = [v5 rangeOfString:@"\n"];
+  replacementsCopy = replacements;
+  attributedStringFormat = [(RAPReportComposerTwoLineSnippetTableViewCell *)self attributedStringFormat];
+  string = [attributedStringFormat string];
+  v6 = [string rangeOfString:@"\n"];
   v8 = v7;
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = v4;
+    v9 = attributedStringFormat;
     v10 = 0;
     if (v9)
     {
@@ -50,23 +50,23 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v9 = [v4 attributedSubstringFromRange:{0, v6}];
-  v10 = [v4 attributedSubstringFromRange:{&v6[v8], objc_msgSend(v4, "length") - &v6[v8]}];
+  v9 = [attributedStringFormat attributedSubstringFromRange:{0, v6}];
+  v10 = [attributedStringFormat attributedSubstringFromRange:{&v6[v8], objc_msgSend(attributedStringFormat, "length") - &v6[v8]}];
   if (!v9)
   {
     goto LABEL_6;
   }
 
 LABEL_3:
-  v11 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self defaultReplacementAttributes];
-  v12 = [v9 _mapkit_attributedStringByApplyingBindingFormatReplacements:v15 defaultReplacementAttributes:v11];
+  defaultReplacementAttributes = [(RAPReportComposerTwoLineSnippetTableViewCell *)self defaultReplacementAttributes];
+  v12 = [v9 _mapkit_attributedStringByApplyingBindingFormatReplacements:replacementsCopy defaultReplacementAttributes:defaultReplacementAttributes];
   [(UILabel *)self->_firstLineLabel setAttributedText:v12];
 
   if (v10)
   {
 LABEL_4:
-    v13 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self defaultReplacementAttributes];
-    v14 = [v10 _mapkit_attributedStringByApplyingBindingFormatReplacements:v15 defaultReplacementAttributes:v13];
+    defaultReplacementAttributes2 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self defaultReplacementAttributes];
+    v14 = [v10 _mapkit_attributedStringByApplyingBindingFormatReplacements:replacementsCopy defaultReplacementAttributes:defaultReplacementAttributes2];
     [(UILabel *)self->_secondLineLabel setAttributedText:v14];
 
     goto LABEL_8;
@@ -95,8 +95,8 @@ LABEL_8:
 
 - (void)_updateLeftRightConstraints
 {
-  v3 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self contentView];
-  [v3 layoutMargins];
+  contentView = [(RAPReportComposerTwoLineSnippetTableViewCell *)self contentView];
+  [contentView layoutMargins];
   v5 = v4;
   v7 = v6;
 
@@ -122,15 +122,15 @@ LABEL_8:
         }
 
         v12 = *(*(&v54 + 1) + 8 * v11);
-        v13 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self imageView];
-        v14 = [v13 image];
-        if (v14)
+        imageView = [(RAPReportComposerTwoLineSnippetTableViewCell *)self imageView];
+        image = [imageView image];
+        if (image)
         {
-          v15 = v14;
-          v16 = [v12 secondItem];
-          v17 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self imageView];
+          v15 = image;
+          secondItem = [v12 secondItem];
+          imageView2 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self imageView];
 
-          if (v16 == v17)
+          if (secondItem == imageView2)
           {
             goto LABEL_19;
           }
@@ -140,34 +140,34 @@ LABEL_8:
         {
         }
 
-        v18 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self imageView];
-        v19 = [v18 image];
+        imageView3 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self imageView];
+        image2 = [imageView3 image];
 
-        if (v19)
+        if (image2)
         {
-          v20 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self contentView];
-          v21 = [v20 constraints];
-          v22 = [v21 containsObject:v12];
+          contentView2 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self contentView];
+          constraints = [contentView2 constraints];
+          v22 = [constraints containsObject:v12];
 
           if (v22)
           {
-            v23 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self contentView];
-            [v23 removeConstraint:v12];
+            contentView3 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self contentView];
+            [contentView3 removeConstraint:v12];
           }
 
-          v24 = [v12 firstItem];
-          v25 = [v24 leadingAnchor];
-          v26 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self imageView];
-          v27 = [v26 trailingAnchor];
-          v28 = [v25 constraintEqualToAnchor:v27 constant:15.0];
+          firstItem = [v12 firstItem];
+          leadingAnchor = [firstItem leadingAnchor];
+          imageView4 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self imageView];
+          trailingAnchor = [imageView4 trailingAnchor];
+          v28 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:15.0];
         }
 
         else
         {
-          v30 = [v12 secondItem];
-          v31 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self imageView];
+          secondItem2 = [v12 secondItem];
+          imageView5 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self imageView];
 
-          if (v30 != v31)
+          if (secondItem2 != imageView5)
           {
             [v12 setConstant:v5];
 LABEL_19:
@@ -175,28 +175,28 @@ LABEL_19:
             goto LABEL_20;
           }
 
-          v32 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self contentView];
-          v33 = [v32 constraints];
-          v22 = [v33 containsObject:v12];
+          contentView4 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self contentView];
+          constraints2 = [contentView4 constraints];
+          v22 = [constraints2 containsObject:v12];
 
           if (v22)
           {
-            v34 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self contentView];
-            [v34 removeConstraint:v12];
+            contentView5 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self contentView];
+            [contentView5 removeConstraint:v12];
           }
 
-          v35 = [v12 firstItem];
-          v36 = [v35 leadingAnchor];
-          v37 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self contentView];
-          v38 = [v37 leadingAnchor];
-          v28 = [v36 constraintEqualToAnchor:v38 constant:v5];
+          firstItem2 = [v12 firstItem];
+          leadingAnchor2 = [firstItem2 leadingAnchor];
+          contentView6 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self contentView];
+          leadingAnchor3 = [contentView6 leadingAnchor];
+          v28 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3 constant:v5];
         }
 
         [v28 setIdentifier:@"Left margin"];
         if (v22)
         {
-          v29 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self contentView];
-          [v29 addConstraint:v28];
+          contentView7 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self contentView];
+          [contentView7 addConstraint:v28];
         }
 
         [v49 addObject:v28];
@@ -254,12 +254,12 @@ LABEL_20:
     [NSLayoutConstraint deactivateConstraints:?];
   }
 
-  v3 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self thirdLineAccessoryView];
-  v4 = v3;
+  thirdLineAccessoryView = [(RAPReportComposerTwoLineSnippetTableViewCell *)self thirdLineAccessoryView];
+  v4 = thirdLineAccessoryView;
   firstLineLabel = self->_firstLineLabel;
-  if (v3)
+  if (thirdLineAccessoryView)
   {
-    _NSDictionaryOfVariableBindings(@"_firstLineLabel, _secondLineLabel, accessoryView", firstLineLabel, self->_secondLineLabel, v3, 0);
+    _NSDictionaryOfVariableBindings(@"_firstLineLabel, _secondLineLabel, accessoryView", firstLineLabel, self->_secondLineLabel, thirdLineAccessoryView, 0);
   }
 
   else
@@ -270,7 +270,7 @@ LABEL_20:
   +[TransitArtworkListView transitArtworkListHeight];
   v86 = sub_1005FF458(@"topBottomMargin, lineMargin, artworkListHeight", 10.0, v7, v8, v9, v10, v11, v12, v13, 0x4014000000000000);
   [(UILabel *)self->_firstLineLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v92 = self;
+  selfCopy = self;
   [(UILabel *)self->_secondLineLabel setTranslatesAutoresizingMaskIntoConstraints:0];
   v84 = v4;
   [(UILabel *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -298,16 +298,16 @@ LABEL_20:
         }
 
         v18 = *(*(&v93 + 1) + 8 * i);
-        v19 = [v18 leadingAnchor];
-        v20 = [(RAPReportComposerTwoLineSnippetTableViewCell *)v92 contentView];
-        v21 = [v20 leadingAnchor];
-        v22 = [v19 constraintEqualToAnchor:v21];
+        leadingAnchor = [v18 leadingAnchor];
+        contentView = [(RAPReportComposerTwoLineSnippetTableViewCell *)selfCopy contentView];
+        leadingAnchor2 = [contentView leadingAnchor];
+        v22 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
         [v22 setIdentifier:@"Left margin"];
-        v23 = [v18 trailingAnchor];
-        v24 = [(RAPReportComposerTwoLineSnippetTableViewCell *)v92 contentView];
-        v25 = [v24 trailingAnchor];
-        v26 = [v23 constraintEqualToAnchor:v25];
+        trailingAnchor = [v18 trailingAnchor];
+        contentView2 = [(RAPReportComposerTwoLineSnippetTableViewCell *)selfCopy contentView];
+        trailingAnchor2 = [contentView2 trailingAnchor];
+        v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
         [v26 setIdentifier:@"Right margin"];
         [v91 addObject:v22];
@@ -321,16 +321,16 @@ LABEL_20:
   }
 
   v27 = [v91 copy];
-  leftMarginConstraints = v92->_leftMarginConstraints;
-  v92->_leftMarginConstraints = v27;
+  leftMarginConstraints = selfCopy->_leftMarginConstraints;
+  selfCopy->_leftMarginConstraints = v27;
 
   v29 = [v90 copy];
-  rightMarginConstraints = v92->_rightMarginConstraints;
-  v92->_rightMarginConstraints = v29;
+  rightMarginConstraints = selfCopy->_rightMarginConstraints;
+  selfCopy->_rightMarginConstraints = v29;
 
-  [(RAPReportComposerTwoLineSnippetTableViewCell *)v92 _updateLeftRightConstraints];
-  [v85 addObjectsFromArray:v92->_leftMarginConstraints];
-  [v85 addObjectsFromArray:v92->_rightMarginConstraints];
+  [(RAPReportComposerTwoLineSnippetTableViewCell *)selfCopy _updateLeftRightConstraints];
+  [v85 addObjectsFromArray:selfCopy->_leftMarginConstraints];
+  [v85 addObjectsFromArray:selfCopy->_rightMarginConstraints];
   v31 = +[NSLayoutConstraint constraintsWithVisualFormat:options:metrics:views:](NSLayoutConstraint, "constraintsWithVisualFormat:options:metrics:views:", @"V:|-topBottomMargin-[_firstLineLabel]", 0, v86, v87);
   v97 = 0u;
   v98 = 0u;
@@ -366,19 +366,19 @@ LABEL_20:
 
   [v85 addObjectsFromArray:v31];
 
-  v39 = [(UILabel *)v92->_secondLineLabel text];
-  if ([v39 length])
+  text = [(UILabel *)selfCopy->_secondLineLabel text];
+  if ([text length])
   {
 
     v40 = 1;
     v41 = v84;
 LABEL_22:
-    secondLineLabel = v92->_secondLineLabel;
+    secondLineLabel = selfCopy->_secondLineLabel;
     goto LABEL_23;
   }
 
-  v55 = [(UILabel *)v92->_secondLineLabel attributedText];
-  v56 = [v55 length];
+  attributedText = [(UILabel *)selfCopy->_secondLineLabel attributedText];
+  v56 = [attributedText length];
   v40 = v56 != 0;
 
   v41 = v84;
@@ -391,14 +391,14 @@ LABEL_22:
   secondLineLabel = v84;
 LABEL_23:
   obja = secondLineLabel;
-  v43 = [(UILabel *)obja topAnchor];
-  v44 = [(UILabel *)v92->_firstLineLabel bottomAnchor];
-  v45 = [v43 constraintEqualToAnchor:v44];
-  collapsibleFirstSecondLineMargin = v92->_collapsibleFirstSecondLineMargin;
-  v92->_collapsibleFirstSecondLineMargin = v45;
+  topAnchor = [(UILabel *)obja topAnchor];
+  bottomAnchor = [(UILabel *)selfCopy->_firstLineLabel bottomAnchor];
+  v45 = [topAnchor constraintEqualToAnchor:bottomAnchor];
+  collapsibleFirstSecondLineMargin = selfCopy->_collapsibleFirstSecondLineMargin;
+  selfCopy->_collapsibleFirstSecondLineMargin = v45;
 
-  [(NSLayoutConstraint *)v92->_collapsibleFirstSecondLineMargin setIdentifier:@"Collapsible first-second line margin"];
-  [v85 addObject:v92->_collapsibleFirstSecondLineMargin];
+  [(NSLayoutConstraint *)selfCopy->_collapsibleFirstSecondLineMargin setIdentifier:@"Collapsible first-second line margin"];
+  [v85 addObject:selfCopy->_collapsibleFirstSecondLineMargin];
   if (!v41)
   {
     v57 = [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_secondLineLabel]-topBottomMargin-|" options:0 metrics:v86 views:v87];
@@ -556,42 +556,42 @@ LABEL_59:
     v73 = v84;
   }
 
-  v81 = [(RAPReportComposerTwoLineSnippetTableViewCell *)v92 contentView];
-  [v81 addConstraints:v72];
+  contentView3 = [(RAPReportComposerTwoLineSnippetTableViewCell *)selfCopy contentView];
+  [contentView3 addConstraints:v72];
 
   v82 = [v72 copy];
-  allConstraints = v92->_allConstraints;
-  v92->_allConstraints = v82;
+  allConstraints = selfCopy->_allConstraints;
+  selfCopy->_allConstraints = v82;
 }
 
-- (void)setThirdLineAccessoryView:(id)a3
+- (void)setThirdLineAccessoryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   thirdLineAccessoryView = self->_thirdLineAccessoryView;
-  if (thirdLineAccessoryView != v5)
+  if (thirdLineAccessoryView != viewCopy)
   {
-    v9 = v5;
+    v9 = viewCopy;
     [(UIView *)thirdLineAccessoryView removeFromSuperview];
-    objc_storeStrong(&self->_thirdLineAccessoryView, a3);
+    objc_storeStrong(&self->_thirdLineAccessoryView, view);
     if (self->_thirdLineAccessoryView)
     {
-      v7 = [(RAPReportComposerTwoLineSnippetTableViewCell *)self contentView];
-      [v7 addSubview:self->_thirdLineAccessoryView];
+      contentView = [(RAPReportComposerTwoLineSnippetTableViewCell *)self contentView];
+      [contentView addSubview:self->_thirdLineAccessoryView];
 
       LODWORD(v8) = 1148829696;
       [(UIView *)self->_thirdLineAccessoryView setContentCompressionResistancePriority:1 forAxis:v8];
     }
 
     [(RAPReportComposerTwoLineSnippetTableViewCell *)self _recreateConstraints];
-    v5 = v9;
+    viewCopy = v9;
   }
 }
 
-- (RAPReportComposerTwoLineSnippetTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (RAPReportComposerTwoLineSnippetTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v15.receiver = self;
   v15.super_class = RAPReportComposerTwoLineSnippetTableViewCell;
-  v4 = [(RAPReportComposerTwoLineSnippetTableViewCell *)&v15 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(RAPReportComposerTwoLineSnippetTableViewCell *)&v15 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -602,8 +602,8 @@ LABEL_59:
 
     [(UILabel *)v5->_firstLineLabel setNumberOfLines:3];
     [(UILabel *)v5->_firstLineLabel setLineBreakMode:4];
-    v8 = [(RAPReportComposerTwoLineSnippetTableViewCell *)v5 contentView];
-    [v8 addSubview:v5->_firstLineLabel];
+    contentView = [(RAPReportComposerTwoLineSnippetTableViewCell *)v5 contentView];
+    [contentView addSubview:v5->_firstLineLabel];
 
     LODWORD(v9) = 1148829696;
     [(UILabel *)v5->_firstLineLabel setContentCompressionResistancePriority:1 forAxis:v9];
@@ -613,8 +613,8 @@ LABEL_59:
 
     [(UILabel *)v5->_secondLineLabel setNumberOfLines:3];
     [(UILabel *)v5->_secondLineLabel setLineBreakMode:4];
-    v12 = [(RAPReportComposerTwoLineSnippetTableViewCell *)v5 contentView];
-    [v12 addSubview:v5->_secondLineLabel];
+    contentView2 = [(RAPReportComposerTwoLineSnippetTableViewCell *)v5 contentView];
+    [contentView2 addSubview:v5->_secondLineLabel];
 
     LODWORD(v13) = 1148829696;
     [(UILabel *)v5->_secondLineLabel setContentCompressionResistancePriority:1 forAxis:v13];
@@ -631,11 +631,11 @@ LABEL_59:
     dispatch_once(&qword_10195F0C8, &stru_101652A60);
   }
 
-  v3 = NSStringFromClass(a1);
+  v3 = NSStringFromClass(self);
   v4 = [qword_10195F0C0 objectForKeyedSubscript:v3];
   if (!v4)
   {
-    v4 = [[a1 alloc] initWithStyle:0 reuseIdentifier:0];
+    v4 = [[self alloc] initWithStyle:0 reuseIdentifier:0];
     [qword_10195F0C0 setObject:v4 forKeyedSubscript:v3];
   }
 

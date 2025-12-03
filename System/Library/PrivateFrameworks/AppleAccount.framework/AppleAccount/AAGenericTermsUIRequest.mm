@@ -1,7 +1,7 @@
 @interface AAGenericTermsUIRequest
-- (AAGenericTermsUIRequest)initWithAccount:(id)a3 parameters:(id)a4 preferPassword:(BOOL)a5;
-- (AAGenericTermsUIRequest)initWithAccount:(id)a3 termsEntries:(id)a4;
-- (id)_requestParamsForTermsEntries:(id)a3 additionalInfo:(id)a4;
+- (AAGenericTermsUIRequest)initWithAccount:(id)account parameters:(id)parameters preferPassword:(BOOL)password;
+- (AAGenericTermsUIRequest)initWithAccount:(id)account termsEntries:(id)entries;
+- (id)_requestParamsForTermsEntries:(id)entries additionalInfo:(id)info;
 - (id)urlRequest;
 - (id)urlString;
 @end
@@ -11,49 +11,49 @@
 - (id)urlString
 {
   v2 = +[AAURLConfiguration urlConfiguration];
-  v3 = [v2 genericTermsURL];
+  genericTermsURL = [v2 genericTermsURL];
 
-  return v3;
+  return genericTermsURL;
 }
 
-- (AAGenericTermsUIRequest)initWithAccount:(id)a3 parameters:(id)a4 preferPassword:(BOOL)a5
+- (AAGenericTermsUIRequest)initWithAccount:(id)account parameters:(id)parameters preferPassword:(BOOL)password
 {
-  v9 = a3;
-  v10 = a4;
+  accountCopy = account;
+  parametersCopy = parameters;
   v15.receiver = self;
   v15.super_class = AAGenericTermsUIRequest;
   v11 = [(AAGenericTermsUIRequest *)&v15 init];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [parametersCopy copy];
     requestDictionary = v11->_requestDictionary;
     v11->_requestDictionary = v12;
 
-    objc_storeStrong(&v11->_account, a3);
-    v11->_preferPassword = a5;
+    objc_storeStrong(&v11->_account, account);
+    v11->_preferPassword = password;
   }
 
   return v11;
 }
 
-- (AAGenericTermsUIRequest)initWithAccount:(id)a3 termsEntries:(id)a4
+- (AAGenericTermsUIRequest)initWithAccount:(id)account termsEntries:(id)entries
 {
-  v6 = a3;
-  v7 = [(AAGenericTermsUIRequest *)self _requestParamsForTermsEntries:a4];
-  v8 = [(AAGenericTermsUIRequest *)self initWithAccount:v6 parameters:v7];
+  accountCopy = account;
+  v7 = [(AAGenericTermsUIRequest *)self _requestParamsForTermsEntries:entries];
+  v8 = [(AAGenericTermsUIRequest *)self initWithAccount:accountCopy parameters:v7];
 
   return v8;
 }
 
-- (id)_requestParamsForTermsEntries:(id)a3 additionalInfo:(id)a4
+- (id)_requestParamsForTermsEntries:(id)entries additionalInfo:(id)info
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  entriesCopy = entries;
+  infoCopy = info;
+  if ([entriesCopy count])
   {
-    v20 = v5;
-    v7 = [v5 mutableCopy];
+    v20 = entriesCopy;
+    v7 = [entriesCopy mutableCopy];
     [v7 addObject:@"iCloud"];
     if ([v7 containsObject:@"iOSWarranty"] && (objc_msgSend(v7, "containsObject:", @"HomePodSLA") & 1) == 0)
     {
@@ -83,7 +83,7 @@
           v14 = *(*(&v21 + 1) + 8 * i);
           v15 = objc_opt_new();
           [v15 setObject:v14 forKeyedSubscript:@"name"];
-          v16 = [v6 objectForKeyedSubscript:v14];
+          v16 = [infoCopy objectForKeyedSubscript:v14];
           if (v16)
           {
             [v15 addEntriesFromDictionary:v16];
@@ -104,7 +104,7 @@
     v26[1] = @"plist/buddyml";
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:2];
 
-    v5 = v20;
+    entriesCopy = v20;
   }
 
   else
@@ -122,8 +122,8 @@
   v42 = *MEMORY[0x1E69E9840];
   v39.receiver = self;
   v39.super_class = AAGenericTermsUIRequest;
-  v3 = [(AARequest *)&v39 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AARequest *)&v39 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   [v4 setHTTPMethod:@"POST"];
   v5 = [(NSDictionary *)self->_requestDictionary mutableCopy];
@@ -157,9 +157,9 @@
       goto LABEL_13;
     }
 
-    v13 = [v11 localizedDescription];
+    localizedDescription = [v11 localizedDescription];
     *buf = 138412290;
-    v41 = v13;
+    v41 = localizedDescription;
     v14 = "No data body to set on HTTP request: %@";
     v15 = v12;
     goto LABEL_11;
@@ -167,13 +167,13 @@
 
   [v4 setHTTPBody:v10];
   v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:objc_msgSend(v10 length:"bytes") encoding:{objc_msgSend(v10, "length"), 4}];
-  v13 = _AALogSystem();
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  localizedDescription = _AALogSystem();
+  if (os_log_type_enabled(localizedDescription, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
     v41 = v12;
     v14 = "Request body:%@";
-    v15 = v13;
+    v15 = localizedDescription;
 LABEL_11:
     _os_log_impl(&dword_1B6F6A000, v15, OS_LOG_TYPE_DEFAULT, v14, buf, 0xCu);
   }
@@ -188,51 +188,51 @@ LABEL_13:
       goto LABEL_26;
     }
 
-    v17 = [(ACAccount *)self->_account _aa_appProvidedContext];
+    _aa_appProvidedContext = [(ACAccount *)self->_account _aa_appProvidedContext];
 
-    if (v17)
+    if (_aa_appProvidedContext)
     {
       v18 = _AALogSystem();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
-        v19 = [(ACAccount *)self->_account _aa_appProvidedContext];
+        _aa_appProvidedContext2 = [(ACAccount *)self->_account _aa_appProvidedContext];
         *buf = 138412290;
-        v41 = v19;
+        v41 = _aa_appProvidedContext2;
         _os_log_impl(&dword_1B6F6A000, v18, OS_LOG_TYPE_DEFAULT, "Apple account contains an app provided context to add to the request: %@", buf, 0xCu);
       }
 
-      v20 = [(ACAccount *)self->_account _aa_appProvidedContext];
-      [v4 ak_addAppProvidedContext:v20];
+      _aa_appProvidedContext3 = [(ACAccount *)self->_account _aa_appProvidedContext];
+      [v4 ak_addAppProvidedContext:_aa_appProvidedContext3];
 
       [(ACAccount *)self->_account _aa_setAppProvidedContext:0];
     }
 
-    v21 = [MEMORY[0x1E6959A48] defaultStore];
-    v22 = [(ACAccount *)self->_account aa_altDSID];
-    v23 = [v21 aida_accountForAltDSID:v22];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+    aa_altDSID = [(ACAccount *)self->_account aa_altDSID];
+    v23 = [defaultStore aida_accountForAltDSID:aa_altDSID];
 
     if (v23)
     {
-      v24 = [MEMORY[0x1E6959A48] defaultStore];
-      v25 = [v24 credentialForAccount:v23 serviceID:@"com.apple.gs.icloud.family.auth"];
+      defaultStore2 = [MEMORY[0x1E6959A48] defaultStore];
+      v25 = [defaultStore2 credentialForAccount:v23 serviceID:@"com.apple.gs.icloud.family.auth"];
 
-      v26 = [v25 token];
-      v27 = [v23 aida_alternateDSID];
-      [v4 aa_addGrandslamAuthorizationHeaderWithAltDSID:v27 grandslamToken:v26];
+      token = [v25 token];
+      aida_alternateDSID = [v23 aida_alternateDSID];
+      [v4 aa_addGrandslamAuthorizationHeaderWithAltDSID:aida_alternateDSID grandslamToken:token];
     }
   }
 
-  v28 = [(AAGenericTermsUIRequest *)self additionalHeaders];
+  additionalHeaders = [(AAGenericTermsUIRequest *)self additionalHeaders];
 
-  if (v28)
+  if (additionalHeaders)
   {
-    v29 = [(AAGenericTermsUIRequest *)self additionalHeaders];
+    additionalHeaders2 = [(AAGenericTermsUIRequest *)self additionalHeaders];
     v33 = MEMORY[0x1E69E9820];
     v34 = 3221225472;
     v35 = __37__AAGenericTermsUIRequest_urlRequest__block_invoke;
     v36 = &unk_1E7C9C428;
     v37 = v4;
-    [v29 enumerateKeysAndObjectsUsingBlock:&v33];
+    [additionalHeaders2 enumerateKeysAndObjectsUsingBlock:&v33];
   }
 
   [v4 setValue:@"text/plist" forHTTPHeaderField:{@"Content-Type", v33, v34, v35, v36}];

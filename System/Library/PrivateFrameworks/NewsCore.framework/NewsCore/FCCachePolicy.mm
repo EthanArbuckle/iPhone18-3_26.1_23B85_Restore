@@ -1,10 +1,10 @@
 @interface FCCachePolicy
-+ (FCCachePolicy)cachePolicyWithSoftMaxAge:(double)a3;
++ (FCCachePolicy)cachePolicyWithSoftMaxAge:(double)age;
 + (id)cachedOnlyCachePolicy;
 + (id)defaultCachePolicy;
 + (id)ignoreCacheCachePolicy;
 - (NSDate)oldestAllowedDate;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation FCCachePolicy
@@ -34,18 +34,18 @@ uint64_t __35__FCCachePolicy_defaultCachePolicy__block_invoke()
 
 - (NSDate)oldestAllowedDate
 {
-  v3 = [(FCCachePolicy *)self cachePolicy];
-  if (v3 <= 5)
+  cachePolicy = [(FCCachePolicy *)self cachePolicy];
+  if (cachePolicy <= 5)
   {
-    if (((1 << v3) & 0xD) != 0)
+    if (((1 << cachePolicy) & 0xD) != 0)
     {
       v4 = MEMORY[0x1E695DF00];
 LABEL_7:
-      v3 = [v4 distantPast];
+      cachePolicy = [v4 distantPast];
       goto LABEL_8;
     }
 
-    if (((1 << v3) & 0x30) != 0)
+    if (((1 << cachePolicy) & 0x30) != 0)
     {
       [(FCCachePolicy *)self maximumCachedAge];
       v5 = MEMORY[0x1E695DF00];
@@ -56,18 +56,18 @@ LABEL_7:
       }
 
       [(FCCachePolicy *)self maximumCachedAge];
-      v3 = [v5 dateWithTimeIntervalSinceNow:-v8];
+      cachePolicy = [v5 dateWithTimeIntervalSinceNow:-v8];
     }
 
     else
     {
-      v3 = [MEMORY[0x1E695DF00] distantFuture];
+      cachePolicy = [MEMORY[0x1E695DF00] distantFuture];
     }
   }
 
 LABEL_8:
 
-  return v3;
+  return cachePolicy;
 }
 
 + (id)cachedOnlyCachePolicy
@@ -116,18 +116,18 @@ uint64_t __39__FCCachePolicy_ignoreCacheCachePolicy__block_invoke()
   return [v2 setCachePolicy:1];
 }
 
-+ (FCCachePolicy)cachePolicyWithSoftMaxAge:(double)a3
++ (FCCachePolicy)cachePolicyWithSoftMaxAge:(double)age
 {
   v4 = objc_opt_new();
   [v4 setCachePolicy:4];
-  [v4 setMaximumCachedAge:a3];
+  [v4 setMaximumCachedAge:age];
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setCachePolicy:{-[FCCachePolicy cachePolicy](self, "cachePolicy")}];
   [(FCCachePolicy *)self maximumCachedAge];
   [v4 setMaximumCachedAge:?];

@@ -1,10 +1,10 @@
 @interface PFMirroredManyToManyRelationship
-+ (BOOL)_isValidMirroredRelationshipRecord:(id)a3 values:(id)a4;
-+ (uint64_t)ckRecordNameForOrderedRecordNames:(uint64_t)a1;
-+ (uint64_t)ckRecordTypeForOrderedRelationships:(uint64_t)a1;
-- (BOOL)updateRelationshipValueUsingImportContext:(id)a3 andManagedObjectContext:(id)a4 error:(id *)a5;
-- (PFMirroredManyToManyRelationship)initWithRecordID:(id)a3 recordType:(id)a4 managedObjectModel:(id)a5 andType:(unint64_t)a6;
-- (id)_setManyToManyRecordID:(void *)a3 manyToManyRecordType:(void *)a4 ckRecordID:(void *)a5 relatedCKRecordID:(void *)a6 relationshipDescription:(void *)a7 inverseRelationshipDescription:(uint64_t)a8 type:;
++ (BOOL)_isValidMirroredRelationshipRecord:(id)record values:(id)values;
++ (uint64_t)ckRecordNameForOrderedRecordNames:(uint64_t)names;
++ (uint64_t)ckRecordTypeForOrderedRelationships:(uint64_t)relationships;
+- (BOOL)updateRelationshipValueUsingImportContext:(id)context andManagedObjectContext:(id)objectContext error:(id *)error;
+- (PFMirroredManyToManyRelationship)initWithRecordID:(id)d recordType:(id)type managedObjectModel:(id)model andType:(unint64_t)andType;
+- (id)_setManyToManyRecordID:(void *)d manyToManyRecordType:(void *)type ckRecordID:(void *)iD relatedCKRecordID:(void *)recordID relationshipDescription:(void *)description inverseRelationshipDescription:(uint64_t)relationshipDescription type:;
 - (id)description;
 - (void)dealloc;
 - (void)recordTypeToRecordID;
@@ -12,7 +12,7 @@
 
 @implementation PFMirroredManyToManyRelationship
 
-- (PFMirroredManyToManyRelationship)initWithRecordID:(id)a3 recordType:(id)a4 managedObjectModel:(id)a5 andType:(unint64_t)a6
+- (PFMirroredManyToManyRelationship)initWithRecordID:(id)d recordType:(id)type managedObjectModel:(id)model andType:(unint64_t)andType
 {
   v27[2] = *MEMORY[0x1E69E9840];
   v26.receiver = self;
@@ -21,8 +21,8 @@
   if (v10)
   {
     objc_opt_self();
-    v11 = [a4 length];
-    if (v11 > [@"CD_M2M_" length] && (v12 = objc_msgSend(objc_msgSend(a4, "substringFromIndex:", objc_msgSend(@"CD_M2M_", "length")), "componentsSeparatedByString:", @"_"), objc_msgSend(v12, "count") == 2) && (v13 = objc_msgSend(objc_msgSend(a5, "entitiesByName"), "objectForKey:", objc_msgSend(v12, "objectAtIndex:", 0))) != 0 && (v14 = objc_msgSend(objc_msgSend(v13, "relationshipsByName"), "objectForKey:", objc_msgSend(v12, "objectAtIndex:", 1))) != 0 && (v15 = v14, objc_msgSend(v14, "inverseRelationship")))
+    v11 = [type length];
+    if (v11 > [@"CD_M2M_" length] && (v12 = objc_msgSend(objc_msgSend(type, "substringFromIndex:", objc_msgSend(@"CD_M2M_", "length")), "componentsSeparatedByString:", @"_"), objc_msgSend(v12, "count") == 2) && (v13 = objc_msgSend(objc_msgSend(model, "entitiesByName"), "objectForKey:", objc_msgSend(v12, "objectAtIndex:", 0))) != 0 && (v14 = objc_msgSend(objc_msgSend(v13, "relationshipsByName"), "objectForKey:", objc_msgSend(v12, "objectAtIndex:", 1))) != 0 && (v15 = v14, objc_msgSend(v14, "inverseRelationship")))
     {
       v27[0] = v15;
       v27[1] = [v15 inverseRelationship];
@@ -38,17 +38,17 @@
     v18 = [v16 objectAtIndex:1];
     if (v17 && (v19 = v18) != 0)
     {
-      v20 = [a3 recordName];
+      recordName = [d recordName];
       objc_opt_self();
-      v21 = [v20 componentsSeparatedByString:@":"];
+      v21 = [recordName componentsSeparatedByString:@":"];
       if ([v21 count] != 2)
       {
         v21 = 0;
       }
 
-      v22 = [objc_alloc(getCloudKitCKRecordIDClass[0]()) initWithRecordName:objc_msgSend(v21 zoneID:{"objectAtIndex:", 0), objc_msgSend(a3, "zoneID")}];
-      v23 = [objc_alloc(getCloudKitCKRecordIDClass[0]()) initWithRecordName:objc_msgSend(v21 zoneID:{"objectAtIndex:", 1), objc_msgSend(a3, "zoneID")}];
-      [(PFMirroredManyToManyRelationship *)v10 _setManyToManyRecordID:a3 manyToManyRecordType:a4 ckRecordID:v22 relatedCKRecordID:v23 relationshipDescription:v17 inverseRelationshipDescription:v19 type:a6];
+      v22 = [objc_alloc(getCloudKitCKRecordIDClass[0]()) initWithRecordName:objc_msgSend(v21 zoneID:{"objectAtIndex:", 0), objc_msgSend(d, "zoneID")}];
+      v23 = [objc_alloc(getCloudKitCKRecordIDClass[0]()) initWithRecordName:objc_msgSend(v21 zoneID:{"objectAtIndex:", 1), objc_msgSend(d, "zoneID")}];
+      [(PFMirroredManyToManyRelationship *)v10 _setManyToManyRecordID:d manyToManyRecordType:type ckRecordID:v22 relatedCKRecordID:v23 relationshipDescription:v17 inverseRelationshipDescription:v19 type:andType];
     }
 
     else
@@ -62,10 +62,10 @@
   return v10;
 }
 
-- (id)_setManyToManyRecordID:(void *)a3 manyToManyRecordType:(void *)a4 ckRecordID:(void *)a5 relatedCKRecordID:(void *)a6 relationshipDescription:(void *)a7 inverseRelationshipDescription:(uint64_t)a8 type:
+- (id)_setManyToManyRecordID:(void *)d manyToManyRecordType:(void *)type ckRecordID:(void *)iD relatedCKRecordID:(void *)recordID relationshipDescription:(void *)description inverseRelationshipDescription:(uint64_t)relationshipDescription type:
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (![objc_msgSend(a2 "zoneID")] || (objc_msgSend(objc_msgSend(a2, "zoneID"), "isEqual:", objc_msgSend(a5, "zoneID")) & 1) == 0)
+  if (![objc_msgSend(a2 "zoneID")] || (objc_msgSend(objc_msgSend(a2, "zoneID"), "isEqual:", objc_msgSend(iD, "zoneID")) & 1) == 0)
   {
     LogStream = _PFLogGetLogStream(17);
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
@@ -73,9 +73,9 @@
       v20 = 138412802;
       v21 = a2;
       v22 = 2112;
-      v23 = a4;
+      typeCopy2 = type;
       v24 = 2112;
-      v25 = a5;
+      iDCopy2 = iD;
     }
 
     v17 = _PFLogGetLogStream(17);
@@ -84,20 +84,20 @@
       v20 = 138412802;
       v21 = a2;
       v22 = 2112;
-      v23 = a4;
+      typeCopy2 = type;
       v24 = 2112;
-      v25 = a5;
+      iDCopy2 = iD;
     }
   }
 
-  a1[4] = a2;
-  a1[5] = a3;
-  a1[2] = a6;
-  a1[3] = a7;
-  a1[6] = a4;
-  result = a5;
-  a1[7] = result;
-  a1[1] = a8;
+  self[4] = a2;
+  self[5] = d;
+  self[2] = recordID;
+  self[3] = description;
+  self[6] = type;
+  result = iD;
+  self[7] = result;
+  self[1] = relationshipDescription;
   v19 = *MEMORY[0x1E69E9840];
   return result;
 }
@@ -129,14 +129,14 @@
   return v4;
 }
 
-- (BOOL)updateRelationshipValueUsingImportContext:(id)a3 andManagedObjectContext:(id)a4 error:(id *)a5
+- (BOOL)updateRelationshipValueUsingImportContext:(id)context andManagedObjectContext:(id)objectContext error:(id *)error
 {
   v34 = *MEMORY[0x1E69E9840];
   ckRecordID = self->_ckRecordID;
-  v10 = [(NSEntityDescription *)[(NSPropertyDescription *)self->_relationshipDescription entity] name];
-  if (a3)
+  name = [(NSEntityDescription *)[(NSPropertyDescription *)self->_relationshipDescription entity] name];
+  if (context)
   {
-    v11 = [objc_msgSend(*(a3 + 8) objectForKey:{v10), "objectForKey:", ckRecordID}];
+    v11 = [objc_msgSend(*(context + 8) objectForKey:{name), "objectForKey:", ckRecordID}];
   }
 
   else
@@ -145,21 +145,21 @@
   }
 
   relatedCKRecordID = self->_relatedCKRecordID;
-  v13 = [(NSEntityDescription *)[(NSPropertyDescription *)self->_inverseRelationshipDescription entity] name];
-  if (a3)
+  name2 = [(NSEntityDescription *)[(NSPropertyDescription *)self->_inverseRelationshipDescription entity] name];
+  if (context)
   {
-    a3 = [objc_msgSend(*(a3 + 8) objectForKey:{v13), "objectForKey:", relatedCKRecordID}];
+    context = [objc_msgSend(*(context + 8) objectForKey:{name2), "objectForKey:", relatedCKRecordID}];
   }
 
-  if ((-[PFMirroredManyToManyRelationship isTemporaryID](v11, "isTemporaryID") & 1) != 0 || [a3 isTemporaryID])
+  if ((-[PFMirroredManyToManyRelationship isTemporaryID](v11, "isTemporaryID") & 1) != 0 || [context isTemporaryID])
   {
     LogStream = _PFLogGetLogStream(17);
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
     {
       v30 = 138412546;
-      v31 = v11;
+      selfCopy2 = v11;
       v32 = 2112;
-      v33 = a3;
+      contextCopy2 = context;
       _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Got temporary objectIDs back during import where we should have permanent ones: %@ / %@\n", &v30, 0x16u);
     }
 
@@ -167,9 +167,9 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
     {
       v30 = 138412546;
-      v31 = v11;
+      selfCopy2 = v11;
       v32 = 2112;
-      v33 = a3;
+      contextCopy2 = context;
       _os_log_fault_impl(&dword_18565F000, v15, OS_LOG_TYPE_FAULT, "CoreData: Got temporary objectIDs back during import where we should have permanent ones: %@ / %@", &v30, 0x16u);
     }
   }
@@ -177,10 +177,10 @@
   v16 = 134412;
   if (v11)
   {
-    if (a3)
+    if (context)
     {
-      v17 = [a4 objectWithID:{v11, 134412}];
-      v18 = [a4 objectWithID:a3];
+      v17 = [objectContext objectWithID:{v11, 134412}];
+      v18 = [objectContext objectWithID:context];
       v19 = [objc_msgSend(v17 valueForKey:{-[NSPropertyDescription name](self->_relationshipDescription, "name")), "mutableCopy"}];
       v20 = v19;
       type = self->_type;
@@ -197,7 +197,7 @@
           if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
           {
             v30 = 138412290;
-            v31 = self;
+            selfCopy2 = self;
             _os_log_error_impl(&dword_18565F000, v26, OS_LOG_TYPE_ERROR, "CoreData: fault: New many to many relationship type?: %@\n", &v30, 0xCu);
           }
 
@@ -205,7 +205,7 @@
           if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
           {
             v30 = 138412290;
-            v31 = self;
+            selfCopy2 = self;
             _os_log_fault_impl(&dword_18565F000, v27, OS_LOG_TYPE_FAULT, "CoreData: New many to many relationship type?: %@", &v30, 0xCu);
           }
 
@@ -236,11 +236,11 @@ LABEL_33:
   v22 = [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E696A250] code:v16 userInfo:0];
   if (v22)
   {
-    if (a5)
+    if (error)
     {
       v23 = v22;
       LOBYTE(v22) = 0;
-      *a5 = v23;
+      *error = v23;
       goto LABEL_34;
     }
 
@@ -253,9 +253,9 @@ LABEL_26:
   if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
   {
     v30 = 136315394;
-    v31 = "/Library/Caches/com.apple.xbs/Sources/Persistence/PFMirroredRelationship.m";
+    selfCopy2 = "/Library/Caches/com.apple.xbs/Sources/Persistence/PFMirroredRelationship.m";
     v32 = 1024;
-    LODWORD(v33) = 213;
+    LODWORD(contextCopy2) = 213;
     _os_log_error_impl(&dword_18565F000, v24, OS_LOG_TYPE_ERROR, "CoreData: fault: Illegal attempt to return an error without one in %s:%d\n", &v30, 0x12u);
   }
 
@@ -264,9 +264,9 @@ LABEL_26:
   if (v22)
   {
     v30 = 136315394;
-    v31 = "/Library/Caches/com.apple.xbs/Sources/Persistence/PFMirroredRelationship.m";
+    selfCopy2 = "/Library/Caches/com.apple.xbs/Sources/Persistence/PFMirroredRelationship.m";
     v32 = 1024;
-    LODWORD(v33) = 213;
+    LODWORD(contextCopy2) = 213;
     _os_log_fault_impl(&dword_18565F000, v25, OS_LOG_TYPE_FAULT, "CoreData: Illegal attempt to return an error without one in %s:%d", &v30, 0x12u);
     goto LABEL_26;
   }
@@ -312,26 +312,26 @@ uint64_t __55__PFMirroredManyToManyRelationship_orderRelationships___block_invok
   return result;
 }
 
-+ (uint64_t)ckRecordTypeForOrderedRelationships:(uint64_t)a1
++ (uint64_t)ckRecordTypeForOrderedRelationships:(uint64_t)relationships
 {
   objc_opt_self();
   v3 = [a2 objectAtIndexedSubscript:0];
   return [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@_%@", @"CD_M2M_", objc_msgSend(objc_msgSend(v3, "entity"), "name"), objc_msgSend(v3, "name")];
 }
 
-+ (uint64_t)ckRecordNameForOrderedRecordNames:(uint64_t)a1
++ (uint64_t)ckRecordNameForOrderedRecordNames:(uint64_t)names
 {
   objc_opt_self();
 
   return [a2 componentsJoinedByString:@":"];
 }
 
-+ (BOOL)_isValidMirroredRelationshipRecord:(id)a3 values:(id)a4
++ (BOOL)_isValidMirroredRelationshipRecord:(id)record values:(id)values
 {
-  v5 = [objc_msgSend(a3 "recordType")];
+  v5 = [objc_msgSend(record "recordType")];
   if (v5)
   {
-    LOBYTE(v5) = [objc_msgSend(objc_msgSend(a3 "recordID")] != 0;
+    LOBYTE(v5) = [objc_msgSend(objc_msgSend(record "recordID")] != 0;
   }
 
   return v5;

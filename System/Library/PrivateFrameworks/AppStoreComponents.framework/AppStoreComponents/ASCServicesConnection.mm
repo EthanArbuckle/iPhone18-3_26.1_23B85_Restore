@@ -3,8 +3,8 @@
 + (OS_os_log)log;
 - (ASCServicesConnection)init;
 - (NSXPCConnection)connection;
-- (id)offerStateServiceWithDelegate:(id)a3;
-- (id)serviceWithBlock:(id)a3;
+- (id)offerStateServiceWithDelegate:(id)delegate;
+- (id)serviceWithBlock:(id)block;
 - (id)testConnection;
 - (void)connectionWasInterrupted;
 - (void)connectionWasInvalidated;
@@ -49,14 +49,14 @@ uint64_t __41__ASCServicesConnection_sharedConnection__block_invoke()
 
 - (NSXPCConnection)connection
 {
-  v3 = [(ASCServicesConnection *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(ASCServicesConnection *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(ASCServicesConnection *)self connectionIfValid];
-  v5 = v4;
-  if (v4)
+  connectionIfValid = [(ASCServicesConnection *)self connectionIfValid];
+  v5 = connectionIfValid;
+  if (connectionIfValid)
   {
-    v6 = v4;
+    v6 = connectionIfValid;
   }
 
   else
@@ -78,8 +78,8 @@ uint64_t __41__ASCServicesConnection_sharedConnection__block_invoke()
     v10[3] = &unk_2781CBD28;
     objc_copyWeak(&v11, &location);
     [v6 setInvalidationHandler:v10];
-    v8 = [(ASCServicesConnection *)self workQueue];
-    [v6 _setQueue:v8];
+    workQueue2 = [(ASCServicesConnection *)self workQueue];
+    [v6 _setQueue:workQueue2];
 
     [v6 resume];
     [(ASCServicesConnection *)self setConnectionIfValid:v6];
@@ -124,8 +124,8 @@ void __35__ASCServicesConnection_connection__block_invoke_2(uint64_t a1)
 
 - (void)connectionWasInterrupted
 {
-  v3 = [(ASCServicesConnection *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(ASCServicesConnection *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = +[ASCServicesConnection log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -134,14 +134,14 @@ void __35__ASCServicesConnection_connection__block_invoke_2(uint64_t a1)
     _os_log_impl(&dword_21571A000, v4, OS_LOG_TYPE_INFO, "daemon connection interrupted", v6, 2u);
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:@"ASCServicesConnectionWasInterruptedNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ASCServicesConnectionWasInterruptedNotification" object:self];
 }
 
 - (void)connectionWasInvalidated
 {
-  v3 = [(ASCServicesConnection *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(ASCServicesConnection *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = +[ASCServicesConnection log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -151,15 +151,15 @@ void __35__ASCServicesConnection_connection__block_invoke_2(uint64_t a1)
   }
 
   [(ASCServicesConnection *)self setConnectionIfValid:0];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 postNotificationName:@"ASCServicesConnectionWasInvalidatedNotification" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"ASCServicesConnectionWasInvalidatedNotification" object:self];
 }
 
-- (id)serviceWithBlock:(id)a3
+- (id)serviceWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(MEMORY[0x277CEE600]);
-  v6 = [(ASCServicesConnection *)self workQueue];
+  workQueue = [(ASCServicesConnection *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __42__ASCServicesConnection_serviceWithBlock___block_invoke;
@@ -167,9 +167,9 @@ void __35__ASCServicesConnection_connection__block_invoke_2(uint64_t a1)
   block[4] = self;
   v7 = v5;
   v13 = v7;
-  v14 = v4;
-  v8 = v4;
-  dispatch_async(v6, block);
+  v14 = blockCopy;
+  v8 = blockCopy;
+  dispatch_async(workQueue, block);
 
   v9 = v14;
   v10 = v7;
@@ -193,7 +193,7 @@ void __42__ASCServicesConnection_serviceWithBlock___block_invoke(uint64_t a1)
 - (id)testConnection
 {
   v3 = objc_alloc_init(MEMORY[0x277CEE5F0]);
-  v4 = [(ASCServicesConnection *)self workQueue];
+  workQueue = [(ASCServicesConnection *)self workQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __39__ASCServicesConnection_testConnection__block_invoke;
@@ -201,7 +201,7 @@ void __42__ASCServicesConnection_serviceWithBlock___block_invoke(uint64_t a1)
   v9[4] = self;
   v5 = v3;
   v10 = v5;
-  dispatch_async(v4, v9);
+  dispatch_async(workQueue, v9);
 
   v6 = v10;
   v7 = v5;
@@ -255,15 +255,15 @@ void __39__ASCServicesConnection_metricsService__block_invoke(uint64_t a1, void 
   [v4 getMetricsServiceWithReplyHandler:v5];
 }
 
-- (id)offerStateServiceWithDelegate:(id)a3
+- (id)offerStateServiceWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __55__ASCServicesConnection_offerStateServiceWithDelegate___block_invoke;
   v8[3] = &unk_2781CD050;
-  v9 = v4;
-  v5 = v4;
+  v9 = delegateCopy;
+  v5 = delegateCopy;
   v6 = [(ASCServicesConnection *)self serviceWithBlock:v8];
 
   return v6;

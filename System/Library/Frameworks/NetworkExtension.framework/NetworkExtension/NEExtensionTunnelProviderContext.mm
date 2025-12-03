@@ -1,28 +1,28 @@
 @interface NEExtensionTunnelProviderContext
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
-- (void)cancelWithError:(id)a3;
-- (void)establishIPCWithCompletionHandler:(id)a3;
+- (void)cancelWithError:(id)error;
+- (void)establishIPCWithCompletionHandler:(id)handler;
 - (void)handleIPCDetached;
-- (void)setConfiguration:(id)a3 extensionIdentifier:(id)a4;
-- (void)setTunnelConfiguration:(id)a3 completionHandler:(id)a4;
+- (void)setConfiguration:(id)configuration extensionIdentifier:(id)identifier;
+- (void)setTunnelConfiguration:(id)configuration completionHandler:(id)handler;
 @end
 
 @implementation NEExtensionTunnelProviderContext
 
-- (void)cancelWithError:(id)a3
+- (void)cancelWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   [(NEExtensionTunnelProviderContext *)self handleIPCDetached];
   v5.receiver = self;
   v5.super_class = NEExtensionTunnelProviderContext;
-  [(NEExtensionProviderContext *)&v5 cancelWithError:v4];
+  [(NEExtensionProviderContext *)&v5 cancelWithError:errorCopy];
 }
 
-- (void)establishIPCWithCompletionHandler:(id)a3
+- (void)establishIPCWithCompletionHandler:(id)handler
 {
   v47 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  handlerCopy = handler;
   if (self && objc_getProperty(self, v4, 88, 1))
   {
     Property = objc_getProperty(self, v6, 88, 1);
@@ -36,7 +36,7 @@
         _os_log_error_impl(&dword_1BA83C000, v12, OS_LOG_TYPE_ERROR, "%@: IPC is already established", &handler, 0xCu);
       }
 
-      v5[2](v5, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
     else
@@ -118,7 +118,7 @@ LABEL_16:
     _os_log_impl(&dword_1BA83C000, v34, OS_LOG_TYPE_INFO, "%@: created IPC listener", &handler, 0xCu);
   }
 
-  (v5)[2](v5, v33);
+  (handlerCopy)[2](handlerCopy, v33);
   objc_destroyWeak(&v40);
   objc_destroyWeak(&location);
 
@@ -176,11 +176,11 @@ void __53__NEExtensionTunnelProviderContext_resetIPCIdleTimer__block_invoke(uint
 - (void)handleIPCDetached
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy)
   {
-    Property = objc_getProperty(v2, v3, 88, 1);
+    Property = objc_getProperty(selfCopy, v3, 88, 1);
   }
 
   else
@@ -191,14 +191,14 @@ void __53__NEExtensionTunnelProviderContext_resetIPCIdleTimer__block_invoke(uint
   v5 = Property;
   [(NEIPC *)v5 stop];
 
-  if (v2)
+  if (selfCopy)
   {
-    objc_setProperty_atomic(v2, v6, 0, 88);
-    if (objc_getProperty(v2, v7, 96, 1))
+    objc_setProperty_atomic(selfCopy, v6, 0, 88);
+    if (objc_getProperty(selfCopy, v7, 96, 1))
     {
-      v9 = objc_getProperty(v2, v8, 96, 1);
+      v9 = objc_getProperty(selfCopy, v8, 96, 1);
       dispatch_source_cancel(v9);
-      objc_setProperty_atomic(v2, v10, 0, 96);
+      objc_setProperty_atomic(selfCopy, v10, 0, 96);
     }
   }
 
@@ -206,26 +206,26 @@ void __53__NEExtensionTunnelProviderContext_resetIPCIdleTimer__block_invoke(uint
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138412290;
-    v16 = v2;
+    v16 = selfCopy;
     _os_log_impl(&dword_1BA83C000, v11, OS_LOG_TYPE_DEFAULT, "%@: IPC detached", &v15, 0xCu);
   }
 
-  v13 = [(NEExtensionProviderContext *)v2 hostContext];
-  [v13 handleIPCDetached];
+  hostContext = [(NEExtensionProviderContext *)selfCopy hostContext];
+  [hostContext handleIPCDetached];
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setConfiguration:(id)a3 extensionIdentifier:(id)a4
+- (void)setConfiguration:(id)configuration extensionIdentifier:(id)identifier
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  configurationCopy = configuration;
   v28.receiver = self;
   v28.super_class = NEExtensionTunnelProviderContext;
-  [(NEExtensionProviderContext *)&v28 setConfiguration:v6 extensionIdentifier:a4];
-  v7 = [(NEExtensionProviderContext *)self _principalObject];
-  if (!v7)
+  [(NEExtensionProviderContext *)&v28 setConfiguration:configurationCopy extensionIdentifier:identifier];
+  _principalObject = [(NEExtensionProviderContext *)self _principalObject];
+  if (!_principalObject)
   {
     v17 = ne_log_obj();
     if (!os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -234,7 +234,7 @@ void __53__NEExtensionTunnelProviderContext_resetIPCIdleTimer__block_invoke(uint
     }
 
     *buf = 138412290;
-    v30 = self;
+    selfCopy4 = self;
     v18 = "%@: no provider found";
 LABEL_19:
     _os_log_error_impl(&dword_1BA83C000, v17, OS_LOG_TYPE_ERROR, v18, buf, 0xCu);
@@ -251,70 +251,70 @@ LABEL_19:
     }
 
     *buf = 138412290;
-    v30 = self;
+    selfCopy4 = self;
     v18 = "%@: not setting configuration because provider is not an NETunnelProvider";
     goto LABEL_19;
   }
 
-  v8 = [v6 alwaysOnVPN];
+  alwaysOnVPN = [configurationCopy alwaysOnVPN];
 
-  if (v8)
+  if (alwaysOnVPN)
   {
     v9 = ne_log_obj();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [v6 alwaysOnVPN];
-      v11 = [v10 activeInterfaceProtocolKey];
+      alwaysOnVPN2 = [configurationCopy alwaysOnVPN];
+      activeInterfaceProtocolKey = [alwaysOnVPN2 activeInterfaceProtocolKey];
       *buf = 138412546;
-      v30 = self;
+      selfCopy4 = self;
       v31 = 2112;
-      v32 = v11;
+      v32 = activeInterfaceProtocolKey;
       _os_log_impl(&dword_1BA83C000, v9, OS_LOG_TYPE_INFO, "%@: AlwaysOn VPN configuration: activeInterfaceProtocolKey %@", buf, 0x16u);
     }
 
-    v12 = [v6 alwaysOnVPN];
-    v13 = [v12 interfaceProtocolMapping];
-    v14 = [v6 alwaysOnVPN];
-    v15 = [v14 activeInterfaceProtocolKey];
-    v16 = [v13 objectForKeyedSubscript:v15];
-    [v7 setProtocolConfiguration:v16];
+    alwaysOnVPN3 = [configurationCopy alwaysOnVPN];
+    interfaceProtocolMapping = [alwaysOnVPN3 interfaceProtocolMapping];
+    alwaysOnVPN4 = [configurationCopy alwaysOnVPN];
+    activeInterfaceProtocolKey2 = [alwaysOnVPN4 activeInterfaceProtocolKey];
+    v16 = [interfaceProtocolMapping objectForKeyedSubscript:activeInterfaceProtocolKey2];
+    [_principalObject setProtocolConfiguration:v16];
 
-    v7[42] = 1;
+    _principalObject[42] = 1;
   }
 
   else
   {
-    v19 = [v6 VPN];
-    if (v19 || ([v6 appVPN], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
+    v19 = [configurationCopy VPN];
+    if (v19 || ([configurationCopy appVPN], (v19 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v20 = v19;
-      v7[41] = [v19 isOnDemandEnabled];
-      v21 = [v20 protocol];
-      [v7 setProtocolConfiguration:v21];
+      _principalObject[41] = [v19 isOnDemandEnabled];
+      protocol = [v20 protocol];
+      [_principalObject setProtocolConfiguration:protocol];
 
-      v22 = [v6 appVPN];
+      appVPN = [configurationCopy appVPN];
 
-      if (v22)
+      if (appVPN)
       {
-        v23 = [v6 appVPN];
-        v24 = [v23 appRules];
-        [v7 setAppRules:v24];
+        appVPN2 = [configurationCopy appVPN];
+        appRules = [appVPN2 appRules];
+        [_principalObject setAppRules:appRules];
       }
 
-      v25 = [v20 protocol];
-      [v25 type];
+      protocol2 = [v20 protocol];
+      [protocol2 type];
     }
   }
 
-  v26 = [v7 protocolConfiguration];
+  protocolConfiguration = [_principalObject protocolConfiguration];
 
-  if (!v26)
+  if (!protocolConfiguration)
   {
     v17 = ne_log_obj();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v30 = self;
+      selfCopy4 = self;
       v18 = "%@: configuration has no VPN configuration";
       goto LABEL_19;
     }
@@ -325,11 +325,11 @@ LABEL_20:
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setTunnelConfiguration:(id)a3 completionHandler:(id)a4
+- (void)setTunnelConfiguration:(id)configuration completionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   is_debug_logging_enabled = nelog_is_debug_logging_enabled();
   v9 = ne_log_large_obj();
   v10 = v9;
@@ -337,9 +337,9 @@ LABEL_20:
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 descriptionWithIndent:0 options:2];
+      v11 = [configurationCopy descriptionWithIndent:0 options:2];
       v15 = 138412546;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2112;
       v18 = v11;
       _os_log_impl(&dword_1BA83C000, v10, OS_LOG_TYPE_DEFAULT, "%@: provider set tunnel configuration to %@", &v15, 0x16u);
@@ -349,14 +349,14 @@ LABEL_20:
   else if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v15 = 138412546;
-    v16 = self;
+    selfCopy2 = self;
     v17 = 2112;
-    v18 = v6;
+    v18 = configurationCopy;
     _os_log_debug_impl(&dword_1BA83C000, v10, OS_LOG_TYPE_DEBUG, "%@: provider set tunnel configuration to %@", &v15, 0x16u);
   }
 
-  v13 = [(NEExtensionProviderContext *)self hostContext];
-  [v13 setTunnelConfiguration:v6 completionHandler:v7];
+  hostContext = [(NEExtensionProviderContext *)self hostContext];
+  [hostContext setTunnelConfiguration:configurationCopy completionHandler:handlerCopy];
 
   v14 = *MEMORY[0x1E69E9840];
 }

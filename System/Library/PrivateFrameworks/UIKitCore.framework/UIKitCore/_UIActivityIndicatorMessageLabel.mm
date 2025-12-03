@@ -1,42 +1,42 @@
 @interface _UIActivityIndicatorMessageLabel
 + (id)defaultRegularContentSizeTextAttributes;
-- (_UIActivityIndicatorMessageLabel)initWithRegularTextAttributes:(id)a3;
+- (_UIActivityIndicatorMessageLabel)initWithRegularTextAttributes:(id)attributes;
 - (double)_effectiveVerticalSpacingToSpinner;
 - (double)verticalSpacingToSpinner;
-- (id)_effectiveAttributesDerivedFromRegularTextAttributes:(id)a3;
-- (id)_validatedAttributedString:(id)a3;
+- (id)_effectiveAttributesDerivedFromRegularTextAttributes:(id)attributes;
+- (id)_validatedAttributedString:(id)string;
 - (void)_ensureCapableOfCalculatingBaselineOffsets;
-- (void)setAttributedText:(id)a3;
-- (void)setEffectiveTextAttributes:(id)a3;
-- (void)setText:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setAttributedText:(id)text;
+- (void)setEffectiveTextAttributes:(id)attributes;
+- (void)setText:(id)text;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation _UIActivityIndicatorMessageLabel
 
 + (id)defaultRegularContentSizeTextAttributes
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v3 = [off_1E70ECC18 systemFontOfSize:11.0];
-  [v2 setObject:v3 forKey:*off_1E70EC918];
+  [dictionary setObject:v3 forKey:*off_1E70EC918];
 
   v4 = +[UIColor systemGrayColor];
-  [v2 setObject:v4 forKey:*off_1E70EC920];
+  [dictionary setObject:v4 forKey:*off_1E70EC920];
 
-  return v2;
+  return dictionary;
 }
 
-- (_UIActivityIndicatorMessageLabel)initWithRegularTextAttributes:(id)a3
+- (_UIActivityIndicatorMessageLabel)initWithRegularTextAttributes:(id)attributes
 {
-  v5 = a3;
+  attributesCopy = attributes;
   v9.receiver = self;
   v9.super_class = _UIActivityIndicatorMessageLabel;
   v6 = [(UILabel *)&v9 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_regularTextAttributes, a3);
-    objc_storeStrong(&v7->_effectiveTextAttributes, a3);
+    objc_storeStrong(&v6->_regularTextAttributes, attributes);
+    objc_storeStrong(&v7->_effectiveTextAttributes, attributes);
     [(UIView *)v7 setBackgroundColor:0];
     [(UIView *)v7 setOpaque:0];
     [(_UIActivityIndicatorMessageLabel *)v7 _ensureCapableOfCalculatingBaselineOffsets];
@@ -53,63 +53,63 @@
   return v5 - v4;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v4 = MEMORY[0x1E696AAB0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithString:v5];
+  textCopy = text;
+  v6 = [[v4 alloc] initWithString:textCopy];
 
   [(_UIActivityIndicatorMessageLabel *)self setAttributedText:v6];
 }
 
-- (void)setAttributedText:(id)a3
+- (void)setAttributedText:(id)text
 {
-  v4 = [(_UIActivityIndicatorMessageLabel *)self _validatedAttributedString:a3];
-  v5 = [(_UIActivityIndicatorMessageLabel *)self effectiveTextAttributes];
+  v4 = [(_UIActivityIndicatorMessageLabel *)self _validatedAttributedString:text];
+  effectiveTextAttributes = [(_UIActivityIndicatorMessageLabel *)self effectiveTextAttributes];
   v6 = [v4 mutableCopy];
-  [v6 addAttributes:v5 range:{0, objc_msgSend(v6, "length")}];
+  [v6 addAttributes:effectiveTextAttributes range:{0, objc_msgSend(v6, "length")}];
   v7.receiver = self;
   v7.super_class = _UIActivityIndicatorMessageLabel;
   [(UILabel *)&v7 setAttributedText:v6];
   [(_UIActivityIndicatorMessageLabel *)self _ensureCapableOfCalculatingBaselineOffsets];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = _UIActivityIndicatorMessageLabel;
-  [(UILabel *)&v5 traitCollectionDidChange:a3];
+  [(UILabel *)&v5 traitCollectionDidChange:change];
   v4 = [(_UIActivityIndicatorMessageLabel *)self _effectiveAttributesDerivedFromRegularTextAttributes:self->_regularTextAttributes];
   [(_UIActivityIndicatorMessageLabel *)self setEffectiveTextAttributes:v4];
 }
 
-- (void)setEffectiveTextAttributes:(id)a3
+- (void)setEffectiveTextAttributes:(id)attributes
 {
-  v8 = a3;
+  attributesCopy = attributes;
   if (([(NSDictionary *)self->_effectiveTextAttributes isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_effectiveTextAttributes, a3);
+    objc_storeStrong(&self->_effectiveTextAttributes, attributes);
     v5 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v6 = [(UILabel *)self text];
-    v7 = [v5 initWithString:v6 attributes:v8];
+    text = [(UILabel *)self text];
+    v7 = [v5 initWithString:text attributes:attributesCopy];
 
     [(_UIActivityIndicatorMessageLabel *)self setAttributedText:v7];
   }
 }
 
-- (id)_effectiveAttributesDerivedFromRegularTextAttributes:(id)a3
+- (id)_effectiveAttributesDerivedFromRegularTextAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(UIView *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v6);
+  attributesCopy = attributes;
+  traitCollection = [(UIView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
-  v8 = v4;
+  v8 = attributesCopy;
   if (IsAccessibilityCategory)
   {
-    v8 = [v4 mutableCopy];
+    v8 = [attributesCopy mutableCopy];
     v9 = *off_1E70EC918;
-    v10 = [v4 objectForKeyedSubscript:*off_1E70EC918];
+    v10 = [attributesCopy objectForKeyedSubscript:*off_1E70EC918];
     v11 = v10;
     if (v10)
     {
@@ -133,9 +133,9 @@
 
 - (double)_effectiveVerticalSpacingToSpinner
 {
-  v2 = [(UIView *)self traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v3);
+  traitCollection = [(UIView *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   result = 36.0;
   if (!IsAccessibilityCategory)
@@ -146,14 +146,14 @@
   return result;
 }
 
-- (id)_validatedAttributedString:(id)a3
+- (id)_validatedAttributedString:(id)string
 {
-  v3 = a3;
-  if (![v3 length])
+  stringCopy = string;
+  if (![stringCopy length])
   {
-    if (v3)
+    if (stringCopy)
     {
-      v4 = [v3 mutableCopy];
+      v4 = [stringCopy mutableCopy];
     }
 
     else
@@ -165,16 +165,16 @@
     v6 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@" "];
     [v5 appendAttributedString:v6];
 
-    v3 = v5;
+    stringCopy = v5;
   }
 
-  return v3;
+  return stringCopy;
 }
 
 - (void)_ensureCapableOfCalculatingBaselineOffsets
 {
-  v3 = [(UILabel *)self text];
-  v4 = [v3 length];
+  text = [(UILabel *)self text];
+  v4 = [text length];
 
   if (!v4)
   {

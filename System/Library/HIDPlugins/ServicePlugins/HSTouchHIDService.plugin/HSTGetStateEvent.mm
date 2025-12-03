@@ -1,19 +1,19 @@
 @interface HSTGetStateEvent
-- (BOOL)decodeFromMap:(void *)a3;
-- (void)encodeToMap:(void *)a3;
+- (BOOL)decodeFromMap:(void *)map;
+- (void)encodeToMap:(void *)map;
 @end
 
 @implementation HSTGetStateEvent
 
-- (void)encodeToMap:(void *)a3
+- (void)encodeToMap:(void *)map
 {
   v5.receiver = self;
   v5.super_class = HSTGetStateEvent;
   [(HSTEvent *)&v5 encodeToMap:?];
-  HSUtil::Encoder::encodeBool(a3, HSUtil::CoderKey::Literal<(char)104,(char)97,(char)110,(char)100,(char)108,(char)101,(char)100>::Key, self->handled);
+  HSUtil::Encoder::encodeBool(map, HSUtil::CoderKey::Literal<(char)104,(char)97,(char)110,(char)100,(char)108,(char)101,(char)100>::Key, self->handled);
 }
 
-- (BOOL)decodeFromMap:(void *)a3
+- (BOOL)decodeFromMap:(void *)map
 {
   v6.receiver = self;
   v6.super_class = HSTGetStateEvent;
@@ -29,8 +29,8 @@
     return 0;
   }
 
-  self->handled = HSUtil::Decoder::decodeBool(a3, HSUtil::CoderKey::Literal<(char)104,(char)97,(char)110,(char)100,(char)108,(char)101,(char)100>::Key);
-  if (*a3)
+  self->handled = HSUtil::Decoder::decodeBool(map, HSUtil::CoderKey::Literal<(char)104,(char)97,(char)110,(char)100,(char)108,(char)101,(char)100>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/HIDSensingTouch/HSTPipeline/HSTEvent.mm", __b);

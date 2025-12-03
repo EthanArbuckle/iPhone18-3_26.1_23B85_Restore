@@ -1,16 +1,16 @@
 @interface MacChargingNetworksPickerViewController
-- (MacChargingNetworksPickerViewController)initWithExcludedNetworks:(id)a3 delegate:(id)a4;
+- (MacChargingNetworksPickerViewController)initWithExcludedNetworks:(id)networks delegate:(id)delegate;
 - (_TtP4Maps43ChargingNetworkPickerViewControllerDelegate_)delegate;
 - (void)_setupConstraints;
 - (void)_setupSubviews;
 - (void)_updateAddButton;
-- (void)didDeselectNetwork:(id)a3 isSuggested:(BOOL)a4;
-- (void)didSelectNetwork:(id)a3 isSuggested:(BOOL)a4;
-- (void)macFooterViewBackButtonTapped:(id)a3;
-- (void)macFooterViewRightButtonTapped:(id)a3;
-- (void)searchBarCancelButtonClicked:(id)a3;
+- (void)didDeselectNetwork:(id)network isSuggested:(BOOL)suggested;
+- (void)didSelectNetwork:(id)network isSuggested:(BOOL)suggested;
+- (void)macFooterViewBackButtonTapped:(id)tapped;
+- (void)macFooterViewRightButtonTapped:(id)tapped;
+- (void)searchBarCancelButtonClicked:(id)clicked;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation MacChargingNetworksPickerViewController
@@ -22,18 +22,18 @@
   return WeakRetained;
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10070AD40;
   block[3] = &unk_101661B18;
-  v5 = a3;
-  v3 = v5;
+  clickedCopy = clicked;
+  v3 = clickedCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)macFooterViewBackButtonTapped:(id)a3
+- (void)macFooterViewBackButtonTapped:(id)tapped
 {
   v3 = sub_10006D178();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -60,18 +60,18 @@
   }
 }
 
-- (void)macFooterViewRightButtonTapped:(id)a3
+- (void)macFooterViewRightButtonTapped:(id)tapped
 {
   [(MacChargingNetworksPickerViewController *)self dismissViewControllerAnimated:1 completion:0];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [(ChargingNetworksDataSource *)self->_dataSource selectedNetworks];
-  v5 = [v4 allObjects];
-  [WeakRetained networkPickerControllerDidSelectNetworks:v5];
+  selectedNetworks = [(ChargingNetworksDataSource *)self->_dataSource selectedNetworks];
+  allObjects = [selectedNetworks allObjects];
+  [WeakRetained networkPickerControllerDidSelectNetworks:allObjects];
 }
 
-- (void)didDeselectNetwork:(id)a3 isSuggested:(BOOL)a4
+- (void)didDeselectNetwork:(id)network isSuggested:(BOOL)suggested
 {
-  if (a4)
+  if (suggested)
   {
     v5 = 439;
   }
@@ -87,9 +87,9 @@
   [(MacChargingNetworksPickerViewController *)self _updateAddButton];
 }
 
-- (void)didSelectNetwork:(id)a3 isSuggested:(BOOL)a4
+- (void)didSelectNetwork:(id)network isSuggested:(BOOL)suggested
 {
-  if (a4)
+  if (suggested)
   {
     v5 = 455;
   }
@@ -107,8 +107,8 @@
 
 - (void)_updateAddButton
 {
-  v3 = [(ChargingNetworksDataSource *)self->_dataSource selectedNetworks];
-  v4 = [v3 count] != 0;
+  selectedNetworks = [(ChargingNetworksDataSource *)self->_dataSource selectedNetworks];
+  v4 = [selectedNetworks count] != 0;
 
   footerView = self->_footerView;
 
@@ -117,57 +117,57 @@
 
 - (void)_setupConstraints
 {
-  v44 = [(UISearchBar *)self->_searchBar topAnchor];
-  v45 = [(MacChargingNetworksPickerViewController *)self view];
-  v43 = [v45 topAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  topAnchor = [(UISearchBar *)self->_searchBar topAnchor];
+  view = [(MacChargingNetworksPickerViewController *)self view];
+  topAnchor2 = [view topAnchor];
+  v42 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v46[0] = v42;
-  v40 = [(UISearchBar *)self->_searchBar leadingAnchor];
-  v41 = [(MacChargingNetworksPickerViewController *)self view];
-  v39 = [v41 leadingAnchor];
-  v38 = [v40 constraintEqualToAnchor:v39];
+  leadingAnchor = [(UISearchBar *)self->_searchBar leadingAnchor];
+  view2 = [(MacChargingNetworksPickerViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v38 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v46[1] = v38;
-  v36 = [(UISearchBar *)self->_searchBar trailingAnchor];
-  v37 = [(MacChargingNetworksPickerViewController *)self view];
-  v35 = [v37 trailingAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  trailingAnchor = [(UISearchBar *)self->_searchBar trailingAnchor];
+  view3 = [(MacChargingNetworksPickerViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v34 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v46[2] = v34;
-  v33 = [(UITableView *)self->_tableView topAnchor];
-  v32 = [(UISearchBar *)self->_searchBar bottomAnchor];
-  v31 = [v33 constraintEqualToAnchor:v32];
+  topAnchor3 = [(UITableView *)self->_tableView topAnchor];
+  bottomAnchor = [(UISearchBar *)self->_searchBar bottomAnchor];
+  v31 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   v46[3] = v31;
-  v29 = [(UITableView *)self->_tableView bottomAnchor];
-  v30 = [(MacChargingNetworksPickerViewController *)self view];
-  v28 = [v30 safeAreaLayoutGuide];
-  v27 = [v28 bottomAnchor];
-  v26 = [v29 constraintEqualToAnchor:v27];
+  bottomAnchor2 = [(UITableView *)self->_tableView bottomAnchor];
+  view4 = [(MacChargingNetworksPickerViewController *)self view];
+  safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+  bottomAnchor3 = [safeAreaLayoutGuide bottomAnchor];
+  v26 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v46[4] = v26;
-  v24 = [(UITableView *)self->_tableView leadingAnchor];
-  v25 = [(MacChargingNetworksPickerViewController *)self view];
-  v23 = [v25 safeAreaLayoutGuide];
-  v22 = [v23 leadingAnchor];
-  v21 = [v24 constraintEqualToAnchor:v22];
+  leadingAnchor3 = [(UITableView *)self->_tableView leadingAnchor];
+  view5 = [(MacChargingNetworksPickerViewController *)self view];
+  safeAreaLayoutGuide2 = [view5 safeAreaLayoutGuide];
+  leadingAnchor4 = [safeAreaLayoutGuide2 leadingAnchor];
+  v21 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v46[5] = v21;
-  v19 = [(UITableView *)self->_tableView trailingAnchor];
-  v20 = [(MacChargingNetworksPickerViewController *)self view];
-  v18 = [v20 safeAreaLayoutGuide];
-  v17 = [v18 trailingAnchor];
-  v16 = [v19 constraintEqualToAnchor:v17];
+  trailingAnchor3 = [(UITableView *)self->_tableView trailingAnchor];
+  view6 = [(MacChargingNetworksPickerViewController *)self view];
+  safeAreaLayoutGuide3 = [view6 safeAreaLayoutGuide];
+  trailingAnchor4 = [safeAreaLayoutGuide3 trailingAnchor];
+  v16 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v46[6] = v16;
-  v14 = [(MacFooterView *)self->_footerView leadingAnchor];
-  v15 = [(MacChargingNetworksPickerViewController *)self view];
-  v13 = [v15 leadingAnchor];
-  v3 = [v14 constraintEqualToAnchor:v13];
+  leadingAnchor5 = [(MacFooterView *)self->_footerView leadingAnchor];
+  view7 = [(MacChargingNetworksPickerViewController *)self view];
+  leadingAnchor6 = [view7 leadingAnchor];
+  v3 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v46[7] = v3;
-  v4 = [(MacFooterView *)self->_footerView trailingAnchor];
-  v5 = [(MacChargingNetworksPickerViewController *)self view];
-  v6 = [v5 trailingAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  trailingAnchor5 = [(MacFooterView *)self->_footerView trailingAnchor];
+  view8 = [(MacChargingNetworksPickerViewController *)self view];
+  trailingAnchor6 = [view8 trailingAnchor];
+  v7 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v46[8] = v7;
-  v8 = [(MacFooterView *)self->_footerView bottomAnchor];
-  v9 = [(MacChargingNetworksPickerViewController *)self view];
-  v10 = [v9 bottomAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  bottomAnchor4 = [(MacFooterView *)self->_footerView bottomAnchor];
+  view9 = [(MacChargingNetworksPickerViewController *)self view];
+  bottomAnchor5 = [view9 bottomAnchor];
+  v11 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v46[9] = v11;
   v12 = [NSArray arrayWithObjects:v46 count:10];
   [NSLayoutConstraint activateConstraints:v12];
@@ -187,24 +187,24 @@
   v6 = +[UIColor clearColor];
   [(UISearchBar *)self->_searchBar setBackgroundColor:v6];
 
-  v7 = [(UISearchBar *)self->_searchBar layer];
-  [v7 setCornerRadius:10.0];
+  layer = [(UISearchBar *)self->_searchBar layer];
+  [layer setCornerRadius:10.0];
 
   [(UISearchBar *)self->_searchBar setClipsToBounds:1];
   v8 = +[NSBundle mainBundle];
   v9 = [v8 localizedStringForKey:@"Networks picker" value:@"localized string not found" table:0];
   [(UISearchBar *)self->_searchBar setPlaceholder:v9];
 
-  v10 = [(UISearchBar *)self->_searchBar searchTextField];
-  [v10 setControlSize:2];
+  searchTextField = [(UISearchBar *)self->_searchBar searchTextField];
+  [searchTextField setControlSize:2];
 
   [(UISearchBar *)self->_searchBar setReturnKeyType:9];
   [(UISearchBar *)self->_searchBar setContentInset:16.0, 16.0, 10.0, 16.0];
-  v11 = [(UISearchBar *)self->_searchBar searchTextField];
-  [v11 setDelegate:self];
+  searchTextField2 = [(UISearchBar *)self->_searchBar searchTextField];
+  [searchTextField2 setDelegate:self];
 
-  v12 = [(MacChargingNetworksPickerViewController *)self view];
-  [v12 addSubview:self->_searchBar];
+  view = [(MacChargingNetworksPickerViewController *)self view];
+  [view addSubview:self->_searchBar];
 
   v13 = [[UITableView alloc] initWithFrame:2 style:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
   tableView = self->_tableView;
@@ -231,8 +231,8 @@
   v21 = +[UIColor clearColor];
   [(UITableView *)self->_tableView setBackgroundColor:v21];
 
-  v22 = [(MacChargingNetworksPickerViewController *)self view];
-  [v22 addSubview:self->_tableView];
+  view2 = [(MacChargingNetworksPickerViewController *)self view];
+  [view2 addSubview:self->_tableView];
 
   v23 = [[MacFooterView alloc] initWithNoBlurRightSideButtonsOfType:1];
   footerView = self->_footerView;
@@ -241,20 +241,20 @@
   [(MacFooterView *)self->_footerView setTranslatesAutoresizingMaskIntoConstraints:0];
   [(MacFooterView *)self->_footerView setDelegate:self];
   [(MacFooterView *)self->_footerView setRightButtonEnabled:0];
-  v25 = [(MacChargingNetworksPickerViewController *)self view];
-  [v25 addSubview:self->_footerView];
+  view3 = [(MacChargingNetworksPickerViewController *)self view];
+  [view3 addSubview:self->_footerView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = MacChargingNetworksPickerViewController;
-  [(MacChargingNetworksPickerViewController *)&v6 viewWillAppear:a3];
+  [(MacChargingNetworksPickerViewController *)&v6 viewWillAppear:appear];
   [(MacFooterView *)self->_footerView layoutIfNeeded];
   [(MacFooterView *)self->_footerView frame];
   [(MacChargingNetworksPickerViewController *)self setAdditionalSafeAreaInsets:0.0, 0.0, v4, 0.0];
-  v5 = [(MacChargingNetworksPickerViewController *)self view];
-  [v5 bringSubviewToFront:self->_footerView];
+  view = [(MacChargingNetworksPickerViewController *)self view];
+  [view bringSubviewToFront:self->_footerView];
 }
 
 - (void)viewDidLoad
@@ -262,25 +262,25 @@
   v4.receiver = self;
   v4.super_class = MacChargingNetworksPickerViewController;
   [(MacChargingNetworksPickerViewController *)&v4 viewDidLoad];
-  v3 = [(MacChargingNetworksPickerViewController *)self navigationController];
-  [v3 setNavigationBarHidden:1];
+  navigationController = [(MacChargingNetworksPickerViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:1];
 
   [(MacChargingNetworksPickerViewController *)self _setupSubviews];
   [(MacChargingNetworksPickerViewController *)self _setupConstraints];
 }
 
-- (MacChargingNetworksPickerViewController)initWithExcludedNetworks:(id)a3 delegate:(id)a4
+- (MacChargingNetworksPickerViewController)initWithExcludedNetworks:(id)networks delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  networksCopy = networks;
+  delegateCopy = delegate;
   v13.receiver = self;
   v13.super_class = MacChargingNetworksPickerViewController;
   v8 = [(MacChargingNetworksPickerViewController *)&v13 initWithNibName:0 bundle:0];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_delegate, v7);
-    v10 = [[_TtC4Maps26ChargingNetworksDataSource alloc] initWithExcludedNetworks:v6 context:2 delegate:v9];
+    objc_storeWeak(&v8->_delegate, delegateCopy);
+    v10 = [[_TtC4Maps26ChargingNetworksDataSource alloc] initWithExcludedNetworks:networksCopy context:2 delegate:v9];
     dataSource = v9->_dataSource;
     v9->_dataSource = v10;
   }

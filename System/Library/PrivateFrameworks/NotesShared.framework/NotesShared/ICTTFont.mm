@@ -1,55 +1,55 @@
 @interface ICTTFont
-- (BOOL)isEqual:(id)a3;
-- (ICTTFont)initWithArchive:(const void *)a3;
-- (ICTTFont)initWithCoder:(id)a3;
-- (ICTTFont)initWithData:(id)a3;
-- (ICTTFont)initWithName:(id)a3 size:(double)a4 hints:(unsigned int)a5;
+- (BOOL)isEqual:(id)equal;
+- (ICTTFont)initWithArchive:(const void *)archive;
+- (ICTTFont)initWithCoder:(id)coder;
+- (ICTTFont)initWithData:(id)data;
+- (ICTTFont)initWithName:(id)name size:(double)size hints:(unsigned int)hints;
 - (id)description;
 - (id)serialize;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)saveToArchive:(void *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)saveToArchive:(void *)archive;
 @end
 
 @implementation ICTTFont
 
-- (ICTTFont)initWithName:(id)a3 size:(double)a4 hints:(unsigned int)a5
+- (ICTTFont)initWithName:(id)name size:(double)size hints:(unsigned int)hints
 {
-  v8 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = ICTTFont;
   v9 = [(ICTTFont *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [nameCopy copy];
     fontName = v9->_fontName;
     v9->_fontName = v10;
 
-    v9->_pointSize = a4;
-    v9->_fontHints = a5;
+    v9->_pointSize = size;
+    v9->_fontHints = hints;
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v6;
-    v8 = [(ICTTFont *)self fontName];
-    v9 = [v7 fontName];
-    if (v8 == v9 || (-[ICTTFont fontName](self, "fontName"), v3 = objc_claimAutoreleasedReturnValue(), [v7 fontName], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqualToString:", v4)))
+    v7 = equalCopy;
+    fontName = [(ICTTFont *)self fontName];
+    fontName2 = [v7 fontName];
+    if (fontName == fontName2 || (-[ICTTFont fontName](self, "fontName"), v3 = objc_claimAutoreleasedReturnValue(), [v7 fontName], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqualToString:", v4)))
     {
       [(ICTTFont *)self pointSize];
       v12 = v11;
       [v7 pointSize];
       if (v12 == v13)
       {
-        v14 = [(ICTTFont *)self fontHints];
-        v10 = v14 == [v7 fontHints];
+        fontHints = [(ICTTFont *)self fontHints];
+        v10 = fontHints == [v7 fontHints];
       }
 
       else
@@ -57,7 +57,7 @@
         v10 = 0;
       }
 
-      if (v8 == v9)
+      if (fontName == fontName2)
       {
         goto LABEL_11;
       }
@@ -80,8 +80,8 @@ LABEL_12:
 
 - (unint64_t)hash
 {
-  v3 = [(ICTTFont *)self fontName];
-  v4 = [v3 hash];
+  fontName = [(ICTTFont *)self fontName];
+  v4 = [fontName hash];
   [(ICTTFont *)self pointSize];
   v6 = v5;
   v7 = v4 ^ [(ICTTFont *)self fontHints];
@@ -94,7 +94,7 @@ LABEL_12:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(ICTTFont *)self fontName];
+  fontName = [(ICTTFont *)self fontName];
   [(ICTTFont *)self pointSize];
   v8 = v7;
   if (([(ICTTFont *)self fontHints]& 1) != 0)
@@ -107,28 +107,28 @@ LABEL_12:
     v9 = &stru_2827172C0;
   }
 
-  v10 = [(ICTTFont *)self fontHints];
+  fontHints = [(ICTTFont *)self fontHints];
   v11 = @" italic";
-  if ((v10 & 2) == 0)
+  if ((fontHints & 2) == 0)
   {
     v11 = &stru_2827172C0;
   }
 
-  v12 = [v3 stringWithFormat:@"<%@: %p %@ %0.1f%@%@>", v5, self, v6, v8, v9, v11];
+  v12 = [v3 stringWithFormat:@"<%@: %p %@ %0.1f%@%@>", v5, self, fontName, v8, v9, v11];
 
   return v12;
 }
 
-- (ICTTFont)initWithData:(id)a3
+- (ICTTFont)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   topotext::Font::Font(v10);
-  v5 = [v4 bytes];
-  v6 = ICTTBoundedCheckedCastNSUIntegerToUInt32([v4 length]);
-  if (google::protobuf::MessageLite::ParseFromArray(v10, v5, v6))
+  bytes = [dataCopy bytes];
+  v6 = ICTTBoundedCheckedCastNSUIntegerToUInt32([dataCopy length]);
+  if (google::protobuf::MessageLite::ParseFromArray(v10, bytes, v6))
   {
     self = [(ICTTFont *)self initWithArchive:v10];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -139,30 +139,30 @@ LABEL_12:
       [ICTTParagraphStyle(ICTTParagraphStylePersistenceAdditions) initWithData:v8];
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
   topotext::Font::~Font(v10);
 
-  return v7;
+  return selfCopy;
 }
 
-- (ICTTFont)initWithArchive:(const void *)a3
+- (ICTTFont)initWithArchive:(const void *)archive
 {
-  v5 = *(a3 + 8);
+  v5 = *(archive + 8);
   if (v5)
   {
     v7 = objc_alloc(MEMORY[0x277CCACA8]);
-    v8 = *(a3 + 5);
+    v8 = *(archive + 5);
     v9 = *(v8 + 23);
     if (v9 < 0)
     {
       v8 = *v8;
-      v9 = *(*(a3 + 5) + 8);
+      v9 = *(*(archive + 5) + 8);
     }
 
     v10 = [v7 initWithBytes:v8 length:v9 encoding:4];
-    v5 = *(a3 + 8);
+    v5 = *(archive + 8);
     v6 = v10;
   }
 
@@ -171,7 +171,7 @@ LABEL_12:
     v6 = 0;
   }
 
-  v11 = *(a3 + 12);
+  v11 = *(archive + 12);
   v12 = [ICTTFont alloc];
   v13 = v11;
   if ((v5 & 2) == 0)
@@ -179,27 +179,27 @@ LABEL_12:
     v13 = 0.0;
   }
 
-  v14 = [(ICTTFont *)v12 initWithName:v6 size:*(a3 + 13) & ((*(a3 + 8) << 29) >> 31) hints:v13];
+  v14 = [(ICTTFont *)v12 initWithName:v6 size:*(archive + 13) & ((*(archive + 8) << 29) >> 31) hints:v13];
 
   return v14;
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
-  v5 = [(ICTTFont *)self fontName];
+  fontName = [(ICTTFont *)self fontName];
 
-  if (v5)
+  if (fontName)
   {
-    v6 = [(ICTTFont *)self fontName];
-    v7 = [v6 UTF8String];
-    *(a3 + 8) |= 1u;
+    fontName2 = [(ICTTFont *)self fontName];
+    uTF8String = [fontName2 UTF8String];
+    *(archive + 8) |= 1u;
     if (!google::protobuf::internal::empty_string_)
     {
       __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
     }
 
-    v8 = v7;
-    v9 = *(a3 + 5);
+    v8 = uTF8String;
+    v9 = *(archive + 5);
     if (v9 == google::protobuf::internal::empty_string_)
     {
       operator new();
@@ -213,15 +213,15 @@ LABEL_12:
   {
     [(ICTTFont *)self pointSize];
     *&v11 = v11;
-    *(a3 + 8) |= 2u;
-    *(a3 + 12) = LODWORD(v11);
+    *(archive + 8) |= 2u;
+    *(archive + 12) = LODWORD(v11);
   }
 
   if ([(ICTTFont *)self fontHints])
   {
-    v12 = [(ICTTFont *)self fontHints];
-    *(a3 + 8) |= 4u;
-    *(a3 + 13) = v12;
+    fontHints = [(ICTTFont *)self fontHints];
+    *(archive + 8) |= 4u;
+    *(archive + 13) = fontHints;
   }
 }
 
@@ -230,30 +230,30 @@ LABEL_12:
   topotext::Font::Font(v7);
   [(ICTTFont *)self saveToArchive:v7];
   v3 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:topotext::Font::ByteSize(v7)];
-  v4 = [v3 mutableBytes];
+  mutableBytes = [v3 mutableBytes];
   v5 = ICTTBoundedCheckedCastNSUIntegerToUInt32([v3 length]);
-  google::protobuf::MessageLite::SerializeToArray(v7, v4, v5);
+  google::protobuf::MessageLite::SerializeToArray(v7, mutableBytes, v5);
   topotext::Font::~Font(v7);
 
   return v3;
 }
 
-- (ICTTFont)initWithCoder:(id)a3
+- (ICTTFont)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufArchiveKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufArchiveKey"];
   v6 = [(ICTTFont *)self initWithData:v5];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(ICTTFont *)self serialize];
-  if (v4)
+  coderCopy = coder;
+  serialize = [(ICTTFont *)self serialize];
+  if (serialize)
   {
-    [v5 encodeObject:v4 forKey:@"protobufArchiveKey"];
+    [coderCopy encodeObject:serialize forKey:@"protobufArchiveKey"];
   }
 }
 

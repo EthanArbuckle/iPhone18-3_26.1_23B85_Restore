@@ -1,30 +1,30 @@
 @interface UINavigationControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityCanPerformEscapeAction;
 - (BOOL)_accessibilityNavigationControllerShouldSendScreenChange;
 - (BOOL)accessibilityPerformEscape;
 - (id)_accessibilityOutermostNavigationController;
 - (id)_accessibilitySpeakThisViewController;
-- (uint64_t)_accessibilityPostScreenChangeForAppearingView:(uint64_t)a1;
-- (uint64_t)_accessibilityVoiceOverFocusIsInView:(uint64_t)a1;
+- (uint64_t)_accessibilityPostScreenChangeForAppearingView:(uint64_t)view;
+- (uint64_t)_accessibilityVoiceOverFocusIsInView:(uint64_t)view;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axHandleTransitionEndFromView:(id)a3 toView:(id)a4;
+- (void)_axHandleTransitionEndFromView:(id)view toView:(id)toView;
 - (void)_setupFloatingToolbarAccessibility;
-- (void)transitionConductor:(id)a3 beginPinningInputViewsForTransitionFromViewController:(id)a4 toViewController:(id)a5 forTransitionType:(int)a6;
-- (void)transitionConductor:(id)a3 didEndCustomTransitionWithContext:(id)a4 didComplete:(BOOL)a5;
-- (void)transitionConductor:(id)a3 didEndTransitionFromView:(id)a4 toView:(id)a5;
+- (void)transitionConductor:(id)conductor beginPinningInputViewsForTransitionFromViewController:(id)controller toViewController:(id)viewController forTransitionType:(int)type;
+- (void)transitionConductor:(id)conductor didEndCustomTransitionWithContext:(id)context didComplete:(BOOL)complete;
+- (void)transitionConductor:(id)conductor didEndTransitionFromView:(id)view toView:(id)toView;
 @end
 
 @implementation UINavigationControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v8 = location;
   v7 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = "@";
   [location[0] validateClass:@"UIViewController" hasInstanceMethod:@"navigationItem" withFullSignature:0];
   v6 = @"UINavigationController";
@@ -46,79 +46,79 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UINavigationControllerAccessibility;
   [(UINavigationControllerAccessibility *)&v2 _accessibilityLoadAccessibilityInformation];
   if (_UISolariumEnabled())
   {
-    [(UINavigationControllerAccessibility *)v4 _setupFloatingToolbarAccessibility];
+    [(UINavigationControllerAccessibility *)selfCopy _setupFloatingToolbarAccessibility];
   }
 }
 
 - (BOOL)_accessibilityCanPerformEscapeAction
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v4 = [(UINavigationControllerAccessibility *)self safeValueForKey:@"visibleViewController"];
-  v5 = [v4 _accessibilityCanPerformEscapeAction];
+  _accessibilityCanPerformEscapeAction = [v4 _accessibilityCanPerformEscapeAction];
   *&v2 = MEMORY[0x29EDC9740](v4).n128_u64[0];
-  if (v5)
+  if (_accessibilityCanPerformEscapeAction)
   {
     return 1;
   }
 
-  v6.receiver = v8;
+  v6.receiver = selfCopy;
   v6.super_class = UINavigationControllerAccessibility;
   return [(UINavigationControllerAccessibility *)&v6 _accessibilityCanPerformEscapeAction];
 }
 
 - (BOOL)accessibilityPerformEscape
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v4 = [(UINavigationControllerAccessibility *)self safeValueForKey:@"visibleViewController"];
-  v5 = [v4 accessibilityPerformEscape];
+  accessibilityPerformEscape = [v4 accessibilityPerformEscape];
   *&v2 = MEMORY[0x29EDC9740](v4).n128_u64[0];
-  if (v5)
+  if (accessibilityPerformEscape)
   {
     return 1;
   }
 
-  v6.receiver = v8;
+  v6.receiver = selfCopy;
   v6.super_class = UINavigationControllerAccessibility;
   return [(UINavigationControllerAccessibility *)&v6 accessibilityPerformEscape];
 }
 
 - (id)_accessibilitySpeakThisViewController
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v7 = 0;
   objc_opt_class();
-  v4 = [(UINavigationControllerAccessibility *)v9 topViewController];
+  topViewController = [(UINavigationControllerAccessibility *)selfCopy topViewController];
   v6 = __UIAccessibilityCastAsSafeCategory();
-  MEMORY[0x29EDC9740](v4);
+  MEMORY[0x29EDC9740](topViewController);
   v5 = MEMORY[0x29EDC9748](v6);
   objc_storeStrong(&v6, 0);
-  v3 = [v5 _accessibilitySpeakThisViewController];
+  _accessibilitySpeakThisViewController = [v5 _accessibilitySpeakThisViewController];
   MEMORY[0x29EDC9740](v5);
 
-  return v3;
+  return _accessibilitySpeakThisViewController;
 }
 
 - (id)_accessibilityOutermostNavigationController
 {
-  v6 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v5 = MEMORY[0x29EDC9748](v6);
+    v5 = MEMORY[0x29EDC9748](selfCopy);
     while (([v5 safeBoolForKey:@"_isNestedNavigationController"] & 1) != 0)
     {
-      v1 = [v5 navigationController];
+      navigationController = [v5 navigationController];
       v2 = v5;
-      v5 = v1;
+      v5 = navigationController;
       MEMORY[0x29EDC9740](v2);
     }
 
@@ -136,12 +136,12 @@
   return v3;
 }
 
-- (uint64_t)_accessibilityVoiceOverFocusIsInView:(uint64_t)a1
+- (uint64_t)_accessibilityVoiceOverFocusIsInView:(uint64_t)view
 {
-  v18 = a1;
+  viewCopy = view;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v18)
+  if (viewCopy)
   {
     v11 = 0;
     v12 = &v11;
@@ -193,39 +193,39 @@ void __76__UINavigationControllerAccessibility__accessibilityVoiceOverFocusIsInV
   objc_storeStrong(location, 0);
 }
 
-- (uint64_t)_accessibilityPostScreenChangeForAppearingView:(uint64_t)a1
+- (uint64_t)_accessibilityPostScreenChangeForAppearingView:(uint64_t)view
 {
   v16[3] = *MEMORY[0x29EDCA608];
-  v13 = a1;
+  viewCopy = view;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v13)
+  if (viewCopy)
   {
-    v10 = [location _accessibilityElementToFocusForAppearanceScreenChange];
-    if (!v10)
+    _accessibilityElementToFocusForAppearanceScreenChange = [location _accessibilityElementToFocusForAppearanceScreenChange];
+    if (!_accessibilityElementToFocusForAppearanceScreenChange)
     {
-      v9 = [location _accessibilityViewController];
-      v2 = [v9 _accessibilityElementToFocusForAppearanceScreenChange];
-      v3 = v10;
-      v10 = v2;
+      _accessibilityViewController = [location _accessibilityViewController];
+      _accessibilityElementToFocusForAppearanceScreenChange2 = [_accessibilityViewController _accessibilityElementToFocusForAppearanceScreenChange];
+      v3 = _accessibilityElementToFocusForAppearanceScreenChange;
+      _accessibilityElementToFocusForAppearanceScreenChange = _accessibilityElementToFocusForAppearanceScreenChange2;
       MEMORY[0x29EDC9740](v3);
-      objc_storeStrong(&v9, 0);
+      objc_storeStrong(&_accessibilityViewController, 0);
     }
 
-    if (v10)
+    if (_accessibilityElementToFocusForAppearanceScreenChange)
     {
       v15[0] = *MEMORY[0x29EDBDB28];
       v16[0] = MEMORY[0x29EDB8EB0];
       v15[1] = *MEMORY[0x29EDBDB68];
       v5 = MEMORY[0x29EDBA070];
-      v7 = [(UINavigationControllerAccessibility *)v13 _accessibilityOutermostNavigationController];
+      _accessibilityOutermostNavigationController = [(UINavigationControllerAccessibility *)viewCopy _accessibilityOutermostNavigationController];
       v6 = [v5 numberWithUnsignedLongLong:?];
       v16[1] = v6;
       v15[2] = *MEMORY[0x29EDC7490];
-      v16[2] = v10;
+      v16[2] = _accessibilityElementToFocusForAppearanceScreenChange;
       argument = [MEMORY[0x29EDB8DC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
       MEMORY[0x29EDC9740](v6);
-      MEMORY[0x29EDC9740](v7);
+      MEMORY[0x29EDC9740](_accessibilityOutermostNavigationController);
       UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], argument);
       v14 = 1;
       v11 = 1;
@@ -238,7 +238,7 @@ void __76__UINavigationControllerAccessibility__accessibilityVoiceOverFocusIsInV
       v11 = 1;
     }
 
-    objc_storeStrong(&v10, 0);
+    objc_storeStrong(&_accessibilityElementToFocusForAppearanceScreenChange, 0);
   }
 
   else
@@ -251,34 +251,34 @@ void __76__UINavigationControllerAccessibility__accessibilityVoiceOverFocusIsInV
   return v14 & 1;
 }
 
-- (void)transitionConductor:(id)a3 beginPinningInputViewsForTransitionFromViewController:(id)a4 toViewController:(id)a5 forTransitionType:(int)a6
+- (void)transitionConductor:(id)conductor beginPinningInputViewsForTransitionFromViewController:(id)controller toViewController:(id)viewController forTransitionType:(int)type
 {
-  v30 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, conductor);
   v28 = 0;
-  objc_storeStrong(&v28, a4);
+  objc_storeStrong(&v28, controller);
   v27 = 0;
-  objc_storeStrong(&v27, a5);
-  v26 = a6;
-  v6 = [(UINavigationControllerAccessibility *)v30 safeValueForKey:@"navigationTransitionView"];
+  objc_storeStrong(&v27, viewController);
+  typeCopy = type;
+  v6 = [(UINavigationControllerAccessibility *)selfCopy safeValueForKey:@"navigationTransitionView"];
   v15 = v6 != 0;
   *&v7 = MEMORY[0x29EDC9740](v6).n128_u64[0];
   v25 = v15;
   v24 = 0;
   if (v15)
   {
-    v11 = [(UINavigationControllerAccessibility *)v30 safeValueForKey:@"disappearingViewController", v7];
+    v11 = [(UINavigationControllerAccessibility *)selfCopy safeValueForKey:@"disappearingViewController", v7];
     v23 = [v11 safeUIViewForKey:@"view"];
     MEMORY[0x29EDC9740](v11);
-    v24 = [(UINavigationControllerAccessibility *)v30 _accessibilityVoiceOverFocusIsInView:v23];
+    v24 = [(UINavigationControllerAccessibility *)selfCopy _accessibilityVoiceOverFocusIsInView:v23];
     objc_storeStrong(&v23, 0);
   }
 
-  v22.receiver = v30;
+  v22.receiver = selfCopy;
   v22.super_class = UINavigationControllerAccessibility;
-  [(UINavigationControllerAccessibility *)&v22 transitionConductor:location[0] beginPinningInputViewsForTransitionFromViewController:v28 toViewController:v27 forTransitionType:v26, v7];
+  [(UINavigationControllerAccessibility *)&v22 transitionConductor:location[0] beginPinningInputViewsForTransitionFromViewController:v28 toViewController:v27 forTransitionType:typeCopy, v7];
   if (v25 && (v24 & 1) != 0)
   {
     v9 = MEMORY[0x29EDCA578];
@@ -289,7 +289,7 @@ void __76__UINavigationControllerAccessibility__accessibilityVoiceOverFocusIsInV
     v18 = 0;
     v19 = __148__UINavigationControllerAccessibility_transitionConductor_beginPinningInputViewsForTransitionFromViewController_toViewController_forTransitionType___block_invoke;
     v20 = &unk_29F30C7C8;
-    v21 = MEMORY[0x29EDC9748](v30);
+    v21 = MEMORY[0x29EDC9748](selfCopy);
     dispatch_async(queue, &v16);
     MEMORY[0x29EDC9740](queue);
     objc_storeStrong(&v21, 0);
@@ -311,89 +311,89 @@ void __148__UINavigationControllerAccessibility_transitionConductor_beginPinning
   objc_storeStrong(v3, 0);
 }
 
-- (void)transitionConductor:(id)a3 didEndCustomTransitionWithContext:(id)a4 didComplete:(BOOL)a5
+- (void)transitionConductor:(id)conductor didEndCustomTransitionWithContext:(id)context didComplete:(BOOL)complete
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, conductor);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  v11 = a5;
-  v10.receiver = v14;
+  objc_storeStrong(&v12, context);
+  completeCopy = complete;
+  v10.receiver = selfCopy;
   v10.super_class = UINavigationControllerAccessibility;
-  [(UINavigationControllerAccessibility *)&v10 transitionConductor:location[0] didEndCustomTransitionWithContext:v12 didComplete:a5];
-  v7 = v14;
-  v9 = [v12 _fromView];
-  v8 = [v12 _toView];
-  [(UINavigationControllerAccessibility *)v7 _axHandleTransitionEndFromView:v9 toView:?];
-  MEMORY[0x29EDC9740](v8);
-  MEMORY[0x29EDC9740](v9);
+  [(UINavigationControllerAccessibility *)&v10 transitionConductor:location[0] didEndCustomTransitionWithContext:v12 didComplete:complete];
+  v7 = selfCopy;
+  _fromView = [v12 _fromView];
+  _toView = [v12 _toView];
+  [(UINavigationControllerAccessibility *)v7 _axHandleTransitionEndFromView:_fromView toView:?];
+  MEMORY[0x29EDC9740](_toView);
+  MEMORY[0x29EDC9740](_fromView);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)transitionConductor:(id)a3 didEndTransitionFromView:(id)a4 toView:(id)a5
+- (void)transitionConductor:(id)conductor didEndTransitionFromView:(id)view toView:(id)toView
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, conductor);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, view);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
-  v7.receiver = v11;
+  objc_storeStrong(&v8, toView);
+  v7.receiver = selfCopy;
   v7.super_class = UINavigationControllerAccessibility;
   [(UINavigationControllerAccessibility *)&v7 transitionConductor:location[0] didEndTransitionFromView:v9 toView:v8];
-  [(UINavigationControllerAccessibility *)v11 _axHandleTransitionEndFromView:v9 toView:v8];
+  [(UINavigationControllerAccessibility *)selfCopy _axHandleTransitionEndFromView:v9 toView:v8];
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)_axHandleTransitionEndFromView:(id)a3 toView:(id)a4
+- (void)_axHandleTransitionEndFromView:(id)view toView:(id)toView
 {
-  v17 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, view);
   v15 = 0;
-  objc_storeStrong(&v15, a4);
-  v4 = [(UINavigationControllerAccessibility *)v17 safeValueForKey:@"navigationTransitionView"];
+  objc_storeStrong(&v15, toView);
+  v4 = [(UINavigationControllerAccessibility *)selfCopy safeValueForKey:@"navigationTransitionView"];
   v9 = v4 != 0;
   *&v5 = MEMORY[0x29EDC9740](v4).n128_u64[0];
   v14 = v9;
   if (v15 && v14)
   {
-    v7 = [(UINavigationControllerAccessibility *)v17 viewControllers];
-    v13 = [v7 lastObject];
-    MEMORY[0x29EDC9740](v7);
-    v12 = 0;
+    viewControllers = [(UINavigationControllerAccessibility *)selfCopy viewControllers];
+    lastObject = [viewControllers lastObject];
+    MEMORY[0x29EDC9740](viewControllers);
+    _accessibilityHandleNavigationControllerDidEndTransition = 0;
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v13 _accessibilityHandleNavigationControllerDidEndTransition];
+      _accessibilityHandleNavigationControllerDidEndTransition = [lastObject _accessibilityHandleNavigationControllerDidEndTransition];
     }
 
-    if ((v12 & 1) == 0)
+    if ((_accessibilityHandleNavigationControllerDidEndTransition & 1) == 0)
     {
       v11 = 0;
-      if (([(UINavigationControllerAccessibility *)v17 _accessibilityVoiceOverFocusIsInView:?]& 1) != 0)
+      if (([(UINavigationControllerAccessibility *)selfCopy _accessibilityVoiceOverFocusIsInView:?]& 1) != 0)
       {
-        v6 = [v15 _accessibilitySortedElementsWithin];
-        v10 = [v6 firstObject];
-        MEMORY[0x29EDC9740](v6);
-        v11 = [(UINavigationControllerAccessibility *)v17 _accessibilityPostScreenChangeForAppearingView:v10];
-        objc_storeStrong(&v10, 0);
+        _accessibilitySortedElementsWithin = [v15 _accessibilitySortedElementsWithin];
+        firstObject = [_accessibilitySortedElementsWithin firstObject];
+        MEMORY[0x29EDC9740](_accessibilitySortedElementsWithin);
+        v11 = [(UINavigationControllerAccessibility *)selfCopy _accessibilityPostScreenChangeForAppearingView:firstObject];
+        objc_storeStrong(&firstObject, 0);
       }
 
-      if ((v11 & 1) == 0 && ([(UINavigationControllerAccessibility *)v17 _accessibilityVoiceOverFocusIsInView:v15]& 1) == 0)
+      if ((v11 & 1) == 0 && ([(UINavigationControllerAccessibility *)selfCopy _accessibilityVoiceOverFocusIsInView:v15]& 1) == 0)
       {
         UIAccessibilityPostNotification(*MEMORY[0x29EDC7F10], *MEMORY[0x29EDBDB28]);
       }
     }
 
-    objc_storeStrong(&v13, 0);
+    objc_storeStrong(&lastObject, 0);
   }
 
   objc_storeStrong(&v15, 0);
@@ -402,16 +402,16 @@ void __148__UINavigationControllerAccessibility_transitionConductor_beginPinning
 
 - (BOOL)_accessibilityNavigationControllerShouldSendScreenChange
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
   v7 = 0;
   objc_opt_class();
   v6 = __UIAccessibilityCastAsClass();
   v5 = MEMORY[0x29EDC9748](v6);
   objc_storeStrong(&v6, 0);
-  v3 = [v5 view];
-  v4 = [v3 isHiddenOrHasHiddenAncestor] ^ 1;
-  MEMORY[0x29EDC9740](v3);
+  view = [v5 view];
+  v4 = [view isHiddenOrHasHiddenAncestor] ^ 1;
+  MEMORY[0x29EDC9740](view);
   MEMORY[0x29EDC9740](v5);
   return v4;
 }
@@ -429,20 +429,20 @@ void __148__UINavigationControllerAccessibility_transitionConductor_beginPinning
   v10 = MEMORY[0x29EDC9748](v11);
   objc_storeStrong(&v11, 0);
   v13 = v10;
-  v3 = [v10 subviews];
-  v9 = [v3 firstObject];
-  *&v2 = MEMORY[0x29EDC9740](v3).n128_u64[0];
-  [v9 setAccessibilityContainerType:{4, v2}];
-  [v9 _setAccessibilityAutomationType:24];
-  v4 = v9;
+  subviews = [v10 subviews];
+  firstObject = [subviews firstObject];
+  *&v2 = MEMORY[0x29EDC9740](subviews).n128_u64[0];
+  [firstObject setAccessibilityContainerType:{4, v2}];
+  [firstObject _setAccessibilityAutomationType:24];
+  v4 = firstObject;
   v5 = AXNoLoc(@"Toolbar");
   [v4 setAccessibilityIdentifier:?];
   MEMORY[0x29EDC9740](v5);
-  v6 = v9;
+  v6 = firstObject;
   v7 = accessibilityLocalizedString(@"toolbar.label");
   [v6 setAccessibilityLabel:?];
   MEMORY[0x29EDC9740](v7);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&firstObject, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(v14, 0);
 }

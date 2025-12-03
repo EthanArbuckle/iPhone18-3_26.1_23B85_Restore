@@ -1,28 +1,28 @@
 @interface UIImage
-+ (id)_circularImageFromIcon:(id)a3 size:(double)a4 scale:(double)a5;
-+ (id)_imageDescriptorForSize:(CGSize)a3;
-+ (id)_imageForIcon:(id)a3 imageDescriptor:(id)a4;
-+ (id)aaui_imageFromColor:(id)a3;
-+ (id)addBackgroundForImage:(id)a3 withBackgroundColor:(id)a4 yShift:(double)a5;
-+ (id)circularImageForBundleID:(id)a3 size:(double)a4 scale:(double)a5;
-+ (id)circularImageFromCGImage:(CGImage *)a3 size:(CGSize)a4 scale:(double)a5;
-+ (id)iconForSize:(CGSize)a3 bundleIdentifier:(id)a4;
-+ (id)iconForSize:(CGSize)a3 typeID:(id)a4;
-- (CGRect)_cropRectForRawImageOrientation:(CGRect)a3;
-- (id)_imageByCroppingCGImageToRect:(CGRect)a3;
-- (id)_imageByCroppingCIImageToRect:(CGRect)a3;
-- (id)imageByCroppingToRect:(CGRect)a3;
++ (id)_circularImageFromIcon:(id)icon size:(double)size scale:(double)scale;
++ (id)_imageDescriptorForSize:(CGSize)size;
++ (id)_imageForIcon:(id)icon imageDescriptor:(id)descriptor;
++ (id)aaui_imageFromColor:(id)color;
++ (id)addBackgroundForImage:(id)image withBackgroundColor:(id)color yShift:(double)shift;
++ (id)circularImageForBundleID:(id)d size:(double)size scale:(double)scale;
++ (id)circularImageFromCGImage:(CGImage *)image size:(CGSize)size scale:(double)scale;
++ (id)iconForSize:(CGSize)size bundleIdentifier:(id)identifier;
++ (id)iconForSize:(CGSize)size typeID:(id)d;
+- (CGRect)_cropRectForRawImageOrientation:(CGRect)orientation;
+- (id)_imageByCroppingCGImageToRect:(CGRect)rect;
+- (id)_imageByCroppingCIImageToRect:(CGRect)rect;
+- (id)imageByCroppingToRect:(CGRect)rect;
 @end
 
 @implementation UIImage
 
-+ (id)aaui_imageFromColor:(id)a3
++ (id)aaui_imageFromColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v7.width = 1.0;
   v7.height = 1.0;
   UIGraphicsBeginImageContext(v7);
-  [v3 set];
+  [colorCopy set];
 
   v8.origin.x = 0.0;
   v8.origin.y = 0.0;
@@ -35,9 +35,9 @@
   return v4;
 }
 
-- (id)imageByCroppingToRect:(CGRect)a3
+- (id)imageByCroppingToRect:(CGRect)rect
 {
-  [(UIImage *)self _cropRectForRawImageOrientation:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(UIImage *)self _cropRectForRawImageOrientation:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -49,9 +49,9 @@
 
   else
   {
-    v13 = [(UIImage *)self CIImage];
+    cIImage = [(UIImage *)self CIImage];
 
-    if (v13)
+    if (cIImage)
     {
       v12 = [(UIImage *)self _imageByCroppingCIImageToRect:v5, v7, v9, v11];
     }
@@ -65,18 +65,18 @@
   return v12;
 }
 
-- (id)_imageByCroppingCGImageToRect:(CGRect)a3
+- (id)_imageByCroppingCGImageToRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UIImage *)self CGImage];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  cGImage = [(UIImage *)self CGImage];
   v14.origin.x = x;
   v14.origin.y = y;
   v14.size.width = width;
   v14.size.height = height;
-  v9 = CGImageCreateWithImageInRect(v8, v14);
+  v9 = CGImageCreateWithImageInRect(cGImage, v14);
   [(UIImage *)self scale];
   v11 = [UIImage imageWithCGImage:v9 scale:[(UIImage *)self imageOrientation] orientation:v10];
   CGImageRelease(v9);
@@ -84,14 +84,14 @@
   return v11;
 }
 
-- (id)_imageByCroppingCIImageToRect:(CGRect)a3
+- (id)_imageByCroppingCIImageToRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(UIImage *)self CIImage];
-  v9 = [v8 imageByCroppingToRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  cIImage = [(UIImage *)self CIImage];
+  v9 = [cIImage imageByCroppingToRect:{x, y, width, height}];
 
   [(UIImage *)self scale];
   v11 = [UIImage imageWithCIImage:v9 scale:[(UIImage *)self imageOrientation] orientation:v10];
@@ -99,22 +99,22 @@
   return v11;
 }
 
-- (CGRect)_cropRectForRawImageOrientation:(CGRect)a3
+- (CGRect)_cropRectForRawImageOrientation:(CGRect)orientation
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = orientation.size.height;
+  width = orientation.size.width;
+  y = orientation.origin.y;
+  x = orientation.origin.x;
   v8 = *&CGAffineTransformIdentity.c;
   *&v29.a = *&CGAffineTransformIdentity.a;
   *&v29.c = v8;
   v26 = v8;
   v25 = *&CGAffineTransformIdentity.tx;
   *&v29.tx = v25;
-  v9 = [(UIImage *)self imageOrientation];
-  if (v9 <= 7)
+  imageOrientation = [(UIImage *)self imageOrientation];
+  if (imageOrientation <= 7)
   {
-    if (((1 << v9) & 0x22) != 0)
+    if (((1 << imageOrientation) & 0x22) != 0)
     {
       *&v28.a = *&v29.a;
       *&v28.c = v26;
@@ -133,7 +133,7 @@
       goto LABEL_8;
     }
 
-    if (((1 << v9) & 0x44) != 0)
+    if (((1 << imageOrientation) & 0x44) != 0)
     {
       *&v28.a = *&v29.a;
       *&v28.c = v26;
@@ -148,7 +148,7 @@
       goto LABEL_8;
     }
 
-    if (((1 << v9) & 0x88) != 0)
+    if (((1 << imageOrientation) & 0x88) != 0)
     {
       *&v28.a = *&v29.a;
       *&v28.c = v26;
@@ -174,76 +174,76 @@ LABEL_8:
   return CGRectApplyAffineTransform(v30, &v28);
 }
 
-+ (id)circularImageForBundleID:(id)a3 size:(double)a4 scale:(double)a5
++ (id)circularImageForBundleID:(id)d size:(double)size scale:(double)scale
 {
-  v8 = a3;
-  v9 = [[ISIcon alloc] initWithBundleIdentifier:v8];
+  dCopy = d;
+  v9 = [[ISIcon alloc] initWithBundleIdentifier:dCopy];
 
-  v10 = [a1 _circularImageFromIcon:v9 size:a4 scale:a5];
+  v10 = [self _circularImageFromIcon:v9 size:size scale:scale];
 
   return v10;
 }
 
-+ (id)_circularImageFromIcon:(id)a3 size:(double)a4 scale:(double)a5
++ (id)_circularImageFromIcon:(id)icon size:(double)size scale:(double)scale
 {
-  v8 = a3;
-  v9 = [[ISImageDescriptor alloc] initWithSize:a4 scale:{a4, a5}];
-  v10 = [v8 prepareImageForDescriptor:v9];
+  iconCopy = icon;
+  v9 = [[ISImageDescriptor alloc] initWithSize:size scale:{size, scale}];
+  v10 = [iconCopy prepareImageForDescriptor:v9];
 
-  v11 = [a1 circularImageFromCGImage:objc_msgSend(v10 size:"CGImage") scale:{a4, a4, a5}];
+  v11 = [self circularImageFromCGImage:objc_msgSend(v10 size:"CGImage") scale:{size, size, scale}];
 
   return v11;
 }
 
-+ (id)iconForSize:(CGSize)a3 typeID:(id)a4
++ (id)iconForSize:(CGSize)size typeID:(id)d
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [[ISIcon alloc] initWithType:v7];
+  height = size.height;
+  width = size.width;
+  dCopy = d;
+  v8 = [[ISIcon alloc] initWithType:dCopy];
 
-  v9 = [a1 _imageDescriptorForSize:{width, height}];
-  v10 = [a1 _imageForIcon:v8 imageDescriptor:v9];
+  v9 = [self _imageDescriptorForSize:{width, height}];
+  v10 = [self _imageForIcon:v8 imageDescriptor:v9];
 
   return v10;
 }
 
-+ (id)iconForSize:(CGSize)a3 bundleIdentifier:(id)a4
++ (id)iconForSize:(CGSize)size bundleIdentifier:(id)identifier
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = [[ISIcon alloc] initWithBundleIdentifier:v7];
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
+  v8 = [[ISIcon alloc] initWithBundleIdentifier:identifierCopy];
 
-  v9 = [a1 _imageDescriptorForSize:{width, height}];
-  v10 = [a1 _imageForIcon:v8 imageDescriptor:v9];
+  v9 = [self _imageDescriptorForSize:{width, height}];
+  v10 = [self _imageForIcon:v8 imageDescriptor:v9];
 
   return v10;
 }
 
-+ (id)_imageForIcon:(id)a3 imageDescriptor:(id)a4
++ (id)_imageForIcon:(id)icon imageDescriptor:(id)descriptor
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 imageForDescriptor:v6];
+  iconCopy = icon;
+  descriptorCopy = descriptor;
+  v7 = [iconCopy imageForDescriptor:descriptorCopy];
   if ([v7 placeholder])
   {
-    v8 = [v5 prepareImageForDescriptor:v6];
+    v8 = [iconCopy prepareImageForDescriptor:descriptorCopy];
 
     v7 = v8;
   }
 
-  v9 = [v7 CGImage];
+  cGImage = [v7 CGImage];
   [v7 scale];
-  v10 = [UIImage imageWithCGImage:v9 scale:0 orientation:?];
+  v10 = [UIImage imageWithCGImage:cGImage scale:0 orientation:?];
 
   return v10;
 }
 
-+ (id)_imageDescriptorForSize:(CGSize)a3
++ (id)_imageDescriptorForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = objc_alloc_init(ISImageDescriptor);
   [v5 setSize:{width, height}];
   v6 = +[UIScreen mainScreen];
@@ -253,12 +253,12 @@ LABEL_8:
   return v5;
 }
 
-+ (id)circularImageFromCGImage:(CGImage *)a3 size:(CGSize)a4 scale:(double)a5
++ (id)circularImageFromCGImage:(CGImage *)image size:(CGSize)size scale:(double)scale
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = [[UIGraphicsImageRenderer alloc] initWithSize:{a4.width, a4.height}];
-  [UIImage imageWithCGImage:a3 scale:0 orientation:a5];
+  height = size.height;
+  width = size.width;
+  v9 = [[UIGraphicsImageRenderer alloc] initWithSize:{size.width, size.height}];
+  [UIImage imageWithCGImage:image scale:0 orientation:scale];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_3FDC;
@@ -279,17 +279,17 @@ LABEL_8:
   return v11;
 }
 
-+ (id)addBackgroundForImage:(id)a3 withBackgroundColor:(id)a4 yShift:(double)a5
++ (id)addBackgroundForImage:(id)image withBackgroundColor:(id)color yShift:(double)shift
 {
-  v7 = a3;
-  v8 = a4;
-  [v7 size];
+  imageCopy = image;
+  colorCopy = color;
+  [imageCopy size];
   v10 = (29.0 - v9) * 0.5;
-  [v7 size];
+  [imageCopy size];
   v12 = (29.0 - v11) * 0.5;
-  [v7 size];
+  [imageCopy size];
   v14 = v13;
-  [v7 size];
+  [imageCopy size];
   v16 = v15;
   v17 = [[UIGraphicsImageRenderer alloc] initWithSize:{29.0, 29.0}];
   v33[0] = _NSConcreteStackBlock;
@@ -302,15 +302,15 @@ LABEL_8:
 
   v27 = _Q0;
   v38 = _Q0;
-  v34 = v8;
-  v35 = v7;
-  v39 = a5;
+  v34 = colorCopy;
+  v35 = imageCopy;
+  shiftCopy = shift;
   v40 = v10;
   v41 = v12;
   v42 = v14;
   v43 = v16;
-  v23 = v7;
-  v24 = v8;
+  v23 = imageCopy;
+  v24 = colorCopy;
   [v17 imageWithActions:v33];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;

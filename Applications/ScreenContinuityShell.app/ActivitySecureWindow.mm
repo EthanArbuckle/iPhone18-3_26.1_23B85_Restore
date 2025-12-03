@@ -1,35 +1,35 @@
 @interface ActivitySecureWindow
-- (_TtC21ScreenContinuityShell20ActivitySecureWindow)initWithCoder:(id)a3;
-- (_TtC21ScreenContinuityShell20ActivitySecureWindow)initWithFrame:(CGRect)a3;
-- (_TtC21ScreenContinuityShell20ActivitySecureWindow)initWithWindowScene:(id)a3;
+- (_TtC21ScreenContinuityShell20ActivitySecureWindow)initWithCoder:(id)coder;
+- (_TtC21ScreenContinuityShell20ActivitySecureWindow)initWithFrame:(CGRect)frame;
+- (_TtC21ScreenContinuityShell20ActivitySecureWindow)initWithWindowScene:(id)scene;
 @end
 
 @implementation ActivitySecureWindow
 
-- (_TtC21ScreenContinuityShell20ActivitySecureWindow)initWithWindowScene:(id)a3
+- (_TtC21ScreenContinuityShell20ActivitySecureWindow)initWithWindowScene:(id)scene
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for ActivitySecureWindow();
-  return [(ActivitySecureWindow *)&v5 initWithWindowScene:a3];
+  return [(ActivitySecureWindow *)&v5 initWithWindowScene:scene];
 }
 
-- (_TtC21ScreenContinuityShell20ActivitySecureWindow)initWithFrame:(CGRect)a3
+- (_TtC21ScreenContinuityShell20ActivitySecureWindow)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = type metadata accessor for ActivitySecureWindow();
   return [(ActivitySecureWindow *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC21ScreenContinuityShell20ActivitySecureWindow)initWithCoder:(id)a3
+- (_TtC21ScreenContinuityShell20ActivitySecureWindow)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ActivitySecureWindow();
-  v4 = a3;
-  v5 = [(ActivitySecureWindow *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(ActivitySecureWindow *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -1,26 +1,26 @@
 @interface HUMediaServiceDefaultAccountsItemManager
-- (HUMediaServiceDefaultAccountsItemManager)initWithHome:(id)a3 sourceItem:(id)a4 delegate:(id)a5;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HUMediaServiceDefaultAccountsItemManager)initWithHome:(id)home sourceItem:(id)item delegate:(id)delegate;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 - (void)_registerForExternalUpdates;
 - (void)_unregisterForExternalUpdates;
 @end
 
 @implementation HUMediaServiceDefaultAccountsItemManager
 
-- (HUMediaServiceDefaultAccountsItemManager)initWithHome:(id)a3 sourceItem:(id)a4 delegate:(id)a5
+- (HUMediaServiceDefaultAccountsItemManager)initWithHome:(id)home sourceItem:(id)item delegate:(id)delegate
 {
-  v8 = a3;
+  homeCopy = home;
   v15.receiver = self;
   v15.super_class = HUMediaServiceDefaultAccountsItemManager;
-  v9 = [(HFItemManager *)&v15 initWithDelegate:a5 sourceItem:a4];
+  v9 = [(HFItemManager *)&v15 initWithDelegate:delegate sourceItem:item];
   v10 = v9;
   if (v9)
   {
-    [(HUMediaServiceDefaultAccountsItemManager *)v9 setHomeForUser:v8];
+    [(HUMediaServiceDefaultAccountsItemManager *)v9 setHomeForUser:homeCopy];
     v11 = [HUMediaServiceDefaultAccountsItemModule alloc];
-    v12 = [(HUMediaServiceDefaultAccountsItemManager *)v10 homeForUser];
-    v13 = [(HUMediaServiceDefaultAccountsItemModule *)v11 initWithItemUpdater:v10 home:v12];
+    homeForUser = [(HUMediaServiceDefaultAccountsItemManager *)v10 homeForUser];
+    v13 = [(HUMediaServiceDefaultAccountsItemModule *)v11 initWithItemUpdater:v10 home:homeForUser];
     [(HUMediaServiceDefaultAccountsItemManager *)v10 setDefaultAccountsItemModule:v13];
   }
 
@@ -32,8 +32,8 @@
   v4.receiver = self;
   v4.super_class = HUMediaServiceDefaultAccountsItemManager;
   [(HFItemManager *)&v4 _registerForExternalUpdates];
-  v3 = [(HUMediaServiceDefaultAccountsItemManager *)self defaultAccountsItemModule];
-  [v3 registerForExternalUpdates];
+  defaultAccountsItemModule = [(HUMediaServiceDefaultAccountsItemManager *)self defaultAccountsItemModule];
+  [defaultAccountsItemModule registerForExternalUpdates];
 }
 
 - (void)_unregisterForExternalUpdates
@@ -41,11 +41,11 @@
   v4.receiver = self;
   v4.super_class = HUMediaServiceDefaultAccountsItemManager;
   [(HFItemManager *)&v4 _unregisterForExternalUpdates];
-  v3 = [(HUMediaServiceDefaultAccountsItemManager *)self defaultAccountsItemModule];
-  [v3 unregisterForExternalUpdates];
+  defaultAccountsItemModule = [(HUMediaServiceDefaultAccountsItemManager *)self defaultAccountsItemModule];
+  [defaultAccountsItemModule unregisterForExternalUpdates];
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v21[1] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc(MEMORY[0x277D14B38]);
@@ -57,8 +57,8 @@
   [(HUMediaServiceDefaultAccountsItemManager *)self setDefaultAccountsTitleItem:v7];
 
   v8 = objc_alloc(MEMORY[0x277CBEB98]);
-  v9 = [(HUMediaServiceDefaultAccountsItemManager *)self defaultAccountsTitleItem];
-  v19 = v9;
+  defaultAccountsTitleItem = [(HUMediaServiceDefaultAccountsItemManager *)self defaultAccountsTitleItem];
+  v19 = defaultAccountsTitleItem;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
   v11 = [v8 initWithArray:v10];
 
@@ -66,29 +66,29 @@
   v13 = [objc_alloc(MEMORY[0x277D14B40]) initWithItems:v11];
   v14 = [v12 setWithObject:v13];
 
-  v15 = [(HUMediaServiceDefaultAccountsItemManager *)self defaultAccountsItemModule];
-  v16 = [v15 itemProviders];
-  [v14 unionSet:v16];
+  defaultAccountsItemModule = [(HUMediaServiceDefaultAccountsItemManager *)self defaultAccountsItemModule];
+  itemProviders = [defaultAccountsItemModule itemProviders];
+  [v14 unionSet:itemProviders];
 
-  v17 = [v14 allObjects];
+  allObjects = [v14 allObjects];
 
-  return v17;
+  return allObjects;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v13[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
+  itemsCopy = items;
   v6 = objc_alloc_init(v4);
   v7 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUMediaServiceDefaultAccountsTitleSectionIdentifier"];
-  v8 = [(HUMediaServiceDefaultAccountsItemManager *)self defaultAccountsTitleItem];
-  v13[0] = v8;
+  defaultAccountsTitleItem = [(HUMediaServiceDefaultAccountsItemManager *)self defaultAccountsTitleItem];
+  v13[0] = defaultAccountsTitleItem;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
   [v7 setItems:v9];
 
-  v10 = [(HUMediaServiceDefaultAccountsItemManager *)self defaultAccountsItemModule];
-  v11 = [v10 buildSectionsWithDisplayedItems:v5];
+  defaultAccountsItemModule = [(HUMediaServiceDefaultAccountsItemManager *)self defaultAccountsItemModule];
+  v11 = [defaultAccountsItemModule buildSectionsWithDisplayedItems:itemsCopy];
 
   [v6 addObject:v7];
   [v6 addObjectsFromArray:v11];

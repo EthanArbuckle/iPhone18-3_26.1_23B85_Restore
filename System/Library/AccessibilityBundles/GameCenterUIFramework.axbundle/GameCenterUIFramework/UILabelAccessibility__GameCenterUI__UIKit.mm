@@ -1,15 +1,15 @@
 @interface UILabelAccessibility__GameCenterUI__UIKit
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 @end
 
 @implementation UILabelAccessibility__GameCenterUI__UIKit
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UILabel" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIColor" hasInstanceMethod:@"alpha" withFullSignature:{"d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UILabel" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIColor" hasInstanceMethod:@"alpha" withFullSignature:{"d", 0}];
 }
 
 - (BOOL)isAccessibilityElement

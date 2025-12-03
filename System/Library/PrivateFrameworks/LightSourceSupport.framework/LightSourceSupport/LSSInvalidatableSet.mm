@@ -1,5 +1,5 @@
 @interface LSSInvalidatableSet
-+ (id)addAssertionsForOptions:(unsigned int)a3 reason:(id)a4 to:(id)a5;
++ (id)addAssertionsForOptions:(unsigned int)options reason:(id)reason to:(id)to;
 - (void)dealloc;
 - (void)invalidate;
 @end
@@ -52,31 +52,31 @@
   [(LSSInvalidatableSet *)&v2 dealloc];
 }
 
-+ (id)addAssertionsForOptions:(unsigned int)a3 reason:(id)a4 to:(id)a5
++ (id)addAssertionsForOptions:(unsigned int)options reason:(id)reason to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = [MEMORY[0x277CBEB18] array];
+  optionsCopy = options;
+  reasonCopy = reason;
+  toCopy = to;
+  array = [MEMORY[0x277CBEB18] array];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __57__LSSInvalidatableSet_addAssertionsForOptions_reason_to___block_invoke;
   v18[3] = &unk_2798127C0;
-  v10 = v8;
+  v10 = toCopy;
   v19 = v10;
-  v11 = v7;
+  v11 = reasonCopy;
   v20 = v11;
-  v12 = v9;
+  v12 = array;
   v21 = v12;
   v13 = MEMORY[0x259C50010](v18);
   v14 = v13;
-  if ((v6 & 2) != 0)
+  if ((optionsCopy & 2) != 0)
   {
     (*(v13 + 16))(v13, 100);
-    if ((v6 & 4) == 0)
+    if ((optionsCopy & 4) == 0)
     {
 LABEL_3:
-      if ((v6 & 8) == 0)
+      if ((optionsCopy & 8) == 0)
       {
         goto LABEL_4;
       }
@@ -85,13 +85,13 @@ LABEL_3:
     }
   }
 
-  else if ((v6 & 4) == 0)
+  else if ((optionsCopy & 4) == 0)
   {
     goto LABEL_3;
   }
 
   v14[2](v14, 101);
-  if ((v6 & 8) == 0)
+  if ((optionsCopy & 8) == 0)
   {
 LABEL_4:
     v15 = [v12 count];
@@ -101,7 +101,7 @@ LABEL_4:
     }
 
 LABEL_10:
-    v16 = 0;
+    firstObject = 0;
     goto LABEL_12;
   }
 
@@ -116,18 +116,18 @@ LABEL_9:
 LABEL_5:
   if (v15 == 1)
   {
-    v16 = [v12 firstObject];
+    firstObject = [v12 firstObject];
   }
 
   else
   {
-    v16 = objc_alloc_init(LSSInvalidatableSet);
-    [(LSSInvalidatableSet *)v16 setInvalidatables:v12];
+    firstObject = objc_alloc_init(LSSInvalidatableSet);
+    [(LSSInvalidatableSet *)firstObject setInvalidatables:v12];
   }
 
 LABEL_12:
 
-  return v16;
+  return firstObject;
 }
 
 uint64_t __57__LSSInvalidatableSet_addAssertionsForOptions_reason_to___block_invoke(uint64_t a1, uint64_t a2)

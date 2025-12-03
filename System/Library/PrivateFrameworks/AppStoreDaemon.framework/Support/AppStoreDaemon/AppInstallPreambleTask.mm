@@ -1,12 +1,12 @@
 @interface AppInstallPreambleTask
-- (void)mainWithCompletionHandler:(id)a3;
+- (void)mainWithCompletionHandler:(id)handler;
 @end
 
 @implementation AppInstallPreambleTask
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[NSNumber numberWithLongLong:](NSNumber, "numberWithLongLong:", [*(&self->super._finished + 1) databaseID]);
   v6 = sub_100402BD0(AppInstallInfo, v5);
   v7 = *(&self->_package + 2);
@@ -64,13 +64,13 @@ LABEL_35:
         v49 = v47;
 LABEL_36:
 
-        v50 = self;
-        objc_sync_enter(v50);
-        v51 = *(&v50->_installInfo + 2);
-        *(&v50->_installInfo + 2) = v49;
+        selfCopy = self;
+        objc_sync_enter(selfCopy);
+        v51 = *(&selfCopy->_installInfo + 2);
+        *(&selfCopy->_installInfo + 2) = v49;
 
-        objc_sync_exit(v50);
-        v4[2](v4, 0);
+        objc_sync_exit(selfCopy);
+        handlerCopy[2](handlerCopy, 0);
         goto LABEL_37;
       }
 
@@ -91,12 +91,12 @@ LABEL_36:
     }
 
     v26 = sub_10023E0F8(*(&self->super._finished + 1), @"cancel_if_duplicate");
-    v27 = [v26 BOOLValue];
+    bOOLValue = [v26 BOOLValue];
 
     v28 = sub_10023E0F8(*(&self->super._finished + 1), @"item_id");
     v29 = sub_10023E0F8(*(&self->super._finished + 1), @"bundle_id");
     v30 = v29;
-    v145 = v4;
+    v145 = handlerCopy;
     v146 = v19;
     if (v28)
     {
@@ -117,7 +117,7 @@ LABEL_36:
     v35 = v31;
     if (v31)
     {
-      if (v27)
+      if (bOOLValue)
       {
         v36 = ASDLogHandleForCategory();
         if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -147,7 +147,7 @@ LABEL_36:
           v164 = 2114;
           v165 = v103;
         }
-        v38 = ;
+        distributorID = ;
         v39 = ASDErrorWithDescription();
 LABEL_28:
 
@@ -159,9 +159,9 @@ LABEL_28:
         v40 = *(&self->super._finished + 1);
         if (!v40 || sub_10023E604(v40, @"source_type") != 2)
         {
-          v41 = [v35 iTunesMetadata];
-          v42 = [v41 distributorInfo];
-          v38 = [v42 distributorID];
+          iTunesMetadata = [v35 iTunesMetadata];
+          distributorInfo = [iTunesMetadata distributorInfo];
+          distributorID = [distributorInfo distributorID];
 
           v43 = ASDLogHandleForCategory();
           if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
@@ -191,7 +191,7 @@ LABEL_28:
             v164 = 2114;
             v165 = v136;
             v166 = 2114;
-            v167 = v38;
+            v167 = distributorID;
           }
           v45 = ;
           v39 = ASDErrorWithDescription();
@@ -211,7 +211,7 @@ LABEL_32:
 LABEL_33:
       v46 = v39;
 
-      v4 = v145;
+      handlerCopy = v145;
 LABEL_34:
       v19 = v146;
       v47 = sub_100388100(AppInstallPreambleResponse, [*(&self->super._finished + 1) databaseID], v146, v46);
@@ -343,12 +343,12 @@ LABEL_60:
 
 LABEL_61:
       v68 = sub_10023E0F8(*(&self->super._finished + 1), @"supports_32bit_only");
-      v69 = [v68 BOOLValue];
+      bOOLValue2 = [v68 BOOLValue];
 
-      if (v69)
+      if (bOOLValue2)
       {
         v70 = ASDLogHandleForCategory();
-        v4 = v145;
+        handlerCopy = v145;
         if (os_log_type_enabled(v70, OS_LOG_TYPE_ERROR))
         {
           v129 = *(&self->_package + 2);
@@ -369,7 +369,7 @@ LABEL_61:
       else
       {
         v72 = 0;
-        v4 = v145;
+        handlerCopy = v145;
       }
 
       v73 = v72;
@@ -383,9 +383,9 @@ LABEL_61:
       if (+[AMSDevice deviceIsAppleTV])
       {
         v74 = sub_10023E0F8(*(&self->super._finished + 1), @"restore_type");
-        v75 = [v74 integerValue];
+        integerValue = [v74 integerValue];
 
-        if (v75 == 1)
+        if (integerValue == 1)
         {
           v159 = 0;
           v76 = sub_1002499D4(v146, &v159);
@@ -496,10 +496,10 @@ LABEL_83:
               objc_setProperty_atomic_copy(v104, v107, v108, 80);
             }
 
-            v110 = [v78 uniqueIdentifier];
+            uniqueIdentifier = [v78 uniqueIdentifier];
             if (v104)
             {
-              objc_setProperty_atomic_copy(v104, v109, v110, 40);
+              objc_setProperty_atomic_copy(v104, v109, uniqueIdentifier, 40);
             }
 
             v111 = sub_10023E604(*(&self->super._finished + 1), @"restore_type");
@@ -561,12 +561,12 @@ LABEL_119:
               v125 = sub_10029B4F0(v123, v122, 0);
               if ([v125 isComplete])
               {
-                v126 = [*(&self->super._finished + 1) databaseID];
+                databaseID = [*(&self->super._finished + 1) databaseID];
                 v127 = v78;
                 objc_opt_self();
-                v49 = sub_100389614([AppInstallPreambleResponse alloc], v126, 3, v127, 0);
+                v49 = sub_100389614([AppInstallPreambleResponse alloc], databaseID, 3, v127, 0);
 
-                v4 = v145;
+                handlerCopy = v145;
 LABEL_125:
 
                 v46 = v124;
@@ -580,10 +580,10 @@ LABEL_125:
               v124 = v97;
             }
 
-            v128 = [*(&self->super._finished + 1) databaseID];
+            databaseID2 = [*(&self->super._finished + 1) databaseID];
             v123 = v146;
             objc_opt_self();
-            v49 = sub_100389614([AppInstallPreambleResponse alloc], v128, 1, v123, 0);
+            v49 = sub_100389614([AppInstallPreambleResponse alloc], databaseID2, 1, v123, 0);
             goto LABEL_125;
           }
 
@@ -637,8 +637,8 @@ LABEL_53:
   v149[1] = 3221225472;
   v150 = sub_1003894FC;
   v151 = &unk_100525F20;
-  v152 = self;
-  v153 = v4;
+  selfCopy2 = self;
+  v153 = handlerCopy;
   v32 = v149;
   v33 = ASDErrorWithDescription();
   v34 = sub_100388100(AppInstallPreambleResponse, [*(&self->super._finished + 1) databaseID], 0, v33);

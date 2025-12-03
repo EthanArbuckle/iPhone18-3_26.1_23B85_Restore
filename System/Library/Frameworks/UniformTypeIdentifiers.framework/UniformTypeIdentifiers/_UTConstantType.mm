@@ -3,13 +3,13 @@
 + (objc_ivar)_validateThisClass;
 + (void)_validateThisClass;
 - (BOOL)_isRealized;
-- (BOOL)conformsToType:(id)a3;
-- (id)_preferredTagOfClass:(id)a3;
+- (BOOL)conformsToType:(id)type;
+- (id)_preferredTagOfClass:(id)class;
 - (id)_typeRecord;
 - (id)debugDescription;
 - (id)supertypes;
 - (id)tags;
-- (unint64_t)_getEnclosureColors:(UTHardwareColor *)a3 count:(unint64_t)a4;
+- (unint64_t)_getEnclosureColors:(UTHardwareColor *)colors count:(unint64_t)count;
 - (void)_unrealize;
 @end
 
@@ -53,17 +53,17 @@
 + (void)_validateThisClass
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = UniformTypeIdentifiers::CoreTypes::log(a1);
+  v3 = UniformTypeIdentifiers::CoreTypes::log(self);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446466;
-    Name = class_getName(a1);
+    Name = class_getName(self);
     v20 = 2082;
     v21 = "{Constant=^v{Fields=@b2b1b1b4[7c]}}";
     _os_log_impl(&dword_1AC1AE000, v3, OS_LOG_TYPE_DEFAULT, "%{public}s instance C structure encoding: %{public}s", buf, 0x16u);
   }
 
-  for (i = a1; i && i != objc_opt_class(); i = class_getSuperclass(i))
+  for (i = self; i && i != objc_opt_class(); i = class_getSuperclass(i))
   {
     *buf = 0;
     v5 = class_copyIvarList(i, buf);
@@ -82,7 +82,7 @@
   v7 = UniformTypeIdentifiers::CoreTypes::log(v6);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = class_getName(a1);
+    v8 = class_getName(self);
     *buf = 136446210;
     Name = v8;
     _os_log_impl(&dword_1AC1AE000, v7, OS_LOG_TYPE_DEFAULT, "%{public}s subclass ivar encoding:", buf, 0xCu);
@@ -91,32 +91,32 @@
   v10 = UniformTypeIdentifiers::CoreTypes::log(v9);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    InstanceSize = class_getInstanceSize(a1);
+    InstanceSize = class_getInstanceSize(self);
     *buf = 134217984;
     Name = InstanceSize;
     _os_log_impl(&dword_1AC1AE000, v10, OS_LOG_TYPE_DEFAULT, "   Size: %zu bytes", buf, 0xCu);
   }
 
-  InstanceVariable = class_getInstanceVariable(a1, "_fields");
+  InstanceVariable = class_getInstanceVariable(self, "_fields");
   if (!InstanceVariable)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"UTCoreTypes.mm" lineNumber:356 description:{@"Failed to find %s::_fields ivar description.", class_getName(a1)}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UTCoreTypes.mm" lineNumber:356 description:{@"Failed to find %s::_fields ivar description.", class_getName(self)}];
   }
 
   Offset = ivar_getOffset(InstanceVariable);
   if (Offset != 16)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:a1 file:@"UTCoreTypes.mm" lineNumber:362 description:{@"Offset of %s::_fields is %zu at runtime, but we expected %zu during compilation. UTType may have had ivars added unintentionally.", class_getName(a1), Offset, 16}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"UTCoreTypes.mm" lineNumber:362 description:{@"Offset of %s::_fields is %zu at runtime, but we expected %zu during compilation. UTType may have had ivars added unintentionally.", class_getName(self), Offset, 16}];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)conformsToType:(id)a3
+- (BOOL)conformsToType:(id)type
 {
-  if (self == a3)
+  if (self == type)
   {
     return 1;
   }
@@ -124,8 +124,8 @@
   if ((*(&self->_fields + 8) & 8) != 0)
   {
     identifier = self->_fields.identifier;
-    v5 = [a3 identifier];
-    v3 = _UTIdentifiersAreEqual(identifier, v5);
+    identifier = [type identifier];
+    v3 = _UTIdentifiersAreEqual(identifier, identifier);
   }
 
   else
@@ -142,37 +142,37 @@
 {
   if ((*(&self->_fields + 8) & 8) != 0)
   {
-    v2 = [MEMORY[0x1E695DFD8] set];
+    supertypes = [MEMORY[0x1E695DFD8] set];
   }
 
   else
   {
     v4.receiver = self;
     v4.super_class = _UTConstantType;
-    v2 = [(UTType *)&v4 supertypes];
+    supertypes = [(UTType *)&v4 supertypes];
   }
 
-  return v2;
+  return supertypes;
 }
 
 - (id)tags
 {
   if ((*(&self->_fields + 8) & 4) != 0)
   {
-    v3 = MEMORY[0x1E695E0F8];
+    tags = MEMORY[0x1E695E0F8];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = _UTConstantType;
-    v3 = [(UTType *)&v5 tags];
+    tags = [(UTType *)&v5 tags];
   }
 
-  return v3;
+  return tags;
 }
 
-- (unint64_t)_getEnclosureColors:(UTHardwareColor *)a3 count:(unint64_t)a4
+- (unint64_t)_getEnclosureColors:(UTHardwareColor *)colors count:(unint64_t)count
 {
   if ((*(&self->_fields + 8) & 3) == 2 || (*(&self->_fields + 8) & 4) != 0)
   {
@@ -183,7 +183,7 @@
   v10 = v5;
   v8.receiver = self;
   v8.super_class = _UTConstantType;
-  return [(UTType *)&v8 _getEnclosureColors:a3 count:a4];
+  return [(UTType *)&v8 _getEnclosureColors:colors count:count];
 }
 
 - (BOOL)_isRealized
@@ -203,17 +203,17 @@
   os_unfair_recursive_lock_unlock();
 }
 
-- (id)_preferredTagOfClass:(id)a3
+- (id)_preferredTagOfClass:(id)class
 {
-  if ([a3 isEqual:@"public.filename-extension"])
+  if ([class isEqual:@"public.filename-extension"])
   {
     if (_UTAlwaysUseSlowPathForPreferredExtension == 1)
     {
-      v13 = self;
-      v8 = &v13;
+      selfCopy = self;
+      v8 = &selfCopy;
 LABEL_20:
       v8->super_class = _UTConstantType;
-      [(objc_super *)v8 _preferredTagOfClass:a3, v10.receiver, v10.super_class, v11.receiver, v11.super_class, v12.receiver];
+      [(objc_super *)v8 _preferredTagOfClass:class, v10.receiver, v10.super_class, v11.receiver, v11.super_class, v12.receiver];
       goto LABEL_21;
     }
 
@@ -236,19 +236,19 @@ LABEL_16:
     goto LABEL_22;
   }
 
-  if ([a3 isEqual:@"public.mime-type"])
+  if ([class isEqual:@"public.mime-type"])
   {
     if ((*(&self->_fields + 8) & 3) == 1 || (*(&self->_fields + 8) & 4) != 0)
     {
       goto LABEL_16;
     }
 
-    [(UTType *)&v11 _preferredTagOfClass:a3, v10.receiver, v10.super_class, self, _UTConstantType, v12.receiver];
+    [(UTType *)&v11 _preferredTagOfClass:class, v10.receiver, v10.super_class, self, _UTConstantType, v12.receiver];
   }
 
   else
   {
-    [(UTType *)&v10 _preferredTagOfClass:a3, self, _UTConstantType, v11.receiver, v11.super_class, v12.receiver];
+    [(UTType *)&v10 _preferredTagOfClass:class, self, _UTConstantType, v11.receiver, v11.super_class, v12.receiver];
   }
 
   v6 = LABEL_21:;
@@ -286,9 +286,9 @@ LABEL_22:
     v6 = objc_alloc(MEMORY[0x1E696AEC0]);
     Class = object_getClass(self);
     identifier = self->_fields.identifier;
-    v9 = [(_UTConstantType *)self _isRealized];
+    _isRealized = [(_UTConstantType *)self _isRealized];
     v10 = *(&self->_fields + 8);
-    v11 = [(UTType *)self _constantIndex];
+    _constantIndex = [(UTType *)self _constantIndex];
     v12 = @"yes";
     if ((v10 & 8) != 0)
     {
@@ -310,12 +310,12 @@ LABEL_22:
       v14 = @"yes";
     }
 
-    if (!v9)
+    if (!_isRealized)
     {
       v12 = @"no";
     }
 
-    v15 = [v6 initWithFormat:@"<%@ %p> { id=%@, r=%@, t=%@, r=%@, %@idx=%li }", Class, self, identifier, v12, v14, v13, v5, v11];
+    v15 = [v6 initWithFormat:@"<%@ %p> { id=%@, r=%@, t=%@, r=%@, %@idx=%li }", Class, self, identifier, v12, v14, v13, v5, _constantIndex];
   }
 
   else

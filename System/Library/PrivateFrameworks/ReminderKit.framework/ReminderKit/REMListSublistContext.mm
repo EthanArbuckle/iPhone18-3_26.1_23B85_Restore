@@ -1,48 +1,48 @@
 @interface REMListSublistContext
-- (REMListSublistContext)initWithList:(id)a3;
-- (id)fetchCustomSmartListsWithError:(id *)a3;
-- (id)fetchListsWithError:(id *)a3;
+- (REMListSublistContext)initWithList:(id)list;
+- (id)fetchCustomSmartListsWithError:(id *)error;
+- (id)fetchListsWithError:(id *)error;
 @end
 
 @implementation REMListSublistContext
 
-- (REMListSublistContext)initWithList:(id)a3
+- (REMListSublistContext)initWithList:(id)list
 {
-  v5 = a3;
+  listCopy = list;
   v9.receiver = self;
   v9.super_class = REMListSublistContext;
   v6 = [(REMListSublistContext *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_list, a3);
+    objc_storeStrong(&v6->_list, list);
   }
 
   return v7;
 }
 
-- (id)fetchListsWithError:(id *)a3
+- (id)fetchListsWithError:(id *)error
 {
   v5 = [REMListsDataView alloc];
-  v6 = [(REMListSublistContext *)self list];
-  v7 = [v6 store];
-  v8 = [(REMListsDataView *)v5 initWithStore:v7];
+  list = [(REMListSublistContext *)self list];
+  store = [list store];
+  v8 = [(REMListsDataView *)v5 initWithStore:store];
 
-  v9 = [(REMListSublistContext *)self list];
-  v10 = [(REMListsDataView *)v8 fetchListsInGroup:v9 error:a3];
+  list2 = [(REMListSublistContext *)self list];
+  v10 = [(REMListsDataView *)v8 fetchListsInGroup:list2 error:error];
 
   return v10;
 }
 
-- (id)fetchCustomSmartListsWithError:(id *)a3
+- (id)fetchCustomSmartListsWithError:(id *)error
 {
   v5 = [REMSmartListsDataView alloc];
-  v6 = [(REMListSublistContext *)self list];
-  v7 = [v6 store];
-  v8 = [(REMSmartListsDataView *)v5 initWithStore:v7];
+  list = [(REMListSublistContext *)self list];
+  store = [list store];
+  v8 = [(REMSmartListsDataView *)v5 initWithStore:store];
 
-  v9 = [(REMListSublistContext *)self list];
-  v10 = [(REMSmartListsDataView *)v8 fetchCustomSmartListsInGroup:v9 error:a3];
+  list2 = [(REMListSublistContext *)self list];
+  v10 = [(REMSmartListsDataView *)v8 fetchCustomSmartListsInGroup:list2 error:error];
 
   return v10;
 }

@@ -1,11 +1,11 @@
 @interface PKSearchResult
 - (PKSearchResult)init;
-- (PKSearchResult)initWithEpisodes:(id)a3 shows:(id)a4;
+- (PKSearchResult)initWithEpisodes:(id)episodes shows:(id)shows;
 @end
 
 @implementation PKSearchResult
 
-- (PKSearchResult)initWithEpisodes:(id)a3 shows:(id)a4
+- (PKSearchResult)initWithEpisodes:(id)episodes shows:(id)shows
 {
   type metadata accessor for Episode();
   v5 = sub_25EA1E718();

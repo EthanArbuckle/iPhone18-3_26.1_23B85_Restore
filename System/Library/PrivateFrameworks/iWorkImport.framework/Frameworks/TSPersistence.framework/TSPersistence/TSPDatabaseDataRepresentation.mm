@@ -1,6 +1,6 @@
 @interface TSPDatabaseDataRepresentation
-- (BOOL)hasSameLocationAs:(id)a3;
-- (TSPDatabaseDataRepresentation)initWithDatabase:(id)a3 identifier:(int64_t)a4;
+- (BOOL)hasSameLocationAs:(id)as;
+- (TSPDatabaseDataRepresentation)initWithDatabase:(id)database identifier:(int64_t)identifier;
 - (id)inputStream;
 - (int64_t)dataLength;
 - (sqlite3_blob)_openBlob;
@@ -8,17 +8,17 @@
 
 @implementation TSPDatabaseDataRepresentation
 
-- (TSPDatabaseDataRepresentation)initWithDatabase:(id)a3 identifier:(int64_t)a4
+- (TSPDatabaseDataRepresentation)initWithDatabase:(id)database identifier:(int64_t)identifier
 {
-  v7 = a3;
+  databaseCopy = database;
   v12.receiver = self;
   v12.super_class = TSPDatabaseDataRepresentation;
   v8 = [(TSPDatabaseDataRepresentation *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_database, a3);
-    v9->_identifier = a4;
+    objc_storeStrong(&v8->_database, database);
+    v9->_identifier = identifier;
     v10 = v9;
   }
 
@@ -42,10 +42,10 @@
   return v6;
 }
 
-- (BOOL)hasSameLocationAs:(id)a3
+- (BOOL)hasSameLocationAs:(id)as
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_database == v4[4] && self->_identifier == v4[5];
+  asCopy = as;
+  v5 = asCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && self->_database == asCopy[4] && self->_identifier == asCopy[5];
 
   return v5;
 }

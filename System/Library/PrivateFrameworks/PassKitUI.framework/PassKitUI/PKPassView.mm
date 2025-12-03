@@ -1,69 +1,69 @@
 @interface PKPassView
-- (BOOL)_visibleFaceShouldClipForCurrentViewMode:(double *)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)_visibleFaceShouldClipForCurrentViewMode:(double *)mode;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (CGRect)frameOfVisibleFace;
 - (CGSize)sizeOfFront;
 - (CGSize)sizeOfFrontFace;
-- (PKPassView)initWithPass:(id)a3 content:(int64_t)a4 suppressedContent:(unint64_t)a5 rendererState:(id)a6;
+- (PKPassView)initWithPass:(id)pass content:(int64_t)content suppressedContent:(unint64_t)suppressedContent rendererState:(id)state;
 - (PKPassViewDelegate)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)observers;
 - (id)snapshotOfFrontFace;
-- (id)snapshotOfFrontFaceWithRequestedSize:(CGSize)a3 format:(id)a4;
+- (id)snapshotOfFrontFaceWithRequestedSize:(CGSize)size format:(id)format;
 - (id)snapshotOfPassView;
-- (id)snapshotViewOfVisibleFaceAfterScreenUpdates:(BOOL)a3;
+- (id)snapshotViewOfVisibleFaceAfterScreenUpdates:(BOOL)updates;
 - (unint64_t)_regionsForCurrentModes;
-- (void)_applyContentMode:(BOOL)a3;
+- (void)_applyContentMode:(BOOL)mode;
 - (void)_disablePortals;
 - (void)_enablePortals;
 - (void)_endAssertingPortal;
 - (void)_updateFrontFaceSuppressedContent;
-- (void)_updateHighEndLayerShadowAnimated:(BOOL)a3 withDelay:(double)a4;
-- (void)_updateLayerShadowAnimated:(BOOL)a3 withDelay:(double)a4;
-- (void)addPassStateObserver:(id)a3;
+- (void)_updateHighEndLayerShadowAnimated:(BOOL)animated withDelay:(double)delay;
+- (void)_updateLayerShadowAnimated:(BOOL)animated withDelay:(double)delay;
+- (void)addPassStateObserver:(id)observer;
 - (void)dealloc;
-- (void)drawFrontFaceAtSize:(CGSize)a3;
+- (void)drawFrontFaceAtSize:(CGSize)size;
 - (void)invalidate;
 - (void)layoutSubviews;
-- (void)passFaceViewExpandButtonTapped:(id)a3;
-- (void)passcodeLockManager:(id)a3 didReceivePasscodeSet:(BOOL)a4;
-- (void)removePassStateObserver:(id)a3;
-- (void)setContentMode:(int64_t)a3 animated:(BOOL)a4 withDelay:(double)a5;
-- (void)setFrontFaceExpanded:(BOOL)a3 animated:(BOOL)a4;
-- (void)setModalShadowVisibility:(double)a3 animated:(BOOL)a4 withDelay:(double)a5;
-- (void)setModallyPresented:(BOOL)a3;
-- (void)setPassState:(id)a3;
-- (void)tapRecognized:(id)a3;
+- (void)passFaceViewExpandButtonTapped:(id)tapped;
+- (void)passcodeLockManager:(id)manager didReceivePasscodeSet:(BOOL)set;
+- (void)removePassStateObserver:(id)observer;
+- (void)setContentMode:(int64_t)mode animated:(BOOL)animated withDelay:(double)delay;
+- (void)setFrontFaceExpanded:(BOOL)expanded animated:(BOOL)animated;
+- (void)setModalShadowVisibility:(double)visibility animated:(BOOL)animated withDelay:(double)delay;
+- (void)setModallyPresented:(BOOL)presented;
+- (void)setPassState:(id)state;
+- (void)tapRecognized:(id)recognized;
 @end
 
 @implementation PKPassView
 
 - (void)_updateFrontFaceSuppressedContent
 {
-  v3 = [(PKPass *)self->_pass isExpired];
-  v4 = [(PKPass *)self->_pass isVoided];
-  v5 = [(PKPass *)self->_pass hasValidNFCPayload];
-  v6 = 0;
+  isExpired = [(PKPass *)self->_pass isExpired];
+  isVoided = [(PKPass *)self->_pass isVoided];
+  hasValidNFCPayload = [(PKPass *)self->_pass hasValidNFCPayload];
+  isValid = 0;
   v7 = 1;
-  if ((self->_suppressedContent & 0x40) == 0 && v5)
+  if ((self->_suppressedContent & 0x40) == 0 && hasValidNFCPayload)
   {
     if (PKValueAddedServicesEnabled())
     {
-      v6 = [(PKPass *)self->_pass isValid];
+      isValid = [(PKPass *)self->_pass isValid];
       v7 = 0;
     }
 
     else
     {
-      v6 = 0;
+      isValid = 0;
     }
   }
 
   suppressedContent = self->_suppressedContent;
   if ((suppressedContent & 0x80) == 0)
   {
-    v9 = [(PKPass *)self->_pass barcode];
-    if ((v9 == 0) | v6 & 1)
+    barcode = [(PKPass *)self->_pass barcode];
+    if ((barcode == 0) | isValid & 1)
     {
       v10 = 0;
     }
@@ -80,7 +80,7 @@
     }
 
 LABEL_10:
-    v11 = 0;
+    enabled = 0;
     goto LABEL_16;
   }
 
@@ -93,19 +93,19 @@ LABEL_10:
 LABEL_13:
   if ([(PKPass *)self->_pass liveRenderingRequiresEnablement])
   {
-    v12 = [(PKPassDynamicState *)self->_passState liveRender];
-    v11 = [v12 enabled];
+    liveRender = [(PKPassDynamicState *)self->_passState liveRender];
+    enabled = [liveRender enabled];
   }
 
   else
   {
-    v11 = 1;
+    enabled = 1;
   }
 
 LABEL_16:
-  if (((v7 | v10) & 1) != 0 || ((v3 | v4) & 1) == 0)
+  if (((v7 | v10) & 1) != 0 || ((isExpired | isVoided) & 1) == 0)
   {
-    v13 = ((self->_suppressedContent & 0x800) == 0) & v6;
+    v13 = ((self->_suppressedContent & 0x800) == 0) & isValid;
   }
 
   else
@@ -117,7 +117,7 @@ LABEL_16:
   [(PKPassFrontFaceView *)self->_frontFace setShowsBarcodeView:v10];
   [(PKPassFrontFaceView *)self->_frontFace setShowsLinkedApp:(suppressedContent & 0x20) == 0];
   frontFace = self->_frontFace;
-  if (v11)
+  if (enabled)
   {
     [(PKPassFaceView *)frontFace setShowsLiveRendering:1 rendererState:self->_rendererState];
     rendererState = self->_rendererState;
@@ -166,8 +166,8 @@ LABEL_16:
 - (id)observers
 {
   os_unfair_lock_lock(&self->_observersLock);
-  v3 = [(NSHashTable *)self->_observers allObjects];
-  v4 = [v3 copy];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
+  v4 = [allObjects copy];
 
   os_unfair_lock_unlock(&self->_observersLock);
 
@@ -275,26 +275,26 @@ LABEL_16:
   }
 }
 
-- (PKPassView)initWithPass:(id)a3 content:(int64_t)a4 suppressedContent:(unint64_t)a5 rendererState:(id)a6
+- (PKPassView)initWithPass:(id)pass content:(int64_t)content suppressedContent:(unint64_t)suppressedContent rendererState:(id)state
 {
-  v11 = a3;
-  v12 = a6;
+  passCopy = pass;
+  stateCopy = state;
   v41.receiver = self;
   v41.super_class = PKPassView;
   v13 = [(PKPassView *)&v41 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v13)
   {
     context = objc_autoreleasePoolPush();
-    v14 = [v11 displayProfile];
-    v13->_suppressedContent = a5;
-    objc_storeStrong(&v13->_rendererState, a6);
+    displayProfile = [passCopy displayProfile];
+    v13->_suppressedContent = suppressedContent;
+    objc_storeStrong(&v13->_rendererState, state);
     v13->_observersLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v13->_pass, a3);
-    v15 = [PKPassColorProfile profileForDisplayProfile:v14];
+    objc_storeStrong(&v13->_pass, pass);
+    v15 = [PKPassColorProfile profileForDisplayProfile:displayProfile];
     colorProfile = v13->_colorProfile;
     v13->_colorProfile = v15;
 
-    v17 = +[PKPassFaceView newFrontFaceViewForStyle:](PKPassFaceView, "newFrontFaceViewForStyle:", [v11 style]);
+    v17 = +[PKPassFaceView newFrontFaceViewForStyle:](PKPassFaceView, "newFrontFaceViewForStyle:", [passCopy style]);
     frontFace = v13->_frontFace;
     v13->_frontFace = v17;
 
@@ -308,27 +308,27 @@ LABEL_16:
       [(PKPassFrontFaceView *)v13->_frontFace anchorPoint];
       v20 = v19;
       v22 = v21;
-      v23 = [(PKPassFrontFaceView *)v13->_frontFace layer];
+      layer = [(PKPassFrontFaceView *)v13->_frontFace layer];
       v24 = objc_alloc_init(MEMORY[0x1E69B8978]);
       actionRemover = v13->_actionRemover;
       v13->_actionRemover = v24;
 
-      v26 = [MEMORY[0x1E6979408] layer];
+      layer2 = [MEMORY[0x1E6979408] layer];
       portalLayerShadow = v13->_portalLayerShadow;
-      v13->_portalLayerShadow = v26;
+      v13->_portalLayerShadow = layer2;
 
-      [(CAPortalLayer *)v13->_portalLayerShadow setSourceLayer:v23];
+      [(CAPortalLayer *)v13->_portalLayerShadow setSourceLayer:layer];
       [(CAPortalLayer *)v13->_portalLayerShadow setDelegate:v13->_actionRemover];
       [(CAPortalLayer *)v13->_portalLayerShadow setAnchorPoint:v20, v22];
       [(CAPortalLayer *)v13->_portalLayerShadow setOpacity:0.0];
       v28 = v13->_portalLayerShadow;
       CATransform3DMakeScale(&v40, 0.94, 0.94, 1.0);
       [(CAPortalLayer *)v28 setTransform:&v40];
-      v29 = [MEMORY[0x1E6979408] layer];
+      layer3 = [MEMORY[0x1E6979408] layer];
       portalFrontLayer = v13->_portalFrontLayer;
-      v13->_portalFrontLayer = v29;
+      v13->_portalFrontLayer = layer3;
 
-      [(CAPortalLayer *)v13->_portalFrontLayer setSourceLayer:v23];
+      [(CAPortalLayer *)v13->_portalFrontLayer setSourceLayer:layer];
       [(CAPortalLayer *)v13->_portalFrontLayer setDelegate:v13->_actionRemover];
       [(CAPortalLayer *)v13->_portalFrontLayer setAnchorPoint:v20, v22];
       [(CAPortalLayer *)v13->_portalFrontLayer setMatchesPosition:1];
@@ -344,18 +344,18 @@ LABEL_16:
     [(UITapGestureRecognizer *)v13->_tapRecognizer setNumberOfTapsRequired:1];
     [(UITapGestureRecognizer *)v13->_tapRecognizer setNumberOfTouchesRequired:1];
     [(PKPassView *)v13 addGestureRecognizer:v13->_tapRecognizer];
-    [PKAppIntentUIUtilities annotateView:v13 withEntityForPass:v11];
-    v13->_contentMode = a4;
+    [PKAppIntentUIUtilities annotateView:v13 withEntityForPass:passCopy];
+    v13->_contentMode = content;
     [(PKPassView *)v13 _applyContentMode:0];
     [(PKPassView *)v13 sizeToFit];
-    v33 = [MEMORY[0x1E69B8B28] sharedManager];
+    mEMORY[0x1E69B8B28] = [MEMORY[0x1E69B8B28] sharedManager];
     passcodeLockManager = v13->_passcodeLockManager;
-    v13->_passcodeLockManager = v33;
+    v13->_passcodeLockManager = mEMORY[0x1E69B8B28];
 
     [(PKPasscodeLockManager *)v13->_passcodeLockManager addObserver:v13];
     v35 = MEMORY[0x1E696AEC0];
-    v36 = [v11 uniqueID];
-    v37 = [v35 stringWithFormat:@"PKPassView.%@", v36];
+    uniqueID = [passCopy uniqueID];
+    v37 = [v35 stringWithFormat:@"PKPassView.%@", uniqueID];
 
     [(PKPassView *)v13 setAccessibilityIdentifier:v37];
     [(PKPassView *)v13 setAccessibilityIgnoresInvertColors:1];
@@ -402,38 +402,38 @@ LABEL_16:
   }
 }
 
-- (void)addPassStateObserver:(id)a3
+- (void)addPassStateObserver:(id)observer
 {
-  v7 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observersLock);
   observers = self->_observers;
   if (!observers)
   {
-    v5 = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
+    pk_weakObjectsHashTableUsingPointerPersonality = [MEMORY[0x1E696AC70] pk_weakObjectsHashTableUsingPointerPersonality];
     v6 = self->_observers;
-    self->_observers = v5;
+    self->_observers = pk_weakObjectsHashTableUsingPointerPersonality;
 
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v7];
+  [(NSHashTable *)observers addObject:observerCopy];
   os_unfair_lock_unlock(&self->_observersLock);
 }
 
-- (void)removePassStateObserver:(id)a3
+- (void)removePassStateObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observersLock);
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_observersLock);
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v10.receiver = self;
   v10.super_class = PKPassView;
-  v5 = [(PKPassView *)&v10 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(PKPassView *)&v10 hitTest:event withEvent:test.x, test.y];
   v6 = v5;
   if (v5 == self)
   {
@@ -450,15 +450,15 @@ LABEL_16:
   return v7;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   frontFace = self->_frontFace;
-  [a4 locationInView:frontFace];
+  [touch locationInView:frontFace];
 
   return [(WLEasyToHitCustomView *)frontFace pointInside:0 withEvent:?];
 }
 
-- (void)tapRecognized:(id)a3
+- (void)tapRecognized:(id)recognized
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -488,12 +488,12 @@ LABEL_16:
   return [(PKPassView *)self snapshotOfFrontFaceWithRequestedSize:v3, v4];
 }
 
-- (id)snapshotOfFrontFaceWithRequestedSize:(CGSize)a3 format:(id)a4
+- (id)snapshotOfFrontFaceWithRequestedSize:(CGSize)size format:(id)format
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  v8 = v7;
+  height = size.height;
+  width = size.width;
+  formatCopy = format;
+  preferredFormat = formatCopy;
   v9 = *MEMORY[0x1E695F060];
   v10 = *(MEMORY[0x1E695F060] + 8);
   if (*MEMORY[0x1E695F060] == width && v10 == height)
@@ -503,9 +503,9 @@ LABEL_16:
 
   else
   {
-    if (!v7)
+    if (!formatCopy)
     {
-      v8 = [MEMORY[0x1E69DCA80] preferredFormat];
+      preferredFormat = [MEMORY[0x1E69DCA80] preferredFormat];
     }
 
     suppressedContent = self->_suppressedContent;
@@ -561,7 +561,7 @@ LABEL_16:
         v25 = 1.0;
       }
 
-      v27 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:v8 format:{v18, v19}];
+      v27 = [objc_alloc(MEMORY[0x1E69DCA78]) initWithSize:preferredFormat format:{v18, v19}];
       v41[0] = MEMORY[0x1E69E9820];
       v41[1] = 3221225472;
       v41[2] = __58__PKPassView_snapshotOfFrontFaceWithRequestedSize_format___block_invoke_2;
@@ -659,8 +659,8 @@ void __58__PKPassView_snapshotOfFrontFaceWithRequestedSize_format___block_invoke
     aBlock[5] = suppressedContent;
     v11 = _Block_copy(aBlock);
     v12 = objc_alloc(MEMORY[0x1E69DCA78]);
-    v13 = [MEMORY[0x1E69DCA80] preferredFormat];
-    v14 = [v12 initWithSize:v13 format:{v7, v8}];
+    preferredFormat = [MEMORY[0x1E69DCA80] preferredFormat];
+    v14 = [v12 initWithSize:preferredFormat format:{v7, v8}];
 
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
@@ -698,43 +698,43 @@ void __32__PKPassView_snapshotOfPassView__block_invoke_2(uint64_t a1, void *a2)
   CGContextRestoreGState(v3);
 }
 
-- (id)snapshotViewOfVisibleFaceAfterScreenUpdates:(BOOL)a3
+- (id)snapshotViewOfVisibleFaceAfterScreenUpdates:(BOOL)updates
 {
-  v4 = [(PKPassFrontFaceView *)self->_frontFace snapshotViewAfterScreenUpdates:a3];
-  v5 = [(PKPassView *)self layer];
-  v6 = [(PKPassFrontFaceView *)self->_frontFace layer];
-  v7 = [v4 layer];
-  [v5 bounds];
+  v4 = [(PKPassFrontFaceView *)self->_frontFace snapshotViewAfterScreenUpdates:updates];
+  layer = [(PKPassView *)self layer];
+  layer2 = [(PKPassFrontFaceView *)self->_frontFace layer];
+  layer3 = [v4 layer];
+  [layer bounds];
   v45 = v9;
   v46 = v8;
   v11 = v10;
   v13 = v12;
-  [v7 bounds];
+  [layer3 bounds];
   v43 = v15;
   v44 = v14;
   v41 = v17;
   v42 = v16;
-  [v7 anchorPoint];
+  [layer3 anchorPoint];
   v39 = v19;
   v40 = v18;
-  [v5 position];
+  [layer position];
   v21 = v20;
   v23 = v22;
-  [v5 anchorPoint];
+  [layer anchorPoint];
   v25 = v21 - v24 * v11;
   v27 = v23 - v26 * v13;
-  [v6 position];
+  [layer2 position];
   v29 = v28;
   v31 = v30;
-  [v6 bounds];
+  [layer2 bounds];
   v33 = v32;
   v35 = v34;
-  [v6 anchorPoint];
+  [layer2 anchorPoint];
   v47[0] = MEMORY[0x1E69E9820];
   v47[1] = 3221225472;
   v47[2] = __58__PKPassView_snapshotViewOfVisibleFaceAfterScreenUpdates___block_invoke;
   v47[3] = &unk_1E80258A8;
-  v47[4] = v7;
+  v47[4] = layer3;
   *&v47[5] = v25;
   *&v47[6] = v27;
   *&v47[7] = v29 - v36 * v33;
@@ -754,10 +754,10 @@ void __32__PKPassView_snapshotOfPassView__block_invoke_2(uint64_t a1, void *a2)
   return v4;
 }
 
-- (void)drawFrontFaceAtSize:(CGSize)a3
+- (void)drawFrontFaceAtSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   suppressedContent = self->_suppressedContent;
   modallyPresented = self->_modallyPresented;
   if (suppressedContent != (suppressedContent | 0x377))
@@ -790,8 +790,8 @@ void __32__PKPassView_snapshotOfPassView__block_invoke_2(uint64_t a1, void *a2)
     CGContextTranslateCTM(CurrentContext, v12, v13);
   }
 
-  v15 = [(PKPassFrontFaceView *)self->_frontFace layer];
-  [v15 renderInContext:CurrentContext];
+  layer = [(PKPassFrontFaceView *)self->_frontFace layer];
+  [layer renderInContext:CurrentContext];
 
   CGContextRestoreGState(CurrentContext);
   v8[2](v8);
@@ -811,19 +811,19 @@ uint64_t __34__PKPassView_drawFrontFaceAtSize___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setModallyPresented:(BOOL)a3
+- (void)setModallyPresented:(BOOL)presented
 {
-  if (self->_modallyPresented != a3)
+  if (self->_modallyPresented != presented)
   {
-    v3 = a3;
-    self->_modallyPresented = a3;
+    presentedCopy = presented;
+    self->_modallyPresented = presented;
     [(PKPassFaceView *)self->_frontFace setModallyPresented:?];
     if ((PKRunningInRemoteContext() & 1) == 0)
     {
       if (self->_modallyPresented)
       {
-        v5 = [(PKPass *)self->_pass uniqueID];
-        v6 = [v5 copy];
+        uniqueID = [(PKPass *)self->_pass uniqueID];
+        v6 = [uniqueID copy];
       }
 
       else
@@ -846,10 +846,10 @@ uint64_t __34__PKPassView_drawFrontFaceAtSize___block_invoke(uint64_t a1)
 
     v10 = [PKPassViewUserActivityManager sharedInstance:v13];
     v11 = v10;
-    if (v3)
+    if (presentedCopy)
     {
-      v12 = [(PKPassView *)self pass];
-      [v11 startedViewingPass:v12];
+      pass = [(PKPassView *)self pass];
+      [v11 startedViewingPass:pass];
     }
 
     else
@@ -876,22 +876,22 @@ void __34__PKPassView_setModallyPresented___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)setModalShadowVisibility:(double)a3 animated:(BOOL)a4 withDelay:(double)a5
+- (void)setModalShadowVisibility:(double)visibility animated:(BOOL)animated withDelay:(double)delay
 {
-  v5 = fmax(fmin(a3, 1.0), 0.0);
+  v5 = fmax(fmin(visibility, 1.0), 0.0);
   if (self->_modalShadowVisibility != v5)
   {
     self->_modalShadowVisibility = v5;
-    [(PKPassView *)self _updateLayerShadowAnimated:a4 withDelay:a5];
+    [(PKPassView *)self _updateLayerShadowAnimated:animated withDelay:delay];
   }
 }
 
-- (void)setContentMode:(int64_t)a3 animated:(BOOL)a4 withDelay:(double)a5
+- (void)setContentMode:(int64_t)mode animated:(BOOL)animated withDelay:(double)delay
 {
   contentMode = self->_contentMode;
-  if (contentMode != a3)
+  if (contentMode != mode)
   {
-    v7 = a4;
+    animatedCopy = animated;
     contentModeUpdateTimer = self->_contentModeUpdateTimer;
     if (contentModeUpdateTimer)
     {
@@ -903,11 +903,11 @@ void __34__PKPassView_setModallyPresented___block_invoke(uint64_t a1, void *a2)
     }
 
     self->_priorContentMode = contentMode;
-    self->_contentMode = a3;
-    if (a5 <= 0.0 || self->_priorContentMode < a3)
+    self->_contentMode = mode;
+    if (delay <= 0.0 || self->_priorContentMode < mode)
     {
 
-      [(PKPassView *)self _applyContentMode:v7];
+      [(PKPassView *)self _applyContentMode:animatedCopy];
     }
 
     else
@@ -917,7 +917,7 @@ void __34__PKPassView_setModallyPresented___block_invoke(uint64_t a1, void *a2)
       self->_contentModeUpdateTimer = v12;
 
       v14 = self->_contentModeUpdateTimer;
-      v15 = dispatch_time(0, (a5 * 1000000000.0));
+      v15 = dispatch_time(0, (delay * 1000000000.0));
       dispatch_source_set_timer(v14, v15, 0xFFFFFFFFFFFFFFFFLL, 0x2FAF080uLL);
       objc_initWeak(&location, self);
       v16 = self->_contentModeUpdateTimer;
@@ -926,7 +926,7 @@ void __34__PKPassView_setModallyPresented___block_invoke(uint64_t a1, void *a2)
       handler[2] = __48__PKPassView_setContentMode_animated_withDelay___block_invoke;
       handler[3] = &unk_1E80111A8;
       objc_copyWeak(&v18, &location);
-      v19 = v7;
+      v19 = animatedCopy;
       dispatch_source_set_event_handler(v16, handler);
       dispatch_resume(self->_contentModeUpdateTimer);
       objc_destroyWeak(&v18);
@@ -950,21 +950,21 @@ void __48__PKPassView_setContentMode_animated_withDelay___block_invoke(uint64_t 
   }
 }
 
-- (void)setPassState:(id)a3
+- (void)setPassState:(id)state
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_passState != v5)
+  stateCopy = state;
+  if (self->_passState != stateCopy)
   {
-    objc_storeStrong(&self->_passState, a3);
-    [(PKPassFrontFaceView *)self->_frontFace setPassState:v5];
+    objc_storeStrong(&self->_passState, state);
+    [(PKPassFrontFaceView *)self->_frontFace setPassState:stateCopy];
     [(PKPassView *)self _updateFrontFaceSuppressedContent];
-    v6 = [(PKPassView *)self observers];
+    observers = [(PKPassView *)self observers];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    v7 = [observers countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -976,20 +976,20 @@ void __48__PKPassView_setContentMode_animated_withDelay___block_invoke(uint64_t 
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(observers);
           }
 
           v11 = *(*(&v12 + 1) + 8 * v10);
           if (objc_opt_respondsToSelector())
           {
-            [v11 passStateProvider:self didUpdatePassState:v5];
+            [v11 passStateProvider:self didUpdatePassState:stateCopy];
           }
 
           ++v10;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [observers countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -997,10 +997,10 @@ void __48__PKPassView_setContentMode_animated_withDelay___block_invoke(uint64_t 
   }
 }
 
-- (void)setFrontFaceExpanded:(BOOL)a3 animated:(BOOL)a4
+- (void)setFrontFaceExpanded:(BOOL)expanded animated:(BOOL)animated
 {
-  v4 = a3;
-  v6 = [(PKPass *)self->_pass barcodeSettings:a3];
+  expandedCopy = expanded;
+  v6 = [(PKPass *)self->_pass barcodeSettings:expanded];
 
   if (v6)
   {
@@ -1012,7 +1012,7 @@ void __48__PKPassView_setContentMode_animated_withDelay___block_invoke(uint64_t 
     aBlock[3] = &unk_1E8010970;
     aBlock[4] = self;
     v7 = _Block_copy(aBlock);
-    [(PKPassFaceView *)self->_frontFace setViewExpanded:v4];
+    [(PKPassFaceView *)self->_frontFace setViewExpanded:expandedCopy];
     [MEMORY[0x1E69DD250] pkui_animateUsingOptions:2 animations:v7 completion:0];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     if (objc_opt_respondsToSelector())
@@ -1035,12 +1035,12 @@ uint64_t __44__PKPassView_setFrontFaceExpanded_animated___block_invoke(uint64_t 
   if (!self->_portalsEnabled)
   {
     self->_portalsEnabled = 1;
-    v6 = [(PKPassView *)self layer];
+    layer = [(PKPassView *)self layer];
     portalLayerShadow = self->_portalLayerShadow;
-    v5 = [(CAPortalLayer *)portalLayerShadow sourceLayer];
-    [v6 insertSublayer:portalLayerShadow above:v5];
+    sourceLayer = [(CAPortalLayer *)portalLayerShadow sourceLayer];
+    [layer insertSublayer:portalLayerShadow above:sourceLayer];
 
-    [v6 insertSublayer:self->_portalFrontLayer above:self->_portalLayerShadow];
+    [layer insertSublayer:self->_portalFrontLayer above:self->_portalLayerShadow];
   }
 }
 
@@ -1069,25 +1069,25 @@ uint64_t __44__PKPassView_setFrontFaceExpanded_animated___block_invoke(uint64_t 
   }
 }
 
-- (void)_updateLayerShadowAnimated:(BOOL)a3 withDelay:(double)a4
+- (void)_updateLayerShadowAnimated:(BOOL)animated withDelay:(double)delay
 {
-  v5 = a3;
+  animatedCopy = animated;
   if (PKIsLowEndDevice())
   {
 
-    [(PKPassView *)self _updateLowEndLayerShadowAnimated:v5 withDelay:a4];
+    [(PKPassView *)self _updateLowEndLayerShadowAnimated:animatedCopy withDelay:delay];
   }
 
   else
   {
 
-    [(PKPassView *)self _updateHighEndLayerShadowAnimated:v5 withDelay:a4];
+    [(PKPassView *)self _updateHighEndLayerShadowAnimated:animatedCopy withDelay:delay];
   }
 }
 
-- (void)_updateHighEndLayerShadowAnimated:(BOOL)a3 withDelay:(double)a4
+- (void)_updateHighEndLayerShadowAnimated:(BOOL)animated withDelay:(double)delay
 {
-  v4 = a3;
+  animatedCopy = animated;
   v125[3] = *MEMORY[0x1E69E9840];
   [(PKPassView *)self _beginAssertingPortal];
   [(PKRemoveableAnimationTrackerStore *)self->_delayedAnimations preempt];
@@ -1227,7 +1227,7 @@ uint64_t __44__PKPassView_setFrontFaceExpanded_animated___block_invoke(uint64_t 
   v44 = (v6 + 13.0) * modalShadowVisibility;
   v45 = modalShadowVisibility * 1.32;
   v46 = v24 + modalShadowVisibility * 1.32;
-  if (v4)
+  if (animatedCopy)
   {
     v47 = v20;
     v108 = 0;
@@ -1239,8 +1239,8 @@ uint64_t __44__PKPassView_setFrontFaceExpanded_animated___block_invoke(uint64_t 
       v51 = [MEMORY[0x1E69B92B0] springAnimationWithKeyPath:@"opacity"];
       [v51 pkui_updateForAdditiveAnimationFromScalar:v47 toScalar:v43];
       [v109 addObject:v51];
-      v52 = [v51 fromValue];
-      [v52 doubleValue];
+      fromValue = [v51 fromValue];
+      [fromValue doubleValue];
       v49 = v53;
 
       [v51 duration];
@@ -1271,8 +1271,8 @@ uint64_t __44__PKPassView_setFrontFaceExpanded_animated___block_invoke(uint64_t 
       v58 = [MEMORY[0x1E69B92B0] springAnimationWithKeyPath:@"filters.gaussianBlur.inputRadius"];
       [v58 pkui_updateForAdditiveAnimationFromScalar:v23 toScalar:v44];
       [v109 addObject:v58];
-      v59 = [v58 fromValue];
-      [v59 doubleValue];
+      fromValue2 = [v58 fromValue];
+      [fromValue2 doubleValue];
       v108 = v60;
 
       [v58 duration];
@@ -1325,11 +1325,11 @@ uint64_t __44__PKPassView_setFrontFaceExpanded_animated___block_invoke(uint64_t 
       [v69 setToValue:v72];
 
       [v109 addObject:v69];
-      v73 = [v69 fromValue];
-      v74 = v73;
-      if (v73)
+      fromValue3 = [v69 fromValue];
+      v74 = fromValue3;
+      if (fromValue3)
       {
-        [v73 CAColorMatrixValue];
+        [fromValue3 CAColorMatrixValue];
       }
 
       else
@@ -1361,8 +1361,8 @@ LABEL_34:
       v77 = [MEMORY[0x1E69B92B0] springAnimationWithKeyPath:{@"filters.colorSaturate.inputAmount", v68}];
       [v77 pkui_updateForAdditiveAnimationFromScalar:v42 toScalar:v46];
       [v109 addObject:v77];
-      v78 = [v77 fromValue];
-      [v78 doubleValue];
+      fromValue4 = [v77 fromValue];
+      [fromValue4 doubleValue];
       v80 = v79;
 
       [v77 duration];
@@ -1422,12 +1422,12 @@ LABEL_34:
 
   if ([v109 count])
   {
-    v87 = [MEMORY[0x1E6979308] animation];
-    [v87 setFillMode:*MEMORY[0x1E69797E0]];
-    [v87 setBeginTimeMode:*MEMORY[0x1E69795C0]];
-    [v87 setBeginTime:a4];
-    [v87 setDuration:v50 + a4];
-    [v87 setAnimations:v109];
+    animation = [MEMORY[0x1E6979308] animation];
+    [animation setFillMode:*MEMORY[0x1E69797E0]];
+    [animation setBeginTimeMode:*MEMORY[0x1E69795C0]];
+    [animation setBeginTime:delay];
+    [animation setDuration:v50 + delay];
+    [animation setAnimations:v109];
     if (!self->_delayedAnimations)
     {
       v88 = objc_alloc_init(MEMORY[0x1E69B9148]);
@@ -1535,7 +1535,7 @@ void __58__PKPassView__updateHighEndLayerShadowAnimated_withDelay___block_invoke
   }
 }
 
-- (void)passcodeLockManager:(id)a3 didReceivePasscodeSet:(BOOL)a4
+- (void)passcodeLockManager:(id)manager didReceivePasscodeSet:(BOOL)set
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1553,7 +1553,7 @@ uint64_t __56__PKPassView_passcodeLockManager_didReceivePasscodeSet___block_invo
   return [v2 setNeedsLayout];
 }
 
-- (void)passFaceViewExpandButtonTapped:(id)a3
+- (void)passFaceViewExpandButtonTapped:(id)tapped
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
@@ -1562,7 +1562,7 @@ uint64_t __56__PKPassView_passcodeLockManager_didReceivePasscodeSet___block_invo
   }
 }
 
-- (void)_applyContentMode:(BOOL)a3
+- (void)_applyContentMode:(BOOL)mode
 {
   v4 = objc_autoreleasePoolPush();
   if ([(PKPass *)self->_pass passType]== PKPassTypeSecureElement)
@@ -1578,12 +1578,12 @@ uint64_t __56__PKPassView_passcodeLockManager_didReceivePasscodeSet___block_invo
   v6 = pass;
   [(PKPassFaceView *)self->_frontFace setBackgroundMode:[(PKPassView *)self _frontFaceBackgroundModeForContentMode]];
   [(PKPassFaceView *)self->_frontFace setVisibleRegions:[(PKPassView *)self _regionsForCurrentModes]];
-  v7 = [(PKPass *)v6 dynamicLayerConfiguration];
+  dynamicLayerConfiguration = [(PKPass *)v6 dynamicLayerConfiguration];
 
   contentMode = self->_contentMode;
   v9 = contentMode == 5;
   v10 = contentMode > 2;
-  if (v7)
+  if (dynamicLayerConfiguration)
   {
     v11 = v10;
   }
@@ -1682,7 +1682,7 @@ void __32__PKPassView__applyContentMode___block_invoke_2(uint64_t a1)
   }
 }
 
-- (BOOL)_visibleFaceShouldClipForCurrentViewMode:(double *)a3
+- (BOOL)_visibleFaceShouldClipForCurrentViewMode:(double *)mode
 {
   contentMode = self->_contentMode;
   if (contentMode == 2)
@@ -1708,9 +1708,9 @@ void __32__PKPassView__applyContentMode___block_invoke_2(uint64_t a1)
     return 0;
   }
 
-  if (a3)
+  if (mode)
   {
-    *a3 = v7;
+    *mode = v7;
   }
 
   return 1;

@@ -1,5 +1,5 @@
 @interface SCATSpeechSwiftUI
-- (SCATSpeechSwiftUI)initWithNibName:(id)a3 bundle:(id)a4;
+- (SCATSpeechSwiftUI)initWithNibName:(id)name bundle:(id)bundle;
 - (id)makeController;
 @end
 
@@ -15,9 +15,9 @@
   return v2;
 }
 
-- (SCATSpeechSwiftUI)initWithNibName:(id)a3 bundle:(id)a4
+- (SCATSpeechSwiftUI)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_19BFE4();
     v7 = v6;
@@ -29,8 +29,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return SCATSpeechSwiftUI.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return SCATSpeechSwiftUI.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

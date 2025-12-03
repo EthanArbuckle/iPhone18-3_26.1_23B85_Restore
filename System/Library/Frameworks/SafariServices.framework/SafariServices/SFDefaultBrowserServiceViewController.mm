@@ -1,40 +1,40 @@
 @interface SFDefaultBrowserServiceViewController
 - (id)_makeDefaultBrowserInformationViewController;
 - (id)_makeDefaultBrowserSelectionViewController;
-- (void)_commitDefaultBrowser:(id)a3 browserChoiceResult:(int64_t)a4 defaultBrowserBundleIdentifier:(id)a5;
+- (void)_commitDefaultBrowser:(id)browser browserChoiceResult:(int64_t)result defaultBrowserBundleIdentifier:(id)identifier;
 - (void)_hostApplicationDidEnterBackground;
-- (void)_postNotification:(id)a3;
+- (void)_postNotification:(id)notification;
 - (void)_showConnectionErrorAlert;
 - (void)_showListOfAvailableBrowsers;
-- (void)_updateDefaultBrowserWithRecord:(id)a3;
-- (void)didChangeDefaultBrowserWithBundleIdentifier:(id)a3 browserChoiceResult:(int64_t)a4;
-- (void)didCommitDefaultBrowserChoice:(int64_t)a3;
-- (void)prepareForDisplayWithCompletionHandler:(id)a3;
+- (void)_updateDefaultBrowserWithRecord:(id)record;
+- (void)didChangeDefaultBrowserWithBundleIdentifier:(id)identifier browserChoiceResult:(int64_t)result;
+- (void)didCommitDefaultBrowserChoice:(int64_t)choice;
+- (void)prepareForDisplayWithCompletionHandler:(id)handler;
 @end
 
 @implementation SFDefaultBrowserServiceViewController
 
-- (void)prepareForDisplayWithCompletionHandler:(id)a3
+- (void)prepareForDisplayWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_alloc(MEMORY[0x1E69DCCD8]);
-  v6 = [(SFDefaultBrowserServiceViewController *)self _makeDefaultBrowserInformationViewController];
-  v7 = [v5 initWithRootViewController:v6];
+  _makeDefaultBrowserInformationViewController = [(SFDefaultBrowserServiceViewController *)self _makeDefaultBrowserInformationViewController];
+  v7 = [v5 initWithRootViewController:_makeDefaultBrowserInformationViewController];
   navigationController = self->_navigationController;
   self->_navigationController = v7;
 
-  v9 = [(UINavigationController *)self->_navigationController view];
-  v10 = [(SFDefaultBrowserServiceViewController *)self view];
-  [v10 bounds];
-  [v9 setFrame:?];
+  view = [(UINavigationController *)self->_navigationController view];
+  view2 = [(SFDefaultBrowserServiceViewController *)self view];
+  [view2 bounds];
+  [view setFrame:?];
 
-  [v9 setAutoresizingMask:18];
+  [view setAutoresizingMask:18];
   [(SFDefaultBrowserServiceViewController *)self addChildViewController:self->_navigationController];
-  v11 = [(SFDefaultBrowserServiceViewController *)self view];
-  [v11 addSubview:v9];
+  view3 = [(SFDefaultBrowserServiceViewController *)self view];
+  [view3 addSubview:view];
 
   [(UINavigationController *)self->_navigationController didMoveToParentViewController:self];
-  v4[2](v4, 1);
+  handlerCopy[2](handlerCopy, 1);
   objc_initWeak(&location, self);
   v12 = [SFDefaultBrowserListView alloc];
   v15 = MEMORY[0x1E69E9820];
@@ -74,8 +74,8 @@ void __80__SFDefaultBrowserServiceViewController_prepareForDisplayWithCompletion
 - (void)_showListOfAvailableBrowsers
 {
   navigationController = self->_navigationController;
-  v3 = [(SFDefaultBrowserServiceViewController *)self _makeDefaultBrowserSelectionViewController];
-  [(UINavigationController *)navigationController pushViewController:v3 animated:1];
+  _makeDefaultBrowserSelectionViewController = [(SFDefaultBrowserServiceViewController *)self _makeDefaultBrowserSelectionViewController];
+  [(UINavigationController *)navigationController pushViewController:_makeDefaultBrowserSelectionViewController animated:1];
 }
 
 - (id)_makeDefaultBrowserInformationViewController
@@ -85,11 +85,11 @@ void __80__SFDefaultBrowserServiceViewController_prepareForDisplayWithCompletion
   _SFDeviceIsPad();
   v4 = _WBSLocalizedString();
   v5 = +[SFDefaultBrowserPromptController sharedController];
-  v6 = [v5 hasShownBrowserChoiceScreenOnOtherDevices];
+  hasShownBrowserChoiceScreenOnOtherDevices = [v5 hasShownBrowserChoiceScreenOnOtherDevices];
 
-  v7 = [MEMORY[0x1E695E000] safari_browserDefaults];
+  safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
   v8 = SFDefaultBrowserSelectionStateKey();
-  if (([v7 integerForKey:v8] == 0) | v6 & 1)
+  if (([safari_browserDefaults integerForKey:v8] == 0) | hasShownBrowserChoiceScreenOnOtherDevices & 1)
   {
   }
 
@@ -103,7 +103,7 @@ void __80__SFDefaultBrowserServiceViewController_prepareForDisplayWithCompletion
     }
   }
 
-  if (v6)
+  if (hasShownBrowserChoiceScreenOnOtherDevices)
   {
     v28 = 0;
     v29 = &v28;
@@ -192,21 +192,21 @@ void __80__SFDefaultBrowserServiceViewController_prepareForDisplayWithCompletion
 
   v21 = v20;
   _Block_object_dispose(&v28, 8);
-  v22 = [v20 boldButton];
+  boldButton = [v20 boldButton];
   v23 = _WBSLocalizedString();
-  [v22 setTitle:v23 forState:0];
+  [boldButton setTitle:v23 forState:0];
 
-  [v22 addTarget:self action:sel__showListOfAvailableBrowsers forControlEvents:64];
-  v24 = [v19 buttonTray];
-  [v24 addButton:v22];
+  [boldButton addTarget:self action:sel__showListOfAvailableBrowsers forControlEvents:64];
+  buttonTray = [v19 buttonTray];
+  [buttonTray addButton:boldButton];
 
-  v25 = [v19 buttonTray];
-  [v25 setPrivacyLinkForBundles:&unk_1F5023F68];
+  buttonTray2 = [v19 buttonTray];
+  [buttonTray2 setPrivacyLinkForBundles:&unk_1F5023F68];
 
-  v26 = [v19 view];
-  [v26 setAccessibilityIdentifier:@"BrowserChoiceSheet"];
+  view = [v19 view];
+  [view setAccessibilityIdentifier:@"BrowserChoiceSheet"];
 
-  [v22 setAccessibilityIdentifier:@"ContinueButton"];
+  [boldButton setAccessibilityIdentifier:@"ContinueButton"];
 
   return v19;
 }
@@ -216,106 +216,106 @@ void __80__SFDefaultBrowserServiceViewController_prepareForDisplayWithCompletion
   v74[4] = *MEMORY[0x1E69E9840];
   v66 = _WBSLocalizedString();
   v3 = [[SFDefaultBrowserListViewController alloc] initWithTitle:v66 detailText:0 icon:0 contentLayout:3];
-  v4 = [(SFDefaultBrowserListViewController *)v3 contentView];
-  [v4 addSubview:self->_browserListView];
+  contentView = [(SFDefaultBrowserListViewController *)v3 contentView];
+  [contentView addSubview:self->_browserListView];
 
   [(SFDefaultBrowserListView *)self->_browserListView setTranslatesAutoresizingMaskIntoConstraints:0];
   v51 = MEMORY[0x1E696ACD8];
-  v67 = [(SFDefaultBrowserListView *)self->_browserListView topAnchor];
-  v69 = [(SFDefaultBrowserListViewController *)v3 contentView];
-  v64 = [v69 topAnchor];
-  v62 = [v67 constraintEqualToAnchor:v64];
+  topAnchor = [(SFDefaultBrowserListView *)self->_browserListView topAnchor];
+  contentView2 = [(SFDefaultBrowserListViewController *)v3 contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v62 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v74[0] = v62;
-  v57 = [(SFDefaultBrowserListView *)self->_browserListView bottomAnchor];
-  v60 = [(SFDefaultBrowserListViewController *)v3 contentView];
-  v54 = [v60 bottomAnchor];
-  v49 = [v57 constraintEqualToAnchor:v54];
+  bottomAnchor = [(SFDefaultBrowserListView *)self->_browserListView bottomAnchor];
+  contentView3 = [(SFDefaultBrowserListViewController *)v3 contentView];
+  bottomAnchor2 = [contentView3 bottomAnchor];
+  v49 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v74[1] = v49;
-  v47 = [(SFDefaultBrowserListView *)self->_browserListView leadingAnchor];
-  v5 = [(SFDefaultBrowserListViewController *)v3 contentView];
-  v6 = [v5 leadingAnchor];
-  v7 = [v47 constraintEqualToAnchor:v6];
+  leadingAnchor = [(SFDefaultBrowserListView *)self->_browserListView leadingAnchor];
+  contentView4 = [(SFDefaultBrowserListViewController *)v3 contentView];
+  leadingAnchor2 = [contentView4 leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v74[2] = v7;
-  v8 = [(SFDefaultBrowserListView *)self->_browserListView trailingAnchor];
+  trailingAnchor = [(SFDefaultBrowserListView *)self->_browserListView trailingAnchor];
   v71 = v3;
-  v9 = [(SFDefaultBrowserListViewController *)v3 contentView];
-  v10 = [v9 trailingAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  contentView5 = [(SFDefaultBrowserListViewController *)v3 contentView];
+  trailingAnchor2 = [contentView5 trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v74[3] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v74 count:4];
   [v51 activateConstraints:v12];
 
   v13 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
   [v13 configureWithTransparentBackground];
-  v14 = [(UINavigationController *)self->_navigationController navigationBar];
-  [v14 setScrollEdgeAppearance:v13];
-  [v14 setCompactAppearance:v13];
-  v63 = v14;
+  navigationBar = [(UINavigationController *)self->_navigationController navigationBar];
+  [navigationBar setScrollEdgeAppearance:v13];
+  [navigationBar setCompactAppearance:v13];
+  v63 = navigationBar;
   v65 = v13;
-  [v14 setStandardAppearance:v13];
+  [navigationBar setStandardAppearance:v13];
   v15 = [SFDefaultBrowserPinnedHeaderView alloc];
   v16 = *MEMORY[0x1E695F058];
   v17 = *(MEMORY[0x1E695F058] + 8);
   v18 = *(MEMORY[0x1E695F058] + 16);
   v19 = *(MEMORY[0x1E695F058] + 24);
   v20 = [(SFDefaultBrowserPinnedHeaderView *)v15 initWithFrame:*MEMORY[0x1E695F058], v17, v18, v19];
-  v21 = self;
-  v22 = [(SFDefaultBrowserListView *)self->_browserListView headerView];
-  v23 = [v22 lockupView];
+  selfCopy = self;
+  headerView = [(SFDefaultBrowserListView *)self->_browserListView headerView];
+  lockupView = [headerView lockupView];
 
-  if (v23)
+  if (lockupView)
   {
-    [(SFDefaultBrowserPinnedHeaderView *)v20 setLockupView:v23];
+    [(SFDefaultBrowserPinnedHeaderView *)v20 setLockupView:lockupView];
   }
 
-  v24 = [(SFDefaultBrowserListViewController *)v71 view];
-  [v24 addSubview:v20];
+  view = [(SFDefaultBrowserListViewController *)v71 view];
+  [view addSubview:v20];
 
   [(SFDefaultBrowserPinnedHeaderView *)v20 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v61 = v23;
-  v25 = [(SFDefaultBrowserListView *)self->_browserListView layoutMarginsGuide];
+  v61 = lockupView;
+  layoutMarginsGuide = [(SFDefaultBrowserListView *)self->_browserListView layoutMarginsGuide];
   v48 = MEMORY[0x1E696ACD8];
-  v55 = [(SFDefaultBrowserPinnedHeaderView *)v20 topAnchor];
-  v58 = [(SFDefaultBrowserListViewController *)v71 view];
-  v52 = [v58 safeAreaLayoutGuide];
-  v50 = [v52 topAnchor];
-  [v55 constraintEqualToAnchor:v50];
+  topAnchor3 = [(SFDefaultBrowserPinnedHeaderView *)v20 topAnchor];
+  view2 = [(SFDefaultBrowserListViewController *)v71 view];
+  safeAreaLayoutGuide = [view2 safeAreaLayoutGuide];
+  topAnchor4 = [safeAreaLayoutGuide topAnchor];
+  [topAnchor3 constraintEqualToAnchor:topAnchor4];
   v27 = v26 = v20;
   v73[0] = v27;
   v70 = v26;
-  v28 = [(SFDefaultBrowserPinnedHeaderView *)v26 leadingAnchor];
-  v68 = v25;
-  v29 = [v25 leadingAnchor];
-  v30 = [v28 constraintEqualToAnchor:v29];
+  leadingAnchor3 = [(SFDefaultBrowserPinnedHeaderView *)v26 leadingAnchor];
+  v68 = layoutMarginsGuide;
+  leadingAnchor4 = [layoutMarginsGuide leadingAnchor];
+  v30 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   v73[1] = v30;
-  v31 = [(SFDefaultBrowserPinnedHeaderView *)v26 trailingAnchor];
-  v32 = [v25 trailingAnchor];
-  v33 = [v31 constraintEqualToAnchor:v32];
+  trailingAnchor3 = [(SFDefaultBrowserPinnedHeaderView *)v26 trailingAnchor];
+  trailingAnchor4 = [layoutMarginsGuide trailingAnchor];
+  v33 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   v73[2] = v33;
   v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v73 count:3];
   [v48 activateConstraints:v34];
 
-  [(SFDefaultBrowserListView *)v21->_browserListView setContainerViewController:v71];
-  [(SFDefaultBrowserListView *)v21->_browserListView setHeaderView:v70];
+  [(SFDefaultBrowserListView *)selfCopy->_browserListView setContainerViewController:v71];
+  [(SFDefaultBrowserListView *)selfCopy->_browserListView setHeaderView:v70];
   v35 = [[SFDefaultBrowserScrollInstructionView alloc] initWithFrame:v16, v17, v18, v19];
   [(SFDefaultBrowserScrollInstructionView *)v35 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [(SFDefaultBrowserListView *)v21->_browserListView setInstructionView:v35];
-  v36 = [(SFDefaultBrowserListViewController *)v71 view];
-  [v36 addSubview:v35];
+  [(SFDefaultBrowserListView *)selfCopy->_browserListView setInstructionView:v35];
+  view3 = [(SFDefaultBrowserListViewController *)v71 view];
+  [view3 addSubview:v35];
 
   v53 = MEMORY[0x1E696ACD8];
-  v59 = [(SFDefaultBrowserScrollInstructionView *)v35 leadingAnchor];
-  v56 = [v68 leadingAnchor];
-  v37 = [v59 constraintEqualToAnchor:v56];
+  leadingAnchor5 = [(SFDefaultBrowserScrollInstructionView *)v35 leadingAnchor];
+  leadingAnchor6 = [v68 leadingAnchor];
+  v37 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
   v72[0] = v37;
-  v38 = [(SFDefaultBrowserScrollInstructionView *)v35 trailingAnchor];
-  v39 = [v68 trailingAnchor];
-  v40 = [v38 constraintEqualToAnchor:v39];
+  trailingAnchor5 = [(SFDefaultBrowserScrollInstructionView *)v35 trailingAnchor];
+  trailingAnchor6 = [v68 trailingAnchor];
+  v40 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
   v72[1] = v40;
-  v41 = [(SFDefaultBrowserScrollInstructionView *)v35 bottomAnchor];
-  v42 = [(SFDefaultBrowserListViewController *)v71 view];
-  v43 = [v42 bottomAnchor];
-  v44 = [v41 constraintEqualToAnchor:v43];
+  bottomAnchor3 = [(SFDefaultBrowserScrollInstructionView *)v35 bottomAnchor];
+  view4 = [(SFDefaultBrowserListViewController *)v71 view];
+  bottomAnchor4 = [view4 bottomAnchor];
+  v44 = [bottomAnchor3 constraintEqualToAnchor:bottomAnchor4];
   v72[2] = v44;
   v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:v72 count:3];
   [v53 activateConstraints:v45];
@@ -328,8 +328,8 @@ void __80__SFDefaultBrowserServiceViewController_prepareForDisplayWithCompletion
   v3 = _WBSLocalizedString();
   v4 = _WBSLocalizedString();
   v5 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v3 message:v4 preferredStyle:1];
-  v6 = [v5 view];
-  [v6 setAccessibilityIdentifier:@"AppStoreConnectionAlert"];
+  view = [v5 view];
+  [view setAccessibilityIdentifier:@"AppStoreConnectionAlert"];
 
   objc_initWeak(&location, self);
   v7 = MEMORY[0x1E69DC648];
@@ -355,20 +355,20 @@ void __66__SFDefaultBrowserServiceViewController__showConnectionErrorAlert__bloc
   [v1 serviceViewControllerFailed];
 }
 
-- (void)didCommitDefaultBrowserChoice:(int64_t)a3
+- (void)didCommitDefaultBrowserChoice:(int64_t)choice
 {
-  v4 = [(SFDefaultBrowserServiceViewController *)self _remoteViewControllerProxy];
-  [v4 serviceViewControllerDidFinishWithResult:a3];
+  _remoteViewControllerProxy = [(SFDefaultBrowserServiceViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy serviceViewControllerDidFinishWithResult:choice];
 }
 
-- (void)_postNotification:(id)a3
+- (void)_postNotification:(id)notification
 {
   v3 = MEMORY[0x1E6983298];
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [v6 UUIDString];
-  v9 = [v3 requestWithIdentifier:v7 content:v5 trigger:0];
+  notificationCopy = notification;
+  uUID = [v4 UUID];
+  uUIDString = [uUID UUIDString];
+  v9 = [v3 requestWithIdentifier:uUIDString content:notificationCopy trigger:0];
 
   v8 = [objc_alloc(MEMORY[0x1E6983308]) initWithBundleIdentifier:@"com.apple.Preferences"];
   [v8 addNotificationRequest:v9 withCompletionHandler:&__block_literal_global_71];
@@ -394,18 +394,18 @@ void __59__SFDefaultBrowserServiceViewController__postNotification___block_invok
   }
 }
 
-- (void)_updateDefaultBrowserWithRecord:(id)a3
+- (void)_updateDefaultBrowserWithRecord:(id)record
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E6963608] defaultWorkspace];
+  recordCopy = record;
+  defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __73__SFDefaultBrowserServiceViewController__updateDefaultBrowserWithRecord___block_invoke;
   v7[3] = &unk_1E8496058;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 setDefaultWebBrowserToApplicationRecord:v6 completionHandler:v7];
+  v8 = recordCopy;
+  selfCopy = self;
+  v6 = recordCopy;
+  [defaultWorkspace setDefaultWebBrowserToApplicationRecord:v6 completionHandler:v7];
 }
 
 void __73__SFDefaultBrowserServiceViewController__updateDefaultBrowserWithRecord___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -464,13 +464,13 @@ void __73__SFDefaultBrowserServiceViewController__updateDefaultBrowserWithRecord
   [*(a1 + 32) _postNotification:*(a1 + 40)];
 }
 
-- (void)didChangeDefaultBrowserWithBundleIdentifier:(id)a3 browserChoiceResult:(int64_t)a4
+- (void)didChangeDefaultBrowserWithBundleIdentifier:(id)identifier browserChoiceResult:(int64_t)result
 {
-  v6 = a3;
-  if (a4 != 2)
+  identifierCopy = identifier;
+  if (result != 2)
   {
     v18 = 0;
-    v7 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:v6 allowPlaceholder:0 error:&v18];
+    v7 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:&v18];
     v8 = v18;
     if (!v7)
     {
@@ -483,11 +483,11 @@ void __73__SFDefaultBrowserServiceViewController__updateDefaultBrowserWithRecord
       goto LABEL_12;
     }
 
-    v9 = [v7 bundleIdentifier];
-    if (a4 == 1)
+    bundleIdentifier = [v7 bundleIdentifier];
+    if (result == 1)
     {
       v10 = +[SFDefaultBrowserPromptController sharedController];
-      v11 = [v7 localizedName];
+      localizedName = [v7 localizedName];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __105__SFDefaultBrowserServiceViewController_didChangeDefaultBrowserWithBundleIdentifier_browserChoiceResult___block_invoke;
@@ -495,8 +495,8 @@ void __73__SFDefaultBrowserServiceViewController__updateDefaultBrowserWithRecord
       v14[4] = self;
       v15 = v7;
       v17 = 1;
-      v16 = v9;
-      v12 = [v10 browserIconReplacementAlertController:v16 browserLocalizedName:v11 completionHandler:v14];
+      v16 = bundleIdentifier;
+      v12 = [v10 browserIconReplacementAlertController:v16 browserLocalizedName:localizedName completionHandler:v14];
 
       if (v12)
       {
@@ -509,7 +509,7 @@ LABEL_12:
       }
     }
 
-    [(SFDefaultBrowserServiceViewController *)self _commitDefaultBrowser:v7 browserChoiceResult:a4 defaultBrowserBundleIdentifier:v9];
+    [(SFDefaultBrowserServiceViewController *)self _commitDefaultBrowser:v7 browserChoiceResult:result defaultBrowserBundleIdentifier:bundleIdentifier];
     goto LABEL_11;
   }
 
@@ -517,17 +517,17 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)_commitDefaultBrowser:(id)a3 browserChoiceResult:(int64_t)a4 defaultBrowserBundleIdentifier:(id)a5
+- (void)_commitDefaultBrowser:(id)browser browserChoiceResult:(int64_t)result defaultBrowserBundleIdentifier:(id)identifier
 {
-  v9 = a5;
-  [(SFDefaultBrowserServiceViewController *)self _updateDefaultBrowserWithRecord:a3];
-  if (v9)
+  identifierCopy = identifier;
+  [(SFDefaultBrowserServiceViewController *)self _updateDefaultBrowserWithRecord:browser];
+  if (identifierCopy)
   {
-    v8 = [MEMORY[0x1E69C8810] sharedLogger];
-    [v8 _sf_reportBrowserChoice:v9];
+    mEMORY[0x1E69C8810] = [MEMORY[0x1E69C8810] sharedLogger];
+    [mEMORY[0x1E69C8810] _sf_reportBrowserChoice:identifierCopy];
   }
 
-  [(SFDefaultBrowserServiceViewController *)self didCommitDefaultBrowserChoice:a4];
+  [(SFDefaultBrowserServiceViewController *)self didCommitDefaultBrowserChoice:result];
 }
 
 void __59__SFDefaultBrowserServiceViewController__postNotification___block_invoke_cold_1(void *a1)

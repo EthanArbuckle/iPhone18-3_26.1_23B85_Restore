@@ -1,12 +1,12 @@
 @interface HMDMediaPlaybackActionModel
 + (id)properties;
 - (BOOL)validForStorage;
-- (id)_profilesFromManagedObject:(id)a3;
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5;
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5;
+- (id)_profilesFromManagedObject:(id)object;
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info;
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context;
 - (id)dependentUUIDs;
 - (id)validate;
-- (void)loadModelWithActionInformation:(id)a3;
+- (void)loadModelWithActionInformation:(id)information;
 @end
 
 @implementation HMDMediaPlaybackActionModel
@@ -16,23 +16,23 @@
   v32 = *MEMORY[0x277D85DE8];
   v29.receiver = self;
   v29.super_class = HMDMediaPlaybackActionModel;
-  v3 = [(HMDBackingStoreModelObject *)&v29 dependentUUIDs];
-  v4 = [v3 mutableCopy];
+  dependentUUIDs = [(HMDBackingStoreModelObject *)&v29 dependentUUIDs];
+  v4 = [dependentUUIDs mutableCopy];
 
-  v5 = [(HMDBackingStoreModelObject *)self parentUUID];
+  parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
 
-  if (v5)
+  if (parentUUID)
   {
-    v6 = [(HMDBackingStoreModelObject *)self parentUUID];
-    [v4 addObject:v6];
+    parentUUID2 = [(HMDBackingStoreModelObject *)self parentUUID];
+    [v4 addObject:parentUUID2];
   }
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [(HMDMediaPlaybackActionModel *)self accessories];
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v31 count:16];
+  accessories = [(HMDMediaPlaybackActionModel *)self accessories];
+  v8 = [accessories countByEnumeratingWithState:&v25 objects:v31 count:16];
   if (v8)
   {
     v9 = v8;
@@ -43,14 +43,14 @@
       {
         if (*v26 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(accessories);
         }
 
         v12 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:*(*(&v25 + 1) + 8 * i)];
         [v4 addObject:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v25 objects:v31 count:16];
+      v9 = [accessories countByEnumeratingWithState:&v25 objects:v31 count:16];
     }
 
     while (v9);
@@ -60,8 +60,8 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v13 = [(HMDMediaPlaybackActionModel *)self services];
-  v14 = [v13 countByEnumeratingWithState:&v21 objects:v30 count:16];
+  services = [(HMDMediaPlaybackActionModel *)self services];
+  v14 = [services countByEnumeratingWithState:&v21 objects:v30 count:16];
   if (v14)
   {
     v15 = v14;
@@ -72,14 +72,14 @@
       {
         if (*v22 != v16)
         {
-          objc_enumerationMutation(v13);
+          objc_enumerationMutation(services);
         }
 
         v18 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:*(*(&v21 + 1) + 8 * j)];
         [v4 addObject:v18];
       }
 
-      v15 = [v13 countByEnumeratingWithState:&v21 objects:v30 count:16];
+      v15 = [services countByEnumeratingWithState:&v21 objects:v30 count:16];
     }
 
     while (v15);
@@ -92,11 +92,11 @@
 
 - (id)validate
 {
-  v3 = [(HMDMediaPlaybackActionModel *)self profiles];
-  v4 = [(HMDMediaPlaybackActionModel *)self state];
-  v5 = [v4 integerValue];
-  v6 = [(HMDMediaPlaybackActionModel *)self volume];
-  v7 = [HMDMediaPlaybackAction isPlaybackActionValidWithProfiles:v3 state:v5 volume:v6];
+  profiles = [(HMDMediaPlaybackActionModel *)self profiles];
+  state = [(HMDMediaPlaybackActionModel *)self state];
+  integerValue = [state integerValue];
+  volume = [(HMDMediaPlaybackActionModel *)self volume];
+  v7 = [HMDMediaPlaybackAction isPlaybackActionValidWithProfiles:profiles state:integerValue volume:volume];
 
   if (v7)
   {
@@ -113,30 +113,30 @@
 
 - (BOOL)validForStorage
 {
-  v3 = [(HMDMediaPlaybackActionModel *)self profiles];
-  if ([v3 count])
+  profiles = [(HMDMediaPlaybackActionModel *)self profiles];
+  if ([profiles count])
   {
-    v4 = [(HMDMediaPlaybackActionModel *)self accessories];
-    if ([v4 count])
+    accessories = [(HMDMediaPlaybackActionModel *)self accessories];
+    if ([accessories count])
     {
-      v5 = [(HMDMediaPlaybackActionModel *)self state];
-      if ([v5 integerValue])
+      state = [(HMDMediaPlaybackActionModel *)self state];
+      if ([state integerValue])
       {
         v6 = 1;
       }
 
       else
       {
-        v7 = [(HMDMediaPlaybackActionModel *)self volume];
-        if (v7)
+        volume = [(HMDMediaPlaybackActionModel *)self volume];
+        if (volume)
         {
           v6 = 1;
         }
 
         else
         {
-          v8 = [(HMDMediaPlaybackActionModel *)self encodedPlaybackArchive];
-          v6 = v8 != 0;
+          encodedPlaybackArchive = [(HMDMediaPlaybackActionModel *)self encodedPlaybackArchive];
+          v6 = encodedPlaybackArchive != 0;
         }
       }
     }
@@ -155,26 +155,26 @@
   return v6;
 }
 
-- (void)loadModelWithActionInformation:(id)a3
+- (void)loadModelWithActionInformation:(id)information
 {
-  v4 = a3;
+  informationCopy = information;
   v11.receiver = self;
   v11.super_class = HMDMediaPlaybackActionModel;
-  [(HMDActionModel *)&v11 loadModelWithActionInformation:v4];
-  v5 = [v4 hmf_numberForKey:*MEMORY[0x277CD08B0]];
+  [(HMDActionModel *)&v11 loadModelWithActionInformation:informationCopy];
+  v5 = [informationCopy hmf_numberForKey:*MEMORY[0x277CD08B0]];
   [(HMDMediaPlaybackActionModel *)self setState:v5];
 
-  v6 = [v4 hmf_numberForKey:*MEMORY[0x277CD08C0]];
+  v6 = [informationCopy hmf_numberForKey:*MEMORY[0x277CD08C0]];
   [(HMDMediaPlaybackActionModel *)self setVolume:v6];
 
-  v7 = [v4 hmf_arrayForKey:*MEMORY[0x277CD08A0]];
+  v7 = [informationCopy hmf_arrayForKey:*MEMORY[0x277CD08A0]];
   if (v7)
   {
     v8 = [MEMORY[0x277CBEB98] setWithArray:v7];
     [(HMDMediaPlaybackActionModel *)self setProfiles:v8];
   }
 
-  v9 = [v4 hmf_dataForKey:*MEMORY[0x277CD0890]];
+  v9 = [informationCopy hmf_dataForKey:*MEMORY[0x277CD0890]];
   if (v9)
   {
     v10 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClass:objc_opt_class() fromData:v9 error:0];
@@ -191,7 +191,7 @@
   block[1] = 3221225472;
   block[2] = __41__HMDMediaPlaybackActionModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_259207 != -1)
   {
     dispatch_once(&properties_onceToken_259207, block);
@@ -246,12 +246,12 @@ void __41__HMDMediaPlaybackActionModel_properties__block_invoke(uint64_t a1)
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cd_generateValueForProperty:(id)a3 managedObjectField:(id)a4 context:(id)a5
+- (id)cd_generateValueForProperty:(id)property managedObjectField:(id)field context:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"accessories_"])
+  propertyCopy = property;
+  fieldCopy = field;
+  contextCopy = context;
+  if ([fieldCopy isEqualToString:@"accessories_"])
   {
     if ([(HMDBackingStoreModelObject *)self propertyWasSet:@"accessories"])
     {
@@ -261,17 +261,17 @@ void __41__HMDMediaPlaybackActionModel_properties__block_invoke(uint64_t a1)
       v21 = __Block_byref_object_copy__261886;
       v22 = __Block_byref_object_dispose__261887;
       v11 = MEMORY[0x277CBEB58];
-      v12 = [(HMDMediaPlaybackActionModel *)self accessories];
-      v23 = [v11 setWithCapacity:{objc_msgSend(v12, "count")}];
+      accessories = [(HMDMediaPlaybackActionModel *)self accessories];
+      v23 = [v11 setWithCapacity:{objc_msgSend(accessories, "count")}];
 
-      v13 = [(HMDMediaPlaybackActionModel *)self accessories];
+      accessories2 = [(HMDMediaPlaybackActionModel *)self accessories];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __96__HMDMediaPlaybackActionModel_CoreData__cd_generateValueForProperty_managedObjectField_context___block_invoke;
       v17[3] = &unk_278687248;
       v17[4] = self;
       v17[5] = &v18;
-      [v13 hmf_enumerateWithAutoreleasePoolUsingBlock:v17];
+      [accessories2 hmf_enumerateWithAutoreleasePoolUsingBlock:v17];
 
       v14 = v19[5];
       _Block_object_dispose(&v18, 8);
@@ -287,7 +287,7 @@ void __41__HMDMediaPlaybackActionModel_properties__block_invoke(uint64_t a1)
   {
     v16.receiver = self;
     v16.super_class = HMDMediaPlaybackActionModel;
-    v14 = [(HMDBackingStoreModelObject *)&v16 cd_generateValueForProperty:v8 managedObjectField:v9 context:v10];
+    v14 = [(HMDBackingStoreModelObject *)&v16 cd_generateValueForProperty:propertyCopy managedObjectField:fieldCopy context:contextCopy];
   }
 
   return v14;
@@ -322,14 +322,14 @@ void __96__HMDMediaPlaybackActionModel_CoreData__cd_generateValueForProperty_man
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_profilesFromManagedObject:(id)a3
+- (id)_profilesFromManagedObject:(id)object
 {
   v3 = MEMORY[0x277CBEB58];
-  v4 = a3;
-  v5 = [v4 accessories];
-  v6 = [v3 setWithCapacity:{objc_msgSend(v5, "count")}];
+  objectCopy = object;
+  accessories = [objectCopy accessories];
+  v6 = [v3 setWithCapacity:{objc_msgSend(accessories, "count")}];
 
-  v7 = [v4 accessories];
+  accessories2 = [objectCopy accessories];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -337,7 +337,7 @@ void __96__HMDMediaPlaybackActionModel_CoreData__cd_generateValueForProperty_man
   v11[3] = &unk_278687220;
   v12 = v6;
   v8 = v6;
-  [v7 hmf_enumerateWithAutoreleasePoolUsingBlock:v11];
+  [accessories2 hmf_enumerateWithAutoreleasePoolUsingBlock:v11];
 
   v9 = [v8 copy];
 
@@ -353,12 +353,12 @@ void __68__HMDMediaPlaybackActionModel_CoreData___profilesFromManagedObject___bl
   [v2 addObject:v4];
 }
 
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqualToString:@"accessories"])
+  objectCopy = object;
+  fieldCopy = field;
+  infoCopy = info;
+  if ([fieldCopy isEqualToString:@"accessories"])
   {
     v19 = 0;
     v20 = &v19;
@@ -366,16 +366,16 @@ void __68__HMDMediaPlaybackActionModel_CoreData___profilesFromManagedObject___bl
     v22 = __Block_byref_object_copy__261886;
     v23 = __Block_byref_object_dispose__261887;
     v11 = MEMORY[0x277CBEB58];
-    v12 = [v8 accessories];
-    v24 = [v11 setWithCapacity:{objc_msgSend(v12, "count")}];
+    accessories = [objectCopy accessories];
+    v24 = [v11 setWithCapacity:{objc_msgSend(accessories, "count")}];
 
-    v13 = [v8 accessories];
+    accessories2 = [objectCopy accessories];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __121__HMDMediaPlaybackActionModel_CoreData__cd_generateValueForModelObjectFromManagedObject_modelObjectField_modelFieldInfo___block_invoke;
     v18[3] = &unk_2786871F8;
     v18[4] = &v19;
-    [v13 hmf_enumerateWithAutoreleasePoolUsingBlock:v18];
+    [accessories2 hmf_enumerateWithAutoreleasePoolUsingBlock:v18];
 
     v14 = v20[5];
     _Block_object_dispose(&v19, 8);
@@ -383,16 +383,16 @@ void __68__HMDMediaPlaybackActionModel_CoreData___profilesFromManagedObject___bl
 
   else
   {
-    if ([v9 isEqualToString:@"profiles"])
+    if ([fieldCopy isEqualToString:@"profiles"])
     {
-      v15 = [(HMDMediaPlaybackActionModel *)self _profilesFromManagedObject:v8];
+      v15 = [(HMDMediaPlaybackActionModel *)self _profilesFromManagedObject:objectCopy];
     }
 
     else
     {
       v17.receiver = self;
       v17.super_class = HMDMediaPlaybackActionModel;
-      v15 = [(HMDBackingStoreModelObject *)&v17 cd_generateValueForModelObjectFromManagedObject:v8 modelObjectField:v9 modelFieldInfo:v10];
+      v15 = [(HMDBackingStoreModelObject *)&v17 cd_generateValueForModelObjectFromManagedObject:objectCopy modelObjectField:fieldCopy modelFieldInfo:infoCopy];
     }
 
     v14 = v15;

@@ -1,10 +1,10 @@
 @interface HUScheduleEditorItemModule
-- (BOOL)updateScheduleBuilder:(id)a3;
-- (BOOL)updateSelectedScheduleType:(id)a3;
-- (HUScheduleEditorItemModule)initWithItemUpdater:(id)a3;
-- (HUScheduleEditorItemModule)initWithItemUpdater:(id)a3 scheduleBuilder:(id)a4;
+- (BOOL)updateScheduleBuilder:(id)builder;
+- (BOOL)updateSelectedScheduleType:(id)type;
+- (HUScheduleEditorItemModule)initWithItemUpdater:(id)updater;
+- (HUScheduleEditorItemModule)initWithItemUpdater:(id)updater scheduleBuilder:(id)builder;
 - (HUScheduleEditorItemModuleDelegate)delegate;
-- (id)buildSectionsWithDisplayedItems:(id)a3;
+- (id)buildSectionsWithDisplayedItems:(id)items;
 - (id)itemProviders;
 - (unint64_t)selectedScheduleType;
 - (void)_buildItemProviders;
@@ -12,14 +12,14 @@
 
 @implementation HUScheduleEditorItemModule
 
-- (HUScheduleEditorItemModule)initWithItemUpdater:(id)a3 scheduleBuilder:(id)a4
+- (HUScheduleEditorItemModule)initWithItemUpdater:(id)updater scheduleBuilder:(id)builder
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  updaterCopy = updater;
+  builderCopy = builder;
+  v9 = builderCopy;
+  if (updaterCopy)
   {
-    if (v8)
+    if (builderCopy)
     {
       goto LABEL_3;
     }
@@ -27,8 +27,8 @@
 
   else
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"HUScheduleEditorItemModule.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"itemUpdater"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUScheduleEditorItemModule.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"itemUpdater"}];
 
     if (v9)
     {
@@ -36,13 +36,13 @@
     }
   }
 
-  v17 = [MEMORY[0x277CCA890] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"HUScheduleEditorItemModule.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"scheduleBuilder"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HUScheduleEditorItemModule.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"scheduleBuilder"}];
 
 LABEL_3:
   v18.receiver = self;
   v18.super_class = HUScheduleEditorItemModule;
-  v10 = [(HFItemModule *)&v18 initWithItemUpdater:v7];
+  v10 = [(HFItemModule *)&v18 initWithItemUpdater:updaterCopy];
   if (v10)
   {
     v11 = [v9 copy];
@@ -59,11 +59,11 @@ LABEL_3:
   return v10;
 }
 
-- (HUScheduleEditorItemModule)initWithItemUpdater:(id)a3
+- (HUScheduleEditorItemModule)initWithItemUpdater:(id)updater
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithItemUpdater_scheduleBuilder_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUScheduleEditorItemModule.m" lineNumber:43 description:{@"%s is unavailable; use %@ instead", "-[HUScheduleEditorItemModule initWithItemUpdater:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUScheduleEditorItemModule.m" lineNumber:43 description:{@"%s is unavailable; use %@ instead", "-[HUScheduleEditorItemModule initWithItemUpdater:]", v6}];
 
   return 0;
 }
@@ -71,47 +71,47 @@ LABEL_3:
 - (id)itemProviders
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(HUScheduleEditorItemModule *)self scheduleTypeItemProvider];
-  v5 = [(HUScheduleEditorItemModule *)self scheduleRuleItemProvider];
-  v6 = [(HUScheduleEditorItemModule *)self staticItemProvider];
-  v7 = [v3 setWithObjects:{v4, v5, v6, 0}];
-  v8 = [(HUScheduleEditorItemModule *)self ruleEditorItemModule];
-  v9 = [v8 itemProviders];
-  v10 = [v7 setByAddingObjectsFromSet:v9];
+  scheduleTypeItemProvider = [(HUScheduleEditorItemModule *)self scheduleTypeItemProvider];
+  scheduleRuleItemProvider = [(HUScheduleEditorItemModule *)self scheduleRuleItemProvider];
+  staticItemProvider = [(HUScheduleEditorItemModule *)self staticItemProvider];
+  v7 = [v3 setWithObjects:{scheduleTypeItemProvider, scheduleRuleItemProvider, staticItemProvider, 0}];
+  ruleEditorItemModule = [(HUScheduleEditorItemModule *)self ruleEditorItemModule];
+  itemProviders = [ruleEditorItemModule itemProviders];
+  v10 = [v7 setByAddingObjectsFromSet:itemProviders];
 
   return v10;
 }
 
-- (id)buildSectionsWithDisplayedItems:(id)a3
+- (id)buildSectionsWithDisplayedItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
-  v6 = [(HUScheduleEditorItemModule *)self scheduleTypeItemProvider];
-  v7 = [v6 items];
-  v8 = [v4 intersectsSet:v7];
+  scheduleTypeItemProvider = [(HUScheduleEditorItemModule *)self scheduleTypeItemProvider];
+  items = [scheduleTypeItemProvider items];
+  v8 = [itemsCopy intersectsSet:items];
 
   if (v8)
   {
     v9 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUScheduleEditorTypesItemSectionIdentifier"];
-    v10 = [(HUScheduleEditorItemModule *)self scheduleTypeItemProvider];
-    v11 = [v10 items];
-    v12 = [v11 allObjects];
-    v13 = [v12 sortedArrayUsingComparator:&__block_literal_global_90];
+    scheduleTypeItemProvider2 = [(HUScheduleEditorItemModule *)self scheduleTypeItemProvider];
+    items2 = [scheduleTypeItemProvider2 items];
+    allObjects = [items2 allObjects];
+    v13 = [allObjects sortedArrayUsingComparator:&__block_literal_global_90];
 
     [v9 setItems:v13];
     [v5 addObject:v9];
   }
 
-  v14 = [(HUScheduleEditorItemModule *)self ruleEditorItemModule];
-  v15 = [v14 buildSectionsWithDisplayedItems:v4];
+  ruleEditorItemModule = [(HUScheduleEditorItemModule *)self ruleEditorItemModule];
+  v15 = [ruleEditorItemModule buildSectionsWithDisplayedItems:itemsCopy];
 
   v35 = v5;
   [v5 na_safeAddObjectsFromArray:v15];
   v16 = objc_opt_new();
   v17 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUScheduleEditorRulesItemSectionIdentifier"];
-  v18 = [(HUScheduleEditorItemModule *)self updatedScheduleBuilder];
-  v19 = [v18 rules];
-  v20 = [v19 count];
+  updatedScheduleBuilder = [(HUScheduleEditorItemModule *)self updatedScheduleBuilder];
+  rules = [updatedScheduleBuilder rules];
+  v20 = [rules count];
 
   if (v20 >= 2)
   {
@@ -129,27 +129,27 @@ LABEL_3:
     [v17 setHeaderTitle:v22];
   }
 
-  v23 = [(HUScheduleEditorItemModule *)self scheduleRuleItemProvider];
-  v24 = [v23 items];
-  v25 = [v4 intersectsSet:v24];
+  scheduleRuleItemProvider = [(HUScheduleEditorItemModule *)self scheduleRuleItemProvider];
+  items3 = [scheduleRuleItemProvider items];
+  v25 = [itemsCopy intersectsSet:items3];
 
   if (v25 && v20 >= 2)
   {
-    v26 = [(HUScheduleEditorItemModule *)self scheduleRuleItemProvider];
-    v27 = [v26 items];
-    v28 = [v27 allObjects];
-    v29 = [MEMORY[0x277D14A50] sortComparatorForScheduleRules];
-    v30 = [v28 sortedArrayUsingComparator:v29];
+    scheduleRuleItemProvider2 = [(HUScheduleEditorItemModule *)self scheduleRuleItemProvider];
+    items4 = [scheduleRuleItemProvider2 items];
+    allObjects2 = [items4 allObjects];
+    sortComparatorForScheduleRules = [MEMORY[0x277D14A50] sortComparatorForScheduleRules];
+    v30 = [allObjects2 sortedArrayUsingComparator:sortComparatorForScheduleRules];
     [v16 addObjectsFromArray:v30];
   }
 
-  v31 = [(HUScheduleEditorItemModule *)self addScheduleRuleItem];
-  v32 = [v4 containsObject:v31];
+  addScheduleRuleItem = [(HUScheduleEditorItemModule *)self addScheduleRuleItem];
+  v32 = [itemsCopy containsObject:addScheduleRuleItem];
 
   if (v32)
   {
-    v33 = [(HUScheduleEditorItemModule *)self addScheduleRuleItem];
-    [v16 addObject:v33];
+    addScheduleRuleItem2 = [(HUScheduleEditorItemModule *)self addScheduleRuleItem];
+    [v16 addObject:addScheduleRuleItem2];
   }
 
   if (([v16 hmf_isEmpty] & 1) == 0)
@@ -216,34 +216,34 @@ uint64_t __62__HUScheduleEditorItemModule_buildSectionsWithDisplayedItems___bloc
 {
   v35[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D14A40]);
-  v4 = [(HUScheduleEditorItemModule *)self originalScheduleBuilder];
-  v5 = [v3 initWithScheduleBuilder:v4];
+  originalScheduleBuilder = [(HUScheduleEditorItemModule *)self originalScheduleBuilder];
+  v5 = [v3 initWithScheduleBuilder:originalScheduleBuilder];
   [(HUScheduleEditorItemModule *)self setScheduleTypeItemProvider:v5];
 
-  v6 = [(HUScheduleEditorItemModule *)self originalScheduleBuilder];
-  v7 = [v6 estimatedScheduleType];
+  originalScheduleBuilder2 = [(HUScheduleEditorItemModule *)self originalScheduleBuilder];
+  estimatedScheduleType = [originalScheduleBuilder2 estimatedScheduleType];
 
-  v8 = [(HUScheduleEditorItemModule *)self scheduleTypeItemProvider];
-  [v8 updateSelectedType:v7];
+  scheduleTypeItemProvider = [(HUScheduleEditorItemModule *)self scheduleTypeItemProvider];
+  [scheduleTypeItemProvider updateSelectedType:estimatedScheduleType];
 
   v9 = objc_alloc(MEMORY[0x277D14A30]);
-  v10 = [(HUScheduleEditorItemModule *)self originalScheduleBuilder];
-  v11 = [v9 initWithScheduleBuilder:v10];
+  originalScheduleBuilder3 = [(HUScheduleEditorItemModule *)self originalScheduleBuilder];
+  v11 = [v9 initWithScheduleBuilder:originalScheduleBuilder3];
   [(HUScheduleEditorItemModule *)self setScheduleRuleItemProvider:v11];
 
   v12 = [HUScheduleRuleEditorItemModule alloc];
-  v13 = [(HFItemModule *)self itemUpdater];
-  v14 = [(HUScheduleEditorItemModule *)self originalScheduleBuilder];
-  v15 = [v14 estimatedScheduleType];
-  v16 = [(HUScheduleEditorItemModule *)self originalScheduleBuilder];
-  v17 = [v16 rules];
-  v18 = [v17 anyObject];
-  v19 = [(HUScheduleEditorItemModule *)self originalScheduleBuilder];
-  v20 = [(HUScheduleRuleEditorItemModule *)v12 initWithItemUpdater:v13 scheduleType:v15 scheduleRule:v18 scheduleBuilder:v19];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
+  originalScheduleBuilder4 = [(HUScheduleEditorItemModule *)self originalScheduleBuilder];
+  estimatedScheduleType2 = [originalScheduleBuilder4 estimatedScheduleType];
+  originalScheduleBuilder5 = [(HUScheduleEditorItemModule *)self originalScheduleBuilder];
+  rules = [originalScheduleBuilder5 rules];
+  anyObject = [rules anyObject];
+  originalScheduleBuilder6 = [(HUScheduleEditorItemModule *)self originalScheduleBuilder];
+  v20 = [(HUScheduleRuleEditorItemModule *)v12 initWithItemUpdater:itemUpdater scheduleType:estimatedScheduleType2 scheduleRule:anyObject scheduleBuilder:originalScheduleBuilder6];
   [(HUScheduleEditorItemModule *)self setRuleEditorItemModule:v20];
 
-  v21 = [(HUScheduleEditorItemModule *)self ruleEditorItemModule];
-  [v21 setShowAsInlineModule:1];
+  ruleEditorItemModule = [(HUScheduleEditorItemModule *)self ruleEditorItemModule];
+  [ruleEditorItemModule setShowAsInlineModule:1];
 
   objc_initWeak(&location, self);
   v22 = objc_alloc(MEMORY[0x277D14B38]);
@@ -255,8 +255,8 @@ uint64_t __62__HUScheduleEditorItemModule_buildSectionsWithDisplayedItems___bloc
   v23 = [v22 initWithResultsBlock:&v29];
   [(HUScheduleEditorItemModule *)self setAddScheduleRuleItem:v23, v29, v30, v31, v32];
 
-  v24 = [(HUScheduleEditorItemModule *)self addScheduleRuleItem];
-  v35[0] = v24;
+  addScheduleRuleItem = [(HUScheduleEditorItemModule *)self addScheduleRuleItem];
+  v35[0] = addScheduleRuleItem;
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:1];
 
   v26 = objc_alloc(MEMORY[0x277D14B40]);
@@ -292,23 +292,23 @@ id __49__HUScheduleEditorItemModule__buildItemProviders__block_invoke(uint64_t a
 
 - (unint64_t)selectedScheduleType
 {
-  v2 = [(HUScheduleEditorItemModule *)self scheduleTypeItemProvider];
-  v3 = [v2 selectedType];
+  scheduleTypeItemProvider = [(HUScheduleEditorItemModule *)self scheduleTypeItemProvider];
+  selectedType = [scheduleTypeItemProvider selectedType];
 
-  return v3;
+  return selectedType;
 }
 
-- (BOOL)updateSelectedScheduleType:(id)a3
+- (BOOL)updateSelectedScheduleType:(id)type
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  typeCopy = type;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v5, "type")}];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(typeCopy, "type")}];
     v22 = 138412802;
-    v23 = self;
+    selfCopy = self;
     v24 = 2112;
     v25 = v7;
     v26 = 2112;
@@ -316,78 +316,78 @@ id __49__HUScheduleEditorItemModule__buildItemProviders__block_invoke(uint64_t a
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@ Updating selected schedule type to %@", &v22, 0x20u);
   }
 
-  v9 = [(HUScheduleEditorItemModule *)self originalScheduleBuilder];
-  v10 = [v9 estimatedScheduleType];
+  originalScheduleBuilder = [(HUScheduleEditorItemModule *)self originalScheduleBuilder];
+  estimatedScheduleType = [originalScheduleBuilder estimatedScheduleType];
 
-  if (v10 == [v5 type])
+  if (estimatedScheduleType == [typeCopy type])
   {
-    v11 = [(HUScheduleEditorItemModule *)self originalScheduleBuilder];
-    v12 = [v11 copy];
+    originalScheduleBuilder2 = [(HUScheduleEditorItemModule *)self originalScheduleBuilder];
+    v12 = [originalScheduleBuilder2 copy];
   }
 
   else
   {
-    v12 = [MEMORY[0x277D14A08] scheduleBuilderFromType:objc_msgSend(v5 withDefaultRules:{"type"), 1}];
+    v12 = [MEMORY[0x277D14A08] scheduleBuilderFromType:objc_msgSend(typeCopy withDefaultRules:{"type"), 1}];
   }
 
   [(HUScheduleEditorItemModule *)self updateScheduleBuilder:v12];
-  v13 = [(HUScheduleEditorItemModule *)self scheduleTypeItemProvider];
-  [v13 updateSelectedType:{objc_msgSend(v5, "type")}];
+  scheduleTypeItemProvider = [(HUScheduleEditorItemModule *)self scheduleTypeItemProvider];
+  [scheduleTypeItemProvider updateSelectedType:{objc_msgSend(typeCopy, "type")}];
 
-  v14 = [(HUScheduleEditorItemModule *)self itemProviders];
-  v15 = [(HUScheduleEditorItemModule *)self ruleEditorItemModule];
-  v16 = [v15 itemProviders];
-  v17 = [v14 setByAddingObjectsFromSet:v16];
+  itemProviders = [(HUScheduleEditorItemModule *)self itemProviders];
+  ruleEditorItemModule = [(HUScheduleEditorItemModule *)self ruleEditorItemModule];
+  itemProviders2 = [ruleEditorItemModule itemProviders];
+  v17 = [itemProviders setByAddingObjectsFromSet:itemProviders2];
 
   v18 = [MEMORY[0x277D14788] requestToReloadItemProviders:v17 senderSelector:a2];
-  v19 = [(HFItemModule *)self itemUpdater];
-  v20 = [v19 performItemUpdateRequest:v18];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
+  v20 = [itemUpdater performItemUpdateRequest:v18];
 
   return 1;
 }
 
-- (BOOL)updateScheduleBuilder:(id)a3
+- (BOOL)updateScheduleBuilder:(id)builder
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  builderCopy = builder;
   v6 = HFLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = NSStringFromSelector(a2);
     v24 = 138412802;
-    v25 = self;
+    selfCopy = self;
     v26 = 2112;
     v27 = v7;
     v28 = 2112;
-    v29 = v5;
+    v29 = builderCopy;
     _os_log_impl(&dword_20CEB6000, v6, OS_LOG_TYPE_DEFAULT, "%@:%@ Updating schedule builder to %@", &v24, 0x20u);
   }
 
-  [(HUScheduleEditorItemModule *)self setUpdatedScheduleBuilder:v5];
-  v8 = [(HUScheduleEditorItemModule *)self updatedScheduleBuilder];
-  v9 = [(HUScheduleEditorItemModule *)self scheduleTypeItemProvider];
-  [v9 setScheduleBuilder:v8];
+  [(HUScheduleEditorItemModule *)self setUpdatedScheduleBuilder:builderCopy];
+  updatedScheduleBuilder = [(HUScheduleEditorItemModule *)self updatedScheduleBuilder];
+  scheduleTypeItemProvider = [(HUScheduleEditorItemModule *)self scheduleTypeItemProvider];
+  [scheduleTypeItemProvider setScheduleBuilder:updatedScheduleBuilder];
 
-  v10 = [(HUScheduleEditorItemModule *)self updatedScheduleBuilder];
-  v11 = [(HUScheduleEditorItemModule *)self scheduleRuleItemProvider];
-  [v11 setScheduleBuilder:v10];
+  updatedScheduleBuilder2 = [(HUScheduleEditorItemModule *)self updatedScheduleBuilder];
+  scheduleRuleItemProvider = [(HUScheduleEditorItemModule *)self scheduleRuleItemProvider];
+  [scheduleRuleItemProvider setScheduleBuilder:updatedScheduleBuilder2];
 
-  v12 = [(HUScheduleEditorItemModule *)self ruleEditorItemModule];
-  v13 = [(HUScheduleEditorItemModule *)self updatedScheduleBuilder];
-  [v12 updateScheduleBuilder:v13];
+  ruleEditorItemModule = [(HUScheduleEditorItemModule *)self ruleEditorItemModule];
+  updatedScheduleBuilder3 = [(HUScheduleEditorItemModule *)self updatedScheduleBuilder];
+  [ruleEditorItemModule updateScheduleBuilder:updatedScheduleBuilder3];
 
-  v14 = [(HUScheduleEditorItemModule *)self delegate];
-  v15 = [(HUScheduleEditorItemModule *)self updatedScheduleBuilder];
-  [v14 scheduleEditorModule:self didUpdateScheduleBuilder:v15];
+  delegate = [(HUScheduleEditorItemModule *)self delegate];
+  updatedScheduleBuilder4 = [(HUScheduleEditorItemModule *)self updatedScheduleBuilder];
+  [delegate scheduleEditorModule:self didUpdateScheduleBuilder:updatedScheduleBuilder4];
 
-  v16 = [(HUScheduleEditorItemModule *)self itemProviders];
-  v17 = [(HUScheduleEditorItemModule *)self ruleEditorItemModule];
-  v18 = [v17 itemProviders];
-  v19 = [v16 setByAddingObjectsFromSet:v18];
+  itemProviders = [(HUScheduleEditorItemModule *)self itemProviders];
+  ruleEditorItemModule2 = [(HUScheduleEditorItemModule *)self ruleEditorItemModule];
+  itemProviders2 = [ruleEditorItemModule2 itemProviders];
+  v19 = [itemProviders setByAddingObjectsFromSet:itemProviders2];
 
   v20 = [MEMORY[0x277D14788] requestToReloadItemProviders:v19 senderSelector:a2];
-  v21 = [(HFItemModule *)self itemUpdater];
-  v22 = [v21 performItemUpdateRequest:v20];
+  itemUpdater = [(HFItemModule *)self itemUpdater];
+  v22 = [itemUpdater performItemUpdateRequest:v20];
 
   return 1;
 }

@@ -1,16 +1,16 @@
 @interface SSRVTUITrainingListener
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (SSRVTUITrainingListener)initWithMessageHandler:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (SSRVTUITrainingListener)initWithMessageHandler:(id)handler;
 - (void)listen;
 @end
 
 @implementation SSRVTUITrainingListener
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = MEMORY[0x277D015D8];
   v9 = *MEMORY[0x277D015D8];
   if (os_log_type_enabled(*MEMORY[0x277D015D8], OS_LOG_TYPE_DEFAULT))
@@ -18,27 +18,27 @@
     *buf = 136315394;
     v29 = "[SSRVTUITrainingListener listener:shouldAcceptNewConnection:]";
     v30 = 2112;
-    v31 = v7;
+    v31 = connectionCopy;
     _os_log_impl(&dword_225E12000, v9, OS_LOG_TYPE_DEFAULT, "%s Got new connection on attending service: %@", buf, 0x16u);
   }
 
   listener = self->_listener;
-  if (listener == v6)
+  if (listener == listenerCopy)
   {
     v12 = SSRVTUITrainingServiceGetXPCInterface();
-    [(NSXPCListener *)v7 setExportedInterface:v12];
+    [(NSXPCListener *)connectionCopy setExportedInterface:v12];
 
     v13 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_283937040];
-    [(NSXPCListener *)v7 setRemoteObjectInterface:v13];
+    [(NSXPCListener *)connectionCopy setRemoteObjectInterface:v13];
 
     queue = self->_queue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __62__SSRVTUITrainingListener_listener_shouldAcceptNewConnection___block_invoke;
     block[3] = &unk_278579350;
-    v15 = v7;
+    v15 = connectionCopy;
     v26 = v15;
-    v27 = self;
+    selfCopy = self;
     dispatch_sync(queue, block);
     objc_initWeak(buf, self);
     objc_initWeak(&location, v15);
@@ -73,13 +73,13 @@
       *buf = 136315394;
       v29 = "[SSRVTUITrainingListener listener:shouldAcceptNewConnection:]";
       v30 = 2114;
-      v31 = v6;
+      v31 = listenerCopy;
       _os_log_error_impl(&dword_225E12000, v11, OS_LOG_TYPE_ERROR, "%s Invalid listener - %{public}@", buf, 0x16u);
     }
   }
 
   v16 = *MEMORY[0x277D85DE8];
-  return listener == v6;
+  return listener == listenerCopy;
 }
 
 uint64_t __62__SSRVTUITrainingListener_listener_shouldAcceptNewConnection___block_invoke(uint64_t a1)
@@ -223,9 +223,9 @@ void __62__SSRVTUITrainingListener_listener_shouldAcceptNewConnection___block_in
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (SSRVTUITrainingListener)initWithMessageHandler:(id)a3
+- (SSRVTUITrainingListener)initWithMessageHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v10.receiver = self;
   v10.super_class = SSRVTUITrainingListener;
   v6 = [(SSRVTUITrainingListener *)&v10 init];
@@ -235,7 +235,7 @@ void __62__SSRVTUITrainingListener_listener_shouldAcceptNewConnection___block_in
     queue = v6->_queue;
     v6->_queue = v7;
 
-    objc_storeStrong(&v6->_messageHandler, a3);
+    objc_storeStrong(&v6->_messageHandler, handler);
   }
 
   return v6;

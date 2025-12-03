@@ -1,15 +1,15 @@
 @interface AMSDefaultsIdentifierHistoryProvider
-- (id)identifierHistoryFor:(id)a3;
-- (void)setIdentifierHistory:(id)a3 for:(id)a4;
+- (id)identifierHistoryFor:(id)for;
+- (void)setIdentifierHistory:(id)history for:(id)for;
 @end
 
 @implementation AMSDefaultsIdentifierHistoryProvider
 
-- (id)identifierHistoryFor:(id)a3
+- (id)identifierHistoryFor:(id)for
 {
   v4 = sub_192F967CC();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8._countAndFlagsBits = v4;
   v8._object = v6;
   v9 = DefaultsIdentifierHistoryProvider.identifierHistory(for:)(v8);
@@ -27,9 +27,9 @@
   return v10;
 }
 
-- (void)setIdentifierHistory:(id)a3 for:(id)a4
+- (void)setIdentifierHistory:(id)history for:(id)for
 {
-  if (a3)
+  if (history)
   {
     v5 = sub_192F9669C();
   }
@@ -41,7 +41,7 @@
 
   v6 = sub_192F967CC();
   v8 = v7;
-  v9 = self;
+  selfCopy = self;
   v12.value._rawValue = v5;
   v12.is_nil = v6;
   v10._countAndFlagsBits = v8;

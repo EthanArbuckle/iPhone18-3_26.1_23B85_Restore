@@ -1,5 +1,5 @@
 @interface CUState
-- (CUState)initWithName:(id)a3 parent:(id)a4;
+- (CUState)initWithName:(id)name parent:(id)parent;
 - (id)description;
 - (void)dealloc;
 - (void)invalidate;
@@ -42,10 +42,10 @@
   [(CUState *)&v10 dealloc];
 }
 
-- (CUState)initWithName:(id)a3 parent:(id)a4
+- (CUState)initWithName:(id)name parent:(id)parent
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  parentCopy = parent;
   v22.receiver = self;
   v22.super_class = CUState;
   v8 = [(CUState *)&v22 init];
@@ -55,11 +55,11 @@
   }
 
   v16 = v8;
-  v17 = [v6 copy];
+  v17 = [nameCopy copy];
   name = v16->_name;
   v16->_name = v17;
 
-  v19 = v7;
+  v19 = parentCopy;
   parent = v16->_parent;
   v16->_parent = v19;
 

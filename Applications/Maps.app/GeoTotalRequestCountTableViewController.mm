@@ -1,10 +1,10 @@
 @interface GeoTotalRequestCountTableViewController
-- (GeoTotalRequestCountTableViewController)initWithDictionary:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (unint64_t)getRequestCountForType:(id)a3 andApp:(id)a4;
+- (GeoTotalRequestCountTableViewController)initWithDictionary:(id)dictionary;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (unint64_t)getRequestCountForType:(id)type andApp:(id)app;
 - (void)dataPreProcessing;
 - (void)didReceiveMemoryWarning;
 - (void)viewDidLoad;
@@ -12,18 +12,18 @@
 
 @implementation GeoTotalRequestCountTableViewController
 
-- (unint64_t)getRequestCountForType:(id)a3 andApp:(id)a4
+- (unint64_t)getRequestCountForType:(id)type andApp:(id)app
 {
-  v6 = a4;
-  v7 = [(GeoTotalRequestCountTableViewController *)self info];
-  v8 = [v7 valueForKey:v6];
+  appCopy = app;
+  info = [(GeoTotalRequestCountTableViewController *)self info];
+  v8 = [info valueForKey:appCopy];
 
   v9 = 0;
   v10 = 0;
   do
   {
     v11 = v9;
-    v10 += [v8 numberOfRequestsForType:a3 result:v9++];
+    v10 += [v8 numberOfRequestsForType:type result:v9++];
   }
 
   while (v11 < 4);
@@ -31,22 +31,22 @@
   return v10;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(GeoTotalRequestCountTableViewController *)self orderedSectionKeys];
-  v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
+  pathCopy = path;
+  viewCopy = view;
+  orderedSectionKeys = [(GeoTotalRequestCountTableViewController *)self orderedSectionKeys];
+  v9 = [orderedSectionKeys objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v10 = [(GeoTotalRequestCountTableViewController *)self sectionDict];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  sectionDict = [(GeoTotalRequestCountTableViewController *)self sectionDict];
+  v11 = [sectionDict objectForKeyedSubscript:v9];
 
   v12 = [v11 objectForKeyedSubscript:@"apps"];
-  v13 = [v6 row];
+  v13 = [pathCopy row];
 
   v14 = [v12 objectAtIndexedSubscript:v13];
 
-  v15 = [v7 dequeueReusableCellWithIdentifier:@"reuseIdentifier"];
+  v15 = [viewCopy dequeueReusableCellWithIdentifier:@"reuseIdentifier"];
 
   if (!v15)
   {
@@ -55,26 +55,26 @@
 
   [v15 setSelectionStyle:0];
   v16 = [v14 objectForKeyedSubscript:@"name"];
-  v17 = [v15 textLabel];
-  [v17 setText:v16];
+  textLabel = [v15 textLabel];
+  [textLabel setText:v16];
 
   v18 = [v14 objectForKeyedSubscript:@"count"];
   v19 = [v14 objectForKeyedSubscript:@"xmitB"];
   v20 = [v14 objectForKeyedSubscript:@"recvB"];
   v21 = [NSString stringWithFormat:@"%@ requests : (xmit:%@ / recv:%@)", v18, v19, v20];
-  v22 = [v15 detailTextLabel];
-  [v22 setText:v21];
+  detailTextLabel = [v15 detailTextLabel];
+  [detailTextLabel setText:v21];
 
   return v15;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = [(GeoTotalRequestCountTableViewController *)self orderedSectionKeys];
-  v7 = [v6 objectAtIndexedSubscript:a4];
+  orderedSectionKeys = [(GeoTotalRequestCountTableViewController *)self orderedSectionKeys];
+  v7 = [orderedSectionKeys objectAtIndexedSubscript:section];
 
-  v8 = [(GeoTotalRequestCountTableViewController *)self sectionDict];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  sectionDict = [(GeoTotalRequestCountTableViewController *)self sectionDict];
+  v9 = [sectionDict objectForKeyedSubscript:v7];
 
   v10 = [v9 objectForKeyedSubscript:@"apps"];
   v11 = [v10 count];
@@ -82,13 +82,13 @@
   return v11;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v6 = [(GeoTotalRequestCountTableViewController *)self orderedSectionKeys];
-  v7 = [v6 objectAtIndexedSubscript:a4];
+  orderedSectionKeys = [(GeoTotalRequestCountTableViewController *)self orderedSectionKeys];
+  v7 = [orderedSectionKeys objectAtIndexedSubscript:section];
 
-  v8 = [(GeoTotalRequestCountTableViewController *)self sectionDict];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  sectionDict = [(GeoTotalRequestCountTableViewController *)self sectionDict];
+  v9 = [sectionDict objectForKeyedSubscript:v7];
 
   v10 = [v9 objectForKeyedSubscript:@"xmitB"];
   v11 = +[NSByteCountFormatter stringFromByteCount:countStyle:](NSByteCountFormatter, "stringFromByteCount:countStyle:", [v10 unsignedIntegerValue], 3);
@@ -101,10 +101,10 @@
   return v14;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(GeoTotalRequestCountTableViewController *)self orderedSectionKeys];
-  v4 = [v3 count];
+  orderedSectionKeys = [(GeoTotalRequestCountTableViewController *)self orderedSectionKeys];
+  v4 = [orderedSectionKeys count];
 
   return v4;
 }
@@ -148,8 +148,8 @@
         }
 
         v9 = *(*(&v22 + 1) + 8 * v8);
-        v10 = [(GeoTotalRequestCountTableViewController *)self info];
-        v11 = [v10 objectForKeyedSubscript:v9];
+        info = [(GeoTotalRequestCountTableViewController *)self info];
+        v11 = [info objectForKeyedSubscript:v9];
 
         v18[0] = _NSConcreteStackBlock;
         v18[1] = 3221225472;
@@ -182,15 +182,15 @@
   self->_orderedSectionKeys = v15;
 }
 
-- (GeoTotalRequestCountTableViewController)initWithDictionary:(id)a3
+- (GeoTotalRequestCountTableViewController)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = GeoTotalRequestCountTableViewController;
   v5 = [(GeoTotalRequestCountTableViewController *)&v9 initWithStyle:1];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     info = v5->_info;
     v5->_info = v6;
 

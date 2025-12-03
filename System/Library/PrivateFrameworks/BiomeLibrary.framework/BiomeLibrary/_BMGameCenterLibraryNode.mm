@@ -5,7 +5,7 @@
 + (id)configurationForSuggestionFeedback;
 + (id)storeConfigurationForAchievementEarned;
 + (id)storeConfigurationForSuggestionFeedback;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -13,13 +13,13 @@
 
 + (id)configurationForAchievementEarned
 {
-  v3 = [a1 storeConfigurationForAchievementEarned];
-  v4 = [a1 syncPolicyForAchievementEarned];
+  storeConfigurationForAchievementEarned = [self storeConfigurationForAchievementEarned];
+  syncPolicyForAchievementEarned = [self syncPolicyForAchievementEarned];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"5D482238-969B-4858-867E-E7AC86BD8D22"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"GameCenter.AchievementEarned" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.gamecenter" pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"GameCenter.AchievementEarned" eventClass:objc_opt_class() storeConfig:storeConfigurationForAchievementEarned syncPolicy:syncPolicyForAchievementEarned legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:@"com.apple.gamecenter" pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -35,7 +35,7 @@
 + (id)SuggestionFeedback
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForSuggestionFeedback];
+  configurationForSuggestionFeedback = [self configurationForSuggestionFeedback];
   v3 = +[BMGameCenterSuggestionFeedback columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -47,7 +47,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"GameCenter.SuggestionFeedback" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"GameCenter.SuggestionFeedback" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"GameCenter.SuggestionFeedback" schema:v9 configuration:configurationForSuggestionFeedback];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -56,13 +56,13 @@
 
 + (id)configurationForSuggestionFeedback
 {
-  v3 = [a1 storeConfigurationForSuggestionFeedback];
-  v4 = [a1 syncPolicyForSuggestionFeedback];
+  storeConfigurationForSuggestionFeedback = [self storeConfigurationForSuggestionFeedback];
+  syncPolicyForSuggestionFeedback = [self syncPolicyForSuggestionFeedback];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"39DCFB87-1759-48FE-9D81-E30419BD360A"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"GameCenter.SuggestionFeedback" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"GameCenter.SuggestionFeedback" eventClass:objc_opt_class() storeConfig:storeConfigurationForSuggestionFeedback syncPolicy:syncPolicyForSuggestionFeedback legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -78,7 +78,7 @@
 + (id)AchievementEarned
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForAchievementEarned];
+  configurationForAchievementEarned = [self configurationForAchievementEarned];
   v3 = +[BMGameCenterAchievementEarned columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -90,27 +90,27 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"GameCenter.AchievementEarned" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"GameCenter.AchievementEarned" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"GameCenter.AchievementEarned" schema:v9 configuration:configurationForAchievementEarned];
 
   v11 = *MEMORY[0x1E69E9840];
 
   return v10;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"AchievementEarned"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"AchievementEarned"])
   {
-    v5 = [a1 AchievementEarned];
+    achievementEarned = [self AchievementEarned];
 LABEL_5:
-    v6 = v5;
+    v6 = achievementEarned;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"SuggestionFeedback"])
+  if ([nameCopy isEqualToString:@"SuggestionFeedback"])
   {
-    v5 = [a1 SuggestionFeedback];
+    achievementEarned = [self SuggestionFeedback];
     goto LABEL_5;
   }
 

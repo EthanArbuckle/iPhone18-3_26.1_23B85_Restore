@@ -1,22 +1,22 @@
 @interface AXDragEndpointClient
-+ (BOOL)isValidServiceName:(id)a3;
-- (AXDragEndpointClient)initWithServiceName:(id)a3;
++ (BOOL)isValidServiceName:(id)name;
+- (AXDragEndpointClient)initWithServiceName:(id)name;
 - (void)dealloc;
-- (void)getDragEndpoint:(id)a3;
+- (void)getDragEndpoint:(id)endpoint;
 @end
 
 @implementation AXDragEndpointClient
 
-+ (BOOL)isValidServiceName:(id)a3
++ (BOOL)isValidServiceName:(id)name
 {
   v3 = isValidServiceName__onceToken;
-  v4 = a3;
+  nameCopy = name;
   if (v3 != -1)
   {
     +[AXDragEndpointClient isValidServiceName:];
   }
 
-  v5 = [isValidServiceName__AllowedServiceNames containsObject:v4];
+  v5 = [isValidServiceName__AllowedServiceNames containsObject:nameCopy];
 
   return v5;
 }
@@ -37,15 +37,15 @@ void __43__AXDragEndpointClient_isValidServiceName___block_invoke()
   isValidServiceName__AllowedServiceNames = v4;
 }
 
-- (AXDragEndpointClient)initWithServiceName:(id)a3
+- (AXDragEndpointClient)initWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v10.receiver = self;
   v10.super_class = AXDragEndpointClient;
   v5 = [(AXDragEndpointClient *)&v10 init];
-  if (v5 && [objc_opt_class() isValidServiceName:v4])
+  if (v5 && [objc_opt_class() isValidServiceName:nameCopy])
   {
-    v6 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:v4 options:0];
+    v6 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:nameCopy options:0];
     connection = v5->_connection;
     v5->_connection = v6;
 
@@ -66,15 +66,15 @@ void __43__AXDragEndpointClient_isValidServiceName___block_invoke()
   [(AXDragEndpointClient *)&v3 dealloc];
 }
 
-- (void)getDragEndpoint:(id)a3
+- (void)getDragEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   connection = self->_connection;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __40__AXDragEndpointClient_getDragEndpoint___block_invoke;
   v11[3] = &unk_1E812DBE0;
-  v6 = v4;
+  v6 = endpointCopy;
   v12 = v6;
   v7 = [(NSXPCConnection *)connection remoteObjectProxyWithErrorHandler:v11];
   v9[0] = MEMORY[0x1E69E9820];

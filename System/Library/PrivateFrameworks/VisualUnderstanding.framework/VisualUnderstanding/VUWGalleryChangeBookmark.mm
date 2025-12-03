@@ -1,34 +1,34 @@
 @interface VUWGalleryChangeBookmark
 - (VUWGalleryChangeBookmark)init;
-- (VUWGalleryChangeBookmark)initWithBookmark:(id)a3;
-- (VUWGalleryChangeBookmark)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (VUWGalleryChangeBookmark)initWithBookmark:(id)bookmark;
+- (VUWGalleryChangeBookmark)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VUWGalleryChangeBookmark
 
-- (VUWGalleryChangeBookmark)initWithBookmark:(id)a3
+- (VUWGalleryChangeBookmark)initWithBookmark:(id)bookmark
 {
-  *(&self->super.isa + OBJC_IVAR___VUWGalleryChangeBookmark_bookmark) = a3;
+  *(&self->super.isa + OBJC_IVAR___VUWGalleryChangeBookmark_bookmark) = bookmark;
   v5.receiver = self;
   v5.super_class = VUWGalleryChangeBookmark;
-  v3 = a3;
+  bookmarkCopy = bookmark;
   return [(VUWGalleryChangeBookmark *)&v5 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = *(&self->super.isa + OBJC_IVAR___VUWGalleryChangeBookmark_bookmark);
-  v7 = a3;
-  v5 = self;
+  coderCopy = coder;
+  selfCopy = self;
   v6 = sub_1D225092C();
-  [v7 encodeObject:v4 forKey:v6];
+  [coderCopy encodeObject:v4 forKey:v6];
 }
 
-- (VUWGalleryChangeBookmark)initWithCoder:(id)a3
+- (VUWGalleryChangeBookmark)initWithCoder:(id)coder
 {
   type metadata accessor for VUGallery.Bookmark();
-  v5 = a3;
+  coderCopy = coder;
   v6 = sub_1D2250DEC();
   if (v6)
   {

@@ -13,8 +13,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(NSDictionary *)self->_addressComponents objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  objectEnumerator = [(NSDictionary *)self->_addressComponents objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -26,14 +26,14 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v4 += __51__PPPasteboardLocationItem_memoryFootprintEstimate__block_invoke(*(*(&v12 + 1) + 8 * v9++));
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);

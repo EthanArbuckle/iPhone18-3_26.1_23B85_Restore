@@ -1,31 +1,31 @@
 @interface CHSMutableConfiguredWidgetDescriptor
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setSupportedRenderSchemes:(id)a3;
-- (void)setSupportedRenderingModes:(unint64_t)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setSupportedRenderSchemes:(id)schemes;
+- (void)setSupportedRenderingModes:(unint64_t)modes;
 @end
 
 @implementation CHSMutableConfiguredWidgetDescriptor
 
-- (void)setSupportedRenderingModes:(unint64_t)a3
+- (void)setSupportedRenderingModes:(unint64_t)modes
 {
-  v3 = a3;
+  modesCopy = modes;
   v10 = objc_opt_new();
-  if (v3)
+  if (modesCopy)
   {
-    v5 = [(CHSConfiguredWidgetDescriptor *)self widget];
-    IsAccessory = CHSWidgetFamilyIsAccessory([v5 family]);
+    widget = [(CHSConfiguredWidgetDescriptor *)self widget];
+    IsAccessory = CHSWidgetFamilyIsAccessory([widget family]);
 
     v7 = [[CHSWidgetRenderScheme alloc] initWithRenderingModes:1 backgroundViewPolicy:IsAccessory];
     [v10 addObject:v7];
   }
 
-  if ((v3 & 4) != 0)
+  if ((modesCopy & 4) != 0)
   {
     v8 = [[CHSWidgetRenderScheme alloc] initWithRenderingModes:4 backgroundViewPolicy:1];
     [v10 addObject:v8];
   }
 
-  if ((v3 & 2) != 0)
+  if ((modesCopy & 2) != 0)
   {
     v9 = [[CHSWidgetRenderScheme alloc] initWithRenderingModes:2 backgroundViewPolicy:1];
     [v10 addObject:v9];
@@ -34,16 +34,16 @@
   [(CHSMutableConfiguredWidgetDescriptor *)self setSupportedRenderSchemes:v10];
 }
 
-- (void)setSupportedRenderSchemes:(id)a3
+- (void)setSupportedRenderSchemes:(id)schemes
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
+  schemesCopy = schemes;
+  array = [MEMORY[0x1E695DF70] array];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = schemesCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -58,16 +58,16 @@
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 _compatibilityRenderSchemesFromDeprecatedRenderingModes];
-        if ([v11 count])
+        _compatibilityRenderSchemesFromDeprecatedRenderingModes = [v10 _compatibilityRenderSchemesFromDeprecatedRenderingModes];
+        if ([_compatibilityRenderSchemesFromDeprecatedRenderingModes count])
         {
-          [(NSArray *)v5 addObjectsFromArray:v11];
+          [(NSArray *)array addObjectsFromArray:_compatibilityRenderSchemesFromDeprecatedRenderingModes];
         }
 
         else
         {
           v12 = [v10 copy];
-          [(NSArray *)v5 addObject:v12];
+          [(NSArray *)array addObject:v12];
         }
       }
 
@@ -78,12 +78,12 @@
   }
 
   supportedRenderSchemes = self->super._supportedRenderSchemes;
-  self->super._supportedRenderSchemes = v5;
+  self->super._supportedRenderSchemes = array;
 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [CHSConfiguredWidgetDescriptor alloc];
 

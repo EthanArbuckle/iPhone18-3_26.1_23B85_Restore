@@ -1,6 +1,6 @@
 @interface CRLManagedAccountUtilities
 + (BOOL)loggedInUserHasManagedAppleID;
-+ (BOOL)loggedInUserHasManagedAppleIDWithError:(id *)a3;
++ (BOOL)loggedInUserHasManagedAppleIDWithError:(id *)error;
 + (BOOL)loggedInUserHasPolicyRestriction;
 @end
 
@@ -38,9 +38,9 @@
 
     v7 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", "+[CRLManagedAccountUtilities loggedInUserHasManagedAppleID]");
     v8 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/CRLManagedAccountUtilities.m"];
-    v9 = [v3 code];
-    v10 = [v3 domain];
-    [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:26 isFatal:0 description:"Could not determine if iCloud account is Managed Apple ID, error: %zd %{public}@ %@", v9, v10, v3];
+    code = [v3 code];
+    domain = [v3 domain];
+    [CRLAssertionHandler handleFailureInFunction:v7 file:v8 lineNumber:26 isFatal:0 description:"Could not determine if iCloud account is Managed Apple ID, error: %zd %{public}@ %@", code, domain, v3];
   }
 
   return v2;
@@ -54,33 +54,33 @@
   return v3;
 }
 
-+ (BOOL)loggedInUserHasManagedAppleIDWithError:(id *)a3
++ (BOOL)loggedInUserHasManagedAppleIDWithError:(id *)error
 {
   HasManagedAppleID = BRLoggedInUserHasManagedAppleID();
-  if (a3 && HasManagedAppleID)
+  if (error && HasManagedAppleID)
   {
     v5 = 0;
-    *a3 = 0;
+    *error = 0;
   }
 
   else
   {
-    if (!a3)
+    if (!error)
     {
       return 0;
     }
 
-    v5 = *a3;
+    v5 = *error;
   }
 
   if ([v5 code] == 2)
   {
-    v6 = [*a3 domain];
-    v7 = [v6 isEqualToString:BRCloudDocsErrorDomain];
+    domain = [*error domain];
+    v7 = [domain isEqualToString:BRCloudDocsErrorDomain];
 
     if (v7)
     {
-      *a3 = 0;
+      *error = 0;
     }
   }
 

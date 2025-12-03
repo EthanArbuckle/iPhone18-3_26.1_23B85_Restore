@@ -1,69 +1,69 @@
 @interface _UIKeyboardTextSelectionInteraction
-+ (void)attachToExistingRecogniser:(id)a3 owner:(id)a4 forType:(int64_t)a5;
-- (BOOL)forceTouchGestureRecognizerShouldBegin:(id)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
++ (void)attachToExistingRecogniser:(id)recogniser owner:(id)owner forType:(int64_t)type;
+- (BOOL)forceTouchGestureRecognizerShouldBegin:(id)begin;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)isPlacedCarefully;
-- (CGPoint)acceleratedTranslation:(CGPoint)a3 velocity:(CGPoint)a4 isActive:(BOOL)a5;
-- (CGPoint)boundedTranslation:(CGPoint)a3;
-- (CGPoint)cursorLocationForTranslation:(CGPoint)a3;
-- (_UIKeyboardTextSelectionInteraction)initWithView:(id)a3 owner:(id)a4 forTypes:(int64_t)a5;
-- (double)additionalPressDurationForTypingCadence:(id)a3;
+- (CGPoint)acceleratedTranslation:(CGPoint)translation velocity:(CGPoint)velocity isActive:(BOOL)active;
+- (CGPoint)boundedTranslation:(CGPoint)translation;
+- (CGPoint)cursorLocationForTranslation:(CGPoint)translation;
+- (_UIKeyboardTextSelectionInteraction)initWithView:(id)view owner:(id)owner forTypes:(int64_t)types;
+- (double)additionalPressDurationForTypingCadence:(id)cadence;
 - (id)gestures;
 - (id)selectionController;
-- (int64_t)layoutDirectionFromFlickDirection:(unint64_t)a3;
-- (void)_beginLongForcePressTimerForGesture:(id)a3;
+- (int64_t)layoutDirectionFromFlickDirection:(unint64_t)direction;
+- (void)_beginLongForcePressTimerForGesture:(id)gesture;
 - (void)_cancelLongForcePressTimer;
 - (void)_cancelTouchPadTimer;
 - (void)_clearHiding;
 - (void)_clearTouchPadCallback;
-- (void)_configureLongPressAddedTouchRecognizer:(id)a3;
-- (void)_configureLongPressRecognizer:(id)a3;
-- (void)_configureOneFingerForcePressRecognizer:(id)a3;
-- (void)_configureTwoFingerPanGestureRecognizer:(id)a3;
-- (void)_configureTwoFingerTapGestureRecognizer:(id)a3;
-- (void)_didEndIndirectSelectionGesture:(id)a3;
-- (void)_gestureRecognizerFailed:(id)a3;
-- (void)_granularityExpandingGestureWithTimeInterval:(double)a3 timeGranularity:(double)a4 isMidPan:(BOOL)a5;
-- (void)_logTapCounts:(id)a3;
-- (void)_longForcePressDetected:(id)a3;
+- (void)_configureLongPressAddedTouchRecognizer:(id)recognizer;
+- (void)_configureLongPressRecognizer:(id)recognizer;
+- (void)_configureOneFingerForcePressRecognizer:(id)recognizer;
+- (void)_configureTwoFingerPanGestureRecognizer:(id)recognizer;
+- (void)_configureTwoFingerTapGestureRecognizer:(id)recognizer;
+- (void)_didEndIndirectSelectionGesture:(id)gesture;
+- (void)_gestureRecognizerFailed:(id)failed;
+- (void)_granularityExpandingGestureWithTimeInterval:(double)interval timeGranularity:(double)granularity isMidPan:(BOOL)pan;
+- (void)_logTapCounts:(id)counts;
+- (void)_longForcePressDetected:(id)detected;
 - (void)_prepareForGesture;
-- (void)_startTouchPadTimerWithCompletion:(id)a3;
+- (void)_startTouchPadTimerWithCompletion:(id)completion;
 - (void)_tidyUpGesture;
-- (void)_willBeginIndirectSelectionGesture:(id)a3;
-- (void)beginCursorManipulationFromRect:(CGRect)a3;
-- (void)beginIndirectBlockPanWithTranslation:(CGPoint)a3 executionContext:(id)a4;
-- (void)beginLongPressWithTranslation:(CGPoint)a3 touchCount:(unint64_t)a4 executionContext:(id)a5;
-- (void)beginTwoFingerCursorPanWithTranslation:(CGPoint)a3 executionContext:(id)a4;
-- (void)beginTwoFingerPanWithTranslation:(CGPoint)a3 isShiftKeyBeingHeld:(BOOL)a4 executionContext:(id)a5;
-- (void)clearKeyboardTouchesForGesture:(id)a3;
+- (void)_willBeginIndirectSelectionGesture:(id)gesture;
+- (void)beginCursorManipulationFromRect:(CGRect)rect;
+- (void)beginIndirectBlockPanWithTranslation:(CGPoint)translation executionContext:(id)context;
+- (void)beginLongPressWithTranslation:(CGPoint)translation touchCount:(unint64_t)count executionContext:(id)context;
+- (void)beginTwoFingerCursorPanWithTranslation:(CGPoint)translation executionContext:(id)context;
+- (void)beginTwoFingerPanWithTranslation:(CGPoint)translation isShiftKeyBeingHeld:(BOOL)held executionContext:(id)context;
+- (void)clearKeyboardTouchesForGesture:(id)gesture;
 - (void)dealloc;
 - (void)detach;
 - (void)disableEnclosingScrollViewScrolling;
-- (void)endIndirectBlockPanWithExecutionContext:(id)a3;
-- (void)endTwoFingerPanWithExecutionContext:(id)a3;
-- (void)finishLongPressWithExecutionContext:(id)a3;
-- (void)forwardIndirectGestureWithType:(int64_t)a3 state:(int64_t)a4 translation:(CGPoint)a5 flickDirection:(unint64_t)a6 touchCount:(unint64_t)a7;
-- (void)gestureRecognizerShouldBeginResponse:(id)a3;
-- (void)handleRemoteIndirectGestureWithState:(id)a3;
-- (void)handleTwoFingerFlickInDirection:(int64_t)a3 executionContext:(id)a4;
-- (void)hideInsideRecogniser:(id)a3;
-- (void)hideRecogniser:(id)a3 forKey:(id)a4;
-- (void)indirectBlockPanGestureWithState:(int64_t)a3 withTranslation:(CGPoint)a4;
-- (void)indirectCursorPanGestureWithState:(int64_t)a3 withTranslation:(CGPoint)a4 withFlickDirection:(unint64_t)a5;
-- (void)indirectPanGestureWithState:(int64_t)a3 withTranslation:(CGPoint)a4 withFlickDirection:(unint64_t)a5 isShiftKeyBeingHeld:(BOOL)a6;
-- (void)longPressGestureWithState:(int64_t)a3 withTranslation:(CGPoint)a4 touchCount:(unint64_t)a5;
-- (void)oneFingerForcePan:(id)a3;
-- (void)oneFingerForcePress:(id)a3;
-- (void)panningGesture:(id)a3;
-- (void)panningGestureAddedTouch:(id)a3;
-- (void)registerOwner:(id)a3;
+- (void)endIndirectBlockPanWithExecutionContext:(id)context;
+- (void)endTwoFingerPanWithExecutionContext:(id)context;
+- (void)finishLongPressWithExecutionContext:(id)context;
+- (void)forwardIndirectGestureWithType:(int64_t)type state:(int64_t)state translation:(CGPoint)translation flickDirection:(unint64_t)direction touchCount:(unint64_t)count;
+- (void)gestureRecognizerShouldBeginResponse:(id)response;
+- (void)handleRemoteIndirectGestureWithState:(id)state;
+- (void)handleTwoFingerFlickInDirection:(int64_t)direction executionContext:(id)context;
+- (void)hideInsideRecogniser:(id)recogniser;
+- (void)hideRecogniser:(id)recogniser forKey:(id)key;
+- (void)indirectBlockPanGestureWithState:(int64_t)state withTranslation:(CGPoint)translation;
+- (void)indirectCursorPanGestureWithState:(int64_t)state withTranslation:(CGPoint)translation withFlickDirection:(unint64_t)direction;
+- (void)indirectPanGestureWithState:(int64_t)state withTranslation:(CGPoint)translation withFlickDirection:(unint64_t)direction isShiftKeyBeingHeld:(BOOL)held;
+- (void)longPressGestureWithState:(int64_t)state withTranslation:(CGPoint)translation touchCount:(unint64_t)count;
+- (void)oneFingerForcePan:(id)pan;
+- (void)oneFingerForcePress:(id)press;
+- (void)panningGesture:(id)gesture;
+- (void)panningGestureAddedTouch:(id)touch;
+- (void)registerOwner:(id)owner;
 - (void)removeTemporaryGesture;
-- (void)twoFingerTap:(id)a3;
-- (void)updateIndirectBlockPanWithTranslation:(CGPoint)a3 executionContext:(id)a4;
-- (void)updateLongPressWithTranslation:(CGPoint)a3 executionContext:(id)a4;
-- (void)updateTwoFingerPanWithTranslation:(CGPoint)a3 executionContext:(id)a4;
+- (void)twoFingerTap:(id)tap;
+- (void)updateIndirectBlockPanWithTranslation:(CGPoint)translation executionContext:(id)context;
+- (void)updateLongPressWithTranslation:(CGPoint)translation executionContext:(id)context;
+- (void)updateTwoFingerPanWithTranslation:(CGPoint)translation executionContext:(id)context;
 @end
 
 @implementation _UIKeyboardTextSelectionInteraction
@@ -105,8 +105,8 @@
   addedTouchRecognizer = self->_addedTouchRecognizer;
   if (addedTouchRecognizer)
   {
-    v4 = [(UIGestureRecognizer *)addedTouchRecognizer view];
-    [v4 removeGestureRecognizer:self->_addedTouchRecognizer];
+    view = [(UIGestureRecognizer *)addedTouchRecognizer view];
+    [view removeGestureRecognizer:self->_addedTouchRecognizer];
 
     v5 = self->_addedTouchRecognizer;
     self->_addedTouchRecognizer = 0;
@@ -115,8 +115,8 @@
   activePress = self->_activePress;
   if (activePress)
   {
-    v7 = [(UIGestureRecognizer *)activePress view];
-    [v7 removeGestureRecognizer:self->_activePress];
+    view2 = [(UIGestureRecognizer *)activePress view];
+    [view2 removeGestureRecognizer:self->_activePress];
 
     v8 = self->_activePress;
     self->_activePress = 0;
@@ -125,33 +125,33 @@
   [(_UIKeyboardTextSelectionInteraction *)self _cancelTouchPadTimer];
 }
 
-- (void)hideRecogniser:(id)a3 forKey:(id)a4
+- (void)hideRecogniser:(id)recogniser forKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
+  recogniserCopy = recogniser;
+  keyCopy = key;
   weakMap = self->_weakMap;
   if (!weakMap)
   {
-    v10 = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
+    strongToWeakObjectsMapTable = [MEMORY[0x1E696AD18] strongToWeakObjectsMapTable];
     v11 = self->_weakMap;
-    self->_weakMap = v10;
+    self->_weakMap = strongToWeakObjectsMapTable;
 
     weakMap = self->_weakMap;
   }
 
-  [(NSMapTable *)weakMap setObject:v7 forKey:v8];
+  [(NSMapTable *)weakMap setObject:recogniserCopy forKey:keyCopy];
   v13.receiver = self;
   v13.super_class = _UIKeyboardTextSelectionInteraction;
-  v12 = [(UITextInteraction *)&v13 gestureMap];
-  [v12 removeObjectForKey:v8];
+  gestureMap = [(UITextInteraction *)&v13 gestureMap];
+  [gestureMap removeObjectForKey:keyCopy];
 
-  objc_setAssociatedObject(v7, a2, self, 0x301);
+  objc_setAssociatedObject(recogniserCopy, a2, self, 0x301);
 }
 
-- (void)hideInsideRecogniser:(id)a3
+- (void)hideInsideRecogniser:(id)recogniser
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recogniserCopy = recogniser;
   v17.receiver = self;
   v17.super_class = _UIKeyboardTextSelectionInteraction;
   [(UITextInteraction *)&v17 gestureMap];
@@ -176,7 +176,7 @@ LABEL_3:
       v10 = *(*(&v13 + 1) + 8 * v9);
       v11 = [v5 objectForKey:v10];
 
-      if (v11 == v4)
+      if (v11 == recogniserCopy)
       {
         break;
       }
@@ -206,16 +206,16 @@ LABEL_3:
 LABEL_9:
   }
 
-  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Didn't find gesture %@ in cluster %@", v4, self, v13}];
+  [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Didn't find gesture %@ in cluster %@", recogniserCopy, self, v13}];
   v12 = 0;
 LABEL_12:
-  [(_UIKeyboardTextSelectionInteraction *)self hideRecogniser:v4 forKey:v12];
+  [(_UIKeyboardTextSelectionInteraction *)self hideRecogniser:recogniserCopy forKey:v12];
 }
 
-- (void)registerOwner:(id)a3
+- (void)registerOwner:(id)owner
 {
-  objc_storeStrong(&self->_owner, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_owner, owner);
+  ownerCopy = owner;
   owner = self->_owner;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -231,72 +231,72 @@ LABEL_12:
 {
   v8.receiver = self;
   v8.super_class = _UIKeyboardTextSelectionInteraction;
-  v3 = [(UITextInteraction *)&v8 gestureMap];
-  v4 = v3;
+  gestureMap = [(UITextInteraction *)&v8 gestureMap];
+  v4 = gestureMap;
   if (self->_weakMap)
   {
-    v5 = [v3 mutableCopy];
-    v6 = [(NSMapTable *)self->_weakMap dictionaryRepresentation];
-    [v5 addEntriesFromDictionary:v6];
+    v5 = [gestureMap mutableCopy];
+    dictionaryRepresentation = [(NSMapTable *)self->_weakMap dictionaryRepresentation];
+    [v5 addEntriesFromDictionary:dictionaryRepresentation];
   }
 
   else
   {
-    v5 = v3;
+    v5 = gestureMap;
   }
 
   return v5;
 }
 
-+ (void)attachToExistingRecogniser:(id)a3 owner:(id)a4 forType:(int64_t)a5
++ (void)attachToExistingRecogniser:(id)recogniser owner:(id)owner forType:(int64_t)type
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = objc_alloc_init(a1);
+  recogniserCopy = recogniser;
+  ownerCopy = owner;
+  v9 = objc_alloc_init(self);
   v10 = v9;
   if (v9)
   {
-    [v9 registerOwner:v8];
-    switch(a5)
+    [v9 registerOwner:ownerCopy];
+    switch(type)
     {
       case 4:
-        [v10 _configureTwoFingerPanGestureRecognizer:v11];
+        [v10 _configureTwoFingerPanGestureRecognizer:recogniserCopy];
         break;
       case 2:
-        [v10 _configureTwoFingerTapGestureRecognizer:v11];
+        [v10 _configureTwoFingerTapGestureRecognizer:recogniserCopy];
         break;
       case 1:
-        [v10 _configureOneFingerForcePressRecognizer:v11];
+        [v10 _configureOneFingerForcePressRecognizer:recogniserCopy];
         break;
       default:
-        [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Unknown type %li", a5}];
+        [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:{@"Unknown type %li", type}];
         break;
     }
 
-    [v10 addGestureRecognizer:v11 withName:@"owner"];
-    [v10 hideInsideRecogniser:v11];
+    [v10 addGestureRecognizer:recogniserCopy withName:@"owner"];
+    [v10 hideInsideRecogniser:recogniserCopy];
   }
 }
 
-- (_UIKeyboardTextSelectionInteraction)initWithView:(id)a3 owner:(id)a4 forTypes:(int64_t)a5
+- (_UIKeyboardTextSelectionInteraction)initWithView:(id)view owner:(id)owner forTypes:(int64_t)types
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
+  typesCopy = types;
+  viewCopy = view;
+  ownerCopy = owner;
   v23.receiver = self;
   v23.super_class = _UIKeyboardTextSelectionInteraction;
   v10 = [(UITextInteraction *)&v23 init];
   v11 = v10;
   if (v10)
   {
-    [(_UIKeyboardTextSelectionInteraction *)v10 registerOwner:v9];
-    if ((v5 & 8) != 0)
+    [(_UIKeyboardTextSelectionInteraction *)v10 registerOwner:ownerCopy];
+    if ((typesCopy & 8) != 0)
     {
       v12 = objc_alloc_init(_UIPanOrFlickGestureRecognizer);
       [(UIGestureRecognizer *)v12 setName:@"com.apple.UIKit.textSpacePress"];
       [(_UIKeyboardTextSelectionInteraction *)v11 _configureLongPressRecognizer:v12];
       [(UITextInteraction *)v11 addGestureRecognizer:v12 withName:@"_UIKeyboardTextSelectionGestureLongPress"];
-      if ((v5 & 1) == 0)
+      if ((typesCopy & 1) == 0)
       {
         goto LABEL_16;
       }
@@ -305,7 +305,7 @@ LABEL_12:
     else
     {
       v12 = 0;
-      if ((v5 & 1) == 0)
+      if ((typesCopy & 1) == 0)
       {
         goto LABEL_16;
       }
@@ -313,7 +313,7 @@ LABEL_12:
 
     v13 = objc_alloc_init(_UITextSelectionForceGesture);
     [(_UIKeyboardTextSelectionInteraction *)v11 _configureOneFingerForcePressRecognizer:v13];
-    if (_isViewKeyboardLayoutPresent(v8))
+    if (_isViewKeyboardLayoutPresent(viewCopy))
     {
       GestureKeyboardFlag = _getGestureKeyboardFlag(v13);
       _setGestureKeyboardFlag(v13, GestureKeyboardFlag | 0x10);
@@ -336,22 +336,22 @@ LABEL_12:
     if (_AXSForceTouchEnabled())
     {
       v17 = +[UIDevice currentDevice];
-      v18 = [v17 _supportsForceTouch];
+      _supportsForceTouch = [v17 _supportsForceTouch];
 
-      if (v18)
+      if (_supportsForceTouch)
       {
         [(UIGestureRecognizer *)v12 requireGestureRecognizerToFail:v13];
       }
     }
 
 LABEL_16:
-    if ((v5 & 2) != 0)
+    if ((typesCopy & 2) != 0)
     {
       v19 = objc_alloc_init(UITextTapRecognizer);
       [(_UIKeyboardTextSelectionInteraction *)v11 _configureTwoFingerTapGestureRecognizer:v19];
       [(UITextInteraction *)v11 addGestureRecognizer:v19 withName:@"_UIKeyboardTextSelectionGestureTwoFingerTap"];
 
-      if ((v5 & 4) == 0)
+      if ((typesCopy & 4) == 0)
       {
 LABEL_23:
 
@@ -359,7 +359,7 @@ LABEL_23:
       }
     }
 
-    else if ((v5 & 4) == 0)
+    else if ((typesCopy & 4) == 0)
     {
       goto LABEL_23;
     }
@@ -367,13 +367,13 @@ LABEL_23:
     v20 = objc_alloc_init(_UIPanOrFlickGestureRecognizer);
     [(UIGestureRecognizer *)v20 setName:@"com.apple.UIKit.textPanOrFlick"];
     [(_UIKeyboardTextSelectionInteraction *)v11 _configureTwoFingerPanGestureRecognizer:v20];
-    if (_isViewKeyboardLayoutPresent(v8))
+    if (_isViewKeyboardLayoutPresent(viewCopy))
     {
       [(UIPanGestureRecognizer *)v20 _setHysteresis:30.0];
     }
 
-    v21 = [(_UIKeyboardTextSelectionInteraction *)v11 owner];
-    [v21 enableEnclosingScrollViewNestedPinching];
+    owner = [(_UIKeyboardTextSelectionInteraction *)v11 owner];
+    [owner enableEnclosingScrollViewNestedPinching];
 
     [(UITextInteraction *)v11 addGestureRecognizer:v20 withName:@"_UIKeyboardTextSelectionGestureTwoFingerPan"];
     goto LABEL_23;
@@ -384,25 +384,25 @@ LABEL_24:
   return v11;
 }
 
-- (void)_configureOneFingerForcePressRecognizer:(id)a3
+- (void)_configureOneFingerForcePressRecognizer:(id)recognizer
 {
-  v5 = a3;
-  _setGestureKeyboardFlag(v5, 1);
+  recognizerCopy = recognizer;
+  _setGestureKeyboardFlag(recognizerCopy, 1);
   v4 = objc_alloc_init(_UILinearForceLevelClassifier);
-  [v5 _setForceLevelClassifier:v4];
+  [recognizerCopy _setForceLevelClassifier:v4];
 
-  [v5 setRequiredPreviewForceState:2];
-  [v5 addTarget:self action:sel_oneFingerForcePan_];
-  [(UIGestureRecognizer *)v5 _addForceTarget:sel_oneFingerForcePress_ action:?];
+  [recognizerCopy setRequiredPreviewForceState:2];
+  [recognizerCopy addTarget:self action:sel_oneFingerForcePan_];
+  [(UIGestureRecognizer *)recognizerCopy _addForceTarget:sel_oneFingerForcePress_ action:?];
   [(_UIKeyboardTextSelectionGestureController *)self->_owner oneFingerForcePressMinimumDuration];
-  [v5 setMinimumPressDuration:?];
+  [recognizerCopy setMinimumPressDuration:?];
   [(_UIKeyboardTextSelectionGestureController *)self->_owner oneFingerForcePressAllowableMovement];
-  [v5 setAllowableMovement:?];
+  [recognizerCopy setAllowableMovement:?];
 }
 
-- (void)_configureTwoFingerPanGestureRecognizer:(id)a3
+- (void)_configureTwoFingerPanGestureRecognizer:(id)recognizer
 {
-  v7 = a3;
+  recognizerCopy = recognizer;
   v4 = UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL;
   if (v4 == 1)
   {
@@ -414,94 +414,94 @@ LABEL_24:
     v5 = 18;
   }
 
-  _setGestureKeyboardFlag(v7, v5);
-  [v7 addTarget:self action:sel_panningGesture_];
-  [v7 setDelaysTouchesEnded:0];
-  [v7 setMinimumNumberOfTouches:2];
-  [v7 setMaximumNumberOfTouches:2];
-  [v7 setAllowableMovement:16.0];
-  [v7 _setFailsPastHysteresisWithoutMinTouches:1];
-  [v7 setAllowedFlickDirections:15];
-  [v7 setMaximumFlickDuration:0.16];
-  [v7 setMinimumFlickDistance:5.0];
-  [v7 setResponsivenessDelay:0.13];
+  _setGestureKeyboardFlag(recognizerCopy, v5);
+  [recognizerCopy addTarget:self action:sel_panningGesture_];
+  [recognizerCopy setDelaysTouchesEnded:0];
+  [recognizerCopy setMinimumNumberOfTouches:2];
+  [recognizerCopy setMaximumNumberOfTouches:2];
+  [recognizerCopy setAllowableMovement:16.0];
+  [recognizerCopy _setFailsPastHysteresisWithoutMinTouches:1];
+  [recognizerCopy setAllowedFlickDirections:15];
+  [recognizerCopy setMaximumFlickDuration:0.16];
+  [recognizerCopy setMinimumFlickDistance:5.0];
+  [recognizerCopy setResponsivenessDelay:0.13];
   if (v4 == 1)
   {
     v6 = +[_UITextSelectionSettings sharedInstance];
     [v6 allowableSeparation];
-    [v7 _setAllowableSeparation:?];
+    [recognizerCopy _setAllowableSeparation:?];
 
-    [v7 setMinimumPressDuration:1.0];
-    [v7 _setAllowableTouchTimeSeparation:0.06];
-    [v7 _setRequiresImmediateMultipleTouches:1];
+    [recognizerCopy setMinimumPressDuration:1.0];
+    [recognizerCopy _setAllowableTouchTimeSeparation:0.06];
+    [recognizerCopy _setRequiresImmediateMultipleTouches:1];
   }
 
   else
   {
-    [v7 _setAllowableTouchTimeSeparation:0.5];
-    [v7 setMinimumPressDuration:1.0];
+    [recognizerCopy _setAllowableTouchTimeSeparation:0.5];
+    [recognizerCopy setMinimumPressDuration:1.0];
   }
 }
 
-- (void)_configureTwoFingerTapGestureRecognizer:(id)a3
+- (void)_configureTwoFingerTapGestureRecognizer:(id)recognizer
 {
-  v5 = a3;
-  _setGestureKeyboardFlag(v5, 2);
-  [v5 addTarget:self action:sel_twoFingerTap_];
-  [v5 setAllowableMovement:60.0];
+  recognizerCopy = recognizer;
+  _setGestureKeyboardFlag(recognizerCopy, 2);
+  [recognizerCopy addTarget:self action:sel_twoFingerTap_];
+  [recognizerCopy setAllowableMovement:60.0];
   if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     v4 = +[_UITextSelectionSettings sharedInstance];
     [v4 allowableSeparation];
-    [v5 _setAllowableSeparation:?];
+    [recognizerCopy _setAllowableSeparation:?];
   }
 
-  [v5 setNumberOfTapsRequired:1];
-  [v5 setNumberOfTouchesRequired:2];
-  [v5 _setAllowableTouchTimeSeparation:0.06];
-  [v5 setMaximumTapDuration:0.13];
+  [recognizerCopy setNumberOfTapsRequired:1];
+  [recognizerCopy setNumberOfTouchesRequired:2];
+  [recognizerCopy _setAllowableTouchTimeSeparation:0.06];
+  [recognizerCopy setMaximumTapDuration:0.13];
 }
 
-- (void)_configureLongPressAddedTouchRecognizer:(id)a3
+- (void)_configureLongPressAddedTouchRecognizer:(id)recognizer
 {
-  v4 = a3;
-  _setGestureKeyboardFlag(v4, 8);
-  [v4 addTarget:self action:sel_panningGestureAddedTouch_];
+  recognizerCopy = recognizer;
+  _setGestureKeyboardFlag(recognizerCopy, 8);
+  [recognizerCopy addTarget:self action:sel_panningGestureAddedTouch_];
 }
 
-- (void)_configureLongPressRecognizer:(id)a3
+- (void)_configureLongPressRecognizer:(id)recognizer
 {
-  v4 = a3;
-  _setGestureKeyboardFlag(v4, 100);
-  [v4 addTarget:self action:sel_panningGesture_];
-  [v4 setLongPressOnly:1];
-  [v4 setDelaysTouchesEnded:0];
-  [v4 setMinimumNumberOfTouches:1];
-  [v4 setMaximumNumberOfTouches:1];
-  [v4 setAllowableMovement:16.0];
-  [v4 _setFailsPastHysteresisWithoutMinTouches:1];
-  [v4 setAllowedFlickDirections:0];
-  [v4 setMinimumPressDuration:0.375];
+  recognizerCopy = recognizer;
+  _setGestureKeyboardFlag(recognizerCopy, 100);
+  [recognizerCopy addTarget:self action:sel_panningGesture_];
+  [recognizerCopy setLongPressOnly:1];
+  [recognizerCopy setDelaysTouchesEnded:0];
+  [recognizerCopy setMinimumNumberOfTouches:1];
+  [recognizerCopy setMaximumNumberOfTouches:1];
+  [recognizerCopy setAllowableMovement:16.0];
+  [recognizerCopy _setFailsPastHysteresisWithoutMinTouches:1];
+  [recognizerCopy setAllowedFlickDirections:0];
+  [recognizerCopy setMinimumPressDuration:0.375];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   v15.receiver = self;
   v15.super_class = _UIKeyboardTextSelectionInteraction;
-  v5 = [(UITextInteraction *)&v15 gestureRecognizerShouldBegin:v4];
-  v6 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  v7 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  v8 = [v7 delegate];
+  v5 = [(UITextInteraction *)&v15 gestureRecognizerShouldBegin:beginCopy];
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  owner2 = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  delegate = [owner2 delegate];
 
   if (v5)
   {
-    v9 = [v4 view];
-    isViewKeyboardLayoutPresent = _isViewKeyboardLayoutPresent(v9);
+    view = [beginCopy view];
+    isViewKeyboardLayoutPresent = _isViewKeyboardLayoutPresent(view);
 
     if (isViewKeyboardLayoutPresent)
     {
-      if (objc_opt_respondsToSelector() & 1) != 0 && ([v8 transitionInProgress])
+      if (objc_opt_respondsToSelector() & 1) != 0 && ([delegate transitionInProgress])
       {
 LABEL_15:
         LOBYTE(v5) = 0;
@@ -511,9 +511,9 @@ LABEL_15:
 
     else if (objc_opt_respondsToSelector())
     {
-      v11 = [v4 view];
-      [v4 locationInView:v11];
-      v12 = [v8 shouldAllowSelectionGestures:1 atPoint:1 toBegin:?];
+      view2 = [beginCopy view];
+      [beginCopy locationInView:view2];
+      v12 = [delegate shouldAllowSelectionGestures:1 atPoint:1 toBegin:?];
 
       if (!v12)
       {
@@ -521,15 +521,15 @@ LABEL_15:
       }
     }
 
-    if ((_getGestureKeyboardFlag(v4) & 0x40) != 0 && !IsGestureWithinSpecialRegion(v4) || (_getGestureKeyboardFlag(v4) & 8) != 0 && ![v6 isPanning])
+    if ((_getGestureKeyboardFlag(beginCopy) & 0x40) != 0 && !IsGestureWithinSpecialRegion(beginCopy) || (_getGestureKeyboardFlag(beginCopy) & 8) != 0 && ![owner isPanning])
     {
       goto LABEL_15;
     }
 
-    if (_getGestureKeyboardFlag(v4) & 2) != 0 && (objc_opt_respondsToSelector())
+    if (_getGestureKeyboardFlag(beginCopy) & 2) != 0 && (objc_opt_respondsToSelector())
     {
-      v13 = [v4 view];
-      LOBYTE(v5) = [v8 shouldAllowTwoFingerSelectionGestureOnView:v13];
+      view3 = [beginCopy view];
+      LOBYTE(v5) = [delegate shouldAllowTwoFingerSelectionGestureOnView:view3];
     }
 
     else
@@ -543,48 +543,48 @@ LABEL_17:
   return v5;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  v9 = [v8 delegate];
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  delegate = [owner delegate];
 
-  v10 = [v6 view];
-  isViewKeyboardLayoutPresent = _isViewKeyboardLayoutPresent(v10);
+  view = [recognizerCopy view];
+  isViewKeyboardLayoutPresent = _isViewKeyboardLayoutPresent(view);
 
   if (!isViewKeyboardLayoutPresent)
   {
     goto LABEL_26;
   }
 
-  v12 = [v6 requiredPreviewForceState];
+  requiredPreviewForceState = [recognizerCopy requiredPreviewForceState];
   v13 = objc_opt_respondsToSelector();
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if (!v12 && (v13 & 1) != 0 && (isKindOfClass & 1) != 0)
+  if (!requiredPreviewForceState && (v13 & 1) != 0 && (isKindOfClass & 1) != 0)
   {
-    if (v7)
+    if (touchCopy)
     {
-      [v7 timestamp];
+      [touchCopy timestamp];
       v16 = v15;
     }
 
     else
     {
-      v17 = [MEMORY[0x1E696AE30] processInfo];
-      [v17 systemUptime];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      [processInfo systemUptime];
       v16 = v18;
     }
 
-    [v9 timestampOfLastTouchesEnded];
+    [delegate timestampOfLastTouchesEnded];
     if (v19 + 0.5 >= v16)
     {
       goto LABEL_22;
     }
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ((v20 = v12 != 0, v7) ? (v21 = v7) : (v21 = v6), [v6 view], v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "locationInView:", v22), v24 = v23, v26 = v25, v22, !objc_msgSend(v9, "shouldAllowSelectionGestures:atPoint:toBegin:", v20, v7 == 0, v24, v26)))
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ((v20 = requiredPreviewForceState != 0, touchCopy) ? (v21 = touchCopy) : (v21 = recognizerCopy), [recognizerCopy view], v22 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v21, "locationInView:", v22), v24 = v23, v26 = v25, v22, !objc_msgSend(delegate, "shouldAllowSelectionGestures:atPoint:toBegin:", v20, touchCopy == 0, v24, v26)))
   {
 LABEL_22:
     v34 = 0;
@@ -593,10 +593,10 @@ LABEL_22:
   else
   {
 LABEL_26:
-    if (_getGestureKeyboardFlag(v6) & 0x10) != 0 && (v7 ? (v27 = v7) : (v27 = v6), ([v6 view], v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "locationInView:", v28), v30 = v29, v32 = v31, v28, objc_msgSend(v6, "view"), v33 = objc_claimAutoreleasedReturnValue(), LODWORD(v28) = IsTouchPointWithinSpecialRegion(v33, v30, v32), v33, v28) && (objc_opt_class(), (objc_opt_isKindOfClass())))
+    if (_getGestureKeyboardFlag(recognizerCopy) & 0x10) != 0 && (touchCopy ? (v27 = touchCopy) : (v27 = recognizerCopy), ([recognizerCopy view], v28 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v27, "locationInView:", v28), v30 = v29, v32 = v31, v28, objc_msgSend(recognizerCopy, "view"), v33 = objc_claimAutoreleasedReturnValue(), LODWORD(v28) = IsTouchPointWithinSpecialRegion(v33, v30, v32), v33, v28) && (objc_opt_class(), (objc_opt_isKindOfClass())))
     {
       v34 = 1;
-      [v6 setShouldFailWithoutForce:1];
+      [recognizerCopy setShouldFailWithoutForce:1];
     }
 
     else
@@ -608,31 +608,31 @@ LABEL_26:
   return v34;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  v9 = [v8 delegate];
-  v10 = [v9 textSelectionController];
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  delegate = [owner delegate];
+  textSelectionController = [delegate textSelectionController];
 
-  if (v10)
+  if (textSelectionController)
   {
-    GestureKeyboardFlag = _getGestureKeyboardFlag(v6);
-    if (GestureKeyboardFlag & 2 | _getGestureKeyboardFlag(v6) & 1)
+    GestureKeyboardFlag = _getGestureKeyboardFlag(recognizerCopy);
+    if (GestureKeyboardFlag & 2 | _getGestureKeyboardFlag(recognizerCopy) & 1)
     {
-      v14 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-      v15 = [v14 textInputView];
+      selectionController = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+      textInputView = [selectionController textInputView];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v16 = [v15 _scroller];
-        v17 = v16;
-        if (v16)
+        _scroller = [textInputView _scroller];
+        v17 = _scroller;
+        if (_scroller)
         {
-          v18 = [v16 panGestureRecognizer];
-          v12 = v18 == v7;
+          panGestureRecognizer = [_scroller panGestureRecognizer];
+          v12 = panGestureRecognizer == gestureRecognizerCopy;
         }
 
         else
@@ -652,8 +652,8 @@ LABEL_26:
       v12 = 0;
     }
 
-    v19 = _getGestureKeyboardFlag(v6);
-    v13 = ((_getGestureKeyboardFlag(v7) ^ ~v19) & 0xC) == 0 || v12;
+    v19 = _getGestureKeyboardFlag(recognizerCopy);
+    v13 = ((_getGestureKeyboardFlag(gestureRecognizerCopy) ^ ~v19) & 0xC) == 0 || v12;
   }
 
   else
@@ -664,33 +664,33 @@ LABEL_26:
   return v13;
 }
 
-- (void)gestureRecognizerShouldBeginResponse:(id)a3
+- (void)gestureRecognizerShouldBeginResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   if ([(_UIKeyboardTextSelectionInteraction *)self gestureRecognizerShouldBegin:?])
   {
-    [(_UIKeyboardTextSelectionInteraction *)self panningGesture:v4];
+    [(_UIKeyboardTextSelectionInteraction *)self panningGesture:responseCopy];
   }
 }
 
-- (double)additionalPressDurationForTypingCadence:(id)a3
+- (double)additionalPressDurationForTypingCadence:(id)cadence
 {
-  v4 = a3;
+  cadenceCopy = cadence;
   v5 = 0.0;
-  if ((_getGestureKeyboardFlag(v4) & 4) != 0)
+  if ((_getGestureKeyboardFlag(cadenceCopy) & 4) != 0)
   {
-    v6 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-    v7 = [v6 delegate];
+    owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+    delegate = [owner delegate];
 
     if (objc_opt_respondsToSelector())
     {
-      v8 = [MEMORY[0x1E696AE30] processInfo];
-      [v8 systemUptime];
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      [processInfo systemUptime];
       v10 = v9;
 
-      [v7 timestampOfLastTouchesEnded];
+      [delegate timestampOfLastTouchesEnded];
       v12 = v11;
-      [v4 minimumPressDuration];
+      [cadenceCopy minimumPressDuration];
       if (v12 + v13 >= v10)
       {
         v5 = 0.4;
@@ -706,80 +706,80 @@ LABEL_26:
   return v5;
 }
 
-- (void)_gestureRecognizerFailed:(id)a3
+- (void)_gestureRecognizerFailed:(id)failed
 {
-  v11 = a3;
-  v4 = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  failedCopy = failed;
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 isPanning] && (_getGestureKeyboardFlag(v11) & 2) != 0 && (objc_msgSend(v4, "isSpacePan") & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [owner isPanning] && (_getGestureKeyboardFlag(failedCopy) & 2) != 0 && (objc_msgSend(owner, "isSpacePan") & 1) == 0)
   {
-    v5 = [v4 selectionController];
-    v6 = v11;
+    selectionController = [owner selectionController];
+    v6 = failedCopy;
     [(_UIKeyboardTextSelectionInteraction *)self _didEndIndirectSelectionGesture:v6];
-    if ([v4 didFloatCursor])
+    if ([owner didFloatCursor])
     {
-      [v5 endFloatingCursor];
+      [selectionController endFloatingCursor];
     }
 
-    [v4 setIsLongPressing:0];
-    [v4 setIsPanning:0];
-    [v4 setIsSpacePan:0];
-    [v4 setDidFloatCursor:0];
-    v7 = [v4 activeGestures];
-    [v7 removeObject:v6];
+    [owner setIsLongPressing:0];
+    [owner setIsPanning:0];
+    [owner setIsSpacePan:0];
+    [owner setDidFloatCursor:0];
+    activeGestures = [owner activeGestures];
+    [activeGestures removeObject:v6];
 
-    [v5 resetCursorPosition];
+    [selectionController resetCursorPosition];
   }
 
-  if ([v4 panGestureState] && (_getGestureKeyboardFlag(v11) & 1) != 0)
+  if ([owner panGestureState] && (_getGestureKeyboardFlag(failedCopy) & 1) != 0)
   {
-    v8 = [v4 selectionController];
-    v9 = v11;
-    if ([v4 panGestureState] >= 1)
+    selectionController2 = [owner selectionController];
+    v9 = failedCopy;
+    if ([owner panGestureState] >= 1)
     {
       [(_UIKeyboardTextSelectionInteraction *)self oneFingerForcePan:v9];
     }
 
-    [v4 setPanGestureState:0];
-    [v4 setPreviousForcePressCount:0];
-    [v4 setDidFloatCursor:0];
-    v10 = [v4 activeGestures];
-    [v10 removeObject:v9];
+    [owner setPanGestureState:0];
+    [owner setPreviousForcePressCount:0];
+    [owner setDidFloatCursor:0];
+    activeGestures2 = [owner activeGestures];
+    [activeGestures2 removeObject:v9];
 
-    [v8 resetCursorPosition];
+    [selectionController2 resetCursorPosition];
   }
 }
 
 - (id)selectionController
 {
-  v2 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  v3 = [v2 selectionController];
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  selectionController = [owner selectionController];
 
-  return v3;
+  return selectionController;
 }
 
-- (void)_didEndIndirectSelectionGesture:(id)a3
+- (void)_didEndIndirectSelectionGesture:(id)gesture
 {
-  v4 = [a3 view];
-  v5 = _getViewKeyboardLayout(v4);
+  view = [gesture view];
+  v5 = _getViewKeyboardLayout(view);
   [v5 didEndIndirectSelectionGesture];
 
   [(_UIKeyboardTextSelectionInteraction *)self removeTemporaryGesture];
 }
 
-- (CGPoint)acceleratedTranslation:(CGPoint)a3 velocity:(CGPoint)a4 isActive:(BOOL)a5
+- (CGPoint)acceleratedTranslation:(CGPoint)translation velocity:(CGPoint)velocity isActive:(BOOL)active
 {
-  v5 = a5;
-  y = a3.y;
-  x = a3.x;
-  v8 = [(_UIKeyboardTextSelectionInteraction *)self owner:a3.x];
+  activeCopy = active;
+  y = translation.y;
+  x = translation.x;
+  v8 = [(_UIKeyboardTextSelectionInteraction *)self owner:translation.x];
   v9 = +[_UICubicPolyTangent keyboardTrackpadCurve];
   [v8 lastPanTranslation];
   v11 = x - v10;
   [v8 lastPanTranslation];
   v13 = y - v12;
   v14 = 0.0;
-  if (v5)
+  if (activeCopy)
   {
     [v9 piecewiseCubicAcceleratedSpeed:sqrt(v11 * v11 + v13 * v13)];
     v14 = v15;
@@ -797,18 +797,18 @@ LABEL_26:
   return result;
 }
 
-- (BOOL)forceTouchGestureRecognizerShouldBegin:(id)a3
+- (BOOL)forceTouchGestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  v6 = [v5 delegate];
+  beginCopy = begin;
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  delegate = [owner delegate];
 
-  if (![v4 requiredPreviewForceState])
+  if (![beginCopy requiredPreviewForceState])
   {
     goto LABEL_7;
   }
 
-  v7 = [v4 view];
+  view = [beginCopy view];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -819,13 +819,13 @@ LABEL_26:
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [MEMORY[0x1E696AE30] processInfo];
-    [v9 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     v11 = v10;
 
-    [v6 timestampOfLastTouchesEnded];
+    [delegate timestampOfLastTouchesEnded];
     v13 = v12 + 0.4;
-    [v4 minimumPressDuration];
+    [beginCopy minimumPressDuration];
     if (v13 + v14 >= v11)
     {
       v16 = 0;
@@ -835,9 +835,9 @@ LABEL_26:
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [v4 view];
-    [v4 locationInView:v15];
-    v16 = [v6 shouldAllowSelectionGestures:1 atPoint:1 toBegin:?];
+    view2 = [beginCopy view];
+    [beginCopy locationInView:view2];
+    v16 = [delegate shouldAllowSelectionGestures:1 atPoint:1 toBegin:?];
   }
 
   else
@@ -851,20 +851,20 @@ LABEL_8:
   return v16;
 }
 
-- (CGPoint)boundedTranslation:(CGPoint)a3
+- (CGPoint)boundedTranslation:(CGPoint)translation
 {
-  y = a3.y;
-  x = a3.x;
+  y = translation.y;
+  x = translation.x;
   if (!+[UIKeyboard isInputSystemUI])
   {
-    v6 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-    v7 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    [v6 cursorLocationBase];
-    [v7 boundedDeltaForTranslation:x cursorLocationBase:{y, v8, v9}];
+    owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+    selectionController = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    [owner cursorLocationBase];
+    [selectionController boundedDeltaForTranslation:x cursorLocationBase:{y, v8, v9}];
     v11 = v10;
     v13 = v12;
 
-    [v6 accumulatedBounding];
+    [owner accumulatedBounding];
     if (v14 <= 0.0)
     {
       v16 = v11;
@@ -903,7 +903,7 @@ LABEL_9:
 
         v17 = v13 + v15;
 LABEL_16:
-        [v6 setAccumulatedBounding:{v16, v17}];
+        [owner setAccumulatedBounding:{v16, v17}];
         x = x + v16;
         y = y + v17;
 
@@ -938,16 +938,16 @@ LABEL_17:
   return result;
 }
 
-- (void)_willBeginIndirectSelectionGesture:(id)a3
+- (void)_willBeginIndirectSelectionGesture:(id)gesture
 {
-  v10 = a3;
-  v4 = [v10 view];
-  v5 = _getViewKeyboardLayout(v4);
+  gestureCopy = gesture;
+  view = [gestureCopy view];
+  v5 = _getViewKeyboardLayout(view);
 
   if (v5)
   {
     v6 = [(UITextInteraction *)self recognizerForName:@"_UIKeyboardTextSelectionGestureLongPress"];
-    if (v6 == v10)
+    if (v6 == gestureCopy)
     {
     }
 
@@ -955,7 +955,7 @@ LABEL_17:
     {
       v7 = [(UITextInteraction *)self recognizerForName:@"_UIKeyboardTextSelectionGestureForcePress"];
 
-      if (v7 != v10)
+      if (v7 != gestureCopy)
       {
 LABEL_7:
         [v5 willBeginIndirectSelectionGesture];
@@ -963,9 +963,9 @@ LABEL_7:
       }
     }
 
-    v8 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-    v9 = [v8 feedbackBehaviour];
-    [v9 transitionToState:@"preview" ended:1];
+    owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+    feedbackBehaviour = [owner feedbackBehaviour];
+    [feedbackBehaviour transitionToState:@"preview" ended:1];
 
     goto LABEL_7;
   }
@@ -975,198 +975,198 @@ LABEL_8:
 
 - (void)_prepareForGesture
 {
-  v5 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  v2 = [v5 feedbackBehaviour];
-  v3 = [v2 isActive];
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  feedbackBehaviour = [owner feedbackBehaviour];
+  isActive = [feedbackBehaviour isActive];
 
-  if ((v3 & 1) == 0)
+  if ((isActive & 1) == 0)
   {
-    v4 = [v5 feedbackBehaviour];
-    [v4 activateWithCompletionBlock:0];
+    feedbackBehaviour2 = [owner feedbackBehaviour];
+    [feedbackBehaviour2 activateWithCompletionBlock:0];
   }
 }
 
 - (void)_tidyUpGesture
 {
-  v5 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  v2 = [v5 feedbackBehaviour];
-  v3 = [v2 isActive];
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  feedbackBehaviour = [owner feedbackBehaviour];
+  isActive = [feedbackBehaviour isActive];
 
-  if (v3)
+  if (isActive)
   {
-    v4 = [v5 feedbackBehaviour];
-    [v4 deactivate];
+    feedbackBehaviour2 = [owner feedbackBehaviour];
+    [feedbackBehaviour2 deactivate];
   }
 }
 
 - (BOOL)isPlacedCarefully
 {
-  v2 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  v3 = [v2 weightedPoint];
-  v4 = [v3 isPlacedCarefully];
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  weightedPoint = [owner weightedPoint];
+  isPlacedCarefully = [weightedPoint isPlacedCarefully];
 
-  return v4;
+  return isPlacedCarefully;
 }
 
-- (void)indirectCursorPanGestureWithState:(int64_t)a3 withTranslation:(CGPoint)a4 withFlickDirection:(unint64_t)a5
+- (void)indirectCursorPanGestureWithState:(int64_t)state withTranslation:(CGPoint)translation withFlickDirection:(unint64_t)direction
 {
-  y = a4.y;
-  x = a4.x;
+  y = translation.y;
+  x = translation.x;
   if (qword_1ED498F00 != -1)
   {
     dispatch_once(&qword_1ED498F00, &__block_literal_global_418);
   }
 
-  v10 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  v11 = [v10 delegate];
-  v12 = [v11 taskQueue];
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  delegate = [owner delegate];
+  taskQueue = [delegate taskQueue];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __108___UIKeyboardTextSelectionInteraction_indirectCursorPanGestureWithState_withTranslation_withFlickDirection___block_invoke_3;
   v13[3] = &unk_1E7118C40;
   v13[4] = self;
-  v13[5] = a3;
+  v13[5] = state;
   *&v13[6] = x;
   *&v13[7] = y;
-  v13[8] = a5;
-  [v12 addTask:v13 breadcrumb:_MergedGlobals_13_3];
+  v13[8] = direction;
+  [taskQueue addTask:v13 breadcrumb:_MergedGlobals_13_3];
 }
 
-- (void)indirectBlockPanGestureWithState:(int64_t)a3 withTranslation:(CGPoint)a4
+- (void)indirectBlockPanGestureWithState:(int64_t)state withTranslation:(CGPoint)translation
 {
-  y = a4.y;
-  x = a4.x;
+  y = translation.y;
+  x = translation.x;
   if (qword_1ED498F10 != -1)
   {
     dispatch_once(&qword_1ED498F10, &__block_literal_global_70_0);
   }
 
-  v8 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  v9 = [v8 delegate];
-  v10 = [v9 taskQueue];
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  delegate = [owner delegate];
+  taskQueue = [delegate taskQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __88___UIKeyboardTextSelectionInteraction_indirectBlockPanGestureWithState_withTranslation___block_invoke_3;
   v11[3] = &unk_1E7116E48;
   v11[4] = self;
-  v11[5] = a3;
+  v11[5] = state;
   *&v11[6] = x;
   *&v11[7] = y;
-  [v10 addTask:v11 breadcrumb:qword_1ED498F08];
+  [taskQueue addTask:v11 breadcrumb:qword_1ED498F08];
 }
 
-- (void)beginIndirectBlockPanWithTranslation:(CGPoint)a3 executionContext:(id)a4
+- (void)beginIndirectBlockPanWithTranslation:(CGPoint)translation executionContext:(id)context
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+  y = translation.y;
+  x = translation.x;
+  contextCopy = context;
+  selectionController = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
 
-  if (v8)
+  if (selectionController)
   {
-    v9 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    [v9 caretRectForCursorPosition];
+    selectionController2 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    [selectionController2 caretRectForCursorPosition];
     [(_UIKeyboardTextSelectionInteraction *)self beginCursorManipulationFromRect:?];
 
     [(_UIKeyboardTextSelectionInteraction *)self cursorLocationForTranslation:x, y];
     v11 = v10;
     v13 = v12;
-    v14 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    [v14 beginFloatingCursorAtPoint:{v11, v13}];
+    selectionController3 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    [selectionController3 beginFloatingCursorAtPoint:{v11, v13}];
 
-    v15 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    v16 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-    v17 = [v16 previousRepeatedGranularity];
+    selectionController4 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+    previousRepeatedGranularity = [owner previousRepeatedGranularity];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __93___UIKeyboardTextSelectionInteraction_beginIndirectBlockPanWithTranslation_executionContext___block_invoke;
     v19[3] = &unk_1E70FD058;
     v19[4] = self;
-    v18 = [v7 childWithContinuation:v19];
-    [v15 selectTextWithGranularity:v17 atPoint:v18 executionContext:{v11, v13}];
+    v18 = [contextCopy childWithContinuation:v19];
+    [selectionController4 selectTextWithGranularity:previousRepeatedGranularity atPoint:v18 executionContext:{v11, v13}];
   }
 
   else
   {
-    [v7 returnExecutionToParent];
+    [contextCopy returnExecutionToParent];
   }
 }
 
-- (void)updateIndirectBlockPanWithTranslation:(CGPoint)a3 executionContext:(id)a4
+- (void)updateIndirectBlockPanWithTranslation:(CGPoint)translation executionContext:(id)context
 {
-  y = a3.y;
-  x = a3.x;
-  v15 = a4;
-  v7 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+  y = translation.y;
+  x = translation.x;
+  contextCopy = context;
+  selectionController = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
 
-  if (!v7)
+  if (!selectionController)
   {
-    [v15 returnExecutionToParent];
+    [contextCopy returnExecutionToParent];
     goto LABEL_10;
   }
 
   [(_UIKeyboardTextSelectionInteraction *)self cursorLocationForTranslation:x, y];
   v9 = v8;
   v11 = v10;
-  v12 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-  [v12 updateFloatingCursorAtPoint:{v9, v11}];
+  selectionController2 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+  [selectionController2 updateFloatingCursorAtPoint:{v9, v11}];
 
-  v13 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  if ([v13 panGestureState] == 5)
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  if ([owner panGestureState] == 5)
   {
-    v14 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    [v14 selectTextWithGranularity:objc_msgSend(v13 atPoint:"previousRepeatedGranularity") executionContext:{v15, v9, v11}];
+    selectionController3 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    [selectionController3 selectTextWithGranularity:objc_msgSend(owner atPoint:"previousRepeatedGranularity") executionContext:{contextCopy, v9, v11}];
   }
 
   else
   {
-    if ([v13 panGestureState] != 6 && objc_msgSend(v13, "panGestureState"))
+    if ([owner panGestureState] != 6 && objc_msgSend(owner, "panGestureState"))
     {
       goto LABEL_9;
     }
 
-    v14 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    [v14 updateSelectionWithExtentPoint:objc_msgSend(v13 withBoundary:"previousRepeatedGranularity") executionContext:{v15, v9, v11}];
+    selectionController3 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    [selectionController3 updateSelectionWithExtentPoint:objc_msgSend(owner withBoundary:"previousRepeatedGranularity") executionContext:{contextCopy, v9, v11}];
   }
 
 LABEL_9:
 LABEL_10:
 }
 
-- (void)endIndirectBlockPanWithExecutionContext:(id)a3
+- (void)endIndirectBlockPanWithExecutionContext:(id)context
 {
-  v6 = a3;
-  v4 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-  [v4 endFloatingCursor];
+  contextCopy = context;
+  selectionController = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+  [selectionController endFloatingCursor];
 
-  v5 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-  [v5 endSelection];
+  selectionController2 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+  [selectionController2 endSelection];
 
-  [v6 returnExecutionToParent];
+  [contextCopy returnExecutionToParent];
 }
 
-- (void)beginTwoFingerCursorPanWithTranslation:(CGPoint)a3 executionContext:(id)a4
+- (void)beginTwoFingerCursorPanWithTranslation:(CGPoint)translation executionContext:(id)context
 {
-  y = a3.y;
-  x = a3.x;
-  v27 = a4;
-  v7 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+  y = translation.y;
+  x = translation.x;
+  contextCopy = context;
+  selectionController = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
 
-  if (v7)
+  if (selectionController)
   {
-    v8 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    v9 = [v8 hasCaretSelection];
+    selectionController2 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    hasCaretSelection = [selectionController2 hasCaretSelection];
 
-    v10 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    v11 = v10;
-    if (v9)
+    selectionController3 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    v11 = selectionController3;
+    if (hasCaretSelection)
     {
-      [v10 caretRectForCursorPosition];
+      [selectionController3 caretRectForCursorPosition];
     }
 
     else
     {
-      [v10 caretRectForFirstSelectedPosition];
+      [selectionController3 caretRectForFirstSelectedPosition];
     }
 
     v16 = v12;
@@ -1178,32 +1178,32 @@ LABEL_10:
     [(_UIKeyboardTextSelectionInteraction *)self cursorLocationForTranslation:x, y];
     v21 = v20;
     v23 = v22;
-    v24 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    [v24 beginFloatingCursorAtPoint:{v21, v23}];
+    selectionController4 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    [selectionController4 beginFloatingCursorAtPoint:{v21, v23}];
 
-    v25 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    [v25 beginSelection];
+    selectionController5 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    [selectionController5 beginSelection];
 
-    v26 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    [v26 selectPositionAtPoint:v27 executionContext:{v21, v23}];
+    selectionController6 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    [selectionController6 selectPositionAtPoint:contextCopy executionContext:{v21, v23}];
   }
 
   else
   {
-    [v27 returnExecutionToParent];
+    [contextCopy returnExecutionToParent];
   }
 }
 
-- (void)beginTwoFingerPanWithTranslation:(CGPoint)a3 isShiftKeyBeingHeld:(BOOL)a4 executionContext:(id)a5
+- (void)beginTwoFingerPanWithTranslation:(CGPoint)translation isShiftKeyBeingHeld:(BOOL)held executionContext:(id)context
 {
-  v5 = a4;
-  y = a3.y;
-  x = a3.x;
-  v54 = a5;
-  v9 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-  v10 = [v9 hasCaretSelection];
+  heldCopy = held;
+  y = translation.y;
+  x = translation.x;
+  contextCopy = context;
+  selectionController = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+  hasCaretSelection = [selectionController hasCaretSelection];
 
-  if (!v10 || v5)
+  if (!hasCaretSelection || heldCopy)
   {
     v20 = fabs(x);
     v21 = fabs(y);
@@ -1229,13 +1229,13 @@ LABEL_10:
       v24 = v23;
     }
 
-    v25 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    v26 = v25;
+    selectionController2 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    v26 = selectionController2;
     if (v24 > 3)
     {
       if (v24 == 4)
       {
-        [v25 caretRectForFirstSelectedPosition];
+        [selectionController2 caretRectForFirstSelectedPosition];
         v28 = v36;
         v30 = v37;
         v32 = v38;
@@ -1245,7 +1245,7 @@ LABEL_10:
 
       else
       {
-        [v25 caretRectForLastSelectedPosition];
+        [selectionController2 caretRectForLastSelectedPosition];
         v28 = v44;
         v30 = v45;
         v32 = v46;
@@ -1256,7 +1256,7 @@ LABEL_10:
 
     else if (v24 == 2)
     {
-      [v25 caretRectForRightmostSelectedPosition];
+      [selectionController2 caretRectForRightmostSelectedPosition];
       v28 = v27;
       v30 = v29;
       v32 = v31;
@@ -1266,7 +1266,7 @@ LABEL_10:
 
     else
     {
-      [v25 caretRectForLeftmostSelectedPosition];
+      [selectionController2 caretRectForLeftmostSelectedPosition];
       v28 = v40;
       v30 = v41;
       v32 = v42;
@@ -1278,110 +1278,110 @@ LABEL_10:
     [(_UIKeyboardTextSelectionInteraction *)self cursorLocationForTranslation:x, y];
     v49 = v48;
     v51 = v50;
-    v52 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    [v52 beginFloatingCursorAtPoint:{v49, v51}];
+    selectionController3 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    [selectionController3 beginFloatingCursorAtPoint:{v49, v51}];
 
-    v53 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    selectionController4 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
 
-    if (v53)
+    if (selectionController4)
     {
-      v19 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-      [v19 beginSelectionWithBaseAtSelectionBoundaryInDirection:v35 initialExtentPoint:v54 executionContext:{v49, v51}];
+      selectionController5 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+      [selectionController5 beginSelectionWithBaseAtSelectionBoundaryInDirection:v35 initialExtentPoint:contextCopy executionContext:{v49, v51}];
       goto LABEL_21;
     }
   }
 
   else
   {
-    v11 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    [v11 caretRectForCursorPosition];
+    selectionController6 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    [selectionController6 caretRectForCursorPosition];
     [(_UIKeyboardTextSelectionInteraction *)self beginCursorManipulationFromRect:?];
 
     [(_UIKeyboardTextSelectionInteraction *)self cursorLocationForTranslation:x, y];
     v13 = v12;
     v15 = v14;
-    v16 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    [v16 beginFloatingCursorAtPoint:{v13, v15}];
+    selectionController7 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    [selectionController7 beginFloatingCursorAtPoint:{v13, v15}];
 
-    v17 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    [v17 beginSelection];
+    selectionController8 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    [selectionController8 beginSelection];
 
-    v18 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    selectionController9 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
 
-    if (v18)
+    if (selectionController9)
     {
-      v19 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-      [v19 selectPositionAtPoint:v54 executionContext:{v13, v15}];
+      selectionController5 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+      [selectionController5 selectPositionAtPoint:contextCopy executionContext:{v13, v15}];
 LABEL_21:
 
       goto LABEL_23;
     }
   }
 
-  [v54 returnExecutionToParent];
+  [contextCopy returnExecutionToParent];
 LABEL_23:
 }
 
-- (void)updateTwoFingerPanWithTranslation:(CGPoint)a3 executionContext:(id)a4
+- (void)updateTwoFingerPanWithTranslation:(CGPoint)translation executionContext:(id)context
 {
-  y = a3.y;
-  x = a3.x;
-  v17 = a4;
-  v7 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+  y = translation.y;
+  x = translation.x;
+  contextCopy = context;
+  selectionController = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
 
-  if (v7)
+  if (selectionController)
   {
     [(_UIKeyboardTextSelectionInteraction *)self cursorLocationForTranslation:x, y];
     v9 = v8;
     v11 = v10;
-    v12 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    [v12 updateFloatingCursorAtPoint:{v9, v11}];
+    selectionController2 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    [selectionController2 updateFloatingCursorAtPoint:{v9, v11}];
 
-    v13 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    v14 = [v13 hasCaretSelection];
+    selectionController3 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    hasCaretSelection = [selectionController3 hasCaretSelection];
 
-    v15 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    v16 = v15;
-    if (v14)
+    selectionController4 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    v16 = selectionController4;
+    if (hasCaretSelection)
     {
-      [v15 selectPositionAtPoint:v17 executionContext:{v9, v11}];
+      [selectionController4 selectPositionAtPoint:contextCopy executionContext:{v9, v11}];
     }
 
     else
     {
-      [v15 updateSelectionWithExtentPoint:v17 executionContext:{v9, v11}];
+      [selectionController4 updateSelectionWithExtentPoint:contextCopy executionContext:{v9, v11}];
     }
   }
 
   else
   {
-    [v17 returnExecutionToParent];
+    [contextCopy returnExecutionToParent];
   }
 }
 
-- (void)endTwoFingerPanWithExecutionContext:(id)a3
+- (void)endTwoFingerPanWithExecutionContext:(id)context
 {
-  v7 = a3;
-  v4 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-  [v4 endFloatingCursor];
+  contextCopy = context;
+  selectionController = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+  [selectionController endFloatingCursor];
 
-  v5 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-  [v5 endSelection];
+  selectionController2 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+  [selectionController2 endSelection];
 
-  v6 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  [v6 setDidFloatCursor:0];
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  [owner setDidFloatCursor:0];
 
-  [v7 returnExecutionToParent];
+  [contextCopy returnExecutionToParent];
 }
 
-- (void)handleTwoFingerFlickInDirection:(int64_t)a3 executionContext:(id)a4
+- (void)handleTwoFingerFlickInDirection:(int64_t)direction executionContext:(id)context
 {
-  v6 = a4;
-  v7 = a3 & 0xFFFFFFFFFFFFFFFELL;
-  v8 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-  v9 = [v8 hasCaretSelection];
+  contextCopy = context;
+  v7 = direction & 0xFFFFFFFFFFFFFFFELL;
+  selectionController = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+  hasCaretSelection = [selectionController hasCaretSelection];
 
-  if (v9)
+  if (hasCaretSelection)
   {
     v10 = v7 == 2;
     if (v7 == 2)
@@ -1400,56 +1400,56 @@ LABEL_23:
     v16[3] = &unk_1E7118C68;
     v16[4] = self;
     v20 = v10;
-    v17 = v6;
+    v17 = contextCopy;
     v18 = v11;
-    v19 = a3;
+    directionCopy = direction;
     [UIView animateWithDuration:50331648 delay:v16 options:0 animations:0.15 completion:0.0];
   }
 
   else
   {
-    v12 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    selectionController2 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
 
-    if (v12)
+    if (selectionController2)
     {
-      v13 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-      v14 = v13;
+      selectionController3 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+      v14 = selectionController3;
       if (v7 == 2)
       {
-        [v13 updateSelectionWithExtentAtBoundary:4 inDirection:a3 executionContext:v6];
+        [selectionController3 updateSelectionWithExtentAtBoundary:4 inDirection:direction executionContext:contextCopy];
       }
 
       else
       {
-        [v13 updateImmediateSelectionWithExtentAtBoundary:3 inDirection:a3 executionContext:v6];
+        [selectionController3 updateImmediateSelectionWithExtentAtBoundary:3 inDirection:direction executionContext:contextCopy];
       }
 
-      v15 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-      [v15 scrollSelectionToVisible];
+      selectionController4 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+      [selectionController4 scrollSelectionToVisible];
     }
 
     else
     {
-      [v6 returnExecutionToParent];
+      [contextCopy returnExecutionToParent];
     }
   }
 }
 
-- (int64_t)layoutDirectionFromFlickDirection:(unint64_t)a3
+- (int64_t)layoutDirectionFromFlickDirection:(unint64_t)direction
 {
   v3 = 3;
   v4 = 5;
-  if ((a3 & 4) == 0)
+  if ((direction & 4) == 0)
   {
     v4 = 2;
   }
 
-  if ((a3 & 2) == 0)
+  if ((direction & 2) == 0)
   {
     v3 = v4;
   }
 
-  if (a3)
+  if (direction)
   {
     return 4;
   }
@@ -1460,14 +1460,14 @@ LABEL_23:
   }
 }
 
-- (void)beginCursorManipulationFromRect:(CGRect)a3
+- (void)beginCursorManipulationFromRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  if (([v11 didFloatCursor] & 1) == 0)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  if (([owner didFloatCursor] & 1) == 0)
   {
     v13.origin.x = x;
     v13.origin.y = y;
@@ -1485,20 +1485,20 @@ LABEL_23:
       v9 = y + height * 0.5;
     }
 
-    [v11 setCursorLocationBase:{v8, v9}];
-    [v11 setDidFloatCursor:1];
-    v10 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    [v10 willBeginFloatingCursor:1];
+    [owner setCursorLocationBase:{v8, v9}];
+    [owner setDidFloatCursor:1];
+    selectionController = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    [selectionController willBeginFloatingCursor:1];
   }
 }
 
-- (CGPoint)cursorLocationForTranslation:(CGPoint)a3
+- (CGPoint)cursorLocationForTranslation:(CGPoint)translation
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = a3.x;
-  v6 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  [v6 cursorLocationBase];
+  y = translation.y;
+  x = translation.x;
+  v5 = translation.x;
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  [owner cursorLocationBase];
   v8 = v7;
   v10 = v9;
 
@@ -1517,18 +1517,18 @@ LABEL_23:
 
 - (void)_cancelLongForcePressTimer
 {
-  v3 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  v2 = [v3 longForcePressAction];
-  [v2 cancel];
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  longForcePressAction = [owner longForcePressAction];
+  [longForcePressAction cancel];
 
-  [v3 setLongForcePressAction:0];
+  [owner setLongForcePressAction:0];
 }
 
-- (void)clearKeyboardTouchesForGesture:(id)a3
+- (void)clearKeyboardTouchesForGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [v4 view];
-  v6 = _getViewKeyboardLayout(v5);
+  gestureCopy = gesture;
+  view = [gestureCopy view];
+  v6 = _getViewKeyboardLayout(view);
 
   if (!v6)
   {
@@ -1538,15 +1538,15 @@ LABEL_23:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v4 touchesForTap];
+    touchesForTap = [gestureCopy touchesForTap];
 LABEL_7:
-    v8 = v7;
+    v8 = touchesForTap;
     goto LABEL_8;
   }
 
-  if ((_getGestureKeyboardFlag(v4) & 2) != 0)
+  if ((_getGestureKeyboardFlag(gestureCopy) & 2) != 0)
   {
-    v7 = [(UIPanGestureRecognizer *)v4 _activeTouches];
+    touchesForTap = [(UIPanGestureRecognizer *)gestureCopy _activeTouches];
     goto LABEL_7;
   }
 
@@ -1557,9 +1557,9 @@ LABEL_8:
     dispatch_once(&qword_1ED498F20, &__block_literal_global_74_2);
   }
 
-  v9 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  v10 = [v9 delegate];
-  v11 = [v10 taskQueue];
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  delegate = [owner delegate];
+  taskQueue = [delegate taskQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __70___UIKeyboardTextSelectionInteraction_clearKeyboardTouchesForGesture___block_invoke_3;
@@ -1568,70 +1568,70 @@ LABEL_8:
   v16 = v8;
   v12 = qword_1ED498F18;
   v13 = v8;
-  [v11 addTask:v14 breadcrumb:v12];
+  [taskQueue addTask:v14 breadcrumb:v12];
 
 LABEL_11:
 }
 
-- (void)_granularityExpandingGestureWithTimeInterval:(double)a3 timeGranularity:(double)a4 isMidPan:(BOOL)a5
+- (void)_granularityExpandingGestureWithTimeInterval:(double)interval timeGranularity:(double)granularity isMidPan:(BOOL)pan
 {
-  v9 = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
   if (qword_1ED498F30 != -1)
   {
     dispatch_once(&qword_1ED498F30, &__block_literal_global_78_1);
   }
 
-  v10 = [v9 delegate];
-  v11 = [v10 taskQueue];
+  delegate = [owner delegate];
+  taskQueue = [delegate taskQueue];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __109___UIKeyboardTextSelectionInteraction__granularityExpandingGestureWithTimeInterval_timeGranularity_isMidPan___block_invoke_3;
   v14[3] = &unk_1E7118C90;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
+  intervalCopy = interval;
+  granularityCopy = granularity;
+  panCopy = pan;
   v14[4] = self;
-  v15 = v9;
+  v15 = owner;
   v12 = qword_1ED498F28;
-  v13 = v9;
-  [v11 addTask:v14 breadcrumb:v12];
+  v13 = owner;
+  [taskQueue addTask:v14 breadcrumb:v12];
 }
 
 - (void)disableEnclosingScrollViewScrolling
 {
-  v3 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  v4 = [v3 delegate];
-  v5 = [v4 textSelectionController];
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  delegate = [owner delegate];
+  textSelectionController = [delegate textSelectionController];
 
-  if (v5)
+  if (textSelectionController)
   {
-    v6 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    v7 = [v6 textInputView];
-    v10 = [v7 _scroller];
+    selectionController = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    textInputView = [selectionController textInputView];
+    _scroller = [textInputView _scroller];
 
-    v8 = v10;
-    if (v10)
+    v8 = _scroller;
+    if (_scroller)
     {
-      v9 = [v10 panGestureRecognizer];
-      if ([v9 isEnabled])
+      panGestureRecognizer = [_scroller panGestureRecognizer];
+      if ([panGestureRecognizer isEnabled])
       {
-        [v9 setEnabled:0];
-        [v9 setEnabled:1];
+        [panGestureRecognizer setEnabled:0];
+        [panGestureRecognizer setEnabled:1];
       }
 
-      v8 = v10;
+      v8 = _scroller;
     }
   }
 }
 
-- (void)longPressGestureWithState:(int64_t)a3 withTranslation:(CGPoint)a4 touchCount:(unint64_t)a5
+- (void)longPressGestureWithState:(int64_t)state withTranslation:(CGPoint)translation touchCount:(unint64_t)count
 {
-  y = a4.y;
-  x = a4.x;
+  y = translation.y;
+  x = translation.x;
   if (+[UIKeyboard isInputSystemUI](UIKeyboard, "isInputSystemUI") && (+[UIKeyboardImpl activeInstance](UIKeyboardImpl, "activeInstance"), v10 = objc_claimAutoreleasedReturnValue(), [v10 inputDelegateManager], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "forwardingInputDelegate"), v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v10, !v12))
   {
 
-    [(_UIKeyboardTextSelectionInteraction *)self forwardIndirectGestureWithType:8 state:a3 translation:0 flickDirection:a5 touchCount:x, y];
+    [(_UIKeyboardTextSelectionInteraction *)self forwardIndirectGestureWithType:8 state:state translation:0 flickDirection:count touchCount:x, y];
   }
 
   else
@@ -1641,30 +1641,30 @@ LABEL_11:
       dispatch_once(&qword_1ED498F40, &__block_literal_global_84_1);
     }
 
-    v13 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-    v14 = [v13 delegate];
-    v15 = [v14 taskQueue];
+    owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+    delegate = [owner delegate];
+    taskQueue = [delegate taskQueue];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __92___UIKeyboardTextSelectionInteraction_longPressGestureWithState_withTranslation_touchCount___block_invoke_3;
     v16[3] = &unk_1E7118C40;
     v16[4] = self;
-    v16[5] = a3;
+    v16[5] = state;
     *&v16[6] = x;
     *&v16[7] = y;
-    v16[8] = a5;
-    [v15 addTask:v16 breadcrumb:qword_1ED498F38];
+    v16[8] = count;
+    [taskQueue addTask:v16 breadcrumb:qword_1ED498F38];
   }
 }
 
-- (void)beginLongPressWithTranslation:(CGPoint)a3 touchCount:(unint64_t)a4 executionContext:(id)a5
+- (void)beginLongPressWithTranslation:(CGPoint)translation touchCount:(unint64_t)count executionContext:(id)context
 {
-  y = a3.y;
-  x = a3.x;
-  v24 = a5;
-  v9 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+  y = translation.y;
+  x = translation.x;
+  contextCopy = context;
+  selectionController = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
 
-  if (v9)
+  if (selectionController)
   {
     v10 = fabs(x);
     v11 = fabs(y);
@@ -1686,139 +1686,139 @@ LABEL_11:
     }
 
     v14 = qword_18A6805C0[v12 - 2];
-    v15 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    [v15 caretRectForCursorPosition];
+    selectionController2 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    [selectionController2 caretRectForCursorPosition];
     [(_UIKeyboardTextSelectionInteraction *)self beginCursorManipulationFromRect:?];
 
     [(_UIKeyboardTextSelectionInteraction *)self cursorLocationForTranslation:x, y];
     v17 = v16;
     v19 = v18;
-    v20 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    [v20 beginFloatingCursorAtPoint:{v17, v19}];
+    selectionController3 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    [selectionController3 beginFloatingCursorAtPoint:{v17, v19}];
 
-    v21 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    v22 = v21;
-    if (a4 == 1)
+    selectionController4 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    v22 = selectionController4;
+    if (count == 1)
     {
-      [v21 beginSelection];
+      [selectionController4 beginSelection];
 
-      v23 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-      [v23 updateSelectionWithExtentPoint:v24 executionContext:{v17, v19}];
+      selectionController5 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+      [selectionController5 updateSelectionWithExtentPoint:contextCopy executionContext:{v17, v19}];
     }
 
     else
     {
-      [v21 beginSelectionWithBaseAtSelectionBoundaryInDirection:v14 initialExtentPoint:v24 executionContext:{v17, v19}];
+      [selectionController4 beginSelectionWithBaseAtSelectionBoundaryInDirection:v14 initialExtentPoint:contextCopy executionContext:{v17, v19}];
     }
   }
 
   else
   {
-    [v24 returnExecutionToParent];
+    [contextCopy returnExecutionToParent];
   }
 }
 
-- (void)updateLongPressWithTranslation:(CGPoint)a3 executionContext:(id)a4
+- (void)updateLongPressWithTranslation:(CGPoint)translation executionContext:(id)context
 {
-  y = a3.y;
-  x = a3.x;
-  v14 = a4;
-  v7 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+  y = translation.y;
+  x = translation.x;
+  contextCopy = context;
+  selectionController = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
 
-  if (v7)
+  if (selectionController)
   {
     [(_UIKeyboardTextSelectionInteraction *)self cursorLocationForTranslation:x, y];
     v9 = v8;
     v11 = v10;
-    v12 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    [v12 updateFloatingCursorAtPoint:{v9, v11}];
+    selectionController2 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    [selectionController2 updateFloatingCursorAtPoint:{v9, v11}];
 
-    v13 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    [v13 updateSelectionWithExtentPoint:v14 executionContext:{v9, v11}];
+    selectionController3 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    [selectionController3 updateSelectionWithExtentPoint:contextCopy executionContext:{v9, v11}];
   }
 
   else
   {
-    [v14 returnExecutionToParent];
+    [contextCopy returnExecutionToParent];
   }
 }
 
-- (void)finishLongPressWithExecutionContext:(id)a3
+- (void)finishLongPressWithExecutionContext:(id)context
 {
-  v6 = a3;
-  v4 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-  [v4 endFloatingCursor];
+  contextCopy = context;
+  selectionController = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+  [selectionController endFloatingCursor];
 
-  v5 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-  [v5 endSelection];
+  selectionController2 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+  [selectionController2 endSelection];
 
-  [v6 returnExecutionToParent];
+  [contextCopy returnExecutionToParent];
 }
 
-- (void)forwardIndirectGestureWithType:(int64_t)a3 state:(int64_t)a4 translation:(CGPoint)a5 flickDirection:(unint64_t)a6 touchCount:(unint64_t)a7
+- (void)forwardIndirectGestureWithType:(int64_t)type state:(int64_t)state translation:(CGPoint)translation flickDirection:(unint64_t)direction touchCount:(unint64_t)count
 {
-  y = a5.y;
-  x = a5.x;
+  y = translation.y;
+  x = translation.x;
   v13 = +[UIKeyboardImpl activeInstance];
-  v14 = [v13 inputDelegateManager];
-  v18 = [v14 inputSystemSourceSession];
+  inputDelegateManager = [v13 inputDelegateManager];
+  inputSystemSourceSession = [inputDelegateManager inputSystemSourceSession];
 
-  if (v18)
+  if (inputSystemSourceSession)
   {
-    v15 = [v18 textOperations];
+    textOperations = [inputSystemSourceSession textOperations];
     v16 = objc_alloc_init(_UIKeyboardIndirectTextSelectionGestureState);
-    [(_UIKeyboardIndirectTextSelectionGestureState *)v16 setType:a3];
-    [(_UIKeyboardIndirectTextSelectionGestureState *)v16 setState:a4];
+    [(_UIKeyboardIndirectTextSelectionGestureState *)v16 setType:type];
+    [(_UIKeyboardIndirectTextSelectionGestureState *)v16 setState:state];
     [(_UIKeyboardIndirectTextSelectionGestureState *)v16 setTranslation:x, y];
-    [(_UIKeyboardIndirectTextSelectionGestureState *)v16 setFlickDirection:a6];
-    [(_UIKeyboardIndirectTextSelectionGestureState *)v16 setTouchCount:a7];
+    [(_UIKeyboardIndirectTextSelectionGestureState *)v16 setFlickDirection:direction];
+    [(_UIKeyboardIndirectTextSelectionGestureState *)v16 setTouchCount:count];
     v17 = +[UIKeyboardImpl activeInstance];
     -[_UIKeyboardIndirectTextSelectionGestureState setIsShiftKeyBeingHeld:](v16, "setIsShiftKeyBeingHeld:", [v17 isShiftKeyBeingHeld]);
 
-    [v15 setCustomInfoType:0x1EFB7C930];
-    [v15 setCustomInfo:v16];
-    [v18 flushOperations];
+    [textOperations setCustomInfoType:0x1EFB7C930];
+    [textOperations setCustomInfo:v16];
+    [inputSystemSourceSession flushOperations];
   }
 }
 
-- (void)handleRemoteIndirectGestureWithState:(id)a3
+- (void)handleRemoteIndirectGestureWithState:(id)state
 {
-  v4 = a3;
-  if ([(_UIKeyboardIndirectTextSelectionGestureState *)v4 type]== 2)
+  stateCopy = state;
+  if ([(_UIKeyboardIndirectTextSelectionGestureState *)stateCopy type]== 2)
   {
     [(_UIKeyboardTextSelectionInteraction *)self twoFingerTap:0];
   }
 
   else
   {
-    [(_UIKeyboardIndirectTextSelectionGestureState *)v4 translation];
+    [(_UIKeyboardIndirectTextSelectionGestureState *)stateCopy translation];
     [(_UIKeyboardTextSelectionInteraction *)self boundedTranslation:?];
     v6 = v5;
     v8 = v7;
-    if ([(_UIKeyboardIndirectTextSelectionGestureState *)v4 type]== 4)
+    if ([(_UIKeyboardIndirectTextSelectionGestureState *)stateCopy type]== 4)
     {
-      if ([(_UIKeyboardIndirectTextSelectionGestureState *)v4 state]== 1)
+      if ([(_UIKeyboardIndirectTextSelectionGestureState *)stateCopy state]== 1)
       {
         v9 = *MEMORY[0x1E695EFF8];
         v10 = *(MEMORY[0x1E695EFF8] + 8);
-        v11 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-        [v11 setAccumulatedBounding:{v9, v10}];
+        owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+        [owner setAccumulatedBounding:{v9, v10}];
 
         [(_UIKeyboardTextSelectionInteraction *)self indirectCursorPanGestureWithState:1 withTranslation:2 withFlickDirection:v9, v10];
       }
 
-      [(_UIKeyboardTextSelectionInteraction *)self indirectPanGestureWithState:[(_UIKeyboardIndirectTextSelectionGestureState *)v4 state] withTranslation:[(_UIKeyboardIndirectTextSelectionGestureState *)v4 flickDirection] withFlickDirection:[(_UIKeyboardIndirectTextSelectionGestureState *)v4 isShiftKeyBeingHeld] isShiftKeyBeingHeld:v6, v8];
+      [(_UIKeyboardTextSelectionInteraction *)self indirectPanGestureWithState:[(_UIKeyboardIndirectTextSelectionGestureState *)stateCopy state] withTranslation:[(_UIKeyboardIndirectTextSelectionGestureState *)stateCopy flickDirection] withFlickDirection:[(_UIKeyboardIndirectTextSelectionGestureState *)stateCopy isShiftKeyBeingHeld] isShiftKeyBeingHeld:v6, v8];
     }
 
-    else if ([(_UIKeyboardIndirectTextSelectionGestureState *)v4 type]== 8)
+    else if ([(_UIKeyboardIndirectTextSelectionGestureState *)stateCopy type]== 8)
     {
-      if ([(_UIKeyboardIndirectTextSelectionGestureState *)self->_previousRemoteGestureState type]== 4 && [(_UIKeyboardIndirectTextSelectionGestureState *)self->_previousRemoteGestureState state]== 2 && [(_UIKeyboardIndirectTextSelectionGestureState *)v4 state]== 2)
+      if ([(_UIKeyboardIndirectTextSelectionGestureState *)self->_previousRemoteGestureState type]== 4 && [(_UIKeyboardIndirectTextSelectionGestureState *)self->_previousRemoteGestureState state]== 2 && [(_UIKeyboardIndirectTextSelectionGestureState *)stateCopy state]== 2)
       {
-        v12 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-        [v12 restartSelection];
+        selectionController = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+        [selectionController restartSelection];
       }
 
-      [(_UIKeyboardTextSelectionInteraction *)self longPressGestureWithState:[(_UIKeyboardIndirectTextSelectionGestureState *)v4 state] withTranslation:[(_UIKeyboardIndirectTextSelectionGestureState *)v4 touchCount] touchCount:v6, v8];
+      [(_UIKeyboardTextSelectionInteraction *)self longPressGestureWithState:[(_UIKeyboardIndirectTextSelectionGestureState *)stateCopy state] withTranslation:[(_UIKeyboardIndirectTextSelectionGestureState *)stateCopy touchCount] touchCount:v6, v8];
     }
 
     else if (os_variant_has_internal_diagnostics())
@@ -1841,28 +1841,28 @@ LABEL_11:
       }
     }
 
-    if ([(_UIKeyboardIndirectTextSelectionGestureState *)v4 state]>= 3)
+    if ([(_UIKeyboardIndirectTextSelectionGestureState *)stateCopy state]>= 3)
     {
-      v14 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-      [v14 setDidFloatCursor:0];
+      owner2 = [(_UIKeyboardTextSelectionInteraction *)self owner];
+      [owner2 setDidFloatCursor:0];
 
-      v15 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-      [v15 resetCursorPosition];
+      selectionController2 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+      [selectionController2 resetCursorPosition];
     }
   }
 
   previousRemoteGestureState = self->_previousRemoteGestureState;
-  self->_previousRemoteGestureState = v4;
+  self->_previousRemoteGestureState = stateCopy;
 }
 
-- (void)indirectPanGestureWithState:(int64_t)a3 withTranslation:(CGPoint)a4 withFlickDirection:(unint64_t)a5 isShiftKeyBeingHeld:(BOOL)a6
+- (void)indirectPanGestureWithState:(int64_t)state withTranslation:(CGPoint)translation withFlickDirection:(unint64_t)direction isShiftKeyBeingHeld:(BOOL)held
 {
-  y = a4.y;
-  x = a4.x;
+  y = translation.y;
+  x = translation.x;
   if (+[UIKeyboard isInputSystemUI](UIKeyboard, "isInputSystemUI") && (+[UIKeyboardImpl activeInstance](UIKeyboardImpl, "activeInstance"), v12 = objc_claimAutoreleasedReturnValue(), [v12 inputDelegateManager], v13 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v13, "forwardingInputDelegate"), v14 = objc_claimAutoreleasedReturnValue(), v14, v13, v12, !v14))
   {
 
-    [(_UIKeyboardTextSelectionInteraction *)self forwardIndirectGestureWithType:4 state:a3 translation:a5 flickDirection:0 touchCount:x, y];
+    [(_UIKeyboardTextSelectionInteraction *)self forwardIndirectGestureWithType:4 state:state translation:direction flickDirection:0 touchCount:x, y];
   }
 
   else
@@ -1872,78 +1872,78 @@ LABEL_11:
       dispatch_once(&qword_1ED498F50, &__block_literal_global_95);
     }
 
-    v15 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-    v16 = [v15 delegate];
-    v17 = [v16 taskQueue];
+    owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+    delegate = [owner delegate];
+    taskQueue = [delegate taskQueue];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __122___UIKeyboardTextSelectionInteraction_indirectPanGestureWithState_withTranslation_withFlickDirection_isShiftKeyBeingHeld___block_invoke_3;
     v18[3] = &unk_1E7118CE0;
     v18[4] = self;
-    v18[5] = a3;
+    v18[5] = state;
     *&v18[6] = x;
     *&v18[7] = y;
-    v19 = a6;
-    v18[8] = a5;
-    [v17 addTask:v18 breadcrumb:qword_1ED498F48];
+    heldCopy = held;
+    v18[8] = direction;
+    [taskQueue addTask:v18 breadcrumb:qword_1ED498F48];
   }
 }
 
-- (void)_beginLongForcePressTimerForGesture:(id)a3
+- (void)_beginLongForcePressTimerForGesture:(id)gesture
 {
-  v4 = a3;
-  v8 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  v5 = [v8 longForcePressAction];
+  gestureCopy = gesture;
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  longForcePressAction = [owner longForcePressAction];
 
-  if (v5)
+  if (longForcePressAction)
   {
-    v6 = [v8 longForcePressAction];
-    [v6 cancel];
+    longForcePressAction2 = [owner longForcePressAction];
+    [longForcePressAction2 cancel];
   }
 
-  v7 = [[UIDelayedAction alloc] initWithTarget:self action:sel__longForcePressDetected_ userInfo:v4 delay:0.2];
+  v7 = [[UIDelayedAction alloc] initWithTarget:self action:sel__longForcePressDetected_ userInfo:gestureCopy delay:0.2];
 
-  [v8 setLongForcePressAction:v7];
+  [owner setLongForcePressAction:v7];
 }
 
-- (void)_longForcePressDetected:(id)a3
+- (void)_longForcePressDetected:(id)detected
 {
-  v4 = a3;
-  v5 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  [v5 setPreviousForcePressCount:{objc_msgSend(v5, "previousForcePressCount") - 1}];
+  detectedCopy = detected;
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  [owner setPreviousForcePressCount:{objc_msgSend(owner, "previousForcePressCount") - 1}];
   [(_UIKeyboardTextSelectionInteraction *)self _cancelLongForcePressTimer];
-  [(_UIKeyboardTextSelectionInteraction *)self oneFingerForcePress:v4];
+  [(_UIKeyboardTextSelectionInteraction *)self oneFingerForcePress:detectedCopy];
 }
 
-- (void)_logTapCounts:(id)a3
+- (void)_logTapCounts:(id)counts
 {
-  v4 = a3;
-  v5 = [v4 valueForKey:@"tapLogValue"];
-  v6 = [v5 intValue];
+  countsCopy = counts;
+  v5 = [countsCopy valueForKey:@"tapLogValue"];
+  intValue = [v5 intValue];
 
-  v7 = [v4 valueForKey:@"isOnKeyboard"];
+  v7 = [countsCopy valueForKey:@"isOnKeyboard"];
 
-  +[_UIKeyboardUsageTracking keyboardGestureTwoFingerTap:withTapCount:](_UIKeyboardUsageTracking, "keyboardGestureTwoFingerTap:withTapCount:", [v7 BOOLValue], v6);
-  v9 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  v8 = [v9 tapLogTimer];
-  [v8 cancel];
+  +[_UIKeyboardUsageTracking keyboardGestureTwoFingerTap:withTapCount:](_UIKeyboardUsageTracking, "keyboardGestureTwoFingerTap:withTapCount:", [v7 BOOLValue], intValue);
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  tapLogTimer = [owner tapLogTimer];
+  [tapLogTimer cancel];
 
-  [v9 setTapLogTimer:0];
+  [owner setTapLogTimer:0];
 }
 
-- (void)oneFingerForcePan:(id)a3
+- (void)oneFingerForcePan:(id)pan
 {
-  v4 = a3;
-  v5 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-  v6 = [v5 textInputView];
-  [v4 _translationInView:v6];
+  panCopy = pan;
+  selectionController = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+  textInputView = [selectionController textInputView];
+  [panCopy _translationInView:textInputView];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  v12 = [v11 longForcePressAction];
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  longForcePressAction = [owner longForcePressAction];
 
-  if (v12)
+  if (longForcePressAction)
   {
     v13 = hypot(v8, v10);
     v14 = +[_UITextSelectionSettings sharedInstance];
@@ -1956,23 +1956,23 @@ LABEL_11:
     }
   }
 
-  if ([v4 state] == 1)
+  if ([panCopy state] == 1)
   {
     v17 = *MEMORY[0x1E695EFF8];
     v18 = *(MEMORY[0x1E695EFF8] + 8);
-    [v11 setAccumulatedAcceleration:{*MEMORY[0x1E695EFF8], v18}];
-    [v11 setAccumulatedBounding:{v17, v18}];
-    [v11 setLastPanTranslation:{v8, v10}];
-    v19 = [v11 weightedPoint];
-    [v19 clearHistory];
+    [owner setAccumulatedAcceleration:{*MEMORY[0x1E695EFF8], v18}];
+    [owner setAccumulatedBounding:{v17, v18}];
+    [owner setLastPanTranslation:{v8, v10}];
+    weightedPoint = [owner weightedPoint];
+    [weightedPoint clearHistory];
 
-    v20 = [v11 weightedPoint];
-    [v20 addPoint:{v8, v10}];
+    weightedPoint2 = [owner weightedPoint];
+    [weightedPoint2 addPoint:{v8, v10}];
 
-    v21 = [v4 view];
-    [_UIKeyboardUsageTracking keyboardGestureOneFingerForcePan:_isViewKeyboardLayoutPresent(v21)];
+    view = [panCopy view];
+    [_UIKeyboardUsageTracking keyboardGestureOneFingerForcePan:_isViewKeyboardLayoutPresent(view)];
 
-    v22 = [MEMORY[0x1E69D4E18] sharedInstance];
+    mEMORY[0x1E69D4E18] = [MEMORY[0x1E69D4E18] sharedInstance];
     v59[0] = MEMORY[0x1E69E9820];
     v59[1] = 3221225472;
     v59[2] = __57___UIKeyboardTextSelectionInteraction_oneFingerForcePan___block_invoke;
@@ -1980,30 +1980,30 @@ LABEL_11:
     v59[4] = self;
     v62 = v8;
     v63 = v10;
-    v60 = v11;
-    v61 = v4;
-    [v22 logBlock:v59 domain:@"com.apple.keyboard.UIKit"];
+    v60 = owner;
+    v61 = panCopy;
+    [mEMORY[0x1E69D4E18] logBlock:v59 domain:@"com.apple.keyboard.UIKit"];
 
     [(_UIKeyboardTextSelectionInteraction *)self _prepareForGesture];
   }
 
-  if ([v4 state] >= 2)
+  if ([panCopy state] >= 2)
   {
     v23 = +[_UITextSelectionSettings sharedInstance];
-    v24 = [v23 shouldUseAcceleration];
-    v25 = [v24 BOOLValue];
+    shouldUseAcceleration = [v23 shouldUseAcceleration];
+    bOOLValue = [shouldUseAcceleration BOOLValue];
 
-    if (v25)
+    if (bOOLValue)
     {
-      v26 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-      v27 = [v26 textInputView];
-      [v4 velocityInView:v27];
+      selectionController2 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+      textInputView2 = [selectionController2 textInputView];
+      [panCopy velocityInView:textInputView2];
       v29 = v28;
       v31 = v30;
 
-      if ([v11 panGestureState])
+      if ([owner panGestureState])
       {
-        v32 = v4;
+        v32 = panCopy;
         v33 = [v32 state] != 3 && objc_msgSend(v32, "state") != 4 && objc_msgSend(v32, "state") != 5;
       }
 
@@ -2015,24 +2015,24 @@ LABEL_11:
       [(_UIKeyboardTextSelectionInteraction *)self acceleratedTranslation:v33 velocity:v8 isActive:v10, v29, v31];
       v35 = v34;
       v37 = v36;
-      [v11 setLastPanTranslation:{v8, v10}];
+      [owner setLastPanTranslation:{v8, v10}];
       v10 = v37;
       v8 = v35;
     }
 
-    v38 = [v11 weightedPoint];
-    [v38 addPoint:{v8, v10}];
+    weightedPoint3 = [owner weightedPoint];
+    [weightedPoint3 addPoint:{v8, v10}];
 
-    v39 = v4;
+    v39 = panCopy;
     if ([v39 state] == 3 || objc_msgSend(v39, "state") == 4)
     {
     }
 
     else
     {
-      v43 = [v39 state];
+      state = [v39 state];
 
-      if (v43 != 5)
+      if (state != 5)
       {
 LABEL_22:
         [(_UIKeyboardTextSelectionInteraction *)self boundedTranslation:v8, v10];
@@ -2044,8 +2044,8 @@ LABEL_22:
 
     if ([(_UIKeyboardTextSelectionInteraction *)self isPlacedCarefully])
     {
-      v40 = [v11 weightedPoint];
-      [v40 weightedPoint];
+      weightedPoint4 = [owner weightedPoint];
+      [weightedPoint4 weightedPoint];
       v8 = v41;
       v10 = v42;
     }
@@ -2054,81 +2054,81 @@ LABEL_22:
   }
 
 LABEL_23:
-  if ([v11 panGestureState] == 1)
+  if ([owner panGestureState] == 1)
   {
-    v46 = v4;
+    v46 = panCopy;
     if ([v46 state] == 3 || objc_msgSend(v46, "state") == 4)
     {
     }
 
     else
     {
-      v53 = [v46 state];
+      state2 = [v46 state];
 
-      if (v53 != 5)
+      if (state2 != 5)
       {
         [(_UIKeyboardTextSelectionInteraction *)self indirectCursorPanGestureWithState:2 withTranslation:0 withFlickDirection:v8, v10];
         goto LABEL_34;
       }
     }
 
-    [v11 setDidFloatCursor:0];
+    [owner setDidFloatCursor:0];
     -[_UIKeyboardTextSelectionInteraction indirectCursorPanGestureWithState:withTranslation:withFlickDirection:](self, "indirectCursorPanGestureWithState:withTranslation:withFlickDirection:", [v46 state], 0, v8, v10);
     goto LABEL_33;
   }
 
-  if ([v11 panGestureState] == 6)
+  if ([owner panGestureState] == 6)
   {
-    v47 = v4;
+    v47 = panCopy;
     if ([v47 state] == 3 || objc_msgSend(v47, "state") == 4)
     {
     }
 
     else
     {
-      v54 = [v47 state];
+      state3 = [v47 state];
 
-      if (v54 != 5)
+      if (state3 != 5)
       {
         [(_UIKeyboardTextSelectionInteraction *)self indirectBlockPanGestureWithState:2 withTranslation:v8, v10];
         goto LABEL_34;
       }
     }
 
-    [v11 setDidFloatCursor:0];
+    [owner setDidFloatCursor:0];
     -[_UIKeyboardTextSelectionInteraction indirectBlockPanGestureWithState:withTranslation:](self, "indirectBlockPanGestureWithState:withTranslation:", [v47 state], v8, v10);
 LABEL_33:
-    [v11 setPanGestureState:0];
+    [owner setPanGestureState:0];
   }
 
 LABEL_34:
-  v48 = v4;
+  v48 = panCopy;
   if ([v48 state] == 3 || objc_msgSend(v48, "state") == 4)
   {
   }
 
   else
   {
-    v52 = [v48 state];
+    state4 = [v48 state];
 
-    if (v52 != 5)
+    if (state4 != 5)
     {
       goto LABEL_38;
     }
   }
 
-  [v11 setDidFloatCursor:0];
-  [v11 setPreviousForcePressCount:0];
-  [v11 setPanGestureState:0];
+  [owner setDidFloatCursor:0];
+  [owner setPreviousForcePressCount:0];
+  [owner setPanGestureState:0];
   [(_UIKeyboardTextSelectionInteraction *)self _didEndIndirectSelectionGesture:v48];
-  v49 = [v11 activeGestures];
-  [v49 removeObject:v48];
+  activeGestures = [owner activeGestures];
+  [activeGestures removeObject:v48];
 
-  v50 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-  [v50 resetCursorPosition];
+  selectionController3 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+  [selectionController3 resetCursorPosition];
 
   [(_UIKeyboardTextSelectionInteraction *)self _tidyUpGesture];
-  v51 = [MEMORY[0x1E69D4E18] sharedInstance];
+  mEMORY[0x1E69D4E18]2 = [MEMORY[0x1E69D4E18] sharedInstance];
   v55[0] = MEMORY[0x1E69E9820];
   v55[1] = 3221225472;
   v55[2] = __57___UIKeyboardTextSelectionInteraction_oneFingerForcePan___block_invoke_2;
@@ -2137,24 +2137,24 @@ LABEL_34:
   v57 = v8;
   v58 = v10;
   v56 = v48;
-  [v51 logBlock:v55 domain:@"com.apple.keyboard.UIKit"];
+  [mEMORY[0x1E69D4E18]2 logBlock:v55 domain:@"com.apple.keyboard.UIKit"];
 
 LABEL_38:
 }
 
-- (void)twoFingerTap:(id)a3
+- (void)twoFingerTap:(id)tap
 {
   v40[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  tapCopy = tap;
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
   Current = CFAbsoluteTimeGetCurrent();
-  [v5 twoFingerTapTimestamp];
+  [owner twoFingerTapTimestamp];
   v8 = v7;
-  [(_UIKeyboardTextSelectionInteraction *)self clearKeyboardTouchesForGesture:v4];
+  [(_UIKeyboardTextSelectionInteraction *)self clearKeyboardTouchesForGesture:tapCopy];
   if (+[UIKeyboard isInputSystemUI])
   {
-    v9 = [v4 state];
-    [(_UIKeyboardTextSelectionInteraction *)self forwardIndirectGestureWithType:2 state:v9 translation:0 flickDirection:0 touchCount:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
+    state = [tapCopy state];
+    [(_UIKeyboardTextSelectionInteraction *)self forwardIndirectGestureWithType:2 state:state translation:0 flickDirection:0 touchCount:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)];
   }
 
   else
@@ -2162,22 +2162,22 @@ LABEL_38:
     [(_UIKeyboardTextSelectionInteraction *)self _granularityExpandingGestureWithTimeInterval:0 timeGranularity:Current - v8 isMidPan:0.667];
   }
 
-  [v5 setTwoFingerTapTimestamp:Current];
-  v10 = [v5 delegate];
+  [owner setTwoFingerTapTimestamp:Current];
+  delegate = [owner delegate];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [v5 delegate];
-    [v12 setTwoFingerTapTimestamp:Current];
+    delegate2 = [owner delegate];
+    [delegate2 setTwoFingerTapTimestamp:Current];
   }
 
-  v13 = [v5 tapLogTimer];
+  tapLogTimer = [owner tapLogTimer];
 
-  if (!v13)
+  if (!tapLogTimer)
   {
-    v25 = [v4 view];
-    isViewKeyboardLayoutPresent = _isViewKeyboardLayoutPresent(v25);
+    view = [tapCopy view];
+    isViewKeyboardLayoutPresent = _isViewKeyboardLayoutPresent(view);
 
     v40[0] = &unk_1EFE31FC0;
     v39[0] = @"tapLogValue";
@@ -2185,78 +2185,78 @@ LABEL_38:
     v27 = [MEMORY[0x1E696AD98] numberWithBool:isViewKeyboardLayoutPresent];
     v40[1] = v27;
     v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:2];
-    v15 = [v28 mutableCopy];
+    userInfo = [v28 mutableCopy];
 
     v29 = [UIDelayedAction alloc];
-    v30 = [(UIDelayedAction *)v29 initWithTarget:self action:sel__logTapCounts_ userInfo:v15 delay:*MEMORY[0x1E695D918] mode:0.667];
-    [v5 setTapLogTimer:v30];
+    v30 = [(UIDelayedAction *)v29 initWithTarget:self action:sel__logTapCounts_ userInfo:userInfo delay:*MEMORY[0x1E695D918] mode:0.667];
+    [owner setTapLogTimer:v30];
 
-    v21 = [MEMORY[0x1E69D4E18] sharedInstance];
+    mEMORY[0x1E69D4E18] = [MEMORY[0x1E69D4E18] sharedInstance];
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __52___UIKeyboardTextSelectionInteraction_twoFingerTap___block_invoke;
     v35[3] = &unk_1E7118D30;
     v22 = &v36;
-    v36 = v5;
+    v36 = owner;
     v38 = isViewKeyboardLayoutPresent;
     v23 = &v37;
-    v37 = v4;
+    v37 = tapCopy;
     v24 = v35;
     goto LABEL_10;
   }
 
-  v14 = [v5 tapLogTimer];
-  v15 = [v14 userInfo];
+  tapLogTimer2 = [owner tapLogTimer];
+  userInfo = [tapLogTimer2 userInfo];
 
-  v16 = [v15 objectForKey:@"tapLogValue"];
-  v17 = [v16 intValue];
-  v18 = (v17 + 1);
+  v16 = [userInfo objectForKey:@"tapLogValue"];
+  intValue = [v16 intValue];
+  v18 = (intValue + 1);
 
   v19 = [MEMORY[0x1E696AD98] numberWithInt:v18];
-  [v15 setValue:v19 forKey:@"tapLogValue"];
+  [userInfo setValue:v19 forKey:@"tapLogValue"];
 
-  v20 = [v5 tapLogTimer];
-  [v20 touch];
+  tapLogTimer3 = [owner tapLogTimer];
+  [tapLogTimer3 touch];
 
-  if (v17 >= 1)
+  if (intValue >= 1)
   {
-    v21 = [MEMORY[0x1E69D4E18] sharedInstance];
+    mEMORY[0x1E69D4E18] = [MEMORY[0x1E69D4E18] sharedInstance];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __52___UIKeyboardTextSelectionInteraction_twoFingerTap___block_invoke_2;
     v31[3] = &unk_1E7118D58;
     v22 = &v32;
-    v32 = v5;
+    v32 = owner;
     v23 = &v33;
-    v33 = v4;
+    v33 = tapCopy;
     v34 = v18;
     v24 = v31;
 LABEL_10:
-    [v21 logBlock:v24 domain:@"com.apple.keyboard.UIKit"];
+    [mEMORY[0x1E69D4E18] logBlock:v24 domain:@"com.apple.keyboard.UIKit"];
   }
 }
 
-- (void)panningGestureAddedTouch:(id)a3
+- (void)panningGestureAddedTouch:(id)touch
 {
-  v9 = a3;
-  if ([v9 state] == 1)
+  touchCopy = touch;
+  if ([touchCopy state] == 1)
   {
-    v4 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-    v5 = [v4 isPanning];
+    owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+    isPanning = [owner isPanning];
 
-    if (v5)
+    if (isPanning)
     {
-      v6 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-      [v6 setHadAddedTouch:1];
+      owner2 = [(_UIKeyboardTextSelectionInteraction *)self owner];
+      [owner2 setHadAddedTouch:1];
     }
   }
 
-  else if ([v9 state] == 3)
+  else if ([touchCopy state] == 3)
   {
-    v7 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-    v8 = [v7 isPanning];
+    owner3 = [(_UIKeyboardTextSelectionInteraction *)self owner];
+    isPanning2 = [owner3 isPanning];
 
-    if ((v8 & 1) == 0)
+    if ((isPanning2 & 1) == 0)
     {
       if (self->_touchPadTimerCompletion)
       {
@@ -2267,64 +2267,64 @@ LABEL_10:
   }
 }
 
-- (void)panningGesture:(id)a3
+- (void)panningGesture:(id)gesture
 {
-  v4 = a3;
-  v5 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  v6 = [v5 delegate];
-  v7 = [v4 state];
-  if ((_getGestureKeyboardFlag(v4) & 2) == 0)
+  gestureCopy = gesture;
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  delegate = [owner delegate];
+  state = [gestureCopy state];
+  if ((_getGestureKeyboardFlag(gestureCopy) & 2) == 0)
   {
     goto LABEL_12;
   }
 
-  if (([v5 suppressTwoFingerPan] & 1) == 0 && v7 <= 1)
+  if (([owner suppressTwoFingerPan] & 1) == 0 && state <= 1)
   {
-    v8 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    v9 = [v8 textInputView];
-    v10 = [v9 _scroller];
+    selectionController = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    textInputView = [selectionController textInputView];
+    _scroller = [textInputView _scroller];
 
-    if ([v10 isZooming])
+    if ([_scroller isZooming])
     {
-      [v5 setSuppressTwoFingerPan:1];
+      [owner setSuppressTwoFingerPan:1];
     }
   }
 
-  if (![v5 suppressTwoFingerPan])
+  if (![owner suppressTwoFingerPan])
   {
 LABEL_12:
     [(_UIKeyboardTextSelectionInteraction *)self _cancelTouchPadTimer];
     Current = CFAbsoluteTimeGetCurrent();
-    v14 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-    v15 = [v14 textInputView];
-    [v4 translationInView:v15];
+    selectionController2 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+    textInputView2 = [selectionController2 textInputView];
+    [gestureCopy translationInView:textInputView2];
     v17 = v16;
     v19 = v18;
 
     v20 = &OBJC_IVAR___UIKeyboardLayoutStar__flickPopupView;
-    if (([v5 isPanning] & 1) != 0 || v7 > 1 || (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(v4, "view"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "locationInView:", v21), v22 = objc_msgSend(v6, "shouldAllowSelectionGestures:atPoint:toBegin:", 0, 1), v21, !v22))
+    if (([owner isPanning] & 1) != 0 || state > 1 || (objc_opt_respondsToSelector() & 1) != 0 && (objc_msgSend(gestureCopy, "view"), v21 = objc_claimAutoreleasedReturnValue(), objc_msgSend(gestureCopy, "locationInView:", v21), v22 = objc_msgSend(delegate, "shouldAllowSelectionGestures:atPoint:toBegin:", 0, 1), v21, !v22))
     {
-      if ([v5 isPanning])
+      if ([owner isPanning])
       {
         v40 = +[_UITextSelectionSettings sharedInstance];
-        v41 = [v40 shouldUseAcceleration];
-        v42 = [v41 BOOLValue];
+        shouldUseAcceleration = [v40 shouldUseAcceleration];
+        bOOLValue = [shouldUseAcceleration BOOLValue];
 
-        if (v42)
+        if (bOOLValue)
         {
-          v43 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-          v44 = [v43 textInputView];
-          [v4 velocityInView:v44];
+          selectionController3 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+          textInputView3 = [selectionController3 textInputView];
+          [gestureCopy velocityInView:textInputView3];
           v46 = v45;
           v48 = v47;
 
-          v49 = v4;
+          v49 = gestureCopy;
           v50 = [v49 state] != 3 && objc_msgSend(v49, "state") != 4 && objc_msgSend(v49, "state") != 5;
 
           [(_UIKeyboardTextSelectionInteraction *)self acceleratedTranslation:v50 velocity:v17 isActive:v19, v46, v48];
           v53 = v52;
           v55 = v54;
-          [v5 setLastPanTranslation:{v17, v19}];
+          [owner setLastPanTranslation:{v17, v19}];
           v19 = v55;
           v17 = v53;
         }
@@ -2332,19 +2332,19 @@ LABEL_12:
         [(_UIKeyboardTextSelectionInteraction *)self boundedTranslation:v17, v19];
         v17 = v56;
         v19 = v57;
-        v58 = [v5 weightedPoint];
-        [v58 addPoint:{v17, v19}];
+        weightedPoint = [owner weightedPoint];
+        [weightedPoint addPoint:{v17, v19}];
 
-        v59 = v4;
+        v59 = gestureCopy;
         if ([v59 state] == 3 || objc_msgSend(v59, "state") == 4)
         {
         }
 
         else
         {
-          v63 = [v59 state];
+          state2 = [v59 state];
 
-          if (v63 != 5)
+          if (state2 != 5)
           {
             goto LABEL_53;
           }
@@ -2352,8 +2352,8 @@ LABEL_12:
 
         if ([(_UIKeyboardTextSelectionInteraction *)self isPlacedCarefully])
         {
-          v60 = [v5 weightedPoint];
-          [v60 weightedPoint];
+          weightedPoint2 = [owner weightedPoint];
+          [weightedPoint2 weightedPoint];
           v17 = v61;
           v19 = v62;
         }
@@ -2367,16 +2367,16 @@ LABEL_12:
 
     else
     {
-      v23 = [v5 activeGestures];
-      [v23 addObject:v4];
+      activeGestures = [owner activeGestures];
+      [activeGestures addObject:gestureCopy];
 
-      v24 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-      v25 = [v24 textInputView];
+      selectionController4 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+      textInputView4 = [selectionController4 textInputView];
       v26 = *MEMORY[0x1E695EFF8];
       v27 = *(MEMORY[0x1E695EFF8] + 8);
-      [v4 setTranslation:v25 inView:{*MEMORY[0x1E695EFF8], v27}];
+      [gestureCopy setTranslation:textInputView4 inView:{*MEMORY[0x1E695EFF8], v27}];
 
-      [v5 setLastPanTranslation:{v26, v27}];
+      [owner setLastPanTranslation:{v26, v27}];
       v28 = -1.0;
       if (v17 < 0.0)
       {
@@ -2413,28 +2413,28 @@ LABEL_12:
         v19 = 1.0;
       }
 
-      [v5 setIsPanning:{1, 1.0, v28, v29}];
-      [v5 setIsSpacePan:(_getGestureKeyboardFlag(v4) >> 2) & 1];
-      [v5 setSpacePanDistance:0.0];
-      [v5 setHadAddedTouch:0];
-      [v5 setIsLongPressing:0];
-      [v5 setLastPanTranslation:{v17, v19}];
-      [v5 setAccumulatedAcceleration:{v26, v27}];
-      [v5 setAccumulatedBounding:{v26, v27}];
-      [(_UIKeyboardTextSelectionInteraction *)self clearKeyboardTouchesForGesture:v4];
-      [(_UIKeyboardTextSelectionInteraction *)self _willBeginIndirectSelectionGesture:v4];
+      [owner setIsPanning:{1, 1.0, v28, v29}];
+      [owner setIsSpacePan:(_getGestureKeyboardFlag(gestureCopy) >> 2) & 1];
+      [owner setSpacePanDistance:0.0];
+      [owner setHadAddedTouch:0];
+      [owner setIsLongPressing:0];
+      [owner setLastPanTranslation:{v17, v19}];
+      [owner setAccumulatedAcceleration:{v26, v27}];
+      [owner setAccumulatedBounding:{v26, v27}];
+      [(_UIKeyboardTextSelectionInteraction *)self clearKeyboardTouchesForGesture:gestureCopy];
+      [(_UIKeyboardTextSelectionInteraction *)self _willBeginIndirectSelectionGesture:gestureCopy];
       [(_UIKeyboardTextSelectionInteraction *)self disableEnclosingScrollViewScrolling];
       [(_UIKeyboardTextSelectionInteraction *)self _prepareForGesture];
-      v30 = [v5 weightedPoint];
-      [v30 clearHistory];
+      weightedPoint3 = [owner weightedPoint];
+      [weightedPoint3 clearHistory];
 
-      v31 = [v5 weightedPoint];
-      [v31 addPoint:{v17, v19}];
+      weightedPoint4 = [owner weightedPoint];
+      [weightedPoint4 addPoint:{v17, v19}];
 
-      if ((_getGestureKeyboardFlag(v4) & 4) != 0)
+      if ((_getGestureKeyboardFlag(gestureCopy) & 4) != 0)
       {
-        v32 = [v4 view];
-        isViewKeyboardLayoutPresent = _isViewKeyboardLayoutPresent(v32);
+        view = [gestureCopy view];
+        isViewKeyboardLayoutPresent = _isViewKeyboardLayoutPresent(view);
 
         if (isViewKeyboardLayoutPresent && !self->_addedTouchRecognizer)
         {
@@ -2448,91 +2448,91 @@ LABEL_12:
         }
       }
 
-      if ((_getGestureKeyboardFlag(v4) & 0x20) != 0 && !self->_touchPadTimerCompletion)
+      if ((_getGestureKeyboardFlag(gestureCopy) & 0x20) != 0 && !self->_touchPadTimerCompletion)
       {
         v37 = +[UIKeyboardImpl activeInstance];
-        v38 = [v37 isShiftKeyBeingHeld];
+        isShiftKeyBeingHeld = [v37 isShiftKeyBeingHeld];
 
-        if ((v38 & 1) == 0)
+        if ((isShiftKeyBeingHeld & 1) == 0)
         {
           [(_UIKeyboardTextSelectionInteraction *)self indirectCursorPanGestureWithState:1 withTranslation:2 withFlickDirection:v26, v27];
         }
       }
 
-      v39 = [MEMORY[0x1E69D4E18] sharedInstance];
+      mEMORY[0x1E69D4E18] = [MEMORY[0x1E69D4E18] sharedInstance];
       v115[0] = MEMORY[0x1E69E9820];
       v115[1] = 3221225472;
       v115[2] = __54___UIKeyboardTextSelectionInteraction_panningGesture___block_invoke;
       v115[3] = &unk_1E7118D08;
-      v116 = v5;
-      v117 = v4;
+      v116 = owner;
+      v117 = gestureCopy;
       v118 = v17;
       v119 = v19;
-      [v39 logBlock:v115 domain:@"com.apple.keyboard.UIKit"];
+      [mEMORY[0x1E69D4E18] logBlock:v115 domain:@"com.apple.keyboard.UIKit"];
     }
 
 LABEL_53:
-    if ([v5 isSpacePan])
+    if ([owner isSpacePan])
     {
       v64 = sqrt(v19 * v19 + v17 * v17);
-      [v5 spacePanDistance];
+      [owner spacePanDistance];
       if (v64 > v65)
       {
-        [v5 setSpacePanDistance:v64];
+        [owner setSpacePanDistance:v64];
       }
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v66 = [v6 hasMarkedText];
+      hasMarkedText = [delegate hasMarkedText];
     }
 
     else
     {
-      v66 = 0;
+      hasMarkedText = 0;
     }
 
-    if (![v5 isPanning])
+    if (![owner isPanning])
     {
       goto LABEL_67;
     }
 
-    if ((_getGestureKeyboardFlag(v4) & 2) != 0)
+    if ((_getGestureKeyboardFlag(gestureCopy) & 2) != 0)
     {
-      if ([v4 didLongPress])
+      if ([gestureCopy didLongPress])
       {
-        v67 = 1;
+        hadAddedTouch = 1;
         goto LABEL_66;
       }
     }
 
-    else if ((_getGestureKeyboardFlag(v4) & 4) == 0)
+    else if ((_getGestureKeyboardFlag(gestureCopy) & 4) == 0)
     {
-      v67 = 0;
+      hadAddedTouch = 0;
       goto LABEL_66;
     }
 
-    v67 = [v5 hadAddedTouch];
+    hadAddedTouch = [owner hadAddedTouch];
 LABEL_66:
     v68 = +[UIKeyboardImpl activeInstance];
-    v69 = [v68 isShiftKeyBeingHeld];
+    isShiftKeyBeingHeld2 = [v68 isShiftKeyBeingHeld];
 
-    if (!(v66 & 1 | (((v69 | v67) & 1) == 0)))
+    if (!(hasMarkedText & 1 | (((isShiftKeyBeingHeld2 | hadAddedTouch) & 1) == 0)))
     {
-      if ([v5 hadAddedTouch])
+      if ([owner hadAddedTouch])
       {
-        v73 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-        [v73 restartSelection];
+        selectionController5 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+        [selectionController5 restartSelection];
       }
 
-      if (([v5 isLongPressing] & 1) == 0)
+      if (([owner isLongPressing] & 1) == 0)
       {
-        [v5 setIsLongPressing:1];
-        v74 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-        [v74 switchToRangedSelection];
+        [owner setIsLongPressing:1];
+        selectionController6 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+        [selectionController6 switchToRangedSelection];
       }
 
-      if ((_getGestureKeyboardFlag(v4) & 4) != 0)
+      if ((_getGestureKeyboardFlag(gestureCopy) & 4) != 0)
       {
         v75 = 1;
       }
@@ -2542,52 +2542,52 @@ LABEL_66:
         v75 = 2;
       }
 
-      [(_UIKeyboardTextSelectionInteraction *)self longPressGestureWithState:v7 withTranslation:v75 touchCount:v17, v19];
+      [(_UIKeyboardTextSelectionInteraction *)self longPressGestureWithState:state withTranslation:v75 touchCount:v17, v19];
       goto LABEL_81;
     }
 
 LABEL_67:
-    if (![v5 isPanning])
+    if (![owner isPanning])
     {
       goto LABEL_81;
     }
 
-    [v5 twoFingerTapTimestamp];
+    [owner twoFingerTapTimestamp];
     if (Current - v70 > 0.667)
     {
       v71 = +[_UITextSelectionSettings sharedInstance];
-      v72 = [v71 allowExtendingSelections];
-      if ([v72 BOOLValue])
+      allowExtendingSelections = [v71 allowExtendingSelections];
+      if ([allowExtendingSelections BOOLValue])
       {
       }
 
       else
       {
-        GestureKeyboardFlag = _getGestureKeyboardFlag(v4);
+        GestureKeyboardFlag = _getGestureKeyboardFlag(gestureCopy);
 
         if ((GestureKeyboardFlag & 0x10) != 0)
         {
-          -[_UIKeyboardTextSelectionInteraction indirectCursorPanGestureWithState:withTranslation:withFlickDirection:](self, "indirectCursorPanGestureWithState:withTranslation:withFlickDirection:", [v4 state], objc_msgSend(v4, "recognizedFlickDirection"), v17, v19);
+          -[_UIKeyboardTextSelectionInteraction indirectCursorPanGestureWithState:withTranslation:withFlickDirection:](self, "indirectCursorPanGestureWithState:withTranslation:withFlickDirection:", [gestureCopy state], objc_msgSend(gestureCopy, "recognizedFlickDirection"), v17, v19);
 LABEL_81:
-          v80 = v4;
+          v80 = gestureCopy;
           if ([v80 state] == 3 || objc_msgSend(v80, "state") == 4)
           {
           }
 
           else
           {
-            v99 = [v80 state];
+            state3 = [v80 state];
 
-            if (v99 != 5)
+            if (state3 != 5)
             {
               goto LABEL_109;
             }
           }
 
-          if ([v5 isPanning])
+          if ([owner isPanning])
           {
-            v81 = [v80 view];
-            v82 = _isViewKeyboardLayoutPresent(v81);
+            view2 = [v80 view];
+            v82 = _isViewKeyboardLayoutPresent(view2);
 
             v83 = MEMORY[0x1E69D9C20];
             if (!v82)
@@ -2596,10 +2596,10 @@ LABEL_81:
             }
 
             v84 = *v83;
-            v85 = [v6 textSelectionController];
-            v86 = [v85 hasRangedSelection];
+            textSelectionController = [delegate textSelectionController];
+            hasRangedSelection = [textSelectionController hasRangedSelection];
             v87 = MEMORY[0x1E69D9C08];
-            if (!v86)
+            if (!hasRangedSelection)
             {
               v87 = MEMORY[0x1E69D9C10];
             }
@@ -2609,29 +2609,29 @@ LABEL_81:
             v89 = TIStatisticsGetKeyForGesture();
             TIStatisticScalarIncrement();
 
-            v90 = [MEMORY[0x1E69D4E18] sharedInstance];
+            mEMORY[0x1E69D4E18]2 = [MEMORY[0x1E69D4E18] sharedInstance];
             v110[0] = MEMORY[0x1E69E9820];
             v110[1] = 3221225472;
             v110[2] = __54___UIKeyboardTextSelectionInteraction_panningGesture___block_invoke_2;
             v110[3] = &unk_1E7118D08;
-            v111 = v5;
+            v111 = owner;
             v91 = v80;
 
             v112 = v91;
             v113 = v17;
             v114 = v19;
-            [v90 logBlock:v110 domain:@"com.apple.keyboard.UIKit"];
+            [mEMORY[0x1E69D4E18]2 logBlock:v110 domain:@"com.apple.keyboard.UIKit"];
           }
 
-          [v5 setDidFloatCursor:0];
-          [v5 setIsLongPressing:0];
-          [v5 setIsPanning:0];
-          [v5 setIsSpacePan:0];
-          v92 = [v5 activeGestures];
-          [v92 removeObject:v80];
+          [owner setDidFloatCursor:0];
+          [owner setIsLongPressing:0];
+          [owner setIsPanning:0];
+          [owner setIsSpacePan:0];
+          activeGestures2 = [owner activeGestures];
+          [activeGestures2 removeObject:v80];
 
-          v93 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-          [v93 resetCursorPosition];
+          selectionController7 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+          [selectionController7 resetCursorPosition];
 
           [(_UIKeyboardTextSelectionInteraction *)self _tidyUpGesture];
           touchPadTimerCompletion = self->_touchPadTimerCompletion;
@@ -2645,7 +2645,7 @@ LABEL_81:
             v107[3] = &unk_1E70F6228;
             v107[4] = self;
             v106 = &v108;
-            v108 = v5;
+            v108 = owner;
             v20 = &v109;
             v109 = v80;
           }
@@ -2653,11 +2653,11 @@ LABEL_81:
           v96 = _Block_copy(v95);
           if ((_getGestureKeyboardFlag(v80) & 4) != 0)
           {
-            v97 = [v80 view];
-            [v80 locationInView:v97];
-            [v80 velocityInView:v97];
-            [v97 bounds];
-            if (!-[_UIKeyboardTextSelectionInteraction isPlacedCarefully](self, "isPlacedCarefully") && (self->_touchPadTimerCompletion || ([v5 spacePanDistance], v100 > 16.0)) || (objc_msgSend(v5, "spacePanDistance"), v98 < 16.0) && IsGestureWithinSpecialRegion(v80))
+            view3 = [v80 view];
+            [v80 locationInView:view3];
+            [v80 velocityInView:view3];
+            [view3 bounds];
+            if (!-[_UIKeyboardTextSelectionInteraction isPlacedCarefully](self, "isPlacedCarefully") && (self->_touchPadTimerCompletion || ([owner spacePanDistance], v100 > 16.0)) || (objc_msgSend(owner, "spacePanDistance"), v98 < 16.0) && IsGestureWithinSpecialRegion(v80))
             {
               if (!self->_activePress)
               {
@@ -2695,44 +2695,44 @@ LABEL_81:
       }
     }
 
-    v77 = [v4 state];
-    v78 = [v4 recognizedFlickDirection];
+    state4 = [gestureCopy state];
+    recognizedFlickDirection = [gestureCopy recognizedFlickDirection];
     v79 = +[UIKeyboardImpl activeInstance];
-    -[_UIKeyboardTextSelectionInteraction indirectPanGestureWithState:withTranslation:withFlickDirection:isShiftKeyBeingHeld:](self, "indirectPanGestureWithState:withTranslation:withFlickDirection:isShiftKeyBeingHeld:", v77, v78, [v79 isShiftKeyBeingHeld], v17, v19);
+    -[_UIKeyboardTextSelectionInteraction indirectPanGestureWithState:withTranslation:withFlickDirection:isShiftKeyBeingHeld:](self, "indirectPanGestureWithState:withTranslation:withFlickDirection:isShiftKeyBeingHeld:", state4, recognizedFlickDirection, [v79 isShiftKeyBeingHeld], v17, v19);
 
     goto LABEL_81;
   }
 
-  v11 = v4;
+  v11 = gestureCopy;
   if ([v11 state] == 3 || objc_msgSend(v11, "state") == 4)
   {
   }
 
   else
   {
-    v51 = [v11 state];
+    state5 = [v11 state];
 
-    if (v51 != 5)
+    if (state5 != 5)
     {
       goto LABEL_109;
     }
   }
 
-  [v5 setDidFloatCursor:0];
-  [v5 setSuppressTwoFingerPan:0];
-  v12 = [v5 activeGestures];
-  [v12 removeObject:v11];
+  [owner setDidFloatCursor:0];
+  [owner setSuppressTwoFingerPan:0];
+  activeGestures3 = [owner activeGestures];
+  [activeGestures3 removeObject:v11];
 
 LABEL_109:
 }
 
-- (void)_startTouchPadTimerWithCompletion:(id)a3
+- (void)_startTouchPadTimerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(_UIKeyboardTextSelectionInteraction *)self _cancelTouchPadTimer];
-  if (v4)
+  if (completionCopy)
   {
-    v5 = [v4 copy];
+    v5 = [completionCopy copy];
     touchPadTimerCompletion = self->_touchPadTimerCompletion;
     self->_touchPadTimerCompletion = v5;
 
@@ -2753,44 +2753,44 @@ LABEL_109:
   self->_touchPadTimerCompletion = 0;
 }
 
-- (void)oneFingerForcePress:(id)a3
+- (void)oneFingerForcePress:(id)press
 {
-  v4 = a3;
-  v5 = [(_UIKeyboardTextSelectionInteraction *)self owner];
-  v6 = [v4 view];
-  if (!v6)
+  pressCopy = press;
+  owner = [(_UIKeyboardTextSelectionInteraction *)self owner];
+  view = [pressCopy view];
+  if (!view)
   {
     goto LABEL_67;
   }
 
-  v7 = v6;
-  v8 = [v5 delegate];
-  v9 = [v8 textSelectionController];
+  v7 = view;
+  delegate = [owner delegate];
+  textSelectionController = [delegate textSelectionController];
 
-  if (!v9)
+  if (!textSelectionController)
   {
     goto LABEL_67;
   }
 
-  v10 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-  v11 = [v10 textInputView];
-  [v4 velocityInView:v11];
+  selectionController = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+  textInputView = [selectionController textInputView];
+  [pressCopy velocityInView:textInputView];
   v13 = v12;
   v15 = v14;
 
   v16 = hypot(v13, v15);
-  v17 = 1;
-  if ([v5 panGestureState] && v16 > 65.0)
+  touchEclipsesVelocity = 1;
+  if ([owner panGestureState] && v16 > 65.0)
   {
-    v17 = [v4 touchEclipsesVelocity];
+    touchEclipsesVelocity = [pressCopy touchEclipsesVelocity];
   }
 
-  if (!v4)
+  if (!pressCopy)
   {
-    [v5 previousForcePressCount];
+    [owner previousForcePressCount];
 LABEL_12:
     v19 = 0;
-    if (!v17)
+    if (!touchEclipsesVelocity)
     {
       goto LABEL_9;
     }
@@ -2798,14 +2798,14 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v18 = v4[19];
-  if (v18 <= [v5 previousForcePressCount])
+  v18 = pressCopy[19];
+  if (v18 <= [owner previousForcePressCount])
   {
     goto LABEL_12;
   }
 
-  v19 = v4[19] == 1;
-  if (!v17)
+  v19 = pressCopy[19] == 1;
+  if (!touchEclipsesVelocity)
   {
 LABEL_9:
     [(_UIKeyboardTextSelectionInteraction *)self _cancelLongForcePressTimer];
@@ -2815,16 +2815,16 @@ LABEL_10:
   }
 
 LABEL_13:
-  if ([v5 panGestureState] <= 0 && !-[_UIKeyboardTextSelectionInteraction forceTouchGestureRecognizerShouldBegin:](self, "forceTouchGestureRecognizerShouldBegin:", v4))
+  if ([owner panGestureState] <= 0 && !-[_UIKeyboardTextSelectionInteraction forceTouchGestureRecognizerShouldBegin:](self, "forceTouchGestureRecognizerShouldBegin:", pressCopy))
   {
     if (v19)
     {
-      [(_UIKeyboardTextSelectionInteraction *)self _beginLongForcePressTimerForGesture:v4];
-      v36 = [v4 view];
-      isViewKeyboardLayoutPresent = _isViewKeyboardLayoutPresent(v36);
-      if (v4)
+      [(_UIKeyboardTextSelectionInteraction *)self _beginLongForcePressTimerForGesture:pressCopy];
+      view2 = [pressCopy view];
+      isViewKeyboardLayoutPresent = _isViewKeyboardLayoutPresent(view2);
+      if (pressCopy)
       {
-        v38 = *(v4 + 38);
+        v38 = *(pressCopy + 38);
       }
 
       else
@@ -2845,45 +2845,45 @@ LABEL_13:
 
   v20 = 0;
 LABEL_18:
-  v21 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-  v22 = [v21 textInputView];
-  [v4 _translationInView:v22];
+  selectionController2 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+  textInputView2 = [selectionController2 textInputView];
+  [pressCopy _translationInView:textInputView2];
   v24 = v23;
   v26 = v25;
 
-  if ([v4 state] == 1 || v19)
+  if ([pressCopy state] == 1 || v19)
   {
     v27 = *MEMORY[0x1E695EFF8];
     v28 = *(MEMORY[0x1E695EFF8] + 8);
-    [v5 setAccumulatedAcceleration:{*MEMORY[0x1E695EFF8], v28}];
-    [v5 setAccumulatedBounding:{v27, v28}];
-    [v5 setLastPanTranslation:{v24, v26}];
+    [owner setAccumulatedAcceleration:{*MEMORY[0x1E695EFF8], v28}];
+    [owner setAccumulatedBounding:{v27, v28}];
+    [owner setLastPanTranslation:{v24, v26}];
     [(_UIKeyboardTextSelectionInteraction *)self _prepareForGesture];
   }
 
-  if ([v4 currentPreviewForceState] < 1)
+  if ([pressCopy currentPreviewForceState] < 1)
   {
     goto LABEL_64;
   }
 
-  v29 = v4 ? v4[19] : 0;
-  v30 = v29 <= [v5 previousForcePressCount] ? 1 : v20;
+  v29 = pressCopy ? pressCopy[19] : 0;
+  v30 = v29 <= [owner previousForcePressCount] ? 1 : v20;
   if (v30)
   {
     goto LABEL_64;
   }
 
-  if ([v4 state] >= 2)
+  if ([pressCopy state] >= 2)
   {
     v31 = +[_UITextSelectionSettings sharedInstance];
-    v32 = [v31 shouldUseAcceleration];
-    v33 = [v32 BOOLValue];
+    shouldUseAcceleration = [v31 shouldUseAcceleration];
+    bOOLValue = [shouldUseAcceleration BOOLValue];
 
-    if (v33)
+    if (bOOLValue)
     {
-      if ([v5 panGestureState])
+      if ([owner panGestureState])
       {
-        v34 = v4;
+        v34 = pressCopy;
         v35 = [v34 state] != 3 && objc_msgSend(v34, "state") != 4 && objc_msgSend(v34, "state") != 5;
       }
 
@@ -2895,24 +2895,24 @@ LABEL_18:
       [(_UIKeyboardTextSelectionInteraction *)self acceleratedTranslation:v35 velocity:v24 isActive:v26, v13, v15];
       v40 = v39;
       v42 = v41;
-      [v5 setLastPanTranslation:{v24, v26}];
+      [owner setLastPanTranslation:{v24, v26}];
       v26 = v42;
       v24 = v40;
     }
 
-    v43 = [v5 weightedPoint];
-    [v43 addPoint:{v24, v26}];
+    weightedPoint = [owner weightedPoint];
+    [weightedPoint addPoint:{v24, v26}];
 
-    v44 = v4;
+    v44 = pressCopy;
     if ([v44 state] == 3 || objc_msgSend(v44, "state") == 4)
     {
     }
 
     else
     {
-      v48 = [v44 state];
+      state = [v44 state];
 
-      if (v48 != 5)
+      if (state != 5)
       {
 LABEL_47:
         [(_UIKeyboardTextSelectionInteraction *)self boundedTranslation:v24, v26];
@@ -2924,8 +2924,8 @@ LABEL_47:
 
     if ([(_UIKeyboardTextSelectionInteraction *)self isPlacedCarefully])
     {
-      v45 = [v5 weightedPoint];
-      [v45 weightedPoint];
+      weightedPoint2 = [owner weightedPoint];
+      [weightedPoint2 weightedPoint];
       v24 = v46;
       v26 = v47;
     }
@@ -2935,21 +2935,21 @@ LABEL_47:
 
 LABEL_48:
   Current = CFAbsoluteTimeGetCurrent();
-  [v5 lastPressTimestamp];
+  [owner lastPressTimestamp];
   v53 = v52;
-  v54 = [v5 delegate];
+  delegate2 = [owner delegate];
   if (objc_opt_respondsToSelector())
   {
-    v55 = [v5 delegate];
-    v56 = [v55 hasMarkedText];
+    delegate3 = [owner delegate];
+    hasMarkedText = [delegate3 hasMarkedText];
   }
 
   else
   {
-    v56 = 0;
+    hasMarkedText = 0;
   }
 
-  if ([v5 panGestureState] == 6)
+  if ([owner panGestureState] == 6)
   {
     v57 = Current - v53;
     if (Current - v53 <= 0.8)
@@ -2959,57 +2959,57 @@ LABEL_48:
 
     else
     {
-      [v5 setPanGestureState:{0, v57}];
+      [owner setPanGestureState:{0, v57}];
       [(_UIKeyboardTextSelectionInteraction *)self indirectBlockPanGestureWithState:3 withTranslation:v24, v26];
     }
   }
 
-  if ([v5 panGestureState])
+  if ([owner panGestureState])
   {
-    if (!(([v5 panGestureState] != 1) | v56 & 1))
+    if (!(([owner panGestureState] != 1) | hasMarkedText & 1))
     {
-      v58 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-      [v58 endSelection];
+      selectionController3 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+      [selectionController3 endSelection];
 
-      v59 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-      [v59 switchToRangedSelection];
+      selectionController4 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+      [selectionController4 switchToRangedSelection];
 
-      [v5 setPreviousRepeatedGranularity:1];
-      [v5 setPanGestureState:6];
+      [owner setPreviousRepeatedGranularity:1];
+      [owner setPanGestureState:6];
       [(_UIKeyboardTextSelectionInteraction *)self indirectBlockPanGestureWithState:1 withTranslation:v24, v26];
     }
   }
 
   else
   {
-    v60 = [v5 activeGestures];
-    v61 = [v60 containsObject:v4];
+    activeGestures = [owner activeGestures];
+    v61 = [activeGestures containsObject:pressCopy];
 
     if ((v61 & 1) == 0)
     {
-      v62 = [v5 activeGestures];
-      [v62 addObject:v4];
+      activeGestures2 = [owner activeGestures];
+      [activeGestures2 addObject:pressCopy];
     }
 
     if (v19)
     {
-      v63 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
-      v64 = [v63 textInputView];
+      selectionController5 = [(_UIKeyboardTextSelectionInteraction *)self selectionController];
+      textInputView3 = [selectionController5 textInputView];
       v24 = *MEMORY[0x1E695EFF8];
       v26 = *(MEMORY[0x1E695EFF8] + 8);
-      [v4 _setTranslation:v64 inView:{*MEMORY[0x1E695EFF8], v26}];
+      [pressCopy _setTranslation:textInputView3 inView:{*MEMORY[0x1E695EFF8], v26}];
 
-      [v5 setLastPanTranslation:{v24, v26}];
+      [owner setLastPanTranslation:{v24, v26}];
     }
 
-    [v5 setPanGestureState:1];
-    [(_UIKeyboardTextSelectionInteraction *)self clearKeyboardTouchesForGesture:v4];
-    [(_UIKeyboardTextSelectionInteraction *)self _willBeginIndirectSelectionGesture:v4];
+    [owner setPanGestureState:1];
+    [(_UIKeyboardTextSelectionInteraction *)self clearKeyboardTouchesForGesture:pressCopy];
+    [(_UIKeyboardTextSelectionInteraction *)self _willBeginIndirectSelectionGesture:pressCopy];
     [(_UIKeyboardTextSelectionInteraction *)self indirectCursorPanGestureWithState:1 withTranslation:0 withFlickDirection:v24, v26];
   }
 
-  [v5 setLastPressTimestamp:Current];
-  v65 = [MEMORY[0x1E69D4E18] sharedInstance];
+  [owner setLastPressTimestamp:Current];
+  mEMORY[0x1E69D4E18] = [MEMORY[0x1E69D4E18] sharedInstance];
   v67[0] = MEMORY[0x1E69E9820];
   v67[1] = 3221225472;
   v67[2] = __59___UIKeyboardTextSelectionInteraction_oneFingerForcePress___block_invoke;
@@ -3017,14 +3017,14 @@ LABEL_48:
   v67[4] = self;
   v70 = v24;
   v71 = v26;
-  v68 = v5;
-  v69 = v4;
-  [v65 logBlock:v67 domain:@"com.apple.keyboard.UIKit"];
+  v68 = owner;
+  v69 = pressCopy;
+  [mEMORY[0x1E69D4E18] logBlock:v67 domain:@"com.apple.keyboard.UIKit"];
 
 LABEL_64:
-  if (v4)
+  if (pressCopy)
   {
-    v66 = *(v4 + 38);
+    v66 = *(pressCopy + 38);
   }
 
   else
@@ -3032,7 +3032,7 @@ LABEL_64:
     v66 = 0;
   }
 
-  [v5 setPreviousForcePressCount:v66];
+  [owner setPreviousForcePressCount:v66];
 LABEL_67:
 }
 

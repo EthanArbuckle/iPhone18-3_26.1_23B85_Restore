@@ -2,14 +2,14 @@
 - (CGRect)bounds;
 - (NSArray)strokes;
 - (_TtC8PaperKit30MathExpressionEvaluationResult)init;
-- (void)setStrokeGroupIdentifier:(id)a3;
+- (void)setStrokeGroupIdentifier:(id)identifier;
 @end
 
 @implementation MathExpressionEvaluationResult
 
 - (NSArray)strokes
 {
-  v2 = self;
+  selfCopy = self;
   MathExpressionEvaluationResult.strokes.getter();
 
   __swift_instantiateConcreteTypeFromMangledNameV2(&_sSo8CHStroke_pMd);
@@ -41,11 +41,11 @@
   return result;
 }
 
-- (void)setStrokeGroupIdentifier:(id)a3
+- (void)setStrokeGroupIdentifier:(id)identifier
 {
   v4 = *(self + OBJC_IVAR____TtC8PaperKit30MathExpressionEvaluationResult_strokeGroupIdentifier);
-  *(self + OBJC_IVAR____TtC8PaperKit30MathExpressionEvaluationResult_strokeGroupIdentifier) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC8PaperKit30MathExpressionEvaluationResult_strokeGroupIdentifier) = identifier;
+  identifierCopy = identifier;
 }
 
 - (_TtC8PaperKit30MathExpressionEvaluationResult)init

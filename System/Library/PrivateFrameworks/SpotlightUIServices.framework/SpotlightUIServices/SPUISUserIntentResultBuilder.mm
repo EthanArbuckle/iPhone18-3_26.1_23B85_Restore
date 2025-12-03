@@ -1,6 +1,6 @@
 @interface SPUISUserIntentResultBuilder
-+ (BOOL)supportsResult:(id)a3;
-- (SPUISUserIntentResultBuilder)initWithResult:(id)a3;
++ (BOOL)supportsResult:(id)result;
+- (SPUISUserIntentResultBuilder)initWithResult:(id)result;
 - (id)buildCommand;
 - (id)buildDescriptions;
 - (id)buildResult;
@@ -10,45 +10,45 @@
 
 @implementation SPUISUserIntentResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v3 = [a3 contentType];
-  v4 = [v3 hasPrefix:*MEMORY[0x277CD3868]];
+  contentType = [result contentType];
+  v4 = [contentType hasPrefix:*MEMORY[0x277CD3868]];
 
   return v4;
 }
 
-- (SPUISUserIntentResultBuilder)initWithResult:(id)a3
+- (SPUISUserIntentResultBuilder)initWithResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v15.receiver = self;
   v15.super_class = SPUISUserIntentResultBuilder;
-  v5 = [(SPUISResultBuilder *)&v15 initWithResult:v4];
+  v5 = [(SPUISResultBuilder *)&v15 initWithResult:resultCopy];
   if (v5)
   {
-    v6 = [v4 applicationBundleIdentifier];
-    [(SPUISUserIntentResultBuilder *)v5 setAppBundleId:v6];
+    applicationBundleIdentifier = [resultCopy applicationBundleIdentifier];
+    [(SPUISUserIntentResultBuilder *)v5 setAppBundleId:applicationBundleIdentifier];
 
-    v7 = [v4 valueForAttribute:*MEMORY[0x277CC24F0] withType:objc_opt_class()];
+    v7 = [resultCopy valueForAttribute:*MEMORY[0x277CC24F0] withType:objc_opt_class()];
     -[SPUISUserIntentResultBuilder setIsBackgroundRunnable:](v5, "setIsBackgroundRunnable:", [v7 BOOLValue]);
 
-    v8 = [v4 valueForAttribute:*MEMORY[0x277CC3128] withType:objc_opt_class()];
+    v8 = [resultCopy valueForAttribute:*MEMORY[0x277CC3128] withType:objc_opt_class()];
     [(SPUISUserIntentResultBuilder *)v5 setStartDate:v8];
 
-    v9 = [v4 valueForAttribute:*MEMORY[0x277CC31F0] withType:objc_opt_class()];
+    v9 = [resultCopy valueForAttribute:*MEMORY[0x277CC31F0] withType:objc_opt_class()];
     [(SPUISUserIntentResultBuilder *)v5 setIntentName:v9];
 
-    v10 = [v4 valueForAttribute:*MEMORY[0x277CC2FE8] withType:objc_opt_class()];
+    v10 = [resultCopy valueForAttribute:*MEMORY[0x277CC2FE8] withType:objc_opt_class()];
     [(SPUISUserIntentResultBuilder *)v5 setPunchoutLabel:v10];
 
-    v11 = [(SPUISResultBuilder *)v5 result];
-    v12 = [v11 valueForAttribute:*MEMORY[0x277CC3220] withType:objc_opt_class()];
+    result = [(SPUISResultBuilder *)v5 result];
+    v12 = [result valueForAttribute:*MEMORY[0x277CC3220] withType:objc_opt_class()];
     [(SPUISUserIntentResultBuilder *)v5 setUserActivityData:v12];
 
-    v13 = [v4 valueForAttribute:*MEMORY[0x277CC3230] withType:objc_opt_class()];
+    v13 = [resultCopy valueForAttribute:*MEMORY[0x277CC3230] withType:objc_opt_class()];
     if (!v13)
     {
-      v13 = [v4 valueForAttribute:*MEMORY[0x277CC2BD8] withType:objc_opt_class()];
+      v13 = [resultCopy valueForAttribute:*MEMORY[0x277CC2BD8] withType:objc_opt_class()];
     }
 
     [(SPUISUserIntentResultBuilder *)v5 setUserActivityRequiredString:v13];
@@ -61,30 +61,30 @@
 {
   v6.receiver = self;
   v6.super_class = SPUISUserIntentResultBuilder;
-  v3 = [(SPUISResultBuilder *)&v6 buildResult];
-  v4 = [(SPUISUserIntentResultBuilder *)self userActivityRequiredString];
-  [v3 setUserActivityRequiredString:v4];
+  buildResult = [(SPUISResultBuilder *)&v6 buildResult];
+  userActivityRequiredString = [(SPUISUserIntentResultBuilder *)self userActivityRequiredString];
+  [buildResult setUserActivityRequiredString:userActivityRequiredString];
 
-  [v3 setType:20];
+  [buildResult setType:20];
 
-  return v3;
+  return buildResult;
 }
 
 - (id)buildCommand
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(SPUISResultBuilder *)self result];
-  v5 = [v4 userActivityRequiredString];
-  if (v5)
+  result = [(SPUISResultBuilder *)self result];
+  userActivityRequiredString = [result userActivityRequiredString];
+  if (userActivityRequiredString)
   {
-    v6 = v5;
+    userActivityRequiredString2 = userActivityRequiredString;
   }
 
   else
   {
-    v6 = [(SPUISUserIntentResultBuilder *)self userActivityRequiredString];
+    userActivityRequiredString2 = [(SPUISUserIntentResultBuilder *)self userActivityRequiredString];
 
-    if (!v6)
+    if (!userActivityRequiredString2)
     {
       v8 = 0;
       v7 = 0;
@@ -92,7 +92,7 @@
     }
   }
 
-  v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v6];
+  v7 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:userActivityRequiredString2];
   if (v7)
   {
     v8 = [MEMORY[0x277D79D88] donationWithUUID:v7];
@@ -104,13 +104,13 @@
   }
 
 LABEL_8:
-  v9 = [v8 interaction];
-  v10 = [v9 intent];
+  interaction = [v8 interaction];
+  intent = [interaction intent];
 
-  if (v10)
+  if (intent)
   {
     v18 = 0;
-    v11 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v10 requiringSecureCoding:0 error:&v18];
+    v11 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:intent requiringSecureCoding:0 error:&v18];
     v12 = v18;
     if (v12)
     {
@@ -143,8 +143,8 @@ LABEL_8:
 
   else
   {
-    v16 = [(SPUISUserIntentResultBuilder *)self userActivityData];
-    [v15 setIntentMessageData:v16];
+    userActivityData = [(SPUISUserIntentResultBuilder *)self userActivityData];
+    [v15 setIntentMessageData:userActivityData];
   }
 
   return v15;
@@ -154,31 +154,31 @@ LABEL_8:
 {
   v6.receiver = self;
   v6.super_class = SPUISUserIntentResultBuilder;
-  v3 = [(SPUISResultBuilder *)&v6 buildThumbnail];
-  if (!v3)
+  buildThumbnail = [(SPUISResultBuilder *)&v6 buildThumbnail];
+  if (!buildThumbnail)
   {
-    v3 = objc_opt_new();
-    v4 = [(SPUISUserIntentResultBuilder *)self appBundleId];
-    [v3 setBundleIdentifier:v4];
+    buildThumbnail = objc_opt_new();
+    appBundleId = [(SPUISUserIntentResultBuilder *)self appBundleId];
+    [buildThumbnail setBundleIdentifier:appBundleId];
   }
 
-  return v3;
+  return buildThumbnail;
 }
 
 - (id)buildDescriptions
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SPUISResultBuilder *)self result];
-  v4 = [v3 contentTypeTree];
-  if ([v4 containsObject:*MEMORY[0x277CD3860]])
+  result = [(SPUISResultBuilder *)self result];
+  contentTypeTree = [result contentTypeTree];
+  if ([contentTypeTree containsObject:*MEMORY[0x277CD3860]])
   {
-    v5 = [(SPUISUserIntentResultBuilder *)self startDate];
+    startDate = [(SPUISUserIntentResultBuilder *)self startDate];
 
-    if (v5)
+    if (startDate)
     {
       v6 = +[SPUISDateFormatManager shortDateTimeFormatter];
-      v7 = [(SPUISUserIntentResultBuilder *)self startDate];
-      v8 = [v6 stringFromDate:v7];
+      startDate2 = [(SPUISUserIntentResultBuilder *)self startDate];
+      v8 = [v6 stringFromDate:startDate2];
 
       v9 = MEMORY[0x277CCACA8];
       v10 = +[SPUISDateFormatManager dateLastCalledStringFormat];
@@ -207,7 +207,7 @@ LABEL_6:
 {
   v5 = *MEMORY[0x277D85DE8];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_26B882000, a2, OS_LOG_TYPE_ERROR, "SPUISUserIntentResultBuilder: eror when converting intent to data: %@", &v3, 0xCu);
   v2 = *MEMORY[0x277D85DE8];
 }

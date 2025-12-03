@@ -1,30 +1,30 @@
 @interface FLSpring
-+ (id)springWithValue:(double)a3;
-- (FLSpring)initWithValue:(double)a3;
++ (id)springWithValue:(double)value;
+- (FLSpring)initWithValue:(double)value;
 - (FLSpringParameters)_effectiveParameters;
 - (FLSpringParameters)parameters;
 - (FLSpringParameters)trackingParameters;
-- (double)_projectedTargetForVelocity:(double)a3;
+- (double)_projectedTargetForVelocity:(double)velocity;
 - (double)projectedTarget;
 - (void)_updateForEffectiveParameters;
-- (void)resetImmediatelyToValue:(double)a3;
-- (void)setParameters:(FLSpringParameters)a3;
-- (void)setTarget:(double)a3;
-- (void)setTracking:(BOOL)a3;
-- (void)setTrackingParameters:(FLSpringParameters)a3;
-- (void)step:(double)a3;
+- (void)resetImmediatelyToValue:(double)value;
+- (void)setParameters:(FLSpringParameters)parameters;
+- (void)setTarget:(double)target;
+- (void)setTracking:(BOOL)tracking;
+- (void)setTrackingParameters:(FLSpringParameters)parameters;
+- (void)step:(double)step;
 @end
 
 @implementation FLSpring
 
-+ (id)springWithValue:(double)a3
++ (id)springWithValue:(double)value
 {
-  v3 = [[a1 alloc] initWithValue:a3];
+  v3 = [[self alloc] initWithValue:value];
 
   return v3;
 }
 
-- (FLSpring)initWithValue:(double)a3
+- (FLSpring)initWithValue:(double)value
 {
   v8.receiver = self;
   v8.super_class = FLSpring;
@@ -40,22 +40,22 @@
     *(v4 + 49) = 0x7FEFFFFFFFFFFFFFLL;
     *(v4 + 51) = 0x3FC3333333333333;
     *(v4 + 52) = 0x3FEFD70A3D70A3D7;
-    [v4 resetImmediatelyToValue:a3];
+    [v4 resetImmediatelyToValue:value];
     v6 = v5;
   }
 
   return v5;
 }
 
-- (void)setTarget:(double)a3
+- (void)setTarget:(double)target
 {
   rubberbandRange = self->_rubberbandRange;
   if (rubberbandRange != 1.79769313e308)
   {
     maximumTarget = self->_maximumTarget;
-    if (maximumTarget > a3)
+    if (maximumTarget > target)
     {
-      maximumTarget = a3;
+      maximumTarget = target;
     }
 
     if (maximumTarget < self->_minimumTarget)
@@ -63,18 +63,18 @@
       maximumTarget = self->_minimumTarget;
     }
 
-    a3 = FLRubberbandValue(a3, maximumTarget, rubberbandRange, self->_rubberbandFactor);
+    target = FLRubberbandValue(target, maximumTarget, rubberbandRange, self->_rubberbandFactor);
   }
 
   if (self->_transitioningFromTracking && self->_retargetResponseFraction > 0.0)
   {
-    self->_s.anchor.anchor = a3;
+    self->_s.anchor.anchor = target;
   }
 
   else
   {
 
-    FLCompoundSpringSetAnchorImmediately(&self->_s, a3);
+    FLCompoundSpringSetAnchorImmediately(&self->_s, target);
   }
 }
 
@@ -98,32 +98,32 @@
   return result;
 }
 
-- (double)_projectedTargetForVelocity:(double)a3
+- (double)_projectedTargetForVelocity:(double)velocity
 {
   [(FLSpring *)self value];
   projectionDeceleration = self->_projectionDeceleration;
 
-  return FLDeceleratedRestPosition(v5, a3, projectionDeceleration);
+  return FLDeceleratedRestPosition(v5, velocity, projectionDeceleration);
 }
 
-- (void)resetImmediatelyToValue:(double)a3
+- (void)resetImmediatelyToValue:(double)value
 {
   [(FLSpring *)self _effectiveParameters];
-  FLCompoundSpringMakeWithDampingRatioResponse(__src, a3, 0.0, v5, v6);
+  FLCompoundSpringMakeWithDampingRatioResponse(__src, value, 0.0, v5, v6);
   memcpy(&self->_s, __src, sizeof(self->_s));
-  self->_previousTarget = a3;
+  self->_previousTarget = value;
   self->_targetVelocity = 0.0;
 }
 
-- (void)setParameters:(FLSpringParameters)a3
+- (void)setParameters:(FLSpringParameters)parameters
 {
-  v3.f64[0] = a3.dampingRatio;
-  v3.f64[1] = a3.dampingRatioSmoothing;
-  v4.f64[0] = a3.response;
-  v4.f64[1] = a3.responseSmoothing;
+  v3.f64[0] = parameters.dampingRatio;
+  v3.f64[1] = parameters.dampingRatioSmoothing;
+  v4.f64[0] = parameters.response;
+  v4.f64[1] = parameters.responseSmoothing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_parameters.dampingRatio, v3), vceqq_f64(*&self->_parameters.response, v4)))) & 1) == 0)
   {
-    self->_parameters = a3;
+    self->_parameters = parameters;
     if (!self->_tracking)
     {
       [(FLSpring *)self _updateForEffectiveParameters];
@@ -131,15 +131,15 @@
   }
 }
 
-- (void)setTrackingParameters:(FLSpringParameters)a3
+- (void)setTrackingParameters:(FLSpringParameters)parameters
 {
-  v3.f64[0] = a3.dampingRatio;
-  v3.f64[1] = a3.dampingRatioSmoothing;
-  v4.f64[0] = a3.response;
-  v4.f64[1] = a3.responseSmoothing;
+  v3.f64[0] = parameters.dampingRatio;
+  v3.f64[1] = parameters.dampingRatioSmoothing;
+  v4.f64[0] = parameters.response;
+  v4.f64[1] = parameters.responseSmoothing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_trackingParameters.dampingRatio, v3), vceqq_f64(*&self->_trackingParameters.response, v4)))) & 1) == 0)
   {
-    self->_trackingParameters = a3;
+    self->_trackingParameters = parameters;
     if (self->_tracking)
     {
       [(FLSpring *)self _updateForEffectiveParameters];
@@ -147,14 +147,14 @@
   }
 }
 
-- (void)setTracking:(BOOL)a3
+- (void)setTracking:(BOOL)tracking
 {
   tracking = self->_tracking;
-  if (tracking != a3)
+  if (tracking != tracking)
   {
-    self->_transitioningFromTracking = tracking & ~a3;
-    self->_tracking = a3;
-    if (!a3)
+    self->_transitioningFromTracking = tracking & ~tracking;
+    self->_tracking = tracking;
+    if (!tracking)
     {
       v6 = self->_retargetResponseFraction * self->_parameters.response;
       [(FLSpring *)self _projectedTargetForVelocity:self->_targetVelocity];
@@ -165,13 +165,13 @@
   }
 }
 
-- (void)step:(double)a3
+- (void)step:(double)step
 {
   memcpy(v6, &self->_s, sizeof(v6));
-  FLCompoundSpringStep(v6, __src, a3);
+  FLCompoundSpringStep(v6, __src, step);
   memcpy(&self->_s, __src, sizeof(self->_s));
   anchor = self->_s.anchor.anchor;
-  self->_targetVelocity = (anchor - self->_previousTarget) / a3 * 0.25 + self->_targetVelocity * 0.75;
+  self->_targetVelocity = (anchor - self->_previousTarget) / step * 0.25 + self->_targetVelocity * 0.75;
   self->_previousTarget = anchor;
   self->_transitioningFromTracking = 0;
 }

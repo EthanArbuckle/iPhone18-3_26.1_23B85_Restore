@@ -1,18 +1,18 @@
 @interface THWInteractiveImageWidgetInfo
 - (CGSize)backgroundSize;
-- (THWInteractiveImageWidgetInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 stageGeometry:(id)a6;
+- (THWInteractiveImageWidgetInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style stageGeometry:(id)stageGeometry;
 - (id)childEnumerator;
-- (unint64_t)indexOfCallout:(id)a3;
+- (unint64_t)indexOfCallout:(id)callout;
 - (void)dealloc;
 - (void)p_initZoomLimits;
-- (void)setupWithCallouts:(id)a3 backgroundSize:(CGSize)a4 backgroundImageInfo:(id)a5 useSidebar:(BOOL)a6 showTransportControls:(BOOL)a7;
+- (void)setupWithCallouts:(id)callouts backgroundSize:(CGSize)size backgroundImageInfo:(id)info useSidebar:(BOOL)sidebar showTransportControls:(BOOL)controls;
 @end
 
 @implementation THWInteractiveImageWidgetInfo
 
-- (unint64_t)indexOfCallout:(id)a3
+- (unint64_t)indexOfCallout:(id)callout
 {
-  if (a3)
+  if (callout)
   {
     return [(NSArray *)self->_callouts indexOfObjectIdenticalTo:?];
   }
@@ -23,15 +23,15 @@
   }
 }
 
-- (THWInteractiveImageWidgetInfo)initWithContext:(id)a3 geometry:(id)a4 style:(id)a5 stageGeometry:(id)a6
+- (THWInteractiveImageWidgetInfo)initWithContext:(id)context geometry:(id)geometry style:(id)style stageGeometry:(id)stageGeometry
 {
   v10.receiver = self;
   v10.super_class = THWInteractiveImageWidgetInfo;
-  v8 = [(THWInteractiveImageWidgetInfo *)&v10 initWithContext:a3 geometry:a4];
+  v8 = [(THWInteractiveImageWidgetInfo *)&v10 initWithContext:context geometry:geometry];
   if (v8)
   {
-    v8->_style = a5;
-    v8->_stageGeometry = a6;
+    v8->_style = style;
+    v8->_stageGeometry = stageGeometry;
   }
 
   return v8;
@@ -44,20 +44,20 @@
   [(THWInteractiveImageWidgetInfo *)&v3 dealloc];
 }
 
-- (void)setupWithCallouts:(id)a3 backgroundSize:(CGSize)a4 backgroundImageInfo:(id)a5 useSidebar:(BOOL)a6 showTransportControls:(BOOL)a7
+- (void)setupWithCallouts:(id)callouts backgroundSize:(CGSize)size backgroundImageInfo:(id)info useSidebar:(BOOL)sidebar showTransportControls:(BOOL)controls
 {
-  v7 = a7;
-  v8 = a6;
-  [(THWInteractiveImageWidgetInfo *)self setBackgroundSize:a4.width, a4.height];
-  [(THWInteractiveImageWidgetInfo *)self setBackgroundImageInfo:a5];
+  controlsCopy = controls;
+  sidebarCopy = sidebar;
+  [(THWInteractiveImageWidgetInfo *)self setBackgroundSize:size.width, size.height];
+  [(THWInteractiveImageWidgetInfo *)self setBackgroundImageInfo:info];
   v12 = [TSDInfoGeometry alloc];
   [(THWStageGeometry *)[(THWInteractiveImageWidgetInfo *)self stageGeometry] frame];
   y = CGPointZero.y;
   v14 = [v12 initWithPosition:CGPointZero.x size:y angle:?];
 
-  self->_callouts = [a3 copy];
-  [(THWInteractiveImageWidgetInfo *)self setUseSidebar:v8];
-  [(THWInteractiveImageWidgetInfo *)self setShowTransportControls:v7];
+  self->_callouts = [callouts copy];
+  [(THWInteractiveImageWidgetInfo *)self setUseSidebar:sidebarCopy];
+  [(THWInteractiveImageWidgetInfo *)self setShowTransportControls:controlsCopy];
   [(THWStageGeometry *)[(THWInteractiveImageWidgetInfo *)self stageGeometry] frame];
   v16 = [[TSDInfoGeometry alloc] initWithPosition:CGPointZero.x size:y angle:{v15, 44.0, 0.0}];
   [(THWInteractiveImageWidgetInfo *)self setTransportControlsInfo:[[THWInteractiveImageRadioPanelInfo alloc] initWithGeometry:v16 widgetInfo:self]];
@@ -73,8 +73,8 @@
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v3 = [(THWInteractiveImageWidgetInfo *)self calloutEnumerator];
-    v4 = [(NSEnumerator *)v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+    calloutEnumerator = [(THWInteractiveImageWidgetInfo *)self calloutEnumerator];
+    v4 = [(NSEnumerator *)calloutEnumerator countByEnumeratingWithState:&v22 objects:v26 count:16];
     if (v4)
     {
       v5 = v4;
@@ -87,7 +87,7 @@
         {
           if (*v23 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(calloutEnumerator);
           }
 
           v10 = *(*(&v22 + 1) + 8 * i);
@@ -104,7 +104,7 @@
           }
         }
 
-        v5 = [(NSEnumerator *)v3 countByEnumeratingWithState:&v22 objects:v26 count:16];
+        v5 = [(NSEnumerator *)calloutEnumerator countByEnumeratingWithState:&v22 objects:v26 count:16];
       }
 
       while (v5);

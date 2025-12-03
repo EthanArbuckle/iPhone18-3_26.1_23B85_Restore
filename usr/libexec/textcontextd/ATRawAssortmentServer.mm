@@ -1,5 +1,5 @@
 @interface ATRawAssortmentServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (void)dealloc;
 @end
 
@@ -9,20 +9,20 @@
 {
   v3 = OBJC_IVAR____TtC12textcontextd21ATRawAssortmentServer_listener;
   v4 = *(&self->super.isa + OBJC_IVAR____TtC12textcontextd21ATRawAssortmentServer_listener);
-  v5 = self;
+  selfCopy = self;
   [v4 setDelegate:0];
   [*(&self->super.isa + v3) invalidate];
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for ATRawAssortmentServer();
   [(ATRawAssortmentServer *)&v6 dealloc];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_100001CF0(v7);
+  listenerCopy = listener;
+  connectionCopy = connection;
+  selfCopy = self;
+  v9 = sub_100001CF0(connectionCopy);
 
   return v9 & 1;
 }

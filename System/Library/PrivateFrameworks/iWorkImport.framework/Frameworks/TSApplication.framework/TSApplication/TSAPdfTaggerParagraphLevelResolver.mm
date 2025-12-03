@@ -1,23 +1,23 @@
 @interface TSAPdfTaggerParagraphLevelResolver
-- (BOOL)paragraphInfo:(id)a3 matchesParagraphInfo:(id)a4 level:(int)a5;
+- (BOOL)paragraphInfo:(id)info matchesParagraphInfo:(id)paragraphInfo level:(int)level;
 - (TSAPdfTagger)tagger;
-- (TSAPdfTaggerParagraphLevelResolver)initWithTagger:(id)a3;
-- (int)levelOfCurrentParagraph:(id *)a3;
+- (TSAPdfTaggerParagraphLevelResolver)initWithTagger:(id)tagger;
+- (int)levelOfCurrentParagraph:(id *)paragraph;
 - (int)tagType;
 @end
 
 @implementation TSAPdfTaggerParagraphLevelResolver
 
-- (TSAPdfTaggerParagraphLevelResolver)initWithTagger:(id)a3
+- (TSAPdfTaggerParagraphLevelResolver)initWithTagger:(id)tagger
 {
-  v4 = a3;
+  taggerCopy = tagger;
   v8.receiver = self;
   v8.super_class = TSAPdfTaggerParagraphLevelResolver;
   v5 = [(TSAPdfTaggerParagraphLevelResolver *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_tagger, v4);
+    objc_storeWeak(&v5->_tagger, taggerCopy);
   }
 
   return v6;
@@ -44,7 +44,7 @@
   objc_exception_throw(v22);
 }
 
-- (int)levelOfCurrentParagraph:(id *)a3
+- (int)levelOfCurrentParagraph:(id *)paragraph
 {
   v4 = MEMORY[0x277D81150];
   v5 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSAPdfTaggerParagraphLevelResolver levelOfCurrentParagraph:]", v3);
@@ -65,10 +65,10 @@
   objc_exception_throw(v23);
 }
 
-- (BOOL)paragraphInfo:(id)a3 matchesParagraphInfo:(id)a4 level:(int)a5
+- (BOOL)paragraphInfo:(id)info matchesParagraphInfo:(id)paragraphInfo level:(int)level
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  paragraphInfoCopy = paragraphInfo;
   v8 = MEMORY[0x277D81150];
   v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSAPdfTaggerParagraphLevelResolver paragraphInfo:matchesParagraphInfo:level:]", v10);
   v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/application/common/TSAPdfTagger.mm", v13);

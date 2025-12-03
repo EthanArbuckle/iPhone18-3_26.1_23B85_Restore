@@ -1,41 +1,41 @@
 @interface BPSMerge
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5;
-- (BPSMerge)initWithA:(id)a3 b:(id)a4;
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state;
+- (BPSMerge)initWithA:(id)a b:(id)b;
 - (id)bookmark;
 - (id)bookmarkableUpstreams;
 - (id)nextEvent;
 - (id)upstreamPublishers;
-- (id)validateBookmark:(id)a3;
-- (void)applyBookmark:(id)a3;
+- (id)validateBookmark:(id)bookmark;
+- (void)applyBookmark:(id)bookmark;
 - (void)reset;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BPSMerge
 
-- (BPSMerge)initWithA:(id)a3 b:(id)a4
+- (BPSMerge)initWithA:(id)a b:(id)b
 {
-  v7 = a3;
-  v8 = a4;
+  aCopy = a;
+  bCopy = b;
   v12.receiver = self;
   v12.super_class = BPSMerge;
   v9 = [(BPSMerge *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_a, a3);
-    objc_storeStrong(&v10->_b, a4);
+    objc_storeStrong(&v9->_a, a);
+    objc_storeStrong(&v10->_b, b);
     v10->_nextIsB = 0;
   }
 
   return v10;
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
-  v4 = a3;
-  v9 = [[_BPSMerged alloc] initWithDownstream:v4 count:2];
-  [v4 receiveSubscription:v9];
+  subscribeCopy = subscribe;
+  v9 = [[_BPSMerged alloc] initWithDownstream:subscribeCopy count:2];
+  [subscribeCopy receiveSubscription:v9];
 
   v5 = [(BPSMerge *)self a];
   v6 = [[_BPSMergedSide alloc] initWithIndex:0 merger:v9];
@@ -73,10 +73,10 @@
   }
   v3 = ;
   [(BPSMerge *)self setNextIsB:[(BPSMerge *)self nextIsB]^ 1];
-  v4 = [v3 nextEvent];
-  if (v4)
+  nextEvent = [v3 nextEvent];
+  if (nextEvent)
   {
-    v5 = v4;
+    nextEvent2 = nextEvent;
   }
 
   else
@@ -93,11 +93,11 @@
     v6 = ;
 
     [(BPSMerge *)self setNextIsB:[(BPSMerge *)self nextIsB]^ 1];
-    v5 = [v6 nextEvent];
+    nextEvent2 = [v6 nextEvent];
     v3 = v6;
   }
 
-  return v5;
+  return nextEvent2;
 }
 
 - (void)reset
@@ -111,15 +111,15 @@
 - (id)bookmark
 {
   v2 = MEMORY[0x1E696AD98];
-  v3 = [(BPSMerge *)self nextIsB];
+  nextIsB = [(BPSMerge *)self nextIsB];
 
-  return [v2 numberWithBool:v3];
+  return [v2 numberWithBool:nextIsB];
 }
 
-- (id)validateBookmark:(id)a3
+- (id)validateBookmark:(id)bookmark
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  bookmarkCopy = bookmark;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -130,10 +130,10 @@
   {
     v5 = objc_alloc(MEMORY[0x1E696AEC0]);
     v6 = objc_opt_class();
-    v7 = [v5 initWithFormat:@"%@ expected bookmark of class %@, but received %@", v6, objc_opt_class(), v3];
+    bookmarkCopy = [v5 initWithFormat:@"%@ expected bookmark of class %@, but received %@", v6, objc_opt_class(), bookmarkCopy];
     v8 = MEMORY[0x1E696ABC0];
     v12 = *MEMORY[0x1E696A578];
-    v13[0] = v7;
+    v13[0] = bookmarkCopy;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v4 = [v8 errorWithDomain:@"BiomePubSubError" code:2 userInfo:v9];
   }
@@ -143,19 +143,19 @@
   return v4;
 }
 
-- (void)applyBookmark:(id)a3
+- (void)applyBookmark:(id)bookmark
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [bookmark BOOLValue];
 
-  [(BPSMerge *)self setNextIsB:v4];
+  [(BPSMerge *)self setNextIsB:bOOLValue];
 }
 
-+ (id)publisherWithPublisher:(id)a3 upstreams:(id)a4 bookmarkState:(id)a5
++ (id)publisherWithPublisher:(id)publisher upstreams:(id)upstreams bookmarkState:(id)state
 {
-  v5 = a4;
+  upstreamsCopy = upstreams;
   v6 = [BPSMerge alloc];
-  v7 = [v5 objectAtIndexedSubscript:0];
-  v8 = [v5 objectAtIndexedSubscript:1];
+  v7 = [upstreamsCopy objectAtIndexedSubscript:0];
+  v8 = [upstreamsCopy objectAtIndexedSubscript:1];
 
   v9 = [(BPSMerge *)v6 initWithA:v7 b:v8];
 

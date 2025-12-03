@@ -1,6 +1,6 @@
 @interface KGGraphManagerRecord
 - (BOOL)decrementUseCount;
-- (KGGraphManagerRecord)initWithGraphManager:(id)a3;
+- (KGGraphManagerRecord)initWithGraphManager:(id)manager;
 @end
 
 @implementation KGGraphManagerRecord
@@ -12,16 +12,16 @@
   return v2 == 0;
 }
 
-- (KGGraphManagerRecord)initWithGraphManager:(id)a3
+- (KGGraphManagerRecord)initWithGraphManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = KGGraphManagerRecord;
   v6 = [(KGGraphManagerRecord *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_graphManager, a3);
+    objc_storeStrong(&v6->_graphManager, manager);
     v7->_useCount = 1;
   }
 

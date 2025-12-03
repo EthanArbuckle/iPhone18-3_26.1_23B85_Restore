@@ -1,19 +1,19 @@
 @interface VKDebugTreePropertyNode
-- (VKDebugTreePropertyNode)initWithDebugTreeProperty:(const void *)a3 withParent:(id)a4;
-- (id)idValueForTreeValue:(const void *)a3;
+- (VKDebugTreePropertyNode)initWithDebugTreeProperty:(const void *)property withParent:(id)parent;
+- (id)idValueForTreeValue:(const void *)value;
 - (id)name;
 - (id)propertyColumn;
 - (id)tagsColumn;
 - (id)valueColumn;
-- (void)searchNodes:(id)a3 withParameter:(id)a4;
+- (void)searchNodes:(id)nodes withParameter:(id)parameter;
 @end
 
 @implementation VKDebugTreePropertyNode
 
-- (id)idValueForTreeValue:(const void *)a3
+- (id)idValueForTreeValue:(const void *)value
 {
   v3 = 0;
-  v4 = *(a3 + 14);
+  v4 = *(value + 14);
   if (v4 <= 1)
   {
     if (v4)
@@ -23,12 +23,12 @@
         goto LABEL_19;
       }
 
-      v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(a3 + 1)];
+      v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:*(value + 1)];
     }
 
     else
     {
-      v7 = [MEMORY[0x1E696AD98] numberWithLongLong:*a3];
+      v7 = [MEMORY[0x1E696AD98] numberWithLongLong:*value];
     }
 
     goto LABEL_18;
@@ -36,7 +36,7 @@
 
   if (v4 == 2)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.02f", *(a3 + 2)];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.02f", *(value + 2)];
 LABEL_18:
     v3 = v7;
     goto LABEL_19;
@@ -49,7 +49,7 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    hasComputedJunctions = geo::codec::VectorTile::hasComputedJunctions(*(a3 + 24));
+    hasComputedJunctions = geo::codec::VectorTile::hasComputedJunctions(*(value + 24));
     v6 = @"False";
     if (hasComputedJunctions)
     {
@@ -61,7 +61,7 @@ LABEL_18:
   }
 
   v8 = MEMORY[0x1E696AEC0];
-  gdc::DebugTreeValue::string(&__p, a3);
+  gdc::DebugTreeValue::string(&__p, value);
   if ((__p.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
     p_p = &__p;
@@ -83,10 +83,10 @@ LABEL_19:
   return v3;
 }
 
-- (void)searchNodes:(id)a3 withParameter:(id)a4
+- (void)searchNodes:(id)nodes withParameter:(id)parameter
 {
-  v31 = a3;
-  v6 = a4;
+  nodesCopy = nodes;
+  parameterCopy = parameter;
   property = self->_property;
   if (*(property + 23) < 0)
   {
@@ -94,7 +94,7 @@ LABEL_19:
   }
 
   v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:property];
-  v9 = [v8 rangeOfString:v6 options:1];
+  v9 = [v8 rangeOfString:parameterCopy options:1];
 
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -130,7 +130,7 @@ LABEL_19:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            if ([v17 rangeOfString:v6 options:1] != 0x7FFFFFFFFFFFFFFFLL)
+            if ([v17 rangeOfString:parameterCopy options:1] != 0x7FFFFFFFFFFFFFFFLL)
             {
               goto LABEL_16;
             }
@@ -138,14 +138,14 @@ LABEL_19:
 
           else
           {
-            v19 = [v17 stringValue];
-            v20 = [v19 rangeOfString:v6 options:1];
+            stringValue = [v17 stringValue];
+            v20 = [stringValue rangeOfString:parameterCopy options:1];
 
             if (v20 != 0x7FFFFFFFFFFFFFFFLL)
             {
 LABEL_16:
-              v21 = [(VKDebugTreeNode *)self parent];
-              [v31 addObject:v21];
+              parent = [(VKDebugTreeNode *)self parent];
+              [nodesCopy addObject:parent];
 
               v18 = 1;
               goto LABEL_17;
@@ -201,7 +201,7 @@ LABEL_17:
 
         v25 = v32[23] >= 0 ? v32 : *v32;
         v26 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v25];
-        v27 = [v26 rangeOfString:v6 options:1];
+        v27 = [v26 rangeOfString:parameterCopy options:1];
 
         if (v27 != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -220,8 +220,8 @@ LABEL_17:
         }
       }
 
-      v29 = [(VKDebugTreeNode *)self parent];
-      [v31 addObject:v29];
+      parent2 = [(VKDebugTreeNode *)self parent];
+      [nodesCopy addObject:parent2];
 
       if ((v32[23] & 0x80000000) != 0)
       {
@@ -232,8 +232,8 @@ LABEL_17:
 
   else
   {
-    v28 = [(VKDebugTreeNode *)self parent];
-    [v31 addObject:v28];
+    parent3 = [(VKDebugTreeNode *)self parent];
+    [nodesCopy addObject:parent3];
   }
 
 LABEL_36:
@@ -337,8 +337,8 @@ LABEL_36:
 
           else
           {
-            v12 = [v11 stringValue];
-            [(__CFString *)v3 appendString:v12];
+            stringValue = [v11 stringValue];
+            [(__CFString *)v3 appendString:stringValue];
           }
 
           [(__CFString *)v3 appendString:@", "];
@@ -383,14 +383,14 @@ LABEL_36:
   return [MEMORY[0x1E696AEC0] stringWithUTF8String:property];
 }
 
-- (VKDebugTreePropertyNode)initWithDebugTreeProperty:(const void *)a3 withParent:(id)a4
+- (VKDebugTreePropertyNode)initWithDebugTreeProperty:(const void *)property withParent:(id)parent
 {
   v6.receiver = self;
   v6.super_class = VKDebugTreePropertyNode;
-  result = [(VKDebugTreeNode *)&v6 initWithParent:a4];
+  result = [(VKDebugTreeNode *)&v6 initWithParent:parent];
   if (result)
   {
-    result->_property = a3;
+    result->_property = property;
   }
 
   return result;

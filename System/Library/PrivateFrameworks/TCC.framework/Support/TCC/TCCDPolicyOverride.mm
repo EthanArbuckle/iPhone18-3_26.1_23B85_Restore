@@ -3,19 +3,19 @@
 + (id)logHandle;
 + (id)orderedOverridePolicies;
 + (id)queue;
-+ (unint64_t)evaluateOverridePolicyForAccessByIdentity:(id)a3 toService:(id)a4 withIndirectObjectIdentityIdentity:(id)a5 authorizationReason:(unint64_t *)a6;
++ (unint64_t)evaluateOverridePolicyForAccessByIdentity:(id)identity toService:(id)service withIndirectObjectIdentityIdentity:(id)identityIdentity authorizationReason:(unint64_t *)reason;
 + (void)loadPolicyData;
-+ (void)populatePolicyAuthorizationsForClient:(id)a3 message:(id)a4;
-+ (void)populatePolicyAuthorizationsForService:(id)a3 message:(id)a4 specifiedAuth:(unint64_t)a5;
-- (BOOL)_locked_populateGeneralAuthorzationFieldsForService:(id)a3 info:(id)a4 entry:(id)a5;
-- (BOOL)_locked_populateIndirectAuthorzationFieldsForService:(id)a3 info:(id)a4 entry:(id)a5;
-- (BOOL)_locked_populatePolicyAuthorizationForSubjectWithInfoDict:(id)a3 message:(id)a4;
++ (void)populatePolicyAuthorizationsForClient:(id)client message:(id)message;
++ (void)populatePolicyAuthorizationsForService:(id)service message:(id)message specifiedAuth:(unint64_t)auth;
+- (BOOL)_locked_populateGeneralAuthorzationFieldsForService:(id)service info:(id)info entry:(id)entry;
+- (BOOL)_locked_populateIndirectAuthorzationFieldsForService:(id)service info:(id)info entry:(id)entry;
+- (BOOL)_locked_populatePolicyAuthorizationForSubjectWithInfoDict:(id)dict message:(id)message;
 - (BOOL)isActive;
-- (BOOL)validateEntry:(id)a3 identifierType:(id)a4 codeRequirementString:(id)a5 serviceName:(id)a6 allowed:(id)a7 comment:(id)a8;
+- (BOOL)validateEntry:(id)entry identifierType:(id)type codeRequirementString:(id)string serviceName:(id)name allowed:(id)allowed comment:(id)comment;
 - (TCCDPolicyOverride)init;
-- (void)_locked_populatePolicyAuthorizationsForClient:(id)a3 message:(id)a4;
-- (void)_locked_populatePolicyAuthorizationsForService:(id)a3 message:(id)a4 specifiedAuth:(unint64_t)a5;
-- (void)addBundleIdWithSpecifiedAuth:(unint64_t)a3 infoDict:(id)a4 message:(id)a5;
+- (void)_locked_populatePolicyAuthorizationsForClient:(id)client message:(id)message;
+- (void)_locked_populatePolicyAuthorizationsForService:(id)service message:(id)message specifiedAuth:(unint64_t)auth;
+- (void)addBundleIdWithSpecifiedAuth:(unint64_t)auth infoDict:(id)dict message:(id)message;
 - (void)loadAndParse;
 - (void)loadPlist;
 - (void)parsePlist;
@@ -58,21 +58,21 @@
 
 + (BOOL)isMDMPolicyOverrideActive
 {
-  v2 = [a1 orderedOverridePolicies];
-  v3 = [v2 firstObject];
-  v4 = [v3 isActive];
+  orderedOverridePolicies = [self orderedOverridePolicies];
+  firstObject = [orderedOverridePolicies firstObject];
+  isActive = [firstObject isActive];
 
-  return v4;
+  return isActive;
 }
 
 + (void)loadPolicyData
 {
-  v2 = [a1 orderedOverridePolicies];
+  orderedOverridePolicies = [self orderedOverridePolicies];
   v7 = 0u;
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  v3 = [orderedOverridePolicies countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -84,7 +84,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(orderedOverridePolicies);
         }
 
         [*(*(&v7 + 1) + 8 * v6) loadAndParse];
@@ -92,37 +92,37 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [orderedOverridePolicies countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
   }
 }
 
-+ (unint64_t)evaluateOverridePolicyForAccessByIdentity:(id)a3 toService:(id)a4 withIndirectObjectIdentityIdentity:(id)a5 authorizationReason:(unint64_t *)a6
++ (unint64_t)evaluateOverridePolicyForAccessByIdentity:(id)identity toService:(id)service withIndirectObjectIdentityIdentity:(id)identityIdentity authorizationReason:(unint64_t *)reason
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  identityCopy = identity;
+  serviceCopy = service;
+  identityIdentityCopy = identityIdentity;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 1;
-  v13 = [a1 orderedOverridePolicies];
-  if ([v13 count])
+  orderedOverridePolicies = [self orderedOverridePolicies];
+  if ([orderedOverridePolicies count])
   {
-    v14 = [a1 queue];
+    queue = [self queue];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_1000501E4;
     v17[3] = &unk_1000A6948;
-    v18 = v13;
-    v19 = v11;
+    v18 = orderedOverridePolicies;
+    v19 = serviceCopy;
     v22 = &v24;
-    v20 = v10;
-    v21 = v12;
-    v23 = a6;
-    dispatch_sync(v14, v17);
+    v20 = identityCopy;
+    v21 = identityIdentityCopy;
+    reasonCopy = reason;
+    dispatch_sync(queue, v17);
   }
 
   v15 = v25[3];
@@ -131,42 +131,42 @@
   return v15;
 }
 
-+ (void)populatePolicyAuthorizationsForClient:(id)a3 message:(id)a4
++ (void)populatePolicyAuthorizationsForClient:(id)client message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 orderedOverridePolicies];
-  if ([v8 count])
+  clientCopy = client;
+  messageCopy = message;
+  orderedOverridePolicies = [self orderedOverridePolicies];
+  if ([orderedOverridePolicies count])
   {
-    v9 = [a1 queue];
+    queue = [self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000504E4;
     block[3] = &unk_1000A5098;
-    v11 = v8;
-    v12 = v6;
-    v13 = v7;
-    dispatch_sync(v9, block);
+    v11 = orderedOverridePolicies;
+    v12 = clientCopy;
+    v13 = messageCopy;
+    dispatch_sync(queue, block);
   }
 }
 
-+ (void)populatePolicyAuthorizationsForService:(id)a3 message:(id)a4 specifiedAuth:(unint64_t)a5
++ (void)populatePolicyAuthorizationsForService:(id)service message:(id)message specifiedAuth:(unint64_t)auth
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a1 orderedOverridePolicies];
-  if ([v10 count])
+  serviceCopy = service;
+  messageCopy = message;
+  orderedOverridePolicies = [self orderedOverridePolicies];
+  if ([orderedOverridePolicies count])
   {
-    v11 = [a1 queue];
+    queue = [self queue];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100050788;
     v12[3] = &unk_1000A6970;
-    v13 = v10;
-    v14 = v8;
-    v15 = v9;
-    v16 = a5;
-    dispatch_sync(v11, v12);
+    v13 = orderedOverridePolicies;
+    v14 = serviceCopy;
+    v15 = messageCopy;
+    authCopy = auth;
+    dispatch_sync(queue, v12);
   }
 }
 
@@ -188,14 +188,14 @@
 
 - (BOOL)isActive
 {
-  v3 = [(TCCDPolicyOverride *)self plistDictionary];
-  if (v3)
+  plistDictionary = [(TCCDPolicyOverride *)self plistDictionary];
+  if (plistDictionary)
   {
-    v4 = [(TCCDPolicyOverride *)self plistDictionary];
-    if ([v4 count])
+    plistDictionary2 = [(TCCDPolicyOverride *)self plistDictionary];
+    if ([plistDictionary2 count])
     {
-      v5 = [(TCCDPolicyOverride *)self policyAccessByIdentifier];
-      v6 = [v5 count] != 0;
+      policyAccessByIdentifier = [(TCCDPolicyOverride *)self policyAccessByIdentifier];
+      v6 = [policyAccessByIdentifier count] != 0;
     }
 
     else
@@ -214,8 +214,8 @@
 
 - (void)loadPlist
 {
-  v3 = [(TCCDPolicyOverride *)self plistFilePath];
-  if (v3)
+  plistFilePath = [(TCCDPolicyOverride *)self plistFilePath];
+  if (plistFilePath)
   {
     if (qword_1000C1238 != -1)
     {
@@ -226,12 +226,12 @@
     if (os_log_type_enabled(qword_1000C1240, OS_LOG_TYPE_INFO))
     {
       *buf = 138543362;
-      v19 = v3;
+      v19 = plistFilePath;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "Override: loading from: %{public}@", buf, 0xCu);
     }
 
     v17 = 0;
-    v5 = [NSData dataWithContentsOfFile:v3 options:0 error:&v17];
+    v5 = [NSData dataWithContentsOfFile:plistFilePath options:0 error:&v17];
     v6 = v17;
     v7 = v6;
     if (v5)
@@ -241,9 +241,9 @@
       v9 = v16;
 
       [(TCCDPolicyOverride *)self setPlistDictionary:v8];
-      v10 = [(TCCDPolicyOverride *)self plistDictionary];
+      plistDictionary = [(TCCDPolicyOverride *)self plistDictionary];
 
-      if (!v10)
+      if (!plistDictionary)
       {
         if (qword_1000C1238 != -1)
         {
@@ -253,7 +253,7 @@
         v11 = qword_1000C1240;
         if (os_log_type_enabled(qword_1000C1240, OS_LOG_TYPE_ERROR))
         {
-          sub_100052D18(v3, v9, v11);
+          sub_100052D18(plistFilePath, v9, v11);
         }
       }
 
@@ -261,8 +261,8 @@
       goto LABEL_31;
     }
 
-    v12 = [v6 domain];
-    if ([v12 isEqualToString:NSCocoaErrorDomain])
+    domain = [v6 domain];
+    if ([domain isEqualToString:NSCocoaErrorDomain])
     {
       if ([v7 code] == 4)
       {
@@ -277,7 +277,7 @@ LABEL_26:
         if (os_log_type_enabled(qword_1000C1240, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v19 = v3;
+          v19 = plistFilePath;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Override: no file at: %{public}@", buf, 0xCu);
         }
 
@@ -288,9 +288,9 @@ LABEL_31:
         goto LABEL_32;
       }
 
-      v14 = [v7 code];
+      code = [v7 code];
 
-      if (v14 == 260)
+      if (code == 260)
       {
         goto LABEL_26;
       }
@@ -308,7 +308,7 @@ LABEL_31:
     v13 = qword_1000C1240;
     if (os_log_type_enabled(qword_1000C1240, OS_LOG_TYPE_ERROR))
     {
-      sub_100052D90(v3, v7, v13);
+      sub_100052D90(plistFilePath, v7, v13);
     }
 
     goto LABEL_30;
@@ -338,15 +338,15 @@ LABEL_32:
   dispatch_barrier_async(v3, block);
 }
 
-- (BOOL)validateEntry:(id)a3 identifierType:(id)a4 codeRequirementString:(id)a5 serviceName:(id)a6 allowed:(id)a7 comment:(id)a8
+- (BOOL)validateEntry:(id)entry identifierType:(id)type codeRequirementString:(id)string serviceName:(id)name allowed:(id)allowed comment:(id)comment
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (!v15 || !v13 || !v14 || !v17)
+  entryCopy = entry;
+  typeCopy = type;
+  stringCopy = string;
+  nameCopy = name;
+  allowedCopy = allowed;
+  commentCopy = comment;
+  if (!stringCopy || !entryCopy || !typeCopy || !allowedCopy)
   {
     if (qword_1000C1238 != -1)
     {
@@ -360,22 +360,22 @@ LABEL_32:
     }
 
     v26 = 138544386;
-    v27 = v16;
+    v27 = nameCopy;
     v28 = 2114;
-    v29 = v13;
+    v29 = entryCopy;
     v30 = 2114;
-    v31 = v14;
+    v31 = typeCopy;
     v32 = 2114;
-    v33 = v15;
+    v33 = stringCopy;
     v34 = 2114;
-    v35 = v18;
+    v35 = commentCopy;
     v21 = "Override: missing configuration info for Service: %{public}@: Identifier: %{public}@, type: %{public}@, code requirement: %{public}@, comment: %{public}@";
     v22 = v20;
     v23 = 52;
     goto LABEL_16;
   }
 
-  if (([v14 isEqualToString:@"bundleID"] & 1) == 0 && (objc_msgSend(v14, "isEqualToString:", @"path") & 1) == 0)
+  if (([typeCopy isEqualToString:@"bundleID"] & 1) == 0 && (objc_msgSend(typeCopy, "isEqualToString:", @"path") & 1) == 0)
   {
     if (qword_1000C1238 != -1)
     {
@@ -389,11 +389,11 @@ LABEL_32:
     }
 
     v26 = 138543874;
-    v27 = v16;
+    v27 = nameCopy;
     v28 = 2114;
-    v29 = v13;
+    v29 = entryCopy;
     v30 = 2114;
-    v31 = v14;
+    v31 = typeCopy;
     v21 = "Override: invalid identifier type for Service %{public}@, Identifier: %{public}@, type: %{public}@";
     v22 = v24;
     v23 = 32;
@@ -422,11 +422,11 @@ LABEL_18:
   v7 = qword_1000C1240;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    v8 = [(TCCDPolicyOverride *)self plistDictionary];
-    if (v8)
+    plistDictionary = [(TCCDPolicyOverride *)self plistDictionary];
+    if (plistDictionary)
     {
-      v2 = [(TCCDPolicyOverride *)self plistDictionary];
-      v3 = [v2 objectForKeyedSubscript:@"Services"];
+      plistDictionary2 = [(TCCDPolicyOverride *)self plistDictionary];
+      v3 = [plistDictionary2 objectForKeyedSubscript:@"Services"];
       v9 = [v3 count];
     }
 
@@ -436,24 +436,24 @@ LABEL_18:
     }
 
     *buf = 138412546;
-    v76 = self;
+    selfCopy = self;
     v77 = 2048;
     v78 = v9;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Override: parsing plist for %@ with %ld entries.", buf, 0x16u);
-    if (v8)
+    if (plistDictionary)
     {
     }
   }
 
-  v10 = [(TCCDPolicyOverride *)self plistDictionary];
+  plistDictionary3 = [(TCCDPolicyOverride *)self plistDictionary];
 
-  if (v10)
+  if (plistDictionary3)
   {
-    v11 = [(TCCDPolicyOverride *)self policyAccessByIdentifier];
-    [v11 removeAllObjects];
+    policyAccessByIdentifier = [(TCCDPolicyOverride *)self policyAccessByIdentifier];
+    [policyAccessByIdentifier removeAllObjects];
 
-    v12 = [(TCCDPolicyOverride *)self plistDictionary];
-    v13 = [v12 objectForKeyedSubscript:@"Services"];
+    plistDictionary4 = [(TCCDPolicyOverride *)self plistDictionary];
+    v13 = [plistDictionary4 objectForKeyedSubscript:@"Services"];
 
     v73 = 0u;
     v74 = 0u;
@@ -466,7 +466,7 @@ LABEL_18:
       v50 = *v72;
       *&v14 = 138544386;
       v49 = v14;
-      v54 = self;
+      selfCopy2 = self;
       do
       {
         v15 = 0;
@@ -536,7 +536,7 @@ LABEL_18:
                   if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
                   {
                     *buf = 138544130;
-                    v76 = v63;
+                    selfCopy = v63;
                     v77 = 2114;
                     v78 = v21;
                     v79 = 2114;
@@ -559,7 +559,7 @@ LABEL_18:
                 if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138544130;
-                  v76 = v63;
+                  selfCopy = v63;
                   v77 = 2114;
                   v78 = v21;
                   v79 = 2114;
@@ -571,14 +571,14 @@ LABEL_18:
 
                 v64 = v24;
                 v60 = v23;
-                v32 = [(TCCDPolicyOverride *)self policyAccessByIdentifier];
-                v33 = [v32 objectForKeyedSubscript:v21];
+                policyAccessByIdentifier2 = [(TCCDPolicyOverride *)self policyAccessByIdentifier];
+                v33 = [policyAccessByIdentifier2 objectForKeyedSubscript:v21];
 
                 if (!v33)
                 {
                   v33 = +[NSMutableDictionary dictionary];
-                  v34 = [(TCCDPolicyOverride *)self policyAccessByIdentifier];
-                  [v34 setObject:v33 forKeyedSubscript:v21];
+                  policyAccessByIdentifier3 = [(TCCDPolicyOverride *)self policyAccessByIdentifier];
+                  [policyAccessByIdentifier3 setObject:v33 forKeyedSubscript:v21];
                 }
 
                 v35 = [v33 objectForKeyedSubscript:v59];
@@ -606,12 +606,12 @@ LABEL_18:
                       sub_100052CF0();
                     }
 
-                    self = v54;
+                    self = selfCopy2;
                     v48 = qword_1000C1240;
                     if (os_log_type_enabled(qword_1000C1240, OS_LOG_TYPE_ERROR))
                     {
                       *buf = v49;
-                      v76 = v63;
+                      selfCopy = v63;
                       v77 = 2114;
                       v78 = v21;
                       v79 = 2114;
@@ -647,7 +647,7 @@ LABEL_57:
                   [v41 setObject:v37 forKeyedSubscript:@"AEReceiverIdentifierType"];
                   [v41 setObject:v40 forKeyedSubscript:@"AEReceiverCodeRequirementData"];
 
-                  self = v54;
+                  self = selfCopy2;
                   v5 = &qword_1000C1000;
                   v6 = &qword_1000C1000;
                 }
@@ -681,16 +681,16 @@ LABEL_57:
                 if (os_log_type_enabled(v43, OS_LOG_TYPE_DEBUG))
                 {
                   v44 = v43;
-                  v45 = [(TCCDPolicyOverride *)self policyAccessByIdentifier];
-                  v46 = [v45 objectForKeyedSubscript:v21];
+                  policyAccessByIdentifier4 = [(TCCDPolicyOverride *)self policyAccessByIdentifier];
+                  v46 = [policyAccessByIdentifier4 objectForKeyedSubscript:v21];
                   *buf = 138412546;
-                  v76 = v21;
+                  selfCopy = v21;
                   v77 = 2112;
                   v78 = v46;
                   _os_log_debug_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEBUG, "Override: policyAccessByIdentifier[%@] = %@", buf, 0x16u);
 
                   v6 = &qword_1000C1000;
-                  self = v54;
+                  self = selfCopy2;
                 }
 
                 v17 = v61 + 1;
@@ -722,45 +722,45 @@ LABEL_58:
   }
 }
 
-- (void)addBundleIdWithSpecifiedAuth:(unint64_t)a3 infoDict:(id)a4 message:(id)a5
+- (void)addBundleIdWithSpecifiedAuth:(unint64_t)auth infoDict:(id)dict message:(id)message
 {
-  v16 = a4;
-  v8 = a5;
-  v9 = [v16 objectForKeyedSubscript:@"Allowed"];
+  dictCopy = dict;
+  messageCopy = message;
+  v9 = [dictCopy objectForKeyedSubscript:@"Allowed"];
   v10 = [(TCCDPolicyOverride *)self allowedParser:v9];
 
-  v11 = [v10 BOOLValue];
-  if (a3 == 2 && (v11 & 1) != 0 || (v12 = [v10 BOOLValue], !a3) && (v12 & 1) == 0)
+  bOOLValue = [v10 BOOLValue];
+  if (auth == 2 && (bOOLValue & 1) != 0 || (v12 = [v10 BOOLValue], !auth) && (v12 & 1) == 0)
   {
-    v13 = [v16 objectForKeyedSubscript:@"IdentifierType"];
+    v13 = [dictCopy objectForKeyedSubscript:@"IdentifierType"];
     if ([v13 isEqualToString:@"bundleID"])
     {
-      v14 = [v16 objectForKeyedSubscript:@"Identifier"];
+      v14 = [dictCopy objectForKeyedSubscript:@"Identifier"];
       v15 = xpc_string_create([v14 UTF8String]);
-      xpc_array_append_value(v8, v15);
+      xpc_array_append_value(messageCopy, v15);
     }
   }
 }
 
-- (BOOL)_locked_populateGeneralAuthorzationFieldsForService:(id)a3 info:(id)a4 entry:(id)a5
+- (BOOL)_locked_populateGeneralAuthorzationFieldsForService:(id)service info:(id)info entry:(id)entry
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
-  v11 = [v10 objectForKeyedSubscript:@"Allowed"];
+  serviceCopy = service;
+  entryCopy = entry;
+  infoCopy = info;
+  v11 = [infoCopy objectForKeyedSubscript:@"Allowed"];
   v12 = [(TCCDPolicyOverride *)self allowedParser:v11];
 
-  v13 = [v10 objectForKeyedSubscript:@"CodeRequirementData"];
+  v13 = [infoCopy objectForKeyedSubscript:@"CodeRequirementData"];
 
   if (v13)
   {
     BytePtr = CFDataGetBytePtr(v13);
     Length = CFDataGetLength(v13);
-    xpc_dictionary_set_data(v9, "code_requirement", BytePtr, Length);
-    v16 = [v8 name];
-    xpc_dictionary_set_string(v9, "service", [v16 UTF8String]);
+    xpc_dictionary_set_data(entryCopy, "code_requirement", BytePtr, Length);
+    name = [serviceCopy name];
+    xpc_dictionary_set_string(entryCopy, "service", [name UTF8String]);
 
-    xpc_dictionary_set_BOOL(v9, "granted", [v12 BOOLValue]);
+    xpc_dictionary_set_BOOL(entryCopy, "granted", [v12 BOOLValue]);
     if ([v12 BOOLValue])
     {
       v17 = 2;
@@ -771,44 +771,44 @@ LABEL_58:
       v17 = 0;
     }
 
-    xpc_dictionary_set_uint64(v9, "auth_value", v17);
-    xpc_dictionary_set_uint64(v9, "auth_reason", 6uLL);
-    xpc_dictionary_set_uint64(v9, "auth_version", [v8 authorizationVersionNumber]);
-    xpc_dictionary_set_BOOL(v9, "non_modifiable", 1);
+    xpc_dictionary_set_uint64(entryCopy, "auth_value", v17);
+    xpc_dictionary_set_uint64(entryCopy, "auth_reason", 6uLL);
+    xpc_dictionary_set_uint64(entryCopy, "auth_version", [serviceCopy authorizationVersionNumber]);
+    xpc_dictionary_set_BOOL(entryCopy, "non_modifiable", 1);
   }
 
   else
   {
     v18 = +[TCCDPlatform currentPlatform];
-    v19 = [v18 server];
-    v20 = [v19 logHandle];
+    server = [v18 server];
+    logHandle = [server logHandle];
 
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
-      sub_100052EC4(v8, v20);
+      sub_100052EC4(serviceCopy, logHandle);
     }
   }
 
   return v13 != 0;
 }
 
-- (BOOL)_locked_populateIndirectAuthorzationFieldsForService:(id)a3 info:(id)a4 entry:(id)a5
+- (BOOL)_locked_populateIndirectAuthorzationFieldsForService:(id)service info:(id)info entry:(id)entry
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 objectForKeyedSubscript:@"AEReceiverCodeRequirementData"];
+  serviceCopy = service;
+  infoCopy = info;
+  entryCopy = entry;
+  v11 = [infoCopy objectForKeyedSubscript:@"AEReceiverCodeRequirementData"];
 
-  v12 = [v9 objectForKeyedSubscript:@"AEReceiverIdentifier"];
-  v13 = [v9 objectForKeyedSubscript:@"AEReceiverIdentifierType"];
+  v12 = [infoCopy objectForKeyedSubscript:@"AEReceiverIdentifier"];
+  v13 = [infoCopy objectForKeyedSubscript:@"AEReceiverIdentifierType"];
   v14 = v13;
   if (!v11 || !v12 || !v13)
   {
     v18 = +[TCCDPlatform currentPlatform];
-    v19 = [v18 server];
-    v20 = [v19 logHandle];
+    server = [v18 server];
+    logHandle = [server logHandle];
 
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_100052FF0();
     }
@@ -818,16 +818,16 @@ LABEL_58:
 
   BytePtr = CFDataGetBytePtr(v11);
   Length = CFDataGetLength(v11);
-  xpc_dictionary_set_data(v10, "indirect_object_code_requirement", BytePtr, Length);
-  xpc_dictionary_set_string(v10, "indirect_object_identifier", [v12 UTF8String]);
-  xpc_dictionary_set_string(v10, "indirect_object_type", [v14 UTF8String]);
-  if (![(TCCDPolicyOverride *)self _locked_populateGeneralAuthorzationFieldsForService:v8 info:v9 entry:v10])
+  xpc_dictionary_set_data(entryCopy, "indirect_object_code_requirement", BytePtr, Length);
+  xpc_dictionary_set_string(entryCopy, "indirect_object_identifier", [v12 UTF8String]);
+  xpc_dictionary_set_string(entryCopy, "indirect_object_type", [v14 UTF8String]);
+  if (![(TCCDPolicyOverride *)self _locked_populateGeneralAuthorzationFieldsForService:serviceCopy info:infoCopy entry:entryCopy])
   {
     v21 = +[TCCDPlatform currentPlatform];
-    v22 = [v21 server];
-    v20 = [v22 logHandle];
+    server2 = [v21 server];
+    logHandle = [server2 logHandle];
 
-    if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_100052F70();
     }
@@ -844,13 +844,13 @@ LABEL_11:
   return v17;
 }
 
-- (void)_locked_populatePolicyAuthorizationsForClient:(id)a3 message:(id)a4
+- (void)_locked_populatePolicyAuthorizationsForClient:(id)client message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TCCDPolicyOverride *)self policyAccessByIdentifier];
-  v31 = v6;
-  v9 = [v8 objectForKeyedSubscript:v6];
+  clientCopy = client;
+  messageCopy = message;
+  policyAccessByIdentifier = [(TCCDPolicyOverride *)self policyAccessByIdentifier];
+  v31 = clientCopy;
+  v9 = [policyAccessByIdentifier objectForKeyedSubscript:clientCopy];
 
   v42 = 0u;
   v43 = 0u;
@@ -880,15 +880,15 @@ LABEL_11:
         v16 = [v15 serviceByName:v13];
 
         v17 = +[TCCDPlatform currentPlatform];
-        v18 = [v17 server];
-        v19 = [v18 macos_isSystemServer];
-        v20 = [v16 macos_isPerSystem];
+        server = [v17 server];
+        macos_isSystemServer = [server macos_isSystemServer];
+        macos_isPerSystem = [v16 macos_isPerSystem];
 
-        if (v19 == v20)
+        if (macos_isSystemServer == macos_isPerSystem)
         {
           v22 = xpc_dictionary_create(0, 0, 0);
-          v23 = [v16 name];
-          v24 = [v23 isEqualToString:@"kTCCServiceAppleEvents"];
+          name = [v16 name];
+          v24 = [name isEqualToString:@"kTCCServiceAppleEvents"];
 
           if (v24)
           {
@@ -919,7 +919,7 @@ LABEL_11:
 
                   if ([(TCCDPolicyOverride *)self _locked_populateIndirectAuthorzationFieldsForService:v16 info:v14 entry:v22])
                   {
-                    xpc_array_append_value(v7, v22);
+                    xpc_array_append_value(messageCopy, v22);
                   }
 
                   v29 = v29 + 1;
@@ -939,7 +939,7 @@ LABEL_11:
 
           else if ([(TCCDPolicyOverride *)self _locked_populateGeneralAuthorzationFieldsForService:v16 info:v14 entry:v22])
           {
-            xpc_array_append_value(v7, v22);
+            xpc_array_append_value(messageCopy, v22);
           }
 
           v21 = v35;
@@ -961,29 +961,29 @@ LABEL_11:
   }
 }
 
-- (BOOL)_locked_populatePolicyAuthorizationForSubjectWithInfoDict:(id)a3 message:(id)a4
+- (BOOL)_locked_populatePolicyAuthorizationForSubjectWithInfoDict:(id)dict message:(id)message
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKeyedSubscript:@"IdentifierType"];
+  dictCopy = dict;
+  messageCopy = message;
+  v7 = [dictCopy objectForKeyedSubscript:@"IdentifierType"];
   v8 = [v7 isEqualToString:@"path"];
-  v9 = [v5 objectForKeyedSubscript:@"CodeRequirementData"];
+  v9 = [dictCopy objectForKeyedSubscript:@"CodeRequirementData"];
 
   if (v9)
   {
     BytePtr = CFDataGetBytePtr(v9);
     Length = CFDataGetLength(v9);
-    xpc_dictionary_set_data(v6, "code_requirement", BytePtr, Length);
+    xpc_dictionary_set_data(messageCopy, "code_requirement", BytePtr, Length);
   }
 
-  v12 = [v5 objectForKeyedSubscript:@"Identifier"];
+  v12 = [dictCopy objectForKeyedSubscript:@"Identifier"];
   if (v12)
   {
     v13 = xpc_dictionary_create(0, 0, 0);
     xpc_dictionary_set_uint64(v13, "TCCD_MSG_IDENTITY_TYPE_KEY", v8);
     xpc_dictionary_set_string(v13, "TCCD_MSG_IDENTITY_ID_KEY", [v12 UTF8String]);
-    xpc_dictionary_set_value(v6, "TCC_MSG_REQUEST_AUTHORIZATION_SUBJECT_IDENTITY_DICTIONARY_KEY", v13);
-    v14 = [v12 UTF8String];
+    xpc_dictionary_set_value(messageCopy, "TCC_MSG_REQUEST_AUTHORIZATION_SUBJECT_IDENTITY_DICTIONARY_KEY", v13);
+    uTF8String = [v12 UTF8String];
     if (v8)
     {
       v15 = "path";
@@ -994,16 +994,16 @@ LABEL_11:
       v15 = "bundle_id";
     }
 
-    xpc_dictionary_set_string(v6, v15, v14);
+    xpc_dictionary_set_string(messageCopy, v15, uTF8String);
   }
 
   else
   {
     v16 = +[TCCDPlatform currentPlatform];
-    v17 = [v16 server];
-    v18 = [v17 logHandle];
+    server = [v16 server];
+    logHandle = [server logHandle];
 
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
     {
       sub_100053070();
     }
@@ -1012,27 +1012,27 @@ LABEL_11:
   return v12 != 0;
 }
 
-- (void)_locked_populatePolicyAuthorizationsForService:(id)a3 message:(id)a4 specifiedAuth:(unint64_t)a5
+- (void)_locked_populatePolicyAuthorizationsForService:(id)service message:(id)message specifiedAuth:(unint64_t)auth
 {
-  v8 = a3;
-  v9 = a4;
+  serviceCopy = service;
+  messageCopy = message;
   v10 = +[TCCDPlatform currentPlatform];
-  v44 = [v10 serviceByName:v8];
+  v44 = [v10 serviceByName:serviceCopy];
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v11 = [(TCCDPolicyOverride *)self policyAccessByIdentifier];
-  v41 = [v11 countByEnumeratingWithState:&v49 objects:v58 count:16];
+  policyAccessByIdentifier = [(TCCDPolicyOverride *)self policyAccessByIdentifier];
+  v41 = [policyAccessByIdentifier countByEnumeratingWithState:&v49 objects:v58 count:16];
   if (!v41)
   {
     goto LABEL_41;
   }
 
   v40 = *v50;
-  v38 = v11;
-  v39 = v8;
+  v38 = policyAccessByIdentifier;
+  v39 = serviceCopy;
   while (2)
   {
     v12 = 0;
@@ -1040,7 +1040,7 @@ LABEL_11:
     {
       if (*v50 != v40)
       {
-        objc_enumerationMutation(v11);
+        objc_enumerationMutation(policyAccessByIdentifier);
       }
 
       v42 = v12;
@@ -1049,16 +1049,16 @@ LABEL_11:
       v15 = [v14 objectForKeyedSubscript:v13];
 
       v43 = v15;
-      v16 = [v15 objectForKeyedSubscript:v8];
+      v16 = [v15 objectForKeyedSubscript:serviceCopy];
       v17 = +[TCCDPlatform currentPlatform];
-      v18 = [v17 server];
-      v19 = v18;
+      server = [v17 server];
+      v19 = server;
       if (v16)
       {
-        v20 = [v18 macos_isSystemServer];
-        v21 = [v44 macos_isPerSystem];
+        macos_isSystemServer = [server macos_isSystemServer];
+        macos_isPerSystem = [v44 macos_isPerSystem];
 
-        if (v20 != v21)
+        if (macos_isSystemServer != macos_isPerSystem)
         {
           v23 = v42;
           v22 = v43;
@@ -1069,10 +1069,10 @@ LABEL_11:
         if (!v25)
         {
           v35 = +[TCCDPlatform currentPlatform];
-          v36 = [v35 server];
-          v37 = [v36 logHandle];
+          server2 = [v35 server];
+          logHandle = [server2 logHandle];
 
-          if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
           {
             sub_1000530F0();
           }
@@ -1080,25 +1080,25 @@ LABEL_11:
           goto LABEL_41;
         }
 
-        v24 = v25;
-        v26 = [v44 name];
-        v27 = [v26 isEqualToString:@"kTCCServiceAppleEvents"];
+        logHandle2 = v25;
+        name = [v44 name];
+        v27 = [name isEqualToString:@"kTCCServiceAppleEvents"];
 
         if (!v27)
         {
           v23 = v42;
           v22 = v43;
-          if (a5 == 1)
+          if (auth == 1)
           {
-            if ([(TCCDPolicyOverride *)self _locked_populatePolicyAuthorizationForSubjectWithInfoDict:v16 message:v24]&& [(TCCDPolicyOverride *)self _locked_populateGeneralAuthorzationFieldsForService:v44 info:v16 entry:v24])
+            if ([(TCCDPolicyOverride *)self _locked_populatePolicyAuthorizationForSubjectWithInfoDict:v16 message:logHandle2]&& [(TCCDPolicyOverride *)self _locked_populateGeneralAuthorzationFieldsForService:v44 info:v16 entry:logHandle2])
             {
-              xpc_array_append_value(v9, v24);
+              xpc_array_append_value(messageCopy, logHandle2);
             }
           }
 
           else
           {
-            [(TCCDPolicyOverride *)self addBundleIdWithSpecifiedAuth:a5 infoDict:v16 message:v9];
+            [(TCCDPolicyOverride *)self addBundleIdWithSpecifiedAuth:auth infoDict:v16 message:messageCopy];
           }
 
           goto LABEL_28;
@@ -1128,17 +1128,17 @@ LABEL_11:
 
               v16 = [v16 objectForKeyedSubscript:*(*(&v45 + 1) + 8 * i)];
 
-              if (a5 == 1)
+              if (auth == 1)
               {
-                if ([(TCCDPolicyOverride *)self _locked_populatePolicyAuthorizationForSubjectWithInfoDict:v16 message:v24]&& [(TCCDPolicyOverride *)self _locked_populateIndirectAuthorzationFieldsForService:v44 info:v16 entry:v24])
+                if ([(TCCDPolicyOverride *)self _locked_populatePolicyAuthorizationForSubjectWithInfoDict:v16 message:logHandle2]&& [(TCCDPolicyOverride *)self _locked_populateIndirectAuthorzationFieldsForService:v44 info:v16 entry:logHandle2])
                 {
-                  xpc_array_append_value(v9, v24);
+                  xpc_array_append_value(messageCopy, logHandle2);
                 }
               }
 
               else
               {
-                [(TCCDPolicyOverride *)self addBundleIdWithSpecifiedAuth:a5 infoDict:v16 message:v9];
+                [(TCCDPolicyOverride *)self addBundleIdWithSpecifiedAuth:auth infoDict:v16 message:messageCopy];
               }
             }
 
@@ -1148,21 +1148,21 @@ LABEL_11:
           while (v30);
         }
 
-        v11 = v38;
-        v8 = v39;
+        policyAccessByIdentifier = v38;
+        serviceCopy = v39;
       }
 
       else
       {
-        v24 = [v18 logHandle];
+        logHandle2 = [server logHandle];
 
-        if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
           v55 = v13;
           v56 = 2112;
-          v57 = v8;
-          _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "client: %@  has no MDM records for service: %@", buf, 0x16u);
+          v57 = serviceCopy;
+          _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "client: %@  has no MDM records for service: %@", buf, 0x16u);
         }
 
         v16 = 0;
@@ -1177,7 +1177,7 @@ LABEL_29:
     }
 
     while (v12 != v41);
-    v34 = [v11 countByEnumeratingWithState:&v49 objects:v58 count:16];
+    v34 = [policyAccessByIdentifier countByEnumeratingWithState:&v49 objects:v58 count:16];
     v41 = v34;
     if (v34)
     {
@@ -1192,21 +1192,21 @@ LABEL_41:
 
 - (void)watchPlistChanges
 {
-  v3 = [(TCCDPolicyOverride *)self watchedFileVnodeSource];
+  watchedFileVnodeSource = [(TCCDPolicyOverride *)self watchedFileVnodeSource];
 
-  if (v3)
+  if (watchedFileVnodeSource)
   {
-    v4 = [(TCCDPolicyOverride *)self watchedFileVnodeSource];
-    dispatch_source_cancel(v4);
+    watchedFileVnodeSource2 = [(TCCDPolicyOverride *)self watchedFileVnodeSource];
+    dispatch_source_cancel(watchedFileVnodeSource2);
 
     [(TCCDPolicyOverride *)self setWatchedFileVnodeSource:0];
   }
 
-  v5 = [(TCCDPolicyOverride *)self watchedPath];
-  v6 = v5;
-  if (v5)
+  watchedPath = [(TCCDPolicyOverride *)self watchedPath];
+  v6 = watchedPath;
+  if (watchedPath)
   {
-    v7 = open([v5 UTF8String], 0x8000);
+    v7 = open([watchedPath UTF8String], 0x8000);
     if ((v7 & 0x80000000) != 0)
     {
       if (qword_1000C1238 != -1)
@@ -1236,7 +1236,7 @@ LABEL_41:
       v19 = v11;
       v12 = v6;
       v20 = v12;
-      v21 = self;
+      selfCopy = self;
       dispatch_source_set_event_handler(v11, handler);
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;

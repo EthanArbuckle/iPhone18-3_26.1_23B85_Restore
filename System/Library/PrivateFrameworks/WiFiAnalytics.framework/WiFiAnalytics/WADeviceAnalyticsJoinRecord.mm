@@ -1,7 +1,7 @@
 @interface WADeviceAnalyticsJoinRecord
-+ (id)earliestJoinDate:(id)a3 moc:(id)a4;
-+ (id)mostRecentJoinsWithBatchSize:(unint64_t)a3 bssid:(id)a4 ssid:(id)a5 moc:(id)a6;
-+ (unint64_t)joinCount:(id)a3 bssid:(id)a4 maxAgeInDays:(unint64_t)a5 success:(BOOL)a6 moc:(id)a7;
++ (id)earliestJoinDate:(id)date moc:(id)moc;
++ (id)mostRecentJoinsWithBatchSize:(unint64_t)size bssid:(id)bssid ssid:(id)ssid moc:(id)moc;
++ (unint64_t)joinCount:(id)count bssid:(id)bssid maxAgeInDays:(unint64_t)days success:(BOOL)success moc:(id)moc;
 - (id)description;
 @end
 
@@ -24,19 +24,19 @@
   v11.super_class = WADeviceAnalyticsJoinRecord;
   v5 = [(WADeviceAnalyticsDatedRecord *)&v11 description];
   v6 = [(WADeviceAnalyticsJoinRecord *)self bss];
-  v7 = [(WADeviceAnalyticsJoinRecord *)self network];
+  network = [(WADeviceAnalyticsJoinRecord *)self network];
   v8 = [(WADeviceAnalyticsJoinRecord *)self lan];
-  v9 = [v3 stringWithFormat:@"%@ %@ on %@ %@ %@", v4, v5, v6, v7, v8];
+  v9 = [v3 stringWithFormat:@"%@ %@ on %@ %@ %@", v4, v5, v6, network, v8];
 
   return v9;
 }
 
-+ (id)earliestJoinDate:(id)a3 moc:(id)a4
++ (id)earliestJoinDate:(id)date moc:(id)moc
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  dateCopy = date;
+  mocCopy = moc;
+  if (dateCopy)
   {
     v7 = objc_autoreleasePoolPush();
     v8 = +[WADeviceAnalyticsJoinRecord fetchRequest];
@@ -45,13 +45,13 @@
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
     [v8 setSortDescriptors:v10];
 
-    v11 = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.network.ssid == %@", v5];
-    v12 = [AnalyticsStoreProxy fetchFirst:v8 withPredicate:v11 moc:v6];
+    dateCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.network.ssid == %@", dateCopy];
+    v12 = [AnalyticsStoreProxy fetchFirst:v8 withPredicate:dateCopy moc:mocCopy];
 
     if (v12)
     {
-      v13 = [v12 date];
-      v14 = [v13 copy];
+      date = [v12 date];
+      v14 = [date copy];
     }
 
     else
@@ -82,34 +82,34 @@
   return v14;
 }
 
-+ (id)mostRecentJoinsWithBatchSize:(unint64_t)a3 bssid:(id)a4 ssid:(id)a5 moc:(id)a6
++ (id)mostRecentJoinsWithBatchSize:(unint64_t)size bssid:(id)bssid ssid:(id)ssid moc:(id)moc
 {
   v33[3] = *MEMORY[0x1E69E9840];
   v9 = MEMORY[0x1E696AEB0];
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
+  mocCopy = moc;
+  ssidCopy = ssid;
+  bssidCopy = bssid;
   v13 = [[v9 alloc] initWithKey:@"date" ascending:0];
   v14 = MEMORY[0x1E696AB28];
-  v15 = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.network.ssid == %@", v11];
+  ssidCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.network.ssid == %@", ssidCopy];
 
-  v33[0] = v15;
-  v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.bssid == %@", v12];
+  v33[0] = ssidCopy;
+  bssidCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.bssid == %@", bssidCopy];
 
-  v33[1] = v16;
+  v33[1] = bssidCopy;
   v17 = [MEMORY[0x1E696AE18] predicateWithFormat:@"success == 0"];
   v33[2] = v17;
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:3];
   v19 = [v14 andPredicateWithSubpredicates:v18];
 
   v20 = +[WADeviceAnalyticsJoinRecord fetchRequest];
-  [v20 setFetchBatchSize:a3];
+  [v20 setFetchBatchSize:size];
   [v20 setRelationshipKeyPathsForPrefetching:&unk_1F483E5C0];
   v32 = v13;
   v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1];
   [v20 setSortDescriptors:v21];
 
-  v22 = [AnalyticsStoreProxy fetch:v20 withPredicate:v19 moc:v10];
+  v22 = [AnalyticsStoreProxy fetch:v20 withPredicate:v19 moc:mocCopy];
 
   if (v22)
   {
@@ -131,22 +131,22 @@
   return v22;
 }
 
-+ (unint64_t)joinCount:(id)a3 bssid:(id)a4 maxAgeInDays:(unint64_t)a5 success:(BOOL)a6 moc:(id)a7
++ (unint64_t)joinCount:(id)count bssid:(id)bssid maxAgeInDays:(unint64_t)days success:(BOOL)success moc:(id)moc
 {
-  v8 = a6;
+  successCopy = success;
   v35[3] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v31 = a7;
+  countCopy = count;
+  bssidCopy = bssid;
+  mocCopy = moc;
   v13 = MEMORY[0x1E696AB28];
-  v14 = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.network.ssid == %@", v11];
-  v15 = v14;
-  if (v12)
+  countCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.network.ssid == %@", countCopy];
+  v15 = countCopy;
+  if (bssidCopy)
   {
-    v35[0] = v14;
-    v16 = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.bssid == %@", v12];
-    v35[1] = v16;
-    v17 = [WAPersistentContainer predicateForRecordsNewerThan:(86400 * a5)];
+    v35[0] = countCopy;
+    bssidCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"bss.bssid == %@", bssidCopy];
+    v35[1] = bssidCopy;
+    v17 = [WAPersistentContainer predicateForRecordsNewerThan:(86400 * days)];
     v35[2] = v17;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:3];
     v19 = [v13 andPredicateWithSubpredicates:v18];
@@ -154,15 +154,15 @@
 
   else
   {
-    v34[0] = v14;
-    v16 = [WAPersistentContainer predicateForRecordsNewerThan:(86400 * a5)];
-    v34[1] = v16;
+    v34[0] = countCopy;
+    bssidCopy = [WAPersistentContainer predicateForRecordsNewerThan:(86400 * days)];
+    v34[1] = bssidCopy;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v34 count:2];
     v19 = [v13 andPredicateWithSubpredicates:v17];
   }
 
   v20 = MEMORY[0x1E696AB28];
-  if (v8)
+  if (successCopy)
   {
     v33 = v19;
     v21 = @"success == 1";
@@ -182,8 +182,8 @@
   v25 = [v20 andPredicateWithSubpredicates:v24];
 
   v26 = +[WADeviceAnalyticsJoinRecord entity];
-  v27 = [v26 name];
-  v28 = [AnalyticsStoreProxy entityCount:v27 withPredicate:v25 moc:v31];
+  name = [v26 name];
+  v28 = [AnalyticsStoreProxy entityCount:name withPredicate:v25 moc:mocCopy];
 
   v29 = *MEMORY[0x1E69E9840];
   return v28;

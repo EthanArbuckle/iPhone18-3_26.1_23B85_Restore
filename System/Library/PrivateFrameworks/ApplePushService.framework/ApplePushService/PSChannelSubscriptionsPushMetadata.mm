@@ -1,12 +1,12 @@
 @interface PSChannelSubscriptionsPushMetadata
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PSChannelSubscriptionsPushMetadata
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = PSChannelSubscriptionsPushMetadata;
   v3 = [(PSChannelSubscriptionsPushMetadata *)&v7 description];
-  v4 = [(PSChannelSubscriptionsPushMetadata *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PSChannelSubscriptionsPushMetadata *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -41,45 +41,45 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_channelId)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     checkpoint = self->_checkpoint;
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_channelId)
   {
-    v5 = v4;
-    [v4 setChannelId:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setChannelId:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_checkpoint;
-    *(v4 + 24) |= 1u;
+    *(toCopy + 1) = self->_checkpoint;
+    *(toCopy + 24) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_channelId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_channelId copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -92,16 +92,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   channelId = self->_channelId;
-  if (channelId | *(v4 + 2))
+  if (channelId | *(equalCopy + 2))
   {
     if (![(NSData *)channelId isEqual:?])
     {
@@ -109,10 +109,10 @@
     }
   }
 
-  v6 = (*(v4 + 24) & 1) == 0;
+  v6 = (*(equalCopy + 24) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) != 0 && self->_checkpoint == *(v4 + 1))
+    if ((*(equalCopy + 24) & 1) != 0 && self->_checkpoint == *(equalCopy + 1))
     {
       v6 = 1;
       goto LABEL_9;
@@ -143,19 +143,19 @@ LABEL_9:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[2])
+  fromCopy = from;
+  if (fromCopy[2])
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(PSChannelSubscriptionsPushMetadata *)self setChannelId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
-    self->_checkpoint = v4[1];
+    self->_checkpoint = fromCopy[1];
     *&self->_has |= 1u;
   }
 }

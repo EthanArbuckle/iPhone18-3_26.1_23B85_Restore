@@ -1,8 +1,8 @@
 @interface AXMVisionFeatureFaceAttributes
 + (id)unitTestingFaceAttributes;
-+ (id)unitTestingFaceAttributesForAge:(int64_t)a3 gender:(int64_t)a4 eyes:(int64_t)a5 smiling:(int64_t)a6 facialHair:(int64_t)a7 hairColor:(int64_t)a8 baldness:(int64_t)a9 glasses:(int64_t)a10 eyeMakeup:(int64_t)a11 lipMakeup:(int64_t)a12 faceMask:(int64_t)a13 ethnicity:(int64_t)a14 expression:(int64_t)a15 facialHairV2:(int64_t)a16 hairType:(int64_t)a17 headGear:(int64_t)a18 pose:(int64_t)a19 skinTone:(int64_t)a20 excludeOptions:(int64_t)a21;
-- (AXMVisionFeatureFaceAttributes)initWithCoder:(id)a3;
-- (AXMVisionFeatureFaceAttributes)initWithVisionFaceAttributes:(id)a3;
++ (id)unitTestingFaceAttributesForAge:(int64_t)age gender:(int64_t)gender eyes:(int64_t)eyes smiling:(int64_t)smiling facialHair:(int64_t)hair hairColor:(int64_t)color baldness:(int64_t)baldness glasses:(int64_t)self0 eyeMakeup:(int64_t)self1 lipMakeup:(int64_t)self2 faceMask:(int64_t)self3 ethnicity:(int64_t)self4 expression:(int64_t)self5 facialHairV2:(int64_t)self6 hairType:(int64_t)self7 headGear:(int64_t)self8 pose:(int64_t)self9 skinTone:(int64_t)tone excludeOptions:(int64_t)options;
+- (AXMVisionFeatureFaceAttributes)initWithCoder:(id)coder;
+- (AXMVisionFeatureFaceAttributes)initWithVisionFaceAttributes:(id)attributes;
 - (id)_accessibilityIdentifierForAgeCategory;
 - (id)_accessibilityIdentifierForEthnicityCategory;
 - (id)_accessibilityIdentifierForExpressionCategory;
@@ -33,330 +33,330 @@
 - (id)_accessibilityLabelFormatterForPoseCategory;
 - (id)accessibilityLabelAndConfidenceMappingForAttributes;
 - (id)accessibilityLabelForAttributes;
-- (int64_t)_AXMAgeCategoryForVisionCategoryIdentifier:(id)a3;
-- (int64_t)_AXMEthnicityCategoryForVisionCategoryIdentifier:(id)a3;
-- (int64_t)_AXMExpressionCategoryForVisionCategoryIdentifier:(id)a3;
-- (int64_t)_AXMEyesCategoryForVisionCategoryIdentifier:(id)a3;
-- (int64_t)_AXMFaceHairV2CategoryForVisionCategoryIdentifier:(id)a3;
-- (int64_t)_AXMFacemaskCategoryForVisionCategoryIdentifier:(id)a3;
-- (int64_t)_AXMGenderCategoryForVisionCategoryIdentifier:(id)a3;
-- (int64_t)_AXMGlassesCategoryForVisionCategoryIdentifier:(id)a3;
-- (int64_t)_AXMHairColorCategoryForVisionCategoryIdentifier:(id)a3;
-- (int64_t)_AXMHairtypeCategoryForVisionCategoryIdentifier:(id)a3;
-- (int64_t)_AXMHeadgearCategoryForVisionCategoryIdentifier:(id)a3;
-- (int64_t)_AXMMakeupEyesCategoryForVisionCategoryIdentifier:(id)a3;
-- (int64_t)_AXMMakeupLipsCategoryForVisionCategoryIdentifier:(id)a3;
-- (int64_t)_AXMPoseCategoryForVisionCategoryIdentifier:(id)a3;
-- (int64_t)_AXMSkintoneCategoryForVisionCategoryIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)_AXMAgeCategoryForVisionCategoryIdentifier:(id)identifier;
+- (int64_t)_AXMEthnicityCategoryForVisionCategoryIdentifier:(id)identifier;
+- (int64_t)_AXMExpressionCategoryForVisionCategoryIdentifier:(id)identifier;
+- (int64_t)_AXMEyesCategoryForVisionCategoryIdentifier:(id)identifier;
+- (int64_t)_AXMFaceHairV2CategoryForVisionCategoryIdentifier:(id)identifier;
+- (int64_t)_AXMFacemaskCategoryForVisionCategoryIdentifier:(id)identifier;
+- (int64_t)_AXMGenderCategoryForVisionCategoryIdentifier:(id)identifier;
+- (int64_t)_AXMGlassesCategoryForVisionCategoryIdentifier:(id)identifier;
+- (int64_t)_AXMHairColorCategoryForVisionCategoryIdentifier:(id)identifier;
+- (int64_t)_AXMHairtypeCategoryForVisionCategoryIdentifier:(id)identifier;
+- (int64_t)_AXMHeadgearCategoryForVisionCategoryIdentifier:(id)identifier;
+- (int64_t)_AXMMakeupEyesCategoryForVisionCategoryIdentifier:(id)identifier;
+- (int64_t)_AXMMakeupLipsCategoryForVisionCategoryIdentifier:(id)identifier;
+- (int64_t)_AXMPoseCategoryForVisionCategoryIdentifier:(id)identifier;
+- (int64_t)_AXMSkintoneCategoryForVisionCategoryIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AXMVisionFeatureFaceAttributes
 
-- (AXMVisionFeatureFaceAttributes)initWithVisionFaceAttributes:(id)a3
+- (AXMVisionFeatureFaceAttributes)initWithVisionFaceAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v97.receiver = self;
   v97.super_class = AXMVisionFeatureFaceAttributes;
   v5 = [(AXMVisionFeatureFaceAttributes *)&v97 init];
   if (v5)
   {
-    v6 = [v4 ageCategory];
-    v7 = [v6 label];
-    v8 = [v7 identifier];
-    v5->_axAgeCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMAgeCategoryForVisionCategoryIdentifier:v8];
+    ageCategory = [attributesCopy ageCategory];
+    label = [ageCategory label];
+    identifier = [label identifier];
+    v5->_axAgeCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMAgeCategoryForVisionCategoryIdentifier:identifier];
 
-    v9 = [v4 ageCategory];
-    v10 = [v9 label];
-    [v10 confidence];
+    ageCategory2 = [attributesCopy ageCategory];
+    label2 = [ageCategory2 label];
+    [label2 confidence];
     v5->_axAgeCategoryConfidence = v11;
 
-    v12 = [v4 VN7exwFFmQF0AI9P7FjBljwEFu7QYUGCYE];
-    v13 = [v12 label];
-    v14 = [v13 identifier];
-    v5->_axGenderCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMGenderCategoryForVisionCategoryIdentifier:v14];
+    vN7exwFFmQF0AI9P7FjBljwEFu7QYUGCYE = [attributesCopy VN7exwFFmQF0AI9P7FjBljwEFu7QYUGCYE];
+    label3 = [vN7exwFFmQF0AI9P7FjBljwEFu7QYUGCYE label];
+    identifier2 = [label3 identifier];
+    v5->_axGenderCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMGenderCategoryForVisionCategoryIdentifier:identifier2];
 
-    v15 = [v4 VN7exwFFmQF0AI9P7FjBljwEFu7QYUGCYE];
-    v16 = [v15 label];
-    [v16 confidence];
+    vN7exwFFmQF0AI9P7FjBljwEFu7QYUGCYE2 = [attributesCopy VN7exwFFmQF0AI9P7FjBljwEFu7QYUGCYE];
+    label4 = [vN7exwFFmQF0AI9P7FjBljwEFu7QYUGCYE2 label];
+    [label4 confidence];
     v5->_axGenderCategoryConfidence = v17;
 
-    v18 = [v4 eyesCategory];
-    v19 = [v18 label];
-    v20 = [v19 identifier];
-    v5->_axEyesCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMEyesCategoryForVisionCategoryIdentifier:v20];
+    eyesCategory = [attributesCopy eyesCategory];
+    label5 = [eyesCategory label];
+    identifier3 = [label5 identifier];
+    v5->_axEyesCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMEyesCategoryForVisionCategoryIdentifier:identifier3];
 
-    v21 = [v4 eyesCategory];
-    v22 = [v21 label];
-    [v22 confidence];
+    eyesCategory2 = [attributesCopy eyesCategory];
+    label6 = [eyesCategory2 label];
+    [label6 confidence];
     v5->_axEyesCategoryConfidence = v23;
 
-    v24 = [v4 hairColorCategory];
-    v25 = [v24 label];
-    v26 = [v25 identifier];
-    v5->_axHairColorCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMHairColorCategoryForVisionCategoryIdentifier:v26];
+    hairColorCategory = [attributesCopy hairColorCategory];
+    label7 = [hairColorCategory label];
+    identifier4 = [label7 identifier];
+    v5->_axHairColorCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMHairColorCategoryForVisionCategoryIdentifier:identifier4];
 
-    v27 = [v4 hairColorCategory];
-    v28 = [v27 label];
-    [v28 confidence];
+    hairColorCategory2 = [attributesCopy hairColorCategory];
+    label8 = [hairColorCategory2 label];
+    [label8 confidence];
     v5->_axHairColorCategoryConfidence = v29;
 
-    v30 = [v4 glassesCategory];
-    v31 = [v30 label];
-    v32 = [v31 identifier];
-    v5->_axGlassesCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMGlassesCategoryForVisionCategoryIdentifier:v32];
+    glassesCategory = [attributesCopy glassesCategory];
+    label9 = [glassesCategory label];
+    identifier5 = [label9 identifier];
+    v5->_axGlassesCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMGlassesCategoryForVisionCategoryIdentifier:identifier5];
 
-    v33 = [v4 glassesCategory];
-    v34 = [v33 label];
-    [v34 confidence];
+    glassesCategory2 = [attributesCopy glassesCategory];
+    label10 = [glassesCategory2 label];
+    [label10 confidence];
     v5->_axGlassesCategoryConfidence = v35;
 
-    v36 = [v4 makeupEyesCategory];
-    v37 = [v36 label];
-    v38 = [v37 identifier];
-    v5->_axMakeupEyesCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMMakeupEyesCategoryForVisionCategoryIdentifier:v38];
+    makeupEyesCategory = [attributesCopy makeupEyesCategory];
+    label11 = [makeupEyesCategory label];
+    identifier6 = [label11 identifier];
+    v5->_axMakeupEyesCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMMakeupEyesCategoryForVisionCategoryIdentifier:identifier6];
 
-    v39 = [v4 makeupEyesCategory];
-    v40 = [v39 label];
-    [v40 confidence];
+    makeupEyesCategory2 = [attributesCopy makeupEyesCategory];
+    label12 = [makeupEyesCategory2 label];
+    [label12 confidence];
     v5->_axMakeupEyesCategoryConfidence = v41;
 
-    v42 = [v4 makeupLipsCategory];
-    v43 = [v42 label];
-    v44 = [v43 identifier];
-    v5->_axMakeupLipsCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMMakeupLipsCategoryForVisionCategoryIdentifier:v44];
+    makeupLipsCategory = [attributesCopy makeupLipsCategory];
+    label13 = [makeupLipsCategory label];
+    identifier7 = [label13 identifier];
+    v5->_axMakeupLipsCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMMakeupLipsCategoryForVisionCategoryIdentifier:identifier7];
 
-    v45 = [v4 makeupLipsCategory];
-    v46 = [v45 label];
-    [v46 confidence];
+    makeupLipsCategory2 = [attributesCopy makeupLipsCategory];
+    label14 = [makeupLipsCategory2 label];
+    [label14 confidence];
     v5->_axMakeupLipsCategoryConfidence = v47;
 
-    v48 = [v4 facemaskCategory];
-    v49 = [v48 label];
-    v50 = [v49 identifier];
-    v5->_axFacemaskCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMFacemaskCategoryForVisionCategoryIdentifier:v50];
+    facemaskCategory = [attributesCopy facemaskCategory];
+    label15 = [facemaskCategory label];
+    identifier8 = [label15 identifier];
+    v5->_axFacemaskCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMFacemaskCategoryForVisionCategoryIdentifier:identifier8];
 
-    v51 = [v4 facemaskCategory];
-    v52 = [v51 label];
-    [v52 confidence];
+    facemaskCategory2 = [attributesCopy facemaskCategory];
+    label16 = [facemaskCategory2 label];
+    [label16 confidence];
     v5->_axFacemaskCategoryConfidence = v53;
 
-    v54 = [v4 VN1uMyFtnYEWjbrdx3yAuDndKkPeyzNJhB];
-    v55 = [v54 label];
-    v56 = [v55 identifier];
-    v5->_axEthnicityCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMEthnicityCategoryForVisionCategoryIdentifier:v56];
+    vN1uMyFtnYEWjbrdx3yAuDndKkPeyzNJhB = [attributesCopy VN1uMyFtnYEWjbrdx3yAuDndKkPeyzNJhB];
+    label17 = [vN1uMyFtnYEWjbrdx3yAuDndKkPeyzNJhB label];
+    identifier9 = [label17 identifier];
+    v5->_axEthnicityCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMEthnicityCategoryForVisionCategoryIdentifier:identifier9];
 
-    v57 = [v4 VN1uMyFtnYEWjbrdx3yAuDndKkPeyzNJhB];
-    v58 = [v57 label];
-    [v58 confidence];
+    vN1uMyFtnYEWjbrdx3yAuDndKkPeyzNJhB2 = [attributesCopy VN1uMyFtnYEWjbrdx3yAuDndKkPeyzNJhB];
+    label18 = [vN1uMyFtnYEWjbrdx3yAuDndKkPeyzNJhB2 label];
+    [label18 confidence];
     v5->_axEthnicityCategoryConfidence = v59;
 
-    v60 = [v4 VN4UfLbvVUqMvYV8bbGFQcxg5yRLm8ekI1];
-    v61 = [v60 label];
-    v62 = [v61 identifier];
-    v5->_axExpressionCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMExpressionCategoryForVisionCategoryIdentifier:v62];
+    vN4UfLbvVUqMvYV8bbGFQcxg5yRLm8ekI1 = [attributesCopy VN4UfLbvVUqMvYV8bbGFQcxg5yRLm8ekI1];
+    label19 = [vN4UfLbvVUqMvYV8bbGFQcxg5yRLm8ekI1 label];
+    identifier10 = [label19 identifier];
+    v5->_axExpressionCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMExpressionCategoryForVisionCategoryIdentifier:identifier10];
 
-    v63 = [v4 VN4UfLbvVUqMvYV8bbGFQcxg5yRLm8ekI1];
-    v64 = [v63 label];
-    [v64 confidence];
+    vN4UfLbvVUqMvYV8bbGFQcxg5yRLm8ekI12 = [attributesCopy VN4UfLbvVUqMvYV8bbGFQcxg5yRLm8ekI1];
+    label20 = [vN4UfLbvVUqMvYV8bbGFQcxg5yRLm8ekI12 label];
+    [label20 confidence];
     v5->_axExpressionCategoryConfidence = v65;
 
-    v66 = [v4 VN2riiZbQrloRhCzYW56f0rk4N3ROe151S];
-    v67 = [v66 label];
-    v68 = [v67 identifier];
-    v5->_axFaceHairV2Category = [(AXMVisionFeatureFaceAttributes *)v5 _AXMFaceHairV2CategoryForVisionCategoryIdentifier:v68];
+    vN2riiZbQrloRhCzYW56f0rk4N3ROe151S = [attributesCopy VN2riiZbQrloRhCzYW56f0rk4N3ROe151S];
+    label21 = [vN2riiZbQrloRhCzYW56f0rk4N3ROe151S label];
+    identifier11 = [label21 identifier];
+    v5->_axFaceHairV2Category = [(AXMVisionFeatureFaceAttributes *)v5 _AXMFaceHairV2CategoryForVisionCategoryIdentifier:identifier11];
 
-    v69 = [v4 VN2riiZbQrloRhCzYW56f0rk4N3ROe151S];
-    v70 = [v69 label];
-    [v70 confidence];
+    vN2riiZbQrloRhCzYW56f0rk4N3ROe151S2 = [attributesCopy VN2riiZbQrloRhCzYW56f0rk4N3ROe151S];
+    label22 = [vN2riiZbQrloRhCzYW56f0rk4N3ROe151S2 label];
+    [label22 confidence];
     v5->_axFaceHairV2CategoryConfidence = v71;
 
-    v72 = [v4 VN7CbCeAogPS2iHE6VQwu6H96xanljtMqk];
-    v73 = [v72 label];
-    v74 = [v73 identifier];
-    v5->_axHairTypeCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMHairtypeCategoryForVisionCategoryIdentifier:v74];
+    vN7CbCeAogPS2iHE6VQwu6H96xanljtMqk = [attributesCopy VN7CbCeAogPS2iHE6VQwu6H96xanljtMqk];
+    label23 = [vN7CbCeAogPS2iHE6VQwu6H96xanljtMqk label];
+    identifier12 = [label23 identifier];
+    v5->_axHairTypeCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMHairtypeCategoryForVisionCategoryIdentifier:identifier12];
 
-    v75 = [v4 VN7CbCeAogPS2iHE6VQwu6H96xanljtMqk];
-    v76 = [v75 label];
-    [v76 confidence];
+    vN7CbCeAogPS2iHE6VQwu6H96xanljtMqk2 = [attributesCopy VN7CbCeAogPS2iHE6VQwu6H96xanljtMqk];
+    label24 = [vN7CbCeAogPS2iHE6VQwu6H96xanljtMqk2 label];
+    [label24 confidence];
     v5->_axHairTypeCategoryConfidence = v77;
 
-    v78 = [v4 VN7fiLHgGnvqPqG63cfDUCK4Xm8obUuWoP];
-    v79 = [v78 label];
-    v80 = [v79 identifier];
-    v5->_axHeadgearCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMHeadgearCategoryForVisionCategoryIdentifier:v80];
+    vN7fiLHgGnvqPqG63cfDUCK4Xm8obUuWoP = [attributesCopy VN7fiLHgGnvqPqG63cfDUCK4Xm8obUuWoP];
+    label25 = [vN7fiLHgGnvqPqG63cfDUCK4Xm8obUuWoP label];
+    identifier13 = [label25 identifier];
+    v5->_axHeadgearCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMHeadgearCategoryForVisionCategoryIdentifier:identifier13];
 
-    v81 = [v4 VN7fiLHgGnvqPqG63cfDUCK4Xm8obUuWoP];
-    v82 = [v81 label];
-    [v82 confidence];
+    vN7fiLHgGnvqPqG63cfDUCK4Xm8obUuWoP2 = [attributesCopy VN7fiLHgGnvqPqG63cfDUCK4Xm8obUuWoP];
+    label26 = [vN7fiLHgGnvqPqG63cfDUCK4Xm8obUuWoP2 label];
+    [label26 confidence];
     v5->_axHeadgearCategoryConfidence = v83;
 
-    v84 = [v4 VNpLorzxnyAlLcPFNcKhgoNCmy9b5BRWyk];
-    v85 = [v84 label];
-    v86 = [v85 identifier];
-    v5->_axPoseCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMPoseCategoryForVisionCategoryIdentifier:v86];
+    vNpLorzxnyAlLcPFNcKhgoNCmy9b5BRWyk = [attributesCopy VNpLorzxnyAlLcPFNcKhgoNCmy9b5BRWyk];
+    label27 = [vNpLorzxnyAlLcPFNcKhgoNCmy9b5BRWyk label];
+    identifier14 = [label27 identifier];
+    v5->_axPoseCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMPoseCategoryForVisionCategoryIdentifier:identifier14];
 
-    v87 = [v4 VNpLorzxnyAlLcPFNcKhgoNCmy9b5BRWyk];
-    v88 = [v87 label];
-    [v88 confidence];
+    vNpLorzxnyAlLcPFNcKhgoNCmy9b5BRWyk2 = [attributesCopy VNpLorzxnyAlLcPFNcKhgoNCmy9b5BRWyk];
+    label28 = [vNpLorzxnyAlLcPFNcKhgoNCmy9b5BRWyk2 label];
+    [label28 confidence];
     v5->_axPoseCategoryConfidence = v89;
 
-    v90 = [v4 VN3iT1YRjjnIuELobV1olJiO1vvItN6Kdq];
-    v91 = [v90 label];
-    v92 = [v91 identifier];
-    v5->_axSkintoneCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMSkintoneCategoryForVisionCategoryIdentifier:v92];
+    vN3iT1YRjjnIuELobV1olJiO1vvItN6Kdq = [attributesCopy VN3iT1YRjjnIuELobV1olJiO1vvItN6Kdq];
+    label29 = [vN3iT1YRjjnIuELobV1olJiO1vvItN6Kdq label];
+    identifier15 = [label29 identifier];
+    v5->_axSkintoneCategory = [(AXMVisionFeatureFaceAttributes *)v5 _AXMSkintoneCategoryForVisionCategoryIdentifier:identifier15];
 
-    v93 = [v4 VN3iT1YRjjnIuELobV1olJiO1vvItN6Kdq];
-    v94 = [v93 label];
-    [v94 confidence];
+    vN3iT1YRjjnIuELobV1olJiO1vvItN6Kdq2 = [attributesCopy VN3iT1YRjjnIuELobV1olJiO1vvItN6Kdq];
+    label30 = [vN3iT1YRjjnIuELobV1olJiO1vvItN6Kdq2 label];
+    [label30 confidence];
     v5->_axSkintoneCategoryConfidence = v95;
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v19 = a3;
-  [v19 encodeInteger:-[AXMVisionFeatureFaceAttributes axAgeCategory](self forKey:{"axAgeCategory"), @"age"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[AXMVisionFeatureFaceAttributes axAgeCategory](self forKey:{"axAgeCategory"), @"age"}];
   [(AXMVisionFeatureFaceAttributes *)self axAgeCategoryConfidence];
   *&v4 = v4;
-  [v19 encodeFloat:@"ageConfidence" forKey:v4];
-  [v19 encodeInteger:-[AXMVisionFeatureFaceAttributes axGenderCategory](self forKey:{"axGenderCategory"), @"gender"}];
+  [coderCopy encodeFloat:@"ageConfidence" forKey:v4];
+  [coderCopy encodeInteger:-[AXMVisionFeatureFaceAttributes axGenderCategory](self forKey:{"axGenderCategory"), @"gender"}];
   [(AXMVisionFeatureFaceAttributes *)self axGenderCategoryConfidence];
   *&v5 = v5;
-  [v19 encodeFloat:@"genderConfidence" forKey:v5];
-  [v19 encodeInteger:-[AXMVisionFeatureFaceAttributes axEyesCategory](self forKey:{"axEyesCategory"), @"eyes"}];
+  [coderCopy encodeFloat:@"genderConfidence" forKey:v5];
+  [coderCopy encodeInteger:-[AXMVisionFeatureFaceAttributes axEyesCategory](self forKey:{"axEyesCategory"), @"eyes"}];
   [(AXMVisionFeatureFaceAttributes *)self axEyesCategoryConfidence];
   *&v6 = v6;
-  [v19 encodeFloat:@"eyesConfidence" forKey:v6];
-  [v19 encodeInteger:-[AXMVisionFeatureFaceAttributes axSmilingCategory](self forKey:{"axSmilingCategory"), @"smiling"}];
-  [v19 encodeInteger:-[AXMVisionFeatureFaceAttributes axFaceHairCategory](self forKey:{"axFaceHairCategory"), @"faceHair"}];
-  [v19 encodeInteger:-[AXMVisionFeatureFaceAttributes axHairColorCategory](self forKey:{"axHairColorCategory"), @"hairColor"}];
+  [coderCopy encodeFloat:@"eyesConfidence" forKey:v6];
+  [coderCopy encodeInteger:-[AXMVisionFeatureFaceAttributes axSmilingCategory](self forKey:{"axSmilingCategory"), @"smiling"}];
+  [coderCopy encodeInteger:-[AXMVisionFeatureFaceAttributes axFaceHairCategory](self forKey:{"axFaceHairCategory"), @"faceHair"}];
+  [coderCopy encodeInteger:-[AXMVisionFeatureFaceAttributes axHairColorCategory](self forKey:{"axHairColorCategory"), @"hairColor"}];
   [(AXMVisionFeatureFaceAttributes *)self axHairColorCategoryConfidence];
   *&v7 = v7;
-  [v19 encodeFloat:@"hairColorConfidence" forKey:v7];
-  [v19 encodeInteger:-[AXMVisionFeatureFaceAttributes axBaldCategory](self forKey:{"axBaldCategory"), @"bald"}];
-  [v19 encodeInteger:-[AXMVisionFeatureFaceAttributes axGlassesCategory](self forKey:{"axGlassesCategory"), @"glasses"}];
+  [coderCopy encodeFloat:@"hairColorConfidence" forKey:v7];
+  [coderCopy encodeInteger:-[AXMVisionFeatureFaceAttributes axBaldCategory](self forKey:{"axBaldCategory"), @"bald"}];
+  [coderCopy encodeInteger:-[AXMVisionFeatureFaceAttributes axGlassesCategory](self forKey:{"axGlassesCategory"), @"glasses"}];
   [(AXMVisionFeatureFaceAttributes *)self axGlassesCategoryConfidence];
   *&v8 = v8;
-  [v19 encodeFloat:@"glassesConfidence" forKey:v8];
-  [v19 encodeInteger:-[AXMVisionFeatureFaceAttributes axMakeupEyesCategory](self forKey:{"axMakeupEyesCategory"), @"makeupEyes"}];
+  [coderCopy encodeFloat:@"glassesConfidence" forKey:v8];
+  [coderCopy encodeInteger:-[AXMVisionFeatureFaceAttributes axMakeupEyesCategory](self forKey:{"axMakeupEyesCategory"), @"makeupEyes"}];
   [(AXMVisionFeatureFaceAttributes *)self axMakeupEyesCategoryConfidence];
   *&v9 = v9;
-  [v19 encodeFloat:@"makeupEyesConfidence" forKey:v9];
-  [v19 encodeInteger:-[AXMVisionFeatureFaceAttributes axMakeupLipsCategory](self forKey:{"axMakeupLipsCategory"), @"makeupLips"}];
+  [coderCopy encodeFloat:@"makeupEyesConfidence" forKey:v9];
+  [coderCopy encodeInteger:-[AXMVisionFeatureFaceAttributes axMakeupLipsCategory](self forKey:{"axMakeupLipsCategory"), @"makeupLips"}];
   [(AXMVisionFeatureFaceAttributes *)self axMakeupLipsCategoryConfidence];
   *&v10 = v10;
-  [v19 encodeFloat:@"makeupLipsConfidence" forKey:v10];
-  [v19 encodeInteger:-[AXMVisionFeatureFaceAttributes axFacemaskCategory](self forKey:{"axFacemaskCategory"), @"facemask"}];
+  [coderCopy encodeFloat:@"makeupLipsConfidence" forKey:v10];
+  [coderCopy encodeInteger:-[AXMVisionFeatureFaceAttributes axFacemaskCategory](self forKey:{"axFacemaskCategory"), @"facemask"}];
   [(AXMVisionFeatureFaceAttributes *)self axFacemaskCategoryConfidence];
   *&v11 = v11;
-  [v19 encodeFloat:@"facemaskConfidence" forKey:v11];
-  [v19 encodeInteger:-[AXMVisionFeatureFaceAttributes axEthnicityCategory](self forKey:{"axEthnicityCategory"), @"ethnicity"}];
+  [coderCopy encodeFloat:@"facemaskConfidence" forKey:v11];
+  [coderCopy encodeInteger:-[AXMVisionFeatureFaceAttributes axEthnicityCategory](self forKey:{"axEthnicityCategory"), @"ethnicity"}];
   [(AXMVisionFeatureFaceAttributes *)self axEthnicityCategoryConfidence];
   *&v12 = v12;
-  [v19 encodeFloat:@"ethnicityConfidence" forKey:v12];
-  [v19 encodeInteger:-[AXMVisionFeatureFaceAttributes axExpressionCategory](self forKey:{"axExpressionCategory"), @"expression"}];
+  [coderCopy encodeFloat:@"ethnicityConfidence" forKey:v12];
+  [coderCopy encodeInteger:-[AXMVisionFeatureFaceAttributes axExpressionCategory](self forKey:{"axExpressionCategory"), @"expression"}];
   [(AXMVisionFeatureFaceAttributes *)self axExpressionCategoryConfidence];
   *&v13 = v13;
-  [v19 encodeFloat:@"expressionConfidence" forKey:v13];
-  [v19 encodeInteger:-[AXMVisionFeatureFaceAttributes axFaceHairV2Category](self forKey:{"axFaceHairV2Category"), @"faceHairV2"}];
+  [coderCopy encodeFloat:@"expressionConfidence" forKey:v13];
+  [coderCopy encodeInteger:-[AXMVisionFeatureFaceAttributes axFaceHairV2Category](self forKey:{"axFaceHairV2Category"), @"faceHairV2"}];
   [(AXMVisionFeatureFaceAttributes *)self axFaceHairV2CategoryConfidence];
   *&v14 = v14;
-  [v19 encodeFloat:@"faceHairV2Confidence" forKey:v14];
-  [v19 encodeInteger:-[AXMVisionFeatureFaceAttributes axHairTypeCategory](self forKey:{"axHairTypeCategory"), @"hairType"}];
+  [coderCopy encodeFloat:@"faceHairV2Confidence" forKey:v14];
+  [coderCopy encodeInteger:-[AXMVisionFeatureFaceAttributes axHairTypeCategory](self forKey:{"axHairTypeCategory"), @"hairType"}];
   [(AXMVisionFeatureFaceAttributes *)self axHairTypeCategoryConfidence];
   *&v15 = v15;
-  [v19 encodeFloat:@"hairTypeConfidence" forKey:v15];
-  [v19 encodeInteger:-[AXMVisionFeatureFaceAttributes axHeadgearCategory](self forKey:{"axHeadgearCategory"), @"headgear"}];
+  [coderCopy encodeFloat:@"hairTypeConfidence" forKey:v15];
+  [coderCopy encodeInteger:-[AXMVisionFeatureFaceAttributes axHeadgearCategory](self forKey:{"axHeadgearCategory"), @"headgear"}];
   [(AXMVisionFeatureFaceAttributes *)self axHeadgearCategoryConfidence];
   *&v16 = v16;
-  [v19 encodeFloat:@"headgearConfidence" forKey:v16];
-  [v19 encodeInteger:-[AXMVisionFeatureFaceAttributes axPoseCategory](self forKey:{"axPoseCategory"), @"pose"}];
+  [coderCopy encodeFloat:@"headgearConfidence" forKey:v16];
+  [coderCopy encodeInteger:-[AXMVisionFeatureFaceAttributes axPoseCategory](self forKey:{"axPoseCategory"), @"pose"}];
   [(AXMVisionFeatureFaceAttributes *)self axPoseCategoryConfidence];
   *&v17 = v17;
-  [v19 encodeFloat:@"poseConfidence" forKey:v17];
-  [v19 encodeInteger:-[AXMVisionFeatureFaceAttributes axSkintoneCategory](self forKey:{"axSkintoneCategory"), @"skintone"}];
+  [coderCopy encodeFloat:@"poseConfidence" forKey:v17];
+  [coderCopy encodeInteger:-[AXMVisionFeatureFaceAttributes axSkintoneCategory](self forKey:{"axSkintoneCategory"), @"skintone"}];
   [(AXMVisionFeatureFaceAttributes *)self axSkintoneCategoryConfidence];
   *&v18 = v18;
-  [v19 encodeFloat:@"skintoneConfidence" forKey:v18];
+  [coderCopy encodeFloat:@"skintoneConfidence" forKey:v18];
 }
 
-- (AXMVisionFeatureFaceAttributes)initWithCoder:(id)a3
+- (AXMVisionFeatureFaceAttributes)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = AXMVisionFeatureFaceAttributes;
   v5 = [(AXMVisionFeatureFaceAttributes *)&v22 init];
   if (v5)
   {
-    v5->_axAgeCategory = [v4 decodeIntegerForKey:@"age"];
-    [v4 decodeFloatForKey:@"ageConfidence"];
+    v5->_axAgeCategory = [coderCopy decodeIntegerForKey:@"age"];
+    [coderCopy decodeFloatForKey:@"ageConfidence"];
     v5->_axAgeCategoryConfidence = v6;
-    v5->_axGenderCategory = [v4 decodeIntegerForKey:@"gender"];
-    [v4 decodeFloatForKey:@"genderConfidence"];
+    v5->_axGenderCategory = [coderCopy decodeIntegerForKey:@"gender"];
+    [coderCopy decodeFloatForKey:@"genderConfidence"];
     v5->_axGenderCategoryConfidence = v7;
-    v5->_axEyesCategory = [v4 decodeIntegerForKey:@"eyes"];
-    [v4 decodeFloatForKey:@"eyesConfidence"];
+    v5->_axEyesCategory = [coderCopy decodeIntegerForKey:@"eyes"];
+    [coderCopy decodeFloatForKey:@"eyesConfidence"];
     v5->_axEyesCategoryConfidence = v8;
-    v5->_axSmilingCategory = [v4 decodeIntegerForKey:@"smiling"];
-    v5->_axFaceHairCategory = [v4 decodeIntegerForKey:@"faceHair"];
-    v5->_axHairColorCategory = [v4 decodeIntegerForKey:@"hairColor"];
-    [v4 decodeFloatForKey:@"hairColorConfidence"];
+    v5->_axSmilingCategory = [coderCopy decodeIntegerForKey:@"smiling"];
+    v5->_axFaceHairCategory = [coderCopy decodeIntegerForKey:@"faceHair"];
+    v5->_axHairColorCategory = [coderCopy decodeIntegerForKey:@"hairColor"];
+    [coderCopy decodeFloatForKey:@"hairColorConfidence"];
     v5->_axHairColorCategoryConfidence = v9;
-    v5->_axBaldCategory = [v4 decodeIntegerForKey:@"bald"];
-    v5->_axGlassesCategory = [v4 decodeIntegerForKey:@"glasses"];
-    [v4 decodeFloatForKey:@"glassesConfidence"];
+    v5->_axBaldCategory = [coderCopy decodeIntegerForKey:@"bald"];
+    v5->_axGlassesCategory = [coderCopy decodeIntegerForKey:@"glasses"];
+    [coderCopy decodeFloatForKey:@"glassesConfidence"];
     v5->_axGlassesCategoryConfidence = v10;
-    v5->_axMakeupEyesCategory = [v4 decodeIntegerForKey:@"makeupEyes"];
-    [v4 decodeFloatForKey:@"makeupEyesConfidence"];
+    v5->_axMakeupEyesCategory = [coderCopy decodeIntegerForKey:@"makeupEyes"];
+    [coderCopy decodeFloatForKey:@"makeupEyesConfidence"];
     v5->_axMakeupEyesCategoryConfidence = v11;
-    v5->_axMakeupLipsCategory = [v4 decodeIntegerForKey:@"makeupLips"];
-    [v4 decodeFloatForKey:@"makeupLipsConfidence"];
+    v5->_axMakeupLipsCategory = [coderCopy decodeIntegerForKey:@"makeupLips"];
+    [coderCopy decodeFloatForKey:@"makeupLipsConfidence"];
     v5->_axMakeupLipsCategoryConfidence = v12;
-    v5->_axFacemaskCategory = [v4 decodeIntegerForKey:@"facemask"];
-    [v4 decodeFloatForKey:@"facemaskConfidence"];
+    v5->_axFacemaskCategory = [coderCopy decodeIntegerForKey:@"facemask"];
+    [coderCopy decodeFloatForKey:@"facemaskConfidence"];
     v5->_axFacemaskCategoryConfidence = v13;
-    v5->_axEthnicityCategory = [v4 decodeIntegerForKey:@"ethnicity"];
-    [v4 decodeFloatForKey:@"ethnicityConfidence"];
+    v5->_axEthnicityCategory = [coderCopy decodeIntegerForKey:@"ethnicity"];
+    [coderCopy decodeFloatForKey:@"ethnicityConfidence"];
     v5->_axEthnicityCategoryConfidence = v14;
-    v5->_axExpressionCategory = [v4 decodeIntegerForKey:@"expression"];
-    [v4 decodeFloatForKey:@"expressionConfidence"];
+    v5->_axExpressionCategory = [coderCopy decodeIntegerForKey:@"expression"];
+    [coderCopy decodeFloatForKey:@"expressionConfidence"];
     v5->_axExpressionCategoryConfidence = v15;
-    v5->_axFaceHairV2Category = [v4 decodeIntegerForKey:@"faceHairV2"];
-    [v4 decodeFloatForKey:@"faceHairV2Confidence"];
+    v5->_axFaceHairV2Category = [coderCopy decodeIntegerForKey:@"faceHairV2"];
+    [coderCopy decodeFloatForKey:@"faceHairV2Confidence"];
     v5->_axFaceHairV2CategoryConfidence = v16;
-    v5->_axHairTypeCategory = [v4 decodeIntegerForKey:@"hairType"];
-    [v4 decodeFloatForKey:@"hairTypeConfidence"];
+    v5->_axHairTypeCategory = [coderCopy decodeIntegerForKey:@"hairType"];
+    [coderCopy decodeFloatForKey:@"hairTypeConfidence"];
     v5->_axHairTypeCategoryConfidence = v17;
-    v5->_axHeadgearCategory = [v4 decodeIntegerForKey:@"headgear"];
-    [v4 decodeFloatForKey:@"headgearConfidence"];
+    v5->_axHeadgearCategory = [coderCopy decodeIntegerForKey:@"headgear"];
+    [coderCopy decodeFloatForKey:@"headgearConfidence"];
     v5->_axHeadgearCategoryConfidence = v18;
-    v5->_axPoseCategory = [v4 decodeIntegerForKey:@"pose"];
-    [v4 decodeFloatForKey:@"poseConfidence"];
+    v5->_axPoseCategory = [coderCopy decodeIntegerForKey:@"pose"];
+    [coderCopy decodeFloatForKey:@"poseConfidence"];
     v5->_axPoseCategoryConfidence = v19;
-    v5->_axSkintoneCategory = [v4 decodeIntegerForKey:@"skintone"];
-    [v4 decodeFloatForKey:@"skintoneConfidence"];
+    v5->_axSkintoneCategory = [coderCopy decodeIntegerForKey:@"skintone"];
+    [coderCopy decodeFloatForKey:@"skintoneConfidence"];
     v5->_axSkintoneCategoryConfidence = v20;
   }
 
   return v5;
 }
 
-- (int64_t)_AXMAgeCategoryForVisionCategoryIdentifier:(id)a3
+- (int64_t)_AXMAgeCategoryForVisionCategoryIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (_AXMAgeCategoryForVisionCategoryIdentifier__onceToken != -1)
   {
     [AXMVisionFeatureFaceAttributes _AXMAgeCategoryForVisionCategoryIdentifier:];
   }
 
-  v4 = [_AXMAgeCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:v3];
+  v4 = [_AXMAgeCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:identifierCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
@@ -367,10 +367,10 @@
       [AXMVisionFeatureFaceAttributes _AXMAgeCategoryForVisionCategoryIdentifier:];
     }
 
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 void __77__AXMVisionFeatureFaceAttributes__AXMAgeCategoryForVisionCategoryIdentifier___block_invoke()
@@ -494,19 +494,19 @@ LABEL_17:
   _AXMAgeCategoryForVisionCategoryIdentifier__categoryMap = v16;
 }
 
-- (int64_t)_AXMGenderCategoryForVisionCategoryIdentifier:(id)a3
+- (int64_t)_AXMGenderCategoryForVisionCategoryIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (_AXMGenderCategoryForVisionCategoryIdentifier__onceToken != -1)
   {
     [AXMVisionFeatureFaceAttributes _AXMGenderCategoryForVisionCategoryIdentifier:];
   }
 
-  v4 = [_AXMGenderCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:v3];
+  v4 = [_AXMGenderCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:identifierCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
@@ -517,10 +517,10 @@ LABEL_17:
       [AXMVisionFeatureFaceAttributes _AXMGenderCategoryForVisionCategoryIdentifier:];
     }
 
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 void __80__AXMVisionFeatureFaceAttributes__AXMGenderCategoryForVisionCategoryIdentifier___block_invoke()
@@ -578,19 +578,19 @@ LABEL_8:
   _AXMGenderCategoryForVisionCategoryIdentifier__categoryMap = v7;
 }
 
-- (int64_t)_AXMEyesCategoryForVisionCategoryIdentifier:(id)a3
+- (int64_t)_AXMEyesCategoryForVisionCategoryIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (_AXMEyesCategoryForVisionCategoryIdentifier__onceToken != -1)
   {
     [AXMVisionFeatureFaceAttributes _AXMEyesCategoryForVisionCategoryIdentifier:];
   }
 
-  v4 = [_AXMEyesCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:v3];
+  v4 = [_AXMEyesCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:identifierCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
@@ -601,10 +601,10 @@ LABEL_8:
       [AXMVisionFeatureFaceAttributes _AXMEyesCategoryForVisionCategoryIdentifier:];
     }
 
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 void __78__AXMVisionFeatureFaceAttributes__AXMEyesCategoryForVisionCategoryIdentifier___block_invoke()
@@ -662,19 +662,19 @@ LABEL_8:
   _AXMEyesCategoryForVisionCategoryIdentifier__categoryMap = v7;
 }
 
-- (int64_t)_AXMHairColorCategoryForVisionCategoryIdentifier:(id)a3
+- (int64_t)_AXMHairColorCategoryForVisionCategoryIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (_AXMHairColorCategoryForVisionCategoryIdentifier__onceToken != -1)
   {
     [AXMVisionFeatureFaceAttributes _AXMHairColorCategoryForVisionCategoryIdentifier:];
   }
 
-  v4 = [_AXMHairColorCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:v3];
+  v4 = [_AXMHairColorCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:identifierCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
@@ -685,10 +685,10 @@ LABEL_8:
       [AXMVisionFeatureFaceAttributes _AXMHairColorCategoryForVisionCategoryIdentifier:];
     }
 
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 void __83__AXMVisionFeatureFaceAttributes__AXMHairColorCategoryForVisionCategoryIdentifier___block_invoke()
@@ -834,19 +834,19 @@ LABEL_20:
   _AXMHairColorCategoryForVisionCategoryIdentifier__categoryMap = v19;
 }
 
-- (int64_t)_AXMGlassesCategoryForVisionCategoryIdentifier:(id)a3
+- (int64_t)_AXMGlassesCategoryForVisionCategoryIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (_AXMGlassesCategoryForVisionCategoryIdentifier__onceToken != -1)
   {
     [AXMVisionFeatureFaceAttributes _AXMGlassesCategoryForVisionCategoryIdentifier:];
   }
 
-  v4 = [_AXMGlassesCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:v3];
+  v4 = [_AXMGlassesCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:identifierCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
@@ -857,10 +857,10 @@ LABEL_20:
       [AXMVisionFeatureFaceAttributes _AXMGlassesCategoryForVisionCategoryIdentifier:];
     }
 
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 void __81__AXMVisionFeatureFaceAttributes__AXMGlassesCategoryForVisionCategoryIdentifier___block_invoke()
@@ -940,19 +940,19 @@ LABEL_11:
   _AXMGlassesCategoryForVisionCategoryIdentifier__categoryMap = v10;
 }
 
-- (int64_t)_AXMMakeupEyesCategoryForVisionCategoryIdentifier:(id)a3
+- (int64_t)_AXMMakeupEyesCategoryForVisionCategoryIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (_AXMMakeupEyesCategoryForVisionCategoryIdentifier__onceToken != -1)
   {
     [AXMVisionFeatureFaceAttributes _AXMMakeupEyesCategoryForVisionCategoryIdentifier:];
   }
 
-  v4 = [_AXMMakeupEyesCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:v3];
+  v4 = [_AXMMakeupEyesCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:identifierCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
@@ -963,10 +963,10 @@ LABEL_11:
       [AXMVisionFeatureFaceAttributes _AXMMakeupEyesCategoryForVisionCategoryIdentifier:];
     }
 
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 void __84__AXMVisionFeatureFaceAttributes__AXMMakeupEyesCategoryForVisionCategoryIdentifier___block_invoke()
@@ -1046,19 +1046,19 @@ LABEL_11:
   _AXMMakeupEyesCategoryForVisionCategoryIdentifier__categoryMap = v10;
 }
 
-- (int64_t)_AXMMakeupLipsCategoryForVisionCategoryIdentifier:(id)a3
+- (int64_t)_AXMMakeupLipsCategoryForVisionCategoryIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (_AXMMakeupLipsCategoryForVisionCategoryIdentifier__onceToken != -1)
   {
     [AXMVisionFeatureFaceAttributes _AXMMakeupLipsCategoryForVisionCategoryIdentifier:];
   }
 
-  v4 = [_AXMMakeupLipsCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:v3];
+  v4 = [_AXMMakeupLipsCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:identifierCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
@@ -1069,10 +1069,10 @@ LABEL_11:
       [AXMVisionFeatureFaceAttributes _AXMMakeupLipsCategoryForVisionCategoryIdentifier:];
     }
 
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 void __84__AXMVisionFeatureFaceAttributes__AXMMakeupLipsCategoryForVisionCategoryIdentifier___block_invoke()
@@ -1152,19 +1152,19 @@ LABEL_11:
   _AXMMakeupLipsCategoryForVisionCategoryIdentifier__categoryMap = v10;
 }
 
-- (int64_t)_AXMFacemaskCategoryForVisionCategoryIdentifier:(id)a3
+- (int64_t)_AXMFacemaskCategoryForVisionCategoryIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (_AXMFacemaskCategoryForVisionCategoryIdentifier__onceToken != -1)
   {
     [AXMVisionFeatureFaceAttributes _AXMFacemaskCategoryForVisionCategoryIdentifier:];
   }
 
-  v4 = [_AXMFacemaskCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:v3];
+  v4 = [_AXMFacemaskCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:identifierCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
@@ -1175,10 +1175,10 @@ LABEL_11:
       [AXMVisionFeatureFaceAttributes _AXMFacemaskCategoryForVisionCategoryIdentifier:];
     }
 
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 void __82__AXMVisionFeatureFaceAttributes__AXMFacemaskCategoryForVisionCategoryIdentifier___block_invoke()
@@ -1236,19 +1236,19 @@ LABEL_8:
   _AXMFacemaskCategoryForVisionCategoryIdentifier__categoryMap = v7;
 }
 
-- (int64_t)_AXMEthnicityCategoryForVisionCategoryIdentifier:(id)a3
+- (int64_t)_AXMEthnicityCategoryForVisionCategoryIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (_AXMEthnicityCategoryForVisionCategoryIdentifier__onceToken != -1)
   {
     [AXMVisionFeatureFaceAttributes _AXMEthnicityCategoryForVisionCategoryIdentifier:];
   }
 
-  v4 = [_AXMEthnicityCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:v3];
+  v4 = [_AXMEthnicityCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:identifierCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
@@ -1259,10 +1259,10 @@ LABEL_8:
       [AXMVisionFeatureFaceAttributes _AXMEthnicityCategoryForVisionCategoryIdentifier:];
     }
 
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 void __83__AXMVisionFeatureFaceAttributes__AXMEthnicityCategoryForVisionCategoryIdentifier___block_invoke()
@@ -1386,19 +1386,19 @@ LABEL_17:
   _AXMEthnicityCategoryForVisionCategoryIdentifier__categoryMap = v16;
 }
 
-- (int64_t)_AXMExpressionCategoryForVisionCategoryIdentifier:(id)a3
+- (int64_t)_AXMExpressionCategoryForVisionCategoryIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (_AXMExpressionCategoryForVisionCategoryIdentifier__onceToken != -1)
   {
     [AXMVisionFeatureFaceAttributes _AXMExpressionCategoryForVisionCategoryIdentifier:];
   }
 
-  v4 = [_AXMExpressionCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:v3];
+  v4 = [_AXMExpressionCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:identifierCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
@@ -1409,10 +1409,10 @@ LABEL_17:
       [AXMVisionFeatureFaceAttributes _AXMExpressionCategoryForVisionCategoryIdentifier:];
     }
 
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 void __84__AXMVisionFeatureFaceAttributes__AXMExpressionCategoryForVisionCategoryIdentifier___block_invoke()
@@ -1558,19 +1558,19 @@ LABEL_20:
   _AXMExpressionCategoryForVisionCategoryIdentifier__categoryMap = v19;
 }
 
-- (int64_t)_AXMFaceHairV2CategoryForVisionCategoryIdentifier:(id)a3
+- (int64_t)_AXMFaceHairV2CategoryForVisionCategoryIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (_AXMFaceHairV2CategoryForVisionCategoryIdentifier__onceToken != -1)
   {
     [AXMVisionFeatureFaceAttributes _AXMFaceHairV2CategoryForVisionCategoryIdentifier:];
   }
 
-  v4 = [_AXMFaceHairV2CategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:v3];
+  v4 = [_AXMFaceHairV2CategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:identifierCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
@@ -1581,10 +1581,10 @@ LABEL_20:
       [AXMVisionFeatureFaceAttributes _AXMFaceHairV2CategoryForVisionCategoryIdentifier:];
     }
 
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 void __84__AXMVisionFeatureFaceAttributes__AXMFaceHairV2CategoryForVisionCategoryIdentifier___block_invoke()
@@ -1752,19 +1752,19 @@ LABEL_23:
   _AXMFaceHairV2CategoryForVisionCategoryIdentifier__categoryMap = v22;
 }
 
-- (int64_t)_AXMHairtypeCategoryForVisionCategoryIdentifier:(id)a3
+- (int64_t)_AXMHairtypeCategoryForVisionCategoryIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (_AXMHairtypeCategoryForVisionCategoryIdentifier__onceToken != -1)
   {
     [AXMVisionFeatureFaceAttributes _AXMHairtypeCategoryForVisionCategoryIdentifier:];
   }
 
-  v4 = [_AXMHairtypeCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:v3];
+  v4 = [_AXMHairtypeCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:identifierCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
@@ -1775,10 +1775,10 @@ LABEL_23:
       [AXMVisionFeatureFaceAttributes _AXMHairtypeCategoryForVisionCategoryIdentifier:];
     }
 
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 void __82__AXMVisionFeatureFaceAttributes__AXMHairtypeCategoryForVisionCategoryIdentifier___block_invoke()
@@ -1946,19 +1946,19 @@ LABEL_23:
   _AXMHairtypeCategoryForVisionCategoryIdentifier__categoryMap = v22;
 }
 
-- (int64_t)_AXMHeadgearCategoryForVisionCategoryIdentifier:(id)a3
+- (int64_t)_AXMHeadgearCategoryForVisionCategoryIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (_AXMHeadgearCategoryForVisionCategoryIdentifier__onceToken != -1)
   {
     [AXMVisionFeatureFaceAttributes _AXMHeadgearCategoryForVisionCategoryIdentifier:];
   }
 
-  v4 = [_AXMHeadgearCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:v3];
+  v4 = [_AXMHeadgearCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:identifierCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
@@ -1969,10 +1969,10 @@ LABEL_23:
       [AXMVisionFeatureFaceAttributes _AXMHeadgearCategoryForVisionCategoryIdentifier:];
     }
 
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 void __82__AXMVisionFeatureFaceAttributes__AXMHeadgearCategoryForVisionCategoryIdentifier___block_invoke()
@@ -2096,19 +2096,19 @@ LABEL_17:
   _AXMHeadgearCategoryForVisionCategoryIdentifier__categoryMap = v16;
 }
 
-- (int64_t)_AXMPoseCategoryForVisionCategoryIdentifier:(id)a3
+- (int64_t)_AXMPoseCategoryForVisionCategoryIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (_AXMPoseCategoryForVisionCategoryIdentifier__onceToken != -1)
   {
     [AXMVisionFeatureFaceAttributes _AXMPoseCategoryForVisionCategoryIdentifier:];
   }
 
-  v4 = [_AXMPoseCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:v3];
+  v4 = [_AXMPoseCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:identifierCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
@@ -2119,10 +2119,10 @@ LABEL_17:
       [AXMVisionFeatureFaceAttributes _AXMPoseCategoryForVisionCategoryIdentifier:];
     }
 
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 void __78__AXMVisionFeatureFaceAttributes__AXMPoseCategoryForVisionCategoryIdentifier___block_invoke()
@@ -2246,19 +2246,19 @@ LABEL_17:
   _AXMPoseCategoryForVisionCategoryIdentifier__categoryMap = v16;
 }
 
-- (int64_t)_AXMSkintoneCategoryForVisionCategoryIdentifier:(id)a3
+- (int64_t)_AXMSkintoneCategoryForVisionCategoryIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   if (_AXMSkintoneCategoryForVisionCategoryIdentifier__onceToken != -1)
   {
     [AXMVisionFeatureFaceAttributes _AXMSkintoneCategoryForVisionCategoryIdentifier:];
   }
 
-  v4 = [_AXMSkintoneCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:v3];
+  v4 = [_AXMSkintoneCategoryForVisionCategoryIdentifier__categoryMap objectForKeyedSubscript:identifierCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
@@ -2269,10 +2269,10 @@ LABEL_17:
       [AXMVisionFeatureFaceAttributes _AXMSkintoneCategoryForVisionCategoryIdentifier:];
     }
 
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
 void __82__AXMVisionFeatureFaceAttributes__AXMSkintoneCategoryForVisionCategoryIdentifier___block_invoke()
@@ -2425,15 +2425,15 @@ LABEL_20:
     return 0;
   }
 
-  v3 = [(AXMVisionFeatureFaceAttributes *)self axPoseCategory];
-  if ((v3 - 1) > 4)
+  axPoseCategory = [(AXMVisionFeatureFaceAttributes *)self axPoseCategory];
+  if ((axPoseCategory - 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7A1C780[v3 - 1];
+    return off_1E7A1C780[axPoseCategory - 1];
   }
 }
 
@@ -2444,15 +2444,15 @@ LABEL_20:
     return 0;
   }
 
-  v3 = [(AXMVisionFeatureFaceAttributes *)self axSkintoneCategory];
-  if ((v3 - 1) > 5)
+  axSkintoneCategory = [(AXMVisionFeatureFaceAttributes *)self axSkintoneCategory];
+  if ((axSkintoneCategory - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7A1C7A8[v3 - 1];
+    return off_1E7A1C7A8[axSkintoneCategory - 1];
   }
 }
 
@@ -2463,15 +2463,15 @@ LABEL_20:
     return 0;
   }
 
-  v3 = [(AXMVisionFeatureFaceAttributes *)self axEthnicityCategory];
-  if ((v3 - 1) > 4)
+  axEthnicityCategory = [(AXMVisionFeatureFaceAttributes *)self axEthnicityCategory];
+  if ((axEthnicityCategory - 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7A1C7D8[v3 - 1];
+    return off_1E7A1C7D8[axEthnicityCategory - 1];
   }
 }
 
@@ -2482,14 +2482,14 @@ LABEL_20:
     return 0;
   }
 
-  v3 = [(AXMVisionFeatureFaceAttributes *)self axGenderCategory];
+  axGenderCategory = [(AXMVisionFeatureFaceAttributes *)self axGenderCategory];
   v4 = @"Gender_Female";
-  if (v3 != 2)
+  if (axGenderCategory != 2)
   {
     v4 = 0;
   }
 
-  if (v3 == 1)
+  if (axGenderCategory == 1)
   {
     return @"Gender_Male";
   }
@@ -2507,15 +2507,15 @@ LABEL_20:
     return 0;
   }
 
-  v3 = [(AXMVisionFeatureFaceAttributes *)self axAgeCategory];
-  if ((v3 - 1) > 4)
+  axAgeCategory = [(AXMVisionFeatureFaceAttributes *)self axAgeCategory];
+  if ((axAgeCategory - 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7A1C800[v3 - 1];
+    return off_1E7A1C800[axAgeCategory - 1];
   }
 }
 
@@ -2526,29 +2526,29 @@ LABEL_20:
     return 0;
   }
 
-  v3 = [(AXMVisionFeatureFaceAttributes *)self axHairColorCategory];
-  if ((v3 - 1) > 5)
+  axHairColorCategory = [(AXMVisionFeatureFaceAttributes *)self axHairColorCategory];
+  if ((axHairColorCategory - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7A1C828[v3 - 1];
+    return off_1E7A1C828[axHairColorCategory - 1];
   }
 }
 
 - (id)_accessibilityIdentifierForHairTypeCategory
 {
-  v2 = [(AXMVisionFeatureFaceAttributes *)self axHairTypeCategory];
-  if ((v2 - 1) > 6)
+  axHairTypeCategory = [(AXMVisionFeatureFaceAttributes *)self axHairTypeCategory];
+  if ((axHairTypeCategory - 1) > 6)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7A1C858[v2 - 1];
+    return off_1E7A1C858[axHairTypeCategory - 1];
   }
 }
 
@@ -2559,15 +2559,15 @@ LABEL_20:
     return 0;
   }
 
-  v3 = [(AXMVisionFeatureFaceAttributes *)self axFaceHairV2Category];
-  if ((v3 - 2) > 5)
+  axFaceHairV2Category = [(AXMVisionFeatureFaceAttributes *)self axFaceHairV2Category];
+  if ((axFaceHairV2Category - 2) > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7A1C890[v3 - 2];
+    return off_1E7A1C890[axFaceHairV2Category - 2];
   }
 }
 
@@ -2578,14 +2578,14 @@ LABEL_20:
     return 0;
   }
 
-  v3 = [(AXMVisionFeatureFaceAttributes *)self axGlassesCategory];
+  axGlassesCategory = [(AXMVisionFeatureFaceAttributes *)self axGlassesCategory];
   v4 = @"Glasses_Sunglasses";
-  if (v3 != 2)
+  if (axGlassesCategory != 2)
   {
     v4 = 0;
   }
 
-  if (v3 == 1)
+  if (axGlassesCategory == 1)
   {
     return @"Glasses_Prescription";
   }
@@ -2618,15 +2618,15 @@ LABEL_20:
     return 0;
   }
 
-  v3 = [(AXMVisionFeatureFaceAttributes *)self axHeadgearCategory];
-  if ((v3 - 1) > 3)
+  axHeadgearCategory = [(AXMVisionFeatureFaceAttributes *)self axHeadgearCategory];
+  if ((axHeadgearCategory - 1) > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7A1C8C0[v3 - 1];
+    return off_1E7A1C8C0[axHeadgearCategory - 1];
   }
 }
 
@@ -2667,15 +2667,15 @@ LABEL_20:
     return 0;
   }
 
-  v3 = [(AXMVisionFeatureFaceAttributes *)self axExpressionCategory];
-  if ((v3 - 1) > 4)
+  axExpressionCategory = [(AXMVisionFeatureFaceAttributes *)self axExpressionCategory];
+  if ((axExpressionCategory - 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7A1C8E0[v3 - 1];
+    return off_1E7A1C8E0[axExpressionCategory - 1];
   }
 }
 
@@ -2686,14 +2686,14 @@ LABEL_20:
     return 0;
   }
 
-  v3 = [(AXMVisionFeatureFaceAttributes *)self axEyesCategory];
+  axEyesCategory = [(AXMVisionFeatureFaceAttributes *)self axEyesCategory];
   v4 = @"Eyes_Open";
-  if (v3 != 2)
+  if (axEyesCategory != 2)
   {
     v4 = 0;
   }
 
-  if (v3 == 1)
+  if (axEyesCategory == 1)
   {
     return @"Eyes_Closed";
   }
@@ -2711,15 +2711,15 @@ LABEL_20:
     return 0;
   }
 
-  v3 = [(AXMVisionFeatureFaceAttributes *)self axPoseCategory];
-  if ((v3 - 2) > 3)
+  axPoseCategory = [(AXMVisionFeatureFaceAttributes *)self axPoseCategory];
+  if ((axPoseCategory - 2) > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7A1C908[v3 - 2];
+    return off_1E7A1C908[axPoseCategory - 2];
   }
 }
 
@@ -2730,15 +2730,15 @@ LABEL_20:
     return @".age.person";
   }
 
-  v3 = [(AXMVisionFeatureFaceAttributes *)self axAgeCategory];
-  if (v3 > 5)
+  axAgeCategory = [(AXMVisionFeatureFaceAttributes *)self axAgeCategory];
+  if (axAgeCategory > 5)
   {
     return @".age.baby";
   }
 
   else
   {
-    return off_1E7A1C928[v3];
+    return off_1E7A1C928[axAgeCategory];
   }
 }
 
@@ -2749,15 +2749,15 @@ LABEL_20:
     return 0;
   }
 
-  v3 = [(AXMVisionFeatureFaceAttributes *)self axHairColorCategory];
-  if ((v3 - 1) > 5)
+  axHairColorCategory = [(AXMVisionFeatureFaceAttributes *)self axHairColorCategory];
+  if ((axHairColorCategory - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7A1C958[v3 - 1];
+    return off_1E7A1C958[axHairColorCategory - 1];
   }
 }
 
@@ -2768,15 +2768,15 @@ LABEL_20:
     return 0;
   }
 
-  v3 = [(AXMVisionFeatureFaceAttributes *)self axHairTypeCategory];
-  if ((v3 - 1) > 3)
+  axHairTypeCategory = [(AXMVisionFeatureFaceAttributes *)self axHairTypeCategory];
+  if ((axHairTypeCategory - 1) > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_1E7A1C988[v3 - 1];
+    return off_1E7A1C988[axHairTypeCategory - 1];
   }
 }
 
@@ -2784,19 +2784,19 @@ LABEL_20:
 {
   if (([(AXMVisionFeatureFaceAttributes *)self excludeOptions]& 0x100) != 0)
   {
-    v4 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForHairColorCategory];
-    v5 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForHairTypeCategory];
+    _accessibilityLabelFormatterForHairColorCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForHairColorCategory];
+    _accessibilityLabelFormatterForHairTypeCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForHairTypeCategory];
     v10 = 0;
   }
 
   else
   {
-    v3 = [(AXMVisionFeatureFaceAttributes *)self axFaceHairV2Category];
-    v4 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForHairColorCategory];
-    v5 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForHairTypeCategory];
-    if (v5 | v4)
+    axFaceHairV2Category = [(AXMVisionFeatureFaceAttributes *)self axFaceHairV2Category];
+    _accessibilityLabelFormatterForHairColorCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForHairColorCategory];
+    _accessibilityLabelFormatterForHairTypeCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForHairTypeCategory];
+    if (_accessibilityLabelFormatterForHairTypeCategory | _accessibilityLabelFormatterForHairColorCategory)
     {
-      v6 = v5;
+      v6 = _accessibilityLabelFormatterForHairTypeCategory;
     }
 
     else
@@ -2805,22 +2805,22 @@ LABEL_20:
     }
 
     v7 = @".facehair.present";
-    if (v5 | v4)
+    if (_accessibilityLabelFormatterForHairTypeCategory | _accessibilityLabelFormatterForHairColorCategory)
     {
       v7 = @".facehair.included";
     }
 
-    if (((1 << v3) & 0xEC) != 0)
+    if (((1 << axFaceHairV2Category) & 0xEC) != 0)
     {
       v8 = v6;
     }
 
     else
     {
-      v8 = v5;
+      v8 = _accessibilityLabelFormatterForHairTypeCategory;
     }
 
-    if (((1 << v3) & 0xEC) != 0)
+    if (((1 << axFaceHairV2Category) & 0xEC) != 0)
     {
       v9 = v7;
     }
@@ -2830,14 +2830,14 @@ LABEL_20:
       v9 = 0;
     }
 
-    if (v3 > 7)
+    if (axFaceHairV2Category > 7)
     {
       v10 = 0;
     }
 
     else
     {
-      v5 = v8;
+      _accessibilityLabelFormatterForHairTypeCategory = v8;
       v10 = v9;
     }
   }
@@ -2852,14 +2852,14 @@ LABEL_20:
     return 0;
   }
 
-  v3 = [(AXMVisionFeatureFaceAttributes *)self axGlassesCategory];
+  axGlassesCategory = [(AXMVisionFeatureFaceAttributes *)self axGlassesCategory];
   v4 = @".sunglasses";
-  if (v3 != 2)
+  if (axGlassesCategory != 2)
   {
     v4 = 0;
   }
 
-  if (v3 == 1)
+  if (axGlassesCategory == 1)
   {
     return @".prescription";
   }
@@ -2892,14 +2892,14 @@ LABEL_20:
     return 0;
   }
 
-  v3 = [(AXMVisionFeatureFaceAttributes *)self axExpressionCategory];
+  axExpressionCategory = [(AXMVisionFeatureFaceAttributes *)self axExpressionCategory];
   v4 = @".smiling";
-  if (v3 != 5)
+  if (axExpressionCategory != 5)
   {
     v4 = 0;
   }
 
-  if (v3 == 2)
+  if (axExpressionCategory == 2)
   {
     return @".laughing";
   }
@@ -2913,19 +2913,19 @@ LABEL_20:
 - (id)_accessibilityLabelForDemographics
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterBeginning];
-  v5 = [v3 stringWithString:v4];
+  _accessibilityLabelFormatterBeginning = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterBeginning];
+  v5 = [v3 stringWithString:_accessibilityLabelFormatterBeginning];
 
-  v6 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForPoseCategory];
-  if (v6)
+  _accessibilityLabelFormatterForPoseCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForPoseCategory];
+  if (_accessibilityLabelFormatterForPoseCategory)
   {
-    [v5 appendString:v6];
+    [v5 appendString:_accessibilityLabelFormatterForPoseCategory];
   }
 
-  v7 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForAgeCategory];
-  if (v7)
+  _accessibilityLabelFormatterForAgeCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForAgeCategory];
+  if (_accessibilityLabelFormatterForAgeCategory)
   {
-    [v5 appendString:v7];
+    [v5 appendString:_accessibilityLabelFormatterForAgeCategory];
 LABEL_6:
     v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.accessibility.AXMediaUtilities"];
     v9 = [v8 localizedStringForKey:v5 value:&stru_1F23EA908 table:@"Accessibility"];
@@ -2933,7 +2933,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (_accessibilityLabelFormatterForPoseCategory)
   {
     goto LABEL_6;
   }
@@ -2947,15 +2947,15 @@ LABEL_7:
 - (id)_accessibilityLabelForHairDetails
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterBeginning];
-  v5 = [v3 stringWithString:v4];
+  _accessibilityLabelFormatterBeginning = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterBeginning];
+  v5 = [v3 stringWithString:_accessibilityLabelFormatterBeginning];
 
-  v6 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForHairColorCategory];
-  v7 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForHairTypeCategory];
-  v8 = v7;
-  if (v6 && v7)
+  _accessibilityLabelFormatterForHairColorCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForHairColorCategory];
+  _accessibilityLabelFormatterForHairTypeCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForHairTypeCategory];
+  v8 = _accessibilityLabelFormatterForHairTypeCategory;
+  if (_accessibilityLabelFormatterForHairColorCategory && _accessibilityLabelFormatterForHairTypeCategory)
   {
-    [v5 appendString:v6];
+    [v5 appendString:_accessibilityLabelFormatterForHairColorCategory];
     v9 = v8;
 LABEL_8:
     [v5 appendString:v9];
@@ -2965,17 +2965,17 @@ LABEL_8:
     goto LABEL_10;
   }
 
-  if (v6)
+  if (_accessibilityLabelFormatterForHairColorCategory)
   {
-    v9 = v6;
+    v9 = _accessibilityLabelFormatterForHairColorCategory;
   }
 
   else
   {
-    v9 = v7;
+    v9 = _accessibilityLabelFormatterForHairTypeCategory;
   }
 
-  if (v6 | v7)
+  if (_accessibilityLabelFormatterForHairColorCategory | _accessibilityLabelFormatterForHairTypeCategory)
   {
     goto LABEL_8;
   }
@@ -2989,13 +2989,13 @@ LABEL_10:
 - (id)_accessibilityLabelForFacialHairDetails
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterBeginning];
-  v5 = [v3 stringWithString:v4];
+  _accessibilityLabelFormatterBeginning = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterBeginning];
+  v5 = [v3 stringWithString:_accessibilityLabelFormatterBeginning];
 
-  v6 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForFaceHairV2Category];
-  if (v6)
+  _accessibilityLabelFormatterForFaceHairV2Category = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForFaceHairV2Category];
+  if (_accessibilityLabelFormatterForFaceHairV2Category)
   {
-    [v5 appendString:v6];
+    [v5 appendString:_accessibilityLabelFormatterForFaceHairV2Category];
     v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.accessibility.AXMediaUtilities"];
     v8 = [v7 localizedStringForKey:v5 value:&stru_1F23EA908 table:@"Accessibility"];
   }
@@ -3011,20 +3011,20 @@ LABEL_10:
 - (id)_accessibilityLabelForAccessoryDetails
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterBeginning];
-  v5 = [v3 stringWithString:v4];
+  _accessibilityLabelFormatterBeginning = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterBeginning];
+  v5 = [v3 stringWithString:_accessibilityLabelFormatterBeginning];
 
   [v5 appendString:@".accessories"];
-  v6 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForGlassesCategory];
-  if (v6)
+  _accessibilityLabelFormatterForGlassesCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForGlassesCategory];
+  if (_accessibilityLabelFormatterForGlassesCategory)
   {
-    [v5 appendString:v6];
+    [v5 appendString:_accessibilityLabelFormatterForGlassesCategory];
   }
 
-  v7 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForFaceMaskCategory];
-  if (v7)
+  _accessibilityLabelFormatterForFaceMaskCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForFaceMaskCategory];
+  if (_accessibilityLabelFormatterForFaceMaskCategory)
   {
-    [v5 appendString:v7];
+    [v5 appendString:_accessibilityLabelFormatterForFaceMaskCategory];
 LABEL_6:
     v8 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.accessibility.AXMediaUtilities"];
     v9 = [v8 localizedStringForKey:v5 value:&stru_1F23EA908 table:@"Accessibility"];
@@ -3032,7 +3032,7 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (v6)
+  if (_accessibilityLabelFormatterForGlassesCategory)
   {
     goto LABEL_6;
   }
@@ -3046,14 +3046,14 @@ LABEL_7:
 - (id)_accessibilityLabelForExpressionDetails
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterBeginning];
-  v5 = [v3 stringWithString:v4];
+  _accessibilityLabelFormatterBeginning = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterBeginning];
+  v5 = [v3 stringWithString:_accessibilityLabelFormatterBeginning];
 
   [v5 appendString:@".expression"];
-  v6 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForExpressionCategory];
-  if (v6)
+  _accessibilityLabelFormatterForExpressionCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelFormatterForExpressionCategory];
+  if (_accessibilityLabelFormatterForExpressionCategory)
   {
-    [v5 appendString:v6];
+    [v5 appendString:_accessibilityLabelFormatterForExpressionCategory];
     v7 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.accessibility.AXMediaUtilities"];
     v8 = [v7 localizedStringForKey:v5 value:&stru_1F23EA908 table:@"Accessibility"];
   }
@@ -3068,189 +3068,189 @@ LABEL_7:
 
 - (id)accessibilityLabelForAttributes
 {
-  v3 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelForDemographics];
-  v4 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelForHairDetails];
-  v5 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelForFacialHairDetails];
-  v6 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelForAccessoryDetails];
-  v7 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelForExpressionDetails];
-  v8 = [MEMORY[0x1E695DEC8] axmArrayByIgnoringNilElementsWithCount:{5, v3, v4, v5, v6, v7}];
+  _accessibilityLabelForDemographics = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelForDemographics];
+  _accessibilityLabelForHairDetails = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelForHairDetails];
+  _accessibilityLabelForFacialHairDetails = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelForFacialHairDetails];
+  _accessibilityLabelForAccessoryDetails = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelForAccessoryDetails];
+  _accessibilityLabelForExpressionDetails = [(AXMVisionFeatureFaceAttributes *)self _accessibilityLabelForExpressionDetails];
+  v8 = [MEMORY[0x1E695DEC8] axmArrayByIgnoringNilElementsWithCount:{5, _accessibilityLabelForDemographics, _accessibilityLabelForHairDetails, _accessibilityLabelForFacialHairDetails, _accessibilityLabelForAccessoryDetails, _accessibilityLabelForExpressionDetails}];
   v9 = AXMLabelForNSStringElements(v8, 1, 0);
-  v10 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  v11 = [v9 stringByTrimmingCharactersInSet:v10];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  v11 = [v9 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   return v11;
 }
 
 - (id)accessibilityLabelAndConfidenceMappingForAttributes
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForPoseCategory];
-  if (v4)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  _accessibilityIdentifierForPoseCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForPoseCategory];
+  if (_accessibilityIdentifierForPoseCategory)
   {
     v5 = MEMORY[0x1E696AD98];
     [(AXMVisionFeatureFaceAttributes *)self axPoseCategoryConfidence];
     v6 = [v5 numberWithDouble:?];
-    [v3 setObject:v6 forKeyedSubscript:v4];
+    [dictionary setObject:v6 forKeyedSubscript:_accessibilityIdentifierForPoseCategory];
   }
 
-  v7 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForAgeCategory];
-  if (v7)
+  _accessibilityIdentifierForAgeCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForAgeCategory];
+  if (_accessibilityIdentifierForAgeCategory)
   {
     v8 = MEMORY[0x1E696AD98];
     [(AXMVisionFeatureFaceAttributes *)self axAgeCategoryConfidence];
     v9 = [v8 numberWithDouble:?];
-    [v3 setObject:v9 forKeyedSubscript:v7];
+    [dictionary setObject:v9 forKeyedSubscript:_accessibilityIdentifierForAgeCategory];
   }
 
-  v10 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForGenderCategory];
-  if (v10)
+  _accessibilityIdentifierForGenderCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForGenderCategory];
+  if (_accessibilityIdentifierForGenderCategory)
   {
     v11 = MEMORY[0x1E696AD98];
     [(AXMVisionFeatureFaceAttributes *)self axGenderCategoryConfidence];
     v12 = [v11 numberWithDouble:?];
-    [v3 setObject:v12 forKeyedSubscript:v10];
+    [dictionary setObject:v12 forKeyedSubscript:_accessibilityIdentifierForGenderCategory];
   }
 
-  v13 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForGlassesCategory];
-  if (v13)
+  _accessibilityIdentifierForGlassesCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForGlassesCategory];
+  if (_accessibilityIdentifierForGlassesCategory)
   {
     v14 = MEMORY[0x1E696AD98];
     [(AXMVisionFeatureFaceAttributes *)self axGlassesCategoryConfidence];
     v15 = [v14 numberWithDouble:?];
-    [v3 setObject:v15 forKeyedSubscript:v13];
+    [dictionary setObject:v15 forKeyedSubscript:_accessibilityIdentifierForGlassesCategory];
   }
 
-  v55 = v10;
-  v16 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForHairColorCategory];
-  if (v16)
+  v55 = _accessibilityIdentifierForGenderCategory;
+  _accessibilityIdentifierForHairColorCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForHairColorCategory];
+  if (_accessibilityIdentifierForHairColorCategory)
   {
     v17 = MEMORY[0x1E696AD98];
     [(AXMVisionFeatureFaceAttributes *)self axHairColorCategoryConfidence];
     v18 = [v17 numberWithDouble:?];
-    [v3 setObject:v18 forKeyedSubscript:v16];
+    [dictionary setObject:v18 forKeyedSubscript:_accessibilityIdentifierForHairColorCategory];
   }
 
-  v19 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForHairTypeCategory];
-  if (v19)
+  _accessibilityIdentifierForHairTypeCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForHairTypeCategory];
+  if (_accessibilityIdentifierForHairTypeCategory)
   {
     v20 = MEMORY[0x1E696AD98];
     [(AXMVisionFeatureFaceAttributes *)self axHairTypeCategoryConfidence];
     v21 = [v20 numberWithDouble:?];
-    [v3 setObject:v21 forKeyedSubscript:v19];
+    [dictionary setObject:v21 forKeyedSubscript:_accessibilityIdentifierForHairTypeCategory];
   }
 
-  v22 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForFaceHairV2Category];
-  if (v22)
+  _accessibilityIdentifierForFaceHairV2Category = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForFaceHairV2Category];
+  if (_accessibilityIdentifierForFaceHairV2Category)
   {
     v23 = MEMORY[0x1E696AD98];
     [(AXMVisionFeatureFaceAttributes *)self axFaceHairV2CategoryConfidence];
     v24 = [v23 numberWithDouble:?];
-    [v3 setObject:v24 forKeyedSubscript:v22];
+    [dictionary setObject:v24 forKeyedSubscript:_accessibilityIdentifierForFaceHairV2Category];
   }
 
-  v51 = v22;
-  v57 = v4;
-  v25 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForHeadgearCategory];
-  if (v25)
+  v51 = _accessibilityIdentifierForFaceHairV2Category;
+  v57 = _accessibilityIdentifierForPoseCategory;
+  _accessibilityIdentifierForHeadgearCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForHeadgearCategory];
+  if (_accessibilityIdentifierForHeadgearCategory)
   {
     v26 = MEMORY[0x1E696AD98];
     [(AXMVisionFeatureFaceAttributes *)self axHeadgearCategoryConfidence];
     v27 = [v26 numberWithDouble:?];
-    [v3 setObject:v27 forKeyedSubscript:v25];
+    [dictionary setObject:v27 forKeyedSubscript:_accessibilityIdentifierForHeadgearCategory];
   }
 
-  v56 = v7;
-  v28 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForFacemaskCategory];
-  if (v28)
+  v56 = _accessibilityIdentifierForAgeCategory;
+  _accessibilityIdentifierForFacemaskCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForFacemaskCategory];
+  if (_accessibilityIdentifierForFacemaskCategory)
   {
     v29 = MEMORY[0x1E696AD98];
     [(AXMVisionFeatureFaceAttributes *)self axFacemaskCategoryConfidence];
     v30 = [v29 numberWithDouble:?];
-    [v3 setObject:v30 forKeyedSubscript:v28];
+    [dictionary setObject:v30 forKeyedSubscript:_accessibilityIdentifierForFacemaskCategory];
   }
 
-  v31 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForExpressionCategory];
-  if (v31)
+  _accessibilityIdentifierForExpressionCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForExpressionCategory];
+  if (_accessibilityIdentifierForExpressionCategory)
   {
     v32 = MEMORY[0x1E696AD98];
     [(AXMVisionFeatureFaceAttributes *)self axExpressionCategoryConfidence];
     v33 = [v32 numberWithDouble:?];
-    [v3 setObject:v33 forKeyedSubscript:v31];
+    [dictionary setObject:v33 forKeyedSubscript:_accessibilityIdentifierForExpressionCategory];
   }
 
-  v54 = v13;
-  v34 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForEthnicityCategory];
-  if (v34)
+  v54 = _accessibilityIdentifierForGlassesCategory;
+  _accessibilityIdentifierForEthnicityCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForEthnicityCategory];
+  if (_accessibilityIdentifierForEthnicityCategory)
   {
     v35 = MEMORY[0x1E696AD98];
     [(AXMVisionFeatureFaceAttributes *)self axEthnicityCategoryConfidence];
     v36 = [v35 numberWithDouble:?];
-    [v3 setObject:v36 forKeyedSubscript:v34];
+    [dictionary setObject:v36 forKeyedSubscript:_accessibilityIdentifierForEthnicityCategory];
   }
 
-  v53 = v16;
-  v37 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForEyesCategory];
-  if (v37)
+  v53 = _accessibilityIdentifierForHairColorCategory;
+  _accessibilityIdentifierForEyesCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForEyesCategory];
+  if (_accessibilityIdentifierForEyesCategory)
   {
     v38 = MEMORY[0x1E696AD98];
     [(AXMVisionFeatureFaceAttributes *)self axEyesCategoryConfidence];
     v39 = [v38 numberWithDouble:?];
-    [v3 setObject:v39 forKeyedSubscript:v37];
+    [dictionary setObject:v39 forKeyedSubscript:_accessibilityIdentifierForEyesCategory];
   }
 
-  v52 = v19;
-  v40 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForMakeupEyesCategory];
-  if (v40)
+  v52 = _accessibilityIdentifierForHairTypeCategory;
+  _accessibilityIdentifierForMakeupEyesCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForMakeupEyesCategory];
+  if (_accessibilityIdentifierForMakeupEyesCategory)
   {
     v41 = MEMORY[0x1E696AD98];
     [(AXMVisionFeatureFaceAttributes *)self axMakeupEyesCategoryConfidence];
     v42 = [v41 numberWithDouble:?];
-    [v3 setObject:v42 forKeyedSubscript:v40];
+    [dictionary setObject:v42 forKeyedSubscript:_accessibilityIdentifierForMakeupEyesCategory];
   }
 
-  v43 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForMakeupLipsCategory];
-  if (v43)
+  _accessibilityIdentifierForMakeupLipsCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForMakeupLipsCategory];
+  if (_accessibilityIdentifierForMakeupLipsCategory)
   {
     v44 = MEMORY[0x1E696AD98];
     [(AXMVisionFeatureFaceAttributes *)self axMakeupLipsCategoryConfidence];
     v45 = [v44 numberWithDouble:?];
-    [v3 setObject:v45 forKeyedSubscript:v43];
+    [dictionary setObject:v45 forKeyedSubscript:_accessibilityIdentifierForMakeupLipsCategory];
   }
 
-  v46 = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForSkintoneCategory];
-  if (v46)
+  _accessibilityIdentifierForSkintoneCategory = [(AXMVisionFeatureFaceAttributes *)self _accessibilityIdentifierForSkintoneCategory];
+  if (_accessibilityIdentifierForSkintoneCategory)
   {
     v47 = MEMORY[0x1E696AD98];
     [(AXMVisionFeatureFaceAttributes *)self axSkintoneCategoryConfidence];
     v48 = [v47 numberWithDouble:?];
-    [v3 setObject:v48 forKeyedSubscript:v46];
+    [dictionary setObject:v48 forKeyedSubscript:_accessibilityIdentifierForSkintoneCategory];
   }
 
-  return v3;
+  return dictionary;
 }
 
-+ (id)unitTestingFaceAttributesForAge:(int64_t)a3 gender:(int64_t)a4 eyes:(int64_t)a5 smiling:(int64_t)a6 facialHair:(int64_t)a7 hairColor:(int64_t)a8 baldness:(int64_t)a9 glasses:(int64_t)a10 eyeMakeup:(int64_t)a11 lipMakeup:(int64_t)a12 faceMask:(int64_t)a13 ethnicity:(int64_t)a14 expression:(int64_t)a15 facialHairV2:(int64_t)a16 hairType:(int64_t)a17 headGear:(int64_t)a18 pose:(int64_t)a19 skinTone:(int64_t)a20 excludeOptions:(int64_t)a21
++ (id)unitTestingFaceAttributesForAge:(int64_t)age gender:(int64_t)gender eyes:(int64_t)eyes smiling:(int64_t)smiling facialHair:(int64_t)hair hairColor:(int64_t)color baldness:(int64_t)baldness glasses:(int64_t)self0 eyeMakeup:(int64_t)self1 lipMakeup:(int64_t)self2 faceMask:(int64_t)self3 ethnicity:(int64_t)self4 expression:(int64_t)self5 facialHairV2:(int64_t)self6 hairType:(int64_t)self7 headGear:(int64_t)self8 pose:(int64_t)self9 skinTone:(int64_t)tone excludeOptions:(int64_t)options
 {
   v24 = objc_alloc_init(AXMVisionFeatureFaceAttributes);
-  [(AXMVisionFeatureFaceAttributes *)v24 setExcludeOptions:a21];
-  v24->_axAgeCategory = a3;
-  v24->_axGenderCategory = a4;
-  v24->_axEyesCategory = a5;
-  v24->_axSmilingCategory = a6;
-  v24->_axFaceHairCategory = a7;
-  v24->_axHairColorCategory = a8;
-  v24->_axBaldCategory = a9;
-  v24->_axGlassesCategory = a10;
-  v24->_axMakeupEyesCategory = a11;
-  v24->_axMakeupLipsCategory = a12;
-  v24->_axFacemaskCategory = a13;
-  v24->_axEthnicityCategory = a14;
-  v24->_axExpressionCategory = a15;
-  v24->_axFaceHairV2Category = a16;
-  v24->_axHairTypeCategory = a17;
-  v24->_axHeadgearCategory = a18;
-  v24->_axPoseCategory = a19;
-  v24->_axSkintoneCategory = a20;
+  [(AXMVisionFeatureFaceAttributes *)v24 setExcludeOptions:options];
+  v24->_axAgeCategory = age;
+  v24->_axGenderCategory = gender;
+  v24->_axEyesCategory = eyes;
+  v24->_axSmilingCategory = smiling;
+  v24->_axFaceHairCategory = hair;
+  v24->_axHairColorCategory = color;
+  v24->_axBaldCategory = baldness;
+  v24->_axGlassesCategory = glasses;
+  v24->_axMakeupEyesCategory = makeup;
+  v24->_axMakeupLipsCategory = lipMakeup;
+  v24->_axFacemaskCategory = mask;
+  v24->_axEthnicityCategory = ethnicity;
+  v24->_axExpressionCategory = expression;
+  v24->_axFaceHairV2Category = v2;
+  v24->_axHairTypeCategory = type;
+  v24->_axHeadgearCategory = gear;
+  v24->_axPoseCategory = pose;
+  v24->_axSkintoneCategory = tone;
 
   return v24;
 }

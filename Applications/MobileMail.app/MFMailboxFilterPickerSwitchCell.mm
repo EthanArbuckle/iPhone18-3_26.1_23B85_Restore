@@ -1,19 +1,19 @@
 @interface MFMailboxFilterPickerSwitchCell
-- (MFMailboxFilterPickerSwitchCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MFMailboxFilterPickerSwitchCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (MFMailboxFilterPickerSwitchCellDelegate)delegate;
 - (void)_handleSwitchValueChange;
 - (void)prepareForReuse;
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4;
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 @end
 
 @implementation MFMailboxFilterPickerSwitchCell
 
-- (MFMailboxFilterPickerSwitchCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MFMailboxFilterPickerSwitchCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = MFMailboxFilterPickerSwitchCell;
-  v7 = [(MFMailboxFilterPickerCell *)&v11 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(MFMailboxFilterPickerCell *)&v11 initWithStyle:style reuseIdentifier:identifierCopy];
   if (v7)
   {
     v8 = objc_alloc_init(UISwitch);
@@ -27,14 +27,14 @@
   return v7;
 }
 
-- (void)setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
-  v4 = a3;
+  selectedCopy = selected;
   v7.receiver = self;
   v7.super_class = MFMailboxFilterPickerSwitchCell;
-  [(MFMailboxFilterPickerSwitchCell *)&v7 setSelected:a3 animated:a4];
-  v6 = [(MFMailboxFilterPickerSwitchCell *)self selectionSwitch];
-  [v6 setOn:v4];
+  [(MFMailboxFilterPickerSwitchCell *)&v7 setSelected:selected animated:animated];
+  selectionSwitch = [(MFMailboxFilterPickerSwitchCell *)self selectionSwitch];
+  [selectionSwitch setOn:selectedCopy];
 }
 
 - (void)prepareForReuse
@@ -47,14 +47,14 @@
 
 - (void)_handleSwitchValueChange
 {
-  v4 = [(MFMailboxFilterPickerSwitchCell *)self selectionSwitch];
-  -[MFMailboxFilterPickerSwitchCell setSelected:](self, "setSelected:", [v4 isOn]);
+  selectionSwitch = [(MFMailboxFilterPickerSwitchCell *)self selectionSwitch];
+  -[MFMailboxFilterPickerSwitchCell setSelected:](self, "setSelected:", [selectionSwitch isOn]);
 
-  v5 = [(MFMailboxFilterPickerSwitchCell *)self delegate];
+  delegate = [(MFMailboxFilterPickerSwitchCell *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(MFMailboxFilterPickerSwitchCell *)self selectionSwitch];
-    [v5 mailboxFilterPickerSwitchCell:self valueDidChange:{objc_msgSend(v3, "isOn")}];
+    selectionSwitch2 = [(MFMailboxFilterPickerSwitchCell *)self selectionSwitch];
+    [delegate mailboxFilterPickerSwitchCell:self valueDidChange:{objc_msgSend(selectionSwitch2, "isOn")}];
   }
 }
 

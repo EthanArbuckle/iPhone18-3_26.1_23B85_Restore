@@ -1,9 +1,9 @@
 @interface JavaNioPipeImpl_PipeSinkChannel
-- (int)writeWithJavaNioByteBuffer:(id)a3;
-- (int64_t)writeWithJavaNioByteBufferArray:(id)a3;
+- (int)writeWithJavaNioByteBuffer:(id)buffer;
+- (int64_t)writeWithJavaNioByteBufferArray:(id)array;
 - (void)dealloc;
 - (void)implCloseSelectableChannel;
-- (void)implConfigureBlockingWithBoolean:(BOOL)a3;
+- (void)implConfigureBlockingWithBoolean:(BOOL)boolean;
 @end
 
 @implementation JavaNioPipeImpl_PipeSinkChannel
@@ -19,15 +19,15 @@
   [v3 close];
 }
 
-- (void)implConfigureBlockingWithBoolean:(BOOL)a3
+- (void)implConfigureBlockingWithBoolean:(BOOL)boolean
 {
-  v3 = a3;
-  v4 = [(JavaNioPipeImpl_PipeSinkChannel *)self getFD];
+  booleanCopy = boolean;
+  getFD = [(JavaNioPipeImpl_PipeSinkChannel *)self getFD];
 
-  LibcoreIoIoUtils_setBlockingWithJavaIoFileDescriptor_withBoolean_(v4, v3);
+  LibcoreIoIoUtils_setBlockingWithJavaIoFileDescriptor_withBoolean_(getFD, booleanCopy);
 }
 
-- (int)writeWithJavaNioByteBuffer:(id)a3
+- (int)writeWithJavaNioByteBuffer:(id)buffer
 {
   v4 = *(&self->fd_ + 7);
   if (!v4)
@@ -35,10 +35,10 @@
     JreThrowNullPointerException();
   }
 
-  return [v4 writeWithJavaNioByteBuffer:a3];
+  return [v4 writeWithJavaNioByteBuffer:buffer];
 }
 
-- (int64_t)writeWithJavaNioByteBufferArray:(id)a3
+- (int64_t)writeWithJavaNioByteBufferArray:(id)array
 {
   v4 = *(&self->fd_ + 7);
   if (!v4)
@@ -46,7 +46,7 @@
     JreThrowNullPointerException();
   }
 
-  return [v4 writeWithJavaNioByteBufferArray:a3];
+  return [v4 writeWithJavaNioByteBufferArray:array];
 }
 
 - (void)dealloc

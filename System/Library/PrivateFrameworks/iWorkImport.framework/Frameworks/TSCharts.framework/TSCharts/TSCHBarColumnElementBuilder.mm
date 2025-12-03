@@ -1,17 +1,17 @@
 @interface TSCHBarColumnElementBuilder
-+ (void)calculateGapsForChartModel:(id)a3 forTotalWidth:(float)a4 outBarWidth:(float *)a5 outBarGroupGap:(float *)a6 outBarGap:(float *)a7;
-- (CGPath)newRoundedRectPathWithRect:(CGRect)a3 chartInfo:(id)a4 series:(id)a5 groupIndex:(unint64_t)a6 isVertical:(BOOL)a7 forGroups:(id)a8 forBodyLayout:(id)a9;
-- (CGRect)nudgeBarElementFrame:(CGRect)a3 inPlotAreaFrame:(CGRect)a4 usingBarModelCache:(id)a5 unitSpaceValueBegin:(double)a6 unitSpaceValueEnd:(double)a7 withViewScale:(double)a8;
-- (CGRect)p_createBarRectInFrame:(CGRect)a3 forSeries:(id)a4 groupIndex:(unint64_t)a5 count:(unint64_t)a6 valueAxis:(id)a7 groupAxis:(id)a8 barWidth:(float)a9 barGroupGap:(float)a10 barGap:(float)a11;
++ (void)calculateGapsForChartModel:(id)model forTotalWidth:(float)width outBarWidth:(float *)barWidth outBarGroupGap:(float *)gap outBarGap:(float *)barGap;
+- (CGPath)newRoundedRectPathWithRect:(CGRect)rect chartInfo:(id)info series:(id)series groupIndex:(unint64_t)index isVertical:(BOOL)vertical forGroups:(id)groups forBodyLayout:(id)layout;
+- (CGRect)nudgeBarElementFrame:(CGRect)frame inPlotAreaFrame:(CGRect)areaFrame usingBarModelCache:(id)cache unitSpaceValueBegin:(double)begin unitSpaceValueEnd:(double)end withViewScale:(double)scale;
+- (CGRect)p_createBarRectInFrame:(CGRect)frame forSeries:(id)series groupIndex:(unint64_t)index count:(unint64_t)count valueAxis:(id)axis groupAxis:(id)groupAxis barWidth:(float)width barGroupGap:(float)self0 barGap:(float)self1;
 - (TSCHBarColumnElementBuilder)init;
-- (TSCHBarColumnElementBuilder)initWithVertical:(BOOL)a3;
-- (unint64_t)countOfBarRectsForSeries:(id)a3 forGroups:(id)a4 forBodyLayout:(id)a5 outNewGroupIndexArray:(unint64_t *)a6 outNewElementRectsArray:(CGRect *)a7 outNewClipRectsArray:(CGRect *)a8;
-- (unint64_t)countOfElementsInSeries:(id)a3 forGroups:(id)a4 forBodyLayout:(id)a5 outNewElementBounds:(CGRect *)a6 outNewClipRects:(CGRect *)a7 outNewElementPaths:(const CGPath *)a8 outSelectionKnobLocations:(id *)a9 forHighlightPath:(BOOL)a10;
-- (unint64_t)countOfErrorBarsInSeries:(id)a3 forGroups:(id)a4 forAxisID:(id)a5 forBodyLayout:(id)a6 outClipRect:(CGRect *)a7 outNewErrorBarDescriptors:(id *)a8;
-- (unint64_t)countOfLabelsForSeries:(id)a3 forGroups:(id)a4 forBodyLayout:(id)a5 outNewTransforms:(CGAffineTransform *)a6 outNewElementSizes:(CGSize *)a7 outNewClipRects:(CGRect *)a8 outNewStrings:(id *)a9;
-- (void)p_calcGapsForBodyLayout:(id)a3 elementCount:(unint64_t)a4 outBarWidth:(float *)a5 outBarGroupGap:(float *)a6 outBarGap:(float *)a7;
-- (void)p_nudgeBarElementFrame:(CGRect *)a3 inPlotAreaFrame:(CGRect)a4 usingBarModelCache:(id)a5 unitSpaceValueBegin:(double)a6 unitSpaceValueEnd:(double)a7 withViewScale:(double)a8;
-- (void)p_trendlineInfoForSeries:(id)a3 forBodyLayout:(id)a4 outVertical:(BOOL *)a5 outOffsetInBody:(double *)a6;
+- (TSCHBarColumnElementBuilder)initWithVertical:(BOOL)vertical;
+- (unint64_t)countOfBarRectsForSeries:(id)series forGroups:(id)groups forBodyLayout:(id)layout outNewGroupIndexArray:(unint64_t *)array outNewElementRectsArray:(CGRect *)rectsArray outNewClipRectsArray:(CGRect *)clipRectsArray;
+- (unint64_t)countOfElementsInSeries:(id)series forGroups:(id)groups forBodyLayout:(id)layout outNewElementBounds:(CGRect *)bounds outNewClipRects:(CGRect *)rects outNewElementPaths:(const CGPath *)paths outSelectionKnobLocations:(id *)locations forHighlightPath:(BOOL)self0;
+- (unint64_t)countOfErrorBarsInSeries:(id)series forGroups:(id)groups forAxisID:(id)d forBodyLayout:(id)layout outClipRect:(CGRect *)rect outNewErrorBarDescriptors:(id *)descriptors;
+- (unint64_t)countOfLabelsForSeries:(id)series forGroups:(id)groups forBodyLayout:(id)layout outNewTransforms:(CGAffineTransform *)transforms outNewElementSizes:(CGSize *)sizes outNewClipRects:(CGRect *)rects outNewStrings:(id *)strings;
+- (void)p_calcGapsForBodyLayout:(id)layout elementCount:(unint64_t)count outBarWidth:(float *)width outBarGroupGap:(float *)gap outBarGap:(float *)barGap;
+- (void)p_nudgeBarElementFrame:(CGRect *)frame inPlotAreaFrame:(CGRect)areaFrame usingBarModelCache:(id)cache unitSpaceValueBegin:(double)begin unitSpaceValueEnd:(double)end withViewScale:(double)scale;
+- (void)p_trendlineInfoForSeries:(id)series forBodyLayout:(id)layout outVertical:(BOOL *)vertical outOffsetInBody:(double *)body;
 @end
 
 @implementation TSCHBarColumnElementBuilder
@@ -34,68 +34,68 @@
   return 0;
 }
 
-- (TSCHBarColumnElementBuilder)initWithVertical:(BOOL)a3
+- (TSCHBarColumnElementBuilder)initWithVertical:(BOOL)vertical
 {
   v5.receiver = self;
   v5.super_class = TSCHBarColumnElementBuilder;
   result = [(TSCHBarColumnElementBuilder *)&v5 init];
   if (result)
   {
-    result->_vertical = a3;
+    result->_vertical = vertical;
   }
 
   return result;
 }
 
-- (CGPath)newRoundedRectPathWithRect:(CGRect)a3 chartInfo:(id)a4 series:(id)a5 groupIndex:(unint64_t)a6 isVertical:(BOOL)a7 forGroups:(id)a8 forBodyLayout:(id)a9
+- (CGPath)newRoundedRectPathWithRect:(CGRect)rect chartInfo:(id)info series:(id)series groupIndex:(unint64_t)index isVertical:(BOOL)vertical forGroups:(id)groups forBodyLayout:(id)layout
 {
-  v9 = a7;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a4;
-  v17 = a5;
-  objc_msgSend_floatValueForProperty_defaultValue_(v16, v18, 0.0, v19, v20, 1111);
+  verticalCopy = vertical;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  infoCopy = info;
+  seriesCopy = series;
+  objc_msgSend_floatValueForProperty_defaultValue_(infoCopy, v18, 0.0, v19, v20, 1111);
   v22 = *&v21;
-  v26 = objc_msgSend_intValueForProperty_defaultValue_(v16, v23, v21, v24, v25, 1110, 0);
-  LODWORD(a6) = sub_276348D78(v17, a6);
+  v26 = objc_msgSend_intValueForProperty_defaultValue_(infoCopy, v23, v21, v24, v25, 1110, 0);
+  LODWORD(index) = sub_276348D78(seriesCopy, index);
   v29.origin.x = x;
   v29.origin.y = y;
   v29.size.width = width;
   v29.size.height = height;
   v30 = CGRectStandardize(v29);
-  v27 = sub_2762A1C64(v9, v26 != 0, a6, 1, v30.origin.x, v30.origin.y, v30.size.width, v30.size.height, v22);
+  v27 = sub_2762A1C64(verticalCopy, v26 != 0, index, 1, v30.origin.x, v30.origin.y, v30.size.width, v30.size.height, v22);
 
   return v27;
 }
 
-- (unint64_t)countOfElementsInSeries:(id)a3 forGroups:(id)a4 forBodyLayout:(id)a5 outNewElementBounds:(CGRect *)a6 outNewClipRects:(CGRect *)a7 outNewElementPaths:(const CGPath *)a8 outSelectionKnobLocations:(id *)a9 forHighlightPath:(BOOL)a10
+- (unint64_t)countOfElementsInSeries:(id)series forGroups:(id)groups forBodyLayout:(id)layout outNewElementBounds:(CGRect *)bounds outNewClipRects:(CGRect *)rects outNewElementPaths:(const CGPath *)paths outSelectionKnobLocations:(id *)locations forHighlightPath:(BOOL)self0
 {
-  v14 = a3;
-  v15 = a4;
-  v17 = a5;
-  if (a6)
+  seriesCopy = series;
+  groupsCopy = groups;
+  layoutCopy = layout;
+  if (bounds)
   {
-    *a6 = 0;
+    *bounds = 0;
   }
 
-  if (a7)
+  if (rects)
   {
-    *a7 = 0;
+    *rects = 0;
   }
 
-  if (a8)
+  if (paths)
   {
-    *a8 = 0;
+    *paths = 0;
   }
 
-  if (a9)
+  if (locations)
   {
-    *a9 = 0;
+    *locations = 0;
   }
 
-  if (!v14)
+  if (!seriesCopy)
   {
     v40 = MEMORY[0x277D81150];
     v41 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, v18, v19, v20, "[TSCHBarColumnElementBuilder countOfElementsInSeries:forGroups:forBodyLayout:outNewElementBounds:outNewClipRects:outNewElementPaths:outSelectionKnobLocations:forHighlightPath:]");
@@ -107,16 +107,16 @@
     goto LABEL_71;
   }
 
-  v104 = v15;
-  v105 = v17;
-  v21 = objc_msgSend_seriesType(v14, v16, v18, v19, v20);
+  v104 = groupsCopy;
+  v105 = layoutCopy;
+  v21 = objc_msgSend_seriesType(seriesCopy, v16, v18, v19, v20);
   isVertical = objc_msgSend_isVertical(v21, v22, v23, v24, v25);
-  v103 = a6;
+  boundsCopy = bounds;
 
   v116 = 0;
   v117 = 0;
   v115 = 0;
-  if (a6 | a8 | a9)
+  if (bounds | paths | locations)
   {
     v31 = &v117;
   }
@@ -126,14 +126,14 @@
     v31 = 0;
   }
 
-  if (a7)
+  if (rects)
   {
-    v32 = objc_msgSend_countOfBarRectsForSeries_forGroups_forBodyLayout_outNewGroupIndexArray_outNewElementRectsArray_outNewClipRectsArray_(self, v27, v28, v29, v30, v14, v15, v17, &v115, v31, &v116);
+    v32 = objc_msgSend_countOfBarRectsForSeries_forGroups_forBodyLayout_outNewGroupIndexArray_outNewElementRectsArray_outNewClipRectsArray_(self, v27, v28, v29, v30, seriesCopy, groupsCopy, layoutCopy, &v115, v31, &v116);
   }
 
   else
   {
-    v32 = objc_msgSend_countOfBarRectsForSeries_forGroups_forBodyLayout_outNewGroupIndexArray_outNewElementRectsArray_outNewClipRectsArray_(self, v27, v28, v29, v30, v14, v15, v17, &v115, v31, 0);
+    v32 = objc_msgSend_countOfBarRectsForSeries_forGroups_forBodyLayout_outNewGroupIndexArray_outNewElementRectsArray_outNewClipRectsArray_(self, v27, v28, v29, v30, seriesCopy, groupsCopy, layoutCopy, &v115, v31, 0);
   }
 
   v35 = v32;
@@ -143,10 +143,10 @@
   v36 = *(MEMORY[0x277CBF398] + 24);
   height = v36;
   width = v37;
-  if (!a8)
+  if (!paths)
   {
     Mutable = 0;
-    if (a9)
+    if (locations)
     {
       goto LABEL_18;
     }
@@ -157,7 +157,7 @@ LABEL_21:
   }
 
   Mutable = CGPathCreateMutable();
-  if (!a9)
+  if (!locations)
   {
     goto LABEL_21;
   }
@@ -178,7 +178,7 @@ LABEL_22:
     v114.origin.y = y;
     do
     {
-      if (a8)
+      if (paths)
       {
         if (v117)
         {
@@ -193,12 +193,12 @@ LABEL_22:
           width = v119.size.width;
           if (Mutable)
           {
-            v60 = v14;
-            v61 = objc_msgSend_chartInfo(v14, v59, v119.origin.x, v119.origin.y, v119.size.width);
+            v60 = seriesCopy;
+            v61 = objc_msgSend_chartInfo(seriesCopy, v59, v119.origin.x, v119.origin.y, v119.size.width);
             v66 = v61;
-            if (a10 && objc_msgSend_supportsAndHasRoundedCorners(v61, v62, v63, v64, v65))
+            if (path && objc_msgSend_supportsAndHasRoundedCorners(v61, v62, v63, v64, v65))
             {
-              isVertical_forGroups_forBodyLayout = objc_msgSend_newRoundedRectPathWithRect_chartInfo_series_groupIndex_isVertical_forGroups_forBodyLayout_(self, v67, *(v117 + v58 - 24), *(v117 + v58 - 16), *(v117 + v58 - 8), v66, v14, *(v115 + v57), isVertical, v104, v105, *(v117 + v58));
+              isVertical_forGroups_forBodyLayout = objc_msgSend_newRoundedRectPathWithRect_chartInfo_series_groupIndex_isVertical_forGroups_forBodyLayout_(self, v67, *(v117 + v58 - 24), *(v117 + v58 - 16), *(v117 + v58 - 8), v66, seriesCopy, *(v115 + v57), isVertical, v104, v105, *(v117 + v58));
               CGPathAddPathSafe();
               CGPathRelease(isVertical_forGroups_forBodyLayout);
             }
@@ -208,7 +208,7 @@ LABEL_22:
               CGPathAddRectSafe();
             }
 
-            v14 = v60;
+            seriesCopy = v60;
           }
         }
       }
@@ -296,37 +296,37 @@ LABEL_22:
     v114.size.height = height;
   }
 
-  v17 = v105;
-  if (v103)
+  layoutCopy = v105;
+  if (boundsCopy)
   {
     v99 = malloc_type_calloc(0x20uLL, 1uLL, 0x1000040E0EAB150uLL);
-    *v103 = v99;
+    *boundsCopy = v99;
     v99->origin.x = x;
     v99->origin.y = y;
     v99->size.width = width;
     v99->size.height = height;
   }
 
-  if (a7)
+  if (rects)
   {
     v100 = malloc_type_calloc(0x20uLL, 1uLL, 0x1000040E0EAB150uLL);
-    *a7 = v100;
+    *rects = v100;
     v100->origin.x = v114.origin.x;
     v100->origin.y = v114.origin.y;
     v100->size.width = v114.size.width;
     v100->size.height = v114.size.height;
   }
 
-  if (a8)
+  if (paths)
   {
-    *a8 = malloc_type_calloc(8uLL, 1uLL, 0x6004044C4A2DFuLL);
-    **a8 = CGPathRetain(Mutable);
+    *paths = malloc_type_calloc(8uLL, 1uLL, 0x6004044C4A2DFuLL);
+    **paths = CGPathRetain(Mutable);
   }
 
-  if (a9)
+  if (locations)
   {
     v101 = v39;
-    *a9 = v39;
+    *locations = v39;
   }
 
   CGPathRelease(Mutable);
@@ -346,38 +346,38 @@ LABEL_22:
   }
 
   v55 = 1;
-  v15 = v104;
+  groupsCopy = v104;
 LABEL_71:
 
   return v55;
 }
 
-- (unint64_t)countOfLabelsForSeries:(id)a3 forGroups:(id)a4 forBodyLayout:(id)a5 outNewTransforms:(CGAffineTransform *)a6 outNewElementSizes:(CGSize *)a7 outNewClipRects:(CGRect *)a8 outNewStrings:(id *)a9
+- (unint64_t)countOfLabelsForSeries:(id)series forGroups:(id)groups forBodyLayout:(id)layout outNewTransforms:(CGAffineTransform *)transforms outNewElementSizes:(CGSize *)sizes outNewClipRects:(CGRect *)rects outNewStrings:(id *)strings
 {
-  v14 = a3;
-  v15 = a4;
-  v217 = a5;
-  if (a6)
+  seriesCopy = series;
+  groupsCopy = groups;
+  layoutCopy = layout;
+  if (transforms)
   {
-    *a6 = 0;
+    *transforms = 0;
   }
 
-  if (a7)
+  if (sizes)
   {
-    *a7 = 0;
+    *sizes = 0;
   }
 
-  if (a8)
+  if (rects)
   {
-    *a8 = 0;
+    *rects = 0;
   }
 
-  if (a9)
+  if (strings)
   {
-    *a9 = 0;
+    *strings = 0;
   }
 
-  if (!v14)
+  if (!seriesCopy)
   {
     v20 = MEMORY[0x277D81150];
     v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v16, v17, v18, v19, "[TSCHBarColumnElementBuilder countOfLabelsForSeries:forGroups:forBodyLayout:outNewTransforms:outNewElementSizes:outNewClipRects:outNewStrings:]");
@@ -387,13 +387,13 @@ LABEL_71:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v31, v32, v33, v34);
   }
 
-  if (v217)
+  if (layoutCopy)
   {
     v35 = 0;
-    if (v14 && a8 | a6 | a9)
+    if (seriesCopy && rects | transforms | strings)
     {
-      v214 = objc_msgSend_model(v14, v16, v17, v18, v19);
-      v40 = objc_msgSend_seriesIndex(v14, v36, v37, v38, v39);
+      v214 = objc_msgSend_model(seriesCopy, v16, v17, v18, v19);
+      v40 = objc_msgSend_seriesIndex(seriesCopy, v36, v37, v38, v39);
       v45 = objc_msgSend_barModelCacheForSeries_(v214, v41, v42, v43, v44, v40);
       v215 = v45;
       if (v45)
@@ -433,11 +433,11 @@ LABEL_71:
           memset(v289, 0, sizeof(v289));
           v290 = 1065353216;
           v210 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v50, COERCE_DOUBLE(0x5812000000), 0.0, v51);
-          v56 = objc_msgSend_allGroupsIndexSetForSeries_(v214, v52, v53, v54, v55, v14);
+          v56 = objc_msgSend_allGroupsIndexSetForSeries_(v214, v52, v53, v54, v55, seriesCopy);
           v211 = v56;
-          if (v15)
+          if (groupsCopy)
           {
-            v57 = v15;
+            v57 = groupsCopy;
           }
 
           else
@@ -447,7 +447,7 @@ LABEL_71:
 
           v209 = v57;
 
-          v62 = objc_msgSend_numberOfGroupsInSeries_(v214, v58, v59, v60, v61, v14);
+          v62 = objc_msgSend_numberOfGroupsInSeries_(v214, v58, v59, v60, v61, seriesCopy);
           v213 = objc_msgSend_groupAxis(v215, v63, v64, v65, v66);
           v207 = v62;
           v212 = objc_msgSend_valueAxis(v215, v67, v68, v69, v70);
@@ -465,11 +465,11 @@ LABEL_71:
           v91 = v90;
           objc_msgSend_unitSpaceIntercept(v215, v92, v90, v93, v94);
           v96 = v95;
-          v100 = objc_msgSend_chartInfo(v217, v97, v95, v98, v99);
+          v100 = objc_msgSend_chartInfo(layoutCopy, v97, v95, v98, v99);
           v105 = objc_msgSend_chartType(v100, v101, v102, v103, v104);
           v110 = objc_msgSend_drawValueLabelsForZero(v105, v106, v107, v108, v109);
 
-          objc_msgSend_rootedLayoutRect(v217, v111, v112, v113, v114);
+          objc_msgSend_rootedLayoutRect(layoutCopy, v111, v112, v113, v114);
           v120 = v119;
           v121 = v116;
           v122 = v117;
@@ -486,8 +486,8 @@ LABEL_71:
 
           objc_msgSend_barWidthRatio(v215, v115, v118 + -2.0, v116, v117);
           v126 = v125;
-          v130 = objc_msgSend_intValueForProperty_defaultValue_(v14, v127, v125, v128, v129, 1209, 0) != 0;
-          v206 = objc_msgSend_seriesType(v14, v131, v132, v133, v134);
+          v130 = objc_msgSend_intValueForProperty_defaultValue_(seriesCopy, v127, v125, v128, v129, 1209, 0) != 0;
+          v206 = objc_msgSend_seriesType(seriesCopy, v131, v132, v133, v134);
           v286[0] = 0;
           v286[1] = v286;
           v286[2] = 0x3032000000;
@@ -498,7 +498,7 @@ LABEL_71:
           v260[1] = 3221225472;
           v260[2] = sub_27634A28C;
           v260[3] = &unk_27A6B9D28;
-          v261 = v14;
+          v261 = seriesCopy;
           v205 = v212;
           v262 = v205;
           v284 = v110 ^ 1;
@@ -509,7 +509,7 @@ LABEL_71:
           v276 = v207;
           v208 = v213;
           v264 = v208;
-          v265 = self;
+          selfCopy = self;
           v277 = v124;
           v266 = v215;
           v278 = v126 * v124;
@@ -579,9 +579,9 @@ LABEL_71:
           v149 = v209;
           objc_msgSend_enumerateIndexesWithOptions_usingBlock_(v209, v150, v151, v152, v153, 2, v218);
           v158 = v257;
-          if (a6)
+          if (transforms)
           {
-            *a6 = malloc_type_calloc(0x30uLL, v257[3], 0x1000040EED21634uLL);
+            *transforms = malloc_type_calloc(0x30uLL, v257[3], 0x1000040EED21634uLL);
             v158 = v257;
             if (v257[3])
             {
@@ -590,7 +590,7 @@ LABEL_71:
               do
               {
                 v161 = (v248[6] + v159 * 48);
-                v162 = &(*a6)[v159];
+                v162 = &(*transforms)[v159];
                 v155 = *v161;
                 v156 = v161[1];
                 v157 = v161[2];
@@ -605,9 +605,9 @@ LABEL_71:
             }
           }
 
-          if (a7)
+          if (sizes)
           {
-            *a7 = malloc_type_calloc(0x10uLL, v158[3], 0x1000040451B5BE8uLL);
+            *sizes = malloc_type_calloc(0x10uLL, v158[3], 0x1000040451B5BE8uLL);
             v158 = v257;
             if (v257[3])
             {
@@ -616,7 +616,7 @@ LABEL_71:
               do
               {
                 v155 = *(v239[6] + v163 * 16);
-                (*a7)[v163] = v155;
+                (*sizes)[v163] = v155;
                 ++v164;
                 v158 = v257;
                 ++v163;
@@ -626,7 +626,7 @@ LABEL_71:
             }
           }
 
-          if (a8)
+          if (rects)
           {
             v154 = v158[3];
             if (v154)
@@ -634,7 +634,7 @@ LABEL_71:
               v165 = malloc_type_calloc(0x20uLL, v154, 0x1000040E0EAB150uLL);
               v158 = v257;
               v166 = v257[3];
-              *a8 = v165;
+              *rects = v165;
               if (v166)
               {
                 v167 = 0;
@@ -642,7 +642,7 @@ LABEL_71:
                 do
                 {
                   v169 = (v230[6] + v167 * 32);
-                  v170 = &(*a8)[v167];
+                  v170 = &(*rects)[v167];
                   v155 = *v169;
                   v156 = v169[1];
                   v170->origin = *v169;
@@ -658,13 +658,13 @@ LABEL_71:
 
             else
             {
-              *a8 = 0;
+              *rects = 0;
             }
           }
 
-          if (a9 && v158[3])
+          if (strings && v158[3])
           {
-            *a9 = objc_msgSend_subarrayWithRange_(v147, v154, v155.width, v156.width, v157.width, 0);
+            *strings = objc_msgSend_subarrayWithRange_(v147, v154, v155.width, v156.width, v157.width, 0);
             v158 = v257;
           }
 
@@ -719,12 +719,12 @@ LABEL_71:
       }
 
       v35 = 0;
-      v149 = v15;
+      v149 = groupsCopy;
       v201 = v214;
       v202 = v215;
 LABEL_52:
 
-      v15 = v149;
+      groupsCopy = v149;
     }
   }
 
@@ -742,44 +742,44 @@ LABEL_52:
   return v35;
 }
 
-- (unint64_t)countOfBarRectsForSeries:(id)a3 forGroups:(id)a4 forBodyLayout:(id)a5 outNewGroupIndexArray:(unint64_t *)a6 outNewElementRectsArray:(CGRect *)a7 outNewClipRectsArray:(CGRect *)a8
+- (unint64_t)countOfBarRectsForSeries:(id)series forGroups:(id)groups forBodyLayout:(id)layout outNewGroupIndexArray:(unint64_t *)array outNewElementRectsArray:(CGRect *)rectsArray outNewClipRectsArray:(CGRect *)clipRectsArray
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v21 = v16;
-  if (a6)
+  seriesCopy = series;
+  groupsCopy = groups;
+  layoutCopy = layout;
+  v21 = layoutCopy;
+  if (array)
   {
-    *a6 = 0;
+    *array = 0;
   }
 
-  if (a7)
+  if (rectsArray)
   {
-    *a7 = 0;
+    *rectsArray = 0;
   }
 
-  if (a8)
+  if (clipRectsArray)
   {
-    *a8 = 0;
+    *clipRectsArray = 0;
   }
 
-  v117 = v16;
-  if (v14)
+  v117 = layoutCopy;
+  if (seriesCopy)
   {
-    v22 = objc_msgSend_model(v14, v17, v18, v19, v20);
+    v22 = objc_msgSend_model(seriesCopy, v17, v18, v19, v20);
     v116 = v22;
-    v27 = objc_msgSend_seriesIndex(v14, v23, v24, v25, v26);
+    v27 = objc_msgSend_seriesIndex(seriesCopy, v23, v24, v25, v26);
     v114 = objc_msgSend_barModelCacheForSeries_(v22, v28, v29, v30, v31, v27);
     v115 = objc_msgSend_valueAxis(v114, v32, v33, v34, v35);
     v113 = objc_msgSend_groupAxis(v114, v36, v37, v38, v39);
     v112 = objc_msgSend_shadow(v114, v40, v41, v42, v43);
     hasShadow = objc_msgSend_hasShadow_(TSCHStyleUtilities, v44, v45, v46, v47, v112);
-    if (!v15)
+    if (!groupsCopy)
     {
-      v15 = objc_msgSend_allGroupsIndexSetForSeries_(v22, v48, v50, v51, v52, v14);
+      groupsCopy = objc_msgSend_allGroupsIndexSetForSeries_(v22, v48, v50, v51, v52, seriesCopy);
     }
 
-    v53 = objc_msgSend_numberOfGroupsInSeries_(v22, v48, v50, v51, v52, v14);
+    v53 = objc_msgSend_numberOfGroupsInSeries_(v22, v48, v50, v51, v52, seriesCopy);
     v163[0] = 0;
     v162 = 0;
     objc_msgSend_p_calcGapsForBodyLayout_elementCount_outBarWidth_outBarGroupGap_outBarGap_(self, v54, v55, v56, v57, v21, v53, v163 + 4, v163, &v162);
@@ -820,7 +820,7 @@ LABEL_52:
     v127 = v62;
     v128 = v63;
     v129 = v64;
-    v119 = v14;
+    v119 = seriesCopy;
     v130 = v53;
     v65 = v115;
     v120 = v65;
@@ -835,13 +835,13 @@ LABEL_52:
     v123 = &v144;
     v124 = &v135;
     v125 = &v153;
-    objc_msgSend_enumerateIndexesWithOptions_usingBlock_(v15, v68, v69, v70, v71, 2, v118);
-    if (a6)
+    objc_msgSend_enumerateIndexesWithOptions_usingBlock_(groupsCopy, v68, v69, v70, v71, 2, v118);
+    if (array)
     {
       v73 = v154[6];
       v72 = v154[7];
       v74 = malloc_type_calloc(8uLL, (v72 - v73) >> 3, 0x100004000313F17uLL);
-      *a6 = v74;
+      *array = v74;
       if (v72 != v73)
       {
         v75 = 0;
@@ -865,11 +865,11 @@ LABEL_52:
       }
     }
 
-    if (a7)
+    if (rectsArray)
     {
       v78 = v145[6];
       v77 = v145[7];
-      *a7 = malloc_type_calloc(0x20uLL, (v77 - v78) >> 5, 0x1000040E0EAB150uLL);
+      *rectsArray = malloc_type_calloc(0x20uLL, (v77 - v78) >> 5, 0x1000040E0EAB150uLL);
       if (v77 != v78)
       {
         v79 = 0;
@@ -886,7 +886,7 @@ LABEL_52:
         do
         {
           v81 = (v145[6] + v79 * 32);
-          v82 = &(*a7)[v79];
+          v82 = &(*rectsArray)[v79];
           v83 = v81[1];
           v82->origin = *v81;
           v82->size = v83;
@@ -898,11 +898,11 @@ LABEL_52:
       }
     }
 
-    if (a8)
+    if (clipRectsArray)
     {
       v85 = v136[6];
       v84 = v136[7];
-      *a8 = malloc_type_calloc(0x20uLL, (v84 - v85) >> 5, 0x1000040E0EAB150uLL);
+      *clipRectsArray = malloc_type_calloc(0x20uLL, (v84 - v85) >> 5, 0x1000040E0EAB150uLL);
       if (v84 != v85)
       {
         v86 = 0;
@@ -919,7 +919,7 @@ LABEL_52:
         do
         {
           v88 = (v136[6] + v86 * 32);
-          v89 = &(*a8)[v86];
+          v89 = &(*clipRectsArray)[v86];
           v90 = v88[1];
           v89->origin = *v88;
           v89->size = v90;
@@ -975,14 +975,14 @@ LABEL_52:
   return v94;
 }
 
-- (CGRect)nudgeBarElementFrame:(CGRect)a3 inPlotAreaFrame:(CGRect)a4 usingBarModelCache:(id)a5 unitSpaceValueBegin:(double)a6 unitSpaceValueEnd:(double)a7 withViewScale:(double)a8
+- (CGRect)nudgeBarElementFrame:(CGRect)frame inPlotAreaFrame:(CGRect)areaFrame usingBarModelCache:(id)cache unitSpaceValueBegin:(double)begin unitSpaceValueEnd:(double)end withViewScale:(double)scale
 {
-  v12 = a3;
-  objc_msgSend_p_nudgeBarElementFrame_inPlotAreaFrame_usingBarModelCache_unitSpaceValueBegin_unitSpaceValueEnd_withViewScale_(self, a2, a4.origin.x, a4.origin.y, a4.size.width, &v12, a5, a4.size.height, a6, a7, a8);
-  y = v12.origin.y;
-  x = v12.origin.x;
-  height = v12.size.height;
-  width = v12.size.width;
+  frameCopy = frame;
+  objc_msgSend_p_nudgeBarElementFrame_inPlotAreaFrame_usingBarModelCache_unitSpaceValueBegin_unitSpaceValueEnd_withViewScale_(self, a2, areaFrame.origin.x, areaFrame.origin.y, areaFrame.size.width, &frameCopy, cache, areaFrame.size.height, begin, end, scale);
+  y = frameCopy.origin.y;
+  x = frameCopy.origin.x;
+  height = frameCopy.size.height;
+  width = frameCopy.size.width;
   result.size.height = height;
   result.size.width = width;
   result.origin.y = y;
@@ -990,18 +990,18 @@ LABEL_52:
   return result;
 }
 
-+ (void)calculateGapsForChartModel:(id)a3 forTotalWidth:(float)a4 outBarWidth:(float *)a5 outBarGroupGap:(float *)a6 outBarGap:(float *)a7
++ (void)calculateGapsForChartModel:(id)model forTotalWidth:(float)width outBarWidth:(float *)barWidth outBarGroupGap:(float *)gap outBarGap:(float *)barGap
 {
   v77 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v14 = objc_msgSend_chartInfo(v9, v10, v11, v12, v13);
+  modelCopy = model;
+  v14 = objc_msgSend_chartInfo(modelCopy, v10, v11, v12, v13);
   v71 = objc_msgSend_chartType(v14, v15, v16, v17, v18);
   v23 = objc_msgSend_stackingSignRule(v71, v19, v20, v21, v22);
-  v29 = objc_msgSend_numberOfValues(v9, v24, v25, v26, v27);
-  v67 = a6;
+  v29 = objc_msgSend_numberOfValues(modelCopy, v24, v25, v26, v27);
+  gapCopy = gap;
   if (v23)
   {
-    v34 = objc_msgSend_numberOfSeries(v9, v28, v30, v31, v32) != 0;
+    v34 = objc_msgSend_numberOfSeries(modelCopy, v28, v30, v31, v32) != 0;
   }
 
   else
@@ -1010,7 +1010,7 @@ LABEL_52:
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v38 = objc_msgSend_seriesList(v9, v28, 0.0, v31, v32);
+    v38 = objc_msgSend_seriesList(modelCopy, v28, 0.0, v31, v32);
     v34 = 0;
     v44 = objc_msgSend_countByEnumeratingWithState_objects_count_(v38, v39, v40, v41, v42, &v72, v76, 16);
     if (v44)
@@ -1025,7 +1025,7 @@ LABEL_52:
             objc_enumerationMutation(v38);
           }
 
-          v50 = objc_msgSend_seriesType(*(*(&v72 + 1) + 8 * i), v43, v45, v46, v47, v67);
+          v50 = objc_msgSend_seriesType(*(*(&v72 + 1) + 8 * i), v43, v45, v46, v47, gapCopy);
           v55 = objc_msgSend_useInBarGapCalculations(v50, v51, v52, v53, v54);
 
           v34 += v55;
@@ -1039,16 +1039,16 @@ LABEL_52:
   }
 
   LODWORD(v35) = 1120403456;
-  objc_msgSend_floatValueForProperty_defaultValue_(v14, v33, v35, v36, v37, 1105, v67);
+  objc_msgSend_floatValueForProperty_defaultValue_(v14, v33, v35, v36, v37, 1105, gapCopy);
   v57 = v56;
   LODWORD(v58) = 10.0;
   objc_msgSend_floatValueForProperty_defaultValue_(v14, v59, v58, v60, v61, 1104);
   v62 = v57 / 100.0 * 0.5;
   v64 = v63 / 100.0;
-  v65 = a4 / ((((v29 * v62) + (v29 * v62)) + (v34 * v29)) + (v64 * ((v34 - 1) * v29)));
-  if (a5)
+  v65 = width / ((((v29 * v62) + (v29 * v62)) + (v34 * v29)) + (v64 * ((v34 - 1) * v29)));
+  if (barWidth)
   {
-    *a5 = v65;
+    *barWidth = v65;
   }
 
   if (v68)
@@ -1056,7 +1056,7 @@ LABEL_52:
     *v68 = v65 * v62;
   }
 
-  if (a7)
+  if (barGap)
   {
     v66 = v64 * v65;
     if (v34 <= 1)
@@ -1064,45 +1064,45 @@ LABEL_52:
       v66 = 0.0;
     }
 
-    *a7 = v66;
+    *barGap = v66;
   }
 }
 
-- (unint64_t)countOfErrorBarsInSeries:(id)a3 forGroups:(id)a4 forAxisID:(id)a5 forBodyLayout:(id)a6 outClipRect:(CGRect *)a7 outNewErrorBarDescriptors:(id *)a8
+- (unint64_t)countOfErrorBarsInSeries:(id)series forGroups:(id)groups forAxisID:(id)d forBodyLayout:(id)layout outClipRect:(CGRect *)rect outNewErrorBarDescriptors:(id *)descriptors
 {
   v298[1] = *MEMORY[0x277D85DE8];
-  v231 = a3;
-  v12 = a4;
-  v201 = a5;
-  v202 = a6;
+  seriesCopy = series;
+  groupsCopy = groups;
+  dCopy = d;
+  layoutCopy = layout;
   v17 = MEMORY[0x277CBF398];
-  if (a7)
+  if (rect)
   {
     v14 = *MEMORY[0x277CBF398];
     v15 = *(MEMORY[0x277CBF398] + 16);
-    a7->origin = *MEMORY[0x277CBF398];
-    a7->size = v15;
+    rect->origin = *MEMORY[0x277CBF398];
+    rect->size = v15;
   }
 
-  if (a8)
+  if (descriptors)
   {
-    *a8 = 0;
+    *descriptors = 0;
   }
 
-  v198 = a7;
-  v232 = objc_msgSend_errorBarData(v231, v13, *&v14, v15.width, v16);
+  rectCopy = rect;
+  v232 = objc_msgSend_errorBarData(seriesCopy, v13, *&v14, v15.width, v16);
   v21 = 0;
-  if (v231 && v232)
+  if (seriesCopy && v232)
   {
     v293 = 0;
     v294 = &v293;
     v295 = 0x2020000000;
     v296 = 0;
-    v200 = objc_msgSend_model(v231, v18, COERCE_DOUBLE(0x2020000000), v19, v20);
+    v200 = objc_msgSend_model(seriesCopy, v18, COERCE_DOUBLE(0x2020000000), v19, v20);
     v199 = objc_msgSend_chartInfo(v200, v22, v23, v24, v25);
-    v216 = objc_msgSend_seriesType(v231, v26, v27, v28, v29);
+    v216 = objc_msgSend_seriesType(seriesCopy, v26, v27, v28, v29);
     isVertical = objc_msgSend_isVertical(v216, v30, v31, v32, v33);
-    objc_msgSend_rootedLayoutRect(v202, v34, v35, v36, v37);
+    objc_msgSend_rootedLayoutRect(layoutCopy, v34, v35, v36, v37);
     v213 = v40;
     v214 = v39;
     v217 = v42;
@@ -1129,9 +1129,9 @@ LABEL_52:
       objc_msgSend_chartType(v199, v38, v41, v194, v41);
     }
     v197 = ;
-    if (v201)
+    if (dCopy)
     {
-      v298[0] = v201;
+      v298[0] = dCopy;
       objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v43, v44, v45, v46, v298, 1);
     }
 
@@ -1140,11 +1140,11 @@ LABEL_52:
       objc_msgSend_valueAxisIDs(v197, v43, v44, v45, v46);
     }
     v196 = ;
-    v51 = objc_msgSend_allGroupsIndexSetForSeries_(v200, v47, v48, v49, v50, v231);
+    v51 = objc_msgSend_allGroupsIndexSetForSeries_(v200, v47, v48, v49, v50, seriesCopy);
     v215 = v51;
-    if (v12)
+    if (groupsCopy)
     {
-      v52 = v12;
+      v52 = groupsCopy;
     }
 
     else
@@ -1154,15 +1154,15 @@ LABEL_52:
 
     v221 = v52;
 
-    v57 = objc_msgSend_numberOfGroupsInSeries_(v200, v53, v54, v55, v56, v231);
+    v57 = objc_msgSend_numberOfGroupsInSeries_(v200, v53, v54, v55, v56, seriesCopy);
     v292 = 0;
     v291 = 0.0;
-    objc_msgSend_p_calcGapsForBodyLayout_elementCount_outBarWidth_outBarGroupGap_outBarGap_(self, v58, v59, v60, v61, v202, v57, &v292 + 4, &v292, &v291);
+    objc_msgSend_p_calcGapsForBodyLayout_elementCount_outBarWidth_outBarGroupGap_outBarGap_(self, v58, v59, v60, v61, layoutCopy, v57, &v292 + 4, &v292, &v291);
     v208.origin.x = *v17;
     v208.origin.y = v17[1];
     v208.size.width = v17[2];
     v208.size.height = v17[3];
-    v210 = objc_msgSend_intValueForProperty_defaultValue_(v231, v62, v208.size.height, v208.size.width, v63, 1152, 0) != 0;
+    v210 = objc_msgSend_intValueForProperty_defaultValue_(seriesCopy, v62, v208.size.height, v208.size.width, v63, 1152, 0) != 0;
     v282 = 0;
     v283 = &v282;
     v284 = 0x4812000000;
@@ -1204,11 +1204,11 @@ LABEL_52:
           v75 = *(*(&v278 + 1) + 8 * v74);
           if (objc_msgSend_showErrorBarsForAxisID_(v232, v68, height, width, v70, v75))
           {
-            v230 = objc_msgSend_axisForAxisType_(v231, v68, height, width, v70, v212);
+            v230 = objc_msgSend_axisForAxisType_(seriesCopy, v68, height, width, v70, v212);
             objc_msgSend_min(v230, v76, v77, v78, v79);
             objc_msgSend_unitSpaceValueForCountSpaceValue_(v230, v80, v81, v82, v83);
             v85 = v84;
-            v89 = objc_msgSend_seriesIndexForDrawing_(v216, v86, v84, v87, v88, v231);
+            v89 = objc_msgSend_seriesIndexForDrawing_(v216, v86, v84, v87, v88, seriesCopy);
             v90 = *(&v292 + 1);
             v91 = *&v292;
             v92 = v291;
@@ -1244,10 +1244,10 @@ LABEL_52:
             v227 = objc_msgSend_lineEndForAxisID_(v232, v102, v108, (v108 + -1.0) * 0.6 + 1.0, 0.6, v75);
             v114 = sub_276348464(v227, v110, v111, v112, v113);
             v119 = objc_msgSend_type(v75, v115, v116, v117, v118);
-            v124 = objc_msgSend_axisForAxisType_(v231, v120, v121, v122, v123, v119);
+            v124 = objc_msgSend_axisForAxisType_(seriesCopy, v120, v121, v122, v123, v119);
             v226 = v114;
-            LOBYTE(v114) = objc_msgSend_errorBarIsVerticalForAxisID_series_(&v71[99], v125, v126, v127, v128, v75, v231);
-            v133 = objc_msgSend_errorBarTypeForAxisID_series_(&v71[99], v129, v130, v131, v132, v75, v231);
+            LOBYTE(v114) = objc_msgSend_errorBarIsVerticalForAxisID_series_(&v71[99], v125, v126, v127, v128, v75, seriesCopy);
+            v133 = objc_msgSend_errorBarTypeForAxisID_series_(&v71[99], v129, v130, v131, v132, v75, seriesCopy);
             isRangeContinuous = objc_msgSend_isRangeContinuous(v230, v134, v135, v136, v137);
             v143 = objc_msgSend_isRangeContinuous(v124, v139, v140, v141, v142);
             v275[0] = 0;
@@ -1313,8 +1313,8 @@ LABEL_52:
             v152 = v227;
             v260 = v210;
             v240 = v152;
-            v241 = self;
-            v261 = a8 != 0;
+            selfCopy = self;
+            v261 = descriptors != 0;
             v243 = v262;
             v244 = v275;
             v245 = v272;
@@ -1323,7 +1323,7 @@ LABEL_52:
             v233[1] = 3221225472;
             v233[2] = sub_27634CD50;
             v233[3] = &unk_27A6B9C18;
-            v234 = a8 != 0;
+            v234 = descriptors != 0;
             v233[4] = v272;
             v233[5] = &v282;
             v233[6] = v275;
@@ -1448,7 +1448,7 @@ LABEL_52:
     v183 = v303.origin.y;
     v184 = v303.size.width;
     v185 = v303.size.height;
-    if (a8 && (v186 = v283[7] - v283[6]) != 0)
+    if (descriptors && (v186 = v283[7] - v283[6]) != 0)
     {
       v187 = malloc_type_calloc(0x30uLL, 0xAAAAAAAAAAAAAAABLL * (v186 >> 4), 0x1000040C179455EuLL);
       v188 = v187;
@@ -1465,17 +1465,17 @@ LABEL_52:
       v188 = 0;
     }
 
-    if (v198)
+    if (rectCopy)
     {
-      v198->origin.x = v182;
-      v198->origin.y = v183;
-      v198->size.width = v184;
-      v198->size.height = v185;
+      rectCopy->origin.x = v182;
+      rectCopy->origin.y = v183;
+      rectCopy->size.width = v184;
+      rectCopy->size.height = v185;
     }
 
-    if (a8)
+    if (descriptors)
     {
-      *a8 = v188;
+      *descriptors = v188;
     }
 
     v21 = v294[3];
@@ -1491,18 +1491,18 @@ LABEL_52:
 
   else
   {
-    v221 = v12;
+    v221 = groupsCopy;
   }
 
   return v21;
 }
 
-- (void)p_calcGapsForBodyLayout:(id)a3 elementCount:(unint64_t)a4 outBarWidth:(float *)a5 outBarGroupGap:(float *)a6 outBarGap:(float *)a7
+- (void)p_calcGapsForBodyLayout:(id)layout elementCount:(unint64_t)count outBarWidth:(float *)width outBarGroupGap:(float *)gap outBarGap:(float *)barGap
 {
-  v47 = a3;
-  v16 = objc_msgSend_chartInfo(v47, v12, v13, v14, v15);
-  v21 = objc_msgSend_model(v47, v17, v18, v19, v20);
-  objc_msgSend_rootedLayoutRect(v47, v22, v23, v24, v25);
+  layoutCopy = layout;
+  v16 = objc_msgSend_chartInfo(layoutCopy, v12, v13, v14, v15);
+  v21 = objc_msgSend_model(layoutCopy, v17, v18, v19, v20);
+  objc_msgSend_rootedLayoutRect(layoutCopy, v22, v23, v24, v25);
   if (self->_vertical)
   {
     v30 = v28;
@@ -1521,18 +1521,18 @@ LABEL_52:
   objc_msgSend_floatValueForProperty_defaultValue_(v16, v39, v38, v40, v41, 1104);
   v42 = v37 / 100.0 * 0.5;
   v44 = v43 / 100.0;
-  v45 = v30 / ((((a4 * v42) + (a4 * v42)) + (v31 * a4)) + (v44 * ((v31 - 1) * a4)));
-  if (a5)
+  v45 = v30 / ((((count * v42) + (count * v42)) + (v31 * count)) + (v44 * ((v31 - 1) * count)));
+  if (width)
   {
-    *a5 = v45;
+    *width = v45;
   }
 
-  if (a6)
+  if (gap)
   {
-    *a6 = v42 * v45;
+    *gap = v42 * v45;
   }
 
-  if (a7)
+  if (barGap)
   {
     v46 = v44 * v45;
     if (v31 <= 1)
@@ -1540,19 +1540,19 @@ LABEL_52:
       v46 = 0.0;
     }
 
-    *a7 = v46;
+    *barGap = v46;
   }
 }
 
-- (CGRect)p_createBarRectInFrame:(CGRect)a3 forSeries:(id)a4 groupIndex:(unint64_t)a5 count:(unint64_t)a6 valueAxis:(id)a7 groupAxis:(id)a8 barWidth:(float)a9 barGroupGap:(float)a10 barGap:(float)a11
+- (CGRect)p_createBarRectInFrame:(CGRect)frame forSeries:(id)series groupIndex:(unint64_t)index count:(unint64_t)count valueAxis:(id)axis groupAxis:(id)groupAxis barWidth:(float)width barGroupGap:(float)self0 barGap:(float)self1
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v18 = a4;
-  v19 = a7;
-  v20 = a8;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  seriesCopy = series;
+  axisCopy = axis;
+  groupAxisCopy = groupAxis;
   objc_opt_class();
   v21 = TSUDynamicCast();
 
@@ -1570,33 +1570,33 @@ LABEL_52:
   v41 = MEMORY[0x277CBF398];
   v42 = *MEMORY[0x277CBF398];
   v43 = *(MEMORY[0x277CBF398] + 8);
-  v44 = *(MEMORY[0x277CBF398] + 16);
-  v45 = *(MEMORY[0x277CBF398] + 24);
-  if (v18 && v20)
+  widthCopy3 = *(MEMORY[0x277CBF398] + 16);
+  widthCopy2 = *(MEMORY[0x277CBF398] + 24);
+  if (seriesCopy && groupAxisCopy)
   {
-    objc_msgSend_interceptForAxis_(v19, v22, v23, v24, v25, v20);
-    objc_msgSend_unitSpaceValueForDataSpaceValue_(v19, v46, v47, v48, v49);
+    objc_msgSend_interceptForAxis_(axisCopy, v22, v23, v24, v25, groupAxisCopy);
+    objc_msgSend_unitSpaceValueForDataSpaceValue_(axisCopy, v46, v47, v48, v49);
     v53 = v52;
-    v54 = height + -2.0;
+    widthCopy = height + -2.0;
     if (self->_vertical)
     {
-      v54 = width;
+      widthCopy = width;
     }
 
-    objc_msgSend_unitSpaceValueForSeries_groupIndex_(v19, v50, v54, width, v51, v18, a5, *&v54);
+    objc_msgSend_unitSpaceValueForSeries_groupIndex_(axisCopy, v50, widthCopy, width, v51, seriesCopy, index, *&widthCopy);
     v56 = v55;
-    objc_msgSend_p_beginValueForSeries_groupIndex_unitSpaceIntercept_relativelyPositive_valueAxis_(self, v57, v53, v58, v59, v18, a5, v55 >= v53, v19);
+    objc_msgSend_p_beginValueForSeries_groupIndex_unitSpaceIntercept_relativelyPositive_valueAxis_(self, v57, v53, v58, v59, seriesCopy, index, v55 >= v53, axisCopy);
     v61 = v60;
-    objc_msgSend_min(v20, v62, v60, v63, v64);
-    objc_msgSend_unitSpaceValueForCountSpaceValue_min_count_(v20, v65, a5, v66, a6);
+    objc_msgSend_min(groupAxisCopy, v62, v60, v63, v64);
+    objc_msgSend_unitSpaceValueForCountSpaceValue_min_count_(groupAxisCopy, v65, index, v66, count);
     v70 = v69;
     v71 = fabs(v56) == INFINITY;
     if (fabs(v61) == INFINITY || v71)
     {
       v42 = *v41;
       v43 = v41[1];
-      v44 = v41[2];
-      v45 = v41[3];
+      widthCopy3 = v41[2];
+      widthCopy2 = v41[3];
     }
 
     else
@@ -1621,34 +1621,34 @@ LABEL_52:
         v73 = v61;
       }
 
-      if (v72 > 0.0 && (v72 = 1.0, v73 < 1.0) || ((objc_msgSend_model(v18, v67, v73, v72, v68), v74 = objc_claimAutoreleasedReturnValue(), isMultiData = objc_msgSend_isMultiData(v74, v75, v76, v77, v78), v74, v61 == 0.0) ? (v80 = isMultiData) : (v80 = 0), v80 == 1 && v56 == 0.0))
+      if (v72 > 0.0 && (v72 = 1.0, v73 < 1.0) || ((objc_msgSend_model(seriesCopy, v67, v73, v72, v68), v74 = objc_claimAutoreleasedReturnValue(), isMultiData = objc_msgSend_isMultiData(v74, v75, v76, v77, v78), v74, v61 == 0.0) ? (v80 = isMultiData) : (v80 = 0), v80 == 1 && v56 == 0.0))
       {
         TSUClamp();
         v82 = v81;
         TSUClamp();
         v84 = v83;
-        v88 = objc_msgSend_p_logicalSeriesIndexForSeries_(self, v85, v83, v86, v87, v18);
-        v89 = v70 * v96 + 0.0 + a10 + (v88 * a9) + (v88 * a11);
+        v88 = objc_msgSend_p_logicalSeriesIndexForSeries_(self, v85, v83, v86, v87, seriesCopy);
+        v89 = v70 * v96 + 0.0 + gap + (v88 * width) + (v88 * barGap);
         vertical = self->_vertical;
         v91 = height * (v82 - v84);
         if (vertical)
         {
-          v45 = height * (v82 - v84);
+          widthCopy2 = height * (v82 - v84);
         }
 
         else
         {
-          v45 = a9;
+          widthCopy2 = width;
         }
 
         if (vertical)
         {
-          v44 = a9;
+          widthCopy3 = width;
         }
 
         else
         {
-          v44 = width * (v82 - v84);
+          widthCopy3 = width * (v82 - v84);
         }
 
         if (vertical)
@@ -1673,8 +1673,8 @@ LABEL_52:
 
   v92 = v42;
   v93 = v43;
-  v94 = v44;
-  v95 = v45;
+  v94 = widthCopy3;
+  v95 = widthCopy2;
   result.size.height = v95;
   result.size.width = v94;
   result.origin.y = v93;
@@ -1682,36 +1682,36 @@ LABEL_52:
   return result;
 }
 
-- (void)p_nudgeBarElementFrame:(CGRect *)a3 inPlotAreaFrame:(CGRect)a4 usingBarModelCache:(id)a5 unitSpaceValueBegin:(double)a6 unitSpaceValueEnd:(double)a7 withViewScale:(double)a8
+- (void)p_nudgeBarElementFrame:(CGRect *)frame inPlotAreaFrame:(CGRect)areaFrame usingBarModelCache:(id)cache unitSpaceValueBegin:(double)begin unitSpaceValueEnd:(double)end withViewScale:(double)scale
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v72 = a5;
-  objc_msgSend_unitSpaceIntercept(v72, v16, v17, v18, v19);
+  height = areaFrame.size.height;
+  width = areaFrame.size.width;
+  y = areaFrame.origin.y;
+  x = areaFrame.origin.x;
+  cacheCopy = cache;
+  objc_msgSend_unitSpaceIntercept(cacheCopy, v16, v17, v18, v19);
   v24 = v21;
   v25 = v21 < 1.0 && v21 > 0.0;
-  v26 = objc_msgSend_valueAxis(v72, v20, 1.0, v22, v23, *&height);
+  v26 = objc_msgSend_valueAxis(cacheCopy, v20, 1.0, v22, v23, *&height);
   objc_msgSend_modelMin(v26, v27, v28, v29, v30);
   objc_msgSend_unitSpaceValueForDataSpaceValue_(v26, v31, v32, v33, v34);
   v36 = v35;
   objc_msgSend_modelMax(v26, v37, v35, v38, v39);
   objc_msgSend_unitSpaceValueForDataSpaceValue_(v26, v40, v41, v42, v43);
-  v45 = fmin(0.5 / a8, 0.5);
+  v45 = fmin(0.5 / scale, 0.5);
   if (self->_vertical)
   {
-    if (v25 && (v24 == a6 || vabdd_f64(v24, a6) < fabs(a6 * 1.0e-10)))
+    if (v25 && (v24 == begin || vabdd_f64(v24, begin) < fabs(begin * 1.0e-10)))
     {
-      v46 = a3->size.height;
-      if (v24 > a7)
+      v46 = frame->size.height;
+      if (v24 > end)
       {
         if (v46 <= v45)
         {
           goto LABEL_22;
         }
 
-        a3->origin.y = v45 + a3->origin.y;
+        frame->origin.y = v45 + frame->origin.y;
       }
 
       else if (v46 <= v45)
@@ -1720,36 +1720,36 @@ LABEL_22:
         if (fabs(v46) <= v45)
         {
           v48 = *(MEMORY[0x277CBF398] + 16);
-          a3->origin = *MEMORY[0x277CBF398];
-          a3->size = v48;
+          frame->origin = *MEMORY[0x277CBF398];
+          frame->size = v48;
         }
 
         goto LABEL_24;
       }
 
-      a3->size.height = v46 - v45;
+      frame->size.height = v46 - v45;
     }
 
 LABEL_24:
-    if (v24 > a7 && (v36 == a7 || (vabdd_f64(v36, a7) >= fabs(a7 * 1.0e-10) ? (v49 = v36 <= a7) : (v49 = 0), !v49)) || v24 <= a7 && (v44 == a7 || (vabdd_f64(v44, a7) >= fabs(a7 * 1.0e-10) ? (v50 = v44 < a7) : (v50 = 1), v50)))
+    if (v24 > end && (v36 == end || (vabdd_f64(v36, end) >= fabs(end * 1.0e-10) ? (v49 = v36 <= end) : (v49 = 0), !v49)) || v24 <= end && (v44 == end || (vabdd_f64(v44, end) >= fabs(end * 1.0e-10) ? (v50 = v44 < end) : (v50 = 1), v50)))
     {
-      if (CGRectGetMinY(*a3) - y < v45)
+      if (CGRectGetMinY(*frame) - y < v45)
       {
-        MinY = CGRectGetMinY(*a3);
-        a3->origin.y = y + v45;
-        a3->size.height = MinY - (y + v45) + fabs(a3->size.height);
+        MinY = CGRectGetMinY(*frame);
+        frame->origin.y = y + v45;
+        frame->size.height = MinY - (y + v45) + fabs(frame->size.height);
       }
     }
 
-    if (v24 == a6 || vabdd_f64(v24, a6) < fabs(a6 * 1.0e-10))
+    if (v24 == begin || vabdd_f64(v24, begin) < fabs(begin * 1.0e-10))
     {
       v52 = y + v71;
-      if (y + v71 - CGRectGetMaxY(*a3) < v45)
+      if (y + v71 - CGRectGetMaxY(*frame) < v45)
       {
-        v53 = a3->origin.x;
-        v54 = a3->origin.y;
-        v55 = a3->size.width;
-        v56 = a3->size.height;
+        v53 = frame->origin.x;
+        v54 = frame->origin.y;
+        v55 = frame->size.width;
+        v56 = frame->size.height;
         if (v56 >= 0.0)
         {
           v57 = v52 - v45 - CGRectGetMinY(*&v53);
@@ -1760,18 +1760,18 @@ LABEL_24:
           v57 = CGRectGetMinY(*&v53) - (v52 - v45);
         }
 
-        a3->size.height = v57;
+        frame->size.height = v57;
       }
     }
 
-    v67 = a3->size.height;
+    v67 = frame->size.height;
     goto LABEL_74;
   }
 
-  if (v25 && (v24 == a6 || vabdd_f64(v24, a6) < fabs(a6 * 1.0e-10)))
+  if (v25 && (v24 == begin || vabdd_f64(v24, begin) < fabs(begin * 1.0e-10)))
   {
-    v47 = a3->size.width;
-    if (v24 > a7)
+    v47 = frame->size.width;
+    if (v24 > end)
     {
       if (v47 > v45)
       {
@@ -1781,30 +1781,30 @@ LABEL_24:
 
     else if (v47 > v45)
     {
-      a3->origin.x = v45 + a3->origin.x;
+      frame->origin.x = v45 + frame->origin.x;
 LABEL_21:
-      a3->size.width = v47 - v45;
+      frame->size.width = v47 - v45;
       goto LABEL_47;
     }
 
     if (fabs(v47) <= v45)
     {
       v58 = *(MEMORY[0x277CBF398] + 16);
-      a3->origin = *MEMORY[0x277CBF398];
-      a3->size = v58;
+      frame->origin = *MEMORY[0x277CBF398];
+      frame->size = v58;
     }
   }
 
 LABEL_47:
-  if (v24 > a7 && (v36 == a7 || (vabdd_f64(v36, a7) >= fabs(a7 * 1.0e-10) ? (v59 = v36 <= a7) : (v59 = 0), !v59)) || v24 <= a7 && (v44 == a7 || (vabdd_f64(v44, a7) >= fabs(a7 * 1.0e-10) ? (v60 = v44 < a7) : (v60 = 1), v60)))
+  if (v24 > end && (v36 == end || (vabdd_f64(v36, end) >= fabs(end * 1.0e-10) ? (v59 = v36 <= end) : (v59 = 0), !v59)) || v24 <= end && (v44 == end || (vabdd_f64(v44, end) >= fabs(end * 1.0e-10) ? (v60 = v44 < end) : (v60 = 1), v60)))
   {
     v61 = x + width;
-    if (x + width - CGRectGetMaxX(*a3) < v45)
+    if (x + width - CGRectGetMaxX(*frame) < v45)
     {
-      v62 = a3->origin.x;
-      v63 = a3->origin.y;
-      v64 = a3->size.width;
-      v65 = a3->size.height;
+      v62 = frame->origin.x;
+      v63 = frame->origin.y;
+      v64 = frame->size.width;
+      v65 = frame->size.height;
       if (v64 >= 0.0)
       {
         v66 = v61 - v45 - CGRectGetMinX(*&v62);
@@ -1815,40 +1815,40 @@ LABEL_47:
         v66 = CGRectGetMinX(*&v62) - (v61 - v45);
       }
 
-      a3->size.width = v66;
+      frame->size.width = v66;
     }
   }
 
-  if ((v24 == a6 || vabdd_f64(v24, a6) < fabs(a6 * 1.0e-10)) && CGRectGetMinX(*a3) - x < v45)
+  if ((v24 == begin || vabdd_f64(v24, begin) < fabs(begin * 1.0e-10)) && CGRectGetMinX(*frame) - x < v45)
   {
-    MinX = CGRectGetMinX(*a3);
-    a3->origin.x = x + v45;
-    a3->size.width = MinX - (x + v45) + fabs(a3->size.width);
+    MinX = CGRectGetMinX(*frame);
+    frame->origin.x = x + v45;
+    frame->size.width = MinX - (x + v45) + fabs(frame->size.width);
   }
 
-  v67 = a3->size.width;
+  v67 = frame->size.width;
 LABEL_74:
   if (fabs(v67) < v45)
   {
     v69 = *(MEMORY[0x277CBF398] + 16);
-    a3->origin = *MEMORY[0x277CBF398];
-    a3->size = v69;
+    frame->origin = *MEMORY[0x277CBF398];
+    frame->size = v69;
   }
 }
 
-- (void)p_trendlineInfoForSeries:(id)a3 forBodyLayout:(id)a4 outVertical:(BOOL *)a5 outOffsetInBody:(double *)a6
+- (void)p_trendlineInfoForSeries:(id)series forBodyLayout:(id)layout outVertical:(BOOL *)vertical outOffsetInBody:(double *)body
 {
-  v10 = a3;
-  v11 = a4;
-  v16 = v11;
-  if (a5)
+  seriesCopy = series;
+  layoutCopy = layout;
+  v16 = layoutCopy;
+  if (vertical)
   {
-    *a5 = self->_vertical;
+    *vertical = self->_vertical;
   }
 
-  if (a6)
+  if (body)
   {
-    if (!v11)
+    if (!layoutCopy)
     {
       v17 = MEMORY[0x277D81150];
       v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v12, v13, v14, v15, "[TSCHBarColumnElementBuilder p_trendlineInfoForSeries:forBodyLayout:outVertical:outOffsetInBody:]");
@@ -1858,20 +1858,20 @@ LABEL_74:
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v28, v29, v30, v31);
     }
 
-    v33 = objc_msgSend_seriesType(v10, v12, v13, v14, v15);
+    v33 = objc_msgSend_seriesType(seriesCopy, v12, v13, v14, v15);
     if (self->_vertical)
     {
-      objc_msgSend_axisForAxisType_(v10, v32, v34, v35, v36, 1);
+      objc_msgSend_axisForAxisType_(seriesCopy, v32, v34, v35, v36, 1);
     }
 
     else
     {
-      objc_msgSend_axisForAxisType_(v10, v32, v34, v35, v36, 2);
+      objc_msgSend_axisForAxisType_(seriesCopy, v32, v34, v35, v36, 2);
     }
     v37 = ;
     if (objc_msgSend_useInBarGapCalculations(v33, v38, v39, v40, v41))
     {
-      v46 = objc_msgSend_trendLineData(v10, v42, v43, v44, v45);
+      v46 = objc_msgSend_trendLineData(seriesCopy, v42, v43, v44, v45);
       v51 = v46;
       if (v46 && (objc_msgSend_showTrendLine(v46, v47, v48, v49, v50) & 1) != 0)
       {
@@ -1889,9 +1889,9 @@ LABEL_74:
         v82 = v81;
         LODWORD(v65) = self->_vertical;
         v83 = v96;
-        v87 = objc_msgSend_barGapIndex(v10, v84, v85, v86, v79);
+        v87 = objc_msgSend_barGapIndex(seriesCopy, v84, v85, v86, v79);
         v88 = v95;
-        v93 = objc_msgSend_barGapIndex(v10, v89, v90, v91, v92);
+        v93 = objc_msgSend_barGapIndex(seriesCopy, v89, v90, v91, v92);
         if (v65)
         {
           v94 = v80;
@@ -1902,7 +1902,7 @@ LABEL_74:
           v94 = v82;
         }
 
-        *a6 = *(&v83 + 1) * 0.5 + v61 * v94 + *&v83 + (*(&v83 + 1) * v87) + (v88 * v93);
+        *body = *(&v83 + 1) * 0.5 + v61 * v94 + *&v83 + (*(&v83 + 1) * v87) + (v88 * v93);
       }
     }
   }

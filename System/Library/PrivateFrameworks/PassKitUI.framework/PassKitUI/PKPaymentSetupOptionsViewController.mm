@@ -1,43 +1,43 @@
 @interface PKPaymentSetupOptionsViewController
 - (PKPaymentSetupDockView)dockView;
-- (PKPaymentSetupOptionsViewController)initWithContext:(int64_t)a3;
+- (PKPaymentSetupOptionsViewController)initWithContext:(int64_t)context;
 - (id)_init;
-- (int64_t)visibilityBackdropView:(id)a3 preferredStyleForTraitCollection:(id)a4;
+- (int64_t)visibilityBackdropView:(id)view preferredStyleForTraitCollection:(id)collection;
 - (void)_addDockViewToCollectionViewIfNeeded;
-- (void)_keyboardSizeDidChange:(id)a3;
-- (void)_scrollToContentAnimated:(BOOL)a3;
-- (void)_scrollToTopAnimated:(BOOL)a3;
-- (void)_setNavigationBarEnabled:(BOOL)a3;
+- (void)_keyboardSizeDidChange:(id)change;
+- (void)_scrollToContentAnimated:(BOOL)animated;
+- (void)_scrollToTopAnimated:(BOOL)animated;
+- (void)_setNavigationBarEnabled:(BOOL)enabled;
 - (void)_updateNavigationItem;
 - (void)removeSetupDockView;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
 - (void)searchBarCancelButtonClicked;
-- (void)searchBarCancelButtonClicked:(id)a3;
+- (void)searchBarCancelButtonClicked:(id)clicked;
 - (void)searchBarTextDidBeginEditing;
 - (void)searchBarTextDidEndEditing;
-- (void)searchBarTextDidEndEditing:(id)a3;
-- (void)searchTextDidChangeTo:(id)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setHeaderMode:(unint64_t)a3;
-- (void)setIsShowingKeyboard:(BOOL)a3;
-- (void)setNoResultsActionButtonTitle:(id)a3 target:(id)a4 action:(SEL)a5;
-- (void)setNoResultsIcon:(id)a3;
-- (void)setNoResultsSubtitle:(id)a3;
-- (void)setNoResultsTitle:(id)a3;
-- (void)setPrivacyLink:(id)a3;
-- (void)setSearchBarDefaultText:(id)a3;
-- (void)setSections:(id)a3 animated:(BOOL)a4;
-- (void)setShowHeaderSpinner:(BOOL)a3;
-- (void)setShowNavigationBarSpinner:(BOOL)a3;
-- (void)setShowNoResultsView:(BOOL)a3 animated:(BOOL)a4;
-- (void)setShowSearchBar:(BOOL)a3;
-- (void)setSubtitleText:(id)a3;
-- (void)setTitleFont:(id)a3;
-- (void)setTitleText:(id)a3;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)searchBarTextDidEndEditing:(id)editing;
+- (void)searchTextDidChangeTo:(id)to;
+- (void)setBackgroundColor:(id)color;
+- (void)setHeaderMode:(unint64_t)mode;
+- (void)setIsShowingKeyboard:(BOOL)keyboard;
+- (void)setNoResultsActionButtonTitle:(id)title target:(id)target action:(SEL)action;
+- (void)setNoResultsIcon:(id)icon;
+- (void)setNoResultsSubtitle:(id)subtitle;
+- (void)setNoResultsTitle:(id)title;
+- (void)setPrivacyLink:(id)link;
+- (void)setSearchBarDefaultText:(id)text;
+- (void)setSections:(id)sections animated:(BOOL)animated;
+- (void)setShowHeaderSpinner:(BOOL)spinner;
+- (void)setShowNavigationBarSpinner:(BOOL)spinner;
+- (void)setShowNoResultsView:(BOOL)view animated:(BOOL)animated;
+- (void)setShowSearchBar:(BOOL)bar;
+- (void)setSubtitleText:(id)text;
+- (void)setTitleFont:(id)font;
+- (void)setTitleText:(id)text;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -83,25 +83,25 @@
     noResultsView = v3->_noResultsView;
     v3->_noResultsView = v15;
 
-    v17 = [(PKPaymentSetupNoResultsView *)v3->_noResultsView layer];
-    [v17 setOpacity:0.0];
+    layer = [(PKPaymentSetupNoResultsView *)v3->_noResultsView layer];
+    [layer setOpacity:0.0];
 
-    v18 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v18 addObserver:v3 selector:sel__keyboardSizeDidChange_ name:*MEMORY[0x1E69DE080] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__keyboardSizeDidChange_ name:*MEMORY[0x1E69DE080] object:0];
 
-    v19 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v19 addObserver:v3 selector:sel__addDockViewToCollectionViewIfNeeded name:*MEMORY[0x1E69DDC48] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v3 selector:sel__addDockViewToCollectionViewIfNeeded name:*MEMORY[0x1E69DDC48] object:0];
   }
 
   return v3;
 }
 
-- (PKPaymentSetupOptionsViewController)initWithContext:(int64_t)a3
+- (PKPaymentSetupOptionsViewController)initWithContext:(int64_t)context
 {
   result = [(PKPaymentSetupOptionsViewController *)self _init];
   if (result)
   {
-    result->_context = a3;
+    result->_context = context;
     result->_allowsManualEntry = 1;
     result->_paymentSetupMode = 0;
   }
@@ -114,47 +114,47 @@
   v6.receiver = self;
   v6.super_class = PKPaymentSetupOptionsViewController;
   [(PKDynamicCollectionViewController *)&v6 viewDidLoad];
-  v3 = [(PKPaymentSetupOptionsViewController *)self view];
+  view = [(PKPaymentSetupOptionsViewController *)self view];
   if (!self->_backgroundColor)
   {
-    v4 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(PKPaymentSetupOptionsViewController *)self setBackgroundColor:v4];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(PKPaymentSetupOptionsViewController *)self setBackgroundColor:systemBackgroundColor];
   }
 
   if ((_UISolariumFeatureFlagEnabled() & 1) == 0)
   {
-    [v3 addSubview:self->_headerView];
+    [view addSubview:self->_headerView];
   }
 
   if (self->_blurringView)
   {
-    [v3 bringSubviewToFront:?];
+    [view bringSubviewToFront:?];
   }
 
-  [v3 addSubview:self->_noResultsView];
-  v5 = [(PKPaymentSetupOptionsViewController *)self navigationItem];
+  [view addSubview:self->_noResultsView];
+  navigationItem = [(PKPaymentSetupOptionsViewController *)self navigationItem];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    [v5 pkui_setupScrollEdgeChromelessAppearance];
-    [v5 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
+    [navigationItem pkui_setupScrollEdgeChromelessAppearance];
+    [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
   }
 
   [(PKPaymentSetupOptionsViewController *)self _updateNavigationItem];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentSetupOptionsViewController;
-  [(PKDynamicCollectionViewController *)&v4 viewDidAppear:a3];
+  [(PKDynamicCollectionViewController *)&v4 viewDidAppear:appear];
   self->_viewDidAppear = 1;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentSetupOptionsViewController;
-  [(PKDynamicCollectionViewController *)&v4 viewWillAppear:a3];
+  [(PKDynamicCollectionViewController *)&v4 viewWillAppear:appear];
   [(PKPaymentSetupOptionsViewController *)self _addDockViewToCollectionViewIfNeeded];
   [(PKPaymentSetupOptionsViewController *)self _updateNavigationItem];
 }
@@ -164,25 +164,25 @@
   v83.receiver = self;
   v83.super_class = PKPaymentSetupOptionsViewController;
   [(PKDynamicCollectionViewController *)&v83 viewWillLayoutSubviews];
-  v3 = [(PKPaymentSetupOptionsViewController *)self view];
-  [v3 bounds];
+  view = [(PKPaymentSetupOptionsViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  [v3 safeAreaInsets];
+  [view safeAreaInsets];
   v71 = v12;
   v14 = v13;
-  v15 = [(PKDynamicCollectionViewController *)self collectionView];
-  [v15 frame];
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  [collectionView frame];
   v17 = v16;
   v19 = v18;
   v78 = v21;
   v79 = v20;
-  [v15 contentOffset];
+  [collectionView contentOffset];
   v75 = v23;
   v76 = v22;
-  [v15 contentInset];
+  [collectionView contentInset];
   v77 = v24;
   v25 = MEMORY[0x1E69DDCE0];
   dockView = self->_dockView;
@@ -223,15 +223,15 @@
 
     [(PKPaymentSetupDockView *)self->_dockView setFrame:v34, v32, v29, v33];
     [(PKPaymentSetupDockView *)self->_dockView layoutIfNeeded];
-    [v15 bounds];
+    [collectionView bounds];
     v37 = v36;
     v39 = v38;
     v41 = v40;
     v43 = v42;
-    [v15 contentSize];
+    [collectionView contentSize];
     v45 = fmin(v43, v44 - v39);
     [(_PKVisibilityBackdropView *)self->_blurringView bounds];
-    [v15 convertRect:self->_blurringView fromView:?];
+    [collectionView convertRect:self->_blurringView fromView:?];
     v47 = v46;
     v86.origin.x = v37;
     v86.origin.y = v39;
@@ -303,15 +303,15 @@ LABEL_13:
       v50 = v49;
     }
 
-    v53 = [(PKPaymentSetupOptionsViewController *)self view];
-    [v53 convertRect:0 fromView:{self->_keyboardFrame.origin.x, self->_keyboardFrame.origin.y, self->_keyboardFrame.size.width, self->_keyboardFrame.size.height}];
+    view2 = [(PKPaymentSetupOptionsViewController *)self view];
+    [view2 convertRect:0 fromView:{self->_keyboardFrame.origin.x, self->_keyboardFrame.origin.y, self->_keyboardFrame.size.width, self->_keyboardFrame.size.height}];
     v72 = v54;
     v74 = v17;
     v56 = v55;
     v58 = v57;
     v60 = v59;
 
-    [v15 frame];
+    [collectionView frame];
     v61 = v19;
     v62 = CGRectGetMaxY(v87);
     v88.origin.y = v56;
@@ -326,22 +326,22 @@ LABEL_13:
 
   [(PKPaymentSetupOptionsViewController *)self footerViewContentHeight];
   v65 = v80 + v64;
-  [v15 setContentInset:{v50, v51, v80 + v64, v52}];
+  [collectionView setContentInset:{v50, v51, v80 + v64, v52}];
   v66 = v77 - v50;
   if (v77 - v50 != 0.0)
   {
-    [v15 setContentOffset:{v76, v75 + v66}];
+    [collectionView setContentOffset:{v76, v75 + v66}];
   }
 
-  [v15 adjustedContentInset];
+  [collectionView adjustedContentInset];
   [(PKPaymentSetupNoResultsView *)self->_noResultsView setFrame:v17, v19, v79, v78 - v67 - v65];
 }
 
-- (void)setHeaderMode:(unint64_t)a3
+- (void)setHeaderMode:(unint64_t)mode
 {
-  if (self->_headerMode != a3)
+  if (self->_headerMode != mode)
   {
-    self->_headerMode = a3;
+    self->_headerMode = mode;
     [(PKPaymentSetupOptionsViewController *)self _updateNavigationItem];
     [(PKPaymentSetupOptionsHeaderSectionController *)self->_headerSectionController setHidden:self->_headerMode != 0];
     headerSectionController = self->_headerSectionController;
@@ -350,55 +350,55 @@ LABEL_13:
   }
 }
 
-- (void)setTitleFont:(id)a3
+- (void)setTitleFont:(id)font
 {
-  v6 = a3;
-  v4 = [(PKCollapsibleHeaderView *)self->_headerView titleFont];
-  v5 = [v4 isEqual:v6];
+  fontCopy = font;
+  titleFont = [(PKCollapsibleHeaderView *)self->_headerView titleFont];
+  v5 = [titleFont isEqual:fontCopy];
 
   if ((v5 & 1) == 0)
   {
-    [(PKCollapsibleHeaderView *)self->_headerView setTitleFont:v6];
+    [(PKCollapsibleHeaderView *)self->_headerView setTitleFont:fontCopy];
   }
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   if (![(NSString *)self->_titleText isEqualToString:?])
   {
-    objc_storeStrong(&self->_titleText, a3);
+    objc_storeStrong(&self->_titleText, text);
     [(PKCollapsibleHeaderView *)self->_headerView setTitle:self->_titleText subtitle:self->_subtitleText];
-    v5 = [(PKPaymentSetupOptionsViewController *)self view];
-    [v5 setNeedsLayout];
+    view = [(PKPaymentSetupOptionsViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
-- (void)setSubtitleText:(id)a3
+- (void)setSubtitleText:(id)text
 {
-  v6 = a3;
+  textCopy = text;
   if (![(NSString *)self->_subtitleText isEqualToString:?])
   {
-    objc_storeStrong(&self->_subtitleText, a3);
+    objc_storeStrong(&self->_subtitleText, text);
     [(PKCollapsibleHeaderView *)self->_headerView setTitle:self->_titleText subtitle:self->_subtitleText];
-    v5 = [(PKPaymentSetupOptionsViewController *)self view];
-    [v5 setNeedsLayout];
+    view = [(PKPaymentSetupOptionsViewController *)self view];
+    [view setNeedsLayout];
   }
 }
 
-- (void)setShowSearchBar:(BOOL)a3
+- (void)setShowSearchBar:(BOOL)bar
 {
-  if (self->_showSearchBar == !a3)
+  if (self->_showSearchBar == !bar)
   {
-    v3 = a3;
-    self->_showSearchBar = a3;
+    barCopy = bar;
+    self->_showSearchBar = bar;
     if (_UISolariumFeatureFlagEnabled())
     {
-      v5 = [(PKPaymentSetupOptionsViewController *)self navigationItem];
-      v11 = v5;
+      navigationItem = [(PKPaymentSetupOptionsViewController *)self navigationItem];
+      v11 = navigationItem;
       if (self->_showSearchBar)
       {
-        v6 = v5;
+        v6 = navigationItem;
         if (!self->_searchController)
         {
           v7 = [objc_alloc(MEMORY[0x1E69DCF10]) initWithSearchResultsController:0];
@@ -409,9 +409,9 @@ LABEL_13:
           [(UISearchController *)self->_searchController setSearchResultsUpdater:self];
           [(UISearchController *)self->_searchController setHidesNavigationBarDuringPresentation:0];
           [(UISearchController *)self->_searchController setAutomaticallyShowsCancelButton:1];
-          v9 = [(UISearchController *)self->_searchController searchBar];
-          [v9 setDelegate:self];
-          [v9 setSearchBarStyle:2];
+          searchBar = [(UISearchController *)self->_searchController searchBar];
+          [searchBar setDelegate:self];
+          [searchBar setSearchBarStyle:2];
 
           v6 = v11;
         }
@@ -432,83 +432,83 @@ LABEL_13:
     {
       headerView = self->_headerView;
 
-      [(PKCollapsibleHeaderView *)headerView setShowSearchBar:v3];
+      [(PKCollapsibleHeaderView *)headerView setShowSearchBar:barCopy];
     }
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_backgroundColor != v5)
+  colorCopy = color;
+  if (self->_backgroundColor != colorCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_backgroundColor, a3);
-    v6 = [(PKPaymentSetupOptionsViewController *)self view];
-    [v6 setBackgroundColor:v8];
+    v8 = colorCopy;
+    objc_storeStrong(&self->_backgroundColor, color);
+    view = [(PKPaymentSetupOptionsViewController *)self view];
+    [view setBackgroundColor:v8];
 
-    v7 = [(PKDynamicCollectionViewController *)self collectionView];
-    [v7 setBackgroundColor:v8];
+    collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+    [collectionView setBackgroundColor:v8];
 
-    v5 = v8;
+    colorCopy = v8;
   }
 }
 
-- (void)setShowNoResultsView:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowNoResultsView:(BOOL)view animated:(BOOL)animated
 {
-  v4 = !a3;
-  if (self->_showNoResultsView == !a3)
+  v4 = !view;
+  if (self->_showNoResultsView == !view)
   {
-    v5 = a4;
-    self->_showNoResultsView = a3;
-    [(UIView *)self->_noResultsView pkui_setAlpha:a4 animated:a3];
-    v7 = [(PKDynamicCollectionViewController *)self collectionView];
-    [v7 pkui_setAlpha:v5 animated:v4];
+    animatedCopy = animated;
+    self->_showNoResultsView = view;
+    [(UIView *)self->_noResultsView pkui_setAlpha:animated animated:view];
+    collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+    [collectionView pkui_setAlpha:animatedCopy animated:v4];
   }
 }
 
-- (void)setNoResultsIcon:(id)a3
+- (void)setNoResultsIcon:(id)icon
 {
-  [(PKPaymentSetupNoResultsView *)self->_noResultsView setIcon:a3];
-  v4 = [(PKPaymentSetupOptionsViewController *)self view];
-  [v4 setNeedsLayout];
+  [(PKPaymentSetupNoResultsView *)self->_noResultsView setIcon:icon];
+  view = [(PKPaymentSetupOptionsViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)setNoResultsTitle:(id)a3
+- (void)setNoResultsTitle:(id)title
 {
-  [(PKPaymentSetupNoResultsView *)self->_noResultsView setTitle:a3];
-  v4 = [(PKPaymentSetupOptionsViewController *)self view];
-  [v4 setNeedsLayout];
+  [(PKPaymentSetupNoResultsView *)self->_noResultsView setTitle:title];
+  view = [(PKPaymentSetupOptionsViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)setNoResultsSubtitle:(id)a3
+- (void)setNoResultsSubtitle:(id)subtitle
 {
-  [(PKPaymentSetupNoResultsView *)self->_noResultsView setSubtitle:a3];
-  v4 = [(PKPaymentSetupOptionsViewController *)self view];
-  [v4 setNeedsLayout];
+  [(PKPaymentSetupNoResultsView *)self->_noResultsView setSubtitle:subtitle];
+  view = [(PKPaymentSetupOptionsViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)setNoResultsActionButtonTitle:(id)a3 target:(id)a4 action:(SEL)a5
+- (void)setNoResultsActionButtonTitle:(id)title target:(id)target action:(SEL)action
 {
-  [(PKPaymentSetupNoResultsView *)self->_noResultsView setActionButtonTitle:a3 addTarget:a4 action:a5];
-  v6 = [(PKPaymentSetupOptionsViewController *)self view];
-  [v6 setNeedsLayout];
+  [(PKPaymentSetupNoResultsView *)self->_noResultsView setActionButtonTitle:title addTarget:target action:action];
+  view = [(PKPaymentSetupOptionsViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)setSearchBarDefaultText:(id)a3
+- (void)setSearchBarDefaultText:(id)text
 {
   searchController = self->_searchController;
   if (searchController)
   {
-    v4 = a3;
-    v6 = [(UISearchController *)searchController searchBar];
-    [v6 setPlaceholder:v4];
+    textCopy = text;
+    textCopy2 = [(UISearchController *)searchController searchBar];
+    [textCopy2 setPlaceholder:textCopy];
   }
 
   else
   {
     headerView = self->_headerView;
-    v6 = a3;
+    textCopy2 = text;
     [(PKCollapsibleHeaderView *)headerView setSearchBarDefaultText:?];
   }
 }
@@ -518,7 +518,7 @@ LABEL_13:
   dockView = self->_dockView;
   if (!dockView)
   {
-    v4 = [(PKPaymentSetupOptionsViewController *)self view];
+    view = [(PKPaymentSetupOptionsViewController *)self view];
     v5 = [PKPaymentSetupDockView alloc];
     v6 = *MEMORY[0x1E695F058];
     v7 = *(MEMORY[0x1E695F058] + 8);
@@ -531,11 +531,11 @@ LABEL_13:
     if (_UISolariumFeatureFlagEnabled())
     {
       v12 = objc_alloc(MEMORY[0x1E69DD6C8]);
-      v13 = [(PKDynamicCollectionViewController *)self collectionView];
-      v14 = [v12 initWithScrollView:v13 edge:4 style:0];
+      collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+      contentView = [v12 initWithScrollView:collectionView edge:4 style:0];
 
-      [(PKPaymentSetupDockView *)self->_dockView addInteraction:v14];
-      [v4 addSubview:self->_dockView];
+      [(PKPaymentSetupDockView *)self->_dockView addInteraction:contentView];
+      [view addSubview:self->_dockView];
     }
 
     else
@@ -547,12 +547,12 @@ LABEL_13:
       [(_PKVisibilityBackdropView *)self->_blurringView setDelegate:self];
       [(_PKVisibilityBackdropView *)self->_blurringView pkui_setVisibility:0 animated:self->_backdropWeight];
       [(_PKVisibilityBackdropView *)self->_blurringView setUserInteractionEnabled:1];
-      v14 = [(_UIBackdropView *)self->_blurringView contentView];
-      [v14 addSubview:self->_dockView];
+      contentView = [(_UIBackdropView *)self->_blurringView contentView];
+      [contentView addSubview:self->_dockView];
     }
 
-    [v4 addSubview:self->_blurringView];
-    [v4 setNeedsLayout];
+    [view addSubview:self->_blurringView];
+    [view setNeedsLayout];
 
     dockView = self->_dockView;
   }
@@ -570,50 +570,50 @@ LABEL_13:
   dockView = self->_dockView;
   self->_dockView = 0;
 
-  v5 = [(PKPaymentSetupOptionsViewController *)self view];
-  [v5 setNeedsLayout];
+  view = [(PKPaymentSetupOptionsViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)setShowHeaderSpinner:(BOOL)a3
+- (void)setShowHeaderSpinner:(BOOL)spinner
 {
-  if (self->_showHeaderSpinner == !a3)
+  if (self->_showHeaderSpinner == !spinner)
   {
-    self->_showHeaderSpinner = a3;
+    self->_showHeaderSpinner = spinner;
     [(PKCollapsibleHeaderView *)self->_headerView setShowSpinner:?];
   }
 }
 
-- (void)setShowNavigationBarSpinner:(BOOL)a3
+- (void)setShowNavigationBarSpinner:(BOOL)spinner
 {
-  if (self->_showNavigationBarSpinner != a3)
+  if (self->_showNavigationBarSpinner != spinner)
   {
-    v3 = a3;
-    self->_showNavigationBarSpinner = a3;
-    v5 = [(PKPaymentSetupOptionsViewController *)self navigationController];
-    v6 = [v5 view];
-    v7 = v6;
-    if (v6)
+    spinnerCopy = spinner;
+    self->_showNavigationBarSpinner = spinner;
+    navigationController = [(PKPaymentSetupOptionsViewController *)self navigationController];
+    view = [navigationController view];
+    v7 = view;
+    if (view)
     {
-      v8 = v6;
+      view2 = view;
     }
 
     else
     {
-      v8 = [(PKPaymentSetupOptionsViewController *)self view];
+      view2 = [(PKPaymentSetupOptionsViewController *)self view];
     }
 
-    v18 = v8;
+    v18 = view2;
 
-    [v18 setUserInteractionEnabled:!v3];
-    [(PKPaymentSetupDockView *)self->_dockView setButtonsEnabled:!v3];
-    v9 = [(PKPaymentSetupOptionsViewController *)self navigationItem];
-    v10 = v9;
+    [v18 setUserInteractionEnabled:!spinnerCopy];
+    [(PKPaymentSetupDockView *)self->_dockView setButtonsEnabled:!spinnerCopy];
+    navigationItem = [(PKPaymentSetupOptionsViewController *)self navigationItem];
+    v10 = navigationItem;
     if (self->_showNavigationBarSpinner)
     {
-      self->_wasBackHidden = [v9 hidesBackButton];
-      v11 = [v10 rightBarButtonItem];
+      self->_wasBackHidden = [navigationItem hidesBackButton];
+      rightBarButtonItem = [v10 rightBarButtonItem];
       hiddenRightBarButtonItem = self->_hiddenRightBarButtonItem;
-      self->_hiddenRightBarButtonItem = v11;
+      self->_hiddenRightBarButtonItem = rightBarButtonItem;
 
       if (!self->_spinningNavBarItem)
       {
@@ -639,45 +639,45 @@ LABEL_13:
     }
 
     [v10 setHidesBackButton:wasBackHidden];
-    [(PKPaymentSetupOptionsViewController *)self _setNavigationBarEnabled:!v3];
+    [(PKPaymentSetupOptionsViewController *)self _setNavigationBarEnabled:!spinnerCopy];
     [v18 setNeedsLayout];
   }
 }
 
-- (void)_setNavigationBarEnabled:(BOOL)a3
+- (void)_setNavigationBarEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v10 = [(PKPaymentSetupOptionsViewController *)self navigationController];
-  v5 = [v10 navigationBar];
-  [v5 setUserInteractionEnabled:v3];
+  enabledCopy = enabled;
+  navigationController = [(PKPaymentSetupOptionsViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setUserInteractionEnabled:enabledCopy];
 
-  v6 = [v10 interactivePopGestureRecognizer];
-  [v6 setEnabled:v3];
+  interactivePopGestureRecognizer = [navigationController interactivePopGestureRecognizer];
+  [interactivePopGestureRecognizer setEnabled:enabledCopy];
 
-  v7 = [(PKPaymentSetupOptionsViewController *)self navigationItem];
-  v8 = [v7 leftBarButtonItem];
-  [v8 setEnabled:v3];
+  navigationItem = [(PKPaymentSetupOptionsViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
+  [leftBarButtonItem setEnabled:enabledCopy];
 
-  v9 = [v7 rightBarButtonItem];
-  [v9 setEnabled:v3];
+  rightBarButtonItem = [navigationItem rightBarButtonItem];
+  [rightBarButtonItem setEnabled:enabledCopy];
 }
 
-- (void)setPrivacyLink:(id)a3
+- (void)setPrivacyLink:(id)link
 {
-  v7 = a3;
+  linkCopy = link;
   if ((PKEqualObjects() & 1) == 0)
   {
     privacyLink = self->_privacyLink;
     if (privacyLink)
     {
       [(OBPrivacyLinkController *)privacyLink willMoveToParentViewController:0];
-      v6 = [(OBPrivacyLinkController *)self->_privacyLink view];
-      [v6 removeFromSuperview];
+      view = [(OBPrivacyLinkController *)self->_privacyLink view];
+      [view removeFromSuperview];
 
       [(OBPrivacyLinkController *)self->_privacyLink removeFromParentViewController];
     }
 
-    objc_storeStrong(&self->_privacyLink, a3);
+    objc_storeStrong(&self->_privacyLink, link);
     if (self->_privacyLink)
     {
       [(PKPaymentSetupOptionsViewController *)self addChildViewController:?];
@@ -688,10 +688,10 @@ LABEL_13:
   }
 }
 
-- (void)setSections:(id)a3 animated:(BOOL)a4
+- (void)setSections:(id)sections animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = [a3 mutableCopy];
+  animatedCopy = animated;
+  v6 = [sections mutableCopy];
   v7 = v6;
   headerSectionController = self->_headerSectionController;
   if (headerSectionController)
@@ -703,16 +703,16 @@ LABEL_13:
   v9 = [v7 copy];
   v10.receiver = self;
   v10.super_class = PKPaymentSetupOptionsViewController;
-  [(PKDynamicCollectionViewController *)&v10 setSections:v9 animated:v4];
+  [(PKDynamicCollectionViewController *)&v10 setSections:v9 animated:animatedCopy];
 }
 
-- (void)setIsShowingKeyboard:(BOOL)a3
+- (void)setIsShowingKeyboard:(BOOL)keyboard
 {
-  if (self->_isShowingKeyboard != a3)
+  if (self->_isShowingKeyboard != keyboard)
   {
     v6[7] = v3;
     v6[8] = v4;
-    self->_isShowingKeyboard = a3;
+    self->_isShowingKeyboard = keyboard;
     if (+[PKPaymentSetupOptionsViewController _respondToKeyboardPresentationEvents])
     {
       v6[0] = MEMORY[0x1E69E9820];
@@ -734,15 +734,15 @@ void __60__PKPaymentSetupOptionsViewController_setIsShowingKeyboard___block_invo
   [v3 layoutIfNeeded];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   if (self->_headerMode)
   {
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      v5 = [(PKPaymentSetupOptionsViewController *)self navigationItem];
-      [v5 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:1.0];
+      navigationItem = [(PKPaymentSetupOptionsViewController *)self navigationItem];
+      [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:1.0];
 LABEL_4:
     }
   }
@@ -751,17 +751,17 @@ LABEL_4:
   {
     if (_UISolariumFeatureFlagEnabled())
     {
-      v7 = [(PKPaymentSetupOptionsHeaderSectionController *)self->_headerSectionController item];
-      v5 = [(PKDynamicCollectionViewController *)self cellLayoutAttributesForItem:v7];
+      item = [(PKPaymentSetupOptionsHeaderSectionController *)self->_headerSectionController item];
+      navigationItem = [(PKDynamicCollectionViewController *)self cellLayoutAttributesForItem:item];
 
-      if (v5)
+      if (navigationItem)
       {
-        [v5 frame];
+        [navigationItem frame];
         v9 = v8;
-        [v4 contentOffset];
+        [scrollCopy contentOffset];
         v11 = v10;
-        v12 = [(PKPaymentSetupOptionsViewController *)self view];
-        [v12 safeAreaInsets];
+        view = [(PKPaymentSetupOptionsViewController *)self view];
+        [view safeAreaInsets];
         v14 = v13;
 
         v15 = v11 + v14;
@@ -787,8 +787,8 @@ LABEL_4:
         v39 = v15 - v9;
         v46.receiver = self;
         v46.super_class = PKPaymentSetupOptionsViewController;
-        v40 = [(PKPaymentSetupOptionsViewController *)&v46 title];
-        v41 = v40 != 0;
+        title = [(PKPaymentSetupOptionsViewController *)&v46 title];
+        v41 = title != 0;
 
         if (v18 <= v39 != v41)
         {
@@ -811,10 +811,10 @@ LABEL_4:
       goto LABEL_4;
     }
 
-    [v4 contentOffset];
+    [scrollCopy contentOffset];
     v20 = v19;
-    v21 = [(PKPaymentSetupOptionsViewController *)self view];
-    [v21 safeAreaInsets];
+    view2 = [(PKPaymentSetupOptionsViewController *)self view];
+    [view2 safeAreaInsets];
     v23 = v22;
 
     v24 = v20 + v23;
@@ -862,16 +862,16 @@ LABEL_4:
 
       if ((_UISolariumFeatureFlagEnabled() & 1) == 0)
       {
-        v33 = [(PKPaymentSetupOptionsViewController *)self navigationItem];
-        [v33 _setManualScrollEdgeAppearanceProgress:{fmin(fmax((v32 - *(&v47 + 1)) / 20.0, 0.0), 1.0)}];
+        navigationItem2 = [(PKPaymentSetupOptionsViewController *)self navigationItem];
+        [navigationItem2 _setManualScrollEdgeAppearanceProgress:{fmin(fmax((v32 - *(&v47 + 1)) / 20.0, 0.0), 1.0)}];
       }
 
       v34 = *&v48;
       v35 = *&v48 <= v32;
       v44.receiver = self;
       v44.super_class = PKPaymentSetupOptionsViewController;
-      v36 = [(PKPaymentSetupOptionsViewController *)&v44 title];
-      v37 = v36 != 0;
+      title2 = [(PKPaymentSetupOptionsViewController *)&v44 title];
+      v37 = title2 != 0;
 
       if (v35 != v37)
       {
@@ -892,15 +892,15 @@ LABEL_4:
     }
   }
 
-  v6 = [(PKPaymentSetupOptionsViewController *)self view];
-  [v6 setNeedsLayout];
+  view3 = [(PKPaymentSetupOptionsViewController *)self view];
+  [view3 setNeedsLayout];
 }
 
-- (void)searchTextDidChangeTo:(id)a3
+- (void)searchTextDidChangeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   v6 = self->_currentSearchText;
-  v7 = v5;
+  v7 = toCopy;
   v9 = v7;
   if (v6 == v7)
   {
@@ -919,7 +919,7 @@ LABEL_4:
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_currentSearchText, a3);
+    objc_storeStrong(&self->_currentSearchText, to);
     [(PKPaymentSetupOptionsViewController *)self _scrollToContentAnimated:1];
   }
 
@@ -935,10 +935,10 @@ LABEL_9:
 
 - (void)searchBarTextDidEndEditing
 {
-  v3 = [(PKPaymentSetupOptionsViewController *)self view];
-  v4 = [v3 isUserInteractionEnabled];
+  view = [(PKPaymentSetupOptionsViewController *)self view];
+  isUserInteractionEnabled = [view isUserInteractionEnabled];
 
-  if (v4)
+  if (isUserInteractionEnabled)
   {
     [(PKPaymentSetupOptionsViewController *)self setIsShowingKeyboard:0];
 
@@ -954,15 +954,15 @@ LABEL_9:
   [(PKPaymentSetupOptionsViewController *)self _scrollToTopAnimated:1];
 }
 
-- (int64_t)visibilityBackdropView:(id)a3 preferredStyleForTraitCollection:(id)a4
+- (int64_t)visibilityBackdropView:(id)view preferredStyleForTraitCollection:(id)collection
 {
-  v4 = a4;
+  collectionCopy = collection;
   if (PKPaymentSetupForceBridgeAppearance() & 1) != 0 || (PKPaymentSetupContextIsBridge())
   {
     v5 = 2030;
   }
 
-  else if ([v4 userInterfaceStyle] == 2)
+  else if ([collectionCopy userInterfaceStyle] == 2)
   {
     v5 = 2030;
   }
@@ -975,46 +975,46 @@ LABEL_9:
   return v5;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v6 = a3;
-  if ([v6 isActive])
+  controllerCopy = controller;
+  if ([controllerCopy isActive])
   {
-    v4 = [v6 searchBar];
-    v5 = [v4 text];
-    [(PKPaymentSetupOptionsViewController *)self searchTextDidChangeTo:v5];
+    searchBar = [controllerCopy searchBar];
+    text = [searchBar text];
+    [(PKPaymentSetupOptionsViewController *)self searchTextDidChangeTo:text];
   }
 }
 
-- (void)searchBarTextDidEndEditing:(id)a3
+- (void)searchBarTextDidEndEditing:(id)editing
 {
-  v4 = a3;
-  [v4 resignFirstResponder];
-  [v4 setShowsCancelButton:0];
+  editingCopy = editing;
+  [editingCopy resignFirstResponder];
+  [editingCopy setShowsCancelButton:0];
 
   [(PKPaymentSetupOptionsViewController *)self searchBarTextDidEndEditing];
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v4 = a3;
-  [v4 setText:0];
-  [v4 resignFirstResponder];
+  clickedCopy = clicked;
+  [clickedCopy setText:0];
+  [clickedCopy resignFirstResponder];
 
   [(PKPaymentSetupOptionsViewController *)self searchBarCancelButtonClicked];
 }
 
-- (void)_keyboardSizeDidChange:(id)a3
+- (void)_keyboardSizeDidChange:(id)change
 {
-  v10 = [a3 userInfo];
-  v4 = [v10 valueForKey:*MEMORY[0x1E69DDFA0]];
+  userInfo = [change userInfo];
+  v4 = [userInfo valueForKey:*MEMORY[0x1E69DDFA0]];
   [v4 CGRectValue];
   self->_keyboardFrame.origin.x = v5;
   self->_keyboardFrame.origin.y = v6;
   self->_keyboardFrame.size.width = v7;
   self->_keyboardFrame.size.height = v8;
-  v9 = [(PKPaymentSetupOptionsViewController *)self view];
-  [v9 layoutIfNeeded];
+  view = [(PKPaymentSetupOptionsViewController *)self view];
+  [view layoutIfNeeded];
 }
 
 - (void)_addDockViewToCollectionViewIfNeeded
@@ -1027,18 +1027,18 @@ LABEL_9:
 
   else
   {
-    v5 = [(PKPaymentSetupDockView *)self->_dockView privacyLink];
-    if (!v5)
+    privacyLink = [(PKPaymentSetupDockView *)self->_dockView privacyLink];
+    if (!privacyLink)
     {
       return;
     }
 
-    v4 = v5;
+    v4 = privacyLink;
   }
 
   [(PKPaymentSetupDockView *)self->_dockView setPrivacyLink:v4];
-  v6 = [(PKPaymentSetupOptionsViewController *)self view];
-  [v6 bounds];
+  view = [(PKPaymentSetupOptionsViewController *)self view];
+  [view bounds];
   v8 = v7;
   v10 = v9;
 
@@ -1050,8 +1050,8 @@ LABEL_9:
 
     if (privacyLinkSectionController)
     {
-      v15 = [(PKDynamicCollectionViewController *)self sections];
-      v16 = [v15 pk_objectsPassingTest:&__block_literal_global_37];
+      sections = [(PKDynamicCollectionViewController *)self sections];
+      v16 = [sections pk_objectsPassingTest:&__block_literal_global_37];
 
       [(PKPaymentSetupOptionsViewController *)self setSections:v16 animated:1];
     }
@@ -1063,9 +1063,9 @@ LABEL_9:
     {
       [(PKPaymentSetupDockView *)self->_dockView setPrivacyLink:0];
       [(PKPaymentSetupPrivacyLinkSectionController *)self->_privacyLinkSectionController setPrivacyLink:v4];
-      v13 = [(PKPaymentSetupListSectionController *)self->_privacyLinkSectionController identifiers];
-      v14 = [v13 firstObject];
-      [(PKDynamicCollectionViewController *)self reloadDataForSectionIdentifier:v14 animated:1];
+      identifiers = [(PKPaymentSetupListSectionController *)self->_privacyLinkSectionController identifiers];
+      firstObject = [identifiers firstObject];
+      [(PKDynamicCollectionViewController *)self reloadDataForSectionIdentifier:firstObject animated:1];
     }
 
     else
@@ -1076,11 +1076,11 @@ LABEL_9:
 
       [(PKPaymentSetupDockView *)self->_dockView setPrivacyLink:0];
       [(PKPaymentSetupPrivacyLinkSectionController *)self->_privacyLinkSectionController setPrivacyLink:v4];
-      v13 = [(PKDynamicCollectionViewController *)self sections];
-      v14 = [v13 arrayByAddingObject:self->_privacyLinkSectionController];
+      identifiers = [(PKDynamicCollectionViewController *)self sections];
+      firstObject = [identifiers arrayByAddingObject:self->_privacyLinkSectionController];
       v22.receiver = self;
       v22.super_class = PKPaymentSetupOptionsViewController;
-      [(PKDynamicCollectionViewController *)&v22 setSections:v14 animated:1];
+      [(PKDynamicCollectionViewController *)&v22 setSections:firstObject animated:1];
     }
   }
 
@@ -1088,8 +1088,8 @@ LABEL_9:
   self->_privacyLink = v4;
   v20 = v4;
 
-  v21 = [(PKDynamicCollectionViewController *)self collectionView];
-  [(PKPaymentSetupOptionsViewController *)self scrollViewDidScroll:v21];
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  [(PKPaymentSetupOptionsViewController *)self scrollViewDidScroll:collectionView];
 }
 
 BOOL __75__PKPaymentSetupOptionsViewController__addDockViewToCollectionViewIfNeeded__block_invoke(uint64_t a1, void *a2)
@@ -1103,21 +1103,21 @@ BOOL __75__PKPaymentSetupOptionsViewController__addDockViewToCollectionViewIfNee
 
 - (void)_updateNavigationItem
 {
-  v3 = [(PKPaymentSetupOptionsViewController *)self viewIfLoaded];
+  viewIfLoaded = [(PKPaymentSetupOptionsViewController *)self viewIfLoaded];
 
-  if (v3)
+  if (viewIfLoaded)
   {
-    v4 = [(PKPaymentSetupOptionsViewController *)self navigationController];
-    if (v4)
+    navigationController = [(PKPaymentSetupOptionsViewController *)self navigationController];
+    if (navigationController)
     {
       headerMode = self->_headerMode;
-      v10 = v4;
-      v6 = [v4 navigationBar];
-      v7 = v6;
+      v10 = navigationController;
+      navigationBar = [navigationController navigationBar];
+      v7 = navigationBar;
       if (headerMode == 2)
       {
         v8 = 1;
-        if (([v6 prefersLargeTitles] & 1) == 0)
+        if (([navigationBar prefersLargeTitles] & 1) == 0)
         {
           [v7 setPrefersLargeTitles:1];
         }
@@ -1128,49 +1128,49 @@ BOOL __75__PKPaymentSetupOptionsViewController__addDockViewToCollectionViewIfNee
         v8 = 2;
       }
 
-      v9 = [(PKPaymentSetupOptionsViewController *)self navigationItem];
-      if ([v9 largeTitleDisplayMode] != v8)
+      navigationItem = [(PKPaymentSetupOptionsViewController *)self navigationItem];
+      if ([navigationItem largeTitleDisplayMode] != v8)
       {
-        [v9 setLargeTitleDisplayMode:v8];
+        [navigationItem setLargeTitleDisplayMode:v8];
       }
 
-      v4 = v10;
+      navigationController = v10;
     }
   }
 }
 
-- (void)_scrollToTopAnimated:(BOOL)a3
+- (void)_scrollToTopAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v9 = [(PKDynamicCollectionViewController *)self collectionView];
-  [v9 contentInset];
+  animatedCopy = animated;
+  collectionView = [(PKDynamicCollectionViewController *)self collectionView];
+  [collectionView contentInset];
   v6 = -v5;
-  v7 = [(PKPaymentSetupOptionsViewController *)self view];
-  [v7 safeAreaInsets];
-  [v9 setContentOffset:v3 animated:{0.0, v6 - v8}];
+  view = [(PKPaymentSetupOptionsViewController *)self view];
+  [view safeAreaInsets];
+  [collectionView setContentOffset:animatedCopy animated:{0.0, v6 - v8}];
 }
 
-- (void)_scrollToContentAnimated:(BOOL)a3
+- (void)_scrollToContentAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PKPaymentSetupOptionsHeaderSectionController *)self->_headerSectionController item];
-  v13 = [(PKDynamicCollectionViewController *)self cellLayoutAttributesForItem:v5];
+  animatedCopy = animated;
+  item = [(PKPaymentSetupOptionsHeaderSectionController *)self->_headerSectionController item];
+  v13 = [(PKDynamicCollectionViewController *)self cellLayoutAttributesForItem:item];
 
   if (v13)
   {
-    v6 = [(PKDynamicCollectionViewController *)self collectionView];
+    collectionView = [(PKDynamicCollectionViewController *)self collectionView];
     [v13 frame];
     v8 = v7;
     [v13 frame];
     v10 = v8 + v9;
-    v11 = [(PKPaymentSetupOptionsViewController *)self view];
-    [v11 safeAreaInsets];
-    [v6 setContentOffset:v3 animated:{0.0, v10 - v12}];
+    view = [(PKPaymentSetupOptionsViewController *)self view];
+    [view safeAreaInsets];
+    [collectionView setContentOffset:animatedCopy animated:{0.0, v10 - v12}];
   }
 
   else
   {
-    [(PKPaymentSetupOptionsViewController *)self _scrollToTopAnimated:v3];
+    [(PKPaymentSetupOptionsViewController *)self _scrollToTopAnimated:animatedCopy];
   }
 }
 

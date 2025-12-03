@@ -1,15 +1,15 @@
 @interface RKEntityInteractionAccessibilityWrapperAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)didFire;
 @end
 
 @implementation RKEntityInteractionAccessibilityWrapperAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"RealityFoundation.RKEntityInteractionAccessibilityWrapper" hasInstanceMethod:@"didFire" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"RealityFoundation.RKEntityInteractionAccessibilityWrapper" hasInstanceMethod:@"accessibilityDescription" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"RealityFoundation.RKEntityInteractionAccessibilityWrapper" hasInstanceMethod:@"didFire" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"RealityFoundation.RKEntityInteractionAccessibilityWrapper" hasInstanceMethod:@"accessibilityDescription" withFullSignature:{"@", 0}];
 }
 
 - (void)didFire

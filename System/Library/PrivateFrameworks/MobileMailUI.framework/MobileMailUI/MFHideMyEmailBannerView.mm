@@ -1,5 +1,5 @@
 @interface MFHideMyEmailBannerView
-- (MFHideMyEmailBannerView)initWithFrame:(CGRect)a3;
+- (MFHideMyEmailBannerView)initWithFrame:(CGRect)frame;
 - (MFHideMyEmailBannerViewDelegate)delegate;
 - (void)dismissAction;
 - (void)primaryAction;
@@ -7,12 +7,12 @@
 
 @implementation MFHideMyEmailBannerView
 
-- (MFHideMyEmailBannerView)initWithFrame:(CGRect)a3
+- (MFHideMyEmailBannerView)initWithFrame:(CGRect)frame
 {
   v26[1] = *MEMORY[0x277D85DE8];
   v25.receiver = self;
   v25.super_class = MFHideMyEmailBannerView;
-  v3 = [(MFSuggestionBannerView *)&v25 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFSuggestionBannerView *)&v25 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D025D0]);
@@ -30,8 +30,8 @@
     [v4 setActionTitle:v10];
 
     [v4 setActionButtonType:0];
-    v11 = [MEMORY[0x277D75348] mailInteractiveColor];
-    v12 = [MFSuggestionBannerView bannerIconViewForSymbol:*MEMORY[0x277D259C0] tintColor:v11];
+    mailInteractiveColor = [MEMORY[0x277D75348] mailInteractiveColor];
+    v12 = [MFSuggestionBannerView bannerIconViewForSymbol:*MEMORY[0x277D259C0] tintColor:mailInteractiveColor];
     v26[0] = v12;
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
     [v4 setImageSGViews:v13];
@@ -80,14 +80,14 @@ void __41__MFHideMyEmailBannerView_initWithFrame___block_invoke_2(uint64_t a1)
 
 - (void)primaryAction
 {
-  v3 = [(MFHideMyEmailBannerView *)self delegate];
-  [v3 didTapHideMyEmailBannerView:self];
+  delegate = [(MFHideMyEmailBannerView *)self delegate];
+  [delegate didTapHideMyEmailBannerView:self];
 }
 
 - (void)dismissAction
 {
-  v3 = [(MFHideMyEmailBannerView *)self delegate];
-  [v3 didDismissHideMyEmailBannerView:self];
+  delegate = [(MFHideMyEmailBannerView *)self delegate];
+  [delegate didDismissHideMyEmailBannerView:self];
 }
 
 - (MFHideMyEmailBannerViewDelegate)delegate

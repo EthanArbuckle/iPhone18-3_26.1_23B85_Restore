@@ -54,7 +54,7 @@
   v10 = UIFontNameForPUIFontIdentifier(v9);
   v11 = PUIFontAttributesForPUIFontIdentifier(v9);
 
-  v12 = [a1 pui_UIFontWithName:v10 forRole:v8 includingFallbackFonts:a5 attributes:v11];
+  v12 = [self pui_UIFontWithName:v10 forRole:v8 includingFallbackFonts:a5 attributes:v11];
 
   return v12;
 }
@@ -103,8 +103,8 @@
 {
   v8 = a5;
   v9 = a3;
-  v10 = [a4 bundleURL];
-  v11 = [a1 pui_UIFontWithPostScriptName:v9 inBundleAtURL:v10 relativePath:v8];
+  bundleURL = [a4 bundleURL];
+  v11 = [self pui_UIFontWithPostScriptName:v9 inBundleAtURL:bundleURL relativePath:v8];
 
   return v11;
 }
@@ -120,7 +120,7 @@
   v13 = [v12 URL];
   if (v13)
   {
-    v14 = [a1 pui_UIFontWithPostScriptName:v8 inBundleAtURL:v13 relativePath:v9];
+    v14 = [self pui_UIFontWithPostScriptName:v8 inBundleAtURL:v13 relativePath:v9];
   }
 
   else
@@ -172,8 +172,8 @@
 
 + (id)pui_defaultFont
 {
-  v2 = [a1 pui_defaultFontIdentifier];
-  v3 = [a1 pui_UIFontWithPUIFontIdentifier:v2];
+  pui_defaultFontIdentifier = [self pui_defaultFontIdentifier];
+  v3 = [self pui_UIFontWithPUIFontIdentifier:pui_defaultFontIdentifier];
 
   return v3;
 }
@@ -181,8 +181,8 @@
 + (id)pui_defaultFontForRole:()PosterUIFoundation
 {
   v4 = a3;
-  v5 = [a1 pui_defaultFontIdentifierForRole:v4];
-  v6 = [a1 pui_UIFontWithPUIFontIdentifier:v5 forRole:v4];
+  v5 = [self pui_defaultFontIdentifierForRole:v4];
+  v6 = [self pui_UIFontWithPUIFontIdentifier:v5 forRole:v4];
 
   return v6;
 }
@@ -216,8 +216,8 @@
 
 - (CTFontRef)pui_minimumAllowedFontWeightFont
 {
-  v1 = [a1 pui_timeFontIdentifier];
-  v2 = PUIMinimumVariableFontNameForTimeFontIdentifier(v1);
+  pui_timeFontIdentifier = [self pui_timeFontIdentifier];
+  v2 = PUIMinimumVariableFontNameForTimeFontIdentifier(pui_timeFontIdentifier);
 
   if (v2)
   {
@@ -234,8 +234,8 @@
 
 - (CTFontRef)pui_maximumAllowedFontWeightFont
 {
-  v1 = [a1 pui_timeFontIdentifier];
-  v2 = PUIMaximumVariableFontNameForTimeFontIdentifier(v1);
+  pui_timeFontIdentifier = [self pui_timeFontIdentifier];
+  v2 = PUIMaximumVariableFontNameForTimeFontIdentifier(pui_timeFontIdentifier);
 
   if (v2)
   {
@@ -253,7 +253,7 @@
 - (CTFontRef)pui_fontWithAttributes:()PosterUIFoundation options:
 {
   v6 = a3;
-  CopyWithAttributes = CTFontDescriptorCreateCopyWithAttributes([a1 fontDescriptor], v6);
+  CopyWithAttributes = CTFontDescriptorCreateCopyWithAttributes([self fontDescriptor], v6);
 
   v8 = CTFontCreateWithFontDescriptorAndOptions(CopyWithAttributes, 12.0, 0, a4);
   CFRelease(CopyWithAttributes);
@@ -268,7 +268,7 @@
   v5 = v4;
   if (v4)
   {
-    v26[0] = a1;
+    v26[0] = self;
     v26[1] = v4;
     v6 = MEMORY[0x1E695DEC8];
     v7 = v26;
@@ -277,7 +277,7 @@
 
   else
   {
-    v27[0] = a1;
+    v27[0] = self;
     v6 = MEMORY[0x1E695DEC8];
     v7 = v27;
     v8 = 1;
@@ -288,9 +288,9 @@
   v10 = cachedFontWithDefaultFallbacks;
   if (!cachedFontWithDefaultFallbacks)
   {
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v12 = cachedFontWithDefaultFallbacks;
-    cachedFontWithDefaultFallbacks = v11;
+    cachedFontWithDefaultFallbacks = dictionary;
 
     v10 = cachedFontWithDefaultFallbacks;
   }
@@ -306,11 +306,11 @@
   else
   {
     os_unfair_lock_unlock(&cachedFontLock);
-    v15 = [a1 pui_defaultFontFallbacks];
-    v14 = [a1 pui_fontWithFallbacks:v15];
+    pui_defaultFontFallbacks = [self pui_defaultFontFallbacks];
+    v14 = [self pui_fontWithFallbacks:pui_defaultFontFallbacks];
 
-    v16 = [a1 pui_timeFontIdentifier];
-    if (([v16 isEqualToString:@"PRTimeFontIdentifierNewYorkAlpha"] & 1) != 0 || objc_msgSend(v16, "isEqualToString:", @"PRTimeFontIdentifierSFCondensed"))
+    pui_timeFontIdentifier = [self pui_timeFontIdentifier];
+    if (([pui_timeFontIdentifier isEqualToString:@"PRTimeFontIdentifierNewYorkAlpha"] & 1) != 0 || objc_msgSend(pui_timeFontIdentifier, "isEqualToString:", @"PRTimeFontIdentifierSFCondensed"))
     {
       v17 = UIFontNameForPUIFontIdentifier(@"PRTimeFontIdentifierSFArabic");
       v25[0] = v17;
@@ -346,28 +346,28 @@
   v2 = cachedDefaultFallbacks;
   if (!cachedDefaultFallbacks)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v4 = cachedDefaultFallbacks;
-    cachedDefaultFallbacks = v3;
+    cachedDefaultFallbacks = dictionary;
 
     v2 = cachedDefaultFallbacks;
   }
 
-  v5 = [v2 objectForKeyedSubscript:a1];
+  v5 = [v2 objectForKeyedSubscript:self];
 
   if (v5)
   {
-    v6 = [cachedDefaultFallbacks objectForKeyedSubscript:a1];
+    v6 = [cachedDefaultFallbacks objectForKeyedSubscript:self];
   }
 
   else
   {
     os_unfair_lock_unlock(&cachedDefaultFallbacksLock);
-    v7 = CTFontCopyDefaultCascadeListForLanguages(a1, 0);
+    v7 = CTFontCopyDefaultCascadeListForLanguages(self, 0);
     v6 = [(__CFArray *)v7 copy];
     CFRelease(v7);
     os_unfair_lock_lock(&cachedDefaultFallbacksLock);
-    [cachedDefaultFallbacks setObject:v6 forKeyedSubscript:a1];
+    [cachedDefaultFallbacks setObject:v6 forKeyedSubscript:self];
   }
 
   os_unfair_lock_unlock(&cachedDefaultFallbacksLock);
@@ -377,20 +377,20 @@
 
 - (id)pui_fontFallbacks
 {
-  v2 = [a1 fontDescriptor];
-  v3 = [v2 objectForKey:*MEMORY[0x1E6965678]];
+  fontDescriptor = [self fontDescriptor];
+  v3 = [fontDescriptor objectForKey:*MEMORY[0x1E6965678]];
 
   if (v3 && [v3 count])
   {
-    v4 = v3;
+    pui_defaultFontFallbacks = v3;
   }
 
   else
   {
-    v4 = [a1 pui_defaultFontFallbacks];
+    pui_defaultFontFallbacks = [self pui_defaultFontFallbacks];
   }
 
-  v5 = v4;
+  v5 = pui_defaultFontFallbacks;
 
   return v5;
 }
@@ -399,7 +399,7 @@
 {
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObject:a3 forKey:*MEMORY[0x1E6965678]];
   v5 = CTFontDescriptorCreateWithAttributes(v4);
-  CopyWithAttributes = CTFontCreateCopyWithAttributes(a1, 0.0, 0, v5);
+  CopyWithAttributes = CTFontCreateCopyWithAttributes(self, 0.0, 0, v5);
 
   return CopyWithAttributes;
 }
@@ -408,10 +408,10 @@
 {
   v41[1] = *MEMORY[0x1E69E9840];
   v6 = a3;
-  v23 = a1;
+  selfCopy = self;
   v24 = a4;
-  v7 = [a1 pui_fontFallbacks];
-  v26 = [v7 mutableCopy];
+  pui_fontFallbacks = [self pui_fontFallbacks];
+  v26 = [pui_fontFallbacks mutableCopy];
 
   v34 = 0;
   v35 = &v34;
@@ -460,11 +460,11 @@
         v18 = [v16 fontDescriptorWithFontAttributes:v17];
 
         MatchingFontDescriptorsWithOptions = CTFontDescriptorCreateMatchingFontDescriptorsWithOptions();
-        v20 = [MatchingFontDescriptorsWithOptions firstObject];
+        firstObject = [MatchingFontDescriptorsWithOptions firstObject];
 
-        if (v20)
+        if (firstObject)
         {
-          [v26 insertObject:v20 atIndex:v35[3]++];
+          [v26 insertObject:firstObject atIndex:v35[3]++];
         }
       }
 
@@ -474,7 +474,7 @@
     while (v12);
   }
 
-  v21 = [v23 pui_fontWithFallbacks:v26];
+  v21 = [selfCopy pui_fontWithFallbacks:v26];
 
   _Block_object_dispose(&v34, 8);
 
@@ -485,8 +485,8 @@
 {
   v19[1] = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 pui_fontFallbacks];
-  v6 = [v5 mutableCopy];
+  pui_fontFallbacks = [self pui_fontFallbacks];
+  v6 = [pui_fontFallbacks mutableCopy];
 
   v7 = MEMORY[0x1E695DFD8];
   v19[0] = *MEMORY[0x1E69DB8B8];
@@ -504,31 +504,31 @@
   v11 = v9;
   v12 = v4;
   [v10 enumerateObjectsUsingBlock:v15];
-  v13 = [a1 pui_fontWithFallbacks:v10];
+  v13 = [self pui_fontWithFallbacks:v10];
 
   return v13;
 }
 
 - (id)pui_timeFontIdentifier
 {
-  v1 = [a1 fontName];
-  v2 = PUIFontIdentifierForFontName(v1);
+  fontName = [self fontName];
+  v2 = PUIFontIdentifierForFontName(fontName);
 
   return v2;
 }
 
 - (id)pui_localizedTimeFontName
 {
-  v2 = [a1 pui_timeFontIdentifier];
-  v3 = v2;
-  if (v2)
+  pui_timeFontIdentifier = [self pui_timeFontIdentifier];
+  v3 = pui_timeFontIdentifier;
+  if (pui_timeFontIdentifier)
   {
-    PUILocalizedDisplayNameForTimeFontIdentifier(v2);
+    PUILocalizedDisplayNameForTimeFontIdentifier(pui_timeFontIdentifier);
   }
 
   else
   {
-    [a1 familyName];
+    [self familyName];
   }
   v4 = ;
 
@@ -537,23 +537,23 @@
 
 - (__CFString)pui_postScriptName
 {
-  v1 = CTFontCopyPostScriptName(a1);
+  v1 = CTFontCopyPostScriptName(self);
 
   return v1;
 }
 
 - (id)pui_referenceURL
 {
-  v1 = [a1 fontDescriptor];
-  v2 = CTFontDescriptorCopyAttribute(v1, *MEMORY[0x1E6965838]);
+  fontDescriptor = [self fontDescriptor];
+  v2 = CTFontDescriptorCopyAttribute(fontDescriptor, *MEMORY[0x1E6965838]);
 
   return v2;
 }
 
 - (id)pui_referencePathRelativeToBundle:()PosterUIFoundation
 {
-  v4 = [a3 bundleURL];
-  v5 = [a1 pui_referencePathRelativeToDirectoryAtURL:v4];
+  bundleURL = [a3 bundleURL];
+  v5 = [self pui_referencePathRelativeToDirectoryAtURL:bundleURL];
 
   return v5;
 }
@@ -561,14 +561,14 @@
 - (id)pui_referencePathRelativeToDirectoryAtURL:()PosterUIFoundation
 {
   v4 = a3;
-  if ([a1 pui_isReferenceFileContainedInDirectoryAtURL:v4])
+  if ([self pui_isReferenceFileContainedInDirectoryAtURL:v4])
   {
-    v5 = [a1 pui_referenceURL];
-    v6 = [v5 path];
-    v7 = [v4 path];
-    if ([v6 hasPrefix:v7])
+    pui_referenceURL = [self pui_referenceURL];
+    path = [pui_referenceURL path];
+    path2 = [v4 path];
+    if ([path hasPrefix:path2])
     {
-      v8 = [v6 substringFromIndex:{objc_msgSend(v7, "length")}];
+      v8 = [path substringFromIndex:{objc_msgSend(path2, "length")}];
     }
 
     else
@@ -587,8 +587,8 @@
 
 - (uint64_t)pui_isReferenceFileContainedInBundle:()PosterUIFoundation
 {
-  v4 = [a3 bundleURL];
-  v5 = [a1 pui_isReferenceFileContainedInDirectoryAtURL:v4];
+  bundleURL = [a3 bundleURL];
+  v5 = [self pui_isReferenceFileContainedInDirectoryAtURL:bundleURL];
 
   return v5;
 }
@@ -596,10 +596,10 @@
 - (uint64_t)pui_isReferenceFileContainedInDirectoryAtURL:()PosterUIFoundation
 {
   v4 = a3;
-  v5 = [a1 pui_referenceURL];
-  v6 = v5;
+  pui_referenceURL = [self pui_referenceURL];
+  v6 = pui_referenceURL;
   v7 = 0;
-  if (v4 && v5)
+  if (v4 && pui_referenceURL)
   {
     v8 = objc_alloc_init(MEMORY[0x1E696AC08]);
     v11 = 0;
@@ -621,23 +621,23 @@
 - (uint64_t)pui_variantWeight
 {
   v28 = *MEMORY[0x1E69E9840];
-  v2 = [a1 pui_cachedVariantWeight];
+  pui_cachedVariantWeight = [self pui_cachedVariantWeight];
 
-  if (v2)
+  if (pui_cachedVariantWeight)
   {
-    v3 = [a1 pui_cachedVariantWeight];
-    v4 = [v3 unsignedIntegerValue];
+    pui_cachedVariantWeight2 = [self pui_cachedVariantWeight];
+    unsignedIntegerValue = [pui_cachedVariantWeight2 unsignedIntegerValue];
 
-    return v4;
+    return unsignedIntegerValue;
   }
 
   else
   {
-    v6 = CTFontCopyVariation(a1);
+    v6 = CTFontCopyVariation(self);
     if (v6 && ([MEMORY[0x1E696AD98] numberWithDouble:2003265650.0], v7 = objc_claimAutoreleasedReturnValue(), -[__CFDictionary objectForKeyedSubscript:](v6, "objectForKeyedSubscript:", v7), v8 = objc_claimAutoreleasedReturnValue(), v7, v8))
     {
-      [a1 pui_setCachedVariantWeight:v8];
-      v9 = [v8 unsignedIntegerValue];
+      [self pui_setCachedVariantWeight:v8];
+      unsignedIntegerValue2 = [v8 unsignedIntegerValue];
     }
 
     else
@@ -675,8 +675,8 @@
                 if (v20)
                 {
                   v21 = v20;
-                  [a1 pui_setCachedVariantWeight:v20];
-                  v9 = [v21 unsignedIntegerValue];
+                  [self pui_setCachedVariantWeight:v20];
+                  unsignedIntegerValue2 = [v21 unsignedIntegerValue];
 
                   goto LABEL_18;
                 }
@@ -694,32 +694,32 @@
         }
       }
 
-      [a1 pui_setCachedVariantWeight:&unk_1F1C926A0];
-      v9 = 0x7FFFFFFFFFFFFFFFLL;
+      [self pui_setCachedVariantWeight:&unk_1F1C926A0];
+      unsignedIntegerValue2 = 0x7FFFFFFFFFFFFFFFLL;
 LABEL_18:
 
       v6 = v22;
     }
 
-    return v9;
+    return unsignedIntegerValue2;
   }
 }
 
 - (uint64_t)pui_variantWeightRange
 {
   v28 = *MEMORY[0x1E69E9840];
-  v2 = [a1 pui_minimumAllowedFontWeightFont];
-  v3 = [a1 pui_maximumAllowedFontWeightFont];
-  v4 = v3;
-  if (v2 && v3)
+  pui_minimumAllowedFontWeightFont = [self pui_minimumAllowedFontWeightFont];
+  pui_maximumAllowedFontWeightFont = [self pui_maximumAllowedFontWeightFont];
+  v4 = pui_maximumAllowedFontWeightFont;
+  if (pui_minimumAllowedFontWeightFont && pui_maximumAllowedFontWeightFont)
   {
-    v5 = [v2 pui_variantWeight] + 1;
+    v5 = [pui_minimumAllowedFontWeightFont pui_variantWeight] + 1;
     [v4 pui_variantWeight];
   }
 
   else
   {
-    v21 = v3;
+    v21 = pui_maximumAllowedFontWeightFont;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -799,8 +799,8 @@ LABEL_20:
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
 
   v12 = CTFontDescriptorCreateWithAttributes(v11);
-  [a1 pointSize];
-  CopyWithAttributes = CTFontCreateCopyWithAttributes(a1, v13, 0, v12);
+  [self pointSize];
+  CopyWithAttributes = CTFontCreateCopyWithAttributes(self, v13, 0, v12);
   CFRelease(v12);
   v15 = [(__CTFont *)CopyWithAttributes pui_UIFontWithDefaultFallbacksForRole:v7];
 

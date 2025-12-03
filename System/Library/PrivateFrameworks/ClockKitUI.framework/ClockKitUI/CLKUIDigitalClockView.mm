@@ -1,32 +1,32 @@
 @interface CLKUIDigitalClockView
-- (CLKUIDigitalClockView)initWithDevice:(id)a3 clockTimer:(id)a4;
+- (CLKUIDigitalClockView)initWithDevice:(id)device clockTimer:(id)timer;
 - (NSArray)fontScaleFactorForNumberSystemOverridesWithTicks;
 - (NSArray)fontScaleFactorForNumberSystemOverridesWithoutTicks;
-- (id)_fontForConfiguration:(id)a3;
+- (id)_fontForConfiguration:(id)configuration;
 - (void)layoutSubviews;
-- (void)setAodTransform:(CGAffineTransform *)a3;
-- (void)setConfiguration:(id)a3;
-- (void)setOverrideDate:(id)a3;
-- (void)setState:(unint64_t)a3;
-- (void)traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4;
+- (void)setAodTransform:(CGAffineTransform *)transform;
+- (void)setConfiguration:(id)configuration;
+- (void)setOverrideDate:(id)date;
+- (void)setState:(unint64_t)state;
+- (void)traitCollectionDidChange:(id)change previousTraitCollection:(id)collection;
 @end
 
 @implementation CLKUIDigitalClockView
 
-- (CLKUIDigitalClockView)initWithDevice:(id)a3 clockTimer:(id)a4
+- (CLKUIDigitalClockView)initWithDevice:(id)device clockTimer:(id)timer
 {
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  timerCopy = timer;
   v14.receiver = self;
   v14.super_class = CLKUIDigitalClockView;
-  v8 = [(CLKUITimeView *)&v14 initWithDevice:v6 clockTimer:v7];
+  v8 = [(CLKUITimeView *)&v14 initWithDevice:deviceCopy clockTimer:timerCopy];
   if (v8)
   {
-    v9 = [[CLKUITimeLabel alloc] initWithTimeLabelOptions:1 forDevice:v6 clockTimer:v7];
+    v9 = [[CLKUITimeLabel alloc] initWithTimeLabelOptions:1 forDevice:deviceCopy clockTimer:timerCopy];
     timeLabel = v8->_timeLabel;
     v8->_timeLabel = v9;
 
-    v11 = [[CLKUITimeLabel alloc] initWithTimeLabelOptions:1 forDevice:v6 clockTimer:v7];
+    v11 = [[CLKUITimeLabel alloc] initWithTimeLabelOptions:1 forDevice:deviceCopy clockTimer:timerCopy];
     inactiveTimeLabel = v8->_inactiveTimeLabel;
     v8->_inactiveTimeLabel = v11;
 
@@ -67,14 +67,14 @@
   }
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v33.receiver = self;
   v33.super_class = CLKUIDigitalClockView;
-  [(CLKUITimeView *)&v33 setConfiguration:v4];
-  v5 = [(CLKUITimeView *)self device];
-  ___LayoutConstants_block_invoke_0(v5, v5);
+  [(CLKUITimeView *)&v33 setConfiguration:configurationCopy];
+  device = [(CLKUITimeView *)self device];
+  ___LayoutConstants_block_invoke_0(device, device);
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -90,14 +90,14 @@
   else
   {
     v13 = [CLKUIDualTimeDigitalTicksView alloc];
-    v14 = [(CLKUITimeView *)self clockTimer];
+    clockTimer = [(CLKUITimeView *)self clockTimer];
     v32[0] = v7;
     v32[1] = v9;
     v32[2] = v7;
     v32[3] = v9;
     v32[4] = v11;
     v32[5] = v11;
-    v15 = [(CLKUIDualTimeDigitalTicksView *)v13 initWithConfiguration:v32 timer:v14];
+    v15 = [(CLKUIDualTimeDigitalTicksView *)v13 initWithConfiguration:v32 timer:clockTimer];
     v16 = self->_ticksView;
     self->_ticksView = v15;
 
@@ -105,99 +105,99 @@
     [(CLKUIDigitalClockView *)self addSubview:self->_ticksView];
   }
 
-  v17 = [v4 activeTickColor];
-  v18 = v17;
-  if (v17)
+  activeTickColor = [configurationCopy activeTickColor];
+  v18 = activeTickColor;
+  if (activeTickColor)
   {
-    v19 = v17;
+    timeColor = activeTickColor;
   }
 
   else
   {
-    v19 = [(CLKUITimeView *)self timeColor];
+    timeColor = [(CLKUITimeView *)self timeColor];
   }
 
-  v20 = v19;
+  v20 = timeColor;
 
   [(CLKUIDualTimeDigitalTicksView *)self->_ticksView setActiveTickColor:v20];
   v21 = [v20 colorWithAlphaComponent:0.5];
   [(CLKUIDualTimeDigitalTicksView *)self->_ticksView setInactiveTickColor:v21];
 
   [(CLKUIDualTimeDigitalTicksView *)self->_ticksView refreshTicks];
-  v22 = [v4 forcedNumberSystem];
-  v23 = v22;
+  forcedNumberSystem = [configurationCopy forcedNumberSystem];
+  v23 = forcedNumberSystem;
   v24 = &unk_1F5E96C48;
-  if (v22)
+  if (forcedNumberSystem)
   {
-    v24 = v22;
+    v24 = forcedNumberSystem;
   }
 
   v25 = v24;
 
-  v26 = [v25 unsignedIntegerValue];
-  [(CLKUITimeLabel *)self->_timeLabel setForcedNumberSystem:v26];
-  [(CLKUITimeLabel *)self->_inactiveTimeLabel setForcedNumberSystem:v26];
-  v27 = [(CLKUIDigitalClockView *)self _fontForConfiguration:v4];
+  unsignedIntegerValue = [v25 unsignedIntegerValue];
+  [(CLKUITimeLabel *)self->_timeLabel setForcedNumberSystem:unsignedIntegerValue];
+  [(CLKUITimeLabel *)self->_inactiveTimeLabel setForcedNumberSystem:unsignedIntegerValue];
+  v27 = [(CLKUIDigitalClockView *)self _fontForConfiguration:configurationCopy];
   [(CLKUITimeLabel *)self->_timeLabel setFont:v27];
   [(CLKUITimeLabel *)self->_inactiveTimeLabel setFont:v27];
-  v28 = [v4 timeLabelColor];
-  if (v28)
+  timeLabelColor = [configurationCopy timeLabelColor];
+  if (timeLabelColor)
   {
-    [(CLKUITimeLabel *)self->_timeLabel setTextColor:v28];
+    [(CLKUITimeLabel *)self->_timeLabel setTextColor:timeLabelColor];
   }
 
   else
   {
-    v29 = [(CLKUITimeView *)self timeColor];
-    [(CLKUITimeLabel *)self->_timeLabel setTextColor:v29];
+    timeColor2 = [(CLKUITimeView *)self timeColor];
+    [(CLKUITimeLabel *)self->_timeLabel setTextColor:timeColor2];
   }
 
-  v30 = [v4 timeLabelColor];
-  if (v30)
+  timeLabelColor2 = [configurationCopy timeLabelColor];
+  if (timeLabelColor2)
   {
-    [(CLKUITimeLabel *)self->_inactiveTimeLabel setTextColor:v30];
+    [(CLKUITimeLabel *)self->_inactiveTimeLabel setTextColor:timeLabelColor2];
   }
 
   else
   {
-    v31 = [MEMORY[0x1E69DC888] whiteColor];
-    [(CLKUITimeLabel *)self->_inactiveTimeLabel setTextColor:v31];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(CLKUITimeLabel *)self->_inactiveTimeLabel setTextColor:whiteColor];
   }
 }
 
-- (id)_fontForConfiguration:(id)a3
+- (id)_fontForConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(CLKUITimeView *)self device];
-  v6 = ___LayoutConstants_block_invoke_0(v5, v5);
+  configurationCopy = configuration;
+  device = [(CLKUITimeView *)self device];
+  v6 = ___LayoutConstants_block_invoke_0(device, device);
 
-  v7 = [v4 forcedNumberSystem];
+  forcedNumberSystem = [configurationCopy forcedNumberSystem];
 
-  if (v7)
+  if (forcedNumberSystem)
   {
-    v8 = [v4 forcedNumberSystem];
-    v9 = [v8 unsignedIntegerValue];
+    forcedNumberSystem2 = [configurationCopy forcedNumberSystem];
+    unsignedIntegerValue = [forcedNumberSystem2 unsignedIntegerValue];
 
-    if (v9 != -1)
+    if (unsignedIntegerValue != -1)
     {
-      v10 = [(CLKUIDigitalClockView *)self fontScaleFactorForNumberSystemOverridesWithTicks];
-      v11 = [v10 count];
+      fontScaleFactorForNumberSystemOverridesWithTicks = [(CLKUIDigitalClockView *)self fontScaleFactorForNumberSystemOverridesWithTicks];
+      v11 = [fontScaleFactorForNumberSystemOverridesWithTicks count];
 
-      if (v9 < v11)
+      if (unsignedIntegerValue < v11)
       {
-        v12 = [(CLKUIDigitalClockView *)self fontScaleFactorForNumberSystemOverridesWithTicks];
-        v13 = [v12 objectAtIndexedSubscript:v9];
+        fontScaleFactorForNumberSystemOverridesWithTicks2 = [(CLKUIDigitalClockView *)self fontScaleFactorForNumberSystemOverridesWithTicks];
+        v13 = [fontScaleFactorForNumberSystemOverridesWithTicks2 objectAtIndexedSubscript:unsignedIntegerValue];
         [v13 doubleValue];
 
-        v14 = [(CLKUITimeView *)self device];
+        device2 = [(CLKUITimeView *)self device];
         CLKRoundForDevice();
         v6 = v15;
       }
     }
   }
 
-  v16 = [v4 timeLabelFont];
-  v17 = [v16 fontWithSize:v6];
+  timeLabelFont = [configurationCopy timeLabelFont];
+  v17 = [timeLabelFont fontWithSize:v6];
 
   if (!v17)
   {
@@ -207,12 +207,12 @@
   return v17;
 }
 
-- (void)setState:(unint64_t)a3
+- (void)setState:(unint64_t)state
 {
   v7.receiver = self;
   v7.super_class = CLKUIDigitalClockView;
   [(CLKUITimeView *)&v7 setState:?];
-  if (a3 == 1)
+  if (state == 1)
   {
     [(CLKUITimeLabel *)self->_timeLabel setPaused:1];
     [(CLKUITimeLabel *)self->_inactiveTimeLabel setPaused:1];
@@ -224,7 +224,7 @@
     }
   }
 
-  else if (!a3)
+  else if (!state)
   {
     [(CLKUITimeLabel *)self->_timeLabel setPaused:0];
     [(CLKUITimeLabel *)self->_inactiveTimeLabel setPaused:0];
@@ -237,32 +237,32 @@
   }
 }
 
-- (void)setOverrideDate:(id)a3
+- (void)setOverrideDate:(id)date
 {
   v7.receiver = self;
   v7.super_class = CLKUIDigitalClockView;
-  v4 = a3;
-  [(CLKUITimeView *)&v7 setOverrideDate:v4];
+  dateCopy = date;
+  [(CLKUITimeView *)&v7 setOverrideDate:dateCopy];
   v5 = [(CLKUITimeLabel *)self->_timeLabel timeFormatter:v7.receiver];
-  [v5 setOverrideDate:v4];
+  [v5 setOverrideDate:dateCopy];
 
-  v6 = [(CLKUITimeLabel *)self->_inactiveTimeLabel timeFormatter];
-  [v6 setOverrideDate:v4];
+  timeFormatter = [(CLKUITimeLabel *)self->_inactiveTimeLabel timeFormatter];
+  [timeFormatter setOverrideDate:dateCopy];
 }
 
-- (void)setAodTransform:(CGAffineTransform *)a3
+- (void)setAodTransform:(CGAffineTransform *)transform
 {
   v10.receiver = self;
   v10.super_class = CLKUIDigitalClockView;
-  v5 = *&a3->c;
-  v7 = *&a3->a;
+  v5 = *&transform->c;
+  v7 = *&transform->a;
   v8 = v5;
-  v9 = *&a3->tx;
+  v9 = *&transform->tx;
   [(CLKUITimeView *)&v10 setAodTransform:&v7];
-  v6 = *&a3->c;
-  v7 = *&a3->a;
+  v6 = *&transform->c;
+  v7 = *&transform->a;
   v8 = v6;
-  v9 = *&a3->tx;
+  v9 = *&transform->tx;
   [(CLKUIDigitalClockView *)self setTransform:&v7];
 }
 
@@ -292,17 +292,17 @@
   return fontScaleFactorForNumberSystemOverridesWithoutTicks;
 }
 
-- (void)traitCollectionDidChange:(id)a3 previousTraitCollection:(id)a4
+- (void)traitCollectionDidChange:(id)change previousTraitCollection:(id)collection
 {
-  v5 = a4;
-  v6 = [(CLKUIDigitalClockView *)self traitCollection];
-  v7 = [v6 activeAppearance];
-  v8 = [v5 activeAppearance];
+  collectionCopy = collection;
+  traitCollection = [(CLKUIDigitalClockView *)self traitCollection];
+  activeAppearance = [traitCollection activeAppearance];
+  activeAppearance2 = [collectionCopy activeAppearance];
 
-  if (v7 != v8)
+  if (activeAppearance != activeAppearance2)
   {
-    v9 = [(CLKUIDigitalClockView *)self traitCollection];
-    v10 = [v9 activeAppearance] ? 1.0 : 0.0;
+    traitCollection2 = [(CLKUIDigitalClockView *)self traitCollection];
+    v10 = [traitCollection2 activeAppearance] ? 1.0 : 0.0;
 
     [(CLKUITimeLabel *)self->_timeLabel setAlpha:v10];
     [(CLKUITimeLabel *)self->_inactiveTimeLabel setAlpha:1.0 - v10];

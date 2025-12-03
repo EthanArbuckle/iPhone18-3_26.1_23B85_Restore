@@ -5,10 +5,10 @@
 - (NTKWidgetDescriptorProvider)init;
 - (id)collatedDescriptors;
 - (void)_queue_widgetDescriptorsChanged;
-- (void)descriptorsDidChangeForDescriptorProvider:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)reloadDescriptorsForContainerIdentifier:(id)a3 completion:(id)a4;
-- (void)unregisterObserver:(id)a3;
+- (void)descriptorsDidChangeForDescriptorProvider:(id)provider;
+- (void)registerObserver:(id)observer;
+- (void)reloadDescriptorsForContainerIdentifier:(id)identifier completion:(id)completion;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation NTKWidgetDescriptorProvider
@@ -41,9 +41,9 @@ void __45__NTKWidgetDescriptorProvider_sharedInstance__block_invoke()
   if (v2)
   {
     v2->_lock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     lock_observers = v3->_lock_observers;
-    v3->_lock_observers = v4;
+    v3->_lock_observers = weakObjectsHashTable;
 
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v7 = dispatch_queue_create("com.apple.NanoTimeKit.NTKWidgetDescriptorProvider", v6);
@@ -75,20 +75,20 @@ uint64_t __35__NTKWidgetDescriptorProvider_init__block_invoke(uint64_t a1)
   return [v5 _queue_widgetDescriptorsChanged];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers addObject:v4];
+  [(NSHashTable *)self->_lock_observers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_lock_observers removeObject:v4];
+  [(NSHashTable *)self->_lock_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -129,24 +129,24 @@ uint64_t __35__NTKWidgetDescriptorProvider_init__block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)reloadDescriptorsForContainerIdentifier:(id)a3 completion:(id)a4
+- (void)reloadDescriptorsForContainerIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__NTKWidgetDescriptorProvider_reloadDescriptorsForContainerIdentifier_completion___block_invoke;
   block[3] = &unk_27877DC88;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
   dispatch_async(queue, block);
 }
 
-- (void)descriptorsDidChangeForDescriptorProvider:(id)a3
+- (void)descriptorsDidChangeForDescriptorProvider:(id)provider
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -160,20 +160,20 @@ uint64_t __35__NTKWidgetDescriptorProvider_init__block_invoke(uint64_t a1)
 - (void)_queue_widgetDescriptorsChanged
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(CHSWidgetDescriptorProvider *)self->_widgetDescriptorProvider descriptors];
-  v4 = [(CHSWidgetDescriptorProvider *)self->_widgetDescriptorProvider descriptorsByExtensionIdentifier];
+  descriptors = [(CHSWidgetDescriptorProvider *)self->_widgetDescriptorProvider descriptors];
+  descriptorsByExtensionIdentifier = [(CHSWidgetDescriptorProvider *)self->_widgetDescriptorProvider descriptorsByExtensionIdentifier];
   os_unfair_lock_lock(&self->_lock);
   lock_widgetDescriptors = self->_lock_widgetDescriptors;
-  self->_lock_widgetDescriptors = v3;
-  v6 = v3;
+  self->_lock_widgetDescriptors = descriptors;
+  v6 = descriptors;
 
   lock_descriptorsByExtensionIdentifier = self->_lock_descriptorsByExtensionIdentifier;
-  self->_lock_descriptorsByExtensionIdentifier = v4;
-  v8 = v4;
+  self->_lock_descriptorsByExtensionIdentifier = descriptorsByExtensionIdentifier;
+  v8 = descriptorsByExtensionIdentifier;
 
   self->_lock_firstLoadCompleted = 1;
   v9 = [(NSHashTable *)self->_lock_observers copy];
-  v10 = [v9 allObjects];
+  allObjects = [v9 allObjects];
 
   os_unfair_lock_unlock(&self->_lock);
   v11[0] = MEMORY[0x277D85DD0];
@@ -181,7 +181,7 @@ uint64_t __35__NTKWidgetDescriptorProvider_init__block_invoke(uint64_t a1)
   v11[2] = __62__NTKWidgetDescriptorProvider__queue_widgetDescriptorsChanged__block_invoke;
   v11[3] = &unk_278781D48;
   v11[4] = self;
-  [v10 enumerateObjectsUsingBlock:v11];
+  [allObjects enumerateObjectsUsingBlock:v11];
 }
 
 @end

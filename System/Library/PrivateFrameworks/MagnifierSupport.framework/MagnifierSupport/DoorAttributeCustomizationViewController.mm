@@ -1,35 +1,35 @@
 @interface DoorAttributeCustomizationViewController
-- (_TtC16MagnifierSupport40DoorAttributeCustomizationViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (_TtC16MagnifierSupport40DoorAttributeCustomizationViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation DoorAttributeCustomizationViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_257BFEF40();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_257C001B4(a3);
+  selfCopy = self;
+  sub_257C001B4(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   v4 = v8.receiver;
-  [(DoorAttributeCustomizationViewController *)&v8 viewWillDisappear:v3];
+  [(DoorAttributeCustomizationViewController *)&v8 viewWillDisappear:disappearCopy];
   v5 = v4 + OBJC_IVAR____TtC16MagnifierSupport40DoorAttributeCustomizationViewController_delegate;
   swift_beginAccess();
   if (*(v5 + 24))
@@ -48,9 +48,9 @@
   }
 }
 
-- (_TtC16MagnifierSupport40DoorAttributeCustomizationViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16MagnifierSupport40DoorAttributeCustomizationViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_257ECF500();
     v7 = v6;
@@ -62,13 +62,13 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_257C00454(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_257C00454(v5, v7, bundle);
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 0;
   }
@@ -78,25 +78,25 @@
   return (*(&self->super.super.super.isa + v5))[2];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = sub_257ECCEB0();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v14 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_257ECCE40();
-  v10 = a3;
-  v11 = self;
-  v12 = sub_257C00874(v10);
+  viewCopy = view;
+  selfCopy = self;
+  v12 = sub_257C00874(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 
   return v12;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     v5 = 0;
   }
@@ -120,16 +120,16 @@
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v6 = sub_257ECCEB0();
   v7 = *(v6 - 8);
   MEMORY[0x28223BE20](v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_257ECCE40();
-  v10 = a3;
-  v11 = self;
-  sub_257C00CB4(v10);
+  viewCopy = view;
+  selfCopy = self;
+  sub_257C00CB4(viewCopy);
 
   (*(v7 + 8))(v9, v6);
 }

@@ -1,27 +1,27 @@
 @interface SiriUIMapTemplateView
-- (SiriUIMapTemplateView)initWithDataSource:(id)a3;
+- (SiriUIMapTemplateView)initWithDataSource:(id)source;
 - (SiriUIMapTemplateViewDelegate)delegate;
 - (double)desiredHeight;
 - (id)_configuredFootnoteDescriptorLabel;
 - (id)_configuredFootnoteLabel;
 - (id)_configuredLabel;
-- (void)_handleTapGesture:(id)a3;
-- (void)_mapButtonPressed:(id)a3;
-- (void)_notifyDelegateOfLocationUpdateIfNeededWithPlacemark:(id)a3;
+- (void)_handleTapGesture:(id)gesture;
+- (void)_mapButtonPressed:(id)pressed;
+- (void)_notifyDelegateOfLocationUpdateIfNeededWithPlacemark:(id)placemark;
 - (void)layoutSubviews;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
 - (void)prepareForDismissal;
 - (void)reloadData;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation SiriUIMapTemplateView
 
-- (SiriUIMapTemplateView)initWithDataSource:(id)a3
+- (SiriUIMapTemplateView)initWithDataSource:(id)source
 {
   v21.receiver = self;
   v21.super_class = SiriUIMapTemplateView;
-  v3 = [(SiriUIBaseTemplateView *)&v21 initWithDataSource:a3];
+  v3 = [(SiriUIBaseTemplateView *)&v21 initWithDataSource:source];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277CD4EC8]);
@@ -36,14 +36,14 @@
     v3->_pinAnnotationView = v7;
 
     [(SiriUIMapTemplateView *)v3 addSubview:v3->_pinAnnotationView];
-    v9 = [(SiriUIMapTemplateView *)v3 _configuredFootnoteDescriptorLabel];
+    _configuredFootnoteDescriptorLabel = [(SiriUIMapTemplateView *)v3 _configuredFootnoteDescriptorLabel];
     footnoteDescriptorLabel = v3->_footnoteDescriptorLabel;
-    v3->_footnoteDescriptorLabel = v9;
+    v3->_footnoteDescriptorLabel = _configuredFootnoteDescriptorLabel;
 
     [(SiriUIMapTemplateView *)v3 addSubview:v3->_footnoteDescriptorLabel];
-    v11 = [(SiriUIMapTemplateView *)v3 _configuredFootnoteLabel];
+    _configuredFootnoteLabel = [(SiriUIMapTemplateView *)v3 _configuredFootnoteLabel];
     footnoteLabel = v3->_footnoteLabel;
-    v3->_footnoteLabel = v11;
+    v3->_footnoteLabel = _configuredFootnoteLabel;
 
     [(SiriUIMapTemplateView *)v3 addSubview:v3->_footnoteLabel];
     v13 = objc_alloc(MEMORY[0x277D75220]);
@@ -71,47 +71,47 @@
 
 - (void)reloadData
 {
-  v18 = [(SiriUIBaseTemplateView *)self dataSource];
+  dataSource = [(SiriUIBaseTemplateView *)self dataSource];
   [(MKMapView *)self->_mapView setDelegate:0];
   mapView = self->_mapView;
-  v4 = [(MKMapView *)mapView annotations];
-  [(MKMapView *)mapView removeAnnotations:v4];
+  annotations = [(MKMapView *)mapView annotations];
+  [(MKMapView *)mapView removeAnnotations:annotations];
 
-  v5 = [v18 CLLocation];
-  [v5 coordinate];
+  cLLocation = [dataSource CLLocation];
+  [cLLocation coordinate];
   v7 = v6;
   v9 = v8;
 
   [(MKMapView *)self->_mapView setRegion:1 animated:v7, v9, 0.005, 0.005];
   [(MKMapView *)self->_mapView setDelegate:self];
   pinAnnotationView = self->_pinAnnotationView;
-  v11 = [(SiriUIBaseTemplateView *)self dataSource];
-  v12 = [v11 pinColor];
-  if (v12)
+  dataSource2 = [(SiriUIBaseTemplateView *)self dataSource];
+  pinColor = [dataSource2 pinColor];
+  if (pinColor)
   {
-    [(MKPinAnnotationView *)pinAnnotationView setPinTintColor:v12];
+    [(MKPinAnnotationView *)pinAnnotationView setPinTintColor:pinColor];
   }
 
   else
   {
-    v13 = [MEMORY[0x277D75348] redColor];
-    [(MKPinAnnotationView *)pinAnnotationView setPinTintColor:v13];
+    redColor = [MEMORY[0x277D75348] redColor];
+    [(MKPinAnnotationView *)pinAnnotationView setPinTintColor:redColor];
   }
 
   footnoteDescriptorLabel = self->_footnoteDescriptorLabel;
-  v15 = [v18 footnoteDescriptor];
-  [(UILabel *)footnoteDescriptorLabel setText:v15];
+  footnoteDescriptor = [dataSource footnoteDescriptor];
+  [(UILabel *)footnoteDescriptorLabel setText:footnoteDescriptor];
 
   footnoteLabel = self->_footnoteLabel;
-  v17 = [v18 footnote];
-  [(UILabel *)footnoteLabel setText:v17];
+  footnote = [dataSource footnote];
+  [(UILabel *)footnoteLabel setText:footnote];
 
   [(SiriUIMapTemplateView *)self setNeedsLayout];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -125,8 +125,8 @@
 
 - (double)desiredHeight
 {
-  v2 = [(SiriUIBaseTemplateView *)self dataSource];
-  v3 = [v2 mapSizeValue] == 0;
+  dataSource = [(SiriUIBaseTemplateView *)self dataSource];
+  v3 = [dataSource mapSizeValue] == 0;
 
   return dbl_2694DDC30[v3];
 }
@@ -137,23 +137,23 @@
   height = v31.size.height;
   width = v31.size.width;
   v3 = CGRectGetWidth(v31);
-  v4 = [(SiriUIMapTemplateView *)self semanticContentAttribute];
-  v5 = [(SiriUIBaseTemplateView *)self templatedSuperview];
-  [v5 templatedContentMargins];
+  semanticContentAttribute = [(SiriUIMapTemplateView *)self semanticContentAttribute];
+  templatedSuperview = [(SiriUIBaseTemplateView *)self templatedSuperview];
+  [templatedSuperview templatedContentMargins];
   v7 = v6;
 
-  v8 = [(SiriUIBaseTemplateView *)self dataSource];
-  v9 = [v8 mapSizeValue];
+  dataSource = [(SiriUIBaseTemplateView *)self dataSource];
+  mapSizeValue = [dataSource mapSizeValue];
 
-  v10 = [(SiriUIBaseTemplateView *)self dataSource];
-  v11 = [v10 interactive];
+  dataSource2 = [(SiriUIBaseTemplateView *)self dataSource];
+  interactive = [dataSource2 interactive];
 
   [(MKMapView *)self->_mapView setDelegate:0];
-  v12 = dbl_2694DDC40[v9 != 1];
+  v12 = dbl_2694DDC40[mapSizeValue != 1];
   [(MKMapView *)self->_mapView setFrame:0.0, 0.0, v3, v12];
-  [(MKMapView *)self->_mapView setScrollEnabled:v11];
-  [(MKMapView *)self->_mapView setZoomEnabled:v11];
-  if (v11)
+  [(MKMapView *)self->_mapView setScrollEnabled:interactive];
+  [(MKMapView *)self->_mapView setZoomEnabled:interactive];
+  if (interactive)
   {
     [(UIButton *)self->_mapButton removeFromSuperview];
   }
@@ -163,7 +163,7 @@
     [(SiriUIMapTemplateView *)self addSubview:self->_mapButton];
   }
 
-  v13 = v9 != 1;
+  v13 = mapSizeValue != 1;
   [(UIButton *)self->_mapButton setFrame:0.0, 0.0, v3, v12];
   pinAnnotationView = self->_pinAnnotationView;
   [(MKPinAnnotationView *)pinAnnotationView frame];
@@ -187,7 +187,7 @@
   v19 = v18;
   v20 = v3 - v18;
   v21 = v20 - v7;
-  if (v4 == 4)
+  if (semanticContentAttribute == 4)
   {
     v22 = v20 - v7;
   }
@@ -202,7 +202,7 @@
   [(UILabel *)self->_footnoteLabel sizeThatFits:v15, v16];
   v25 = v24;
   v26 = v21 + -10.0 - v24;
-  if (v4 != 4)
+  if (semanticContentAttribute != 4)
   {
     v26 = v7 + v19 + 10.0;
   }
@@ -222,13 +222,13 @@
   [(SiriUIMapTemplateView *)self _notifyDelegateOfLocationUpdateIfNeededWithPlacemark:currentPlacemark];
 }
 
-- (void)_notifyDelegateOfLocationUpdateIfNeededWithPlacemark:(id)a3
+- (void)_notifyDelegateOfLocationUpdateIfNeededWithPlacemark:(id)placemark
 {
   if (self->_needsToNotifyDelegateOfLocationUpdate)
   {
-    v4 = a3;
-    v5 = [(SiriUIMapTemplateView *)self delegate];
-    [v5 mapTemplateView:self didModifyPlacemark:v4];
+    placemarkCopy = placemark;
+    delegate = [(SiriUIMapTemplateView *)self delegate];
+    [delegate mapTemplateView:self didModifyPlacemark:placemarkCopy];
 
     self->_needsToNotifyDelegateOfLocationUpdate = 0;
   }
@@ -236,44 +236,44 @@
 
 - (id)_configuredFootnoteDescriptorLabel
 {
-  v2 = [(SiriUIMapTemplateView *)self _configuredLabel];
+  _configuredLabel = [(SiriUIMapTemplateView *)self _configuredLabel];
   v3 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76968]];
-  [v2 setFont:v3];
+  [_configuredLabel setFont:v3];
 
-  v4 = [MEMORY[0x277D75348] siriui_platterSemiTransparentTextColor];
-  [v2 setTextColor:v4];
+  siriui_platterSemiTransparentTextColor = [MEMORY[0x277D75348] siriui_platterSemiTransparentTextColor];
+  [_configuredLabel setTextColor:siriui_platterSemiTransparentTextColor];
 
-  return v2;
+  return _configuredLabel;
 }
 
 - (id)_configuredFootnoteLabel
 {
-  v2 = [(SiriUIMapTemplateView *)self _configuredLabel];
+  _configuredLabel = [(SiriUIMapTemplateView *)self _configuredLabel];
   v3 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
-  [v2 setFont:v3];
+  [_configuredLabel setFont:v3];
 
-  return v2;
+  return _configuredLabel;
 }
 
 - (id)_configuredLabel
 {
   v2 = objc_alloc(MEMORY[0x277D756B8]);
   v3 = [v2 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-  v4 = [MEMORY[0x277D75348] siriui_platterTextColor];
-  [v3 setTextColor:v4];
+  siriui_platterTextColor = [MEMORY[0x277D75348] siriui_platterTextColor];
+  [v3 setTextColor:siriui_platterTextColor];
 
   return v3;
 }
 
-- (void)_mapButtonPressed:(id)a3
+- (void)_mapButtonPressed:(id)pressed
 {
-  v4 = [(SiriUIMapTemplateView *)self delegate];
-  [v4 mapTemplateViewDidSelectMap:self];
+  delegate = [(SiriUIMapTemplateView *)self delegate];
+  [delegate mapTemplateViewDidSelectMap:self];
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
-  v5 = a3;
+  viewCopy = view;
   self->_needsToNotifyDelegateOfLocationUpdate = 1;
   [(MKMapView *)self->_mapView centerCoordinate];
   v8 = [objc_alloc(MEMORY[0x277CE41F8]) initWithLatitude:v6 longitude:v7];
@@ -290,7 +290,7 @@
   v12 = v8;
   v14 = v12;
   objc_copyWeak(&v16, &location);
-  v15 = self;
+  selfCopy = self;
   [(CLGeocoder *)geocoder reverseGeocodeLocation:v12 completionHandler:v13];
   objc_destroyWeak(&v16);
 
@@ -391,7 +391,7 @@ void __57__SiriUIMapTemplateView_mapView_regionDidChangeAnimated___block_invoke_
   objc_storeStrong(v3, v2);
 }
 
-- (void)_handleTapGesture:(id)a3
+- (void)_handleTapGesture:(id)gesture
 {
   v6 = *MEMORY[0x277D85DE8];
   v3 = *MEMORY[0x277CEF098];

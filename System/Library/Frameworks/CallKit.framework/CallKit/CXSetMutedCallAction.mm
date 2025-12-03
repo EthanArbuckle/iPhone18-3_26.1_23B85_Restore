@@ -1,37 +1,37 @@
 @interface CXSetMutedCallAction
-- (CXSetMutedCallAction)initWithCallUUID:(id)a3 muted:(BOOL)a4 bottomUpMute:(BOOL)a5;
-- (CXSetMutedCallAction)initWithCallUUID:(id)a3 muted:(BOOL)a4 systemInitiated:(BOOL)a5;
+- (CXSetMutedCallAction)initWithCallUUID:(id)d muted:(BOOL)muted bottomUpMute:(BOOL)mute;
+- (CXSetMutedCallAction)initWithCallUUID:(id)d muted:(BOOL)muted systemInitiated:(BOOL)initiated;
 - (CXSetMutedCallAction)initWithCoder:(NSCoder *)aDecoder;
 - (id)customDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone;
 @end
 
 @implementation CXSetMutedCallAction
 
-- (CXSetMutedCallAction)initWithCallUUID:(id)a3 muted:(BOOL)a4 bottomUpMute:(BOOL)a5
+- (CXSetMutedCallAction)initWithCallUUID:(id)d muted:(BOOL)muted bottomUpMute:(BOOL)mute
 {
   v8.receiver = self;
   v8.super_class = CXSetMutedCallAction;
-  result = [(CXCallAction *)&v8 initWithCallUUID:a3];
+  result = [(CXCallAction *)&v8 initWithCallUUID:d];
   if (result)
   {
-    result->_muted = a4;
-    result->_bottomUpMute = a5;
+    result->_muted = muted;
+    result->_bottomUpMute = mute;
   }
 
   return result;
 }
 
-- (CXSetMutedCallAction)initWithCallUUID:(id)a3 muted:(BOOL)a4 systemInitiated:(BOOL)a5
+- (CXSetMutedCallAction)initWithCallUUID:(id)d muted:(BOOL)muted systemInitiated:(BOOL)initiated
 {
   v8.receiver = self;
   v8.super_class = CXSetMutedCallAction;
-  result = [(CXCallAction *)&v8 initWithCallUUID:a3];
+  result = [(CXCallAction *)&v8 initWithCallUUID:d];
   if (result)
   {
-    result->_muted = a4;
-    result->_systemInitiated = a5;
+    result->_muted = muted;
+    result->_systemInitiated = initiated;
   }
 
   return result;
@@ -41,23 +41,23 @@
 {
   v5.receiver = self;
   v5.super_class = CXSetMutedCallAction;
-  v3 = [(CXCallAction *)&v5 customDescription];
-  [v3 appendFormat:@" muted=%d", -[CXSetMutedCallAction isMuted](self, "isMuted")];
-  [v3 appendFormat:@" bottomUp=%d", -[CXSetMutedCallAction isBottomUpMute](self, "isBottomUpMute")];
-  [v3 appendFormat:@" systemInitiated=%d", -[CXSetMutedCallAction isSystemInitiated](self, "isSystemInitiated")];
+  customDescription = [(CXCallAction *)&v5 customDescription];
+  [customDescription appendFormat:@" muted=%d", -[CXSetMutedCallAction isMuted](self, "isMuted")];
+  [customDescription appendFormat:@" bottomUp=%d", -[CXSetMutedCallAction isBottomUpMute](self, "isBottomUpMute")];
+  [customDescription appendFormat:@" systemInitiated=%d", -[CXSetMutedCallAction isSystemInitiated](self, "isSystemInitiated")];
 
-  return v3;
+  return customDescription;
 }
 
-- (void)updateSanitizedCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateSanitizedCopy:(id)copy withZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CXSetMutedCallAction;
-  v6 = a3;
-  [(CXCallAction *)&v7 updateSanitizedCopy:v6 withZone:a4];
-  [v6 setMuted:{-[CXSetMutedCallAction isMuted](self, "isMuted", v7.receiver, v7.super_class)}];
-  [v6 setBottomUpMute:{-[CXSetMutedCallAction isBottomUpMute](self, "isBottomUpMute")}];
-  [v6 setSystemInitiated:{-[CXSetMutedCallAction isSystemInitiated](self, "isSystemInitiated")}];
+  copyCopy = copy;
+  [(CXCallAction *)&v7 updateSanitizedCopy:copyCopy withZone:zone];
+  [copyCopy setMuted:{-[CXSetMutedCallAction isMuted](self, "isMuted", v7.receiver, v7.super_class)}];
+  [copyCopy setBottomUpMute:{-[CXSetMutedCallAction isBottomUpMute](self, "isBottomUpMute")}];
+  [copyCopy setSystemInitiated:{-[CXSetMutedCallAction isSystemInitiated](self, "isSystemInitiated")}];
 }
 
 - (CXSetMutedCallAction)initWithCoder:(NSCoder *)aDecoder
@@ -81,23 +81,23 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = CXSetMutedCallAction;
-  v4 = a3;
-  [(CXCallAction *)&v11 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CXCallAction *)&v11 encodeWithCoder:coderCopy];
   v5 = [(CXSetMutedCallAction *)self isMuted:v11.receiver];
   v6 = NSStringFromSelector(sel_isMuted);
-  [v4 encodeBool:v5 forKey:v6];
+  [coderCopy encodeBool:v5 forKey:v6];
 
-  v7 = [(CXSetMutedCallAction *)self isBottomUpMute];
+  isBottomUpMute = [(CXSetMutedCallAction *)self isBottomUpMute];
   v8 = NSStringFromSelector(sel_isBottomUpMute);
-  [v4 encodeBool:v7 forKey:v8];
+  [coderCopy encodeBool:isBottomUpMute forKey:v8];
 
-  v9 = [(CXSetMutedCallAction *)self isSystemInitiated];
+  isSystemInitiated = [(CXSetMutedCallAction *)self isSystemInitiated];
   v10 = NSStringFromSelector(sel_isSystemInitiated);
-  [v4 encodeBool:v9 forKey:v10];
+  [coderCopy encodeBool:isSystemInitiated forKey:v10];
 }
 
 @end

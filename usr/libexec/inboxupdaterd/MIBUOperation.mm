@@ -2,7 +2,7 @@
 + (unint64_t)currentOperationCode;
 - (BOOL)inProgress;
 - (BOOL)saveOpCode;
-- (MIBUOperation)initWithDelegate:(id)a3;
+- (MIBUOperation)initWithDelegate:(id)delegate;
 - (MIBUOperationDelegate)delegate;
 - (void)resume;
 - (void)terminateNow;
@@ -16,20 +16,20 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntValue];
+    unsignedIntValue = [v2 unsignedIntValue];
   }
 
   else
   {
-    v4 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v4;
+  return unsignedIntValue;
 }
 
-- (MIBUOperation)initWithDelegate:(id)a3
+- (MIBUOperation)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = MIBUOperation;
   v5 = [(MIBUOperation *)&v11 init];
@@ -37,7 +37,7 @@
   if (v5)
   {
     [(MIBUOperation *)v5 setOpCode:0];
-    [(MIBUOperation *)v6 setDelegate:v4];
+    [(MIBUOperation *)v6 setDelegate:delegateCopy];
     v7 = [NSString stringWithFormat:@"com.apple.mibu_%@_op_queue", objc_opt_class()];
     v8 = dispatch_queue_create([v7 UTF8String], 0);
     [(MIBUOperation *)v6 setSyncQueue:v8];
@@ -51,24 +51,24 @@
 
 - (void)resume
 {
-  v3 = [(MIBUOperation *)self syncQueue];
+  syncQueue = [(MIBUOperation *)self syncQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001F774;
   block[3] = &unk_1000994A8;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(syncQueue, block);
 }
 
 - (void)terminateNow
 {
-  v3 = [(MIBUOperation *)self syncQueue];
+  syncQueue = [(MIBUOperation *)self syncQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10001F804;
   block[3] = &unk_1000994A8;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(syncQueue, block);
 }
 
 - (BOOL)inProgress

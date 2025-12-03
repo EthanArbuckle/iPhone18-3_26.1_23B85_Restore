@@ -8,10 +8,10 @@
 {
   v4.receiver = self;
   v4.super_class = BMScreenSharing_v1;
-  v2 = [(BMScreenSharing *)&v4 type];
-  if (v2)
+  type = [(BMScreenSharing *)&v4 type];
+  if (type)
   {
-    return 2 * (v2 == 1);
+    return 2 * (type == 1);
   }
 
   else

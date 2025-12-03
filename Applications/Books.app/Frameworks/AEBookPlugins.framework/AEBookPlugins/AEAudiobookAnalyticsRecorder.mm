@@ -3,16 +3,16 @@
 - (AEAudiobookAnalyticsRecorder)init;
 - (AEAudiobookAnalyticsRecorderTrackerHosting)trackerHost;
 - (void)forceEndPlaySession;
-- (void)networkChanged:(id)a3;
-- (void)player:(id)a3 audiobookWillChange:(id)a4;
-- (void)player:(id)a3 bitRateChangedFrom:(float)a4 to:(float)a5;
-- (void)player:(id)a3 isScrubbing:(BOOL)a4;
-- (void)player:(id)a3 playbackRateDidChange:(float)a4;
-- (void)player:(id)a3 stateDidChangeFrom:(int64_t)a4 to:(int64_t)a5;
-- (void)routeChanged:(id)a3;
-- (void)skipController:(id)a3 willBeginSkippingInDirection:(unint64_t)a4;
-- (void)skipControllerDidEndSkipping:(id)a3 actionSource:(unint64_t)a4;
-- (void)startRecordingAnalyticsWithSessionHost:(id)a3;
+- (void)networkChanged:(id)changed;
+- (void)player:(id)player audiobookWillChange:(id)change;
+- (void)player:(id)player bitRateChangedFrom:(float)from to:(float)to;
+- (void)player:(id)player isScrubbing:(BOOL)scrubbing;
+- (void)player:(id)player playbackRateDidChange:(float)change;
+- (void)player:(id)player stateDidChangeFrom:(int64_t)from to:(int64_t)to;
+- (void)routeChanged:(id)changed;
+- (void)skipController:(id)controller willBeginSkippingInDirection:(unint64_t)direction;
+- (void)skipControllerDidEndSkipping:(id)skipping actionSource:(unint64_t)source;
+- (void)startRecordingAnalyticsWithSessionHost:(id)host;
 @end
 
 @implementation AEAudiobookAnalyticsRecorder
@@ -37,29 +37,29 @@
   return v3;
 }
 
-- (void)routeChanged:(id)a3
+- (void)routeChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_10E228(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_10E228(changedCopy);
 }
 
-- (void)networkChanged:(id)a3
+- (void)networkChanged:(id)changed
 {
   sub_11BF80(0, &qword_22C5A8);
   *(swift_allocObject() + 16) = self;
-  v4 = self;
+  selfCopy = self;
   sub_139AE0();
 }
 
-- (void)startRecordingAnalyticsWithSessionHost:(id)a3
+- (void)startRecordingAnalyticsWithSessionHost:(id)host
 {
   sub_11BF80(0, &qword_22C5A8);
   v5 = swift_allocObject();
   *(v5 + 16) = self;
-  *(v5 + 24) = a3;
+  *(v5 + 24) = host;
   swift_unknownObjectRetain_n();
-  v6 = self;
+  selfCopy = self;
   sub_139AE0();
 
   swift_unknownObjectRelease();
@@ -69,7 +69,7 @@
 {
   sub_11BF80(0, &qword_22C5A8);
   *(swift_allocObject() + 16) = self;
-  v3 = self;
+  selfCopy = self;
   sub_139AE0();
 }
 
@@ -80,92 +80,92 @@
   return result;
 }
 
-- (void)skipController:(id)a3 willBeginSkippingInDirection:(unint64_t)a4
+- (void)skipController:(id)controller willBeginSkippingInDirection:(unint64_t)direction
 {
   v4 = *(self + OBJC_IVAR___AEAudiobookAnalyticsRecorder_player);
-  v6 = self;
+  selfCopy = self;
   [v4 positionInCurrentAudiobook];
-  *(v6 + OBJC_IVAR___AEAudiobookAnalyticsRecorder_skipStartMediaTime) = v5;
+  *(selfCopy + OBJC_IVAR___AEAudiobookAnalyticsRecorder_skipStartMediaTime) = v5;
 }
 
-- (void)skipControllerDidEndSkipping:(id)a3 actionSource:(unint64_t)a4
+- (void)skipControllerDidEndSkipping:(id)skipping actionSource:(unint64_t)source
 {
   v6 = sub_1395E0();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = v13 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (!a4)
+  if (!source)
   {
     v10 = &enum case for SkipActionType.unknown(_:);
 LABEL_5:
     (*(v7 + 104))(v9, *v10, v6);
-    v11 = self;
+    selfCopy = self;
     sub_10F99C(v9);
 
     (*(v7 + 8))(v9, v6);
     return;
   }
 
-  if (a4 == 1)
+  if (source == 1)
   {
     v10 = &enum case for SkipActionType.buttonTap(_:);
     goto LABEL_5;
   }
 
   type metadata accessor for BKAudiobookActionSource(0);
-  v13[1] = a4;
-  v12 = self;
+  v13[1] = source;
+  selfCopy2 = self;
   sub_139CE0();
   __break(1u);
 }
 
-- (void)player:(id)a3 audiobookWillChange:(id)a4
+- (void)player:(id)player audiobookWillChange:(id)change
 {
   if (*(self + OBJC_IVAR___AEAudiobookAnalyticsRecorder_analyticsSessionAssertion))
   {
-    v4 = self;
+    selfCopy = self;
     sub_10EF30();
   }
 }
 
-- (void)player:(id)a3 stateDidChangeFrom:(int64_t)a4 to:(int64_t)a5
+- (void)player:(id)player stateDidChangeFrom:(int64_t)from to:(int64_t)to
 {
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_11B258(a3, a5);
+  selfCopy = self;
+  sub_11B258(player, to);
   swift_unknownObjectRelease();
 }
 
-- (void)player:(id)a3 playbackRateDidChange:(float)a4
+- (void)player:(id)player playbackRateDidChange:(float)change
 {
   v4 = OBJC_IVAR___AEAudiobookAnalyticsRecorder_playSessionPlaybackRate;
-  if (*(self + OBJC_IVAR___AEAudiobookAnalyticsRecorder_playSessionPlaybackRate) != a4)
+  if (*(self + OBJC_IVAR___AEAudiobookAnalyticsRecorder_playSessionPlaybackRate) != change)
   {
-    v7 = self;
+    selfCopy = self;
     sub_111520();
-    *(self + v4) = a4;
+    *(self + v4) = change;
   }
 }
 
-- (void)player:(id)a3 isScrubbing:(BOOL)a4
+- (void)player:(id)player isScrubbing:(BOOL)scrubbing
 {
-  v4 = a4;
+  scrubbingCopy = scrubbing;
   v7 = sub_1395E0();
   v8 = *(v7 - 8);
   __chkstk_darwin(v7);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (v4)
+  if (scrubbingCopy)
   {
-    v15 = self;
-    [a3 positionInCurrentAudiobook];
-    v11 = v15;
-    *(v15 + OBJC_IVAR___AEAudiobookAnalyticsRecorder_skipStartMediaTime) = v12;
+    selfCopy = self;
+    [player positionInCurrentAudiobook];
+    v11 = selfCopy;
+    *(selfCopy + OBJC_IVAR___AEAudiobookAnalyticsRecorder_skipStartMediaTime) = v12;
   }
 
   else
   {
     (*(v8 + 104))(v10, enum case for SkipActionType.scrubbing(_:), v7);
-    v13 = self;
+    selfCopy2 = self;
     swift_unknownObjectRetain();
     sub_10F99C(v10);
     swift_unknownObjectRelease();
@@ -174,14 +174,14 @@ LABEL_5:
   }
 }
 
-- (void)player:(id)a3 bitRateChangedFrom:(float)a4 to:(float)a5
+- (void)player:(id)player bitRateChangedFrom:(float)from to:(float)to
 {
   sub_11BF80(0, &qword_22C5A8);
   v8 = swift_allocObject();
   *(v8 + 16) = self;
-  *(v8 + 24) = a5;
-  *(v8 + 28) = a4;
-  v9 = self;
+  *(v8 + 24) = to;
+  *(v8 + 28) = from;
+  selfCopy = self;
   sub_139AE0();
 }
 

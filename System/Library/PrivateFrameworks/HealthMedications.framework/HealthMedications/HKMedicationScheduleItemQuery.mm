@@ -1,44 +1,44 @@
 @interface HKMedicationScheduleItemQuery
-+ (void)configureClientInterface:(id)a3;
-- (HKMedicationScheduleItemQuery)initWithFromDate:(id)a3 toDate:(id)a4 identifier:(id)a5 sortDescriptors:(id)a6 resultsHandler:(id)a7;
-- (void)client_deliverScheduleItems:(id)a3 queryUUID:(id)a4;
-- (void)queue_deliverError:(id)a3;
-- (void)queue_populateConfiguration:(id)a3;
-- (void)queue_queryDidDeactivate:(id)a3;
++ (void)configureClientInterface:(id)interface;
+- (HKMedicationScheduleItemQuery)initWithFromDate:(id)date toDate:(id)toDate identifier:(id)identifier sortDescriptors:(id)descriptors resultsHandler:(id)handler;
+- (void)client_deliverScheduleItems:(id)items queryUUID:(id)d;
+- (void)queue_deliverError:(id)error;
+- (void)queue_populateConfiguration:(id)configuration;
+- (void)queue_queryDidDeactivate:(id)deactivate;
 - (void)queue_validate;
 @end
 
 @implementation HKMedicationScheduleItemQuery
 
-- (HKMedicationScheduleItemQuery)initWithFromDate:(id)a3 toDate:(id)a4 identifier:(id)a5 sortDescriptors:(id)a6 resultsHandler:(id)a7
+- (HKMedicationScheduleItemQuery)initWithFromDate:(id)date toDate:(id)toDate identifier:(id)identifier sortDescriptors:(id)descriptors resultsHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dateCopy = date;
+  toDateCopy = toDate;
+  identifierCopy = identifier;
+  descriptorsCopy = descriptors;
+  handlerCopy = handler;
   v29.receiver = self;
   v29.super_class = HKMedicationScheduleItemQuery;
   v17 = [(HKQuery *)&v29 _initWithObjectType:0 predicate:0];
   if (v17)
   {
-    v18 = [v12 copy];
+    v18 = [dateCopy copy];
     fromDate = v17->_fromDate;
     v17->_fromDate = v18;
 
-    v20 = [v13 copy];
+    v20 = [toDateCopy copy];
     toDate = v17->_toDate;
     v17->_toDate = v20;
 
-    v22 = [v14 copy];
+    v22 = [identifierCopy copy];
     identifier = v17->_identifier;
     v17->_identifier = v22;
 
-    v24 = [v15 copy];
+    v24 = [descriptorsCopy copy];
     sortDescriptors = v17->_sortDescriptors;
     v17->_sortDescriptors = v24;
 
-    v26 = [v16 copy];
+    v26 = [handlerCopy copy];
     resultsHandler = v17->_resultsHandler;
     v17->_resultsHandler = v26;
   }
@@ -46,21 +46,21 @@
   return v17;
 }
 
-- (void)client_deliverScheduleItems:(id)a3 queryUUID:(id)a4
+- (void)client_deliverScheduleItems:(id)items queryUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKQuery *)self queue];
+  itemsCopy = items;
+  dCopy = d;
+  queue = [(HKQuery *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __71__HKMedicationScheduleItemQuery_client_deliverScheduleItems_queryUUID___block_invoke;
   block[3] = &unk_2796CAB78;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v12 = dCopy;
+  v13 = itemsCopy;
+  v9 = itemsCopy;
+  v10 = dCopy;
+  dispatch_async(queue, block);
 }
 
 void __71__HKMedicationScheduleItemQuery_client_deliverScheduleItems_queryUUID___block_invoke(uint64_t a1)
@@ -84,42 +84,42 @@ void __71__HKMedicationScheduleItemQuery_client_deliverScheduleItems_queryUUID__
   }
 }
 
-- (void)queue_populateConfiguration:(id)a3
+- (void)queue_populateConfiguration:(id)configuration
 {
   v5.receiver = self;
   v5.super_class = HKMedicationScheduleItemQuery;
-  v4 = a3;
-  [(HKQuery *)&v5 queue_populateConfiguration:v4];
-  [v4 setFromDate:{self->_fromDate, v5.receiver, v5.super_class}];
-  [v4 setToDate:self->_toDate];
-  [v4 setIdentifier:self->_identifier];
-  [v4 setSortDescriptors:self->_sortDescriptors];
+  configurationCopy = configuration;
+  [(HKQuery *)&v5 queue_populateConfiguration:configurationCopy];
+  [configurationCopy setFromDate:{self->_fromDate, v5.receiver, v5.super_class}];
+  [configurationCopy setToDate:self->_toDate];
+  [configurationCopy setIdentifier:self->_identifier];
+  [configurationCopy setSortDescriptors:self->_sortDescriptors];
 }
 
-+ (void)configureClientInterface:(id)a3
++ (void)configureClientInterface:(id)interface
 {
-  v4 = a3;
-  v6.receiver = a1;
+  interfaceCopy = interface;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___HKMedicationScheduleItemQuery;
-  objc_msgSendSuper2(&v6, sel_configureClientInterface_, v4);
-  v5 = [v4 hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverScheduleItems_queryUUID_ argumentIndex:0 ofReply:0];
+  objc_msgSendSuper2(&v6, sel_configureClientInterface_, interfaceCopy);
+  v5 = [interfaceCopy hk_setArrayOfClass:objc_opt_class() forSelector:sel_client_deliverScheduleItems_queryUUID_ argumentIndex:0 ofReply:0];
 }
 
-- (void)queue_deliverError:(id)a3
+- (void)queue_deliverError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x2530840C0](self->_resultsHandler);
-  v6 = [(HKQuery *)self clientQueue];
+  clientQueue = [(HKQuery *)self clientQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__HKMedicationScheduleItemQuery_queue_deliverError___block_invoke;
   block[3] = &unk_2796CAB50;
-  v10 = v4;
+  v10 = errorCopy;
   v11 = v5;
   block[4] = self;
-  v7 = v4;
+  v7 = errorCopy;
   v8 = v5;
-  dispatch_async(v6, block);
+  dispatch_async(clientQueue, block);
 }
 
 - (void)queue_validate
@@ -133,11 +133,11 @@ void __71__HKMedicationScheduleItemQuery_client_deliverScheduleItems_queryUUID__
   }
 }
 
-- (void)queue_queryDidDeactivate:(id)a3
+- (void)queue_queryDidDeactivate:(id)deactivate
 {
   v5.receiver = self;
   v5.super_class = HKMedicationScheduleItemQuery;
-  [(HKQuery *)&v5 queue_queryDidDeactivate:a3];
+  [(HKQuery *)&v5 queue_queryDidDeactivate:deactivate];
   resultsHandler = self->_resultsHandler;
   self->_resultsHandler = 0;
 }

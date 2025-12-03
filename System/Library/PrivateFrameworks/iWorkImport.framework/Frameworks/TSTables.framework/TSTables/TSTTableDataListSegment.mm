@@ -1,34 +1,34 @@
 @interface TSTTableDataListSegment
-- (TSTTableDataListSegment)initWithType:(int)a3 keyRange:(_NSRange)a4 context:(id)a5;
+- (TSTTableDataListSegment)initWithType:(int)type keyRange:(_NSRange)range context:(id)context;
 - (_NSRange)keyRange;
 - (id).cxx_construct;
-- (id)contentsOfObjectForKey:(unsigned int)a3;
-- (id)copyWithContext:(id)a3;
-- (id)objectAtIndexedSubscript:(unsigned int)a3;
+- (id)contentsOfObjectForKey:(unsigned int)key;
+- (id)copyWithContext:(id)context;
+- (id)objectAtIndexedSubscript:(unsigned int)subscript;
 - (id)split;
-- (void)encodeObjectsToDataListArchive:(void *)a3 archiver:(id)a4;
-- (void)enumerateObjectsWithBlock:(id)a3;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)loadObjectsFromDataListArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setKeyRange:(_NSRange)a3;
-- (void)setObject:(id)a3 atIndexedSubscript:(unsigned int)a4;
+- (void)encodeObjectsToDataListArchive:(void *)archive archiver:(id)archiver;
+- (void)enumerateObjectsWithBlock:(id)block;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)loadObjectsFromDataListArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setKeyRange:(_NSRange)range;
+- (void)setObject:(id)object atIndexedSubscript:(unsigned int)subscript;
 @end
 
 @implementation TSTTableDataListSegment
 
-- (TSTTableDataListSegment)initWithType:(int)a3 keyRange:(_NSRange)a4 context:(id)a5
+- (TSTTableDataListSegment)initWithType:(int)type keyRange:(_NSRange)range context:(id)context
 {
-  length = a4.length;
-  location = a4.location;
-  v9 = a5;
+  length = range.length;
+  location = range.location;
+  contextCopy = context;
   v19.receiver = self;
   v19.super_class = TSTTableDataListSegment;
-  v10 = [(TSTTableDataListSegment *)&v19 initWithContext:v9];
+  v10 = [(TSTTableDataListSegment *)&v19 initWithContext:contextCopy];
   v15 = v10;
   if (v10)
   {
-    v10->_listType = a3;
+    v10->_listType = type;
     v10->_keyRange.location = location;
     v10->_keyRange.length = length;
     v16 = objc_msgSend_indexSet(MEMORY[0x277CCAB58], v11, v12, v13, v14);
@@ -41,18 +41,18 @@
   return v15;
 }
 
-- (id)copyWithContext:(id)a3
+- (id)copyWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = objc_alloc(objc_opt_class());
-  v7 = objc_msgSend_initWithType_keyRange_context_(v5, v6, self->_listType, self->_keyRange.location, self->_keyRange.length, v4);
+  v7 = objc_msgSend_initWithType_keyRange_context_(v5, v6, self->_listType, self->_keyRange.location, self->_keyRange.length, contextCopy);
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = sub_2213BEC40;
   v16[3] = &unk_2784641D8;
   v8 = v7;
   v17 = v8;
-  v9 = v4;
+  v9 = contextCopy;
   v18 = v9;
   objc_msgSend_enumerateObjectsWithBlock_(self, v10, v16, v11, v12);
   v13 = v18;
@@ -61,13 +61,13 @@
   return v14;
 }
 
-- (void)setKeyRange:(_NSRange)a3
+- (void)setKeyRange:(_NSRange)range
 {
   p_keyRange = &self->_keyRange;
-  if (a3.location != self->_keyRange.location || a3.length != self->_keyRange.length)
+  if (range.location != self->_keyRange.location || range.length != self->_keyRange.length)
   {
-    location = a3.location;
-    if (HIDWORD(a3.location))
+    location = range.location;
+    if (HIDWORD(range.location))
     {
       TSUSetCrashReporterInfo();
       v8 = MEMORY[0x277D81150];
@@ -78,10 +78,10 @@
 
     else
     {
-      length = a3.length;
-      if (!HIDWORD(a3.length))
+      length = range.length;
+      if (!HIDWORD(range.length))
       {
-        objc_msgSend_willModify(self, a2, a3.location, LODWORD(a3.length), v3);
+        objc_msgSend_willModify(self, a2, range.location, LODWORD(range.length), v3);
         p_keyRange->location = location;
         p_keyRange->length = length;
         return;
@@ -275,19 +275,19 @@ LABEL_18:
   return v92;
 }
 
-- (id)objectAtIndexedSubscript:(unsigned int)a3
+- (id)objectAtIndexedSubscript:(unsigned int)subscript
 {
-  v22 = a3;
-  if (a3)
+  subscriptCopy = subscript;
+  if (subscript)
   {
-    v3 = sub_2211DC534(&self->_data.__table_.__bucket_list_.__ptr_, &v22);
+    v3 = sub_2211DC534(&self->_data.__table_.__bucket_list_.__ptr_, &subscriptCopy);
     if (v3)
     {
       v8 = v3[3];
       if (v8)
       {
         v9 = objc_msgSend_key(v3[3], v4, v5, v6, v7);
-        if (v9 != v22)
+        if (v9 != subscriptCopy)
         {
           TSUSetCrashReporterInfo();
           v10 = MEMORY[0x277D81150];
@@ -317,19 +317,19 @@ LABEL_18:
   return v20;
 }
 
-- (id)contentsOfObjectForKey:(unsigned int)a3
+- (id)contentsOfObjectForKey:(unsigned int)key
 {
-  v22 = a3;
-  if (a3)
+  keyCopy = key;
+  if (key)
   {
-    v3 = sub_2211DC534(&self->_data.__table_.__bucket_list_.__ptr_, &v22);
+    v3 = sub_2211DC534(&self->_data.__table_.__bucket_list_.__ptr_, &keyCopy);
     if (v3)
     {
       v8 = v3[3];
       if (v8)
       {
         v9 = objc_msgSend_key(v3[3], v4, v5, v6, v7);
-        if (v9 != v22)
+        if (v9 != keyCopy)
         {
           TSUSetCrashReporterInfo();
           v10 = MEMORY[0x277D81150];
@@ -359,34 +359,34 @@ LABEL_18:
   return v20;
 }
 
-- (void)setObject:(id)a3 atIndexedSubscript:(unsigned int)a4
+- (void)setObject:(id)object atIndexedSubscript:(unsigned int)subscript
 {
-  v5 = *&a4;
-  v27 = a4;
-  objc_msgSend_willModify(self, a2, a3, *&a4, v4);
-  if (a3)
+  v5 = *&subscript;
+  subscriptCopy = subscript;
+  objc_msgSend_willModify(self, a2, object, *&subscript, v4);
+  if (object)
   {
-    objc_msgSend_setKey_(a3, v8, v5, v9, v10);
-    v28 = &v27;
-    v11 = sub_2213C0608(&self->_data.__table_.__bucket_list_.__ptr_, &v27);
-    objc_storeStrong(v11 + 3, a3);
-    objc_msgSend_addIndex_(self->_keys, v12, v27, v13, v14);
-    self->_estimatedByteSize += objc_msgSend_byteSizeForArchiving(a3, v15, v16, v17, v18);
+    objc_msgSend_setKey_(object, v8, v5, v9, v10);
+    v28 = &subscriptCopy;
+    v11 = sub_2213C0608(&self->_data.__table_.__bucket_list_.__ptr_, &subscriptCopy);
+    objc_storeStrong(v11 + 3, object);
+    objc_msgSend_addIndex_(self->_keys, v12, subscriptCopy, v13, v14);
+    self->_estimatedByteSize += objc_msgSend_byteSizeForArchiving(object, v15, v16, v17, v18);
   }
 
   else
   {
-    v28 = &v27;
-    v19 = sub_2213C0608(&self->_data.__table_.__bucket_list_.__ptr_, &v27);
+    v28 = &subscriptCopy;
+    v19 = sub_2213C0608(&self->_data.__table_.__bucket_list_.__ptr_, &subscriptCopy);
     self->_estimatedByteSize -= objc_msgSend_byteSizeForArchiving(v19[3], v20, v21, v22, v23);
-    sub_221387BB4(&self->_data.__table_.__bucket_list_.__ptr_, &v27);
-    objc_msgSend_removeIndex_(self->_keys, v24, v27, v25, v26);
+    sub_221387BB4(&self->_data.__table_.__bucket_list_.__ptr_, &subscriptCopy);
+    objc_msgSend_removeIndex_(self->_keys, v24, subscriptCopy, v25, v26);
   }
 }
 
-- (void)enumerateObjectsWithBlock:(id)a3
+- (void)enumerateObjectsWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v6 = 0;
   p_first_node = &self->_data.__table_.__first_node_;
   do
@@ -397,17 +397,17 @@ LABEL_18:
       break;
     }
 
-    v4[2](v4, p_first_node[3].__next_, &v6);
+    blockCopy[2](blockCopy, p_first_node[3].__next_, &v6);
   }
 
   while ((v6 & 1) == 0);
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v4 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v8 = objc_msgSend_messageWithDescriptor_(v4, v5, off_2812E4498[40], v6, v7);
+  v8 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v5, off_2812E4498[40], v6, v7);
 
   self->_listType = *(v8 + 56);
   self->_keyRange.location = TSPNSRangeFromMessage();
@@ -440,7 +440,7 @@ LABEL_18:
       v21[2] = sub_2213BFDD4;
       v21[3] = &unk_278464200;
       v21[4] = self;
-      objc_msgSend_loadObjectFromArchive_listType_unarchiver_completion_(TSTTableDataObject, v20, v22, listType, v4, v21);
+      objc_msgSend_loadObjectFromArchive_listType_unarchiver_completion_(TSTTableDataObject, v20, v22, listType, unarchiverCopy, v21);
       TST::TableDataList_ListEntry::~TableDataList_ListEntry(v22);
       ++v16;
       v18 -= 8;
@@ -450,11 +450,11 @@ LABEL_18:
   }
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v4 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v7 = objc_msgSend_messageWithNewFunction_descriptor_(v4, v5, sub_2213C086C, off_2812E4498[40], v6);
+  v7 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v5, sub_2213C086C, off_2812E4498[40], v6);
 
   if (HIDWORD(self->_keyRange.location) || HIDWORD(self->_keyRange.length))
   {
@@ -488,14 +488,14 @@ LABEL_18:
   v29[3] = &unk_278464228;
   v29[4] = self;
   v31 = v7;
-  v25 = v4;
+  v25 = archiverCopy;
   v30 = v25;
   objc_msgSend_enumerateIndexesUsingBlock_(keys, v26, v29, v27, v28);
 }
 
-- (void)loadObjectsFromDataListArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadObjectsFromDataListArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v9 = a4;
+  unarchiverCopy = unarchiver;
   if (!self->_listType)
   {
     v10 = MEMORY[0x277D81150];
@@ -506,7 +506,7 @@ LABEL_18:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v17, v18, v19, v20);
   }
 
-  v21 = *(a3 + 5);
+  v21 = *(archive + 5);
   if (v21)
   {
     v22 = (v21 + 8);
@@ -517,7 +517,7 @@ LABEL_18:
     v22 = 0;
   }
 
-  v23 = *(a3 + 8);
+  v23 = *(archive + 8);
   if (v23)
   {
     v24 = 8 * v23;
@@ -530,7 +530,7 @@ LABEL_18:
       v27[2] = sub_2213C0318;
       v27[3] = &unk_278464200;
       v27[4] = self;
-      objc_msgSend_loadObjectFromArchive_listType_unarchiver_completion_(TSTTableDataObject, v26, v28, listType, v9, v27);
+      objc_msgSend_loadObjectFromArchive_listType_unarchiver_completion_(TSTTableDataObject, v26, v28, listType, unarchiverCopy, v27);
       TST::TableDataList_ListEntry::~TableDataList_ListEntry(v28);
       ++v22;
       v24 -= 8;
@@ -540,18 +540,18 @@ LABEL_18:
   }
 }
 
-- (void)encodeObjectsToDataListArchive:(void *)a3 archiver:(id)a4
+- (void)encodeObjectsToDataListArchive:(void *)archive archiver:(id)archiver
 {
-  v6 = a4;
+  archiverCopy = archiver;
   keys = self->_keys;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = sub_2213C044C;
   v12[3] = &unk_278464228;
-  v13 = v6;
-  v14 = a3;
+  v13 = archiverCopy;
+  archiveCopy = archive;
   v12[4] = self;
-  v8 = v6;
+  v8 = archiverCopy;
   objc_msgSend_enumerateIndexesUsingBlock_(keys, v9, v12, v10, v11);
 }
 

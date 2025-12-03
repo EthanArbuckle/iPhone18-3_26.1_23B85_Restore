@@ -5,27 +5,27 @@
 - (NSString)clientMetricName;
 - (NSString)clientMetricString;
 - (NSUUID)activityUUID;
-- (NWActivityClientMetricStatistics)initWithData:(id)a3;
-- (NWActivityClientMetricStatistics)initWithNWActivityClientMetricReport:(nw_activity_client_metric_report_s *)a3 length:(unint64_t)a4;
-- (void)setClientMetricName:(id)a3;
-- (void)setClientMetricString:(id)a3;
+- (NWActivityClientMetricStatistics)initWithData:(id)data;
+- (NWActivityClientMetricStatistics)initWithNWActivityClientMetricReport:(nw_activity_client_metric_report_s *)report length:(unint64_t)length;
+- (void)setClientMetricName:(id)name;
+- (void)setClientMetricString:(id)string;
 @end
 
 @implementation NWActivityClientMetricStatistics
 
-- (NWActivityClientMetricStatistics)initWithData:(id)a3
+- (NWActivityClientMetricStatistics)initWithData:(id)data
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v22.receiver = self;
   v22.super_class = NWActivityClientMetricStatistics;
   v5 = [(NWActivityClientMetricStatistics *)&v22 init];
   if (v5)
   {
-    if (v4 && [v4 length])
+    if (dataCopy && [dataCopy length])
     {
       v19 = 0;
-      v6 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v4 options:0 error:&v19];
+      v6 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:0 error:&v19];
       v7 = v19;
       if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
@@ -141,7 +141,7 @@ LABEL_31:
   return v5;
 }
 
-- (NWActivityClientMetricStatistics)initWithNWActivityClientMetricReport:(nw_activity_client_metric_report_s *)a3 length:(unint64_t)a4
+- (NWActivityClientMetricStatistics)initWithNWActivityClientMetricReport:(nw_activity_client_metric_report_s *)report length:(unint64_t)length
 {
   MEMORY[0x1EEE9AC00](self);
   v7 = v6;
@@ -182,11 +182,11 @@ LABEL_31:
   metricData = self->_metricData;
   if (!metricData)
   {
-    v4 = [(NWActivityClientMetricStatistics *)self dictionaryRepresentation];
-    if ([MEMORY[0x1E696ACB0] isValidJSONObject:v4])
+    dictionaryRepresentation = [(NWActivityClientMetricStatistics *)self dictionaryRepresentation];
+    if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
     {
       v9 = 0;
-      v5 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v4 options:0 error:&v9];
+      v5 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:&v9];
       v6 = v9;
       if (v6 || !v5)
       {
@@ -198,7 +198,7 @@ LABEL_31:
           *buf = 136446466;
           v11 = "[NWActivityClientMetricStatistics metricData]";
           v12 = 2112;
-          v13 = self;
+          selfCopy = self;
           _os_log_impl(&dword_181A37000, &v7->super, OS_LOG_TYPE_DEBUG, "%{public}s Failed to serialize client metric %@", buf, 0x16u);
         }
       }
@@ -225,40 +225,40 @@ LABEL_31:
   if (!dictionaryRepresentation)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v5 = [(NWActivityClientMetricStatistics *)self clientMetricName];
-    if (v5)
+    clientMetricName = [(NWActivityClientMetricStatistics *)self clientMetricName];
+    if (clientMetricName)
     {
-      v6 = [(NWActivityClientMetricStatistics *)self clientMetricName];
-      [(NSDictionary *)v4 setObject:v6 forKey:@"name"];
+      clientMetricName2 = [(NWActivityClientMetricStatistics *)self clientMetricName];
+      [(NSDictionary *)v4 setObject:clientMetricName2 forKey:@"name"];
     }
 
-    v7 = [(NWActivityClientMetricStatistics *)self clientMetric];
-    if (v7)
+    clientMetric = [(NWActivityClientMetricStatistics *)self clientMetric];
+    if (clientMetric)
     {
-      [(NSDictionary *)v4 setObject:v7 forKey:@"metric"];
+      [(NSDictionary *)v4 setObject:clientMetric forKey:@"metric"];
     }
 
-    v8 = [(NWActivityClientMetricStatistics *)self bundleID];
-    if (v8)
+    bundleID = [(NWActivityClientMetricStatistics *)self bundleID];
+    if (bundleID)
     {
-      v9 = v8;
-      v10 = [(NWActivityClientMetricStatistics *)self bundleID];
-      v11 = [v10 length];
+      v9 = bundleID;
+      bundleID2 = [(NWActivityClientMetricStatistics *)self bundleID];
+      v11 = [bundleID2 length];
 
       if (v11)
       {
-        v12 = [(NWActivityClientMetricStatistics *)self bundleID];
-        [(NSDictionary *)v4 setObject:v12 forKey:@"bundleID"];
+        bundleID3 = [(NWActivityClientMetricStatistics *)self bundleID];
+        [(NSDictionary *)v4 setObject:bundleID3 forKey:@"bundleID"];
       }
     }
 
-    v13 = [(NWActivityClientMetricStatistics *)self externallyVisibleActivityUUID];
+    externallyVisibleActivityUUID = [(NWActivityClientMetricStatistics *)self externallyVisibleActivityUUID];
 
-    if (v13)
+    if (externallyVisibleActivityUUID)
     {
-      v14 = [(NWActivityClientMetricStatistics *)self externallyVisibleActivityUUID];
-      v15 = [v14 UUIDString];
-      [(NSDictionary *)v4 setObject:v15 forKey:@"activityUUID"];
+      externallyVisibleActivityUUID2 = [(NWActivityClientMetricStatistics *)self externallyVisibleActivityUUID];
+      uUIDString = [externallyVisibleActivityUUID2 UUIDString];
+      [(NSDictionary *)v4 setObject:uUIDString forKey:@"activityUUID"];
     }
 
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
@@ -359,7 +359,7 @@ LABEL_31:
   return v10;
 }
 
-- (void)setClientMetricString:(id)a3
+- (void)setClientMetricString:(id)string
 {
   MEMORY[0x1EEE9AC00](self);
   v4 = v3;
@@ -412,7 +412,7 @@ LABEL_31:
   return v4;
 }
 
-- (void)setClientMetricName:(id)a3
+- (void)setClientMetricName:(id)name
 {
   MEMORY[0x1EEE9AC00](self);
   v4 = v3;

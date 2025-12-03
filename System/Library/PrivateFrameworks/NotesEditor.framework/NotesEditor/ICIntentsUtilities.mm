@@ -1,26 +1,26 @@
 @interface ICIntentsUtilities
-+ (id)interactionForAppendToNote:(id)a3 withAppendedText:(id)a4;
-+ (id)interactionForCreateNote:(id)a3;
-+ (id)interactionForDeleteNote:(id)a3;
-+ (id)interactionForSearchString:(id)a3;
-+ (void)donateInteraction:(id)a3;
++ (id)interactionForAppendToNote:(id)note withAppendedText:(id)text;
++ (id)interactionForCreateNote:(id)note;
++ (id)interactionForDeleteNote:(id)note;
++ (id)interactionForSearchString:(id)string;
++ (void)donateInteraction:(id)interaction;
 @end
 
 @implementation ICIntentsUtilities
 
-+ (id)interactionForCreateNote:(id)a3
++ (id)interactionForCreateNote:(id)note
 {
-  v3 = a3;
-  v4 = [v3 contentIdentifier];
-  v5 = [v3 title];
+  noteCopy = note;
+  contentIdentifier = [noteCopy contentIdentifier];
+  title = [noteCopy title];
   v6 = objc_alloc(MEMORY[0x277CD3B30]);
-  v7 = [objc_alloc(MEMORY[0x277CD4188]) initWithSpokenPhrase:v5];
+  v7 = [objc_alloc(MEMORY[0x277CD4188]) initWithSpokenPhrase:title];
   v8 = [v6 initWithTitle:v7 content:0 groupName:0];
 
   v9 = [objc_alloc(MEMORY[0x277CD3D58]) initWithIntent:v8 response:0];
-  v10 = [v3 identifier];
+  identifier = [noteCopy identifier];
 
-  [v9 setGroupIdentifier:v10];
+  [v9 setGroupIdentifier:identifier];
   v11 = os_log_create("com.apple.notes", "Intents");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -30,37 +30,37 @@
   return v9;
 }
 
-+ (id)interactionForAppendToNote:(id)a3 withAppendedText:(id)a4
++ (id)interactionForAppendToNote:(id)note withAppendedText:(id)text
 {
-  v27 = a4;
-  v5 = a3;
-  v6 = [v5 contentIdentifier];
-  v7 = [v5 title];
-  v8 = [v5 creationDate];
-  v9 = [v5 modificationDate];
-  v10 = [v5 folderName];
+  textCopy = text;
+  noteCopy = note;
+  contentIdentifier = [noteCopy contentIdentifier];
+  title = [noteCopy title];
+  creationDate = [noteCopy creationDate];
+  modificationDate = [noteCopy modificationDate];
+  folderName = [noteCopy folderName];
   v11 = objc_alloc(MEMORY[0x277CD3E00]);
-  v31 = v7;
-  v12 = [objc_alloc(MEMORY[0x277CD4188]) initWithSpokenPhrase:v7];
-  v28 = v10;
-  v13 = [objc_alloc(MEMORY[0x277CD4188]) initWithSpokenPhrase:v10];
-  v14 = [MEMORY[0x277CBEA80] currentCalendar];
-  v30 = v8;
-  v15 = [v14 components:64 fromDate:v8];
-  v16 = [MEMORY[0x277CBEA80] currentCalendar];
-  v29 = v9;
-  v17 = [v16 components:64 fromDate:v9];
-  v18 = v6;
-  v19 = [v11 initWithTitle:v12 contents:MEMORY[0x277CBEBF8] groupName:v13 createdDateComponents:v15 modifiedDateComponents:v17 identifier:v6];
+  v31 = title;
+  v12 = [objc_alloc(MEMORY[0x277CD4188]) initWithSpokenPhrase:title];
+  v28 = folderName;
+  v13 = [objc_alloc(MEMORY[0x277CD4188]) initWithSpokenPhrase:folderName];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  v30 = creationDate;
+  v15 = [currentCalendar components:64 fromDate:creationDate];
+  currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
+  v29 = modificationDate;
+  v17 = [currentCalendar2 components:64 fromDate:modificationDate];
+  v18 = contentIdentifier;
+  v19 = [v11 initWithTitle:v12 contents:MEMORY[0x277CBEBF8] groupName:v13 createdDateComponents:v15 modifiedDateComponents:v17 identifier:contentIdentifier];
 
   v20 = objc_alloc(MEMORY[0x277CD3A98]);
-  v21 = [objc_alloc(MEMORY[0x277CD4250]) initWithText:v27];
+  v21 = [objc_alloc(MEMORY[0x277CD4250]) initWithText:textCopy];
 
   v22 = [v20 initWithTargetNote:v19 content:v21];
   v23 = [objc_alloc(MEMORY[0x277CD3D58]) initWithIntent:v22 response:0];
-  v24 = [v5 identifier];
+  identifier = [noteCopy identifier];
 
-  [v23 setGroupIdentifier:v24];
+  [v23 setGroupIdentifier:identifier];
   v25 = os_log_create("com.apple.notes", "Intents");
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
   {
@@ -70,13 +70,13 @@
   return v23;
 }
 
-+ (id)interactionForSearchString:(id)a3
++ (id)interactionForSearchString:(id)string
 {
   v3 = MEMORY[0x277CD4058];
-  v4 = a3;
+  stringCopy = string;
   v5 = [v3 alloc];
-  v6 = [objc_alloc(MEMORY[0x277CD4188]) initWithSpokenPhrase:v4];
-  v7 = [v5 initWithTitle:v6 content:v4 itemType:1 status:0 location:0 locationSearchType:0 dateTime:0 dateSearchType:0 temporalEventTriggerTypes:1 taskPriority:0 notebookItemIdentifier:0];
+  v6 = [objc_alloc(MEMORY[0x277CD4188]) initWithSpokenPhrase:stringCopy];
+  v7 = [v5 initWithTitle:v6 content:stringCopy itemType:1 status:0 location:0 locationSearchType:0 dateTime:0 dateSearchType:0 temporalEventTriggerTypes:1 taskPriority:0 notebookItemIdentifier:0];
 
   v8 = [objc_alloc(MEMORY[0x277CD3D58]) initWithIntent:v7 response:0];
   v9 = os_log_create("com.apple.notes", "Intents");
@@ -88,14 +88,14 @@
   return v8;
 }
 
-+ (id)interactionForDeleteNote:(id)a3
++ (id)interactionForDeleteNote:(id)note
 {
-  v3 = a3;
-  v4 = [v3 contentIdentifier];
-  v5 = [v3 title];
+  noteCopy = note;
+  contentIdentifier = [noteCopy contentIdentifier];
+  title = [noteCopy title];
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  [v6 setObject:v4 forKeyedSubscript:@"identifier"];
-  [v6 setObject:v5 forKeyedSubscript:@"title"];
+  [v6 setObject:contentIdentifier forKeyedSubscript:@"identifier"];
+  [v6 setObject:title forKeyedSubscript:@"title"];
   v7 = [objc_alloc(MEMORY[0x277CD3D30]) initWithDomain:@"Notes" verb:@"DeleteNote" parametersByName:v6];
   v8 = [objc_alloc(MEMORY[0x277CD3D58]) initWithIntent:v7 response:0];
   v9 = os_log_create("com.apple.notes", "Intents");
@@ -104,14 +104,14 @@
     [ICIntentsUtilities interactionForDeleteNote:v8];
   }
 
-  if (v4)
+  if (contentIdentifier)
   {
     v10 = MEMORY[0x277CD3D58];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __47__ICIntentsUtilities_interactionForDeleteNote___block_invoke;
     v13[3] = &unk_2781AE978;
-    v14 = v4;
+    v14 = contentIdentifier;
     [v10 deleteInteractionsWithGroupIdentifier:v14 completion:v13];
     v11 = v14;
   }
@@ -121,7 +121,7 @@
     v11 = os_log_create("com.apple.notes", "Intents");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
-      [(ICIntentsUtilities *)v3 interactionForDeleteNote:v11];
+      [(ICIntentsUtilities *)noteCopy interactionForDeleteNote:v11];
     }
   }
 
@@ -147,17 +147,17 @@ void __47__ICIntentsUtilities_interactionForDeleteNote___block_invoke(uint64_t a
   }
 }
 
-+ (void)donateInteraction:(id)a3
++ (void)donateInteraction:(id)interaction
 {
-  v3 = a3;
-  v4 = [v3 identifier];
+  interactionCopy = interaction;
+  identifier = [interactionCopy identifier];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__ICIntentsUtilities_donateInteraction___block_invoke;
   v6[3] = &unk_2781AE978;
-  v7 = v4;
-  v5 = v4;
-  [v3 donateInteractionWithCompletion:v6];
+  v7 = identifier;
+  v5 = identifier;
+  [interactionCopy donateInteractionWithCompletion:v6];
 }
 
 void __40__ICIntentsUtilities_donateInteraction___block_invoke(uint64_t a1, void *a2)

@@ -7,30 +7,30 @@
 - (id)contextStorePredicate
 {
   v2 = objc_opt_new();
-  if ([a1 onStart])
+  if ([self onStart])
   {
     v3 = (softLink_HKWorkoutSessionStateName)(2);
     [v2 addObject:v3];
   }
 
-  if ([a1 onEnd])
+  if ([self onEnd])
   {
     v4 = (softLink_HKWorkoutSessionStateName)(3);
     [v2 addObject:v4];
   }
 
-  v5 = [a1 selection];
-  if (v5 == 1)
+  selection = [self selection];
+  if (selection == 1)
   {
-    v6 = [a1 selectedWorkoutTypes];
+    selectedWorkoutTypes = [self selectedWorkoutTypes];
     goto LABEL_9;
   }
 
-  if (!v5)
+  if (!selection)
   {
-    v6 = [(objc_class *)getHKWorkoutClass() _allWorkoutActivityTypes];
+    selectedWorkoutTypes = [(objc_class *)getHKWorkoutClass() _allWorkoutActivityTypes];
 LABEL_9:
-    v7 = v6;
+    v7 = selectedWorkoutTypes;
     goto LABEL_11;
   }
 

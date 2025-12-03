@@ -1,14 +1,14 @@
 @interface POSessionDelegate
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5;
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler;
 @end
 
 @implementation POSessionDelegate
 
-- (void)URLSession:(id)a3 didReceiveChallenge:(id)a4 completionHandler:(id)a5
+- (void)URLSession:(id)session didReceiveChallenge:(id)challenge completionHandler:(id)handler
 {
-  v6 = a5;
-  v7 = [a4 protectionSpace];
-  v8 = [v7 serverTrust];
+  handlerCopy = handler;
+  protectionSpace = [challenge protectionSpace];
+  serverTrust = [protectionSpace serverTrust];
 
   if (+[POCoreConfigurationUtil platformSSODevModeEnabled])
   {
@@ -18,13 +18,13 @@
       [POSessionDelegate URLSession:v9 didReceiveChallenge:? completionHandler:?];
     }
 
-    v10 = [objc_alloc(MEMORY[0x277CCACF0]) initWithTrust:v8];
-    v6[2](v6, 0, v10);
+    v10 = [objc_alloc(MEMORY[0x277CCACF0]) initWithTrust:serverTrust];
+    handlerCopy[2](handlerCopy, 0, v10);
   }
 
   else
   {
-    v6[2](v6, 1, 0);
+    handlerCopy[2](handlerCopy, 1, 0);
   }
 }
 

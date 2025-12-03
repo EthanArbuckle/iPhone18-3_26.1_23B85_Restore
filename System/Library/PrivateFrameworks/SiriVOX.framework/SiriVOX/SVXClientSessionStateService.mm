@@ -1,10 +1,10 @@
 @interface SVXClientSessionStateService
-- (SVXClientSessionStateService)initWithClientServiceProvider:(id)a3 analytics:(id)a4 performer:(id)a5;
+- (SVXClientSessionStateService)initWithClientServiceProvider:(id)provider analytics:(id)analytics performer:(id)performer;
 - (SVXClientSessionStateServiceDelegate)delegate;
-- (void)_setCurrentState:(int64_t)a3;
-- (void)fetchStateWithCompletion:(id)a3;
-- (void)handleDidChangeSessionStateFrom:(int64_t)a3 to:(int64_t)a4;
-- (void)handleWillChangeSessionStateFrom:(int64_t)a3 to:(int64_t)a4;
+- (void)_setCurrentState:(int64_t)state;
+- (void)fetchStateWithCompletion:(id)completion;
+- (void)handleDidChangeSessionStateFrom:(int64_t)from to:(int64_t)to;
+- (void)handleWillChangeSessionStateFrom:(int64_t)from to:(int64_t)to;
 @end
 
 @implementation SVXClientSessionStateService
@@ -16,7 +16,7 @@
   return WeakRetained;
 }
 
-- (void)_setCurrentState:(int64_t)a3
+- (void)_setCurrentState:(int64_t)state
 {
   v26 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CEF098];
@@ -24,14 +24,14 @@
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     v7 = v6;
-    if (a3 > 4)
+    if (state > 4)
     {
       v8 = @"(unknown)";
     }
 
     else
     {
-      v8 = off_279C68A18[a3];
+      v8 = off_279C68A18[state];
     }
 
     v9 = v8;
@@ -43,10 +43,10 @@
   }
 
   currentState = self->_currentState;
-  if (currentState != a3)
+  if (currentState != state)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained sessionStateService:self willChangeStateFrom:currentState to:a3];
+    [WeakRetained sessionStateService:self willChangeStateFrom:currentState to:state];
 
     v12 = *v5;
     if (os_log_type_enabled(*v5, OS_LOG_TYPE_INFO))
@@ -73,18 +73,18 @@
       v12 = *v5;
     }
 
-    self->_currentState = a3;
+    self->_currentState = state;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v17 = v12;
-      if (a3 > 4)
+      if (state > 4)
       {
         v18 = @"(unknown)";
       }
 
       else
       {
-        v18 = off_279C68A18[a3];
+        v18 = off_279C68A18[state];
       }
 
       v19 = v18;
@@ -96,16 +96,16 @@
     }
 
     v20 = objc_loadWeakRetained(&self->_delegate);
-    [v20 sessionStateService:self didChangeStateFrom:currentState to:a3];
+    [v20 sessionStateService:self didChangeStateFrom:currentState to:state];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchStateWithCompletion:(id)a3
+- (void)fetchStateWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
@@ -120,7 +120,7 @@
   v11[2] = __57__SVXClientSessionStateService_fetchStateWithCompletion___block_invoke;
   v11[3] = &unk_279C67F98;
   v11[4] = self;
-  v12 = v4;
+  v12 = completionCopy;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__SVXClientSessionStateService_fetchStateWithCompletion___block_invoke_4;
@@ -181,20 +181,6 @@ uint64_t __57__SVXClientSessionStateService_fetchStateWithCompletion___block_inv
   return result;
 }
 
-{
-  [*(a1 + 32) _setCurrentState:*(a1 + 48)];
-  result = *(a1 + 40);
-  if (result)
-  {
-    v3 = *(a1 + 48);
-    v4 = *(result + 16);
-
-    return v4();
-  }
-
-  return result;
-}
-
 void __57__SVXClientSessionStateService_fetchStateWithCompletion___block_invoke_2(uint64_t a1, uint64_t a2, void *a3)
 {
   if (a3)
@@ -215,49 +201,49 @@ void __57__SVXClientSessionStateService_fetchStateWithCompletion___block_invoke_
   [v6 performBlock:v8];
 }
 
-- (SVXClientSessionStateService)initWithClientServiceProvider:(id)a3 analytics:(id)a4 performer:(id)a5
+- (SVXClientSessionStateService)initWithClientServiceProvider:(id)provider analytics:(id)analytics performer:(id)performer
 {
-  v8 = a3;
-  v9 = a5;
+  providerCopy = provider;
+  performerCopy = performer;
   v13.receiver = self;
   v13.super_class = SVXClientSessionStateService;
   v10 = [(SVXClientSessionStateService *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_performer, a5);
-    objc_storeStrong(&v11->_clientServiceProvider, a3);
+    objc_storeStrong(&v10->_performer, performer);
+    objc_storeStrong(&v11->_clientServiceProvider, provider);
   }
 
   return v11;
 }
 
-- (void)handleDidChangeSessionStateFrom:(int64_t)a3 to:(int64_t)a4
+- (void)handleDidChangeSessionStateFrom:(int64_t)from to:(int64_t)to
 {
   v22 = *MEMORY[0x277D85DE8];
   v7 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     v8 = v7;
-    if (a3 > 4)
+    if (from > 4)
     {
       v9 = @"(unknown)";
     }
 
     else
     {
-      v9 = off_279C68A18[a3];
+      v9 = off_279C68A18[from];
     }
 
     v10 = v9;
-    if (a4 > 4)
+    if (to > 4)
     {
       v11 = @"(unknown)";
     }
 
     else
     {
-      v11 = off_279C68A18[a4];
+      v11 = off_279C68A18[to];
     }
 
     v12 = v11;
@@ -276,8 +262,8 @@ void __57__SVXClientSessionStateService_fetchStateWithCompletion___block_invoke_
   v15[2] = __67__SVXClientSessionStateService_handleDidChangeSessionStateFrom_to___block_invoke;
   v15[3] = &unk_279C68E80;
   v15[4] = self;
-  v15[5] = a3;
-  v15[6] = a4;
+  v15[5] = from;
+  v15[6] = to;
   [(SVXPerforming *)performer performBlock:v15];
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -349,32 +335,32 @@ uint64_t __67__SVXClientSessionStateService_handleDidChangeSessionStateFrom_to__
   return result;
 }
 
-- (void)handleWillChangeSessionStateFrom:(int64_t)a3 to:(int64_t)a4
+- (void)handleWillChangeSessionStateFrom:(int64_t)from to:(int64_t)to
 {
   v22 = *MEMORY[0x277D85DE8];
   v7 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_INFO))
   {
     v8 = v7;
-    if (a3 > 4)
+    if (from > 4)
     {
       v9 = @"(unknown)";
     }
 
     else
     {
-      v9 = off_279C68A18[a3];
+      v9 = off_279C68A18[from];
     }
 
     v10 = v9;
-    if (a4 > 4)
+    if (to > 4)
     {
       v11 = @"(unknown)";
     }
 
     else
     {
-      v11 = off_279C68A18[a4];
+      v11 = off_279C68A18[to];
     }
 
     v12 = v11;
@@ -393,8 +379,8 @@ uint64_t __67__SVXClientSessionStateService_handleDidChangeSessionStateFrom_to__
   v15[2] = __68__SVXClientSessionStateService_handleWillChangeSessionStateFrom_to___block_invoke;
   v15[3] = &unk_279C68E80;
   v15[4] = self;
-  v15[5] = a3;
-  v15[6] = a4;
+  v15[5] = from;
+  v15[6] = to;
   [(SVXPerforming *)performer performBlock:v15];
   v14 = *MEMORY[0x277D85DE8];
 }

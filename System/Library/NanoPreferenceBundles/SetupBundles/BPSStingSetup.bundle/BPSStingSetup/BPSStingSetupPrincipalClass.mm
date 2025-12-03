@@ -1,10 +1,10 @@
 @interface BPSStingSetupPrincipalClass
-+ (BOOL)controllerNeedsToRunForBuddyControllerDelegate:(id)a3;
-+ (BOOL)skipControllerForExpressMode:(id)a3;
-+ (id)_stingConfigForDevice:(id)a3;
-+ (id)expressModeSettingsString:(id)a3;
++ (BOOL)controllerNeedsToRunForBuddyControllerDelegate:(id)delegate;
++ (BOOL)skipControllerForExpressMode:(id)mode;
++ (id)_stingConfigForDevice:(id)device;
++ (id)expressModeSettingsString:(id)string;
 - (BPSStingSetupPrincipalClass)init;
-- (void)miniFlowStepComplete:(id)a3;
+- (void)miniFlowStepComplete:(id)complete;
 @end
 
 @implementation BPSStingSetupPrincipalClass
@@ -26,25 +26,25 @@
   return v2;
 }
 
-+ (BOOL)controllerNeedsToRunForBuddyControllerDelegate:(id)a3
++ (BOOL)controllerNeedsToRunForBuddyControllerDelegate:(id)delegate
 {
-  v3 = a3;
+  delegateCopy = delegate;
   v4 = +[NRPairedDeviceRegistry sharedInstance];
   v5 = +[NRPairedDeviceRegistry activeDeviceSelectorBlock];
   v6 = [v4 getAllDevicesWithArchivedAltAccountDevicesMatching:v5];
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
   v8 = [[NSUUID alloc] initWithUUIDString:@"15BF559D-D50B-44FE-AC84-DFBA323EC985"];
-  v9 = [v7 supportsCapability:v8];
+  v9 = [firstObject supportsCapability:v8];
 
   if (v9)
   {
-    v10 = [BPSStingSetupPrincipalClass _stingConfigForDevice:v7];
-    v11 = [v3 setupFlowUserInfo];
-    v12 = [v11 objectForKeyedSubscript:BPSPairingDeviceRestoredFrom];
+    v10 = [BPSStingSetupPrincipalClass _stingConfigForDevice:firstObject];
+    setupFlowUserInfo = [delegateCopy setupFlowUserInfo];
+    v12 = [setupFlowUserInfo objectForKeyedSubscript:BPSPairingDeviceRestoredFrom];
 
-    v13 = [v3 setupFlowUserInfo];
-    v14 = [v13 objectForKeyedSubscript:BPSPairingBackupRestoredFrom];
+    setupFlowUserInfo2 = [delegateCopy setupFlowUserInfo];
+    v14 = [setupFlowUserInfo2 objectForKeyedSubscript:BPSPairingBackupRestoredFrom];
 
     v15 = bps_setup_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -88,17 +88,17 @@
   return v9;
 }
 
-+ (BOOL)skipControllerForExpressMode:(id)a3
++ (BOOL)skipControllerForExpressMode:(id)mode
 {
-  v3 = [BPSStingSetupPrincipalClass _stingConfigForDevice:a3];
+  v3 = [BPSStingSetupPrincipalClass _stingConfigForDevice:mode];
   v4 = v3 != 0;
 
   return v4;
 }
 
-+ (id)expressModeSettingsString:(id)a3
++ (id)expressModeSettingsString:(id)string
 {
-  v3 = [BPSStingSetupPrincipalClass _stingConfigForDevice:a3];
+  v3 = [BPSStingSetupPrincipalClass _stingConfigForDevice:string];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"STING_SETUP_TITLE" value:&stru_C620 table:@"Localizable-N199"];
   v6 = [v3 objectForKey:@"action"];
@@ -107,21 +107,21 @@
   return v7;
 }
 
-+ (id)_stingConfigForDevice:(id)a3
++ (id)_stingConfigForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.Carousel" pairedDevice:v3];
+  deviceCopy = device;
+  v4 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.Carousel" pairedDevice:deviceCopy];
 
-  v5 = [v4 synchronize];
+  synchronize = [v4 synchronize];
   v6 = [v4 objectForKey:@"StingSettingsConfiguration"];
 
   return v6;
 }
 
-- (void)miniFlowStepComplete:(id)a3
+- (void)miniFlowStepComplete:(id)complete
 {
-  v4 = [(BPSStingSetupPrincipalClass *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(BPSStingSetupPrincipalClass *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 @end

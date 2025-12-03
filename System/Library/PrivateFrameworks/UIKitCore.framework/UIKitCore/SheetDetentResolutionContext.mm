@@ -20,7 +20,7 @@
   if (v4)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA937AA0);
-    v6 = self;
+    selfCopy = self;
     v7 = *AGGraphGetValue();
 
     return v7;
@@ -43,7 +43,7 @@
   if (v4)
   {
     type metadata accessor for CGRect(0);
-    v9 = self;
+    selfCopy = self;
     Value = AGGraphGetValue();
     v11 = *Value;
     v12 = Value[1];
@@ -77,7 +77,7 @@
   if (v4)
   {
     type metadata accessor for UIEdgeInsets(0);
-    v9 = self;
+    selfCopy = self;
     Value = AGGraphGetValue();
     v11 = *Value;
     v12 = Value[1];
@@ -110,7 +110,7 @@
   result = swift_unownedRetainStrong();
   if (v4)
   {
-    v6 = self;
+    selfCopy = self;
     v7 = *AGGraphGetValue();
 
     return v7;
@@ -132,7 +132,7 @@
   result = swift_unownedRetainStrong();
   if (v4)
   {
-    v6 = self;
+    selfCopy = self;
     v7 = *AGGraphGetValue();
 
     return v7;
@@ -155,7 +155,7 @@
   if (v4)
   {
     type metadata accessor for CGRect(0);
-    v9 = self;
+    selfCopy = self;
     Value = AGGraphGetValue();
     v11 = *Value;
     v12 = Value[1];
@@ -189,7 +189,7 @@
   if (v4)
   {
     type metadata accessor for CGRect(0);
-    v9 = self;
+    selfCopy = self;
     Value = AGGraphGetValue();
     v11 = *Value;
     v12 = Value[1];

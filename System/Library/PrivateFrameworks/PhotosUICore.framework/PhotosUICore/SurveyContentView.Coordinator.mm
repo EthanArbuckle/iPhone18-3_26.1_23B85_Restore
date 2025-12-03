@@ -1,42 +1,42 @@
 @interface SurveyContentView.Coordinator
 - (_TtCV12PhotosUICoreP33_AFC00BCA01978D7A3A12D1D9F0B75D8117SurveyContentView11Coordinator)init;
-- (void)surveyQuestionGadget:(id)a3 presentAssetCollection:(id)a4 regionOfInterest:(id)a5;
-- (void)surveyQuestionGadget:(id)a3 presentViewController:(id)a4 regionOfInterest:(id)a5;
-- (void)surveyQuestionGadgetPresentOneUp:(id)a3 keyAsset:(id)a4 assetCollection:(id)a5 regionOfInterest:(id)a6;
+- (void)surveyQuestionGadget:(id)gadget presentAssetCollection:(id)collection regionOfInterest:(id)interest;
+- (void)surveyQuestionGadget:(id)gadget presentViewController:(id)controller regionOfInterest:(id)interest;
+- (void)surveyQuestionGadgetPresentOneUp:(id)up keyAsset:(id)asset assetCollection:(id)collection regionOfInterest:(id)interest;
 @end
 
 @implementation SurveyContentView.Coordinator
 
-- (void)surveyQuestionGadgetPresentOneUp:(id)a3 keyAsset:(id)a4 assetCollection:(id)a5 regionOfInterest:(id)a6
+- (void)surveyQuestionGadgetPresentOneUp:(id)up keyAsset:(id)asset assetCollection:(id)collection regionOfInterest:(id)interest
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  sub_1A43A5A1C(v11, v12, a6);
+  upCopy = up;
+  assetCopy = asset;
+  collectionCopy = collection;
+  interestCopy = interest;
+  selfCopy = self;
+  sub_1A43A5A1C(assetCopy, collectionCopy, interest);
 }
 
-- (void)surveyQuestionGadget:(id)a3 presentAssetCollection:(id)a4 regionOfInterest:(id)a5
+- (void)surveyQuestionGadget:(id)gadget presentAssetCollection:(id)collection regionOfInterest:(id)interest
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1A43A5B54(v9, a5);
+  gadgetCopy = gadget;
+  collectionCopy = collection;
+  interestCopy = interest;
+  selfCopy = self;
+  sub_1A43A5B54(collectionCopy, interest);
 }
 
-- (void)surveyQuestionGadget:(id)a3 presentViewController:(id)a4 regionOfInterest:(id)a5
+- (void)surveyQuestionGadget:(id)gadget presentViewController:(id)controller regionOfInterest:(id)interest
 {
   v8 = type metadata accessor for LemonadeNavigationDestination();
   MEMORY[0x1EEE9AC00](v8);
   v10 = (&v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0));
-  *v10 = a4;
+  *v10 = controller;
   swift_storeEnumTagMultiPayload();
-  v11 = a4;
-  v12 = a5;
-  v13 = self;
-  sub_1A43A48C0(v10, a5);
+  controllerCopy = controller;
+  interestCopy = interest;
+  selfCopy = self;
+  sub_1A43A48C0(v10, interest);
 
   sub_1A43A5954(v10, type metadata accessor for LemonadeNavigationDestination);
 }

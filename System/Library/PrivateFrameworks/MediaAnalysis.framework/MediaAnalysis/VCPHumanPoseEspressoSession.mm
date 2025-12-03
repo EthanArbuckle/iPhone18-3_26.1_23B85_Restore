@@ -1,18 +1,18 @@
 @interface VCPHumanPoseEspressoSession
-- (VCPHumanPoseEspressoSession)initWithOptions:(id)a3;
-- (id)keypointsToObservation:(id)a3;
-- (int)keypointsFromTensor:(VCPHumanPoseEspressoSession *)self width:(SEL)a2 height:channels:withOptions:results:;
-- (int)keypointsFromTensor:(id *)a3 withOptions:(id)a4 results:(id)a5;
-- (int)processFrame:(__CVBuffer *)a3 withOptions:(id)a4 results:(id)a5;
-- (int)requiredInputFormat:(int *)a3 height:(int *)a4 format:(unsigned int *)a5;
+- (VCPHumanPoseEspressoSession)initWithOptions:(id)options;
+- (id)keypointsToObservation:(id)observation;
+- (int)keypointsFromTensor:(VCPHumanPoseEspressoSession *)self width:(SEL)width height:channels:withOptions:results:;
+- (int)keypointsFromTensor:(id *)tensor withOptions:(id)options results:(id)results;
+- (int)processFrame:(__CVBuffer *)frame withOptions:(id)options results:(id)results;
+- (int)requiredInputFormat:(int *)format height:(int *)height format:(unsigned int *)a5;
 - (void)dealloc;
 @end
 
 @implementation VCPHumanPoseEspressoSession
 
-- (VCPHumanPoseEspressoSession)initWithOptions:(id)a3
+- (VCPHumanPoseEspressoSession)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v27.receiver = self;
   v27.super_class = VCPHumanPoseEspressoSession;
   v5 = [(VCPHumanPoseEspressoSession *)&v27 init];
@@ -22,29 +22,29 @@
   {
     *&v5->_width = 0x3000000030;
     v5->_revision = 1;
-    v8 = [v4 objectForKeyedSubscript:@"revision"];
+    v8 = [optionsCopy objectForKeyedSubscript:@"revision"];
 
     if (v8)
     {
-      v9 = [v4 objectForKeyedSubscript:@"revision"];
+      v9 = [optionsCopy objectForKeyedSubscript:@"revision"];
       v7->_revision = [v9 intValue];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"config"];
+    v10 = [optionsCopy objectForKeyedSubscript:@"config"];
 
     if (!v10)
     {
 LABEL_11:
       v7->_plan = 0;
       v7->_ctx = 0;
-      v13 = [v4 objectForKeyedSubscript:@"loadModel"];
+      v13 = [optionsCopy objectForKeyedSubscript:@"loadModel"];
       v14 = v13;
       if (v13 && [v13 BOOLValue])
       {
-        v15 = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
-        v16 = [v15 resourceURL];
+        vcp_mediaAnalysisBundle = [MEMORY[0x1E696AAE8] vcp_mediaAnalysisBundle];
+        resourceURL = [vcp_mediaAnalysisBundle resourceURL];
 
-        v17 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_human_pose_lite_v2.espresso.net" relativeToURL:v16];
+        v17 = [MEMORY[0x1E695DFF8] URLWithString:@"cnn_human_pose_lite_v2.espresso.net" relativeToURL:resourceURL];
         v7->_ctx = espresso_create_context();
         plan = espresso_create_plan();
         v7->_plan = plan;
@@ -90,7 +90,7 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"config"];
+    v11 = [optionsCopy objectForKeyedSubscript:@"config"];
     if ([v11 isEqualToString:@"res_256x160"])
     {
       v12 = 0x2800000040;
@@ -147,20 +147,20 @@ LABEL_26:
   [(VCPHumanPoseEspressoSession *)&v5 dealloc];
 }
 
-- (id)keypointsToObservation:(id)a3
+- (id)keypointsToObservation:(id)observation
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v21 = v3;
-  if ([v3 count] == 17)
+  observationCopy = observation;
+  v21 = observationCopy;
+  if ([observationCopy count] == 17)
   {
     v20 = objc_alloc_init(VCPPersonObservation);
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v5 = v3;
+    v5 = observationCopy;
     v6 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v6)
     {
@@ -194,7 +194,7 @@ LABEL_26:
           [v16 floatValue];
           [(VCPKeypoint *)v10 setConfidence:?];
 
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
 
         v6 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
@@ -207,7 +207,7 @@ LABEL_26:
       }
     }
 
-    [(VCPPersonObservation *)v20 setKeypoints:v4];
+    [(VCPPersonObservation *)v20 setKeypoints:array];
     v17 = v20;
     [(VCPPersonObservation *)v20 setRevision:1];
 LABEL_16:
@@ -228,20 +228,20 @@ LABEL_16:
   return v18;
 }
 
-- (int)keypointsFromTensor:(id *)a3 withOptions:(id)a4 results:(id)a5
+- (int)keypointsFromTensor:(id *)tensor withOptions:(id)options results:(id)results
 {
-  v8 = a4;
-  v9 = a5;
-  var0 = a3->var0;
-  if (!a3->var0)
+  optionsCopy = options;
+  resultsCopy = results;
+  var0 = tensor->var0;
+  if (!tensor->var0)
   {
     v28 = -18;
     goto LABEL_15;
   }
 
-  var4 = a3->var4;
-  var5 = a3->var5;
-  var6 = a3->var6;
+  var4 = tensor->var4;
+  var5 = tensor->var5;
+  var6 = tensor->var6;
   v14 = *&self->_modelOutput16bit[4];
   v15 = var4 * var5;
   if (!v14)
@@ -293,13 +293,13 @@ LABEL_5:
     while (v20);
   }
 
-  v28 = [(VCPHumanPoseEspressoSession *)self keypointsFromTensor:v14 width:var4 height:var5 channels:var6 withOptions:v8 results:v9];
+  v28 = [(VCPHumanPoseEspressoSession *)self keypointsFromTensor:v14 width:var4 height:var5 channels:var6 withOptions:optionsCopy results:resultsCopy];
 LABEL_15:
 
   return v28;
 }
 
-- (int)keypointsFromTensor:(VCPHumanPoseEspressoSession *)self width:(SEL)a2 height:channels:withOptions:results:
+- (int)keypointsFromTensor:(VCPHumanPoseEspressoSession *)self width:(SEL)width height:channels:withOptions:results:
 {
   v8 = v7;
   v9 = v5;
@@ -326,8 +326,8 @@ LABEL_15:
     goto LABEL_118;
   }
 
-  v161 = [MEMORY[0x1E695DF70] array];
-  v14 = self;
+  array = [MEMORY[0x1E695DF70] array];
+  selfCopy3 = self;
   v15 = *self->_heatmapNms;
   v16 = v10 * v11;
   if (v15)
@@ -335,12 +335,12 @@ LABEL_15:
     if (v16 == self->_height * self->_width)
     {
       v17 = 34 * v16;
-      v14 = self;
+      selfCopy3 = self;
       goto LABEL_13;
     }
 
     MEMORY[0x1CCA95C10]();
-    v14 = self;
+    selfCopy3 = self;
   }
 
   v17 = 34 * v16;
@@ -355,19 +355,19 @@ LABEL_15:
   }
 
   v15 = operator new[](v18, MEMORY[0x1E69E5398]);
-  *v14->_heatmapNms = v15;
+  *selfCopy3->_heatmapNms = v15;
   if (!v15)
   {
     v13 = -108;
     goto LABEL_117;
   }
 
-  v14->_width = v11;
-  v14->_height = v10;
+  selfCopy3->_width = v11;
+  selfCopy3->_height = v10;
 LABEL_13:
   memcpy(v15, __src, v17);
   v19 = 0;
-  v20 = *v14->_heatmapNms;
+  v20 = *selfCopy3->_heatmapNms;
   LOWORD(v21) = COERCE_UNSIGNED_INT(-1.0);
   v22 = v20;
   do
@@ -442,7 +442,7 @@ LABEL_35:
   }
 
   while (v19 != 17);
-  v162 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   for (i = 0; i != 17; ++i)
   {
     if (!v10)
@@ -479,7 +479,7 @@ LABEL_35:
         v186 = 0u;
         v187 = 0u;
         v188 = 0u;
-        v46 = v162;
+        v46 = array2;
         v47 = [v46 countByEnumeratingWithState:&v185 objects:v197 count:16];
         __asm { FCVT            S8, H8 }
 
@@ -529,7 +529,7 @@ LABEL_35:
 
           if ((v51 & 0x80000000) == 0 && v52 < 0.3)
           {
-            v60 = [v161 objectAtIndexedSubscript:v51];
+            array3 = [array objectAtIndexedSubscript:v51];
             v61 = [v46 objectAtIndexedSubscript:v51];
             v62 = [v61 objectAtIndexedSubscript:0];
             [v62 floatValue];
@@ -550,7 +550,7 @@ LABEL_35:
             [v46 setObject:v73 atIndexedSubscript:v51];
 
             _H8 = *(v174 + 2 * v171);
-            v75 = [v60 objectAtIndexedSubscript:i];
+            v75 = [array3 objectAtIndexedSubscript:i];
             v76 = [v75 objectAtIndexedSubscript:2];
             [v76 floatValue];
             __asm { FCVT            S1, H8 }
@@ -569,7 +569,7 @@ LABEL_35:
               v83 = [MEMORY[0x1E696AD98] numberWithFloat:_D0];
               v195[2] = v83;
               v84 = [MEMORY[0x1E695DEC8] arrayWithObjects:v195 count:3];
-              [v60 setObject:v84 atIndexedSubscript:i];
+              [array3 setObject:v84 atIndexedSubscript:i];
             }
 
             goto LABEL_63;
@@ -587,11 +587,11 @@ LABEL_35:
         v86 = [MEMORY[0x1E695DEC8] arrayWithObjects:v194 count:2];
         [v46 addObject:v86];
 
-        v60 = [MEMORY[0x1E695DF70] array];
+        array3 = [MEMORY[0x1E695DF70] array];
         v87 = 17;
         do
         {
-          [v60 addObject:&unk_1F49BE890];
+          [array3 addObject:&unk_1F49BE890];
           --v87;
         }
 
@@ -606,9 +606,9 @@ LABEL_35:
         v92 = [MEMORY[0x1E696AD98] numberWithFloat:_D0];
         v193[2] = v92;
         v93 = [MEMORY[0x1E695DEC8] arrayWithObjects:v193 count:3];
-        [v60 setObject:v93 atIndexedSubscript:i];
+        [array3 setObject:v93 atIndexedSubscript:i];
 
-        [v161 addObject:v60];
+        [array addObject:array3];
 LABEL_63:
 
         v16 = v10 * v11;
@@ -628,7 +628,7 @@ LABEL_64:
   v184 = 0u;
   v181 = 0u;
   v182 = 0u;
-  obja = v161;
+  obja = array;
   v94 = [obja countByEnumeratingWithState:&v181 objects:v192 count:16];
   if (v94)
   {
@@ -661,10 +661,10 @@ LABEL_119:
           if (v101)
           {
             v102 = [v98 objectAtIndexedSubscript:0];
-            v103 = [v102 intValue];
+            intValue = [v102 intValue];
 
             v104 = [v98 objectAtIndexedSubscript:1];
-            v105 = [v104 intValue];
+            intValue2 = [v104 intValue];
 
             v107 = 0.0;
             v108 = -3;
@@ -672,12 +672,12 @@ LABEL_119:
             v110 = 0.0;
             do
             {
-              v111 = (v108 + v105);
+              v111 = (v108 + intValue2);
               v112 = &__src[2 * v10 * v11 * m + 2 * v111 * v11];
               *&v106 = v111;
               v114 = (v111 & 0x80000000) != 0 || v111 >= v10;
               v115 = 7;
-              v116 = v103 - 3;
+              v116 = intValue - 3;
               do
               {
                 v117 = (v116 & 0x80000000) != 0 || v114;
@@ -808,8 +808,8 @@ LABEL_119:
           *&v131 = v129 / v130;
           if ((v129 / v130) > 0.1)
           {
-            v155 = [(VCPHumanPoseEspressoSession *)self keypointsToObservation:v128, v131];
-            [v158 addObject:v155];
+            v131 = [(VCPHumanPoseEspressoSession *)self keypointsToObservation:v128, v131];
+            [v158 addObject:v131];
           }
         }
       }
@@ -834,16 +834,16 @@ LABEL_118:
   return v13;
 }
 
-- (int)requiredInputFormat:(int *)a3 height:(int *)a4 format:(unsigned int *)a5
+- (int)requiredInputFormat:(int *)format height:(int *)height format:(unsigned int *)a5
 {
   result = -50;
-  if (a3 && a4)
+  if (format && height)
   {
     if (a5)
     {
       result = 0;
-      *a3 = 256;
-      *a4 = 160;
+      *format = 256;
+      *height = 160;
       *a5 = 1111970369;
     }
   }
@@ -851,16 +851,16 @@ LABEL_118:
   return result;
 }
 
-- (int)processFrame:(__CVBuffer *)a3 withOptions:(id)a4 results:(id)a5
+- (int)processFrame:(__CVBuffer *)frame withOptions:(id)options results:(id)results
 {
-  v7 = a5;
-  v8 = v7;
+  resultsCopy = results;
+  v8 = resultsCopy;
   v9 = -50;
-  if (a3 && v7)
+  if (frame && resultsCopy)
   {
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
-    if (CVPixelBufferGetPixelFormatType(a3) == 1111970369 && Width == 256 && Height == 160)
+    Width = CVPixelBufferGetWidth(frame);
+    Height = CVPixelBufferGetHeight(frame);
+    if (CVPixelBufferGetPixelFormatType(frame) == 1111970369 && Width == 256 && Height == 160)
     {
       [@"input" UTF8String];
       if (espresso_network_bind_direct_cvpixelbuffer() || espresso_plan_execute_sync())

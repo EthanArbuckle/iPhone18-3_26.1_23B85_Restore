@@ -1,26 +1,26 @@
 @interface _ListenerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (_ListenerDelegate)initWithService:(id)a3 queue:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (_ListenerDelegate)initWithService:(id)service queue:(id)queue;
 - (id)makeServiceAuthorizationCheck;
 @end
 
 @implementation _ListenerDelegate
 
-- (_ListenerDelegate)initWithService:(id)a3 queue:(id)a4
+- (_ListenerDelegate)initWithService:(id)service queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = _ListenerDelegate;
   v9 = [(_ListenerDelegate *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_service, a3);
-    objc_storeStrong(&v10->_queue, a4);
-    v11 = [(_ListenerDelegate *)v10 makeServiceAuthorizationCheck];
+    objc_storeStrong(&v9->_service, service);
+    objc_storeStrong(&v10->_queue, queue);
+    makeServiceAuthorizationCheck = [(_ListenerDelegate *)v10 makeServiceAuthorizationCheck];
     serviceAuthorizationCheck = v10->_serviceAuthorizationCheck;
-    v10->_serviceAuthorizationCheck = v11;
+    v10->_serviceAuthorizationCheck = makeServiceAuthorizationCheck;
 
     v13 = v10;
   }
@@ -39,41 +39,41 @@
   return v4;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = +[CNContactPosterDataStore log];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [_ListenerDelegate listener:v5 shouldAcceptNewConnection:?];
+    [_ListenerDelegate listener:connectionCopy shouldAcceptNewConnection:?];
   }
 
-  v7 = [(CNContactsAPIServiceAuthorizationCheck *)self->_serviceAuthorizationCheck isAuthorized:v5];
+  v7 = [(CNContactsAPIServiceAuthorizationCheck *)self->_serviceAuthorizationCheck isAuthorized:connectionCopy];
   v8 = +[CNContactPosterDataStore log];
   v9 = v8;
   if (v7)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [_ListenerDelegate listener:v5 shouldAcceptNewConnection:?];
+      [_ListenerDelegate listener:connectionCopy shouldAcceptNewConnection:?];
     }
 
     v10 = +[CNContactPosterDataXPCService interface];
-    [v5 setExportedInterface:v10];
+    [connectionCopy setExportedInterface:v10];
 
-    [v5 setExportedObject:self->_service];
-    [v5 _setQueue:self->_queue];
-    [v5 resume];
+    [connectionCopy setExportedObject:self->_service];
+    [connectionCopy _setQueue:self->_queue];
+    [connectionCopy resume];
   }
 
   else
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [_ListenerDelegate listener:v5 shouldAcceptNewConnection:v9];
+      [_ListenerDelegate listener:connectionCopy shouldAcceptNewConnection:v9];
     }
 
-    [v5 invalidate];
+    [connectionCopy invalidate];
   }
 
   return v7;

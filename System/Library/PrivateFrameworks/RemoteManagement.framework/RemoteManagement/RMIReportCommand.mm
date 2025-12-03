@@ -1,8 +1,8 @@
 @interface RMIReportCommand
-- (BOOL)runWithOptions:(id)a3;
-- (id)_getDeclarationStatusWithContext:(id)a3 scope:(int64_t)a4;
-- (id)_getReportWithContext:(id)a3;
-- (id)_reportInScope:(int64_t)a3 overrideUserScopeHomePath:(id)a4;
+- (BOOL)runWithOptions:(id)options;
+- (id)_getDeclarationStatusWithContext:(id)context scope:(int64_t)scope;
+- (id)_getReportWithContext:(id)context;
+- (id)_reportInScope:(int64_t)scope overrideUserScopeHomePath:(id)path;
 - (id)options;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (BOOL)runWithOptions:(id)a3
+- (BOOL)runWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 dictionaryWithOptionsAndValues];
-  v6 = [v5 objectForKeyedSubscript:@"scope"];
+  optionsCopy = options;
+  dictionaryWithOptionsAndValues = [optionsCopy dictionaryWithOptionsAndValues];
+  v6 = [dictionaryWithOptionsAndValues objectForKeyedSubscript:@"scope"];
   v7 = v6;
   if (v6)
   {
@@ -54,9 +54,9 @@
     }
 
     v18 = +[RMManagedDevice currentManagedDevice];
-    v19 = [v18 isSharediPad];
+    isSharediPad = [v18 isSharediPad];
 
-    if ((v19 & 1) == 0)
+    if ((isSharediPad & 1) == 0)
     {
       sub_10000FA6C(@"Device is not in Shared iPad mode", v20, v21, v22, v23, v24, v25, v26, v30);
       goto LABEL_11;
@@ -73,16 +73,16 @@ LABEL_11:
   return 1;
 }
 
-- (id)_reportInScope:(int64_t)a3 overrideUserScopeHomePath:(id)a4
+- (id)_reportInScope:(int64_t)scope overrideUserScopeHomePath:(id)path
 {
-  [RMBundle setManagementScope:a3, a4];
+  [RMBundle setManagementScope:scope, path];
   v5 = sub_1000035A4(1);
   v6 = v5;
   if (v5)
   {
     v92 = v5;
-    v91 = self;
-    v94 = [v5 newBackgroundContext];
+    selfCopy = self;
+    newBackgroundContext = [v5 newBackgroundContext];
     v7 = [(RMIReportCommand *)self _getReportWithContext:?];
     v93 = objc_alloc_init(NSMutableDictionary);
     v182 = 0u;
@@ -431,7 +431,7 @@ LABEL_11:
       while (v8);
     }
 
-    v49 = [(RMIReportCommand *)v91 _getDeclarationStatusWithContext:v94 scope:a3];
+    v49 = [(RMIReportCommand *)selfCopy _getDeclarationStatusWithContext:newBackgroundContext scope:scope];
     v104 = +[NSMutableArray array];
     v192 = 0u;
     v193 = 0u;
@@ -715,7 +715,7 @@ LABEL_11:
     }
 
     v84 = @"user";
-    if (a3 == 1)
+    if (scope == 1)
     {
       v84 = @"system";
     }
@@ -736,7 +736,7 @@ LABEL_11:
   {
     v186[0] = @"Error";
     v186[1] = @"Scope";
-    if (a3 == 1)
+    if (scope == 1)
     {
       v87 = @"system";
     }
@@ -754,7 +754,7 @@ LABEL_11:
   return v86;
 }
 
-- (id)_getReportWithContext:(id)a3
+- (id)_getReportWithContext:(id)context
 {
   v9 = 0;
   v10 = &v9;
@@ -767,9 +767,9 @@ LABEL_11:
   v6[2] = sub_100005900;
   v6[3] = &unk_10001C5B8;
   v8 = &v9;
-  v3 = a3;
-  v7 = v3;
-  [v3 performBlockAndWait:v6];
+  contextCopy = context;
+  v7 = contextCopy;
+  [contextCopy performBlockAndWait:v6];
   v4 = v10[5];
 
   _Block_object_dispose(&v9, 8);
@@ -777,20 +777,20 @@ LABEL_11:
   return v4;
 }
 
-- (id)_getDeclarationStatusWithContext:(id)a3 scope:(int64_t)a4
+- (id)_getDeclarationStatusWithContext:(id)context scope:(int64_t)scope
 {
   v30 = _NSConcreteStackBlock;
   v31 = 3221225472;
   v32 = sub_100005D0C;
   v33 = &unk_10001C5E0;
-  v14 = a3;
+  contextCopy = context;
   v15 = objc_opt_new();
   v34 = v15;
-  [v14 performBlockAndWait:&v30];
+  [contextCopy performBlockAndWait:&v30];
 
   if ([v15 count])
   {
-    v18 = [RMXPCProxy newConnectionWithScope:a4];
+    v18 = [RMXPCProxy newConnectionWithScope:scope];
     [v18 resume];
     v19 = objc_opt_new();
     v22 = 0u;

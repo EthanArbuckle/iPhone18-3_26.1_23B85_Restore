@@ -1,24 +1,24 @@
 @interface ACProtobufAccountType
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addSupportedEnumDataclasses:(id)a3;
-- (void)addSyncableEnumDataclasses:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasObsolete:(BOOL)a3;
-- (void)setHasSupportsMultipleAccounts:(BOOL)a3;
-- (void)setHasVisibility:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addSupportedEnumDataclasses:(id)dataclasses;
+- (void)addSyncableEnumDataclasses:(id)dataclasses;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasObsolete:(BOOL)obsolete;
+- (void)setHasSupportsMultipleAccounts:(BOOL)accounts;
+- (void)setHasVisibility:(BOOL)visibility;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ACProtobufAccountType
 
-- (void)setHasVisibility:(BOOL)a3
+- (void)setHasVisibility:(BOOL)visibility
 {
-  if (a3)
+  if (visibility)
   {
     v3 = 2;
   }
@@ -31,9 +31,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSupportsMultipleAccounts:(BOOL)a3
+- (void)setHasSupportsMultipleAccounts:(BOOL)accounts
 {
-  if (a3)
+  if (accounts)
   {
     v3 = 8;
   }
@@ -46,9 +46,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasObsolete:(BOOL)a3
+- (void)setHasObsolete:(BOOL)obsolete
 {
-  if (a3)
+  if (obsolete)
   {
     v3 = 4;
   }
@@ -61,40 +61,40 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addSyncableEnumDataclasses:(id)a3
+- (void)addSyncableEnumDataclasses:(id)dataclasses
 {
-  v4 = a3;
+  dataclassesCopy = dataclasses;
   syncableEnumDataclasses = self->_syncableEnumDataclasses;
-  v8 = v4;
+  v8 = dataclassesCopy;
   if (!syncableEnumDataclasses)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_syncableEnumDataclasses;
     self->_syncableEnumDataclasses = v6;
 
-    v4 = v8;
+    dataclassesCopy = v8;
     syncableEnumDataclasses = self->_syncableEnumDataclasses;
   }
 
-  [(NSMutableArray *)syncableEnumDataclasses addObject:v4];
+  [(NSMutableArray *)syncableEnumDataclasses addObject:dataclassesCopy];
 }
 
-- (void)addSupportedEnumDataclasses:(id)a3
+- (void)addSupportedEnumDataclasses:(id)dataclasses
 {
-  v4 = a3;
+  dataclassesCopy = dataclasses;
   supportedEnumDataclasses = self->_supportedEnumDataclasses;
-  v8 = v4;
+  v8 = dataclassesCopy;
   if (!supportedEnumDataclasses)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_supportedEnumDataclasses;
     self->_supportedEnumDataclasses = v6;
 
-    v4 = v8;
+    dataclassesCopy = v8;
     supportedEnumDataclasses = self->_supportedEnumDataclasses;
   }
 
-  [(NSMutableArray *)supportedEnumDataclasses addObject:v4];
+  [(NSMutableArray *)supportedEnumDataclasses addObject:dataclassesCopy];
 }
 
 - (id)description
@@ -103,8 +103,8 @@
   v8.receiver = self;
   v8.super_class = ACProtobufAccountType;
   v4 = [(ACProtobufAccountType *)&v8 description];
-  v5 = [(ACProtobufAccountType *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ACProtobufAccountType *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -112,12 +112,12 @@
 - (id)dictionaryRepresentation
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   accountTypeDescription = self->_accountTypeDescription;
   if (accountTypeDescription)
   {
-    [v3 setObject:accountTypeDescription forKey:@"accountTypeDescription"];
+    [dictionary setObject:accountTypeDescription forKey:@"accountTypeDescription"];
   }
 
   identifier = self->_identifier;
@@ -129,8 +129,8 @@
   objectID = self->_objectID;
   if (objectID)
   {
-    v8 = [(ACProtobufURL *)objectID dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"objectID"];
+    dictionaryRepresentation = [(ACProtobufURL *)objectID dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"objectID"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -200,8 +200,8 @@
             objc_enumerationMutation(v18);
           }
 
-          v23 = [*(*(&v37 + 1) + 8 * i) dictionaryRepresentation];
-          [v17 addObject:v23];
+          dictionaryRepresentation2 = [*(*(&v37 + 1) + 8 * i) dictionaryRepresentation];
+          [v17 addObject:dictionaryRepresentation2];
         }
 
         v20 = [(NSMutableArray *)v18 countByEnumeratingWithState:&v37 objects:v42 count:16];
@@ -235,8 +235,8 @@
             objc_enumerationMutation(v25);
           }
 
-          v30 = [*(*(&v33 + 1) + 8 * j) dictionaryRepresentation];
-          [v24 addObject:v30];
+          dictionaryRepresentation3 = [*(*(&v33 + 1) + 8 * j) dictionaryRepresentation];
+          [v24 addObject:dictionaryRepresentation3];
         }
 
         v27 = [(NSMutableArray *)v25 countByEnumeratingWithState:&v33 objects:v41 count:16];
@@ -253,10 +253,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   accountTypeDescription = self->_accountTypeDescription;
   PBDataWriterWriteStringField();
   identifier = self->_identifier;
@@ -368,33 +368,33 @@
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v14 = a3;
-  [v14 setAccountTypeDescription:self->_accountTypeDescription];
-  [v14 setIdentifier:self->_identifier];
+  toCopy = to;
+  [toCopy setAccountTypeDescription:self->_accountTypeDescription];
+  [toCopy setIdentifier:self->_identifier];
   if (self->_objectID)
   {
-    [v14 setObjectID:?];
+    [toCopy setObjectID:?];
   }
 
-  v4 = v14;
+  v4 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
-    *(v14 + 20) = self->_visibility;
-    *(v14 + 88) |= 2u;
+    *(toCopy + 20) = self->_visibility;
+    *(toCopy + 88) |= 2u;
   }
 
   if (self->_credentialType)
   {
-    [v14 setCredentialType:?];
-    v4 = v14;
+    [toCopy setCredentialType:?];
+    v4 = toCopy;
   }
 
   if (self->_credentialProtectionPolicy)
   {
-    [v14 setCredentialProtectionPolicy:?];
-    v4 = v14;
+    [toCopy setCredentialProtectionPolicy:?];
+    v4 = toCopy;
   }
 
   has = self->_has;
@@ -413,8 +413,8 @@
 
   if (self->_owningBundleID)
   {
-    [v14 setOwningBundleID:?];
-    v4 = v14;
+    [toCopy setOwningBundleID:?];
+    v4 = toCopy;
   }
 
   if ((*&self->_has & 4) != 0)
@@ -425,48 +425,48 @@
 
   if ([(ACProtobufAccountType *)self syncableEnumDataclassesCount])
   {
-    [v14 clearSyncableEnumDataclasses];
-    v6 = [(ACProtobufAccountType *)self syncableEnumDataclassesCount];
-    if (v6)
+    [toCopy clearSyncableEnumDataclasses];
+    syncableEnumDataclassesCount = [(ACProtobufAccountType *)self syncableEnumDataclassesCount];
+    if (syncableEnumDataclassesCount)
     {
-      v7 = v6;
+      v7 = syncableEnumDataclassesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(ACProtobufAccountType *)self syncableEnumDataclassesAtIndex:i];
-        [v14 addSyncableEnumDataclasses:v9];
+        [toCopy addSyncableEnumDataclasses:v9];
       }
     }
   }
 
   if ([(ACProtobufAccountType *)self supportedEnumDataclassesCount])
   {
-    [v14 clearSupportedEnumDataclasses];
-    v10 = [(ACProtobufAccountType *)self supportedEnumDataclassesCount];
-    if (v10)
+    [toCopy clearSupportedEnumDataclasses];
+    supportedEnumDataclassesCount = [(ACProtobufAccountType *)self supportedEnumDataclassesCount];
+    if (supportedEnumDataclassesCount)
     {
-      v11 = v10;
+      v11 = supportedEnumDataclassesCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(ACProtobufAccountType *)self supportedEnumDataclassesAtIndex:j];
-        [v14 addSupportedEnumDataclasses:v13];
+        [toCopy addSupportedEnumDataclasses:v13];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_accountTypeDescription copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_accountTypeDescription copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
-  v8 = [(NSString *)self->_identifier copyWithZone:a3];
+  v8 = [(NSString *)self->_identifier copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(ACProtobufURL *)self->_objectID copyWithZone:a3];
+  v10 = [(ACProtobufURL *)self->_objectID copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
@@ -476,11 +476,11 @@
     *(v5 + 88) |= 2u;
   }
 
-  v12 = [(NSString *)self->_credentialType copyWithZone:a3];
+  v12 = [(NSString *)self->_credentialType copyWithZone:zone];
   v13 = *(v5 + 24);
   *(v5 + 24) = v12;
 
-  v14 = [(NSString *)self->_credentialProtectionPolicy copyWithZone:a3];
+  v14 = [(NSString *)self->_credentialProtectionPolicy copyWithZone:zone];
   v15 = *(v5 + 16);
   *(v5 + 16) = v14;
 
@@ -498,7 +498,7 @@
     *(v5 + 88) |= 8u;
   }
 
-  v17 = [(NSString *)self->_owningBundleID copyWithZone:a3];
+  v17 = [(NSString *)self->_owningBundleID copyWithZone:zone];
   v18 = *(v5 + 48);
   *(v5 + 48) = v17;
 
@@ -527,7 +527,7 @@
           objc_enumerationMutation(v19);
         }
 
-        v24 = [*(*(&v37 + 1) + 8 * i) copyWithZone:a3];
+        v24 = [*(*(&v37 + 1) + 8 * i) copyWithZone:zone];
         [v5 addSyncableEnumDataclasses:v24];
       }
 
@@ -556,7 +556,7 @@
           objc_enumerationMutation(v25);
         }
 
-        v30 = [*(*(&v33 + 1) + 8 * j) copyWithZone:{a3, v33}];
+        v30 = [*(*(&v33 + 1) + 8 * j) copyWithZone:{zone, v33}];
         [v5 addSupportedEnumDataclasses:v30];
       }
 
@@ -570,16 +570,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_45;
   }
 
   accountTypeDescription = self->_accountTypeDescription;
-  if (accountTypeDescription | *(v4 + 1))
+  if (accountTypeDescription | *(equalCopy + 1))
   {
     if (![(NSString *)accountTypeDescription isEqual:?])
     {
@@ -588,7 +588,7 @@
   }
 
   identifier = self->_identifier;
-  if (identifier | *(v4 + 4))
+  if (identifier | *(equalCopy + 4))
   {
     if (![(NSString *)identifier isEqual:?])
     {
@@ -597,7 +597,7 @@
   }
 
   objectID = self->_objectID;
-  if (objectID | *(v4 + 5))
+  if (objectID | *(equalCopy + 5))
   {
     if (![(ACProtobufURL *)objectID isEqual:?])
     {
@@ -605,28 +605,28 @@
     }
   }
 
-  v8 = *(v4 + 88);
+  v8 = *(equalCopy + 88);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 88) & 2) == 0 || self->_visibility != *(v4 + 20))
+    if ((*(equalCopy + 88) & 2) == 0 || self->_visibility != *(equalCopy + 20))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((*(v4 + 88) & 2) != 0)
+  else if ((*(equalCopy + 88) & 2) != 0)
   {
     goto LABEL_45;
   }
 
   credentialType = self->_credentialType;
-  if (credentialType | *(v4 + 3) && ![(NSString *)credentialType isEqual:?])
+  if (credentialType | *(equalCopy + 3) && ![(NSString *)credentialType isEqual:?])
   {
     goto LABEL_45;
   }
 
   credentialProtectionPolicy = self->_credentialProtectionPolicy;
-  if (credentialProtectionPolicy | *(v4 + 2))
+  if (credentialProtectionPolicy | *(equalCopy + 2))
   {
     if (![(NSString *)credentialProtectionPolicy isEqual:?])
     {
@@ -635,49 +635,49 @@
   }
 
   has = self->_has;
-  v12 = *(v4 + 88);
+  v12 = *(equalCopy + 88);
   if (has)
   {
-    if ((*(v4 + 88) & 1) == 0 || self->_supportsAuthentication != *(v4 + 16))
+    if ((*(equalCopy + 88) & 1) == 0 || self->_supportsAuthentication != *(equalCopy + 16))
     {
       goto LABEL_45;
     }
   }
 
-  else if (*(v4 + 88))
+  else if (*(equalCopy + 88))
   {
     goto LABEL_45;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 88) & 8) == 0)
+    if ((*(equalCopy + 88) & 8) == 0)
     {
       goto LABEL_45;
     }
 
-    v18 = *(v4 + 85);
+    v18 = *(equalCopy + 85);
     if (self->_supportsMultipleAccounts)
     {
-      if ((*(v4 + 85) & 1) == 0)
+      if ((*(equalCopy + 85) & 1) == 0)
       {
         goto LABEL_45;
       }
     }
 
-    else if (*(v4 + 85))
+    else if (*(equalCopy + 85))
     {
       goto LABEL_45;
     }
   }
 
-  else if ((*(v4 + 88) & 8) != 0)
+  else if ((*(equalCopy + 88) & 8) != 0)
   {
     goto LABEL_45;
   }
 
   owningBundleID = self->_owningBundleID;
-  if (owningBundleID | *(v4 + 6))
+  if (owningBundleID | *(equalCopy + 6))
   {
     if (![(NSString *)owningBundleID isEqual:?])
     {
@@ -687,10 +687,10 @@
     has = self->_has;
   }
 
-  v14 = *(v4 + 88);
+  v14 = *(equalCopy + 88);
   if ((has & 4) == 0)
   {
-    if ((*(v4 + 88) & 4) == 0)
+    if ((*(equalCopy + 88) & 4) == 0)
     {
       goto LABEL_29;
     }
@@ -700,15 +700,15 @@ LABEL_45:
     goto LABEL_46;
   }
 
-  if ((*(v4 + 88) & 4) == 0)
+  if ((*(equalCopy + 88) & 4) == 0)
   {
     goto LABEL_45;
   }
 
-  v19 = *(v4 + 84);
+  v19 = *(equalCopy + 84);
   if (!self->_obsolete)
   {
-    if ((*(v4 + 84) & 1) == 0)
+    if ((*(equalCopy + 84) & 1) == 0)
     {
       goto LABEL_29;
     }
@@ -716,20 +716,20 @@ LABEL_45:
     goto LABEL_45;
   }
 
-  if ((*(v4 + 84) & 1) == 0)
+  if ((*(equalCopy + 84) & 1) == 0)
   {
     goto LABEL_45;
   }
 
 LABEL_29:
   syncableEnumDataclasses = self->_syncableEnumDataclasses;
-  if (syncableEnumDataclasses | *(v4 + 9) && ![(NSMutableArray *)syncableEnumDataclasses isEqual:?])
+  if (syncableEnumDataclasses | *(equalCopy + 9) && ![(NSMutableArray *)syncableEnumDataclasses isEqual:?])
   {
     goto LABEL_45;
   }
 
   supportedEnumDataclasses = self->_supportedEnumDataclasses;
-  if (supportedEnumDataclasses | *(v4 + 7))
+  if (supportedEnumDataclasses | *(equalCopy + 7))
   {
     v17 = [(NSMutableArray *)supportedEnumDataclasses isEqual:?];
   }
@@ -798,22 +798,22 @@ LABEL_9:
   return v12 ^ [(NSMutableArray *)self->_supportedEnumDataclasses hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
     [(ACProtobufAccountType *)self setAccountTypeDescription:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ACProtobufAccountType *)self setIdentifier:?];
   }
 
   objectID = self->_objectID;
-  v6 = *(v4 + 5);
+  v6 = *(fromCopy + 5);
   if (objectID)
   {
     if (v6)
@@ -827,44 +827,44 @@ LABEL_9:
     [(ACProtobufAccountType *)self setObjectID:?];
   }
 
-  if ((*(v4 + 88) & 2) != 0)
+  if ((*(fromCopy + 88) & 2) != 0)
   {
-    self->_visibility = *(v4 + 20);
+    self->_visibility = *(fromCopy + 20);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(ACProtobufAccountType *)self setCredentialType:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(ACProtobufAccountType *)self setCredentialProtectionPolicy:?];
   }
 
-  v7 = *(v4 + 88);
+  v7 = *(fromCopy + 88);
   if (v7)
   {
-    self->_supportsAuthentication = *(v4 + 16);
+    self->_supportsAuthentication = *(fromCopy + 16);
     *&self->_has |= 1u;
-    v7 = *(v4 + 88);
+    v7 = *(fromCopy + 88);
   }
 
   if ((v7 & 8) != 0)
   {
-    self->_supportsMultipleAccounts = *(v4 + 85);
+    self->_supportsMultipleAccounts = *(fromCopy + 85);
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(ACProtobufAccountType *)self setOwningBundleID:?];
   }
 
-  if ((*(v4 + 88) & 4) != 0)
+  if ((*(fromCopy + 88) & 4) != 0)
   {
-    self->_obsolete = *(v4 + 84);
+    self->_obsolete = *(fromCopy + 84);
     *&self->_has |= 4u;
   }
 
@@ -872,7 +872,7 @@ LABEL_9:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = *(v4 + 9);
+  v8 = *(fromCopy + 9);
   v9 = [v8 countByEnumeratingWithState:&v23 objects:v28 count:16];
   if (v9)
   {
@@ -900,7 +900,7 @@ LABEL_9:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v13 = *(v4 + 7);
+  v13 = *(fromCopy + 7);
   v14 = [v13 countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v14)
   {

@@ -8,7 +8,7 @@
 
 - (NSString)error
 {
-  v2 = self;
+  selfCopy = self;
   sub_223B60CD4();
 
   v3 = sub_223BF453C();

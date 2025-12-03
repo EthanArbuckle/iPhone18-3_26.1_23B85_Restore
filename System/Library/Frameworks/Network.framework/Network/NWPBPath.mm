@@ -1,10 +1,10 @@
 @interface NWPBPath
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NWPBPath
@@ -79,16 +79,16 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_49;
   }
 
   endpoint = self->_endpoint;
-  if (endpoint | *(v4 + 5))
+  if (endpoint | *(equalCopy + 5))
   {
     if (![(NWPBEndpoint *)endpoint isEqual:?])
     {
@@ -97,7 +97,7 @@ LABEL_8:
   }
 
   parameters = self->_parameters;
-  if (parameters | *(v4 + 6))
+  if (parameters | *(equalCopy + 6))
   {
     if (![(NWPBParameters *)parameters isEqual:?])
     {
@@ -106,7 +106,7 @@ LABEL_8:
   }
 
   clientUUID = self->_clientUUID;
-  if (clientUUID | *(v4 + 2))
+  if (clientUUID | *(equalCopy + 2))
   {
     if (![(NSString *)clientUUID isEqual:?])
     {
@@ -116,25 +116,25 @@ LABEL_8:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 64) & 1) == 0 || self->_status != *(v4 + 14))
+    if ((*(equalCopy + 64) & 1) == 0 || self->_status != *(equalCopy + 14))
     {
       goto LABEL_49;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_49;
   }
 
   directInterface = self->_directInterface;
-  if (directInterface | *(v4 + 4) && ![(NWPBInterface *)directInterface isEqual:?])
+  if (directInterface | *(equalCopy + 4) && ![(NWPBInterface *)directInterface isEqual:?])
   {
     goto LABEL_49;
   }
 
   delegateInterface = self->_delegateInterface;
-  if (delegateInterface | *(v4 + 3))
+  if (delegateInterface | *(equalCopy + 3))
   {
     if (![(NWPBInterface *)delegateInterface isEqual:?])
     {
@@ -143,7 +143,7 @@ LABEL_8:
   }
 
   agents = self->_agents;
-  if (agents | *(v4 + 1))
+  if (agents | *(equalCopy + 1))
   {
     if (![(NSMutableArray *)agents isEqual:?])
     {
@@ -153,96 +153,96 @@ LABEL_8:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 64) & 4) == 0)
+    if ((*(equalCopy + 64) & 4) == 0)
     {
       goto LABEL_49;
     }
 
     if (self->_ipv4)
     {
-      if ((*(v4 + 61) & 1) == 0)
+      if ((*(equalCopy + 61) & 1) == 0)
       {
         goto LABEL_49;
       }
     }
 
-    else if (*(v4 + 61))
+    else if (*(equalCopy + 61))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 64) & 4) != 0)
+  else if ((*(equalCopy + 64) & 4) != 0)
   {
     goto LABEL_49;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 64) & 8) == 0)
+    if ((*(equalCopy + 64) & 8) == 0)
     {
       goto LABEL_49;
     }
 
     if (self->_ipv6)
     {
-      if ((*(v4 + 62) & 1) == 0)
+      if ((*(equalCopy + 62) & 1) == 0)
       {
         goto LABEL_49;
       }
     }
 
-    else if (*(v4 + 62))
+    else if (*(equalCopy + 62))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 64) & 8) != 0)
+  else if ((*(equalCopy + 64) & 8) != 0)
   {
     goto LABEL_49;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 64) & 0x10) == 0)
+    if ((*(equalCopy + 64) & 0x10) == 0)
     {
       goto LABEL_49;
     }
 
     if (self->_local)
     {
-      if ((*(v4 + 63) & 1) == 0)
+      if ((*(equalCopy + 63) & 1) == 0)
       {
         goto LABEL_49;
       }
     }
 
-    else if (*(v4 + 63))
+    else if (*(equalCopy + 63))
     {
       goto LABEL_49;
     }
   }
 
-  else if ((*(v4 + 64) & 0x10) != 0)
+  else if ((*(equalCopy + 64) & 0x10) != 0)
   {
     goto LABEL_49;
   }
 
-  v11 = (*(v4 + 64) & 2) == 0;
+  v11 = (*(equalCopy + 64) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 64) & 2) != 0)
+    if ((*(equalCopy + 64) & 2) != 0)
     {
       if (self->_direct)
       {
-        if (*(v4 + 60))
+        if (*(equalCopy + 60))
         {
           goto LABEL_51;
         }
       }
 
-      else if (!*(v4 + 60))
+      else if (!*(equalCopy + 60))
       {
 LABEL_51:
         v11 = 1;
@@ -259,19 +259,19 @@ LABEL_50:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NWPBEndpoint *)self->_endpoint copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NWPBEndpoint *)self->_endpoint copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
-  v8 = [(NWPBParameters *)self->_parameters copyWithZone:a3];
+  v8 = [(NWPBParameters *)self->_parameters copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
-  v10 = [(NSString *)self->_clientUUID copyWithZone:a3];
+  v10 = [(NSString *)self->_clientUUID copyWithZone:zone];
   v11 = *(v5 + 16);
   *(v5 + 16) = v10;
 
@@ -281,11 +281,11 @@ LABEL_50:
     *(v5 + 64) |= 1u;
   }
 
-  v12 = [(NWPBInterface *)self->_directInterface copyWithZone:a3];
+  v12 = [(NWPBInterface *)self->_directInterface copyWithZone:zone];
   v13 = *(v5 + 32);
   *(v5 + 32) = v12;
 
-  v14 = [(NWPBInterface *)self->_delegateInterface copyWithZone:a3];
+  v14 = [(NWPBInterface *)self->_delegateInterface copyWithZone:zone];
   v15 = *(v5 + 24);
   *(v5 + 24) = v14;
 
@@ -308,7 +308,7 @@ LABEL_50:
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v27 + 1) + 8 * i) copyWithZone:a3];
+        v21 = [*(*(&v27 + 1) + 8 * i) copyWithZone:zone];
         v22 = *(v5 + 8);
         if (!v22)
         {
@@ -378,10 +378,10 @@ LABEL_16:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_endpoint)
   {
     PBDataWriterWriteSubmessage();
@@ -489,25 +489,25 @@ LABEL_25:
 - (id)dictionaryRepresentation
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   endpoint = self->_endpoint;
   if (endpoint)
   {
-    v5 = [(NWPBEndpoint *)endpoint dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"endpoint"];
+    dictionaryRepresentation = [(NWPBEndpoint *)endpoint dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"endpoint"];
   }
 
   parameters = self->_parameters;
   if (parameters)
   {
-    v7 = [(NWPBParameters *)parameters dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"parameters"];
+    dictionaryRepresentation2 = [(NWPBParameters *)parameters dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"parameters"];
   }
 
   clientUUID = self->_clientUUID;
   if (clientUUID)
   {
-    [v3 setObject:clientUUID forKey:@"clientUUID"];
+    [dictionary setObject:clientUUID forKey:@"clientUUID"];
   }
 
   if (*&self->_has)
@@ -523,21 +523,21 @@ LABEL_25:
       v10 = off_1E6A39D40[status];
     }
 
-    [v3 setObject:v10 forKey:@"status"];
+    [dictionary setObject:v10 forKey:@"status"];
   }
 
   directInterface = self->_directInterface;
   if (directInterface)
   {
-    v12 = [(NWPBInterface *)directInterface dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"directInterface"];
+    dictionaryRepresentation3 = [(NWPBInterface *)directInterface dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"directInterface"];
   }
 
   delegateInterface = self->_delegateInterface;
   if (delegateInterface)
   {
-    v14 = [(NWPBInterface *)delegateInterface dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"delegateInterface"];
+    dictionaryRepresentation4 = [(NWPBInterface *)delegateInterface dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"delegateInterface"];
   }
 
   if ([(NSMutableArray *)self->_agents count])
@@ -562,8 +562,8 @@ LABEL_25:
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation5 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation5];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -572,14 +572,14 @@ LABEL_25:
       while (v18);
     }
 
-    [v3 setObject:v15 forKey:@"agents"];
+    [dictionary setObject:v15 forKey:@"agents"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v25 = [MEMORY[0x1E696AD98] numberWithBool:self->_ipv4];
-    [v3 setObject:v25 forKey:@"ipv4"];
+    [dictionary setObject:v25 forKey:@"ipv4"];
 
     has = self->_has;
     if ((has & 8) == 0)
@@ -600,7 +600,7 @@ LABEL_27:
   }
 
   v26 = [MEMORY[0x1E696AD98] numberWithBool:self->_ipv6];
-  [v3 setObject:v26 forKey:@"ipv6"];
+  [dictionary setObject:v26 forKey:@"ipv6"];
 
   has = self->_has;
   if ((has & 0x10) == 0)
@@ -616,18 +616,18 @@ LABEL_28:
 
 LABEL_35:
   v27 = [MEMORY[0x1E696AD98] numberWithBool:self->_local];
-  [v3 setObject:v27 forKey:@"local"];
+  [dictionary setObject:v27 forKey:@"local"];
 
   if ((*&self->_has & 2) != 0)
   {
 LABEL_29:
     v23 = [MEMORY[0x1E696AD98] numberWithBool:self->_direct];
-    [v3 setObject:v23 forKey:@"direct"];
+    [dictionary setObject:v23 forKey:@"direct"];
   }
 
 LABEL_30:
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -636,8 +636,8 @@ LABEL_30:
   v8.receiver = self;
   v8.super_class = NWPBPath;
   v4 = [(NWPBPath *)&v8 description];
-  v5 = [(NWPBPath *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NWPBPath *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }

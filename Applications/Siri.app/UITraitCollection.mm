@@ -10,10 +10,10 @@
 
 - (id)aceDisplayColorScheme
 {
-  v2 = [(UITraitCollection *)self userInterfaceStyle];
-  if (v2 <= UIUserInterfaceStyleDark)
+  userInterfaceStyle = [(UITraitCollection *)self userInterfaceStyle];
+  if (userInterfaceStyle <= UIUserInterfaceStyleDark)
   {
-    v3 = **(&off_100167C20 + v2);
+    v3 = **(&off_100167C20 + userInterfaceStyle);
   }
 
   return v3;
@@ -21,135 +21,135 @@
 
 - (id)aceDisplayColorGamut
 {
-  v2 = [(UITraitCollection *)self displayGamut];
-  if (v2 + 1 <= 2)
+  displayGamut = [(UITraitCollection *)self displayGamut];
+  if (displayGamut + 1 <= 2)
   {
-    v2 = **(&off_100167C38 + v2 + 1);
+    displayGamut = **(&off_100167C38 + displayGamut + 1);
   }
 
-  return v2;
+  return displayGamut;
 }
 
 - (id)aceTextLegibilityWeight
 {
-  v2 = [(UITraitCollection *)self legibilityWeight];
-  if (v2 + 1 <= 2)
+  legibilityWeight = [(UITraitCollection *)self legibilityWeight];
+  if (legibilityWeight + 1 <= 2)
   {
-    v2 = **(&off_100167C50 + v2 + 1);
+    legibilityWeight = **(&off_100167C50 + legibilityWeight + 1);
   }
 
-  return v2;
+  return legibilityWeight;
 }
 
 - (id)aceDynamicTypeSize
 {
-  v3 = [(UITraitCollection *)self preferredContentSizeCategory];
+  preferredContentSizeCategory = [(UITraitCollection *)self preferredContentSizeCategory];
 
   v4 = &SAUIDynamicTypeSizeUnspecifiedValue;
-  if (v3 != UIContentSizeCategoryUnspecified)
+  if (preferredContentSizeCategory != UIContentSizeCategoryUnspecified)
   {
-    v5 = [(UITraitCollection *)self preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [(UITraitCollection *)self preferredContentSizeCategory];
 
-    if (v5 == UIContentSizeCategorySmall)
+    if (preferredContentSizeCategory2 == UIContentSizeCategorySmall)
     {
       v4 = &SAUIDynamicTypeSizeSmallValue;
     }
 
     else
     {
-      v6 = [(UITraitCollection *)self preferredContentSizeCategory];
+      preferredContentSizeCategory3 = [(UITraitCollection *)self preferredContentSizeCategory];
 
-      if (v6 == UIContentSizeCategoryMedium)
+      if (preferredContentSizeCategory3 == UIContentSizeCategoryMedium)
       {
         v4 = &SAUIDynamicTypeSizeMediumValue;
       }
 
       else
       {
-        v7 = [(UITraitCollection *)self preferredContentSizeCategory];
+        preferredContentSizeCategory4 = [(UITraitCollection *)self preferredContentSizeCategory];
 
-        if (v7 == UIContentSizeCategoryExtraSmall)
+        if (preferredContentSizeCategory4 == UIContentSizeCategoryExtraSmall)
         {
           v4 = &SAUIDynamicTypeSizeExtraSmallValue;
         }
 
         else
         {
-          v8 = [(UITraitCollection *)self preferredContentSizeCategory];
+          preferredContentSizeCategory5 = [(UITraitCollection *)self preferredContentSizeCategory];
 
-          if (v8 == UIContentSizeCategoryLarge)
+          if (preferredContentSizeCategory5 == UIContentSizeCategoryLarge)
           {
             v4 = &SAUIDynamicTypeSizeLargeValue;
           }
 
           else
           {
-            v9 = [(UITraitCollection *)self preferredContentSizeCategory];
+            preferredContentSizeCategory6 = [(UITraitCollection *)self preferredContentSizeCategory];
 
-            if (v9 == UIContentSizeCategoryExtraLarge)
+            if (preferredContentSizeCategory6 == UIContentSizeCategoryExtraLarge)
             {
               v4 = &SAUIDynamicTypeSizeExtraLargeValue;
             }
 
             else
             {
-              v10 = [(UITraitCollection *)self preferredContentSizeCategory];
+              preferredContentSizeCategory7 = [(UITraitCollection *)self preferredContentSizeCategory];
 
-              if (v10 == UIContentSizeCategoryExtraExtraLarge)
+              if (preferredContentSizeCategory7 == UIContentSizeCategoryExtraExtraLarge)
               {
                 v4 = &SAUIDynamicTypeSizeExtraExtraLargeValue;
               }
 
               else
               {
-                v11 = [(UITraitCollection *)self preferredContentSizeCategory];
+                preferredContentSizeCategory8 = [(UITraitCollection *)self preferredContentSizeCategory];
 
-                if (v11 == UIContentSizeCategoryExtraExtraExtraLarge)
+                if (preferredContentSizeCategory8 == UIContentSizeCategoryExtraExtraExtraLarge)
                 {
                   v4 = &SAUIDynamicTypeSizeExtraExtraExtraLargeValue;
                 }
 
                 else
                 {
-                  v12 = [(UITraitCollection *)self preferredContentSizeCategory];
+                  preferredContentSizeCategory9 = [(UITraitCollection *)self preferredContentSizeCategory];
 
-                  if (v12 == UIContentSizeCategoryAccessibilityMedium)
+                  if (preferredContentSizeCategory9 == UIContentSizeCategoryAccessibilityMedium)
                   {
                     v4 = &SAUIDynamicTypeSizeAccessibilityMediumValue;
                   }
 
                   else
                   {
-                    v13 = [(UITraitCollection *)self preferredContentSizeCategory];
+                    preferredContentSizeCategory10 = [(UITraitCollection *)self preferredContentSizeCategory];
 
-                    if (v13 == UIContentSizeCategoryAccessibilityLarge)
+                    if (preferredContentSizeCategory10 == UIContentSizeCategoryAccessibilityLarge)
                     {
                       v4 = &SAUIDynamicTypeSizeAccessibilityLargeValue;
                     }
 
                     else
                     {
-                      v14 = [(UITraitCollection *)self preferredContentSizeCategory];
+                      preferredContentSizeCategory11 = [(UITraitCollection *)self preferredContentSizeCategory];
 
-                      if (v14 == UIContentSizeCategoryAccessibilityExtraLarge)
+                      if (preferredContentSizeCategory11 == UIContentSizeCategoryAccessibilityExtraLarge)
                       {
                         v4 = &SAUIDynamicTypeSizeAccessibilityExtraLargeValue;
                       }
 
                       else
                       {
-                        v15 = [(UITraitCollection *)self preferredContentSizeCategory];
+                        preferredContentSizeCategory12 = [(UITraitCollection *)self preferredContentSizeCategory];
 
-                        if (v15 == UIContentSizeCategoryAccessibilityExtraExtraLarge)
+                        if (preferredContentSizeCategory12 == UIContentSizeCategoryAccessibilityExtraExtraLarge)
                         {
                           v4 = &SAUIDynamicTypeSizeAccessibilityExtraExtraLargeValue;
                         }
 
                         else
                         {
-                          v16 = [(UITraitCollection *)self preferredContentSizeCategory];
+                          preferredContentSizeCategory13 = [(UITraitCollection *)self preferredContentSizeCategory];
 
-                          if (v16 == UIContentSizeCategoryAccessibilityExtraExtraExtraLarge)
+                          if (preferredContentSizeCategory13 == UIContentSizeCategoryAccessibilityExtraExtraExtraLarge)
                           {
                             v4 = &SAUIDynamicTypeSizeAccessibilityExtraExtraExtraLargeValue;
                           }
@@ -173,13 +173,13 @@
 
 - (id)aceDisplayContrast
 {
-  v2 = [(UITraitCollection *)self accessibilityContrast];
-  if (v2 + 1 <= 2)
+  accessibilityContrast = [(UITraitCollection *)self accessibilityContrast];
+  if (accessibilityContrast + 1 <= 2)
   {
-    v2 = **(&off_100167C68 + v2 + 1);
+    accessibilityContrast = **(&off_100167C68 + accessibilityContrast + 1);
   }
 
-  return v2;
+  return accessibilityContrast;
 }
 
 @end

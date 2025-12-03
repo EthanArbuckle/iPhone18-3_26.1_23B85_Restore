@@ -1,34 +1,34 @@
 @interface HAPCharacteristicValueTransitionFetch
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPCharacteristicValueTransitionFetch)init;
-- (HAPCharacteristicValueTransitionFetch)initWithHAPInstanceID:(id)a3;
+- (HAPCharacteristicValueTransitionFetch)initWithHAPInstanceID:(id)d;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPCharacteristicValueTransitionFetch
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPCharacteristicValueTransitionFetch);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPCharacteristicValueTransitionFetch *)v6 parseFromData:v5 error:&v11];
+    [(HAPCharacteristicValueTransitionFetch *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else
@@ -48,41 +48,41 @@
   return [(HAPCharacteristicValueTransitionFetch *)&v3 init];
 }
 
-- (HAPCharacteristicValueTransitionFetch)initWithHAPInstanceID:(id)a3
+- (HAPCharacteristicValueTransitionFetch)initWithHAPInstanceID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = HAPCharacteristicValueTransitionFetch;
   v6 = [(HAPCharacteristicValueTransitionFetch *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_HAPInstanceID, a3);
+    objc_storeStrong(&v6->_HAPInstanceID, d);
   }
 
   return v7;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v9 = 0;
 LABEL_16:
-    [(HAPCharacteristicValueTransitionFetch *)self setHAPInstanceID:v9, v20];
+    [(HAPCharacteristicValueTransitionFetch *)self setHAPInstanceID:v9, selfCopy];
     v10 = 0;
     v17 = 1;
   }
 
   else
   {
-    v20 = self;
+    selfCopy = self;
     v9 = 0;
     v10 = 0;
-    v11 = &v7[v8];
+    v11 = &bytes[v8];
     while (1)
     {
       v25 = 0;
@@ -124,11 +124,11 @@ LABEL_16:
         if (v10)
         {
 LABEL_9:
-          if (a4)
+          if (error)
           {
             v16 = v10;
             v17 = 0;
-            *a4 = v10;
+            *error = v10;
             goto LABEL_18;
           }
 
@@ -136,15 +136,15 @@ LABEL_9:
         }
 
 LABEL_15:
-        self = v20;
+        self = selfCopy;
         goto LABEL_16;
       }
     }
 
-    if (a4)
+    if (error)
     {
       sub_100041618(Next);
-      *a4 = v17 = 0;
+      *error = v17 = 0;
       goto LABEL_18;
     }
 
@@ -157,7 +157,7 @@ LABEL_18:
   return v17;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v33 = 0u;
   v34 = 0u;
@@ -181,16 +181,16 @@ LABEL_18:
   v14 = 0u;
   v15 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPCharacteristicValueTransitionFetch *)self HAPInstanceID];
+  hAPInstanceID = [(HAPCharacteristicValueTransitionFetch *)self HAPInstanceID];
 
-  if (!v5)
+  if (!hAPInstanceID)
   {
     goto LABEL_8;
   }
 
-  v6 = [(HAPCharacteristicValueTransitionFetch *)self HAPInstanceID];
+  hAPInstanceID2 = [(HAPCharacteristicValueTransitionFetch *)self HAPInstanceID];
   v13 = 0;
-  v7 = [v6 serializeWithError:&v13];
+  v7 = [hAPInstanceID2 serializeWithError:&v13];
   v8 = v13;
 
   if (!v8)
@@ -201,11 +201,11 @@ LABEL_18:
 
     if (v11)
     {
-      if (a3)
+      if (error)
       {
         sub_100041618(v11);
         v8 = 0;
-        *a3 = v10 = 0;
+        *error = v10 = 0;
         goto LABEL_11;
       }
 
@@ -219,11 +219,11 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if (a3)
+  if (error)
   {
     v9 = v8;
     v10 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_11;
   }
 
@@ -235,19 +235,19 @@ LABEL_11:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPCharacteristicValueTransitionFetch allocWithZone:a3];
-  v5 = [(HAPCharacteristicValueTransitionFetch *)self HAPInstanceID];
-  v6 = [(HAPCharacteristicValueTransitionFetch *)v4 initWithHAPInstanceID:v5];
+  v4 = [HAPCharacteristicValueTransitionFetch allocWithZone:zone];
+  hAPInstanceID = [(HAPCharacteristicValueTransitionFetch *)self HAPInstanceID];
+  v6 = [(HAPCharacteristicValueTransitionFetch *)v4 initWithHAPInstanceID:hAPInstanceID];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -257,19 +257,19 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HAPCharacteristicValueTransitionFetch *)self HAPInstanceID];
-      v7 = [(HAPCharacteristicValueTransitionFetch *)v5 HAPInstanceID];
-      if (v6 == v7)
+      v5 = equalCopy;
+      hAPInstanceID = [(HAPCharacteristicValueTransitionFetch *)self HAPInstanceID];
+      hAPInstanceID2 = [(HAPCharacteristicValueTransitionFetch *)v5 HAPInstanceID];
+      if (hAPInstanceID == hAPInstanceID2)
       {
         v10 = 1;
       }
 
       else
       {
-        v8 = [(HAPCharacteristicValueTransitionFetch *)self HAPInstanceID];
-        v9 = [(HAPCharacteristicValueTransitionFetch *)v5 HAPInstanceID];
-        v10 = [v8 isEqual:v9];
+        hAPInstanceID3 = [(HAPCharacteristicValueTransitionFetch *)self HAPInstanceID];
+        hAPInstanceID4 = [(HAPCharacteristicValueTransitionFetch *)v5 HAPInstanceID];
+        v10 = [hAPInstanceID3 isEqual:hAPInstanceID4];
       }
     }
 
@@ -284,8 +284,8 @@ LABEL_11:
 
 - (NSString)description
 {
-  v2 = [(HAPCharacteristicValueTransitionFetch *)self HAPInstanceID];
-  v3 = [NSString stringWithFormat:@"<HAPCharacteristicValueTransitionFetch HAPInstanceID=%@>", v2];
+  hAPInstanceID = [(HAPCharacteristicValueTransitionFetch *)self HAPInstanceID];
+  v3 = [NSString stringWithFormat:@"<HAPCharacteristicValueTransitionFetch HAPInstanceID=%@>", hAPInstanceID];
 
   return v3;
 }

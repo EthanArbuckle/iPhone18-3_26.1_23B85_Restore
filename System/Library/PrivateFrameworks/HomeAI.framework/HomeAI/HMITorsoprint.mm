@@ -1,27 +1,27 @@
 @interface HMITorsoprint
-- (BOOL)isEqual:(id)a3;
-- (HMITorsoprint)initWithCoder:(id)a3;
-- (HMITorsoprint)initWithUUID:(id)a3 data:(id)a4 lowQuality:(BOOL)a5 unrecognizable:(BOOL)a6;
+- (BOOL)isEqual:(id)equal;
+- (HMITorsoprint)initWithCoder:(id)coder;
+- (HMITorsoprint)initWithUUID:(id)d data:(id)data lowQuality:(BOOL)quality unrecognizable:(BOOL)unrecognizable;
 - (id)attributeDescriptions;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMITorsoprint
 
-- (HMITorsoprint)initWithUUID:(id)a3 data:(id)a4 lowQuality:(BOOL)a5 unrecognizable:(BOOL)a6
+- (HMITorsoprint)initWithUUID:(id)d data:(id)data lowQuality:(BOOL)quality unrecognizable:(BOOL)unrecognizable
 {
-  v10 = a3;
-  v11 = a4;
-  if (v11)
+  dCopy = d;
+  dataCopy = data;
+  if (dataCopy)
   {
-    v12 = v11;
+    v12 = dataCopy;
     v21.receiver = self;
     v21.super_class = HMITorsoprint;
     v13 = [(HMITorsoprint *)&v21 init];
     if (v13)
     {
-      v14 = [v10 copy];
+      v14 = [dCopy copy];
       UUID = v13->_UUID;
       v13->_UUID = v14;
 
@@ -29,8 +29,8 @@
       data = v13->_data;
       v13->_data = v16;
 
-      v13->_lowQuality = a5;
-      v13->_unrecognizable = a6;
+      v13->_lowQuality = quality;
+      v13->_unrecognizable = unrecognizable;
     }
 
     return v13;
@@ -47,12 +47,12 @@
 {
   v17[4] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMITorsoprint *)self UUID];
-  v5 = [v3 initWithName:@"UUID" value:v4];
+  uUID = [(HMITorsoprint *)self UUID];
+  v5 = [v3 initWithName:@"UUID" value:uUID];
   v17[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMITorsoprint *)self data];
-  v8 = [v6 initWithName:@"Data" value:v7];
+  data = [(HMITorsoprint *)self data];
+  v8 = [v6 initWithName:@"Data" value:data];
   v17[1] = v8;
   v9 = objc_alloc(MEMORY[0x277D0F778]);
   [(HMITorsoprint *)self lowQuality];
@@ -69,13 +69,13 @@
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -86,16 +86,16 @@
   v6 = v5;
   if (v6)
   {
-    v7 = [(HMITorsoprint *)self UUID];
-    v8 = [v6 UUID];
-    if ([v7 isEqual:v8])
+    uUID = [(HMITorsoprint *)self UUID];
+    uUID2 = [v6 UUID];
+    if ([uUID isEqual:uUID2])
     {
-      v9 = [(HMITorsoprint *)self data];
-      v10 = [v6 data];
-      if ([v9 isEqualToData:v10] && (v11 = -[HMITorsoprint lowQuality](self, "lowQuality"), v11 == objc_msgSend(v6, "lowQuality")))
+      data = [(HMITorsoprint *)self data];
+      data2 = [v6 data];
+      if ([data isEqualToData:data2] && (v11 = -[HMITorsoprint lowQuality](self, "lowQuality"), v11 == objc_msgSend(v6, "lowQuality")))
       {
-        v13 = [(HMITorsoprint *)self unrecognizable];
-        v12 = v13 ^ [v6 unrecognizable] ^ 1;
+        unrecognizable = [(HMITorsoprint *)self unrecognizable];
+        v12 = unrecognizable ^ [v6 unrecognizable] ^ 1;
       }
 
       else
@@ -120,33 +120,33 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HMITorsoprint *)self UUID];
-  v3 = [v2 hash];
+  uUID = [(HMITorsoprint *)self UUID];
+  v3 = [uUID hash];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(HMITorsoprint *)self UUID];
-  [v6 encodeObject:v4 forKey:@"HMITP.ck.u"];
+  coderCopy = coder;
+  uUID = [(HMITorsoprint *)self UUID];
+  [coderCopy encodeObject:uUID forKey:@"HMITP.ck.u"];
 
-  v5 = [(HMITorsoprint *)self data];
-  [v6 encodeObject:v5 forKey:@"HMITP.ck.d"];
+  data = [(HMITorsoprint *)self data];
+  [coderCopy encodeObject:data forKey:@"HMITP.ck.d"];
 
-  [v6 encodeBool:-[HMITorsoprint lowQuality](self forKey:{"lowQuality"), @"HMITP.ck.lq"}];
-  [v6 encodeBool:-[HMITorsoprint unrecognizable](self forKey:{"unrecognizable"), @"HMITP.ck.ur"}];
+  [coderCopy encodeBool:-[HMITorsoprint lowQuality](self forKey:{"lowQuality"), @"HMITP.ck.lq"}];
+  [coderCopy encodeBool:-[HMITorsoprint unrecognizable](self forKey:{"unrecognizable"), @"HMITP.ck.ur"}];
 }
 
-- (HMITorsoprint)initWithCoder:(id)a3
+- (HMITorsoprint)initWithCoder:(id)coder
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMITP.ck.u"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HMITP.ck.d"];
-  v7 = [v4 containsValueForKey:@"HMITP.ck.lq"];
-  v8 = [v4 containsValueForKey:@"HMITP.ck.ur"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMITP.ck.u"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HMITP.ck.d"];
+  v7 = [coderCopy containsValueForKey:@"HMITP.ck.lq"];
+  v8 = [coderCopy containsValueForKey:@"HMITP.ck.ur"];
   if (v5)
   {
     v9 = v6 == 0;
@@ -161,7 +161,7 @@
   if (v10 || (v8 & 1) == 0)
   {
     v13 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -187,8 +187,8 @@
 
   else
   {
-    v11 = -[HMITorsoprint initWithUUID:data:lowQuality:unrecognizable:](self, "initWithUUID:data:lowQuality:unrecognizable:", v5, v6, [v4 decodeBoolForKey:@"HMITP.ck.lq"], objc_msgSend(v4, "decodeBoolForKey:", @"HMITP.ck.ur"));
-    v12 = v11;
+    selfCopy = -[HMITorsoprint initWithUUID:data:lowQuality:unrecognizable:](self, "initWithUUID:data:lowQuality:unrecognizable:", v5, v6, [coderCopy decodeBoolForKey:@"HMITP.ck.lq"], objc_msgSend(coderCopy, "decodeBoolForKey:", @"HMITP.ck.ur"));
+    v12 = selfCopy;
   }
 
   return v12;

@@ -1,13 +1,13 @@
 @interface DMFCommunicationPolicyMonitor
 + (NSSet)communicationBundleIdentifiers;
 + (NSSet)policyTypes;
-+ (unint64_t)communicationPolicyForApplicationPolicy:(id)a3 downtimeEnforced:(BOOL)a4;
++ (unint64_t)communicationPolicyForApplicationPolicy:(id)policy downtimeEnforced:(BOOL)enforced;
 - (DMFCommunicationPolicyMonitor)init;
-- (DMFCommunicationPolicyMonitor)initWithPolicyChangeHandler:(id)a3;
-- (id)requestPoliciesByBundleIdentifierWithError:(id *)a3;
+- (DMFCommunicationPolicyMonitor)initWithPolicyChangeHandler:(id)handler;
+- (id)requestPoliciesByBundleIdentifierWithError:(id *)error;
 - (void)_updatePoliciesByBundleIdentifier;
 - (void)dealloc;
-- (void)requestPoliciesByBundleIdentifierWithCompletionHandler:(id)a3;
+- (void)requestPoliciesByBundleIdentifierWithCompletionHandler:(id)handler;
 @end
 
 @implementation DMFCommunicationPolicyMonitor
@@ -70,9 +70,9 @@ void __44__DMFCommunicationPolicyMonitor_policyTypes__block_invoke()
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (DMFCommunicationPolicyMonitor)initWithPolicyChangeHandler:(id)a3
+- (DMFCommunicationPolicyMonitor)initWithPolicyChangeHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = DMFCommunicationPolicyMonitor;
   v5 = [(DMFCommunicationPolicyMonitor *)&v17 init];
@@ -82,10 +82,10 @@ void __44__DMFCommunicationPolicyMonitor_policyTypes__block_invoke()
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    if (v4)
+    if (handlerCopy)
     {
-      v8 = [objc_opt_class() policyTypes];
-      v9 = [[DMFPolicyRegistration alloc] initWithIdentifier:@"dmf.policy.monitor.communication" policyTypes:v8 callback:v4];
+      policyTypes = [objc_opt_class() policyTypes];
+      v9 = [[DMFPolicyRegistration alloc] initWithIdentifier:@"dmf.policy.monitor.communication" policyTypes:policyTypes callback:handlerCopy];
       v10 = +[DMFPolicyMonitor policyMonitor];
       v11 = v5->_identifier;
       v14[0] = MEMORY[0x1E69E9820];
@@ -93,8 +93,8 @@ void __44__DMFCommunicationPolicyMonitor_policyTypes__block_invoke()
       v14[2] = __61__DMFCommunicationPolicyMonitor_initWithPolicyChangeHandler___block_invoke;
       v14[3] = &unk_1E8616088;
       v15 = v5;
-      v16 = v8;
-      v12 = v8;
+      v16 = policyTypes;
+      v12 = policyTypes;
       [v10 addRegistration:v9 forPolicyMonitorIdentifier:v11 completionHandler:v14];
     }
   }
@@ -125,39 +125,39 @@ void __61__DMFCommunicationPolicyMonitor_initWithPolicyChangeHandler___block_inv
   [(DMFCommunicationPolicyMonitor *)&v4 dealloc];
 }
 
-+ (unint64_t)communicationPolicyForApplicationPolicy:(id)a3 downtimeEnforced:(BOOL)a4
++ (unint64_t)communicationPolicyForApplicationPolicy:(id)policy downtimeEnforced:(BOOL)enforced
 {
-  v4 = a4;
-  if ([a3 integerValue])
+  enforcedCopy = enforced;
+  if ([policy integerValue])
   {
     return 2;
   }
 
   else
   {
-    return v4;
+    return enforcedCopy;
   }
 }
 
-- (id)requestPoliciesByBundleIdentifierWithError:(id *)a3
+- (id)requestPoliciesByBundleIdentifierWithError:(id *)error
 {
-  v4 = [objc_opt_class() communicationBundleIdentifiers];
-  v5 = [v4 allObjects];
+  communicationBundleIdentifiers = [objc_opt_class() communicationBundleIdentifiers];
+  allObjects = [communicationBundleIdentifiers allObjects];
 
   v6 = +[DMFPolicyMonitor policyMonitor];
-  v7 = [v6 requestCommunicationPoliciesForBundleIdentifiers:v5 withError:a3];
+  v7 = [v6 requestCommunicationPoliciesForBundleIdentifiers:allObjects withError:error];
 
   return v7;
 }
 
-- (void)requestPoliciesByBundleIdentifierWithCompletionHandler:(id)a3
+- (void)requestPoliciesByBundleIdentifierWithCompletionHandler:(id)handler
 {
-  v3 = a3;
-  v4 = [objc_opt_class() communicationBundleIdentifiers];
-  v6 = [v4 allObjects];
+  handlerCopy = handler;
+  communicationBundleIdentifiers = [objc_opt_class() communicationBundleIdentifiers];
+  allObjects = [communicationBundleIdentifiers allObjects];
 
   v5 = +[DMFPolicyMonitor policyMonitor];
-  [v5 requestCommunicationPoliciesForBundleIdentifiers:v6 completionHandler:v3];
+  [v5 requestCommunicationPoliciesForBundleIdentifiers:allObjects completionHandler:handlerCopy];
 }
 
 - (DMFCommunicationPolicyMonitor)init
@@ -167,17 +167,17 @@ void __61__DMFCommunicationPolicyMonitor_initWithPolicyChangeHandler___block_inv
   v18[1] = 3221225472;
   v18[2] = __37__DMFCommunicationPolicyMonitor_init__block_invoke;
   v18[3] = &unk_1E86160F8;
-  v19 = self;
-  v2 = [(DMFCommunicationPolicyMonitor *)v19 initWithPolicyChangeHandler:v18];
+  selfCopy = self;
+  v2 = [(DMFCommunicationPolicyMonitor *)selfCopy initWithPolicyChangeHandler:v18];
   if (v2)
   {
-    v3 = [objc_opt_class() communicationBundleIdentifiers];
-    v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v3, "count")}];
+    communicationBundleIdentifiers = [objc_opt_class() communicationBundleIdentifiers];
+    v4 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(communicationBundleIdentifiers, "count")}];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = v3;
+    v5 = communicationBundleIdentifiers;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v20 count:16];
     if (v6)
     {
@@ -216,7 +216,7 @@ void __61__DMFCommunicationPolicyMonitor_initWithPolicyChangeHandler___block_inv
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1DBFFF000, a2, OS_LOG_TYPE_ERROR, "Failed to request communication policies with error: %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

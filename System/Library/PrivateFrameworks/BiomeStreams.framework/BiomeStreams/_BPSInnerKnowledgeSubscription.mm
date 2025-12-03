@@ -1,36 +1,36 @@
 @interface _BPSInnerKnowledgeSubscription
-- (_BPSInnerKnowledgeSubscription)initWithQuery:(id)a3 downstream:(id)a4 store:(id)a5;
+- (_BPSInnerKnowledgeSubscription)initWithQuery:(id)query downstream:(id)downstream store:(id)store;
 - (void)cancel;
-- (void)requestDemand:(int64_t)a3;
+- (void)requestDemand:(int64_t)demand;
 @end
 
 @implementation _BPSInnerKnowledgeSubscription
 
-- (_BPSInnerKnowledgeSubscription)initWithQuery:(id)a3 downstream:(id)a4 store:(id)a5
+- (_BPSInnerKnowledgeSubscription)initWithQuery:(id)query downstream:(id)downstream store:(id)store
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  queryCopy = query;
+  downstreamCopy = downstream;
+  storeCopy = store;
   v16.receiver = self;
   v16.super_class = _BPSInnerKnowledgeSubscription;
   v12 = [(_BPSInnerKnowledgeSubscription *)&v16 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_downstream, a4);
-    objc_storeStrong(&v13->_knowledgeStore, a5);
-    objc_storeStrong(&v13->_query, a3);
+    objc_storeStrong(&v12->_downstream, downstream);
+    objc_storeStrong(&v13->_knowledgeStore, store);
+    objc_storeStrong(&v13->_query, query);
     if (![(_DKEventQuery *)v13->_query limit]|| [(_DKEventQuery *)v13->_query limit]< 0)
     {
-      v14 = 0x7FFFFFFFFFFFFFFFLL;
+      limit = 0x7FFFFFFFFFFFFFFFLL;
     }
 
     else
     {
-      v14 = [(_DKEventQuery *)v13->_query limit];
+      limit = [(_DKEventQuery *)v13->_query limit];
     }
 
-    v13->_remaining = v14;
+    v13->_remaining = limit;
     v13->_pendingDemand = 0;
     v13->_lock._os_unfair_lock_opaque = 0;
   }
@@ -38,55 +38,55 @@
   return v13;
 }
 
-- (void)requestDemand:(int64_t)a3
+- (void)requestDemand:(int64_t)demand
 {
-  v4 = self;
-  os_unfair_lock_lock(&v4->_lock);
-  v5 = [(_BPSInnerKnowledgeSubscription *)v4 downstream];
-  if (v5)
+  selfCopy = self;
+  os_unfair_lock_lock(&selfCopy->_lock);
+  downstream = [(_BPSInnerKnowledgeSubscription *)selfCopy downstream];
+  if (downstream)
   {
-    [(_BPSInnerKnowledgeSubscription *)v4 setPendingDemand:[(_BPSInnerKnowledgeSubscription *)v4 pendingDemand]+ a3];
-    if (![(_BPSInnerKnowledgeSubscription *)v4 recursion])
+    [(_BPSInnerKnowledgeSubscription *)selfCopy setPendingDemand:[(_BPSInnerKnowledgeSubscription *)selfCopy pendingDemand]+ demand];
+    if (![(_BPSInnerKnowledgeSubscription *)selfCopy recursion])
     {
-      if ([(_BPSInnerKnowledgeSubscription *)v4 remaining]< 1)
+      if ([(_BPSInnerKnowledgeSubscription *)selfCopy remaining]< 1)
       {
         v11 = MEMORY[0x1E695E0F0];
       }
 
       else
       {
-        v6 = [(_BPSInnerKnowledgeSubscription *)v4 pendingDemand];
-        v7 = [(_BPSInnerKnowledgeSubscription *)v4 remaining];
-        if (v6 >= v7)
+        pendingDemand = [(_BPSInnerKnowledgeSubscription *)selfCopy pendingDemand];
+        remaining = [(_BPSInnerKnowledgeSubscription *)selfCopy remaining];
+        if (pendingDemand >= remaining)
         {
-          v6 = v7;
+          pendingDemand = remaining;
         }
 
-        v8 = [(_BPSInnerKnowledgeSubscription *)v4 query];
-        [v8 setLimit:v6];
+        query = [(_BPSInnerKnowledgeSubscription *)selfCopy query];
+        [query setLimit:pendingDemand];
 
-        v9 = [(_BPSInnerKnowledgeSubscription *)v4 knowledgeStore];
-        v10 = [(_BPSInnerKnowledgeSubscription *)v4 query];
+        knowledgeStore = [(_BPSInnerKnowledgeSubscription *)selfCopy knowledgeStore];
+        query2 = [(_BPSInnerKnowledgeSubscription *)selfCopy query];
         v22 = 0;
-        v11 = [v9 executeQuery:v10 error:&v22];
-        v12 = v22;
+        v11 = [knowledgeStore executeQuery:query2 error:&v22];
+        objectEnumerator = v22;
 
-        if ([(_BPSInnerKnowledgeSubscription *)v4 remaining]!= 0x7FFFFFFFFFFFFFFFLL)
+        if ([(_BPSInnerKnowledgeSubscription *)selfCopy remaining]!= 0x7FFFFFFFFFFFFFFFLL)
         {
-          -[_BPSInnerKnowledgeSubscription setRemaining:](v4, "setRemaining:", -[_BPSInnerKnowledgeSubscription remaining](v4, "remaining") - [v11 count]);
+          -[_BPSInnerKnowledgeSubscription setRemaining:](selfCopy, "setRemaining:", -[_BPSInnerKnowledgeSubscription remaining](selfCopy, "remaining") - [v11 count]);
         }
 
-        v13 = [(_BPSInnerKnowledgeSubscription *)v4 query];
-        [v13 setOffset:{objc_msgSend(v13, "offset") + objc_msgSend(v11, "count")}];
+        query3 = [(_BPSInnerKnowledgeSubscription *)selfCopy query];
+        [query3 setOffset:{objc_msgSend(query3, "offset") + objc_msgSend(v11, "count")}];
 
-        if (v12)
+        if (objectEnumerator)
         {
-          os_unfair_lock_unlock(&v4->_lock);
-          v14 = [(_BPSInnerKnowledgeSubscription *)v4 downstream];
-          v15 = [MEMORY[0x1E698F0C0] failureWithError:v12];
-          v16 = v14;
+          os_unfair_lock_unlock(&selfCopy->_lock);
+          downstream2 = [(_BPSInnerKnowledgeSubscription *)selfCopy downstream];
+          success = [MEMORY[0x1E698F0C0] failureWithError:objectEnumerator];
+          v16 = downstream2;
 LABEL_22:
-          [v16 receiveCompletion:v15];
+          [v16 receiveCompletion:success];
 LABEL_23:
 
 LABEL_24:
@@ -95,14 +95,14 @@ LABEL_24:
       }
 
       v11 = v11;
-      v12 = [v11 objectEnumerator];
-      v17 = [v12 nextObject];
-      [(_BPSInnerKnowledgeSubscription *)v4 setNext:v17];
+      objectEnumerator = [v11 objectEnumerator];
+      nextObject = [objectEnumerator nextObject];
+      [(_BPSInnerKnowledgeSubscription *)selfCopy setNext:nextObject];
 
-      if ([(_BPSInnerKnowledgeSubscription *)v4 pendingDemand]< 1)
+      if ([(_BPSInnerKnowledgeSubscription *)selfCopy pendingDemand]< 1)
       {
 LABEL_19:
-        os_unfair_lock_unlock(&v4->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       else
@@ -111,66 +111,66 @@ LABEL_19:
         {
           while (1)
           {
-            v14 = [(_BPSInnerKnowledgeSubscription *)v4 next];
-            if (!v14)
+            downstream2 = [(_BPSInnerKnowledgeSubscription *)selfCopy next];
+            if (!downstream2)
             {
 
-              [(_BPSInnerKnowledgeSubscription *)v4 setDownstream:0];
-              os_unfair_lock_unlock(&v4->_lock);
-              v15 = [MEMORY[0x1E698F0C0] success];
-              v16 = v5;
+              [(_BPSInnerKnowledgeSubscription *)selfCopy setDownstream:0];
+              os_unfair_lock_unlock(&selfCopy->_lock);
+              success = [MEMORY[0x1E698F0C0] success];
+              v16 = downstream;
               goto LABEL_22;
             }
 
-            [(_BPSInnerKnowledgeSubscription *)v4 setPendingDemand:[(_BPSInnerKnowledgeSubscription *)v4 pendingDemand]- 1];
-            v18 = [v12 nextObject];
-            [(_BPSInnerKnowledgeSubscription *)v4 setNext:v18];
+            [(_BPSInnerKnowledgeSubscription *)selfCopy setPendingDemand:[(_BPSInnerKnowledgeSubscription *)selfCopy pendingDemand]- 1];
+            nextObject2 = [objectEnumerator nextObject];
+            [(_BPSInnerKnowledgeSubscription *)selfCopy setNext:nextObject2];
 
-            [(_BPSInnerKnowledgeSubscription *)v4 setRecursion:1];
-            os_unfair_lock_unlock(&v4->_lock);
-            v19 = [v5 receiveInput:v14];
-            os_unfair_lock_lock(&v4->_lock);
-            [(_BPSInnerKnowledgeSubscription *)v4 setPendingDemand:[(_BPSInnerKnowledgeSubscription *)v4 pendingDemand]+ v19];
-            [(_BPSInnerKnowledgeSubscription *)v4 setRecursion:0];
-            v20 = [(_BPSInnerKnowledgeSubscription *)v4 next];
-            if (v20)
+            [(_BPSInnerKnowledgeSubscription *)selfCopy setRecursion:1];
+            os_unfair_lock_unlock(&selfCopy->_lock);
+            v19 = [downstream receiveInput:downstream2];
+            os_unfair_lock_lock(&selfCopy->_lock);
+            [(_BPSInnerKnowledgeSubscription *)selfCopy setPendingDemand:[(_BPSInnerKnowledgeSubscription *)selfCopy pendingDemand]+ v19];
+            [(_BPSInnerKnowledgeSubscription *)selfCopy setRecursion:0];
+            next = [(_BPSInnerKnowledgeSubscription *)selfCopy next];
+            if (next)
             {
             }
 
-            else if (![(_BPSInnerKnowledgeSubscription *)v4 pendingDemand])
+            else if (![(_BPSInnerKnowledgeSubscription *)selfCopy pendingDemand])
             {
-              [(_BPSInnerKnowledgeSubscription *)v4 setDownstream:0];
-              os_unfair_lock_unlock(&v4->_lock);
-              v21 = [MEMORY[0x1E698F0C0] success];
-              [v5 receiveCompletion:v21];
+              [(_BPSInnerKnowledgeSubscription *)selfCopy setDownstream:0];
+              os_unfair_lock_unlock(&selfCopy->_lock);
+              success2 = [MEMORY[0x1E698F0C0] success];
+              [downstream receiveCompletion:success2];
 
-              v15 = v11;
+              success = v11;
               goto LABEL_23;
             }
 
-            if ([(_BPSInnerKnowledgeSubscription *)v4 pendingDemand]<= 0)
+            if ([(_BPSInnerKnowledgeSubscription *)selfCopy pendingDemand]<= 0)
             {
               goto LABEL_19;
             }
           }
         }
 
-        os_unfair_lock_unlock(&v4->_lock);
+        os_unfair_lock_unlock(&selfCopy->_lock);
       }
 
       goto LABEL_24;
     }
   }
 
-  os_unfair_lock_unlock(&v4->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
 LABEL_25:
 }
 
 - (void)cancel
 {
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(&self->_lock);
-  [(_BPSInnerKnowledgeSubscription *)v3 setDownstream:0];
+  [(_BPSInnerKnowledgeSubscription *)selfCopy setDownstream:0];
   os_unfair_lock_unlock(&self->_lock);
 }
 

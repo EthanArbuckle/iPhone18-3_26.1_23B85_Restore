@@ -1,63 +1,63 @@
 @interface AXCameraVisionEngine
-+ (BOOL)_isContainedWithinScreenBoundsForNormalizedFrame:(CGRect)a3;
-+ (CGAffineTransform)_scaleNormalizedCoordinatesToSceneCoordinates:(SEL)a3;
++ (BOOL)_isContainedWithinScreenBoundsForNormalizedFrame:(CGRect)frame;
++ (CGAffineTransform)_scaleNormalizedCoordinatesToSceneCoordinates:(SEL)coordinates;
 + (id)sharedEngine;
 - (AVCaptureSession)captureSession;
 - (AXCameraVisionEngine)init;
-- (BOOL)_attemptAnnouncement:(id)a3 type:(int64_t)a4 isPartial:(BOOL)a5 timestamp:(double)a6;
-- (BOOL)_canCreateAccessibilityElementForFeature:(id)a3 correctedFrame:(CGRect)a4 allFeatures:(id)a5;
-- (BOOL)_canPostAnnouncement:(id)a3 type:(int64_t)a4 isPartial:(BOOL)a5 timestamp:(double)a6;
+- (BOOL)_attemptAnnouncement:(id)announcement type:(int64_t)type isPartial:(BOOL)partial timestamp:(double)timestamp;
+- (BOOL)_canCreateAccessibilityElementForFeature:(id)feature correctedFrame:(CGRect)frame allFeatures:(id)features;
+- (BOOL)_canPostAnnouncement:(id)announcement type:(int64_t)type isPartial:(BOOL)partial timestamp:(double)timestamp;
 - (BOOL)_hasDetectedFaces;
 - (BOOL)_hasRealtimeFacesWithoutNames;
-- (BOOL)_shouldReuseExistingElement:(id)a3 forFeature:(id)a4 correctedFrame:(CGRect)a5;
-- (BOOL)_updateAccessibilityElements:(id)a3 forIncomingFeature:(id)a4 correctedFrame:(CGRect)a5 evaluatedFeatureTypes:(id)a6;
-- (CGRect)_motionCorrectedNormalizedFrame:(CGRect)a3 frameContext:(id)a4 targetAttitude:(id)a5;
-- (CGRect)_motionCorrectedNormalizedFrameForFeature:(id)a3;
-- (CGRect)_normalizedFrameForAccessibilityElements:(id)a3;
-- (CGRect)_sceneObjectFrameForNormalizedFrame:(CGRect)a3 inSceneFrame:(CGRect)a4;
+- (BOOL)_shouldReuseExistingElement:(id)element forFeature:(id)feature correctedFrame:(CGRect)frame;
+- (BOOL)_updateAccessibilityElements:(id)elements forIncomingFeature:(id)feature correctedFrame:(CGRect)frame evaluatedFeatureTypes:(id)types;
+- (CGRect)_motionCorrectedNormalizedFrame:(CGRect)frame frameContext:(id)context targetAttitude:(id)attitude;
+- (CGRect)_motionCorrectedNormalizedFrameForFeature:(id)feature;
+- (CGRect)_normalizedFrameForAccessibilityElements:(id)elements;
+- (CGRect)_sceneObjectFrameForNormalizedFrame:(CGRect)frame inSceneFrame:(CGRect)sceneFrame;
 - (CGSize)_lastSampleBufferSize;
 - (UIView)sceneObjectElementContainerView;
 - (id)_analysisOptionsForIncomingFrame;
-- (id)_announcementStringForFeedbackZone:(int64_t)a3;
-- (id)_filterElements:(id)a3 usingRelativeAreaThreshold:(double)a4 referenceElement:(id)a5;
-- (id)_filterElements:(id)a3 usingRelativeWidthThreshold:(double)a4 referenceElement:(id)a5;
-- (id)_sceneDescriptionAnnouncementForVisionFeatures:(id)a3 previousAnnouncementLocation:(int64_t)a4 locationForAnnouncement:(int64_t *)a5 announcementType:(int64_t *)a6;
-- (void)_applyMotionCorrectionToElement:(id)a3 updatedFrameContext:(id)a4;
-- (void)_attemptLevelingAnnouncementForZone:(int64_t)a3 previousZone:(int64_t)a4;
-- (void)_attemptSceneDescriptionAnnouncement:(id)a3 locationForAnnouncement:(int64_t)a4 type:(int64_t)a5;
+- (id)_announcementStringForFeedbackZone:(int64_t)zone;
+- (id)_filterElements:(id)elements usingRelativeAreaThreshold:(double)threshold referenceElement:(id)element;
+- (id)_filterElements:(id)elements usingRelativeWidthThreshold:(double)threshold referenceElement:(id)element;
+- (id)_sceneDescriptionAnnouncementForVisionFeatures:(id)features previousAnnouncementLocation:(int64_t)location locationForAnnouncement:(int64_t *)announcement announcementType:(int64_t *)type;
+- (void)_applyMotionCorrectionToElement:(id)element updatedFrameContext:(id)context;
+- (void)_attemptLevelingAnnouncementForZone:(int64_t)zone previousZone:(int64_t)previousZone;
+- (void)_attemptSceneDescriptionAnnouncement:(id)announcement locationForAnnouncement:(int64_t)forAnnouncement type:(int64_t)type;
 - (void)_clearCachedVisionResults;
-- (void)_createAccessibilityElementCandidatesForVisionFeatures:(id)a3 evaluatedFeatureTypes:(id)a4;
-- (void)_dispatchToResultsQueueWithBlock:(id)a3;
-- (void)_generateAnnouncementsForVisionFeatures:(id)a3;
-- (void)_handleAnnouncementDidFinish:(id)a3;
-- (void)_handleCameraMetadataObjects:(id)a3 fromConnection:(id)a4;
-- (void)_handleDeviceMotion:(id)a3;
-- (void)_handleUpdatedVisionFeatures:(id)a3 evaluatedFeatureTypes:(id)a4 fromMotionUpdate:(BOOL)a5;
-- (void)_handleVisionFeatures:(id)a3 evaluatedFeatureTypes:(id)a4 userContext:(id)a5;
+- (void)_createAccessibilityElementCandidatesForVisionFeatures:(id)features evaluatedFeatureTypes:(id)types;
+- (void)_dispatchToResultsQueueWithBlock:(id)block;
+- (void)_generateAnnouncementsForVisionFeatures:(id)features;
+- (void)_handleAnnouncementDidFinish:(id)finish;
+- (void)_handleCameraMetadataObjects:(id)objects fromConnection:(id)connection;
+- (void)_handleDeviceMotion:(id)motion;
+- (void)_handleUpdatedVisionFeatures:(id)features evaluatedFeatureTypes:(id)types fromMotionUpdate:(BOOL)update;
+- (void)_handleVisionFeatures:(id)features evaluatedFeatureTypes:(id)types userContext:(id)context;
 - (void)_performBecameLevelFeedback;
 - (void)_performBecameUnlevelFeedback;
-- (void)_performOnMainQueueWithBlock:(id)a3;
+- (void)_performOnMainQueueWithBlock:(id)block;
 - (void)_performScreenEdgeHaptic;
-- (void)_purgeExpiredVisionFeaturesUsingTime:(double)a3;
+- (void)_purgeExpiredVisionFeaturesUsingTime:(double)time;
 - (void)_resetAccessiblityElements;
 - (void)_resetAnnouncementState;
 - (void)_resetScheduling;
-- (void)_setCaptureDevicePosition:(int64_t)a3 mode:(int64_t)a4;
+- (void)_setCaptureDevicePosition:(int64_t)position mode:(int64_t)mode;
 - (void)_setupCaptureSessionNode;
 - (void)_setupEngine;
 - (void)_setupHaptics;
 - (void)_setupLeveling;
-- (void)_sortedAndFilteredAccessibilityElements:(id)a3 faces:(id *)a4 persons:(id *)a5 prominentObjects:(id *)a6 objectClassifications:(id *)a7;
-- (void)_updateLevelFeedbackForDeviceMotion:(id)a3;
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 forMetadataObjectTypes:(id)a5 fromConnection:(id)a6;
-- (void)captureSessionNode:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5;
+- (void)_sortedAndFilteredAccessibilityElements:(id)elements faces:(id *)faces persons:(id *)persons prominentObjects:(id *)objects objectClassifications:(id *)classifications;
+- (void)_updateLevelFeedbackForDeviceMotion:(id)motion;
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects forMetadataObjectTypes:(id)types fromConnection:(id)connection;
+- (void)captureSessionNode:(id)node didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection;
 - (void)dealloc;
-- (void)motionManagerDidUpdateDeviceMotion:(id)a3 captureOrientation:(int64_t)a4;
-- (void)setAppActive:(BOOL)a3;
-- (void)setCaptureDevicePosition:(int64_t)a3 mode:(int64_t)a4;
-- (void)setCaptureSession:(id)a3;
-- (void)setInterfaceOrientation:(int64_t)a3;
-- (void)setPreviousSceneAnnouncementCandidateWithoutLocation:(id)a3;
+- (void)motionManagerDidUpdateDeviceMotion:(id)motion captureOrientation:(int64_t)orientation;
+- (void)setAppActive:(BOOL)active;
+- (void)setCaptureDevicePosition:(int64_t)position mode:(int64_t)mode;
+- (void)setCaptureSession:(id)session;
+- (void)setInterfaceOrientation:(int64_t)orientation;
+- (void)setPreviousSceneAnnouncementCandidateWithoutLocation:(id)location;
 @end
 
 @implementation AXCameraVisionEngine
@@ -70,7 +70,7 @@
     block[1] = 3221225472;
     block[2] = __36__AXCameraVisionEngine_sharedEngine__block_invoke;
     block[3] = &__block_descriptor_40_e5_v8__0l;
-    block[4] = a1;
+    block[4] = self;
     if (sharedEngine_onceToken != -1)
     {
       dispatch_once(&sharedEngine_onceToken, block);
@@ -105,16 +105,16 @@ uint64_t __36__AXCameraVisionEngine_sharedEngine__block_invoke(uint64_t a1)
     [(AXCameraVisionEngine *)v2 _setupHaptics];
     [(AXCameraVisionEngine *)v2 _setupLeveling];
     [(AXCameraVisionEngine *)v2 _resetAnnouncementState];
-    v6 = [MEMORY[0x29EDB8E00] dictionary];
+    dictionary = [MEMORY[0x29EDB8E00] dictionary];
     mostRecentVisionFeatures = v2->__mostRecentVisionFeatures;
-    v2->__mostRecentVisionFeatures = v6;
+    v2->__mostRecentVisionFeatures = dictionary;
 
-    v8 = [MEMORY[0x29EDB8E00] dictionary];
+    dictionary2 = [MEMORY[0x29EDB8E00] dictionary];
     mostRecentVisionFeaturesUpdateTimes = v2->__mostRecentVisionFeaturesUpdateTimes;
-    v2->__mostRecentVisionFeaturesUpdateTimes = v8;
+    v2->__mostRecentVisionFeaturesUpdateTimes = dictionary2;
 
-    v10 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v10 addObserver:v2 selector:sel__handleAnnouncementDidFinish_ name:*MEMORY[0x29EDC7E98] object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleAnnouncementDidFinish_ name:*MEMORY[0x29EDC7E98] object:0];
   }
 
   return v2;
@@ -122,31 +122,31 @@ uint64_t __36__AXCameraVisionEngine_sharedEngine__block_invoke(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = AXCameraVisionEngine;
   [(AXCameraVisionEngine *)&v4 dealloc];
 }
 
-- (void)setAppActive:(BOOL)a3
+- (void)setAppActive:(BOOL)active
 {
-  self->_appActive = a3;
+  self->_appActive = active;
   v3[0] = MEMORY[0x29EDCA5F8];
   v3[1] = 3221225472;
   v3[2] = __37__AXCameraVisionEngine_setAppActive___block_invoke;
   v3[3] = &unk_29F2ACE98;
   v3[4] = self;
-  v4 = a3;
+  activeCopy = active;
   [(AXCameraVisionEngine *)self _dispatchToResultsQueueWithBlock:v3];
 }
 
-- (void)setInterfaceOrientation:(int64_t)a3
+- (void)setInterfaceOrientation:(int64_t)orientation
 {
-  if (self->_interfaceOrientation != a3)
+  if (self->_interfaceOrientation != orientation)
   {
-    self->_interfaceOrientation = a3;
+    self->_interfaceOrientation = orientation;
     [(AXCameraVisionEngine *)self _resetScheduling];
     [(AXCameraVisionEngine *)self _clearCachedVisionResults];
     [(AXCameraVisionEngine *)self _resetAccessiblityElements];
@@ -155,22 +155,22 @@ uint64_t __36__AXCameraVisionEngine_sharedEngine__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setCaptureDevicePosition:(int64_t)a3 mode:(int64_t)a4
+- (void)setCaptureDevicePosition:(int64_t)position mode:(int64_t)mode
 {
   v4[0] = MEMORY[0x29EDCA5F8];
   v4[1] = 3221225472;
   v4[2] = __54__AXCameraVisionEngine_setCaptureDevicePosition_mode___block_invoke;
   v4[3] = &unk_29F2ACEC0;
   v4[4] = self;
-  v4[5] = a3;
-  v4[6] = a4;
+  v4[5] = position;
+  v4[6] = mode;
   [(AXCameraVisionEngine *)self _dispatchToResultsQueueWithBlock:v4];
 }
 
-- (void)_setCaptureDevicePosition:(int64_t)a3 mode:(int64_t)a4
+- (void)_setCaptureDevicePosition:(int64_t)position mode:(int64_t)mode
 {
-  self->_cameraDevicePosition = a3;
-  self->_cameraMode = a4;
+  self->_cameraDevicePosition = position;
+  self->_cameraMode = mode;
   [(AXCameraVisionEngine *)self _resetScheduling];
   [(AXCameraVisionEngine *)self _clearCachedVisionResults];
   [(AXCameraVisionEngine *)self _resetAccessiblityElements];
@@ -190,15 +190,15 @@ uint64_t __36__AXCameraVisionEngine_sharedEngine__block_invoke(uint64_t a1)
 
 - (void)_clearCachedVisionResults
 {
-  v2 = [(AXCameraVisionEngine *)self _mostRecentVisionFeatures];
-  [v2 removeAllObjects];
+  _mostRecentVisionFeatures = [(AXCameraVisionEngine *)self _mostRecentVisionFeatures];
+  [_mostRecentVisionFeatures removeAllObjects];
 }
 
 - (void)_resetAccessiblityElements
 {
   [(AXCameraVisionEngine *)self set_accessibilityElementCandidates:0];
-  v3 = [(AXCameraVisionEngine *)self sceneObjectElementContainerView];
-  [v3 setAccessibilityElements:0];
+  sceneObjectElementContainerView = [(AXCameraVisionEngine *)self sceneObjectElementContainerView];
+  [sceneObjectElementContainerView setAccessibilityElements:0];
 
   v4 = *MEMORY[0x29EDC7ED8];
 
@@ -218,8 +218,8 @@ uint64_t __36__AXCameraVisionEngine_sharedEngine__block_invoke(uint64_t a1)
   [(AXCameraVisionEngine *)self setLastSceneAnnouncementLocation:0];
   [(AXCameraVisionEngine *)self setLastSceneAnnouncementTime:0.0];
   [(AXCameraVisionEngine *)self setLastSceneAnnouncementFullTime:0.0];
-  v3 = [(AXCameraVisionEngine *)self _levelingMotionAnalyzer];
-  [v3 reset];
+  _levelingMotionAnalyzer = [(AXCameraVisionEngine *)self _levelingMotionAnalyzer];
+  [_levelingMotionAnalyzer reset];
 
   [(AXCameraVisionEngine *)self setLastLevelZone:0];
   [(AXCameraVisionEngine *)self setLastLevelZoneChangedTime:0.0];
@@ -228,17 +228,17 @@ uint64_t __36__AXCameraVisionEngine_sharedEngine__block_invoke(uint64_t a1)
   [(AXCameraVisionEngine *)self setLastLevelAnnouncementTime:0.0];
 }
 
-- (void)_dispatchToResultsQueueWithBlock:(id)a3
+- (void)_dispatchToResultsQueueWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AXCameraVisionEngine *)self axResultsQueue];
+  blockCopy = block;
+  axResultsQueue = [(AXCameraVisionEngine *)self axResultsQueue];
   block[0] = MEMORY[0x29EDCA5F8];
   block[1] = 3221225472;
   block[2] = __57__AXCameraVisionEngine__dispatchToResultsQueueWithBlock___block_invoke;
   block[3] = &unk_29F2ACEE8;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(axResultsQueue, block);
 }
 
 void __57__AXCameraVisionEngine__dispatchToResultsQueueWithBlock___block_invoke(uint64_t a1)
@@ -253,15 +253,15 @@ void __57__AXCameraVisionEngine__dispatchToResultsQueueWithBlock___block_invoke(
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_performOnMainQueueWithBlock:(id)a3
+- (void)_performOnMainQueueWithBlock:(id)block
 {
-  v3 = a3;
-  if (v3)
+  blockCopy = block;
+  if (blockCopy)
   {
     if ([MEMORY[0x29EDBA108] isMainThread])
     {
       v4 = objc_autoreleasePoolPush();
-      v3[2](v3);
+      blockCopy[2](blockCopy);
       objc_autoreleasePoolPop(v4);
     }
 
@@ -271,7 +271,7 @@ void __57__AXCameraVisionEngine__dispatchToResultsQueueWithBlock___block_invoke(
       block[1] = 3221225472;
       block[2] = __53__AXCameraVisionEngine__performOnMainQueueWithBlock___block_invoke;
       block[3] = &unk_29F2ACEE8;
-      v6 = v3;
+      v6 = blockCopy;
       dispatch_async(MEMORY[0x29EDCA578], block);
     }
   }
@@ -357,16 +357,16 @@ void __53__AXCameraVisionEngine__performOnMainQueueWithBlock___block_invoke(uint
   return WeakRetained;
 }
 
-- (void)setCaptureSession:(id)a3
+- (void)setCaptureSession:(id)session
 {
-  obj = a3;
+  obj = session;
   WeakRetained = objc_loadWeakRetained(&self->_captureSession);
 
   v5 = obj;
   if (WeakRetained != obj)
   {
-    v6 = [(AXCameraVisionEngine *)self visionEngine];
-    v7 = [v6 canAddSourceNodeClass:objc_opt_class()];
+    visionEngine = [(AXCameraVisionEngine *)self visionEngine];
+    v7 = [visionEngine canAddSourceNodeClass:objc_opt_class()];
 
     v5 = obj;
     if (v7)
@@ -389,9 +389,9 @@ void __53__AXCameraVisionEngine__performOnMainQueueWithBlock___block_invoke(uint
       v4 = [objc_alloc(MEMORY[0x29EDBD708]) initWithIdentifier:@"captureSession"];
       [(AXCameraVisionEngine *)self setCaptureSessionNode:v4];
 
-      v5 = [(AXCameraVisionEngine *)self visionEngine];
-      v6 = [(AXCameraVisionEngine *)self captureSessionNode];
-      [v5 addSourceNode:v6];
+      visionEngine = [(AXCameraVisionEngine *)self visionEngine];
+      captureSessionNode = [(AXCameraVisionEngine *)self captureSessionNode];
+      [visionEngine addSourceNode:captureSessionNode];
     }
 
     v7 = v15;
@@ -401,9 +401,9 @@ void __53__AXCameraVisionEngine__performOnMainQueueWithBlock___block_invoke(uint
     goto LABEL_7;
   }
 
-  v9 = [(AXCameraVisionEngine *)self captureSessionNode];
+  captureSessionNode2 = [(AXCameraVisionEngine *)self captureSessionNode];
 
-  if (v9)
+  if (captureSessionNode2)
   {
     v7 = block;
     block[0] = MEMORY[0x29EDCA5F8];
@@ -417,13 +417,13 @@ LABEL_7:
   }
 
   objc_initWeak(&location, self);
-  v10 = [(AXCameraVisionEngine *)self visionEngine];
+  visionEngine2 = [(AXCameraVisionEngine *)self visionEngine];
   v11[0] = MEMORY[0x29EDCA5F8];
   v11[1] = 3221225472;
   v11[2] = __48__AXCameraVisionEngine__setupCaptureSessionNode__block_invoke_3;
   v11[3] = &unk_29F2ACF38;
   objc_copyWeak(&v12, &location);
-  [v10 addResultHandler:v11];
+  [visionEngine2 addResultHandler:v11];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -482,20 +482,20 @@ void __48__AXCameraVisionEngine__setupCaptureSessionNode__block_invoke_4(uint64_
 - (id)_analysisOptionsForIncomingFrame
 {
   v3 = objc_alloc_init(MEMORY[0x29EDBD760]);
-  v4 = [(AXCameraVisionEngine *)self _hasRealtimeFacesWithoutNames];
-  if (v4 || ![(AXCameraVisionEngine *)self _hasDetectedFaces])
+  _hasRealtimeFacesWithoutNames = [(AXCameraVisionEngine *)self _hasRealtimeFacesWithoutNames];
+  if (_hasRealtimeFacesWithoutNames || ![(AXCameraVisionEngine *)self _hasDetectedFaces])
   {
     [v3 setDetectFaceNames:1];
-    [v3 setDetectFaceRectangles:!v4];
+    [v3 setDetectFaceRectangles:!_hasRealtimeFacesWithoutNames];
   }
 
   v5 = [(AXCameraVisionEngine *)self currentFrameCount]% 0x1E;
-  v6 = [(AXCameraVisionEngine *)self currentFrameCount];
-  v7 = [(AXCameraVisionEngine *)self lastDesiredAnalysisOptions];
+  currentFrameCount = [(AXCameraVisionEngine *)self currentFrameCount];
+  lastDesiredAnalysisOptions = [(AXCameraVisionEngine *)self lastDesiredAnalysisOptions];
   v8 = objc_alloc_init(MEMORY[0x29EDBD760]);
   if ([v3 detectFaceNames])
   {
-    v9 = [v7 detectFaceNames] ^ 1;
+    v9 = [lastDesiredAnalysisOptions detectFaceNames] ^ 1;
     if (v5)
     {
       v10 = v9;
@@ -515,7 +515,7 @@ void __48__AXCameraVisionEngine__setupCaptureSessionNode__block_invoke_4(uint64_
   [v8 setDetectFaceNames:v10];
   if ([v3 detectFaceRectangles])
   {
-    v11 = [v7 detectFaceRectangles] ^ 1;
+    v11 = [lastDesiredAnalysisOptions detectFaceRectangles] ^ 1;
     if (v5)
     {
       v12 = v11;
@@ -535,7 +535,7 @@ void __48__AXCameraVisionEngine__setupCaptureSessionNode__block_invoke_4(uint64_
   [v8 setDetectFaceRectangles:v12];
   if ([v3 detectProminentObjects])
   {
-    v13 = [v7 detectProminentObjects] ^ 1;
+    v13 = [lastDesiredAnalysisOptions detectProminentObjects] ^ 1;
     if (v5)
     {
       v14 = v13;
@@ -555,8 +555,8 @@ void __48__AXCameraVisionEngine__setupCaptureSessionNode__block_invoke_4(uint64_
   [v8 setDetectProminentObjects:v14];
   if ([v3 detectScenes])
   {
-    v15 = [v7 detectScenes] ^ 1;
-    if (v6 % 0x1E)
+    v15 = [lastDesiredAnalysisOptions detectScenes] ^ 1;
+    if (currentFrameCount % 0x1E)
     {
       v16 = v15;
     }
@@ -575,7 +575,7 @@ void __48__AXCameraVisionEngine__setupCaptureSessionNode__block_invoke_4(uint64_
   [v8 setDetectScenes:v16];
   if ([v3 detectHorizon])
   {
-    v17 = [v7 detectHorizon] ^ 1;
+    v17 = [lastDesiredAnalysisOptions detectHorizon] ^ 1;
     if (v5)
     {
       v18 = v17;
@@ -595,7 +595,7 @@ void __48__AXCameraVisionEngine__setupCaptureSessionNode__block_invoke_4(uint64_
   [v8 setDetectHorizon:v18];
   if ([v3 detectAesthetics])
   {
-    v19 = [v7 detectAesthetics] ^ 1;
+    v19 = [lastDesiredAnalysisOptions detectAesthetics] ^ 1;
     if (v5)
     {
       v20 = v19;
@@ -622,8 +622,8 @@ void __48__AXCameraVisionEngine__setupCaptureSessionNode__block_invoke_4(uint64_
 - (BOOL)_hasRealtimeFacesWithoutNames
 {
   v18 = *MEMORY[0x29EDCA608];
-  v3 = [(AXCameraVisionEngine *)self _mostRecentVisionFeatures];
-  v4 = [v3 objectForKeyedSubscript:&unk_2A214D048];
+  _mostRecentVisionFeatures = [(AXCameraVisionEngine *)self _mostRecentVisionFeatures];
+  v4 = [_mostRecentVisionFeatures objectForKeyedSubscript:&unk_2A214D048];
 
   if (v4)
   {
@@ -648,8 +648,8 @@ void __48__AXCameraVisionEngine__setupCaptureSessionNode__block_invoke_4(uint64_
           v9 = *(*(&v13 + 1) + 8 * i);
           if ([v9 isFace])
           {
-            v10 = [v9 faceName];
-            v11 = [v10 length];
+            faceName = [v9 faceName];
+            v11 = [faceName length];
 
             if (!v11)
             {
@@ -682,8 +682,8 @@ LABEL_14:
 
 - (BOOL)_hasDetectedFaces
 {
-  v3 = [(AXCameraVisionEngine *)self _mostRecentVisionFeatures];
-  v4 = [v3 objectForKeyedSubscript:&unk_2A214D060];
+  _mostRecentVisionFeatures = [(AXCameraVisionEngine *)self _mostRecentVisionFeatures];
+  v4 = [_mostRecentVisionFeatures objectForKeyedSubscript:&unk_2A214D060];
   if (v4)
   {
     v5 = 1;
@@ -691,8 +691,8 @@ LABEL_14:
 
   else
   {
-    v6 = [(AXCameraVisionEngine *)self _mostRecentVisionFeatures];
-    v7 = [v6 objectForKeyedSubscript:&unk_2A214D048];
+    _mostRecentVisionFeatures2 = [(AXCameraVisionEngine *)self _mostRecentVisionFeatures];
+    v7 = [_mostRecentVisionFeatures2 objectForKeyedSubscript:&unk_2A214D048];
     v5 = v7 != 0;
   }
 
@@ -701,44 +701,44 @@ LABEL_14:
 
 - (void)_performBecameLevelFeedback
 {
-  v2 = [(AXCameraVisionEngine *)self hapticEngine];
-  [v2 performLevelFeedback];
+  hapticEngine = [(AXCameraVisionEngine *)self hapticEngine];
+  [hapticEngine performLevelFeedback];
 }
 
 - (void)_performBecameUnlevelFeedback
 {
-  v2 = [(AXCameraVisionEngine *)self hapticEngine];
-  [v2 performUnlevelFeedback];
+  hapticEngine = [(AXCameraVisionEngine *)self hapticEngine];
+  [hapticEngine performUnlevelFeedback];
 }
 
 - (void)_performScreenEdgeHaptic
 {
-  v2 = [(AXCameraVisionEngine *)self hapticEngine];
-  [v2 performSubjectHitScreenEdgeFeedback];
+  hapticEngine = [(AXCameraVisionEngine *)self hapticEngine];
+  [hapticEngine performSubjectHitScreenEdgeFeedback];
 }
 
-- (void)_handleVisionFeatures:(id)a3 evaluatedFeatureTypes:(id)a4 userContext:(id)a5
+- (void)_handleVisionFeatures:(id)features evaluatedFeatureTypes:(id)types userContext:(id)context
 {
   v39 = *MEMORY[0x29EDCA608];
-  v8 = a3;
-  v29 = a4;
-  v9 = a5;
-  if (v9)
+  featuresCopy = features;
+  typesCopy = types;
+  contextCopy = context;
+  if (contextCopy)
   {
-    v10 = [(AXCameraVisionEngine *)self lastCameraFrameContext];
-    if (!v10 || (v11 = v10, [v9 presentationTimestamp], v13 = v12, -[AXCameraVisionEngine lastCameraFrameContext](self, "lastCameraFrameContext"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "presentationTimestamp"), v16 = v15, v14, v11, v13 > v16))
+    lastCameraFrameContext = [(AXCameraVisionEngine *)self lastCameraFrameContext];
+    if (!lastCameraFrameContext || (v11 = lastCameraFrameContext, [contextCopy presentationTimestamp], v13 = v12, -[AXCameraVisionEngine lastCameraFrameContext](self, "lastCameraFrameContext"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v14, "presentationTimestamp"), v16 = v15, v14, v11, v13 > v16))
     {
-      [(AXCameraVisionEngine *)self setLastCameraFrameContext:v9];
+      [(AXCameraVisionEngine *)self setLastCameraFrameContext:contextCopy];
     }
   }
 
-  v28 = v9;
-  v17 = [MEMORY[0x29EDB8E00] dictionary];
+  v28 = contextCopy;
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v18 = v8;
+  v18 = featuresCopy;
   v19 = [v18 countByEnumeratingWithState:&v34 objects:v38 count:16];
   if (v19)
   {
@@ -773,11 +773,11 @@ LABEL_14:
         }
 
         v26 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:{objc_msgSend(v23, "featureType")}];
-        v27 = [v17 objectForKeyedSubscript:v26];
+        v27 = [dictionary objectForKeyedSubscript:v26];
         if (!v27)
         {
           v27 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
-          [v17 setObject:v27 forKeyedSubscript:v26];
+          [dictionary setObject:v27 forKeyedSubscript:v26];
         }
 
         [v27 addObject:v23];
@@ -789,26 +789,26 @@ LABEL_14:
     while (v20);
   }
 
-  if ([v29 count])
+  if ([typesCopy count])
   {
-    [(AXCameraVisionEngine *)self _handleUpdatedVisionFeatures:v17 evaluatedFeatureTypes:v29 fromMotionUpdate:0];
+    [(AXCameraVisionEngine *)self _handleUpdatedVisionFeatures:dictionary evaluatedFeatureTypes:typesCopy fromMotionUpdate:0];
   }
 }
 
-- (void)_handleUpdatedVisionFeatures:(id)a3 evaluatedFeatureTypes:(id)a4 fromMotionUpdate:(BOOL)a5
+- (void)_handleUpdatedVisionFeatures:(id)features evaluatedFeatureTypes:(id)types fromMotionUpdate:(BOOL)update
 {
   v26 = *MEMORY[0x29EDCA608];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(AXCameraVisionEngine *)self _mostRecentVisionFeatures];
-  v20 = self;
-  v10 = [(AXCameraVisionEngine *)self _mostRecentVisionFeaturesUpdateTimes];
+  featuresCopy = features;
+  typesCopy = types;
+  _mostRecentVisionFeatures = [(AXCameraVisionEngine *)self _mostRecentVisionFeatures];
+  selfCopy = self;
+  _mostRecentVisionFeaturesUpdateTimes = [(AXCameraVisionEngine *)self _mostRecentVisionFeaturesUpdateTimes];
   Current = CFAbsoluteTimeGetCurrent();
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = v8;
+  v12 = typesCopy;
   v13 = [v12 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v13)
   {
@@ -824,12 +824,12 @@ LABEL_14:
         }
 
         v17 = *(*(&v21 + 1) + 8 * i);
-        v18 = [v7 objectForKeyedSubscript:v17];
+        v18 = [featuresCopy objectForKeyedSubscript:v17];
         if ([v18 count])
         {
-          [v9 setObject:v18 forKeyedSubscript:v17];
+          [_mostRecentVisionFeatures setObject:v18 forKeyedSubscript:v17];
           v19 = [MEMORY[0x29EDBA070] numberWithDouble:Current];
-          [v10 setObject:v19 forKeyedSubscript:v17];
+          [_mostRecentVisionFeaturesUpdateTimes setObject:v19 forKeyedSubscript:v17];
         }
       }
 
@@ -839,22 +839,22 @@ LABEL_14:
     while (v14);
   }
 
-  [(AXCameraVisionEngine *)v20 _purgeExpiredVisionFeaturesUsingTime:Current];
-  [(AXCameraVisionEngine *)v20 _createAccessibilityElementCandidatesForVisionFeatures:v9 evaluatedFeatureTypes:v12];
-  [(AXCameraVisionEngine *)v20 _generateAnnouncementsForVisionFeatures:v9];
+  [(AXCameraVisionEngine *)selfCopy _purgeExpiredVisionFeaturesUsingTime:Current];
+  [(AXCameraVisionEngine *)selfCopy _createAccessibilityElementCandidatesForVisionFeatures:_mostRecentVisionFeatures evaluatedFeatureTypes:v12];
+  [(AXCameraVisionEngine *)selfCopy _generateAnnouncementsForVisionFeatures:_mostRecentVisionFeatures];
 }
 
-- (void)_purgeExpiredVisionFeaturesUsingTime:(double)a3
+- (void)_purgeExpiredVisionFeaturesUsingTime:(double)time
 {
   v23 = *MEMORY[0x29EDCA608];
-  v5 = [(AXCameraVisionEngine *)self _mostRecentVisionFeatures];
-  v6 = [(AXCameraVisionEngine *)self _mostRecentVisionFeaturesUpdateTimes];
-  v7 = [v5 allKeys];
+  _mostRecentVisionFeatures = [(AXCameraVisionEngine *)self _mostRecentVisionFeatures];
+  _mostRecentVisionFeaturesUpdateTimes = [(AXCameraVisionEngine *)self _mostRecentVisionFeaturesUpdateTimes];
+  allKeys = [_mostRecentVisionFeatures allKeys];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v8 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v8)
   {
     v9 = v8;
@@ -865,59 +865,59 @@ LABEL_14:
       {
         if (*v19 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 integerValue];
-        v14 = [v6 objectForKeyedSubscript:v12];
+        integerValue = [v12 integerValue];
+        v14 = [_mostRecentVisionFeaturesUpdateTimes objectForKeyedSubscript:v12];
         [v14 doubleValue];
         v16 = v15;
 
-        [(AXCameraVisionEngine *)self _expirationTimeForFeatureType:v13];
-        if (a3 - v16 >= v17)
+        [(AXCameraVisionEngine *)self _expirationTimeForFeatureType:integerValue];
+        if (time - v16 >= v17)
         {
-          [v5 setObject:0 forKeyedSubscript:v12];
-          [v6 setObject:0 forKeyedSubscript:v12];
+          [_mostRecentVisionFeatures setObject:0 forKeyedSubscript:v12];
+          [_mostRecentVisionFeaturesUpdateTimes setObject:0 forKeyedSubscript:v12];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)_createAccessibilityElementCandidatesForVisionFeatures:(id)a3 evaluatedFeatureTypes:(id)a4
+- (void)_createAccessibilityElementCandidatesForVisionFeatures:(id)features evaluatedFeatureTypes:(id)types
 {
   v116 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AXCameraVisionEngine *)self sceneObjectElementContainerView];
+  featuresCopy = features;
+  typesCopy = types;
+  sceneObjectElementContainerView = [(AXCameraVisionEngine *)self sceneObjectElementContainerView];
 
-  if (v8)
+  if (sceneObjectElementContainerView)
   {
-    v9 = [(AXCameraVisionEngine *)self lastDeviceMotion];
-    v10 = [v9 attitude];
+    lastDeviceMotion = [(AXCameraVisionEngine *)self lastDeviceMotion];
+    attitude = [lastDeviceMotion attitude];
 
-    v11 = [(AXCameraVisionEngine *)self lastCameraFrameContext];
-    v84 = v10;
-    v12 = v7;
-    if (v11)
+    lastCameraFrameContext = [(AXCameraVisionEngine *)self lastCameraFrameContext];
+    v84 = attitude;
+    v12 = typesCopy;
+    if (lastCameraFrameContext)
     {
       v13 = objc_alloc(MEMORY[0x29EDBD720]);
-      [v11 videoFieldOfView];
+      [lastCameraFrameContext videoFieldOfView];
       v15 = v14;
-      [v11 videoZoomFactor];
+      [lastCameraFrameContext videoZoomFactor];
       v17 = v16;
-      v18 = [v11 videoSourceWidth];
-      v19 = [v11 videoSourceHeight];
-      [v11 presentationTimestamp];
+      videoSourceWidth = [lastCameraFrameContext videoSourceWidth];
+      videoSourceHeight = [lastCameraFrameContext videoSourceHeight];
+      [lastCameraFrameContext presentationTimestamp];
       v21 = v20;
       LODWORD(v20) = v15;
       LODWORD(v22) = v17;
-      v95 = [v13 initWithVideoFieldOfView:v18 zoomFactor:v19 sourceWidth:v10 sourceHeight:v20 presentationTimestamp:v22 attitude:v21];
+      v95 = [v13 initWithVideoFieldOfView:videoSourceWidth zoomFactor:videoSourceHeight sourceWidth:attitude sourceHeight:v20 presentationTimestamp:v22 attitude:v21];
     }
 
     else
@@ -925,9 +925,9 @@ LABEL_14:
       v95 = 0;
     }
 
-    v91 = [MEMORY[0x29EDB8DE8] array];
-    v23 = [(AXCameraVisionEngine *)self _accessibilityElementCandidates];
-    v24 = [v23 mutableCopy];
+    array = [MEMORY[0x29EDB8DE8] array];
+    _accessibilityElementCandidates = [(AXCameraVisionEngine *)self _accessibilityElementCandidates];
+    v24 = [_accessibilityElementCandidates mutableCopy];
 
     v92 = [MEMORY[0x29EDB8E20] set];
     v108 = 0u;
@@ -966,21 +966,21 @@ LABEL_14:
       while (v26);
     }
 
-    v83 = v11;
+    v83 = lastCameraFrameContext;
 
     v106 = 0u;
     v107 = 0u;
     v104 = 0u;
     v105 = 0u;
-    v7 = v12;
-    v31 = v91;
+    typesCopy = v12;
+    v31 = array;
     v86 = [&unk_2A214D0F0 countByEnumeratingWithState:&v104 objects:v114 count:16];
     if (v86)
     {
       v85 = *v105;
       v88 = *MEMORY[0x29EDC7FF0];
       v89 = v12;
-      v90 = v6;
+      v90 = featuresCopy;
       do
       {
         v32 = 0;
@@ -992,7 +992,7 @@ LABEL_14:
           }
 
           v87 = v32;
-          v33 = [v6 objectForKeyedSubscript:*(*(&v104 + 1) + 8 * v32)];
+          v33 = [featuresCopy objectForKeyedSubscript:*(*(&v104 + 1) + 8 * v32)];
           v100 = 0u;
           v101 = 0u;
           v102 = 0u;
@@ -1018,7 +1018,7 @@ LABEL_14:
                 v42 = v41;
                 v44 = v43;
                 v46 = v45;
-                if (![(AXCameraVisionEngine *)self _updateAccessibilityElements:v31 forIncomingFeature:v38 correctedFrame:v7 evaluatedFeatureTypes:?]&& [(AXCameraVisionEngine *)self _canCreateAccessibilityElementForFeature:v38 correctedFrame:v6 allFeatures:v40, v42, v44, v46])
+                if (![(AXCameraVisionEngine *)self _updateAccessibilityElements:v31 forIncomingFeature:v38 correctedFrame:typesCopy evaluatedFeatureTypes:?]&& [(AXCameraVisionEngine *)self _canCreateAccessibilityElementForFeature:v38 correctedFrame:featuresCopy allFeatures:v40, v42, v44, v46])
                 {
                   v98 = 0u;
                   v99 = 0u;
@@ -1074,12 +1074,12 @@ LABEL_34:
 
 LABEL_37:
                     v54 = [AXCameraAccessibilityElement alloc];
-                    v55 = [(AXCameraVisionEngine *)self sceneObjectElementContainerView];
-                    v53 = [(AXCameraAccessibilityElement *)v54 initWithAccessibilityContainer:v55];
+                    sceneObjectElementContainerView2 = [(AXCameraVisionEngine *)self sceneObjectElementContainerView];
+                    v53 = [(AXCameraAccessibilityElement *)v54 initWithAccessibilityContainer:sceneObjectElementContainerView2];
                   }
 
-                  v56 = [(AXCameraVisionEngine *)self sceneObjectElementContainerView];
-                  [v56 bounds];
+                  sceneObjectElementContainerView3 = [(AXCameraVisionEngine *)self sceneObjectElementContainerView];
+                  [sceneObjectElementContainerView3 bounds];
                   [(AXCameraVisionEngine *)self _sceneObjectFrameForNormalizedFrame:v40 inSceneFrame:v42, v44, v46, v57, v58, v59, v60];
                   v62 = v61;
                   v64 = v63;
@@ -1094,11 +1094,11 @@ LABEL_37:
                   [(AXCameraAccessibilityElement *)v53 setConfidence:?];
                   [(AXCameraAccessibilityElement *)v53 setAccessibilityTraits:v88 | [(AXCameraAccessibilityElement *)v53 accessibilityTraits]];
                   [(AXCameraAccessibilityElement *)v53 setAccessibilityFrameInContainerSpace:v62, v64, v66, v68];
-                  v70 = [v38 classificationLocalizedValue];
-                  [(AXCameraAccessibilityElement *)v53 setClassificationLocalizedValue:v70];
+                  classificationLocalizedValue = [v38 classificationLocalizedValue];
+                  [(AXCameraAccessibilityElement *)v53 setClassificationLocalizedValue:classificationLocalizedValue];
 
-                  v71 = [v38 classificationLabel];
-                  [(AXCameraAccessibilityElement *)v53 setClassificationLabel:v71];
+                  classificationLabel = [v38 classificationLabel];
+                  [(AXCameraAccessibilityElement *)v53 setClassificationLabel:classificationLabel];
 
                   [(AXCameraAccessibilityElement *)v53 setCameraFrameContext:v95];
                   if ([v92 containsObject:v53])
@@ -1114,23 +1114,23 @@ LABEL_37:
                   }
 
                   [(AXCameraAccessibilityElement *)v53 setDidCrossEdge:v72];
-                  v74 = [(AXCameraAccessibilityElement *)v53 faceName];
-                  if ([v74 length])
+                  faceName = [(AXCameraAccessibilityElement *)v53 faceName];
+                  if ([faceName length])
                   {
 LABEL_44:
                   }
 
                   else
                   {
-                    v75 = [v38 faceDetectionResult];
-                    v76 = [v75 name];
-                    v77 = [v76 length];
+                    faceDetectionResult = [v38 faceDetectionResult];
+                    name = [faceDetectionResult name];
+                    v77 = [name length];
 
                     if (v77)
                     {
-                      v74 = [v38 faceDetectionResult];
-                      v78 = [v74 name];
-                      [(AXCameraAccessibilityElement *)v53 setFaceName:v78];
+                      faceName = [v38 faceDetectionResult];
+                      name2 = [faceName name];
+                      [(AXCameraAccessibilityElement *)v53 setFaceName:name2];
 
                       goto LABEL_44;
                     }
@@ -1141,21 +1141,21 @@ LABEL_44:
                     -[AXCameraAccessibilityElement setFaceID:](v53, "setFaceID:", [v38 faceId]);
                   }
 
-                  v79 = [v38 faceDetectionResult];
-                  v80 = [v79 attributes];
+                  faceDetectionResult2 = [v38 faceDetectionResult];
+                  attributes = [faceDetectionResult2 attributes];
 
-                  v6 = v90;
-                  if (v80)
+                  featuresCopy = v90;
+                  if (attributes)
                   {
-                    v81 = [v38 faceDetectionResult];
-                    v82 = [v81 attributes];
-                    [(AXCameraAccessibilityElement *)v53 setFaceAttributes:v82];
+                    faceDetectionResult3 = [v38 faceDetectionResult];
+                    attributes2 = [faceDetectionResult3 attributes];
+                    [(AXCameraAccessibilityElement *)v53 setFaceAttributes:attributes2];
                   }
 
-                  v31 = v91;
-                  [v91 addObject:v53];
+                  v31 = array;
+                  [array addObject:v53];
 
-                  v7 = v89;
+                  typesCopy = v89;
                   v33 = v94;
                   continue;
                 }
@@ -1181,13 +1181,13 @@ LABEL_44:
   }
 }
 
-- (BOOL)_canCreateAccessibilityElementForFeature:(id)a3 correctedFrame:(CGRect)a4 allFeatures:(id)a5
+- (BOOL)_canCreateAccessibilityElementForFeature:(id)feature correctedFrame:(CGRect)frame allFeatures:(id)features
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  featureCopy = feature;
   v15.origin.x = x;
   v15.origin.y = y;
   v15.size.width = width;
@@ -1234,25 +1234,25 @@ LABEL_44:
   v20.size.width = width;
   v20.size.height = height;
   v13 = CGRectGetHeight(v20);
-  if ([v10 isPerson])
+  if ([featureCopy isPerson])
   {
     LOBYTE(self) = [(AXCameraVisionEngine *)self cameraDevicePosition]!= 1;
     goto LABEL_6;
   }
 
   v14 = v12 * v13;
-  if ([v10 isProminentObject])
+  if ([featureCopy isProminentObject])
   {
 LABEL_10:
     LOBYTE(self) = v14 >= 0.005;
     goto LABEL_6;
   }
 
-  if (([v10 isSceneClassification] & 1) == 0)
+  if (([featureCopy isSceneClassification] & 1) == 0)
   {
-    if (![v10 isObjectClassification])
+    if (![featureCopy isObjectClassification])
     {
-      LODWORD(self) = [v10 isFace] ^ 1;
+      LODWORD(self) = [featureCopy isFace] ^ 1;
       goto LABEL_6;
     }
 
@@ -1266,13 +1266,13 @@ LABEL_6:
   return self;
 }
 
-- (BOOL)_updateAccessibilityElements:(id)a3 forIncomingFeature:(id)a4 correctedFrame:(CGRect)a5 evaluatedFeatureTypes:(id)a6
+- (BOOL)_updateAccessibilityElements:(id)elements forIncomingFeature:(id)feature correctedFrame:(CGRect)frame evaluatedFeatureTypes:(id)types
 {
   v65 = *MEMORY[0x29EDCA608];
-  v8 = a3;
-  v9 = a4;
-  v10 = a6;
-  if ([v9 isFace] && !objc_msgSend(v10, "containsObject:", &unk_2A214D060))
+  elementsCopy = elements;
+  featureCopy = feature;
+  typesCopy = types;
+  if ([featureCopy isFace] && !objc_msgSend(typesCopy, "containsObject:", &unk_2A214D060))
   {
     v39 = 1;
   }
@@ -1283,7 +1283,7 @@ LABEL_6:
     v63 = 0u;
     v60 = 0u;
     v61 = 0u;
-    v11 = v8;
+    v11 = elementsCopy;
     v12 = [v11 countByEnumeratingWithState:&v60 objects:v64 count:16];
     if (v12)
     {
@@ -1300,8 +1300,8 @@ LABEL_5:
         }
 
         v16 = *(*(&v60 + 1) + 8 * v15);
-        v17 = [v9 featureType];
-        if (v17 != [v16 featureType])
+        featureType = [featureCopy featureType];
+        if (featureType != [v16 featureType])
         {
           [v16 normalizedFrame];
           v19 = v18;
@@ -1312,14 +1312,14 @@ LABEL_5:
           v73.origin.y = v20;
           v73.size.width = v22;
           v73.size.height = v24;
-          v66 = CGRectIntersection(a5, v73);
+          v66 = CGRectIntersection(frame, v73);
           x = v66.origin.x;
           y = v66.origin.y;
           width = v66.size.width;
           height = v66.size.height;
           if (!CGRectIsNull(v66))
           {
-            if ([v16 isPerson] && ((objc_msgSend(v9, "isFace") & 1) != 0 || objc_msgSend(v9, "isRealtimeFace")))
+            if ([v16 isPerson] && ((objc_msgSend(featureCopy, "isFace") & 1) != 0 || objc_msgSend(featureCopy, "isRealtimeFace")))
             {
               v67.origin.x = x;
               v67.origin.y = y;
@@ -1331,41 +1331,41 @@ LABEL_5:
               v68.size.width = width;
               v68.size.height = height;
               v31 = v30 * CGRectGetHeight(v68);
-              v32 = CGRectGetWidth(a5);
-              if (v31 >= v32 * CGRectGetHeight(a5) * 0.2)
+              v32 = CGRectGetWidth(frame);
+              if (v31 >= v32 * CGRectGetHeight(frame) * 0.2)
               {
-                v40 = [v16 faceName];
-                if ([v40 length])
+                faceName = [v16 faceName];
+                if ([faceName length])
                 {
 LABEL_33:
                 }
 
                 else
                 {
-                  v41 = [v9 faceDetectionResult];
-                  v42 = [v41 name];
-                  v43 = [v42 length];
+                  faceDetectionResult = [featureCopy faceDetectionResult];
+                  name = [faceDetectionResult name];
+                  v43 = [name length];
 
                   if (v43)
                   {
-                    v40 = [v9 faceDetectionResult];
-                    v44 = [v40 name];
-                    [v16 setFaceName:v44];
+                    faceName = [featureCopy faceDetectionResult];
+                    name2 = [faceName name];
+                    [v16 setFaceName:name2];
 
                     goto LABEL_33;
                   }
                 }
 
-                if (![v16 faceID] && objc_msgSend(v9, "faceId"))
+                if (![v16 faceID] && objc_msgSend(featureCopy, "faceId"))
                 {
-                  [v16 setFaceID:{objc_msgSend(v9, "faceId")}];
+                  [v16 setFaceID:{objc_msgSend(featureCopy, "faceId")}];
                 }
 
                 goto LABEL_42;
               }
             }
 
-            else if ([v16 featureType] == 6 && objc_msgSend(v9, "isFace"))
+            else if ([v16 featureType] == 6 && objc_msgSend(featureCopy, "isFace"))
             {
               v69.origin.x = v19;
               v69.origin.y = v21;
@@ -1377,8 +1377,8 @@ LABEL_33:
               v70.size.width = v23;
               v70.size.height = v25;
               v58 = v57 * CGRectGetHeight(v70);
-              v56 = CGRectGetWidth(a5);
-              v33 = v56 * CGRectGetHeight(a5);
+              v56 = CGRectGetWidth(frame);
+              v33 = v56 * CGRectGetHeight(frame);
               v71.origin.x = x;
               v71.origin.y = y;
               v71.size.width = width;
@@ -1407,37 +1407,37 @@ LABEL_22:
                   v37 = v34 * v35;
                   if (v37 >= v36 * 0.65 && v37 >= v33 * 0.65)
                   {
-                    v45 = [v16 faceName];
-                    if ([v45 length])
+                    faceName2 = [v16 faceName];
+                    if ([faceName2 length])
                     {
 LABEL_41:
                     }
 
                     else
                     {
-                      v46 = [v9 faceDetectionResult];
-                      v47 = [v46 name];
-                      v48 = [v47 length];
+                      faceDetectionResult2 = [featureCopy faceDetectionResult];
+                      name3 = [faceDetectionResult2 name];
+                      v48 = [name3 length];
 
                       if (v48)
                       {
-                        v45 = [v9 faceDetectionResult];
-                        v49 = [v45 name];
-                        [v16 setFaceName:v49];
+                        faceName2 = [featureCopy faceDetectionResult];
+                        name4 = [faceName2 name];
+                        [v16 setFaceName:name4];
 
                         goto LABEL_41;
                       }
                     }
 
 LABEL_42:
-                    v50 = [v9 faceDetectionResult];
-                    v51 = [v50 attributes];
+                    faceDetectionResult3 = [featureCopy faceDetectionResult];
+                    attributes = [faceDetectionResult3 attributes];
 
-                    if (v51)
+                    if (attributes)
                     {
-                      v52 = [v9 faceDetectionResult];
-                      v53 = [v52 attributes];
-                      [v16 setFaceAttributes:v53];
+                      faceDetectionResult4 = [featureCopy faceDetectionResult];
+                      attributes2 = [faceDetectionResult4 attributes];
+                      [v16 setFaceAttributes:attributes2];
                     }
 
                     v39 = 1;
@@ -1469,31 +1469,31 @@ LABEL_45:
   return v39;
 }
 
-- (BOOL)_shouldReuseExistingElement:(id)a3 forFeature:(id)a4 correctedFrame:(CGRect)a5
+- (BOOL)_shouldReuseExistingElement:(id)element forFeature:(id)feature correctedFrame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a3;
-  v11 = a4;
-  v12 = [v11 featureType];
-  if (v12 != [v10 featureType])
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  elementCopy = element;
+  featureCopy = feature;
+  featureType = [featureCopy featureType];
+  if (featureType != [elementCopy featureType])
   {
     goto LABEL_6;
   }
 
-  if ([v10 faceID])
+  if ([elementCopy faceID])
   {
-    v13 = [v10 faceID];
-    if (v13 == [v11 faceId])
+    faceID = [elementCopy faceID];
+    if (faceID == [featureCopy faceId])
     {
       v14 = 1;
       goto LABEL_7;
     }
   }
 
-  [v10 normalizedFrame];
+  [elementCopy normalizedFrame];
   v41.origin.x = x;
   v41.origin.y = y;
   v41.size.width = width;
@@ -1514,7 +1514,7 @@ LABEL_6:
   v29 = v17;
   v30 = v16;
   v31 = v15;
-  [v10 normalizedFrame];
+  [elementCopy normalizedFrame];
   v20 = v35.origin.x;
   v21 = v35.origin.y;
   v22 = v35.size.width;
@@ -1567,30 +1567,30 @@ LABEL_7:
   return v14;
 }
 
-- (void)_generateAnnouncementsForVisionFeatures:(id)a3
+- (void)_generateAnnouncementsForVisionFeatures:(id)features
 {
-  v4 = a3;
-  v5 = [(AXCameraVisionEngine *)self sceneObjectElementContainerView];
+  featuresCopy = features;
+  sceneObjectElementContainerView = [(AXCameraVisionEngine *)self sceneObjectElementContainerView];
 
-  if (v5)
+  if (sceneObjectElementContainerView)
   {
     v7 = 0;
     v8 = 0;
-    v6 = [(AXCameraVisionEngine *)self _sceneDescriptionAnnouncementForVisionFeatures:v4 previousAnnouncementLocation:[(AXCameraVisionEngine *)self lastSceneAnnouncementLocation] locationForAnnouncement:&v8 announcementType:&v7];
+    v6 = [(AXCameraVisionEngine *)self _sceneDescriptionAnnouncementForVisionFeatures:featuresCopy previousAnnouncementLocation:[(AXCameraVisionEngine *)self lastSceneAnnouncementLocation] locationForAnnouncement:&v8 announcementType:&v7];
     [(AXCameraVisionEngine *)self _attemptSceneDescriptionAnnouncement:v6 locationForAnnouncement:v8 type:v7];
   }
 }
 
-- (id)_sceneDescriptionAnnouncementForVisionFeatures:(id)a3 previousAnnouncementLocation:(int64_t)a4 locationForAnnouncement:(int64_t *)a5 announcementType:(int64_t *)a6
+- (id)_sceneDescriptionAnnouncementForVisionFeatures:(id)features previousAnnouncementLocation:(int64_t)location locationForAnnouncement:(int64_t *)announcement announcementType:(int64_t *)type
 {
   v132[2] = *MEMORY[0x29EDCA608];
-  v9 = [a3 objectForKeyedSubscript:&unk_2A214D0C0];
-  v10 = [(AXCameraVisionEngine *)self _accessibilityElementCandidates];
+  v9 = [features objectForKeyedSubscript:&unk_2A214D0C0];
+  _accessibilityElementCandidates = [(AXCameraVisionEngine *)self _accessibilityElementCandidates];
   v125 = 0;
   v126 = 0;
   v123 = 0;
   v124 = 0;
-  [(AXCameraVisionEngine *)self _sortedAndFilteredAccessibilityElements:v10 faces:&v126 persons:&v125 prominentObjects:&v124 objectClassifications:&v123];
+  [(AXCameraVisionEngine *)self _sortedAndFilteredAccessibilityElements:_accessibilityElementCandidates faces:&v126 persons:&v125 prominentObjects:&v124 objectClassifications:&v123];
   v11 = v126;
   v12 = v125;
   v103 = v124;
@@ -1614,35 +1614,35 @@ LABEL_7:
     v104 = [v16 localizedStringWithFormat:v18, v13];
   }
 
-  v101 = a5;
-  v102 = a6;
+  announcementCopy = announcement;
+  typeCopy = type;
   v99 = v12;
   v100 = v11;
   if (v13)
   {
     if (v13 == 1)
     {
-      v19 = [v106 firstObject];
-      v20 = [v19 faceName];
-      if ([v20 length])
+      firstObject = [v106 firstObject];
+      faceName = [firstObject faceName];
+      if ([faceName length])
       {
-        v21 = [v19 faceName];
+        faceName2 = [firstObject faceName];
       }
 
       else
       {
-        v21 = v104;
+        faceName2 = v104;
       }
 
-      v45 = v21;
+      v45 = faceName2;
 
       if ([v105 count] == 1)
       {
-        v46 = [v105 firstObject];
-        [v46 classificationLocalizedValue];
+        firstObject2 = [v105 firstObject];
+        [firstObject2 classificationLocalizedValue];
         v47 = v97 = v9;
-        v132[0] = v19;
-        v132[1] = v46;
+        v132[0] = firstObject;
+        v132[1] = firstObject2;
         v26 = 2;
         v25 = [MEMORY[0x29EDB8D80] arrayWithObjects:v132 count:2];
         [(AXCameraVisionEngine *)self _normalizedFrameForAccessibilityElements:v25];
@@ -1652,16 +1652,16 @@ LABEL_7:
         v55 = v54;
         v56 = MEMORY[0x29EDBA0F8];
         v57 = accessibilityCameraUILocalizedString(@"subjects.first.and.second");
-        v23 = [v56 localizedStringWithFormat:v57, v45, v47];
+        buildSpeakableDescription = [v56 localizedStringWithFormat:v57, v45, v47];
 
-        v24 = [MEMORY[0x29EDBD770] locationForNormalizedFrame:a4 previousLocation:-[AXCameraVisionEngine useThirdsForLocation](self usingThirds:{"useThirdsForLocation"), v49, v51, v53, v55}];
+        location = [MEMORY[0x29EDBD770] locationForNormalizedFrame:location previousLocation:-[AXCameraVisionEngine useThirdsForLocation](self usingThirds:{"useThirdsForLocation"), v49, v51, v53, v55}];
         v9 = v97;
       }
 
       else
       {
-        v23 = v45;
-        v24 = [v19 location];
+        buildSpeakableDescription = v45;
+        location = [firstObject location];
         v25 = v106;
         v26 = 1;
       }
@@ -1691,13 +1691,13 @@ LABEL_7:
           }
 
           v33 = *(*(&v119 + 1) + 8 * i);
-          v34 = [v33 faceName];
-          v35 = [v34 length];
+          faceName3 = [v33 faceName];
+          v35 = [faceName3 length];
 
           if (v35)
           {
-            v36 = [v33 faceName];
-            [v27 addObject:v36];
+            faceName4 = [v33 faceName];
+            [v27 addObject:faceName4];
           }
         }
 
@@ -1709,8 +1709,8 @@ LABEL_7:
 
     if ([v27 count])
     {
-      v37 = [v27 allObjects];
-      v38 = [v37 sortedArrayUsingComparator:&__block_literal_global_6];
+      allObjects = [v27 allObjects];
+      v38 = [allObjects sortedArrayUsingComparator:&__block_literal_global_6];
 
       v117 = 0u;
       v118 = 0u;
@@ -1766,37 +1766,37 @@ LABEL_7:
         v81 = accessibilityCameraUILocalizedString(@"subjects.first.and.second");
         v82 = [v38 objectAtIndexedSubscript:0];
         v83 = [v38 objectAtIndexedSubscript:1];
-        v23 = [v80 localizedStringWithFormat:v81, v82, v83];
+        buildSpeakableDescription = [v80 localizedStringWithFormat:v81, v82, v83];
       }
 
       else
       {
         if (v78 == 1)
         {
-          v79 = [v38 firstObject];
+          firstObject3 = [v38 firstObject];
         }
 
         else
         {
-          v79 = v104;
+          firstObject3 = v104;
         }
 
-        v23 = v79;
+        buildSpeakableDescription = firstObject3;
       }
 
       v9 = v96;
-      v71 = a4;
+      locationCopy2 = location;
     }
 
     else
     {
-      v23 = v104;
+      buildSpeakableDescription = v104;
       v9 = v96;
-      v71 = a4;
+      locationCopy2 = location;
     }
 
     [(AXCameraVisionEngine *)self _normalizedFrameForAccessibilityElements:v28];
-    v24 = [MEMORY[0x29EDBD770] locationForNormalizedFrame:v71 previousLocation:-[AXCameraVisionEngine useThirdsForLocation](self usingThirds:{"useThirdsForLocation"), v84, v85, v86, v87}];
+    location = [MEMORY[0x29EDBD770] locationForNormalizedFrame:locationCopy2 previousLocation:-[AXCameraVisionEngine useThirdsForLocation](self usingThirds:{"useThirdsForLocation"), v84, v85, v86, v87}];
     v25 = v28;
 
 LABEL_56:
@@ -1806,10 +1806,10 @@ LABEL_56:
 
   if ([v103 count])
   {
-    v22 = [v103 firstObject];
-    v23 = accessibilityCameraUILocalizedString(@"prominent.object");
-    v24 = [v22 location];
-    v129 = v22;
+    firstObject4 = [v103 firstObject];
+    buildSpeakableDescription = accessibilityCameraUILocalizedString(@"prominent.object");
+    location = [firstObject4 location];
+    v129 = firstObject4;
     v25 = [MEMORY[0x29EDB8D80] arrayWithObjects:&v129 count:1];
 
     v26 = 3;
@@ -1822,17 +1822,17 @@ LABEL_56:
     {
       v95 = [MEMORY[0x29EDBD728] builderWithOptions:0];
       [v95 addDetectedClassificationFeatures:v9];
-      v23 = [v95 buildSpeakableDescription];
+      buildSpeakableDescription = [v95 buildSpeakableDescription];
 
       v25 = 0;
-      v24 = 0;
+      location = 0;
       v26 = 5;
       goto LABEL_57;
     }
 
-    v23 = v104;
+    buildSpeakableDescription = v104;
     v25 = 0;
-    v24 = 0;
+    location = 0;
     goto LABEL_56;
   }
 
@@ -1857,9 +1857,9 @@ LABEL_56:
         }
 
         v64 = *(*(&v111 + 1) + 8 * k);
-        v65 = [v64 classificationLocalizedValue];
-        v66 = [v64 classificationLabel];
-        [v58 addDetectedClassificationLocalizedValue:v65 forLabel:v66];
+        classificationLocalizedValue = [v64 classificationLocalizedValue];
+        classificationLabel = [v64 classificationLabel];
+        [v58 addDetectedClassificationLocalizedValue:classificationLocalizedValue forLabel:classificationLabel];
       }
 
       v61 = [v59 countByEnumeratingWithState:&v111 objects:v128 count:16];
@@ -1870,22 +1870,22 @@ LABEL_56:
 
   if ([v59 count] > 2)
   {
-    v24 = 0;
+    location = 0;
   }
 
   else
   {
     [(AXCameraVisionEngine *)self _normalizedFrameForAccessibilityElements:v59];
-    v24 = [MEMORY[0x29EDBD770] locationForNormalizedFrame:a4 previousLocation:-[AXCameraVisionEngine useThirdsForLocation](self usingThirds:{"useThirdsForLocation"), v67, v68, v69, v70}];
+    location = [MEMORY[0x29EDBD770] locationForNormalizedFrame:location previousLocation:-[AXCameraVisionEngine useThirdsForLocation](self usingThirds:{"useThirdsForLocation"), v67, v68, v69, v70}];
   }
 
-  v23 = [v58 buildSpeakableDescription];
+  buildSpeakableDescription = [v58 buildSpeakableDescription];
   v25 = v59;
 
   v26 = 4;
 LABEL_57:
-  v88 = [(AXCameraVisionEngine *)self sceneObjectElementContainerView];
-  [v88 setAccessibilityElements:v25];
+  sceneObjectElementContainerView = [(AXCameraVisionEngine *)self sceneObjectElementContainerView];
+  [sceneObjectElementContainerView setAccessibilityElements:v25];
 
   UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
   v109 = 0u;
@@ -1926,22 +1926,22 @@ LABEL_57:
 
 LABEL_67:
 
-  if (v101)
+  if (announcementCopy)
   {
-    *v101 = v24;
+    *announcementCopy = location;
   }
 
-  if (v102)
+  if (typeCopy)
   {
-    *v102 = v26;
+    *typeCopy = v26;
   }
 
-  return v23;
+  return buildSpeakableDescription;
 }
 
-- (void)_attemptSceneDescriptionAnnouncement:(id)a3 locationForAnnouncement:(int64_t)a4 type:(int64_t)a5
+- (void)_attemptSceneDescriptionAnnouncement:(id)announcement locationForAnnouncement:(int64_t)forAnnouncement type:(int64_t)type
 {
-  v27 = a3;
+  announcementCopy = announcement;
   [(AXCameraVisionEngine *)self setPreviousSceneAnnouncementCandidateWithoutLocation:?];
   Current = CFAbsoluteTimeGetCurrent();
   [(AXCameraVisionEngine *)self lastSceneAnnouncementTime];
@@ -1951,15 +1951,15 @@ LABEL_67:
   [(AXCameraVisionEngine *)self previousSceneAnnouncementCandidateWithoutLocationChangedTime];
   if (Current - v13 >= 1.5 || v10 >= 4.5)
   {
-    v15 = [(AXCameraVisionEngine *)self lastSceneAnnouncementWithoutLocation];
-    v16 = [v27 isEqualToString:v15];
+    lastSceneAnnouncementWithoutLocation = [(AXCameraVisionEngine *)self lastSceneAnnouncementWithoutLocation];
+    v16 = [announcementCopy isEqualToString:lastSceneAnnouncementWithoutLocation];
 
     if (v16)
     {
       v17 = Current - v12;
-      v18 = [(AXCameraVisionEngine *)self lastSceneAnnouncementLocation];
+      lastSceneAnnouncementLocation = [(AXCameraVisionEngine *)self lastSceneAnnouncementLocation];
       v19 = 30.0;
-      if (v18 == a4)
+      if (lastSceneAnnouncementLocation == forAnnouncement)
       {
         if (v17 >= 30.0)
         {
@@ -1977,9 +1977,9 @@ LABEL_10:
         v19 = 2.0;
         if (v10 >= 2.0)
         {
-          v22 = [(AXCameraVisionEngine *)self lastAnnouncementType];
-          v20 = v22 == a5;
-          v21 = v22 != a5;
+          lastAnnouncementType = [(AXCameraVisionEngine *)self lastAnnouncementType];
+          v20 = lastAnnouncementType == type;
+          v21 = lastAnnouncementType != type;
           goto LABEL_15;
         }
 
@@ -2000,29 +2000,29 @@ LABEL_14:
     v20 = 0;
     v21 = 1;
 LABEL_15:
-    if (a4)
+    if (forAnnouncement)
     {
-      v23 = [MEMORY[0x29EDBD770] localizedStringForLocation:a4 isSubjectImplicit:{0, v19}];
-      v24 = [MEMORY[0x29EDBA0F8] localizedStringWithFormat:v23, v27];
+      v23 = [MEMORY[0x29EDBD770] localizedStringForLocation:forAnnouncement isSubjectImplicit:{0, v19}];
+      announcementCopy = [MEMORY[0x29EDBA0F8] localizedStringWithFormat:v23, announcementCopy];
 
       if (v20)
       {
 LABEL_17:
-        v25 = [MEMORY[0x29EDBD770] localizedStringForLocation:a4 isSubjectImplicit:1];
+        v25 = [MEMORY[0x29EDBD770] localizedStringForLocation:forAnnouncement isSubjectImplicit:1];
         goto LABEL_20;
       }
     }
 
     else
     {
-      v24 = v27;
+      announcementCopy = announcementCopy;
       if (v20)
       {
         goto LABEL_17;
       }
     }
 
-    v25 = v24;
+    v25 = announcementCopy;
     if (!v21)
     {
 LABEL_23:
@@ -2031,13 +2031,13 @@ LABEL_23:
     }
 
 LABEL_20:
-    v26 = [v25 isEqualToString:v24];
-    if ([(AXCameraVisionEngine *)self _attemptAnnouncement:v25 type:a5 isPartial:v26 ^ 1u timestamp:Current])
+    v26 = [v25 isEqualToString:announcementCopy];
+    if ([(AXCameraVisionEngine *)self _attemptAnnouncement:v25 type:type isPartial:v26 ^ 1u timestamp:Current])
     {
       [(AXCameraVisionEngine *)self setLastSceneAnnouncement:v25];
-      [(AXCameraVisionEngine *)self setLastSceneAnnouncementFull:v24];
-      [(AXCameraVisionEngine *)self setLastSceneAnnouncementWithoutLocation:v27];
-      [(AXCameraVisionEngine *)self setLastSceneAnnouncementLocation:a4];
+      [(AXCameraVisionEngine *)self setLastSceneAnnouncementFull:announcementCopy];
+      [(AXCameraVisionEngine *)self setLastSceneAnnouncementWithoutLocation:announcementCopy];
+      [(AXCameraVisionEngine *)self setLastSceneAnnouncementLocation:forAnnouncement];
       [(AXCameraVisionEngine *)self setLastSceneAnnouncementTime:Current];
       if (v26)
       {
@@ -2051,17 +2051,17 @@ LABEL_20:
 LABEL_24:
 }
 
-- (BOOL)_attemptAnnouncement:(id)a3 type:(int64_t)a4 isPartial:(BOOL)a5 timestamp:(double)a6
+- (BOOL)_attemptAnnouncement:(id)announcement type:(int64_t)type isPartial:(BOOL)partial timestamp:(double)timestamp
 {
-  v7 = a5;
-  v10 = a3;
-  if (v10 && [(AXCameraVisionEngine *)self _canPostAnnouncement:v10 type:a4 isPartial:v7 timestamp:a6])
+  partialCopy = partial;
+  announcementCopy = announcement;
+  if (announcementCopy && [(AXCameraVisionEngine *)self _canPostAnnouncement:announcementCopy type:type isPartial:partialCopy timestamp:timestamp])
   {
-    [(AXCameraVisionEngine *)self setInflightAnnouncement:v10];
-    [(AXCameraVisionEngine *)self setLastAnnouncement:v10];
-    [(AXCameraVisionEngine *)self setLastAnnouncementType:a4];
-    [(AXCameraVisionEngine *)self setLastAnnouncementPartial:v7];
-    [(AXCameraVisionEngine *)self setLastAnnouncementTime:a6];
+    [(AXCameraVisionEngine *)self setInflightAnnouncement:announcementCopy];
+    [(AXCameraVisionEngine *)self setLastAnnouncement:announcementCopy];
+    [(AXCameraVisionEngine *)self setLastAnnouncementType:type];
+    [(AXCameraVisionEngine *)self setLastAnnouncementPartial:partialCopy];
+    [(AXCameraVisionEngine *)self setLastAnnouncementTime:timestamp];
     UIAccessibilitySpeakIfNotSpeaking();
     v11 = 1;
   }
@@ -2074,47 +2074,47 @@ LABEL_24:
   return v11;
 }
 
-- (BOOL)_canPostAnnouncement:(id)a3 type:(int64_t)a4 isPartial:(BOOL)a5 timestamp:(double)a6
+- (BOOL)_canPostAnnouncement:(id)announcement type:(int64_t)type isPartial:(BOOL)partial timestamp:(double)timestamp
 {
-  v9 = [(AXCameraVisionEngine *)self inflightAnnouncement:a3];
+  v9 = [(AXCameraVisionEngine *)self inflightAnnouncement:announcement];
   if (v9)
   {
     [(AXCameraVisionEngine *)self lastAnnouncementTime];
-    if (a6 - v10 <= 7.0)
+    if (timestamp - v10 <= 7.0)
     {
-      v13 = [(AXCameraVisionEngine *)self lastAnnouncementType];
-      v14 = [(AXCameraVisionEngine *)self _priorityForAnnouncementType:a4];
-      v15 = [(AXCameraVisionEngine *)self _priorityForAnnouncementType:v13];
+      lastAnnouncementType = [(AXCameraVisionEngine *)self lastAnnouncementType];
+      v14 = [(AXCameraVisionEngine *)self _priorityForAnnouncementType:type];
+      v15 = [(AXCameraVisionEngine *)self _priorityForAnnouncementType:lastAnnouncementType];
       if (v14 < v15)
       {
-        v11 = 0;
+        isLastAnnouncementPartial = 0;
         goto LABEL_4;
       }
 
       if (v14 <= v15)
       {
-        v11 = [(AXCameraVisionEngine *)self isLastAnnouncementPartial];
+        isLastAnnouncementPartial = [(AXCameraVisionEngine *)self isLastAnnouncementPartial];
         goto LABEL_4;
       }
     }
   }
 
-  v11 = 1;
+  isLastAnnouncementPartial = 1;
 LABEL_4:
 
-  return v11;
+  return isLastAnnouncementPartial;
 }
 
-- (void)_handleAnnouncementDidFinish:(id)a3
+- (void)_handleAnnouncementDidFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   v6[0] = MEMORY[0x29EDCA5F8];
   v6[1] = 3221225472;
   v6[2] = __53__AXCameraVisionEngine__handleAnnouncementDidFinish___block_invoke;
   v6[3] = &unk_29F2ACF10;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = finishCopy;
+  selfCopy = self;
+  v5 = finishCopy;
   [(AXCameraVisionEngine *)self _dispatchToResultsQueueWithBlock:v6];
 }
 
@@ -2132,9 +2132,9 @@ void __53__AXCameraVisionEngine__handleAnnouncementDidFinish___block_invoke(uint
   }
 }
 
-- (CGRect)_normalizedFrameForAccessibilityElements:(id)a3
+- (CGRect)_normalizedFrameForAccessibilityElements:(id)elements
 {
-  v3 = a3;
+  elementsCopy = elements;
   v14 = 0;
   v15 = &v14;
   v16 = 0x4010000000;
@@ -2147,7 +2147,7 @@ void __53__AXCameraVisionEngine__handleAnnouncementDidFinish___block_invoke(uint
   v13[2] = __65__AXCameraVisionEngine__normalizedFrameForAccessibilityElements___block_invoke;
   v13[3] = &unk_29F2ACF80;
   v13[4] = &v14;
-  [v3 enumerateObjectsUsingBlock:v13];
+  [elementsCopy enumerateObjectsUsingBlock:v13];
   v5 = v15[4];
   v6 = v15[5];
   v7 = v15[6];
@@ -2188,13 +2188,13 @@ void __65__AXCameraVisionEngine__normalizedFrameForAccessibilityElements___block
   *(*(*v4 + 8) + 32) = v10;
 }
 
-- (void)_sortedAndFilteredAccessibilityElements:(id)a3 faces:(id *)a4 persons:(id *)a5 prominentObjects:(id *)a6 objectClassifications:(id *)a7
+- (void)_sortedAndFilteredAccessibilityElements:(id)elements faces:(id *)faces persons:(id *)persons prominentObjects:(id *)objects objectClassifications:(id *)classifications
 {
-  v11 = a3;
-  v12 = [v11 axFilterObjectsUsingBlock:&__block_literal_global_560];
-  v13 = [v11 axFilterObjectsUsingBlock:&__block_literal_global_562];
-  v14 = [v11 axFilterObjectsUsingBlock:&__block_literal_global_564];
-  v15 = [v11 axFilterObjectsUsingBlock:&__block_literal_global_566];
+  elementsCopy = elements;
+  v12 = [elementsCopy axFilterObjectsUsingBlock:&__block_literal_global_560];
+  v13 = [elementsCopy axFilterObjectsUsingBlock:&__block_literal_global_562];
+  v14 = [elementsCopy axFilterObjectsUsingBlock:&__block_literal_global_564];
+  v15 = [elementsCopy axFilterObjectsUsingBlock:&__block_literal_global_566];
 
   v16 = [v12 sortedArrayUsingComparator:&__block_literal_global_569];
 
@@ -2204,56 +2204,56 @@ void __65__AXCameraVisionEngine__normalizedFrameForAccessibilityElements___block
 
   v19 = [v15 sortedArrayUsingComparator:&__block_literal_global_575];
 
-  v20 = [v16 firstObject];
-  v21 = [(AXCameraVisionEngine *)self _filterElements:v16 usingRelativeAreaThreshold:v20 referenceElement:0.110889];
+  firstObject = [v16 firstObject];
+  v21 = [(AXCameraVisionEngine *)self _filterElements:v16 usingRelativeAreaThreshold:firstObject referenceElement:0.110889];
 
-  v22 = [v17 firstObject];
-  v23 = [(AXCameraVisionEngine *)self _filterElements:v17 usingRelativeWidthThreshold:v22 referenceElement:0.333];
+  firstObject2 = [v17 firstObject];
+  v23 = [(AXCameraVisionEngine *)self _filterElements:v17 usingRelativeWidthThreshold:firstObject2 referenceElement:0.333];
 
-  v24 = [v18 firstObject];
-  v25 = [(AXCameraVisionEngine *)self _filterElements:v18 usingRelativeAreaThreshold:v24 referenceElement:0.110889];
+  firstObject3 = [v18 firstObject];
+  v25 = [(AXCameraVisionEngine *)self _filterElements:v18 usingRelativeAreaThreshold:firstObject3 referenceElement:0.110889];
 
-  v26 = [v19 firstObject];
-  v27 = [(AXCameraVisionEngine *)self _filterElements:v19 usingRelativeAreaThreshold:v26 referenceElement:0.110889];
+  firstObject4 = [v19 firstObject];
+  v27 = [(AXCameraVisionEngine *)self _filterElements:v19 usingRelativeAreaThreshold:firstObject4 referenceElement:0.110889];
 
-  v28 = [v21 firstObject];
-  v29 = [(AXCameraVisionEngine *)self _filterElements:v23 usingRelativeAreaThreshold:v28 referenceElement:0.665334];
+  firstObject5 = [v21 firstObject];
+  v29 = [(AXCameraVisionEngine *)self _filterElements:v23 usingRelativeAreaThreshold:firstObject5 referenceElement:0.665334];
 
-  v30 = [v29 firstObject];
-  v31 = [(AXCameraVisionEngine *)self _filterElements:v21 usingRelativeAreaThreshold:v30 referenceElement:0.0184815];
+  firstObject6 = [v29 firstObject];
+  v31 = [(AXCameraVisionEngine *)self _filterElements:v21 usingRelativeAreaThreshold:firstObject6 referenceElement:0.0184815];
 
-  v32 = [v27 firstObject];
-  v42 = [(AXCameraVisionEngine *)self _filterElements:v31 usingRelativeAreaThreshold:v32 referenceElement:0.0833333333];
+  firstObject7 = [v27 firstObject];
+  v42 = [(AXCameraVisionEngine *)self _filterElements:v31 usingRelativeAreaThreshold:firstObject7 referenceElement:0.0833333333];
 
-  v33 = [(AXCameraVisionEngine *)self _filterElements:v29 usingRelativeAreaThreshold:v32 referenceElement:0.5];
+  v33 = [(AXCameraVisionEngine *)self _filterElements:v29 usingRelativeAreaThreshold:firstObject7 referenceElement:0.5];
 
-  v34 = [v33 firstObject];
-  v35 = [(AXCameraVisionEngine *)self _filterElements:v27 usingRelativeAreaThreshold:v34 referenceElement:0.25];
+  firstObject8 = [v33 firstObject];
+  v35 = [(AXCameraVisionEngine *)self _filterElements:v27 usingRelativeAreaThreshold:firstObject8 referenceElement:0.25];
 
-  v36 = [v42 firstObject];
-  v37 = [(AXCameraVisionEngine *)self _filterElements:v35 usingRelativeAreaThreshold:v36 referenceElement:0.0416666667];
+  firstObject9 = [v42 firstObject];
+  v37 = [(AXCameraVisionEngine *)self _filterElements:v35 usingRelativeAreaThreshold:firstObject9 referenceElement:0.0416666667];
 
-  if (a4)
+  if (faces)
   {
-    *a4 = v42;
+    *faces = v42;
   }
 
-  if (a5)
+  if (persons)
   {
     v38 = v33;
-    *a5 = v33;
+    *persons = v33;
   }
 
-  if (a6)
+  if (objects)
   {
     v39 = v25;
-    *a6 = v25;
+    *objects = v25;
   }
 
-  if (a7)
+  if (classifications)
   {
     v40 = v37;
-    *a7 = v37;
+    *classifications = v37;
   }
 }
 
@@ -2391,13 +2391,13 @@ uint64_t __117__AXCameraVisionEngine__sortedAndFilteredAccessibilityElements_fac
   return v23;
 }
 
-- (id)_filterElements:(id)a3 usingRelativeAreaThreshold:(double)a4 referenceElement:(id)a5
+- (id)_filterElements:(id)elements usingRelativeAreaThreshold:(double)threshold referenceElement:(id)element
 {
-  v7 = a3;
-  v8 = v7;
-  if (a5)
+  elementsCopy = elements;
+  v8 = elementsCopy;
+  if (element)
   {
-    [a5 normalizedFrame];
+    [element normalizedFrame];
     x = v20.origin.x;
     y = v20.origin.y;
     width = v20.size.width;
@@ -2412,7 +2412,7 @@ uint64_t __117__AXCameraVisionEngine__sortedAndFilteredAccessibilityElements_fac
     v18[0] = MEMORY[0x29EDCA5F8];
     v18[2] = __84__AXCameraVisionEngine__filterElements_usingRelativeAreaThreshold_referenceElement___block_invoke;
     v18[3] = &__block_descriptor_48_e45_B32__0__AXCameraAccessibilityElement_8Q16_B24l;
-    *&v18[4] = a4;
+    *&v18[4] = threshold;
     *&v18[5] = v13 * v14;
     v15 = [v8 indexesOfObjectsPassingTest:v18];
     v16 = [v8 objectsAtIndexes:v15];
@@ -2420,7 +2420,7 @@ uint64_t __117__AXCameraVisionEngine__sortedAndFilteredAccessibilityElements_fac
 
   else
   {
-    v16 = v7;
+    v16 = elementsCopy;
   }
 
   return v16;
@@ -2441,19 +2441,19 @@ BOOL __84__AXCameraVisionEngine__filterElements_usingRelativeAreaThreshold_refer
   return v7 * CGRectGetHeight(v10) >= *(a1 + 32) * *(a1 + 40);
 }
 
-- (id)_filterElements:(id)a3 usingRelativeWidthThreshold:(double)a4 referenceElement:(id)a5
+- (id)_filterElements:(id)elements usingRelativeWidthThreshold:(double)threshold referenceElement:(id)element
 {
-  v7 = a3;
-  v8 = v7;
-  if (a5)
+  elementsCopy = elements;
+  v8 = elementsCopy;
+  if (element)
   {
-    [a5 normalizedFrame];
+    [element normalizedFrame];
     Width = CGRectGetWidth(v15);
     v13[0] = MEMORY[0x29EDCA5F8];
     v13[1] = 3221225472;
     v13[2] = __85__AXCameraVisionEngine__filterElements_usingRelativeWidthThreshold_referenceElement___block_invoke;
     v13[3] = &__block_descriptor_48_e45_B32__0__AXCameraAccessibilityElement_8Q16_B24l;
-    *&v13[4] = a4;
+    *&v13[4] = threshold;
     *&v13[5] = Width;
     v10 = [v8 indexesOfObjectsPassingTest:v13];
     v11 = [v8 objectsAtIndexes:v10];
@@ -2461,20 +2461,20 @@ BOOL __84__AXCameraVisionEngine__filterElements_usingRelativeAreaThreshold_refer
 
   else
   {
-    v11 = v7;
+    v11 = elementsCopy;
   }
 
   return v11;
 }
 
-- (void)setPreviousSceneAnnouncementCandidateWithoutLocation:(id)a3
+- (void)setPreviousSceneAnnouncementCandidateWithoutLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   previousSceneAnnouncementCandidateWithoutLocation = self->_previousSceneAnnouncementCandidateWithoutLocation;
-  if (previousSceneAnnouncementCandidateWithoutLocation != v4)
+  if (previousSceneAnnouncementCandidateWithoutLocation != locationCopy)
   {
-    v8 = v4;
-    if (![(NSString *)previousSceneAnnouncementCandidateWithoutLocation isEqualToString:v4])
+    v8 = locationCopy;
+    if (![(NSString *)previousSceneAnnouncementCandidateWithoutLocation isEqualToString:locationCopy])
     {
       v6 = [(NSString *)v8 copy];
       v7 = self->_previousSceneAnnouncementCandidateWithoutLocation;
@@ -2487,16 +2487,16 @@ BOOL __84__AXCameraVisionEngine__filterElements_usingRelativeAreaThreshold_refer
   MEMORY[0x2A1C71028]();
 }
 
-- (CGRect)_sceneObjectFrameForNormalizedFrame:(CGRect)a3 inSceneFrame:(CGRect)a4
+- (CGRect)_sceneObjectFrameForNormalizedFrame:(CGRect)frame inSceneFrame:(CGRect)sceneFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = sceneFrame.size.height;
+  width = sceneFrame.size.width;
+  y = sceneFrame.origin.y;
+  x = sceneFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
   [(AXCameraVisionEngine *)self interfaceOrientation];
   AXMNormalizedFrameTransform();
   memset(v16, 0, sizeof(v16));
@@ -2523,7 +2523,7 @@ BOOL __84__AXCameraVisionEngine__filterElements_usingRelativeAreaThreshold_refer
   return CGRectApplyAffineTransform(v17, &t1);
 }
 
-+ (CGAffineTransform)_scaleNormalizedCoordinatesToSceneCoordinates:(SEL)a3
++ (CGAffineTransform)_scaleNormalizedCoordinatesToSceneCoordinates:(SEL)coordinates
 {
   height = a4.size.height;
   width = a4.size.width;
@@ -2539,14 +2539,14 @@ BOOL __84__AXCameraVisionEngine__filterElements_usingRelativeAreaThreshold_refer
   return CGAffineTransformMakeScale(retstr, v9, v10);
 }
 
-+ (BOOL)_isContainedWithinScreenBoundsForNormalizedFrame:(CGRect)a3
++ (BOOL)_isContainedWithinScreenBoundsForNormalizedFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   result = 0;
-  if (CGRectGetMinX(a3) >= 0.0)
+  if (CGRectGetMinX(frame) >= 0.0)
   {
     v8.origin.x = x;
     v8.origin.y = y;
@@ -2575,35 +2575,35 @@ BOOL __84__AXCameraVisionEngine__filterElements_usingRelativeAreaThreshold_refer
   return result;
 }
 
-- (void)_applyMotionCorrectionToElement:(id)a3 updatedFrameContext:(id)a4
+- (void)_applyMotionCorrectionToElement:(id)element updatedFrameContext:(id)context
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [v10 cameraFrameContext];
-  v8 = [v6 deviceAttitude];
-  v9 = v8;
-  if (v7 && v8)
+  elementCopy = element;
+  contextCopy = context;
+  cameraFrameContext = [elementCopy cameraFrameContext];
+  deviceAttitude = [contextCopy deviceAttitude];
+  v9 = deviceAttitude;
+  if (cameraFrameContext && deviceAttitude)
   {
-    [v10 normalizedFrame];
-    [(AXCameraVisionEngine *)self _motionCorrectedNormalizedFrame:v7 frameContext:v9 targetAttitude:?];
-    [v10 setNormalizedFrame:?];
-    [v10 setCameraFrameContext:v6];
+    [elementCopy normalizedFrame];
+    [(AXCameraVisionEngine *)self _motionCorrectedNormalizedFrame:cameraFrameContext frameContext:v9 targetAttitude:?];
+    [elementCopy setNormalizedFrame:?];
+    [elementCopy setCameraFrameContext:contextCopy];
   }
 }
 
-- (CGRect)_motionCorrectedNormalizedFrameForFeature:(id)a3
+- (CGRect)_motionCorrectedNormalizedFrameForFeature:(id)feature
 {
-  v4 = a3;
-  v5 = [v4 userContext];
-  [v4 normalizedFrame];
+  featureCopy = feature;
+  userContext = [featureCopy userContext];
+  [featureCopy normalizedFrame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(AXCameraVisionEngine *)self lastDeviceMotion];
-  v15 = [v14 attitude];
-  [(AXCameraVisionEngine *)self _motionCorrectedNormalizedFrame:v5 frameContext:v15 targetAttitude:v7, v9, v11, v13];
+  lastDeviceMotion = [(AXCameraVisionEngine *)self lastDeviceMotion];
+  attitude = [lastDeviceMotion attitude];
+  [(AXCameraVisionEngine *)self _motionCorrectedNormalizedFrame:userContext frameContext:attitude targetAttitude:v7, v9, v11, v13];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -2620,22 +2620,22 @@ BOOL __84__AXCameraVisionEngine__filterElements_usingRelativeAreaThreshold_refer
   return result;
 }
 
-- (CGRect)_motionCorrectedNormalizedFrame:(CGRect)a3 frameContext:(id)a4 targetAttitude:(id)a5
+- (CGRect)_motionCorrectedNormalizedFrame:(CGRect)frame frameContext:(id)context targetAttitude:(id)attitude
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a4 && a5)
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  if (context && attitude)
   {
-    v11 = a5;
-    v12 = a4;
-    [v12 videoZoomFactor];
+    attitudeCopy = attitude;
+    contextCopy = context;
+    [contextCopy videoZoomFactor];
     v14 = v13;
-    v15 = [(AXCameraVisionEngine *)self interfaceOrientation];
-    v16 = [(AXCameraVisionEngine *)self _isMirrored];
+    interfaceOrientation = [(AXCameraVisionEngine *)self interfaceOrientation];
+    _isMirrored = [(AXCameraVisionEngine *)self _isMirrored];
     LODWORD(v17) = v14;
-    [v12 motionCorrectedNormalizedFrame:v11 targetAttitude:v15 targetZoomFactor:v16 interfaceOrientation:x mirrored:{y, width, height, v17}];
+    [contextCopy motionCorrectedNormalizedFrame:attitudeCopy targetAttitude:interfaceOrientation targetZoomFactor:_isMirrored interfaceOrientation:x mirrored:{y, width, height, v17}];
     x = v18;
     y = v19;
     width = v20;
@@ -2653,23 +2653,23 @@ BOOL __84__AXCameraVisionEngine__filterElements_usingRelativeAreaThreshold_refer
   return result;
 }
 
-- (void)_handleDeviceMotion:(id)a3
+- (void)_handleDeviceMotion:(id)motion
 {
-  v4 = a3;
-  [(AXCameraVisionEngine *)self _updateLevelFeedbackForDeviceMotion:v4];
-  [(AXCameraVisionEngine *)self setLastDeviceMotion:v4];
+  motionCopy = motion;
+  [(AXCameraVisionEngine *)self _updateLevelFeedbackForDeviceMotion:motionCopy];
+  [(AXCameraVisionEngine *)self setLastDeviceMotion:motionCopy];
 }
 
-- (void)_updateLevelFeedbackForDeviceMotion:(id)a3
+- (void)_updateLevelFeedbackForDeviceMotion:(id)motion
 {
-  v4 = a3;
-  v5 = [(AXCameraVisionEngine *)self lastLevelZone];
-  v6 = [(AXCameraVisionEngine *)self _levelingMotionAnalyzer];
-  v7 = [v6 updateWithDeviceMotion:v4 previousZone:v5];
+  motionCopy = motion;
+  lastLevelZone = [(AXCameraVisionEngine *)self lastLevelZone];
+  _levelingMotionAnalyzer = [(AXCameraVisionEngine *)self _levelingMotionAnalyzer];
+  v7 = [_levelingMotionAnalyzer updateWithDeviceMotion:motionCopy previousZone:lastLevelZone];
 
   if ([(AXCameraVisionEngine *)self shouldEmitLevelFeedback]&& v7)
   {
-    if (!v5 || v7 == v5)
+    if (!lastLevelZone || v7 == lastLevelZone)
     {
       [(AXCameraVisionEngine *)self setLastLevelZone:v7];
     }
@@ -2690,7 +2690,7 @@ BOOL __84__AXCameraVisionEngine__filterElements_usingRelativeAreaThreshold_refer
       [(AXCameraVisionEngine *)self setLastLevelZoneChangedTime:CFAbsoluteTimeGetCurrent()];
     }
 
-    [(AXCameraVisionEngine *)self _attemptLevelingAnnouncementForZone:v7 previousZone:v5];
+    [(AXCameraVisionEngine *)self _attemptLevelingAnnouncementForZone:v7 previousZone:lastLevelZone];
   }
 
   else
@@ -2702,25 +2702,25 @@ BOOL __84__AXCameraVisionEngine__filterElements_usingRelativeAreaThreshold_refer
   }
 }
 
-- (void)_attemptLevelingAnnouncementForZone:(int64_t)a3 previousZone:(int64_t)a4
+- (void)_attemptLevelingAnnouncementForZone:(int64_t)zone previousZone:(int64_t)previousZone
 {
-  v21 = [(AXCameraVisionEngine *)self _announcementStringForFeedbackZone:a3, a4];
-  if (!v21)
+  previousZone = [(AXCameraVisionEngine *)self _announcementStringForFeedbackZone:zone, previousZone];
+  if (!previousZone)
   {
     goto LABEL_25;
   }
 
-  v6 = [(AXCameraVisionEngine *)self lastAnnouncementType];
-  v7 = [(AXCameraVisionEngine *)self _isLevelingNeededForZone:a3];
+  lastAnnouncementType = [(AXCameraVisionEngine *)self lastAnnouncementType];
+  v7 = [(AXCameraVisionEngine *)self _isLevelingNeededForZone:zone];
   v8 = [(AXCameraVisionEngine *)self _isLevelingNeededForZone:[(AXCameraVisionEngine *)self lastLevelAnnouncementZone]];
   if (!v7 && !v8)
   {
     goto LABEL_25;
   }
 
-  if (v6 == 6)
+  if (lastAnnouncementType == 6)
   {
-    if (a3 == 1)
+    if (zone == 1)
     {
       [(AXCameraVisionEngine *)self lastLevelAnnouncementTime];
       v10 = v12;
@@ -2729,10 +2729,10 @@ BOOL __84__AXCameraVisionEngine__filterElements_usingRelativeAreaThreshold_refer
       goto LABEL_18;
     }
 
-    v16 = [(AXCameraVisionEngine *)self lastLevelAnnouncementZone];
+    lastLevelAnnouncementZone = [(AXCameraVisionEngine *)self lastLevelAnnouncementZone];
     [(AXCameraVisionEngine *)self lastAnnouncementTime];
     v10 = v17;
-    if (v16 == a3)
+    if (lastLevelAnnouncementZone == zone)
     {
       v11 = 10.0;
     }
@@ -2749,7 +2749,7 @@ BOOL __84__AXCameraVisionEngine__filterElements_usingRelativeAreaThreshold_refer
     }
   }
 
-  else if (v6)
+  else if (lastAnnouncementType)
   {
     [(AXCameraVisionEngine *)self lastAnnouncementTime];
     v10 = v14;
@@ -2773,44 +2773,44 @@ BOOL __84__AXCameraVisionEngine__filterElements_usingRelativeAreaThreshold_refer
 LABEL_18:
   Current = CFAbsoluteTimeGetCurrent();
   v20 = Current - v10 >= v11 && Current - v10 <= v13;
-  if (v20 && [(AXCameraVisionEngine *)self _attemptAnnouncement:v21 type:6 isPartial:0 timestamp:Current])
+  if (v20 && [(AXCameraVisionEngine *)self _attemptAnnouncement:previousZone type:6 isPartial:0 timestamp:Current])
   {
-    [(AXCameraVisionEngine *)self setLastLevelAnnouncementZone:a3];
+    [(AXCameraVisionEngine *)self setLastLevelAnnouncementZone:zone];
     [(AXCameraVisionEngine *)self setLastLevelAnnouncementTime:Current];
   }
 
 LABEL_25:
 }
 
-- (id)_announcementStringForFeedbackZone:(int64_t)a3
+- (id)_announcementStringForFeedbackZone:(int64_t)zone
 {
-  if ((a3 - 1) > 2)
+  if ((zone - 1) > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = accessibilityCameraUILocalizedString(off_29F2AD050[a3 - 1]);
+    v4 = accessibilityCameraUILocalizedString(off_29F2AD050[zone - 1]);
   }
 
   return v4;
 }
 
-- (void)motionManagerDidUpdateDeviceMotion:(id)a3 captureOrientation:(int64_t)a4
+- (void)motionManagerDidUpdateDeviceMotion:(id)motion captureOrientation:(int64_t)orientation
 {
-  v6 = a3;
-  v7 = [(AXCameraVisionEngine *)self sceneObjectElementContainerView];
+  motionCopy = motion;
+  sceneObjectElementContainerView = [(AXCameraVisionEngine *)self sceneObjectElementContainerView];
 
-  if (v7)
+  if (sceneObjectElementContainerView)
   {
     v8[0] = MEMORY[0x29EDCA5F8];
     v8[1] = 3221225472;
     v8[2] = __78__AXCameraVisionEngine_motionManagerDidUpdateDeviceMotion_captureOrientation___block_invoke;
     v8[3] = &unk_29F2AD008;
     v8[4] = self;
-    v10 = a4;
-    v9 = v6;
+    orientationCopy = orientation;
+    v9 = motionCopy;
     [(AXCameraVisionEngine *)self _dispatchToResultsQueueWithBlock:v8];
   }
 }
@@ -2846,56 +2846,56 @@ void __78__AXCameraVisionEngine_motionManagerDidUpdateDeviceMotion_captureOrient
   }
 }
 
-- (void)captureSessionNode:(id)a3 didOutputSampleBuffer:(opaqueCMSampleBuffer *)a4 fromConnection:(id)a5
+- (void)captureSessionNode:(id)node didOutputSampleBuffer:(opaqueCMSampleBuffer *)buffer fromConnection:(id)connection
 {
-  v8 = a3;
-  v9 = a5;
+  nodeCopy = node;
+  connectionCopy = connection;
   if (UIAccessibilityIsVoiceOverRunning() && [(AXCameraVisionEngine *)self _queue_appActive])
   {
-    ImageBuffer = CMSampleBufferGetImageBuffer(a4);
+    ImageBuffer = CMSampleBufferGetImageBuffer(buffer);
     Width = CVPixelBufferGetWidth(ImageBuffer);
     [(AXCameraVisionEngine *)self set_lastSampleBufferSize:Width, CVPixelBufferGetHeight(ImageBuffer)];
-    v12 = [(AXCameraVisionEngine *)self _analysisOptionsForIncomingFrame];
-    if ([v12 hasDetectionsEnabled])
+    _analysisOptionsForIncomingFrame = [(AXCameraVisionEngine *)self _analysisOptionsForIncomingFrame];
+    if ([_analysisOptionsForIncomingFrame hasDetectionsEnabled])
     {
-      v13 = [MEMORY[0x29EDBD718] videoDeviceFromConnection:v9];
+      v13 = [MEMORY[0x29EDBD718] videoDeviceFromConnection:connectionCopy];
       v28 = [MEMORY[0x29EDBD718] isMirroredVideoDevice:v13];
       v26 = v13;
-      v27 = [v13 activeFormat];
+      activeFormat = [v13 activeFormat];
       v14 = [MEMORY[0x29EDBD718] videoDimensionsForDeviceFormat:?];
-      CMSampleBufferGetPresentationTimeStamp(&time, a4);
+      CMSampleBufferGetPresentationTimeStamp(&time, buffer);
       Seconds = CMTimeGetSeconds(&time);
       v16 = objc_alloc(MEMORY[0x29EDBD720]);
-      [v27 videoFieldOfView];
+      [activeFormat videoFieldOfView];
       v18 = v17;
       [v13 videoZoomFactor];
       v20 = v19;
-      v21 = [(AXCameraVisionEngine *)self lastDeviceMotion];
-      v22 = [v21 attitude];
+      lastDeviceMotion = [(AXCameraVisionEngine *)self lastDeviceMotion];
+      attitude = [lastDeviceMotion attitude];
       LODWORD(v23) = v18;
       *&v24 = v20;
-      v25 = [v16 initWithVideoFieldOfView:v14 zoomFactor:v14 >> 32 sourceWidth:v22 sourceHeight:v23 presentationTimestamp:v24 attitude:Seconds];
+      v25 = [v16 initWithVideoFieldOfView:v14 zoomFactor:v14 >> 32 sourceWidth:attitude sourceHeight:v23 presentationTimestamp:v24 attitude:Seconds];
 
-      [v8 triggerWithSampleBuffer:a4 interfaceOrientation:-[AXCameraVisionEngine interfaceOrientation](self mirrored:"interfaceOrientation") options:v28 userContext:{v12, v25}];
+      [nodeCopy triggerWithSampleBuffer:buffer interfaceOrientation:-[AXCameraVisionEngine interfaceOrientation](self mirrored:"interfaceOrientation") options:v28 userContext:{_analysisOptionsForIncomingFrame, v25}];
     }
   }
 }
 
-- (void)captureOutput:(id)a3 didOutputMetadataObjects:(id)a4 forMetadataObjectTypes:(id)a5 fromConnection:(id)a6
+- (void)captureOutput:(id)output didOutputMetadataObjects:(id)objects forMetadataObjectTypes:(id)types fromConnection:(id)connection
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  outputCopy = output;
+  objectsCopy = objects;
+  typesCopy = types;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   v16[0] = MEMORY[0x29EDCA5F8];
   v16[1] = 3221225472;
   v16[2] = __101__AXCameraVisionEngine_captureOutput_didOutputMetadataObjects_forMetadataObjectTypes_fromConnection___block_invoke;
   v16[3] = &unk_29F2AD030;
   objc_copyWeak(&v19, &location);
-  v14 = v11;
+  v14 = objectsCopy;
   v17 = v14;
-  v15 = v13;
+  v15 = connectionCopy;
   v18 = v15;
   [(AXCameraVisionEngine *)self _dispatchToResultsQueueWithBlock:v16];
 
@@ -2909,11 +2909,11 @@ void __101__AXCameraVisionEngine_captureOutput_didOutputMetadataObjects_forMetad
   [WeakRetained _handleCameraMetadataObjects:*(a1 + 32) fromConnection:*(a1 + 40)];
 }
 
-- (void)_handleCameraMetadataObjects:(id)a3 fromConnection:(id)a4
+- (void)_handleCameraMetadataObjects:(id)objects fromConnection:(id)connection
 {
   v59 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
+  objectsCopy = objects;
+  connectionCopy = connection;
   if (UIAccessibilityIsVoiceOverRunning())
   {
     [(AXCameraVisionEngine *)self _lastSampleBufferSize];
@@ -2921,8 +2921,8 @@ void __101__AXCameraVisionEngine_captureOutput_didOutputMetadataObjects_forMetad
     v11 = v8;
     if (v9 != *MEMORY[0x29EDB90E8] || v8 != *(MEMORY[0x29EDB90E8] + 8))
     {
-      v13 = [(AXCameraVisionEngine *)self interfaceOrientation];
-      if (v13 >= 3)
+      interfaceOrientation = [(AXCameraVisionEngine *)self interfaceOrientation];
+      if (interfaceOrientation >= 3)
       {
         v14 = v11;
       }
@@ -2932,26 +2932,26 @@ void __101__AXCameraVisionEngine_captureOutput_didOutputMetadataObjects_forMetad
         v14 = v10;
       }
 
-      if (v13 < 3)
+      if (interfaceOrientation < 3)
       {
         v10 = v11;
       }
 
-      v15 = [MEMORY[0x29EDBD718] videoDeviceFromConnection:v7];
+      v15 = [MEMORY[0x29EDBD718] videoDeviceFromConnection:connectionCopy];
       v16 = [MEMORY[0x29EDBD718] isMirroredVideoDevice:v15];
       v52 = v15;
-      v51 = [v15 activeFormat];
+      activeFormat = [v15 activeFormat];
       v17 = [MEMORY[0x29EDBD718] videoDimensionsForDeviceFormat:?];
-      v18 = [(AXCameraVisionEngine *)self interfaceOrientation];
-      v43 = v7;
-      if ((v18 - 2) > 2)
+      interfaceOrientation2 = [(AXCameraVisionEngine *)self interfaceOrientation];
+      v43 = connectionCopy;
+      if ((interfaceOrientation2 - 2) > 2)
       {
         v19 = 3;
       }
 
       else
       {
-        v19 = qword_29BC8EB80[v18 - 2];
+        v19 = qword_29BC8EB80[interfaceOrientation2 - 2];
       }
 
       v20 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
@@ -2960,8 +2960,8 @@ void __101__AXCameraVisionEngine_captureOutput_didOutputMetadataObjects_forMetad
       v55 = 0u;
       v56 = 0u;
       v57 = 0u;
-      v45 = v6;
-      obj = v6;
+      v45 = objectsCopy;
+      obj = objectsCopy;
       v21 = [obj countByEnumeratingWithState:&v54 objects:v58 count:16];
       if (v21)
       {
@@ -2995,16 +2995,16 @@ void __101__AXCameraVisionEngine_captureOutput_didOutputMetadataObjects_forMetad
 
               Seconds = CMTimeGetSeconds(&time);
               v28 = objc_alloc(MEMORY[0x29EDBD720]);
-              [v51 videoFieldOfView];
+              [activeFormat videoFieldOfView];
               v30 = v29;
               [v52 videoZoomFactor];
               v32 = v31;
               [(AXCameraVisionEngine *)self lastDeviceMotion];
               v34 = v33 = self;
-              v35 = [v34 attitude];
+              attitude = [v34 attitude];
               LODWORD(v36) = v30;
               *&v37 = v32;
-              v38 = [v28 initWithVideoFieldOfView:v48 zoomFactor:v47 sourceWidth:v35 sourceHeight:v36 presentationTimestamp:v37 attitude:Seconds];
+              v38 = [v28 initWithVideoFieldOfView:v48 zoomFactor:v47 sourceWidth:attitude sourceHeight:v36 presentationTimestamp:v37 attitude:Seconds];
 
               [v26 setUserContext:v38];
               v20 = v49;
@@ -3029,16 +3029,16 @@ void __101__AXCameraVisionEngine_captureOutput_didOutputMetadataObjects_forMetad
       }
 
       v40 = [v50 count];
-      v7 = v44;
+      connectionCopy = v44;
       if (v40)
       {
-        v41 = [v20 firstObject];
-        v42 = [v41 userContext];
+        firstObject = [v20 firstObject];
+        userContext = [firstObject userContext];
 
-        [(AXCameraVisionEngine *)self _handleVisionFeatures:v20 evaluatedFeatureTypes:v50 userContext:v42];
+        [(AXCameraVisionEngine *)self _handleVisionFeatures:v20 evaluatedFeatureTypes:v50 userContext:userContext];
       }
 
-      v6 = v45;
+      objectsCopy = v45;
     }
   }
 }

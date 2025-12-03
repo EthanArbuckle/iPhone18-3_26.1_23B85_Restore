@@ -1,36 +1,36 @@
 @interface HMCameraClipManager
 + (id)logCategory;
-+ (id)zoneNameForRecordingManagementServiceUUID:(id)a3;
-- (HMCameraClipManager)initWithContext:(id)a3 profileUniqueIdentifier:(id)a4 zoneName:(id)a5 home:(id)a6;
-- (HMCameraClipManager)initWithContext:(id)a3 profileUniqueIdentifier:(id)a4 zoneName:(id)a5 notificationCenter:(id)a6;
++ (id)zoneNameForRecordingManagementServiceUUID:(id)d;
+- (HMCameraClipManager)initWithContext:(id)context profileUniqueIdentifier:(id)identifier zoneName:(id)name home:(id)home;
+- (HMCameraClipManager)initWithContext:(id)context profileUniqueIdentifier:(id)identifier zoneName:(id)name notificationCenter:(id)center;
 - (id)logIdentifier;
-- (id)videoSegmentsAssetContextForClip:(id)a3;
-- (void)addObserver:(id)a3 queue:(id)a4;
+- (id)videoSegmentsAssetContextForClip:(id)clip;
+- (void)addObserver:(id)observer queue:(id)queue;
 - (void)configure;
 - (void)dealloc;
-- (void)deleteAllClipsWithCompletionHandler:(id)a3;
-- (void)deleteClipWithUUID:(id)a3 completion:(id)a4;
-- (void)donateClipsWithUUIDs:(id)a3 completion:(id)a4;
-- (void)fetchAllClipsWithCompletion:(id)a3;
-- (void)fetchAllSignificantEventsWithCompletion:(id)a3;
-- (void)fetchClipForSignificantEventWithUUID:(id)a3 completion:(id)a4;
-- (void)fetchClipWithUUID:(id)a3 completion:(id)a4;
-- (void)fetchClipsWithDateInterval:(id)a3 quality:(int64_t)a4 limit:(unint64_t)a5 shouldOrderAscending:(BOOL)a6 completion:(id)a7;
-- (void)fetchCountOfAllClipsWithCompletion:(id)a3;
-- (void)fetchCountOfClipsWithDateInterval:(id)a3 quality:(int64_t)a4 completion:(id)a5;
-- (void)fetchFaceCropDataRepresentationForSignificantEventWithUUID:(id)a3 completion:(id)a4;
-- (void)fetchHeroFrameDataRepresentationForClipWithUUID:(id)a3 completion:(id)a4;
-- (void)fetchIsCloudStorageEnabledWithCompletion:(id)a3;
-- (void)fetchSignificantEventsWithUUIDs:(id)a3 completion:(id)a4;
-- (void)fetchVideoSegmentsAssetContextForClip:(id)a3 completion:(id)a4;
-- (void)handleDaemonReconnectedNotification:(id)a3;
-- (void)handleDidChangeClipsMessage:(id)a3;
-- (void)handleDidChangeSignificantEventsMessage:(id)a3;
-- (void)handleFaceMisclassificationForSignificantEvent:(id)a3 completion:(id)a4;
-- (void)importClipsWithImportData:(id)a3 completion:(id)a4;
-- (void)notifyObserversWithBlock:(id)a3;
-- (void)performCloudPullWithCompletion:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)deleteAllClipsWithCompletionHandler:(id)handler;
+- (void)deleteClipWithUUID:(id)d completion:(id)completion;
+- (void)donateClipsWithUUIDs:(id)ds completion:(id)completion;
+- (void)fetchAllClipsWithCompletion:(id)completion;
+- (void)fetchAllSignificantEventsWithCompletion:(id)completion;
+- (void)fetchClipForSignificantEventWithUUID:(id)d completion:(id)completion;
+- (void)fetchClipWithUUID:(id)d completion:(id)completion;
+- (void)fetchClipsWithDateInterval:(id)interval quality:(int64_t)quality limit:(unint64_t)limit shouldOrderAscending:(BOOL)ascending completion:(id)completion;
+- (void)fetchCountOfAllClipsWithCompletion:(id)completion;
+- (void)fetchCountOfClipsWithDateInterval:(id)interval quality:(int64_t)quality completion:(id)completion;
+- (void)fetchFaceCropDataRepresentationForSignificantEventWithUUID:(id)d completion:(id)completion;
+- (void)fetchHeroFrameDataRepresentationForClipWithUUID:(id)d completion:(id)completion;
+- (void)fetchIsCloudStorageEnabledWithCompletion:(id)completion;
+- (void)fetchSignificantEventsWithUUIDs:(id)ds completion:(id)completion;
+- (void)fetchVideoSegmentsAssetContextForClip:(id)clip completion:(id)completion;
+- (void)handleDaemonReconnectedNotification:(id)notification;
+- (void)handleDidChangeClipsMessage:(id)message;
+- (void)handleDidChangeSignificantEventsMessage:(id)message;
+- (void)handleFaceMisclassificationForSignificantEvent:(id)event completion:(id)completion;
+- (void)importClipsWithImportData:(id)data completion:(id)completion;
+- (void)notifyObserversWithBlock:(id)block;
+- (void)performCloudPullWithCompletion:(id)completion;
+- (void)removeObserver:(id)observer;
 - (void)subscribe;
 - (void)unsubscribe;
 @end
@@ -39,18 +39,18 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMCameraClipManager *)self profileUniqueIdentifier];
-  v3 = [v2 UUIDString];
+  profileUniqueIdentifier = [(HMCameraClipManager *)self profileUniqueIdentifier];
+  uUIDString = [profileUniqueIdentifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)handleDaemonReconnectedNotification:(id)a3
+- (void)handleDaemonReconnectedNotification:(id)notification
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  notificationCopy = notification;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -62,22 +62,22 @@
 
   objc_autoreleasePoolPop(v5);
   os_unfair_lock_lock_with_options();
-  v9 = [(NSMapTable *)v6->_delegateCallersByObservers count];
-  os_unfair_lock_unlock(&v6->_lock);
+  v9 = [(NSMapTable *)selfCopy->_delegateCallersByObservers count];
+  os_unfair_lock_unlock(&selfCopy->_lock);
   if (v9)
   {
-    [(HMCameraClipManager *)v6 subscribe];
+    [(HMCameraClipManager *)selfCopy subscribe];
   }
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleDidChangeSignificantEventsMessage:(id)a3
+- (void)handleDidChangeSignificantEventsMessage:(id)message
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -91,11 +91,11 @@
   v31[0] = objc_opt_class();
   v31[1] = objc_opt_class();
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2];
-  v10 = [v4 unarchivedObjectForKey:@"HMCCM.mk.use" ofClasses:v9];
+  v10 = [messageCopy unarchivedObjectForKey:@"HMCCM.mk.use" ofClasses:v9];
 
-  v11 = [v4 setForKey:@"HMCCM.mk.rseu"];
+  v11 = [messageCopy setForKey:@"HMCCM.mk.rseu"];
   v12 = objc_autoreleasePoolPush();
-  v13 = v6;
+  v13 = selfCopy;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -122,7 +122,7 @@
   v18 = v11;
   v19 = v10;
   [(HMCameraClipManager *)v13 notifyObserversWithBlock:v21];
-  [v4 respondWithPayload:0];
+  [messageCopy respondWithPayload:0];
 
   v20 = *MEMORY[0x1E69E9840];
 }
@@ -141,12 +141,12 @@ void __63__HMCameraClipManager_handleDidChangeSignificantEventsMessage___block_i
   }
 }
 
-- (void)handleDidChangeClipsMessage:(id)a3
+- (void)handleDidChangeClipsMessage:(id)message
 {
   v43[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -160,9 +160,9 @@ void __63__HMCameraClipManager_handleDidChangeSignificantEventsMessage___block_i
   v43[0] = objc_opt_class();
   v43[1] = objc_opt_class();
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:2];
-  v10 = [v4 unarchivedObjectForKey:@"HMCCM.mk.uc" ofClasses:v9];
+  v10 = [messageCopy unarchivedObjectForKey:@"HMCCM.mk.uc" ofClasses:v9];
 
-  v11 = [v4 setForKey:@"HMCCM.mk.rcu"];
+  v11 = [messageCopy setForKey:@"HMCCM.mk.rcu"];
   os_unfair_lock_lock_with_options();
   v34 = 0u;
   v35 = 0u;
@@ -184,9 +184,9 @@ void __63__HMCameraClipManager_handleDidChangeSignificantEventsMessage___block_i
         }
 
         v16 = *(*(&v32 + 1) + 8 * v15);
-        v17 = [(HMCameraClipManager *)v6 videoAssetContextsByClipUUID];
-        v18 = [v16 uniqueIdentifier];
-        [v17 setObject:0 forKeyedSubscript:v18];
+        videoAssetContextsByClipUUID = [(HMCameraClipManager *)selfCopy videoAssetContextsByClipUUID];
+        uniqueIdentifier = [v16 uniqueIdentifier];
+        [videoAssetContextsByClipUUID setObject:0 forKeyedSubscript:uniqueIdentifier];
 
         ++v15;
       }
@@ -198,9 +198,9 @@ void __63__HMCameraClipManager_handleDidChangeSignificantEventsMessage___block_i
     while (v13);
   }
 
-  os_unfair_lock_unlock(&v6->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v19 = objc_autoreleasePoolPush();
-  v20 = v6;
+  v20 = selfCopy;
   v21 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
   {
@@ -227,7 +227,7 @@ void __63__HMCameraClipManager_handleDidChangeSignificantEventsMessage___block_i
   v25 = v11;
   v26 = v12;
   [(HMCameraClipManager *)v20 notifyObserversWithBlock:v28];
-  [v4 respondWithPayload:0];
+  [messageCopy respondWithPayload:0];
 
   v27 = *MEMORY[0x1E69E9840];
 }
@@ -246,10 +246,10 @@ void __51__HMCameraClipManager_handleDidChangeClipsMessage___block_invoke(uint64
   }
 }
 
-- (void)notifyObserversWithBlock:(id)a3
+- (void)notifyObserversWithBlock:(id)block
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   os_unfair_lock_lock_with_options();
   v5 = [(NSMapTable *)self->_delegateCallersByObservers copy];
   os_unfair_lock_unlock(&self->_lock);
@@ -277,7 +277,7 @@ void __51__HMCameraClipManager_handleDidChangeClipsMessage___block_invoke(uint64
         v14[1] = 3221225472;
         v14[2] = __48__HMCameraClipManager_notifyObserversWithBlock___block_invoke;
         v14[3] = &unk_1E754E458;
-        v11 = v4;
+        v11 = blockCopy;
         v14[4] = v9;
         v15 = v11;
         [v10 invokeBlock:v14];
@@ -296,7 +296,7 @@ void __51__HMCameraClipManager_handleDidChangeClipsMessage___block_invoke(uint64
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -308,13 +308,13 @@ void __51__HMCameraClipManager_handleDidChangeClipsMessage___block_invoke(uint64
 
   objc_autoreleasePoolPop(v3);
   v7 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v8 = [(HMCameraClipManager *)v4 profileUniqueIdentifier];
-  v9 = [v7 initWithTarget:v8];
+  profileUniqueIdentifier = [(HMCameraClipManager *)selfCopy profileUniqueIdentifier];
+  v9 = [v7 initWithTarget:profileUniqueIdentifier];
 
   v10 = [MEMORY[0x1E69A2A10] messageWithName:@"HMCCM.m.u" destination:v9 payload:0];
-  v11 = [(HMCameraClipManager *)v4 context];
-  v12 = [v11 messageDispatcher];
-  [v12 sendMessage:v10 completionHandler:0];
+  context = [(HMCameraClipManager *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v10 completionHandler:0];
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -323,7 +323,7 @@ void __51__HMCameraClipManager_handleDidChangeClipsMessage___block_invoke(uint64
 {
   v16 = *MEMORY[0x1E69E9840];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -335,13 +335,13 @@ void __51__HMCameraClipManager_handleDidChangeClipsMessage___block_invoke(uint64
 
   objc_autoreleasePoolPop(v3);
   v7 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v8 = [(HMCameraClipManager *)v4 profileUniqueIdentifier];
-  v9 = [v7 initWithTarget:v8];
+  profileUniqueIdentifier = [(HMCameraClipManager *)selfCopy profileUniqueIdentifier];
+  v9 = [v7 initWithTarget:profileUniqueIdentifier];
 
   v10 = [MEMORY[0x1E69A2A10] messageWithName:@"HMCCM.m.s" destination:v9 payload:0];
-  v11 = [(HMCameraClipManager *)v4 context];
-  v12 = [v11 messageDispatcher];
-  [v12 sendMessage:v10 completionHandler:0];
+  context = [(HMCameraClipManager *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v10 completionHandler:0];
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -400,45 +400,45 @@ LABEL_6:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchIsCloudStorageEnabledWithCompletion:(id)a3
+- (void)fetchIsCloudStorageEnabledWithCompletion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Fetching is cloud storage enabled"];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 identifier];
-    v11 = [v10 shortDescription];
+    identifier = [v5 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543618;
     v25 = v9;
     v26 = 2114;
-    v27 = v11;
+    v27 = shortDescription;
     _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Fetching is cloud storage enabled", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
   v12 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v13 = [(HMCameraClipManager *)v7 profileUniqueIdentifier];
-  v14 = [v12 initWithTarget:v13];
+  profileUniqueIdentifier = [(HMCameraClipManager *)selfCopy profileUniqueIdentifier];
+  v14 = [v12 initWithTarget:profileUniqueIdentifier];
 
   v15 = [MEMORY[0x1E69A2A10] messageWithName:@"HMCCM.m.ficse" destination:v14 payload:0];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __64__HMCameraClipManager_fetchIsCloudStorageEnabledWithCompletion___block_invoke;
   v21[3] = &unk_1E754E480;
-  v21[4] = v7;
+  v21[4] = selfCopy;
   v22 = v5;
-  v23 = v4;
-  v16 = v4;
+  v23 = completionCopy;
+  v16 = completionCopy;
   v17 = v5;
   [v15 setResponseHandler:v21];
-  v18 = [(HMCameraClipManager *)v7 context];
-  v19 = [v18 messageDispatcher];
-  [v19 sendMessage:v15 completionHandler:0];
+  context = [(HMCameraClipManager *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v15 completionHandler:0];
 
   v20 = *MEMORY[0x1E69E9840];
 }
@@ -515,36 +515,36 @@ void __64__HMCameraClipManager_fetchIsCloudStorageEnabledWithCompletion___block_
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)importClipsWithImportData:(id)a3 completion:(id)a4
+- (void)importClipsWithImportData:(id)data completion:(id)completion
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   v8 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Import clips"];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 identifier];
-    v14 = [v13 shortDescription];
+    identifier = [v8 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v38 = v12;
     v39 = 2114;
-    v40 = v14;
+    v40 = shortDescription;
     v41 = 2048;
-    v42 = [v6 count];
+    v42 = [dataCopy count];
     _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Importing %lu clips", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
   v15 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v16 = [(HMCameraClipManager *)v10 profileUniqueIdentifier];
-  v17 = [v15 initWithTarget:v16];
+  profileUniqueIdentifier = [(HMCameraClipManager *)selfCopy profileUniqueIdentifier];
+  v17 = [v15 initWithTarget:profileUniqueIdentifier];
 
   v35 = @"HMCCM.mk.cid";
-  v18 = encodeRootObject(v6);
+  v18 = encodeRootObject(dataCopy);
   v36 = v18;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
 
@@ -553,17 +553,17 @@ void __64__HMCameraClipManager_fetchIsCloudStorageEnabledWithCompletion___block_
   v28 = 3221225472;
   v29 = __60__HMCameraClipManager_importClipsWithImportData_completion___block_invoke;
   v30 = &unk_1E754D030;
-  v31 = v10;
+  v31 = selfCopy;
   v32 = v8;
-  v33 = v6;
-  v34 = v7;
-  v21 = v7;
-  v22 = v6;
+  v33 = dataCopy;
+  v34 = completionCopy;
+  v21 = completionCopy;
+  v22 = dataCopy;
   v23 = v8;
   [v20 setResponseHandler:&v27];
-  v24 = [(HMCameraClipManager *)v10 context:v27];
-  v25 = [v24 messageDispatcher];
-  [v25 sendMessage:v20 completionHandler:0];
+  v24 = [(HMCameraClipManager *)selfCopy context:v27];
+  messageDispatcher = [v24 messageDispatcher];
+  [messageDispatcher sendMessage:v20 completionHandler:0];
 
   v26 = *MEMORY[0x1E69E9840];
 }
@@ -624,45 +624,45 @@ LABEL_6:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchVideoSegmentsAssetContextForClip:(id)a3 completion:(id)a4
+- (void)fetchVideoSegmentsAssetContextForClip:(id)clip completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  clipCopy = clip;
+  completionCopy = completion;
   v8 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Fetch video segments asset context"];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 identifier];
-    v14 = [v13 shortDescription];
+    identifier = [v8 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v31 = v12;
     v32 = 2114;
-    v33 = v14;
+    v33 = shortDescription;
     v34 = 2112;
-    v35 = v6;
+    v35 = clipCopy;
     _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Fetching video segments asset context for clip %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
-  v15 = [(HMCameraClipManager *)v10 videoSegmentsAssetContextForClip:v6];
+  v15 = [(HMCameraClipManager *)selfCopy videoSegmentsAssetContextForClip:clipCopy];
   if (v15)
   {
-    v7[2](v7, v15, 0);
+    completionCopy[2](completionCopy, v15, 0);
   }
 
   else
   {
     v16 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v17 = [(HMCameraClipManager *)v10 profileUniqueIdentifier];
-    v18 = [v16 initWithTarget:v17];
+    profileUniqueIdentifier = [(HMCameraClipManager *)selfCopy profileUniqueIdentifier];
+    v18 = [v16 initWithTarget:profileUniqueIdentifier];
 
     v28 = @"HMCCM.mk.cu";
-    v19 = [v6 uniqueIdentifier];
-    v29 = v19;
+    uniqueIdentifier = [clipCopy uniqueIdentifier];
+    v29 = uniqueIdentifier;
     v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
 
     v21 = [objc_alloc(MEMORY[0x1E69A2A10]) initWithName:@"HMCCM.m.fvsac" destination:v18 payload:v20];
@@ -670,13 +670,13 @@ LABEL_6:
     v25[1] = 3221225472;
     v25[2] = __72__HMCameraClipManager_fetchVideoSegmentsAssetContextForClip_completion___block_invoke;
     v25[3] = &unk_1E754E480;
-    v25[4] = v10;
+    v25[4] = selfCopy;
     v26 = v8;
-    v27 = v7;
+    v27 = completionCopy;
     [v21 setResponseHandler:v25];
-    v22 = [(HMCameraClipManager *)v10 context];
-    v23 = [v22 messageDispatcher];
-    [v23 sendMessage:v21 completionHandler:0];
+    context = [(HMCameraClipManager *)selfCopy context];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v21 completionHandler:0];
   }
 
   v24 = *MEMORY[0x1E69E9840];
@@ -841,65 +841,65 @@ void __72__HMCameraClipManager_fetchVideoSegmentsAssetContextForClip_completion_
 
 - (void)configure
 {
-  v3 = [(HMCameraClipManager *)self context];
-  v4 = [v3 messageDispatcher];
-  [v4 registerForMessage:@"HMCCM.m.dcc" receiver:self selector:sel_handleDidChangeClipsMessage_];
+  context = [(HMCameraClipManager *)self context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher registerForMessage:@"HMCCM.m.dcc" receiver:self selector:sel_handleDidChangeClipsMessage_];
 
-  v5 = [(HMCameraClipManager *)self context];
-  v6 = [v5 messageDispatcher];
-  [v6 registerForMessage:@"HMCCM.m.dcse" receiver:self selector:sel_handleDidChangeSignificantEventsMessage_];
+  context2 = [(HMCameraClipManager *)self context];
+  messageDispatcher2 = [context2 messageDispatcher];
+  [messageDispatcher2 registerForMessage:@"HMCCM.m.dcse" receiver:self selector:sel_handleDidChangeSignificantEventsMessage_];
 
-  v7 = [(HMCameraClipManager *)self notificationCenter];
-  [v7 addObserver:self selector:sel_handleDaemonReconnectedNotification_ name:@"HMDaemonReconnectedNotification" object:0];
+  notificationCenter = [(HMCameraClipManager *)self notificationCenter];
+  [notificationCenter addObserver:self selector:sel_handleDaemonReconnectedNotification_ name:@"HMDaemonReconnectedNotification" object:0];
 }
 
-- (void)donateClipsWithUUIDs:(id)a3 completion:(id)a4
+- (void)donateClipsWithUUIDs:(id)ds completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v8 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Handle feedback submission"];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 identifier];
-    v14 = [v13 shortDescription];
+    identifier = [v8 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v37 = v12;
     v38 = 2114;
-    v39 = v14;
+    v39 = shortDescription;
     v40 = 2112;
-    v41 = v6;
+    v41 = dsCopy;
     _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Handling feedback submission for clips %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
   v15 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v16 = [(HMCameraClipManager *)v10 profileUniqueIdentifier];
-  v17 = [v15 initWithTarget:v16];
+  profileUniqueIdentifier = [(HMCameraClipManager *)selfCopy profileUniqueIdentifier];
+  v17 = [v15 initWithTarget:profileUniqueIdentifier];
 
   v34 = @"HMCCM.mk.cus";
-  v35 = v6;
+  v35 = dsCopy;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
   v19 = [objc_alloc(MEMORY[0x1E69A2A10]) initWithName:@"HMCCM.m.sc" destination:v17 payload:v18];
   v26 = MEMORY[0x1E69E9820];
   v27 = 3221225472;
   v28 = __55__HMCameraClipManager_donateClipsWithUUIDs_completion___block_invoke;
   v29 = &unk_1E754D030;
-  v30 = v10;
+  v30 = selfCopy;
   v31 = v8;
-  v32 = v6;
-  v33 = v7;
-  v20 = v7;
-  v21 = v6;
+  v32 = dsCopy;
+  v33 = completionCopy;
+  v20 = completionCopy;
+  v21 = dsCopy;
   v22 = v8;
   [v19 setResponseHandler:&v26];
-  v23 = [(HMCameraClipManager *)v10 context:v26];
-  v24 = [v23 messageDispatcher];
-  [v24 sendMessage:v19 completionHandler:0];
+  v23 = [(HMCameraClipManager *)selfCopy context:v26];
+  messageDispatcher = [v23 messageDispatcher];
+  [messageDispatcher sendMessage:v19 completionHandler:0];
 
   v25 = *MEMORY[0x1E69E9840];
 }
@@ -965,35 +965,35 @@ LABEL_6:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)handleFaceMisclassificationForSignificantEvent:(id)a3 completion:(id)a4
+- (void)handleFaceMisclassificationForSignificantEvent:(id)event completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  completionCopy = completion;
   v8 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Handle face misclassification"];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 identifier];
-    v14 = [v13 shortDescription];
+    identifier = [v8 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v36 = v12;
     v37 = 2114;
-    v38 = v14;
+    v38 = shortDescription;
     v39 = 2112;
-    v40 = v6;
+    v40 = eventCopy;
     _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Handling face misclassification for significant event %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
   v15 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v16 = [(HMCameraClipManager *)v10 profileUniqueIdentifier];
-  v17 = [v15 initWithTarget:v16];
+  profileUniqueIdentifier = [(HMCameraClipManager *)selfCopy profileUniqueIdentifier];
+  v17 = [v15 initWithTarget:profileUniqueIdentifier];
 
-  v32 = v6;
+  v32 = eventCopy;
   v33 = @"HMCCM.mk.se";
   v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v32 count:1];
   v19 = encodeRootObject(v18);
@@ -1005,17 +1005,17 @@ LABEL_6:
   v28[1] = 3221225472;
   v28[2] = __81__HMCameraClipManager_handleFaceMisclassificationForSignificantEvent_completion___block_invoke;
   v28[3] = &unk_1E754D030;
-  v28[4] = v10;
+  v28[4] = selfCopy;
   v29 = v8;
-  v30 = v6;
-  v31 = v7;
-  v22 = v7;
-  v23 = v6;
+  v30 = eventCopy;
+  v31 = completionCopy;
+  v22 = completionCopy;
+  v23 = eventCopy;
   v24 = v8;
   [v21 setResponseHandler:v28];
-  v25 = [(HMCameraClipManager *)v10 context];
-  v26 = [v25 messageDispatcher];
-  [v26 sendMessage:v21 completionHandler:0];
+  context = [(HMCameraClipManager *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v21 completionHandler:0];
 
   v27 = *MEMORY[0x1E69E9840];
 }
@@ -1081,45 +1081,45 @@ LABEL_6:
   v22 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteAllClipsWithCompletionHandler:(id)a3
+- (void)deleteAllClipsWithCompletionHandler:(id)handler
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Delete all clips"];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 identifier];
-    v11 = [v10 shortDescription];
+    identifier = [v5 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543618;
     v25 = v9;
     v26 = 2114;
-    v27 = v11;
+    v27 = shortDescription;
     _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Deleting all clips", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
   v12 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v13 = [(HMCameraClipManager *)v7 profileUniqueIdentifier];
-  v14 = [v12 initWithTarget:v13];
+  profileUniqueIdentifier = [(HMCameraClipManager *)selfCopy profileUniqueIdentifier];
+  v14 = [v12 initWithTarget:profileUniqueIdentifier];
 
   v15 = [MEMORY[0x1E69A2A10] messageWithName:@"HMCCM.m.dac" destination:v14 payload:0];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __59__HMCameraClipManager_deleteAllClipsWithCompletionHandler___block_invoke;
   v21[3] = &unk_1E754E480;
-  v21[4] = v7;
+  v21[4] = selfCopy;
   v22 = v5;
-  v23 = v4;
-  v16 = v4;
+  v23 = handlerCopy;
+  v16 = handlerCopy;
   v17 = v5;
   [v15 setResponseHandler:v21];
-  v18 = [(HMCameraClipManager *)v7 context];
-  v19 = [v18 messageDispatcher];
-  [v19 sendMessage:v15 completionHandler:0];
+  context = [(HMCameraClipManager *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v15 completionHandler:0];
 
   v20 = *MEMORY[0x1E69E9840];
 }
@@ -1179,53 +1179,53 @@ LABEL_6:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)deleteClipWithUUID:(id)a3 completion:(id)a4
+- (void)deleteClipWithUUID:(id)d completion:(id)completion
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Delete clip"];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 identifier];
-    v14 = [v13 shortDescription];
+    identifier = [v8 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v37 = v12;
     v38 = 2114;
-    v39 = v14;
+    v39 = shortDescription;
     v40 = 2112;
-    v41 = v6;
+    v41 = dCopy;
     _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Deleting clip with UUID %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
   v15 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v16 = [(HMCameraClipManager *)v10 profileUniqueIdentifier];
-  v17 = [v15 initWithTarget:v16];
+  profileUniqueIdentifier = [(HMCameraClipManager *)selfCopy profileUniqueIdentifier];
+  v17 = [v15 initWithTarget:profileUniqueIdentifier];
 
   v34 = @"HMCCM.mk.cu";
-  v35 = v6;
+  v35 = dCopy;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v35 forKeys:&v34 count:1];
   v19 = [MEMORY[0x1E69A2A10] messageWithName:@"HMCCM.m.dc" destination:v17 payload:v18];
   v26 = MEMORY[0x1E69E9820];
   v27 = 3221225472;
   v28 = __53__HMCameraClipManager_deleteClipWithUUID_completion___block_invoke;
   v29 = &unk_1E754D030;
-  v30 = v10;
+  v30 = selfCopy;
   v31 = v8;
-  v32 = v6;
-  v33 = v7;
-  v20 = v7;
-  v21 = v6;
+  v32 = dCopy;
+  v33 = completionCopy;
+  v20 = completionCopy;
+  v21 = dCopy;
   v22 = v8;
   [v19 setResponseHandler:&v26];
-  v23 = [(HMCameraClipManager *)v10 context:v26];
-  v24 = [v23 messageDispatcher];
-  [v24 sendMessage:v19 completionHandler:0];
+  v23 = [(HMCameraClipManager *)selfCopy context:v26];
+  messageDispatcher = [v23 messageDispatcher];
+  [messageDispatcher sendMessage:v19 completionHandler:0];
 
   v25 = *MEMORY[0x1E69E9840];
 }
@@ -1337,20 +1337,20 @@ void __100__HMCameraClipManager_fetchSignificantEventsWithDateInterval_limit_sho
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAllSignificantEventsWithCompletion:(id)a3
+- (void)fetchAllSignificantEventsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc(MEMORY[0x1E696AB80]);
-  v6 = [MEMORY[0x1E695DF00] distantPast];
-  v7 = [MEMORY[0x1E695DF00] distantFuture];
-  v8 = [v5 initWithStartDate:v6 endDate:v7];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  v8 = [v5 initWithStartDate:distantPast endDate:distantFuture];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __63__HMCameraClipManager_fetchAllSignificantEventsWithCompletion___block_invoke;
   v10[3] = &unk_1E754DDD8;
-  v11 = v4;
-  v9 = v4;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [(HMCameraClipManager *)self fetchSignificantEventsWithDateInterval:v8 limit:-1 shouldOrderAscending:1 completion:v10];
 }
 
@@ -1373,51 +1373,51 @@ void __63__HMCameraClipManager_fetchAllSignificantEventsWithCompletion___block_i
   }
 }
 
-- (void)fetchSignificantEventsWithUUIDs:(id)a3 completion:(id)a4
+- (void)fetchSignificantEventsWithUUIDs:(id)ds completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   v8 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Fetch significant events with UUIDs"];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 identifier];
-    v14 = [v13 shortDescription];
+    identifier = [v8 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v31 = v12;
     v32 = 2114;
-    v33 = v14;
+    v33 = shortDescription;
     v34 = 2112;
-    v35 = v6;
+    v35 = dsCopy;
     _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Fetching significant events with UUIDs %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
   v15 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v16 = [(HMCameraClipManager *)v10 profileUniqueIdentifier];
-  v17 = [v15 initWithTarget:v16];
+  profileUniqueIdentifier = [(HMCameraClipManager *)selfCopy profileUniqueIdentifier];
+  v17 = [v15 initWithTarget:profileUniqueIdentifier];
 
   v28 = @"HMCCM.mk.seu";
-  v29 = v6;
+  v29 = dsCopy;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
   v19 = [MEMORY[0x1E69A2A10] messageWithName:@"HMCCM.m.fse" destination:v17 payload:v18];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __66__HMCameraClipManager_fetchSignificantEventsWithUUIDs_completion___block_invoke;
   v25[3] = &unk_1E754E480;
-  v25[4] = v10;
+  v25[4] = selfCopy;
   v26 = v8;
-  v27 = v7;
-  v20 = v7;
+  v27 = completionCopy;
+  v20 = completionCopy;
   v21 = v8;
   [v19 setResponseHandler:v25];
-  v22 = [(HMCameraClipManager *)v10 context];
-  v23 = [v22 messageDispatcher];
-  [v23 sendMessage:v19 completionHandler:0];
+  context = [(HMCameraClipManager *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v19 completionHandler:0];
 
   v24 = *MEMORY[0x1E69E9840];
 }
@@ -1498,36 +1498,36 @@ void __66__HMCameraClipManager_fetchSignificantEventsWithUUIDs_completion___bloc
   (*(v1 + 16))(v1, v2, 0);
 }
 
-- (void)fetchFaceCropDataRepresentationForSignificantEventWithUUID:(id)a3 completion:(id)a4
+- (void)fetchFaceCropDataRepresentationForSignificantEventWithUUID:(id)d completion:(id)completion
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Fetch face crop image data for significant event"];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 identifier];
-    v14 = [v13 shortDescription];
+    identifier = [v8 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v32 = v12;
     v33 = 2114;
-    v34 = v14;
+    v34 = shortDescription;
     v35 = 2112;
-    v36 = v6;
+    v36 = dCopy;
     _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Fetching face crop image data for significant event with UUID %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
   v15 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v16 = [(HMCameraClipManager *)v10 profileUniqueIdentifier];
-  v17 = [v15 initWithTarget:v16];
+  profileUniqueIdentifier = [(HMCameraClipManager *)selfCopy profileUniqueIdentifier];
+  v17 = [v15 initWithTarget:profileUniqueIdentifier];
 
   v29 = @"HMCCM.mk.seu";
-  v18 = [MEMORY[0x1E695DFD8] setWithObject:v6];
+  v18 = [MEMORY[0x1E695DFD8] setWithObject:dCopy];
   v30 = v18;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
 
@@ -1536,15 +1536,15 @@ void __66__HMCameraClipManager_fetchSignificantEventsWithUUIDs_completion___bloc
   v26[1] = 3221225472;
   v26[2] = __93__HMCameraClipManager_fetchFaceCropDataRepresentationForSignificantEventWithUUID_completion___block_invoke;
   v26[3] = &unk_1E754E480;
-  v26[4] = v10;
+  v26[4] = selfCopy;
   v27 = v8;
-  v28 = v7;
-  v21 = v7;
+  v28 = completionCopy;
+  v21 = completionCopy;
   v22 = v8;
   [v20 setResponseHandler:v26];
-  v23 = [(HMCameraClipManager *)v10 context];
-  v24 = [v23 messageDispatcher];
-  [v24 sendMessage:v20 completionHandler:0];
+  context = [(HMCameraClipManager *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v20 completionHandler:0];
 
   v25 = *MEMORY[0x1E69E9840];
 }
@@ -1633,51 +1633,51 @@ void __93__HMCameraClipManager_fetchFaceCropDataRepresentationForSignificantEven
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchHeroFrameDataRepresentationForClipWithUUID:(id)a3 completion:(id)a4
+- (void)fetchHeroFrameDataRepresentationForClipWithUUID:(id)d completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Fetch hero frame image data for clip"];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 identifier];
-    v14 = [v13 shortDescription];
+    identifier = [v8 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v31 = v12;
     v32 = 2114;
-    v33 = v14;
+    v33 = shortDescription;
     v34 = 2112;
-    v35 = v6;
+    v35 = dCopy;
     _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Fetching hero frame image data for clip with UUID %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
   v15 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v16 = [(HMCameraClipManager *)v10 profileUniqueIdentifier];
-  v17 = [v15 initWithTarget:v16];
+  profileUniqueIdentifier = [(HMCameraClipManager *)selfCopy profileUniqueIdentifier];
+  v17 = [v15 initWithTarget:profileUniqueIdentifier];
 
   v28 = @"HMCCM.mk.cu";
-  v29 = v6;
+  v29 = dCopy;
   v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
   v19 = [MEMORY[0x1E69A2A10] messageWithName:@"HMCCM.fhfdr" destination:v17 payload:v18];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __82__HMCameraClipManager_fetchHeroFrameDataRepresentationForClipWithUUID_completion___block_invoke;
   v25[3] = &unk_1E754E480;
-  v25[4] = v10;
+  v25[4] = selfCopy;
   v26 = v8;
-  v27 = v7;
-  v20 = v7;
+  v27 = completionCopy;
+  v20 = completionCopy;
   v21 = v8;
   [v19 setResponseHandler:v25];
-  v22 = [(HMCameraClipManager *)v10 context];
-  v23 = [v22 messageDispatcher];
-  [v23 sendMessage:v19 completionHandler:0];
+  context = [(HMCameraClipManager *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v19 completionHandler:0];
 
   v24 = *MEMORY[0x1E69E9840];
 }
@@ -1766,48 +1766,48 @@ void __82__HMCameraClipManager_fetchHeroFrameDataRepresentationForClipWithUUID_c
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchCountOfClipsWithDateInterval:(id)a3 quality:(int64_t)a4 completion:(id)a5
+- (void)fetchCountOfClipsWithDateInterval:(id)interval quality:(int64_t)quality completion:(id)completion
 {
   v47 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  intervalCopy = interval;
+  completionCopy = completion;
   v10 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Fetch count of clips with date interval"];
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     v14 = HMFGetLogIdentifier();
     [v10 identifier];
-    v15 = v33 = v9;
-    v16 = [v15 shortDescription];
-    v17 = HMStringFromCameraClipQuality(a4);
+    v15 = v33 = completionCopy;
+    shortDescription = [v15 shortDescription];
+    v17 = HMStringFromCameraClipQuality(quality);
     *buf = 138544130;
     v40 = v14;
     v41 = 2114;
-    v42 = v16;
+    v42 = shortDescription;
     v43 = 2112;
-    v44 = v8;
+    v44 = intervalCopy;
     v45 = 2112;
     v46 = v17;
     _os_log_impl(&dword_19BB39000, v13, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Fetching count of clips with date interval: %@ quality: %@", buf, 0x2Au);
 
-    v9 = v33;
+    completionCopy = v33;
   }
 
   objc_autoreleasePoolPop(v11);
   v18 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v19 = [(HMCameraClipManager *)v12 profileUniqueIdentifier];
-  v20 = [v18 initWithTarget:v19];
+  profileUniqueIdentifier = [(HMCameraClipManager *)selfCopy profileUniqueIdentifier];
+  v20 = [v18 initWithTarget:profileUniqueIdentifier];
 
   v37[0] = @"HMCCM.mk.daf";
-  v21 = [v8 startDate];
-  v38[0] = v21;
+  startDate = [intervalCopy startDate];
+  v38[0] = startDate;
   v37[1] = @"HMCCM.mk.db";
-  v22 = [v8 endDate];
-  v38[1] = v22;
+  endDate = [intervalCopy endDate];
+  v38[1] = endDate;
   v37[2] = @"HMCCM.mk.v";
-  v23 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v23 = [MEMORY[0x1E696AD98] numberWithInteger:quality];
   v38[2] = v23;
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v38 forKeys:v37 count:3];
 
@@ -1819,15 +1819,15 @@ void __82__HMCameraClipManager_fetchHeroFrameDataRepresentationForClipWithUUID_c
   v34[1] = 3221225472;
   v34[2] = __76__HMCameraClipManager_fetchCountOfClipsWithDateInterval_quality_completion___block_invoke;
   v34[3] = &unk_1E754E480;
-  v34[4] = v12;
+  v34[4] = selfCopy;
   v35 = v10;
-  v36 = v9;
-  v28 = v9;
+  v36 = completionCopy;
+  v28 = completionCopy;
   v29 = v10;
   [v27 setResponseHandler:v34];
-  v30 = [(HMCameraClipManager *)v12 context];
-  v31 = [v30 messageDispatcher];
-  [v31 sendMessage:v27 completionHandler:0];
+  context = [(HMCameraClipManager *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v27 completionHandler:0];
 
   v32 = *MEMORY[0x1E69E9840];
 }
@@ -1907,80 +1907,80 @@ void __76__HMCameraClipManager_fetchCountOfClipsWithDateInterval_quality_complet
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchCountOfAllClipsWithCompletion:(id)a3
+- (void)fetchCountOfAllClipsWithCompletion:(id)completion
 {
   v4 = MEMORY[0x1E696AB80];
-  v5 = a3;
+  completionCopy = completion;
   v6 = [v4 alloc];
-  v7 = [MEMORY[0x1E695DF00] distantPast];
-  v8 = [MEMORY[0x1E695DF00] distantFuture];
-  v9 = [v6 initWithStartDate:v7 endDate:v8];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  v9 = [v6 initWithStartDate:distantPast endDate:distantFuture];
 
-  [(HMCameraClipManager *)self fetchCountOfClipsWithDateInterval:v9 completion:v5];
+  [(HMCameraClipManager *)self fetchCountOfClipsWithDateInterval:v9 completion:completionCopy];
 }
 
-- (void)fetchClipsWithDateInterval:(id)a3 quality:(int64_t)a4 limit:(unint64_t)a5 shouldOrderAscending:(BOOL)a6 completion:(id)a7
+- (void)fetchClipsWithDateInterval:(id)interval quality:(int64_t)quality limit:(unint64_t)limit shouldOrderAscending:(BOOL)ascending completion:(id)completion
 {
-  v39 = a6;
+  ascendingCopy = ascending;
   v57 = *MEMORY[0x1E69E9840];
-  v38 = a3;
-  v37 = a7;
+  intervalCopy = interval;
+  completionCopy = completion;
   v11 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Fetch clips with date interval"];
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v11 identifier];
-    v17 = [v16 shortDescription];
-    HMStringFromCameraClipQuality(a4);
-    v35 = a4;
-    v19 = v18 = a5;
+    identifier = [v11 identifier];
+    shortDescription = [identifier shortDescription];
+    HMStringFromCameraClipQuality(quality);
+    qualityCopy = quality;
+    v19 = v18 = limit;
     *buf = 138544642;
     v46 = v15;
     v47 = 2114;
-    v48 = v17;
+    v48 = shortDescription;
     v49 = 2112;
     v50 = v19;
     v51 = 2112;
-    v52 = v38;
+    v52 = intervalCopy;
     v53 = 2048;
     v54 = v18;
     v55 = 1024;
-    v56 = v39;
+    v56 = ascendingCopy;
     _os_log_impl(&dword_19BB39000, v14, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Fetching clips with date interval: %@ quality: %@ limit: %lu shouldOrderAscending: %d", buf, 0x3Au);
 
-    a5 = v18;
-    a4 = v35;
+    limit = v18;
+    quality = qualityCopy;
   }
 
   objc_autoreleasePoolPop(v12);
   v20 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v21 = [(HMCameraClipManager *)v13 profileUniqueIdentifier];
-  v36 = [v20 initWithTarget:v21];
+  profileUniqueIdentifier = [(HMCameraClipManager *)selfCopy profileUniqueIdentifier];
+  v36 = [v20 initWithTarget:profileUniqueIdentifier];
 
   v43[0] = @"HMCCM.mk.daf";
-  v22 = [v38 startDate];
-  v44[0] = v22;
+  startDate = [intervalCopy startDate];
+  v44[0] = startDate;
   v43[1] = @"HMCCM.mk.db";
-  v23 = [v38 endDate];
-  v44[1] = v23;
+  endDate = [intervalCopy endDate];
+  v44[1] = endDate;
   v43[2] = @"HMCCM.mk.v";
-  v24 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v24 = [MEMORY[0x1E696AD98] numberWithInteger:quality];
   v44[2] = v24;
   v43[3] = @"HMCCM.mk.l";
-  v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a5];
+  v25 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:limit];
   v44[3] = v25;
   v43[4] = @"HMCCM.mk.soa";
-  v26 = [MEMORY[0x1E696AD98] numberWithBool:v39];
+  v26 = [MEMORY[0x1E696AD98] numberWithBool:ascendingCopy];
   v44[4] = v26;
   v27 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v44 forKeys:v43 count:5];
 
-  v28 = [(HMCameraClipManager *)v13 fetchClientFactory];
-  v29 = [v11 identifier];
-  v30 = [(HMCameraClipManager *)v13 context];
-  v31 = (v28)[2](v28, v29, v30, @"HMCCM.m.fcs", v36);
+  fetchClientFactory = [(HMCameraClipManager *)selfCopy fetchClientFactory];
+  identifier2 = [v11 identifier];
+  context = [(HMCameraClipManager *)selfCopy context];
+  v31 = (fetchClientFactory)[2](fetchClientFactory, identifier2, context, @"HMCCM.m.fcs", v36);
 
   [v31 setClassForUnarchiving:objc_opt_class()];
   [v31 setPayload:v27];
@@ -1988,10 +1988,10 @@ void __76__HMCameraClipManager_fetchCountOfClipsWithDateInterval_quality_complet
   v40[1] = 3221225472;
   v40[2] = __96__HMCameraClipManager_fetchClipsWithDateInterval_quality_limit_shouldOrderAscending_completion___block_invoke;
   v40[3] = &unk_1E754C418;
-  v40[4] = v13;
+  v40[4] = selfCopy;
   v41 = v11;
-  v42 = v37;
-  v32 = v37;
+  v42 = completionCopy;
+  v32 = completionCopy;
   v33 = v11;
   [v31 fetchWithCompletion:v40];
 
@@ -2044,20 +2044,20 @@ void __96__HMCameraClipManager_fetchClipsWithDateInterval_quality_limit_shouldOr
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchAllClipsWithCompletion:(id)a3
+- (void)fetchAllClipsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc(MEMORY[0x1E696AB80]);
-  v6 = [MEMORY[0x1E695DF00] distantPast];
-  v7 = [MEMORY[0x1E695DF00] distantFuture];
-  v8 = [v5 initWithStartDate:v6 endDate:v7];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  v8 = [v5 initWithStartDate:distantPast endDate:distantFuture];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __51__HMCameraClipManager_fetchAllClipsWithCompletion___block_invoke;
   v10[3] = &unk_1E754DDD8;
-  v11 = v4;
-  v9 = v4;
+  v11 = completionCopy;
+  v9 = completionCopy;
   [(HMCameraClipManager *)self fetchClipsWithDateInterval:v8 limit:-1 shouldOrderAscending:1 completion:v10];
 }
 
@@ -2080,36 +2080,36 @@ void __51__HMCameraClipManager_fetchAllClipsWithCompletion___block_invoke(uint64
   }
 }
 
-- (void)fetchClipForSignificantEventWithUUID:(id)a3 completion:(id)a4
+- (void)fetchClipForSignificantEventWithUUID:(id)d completion:(id)completion
 {
   v43 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Fetch clip for significant event"];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 identifier];
-    v14 = [v13 shortDescription];
+    identifier = [v8 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v38 = v12;
     v39 = 2114;
-    v40 = v14;
+    v40 = shortDescription;
     v41 = 2112;
-    v42 = v6;
+    v42 = dCopy;
     _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Fetching clip for significant event with UUID %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
   v15 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v16 = [(HMCameraClipManager *)v10 profileUniqueIdentifier];
-  v17 = [v15 initWithTarget:v16];
+  profileUniqueIdentifier = [(HMCameraClipManager *)selfCopy profileUniqueIdentifier];
+  v17 = [v15 initWithTarget:profileUniqueIdentifier];
 
   v35 = @"HMCCM.mk.seu";
-  v18 = [MEMORY[0x1E695DFD8] setWithObject:v6];
+  v18 = [MEMORY[0x1E695DFD8] setWithObject:dCopy];
   v36 = v18;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
 
@@ -2118,17 +2118,17 @@ void __51__HMCameraClipManager_fetchAllClipsWithCompletion___block_invoke(uint64
   v28 = 3221225472;
   v29 = __71__HMCameraClipManager_fetchClipForSignificantEventWithUUID_completion___block_invoke;
   v30 = &unk_1E754D030;
-  v31 = v10;
+  v31 = selfCopy;
   v32 = v8;
-  v33 = v6;
-  v34 = v7;
-  v21 = v6;
-  v22 = v7;
+  v33 = dCopy;
+  v34 = completionCopy;
+  v21 = dCopy;
+  v22 = completionCopy;
   v23 = v8;
   [v20 setResponseHandler:&v27];
-  v24 = [(HMCameraClipManager *)v10 context:v27];
-  v25 = [v24 messageDispatcher];
-  [v25 sendMessage:v20 completionHandler:0];
+  v24 = [(HMCameraClipManager *)selfCopy context:v27];
+  messageDispatcher = [v24 messageDispatcher];
+  [messageDispatcher sendMessage:v20 completionHandler:0];
 
   v26 = *MEMORY[0x1E69E9840];
 }
@@ -2218,51 +2218,51 @@ void __71__HMCameraClipManager_fetchClipForSignificantEventWithUUID_completion__
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)fetchClipWithUUID:(id)a3 completion:(id)a4
+- (void)fetchClipWithUUID:(id)d completion:(id)completion
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Fetch clip for significant event"];
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     v12 = HMFGetLogIdentifier();
-    v13 = [v8 identifier];
-    v14 = [v13 shortDescription];
+    identifier = [v8 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v31 = v12;
     v32 = 2114;
-    v33 = v14;
+    v33 = shortDescription;
     v34 = 2112;
-    v35 = v6;
+    v35 = dCopy;
     _os_log_impl(&dword_19BB39000, v11, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Fetching clip with UUID %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
   v28 = @"HMCCM.mk.cu";
-  v29 = v6;
+  v29 = dCopy;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
   v16 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v17 = [(HMCameraClipManager *)v10 profileUniqueIdentifier];
-  v18 = [v16 initWithTarget:v17];
+  profileUniqueIdentifier = [(HMCameraClipManager *)selfCopy profileUniqueIdentifier];
+  v18 = [v16 initWithTarget:profileUniqueIdentifier];
 
   v19 = [MEMORY[0x1E69A2A10] messageWithName:@"HMCCM.m.fc" destination:v18 payload:v15];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __52__HMCameraClipManager_fetchClipWithUUID_completion___block_invoke;
   v25[3] = &unk_1E754E480;
-  v25[4] = v10;
+  v25[4] = selfCopy;
   v26 = v8;
-  v27 = v7;
-  v20 = v7;
+  v27 = completionCopy;
+  v20 = completionCopy;
   v21 = v8;
   [v19 setResponseHandler:v25];
-  v22 = [(HMCameraClipManager *)v10 context];
-  v23 = [v22 messageDispatcher];
-  [v23 sendMessage:v19 completionHandler:0];
+  context = [(HMCameraClipManager *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v19 completionHandler:0];
 
   v24 = *MEMORY[0x1E69E9840];
 }
@@ -2349,45 +2349,45 @@ void __52__HMCameraClipManager_fetchClipWithUUID_completion___block_invoke_163(u
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (id)videoSegmentsAssetContextForClip:(id)a3
+- (id)videoSegmentsAssetContextForClip:(id)clip
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  clipCopy = clip;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMCameraClipManager *)self videoAssetContextsByClipUUID];
-  v6 = [v4 uniqueIdentifier];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  videoAssetContextsByClipUUID = [(HMCameraClipManager *)self videoAssetContextsByClipUUID];
+  uniqueIdentifier = [clipCopy uniqueIdentifier];
+  v7 = [videoAssetContextsByClipUUID objectForKeyedSubscript:uniqueIdentifier];
 
   if (v7)
   {
-    v8 = [v7 expirationDate];
-    v9 = [MEMORY[0x1E695DF00] date];
-    [v8 timeIntervalSinceDate:v9];
+    expirationDate = [v7 expirationDate];
+    date = [MEMORY[0x1E695DF00] date];
+    [expirationDate timeIntervalSinceDate:date];
     v11 = v10;
 
     if (v11 < 120.0)
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v15 = HMFGetLogIdentifier();
-        v16 = [v4 uniqueIdentifier];
-        v17 = [v16 UUIDString];
+        uniqueIdentifier2 = [clipCopy uniqueIdentifier];
+        uUIDString = [uniqueIdentifier2 UUIDString];
         v22 = 138543874;
         v23 = v15;
         v24 = 2112;
-        v25 = v17;
+        v25 = uUIDString;
         v26 = 2112;
         v27 = v7;
         _os_log_impl(&dword_19BB39000, v14, OS_LOG_TYPE_INFO, "%{public}@Video segments asset context for clip UUID %@ has expired: %@", &v22, 0x20u);
       }
 
       objc_autoreleasePoolPop(v12);
-      v18 = [(HMCameraClipManager *)v13 videoAssetContextsByClipUUID];
-      v19 = [v4 uniqueIdentifier];
-      [v18 setObject:0 forKeyedSubscript:v19];
+      videoAssetContextsByClipUUID2 = [(HMCameraClipManager *)selfCopy videoAssetContextsByClipUUID];
+      uniqueIdentifier3 = [clipCopy uniqueIdentifier];
+      [videoAssetContextsByClipUUID2 setObject:0 forKeyedSubscript:uniqueIdentifier3];
 
       v7 = 0;
     }
@@ -2400,45 +2400,45 @@ void __52__HMCameraClipManager_fetchClipWithUUID_completion___block_invoke_163(u
   return v7;
 }
 
-- (void)performCloudPullWithCompletion:(id)a3
+- (void)performCloudPullWithCompletion:(id)completion
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   v5 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Perform cloud pull"];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v5 identifier];
-    v11 = [v10 shortDescription];
+    identifier = [v5 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543618;
     v25 = v9;
     v26 = 2114;
-    v27 = v11;
+    v27 = shortDescription;
     _os_log_impl(&dword_19BB39000, v8, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Performing cloud pull", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
   v12 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v13 = [(HMCameraClipManager *)v7 profileUniqueIdentifier];
-  v14 = [v12 initWithTarget:v13];
+  profileUniqueIdentifier = [(HMCameraClipManager *)selfCopy profileUniqueIdentifier];
+  v14 = [v12 initWithTarget:profileUniqueIdentifier];
 
   v15 = [MEMORY[0x1E69A2A10] messageWithName:@"HMCCM.m.pcp" destination:v14 payload:0];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __54__HMCameraClipManager_performCloudPullWithCompletion___block_invoke;
   v21[3] = &unk_1E754E480;
-  v21[4] = v7;
+  v21[4] = selfCopy;
   v22 = v5;
-  v23 = v4;
-  v16 = v4;
+  v23 = completionCopy;
+  v16 = completionCopy;
   v17 = v5;
   [v15 setResponseHandler:v21];
-  v18 = [(HMCameraClipManager *)v7 context];
-  v19 = [v18 messageDispatcher];
-  [v19 sendMessage:v15];
+  context = [(HMCameraClipManager *)selfCopy context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v15];
 
   v20 = *MEMORY[0x1E69E9840];
 }
@@ -2498,18 +2498,18 @@ LABEL_6:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v9 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock_with_options();
-  v4 = [(HMCameraClipManager *)self delegateCallersByObservers];
-  v5 = [v4 count];
+  delegateCallersByObservers = [(HMCameraClipManager *)self delegateCallersByObservers];
+  v5 = [delegateCallersByObservers count];
 
-  v6 = [(HMCameraClipManager *)self delegateCallersByObservers];
-  [v6 removeObjectForKey:v9];
+  delegateCallersByObservers2 = [(HMCameraClipManager *)self delegateCallersByObservers];
+  [delegateCallersByObservers2 removeObjectForKey:observerCopy];
 
-  v7 = [(HMCameraClipManager *)self delegateCallersByObservers];
-  v8 = [v7 count];
+  delegateCallersByObservers3 = [(HMCameraClipManager *)self delegateCallersByObservers];
+  v8 = [delegateCallersByObservers3 count];
 
   os_unfair_lock_unlock(&self->_lock);
   if (!v8 && v5)
@@ -2518,27 +2518,27 @@ LABEL_6:
   }
 }
 
-- (void)addObserver:(id)a3 queue:(id)a4
+- (void)addObserver:(id)observer queue:(id)queue
 {
-  v12 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  queueCopy = queue;
   os_unfair_lock_lock_with_options();
-  v7 = [(HMCameraClipManager *)self delegateCallersByObservers];
-  v8 = [v7 count];
+  delegateCallersByObservers = [(HMCameraClipManager *)self delegateCallersByObservers];
+  v8 = [delegateCallersByObservers count];
 
-  if (v6)
+  if (queueCopy)
   {
-    v9 = [[HMDelegateCaller alloc] initWithQueue:v6];
+    delegateCaller = [[HMDelegateCaller alloc] initWithQueue:queueCopy];
   }
 
   else
   {
-    v10 = [(HMCameraClipManager *)self context];
-    v9 = [v10 delegateCaller];
+    context = [(HMCameraClipManager *)self context];
+    delegateCaller = [context delegateCaller];
   }
 
-  v11 = [(HMCameraClipManager *)self delegateCallersByObservers];
-  [v11 setObject:v9 forKey:v12];
+  delegateCallersByObservers2 = [(HMCameraClipManager *)self delegateCallersByObservers];
+  [delegateCallersByObservers2 setObject:delegateCaller forKey:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   if (!v8)
@@ -2549,51 +2549,51 @@ LABEL_6:
 
 - (void)dealloc
 {
-  v3 = [(NSMapTable *)self->_delegateCallersByObservers keyEnumerator];
-  v4 = [v3 nextObject];
+  keyEnumerator = [(NSMapTable *)self->_delegateCallersByObservers keyEnumerator];
+  nextObject = [keyEnumerator nextObject];
 
-  if (v4)
+  if (nextObject)
   {
     [(HMCameraClipManager *)self unsubscribe];
   }
 
-  v5 = [(HMCameraClipManager *)self context];
-  v6 = [v5 messageDispatcher];
-  [v6 deregisterReceiver:self];
+  context = [(HMCameraClipManager *)self context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher deregisterReceiver:self];
 
   v7.receiver = self;
   v7.super_class = HMCameraClipManager;
   [(HMCameraClipManager *)&v7 dealloc];
 }
 
-- (HMCameraClipManager)initWithContext:(id)a3 profileUniqueIdentifier:(id)a4 zoneName:(id)a5 notificationCenter:(id)a6
+- (HMCameraClipManager)initWithContext:(id)context profileUniqueIdentifier:(id)identifier zoneName:(id)name notificationCenter:(id)center
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  contextCopy = context;
+  identifierCopy = identifier;
+  nameCopy = name;
+  centerCopy = center;
+  if (!contextCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v12)
+  if (!identifierCopy)
   {
 LABEL_9:
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v13)
+  if (!nameCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  v15 = v14;
-  if (!v14)
+  v15 = centerCopy;
+  if (!centerCopy)
   {
 LABEL_11:
     v32 = _HMFPreconditionFailure();
@@ -2606,31 +2606,31 @@ LABEL_11:
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_context, a3);
-    v18 = [v12 copy];
+    objc_storeStrong(&v16->_context, context);
+    v18 = [identifierCopy copy];
     profileUniqueIdentifier = v17->_profileUniqueIdentifier;
     v17->_profileUniqueIdentifier = v18;
 
-    v20 = [v13 copy];
+    v20 = [nameCopy copy];
     zoneName = v17->_zoneName;
     v17->_zoneName = v20;
 
-    objc_storeStrong(&v17->_notificationCenter, a6);
-    v22 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v17->_notificationCenter, center);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     clipsByFetchUUID = v17->_clipsByFetchUUID;
-    v17->_clipsByFetchUUID = v22;
+    v17->_clipsByFetchUUID = dictionary;
 
-    v24 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     significantEventsByFetchUUID = v17->_significantEventsByFetchUUID;
-    v17->_significantEventsByFetchUUID = v24;
+    v17->_significantEventsByFetchUUID = dictionary2;
 
-    v26 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     videoAssetContextsByClipUUID = v17->_videoAssetContextsByClipUUID;
-    v17->_videoAssetContextsByClipUUID = v26;
+    v17->_videoAssetContextsByClipUUID = dictionary3;
 
-    v28 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     delegateCallersByObservers = v17->_delegateCallersByObservers;
-    v17->_delegateCallersByObservers = v28;
+    v17->_delegateCallersByObservers = weakToStrongObjectsMapTable;
 
     fetchClientFactory = v17->_fetchClientFactory;
     v17->_fetchClientFactory = &__block_literal_global_47985;
@@ -2650,14 +2650,14 @@ HMCameraObjectFetchClient *__91__HMCameraClipManager_initWithContext_profileUniq
   return v12;
 }
 
-- (HMCameraClipManager)initWithContext:(id)a3 profileUniqueIdentifier:(id)a4 zoneName:(id)a5 home:(id)a6
+- (HMCameraClipManager)initWithContext:(id)context profileUniqueIdentifier:(id)identifier zoneName:(id)name home:(id)home
 {
   v9 = MEMORY[0x1E696AD88];
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v9 defaultCenter];
-  v14 = [(HMCameraClipManager *)self initWithContext:v12 profileUniqueIdentifier:v11 zoneName:v10 notificationCenter:v13];
+  nameCopy = name;
+  identifierCopy = identifier;
+  contextCopy = context;
+  defaultCenter = [v9 defaultCenter];
+  v14 = [(HMCameraClipManager *)self initWithContext:contextCopy profileUniqueIdentifier:identifierCopy zoneName:nameCopy notificationCenter:defaultCenter];
 
   return v14;
 }
@@ -2684,11 +2684,11 @@ uint64_t __34__HMCameraClipManager_logCategory__block_invoke()
   return MEMORY[0x1EEE66BB8](v1, v2);
 }
 
-+ (id)zoneNameForRecordingManagementServiceUUID:(id)a3
++ (id)zoneNameForRecordingManagementServiceUUID:(id)d
 {
-  v3 = [MEMORY[0x1E696AFB0] hm_deriveUUIDFromBaseUUID:a3 identifierSalt:0 withSalts:0];
-  v4 = [v3 UUIDString];
-  v5 = [@"camera-clips-" stringByAppendingString:v4];
+  v3 = [MEMORY[0x1E696AFB0] hm_deriveUUIDFromBaseUUID:d identifierSalt:0 withSalts:0];
+  uUIDString = [v3 UUIDString];
+  v5 = [@"camera-clips-" stringByAppendingString:uUIDString];
 
   return v5;
 }

@@ -1,8 +1,8 @@
 @interface ECAuthScheme
 + (NSArray)knownSchemes;
-+ (id)allocWithZone:(_NSZone *)a3;
-+ (id)schemeWithApplescriptScheme:(unsigned int)a3;
-+ (id)schemeWithName:(id)a3;
++ (id)allocWithZone:(_NSZone *)zone;
++ (id)schemeWithApplescriptScheme:(unsigned int)scheme;
++ (id)schemeWithName:(id)name;
 - (NSString)humanReadableName;
 - (NSString)name;
 - (unsigned)applescriptScheme;
@@ -10,18 +10,18 @@
 
 @implementation ECAuthScheme
 
-+ (id)allocWithZone:(_NSZone *)a3
++ (id)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot directly allocate a %@ object, use +knownSchemes, +schemeWithName:, or +authSchemesForAccount:connection: instead.", a1];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"Cannot directly allocate a %@ object, use +knownSchemes, +schemeWithName:, or +authSchemesForAccount:connection: instead.", self];
     v6 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE648] reason:objc_claimAutoreleasedReturnValue() userInfo:0];
     objc_exception_throw(v6);
   }
 
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___ECAuthScheme;
-  return objc_msgSendSuper2(&v7, sel_allocWithZone_, a3);
+  return objc_msgSendSuper2(&v7, sel_allocWithZone_, zone);
 }
 
 + (NSArray)knownSchemes
@@ -54,12 +54,12 @@
   return v11;
 }
 
-+ (id)schemeWithName:(id)a3
++ (id)schemeWithName:(id)name
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || [v4 isEqualToString:&stru_284041D88])
+  nameCopy = name;
+  v5 = nameCopy;
+  if (!nameCopy || [nameCopy isEqualToString:&stru_284041D88])
   {
     v6 = +[ECPlainAuthScheme plainAuthScheme];
 LABEL_4:
@@ -125,8 +125,8 @@ LABEL_4:
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v10 = [a1 knownSchemes];
-  v7 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  knownSchemes = [self knownSchemes];
+  v7 = [knownSchemes countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v11 = *v17;
@@ -136,12 +136,12 @@ LABEL_4:
       {
         if (*v17 != v11)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(knownSchemes);
         }
 
         v13 = *(*(&v16 + 1) + 8 * i);
-        v14 = [v13 supportedSASLMechanisms];
-        v15 = [v14 containsObject:v5];
+        supportedSASLMechanisms = [v13 supportedSASLMechanisms];
+        v15 = [supportedSASLMechanisms containsObject:v5];
 
         if (v15)
         {
@@ -150,7 +150,7 @@ LABEL_4:
         }
       }
 
-      v7 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [knownSchemes countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -168,12 +168,12 @@ LABEL_5:
   return v7;
 }
 
-+ (id)schemeWithApplescriptScheme:(unsigned int)a3
++ (id)schemeWithApplescriptScheme:(unsigned int)scheme
 {
   v3 = 0;
-  if (a3 <= 1635279731)
+  if (scheme <= 1635279731)
   {
-    switch(a3)
+    switch(scheme)
     {
       case 0x6161706Fu:
         v3 = +[ECAPOPAuthScheme apopAuthScheme];
@@ -187,25 +187,25 @@ LABEL_5:
     }
   }
 
-  else if (a3 > 1635282275)
+  else if (scheme > 1635282275)
   {
-    if (a3 == 1635282276)
+    if (scheme == 1635282276)
     {
       v3 = +[ECCramMD5AuthScheme cramMD5AuthScheme];
     }
 
-    else if (a3 == 1635282548)
+    else if (scheme == 1635282548)
     {
       v3 = +[ECNTLMAuthScheme ntlmAuthScheme];
     }
   }
 
-  else if (a3 == 1635279732)
+  else if (scheme == 1635279732)
   {
     v3 = +[ECPlainAuthScheme plainAuthScheme];
   }
 
-  else if (a3 == 1635281717)
+  else if (scheme == 1635281717)
   {
     v3 = +[ECGSSAPIAuthScheme gssapiAuthScheme];
   }
@@ -215,24 +215,24 @@ LABEL_5:
 
 - (NSString)name
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"ECAuthScheme.m" lineNumber:152 description:@"Subclass must implement."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ECAuthScheme.m" lineNumber:152 description:@"Subclass must implement."];
 
   return &stru_284041D88;
 }
 
 - (NSString)humanReadableName
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"ECAuthScheme.m" lineNumber:157 description:@"Subclass must implement."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ECAuthScheme.m" lineNumber:157 description:@"Subclass must implement."];
 
   return &stru_284041D88;
 }
 
 - (unsigned)applescriptScheme
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"ECAuthScheme.m" lineNumber:162 description:@"Subclass must implement."];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"ECAuthScheme.m" lineNumber:162 description:@"Subclass must implement."];
 
   return 1635284334;
 }

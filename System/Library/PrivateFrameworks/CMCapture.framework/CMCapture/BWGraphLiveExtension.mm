@@ -1,5 +1,5 @@
 @interface BWGraphLiveExtension
-- (void)addNode:(id)a3;
+- (void)addNode:(id)node;
 - (void)dealloc;
 @end
 
@@ -12,17 +12,17 @@
   [(BWGraphLiveExtension *)&v3 dealloc];
 }
 
-- (void)addNode:(id)a3
+- (void)addNode:(id)node
 {
   if (!self->_nodes)
   {
     self->_nodes = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
   }
 
-  [a3 setRequestedConfigurationID:self->_configurationID];
+  [node setRequestedConfigurationID:self->_configurationID];
   nodes = self->_nodes;
 
-  [(NSMutableArray *)nodes addObject:a3];
+  [(NSMutableArray *)nodes addObject:node];
 }
 
 @end

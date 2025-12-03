@@ -2,10 +2,10 @@
 - (BOOL)hasContent;
 - (BOOL)hasOnlyImage;
 - (id)description;
-- (id)filterItemsByType:(unint64_t)a3;
+- (id)filterItemsByType:(unint64_t)type;
 - (id)text;
 - (unint64_t)maxLines;
-- (void)setFormattedTextItems:(id)a3;
+- (void)setFormattedTextItems:(id)items;
 @end
 
 @implementation TLKRichText
@@ -18,8 +18,8 @@
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [(TLKRichText *)self formattedTextItems];
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  formattedTextItems = [(TLKRichText *)self formattedTextItems];
+  v5 = [formattedTextItems countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -30,24 +30,24 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(formattedTextItems);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 string];
+          string = [v9 string];
 
-          if (v10)
+          if (string)
           {
-            v11 = [v9 string];
-            [v3 appendString:v11];
+            string2 = [v9 string];
+            [v3 appendString:string2];
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [formattedTextItems countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v6);
@@ -55,11 +55,11 @@
 
   v17.receiver = self;
   v17.super_class = TLKRichText;
-  v12 = [(TLKMultilineText *)&v17 text];
-  v13 = v12;
-  if (v12)
+  text = [(TLKMultilineText *)&v17 text];
+  v13 = text;
+  if (text)
   {
-    v14 = v12;
+    v14 = text;
   }
 
   else
@@ -75,8 +75,8 @@
 - (BOOL)hasContent
 {
   v15 = *MEMORY[0x1E69E9840];
-  v3 = [(TLKRichText *)self text];
-  v4 = [v3 length];
+  text = [(TLKRichText *)self text];
+  v4 = [text length];
 
   if (v4)
   {
@@ -89,8 +89,8 @@
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v6 = [(TLKRichText *)self formattedTextItems];
-    v5 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    formattedTextItems = [(TLKRichText *)self formattedTextItems];
+    v5 = [formattedTextItems countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v7 = *v11;
@@ -100,7 +100,7 @@
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(formattedTextItems);
           }
 
           if ([*(*(&v10 + 1) + 8 * i) hasContent])
@@ -110,7 +110,7 @@
           }
         }
 
-        v5 = [v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v5 = [formattedTextItems countByEnumeratingWithState:&v10 objects:v14 count:16];
         if (v5)
         {
           continue;
@@ -128,26 +128,26 @@ LABEL_13:
 
 - (unint64_t)maxLines
 {
-  v3 = [(TLKRichText *)self stars];
-  if ([v3 count])
+  stars = [(TLKRichText *)self stars];
+  if ([stars count])
   {
-    v4 = 1;
+    maxLines = 1;
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = TLKRichText;
-    v4 = [(TLKMultilineText *)&v6 maxLines];
+    maxLines = [(TLKMultilineText *)&v6 maxLines];
   }
 
-  return v4;
+  return maxLines;
 }
 
-- (void)setFormattedTextItems:(id)a3
+- (void)setFormattedTextItems:(id)items
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  itemsCopy = items;
   if (objc_opt_respondsToSelector())
   {
     [(NSArray *)self->_formattedTextItems setObserver:0];
@@ -158,7 +158,7 @@ LABEL_13:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v5;
+      v23 = itemsCopy;
       v30 = 0u;
       v31 = 0u;
       v28 = 0u;
@@ -191,11 +191,11 @@ LABEL_13:
         while (v8);
       }
 
-      v5 = v23;
+      itemsCopy = v23;
     }
   }
 
-  objc_storeStrong(&self->_formattedTextItems, a3);
+  objc_storeStrong(&self->_formattedTextItems, items);
   if (objc_opt_respondsToSelector())
   {
     [(NSArray *)self->_formattedTextItems setObserver:self];
@@ -240,28 +240,28 @@ LABEL_13:
     }
   }
 
-  v18 = [(TLKObject *)self observer];
-  if (v18)
+  observer = [(TLKObject *)self observer];
+  if (observer)
   {
-    v19 = v18;
-    v20 = [(TLKObject *)self observer];
-    v21 = [v20 batchUpdateCount];
+    v19 = observer;
+    observer2 = [(TLKObject *)self observer];
+    batchUpdateCount = [observer2 batchUpdateCount];
 
-    if (!v21)
+    if (!batchUpdateCount)
     {
-      v22 = [(TLKObject *)self observer];
-      [v22 propertiesDidChange];
+      observer3 = [(TLKObject *)self observer];
+      [observer3 propertiesDidChange];
     }
   }
 }
 
 - (BOOL)hasOnlyImage
 {
-  v3 = [(TLKRichText *)self formattedTextItems];
-  if ([v3 count] == 1)
+  formattedTextItems = [(TLKRichText *)self formattedTextItems];
+  if ([formattedTextItems count] == 1)
   {
-    v4 = [(TLKRichText *)self formattedTextItems];
-    v5 = [v4 firstObject];
+    formattedTextItems2 = [(TLKRichText *)self formattedTextItems];
+    firstObject = [formattedTextItems2 firstObject];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -287,8 +287,8 @@ LABEL_13:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(TLKRichText *)self formattedTextItems];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  formattedTextItems = [(TLKRichText *)self formattedTextItems];
+  v6 = [formattedTextItems countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -299,14 +299,14 @@ LABEL_13:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(formattedTextItems);
         }
 
         v10 = [*(*(&v12 + 1) + 8 * i) description];
         [v3 appendString:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v7 = [formattedTextItems countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v7);
@@ -315,7 +315,7 @@ LABEL_13:
   return v3;
 }
 
-- (id)filterItemsByType:(unint64_t)a3
+- (id)filterItemsByType:(unint64_t)type
 {
   v20 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_new();
@@ -323,8 +323,8 @@ LABEL_13:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(TLKRichText *)self formattedTextItems];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  formattedTextItems = [(TLKRichText *)self formattedTextItems];
+  v7 = [formattedTextItems countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -335,17 +335,17 @@ LABEL_13:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(formattedTextItems);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        if ([v11 _itemType] == a3)
+        if ([v11 _itemType] == type)
         {
           [v5 addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [formattedTextItems countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);

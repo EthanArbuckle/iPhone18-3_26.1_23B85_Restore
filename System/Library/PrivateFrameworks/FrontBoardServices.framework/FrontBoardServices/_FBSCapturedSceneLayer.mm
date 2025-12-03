@@ -1,28 +1,28 @@
 @interface _FBSCapturedSceneLayer
-- (BOOL)isEqual:(id)a3;
-- (_FBSCapturedSceneLayer)initWithXPCDictionary:(id)a3;
-- (id)_initWithLayer:(id)a3;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_FBSCapturedSceneLayer)initWithXPCDictionary:(id)dictionary;
+- (id)_initWithLayer:(id)layer;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithXPCDictionary:(id)dictionary;
 @end
 
 @implementation _FBSCapturedSceneLayer
 
-- (id)_initWithLayer:(id)a3
+- (id)_initWithLayer:(id)layer
 {
-  v5 = a3;
-  if (!v5)
+  layerCopy = layer;
+  if (!layerCopy)
   {
     [_FBSCapturedSceneLayer _initWithLayer:a2];
   }
 
-  v6 = v5;
-  v7 = [(FBSSceneLayer *)self _init];
-  v8 = v7;
-  if (v7)
+  v6 = layerCopy;
+  _init = [(FBSSceneLayer *)self _init];
+  v8 = _init;
+  if (_init)
   {
-    v7[6] = *(v6 + 6);
-    objc_storeStrong(v7 + 1, *(v6 + 1));
+    _init[6] = *(v6 + 6);
+    objc_storeStrong(_init + 1, *(v6 + 1));
     *(v8 + 4) = *(v6 + 4);
     v8[3] = *(v6 + 3);
     objc_storeStrong(v8 + 5, *(v6 + 5));
@@ -47,11 +47,11 @@
   return v8;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   level = self->super._level;
-  [v4 level];
+  [compareCopy level];
   if (level >= v6)
   {
     if (level > v6)
@@ -61,7 +61,7 @@
     }
 
     captureTime = self->_captureTime;
-    v9 = v4[9];
+    v9 = compareCopy[9];
     if (captureTime >= v9)
     {
       v7 = captureTime > v9;
@@ -75,37 +75,37 @@ LABEL_7:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = _FBSCapturedSceneLayer;
-  v6 = [(FBSSceneLayer *)&v8 isEqual:v4]&& (v5 = objc_opt_class(), v5 == objc_opt_class()) && self->_captureTime == v4[9];
+  v6 = [(FBSSceneLayer *)&v8 isEqual:equalCopy]&& (v5 = objc_opt_class(), v5 == objc_opt_class()) && self->_captureTime == equalCopy[9];
 
   return v6;
 }
 
-- (_FBSCapturedSceneLayer)initWithXPCDictionary:(id)a3
+- (_FBSCapturedSceneLayer)initWithXPCDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [(FBSSceneLayer *)self _init];
-  if (v5)
+  dictionaryCopy = dictionary;
+  _init = [(FBSSceneLayer *)self _init];
+  if (_init)
   {
-    v5[6] = xpc_dictionary_get_uint64(v4, "t");
-    *(v5 + 4) = xpc_dictionary_get_double(v4, "l");
-    v5[9] = xpc_dictionary_get_uint64(v4, "ts");
-    *(v5 + 4) = xpc_dictionary_get_uint64(v4, "cid");
-    v5[3] = xpc_dictionary_get_uint64(v4, "rid");
-    v5[7] = xpc_dictionary_get_uint64(v4, "a");
+    _init[6] = xpc_dictionary_get_uint64(dictionaryCopy, "t");
+    *(_init + 4) = xpc_dictionary_get_double(dictionaryCopy, "l");
+    _init[9] = xpc_dictionary_get_uint64(dictionaryCopy, "ts");
+    *(_init + 4) = xpc_dictionary_get_uint64(dictionaryCopy, "cid");
+    _init[3] = xpc_dictionary_get_uint64(dictionaryCopy, "rid");
+    _init[7] = xpc_dictionary_get_uint64(dictionaryCopy, "a");
     BSDeserializeBSXPCEncodableObjectFromXPCDictionaryWithKey();
   }
 
   return 0;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
-  xdict = a3;
+  xdict = dictionary;
   xpc_dictionary_set_uint64(xdict, "t", self->super._type);
   xpc_dictionary_set_double(xdict, "l", self->super._level);
   xpc_dictionary_set_uint64(xdict, "ts", self->_captureTime);

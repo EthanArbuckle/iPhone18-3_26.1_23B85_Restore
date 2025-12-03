@@ -1,6 +1,6 @@
 @interface NTKCFaceDetailShowSecondsCell
 + (id)reuseIdentifier;
-- (NTKCFaceDetailShowSecondsCell)initWithCollection:(id)a3;
+- (NTKCFaceDetailShowSecondsCell)initWithCollection:(id)collection;
 @end
 
 @implementation NTKCFaceDetailShowSecondsCell
@@ -12,19 +12,19 @@
   return NSStringFromClass(v2);
 }
 
-- (NTKCFaceDetailShowSecondsCell)initWithCollection:(id)a3
+- (NTKCFaceDetailShowSecondsCell)initWithCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v11.receiver = self;
   v11.super_class = NTKCFaceDetailShowSecondsCell;
   v6 = [(NTKCFaceDetailToggleCell *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_collection, a3);
-    v8 = [(NTKEditOptionCollection *)v7->_collection localizedName];
-    v9 = [(NTKCFaceDetailShowSecondsCell *)v7 textLabel];
-    [v9 setText:v8];
+    objc_storeStrong(&v6->_collection, collection);
+    localizedName = [(NTKEditOptionCollection *)v7->_collection localizedName];
+    textLabel = [(NTKCFaceDetailShowSecondsCell *)v7 textLabel];
+    [textLabel setText:localizedName];
   }
 
   return v7;

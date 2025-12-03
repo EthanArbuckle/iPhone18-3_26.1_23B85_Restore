@@ -1,26 +1,26 @@
 @interface StopwatchStandbyCompressedController
 - (void)didPauseLapTimer;
 - (void)didResumeLapTimer;
-- (void)didUpdateCurrentInterval:(double)a3 adjustedCurrentInterval:(double)a4 totalInterval:(double)a5 adjustedTotalInterval:(double)a6 isStopwatchRunning:(BOOL)a7 isStopwatchStopped:(BOOL)a8;
+- (void)didUpdateCurrentInterval:(double)interval adjustedCurrentInterval:(double)currentInterval totalInterval:(double)totalInterval adjustedTotalInterval:(double)adjustedTotalInterval isStopwatchRunning:(BOOL)running isStopwatchStopped:(BOOL)stopped;
 @end
 
 @implementation StopwatchStandbyCompressedController
 
-- (void)didUpdateCurrentInterval:(double)a3 adjustedCurrentInterval:(double)a4 totalInterval:(double)a5 adjustedTotalInterval:(double)a6 isStopwatchRunning:(BOOL)a7 isStopwatchStopped:(BOOL)a8
+- (void)didUpdateCurrentInterval:(double)interval adjustedCurrentInterval:(double)currentInterval totalInterval:(double)totalInterval adjustedTotalInterval:(double)adjustedTotalInterval isStopwatchRunning:(BOOL)running isStopwatchStopped:(BOOL)stopped
 {
-  v14 = self;
-  sub_100080E9C(a7, a8, a3, a4, a5, a6);
+  selfCopy = self;
+  sub_100080E9C(running, stopped, interval, currentInterval, totalInterval, adjustedTotalInterval);
 }
 
 - (void)didPauseLapTimer
 {
-  v2 = self;
+  selfCopy = self;
   sub_100081060();
 }
 
 - (void)didResumeLapTimer
 {
-  v2 = self;
+  selfCopy = self;
   sub_100081134();
 }
 

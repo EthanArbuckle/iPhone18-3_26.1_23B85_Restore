@@ -1,29 +1,29 @@
 @interface RCSpatialRecorder
-- (BOOL)handleWillTerminate:(id *)a3;
-- (BOOL)sampleRecordingTime:(double *)a3;
-- (BOOL)startAndReturnError:(id *)a3;
+- (BOOL)handleWillTerminate:(id *)terminate;
+- (BOOL)sampleRecordingTime:(double *)time;
+- (BOOL)startAndReturnError:(id *)error;
 - (NSDictionary)outputFileSettings;
 - (NSURL)outputFileURL;
 - (VMRecordingController)controller;
 - (_TtC10VoiceMemos17RCSpatialRecorder)init;
-- (_TtC10VoiceMemos17RCSpatialRecorder)initWithOutputFileURL:(id)a3 outputFileSettings:(id)a4;
-- (void)captureSessionRecorder:(id)a3 didFailWithError:(id)a4;
-- (void)captureSessionRecorderDidCaptureSampleBuffer:(id)a3 buffer:(id)a4 mediaTime:(double)a5;
-- (void)captureSessionRecorderDidFinish:(id)a3 fileOutputURL:(id)a4 error:(id)a5;
-- (void)captureSessionRecorderIsRunningDidChange:(id)a3 isRunning:(BOOL)a4;
-- (void)setController:(id)a3;
-- (void)setGroup:(id)a3;
-- (void)setOutputFileSettings:(id)a3;
-- (void)stopRecordingAtTime:(double)a3 completion:(id)a4;
+- (_TtC10VoiceMemos17RCSpatialRecorder)initWithOutputFileURL:(id)l outputFileSettings:(id)settings;
+- (void)captureSessionRecorder:(id)recorder didFailWithError:(id)error;
+- (void)captureSessionRecorderDidCaptureSampleBuffer:(id)buffer buffer:(id)a4 mediaTime:(double)time;
+- (void)captureSessionRecorderDidFinish:(id)finish fileOutputURL:(id)l error:(id)error;
+- (void)captureSessionRecorderIsRunningDidChange:(id)change isRunning:(BOOL)running;
+- (void)setController:(id)controller;
+- (void)setGroup:(id)group;
+- (void)setOutputFileSettings:(id)settings;
+- (void)stopRecordingAtTime:(double)time completion:(id)completion;
 @end
 
 @implementation RCSpatialRecorder
 
-- (void)setGroup:(id)a3
+- (void)setGroup:(id)group
 {
   v4 = *(self + OBJC_IVAR____TtC10VoiceMemos17RCSpatialRecorder_group);
-  *(self + OBJC_IVAR____TtC10VoiceMemos17RCSpatialRecorder_group) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC10VoiceMemos17RCSpatialRecorder_group) = group;
+  groupCopy = group;
 }
 
 - (VMRecordingController)controller
@@ -33,9 +33,9 @@
   return v2;
 }
 
-- (void)setController:(id)a3
+- (void)setController:(id)controller
 {
-  *(self + OBJC_IVAR____TtC10VoiceMemos17RCSpatialRecorder_controller) = a3;
+  *(self + OBJC_IVAR____TtC10VoiceMemos17RCSpatialRecorder_controller) = controller;
   swift_unknownObjectRetain();
 
   swift_unknownObjectRelease();
@@ -63,57 +63,57 @@
   return v2.super.isa;
 }
 
-- (void)setOutputFileSettings:(id)a3
+- (void)setOutputFileSettings:(id)settings
 {
   *(self + OBJC_IVAR____TtC10VoiceMemos17RCSpatialRecorder_outputFileSettings) = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
 }
 
-- (void)stopRecordingAtTime:(double)a3 completion:(id)a4
+- (void)stopRecordingAtTime:(double)time completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   _Block_copy(v5);
-  v6 = self;
-  sub_10015CD64(v6, v5);
+  selfCopy = self;
+  sub_10015CD64(selfCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 }
 
-- (BOOL)sampleRecordingTime:(double *)a3
+- (BOOL)sampleRecordingTime:(double *)time
 {
   v3 = *(self + OBJC_IVAR____TtC10VoiceMemos17RCSpatialRecorder_firstSampleMediaTime + 8);
   if ((v3 & 1) == 0)
   {
     v6 = *(self + OBJC_IVAR____TtC10VoiceMemos17RCSpatialRecorder_firstSampleMediaTime);
     v7 = objc_opt_self();
-    v8 = self;
+    selfCopy = self;
     [v7 secondsForHostTime:mach_absolute_time()];
-    *a3 = v9 - v6 + *(v8 + OBJC_IVAR____TtC10VoiceMemos17RCSpatialRecorder_punchInTime);
+    *time = v9 - v6 + *(selfCopy + OBJC_IVAR____TtC10VoiceMemos17RCSpatialRecorder_punchInTime);
   }
 
   return v3 ^ 1;
 }
 
-- (BOOL)startAndReturnError:(id *)a3
+- (BOOL)startAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   sub_10018611C();
   sub_100186A38();
 
   return 1;
 }
 
-- (BOOL)handleWillTerminate:(id *)a3
+- (BOOL)handleWillTerminate:(id *)terminate
 {
   v3 = *(self + OBJC_IVAR____TtC10VoiceMemos17RCSpatialRecorder_captureSessionRecorder);
   v4 = *(v3 + OBJC_IVAR____TtC10VoiceMemos22CaptureSessionRecorder_fileOutput);
-  v5 = self;
+  selfCopy = self;
   [v4 stopRecording];
   [*(v3 + OBJC_IVAR____TtC10VoiceMemos22CaptureSessionRecorder_captureSession) stopRunning];
 
   return 1;
 }
 
-- (_TtC10VoiceMemos17RCSpatialRecorder)initWithOutputFileURL:(id)a3 outputFileSettings:(id)a4
+- (_TtC10VoiceMemos17RCSpatialRecorder)initWithOutputFileURL:(id)l outputFileSettings:(id)settings
 {
   v4 = type metadata accessor for URL();
   __chkstk_darwin(v4 - 8, v5);
@@ -130,24 +130,24 @@
   return result;
 }
 
-- (void)captureSessionRecorderIsRunningDidChange:(id)a3 isRunning:(BOOL)a4
+- (void)captureSessionRecorderIsRunningDidChange:(id)change isRunning:(BOOL)running
 {
   v4 = *(self + OBJC_IVAR____TtC10VoiceMemos17RCSpatialRecorder_controller);
   if (v4)
   {
-    [v4 setIoStarted:a4];
+    [v4 setIoStarted:running];
   }
 }
 
-- (void)captureSessionRecorder:(id)a3 didFailWithError:(id)a4
+- (void)captureSessionRecorder:(id)recorder didFailWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
-  sub_10015CE60(v8);
+  recorderCopy = recorder;
+  errorCopy = error;
+  selfCopy = self;
+  sub_10015CE60(errorCopy);
 }
 
-- (void)captureSessionRecorderDidFinish:(id)a3 fileOutputURL:(id)a4 error:(id)a5
+- (void)captureSessionRecorderDidFinish:(id)finish fileOutputURL:(id)l error:(id)error
 {
   v6 = type metadata accessor for URL();
   v7 = *(v6 - 8);
@@ -156,7 +156,7 @@
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = (self + OBJC_IVAR____TtC10VoiceMemos17RCSpatialRecorder_stopRecordingCompletion);
   v12 = *(self + OBJC_IVAR____TtC10VoiceMemos17RCSpatialRecorder_stopRecordingCompletion);
-  v13 = self;
+  selfCopy = self;
   if (v12)
   {
     v14 = sub_1000D0DAC(v12);
@@ -171,12 +171,12 @@
   sub_1000338B4(v15);
 }
 
-- (void)captureSessionRecorderDidCaptureSampleBuffer:(id)a3 buffer:(id)a4 mediaTime:(double)a5
+- (void)captureSessionRecorderDidCaptureSampleBuffer:(id)buffer buffer:(id)a4 mediaTime:(double)time
 {
-  v8 = a3;
+  bufferCopy = buffer;
   v9 = a4;
-  v10 = self;
-  sub_10015D21C(v9, a5);
+  selfCopy = self;
+  sub_10015D21C(v9, time);
 }
 
 @end

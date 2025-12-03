@@ -2,27 +2,27 @@
 + (CGSize)defaultItemSize;
 + (CGSize)largeItemSize;
 + (double)baseFontSize;
-+ (double)grayscaleLuminance:(id)a3;
++ (double)grayscaleLuminance:(id)luminance;
 - (BOOL)_allItemViewsActive;
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
 - (CGRect)_unionRectActiveItems;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (_UICursorAccessoryItemDataSource)dataSource;
-- (_UICursorAccessoryView)initWithDataSource:(id)a3;
+- (_UICursorAccessoryView)initWithDataSource:(id)source;
 - (double)activeAccessoryXOffset;
-- (id)_displayedItemViewAtIndex:(int64_t)a3;
-- (id)tintColorAdjusted:(BOOL)a3;
+- (id)_displayedItemViewAtIndex:(int64_t)index;
+- (id)tintColorAdjusted:(BOOL)adjusted;
 - (void)_cleanupRemovedItemViews;
-- (void)_didRecognizeAccessoryTapGestureRecognizer:(id)a3;
-- (void)_ensureNumberOfReusableViews:(unint64_t)a3 inArray:(id)a4 ofClass:(Class)a5;
+- (void)_didRecognizeAccessoryTapGestureRecognizer:(id)recognizer;
+- (void)_ensureNumberOfReusableViews:(unint64_t)views inArray:(id)array ofClass:(Class)class;
 - (void)_layoutContainerView;
 - (void)_layoutDisplayedAccessoryItemViews;
 - (void)_layoutHighlightView;
 - (void)_reloadAccessoryItemViews;
-- (void)_updateBackgroundEffects:(int64_t)a3;
+- (void)_updateBackgroundEffects:(int64_t)effects;
 - (void)layoutSubviews;
-- (void)setAccessoryIdentifiers:(id)a3 animated:(BOOL)a4;
-- (void)setTintColor:(id)a3;
+- (void)setAccessoryIdentifiers:(id)identifiers animated:(BOOL)animated;
+- (void)setTintColor:(id)color;
 @end
 
 @implementation _UICursorAccessoryView
@@ -47,10 +47,10 @@
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  v3 = [(UIView *)self traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  traitCollection = [(UIView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == 6)
+  if (userInterfaceIdiom == 6)
   {
     v19[3] = 0x4010000000000000;
   }
@@ -74,8 +74,8 @@
     v19[3] = 0x4014000000000000;
   }
 
-  v13 = [(UIView *)self traitCollection];
-  v14 = [v13 layoutDirection] == 1;
+  traitCollection2 = [(UIView *)self traitCollection];
+  v14 = [traitCollection2 layoutDirection] == 1;
 
   displayedIdentifiers = self->_displayedIdentifiers;
   v16[0] = MEMORY[0x1E69E9820];
@@ -304,8 +304,8 @@ LABEL_12:
     v13.size.height = height;
     v7 = CGRectGetHeight(v13) * 0.5;
     [(UIView *)self->_activeHighlightBackgroundView setHidden:0];
-    v8 = [(UIView *)self->_activeHighlightBackgroundView layer];
-    [v8 setCornerRadius:v7];
+    layer = [(UIView *)self->_activeHighlightBackgroundView layer];
+    [layer setCornerRadius:v7];
 
     v9 = self->_activeHighlightBackgroundView;
 
@@ -315,10 +315,10 @@ LABEL_12:
 
 - (double)activeAccessoryXOffset
 {
-  v3 = [(UIView *)self layer];
-  v4 = [v3 needsLayout];
+  layer = [(UIView *)self layer];
+  needsLayout = [layer needsLayout];
 
-  if (v4)
+  if (needsLayout)
   {
     [(_UICursorAccessoryView *)self _layoutDisplayedAccessoryItemViews];
   }
@@ -337,9 +337,9 @@ LABEL_12:
   return result;
 }
 
-- (_UICursorAccessoryView)initWithDataSource:(id)a3
+- (_UICursorAccessoryView)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = [UIBlurEffect effectWithStyle:9];
   v43.receiver = self;
   v43.super_class = _UICursorAccessoryView;
@@ -347,48 +347,48 @@ LABEL_12:
 
   if (v6)
   {
-    objc_storeWeak(&v6->_dataSource, v4);
-    v7 = [MEMORY[0x1E695DEC8] array];
+    objc_storeWeak(&v6->_dataSource, sourceCopy);
+    array = [MEMORY[0x1E695DEC8] array];
     accessoryIdentifiers = v6->_accessoryIdentifiers;
-    v6->_accessoryIdentifiers = v7;
+    v6->_accessoryIdentifiers = array;
 
     v42.receiver = v6;
     v42.super_class = _UICursorAccessoryView;
-    v9 = [(UIView *)&v42 tintColor];
+    tintColor = [(UIView *)&v42 tintColor];
     tintColor = v6->_tintColor;
-    v6->_tintColor = v9;
+    v6->_tintColor = tintColor;
 
-    v11 = [(UIView *)v6 layer];
-    [v11 setMasksToBounds:0];
+    layer = [(UIView *)v6 layer];
+    [layer setMasksToBounds:0];
 
     if ((_UISolariumEnabled() & 1) == 0)
     {
       v12 = +[UIColor blackColor];
-      v13 = [v12 CGColor];
-      v14 = [(UIView *)v6 layer];
-      [v14 setShadowColor:v13];
+      cGColor = [v12 CGColor];
+      layer2 = [(UIView *)v6 layer];
+      [layer2 setShadowColor:cGColor];
 
-      v15 = [(UIView *)v6 layer];
-      [v15 setShadowOffset:{0.0, 3.0}];
+      layer3 = [(UIView *)v6 layer];
+      [layer3 setShadowOffset:{0.0, 3.0}];
 
-      v16 = [(UIView *)v6 layer];
+      layer4 = [(UIView *)v6 layer];
       LODWORD(v17) = 1043878380;
-      [v16 setShadowOpacity:v17];
+      [layer4 setShadowOpacity:v17];
 
-      v18 = [(UIView *)v6 layer];
-      [v18 setShadowRadius:9.0];
+      layer5 = [(UIView *)v6 layer];
+      [layer5 setShadowRadius:9.0];
     }
 
-    v19 = [(UIView *)v6 traitCollection];
-    v20 = [v19 userInterfaceIdiom];
+    traitCollection = [(UIView *)v6 traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v20 == 6)
+    if (userInterfaceIdiom == 6)
     {
-      v21 = [(UIVisualEffectView *)v6 contentView];
-      [v21 sws_enablePlatter];
+      contentView = [(UIVisualEffectView *)v6 contentView];
+      [contentView sws_enablePlatter];
 
-      v22 = [(UIView *)v6 layer];
-      [v22 setZPosition:4.0];
+      layer6 = [(UIView *)v6 layer];
+      [layer6 setZPosition:4.0];
     }
 
     else
@@ -402,8 +402,8 @@ LABEL_12:
       containerView = v6->_containerView;
       v6->_containerView = v28;
 
-      v30 = [(UIVisualEffectView *)v6 contentView];
-      [v30 addSubview:v6->_containerView];
+      contentView2 = [(UIVisualEffectView *)v6 contentView];
+      [contentView2 addSubview:v6->_containerView];
 
       v31 = [[UIView alloc] initWithFrame:v24, v25, v26, v27];
       activeHighlightBackgroundView = v6->_activeHighlightBackgroundView;
@@ -446,10 +446,10 @@ LABEL_12:
   return v6;
 }
 
-- (void)_ensureNumberOfReusableViews:(unint64_t)a3 inArray:(id)a4 ofClass:(Class)a5
+- (void)_ensureNumberOfReusableViews:(unint64_t)views inArray:(id)array ofClass:(Class)class
 {
-  v14 = a4;
-  if ([v14 count] < a3)
+  arrayCopy = array;
+  if ([arrayCopy count] < views)
   {
     v8 = *MEMORY[0x1E695F058];
     v9 = *(MEMORY[0x1E695F058] + 8);
@@ -457,43 +457,43 @@ LABEL_12:
     v11 = *(MEMORY[0x1E695F058] + 24);
     do
     {
-      v12 = [[a5 alloc] initWithFrame:{v8, v9, v10, v11}];
-      [v14 addObject:v12];
+      v12 = [[class alloc] initWithFrame:{v8, v9, v10, v11}];
+      [arrayCopy addObject:v12];
       [(UIView *)self->_containerView addSubview:v12];
     }
 
-    while ([v14 count] < a3);
+    while ([arrayCopy count] < views);
   }
 
-  while ([v14 count] > a3)
+  while ([arrayCopy count] > views)
   {
-    v13 = [v14 lastObject];
-    [v13 removeFromSuperview];
-    [v14 removeObject:v13];
+    lastObject = [arrayCopy lastObject];
+    [lastObject removeFromSuperview];
+    [arrayCopy removeObject:lastObject];
   }
 }
 
-- (id)tintColorAdjusted:(BOOL)a3
+- (id)tintColorAdjusted:(BOOL)adjusted
 {
-  if (a3)
+  if (adjusted)
   {
     v5.receiver = self;
     v5.super_class = _UICursorAccessoryView;
-    v3 = [(UIView *)&v5 tintColor];
+    tintColor = [(UIView *)&v5 tintColor];
   }
 
   else
   {
-    v3 = self->_tintColor;
+    tintColor = self->_tintColor;
   }
 
-  return v3;
+  return tintColor;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
-  objc_storeStrong(&self->_tintColor, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_tintColor, color);
+  colorCopy = color;
   tintColor = self->_tintColor;
   v7.receiver = self;
   v7.super_class = _UICursorAccessoryView;
@@ -506,7 +506,7 @@ LABEL_12:
 {
   v16 = *MEMORY[0x1E69E9840];
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:a2 object:0];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -533,7 +533,7 @@ LABEL_12:
           [v10 removeFromSuperview];
 
           [(NSMutableDictionary *)self->_itemViewsByIdentifier removeObjectForKey:v9];
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
@@ -543,7 +543,7 @@ LABEL_12:
     while (v6);
   }
 
-  [(NSMutableOrderedSet *)self->_displayedIdentifiers removeObjectsInArray:v3];
+  [(NSMutableOrderedSet *)self->_displayedIdentifiers removeObjectsInArray:array];
   if (![(NSMutableOrderedSet *)self->_displayedIdentifiers count])
   {
     [(_UICursorAccessoryView *)self _updateBackgroundEffects:0];
@@ -560,24 +560,24 @@ LABEL_12:
   [UIView performWithoutAnimation:v2];
 }
 
-- (void)setAccessoryIdentifiers:(id)a3 animated:(BOOL)a4
+- (void)setAccessoryIdentifiers:(id)identifiers animated:(BOOL)animated
 {
-  v56 = a4;
+  animatedCopy = animated;
   v89 = *MEMORY[0x1E69E9840];
-  v52 = a3;
-  v5 = a3;
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [(NSMutableOrderedSet *)self->_displayedIdentifiers array];
-  v53 = v5;
-  v8 = [v5 differenceFromArray:v7];
+  identifiersCopy = identifiers;
+  identifiersCopy2 = identifiers;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [(NSMutableOrderedSet *)self->_displayedIdentifiers array];
+  v53 = identifiersCopy2;
+  v8 = [identifiersCopy2 differenceFromArray:array2];
 
   v82 = 0u;
   v83 = 0u;
   v80 = 0u;
   v81 = 0u;
   v58 = v8;
-  v9 = [v8 removals];
-  v10 = [v9 countByEnumeratingWithState:&v80 objects:v88 count:16];
+  removals = [v8 removals];
+  v10 = [removals countByEnumeratingWithState:&v80 objects:v88 count:16];
   if (v10)
   {
     v11 = v10;
@@ -588,14 +588,14 @@ LABEL_12:
       {
         if (*v81 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(removals);
         }
 
-        v14 = [*(*(&v80 + 1) + 8 * i) object];
-        [v6 addObject:v14];
+        object = [*(*(&v80 + 1) + 8 * i) object];
+        [array addObject:object];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v80 objects:v88 count:16];
+      v11 = [removals countByEnumeratingWithState:&v80 objects:v88 count:16];
     }
 
     while (v11);
@@ -607,8 +607,8 @@ LABEL_12:
   v77 = 0u;
   obj = [v58 insertions];
   v59 = [obj countByEnumeratingWithState:&v76 objects:v87 count:16];
-  v60 = self;
-  v57 = v6;
+  selfCopy = self;
+  v57 = array;
   if (v59)
   {
     v55 = *v77;
@@ -626,27 +626,27 @@ LABEL_12:
         }
 
         v20 = *(*(&v76 + 1) + 8 * j);
-        v21 = [v20 object];
-        if ([v6 containsObject:v21])
+        object2 = [v20 object];
+        if ([array containsObject:object2])
         {
-          [v6 removeObject:v21];
+          [array removeObject:object2];
         }
 
-        v22 = [(NSMutableDictionary *)self->_itemViewsByIdentifier objectForKey:v21];
+        v22 = [(NSMutableDictionary *)self->_itemViewsByIdentifier objectForKey:object2];
         if (!v22)
         {
           v22 = [[_UICursorAccessoryItemView alloc] initWithFrame:v15, v16, v17, v18];
           [(UIView *)self->_containerView addSubview:v22];
-          [(NSMutableDictionary *)self->_itemViewsByIdentifier setObject:v22 forKey:v21];
+          [(NSMutableDictionary *)self->_itemViewsByIdentifier setObject:v22 forKey:object2];
         }
 
-        v23 = [v20 index];
+        index = [v20 index];
         v72 = 0u;
         v73 = 0u;
         v74 = 0u;
         v75 = 0u;
-        v24 = [v58 removals];
-        v25 = [v24 countByEnumeratingWithState:&v72 objects:v86 count:16];
+        removals2 = [v58 removals];
+        v25 = [removals2 countByEnumeratingWithState:&v72 objects:v86 count:16];
         if (v25)
         {
           v26 = v25;
@@ -657,27 +657,27 @@ LABEL_12:
             {
               if (*v73 != v27)
               {
-                objc_enumerationMutation(v24);
+                objc_enumerationMutation(removals2);
               }
 
-              v29 = [*(*(&v72 + 1) + 8 * k) index];
-              if (v29 < [v20 index])
+              index2 = [*(*(&v72 + 1) + 8 * k) index];
+              if (index2 < [v20 index])
               {
-                ++v23;
+                ++index;
               }
             }
 
-            v26 = [v24 countByEnumeratingWithState:&v72 objects:v86 count:16];
+            v26 = [removals2 countByEnumeratingWithState:&v72 objects:v86 count:16];
           }
 
           while (v26);
         }
 
-        self = v60;
-        v30 = [(NSMutableOrderedSet *)v60->_displayedIdentifiers count];
-        if (v30 >= v23)
+        self = selfCopy;
+        v30 = [(NSMutableOrderedSet *)selfCopy->_displayedIdentifiers count];
+        if (v30 >= index)
         {
-          v31 = v23;
+          v31 = index;
         }
 
         else
@@ -685,13 +685,13 @@ LABEL_12:
           v31 = v30;
         }
 
-        [(NSMutableOrderedSet *)v60->_displayedIdentifiers insertObject:v21 atIndex:v31];
-        if (v56)
+        [(NSMutableOrderedSet *)selfCopy->_displayedIdentifiers insertObject:object2 atIndex:v31];
+        if (animatedCopy)
         {
           [(_UICursorAccessoryItemView *)v22 setCollapsed:1];
         }
 
-        v6 = v57;
+        array = v57;
       }
 
       v59 = [obj countByEnumeratingWithState:&v76 objects:v87 count:16];
@@ -700,7 +700,7 @@ LABEL_12:
     while (v59);
   }
 
-  objc_storeStrong(&self->_accessoryIdentifiers, v52);
+  objc_storeStrong(&self->_accessoryIdentifiers, identifiersCopy);
   v32 = [(NSMutableOrderedSet *)self->_displayedIdentifiers count];
   if (v32)
   {
@@ -722,7 +722,7 @@ LABEL_12:
   [(NSMutableArray *)dividerViews enumerateObjectsUsingBlock:v71];
   [(UIView *)self invalidateIntrinsicContentSize];
   [(UIView *)self setNeedsLayout];
-  if (v56)
+  if (animatedCopy)
   {
     [(_UICursorAccessoryView *)self layoutSubviews];
     [(_UICursorAccessoryView *)self _reloadAccessoryItemViews];
@@ -753,15 +753,15 @@ LABEL_12:
           }
 
           v42 = *(*(&v67 + 1) + 8 * m);
-          v43 = [(NSMutableDictionary *)self->_itemViewsByIdentifier objectForKey:v42, v52];
-          [v43 setCollapsed:0];
+          identifiersCopy = [(NSMutableDictionary *)self->_itemViewsByIdentifier objectForKey:v42, identifiersCopy];
+          [identifiersCopy setCollapsed:0];
 
           if (([v42 isEqualToString:@"dic"] & 1) != 0 || objc_msgSend(v42, "isEqualToString:", @"mod:2"))
           {
             v39 = 1;
           }
 
-          self = v60;
+          self = selfCopy;
         }
 
         v38 = [(NSMutableOrderedSet *)v35 countByEnumeratingWithState:&v67 objects:v85 count:16];
@@ -794,8 +794,8 @@ LABEL_12:
             objc_enumerationMutation(v44);
           }
 
-          v49 = [(NSMutableDictionary *)v60->_itemViewsByIdentifier objectForKey:*(*(&v63 + 1) + 8 * n), v52];
-          [v49 setCollapsed:1];
+          identifiersCopy2 = [(NSMutableDictionary *)selfCopy->_itemViewsByIdentifier objectForKey:*(*(&v63 + 1) + 8 * n), identifiersCopy];
+          [identifiersCopy2 setCollapsed:1];
         }
 
         v46 = [v44 countByEnumeratingWithState:&v63 objects:v84 count:16];
@@ -814,20 +814,20 @@ LABEL_12:
       v50 = ([v53 count] != 2) | v39 ^ 1;
     }
 
-    v6 = v57;
-    v60->_visionShouldColorSelection = v50 & 1;
-    v51 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:0.9 response:0.2, v52];
-    v61[4] = v60;
+    array = v57;
+    selfCopy->_visionShouldColorSelection = v50 & 1;
+    identifiersCopy3 = [UIViewSpringAnimationBehavior behaviorWithDampingRatio:0.9 response:0.2, identifiersCopy];
+    v61[4] = selfCopy;
     v62[0] = MEMORY[0x1E69E9820];
     v62[1] = 3221225472;
     v62[2] = __59___UICursorAccessoryView_setAccessoryIdentifiers_animated___block_invoke_2;
     v62[3] = &unk_1E70F3590;
-    v62[4] = v60;
+    v62[4] = selfCopy;
     v61[0] = MEMORY[0x1E69E9820];
     v61[1] = 3221225472;
     v61[2] = __59___UICursorAccessoryView_setAccessoryIdentifiers_animated___block_invoke_3;
     v61[3] = &unk_1E70F3FD8;
-    [UIView _animateUsingSpringBehavior:v51 tracking:0 animations:v62 completion:v61];
+    [UIView _animateUsingSpringBehavior:identifiersCopy3 tracking:0 animations:v62 completion:v61];
   }
 
   else
@@ -843,24 +843,24 @@ LABEL_12:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v41 = *MEMORY[0x1E69E9840];
-  v6 = [(NSMutableDictionary *)self->_itemViewsByIdentifier allValues];
-  if ([v6 count])
+  allValues = [(NSMutableDictionary *)self->_itemViewsByIdentifier allValues];
+  if ([allValues count])
   {
-    v7 = [(UIView *)self traitCollection];
-    v8 = [v7 userInterfaceIdiom];
+    traitCollection = [(UIView *)self traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-    if (v8 == 6)
+    if (userInterfaceIdiom == 6)
     {
       v37 = 0uLL;
       v38 = 0uLL;
       v35 = 0uLL;
       v36 = 0uLL;
-      v9 = v6;
+      v9 = allValues;
       v10 = [v9 countByEnumeratingWithState:&v35 objects:v40 count:16];
       if (v10)
       {
@@ -895,7 +895,7 @@ LABEL_12:
       v34 = 0uLL;
       v31 = 0uLL;
       v32 = 0uLL;
-      v16 = v6;
+      v16 = allValues;
       v17 = [v16 countByEnumeratingWithState:&v31 objects:v39 count:16];
       if (v17)
       {
@@ -971,9 +971,9 @@ LABEL_12:
   return result;
 }
 
-- (id)_displayedItemViewAtIndex:(int64_t)a3
+- (id)_displayedItemViewAtIndex:(int64_t)index
 {
-  if (a3 < 0 || [(NSMutableOrderedSet *)self->_displayedIdentifiers count]- 1 < a3)
+  if (index < 0 || [(NSMutableOrderedSet *)self->_displayedIdentifiers count]- 1 < index)
   {
     v5 = 0;
   }
@@ -981,24 +981,24 @@ LABEL_12:
   else
   {
     itemViewsByIdentifier = self->_itemViewsByIdentifier;
-    v7 = [(NSMutableOrderedSet *)self->_displayedIdentifiers objectAtIndex:a3];
+    v7 = [(NSMutableOrderedSet *)self->_displayedIdentifiers objectAtIndex:index];
     v5 = [(NSMutableDictionary *)itemViewsByIdentifier objectForKey:v7];
   }
 
   return v5;
 }
 
-- (void)_updateBackgroundEffects:(int64_t)a3
+- (void)_updateBackgroundEffects:(int64_t)effects
 {
-  if (a3)
+  if (effects)
   {
-    if (a3 == 2)
+    if (effects == 2)
     {
       if (_UISolariumEnabled())
       {
-        v13 = [(UIView *)self->_activeHighlightBackgroundView _background];
+        _background = [(UIView *)self->_activeHighlightBackgroundView _background];
         v11 = [(_UICursorAccessoryView *)self tintColorAdjusted:1];
-        [v13 setTintColor:v11];
+        [_background setTintColor:v11];
 
 LABEL_11:
 
@@ -1008,41 +1008,41 @@ LABEL_11:
 
     else
     {
-      if (a3 != 1)
+      if (effects != 1)
       {
         return;
       }
 
       if (_UISolariumEnabled())
       {
-        v4 = [(UIVisualEffectView *)self contentView];
-        v5 = [v4 _background];
+        contentView = [(UIVisualEffectView *)self contentView];
+        _background2 = [contentView _background];
 
-        if (!v5)
+        if (!_background2)
         {
           v6 = objc_opt_new();
-          v7 = [(UIVisualEffectView *)self contentView];
-          [v7 _setBackground:v6];
+          contentView2 = [(UIVisualEffectView *)self contentView];
+          [contentView2 _setBackground:v6];
         }
 
-        v13 = [objc_opt_class() glassSubvariantName];
+        _background = [objc_opt_class() glassSubvariantName];
         v8 = [[_UIViewGlass alloc] initWithVariant:0];
-        [(_UIViewGlass *)v8 setSubvariant:v13];
+        [(_UIViewGlass *)v8 setSubvariant:_background];
         [(_UIViewGlass *)v8 setFlexible:1];
         [(UIView *)self->_containerView _setBackground:v8];
         v9 = [[_UIViewGlass alloc] initWithVariant:0];
         v10 = [(_UICursorAccessoryView *)self tintColorAdjusted:1];
         [(_UIViewGlass *)v9 setTintColor:v10];
 
-        [(_UIViewGlass *)v9 setSubvariant:v13];
+        [(_UIViewGlass *)v9 setSubvariant:_background];
         [(UIView *)self->_activeHighlightBackgroundView _setBackground:v9];
 
         goto LABEL_11;
       }
     }
 
-    v13 = [(_UICursorAccessoryView *)self tintColorAdjusted:1];
-    [(UIView *)self->_activeHighlightBackgroundView setBackgroundColor:v13];
+    _background = [(_UICursorAccessoryView *)self tintColorAdjusted:1];
+    [(UIView *)self->_activeHighlightBackgroundView setBackgroundColor:_background];
     goto LABEL_11;
   }
 
@@ -1052,19 +1052,19 @@ LABEL_11:
   [(UIView *)activeHighlightBackgroundView _setBackground:0];
 }
 
-- (void)_didRecognizeAccessoryTapGestureRecognizer:(id)a3
+- (void)_didRecognizeAccessoryTapGestureRecognizer:(id)recognizer
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 state] == 3)
+  recognizerCopy = recognizer;
+  if ([recognizerCopy state] == 3)
   {
     objc_initWeak(&location, self);
     WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-    [v4 locationInView:self];
+    [recognizerCopy locationInView:self];
     v7 = v6;
     v9 = v8;
-    v10 = [(UIView *)self traitCollection];
-    v11 = [v10 userInterfaceIdiom] == 6;
+    traitCollection = [(UIView *)self traitCollection];
+    v11 = [traitCollection userInterfaceIdiom] == 6;
 
     if (v11)
     {
@@ -1111,7 +1111,7 @@ LABEL_11:
     v22[2] = v9;
     v18 = WeakRetained;
     v20 = v18;
-    v21 = self;
+    selfCopy = self;
     [(NSMutableDictionary *)itemViewsByIdentifier enumerateKeysAndObjectsUsingBlock:v19];
 
     objc_destroyWeak(v22);
@@ -1119,11 +1119,11 @@ LABEL_11:
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  if (self->_accessoryItemTapGestureRecognizer == a3)
+  if (self->_accessoryItemTapGestureRecognizer == recognizer)
   {
-    v5 = a4;
+    gestureRecognizerCopy = gestureRecognizer;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -1143,8 +1143,8 @@ LABEL_11:
     dispatch_once(&qword_1ED49ACB8, &__block_literal_global_523);
   }
 
-  v2 = [UIApp preferredContentSizeCategory];
-  v3 = [_MergedGlobals_7_5 objectForKeyedSubscript:v2];
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  v3 = [_MergedGlobals_7_5 objectForKeyedSubscript:preferredContentSizeCategory];
   [v3 floatValue];
   v5 = v4 + 17.0;
 
@@ -1158,12 +1158,12 @@ LABEL_11:
     dispatch_once(&qword_1ED49ACD0, &__block_literal_global_39_1);
   }
 
-  v2 = [UIApp preferredContentSizeCategory];
-  v3 = [qword_1ED49ACC0 objectForKeyedSubscript:v2];
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  v3 = [qword_1ED49ACC0 objectForKeyedSubscript:preferredContentSizeCategory];
   [v3 floatValue];
   v5 = v4 + 37.0;
 
-  v6 = [qword_1ED49ACC8 objectForKeyedSubscript:v2];
+  v6 = [qword_1ED49ACC8 objectForKeyedSubscript:preferredContentSizeCategory];
   [v6 floatValue];
   v8 = v7 + 27.0;
 
@@ -1181,12 +1181,12 @@ LABEL_11:
     dispatch_once(&qword_1ED49ACE8, &__block_literal_global_53_2);
   }
 
-  v2 = [UIApp preferredContentSizeCategory];
-  v3 = [qword_1ED49ACD8 objectForKeyedSubscript:v2];
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  v3 = [qword_1ED49ACD8 objectForKeyedSubscript:preferredContentSizeCategory];
   [v3 floatValue];
   v5 = (v4 + 49.0);
 
-  v6 = [qword_1ED49ACE0 objectForKeyedSubscript:v2];
+  v6 = [qword_1ED49ACE0 objectForKeyedSubscript:preferredContentSizeCategory];
   [v6 floatValue];
   v8 = (v7 + 33.0);
 
@@ -1197,10 +1197,10 @@ LABEL_11:
   return result;
 }
 
-+ (double)grayscaleLuminance:(id)a3
++ (double)grayscaleLuminance:(id)luminance
 {
   v4 = 0.0;
-  [a3 getWhite:&v4 alpha:0];
+  [luminance getWhite:&v4 alpha:0];
   return v4;
 }
 

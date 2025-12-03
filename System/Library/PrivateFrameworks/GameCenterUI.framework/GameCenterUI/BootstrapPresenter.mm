@@ -6,7 +6,7 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_24E19116C();
 }
 

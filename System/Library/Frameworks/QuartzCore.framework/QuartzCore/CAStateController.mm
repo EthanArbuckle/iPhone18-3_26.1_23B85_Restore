@@ -1,17 +1,17 @@
 @interface CAStateController
-- (CAStateController)initWithLayer:(id)a3;
+- (CAStateController)initWithLayer:(id)layer;
 - (id)removeAllStateChanges;
-- (id)stateOfLayer:(id)a3;
-- (void)_addAnimation:(id)a3 forKey:(id)a4 target:(id)a5 undo:(id)a6;
-- (void)_applyTransition:(id)a3 layer:(id)a4 undo:(id)a5 speed:(float)a6;
-- (void)_applyTransitionElement:(id)a3 layer:(id)a4 undo:(id)a5 speed:(float)a6;
-- (void)_nextStateTimer:(id)a3;
-- (void)_removeTransition:(id)a3 layer:(id)a4;
+- (id)stateOfLayer:(id)layer;
+- (void)_addAnimation:(id)animation forKey:(id)key target:(id)target undo:(id)undo;
+- (void)_applyTransition:(id)transition layer:(id)layer undo:(id)undo speed:(float)speed;
+- (void)_applyTransitionElement:(id)element layer:(id)layer undo:(id)undo speed:(float)speed;
+- (void)_nextStateTimer:(id)timer;
+- (void)_removeTransition:(id)transition layer:(id)layer;
 - (void)cancelTimers;
 - (void)dealloc;
-- (void)restoreStateChanges:(id)a3;
-- (void)setInitialStatesOfLayer:(id)a3 transitionSpeed:(float)a4;
-- (void)setState:(id)a3 ofLayer:(id)a4 transitionSpeed:(float)a5;
+- (void)restoreStateChanges:(id)changes;
+- (void)setInitialStatesOfLayer:(id)layer transitionSpeed:(float)speed;
+- (void)setState:(id)state ofLayer:(id)layer transitionSpeed:(float)speed;
 @end
 
 @implementation CAStateController
@@ -41,23 +41,23 @@
   [(CAStateController *)&v6 dealloc];
 }
 
-- (void)_applyTransitionElement:(id)a3 layer:(id)a4 undo:(id)a5 speed:(float)a6
+- (void)_applyTransitionElement:(id)element layer:(id)layer undo:(id)undo speed:(float)speed
 {
-  if ([a3 isEnabled])
+  if ([element isEnabled])
   {
-    v10 = [a3 animation];
-    if (v10)
+    animation = [element animation];
+    if (animation)
     {
-      v11 = v10;
-      v12 = [a3 target];
-      if (v12)
+      v11 = animation;
+      target = [element target];
+      if (target)
       {
-        v13 = v12;
+        v13 = target;
         [v11 duration];
         v15 = v14;
         v16 = begin_time(self->_data->var3);
         [v11 beginTime];
-        v18 = v17 / a6 + v16 + v15 / a6;
+        v18 = v17 / speed + v16 + v15 / speed;
         [v13 convertTime:0 fromLayer:?];
         v20 = v19;
         [v13 convertTime:0 fromLayer:v18];
@@ -78,46 +78,46 @@
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) != 0 && ![v30 fromValue] && !objc_msgSend(v30, "toValue") && !objc_msgSend(v30, "byValue"))
           {
-            v27 = [v13 presentationLayer];
-            v28 = [v30 keyPath];
-            if (!v28)
+            presentationLayer = [v13 presentationLayer];
+            keyPath = [v30 keyPath];
+            if (!keyPath)
             {
-              v28 = [a3 key];
+              keyPath = [element key];
             }
 
-            [v30 setFromValue:{objc_msgSend(v27, "valueForKeyPath:", v28)}];
+            [v30 setFromValue:{objc_msgSend(presentationLayer, "valueForKeyPath:", keyPath)}];
           }
 
-          v29 = [a3 key];
+          v29 = [element key];
           if ((objc_opt_respondsToSelector() & 1) != 0 && ![v30 keyPath])
           {
             [v30 setKeyPath:v29];
           }
 
-          [(CAStateController *)self _addAnimation:v30 forKey:v29 target:v13 undo:a5];
+          [(CAStateController *)self _addAnimation:v30 forKey:v29 target:v13 undo:undo];
         }
       }
     }
   }
 }
 
-- (void)_removeTransition:(id)a3 layer:(id)a4
+- (void)_removeTransition:(id)transition layer:(id)layer
 {
-  Value = CFDictionaryGetValue(self->_data->var1, a4);
+  Value = CFDictionaryGetValue(self->_data->var1, layer);
 
-  [Value removeTransition:a3];
+  [Value removeTransition:transition];
 }
 
-- (void)_applyTransition:(id)a3 layer:(id)a4 undo:(id)a5 speed:(float)a6
+- (void)_applyTransition:(id)transition layer:(id)layer undo:(id)undo speed:(float)speed
 {
   v36 = *MEMORY[0x1E69E9840];
   v11 = objc_alloc_init(CAStateControllerTransition);
   v11->_controller = self;
-  v11->_layer = a4;
-  v11->_transition = a3;
-  [a3 duration];
+  v11->_layer = layer;
+  v11->_transition = transition;
+  [transition duration];
   v11->_duration = v12;
-  v11->_speed = a6;
+  v11->_speed = speed;
   +[CATransaction commitTime];
   v11->_beginTime = beginTime;
   if (beginTime == 0.0)
@@ -129,24 +129,24 @@
   }
 
   v15 = v11->_duration / v11->_speed + beginTime;
-  [a4 convertTime:0 fromLayer:?];
+  [layer convertTime:0 fromLayer:?];
   v17 = v16;
-  [a4 convertTime:0 fromLayer:v15];
+  [layer convertTime:0 fromLayer:v15];
   v19 = v18;
-  v11->_masterKey = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", objc_msgSend(a3, "fromState"), objc_msgSend(a3, "toState")];
+  v11->_masterKey = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", objc_msgSend(transition, "fromState"), objc_msgSend(transition, "toState")];
   v20 = +[CAAnimationGroup animation];
   [(CAAnimation *)v20 setBeginTime:v17];
   [(CAAnimation *)v20 setDuration:v19 - v17];
   [(CAAnimation *)v20 setDelegate:v11];
   [(CAAnimation *)v20 setCAStateControllerTransition:v11];
-  [a4 addAnimation:v20 forKey:v11->_masterKey];
+  [layer addAnimation:v20 forKey:v11->_masterKey];
   self->_data->var3 = v11;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v21 = [a3 elements];
-  v22 = [v21 countByEnumeratingWithState:&v32 objects:v31 count:16];
+  elements = [transition elements];
+  v22 = [elements countByEnumeratingWithState:&v32 objects:v31 count:16];
   if (v22)
   {
     v24 = v22;
@@ -158,28 +158,28 @@
       {
         if (*v33 != v25)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(elements);
         }
 
-        *&v23 = a6;
-        [(CAStateController *)self _applyTransitionElement:*(*(&v32 + 1) + 8 * v26++) layer:a4 undo:a5 speed:v23];
+        *&v23 = speed;
+        [(CAStateController *)self _applyTransitionElement:*(*(&v32 + 1) + 8 * v26++) layer:layer undo:undo speed:v23];
       }
 
       while (v24 != v26);
-      v24 = [v21 countByEnumeratingWithState:&v32 objects:v31 count:16];
+      v24 = [elements countByEnumeratingWithState:&v32 objects:v31 count:16];
     }
 
     while (v24);
   }
 
-  if (a5)
+  if (undo)
   {
-    [a5 addTransition:v11];
+    [undo addTransition:v11];
   }
 
   data = self->_data;
   data->var3 = 0;
-  Value = CFDictionaryGetValue(data->var1, a4);
+  Value = CFDictionaryGetValue(data->var1, layer);
   if (Value)
   {
     [Value addTransition:v11];
@@ -188,32 +188,32 @@
   WeakRetained = objc_loadWeakRetained(&self->_data->var2);
   if (objc_opt_respondsToSelector())
   {
-    *&v30 = a6;
-    [WeakRetained stateController:self transitionDidStart:a3 speed:v30];
+    *&v30 = speed;
+    [WeakRetained stateController:self transitionDidStart:transition speed:v30];
   }
 }
 
-- (void)_addAnimation:(id)a3 forKey:(id)a4 target:(id)a5 undo:(id)a6
+- (void)_addAnimation:(id)animation forKey:(id)key target:(id)target undo:(id)undo
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    a4 = @"transition";
+    key = @"transition";
   }
 
-  [a3 setRemovedOnCompletion:0];
-  [a3 setCAStateControllerTransition:self->_data->var3];
-  [a5 addAnimation:a3 forKey:a4];
-  if (a3)
+  [animation setRemovedOnCompletion:0];
+  [animation setCAStateControllerTransition:self->_data->var3];
+  [target addAnimation:animation forKey:key];
+  if (animation)
   {
-    v10 = [[CAStateControllerAnimation alloc] initWithLayer:a5 key:a4];
+    v10 = [[CAStateControllerAnimation alloc] initWithLayer:target key:key];
     [self->_data->var3 addAnimation:v10];
   }
 }
 
-- (void)_nextStateTimer:(id)a3
+- (void)_nextStateTimer:(id)timer
 {
-  Value = CFDictionaryGetValue(self->_data->var1, [a3 userInfo]);
+  Value = CFDictionaryGetValue(self->_data->var1, [timer userInfo]);
   if (Value)
   {
     v6 = Value[6];
@@ -233,14 +233,14 @@
   }
 }
 
-- (void)restoreStateChanges:(id)a3
+- (void)restoreStateChanges:(id)changes
 {
   v14 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+  v5 = [changes countByEnumeratingWithState:&v10 objects:v9 count:16];
   if (v5)
   {
     v6 = v5;
@@ -252,15 +252,15 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(changes);
         }
 
-        -[CAStateController setState:ofLayer:transitionSpeed:](self, "setState:ofLayer:transitionSpeed:", [a3 objectForKey:*(*(&v10 + 1) + 8 * v8)], *(*(&v10 + 1) + 8 * v8), 0.0);
+        -[CAStateController setState:ofLayer:transitionSpeed:](self, "setState:ofLayer:transitionSpeed:", [changes objectForKey:*(*(&v10 + 1) + 8 * v8)], *(*(&v10 + 1) + 8 * v8), 0.0);
         ++v8;
       }
 
       while (v6 != v8);
-      v6 = [a3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+      v6 = [changes countByEnumeratingWithState:&v10 objects:v9 count:16];
     }
 
     while (v6);
@@ -308,18 +308,18 @@
   return Mutable;
 }
 
-- (void)setInitialStatesOfLayer:(id)a3 transitionSpeed:(float)a4
+- (void)setInitialStatesOfLayer:(id)layer transitionSpeed:(float)speed
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = [a3 states];
-  if (v7)
+  states = [layer states];
+  if (states)
   {
-    v8 = v7;
+    v8 = states;
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v9 = [v7 countByEnumeratingWithState:&v30 objects:v29 count:16];
+    v9 = [states countByEnumeratingWithState:&v30 objects:v29 count:16];
     if (v9)
     {
       v11 = v9;
@@ -358,19 +358,19 @@ LABEL_10:
       v14 = 0;
     }
 
-    *&v10 = a4;
-    [(CAStateController *)self setState:v14 ofLayer:a3 transitionSpeed:v10];
+    *&v10 = speed;
+    [(CAStateController *)self setState:v14 ofLayer:layer transitionSpeed:v10];
   }
 
-  v15 = [a3 sublayers];
-  if (v15)
+  sublayers = [layer sublayers];
+  if (sublayers)
   {
-    v16 = v15;
+    v16 = sublayers;
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v17 = [v15 countByEnumeratingWithState:&v25 objects:v24 count:16];
+    v17 = [sublayers countByEnumeratingWithState:&v25 objects:v24 count:16];
     if (v17)
     {
       v19 = v17;
@@ -384,7 +384,7 @@ LABEL_10:
             objc_enumerationMutation(v16);
           }
 
-          *&v18 = a4;
+          *&v18 = speed;
           [(CAStateController *)self setInitialStatesOfLayer:*(*(&v25 + 1) + 8 * i) transitionSpeed:v18];
         }
 
@@ -395,27 +395,27 @@ LABEL_10:
     }
   }
 
-  v22 = [a3 mask];
-  if (v22)
+  mask = [layer mask];
+  if (mask)
   {
-    *&v23 = a4;
-    [(CAStateController *)self setInitialStatesOfLayer:v22 transitionSpeed:v23];
+    *&v23 = speed;
+    [(CAStateController *)self setInitialStatesOfLayer:mask transitionSpeed:v23];
   }
 }
 
-- (void)setState:(id)a3 ofLayer:(id)a4 transitionSpeed:(float)a5
+- (void)setState:(id)state ofLayer:(id)layer transitionSpeed:(float)speed
 {
   v95 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (layer)
   {
-    Value = CFDictionaryGetValue(self->_data->var1, a4);
-    v10 = [(CAStateControllerLayer *)Value currentState];
-    if (v10 == a3)
+    Value = CFDictionaryGetValue(self->_data->var1, layer);
+    currentState = [(CAStateControllerLayer *)Value currentState];
+    if (currentState == state)
     {
       return;
     }
 
-    v11 = v10;
+    v11 = currentState;
     if (Value)
     {
       nextTimer = Value->_nextTimer;
@@ -428,12 +428,12 @@ LABEL_10:
       }
     }
 
-    v13 = [a4 states];
-    v14 = [a4 stateTransitions];
-    v15 = v14;
-    if (a3)
+    states = [layer states];
+    stateTransitions = [layer stateTransitions];
+    v15 = stateTransitions;
+    if (state)
     {
-      if ([(NSArray *)v13 indexOfObjectIdenticalTo:a3]== 0x7FFFFFFFFFFFFFFFLL)
+      if ([(NSArray *)states indexOfObjectIdenticalTo:state]== 0x7FFFFFFFFFFFFFFFLL)
       {
         if (x_log_get_states(void)::once != -1)
         {
@@ -456,51 +456,51 @@ LABEL_16:
       v77 = v15;
       if (!Value)
       {
-        Value = [[CAStateControllerLayer alloc] initWithLayer:a4];
+        Value = [[CAStateControllerLayer alloc] initWithLayer:layer];
         var1 = self->_data->var1;
         v19 = CFRetain(Value);
-        CFDictionarySetValue(var1, a4, v19);
+        CFDictionarySetValue(var1, layer, v19);
       }
     }
 
     else
     {
-      v77 = v14;
+      v77 = stateTransitions;
     }
 
     state = +[CATransaction disableActions];
-    v21 = state;
+    stateCopy = state;
     if ((state & 1) == 0)
     {
       state = [CATransaction setDisableActions:1];
     }
 
-    if (a3)
+    if (state)
     {
-      if (!v11 || (state = find_state(v13, [(CAState *)v11 basedOn]), v22 = a3, state != a3))
+      if (!v11 || (state = find_state(states, [(CAState *)v11 basedOn]), v22 = state, state != state))
       {
-        state = find_state(v13, [a3 basedOn]);
+        state = find_state(states, [state basedOn]);
         v22 = state == v11 ? v11 : 0;
         if (v11 && state != v11)
         {
-          v23 = v11;
+          stateCopy2 = v11;
           while (2)
           {
-            state = a3;
+            state = state;
             do
             {
-              if (v23 == state)
+              if (stateCopy2 == state)
               {
-                v22 = v23;
+                v22 = stateCopy2;
                 goto LABEL_38;
               }
 
-              state = find_state(v13, [state basedOn]);
+              state = find_state(states, [state basedOn]);
             }
 
             while (state);
-            state = find_state(v13, [(CAState *)v23 basedOn]);
-            v23 = state;
+            state = find_state(states, [(CAState *)stateCopy2 basedOn]);
+            stateCopy2 = state;
             v22 = 0;
             if (state)
             {
@@ -530,12 +530,12 @@ LABEL_38:
       undoStack = 0;
     }
 
-    v81 = a4;
+    layerCopy = layer;
     v82 = Value;
-    v79 = self;
-    v78 = v21;
-    v83 = a3;
-    if (v22 == a3)
+    selfCopy = self;
+    v78 = stateCopy;
+    stateCopy3 = state;
+    if (v22 == state)
     {
       v25 = 0;
       if (!undoStack)
@@ -550,12 +550,12 @@ LABEL_38:
       {
         MEMORY[0x1EEE9AC00](state);
         v25 = &v76 - 4;
-        *(&v76 - 3) = a3;
+        *(&v76 - 3) = state;
         *(&v76 - 2) = 0;
         *(&v76 - 4) = v26;
         *(&v76 - 2) = objc_alloc_init(CAStateControllerUndo);
-        state = find_state(v13, [a3 basedOn]);
-        a3 = state;
+        state = find_state(states, [state basedOn]);
+        state = state;
       }
 
       while (state != v22);
@@ -606,16 +606,16 @@ LABEL_38:
 
     while (v27);
 LABEL_56:
-    v33 = v81;
-    v34 = v79;
+    v33 = layerCopy;
+    v34 = selfCopy;
     v35 = v77;
-    if (a5 > 0.0)
+    if (speed > 0.0)
     {
-      v36 = [(CAState *)v80 name];
-      transition = find_transition(v35, v36, [v83 name]);
+      name = [(CAState *)v80 name];
+      transition = find_transition(v35, name, [stateCopy3 name]);
       if (transition)
       {
-        *&v38 = a5;
+        *&v38 = speed;
         [(CAStateController *)v34 _applyTransition:transition layer:v33 undo:undoStack speed:v38];
       }
 
@@ -635,7 +635,7 @@ LABEL_56:
             v41 = find_transition(v35, [(CAState *)v40 name], @"*");
             if (v41)
             {
-              *&v42 = a5;
+              *&v42 = speed;
               [(CAStateController *)v34 _applyTransition:v41 layer:v33 undo:0 speed:v42];
             }
 
@@ -653,7 +653,7 @@ LABEL_56:
             v44 = find_transition(v35, @"*", [v43[1] name]);
             if (v44)
             {
-              *&v45 = a5;
+              *&v45 = speed;
               [(CAStateController *)v34 _applyTransition:v44 layer:v33 undo:v43[2] speed:v45];
             }
 
@@ -674,14 +674,14 @@ LABEL_56:
           break;
         }
 
-        v46 = [(CAStateControllerUndo *)undoStack elements];
-        v47 = [(NSMutableArray *)v46 count];
+        elements = [(CAStateControllerUndo *)undoStack elements];
+        v47 = [(NSMutableArray *)elements count];
         if (v47)
         {
           v48 = v47 - 1;
           do
           {
-            [-[NSMutableArray objectAtIndex:](v46 objectAtIndex:{v48--), "apply:", 0}];
+            [-[NSMutableArray objectAtIndex:](elements objectAtIndex:{v48--), "apply:", 0}];
           }
 
           while (v48 != -1);
@@ -704,8 +704,8 @@ LABEL_56:
       v89 = 0u;
       v86 = 0u;
       v87 = 0u;
-      v51 = [v25[1] elements];
-      v52 = [v51 countByEnumeratingWithState:&v86 objects:v85 count:16];
+      elements2 = [v25[1] elements];
+      v52 = [elements2 countByEnumeratingWithState:&v86 objects:v85 count:16];
       if (v52)
       {
         v53 = v52;
@@ -716,13 +716,13 @@ LABEL_56:
           {
             if (*v87 != v54)
             {
-              objc_enumerationMutation(v51);
+              objc_enumerationMutation(elements2);
             }
 
             [*(*(&v86 + 1) + 8 * k) apply:undoStack];
           }
 
-          v53 = [v51 countByEnumeratingWithState:&v86 objects:v85 count:16];
+          v53 = [elements2 countByEnumeratingWithState:&v86 objects:v85 count:16];
         }
 
         while (v53);
@@ -732,22 +732,22 @@ LABEL_56:
     v56 = v82;
     if (v82)
     {
-      [(CAStateControllerLayer *)v82 setCurrentState:v83];
+      [(CAStateControllerLayer *)v82 setCurrentState:stateCopy3];
       v57 = j;
     }
 
     else
     {
-      v61 = v83;
+      v61 = stateCopy3;
       v57 = j;
-      if (!(v83 | undoStack))
+      if (!(stateCopy3 | undoStack))
       {
         [0 setCurrentState:0];
 LABEL_113:
         WeakRetained = objc_loadWeakRetained(&v57->_data->var2);
         if (objc_opt_respondsToSelector())
         {
-          [WeakRetained stateController:v57 didSetStateOfLayer:v81];
+          [WeakRetained stateController:v57 didSetStateOfLayer:layerCopy];
         }
 
         if ((v78 & 1) == 0)
@@ -769,24 +769,24 @@ LABEL_113:
         v82 = 0;
 LABEL_88:
         v58 = v80;
-        if (v83 && a5 > 0.0)
+        if (stateCopy3 && speed > 0.0)
         {
-          v59 = [(NSArray *)v13 indexOfObjectIdenticalTo:v83];
-          v60 = v58 ? [(NSArray *)v13 indexOfObjectIdenticalTo:v58]: -1;
+          v59 = [(NSArray *)states indexOfObjectIdenticalTo:stateCopy3];
+          v60 = v58 ? [(NSArray *)states indexOfObjectIdenticalTo:v58]: -1;
           if (v60 >= v59)
           {
-            [v83 previousDelay];
+            [stateCopy3 previousDelay];
           }
 
           else
           {
-            [v83 nextDelay];
+            [stateCopy3 nextDelay];
           }
 
           v65 = v64;
           if ((*&v64 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
           {
-            v66 = [(NSArray *)v13 count];
+            v66 = [(NSArray *)states count];
             if (v60 < v59)
             {
               v67 = 1;
@@ -803,7 +803,7 @@ LABEL_88:
               v69 = v68;
               if (v68 < v66 && v68 != -1)
               {
-                v70 = [-[NSArray objectAtIndex:](v13 objectAtIndex:{v68), "isEnabled"}];
+                v70 = [-[NSArray objectAtIndex:](states objectAtIndex:{v68), "isEnabled"}];
                 v68 = v69 + v67;
                 if (!v70)
                 {
@@ -816,15 +816,15 @@ LABEL_88:
                 v71 = v82;
                 if ((v69 & 0x80000000) == 0)
                 {
-                  v71->_nextState = [(NSArray *)v13 objectAtIndex:v69];
+                  v71->_nextState = [(NSArray *)states objectAtIndex:v69];
                 }
 
-                v72 = begin_time(v57->_data->var3) + v65 / a5;
+                v72 = begin_time(v57->_data->var3) + v65 / speed;
                 v73 = mach_absolute_time();
                 v71->_nextTimer = [MEMORY[0x1E695DFF0] timerWithTimeInterval:v57 target:sel__nextStateTimer_ selector:v33 userInfo:0 repeats:{fmax(v72 - CATimeWithHostTime(v73), 0.0)}];
-                v74 = [MEMORY[0x1E695DFD0] mainRunLoop];
-                [v74 addTimer:v71->_nextTimer forMode:*MEMORY[0x1E695DA28]];
-                v71->_nextSpeed = a5;
+                mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+                [mainRunLoop addTimer:v71->_nextTimer forMode:*MEMORY[0x1E695DA28]];
+                v71->_nextSpeed = speed;
               }
 
               goto LABEL_113;
@@ -855,12 +855,12 @@ LABEL_88:
   }
 }
 
-- (id)stateOfLayer:(id)a3
+- (id)stateOfLayer:(id)layer
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (layer)
   {
-    Value = CFDictionaryGetValue(self->_data->var1, a3);
+    Value = CFDictionaryGetValue(self->_data->var1, layer);
 
     return [Value currentState];
   }
@@ -883,7 +883,7 @@ LABEL_88:
   }
 }
 
-- (CAStateController)initWithLayer:(id)a3
+- (CAStateController)initWithLayer:(id)layer
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
@@ -892,7 +892,7 @@ LABEL_88:
   if (v4)
   {
     v4->_data = malloc_type_calloc(1uLL, 0x20uLL, 0xA0040069AE433uLL);
-    v4->_data->var0 = a3;
+    v4->_data->var0 = layer;
     v4->_data->var1 = CFDictionaryCreateMutable(0, 0, 0, 0);
   }
 

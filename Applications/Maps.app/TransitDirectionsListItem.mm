@@ -1,26 +1,26 @@
 @interface TransitDirectionsListItem
-+ (int64_t)defaultInstructionContextForItemType:(int64_t)a3 forGuidance:(BOOL)a4;
++ (int64_t)defaultInstructionContextForItemType:(int64_t)type forGuidance:(BOOL)guidance;
 - ($873BFAB23BBB6E2F0B0288ED2F935688)displayedMapRect;
 - (GEOComposedRouteStep)matchingRouteStep;
 - (NSArray)composedRouteStepsDisplayedOnMap;
 - (NSArray)subItems;
-- (TransitDirectionsListItem)initWithInstructions:(id)a3;
+- (TransitDirectionsListItem)initWithInstructions:(id)instructions;
 - (TransitDirectionsListItem)nextItem;
 - (TransitDirectionsListItem)parentItem;
 - (TransitDirectionsListItem)previousItem;
 - (UIColor)alternateFromLineColor;
 - (UIColor)alternateToLineColor;
-- (double)lineWidthForView:(id)a3;
-- (id)_itemAfterSubItem:(id)a3;
-- (id)_itemBeforeSubItem:(id)a3;
+- (double)lineWidthForView:(id)view;
+- (id)_itemAfterSubItem:(id)item;
+- (id)_itemBeforeSubItem:(id)item;
 - (id)_subItemsForCurrentState;
 - (id)description;
-- (id)formattedStringsForType:(int64_t)a3;
+- (id)formattedStringsForType:(int64_t)type;
 - (unint64_t)matchingRouteStepIndex;
 - (void)_invalidateSubItems;
 - (void)_rebuildSubItems;
-- (void)setFooterItems:(id)a3;
-- (void)setPostTertiaryItems:(id)a3;
+- (void)setFooterItems:(id)items;
+- (void)setPostTertiaryItems:(id)items;
 @end
 
 @implementation TransitDirectionsListItem
@@ -32,15 +32,15 @@
   return WeakRetained;
 }
 
-- (double)lineWidthForView:(id)a3
+- (double)lineWidthForView:(id)view
 {
-  v3 = a3;
-  v4 = [v3 traitCollection];
+  viewCopy = view;
+  traitCollection = [viewCopy traitCollection];
   v5 = 5.0;
-  if ([v4 userInterfaceIdiom] == 5)
+  if ([traitCollection userInterfaceIdiom] == 5)
   {
-    v6 = [v3 traitCollection];
-    [v6 displayScale];
+    traitCollection2 = [viewCopy traitCollection];
+    [traitCollection2 displayScale];
     if (v7)
     {
       v8 = 4;
@@ -98,89 +98,89 @@
 {
   if ([(TransitDirectionsListItem *)self conformsToProtocol:&OBJC_PROTOCOL___TransitDirectionsListExpandableItem])
   {
-    v3 = self;
-    v4 = [(TransitDirectionsListItem *)v3 subItemsWithForceExpand:[(TransitDirectionsListItem *)v3 expanded]];
+    selfCopy = self;
+    subItems = [(TransitDirectionsListItem *)selfCopy subItemsWithForceExpand:[(TransitDirectionsListItem *)selfCopy expanded]];
   }
 
   else
   {
-    v4 = [(TransitDirectionsListItem *)self subItems];
+    subItems = [(TransitDirectionsListItem *)self subItems];
   }
 
-  return v4;
+  return subItems;
 }
 
-- (id)_itemAfterSubItem:(id)a3
+- (id)_itemAfterSubItem:(id)item
 {
-  v4 = a3;
-  if (v4 == self)
+  itemCopy = item;
+  if (itemCopy == self)
   {
-    v7 = [(TransitDirectionsListItem *)self nextItem];
+    nextItem = [(TransitDirectionsListItem *)self nextItem];
   }
 
   else
   {
-    v5 = [(TransitDirectionsListItem *)self _subItemsForCurrentState];
-    v6 = [v5 indexOfObject:v4];
+    _subItemsForCurrentState = [(TransitDirectionsListItem *)self _subItemsForCurrentState];
+    v6 = [_subItemsForCurrentState indexOfObject:itemCopy];
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v7 = 0;
+      nextItem = 0;
     }
 
     else
     {
       v8 = v6 + 1;
-      if (v6 + 1 == [v5 count])
+      if (v6 + 1 == [_subItemsForCurrentState count])
       {
         WeakRetained = objc_loadWeakRetained(&self->_nextItem);
       }
 
       else
       {
-        WeakRetained = [v5 objectAtIndexedSubscript:v8];
+        WeakRetained = [_subItemsForCurrentState objectAtIndexedSubscript:v8];
       }
 
-      v7 = WeakRetained;
+      nextItem = WeakRetained;
     }
   }
 
-  return v7;
+  return nextItem;
 }
 
-- (id)_itemBeforeSubItem:(id)a3
+- (id)_itemBeforeSubItem:(id)item
 {
-  v4 = a3;
-  if (v4 == self)
+  itemCopy = item;
+  if (itemCopy == self)
   {
-    v8 = [(TransitDirectionsListItem *)self previousItem];
+    previousItem = [(TransitDirectionsListItem *)self previousItem];
   }
 
   else
   {
-    v5 = [(TransitDirectionsListItem *)self _subItemsForCurrentState];
-    v6 = [v5 indexOfObject:v4];
+    _subItemsForCurrentState = [(TransitDirectionsListItem *)self _subItemsForCurrentState];
+    v6 = [_subItemsForCurrentState indexOfObject:itemCopy];
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v8 = 0;
+      previousItem = 0;
     }
 
     else
     {
       if (v6)
       {
-        v7 = [v5 objectAtIndexedSubscript:v6 - 1];
+        selfCopy = [_subItemsForCurrentState objectAtIndexedSubscript:v6 - 1];
       }
 
       else
       {
-        v7 = self;
+        selfCopy = self;
       }
 
-      v8 = v7;
+      previousItem = selfCopy;
     }
   }
 
-  return v8;
+  return previousItem;
 }
 
 - (TransitDirectionsListItem)previousItem
@@ -194,8 +194,8 @@
 
   else
   {
-    v6 = [(TransitDirectionsListItem *)self parentItem];
-    v5 = [v6 _itemBeforeSubItem:self];
+    parentItem = [(TransitDirectionsListItem *)self parentItem];
+    v5 = [parentItem _itemBeforeSubItem:self];
   }
 
   return v5;
@@ -203,10 +203,10 @@
 
 - (TransitDirectionsListItem)nextItem
 {
-  v3 = [(TransitDirectionsListItem *)self _subItemsForCurrentState];
-  if ([v3 count])
+  _subItemsForCurrentState = [(TransitDirectionsListItem *)self _subItemsForCurrentState];
+  if ([_subItemsForCurrentState count])
   {
-    v4 = [v3 firstObject];
+    firstObject = [_subItemsForCurrentState firstObject];
   }
 
   else
@@ -215,17 +215,17 @@
     v6 = WeakRetained;
     if (WeakRetained)
     {
-      v4 = WeakRetained;
+      firstObject = WeakRetained;
     }
 
     else
     {
-      v7 = [(TransitDirectionsListItem *)self parentItem];
-      v4 = [v7 _itemAfterSubItem:self];
+      parentItem = [(TransitDirectionsListItem *)self parentItem];
+      firstObject = [parentItem _itemAfterSubItem:self];
     }
   }
 
-  return v4;
+  return firstObject;
 }
 
 - (void)_invalidateSubItems
@@ -245,18 +245,18 @@
   self->_subItems = v3;
 }
 
-- (void)setFooterItems:(id)a3
+- (void)setFooterItems:(id)items
 {
-  v4 = [a3 copy];
+  v4 = [items copy];
   footerItems = self->_footerItems;
   self->_footerItems = v4;
 
   [(TransitDirectionsListItem *)self _invalidateSubItems];
 }
 
-- (void)setPostTertiaryItems:(id)a3
+- (void)setPostTertiaryItems:(id)items
 {
-  v4 = [a3 copy];
+  v4 = [items copy];
   postTertiaryItems = self->_postTertiaryItems;
   self->_postTertiaryItems = v4;
 
@@ -275,44 +275,44 @@
   return subItems;
 }
 
-- (id)formattedStringsForType:(int64_t)a3
+- (id)formattedStringsForType:(int64_t)type
 {
   v4 = 0;
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_18;
       }
 
-      v8 = [(TransitDirectionsListItem *)self minorFormattedStrings];
+      minorFormattedStrings = [(TransitDirectionsListItem *)self minorFormattedStrings];
     }
 
     else
     {
-      v8 = [(TransitDirectionsListItem *)self majorFormattedStrings];
+      minorFormattedStrings = [(TransitDirectionsListItem *)self majorFormattedStrings];
     }
 
     goto LABEL_15;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
-    v8 = [(TransitDirectionsListItem *)self tertiaryFormattedStrings];
+    minorFormattedStrings = [(TransitDirectionsListItem *)self tertiaryFormattedStrings];
 LABEL_15:
-    v4 = v8;
+    v4 = minorFormattedStrings;
     goto LABEL_18;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
-    v5 = [(TransitDirectionsListItem *)self primaryAccessoryString];
-    if (v5)
+    primaryAccessoryString = [(TransitDirectionsListItem *)self primaryAccessoryString];
+    if (primaryAccessoryString)
     {
-      v6 = [(TransitDirectionsListItem *)self primaryAccessoryString];
-      v11 = v6;
+      primaryAccessoryString2 = [(TransitDirectionsListItem *)self primaryAccessoryString];
+      v11 = primaryAccessoryString2;
       v7 = &v11;
       goto LABEL_13;
     }
@@ -322,19 +322,19 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (a3 != 4)
+  if (type != 4)
   {
     goto LABEL_18;
   }
 
-  v5 = [(TransitDirectionsListItem *)self secondaryAccessoryString];
-  if (!v5)
+  primaryAccessoryString = [(TransitDirectionsListItem *)self secondaryAccessoryString];
+  if (!primaryAccessoryString)
   {
     goto LABEL_16;
   }
 
-  v6 = [(TransitDirectionsListItem *)self secondaryAccessoryString];
-  v10 = v6;
+  primaryAccessoryString2 = [(TransitDirectionsListItem *)self secondaryAccessoryString];
+  v10 = primaryAccessoryString2;
   v7 = &v10;
 LABEL_13:
   v4 = [NSArray arrayWithObjects:v7 count:1];
@@ -355,8 +355,8 @@ LABEL_18:
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(TransitDirectionsListItem *)self composedRouteStepsDisplayedOnMap];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  composedRouteStepsDisplayedOnMap = [(TransitDirectionsListItem *)self composedRouteStepsDisplayedOnMap];
+  v7 = [composedRouteStepsDisplayedOnMap countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
     v8 = v7;
@@ -368,7 +368,7 @@ LABEL_18:
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(composedRouteStepsDisplayedOnMap);
         }
 
         [*(*(&v19 + 1) + 8 * v10) mapRectAroundStartCoordinate];
@@ -389,7 +389,7 @@ LABEL_18:
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v8 = [composedRouteStepsDisplayedOnMap countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v8);
@@ -408,22 +408,22 @@ LABEL_18:
 
 - (GEOComposedRouteStep)matchingRouteStep
 {
-  v3 = [(TransitDirectionsListItem *)self composedRouteSteps];
-  v4 = [v3 firstObject];
+  composedRouteSteps = [(TransitDirectionsListItem *)self composedRouteSteps];
+  firstObject = [composedRouteSteps firstObject];
 
-  v5 = [(TransitDirectionsListItem *)self type];
-  if (v5 <= 4)
+  type = [(TransitDirectionsListItem *)self type];
+  if (type <= 4)
   {
-    if (v5 != 2)
+    if (type != 2)
     {
-      if (v5 == 3)
+      if (type == 3)
       {
         v32 = 0u;
         v33 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v6 = [(TransitDirectionsListItem *)self subItems];
-        v7 = [v6 countByEnumeratingWithState:&v30 objects:v35 count:16];
+        subItems = [(TransitDirectionsListItem *)self subItems];
+        v7 = [subItems countByEnumeratingWithState:&v30 objects:v35 count:16];
         if (v7)
         {
           v8 = v7;
@@ -434,22 +434,22 @@ LABEL_18:
             {
               if (*v31 != v9)
               {
-                objc_enumerationMutation(v6);
+                objc_enumerationMutation(subItems);
               }
 
               v11 = *(*(&v30 + 1) + 8 * i);
               if ([v11 type] == 10)
               {
-                v23 = [v11 matchingRouteStep];
+                matchingRouteStep = [v11 matchingRouteStep];
 LABEL_32:
-                v24 = v23;
+                v24 = matchingRouteStep;
 
-                v4 = v24;
+                firstObject = v24;
                 goto LABEL_33;
               }
             }
 
-            v8 = [v6 countByEnumeratingWithState:&v30 objects:v35 count:16];
+            v8 = [subItems countByEnumeratingWithState:&v30 objects:v35 count:16];
             if (v8)
             {
               continue;
@@ -466,14 +466,14 @@ LABEL_32:
     }
 
 LABEL_17:
-    v12 = [(TransitDirectionsListItem *)self composedRouteSteps];
-    v13 = [v12 lastObject];
+    composedRouteSteps2 = [(TransitDirectionsListItem *)self composedRouteSteps];
+    lastObject = [composedRouteSteps2 lastObject];
 
-    v4 = v13;
+    firstObject = lastObject;
     goto LABEL_34;
   }
 
-  switch(v5)
+  switch(type)
   {
     case 5:
       goto LABEL_17;
@@ -482,8 +482,8 @@ LABEL_17:
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v6 = [(TransitDirectionsListItem *)self composedRouteSteps];
-      v14 = [v6 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      subItems = [(TransitDirectionsListItem *)self composedRouteSteps];
+      v14 = [subItems countByEnumeratingWithState:&v26 objects:v34 count:16];
       if (v14)
       {
         v15 = v14;
@@ -494,29 +494,29 @@ LABEL_17:
           {
             if (*v27 != v16)
             {
-              objc_enumerationMutation(v6);
+              objc_enumerationMutation(subItems);
             }
 
             v18 = *(*(&v26 + 1) + 8 * j);
-            v19 = [v18 transitStep];
-            v20 = [v19 maneuverType];
+            transitStep = [v18 transitStep];
+            maneuverType = [transitStep maneuverType];
 
-            if (v20 != 6)
+            if (maneuverType != 6)
             {
-              v21 = [v18 transitStep];
-              v22 = [v21 maneuverType];
+              transitStep2 = [v18 transitStep];
+              maneuverType2 = [transitStep2 maneuverType];
 
-              if (v22 != 3)
+              if (maneuverType2 != 3)
               {
                 continue;
               }
             }
 
-            v23 = v18;
+            matchingRouteStep = v18;
             goto LABEL_32;
           }
 
-          v15 = [v6 countByEnumeratingWithState:&v26 objects:v34 count:16];
+          v15 = [subItems countByEnumeratingWithState:&v26 objects:v34 count:16];
           if (v15)
           {
             continue;
@@ -532,35 +532,35 @@ LABEL_17:
   }
 
 LABEL_28:
-  if (v4)
+  if (firstObject)
   {
     goto LABEL_34;
   }
 
-  v6 = [(TransitDirectionsListItem *)self parentItem];
-  v4 = [v6 matchingRouteStep];
+  subItems = [(TransitDirectionsListItem *)self parentItem];
+  firstObject = [subItems matchingRouteStep];
 LABEL_33:
 
 LABEL_34:
 
-  return v4;
+  return firstObject;
 }
 
 - (unint64_t)matchingRouteStepIndex
 {
-  v2 = [(TransitDirectionsListItem *)self matchingRouteStep];
-  v3 = v2;
-  if (v2)
+  matchingRouteStep = [(TransitDirectionsListItem *)self matchingRouteStep];
+  v3 = matchingRouteStep;
+  if (matchingRouteStep)
   {
-    v4 = [v2 stepIndex];
+    stepIndex = [matchingRouteStep stepIndex];
   }
 
   else
   {
-    v4 = 0x7FFFFFFFFFFFFFFFLL;
+    stepIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v4;
+  return stepIndex;
 }
 
 - (id)description
@@ -571,50 +571,50 @@ LABEL_34:
   v4 = [(TransitDirectionsListItem *)&v25 description];
   v5 = [v3 initWithString:v4];
 
-  v6 = [(TransitDirectionsListItem *)self type];
-  if (v6 >= 0x12)
+  type = [(TransitDirectionsListItem *)self type];
+  if (type >= 0x12)
   {
-    v7 = [NSString stringWithFormat:@"Unknown (%ld)", v6];
+    v7 = [NSString stringWithFormat:@"Unknown (%ld)", type];
   }
 
   else
   {
-    v7 = off_101654298[v6];
+    v7 = off_101654298[type];
   }
 
   [v5 appendFormat:@" %@", v7];
 
-  v8 = [(TransitDirectionsListItem *)self majorFormattedStrings];
-  v9 = [v8 count];
+  majorFormattedStrings = [(TransitDirectionsListItem *)self majorFormattedStrings];
+  v9 = [majorFormattedStrings count];
 
   if (v9)
   {
-    v10 = [(TransitDirectionsListItem *)self majorFormattedStrings];
-    v11 = [v10 firstObject];
-    v12 = [v11 stringWithDefaultOptions];
-    [v5 appendFormat:@" | %@", v12];
+    majorFormattedStrings2 = [(TransitDirectionsListItem *)self majorFormattedStrings];
+    firstObject = [majorFormattedStrings2 firstObject];
+    stringWithDefaultOptions = [firstObject stringWithDefaultOptions];
+    [v5 appendFormat:@" | %@", stringWithDefaultOptions];
   }
 
-  v13 = [(TransitDirectionsListItem *)self minorFormattedStrings];
-  v14 = [v13 count];
+  minorFormattedStrings = [(TransitDirectionsListItem *)self minorFormattedStrings];
+  v14 = [minorFormattedStrings count];
 
   if (v14)
   {
-    v15 = [(TransitDirectionsListItem *)self minorFormattedStrings];
-    v16 = [v15 firstObject];
-    v17 = [v16 stringWithDefaultOptions];
-    [v5 appendFormat:@" | %@", v17];
+    minorFormattedStrings2 = [(TransitDirectionsListItem *)self minorFormattedStrings];
+    firstObject2 = [minorFormattedStrings2 firstObject];
+    stringWithDefaultOptions2 = [firstObject2 stringWithDefaultOptions];
+    [v5 appendFormat:@" | %@", stringWithDefaultOptions2];
   }
 
-  v18 = [(TransitDirectionsListItem *)self tertiaryFormattedStrings];
-  v19 = [v18 count];
+  tertiaryFormattedStrings = [(TransitDirectionsListItem *)self tertiaryFormattedStrings];
+  v19 = [tertiaryFormattedStrings count];
 
   if (v19)
   {
-    v20 = [(TransitDirectionsListItem *)self tertiaryFormattedStrings];
-    v21 = [v20 firstObject];
-    v22 = [v21 stringWithDefaultOptions];
-    [v5 appendFormat:@" | %@", v22];
+    tertiaryFormattedStrings2 = [(TransitDirectionsListItem *)self tertiaryFormattedStrings];
+    firstObject3 = [tertiaryFormattedStrings2 firstObject];
+    stringWithDefaultOptions3 = [firstObject3 stringWithDefaultOptions];
+    [v5 appendFormat:@" | %@", stringWithDefaultOptions3];
   }
 
   v23 = [v5 copy];
@@ -622,27 +622,27 @@ LABEL_34:
   return v23;
 }
 
-- (TransitDirectionsListItem)initWithInstructions:(id)a3
+- (TransitDirectionsListItem)initWithInstructions:(id)instructions
 {
-  v5 = a3;
+  instructionsCopy = instructions;
   v21.receiver = self;
   v21.super_class = TransitDirectionsListItem;
   v6 = [(TransitDirectionsListItem *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_transitInstruction, a3);
-    v8 = [(MNTransitInstruction *)v7->_transitInstruction majorInstructionStrings];
+    objc_storeStrong(&v6->_transitInstruction, instructions);
+    majorInstructionStrings = [(MNTransitInstruction *)v7->_transitInstruction majorInstructionStrings];
     majorFormattedStrings = v7->_majorFormattedStrings;
-    v7->_majorFormattedStrings = v8;
+    v7->_majorFormattedStrings = majorInstructionStrings;
 
-    v10 = [(MNTransitInstruction *)v7->_transitInstruction minorInstructionStrings];
+    minorInstructionStrings = [(MNTransitInstruction *)v7->_transitInstruction minorInstructionStrings];
     minorFormattedStrings = v7->_minorFormattedStrings;
-    v7->_minorFormattedStrings = v10;
+    v7->_minorFormattedStrings = minorInstructionStrings;
 
-    v12 = [(MNTransitInstruction *)v7->_transitInstruction tertiaryInstructionStrings];
+    tertiaryInstructionStrings = [(MNTransitInstruction *)v7->_transitInstruction tertiaryInstructionStrings];
     tertiaryFormattedStrings = v7->_tertiaryFormattedStrings;
-    v7->_tertiaryFormattedStrings = v12;
+    v7->_tertiaryFormattedStrings = tertiaryInstructionStrings;
 
     v14 = +[GEOPlatform sharedPlatform];
     if ([v14 isInternalInstall])
@@ -650,7 +650,7 @@ LABEL_34:
       v15 = +[NSUserDefaults standardUserDefaults];
       v16 = [v15 BOOLForKey:@"__internal__EnableTransitDebugLocalInstruction"];
 
-      if (!v5 || !v16 || [(NSArray *)v7->_majorFormattedStrings count]|| [(NSArray *)v7->_minorFormattedStrings count]|| [(NSArray *)v7->_tertiaryFormattedStrings count])
+      if (!instructionsCopy || !v16 || [(NSArray *)v7->_majorFormattedStrings count]|| [(NSArray *)v7->_minorFormattedStrings count]|| [(NSArray *)v7->_tertiaryFormattedStrings count])
       {
         goto LABEL_10;
       }
@@ -669,15 +669,15 @@ LABEL_10:
   return v7;
 }
 
-+ (int64_t)defaultInstructionContextForItemType:(int64_t)a3 forGuidance:(BOOL)a4
++ (int64_t)defaultInstructionContextForItemType:(int64_t)type forGuidance:(BOOL)guidance
 {
   v4 = 1;
-  if (!a4)
+  if (!guidance)
   {
     v4 = 2;
   }
 
-  if (((1 << a3) & 0x3E2DF) != 0)
+  if (((1 << type) & 0x3E2DF) != 0)
   {
     v5 = v4;
   }
@@ -687,7 +687,7 @@ LABEL_10:
     v5 = 2;
   }
 
-  if (a3 <= 0x11)
+  if (type <= 0x11)
   {
     return v5;
   }

@@ -1,29 +1,29 @@
 @interface TSDDefaultRenderingObjects
-+ (double)defaultAssetScaleForFrame:(id)a3;
++ (double)defaultAssetScaleForFrame:(id)frame;
 + (id)defaultBasicStrokes;
-+ (id)defaultColorAndGrayscaleFillsForTheme:(id)a3;
-+ (id)defaultColorAndGrayscaleFillsForTheme:(id)a3 withNoFillButton:(BOOL)a4;
-+ (id)defaultColorFillsForTheme:(id)a3;
++ (id)defaultColorAndGrayscaleFillsForTheme:(id)theme;
++ (id)defaultColorAndGrayscaleFillsForTheme:(id)theme withNoFillButton:(BOOL)button;
++ (id)defaultColorFillsForTheme:(id)theme;
 + (id)defaultEndpoints;
 + (id)defaultFrames;
-+ (id)defaultGradientFillsForTheme:(id)a3;
-+ (id)defaultGrayscaleFillsWithNoFillButton:(BOOL)a3 forTheme:(id)a4;
++ (id)defaultGradientFillsForTheme:(id)theme;
++ (id)defaultGrayscaleFillsWithNoFillButton:(BOOL)button forTheme:(id)theme;
 + (id)defaultLines;
-+ (id)defaultPresetImageStrokesForTheme:(id)a3;
++ (id)defaultPresetImageStrokesForTheme:(id)theme;
 + (id)defaultPresetStrokesForShapes;
-+ (id)defaultShadowsForTheme:(id)a3;
++ (id)defaultShadowsForTheme:(id)theme;
 + (id)defaultStrokes;
 + (id)p_frameInspectorDictionary;
-+ (id)p_transposedArrayOfColorFills:(id)a3;
++ (id)p_transposedArrayOfColorFills:(id)fills;
 @end
 
 @implementation TSDDefaultRenderingObjects
 
-+ (id)defaultColorFillsForTheme:(id)a3
++ (id)defaultColorFillsForTheme:(id)theme
 {
-  if (a3)
+  if (theme)
   {
-    v3 = [a3 presetsOfKind:String];
+    v3 = [theme presetsOfKind:String];
     if (v3)
     {
       v4 = v3;
@@ -49,23 +49,23 @@
     }
   }
 
-  v8 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v9 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDDefaultRenderingObjects defaultColorFillsForTheme:]"];
-  [v8 handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDefaultRenderingObjects.m"), 57, @"Couldn't find color fills in theme; falling back on hardcoded grayscale swatches."}];
+  [currentHandler handleFailureInFunction:v9 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDefaultRenderingObjects.m"), 57, @"Couldn't find color fills in theme; falling back on hardcoded grayscale swatches."}];
   return [MEMORY[0x277CBEA60] arrayWithObjects:{+[TSDColorFill colorWithRed:green:blue:alpha:](TSDColorFill, "colorWithRed:green:blue:alpha:", 0.176470588, 0.235294118, 0.333333333, 1.0), +[TSDColorFill colorWithRed:green:blue:alpha:](TSDColorFill, "colorWithRed:green:blue:alpha:", 0.231372549, 0.349019608, 0.525490196, 1.0), +[TSDColorFill colorWithRed:green:blue:alpha:](TSDColorFill, "colorWithRed:green:blue:alpha:", 0.603921569, 0.71372549, 0.784313725, 1.0), +[TSDColorFill colorWithRed:green:blue:alpha:](TSDColorFill, "colorWithRed:green:blue:alpha:", 0.529, 0.359, 0.051, 1.0), +[TSDColorFill colorWithRed:green:blue:alpha:](TSDColorFill, "colorWithRed:green:blue:alpha:", 0.875, 0.502, 0.058, 1.0), +[TSDColorFill colorWithRed:green:blue:alpha:](TSDColorFill, "colorWithRed:green:blue:alpha:", 0.98, 0.801, 0.519, 1.0), +[TSDColorFill colorWithRed:green:blue:alpha:](TSDColorFill, "colorWithRed:green:blue:alpha:", 0.361, 0.101, 0.079, 1.0), +[TSDColorFill colorWithRed:green:blue:alpha:](TSDColorFill, "colorWithRed:green:blue:alpha:", 0.714, 0.171, 0.122, 1.0), +[TSDColorFill colorWithRed:green:blue:alpha:](TSDColorFill, "colorWithRed:green:blue:alpha:", 0.727, 0.441, 0.391, 1.0), +[TSDColorFill colorWithRed:green:blue:alpha:](TSDColorFill, "colorWithRed:green:blue:alpha:", 0.174, 0.257, 0.074, 1.0), +[TSDColorFill colorWithRed:green:blue:alpha:](TSDColorFill, "colorWithRed:green:blue:alpha:", 0.364, 0.467, 0.086, 1.0), +[TSDColorFill colorWithRed:green:blue:alpha:](TSDColorFill, "colorWithRed:green:blue:alpha:", 0.548, 0.696, 0.4, 1.0), +[TSDColorFill colorWithRed:green:blue:alpha:](TSDColorFill, "colorWithRed:green:blue:alpha:", 0.659, 0.195, 0.035, 1.0), +[TSDColorFill colorWithRed:green:blue:alpha:](TSDColorFill, "colorWithRed:green:blue:alpha:", 0.838, 0.256, 0.033, 1.0), +[TSDColorFill colorWithRed:green:blue:alpha:](TSDColorFill, "colorWithRed:green:blue:alpha:", 1.0, 0.685, 0.502, 1.0), +[TSDColorFill colorWithRed:green:blue:alpha:](TSDColorFill, "colorWithRed:green:blue:alpha:", 0.349019608, 0.180392157, 0.0980392157, 1.0), +[TSDColorFill colorWithRed:green:blue:alpha:](TSDColorFill, "colorWithRed:green:blue:alpha:", 0.447058824, 0.28627451, 0.203921569, 1.0), +[TSDColorFill colorWithRed:green:blue:alpha:](TSDColorFill, "colorWithRed:green:blue:alpha:", 0.780392157, 0.603921569, 0.509803922, 1.0), 0}];
 }
 
-+ (id)defaultGradientFillsForTheme:(id)a3
++ (id)defaultGradientFillsForTheme:(id)theme
 {
-  v3 = [a3 presetsOfKind:String];
+  v3 = [theme presetsOfKind:String];
   if ([v3 count])
   {
     return v3;
   }
 
-  v5 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDDefaultRenderingObjects defaultGradientFillsForTheme:]"];
-  [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDefaultRenderingObjects.m"), 94, @"Couldn't find gradients in theme; falling back on hardcoded gradient swatches."}];
+  [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDefaultRenderingObjects.m"), 94, @"Couldn't find gradients in theme; falling back on hardcoded gradient swatches."}];
   v7 = [MEMORY[0x277D6C2A8] colorWithRed:0.580392157 green:0.0549019608 blue:0.0980392157 alpha:1.0];
   v8 = +[TSDGradient linearGradientWithStartColor:endColor:](TSDAngleGradient, "linearGradientWithStartColor:endColor:", v7, [MEMORY[0x277D6C2A8] colorWithRed:0.305882353 green:0.0274509804 blue:0.0509803922 alpha:1.0]);
   v9 = [MEMORY[0x277D6C2A8] colorWithRed:0.133333333 green:0.592156863 blue:0.062745098 alpha:1.0];
@@ -75,35 +75,35 @@
   return [MEMORY[0x277CBEA60] arrayWithObjects:{v8, v10, v12, 0}];
 }
 
-+ (id)defaultColorAndGrayscaleFillsForTheme:(id)a3
++ (id)defaultColorAndGrayscaleFillsForTheme:(id)theme
 {
-  v5 = [a1 p_transposedArrayOfColorFills:{objc_msgSend(a1, "defaultColorFillsForTheme:")}];
-  v6 = [a1 defaultGrayscaleFillsWithNoFillButton:0 forTheme:a3];
+  v5 = [self p_transposedArrayOfColorFills:{objc_msgSend(self, "defaultColorFillsForTheme:")}];
+  v6 = [self defaultGrayscaleFillsWithNoFillButton:0 forTheme:theme];
 
   return [v5 arrayByAddingObjectsFromArray:v6];
 }
 
-+ (id)defaultColorAndGrayscaleFillsForTheme:(id)a3 withNoFillButton:(BOOL)a4
++ (id)defaultColorAndGrayscaleFillsForTheme:(id)theme withNoFillButton:(BOOL)button
 {
-  v4 = a4;
-  v7 = [a1 p_transposedArrayOfColorFills:{objc_msgSend(a1, "defaultColorFillsForTheme:")}];
-  v8 = [a1 defaultGrayscaleFillsWithNoFillButton:v4 forTheme:a3];
+  buttonCopy = button;
+  v7 = [self p_transposedArrayOfColorFills:{objc_msgSend(self, "defaultColorFillsForTheme:")}];
+  v8 = [self defaultGrayscaleFillsWithNoFillButton:buttonCopy forTheme:theme];
 
   return [v7 arrayByAddingObjectsFromArray:v8];
 }
 
 + (id)defaultBasicStrokes
 {
-  v2 = [MEMORY[0x277D6C2A8] blackColor];
-  v3 = [(TSDStroke *)TSDMutableStroke strokeWithColor:v2 width:5.0];
+  blackColor = [MEMORY[0x277D6C2A8] blackColor];
+  v3 = [(TSDStroke *)TSDMutableStroke strokeWithColor:blackColor width:5.0];
   [(TSDMutableStroke *)v3 setPattern:+[TSDStrokePattern solidPattern]];
-  v4 = [(TSDStroke *)TSDMutableStroke strokeWithColor:v2 width:5.0];
+  v4 = [(TSDStroke *)TSDMutableStroke strokeWithColor:blackColor width:5.0];
   [(TSDMutableStroke *)v4 setPattern:+[TSDStrokePattern shortDashPattern]];
-  v5 = [(TSDStroke *)TSDMutableStroke strokeWithColor:v2 width:5.0];
+  v5 = [(TSDStroke *)TSDMutableStroke strokeWithColor:blackColor width:5.0];
   [(TSDMutableStroke *)v5 setPattern:+[TSDStrokePattern mediumDashPattern]];
-  v6 = [(TSDStroke *)TSDMutableStroke strokeWithColor:v2 width:5.0];
+  v6 = [(TSDStroke *)TSDMutableStroke strokeWithColor:blackColor width:5.0];
   [(TSDMutableStroke *)v6 setPattern:+[TSDStrokePattern longDashPattern]];
-  v7 = [(TSDStroke *)TSDMutableStroke strokeWithColor:v2 width:5.0];
+  v7 = [(TSDStroke *)TSDMutableStroke strokeWithColor:blackColor width:5.0];
   [(TSDMutableStroke *)v7 setCap:1];
   [(TSDMutableStroke *)v7 setJoin:1];
   [(TSDMutableStroke *)v7 setPattern:+[TSDStrokePattern roundDashPattern]];
@@ -114,51 +114,51 @@
 {
   v5[5] = *MEMORY[0x277D85DE8];
   v2 = +[TSDDefaultRenderingObjects defaultBasicStrokes];
-  v3 = [MEMORY[0x277D6C2A8] blackColor];
-  v5[0] = [(TSDSmartStroke *)TSDBrushStroke strokeWithName:@"Chalk2" color:v3 width:10.0];
-  v5[1] = [(TSDSmartStroke *)TSDBrushStroke strokeWithName:@"Feathered Brush" color:v3 width:10.0];
-  v5[2] = [(TSDStroke *)TSDCalligraphyStroke strokeWithColor:v3 width:5.0];
-  v5[3] = [(TSDSmartStroke *)TSDBrushStroke strokeWithName:@"Dry Brush" color:v3 width:10.0];
-  v5[4] = [(TSDSmartStroke *)TSDBrushStroke strokeWithName:@"Pen" color:v3 width:10.0];
+  blackColor = [MEMORY[0x277D6C2A8] blackColor];
+  v5[0] = [(TSDSmartStroke *)TSDBrushStroke strokeWithName:@"Chalk2" color:blackColor width:10.0];
+  v5[1] = [(TSDSmartStroke *)TSDBrushStroke strokeWithName:@"Feathered Brush" color:blackColor width:10.0];
+  v5[2] = [(TSDStroke *)TSDCalligraphyStroke strokeWithColor:blackColor width:5.0];
+  v5[3] = [(TSDSmartStroke *)TSDBrushStroke strokeWithName:@"Dry Brush" color:blackColor width:10.0];
+  v5[4] = [(TSDSmartStroke *)TSDBrushStroke strokeWithName:@"Pen" color:blackColor width:10.0];
   return [v2 arrayByAddingObjectsFromArray:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v5, 5)}];
 }
 
 + (id)defaultPresetStrokesForShapes
 {
   v7[6] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D6C2A8] blackColor];
-  v3 = [(TSDStroke *)TSDMutableStroke strokeWithColor:v2 width:1.0];
+  blackColor = [MEMORY[0x277D6C2A8] blackColor];
+  v3 = [(TSDStroke *)TSDMutableStroke strokeWithColor:blackColor width:1.0];
   [(TSDMutableStroke *)v3 setPattern:+[TSDStrokePattern solidPattern]];
-  v4 = [(TSDStroke *)TSDMutableStroke strokeWithColor:v2 width:2.0];
+  v4 = [(TSDStroke *)TSDMutableStroke strokeWithColor:blackColor width:2.0];
   [(TSDMutableStroke *)v4 setPattern:+[TSDStrokePattern solidPattern]];
-  v5 = [(TSDStroke *)TSDMutableStroke strokeWithColor:v2 width:4.0];
+  v5 = [(TSDStroke *)TSDMutableStroke strokeWithColor:blackColor width:4.0];
   [(TSDMutableStroke *)v5 setPattern:+[TSDStrokePattern solidPattern]];
   v7[0] = v3;
   v7[1] = v4;
   v7[2] = v5;
-  v7[3] = [(TSDSmartStroke *)TSDBrushStroke strokeWithName:@"Dry Brush" color:v2 width:6.0];
-  v7[4] = [(TSDSmartStroke *)TSDBrushStroke strokeWithName:@"Chalk2" color:v2 width:6.0];
-  v7[5] = [(TSDSmartStroke *)TSDBrushStroke strokeWithName:@"Pen" color:v2 width:6.0];
+  v7[3] = [(TSDSmartStroke *)TSDBrushStroke strokeWithName:@"Dry Brush" color:blackColor width:6.0];
+  v7[4] = [(TSDSmartStroke *)TSDBrushStroke strokeWithName:@"Chalk2" color:blackColor width:6.0];
+  v7[5] = [(TSDSmartStroke *)TSDBrushStroke strokeWithName:@"Pen" color:blackColor width:6.0];
   return [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:6];
 }
 
-+ (id)defaultPresetImageStrokesForTheme:(id)a3
++ (id)defaultPresetImageStrokesForTheme:(id)theme
 {
-  v5 = [MEMORY[0x277CBEB18] array];
-  v6 = [MEMORY[0x277D6C2A8] blackColor];
-  v7 = [(TSDStroke *)TSDMutableStroke strokeWithColor:v6 width:1.0];
+  array = [MEMORY[0x277CBEB18] array];
+  blackColor = [MEMORY[0x277D6C2A8] blackColor];
+  v7 = [(TSDStroke *)TSDMutableStroke strokeWithColor:blackColor width:1.0];
   [(TSDMutableStroke *)v7 setPattern:+[TSDStrokePattern solidPattern]];
-  [v5 addObject:v7];
-  v8 = [(TSDStroke *)TSDMutableStroke strokeWithColor:v6 width:2.0];
+  [array addObject:v7];
+  v8 = [(TSDStroke *)TSDMutableStroke strokeWithColor:blackColor width:2.0];
   [(TSDMutableStroke *)v8 setPattern:+[TSDStrokePattern solidPattern]];
-  [v5 addObject:v8];
-  v9 = [(TSDStroke *)TSDMutableStroke strokeWithColor:v6 width:4.0];
+  [array addObject:v8];
+  v9 = [(TSDStroke *)TSDMutableStroke strokeWithColor:blackColor width:4.0];
   [(TSDMutableStroke *)v9 setPattern:+[TSDStrokePattern solidPattern]];
-  [v5 addObject:v9];
-  v10 = [MEMORY[0x277CBEB18] array];
-  if (a3)
+  [array addObject:v9];
+  array2 = [MEMORY[0x277CBEB18] array];
+  if (theme)
   {
-    v11 = [a3 presetsOfKind:String];
+    v11 = [theme presetsOfKind:String];
     if (v11)
     {
       v12 = v11;
@@ -169,7 +169,7 @@
           v13 = 0;
           do
           {
-            if ([v10 count] > 2)
+            if ([array2 count] > 2)
             {
               break;
             }
@@ -179,10 +179,10 @@
             {
               objc_opt_class();
               v15 = TSUDynamicCast();
-              if (([v10 containsObject:{objc_msgSend(v15, "frameName")}] & 1) == 0)
+              if (([array2 containsObject:{objc_msgSend(v15, "frameName")}] & 1) == 0)
               {
-                [v5 addObject:v14];
-                [v10 addObject:{objc_msgSend(v15, "frameName")}];
+                [array addObject:v14];
+                [array2 addObject:{objc_msgSend(v15, "frameName")}];
               }
             }
 
@@ -195,13 +195,13 @@
     }
   }
 
-  if ([v10 count] <= 2)
+  if ([array2 count] <= 2)
   {
-    v16 = [a1 p_frameInspectorDictionary];
-    if (v16)
+    p_frameInspectorDictionary = [self p_frameInspectorDictionary];
+    if (p_frameInspectorDictionary)
     {
-      v17 = [v16 objectForKey:@"Display Order"];
-      if ([v10 count] <= 2)
+      v17 = [p_frameInspectorDictionary objectForKey:@"Display Order"];
+      if ([array2 count] <= 2)
       {
         v18 = 0;
         do
@@ -212,33 +212,33 @@
           }
 
           v19 = -[TSDFrame initWithFrameSpec:]([TSDFrame alloc], "initWithFrameSpec:", +[TSDFrameSpec frameSpecWithName:](TSDFrameSpec, "frameSpecWithName:", [v17 objectAtIndexedSubscript:v18]));
-          if (([v10 containsObject:{-[TSDFrame frameName](v19, "frameName")}] & 1) == 0)
+          if (([array2 containsObject:{-[TSDFrame frameName](v19, "frameName")}] & 1) == 0)
           {
-            [v5 addObject:v19];
-            [v10 addObject:{-[TSDFrame frameName](v19, "frameName")}];
+            [array addObject:v19];
+            [array2 addObject:{-[TSDFrame frameName](v19, "frameName")}];
           }
 
           ++v18;
         }
 
-        while ([v10 count] < 3);
+        while ([array2 count] < 3);
       }
     }
   }
 
-  return v5;
+  return array;
 }
 
 + (id)defaultLines
 {
   v9[6] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D6C2A8] blackColor];
-  v3 = [(TSDStroke *)TSDMutableStroke strokeWithColor:v2 width:2.0];
+  blackColor = [MEMORY[0x277D6C2A8] blackColor];
+  v3 = [(TSDStroke *)TSDMutableStroke strokeWithColor:blackColor width:2.0];
   [(TSDMutableStroke *)v3 setPattern:+[TSDStrokePattern solidPattern]];
   v4 = +[TSDLinePreset lineWithStroke:headLineEnd:tailLineEnd:](TSDLinePreset, "lineWithStroke:headLineEnd:tailLineEnd:", v3, +[TSDLineEnd none](TSDLineEnd, "none"), +[TSDLineEnd none]);
-  v5 = [(TSDSmartStroke *)TSDBrushStroke strokeWithName:@"Chalk2" color:v2 width:6.0];
+  v5 = [(TSDSmartStroke *)TSDBrushStroke strokeWithName:@"Chalk2" color:blackColor width:6.0];
   v6 = +[TSDLinePreset lineWithStroke:headLineEnd:tailLineEnd:](TSDLinePreset, "lineWithStroke:headLineEnd:tailLineEnd:", v5, +[TSDLineEnd none](TSDLineEnd, "none"), +[TSDLineEnd none]);
-  v7 = [(TSDStroke *)TSDMutableStroke strokeWithColor:v2 width:3.0];
+  v7 = [(TSDStroke *)TSDMutableStroke strokeWithColor:blackColor width:3.0];
   [(TSDMutableStroke *)v7 setPattern:+[TSDStrokePattern mediumDashPattern]];
   v9[0] = v4;
   v9[1] = v6;
@@ -268,11 +268,11 @@
 + (id)defaultFrames
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [a1 p_frameInspectorDictionary];
-  if (v4)
+  array = [MEMORY[0x277CBEB18] array];
+  p_frameInspectorDictionary = [self p_frameInspectorDictionary];
+  if (p_frameInspectorDictionary)
   {
-    v5 = [v4 objectForKey:@"Display Order"];
+    v5 = [p_frameInspectorDictionary objectForKey:@"Display Order"];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
@@ -293,7 +293,7 @@
           }
 
           v10 = [[TSDFrame alloc] initWithFrameSpec:[TSDFrameSpec frameSpecWithName:*(*(&v12 + 1) + 8 * v9)]];
-          [v3 addObject:v10];
+          [array addObject:v10];
 
           ++v9;
         }
@@ -306,14 +306,14 @@
     }
   }
 
-  return [MEMORY[0x277CBEA60] arrayWithArray:v3];
+  return [MEMORY[0x277CBEA60] arrayWithArray:array];
 }
 
-+ (id)defaultShadowsForTheme:(id)a3
++ (id)defaultShadowsForTheme:(id)theme
 {
-  if (a3)
+  if (theme)
   {
-    v3 = [a3 presetsOfKind:String];
+    v3 = [theme presetsOfKind:String];
     if (v3)
     {
       v4 = v3;
@@ -362,15 +362,15 @@
   return [MEMORY[0x277CBEA60] arrayWithObjects:{v11, v12, v13, v14, v15, v16, v18, v19, 0}];
 }
 
-+ (id)defaultGrayscaleFillsWithNoFillButton:(BOOL)a3 forTheme:(id)a4
++ (id)defaultGrayscaleFillsWithNoFillButton:(BOOL)button forTheme:(id)theme
 {
-  v4 = a3;
-  if (!a4)
+  buttonCopy = button;
+  if (!theme)
   {
     goto LABEL_9;
   }
 
-  v5 = [a4 presetsOfKind:String];
+  v5 = [theme presetsOfKind:String];
   if (!v5)
   {
     goto LABEL_9;
@@ -396,13 +396,13 @@
   if (!v7)
   {
 LABEL_9:
-    v11 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDDefaultRenderingObjects defaultGrayscaleFillsWithNoFillButton:forTheme:]"];
-    [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDefaultRenderingObjects.m"), 378, @"Couldn't find grayscale fills in theme; falling back on hardcoded grayscale swatches."}];
+    [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDDefaultRenderingObjects.m"), 378, @"Couldn't find grayscale fills in theme; falling back on hardcoded grayscale swatches."}];
     v7 = [MEMORY[0x277CBEB18] arrayWithObjects:{+[TSDColorFill whiteColor](TSDColorFill, "whiteColor"), +[TSDColorFill colorWithWhite:alpha:](TSDColorFill, "colorWithWhite:alpha:", 0.8, 1.0), +[TSDColorFill colorWithWhite:alpha:](TSDColorFill, "colorWithWhite:alpha:", 0.4, 1.0), +[TSDColorFill colorWithWhite:alpha:](TSDColorFill, "colorWithWhite:alpha:", 0.2, 1.0), +[TSDColorFill blackColor](TSDColorFill, "blackColor"), 0}];
   }
 
-  if (v4)
+  if (buttonCopy)
   {
     [v7 addObject:{objc_msgSend(MEMORY[0x277CBEB68], "null")}];
   }
@@ -410,9 +410,9 @@ LABEL_9:
   return v7;
 }
 
-+ (double)defaultAssetScaleForFrame:(id)a3
++ (double)defaultAssetScaleForFrame:(id)frame
 {
-  v3 = [objc_msgSend(objc_msgSend(a1 "p_frameInspectorDictionary")];
+  v3 = [objc_msgSend(objc_msgSend(self "p_frameInspectorDictionary")];
   if (!v3)
   {
     return 1.0;
@@ -444,15 +444,15 @@ id __56__TSDDefaultRenderingObjects_p_frameInspectorDictionary__block_invoke()
   return result;
 }
 
-+ (id)p_transposedArrayOfColorFills:(id)a3
++ (id)p_transposedArrayOfColorFills:(id)fills
 {
-  v4 = [a3 count];
+  v4 = [fills count];
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if (v4)
   {
     for (i = 0; i != v4; ++i)
     {
-      [v5 addObject:{objc_msgSend(a3, "objectAtIndex:", i / (v4 >> 2) + 4 * (i % (v4 >> 2)))}];
+      [v5 addObject:{objc_msgSend(fills, "objectAtIndex:", i / (v4 >> 2) + 4 * (i % (v4 >> 2)))}];
     }
   }
 

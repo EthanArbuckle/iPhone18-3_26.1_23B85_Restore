@@ -1,16 +1,16 @@
 @interface WFGetFileMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFGetFileMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"1106.1"))
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"1106.1"))
   {
-    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.documentpicker.open", v5);
+    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.documentpicker.open", migrationCopy);
   }
 
   else
@@ -28,8 +28,8 @@
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v3 = [(WFWorkflowMigration *)self actions];
-  v4 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  actions = [(WFWorkflowMigration *)self actions];
+  v4 = [actions countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v4)
   {
     v5 = v4;
@@ -40,17 +40,17 @@
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actions);
         }
 
         v8 = *(*(&v20 + 1) + 8 * i);
-        v9 = [(WFWorkflowMigration *)self actionIdentifierKey];
-        v10 = [v8 objectForKey:v9];
+        actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+        v10 = [v8 objectForKey:actionIdentifierKey];
 
         if ([v10 isEqualToString:@"is.workflow.actions.documentpicker.open"])
         {
-          v11 = [(WFWorkflowMigration *)self actionParametersKey];
-          v12 = [v8 objectForKeyedSubscript:v11];
+          actionParametersKey = [(WFWorkflowMigration *)self actionParametersKey];
+          v12 = [v8 objectForKeyedSubscript:actionParametersKey];
 
           v13 = [v12 objectForKeyedSubscript:@"WFFileStorageService"];
           if (v13)
@@ -77,18 +77,18 @@
           v16 = [v15 isEqualToString:@"Dropbox"];
           if (v16)
           {
-            v17 = [(WFWorkflowMigration *)self actionIdentifierKey];
-            [v8 setObject:@"is.workflow.actions.dropbox.open" forKey:v17];
+            actionIdentifierKey2 = [(WFWorkflowMigration *)self actionIdentifierKey];
+            [v8 setObject:@"is.workflow.actions.dropbox.open" forKey:actionIdentifierKey2];
 LABEL_21:
 
             [v12 removeObjectForKey:@"WFFileStorageService"];
             goto LABEL_22;
           }
 
-          v17 = [v12 objectForKeyedSubscript:@"WFShowFilePicker"];
-          if (v17 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+          actionIdentifierKey2 = [v12 objectForKeyedSubscript:@"WFShowFilePicker"];
+          if (actionIdentifierKey2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
           {
-            if (![v17 BOOLValue])
+            if (![actionIdentifierKey2 BOOLValue])
             {
               [v12 removeObjectForKey:@"SelectMultiple"];
 LABEL_20:
@@ -100,11 +100,11 @@ LABEL_20:
           else
           {
 
-            v17 = 0;
+            actionIdentifierKey2 = 0;
           }
 
-          v18 = [(WFWorkflowMigration *)self actionIdentifierKey];
-          [v8 setObject:@"is.workflow.actions.file.select" forKey:v18];
+          actionIdentifierKey3 = [(WFWorkflowMigration *)self actionIdentifierKey];
+          [v8 setObject:@"is.workflow.actions.file.select" forKey:actionIdentifierKey3];
 
           goto LABEL_20;
         }
@@ -112,7 +112,7 @@ LABEL_20:
 LABEL_22:
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v5 = [actions countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v5);

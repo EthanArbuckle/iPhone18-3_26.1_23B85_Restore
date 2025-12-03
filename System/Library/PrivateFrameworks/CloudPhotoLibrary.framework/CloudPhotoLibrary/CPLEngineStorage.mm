@@ -1,13 +1,13 @@
 @interface CPLEngineStorage
 + (id)platformImplementationProtocol;
 - (BOOL)_checkSuperWasCalled;
-- (BOOL)closeWithError:(id *)a3;
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6;
+- (BOOL)closeWithError:(id *)error;
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error;
 - (BOOL)isAlive;
 - (BOOL)isEmpty;
-- (BOOL)openWithError:(id *)a3;
+- (BOOL)openWithError:(id *)error;
 - (BOOL)shouldIncludeInStatus;
-- (CPLEngineStorage)initWithEngineStore:(id)a3 name:(id)a4;
+- (CPLEngineStorage)initWithEngineStore:(id)store name:(id)name;
 - (NSString)description;
 - (id)scopeIndexes;
 - (id)status;
@@ -24,78 +24,78 @@
 - (void)writeTransactionDidSucceed
 {
   self->_superWasCalled = 1;
-  v2 = [(CPLEngineStorage *)self platformObject];
-  [v2 writeTransactionDidSucceed];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  [platformObject writeTransactionDidSucceed];
 }
 
 - (void)transactionDidFinish
 {
   self->_superWasCalled = 1;
-  v2 = [(CPLEngineStorage *)self platformObject];
-  [v2 transactionDidFinish];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  [platformObject transactionDidFinish];
 }
 
 - (BOOL)_checkSuperWasCalled
 {
   if (self->_superWasCalled)
   {
-    v3 = [(CPLEngineStorage *)self platformObject];
-    v4 = [v3 _checkSuperWasCalled];
+    platformObject = [(CPLEngineStorage *)self platformObject];
+    _checkSuperWasCalled = [platformObject _checkSuperWasCalled];
   }
 
   else
   {
-    v4 = 0;
+    _checkSuperWasCalled = 0;
   }
 
   self->_superWasCalled = 0;
-  return v4;
+  return _checkSuperWasCalled;
 }
 
 - (id)statusDictionary
 {
-  v3 = [(CPLEngineStorage *)self platformObject];
-  v4 = [v3 shouldIncludeInStatus];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  shouldIncludeInStatus = [platformObject shouldIncludeInStatus];
 
-  if (v4)
+  if (shouldIncludeInStatus)
   {
-    v5 = [(CPLEngineStorage *)self platformObject];
-    v6 = [v5 statusDictionary];
+    platformObject2 = [(CPLEngineStorage *)self platformObject];
+    statusDictionary = [platformObject2 statusDictionary];
   }
 
   else
   {
-    v6 = 0;
+    statusDictionary = 0;
   }
 
-  return v6;
+  return statusDictionary;
 }
 
 - (id)status
 {
-  v3 = [(CPLEngineStorage *)self platformObject];
-  v4 = [v3 shouldIncludeInStatus];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  shouldIncludeInStatus = [platformObject shouldIncludeInStatus];
 
-  if (v4)
+  if (shouldIncludeInStatus)
   {
-    v5 = [(CPLEngineStorage *)self platformObject];
-    v6 = [v5 status];
+    platformObject2 = [(CPLEngineStorage *)self platformObject];
+    status = [platformObject2 status];
   }
 
   else
   {
-    v6 = 0;
+    status = 0;
   }
 
-  return v6;
+  return status;
 }
 
 - (BOOL)shouldIncludeInStatus
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 shouldIncludeInStatus];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  shouldIncludeInStatus = [platformObject shouldIncludeInStatus];
 
-  return v3;
+  return shouldIncludeInStatus;
 }
 
 - (BOOL)isAlive
@@ -105,85 +105,85 @@
     return 1;
   }
 
-  v3 = [(CPLEngineStorage *)self platformObject];
-  v4 = [v3 isAlive];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  isAlive = [platformObject isAlive];
 
-  return v4;
+  return isAlive;
 }
 
 - (BOOL)isEmpty
 {
-  v2 = [(CPLEngineStorage *)self platformObject];
-  v3 = [v2 isEmpty];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  isEmpty = [platformObject isEmpty];
 
-  return v3;
+  return isEmpty;
 }
 
 - (void)writeTransactionDidFail
 {
   self->_superWasCalled = 1;
-  v2 = [(CPLEngineStorage *)self platformObject];
-  [v2 writeTransactionDidFail];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  [platformObject writeTransactionDidFail];
 }
 
 - (id)scopeIndexes
 {
   if ([(CPLEngineStorage *)self isAlive])
   {
-    v3 = [(CPLEngineStorage *)self platformObject];
-    v4 = [v3 scopeIndexes];
+    platformObject = [(CPLEngineStorage *)self platformObject];
+    scopeIndexes = [platformObject scopeIndexes];
   }
 
   else
   {
-    v4 = objc_alloc_init(MEMORY[0x1E696AC90]);
+    scopeIndexes = objc_alloc_init(MEMORY[0x1E696AC90]);
   }
 
-  return v4;
+  return scopeIndexes;
 }
 
 - (id)statusPerScopeIndex
 {
-  v3 = [(CPLEngineStorage *)self platformObject];
-  v4 = [v3 shouldIncludeInStatus];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  shouldIncludeInStatus = [platformObject shouldIncludeInStatus];
 
-  if (v4)
+  if (shouldIncludeInStatus)
   {
-    v5 = [(CPLEngineStorage *)self platformObject];
-    v6 = [v5 statusPerScopeIndex];
+    platformObject2 = [(CPLEngineStorage *)self platformObject];
+    statusPerScopeIndex = [platformObject2 statusPerScopeIndex];
   }
 
   else
   {
-    v6 = 0;
+    statusPerScopeIndex = 0;
   }
 
-  return v6;
+  return statusPerScopeIndex;
 }
 
-- (BOOL)deleteRecordsForScopeIndex:(int64_t)a3 maxCount:(int64_t)a4 deletedCount:(int64_t *)a5 error:(id *)a6
+- (BOOL)deleteRecordsForScopeIndex:(int64_t)index maxCount:(int64_t)count deletedCount:(int64_t *)deletedCount error:(id *)error
 {
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineStorage.m"];
   v10 = objc_opt_class();
   v11 = NSStringFromSelector(a2);
-  [v8 handleFailureInMethod:a2 object:self file:v9 lineNumber:87 description:{@"-[%@ %@] should be implemented by subclasses", v10, v11}];
+  [currentHandler handleFailureInMethod:a2 object:self file:v9 lineNumber:87 description:{@"-[%@ %@] should be implemented by subclasses", v10, v11}];
 
   abort();
 }
 
 - (unint64_t)scopeType
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineStorage.m"];
   v6 = objc_opt_class();
   v7 = NSStringFromSelector(a2);
-  [v4 handleFailureInMethod:a2 object:self file:v5 lineNumber:82 description:{@"-[%@ %@] should be implemented by subclasses", v6, v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:v5 lineNumber:82 description:{@"-[%@ %@] should be implemented by subclasses", v6, v7}];
 
   abort();
 }
 
-- (BOOL)closeWithError:(id *)a3
+- (BOOL)closeWithError:(id *)error
 {
   v20 = *MEMORY[0x1E69E9840];
   if ((_CPLSilentLogging & 1) == 0)
@@ -192,14 +192,14 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v16 = 138412290;
-      v17 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_DEBUG, "Closing %@", &v16, 0xCu);
     }
   }
 
   self->_superWasCalled = 1;
-  v6 = [(CPLEngineStorage *)self platformObject];
-  v7 = [v6 closeWithError:a3];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v7 = [platformObject closeWithError:error];
 
   if (v7)
   {
@@ -209,7 +209,7 @@
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
         v16 = 138412290;
-        v17 = self;
+        selfCopy3 = self;
         v9 = "%@ closed";
         v10 = v8;
         v11 = OS_LOG_TYPE_DEBUG;
@@ -228,9 +228,9 @@ LABEL_12:
     v8 = __CPLStorageOSLogDomain_21522();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v13 = *a3;
+      v13 = *error;
       v16 = 138412546;
-      v17 = self;
+      selfCopy3 = self;
       v18 = 2112;
       v19 = v13;
       v9 = "Closing %@ failed with error: %@";
@@ -247,7 +247,7 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)openWithError:(id *)a3
+- (BOOL)openWithError:(id *)error
 {
   v18 = *MEMORY[0x1E69E9840];
   if ((_CPLSilentLogging & 1) == 0)
@@ -256,14 +256,14 @@ LABEL_13:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v16 = 138412290;
-      v17 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DC05A000, v5, OS_LOG_TYPE_DEBUG, "Opening %@", &v16, 0xCu);
     }
   }
 
   self->_superWasCalled = 1;
-  v6 = [(CPLEngineStorage *)self platformObject];
-  v7 = [v6 openWithError:a3];
+  platformObject = [(CPLEngineStorage *)self platformObject];
+  v7 = [platformObject openWithError:error];
 
   if (v7)
   {
@@ -291,9 +291,9 @@ LABEL_12:
     v8 = __CPLStorageOSLogDomain_21522();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v13 = *a3;
+      v13 = *error;
       v16 = 138412290;
-      v17 = v13;
+      selfCopy = v13;
       v9 = "Opening failed with error: %@";
       v10 = v8;
       v11 = OS_LOG_TYPE_ERROR;
@@ -312,27 +312,27 @@ LABEL_13:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(CPLEngineStorage *)self engineStore];
-  v6 = [v5 engineLibrary];
-  v7 = [v6 libraryIdentifier];
-  v8 = [v3 stringWithFormat:@"[%@ %@ %@]", v4, v7, self->_name];
+  engineStore = [(CPLEngineStorage *)self engineStore];
+  engineLibrary = [engineStore engineLibrary];
+  libraryIdentifier = [engineLibrary libraryIdentifier];
+  v8 = [v3 stringWithFormat:@"[%@ %@ %@]", v4, libraryIdentifier, self->_name];
 
   return v8;
 }
 
-- (CPLEngineStorage)initWithEngineStore:(id)a3 name:(id)a4
+- (CPLEngineStorage)initWithEngineStore:(id)store name:(id)name
 {
   v27 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  storeCopy = store;
+  nameCopy = name;
   v24.receiver = self;
   v24.super_class = CPLEngineStorage;
   v10 = [(CPLEngineStorage *)&v24 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_engineStore, a3);
-    v12 = [v9 copy];
+    objc_storeStrong(&v10->_engineStore, store);
+    v12 = [nameCopy copy];
     name = v11->_name;
     v11->_name = v12;
 
@@ -357,9 +357,9 @@ LABEL_13:
         }
       }
 
-      v22 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/Storage/CPLEngineStorage.m"];
-      [v22 handleFailureInMethod:a2 object:v11 file:v23 lineNumber:32 description:{@"No platform object specified for %@", objc_opt_class()}];
+      [currentHandler handleFailureInMethod:a2 object:v11 file:v23 lineNumber:32 description:{@"No platform object specified for %@", objc_opt_class()}];
 
       abort();
     }

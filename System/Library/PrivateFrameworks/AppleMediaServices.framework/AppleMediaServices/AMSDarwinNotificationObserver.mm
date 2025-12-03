@@ -1,11 +1,11 @@
 @interface AMSDarwinNotificationObserver
-- (AMSDarwinNotificationObserver)initWithNotificationName:(__CFString *)a3 additionalBehavior:(int64_t)a4;
+- (AMSDarwinNotificationObserver)initWithNotificationName:(__CFString *)name additionalBehavior:(int64_t)behavior;
 - (void)dealloc;
 @end
 
 @implementation AMSDarwinNotificationObserver
 
-- (AMSDarwinNotificationObserver)initWithNotificationName:(__CFString *)a3 additionalBehavior:(int64_t)a4
+- (AMSDarwinNotificationObserver)initWithNotificationName:(__CFString *)name additionalBehavior:(int64_t)behavior
 {
   v10.receiver = self;
   v10.super_class = AMSDarwinNotificationObserver;
@@ -13,9 +13,9 @@
   v7 = v6;
   if (v6)
   {
-    v6->_notificationName = a3;
+    v6->_notificationName = name;
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    CFNotificationCenterAddObserver(DarwinNotifyCenter, v7, _handleNotification, a3, 0, (a4 | 0x400));
+    CFNotificationCenterAddObserver(DarwinNotifyCenter, v7, _handleNotification, name, 0, (behavior | 0x400));
   }
 
   return v7;

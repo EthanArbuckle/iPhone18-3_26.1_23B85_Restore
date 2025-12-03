@@ -1,50 +1,50 @@
 @interface SXFullscreenCaptionView
-+ (id)_overridePropertiesWithComponentStyle:(id)a3 storage:(id)a4;
-+ (void)_applyStyle:(id)a3 toStorage:(id)a4;
++ (id)_overridePropertiesWithComponentStyle:(id)style storage:(id)storage;
++ (void)_applyStyle:(id)style toStorage:(id)storage;
 - (BOOL)forceFullExpandsionMode;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGPoint)positionForTextLayout:(id)a3;
-- (CGRect)determineFrameInSuperview:(id)a3;
-- (CGRect)frameWithSuperview:(id)a3 size:(CGSize)a4 forExpansionMode:(int)a5;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGPoint)positionForTextLayout:(id)layout;
+- (CGRect)determineFrameInSuperview:(id)superview;
+- (CGRect)frameWithSuperview:(id)superview size:(CGSize)size forExpansionMode:(int)mode;
 - (CGRect)temporaryLayoutRect;
 - (CGSize)fullSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SXFullscreenCaptionView)initWithTextSourceFactory:(id)a3 actionHandler:(id)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SXFullscreenCaptionView)initWithTextSourceFactory:(id)factory actionHandler:(id)handler;
 - (SXFullscreenCaptionViewDelegate)delegate;
 - (UIEdgeInsets)fullInsets;
-- (double)widthForTextLayout:(id)a3;
+- (double)widthForTextLayout:(id)layout;
 - (void)createBackgroundView;
 - (void)createScrollView;
 - (void)dealloc;
 - (void)didMoveToSuperview;
-- (void)handleSwipeGestureRecognizer:(id)a3;
-- (void)handleTapGestureRecognizer:(id)a3;
+- (void)handleSwipeGestureRecognizer:(id)recognizer;
+- (void)handleTapGestureRecognizer:(id)recognizer;
 - (void)initializeTangier;
 - (void)layoutSubviews;
 - (void)renderCaptionInTangier;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setExpansionMode:(int)a3 animated:(BOOL)a4;
-- (void)setFrame:(CGRect)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setExpansionMode:(int)mode animated:(BOOL)animated;
+- (void)setFrame:(CGRect)frame;
 - (void)setNeedsLayout;
 - (void)setupGestureRecognizers;
-- (void)updateFrameAnimated:(BOOL)a3;
-- (void)updateWithCaption:(id)a3 forViewIndex:(unint64_t)a4 animated:(BOOL)a5;
+- (void)updateFrameAnimated:(BOOL)animated;
+- (void)updateWithCaption:(id)caption forViewIndex:(unint64_t)index animated:(BOOL)animated;
 @end
 
 @implementation SXFullscreenCaptionView
 
-- (SXFullscreenCaptionView)initWithTextSourceFactory:(id)a3 actionHandler:(id)a4
+- (SXFullscreenCaptionView)initWithTextSourceFactory:(id)factory actionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  factoryCopy = factory;
+  handlerCopy = handler;
   v12.receiver = self;
   v12.super_class = SXFullscreenCaptionView;
   v9 = [(SXFullscreenCaptionView *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_textSourceFactory, a3);
-    objc_storeStrong(&v10->_actionHandler, a4);
+    objc_storeStrong(&v9->_textSourceFactory, factory);
+    objc_storeStrong(&v10->_actionHandler, handler);
     if ((_UISolariumFeatureFlagEnabled() & 1) == 0)
     {
       [(SXFullscreenCaptionView *)v10 createBackgroundView];
@@ -68,25 +68,25 @@
   [(SXFullscreenCaptionView *)&v3 dealloc];
 }
 
-- (void)updateWithCaption:(id)a3 forViewIndex:(unint64_t)a4 animated:(BOOL)a5
+- (void)updateWithCaption:(id)caption forViewIndex:(unint64_t)index animated:(BOOL)animated
 {
-  v5 = a5;
-  v17 = a3;
-  objc_storeStrong(&self->_caption, a3);
-  self->_viewIndex = a4;
+  animatedCopy = animated;
+  captionCopy = caption;
+  objc_storeStrong(&self->_caption, caption);
+  self->_viewIndex = index;
   if ([(SXFullscreenCaptionView *)self expansionMode]== 2)
   {
-    v9 = [(SXFullscreenCaptionView *)self scrollView];
-    [v9 setScrollEnabled:0];
+    scrollView = [(SXFullscreenCaptionView *)self scrollView];
+    [scrollView setScrollEnabled:0];
   }
 
   self->_expansionMode = 1;
   [(SXFullscreenCaptionView *)self renderCaptionInTangier];
-  [(SXFullscreenCaptionView *)self updateFrameAnimated:v5];
+  [(SXFullscreenCaptionView *)self updateFrameAnimated:animatedCopy];
   [(SXFullscreenCaptionView *)self frame];
   v11 = v10;
-  v12 = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
-  [v12 lineHeight];
+  autoSizeCanvasController = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
+  [autoSizeCanvasController lineHeight];
   v14 = v13 * 4.5 + 15.5;
 
   if (v11 > v14)
@@ -100,11 +100,11 @@
   }
 
   [(SXFullscreenCaptionView *)self setExpansionMode:v15 animated:0];
-  v16 = [(SXFullscreenCaption *)v17 text];
-  if ([v16 length])
+  text = [(SXFullscreenCaption *)captionCopy text];
+  if ([text length])
   {
     [(SXFullscreenCaptionView *)self setIsAccessibilityElement:1];
-    [(SXFullscreenCaptionView *)self setAccessibilityLabel:v16];
+    [(SXFullscreenCaptionView *)self setAccessibilityLabel:text];
   }
 
   else
@@ -119,25 +119,25 @@
   v3 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v6];
   [(SXFullscreenCaptionView *)self setBackgroundView:v3];
 
-  v4 = [(SXFullscreenCaptionView *)self backgroundView];
-  [v4 _setGroupName:@"captionBars"];
+  backgroundView = [(SXFullscreenCaptionView *)self backgroundView];
+  [backgroundView _setGroupName:@"captionBars"];
 
-  v5 = [(SXFullscreenCaptionView *)self backgroundView];
-  [(SXFullscreenCaptionView *)self addSubview:v5];
+  backgroundView2 = [(SXFullscreenCaptionView *)self backgroundView];
+  [(SXFullscreenCaptionView *)self addSubview:backgroundView2];
 }
 
-- (CGRect)determineFrameInSuperview:(id)a3
+- (CGRect)determineFrameInSuperview:(id)superview
 {
-  v4 = a3;
-  [v4 safeAreaInsets];
+  superviewCopy = superview;
+  [superviewCopy safeAreaInsets];
   v6 = v5;
   v8 = v7;
-  v9 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v9 _peripheryInsets];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen _peripheryInsets];
   v11 = v10;
   v13 = v12;
 
-  [v4 bounds];
+  [superviewCopy bounds];
   v14 = CGRectGetWidth(v28) - v6 - v8;
   [(SXFullscreenCaptionView *)self sizeThatFits:v14, 1.79769313e308];
   self->_fullSize.width = v14;
@@ -146,7 +146,7 @@
   self->_fullInsets.left = v6;
   self->_fullInsets.bottom = v13;
   self->_fullInsets.right = v8;
-  [(SXFullscreenCaptionView *)self frameWithSuperview:v4 size:[(SXFullscreenCaptionView *)self expansionMode] forExpansionMode:v14, v15];
+  [(SXFullscreenCaptionView *)self frameWithSuperview:superviewCopy size:[(SXFullscreenCaptionView *)self expansionMode] forExpansionMode:v14, v15];
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -163,21 +163,21 @@
   return result;
 }
 
-- (CGRect)frameWithSuperview:(id)a3 size:(CGSize)a4 forExpansionMode:(int)a5
+- (CGRect)frameWithSuperview:(id)superview size:(CGSize)size forExpansionMode:(int)mode
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
+  height = size.height;
+  width = size.width;
+  superviewCopy = superview;
   [(SXFullscreenCaptionView *)self fullInsets];
   v11 = v10;
   v13 = v12;
-  [v9 bounds];
+  [superviewCopy bounds];
   v14 = CGRectGetHeight(v35);
   v15 = height + v13 + 16.0;
-  if (a5 == 2)
+  if (mode == 2)
   {
-    v21 = [(SXFullscreenCaptionView *)self superview];
-    [v21 bounds];
+    superview = [(SXFullscreenCaptionView *)self superview];
+    [superview bounds];
     v23 = v22 * 0.5;
 
     if (v23 >= v14 - v15)
@@ -194,10 +194,10 @@
   else
   {
     v16 = v14;
-    if (a5 == 1)
+    if (mode == 1)
     {
-      v17 = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
-      [v17 lineHeight];
+      autoSizeCanvasController = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
+      [autoSizeCanvasController lineHeight];
       v19 = v18;
 
       v20 = v19 * 4.5 + 15.5;
@@ -210,8 +210,8 @@
     }
   }
 
-  v24 = [(SXFullscreenCaptionView *)self caption];
-  if (v24 && (v25 = v24, -[SXFullscreenCaptionView caption](self, "caption"), v26 = objc_claimAutoreleasedReturnValue(), -[SXFullscreenCaption text](v26), v27 = objc_claimAutoreleasedReturnValue(), v28 = [v27 length], v27, v26, v25, v28))
+  caption = [(SXFullscreenCaptionView *)self caption];
+  if (caption && (v25 = caption, -[SXFullscreenCaptionView caption](self, "caption"), v26 = objc_claimAutoreleasedReturnValue(), -[SXFullscreenCaption text](v26), v27 = objc_claimAutoreleasedReturnValue(), v28 = [v27 length], v27, v26, v25, v28))
   {
     v29 = v14 - v16;
     v14 = v16;
@@ -222,7 +222,7 @@
     v29 = 0.0;
   }
 
-  [v9 bounds];
+  [superviewCopy bounds];
   v30 = v11 + CGRectGetMinX(v36);
 
   v31 = v30;
@@ -236,11 +236,11 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v33.receiver = self;
   v33.super_class = SXFullscreenCaptionView;
-  [(SXFullscreenCaptionView *)&v33 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SXFullscreenCaptionView *)&v33 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(SXFullscreenCaptionView *)self fullInsets];
   v5 = v4;
   v7 = v6;
@@ -250,37 +250,37 @@
   v12 = v9 + v5 + v11;
   [(SXFullscreenCaptionView *)self fullSize];
   v14 = v7 + v13 + 16.0;
-  v15 = [(SXFullscreenCaptionView *)self backgroundView];
-  [v15 setFrame:{v10, 0.0, v12, v14}];
+  backgroundView = [(SXFullscreenCaptionView *)self backgroundView];
+  [backgroundView setFrame:{v10, 0.0, v12, v14}];
 
-  v16 = [(SXFullscreenCaptionView *)self scrollView];
+  scrollView = [(SXFullscreenCaptionView *)self scrollView];
   [(SXFullscreenCaptionView *)self fullInsets];
   v18 = v17;
   [(SXFullscreenCaptionView *)self bounds];
   Width = CGRectGetWidth(v34);
   [(SXFullscreenCaptionView *)self bounds];
-  [v16 setFrame:{v18, 15.5, Width, CGRectGetHeight(v35) + -15.5}];
+  [scrollView setFrame:{v18, 15.5, Width, CGRectGetHeight(v35) + -15.5}];
 
-  v20 = [(SXFullscreenCaptionView *)self scrollView];
+  scrollView2 = [(SXFullscreenCaptionView *)self scrollView];
   [(SXFullscreenCaptionView *)self fullSize];
-  [v20 setContentSize:?];
+  [scrollView2 setContentSize:?];
 
-  v21 = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
-  v22 = [v21 canvasView];
+  autoSizeCanvasController = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
+  canvasView = [autoSizeCanvasController canvasView];
   [(SXFullscreenCaptionView *)self fullSize];
   v24 = v23;
   [(SXFullscreenCaptionView *)self fullSize];
-  [v22 setFrame:{0.0, 0.0, v24, v25}];
+  [canvasView setFrame:{0.0, 0.0, v24, v25}];
 
   [(SXFullscreenCaptionView *)self fullSize];
   v27 = v26;
   v29 = v28;
   v30 = [(SXAutoSizedCanvasController *)self->_autoSizeCanvasController cvc];
-  v31 = [v30 canvasLayer];
-  [v31 setUnscaledSize:{v27, v29}];
+  canvasLayer = [v30 canvasLayer];
+  [canvasLayer setUnscaledSize:{v27, v29}];
 
-  v32 = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
-  [v32 invalidateLayoutsAndFrames];
+  autoSizeCanvasController2 = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
+  [autoSizeCanvasController2 invalidateLayoutsAndFrames];
 }
 
 - (void)setNeedsLayout
@@ -288,8 +288,8 @@
   v4.receiver = self;
   v4.super_class = SXFullscreenCaptionView;
   [(SXFullscreenCaptionView *)&v4 setNeedsLayout];
-  v3 = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
-  [v3 invalidateLayoutsAndFrames];
+  autoSizeCanvasController = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
+  [autoSizeCanvasController invalidateLayoutsAndFrames];
 }
 
 - (void)layoutSubviews
@@ -297,8 +297,8 @@
   v5.receiver = self;
   v5.super_class = SXFullscreenCaptionView;
   [(SXFullscreenCaptionView *)&v5 layoutSubviews];
-  v3 = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
-  v4 = [v3 icc];
+  autoSizeCanvasController = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
+  v4 = [autoSizeCanvasController icc];
   [v4 layoutIfNeeded];
 }
 
@@ -307,24 +307,24 @@
   v4.receiver = self;
   v4.super_class = SXFullscreenCaptionView;
   [(SXFullscreenCaptionView *)&v4 didMoveToSuperview];
-  v3 = [(SXFullscreenCaptionView *)self superview];
+  superview = [(SXFullscreenCaptionView *)self superview];
 
-  if (v3)
+  if (superview)
   {
     [(SXFullscreenCaptionView *)self updateFrameAnimated:0];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
-  [v6 invalidateLayoutsAndFrames];
+  height = fits.height;
+  width = fits.width;
+  autoSizeCanvasController = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
+  [autoSizeCanvasController invalidateLayoutsAndFrames];
 
   [(SXFullscreenCaptionView *)self setTemporaryLayoutRect:0.0, 0.0, width, height];
-  v7 = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
-  [v7 sizeThatFits];
+  autoSizeCanvasController2 = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
+  [autoSizeCanvasController2 sizeThatFits];
   v9 = v8;
   v11 = v10;
 
@@ -336,15 +336,15 @@
   return result;
 }
 
-- (void)updateFrameAnimated:(BOOL)a3
+- (void)updateFrameAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(SXFullscreenCaptionView *)self superview];
+  animatedCopy = animated;
+  superview = [(SXFullscreenCaptionView *)self superview];
 
-  if (v5)
+  if (superview)
   {
-    v6 = [(SXFullscreenCaptionView *)self superview];
-    [(SXFullscreenCaptionView *)self determineFrameInSuperview:v6];
+    superview2 = [(SXFullscreenCaptionView *)self superview];
+    [(SXFullscreenCaptionView *)self determineFrameInSuperview:superview2];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -375,7 +375,7 @@
     *&v23[8] = v14;
     v19 = MEMORY[0x1DA716BE0](v23);
     v20 = v19;
-    if (v3)
+    if (animatedCopy)
     {
       v21 = MinY - v16;
       if (MinY - v16 < 0.0)
@@ -413,30 +413,30 @@ uint64_t __47__SXFullscreenCaptionView_updateFrameAnimated___block_invoke(uint64
   scrollView = self->_scrollView;
   self->_scrollView = v3;
 
-  v5 = [(SXFullscreenCaptionView *)self scrollView];
-  [v5 setScrollsToTop:0];
+  scrollView = [(SXFullscreenCaptionView *)self scrollView];
+  [scrollView setScrollsToTop:0];
 
-  v6 = [(SXFullscreenCaptionView *)self scrollView];
-  [v6 setDelegate:self];
+  scrollView2 = [(SXFullscreenCaptionView *)self scrollView];
+  [scrollView2 setDelegate:self];
 
-  v7 = [(SXFullscreenCaptionView *)self scrollView];
-  [v7 setAlwaysBounceVertical:1];
+  scrollView3 = [(SXFullscreenCaptionView *)self scrollView];
+  [scrollView3 setAlwaysBounceVertical:1];
 
-  v8 = [(SXFullscreenCaptionView *)self scrollView];
-  [v8 setDelegate:self];
+  scrollView4 = [(SXFullscreenCaptionView *)self scrollView];
+  [scrollView4 setDelegate:self];
 
   if (_UISolariumFeatureFlagEnabled())
   {
-    v11 = [(SXFullscreenCaptionView *)self scrollView];
+    scrollView5 = [(SXFullscreenCaptionView *)self scrollView];
     [(SXFullscreenCaptionView *)self addSubview:?];
   }
 
   else
   {
-    v11 = [(SXFullscreenCaptionView *)self backgroundView];
-    v9 = [v11 contentView];
-    v10 = [(SXFullscreenCaptionView *)self scrollView];
-    [v9 addSubview:v10];
+    scrollView5 = [(SXFullscreenCaptionView *)self backgroundView];
+    contentView = [scrollView5 contentView];
+    scrollView6 = [(SXFullscreenCaptionView *)self scrollView];
+    [contentView addSubview:scrollView6];
   }
 }
 
@@ -449,167 +449,167 @@ uint64_t __47__SXFullscreenCaptionView_updateFrameAnimated___block_invoke(uint64
   v25 = objc_alloc_init(SXTangierDragItemProvider);
   v5 = [SXAutoSizedCanvasController alloc];
   v6 = self->_documentRoot;
-  v7 = [(SXFullscreenCaptionView *)self actionHandler];
-  v8 = [(SXAutoSizedCanvasController *)v5 initWithDocumentRoot:v6 actionHandler:v7 dragItemProvider:v25];
+  actionHandler = [(SXFullscreenCaptionView *)self actionHandler];
+  v8 = [(SXAutoSizedCanvasController *)v5 initWithDocumentRoot:v6 actionHandler:actionHandler dragItemProvider:v25];
   autoSizeCanvasController = self->_autoSizeCanvasController;
   self->_autoSizeCanvasController = v8;
 
   [(SXAutoSizedCanvasController *)self->_autoSizeCanvasController setDelegate:self];
-  v10 = [(SXAutoSizedCanvasController *)self->_autoSizeCanvasController canvasView];
-  [v10 setClipsToBounds:0];
+  canvasView = [(SXAutoSizedCanvasController *)self->_autoSizeCanvasController canvasView];
+  [canvasView setClipsToBounds:0];
 
   v11 = *MEMORY[0x1E695F058];
   v12 = *(MEMORY[0x1E695F058] + 8);
   v13 = *(MEMORY[0x1E695F058] + 16);
   v14 = *(MEMORY[0x1E695F058] + 24);
-  v15 = [(SXAutoSizedCanvasController *)self->_autoSizeCanvasController canvasView];
-  [v15 setFrame:{v11, v12, v13, v14}];
+  canvasView2 = [(SXAutoSizedCanvasController *)self->_autoSizeCanvasController canvasView];
+  [canvasView2 setFrame:{v11, v12, v13, v14}];
 
-  v16 = [MEMORY[0x1E69DC888] clearColor];
-  v17 = [(SXAutoSizedCanvasController *)self->_autoSizeCanvasController canvasView];
-  [v17 setBackgroundColor:v16];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  canvasView3 = [(SXAutoSizedCanvasController *)self->_autoSizeCanvasController canvasView];
+  [canvasView3 setBackgroundColor:clearColor];
 
-  v18 = [(SXAutoSizedCanvasController *)self->_autoSizeCanvasController canvasView];
-  [v18 setOpaque:0];
+  canvasView4 = [(SXAutoSizedCanvasController *)self->_autoSizeCanvasController canvasView];
+  [canvasView4 setOpaque:0];
 
   v19 = *MEMORY[0x1E695F060];
   v20 = *(MEMORY[0x1E695F060] + 8);
   v21 = [(SXAutoSizedCanvasController *)self->_autoSizeCanvasController cvc];
-  v22 = [v21 canvasLayer];
-  [v22 setUnscaledSize:{v19, v20}];
+  canvasLayer = [v21 canvasLayer];
+  [canvasLayer setUnscaledSize:{v19, v20}];
 
-  v23 = [(SXFullscreenCaptionView *)self scrollView];
-  v24 = [(SXAutoSizedCanvasController *)self->_autoSizeCanvasController canvasView];
-  [v23 addSubview:v24];
+  scrollView = [(SXFullscreenCaptionView *)self scrollView];
+  canvasView5 = [(SXAutoSizedCanvasController *)self->_autoSizeCanvasController canvasView];
+  [scrollView addSubview:canvasView5];
 }
 
 - (void)renderCaptionInTangier
 {
   v55[1] = *MEMORY[0x1E69E9840];
-  v3 = [(SXFullscreenCaptionView *)self captionLayout];
+  captionLayout = [(SXFullscreenCaptionView *)self captionLayout];
 
-  if (v3)
+  if (captionLayout)
   {
-    v4 = [(SXFullscreenCaptionView *)self captionLayout];
-    [v4 setDelegate:0];
+    captionLayout2 = [(SXFullscreenCaptionView *)self captionLayout];
+    [captionLayout2 setDelegate:0];
 
-    v5 = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
-    v6 = [v5 icc];
-    v7 = [v6 layoutController];
-    v8 = [(SXFullscreenCaptionView *)self captionLayout];
-    [v7 unregisterLayout:v8];
+    autoSizeCanvasController = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
+    v6 = [autoSizeCanvasController icc];
+    layoutController = [v6 layoutController];
+    captionLayout3 = [(SXFullscreenCaptionView *)self captionLayout];
+    [layoutController unregisterLayout:captionLayout3];
   }
 
-  v9 = [(SXFullscreenCaptionView *)self caption];
-  v10 = [(SXFullscreenCaption *)v9 text];
+  caption = [(SXFullscreenCaptionView *)self caption];
+  text = [(SXFullscreenCaption *)caption text];
 
-  if (v10)
+  if (text)
   {
     v11 = objc_alloc(MEMORY[0x1E69D5730]);
-    v12 = [(TSPObject *)self->_documentRoot context];
-    v13 = [(SXFullscreenCaptionView *)self caption];
-    v14 = [(SXFullscreenCaption *)v13 text];
-    v15 = [(SXTextTangierDocumentRoot *)self->_documentRoot stylesheet];
-    v54 = [v11 initWithContext:v12 string:v14 stylesheet:v15 kind:3];
+    context = [(TSPObject *)self->_documentRoot context];
+    caption2 = [(SXFullscreenCaptionView *)self caption];
+    text2 = [(SXFullscreenCaption *)caption2 text];
+    stylesheet = [(SXTextTangierDocumentRoot *)self->_documentRoot stylesheet];
+    v54 = [v11 initWithContext:context string:text2 stylesheet:stylesheet kind:3];
 
     v16 = objc_opt_class();
-    v17 = [(SXFullscreenCaptionView *)self caption];
-    v18 = [(SXFullscreenCaptionView *)self textSource];
-    v19 = [v17 componentTextStyleForTextSource:v18 inheritingFromDefaultStyles:1];
+    caption3 = [(SXFullscreenCaptionView *)self caption];
+    textSource = [(SXFullscreenCaptionView *)self textSource];
+    v19 = [caption3 componentTextStyleForTextSource:textSource inheritingFromDefaultStyles:1];
     [v16 _applyStyle:v19 toStorage:v54];
 
-    v20 = [(SXFullscreenCaptionView *)self textSourceFactory];
-    v21 = [(SXFullscreenCaptionView *)self caption];
-    v22 = [(SXFullscreenCaption *)v21 text];
-    v23 = [(SXFullscreenCaptionView *)self caption];
-    v24 = [v20 createTextSourceWithString:v22 dataSource:v23];
+    textSourceFactory = [(SXFullscreenCaptionView *)self textSourceFactory];
+    caption4 = [(SXFullscreenCaptionView *)self caption];
+    text3 = [(SXFullscreenCaption *)caption4 text];
+    caption5 = [(SXFullscreenCaptionView *)self caption];
+    v24 = [textSourceFactory createTextSourceWithString:text3 dataSource:caption5];
     [(SXFullscreenCaptionView *)self setTextSource:v24];
 
     v25 = [SXTextTangierStorage alloc];
-    v26 = [(SXFullscreenCaptionView *)self documentRoot];
-    v27 = [v26 context];
-    v28 = [(SXFullscreenCaptionView *)self documentRoot];
-    v29 = [v28 stylesheet];
-    v30 = [(SXFullscreenCaptionView *)self textSource];
-    v31 = [v30 string];
-    v32 = [(SXFullscreenCaptionView *)self textSource];
-    v33 = [v32 locale];
-    v34 = [(SXTextTangierStorage *)v25 initWithContext:v27 stylesheet:v29 storageKind:3 string:v31 locale:v33];
+    documentRoot = [(SXFullscreenCaptionView *)self documentRoot];
+    context2 = [documentRoot context];
+    documentRoot2 = [(SXFullscreenCaptionView *)self documentRoot];
+    stylesheet2 = [documentRoot2 stylesheet];
+    textSource2 = [(SXFullscreenCaptionView *)self textSource];
+    string = [textSource2 string];
+    textSource3 = [(SXFullscreenCaptionView *)self textSource];
+    locale = [textSource3 locale];
+    v34 = [(SXTextTangierStorage *)v25 initWithContext:context2 stylesheet:stylesheet2 storageKind:3 string:string locale:locale];
     [(SXFullscreenCaptionView *)self setTextStorage:v34];
 
-    v35 = [(SXFullscreenCaptionView *)self textSource];
-    v36 = [(SXFullscreenCaptionView *)self textStorage];
-    [v35 applyStylingOnTextTangierStorage:v36];
+    textSource4 = [(SXFullscreenCaptionView *)self textSource];
+    textStorage = [(SXFullscreenCaptionView *)self textStorage];
+    [textSource4 applyStylingOnTextTangierStorage:textStorage];
 
-    v37 = [(SXFullscreenCaptionView *)self textSource];
-    v38 = [(SXFullscreenCaptionView *)self textStorage];
-    [v37 applyAdditionsOnTextTangierStorage:v38];
+    textSource5 = [(SXFullscreenCaptionView *)self textSource];
+    textStorage2 = [(SXFullscreenCaptionView *)self textStorage];
+    [textSource5 applyAdditionsOnTextTangierStorage:textStorage2];
 
     v39 = [SXStandaloneTextInfo alloc];
-    v40 = [(SXFullscreenCaptionView *)self textStorage];
-    v41 = [(SXStandaloneTextInfo *)v39 initWithStorage:v40];
+    textStorage3 = [(SXFullscreenCaptionView *)self textStorage];
+    v41 = [(SXStandaloneTextInfo *)v39 initWithStorage:textStorage3];
     [(SXFullscreenCaptionView *)self setCaptionInfo:v41];
 
     v42 = [SXStandaloneTextLayout alloc];
-    v43 = [(SXFullscreenCaptionView *)self captionInfo];
-    v44 = [(TSDContainerLayout *)v42 initWithInfo:v43];
+    captionInfo = [(SXFullscreenCaptionView *)self captionInfo];
+    v44 = [(TSDContainerLayout *)v42 initWithInfo:captionInfo];
     [(SXFullscreenCaptionView *)self setCaptionLayout:v44];
 
-    v45 = [(SXFullscreenCaptionView *)self captionLayout];
-    [v45 setDelegate:self];
+    captionLayout4 = [(SXFullscreenCaptionView *)self captionLayout];
+    [captionLayout4 setDelegate:self];
 
-    v46 = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
-    v47 = [v46 icc];
-    v48 = [v47 layoutController];
-    v49 = [(SXFullscreenCaptionView *)self captionLayout];
-    [v48 preregisterLayout:v49];
+    autoSizeCanvasController2 = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
+    v47 = [autoSizeCanvasController2 icc];
+    layoutController2 = [v47 layoutController];
+    captionLayout5 = [(SXFullscreenCaptionView *)self captionLayout];
+    [layoutController2 preregisterLayout:captionLayout5];
 
-    v50 = [(SXFullscreenCaptionView *)self captionInfo];
-    v55[0] = v50;
+    captionInfo2 = [(SXFullscreenCaptionView *)self captionInfo];
+    v55[0] = captionInfo2;
     v51 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:1];
-    v52 = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
-    v53 = [v52 icc];
+    autoSizeCanvasController3 = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
+    v53 = [autoSizeCanvasController3 icc];
     [v53 setInfosToDisplay:v51];
   }
 }
 
-+ (id)_overridePropertiesWithComponentStyle:(id)a3 storage:(id)a4
++ (id)_overridePropertiesWithComponentStyle:(id)style storage:(id)storage
 {
-  v4 = [MEMORY[0x1E69DB878] systemFontOfSize:a3 weight:{a4, 15.0, *MEMORY[0x1E69DB978]}];
+  v4 = [MEMORY[0x1E69DB878] systemFontOfSize:style weight:{storage, 15.0, *MEMORY[0x1E69DB978]}];
   v5 = objc_alloc(MEMORY[0x1E69D56A8]);
-  v6 = [v4 fontName];
+  fontName = [v4 fontName];
   [v4 pointSize];
   v8 = v7;
-  v9 = [MEMORY[0x1E69D5770] clearColor];
-  v10 = [MEMORY[0x1E69D5770] clearColor];
-  v11 = [v5 initWithPropertiesAndValues:{16, v6, 17, v8, 37, v9, 98, v10, 35, 0xBF978D4FDF3B645ALL, 0}];
+  clearColor = [MEMORY[0x1E69D5770] clearColor];
+  clearColor2 = [MEMORY[0x1E69D5770] clearColor];
+  v11 = [v5 initWithPropertiesAndValues:{16, fontName, 17, v8, 37, clearColor, 98, clearColor2, 35, 0xBF978D4FDF3B645ALL, 0}];
 
   if ((_UISolariumFeatureFlagEnabled() & 1) == 0)
   {
-    v12 = [MEMORY[0x1E69D5770] whiteColor];
-    [v11 setObject:v12 forProperty:18];
+    whiteColor = [MEMORY[0x1E69D5770] whiteColor];
+    [v11 setObject:whiteColor forProperty:18];
   }
 
   return v11;
 }
 
-+ (void)_applyStyle:(id)a3 toStorage:(id)a4
++ (void)_applyStyle:(id)style toStorage:(id)storage
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 stylesheet];
-  v14 = [v8 styleWithIdentifier:@"paragraph-style-default"];
+  storageCopy = storage;
+  styleCopy = style;
+  stylesheet = [storageCopy stylesheet];
+  v14 = [stylesheet styleWithIdentifier:@"paragraph-style-default"];
 
-  v9 = [a1 _overridePropertiesWithComponentStyle:v7 storage:v6];
+  v9 = [self _overridePropertiesWithComponentStyle:styleCopy storage:storageCopy];
 
-  v10 = [v6 stylesheet];
-  v11 = [v10 variationOfStyle:v14 propertyMap:v9];
+  stylesheet2 = [storageCopy stylesheet];
+  v11 = [stylesheet2 variationOfStyle:v14 propertyMap:v9];
 
-  v12 = [v6 range];
-  [v6 setParagraphStyle:v11 forCharRange:v12 undoTransaction:{v13, 0}];
+  range = [storageCopy range];
+  [storageCopy setParagraphStyle:v11 forCharRange:range undoTransaction:{v13, 0}];
 }
 
-- (double)widthForTextLayout:(id)a3
+- (double)widthForTextLayout:(id)layout
 {
   [(SXFullscreenCaptionView *)self temporaryLayoutRect];
   if (CGRectIsInfinite(v6))
@@ -625,7 +625,7 @@ uint64_t __47__SXFullscreenCaptionView_updateFrameAnimated___block_invoke(uint64
   return v4;
 }
 
-- (CGPoint)positionForTextLayout:(id)a3
+- (CGPoint)positionForTextLayout:(id)layout
 {
   v3 = 0.0;
   v4 = 0.0;
@@ -634,16 +634,16 @@ uint64_t __47__SXFullscreenCaptionView_updateFrameAnimated___block_invoke(uint64
   return result;
 }
 
-- (void)setExpansionMode:(int)a3 animated:(BOOL)a4
+- (void)setExpansionMode:(int)mode animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = *&a3;
-  self->_expansionMode = a3;
-  [(SXFullscreenCaptionView *)self updateFrameAnimated:a4];
-  if (v5 == 2)
+  animatedCopy = animated;
+  scrollView = *&mode;
+  self->_expansionMode = mode;
+  [(SXFullscreenCaptionView *)self updateFrameAnimated:animated];
+  if (scrollView == 2)
   {
-    v5 = [(SXFullscreenCaptionView *)self scrollView];
-    [v5 contentSize];
+    scrollView = [(SXFullscreenCaptionView *)self scrollView];
+    [scrollView contentSize];
     v10 = v9;
     [(SXFullscreenCaptionView *)self frame];
     v8 = v10 > v11;
@@ -652,27 +652,27 @@ uint64_t __47__SXFullscreenCaptionView_updateFrameAnimated___block_invoke(uint64
 
   else
   {
-    if (v5 == 1)
+    if (scrollView == 1)
     {
-      v5 = [(SXFullscreenCaptionView *)self scrollView];
-      [v5 setContentOffset:v4 animated:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+      scrollView = [(SXFullscreenCaptionView *)self scrollView];
+      [scrollView setContentOffset:animatedCopy animated:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
     }
 
     v7 = 0;
     v8 = 0;
   }
 
-  v12 = [(SXFullscreenCaptionView *)self scrollView];
-  [v12 setScrollEnabled:v8];
+  scrollView2 = [(SXFullscreenCaptionView *)self scrollView];
+  [scrollView2 setScrollEnabled:v8];
 
   if (v7)
   {
   }
 
-  v15 = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
-  v13 = [v15 cvc];
-  v14 = [v13 view];
-  [v14 setUserInteractionEnabled:v7];
+  autoSizeCanvasController = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
+  v13 = [autoSizeCanvasController cvc];
+  view = [v13 view];
+  [view setUserInteractionEnabled:v7];
 }
 
 - (void)setupGestureRecognizers
@@ -681,32 +681,32 @@ uint64_t __47__SXFullscreenCaptionView_updateFrameAnimated___block_invoke(uint64
   swipeGestureRecognizer = self->_swipeGestureRecognizer;
   self->_swipeGestureRecognizer = v3;
 
-  v5 = [(SXFullscreenCaptionView *)self swipeGestureRecognizer];
-  [v5 setDelegate:self];
+  swipeGestureRecognizer = [(SXFullscreenCaptionView *)self swipeGestureRecognizer];
+  [swipeGestureRecognizer setDelegate:self];
 
-  v6 = [(SXFullscreenCaptionView *)self swipeGestureRecognizer];
-  [v6 setDirection:4];
+  swipeGestureRecognizer2 = [(SXFullscreenCaptionView *)self swipeGestureRecognizer];
+  [swipeGestureRecognizer2 setDirection:4];
 
-  v7 = [(SXFullscreenCaptionView *)self swipeGestureRecognizer];
-  [(SXFullscreenCaptionView *)self addGestureRecognizer:v7];
+  swipeGestureRecognizer3 = [(SXFullscreenCaptionView *)self swipeGestureRecognizer];
+  [(SXFullscreenCaptionView *)self addGestureRecognizer:swipeGestureRecognizer3];
 
   v8 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel_handleTapGestureRecognizer_];
   tapGestureRecognizer = self->_tapGestureRecognizer;
   self->_tapGestureRecognizer = v8;
 
-  v10 = [(SXFullscreenCaptionView *)self tapGestureRecognizer];
-  [v10 setDelegate:self];
+  tapGestureRecognizer = [(SXFullscreenCaptionView *)self tapGestureRecognizer];
+  [tapGestureRecognizer setDelegate:self];
 
-  v11 = [(SXFullscreenCaptionView *)self tapGestureRecognizer];
-  [(SXFullscreenCaptionView *)self addGestureRecognizer:v11];
+  tapGestureRecognizer2 = [(SXFullscreenCaptionView *)self tapGestureRecognizer];
+  [(SXFullscreenCaptionView *)self addGestureRecognizer:tapGestureRecognizer2];
 }
 
-- (void)handleTapGestureRecognizer:(id)a3
+- (void)handleTapGestureRecognizer:(id)recognizer
 {
-  v4 = [(SXFullscreenCaptionView *)self expansionMode];
+  expansionMode = [(SXFullscreenCaptionView *)self expansionMode];
   if (![(SXFullscreenCaptionView *)self forceFullExpandsionMode])
   {
-    if (v4 == 1)
+    if (expansionMode == 1)
     {
       v5 = 2;
     }
@@ -720,7 +720,7 @@ uint64_t __47__SXFullscreenCaptionView_updateFrameAnimated___block_invoke(uint64
   }
 }
 
-- (void)handleSwipeGestureRecognizer:(id)a3
+- (void)handleSwipeGestureRecognizer:(id)recognizer
 {
   if (![(SXFullscreenCaptionView *)self forceFullExpandsionMode])
   {
@@ -729,16 +729,16 @@ uint64_t __47__SXFullscreenCaptionView_updateFrameAnimated___block_invoke(uint64
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(SXFullscreenCaptionView *)self tapGestureRecognizer];
+  beginCopy = begin;
+  tapGestureRecognizer = [(SXFullscreenCaptionView *)self tapGestureRecognizer];
 
-  if (v5 == v4 && ([(SXFullscreenCaptionView *)self delegate], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_opt_respondsToSelector(), v6, (v7 & 1) != 0))
+  if (tapGestureRecognizer == beginCopy && ([(SXFullscreenCaptionView *)self delegate], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_opt_respondsToSelector(), v6, (v7 & 1) != 0))
   {
-    v8 = [(SXFullscreenCaptionView *)self delegate];
-    v9 = [(SXFullscreenCaptionView *)self tapGestureRecognizer];
-    v10 = [v8 captionView:self tapGestureRecognizerShouldBegin:v9];
+    delegate = [(SXFullscreenCaptionView *)self delegate];
+    tapGestureRecognizer2 = [(SXFullscreenCaptionView *)self tapGestureRecognizer];
+    v10 = [delegate captionView:self tapGestureRecognizerShouldBegin:tapGestureRecognizer2];
   }
 
   else
@@ -746,9 +746,9 @@ uint64_t __47__SXFullscreenCaptionView_updateFrameAnimated___block_invoke(uint64
     v10 = 1;
   }
 
-  v11 = [(SXFullscreenCaptionView *)self swipeGestureRecognizer];
+  swipeGestureRecognizer = [(SXFullscreenCaptionView *)self swipeGestureRecognizer];
 
-  if (v11 == v4)
+  if (swipeGestureRecognizer == beginCopy)
   {
     v10 = [(SXFullscreenCaptionView *)self expansionMode]== 1;
   }
@@ -760,16 +760,16 @@ uint64_t __47__SXFullscreenCaptionView_updateFrameAnimated___block_invoke(uint64
 {
   [(SXFullscreenCaptionView *)self frame];
   v4 = v3;
-  v5 = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
-  [v5 lineHeight];
+  autoSizeCanvasController = [(SXFullscreenCaptionView *)self autoSizeCanvasController];
+  [autoSizeCanvasController lineHeight];
   v7 = v4 <= v6 * 4.5 + 15.5;
 
   return v7;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  [a3 contentOffset];
+  [scroll contentOffset];
   if (v4 < -40.0)
   {
 

@@ -1,20 +1,20 @@
 @interface RMSecurityUtilities
-+ (BOOL)checkValidAfterWithCertificate:(__SecCertificate *)a3 interval:(double)a4;
-+ (__SecKey)_deserializePrivateKey:(id)a3 privateKeyIsExportable:(BOOL)a4;
-+ (id)_serializePrivateKey:(__SecKey *)a3 privateKeyIsExportable:(BOOL)a4;
-+ (id)deserializeCertificateChain:(id)a3;
-+ (id)serializeCertificateChain:(id)a3;
-+ (void)generateSelfSignedCertificateAndPrivateKeyWithID:(id)a3 completionHandler:(id)a4;
++ (BOOL)checkValidAfterWithCertificate:(__SecCertificate *)certificate interval:(double)interval;
++ (__SecKey)_deserializePrivateKey:(id)key privateKeyIsExportable:(BOOL)exportable;
++ (id)_serializePrivateKey:(__SecKey *)key privateKeyIsExportable:(BOOL)exportable;
++ (id)deserializeCertificateChain:(id)chain;
++ (id)serializeCertificateChain:(id)chain;
++ (void)generateSelfSignedCertificateAndPrivateKeyWithID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation RMSecurityUtilities
 
-+ (id)_serializePrivateKey:(__SecKey *)a3 privateKeyIsExportable:(BOOL)a4
++ (id)_serializePrivateKey:(__SecKey *)key privateKeyIsExportable:(BOOL)exportable
 {
-  if (a4)
+  if (exportable)
   {
     error = 0;
-    v4 = SecKeyCopyExternalRepresentation(a3, &error);
+    v4 = SecKeyCopyExternalRepresentation(key, &error);
     v5 = v4;
     if (v4)
     {
@@ -36,7 +36,7 @@
 
   else
   {
-    v5 = SecKeyCopyAttributes(a3);
+    v5 = SecKeyCopyAttributes(key);
     v7 = [(__CFDictionary *)v5 objectForKeyedSubscript:kSecAttrTokenOID];
     v6 = [v7 base64EncodedStringWithOptions:0];
   }
@@ -44,17 +44,17 @@
   return v6;
 }
 
-+ (__SecKey)_deserializePrivateKey:(id)a3 privateKeyIsExportable:(BOOL)a4
++ (__SecKey)_deserializePrivateKey:(id)key privateKeyIsExportable:(BOOL)exportable
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [[NSData alloc] initWithBase64EncodedString:v5 options:0];
+  exportableCopy = exportable;
+  keyCopy = key;
+  v6 = [[NSData alloc] initWithBase64EncodedString:keyCopy options:0];
   if (v6)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (v4)
+      if (exportableCopy)
       {
         v17[0] = kSecAttrKeyType;
         v17[1] = kSecAttrKeyClass;
@@ -121,15 +121,15 @@ LABEL_15:
   return v8;
 }
 
-+ (id)deserializeCertificateChain:(id)a3
++ (id)deserializeCertificateChain:(id)chain
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  chainCopy = chain;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [chainCopy count]);
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = chainCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -200,15 +200,15 @@ LABEL_17:
   return v15;
 }
 
-+ (id)serializeCertificateChain:(id)a3
++ (id)serializeCertificateChain:(id)chain
 {
-  v3 = a3;
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  chainCopy = chain;
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [chainCopy count]);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = chainCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -239,10 +239,10 @@ LABEL_17:
   return v12;
 }
 
-+ (void)generateSelfSignedCertificateAndPrivateKeyWithID:(id)a3 completionHandler:(id)a4
++ (void)generateSelfSignedCertificateAndPrivateKeyWithID:(id)d completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v42[0] = kSecAttrKeyType;
   v42[1] = kSecAttrKeySizeInBits;
   v43[0] = kSecAttrKeyTypeECSECPrimeRandom;
@@ -276,15 +276,15 @@ LABEL_17:
 
 LABEL_9:
 
-    (*(v6 + 2))(v6, 0, 0, v24);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v24);
     goto LABEL_14;
   }
 
   v11 = v10;
-  v27 = v6;
+  v27 = handlerCopy;
   v29 = v7;
-  v30 = v5;
-  v12 = [NSString stringWithFormat:@"SelfSigned-%@", v5];
+  v30 = dCopy;
+  dCopy = [NSString stringWithFormat:@"SelfSigned-%@", dCopy];
   v39[0] = kSecOidCountryName;
   v39[1] = @"US";
   v13 = [NSArray arrayWithObjects:v39 count:2];
@@ -298,8 +298,8 @@ LABEL_9:
   v16 = [NSArray arrayWithObjects:&v38 count:1];
   v41[1] = v16;
   v35[0] = kSecOidCommonName;
-  v35[1] = v12;
-  v28 = v12;
+  v35[1] = dCopy;
+  v28 = dCopy;
   v17 = [NSArray arrayWithObjects:v35 count:2];
   v36 = v17;
   v18 = [NSArray arrayWithObjects:&v36 count:1];
@@ -317,7 +317,7 @@ LABEL_9:
   {
     v32 = SelfSignedCertificate;
     v23 = [NSArray arrayWithObjects:&v32 count:1];
-    v6 = v27;
+    handlerCopy = v27;
     (*(v27 + 2))(v27, v9, v23, 0);
   }
 
@@ -325,7 +325,7 @@ LABEL_9:
   {
     CFRelease(v9);
     v26 = +[RMLog securityUtilities];
-    v6 = v27;
+    handlerCopy = v27;
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
       sub_10006338C(v26);
@@ -336,13 +336,13 @@ LABEL_9:
   }
 
   v7 = v29;
-  v5 = v30;
+  dCopy = v30;
   v24 = v28;
 
 LABEL_14:
 }
 
-+ (BOOL)checkValidAfterWithCertificate:(__SecCertificate *)a3 interval:(double)a4
++ (BOOL)checkValidAfterWithCertificate:(__SecCertificate *)certificate interval:(double)interval
 {
   SecCertificateNotValidAfter();
   v6 = v5;
@@ -350,7 +350,7 @@ LABEL_14:
   [v7 timeIntervalSinceReferenceDate];
   v9 = v8;
 
-  return v6 - v9 >= a4;
+  return v6 - v9 >= interval;
 }
 
 @end

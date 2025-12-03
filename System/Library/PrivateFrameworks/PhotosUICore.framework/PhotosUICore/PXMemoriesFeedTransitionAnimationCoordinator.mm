@@ -1,42 +1,42 @@
 @interface PXMemoriesFeedTransitionAnimationCoordinator
-- (BOOL)getFinalGeometry:(PXTileGeometry *)a3 finalUserData:(id *)a4 forDisappearingTileWithIdentifier:(PXTileIdentifier *)a5 fromGeometry:(PXTileGeometry *)a6 fromUserData:(id)a7;
-- (BOOL)getInitialGeometry:(PXTileGeometry *)a3 initialUserData:(id *)a4 forAppearingTileWithIdentifier:(PXTileIdentifier *)a5 toGeometry:(PXTileGeometry *)a6 toUserData:(id)a7;
+- (BOOL)getFinalGeometry:(PXTileGeometry *)geometry finalUserData:(id *)data forDisappearingTileWithIdentifier:(PXTileIdentifier *)identifier fromGeometry:(PXTileGeometry *)fromGeometry fromUserData:(id)userData;
+- (BOOL)getInitialGeometry:(PXTileGeometry *)geometry initialUserData:(id *)data forAppearingTileWithIdentifier:(PXTileIdentifier *)identifier toGeometry:(PXTileGeometry *)toGeometry toUserData:(id)userData;
 - (PXMemoriesFeedTransitionAnimationCoordinator)init;
 @end
 
 @implementation PXMemoriesFeedTransitionAnimationCoordinator
 
-- (BOOL)getFinalGeometry:(PXTileGeometry *)a3 finalUserData:(id *)a4 forDisappearingTileWithIdentifier:(PXTileIdentifier *)a5 fromGeometry:(PXTileGeometry *)a6 fromUserData:(id)a7
+- (BOOL)getFinalGeometry:(PXTileGeometry *)geometry finalUserData:(id *)data forDisappearingTileWithIdentifier:(PXTileIdentifier *)identifier fromGeometry:(PXTileGeometry *)fromGeometry fromUserData:(id)userData
 {
-  contentsRect = a6->contentsRect;
-  coordinateSpaceIdentifier = a6->coordinateSpaceIdentifier;
-  v12 = *&a6->zPosition;
-  contentSize = a6->contentSize;
-  memmove(a3, a6, 0x70uLL);
-  a3->alpha = 0.0;
-  a3->contentSize = contentSize;
-  a3->contentsRect = contentsRect;
-  a3->coordinateSpaceIdentifier = coordinateSpaceIdentifier;
-  *&a3->zPosition = v12;
-  v10 = a7;
-  *a4 = a7;
+  contentsRect = fromGeometry->contentsRect;
+  coordinateSpaceIdentifier = fromGeometry->coordinateSpaceIdentifier;
+  v12 = *&fromGeometry->zPosition;
+  contentSize = fromGeometry->contentSize;
+  memmove(geometry, fromGeometry, 0x70uLL);
+  geometry->alpha = 0.0;
+  geometry->contentSize = contentSize;
+  geometry->contentsRect = contentsRect;
+  geometry->coordinateSpaceIdentifier = coordinateSpaceIdentifier;
+  *&geometry->zPosition = v12;
+  userDataCopy = userData;
+  *data = userData;
   return 1;
 }
 
-- (BOOL)getInitialGeometry:(PXTileGeometry *)a3 initialUserData:(id *)a4 forAppearingTileWithIdentifier:(PXTileIdentifier *)a5 toGeometry:(PXTileGeometry *)a6 toUserData:(id)a7
+- (BOOL)getInitialGeometry:(PXTileGeometry *)geometry initialUserData:(id *)data forAppearingTileWithIdentifier:(PXTileIdentifier *)identifier toGeometry:(PXTileGeometry *)toGeometry toUserData:(id)userData
 {
-  contentsRect = a6->contentsRect;
-  coordinateSpaceIdentifier = a6->coordinateSpaceIdentifier;
-  v12 = *&a6->zPosition;
-  contentSize = a6->contentSize;
-  memmove(a3, a6, 0x70uLL);
-  a3->alpha = 0.0;
-  a3->contentSize = contentSize;
-  a3->contentsRect = contentsRect;
-  a3->coordinateSpaceIdentifier = coordinateSpaceIdentifier;
-  *&a3->zPosition = v12;
-  v10 = a7;
-  *a4 = a7;
+  contentsRect = toGeometry->contentsRect;
+  coordinateSpaceIdentifier = toGeometry->coordinateSpaceIdentifier;
+  v12 = *&toGeometry->zPosition;
+  contentSize = toGeometry->contentSize;
+  memmove(geometry, toGeometry, 0x70uLL);
+  geometry->alpha = 0.0;
+  geometry->contentSize = contentSize;
+  geometry->contentsRect = contentsRect;
+  geometry->coordinateSpaceIdentifier = coordinateSpaceIdentifier;
+  *&geometry->zPosition = v12;
+  userDataCopy = userData;
+  *data = userData;
   return 1;
 }
 

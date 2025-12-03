@@ -1,22 +1,22 @@
 @interface PXStoryConcreteTimelineProducer
 + (OS_dispatch_queue)workQueue;
 - (PXStoryConcreteTimelineProducer)init;
-- (id)requestTimelineWithConfiguration:(id)a3 options:(unint64_t)a4 resultHandler:(id)a5;
+- (id)requestTimelineWithConfiguration:(id)configuration options:(unint64_t)options resultHandler:(id)handler;
 @end
 
 @implementation PXStoryConcreteTimelineProducer
 
-- (id)requestTimelineWithConfiguration:(id)a3 options:(unint64_t)a4 resultHandler:(id)a5
+- (id)requestTimelineWithConfiguration:(id)configuration options:(unint64_t)options resultHandler:(id)handler
 {
   v61 = *MEMORY[0x1E69E9840];
-  v40 = a3;
-  v8 = a5;
-  if ((a4 & 5) == 5)
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  if ((options & 5) == 5)
   {
     PXAssertGetLog();
   }
 
-  v9 = [[PXStoryConcreteTimelineParser alloc] initWithConfiguration:v40];
+  v9 = [[PXStoryConcreteTimelineParser alloc] initWithConfiguration:configurationCopy];
   v10 = [(PXStoryConcreteTimelineProducer *)self log];
   v11 = os_signpost_id_make_with_pointer(v10, self);
   *v57 = 0;
@@ -32,7 +32,7 @@
   v13 = v10;
   v51 = v13;
   v54 = v11;
-  v38 = v8;
+  v38 = handlerCopy;
   v52 = v38;
   v53 = v57;
   v14 = _Block_copy(aBlock);
@@ -41,20 +41,20 @@
   v17 = v11 - 1;
   if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v15))
   {
-    v18 = PXStoryProducerRequestOptionsDescription(a4);
+    v18 = PXStoryProducerRequestOptionsDescription(options);
     *buf = 138543362;
     v56 = v18;
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v16, OS_SIGNPOST_INTERVAL_BEGIN, v11, "StoryTimelineTotalProduction", "Options=%{public}@", buf, 0xCu);
   }
 
-  if ((a4 & 5) != 4)
+  if ((options & 5) != 4)
   {
-    if ((a4 & 2) != 0)
+    if ((options & 2) != 0)
     {
-      v19 = [v40 rangeOfPrioritizedDisplayAssetResources];
+      rangeOfPrioritizedDisplayAssetResources = [configurationCopy rangeOfPrioritizedDisplayAssetResources];
       if (v20)
       {
-        [(PXStoryConcreteTimelineParser *)v12 setPreferredInitialDisplayAssetResourceIndex:v19];
+        [(PXStoryConcreteTimelineParser *)v12 setPreferredInitialDisplayAssetResourceIndex:rangeOfPrioritizedDisplayAssetResources];
       }
 
       v21 = +[PXStoryConcreteTimelineSettings sharedInstance];
@@ -104,27 +104,27 @@
   else
   {
     v29 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:0];
-    if ((a4 & 4) != 0)
+    if ((options & 4) != 0)
     {
       [(PXStoryConcreteTimelineParser *)v12 setParseTimeLimit:0.0];
-      v30 = 0;
+      subsequentProductionCountLimit = 0;
     }
 
     else
     {
       [(PXStoryConcreteTimelineProducer *)self subsequentProductionTimeLimit];
       [(PXStoryConcreteTimelineParser *)v12 setParseTimeLimit:?];
-      v30 = [(PXStoryConcreteTimelineProducer *)self subsequentProductionCountLimit];
+      subsequentProductionCountLimit = [(PXStoryConcreteTimelineProducer *)self subsequentProductionCountLimit];
     }
 
-    [(PXStoryConcreteTimelineParser *)v12 setParseCountLimit:v30];
+    [(PXStoryConcreteTimelineParser *)v12 setParseCountLimit:subsequentProductionCountLimit];
     [(PXStoryConcreteTimelineProducer *)self subsequentProductionSimulatedDelay];
     v32 = v31;
-    v33 = [v40 loadingCoordinator];
-    v34 = v33;
-    if (v33)
+    loadingCoordinator = [configurationCopy loadingCoordinator];
+    v34 = loadingCoordinator;
+    if (loadingCoordinator)
     {
-      v35 = v33;
+      v35 = loadingCoordinator;
     }
 
     else
@@ -134,7 +134,7 @@
 
     v27 = v35;
 
-    v36 = [objc_opt_class() workQueue];
+    workQueue = [objc_opt_class() workQueue];
     v41[0] = MEMORY[0x1E69E9820];
     v41[1] = 3221225472;
     v41[2] = __90__PXStoryConcreteTimelineProducer_requestTimelineWithConfiguration_options_resultHandler___block_invoke_4;
@@ -147,7 +147,7 @@
     v46 = v57;
     v48 = v32;
     v45 = v14;
-    [v27 dispatchTimelineWorkAsyncOnQueue:v36 block:v41];
+    [v27 dispatchTimelineWorkAsyncOnQueue:workQueue block:v41];
   }
 
   _Block_object_dispose(v57, 8);
@@ -265,7 +265,7 @@ void __90__PXStoryConcreteTimelineProducer_requestTimelineWithConfiguration_opti
   block[1] = 3221225472;
   block[2] = __44__PXStoryConcreteTimelineProducer_workQueue__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (workQueue_onceToken != -1)
   {
     dispatch_once(&workQueue_onceToken, block);

@@ -1,42 +1,42 @@
 @interface CRLCanvasImager
-- (BOOL)drawPageInContext:(CGContext *)a3 createPage:(BOOL)a4 includeMargin:(BOOL)a5;
-- (BOOL)isCanvasDrawingIntoPDF:(id)a3;
+- (BOOL)drawPageInContext:(CGContext *)context createPage:(BOOL)page includeMargin:(BOOL)margin;
+- (BOOL)isCanvasDrawingIntoPDF:(id)f;
 - (BOOL)p_configureCanvas;
 - (CGImage)newImage;
 - (CGImage)p_newImageInReusableContext;
 - (CGRect)actualScaledClipRect;
 - (CGRect)unscaledClipRect;
-- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)a3;
+- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)canvas;
 - (CGSize)maximumImagePixelSize;
-- (CGSize)p_evenDimensionsWithSize:(CGSize)a3;
+- (CGSize)p_evenDimensionsWithSize:(CGSize)size;
 - (CGSize)scaledImageSize;
-- (CRLCanvasImager)initWithBoard:(id)a3 renderForWideGamut:(BOOL)a4;
+- (CRLCanvasImager)initWithBoard:(id)board renderForWideGamut:(BOOL)gamut;
 - (NSString)boardTitle;
 - (double)contentsScale;
 - (double)viewScale;
-- (id)boardItemOwnerForCanvas:(id)a3;
+- (id)boardItemOwnerForCanvas:(id)canvas;
 - (id)generateImage;
-- (id)getBoardItemForUUID:(id)a3;
+- (id)getBoardItemForUUID:(id)d;
 - (id)i_board;
 - (id)pdfData;
 - (id)pngData;
 - (void)dealloc;
-- (void)p_drawPageInContext:(CGContext *)a3 createPage:(BOOL)a4 includeMargin:(BOOL)a5;
-- (void)setContentsScale:(double)a3;
-- (void)setInfos:(id)a3 allowLayoutIfNeeded:(BOOL)a4;
-- (void)setMaximumImagePixelSize:(CGSize)a3;
-- (void)setPostRenderAction:(id)a3;
-- (void)setScaledImageSize:(CGSize)a3;
-- (void)setViewScale:(double)a3;
+- (void)p_drawPageInContext:(CGContext *)context createPage:(BOOL)page includeMargin:(BOOL)margin;
+- (void)setContentsScale:(double)scale;
+- (void)setInfos:(id)infos allowLayoutIfNeeded:(BOOL)needed;
+- (void)setMaximumImagePixelSize:(CGSize)size;
+- (void)setPostRenderAction:(id)action;
+- (void)setScaledImageSize:(CGSize)size;
+- (void)setViewScale:(double)scale;
 @end
 
 @implementation CRLCanvasImager
 
-- (CRLCanvasImager)initWithBoard:(id)a3 renderForWideGamut:(BOOL)a4
+- (CRLCanvasImager)initWithBoard:(id)board renderForWideGamut:(BOOL)gamut
 {
-  v4 = a4;
-  v6 = a3;
-  if (!v6)
+  gamutCopy = gamut;
+  boardCopy = board;
+  if (!boardCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -71,7 +71,7 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->mBoard, v6);
+    objc_storeWeak(&v10->mBoard, boardCopy);
     size = CGRectInfinite.size;
     v11->mUnscaledClipRect.origin = CGRectInfinite.origin;
     v11->mUnscaledClipRect.size = size;
@@ -82,7 +82,7 @@
     mCanvas = v11->mCanvas;
     v11->mCanvas = v18;
 
-    [(CRLCanvas *)v11->mCanvas i_setCanvasIsWideGamut:v4];
+    [(CRLCanvas *)v11->mCanvas i_setCanvasIsWideGamut:gamutCopy];
     [(CRLCanvas *)v11->mCanvas setDelegate:v11];
   }
 
@@ -102,9 +102,9 @@
 - (NSString)boardTitle
 {
   WeakRetained = objc_loadWeakRetained(&self->mBoard);
-  v3 = [WeakRetained title];
+  title = [WeakRetained title];
 
-  return v3;
+  return title;
 }
 
 - (id)i_board
@@ -114,23 +114,23 @@
   return WeakRetained;
 }
 
-- (void)setPostRenderAction:(id)a3
+- (void)setPostRenderAction:(id)action
 {
-  v4 = [a3 copy];
+  v4 = [action copy];
   mPostRenderAction = self->mPostRenderAction;
   self->mPostRenderAction = v4;
 }
 
-- (void)setInfos:(id)a3 allowLayoutIfNeeded:(BOOL)a4
+- (void)setInfos:(id)infos allowLayoutIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v7 = a3;
-  v8 = v7;
-  if (self->mInfos != v7)
+  neededCopy = needed;
+  infosCopy = infos;
+  v8 = infosCopy;
+  if (self->mInfos != infosCopy)
   {
-    v30 = v4;
-    v31 = self;
-    if (v7 && [(NSArray *)v7 count]&& self->mHasBeenUsed && !self->mMayBeReused)
+    v30 = neededCopy;
+    selfCopy = self;
+    if (infosCopy && [(NSArray *)infosCopy count]&& self->mHasBeenUsed && !self->mMayBeReused)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
       if (qword_101AD5A10 != -1)
@@ -159,7 +159,7 @@
       [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:127 isFatal:0 description:"Should not reuse an imager unless it has been explicitly marked as safe to reuse"];
     }
 
-    objc_storeStrong(&self->mInfos, a3);
+    objc_storeStrong(&self->mInfos, infos);
     v12 = +[NSMutableDictionary dictionary];
     v39 = 0u;
     v40 = 0u;
@@ -194,8 +194,8 @@
             v38 = 0u;
             v35 = 0u;
             v36 = 0u;
-            v21 = [v19 additionalBoardItemsForUUIDBookkeepingForTemporaryCanvases];
-            v22 = [v21 countByEnumeratingWithState:&v35 objects:v43 count:16];
+            additionalBoardItemsForUUIDBookkeepingForTemporaryCanvases = [v19 additionalBoardItemsForUUIDBookkeepingForTemporaryCanvases];
+            v22 = [additionalBoardItemsForUUIDBookkeepingForTemporaryCanvases countByEnumeratingWithState:&v35 objects:v43 count:16];
             if (v22)
             {
               v23 = v22;
@@ -206,7 +206,7 @@
                 {
                   if (*v36 != v24)
                   {
-                    objc_enumerationMutation(v21);
+                    objc_enumerationMutation(additionalBoardItemsForUUIDBookkeepingForTemporaryCanvases);
                   }
 
                   v26 = *(*(&v35 + 1) + 8 * j);
@@ -214,7 +214,7 @@
                   [v12 setObject:v26 forKeyedSubscript:v27];
                 }
 
-                v23 = [v21 countByEnumeratingWithState:&v35 objects:v43 count:16];
+                v23 = [additionalBoardItemsForUUIDBookkeepingForTemporaryCanvases countByEnumeratingWithState:&v35 objects:v43 count:16];
               }
 
               while (v23);
@@ -229,15 +229,15 @@
     }
 
     v28 = [v12 copy];
-    mItemsByUUID = v31->mItemsByUUID;
-    v31->mItemsByUUID = v28;
+    mItemsByUUID = selfCopy->mItemsByUUID;
+    selfCopy->mItemsByUUID = v28;
 
-    if (![(NSArray *)v31->mInfos count])
+    if (![(NSArray *)selfCopy->mInfos count])
     {
-      [(CRLCanvas *)v31->mCanvas setInfosToDisplay:v31->mInfos];
+      [(CRLCanvas *)selfCopy->mCanvas setInfosToDisplay:selfCopy->mInfos];
       if (v30)
       {
-        [(CRLCanvas *)v31->mCanvas nonInteractiveLayoutIfNeeded];
+        [(CRLCanvas *)selfCopy->mCanvas nonInteractiveLayoutIfNeeded];
       }
     }
 
@@ -279,9 +279,9 @@
   return self->mViewScale;
 }
 
-- (void)setViewScale:(double)a3
+- (void)setViewScale:(double)scale
 {
-  if (a3 <= 0.0)
+  if (scale <= 0.0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -312,7 +312,7 @@
 
   else
   {
-    self->mViewScale = a3;
+    self->mViewScale = scale;
     self->mScaledImageSize = CGSizeZero;
     self->mUseScaledImageSize = 0;
   }
@@ -352,9 +352,9 @@
   return self->mContentsScale;
 }
 
-- (void)setContentsScale:(double)a3
+- (void)setContentsScale:(double)scale
 {
-  if (a3 <= 0.0)
+  if (scale <= 0.0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -385,7 +385,7 @@
 
   else
   {
-    self->mContentsScale = a3;
+    self->mContentsScale = scale;
     self->mScaledImageSize = CGSizeZero;
     self->mUseScaledImageSize = 0;
   }
@@ -429,11 +429,11 @@
   return result;
 }
 
-- (void)setScaledImageSize:(CGSize)a3
+- (void)setScaledImageSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  if (a3.width <= 0.0 || a3.height <= 0.0)
+  height = size.height;
+  width = size.width;
+  if (size.width <= 0.0 || size.height <= 0.0)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -510,11 +510,11 @@
   return result;
 }
 
-- (void)setMaximumImagePixelSize:(CGSize)a3
+- (void)setMaximumImagePixelSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = sub_10012211C(a3.width);
+  height = size.height;
+  width = size.width;
+  v7 = sub_10012211C(size.width);
   v8 = v6;
   if (width != v7 || height != v6)
   {
@@ -586,7 +586,7 @@
   if (![(CRLCanvasImager *)self p_configureCanvas])
   {
 LABEL_15:
-    v4 = 0;
+    p_newImageInReusableContext = 0;
     goto LABEL_21;
   }
 
@@ -594,7 +594,7 @@ LABEL_15:
   {
     if ([(CRLCanvasImager *)self shouldReuseBitmapContext])
     {
-      v4 = [(CRLCanvasImager *)self p_newImageInReusableContext];
+      p_newImageInReusableContext = [(CRLCanvasImager *)self p_newImageInReusableContext];
       goto LABEL_19;
     }
 
@@ -606,9 +606,9 @@ LABEL_15:
     v8 = [(CRLCanvas *)self->mCanvas i_imageInScaledRect:self->mInfoToDrawBeneathFilter keepingChildrenPassingTest:self->mActualScaledClipRect.origin.x, self->mActualScaledClipRect.origin.y, self->mActualScaledClipRect.size.width, self->mActualScaledClipRect.size.height];
   }
 
-  v4 = v8;
-  v9 = [(CRLCanvas *)self->mCanvas i_previousRenderDatasNeedingDownload];
-  [(CRLCanvasImager *)self setPreviousRenderDatasNeedingDownload:v9];
+  p_newImageInReusableContext = v8;
+  i_previousRenderDatasNeedingDownload = [(CRLCanvas *)self->mCanvas i_previousRenderDatasNeedingDownload];
+  [(CRLCanvasImager *)self setPreviousRenderDatasNeedingDownload:i_previousRenderDatasNeedingDownload];
 
 LABEL_19:
   mPostRenderAction = self->mPostRenderAction;
@@ -620,16 +620,16 @@ LABEL_19:
 LABEL_21:
   self->mHasBeenUsed = 1;
 
-  return v4;
+  return p_newImageInReusableContext;
 }
 
 - (id)generateImage
 {
-  v2 = [(CRLCanvasImager *)self newImage];
-  if (v2)
+  newImage = [(CRLCanvasImager *)self newImage];
+  if (newImage)
   {
-    v3 = v2;
-    v4 = [CRLImage imageWithCGImage:v2];
+    v3 = newImage;
+    v4 = [CRLImage imageWithCGImage:newImage];
     CGImageRelease(v3);
   }
 
@@ -643,11 +643,11 @@ LABEL_21:
 
 - (id)pngData
 {
-  v2 = [(CRLCanvasImager *)self newImage];
-  if (v2)
+  newImage = [(CRLCanvasImager *)self newImage];
+  if (newImage)
   {
-    v3 = v2;
-    v4 = sub_1005357BC(v2);
+    v3 = newImage;
+    v4 = sub_1005357BC(newImage);
     CGImageRelease(v3);
   }
 
@@ -696,22 +696,22 @@ LABEL_21:
   return v11;
 }
 
-- (BOOL)drawPageInContext:(CGContext *)a3 createPage:(BOOL)a4 includeMargin:(BOOL)a5
+- (BOOL)drawPageInContext:(CGContext *)context createPage:(BOOL)page includeMargin:(BOOL)margin
 {
-  v5 = a5;
-  v6 = a4;
-  v9 = [(CRLCanvasImager *)self p_configureCanvas];
-  if (v9)
+  marginCopy = margin;
+  pageCopy = page;
+  p_configureCanvas = [(CRLCanvasImager *)self p_configureCanvas];
+  if (p_configureCanvas)
   {
-    [(CRLCanvasImager *)self p_drawPageInContext:a3 createPage:v6 includeMargin:v5];
+    [(CRLCanvasImager *)self p_drawPageInContext:context createPage:pageCopy includeMargin:marginCopy];
   }
 
-  return v9;
+  return p_configureCanvas;
 }
 
-- (id)boardItemOwnerForCanvas:(id)a3
+- (id)boardItemOwnerForCanvas:(id)canvas
 {
-  if (self->mCanvas != a3)
+  if (self->mCanvas != canvas)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -743,10 +743,10 @@ LABEL_21:
   return self;
 }
 
-- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)a3
+- (CGRect)visibleScaledBoundsForClippingRepsOnCanvas:(id)canvas
 {
   mCanvas = self->mCanvas;
-  if (mCanvas != a3)
+  if (mCanvas != canvas)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -786,9 +786,9 @@ LABEL_21:
   return result;
 }
 
-- (BOOL)isCanvasDrawingIntoPDF:(id)a3
+- (BOOL)isCanvasDrawingIntoPDF:(id)f
 {
-  if (self->mCanvas != a3)
+  if (self->mCanvas != f)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -820,14 +820,14 @@ LABEL_21:
   return self->mDrawingIntoPDF;
 }
 
-- (id)getBoardItemForUUID:(id)a3
+- (id)getBoardItemForUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(NSDictionary *)self->mItemsByUUID objectForKeyedSubscript:v4];
+  dCopy = d;
+  v5 = [(NSDictionary *)self->mItemsByUUID objectForKeyedSubscript:dCopy];
   if (!v5)
   {
     WeakRetained = objc_loadWeakRetained(&self->mBoard);
-    v5 = [WeakRetained getBoardItemForUUID:v4];
+    v5 = [WeakRetained getBoardItemForUUID:dCopy];
   }
 
   return v5;
@@ -1055,8 +1055,8 @@ LABEL_21:
       v68 = 0u;
       v69 = 0u;
       v70 = 0u;
-      v53 = [(CRLCanvas *)self->mCanvas allRepsOrdered];
-      v54 = [v53 countByEnumeratingWithState:&v67 objects:v71 count:16];
+      allRepsOrdered = [(CRLCanvas *)self->mCanvas allRepsOrdered];
+      v54 = [allRepsOrdered countByEnumeratingWithState:&v67 objects:v71 count:16];
       if (v54)
       {
         v55 = v54;
@@ -1067,14 +1067,14 @@ LABEL_58:
         {
           if (*v68 != v56)
           {
-            objc_enumerationMutation(v53);
+            objc_enumerationMutation(allRepsOrdered);
           }
 
           v58 = *(*(&v67 + 1) + 8 * v57);
-          v59 = [v58 info];
+          info = [v58 info];
           mInfoToDrawBeneath = self->mInfoToDrawBeneath;
 
-          if (v59 == mInfoToDrawBeneath)
+          if (info == mInfoToDrawBeneath)
           {
             break;
           }
@@ -1082,7 +1082,7 @@ LABEL_58:
           [v52 addObject:v58];
           if (v55 == ++v57)
           {
-            v55 = [v53 countByEnumeratingWithState:&v67 objects:v71 count:16];
+            v55 = [allRepsOrdered countByEnumeratingWithState:&v67 objects:v71 count:16];
             if (v55)
             {
               goto LABEL_58;
@@ -1114,11 +1114,11 @@ LABEL_58:
   return v20;
 }
 
-- (CGSize)p_evenDimensionsWithSize:(CGSize)a3
+- (CGSize)p_evenDimensionsWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  *v5.i64 = sub_100122154(a3.width, a3.height);
+  height = size.height;
+  width = size.width;
+  *v5.i64 = sub_100122154(size.width, size.height);
   *v7.i64 = *v6.i64 - trunc(*v6.i64 * 0.5) * 2.0;
   v8.f64[0] = NAN;
   v8.f64[1] = NAN;
@@ -1206,14 +1206,14 @@ LABEL_22:
   return result;
 }
 
-- (void)p_drawPageInContext:(CGContext *)a3 createPage:(BOOL)a4 includeMargin:(BOOL)a5
+- (void)p_drawPageInContext:(CGContext *)context createPage:(BOOL)page includeMargin:(BOOL)margin
 {
-  v5 = a5;
-  v6 = a4;
+  marginCopy = margin;
+  pageCopy = page;
   self->mDrawingIntoPDF = 1;
-  sub_10050DE7C(a3, [(CRLCanvasImager *)self isPrinting], self->mDrawingIntoPDF, 0, [(CRLCanvas *)self->mCanvas shouldSuppressBackgrounds], 1.0);
+  sub_10050DE7C(context, [(CRLCanvasImager *)self isPrinting], self->mDrawingIntoPDF, 0, [(CRLCanvas *)self->mCanvas shouldSuppressBackgrounds], 1.0);
   v9 = 36.0;
-  if (!v5)
+  if (!marginCopy)
   {
     v9 = 0.0;
   }
@@ -1222,41 +1222,41 @@ LABEL_22:
   v11 = self->mActualScaledClipRect.origin.y - v9;
   v12 = self->mActualScaledClipRect.size.width + v9 * 2.0;
   v13 = self->mActualScaledClipRect.size.height + v9 * 2.0;
-  if (v6)
+  if (pageCopy)
   {
     v19.origin.x = sub_10011ECB4();
     v19.origin.y = v14;
     v19.size.width = v15;
     v19.size.height = v16;
-    CGContextBeginPage(a3, &v19);
+    CGContextBeginPage(context, &v19);
   }
 
-  CGContextTranslateCTM(a3, 0.0, v13);
-  CGContextScaleCTM(a3, 1.0, -1.0);
-  CGContextTranslateCTM(a3, -v10, -v11);
+  CGContextTranslateCTM(context, 0.0, v13);
+  CGContextScaleCTM(context, 1.0, -1.0);
+  CGContextTranslateCTM(context, -v10, -v11);
   v20.origin.x = v10;
   v20.origin.y = v11;
   v20.size.width = v12;
   v20.size.height = v13;
-  CGContextClipToRect(a3, v20);
-  sub_100510D7C(a3);
-  [(CRLCanvas *)self->mCanvas i_drawBackgroundInContext:a3];
-  [(CRLCanvas *)self->mCanvas i_drawRepsInContext:a3 passingTest:self->mInfoToDrawBeneathFilter];
-  v17 = sub_1005113C0(a3);
+  CGContextClipToRect(context, v20);
+  sub_100510D7C(context);
+  [(CRLCanvas *)self->mCanvas i_drawBackgroundInContext:context];
+  [(CRLCanvas *)self->mCanvas i_drawRepsInContext:context passingTest:self->mInfoToDrawBeneathFilter];
+  v17 = sub_1005113C0(context);
   [(CRLCanvasImager *)self setPreviousRenderDatasNeedingDownload:v17];
 
   mPostRenderAction = self->mPostRenderAction;
   if (mPostRenderAction)
   {
-    mPostRenderAction[2](mPostRenderAction, a3, self->mCanvas);
+    mPostRenderAction[2](mPostRenderAction, context, self->mCanvas);
   }
 
-  if (v6)
+  if (pageCopy)
   {
-    CGContextEndPage(a3);
+    CGContextEndPage(context);
   }
 
-  sub_10050D814(a3);
+  sub_10050D814(context);
   self->mDrawingIntoPDF = 0;
 }
 

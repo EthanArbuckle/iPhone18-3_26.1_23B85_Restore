@@ -1,102 +1,102 @@
 @interface FIFormattingManager
-+ (id)localizedShortCadenceUnitStringForActivityType:(unint64_t)a3;
++ (id)localizedShortCadenceUnitStringForActivityType:(unint64_t)type;
 + (id)localizedShortPowerUnitString;
-+ (id)percentStringWithNumber:(id)a3;
-+ (id)stringWithNumber:(id)a3 decimalPrecision:(unint64_t)a4 roundingMode:(unint64_t)a5 decimalTrimmingMode:(unint64_t)a6;
-+ (unint64_t)defaultPrecisionForDistanceUnit:(unint64_t)a3;
-+ (unint64_t)sectionTypeForMetricType:(unint64_t)a3;
-- (BOOL)_workoutSupportsDistanceMetricForGoalDisplay:(id)a3;
++ (id)percentStringWithNumber:(id)number;
++ (id)stringWithNumber:(id)number decimalPrecision:(unint64_t)precision roundingMode:(unint64_t)mode decimalTrimmingMode:(unint64_t)trimmingMode;
++ (unint64_t)defaultPrecisionForDistanceUnit:(unint64_t)unit;
++ (unint64_t)sectionTypeForMetricType:(unint64_t)type;
+- (BOOL)_workoutSupportsDistanceMetricForGoalDisplay:(id)display;
 - (FIFormattingManager)init;
-- (FIFormattingManager)initWithUnitManager:(id)a3;
-- (double)caloriesForEnergyBurnedInUserUnit:(double)a3;
-- (double)energyBurnedInUserUnitForCalories:(double)a3;
-- (double)roundedDailyMoveGoal:(double)a3 activityMoveMode:(int64_t)a4;
-- (double)roundedDailyMoveGoalForCalories:(double)a3;
-- (double)speedPerHourWithDistance:(id)a3 overDuration:(double)a4 paceFormat:(int64_t)a5 distanceType:(unint64_t)a6;
-- (id)_energyBurnedUnitStringForUnit:(id)a3 useShortString:(BOOL)a4;
-- (id)_localizedEnergyDescriptionForWorkout:(id)a3 withValue:(id *)a4 appendActivityType:(BOOL)a5 activityTypeString:(id)a6;
-- (id)_localizedKeyMetricCyclingStringWithWorkout:(id)a3 withUnitStyle:(unint64_t)a4;
-- (id)_localizedKeyMetricDistanceStringForWorkout:(id)a3 withUnitStyle:(unint64_t)a4;
-- (id)_localizedKeyMetricDurationStringWithWorkout:(id)a3;
-- (id)_localizedKeyMetricEnergyBurnedStringForWorkout:(id)a3 withUnitStyle:(unint64_t)a4;
-- (id)_localizedOpenGoalKeyMetricStringForWorkout:(id)a3 withUnitStyle:(unint64_t)a4;
-- (id)_localizedStringWithDistanceUnit:(unint64_t)a3 distanceInUnit:(double)a4 unitStyle:(int64_t)a5 decimalPrecision:(unint64_t)a6 roundingMode:(unint64_t)a7 decimalTrimmingMode:(unint64_t)a8;
-- (id)_localizedTimeDescriptionForWorkout:(id)a3 withValue:(id *)a4 appendActivityType:(BOOL)a5 activityTypeString:(id)a6;
-- (id)_localizedTimeValueForWorkout:(id)a3;
-- (id)_stringByReplacingThirdsIfNeeded:(id)a3 distanceInMeters:(double)a4 distanceUnit:(unint64_t)a5 roundingMode:(unint64_t)a6 decimalTrimmingMode:(unint64_t)a7;
-- (id)applyTextCase:(unint64_t)a3 toString:(id)a4;
+- (FIFormattingManager)initWithUnitManager:(id)manager;
+- (double)caloriesForEnergyBurnedInUserUnit:(double)unit;
+- (double)energyBurnedInUserUnitForCalories:(double)calories;
+- (double)roundedDailyMoveGoal:(double)goal activityMoveMode:(int64_t)mode;
+- (double)roundedDailyMoveGoalForCalories:(double)calories;
+- (double)speedPerHourWithDistance:(id)distance overDuration:(double)duration paceFormat:(int64_t)format distanceType:(unint64_t)type;
+- (id)_energyBurnedUnitStringForUnit:(id)unit useShortString:(BOOL)string;
+- (id)_localizedEnergyDescriptionForWorkout:(id)workout withValue:(id *)value appendActivityType:(BOOL)type activityTypeString:(id)string;
+- (id)_localizedKeyMetricCyclingStringWithWorkout:(id)workout withUnitStyle:(unint64_t)style;
+- (id)_localizedKeyMetricDistanceStringForWorkout:(id)workout withUnitStyle:(unint64_t)style;
+- (id)_localizedKeyMetricDurationStringWithWorkout:(id)workout;
+- (id)_localizedKeyMetricEnergyBurnedStringForWorkout:(id)workout withUnitStyle:(unint64_t)style;
+- (id)_localizedOpenGoalKeyMetricStringForWorkout:(id)workout withUnitStyle:(unint64_t)style;
+- (id)_localizedStringWithDistanceUnit:(unint64_t)unit distanceInUnit:(double)inUnit unitStyle:(int64_t)style decimalPrecision:(unint64_t)precision roundingMode:(unint64_t)mode decimalTrimmingMode:(unint64_t)trimmingMode;
+- (id)_localizedTimeDescriptionForWorkout:(id)workout withValue:(id *)value appendActivityType:(BOOL)type activityTypeString:(id)string;
+- (id)_localizedTimeValueForWorkout:(id)workout;
+- (id)_stringByReplacingThirdsIfNeeded:(id)needed distanceInMeters:(double)meters distanceUnit:(unint64_t)unit roundingMode:(unint64_t)mode decimalTrimmingMode:(unint64_t)trimmingMode;
+- (id)applyTextCase:(unint64_t)case toString:(id)string;
 - (id)decimalSeparator;
-- (id)finalLocalizedKeyForKey:(id)a3 multiline:(BOOL)a4;
-- (id)localizationKeyForDistanceBaseKey:(id)a3 distanceType:(unint64_t)a4;
-- (id)localizationKeyForEnergyBaseKey:(id)a3;
-- (id)localizationKeyForMoveBaseKey:(id)a3 activityMoveMode:(int64_t)a4;
-- (id)localizationKeyForMoveMinutesBaseKey:(id)a3;
-- (id)localizedCompactGoalDescriptionForGoalType:(unint64_t)a3 goalValue:(double)a4 activityType:(id)a5;
-- (id)localizedCompactNaturalScaleStringWithDistanceInMeters:(double)a3 distanceType:(unint64_t)a4 unitStyle:(unint64_t)a5 usedUnit:(unint64_t *)a6;
-- (id)localizedDistanceByStrokeStyle:(id)a3 isPoolSwim:(BOOL)a4;
-- (id)localizedDistinguishingCadenceUnitStringWithMetricType:(unint64_t)a3;
-- (id)localizedDistinguishingPowerStringWithMetricType:(unint64_t)a3;
-- (id)localizedDistinguishingPowerUnitStringWithMetricType:(unint64_t)a3;
-- (id)localizedGoalDescriptionForGoalType:(unint64_t)a3 goalValue:(double)a4 activityType:(id)a5;
-- (id)localizedGoalUnitForWorkout:(id)a3;
-- (id)localizedGoalValueForWorkout:(id)a3;
+- (id)finalLocalizedKeyForKey:(id)key multiline:(BOOL)multiline;
+- (id)localizationKeyForDistanceBaseKey:(id)key distanceType:(unint64_t)type;
+- (id)localizationKeyForEnergyBaseKey:(id)key;
+- (id)localizationKeyForMoveBaseKey:(id)key activityMoveMode:(int64_t)mode;
+- (id)localizationKeyForMoveMinutesBaseKey:(id)key;
+- (id)localizedCompactGoalDescriptionForGoalType:(unint64_t)type goalValue:(double)value activityType:(id)activityType;
+- (id)localizedCompactNaturalScaleStringWithDistanceInMeters:(double)meters distanceType:(unint64_t)type unitStyle:(unint64_t)style usedUnit:(unint64_t *)unit;
+- (id)localizedDistanceByStrokeStyle:(id)style isPoolSwim:(BOOL)swim;
+- (id)localizedDistinguishingCadenceUnitStringWithMetricType:(unint64_t)type;
+- (id)localizedDistinguishingPowerStringWithMetricType:(unint64_t)type;
+- (id)localizedDistinguishingPowerUnitStringWithMetricType:(unint64_t)type;
+- (id)localizedGoalDescriptionForGoalType:(unint64_t)type goalValue:(double)value activityType:(id)activityType;
+- (id)localizedGoalUnitForWorkout:(id)workout;
+- (id)localizedGoalValueForWorkout:(id)workout;
 - (id)localizedHeartRateUnitString;
-- (id)localizedInSessionDescriptionForElevation:(unint64_t)a3;
-- (id)localizedInSessionDescriptionForGroundElevation:(unint64_t)a3;
-- (id)localizedKeyMetricStringForWorkout:(id)a3 unitStyle:(unint64_t)a4;
-- (id)localizedLongActiveEnergyUnitStringWithTextCase:(unint64_t)a3;
+- (id)localizedInSessionDescriptionForElevation:(unint64_t)elevation;
+- (id)localizedInSessionDescriptionForGroundElevation:(unint64_t)elevation;
+- (id)localizedKeyMetricStringForWorkout:(id)workout unitStyle:(unint64_t)style;
+- (id)localizedLongActiveEnergyUnitStringWithTextCase:(unint64_t)case;
 - (id)localizedLongActiveHoursUnitString;
-- (id)localizedLongActiveHoursUnitStringForValue:(unint64_t)a3;
+- (id)localizedLongActiveHoursUnitStringForValue:(unint64_t)value;
 - (id)localizedLongBriskMinutesUnitString;
-- (id)localizedLongBriskMinutesUnitStringForValue:(unint64_t)a3;
-- (id)localizedLongMoveMinutesUnitStringWithTextCase:(unint64_t)a3;
-- (id)localizedLongMoveMinutesUnitStringWithTextCase:(unint64_t)a3 value:(unint64_t)a4;
-- (id)localizedLongMoveUnitStringWithActivityMoveMode:(int64_t)a3;
-- (id)localizedLongMoveUnitStringWithActivityMoveMode:(int64_t)a3 value:(unint64_t)a4;
-- (id)localizedLongUnitStringForDistanceUnit:(unint64_t)a3 distanceInUnit:(double)a4 textCase:(unint64_t)a5;
-- (id)localizedMediumMoveMinutesUnitStringWithTextCase:(unint64_t)a3;
-- (id)localizedMediumMoveMinutesUnitStringWithTextCase:(unint64_t)a3 value:(unint64_t)a4;
-- (id)localizedNaturalScaleStringWithDistanceInMeters:(double)a3 distanceType:(unint64_t)a4 unitStyle:(unint64_t)a5 usedUnit:(unint64_t *)a6 decimalTrimmingMode:(unint64_t)a7;
-- (id)localizedPaceAndUnitStringForSpeed:(double)a3 activityType:(id)a4;
-- (id)localizedPaceAndUnitWithDistance:(id)a3 overDuration:(double)a4 paceFormat:(int64_t)a5 distanceType:(unint64_t)a6 unitStyle:(unint64_t)a7 decimalTrimmingMode:(unint64_t)a8;
-- (id)localizedPaceStringWithDistance:(id)a3 overDuration:(double)a4 paceFormat:(int64_t)a5 unitStyle:(unint64_t)a6 decimalTrimmingMode:(unint64_t)a7 distanceType:(unint64_t)a8 zeroShowsDashes:(BOOL)a9;
-- (id)localizedPaceUnitStringWithDistanceType:(unint64_t)a3 distanceUnit:(unint64_t)a4 unitStyle:(int64_t)a5;
-- (id)localizedPaceValueForSplit:(id)a3 activityType:(id)a4;
-- (id)localizedPowerUnitStringForPower:(double)a3;
-- (id)localizedShareTextWithWorkout:(id)a3 shareValue:(id)a4;
+- (id)localizedLongBriskMinutesUnitStringForValue:(unint64_t)value;
+- (id)localizedLongMoveMinutesUnitStringWithTextCase:(unint64_t)case;
+- (id)localizedLongMoveMinutesUnitStringWithTextCase:(unint64_t)case value:(unint64_t)value;
+- (id)localizedLongMoveUnitStringWithActivityMoveMode:(int64_t)mode;
+- (id)localizedLongMoveUnitStringWithActivityMoveMode:(int64_t)mode value:(unint64_t)value;
+- (id)localizedLongUnitStringForDistanceUnit:(unint64_t)unit distanceInUnit:(double)inUnit textCase:(unint64_t)case;
+- (id)localizedMediumMoveMinutesUnitStringWithTextCase:(unint64_t)case;
+- (id)localizedMediumMoveMinutesUnitStringWithTextCase:(unint64_t)case value:(unint64_t)value;
+- (id)localizedNaturalScaleStringWithDistanceInMeters:(double)meters distanceType:(unint64_t)type unitStyle:(unint64_t)style usedUnit:(unint64_t *)unit decimalTrimmingMode:(unint64_t)mode;
+- (id)localizedPaceAndUnitStringForSpeed:(double)speed activityType:(id)type;
+- (id)localizedPaceAndUnitWithDistance:(id)distance overDuration:(double)duration paceFormat:(int64_t)format distanceType:(unint64_t)type unitStyle:(unint64_t)style decimalTrimmingMode:(unint64_t)mode;
+- (id)localizedPaceStringWithDistance:(id)distance overDuration:(double)duration paceFormat:(int64_t)format unitStyle:(unint64_t)style decimalTrimmingMode:(unint64_t)mode distanceType:(unint64_t)type zeroShowsDashes:(BOOL)dashes;
+- (id)localizedPaceUnitStringWithDistanceType:(unint64_t)type distanceUnit:(unint64_t)unit unitStyle:(int64_t)style;
+- (id)localizedPaceValueForSplit:(id)split activityType:(id)type;
+- (id)localizedPowerUnitStringForPower:(double)power;
+- (id)localizedShareTextWithWorkout:(id)workout shareValue:(id)value;
 - (id)localizedShortActiveEnergyUnitString;
 - (id)localizedShortActiveHoursUnitString;
 - (id)localizedShortBriskMinutesUnitString;
-- (id)localizedShortTypeDistinguishingUnitStringForEnergyType:(unint64_t)a3 workoutSectionType:(unint64_t)a4 multiline:(BOOL)a5;
-- (id)localizedShortTypeDistinguishingUnitStringForPowerType:(unint64_t)a3 unitString:(id)a4;
-- (id)localizedShortUnitStringForDistanceType:(unint64_t)a3;
-- (id)localizedShortUnitStringForDistanceUnit:(unint64_t)a3 textCase:(unint64_t)a4;
+- (id)localizedShortTypeDistinguishingUnitStringForEnergyType:(unint64_t)type workoutSectionType:(unint64_t)sectionType multiline:(BOOL)multiline;
+- (id)localizedShortTypeDistinguishingUnitStringForPowerType:(unint64_t)type unitString:(id)string;
+- (id)localizedShortUnitStringForDistanceType:(unint64_t)type;
+- (id)localizedShortUnitStringForDistanceUnit:(unint64_t)unit textCase:(unint64_t)case;
 - (id)localizedSpeedUnitString;
-- (id)localizedSpeedUnitStringForActivityType:(id)a3;
-- (id)localizedSpeedUnitStringForDistanceType:(unint64_t)a3 unitStyle:(unint64_t)a4;
-- (id)localizedSpeedUnitStringForDistanceUnit:(unint64_t)a3 unitStyle:(unint64_t)a4;
-- (id)localizedStringForMetricType:(unint64_t)a3 paceFormat:(int64_t)a4;
-- (id)localizedStringWithActiveHours:(id)a3;
-- (id)localizedStringWithBeatsPerMinute:(double)a3 requirePositiveValue:(BOOL)a4;
-- (id)localizedStringWithBriskMinutes:(id)a3;
-- (id)localizedStringWithDistanceInMeters:(double)a3 distanceType:(unint64_t)a4 distanceUnit:(unint64_t)a5 unitStyle:(unint64_t)a6 roundingMode:(unint64_t)a7;
-- (id)localizedStringWithDistanceInMeters:(double)a3 distanceType:(unint64_t)a4 unitStyle:(unint64_t)a5 roundingMode:(unint64_t)a6;
-- (id)localizedStringWithDistanceInMeters:(double)a3 distanceUnit:(unint64_t)a4 unitStyle:(unint64_t)a5 decimalPrecision:(unint64_t)a6 roundingMode:(unint64_t)a7 decimalTrimmingMode:(unint64_t)a8;
-- (id)localizedStringWithEnergy:(id)a3 energyType:(unint64_t)a4 unitStyle:(unint64_t)a5;
-- (id)localizedStringWithEnergyInCalories:(double)a3 energyType:(unint64_t)a4 unitStyle:(unint64_t)a5;
-- (id)localizedStringWithMoveMinutes:(id)a3;
-- (id)localizedStringWithMoveMinutes:(id)a3 unitStyle:(unint64_t)a4;
-- (id)localizedStringWithMoveQuantity:(id)a3 activityMoveMode:(int64_t)a4;
-- (id)localizedStringWithMoveQuantity:(id)a3 unitStyle:(unint64_t)a4 activityMoveMode:(int64_t)a5;
-- (id)localizedStringWithPersonHeight:(id)a3 unitStyle:(int64_t)a4;
-- (id)localizedStrokeCountStringWithCount:(int64_t)a3 overDistance:(id)a4 paceFormat:(int64_t)a5;
-- (id)localizedSwimmingPaceStringWithDistance:(id)a3 overDuration:(double)a4 paceFormat:(int64_t)a5;
-- (id)localizedTitleForSplit:(id)a3 unit:(id)a4 lapIndex:(int64_t)a5 useShortFormat:(BOOL)a6;
-- (id)localizedUnitStringForDistanceUnit:(unint64_t)a3 distanceInUnit:(double)a4 unitStyle:(unint64_t)a5;
-- (id)stringWithDuration:(double)a3 durationFormat:(unint64_t)a4;
-- (unint64_t)_effectiveGoalTypeForWorkout:(id)a3;
-- (unint64_t)decimalPrecisionForPaceFormat:(int64_t)a3;
-- (unint64_t)naturalScaleUnitForDistanceInMeters:(double)a3 distanceType:(unint64_t)a4;
+- (id)localizedSpeedUnitStringForActivityType:(id)type;
+- (id)localizedSpeedUnitStringForDistanceType:(unint64_t)type unitStyle:(unint64_t)style;
+- (id)localizedSpeedUnitStringForDistanceUnit:(unint64_t)unit unitStyle:(unint64_t)style;
+- (id)localizedStringForMetricType:(unint64_t)type paceFormat:(int64_t)format;
+- (id)localizedStringWithActiveHours:(id)hours;
+- (id)localizedStringWithBeatsPerMinute:(double)minute requirePositiveValue:(BOOL)value;
+- (id)localizedStringWithBriskMinutes:(id)minutes;
+- (id)localizedStringWithDistanceInMeters:(double)meters distanceType:(unint64_t)type distanceUnit:(unint64_t)unit unitStyle:(unint64_t)style roundingMode:(unint64_t)mode;
+- (id)localizedStringWithDistanceInMeters:(double)meters distanceType:(unint64_t)type unitStyle:(unint64_t)style roundingMode:(unint64_t)mode;
+- (id)localizedStringWithDistanceInMeters:(double)meters distanceUnit:(unint64_t)unit unitStyle:(unint64_t)style decimalPrecision:(unint64_t)precision roundingMode:(unint64_t)mode decimalTrimmingMode:(unint64_t)trimmingMode;
+- (id)localizedStringWithEnergy:(id)energy energyType:(unint64_t)type unitStyle:(unint64_t)style;
+- (id)localizedStringWithEnergyInCalories:(double)calories energyType:(unint64_t)type unitStyle:(unint64_t)style;
+- (id)localizedStringWithMoveMinutes:(id)minutes;
+- (id)localizedStringWithMoveMinutes:(id)minutes unitStyle:(unint64_t)style;
+- (id)localizedStringWithMoveQuantity:(id)quantity activityMoveMode:(int64_t)mode;
+- (id)localizedStringWithMoveQuantity:(id)quantity unitStyle:(unint64_t)style activityMoveMode:(int64_t)mode;
+- (id)localizedStringWithPersonHeight:(id)height unitStyle:(int64_t)style;
+- (id)localizedStrokeCountStringWithCount:(int64_t)count overDistance:(id)distance paceFormat:(int64_t)format;
+- (id)localizedSwimmingPaceStringWithDistance:(id)distance overDuration:(double)duration paceFormat:(int64_t)format;
+- (id)localizedTitleForSplit:(id)split unit:(id)unit lapIndex:(int64_t)index useShortFormat:(BOOL)format;
+- (id)localizedUnitStringForDistanceUnit:(unint64_t)unit distanceInUnit:(double)inUnit unitStyle:(unint64_t)style;
+- (id)stringWithDuration:(double)duration durationFormat:(unint64_t)format;
+- (unint64_t)_effectiveGoalTypeForWorkout:(id)workout;
+- (unint64_t)decimalPrecisionForPaceFormat:(int64_t)format;
+- (unint64_t)naturalScaleUnitForDistanceInMeters:(double)meters distanceType:(unint64_t)type;
 - (unint64_t)userDistanceUnitForSwimmingLapLength;
 @end
 
@@ -104,8 +104,8 @@
 
 - (id)localizedShortActiveEnergyUnitString
 {
-  v3 = [(FIUnitManager *)self->_unitManager userActiveEnergyBurnedUnit];
-  v4 = [(FIFormattingManager *)self _energyBurnedUnitStringForUnit:v3 useShortString:1];
+  userActiveEnergyBurnedUnit = [(FIUnitManager *)self->_unitManager userActiveEnergyBurnedUnit];
+  v4 = [(FIFormattingManager *)self _energyBurnedUnitStringForUnit:userActiveEnergyBurnedUnit useShortString:1];
 
   return v4;
 }
@@ -119,43 +119,43 @@
   return v5;
 }
 
-- (FIFormattingManager)initWithUnitManager:(id)a3
+- (FIFormattingManager)initWithUnitManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = FIFormattingManager;
   v6 = [(FIFormattingManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_unitManager, a3);
+    objc_storeStrong(&v6->_unitManager, manager);
   }
 
   return v7;
 }
 
-+ (id)stringWithNumber:(id)a3 decimalPrecision:(unint64_t)a4 roundingMode:(unint64_t)a5 decimalTrimmingMode:(unint64_t)a6
++ (id)stringWithNumber:(id)number decimalPrecision:(unint64_t)precision roundingMode:(unint64_t)mode decimalTrimmingMode:(unint64_t)trimmingMode
 {
-  v9 = a3;
+  numberCopy = number;
   os_unfair_lock_lock(&__formatterLock);
-  v10 = _NumberFormatterForDecimalPrecision(a4, a5, a6);
-  v11 = [v10 stringFromNumber:v9];
+  v10 = _NumberFormatterForDecimalPrecision(precision, mode, trimmingMode);
+  v11 = [v10 stringFromNumber:numberCopy];
 
   os_unfair_lock_unlock(&__formatterLock);
 
   return v11;
 }
 
-+ (id)percentStringWithNumber:(id)a3
++ (id)percentStringWithNumber:(id)number
 {
-  v3 = a3;
+  numberCopy = number;
   os_unfair_lock_lock(&__formatterLock);
   if (_PercentNumberFormatter_onceToken != -1)
   {
     +[FIFormattingManager percentStringWithNumber:];
   }
 
-  v4 = [_PercentNumberFormatter___formatter stringFromNumber:v3];
+  v4 = [_PercentNumberFormatter___formatter stringFromNumber:numberCopy];
 
   os_unfair_lock_unlock(&__formatterLock);
 
@@ -166,135 +166,135 @@
 {
   os_unfair_lock_lock(&__formatterLock);
   v2 = _DoubleFractionNumberFormatter(2);
-  v3 = [v2 decimalSeparator];
+  decimalSeparator = [v2 decimalSeparator];
 
   os_unfair_lock_unlock(&__formatterLock);
 
-  return v3;
+  return decimalSeparator;
 }
 
-- (id)applyTextCase:(unint64_t)a3 toString:(id)a4
+- (id)applyTextCase:(unint64_t)case toString:(id)string
 {
-  v6 = a4;
-  v7 = v6;
-  if (a3 > 1)
+  stringCopy = string;
+  v7 = stringCopy;
+  if (case > 1)
   {
-    if (a3 == 2)
+    if (case == 2)
     {
-      v8 = [v6 localizedLowercaseString];
+      localizedLowercaseString = [stringCopy localizedLowercaseString];
     }
 
     else
     {
-      if (a3 != 3)
+      if (case != 3)
       {
         goto LABEL_11;
       }
 
-      v8 = [v6 localizedCapitalizedString];
+      localizedLowercaseString = [stringCopy localizedCapitalizedString];
     }
   }
 
-  else if (a3)
+  else if (case)
   {
-    if (a3 != 1)
+    if (case != 1)
     {
       goto LABEL_11;
     }
 
-    v8 = [v6 localizedUppercaseString];
+    localizedLowercaseString = [stringCopy localizedUppercaseString];
   }
 
   else
   {
-    v8 = v6;
+    localizedLowercaseString = stringCopy;
   }
 
-  v4 = v8;
+  v4 = localizedLowercaseString;
 LABEL_11:
 
   return v4;
 }
 
-- (id)localizationKeyForMoveBaseKey:(id)a3 activityMoveMode:(int64_t)a4
+- (id)localizationKeyForMoveBaseKey:(id)key activityMoveMode:(int64_t)mode
 {
-  if (a4 == 2)
+  if (mode == 2)
   {
-    [(FIFormattingManager *)self localizationKeyForMoveMinutesBaseKey:a3];
+    [(FIFormattingManager *)self localizationKeyForMoveMinutesBaseKey:key];
   }
 
   else
   {
-    [(FIFormattingManager *)self localizationKeyForEnergyBaseKey:a3];
+    [(FIFormattingManager *)self localizationKeyForEnergyBaseKey:key];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)localizationKeyForMoveMinutesBaseKey:(id)a3
+- (id)localizationKeyForMoveMinutesBaseKey:(id)key
 {
   v3 = MEMORY[0x277CCDAB0];
-  v4 = a3;
-  v5 = [v3 minuteUnit];
-  v6 = _FILocalizationKeyForUnit(v4, v5);
+  keyCopy = key;
+  minuteUnit = [v3 minuteUnit];
+  v6 = _FILocalizationKeyForUnit(keyCopy, minuteUnit);
 
   return v6;
 }
 
-- (id)localizationKeyForEnergyBaseKey:(id)a3
+- (id)localizationKeyForEnergyBaseKey:(id)key
 {
   unitManager = self->_unitManager;
-  v4 = a3;
-  v5 = [(FIUnitManager *)unitManager userActiveEnergyBurnedUnit];
-  v6 = _FILocalizationKeyForUnit(v4, v5);
+  keyCopy = key;
+  userActiveEnergyBurnedUnit = [(FIUnitManager *)unitManager userActiveEnergyBurnedUnit];
+  v6 = _FILocalizationKeyForUnit(keyCopy, userActiveEnergyBurnedUnit);
 
   return v6;
 }
 
-- (id)localizationKeyForDistanceBaseKey:(id)a3 distanceType:(unint64_t)a4
+- (id)localizationKeyForDistanceBaseKey:(id)key distanceType:(unint64_t)type
 {
   unitManager = self->_unitManager;
-  v6 = a3;
-  v7 = [(FIUnitManager *)unitManager userDistanceHKUnitForDistanceType:a4];
-  v8 = _FILocalizationKeyForUnit(v6, v7);
+  keyCopy = key;
+  v7 = [(FIUnitManager *)unitManager userDistanceHKUnitForDistanceType:type];
+  v8 = _FILocalizationKeyForUnit(keyCopy, v7);
 
   return v8;
 }
 
-- (id)stringWithDuration:(double)a3 durationFormat:(unint64_t)a4
+- (id)stringWithDuration:(double)duration durationFormat:(unint64_t)format
 {
   v43 = *MEMORY[0x277D85DE8];
-  if ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
+  if ((*&duration & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
   {
-    v5 = 0.0;
+    durationCopy = 0.0;
   }
 
   else
   {
-    v5 = a3;
+    durationCopy = duration;
   }
 
   v6 = objc_alloc_init(MEMORY[0x277CCA958]);
-  v7 = [MEMORY[0x277CBEA80] currentCalendar];
-  v8 = [MEMORY[0x277CBEAF8] currentLocale];
-  [v7 setLocale:v8];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  [currentCalendar setLocale:currentLocale];
 
-  [v6 setCalendar:v7];
+  [v6 setCalendar:currentCalendar];
   [v6 setUnitsStyle:0];
   v9 = 0;
-  if (a4 <= 3)
+  if (format <= 3)
   {
-    switch(a4)
+    switch(format)
     {
       case 1uLL:
         os_unfair_lock_lock(&__formatterLock);
         v16 = _IntegerNumberFormatter(2);
         v17 = _ZeroPaddedIntegerNumberFormatter();
-        v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:(v5 / 60.0)];
+        v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:(durationCopy / 60.0)];
         v19 = [v16 stringFromNumber:v18];
 
-        v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:(v5 - (60 * (v5 / 60.0)))];
+        v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:(durationCopy - (60 * (durationCopy / 60.0)))];
         v21 = [v17 stringFromNumber:v20];
 
         os_unfair_lock_unlock(&__formatterLock);
@@ -323,17 +323,17 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  if (a4 <= 5)
+  if (format <= 5)
   {
-    if (a4 != 4)
+    if (format != 4)
     {
       [v6 setZeroFormattingBehavior:1];
       [v6 setAllowedUnits:96];
       [v6 setUnitsStyle:1];
-      v10 = [MEMORY[0x277CCABB0] numberWithDouble:v5];
-      v11 = [v10 unsignedIntegerValue];
+      v10 = [MEMORY[0x277CCABB0] numberWithDouble:durationCopy];
+      unsignedIntegerValue = [v10 unsignedIntegerValue];
 
-      v9 = [v6 stringFromTimeInterval:(60 * (v11 / 0x3C))];
+      v9 = [v6 stringFromTimeInterval:(60 * (unsignedIntegerValue / 0x3C))];
 LABEL_16:
       os_unfair_lock_lock(&__formatterLock);
       goto LABEL_42;
@@ -345,7 +345,7 @@ LABEL_16:
     goto LABEL_21;
   }
 
-  if (a4 == 6)
+  if (format == 6)
   {
     [v6 setZeroFormattingBehavior:1];
     [v6 setAllowedUnits:224];
@@ -355,7 +355,7 @@ LABEL_16:
 
   else
   {
-    if (a4 != 7)
+    if (format != 7)
     {
       goto LABEL_16;
     }
@@ -368,9 +368,9 @@ LABEL_16:
 
   [v14 setUnitsStyle:v15];
 LABEL_22:
-  v9 = [v6 stringFromTimeInterval:v5];
+  v9 = [v6 stringFromTimeInterval:durationCopy];
   os_unfair_lock_lock(&__formatterLock);
-  if (a4 == 3)
+  if (format == 3)
   {
     if (!_DurationSeparator___durationSeparator)
     {
@@ -423,15 +423,15 @@ LABEL_34:
     if ([v9 rangeOfString:?] == 1)
     {
       v32 = _ZeroPaddedIntegerNumberFormatter();
-      v33 = [v32 paddingCharacter];
-      v34 = [v33 stringByAppendingString:v9];
+      paddingCharacter = [v32 paddingCharacter];
+      v34 = [paddingCharacter stringByAppendingString:v9];
 
       v9 = v34;
     }
 
-    if (v5 <= -1.0 && v5 > -60.0)
+    if (durationCopy <= -1.0 && durationCopy > -60.0)
     {
-      v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"-00:%02d", -v5];
+      v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"-00:%02d", -durationCopy];
 
       v9 = v35;
     }
@@ -445,87 +445,87 @@ LABEL_42:
   return v9;
 }
 
-+ (unint64_t)defaultPrecisionForDistanceUnit:(unint64_t)a3
++ (unint64_t)defaultPrecisionForDistanceUnit:(unint64_t)unit
 {
-  if (a3 - 1 > 4)
+  if (unit - 1 > 4)
   {
     return 3;
   }
 
   else
   {
-    return qword_24B3AF198[a3 - 1];
+    return qword_24B3AF198[unit - 1];
   }
 }
 
-- (id)localizedStringWithDistanceInMeters:(double)a3 distanceUnit:(unint64_t)a4 unitStyle:(unint64_t)a5 decimalPrecision:(unint64_t)a6 roundingMode:(unint64_t)a7 decimalTrimmingMode:(unint64_t)a8
+- (id)localizedStringWithDistanceInMeters:(double)meters distanceUnit:(unint64_t)unit unitStyle:(unint64_t)style decimalPrecision:(unint64_t)precision roundingMode:(unint64_t)mode decimalTrimmingMode:(unint64_t)trimmingMode
 {
-  [(FIUnitManager *)self->_unitManager distanceInDistanceUnit:a3 forDistanceInMeters:?];
+  [(FIUnitManager *)self->_unitManager distanceInDistanceUnit:meters forDistanceInMeters:?];
   v15 = v14;
   v16 = 0;
-  if (a5 > 1)
+  if (style > 1)
   {
-    if (a5 == 2)
+    if (style == 2)
     {
-      v17 = self;
-      v18 = a4;
+      selfCopy3 = self;
+      unitCopy3 = unit;
       v19 = 2;
     }
 
     else
     {
-      if (a5 != 3)
+      if (style != 3)
       {
         goto LABEL_11;
       }
 
-      v17 = self;
-      v18 = a4;
+      selfCopy3 = self;
+      unitCopy3 = unit;
       v19 = 3;
     }
   }
 
   else
   {
-    if (!a5)
+    if (!style)
     {
       v20 = objc_opt_class();
       v21 = [MEMORY[0x277CCABB0] numberWithDouble:v15];
-      v16 = [v20 stringWithNumber:v21 decimalPrecision:a6 roundingMode:a7 decimalTrimmingMode:a8];
+      v16 = [v20 stringWithNumber:v21 decimalPrecision:precision roundingMode:mode decimalTrimmingMode:trimmingMode];
 
       goto LABEL_11;
     }
 
-    if (a5 != 1)
+    if (style != 1)
     {
       goto LABEL_11;
     }
 
-    v17 = self;
-    v18 = a4;
+    selfCopy3 = self;
+    unitCopy3 = unit;
     v19 = 1;
   }
 
-  v16 = [(FIFormattingManager *)v17 _localizedStringWithDistanceUnit:v18 distanceInUnit:v19 unitStyle:a6 decimalPrecision:a7 roundingMode:a8 decimalTrimmingMode:?];
+  v16 = [(FIFormattingManager *)selfCopy3 _localizedStringWithDistanceUnit:unitCopy3 distanceInUnit:v19 unitStyle:precision decimalPrecision:mode roundingMode:trimmingMode decimalTrimmingMode:?];
 LABEL_11:
 
   return v16;
 }
 
-- (id)_stringByReplacingThirdsIfNeeded:(id)a3 distanceInMeters:(double)a4 distanceUnit:(unint64_t)a5 roundingMode:(unint64_t)a6 decimalTrimmingMode:(unint64_t)a7
+- (id)_stringByReplacingThirdsIfNeeded:(id)needed distanceInMeters:(double)meters distanceUnit:(unint64_t)unit roundingMode:(unint64_t)mode decimalTrimmingMode:(unint64_t)trimmingMode
 {
-  v13 = a3;
-  v14 = v13;
-  v15 = a4 / 0.9144;
-  if (a5 != 4)
+  neededCopy = needed;
+  v14 = neededCopy;
+  metersCopy = meters / 0.9144;
+  if (unit != 4)
   {
-    v15 = a4;
+    metersCopy = meters;
   }
 
-  v16 = v15 - floor(v15);
+  v16 = metersCopy - floor(metersCopy);
   if (fabs(v16 + -0.333333333) >= 0.01)
   {
-    v18 = v13;
+    v18 = neededCopy;
     if (fabs(v16 + -0.666666667) >= 0.01)
     {
       goto LABEL_8;
@@ -539,13 +539,13 @@ LABEL_11:
     v17 = @"%d⅓";
   }
 
-  LODWORD(v7) = vcvtmd_s64_f64(v15);
+  LODWORD(v7) = vcvtmd_s64_f64(metersCopy);
   v19 = MEMORY[0x277CCACA8];
   v20 = FIFitnessUIBundle();
   v21 = [v20 localizedStringForKey:v17 value:&stru_285E60370 table:@"Localizable"];
   v22 = [v19 stringWithFormat:v21, v7];
 
-  v23 = -[FIFormattingManager localizedStringWithDistanceInMeters:distanceUnit:unitStyle:decimalPrecision:roundingMode:decimalTrimmingMode:](self, "localizedStringWithDistanceInMeters:distanceUnit:unitStyle:decimalPrecision:roundingMode:decimalTrimmingMode:", a5, 0, [objc_opt_class() defaultPrecisionForDistanceUnit:a5], a6, a7, a4);
+  v23 = -[FIFormattingManager localizedStringWithDistanceInMeters:distanceUnit:unitStyle:decimalPrecision:roundingMode:decimalTrimmingMode:](self, "localizedStringWithDistanceInMeters:distanceUnit:unitStyle:decimalPrecision:roundingMode:decimalTrimmingMode:", unit, 0, [objc_opt_class() defaultPrecisionForDistanceUnit:unit], mode, trimmingMode, meters);
   v18 = [v14 stringByReplacingOccurrencesOfString:v23 withString:v22];
 
 LABEL_8:
@@ -553,19 +553,19 @@ LABEL_8:
   return v18;
 }
 
-- (id)localizedStringWithDistanceInMeters:(double)a3 distanceType:(unint64_t)a4 unitStyle:(unint64_t)a5 roundingMode:(unint64_t)a6
+- (id)localizedStringWithDistanceInMeters:(double)meters distanceType:(unint64_t)type unitStyle:(unint64_t)style roundingMode:(unint64_t)mode
 {
   v11 = [(FIUnitManager *)self->_unitManager userDistanceUnitForDistanceType:?];
 
-  return [(FIFormattingManager *)self localizedStringWithDistanceInMeters:a4 distanceType:v11 distanceUnit:a5 unitStyle:a6 roundingMode:a3];
+  return [(FIFormattingManager *)self localizedStringWithDistanceInMeters:type distanceType:v11 distanceUnit:style unitStyle:mode roundingMode:meters];
 }
 
-- (id)localizedStringWithDistanceInMeters:(double)a3 distanceType:(unint64_t)a4 distanceUnit:(unint64_t)a5 unitStyle:(unint64_t)a6 roundingMode:(unint64_t)a7
+- (id)localizedStringWithDistanceInMeters:(double)meters distanceType:(unint64_t)type distanceUnit:(unint64_t)unit unitStyle:(unint64_t)style roundingMode:(unint64_t)mode
 {
-  v12 = -[FIFormattingManager localizedStringWithDistanceInMeters:distanceUnit:unitStyle:decimalPrecision:roundingMode:decimalTrimmingMode:](self, "localizedStringWithDistanceInMeters:distanceUnit:unitStyle:decimalPrecision:roundingMode:decimalTrimmingMode:", a5, a6, [objc_opt_class() defaultPrecisionForDistanceUnit:a5], a7, 1, a3);
-  if (a4 == 3)
+  v12 = -[FIFormattingManager localizedStringWithDistanceInMeters:distanceUnit:unitStyle:decimalPrecision:roundingMode:decimalTrimmingMode:](self, "localizedStringWithDistanceInMeters:distanceUnit:unitStyle:decimalPrecision:roundingMode:decimalTrimmingMode:", unit, style, [objc_opt_class() defaultPrecisionForDistanceUnit:unit], mode, 1, meters);
+  if (type == 3)
   {
-    v13 = [(FIFormattingManager *)self _stringByReplacingThirdsIfNeeded:v12 distanceInMeters:a5 distanceUnit:a7 roundingMode:1 decimalTrimmingMode:a3];
+    v13 = [(FIFormattingManager *)self _stringByReplacingThirdsIfNeeded:v12 distanceInMeters:unit distanceUnit:mode roundingMode:1 decimalTrimmingMode:meters];
 
     v12 = v13;
   }
@@ -573,27 +573,27 @@ LABEL_8:
   return v12;
 }
 
-- (id)localizedCompactNaturalScaleStringWithDistanceInMeters:(double)a3 distanceType:(unint64_t)a4 unitStyle:(unint64_t)a5 usedUnit:(unint64_t *)a6
+- (id)localizedCompactNaturalScaleStringWithDistanceInMeters:(double)meters distanceType:(unint64_t)type unitStyle:(unint64_t)style usedUnit:(unint64_t *)unit
 {
-  v6 = [(FIFormattingManager *)self localizedNaturalScaleStringWithDistanceInMeters:a4 distanceType:a5 unitStyle:a6 usedUnit:a3];
+  v6 = [(FIFormattingManager *)self localizedNaturalScaleStringWithDistanceInMeters:type distanceType:style unitStyle:unit usedUnit:meters];
   v7 = [v6 stringByReplacingOccurrencesOfString:@" " withString:&stru_285E60370];
 
   return v7;
 }
 
-- (id)localizedNaturalScaleStringWithDistanceInMeters:(double)a3 distanceType:(unint64_t)a4 unitStyle:(unint64_t)a5 usedUnit:(unint64_t *)a6 decimalTrimmingMode:(unint64_t)a7
+- (id)localizedNaturalScaleStringWithDistanceInMeters:(double)meters distanceType:(unint64_t)type unitStyle:(unint64_t)style usedUnit:(unint64_t *)unit decimalTrimmingMode:(unint64_t)mode
 {
   v13 = [FIFormattingManager naturalScaleUnitForDistanceInMeters:"naturalScaleUnitForDistanceInMeters:distanceType:" distanceType:?];
   v14 = [objc_opt_class() defaultPrecisionForDistanceUnit:v13];
-  if (a6)
+  if (unit)
   {
-    *a6 = v13;
+    *unit = v13;
   }
 
-  v15 = [(FIFormattingManager *)self localizedStringWithDistanceInMeters:v13 distanceUnit:a5 unitStyle:v14 decimalPrecision:2 roundingMode:a7 decimalTrimmingMode:a3];
-  if (a4 == 3)
+  v15 = [(FIFormattingManager *)self localizedStringWithDistanceInMeters:v13 distanceUnit:style unitStyle:v14 decimalPrecision:2 roundingMode:mode decimalTrimmingMode:meters];
+  if (type == 3)
   {
-    v16 = [(FIFormattingManager *)self _stringByReplacingThirdsIfNeeded:v15 distanceInMeters:v13 distanceUnit:2 roundingMode:a7 decimalTrimmingMode:a3];
+    v16 = [(FIFormattingManager *)self _stringByReplacingThirdsIfNeeded:v15 distanceInMeters:v13 distanceUnit:2 roundingMode:mode decimalTrimmingMode:meters];
 
     v15 = v16;
   }
@@ -601,17 +601,17 @@ LABEL_8:
   return v15;
 }
 
-- (unint64_t)naturalScaleUnitForDistanceInMeters:(double)a3 distanceType:(unint64_t)a4
+- (unint64_t)naturalScaleUnitForDistanceInMeters:(double)meters distanceType:(unint64_t)type
 {
   v7 = naturalScaleUnitForDistanceInMeters_distanceType____userDistanceUnit;
-  if (naturalScaleUnitForDistanceInMeters_distanceType____userDistanceUnit && v7 == [(FIUnitManager *)self->_unitManager userDistanceUnitForDistanceType:a4])
+  if (naturalScaleUnitForDistanceInMeters_distanceType____userDistanceUnit && v7 == [(FIUnitManager *)self->_unitManager userDistanceUnitForDistanceType:type])
   {
     v8 = naturalScaleUnitForDistanceInMeters_distanceType____cutoffDistanceInMeters;
   }
 
   else
   {
-    naturalScaleUnitForDistanceInMeters_distanceType____userDistanceUnit = [(FIUnitManager *)self->_unitManager userDistanceUnitForDistanceType:a4];
+    naturalScaleUnitForDistanceInMeters_distanceType____userDistanceUnit = [(FIUnitManager *)self->_unitManager userDistanceUnitForDistanceType:type];
     IsMetric = FIDistanceUnitIsMetric(naturalScaleUnitForDistanceInMeters_distanceType____userDistanceUnit);
     v10 = 0.1;
     if (IsMetric)
@@ -619,12 +619,12 @@ LABEL_8:
       v10 = 1.0;
     }
 
-    [(FIUnitManager *)self->_unitManager distanceInMetersForDistanceInUserUnit:a4 distanceType:v10];
+    [(FIUnitManager *)self->_unitManager distanceInMetersForDistanceInUserUnit:type distanceType:v10];
     naturalScaleUnitForDistanceInMeters_distanceType____cutoffDistanceInMeters = v8;
   }
 
   result = naturalScaleUnitForDistanceInMeters_distanceType____userDistanceUnit;
-  if (*&v8 > a3)
+  if (*&v8 > meters)
   {
     switch(naturalScaleUnitForDistanceInMeters_distanceType____userDistanceUnit)
     {
@@ -634,7 +634,7 @@ LABEL_8:
         return result;
       case 3:
 LABEL_11:
-        if (a4 == 4)
+        if (type == 4)
         {
           return 4;
         }
@@ -652,125 +652,125 @@ LABEL_11:
   return result;
 }
 
-- (id)_localizedStringWithDistanceUnit:(unint64_t)a3 distanceInUnit:(double)a4 unitStyle:(int64_t)a5 decimalPrecision:(unint64_t)a6 roundingMode:(unint64_t)a7 decimalTrimmingMode:(unint64_t)a8
+- (id)_localizedStringWithDistanceUnit:(unint64_t)unit distanceInUnit:(double)inUnit unitStyle:(int64_t)style decimalPrecision:(unint64_t)precision roundingMode:(unint64_t)mode decimalTrimmingMode:(unint64_t)trimmingMode
 {
   os_unfair_lock_lock(&__formatterLock);
-  v14 = _LengthFormatter(a6, a5, a7, a8);
+  v14 = _LengthFormatter(precision, style, mode, trimmingMode);
   v15 = v14;
-  if (a3 - 1 > 4)
+  if (unit - 1 > 4)
   {
     v16 = 14;
   }
 
   else
   {
-    v16 = qword_24B3AF1C0[a3 - 1];
+    v16 = qword_24B3AF1C0[unit - 1];
   }
 
-  v17 = [v14 stringFromValue:v16 unit:a4];
+  v17 = [v14 stringFromValue:v16 unit:inUnit];
   os_unfair_lock_unlock(&__formatterLock);
 
   return v17;
 }
 
-- (id)localizedShortUnitStringForDistanceUnit:(unint64_t)a3 textCase:(unint64_t)a4
+- (id)localizedShortUnitStringForDistanceUnit:(unint64_t)unit textCase:(unint64_t)case
 {
   os_unfair_lock_lock(&__formatterLock);
   v7 = _LengthFormatter(1, 2, 2, 1);
   v8 = v7;
-  if (a3 - 1 > 4)
+  if (unit - 1 > 4)
   {
     v9 = 14;
   }
 
   else
   {
-    v9 = qword_24B3AF1C0[a3 - 1];
+    v9 = qword_24B3AF1C0[unit - 1];
   }
 
   v10 = [v7 unitStringFromValue:v9 unit:100.0];
   os_unfair_lock_unlock(&__formatterLock);
-  v11 = [(FIFormattingManager *)self applyTextCase:a4 toString:v10];
+  v11 = [(FIFormattingManager *)self applyTextCase:case toString:v10];
 
   return v11;
 }
 
-- (id)localizedShortUnitStringForDistanceType:(unint64_t)a3
+- (id)localizedShortUnitStringForDistanceType:(unint64_t)type
 {
-  v4 = [(FIUnitManager *)self->_unitManager userDistanceUnitForDistanceType:a3];
+  v4 = [(FIUnitManager *)self->_unitManager userDistanceUnitForDistanceType:type];
 
   return [(FIFormattingManager *)self localizedShortUnitStringForDistanceUnit:v4];
 }
 
-- (id)localizedLongUnitStringForDistanceUnit:(unint64_t)a3 distanceInUnit:(double)a4 textCase:(unint64_t)a5
+- (id)localizedLongUnitStringForDistanceUnit:(unint64_t)unit distanceInUnit:(double)inUnit textCase:(unint64_t)case
 {
   os_unfair_lock_lock(&__formatterLock);
   v9 = _LengthFormatter(1, 3, 2, 1);
   v10 = v9;
-  if (a3 - 1 > 4)
+  if (unit - 1 > 4)
   {
     v11 = 14;
   }
 
   else
   {
-    v11 = qword_24B3AF1C0[a3 - 1];
+    v11 = qword_24B3AF1C0[unit - 1];
   }
 
-  v12 = [v9 unitStringFromValue:v11 unit:a4];
+  v12 = [v9 unitStringFromValue:v11 unit:inUnit];
   os_unfair_lock_unlock(&__formatterLock);
-  v13 = [(FIFormattingManager *)self applyTextCase:a5 toString:v12];
+  v13 = [(FIFormattingManager *)self applyTextCase:case toString:v12];
 
   return v13;
 }
 
-- (id)localizedUnitStringForDistanceUnit:(unint64_t)a3 distanceInUnit:(double)a4 unitStyle:(unint64_t)a5
+- (id)localizedUnitStringForDistanceUnit:(unint64_t)unit distanceInUnit:(double)inUnit unitStyle:(unint64_t)style
 {
-  if (a5 - 1 >= 2)
+  if (style - 1 >= 2)
   {
-    if (a5 == 3)
+    if (style == 3)
     {
-      v5 = [(FIFormattingManager *)self localizedLongUnitStringForDistanceUnit:a3 distanceInUnit:a4];
+      inUnit = [(FIFormattingManager *)self localizedLongUnitStringForDistanceUnit:unit distanceInUnit:inUnit];
     }
 
     else
     {
-      v5 = &stru_285E60370;
+      inUnit = &stru_285E60370;
     }
   }
 
   else
   {
-    v5 = [(FIFormattingManager *)self localizedShortUnitStringForDistanceUnit:a3, a4];
+    inUnit = [(FIFormattingManager *)self localizedShortUnitStringForDistanceUnit:unit, inUnit];
   }
 
-  return v5;
+  return inUnit;
 }
 
-- (id)localizedPaceStringWithDistance:(id)a3 overDuration:(double)a4 paceFormat:(int64_t)a5 unitStyle:(unint64_t)a6 decimalTrimmingMode:(unint64_t)a7 distanceType:(unint64_t)a8 zeroShowsDashes:(BOOL)a9
+- (id)localizedPaceStringWithDistance:(id)distance overDuration:(double)duration paceFormat:(int64_t)format unitStyle:(unint64_t)style decimalTrimmingMode:(unint64_t)mode distanceType:(unint64_t)type zeroShowsDashes:(BOOL)dashes
 {
-  v9 = a9;
-  v16 = a3;
-  v17 = [(FIFormattingManager *)self decimalPrecisionForPaceFormat:a5];
-  if (a5 == 4)
+  dashesCopy = dashes;
+  distanceCopy = distance;
+  v17 = [(FIFormattingManager *)self decimalPrecisionForPaceFormat:format];
+  if (format == 4)
   {
     v18 = v17;
-    [(FIFormattingManager *)self speedPerHourWithDistance:v16 overDuration:4 paceFormat:a8 distanceType:a4];
+    [(FIFormattingManager *)self speedPerHourWithDistance:distanceCopy overDuration:4 paceFormat:type distanceType:duration];
     v20 = v19;
 
     v21 = objc_opt_class();
     v22 = [MEMORY[0x277CCABB0] numberWithDouble:v20];
-    v23 = [v21 stringWithNumber:v22 decimalPrecision:v18 roundingMode:2 decimalTrimmingMode:a7];
+    v23 = [v21 stringWithNumber:v22 decimalPrecision:v18 roundingMode:2 decimalTrimmingMode:mode];
   }
 
   else
   {
-    [(FIUnitManager *)self->_unitManager paceWithDistance:v16 overDuration:a5 paceFormat:a8 distanceType:a4];
+    [(FIUnitManager *)self->_unitManager paceWithDistance:distanceCopy overDuration:format paceFormat:type distanceType:duration];
     v25 = v24;
 
-    if (v25 != 0.0 || !v9)
+    if (v25 != 0.0 || !dashesCopy)
     {
-      if (a6 == 3)
+      if (style == 3)
       {
         v27 = 6;
       }
@@ -793,23 +793,23 @@ LABEL_11:
   return v23;
 }
 
-- (id)localizedPaceAndUnitWithDistance:(id)a3 overDuration:(double)a4 paceFormat:(int64_t)a5 distanceType:(unint64_t)a6 unitStyle:(unint64_t)a7 decimalTrimmingMode:(unint64_t)a8
+- (id)localizedPaceAndUnitWithDistance:(id)distance overDuration:(double)duration paceFormat:(int64_t)format distanceType:(unint64_t)type unitStyle:(unint64_t)style decimalTrimmingMode:(unint64_t)mode
 {
-  v15 = a3;
-  v16 = [(FIFormattingManager *)self localizedPaceStringWithDistance:v15 overDuration:a5 paceFormat:a7 unitStyle:a8 decimalTrimmingMode:a6 distanceType:a4];
-  v17 = [(FIUnitManager *)self->_unitManager paceDistanceUnitForDistanceType:a6];
-  if ((a5 - 1) < 3)
+  distanceCopy = distance;
+  v16 = [(FIFormattingManager *)self localizedPaceStringWithDistance:distanceCopy overDuration:format paceFormat:style unitStyle:mode decimalTrimmingMode:type distanceType:duration];
+  v17 = [(FIUnitManager *)self->_unitManager paceDistanceUnitForDistanceType:type];
+  if ((format - 1) < 3)
   {
-    if (a7 > 1)
+    if (style > 1)
     {
-      if (a7 != 2)
+      if (style != 2)
       {
-        if (a7 != 3)
+        if (style != 3)
         {
           goto LABEL_21;
         }
 
-        v24 = [(FIFormattingManager *)self localizedPaceUnitStringWithDistanceType:a6 distanceUnit:v17 unitStyle:3];
+        v24 = [(FIFormattingManager *)self localizedPaceUnitStringWithDistanceType:type distanceUnit:v17 unitStyle:3];
         v25 = MEMORY[0x277CCACA8];
         v26 = FIFitnessUIBundle();
         v27 = [v26 localizedStringForKey:@"PACE_PER_UNIT" value:&stru_285E60370 table:@"Localizable"];
@@ -818,26 +818,26 @@ LABEL_11:
         goto LABEL_20;
       }
 
-      v18 = self;
-      v19 = a6;
+      selfCopy2 = self;
+      typeCopy2 = type;
       v20 = v17;
       v21 = 2;
       goto LABEL_17;
     }
 
-    if (a7)
+    if (style)
     {
-      if (a7 != 1)
+      if (style != 1)
       {
         goto LABEL_21;
       }
 
-      v18 = self;
-      v19 = a6;
+      selfCopy2 = self;
+      typeCopy2 = type;
       v20 = v17;
       v21 = 1;
 LABEL_17:
-      v28 = [(FIFormattingManager *)v18 localizedPaceUnitStringWithDistanceType:v19 distanceUnit:v20 unitStyle:v21];
+      v28 = [(FIFormattingManager *)selfCopy2 localizedPaceUnitStringWithDistanceType:typeCopy2 distanceUnit:v20 unitStyle:v21];
 LABEL_19:
       v24 = v28;
       v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v16, v28];
@@ -851,27 +851,27 @@ LABEL_12:
     goto LABEL_21;
   }
 
-  if (a5 != 4)
+  if (format != 4)
   {
     goto LABEL_21;
   }
 
-  [(FIFormattingManager *)self speedPerHourWithDistance:v15 overDuration:4 paceFormat:a6 distanceType:a4];
+  [(FIFormattingManager *)self speedPerHourWithDistance:distanceCopy overDuration:4 paceFormat:type distanceType:duration];
   v23 = v22;
-  if (a8 == 2)
+  if (mode == 2)
   {
     v23 = trunc(v22 * 10.0) / 10.0;
   }
 
-  if (a7 - 1 < 2)
+  if (style - 1 < 2)
   {
-    v28 = [(FIFormattingManager *)self localizedSpeedUnitStringForDistanceUnit:v17 unitStyle:a7];
+    v28 = [(FIFormattingManager *)self localizedSpeedUnitStringForDistanceUnit:v17 unitStyle:style];
     goto LABEL_19;
   }
 
-  if (a7 != 3)
+  if (style != 3)
   {
-    if (a7)
+    if (style)
     {
       goto LABEL_21;
     }
@@ -898,9 +898,9 @@ LABEL_21:
   return v8;
 }
 
-- (unint64_t)decimalPrecisionForPaceFormat:(int64_t)a3
+- (unint64_t)decimalPrecisionForPaceFormat:(int64_t)format
 {
-  if ((a3 - 1) < 3)
+  if ((format - 1) < 3)
   {
     return 1;
   }
@@ -911,50 +911,50 @@ LABEL_21:
   }
 }
 
-- (id)localizedPaceAndUnitStringForSpeed:(double)a3 activityType:(id)a4
+- (id)localizedPaceAndUnitStringForSpeed:(double)speed activityType:(id)type
 {
-  v6 = FIDistanceTypeForActivityType(a4);
+  v6 = FIDistanceTypeForActivityType(type);
   v7 = FIPaceFormatForDistanceType(v6);
   v8 = MEMORY[0x277CCD7E8];
-  v9 = [MEMORY[0x277CCDAB0] meterUnit];
-  v10 = [v8 quantityWithUnit:v9 doubleValue:a3];
+  meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+  v10 = [v8 quantityWithUnit:meterUnit doubleValue:speed];
   v11 = [(FIFormattingManager *)self localizedPaceStringWithDistance:v10 overDuration:v7 paceFormat:v6 distanceType:1.0];
 
-  v12 = [(FIFormattingManager *)self unitManager];
-  v13 = [v12 paceDistanceUnitForDistanceType:v6];
+  unitManager = [(FIFormattingManager *)self unitManager];
+  v13 = [unitManager paceDistanceUnitForDistanceType:v6];
 
   v14 = [(FIFormattingManager *)self localizedPaceUnitStringWithDistanceType:v6 distanceUnit:v13];
-  v15 = [v14 localizedUppercaseString];
+  localizedUppercaseString = [v14 localizedUppercaseString];
 
   v16 = MEMORY[0x277CCACA8];
   v17 = FIFitnessUIBundle();
   v18 = [v17 localizedStringForKey:@"PACE_FORMAT" value:&stru_285E60370 table:@"Localizable"];
-  v19 = [v16 stringWithFormat:v18, v11, v15];
+  v19 = [v16 stringWithFormat:v18, v11, localizedUppercaseString];
 
   return v19;
 }
 
-- (double)speedPerHourWithDistance:(id)a3 overDuration:(double)a4 paceFormat:(int64_t)a5 distanceType:(unint64_t)a6
+- (double)speedPerHourWithDistance:(id)distance overDuration:(double)duration paceFormat:(int64_t)format distanceType:(unint64_t)type
 {
   unitManager = self->_unitManager;
-  v9 = a3;
-  v10 = FIHKUnitForDistanceUnit([(FIUnitManager *)unitManager paceDistanceUnitForDistanceType:a6]);
-  [v9 doubleValueForUnit:v10];
+  distanceCopy = distance;
+  v10 = FIHKUnitForDistanceUnit([(FIUnitManager *)unitManager paceDistanceUnitForDistanceType:type]);
+  [distanceCopy doubleValueForUnit:v10];
   v12 = v11;
 
-  return v12 / (a4 / 3600.0);
+  return v12 / (duration / 3600.0);
 }
 
-- (id)localizedSwimmingPaceStringWithDistance:(id)a3 overDuration:(double)a4 paceFormat:(int64_t)a5
+- (id)localizedSwimmingPaceStringWithDistance:(id)distance overDuration:(double)duration paceFormat:(int64_t)format
 {
-  v8 = a3;
-  v9 = [(FIFormattingManager *)self unitManager];
-  v10 = [v9 userDistanceHKUnitForDistanceType:3];
+  distanceCopy = distance;
+  unitManager = [(FIFormattingManager *)self unitManager];
+  v10 = [unitManager userDistanceHKUnitForDistanceType:3];
 
-  [v8 doubleValueForUnit:v10];
+  [distanceCopy doubleValueForUnit:v10];
   v12 = v11;
 
-  if (v12 > 2.22044605e-16 && a4 / v12 * a5 <= 3600.0)
+  if (v12 > 2.22044605e-16 && duration / v12 * format <= 3600.0)
   {
     v14 = [(FIFormattingManager *)self stringWithDuration:1 durationFormat:?];
   }
@@ -968,30 +968,30 @@ LABEL_21:
   return v14;
 }
 
-- (id)localizedStrokeCountStringWithCount:(int64_t)a3 overDistance:(id)a4 paceFormat:(int64_t)a5
+- (id)localizedStrokeCountStringWithCount:(int64_t)count overDistance:(id)distance paceFormat:(int64_t)format
 {
-  v8 = a4;
-  v9 = [(FIFormattingManager *)self unitManager];
-  v10 = [v9 userDistanceHKUnitForDistanceType:3];
+  distanceCopy = distance;
+  unitManager = [(FIFormattingManager *)self unitManager];
+  v10 = [unitManager userDistanceHKUnitForDistanceType:3];
 
-  [v8 doubleValueForUnit:v10];
+  [distanceCopy doubleValueForUnit:v10];
   v12 = v11;
 
   if (v12 > 2.22044605e-16)
   {
-    a3 = llround(a3 / v12 * a5);
+    count = llround(count / v12 * format);
   }
 
   v13 = objc_opt_class();
-  v14 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v14 = [MEMORY[0x277CCABB0] numberWithInteger:count];
   v15 = [v13 stringWithNumber:v14 decimalPrecision:1];
 
   return v15;
 }
 
-+ (id)localizedShortCadenceUnitStringForActivityType:(unint64_t)a3
++ (id)localizedShortCadenceUnitStringForActivityType:(unint64_t)type
 {
-  v3 = FIIsWorkoutTypePedestrianActivity(a3);
+  v3 = FIIsWorkoutTypePedestrianActivity(type);
   v4 = FIFitnessUIBundle();
   v5 = v4;
   if (v3)
@@ -1017,29 +1017,29 @@ LABEL_21:
   return v3;
 }
 
-- (id)localizedPowerUnitStringForPower:(double)a3
+- (id)localizedPowerUnitStringForPower:(double)power
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = FIFitnessUIBundle();
   v6 = [v5 localizedStringForKey:@"POWER_SHORT_DESCRIPTION" value:&stru_285E60370 table:@"Localizable"];
-  v7 = [v4 localizedStringWithFormat:v6, *&a3];
+  v7 = [v4 localizedStringWithFormat:v6, *&power];
 
   return v7;
 }
 
-- (id)localizedShortTypeDistinguishingUnitStringForPowerType:(unint64_t)a3 unitString:(id)a4
+- (id)localizedShortTypeDistinguishingUnitStringForPowerType:(unint64_t)type unitString:(id)string
 {
-  v5 = a4;
-  v6 = v5;
-  if (a3 == 12)
+  stringCopy = string;
+  stringCopy = stringCopy;
+  if (type == 12)
   {
     v7 = MEMORY[0x277CCACA8];
     v8 = FIFitnessUIBundle();
     v9 = [v8 localizedStringForKey:@"AVERAGE_POWER_DISTINGUISHING_SHORT" value:&stru_285E60370 table:@"Localizable"];
-    v6 = [v7 stringWithFormat:v9, v5];
+    stringCopy = [v7 stringWithFormat:v9, stringCopy];
   }
 
-  return v6;
+  return stringCopy;
 }
 
 - (id)localizedSpeedUnitString
@@ -1050,26 +1050,26 @@ LABEL_21:
   return v4;
 }
 
-- (id)localizedSpeedUnitStringForDistanceType:(unint64_t)a3 unitStyle:(unint64_t)a4
+- (id)localizedSpeedUnitStringForDistanceType:(unint64_t)type unitStyle:(unint64_t)style
 {
-  v7 = [(FIFormattingManager *)self unitManager];
-  v8 = [v7 paceDistanceUnitForDistanceType:a3];
+  unitManager = [(FIFormattingManager *)self unitManager];
+  v8 = [unitManager paceDistanceUnitForDistanceType:type];
 
-  return [(FIFormattingManager *)self localizedSpeedUnitStringForDistanceUnit:v8 unitStyle:a4];
+  return [(FIFormattingManager *)self localizedSpeedUnitStringForDistanceUnit:v8 unitStyle:style];
 }
 
-- (id)localizedSpeedUnitStringForActivityType:(id)a3
+- (id)localizedSpeedUnitStringForActivityType:(id)type
 {
-  v4 = FIDistanceTypeForActivityType(a3);
-  v5 = [(FIFormattingManager *)self unitManager];
-  v6 = [v5 userDistanceUnitForDistanceType:v4];
+  v4 = FIDistanceTypeForActivityType(type);
+  unitManager = [(FIFormattingManager *)self unitManager];
+  v6 = [unitManager userDistanceUnitForDistanceType:v4];
 
   return [(FIFormattingManager *)self localizedSpeedUnitStringForDistanceUnit:v6 unitStyle:1];
 }
 
-- (id)localizedSpeedUnitStringForDistanceUnit:(unint64_t)a3 unitStyle:(unint64_t)a4
+- (id)localizedSpeedUnitStringForDistanceUnit:(unint64_t)unit unitStyle:(unint64_t)style
 {
-  IsMetric = FIDistanceUnitIsMetric(a3);
+  IsMetric = FIDistanceUnitIsMetric(unit);
   v5 = FIFitnessUIBundle();
   v6 = v5;
   if (IsMetric)
@@ -1087,16 +1087,16 @@ LABEL_21:
   return v8;
 }
 
-- (id)localizedPaceUnitStringWithDistanceType:(unint64_t)a3 distanceUnit:(unint64_t)a4 unitStyle:(int64_t)a5
+- (id)localizedPaceUnitStringWithDistanceType:(unint64_t)type distanceUnit:(unint64_t)unit unitStyle:(int64_t)style
 {
-  v8 = FIPaceFormatForDistanceType(a3);
+  v8 = FIPaceFormatForDistanceType(type);
   v9 = FINumberOfUnitsInPaceForPaceFormat(v8);
   v10 = v9;
-  if ((a5 - 1) >= 2)
+  if ((style - 1) >= 2)
   {
-    if (a5 == 3)
+    if (style == 3)
     {
-      v11 = [(FIFormattingManager *)self localizedLongUnitStringForDistanceUnit:a4 distanceInUnit:v9];
+      v11 = [(FIFormattingManager *)self localizedLongUnitStringForDistanceUnit:unit distanceInUnit:v9];
       v12 = @"PACE_MANY_UNIT_FORMAT_LONG";
     }
 
@@ -1109,7 +1109,7 @@ LABEL_21:
 
   else
   {
-    v11 = [(FIFormattingManager *)self localizedShortUnitStringForDistanceUnit:a4];
+    v11 = [(FIFormattingManager *)self localizedShortUnitStringForDistanceUnit:unit];
     v12 = @"PACE_MANY_UNIT_FORMAT";
   }
 
@@ -1130,19 +1130,19 @@ LABEL_21:
   return v11;
 }
 
-- (id)finalLocalizedKeyForKey:(id)a3 multiline:(BOOL)a4
+- (id)finalLocalizedKeyForKey:(id)key multiline:(BOOL)multiline
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = v5;
-  if (v4)
+  multilineCopy = multiline;
+  keyCopy = key;
+  v6 = keyCopy;
+  if (multilineCopy)
   {
-    v7 = v5;
+    v7 = keyCopy;
   }
 
   else
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v5, @"_ONE_LINE"];
+    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", keyCopy, @"_ONE_LINE"];
   }
 
   v8 = v7;
@@ -1150,13 +1150,13 @@ LABEL_21:
   return v8;
 }
 
-- (id)localizedDistinguishingCadenceUnitStringWithMetricType:(unint64_t)a3
+- (id)localizedDistinguishingCadenceUnitStringWithMetricType:(unint64_t)type
 {
   v4 = [objc_opt_class() localizedShortCadenceUnitStringForActivityType:37];
   v5 = MEMORY[0x277CCACA8];
   v6 = FIFitnessUIBundle();
   v7 = v6;
-  if (a3 == 16)
+  if (type == 16)
   {
     v8 = @"AVERAGE_CADENCE_DISTINGUISHING_LONG";
   }
@@ -1169,18 +1169,18 @@ LABEL_21:
   v9 = [v6 localizedStringForKey:v8 value:&stru_285E60370 table:@"Localizable"];
   v10 = [v5 stringWithFormat:v9, v4];
 
-  v11 = [v10 localizedUppercaseString];
+  localizedUppercaseString = [v10 localizedUppercaseString];
 
-  return v11;
+  return localizedUppercaseString;
 }
 
-- (id)localizedDistinguishingPowerUnitStringWithMetricType:(unint64_t)a3
+- (id)localizedDistinguishingPowerUnitStringWithMetricType:(unint64_t)type
 {
-  v4 = [objc_opt_class() localizedShortPowerUnitString];
+  localizedShortPowerUnitString = [objc_opt_class() localizedShortPowerUnitString];
   v5 = MEMORY[0x277CCACA8];
   v6 = FIFitnessUIBundle();
   v7 = v6;
-  if (a3 == 12)
+  if (type == 12)
   {
     v8 = @"AVERAGE_POWER_DISTINGUISHING_LONG";
   }
@@ -1191,19 +1191,19 @@ LABEL_21:
   }
 
   v9 = [v6 localizedStringForKey:v8 value:&stru_285E60370 table:@"Localizable"];
-  v10 = [v5 stringWithFormat:v9, v4];
+  v10 = [v5 stringWithFormat:v9, localizedShortPowerUnitString];
 
-  v11 = [v10 localizedUppercaseString];
+  localizedUppercaseString = [v10 localizedUppercaseString];
 
-  return v11;
+  return localizedUppercaseString;
 }
 
-- (id)localizedDistinguishingPowerStringWithMetricType:(unint64_t)a3
+- (id)localizedDistinguishingPowerStringWithMetricType:(unint64_t)type
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = FIFitnessUIBundle();
   v6 = v5;
-  if (a3 == 12)
+  if (type == 12)
   {
     v7 = @"AVERAGE_POWER_DISTINGUISHING_LONG";
   }
@@ -1216,9 +1216,9 @@ LABEL_21:
   v8 = [v5 localizedStringForKey:v7 value:&stru_285E60370 table:@"Localizable"];
   v9 = [v4 stringWithFormat:v8, @"Power"];
 
-  v10 = [v9 localizedUppercaseString];
+  localizedUppercaseString = [v9 localizedUppercaseString];
 
-  return v10;
+  return localizedUppercaseString;
 }
 
 - (unint64_t)userDistanceUnitForSwimmingLapLength
@@ -1234,9 +1234,9 @@ LABEL_21:
   }
 }
 
-- (id)localizedStringWithPersonHeight:(id)a3 unitStyle:(int64_t)a4
+- (id)localizedStringWithPersonHeight:(id)height unitStyle:(int64_t)style
 {
-  v5 = a3;
+  heightCopy = height;
   os_unfair_lock_lock(&__formatterLock);
   v6 = _LengthFormatterForPersonHeight___formatter;
   if (!_LengthFormatterForPersonHeight___formatter)
@@ -1252,11 +1252,11 @@ LABEL_21:
   v9 = _IntegerNumberFormatter(5);
   [v6 setNumberFormatter:v9];
 
-  [_LengthFormatterForPersonHeight___formatter setUnitStyle:a4];
+  [_LengthFormatterForPersonHeight___formatter setUnitStyle:style];
   v10 = MEMORY[0x277CCDAB0];
   v11 = _LengthFormatterForPersonHeight___formatter;
-  v12 = [v10 meterUnit];
-  [v5 doubleValueForUnit:v12];
+  meterUnit = [v10 meterUnit];
+  [heightCopy doubleValueForUnit:meterUnit];
   v14 = v13;
 
   v15 = [v11 stringFromMeters:v14];
@@ -1266,84 +1266,84 @@ LABEL_21:
   return v15;
 }
 
-- (double)roundedDailyMoveGoal:(double)a3 activityMoveMode:(int64_t)a4
+- (double)roundedDailyMoveGoal:(double)goal activityMoveMode:(int64_t)mode
 {
-  if (a4 == 2)
+  if (mode == 2)
   {
-    [(FIFormattingManager *)self roundedDailyMoveGoalForMoveMinutes:a3];
+    [(FIFormattingManager *)self roundedDailyMoveGoalForMoveMinutes:goal];
   }
 
   else
   {
-    [(FIFormattingManager *)self roundedDailyMoveGoalForCalories:a3];
+    [(FIFormattingManager *)self roundedDailyMoveGoalForCalories:goal];
   }
 
   return result;
 }
 
-- (double)roundedDailyMoveGoalForCalories:(double)a3
+- (double)roundedDailyMoveGoalForCalories:(double)calories
 {
-  v4 = [(FIUnitManager *)self->_unitManager userActiveEnergyBurnedUnit];
-  IsCalorieUnit = FIHKUnitIsCalorieUnit(v4);
+  userActiveEnergyBurnedUnit = [(FIUnitManager *)self->_unitManager userActiveEnergyBurnedUnit];
+  IsCalorieUnit = FIHKUnitIsCalorieUnit(userActiveEnergyBurnedUnit);
 
   if (IsCalorieUnit)
   {
-    return round(a3 / 10.0) * 10.0;
+    return round(calories / 10.0) * 10.0;
   }
 
   v7 = [MEMORY[0x277CCDAB0] jouleUnitWithMetricPrefix:9];
-  v8 = [MEMORY[0x277CCDAB0] kilocalorieUnit];
-  [v8 _valueByConvertingValue:v7 toUnit:a3];
+  kilocalorieUnit = [MEMORY[0x277CCDAB0] kilocalorieUnit];
+  [kilocalorieUnit _valueByConvertingValue:v7 toUnit:calories];
   v10 = v9;
 
-  v11 = [MEMORY[0x277CCDAB0] kilocalorieUnit];
-  [v7 _valueByConvertingValue:v11 toUnit:round(v10 / 20.0) * 20.0];
+  kilocalorieUnit2 = [MEMORY[0x277CCDAB0] kilocalorieUnit];
+  [v7 _valueByConvertingValue:kilocalorieUnit2 toUnit:round(v10 / 20.0) * 20.0];
   v13 = v12;
 
   return v13;
 }
 
-- (double)energyBurnedInUserUnitForCalories:(double)a3
+- (double)energyBurnedInUserUnitForCalories:(double)calories
 {
-  v4 = [(FIUnitManager *)self->_unitManager userActiveEnergyBurnedUnit];
-  v5 = [MEMORY[0x277CCDAB0] kilocalorieUnit];
-  [v5 _valueByConvertingValue:v4 toUnit:a3];
+  userActiveEnergyBurnedUnit = [(FIUnitManager *)self->_unitManager userActiveEnergyBurnedUnit];
+  kilocalorieUnit = [MEMORY[0x277CCDAB0] kilocalorieUnit];
+  [kilocalorieUnit _valueByConvertingValue:userActiveEnergyBurnedUnit toUnit:calories];
   v7 = v6;
 
   return v7;
 }
 
-- (double)caloriesForEnergyBurnedInUserUnit:(double)a3
+- (double)caloriesForEnergyBurnedInUserUnit:(double)unit
 {
-  v4 = [(FIUnitManager *)self->_unitManager userActiveEnergyBurnedUnit];
-  v5 = [MEMORY[0x277CCDAB0] kilocalorieUnit];
-  [v4 _valueByConvertingValue:v5 toUnit:a3];
+  userActiveEnergyBurnedUnit = [(FIUnitManager *)self->_unitManager userActiveEnergyBurnedUnit];
+  kilocalorieUnit = [MEMORY[0x277CCDAB0] kilocalorieUnit];
+  [userActiveEnergyBurnedUnit _valueByConvertingValue:kilocalorieUnit toUnit:unit];
   v7 = v6;
 
   return v7;
 }
 
-- (id)localizedStringWithMoveQuantity:(id)a3 activityMoveMode:(int64_t)a4
+- (id)localizedStringWithMoveQuantity:(id)quantity activityMoveMode:(int64_t)mode
 {
-  if (a4 == 2)
+  if (mode == 2)
   {
-    [(FIFormattingManager *)self localizedStringWithMoveMinutes:a3];
+    [(FIFormattingManager *)self localizedStringWithMoveMinutes:quantity];
   }
 
   else
   {
-    [(FIFormattingManager *)self localizedStringWithActiveEnergy:a3];
+    [(FIFormattingManager *)self localizedStringWithActiveEnergy:quantity];
   }
   v4 = ;
 
   return v4;
 }
 
-- (id)localizedStringWithMoveMinutes:(id)a3
+- (id)localizedStringWithMoveMinutes:(id)minutes
 {
   v3 = MEMORY[0x277CCDAB0];
-  v4 = a3;
-  v5 = [v3 minuteUnit];
+  minutesCopy = minutes;
+  minuteUnit = [v3 minuteUnit];
   v6 = _HKWorkoutFlooredValueForQuantity();
 
   v7 = objc_opt_class();
@@ -1353,21 +1353,21 @@ LABEL_21:
   return v9;
 }
 
-- (id)localizedStringWithMoveMinutes:(id)a3 unitStyle:(unint64_t)a4
+- (id)localizedStringWithMoveMinutes:(id)minutes unitStyle:(unint64_t)style
 {
   v5 = MEMORY[0x277CCDAB0];
-  v6 = a3;
-  v7 = [v5 minuteUnit];
+  minutesCopy = minutes;
+  minuteUnit = [v5 minuteUnit];
   v8 = _HKWorkoutFlooredValueForQuantity();
 
-  if (a4 > 3)
+  if (style > 3)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = off_2790050F0[a4];
+    v9 = off_2790050F0[style];
   }
 
   v10 = v8;
@@ -1381,11 +1381,11 @@ LABEL_21:
   return v15;
 }
 
-- (id)localizedStringWithBriskMinutes:(id)a3
+- (id)localizedStringWithBriskMinutes:(id)minutes
 {
   v3 = MEMORY[0x277CCDAB0];
-  v4 = a3;
-  v5 = [v3 minuteUnit];
+  minutesCopy = minutes;
+  minuteUnit = [v3 minuteUnit];
   v6 = _HKWorkoutFlooredValueForQuantity();
 
   v7 = objc_opt_class();
@@ -1395,11 +1395,11 @@ LABEL_21:
   return v9;
 }
 
-- (id)localizedStringWithActiveHours:(id)a3
+- (id)localizedStringWithActiveHours:(id)hours
 {
   v3 = MEMORY[0x277CCDAB0];
-  v4 = a3;
-  v5 = [v3 countUnit];
+  hoursCopy = hours;
+  countUnit = [v3 countUnit];
   v6 = _HKWorkoutFlooredValueForQuantity();
 
   v7 = objc_opt_class();
@@ -1409,37 +1409,37 @@ LABEL_21:
   return v9;
 }
 
-- (id)localizedStringWithMoveQuantity:(id)a3 unitStyle:(unint64_t)a4 activityMoveMode:(int64_t)a5
+- (id)localizedStringWithMoveQuantity:(id)quantity unitStyle:(unint64_t)style activityMoveMode:(int64_t)mode
 {
-  if (a5 == 2)
+  if (mode == 2)
   {
-    [(FIFormattingManager *)self localizedStringWithMoveMinutes:a3 unitStyle:a4];
+    [(FIFormattingManager *)self localizedStringWithMoveMinutes:quantity unitStyle:style];
   }
 
   else
   {
-    [(FIFormattingManager *)self localizedStringWithActiveEnergy:a3 unitStyle:a4];
+    [(FIFormattingManager *)self localizedStringWithActiveEnergy:quantity unitStyle:style];
   }
   v5 = ;
 
   return v5;
 }
 
-- (id)localizedStringWithEnergy:(id)a3 energyType:(unint64_t)a4 unitStyle:(unint64_t)a5
+- (id)localizedStringWithEnergy:(id)energy energyType:(unint64_t)type unitStyle:(unint64_t)style
 {
-  v8 = a3;
-  switch(a4)
+  energyCopy = energy;
+  switch(type)
   {
     case 3uLL:
       goto LABEL_4;
     case 2uLL:
-      v9 = [(FIUnitManager *)self->_unitManager userBasalEnergyBurnedUnit];
+      userBasalEnergyBurnedUnit = [(FIUnitManager *)self->_unitManager userBasalEnergyBurnedUnit];
       goto LABEL_6;
     case 1uLL:
 LABEL_4:
-      v9 = [(FIUnitManager *)self->_unitManager userActiveEnergyBurnedUnit];
+      userBasalEnergyBurnedUnit = [(FIUnitManager *)self->_unitManager userActiveEnergyBurnedUnit];
 LABEL_6:
-      v10 = v9;
+      v10 = userBasalEnergyBurnedUnit;
       goto LABEL_8;
   }
 
@@ -1447,10 +1447,10 @@ LABEL_6:
 LABEL_8:
   v11 = _HKWorkoutFlooredValueForQuantity();
   v12 = [MEMORY[0x277CCDAB0] energyFormatterUnitFromUnit:v10];
-  v13 = 0;
-  if (a5 > 1)
+  localizedLowercaseString = 0;
+  if (style > 1)
   {
-    if (a5 == 2)
+    if (style == 2)
     {
       os_unfair_lock_lock(&__formatterLock);
       v16 = _EnergyFormatter(v10);
@@ -1460,7 +1460,7 @@ LABEL_8:
 
     else
     {
-      if (a5 != 3)
+      if (style != 3)
       {
         goto LABEL_20;
       }
@@ -1472,13 +1472,13 @@ LABEL_8:
     }
 
     [v16 setUnitStyle:v17];
-    v13 = [v14 stringFromValue:v12 unit:v11];
+    localizedLowercaseString = [v14 stringFromValue:v12 unit:v11];
     goto LABEL_18;
   }
 
-  if (a5)
+  if (style)
   {
-    if (a5 != 1)
+    if (style != 1)
     {
       goto LABEL_20;
     }
@@ -1487,7 +1487,7 @@ LABEL_8:
     v14 = _EnergyFormatter(v10);
     [v14 setUnitStyle:1];
     v15 = [v14 stringFromValue:v12 unit:v11];
-    v13 = [v15 localizedLowercaseString];
+    localizedLowercaseString = [v15 localizedLowercaseString];
 
 LABEL_18:
     os_unfair_lock_unlock(&__formatterLock);
@@ -1496,40 +1496,40 @@ LABEL_18:
 
   v18 = objc_opt_class();
   v14 = [MEMORY[0x277CCABB0] numberWithDouble:v11];
-  v13 = [v18 stringWithNumber:v14 decimalPrecision:1];
+  localizedLowercaseString = [v18 stringWithNumber:v14 decimalPrecision:1];
 LABEL_19:
 
 LABEL_20:
 
-  return v13;
+  return localizedLowercaseString;
 }
 
-- (id)localizedStringWithEnergyInCalories:(double)a3 energyType:(unint64_t)a4 unitStyle:(unint64_t)a5
+- (id)localizedStringWithEnergyInCalories:(double)calories energyType:(unint64_t)type unitStyle:(unint64_t)style
 {
   v9 = MEMORY[0x277CCD7E8];
-  v10 = [MEMORY[0x277CCDAB0] kilocalorieUnit];
-  v11 = [v9 quantityWithUnit:v10 doubleValue:a3];
+  kilocalorieUnit = [MEMORY[0x277CCDAB0] kilocalorieUnit];
+  v11 = [v9 quantityWithUnit:kilocalorieUnit doubleValue:calories];
 
-  v12 = [(FIFormattingManager *)self localizedStringWithEnergy:v11 energyType:a4 unitStyle:a5];
+  v12 = [(FIFormattingManager *)self localizedStringWithEnergy:v11 energyType:type unitStyle:style];
 
   return v12;
 }
 
-- (id)localizedShortTypeDistinguishingUnitStringForEnergyType:(unint64_t)a3 workoutSectionType:(unint64_t)a4 multiline:(BOOL)a5
+- (id)localizedShortTypeDistinguishingUnitStringForEnergyType:(unint64_t)type workoutSectionType:(unint64_t)sectionType multiline:(BOOL)multiline
 {
   v6 = @"SEGMENT_";
-  if (a4 != 3)
+  if (sectionType != 3)
   {
     v6 = &stru_285E60370;
   }
 
   v7 = @"ACTIVE";
-  if (a3 == 3)
+  if (type == 3)
   {
     v7 = @"TOTAL";
   }
 
-  if (a5)
+  if (multiline)
   {
     v8 = @"%@%@_DISTINGUISHING_SHORT";
   }
@@ -1547,9 +1547,9 @@ LABEL_20:
   return v12;
 }
 
-+ (unint64_t)sectionTypeForMetricType:(unint64_t)a3
++ (unint64_t)sectionTypeForMetricType:(unint64_t)type
 {
-  if (a3 - 21 >= 5)
+  if (type - 21 >= 5)
   {
     return 1;
   }
@@ -1560,9 +1560,9 @@ LABEL_20:
   }
 }
 
-- (id)localizedLongMoveUnitStringWithActivityMoveMode:(int64_t)a3
+- (id)localizedLongMoveUnitStringWithActivityMoveMode:(int64_t)mode
 {
-  if (a3 == 2)
+  if (mode == 2)
   {
     [(FIFormattingManager *)self localizedLongMoveMinutesUnitString];
   }
@@ -1576,16 +1576,16 @@ LABEL_20:
   return v3;
 }
 
-- (id)localizedLongMoveUnitStringWithActivityMoveMode:(int64_t)a3 value:(unint64_t)a4
+- (id)localizedLongMoveUnitStringWithActivityMoveMode:(int64_t)mode value:(unint64_t)value
 {
-  if (a3 == 2)
+  if (mode == 2)
   {
-    [(FIFormattingManager *)self localizedLongMoveMinutesUnitStringForValue:a4];
+    [(FIFormattingManager *)self localizedLongMoveMinutesUnitStringForValue:value];
   }
 
   else
   {
-    [(FIFormattingManager *)self localizedLongActiveEnergyUnitString:a3];
+    [(FIFormattingManager *)self localizedLongActiveEnergyUnitString:mode];
   }
   v4 = ;
 
@@ -1598,20 +1598,20 @@ LABEL_20:
   v3 = FIFitnessUIBundle();
   v4 = [v3 localizedStringForKey:@"BRISK_MINUTES_UNIT_LONG" value:&stru_285E60370 table:@"Localizable-tinker"];
   v5 = [v2 localizedStringWithFormat:v4];
-  v6 = [v5 localizedUppercaseString];
+  localizedUppercaseString = [v5 localizedUppercaseString];
 
-  return v6;
+  return localizedUppercaseString;
 }
 
-- (id)localizedLongBriskMinutesUnitStringForValue:(unint64_t)a3
+- (id)localizedLongBriskMinutesUnitStringForValue:(unint64_t)value
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = FIFitnessUIBundle();
   v6 = [v5 localizedStringForKey:@"BRISK_MINUTES_UNIT_LONG" value:&stru_285E60370 table:@"Localizable-tinker"];
-  v7 = [v4 localizedStringWithFormat:v6, a3];
-  v8 = [v7 localizedUppercaseString];
+  value = [v4 localizedStringWithFormat:v6, value];
+  localizedUppercaseString = [value localizedUppercaseString];
 
-  return v8;
+  return localizedUppercaseString;
 }
 
 - (id)localizedLongActiveHoursUnitString
@@ -1620,20 +1620,20 @@ LABEL_20:
   v3 = FIFitnessUIBundle();
   v4 = [v3 localizedStringForKey:@"ACTIVE_HOURS_UNIT_LONG" value:&stru_285E60370 table:@"Localizable-tinker"];
   v5 = [v2 localizedStringWithFormat:v4];
-  v6 = [v5 localizedUppercaseString];
+  localizedUppercaseString = [v5 localizedUppercaseString];
 
-  return v6;
+  return localizedUppercaseString;
 }
 
-- (id)localizedLongActiveHoursUnitStringForValue:(unint64_t)a3
+- (id)localizedLongActiveHoursUnitStringForValue:(unint64_t)value
 {
   v4 = MEMORY[0x277CCACA8];
   v5 = FIFitnessUIBundle();
   v6 = [v5 localizedStringForKey:@"ACTIVE_HOURS_UNIT_LONG" value:&stru_285E60370 table:@"Localizable-tinker"];
-  v7 = [v4 localizedStringWithFormat:v6, a3];
-  v8 = [v7 localizedUppercaseString];
+  value = [v4 localizedStringWithFormat:v6, value];
+  localizedUppercaseString = [value localizedUppercaseString];
 
-  return v8;
+  return localizedUppercaseString;
 }
 
 - (id)localizedShortBriskMinutesUnitString
@@ -1642,9 +1642,9 @@ LABEL_20:
   v3 = FIFitnessUIBundle();
   v4 = [v3 localizedStringForKey:@"BRISK_MINUTES_UNIT_SHORT" value:&stru_285E60370 table:@"Localizable-tinker"];
   v5 = [v2 localizedStringWithFormat:v4];
-  v6 = [v5 localizedUppercaseString];
+  localizedUppercaseString = [v5 localizedUppercaseString];
 
-  return v6;
+  return localizedUppercaseString;
 }
 
 - (id)localizedShortActiveHoursUnitString
@@ -1653,24 +1653,24 @@ LABEL_20:
   v3 = FIFitnessUIBundle();
   v4 = [v3 localizedStringForKey:@"ACTIVE_HOURS_UNIT_SHORT" value:&stru_285E60370 table:@"Localizable-tinker"];
   v5 = [v2 localizedStringWithFormat:v4];
-  v6 = [v5 localizedUppercaseString];
+  localizedUppercaseString = [v5 localizedUppercaseString];
 
-  return v6;
+  return localizedUppercaseString;
 }
 
-- (id)localizedLongActiveEnergyUnitStringWithTextCase:(unint64_t)a3
+- (id)localizedLongActiveEnergyUnitStringWithTextCase:(unint64_t)case
 {
-  v5 = [(FIUnitManager *)self->_unitManager userActiveEnergyBurnedUnit];
-  v6 = [(FIFormattingManager *)self _energyBurnedUnitStringForUnit:v5 useShortString:0];
+  userActiveEnergyBurnedUnit = [(FIUnitManager *)self->_unitManager userActiveEnergyBurnedUnit];
+  v6 = [(FIFormattingManager *)self _energyBurnedUnitStringForUnit:userActiveEnergyBurnedUnit useShortString:0];
 
   v7 = [MEMORY[0x277CBEB98] setWithArray:&unk_285E6B0A0];
-  v8 = [MEMORY[0x277CBEAF8] currentLocale];
-  v9 = [v8 objectForKey:*MEMORY[0x277CBE6C8]];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  v9 = [currentLocale objectForKey:*MEMORY[0x277CBE6C8]];
   v10 = [v7 containsObject:v9];
 
   if ((v10 & 1) == 0)
   {
-    v11 = [(FIFormattingManager *)self applyTextCase:a3 toString:v6];
+    v11 = [(FIFormattingManager *)self applyTextCase:case toString:v6];
 
     v6 = v11;
   }
@@ -1678,62 +1678,62 @@ LABEL_20:
   return v6;
 }
 
-- (id)localizedLongMoveMinutesUnitStringWithTextCase:(unint64_t)a3
+- (id)localizedLongMoveMinutesUnitStringWithTextCase:(unint64_t)case
 {
   v5 = MEMORY[0x277CCACA8];
   v6 = FIFitnessUIBundle();
   v7 = [v6 localizedStringForKey:@"APPLE_MOVE_TIME_UNIT_LONG" value:&stru_285E60370 table:@"Localizable-tinker"];
   v8 = [v5 localizedStringWithFormat:v7];
 
-  v9 = [(FIFormattingManager *)self applyTextCase:a3 toString:v8];
+  v9 = [(FIFormattingManager *)self applyTextCase:case toString:v8];
 
   return v9;
 }
 
-- (id)localizedLongMoveMinutesUnitStringWithTextCase:(unint64_t)a3 value:(unint64_t)a4
+- (id)localizedLongMoveMinutesUnitStringWithTextCase:(unint64_t)case value:(unint64_t)value
 {
   v7 = MEMORY[0x277CCACA8];
   v8 = FIFitnessUIBundle();
   v9 = [v8 localizedStringForKey:@"APPLE_MOVE_TIME_UNIT_LONG" value:&stru_285E60370 table:@"Localizable-tinker"];
-  v10 = [v7 localizedStringWithFormat:v9, a4];
+  value = [v7 localizedStringWithFormat:v9, value];
 
-  v11 = [(FIFormattingManager *)self applyTextCase:a3 toString:v10];
+  v11 = [(FIFormattingManager *)self applyTextCase:case toString:value];
 
   return v11;
 }
 
-- (id)localizedMediumMoveMinutesUnitStringWithTextCase:(unint64_t)a3
+- (id)localizedMediumMoveMinutesUnitStringWithTextCase:(unint64_t)case
 {
   v5 = MEMORY[0x277CCACA8];
   v6 = FIFitnessUIBundle();
   v7 = [v6 localizedStringForKey:@"APPLE_MOVE_TIME_UNIT_MEDIUM" value:&stru_285E60370 table:@"Localizable-tinker"];
   v8 = [v5 localizedStringWithFormat:v7];
 
-  v9 = [(FIFormattingManager *)self applyTextCase:a3 toString:v8];
+  v9 = [(FIFormattingManager *)self applyTextCase:case toString:v8];
 
   return v9;
 }
 
-- (id)localizedMediumMoveMinutesUnitStringWithTextCase:(unint64_t)a3 value:(unint64_t)a4
+- (id)localizedMediumMoveMinutesUnitStringWithTextCase:(unint64_t)case value:(unint64_t)value
 {
   v7 = MEMORY[0x277CCACA8];
   v8 = FIFitnessUIBundle();
   v9 = [v8 localizedStringForKey:@"APPLE_MOVE_TIME_UNIT_MEDIUM" value:&stru_285E60370 table:@"Localizable-tinker"];
-  v10 = [v7 localizedStringWithFormat:v9, a4];
+  value = [v7 localizedStringWithFormat:v9, value];
 
-  v11 = [(FIFormattingManager *)self applyTextCase:a3 toString:v10];
+  v11 = [(FIFormattingManager *)self applyTextCase:case toString:value];
 
   return v11;
 }
 
-- (id)_energyBurnedUnitStringForUnit:(id)a3 useShortString:(BOOL)a4
+- (id)_energyBurnedUnitStringForUnit:(id)unit useShortString:(BOOL)string
 {
-  v4 = a4;
-  v5 = a3;
+  stringCopy = string;
+  unitCopy = unit;
   os_unfair_lock_lock(&__formatterLock);
-  v6 = _EnergyFormatter(v5);
+  v6 = _EnergyFormatter(unitCopy);
   v7 = v6;
-  if (v4)
+  if (stringCopy)
   {
     v8 = 2;
   }
@@ -1744,7 +1744,7 @@ LABEL_20:
   }
 
   [v6 setUnitStyle:v8];
-  v9 = [MEMORY[0x277CCDAB0] energyFormatterUnitFromUnit:v5];
+  v9 = [MEMORY[0x277CCDAB0] energyFormatterUnitFromUnit:unitCopy];
 
   v10 = [v7 unitStringFromValue:v9 unit:100.0];
   os_unfair_lock_unlock(&__formatterLock);
@@ -1752,11 +1752,11 @@ LABEL_20:
   return v10;
 }
 
-- (id)localizedGoalValueForWorkout:(id)a3
+- (id)localizedGoalValueForWorkout:(id)workout
 {
-  v5 = a3;
-  v6 = [v5 fi_activityType];
-  v7 = [(FIFormattingManager *)self _effectiveGoalTypeForWorkout:v5];
+  workoutCopy = workout;
+  fi_activityType = [workoutCopy fi_activityType];
+  v7 = [(FIFormattingManager *)self _effectiveGoalTypeForWorkout:workoutCopy];
   if (v7 <= 1)
   {
     if (v7)
@@ -1766,18 +1766,18 @@ LABEL_20:
         goto LABEL_10;
       }
 
-      v8 = [v5 totalDistance];
-      v9 = FIDistanceTypeForActivityType(v6);
-      v10 = [MEMORY[0x277CCDAB0] meterUnit];
-      [v8 doubleValueForUnit:v10];
+      totalDistance = [workoutCopy totalDistance];
+      v9 = FIDistanceTypeForActivityType(fi_activityType);
+      meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+      [totalDistance doubleValueForUnit:meterUnit];
       v3 = [(FIFormattingManager *)self localizedStringWithDistanceInMeters:v9 distanceType:0 unitStyle:?];
 
       goto LABEL_8;
     }
 
 LABEL_7:
-    v8 = [v5 totalEnergyBurned];
-    v3 = [(FIFormattingManager *)self localizedStringWithActiveEnergy:v8 unitStyle:0];
+    totalDistance = [workoutCopy totalEnergyBurned];
+    v3 = [(FIFormattingManager *)self localizedStringWithActiveEnergy:totalDistance unitStyle:0];
 LABEL_8:
 
     goto LABEL_10;
@@ -1793,42 +1793,42 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v3 = [(FIFormattingManager *)self _localizedTimeValueForWorkout:v5];
+  v3 = [(FIFormattingManager *)self _localizedTimeValueForWorkout:workoutCopy];
 LABEL_10:
 
   return v3;
 }
 
-- (id)localizedGoalUnitForWorkout:(id)a3
+- (id)localizedGoalUnitForWorkout:(id)workout
 {
-  v4 = a3;
-  v5 = [v4 fi_activityType];
-  v6 = [(FIFormattingManager *)self _effectiveGoalTypeForWorkout:v4];
+  workoutCopy = workout;
+  fi_activityType = [workoutCopy fi_activityType];
+  v6 = [(FIFormattingManager *)self _effectiveGoalTypeForWorkout:workoutCopy];
 
   if (!v6 || v6 == 3)
   {
-    v8 = [(FIFormattingManager *)self localizedShortActiveEnergyUnitString];
+    localizedShortActiveEnergyUnitString = [(FIFormattingManager *)self localizedShortActiveEnergyUnitString];
   }
 
   else if (v6 == 1)
   {
-    v7 = [(FIFormattingManager *)self localizedShortUnitStringForDistanceType:FIDistanceTypeForActivityType(v5)];
-    v8 = [v7 localizedUppercaseString];
+    v7 = [(FIFormattingManager *)self localizedShortUnitStringForDistanceType:FIDistanceTypeForActivityType(fi_activityType)];
+    localizedShortActiveEnergyUnitString = [v7 localizedUppercaseString];
   }
 
   else
   {
-    v8 = &stru_285E60370;
+    localizedShortActiveEnergyUnitString = &stru_285E60370;
   }
 
-  return v8;
+  return localizedShortActiveEnergyUnitString;
 }
 
-- (id)_localizedTimeDescriptionForWorkout:(id)a3 withValue:(id *)a4 appendActivityType:(BOOL)a5 activityTypeString:(id)a6
+- (id)_localizedTimeDescriptionForWorkout:(id)workout withValue:(id *)value appendActivityType:(BOOL)type activityTypeString:(id)string
 {
-  v6 = a5;
-  v10 = a6;
-  [a3 duration];
+  typeCopy = type;
+  stringCopy = string;
+  [workout duration];
   v12 = v11;
   v13 = fmod(v11, 60.0);
   if (v13 < 30.0)
@@ -1837,26 +1837,26 @@ LABEL_10:
   }
 
   v14 = [(FIFormattingManager *)self stringWithDuration:4 durationFormat:v12 + v13];
-  *a4 = v14;
-  if (v6)
+  *value = v14;
+  if (typeCopy)
   {
     v15 = MEMORY[0x277CCACA8];
     v16 = FIFitnessUIBundle();
     v17 = [v16 localizedStringForKey:@"TIME_GOAL_FORMAT" value:&stru_285E60370 table:@"Localizable"];
-    v18 = [v15 stringWithFormat:v17, *a4, v10];
+    stringCopy = [v15 stringWithFormat:v17, *value, stringCopy];
   }
 
   else
   {
-    v18 = v14;
+    stringCopy = v14;
   }
 
-  return v18;
+  return stringCopy;
 }
 
-- (id)_localizedTimeValueForWorkout:(id)a3
+- (id)_localizedTimeValueForWorkout:(id)workout
 {
-  [a3 duration];
+  [workout duration];
   v5 = v4;
   v6 = fmod(v4, 60.0);
   if (v6 < 30.0)
@@ -1869,74 +1869,74 @@ LABEL_10:
   return [(FIFormattingManager *)self stringWithDuration:4 durationFormat:v7];
 }
 
-- (id)_localizedEnergyDescriptionForWorkout:(id)a3 withValue:(id *)a4 appendActivityType:(BOOL)a5 activityTypeString:(id)a6
+- (id)_localizedEnergyDescriptionForWorkout:(id)workout withValue:(id *)value appendActivityType:(BOOL)type activityTypeString:(id)string
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = [a3 totalEnergyBurned];
-  *a4 = [(FIFormattingManager *)self localizedStringWithActiveEnergy:v11 unitStyle:0];
-  v12 = [(FIFormattingManager *)self localizedShortActiveEnergyUnitString];
+  typeCopy = type;
+  stringCopy = string;
+  totalEnergyBurned = [workout totalEnergyBurned];
+  *value = [(FIFormattingManager *)self localizedStringWithActiveEnergy:totalEnergyBurned unitStyle:0];
+  localizedShortActiveEnergyUnitString = [(FIFormattingManager *)self localizedShortActiveEnergyUnitString];
   v13 = MEMORY[0x277CCACA8];
   v14 = FIFitnessUIBundle();
   v15 = v14;
-  if (v6)
+  if (typeCopy)
   {
     v16 = [v14 localizedStringForKey:@"ENERGY_GOAL_FORMAT" value:&stru_285E60370 table:@"Localizable"];
-    [v13 stringWithFormat:v16, *a4, v12, v10];
+    [v13 stringWithFormat:v16, *value, localizedShortActiveEnergyUnitString, stringCopy];
   }
 
   else
   {
     v16 = [v14 localizedStringForKey:@"WORKOUT_STATISTICS_UNIT_FORMAT_NO_SPACE" value:&stru_285E60370 table:@"Localizable"];
-    [v13 stringWithFormat:v16, *a4, v12, v19];
+    [v13 stringWithFormat:v16, *value, localizedShortActiveEnergyUnitString, v19];
   }
   v17 = ;
 
   return v17;
 }
 
-- (unint64_t)_effectiveGoalTypeForWorkout:(id)a3
+- (unint64_t)_effectiveGoalTypeForWorkout:(id)workout
 {
-  v4 = a3;
-  v5 = [v4 sourceRevision];
-  v6 = [v5 source];
-  if ([v6 _isAppleWatch])
+  workoutCopy = workout;
+  sourceRevision = [workoutCopy sourceRevision];
+  source = [sourceRevision source];
+  if ([source _isAppleWatch])
   {
-    v7 = 1;
+    _hasFirstPartyBundleID = 1;
   }
 
   else
   {
-    v8 = [v4 sourceRevision];
-    v9 = [v8 source];
-    v7 = [v9 _hasFirstPartyBundleID];
+    sourceRevision2 = [workoutCopy sourceRevision];
+    source2 = [sourceRevision2 source];
+    _hasFirstPartyBundleID = [source2 _hasFirstPartyBundleID];
   }
 
-  v10 = [v4 _goalType];
-  [v4 workoutActivityType];
+  _goalType = [workoutCopy _goalType];
+  [workoutCopy workoutActivityType];
   v11 = _HKWorkoutDistanceTypeForActivityType();
-  v12 = [v4 statisticsForType:v11];
+  v12 = [workoutCopy statisticsForType:v11];
 
-  v13 = [v12 sumQuantity];
-  v14 = [MEMORY[0x277CCDAB0] meterUnit];
-  [v13 doubleValueForUnit:v14];
+  sumQuantity = [v12 sumQuantity];
+  meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+  [sumQuantity doubleValueForUnit:meterUnit];
   v16 = v15;
 
-  if (v7)
+  if (_hasFirstPartyBundleID)
   {
-    if (!v10)
+    if (!_goalType)
     {
-      if (![(FIFormattingManager *)self _workoutSupportsDistanceMetricForGoalDisplay:v4]|| v16 <= 2.22044605e-16)
+      if (![(FIFormattingManager *)self _workoutSupportsDistanceMetricForGoalDisplay:workoutCopy]|| v16 <= 2.22044605e-16)
       {
-        v17 = [v4 totalEnergyBurned];
-        v18 = v17 == 0;
+        totalEnergyBurned = [workoutCopy totalEnergyBurned];
+        v18 = totalEnergyBurned == 0;
 
-        v10 = 2 * v18;
+        _goalType = 2 * v18;
         goto LABEL_14;
       }
 
 LABEL_10:
-      v10 = 1;
+      _goalType = 1;
     }
   }
 
@@ -1947,55 +1947,55 @@ LABEL_10:
       goto LABEL_10;
     }
 
-    [v4 duration];
+    [workoutCopy duration];
     if (v19 <= 2.22044605e-16)
     {
-      v10 = 3;
+      _goalType = 3;
     }
 
     else
     {
-      v10 = 2;
+      _goalType = 2;
     }
   }
 
 LABEL_14:
 
-  return v10;
+  return _goalType;
 }
 
-- (BOOL)_workoutSupportsDistanceMetricForGoalDisplay:(id)a3
+- (BOOL)_workoutSupportsDistanceMetricForGoalDisplay:(id)display
 {
-  v3 = a3;
-  if ([v3 workoutActivityType] == 82 || objc_msgSend(v3, "workoutActivityType") == 21)
+  displayCopy = display;
+  if ([displayCopy workoutActivityType] == 82 || objc_msgSend(displayCopy, "workoutActivityType") == 21)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 supportsWorkoutMetricType:1];
+    v4 = [displayCopy supportsWorkoutMetricType:1];
   }
 
   return v4;
 }
 
-- (id)localizedCompactGoalDescriptionForGoalType:(unint64_t)a3 goalValue:(double)a4 activityType:(id)a5
+- (id)localizedCompactGoalDescriptionForGoalType:(unint64_t)type goalValue:(double)value activityType:(id)activityType
 {
-  v5 = [(FIFormattingManager *)self localizedGoalDescriptionForGoalType:a3 goalValue:a5 activityType:a4];
+  v5 = [(FIFormattingManager *)self localizedGoalDescriptionForGoalType:type goalValue:activityType activityType:value];
   v6 = [v5 stringByReplacingOccurrencesOfString:@" " withString:&stru_285E60370];
 
   return v6;
 }
 
-- (id)localizedGoalDescriptionForGoalType:(unint64_t)a3 goalValue:(double)a4 activityType:(id)a5
+- (id)localizedGoalDescriptionForGoalType:(unint64_t)type goalValue:(double)value activityType:(id)activityType
 {
-  v8 = a5;
-  v9 = v8;
+  activityTypeCopy = activityType;
+  v9 = activityTypeCopy;
   v10 = 0;
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (!a3)
+    if (!type)
     {
       v16 = FIFitnessUIBundle();
       v10 = [v16 localizedStringForKey:@"WORKOUT_OPEN_GOAL" value:&stru_285E60370 table:@"Localizable"];
@@ -2003,29 +2003,29 @@ LABEL_14:
       goto LABEL_11;
     }
 
-    if (a3 != 1)
+    if (type != 1)
     {
       goto LABEL_11;
     }
 
-    v11 = [(FIUnitManager *)self->_unitManager userDistanceUnitForDistanceType:FIDistanceTypeForActivityType(v8)];
-    v12 = -[FIFormattingManager localizedStringWithDistanceInMeters:distanceUnit:unitStyle:decimalPrecision:roundingMode:decimalTrimmingMode:](self, "localizedStringWithDistanceInMeters:distanceUnit:unitStyle:decimalPrecision:roundingMode:decimalTrimmingMode:", v11, 2, [objc_opt_class() defaultPrecisionForDistanceUnit:v11], 6, 2, a4);
+    v11 = [(FIUnitManager *)self->_unitManager userDistanceUnitForDistanceType:FIDistanceTypeForActivityType(activityTypeCopy)];
+    v12 = -[FIFormattingManager localizedStringWithDistanceInMeters:distanceUnit:unitStyle:decimalPrecision:roundingMode:decimalTrimmingMode:](self, "localizedStringWithDistanceInMeters:distanceUnit:unitStyle:decimalPrecision:roundingMode:decimalTrimmingMode:", v11, 2, [objc_opt_class() defaultPrecisionForDistanceUnit:v11], 6, 2, value);
     goto LABEL_10;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
-    v12 = [(FIFormattingManager *)self stringWithDuration:7 durationFormat:a4];
+    v12 = [(FIFormattingManager *)self stringWithDuration:7 durationFormat:value];
 LABEL_10:
     v10 = v12;
     goto LABEL_11;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     v13 = MEMORY[0x277CCD7E8];
-    v14 = [MEMORY[0x277CCDAB0] kilocalorieUnit];
-    v15 = [v13 quantityWithUnit:v14 doubleValue:a4];
+    kilocalorieUnit = [MEMORY[0x277CCDAB0] kilocalorieUnit];
+    v15 = [v13 quantityWithUnit:kilocalorieUnit doubleValue:value];
     v10 = [(FIFormattingManager *)self localizedStringWithActiveEnergy:v15 unitStyle:2];
   }
 
@@ -2034,42 +2034,42 @@ LABEL_11:
   return v10;
 }
 
-- (id)localizedKeyMetricStringForWorkout:(id)a3 unitStyle:(unint64_t)a4
+- (id)localizedKeyMetricStringForWorkout:(id)workout unitStyle:(unint64_t)style
 {
-  v6 = a3;
-  v7 = [v6 _goalType];
+  workoutCopy = workout;
+  _goalType = [workoutCopy _goalType];
   v8 = 0;
-  if (v7 > 1)
+  if (_goalType > 1)
   {
-    if (v7 == 2)
+    if (_goalType == 2)
     {
-      v9 = [(FIFormattingManager *)self _localizedKeyMetricDurationStringWithWorkout:v6];
+      v9 = [(FIFormattingManager *)self _localizedKeyMetricDurationStringWithWorkout:workoutCopy];
     }
 
     else
     {
-      if (v7 != 3)
+      if (_goalType != 3)
       {
         goto LABEL_11;
       }
 
-      v9 = [(FIFormattingManager *)self _localizedKeyMetricEnergyBurnedStringForWorkout:v6 withUnitStyle:a4];
+      v9 = [(FIFormattingManager *)self _localizedKeyMetricEnergyBurnedStringForWorkout:workoutCopy withUnitStyle:style];
     }
   }
 
-  else if (v7)
+  else if (_goalType)
   {
-    if (v7 != 1)
+    if (_goalType != 1)
     {
       goto LABEL_11;
     }
 
-    v9 = [(FIFormattingManager *)self _localizedKeyMetricDistanceStringForWorkout:v6 withUnitStyle:a4];
+    v9 = [(FIFormattingManager *)self _localizedKeyMetricDistanceStringForWorkout:workoutCopy withUnitStyle:style];
   }
 
   else
   {
-    v9 = [(FIFormattingManager *)self _localizedOpenGoalKeyMetricStringForWorkout:v6 withUnitStyle:a4];
+    v9 = [(FIFormattingManager *)self _localizedOpenGoalKeyMetricStringForWorkout:workoutCopy withUnitStyle:style];
   }
 
   v8 = v9;
@@ -2078,55 +2078,55 @@ LABEL_11:
   return v8;
 }
 
-- (id)_localizedKeyMetricEnergyBurnedStringForWorkout:(id)a3 withUnitStyle:(unint64_t)a4
+- (id)_localizedKeyMetricEnergyBurnedStringForWorkout:(id)workout withUnitStyle:(unint64_t)style
 {
-  v6 = [a3 totalEnergyBurned];
-  v7 = [(FIFormattingManager *)self localizedStringWithActiveEnergy:v6 unitStyle:a4];
+  totalEnergyBurned = [workout totalEnergyBurned];
+  v7 = [(FIFormattingManager *)self localizedStringWithActiveEnergy:totalEnergyBurned unitStyle:style];
 
   return v7;
 }
 
-- (id)_localizedKeyMetricDistanceStringForWorkout:(id)a3 withUnitStyle:(unint64_t)a4
+- (id)_localizedKeyMetricDistanceStringForWorkout:(id)workout withUnitStyle:(unint64_t)style
 {
-  v6 = a3;
-  v7 = [v6 totalDistance];
-  v8 = [MEMORY[0x277CCDAB0] meterUnit];
-  [v7 doubleValueForUnit:v8];
+  workoutCopy = workout;
+  totalDistance = [workoutCopy totalDistance];
+  meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+  [totalDistance doubleValueForUnit:meterUnit];
   v10 = v9;
-  v11 = [v6 fi_activityType];
+  fi_activityType = [workoutCopy fi_activityType];
 
-  v12 = [(FIFormattingManager *)self localizedNaturalScaleStringWithDistanceInMeters:FIDistanceTypeForActivityType(v11) distanceType:a4 unitStyle:0 usedUnit:v10];
+  v12 = [(FIFormattingManager *)self localizedNaturalScaleStringWithDistanceInMeters:FIDistanceTypeForActivityType(fi_activityType) distanceType:style unitStyle:0 usedUnit:v10];
 
   return v12;
 }
 
-- (id)_localizedKeyMetricDurationStringWithWorkout:(id)a3
+- (id)_localizedKeyMetricDurationStringWithWorkout:(id)workout
 {
-  [a3 duration];
+  [workout duration];
 
   return [(FIFormattingManager *)self stringWithDuration:4 durationFormat:?];
 }
 
-- (id)_localizedKeyMetricCyclingStringWithWorkout:(id)a3 withUnitStyle:(unint64_t)a4
+- (id)_localizedKeyMetricCyclingStringWithWorkout:(id)workout withUnitStyle:(unint64_t)style
 {
-  v6 = a3;
-  v7 = [v6 totalDistance];
-  v8 = [MEMORY[0x277CCDAB0] meterUnit];
-  [v7 doubleValueForUnit:v8];
+  workoutCopy = workout;
+  totalDistance = [workoutCopy totalDistance];
+  meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+  [totalDistance doubleValueForUnit:meterUnit];
   v10 = v9;
 
-  v11 = [v6 metadata];
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x277CCC4C0]];
-  v13 = [v12 BOOLValue];
+  metadata = [workoutCopy metadata];
+  v12 = [metadata objectForKeyedSubscript:*MEMORY[0x277CCC4C0]];
+  bOOLValue = [v12 BOOLValue];
 
-  if ((v13 & 1) != 0 || v10 <= 2.22044605e-16)
+  if ((bOOLValue & 1) != 0 || v10 <= 2.22044605e-16)
   {
-    v14 = [(FIFormattingManager *)self _localizedKeyMetricEnergyBurnedStringForWorkout:v6 withUnitStyle:a4];
+    v14 = [(FIFormattingManager *)self _localizedKeyMetricEnergyBurnedStringForWorkout:workoutCopy withUnitStyle:style];
   }
 
   else
   {
-    v14 = [(FIFormattingManager *)self _localizedKeyMetricDistanceStringForWorkout:v6 withUnitStyle:a4];
+    v14 = [(FIFormattingManager *)self _localizedKeyMetricDistanceStringForWorkout:workoutCopy withUnitStyle:style];
   }
 
   v15 = v14;
@@ -2134,66 +2134,66 @@ LABEL_11:
   return v15;
 }
 
-- (id)_localizedOpenGoalKeyMetricStringForWorkout:(id)a3 withUnitStyle:(unint64_t)a4
+- (id)_localizedOpenGoalKeyMetricStringForWorkout:(id)workout withUnitStyle:(unint64_t)style
 {
-  v6 = a3;
-  v7 = [v6 workoutActivityType];
-  if (v7 > 0x34)
+  workoutCopy = workout;
+  workoutActivityType = [workoutCopy workoutActivityType];
+  if (workoutActivityType > 0x34)
   {
     goto LABEL_9;
   }
 
-  if (((1 << v7) & 0x10402001000000) != 0)
+  if (((1 << workoutActivityType) & 0x10402001000000) != 0)
   {
-    v8 = [(FIFormattingManager *)self _localizedKeyMetricDistanceStringForWorkout:v6 withUnitStyle:a4];
+    v8 = [(FIFormattingManager *)self _localizedKeyMetricDistanceStringForWorkout:workoutCopy withUnitStyle:style];
     goto LABEL_4;
   }
 
-  if (v7 != 13)
+  if (workoutActivityType != 13)
   {
 LABEL_9:
-    if (v7 == 3000)
+    if (workoutActivityType == 3000)
     {
-      [(FIFormattingManager *)self _localizedKeyMetricDurationStringWithWorkout:v6];
+      [(FIFormattingManager *)self _localizedKeyMetricDurationStringWithWorkout:workoutCopy];
     }
 
     else
     {
-      [(FIFormattingManager *)self _localizedKeyMetricEnergyBurnedStringForWorkout:v6 withUnitStyle:a4];
+      [(FIFormattingManager *)self _localizedKeyMetricEnergyBurnedStringForWorkout:workoutCopy withUnitStyle:style];
     }
     v8 = ;
     goto LABEL_4;
   }
 
-  v8 = [(FIFormattingManager *)self _localizedKeyMetricCyclingStringWithWorkout:v6 withUnitStyle:a4];
+  v8 = [(FIFormattingManager *)self _localizedKeyMetricCyclingStringWithWorkout:workoutCopy withUnitStyle:style];
 LABEL_4:
   v9 = v8;
 
   return v9;
 }
 
-- (id)localizedShareTextWithWorkout:(id)a3 shareValue:(id)a4
+- (id)localizedShareTextWithWorkout:(id)workout shareValue:(id)value
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 metadata];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277CCC4C0]];
-  v9 = [v8 BOOLValue];
+  workoutCopy = workout;
+  valueCopy = value;
+  metadata = [workoutCopy metadata];
+  v8 = [metadata objectForKeyedSubscript:*MEMORY[0x277CCC4C0]];
+  bOOLValue = [v8 BOOLValue];
 
-  v10 = [v5 workoutActivityType];
-  if (v10 > 58)
+  workoutActivityType = [workoutCopy workoutActivityType];
+  if (workoutActivityType > 58)
   {
-    if (v10 <= 69)
+    if (workoutActivityType <= 69)
     {
-      if (v10 > 64)
+      if (workoutActivityType > 64)
       {
-        if (v10 == 65)
+        if (workoutActivityType == 65)
         {
           v11 = @"WORKOUT_SHARING_KICKBOXING_%@";
           goto LABEL_47;
         }
 
-        if (v10 == 66)
+        if (workoutActivityType == 66)
         {
           v11 = @"WORKOUT_SHARING_PILATES_%@";
           goto LABEL_47;
@@ -2202,13 +2202,13 @@ LABEL_4:
 
       else
       {
-        if (v10 == 59)
+        if (workoutActivityType == 59)
         {
           v11 = @"WORKOUT_SHARING_CORE_TRAINING_%@";
           goto LABEL_47;
         }
 
-        if (v10 == 63)
+        if (workoutActivityType == 63)
         {
           v11 = @"WORKOUT_SHARING_HIGH_INTENSITY_INTERVAL_TRAINING_%@";
           goto LABEL_47;
@@ -2218,9 +2218,9 @@ LABEL_4:
       goto LABEL_46;
     }
 
-    if (v10 > 71)
+    if (workoutActivityType > 71)
     {
-      switch(v10)
+      switch(workoutActivityType)
       {
         case 'H':
           v11 = @"WORKOUT_SHARING_TAI_CHI_%@";
@@ -2236,7 +2236,7 @@ LABEL_4:
       goto LABEL_46;
     }
 
-    if (v10 == 70)
+    if (workoutActivityType == 70)
     {
       v11 = @"WORKOUT_SHARING_WHEELCHAIR_WALK_PACE_%@";
     }
@@ -2249,17 +2249,17 @@ LABEL_4:
 
   else
   {
-    if (v10 <= 34)
+    if (workoutActivityType <= 34)
     {
-      if (v10 > 19)
+      if (workoutActivityType > 19)
       {
-        if (v10 == 20)
+        if (workoutActivityType == 20)
         {
           v11 = @"WORKOUT_SHARING_FUNCTIONAL_STRENGTH_TRAINING_%@";
           goto LABEL_47;
         }
 
-        if (v10 == 24)
+        if (workoutActivityType == 24)
         {
           v11 = @"WORKOUT_SHARING_HIKING_%@";
           goto LABEL_47;
@@ -2268,9 +2268,9 @@ LABEL_4:
         goto LABEL_46;
       }
 
-      if (v10 != 13)
+      if (workoutActivityType != 13)
       {
-        if (v10 == 16)
+        if (workoutActivityType == 16)
         {
           v11 = @"WORKOUT_SHARING_ELLIPTICAL_%@";
           goto LABEL_47;
@@ -2283,15 +2283,15 @@ LABEL_4:
       v13 = @"WORKOUT_SHARING_INDOOR_CYCLING_%@";
     }
 
-    else if (v10 <= 43)
+    else if (workoutActivityType <= 43)
     {
-      if (v10 == 35)
+      if (workoutActivityType == 35)
       {
         v11 = @"WORKOUT_SHARING_ROWING_%@";
         goto LABEL_47;
       }
 
-      if (v10 != 37)
+      if (workoutActivityType != 37)
       {
         goto LABEL_46;
       }
@@ -2302,15 +2302,15 @@ LABEL_4:
 
     else
     {
-      if (v10 == 44)
+      if (workoutActivityType == 44)
       {
         v11 = @"WORKOUT_SHARING_STEPPER_%@";
         goto LABEL_47;
       }
 
-      if (v10 != 52)
+      if (workoutActivityType != 52)
       {
-        if (v10 == 57)
+        if (workoutActivityType == 57)
         {
           v11 = @"WORKOUT_SHARING_YOGA_%@";
           goto LABEL_47;
@@ -2325,7 +2325,7 @@ LABEL_46:
       v13 = @"WORKOUT_SHARING_INDOOR_WALKING_%@";
     }
 
-    if (v9)
+    if (bOOLValue)
     {
       v11 = v13;
     }
@@ -2340,45 +2340,45 @@ LABEL_47:
   v14 = MEMORY[0x277CCACA8];
   v15 = FIFitnessUIBundle();
   v16 = [v15 localizedStringForKey:v11 value:&stru_285E60370 table:@"Localizable"];
-  v17 = [v14 stringWithFormat:v16, v6];
+  valueCopy = [v14 stringWithFormat:v16, valueCopy];
 
-  if ([v5 workoutActivityType] == 46)
+  if ([workoutCopy workoutActivityType] == 46)
   {
-    v18 = [v5 fi_swimmingLocationType];
-    if (v18 > 2)
+    fi_swimmingLocationType = [workoutCopy fi_swimmingLocationType];
+    if (fi_swimmingLocationType > 2)
     {
       v21 = 0;
     }
 
     else
     {
-      v19 = off_279005110[v18];
+      v19 = off_279005110[fi_swimmingLocationType];
       v20 = FIFitnessUIBundle();
       v21 = [v20 localizedStringForKey:v19 value:&stru_285E60370 table:@"Localizable-Ariel"];
     }
 
-    v22 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v21 validFormatSpecifiers:@"%@" error:0, v6];
+    valueCopy2 = [MEMORY[0x277CCACA8] stringWithValidatedFormat:v21 validFormatSpecifiers:@"%@" error:0, valueCopy];
 
-    v17 = v22;
+    valueCopy = valueCopy2;
   }
 
-  return v17;
+  return valueCopy;
 }
 
-- (id)localizedPaceValueForSplit:(id)a3 activityType:(id)a4
+- (id)localizedPaceValueForSplit:(id)split activityType:(id)type
 {
   v6 = MEMORY[0x277CCD7E8];
   v7 = MEMORY[0x277CCDAB0];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 meterUnit];
-  [v9 distanceInMeters];
-  v11 = [v6 quantityWithUnit:v10 doubleValue:?];
+  typeCopy = type;
+  splitCopy = split;
+  meterUnit = [v7 meterUnit];
+  [splitCopy distanceInMeters];
+  v11 = [v6 quantityWithUnit:meterUnit doubleValue:?];
 
-  v12 = FIPaceFormatForWorkoutActivityType(v8);
-  v13 = FIDistanceTypeForActivityType(v8);
+  v12 = FIPaceFormatForWorkoutActivityType(typeCopy);
+  v13 = FIDistanceTypeForActivityType(typeCopy);
 
-  [v9 duration];
+  [splitCopy duration];
   v15 = v14;
 
   v16 = [(FIFormattingManager *)self localizedPaceStringWithDistance:v11 overDuration:v12 paceFormat:v13 distanceType:v15];
@@ -2386,9 +2386,9 @@ LABEL_47:
   return v16;
 }
 
-- (id)localizedTitleForSplit:(id)a3 unit:(id)a4 lapIndex:(int64_t)a5 useShortFormat:(BOOL)a6
+- (id)localizedTitleForSplit:(id)split unit:(id)unit lapIndex:(int64_t)index useShortFormat:(BOOL)format
 {
-  if (a6)
+  if (format)
   {
     v7 = 1;
   }
@@ -2398,29 +2398,29 @@ LABEL_47:
     v7 = 3;
   }
 
-  v8 = a4;
+  unitCopy = unit;
   os_unfair_lock_lock(&__formatterLock);
   v9 = _LengthFormatter(1, v7, 2, 1);
-  v10 = [MEMORY[0x277CCDAB0] lengthFormatterUnitFromUnit:v8];
+  v10 = [MEMORY[0x277CCDAB0] lengthFormatterUnitFromUnit:unitCopy];
 
   v11 = [v9 unitStringFromValue:v10 unit:1.0];
-  v12 = [v11 localizedCapitalizedString];
+  localizedCapitalizedString = [v11 localizedCapitalizedString];
 
   os_unfair_lock_unlock(&__formatterLock);
-  v13 = [MEMORY[0x277CCABB0] numberWithInteger:a5 + 1];
+  v13 = [MEMORY[0x277CCABB0] numberWithInteger:index + 1];
   v14 = [FIFormattingManager stringWithNumber:v13 decimalPrecision:1];
 
   v15 = MEMORY[0x277CCACA8];
   v16 = FIFitnessUIBundle();
   v17 = [v16 localizedStringForKey:@"PACE_SECTION_ORDER" value:&stru_285E60370 table:@"Localizable"];
-  v18 = [v15 stringWithFormat:v17, v12, v14];
+  v18 = [v15 stringWithFormat:v17, localizedCapitalizedString, v14];
 
   return v18;
 }
 
-- (id)localizedStringWithBeatsPerMinute:(double)a3 requirePositiveValue:(BOOL)a4
+- (id)localizedStringWithBeatsPerMinute:(double)minute requirePositiveValue:(BOOL)value
 {
-  if (a3 <= 2.22044605e-16 && a4)
+  if (minute <= 2.22044605e-16 && value)
   {
     v5 = FIFitnessUIBundle();
     v6 = [v5 localizedStringForKey:@"HEART_RATE_NOVALUE" value:&stru_285E60370 table:@"Localizable"];
@@ -2429,7 +2429,7 @@ LABEL_47:
   else
   {
     v7 = objc_opt_class();
-    v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+    v5 = [MEMORY[0x277CCABB0] numberWithDouble:minute];
     v6 = [v7 stringWithNumber:v5 decimalPrecision:1 roundingMode:6];
   }
 
@@ -2446,19 +2446,19 @@ LABEL_47:
   return v3;
 }
 
-- (id)localizedDistanceByStrokeStyle:(id)a3 isPoolSwim:(BOOL)a4
+- (id)localizedDistanceByStrokeStyle:(id)style isPoolSwim:(BOOL)swim
 {
-  v25 = a4;
+  swimCopy = swim;
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 allKeys];
+  styleCopy = style;
+  allKeys = [styleCopy allKeys];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __65__FIFormattingManager_localizedDistanceByStrokeStyle_isPoolSwim___block_invoke;
   v33[3] = &unk_2790050D0;
-  v26 = v4;
+  v26 = styleCopy;
   v34 = v26;
-  v6 = [v5 sortedArrayUsingComparator:v33];
+  v6 = [allKeys sortedArrayUsingComparator:v33];
 
   v7 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v29 = 0u;
@@ -2482,18 +2482,18 @@ LABEL_47:
         v10 = *(*(&v29 + 1) + 8 * i);
         v11 = [v26 objectForKeyedSubscript:v10];
         v12 = FILocalizedStrokeStyleName([v10 integerValue]);
-        if (v25)
+        if (swimCopy)
         {
-          v13 = [MEMORY[0x277CCDAB0] meterUnit];
-          [v11 doubleValueForUnit:v13];
+          meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+          [v11 doubleValueForUnit:meterUnit];
           [(FIFormattingManager *)self localizedStringWithDistanceInMeters:3 distanceType:1 unitStyle:?];
         }
 
         else
         {
           v28 = 0;
-          v13 = [MEMORY[0x277CCDAB0] meterUnit];
-          [v11 doubleValueForUnit:v13];
+          meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+          [v11 doubleValueForUnit:meterUnit];
           [(FIFormattingManager *)self localizedNaturalScaleStringWithDistanceInMeters:4 distanceType:1 unitStyle:&v28 usedUnit:?];
         }
         v14 = ;
@@ -2503,8 +2503,8 @@ LABEL_47:
         v17 = [v16 localizedStringForKey:@"SUMMARY_SWIM_DISTANCE_FORMAT_%@_%@" value:&stru_285E60370 table:@"Localizable"];
         v18 = [v15 localizedStringWithFormat:v17, v12, v14];
 
-        v19 = [v8 firstObject];
-        LOBYTE(v17) = [v10 isEqualToNumber:v19];
+        firstObject = [v8 firstObject];
+        LOBYTE(v17) = [v10 isEqualToNumber:firstObject];
 
         if ((v17 & 1) == 0)
         {
@@ -2537,9 +2537,9 @@ uint64_t __65__FIFormattingManager_localizedDistanceByStrokeStyle_isPoolSwim___b
   return v9;
 }
 
-- (id)localizedInSessionDescriptionForElevation:(unint64_t)a3
+- (id)localizedInSessionDescriptionForElevation:(unint64_t)elevation
 {
-  v3 = [(FIFormattingManager *)self localizedShortUnitStringForDistanceUnit:a3 textCase:0];
+  v3 = [(FIFormattingManager *)self localizedShortUnitStringForDistanceUnit:elevation textCase:0];
   v4 = MEMORY[0x277CCACA8];
   v5 = FIFitnessUIBundle();
   v6 = [v5 localizedStringForKey:@"IN_SESSION_ELEVATION_DESCRIPTION" value:&stru_285E60370 table:@"Localizable"];
@@ -2548,9 +2548,9 @@ uint64_t __65__FIFormattingManager_localizedDistanceByStrokeStyle_isPoolSwim___b
   return v7;
 }
 
-- (id)localizedInSessionDescriptionForGroundElevation:(unint64_t)a3
+- (id)localizedInSessionDescriptionForGroundElevation:(unint64_t)elevation
 {
-  v3 = [(FIFormattingManager *)self localizedShortUnitStringForDistanceUnit:a3 textCase:0];
+  v3 = [(FIFormattingManager *)self localizedShortUnitStringForDistanceUnit:elevation textCase:0];
   v4 = MEMORY[0x277CCACA8];
   v5 = FIFitnessUIBundle();
   v6 = [v5 localizedStringForKey:@"IN_SESSION_GROUND_ELEVATION_DESCRIPTION" value:&stru_285E60370 table:@"Localizable"];
@@ -2559,28 +2559,28 @@ uint64_t __65__FIFormattingManager_localizedDistanceByStrokeStyle_isPoolSwim___b
   return v7;
 }
 
-- (id)localizedStringForMetricType:(unint64_t)a3 paceFormat:(int64_t)a4
+- (id)localizedStringForMetricType:(unint64_t)type paceFormat:(int64_t)format
 {
   v4 = &stru_285E60370;
-  v5 = a3 - 1;
-  v6 = @"METRIC_ROLLING_PACE";
+  v5 = type - 1;
+  format = @"METRIC_ROLLING_PACE";
   v7 = @"METRIC_ACTIVE_ENERGY";
   switch(v5)
   {
     case 0uLL:
-      v6 = @"METRIC_DISTANCE";
+      format = @"METRIC_DISTANCE";
       goto LABEL_20;
     case 1uLL:
       goto LABEL_16;
     case 2uLL:
-      v6 = @"METRIC_DURATION";
+      format = @"METRIC_DURATION";
       goto LABEL_20;
     case 3uLL:
       v8 = @"METRIC_CURRENT_PACE";
       v9 = @"METRIC_CURRENT_SPEED";
       goto LABEL_10;
     case 4uLL:
-      v6 = @"METRIC_HEART_RATE";
+      format = @"METRIC_HEART_RATE";
       goto LABEL_20;
     case 5uLL:
     case 0xAuLL:
@@ -2590,8 +2590,8 @@ uint64_t __65__FIFormattingManager_localizedDistanceByStrokeStyle_isPoolSwim___b
     case 6uLL:
       v7 = @"METRIC_TOTAL_ENERGY";
 LABEL_16:
-      v6 = [(FIFormattingManager *)self localizationKeyForEnergyBaseKey:v7, a4];
-      if (!v6)
+      format = [(FIFormattingManager *)self localizationKeyForEnergyBaseKey:v7, format];
+      if (!format)
       {
         goto LABEL_21;
       }
@@ -2602,21 +2602,21 @@ LABEL_16:
       v9 = @"METRIC_AVERAGE_SPEED";
       goto LABEL_10;
     case 8uLL:
-      v6 = @"METRIC_LAPS";
+      format = @"METRIC_LAPS";
       goto LABEL_20;
     case 9uLL:
-      v6 = @"METRIC_ELEVATION";
+      format = @"METRIC_ELEVATION";
       goto LABEL_20;
     case 0xDuLL:
       goto LABEL_20;
     case 0xEuLL:
-      v6 = @"METRIC_CURRENT_CADENCE";
+      format = @"METRIC_CURRENT_CADENCE";
       goto LABEL_20;
     case 0xFuLL:
-      v6 = @"METRIC_AVERAGE_CADENCE";
+      format = @"METRIC_AVERAGE_CADENCE";
       goto LABEL_20;
     case 0x10uLL:
-      v6 = @"METRIC_GROUND_ELEVATION";
+      format = @"METRIC_GROUND_ELEVATION";
       goto LABEL_20;
     default:
       if (@"METRIC_ACTIVE_ENERGY" != 48)
@@ -2627,19 +2627,19 @@ LABEL_16:
       v8 = @"METRIC_FASTEST_PACE";
       v9 = @"METRIC_MAX_SPEED";
 LABEL_10:
-      if (a4 == 4)
+      if (format == 4)
       {
-        v6 = v9;
+        format = v9;
       }
 
       else
       {
-        v6 = v8;
+        format = v8;
       }
 
 LABEL_20:
       v10 = FIFitnessUIBundle();
-      v4 = [v10 localizedStringForKey:v6 value:&stru_285E60370 table:@"Localizable"];
+      v4 = [v10 localizedStringForKey:format value:&stru_285E60370 table:@"Localizable"];
 
 LABEL_21:
 

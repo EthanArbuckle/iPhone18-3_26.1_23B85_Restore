@@ -2,11 +2,11 @@
 - (BOOL)canDismiss;
 - (BOOL)isJobAccountIDRequired;
 - (BOOL)shouldShow;
-- (UIPrintAccountInfoOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4;
+- (UIPrintAccountInfoOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller;
 - (id)createPrintOptionTableViewCell;
-- (void)changeJobAccountID:(id)a3;
+- (void)changeJobAccountID:(id)d;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)promptForJobAccountID;
 - (void)selectJobAccountID;
 - (void)updateFromPrintInfo;
@@ -14,16 +14,16 @@
 
 @implementation UIPrintAccountInfoOption
 
-- (UIPrintAccountInfoOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4
+- (UIPrintAccountInfoOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller
 {
   v8.receiver = self;
   v8.super_class = UIPrintAccountInfoOption;
-  v4 = [(UIPrintOption *)&v8 initWithPrintInfo:a3 printPanelViewController:a4];
+  v4 = [(UIPrintOption *)&v8 initWithPrintInfo:info printPanelViewController:controller];
   v5 = v4;
   if (v4)
   {
-    v6 = [(UIPrintOption *)v4 printInfo];
-    [v6 addObserver:v5 forKeyPath:0x2871AF210 options:0 context:0];
+    printInfo = [(UIPrintOption *)v4 printInfo];
+    [printInfo addObserver:v5 forKeyPath:0x2871AF210 options:0 context:0];
   }
 
   return v5;
@@ -31,8 +31,8 @@
 
 - (void)dealloc
 {
-  v3 = [(UIPrintOption *)self printInfo];
-  [v3 removeObserver:self forKeyPath:0x2871AF210];
+  printInfo = [(UIPrintOption *)self printInfo];
+  [printInfo removeObserver:self forKeyPath:0x2871AF210];
 
   v4.receiver = self;
   v4.super_class = UIPrintAccountInfoOption;
@@ -41,13 +41,13 @@
 
 - (BOOL)isJobAccountIDRequired
 {
-  v3 = [(UIPrintOption *)self printInfo];
-  v4 = [v3 currentPrinter];
-  if (v4)
+  printInfo = [(UIPrintOption *)self printInfo];
+  currentPrinter = [printInfo currentPrinter];
+  if (currentPrinter)
   {
-    v5 = [(UIPrintOption *)self printInfo];
-    v6 = [v5 currentPrinter];
-    v7 = [v6 jobAccountIDSupport] == 1;
+    printInfo2 = [(UIPrintOption *)self printInfo];
+    currentPrinter2 = [printInfo2 currentPrinter];
+    v7 = [currentPrinter2 jobAccountIDSupport] == 1;
   }
 
   else
@@ -60,17 +60,17 @@
 
 - (id)createPrintOptionTableViewCell
 {
-  v3 = [(UIPrintOption *)self printPanelViewController];
-  v4 = [v3 printOptionsTableView];
-  v5 = [v4 dequeueReusableCellWithIdentifier:@"JobAccountIDCell"];
+  printPanelViewController = [(UIPrintOption *)self printPanelViewController];
+  printOptionsTableView = [printPanelViewController printOptionsTableView];
+  v5 = [printOptionsTableView dequeueReusableCellWithIdentifier:@"JobAccountIDCell"];
 
   if (!v5)
   {
     v5 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:1 reuseIdentifier:@"JobAccountIDCell"];
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"Account" value:@"Account" table:@"Localizable"];
-    v8 = [v5 textLabel];
-    [v8 setText:v7];
+    textLabel = [v5 textLabel];
+    [textLabel setText:v7];
 
     [v5 setSelectionStyle:0];
     v9 = objc_alloc(MEMORY[0x277D75BB8]);
@@ -81,65 +81,65 @@
     v14 = [v9 initWithFrame:{*MEMORY[0x277CBF3A0], v11, v12, v13}];
     [(UIPrintAccountInfoOption *)self setJobAccountIDTextField:v14];
 
-    v15 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
-    [v15 setDelegate:self];
+    jobAccountIDTextField = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
+    [jobAccountIDTextField setDelegate:self];
 
     v16 = 2 * ([*MEMORY[0x277D76620] userInterfaceLayoutDirection] == 0);
-    v17 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
-    [v17 setTextAlignment:v16];
+    jobAccountIDTextField2 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
+    [jobAccountIDTextField2 setTextAlignment:v16];
 
-    v18 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
-    [v18 setEnabled:1];
+    jobAccountIDTextField3 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
+    [jobAccountIDTextField3 setEnabled:1];
 
-    v19 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
-    [v19 setSpellCheckingType:1];
+    jobAccountIDTextField4 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
+    [jobAccountIDTextField4 setSpellCheckingType:1];
 
-    v20 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
-    [v20 setAutocorrectionType:1];
+    jobAccountIDTextField5 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
+    [jobAccountIDTextField5 setAutocorrectionType:1];
 
-    v21 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
-    [v21 setHoverStyle:0];
+    jobAccountIDTextField6 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
+    [jobAccountIDTextField6 setHoverStyle:0];
 
-    v22 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
-    [v22 addTarget:self action:sel_changeJobAccountID_ forControlEvents:0x40000];
+    jobAccountIDTextField7 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
+    [jobAccountIDTextField7 addTarget:self action:sel_changeJobAccountID_ forControlEvents:0x40000];
 
-    v23 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
-    [v5 setAccessoryView:v23];
+    jobAccountIDTextField8 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
+    [v5 setAccessoryView:jobAccountIDTextField8];
 
-    v24 = [MEMORY[0x277D756E0] cellConfiguration];
+    cellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
     v25 = [objc_alloc(MEMORY[0x277D756B8]) initWithFrame:{v10, v11, v12, v13}];
     v26 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v27 = [v26 localizedStringForKey:@"Account" value:@"Account" table:@"Localizable"];
     [v25 setText:v27];
 
-    v28 = [v24 textProperties];
-    v29 = [v28 font];
-    [v25 setFont:v29];
+    textProperties = [cellConfiguration textProperties];
+    font = [textProperties font];
+    [v25 setFont:font];
 
     [v25 setNumberOfLines:1];
     [v25 sizeToFit];
-    v30 = [(UIPrintOption *)self printPanelViewController];
-    v31 = [v30 printOptionsTableView];
+    printPanelViewController2 = [(UIPrintOption *)self printPanelViewController];
+    printOptionsTableView2 = [printPanelViewController2 printOptionsTableView];
     v32 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:0];
-    [v31 rectForRowAtIndexPath:v32];
+    [printOptionsTableView2 rectForRowAtIndexPath:v32];
     v34 = v33;
     v36 = v35;
 
-    v37 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
-    [v37 frame];
+    jobAccountIDTextField9 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
+    [jobAccountIDTextField9 frame];
     v39 = v38;
     v41 = v40;
 
     [v25 frame];
     v43 = v34 - (v42 + 64.0);
-    v44 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
-    [v44 setFrame:{v39, v41, v43, v36 + -8.0}];
+    jobAccountIDTextField10 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
+    [jobAccountIDTextField10 setFrame:{v39, v41, v43, v36 + -8.0}];
   }
 
-  v45 = [(UIPrintAccountInfoOption *)self isJobAccountIDRequired];
+  isJobAccountIDRequired = [(UIPrintAccountInfoOption *)self isJobAccountIDRequired];
   v46 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v47 = v46;
-  if (v45)
+  if (isJobAccountIDRequired)
   {
     v48 = @"Account Information (Required)";
   }
@@ -150,23 +150,23 @@
   }
 
   v49 = [v46 localizedStringForKey:v48 value:v48 table:@"Localizable"];
-  v50 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
-  [v50 setPlaceholder:v49];
+  jobAccountIDTextField11 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
+  [jobAccountIDTextField11 setPlaceholder:v49];
 
-  v51 = [(UIPrintOption *)self printInfo];
-  v52 = [v51 jobAccountID];
-  v53 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
-  [v53 setText:v52];
+  printInfo = [(UIPrintOption *)self printInfo];
+  jobAccountID = [printInfo jobAccountID];
+  jobAccountIDTextField12 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
+  [jobAccountIDTextField12 setText:jobAccountID];
 
-  v54 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
-  [v54 setHoverStyle:0];
+  jobAccountIDTextField13 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
+  [jobAccountIDTextField13 setHoverStyle:0];
 
   [(UIPrintOption *)self setTableViewCell:v5];
 
   return v5;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -178,36 +178,36 @@
 
 - (void)updateFromPrintInfo
 {
-  v5 = [(UIPrintOption *)self printInfo];
-  v3 = [v5 jobAccountID];
-  v4 = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
-  [v4 setText:v3];
+  printInfo = [(UIPrintOption *)self printInfo];
+  jobAccountID = [printInfo jobAccountID];
+  jobAccountIDTextField = [(UIPrintAccountInfoOption *)self jobAccountIDTextField];
+  [jobAccountIDTextField setText:jobAccountID];
 }
 
-- (void)changeJobAccountID:(id)a3
+- (void)changeJobAccountID:(id)d
 {
-  v5 = [a3 text];
-  v4 = [(UIPrintOption *)self printInfo];
-  [v4 setJobAccountID:v5];
+  text = [d text];
+  printInfo = [(UIPrintOption *)self printInfo];
+  [printInfo setJobAccountID:text];
 }
 
 - (BOOL)shouldShow
 {
-  v3 = [(UIPrintOption *)self printInfo];
-  v4 = [v3 currentPrinter];
-  if (v4)
+  printInfo = [(UIPrintOption *)self printInfo];
+  currentPrinter = [printInfo currentPrinter];
+  if (currentPrinter)
   {
-    v5 = [(UIPrintOption *)self printInfo];
-    v6 = [v5 currentPrinter];
-    v7 = [v6 supportsJobAccountID];
+    printInfo2 = [(UIPrintOption *)self printInfo];
+    currentPrinter2 = [printInfo2 currentPrinter];
+    supportsJobAccountID = [currentPrinter2 supportsJobAccountID];
   }
 
   else
   {
-    v7 = 0;
+    supportsJobAccountID = 0;
   }
 
-  return v7;
+  return supportsJobAccountID;
 }
 
 - (void)promptForJobAccountID
@@ -215,10 +215,10 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"Account information required for “%@”" value:@"Account information required for “%@”" table:@"Localizable"];
-  v6 = [(UIPrintOption *)self printInfo];
-  v7 = [v6 currentPrinter];
-  v8 = [v7 displayName];
-  v9 = [v3 stringWithFormat:v5, v8];
+  printInfo = [(UIPrintOption *)self printInfo];
+  currentPrinter = [printInfo currentPrinter];
+  displayName = [currentPrinter displayName];
+  v9 = [v3 stringWithFormat:v5, displayName];
 
   v10 = MEMORY[0x277D75110];
   v11 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -236,40 +236,40 @@
   v17 = [v14 actionWithTitle:v16 style:0 handler:v19];
 
   [v13 addAction:v17];
-  v18 = [(UIPrintOption *)self printPanelViewController];
-  [v18 presentViewController:v13 animated:1 completion:0];
+  printPanelViewController = [(UIPrintOption *)self printPanelViewController];
+  [printPanelViewController presentViewController:v13 animated:1 completion:0];
 }
 
 - (void)selectJobAccountID
 {
-  v2 = [(UIPrintOption *)self tableViewCell];
-  v4 = [v2 editableTextField];
+  tableViewCell = [(UIPrintOption *)self tableViewCell];
+  editableTextField = [tableViewCell editableTextField];
 
-  v3 = v4;
-  if (v4)
+  v3 = editableTextField;
+  if (editableTextField)
   {
-    [v4 becomeFirstResponder];
-    v3 = v4;
+    [editableTextField becomeFirstResponder];
+    v3 = editableTextField;
   }
 }
 
 - (BOOL)canDismiss
 {
-  v3 = [(UIPrintOption *)self tableViewCell];
-  v4 = [v3 editableTextField];
+  tableViewCell = [(UIPrintOption *)self tableViewCell];
+  editableTextField = [tableViewCell editableTextField];
 
-  if (v4 && [v4 isFirstResponder])
+  if (editableTextField && [editableTextField isFirstResponder])
   {
-    [v4 resignFirstResponder];
+    [editableTextField resignFirstResponder];
   }
 
-  v5 = [(UIPrintOption *)self printInfo];
-  v6 = [v5 currentPrinter];
-  if ([v6 jobAccountIDSupport] == 1)
+  printInfo = [(UIPrintOption *)self printInfo];
+  currentPrinter = [printInfo currentPrinter];
+  if ([currentPrinter jobAccountIDSupport] == 1)
   {
-    v7 = [(UIPrintOption *)self printInfo];
-    v8 = [v7 jobAccountID];
-    if (!v8)
+    printInfo2 = [(UIPrintOption *)self printInfo];
+    jobAccountID = [printInfo2 jobAccountID];
+    if (!jobAccountID)
     {
 
 LABEL_11:
@@ -278,10 +278,10 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v9 = v8;
-    v10 = [(UIPrintOption *)self printInfo];
-    v11 = [v10 jobAccountID];
-    v12 = [v11 length];
+    v9 = jobAccountID;
+    printInfo3 = [(UIPrintOption *)self printInfo];
+    jobAccountID2 = [printInfo3 jobAccountID];
+    v12 = [jobAccountID2 length];
 
     if (!v12)
     {

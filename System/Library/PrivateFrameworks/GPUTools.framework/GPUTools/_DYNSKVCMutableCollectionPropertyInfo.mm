@@ -1,40 +1,40 @@
 @interface _DYNSKVCMutableCollectionPropertyInfo
-+ (id)mutableCollectionPropertyInfoForClass:(Class)a3;
++ (id)mutableCollectionPropertyInfoForClass:(Class)class;
 + (void)initialize;
-- (_DYNSKVCMutableCollectionPropertyInfo)initWithClass:(Class)a3;
-- (id)_stringWithCapitalizedFirstLetter:(id)a3;
-- (id)bindingForProperty:(id)a3;
-- (id)bindingForSelector:(SEL)a3;
+- (_DYNSKVCMutableCollectionPropertyInfo)initWithClass:(Class)class;
+- (id)_stringWithCapitalizedFirstLetter:(id)letter;
+- (id)bindingForProperty:(id)property;
+- (id)bindingForSelector:(SEL)selector;
 - (void)dealloc;
-- (void)dy_synthesizeMutableArrayProperty:(id)a3 withInstanceVariable:(id)a4;
-- (void)dy_synthesizeMutableSetProperty:(id)a3 withInstanceVariable:(id)a4;
+- (void)dy_synthesizeMutableArrayProperty:(id)property withInstanceVariable:(id)variable;
+- (void)dy_synthesizeMutableSetProperty:(id)property withInstanceVariable:(id)variable;
 @end
 
 @implementation _DYNSKVCMutableCollectionPropertyInfo
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     _DYNSKVCMutableCollectionPropertyClassMap = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:512 valueOptions:0 capacity:16];
   }
 }
 
-+ (id)mutableCollectionPropertyInfoForClass:(Class)a3
++ (id)mutableCollectionPropertyInfoForClass:(Class)class
 {
   GPUTools::DYLockUtils::Lock(&_DYNSKVCMutableCollectionPropertyClassMapLock, a2);
-  v5 = NSMapGet(_DYNSKVCMutableCollectionPropertyClassMap, a3);
+  v5 = NSMapGet(_DYNSKVCMutableCollectionPropertyClassMap, class);
   if (!v5)
   {
-    v5 = [[_DYNSKVCMutableCollectionPropertyInfo alloc] initWithClass:a3];
-    NSMapInsertKnownAbsent(_DYNSKVCMutableCollectionPropertyClassMap, a3, v5);
+    v5 = [[_DYNSKVCMutableCollectionPropertyInfo alloc] initWithClass:class];
+    NSMapInsertKnownAbsent(_DYNSKVCMutableCollectionPropertyClassMap, class, v5);
   }
 
   GPUTools::DYLockUtils::Unlock(&_DYNSKVCMutableCollectionPropertyClassMapLock, v4);
   return v5;
 }
 
-- (_DYNSKVCMutableCollectionPropertyInfo)initWithClass:(Class)a3
+- (_DYNSKVCMutableCollectionPropertyInfo)initWithClass:(Class)class
 {
   v7.receiver = self;
   v7.super_class = _DYNSKVCMutableCollectionPropertyInfo;
@@ -42,7 +42,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_class = a3;
+    v4->_class = class;
     v4->_selectorBindingsMap = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:258 valueOptions:0 capacity:16];
     v5->_propertyBindingsMap = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:0x10000 valueOptions:0 capacity:16];
   }
@@ -57,18 +57,18 @@
   [(_DYNSKVCMutableCollectionPropertyInfo *)&v3 dealloc];
 }
 
-- (id)_stringWithCapitalizedFirstLetter:(id)a3
+- (id)_stringWithCapitalizedFirstLetter:(id)letter
 {
-  v4 = [objc_msgSend(a3 substringToIndex:{1), "uppercaseString"}];
-  v5 = [a3 substringFromIndex:1];
+  v4 = [objc_msgSend(letter substringToIndex:{1), "uppercaseString"}];
+  v5 = [letter substringFromIndex:1];
 
   return [v4 stringByAppendingString:v5];
 }
 
-- (void)dy_synthesizeMutableArrayProperty:(id)a3 withInstanceVariable:(id)a4
+- (void)dy_synthesizeMutableArrayProperty:(id)property withInstanceVariable:(id)variable
 {
-  key = [a3 copy];
-  v6 = [[_DYNSKVCMutableCollectionPropertyBinding alloc] initWithKey:key underlyingIvarName:a4];
+  key = [property copy];
+  v6 = [[_DYNSKVCMutableCollectionPropertyBinding alloc] initWithKey:key underlyingIvarName:variable];
   NSMapInsertKnownAbsent(self->_propertyBindingsMap, key, v6);
   v7 = [(_DYNSKVCMutableCollectionPropertyInfo *)self _stringWithCapitalizedFirstLetter:key];
   name = NSSelectorFromString([MEMORY[0x277CCACA8] stringWithFormat:@"mutable%@", v7]);
@@ -112,10 +112,10 @@
   class_addMethod(self->_class, v12, DYKVCMutableCollections_Array_GetObjectsRange, "v@:^@{_NSRange=QQ}");
 }
 
-- (void)dy_synthesizeMutableSetProperty:(id)a3 withInstanceVariable:(id)a4
+- (void)dy_synthesizeMutableSetProperty:(id)property withInstanceVariable:(id)variable
 {
-  aSelectorName = [a3 copy];
-  v6 = [[_DYNSKVCMutableCollectionPropertyBinding alloc] initWithKey:aSelectorName underlyingIvarName:a4];
+  aSelectorName = [property copy];
+  v6 = [[_DYNSKVCMutableCollectionPropertyBinding alloc] initWithKey:aSelectorName underlyingIvarName:variable];
   v7 = [(_DYNSKVCMutableCollectionPropertyInfo *)self _stringWithCapitalizedFirstLetter:aSelectorName];
   name = NSSelectorFromString([MEMORY[0x277CCACA8] stringWithFormat:@"mutable%@", v7]);
   v13 = NSSelectorFromString(aSelectorName);
@@ -152,15 +152,15 @@
   class_addMethod(self->_class, v11, DYKVCMutableCollections_Set_Member, "@@:@");
 }
 
-- (id)bindingForSelector:(SEL)a3
+- (id)bindingForSelector:(SEL)selector
 {
-  v5 = NSMapGet(self->_selectorBindingsMap, a3);
+  v5 = NSMapGet(self->_selectorBindingsMap, selector);
   if (!v5)
   {
     Superclass = class_getSuperclass(self->_class);
     if (Superclass)
     {
-      v5 = [+[_DYNSKVCMutableCollectionPropertyInfo mutableCollectionPropertyInfoForClass:](_DYNSKVCMutableCollectionPropertyInfo mutableCollectionPropertyInfoForClass:{Superclass), "bindingForSelector:", a3}];
+      v5 = [+[_DYNSKVCMutableCollectionPropertyInfo mutableCollectionPropertyInfoForClass:](_DYNSKVCMutableCollectionPropertyInfo mutableCollectionPropertyInfoForClass:{Superclass), "bindingForSelector:", selector}];
     }
 
     else
@@ -168,21 +168,21 @@
       v5 = 0;
     }
 
-    NSMapInsertKnownAbsent(self->_selectorBindingsMap, a3, v5);
+    NSMapInsertKnownAbsent(self->_selectorBindingsMap, selector, v5);
   }
 
   return v5;
 }
 
-- (id)bindingForProperty:(id)a3
+- (id)bindingForProperty:(id)property
 {
-  v5 = NSMapGet(self->_propertyBindingsMap, a3);
+  v5 = NSMapGet(self->_propertyBindingsMap, property);
   if (!v5)
   {
     Superclass = class_getSuperclass(self->_class);
     if (Superclass)
     {
-      v5 = [+[_DYNSKVCMutableCollectionPropertyInfo mutableCollectionPropertyInfoForClass:](_DYNSKVCMutableCollectionPropertyInfo mutableCollectionPropertyInfoForClass:{Superclass), "bindingForProperty:", a3}];
+      v5 = [+[_DYNSKVCMutableCollectionPropertyInfo mutableCollectionPropertyInfoForClass:](_DYNSKVCMutableCollectionPropertyInfo mutableCollectionPropertyInfoForClass:{Superclass), "bindingForProperty:", property}];
     }
 
     else
@@ -190,7 +190,7 @@
       v5 = 0;
     }
 
-    NSMapInsertKnownAbsent(self->_propertyBindingsMap, a3, v5);
+    NSMapInsertKnownAbsent(self->_propertyBindingsMap, property, v5);
   }
 
   return v5;

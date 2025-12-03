@@ -1,66 +1,66 @@
 @interface CloudBookmarkStore
-- (BOOL)_canHandleCKRecordZoneWithID:(id)a3;
-- (BOOL)_checkMigrationStateOnInternalQueueInRecord:(id)a3 error:(id)a4;
-- (BOOL)_isUnrecoverableCloudKitWriteError:(id)a3;
-- (BOOL)handlesRecordChangesToRecordZoneWithID:(id)a3;
+- (BOOL)_canHandleCKRecordZoneWithID:(id)d;
+- (BOOL)_checkMigrationStateOnInternalQueueInRecord:(id)record error:(id)error;
+- (BOOL)_isUnrecoverableCloudKitWriteError:(id)error;
+- (BOOL)handlesRecordChangesToRecordZoneWithID:(id)d;
 - (BOOL)includesMigrationRecordInSaveBatch;
-- (BOOL)isSecondaryRecordZoneID:(id)a3;
-- (CloudBookmarkStore)initWithType:(int64_t)a3 container:(id)a4 localStorage:(id)a5;
+- (BOOL)isSecondaryRecordZoneID:(id)d;
+- (CloudBookmarkStore)initWithType:(int64_t)type container:(id)container localStorage:(id)storage;
 - (CloudBookmarkStoreLocalStorage)localStorage;
 - (WBSHashGenerator)bookmarkHashGenerator;
-- (id)cloudBookmarkItemConfigurationForRecord:(id)a3;
-- (id)createSubscriptionRequestOperationGroupWithQualityOfService:(int64_t)a3 xpcActivity:(id)a4;
+- (id)cloudBookmarkItemConfigurationForRecord:(id)record;
+- (id)createSubscriptionRequestOperationGroupWithQualityOfService:(int64_t)service xpcActivity:(id)activity;
 - (id)operationConfiguration;
-- (id)rootRecordNameForSecondaryRecordZoneID:(id)a3;
-- (id)secondaryRecordZoneIDWithRootRecordName:(id)a3;
-- (void)_cacheEncryptionRecord:(id)a3;
-- (void)_createEncryptionRecordForRecordZoneWithID:(id)a3 inOperationGroup:(id)a4 completionHandler:(id)a5;
-- (void)_fetchRemoteMigrationInfoInOperationGroup:(id)a3 completionHandler:(id)a4;
-- (void)_fetchUserIdentityInOperationGroup:(id)a3 withCompletionHandler:(id)a4;
-- (void)_modifyRecords:(id)a3 andDeleteRecordIDs:(id)a4 inDatabase:(id)a5 operationGroup:(id)a6 previouslySavedRecords:(id)a7 previouslyDeletedRecords:(id)a8 mergeHandler:(id)a9 completionHandler:(id)a10;
-- (void)_prepareBookmarksRecordZoneInvalidatingCachedZone:(BOOL)a3 createIfNeeded:(BOOL)a4 inOperationGroup:(id)a5 withCompletionHandler:(id)a6;
-- (void)_prepareBookmarksRecordZoneOnInternalQueueAfterExternalCompletionHandlersHaveBeenStashedInvalidatingCachedZone:(BOOL)a3 createIfNeeded:(BOOL)a4 inOperationGroup:(id)a5 withCompletionHandler:(id)a6;
-- (void)_saveBookmarksRecordBatch:(id)a3 inOperationGroup:(id)a4 clientChangeTokenData:(id)a5 previouslySavedRecords:(id)a6 previouslyDeletedRecordIDs:(id)a7 mergeHandler:(id)a8 completionHandler:(id)a9;
-- (void)_setUpEncryptionInfoInOperationGroup:(id)a3 withCompletionHandler:(id)a4;
-- (void)_setUpRecordZoneInOperationGroup:(id)a3 withCompletionHandler:(id)a4;
-- (void)acceptCloudKitShareWithMetadata:(id)a3 inOperationGroup:(id)a4 completionHandler:(id)a5;
-- (void)addParticipantsWithEmailAddresses:(id)a3 toShareInRecordZoneWithID:(id)a4 inOperationGroup:(id)a5 completionHandler:(id)a6;
+- (id)rootRecordNameForSecondaryRecordZoneID:(id)d;
+- (id)secondaryRecordZoneIDWithRootRecordName:(id)name;
+- (void)_cacheEncryptionRecord:(id)record;
+- (void)_createEncryptionRecordForRecordZoneWithID:(id)d inOperationGroup:(id)group completionHandler:(id)handler;
+- (void)_fetchRemoteMigrationInfoInOperationGroup:(id)group completionHandler:(id)handler;
+- (void)_fetchUserIdentityInOperationGroup:(id)group withCompletionHandler:(id)handler;
+- (void)_modifyRecords:(id)records andDeleteRecordIDs:(id)ds inDatabase:(id)database operationGroup:(id)group previouslySavedRecords:(id)savedRecords previouslyDeletedRecords:(id)deletedRecords mergeHandler:(id)handler completionHandler:(id)self0;
+- (void)_prepareBookmarksRecordZoneInvalidatingCachedZone:(BOOL)zone createIfNeeded:(BOOL)needed inOperationGroup:(id)group withCompletionHandler:(id)handler;
+- (void)_prepareBookmarksRecordZoneOnInternalQueueAfterExternalCompletionHandlersHaveBeenStashedInvalidatingCachedZone:(BOOL)zone createIfNeeded:(BOOL)needed inOperationGroup:(id)group withCompletionHandler:(id)handler;
+- (void)_saveBookmarksRecordBatch:(id)batch inOperationGroup:(id)group clientChangeTokenData:(id)data previouslySavedRecords:(id)records previouslyDeletedRecordIDs:(id)ds mergeHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)_setUpEncryptionInfoInOperationGroup:(id)group withCompletionHandler:(id)handler;
+- (void)_setUpRecordZoneInOperationGroup:(id)group withCompletionHandler:(id)handler;
+- (void)acceptCloudKitShareWithMetadata:(id)metadata inOperationGroup:(id)group completionHandler:(id)handler;
+- (void)addParticipantsWithEmailAddresses:(id)addresses toShareInRecordZoneWithID:(id)d inOperationGroup:(id)group completionHandler:(id)handler;
 - (void)clearCachedRecordZone;
-- (void)createRecordZoneAndEncryptionInfoWithZoneName:(id)a3 inOperationGroup:(id)a4 completionHandler:(id)a5;
-- (void)deleteBookmarksRecordBatch:(id)a3 inOperationGroup:(id)a4 clientChangeTokenData:(id)a5 completionHandler:(id)a6;
-- (void)deleteBookmarksZoneInOperationGroup:(id)a3 completionHandler:(id)a4;
-- (void)deleteRecordWithID:(id)a3 inDatabase:(id)a4 operationGroup:(id)a5 completionHandler:(id)a6;
-- (void)deleteRecordZonesWithIDs:(id)a3 inOperationGroup:(id)a4 perRecordZoneDeleteBlock:(id)a5 completionHandler:(id)a6;
-- (void)deleteRecordsWithIDs:(id)a3 inDatabase:(id)a4 operationGroup:(id)a5 completionHandler:(id)a6;
-- (void)deleteSubscriptionWithID:(id)a3 inDatabase:(id)a4 operationGroup:(id)a5 withCompletionHandler:(id)a6;
-- (void)fetchAllBookmarkRecordsWithCompletionHandler:(id)a3;
-- (void)fetchBookmarkRecordsWithNames:(id)a3 withCompletionHandler:(id)a4;
-- (void)fetchBookmarksRecordChangesSinceServerChangeToken:(id)a3 inOperationGroup:(id)a4 recordChangedBlock:(id)a5 recordWithIDWasDeletedBlock:(id)a6 completionHandler:(id)a7;
-- (void)fetchCachedRemoteMigrationInfoWithCompletionHandler:(id)a3;
-- (void)fetchChangesSinceServerChangeToken:(id)a3 inDatabase:(id)a4 operationGroup:(id)a5 completionHandler:(id)a6;
-- (void)fetchEncryptionInfoWithCompletionHandler:(id)a3;
-- (void)fetchEncryptionRecordsForZonesWithIDs:(id)a3 inDatabase:(id)a4 operationGroup:(id)a5 completionHandler:(id)a6;
-- (void)fetchMetadataZoneRecordsInOperationGroup:(id)a3 withRecordChangedBlock:(id)a4 recordWithIDWasDeletedBlock:(id)a5 completionHandler:(id)a6;
-- (void)fetchMinimumSyncAPIVersionInOperationGroup:(id)a3 withCompletionHandler:(id)a4;
-- (void)fetchNumberOfDevicesInSyncCircleWithCompletionHandler:(id)a3;
-- (void)fetchRecordWithID:(id)a3 inDatabase:(id)a4 operationGroup:(id)a5 completionHandler:(id)a6;
-- (void)fetchRecordZoneChangesInZonesWithIDs:(id)a3 perZoneConfigurations:(id)a4 inDatabase:(id)a5 operationGroup:(id)a6 recordWasChangedBlock:(id)a7 recordWithIDWasDeletedBlock:(id)a8 recordZoneFetchCompletionBlock:(id)a9 completionHandler:(id)a10;
-- (void)fetchRecordsWithIDs:(id)a3 inDatabase:(id)a4 operationGroup:(id)a5 perRecordCompletionBlock:(id)a6 completionHandler:(id)a7;
-- (void)fetchRemoteMigrationInfoInOperationGroup:(id)a3 withCompletionHandler:(id)a4;
-- (void)fetchShareMetadataWithURL:(id)a3 invitationTokenData:(id)a4 inOperationGroup:(id)a5 completionHandler:(id)a6;
-- (void)fetchShareRecordForRecordZoneWithID:(id)a3 inDatabase:(id)a4 operationGroup:(id)a5 completionHandler:(id)a6;
-- (void)fetchSubscriptionWithID:(id)a3 inDatabase:(id)a4 operationGroup:(id)a5 withCompletionHandler:(id)a6;
-- (void)fetchUserIdentityInOperationGroup:(id)a3 withCompletionHandler:(id)a4;
-- (void)modifyRecords:(id)a3 andDeleteRecordIDs:(id)a4 inDatabase:(id)a5 operationGroup:(id)a6 mergeHandler:(id)a7 completionHandler:(id)a8;
-- (void)removeParticipantsWithEmailAddresses:(id)a3 fromShareInRecordZoneWithID:(id)a4 inOperationGroup:(id)a5 completionHandler:(id)a6;
-- (void)saveBookmarksRecordBatch:(id)a3 inOperationGroup:(id)a4 clientChangeTokenData:(id)a5 mergeHandler:(id)a6 completionHandler:(id)a7;
-- (void)saveBookmarksZoneSubscriptionInOperationGroup:(id)a3 withCompletionHandler:(id)a4;
-- (void)saveOrLoadRecord:(id)a3 inDatabase:(id)a4 operationGroup:(id)a5 completionHandler:(id)a6;
-- (void)saveSubscription:(id)a3 inDatabase:(id)a4 operationGroup:(id)a5 withCompletionHandler:(id)a6;
-- (void)setIncludesMigrationRecordInSaveBatch:(BOOL)a3;
-- (void)setMinimumSyncAPIVersion:(int64_t)a3 completionHandler:(id)a4;
-- (void)setRemoteMigrationState:(int64_t)a3 deviceIdentifier:(id)a4 inOperationGroup:(id)a5 completionHandler:(id)a6;
-- (void)setUpSharingForRecordZoneWithID:(id)a3 inOperationGroup:(id)a4 completionHandler:(id)a5;
+- (void)createRecordZoneAndEncryptionInfoWithZoneName:(id)name inOperationGroup:(id)group completionHandler:(id)handler;
+- (void)deleteBookmarksRecordBatch:(id)batch inOperationGroup:(id)group clientChangeTokenData:(id)data completionHandler:(id)handler;
+- (void)deleteBookmarksZoneInOperationGroup:(id)group completionHandler:(id)handler;
+- (void)deleteRecordWithID:(id)d inDatabase:(id)database operationGroup:(id)group completionHandler:(id)handler;
+- (void)deleteRecordZonesWithIDs:(id)ds inOperationGroup:(id)group perRecordZoneDeleteBlock:(id)block completionHandler:(id)handler;
+- (void)deleteRecordsWithIDs:(id)ds inDatabase:(id)database operationGroup:(id)group completionHandler:(id)handler;
+- (void)deleteSubscriptionWithID:(id)d inDatabase:(id)database operationGroup:(id)group withCompletionHandler:(id)handler;
+- (void)fetchAllBookmarkRecordsWithCompletionHandler:(id)handler;
+- (void)fetchBookmarkRecordsWithNames:(id)names withCompletionHandler:(id)handler;
+- (void)fetchBookmarksRecordChangesSinceServerChangeToken:(id)token inOperationGroup:(id)group recordChangedBlock:(id)block recordWithIDWasDeletedBlock:(id)deletedBlock completionHandler:(id)handler;
+- (void)fetchCachedRemoteMigrationInfoWithCompletionHandler:(id)handler;
+- (void)fetchChangesSinceServerChangeToken:(id)token inDatabase:(id)database operationGroup:(id)group completionHandler:(id)handler;
+- (void)fetchEncryptionInfoWithCompletionHandler:(id)handler;
+- (void)fetchEncryptionRecordsForZonesWithIDs:(id)ds inDatabase:(id)database operationGroup:(id)group completionHandler:(id)handler;
+- (void)fetchMetadataZoneRecordsInOperationGroup:(id)group withRecordChangedBlock:(id)block recordWithIDWasDeletedBlock:(id)deletedBlock completionHandler:(id)handler;
+- (void)fetchMinimumSyncAPIVersionInOperationGroup:(id)group withCompletionHandler:(id)handler;
+- (void)fetchNumberOfDevicesInSyncCircleWithCompletionHandler:(id)handler;
+- (void)fetchRecordWithID:(id)d inDatabase:(id)database operationGroup:(id)group completionHandler:(id)handler;
+- (void)fetchRecordZoneChangesInZonesWithIDs:(id)ds perZoneConfigurations:(id)configurations inDatabase:(id)database operationGroup:(id)group recordWasChangedBlock:(id)block recordWithIDWasDeletedBlock:(id)deletedBlock recordZoneFetchCompletionBlock:(id)completionBlock completionHandler:(id)self0;
+- (void)fetchRecordsWithIDs:(id)ds inDatabase:(id)database operationGroup:(id)group perRecordCompletionBlock:(id)block completionHandler:(id)handler;
+- (void)fetchRemoteMigrationInfoInOperationGroup:(id)group withCompletionHandler:(id)handler;
+- (void)fetchShareMetadataWithURL:(id)l invitationTokenData:(id)data inOperationGroup:(id)group completionHandler:(id)handler;
+- (void)fetchShareRecordForRecordZoneWithID:(id)d inDatabase:(id)database operationGroup:(id)group completionHandler:(id)handler;
+- (void)fetchSubscriptionWithID:(id)d inDatabase:(id)database operationGroup:(id)group withCompletionHandler:(id)handler;
+- (void)fetchUserIdentityInOperationGroup:(id)group withCompletionHandler:(id)handler;
+- (void)modifyRecords:(id)records andDeleteRecordIDs:(id)ds inDatabase:(id)database operationGroup:(id)group mergeHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)removeParticipantsWithEmailAddresses:(id)addresses fromShareInRecordZoneWithID:(id)d inOperationGroup:(id)group completionHandler:(id)handler;
+- (void)saveBookmarksRecordBatch:(id)batch inOperationGroup:(id)group clientChangeTokenData:(id)data mergeHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)saveBookmarksZoneSubscriptionInOperationGroup:(id)group withCompletionHandler:(id)handler;
+- (void)saveOrLoadRecord:(id)record inDatabase:(id)database operationGroup:(id)group completionHandler:(id)handler;
+- (void)saveSubscription:(id)subscription inDatabase:(id)database operationGroup:(id)group withCompletionHandler:(id)handler;
+- (void)setIncludesMigrationRecordInSaveBatch:(BOOL)batch;
+- (void)setMinimumSyncAPIVersion:(int64_t)version completionHandler:(id)handler;
+- (void)setRemoteMigrationState:(int64_t)state deviceIdentifier:(id)identifier inOperationGroup:(id)group completionHandler:(id)handler;
+- (void)setUpSharingForRecordZoneWithID:(id)d inOperationGroup:(id)group completionHandler:(id)handler;
 @end
 
 @implementation CloudBookmarkStore
@@ -106,7 +106,7 @@
   return v3;
 }
 
-- (void)setIncludesMigrationRecordInSaveBatch:(BOOL)a3
+- (void)setIncludesMigrationRecordInSaveBatch:(BOOL)batch
 {
   internalQueue = self->super._internalQueue;
   v4[0] = _NSConcreteStackBlock;
@@ -114,14 +114,14 @@
   v4[2] = sub_100055000;
   v4[3] = &unk_100131D10;
   v4[4] = self;
-  v5 = a3;
+  batchCopy = batch;
   dispatch_sync(internalQueue, v4);
 }
 
-- (CloudBookmarkStore)initWithType:(int64_t)a3 container:(id)a4 localStorage:(id)a5
+- (CloudBookmarkStore)initWithType:(int64_t)type container:(id)container localStorage:(id)storage
 {
-  v9 = a4;
-  v10 = a5;
+  containerCopy = container;
+  storageCopy = storage;
   v51.receiver = self;
   v51.super_class = CloudBookmarkStore;
   v11 = [(CloudRemoteStore *)&v51 init];
@@ -140,18 +140,18 @@
   v17 = *(v11 + 2);
   *(v11 + 2) = v16;
 
-  *(v11 + 20) = a3;
-  objc_storeStrong(v11 + 19, a5);
+  *(v11 + 20) = type;
+  objc_storeStrong(v11 + 19, storage);
   if (*(v11 + 19))
   {
     v18 = [CKRecord alloc];
-    v19 = [*(v11 + 19) migrationStateEncodedRecordData];
-    v20 = [v18 safari_initWithEncodedRecordData:v19];
+    migrationStateEncodedRecordData = [*(v11 + 19) migrationStateEncodedRecordData];
+    v20 = [v18 safari_initWithEncodedRecordData:migrationStateEncodedRecordData];
     v21 = *(v11 + 11);
     *(v11 + 11) = v20;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v30 = [CloudTabGroupSyncCoordinator _tabGroupsLog]_0();
     v31 = *(v11 + 4);
@@ -174,7 +174,7 @@
 
   else
   {
-    if (a3)
+    if (type)
     {
       goto LABEL_9;
     }
@@ -197,10 +197,10 @@
   }
 
 LABEL_9:
-  objc_storeStrong(v11 + 21, a4);
-  v38 = [*(v11 + 21) privateCloudDatabase];
+  objc_storeStrong(v11 + 21, container);
+  privateCloudDatabase = [*(v11 + 21) privateCloudDatabase];
   v39 = *(v11 + 5);
-  *(v11 + 5) = v38;
+  *(v11 + 5) = privateCloudDatabase;
 
   if (!*(v11 + 5) && os_log_type_enabled(*(v11 + 4), OS_LOG_TYPE_ERROR))
   {
@@ -233,40 +233,40 @@ LABEL_13:
   return v11;
 }
 
-- (BOOL)handlesRecordChangesToRecordZoneWithID:(id)a3
+- (BOOL)handlesRecordChangesToRecordZoneWithID:(id)d
 {
-  v4 = a3;
-  if ([v4 isEqual:self->_bookmarksRecordZoneID])
+  dCopy = d;
+  if ([dCopy isEqual:self->_bookmarksRecordZoneID])
   {
-    v5 = 1;
+    safari_isTabGroupSecondaryRecordZoneID = 1;
   }
 
   else if (self->_type == 1)
   {
-    v5 = [v4 safari_isTabGroupSecondaryRecordZoneID];
+    safari_isTabGroupSecondaryRecordZoneID = [dCopy safari_isTabGroupSecondaryRecordZoneID];
   }
 
   else
   {
-    v5 = 0;
+    safari_isTabGroupSecondaryRecordZoneID = 0;
   }
 
-  return v5;
+  return safari_isTabGroupSecondaryRecordZoneID;
 }
 
-- (BOOL)_isUnrecoverableCloudKitWriteError:(id)a3
+- (BOOL)_isUnrecoverableCloudKitWriteError:(id)error
 {
-  v4 = a3;
-  v5 = ([v4 safari_isUnrecoverableCloudKitError] & 1) != 0 || objc_msgSend(v4, "safari_isOrContainsCloudKitMissingZoneError") && (objc_msgSend(v4, "safari_containsCloudKitMissingZoneErrorForRecordZoneID:", self->_bookmarksRecordZoneID) & 1) != 0;
+  errorCopy = error;
+  v5 = ([errorCopy safari_isUnrecoverableCloudKitError] & 1) != 0 || objc_msgSend(errorCopy, "safari_isOrContainsCloudKitMissingZoneError") && (objc_msgSend(errorCopy, "safari_containsCloudKitMissingZoneErrorForRecordZoneID:", self->_bookmarksRecordZoneID) & 1) != 0;
 
   return v5;
 }
 
-- (BOOL)isSecondaryRecordZoneID:(id)a3
+- (BOOL)isSecondaryRecordZoneID:(id)d
 {
   if (self->_type == 1)
   {
-    return [a3 safari_isTabGroupSecondaryRecordZoneID];
+    return [d safari_isTabGroupSecondaryRecordZoneID];
   }
 
   else
@@ -275,11 +275,11 @@ LABEL_13:
   }
 }
 
-- (id)secondaryRecordZoneIDWithRootRecordName:(id)a3
+- (id)secondaryRecordZoneIDWithRootRecordName:(id)name
 {
   if (self->_type == 1)
   {
-    v5 = [CKRecordZoneID safari_tabGroupSecondaryRecordZoneIDWithRootRecordName:a3, v3];
+    v5 = [CKRecordZoneID safari_tabGroupSecondaryRecordZoneIDWithRootRecordName:name, v3];
   }
 
   else
@@ -290,22 +290,22 @@ LABEL_13:
   return v5;
 }
 
-- (id)rootRecordNameForSecondaryRecordZoneID:(id)a3
+- (id)rootRecordNameForSecondaryRecordZoneID:(id)d
 {
   if (self->_type == 1)
   {
-    v5 = [a3 safari_tabGroupRootRecordName];
+    safari_tabGroupRootRecordName = [d safari_tabGroupRootRecordName];
   }
 
   else
   {
-    v5 = 0;
+    safari_tabGroupRootRecordName = 0;
   }
 
-  return v5;
+  return safari_tabGroupRootRecordName;
 }
 
-- (id)createSubscriptionRequestOperationGroupWithQualityOfService:(int64_t)a3 xpcActivity:(id)a4
+- (id)createSubscriptionRequestOperationGroupWithQualityOfService:(int64_t)service xpcActivity:(id)activity
 {
   if (self->_type == 1)
   {
@@ -317,13 +317,13 @@ LABEL_13:
     v6 = @"Cloud Bookmark Subscription Request";
   }
 
-  return [(CloudRemoteStore *)self createOperationGroupWithName:v6 qualityOfService:a3 xpcActivity:a4];
+  return [(CloudRemoteStore *)self createOperationGroupWithName:v6 qualityOfService:service xpcActivity:activity];
 }
 
-- (void)fetchUserIdentityInOperationGroup:(id)a3 withCompletionHandler:(id)a4
+- (void)fetchUserIdentityInOperationGroup:(id)group withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  handlerCopy = handler;
   v8 = self->_log;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -338,28 +338,28 @@ LABEL_13:
   v13[3] = &unk_1001315B0;
   v13[4] = self;
   v14 = v8;
-  v15 = v6;
-  v16 = v7;
-  v10 = v6;
-  v11 = v7;
+  v15 = groupCopy;
+  v16 = handlerCopy;
+  v10 = groupCopy;
+  v11 = handlerCopy;
   v12 = v8;
   dispatch_async(internalQueue, v13);
 }
 
-- (void)_fetchUserIdentityInOperationGroup:(id)a3 withCompletionHandler:(id)a4
+- (void)_fetchUserIdentityInOperationGroup:(id)group withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = self->_log;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000559F0;
   v10[3] = &unk_100133C50;
   v11 = v7;
-  v12 = self;
-  v13 = v6;
-  v8 = v6;
+  selfCopy = self;
+  v13 = handlerCopy;
+  v8 = handlerCopy;
   v9 = v7;
-  [(CloudBookmarkStore *)self _prepareBookmarksRecordZoneInOperationGroup:a3 withCompletionHandler:v10];
+  [(CloudBookmarkStore *)self _prepareBookmarksRecordZoneInOperationGroup:group withCompletionHandler:v10];
 }
 
 - (void)clearCachedRecordZone
@@ -380,16 +380,16 @@ LABEL_13:
   dispatch_async(internalQueue, block);
 }
 
-- (id)cloudBookmarkItemConfigurationForRecord:(id)a3
+- (id)cloudBookmarkItemConfigurationForRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   cloudBookmarkItemConfigurations = self->_cloudBookmarkItemConfigurations;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100056088;
   v9[3] = &unk_100133188;
-  v10 = v4;
-  v6 = v4;
+  v10 = recordCopy;
+  v6 = recordCopy;
   v7 = [(NSArray *)cloudBookmarkItemConfigurations safari_firstObjectPassingTest:v9];
 
   return v7;
@@ -413,21 +413,21 @@ LABEL_13:
   return v3;
 }
 
-- (void)createRecordZoneAndEncryptionInfoWithZoneName:(id)a3 inOperationGroup:(id)a4 completionHandler:(id)a5
+- (void)createRecordZoneAndEncryptionInfoWithZoneName:(id)name inOperationGroup:(id)group completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  groupCopy = group;
+  handlerCopy = handler;
   if ([(NSString *)self->_secondaryRecordZoneNamePrefix length])
   {
-    v11 = [(CloudBookmarkStore *)self secondaryRecordZoneIDWithRootRecordName:v8];
+    v11 = [(CloudBookmarkStore *)self secondaryRecordZoneIDWithRootRecordName:nameCopy];
     v12 = [[CKRecordZone alloc] initWithZoneID:v11];
     v13 = [[WBSRetryableCKModifyRecordZonesOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
     [v13 setLog:self->_log];
-    v14 = [(CloudBookmarkStore *)self operationConfiguration];
-    [v13 setConfiguration:v14];
+    operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+    [v13 setConfiguration:operationConfiguration];
 
-    [v13 setGroup:v9];
+    [v13 setGroup:groupCopy];
     [v13 setDatabase:self->_database];
     v28 = v12;
     v15 = [NSArray arrayWithObjects:&v28 count:1];
@@ -438,9 +438,9 @@ LABEL_13:
     v21 = sub_100056440;
     v22 = &unk_100133CA0;
     v23 = v11;
-    v25 = v10;
-    v24 = v9;
-    v16 = v10;
+    v25 = handlerCopy;
+    v24 = groupCopy;
+    v16 = handlerCopy;
     v17 = v11;
     [v13 setModifyRecordZonesCompletionBlock:&v19];
     [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v13, v19, v20, v21, v22];
@@ -453,27 +453,27 @@ LABEL_13:
     block[1] = 3221225472;
     block[2] = sub_1000563CC;
     block[3] = &unk_100131628;
-    v27 = v10;
-    v12 = v10;
+    v27 = handlerCopy;
+    v12 = handlerCopy;
     dispatch_async(completionHandlerQueue, block);
     v13 = v27;
   }
 }
 
-- (void)_createEncryptionRecordForRecordZoneWithID:(id)a3 inOperationGroup:(id)a4 completionHandler:(id)a5
+- (void)_createEncryptionRecordForRecordZoneWithID:(id)d inOperationGroup:(id)group completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a5 copy];
+  groupCopy = group;
+  dCopy = d;
+  v10 = [handler copy];
   v11 = objc_alloc_init(WBSHashGenerator);
-  v12 = [v11 encryptionInfoRecordWithZone:v9];
+  v12 = [v11 encryptionInfoRecordWithZone:dCopy];
 
   v13 = [[WBSRetryableCKModifyRecordsOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v13 setLog:self->_log];
-  v14 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v13 setConfiguration:v14];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v13 setConfiguration:operationConfiguration];
 
-  [v13 setGroup:v8];
+  [v13 setGroup:groupCopy];
   [v13 setDatabase:self->_database];
   v24 = v12;
   v15 = [NSArray arrayWithObjects:&v24 count:1];
@@ -498,28 +498,28 @@ LABEL_13:
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v13];
 }
 
-- (void)deleteRecordZonesWithIDs:(id)a3 inOperationGroup:(id)a4 perRecordZoneDeleteBlock:(id)a5 completionHandler:(id)a6
+- (void)deleteRecordZonesWithIDs:(id)ds inOperationGroup:(id)group perRecordZoneDeleteBlock:(id)block completionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a4;
-  v13 = a3;
+  blockCopy = block;
+  handlerCopy = handler;
+  groupCopy = group;
+  dsCopy = ds;
   v14 = [[WBSRetryableCKModifyRecordZonesOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v14 setLog:self->_log];
-  v15 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v14 setConfiguration:v15];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v14 setConfiguration:operationConfiguration];
 
-  [v14 setGroup:v12];
+  [v14 setGroup:groupCopy];
   [v14 setDatabase:self->_database];
-  [v14 setRecordZoneIDsToDelete:v13];
+  [v14 setRecordZoneIDsToDelete:dsCopy];
 
-  if (v10)
+  if (blockCopy)
   {
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_100057044;
     v22[3] = &unk_100133D18;
-    v23 = v10;
+    v23 = blockCopy;
     [v14 setPerRecordZoneDeleteBlock:v22];
   }
 
@@ -527,33 +527,33 @@ LABEL_13:
   v18 = 3221225472;
   v19 = sub_10005705C;
   v20 = &unk_100133D40;
-  v21 = v11;
-  v16 = v11;
+  v21 = handlerCopy;
+  v16 = handlerCopy;
   [v14 setModifyRecordZonesCompletionBlock:&v17];
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v14, v17, v18, v19, v20];
 }
 
-- (void)fetchEncryptionRecordsForZonesWithIDs:(id)a3 inDatabase:(id)a4 operationGroup:(id)a5 completionHandler:(id)a6
+- (void)fetchEncryptionRecordsForZonesWithIDs:(id)ds inDatabase:(id)database operationGroup:(id)group completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dsCopy = ds;
+  databaseCopy = database;
+  groupCopy = group;
+  handlerCopy = handler;
   if ([(NSString *)self->_secondaryRecordZoneNamePrefix length])
   {
     v14 = [[WBSRetryableCKFetchRecordsOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
     [v14 setLog:self->_log];
-    v15 = [(CloudBookmarkStore *)self operationConfiguration];
-    [v14 setConfiguration:v15];
+    operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+    [v14 setConfiguration:operationConfiguration];
 
-    [v14 setGroup:v12];
-    [v14 setDatabase:v11];
+    [v14 setGroup:groupCopy];
+    [v14 setDatabase:databaseCopy];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_100057488;
     v26[3] = &unk_100133D68;
     v26[4] = self;
-    v16 = [v10 safari_mapAndFilterObjectsUsingBlock:v26];
+    v16 = [dsCopy safari_mapAndFilterObjectsUsingBlock:v26];
     [v14 setRecordIDs:v16];
     +[NSMutableDictionary dictionary];
     v24[0] = _NSConcreteStackBlock;
@@ -567,9 +567,9 @@ LABEL_13:
     v21[2] = sub_1000575B0;
     v21[3] = &unk_100133DB8;
     v22 = v17;
-    v23 = v13;
+    v23 = handlerCopy;
     v18 = v17;
-    v19 = v13;
+    v19 = handlerCopy;
     [v14 setFetchRecordsCompletionBlock:v21];
     [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v14];
   }
@@ -581,28 +581,28 @@ LABEL_13:
     block[1] = 3221225472;
     block[2] = sub_100057418;
     block[3] = &unk_100131628;
-    v28 = v13;
-    v14 = v13;
+    v28 = handlerCopy;
+    v14 = handlerCopy;
     dispatch_async(completionHandlerQueue, block);
     v19 = v28;
   }
 }
 
-- (void)fetchChangesSinceServerChangeToken:(id)a3 inDatabase:(id)a4 operationGroup:(id)a5 completionHandler:(id)a6
+- (void)fetchChangesSinceServerChangeToken:(id)token inDatabase:(id)database operationGroup:(id)group completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  handlerCopy = handler;
+  groupCopy = group;
+  databaseCopy = database;
+  tokenCopy = token;
   v14 = [[WBSRetryableCKFetchDatabaseChangesOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v14 setLog:self->_log];
-  v15 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v14 setConfiguration:v15];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v14 setConfiguration:operationConfiguration];
 
-  [v14 setGroup:v11];
-  [v14 setDatabase:v12];
+  [v14 setGroup:groupCopy];
+  [v14 setDatabase:databaseCopy];
 
-  [v14 setPreviousServerChangeToken:v13];
+  [v14 setPreviousServerChangeToken:tokenCopy];
   [v14 setFetchAllChanges:1];
   v16 = +[NSMutableArray array];
   v17 = +[NSMutableArray array];
@@ -635,114 +635,114 @@ LABEL_13:
   v32 = v19;
   v33 = v21;
   v34 = v22;
-  v35 = v10;
+  v35 = handlerCopy;
   v24 = v22;
   v25 = v21;
   v26 = v19;
-  v27 = v10;
+  v27 = handlerCopy;
   [v14 setFetchDatabaseChangesCompletionBlock:&v28];
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v14, v28, v29, v30, v31];
 }
 
-- (void)fetchRecordZoneChangesInZonesWithIDs:(id)a3 perZoneConfigurations:(id)a4 inDatabase:(id)a5 operationGroup:(id)a6 recordWasChangedBlock:(id)a7 recordWithIDWasDeletedBlock:(id)a8 recordZoneFetchCompletionBlock:(id)a9 completionHandler:(id)a10
+- (void)fetchRecordZoneChangesInZonesWithIDs:(id)ds perZoneConfigurations:(id)configurations inDatabase:(id)database operationGroup:(id)group recordWasChangedBlock:(id)block recordWithIDWasDeletedBlock:(id)deletedBlock recordZoneFetchCompletionBlock:(id)completionBlock completionHandler:(id)self0
 {
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
-  v29 = a10;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
+  blockCopy = block;
+  deletedBlockCopy = deletedBlock;
+  completionBlockCopy = completionBlock;
+  handlerCopy = handler;
+  groupCopy = group;
+  databaseCopy = database;
+  configurationsCopy = configurations;
+  dsCopy = ds;
   v23 = [[WBSRetryableCKFetchRecordZoneChangesOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v23 setLog:self->_log];
-  v24 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v23 setConfiguration:v24];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v23 setConfiguration:operationConfiguration];
 
-  [v23 setGroup:v19];
-  [v23 setDatabase:v20];
+  [v23 setGroup:groupCopy];
+  [v23 setDatabase:databaseCopy];
 
-  [v23 setRecordZoneIDs:v22];
-  [v23 setConfigurationsByRecordZoneID:v21];
+  [v23 setRecordZoneIDs:dsCopy];
+  [v23 setConfigurationsByRecordZoneID:configurationsCopy];
 
   [v23 setFetchAllChanges:1];
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_100057FA8;
   v36[3] = &unk_100133E58;
-  v37 = v16;
-  v25 = v16;
+  v37 = blockCopy;
+  v25 = blockCopy;
   [v23 setRecordWasChangedBlock:v36];
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_100057FC4;
   v34[3] = &unk_100133E80;
-  v35 = v17;
-  v26 = v17;
+  v35 = deletedBlockCopy;
+  v26 = deletedBlockCopy;
   [v23 setRecordWithIDWasDeletedBlock:v34];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_100057FDC;
   v32[3] = &unk_100133EA8;
-  v33 = v18;
-  v27 = v18;
+  v33 = completionBlockCopy;
+  v27 = completionBlockCopy;
   [v23 setRecordZoneFetchCompletionBlock:v32];
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_100058000;
   v30[3] = &unk_100133ED0;
-  v31 = v29;
-  v28 = v29;
+  v31 = handlerCopy;
+  v28 = handlerCopy;
   [v23 setFetchRecordZoneChangesCompletionBlock:v30];
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v23];
 }
 
-- (void)modifyRecords:(id)a3 andDeleteRecordIDs:(id)a4 inDatabase:(id)a5 operationGroup:(id)a6 mergeHandler:(id)a7 completionHandler:(id)a8
+- (void)modifyRecords:(id)records andDeleteRecordIDs:(id)ds inDatabase:(id)database operationGroup:(id)group mergeHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  recordsCopy = records;
+  dsCopy = ds;
+  databaseCopy = database;
+  groupCopy = group;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   internalQueue = self->super._internalQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10005825C;
   block[3] = &unk_100133EF8;
   block[4] = self;
-  v28 = v14;
-  v29 = v15;
-  v30 = v16;
-  v31 = v17;
-  v32 = v18;
-  v33 = v19;
-  v21 = v19;
-  v22 = v18;
-  v23 = v17;
-  v24 = v16;
-  v25 = v15;
-  v26 = v14;
+  v28 = recordsCopy;
+  v29 = dsCopy;
+  v30 = databaseCopy;
+  v31 = groupCopy;
+  v32 = handlerCopy;
+  v33 = completionHandlerCopy;
+  v21 = completionHandlerCopy;
+  v22 = handlerCopy;
+  v23 = groupCopy;
+  v24 = databaseCopy;
+  v25 = dsCopy;
+  v26 = recordsCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (void)_modifyRecords:(id)a3 andDeleteRecordIDs:(id)a4 inDatabase:(id)a5 operationGroup:(id)a6 previouslySavedRecords:(id)a7 previouslyDeletedRecords:(id)a8 mergeHandler:(id)a9 completionHandler:(id)a10
+- (void)_modifyRecords:(id)records andDeleteRecordIDs:(id)ds inDatabase:(id)database operationGroup:(id)group previouslySavedRecords:(id)savedRecords previouslyDeletedRecords:(id)deletedRecords mergeHandler:(id)handler completionHandler:(id)self0
 {
-  v54 = a3;
-  v53 = a4;
-  v52 = a5;
-  v16 = a6;
-  v48 = a7;
-  v50 = a8;
-  v17 = a9;
-  v18 = a10;
+  recordsCopy = records;
+  dsCopy = ds;
+  databaseCopy = database;
+  groupCopy = group;
+  savedRecordsCopy = savedRecords;
+  deletedRecordsCopy = deletedRecords;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v19 = self->_log;
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    *&buf[4] = [v54 count];
+    *&buf[4] = [recordsCopy count];
     *&buf[12] = 2048;
-    *&buf[14] = [v53 count];
+    *&buf[14] = [dsCopy count];
     _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Saving record batch with %zu records and %zu deletes", buf, 0x16u);
   }
 
@@ -751,20 +751,20 @@ LABEL_13:
   *&buf[16] = 0x3032000000;
   v98 = sub_1000014C0;
   v99 = sub_100054E84;
-  v100 = [v54 copy];
+  v100 = [recordsCopy copy];
   v91 = 0;
   v92 = &v91;
   v93 = 0x3032000000;
   v94 = sub_1000014C0;
   v95 = sub_100054E84;
-  v96 = [v53 copy];
+  v96 = [dsCopy copy];
   v20 = [[WBSRetryableCKModifyRecordsOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v20 setLog:self->_log];
-  v21 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v20 setConfiguration:v21];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v20 setConfiguration:operationConfiguration];
 
-  [v20 setGroup:v16];
-  [v20 setDatabase:v52];
+  [v20 setGroup:groupCopy];
+  [v20 setDatabase:databaseCopy];
   [v20 setRecordsToSave:*(*&buf[8] + 40)];
   [v20 setRecordIDsToDelete:v92[5]];
   [v20 setAtomic:0];
@@ -774,10 +774,10 @@ LABEL_13:
   v88[3] = &unk_100133F20;
   v22 = v19;
   v89 = v22;
-  v23 = v18;
+  v23 = completionHandlerCopy;
   v90 = v23;
   [v20 setOwnerDidDeallocateBlock:v88];
-  v47 = v16;
+  v47 = groupCopy;
   v86[0] = 0;
   v86[1] = v86;
   v86[2] = 0x2020000000;
@@ -786,8 +786,8 @@ LABEL_13:
   v84[1] = v84;
   v84[2] = 0x2020000000;
   v85 = 0;
-  v24 = [v54 safari_dictionaryByMappingObjectsToKeysUsingBlock:&stru_100133F60];
-  v46 = self;
+  v24 = [recordsCopy safari_dictionaryByMappingObjectsToKeysUsingBlock:&stru_100133F60];
+  selfCopy = self;
   v25 = +[NSMutableArray array];
   v26 = +[NSMutableArray array];
   v27 = +[NSMutableArray array];
@@ -802,7 +802,7 @@ LABEL_13:
   v82 = v86;
   v29 = v25;
   v79 = v29;
-  v30 = v17;
+  v30 = handlerCopy;
   v81 = v30;
   v31 = v26;
   v80 = v31;
@@ -829,9 +829,9 @@ LABEL_13:
   v56 = v36;
   v44 = v23;
   v65 = v44;
-  v49 = v48;
+  v49 = savedRecordsCopy;
   v57 = v49;
-  v51 = v50;
+  v51 = deletedRecordsCopy;
   v58 = v51;
   v67 = v86;
   v37 = v34;
@@ -843,7 +843,7 @@ LABEL_13:
   v61 = v39;
   v40 = v31;
   v62 = v40;
-  v41 = v52;
+  v41 = databaseCopy;
   v63 = v41;
   v42 = v47;
   v64 = v42;
@@ -852,7 +852,7 @@ LABEL_13:
   v69 = buf;
   v70 = &v91;
   [v20 setModifyRecordsCompletionBlock:v55];
-  [(NSOperationQueue *)v46->_bookmarksOperationQueue addOperation:v20];
+  [(NSOperationQueue *)selfCopy->_bookmarksOperationQueue addOperation:v20];
 
   _Block_object_dispose(v84, 8);
   _Block_object_dispose(v86, 8);
@@ -861,21 +861,21 @@ LABEL_13:
   _Block_object_dispose(buf, 8);
 }
 
-- (void)setUpSharingForRecordZoneWithID:(id)a3 inOperationGroup:(id)a4 completionHandler:(id)a5
+- (void)setUpSharingForRecordZoneWithID:(id)d inOperationGroup:(id)group completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a5 copy];
-  v11 = [[CKShare alloc] initWithRecordZoneID:v9];
+  groupCopy = group;
+  dCopy = d;
+  v10 = [handler copy];
+  v11 = [[CKShare alloc] initWithRecordZoneID:dCopy];
 
   [v11 setObject:self->_shareType forKeyedSubscript:CKShareTypeKey];
   [v11 setParticipantSelfRemovalBehavior:1];
   v12 = [[WBSRetryableCKModifyRecordsOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v12 setLog:self->_log];
-  v13 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v12 setConfiguration:v13];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v12 setConfiguration:operationConfiguration];
 
-  [v12 setGroup:v8];
+  [v12 setGroup:groupCopy];
   [v12 setDatabase:self->_database];
   v24 = v11;
   v14 = [NSArray arrayWithObjects:&v24 count:1];
@@ -898,21 +898,21 @@ LABEL_13:
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v12, v17, v18, v19, v20];
 }
 
-- (void)fetchShareRecordForRecordZoneWithID:(id)a3 inDatabase:(id)a4 operationGroup:(id)a5 completionHandler:(id)a6
+- (void)fetchShareRecordForRecordZoneWithID:(id)d inDatabase:(id)database operationGroup:(id)group completionHandler:(id)handler
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [a6 copy];
-  v14 = [[CKRecordID alloc] initWithRecordName:CKRecordNameZoneWideShare zoneID:v12];
+  groupCopy = group;
+  databaseCopy = database;
+  dCopy = d;
+  v13 = [handler copy];
+  v14 = [[CKRecordID alloc] initWithRecordName:CKRecordNameZoneWideShare zoneID:dCopy];
 
   v15 = [[WBSRetryableCKFetchRecordsOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v15 setLog:self->_log];
-  v16 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v15 setConfiguration:v16];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v15 setConfiguration:operationConfiguration];
 
-  [v15 setGroup:v10];
-  [v15 setDatabase:v11];
+  [v15 setGroup:groupCopy];
+  [v15 setDatabase:databaseCopy];
 
   v27 = v14;
   v17 = [NSArray arrayWithObjects:&v27 count:1];
@@ -935,26 +935,26 @@ LABEL_13:
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v15, v20, v21, v22, v23];
 }
 
-- (void)fetchShareMetadataWithURL:(id)a3 invitationTokenData:(id)a4 inOperationGroup:(id)a5 completionHandler:(id)a6
+- (void)fetchShareMetadataWithURL:(id)l invitationTokenData:(id)data inOperationGroup:(id)group completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [a6 copy];
+  lCopy = l;
+  dataCopy = data;
+  groupCopy = group;
+  v13 = [handler copy];
   v14 = [[WBSRetryableCKFetchShareMetadataOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v14 setLog:self->_log];
-  v15 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v14 setConfiguration:v15];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v14 setConfiguration:operationConfiguration];
 
-  [v14 setGroup:v12];
-  v29 = v10;
+  [v14 setGroup:groupCopy];
+  v29 = lCopy;
   v16 = [NSArray arrayWithObjects:&v29 count:1];
   [v14 setShareURLs:v16];
 
-  if (v11)
+  if (dataCopy)
   {
-    v17 = [[CKDeviceToDeviceShareInvitationToken alloc] initWithSharingInvitationData:v11 shareURL:v10];
-    v27 = v10;
+    v17 = [[CKDeviceToDeviceShareInvitationToken alloc] initWithSharingInvitationData:dataCopy shareURL:lCopy];
+    v27 = lCopy;
     v28 = v17;
     v18 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
     [v14 setShareInvitationTokensByShareURL:v18];
@@ -971,31 +971,31 @@ LABEL_13:
   v22[1] = 3221225472;
   v22[2] = sub_10005ABCC;
   v22[3] = &unk_1001340F0;
-  v23 = v10;
+  v23 = lCopy;
   v24 = v19;
-  v20 = v10;
+  v20 = lCopy;
   v21 = v19;
   [v14 setFetchShareMetadataCompletionBlock:v22];
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v14];
 }
 
-- (void)addParticipantsWithEmailAddresses:(id)a3 toShareInRecordZoneWithID:(id)a4 inOperationGroup:(id)a5 completionHandler:(id)a6
+- (void)addParticipantsWithEmailAddresses:(id)addresses toShareInRecordZoneWithID:(id)d inOperationGroup:(id)group completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  addressesCopy = addresses;
+  dCopy = d;
+  groupCopy = group;
   v13 = self->_log;
-  v14 = [a6 copy];
+  v14 = [handler copy];
   v15 = [[WBSRetryableCKFetchShareParticipantsOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v15 setLog:v13];
-  v16 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v15 setConfiguration:v16];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v15 setConfiguration:operationConfiguration];
 
-  [v15 setGroup:v12];
-  v17 = [CKUserIdentityLookupInfo lookupInfosWithEmails:v10];
+  [v15 setGroup:groupCopy];
+  v17 = [CKUserIdentityLookupInfo lookupInfosWithEmails:addressesCopy];
   [v15 setUserIdentityLookupInfos:v17];
 
-  v18 = [NSMutableOrderedSet orderedSetWithArray:v10];
+  v18 = [NSMutableOrderedSet orderedSetWithArray:addressesCopy];
   v19 = +[NSMutableArray array];
   v38[0] = _NSConcreteStackBlock;
   v38[1] = 3221225472;
@@ -1014,14 +1014,14 @@ LABEL_13:
   v30[3] = &unk_1001341B8;
   v31 = v21;
   v32 = v20;
-  v36 = v10;
+  v36 = addressesCopy;
   v37 = v14;
   v33 = v22;
-  v34 = v11;
-  v35 = v12;
-  v23 = v10;
-  v24 = v12;
-  v25 = v11;
+  v34 = dCopy;
+  v35 = groupCopy;
+  v23 = addressesCopy;
+  v24 = groupCopy;
+  v25 = dCopy;
   v26 = v22;
   v27 = v14;
   v28 = v20;
@@ -1030,24 +1030,24 @@ LABEL_13:
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v15];
 }
 
-- (void)removeParticipantsWithEmailAddresses:(id)a3 fromShareInRecordZoneWithID:(id)a4 inOperationGroup:(id)a5 completionHandler:(id)a6
+- (void)removeParticipantsWithEmailAddresses:(id)addresses fromShareInRecordZoneWithID:(id)d inOperationGroup:(id)group completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  addressesCopy = addresses;
+  dCopy = d;
+  groupCopy = group;
   v13 = self->_log;
-  v30 = [a6 copy];
-  v14 = [NSMutableOrderedSet orderedSetWithArray:v10];
-  v15 = [[CKRecordID alloc] initWithRecordName:CKRecordNameZoneWideShare zoneID:v11];
+  v30 = [handler copy];
+  v14 = [NSMutableOrderedSet orderedSetWithArray:addressesCopy];
+  v15 = [[CKRecordID alloc] initWithRecordName:CKRecordNameZoneWideShare zoneID:dCopy];
   v16 = [[WBSRetryableCKFetchRecordsOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v16 setLog:v13];
-  v17 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v16 setConfiguration:v17];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v16 setConfiguration:operationConfiguration];
 
-  [v16 setGroup:v12];
-  v18 = [(CloudBookmarkStore *)self container];
-  v19 = [v18 privateCloudDatabase];
-  [v16 setDatabase:v19];
+  [v16 setGroup:groupCopy];
+  container = [(CloudBookmarkStore *)self container];
+  privateCloudDatabase = [container privateCloudDatabase];
+  [v16 setDatabase:privateCloudDatabase];
 
   v43 = v15;
   v20 = v15;
@@ -1059,17 +1059,17 @@ LABEL_13:
   v35[2] = sub_10005C224;
   v35[3] = &unk_100134208;
   v36 = v13;
-  v37 = v11;
-  v41 = v12;
+  v37 = dCopy;
+  v41 = groupCopy;
   v42 = v30;
-  v38 = v10;
+  v38 = addressesCopy;
   v39 = v14;
-  v40 = self;
-  v22 = v12;
+  selfCopy = self;
+  v22 = groupCopy;
   v23 = v14;
-  v24 = v10;
+  v24 = addressesCopy;
   v25 = v30;
-  v26 = v11;
+  v26 = dCopy;
   v27 = v13;
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
@@ -1088,18 +1088,18 @@ LABEL_13:
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v16];
 }
 
-- (void)acceptCloudKitShareWithMetadata:(id)a3 inOperationGroup:(id)a4 completionHandler:(id)a5
+- (void)acceptCloudKitShareWithMetadata:(id)metadata inOperationGroup:(id)group completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [a5 copy];
+  metadataCopy = metadata;
+  groupCopy = group;
+  v10 = [handler copy];
   v11 = [[WBSRetryableCKAcceptSharesOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v11 setLog:self->_log];
-  v12 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v11 setConfiguration:v12];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v11 setConfiguration:operationConfiguration];
 
-  [v11 setGroup:v9];
-  v22 = v8;
+  [v11 setGroup:groupCopy];
+  v22 = metadataCopy;
   v13 = [NSArray arrayWithObjects:&v22 count:1];
   [v11 setShareMetadatas:v13];
 
@@ -1114,31 +1114,31 @@ LABEL_13:
   v17[1] = 3221225472;
   v17[2] = sub_10005CD74;
   v17[3] = &unk_100134258;
-  v18 = v8;
+  v18 = metadataCopy;
   v19 = v14;
-  v15 = v8;
+  v15 = metadataCopy;
   v16 = v14;
   [v11 setAcceptSharesCompletionBlock:v17];
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v11];
 }
 
-- (void)fetchSubscriptionWithID:(id)a3 inDatabase:(id)a4 operationGroup:(id)a5 withCompletionHandler:(id)a6
+- (void)fetchSubscriptionWithID:(id)d inDatabase:(id)database operationGroup:(id)group withCompletionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
+  dCopy = d;
+  handlerCopy = handler;
   v12 = self->_log;
-  v13 = a5;
-  v14 = a4;
+  groupCopy = group;
+  databaseCopy = database;
   v15 = [[WBSRetryableCKFetchSubscriptionsOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v15 setLog:v12];
   [v15 setTimeout:0.0];
-  v16 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v15 setConfiguration:v16];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v15 setConfiguration:operationConfiguration];
 
-  [v15 setGroup:v13];
-  [v15 setDatabase:v14];
+  [v15 setGroup:groupCopy];
+  [v15 setDatabase:databaseCopy];
 
-  v31 = v10;
+  v31 = dCopy;
   v17 = [NSArray arrayWithObjects:&v31 count:1];
   [v15 setSubscriptionIDs:v17];
 
@@ -1153,33 +1153,33 @@ LABEL_13:
   v23 = 3221225472;
   v24 = sub_10005D180;
   v25 = &unk_1001342A8;
-  v26 = v10;
+  v26 = dCopy;
   v27 = v18;
-  v28 = v11;
-  v19 = v11;
+  v28 = handlerCopy;
+  v19 = handlerCopy;
   v20 = v18;
-  v21 = v10;
+  v21 = dCopy;
   [v15 setFetchSubscriptionCompletionBlock:&v22];
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v15, v22, v23, v24, v25];
 }
 
-- (void)saveSubscription:(id)a3 inDatabase:(id)a4 operationGroup:(id)a5 withCompletionHandler:(id)a6
+- (void)saveSubscription:(id)subscription inDatabase:(id)database operationGroup:(id)group withCompletionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
+  subscriptionCopy = subscription;
+  handlerCopy = handler;
   v12 = self->_log;
-  v13 = a5;
-  v14 = a4;
+  groupCopy = group;
+  databaseCopy = database;
   v15 = [[WBSRetryableCKModifySubscriptionsOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v15 setLog:v12];
   [v15 setTimeout:0.0];
-  v16 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v15 setConfiguration:v16];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v15 setConfiguration:operationConfiguration];
 
-  [v15 setGroup:v13];
-  [v15 setDatabase:v14];
+  [v15 setGroup:groupCopy];
+  [v15 setDatabase:databaseCopy];
 
-  v26 = v10;
+  v26 = subscriptionCopy;
   v17 = [NSArray arrayWithObjects:&v26 count:1];
   [v15 setSubscriptionsToSave:v17];
 
@@ -1194,31 +1194,31 @@ LABEL_13:
   v21[1] = 3221225472;
   v21[2] = sub_10005D520;
   v21[3] = &unk_1001342F8;
-  v22 = v10;
-  v23 = v11;
-  v19 = v10;
-  v20 = v11;
+  v22 = subscriptionCopy;
+  v23 = handlerCopy;
+  v19 = subscriptionCopy;
+  v20 = handlerCopy;
   [v15 setModifySubscriptionsCompletionBlock:v21];
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v15];
 }
 
-- (void)deleteSubscriptionWithID:(id)a3 inDatabase:(id)a4 operationGroup:(id)a5 withCompletionHandler:(id)a6
+- (void)deleteSubscriptionWithID:(id)d inDatabase:(id)database operationGroup:(id)group withCompletionHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   v11 = self->_log;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
+  groupCopy = group;
+  databaseCopy = database;
+  dCopy = d;
   v15 = [[WBSRetryableCKModifySubscriptionsOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v15 setLog:v11];
   [v15 setTimeout:0.0];
-  v16 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v15 setConfiguration:v16];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v15 setConfiguration:operationConfiguration];
 
-  [v15 setGroup:v12];
-  [v15 setDatabase:v13];
+  [v15 setGroup:groupCopy];
+  [v15 setDatabase:databaseCopy];
 
-  v27 = v14;
+  v27 = dCopy;
   v17 = [NSArray arrayWithObjects:&v27 count:1];
   [v15 setSubscriptionIDsToDelete:v17];
 
@@ -1233,16 +1233,16 @@ LABEL_13:
   v21 = 3221225472;
   v22 = sub_10005D868;
   v23 = &unk_100134320;
-  v24 = v10;
-  v19 = v10;
+  v24 = handlerCopy;
+  v19 = handlerCopy;
   [v15 setModifySubscriptionsCompletionBlock:&v20];
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v15, v20, v21, v22, v23];
 }
 
-- (void)saveBookmarksZoneSubscriptionInOperationGroup:(id)a3 withCompletionHandler:(id)a4
+- (void)saveBookmarksZoneSubscriptionInOperationGroup:(id)group withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  handlerCopy = handler;
   v8 = self->_log;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -1258,9 +1258,9 @@ LABEL_13:
   objc_copyWeak(&v16, buf);
   v9 = v8;
   v13 = v9;
-  v10 = v7;
+  v10 = handlerCopy;
   v15 = v10;
-  v11 = v6;
+  v11 = groupCopy;
   v14 = v11;
   [(CloudBookmarkStore *)self _prepareBookmarksRecordZoneInOperationGroup:v11 withCompletionHandler:v12];
 
@@ -1268,13 +1268,13 @@ LABEL_13:
   objc_destroyWeak(buf);
 }
 
-- (void)fetchBookmarksRecordChangesSinceServerChangeToken:(id)a3 inOperationGroup:(id)a4 recordChangedBlock:(id)a5 recordWithIDWasDeletedBlock:(id)a6 completionHandler:(id)a7
+- (void)fetchBookmarksRecordChangesSinceServerChangeToken:(id)token inOperationGroup:(id)group recordChangedBlock:(id)block recordWithIDWasDeletedBlock:(id)deletedBlock completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  tokenCopy = token;
+  groupCopy = group;
+  blockCopy = block;
+  deletedBlockCopy = deletedBlock;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v17 = self->_log;
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -1290,15 +1290,15 @@ LABEL_13:
   objc_copyWeak(&v31, &location);
   v18 = v17;
   v25 = v18;
-  v19 = v16;
+  v19 = handlerCopy;
   v28 = v19;
-  v20 = v12;
+  v20 = tokenCopy;
   v26 = v20;
-  v21 = v14;
+  v21 = blockCopy;
   v29 = v21;
-  v22 = v15;
+  v22 = deletedBlockCopy;
   v30 = v22;
-  v23 = v13;
+  v23 = groupCopy;
   v27 = v23;
   [(CloudBookmarkStore *)self setUpBookmarksRecordZoneInOperationGroup:v23 withCompletionHandler:v24];
 
@@ -1306,31 +1306,31 @@ LABEL_13:
   objc_destroyWeak(&location);
 }
 
-- (void)fetchNumberOfDevicesInSyncCircleWithCompletionHandler:(id)a3
+- (void)fetchNumberOfDevicesInSyncCircleWithCompletionHandler:(id)handler
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10005E9D4;
   v4[3] = &unk_100131A70;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(CloudBookmarkStore *)v5 _prepareBookmarksRecordZoneInvalidatingCachedZone:1 createIfNeeded:1 inOperationGroup:0 withCompletionHandler:v4];
+  selfCopy = self;
+  handlerCopy = handler;
+  v3 = handlerCopy;
+  [(CloudBookmarkStore *)selfCopy _prepareBookmarksRecordZoneInvalidatingCachedZone:1 createIfNeeded:1 inOperationGroup:0 withCompletionHandler:v4];
 }
 
-- (void)saveBookmarksRecordBatch:(id)a3 inOperationGroup:(id)a4 clientChangeTokenData:(id)a5 mergeHandler:(id)a6 completionHandler:(id)a7
+- (void)saveBookmarksRecordBatch:(id)batch inOperationGroup:(id)group clientChangeTokenData:(id)data mergeHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  batchCopy = batch;
+  groupCopy = group;
+  dataCopy = data;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
     v18 = log;
     *buf = 134217984;
-    v32 = [v12 count];
+    v32 = [batchCopy count];
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Saving record batch of size: %lu", buf, 0xCu);
   }
 
@@ -1340,47 +1340,47 @@ LABEL_13:
   v25[2] = sub_10005ED64;
   v25[3] = &unk_100134438;
   v25[4] = self;
-  v26 = v12;
-  v27 = v13;
-  v28 = v14;
-  v29 = v15;
-  v30 = v16;
-  v20 = v16;
-  v21 = v15;
-  v22 = v14;
-  v23 = v13;
-  v24 = v12;
+  v26 = batchCopy;
+  v27 = groupCopy;
+  v28 = dataCopy;
+  v29 = handlerCopy;
+  v30 = completionHandlerCopy;
+  v20 = completionHandlerCopy;
+  v21 = handlerCopy;
+  v22 = dataCopy;
+  v23 = groupCopy;
+  v24 = batchCopy;
   dispatch_async(internalQueue, v25);
 }
 
-- (void)deleteBookmarksRecordBatch:(id)a3 inOperationGroup:(id)a4 clientChangeTokenData:(id)a5 completionHandler:(id)a6
+- (void)deleteBookmarksRecordBatch:(id)batch inOperationGroup:(id)group clientChangeTokenData:(id)data completionHandler:(id)handler
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
+  batchCopy = batch;
+  dataCopy = data;
+  handlerCopy = handler;
   v12 = self->_log;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 134217984;
-    v29 = [v9 count];
+    v29 = [batchCopy count];
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Deleting record batch of size: %lu", buf, 0xCu);
   }
 
   v13 = [[WBSRetryableCKModifyRecordsOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v13 setLog:v12];
-  v14 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v13 setConfiguration:v14];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v13 setConfiguration:operationConfiguration];
 
   [v13 setDatabase:self->_database];
-  [v13 setClientChangeTokenData:v10];
-  [v13 setRecordIDsToDelete:v9];
+  [v13 setClientChangeTokenData:dataCopy];
+  [v13 setRecordIDsToDelete:batchCopy];
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_10005F07C;
   v25[3] = &unk_100133F20;
   v15 = v12;
   v26 = v15;
-  v16 = v11;
+  v16 = handlerCopy;
   v27 = v16;
   [v13 setOwnerDidDeallocateBlock:v25];
   v19 = _NSConcreteStackBlock;
@@ -1395,10 +1395,10 @@ LABEL_13:
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v13, v19, v20, v21, v22];
 }
 
-- (void)deleteBookmarksZoneInOperationGroup:(id)a3 completionHandler:(id)a4
+- (void)deleteBookmarksZoneInOperationGroup:(id)group completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  handlerCopy = handler;
   v8 = self->_log;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1410,10 +1410,10 @@ LABEL_13:
   v10 = [[WBSRetryableCKModifyRecordZonesOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v10 setLog:v8];
   [v10 setTimeout:0.0];
-  v11 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v10 setConfiguration:v11];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v10 setConfiguration:operationConfiguration];
 
-  [v10 setGroup:v6];
+  [v10 setGroup:groupCopy];
   [v10 setDatabase:self->_database];
   v21 = v9;
   v12 = [NSArray arrayWithObjects:&v21 count:1];
@@ -1425,27 +1425,27 @@ LABEL_13:
   v16[3] = &unk_100134488;
   v17 = v9;
   v18 = v8;
-  v19 = v7;
-  v13 = v7;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
   v14 = v8;
   v15 = v9;
   [v10 setModifyRecordZonesCompletionBlock:v16];
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v10];
 }
 
-- (void)_prepareBookmarksRecordZoneInvalidatingCachedZone:(BOOL)a3 createIfNeeded:(BOOL)a4 inOperationGroup:(id)a5 withCompletionHandler:(id)a6
+- (void)_prepareBookmarksRecordZoneInvalidatingCachedZone:(BOOL)zone createIfNeeded:(BOOL)needed inOperationGroup:(id)group withCompletionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a3;
-  v10 = a5;
-  v11 = a6;
+  neededCopy = needed;
+  zoneCopy = zone;
+  groupCopy = group;
+  handlerCopy = handler;
   v12 = self->_log;
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 67109376;
-    v24 = v8;
+    v24 = zoneCopy;
     v25 = 1024;
-    v26 = v7;
+    v26 = neededCopy;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Preparing bookmarks record zone, invalidateCachedZone: %d, createIfNeeded: %d", buf, 0xEu);
   }
 
@@ -1454,22 +1454,22 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = sub_10005F880;
   block[3] = &unk_1001344D8;
-  v21 = v7;
-  v22 = v8;
+  v21 = neededCopy;
+  v22 = zoneCopy;
   block[4] = self;
   v18 = v12;
-  v19 = v10;
-  v20 = v11;
-  v14 = v10;
+  v19 = groupCopy;
+  v20 = handlerCopy;
+  v14 = groupCopy;
   v15 = v12;
-  v16 = v11;
+  v16 = handlerCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (void)_prepareBookmarksRecordZoneOnInternalQueueAfterExternalCompletionHandlersHaveBeenStashedInvalidatingCachedZone:(BOOL)a3 createIfNeeded:(BOOL)a4 inOperationGroup:(id)a5 withCompletionHandler:(id)a6
+- (void)_prepareBookmarksRecordZoneOnInternalQueueAfterExternalCompletionHandlersHaveBeenStashedInvalidatingCachedZone:(BOOL)zone createIfNeeded:(BOOL)needed inOperationGroup:(id)group withCompletionHandler:(id)handler
 {
-  v9 = a5;
-  v10 = a6;
+  groupCopy = group;
+  handlerCopy = handler;
   v11 = self->_log;
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
@@ -1480,10 +1480,10 @@ LABEL_13:
   v12 = [[WBSRetryableCKFetchRecordZonesOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v12 setLog:v11];
   [v12 setTimeout:150.0];
-  v13 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v12 setConfiguration:v13];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v12 setConfiguration:operationConfiguration];
 
-  [v12 setGroup:v9];
+  [v12 setGroup:groupCopy];
   [v12 setDatabase:self->_database];
   v14 = self->_bookmarksRecordZoneID;
   v27 = v14;
@@ -1496,21 +1496,21 @@ LABEL_13:
   v20[3] = &unk_100134528;
   v21 = v14;
   v22 = v11;
-  v25 = a4;
-  v23 = v9;
-  v24 = v10;
-  v16 = v10;
-  v17 = v9;
+  neededCopy = needed;
+  v23 = groupCopy;
+  v24 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = groupCopy;
   v18 = v11;
   v19 = v14;
   [v12 setFetchRecordZonesCompletionBlock:v20];
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v12];
 }
 
-- (void)_setUpEncryptionInfoInOperationGroup:(id)a3 withCompletionHandler:(id)a4
+- (void)_setUpEncryptionInfoInOperationGroup:(id)group withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  handlerCopy = handler;
   v8 = self->_log;
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -1525,17 +1525,17 @@ LABEL_13:
   v14[3] = &unk_100134550;
   v14[4] = self;
   v15 = v8;
-  v16 = v6;
-  v17 = v7;
-  v11 = v6;
+  v16 = groupCopy;
+  v17 = handlerCopy;
+  v11 = groupCopy;
   v12 = v8;
-  v13 = v7;
+  v13 = handlerCopy;
   [(CloudBookmarkStore *)self fetchRecordWithID:v9 inDatabase:database operationGroup:v11 completionHandler:v14];
 }
 
-- (void)_cacheEncryptionRecord:(id)a3
+- (void)_cacheEncryptionRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
   {
@@ -1543,31 +1543,31 @@ LABEL_13:
     _os_log_impl(&_mh_execute_header, log, OS_LOG_TYPE_INFO, "Successfully setup EncryptionInfo record", v9, 2u);
   }
 
-  v6 = [[WBSHashGenerator alloc] initWithEncryptionInfoRecord:v4];
-  v7 = self;
-  objc_sync_enter(v7);
-  threadUnsafeBookmarkHashGenerator = v7->_threadUnsafeBookmarkHashGenerator;
-  v7->_threadUnsafeBookmarkHashGenerator = v6;
+  v6 = [[WBSHashGenerator alloc] initWithEncryptionInfoRecord:recordCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  threadUnsafeBookmarkHashGenerator = selfCopy->_threadUnsafeBookmarkHashGenerator;
+  selfCopy->_threadUnsafeBookmarkHashGenerator = v6;
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)fetchRecordWithID:(id)a3 inDatabase:(id)a4 operationGroup:(id)a5 completionHandler:(id)a6
+- (void)fetchRecordWithID:(id)d inDatabase:(id)database operationGroup:(id)group completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
+  dCopy = d;
+  handlerCopy = handler;
   v12 = self->_log;
-  v13 = a5;
-  v14 = a4;
+  groupCopy = group;
+  databaseCopy = database;
   v15 = [[WBSRetryableCKFetchRecordsOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v15 setLog:v12];
-  v16 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v15 setConfiguration:v16];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v15 setConfiguration:operationConfiguration];
 
-  [v15 setGroup:v13];
-  [v15 setDatabase:v14];
+  [v15 setGroup:groupCopy];
+  [v15 setDatabase:databaseCopy];
 
-  v25 = v10;
+  v25 = dCopy;
   v17 = [NSArray arrayWithObjects:&v25 count:1];
   [v15 setRecordIDs:v17];
 
@@ -1576,64 +1576,64 @@ LABEL_13:
   v21[2] = sub_100060A74;
   v21[3] = &unk_100134578;
   v23 = v12;
-  v24 = v11;
-  v22 = v10;
+  v24 = handlerCopy;
+  v22 = dCopy;
   v18 = v12;
-  v19 = v11;
-  v20 = v10;
+  v19 = handlerCopy;
+  v20 = dCopy;
   [v15 setFetchRecordsCompletionBlock:v21];
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v15];
 }
 
-- (void)fetchRecordsWithIDs:(id)a3 inDatabase:(id)a4 operationGroup:(id)a5 perRecordCompletionBlock:(id)a6 completionHandler:(id)a7
+- (void)fetchRecordsWithIDs:(id)ds inDatabase:(id)database operationGroup:(id)group perRecordCompletionBlock:(id)block completionHandler:(id)handler
 {
-  v12 = a6;
-  v13 = a7;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  blockCopy = block;
+  handlerCopy = handler;
+  groupCopy = group;
+  databaseCopy = database;
+  dsCopy = ds;
   v17 = [[WBSRetryableCKFetchRecordsOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v17 setLog:self->_log];
-  v18 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v17 setConfiguration:v18];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v17 setConfiguration:operationConfiguration];
 
-  [v17 setGroup:v14];
-  [v17 setDatabase:v15];
+  [v17 setGroup:groupCopy];
+  [v17 setDatabase:databaseCopy];
 
-  [v17 setRecordIDs:v16];
+  [v17 setRecordIDs:dsCopy];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_100060E90;
   v26[3] = &unk_100134078;
-  v27 = v12;
-  v19 = v12;
+  v27 = blockCopy;
+  v19 = blockCopy;
   [v17 setPerRecordCompletionBlock:v26];
   v21 = _NSConcreteStackBlock;
   v22 = 3221225472;
   v23 = sub_100060EAC;
   v24 = &unk_1001340A0;
-  v25 = v13;
-  v20 = v13;
+  v25 = handlerCopy;
+  v20 = handlerCopy;
   [v17 setFetchRecordsCompletionBlock:&v21];
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v17, v21, v22, v23, v24];
 }
 
-- (void)saveOrLoadRecord:(id)a3 inDatabase:(id)a4 operationGroup:(id)a5 completionHandler:(id)a6
+- (void)saveOrLoadRecord:(id)record inDatabase:(id)database operationGroup:(id)group completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
+  recordCopy = record;
+  handlerCopy = handler;
   v12 = self->_log;
-  v13 = a5;
-  v14 = a4;
+  groupCopy = group;
+  databaseCopy = database;
   v15 = [[WBSRetryableCKModifyRecordsOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v15 setLog:v12];
-  v16 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v15 setConfiguration:v16];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v15 setConfiguration:operationConfiguration];
 
-  [v15 setGroup:v13];
-  [v15 setDatabase:v14];
+  [v15 setGroup:groupCopy];
+  [v15 setDatabase:databaseCopy];
 
-  v25 = v10;
+  v25 = recordCopy;
   v17 = [NSArray arrayWithObjects:&v25 count:1];
   [v15 setRecordsToSave:v17];
 
@@ -1641,77 +1641,77 @@ LABEL_13:
   v21[1] = 3221225472;
   v21[2] = sub_1000611A8;
   v21[3] = &unk_1001345A0;
-  v22 = v10;
+  v22 = recordCopy;
   v23 = v12;
-  v24 = v11;
-  v18 = v11;
+  v24 = handlerCopy;
+  v18 = handlerCopy;
   v19 = v12;
-  v20 = v10;
+  v20 = recordCopy;
   [v15 setModifyRecordsCompletionBlock:v21];
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v15];
 }
 
-- (void)deleteRecordWithID:(id)a3 inDatabase:(id)a4 operationGroup:(id)a5 completionHandler:(id)a6
+- (void)deleteRecordWithID:(id)d inDatabase:(id)database operationGroup:(id)group completionHandler:(id)handler
 {
-  v10 = a6;
-  v18 = a3;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [NSArray arrayWithObjects:&v18 count:1];
+  handlerCopy = handler;
+  dCopy = d;
+  groupCopy = group;
+  databaseCopy = database;
+  dCopy2 = d;
+  v14 = [NSArray arrayWithObjects:&dCopy count:1];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100061878;
   v16[3] = &unk_1001345C8;
-  v17 = v10;
-  v15 = v10;
-  [(CloudBookmarkStore *)self deleteRecordsWithIDs:v14 inDatabase:v12 operationGroup:v11 completionHandler:v16];
+  v17 = handlerCopy;
+  v15 = handlerCopy;
+  [(CloudBookmarkStore *)self deleteRecordsWithIDs:v14 inDatabase:databaseCopy operationGroup:groupCopy completionHandler:v16];
 }
 
-- (void)deleteRecordsWithIDs:(id)a3 inDatabase:(id)a4 operationGroup:(id)a5 completionHandler:(id)a6
+- (void)deleteRecordsWithIDs:(id)ds inDatabase:(id)database operationGroup:(id)group completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
+  dsCopy = ds;
+  handlerCopy = handler;
   v12 = self->_log;
-  v13 = a5;
-  v14 = a4;
+  groupCopy = group;
+  databaseCopy = database;
   v15 = [[WBSRetryableCKModifyRecordsOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v15 setLog:v12];
-  v16 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v15 setConfiguration:v16];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v15 setConfiguration:operationConfiguration];
 
-  [v15 setGroup:v13];
-  [v15 setDatabase:v14];
+  [v15 setGroup:groupCopy];
+  [v15 setDatabase:databaseCopy];
 
-  [v15 setRecordIDsToDelete:v10];
+  [v15 setRecordIDsToDelete:dsCopy];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_100061AA0;
   v20[3] = &unk_1001345F0;
-  v22 = v10;
-  v23 = v11;
+  v22 = dsCopy;
+  v23 = handlerCopy;
   v21 = v12;
-  v17 = v10;
-  v18 = v11;
+  v17 = dsCopy;
+  v18 = handlerCopy;
   v19 = v12;
   [v15 setModifyRecordsCompletionBlock:v20];
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v15];
 }
 
-- (void)_saveBookmarksRecordBatch:(id)a3 inOperationGroup:(id)a4 clientChangeTokenData:(id)a5 previouslySavedRecords:(id)a6 previouslyDeletedRecordIDs:(id)a7 mergeHandler:(id)a8 completionHandler:(id)a9
+- (void)_saveBookmarksRecordBatch:(id)batch inOperationGroup:(id)group clientChangeTokenData:(id)data previouslySavedRecords:(id)records previouslyDeletedRecordIDs:(id)ds mergeHandler:(id)handler completionHandler:(id)completionHandler
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v40 = a6;
-  v41 = a7;
-  v39 = a8;
-  v42 = a9;
+  batchCopy = batch;
+  groupCopy = group;
+  dataCopy = data;
+  recordsCopy = records;
+  dsCopy = ds;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
   v18 = self->_log;
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = [v15 count];
+    *(&buf + 4) = [batchCopy count];
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Saving record batch with %lu records", &buf, 0xCu);
   }
 
@@ -1720,8 +1720,8 @@ LABEL_13:
   v82 = 0x3032000000;
   v83 = sub_1000014C0;
   v84 = sub_100054E84;
-  v85 = [v15 copy];
-  v43 = [v17 copy];
+  v85 = [batchCopy copy];
+  v43 = [dataCopy copy];
   threadUnsafeIncludesMigrationRecordInSaveBatch = self->_threadUnsafeIncludesMigrationRecordInSaveBatch;
   if (!threadUnsafeIncludesMigrationRecordInSaveBatch)
   {
@@ -1730,9 +1730,9 @@ LABEL_13:
 
   if (self->_threadUnsafeMigrationStateRecord)
   {
-    v19 = [*(*(&buf + 1) + 40) firstObject];
-    v20 = [v19 recordType];
-    v21 = [v20 isEqualToString:@"MigrationState"];
+    firstObject = [*(*(&buf + 1) + 40) firstObject];
+    recordType = [firstObject recordType];
+    v21 = [recordType isEqualToString:@"MigrationState"];
 
     if ((v21 & 1) == 0)
     {
@@ -1746,10 +1746,10 @@ LABEL_13:
 LABEL_7:
     v25 = [[WBSRetryableCKModifyRecordsOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
     [v25 setLog:v18];
-    v26 = [(CloudBookmarkStore *)self operationConfiguration];
-    [v25 setConfiguration:v26];
+    operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+    [v25 setConfiguration:operationConfiguration];
 
-    [v25 setGroup:v16];
+    [v25 setGroup:groupCopy];
     [v25 setDatabase:self->_database];
     [v25 setClientChangeTokenData:v43];
     [v25 setRecordsToSave:*(*(&buf + 1) + 40)];
@@ -1759,7 +1759,7 @@ LABEL_7:
     v73[3] = &unk_100133F20;
     v27 = v18;
     v74 = v27;
-    v28 = v42;
+    v28 = completionHandlerCopy;
     v75 = v28;
     [v25 setOwnerDidDeallocateBlock:v73];
     v71[0] = 0;
@@ -1774,8 +1774,8 @@ LABEL_7:
     v67[1] = v67;
     v67[2] = 0x2020000000;
     v68 = 0;
-    v37 = v15;
-    v29 = [v15 safari_dictionaryByMappingObjectsToKeysUsingBlock:&stru_100134610];
+    v37 = batchCopy;
+    v29 = [batchCopy safari_dictionaryByMappingObjectsToKeysUsingBlock:&stru_100134610];
     v30 = +[NSMutableArray array];
     v58[0] = _NSConcreteStackBlock;
     v58[1] = 3221225472;
@@ -1788,7 +1788,7 @@ LABEL_7:
     v60 = v32;
     v36 = v29;
     v61 = v36;
-    v33 = v39;
+    v33 = handlerCopy;
     v66 = threadUnsafeIncludesMigrationRecordInSaveBatch;
     v62 = v33;
     v64 = v69;
@@ -1800,22 +1800,22 @@ LABEL_7:
     v44[3] = &unk_1001346D8;
     v45 = v31;
     v51 = v28;
-    v46 = v40;
-    v47 = v41;
+    v46 = recordsCopy;
+    v47 = dsCopy;
     v53 = v71;
     v54 = v67;
     v57 = threadUnsafeIncludesMigrationRecordInSaveBatch;
     v55 = v69;
     v34 = v32;
     v48 = v34;
-    v49 = v16;
+    v49 = groupCopy;
     v50 = v43;
     v52 = v33;
     p_buf = &buf;
     [v25 setModifyRecordsCompletionBlock:v44];
     [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v25];
 
-    v15 = v37;
+    batchCopy = v37;
     _Block_object_dispose(v67, 8);
     _Block_object_dispose(v69, 8);
     _Block_object_dispose(v71, 8);
@@ -1833,9 +1833,9 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = sub_10006240C;
   block[3] = &unk_100130E00;
-  v79 = v42;
-  v77 = v40;
-  v78 = v41;
+  v79 = completionHandlerCopy;
+  v77 = recordsCopy;
+  v78 = dsCopy;
   dispatch_async(completionHandlerQueue, block);
 
   v25 = v79;
@@ -1844,15 +1844,15 @@ LABEL_8:
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)fetchBookmarkRecordsWithNames:(id)a3 withCompletionHandler:(id)a4
+- (void)fetchBookmarkRecordsWithNames:(id)names withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  namesCopy = names;
   v8 = [[WBSRetryableCKFetchRecordsOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v8 setLog:self->_log];
   [v8 setTimeout:150.0];
-  v9 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v8 setConfiguration:v9];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v8 setConfiguration:operationConfiguration];
 
   [v8 setDatabase:self->_database];
   v17[0] = _NSConcreteStackBlock;
@@ -1860,32 +1860,32 @@ LABEL_8:
   v17[2] = sub_10006372C;
   v17[3] = &unk_100134700;
   v17[4] = self;
-  v10 = [v7 safari_mapObjectsUsingBlock:v17];
+  v10 = [namesCopy safari_mapObjectsUsingBlock:v17];
 
   [v8 setRecordIDs:v10];
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_1000637A0;
   v15 = &unk_1001340A0;
-  v16 = v6;
-  v11 = v6;
+  v16 = handlerCopy;
+  v11 = handlerCopy;
   [v8 setFetchRecordsCompletionBlock:&v12];
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v8, v12, v13, v14, v15];
 }
 
 - (WBSHashGenerator)bookmarkHashGenerator
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_threadUnsafeBookmarkHashGenerator;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_threadUnsafeBookmarkHashGenerator;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)fetchEncryptionInfoWithCompletionHandler:(id)a3
+- (void)fetchEncryptionInfoWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = self->_bookmarkEncryptionInfoRecordID;
   v6 = self->_log;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
@@ -1897,8 +1897,8 @@ LABEL_8:
   v7 = [[WBSRetryableCKFetchRecordsOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v7 setLog:v6];
   [v7 setTimeout:150.0];
-  v8 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v7 setConfiguration:v8];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v7 setConfiguration:operationConfiguration];
 
   [v7 setDatabase:self->_database];
   v18 = v5;
@@ -1911,50 +1911,50 @@ LABEL_8:
   v13[3] = &unk_100134768;
   v14 = v5;
   v15 = v6;
-  v16 = v4;
-  v10 = v4;
+  v16 = handlerCopy;
+  v10 = handlerCopy;
   v11 = v6;
   v12 = v5;
   [v7 setFetchRecordsCompletionBlock:v13];
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v7];
 }
 
-- (void)fetchMetadataZoneRecordsInOperationGroup:(id)a3 withRecordChangedBlock:(id)a4 recordWithIDWasDeletedBlock:(id)a5 completionHandler:(id)a6
+- (void)fetchMetadataZoneRecordsInOperationGroup:(id)group withRecordChangedBlock:(id)block recordWithIDWasDeletedBlock:(id)deletedBlock completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a3;
-  v13 = [a6 copy];
+  blockCopy = block;
+  deletedBlockCopy = deletedBlock;
+  groupCopy = group;
+  v13 = [handler copy];
   v14 = [[WBSRetryableCKFetchRecordZoneChangesOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v14 setLog:self->_log];
   [v14 setTimeout:150.0];
-  v15 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v14 setConfiguration:v15];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v14 setConfiguration:operationConfiguration];
 
-  [v14 setGroup:v12];
+  [v14 setGroup:groupCopy];
   [v14 setDatabase:self->_database];
   v16 = [[CKRecordZoneID alloc] initWithZoneName:@"metadata_zone" ownerName:CKCurrentUserDefaultName];
   v31 = v16;
   v17 = [NSArray arrayWithObjects:&v31 count:1];
   [v14 setRecordZoneIDs:v17];
 
-  if (v10)
+  if (blockCopy)
   {
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_100064058;
     v29[3] = &unk_100133E58;
-    v30 = v10;
+    v30 = blockCopy;
     [v14 setRecordWasChangedBlock:v29];
   }
 
-  if (v11)
+  if (deletedBlockCopy)
   {
     v27[0] = _NSConcreteStackBlock;
     v27[1] = 3221225472;
     v27[2] = sub_10006406C;
     v27[3] = &unk_100133E80;
-    v28 = v11;
+    v28 = deletedBlockCopy;
     [v14 setRecordWithIDWasDeletedBlock:v27];
   }
 
@@ -1975,43 +1975,43 @@ LABEL_8:
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v14, v20, v21, v22, v23];
 }
 
-- (void)fetchCachedRemoteMigrationInfoWithCompletionHandler:(id)a3
+- (void)fetchCachedRemoteMigrationInfoWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   internalQueue = self->super._internalQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10006449C;
   v7[3] = &unk_100131990;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(internalQueue, v7);
 }
 
-- (void)fetchRemoteMigrationInfoInOperationGroup:(id)a3 withCompletionHandler:(id)a4
+- (void)fetchRemoteMigrationInfoInOperationGroup:(id)group withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  handlerCopy = handler;
   internalQueue = self->super._internalQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000646C8;
   block[3] = &unk_100131A20;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = groupCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = groupCopy;
   dispatch_async(internalQueue, block);
 }
 
-- (void)_fetchRemoteMigrationInfoInOperationGroup:(id)a3 completionHandler:(id)a4
+- (void)_fetchRemoteMigrationInfoInOperationGroup:(id)group completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   threadUnsafeMigrationStateRecord = self->_threadUnsafeMigrationStateRecord;
   self->_threadUnsafeMigrationStateRecord = 0;
-  v8 = a3;
+  groupCopy = group;
 
   [(CloudBookmarkStoreLocalStorage *)self->_threadUnsafeLocalStorage setMigrationStateEncodedRecordData:0];
   v9 = self->_log;
@@ -2024,10 +2024,10 @@ LABEL_8:
   v10 = [[WBSRetryableCKFetchRecordsOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v10 setLog:v9];
   [v10 setTimeout:150.0];
-  v11 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v10 setConfiguration:v11];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v10 setConfiguration:operationConfiguration];
 
-  [v10 setGroup:v8];
+  [v10 setGroup:groupCopy];
   [v10 setDatabase:self->_database];
   v12 = self->_migrationStateRecordID;
   v22 = v12;
@@ -2039,44 +2039,44 @@ LABEL_8:
   v17[2] = sub_100064934;
   v17[3] = &unk_100134578;
   v19 = v9;
-  v20 = v6;
+  v20 = handlerCopy;
   v18 = v12;
   v14 = v9;
-  v15 = v6;
+  v15 = handlerCopy;
   v16 = v12;
   [v10 setFetchRecordsCompletionBlock:v17];
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v10];
 }
 
-- (void)setRemoteMigrationState:(int64_t)a3 deviceIdentifier:(id)a4 inOperationGroup:(id)a5 completionHandler:(id)a6
+- (void)setRemoteMigrationState:(int64_t)state deviceIdentifier:(id)identifier inOperationGroup:(id)group completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  groupCopy = group;
+  handlerCopy = handler;
   v13 = self->_log;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_100065098;
   v18[3] = &unk_1001347E0;
   v19 = v13;
-  v20 = self;
-  v23 = v12;
-  v24 = a3;
-  v21 = v10;
-  v22 = v11;
-  v14 = v11;
-  v15 = v10;
-  v16 = v12;
+  selfCopy = self;
+  v23 = handlerCopy;
+  stateCopy = state;
+  v21 = identifierCopy;
+  v22 = groupCopy;
+  v14 = groupCopy;
+  v15 = identifierCopy;
+  v16 = handlerCopy;
   v17 = v13;
   [(CloudBookmarkStore *)self _prepareBookmarksRecordZoneInOperationGroup:v14 withCompletionHandler:v18];
 }
 
-- (void)fetchMinimumSyncAPIVersionInOperationGroup:(id)a3 withCompletionHandler:(id)a4
+- (void)fetchMinimumSyncAPIVersionInOperationGroup:(id)group withCompletionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = self->_log;
   v8 = self->_syncRequirementsRecordID;
-  v9 = a3;
+  groupCopy = group;
   v10 = [[WBSRetryableCKFetchRecordsOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v10 setLog:v7];
   [v10 setTimeout:150.0];
@@ -2084,10 +2084,10 @@ LABEL_8:
   v11 = [NSArray arrayWithObjects:&v20 count:1];
   [v10 setRecordIDs:v11];
 
-  v12 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v10 setConfiguration:v12];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v10 setConfiguration:operationConfiguration];
 
-  [v10 setGroup:v9];
+  [v10 setGroup:groupCopy];
   [v10 setDatabase:self->_database];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
@@ -2095,51 +2095,51 @@ LABEL_8:
   v16[3] = &unk_100134768;
   v17 = v8;
   v18 = v7;
-  v19 = v6;
-  v13 = v6;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
   v14 = v7;
   v15 = v8;
   [v10 setFetchRecordsCompletionBlock:v16];
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v10];
 }
 
-- (void)setMinimumSyncAPIVersion:(int64_t)a3 completionHandler:(id)a4
+- (void)setMinimumSyncAPIVersion:(int64_t)version completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = self->_log;
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100065F2C;
   v10[3] = &unk_100134808;
   v11 = v7;
-  v12 = self;
-  v13 = v6;
-  v14 = a3;
-  v8 = v6;
+  selfCopy = self;
+  v13 = handlerCopy;
+  versionCopy = version;
+  v8 = handlerCopy;
   v9 = v7;
   [(CloudBookmarkStore *)self _prepareBookmarksRecordZoneInOperationGroup:0 withCompletionHandler:v10];
 }
 
-- (BOOL)_canHandleCKRecordZoneWithID:(id)a3
+- (BOOL)_canHandleCKRecordZoneWithID:(id)d
 {
-  v4 = a3;
-  if ([v4 isEqual:self->_bookmarksRecordZoneID])
+  dCopy = d;
+  if ([dCopy isEqual:self->_bookmarksRecordZoneID])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [(CloudBookmarkStore *)self isSecondaryRecordZoneID:v4];
+    v5 = [(CloudBookmarkStore *)self isSecondaryRecordZoneID:dCopy];
   }
 
   return v5;
 }
 
-- (void)_setUpRecordZoneInOperationGroup:(id)a3 withCompletionHandler:(id)a4
+- (void)_setUpRecordZoneInOperationGroup:(id)group withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  groupCopy = group;
+  handlerCopy = handler;
   v8 = self->_log;
   v9 = self->_bookmarksRecordZoneID;
   v10 = [[CKRecordZone alloc] initWithZoneID:v9];
@@ -2151,10 +2151,10 @@ LABEL_8:
 
   v11 = [[WBSRetryableCKModifyRecordZonesOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v11 setLog:v8];
-  v12 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v11 setConfiguration:v12];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v11 setConfiguration:operationConfiguration];
 
-  [v11 setGroup:v6];
+  [v11 setGroup:groupCopy];
   [v11 setDatabase:self->_database];
   v27 = v10;
   v13 = [NSArray arrayWithObjects:&v27 count:1];
@@ -2166,27 +2166,27 @@ LABEL_8:
   v21 = &unk_100134830;
   v22 = v9;
   v23 = v8;
-  v24 = v6;
-  v25 = v7;
-  v14 = v6;
-  v15 = v7;
+  v24 = groupCopy;
+  v25 = handlerCopy;
+  v14 = groupCopy;
+  v15 = handlerCopy;
   v16 = v8;
   v17 = v9;
   [v11 setModifyRecordZonesCompletionBlock:&v18];
   [(NSOperationQueue *)self->_bookmarksOperationQueue addOperation:v11, v18, v19, v20, v21];
 }
 
-- (BOOL)_checkMigrationStateOnInternalQueueInRecord:(id)a3 error:(id)a4
+- (BOOL)_checkMigrationStateOnInternalQueueInRecord:(id)record error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  recordCopy = record;
+  errorCopy = error;
+  v8 = errorCopy;
+  if (!errorCopy)
   {
     goto LABEL_5;
   }
 
-  if ([v7 code] != 14)
+  if ([errorCopy code] != 14)
   {
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
@@ -2197,9 +2197,9 @@ LABEL_8:
     goto LABEL_14;
   }
 
-  v9 = [v6 safari_migratorDeviceIdentifier];
-  v10 = [(CKRecord *)self->_threadUnsafeMigrationStateRecord safari_migratorDeviceIdentifier];
-  v11 = [v9 isEqualToString:v10];
+  safari_migratorDeviceIdentifier = [recordCopy safari_migratorDeviceIdentifier];
+  safari_migratorDeviceIdentifier2 = [(CKRecord *)self->_threadUnsafeMigrationStateRecord safari_migratorDeviceIdentifier];
+  v11 = [safari_migratorDeviceIdentifier isEqualToString:safari_migratorDeviceIdentifier2];
 
   if ((v11 & 1) == 0)
   {
@@ -2213,25 +2213,25 @@ LABEL_8:
     v16 = self->_log;
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
-      sub_100069274(v16, v6, &self->_threadUnsafeMigrationStateRecord);
+      sub_100069274(v16, recordCopy, &self->_threadUnsafeMigrationStateRecord);
     }
 
     goto LABEL_14;
   }
 
-  v12 = [v6 safari_migrationState];
-  if (v12 != [(CKRecord *)self->_threadUnsafeMigrationStateRecord safari_migrationState])
+  safari_migrationState = [recordCopy safari_migrationState];
+  if (safari_migrationState != [(CKRecord *)self->_threadUnsafeMigrationStateRecord safari_migrationState])
   {
     v17 = self->_log;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       v18 = v17;
-      v19 = [v6 safari_migrationState];
-      v20 = [(CKRecord *)self->_threadUnsafeMigrationStateRecord safari_migrationState];
+      safari_migrationState2 = [recordCopy safari_migrationState];
+      safari_migrationState3 = [(CKRecord *)self->_threadUnsafeMigrationStateRecord safari_migrationState];
       v22 = 134218240;
-      v23 = v19;
+      v23 = safari_migrationState2;
       v24 = 2048;
-      v25 = v20;
+      v25 = safari_migrationState3;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Migration state changed from %ld to %ld", &v22, 0x16u);
     }
 
@@ -2247,9 +2247,9 @@ LABEL_15:
   return v13;
 }
 
-- (void)fetchAllBookmarkRecordsWithCompletionHandler:(id)a3
+- (void)fetchAllBookmarkRecordsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   log = self->_log;
   if (os_log_type_enabled(log, OS_LOG_TYPE_DEFAULT))
   {
@@ -2259,12 +2259,12 @@ LABEL_15:
 
   v6 = objc_alloc_init(CloudBookmarksFetchResult);
   [(CloudBookmarksFetchResult *)v6 setItemConfigurations:self->_cloudBookmarkItemConfigurations];
-  v7 = [v4 copy];
+  v7 = [handlerCopy copy];
 
   v8 = [[WBSRetryableCKFetchRecordZoneChangesOperation alloc] initWithOwner:self handlingQueue:self->super._internalQueue];
   [v8 setLog:self->_log];
-  v9 = [(CloudBookmarkStore *)self operationConfiguration];
-  [v8 setConfiguration:v9];
+  operationConfiguration = [(CloudBookmarkStore *)self operationConfiguration];
+  [v8 setConfiguration:operationConfiguration];
 
   [v8 setDatabase:self->_database];
   v10 = self->_bookmarksRecordZoneID;

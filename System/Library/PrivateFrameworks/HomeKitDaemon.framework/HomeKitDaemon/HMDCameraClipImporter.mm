@@ -1,19 +1,19 @@
 @interface HMDCameraClipImporter
 + (id)logCategory;
-- (HMDCameraClipImporter)initWithLocalZone:(id)a3 cameraProfileUUID:(id)a4 bulletinNotificationManager:(id)a5;
-- (id)importClipsWithImportData:(id)a3;
+- (HMDCameraClipImporter)initWithLocalZone:(id)zone cameraProfileUUID:(id)d bulletinNotificationManager:(id)manager;
+- (id)importClipsWithImportData:(id)data;
 @end
 
 @implementation HMDCameraClipImporter
 
-- (id)importClipsWithImportData:(id)a3
+- (id)importClipsWithImportData:(id)data
 {
   v124 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
-  v77 = v4;
+  v77 = dataCopy;
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
@@ -23,17 +23,17 @@
     v119 = v77;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Importing clips using import data: %@", buf, 0x16u);
 
-    v4 = v77;
+    dataCopy = v77;
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [v4 na_map:&__block_literal_global_229899];
+  v9 = [dataCopy na_map:&__block_literal_global_229899];
   v10 = MEMORY[0x277D2C938];
-  v84 = v6;
-  v11 = [(HMDCameraClipImporter *)v6 workQueue];
-  v88 = [v10 schedulerWithDispatchQueue:v11];
+  v84 = selfCopy;
+  workQueue = [(HMDCameraClipImporter *)selfCopy workQueue];
+  v88 = [v10 schedulerWithDispatchQueue:workQueue];
 
-  v87 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v112 = 0u;
   v113 = 0u;
   v114 = 0u;
@@ -59,67 +59,67 @@
 
         v83 = v15;
         v17 = *(*(&v112 + 1) + 8 * v15);
-        v18 = [v17 videoSegments];
-        v19 = [v18 firstObject];
-        v20 = [v19 isHeader];
+        videoSegments = [v17 videoSegments];
+        firstObject = [videoSegments firstObject];
+        isHeader = [firstObject isHeader];
 
-        if (v20)
+        if (isHeader)
         {
           v21 = [HMDCameraClipUploader alloc];
-          v22 = [MEMORY[0x277CCAD78] UUID];
-          v23 = [v17 startDate];
+          uUID = [MEMORY[0x277CCAD78] UUID];
+          startDate = [v17 startDate];
           [v17 targetFragmentDuration];
           v25 = v24;
-          v26 = [(HMDCameraClipImporter *)v16 localZone];
-          v27 = [(HMDCameraClipImporter *)v16 workQueue];
-          v28 = [(HMDCameraClipImporter *)v16 logIdentifier];
-          v29 = [(HMDCameraClipUploader *)v21 initWithClipUUID:v22 startDate:v23 targetFragmentDuration:0 quality:v26 localZone:v27 workQueue:v28 logIdentifier:v25];
+          localZone = [(HMDCameraClipImporter *)v16 localZone];
+          workQueue2 = [(HMDCameraClipImporter *)v16 workQueue];
+          logIdentifier = [(HMDCameraClipImporter *)v16 logIdentifier];
+          v29 = [(HMDCameraClipUploader *)v21 initWithClipUUID:uUID startDate:startDate targetFragmentDuration:0 quality:localZone localZone:workQueue2 workQueue:logIdentifier logIdentifier:v25];
 
           v30 = v29;
-          v31 = [v17 posterFrames];
-          v32 = [v31 firstObject];
+          posterFrames = [v17 posterFrames];
+          firstObject2 = [posterFrames firstObject];
 
-          if (v32)
+          if (firstObject2)
           {
             v33 = MEMORY[0x277D2C900];
             v108[0] = MEMORY[0x277D85DD0];
             v108[1] = 3221225472;
             v108[2] = __51__HMDCameraClipImporter_importClipsWithImportData___block_invoke_46;
             v108[3] = &unk_2786824E0;
-            v109 = v32;
+            v109 = firstObject2;
             v110 = v16;
             v111 = v30;
             v34 = [v33 futureWithBlock:v108 scheduler:v88];
-            [v87 addObject:v34];
+            [array addObject:v34];
           }
 
-          v35 = [v17 posterFrames];
-          v36 = [v35 lastObject];
+          posterFrames2 = [v17 posterFrames];
+          lastObject = [posterFrames2 lastObject];
 
           v37 = 0x277CBE000uLL;
-          if (v36)
+          if (lastObject)
           {
             v38 = MEMORY[0x277D2C900];
             v104[0] = MEMORY[0x277D85DD0];
             v104[1] = 3221225472;
             v104[2] = __51__HMDCameraClipImporter_importClipsWithImportData___block_invoke_2;
             v104[3] = &unk_2786824E0;
-            v105 = v36;
+            v105 = lastObject;
             v106 = v16;
             v107 = v30;
             v39 = [v38 futureWithBlock:v104 scheduler:v88];
-            [v87 addObject:v39];
+            [array addObject:v39];
           }
 
-          v81 = v36;
-          v82 = v32;
+          v81 = lastObject;
+          v82 = firstObject2;
           v86 = v30;
           v102 = 0u;
           v103 = 0u;
           v100 = 0u;
           v101 = 0u;
-          v85 = [v17 videoSegments];
-          v40 = [v85 countByEnumeratingWithState:&v100 objects:v122 count:16];
+          videoSegments2 = [v17 videoSegments];
+          v40 = [videoSegments2 countByEnumeratingWithState:&v100 objects:v122 count:16];
           if (v40)
           {
             v41 = v40;
@@ -131,21 +131,21 @@
               {
                 if (*v101 != v42)
                 {
-                  objc_enumerationMutation(v85);
+                  objc_enumerationMutation(videoSegments2);
                 }
 
                 v45 = *(*(&v100 + 1) + 8 * i);
                 v46 = *(v37 + 2704);
-                v47 = [v45 resourcePath];
+                resourcePath = [v45 resourcePath];
                 v99 = 0;
-                v48 = [v46 dataWithContentsOfFile:v47 options:0 error:&v99];
+                v48 = [v46 dataWithContentsOfFile:resourcePath options:0 error:&v99];
                 v49 = v99;
 
                 if (v48)
                 {
-                  v50 = [v45 isHeader];
+                  isHeader2 = [v45 isHeader];
                   v51 = MEMORY[0x277D2C900];
-                  if (v50)
+                  if (isHeader2)
                   {
                     v96[0] = MEMORY[0x277D85DD0];
                     v96[1] = 3221225472;
@@ -154,7 +154,7 @@
                     v97 = v86;
                     v98 = v48;
                     v52 = [v51 futureWithBlock:v96 scheduler:v88];
-                    [v87 addObject:v52];
+                    [array addObject:v52];
 
                     v53 = v97;
                   }
@@ -171,7 +171,7 @@
                     v93 = v59;
                     v94 = v45;
                     v60 = [v51 futureWithBlock:v91 scheduler:v88];
-                    [v87 addObject:v60];
+                    [array addObject:v60];
 
                     [v45 duration];
                     v43 = v43 + v61;
@@ -188,11 +188,11 @@
                   if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
                   {
                     v57 = HMFGetLogIdentifier();
-                    v58 = [v45 resourcePath];
+                    resourcePath2 = [v45 resourcePath];
                     *buf = 138543874;
                     v117 = v57;
                     v118 = 2112;
-                    v119 = v58;
+                    v119 = resourcePath2;
                     v120 = 2112;
                     v121 = v49;
                     _os_log_impl(&dword_229538000, v56, OS_LOG_TYPE_ERROR, "%{public}@Could not load data from %@: %@", buf, 0x20u);
@@ -205,7 +205,7 @@
                 }
               }
 
-              v41 = [v85 countByEnumeratingWithState:&v100 objects:v122 count:16];
+              v41 = [videoSegments2 countByEnumeratingWithState:&v100 objects:v122 count:16];
             }
 
             while (v41);
@@ -219,7 +219,7 @@
           v90 = v86;
           v63 = v86;
           v64 = [v62 futureWithBlock:v89 scheduler:v88];
-          [v87 addObject:v64];
+          [array addObject:v64];
 
           v14 = v78;
           v13 = v79;
@@ -233,13 +233,13 @@
           if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
           {
             v68 = HMFGetLogIdentifier();
-            v69 = [v17 videoSegments];
-            v70 = [v69 firstObject];
-            v71 = [v70 resourcePath];
+            videoSegments3 = [v17 videoSegments];
+            firstObject3 = [videoSegments3 firstObject];
+            resourcePath3 = [firstObject3 resourcePath];
             *buf = 138543618;
             v117 = v68;
             v118 = 2112;
-            v119 = v71;
+            v119 = resourcePath3;
             _os_log_impl(&dword_229538000, v67, OS_LOG_TYPE_ERROR, "%{public}@First fragment in clip %@ is not header, skipping", buf, 0x16u);
           }
 
@@ -257,7 +257,7 @@
   }
 
   v72 = MEMORY[0x277D2C900];
-  v73 = [v87 copy];
+  v73 = [array copy];
   v74 = [v72 chainFutures:v73];
 
   v75 = *MEMORY[0x277D85DE8];
@@ -462,26 +462,26 @@ id __51__HMDCameraClipImporter_importClipsWithImportData___block_invoke(uint64_t
   return v3;
 }
 
-- (HMDCameraClipImporter)initWithLocalZone:(id)a3 cameraProfileUUID:(id)a4 bulletinNotificationManager:(id)a5
+- (HMDCameraClipImporter)initWithLocalZone:(id)zone cameraProfileUUID:(id)d bulletinNotificationManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  zoneCopy = zone;
+  dCopy = d;
+  managerCopy = manager;
+  if (!zoneCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v10)
+  if (!dCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  v12 = v11;
-  if (!v11)
+  v12 = managerCopy;
+  if (!managerCopy)
   {
 LABEL_9:
     v23 = _HMFPreconditionFailure();
@@ -494,19 +494,19 @@ LABEL_9:
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_localZone, a3);
-    objc_storeStrong(&v14->_cameraProfileUUID, a4);
-    objc_storeStrong(&v14->_bulletinNotificationManager, a5);
+    objc_storeStrong(&v13->_localZone, zone);
+    objc_storeStrong(&v14->_cameraProfileUUID, d);
+    objc_storeStrong(&v14->_bulletinNotificationManager, manager);
     v15 = HMFDispatchQueueName();
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v17 = dispatch_queue_create(v15, v16);
     workQueue = v14->_workQueue;
     v14->_workQueue = v17;
 
-    v19 = [MEMORY[0x277CCAD78] UUID];
-    v20 = [v19 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     logIdentifier = v14->_logIdentifier;
-    v14->_logIdentifier = v20;
+    v14->_logIdentifier = uUIDString;
   }
 
   return v14;

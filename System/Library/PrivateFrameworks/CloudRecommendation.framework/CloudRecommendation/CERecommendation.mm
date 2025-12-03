@@ -1,40 +1,40 @@
 @interface CERecommendation
-- (CERecommendation)initWithCoder:(id)a3;
-- (CERecommendation)initWithDictionary:(id)a3;
-- (CERecommendation)initWithIdentifier:(id)a3 title:(id)a4 message:(id)a5 bundleID:(id)a6 storageRecoverable:(id)a7 category:(id)a8 actions:(id)a9;
-- (CERecommendation)initWithIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5 message:(id)a6 bundleID:(id)a7 storageRecoverable:(id)a8 category:(id)a9 actions:(id)a10;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)parseActions:(id)a3;
+- (CERecommendation)initWithCoder:(id)coder;
+- (CERecommendation)initWithDictionary:(id)dictionary;
+- (CERecommendation)initWithIdentifier:(id)identifier title:(id)title message:(id)message bundleID:(id)d storageRecoverable:(id)recoverable category:(id)category actions:(id)actions;
+- (CERecommendation)initWithIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle message:(id)message bundleID:(id)d storageRecoverable:(id)recoverable category:(id)category actions:(id)self0;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)parseActions:(id)actions;
 @end
 
 @implementation CERecommendation
 
-- (CERecommendation)initWithIdentifier:(id)a3 title:(id)a4 message:(id)a5 bundleID:(id)a6 storageRecoverable:(id)a7 category:(id)a8 actions:(id)a9
+- (CERecommendation)initWithIdentifier:(id)identifier title:(id)title message:(id)message bundleID:(id)d storageRecoverable:(id)recoverable category:(id)category actions:(id)actions
 {
-  v27 = a3;
-  v26 = a4;
-  v25 = a5;
-  v24 = a6;
-  v23 = a7;
-  v16 = a8;
-  v17 = a9;
+  identifierCopy = identifier;
+  titleCopy = title;
+  messageCopy = message;
+  dCopy = d;
+  recoverableCopy = recoverable;
+  categoryCopy = category;
+  actionsCopy = actions;
   v28.receiver = self;
   v28.super_class = CERecommendation;
   v18 = [(CERecommendation *)&v28 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_identifier, a3);
-    objc_storeStrong(&v19->_title, a4);
+    objc_storeStrong(&v18->_identifier, identifier);
+    objc_storeStrong(&v19->_title, title);
     subTitle = v19->_subTitle;
     v19->_subTitle = &stru_2856B3060;
 
-    objc_storeStrong(&v19->_message, a5);
-    objc_storeStrong(&v19->_bundleID, a6);
-    objc_storeStrong(&v19->_storageRecoverable, a7);
-    objc_storeStrong(&v19->_category, a8);
-    objc_storeStrong(&v19->_actions, a9);
+    objc_storeStrong(&v19->_message, message);
+    objc_storeStrong(&v19->_bundleID, d);
+    objc_storeStrong(&v19->_storageRecoverable, recoverable);
+    objc_storeStrong(&v19->_category, category);
+    objc_storeStrong(&v19->_actions, actions);
     v19->_completed = 0;
     status = v19->_status;
     v19->_status = 0;
@@ -43,30 +43,30 @@
   return v19;
 }
 
-- (CERecommendation)initWithIdentifier:(id)a3 title:(id)a4 subtitle:(id)a5 message:(id)a6 bundleID:(id)a7 storageRecoverable:(id)a8 category:(id)a9 actions:(id)a10
+- (CERecommendation)initWithIdentifier:(id)identifier title:(id)title subtitle:(id)subtitle message:(id)message bundleID:(id)d storageRecoverable:(id)recoverable category:(id)category actions:(id)self0
 {
-  v28 = a3;
-  v27 = a4;
-  v26 = a5;
-  v25 = a6;
-  v24 = a7;
-  v23 = a8;
-  v22 = a9;
-  v17 = a10;
+  identifierCopy = identifier;
+  titleCopy = title;
+  subtitleCopy = subtitle;
+  messageCopy = message;
+  dCopy = d;
+  recoverableCopy = recoverable;
+  categoryCopy = category;
+  actionsCopy = actions;
   v29.receiver = self;
   v29.super_class = CERecommendation;
   v18 = [(CERecommendation *)&v29 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_identifier, a3);
-    objc_storeStrong(&v19->_title, a4);
-    objc_storeStrong(&v19->_subTitle, a5);
-    objc_storeStrong(&v19->_message, a6);
-    objc_storeStrong(&v19->_bundleID, a7);
-    objc_storeStrong(&v19->_storageRecoverable, a8);
-    objc_storeStrong(&v19->_category, a9);
-    objc_storeStrong(&v19->_actions, a10);
+    objc_storeStrong(&v18->_identifier, identifier);
+    objc_storeStrong(&v19->_title, title);
+    objc_storeStrong(&v19->_subTitle, subtitle);
+    objc_storeStrong(&v19->_message, message);
+    objc_storeStrong(&v19->_bundleID, d);
+    objc_storeStrong(&v19->_storageRecoverable, recoverable);
+    objc_storeStrong(&v19->_category, category);
+    objc_storeStrong(&v19->_actions, actions);
     v19->_completed = 0;
     status = v19->_status;
     v19->_status = 0;
@@ -75,9 +75,9 @@
   return v19;
 }
 
-- (CERecommendation)initWithDictionary:(id)a3
+- (CERecommendation)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v49.receiver = self;
   v49.super_class = CERecommendation;
   v5 = [(CERecommendation *)&v49 init];
@@ -85,7 +85,7 @@
   if (v5)
   {
     v5->_completed = 0;
-    v7 = [v4 objectForKeyedSubscript:@"id"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"id"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -103,7 +103,7 @@
       }
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"title"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -121,7 +121,7 @@
       }
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"subtitle"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"subtitle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -139,7 +139,7 @@
       }
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"message"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"message"];
     objc_opt_class();
     v48 = v16;
     if (objc_opt_isKindOfClass())
@@ -158,7 +158,7 @@
       }
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"bundleID"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"bundleID"];
     objc_opt_class();
     v47 = v19;
     if (objc_opt_isKindOfClass())
@@ -177,7 +177,7 @@
       }
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"storageRecoverable"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"storageRecoverable"];
     objc_opt_class();
     v46 = v22;
     if (objc_opt_isKindOfClass())
@@ -196,7 +196,7 @@
       }
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"category"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"category"];
     objc_opt_class();
     v45 = v25;
     if (objc_opt_isKindOfClass())
@@ -215,7 +215,7 @@
       }
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"actions"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"actions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -231,7 +231,7 @@
       }
     }
 
-    v30 = [v4 objectForKeyedSubscript:@"status"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"status"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -249,7 +249,7 @@
       }
     }
 
-    v33 = [v4 objectForKeyedSubscript:@"icon"];
+    v33 = [dictionaryCopy objectForKeyedSubscript:@"icon"];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
@@ -327,10 +327,10 @@ LABEL_52:
   return v6;
 }
 
-- (void)parseActions:(id)a3
+- (void)parseActions:(id)actions
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
+  actionsCopy = actions;
   v6 = objc_alloc_init(v4);
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -338,7 +338,7 @@ LABEL_52:
   v10[3] = &unk_278DE02C0;
   v11 = v6;
   v7 = v6;
-  [v5 enumerateObjectsUsingBlock:v10];
+  [actionsCopy enumerateObjectsUsingBlock:v10];
 
   v8 = [v7 copy];
   actions = self->_actions;
@@ -409,57 +409,57 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeObject:self->_subTitle forKey:@"subtitle"];
-  [v5 encodeObject:self->_message forKey:@"message"];
-  [v5 encodeObject:self->_bundleID forKey:@"bundleID"];
-  [v5 encodeObject:self->_storageRecoverable forKey:@"storageRecoverable"];
-  [v5 encodeObject:self->_category forKey:@"category"];
-  [v5 encodeObject:self->_actions forKey:@"actions"];
-  [v5 encodeObject:self->_icon forKey:@"icon"];
-  [v5 encodeBool:self->_completed forKey:@"completed"];
-  [v5 encodeObject:self->_status forKey:@"status"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_subTitle forKey:@"subtitle"];
+  [coderCopy encodeObject:self->_message forKey:@"message"];
+  [coderCopy encodeObject:self->_bundleID forKey:@"bundleID"];
+  [coderCopy encodeObject:self->_storageRecoverable forKey:@"storageRecoverable"];
+  [coderCopy encodeObject:self->_category forKey:@"category"];
+  [coderCopy encodeObject:self->_actions forKey:@"actions"];
+  [coderCopy encodeObject:self->_icon forKey:@"icon"];
+  [coderCopy encodeBool:self->_completed forKey:@"completed"];
+  [coderCopy encodeObject:self->_status forKey:@"status"];
 }
 
-- (CERecommendation)initWithCoder:(id)a3
+- (CERecommendation)initWithCoder:(id)coder
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v31.receiver = self;
   v31.super_class = CERecommendation;
   v5 = [(CERecommendation *)&v31 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
     subTitle = v5->_subTitle;
     v5->_subTitle = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"message"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"message"];
     message = v5->_message;
     v5->_message = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleID"];
     bundleID = v5->_bundleID;
     v5->_bundleID = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"storageRecoverable"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"storageRecoverable"];
     storageRecoverable = v5->_storageRecoverable;
     v5->_storageRecoverable = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"category"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"category"];
     category = v5->_category;
     v5->_category = v18;
 
@@ -469,16 +469,16 @@ LABEL_18:
     v21 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
     v22 = [v20 setWithArray:v21];
 
-    v23 = [v4 decodeObjectOfClasses:v22 forKey:@"actions"];
+    v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"actions"];
     actions = v5->_actions;
     v5->_actions = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"icon"];
     icon = v5->_icon;
     v5->_icon = v25;
 
-    v5->_completed = [v4 decodeBoolForKey:@"completed"];
-    v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"status"];
+    v5->_completed = [coderCopy decodeBoolForKey:@"completed"];
+    v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"status"];
     status = v5->_status;
     v5->_status = v27;
   }
@@ -487,7 +487,7 @@ LABEL_18:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[CERecommendation allocWithZone:?]title:"initWithIdentifier:title:message:bundleID:storageRecoverable:category:actions:" message:self->_identifier bundleID:self->_title storageRecoverable:self->_message category:self->_bundleID actions:self->_storageRecoverable, self->_category, self->_actions];
   [(CERecommendation *)v4 setSubTitle:self->_subTitle];

@@ -1,33 +1,33 @@
 @interface NNMKProtoMoreMessagesBatchRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addMoreMessagesRequest:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMoreMessagesRequest:(id)request;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NNMKProtoMoreMessagesBatchRequest
 
-- (void)addMoreMessagesRequest:(id)a3
+- (void)addMoreMessagesRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   moreMessagesRequests = self->_moreMessagesRequests;
-  v8 = v4;
+  v8 = requestCopy;
   if (!moreMessagesRequests)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_moreMessagesRequests;
     self->_moreMessagesRequests = v6;
 
-    v4 = v8;
+    requestCopy = v8;
     moreMessagesRequests = self->_moreMessagesRequests;
   }
 
-  [(NSMutableArray *)moreMessagesRequests addObject:v4];
+  [(NSMutableArray *)moreMessagesRequests addObject:requestCopy];
 }
 
 - (id)description
@@ -36,8 +36,8 @@
   v8.receiver = self;
   v8.super_class = NNMKProtoMoreMessagesBatchRequest;
   v4 = [(NNMKProtoMoreMessagesBatchRequest *)&v8 description];
-  v5 = [(NNMKProtoMoreMessagesBatchRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NNMKProtoMoreMessagesBatchRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -45,11 +45,11 @@
 - (id)dictionaryRepresentation
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_fullSyncVersion];
-    [v3 setObject:v4 forKey:@"fullSyncVersion"];
+    [dictionary setObject:v4 forKey:@"fullSyncVersion"];
   }
 
   if ([(NSMutableArray *)self->_moreMessagesRequests count])
@@ -74,8 +74,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v14 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -84,18 +84,18 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"moreMessagesRequest"];
+    [dictionary setObject:v5 forKey:@"moreMessagesRequest"];
   }
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     fullSyncVersion = self->_fullSyncVersion;
@@ -137,23 +137,23 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = self->_fullSyncVersion;
-    *(v4 + 24) |= 1u;
+    toCopy[2] = self->_fullSyncVersion;
+    *(toCopy + 24) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(NNMKProtoMoreMessagesBatchRequest *)self moreMessagesRequestsCount])
   {
     [v9 clearMoreMessagesRequests];
-    v5 = [(NNMKProtoMoreMessagesBatchRequest *)self moreMessagesRequestsCount];
-    if (v5)
+    moreMessagesRequestsCount = [(NNMKProtoMoreMessagesBatchRequest *)self moreMessagesRequestsCount];
+    if (moreMessagesRequestsCount)
     {
-      v6 = v5;
+      v6 = moreMessagesRequestsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NNMKProtoMoreMessagesBatchRequest *)self moreMessagesRequestAtIndex:i];
@@ -163,10 +163,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -194,7 +194,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:{a3, v15}];
+        v12 = [*(*(&v15 + 1) + 8 * v11) copyWithZone:{zone, v15}];
         [v6 addMoreMessagesRequest:v12];
 
         ++v11;
@@ -211,24 +211,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
-  v5 = *(v4 + 24);
+  v5 = *(equalCopy + 24);
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_fullSyncVersion != *(v4 + 2))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_fullSyncVersion != *(equalCopy + 2))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_9:
     v7 = 0;
@@ -236,7 +236,7 @@ LABEL_9:
   }
 
   moreMessagesRequests = self->_moreMessagesRequests;
-  if (moreMessagesRequests | *(v4 + 2))
+  if (moreMessagesRequests | *(equalCopy + 2))
   {
     v7 = [(NSMutableArray *)moreMessagesRequests isEqual:?];
   }
@@ -266,14 +266,14 @@ LABEL_10:
   return [(NSMutableArray *)self->_moreMessagesRequests hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 24))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 24))
   {
-    self->_fullSyncVersion = *(v4 + 2);
+    self->_fullSyncVersion = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
@@ -281,7 +281,7 @@ LABEL_10:
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {

@@ -1,20 +1,20 @@
 @interface DSLogLine
-+ (id)logLinesFromArray:(id)a3;
-- (BOOL)BOOLFromFieldAtIndex:(int)a3;
-- (DSLogLine)initWithLine:(id)a3;
-- (DSLogLine)initWithLogLine:(id)a3;
-- (double)doubleFromFieldAtIndex:(int)a3;
-- (id)blankingStringFromFieldAtIndex:(int)a3;
-- (id)stringFromFieldAtIndex:(int)a3;
-- (int)integerFromFieldAtIndex:(int)a3;
-- (int64_t)longLongFromFieldAtIndex:(int)a3;
++ (id)logLinesFromArray:(id)array;
+- (BOOL)BOOLFromFieldAtIndex:(int)index;
+- (DSLogLine)initWithLine:(id)line;
+- (DSLogLine)initWithLogLine:(id)line;
+- (double)doubleFromFieldAtIndex:(int)index;
+- (id)blankingStringFromFieldAtIndex:(int)index;
+- (id)stringFromFieldAtIndex:(int)index;
+- (int)integerFromFieldAtIndex:(int)index;
+- (int64_t)longLongFromFieldAtIndex:(int)index;
 @end
 
 @implementation DSLogLine
 
-- (DSLogLine)initWithLine:(id)a3
+- (DSLogLine)initWithLine:(id)line
 {
-  v4 = a3;
+  lineCopy = line;
   v28.receiver = self;
   v28.super_class = DSLogLine;
   v5 = [(DSLogLine *)&v28 init];
@@ -25,9 +25,9 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if ([v4 length] >= 2)
+  if ([lineCopy length] >= 2)
   {
-    v6 = [v4 componentsSeparatedByString:{@", "}];
+    v6 = [lineCopy componentsSeparatedByString:{@", "}];
     p_fields = &v5->_fields;
     fields = v5->_fields;
     v5->_fields = v6;
@@ -129,44 +129,44 @@ LABEL_27:
   return v23;
 }
 
-- (DSLogLine)initWithLogLine:(id)a3
+- (DSLogLine)initWithLogLine:(id)line
 {
-  v4 = a3;
+  lineCopy = line;
   v15.receiver = self;
   v15.super_class = DSLogLine;
   v5 = [(DSLogLine *)&v15 init];
   if (v5)
   {
-    v6 = [v4 type];
+    type = [lineCopy type];
     type = v5->_type;
-    v5->_type = v6;
+    v5->_type = type;
 
-    v8 = [v4 date];
+    date = [lineCopy date];
     date = v5->_date;
-    v5->_date = v8;
+    v5->_date = date;
 
-    v5->_isUsable = [v4 isUsable];
-    v10 = [v4 exception];
+    v5->_isUsable = [lineCopy isUsable];
+    exception = [lineCopy exception];
     exception = v5->_exception;
-    v5->_exception = v10;
+    v5->_exception = exception;
 
-    v12 = [v4 fields];
+    fields = [lineCopy fields];
     fields = v5->_fields;
-    v5->_fields = v12;
+    v5->_fields = fields;
   }
 
   return v5;
 }
 
-+ (id)logLinesFromArray:(id)a3
++ (id)logLinesFromArray:(id)array
 {
-  v3 = a3;
+  arrayCopy = array;
   v4 = +[NSMutableArray array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -199,108 +199,108 @@ LABEL_27:
   return v4;
 }
 
-- (int)integerFromFieldAtIndex:(int)a3
+- (int)integerFromFieldAtIndex:(int)index
 {
-  v5 = [(DSLogLine *)self fields];
-  v6 = [v5 count];
+  fields = [(DSLogLine *)self fields];
+  v6 = [fields count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     return 0;
   }
 
-  v7 = [(DSLogLine *)self fields];
-  v8 = [v7 objectAtIndexedSubscript:a3];
-  v9 = [v8 intValue];
+  fields2 = [(DSLogLine *)self fields];
+  v8 = [fields2 objectAtIndexedSubscript:index];
+  intValue = [v8 intValue];
 
-  return v9;
+  return intValue;
 }
 
-- (int64_t)longLongFromFieldAtIndex:(int)a3
+- (int64_t)longLongFromFieldAtIndex:(int)index
 {
-  v5 = [(DSLogLine *)self fields];
-  v6 = [v5 count];
+  fields = [(DSLogLine *)self fields];
+  v6 = [fields count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     return 0;
   }
 
-  v7 = [(DSLogLine *)self fields];
-  v8 = [v7 objectAtIndexedSubscript:a3];
-  v9 = [v8 longLongValue];
+  fields2 = [(DSLogLine *)self fields];
+  v8 = [fields2 objectAtIndexedSubscript:index];
+  longLongValue = [v8 longLongValue];
 
-  return v9;
+  return longLongValue;
 }
 
-- (double)doubleFromFieldAtIndex:(int)a3
+- (double)doubleFromFieldAtIndex:(int)index
 {
-  v5 = [(DSLogLine *)self fields];
-  v6 = [v5 count];
+  fields = [(DSLogLine *)self fields];
+  v6 = [fields count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     return 0.0;
   }
 
-  v7 = [(DSLogLine *)self fields];
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  fields2 = [(DSLogLine *)self fields];
+  v8 = [fields2 objectAtIndexedSubscript:index];
   [v8 doubleValue];
   v10 = v9;
 
   return v10;
 }
 
-- (BOOL)BOOLFromFieldAtIndex:(int)a3
+- (BOOL)BOOLFromFieldAtIndex:(int)index
 {
-  v5 = [(DSLogLine *)self fields];
-  v6 = [v5 count];
+  fields = [(DSLogLine *)self fields];
+  v6 = [fields count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     return 0;
   }
 
-  v7 = [(DSLogLine *)self fields];
-  v8 = [v7 objectAtIndexedSubscript:a3];
-  v9 = [v8 BOOLValue];
+  fields2 = [(DSLogLine *)self fields];
+  v8 = [fields2 objectAtIndexedSubscript:index];
+  bOOLValue = [v8 BOOLValue];
 
-  return v9;
+  return bOOLValue;
 }
 
-- (id)blankingStringFromFieldAtIndex:(int)a3
+- (id)blankingStringFromFieldAtIndex:(int)index
 {
-  v5 = [(DSLogLine *)self fields];
-  v6 = [v5 count];
+  fields = [(DSLogLine *)self fields];
+  v6 = [fields count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v8 = &stru_1C970;
   }
 
   else
   {
-    v7 = [(DSLogLine *)self fields];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    fields2 = [(DSLogLine *)self fields];
+    v8 = [fields2 objectAtIndexedSubscript:index];
   }
 
   return v8;
 }
 
-- (id)stringFromFieldAtIndex:(int)a3
+- (id)stringFromFieldAtIndex:(int)index
 {
-  v5 = [(DSLogLine *)self fields];
-  v6 = [v5 count];
+  fields = [(DSLogLine *)self fields];
+  v6 = [fields count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(DSLogLine *)self fields];
-    v8 = [v7 objectAtIndexedSubscript:a3];
+    fields2 = [(DSLogLine *)self fields];
+    v8 = [fields2 objectAtIndexedSubscript:index];
   }
 
   return v8;

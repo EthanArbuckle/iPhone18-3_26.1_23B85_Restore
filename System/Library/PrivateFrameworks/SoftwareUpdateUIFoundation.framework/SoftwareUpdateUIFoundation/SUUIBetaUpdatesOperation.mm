@@ -1,153 +1,153 @@
 @interface SUUIBetaUpdatesOperation
 - (BOOL)isActive;
-- (SUUIBetaUpdatesOperation)initWithIdentifier:(id)a3 usingBetaManager:(id)a4 withCompletionQueue:(id)a5;
-- (void)cancel:(id)a3;
-- (void)checkForAvailableBetaPrograms:(id)a3 completionHandler:(id)a4;
-- (void)checkForAvailableBetaProgramsForDevice:(id)a3 completionHandler:(id)a4;
-- (void)checkForAvailableBetaProgramsWithCompletionHandler:(id)a3;
-- (void)enrollDevice:(id)a3 inBetaProgram:(id)a4 completionHandler:(id)a5;
-- (void)unenrollDevice:(id)a3 completionHandler:(id)a4;
+- (SUUIBetaUpdatesOperation)initWithIdentifier:(id)identifier usingBetaManager:(id)manager withCompletionQueue:(id)queue;
+- (void)cancel:(id)cancel;
+- (void)checkForAvailableBetaPrograms:(id)programs completionHandler:(id)handler;
+- (void)checkForAvailableBetaProgramsForDevice:(id)device completionHandler:(id)handler;
+- (void)checkForAvailableBetaProgramsWithCompletionHandler:(id)handler;
+- (void)enrollDevice:(id)device inBetaProgram:(id)program completionHandler:(id)handler;
+- (void)unenrollDevice:(id)device completionHandler:(id)handler;
 @end
 
 @implementation SUUIBetaUpdatesOperation
 
-- (SUUIBetaUpdatesOperation)initWithIdentifier:(id)a3 usingBetaManager:(id)a4 withCompletionQueue:(id)a5
+- (SUUIBetaUpdatesOperation)initWithIdentifier:(id)identifier usingBetaManager:(id)manager withCompletionQueue:(id)queue
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, manager);
   v12 = 0;
-  objc_storeStrong(&v12, a5);
-  v5 = v15;
-  v15 = 0;
+  objc_storeStrong(&v12, queue);
+  v5 = selfCopy;
+  selfCopy = 0;
   v11.receiver = v5;
   v11.super_class = SUUIBetaUpdatesOperation;
   v10 = [(SUUIBetaUpdatesOperation *)&v11 init];
-  v15 = v10;
-  objc_storeStrong(&v15, v10);
+  selfCopy = v10;
+  objc_storeStrong(&selfCopy, v10);
   if (v10)
   {
-    [(SUUIBetaUpdatesOperation *)v15 setIdentifier:location[0]];
-    [(SUUIBetaUpdatesOperation *)v15 setBetaManager:v13];
+    [(SUUIBetaUpdatesOperation *)selfCopy setIdentifier:location[0]];
+    [(SUUIBetaUpdatesOperation *)selfCopy setBetaManager:v13];
   }
 
-  v7 = MEMORY[0x277D82BE0](v15);
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v15, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
-- (void)enrollDevice:(id)a3 inBetaProgram:(id)a4 completionHandler:(id)a5
+- (void)enrollDevice:(id)device inBetaProgram:(id)program completionHandler:(id)handler
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, device);
   v9 = 0;
-  objc_storeStrong(&v9, a4);
+  objc_storeStrong(&v9, program);
   v8 = 0;
-  objc_storeStrong(&v8, a5);
-  v7 = [(SUUIBetaUpdatesOperation *)v11 betaManager];
-  [(SDBetaManager *)v7 enrollDevice:location[0] inBetaProgram:v9 completion:v8];
-  MEMORY[0x277D82BD8](v7);
+  objc_storeStrong(&v8, handler);
+  betaManager = [(SUUIBetaUpdatesOperation *)selfCopy betaManager];
+  [(SDBetaManager *)betaManager enrollDevice:location[0] inBetaProgram:v9 completion:v8];
+  MEMORY[0x277D82BD8](betaManager);
   objc_storeStrong(&v8, 0);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)unenrollDevice:(id)a3 completionHandler:(id)a4
+- (void)unenrollDevice:(id)device completionHandler:(id)handler
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, device);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5 = [(SUUIBetaUpdatesOperation *)v8 betaManager];
-  [(SDBetaManager *)v5 unenrollDevice:location[0] completion:v6];
-  MEMORY[0x277D82BD8](v5);
+  objc_storeStrong(&v6, handler);
+  betaManager = [(SUUIBetaUpdatesOperation *)selfCopy betaManager];
+  [(SDBetaManager *)betaManager unenrollDevice:location[0] completion:v6];
+  MEMORY[0x277D82BD8](betaManager);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)checkForAvailableBetaProgramsWithCompletionHandler:(id)a3
+- (void)checkForAvailableBetaProgramsWithCompletionHandler:(id)handler
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUUIBetaUpdatesOperation *)v4 checkForAvailableBetaPrograms:0 completionHandler:location[0]];
+  objc_storeStrong(location, handler);
+  [(SUUIBetaUpdatesOperation *)selfCopy checkForAvailableBetaPrograms:0 completionHandler:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)checkForAvailableBetaPrograms:(id)a3 completionHandler:(id)a4
+- (void)checkForAvailableBetaPrograms:(id)programs completionHandler:(id)handler
 {
   v47 = *MEMORY[0x277D85DE8];
-  v43 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, programs);
   v41 = 0;
-  objc_storeStrong(&v41, a4);
+  objc_storeStrong(&v41, handler);
   if (_os_feature_enabled_impl())
   {
-    v16 = [(SUUIBetaUpdatesOperation *)v43 betaManager];
-    MEMORY[0x277D82BD8](v16);
-    if (v16)
+    betaManager = [(SUUIBetaUpdatesOperation *)selfCopy betaManager];
+    MEMORY[0x277D82BD8](betaManager);
+    if (betaManager)
     {
       v32 = 0;
       v11 = 0;
       if (location[0])
       {
-        v33 = [location[0] currentSeedingDevice];
+        currentSeedingDevice = [location[0] currentSeedingDevice];
         v32 = 1;
-        v11 = v33 != 0;
+        v11 = currentSeedingDevice != 0;
       }
 
       if (v32)
       {
-        MEMORY[0x277D82BD8](v33);
+        MEMORY[0x277D82BD8](currentSeedingDevice);
       }
 
       if (v11)
       {
-        v9 = v43;
-        v10 = [location[0] currentSeedingDevice];
+        v9 = selfCopy;
+        currentSeedingDevice2 = [location[0] currentSeedingDevice];
         [SUUIBetaUpdatesOperation checkForAvailableBetaProgramsForDevice:v9 completionHandler:"checkForAvailableBetaProgramsForDevice:completionHandler:"];
-        MEMORY[0x277D82BD8](v10);
+        MEMORY[0x277D82BD8](currentSeedingDevice2);
       }
 
       else
       {
         v8 = +[SUUILoggingContext betaUpdatesOperationLogger];
-        v31 = [v8 oslog];
+        oslog = [v8 oslog];
         MEMORY[0x277D82BD8](v8);
         v30 = OS_LOG_TYPE_DEFAULT;
-        if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
-          v5 = v31;
+          v5 = oslog;
           v6 = v30;
-          v7 = [(SUUIBetaUpdatesOperation *)v43 identifier];
-          v29 = MEMORY[0x277D82BE0](v7);
+          identifier = [(SUUIBetaUpdatesOperation *)selfCopy identifier];
+          v29 = MEMORY[0x277D82BE0](identifier);
           __os_log_helper_16_2_2_8_32_8_66(v44, "[SUUIBetaUpdatesOperation checkForAvailableBetaPrograms:completionHandler:]", v29);
           _os_log_impl(&dword_26ADE5000, v5, v6, "%s [%{public}@]: Retrieving the current Seeding device", v44, 0x16u);
-          MEMORY[0x277D82BD8](v7);
+          MEMORY[0x277D82BD8](identifier);
           objc_storeStrong(&v29, 0);
         }
 
-        objc_storeStrong(&v31, 0);
+        objc_storeStrong(&oslog, 0);
         v4 = MEMORY[0x277D4D320];
         v22 = MEMORY[0x277D85DD0];
         v23 = -1073741824;
         v24 = 0;
         v25 = __76__SUUIBetaUpdatesOperation_checkForAvailableBetaPrograms_completionHandler___block_invoke;
         v26 = &unk_279CC6E40;
-        v27 = MEMORY[0x277D82BE0](v43);
+        v27 = MEMORY[0x277D82BE0](selfCopy);
         v28 = MEMORY[0x277D82BE0](v41);
         [v4 getCurrentDevice:&v22];
         objc_storeStrong(&v28, 0);
@@ -160,22 +160,22 @@
     else
     {
       v15 = +[SUUILoggingContext betaUpdatesOperationLogger];
-      v36 = [v15 oslog];
+      oslog2 = [v15 oslog];
       MEMORY[0x277D82BD8](v15);
       v35 = 16;
-      if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
       {
-        v12 = v36;
+        v12 = oslog2;
         v13 = v35;
-        v14 = [(SUUIBetaUpdatesOperation *)v43 identifier];
-        v34 = MEMORY[0x277D82BE0](v14);
+        identifier2 = [(SUUIBetaUpdatesOperation *)selfCopy identifier];
+        v34 = MEMORY[0x277D82BE0](identifier2);
         __os_log_helper_16_2_2_8_32_8_66(v45, "[SUUIBetaUpdatesOperation checkForAvailableBetaPrograms:completionHandler:]", v34);
         _os_log_error_impl(&dword_26ADE5000, v12, v13, "%s [%{public}@]: The seeding beta manager was not configured for this scan operation. Skipping.", v45, 0x16u);
-        MEMORY[0x277D82BD8](v14);
+        MEMORY[0x277D82BD8](identifier2);
         objc_storeStrong(&v34, 0);
       }
 
-      objc_storeStrong(&v36, 0);
+      objc_storeStrong(&oslog2, 0);
       (*(v41 + 2))(v41, 0);
       v37 = 1;
     }
@@ -184,22 +184,22 @@
   else
   {
     v20 = +[SUUILoggingContext betaUpdatesOperationLogger];
-    v40 = [v20 oslog];
+    oslog3 = [v20 oslog];
     MEMORY[0x277D82BD8](v20);
     v39 = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
     {
-      log = v40;
+      log = oslog3;
       type = v39;
-      v19 = [(SUUIBetaUpdatesOperation *)v43 identifier];
-      v38 = MEMORY[0x277D82BE0](v19);
+      identifier3 = [(SUUIBetaUpdatesOperation *)selfCopy identifier];
+      v38 = MEMORY[0x277D82BE0](identifier3);
       __os_log_helper_16_2_2_8_32_8_66(v46, "[SUUIBetaUpdatesOperation checkForAvailableBetaPrograms:completionHandler:]", v38);
       _os_log_impl(&dword_26ADE5000, log, type, "%s [%{public}@]: The Seeding feature is unavailable.", v46, 0x16u);
-      MEMORY[0x277D82BD8](v19);
+      MEMORY[0x277D82BD8](identifier3);
       objc_storeStrong(&v38, 0);
     }
 
-    objc_storeStrong(&v40, 0);
+    objc_storeStrong(&oslog3, 0);
     (*(v41 + 2))(v41, 0);
     v37 = 1;
   }
@@ -218,12 +218,12 @@ void __76__SUUIBetaUpdatesOperation_checkForAvailableBetaPrograms_completionHand
   objc_storeStrong(location, 0);
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
+  objc_storeStrong(&location, cancel);
   v6 = MEMORY[0x277CBEAD8];
   v5 = *MEMORY[0x277CBE658];
   v4 = MEMORY[0x277CCACA8];
@@ -250,44 +250,44 @@ void __76__SUUIBetaUpdatesOperation_checkForAvailableBetaPrograms_completionHand
   objc_exception_throw(v8);
 }
 
-- (void)checkForAvailableBetaProgramsForDevice:(id)a3 completionHandler:(id)a4
+- (void)checkForAvailableBetaProgramsForDevice:(id)device completionHandler:(id)handler
 {
   v26 = *MEMORY[0x277D85DE8];
-  v24 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, device);
   v22 = 0;
-  objc_storeStrong(&v22, a4);
+  objc_storeStrong(&v22, handler);
   v9 = +[SUUILoggingContext betaUpdatesOperationLogger];
-  v21 = [v9 oslog];
+  oslog = [v9 oslog];
   MEMORY[0x277D82BD8](v9);
   v20 = OS_LOG_TYPE_DEFAULT;
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    log = v21;
+    log = oslog;
     type = v20;
-    v8 = [(SUUIBetaUpdatesOperation *)v24 identifier];
-    v19 = MEMORY[0x277D82BE0](v8);
+    identifier = [(SUUIBetaUpdatesOperation *)selfCopy identifier];
+    v19 = MEMORY[0x277D82BE0](identifier);
     __os_log_helper_16_2_2_8_32_8_66(v25, "[SUUIBetaUpdatesOperation checkForAvailableBetaProgramsForDevice:completionHandler:]", v19);
     _os_log_impl(&dword_26ADE5000, log, type, "%s [%{public}@]: Querying the currnet beta programs", v25, 0x16u);
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](identifier);
     objc_storeStrong(&v19, 0);
   }
 
-  objc_storeStrong(&v21, 0);
-  v5 = [(SUUIBetaUpdatesOperation *)v24 betaManager];
-  v4 = [location[0] platform];
+  objc_storeStrong(&oslog, 0);
+  betaManager = [(SUUIBetaUpdatesOperation *)selfCopy betaManager];
+  platform = [location[0] platform];
   v11 = MEMORY[0x277D85DD0];
   v12 = -1073741824;
   v13 = 0;
   v14 = __85__SUUIBetaUpdatesOperation_checkForAvailableBetaProgramsForDevice_completionHandler___block_invoke;
   v15 = &unk_279CC6E90;
-  v16 = MEMORY[0x277D82BE0](v24);
+  v16 = MEMORY[0x277D82BE0](selfCopy);
   v18 = MEMORY[0x277D82BE0](v22);
   v17 = MEMORY[0x277D82BE0](location[0]);
-  [(SDBetaManager *)v5 queryProgramsForSystemAccountsWithPlatforms:v4 completion:&v11];
-  MEMORY[0x277D82BD8](v5);
+  [(SDBetaManager *)betaManager queryProgramsForSystemAccountsWithPlatforms:platform completion:&v11];
+  MEMORY[0x277D82BD8](betaManager);
   objc_storeStrong(&v17, 0);
   objc_storeStrong(&v18, 0);
   objc_storeStrong(&v16, 0);

@@ -1,6 +1,6 @@
 @interface CKVisionReplyListChatItem
 + (double)navigationBarHeight;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (UIEdgeInsets)contentInsets;
 - (UIEdgeInsets)transcriptTextAlignmentInsets;
 @end
@@ -51,26 +51,26 @@ void __48__CKVisionReplyListChatItem_navigationBarHeight__block_invoke()
   navigationBarHeight_navigationBarHeight = v1;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (insets)
   {
-    a3 = *MEMORY[0x1E69DDCE0];
-    *&a3.height = *(MEMORY[0x1E69DDCE0] + 16);
-    *&a4->top = *MEMORY[0x1E69DDCE0];
-    *&a4->bottom = *&a3.height;
+    fits = *MEMORY[0x1E69DDCE0];
+    *&fits.height = *(MEMORY[0x1E69DDCE0] + 16);
+    *&insets->top = *MEMORY[0x1E69DDCE0];
+    *&insets->bottom = *&fits.height;
   }
 
-  v5 = [(CKVisionReplyListChatItem *)self groupRowIndex:a3.width];
-  v6 = [(QuickReplyContent *)self->_quickReplyContent rows];
-  v7 = [v6 count];
+  v5 = [(CKVisionReplyListChatItem *)self groupRowIndex:fits.width];
+  rows = [(QuickReplyContent *)self->_quickReplyContent rows];
+  v7 = [rows count];
 
   v8 = 0.0;
   if (v5 < v7)
   {
-    v9 = [(QuickReplyContent *)self->_quickReplyContent rowHeights];
-    v10 = [v9 objectAtIndexedSubscript:v5];
+    rowHeights = [(QuickReplyContent *)self->_quickReplyContent rowHeights];
+    v10 = [rowHeights objectAtIndexedSubscript:v5];
     [v10 floatValue];
     v8 = v11;
   }
@@ -81,7 +81,7 @@ void __48__CKVisionReplyListChatItem_navigationBarHeight__block_invoke()
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v15 = 134218240;
-      v16 = self;
+      selfCopy = self;
       v17 = 2048;
       v18 = v8;
       _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "[%p] Setting height to %f", &v15, 0x16u);

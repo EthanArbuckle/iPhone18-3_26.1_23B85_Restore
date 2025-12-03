@@ -1,26 +1,26 @@
 @interface _INDataImage
 - (BOOL)_requiresRetrieval;
-- (BOOL)isEqual:(id)a3;
-- (_INDataImage)initWithCoder:(id)a3;
-- (_INDataImage)initWithImageData:(id)a3;
-- (id)_copyWithSubclass:(Class)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INDataImage)initWithCoder:(id)coder;
+- (_INDataImage)initWithImageData:(id)data;
+- (id)_copyWithSubclass:(Class)subclass;
 - (id)_dictionaryRepresentation;
 - (id)_identifier;
 - (id)_sha256HashUUID;
-- (void)_loadImageDataAndSizeWithHelper:(id)a3 accessSpecifier:(id)a4 completion:(id)a5;
-- (void)_retrieveImageDataWithReply:(id)a3;
-- (void)_setImageData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_loadImageDataAndSizeWithHelper:(id)helper accessSpecifier:(id)specifier completion:(id)completion;
+- (void)_retrieveImageDataWithReply:(id)reply;
+- (void)_setImageData:(id)data;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _INDataImage
 
 - (id)_identifier
 {
-  v2 = [(_INDataImage *)self _sha256HashUUID];
-  v3 = [v2 UUIDString];
+  _sha256HashUUID = [(_INDataImage *)self _sha256HashUUID];
+  uUIDString = [_sha256HashUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)_sha256HashUUID
@@ -30,8 +30,8 @@
   sha256HashUUID = self->_sha256HashUUID;
   if (!sha256HashUUID)
   {
-    v4 = [(_INDataImage *)self imageData];
-    CC_SHA256([v4 bytes], objc_msgSend(v4, "length"), md);
+    imageData = [(_INDataImage *)self imageData];
+    CC_SHA256([imageData bytes], objc_msgSend(imageData, "length"), md);
     v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:md];
     v6 = self->_sha256HashUUID;
     self->_sha256HashUUID = v5;
@@ -46,15 +46,15 @@
   return v7;
 }
 
-- (_INDataImage)initWithCoder:(id)a3
+- (_INDataImage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _INDataImage;
-  v5 = [(INImage *)&v9 initWithCoder:v4];
+  v5 = [(INImage *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageData"];
     imageData = v5->_imageData;
     v5->_imageData = v6;
 
@@ -64,42 +64,42 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _INDataImage;
-  v4 = a3;
-  [(INImage *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_imageData forKey:{@"imageData", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(INImage *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_imageData forKey:{@"imageData", v5.receiver, v5.super_class}];
 }
 
-- (void)_setImageData:(id)a3
+- (void)_setImageData:(id)data
 {
-  v5 = a3;
-  if (self->_imageData != v5)
+  dataCopy = data;
+  if (self->_imageData != dataCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_imageData, a3);
+    v7 = dataCopy;
+    objc_storeStrong(&self->_imageData, data);
     os_unfair_lock_lock(&self->_hashLock);
     sha256HashUUID = self->_sha256HashUUID;
     self->_sha256HashUUID = 0;
 
     os_unfair_lock_unlock(&self->_hashLock);
-    v5 = v7;
+    dataCopy = v7;
   }
 }
 
-- (id)_copyWithSubclass:(Class)a3
+- (id)_copyWithSubclass:(Class)subclass
 {
   v10.receiver = self;
   v10.super_class = _INDataImage;
-  v4 = [(INImage *)&v10 _copyWithSubclass:a3];
+  v4 = [(INImage *)&v10 _copyWithSubclass:subclass];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5 = v4;
-    v6 = [(_INDataImage *)self imageData];
-    [v5 _setImageData:v6];
+    imageData = [(_INDataImage *)self imageData];
+    [v5 _setImageData:imageData];
   }
 
   else
@@ -137,17 +137,17 @@
 
   v10.receiver = self;
   v10.super_class = _INDataImage;
-  v4 = [(INImage *)&v10 _dictionaryRepresentation];
-  v5 = [v4 mutableCopy];
+  _dictionaryRepresentation = [(INImage *)&v10 _dictionaryRepresentation];
+  v5 = [_dictionaryRepresentation mutableCopy];
 
   v11 = @"imageData";
-  v6 = v3;
+  null = v3;
   if (!v3)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v12[0] = v6;
+  v12[0] = null;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
   [v5 addEntriesFromDictionary:v7];
 
@@ -160,30 +160,30 @@
   return v5;
 }
 
-- (void)_retrieveImageDataWithReply:(id)a3
+- (void)_retrieveImageDataWithReply:(id)reply
 {
-  if (a3)
+  if (reply)
   {
-    (*(a3 + 2))(a3, self, 0);
+    (*(reply + 2))(reply, self, 0);
   }
 }
 
 - (BOOL)_requiresRetrieval
 {
-  v2 = [(_INDataImage *)self imageData];
-  v3 = v2 == 0;
+  imageData = [(_INDataImage *)self imageData];
+  v3 = imageData == 0;
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = _INDataImage;
-  if ([(INImage *)&v10 isEqual:v4])
+  if ([(INImage *)&v10 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     imageData = self->_imageData;
     v7 = v5[9];
     if (imageData)
@@ -213,31 +213,31 @@ LABEL_10:
   return v8;
 }
 
-- (_INDataImage)initWithImageData:(id)a3
+- (_INDataImage)initWithImageData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v9.receiver = self;
   v9.super_class = _INDataImage;
   v6 = [(INImage *)&v9 _initWithIdentifier:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(v6 + 9, a3);
+    objc_storeStrong(v6 + 9, data);
     v7->_hashLock._os_unfair_lock_opaque = 0;
   }
 
   return v7;
 }
 
-- (void)_loadImageDataAndSizeWithHelper:(id)a3 accessSpecifier:(id)a4 completion:(id)a5
+- (void)_loadImageDataAndSizeWithHelper:(id)helper accessSpecifier:(id)specifier completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  helperCopy = helper;
+  specifierCopy = specifier;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+    if (helperCopy && (objc_opt_respondsToSelector() & 1) != 0)
     {
       v11 = INSiriLogContextIntents;
       if (os_log_type_enabled(INSiriLogContextIntents, OS_LOG_TYPE_INFO))
@@ -245,24 +245,24 @@ LABEL_10:
         *buf = 136315394;
         v18 = "[_INDataImage(INPortableImageLoader) _loadImageDataAndSizeWithHelper:accessSpecifier:completion:]";
         v19 = 2112;
-        v20 = v8;
+        v20 = helperCopy;
         _os_log_impl(&dword_18E991000, v11, OS_LOG_TYPE_INFO, "%s Attempting data image loading strategy with helper: %@", buf, 0x16u);
       }
 
-      v12 = [(_INDataImage *)self imageData];
+      imageData = [(_INDataImage *)self imageData];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __98___INDataImage_INPortableImageLoader___loadImageDataAndSizeWithHelper_accessSpecifier_completion___block_invoke;
       v15[3] = &unk_1E72835D0;
       v15[4] = self;
-      v16 = v10;
-      [v8 loadImageSizeFromData:v12 completion:v15];
+      v16 = completionCopy;
+      [helperCopy loadImageSizeFromData:imageData completion:v15];
     }
 
     else
     {
-      v13 = [(_INDataImage *)self imageData];
-      (*(v10 + 2))(v10, v13, 0, 0, 0.0, 0.0);
+      imageData2 = [(_INDataImage *)self imageData];
+      (*(completionCopy + 2))(completionCopy, imageData2, 0, 0, 0.0, 0.0);
     }
   }
 

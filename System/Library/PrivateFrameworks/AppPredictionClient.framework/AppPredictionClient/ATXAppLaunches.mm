@@ -1,12 +1,12 @@
 @interface ATXAppLaunches
 - (ATXAppLaunches)init;
-- (ATXAppLaunches)initWithStream:(id)a3;
-- (double)timesAppHasBeenLaunchedOverLast28Days:(id)a3;
+- (ATXAppLaunches)initWithStream:(id)stream;
+- (double)timesAppHasBeenLaunchedOverLast28Days:(id)days;
 - (double)uniqueAppsLaunchedOverLast28Days;
-- (double)uniqueDaysAppHasBeenLaunchedOverLast28Days:(id)a3;
-- (id)_rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysWithFilter:(id)a3;
-- (id)rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForApp:(id)a3;
-- (id)rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForApps:(id)a3;
+- (double)uniqueDaysAppHasBeenLaunchedOverLast28Days:(id)days;
+- (id)_rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysWithFilter:(id)filter;
+- (id)rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForApp:(id)app;
+- (id)rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForApps:(id)apps;
 @end
 
 @implementation ATXAppLaunches
@@ -15,36 +15,36 @@
 {
   v3 = BiomeLibrary();
   v4 = [v3 App];
-  v5 = [v4 InFocus];
-  v6 = [(ATXAppLaunches *)self initWithStream:v5];
+  inFocus = [v4 InFocus];
+  v6 = [(ATXAppLaunches *)self initWithStream:inFocus];
 
   return v6;
 }
 
-- (ATXAppLaunches)initWithStream:(id)a3
+- (ATXAppLaunches)initWithStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v9.receiver = self;
   v9.super_class = ATXAppLaunches;
   v6 = [(ATXAppLaunches *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_stream, a3);
+    objc_storeStrong(&v6->_stream, stream);
   }
 
   return v7;
 }
 
-- (id)rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForApp:(id)a3
+- (id)rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForApp:(id)app
 {
-  if (a3)
+  if (app)
   {
     v4 = MEMORY[0x1E695DFD8];
-    v5 = a3;
-    v6 = [v4 setWithObject:v5];
+    appCopy = app;
+    v6 = [v4 setWithObject:appCopy];
     v7 = [(ATXAppLaunches *)self rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForApps:v6];
-    v8 = [v7 objectForKeyedSubscript:v5];
+    v8 = [v7 objectForKeyedSubscript:appCopy];
   }
 
   else
@@ -55,50 +55,50 @@
   return v8;
 }
 
-- (double)uniqueDaysAppHasBeenLaunchedOverLast28Days:(id)a3
+- (double)uniqueDaysAppHasBeenLaunchedOverLast28Days:(id)days
 {
-  if (!a3)
+  if (!days)
   {
     return 0.0;
   }
 
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
-  v6 = [v4 setWithObject:v5];
+  daysCopy = days;
+  v6 = [v4 setWithObject:daysCopy];
   v7 = [(ATXAppLaunches *)self rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForApps:v6];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  v8 = [v7 objectForKeyedSubscript:daysCopy];
 
-  v9 = [v8 uniqueDaysLaunched];
-  return v9;
+  uniqueDaysLaunched = [v8 uniqueDaysLaunched];
+  return uniqueDaysLaunched;
 }
 
-- (double)timesAppHasBeenLaunchedOverLast28Days:(id)a3
+- (double)timesAppHasBeenLaunchedOverLast28Days:(id)days
 {
-  if (!a3)
+  if (!days)
   {
     return 0.0;
   }
 
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
-  v6 = [v4 setWithObject:v5];
+  daysCopy = days;
+  v6 = [v4 setWithObject:daysCopy];
   v7 = [(ATXAppLaunches *)self rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForApps:v6];
-  v8 = [v7 objectForKeyedSubscript:v5];
+  v8 = [v7 objectForKeyedSubscript:daysCopy];
 
-  v9 = [v8 rawLaunchCount];
-  return v9;
+  rawLaunchCount = [v8 rawLaunchCount];
+  return rawLaunchCount;
 }
 
-- (id)rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForApps:(id)a3
+- (id)rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForApps:(id)apps
 {
-  v4 = a3;
-  if ([v4 count])
+  appsCopy = apps;
+  if ([appsCopy count])
   {
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __77__ATXAppLaunches_rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysForApps___block_invoke;
     v7[3] = &unk_1E80C1BD0;
-    v8 = v4;
+    v8 = appsCopy;
     v5 = [(ATXAppLaunches *)self _rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysWithFilter:v7];
   }
 
@@ -110,15 +110,15 @@
   return v5;
 }
 
-- (id)_rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysWithFilter:(id)a3
+- (id)_rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysWithFilter:(id)filter
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  filterCopy = filter;
   context = objc_autoreleasePoolPush();
   v5 = objc_opt_new();
-  v6 = [MEMORY[0x1E695DEE8] currentCalendar];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   v7 = [MEMORY[0x1E695DF00] now];
-  v8 = [v6 dateByAddingUnit:16 value:-28 toDate:v7 options:0];
+  v8 = [currentCalendar dateByAddingUnit:16 value:-28 toDate:v7 options:0];
 
   v29 = v8;
   v9 = [(BMStream *)self->_stream atx_publisherFromStartDate:v8];
@@ -126,14 +126,14 @@
   v43[1] = 3221225472;
   v43[2] = __81__ATXAppLaunches__rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysWithFilter___block_invoke;
   v43[3] = &unk_1E80C6110;
-  v28 = v4;
+  v28 = filterCopy;
   v44 = v28;
   v10 = [v9 filterWithIsIncluded:v43];
   v40[0] = MEMORY[0x1E69E9820];
   v40[1] = 3221225472;
   v40[2] = __81__ATXAppLaunches__rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysWithFilter___block_invoke_3;
   v40[3] = &unk_1E80C2220;
-  v27 = v6;
+  v27 = currentCalendar;
   v41 = v27;
   v11 = v5;
   v42 = v11;
@@ -260,9 +260,9 @@ void __81__ATXAppLaunches__rawLaunchCountAndDistinctDaysLaunchedOverLast28DaysWi
 - (double)uniqueAppsLaunchedOverLast28Days
 {
   v3 = objc_opt_new();
-  v4 = [MEMORY[0x1E695DEE8] currentCalendar];
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   v5 = [MEMORY[0x1E695DF00] now];
-  v6 = [v4 dateByAddingUnit:16 value:-28 toDate:v5 options:0];
+  v6 = [currentCalendar dateByAddingUnit:16 value:-28 toDate:v5 options:0];
 
   v7 = [(BMStream *)self->_stream atx_publisherFromStartDate:v6];
   v8 = [v7 filterWithIsIncluded:&__block_literal_global_25_0];

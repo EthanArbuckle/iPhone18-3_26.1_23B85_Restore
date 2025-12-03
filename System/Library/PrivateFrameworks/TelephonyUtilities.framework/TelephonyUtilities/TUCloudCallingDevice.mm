@@ -1,29 +1,29 @@
 @interface TUCloudCallingDevice
-- (TUCloudCallingDevice)initWithIDSDevice:(id)a3;
+- (TUCloudCallingDevice)initWithIDSDevice:(id)device;
 @end
 
 @implementation TUCloudCallingDevice
 
-- (TUCloudCallingDevice)initWithIDSDevice:(id)a3
+- (TUCloudCallingDevice)initWithIDSDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = [(TUCloudCallingDevice *)self init];
   if (v5)
   {
-    v6 = [v4 name];
-    [(TUCloudCallingDevice *)v5 setName:v6];
+    name = [deviceCopy name];
+    [(TUCloudCallingDevice *)v5 setName:name];
 
-    v7 = [v4 modelIdentifier];
-    [(TUCloudCallingDevice *)v5 setModelIdentifier:v7];
+    modelIdentifier = [deviceCopy modelIdentifier];
+    [(TUCloudCallingDevice *)v5 setModelIdentifier:modelIdentifier];
 
-    v8 = [v4 uniqueIDOverride];
-    [(TUCloudCallingDevice *)v5 setUniqueID:v8];
+    uniqueIDOverride = [deviceCopy uniqueIDOverride];
+    [(TUCloudCallingDevice *)v5 setUniqueID:uniqueIDOverride];
 
-    v9 = [v4 linkedUserURIs];
-    [(TUCloudCallingDevice *)v5 setLinkedUserURIs:v9];
+    linkedUserURIs = [deviceCopy linkedUserURIs];
+    [(TUCloudCallingDevice *)v5 setLinkedUserURIs:linkedUserURIs];
 
-    -[TUCloudCallingDevice setDefaultPairedDevice:](v5, "setDefaultPairedDevice:", [v4 isDefaultPairedDevice]);
-    -[TUCloudCallingDevice setSupportsRestrictingSecondaryCalling:](v5, "setSupportsRestrictingSecondaryCalling:", [v4 supportsRestrictingSecondaryCalling]);
+    -[TUCloudCallingDevice setDefaultPairedDevice:](v5, "setDefaultPairedDevice:", [deviceCopy isDefaultPairedDevice]);
+    -[TUCloudCallingDevice setSupportsRestrictingSecondaryCalling:](v5, "setSupportsRestrictingSecondaryCalling:", [deviceCopy supportsRestrictingSecondaryCalling]);
   }
 
   return v5;

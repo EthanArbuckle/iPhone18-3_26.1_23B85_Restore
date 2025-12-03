@@ -1,25 +1,25 @@
 @interface CAMViewfinderReticleView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CAMViewfinderReticleView)initWithFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CAMViewfinderReticleView)initWithFrame:(CGRect)frame;
 - (id)_newViewportCornerImage;
 - (id)_newViewportTemplateImage;
 - (void)_createGradientViewsIfNeeded;
-- (void)_updateMaterialOpacityWithDuration:(double)a3;
+- (void)_updateMaterialOpacityWithDuration:(double)duration;
 - (void)layoutSubviews;
-- (void)setCornersVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setMaterial:(int64_t)a3 withDuration:(double)a4;
-- (void)setOverCaptureGradientHeight:(double)a3 animated:(BOOL)a4;
-- (void)setOverCaptureGradientVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)setViewportTopInset:(double)a3 bottomInset:(double)a4 animated:(BOOL)a5;
+- (void)setCornersVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setMaterial:(int64_t)material withDuration:(double)duration;
+- (void)setOverCaptureGradientHeight:(double)height animated:(BOOL)animated;
+- (void)setOverCaptureGradientVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)setViewportTopInset:(double)inset bottomInset:(double)bottomInset animated:(BOOL)animated;
 @end
 
 @implementation CAMViewfinderReticleView
 
-- (CAMViewfinderReticleView)initWithFrame:(CGRect)a3
+- (CAMViewfinderReticleView)initWithFrame:(CGRect)frame
 {
   v45.receiver = self;
   v45.super_class = CAMViewfinderReticleView;
-  v3 = [(CAMViewfinderReticleView *)&v45 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMViewfinderReticleView *)&v45 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -40,22 +40,22 @@
 
     [(CAMViewfinderReticleView *)v4 addSubview:v4->__topMaskingView];
     [(CAMViewfinderReticleView *)v4 addSubview:v4->__bottomMaskingView];
-    v14 = [MEMORY[0x1E69DC938] currentDevice];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
     cornersAllowed = 0;
-    if ([v14 cam_initialLayoutStyle] == 3)
+    if ([currentDevice cam_initialLayoutStyle] == 3)
     {
       cornersAllowed = v4->__cornersAllowed;
     }
 
     v16 = +[CAMCaptureCapabilities capabilities];
-    v17 = [v16 useReticleStroke];
+    useReticleStroke = [v16 useReticleStroke];
 
-    if (v17)
+    if (useReticleStroke)
     {
-      v18 = [(CAMViewfinderReticleView *)v4 _newViewportTemplateImage];
-      v19 = [v18 resizableImageWithCapInsets:1 resizingMode:{24.0, 24.0, 24.0, 24.0}];
+      _newViewportTemplateImage = [(CAMViewfinderReticleView *)v4 _newViewportTemplateImage];
+      _newViewportCornerImage = [_newViewportTemplateImage resizableImageWithCapInsets:1 resizingMode:{24.0, 24.0, 24.0, 24.0}];
 
-      v20 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v19];
+      v20 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:_newViewportCornerImage];
       p_viewportBorderView = &v4->__viewportBorderView;
       viewportBorderView = v4->__viewportBorderView;
       v4->__viewportBorderView = v20;
@@ -67,11 +67,11 @@
       {
 LABEL_9:
         v35 = [MEMORY[0x1E69DC888] colorWithWhite:0.0 alpha:1.0];
-        v36 = [(CAMViewfinderReticleView *)v4 _topMaskingView];
-        [v36 setBackgroundColor:v35];
+        _topMaskingView = [(CAMViewfinderReticleView *)v4 _topMaskingView];
+        [_topMaskingView setBackgroundColor:v35];
 
-        v37 = [(CAMViewfinderReticleView *)v4 _bottomMaskingView];
-        [v37 setBackgroundColor:v35];
+        _bottomMaskingView = [(CAMViewfinderReticleView *)v4 _bottomMaskingView];
+        [_bottomMaskingView setBackgroundColor:v35];
 
         [(CAMViewfinderReticleView *)v4 _updateMaterialOpacityWithDuration:0.0];
         v38 = v4;
@@ -79,20 +79,20 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v19 = [(CAMViewfinderReticleView *)v4 _newViewportCornerImage];
-      v23 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v19];
+      _newViewportCornerImage = [(CAMViewfinderReticleView *)v4 _newViewportCornerImage];
+      v23 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:_newViewportCornerImage];
       topLeftCornerView = v4->__topLeftCornerView;
       v4->__topLeftCornerView = v23;
 
-      v25 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v19];
+      v25 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:_newViewportCornerImage];
       topRightCornerView = v4->__topRightCornerView;
       v4->__topRightCornerView = v25;
 
-      v27 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v19];
+      v27 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:_newViewportCornerImage];
       bottomLeftCornerView = v4->__bottomLeftCornerView;
       v4->__bottomLeftCornerView = v27;
 
-      v29 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v19];
+      v29 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:_newViewportCornerImage];
       p_viewportBorderView = &v4->__bottomRightCornerView;
       bottomRightCornerView = v4->__bottomRightCornerView;
       v4->__bottomRightCornerView = v29;
@@ -134,32 +134,32 @@ LABEL_10:
 
 - (void)layoutSubviews
 {
-  v62 = [(CAMViewfinderReticleView *)self _topMaskingView];
-  v3 = [(CAMViewfinderReticleView *)self _bottomMaskingView];
+  _topMaskingView = [(CAMViewfinderReticleView *)self _topMaskingView];
+  _bottomMaskingView = [(CAMViewfinderReticleView *)self _bottomMaskingView];
   [(CAMViewfinderReticleView *)self bounds];
   v5 = v4;
   v7 = v6;
   [(CAMViewfinderReticleView *)self viewportTopInset];
-  [v62 setFrame:{0.0, 0.0, v5, v8}];
-  [v62 frame];
+  [_topMaskingView setFrame:{0.0, 0.0, v5, v8}];
+  [_topMaskingView frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(CAMViewfinderReticleView *)self _topOverCaptureGradientView];
-  [v17 setFrame:{v10, v12, v14, v16}];
+  _topOverCaptureGradientView = [(CAMViewfinderReticleView *)self _topOverCaptureGradientView];
+  [_topOverCaptureGradientView setFrame:{v10, v12, v14, v16}];
 
   [(CAMViewfinderReticleView *)self viewportBottomInset];
   v19 = v7 - v18;
   [(CAMViewfinderReticleView *)self viewportBottomInset];
-  [v3 setFrame:{0.0, v19, v5, v20}];
-  [v3 frame];
+  [_bottomMaskingView setFrame:{0.0, v19, v5, v20}];
+  [_bottomMaskingView frame];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [(CAMViewfinderReticleView *)self _bottomOverCaptureGradientView];
-  [v29 setFrame:{v22, v24, v26, v28}];
+  _bottomOverCaptureGradientView = [(CAMViewfinderReticleView *)self _bottomOverCaptureGradientView];
+  [_bottomOverCaptureGradientView setFrame:{v22, v24, v26, v28}];
 
   [(CAMViewfinderReticleView *)self viewportBottomInset];
   v31 = v7 - v30;
@@ -168,12 +168,12 @@ LABEL_10:
   [(CAMViewfinderReticleView *)self viewportTopInset];
   v35 = v34;
   v36 = +[CAMCaptureCapabilities capabilities];
-  v37 = [v36 useReticleStroke];
+  useReticleStroke = [v36 useReticleStroke];
 
-  if (v37)
+  if (useReticleStroke)
   {
-    v38 = [(CAMViewfinderReticleView *)self _viewportBorderView];
-    [v38 setFrame:{0.0, v35, v5, v33}];
+    _viewportBorderView = [(CAMViewfinderReticleView *)self _viewportBorderView];
+    [_viewportBorderView setFrame:{0.0, v35, v5, v33}];
   }
 
   else
@@ -197,8 +197,8 @@ LABEL_10:
     UIRectGetCenter();
     v44 = v43;
     v46 = v45;
-    v47 = [(CAMViewfinderReticleView *)self _topLeftCornerView];
-    [v47 setCenter:{v44, v46}];
+    _topLeftCornerView = [(CAMViewfinderReticleView *)self _topLeftCornerView];
+    [_topLeftCornerView setCenter:{v44, v46}];
 
     v67.origin.x = x;
     v67.origin.y = y;
@@ -214,8 +214,8 @@ LABEL_10:
     UIRectGetCenter();
     v49 = v48;
     v51 = v50;
-    v52 = [(CAMViewfinderReticleView *)self _topRightCornerView];
-    [v52 setCenter:{v49, v51}];
+    _topRightCornerView = [(CAMViewfinderReticleView *)self _topRightCornerView];
+    [_topRightCornerView setCenter:{v49, v51}];
 
     v69.origin.x = x;
     v69.origin.y = y;
@@ -231,8 +231,8 @@ LABEL_10:
     UIRectGetCenter();
     v54 = v53;
     v56 = v55;
-    v57 = [(CAMViewfinderReticleView *)self _bottomLeftCornerView];
-    [v57 setCenter:{v54, v56}];
+    _bottomLeftCornerView = [(CAMViewfinderReticleView *)self _bottomLeftCornerView];
+    [_bottomLeftCornerView setCenter:{v54, v56}];
 
     v71.origin.x = x;
     v71.origin.y = y;
@@ -248,49 +248,49 @@ LABEL_10:
     UIRectGetCenter();
     v59 = v58;
     v61 = v60;
-    v38 = [(CAMViewfinderReticleView *)self _bottomRightCornerView];
-    [v38 setCenter:{v59, v61}];
+    _viewportBorderView = [(CAMViewfinderReticleView *)self _bottomRightCornerView];
+    [_viewportBorderView setCenter:{v59, v61}];
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = [(CAMViewfinderReticleView *)self _topMaskingView];
-  [v7 frame];
+  y = inside.y;
+  x = inside.x;
+  _topMaskingView = [(CAMViewfinderReticleView *)self _topMaskingView];
+  [_topMaskingView frame];
   v11.x = x;
   v11.y = y;
   v8 = CGRectContainsPoint(v13, v11);
 
-  v9 = [(CAMViewfinderReticleView *)self _bottomMaskingView];
-  [v9 frame];
+  _bottomMaskingView = [(CAMViewfinderReticleView *)self _bottomMaskingView];
+  [_bottomMaskingView frame];
   v12.x = x;
   v12.y = y;
-  LOBYTE(v7) = CGRectContainsPoint(v14, v12);
+  LOBYTE(_topMaskingView) = CGRectContainsPoint(v14, v12);
 
-  return (v8 | v7) & 1;
+  return (v8 | _topMaskingView) & 1;
 }
 
-- (void)setMaterial:(int64_t)a3 withDuration:(double)a4
+- (void)setMaterial:(int64_t)material withDuration:(double)duration
 {
-  if (self->_material != a3)
+  if (self->_material != material)
   {
-    self->_material = a3;
-    [(CAMViewfinderReticleView *)self _updateMaterialOpacityWithDuration:a4];
+    self->_material = material;
+    [(CAMViewfinderReticleView *)self _updateMaterialOpacityWithDuration:duration];
   }
 }
 
-- (void)_updateMaterialOpacityWithDuration:(double)a3
+- (void)_updateMaterialOpacityWithDuration:(double)duration
 {
   v5 = +[CAMCaptureCapabilities capabilities];
   v6 = 0;
   if (([v5 featureDevelopmentHidePreviewOverlayBars] & 1) == 0)
   {
-    v7 = [(CAMViewfinderReticleView *)self material];
-    if (v7 <= 4)
+    material = [(CAMViewfinderReticleView *)self material];
+    if (material <= 4)
     {
-      v6 = qword_1A3A69F70[v7];
+      v6 = qword_1A3A69F70[material];
     }
   }
 
@@ -300,13 +300,13 @@ LABEL_10:
   v11[3] = &unk_1E76F7A38;
   v11[4] = self;
   v11[5] = v6;
-  [CAMView animateIfNeededWithDuration:4 options:v11 animations:0 completion:a3];
+  [CAMView animateIfNeededWithDuration:4 options:v11 animations:0 completion:duration];
   v8 = [(CAMViewfinderReticleView *)self material]< 4;
-  v9 = [(CAMViewfinderReticleView *)self _topOverCaptureGradientView];
-  [v9 setGradientVisible:v8 animated:a3 > 0.0];
+  _topOverCaptureGradientView = [(CAMViewfinderReticleView *)self _topOverCaptureGradientView];
+  [_topOverCaptureGradientView setGradientVisible:v8 animated:duration > 0.0];
 
-  v10 = [(CAMViewfinderReticleView *)self _bottomOverCaptureGradientView];
-  [v10 setGradientVisible:v8 animated:a3 > 0.0];
+  _bottomOverCaptureGradientView = [(CAMViewfinderReticleView *)self _bottomOverCaptureGradientView];
+  [_bottomOverCaptureGradientView setGradientVisible:v8 animated:duration > 0.0];
 }
 
 void __63__CAMViewfinderReticleView__updateMaterialOpacityWithDuration___block_invoke(uint64_t a1)
@@ -394,9 +394,9 @@ void __63__CAMViewfinderReticleView__updateMaterialOpacityWithDuration___block_i
   }
 
   v15 = +[CAMCaptureCapabilities capabilities];
-  v16 = [v15 useReticleStroke];
+  useReticleStroke = [v15 useReticleStroke];
 
-  if (v16)
+  if (useReticleStroke)
   {
     v17 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.3];
     [v17 setFill];
@@ -439,15 +439,15 @@ void __63__CAMViewfinderReticleView__updateMaterialOpacityWithDuration___block_i
   return v23;
 }
 
-- (void)setViewportTopInset:(double)a3 bottomInset:(double)a4 animated:(BOOL)a5
+- (void)setViewportTopInset:(double)inset bottomInset:(double)bottomInset animated:(BOOL)animated
 {
-  if (self->_viewportTopInset != a3 || self->_viewportBottomInset != a4)
+  if (self->_viewportTopInset != inset || self->_viewportBottomInset != bottomInset)
   {
-    if (a5)
+    if (animated)
     {
       [(CAMViewfinderReticleView *)self layoutIfNeeded];
-      self->_viewportTopInset = a3;
-      self->_viewportBottomInset = a4;
+      self->_viewportTopInset = inset;
+      self->_viewportBottomInset = bottomInset;
       [(CAMViewfinderReticleView *)self setNeedsLayout];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
@@ -459,27 +459,27 @@ void __63__CAMViewfinderReticleView__updateMaterialOpacityWithDuration___block_i
 
     else
     {
-      self->_viewportTopInset = a3;
-      self->_viewportBottomInset = a4;
+      self->_viewportTopInset = inset;
+      self->_viewportBottomInset = bottomInset;
 
       [(CAMViewfinderReticleView *)self setNeedsLayout];
     }
   }
 }
 
-- (void)setCornersVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setCornersVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_cornersVisible != a3)
+  if (self->_cornersVisible != visible)
   {
-    v4 = a4;
-    v5 = a3;
+    animatedCopy = animated;
+    visibleCopy = visible;
     if ([(CAMViewfinderReticleView *)self _cornersAllowed])
     {
-      self->_cornersVisible = v5;
+      self->_cornersVisible = visibleCopy;
       v7 = 0.0;
       v9[1] = 3221225472;
       v8 = 1.0;
-      if (!v5)
+      if (!visibleCopy)
       {
         v8 = 0.0;
       }
@@ -487,7 +487,7 @@ void __63__CAMViewfinderReticleView__updateMaterialOpacityWithDuration___block_i
       v9[0] = MEMORY[0x1E69E9820];
       v9[2] = __55__CAMViewfinderReticleView_setCornersVisible_animated___block_invoke;
       v9[3] = &unk_1E76F7A38;
-      if (v4)
+      if (animatedCopy)
       {
         v7 = 0.25;
       }
@@ -518,19 +518,19 @@ void __55__CAMViewfinderReticleView_setCornersVisible_animated___block_invoke(ui
   [v9 setAlpha:v8];
 }
 
-- (void)setOverCaptureGradientVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)setOverCaptureGradientVisible:(BOOL)visible animated:(BOOL)animated
 {
-  if (self->_overCaptureGradientVisible != a3)
+  if (self->_overCaptureGradientVisible != visible)
   {
     v19 = v7;
     v20 = v6;
     v21 = v4;
     v22 = v5;
-    v8 = a4;
-    v9 = a3;
-    self->_overCaptureGradientVisible = a3;
+    animatedCopy = animated;
+    visibleCopy = visible;
+    self->_overCaptureGradientVisible = visible;
     [(CAMViewfinderReticleView *)self _createGradientViewsIfNeeded];
-    if (v8)
+    if (animatedCopy)
     {
       [(CAMViewfinderReticleView *)self layoutIfNeeded];
       v11 = 0.25;
@@ -546,12 +546,12 @@ void __55__CAMViewfinderReticleView_setCornersVisible_animated___block_invoke(ui
     v13 = MEMORY[0x1E69E9820];
     v15 = __67__CAMViewfinderReticleView_setOverCaptureGradientVisible_animated___block_invoke;
     v16 = &unk_1E76F7A38;
-    if (!v9)
+    if (!visibleCopy)
     {
       v12 = 0.0;
     }
 
-    v17 = self;
+    selfCopy = self;
     v18 = v12;
     [CAMView animateIfNeededWithDuration:4 options:&v13 animations:0 completion:v11];
     [(CAMViewfinderReticleView *)self _updateMaterialOpacityWithDuration:v11, v13, v14, v15, v16];
@@ -569,17 +569,17 @@ void __67__CAMViewfinderReticleView_setOverCaptureGradientVisible_animated___blo
   [v5 setAlpha:v4];
 }
 
-- (void)setOverCaptureGradientHeight:(double)a3 animated:(BOOL)a4
+- (void)setOverCaptureGradientHeight:(double)height animated:(BOOL)animated
 {
-  if (self->_overCaptureGradientHeight != a3)
+  if (self->_overCaptureGradientHeight != height)
   {
-    v5 = a4;
-    self->_overCaptureGradientHeight = a3;
-    v7 = [(CAMViewfinderReticleView *)self _topOverCaptureGradientView];
-    [v7 setGradientHeight:v5 animated:a3];
+    animatedCopy = animated;
+    self->_overCaptureGradientHeight = height;
+    _topOverCaptureGradientView = [(CAMViewfinderReticleView *)self _topOverCaptureGradientView];
+    [_topOverCaptureGradientView setGradientHeight:animatedCopy animated:height];
 
-    v8 = [(CAMViewfinderReticleView *)self _bottomOverCaptureGradientView];
-    [v8 setGradientHeight:v5 animated:a3];
+    _bottomOverCaptureGradientView = [(CAMViewfinderReticleView *)self _bottomOverCaptureGradientView];
+    [_bottomOverCaptureGradientView setGradientHeight:animatedCopy animated:height];
   }
 }
 
@@ -587,16 +587,16 @@ void __67__CAMViewfinderReticleView_setOverCaptureGradientVisible_animated___blo
 {
   if (+[CAMUserPreferences topOverCaptureGradientEnabled])
   {
-    v3 = [(CAMViewfinderReticleView *)self _topOverCaptureGradientView];
+    _topOverCaptureGradientView = [(CAMViewfinderReticleView *)self _topOverCaptureGradientView];
 
-    if (!v3)
+    if (!_topOverCaptureGradientView)
     {
       v4 = objc_alloc_init(CAMVerticalGradientView);
       [(CAMViewfinderReticleView *)self overCaptureGradientHeight];
       [(CAMVerticalGradientView *)v4 setGradientHeight:?];
       [(CAMVerticalGradientView *)v4 setGradientAscending:0];
-      v5 = [(CAMViewfinderReticleView *)self _topMaskingView];
-      [(CAMViewfinderReticleView *)self insertSubview:v4 aboveSubview:v5];
+      _topMaskingView = [(CAMViewfinderReticleView *)self _topMaskingView];
+      [(CAMViewfinderReticleView *)self insertSubview:v4 aboveSubview:_topMaskingView];
 
       [(CAMViewfinderReticleView *)self set_topOverCaptureGradientView:v4];
       [(CAMViewfinderReticleView *)self setNeedsLayout];
@@ -605,16 +605,16 @@ void __67__CAMViewfinderReticleView_setOverCaptureGradientVisible_animated___blo
 
   if (+[CAMUserPreferences bottomOverCaptureGradientEnabled])
   {
-    v6 = [(CAMViewfinderReticleView *)self _bottomOverCaptureGradientView];
+    _bottomOverCaptureGradientView = [(CAMViewfinderReticleView *)self _bottomOverCaptureGradientView];
 
-    if (!v6)
+    if (!_bottomOverCaptureGradientView)
     {
       v8 = objc_alloc_init(CAMVerticalGradientView);
       [(CAMViewfinderReticleView *)self overCaptureGradientHeight];
       [(CAMVerticalGradientView *)v8 setGradientHeight:?];
       [(CAMVerticalGradientView *)v8 setGradientAscending:1];
-      v7 = [(CAMViewfinderReticleView *)self _bottomMaskingView];
-      [(CAMViewfinderReticleView *)self insertSubview:v8 aboveSubview:v7];
+      _bottomMaskingView = [(CAMViewfinderReticleView *)self _bottomMaskingView];
+      [(CAMViewfinderReticleView *)self insertSubview:v8 aboveSubview:_bottomMaskingView];
 
       [(CAMViewfinderReticleView *)self set_bottomOverCaptureGradientView:v8];
       [(CAMViewfinderReticleView *)self setNeedsLayout];

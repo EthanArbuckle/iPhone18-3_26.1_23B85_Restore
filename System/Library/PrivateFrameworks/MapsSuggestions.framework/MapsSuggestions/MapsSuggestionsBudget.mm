@@ -1,34 +1,34 @@
 @interface MapsSuggestionsBudget
 - (BOOL)hasBudgetLeft;
-- (BOOL)q_saveStateForRuleName:(id)a3 state:(id)a4;
-- (BOOL)spendAtTime:(id)a3;
+- (BOOL)q_saveStateForRuleName:(id)name state:(id)state;
+- (BOOL)spendAtTime:(id)time;
 - (BOOL)spendNow;
-- (MapsSuggestionsBudget)initWithDelegate:(id)a3 name:(id)a4;
+- (MapsSuggestionsBudget)initWithDelegate:(id)delegate name:(id)name;
 - (NSString)description;
 - (id).cxx_construct;
 - (id)objectForJSON;
-- (id)q_loadStateForRuleName:(id)a3;
+- (id)q_loadStateForRuleName:(id)name;
 - (uint64_t)_q_hasBudgetLeft;
-- (uint64_t)_q_spendAtTime:(uint64_t)a1;
-- (void)addRollingWindowOfCount:(unint64_t)a3 perDuration:(const void *)a4 name:(id)a5;
+- (uint64_t)_q_spendAtTime:(uint64_t)time;
+- (void)addRollingWindowOfCount:(unint64_t)count perDuration:(const void *)duration name:(id)name;
 - (void)reset;
 @end
 
 @implementation MapsSuggestionsBudget
 
-- (MapsSuggestionsBudget)initWithDelegate:(id)a3 name:(id)a4
+- (MapsSuggestionsBudget)initWithDelegate:(id)delegate name:(id)name
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  delegateCopy = delegate;
+  nameCopy = name;
+  if (nameCopy)
   {
     v27.receiver = self;
     v27.super_class = MapsSuggestionsBudget;
     v9 = [(MapsSuggestionsBudget *)&v27 init];
     if (v9)
     {
-      v10 = [v8 copy];
+      v10 = [nameCopy copy];
       name = v9->_name;
       v9->_name = v10;
 
@@ -44,22 +44,22 @@
       v16 = v9->_queue._name;
       v9->_queue._name = v15;
 
-      objc_storeStrong(&v9->_delegate, a3);
-      v17 = [(MapsSuggestionsBudgetDelegate *)v9->_delegate readBudgetState];
-      v18 = [v17 mutableCopy];
+      objc_storeStrong(&v9->_delegate, delegate);
+      readBudgetState = [(MapsSuggestionsBudgetDelegate *)v9->_delegate readBudgetState];
+      v18 = [readBudgetState mutableCopy];
       data = v9->_data;
       v9->_data = v18;
 
       v20 = [(NSMutableDictionary *)v9->_data objectForKeyedSubscript:@"MapsSuggestionsBudgetVersionKey"];
-      v21 = [v20 intValue];
+      intValue = [v20 intValue];
 
-      if (v21 != 2)
+      if (intValue != 2)
       {
         v22 = GEOFindOrCreateLog();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
           *buf = 67109376;
-          *&buf[4] = v21;
+          *&buf[4] = intValue;
           *&buf[8] = 1024;
           *&buf[10] = 2;
           _os_log_impl(&dword_1C5126000, v22, OS_LOG_TYPE_ERROR, "The version does not correspond. Them=%d. Me=%d. This may be a migration. Ignoring state!", buf, 0xEu);
@@ -71,7 +71,7 @@
     }
 
     self = v9;
-    v24 = self;
+    selfCopy = self;
   }
 
   else
@@ -90,18 +90,18 @@
       _os_log_impl(&dword_1C5126000, v25, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a name", buf, 0x26u);
     }
 
-    v24 = 0;
+    selfCopy = 0;
   }
 
-  return v24;
+  return selfCopy;
 }
 
-- (void)addRollingWindowOfCount:(unint64_t)a3 perDuration:(const void *)a4 name:(id)a5
+- (void)addRollingWindowOfCount:(unint64_t)count perDuration:(const void *)duration name:(id)name
 {
   v23 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = v8;
-  if (!*a4)
+  nameCopy = name;
+  v9 = nameCopy;
+  if (!*duration)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -120,7 +120,7 @@
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!nameCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -146,9 +146,9 @@ LABEL_9:
   v11[2] = __66__MapsSuggestionsBudget_addRollingWindowOfCount_perDuration_name___block_invoke;
   v11[3] = &unk_1E81F5E00;
   v11[4] = self;
-  v12 = v8;
-  v13 = a3;
-  v14 = a4;
+  v12 = nameCopy;
+  countCopy = count;
+  durationCopy = duration;
   dispatch_sync(self->_queue._innerQueue, v11);
 
 LABEL_10:
@@ -185,18 +185,18 @@ uint64_t __66__MapsSuggestionsBudget_addRollingWindowOfCount_perDuration_name___
   return MSg::Queue::sync<BOOL>(&self->_queue, v3);
 }
 
-- (uint64_t)_q_spendAtTime:(uint64_t)a1
+- (uint64_t)_q_spendAtTime:(uint64_t)time
 {
   v14 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (time)
   {
-    dispatch_assert_queue_V2(*(a1 + 16));
-    hasBudget = [(MapsSuggestionsBudget *)a1 _q_hasBudgetLeft];
+    dispatch_assert_queue_V2(*(time + 16));
+    hasBudget = [(MapsSuggestionsBudget *)time _q_hasBudgetLeft];
     if (hasBudget)
     {
-      v5 = *(a1 + 32);
-      v6 = *(a1 + 40);
+      v5 = *(time + 32);
+      v6 = *(time + 40);
       while (v5 != v6)
       {
         MSg::_RollingWindowBudgetRule::spendAt(v5, v3);
@@ -206,7 +206,7 @@ uint64_t __66__MapsSuggestionsBudget_addRollingWindowOfCount_perDuration_name___
       v8 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        v9 = *(a1 + 8);
+        v9 = *(time + 8);
         *v11 = 138412546;
         *&v11[4] = v9;
         v12 = 2112;
@@ -218,7 +218,7 @@ uint64_t __66__MapsSuggestionsBudget_addRollingWindowOfCount_perDuration_name___
     else
     {
       v7 = GEOFindOrCreateLog();
-      [(MapsSuggestionsBudget *)v7 _q_spendAtTime:a1, v11];
+      [(MapsSuggestionsBudget *)v7 _q_spendAtTime:time, v11];
       v8 = *v11;
     }
   }
@@ -231,19 +231,19 @@ uint64_t __66__MapsSuggestionsBudget_addRollingWindowOfCount_perDuration_name___
   return hasBudget;
 }
 
-- (BOOL)spendAtTime:(id)a3
+- (BOOL)spendAtTime:(id)time
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  timeCopy = time;
+  v5 = timeCopy;
+  if (timeCopy)
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __37__MapsSuggestionsBudget_spendAtTime___block_invoke;
     v9[3] = &unk_1E81F5E50;
     v9[4] = self;
-    v10 = v4;
+    v10 = timeCopy;
     v6 = MSg::Queue::sync<BOOL>(&self->_queue, v9);
   }
 
@@ -312,17 +312,17 @@ uint64_t __30__MapsSuggestionsBudget_reset__block_invoke(uint64_t result)
   return result;
 }
 
-- (id)q_loadStateForRuleName:(id)a3
+- (id)q_loadStateForRuleName:(id)name
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  nameCopy = name;
+  if (!nameCopy)
   {
     v6 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v12 = 136446978;
-      v13 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/MapsSuggestionsBudget.mm";
+      nameCopy2 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/MapsSuggestionsBudget.mm";
       v14 = 1024;
       *v15 = 287;
       *&v15[4] = 2082;
@@ -337,7 +337,7 @@ uint64_t __30__MapsSuggestionsBudget_reset__block_invoke(uint64_t result)
 
   dispatch_assert_queue_V2(self->_queue._innerQueue);
   v5 = [(NSMutableDictionary *)self->_data objectForKeyedSubscript:self->_name];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:nameCopy];
 
   if (!v6)
   {
@@ -345,7 +345,7 @@ uint64_t __30__MapsSuggestionsBudget_reset__block_invoke(uint64_t result)
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       v12 = 138412290;
-      v13 = v4;
+      nameCopy2 = nameCopy;
       _os_log_impl(&dword_1C5126000, v9, OS_LOG_TYPE_DEBUG, "No state found for RULE{%@}", &v12, 0xCu);
     }
 
@@ -360,7 +360,7 @@ uint64_t __30__MapsSuggestionsBudget_reset__block_invoke(uint64_t result)
     {
       name = self->_name;
       v12 = 138412546;
-      v13 = name;
+      nameCopy2 = name;
       v14 = 2112;
       *v15 = objc_opt_class();
       _os_log_impl(&dword_1C5126000, v9, OS_LOG_TYPE_ERROR, "We found some invalid state for RULE{%@}, that was actually a %@?!", &v12, 0x16u);
@@ -376,7 +376,7 @@ LABEL_15:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v12 = 138412290;
-    v13 = v4;
+    nameCopy2 = nameCopy;
     _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_DEBUG, "Correctly loaded state for RULE{%@}", &v12, 0xCu);
   }
 
@@ -386,13 +386,13 @@ LABEL_16:
   return v8;
 }
 
-- (BOOL)q_saveStateForRuleName:(id)a3 state:(id)a4
+- (BOOL)q_saveStateForRuleName:(id)name state:(id)state
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  nameCopy = name;
+  stateCopy = state;
+  v8 = stateCopy;
+  if (!nameCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -415,7 +415,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v7)
+  if (!stateCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -463,7 +463,7 @@ LABEL_15:
   }
 
   v15 = [v8 copy];
-  [v13 setObject:v15 forKeyedSubscript:v6];
+  [v13 setObject:v15 forKeyedSubscript:nameCopy];
 
   v16 = [v13 copy];
   [(NSMutableDictionary *)self->_data setObject:v16 forKeyedSubscript:self->_name];
@@ -480,8 +480,8 @@ LABEL_16:
   v3 = objc_alloc(MEMORY[0x1E696AD60]);
   v4 = self->_rules.__end_ - self->_rules.__begin_;
   v5 = [v3 initWithCapacity:4 * ((v4 >> 2) + (v4 >> 4))];
-  v6 = [(MapsSuggestionsBudget *)self uniqueName];
-  [v5 appendFormat:@"%@: [", v6];
+  uniqueName = [(MapsSuggestionsBudget *)self uniqueName];
+  [v5 appendFormat:@"%@: [", uniqueName];
 
   begin = self->_rules.__begin_;
   for (i = self->_rules.__end_; begin != i; begin = (begin + 80))
@@ -498,9 +498,9 @@ LABEL_16:
 
 - (id)objectForJSON
 {
-  v2 = [(MapsSuggestionsBudget *)self isTrue];
+  isTrue = [(MapsSuggestionsBudget *)self isTrue];
 
-  return MSg::jsonFor(v2);
+  return MSg::jsonFor(isTrue);
 }
 
 - (id).cxx_construct

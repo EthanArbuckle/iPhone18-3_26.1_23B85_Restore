@@ -8,7 +8,7 @@
 {
   [a3 contentRect];
 
-  return [a1 drawInRect:?];
+  return [self drawInRect:?];
 }
 
 @end

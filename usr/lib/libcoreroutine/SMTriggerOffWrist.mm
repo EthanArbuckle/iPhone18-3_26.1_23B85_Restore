@@ -1,29 +1,29 @@
 @interface SMTriggerOffWrist
 - (SMTriggerManagerProtocol)sessionMonitorDelegate;
-- (SMTriggerOffWrist)initWithQueue:(id)a3 defaultsManager:(id)a4 dataProtectionManager:(id)a5 sessionStore:(id)a6 wristStateManager:(id)a7;
-- (void)_onWristStateChangedNotification:(id)a3;
+- (SMTriggerOffWrist)initWithQueue:(id)queue defaultsManager:(id)manager dataProtectionManager:(id)protectionManager sessionStore:(id)store wristStateManager:(id)stateManager;
+- (void)_onWristStateChangedNotification:(id)notification;
 - (void)_setup;
-- (void)_startMonitoringWithConfiguration:(id)a3 handler:(id)a4;
-- (void)_stopMonitoringWithHandler:(id)a3;
-- (void)onWristStateChangedNotification:(id)a3;
+- (void)_startMonitoringWithConfiguration:(id)configuration handler:(id)handler;
+- (void)_stopMonitoringWithHandler:(id)handler;
+- (void)onWristStateChangedNotification:(id)notification;
 - (void)setup;
-- (void)startMonitoringWithConfiguration:(id)a3 handler:(id)a4;
-- (void)stopMonitoringWithHandler:(id)a3;
+- (void)startMonitoringWithConfiguration:(id)configuration handler:(id)handler;
+- (void)stopMonitoringWithHandler:(id)handler;
 @end
 
 @implementation SMTriggerOffWrist
 
-- (SMTriggerOffWrist)initWithQueue:(id)a3 defaultsManager:(id)a4 dataProtectionManager:(id)a5 sessionStore:(id)a6 wristStateManager:(id)a7
+- (SMTriggerOffWrist)initWithQueue:(id)queue defaultsManager:(id)manager dataProtectionManager:(id)protectionManager sessionStore:(id)store wristStateManager:(id)stateManager
 {
   v36 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v30 = a7;
-  if (!v13)
+  queueCopy = queue;
+  managerCopy = manager;
+  protectionManagerCopy = protectionManager;
+  storeCopy = store;
+  stateManagerCopy = stateManager;
+  if (!queueCopy)
   {
-    v28 = v16;
+    v28 = storeCopy;
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -34,31 +34,31 @@
       _os_log_error_impl(&dword_2304B3000, v17, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: queue (in %s:%d)", buf, 0x12u);
     }
 
-    v16 = v28;
+    storeCopy = v28;
   }
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
-    v29 = v16;
+    v29 = storeCopy;
     v18 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v19 = objc_opt_class();
       NSStringFromClass(v19);
-      v20 = v25 = v14;
+      v20 = v25 = managerCopy;
       NSStringFromSelector(a2);
-      v21 = aSelectora = v15;
+      v21 = aSelectora = protectionManagerCopy;
       *buf = 138412546;
       v33 = v20;
       v34 = 2112;
       v35 = v21;
       _os_log_impl(&dword_2304B3000, v18, OS_LOG_TYPE_INFO, "%@, %@, initializing triggerOffWrist", buf, 0x16u);
 
-      v15 = aSelectora;
-      v14 = v25;
+      protectionManagerCopy = aSelectora;
+      managerCopy = v25;
     }
 
-    v16 = v29;
+    storeCopy = v29;
   }
 
   v31.receiver = self;
@@ -67,11 +67,11 @@
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_queue, a3);
-    objc_storeStrong(&v23->_defaultsManager, a4);
-    objc_storeStrong(&v23->_dataProtectionManager, a5);
-    objc_storeStrong(&v23->_sessionStore, a6);
-    objc_storeStrong(&v23->_wristStateManager, a7);
+    objc_storeStrong(&v22->_queue, queue);
+    objc_storeStrong(&v23->_defaultsManager, manager);
+    objc_storeStrong(&v23->_dataProtectionManager, protectionManager);
+    objc_storeStrong(&v23->_sessionStore, store);
+    objc_storeStrong(&v23->_wristStateManager, stateManager);
     [(SMTriggerOffWrist *)v23 setup];
   }
 
@@ -80,13 +80,13 @@
 
 - (void)setup
 {
-  v3 = [(SMTriggerOffWrist *)self queue];
+  queue = [(SMTriggerOffWrist *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __26__SMTriggerOffWrist_setup__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)_setup
@@ -104,30 +104,30 @@
   }
 }
 
-- (void)startMonitoringWithConfiguration:(id)a3 handler:(id)a4
+- (void)startMonitoringWithConfiguration:(id)configuration handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SMTriggerOffWrist *)self queue];
+  configurationCopy = configuration;
+  handlerCopy = handler;
+  queue = [(SMTriggerOffWrist *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__SMTriggerOffWrist_startMonitoringWithConfiguration_handler___block_invoke;
   block[3] = &unk_2788C4500;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = configurationCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = configurationCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)_startMonitoringWithConfiguration:(id)a3 handler:(id)a4
+- (void)_startMonitoringWithConfiguration:(id)configuration handler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v9 = os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO);
-  if (v7)
+  if (configurationCopy)
   {
     if (v9)
     {
@@ -145,13 +145,13 @@
       }
     }
 
-    v14 = [(SMTriggerOffWrist *)self wristStateManager];
+    wristStateManager = [(SMTriggerOffWrist *)self wristStateManager];
     v15 = +[(RTNotification *)RTWatchWristStateManagerWristStateChangedNotification];
-    [v14 addObserver:self selector:sel_onWristStateChangedNotification_ name:v15];
+    [wristStateManager addObserver:self selector:sel_onWristStateChangedNotification_ name:v15];
 
-    if (v8)
+    if (handlerCopy)
     {
-      v8[2](v8, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
@@ -172,24 +172,24 @@
   }
 }
 
-- (void)stopMonitoringWithHandler:(id)a3
+- (void)stopMonitoringWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(SMTriggerOffWrist *)self queue];
+  handlerCopy = handler;
+  queue = [(SMTriggerOffWrist *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__SMTriggerOffWrist_stopMonitoringWithHandler___block_invoke;
   v7[3] = &unk_2788C4938;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_stopMonitoringWithHandler:(id)a3
+- (void)_stopMonitoringWithHandler:(id)handler
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  handlerCopy = handler;
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
     v6 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -206,33 +206,33 @@
     }
   }
 
-  v10 = [(SMTriggerOffWrist *)self wristStateManager];
-  [v10 removeObserver:self];
+  wristStateManager = [(SMTriggerOffWrist *)self wristStateManager];
+  [wristStateManager removeObserver:self];
 
-  if (v5)
+  if (handlerCopy)
   {
-    v5[2](v5, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 }
 
-- (void)onWristStateChangedNotification:(id)a3
+- (void)onWristStateChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(SMTriggerOffWrist *)self queue];
+  notificationCopy = notification;
+  queue = [(SMTriggerOffWrist *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__SMTriggerOffWrist_onWristStateChangedNotification___block_invoke;
   v7[3] = &unk_2788C4A70;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  v6 = notificationCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)_onWristStateChangedNotification:(id)a3
+- (void)_onWristStateChangedNotification:(id)notification
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  notificationCopy = notification;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -246,36 +246,36 @@
     goto LABEL_8;
   }
 
-  v5 = [(SMTriggerOffWrist *)self defaultsManager];
-  v6 = [v5 objectForKey:@"RTDefaultsSMTriggerOffWristSuppressNotifications"];
-  v7 = [v6 BOOLValue];
+  defaultsManager = [(SMTriggerOffWrist *)self defaultsManager];
+  v6 = [defaultsManager objectForKey:@"RTDefaultsSMTriggerOffWristSuppressNotifications"];
+  bOOLValue = [v6 BOOLValue];
 
-  if (!v7)
+  if (!bOOLValue)
   {
-    v8 = v4;
+    v8 = notificationCopy;
     if ([v8 wristState]== 1)
     {
-      v10 = [(SMTriggerOffWrist *)self offWristThresholdTimerAlarm];
+      offWristThresholdTimerAlarm = [(SMTriggerOffWrist *)self offWristThresholdTimerAlarm];
 
-      if (!v10)
+      if (!offWristThresholdTimerAlarm)
       {
         objc_initWeak(&location, self);
         v11 = [RTXPCTimerAlarm alloc];
-        v12 = [(SMTriggerOffWrist *)self queue];
+        queue = [(SMTriggerOffWrist *)self queue];
         v23[0] = MEMORY[0x277D85DD0];
         v23[1] = 3221225472;
         v23[2] = __54__SMTriggerOffWrist__onWristStateChangedNotification___block_invoke;
         v23[3] = &unk_2788C7638;
         v23[4] = self;
         objc_copyWeak(&v24, &location);
-        v13 = [(RTXPCTimerAlarm *)v11 initWithIdentifier:@"com.apple.routined.safetyMonitor.triggerOffWrist.offWristThresholdTimerAlarm" queue:v12 handler:v23];
+        v13 = [(RTXPCTimerAlarm *)v11 initWithIdentifier:@"com.apple.routined.safetyMonitor.triggerOffWrist.offWristThresholdTimerAlarm" queue:queue handler:v23];
         [(SMTriggerOffWrist *)self setOffWristThresholdTimerAlarm:v13];
 
-        v14 = [(SMTriggerOffWrist *)self offWristThresholdTimerAlarm];
-        v15 = [MEMORY[0x277CBEAA8] date];
-        v16 = [v15 dateByAddingTimeInterval:30.0];
+        offWristThresholdTimerAlarm2 = [(SMTriggerOffWrist *)self offWristThresholdTimerAlarm];
+        date = [MEMORY[0x277CBEAA8] date];
+        v16 = [date dateByAddingTimeInterval:30.0];
         v22 = 0;
-        [v14 fireWithDate:v16 error:&v22];
+        [offWristThresholdTimerAlarm2 fireWithDate:v16 error:&v22];
         v17 = v22;
 
         if (v17)
@@ -299,12 +299,12 @@
 
     else if ([v8 wristState]== 2)
     {
-      v19 = [(SMTriggerOffWrist *)self offWristThresholdTimerAlarm];
+      offWristThresholdTimerAlarm3 = [(SMTriggerOffWrist *)self offWristThresholdTimerAlarm];
 
-      if (v19)
+      if (offWristThresholdTimerAlarm3)
       {
-        v20 = [(SMTriggerOffWrist *)self offWristThresholdTimerAlarm];
-        [v20 invalidate];
+        offWristThresholdTimerAlarm4 = [(SMTriggerOffWrist *)self offWristThresholdTimerAlarm];
+        [offWristThresholdTimerAlarm4 invalidate];
 
         [(SMTriggerOffWrist *)self setOffWristThresholdTimerAlarm:0];
       }

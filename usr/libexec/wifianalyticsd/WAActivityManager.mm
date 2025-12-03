@@ -6,8 +6,8 @@
 - (void)_executeBeforePossibleEagerExit;
 - (void)_executeTimerBlock;
 - (void)debugTimer;
-- (void)osTransactionComplete:(id)a3;
-- (void)osTransactionCreate:(const char *)a3 transaction:(id)a4;
+- (void)osTransactionComplete:(id)complete;
+- (void)osTransactionCreate:(const char *)create transaction:(id)transaction;
 @end
 
 @implementation WAActivityManager
@@ -141,15 +141,15 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Found preference value in domain: %@ key: %@", &v8, 0x26u);
     }
 
-    v6 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 - (void)debugTimer
@@ -201,10 +201,10 @@
   }
 }
 
-- (void)osTransactionCreate:(const char *)a3 transaction:(id)a4
+- (void)osTransactionCreate:(const char *)create transaction:(id)transaction
 {
-  v6 = a4;
-  v7 = v6;
+  transactionCopy = transaction;
+  v7 = transactionCopy;
   if (self->isEagerExitEnabled)
   {
     queue = self->_queue;
@@ -213,16 +213,16 @@
     block[2] = sub_1000906D4;
     block[3] = &unk_1000EE870;
     block[4] = self;
-    v10 = v6;
-    v11 = a3;
+    v10 = transactionCopy;
+    createCopy = create;
     dispatch_sync(queue, block);
   }
 }
 
-- (void)osTransactionComplete:(id)a3
+- (void)osTransactionComplete:(id)complete
 {
-  v4 = a3;
-  v5 = v4;
+  completeCopy = complete;
+  v5 = completeCopy;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -234,8 +234,8 @@
     block[1] = 3221225472;
     block[2] = sub_100090A4C;
     block[3] = &unk_1000EE8C0;
-    v9 = v4;
-    v10 = self;
+    v9 = completeCopy;
+    selfCopy = self;
     v11 = &v12;
     dispatch_sync(queue, block);
     if (*(v13 + 24) == 1)
@@ -257,23 +257,23 @@
 
 - (void)_executeBeforePossibleEagerExit
 {
-  v3 = [(WAActivityManager *)self executeBeforePossibleEagerExit];
+  executeBeforePossibleEagerExit = [(WAActivityManager *)self executeBeforePossibleEagerExit];
 
-  if (v3)
+  if (executeBeforePossibleEagerExit)
   {
-    v4 = [(WAActivityManager *)self executeBeforePossibleEagerExit];
-    v4[2]();
+    executeBeforePossibleEagerExit2 = [(WAActivityManager *)self executeBeforePossibleEagerExit];
+    executeBeforePossibleEagerExit2[2]();
   }
 }
 
 - (void)_executeTimerBlock
 {
-  v3 = [(WAActivityManager *)self alternateExecutionBlockForCleanExit];
+  alternateExecutionBlockForCleanExit = [(WAActivityManager *)self alternateExecutionBlockForCleanExit];
 
-  if (v3)
+  if (alternateExecutionBlockForCleanExit)
   {
-    v4 = [(WAActivityManager *)self alternateExecutionBlockForCleanExit];
-    v4[2]();
+    alternateExecutionBlockForCleanExit2 = [(WAActivityManager *)self alternateExecutionBlockForCleanExit];
+    alternateExecutionBlockForCleanExit2[2]();
   }
 }
 

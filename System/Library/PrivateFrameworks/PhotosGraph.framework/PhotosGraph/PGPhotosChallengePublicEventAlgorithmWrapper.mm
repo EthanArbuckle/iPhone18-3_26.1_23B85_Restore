@@ -1,47 +1,47 @@
 @interface PGPhotosChallengePublicEventAlgorithmWrapper
-- (PGPhotosChallengePublicEventAlgorithmWrapper)initWithEvaluationContext:(id)a3;
-- (unsigned)predictedQuestionStateForAssetUUID:(id)a3 publicEventMUID:(unint64_t)a4;
+- (PGPhotosChallengePublicEventAlgorithmWrapper)initWithEvaluationContext:(id)context;
+- (unsigned)predictedQuestionStateForAssetUUID:(id)d publicEventMUID:(unint64_t)iD;
 @end
 
 @implementation PGPhotosChallengePublicEventAlgorithmWrapper
 
-- (unsigned)predictedQuestionStateForAssetUUID:(id)a3 publicEventMUID:(unint64_t)a4
+- (unsigned)predictedQuestionStateForAssetUUID:(id)d publicEventMUID:(unint64_t)iD
 {
   v60[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  dCopy = d;
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   v8 = MEMORY[0x277CD97A8];
-  v60[0] = v6;
+  v60[0] = dCopy;
   v9 = 1;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v60 count:1];
-  v11 = [v8 fetchAssetsWithUUIDs:v10 options:v7];
-  v12 = [v11 firstObject];
+  v11 = [v8 fetchAssetsWithUUIDs:v10 options:librarySpecificFetchOptions];
+  firstObject = [v11 firstObject];
 
-  if (v12)
+  if (firstObject)
   {
-    v13 = [MEMORY[0x277CD97B8] fetchAssetCollectionsContainingAsset:v12 withType:3 options:v7];
-    v14 = [v13 firstObject];
+    v13 = [MEMORY[0x277CD97B8] fetchAssetCollectionsContainingAsset:firstObject withType:3 options:librarySpecificFetchOptions];
+    firstObject2 = [v13 firstObject];
 
-    if (v14)
+    if (firstObject2)
     {
-      v15 = [(PGGraph *)self->_graph momentNodeForMoment:v14];
+      v15 = [(PGGraph *)self->_graph momentNodeForMoment:firstObject2];
       if (v15)
       {
-        v16 = [(CLSPublicEventManager *)self->_publicEventManager cachedPublicEventsForMuid:a4];
+        v16 = [(CLSPublicEventManager *)self->_publicEventManager cachedPublicEventsForMuid:iD];
         if ([v16 count])
         {
-          v46 = v14;
-          v47 = v12;
-          v48 = v7;
-          v49 = v6;
-          v17 = [(PGGraph *)self->_graph largeFrequentLocationNodes];
+          v46 = firstObject2;
+          v47 = firstObject;
+          v48 = librarySpecificFetchOptions;
+          v49 = dCopy;
+          largeFrequentLocationNodes = [(PGGraph *)self->_graph largeFrequentLocationNodes];
           publicEventDisambiguator = self->_publicEventDisambiguator;
           v19 = [(MANodeCollection *)[PGGraphMomentNodeCollection alloc] initWithNode:v15];
           v55 = 0;
           v56 = 0;
           v54 = 0;
-          v45 = v17;
-          [(PGPublicEventDisambiguator *)publicEventDisambiguator collectConsolidatedAddressesForMomentNodes:v19 largeFrequentLocationNodes:v17 consolidatedAddresses:&v56 consolidatedAddressesByMomentIdentifier:&v55 momentNodesForConsolidatedAddresses:&v54 progressBlock:&__block_literal_global_10370];
+          v45 = largeFrequentLocationNodes;
+          [(PGPublicEventDisambiguator *)publicEventDisambiguator collectConsolidatedAddressesForMomentNodes:v19 largeFrequentLocationNodes:largeFrequentLocationNodes consolidatedAddresses:&v56 consolidatedAddressesByMomentIdentifier:&v55 momentNodesForConsolidatedAddresses:&v54 progressBlock:&__block_literal_global_10370];
           v44 = v56;
           v20 = v55;
           v42 = v54;
@@ -52,8 +52,8 @@
           v23 = [v20 objectForKeyedSubscript:v22];
 
           v24 = [PGMeaningfulEventProcessorCache alloc];
-          v25 = [v15 collection];
-          v26 = [(PGMeaningfulEventProcessorCache *)v24 initWithMomentNodes:v25];
+          collection = [v15 collection];
+          v26 = [(PGMeaningfulEventProcessorCache *)v24 initWithMomentNodes:collection];
 
           v52 = 0u;
           v53 = 0u;
@@ -95,10 +95,10 @@
             v9 = 3;
           }
 
-          v7 = v48;
-          v6 = v49;
-          v14 = v46;
-          v12 = v47;
+          librarySpecificFetchOptions = v48;
+          dCopy = v49;
+          firstObject2 = v46;
+          firstObject = v47;
         }
 
         else
@@ -114,9 +114,9 @@
         if (os_log_type_enabled(loggingConnection, OS_LOG_TYPE_INFO))
         {
           v38 = loggingConnection;
-          v39 = [v14 uuid];
+          uuid = [firstObject2 uuid];
           *buf = 138412290;
-          v59 = v39;
+          v59 = uuid;
           v9 = 1;
           _os_log_impl(&dword_22F0FC000, v38, OS_LOG_TYPE_INFO, "[PublicEvents] No moment node found for moment with uuid: %@, skipping", buf, 0xCu);
         }
@@ -130,9 +130,9 @@
       if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
       {
         v35 = v34;
-        v36 = [v12 uuid];
+        uuid2 = [firstObject uuid];
         *buf = 138412290;
-        v59 = v36;
+        v59 = uuid2;
         v9 = 1;
         _os_log_impl(&dword_22F0FC000, v35, OS_LOG_TYPE_INFO, "[PublicEvents] No moment found for asset with uuid: %@, skipping", buf, 0xCu);
       }
@@ -143,37 +143,37 @@
   return v9;
 }
 
-- (PGPhotosChallengePublicEventAlgorithmWrapper)initWithEvaluationContext:(id)a3
+- (PGPhotosChallengePublicEventAlgorithmWrapper)initWithEvaluationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v21.receiver = self;
   v21.super_class = PGPhotosChallengePublicEventAlgorithmWrapper;
   v5 = [(PGPhotosChallengePublicEventAlgorithmWrapper *)&v21 init];
   if (v5)
   {
-    v6 = [v4 graph];
+    graph = [contextCopy graph];
     graph = v5->_graph;
-    v5->_graph = v6;
+    v5->_graph = graph;
 
-    v8 = [v4 photoLibrary];
+    photoLibrary = [contextCopy photoLibrary];
     photoLibrary = v5->_photoLibrary;
-    v5->_photoLibrary = v8;
+    v5->_photoLibrary = photoLibrary;
 
-    v10 = [v4 serviceManager];
+    serviceManager = [contextCopy serviceManager];
     serviceManager = v5->_serviceManager;
-    v5->_serviceManager = v10;
+    v5->_serviceManager = serviceManager;
 
-    v12 = [v4 publicEventManager];
+    publicEventManager = [contextCopy publicEventManager];
     publicEventManager = v5->_publicEventManager;
-    v5->_publicEventManager = v12;
+    v5->_publicEventManager = publicEventManager;
 
-    v14 = [v4 loggingConnection];
+    loggingConnection = [contextCopy loggingConnection];
     loggingConnection = v5->_loggingConnection;
-    v5->_loggingConnection = v14;
+    v5->_loggingConnection = loggingConnection;
 
     v16 = [PGPublicEventDisambiguator alloc];
-    v17 = [v4 sceneTaxonomy];
-    v18 = [(PGPublicEventDisambiguator *)v16 initWithSceneTaxonomy:v17 loggingConnection:v5->_loggingConnection];
+    sceneTaxonomy = [contextCopy sceneTaxonomy];
+    v18 = [(PGPublicEventDisambiguator *)v16 initWithSceneTaxonomy:sceneTaxonomy loggingConnection:v5->_loggingConnection];
     publicEventDisambiguator = v5->_publicEventDisambiguator;
     v5->_publicEventDisambiguator = v18;
   }

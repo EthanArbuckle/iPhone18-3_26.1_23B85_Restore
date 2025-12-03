@@ -1,8 +1,8 @@
 @interface CardCollectionViewCell
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 - (id)zoomSourceView;
-- (void)dragStateDidChange:(int64_t)a3;
-- (void)imageViewHandler:(id)a3;
+- (void)dragStateDidChange:(int64_t)change;
+- (void)imageViewHandler:(id)handler;
 - (void)vui_cellDidEndDisplaying;
 - (void)vui_cellDidSelect;
 - (void)vui_cellWillBeDisplayed;
@@ -13,14 +13,14 @@
 
 - (void)vui_prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E3EEE8B8();
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
-  v4 = self;
+  selfCopy = self;
   sub_1E3EEE9CC();
   v6 = v5;
   v8 = v7;
@@ -34,42 +34,42 @@
 
 - (void)vui_cellWillBeDisplayed
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E3EEEEA8();
 }
 
 - (void)vui_cellDidEndDisplaying
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E3EEF11C();
 }
 
 - (void)vui_cellDidSelect
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E3EEF2D0();
 }
 
-- (void)dragStateDidChange:(int64_t)a3
+- (void)dragStateDidChange:(int64_t)change
 {
-  v4 = self;
-  sub_1E3EEF410(a3);
+  selfCopy = self;
+  sub_1E3EEF410(change);
 }
 
-- (void)imageViewHandler:(id)a3
+- (void)imageViewHandler:(id)handler
 {
-  v4 = a3;
-  v5 = self;
+  handlerCopy = handler;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E3EF3C1C();
 }
 
 - (id)zoomSourceView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E3EF45AC();
 
   return v3;

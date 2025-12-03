@@ -1,14 +1,14 @@
 @interface PXCPLLearnMoreUpgradeSuggestedActionPerformer
-- (void)_didOpenURL:(BOOL)a3;
+- (void)_didOpenURL:(BOOL)l;
 - (void)performBackgroundTask;
 @end
 
 @implementation PXCPLLearnMoreUpgradeSuggestedActionPerformer
 
-- (void)_didOpenURL:(BOOL)a3
+- (void)_didOpenURL:(BOOL)l
 {
-  v3 = a3;
-  if (a3)
+  lCopy = l;
+  if (l)
   {
     v5 = PLUserStatusUIGetLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -31,27 +31,27 @@
     }
   }
 
-  [(PXActionPerformer *)self completeBackgroundTaskWithSuccess:v3 error:v6];
+  [(PXActionPerformer *)self completeBackgroundTaskWithSuccess:lCopy error:v6];
 }
 
 - (void)performBackgroundTask
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(PXPhotoKitCPLActionPerformer *)self photoLibrary];
-  v4 = [v3 cplStatus];
+  photoLibrary = [(PXPhotoKitCPLActionPerformer *)self photoLibrary];
+  cplStatus = [photoLibrary cplStatus];
 
-  v5 = [v4 clientFeatureCompatibleVersion];
-  v6 = [v4 serverFeatureCompatibleVersion];
+  clientFeatureCompatibleVersion = [cplStatus clientFeatureCompatibleVersion];
+  serverFeatureCompatibleVersion = [cplStatus serverFeatureCompatibleVersion];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v5)
+  if (clientFeatureCompatibleVersion)
   {
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"deviceFeatureVersion=%lu", v5];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"deviceFeatureVersion=%lu", clientFeatureCompatibleVersion];
     [v7 addObject:v8];
   }
 
-  if (v6)
+  if (serverFeatureCompatibleVersion)
   {
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"serverFeatureVersion=%lu#%lu", v6, v6];
+    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"serverFeatureVersion=%lu#%lu", serverFeatureCompatibleVersion, serverFeatureCompatibleVersion];
     [v7 addObject:v9];
   }
 
@@ -78,13 +78,13 @@
   }
 
   objc_initWeak(buf, self);
-  v15 = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __70__PXCPLLearnMoreUpgradeSuggestedActionPerformer_performBackgroundTask__block_invoke;
   v16[3] = &unk_1E7747EB0;
   objc_copyWeak(&v17, buf);
-  [v15 openURL:v13 withCompletionHandler:v16];
+  [mEMORY[0x1E69DC668] openURL:v13 withCompletionHandler:v16];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(buf);

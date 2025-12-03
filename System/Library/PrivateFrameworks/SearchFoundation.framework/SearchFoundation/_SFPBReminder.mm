@@ -1,48 +1,48 @@
 @interface _SFPBReminder
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBReminder)initWithDictionary:(id)a3;
-- (_SFPBReminder)initWithFacade:(id)a3;
-- (_SFPBReminder)initWithJSON:(id)a3;
+- (_SFPBReminder)initWithDictionary:(id)dictionary;
+- (_SFPBReminder)initWithFacade:(id)facade;
+- (_SFPBReminder)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setNotes:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setNotes:(id)notes;
+- (void)setTitle:(id)title;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBReminder
 
-- (_SFPBReminder)initWithFacade:(id)a3
+- (_SFPBReminder)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBReminder *)self init];
   if (v5)
   {
-    v6 = [v4 title];
+    title = [facadeCopy title];
 
-    if (v6)
+    if (title)
     {
-      v7 = [v4 title];
-      [(_SFPBReminder *)v5 setTitle:v7];
+      title2 = [facadeCopy title];
+      [(_SFPBReminder *)v5 setTitle:title2];
     }
 
-    v8 = [v4 dueDate];
+    dueDate = [facadeCopy dueDate];
 
-    if (v8)
+    if (dueDate)
     {
       v9 = [_SFPBDate alloc];
-      v10 = [v4 dueDate];
-      v11 = [(_SFPBDate *)v9 initWithNSDate:v10];
+      dueDate2 = [facadeCopy dueDate];
+      v11 = [(_SFPBDate *)v9 initWithNSDate:dueDate2];
       [(_SFPBReminder *)v5 setDueDate:v11];
     }
 
-    v12 = [v4 notes];
+    notes = [facadeCopy notes];
 
-    if (v12)
+    if (notes)
     {
-      v13 = [v4 notes];
-      [(_SFPBReminder *)v5 setNotes:v13];
+      notes2 = [facadeCopy notes];
+      [(_SFPBReminder *)v5 setNotes:notes2];
     }
 
     v14 = v5;
@@ -51,15 +51,15 @@
   return v5;
 }
 
-- (_SFPBReminder)initWithDictionary:(id)a3
+- (_SFPBReminder)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = _SFPBReminder;
   v5 = [(_SFPBReminder *)&v14 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"title"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"title"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,7 +67,7 @@
       [(_SFPBReminder *)v5 setTitle:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"dueDate"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"dueDate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -75,7 +75,7 @@
       [(_SFPBReminder *)v5 setDueDate:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"notes"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"notes"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -89,30 +89,30 @@
   return v5;
 }
 
-- (_SFPBReminder)initWithJSON:(id)a3
+- (_SFPBReminder)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBReminder *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBReminder *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBReminder *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -125,38 +125,38 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_dueDate)
   {
-    v4 = [(_SFPBReminder *)self dueDate];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    dueDate = [(_SFPBReminder *)self dueDate];
+    dictionaryRepresentation = [dueDate dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"dueDate"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"dueDate"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"dueDate"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"dueDate"];
     }
   }
 
   if (self->_notes)
   {
-    v7 = [(_SFPBReminder *)self notes];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"notes"];
+    notes = [(_SFPBReminder *)self notes];
+    v8 = [notes copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"notes"];
   }
 
   if (self->_title)
   {
-    v9 = [(_SFPBReminder *)self title];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"title"];
+    title = [(_SFPBReminder *)self title];
+    v10 = [title copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"title"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -166,28 +166,28 @@
   return v4 ^ [(NSString *)self->_notes hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_SFPBReminder *)self title];
-  v6 = [v4 title];
-  if ((v5 != 0) == (v6 == 0))
+  title = [(_SFPBReminder *)self title];
+  title2 = [equalCopy title];
+  if ((title != 0) == (title2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_SFPBReminder *)self title];
-  if (v7)
+  title3 = [(_SFPBReminder *)self title];
+  if (title3)
   {
-    v8 = v7;
-    v9 = [(_SFPBReminder *)self title];
-    v10 = [v4 title];
-    v11 = [v9 isEqual:v10];
+    v8 = title3;
+    title4 = [(_SFPBReminder *)self title];
+    title5 = [equalCopy title];
+    v11 = [title4 isEqual:title5];
 
     if (!v11)
     {
@@ -199,20 +199,20 @@
   {
   }
 
-  v5 = [(_SFPBReminder *)self dueDate];
-  v6 = [v4 dueDate];
-  if ((v5 != 0) == (v6 == 0))
+  title = [(_SFPBReminder *)self dueDate];
+  title2 = [equalCopy dueDate];
+  if ((title != 0) == (title2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_SFPBReminder *)self dueDate];
-  if (v12)
+  dueDate = [(_SFPBReminder *)self dueDate];
+  if (dueDate)
   {
-    v13 = v12;
-    v14 = [(_SFPBReminder *)self dueDate];
-    v15 = [v4 dueDate];
-    v16 = [v14 isEqual:v15];
+    v13 = dueDate;
+    dueDate2 = [(_SFPBReminder *)self dueDate];
+    dueDate3 = [equalCopy dueDate];
+    v16 = [dueDate2 isEqual:dueDate3];
 
     if (!v16)
     {
@@ -224,12 +224,12 @@
   {
   }
 
-  v5 = [(_SFPBReminder *)self notes];
-  v6 = [v4 notes];
-  if ((v5 != 0) != (v6 == 0))
+  title = [(_SFPBReminder *)self notes];
+  title2 = [equalCopy notes];
+  if ((title != 0) != (title2 == 0))
   {
-    v17 = [(_SFPBReminder *)self notes];
-    if (!v17)
+    notes = [(_SFPBReminder *)self notes];
+    if (!notes)
     {
 
 LABEL_20:
@@ -237,10 +237,10 @@ LABEL_20:
       goto LABEL_18;
     }
 
-    v18 = v17;
-    v19 = [(_SFPBReminder *)self notes];
-    v20 = [v4 notes];
-    v21 = [v19 isEqual:v20];
+    v18 = notes;
+    notes2 = [(_SFPBReminder *)self notes];
+    notes3 = [equalCopy notes];
+    v21 = [notes2 isEqual:notes3];
 
     if (v21)
     {
@@ -260,40 +260,40 @@ LABEL_18:
   return v22;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
-  v4 = [(_SFPBReminder *)self title];
-  if (v4)
+  toCopy = to;
+  title = [(_SFPBReminder *)self title];
+  if (title)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBReminder *)self dueDate];
-  if (v5)
+  dueDate = [(_SFPBReminder *)self dueDate];
+  if (dueDate)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBReminder *)self notes];
-  if (v6)
+  notes = [(_SFPBReminder *)self notes];
+  if (notes)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setNotes:(id)a3
+- (void)setNotes:(id)notes
 {
-  v4 = [a3 copy];
+  v4 = [notes copy];
   notes = self->_notes;
   self->_notes = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   title = self->_title;
   self->_title = v4;
 

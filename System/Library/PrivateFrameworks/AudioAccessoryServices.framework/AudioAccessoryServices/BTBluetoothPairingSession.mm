@@ -177,8 +177,8 @@ LABEL_22:
     self->_wpClient = v16;
 
     [(WPClient *)self->_wpClient disableScanning];
-    v18 = [(BTBluetoothPairingSession *)self _btEnsureStarted];
-    if (!v18)
+    _btEnsureStarted = [(BTBluetoothPairingSession *)self _btEnsureStarted];
+    if (!_btEnsureStarted)
     {
       return;
     }
@@ -187,9 +187,9 @@ LABEL_22:
   }
 
   [(BTBluetoothPairingSession *)p_ucat _activate];
-  v18 = v27;
+  _btEnsureStarted = v27;
 LABEL_23:
-  [(BTBluetoothPairingSession *)self _completed:v18, deviceAddress, guestAddress, v23, v24, v25];
+  [(BTBluetoothPairingSession *)self _completed:_btEnsureStarted, deviceAddress, guestAddress, v23, v24, v25];
 }
 
 uint64_t __38__BTBluetoothPairingSession__activate__block_invoke(uint64_t a1)
@@ -284,12 +284,12 @@ LABEL_5:
 
 LABEL_41:
   *&v94[0] = _btSessionEventHandler;
-  v20 = self;
-  v21 = softLinkBTSessionAttachWithQueue(self->_ucat->var4, v94, v20, v20->_dispatchQueue);
+  selfCopy = self;
+  v21 = softLinkBTSessionAttachWithQueue(self->_ucat->var4, v94, selfCopy, selfCopy->_dispatchQueue);
   if (v21)
   {
     v22 = v21;
-    CFRelease(v20);
+    CFRelease(selfCopy);
     v23 = (v22 + 310000);
     v24 = self->_ucat->var0;
     if (v24 > 60)
@@ -417,8 +417,8 @@ LABEL_54:
 
   WORD2(v94[0]) = 0;
   LODWORD(v94[0]) = 0;
-  v12 = [(NSString *)deviceAddress UTF8String];
-  v13 = softLinkBTDeviceAddressFromString(v12, v94);
+  uTF8String = [(NSString *)deviceAddress UTF8String];
+  v13 = softLinkBTDeviceAddressFromString(uTF8String, v94);
   if (v13)
   {
     v23 = (v13 + 310000);
@@ -953,8 +953,8 @@ LABEL_119:
 
   v93 = 0;
   v92 = 0;
-  v48 = [(NSString *)self->_guestAddress UTF8String];
-  v49 = softLinkBTDeviceAddressFromString(v48, &v92);
+  uTF8String2 = [(NSString *)self->_guestAddress UTF8String];
+  v49 = softLinkBTDeviceAddressFromString(uTF8String2, &v92);
   if (v49)
   {
     v23 = (v49 + 310000);
@@ -1403,7 +1403,7 @@ LABEL_15:
 
 - (uint64_t)_activate
 {
-  result = OUTLINED_FUNCTION_1_2(a1);
+  result = OUTLINED_FUNCTION_1_2(self);
   if (v7 ^ v8 | v6)
   {
     if (v5 == -1)
@@ -1414,7 +1414,7 @@ LABEL_15:
         goto LABEL_6;
       }
 
-      v9 = *a1;
+      v9 = *self;
     }
 
     result = LogPrintF();
@@ -1427,7 +1427,7 @@ LABEL_6:
 
 - (uint64_t)_btEnsureStarted
 {
-  result = OUTLINED_FUNCTION_0_1(a1, a2, a3, a4);
+  result = OUTLINED_FUNCTION_0_1(self, a2, a3, a4);
   if (v8 ^ v9 | v7)
   {
     if (v6 == -1)
@@ -1450,7 +1450,7 @@ LABEL_6:
 
 - (uint64_t)_btDeletePairingAndRetry
 {
-  result = OUTLINED_FUNCTION_1_2(a1);
+  result = OUTLINED_FUNCTION_1_2(self);
   if (v5 ^ v6 | v4)
   {
     if (v3 == -1)
@@ -1461,7 +1461,7 @@ LABEL_6:
         return result;
       }
 
-      v7 = *a1;
+      v7 = *self;
     }
 
     return LogPrintF();

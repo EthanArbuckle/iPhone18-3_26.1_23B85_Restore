@@ -1,81 +1,81 @@
 @interface AEDecorativeTileSource
-+ (id)_imageTileWithImage:(id)a3;
-+ (id)_imageTileWithImageNamed:(id)a3;
-+ (id)_imageTileWithSystemImageName:(id)a3;
-+ (void)registerCommonDecorativeTilesToReusePool:(id)a3;
++ (id)_imageTileWithImage:(id)image;
++ (id)_imageTileWithImageNamed:(id)named;
++ (id)_imageTileWithSystemImageName:(id)name;
++ (void)registerCommonDecorativeTilesToReusePool:(id)pool;
 @end
 
 @implementation AEDecorativeTileSource
 
-+ (id)_imageTileWithSystemImageName:(id)a3
++ (id)_imageTileWithSystemImageName:(id)name
 {
   v4 = MEMORY[0x277D755D0];
-  v5 = a3;
+  nameCopy = name;
   v6 = [v4 configurationWithScale:1];
-  v7 = [MEMORY[0x277D755B8] _systemImageNamed:v5];
+  v7 = [MEMORY[0x277D755B8] _systemImageNamed:nameCopy];
 
   v8 = [v7 imageWithConfiguration:v6];
 
-  v9 = [MEMORY[0x277D75348] whiteColor];
-  v10 = [v8 imageWithTintColor:v9 renderingMode:1];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  v10 = [v8 imageWithTintColor:whiteColor renderingMode:1];
 
-  v11 = [a1 _imageTileWithImage:v10];
+  v11 = [self _imageTileWithImage:v10];
 
   return v11;
 }
 
-+ (id)_imageTileWithImageNamed:(id)a3
++ (id)_imageTileWithImageNamed:(id)named
 {
   v4 = MEMORY[0x277D755B8];
-  v5 = a3;
+  namedCopy = named;
   v6 = AssetExplorerBundle();
-  v7 = [v4 imageNamed:v5 inBundle:v6];
+  v7 = [v4 imageNamed:namedCopy inBundle:v6];
 
-  v8 = [a1 _imageTileWithImage:v7];
+  v8 = [self _imageTileWithImage:v7];
 
   return v8;
 }
 
-+ (id)_imageTileWithImage:(id)a3
++ (id)_imageTileWithImage:(id)image
 {
   v3 = MEMORY[0x277D755E8];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithImage:v4];
+  imageCopy = image;
+  v5 = [[v3 alloc] initWithImage:imageCopy];
 
   v6 = [[AEGenericViewTile alloc] initWithView:v5];
 
   return v6;
 }
 
-+ (void)registerCommonDecorativeTilesToReusePool:(id)a3
++ (void)registerCommonDecorativeTilesToReusePool:(id)pool
 {
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __67__AEDecorativeTileSource_registerCommonDecorativeTilesToReusePool___block_invoke;
   v8[3] = &__block_descriptor_40_e5__8__0l;
-  v8[4] = a1;
-  v4 = a3;
-  [v4 registerReusableObjectForReuseIdentifier:795209734 creationHandler:v8];
-  [v4 registerReusableObjectForReuseIdentifier:795209735 creationHandler:&__block_literal_global_728];
+  v8[4] = self;
+  poolCopy = pool;
+  [poolCopy registerReusableObjectForReuseIdentifier:795209734 creationHandler:v8];
+  [poolCopy registerReusableObjectForReuseIdentifier:795209735 creationHandler:&__block_literal_global_728];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __67__AEDecorativeTileSource_registerCommonDecorativeTilesToReusePool___block_invoke_3;
   v7[3] = &__block_descriptor_40_e5__8__0l;
-  v7[4] = a1;
-  [v4 registerReusableObjectForReuseIdentifier:795209731 creationHandler:v7];
+  v7[4] = self;
+  [poolCopy registerReusableObjectForReuseIdentifier:795209731 creationHandler:v7];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__AEDecorativeTileSource_registerCommonDecorativeTilesToReusePool___block_invoke_4;
   v6[3] = &__block_descriptor_40_e5__8__0l;
-  v6[4] = a1;
-  [v4 registerReusableObjectForReuseIdentifier:795209732 creationHandler:v6];
-  [v4 registerReusableObjectForReuseIdentifier:795209736 creationHandler:&__block_literal_global_222];
+  v6[4] = self;
+  [poolCopy registerReusableObjectForReuseIdentifier:795209732 creationHandler:v6];
+  [poolCopy registerReusableObjectForReuseIdentifier:795209736 creationHandler:&__block_literal_global_222];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __67__AEDecorativeTileSource_registerCommonDecorativeTilesToReusePool___block_invoke_6;
   v5[3] = &__block_descriptor_40_e5__8__0l;
-  v5[4] = a1;
-  [v4 registerReusableObjectForReuseIdentifier:795209738 creationHandler:v5];
+  v5[4] = self;
+  [poolCopy registerReusableObjectForReuseIdentifier:795209738 creationHandler:v5];
 }
 
 id __67__AEDecorativeTileSource_registerCommonDecorativeTilesToReusePool___block_invoke(uint64_t a1)

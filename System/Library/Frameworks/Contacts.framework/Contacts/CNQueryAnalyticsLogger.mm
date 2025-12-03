@@ -1,7 +1,7 @@
 @interface CNQueryAnalyticsLogger
 - (CNPair)processIdentity;
-- (CNQueryAnalyticsLogger)initWithAuditToken:(id)a3 assumedIdentity:(id)a4;
-- (void)recordQueryWithFetchRequest:(id)a3;
+- (CNQueryAnalyticsLogger)initWithAuditToken:(id)token assumedIdentity:(id)identity;
+- (void)recordQueryWithFetchRequest:(id)request;
 @end
 
 @implementation CNQueryAnalyticsLogger
@@ -68,21 +68,21 @@ id __41__CNQueryAnalyticsLogger_processIdentity__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (CNQueryAnalyticsLogger)initWithAuditToken:(id)a3 assumedIdentity:(id)a4
+- (CNQueryAnalyticsLogger)initWithAuditToken:(id)token assumedIdentity:(id)identity
 {
-  v7 = a3;
-  v8 = a4;
+  tokenCopy = token;
+  identityCopy = identity;
   v18.receiver = self;
   v18.super_class = CNQueryAnalyticsLogger;
   v9 = [(CNQueryAnalyticsLogger *)&v18 init];
   if (v9 && ([MEMORY[0x1E69966E8] currentEnvironment], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v10, "featureFlags"), v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v11, "isFeatureEnabled:", 4), v11, v10, v12))
   {
-    objc_storeStrong(&v9->_auditToken, a3);
-    objc_storeStrong(&v9->_assumedIdentity, a4);
-    v13 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v14 = [v13 keyboardStateMonitor];
+    objc_storeStrong(&v9->_auditToken, token);
+    objc_storeStrong(&v9->_assumedIdentity, identity);
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    keyboardStateMonitor = [currentEnvironment keyboardStateMonitor];
     keyboardStateMonitor = v9->_keyboardStateMonitor;
-    v9->_keyboardStateMonitor = v14;
+    v9->_keyboardStateMonitor = keyboardStateMonitor;
 
     v16 = v9;
   }
@@ -95,30 +95,30 @@ id __41__CNQueryAnalyticsLogger_processIdentity__block_invoke(uint64_t a1)
   return v16;
 }
 
-- (void)recordQueryWithFetchRequest:(id)a3
+- (void)recordQueryWithFetchRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 predicate];
-  if (!v5 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  requestCopy = request;
+  predicate = [requestCopy predicate];
+  if (!predicate || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = v5;
-    v7 = [v4 keyboardState];
-    if (v7)
+    v6 = predicate;
+    keyboardState = [requestCopy keyboardState];
+    if (keyboardState)
     {
-      v8 = [v4 keyboardState];
-      [v8 integerValue];
+      keyboardState2 = [requestCopy keyboardState];
+      [keyboardState2 integerValue];
     }
 
     else
     {
-      v8 = [(CNQueryAnalyticsLogger *)self keyboardStateMonitor];
-      [v8 keyboardState];
+      keyboardState2 = [(CNQueryAnalyticsLogger *)self keyboardStateMonitor];
+      [keyboardState2 keyboardState];
     }
 
-    v9 = [(CNQueryAnalyticsLogger *)self assumedIdentity];
-    if (v9)
+    assumedIdentity = [(CNQueryAnalyticsLogger *)self assumedIdentity];
+    if (assumedIdentity)
     {
-      v10 = [(CNQueryAnalyticsLogger *)self assumedIdentity];
+      assumedIdentity2 = [(CNQueryAnalyticsLogger *)self assumedIdentity];
       v11 = tcc_object_copy_description();
     }
 
@@ -127,15 +127,15 @@ id __41__CNQueryAnalyticsLogger_processIdentity__block_invoke(uint64_t a1)
       v11 = &stru_1F094DAB0;
     }
 
-    v12 = [(CNQueryAnalyticsLogger *)self processIdentity];
-    v13 = [v12 first];
-    v14 = [v12 second];
+    processIdentity = [(CNQueryAnalyticsLogger *)self processIdentity];
+    first = [processIdentity first];
+    second = [processIdentity second];
     v21 = v11;
     v19 = v6;
-    v20 = v13;
+    v20 = first;
     v15 = v11;
-    v16 = v14;
-    v17 = v13;
+    v16 = second;
+    v17 = first;
     v18 = v6;
     AnalyticsSendEventLazy();
   }

@@ -1,21 +1,21 @@
 @interface STIncludeWebsiteDataGroupSpecifierProvider
-+ (id)providerWithCoordinator:(id)a3 isRootView:(BOOL)a4;
++ (id)providerWithCoordinator:(id)coordinator isRootView:(BOOL)view;
 - (STIncludeWebsiteDataGroupSpecifierProvider)init;
-- (id)includeWebsiteData:(id)a3;
+- (id)includeWebsiteData:(id)data;
 - (void)_updateHiddenState;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCoordinator:(id)a3;
-- (void)setIncludeWebsiteData:(id)a3 specifier:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCoordinator:(id)coordinator;
+- (void)setIncludeWebsiteData:(id)data specifier:(id)specifier;
 @end
 
 @implementation STIncludeWebsiteDataGroupSpecifierProvider
 
-+ (id)providerWithCoordinator:(id)a3 isRootView:(BOOL)a4
++ (id)providerWithCoordinator:(id)coordinator isRootView:(BOOL)view
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___STIncludeWebsiteDataGroupSpecifierProvider;
-  v5 = objc_msgSendSuper2(&v7, sel_providerWithCoordinator_, a3);
-  v5[48] = a4;
+  v5 = objc_msgSendSuper2(&v7, sel_providerWithCoordinator_, coordinator);
+  v5[48] = view;
   [v5 _updateHiddenState];
 
   return v5;
@@ -36,33 +36,33 @@
     v6 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v5 target:v3 set:sel_setIncludeWebsiteData_specifier_ get:sel_includeWebsiteData_ detail:0 cell:6 edit:0];
     [(STIncludeWebsiteDataGroupSpecifierProvider *)v3 setToggleIncludeWebsiteDataSpecifier:v6];
 
-    v7 = [(STGroupSpecifierProvider *)v3 mutableSpecifiers];
-    v8 = [(STIncludeWebsiteDataGroupSpecifierProvider *)v3 toggleIncludeWebsiteDataSpecifier];
-    [v7 addObject:v8];
+    mutableSpecifiers = [(STGroupSpecifierProvider *)v3 mutableSpecifiers];
+    toggleIncludeWebsiteDataSpecifier = [(STIncludeWebsiteDataGroupSpecifierProvider *)v3 toggleIncludeWebsiteDataSpecifier];
+    [mutableSpecifiers addObject:toggleIncludeWebsiteDataSpecifier];
   }
 
   return v3;
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"viewModel.canToggleWebsiteData" context:"STIncludeWebsiteDataGroupSpecifierProviderObservationContext"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"viewModel.canToggleWebsiteData" context:"STIncludeWebsiteDataGroupSpecifierProviderObservationContext"];
   v6.receiver = self;
   v6.super_class = STIncludeWebsiteDataGroupSpecifierProvider;
-  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:v4];
-  [v4 addObserver:self forKeyPath:@"viewModel.canToggleWebsiteData" options:4 context:"STIncludeWebsiteDataGroupSpecifierProviderObservationContext"];
+  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:coordinatorCopy];
+  [coordinatorCopy addObserver:self forKeyPath:@"viewModel.canToggleWebsiteData" options:4 context:"STIncludeWebsiteDataGroupSpecifierProviderObservationContext"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == "STIncludeWebsiteDataGroupSpecifierProviderObservationContext")
+  if (context == "STIncludeWebsiteDataGroupSpecifierProviderObservationContext")
   {
-    v11 = a3;
+    pathCopy = path;
     [(STRootGroupSpecifierProvider *)self coordinator];
 
-    v12 = [v11 isEqualToString:@"viewModel.canToggleWebsiteData"];
+    v12 = [pathCopy isEqualToString:@"viewModel.canToggleWebsiteData"];
     if (v12)
     {
 
@@ -74,37 +74,37 @@
   {
     v13.receiver = self;
     v13.super_class = STIncludeWebsiteDataGroupSpecifierProvider;
-    v10 = a3;
-    [(STIncludeWebsiteDataGroupSpecifierProvider *)&v13 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+    pathCopy2 = path;
+    [(STIncludeWebsiteDataGroupSpecifierProvider *)&v13 observeValueForKeyPath:pathCopy2 ofObject:object change:change context:context];
   }
 }
 
 - (void)_updateHiddenState
 {
-  v3 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v8 = [v3 viewModel];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
 
-  v4 = [v8 canToggleWebsiteData];
-  if (_os_feature_enabled_impl() && ([v8 me], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isRemoteUser"), v5, v6) && -[STIncludeWebsiteDataGroupSpecifierProvider isRootView](self, "isRootView"))
+  canToggleWebsiteData = [viewModel canToggleWebsiteData];
+  if (_os_feature_enabled_impl() && ([viewModel me], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "isRemoteUser"), v5, v6) && -[STIncludeWebsiteDataGroupSpecifierProvider isRootView](self, "isRootView"))
   {
     v7 = 1;
   }
 
   else
   {
-    v7 = v4 ^ 1u;
+    v7 = canToggleWebsiteData ^ 1u;
   }
 
   [(STGroupSpecifierProvider *)self setIsHidden:v7];
 }
 
-- (void)setIncludeWebsiteData:(id)a3 specifier:(id)a4
+- (void)setIncludeWebsiteData:(id)data specifier:(id)specifier
 {
-  v5 = a3;
-  v7 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v6 = [v5 BOOLValue];
+  dataCopy = data;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  bOOLValue = [dataCopy BOOLValue];
 
-  [v7 setShareWebUsageEnabled:v6 completionHandler:&__block_literal_global_12];
+  [coordinator setShareWebUsageEnabled:bOOLValue completionHandler:&__block_literal_global_12];
 }
 
 void __78__STIncludeWebsiteDataGroupSpecifierProvider_setIncludeWebsiteData_specifier___block_invoke(uint64_t a1, void *a2)
@@ -120,12 +120,12 @@ void __78__STIncludeWebsiteDataGroupSpecifierProvider_setIncludeWebsiteData_spec
   }
 }
 
-- (id)includeWebsiteData:(id)a3
+- (id)includeWebsiteData:(id)data
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v5 = [v4 viewModel];
-  v6 = [v3 numberWithBool:{objc_msgSend(v5, "isWebUsageEnabled")}];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v6 = [v3 numberWithBool:{objc_msgSend(viewModel, "isWebUsageEnabled")}];
 
   return v6;
 }

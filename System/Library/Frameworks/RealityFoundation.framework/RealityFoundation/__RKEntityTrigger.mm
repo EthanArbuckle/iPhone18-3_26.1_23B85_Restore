@@ -1,10 +1,10 @@
 @interface __RKEntityTrigger
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation __RKEntityTrigger
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   type metadata accessor for __RKEntityTrigger();
   result = swift_allocObject();

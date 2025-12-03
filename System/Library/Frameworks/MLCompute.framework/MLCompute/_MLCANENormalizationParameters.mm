@@ -1,34 +1,34 @@
 @interface _MLCANENormalizationParameters
-+ (id)normalizationUnitParametersWith:(id)a3 gocParams:(id)a4 neuronParams:(id)a5;
-- (_MLCANENormalizationParameters)initWithNormalizationParams:(id)a3 gocParams:(id)a4 neuronParams:(id)a5;
++ (id)normalizationUnitParametersWith:(id)with gocParams:(id)params neuronParams:(id)neuronParams;
+- (_MLCANENormalizationParameters)initWithNormalizationParams:(id)params gocParams:(id)gocParams neuronParams:(id)neuronParams;
 @end
 
 @implementation _MLCANENormalizationParameters
 
-+ (id)normalizationUnitParametersWith:(id)a3 gocParams:(id)a4 neuronParams:(id)a5
++ (id)normalizationUnitParametersWith:(id)with gocParams:(id)params neuronParams:(id)neuronParams
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithNormalizationParams:v10 gocParams:v9 neuronParams:v8];
+  neuronParamsCopy = neuronParams;
+  paramsCopy = params;
+  withCopy = with;
+  v11 = [[self alloc] initWithNormalizationParams:withCopy gocParams:paramsCopy neuronParams:neuronParamsCopy];
 
   return v11;
 }
 
-- (_MLCANENormalizationParameters)initWithNormalizationParams:(id)a3 gocParams:(id)a4 neuronParams:(id)a5
+- (_MLCANENormalizationParameters)initWithNormalizationParams:(id)params gocParams:(id)gocParams neuronParams:(id)neuronParams
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  paramsCopy = params;
+  gocParamsCopy = gocParams;
+  neuronParamsCopy = neuronParams;
   v15.receiver = self;
   v15.super_class = _MLCANENormalizationParameters;
   v12 = [(_MLCANENormalizationParameters *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_normalizationParams, a3);
-    objc_storeStrong(&v13->_gocParams, a4);
-    objc_storeStrong(&v13->_neuronParams, a5);
+    objc_storeStrong(&v12->_normalizationParams, params);
+    objc_storeStrong(&v13->_gocParams, gocParams);
+    objc_storeStrong(&v13->_neuronParams, neuronParams);
   }
 
   return v13;

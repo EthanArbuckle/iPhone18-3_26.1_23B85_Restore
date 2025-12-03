@@ -1,6 +1,6 @@
 @interface PGCurationSetTrait
-- (PGCurationSetTrait)initWithItems:(id)a3;
-- (PGCurationSetTrait)initWithItems:(id)a3 negativeItems:(id)a4;
+- (PGCurationSetTrait)initWithItems:(id)items;
+- (PGCurationSetTrait)initWithItems:(id)items negativeItems:(id)negativeItems;
 - (id)debugDescription;
 @end
 
@@ -25,29 +25,29 @@
   return v8;
 }
 
-- (PGCurationSetTrait)initWithItems:(id)a3 negativeItems:(id)a4
+- (PGCurationSetTrait)initWithItems:(id)items negativeItems:(id)negativeItems
 {
-  v7 = a3;
-  v8 = a4;
+  itemsCopy = items;
+  negativeItemsCopy = negativeItems;
   v12.receiver = self;
   v12.super_class = PGCurationSetTrait;
   v9 = [(PGCurationTrait *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_items, a3);
-    objc_storeStrong(&v10->_negativeItems, a4);
+    objc_storeStrong(&v9->_items, items);
+    objc_storeStrong(&v10->_negativeItems, negativeItems);
   }
 
   return v10;
 }
 
-- (PGCurationSetTrait)initWithItems:(id)a3
+- (PGCurationSetTrait)initWithItems:(id)items
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  itemsCopy = items;
   v6 = [v4 set];
-  v7 = [(PGCurationSetTrait *)self initWithItems:v5 negativeItems:v6];
+  v7 = [(PGCurationSetTrait *)self initWithItems:itemsCopy negativeItems:v6];
 
   return v7;
 }

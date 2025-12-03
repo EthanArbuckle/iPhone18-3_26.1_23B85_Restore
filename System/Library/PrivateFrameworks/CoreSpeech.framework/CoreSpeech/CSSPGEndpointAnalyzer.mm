@@ -1,14 +1,14 @@
 @interface CSSPGEndpointAnalyzer
 - (CSSPGEndpointAnalyzer)init;
 - (CSSPGEndpointAnalyzer)initWithAnalyzeMode;
-- (CSSPGEndpointAnalyzer)initWithEndpointThreshold:(float)a3;
+- (CSSPGEndpointAnalyzer)initWithEndpointThreshold:(float)threshold;
 - (CSSPGEndpointAnalyzerDelegate)delegate;
 - (int64_t)getFrameDurationMs;
-- (void)addAudio:(id)a3 numSamples:(unint64_t)a4;
-- (void)clientSilenceFeaturesAvailable:(id)a3;
+- (void)addAudio:(id)audio numSamples:(unint64_t)samples;
+- (void)clientSilenceFeaturesAvailable:(id)available;
 - (void)dealloc;
 - (void)reset;
-- (void)silenceDurationEstimateAvailable:(float *)a3 numEstimates:(unint64_t)a4 clientProcessedAudioMs:(float)a5;
+- (void)silenceDurationEstimateAvailable:(float *)available numEstimates:(unint64_t)estimates clientProcessedAudioMs:(float)ms;
 - (void)stop;
 @end
 
@@ -21,7 +21,7 @@
   return WeakRetained;
 }
 
-- (void)silenceDurationEstimateAvailable:(float *)a3 numEstimates:(unint64_t)a4 clientProcessedAudioMs:(float)a5
+- (void)silenceDurationEstimateAvailable:(float *)available numEstimates:(unint64_t)estimates clientProcessedAudioMs:(float)ms
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -29,15 +29,15 @@
   block[2] = sub_100110084;
   block[3] = &unk_100251C60;
   block[4] = self;
-  block[5] = a4;
-  v7 = a5;
+  block[5] = estimates;
+  msCopy = ms;
   dispatch_async(queue, block);
 }
 
-- (void)clientSilenceFeaturesAvailable:(id)a3
+- (void)clientSilenceFeaturesAvailable:(id)available
 {
-  v4 = a3;
-  [v4 silenceDurationMs];
+  availableCopy = available;
+  [availableCopy silenceDurationMs];
   v6 = v5;
   v7 = qword_10029E3C8;
   if (__ROR8__(0xEEEEEEEEEEEEEEEFLL * qword_10029E3C8, 2) <= 0x444444444444444uLL)
@@ -82,23 +82,23 @@
   v16[2] = sub_10011031C;
   v16[3] = &unk_100253C48;
   v16[4] = self;
-  v17 = v4;
-  v15 = v4;
+  v17 = availableCopy;
+  v15 = availableCopy;
   dispatch_async(queue, v16);
 }
 
-- (void)addAudio:(id)a3 numSamples:(unint64_t)a4
+- (void)addAudio:(id)audio numSamples:(unint64_t)samples
 {
-  v6 = a3;
+  audioCopy = audio;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100110400;
   block[3] = &unk_1002533C8;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = audioCopy;
+  samplesCopy = samples;
+  v8 = audioCopy;
   dispatch_async(queue, block);
 }
 
@@ -172,12 +172,12 @@
   return result;
 }
 
-- (CSSPGEndpointAnalyzer)initWithEndpointThreshold:(float)a3
+- (CSSPGEndpointAnalyzer)initWithEndpointThreshold:(float)threshold
 {
   result = [(CSSPGEndpointAnalyzer *)self init];
   if (result)
   {
-    result->_endpointThreshold = a3;
+    result->_endpointThreshold = threshold;
     result->_isAnalyzeMode = 0;
   }
 
@@ -188,7 +188,7 @@
 {
   if ((+[CSUtils isDarwinOS]& 1) != 0)
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -204,10 +204,10 @@
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

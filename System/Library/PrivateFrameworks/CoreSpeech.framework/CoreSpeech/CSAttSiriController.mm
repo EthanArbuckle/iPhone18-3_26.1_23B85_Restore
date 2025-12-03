@@ -3,14 +3,14 @@
 - (BOOL)getPendingActivationStatus;
 - (BOOL)isCurrentRequestCCTriggered;
 - (BOOL)isDeferredActivationEnabled;
-- (CSAttSiriController)initWithAudioProviderSelector:(id)a3;
-- (CSAttSiriController)initWithEndpointerNode:(id)a3 osdNode:(id)a4 ssrNode:(id)a5 asrNode:(id)a6 uresNode:(id)a7 needsSSRNode:(BOOL)a8 aFtmNode:(id)a9 speechDetectionNode:(id)a10 ccController:(id)a11 isContinuousConverationEnabled:(BOOL)a12 audioProviderSelector:(id)a13 siriEnabledMonitor:(id)a14 siriClientBehaviorMonitor:(id)a15 rcHandler:(id)a16 supportsAcousticProgressiveChecker:(BOOL)a17 supportsUnderstandingOnDevice:(BOOL)a18 requireASROnDevice:(BOOL)a19 supportsHybridUnderstandingOnDevice:(BOOL)a20;
+- (CSAttSiriController)initWithAudioProviderSelector:(id)selector;
+- (CSAttSiriController)initWithEndpointerNode:(id)node osdNode:(id)osdNode ssrNode:(id)ssrNode asrNode:(id)asrNode uresNode:(id)uresNode needsSSRNode:(BOOL)rNode aFtmNode:(id)ftmNode speechDetectionNode:(id)self0 ccController:(id)self1 isContinuousConverationEnabled:(BOOL)self2 audioProviderSelector:(id)self3 siriEnabledMonitor:(id)self4 siriClientBehaviorMonitor:(id)self5 rcHandler:(id)self6 supportsAcousticProgressiveChecker:(BOOL)self7 supportsUnderstandingOnDevice:(BOOL)self8 requireASROnDevice:(BOOL)self9 supportsHybridUnderstandingOnDevice:(BOOL)understandingOnDevice;
 - (id)_startStreamOption;
-- (id)_startStreamOptionWithMachAbsTime:(unint64_t)a3;
-- (id)getNodeOfType:(unint64_t)a3;
+- (id)_startStreamOptionWithMachAbsTime:(unint64_t)time;
+- (id)getNodeOfType:(unint64_t)type;
 - (id)getRequestMHUUID;
-- (void)CSAudioRouteChangeMonitor:(id)a3 didReceiveAudioRouteChangeEvent:(int64_t)a4;
-- (void)CSSiriEnabledMonitor:(id)a3 didReceiveEnabled:(BOOL)a4;
+- (void)CSAudioRouteChangeMonitor:(id)monitor didReceiveAudioRouteChangeEvent:(int64_t)event;
+- (void)CSSiriEnabledMonitor:(id)monitor didReceiveEnabled:(BOOL)enabled;
 - (void)_detachAttendingStreamAndAttachSiriClientStream;
 - (void)_detachSiriClientStreamAndAttachAttendingStream;
 - (void)_fetchMitigationAssets;
@@ -18,43 +18,43 @@
 - (void)_fetchVoiceTriggerAssets;
 - (void)_handleCCTriggeredRequestStart;
 - (void)_handleCCTriggeredRequestStop;
-- (void)_handleStartProcessingWithRecordContext:(id)a3 withAudioStartStreamOptions:(id)a4 completion:(id)a5;
+- (void)_handleStartProcessingWithRecordContext:(id)context withAudioStartStreamOptions:(id)options completion:(id)completion;
 - (void)_handleStopProcessing;
 - (void)_holdAttSiriTransactionIfNeeded;
-- (void)_prepareAttendingAudioSrcNodeWithStreamRequest:(id)a3 audioProviderUUID:(id)a4;
-- (void)_receivedHearstRoutedEvent:(int64_t)a3;
-- (void)_reconfigureRequiredNodes:(id)a3 enforceAttendingAudioNode:(BOOL)a4;
+- (void)_prepareAttendingAudioSrcNodeWithStreamRequest:(id)request audioProviderUUID:(id)d;
+- (void)_receivedHearstRoutedEvent:(int64_t)event;
+- (void)_reconfigureRequiredNodes:(id)nodes enforceAttendingAudioNode:(BOOL)node;
 - (void)_releaseAttSiriTransactionIfNeeded;
 - (void)_resetAttendingState;
-- (void)_setPendingActivationStatus:(BOOL)a3;
-- (void)_setupAttendingAudioSrcNodeWithStreamRequest:(id)a3 audioProviderUUID:(id)a4;
-- (void)_setupAudioSrcNodeWithSiriClientStream:(id)a3;
-- (void)_startAudioStreamForContinuousConversation:(id)a3 withStartStreamOption:(id)a4;
-- (void)_startProcessingContinuousConversationRequest:(unint64_t)a3;
-- (void)_tearDownBuildGraph:(id)a3;
+- (void)_setPendingActivationStatus:(BOOL)status;
+- (void)_setupAttendingAudioSrcNodeWithStreamRequest:(id)request audioProviderUUID:(id)d;
+- (void)_setupAudioSrcNodeWithSiriClientStream:(id)stream;
+- (void)_startAudioStreamForContinuousConversation:(id)conversation withStartStreamOption:(id)option;
+- (void)_startProcessingContinuousConversationRequest:(unint64_t)request;
+- (void)_tearDownBuildGraph:(id)graph;
 - (void)_triggerSiriActivation;
-- (void)attSiriAttendingAudioSrcNodeDidStopUnexpectedly:(id)a3;
-- (void)attSiriAudioSrcNodeDidStopUnexpectedly:(id)a3;
-- (void)attSiriNode:(id)a3 didDetectHardEndpointAtTime:(double)a4 withMetrics:(id)a5 usesAutomaticEndpointing:(BOOL)a6;
-- (void)attSiriNode:(id)a3 didDetectSpeechWithTriggerInfo:(id)a4;
+- (void)attSiriAttendingAudioSrcNodeDidStopUnexpectedly:(id)unexpectedly;
+- (void)attSiriAudioSrcNodeDidStopUnexpectedly:(id)unexpectedly;
+- (void)attSiriNode:(id)node didDetectHardEndpointAtTime:(double)time withMetrics:(id)metrics usesAutomaticEndpointing:(BOOL)endpointing;
+- (void)attSiriNode:(id)node didDetectSpeechWithTriggerInfo:(id)info;
 - (void)attSiriNodeDidNotDetectSpeechWithTimeout;
-- (void)gazeEstimates:(CGPoint)a3 landmarks:(id)a4;
+- (void)gazeEstimates:(CGPoint)estimates landmarks:(id)landmarks;
 - (void)handleAttendingAudioStopUnexpectedly;
 - (void)handleAudioStopUnexpectedly;
-- (void)handleEndOfAttendingForRequestId:(id)a3;
+- (void)handleEndOfAttendingForRequestId:(id)id;
 - (void)handleOrbTransition;
 - (void)resetAttendingState;
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7;
-- (void)siriClientBehaviorMonitor:(id)a3 didStopStream:(id)a4 withEventUUID:(id)a5;
-- (void)siriClientBehaviorMonitor:(id)a3 fetchedSiriClientAudioStream:(id)a4 successfully:(BOOL)a5;
-- (void)siriClientBehaviorMonitor:(id)a3 preparedSiriClientAudioStream:(id)a4 successfully:(BOOL)a5;
-- (void)siriClientBehaviorMonitor:(id)a3 willStartStreamWithContext:(id)a4 option:(id)a5;
-- (void)siriClientBehaviorMonitor:(id)a3 willStopStream:(id)a4 reason:(unint64_t)a5;
-- (void)siriMitigator:(id)a3 mitigationDecision:(unint64_t)a4;
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d;
+- (void)siriClientBehaviorMonitor:(id)monitor didStopStream:(id)stream withEventUUID:(id)d;
+- (void)siriClientBehaviorMonitor:(id)monitor fetchedSiriClientAudioStream:(id)stream successfully:(BOOL)successfully;
+- (void)siriClientBehaviorMonitor:(id)monitor preparedSiriClientAudioStream:(id)stream successfully:(BOOL)successfully;
+- (void)siriClientBehaviorMonitor:(id)monitor willStartStreamWithContext:(id)context option:(id)option;
+- (void)siriClientBehaviorMonitor:(id)monitor willStopStream:(id)stream reason:(unint64_t)reason;
+- (void)siriMitigator:(id)mitigator mitigationDecision:(unint64_t)decision;
 - (void)start;
-- (void)startAttendingWithContext:(id)a3;
-- (void)startSpeechProcessing:(unint64_t)a3;
-- (void)stopAttendingWithContext:(id)a3;
+- (void)startAttendingWithContext:(id)context;
+- (void)startSpeechProcessing:(unint64_t)processing;
+- (void)stopAttendingWithContext:(id)context;
 - (void)triggerSiriActivation;
 @end
 
@@ -104,14 +104,14 @@
   }
 }
 
-- (void)_receivedHearstRoutedEvent:(int64_t)a3
+- (void)_receivedHearstRoutedEvent:(int64_t)event
 {
-  if (self->_hearstRouteStatus != a3)
+  if (self->_hearstRouteStatus != event)
   {
     v5 = +[CSAttSiriStateMonitor sharedInstance];
-    v6 = [v5 isAttending];
+    isAttending = [v5 isAttending];
 
-    if (v6)
+    if (isAttending)
     {
       v7 = CSLogContextFacilityCoreSpeech;
       if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -125,10 +125,10 @@
     }
   }
 
-  self->_hearstRouteStatus = a3;
+  self->_hearstRouteStatus = event;
 }
 
-- (void)CSAudioRouteChangeMonitor:(id)a3 didReceiveAudioRouteChangeEvent:(int64_t)a4
+- (void)CSAudioRouteChangeMonitor:(id)monitor didReceiveAudioRouteChangeEvent:(int64_t)event
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -136,7 +136,7 @@
   v5[2] = sub_1000FF81C;
   v5[3] = &unk_100253C98;
   v5[4] = self;
-  v5[5] = a4;
+  v5[5] = event;
   dispatch_async(queue, v5);
 }
 
@@ -251,21 +251,21 @@ LABEL_11:
   }
 }
 
-- (void)_startProcessingContinuousConversationRequest:(unint64_t)a3
+- (void)_startProcessingContinuousConversationRequest:(unint64_t)request
 {
   v5 = +[NSUUID UUID];
-  v6 = [v5 UUIDString];
+  uUIDString = [v5 UUIDString];
   requestMHUUID = self->_requestMHUUID;
-  self->_requestMHUUID = v6;
+  self->_requestMHUUID = uUIDString;
 
-  v8 = [(CSAudioRecordContext *)self->_audioRecordContext deviceId];
+  deviceId = [(CSAudioRecordContext *)self->_audioRecordContext deviceId];
   v9 = +[CSAudioRecordContext contextForContinuousConversation];
   audioRecordContext = self->_audioRecordContext;
   self->_audioRecordContext = v9;
 
-  [(CSAudioRecordContext *)self->_audioRecordContext setDeviceId:v8];
+  [(CSAudioRecordContext *)self->_audioRecordContext setDeviceId:deviceId];
   v11 = +[CSAudioStartStreamOption noAlertOption];
-  [v11 setStartRecordingSampleCount:a3];
+  [v11 setStartRecordingSampleCount:request];
   [v11 setRequestHistoricalAudioDataSampleCount:1];
   [v11 setRequestHistoricalAudioDataWithHostTime:0];
   [v11 setRequestMHUUID:self->_requestMHUUID];
@@ -296,9 +296,9 @@ LABEL_11:
   [(CSAttSiriController *)self _handleStartProcessingWithRecordContext:v15 withAudioStartStreamOptions:v16 completion:v17];
 }
 
-- (void)_startAudioStreamForContinuousConversation:(id)a3 withStartStreamOption:(id)a4
+- (void)_startAudioStreamForContinuousConversation:(id)conversation withStartStreamOption:(id)option
 {
-  v5 = a4;
+  optionCopy = option;
   v6 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -306,7 +306,7 @@ LABEL_11:
     *buf = 136315650;
     v13 = "[CSAttSiriController _startAudioStreamForContinuousConversation:withStartStreamOption:]";
     v14 = 2112;
-    v15 = v5;
+    v15 = optionCopy;
     v16 = 2112;
     v17 = attendingAudioNode;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s startOption:%@ _attendingAudioNode:%@", buf, 0x20u);
@@ -318,25 +318,25 @@ LABEL_11:
   v10[2] = sub_1001002C4;
   v10[3] = &unk_100253C48;
   v10[4] = self;
-  v11 = v5;
-  v9 = v5;
+  v11 = optionCopy;
+  v9 = optionCopy;
   dispatch_async(queue, v10);
 }
 
-- (void)_setPendingActivationStatus:(BOOL)a3
+- (void)_setPendingActivationStatus:(BOOL)status
 {
-  v3 = a3;
+  statusCopy = status;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 136315394;
     v7 = "[CSAttSiriController _setPendingActivationStatus:]";
     v8 = 1024;
-    v9 = v3;
+    v9 = statusCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s status:%u", &v6, 0x12u);
   }
 
-  self->_pendingActivationProcessing = v3;
+  self->_pendingActivationProcessing = statusCopy;
 }
 
 - (void)_triggerSiriActivation
@@ -388,7 +388,7 @@ LABEL_11:
   }
 }
 
-- (void)startSpeechProcessing:(unint64_t)a3
+- (void)startSpeechProcessing:(unint64_t)processing
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -396,15 +396,15 @@ LABEL_11:
   v4[2] = sub_100100748;
   v4[3] = &unk_100253C98;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = processing;
   dispatch_async(queue, v4);
 }
 
-- (id)_startStreamOptionWithMachAbsTime:(unint64_t)a3
+- (id)_startStreamOptionWithMachAbsTime:(unint64_t)time
 {
   v4 = +[CSAudioStartStreamOption noAlertOption];
   [v4 setRequestHistoricalAudioDataWithHostTime:1];
-  [v4 setStartRecordingHostTime:a3];
+  [v4 setStartRecordingHostTime:time];
   [v4 setRequireSingleChannelLookup:1];
   [v4 setSelectedChannel:0];
 
@@ -422,8 +422,8 @@ LABEL_11:
 {
   if (([(CSAudioRecordContext *)self->_audioRecordContext isContinuousConversation]& 1) != 0)
   {
-    v4 = [(CSAttSiriContConvController *)self->_ccController attentionNode];
-    [v4 removeReceiver:self->_uresNode];
+    attentionNode = [(CSAttSiriContConvController *)self->_ccController attentionNode];
+    [attentionNode removeReceiver:self->_uresNode];
   }
 
   else
@@ -440,23 +440,23 @@ LABEL_11:
 
 - (void)_handleCCTriggeredRequestStart
 {
-  v3 = [(CSAudioRecordContext *)self->_audioRecordContext isContinuousConversation];
-  [(CSAttSiriContConvController *)self->_ccController stopAttendingForRequestId:self->_requestMHUUID isReqCC:v3 forceStop:0];
+  isContinuousConversation = [(CSAudioRecordContext *)self->_audioRecordContext isContinuousConversation];
+  [(CSAttSiriContConvController *)self->_ccController stopAttendingForRequestId:self->_requestMHUUID isReqCC:isContinuousConversation forceStop:0];
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315394;
     v8 = "[CSAttSiriController _handleCCTriggeredRequestStart]";
     v9 = 1024;
-    v10 = v3;
+    v10 = isContinuousConversation;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s isReqCC:%u", &v7, 0x12u);
   }
 
   ccController = self->_ccController;
-  if (v3)
+  if (isContinuousConversation)
   {
-    v6 = [(CSAttSiriContConvController *)ccController attentionNode];
-    [v6 addReceiver:self->_uresNode];
+    attentionNode = [(CSAttSiriContConvController *)ccController attentionNode];
+    [attentionNode addReceiver:self->_uresNode];
   }
 
   else
@@ -465,31 +465,31 @@ LABEL_11:
   }
 }
 
-- (void)handleEndOfAttendingForRequestId:(id)a3
+- (void)handleEndOfAttendingForRequestId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100100C4C;
   v7[3] = &unk_100253C48;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = idCopy;
+  selfCopy = self;
+  v6 = idCopy;
   dispatch_async(queue, v7);
 }
 
 - (void)handleOrbTransition
 {
-  v2 = [(CSAttSiriController *)self attSiriSvcListener];
-  [v2 notifyClientsWithBlock:&stru_100251970];
+  attSiriSvcListener = [(CSAttSiriController *)self attSiriSvcListener];
+  [attSiriSvcListener notifyClientsWithBlock:&stru_100251970];
 }
 
-- (void)gazeEstimates:(CGPoint)a3 landmarks:(id)a4
+- (void)gazeEstimates:(CGPoint)estimates landmarks:(id)landmarks
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = estimates.y;
+  x = estimates.x;
+  landmarksCopy = landmarks;
   v8 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -498,19 +498,19 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s ", &v9, 0xCu);
   }
 
-  [(CSAttSiriContConvController *)self->_ccController relayGazeEstimates:v7 landmarks:x, y];
+  [(CSAttSiriContConvController *)self->_ccController relayGazeEstimates:landmarksCopy landmarks:x, y];
 }
 
-- (void)stopAttendingWithContext:(id)a3
+- (void)stopAttendingWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v12 = "[CSAttSiriController stopAttendingWithContext:]";
     v13 = 2114;
-    v14 = v4;
+    v14 = contextCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s ctx: %{public}@", buf, 0x16u);
   }
 
@@ -519,22 +519,22 @@ LABEL_11:
   v8[1] = 3221225472;
   v8[2] = sub_1001010F8;
   v8[3] = &unk_100253C48;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = contextCopy;
+  selfCopy = self;
+  v7 = contextCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)startAttendingWithContext:(id)a3
+- (void)startAttendingWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v12 = "[CSAttSiriController startAttendingWithContext:]";
     v13 = 2114;
-    v14 = v4;
+    v14 = contextCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s ctx: %{public}@", buf, 0x16u);
   }
 
@@ -543,13 +543,13 @@ LABEL_11:
   v8[1] = 3221225472;
   v8[2] = sub_1001013A0;
   v8[3] = &unk_100253C48;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = contextCopy;
+  selfCopy = self;
+  v7 = contextCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)attSiriAudioSrcNodeDidStopUnexpectedly:(id)a3
+- (void)attSiriAudioSrcNodeDidStopUnexpectedly:(id)unexpectedly
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -560,7 +560,7 @@ LABEL_11:
   dispatch_async(queue, block);
 }
 
-- (void)attSiriAttendingAudioSrcNodeDidStopUnexpectedly:(id)a3
+- (void)attSiriAttendingAudioSrcNodeDidStopUnexpectedly:(id)unexpectedly
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -613,9 +613,9 @@ LABEL_11:
 
   [(CSAttSiriEndpointerNode *)self->_endpointerNode stop];
   v4 = +[CSAttSiriStateMonitor sharedInstance];
-  v5 = [v4 isAttending];
+  isAttending = [v4 isAttending];
 
-  if ((v5 & 1) == 0)
+  if ((isAttending & 1) == 0)
   {
     [(CSAttSiriOSDNode *)self->_osdNode stop];
   }
@@ -637,9 +637,9 @@ LABEL_11:
     if ((+[CSUtils isIOSDeviceSupportingBargeIn]& 1) != 0 || CSIsHorseman())
     {
       v7 = +[CSPhoneCallStateMonitorFactory phoneCallStateMonitor];
-      v8 = [v7 phoneCallState];
+      phoneCallState = [v7 phoneCallState];
 
-      if ((v8 - 2) >= 3)
+      if ((phoneCallState - 2) >= 3)
       {
         [(CSAttSiriContConvController *)self->_ccController startAttendingWithAudioRecordContext:self->_audioRecordContext withRequestId:self->_requestMHUUID shouldStartTimer:CSIsHorseman()];
       }
@@ -675,11 +675,11 @@ LABEL_11:
   }
 }
 
-- (void)_handleStartProcessingWithRecordContext:(id)a3 withAudioStartStreamOptions:(id)a4 completion:(id)a5
+- (void)_handleStartProcessingWithRecordContext:(id)context withAudioStartStreamOptions:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  optionsCopy = options;
+  completionCopy = completion;
   v11 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -688,11 +688,11 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
   }
 
-  if ([v8 isVoiceTriggered])
+  if ([contextCopy isVoiceTriggered])
   {
     v12 = +[CSVoiceTriggerEventInfoProvider sharedInstance];
     v29 = 0;
-    [v12 fetchVoiceTriggerInfoWithAudioContext:v8 resultVoiceTriggerInfo:&v29 resultRTSTriggerInfo:0];
+    [v12 fetchVoiceTriggerInfoWithAudioContext:contextCopy resultVoiceTriggerInfo:&v29 resultRTSTriggerInfo:0];
     v13 = v29;
   }
 
@@ -701,7 +701,7 @@ LABEL_11:
     v13 = 0;
   }
 
-  if ([v8 type] == 17 || objc_msgSend(v8, "type") == 18)
+  if ([contextCopy type] == 17 || objc_msgSend(contextCopy, "type") == 18)
   {
     v14 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -716,31 +716,31 @@ LABEL_11:
   {
     if (+[CSUtils isContinuousConversationSupported])
     {
-      [(CSAttSiriController *)self _reconfigureRequiredNodes:v8 enforceAttendingAudioNode:0];
+      [(CSAttSiriController *)self _reconfigureRequiredNodes:contextCopy enforceAttendingAudioNode:0];
     }
 
     self->_shouldSkipAttending = 0;
     [(CSAttSiriController *)self _holdAttSiriTransactionIfNeeded];
     endpointerNode = self->_endpointerNode;
     +[CSConfig inputRecordingSampleRate];
-    [(CSAttSiriEndpointerNode *)endpointerNode resetForNewRequestWithSampleRate:v16 recordContext:v8 recordOption:v9 voiceTriggerInfo:v13];
+    [(CSAttSiriEndpointerNode *)endpointerNode resetForNewRequestWithSampleRate:v16 recordContext:contextCopy recordOption:optionsCopy voiceTriggerInfo:v13];
     [(CSAttSiriOSDNode *)self->_osdNode setPrefetchedAsset:self->_mitigationAsset];
     [(CSAttSiriUresNode *)self->_uresNode setPrefetchedAsset:self->_mitigationAsset];
-    v28 = -[CSEndpointerSettings initWithDisableEndpointer:]([CSEndpointerSettings alloc], "initWithDisableEndpointer:", [v9 disableEndpointer]);
-    [CSAttSiriOSDNode resetForNewRequestWithRecordContext:"resetForNewRequestWithRecordContext:endpointerSettings:voiceTriggerInfo:" endpointerSettings:v8 voiceTriggerInfo:?];
-    [(CSAttSiriAsrNode *)self->_asrNode prepareToStartSpeechRequestWithStartStreamOption:v9 audioRecordContext:v8 voiceTriggerInfo:v13];
-    v17 = [(CSAsset *)self->_mitigationAsset getCategoryKeyWithRecordCtx:v8];
+    v28 = -[CSEndpointerSettings initWithDisableEndpointer:]([CSEndpointerSettings alloc], "initWithDisableEndpointer:", [optionsCopy disableEndpointer]);
+    [CSAttSiriOSDNode resetForNewRequestWithRecordContext:"resetForNewRequestWithRecordContext:endpointerSettings:voiceTriggerInfo:" endpointerSettings:contextCopy voiceTriggerInfo:?];
+    [(CSAttSiriAsrNode *)self->_asrNode prepareToStartSpeechRequestWithStartStreamOption:optionsCopy audioRecordContext:contextCopy voiceTriggerInfo:v13];
+    v17 = [(CSAsset *)self->_mitigationAsset getCategoryKeyWithRecordCtx:contextCopy];
     if ((CSIsCommunalDevice() & 1) != 0 || [(CSAsset *)self->_mitigationAsset shouldRunSpkrIdForCategory:v17])
     {
       [(CSAttSiriSSRNode *)self->_ssrNode setPrefetchedAsset:self->_vtAsset];
       ssrNode = self->_ssrNode;
-      v19 = [v9 siriSessionUUID];
-      [(CSAttSiriSSRNode *)ssrNode resetForNewRequestWithRecordContext:v8 voiceTriggerInfo:v13 withReqId:v19];
+      siriSessionUUID = [optionsCopy siriSessionUUID];
+      [(CSAttSiriSSRNode *)ssrNode resetForNewRequestWithRecordContext:contextCopy voiceTriggerInfo:v13 withReqId:siriSessionUUID];
     }
 
     v20 = @"AcousticSLTaskTypeVoiceTrigger";
     v21 = @"AcousticSLTaskTypeVoiceTrigger";
-    if ([v8 isContinuousConversation])
+    if ([contextCopy isContinuousConversation])
     {
       v20 = @"AcousticSLTaskTypeContConv";
       v22 = @"AcousticSLTaskTypeContConv";
@@ -748,8 +748,8 @@ LABEL_11:
 
     [(CSAttSiriAFTMNode *)self->_aFTMNode setPrefetchedAsset:self->_mitigationAsset];
     aFTMNode = self->_aFTMNode;
-    v24 = [v9 siriSessionUUID];
-    [(CSAttSiriAFTMNode *)aFTMNode startRequestWithContext:v8 withVtei:v13 taskType:v20 withRequestId:v24 completion:&stru_100251950];
+    siriSessionUUID2 = [optionsCopy siriSessionUUID];
+    [(CSAttSiriAFTMNode *)aFTMNode startRequestWithContext:contextCopy withVtei:v13 taskType:v20 withRequestId:siriSessionUUID2 completion:&stru_100251950];
 
     v25 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -765,7 +765,7 @@ LABEL_11:
       _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%s enabled feature: _deferredActivation:%u _deferredAsrResults:%u", buf, 0x18u);
     }
 
-    if (!self->_deferredActivation || ([v8 isContinuousConversation] & 1) == 0)
+    if (!self->_deferredActivation || ([contextCopy isContinuousConversation] & 1) == 0)
     {
       [(CSAttSiriAsrNode *)self->_asrNode start];
     }
@@ -806,50 +806,50 @@ LABEL_11:
   [(CSAttSiriAttendingAudioSrcNode *)self->_attendingAudioNode addReceiver:self->_osdNode];
 }
 
-- (void)_prepareAttendingAudioSrcNodeWithStreamRequest:(id)a3 audioProviderUUID:(id)a4
+- (void)_prepareAttendingAudioSrcNodeWithStreamRequest:(id)request audioProviderUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  dCopy = d;
   v8 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v17 = "[CSAttSiriController _prepareAttendingAudioSrcNodeWithStreamRequest:audioProviderUUID:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = requestCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s streamRequest:%@", buf, 0x16u);
   }
 
-  [(CSAttSiriController *)self _setupAttendingAudioSrcNodeWithStreamRequest:v6 audioProviderUUID:v7];
-  v9 = [(CSAttSiriController *)self attendingAudioNode];
+  [(CSAttSiriController *)self _setupAttendingAudioSrcNodeWithStreamRequest:requestCopy audioProviderUUID:dCopy];
+  attendingAudioNode = [(CSAttSiriController *)self attendingAudioNode];
   v15 = 0;
-  [v9 prepareAudioStreamSyncWithRequest:v6 error:&v15];
+  [attendingAudioNode prepareAudioStreamSyncWithRequest:requestCopy error:&v15];
   v10 = v15;
 
-  v11 = [(CSAttSiriController *)self attendingAudioNode];
+  attendingAudioNode2 = [(CSAttSiriController *)self attendingAudioNode];
 
-  if (!v11 || v10)
+  if (!attendingAudioNode2 || v10)
   {
     v12 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
       v13 = v12;
-      v14 = [v10 localizedDescription];
+      localizedDescription = [v10 localizedDescription];
       *buf = 136315394;
       v17 = "[CSAttSiriController _prepareAttendingAudioSrcNodeWithStreamRequest:audioProviderUUID:]";
       v18 = 2114;
-      v19 = v14;
+      v19 = localizedDescription;
       _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%s Failed to prepare audioSrcNode : %{public}@", buf, 0x16u);
     }
   }
 }
 
-- (void)_setupAttendingAudioSrcNodeWithStreamRequest:(id)a3 audioProviderUUID:(id)a4
+- (void)_setupAttendingAudioSrcNodeWithStreamRequest:(id)request audioProviderUUID:(id)d
 {
   audioProviderSelector = self->_audioProviderSelector;
-  v7 = a3;
-  v8 = [(CSAudioProviderSelecting *)audioProviderSelector audioProviderWithUUID:a4];
-  v9 = [[CSAttSiriAttendingAudioSrcNode alloc] initWithAudioStreamProvider:v8 audioProviderSelector:self->_audioProviderSelector streamName:0 streamRequest:v7];
+  requestCopy = request;
+  v8 = [(CSAudioProviderSelecting *)audioProviderSelector audioProviderWithUUID:d];
+  v9 = [[CSAttSiriAttendingAudioSrcNode alloc] initWithAudioStreamProvider:v8 audioProviderSelector:self->_audioProviderSelector streamName:0 streamRequest:requestCopy];
 
   [(CSAttSiriAttendingAudioSrcNode *)v9 setDelegate:self];
   if (v9)
@@ -873,26 +873,26 @@ LABEL_11:
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
     {
       v12 = v11;
-      v13 = [0 localizedDescription];
+      localizedDescription = [0 localizedDescription];
       v14 = 136315394;
       v15 = "[CSAttSiriController _setupAttendingAudioSrcNodeWithStreamRequest:audioProviderUUID:]";
       v16 = 2114;
-      v17 = v13;
+      v17 = localizedDescription;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%s Failed to setup audioSrcNode : %{public}@", &v14, 0x16u);
     }
   }
 }
 
-- (void)_setupAudioSrcNodeWithSiriClientStream:(id)a3
+- (void)_setupAudioSrcNodeWithSiriClientStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315394;
     v9 = "[CSAttSiriController _setupAudioSrcNodeWithSiriClientStream:]";
     v10 = 2112;
-    v11 = v4;
+    v11 = streamCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s siriClientStream:%@", &v8, 0x16u);
   }
 
@@ -904,7 +904,7 @@ LABEL_11:
     [(CSAttSiriController *)self setAudioSrcNode:v6];
     [(CSAttSiriController *)self _forceBuildGraph:1];
     [(CSAttSiriController *)self _detachAttendingStreamAndAttachSiriClientStream];
-    [(CSAttSiriAudioSrcNode *)v6 attachToMasterStream:v4 name:@"CSAttSiriAudioSrcNode" completion:&stru_100251930];
+    [(CSAttSiriAudioSrcNode *)v6 attachToMasterStream:streamCopy name:@"CSAttSiriAudioSrcNode" completion:&stru_100251930];
   }
 
   else
@@ -961,10 +961,10 @@ LABEL_11:
   dispatch_async(mitigationAssetFetchQueue, block);
 }
 
-- (void)_reconfigureRequiredNodes:(id)a3 enforceAttendingAudioNode:(BOOL)a4
+- (void)_reconfigureRequiredNodes:(id)nodes enforceAttendingAudioNode:(BOOL)node
 {
-  v4 = a4;
-  v6 = a3;
+  nodeCopy = node;
+  nodesCopy = nodes;
   v7 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
@@ -973,19 +973,19 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s ", buf, 0xCu);
   }
 
-  v31 = v6;
-  if ([v6 isContinuousConversation])
+  v31 = nodesCopy;
+  if ([nodesCopy isContinuousConversation])
   {
     v8 = +[CSFPreferences sharedPreferences];
-    v9 = [v8 isDeferredActivationEnabled];
+    isDeferredActivationEnabled = [v8 isDeferredActivationEnabled];
 
-    if ((v9 & 1) == 0 && !v4)
+    if ((isDeferredActivationEnabled & 1) == 0 && !nodeCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (!v4)
+  else if (!nodeCopy)
   {
 LABEL_6:
     v10 = &off_10025E648;
@@ -1006,7 +1006,7 @@ LABEL_9:
     v13 = v12;
     v14 = *v43;
     v32 = *v43;
-    v33 = self;
+    selfCopy = self;
     do
     {
       v15 = 0;
@@ -1032,8 +1032,8 @@ LABEL_9:
             v38 = 0u;
             v39 = 0u;
             v36 = v18;
-            v19 = [v18 requiredNodes];
-            v20 = [v19 countByEnumeratingWithState:&v38 objects:v52 count:16];
+            requiredNodes = [v18 requiredNodes];
+            v20 = [requiredNodes countByEnumeratingWithState:&v38 objects:v52 count:16];
             if (v20)
             {
               v21 = v20;
@@ -1045,7 +1045,7 @@ LABEL_9:
                 {
                   if (*v39 != v23)
                   {
-                    objc_enumerationMutation(v19);
+                    objc_enumerationMutation(requiredNodes);
                   }
 
                   v25 = *(*(&v38 + 1) + 8 * i);
@@ -1065,7 +1065,7 @@ LABEL_9:
                   }
                 }
 
-                v21 = [v19 countByEnumeratingWithState:&v38 objects:v52 count:16];
+                v21 = [requiredNodes countByEnumeratingWithState:&v38 objects:v52 count:16];
               }
 
               while (v21);
@@ -1079,18 +1079,18 @@ LABEL_9:
             v28 = os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT);
             v17 = v36;
             v14 = v32;
-            self = v33;
+            self = selfCopy;
             v13 = v34;
             if (v28)
             {
               v29 = v27;
-              v30 = [v36 requiredNodes];
+              requiredNodes2 = [v36 requiredNodes];
               *buf = 136315650;
               v47 = "[CSAttSiriController _reconfigureRequiredNodes:enforceAttendingAudioNode:]";
               v48 = 2112;
               v49 = v36;
               v50 = 2112;
-              v51 = v30;
+              v51 = requiredNodes2;
               _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "%s currDp:%@ newRequiredNodes:%@", buf, 0x20u);
 
               v17 = v36;
@@ -1109,15 +1109,15 @@ LABEL_9:
   }
 }
 
-- (void)_tearDownBuildGraph:(id)a3
+- (void)_tearDownBuildGraph:(id)graph
 {
-  v4 = a3;
+  graphCopy = graph;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 requiredNodes];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  requiredNodes = [graphCopy requiredNodes];
+  v6 = [requiredNodes countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1129,27 +1129,27 @@ LABEL_9:
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(requiredNodes);
         }
 
         v10 = [(NSMapTable *)self->_nodesCache objectForKey:*(*(&v12 + 1) + 8 * v9)];
         v11 = v10;
         if (v10)
         {
-          [v10 removeReceiver:v4];
+          [v10 removeReceiver:graphCopy];
         }
 
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [requiredNodes countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
   }
 
-  [v4 setIsReady:0];
+  [graphCopy setIsReady:0];
 }
 
 - (void)attSiriNodeDidNotDetectSpeechWithTimeout
@@ -1163,21 +1163,21 @@ LABEL_9:
   dispatch_async(queue, block);
 }
 
-- (void)attSiriNode:(id)a3 didDetectSpeechWithTriggerInfo:(id)a4
+- (void)attSiriNode:(id)node didDetectSpeechWithTriggerInfo:(id)info
 {
-  v5 = a4;
+  infoCopy = info;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100103994;
   v8[3] = &unk_100253C48;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = infoCopy;
+  v7 = infoCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)attSiriNode:(id)a3 didDetectHardEndpointAtTime:(double)a4 withMetrics:(id)a5 usesAutomaticEndpointing:(BOOL)a6
+- (void)attSiriNode:(id)node didDetectHardEndpointAtTime:(double)time withMetrics:(id)metrics usesAutomaticEndpointing:(BOOL)endpointing
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1188,12 +1188,12 @@ LABEL_9:
   dispatch_async(queue, block);
 }
 
-- (void)siriMitigator:(id)a3 mitigationDecision:(unint64_t)a4
+- (void)siriMitigator:(id)mitigator mitigationDecision:(unint64_t)decision
 {
-  v6 = a3;
-  if (a4)
+  mitigatorCopy = mitigator;
+  if (decision)
   {
-    if (a4 == 1)
+    if (decision == 1)
     {
       [(CSAttSiriController *)self _resetAttendingState];
     }
@@ -1201,26 +1201,26 @@ LABEL_9:
 
   else
   {
-    v7 = [(CSAttSiriController *)self queue];
+    queue = [(CSAttSiriController *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100103BCC;
     block[3] = &unk_100253C20;
     block[4] = self;
-    dispatch_async(v7, block);
+    dispatch_async(queue, block);
   }
 }
 
-- (void)CSSiriEnabledMonitor:(id)a3 didReceiveEnabled:(BOOL)a4
+- (void)CSSiriEnabledMonitor:(id)monitor didReceiveEnabled:(BOOL)enabled
 {
-  v4 = a4;
+  enabledCopy = enabled;
   v6 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v11 = "[CSAttSiriController CSSiriEnabledMonitor:didReceiveEnabled:]";
     v12 = 1026;
-    v13 = v4;
+    v13 = enabledCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s Siri enabled : %{public}d", buf, 0x12u);
   }
 
@@ -1229,42 +1229,42 @@ LABEL_9:
   v8[1] = 3221225472;
   v8[2] = sub_100103CF0;
   v8[3] = &unk_100253BF8;
-  v9 = v4;
+  v9 = enabledCopy;
   v8[4] = self;
   dispatch_async(queue, v8);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 preparedSiriClientAudioStream:(id)a4 successfully:(BOOL)a5
+- (void)siriClientBehaviorMonitor:(id)monitor preparedSiriClientAudioStream:(id)stream successfully:(BOOL)successfully
 {
-  v7 = a4;
+  streamCopy = stream;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100103DAC;
   block[3] = &unk_100253900;
-  v12 = a5;
+  successfullyCopy = successfully;
   block[4] = self;
-  v11 = v7;
-  v9 = v7;
+  v11 = streamCopy;
+  v9 = streamCopy;
   dispatch_async(queue, block);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 fetchedSiriClientAudioStream:(id)a4 successfully:(BOOL)a5
+- (void)siriClientBehaviorMonitor:(id)monitor fetchedSiriClientAudioStream:(id)stream successfully:(BOOL)successfully
 {
-  v7 = a4;
+  streamCopy = stream;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100103FB8;
   block[3] = &unk_100253900;
-  v12 = a5;
+  successfullyCopy = successfully;
   block[4] = self;
-  v11 = v7;
-  v9 = v7;
+  v11 = streamCopy;
+  v9 = streamCopy;
   dispatch_async(queue, block);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 didStopStream:(id)a4 withEventUUID:(id)a5
+- (void)siriClientBehaviorMonitor:(id)monitor didStopStream:(id)stream withEventUUID:(id)d
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -1275,7 +1275,7 @@ LABEL_9:
   dispatch_async(queue, block);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 willStopStream:(id)a4 reason:(unint64_t)a5
+- (void)siriClientBehaviorMonitor:(id)monitor willStopStream:(id)stream reason:(unint64_t)reason
 {
   queue = self->_queue;
   v6[0] = _NSConcreteStackBlock;
@@ -1283,42 +1283,42 @@ LABEL_9:
   v6[2] = sub_1001042B8;
   v6[3] = &unk_100253C98;
   v6[4] = self;
-  v6[5] = a5;
+  v6[5] = reason;
   dispatch_async(queue, v6);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 didStartStreamWithContext:(id)a4 successfully:(BOOL)a5 option:(id)a6 withEventUUID:(id)a7
+- (void)siriClientBehaviorMonitor:(id)monitor didStartStreamWithContext:(id)context successfully:(BOOL)successfully option:(id)option withEventUUID:(id)d
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
+  contextCopy = context;
+  optionCopy = option;
+  dCopy = d;
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001043B8;
   block[3] = &unk_1002524B8;
   block[4] = self;
-  v19 = v11;
-  v22 = a5;
-  v20 = v12;
-  v21 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
+  v19 = contextCopy;
+  successfullyCopy = successfully;
+  v20 = optionCopy;
+  v21 = dCopy;
+  v15 = dCopy;
+  v16 = optionCopy;
+  v17 = contextCopy;
   dispatch_async(queue, block);
 }
 
-- (void)siriClientBehaviorMonitor:(id)a3 willStartStreamWithContext:(id)a4 option:(id)a5
+- (void)siriClientBehaviorMonitor:(id)monitor willStartStreamWithContext:(id)context option:(id)option
 {
-  v7 = a4;
-  v8 = a5;
+  contextCopy = context;
+  optionCopy = option;
   v9 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v17 = "[CSAttSiriController siriClientBehaviorMonitor:willStartStreamWithContext:option:]";
     v18 = 2112;
-    v19 = v7;
+    v19 = contextCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s context : %@", buf, 0x16u);
   }
 
@@ -1328,10 +1328,10 @@ LABEL_9:
   block[2] = sub_100104968;
   block[3] = &unk_100253680;
   block[4] = self;
-  v14 = v7;
-  v15 = v8;
-  v11 = v8;
-  v12 = v7;
+  v14 = contextCopy;
+  v15 = optionCopy;
+  v11 = optionCopy;
+  v12 = contextCopy;
   dispatch_async(queue, block);
 }
 
@@ -1392,7 +1392,7 @@ LABEL_9:
   dispatch_async(queue, block);
 }
 
-- (id)getNodeOfType:(unint64_t)a3
+- (id)getNodeOfType:(unint64_t)type
 {
   v7 = 0;
   v8 = &v7;
@@ -1407,7 +1407,7 @@ LABEL_9:
   block[3] = &unk_100252170;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = type;
   dispatch_async_and_wait(queue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1415,23 +1415,23 @@ LABEL_9:
   return v4;
 }
 
-- (CSAttSiriController)initWithEndpointerNode:(id)a3 osdNode:(id)a4 ssrNode:(id)a5 asrNode:(id)a6 uresNode:(id)a7 needsSSRNode:(BOOL)a8 aFtmNode:(id)a9 speechDetectionNode:(id)a10 ccController:(id)a11 isContinuousConverationEnabled:(BOOL)a12 audioProviderSelector:(id)a13 siriEnabledMonitor:(id)a14 siriClientBehaviorMonitor:(id)a15 rcHandler:(id)a16 supportsAcousticProgressiveChecker:(BOOL)a17 supportsUnderstandingOnDevice:(BOOL)a18 requireASROnDevice:(BOOL)a19 supportsHybridUnderstandingOnDevice:(BOOL)a20
+- (CSAttSiriController)initWithEndpointerNode:(id)node osdNode:(id)osdNode ssrNode:(id)ssrNode asrNode:(id)asrNode uresNode:(id)uresNode needsSSRNode:(BOOL)rNode aFtmNode:(id)ftmNode speechDetectionNode:(id)self0 ccController:(id)self1 isContinuousConverationEnabled:(BOOL)self2 audioProviderSelector:(id)self3 siriEnabledMonitor:(id)self4 siriClientBehaviorMonitor:(id)self5 rcHandler:(id)self6 supportsAcousticProgressiveChecker:(BOOL)self7 supportsUnderstandingOnDevice:(BOOL)self8 requireASROnDevice:(BOOL)self9 supportsHybridUnderstandingOnDevice:(BOOL)understandingOnDevice
 {
-  v80 = a8;
-  v24 = a3;
-  v25 = a4;
-  v84 = a5;
-  v26 = a6;
-  v86 = a7;
-  v85 = a9;
-  v27 = a10;
-  v28 = a11;
-  v29 = v24;
-  v30 = a13;
-  v31 = a14;
-  v32 = v25;
-  v33 = a15;
-  v34 = a16;
+  rNodeCopy = rNode;
+  nodeCopy = node;
+  osdNodeCopy = osdNode;
+  ssrNodeCopy = ssrNode;
+  asrNodeCopy = asrNode;
+  uresNodeCopy = uresNode;
+  ftmNodeCopy = ftmNode;
+  detectionNodeCopy = detectionNode;
+  controllerCopy = controller;
+  v29 = nodeCopy;
+  selectorCopy = selector;
+  monitorCopy = monitor;
+  v32 = osdNodeCopy;
+  behaviorMonitorCopy = behaviorMonitor;
+  handlerCopy = handler;
   v89.receiver = self;
   v89.super_class = CSAttSiriController;
   v35 = [(CSAttSiriController *)&v89 init];
@@ -1440,7 +1440,7 @@ LABEL_9:
     goto LABEL_53;
   }
 
-  v83 = v26;
+  v83 = asrNodeCopy;
   v36 = dispatch_queue_create("AttSiriController queue", 0);
   queue = v35->_queue;
   v35->_queue = v36;
@@ -1462,7 +1462,7 @@ LABEL_9:
   v43 = +[CSFPreferences sharedPreferences];
   v35->_deferredAsrResults = [v43 isDeferredAsrResultsEnabled];
 
-  v81 = v28;
+  v81 = controllerCopy;
   v79 = v29;
   if (v29)
   {
@@ -1479,7 +1479,7 @@ LABEL_9:
 
   [(CSAttSiriEndpointerNode *)v35->_endpointerNode setEndpointerNodeDelegate:v35];
   [(NSMapTable *)v35->_nodesCache setObject:v35->_endpointerNode forKey:&off_10025E588];
-  if (v80)
+  if (rNodeCopy)
   {
     if (+[CSUtils shouldDisableSpeakerRecognition])
     {
@@ -1494,9 +1494,9 @@ LABEL_9:
 
     else
     {
-      if (v84)
+      if (ssrNodeCopy)
       {
-        v47 = v84;
+        v47 = ssrNodeCopy;
       }
 
       else
@@ -1511,7 +1511,7 @@ LABEL_9:
     }
   }
 
-  if (a19 || a20)
+  if (onDevice || understandingOnDevice)
   {
     if (v83)
     {
@@ -1531,11 +1531,11 @@ LABEL_9:
     [(NSMapTable *)v35->_nodesCache setObject:v35->_asrNode forKey:&off_10025E5B8];
   }
 
-  if (a18 || a20)
+  if (device || understandingOnDevice)
   {
-    if (v86)
+    if (uresNodeCopy)
     {
-      v51 = v86;
+      v51 = uresNodeCopy;
     }
 
     else
@@ -1556,9 +1556,9 @@ LABEL_9:
     [(CSAttSiriUresNode *)v35->_uresNode registerNLDAClassifierNode:v35->_nldaClassifierNode];
     [(CSAttSiriAsrNode *)v35->_asrNode registerUresNode:v35->_uresNode];
     [(CSAttSiriUresNode *)v35->_uresNode registerSSRNode:v35->_ssrNode];
-    if (v34)
+    if (handlerCopy)
     {
-      v55 = v34;
+      v55 = handlerCopy;
     }
 
     else
@@ -1570,11 +1570,11 @@ LABEL_9:
     v35->_rcHandler = v55;
   }
 
-  if (a17)
+  if (checker)
   {
-    if (v85)
+    if (ftmNodeCopy)
     {
-      v57 = v85;
+      v57 = ftmNodeCopy;
     }
 
     else
@@ -1589,7 +1589,7 @@ LABEL_9:
   }
 
   v35->_boronScore = 0;
-  if (a12)
+  if (enabled)
   {
     if (v81)
     {
@@ -1604,34 +1604,34 @@ LABEL_9:
     ccController = v35->_ccController;
     v35->_ccController = v59;
 
-    v62 = [(CSAttSiriContConvController *)v35->_ccController nodesCache];
+    nodesCache = [(CSAttSiriContConvController *)v35->_ccController nodesCache];
     v87[0] = _NSConcreteStackBlock;
     v87[1] = 3221225472;
     v87[2] = sub_1001057CC;
     v87[3] = &unk_1002518D0;
     v63 = v35;
     v88 = v63;
-    [v62 enumerateKeysAndObjectsUsingBlock:v87];
+    [nodesCache enumerateKeysAndObjectsUsingBlock:v87];
 
     [(CSAttSiriContConvController *)v35->_ccController setNodesCache:0];
-    v64 = [(CSAttSiriContConvController *)v35->_ccController osdNode];
+    osdNode = [(CSAttSiriContConvController *)v35->_ccController osdNode];
     osdNode = v63->_osdNode;
-    v63->_osdNode = v64;
+    v63->_osdNode = osdNode;
 
     if (CSIsIOS())
     {
       v66 = v63->_uresNode;
-      v67 = [(CSAttSiriContConvController *)v35->_ccController gazeNode];
-      [(CSAttSiriUresNode *)v66 registerGazeNode:v67];
+      gazeNode = [(CSAttSiriContConvController *)v35->_ccController gazeNode];
+      [(CSAttSiriUresNode *)v66 registerGazeNode:gazeNode];
     }
 
     [(CSAttSiriUresNode *)v63->_uresNode registerOSDNode:v63->_osdNode];
     [(CSAttSiriUresNode *)v63->_uresNode registerNLDAClassifierNode:v63->_nldaClassifierNode];
     v63->_shouldSkipAttending = 0;
 
-    v28 = v81;
-    v26 = v83;
-    if (v27)
+    controllerCopy = v81;
+    asrNodeCopy = v83;
+    if (detectionNodeCopy)
     {
       goto LABEL_42;
     }
@@ -1641,8 +1641,8 @@ LABEL_45:
     goto LABEL_46;
   }
 
-  v28 = v81;
-  v26 = v83;
+  controllerCopy = v81;
+  asrNodeCopy = v83;
   if (v32)
   {
     v60 = v32;
@@ -1657,13 +1657,13 @@ LABEL_45:
   v35->_osdNode = v60;
 
   [(NSMapTable *)v35->_nodesCache setObject:v35->_osdNode forKey:&off_10025E618];
-  if (!v27)
+  if (!detectionNodeCopy)
   {
     goto LABEL_45;
   }
 
 LABEL_42:
-  v68 = v27;
+  v68 = detectionNodeCopy;
 LABEL_46:
   speechDetectionNode = v35->_speechDetectionNode;
   v35->_speechDetectionNode = v68;
@@ -1671,10 +1671,10 @@ LABEL_46:
   [(CSAttSiriSpeechDetectionNode *)v35->_speechDetectionNode setDelegate:v35];
   [(NSMapTable *)v35->_nodesCache setObject:v35->_speechDetectionNode forKey:&off_10025E630];
   [(CSAttSiriSpeechDetectionNode *)v35->_speechDetectionNode registerOSDNode:v35->_osdNode];
-  objc_storeStrong(&v35->_audioProviderSelector, a13);
-  if (v31)
+  objc_storeStrong(&v35->_audioProviderSelector, selector);
+  if (monitorCopy)
   {
-    v71 = v31;
+    v71 = monitorCopy;
   }
 
   else
@@ -1685,9 +1685,9 @@ LABEL_46:
   siriEnabledMonitor = v35->_siriEnabledMonitor;
   v35->_siriEnabledMonitor = v71;
 
-  if (v33)
+  if (behaviorMonitorCopy)
   {
-    v73 = v33;
+    v73 = behaviorMonitorCopy;
   }
 
   else
@@ -1709,12 +1709,12 @@ LABEL_53:
   return v35;
 }
 
-- (CSAttSiriController)initWithAudioProviderSelector:(id)a3
+- (CSAttSiriController)initWithAudioProviderSelector:(id)selector
 {
-  v4 = a3;
+  selectorCopy = selector;
   if ((+[CSUtils isMedocFeatureEnabled]& 1) != 0)
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -1747,11 +1747,11 @@ LABEL_53:
     BYTE1(v13) = v9;
     LOBYTE(v13) = v8;
     LOBYTE(v12) = v7;
-    self = [CSAttSiriController initWithEndpointerNode:"initWithEndpointerNode:osdNode:ssrNode:asrNode:uresNode:needsSSRNode:aFtmNode:speechDetectionNode:ccController:isContinuousConverationEnabled:audioProviderSelector:siriEnabledMonitor:siriClientBehaviorMonitor:rcHandler:supportsAcousticProgressiveChecker:supportsUnderstandingOnDevice:requireASROnDevice:supportsHybridUnderstandingOnDevice:" osdNode:0 ssrNode:0 asrNode:0 uresNode:0 needsSSRNode:0 aFtmNode:v6 speechDetectionNode:0 ccController:0 isContinuousConverationEnabled:0 audioProviderSelector:v12 siriEnabledMonitor:v4 siriClientBehaviorMonitor:0 rcHandler:0 supportsAcousticProgressiveChecker:0 supportsUnderstandingOnDevice:v13 requireASROnDevice:? supportsHybridUnderstandingOnDevice:?];
-    v5 = self;
+    self = [CSAttSiriController initWithEndpointerNode:"initWithEndpointerNode:osdNode:ssrNode:asrNode:uresNode:needsSSRNode:aFtmNode:speechDetectionNode:ccController:isContinuousConverationEnabled:audioProviderSelector:siriEnabledMonitor:siriClientBehaviorMonitor:rcHandler:supportsAcousticProgressiveChecker:supportsUnderstandingOnDevice:requireASROnDevice:supportsHybridUnderstandingOnDevice:" osdNode:0 ssrNode:0 asrNode:0 uresNode:0 needsSSRNode:0 aFtmNode:v6 speechDetectionNode:0 ccController:0 isContinuousConverationEnabled:0 audioProviderSelector:v12 siriEnabledMonitor:selectorCopy siriClientBehaviorMonitor:0 rcHandler:0 supportsAcousticProgressiveChecker:0 supportsUnderstandingOnDevice:v13 requireASROnDevice:? supportsHybridUnderstandingOnDevice:?];
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 @end

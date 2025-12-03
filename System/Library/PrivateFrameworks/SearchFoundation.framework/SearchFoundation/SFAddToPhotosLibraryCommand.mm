@@ -1,31 +1,31 @@
 @interface SFAddToPhotosLibraryCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFAddToPhotosLibraryCommand)initWithCoder:(id)a3;
-- (SFAddToPhotosLibraryCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFAddToPhotosLibraryCommand)initWithCoder:(id)coder;
+- (SFAddToPhotosLibraryCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFAddToPhotosLibraryCommand
 
-- (SFAddToPhotosLibraryCommand)initWithProtobuf:(id)a3
+- (SFAddToPhotosLibraryCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFAddToPhotosLibraryCommand;
   v5 = [(SFAddToPhotosLibraryCommand *)&v12 init];
   if (v5)
   {
-    v6 = [v4 image];
+    image = [protobufCopy image];
 
-    if (v6)
+    if (image)
     {
       v7 = [SFImage alloc];
-      v8 = [v4 image];
-      v9 = [(SFImage *)v7 initWithProtobuf:v8];
+      image2 = [protobufCopy image];
+      v9 = [(SFImage *)v7 initWithProtobuf:image2];
       [(SFAddToPhotosLibraryCommand *)v5 setImage:v9];
     }
 
@@ -40,38 +40,38 @@
   v7.receiver = self;
   v7.super_class = SFAddToPhotosLibraryCommand;
   v3 = [(SFCommand *)&v7 hash];
-  v4 = [(SFAddToPhotosLibraryCommand *)self image];
-  v5 = [v4 hash];
+  image = [(SFAddToPhotosLibraryCommand *)self image];
+  v5 = [image hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(SFAddToPhotosLibraryCommand *)v4 isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFAddToPhotosLibraryCommand, [(SFCommand *)&v13 isEqual:v4]))
+  else if ([(SFAddToPhotosLibraryCommand *)equalCopy isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFAddToPhotosLibraryCommand, [(SFCommand *)&v13 isEqual:equalCopy]))
   {
-    v5 = v4;
-    v6 = [(SFAddToPhotosLibraryCommand *)self image];
-    v7 = [(SFAddToPhotosLibraryCommand *)v5 image];
-    if ((v6 != 0) == (v7 == 0))
+    v5 = equalCopy;
+    image = [(SFAddToPhotosLibraryCommand *)self image];
+    image2 = [(SFAddToPhotosLibraryCommand *)v5 image];
+    if ((image != 0) == (image2 == 0))
     {
       v11 = 0;
     }
 
     else
     {
-      v8 = [(SFAddToPhotosLibraryCommand *)self image];
-      if (v8)
+      image3 = [(SFAddToPhotosLibraryCommand *)self image];
+      if (image3)
       {
-        v9 = [(SFAddToPhotosLibraryCommand *)self image];
-        v10 = [(SFAddToPhotosLibraryCommand *)v5 image];
-        v11 = [v9 isEqual:v10];
+        image4 = [(SFAddToPhotosLibraryCommand *)self image];
+        image5 = [(SFAddToPhotosLibraryCommand *)v5 image];
+        v11 = [image4 isEqual:image5];
       }
 
       else
@@ -89,13 +89,13 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFAddToPhotosLibraryCommand;
-  v4 = [(SFCommand *)&v8 copyWithZone:a3];
-  v5 = [(SFAddToPhotosLibraryCommand *)self image];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v8 copyWithZone:zone];
+  image = [(SFAddToPhotosLibraryCommand *)self image];
+  v6 = [image copy];
   [v4 setImage:v6];
 
   return v4;
@@ -104,51 +104,51 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBAddToPhotosLibraryCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBAddToPhotosLibraryCommand *)v2 jsonData];
+  jsonData = [(_SFPBAddToPhotosLibraryCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBAddToPhotosLibraryCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBAddToPhotosLibraryCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBAddToPhotosLibraryCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFAddToPhotosLibraryCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFAddToPhotosLibraryCommand)initWithCoder:(id)a3
+- (SFAddToPhotosLibraryCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFAddToPhotosLibraryCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 image];
-    [(SFAddToPhotosLibraryCommand *)v5 setImage:v9];
+    image = [(SFCommand *)v8 image];
+    [(SFAddToPhotosLibraryCommand *)v5 setImage:image];
 
-    v10 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v10];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v11 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v11];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v12 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v12];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v13 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v13];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;

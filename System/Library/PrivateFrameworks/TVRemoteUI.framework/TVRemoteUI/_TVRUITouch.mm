@@ -1,19 +1,19 @@
 @interface _TVRUITouch
-- (_TVRUITouch)initWithTimestamp:(double)a3 touchPhase:(int64_t)a4 fingerIndex:(int64_t)a5;
+- (_TVRUITouch)initWithTimestamp:(double)timestamp touchPhase:(int64_t)phase fingerIndex:(int64_t)index;
 @end
 
 @implementation _TVRUITouch
 
-- (_TVRUITouch)initWithTimestamp:(double)a3 touchPhase:(int64_t)a4 fingerIndex:(int64_t)a5
+- (_TVRUITouch)initWithTimestamp:(double)timestamp touchPhase:(int64_t)phase fingerIndex:(int64_t)index
 {
   v9.receiver = self;
   v9.super_class = _TVRUITouch;
   result = [(_TVRUITouch *)&v9 init];
   if (result)
   {
-    result->_timestamp = a3;
-    result->_phase = a4;
-    result->_fingerIndex = a5;
+    result->_timestamp = timestamp;
+    result->_phase = phase;
+    result->_fingerIndex = index;
   }
 
   return result;

@@ -1,16 +1,16 @@
 @interface CKAutoloopMovieBalloonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axBalloonViewCustomActions;
 - (id)accessibilityValue;
 @end
 
 @implementation CKAutoloopMovieBalloonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKAutoloopMovieBalloonView" hasInstanceVariable:@"_isMuted" withType:"B"];
-  [v3 validateClass:@"CKAutoloopMovieBalloonView" hasInstanceMethod:@"setIsMuted:" withFullSignature:{"v", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKAutoloopMovieBalloonView" hasInstanceVariable:@"_isMuted" withType:"B"];
+  [validationsCopy validateClass:@"CKAutoloopMovieBalloonView" hasInstanceMethod:@"setIsMuted:" withFullSignature:{"v", "B", 0}];
 }
 
 - (id)accessibilityValue
@@ -28,7 +28,7 @@
   v4 = accessibilityLocalizedString(v3);
   v8.receiver = self;
   v8.super_class = CKAutoloopMovieBalloonViewAccessibility;
-  v7 = [(CKAutoloopMovieBalloonViewAccessibility *)&v8 accessibilityValue];
+  accessibilityValue = [(CKAutoloopMovieBalloonViewAccessibility *)&v8 accessibilityValue];
   v5 = __UIAXStringForVariables();
 
   return v5;
@@ -39,8 +39,8 @@
   v3 = MEMORY[0x29EDB8DE8];
   v13.receiver = self;
   v13.super_class = CKAutoloopMovieBalloonViewAccessibility;
-  v4 = [(CKAutoloopMovieBalloonViewAccessibility *)&v13 _axBalloonViewCustomActions];
-  v5 = [v3 axArrayWithPossiblyNilArrays:{1, v4}];
+  _axBalloonViewCustomActions = [(CKAutoloopMovieBalloonViewAccessibility *)&v13 _axBalloonViewCustomActions];
+  v5 = [v3 axArrayWithPossiblyNilArrays:{1, _axBalloonViewCustomActions}];
 
   v6 = [(CKAutoloopMovieBalloonViewAccessibility *)self safeBoolForKey:@"_isMuted"];
   v7 = objc_alloc(MEMORY[0x29EDC78E0]);

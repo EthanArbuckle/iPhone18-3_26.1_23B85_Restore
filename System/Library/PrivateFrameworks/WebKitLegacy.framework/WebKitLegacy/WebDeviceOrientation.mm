@@ -1,12 +1,12 @@
 @interface WebDeviceOrientation
-- (WebDeviceOrientation)initWithCanProvideAlpha:(BOOL)a3 alpha:(double)a4 canProvideBeta:(BOOL)a5 beta:(double)a6 canProvideGamma:(BOOL)a7 gamma:(double)a8;
-- (WebDeviceOrientation)initWithCoreDeviceOrientation:(void *)a3;
+- (WebDeviceOrientation)initWithCanProvideAlpha:(BOOL)alpha alpha:(double)a4 canProvideBeta:(BOOL)beta beta:(double)a6 canProvideGamma:(BOOL)gamma gamma:(double)a8;
+- (WebDeviceOrientation)initWithCoreDeviceOrientation:(void *)orientation;
 - (void)dealloc;
 @end
 
 @implementation WebDeviceOrientation
 
-- (WebDeviceOrientation)initWithCoreDeviceOrientation:(void *)a3
+- (WebDeviceOrientation)initWithCoreDeviceOrientation:(void *)orientation
 {
   v7.receiver = self;
   v7.super_class = WebDeviceOrientation;
@@ -14,7 +14,7 @@
   if (result)
   {
     v5 = result;
-    v6 = [[WebDeviceOrientationInternal alloc] initWithCoreDeviceOrientation:a3];
+    v6 = [[WebDeviceOrientationInternal alloc] initWithCoreDeviceOrientation:orientation];
     result = v5;
     v5->m_internal = v6;
   }
@@ -22,7 +22,7 @@
   return result;
 }
 
-- (WebDeviceOrientation)initWithCanProvideAlpha:(BOOL)a3 alpha:(double)a4 canProvideBeta:(BOOL)a5 beta:(double)a6 canProvideGamma:(BOOL)a7 gamma:(double)a8
+- (WebDeviceOrientation)initWithCanProvideAlpha:(BOOL)alpha alpha:(double)a4 canProvideBeta:(BOOL)beta beta:(double)a6 canProvideGamma:(BOOL)gamma gamma:(double)a8
 {
   v15.receiver = self;
   v15.super_class = WebDeviceOrientation;

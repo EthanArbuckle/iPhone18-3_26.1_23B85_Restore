@@ -1,7 +1,7 @@
 @interface NNASoftNTKGossamerColorPaletteWrapper
 + (id)sharedPalette;
 - (NNASoftNTKGossamerColorPaletteWrapper)init;
-- (void)assertColor:(id)a3 closeTo:(id)a4;
+- (void)assertColor:(id)color closeTo:(id)to;
 @end
 
 @implementation NNASoftNTKGossamerColorPaletteWrapper
@@ -40,7 +40,7 @@ uint64_t __54__NNASoftNTKGossamerColorPaletteWrapper_sharedPalette__block_invoke
   return v2;
 }
 
-- (void)assertColor:(id)a3 closeTo:(id)a4
+- (void)assertColor:(id)color closeTo:(id)to
 {
   v14 = 0.0;
   v12 = 0.0;
@@ -50,9 +50,9 @@ uint64_t __54__NNASoftNTKGossamerColorPaletteWrapper_sharedPalette__block_invoke
   v8 = 0.0;
   v9 = 0.0;
   v7 = 0.0;
-  v6 = a4;
-  [a3 getRed:&v14 green:&v13 blue:&v12 alpha:&v11];
-  [v6 getRed:&v10 green:&v9 blue:&v8 alpha:&v7];
+  toCopy = to;
+  [color getRed:&v14 green:&v13 blue:&v12 alpha:&v11];
+  [toCopy getRed:&v10 green:&v9 blue:&v8 alpha:&v7];
 
   [(NNASoftNTKGossamerColorPaletteWrapper *)self assertDouble:v14 closeTo:v10];
   [(NNASoftNTKGossamerColorPaletteWrapper *)self assertDouble:v13 closeTo:v9];

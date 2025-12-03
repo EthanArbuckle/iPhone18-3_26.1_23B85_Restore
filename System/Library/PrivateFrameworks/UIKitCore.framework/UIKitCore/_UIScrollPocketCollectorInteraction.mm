@@ -5,10 +5,10 @@
 - (UIView)_view;
 - (UIView)view;
 - (_UIScrollPocketCollectorInteraction)init;
-- (void)_setName:(id)a3;
+- (void)_setName:(id)name;
 - (void)_updateProperties;
-- (void)didMoveToView:(id)a3;
-- (void)set_view:(id)a3;
+- (void)didMoveToView:(id)view;
+- (void)set_view:(id)set_view;
 @end
 
 @implementation _UIScrollPocketCollectorInteraction
@@ -43,38 +43,38 @@
 
 - (UIView)view
 {
-  v2 = [(_UIScrollPocketCollectorInteraction *)self _view];
+  _view = [(_UIScrollPocketCollectorInteraction *)self _view];
 
-  return v2;
+  return _view;
 }
 
-- (void)didMoveToView:(id)a3
+- (void)didMoveToView:(id)view
 {
-  v5 = self;
-  v4 = a3;
-  [(_UIScrollPocketCollectorInteraction *)v5 set_view:v4];
-  if (v4)
+  selfCopy = self;
+  viewCopy = view;
+  [(_UIScrollPocketCollectorInteraction *)selfCopy set_view:viewCopy];
+  if (viewCopy)
   {
   }
 
   else
   {
-    [(_UIScrollPocketCollectorInteraction *)v5 _updateProperties];
+    [(_UIScrollPocketCollectorInteraction *)selfCopy _updateProperties];
   }
 }
 
-- (void)set_view:(id)a3
+- (void)set_view:(id)set_view
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   swift_unknownObjectWeakAssign();
-  v6 = a3;
-  v7 = self;
+  set_viewCopy = set_view;
+  selfCopy = self;
   sub_188AD0F04(Strong);
 }
 
 - (void)_updateProperties
 {
-  v2 = self;
+  selfCopy = self;
   sub_189125928();
 }
 
@@ -83,7 +83,7 @@
   v3 = *(self + OBJC_IVAR____UIScrollPocketCollectorInteraction_model);
   swift_getKeyPath();
   sub_188FAB9F8(&qword_1ED490BC0);
-  v4 = self;
+  selfCopy = self;
   sub_18A4A2C08();
 
   v5 = *(v3 + 32);
@@ -101,9 +101,9 @@
   return v6;
 }
 
-- (void)_setName:(id)a3
+- (void)_setName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = sub_18A4A7288();
     v6 = v5;
@@ -115,7 +115,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1891257C0(v4, v6);
 }
 
@@ -129,7 +129,7 @@
   v9[2] = sub_1891253DC;
   v9[3] = &block_descriptor_5;
   v4 = _Block_copy(v9);
-  v5 = self;
+  selfCopy = self;
 
   v6 = _UIRecursiveDescription(v3, v4);
 
@@ -162,7 +162,7 @@
   v9[2] = sub_1891254F0;
   v9[3] = &block_descriptor_119;
   v4 = _Block_copy(v9);
-  v5 = self;
+  selfCopy = self;
 
   v6 = _UIAncestralDescription(v3, v4);
 

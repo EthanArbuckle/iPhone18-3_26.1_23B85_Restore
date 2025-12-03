@@ -1,19 +1,19 @@
 @interface UNSCriticalAlertAuthorizationAlertController
-- (void)presentAuthorizationAlertForBundleIdentifier:(id)a3 displayName:(id)a4 usageDescription:(id)a5 withResult:(id)a6;
+- (void)presentAuthorizationAlertForBundleIdentifier:(id)identifier displayName:(id)name usageDescription:(id)description withResult:(id)result;
 @end
 
 @implementation UNSCriticalAlertAuthorizationAlertController
 
-- (void)presentAuthorizationAlertForBundleIdentifier:(id)a3 displayName:(id)a4 usageDescription:(id)a5 withResult:(id)a6
+- (void)presentAuthorizationAlertForBundleIdentifier:(id)identifier displayName:(id)name usageDescription:(id)description withResult:(id)result
 {
-  v8 = a6;
+  resultCopy = result;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __133__UNSCriticalAlertAuthorizationAlertController_presentAuthorizationAlertForBundleIdentifier_displayName_usageDescription_withResult___block_invoke;
   v10[3] = &unk_279E10D28;
-  v11 = v8;
-  v9 = v8;
-  UNSShowCriticalAlertAuthorizationAlert(a3, a4, v10);
+  v11 = resultCopy;
+  v9 = resultCopy;
+  UNSShowCriticalAlertAuthorizationAlert(identifier, name, v10);
 }
 
 uint64_t __133__UNSCriticalAlertAuthorizationAlertController_presentAuthorizationAlertForBundleIdentifier_displayName_usageDescription_withResult___block_invoke(uint64_t a1)

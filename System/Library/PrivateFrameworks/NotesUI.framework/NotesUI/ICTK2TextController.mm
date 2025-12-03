@@ -1,40 +1,40 @@
 @interface ICTK2TextController
-- (void)setNote:(id)a3 firstVisibleLocation:(unint64_t)a4;
-- (void)updateAttachmentsSelectionStateInTextStorage:(id)a3 forSelectedRanges:(id)a4 textView:(id)a5;
-- (void)updateHighlightsInRange:(_NSRange)a3 inTextStorage:(id)a4;
+- (void)setNote:(id)note firstVisibleLocation:(unint64_t)location;
+- (void)updateAttachmentsSelectionStateInTextStorage:(id)storage forSelectedRanges:(id)ranges textView:(id)view;
+- (void)updateHighlightsInRange:(_NSRange)range inTextStorage:(id)storage;
 @end
 
 @implementation ICTK2TextController
 
-- (void)setNote:(id)a3 firstVisibleLocation:(unint64_t)a4
+- (void)setNote:(id)note firstVisibleLocation:(unint64_t)location
 {
-  v5 = a3;
-  [(ICTextController *)self setNote:v5];
-  v6 = [v5 textStorage];
+  noteCopy = note;
+  [(ICTextController *)self setNote:noteCopy];
+  textStorage = [noteCopy textStorage];
 
-  [v6 setStyler:self];
-  [v6 setWantsUndoCommands:0];
-  [(ICTextController *)self refreshTextStylingForTextStorage:v6 withTextController:self];
-  [v6 setWantsUndoCommands:1];
+  [textStorage setStyler:self];
+  [textStorage setWantsUndoCommands:0];
+  [(ICTextController *)self refreshTextStylingForTextStorage:textStorage withTextController:self];
+  [textStorage setWantsUndoCommands:1];
 }
 
-- (void)updateAttachmentsSelectionStateInTextStorage:(id)a3 forSelectedRanges:(id)a4 textView:(id)a5
+- (void)updateAttachmentsSelectionStateInTextStorage:(id)storage forSelectedRanges:(id)ranges textView:(id)view
 {
-  v7 = a4;
-  v8 = a5;
+  rangesCopy = ranges;
+  viewCopy = view;
   v9 = *MEMORY[0x1E69DB5F8];
-  v10 = a3;
-  v11 = [v10 ic_range];
+  storageCopy = storage;
+  ic_range = [storageCopy ic_range];
   v13 = v12;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __95__ICTK2TextController_updateAttachmentsSelectionStateInTextStorage_forSelectedRanges_textView___block_invoke;
   v16[3] = &unk_1E8469E68;
-  v17 = v7;
-  v18 = v8;
-  v14 = v8;
-  v15 = v7;
-  [v10 enumerateAttribute:v9 inRange:v11 options:v13 usingBlock:{0, v16}];
+  v17 = rangesCopy;
+  v18 = viewCopy;
+  v14 = viewCopy;
+  v15 = rangesCopy;
+  [storageCopy enumerateAttribute:v9 inRange:ic_range options:v13 usingBlock:{0, v16}];
 }
 
 void __95__ICTK2TextController_updateAttachmentsSelectionStateInTextStorage_forSelectedRanges_textView___block_invoke(uint64_t a1, void *a2, uint64_t a3, uint64_t a4)
@@ -122,13 +122,13 @@ BOOL __95__ICTK2TextController_updateAttachmentsSelectionStateInTextStorage_forS
   return NSIntersectionRange(a1[32], v5).length != 0;
 }
 
-- (void)updateHighlightsInRange:(_NSRange)a3 inTextStorage:(id)a4
+- (void)updateHighlightsInRange:(_NSRange)range inTextStorage:(id)storage
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = a4;
-  v8 = [(ICTextController *)self authorHighlightsController];
-  [v8 performHighlightUpdatesForRange:location inTextStorage:length updates:{v7, 0}];
+  length = range.length;
+  location = range.location;
+  storageCopy = storage;
+  authorHighlightsController = [(ICTextController *)self authorHighlightsController];
+  [authorHighlightsController performHighlightUpdatesForRange:location inTextStorage:length updates:{storageCopy, 0}];
 }
 
 @end

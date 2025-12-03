@@ -15,9 +15,9 @@
     schema = v2->_schema;
     v2->_schema = v3;
 
-    v5 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     rows = v2->_rows;
-    v2->_rows = v5;
+    v2->_rows = array;
 
     v7 = v2;
   }

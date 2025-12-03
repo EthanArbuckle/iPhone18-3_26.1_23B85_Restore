@@ -1,5 +1,5 @@
 @interface MediaDRMOperation
-- (MediaDRMOperation)initWithMediaPath:(id)a3 sinfs:(id)a4;
+- (MediaDRMOperation)initWithMediaPath:(id)path sinfs:(id)sinfs;
 - (NSString)mediaFileExtension;
 - (NSString)mediaPath;
 - (id)sinfs;
@@ -9,15 +9,15 @@
 
 @implementation MediaDRMOperation
 
-- (MediaDRMOperation)initWithMediaPath:(id)a3 sinfs:(id)a4
+- (MediaDRMOperation)initWithMediaPath:(id)path sinfs:(id)sinfs
 {
   v8.receiver = self;
   v8.super_class = MediaDRMOperation;
   v6 = [(MediaDRMOperation *)&v8 init];
   if (v6)
   {
-    v6->_mediaPath = [a3 copy];
-    v6->_sinfs = [a4 copy];
+    v6->_mediaPath = [path copy];
+    v6->_sinfs = [sinfs copy];
   }
 
   return v6;
@@ -63,15 +63,15 @@
     v4 = +[SSLogConfig sharedConfig];
   }
 
-  v5 = [v4 shouldLog];
+  shouldLog = [v4 shouldLog];
   if ([v4 shouldLogToDisk])
   {
-    v6 = v5 | 2;
+    v6 = shouldLog | 2;
   }
 
   else
   {
-    v6 = v5;
+    v6 = shouldLog;
   }
 
   if (!os_log_type_enabled([v4 OSLogObject], OS_LOG_TYPE_INFO))
@@ -108,14 +108,14 @@
     [v12 setObject:sinfs forKey:ISWeakLinkedStringConstantForString()];
   }
 
-  v14 = [ISWeakLinkedClassForString() fileProcessor];
+  fileProcessor = [ISWeakLinkedClassForString() fileProcessor];
   v15 = self->_mediaPath;
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_1000AEBF0;
   v26[3] = &unk_100327858;
   v26[4] = self;
-  v16 = [v14 processPurchasedItem:v15 withAttributes:v12 resultInfo:&v27 progressBlock:v26];
+  v16 = [fileProcessor processPurchasedItem:v15 withAttributes:v12 resultInfo:&v27 progressBlock:v26];
   if (v16)
   {
     v17 = +[SSLogConfig sharedDaemonConfig];
@@ -124,15 +124,15 @@
       v17 = +[SSLogConfig sharedConfig];
     }
 
-    v18 = [v17 shouldLog];
+    shouldLog2 = [v17 shouldLog];
     if ([v17 shouldLogToDisk])
     {
-      v19 = v18 | 2;
+      v19 = shouldLog2 | 2;
     }
 
     else
     {
-      v19 = v18;
+      v19 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v17 OSLogObject], OS_LOG_TYPE_DEFAULT))

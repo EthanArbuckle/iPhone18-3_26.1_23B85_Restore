@@ -1,11 +1,11 @@
 @interface VSRemoteNotifier
 + (id)_currentProcessIdentifier;
 - (VSRemoteNotifier)init;
-- (VSRemoteNotifier)initWithNotificationName:(id)a3;
+- (VSRemoteNotifier)initWithNotificationName:(id)name;
 - (VSRemoteNotifierDelegate)delegate;
-- (void)_didReceiveDistributedNotification:(id)a3;
+- (void)_didReceiveDistributedNotification:(id)notification;
 - (void)dealloc;
-- (void)postNotificationWithUserInfo:(id)a3;
+- (void)postNotificationWithUserInfo:(id)info;
 @end
 
 @implementation VSRemoteNotifier
@@ -38,27 +38,27 @@ void __45__VSRemoteNotifier__currentProcessIdentifier__block_invoke()
   return 0;
 }
 
-- (VSRemoteNotifier)initWithNotificationName:(id)a3
+- (VSRemoteNotifier)initWithNotificationName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v13.receiver = self;
   v13.super_class = VSRemoteNotifier;
   v5 = [(VSRemoteNotifier *)&v13 init];
   if (v5)
   {
-    v6 = [objc_opt_class() _currentProcessIdentifier];
+    _currentProcessIdentifier = [objc_opt_class() _currentProcessIdentifier];
     notificationObject = v5->_notificationObject;
-    v5->_notificationObject = v6;
+    v5->_notificationObject = _currentProcessIdentifier;
 
-    v8 = [MEMORY[0x277CCA9A0] defaultCenter];
+    defaultCenter = [MEMORY[0x277CCA9A0] defaultCenter];
     distributedNotificationCenter = v5->_distributedNotificationCenter;
-    v5->_distributedNotificationCenter = v8;
+    v5->_distributedNotificationCenter = defaultCenter;
 
-    v10 = [v4 copy];
+    v10 = [nameCopy copy];
     remoteNotificationName = v5->_remoteNotificationName;
     v5->_remoteNotificationName = v10;
 
-    [(NSDistributedNotificationCenter *)v5->_distributedNotificationCenter addObserver:v5 selector:sel__didReceiveDistributedNotification_ name:v4 object:0];
+    [(NSDistributedNotificationCenter *)v5->_distributedNotificationCenter addObserver:v5 selector:sel__didReceiveDistributedNotification_ name:nameCopy object:0];
   }
 
   return v5;
@@ -72,31 +72,31 @@ void __45__VSRemoteNotifier__currentProcessIdentifier__block_invoke()
   [(VSRemoteNotifier *)&v3 dealloc];
 }
 
-- (void)_didReceiveDistributedNotification:(id)a3
+- (void)_didReceiveDistributedNotification:(id)notification
 {
-  v9 = a3;
-  v4 = [(VSRemoteNotifier *)self notificationObject];
-  v5 = [v9 object];
-  v6 = [v4 isEqual:v5];
+  notificationCopy = notification;
+  notificationObject = [(VSRemoteNotifier *)self notificationObject];
+  object = [notificationCopy object];
+  v6 = [notificationObject isEqual:object];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(VSRemoteNotifier *)self delegate];
+    delegate = [(VSRemoteNotifier *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [v9 userInfo];
-      [v7 remoteNotifier:self didReceiveRemoteNotificationWithUserInfo:v8];
+      userInfo = [notificationCopy userInfo];
+      [delegate remoteNotifier:self didReceiveRemoteNotificationWithUserInfo:userInfo];
     }
   }
 }
 
-- (void)postNotificationWithUserInfo:(id)a3
+- (void)postNotificationWithUserInfo:(id)info
 {
-  v4 = a3;
-  v7 = [(VSRemoteNotifier *)self distributedNotificationCenter];
-  v5 = [(VSRemoteNotifier *)self remoteNotificationName];
-  v6 = [(VSRemoteNotifier *)self notificationObject];
-  [v7 postNotificationName:v5 object:v6 userInfo:v4];
+  infoCopy = info;
+  distributedNotificationCenter = [(VSRemoteNotifier *)self distributedNotificationCenter];
+  remoteNotificationName = [(VSRemoteNotifier *)self remoteNotificationName];
+  notificationObject = [(VSRemoteNotifier *)self notificationObject];
+  [distributedNotificationCenter postNotificationName:remoteNotificationName object:notificationObject userInfo:infoCopy];
 }
 
 - (VSRemoteNotifierDelegate)delegate

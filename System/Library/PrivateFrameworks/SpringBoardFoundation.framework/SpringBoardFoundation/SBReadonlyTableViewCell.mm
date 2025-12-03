@@ -6,10 +6,10 @@
 
 - (void)updateDisplayedValue
 {
-  v5 = [(SBReadonlyTableViewCell *)self detailTextLabel];
+  detailTextLabel = [(SBReadonlyTableViewCell *)self detailTextLabel];
   v3 = [(PTUIRowTableViewCell *)self row];
-  v4 = [v3 value];
-  [v5 setText:v4];
+  value = [v3 value];
+  [detailTextLabel setText:value];
 }
 
 @end

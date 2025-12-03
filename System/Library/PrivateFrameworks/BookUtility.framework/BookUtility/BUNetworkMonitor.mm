@@ -4,24 +4,24 @@
 - (BOOL)hasWAPICapability;
 - (BOOL)hasWifiConnection;
 - (BOOL)isAirplaneModeEnabled;
-- (BUNetworkMonitor)initWithQueue:(id)a3;
-- (void)setCurrentPath:(id)a3;
+- (BUNetworkMonitor)initWithQueue:(id)queue;
+- (void)setCurrentPath:(id)path;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation BUNetworkMonitor
 
-- (BUNetworkMonitor)initWithQueue:(id)a3
+- (BUNetworkMonitor)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = BUNetworkMonitor;
   v6 = [(BUNetworkMonitor *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_monitorQueue, a3);
+    objc_storeStrong(&v6->_monitorQueue, queue);
     v8 = objc_alloc_init(MEMORY[0x277CEC5D8]);
     radiosPreferences = v7->_radiosPreferences;
     v7->_radiosPreferences = v8;
@@ -105,19 +105,19 @@
   return 0;
 }
 
-- (void)setCurrentPath:(id)a3
+- (void)setCurrentPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   currentPath = self->_currentPath;
   p_currentPath = &self->_currentPath;
-  if (currentPath != v5)
+  if (currentPath != pathCopy)
   {
-    v12 = v5;
-    objc_storeStrong(p_currentPath, a3);
+    v12 = pathCopy;
+    objc_storeStrong(p_currentPath, path);
     v10 = objc_msgSend_defaultCenter(MEMORY[0x277CCAB98], v8, v9);
     objc_msgSend_postNotificationName_object_(v10, v11, @"BUNetworkMonitorInterfaceDidChangeNotification", 0);
 
-    v5 = v12;
+    pathCopy = v12;
   }
 }
 

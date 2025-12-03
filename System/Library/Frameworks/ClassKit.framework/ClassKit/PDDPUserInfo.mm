@@ -1,32 +1,32 @@
 @interface PDDPUserInfo
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addRoles:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addRoles:(id)roles;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPUserInfo
 
-- (void)addRoles:(id)a3
+- (void)addRoles:(id)roles
 {
-  v4 = a3;
+  rolesCopy = roles;
   roles = self->_roles;
-  v8 = v4;
+  v8 = rolesCopy;
   if (!roles)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_roles;
     self->_roles = v6;
 
-    v4 = v8;
+    rolesCopy = v8;
     roles = self->_roles;
   }
 
-  [(NSMutableArray *)roles addObject:v4];
+  [(NSMutableArray *)roles addObject:rolesCopy];
 }
 
 - (id)description
@@ -34,8 +34,8 @@
   v7.receiver = self;
   v7.super_class = PDDPUserInfo;
   v3 = [(PDDPUserInfo *)&v7 description];
-  v4 = [(PDDPUserInfo *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPUserInfo *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -46,8 +46,8 @@
   person = self->_person;
   if (person)
   {
-    v5 = [(PDDPPerson *)person dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"person"];
+    dictionaryRepresentation = [(PDDPPerson *)person dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"person"];
   }
 
   roles = self->_roles;
@@ -59,9 +59,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_person)
   {
     PBDataWriterWriteSubmessage();
@@ -100,34 +100,34 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_person)
   {
-    [v8 setPerson:?];
+    [toCopy setPerson:?];
   }
 
   if ([(PDDPUserInfo *)self rolesCount])
   {
-    [v8 clearRoles];
-    v4 = [(PDDPUserInfo *)self rolesCount];
-    if (v4)
+    [toCopy clearRoles];
+    rolesCount = [(PDDPUserInfo *)self rolesCount];
+    if (rolesCount)
     {
-      v5 = v4;
+      v5 = rolesCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(PDDPUserInfo *)self rolesAtIndex:i];
-        [v8 addRoles:v7];
+        [toCopy addRoles:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(PDDPPerson *)self->_person copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(PDDPPerson *)self->_person copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
@@ -151,7 +151,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{zone, v15}];
         [v5 addRoles:v13];
 
         v12 = v12 + 1;
@@ -167,13 +167,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((person = self->_person, !(person | v4[1])) || -[PDDPPerson isEqual:](person, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((person = self->_person, !(person | equalCopy[1])) || -[PDDPPerson isEqual:](person, "isEqual:")))
   {
     roles = self->_roles;
-    if (roles | v4[2])
+    if (roles | equalCopy[2])
     {
       v7 = [(NSMutableArray *)roles isEqual:?];
     }
@@ -192,11 +192,11 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   person = self->_person;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (person)
   {
     if (v6)
@@ -214,7 +214,7 @@
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = *(v4 + 2);
+  v7 = *(fromCopy + 2);
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {

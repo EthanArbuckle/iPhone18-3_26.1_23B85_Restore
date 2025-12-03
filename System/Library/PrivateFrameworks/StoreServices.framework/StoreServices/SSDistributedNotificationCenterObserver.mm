@@ -1,23 +1,23 @@
 @interface SSDistributedNotificationCenterObserver
-- (SSDistributedNotificationCenterObserver)initWithName:(id)a3 queue:(id)a4 block:(id)a5;
+- (SSDistributedNotificationCenterObserver)initWithName:(id)name queue:(id)queue block:(id)block;
 - (void)dealloc;
 @end
 
 @implementation SSDistributedNotificationCenterObserver
 
-- (SSDistributedNotificationCenterObserver)initWithName:(id)a3 queue:(id)a4 block:(id)a5
+- (SSDistributedNotificationCenterObserver)initWithName:(id)name queue:(id)queue block:(id)block
 {
   v10.receiver = self;
   v10.super_class = SSDistributedNotificationCenterObserver;
   v8 = [(SSDistributedNotificationCenterObserver *)&v10 init];
   if (v8)
   {
-    v8->_block = [a5 copy];
-    v8->_name = [a3 copy];
-    if (a4)
+    v8->_block = [block copy];
+    v8->_name = [name copy];
+    if (queue)
     {
-      v8->_dispatchQueue = a4;
-      dispatch_retain(a4);
+      v8->_dispatchQueue = queue;
+      dispatch_retain(queue);
     }
   }
 

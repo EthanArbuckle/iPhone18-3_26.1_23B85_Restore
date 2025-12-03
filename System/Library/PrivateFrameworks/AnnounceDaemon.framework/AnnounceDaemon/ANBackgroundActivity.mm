@@ -1,7 +1,7 @@
 @interface ANBackgroundActivity
 - (ANBackgroundActivity)init;
 - (BOOL)shouldDefer;
-- (void)scheduleWithBlock:(id)a3;
+- (void)scheduleWithBlock:(id)block;
 @end
 
 @implementation ANBackgroundActivity
@@ -44,19 +44,19 @@ void __28__ANBackgroundActivity_init__block_invoke()
   v1 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scheduleWithBlock:(id)a3
+- (void)scheduleWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(ANBackgroundActivity *)self backgroundActivity];
-  [v5 scheduleWithBlock:v4];
+  blockCopy = block;
+  backgroundActivity = [(ANBackgroundActivity *)self backgroundActivity];
+  [backgroundActivity scheduleWithBlock:blockCopy];
 }
 
 - (BOOL)shouldDefer
 {
-  v2 = [(ANBackgroundActivity *)self backgroundActivity];
-  v3 = [v2 shouldDefer];
+  backgroundActivity = [(ANBackgroundActivity *)self backgroundActivity];
+  shouldDefer = [backgroundActivity shouldDefer];
 
-  return v3;
+  return shouldDefer;
 }
 
 @end

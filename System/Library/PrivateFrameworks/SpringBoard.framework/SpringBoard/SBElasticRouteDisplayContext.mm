@@ -1,48 +1,48 @@
 @interface SBElasticRouteDisplayContext
-+ (id)routeContextWithName:(id)a3 glyphImage:(id)a4;
-+ (id)routeContextWithName:(id)a3 valueTransformer:(id)a4 glyphPackage:(id)a5;
++ (id)routeContextWithName:(id)name glyphImage:(id)image;
++ (id)routeContextWithName:(id)name valueTransformer:(id)transformer glyphPackage:(id)package;
 - (NSString)description;
-- (id)_initWithName:(id)a3 glyphStateValueTransformer:(id)a4 glyphPackage:(id)a5 glyphImage:(id)a6;
+- (id)_initWithName:(id)name glyphStateValueTransformer:(id)transformer glyphPackage:(id)package glyphImage:(id)image;
 @end
 
 @implementation SBElasticRouteDisplayContext
 
-+ (id)routeContextWithName:(id)a3 valueTransformer:(id)a4 glyphPackage:(id)a5
++ (id)routeContextWithName:(id)name valueTransformer:(id)transformer glyphPackage:(id)package
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v11)
+  nameCopy = name;
+  transformerCopy = transformer;
+  packageCopy = package;
+  if (!packageCopy)
   {
-    [SBElasticRouteDisplayContext routeContextWithName:a2 valueTransformer:a1 glyphPackage:?];
+    [SBElasticRouteDisplayContext routeContextWithName:a2 valueTransformer:self glyphPackage:?];
   }
 
-  v12 = [[a1 alloc] _initWithName:v9 glyphStateValueTransformer:v10 glyphPackage:v11 glyphImage:0];
+  v12 = [[self alloc] _initWithName:nameCopy glyphStateValueTransformer:transformerCopy glyphPackage:packageCopy glyphImage:0];
 
   return v12;
 }
 
-+ (id)routeContextWithName:(id)a3 glyphImage:(id)a4
++ (id)routeContextWithName:(id)name glyphImage:(id)image
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v8)
+  nameCopy = name;
+  imageCopy = image;
+  if (!imageCopy)
   {
-    [SBElasticRouteDisplayContext routeContextWithName:a2 glyphImage:a1];
+    [SBElasticRouteDisplayContext routeContextWithName:a2 glyphImage:self];
   }
 
-  v9 = [[a1 alloc] _initWithName:v7 glyphStateValueTransformer:0 glyphPackage:0 glyphImage:v8];
+  v9 = [[self alloc] _initWithName:nameCopy glyphStateValueTransformer:0 glyphPackage:0 glyphImage:imageCopy];
 
   return v9;
 }
 
-- (id)_initWithName:(id)a3 glyphStateValueTransformer:(id)a4 glyphPackage:(id)a5 glyphImage:(id)a6
+- (id)_initWithName:(id)name glyphStateValueTransformer:(id)transformer glyphPackage:(id)package glyphImage:(id)image
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!v12)
+  nameCopy = name;
+  transformerCopy = transformer;
+  packageCopy = package;
+  imageCopy = image;
+  if (!nameCopy)
   {
     [SBElasticRouteDisplayContext _initWithName:a2 glyphStateValueTransformer:self glyphPackage:? glyphImage:?];
   }
@@ -53,13 +53,13 @@
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_localizedDisplayName, a3);
-    v18 = MEMORY[0x223D6F7F0](v13);
+    objc_storeStrong(&v16->_localizedDisplayName, name);
+    v18 = MEMORY[0x223D6F7F0](transformerCopy);
     glyphStateValueTransformer = v17->_glyphStateValueTransformer;
     v17->_glyphStateValueTransformer = v18;
 
-    objc_storeStrong(&v17->_glyphPackage, a5);
-    objc_storeStrong(&v17->_glyphImage, a6);
+    objc_storeStrong(&v17->_glyphPackage, package);
+    objc_storeStrong(&v17->_glyphImage, image);
   }
 
   return v17;

@@ -1,21 +1,21 @@
 @interface CKSocialLayerChatController
-+ (id)chatIdentifierForMessageWithGUID:(id)a3;
-+ (id)chatItemForMessageGUID:(id)a3 messagePartIndex:(int64_t)a4 chatItems:(id)a5;
++ (id)chatIdentifierForMessageWithGUID:(id)d;
++ (id)chatItemForMessageGUID:(id)d messagePartIndex:(int64_t)index chatItems:(id)items;
 - (CKFullScreenBalloonViewControllerPhone)socialLayerFullScreenBalloonController;
-- (CKSocialLayerChatController)initWithConversation:(id)a3;
+- (CKSocialLayerChatController)initWithConversation:(id)conversation;
 - (id)selectedChatItems;
 - (int64_t)messagePartIndexMatchingAttachementGUID;
 - (void)_setConversationDeferredSetup;
 - (void)dealloc;
-- (void)fullScreenBalloonViewController:(id)a3 didAppearAnimated:(BOOL)a4;
-- (void)fullScreenBalloonViewController:(id)a3 replyButtonPressedForChatItem:(id)a4;
-- (void)fullScreenBalloonViewController:(id)a3 verticallyScrollTranscriptByAmount:(double)a4 animated:(BOOL)a5 duration:(double)a6 completion:(id)a7;
-- (void)fullScreenBalloonViewController:(id)a3 willAppearAnimated:(BOOL)a4;
-- (void)fullScreenBalloonViewControllerDidDisappear:(id)a3;
-- (void)fullScreenBalloonViewControllerHandleDismissTap:(id)a3;
+- (void)fullScreenBalloonViewController:(id)controller didAppearAnimated:(BOOL)animated;
+- (void)fullScreenBalloonViewController:(id)controller replyButtonPressedForChatItem:(id)item;
+- (void)fullScreenBalloonViewController:(id)controller verticallyScrollTranscriptByAmount:(double)amount animated:(BOOL)animated duration:(double)duration completion:(id)completion;
+- (void)fullScreenBalloonViewController:(id)controller willAppearAnimated:(BOOL)animated;
+- (void)fullScreenBalloonViewControllerDidDisappear:(id)disappear;
+- (void)fullScreenBalloonViewControllerHandleDismissTap:(id)tap;
 - (void)prewarmAttachmentChatItemSize;
 - (void)scrollToAndHighlightMessage;
-- (void)showFullScreenAcknowledgmentPickerForChatItem:(id)a3;
+- (void)showFullScreenAcknowledgmentPickerForChatItem:(id)item;
 - (void)showTapBackPicker;
 @end
 
@@ -29,11 +29,11 @@
   [(CKChatController *)&v3 dealloc];
 }
 
-- (CKSocialLayerChatController)initWithConversation:(id)a3
+- (CKSocialLayerChatController)initWithConversation:(id)conversation
 {
   v5.receiver = self;
   v5.super_class = CKSocialLayerChatController;
-  v3 = [(CKChatController *)&v5 initWithConversation:a3];
+  v3 = [(CKChatController *)&v5 initWithConversation:conversation];
   if (v3)
   {
     [CKApplicationState setMainWindowForegroundActive:1];
@@ -57,10 +57,10 @@
   dispatch_after(v3, MEMORY[0x1E69E96A0], block);
 }
 
-+ (id)chatIdentifierForMessageWithGUID:(id)a3
++ (id)chatIdentifierForMessageWithGUID:(id)d
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dCopy = d;
   v4 = IMDChatRecordCopyChatForMessageGUID();
   if (v4)
   {
@@ -73,7 +73,7 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = dCopy;
       _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_DEFAULT, "Couldn't find chat for message identifier: %@", &v8, 0xCu);
     }
 
@@ -83,31 +83,31 @@
   return v5;
 }
 
-+ (id)chatItemForMessageGUID:(id)a3 messagePartIndex:(int64_t)a4 chatItems:(id)a5
++ (id)chatItemForMessageGUID:(id)d messagePartIndex:(int64_t)index chatItems:(id)items
 {
   v44 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  dCopy = d;
+  itemsCopy = items;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __81__CKSocialLayerChatController_chatItemForMessageGUID_messagePartIndex_chatItems___block_invoke;
   aBlock[3] = &unk_1E72EBB70;
-  v9 = v7;
+  v9 = dCopy;
   v39 = v9;
-  v40 = a4;
+  indexCopy = index;
   v10 = _Block_copy(aBlock);
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v11 = v8;
+  v11 = itemsCopy;
   v29 = [v11 countByEnumeratingWithState:&v34 objects:v43 count:16];
   if (v29)
   {
     v12 = *v35;
     v27 = *v35;
     v28 = v9;
-    v26 = a4;
+    indexCopy2 = index;
     do
     {
       for (i = 0; i != v29; ++i)
@@ -174,7 +174,7 @@
       }
 
       v9 = v28;
-      a4 = v26;
+      index = indexCopy2;
       v29 = [v11 countByEnumeratingWithState:&v34 objects:v43 count:16];
     }
 
@@ -183,7 +183,7 @@
 
   v22 = IMLogHandleForCategory();
   v23 = os_log_type_enabled(v22, OS_LOG_TYPE_ERROR);
-  if (a4 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     if (v23)
     {
@@ -193,7 +193,7 @@
 
   else if (v23)
   {
-    [CKSocialLayerChatController chatItemForMessageGUID:v9 messagePartIndex:a4 chatItems:v22];
+    [CKSocialLayerChatController chatItemForMessageGUID:v9 messagePartIndex:index chatItems:v22];
   }
 
   v24 = 0;
@@ -224,51 +224,51 @@ BOOL __81__CKSocialLayerChatController_chatItemForMessageGUID_messagePartIndex_c
 
 - (id)selectedChatItems
 {
-  v2 = [(CKCoreChatController *)self collectionViewController];
-  v3 = [v2 selectedChatItems];
+  collectionViewController = [(CKCoreChatController *)self collectionViewController];
+  selectedChatItems = [collectionViewController selectedChatItems];
 
-  return v3;
+  return selectedChatItems;
 }
 
 - (int64_t)messagePartIndexMatchingAttachementGUID
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(CKSocialLayerChatController *)self attachmentGUID];
-  if ([v3 length])
+  attachmentGUID = [(CKSocialLayerChatController *)self attachmentGUID];
+  if ([attachmentGUID length])
   {
-    v4 = [(CKCoreChatController *)self conversation];
-    v5 = [(CKSocialLayerChatController *)self messageGUID];
-    v16 = v4;
-    v6 = [v4 ensureMessageWithGUIDIsLoaded:v5];
-    v7 = [v6 messageParts];
+    conversation = [(CKCoreChatController *)self conversation];
+    messageGUID = [(CKSocialLayerChatController *)self messageGUID];
+    v16 = conversation;
+    v6 = [conversation ensureMessageWithGUIDIsLoaded:messageGUID];
+    messageParts = [v6 messageParts];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    v8 = [messageParts countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v8)
     {
       v9 = v8;
       v10 = *v18;
-      v11 = 0x7FFFFFFFFFFFFFFFLL;
+      messagePartIndex = 0x7FFFFFFFFFFFFFFFLL;
       do
       {
         for (i = 0; i != v9; ++i)
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(messageParts);
           }
 
           v13 = *(*(&v17 + 1) + 8 * i);
-          v14 = [v13 transferGUID];
-          if ([v14 isEqualToString:v3])
+          transferGUID = [v13 transferGUID];
+          if ([transferGUID isEqualToString:attachmentGUID])
           {
-            v11 = [v13 messagePartIndex];
+            messagePartIndex = [v13 messagePartIndex];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v9 = [messageParts countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v9);
@@ -276,27 +276,27 @@ BOOL __81__CKSocialLayerChatController_chatItemForMessageGUID_messagePartIndex_c
 
     else
     {
-      v11 = 0x7FFFFFFFFFFFFFFFLL;
+      messagePartIndex = 0x7FFFFFFFFFFFFFFFLL;
     }
   }
 
   else
   {
-    v11 = 0x7FFFFFFFFFFFFFFFLL;
+    messagePartIndex = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v11;
+  return messagePartIndex;
 }
 
 - (void)scrollToAndHighlightMessage
 {
-  v3 = [(CKCoreChatController *)self collectionViewController];
-  v4 = [v3 collectionView];
-  [v4 reloadData];
+  collectionViewController = [(CKCoreChatController *)self collectionViewController];
+  collectionView = [collectionViewController collectionView];
+  [collectionView reloadData];
 
-  v7 = [(CKCoreChatController *)self conversation];
-  v5 = [(CKSocialLayerChatController *)self messageGUID];
-  v6 = [v7 ensureMessageWithGUIDIsLoaded:v5];
+  conversation = [(CKCoreChatController *)self conversation];
+  messageGUID = [(CKSocialLayerChatController *)self messageGUID];
+  v6 = [conversation ensureMessageWithGUIDIsLoaded:messageGUID];
   [(CKChatController *)self scrollToMessage:v6 atSpecificMessagePartIndex:[(CKSocialLayerChatController *)self messagePartIndexMatchingAttachementGUID] highlight:0 withInlineReplyOverlay:1];
 }
 
@@ -308,35 +308,35 @@ BOOL __81__CKSocialLayerChatController_chatItemForMessageGUID_messagePartIndex_c
     v3 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(CKSocialLayerChatController *)self attachmentGUID];
+      attachmentGUID = [(CKSocialLayerChatController *)self attachmentGUID];
       v16 = 138412290;
-      v17 = v4;
+      v17 = attachmentGUID;
       _os_log_impl(&dword_19020E000, v3, OS_LOG_TYPE_INFO, "prewarm chat item size for attachment guid: %@", &v16, 0xCu);
     }
   }
 
-  v5 = [(CKSocialLayerChatController *)self messageGUID];
-  v6 = [(CKSocialLayerChatController *)self messagePartIndexMatchingAttachementGUID];
-  if ([v5 length])
+  messageGUID = [(CKSocialLayerChatController *)self messageGUID];
+  messagePartIndexMatchingAttachementGUID = [(CKSocialLayerChatController *)self messagePartIndexMatchingAttachementGUID];
+  if ([messageGUID length])
   {
-    v7 = [(CKCoreChatController *)self collectionViewController];
-    v8 = [v7 chatItems];
+    collectionViewController = [(CKCoreChatController *)self collectionViewController];
+    chatItems = [collectionViewController chatItems];
 
-    v9 = [CKSocialLayerChatController chatItemForMessageGUID:v5 messagePartIndex:v6 chatItems:v8];
+    v9 = [CKSocialLayerChatController chatItemForMessageGUID:messageGUID messagePartIndex:messagePartIndexMatchingAttachementGUID chatItems:chatItems];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v10 = v9;
-      v11 = [v10 mediaObject];
-      v12 = [v11 forceInlinePreviewGeneration];
+      mediaObject = [v10 mediaObject];
+      forceInlinePreviewGeneration = [mediaObject forceInlinePreviewGeneration];
 
-      v13 = [v10 mediaObject];
-      [v13 setForceInlinePreviewGeneration:1];
+      mediaObject2 = [v10 mediaObject];
+      [mediaObject2 setForceInlinePreviewGeneration:1];
 
       [v10 size];
-      v14 = [v10 mediaObject];
+      mediaObject3 = [v10 mediaObject];
 
-      [v14 setForceInlinePreviewGeneration:v12];
+      [mediaObject3 setForceInlinePreviewGeneration:forceInlinePreviewGeneration];
     }
   }
 
@@ -353,18 +353,18 @@ BOOL __81__CKSocialLayerChatController_chatItemForMessageGUID_messagePartIndex_c
 
 - (void)showTapBackPicker
 {
-  v7 = [(CKCoreChatController *)self collectionViewController];
-  v3 = [(CKSocialLayerChatController *)self messageGUID];
-  v4 = [(CKSocialLayerChatController *)self messagePartIndexMatchingAttachementGUID];
-  v5 = [v7 chatItems];
-  v6 = [CKSocialLayerChatController chatItemForMessageGUID:v3 messagePartIndex:v4 chatItems:v5];
+  collectionViewController = [(CKCoreChatController *)self collectionViewController];
+  messageGUID = [(CKSocialLayerChatController *)self messageGUID];
+  messagePartIndexMatchingAttachementGUID = [(CKSocialLayerChatController *)self messagePartIndexMatchingAttachementGUID];
+  chatItems = [collectionViewController chatItems];
+  v6 = [CKSocialLayerChatController chatItemForMessageGUID:messageGUID messagePartIndex:messagePartIndexMatchingAttachementGUID chatItems:chatItems];
 
   [(CKSocialLayerChatController *)self showFullScreenAcknowledgmentPickerForChatItem:v6];
 }
 
-- (void)showFullScreenAcknowledgmentPickerForChatItem:(id)a3
+- (void)showFullScreenAcknowledgmentPickerForChatItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -375,12 +375,12 @@ BOOL __81__CKSocialLayerChatController_chatItemForMessageGUID_messagePartIndex_c
     }
   }
 
-  v6 = [(CKCoreChatController *)self chat];
-  [v6 beginHoldingChatItemsUpdatesForReason:*MEMORY[0x1E69A57A0]];
+  chat = [(CKCoreChatController *)self chat];
+  [chat beginHoldingChatItemsUpdatesForReason:*MEMORY[0x1E69A57A0]];
   [(CKScrollViewController *)self beginHoldingScrollGeometryUpdatesForReason:@"FullscreenBalloonMenuVisible"];
-  v7 = [(CKSocialLayerChatController *)self socialLayerFullScreenBalloonController];
+  socialLayerFullScreenBalloonController = [(CKSocialLayerChatController *)self socialLayerFullScreenBalloonController];
 
-  if (v7)
+  if (socialLayerFullScreenBalloonController)
   {
     if (IMOSLoggingEnabled())
     {
@@ -395,7 +395,7 @@ BOOL __81__CKSocialLayerChatController_chatItemForMessageGUID_messagePartIndex_c
     [(CKChatController *)self _dismissFullScreenBubbleViewControllerAnimated:1 withSendAnimation:0 completion:0];
   }
 
-  v9 = [(CKCoreChatController *)self generateDefaultFullScreenBalloonViewControllerWithChatItem:v4];
+  v9 = [(CKCoreChatController *)self generateDefaultFullScreenBalloonViewControllerWithChatItem:itemCopy];
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
@@ -407,14 +407,14 @@ BOOL __81__CKSocialLayerChatController_chatItemForMessageGUID_messagePartIndex_c
   }
 
   [(CKSocialLayerChatController *)self addChildViewController:v9];
-  v11 = [(CKSocialLayerChatController *)self view];
-  v12 = [v9 view];
-  [v11 addSubview:v12];
+  view = [(CKSocialLayerChatController *)self view];
+  view2 = [v9 view];
+  [view addSubview:view2];
 
-  v13 = [v9 view];
-  v14 = [(CKChatController *)self collectionView];
-  [v14 frame];
-  [v13 setFrame:?];
+  view3 = [v9 view];
+  collectionView = [(CKChatController *)self collectionView];
+  [collectionView frame];
+  [view3 setFrame:?];
 
   [v9 didMoveToParentViewController:self];
   [(CKSocialLayerChatController *)self setSocialLayerFullScreenBalloonController:v9];
@@ -436,10 +436,10 @@ BOOL __81__CKSocialLayerChatController_chatItemForMessageGUID_messagePartIndex_c
   return WeakRetained;
 }
 
-- (void)fullScreenBalloonViewController:(id)a3 replyButtonPressedForChatItem:(id)a4
+- (void)fullScreenBalloonViewController:(id)controller replyButtonPressedForChatItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  itemCopy = item;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
@@ -450,19 +450,19 @@ BOOL __81__CKSocialLayerChatController_chatItemForMessageGUID_messagePartIndex_c
     }
   }
 
-  if (v7)
+  if (itemCopy)
   {
     v9.receiver = self;
     v9.super_class = CKSocialLayerChatController;
-    [(CKChatController *)&v9 showInlineReplyControllerForChatItem:v7 presentKeyboard:1];
+    [(CKChatController *)&v9 showInlineReplyControllerForChatItem:itemCopy presentKeyboard:1];
   }
 
-  [(CKSocialLayerChatController *)self fullScreenBalloonViewControllerHandleDismissTap:v6];
+  [(CKSocialLayerChatController *)self fullScreenBalloonViewControllerHandleDismissTap:controllerCopy];
 }
 
-- (void)fullScreenBalloonViewController:(id)a3 willAppearAnimated:(BOOL)a4
+- (void)fullScreenBalloonViewController:(id)controller willAppearAnimated:(BOOL)animated
 {
-  v4 = a3;
+  controllerCopy = controller;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -474,10 +474,10 @@ BOOL __81__CKSocialLayerChatController_chatItemForMessageGUID_messagePartIndex_c
   }
 }
 
-- (void)fullScreenBalloonViewController:(id)a3 didAppearAnimated:(BOOL)a4
+- (void)fullScreenBalloonViewController:(id)controller didAppearAnimated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -490,12 +490,12 @@ BOOL __81__CKSocialLayerChatController_chatItemForMessageGUID_messagePartIndex_c
 
   v8.receiver = self;
   v8.super_class = CKSocialLayerChatController;
-  [(CKChatController *)&v8 fullScreenBalloonViewController:v6 didAppearAnimated:v4];
+  [(CKChatController *)&v8 fullScreenBalloonViewController:controllerCopy didAppearAnimated:animatedCopy];
 }
 
-- (void)fullScreenBalloonViewControllerDidDisappear:(id)a3
+- (void)fullScreenBalloonViewControllerDidDisappear:(id)disappear
 {
-  v4 = a3;
+  disappearCopy = disappear;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -508,12 +508,12 @@ BOOL __81__CKSocialLayerChatController_chatItemForMessageGUID_messagePartIndex_c
 
   v6.receiver = self;
   v6.super_class = CKSocialLayerChatController;
-  [(CKChatController *)&v6 fullScreenBalloonViewControllerDidDisappear:v4];
+  [(CKChatController *)&v6 fullScreenBalloonViewControllerDidDisappear:disappearCopy];
 }
 
-- (void)fullScreenBalloonViewControllerHandleDismissTap:(id)a3
+- (void)fullScreenBalloonViewControllerHandleDismissTap:(id)tap
 {
-  v4 = a3;
+  tapCopy = tap;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -530,8 +530,8 @@ BOOL __81__CKSocialLayerChatController_chatItemForMessageGUID_messagePartIndex_c
   aBlock[3] = &unk_1E72EBA18;
   aBlock[4] = self;
   v6 = _Block_copy(aBlock);
-  v7 = [(CKSocialLayerChatController *)self socialLayerFullScreenBalloonController];
-  [v7 performCancelAnimationWithCompletion:v6];
+  socialLayerFullScreenBalloonController = [(CKSocialLayerChatController *)self socialLayerFullScreenBalloonController];
+  [socialLayerFullScreenBalloonController performCancelAnimationWithCompletion:v6];
 }
 
 void __120__CKSocialLayerChatController_FullScreenBalloonViewControllerDelegate__fullScreenBalloonViewControllerHandleDismissTap___block_invoke(uint64_t a1)
@@ -557,12 +557,12 @@ void __120__CKSocialLayerChatController_FullScreenBalloonViewControllerDelegate_
   }
 }
 
-- (void)fullScreenBalloonViewController:(id)a3 verticallyScrollTranscriptByAmount:(double)a4 animated:(BOOL)a5 duration:(double)a6 completion:(id)a7
+- (void)fullScreenBalloonViewController:(id)controller verticallyScrollTranscriptByAmount:(double)amount animated:(BOOL)animated duration:(double)duration completion:(id)completion
 {
-  v8 = a5;
+  animatedCopy = animated;
   v19 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a7;
+  controllerCopy = controller;
+  completionCopy = completion;
   if (IMOSLoggingEnabled())
   {
     v13 = OSLogHandleForIMFoundationCategory();
@@ -570,22 +570,22 @@ void __120__CKSocialLayerChatController_FullScreenBalloonViewControllerDelegate_
     {
       v14 = @"NO";
       *v16 = 138412802;
-      *&v16[4] = v11;
-      if (v8)
+      *&v16[4] = controllerCopy;
+      if (animatedCopy)
       {
         v14 = @"YES";
       }
 
       *&v16[12] = 2048;
-      *&v16[14] = a4;
+      *&v16[14] = amount;
       v17 = 2112;
       v18 = v14;
       _os_log_impl(&dword_19020E000, v13, OS_LOG_TYPE_INFO, "fullScreenBalloonViewController: %@ verticallyScrollTranscriptByAmount: %.2f animated: %@ completion:", v16, 0x20u);
     }
   }
 
-  v15 = [(CKCoreChatController *)self collectionViewController];
-  [v15 verticallyScrollTranscriptByAmount:v8 animated:v12 completion:a4];
+  collectionViewController = [(CKCoreChatController *)self collectionViewController];
+  [collectionViewController verticallyScrollTranscriptByAmount:animatedCopy animated:completionCopy completion:amount];
 }
 
 + (void)chatItemForMessageGUID:(uint64_t)a1 messagePartIndex:(uint64_t)a2 chatItems:(os_log_t)log .cold.1(uint64_t a1, uint64_t a2, os_log_t log)

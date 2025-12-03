@@ -1,6 +1,6 @@
 @interface PFCloudKitModelValidator
-- (PFCloudKitModelValidator)initWithManagedObjectModel:(id)a3 configuration:(id)a4 mirroringDelegateOptions:(id)a5;
-- (uint64_t)_validateManagedObjectModel:(void *)a3 error:;
+- (PFCloudKitModelValidator)initWithManagedObjectModel:(id)model configuration:(id)configuration mirroringDelegateOptions:(id)options;
+- (uint64_t)_validateManagedObjectModel:(void *)model error:;
 - (void)dealloc;
 @end
 
@@ -25,16 +25,16 @@ void __57__PFCloudKitModelValidator_enforceUniqueConstraintChecks__block_invoke(
   [(PFCloudKitModelValidator *)&v3 dealloc];
 }
 
-- (PFCloudKitModelValidator)initWithManagedObjectModel:(id)a3 configuration:(id)a4 mirroringDelegateOptions:(id)a5
+- (PFCloudKitModelValidator)initWithManagedObjectModel:(id)model configuration:(id)configuration mirroringDelegateOptions:(id)options
 {
   v10.receiver = self;
   v10.super_class = PFCloudKitModelValidator;
   v8 = [(PFCloudKitModelValidator *)&v10 init];
   if (v8)
   {
-    v8->_model = a3;
-    v8->_configurationName = a4;
-    v8->_options = a5;
+    v8->_model = model;
+    v8->_configurationName = configuration;
+    v8->_options = options;
     *&v8->_skipValueTransformerValidation = 0;
     v8->_supportsMergeableTransformable = 0;
   }
@@ -42,7 +42,7 @@ void __57__PFCloudKitModelValidator_enforceUniqueConstraintChecks__block_invoke(
   return v8;
 }
 
-- (uint64_t)_validateManagedObjectModel:(void *)a3 error:
+- (uint64_t)_validateManagedObjectModel:(void *)model error:
 {
   v151 = *MEMORY[0x1E69E9840];
   if (!result)
@@ -60,7 +60,7 @@ void __57__PFCloudKitModelValidator_enforceUniqueConstraintChecks__block_invoke(
       if ([v5 count] || !objc_msgSend(*(v4 + 16), "length"))
       {
         v90 = v4;
-        v83 = a3;
+        modelCopy = model;
         v82 = objc_autoreleasePoolPush();
         v7 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v6];
         v81 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -114,13 +114,13 @@ void __57__PFCloudKitModelValidator_enforceUniqueConstraintChecks__block_invoke(
               if ([objc_msgSend(v16 "userInfo")])
               {
                 v19 = MEMORY[0x1E696AEC0];
-                v80 = [v16 name];
+                name = [v16 name];
                 v20 = v19;
                 v12 = v103;
-                [v86 addObject:{objc_msgSend(v20, "stringWithFormat:", @"%@: %@ cannot be applied to an entity type'", v80, @"NSPersistentCloudKitContainerEncryptedAttributeKey"}];
+                [v86 addObject:{objc_msgSend(v20, "stringWithFormat:", @"%@: %@ cannot be applied to an entity type'", name, @"NSPersistentCloudKitContainerEncryptedAttributeKey"}];
               }
 
-              v21 = [v16 attributesByName];
+              attributesByName = [v16 attributesByName];
               v129[0] = MEMORY[0x1E69E9820];
               v129[1] = 3221225472;
               v129[2] = __51__PFCloudKitModelValidator_validateEntities_error___block_invoke;
@@ -134,8 +134,8 @@ void __57__PFCloudKitModelValidator_enforceUniqueConstraintChecks__block_invoke(
               v129[10] = v17;
               v129[11] = v8;
               v129[12] = v95;
-              [v21 enumerateKeysAndObjectsUsingBlock:v129];
-              v22 = [v16 relationshipsByName];
+              [attributesByName enumerateKeysAndObjectsUsingBlock:v129];
+              relationshipsByName = [v16 relationshipsByName];
               v128[0] = MEMORY[0x1E69E9820];
               v128[1] = 3221225472;
               v128[2] = __51__PFCloudKitModelValidator_validateEntities_error___block_invoke_2;
@@ -149,7 +149,7 @@ void __57__PFCloudKitModelValidator_enforceUniqueConstraintChecks__block_invoke(
               v128[10] = v92;
               v128[11] = v94;
               v128[12] = v91;
-              [v22 enumerateKeysAndObjectsUsingBlock:v128];
+              [relationshipsByName enumerateKeysAndObjectsUsingBlock:v128];
               objc_opt_self();
               if (qword_1ED4BE8A0 != -1)
               {
@@ -158,14 +158,14 @@ void __57__PFCloudKitModelValidator_enforceUniqueConstraintChecks__block_invoke(
 
               if ((_MergedGlobals_63 & 1) == 0 && [objc_msgSend(v16 "uniquenessConstraints")])
               {
-                v23 = [v16 uniquenessConstraints];
+                uniquenessConstraints = [v16 uniquenessConstraints];
                 v127[0] = MEMORY[0x1E69E9820];
                 v127[1] = 3221225472;
                 v127[2] = __51__PFCloudKitModelValidator_validateEntities_error___block_invoke_3;
                 v127[3] = &unk_1E6EC1538;
                 v127[4] = v16;
                 v127[5] = v84;
-                [v23 enumerateObjectsUsingBlock:v127];
+                [uniquenessConstraints enumerateObjectsUsingBlock:v127];
               }
 
               if (qword_1ED4BE890 != -1)
@@ -358,14 +358,14 @@ void __57__PFCloudKitModelValidator_enforceUniqueConstraintChecks__block_invoke(
         if ([v85 count])
         {
           [v85 sortUsingSelector:sel_localizedCaseInsensitiveCompare_];
-          v50 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"CloudKit integration requires that all entities can be materialized in a CKRecord of less than %lu bytes. The following entities cannot:", 700000];
+          700000 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"CloudKit integration requires that all entities can be materialized in a CKRecord of less than %lu bytes. The following entities cannot:", 700000];
           v114[0] = MEMORY[0x1E69E9820];
           v114[1] = 3221225472;
           v114[2] = __51__PFCloudKitModelValidator_validateEntities_error___block_invoke_10;
           v114[3] = &unk_1E6EC1560;
-          v114[4] = v50;
+          v114[4] = 700000;
           [v85 enumerateObjectsUsingBlock:v114];
-          [v37 addObject:v50];
+          [v37 addObject:700000];
         }
 
         if ([v103 count])
@@ -487,20 +487,20 @@ void __57__PFCloudKitModelValidator_enforceUniqueConstraintChecks__block_invoke(
         if (v60)
         {
           v61 = v82;
-          a3 = v83;
+          model = modelCopy;
           if ([v37 count] < 2)
           {
-            v62 = [v37 lastObject];
+            lastObject = [v37 lastObject];
           }
 
           else
           {
-            v62 = [v37 componentsJoinedByString:@"\n"];
+            lastObject = [v37 componentsJoinedByString:@"\n"];
           }
 
           v72 = *MEMORY[0x1E696A250];
           v144 = *MEMORY[0x1E696A588];
-          v145 = v62;
+          v145 = lastObject;
           v71 = [MEMORY[0x1E696ABC0] errorWithDomain:v72 code:134060 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", &v145, &v144, 1)}];
 
           if (!v71)
@@ -534,7 +534,7 @@ void __57__PFCloudKitModelValidator_enforceUniqueConstraintChecks__block_invoke(
 
           v71 = 0;
           v61 = v82;
-          a3 = v83;
+          model = modelCopy;
         }
 
         v75 = v71;
@@ -589,10 +589,10 @@ void __57__PFCloudKitModelValidator_enforceUniqueConstraintChecks__block_invoke(
 LABEL_87:
   if (v71)
   {
-    if (a3)
+    if (model)
     {
       result = 0;
-      *a3 = v71;
+      *model = v71;
       goto LABEL_96;
     }
 

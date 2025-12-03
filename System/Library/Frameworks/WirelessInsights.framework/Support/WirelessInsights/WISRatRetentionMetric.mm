@@ -1,27 +1,27 @@
 @interface WISRatRetentionMetric
 + (id)getSharedInstance;
 - (WISRatRetentionMetric)init;
-- (id)CTCellularDataTechnologyToString:(int)a3;
-- (id)deriveRAT:(id)a3 stewieState:(id)a4 isSatelliteSystem:(BOOL)a5 airplaneModeActive:(BOOL)a6 displayStatus:(id)a7;
-- (id)deriveRegistrationStatus:(id)a3 airplaneModeActive:(BOOL)a4;
-- (id)extractCellInfo:(id)a3 error:(id *)a4;
-- (id)findContextsToDelete:(id)a3;
-- (id)getFrequencyRangeFromArfcn:(id)a3;
-- (id)getNSString:(const char *)a3;
-- (id)getRadioStateString:(id)a3;
-- (void)buildAndSubmitCAPayload:(id)a3 currentTime:(unint64_t)a4 changedFields:(id)a5;
-- (void)cellMonitorUpdate:(id)a3 info:(id)a4;
-- (void)currentDataSimChanged:(id)a3;
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4;
-- (void)handleUpdate:(id)a3 forKey:(int)a4 withState:(id)a5;
-- (void)initializeStateForContext:(id)a3 isDataPreferred:(BOOL)a4 currentTime:(unint64_t)a5;
+- (id)CTCellularDataTechnologyToString:(int)string;
+- (id)deriveRAT:(id)t stewieState:(id)state isSatelliteSystem:(BOOL)system airplaneModeActive:(BOOL)active displayStatus:(id)status;
+- (id)deriveRegistrationStatus:(id)status airplaneModeActive:(BOOL)active;
+- (id)extractCellInfo:(id)info error:(id *)error;
+- (id)findContextsToDelete:(id)delete;
+- (id)getFrequencyRangeFromArfcn:(id)arfcn;
+- (id)getNSString:(const char *)string;
+- (id)getRadioStateString:(id)string;
+- (void)buildAndSubmitCAPayload:(id)payload currentTime:(unint64_t)time changedFields:(id)fields;
+- (void)cellMonitorUpdate:(id)update info:(id)info;
+- (void)currentDataSimChanged:(id)changed;
+- (void)dataStatus:(id)status dataStatusInfo:(id)info;
+- (void)handleUpdate:(id)update forKey:(int)key withState:(id)state;
+- (void)initializeStateForContext:(id)context isDataPreferred:(BOOL)preferred currentTime:(unint64_t)time;
 - (void)populateSubscriptionContextsInUse;
-- (void)radioStateChangedTo:(id)a3;
-- (void)registrationStatusChanged:(id)a3 status:(id)a4;
-- (void)satelliteProvisioningStatusForContext:(id)a3 changedTo:(id)a4;
-- (void)setError:(id *)a3 code:(int64_t)a4 message:(id)a5;
-- (void)setLastKnownGCI:(id)a3 forPayload:(id)a4;
-- (void)stewieStateChangedTo:(id)a3;
+- (void)radioStateChangedTo:(id)to;
+- (void)registrationStatusChanged:(id)changed status:(id)status;
+- (void)satelliteProvisioningStatusForContext:(id)context changedTo:(id)to;
+- (void)setError:(id *)error code:(int64_t)code message:(id)message;
+- (void)setLastKnownGCI:(id)i forPayload:(id)payload;
+- (void)stewieStateChangedTo:(id)to;
 - (void)subscriptionInfoDidChange;
 @end
 
@@ -33,7 +33,7 @@
   block[1] = 3221225472;
   block[2] = sub_100131008;
   block[3] = &unk_1002AB480;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002D85F0 != -1)
   {
     dispatch_once(&qword_1002D85F0, block);
@@ -55,33 +55,33 @@
     [(WISRatRetentionMetric *)v2 setContextUUIDToStateMap:v3];
 
     [(WISRatRetentionMetric *)v2 setQueue:dispatch_queue_create("com.apple.wirelessinsightsd.RatRetentionMetric", 0)];
-    v4 = [(WISRatRetentionMetric *)v2 queue];
+    queue = [(WISRatRetentionMetric *)v2 queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100131178;
     block[3] = &unk_1002AB4D0;
     v5 = v2;
     v9 = v5;
-    dispatch_async(v4, block);
+    dispatch_async(queue, block);
     v6 = v5;
   }
 
   return v2;
 }
 
-- (id)deriveRegistrationStatus:(id)a3 airplaneModeActive:(BOOL)a4
+- (id)deriveRegistrationStatus:(id)status airplaneModeActive:(BOOL)active
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  activeCopy = active;
+  statusCopy = status;
+  v7 = statusCopy;
+  if (activeCopy)
   {
     v8 = [(WISRatRetentionMetric *)self getNSString:"AirplaneMode"];
   }
 
   else
   {
-    v8 = v6;
+    v8 = statusCopy;
   }
 
   v9 = v8;
@@ -89,12 +89,12 @@
   return v9;
 }
 
-- (id)deriveRAT:(id)a3 stewieState:(id)a4 isSatelliteSystem:(BOOL)a5 airplaneModeActive:(BOOL)a6 displayStatus:(id)a7
+- (id)deriveRAT:(id)t stewieState:(id)state isSatelliteSystem:(BOOL)system airplaneModeActive:(BOOL)active displayStatus:(id)status
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  if (a6)
+  tCopy = t;
+  stateCopy = state;
+  statusCopy = status;
+  if (active)
   {
     v15 = "AirplaneMode";
 LABEL_11:
@@ -102,8 +102,8 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  v16 = [v13 isStewieActive];
-  if (v16)
+  isStewieActive = [stateCopy isStewieActive];
+  if (isStewieActive)
   {
     v15 = "Satellite";
   }
@@ -113,42 +113,42 @@ LABEL_11:
     v15 = "LTE NTN";
   }
 
-  if ((v16 | a5))
+  if ((isStewieActive | system))
   {
     goto LABEL_11;
   }
 
-  if ([v14 isEqualToString:kCTRegistrationStatusEmergencyOnly])
+  if ([statusCopy isEqualToString:kCTRegistrationStatusEmergencyOnly])
   {
     v15 = "EmergencyOnly";
     goto LABEL_11;
   }
 
-  if ([v14 isEqualToString:kCTRegistrationStatusNotRegistered])
+  if ([statusCopy isEqualToString:kCTRegistrationStatusNotRegistered])
   {
     v15 = "NoService";
     goto LABEL_11;
   }
 
-  v17 = v12;
+  v17 = tCopy;
 LABEL_12:
   v18 = v17;
 
   return v18;
 }
 
-- (id)getRadioStateString:(id)a3
+- (id)getRadioStateString:(id)string
 {
-  v4 = a3;
-  v5 = [v4 intValue];
-  if (v5 >= 7)
+  stringCopy = string;
+  intValue = [stringCopy intValue];
+  if (intValue >= 7)
   {
     v6 = "Unknown";
   }
 
   else
   {
-    v6 = off_1002B3810[v5];
+    v6 = off_1002B3810[intValue];
   }
 
   v7 = [(WISRatRetentionMetric *)self getNSString:v6];
@@ -156,12 +156,12 @@ LABEL_12:
   return v7;
 }
 
-- (id)extractCellInfo:(id)a3 error:(id *)a4
+- (id)extractCellInfo:(id)info error:(id *)error
 {
-  v6 = a3;
-  v7 = [WISTelephonyUtils getServingCellInfo:v6];
-  v8 = [WISTelephonyUtils getBandFromCellInfo:v7 error:a4];
-  v9 = [WISTelephonyUtils getBandwidthFromCellInfo:v7 error:a4];
+  infoCopy = info;
+  v7 = [WISTelephonyUtils getServingCellInfo:infoCopy];
+  v8 = [WISTelephonyUtils getBandFromCellInfo:v7 error:error];
+  v9 = [WISTelephonyUtils getBandwidthFromCellInfo:v7 error:error];
   v10 = v9;
   if (v8)
   {
@@ -180,20 +180,20 @@ LABEL_12:
 
   else
   {
-    v13 = [WISTelephonyUtils getArfcnFromCellInfo:v7 error:a4];
-    if (*a4 || !v13)
+    v13 = [WISTelephonyUtils getArfcnFromCellInfo:v7 error:error];
+    if (*error || !v13)
     {
 
-      *a4 = 0;
+      *error = 0;
       v13 = &off_1002BF360;
     }
 
     v35 = v13;
     v14 = [(WISRatRetentionMetric *)self getNSString:"Unknown"];
-    v15 = [WISTelephonyUtils extractCellInfoValue:v7 key:kCTCellMonitorCellRadioAccessTechnology expectedClass:objc_opt_class() error:a4];
+    v15 = [WISTelephonyUtils extractCellInfoValue:v7 key:kCTCellMonitorCellRadioAccessTechnology expectedClass:objc_opt_class() error:error];
     v12 = 0;
     v16 = &off_1002BF360;
-    if (*a4 || !v15)
+    if (*error || !v15)
     {
       v21 = &off_1002BF360;
     }
@@ -225,14 +225,14 @@ LABEL_12:
           }
         }
 
-        v19 = [WISTelephonyUtils getMAVNRNSANeighborCellInfo:v6];
+        v19 = [WISTelephonyUtils getMAVNRNSANeighborCellInfo:infoCopy];
         if (v19)
         {
-          v20 = [WISTelephonyUtils getBandwidthFromCellInfo:v19 error:a4];
-          if (*a4 || !v20)
+          v20 = [WISTelephonyUtils getBandwidthFromCellInfo:v19 error:error];
+          if (*error || !v20)
           {
 
-            *a4 = 0;
+            *error = 0;
             v31 = &off_1002BF360;
           }
 
@@ -241,11 +241,11 @@ LABEL_12:
             v31 = v20;
           }
 
-          v23 = [WISTelephonyUtils getArfcnFromCellInfo:v19 error:a4];
-          if (*a4 || !v23)
+          v23 = [WISTelephonyUtils getArfcnFromCellInfo:v19 error:error];
+          if (*error || !v23)
           {
 
-            *a4 = 0;
+            *error = 0;
           }
 
           else
@@ -277,19 +277,19 @@ LABEL_12:
         v31 = &off_1002BF360;
       }
 
-      v25 = [WISTelephonyUtils getGciFromCellInfo:v7 error:a4];
+      v25 = [WISTelephonyUtils getGciFromCellInfo:v7 error:error];
       v26 = v25;
-      if (*a4)
+      if (*error)
       {
 
         v26 = 0;
-        *a4 = 0;
+        *error = 0;
       }
 
       v12 = [[ExtractedCellInfo alloc] init:v30 band:v8 frequencyRange:v32 nrnsaFrequencyRange:v34 bandwidth:v10 nrnsaBandwidth:v31 arfcn:v35 nrnsaArfcn:v16 gci:v26];
       if (!v12)
       {
-        [(WISRatRetentionMetric *)self setError:a4 code:0 message:@"Could not allocate extracted cell info object"];
+        [(WISRatRetentionMetric *)self setError:error code:0 message:@"Could not allocate extracted cell info object"];
       }
 
       v15 = v33;
@@ -303,10 +303,10 @@ LABEL_12:
 
 - (void)populateSubscriptionContextsInUse
 {
-  v3 = [(WISRatRetentionMetric *)self ctRelay];
-  v4 = [v3 coreTelephonyClient];
+  ctRelay = [(WISRatRetentionMetric *)self ctRelay];
+  coreTelephonyClient = [ctRelay coreTelephonyClient];
   v32 = 0;
-  v23 = [v4 getSubscriptionInfoWithError:&v32];
+  v23 = [coreTelephonyClient getSubscriptionInfoWithError:&v32];
   v24 = v32;
 
   if (v24)
@@ -321,15 +321,15 @@ LABEL_12:
 
   else
   {
-    v5 = [v23 subscriptionsInUse];
-    v22 = [WISTelephonyUtils sanitizedSubscriptions:v5];
+    subscriptionsInUse = [v23 subscriptionsInUse];
+    v22 = [WISTelephonyUtils sanitizedSubscriptions:subscriptionsInUse];
 
     if (v22)
     {
-      v6 = [(WISRatRetentionMetric *)self ctRelay];
-      v7 = [v6 coreTelephonyClient];
+      ctRelay2 = [(WISRatRetentionMetric *)self ctRelay];
+      coreTelephonyClient2 = [ctRelay2 coreTelephonyClient];
       v31 = 0;
-      v21 = [v7 getCurrentDataSubscriptionContextSync:&v31];
+      v21 = [coreTelephonyClient2 getCurrentDataSubscriptionContextSync:&v31];
       v24 = v31;
 
       if (v24)
@@ -345,7 +345,7 @@ LABEL_12:
       else
       {
         [(WISRatRetentionMetric *)self setIsDataInitSuccess:1];
-        v26 = [v21 uuid];
+        uuid = [v21 uuid];
         v25 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
         v20 = [(WISRatRetentionMetric *)self findContextsToDelete:v22];
         if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
@@ -353,8 +353,8 @@ LABEL_12:
           sub_10020A4C4(v34, [v20 count], objc_msgSend(v22, "count"));
         }
 
-        v8 = [(WISRatRetentionMetric *)self contextUUIDToStateMap];
-        [v8 removeObjectsForKeys:v20];
+        contextUUIDToStateMap = [(WISRatRetentionMetric *)self contextUUIDToStateMap];
+        [contextUUIDToStateMap removeObjectsForKeys:v20];
 
         v29 = 0u;
         v30 = 0u;
@@ -376,9 +376,9 @@ LABEL_12:
               }
 
               v13 = *(*(&v27 + 1) + 8 * v12);
-              v14 = [(WISRatRetentionMetric *)self contextUUIDToStateMap];
-              v15 = [v13 uuid];
-              v16 = [v14 objectForKey:v15];
+              contextUUIDToStateMap2 = [(WISRatRetentionMetric *)self contextUUIDToStateMap];
+              uuid2 = [v13 uuid];
+              v16 = [contextUUIDToStateMap2 objectForKey:uuid2];
               v17 = v16 == 0;
 
               v18 = os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG);
@@ -391,8 +391,8 @@ LABEL_12:
                   sub_10020A56C();
                 }
 
-                v19 = [v13 uuid];
-                -[WISRatRetentionMetric initializeStateForContext:isDataPreferred:currentTime:](self, "initializeStateForContext:isDataPreferred:currentTime:", v13, [v26 isEqual:v19], v25);
+                uuid3 = [v13 uuid];
+                -[WISRatRetentionMetric initializeStateForContext:isDataPreferred:currentTime:](self, "initializeStateForContext:isDataPreferred:currentTime:", v13, [uuid isEqual:uuid3], v25);
               }
 
               else if (v18)
@@ -426,11 +426,11 @@ LABEL_12:
   }
 }
 
-- (void)buildAndSubmitCAPayload:(id)a3 currentTime:(unint64_t)a4 changedFields:(id)a5
+- (void)buildAndSubmitCAPayload:(id)payload currentTime:(unint64_t)time changedFields:(id)fields
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 startTime] > a4)
+  payloadCopy = payload;
+  fieldsCopy = fields;
+  if ([payloadCopy startTime] > time)
   {
     if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
     {
@@ -440,7 +440,7 @@ LABEL_12:
     goto LABEL_19;
   }
 
-  v10 = a4 - [v8 startTime];
+  v10 = time - [payloadCopy startTime];
   v11 = v10 / 0xF4240;
   if (v10 <= 0x5F5E0FF)
   {
@@ -452,24 +452,24 @@ LABEL_12:
     goto LABEL_19;
   }
 
-  v12 = [v8 displayStatus];
-  v90 = [(WISRatRetentionMetric *)self deriveRegistrationStatus:v12 airplaneModeActive:[(WISRatRetentionMetric *)self airplaneModeActive]];
+  displayStatus = [payloadCopy displayStatus];
+  v90 = [(WISRatRetentionMetric *)self deriveRegistrationStatus:displayStatus airplaneModeActive:[(WISRatRetentionMetric *)self airplaneModeActive]];
 
-  v13 = [v8 rat];
-  v14 = [(WISRatRetentionMetric *)self stewieState];
-  v15 = [v8 isSatelliteSystem];
-  v16 = [(WISRatRetentionMetric *)self airplaneModeActive];
-  v17 = [v8 displayStatus];
-  v18 = [(WISRatRetentionMetric *)self deriveRAT:v13 stewieState:v14 isSatelliteSystem:v15 airplaneModeActive:v16 displayStatus:v17];
+  v13 = [payloadCopy rat];
+  stewieState = [(WISRatRetentionMetric *)self stewieState];
+  isSatelliteSystem = [payloadCopy isSatelliteSystem];
+  airplaneModeActive = [(WISRatRetentionMetric *)self airplaneModeActive];
+  displayStatus2 = [payloadCopy displayStatus];
+  v18 = [(WISRatRetentionMetric *)self deriveRAT:v13 stewieState:stewieState isSatelliteSystem:isSatelliteSystem airplaneModeActive:airplaneModeActive displayStatus:displayStatus2];
 
-  v19 = [v8 dataConnectionType];
-  v20 = [(WISRatRetentionMetric *)self stewieState];
-  v88 = [TelephonyStateRelay deriveDataIcon:v19 stewieState:v20];
+  dataConnectionType = [payloadCopy dataConnectionType];
+  stewieState2 = [(WISRatRetentionMetric *)self stewieState];
+  v88 = [TelephonyStateRelay deriveDataIcon:dataConnectionType stewieState:stewieState2];
 
-  v21 = [(WISRatRetentionMetric *)self radioState];
-  v89 = [(WISRatRetentionMetric *)self getRadioStateString:v21];
+  radioState = [(WISRatRetentionMetric *)self radioState];
+  v89 = [(WISRatRetentionMetric *)self getRadioStateString:radioState];
 
-  v22 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 isSatelliteProvisioned]);
+  v22 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [payloadCopy isSatelliteProvisioned]);
   v23 = objc_alloc_init(NSMutableDictionary);
   v24 = [(WISRatRetentionMetric *)self getNSString:"registration_state"];
   [v23 setObject:v90 forKey:v24];
@@ -483,53 +483,53 @@ LABEL_12:
   v27 = [(WISRatRetentionMetric *)self getNSString:"new_radio_access_technology"];
   [v23 setObject:v18 forKey:v27];
 
-  v28 = [v8 dataBearerTechnology];
+  dataBearerTechnology = [payloadCopy dataBearerTechnology];
   v29 = [(WISRatRetentionMetric *)self getNSString:"data_bearer_technology"];
-  [v23 setObject:v28 forKey:v29];
+  [v23 setObject:dataBearerTechnology forKey:v29];
 
-  v30 = [v8 dataBearerTechnology];
+  dataBearerTechnology2 = [payloadCopy dataBearerTechnology];
   v31 = [(WISRatRetentionMetric *)self getNSString:"new_data_bearer_technology"];
-  [v23 setObject:v30 forKey:v31];
+  [v23 setObject:dataBearerTechnology2 forKey:v31];
 
-  v32 = [v8 band];
+  band = [payloadCopy band];
   v33 = [(WISRatRetentionMetric *)self getNSString:"band"];
-  [v23 setObject:v32 forKey:v33];
+  [v23 setObject:band forKey:v33];
 
-  v34 = [v8 band];
+  band2 = [payloadCopy band];
   v35 = [(WISRatRetentionMetric *)self getNSString:"new_band"];
-  [v23 setObject:v34 forKey:v35];
+  [v23 setObject:band2 forKey:v35];
 
-  v36 = [v8 bandwidth];
+  bandwidth = [payloadCopy bandwidth];
   v37 = [(WISRatRetentionMetric *)self getNSString:"bandwidth"];
-  [v23 setObject:v36 forKey:v37];
+  [v23 setObject:bandwidth forKey:v37];
 
-  v38 = [v8 bandwidth];
+  bandwidth2 = [payloadCopy bandwidth];
   v39 = [(WISRatRetentionMetric *)self getNSString:"new_bandwidth"];
-  [v23 setObject:v38 forKey:v39];
+  [v23 setObject:bandwidth2 forKey:v39];
 
-  v40 = [v8 frequencyRange];
+  frequencyRange = [payloadCopy frequencyRange];
   v41 = [(WISRatRetentionMetric *)self getNSString:"frequency_range"];
-  [v23 setObject:v40 forKey:v41];
+  [v23 setObject:frequencyRange forKey:v41];
 
-  v42 = [v8 frequencyRange];
+  frequencyRange2 = [payloadCopy frequencyRange];
   v43 = [(WISRatRetentionMetric *)self getNSString:"new_frequency_range"];
-  [v23 setObject:v42 forKey:v43];
+  [v23 setObject:frequencyRange2 forKey:v43];
 
-  v44 = [v8 arfcn];
+  arfcn = [payloadCopy arfcn];
   v45 = [(WISRatRetentionMetric *)self getNSString:"arfcn"];
-  [v23 setObject:v44 forKey:v45];
+  [v23 setObject:arfcn forKey:v45];
 
-  v46 = [v8 arfcn];
+  arfcn2 = [payloadCopy arfcn];
   v47 = [(WISRatRetentionMetric *)self getNSString:"new_arfcn"];
-  [v23 setObject:v46 forKey:v47];
+  [v23 setObject:arfcn2 forKey:v47];
 
-  v48 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v8 dataPreferred]);
+  v48 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [payloadCopy dataPreferred]);
   v49 = [(WISRatRetentionMetric *)self getNSString:"is_data_preferred"];
   [v23 setObject:v48 forKey:v49];
 
-  v50 = [v8 subsId];
+  subsId = [payloadCopy subsId];
   v51 = [(WISRatRetentionMetric *)self getNSString:"subs_id"];
-  [v23 setObject:v50 forKey:v51];
+  [v23 setObject:subsId forKey:v51];
 
   v52 = [(WISRatRetentionMetric *)self getNSString:"baseband_operating_mode"];
   [v23 setObject:v89 forKey:v52];
@@ -556,52 +556,52 @@ LABEL_12:
   v60 = [(WISRatRetentionMetric *)self getNSString:"duration_ms"];
   [v23 setObject:v59 forKey:v60];
 
-  v61 = [v8 dataBearerTechnology];
+  dataBearerTechnology3 = [payloadCopy dataBearerTechnology];
   v62 = [(WISRatRetentionMetric *)self getNSString:"NRNSA"];
-  LODWORD(v19) = [v61 isEqualToString:v62];
+  LODWORD(dataConnectionType) = [dataBearerTechnology3 isEqualToString:v62];
 
-  if (v19)
+  if (dataConnectionType)
   {
-    v63 = [v8 nrnsaBandwidth];
+    nrnsaBandwidth = [payloadCopy nrnsaBandwidth];
     v64 = [(WISRatRetentionMetric *)self getNSString:"bandwidth"];
-    [v23 setObject:v63 forKey:v64];
+    [v23 setObject:nrnsaBandwidth forKey:v64];
 
-    v65 = [v8 nrnsaBandwidth];
+    nrnsaBandwidth2 = [payloadCopy nrnsaBandwidth];
     v66 = [(WISRatRetentionMetric *)self getNSString:"new_bandwidth"];
-    [v23 setObject:v65 forKey:v66];
+    [v23 setObject:nrnsaBandwidth2 forKey:v66];
 
-    v67 = [v8 nrnsaArfcn];
+    nrnsaArfcn = [payloadCopy nrnsaArfcn];
     v68 = [(WISRatRetentionMetric *)self getNSString:"arfcn"];
-    [v23 setObject:v67 forKey:v68];
+    [v23 setObject:nrnsaArfcn forKey:v68];
 
-    v69 = [v8 nrnsaArfcn];
+    nrnsaArfcn2 = [payloadCopy nrnsaArfcn];
     v70 = [(WISRatRetentionMetric *)self getNSString:"new_arfcn"];
-    [v23 setObject:v69 forKey:v70];
+    [v23 setObject:nrnsaArfcn2 forKey:v70];
 
-    v71 = [v8 nrnsaFrequencyRange];
+    nrnsaFrequencyRange = [payloadCopy nrnsaFrequencyRange];
     v72 = [(WISRatRetentionMetric *)self getNSString:"frequency_range"];
-    [v23 setObject:v71 forKey:v72];
+    [v23 setObject:nrnsaFrequencyRange forKey:v72];
 
-    v73 = [v8 nrnsaFrequencyRange];
+    nrnsaFrequencyRange2 = [payloadCopy nrnsaFrequencyRange];
     v74 = [(WISRatRetentionMetric *)self getNSString:"new_frequency_range"];
-    [v23 setObject:v73 forKey:v74];
+    [v23 setObject:nrnsaFrequencyRange2 forKey:v74];
   }
 
-  [v23 addEntriesFromDictionary:v9];
-  v75 = [(WISRatRetentionMetric *)self getNSString:"new_registration_state"];
-  v76 = [v23 valueForKey:v75];
+  [v23 addEntriesFromDictionary:fieldsCopy];
+  lastKnownGci = [(WISRatRetentionMetric *)self getNSString:"new_registration_state"];
+  v76 = [v23 valueForKey:lastKnownGci];
   if (![v76 isEqualToString:kCTRegistrationStatusNotRegistered])
   {
 
     goto LABEL_13;
   }
 
-  v77 = [(WISRatRetentionMetric *)self airplaneModeActive];
+  airplaneModeActive2 = [(WISRatRetentionMetric *)self airplaneModeActive];
 
-  if ((v77 & 1) == 0)
+  if ((airplaneModeActive2 & 1) == 0)
   {
-    v75 = [v8 lastKnownGci];
-    [(WISRatRetentionMetric *)self setLastKnownGCI:v75 forPayload:v23];
+    lastKnownGci = [payloadCopy lastKnownGci];
+    [(WISRatRetentionMetric *)self setLastKnownGCI:lastKnownGci forPayload:v23];
 LABEL_13:
   }
 
@@ -637,146 +637,146 @@ LABEL_13:
 LABEL_19:
 }
 
-- (void)stewieStateChangedTo:(id)a3
+- (void)stewieStateChangedTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
   {
     sub_10020A6AC();
   }
 
   v5 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
-  v6 = [(WISRatRetentionMetric *)self contextUUIDToStateMap];
+  contextUUIDToStateMap = [(WISRatRetentionMetric *)self contextUUIDToStateMap];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100132E8C;
   v8[3] = &unk_1002B3778;
   v8[4] = self;
-  v7 = v4;
+  v7 = toCopy;
   v9 = v7;
   v10 = v5;
-  [v6 enumerateKeysAndObjectsUsingBlock:v8];
+  [contextUUIDToStateMap enumerateKeysAndObjectsUsingBlock:v8];
 
   [(WISRatRetentionMetric *)self setStewieState:v7];
 }
 
-- (void)radioStateChangedTo:(id)a3
+- (void)radioStateChangedTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
   {
     sub_10020A71C();
   }
 
   v5 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
-  v6 = [(WISRatRetentionMetric *)self contextUUIDToStateMap];
+  contextUUIDToStateMap = [(WISRatRetentionMetric *)self contextUUIDToStateMap];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001331EC;
   v8[3] = &unk_1002B3778;
   v8[4] = self;
   v10 = v5;
-  v7 = v4;
+  v7 = toCopy;
   v9 = v7;
-  [v6 enumerateKeysAndObjectsUsingBlock:v8];
+  [contextUUIDToStateMap enumerateKeysAndObjectsUsingBlock:v8];
 
   [(WISRatRetentionMetric *)self setRadioState:v7];
 }
 
-- (void)handleUpdate:(id)a3 forKey:(int)a4 withState:(id)a5
+- (void)handleUpdate:(id)update forKey:(int)key withState:(id)state
 {
-  v10 = a3;
-  v8 = a5;
-  v9 = v8;
-  if (a4 > 7)
+  updateCopy = update;
+  stateCopy = state;
+  v9 = stateCopy;
+  if (key > 7)
   {
-    if (a4 <= 12)
+    if (key <= 12)
     {
-      if (a4 == 8)
+      if (key == 8)
       {
-        [(WISRatRetentionMetric *)self registrationStatusChanged:v10 status:v8];
+        [(WISRatRetentionMetric *)self registrationStatusChanged:updateCopy status:stateCopy];
       }
 
-      else if (a4 == 12)
+      else if (key == 12)
       {
-        [(WISRatRetentionMetric *)self stewieStateChangedTo:v8];
+        [(WISRatRetentionMetric *)self stewieStateChangedTo:stateCopy];
       }
     }
 
     else
     {
-      switch(a4)
+      switch(key)
       {
         case 13:
-          -[WISRatRetentionMetric satelliteRegistrationStatusForContext:changedTo:](self, "satelliteRegistrationStatusForContext:changedTo:", v10, [v8 BOOLValue]);
+          -[WISRatRetentionMetric satelliteRegistrationStatusForContext:changedTo:](self, "satelliteRegistrationStatusForContext:changedTo:", updateCopy, [stateCopy BOOLValue]);
           break;
         case 14:
-          [(WISRatRetentionMetric *)self radioStateChangedTo:v8];
+          [(WISRatRetentionMetric *)self radioStateChangedTo:stateCopy];
           break;
         case 15:
-          [(WISRatRetentionMetric *)self satelliteProvisioningStatusForContext:v10 changedTo:v8];
+          [(WISRatRetentionMetric *)self satelliteProvisioningStatusForContext:updateCopy changedTo:stateCopy];
           break;
       }
     }
   }
 
-  else if (a4 <= 3)
+  else if (key <= 3)
   {
-    if (a4)
+    if (key)
     {
-      if (a4 == 3)
+      if (key == 3)
       {
-        [(WISRatRetentionMetric *)self currentDataSimChanged:v10];
+        [(WISRatRetentionMetric *)self currentDataSimChanged:updateCopy];
       }
     }
 
     else
     {
-      [(WISRatRetentionMetric *)self cellMonitorUpdate:v10 info:v8];
+      [(WISRatRetentionMetric *)self cellMonitorUpdate:updateCopy info:stateCopy];
     }
   }
 
   else
   {
-    switch(a4)
+    switch(key)
     {
       case 4:
-        [(WISRatRetentionMetric *)self dataStatus:v10 dataStatusInfo:v8];
+        [(WISRatRetentionMetric *)self dataStatus:updateCopy dataStatusInfo:stateCopy];
         break;
       case 6:
         [(WISRatRetentionMetric *)self subscriptionInfoDidChange];
         break;
       case 7:
-        -[WISRatRetentionMetric airplaneModeStatusChanged:](self, "airplaneModeStatusChanged:", [v8 BOOLValue]);
+        -[WISRatRetentionMetric airplaneModeStatusChanged:](self, "airplaneModeStatusChanged:", [stateCopy BOOLValue]);
         break;
     }
   }
 }
 
-- (void)currentDataSimChanged:(id)a3
+- (void)currentDataSimChanged:(id)changed
 {
-  v4 = a3;
-  if ([WISTelephonyUtils isValidContext:v4])
+  changedCopy = changed;
+  if ([WISTelephonyUtils isValidContext:changedCopy])
   {
     if ([(WISRatRetentionMetric *)self isDataInitSuccess])
     {
       v5 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
       if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
       {
-        [v4 uuid];
+        [changedCopy uuid];
         objc_claimAutoreleasedReturnValue();
         sub_10020A854();
       }
 
-      v6 = [(WISRatRetentionMetric *)self contextUUIDToStateMap];
+      contextUUIDToStateMap = [(WISRatRetentionMetric *)self contextUUIDToStateMap];
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_100133A24;
       v9[3] = &unk_1002B3778;
       v9[4] = self;
       v11 = v5;
-      v10 = v4;
-      [v6 enumerateKeysAndObjectsUsingBlock:v9];
+      v10 = changedCopy;
+      [contextUUIDToStateMap enumerateKeysAndObjectsUsingBlock:v9];
     }
 
     else
@@ -784,9 +784,9 @@ LABEL_19:
       v7 = *(qword_1002DBE98 + 48);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v8 = [v4 uuid];
+        uuid = [changedCopy uuid];
         *buf = 138412290;
-        v13 = v8;
+        v13 = uuid;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "RatRetentionMetric:#I Current data context changed to %@, but we did not successfully initialize. Running initialization", buf, 0xCu);
       }
 
@@ -795,12 +795,12 @@ LABEL_19:
   }
 }
 
-- (void)dataStatus:(id)a3 dataStatusInfo:(id)a4
+- (void)dataStatus:(id)status dataStatusInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [WISTelephonyUtils isValidContext:v6];
-  if (v7)
+  statusCopy = status;
+  infoCopy = info;
+  v8 = [WISTelephonyUtils isValidContext:statusCopy];
+  if (infoCopy)
   {
     v9 = v8;
   }
@@ -812,15 +812,15 @@ LABEL_19:
 
   if (v9)
   {
-    v10 = -[WISRatRetentionMetric CTCellularDataTechnologyToString:](self, "CTCellularDataTechnologyToString:", [v7 dataBearerTechnology]);
-    v11 = [WISSystemStatusSimulacrum deriveConnectionTypeForDataStatus:v7];
+    v10 = -[WISRatRetentionMetric CTCellularDataTechnologyToString:](self, "CTCellularDataTechnologyToString:", [infoCopy dataBearerTechnology]);
+    v11 = [WISSystemStatusSimulacrum deriveConnectionTypeForDataStatus:infoCopy];
     v12 = *(qword_1002DBE98 + 48);
     if (!v10)
     {
       if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_ERROR))
       {
-        [v7 dataBearerTechnology];
-        [v6 uuid];
+        [infoCopy dataBearerTechnology];
+        [statusCopy uuid];
         objc_claimAutoreleasedReturnValue();
         sub_10020A920();
       }
@@ -831,9 +831,9 @@ LABEL_19:
     v13 = v11;
     if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
     {
-      v36 = [v6 uuid];
+      uuid = [statusCopy uuid];
       *buf = 138412802;
-      v39 = v36;
+      v39 = uuid;
       v40 = 2112;
       v41 = v10;
       v42 = 2048;
@@ -841,15 +841,15 @@ LABEL_19:
       _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "RatRetentionMetric:#D Data status of context %@ changed. New Data Bearer Technology: %@, new data connection type %lu", buf, 0x20u);
     }
 
-    v14 = [(WISRatRetentionMetric *)self contextUUIDToStateMap];
-    v15 = [v6 uuid];
-    v16 = [v14 objectForKey:v15];
+    contextUUIDToStateMap = [(WISRatRetentionMetric *)self contextUUIDToStateMap];
+    uuid2 = [statusCopy uuid];
+    v16 = [contextUUIDToStateMap objectForKey:uuid2];
 
     if (!v16)
     {
       if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
       {
-        [v6 uuid];
+        [statusCopy uuid];
         objc_claimAutoreleasedReturnValue();
         sub_10020A8DC();
       }
@@ -857,8 +857,8 @@ LABEL_19:
       goto LABEL_24;
     }
 
-    v17 = [v16 dataBearerTechnology];
-    if ([v17 isEqualToString:v10])
+    dataBearerTechnology = [v16 dataBearerTechnology];
+    if ([dataBearerTechnology isEqualToString:v10])
     {
       v18 = [v16 dataConnectionType] == v13;
 
@@ -866,7 +866,7 @@ LABEL_19:
       {
         if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
         {
-          [v6 uuid];
+          [statusCopy uuid];
           objc_claimAutoreleasedReturnValue();
           sub_10020A898();
         }
@@ -890,36 +890,36 @@ LABEL_25:
       v21 = [(WISRatRetentionMetric *)self getNSString:"new_data_bearer_technology"];
       [v20 setObject:v10 forKey:v21];
 
-      v22 = [(WISRatRetentionMetric *)self stewieState];
-      v23 = [TelephonyStateRelay deriveDataIcon:v13 stewieState:v22];
+      stewieState = [(WISRatRetentionMetric *)self stewieState];
+      v23 = [TelephonyStateRelay deriveDataIcon:v13 stewieState:stewieState];
       v24 = [(WISRatRetentionMetric *)self getNSString:"new_cellular_icon"];
       [v20 setObject:v23 forKey:v24];
 
       v25 = [(WISRatRetentionMetric *)self getNSString:"NRNSA"];
-      LODWORD(v22) = [v10 isEqualToString:v25];
+      LODWORD(stewieState) = [v10 isEqualToString:v25];
 
-      if (v22)
+      if (stewieState)
       {
-        v26 = [v16 nrnsaBandwidth];
+        nrnsaBandwidth = [v16 nrnsaBandwidth];
         v27 = [(WISRatRetentionMetric *)self getNSString:"new_bandwidth"];
-        [v20 setObject:v26 forKey:v27];
+        [v20 setObject:nrnsaBandwidth forKey:v27];
 
-        v28 = [v16 nrnsaArfcn];
+        nrnsaArfcn = [v16 nrnsaArfcn];
         v29 = [(WISRatRetentionMetric *)self getNSString:"new_arfcn"];
-        [v20 setObject:v28 forKey:v29];
+        [v20 setObject:nrnsaArfcn forKey:v29];
 
         [v16 nrnsaFrequencyRange];
       }
 
       else
       {
-        v32 = [v16 bandwidth];
+        bandwidth = [v16 bandwidth];
         v33 = [(WISRatRetentionMetric *)self getNSString:"new_bandwidth"];
-        [v20 setObject:v32 forKey:v33];
+        [v20 setObject:bandwidth forKey:v33];
 
-        v34 = [v16 arfcn];
+        arfcn = [v16 arfcn];
         v35 = [(WISRatRetentionMetric *)self getNSString:"new_arfcn"];
-        [v20 setObject:v34 forKey:v35];
+        [v20 setObject:arfcn forKey:v35];
 
         [v16 frequencyRange];
       }
@@ -940,12 +940,12 @@ LABEL_25:
 LABEL_26:
 }
 
-- (void)cellMonitorUpdate:(id)a3 info:(id)a4
+- (void)cellMonitorUpdate:(id)update info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [WISTelephonyUtils isValidContext:v6];
-  if (v7)
+  updateCopy = update;
+  infoCopy = info;
+  v8 = [WISTelephonyUtils isValidContext:updateCopy];
+  if (infoCopy)
   {
     v9 = v8;
   }
@@ -959,20 +959,20 @@ LABEL_26:
   {
     if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
     {
-      [v6 uuid];
+      [updateCopy uuid];
       objc_claimAutoreleasedReturnValue();
       sub_10020A970();
     }
 
-    v10 = [(WISRatRetentionMetric *)self contextUUIDToStateMap];
-    v11 = [v6 uuid];
-    v12 = [v10 objectForKey:v11];
+    contextUUIDToStateMap = [(WISRatRetentionMetric *)self contextUUIDToStateMap];
+    uuid = [updateCopy uuid];
+    v12 = [contextUUIDToStateMap objectForKey:uuid];
 
     if (!v12)
     {
       if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
       {
-        [v6 uuid];
+        [updateCopy uuid];
         objc_claimAutoreleasedReturnValue();
         sub_10020AAF4();
       }
@@ -981,13 +981,13 @@ LABEL_26:
     }
 
     v73 = 0;
-    v13 = [(WISRatRetentionMetric *)self extractCellInfo:v7 error:&v73];
+    v13 = [(WISRatRetentionMetric *)self extractCellInfo:infoCopy error:&v73];
     v72 = v73;
     if (v72 || !v13)
     {
       if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_ERROR))
       {
-        [v6 uuid];
+        [updateCopy uuid];
         objc_claimAutoreleasedReturnValue();
         [v72 localizedDescription];
         objc_claimAutoreleasedReturnValue();
@@ -1004,7 +1004,7 @@ LABEL_26:
     {
       if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
       {
-        [v6 uuid];
+        [updateCopy uuid];
         objc_claimAutoreleasedReturnValue();
         [v13 gci];
         objc_claimAutoreleasedReturnValue();
@@ -1016,11 +1016,11 @@ LABEL_26:
     }
 
     v17 = [v13 rat];
-    v18 = [(WISRatRetentionMetric *)self stewieState];
-    v19 = [v12 isSatelliteSystem];
-    v20 = [(WISRatRetentionMetric *)self airplaneModeActive];
-    v21 = [v12 displayStatus];
-    v71 = [(WISRatRetentionMetric *)self deriveRAT:v17 stewieState:v18 isSatelliteSystem:v19 airplaneModeActive:v20 displayStatus:v21];
+    stewieState = [(WISRatRetentionMetric *)self stewieState];
+    isSatelliteSystem = [v12 isSatelliteSystem];
+    airplaneModeActive = [(WISRatRetentionMetric *)self airplaneModeActive];
+    displayStatus = [v12 displayStatus];
+    v71 = [(WISRatRetentionMetric *)self deriveRAT:v17 stewieState:stewieState isSatelliteSystem:isSatelliteSystem airplaneModeActive:airplaneModeActive displayStatus:displayStatus];
 
     v70 = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW);
     v22 = [v12 rat];
@@ -1035,38 +1035,38 @@ LABEL_26:
       }
     }
 
-    v25 = [v12 band];
-    v26 = [v13 band];
-    if ([v25 isEqual:v26])
+    band = [v12 band];
+    band2 = [v13 band];
+    if ([band isEqual:band2])
     {
-      v68 = [v12 frequencyRange];
-      v67 = v25;
-      v66 = [v13 frequencyRange];
-      if ([v68 isEqual:?])
+      frequencyRange = [v12 frequencyRange];
+      v67 = band;
+      frequencyRange2 = [v13 frequencyRange];
+      if ([frequencyRange isEqual:?])
       {
-        v65 = [v12 bandwidth];
-        v64 = [v13 bandwidth];
-        if ([v65 isEqual:?])
+        bandwidth = [v12 bandwidth];
+        bandwidth2 = [v13 bandwidth];
+        if ([bandwidth isEqual:?])
         {
-          v63 = [v12 arfcn];
-          v62 = [v13 arfcn];
-          if ([v63 isEqual:?])
+          arfcn = [v12 arfcn];
+          arfcn2 = [v13 arfcn];
+          if ([arfcn isEqual:?])
           {
-            v61 = [v12 dataBearerTechnology];
+            dataBearerTechnology = [v12 dataBearerTechnology];
             v60 = [(WISRatRetentionMetric *)self getNSString:"NRNSA"];
-            if ([v61 isEqualToString:?])
+            if ([dataBearerTechnology isEqualToString:?])
             {
-              v59 = [v12 nrnsaBandwidth];
-              v58 = [v13 nrnsaBandwidth];
-              if ([v59 isEqual:?])
+              nrnsaBandwidth = [v12 nrnsaBandwidth];
+              nrnsaBandwidth2 = [v13 nrnsaBandwidth];
+              if ([nrnsaBandwidth isEqual:?])
               {
-                v57 = [v12 nrnsaArfcn];
-                v56 = [v13 nrnsaArfcn];
-                if ([v57 isEqual:?])
+                nrnsaArfcn = [v12 nrnsaArfcn];
+                nrnsaArfcn2 = [v13 nrnsaArfcn];
+                if ([nrnsaArfcn isEqual:?])
                 {
-                  v55 = [v12 nrnsaFrequencyRange];
-                  v27 = [v13 nrnsaFrequencyRange];
-                  v54 = [v55 isEqualToString:v27];
+                  nrnsaFrequencyRange = [v12 nrnsaFrequencyRange];
+                  nrnsaFrequencyRange2 = [v13 nrnsaFrequencyRange];
+                  v54 = [nrnsaFrequencyRange isEqualToString:nrnsaFrequencyRange2];
 
                   v28 = v54 ^ 1;
                 }
@@ -1114,7 +1114,7 @@ LABEL_26:
       {
         if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
         {
-          [v6 uuid];
+          [updateCopy uuid];
           objc_claimAutoreleasedReturnValue();
           sub_10020AA64();
         }
@@ -1125,7 +1125,7 @@ LABEL_26:
 LABEL_45:
       if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
       {
-        [v6 uuid];
+        [updateCopy uuid];
         objc_claimAutoreleasedReturnValue();
         sub_10020AAA8();
       }
@@ -1136,36 +1136,36 @@ LABEL_45:
         v30 = [(WISRatRetentionMetric *)self getNSString:"new_radio_access_technology"];
         [v29 setObject:v71 forKey:v30];
 
-        v31 = [v13 band];
+        band3 = [v13 band];
         v32 = [(WISRatRetentionMetric *)self getNSString:"new_band"];
-        [v29 setObject:v31 forKey:v32];
+        [v29 setObject:band3 forKey:v32];
 
-        v33 = [v12 dataBearerTechnology];
+        dataBearerTechnology2 = [v12 dataBearerTechnology];
         v34 = [(WISRatRetentionMetric *)self getNSString:"NRNSA"];
-        v35 = [v33 isEqualToString:v34];
+        v35 = [dataBearerTechnology2 isEqualToString:v34];
 
         if (v35)
         {
-          v36 = [v13 nrnsaBandwidth];
+          nrnsaBandwidth3 = [v13 nrnsaBandwidth];
           v37 = [(WISRatRetentionMetric *)self getNSString:"new_bandwidth"];
-          [v29 setObject:v36 forKey:v37];
+          [v29 setObject:nrnsaBandwidth3 forKey:v37];
 
-          v38 = [v13 nrnsaArfcn];
+          nrnsaArfcn3 = [v13 nrnsaArfcn];
           v39 = [(WISRatRetentionMetric *)self getNSString:"new_arfcn"];
-          [v29 setObject:v38 forKey:v39];
+          [v29 setObject:nrnsaArfcn3 forKey:v39];
 
           [v13 nrnsaFrequencyRange];
         }
 
         else
         {
-          v42 = [v13 bandwidth];
+          bandwidth3 = [v13 bandwidth];
           v43 = [(WISRatRetentionMetric *)self getNSString:"new_bandwidth"];
-          [v29 setObject:v42 forKey:v43];
+          [v29 setObject:bandwidth3 forKey:v43];
 
-          v44 = [v13 arfcn];
+          arfcn3 = [v13 arfcn];
           v45 = [(WISRatRetentionMetric *)self getNSString:"new_arfcn"];
-          [v29 setObject:v44 forKey:v45];
+          [v29 setObject:arfcn3 forKey:v45];
 
           [v13 frequencyRange];
         }
@@ -1179,28 +1179,28 @@ LABEL_45:
       v46 = [v13 rat];
       [v12 setRat:v46];
 
-      v47 = [v13 band];
-      [v12 setBand:v47];
+      band4 = [v13 band];
+      [v12 setBand:band4];
 
-      v48 = [v13 frequencyRange];
-      [v12 setFrequencyRange:v48];
+      frequencyRange3 = [v13 frequencyRange];
+      [v12 setFrequencyRange:frequencyRange3];
 
-      v49 = [v13 bandwidth];
-      [v12 setBandwidth:v49];
+      bandwidth4 = [v13 bandwidth];
+      [v12 setBandwidth:bandwidth4];
 
-      v50 = [v13 arfcn];
-      [v12 setArfcn:v50];
+      arfcn4 = [v13 arfcn];
+      [v12 setArfcn:arfcn4];
 
       [v12 setStartTime:v70];
 LABEL_53:
-      v51 = [v13 nrnsaBandwidth];
-      [v12 setNrnsaBandwidth:v51];
+      nrnsaBandwidth4 = [v13 nrnsaBandwidth];
+      [v12 setNrnsaBandwidth:nrnsaBandwidth4];
 
-      v52 = [v13 nrnsaArfcn];
-      [v12 setNrnsaArfcn:v52];
+      nrnsaArfcn4 = [v13 nrnsaArfcn];
+      [v12 setNrnsaArfcn:nrnsaArfcn4];
 
-      v53 = [v13 nrnsaFrequencyRange];
-      [v12 setNrnsaFrequencyRange:v53];
+      nrnsaFrequencyRange3 = [v13 nrnsaFrequencyRange];
+      [v12 setNrnsaFrequencyRange:nrnsaFrequencyRange3];
 
 LABEL_54:
 LABEL_55:
@@ -1219,36 +1219,36 @@ LABEL_29:
 LABEL_56:
 }
 
-- (void)registrationStatusChanged:(id)a3 status:(id)a4
+- (void)registrationStatusChanged:(id)changed status:(id)status
 {
-  v6 = a3;
-  v7 = a4;
-  if ([WISTelephonyUtils isValidContext:v6])
+  changedCopy = changed;
+  statusCopy = status;
+  if ([WISTelephonyUtils isValidContext:changedCopy])
   {
     v8 = *(qword_1002DBE98 + 48);
-    if (v7)
+    if (statusCopy)
     {
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        [v6 uuid];
+        [changedCopy uuid];
         objc_claimAutoreleasedReturnValue();
         sub_10020AB38();
       }
 
-      v9 = [(WISRatRetentionMetric *)self contextUUIDToStateMap];
-      v10 = [v6 uuid];
-      v11 = [v9 objectForKey:v10];
+      contextUUIDToStateMap = [(WISRatRetentionMetric *)self contextUUIDToStateMap];
+      uuid = [changedCopy uuid];
+      v11 = [contextUUIDToStateMap objectForKey:uuid];
 
       if (v11)
       {
-        v12 = [v11 displayStatus];
-        v13 = [v12 isEqualToString:v7];
+        displayStatus = [v11 displayStatus];
+        v13 = [displayStatus isEqualToString:statusCopy];
 
         if (v13)
         {
           if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
           {
-            [v6 uuid];
+            [changedCopy uuid];
             objc_claimAutoreleasedReturnValue();
             sub_10020AB84();
           }
@@ -1263,13 +1263,13 @@ LABEL_56:
             {
               v21 = [(WISRatRetentionMetric *)self getNSString:"new_registration_state"];
               v22[0] = v21;
-              v20 = [(WISRatRetentionMetric *)self deriveRegistrationStatus:v7 airplaneModeActive:[(WISRatRetentionMetric *)self airplaneModeActive]];
+              v20 = [(WISRatRetentionMetric *)self deriveRegistrationStatus:statusCopy airplaneModeActive:[(WISRatRetentionMetric *)self airplaneModeActive]];
               v23[0] = v20;
               v15 = [(WISRatRetentionMetric *)self getNSString:"new_radio_access_technology"];
               v22[1] = v15;
               v16 = [v11 rat];
-              v17 = [(WISRatRetentionMetric *)self stewieState];
-              v18 = -[WISRatRetentionMetric deriveRAT:stewieState:isSatelliteSystem:airplaneModeActive:displayStatus:](self, "deriveRAT:stewieState:isSatelliteSystem:airplaneModeActive:displayStatus:", v16, v17, [v11 isSatelliteSystem], -[WISRatRetentionMetric airplaneModeActive](self, "airplaneModeActive"), v7);
+              stewieState = [(WISRatRetentionMetric *)self stewieState];
+              v18 = -[WISRatRetentionMetric deriveRAT:stewieState:isSatelliteSystem:airplaneModeActive:displayStatus:](self, "deriveRAT:stewieState:isSatelliteSystem:airplaneModeActive:displayStatus:", v16, stewieState, [v11 isSatelliteSystem], -[WISRatRetentionMetric airplaneModeActive](self, "airplaneModeActive"), statusCopy);
               v23[1] = v18;
               v19 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:2];
               [(WISRatRetentionMetric *)self buildAndSubmitCAPayload:v11 currentTime:v14 changedFields:v19];
@@ -1278,13 +1278,13 @@ LABEL_56:
             [v11 setStartTime:v14];
           }
 
-          [v11 setDisplayStatus:v7];
+          [v11 setDisplayStatus:statusCopy];
         }
       }
 
       else if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
       {
-        [v6 uuid];
+        [changedCopy uuid];
         objc_claimAutoreleasedReturnValue();
         sub_10020ABC8();
       }
@@ -1292,7 +1292,7 @@ LABEL_56:
 
     else if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [v6 uuid];
+      [changedCopy uuid];
       objc_claimAutoreleasedReturnValue();
       sub_10020AC0C();
     }
@@ -1309,31 +1309,31 @@ LABEL_56:
   [(WISRatRetentionMetric *)self populateSubscriptionContextsInUse];
 }
 
-- (void)satelliteProvisioningStatusForContext:(id)a3 changedTo:(id)a4
+- (void)satelliteProvisioningStatusForContext:(id)context changedTo:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  if ([WISTelephonyUtils isValidContext:v6])
+  contextCopy = context;
+  toCopy = to;
+  if ([WISTelephonyUtils isValidContext:contextCopy])
   {
     if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
     {
-      [v6 uuid];
+      [contextCopy uuid];
       objc_claimAutoreleasedReturnValue();
       sub_10020AD74();
     }
 
-    v8 = [(WISRatRetentionMetric *)self contextUUIDToStateMap];
-    v9 = [v6 uuid];
-    v10 = [v8 objectForKey:v9];
+    contextUUIDToStateMap = [(WISRatRetentionMetric *)self contextUUIDToStateMap];
+    uuid = [contextCopy uuid];
+    v10 = [contextUUIDToStateMap objectForKey:uuid];
 
     if (v10)
     {
-      v11 = [v10 isSatelliteProvisioned];
-      if (v11 == [v7 BOOLValue])
+      isSatelliteProvisioned = [v10 isSatelliteProvisioned];
+      if (isSatelliteProvisioned == [toCopy BOOLValue])
       {
         if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
         {
-          [v6 uuid];
+          [contextCopy uuid];
           objc_claimAutoreleasedReturnValue();
           sub_10020ADC0();
         }
@@ -1346,32 +1346,32 @@ LABEL_56:
         {
           v13 = [(WISRatRetentionMetric *)self getNSString:"new_is_sat_provisioned"];
           v15 = v13;
-          v16 = v7;
+          v16 = toCopy;
           v14 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
           [(WISRatRetentionMetric *)self buildAndSubmitCAPayload:v10 currentTime:v12 changedFields:v14];
         }
 
         [v10 setStartTime:v12];
-        [v10 setIsSatelliteProvisioned:{objc_msgSend(v7, "BOOLValue")}];
+        [v10 setIsSatelliteProvisioned:{objc_msgSend(toCopy, "BOOLValue")}];
       }
     }
 
     else if (os_log_type_enabled(*(qword_1002DBE98 + 48), OS_LOG_TYPE_DEBUG))
     {
-      [v6 uuid];
+      [contextCopy uuid];
       objc_claimAutoreleasedReturnValue();
       sub_10020AE04();
     }
   }
 }
 
-- (void)initializeStateForContext:(id)a3 isDataPreferred:(BOOL)a4 currentTime:(unint64_t)a5
+- (void)initializeStateForContext:(id)context isDataPreferred:(BOOL)preferred currentTime:(unint64_t)time
 {
-  v8 = a3;
-  v9 = [(WISRatRetentionMetric *)self ctRelay];
-  v10 = [v9 coreTelephonyClient];
+  contextCopy = context;
+  ctRelay = [(WISRatRetentionMetric *)self ctRelay];
+  coreTelephonyClient = [ctRelay coreTelephonyClient];
   v35 = 0;
-  v11 = [v10 copyRegistrationDisplayStatus:v8 error:&v35];
+  v11 = [coreTelephonyClient copyRegistrationDisplayStatus:contextCopy error:&v35];
   v12 = v35;
 
   if (v12)
@@ -1386,10 +1386,10 @@ LABEL_56:
 
   else
   {
-    v13 = [(WISRatRetentionMetric *)self ctRelay];
-    v14 = [v13 coreTelephonyClient];
+    ctRelay2 = [(WISRatRetentionMetric *)self ctRelay];
+    coreTelephonyClient2 = [ctRelay2 coreTelephonyClient];
     v34 = 0;
-    v15 = [v14 getDataStatus:v8 error:&v34];
+    v15 = [coreTelephonyClient2 getDataStatus:contextCopy error:&v34];
     v12 = v34;
 
     if (v12)
@@ -1405,9 +1405,9 @@ LABEL_56:
     else
     {
       v23 = [WISSystemStatusSimulacrum deriveConnectionTypeForDataStatus:v15];
-      v16 = [(WISRatRetentionMetric *)self ctRelay];
+      ctRelay3 = [(WISRatRetentionMetric *)self ctRelay];
       v33 = 0;
-      v17 = [v16 getIsSatelliteProvisioned:v8 error:&v33];
+      v17 = [ctRelay3 getIsSatelliteProvisioned:contextCopy error:&v33];
       v18 = v33;
 
       if (v18)
@@ -1415,44 +1415,44 @@ LABEL_56:
         v19 = *(qword_1002DBE98 + 48);
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
-          v20 = [v18 localizedDescription];
+          localizedDescription = [v18 localizedDescription];
           *buf = 138412290;
-          v37 = v20;
+          v37 = localizedDescription;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "RatRetentionMetric:#N Error while fetching satellite provisioned status: %@", buf, 0xCu);
         }
 
         v17 = 0;
       }
 
-      v21 = [(WISRatRetentionMetric *)self ctRelay];
-      v22 = [v21 coreTelephonyClient];
+      ctRelay4 = [(WISRatRetentionMetric *)self ctRelay];
+      coreTelephonyClient3 = [ctRelay4 coreTelephonyClient];
       v24[0] = _NSConcreteStackBlock;
       v24[1] = 3221225472;
       v24[2] = sub_100135C7C;
       v24[3] = &unk_1002B37F0;
-      v25 = v8;
-      v26 = self;
+      v25 = contextCopy;
+      selfCopy = self;
       v27 = v15;
-      v29 = a5;
-      v31 = a4;
+      timeCopy = time;
+      preferredCopy = preferred;
       v32 = v17;
       v28 = v11;
       v30 = v23;
-      [v22 copyCellInfo:v25 completion:v24];
+      [coreTelephonyClient3 copyCellInfo:v25 completion:v24];
     }
   }
 }
 
-- (id)CTCellularDataTechnologyToString:(int)a3
+- (id)CTCellularDataTechnologyToString:(int)string
 {
-  if ((a3 - 1) > 5)
+  if ((string - 1) > 5)
   {
     v5 = "Unknown";
   }
 
   else
   {
-    v5 = off_1002B3848[a3 - 1];
+    v5 = off_1002B3848[string - 1];
   }
 
   v6 = [(WISRatRetentionMetric *)self getNSString:v5, v3];
@@ -1460,11 +1460,11 @@ LABEL_56:
   return v6;
 }
 
-- (id)getFrequencyRangeFromArfcn:(id)a3
+- (id)getFrequencyRangeFromArfcn:(id)arfcn
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || ([v4 isEqualToNumber:&off_1002BF360] & 1) != 0)
+  arfcnCopy = arfcn;
+  v5 = arfcnCopy;
+  if (!arfcnCopy || ([arfcnCopy isEqualToNumber:&off_1002BF360] & 1) != 0)
   {
     v6 = "Unknown";
 LABEL_4:
@@ -1485,15 +1485,15 @@ LABEL_5:
   return v8;
 }
 
-- (id)findContextsToDelete:(id)a3
+- (id)findContextsToDelete:(id)delete
 {
-  v4 = a3;
+  deleteCopy = delete;
   v5 = objc_alloc_init(NSMutableSet);
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v4;
+  v6 = deleteCopy;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v7)
   {
@@ -1507,8 +1507,8 @@ LABEL_5:
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v22 + 1) + 8 * i) uuid];
-        [v5 addObject:v10];
+        uuid = [*(*(&v22 + 1) + 8 * i) uuid];
+        [v5 addObject:uuid];
       }
 
       v7 = [v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
@@ -1522,8 +1522,8 @@ LABEL_5:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v12 = [(WISRatRetentionMetric *)self contextUUIDToStateMap];
-  v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
+  contextUUIDToStateMap = [(WISRatRetentionMetric *)self contextUUIDToStateMap];
+  v13 = [contextUUIDToStateMap countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v13)
   {
     v14 = *v19;
@@ -1533,7 +1533,7 @@ LABEL_5:
       {
         if (*v19 != v14)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(contextUUIDToStateMap);
         }
 
         v16 = *(*(&v18 + 1) + 8 * j);
@@ -1543,7 +1543,7 @@ LABEL_5:
         }
       }
 
-      v13 = [v12 countByEnumeratingWithState:&v18 objects:v26 count:16];
+      v13 = [contextUUIDToStateMap countByEnumeratingWithState:&v18 objects:v26 count:16];
     }
 
     while (v13);
@@ -1552,9 +1552,9 @@ LABEL_5:
   return v11;
 }
 
-- (id)getNSString:(const char *)a3
+- (id)getNSString:(const char *)string
 {
-  v3 = [NSString stringWithUTF8String:a3];
+  v3 = [NSString stringWithUTF8String:string];
   v4 = v3;
   if (v3)
   {
@@ -1574,19 +1574,19 @@ LABEL_5:
   return v5;
 }
 
-- (void)setError:(id *)a3 code:(int64_t)a4 message:(id)a5
+- (void)setError:(id *)error code:(int64_t)code message:(id)message
 {
-  v10 = a5;
+  messageCopy = message;
   v8 = +[NSMutableDictionary dictionary];
-  [v8 setValue:v10 forKey:NSLocalizedDescriptionKey];
+  [v8 setValue:messageCopy forKey:NSLocalizedDescriptionKey];
   v9 = [(WISRatRetentionMetric *)self getNSString:"RatRetentionMetric"];
-  *a3 = [NSError errorWithDomain:v9 code:a4 userInfo:v8];
+  *error = [NSError errorWithDomain:v9 code:code userInfo:v8];
 }
 
-- (void)setLastKnownGCI:(id)a3 forPayload:(id)a4
+- (void)setLastKnownGCI:(id)i forPayload:(id)payload
 {
-  v6 = a3;
-  v7 = a4;
+  iCopy = i;
+  payloadCopy = payload;
   pthread_mutex_lock(&stru_1002D47D8);
   v8 = xmmword_1002D4818;
   if (!xmmword_1002D4818)
@@ -1624,7 +1624,7 @@ LABEL_5:
   if (v12)
   {
     v13 = [(WISRatRetentionMetric *)self getNSString:"last_known_gci_before_oos"];
-    [v7 setObject:v6 forKey:v13];
+    [payloadCopy setObject:iCopy forKey:v13];
   }
 }
 

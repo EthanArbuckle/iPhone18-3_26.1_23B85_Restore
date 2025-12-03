@@ -1,17 +1,17 @@
 @interface PDPeridotCameraSystemCalibrationData
-+ (id)calibrationDataWithPeridotCalib:(id)a3 platformId:(int)a4 sensorVersion:(int)a5;
-+ (id)calibrationDataWithPeridotCalibDataDictionary:(id)a3;
-- (PDPeridotCameraSystemCalibrationData)initWithPeridotModuleCalibration:(id)a3 platformId:(int)a4 sensorVersion:(int)a5;
-- (void)replacePeridotDistortionModelWithWarperMesh:(id)a3 width:(int64_t)a4 height:(int64_t)a5;
++ (id)calibrationDataWithPeridotCalib:(id)calib platformId:(int)id sensorVersion:(int)version;
++ (id)calibrationDataWithPeridotCalibDataDictionary:(id)dictionary;
+- (PDPeridotCameraSystemCalibrationData)initWithPeridotModuleCalibration:(id)calibration platformId:(int)id sensorVersion:(int)version;
+- (void)replacePeridotDistortionModelWithWarperMesh:(id)mesh width:(int64_t)width height:(int64_t)height;
 @end
 
 @implementation PDPeridotCameraSystemCalibrationData
 
-- (void)replacePeridotDistortionModelWithWarperMesh:(id)a3 width:(int64_t)a4 height:(int64_t)a5
+- (void)replacePeridotDistortionModelWithWarperMesh:(id)mesh width:(int64_t)width height:(int64_t)height
 {
-  v19 = a3;
+  meshCopy = mesh;
   peridot_depth_log("Replacing Jasper distortion model with a warper mesh");
-  if (a4 != 85 || a5 != 109)
+  if (width != 85 || height != 109)
   {
     v15 = MEMORY[0x277CBEAD8];
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"warperMesh dimensions must be %lu%lu", 85, 109];
@@ -22,47 +22,47 @@
   }
 
   v8 = +[PDUserDefaults defaults];
-  v9 = [v8 ignoreWarperMesh];
+  ignoreWarperMesh = [v8 ignoreWarperMesh];
 
-  if (v9)
+  if (ignoreWarperMesh)
   {
     peridot_depth_log("WARNING! Warper mesh set, but ignored due to defaults write");
   }
 
   else
   {
-    v10 = [objc_alloc(MEMORY[0x277CED128]) initWithWarperMesh:v19 type:1 width:85 height:109];
+    v10 = [objc_alloc(MEMORY[0x277CED128]) initWithWarperMesh:meshCopy type:1 width:85 height:109];
     [(ADMutableCameraCalibration *)self->_peridotCamera setDistortionModel:v10];
   }
 
   v11 = +[PDUserDefaults defaults];
-  v12 = [v11 dumpWarperMeshesPath];
+  dumpWarperMeshesPath = [v11 dumpWarperMeshesPath];
 
-  if (v12)
+  if (dumpWarperMeshesPath)
   {
     v13 = +[PDInternalUtils currTimeAsString];
-    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@_Warper.bin", v12, v13];
-    [v19 writeToFile:v14 atomically:1];
+    v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@/%@_Warper.bin", dumpWarperMeshesPath, v13];
+    [meshCopy writeToFile:v14 atomically:1];
   }
 }
 
-- (PDPeridotCameraSystemCalibrationData)initWithPeridotModuleCalibration:(id)a3 platformId:(int)a4 sensorVersion:(int)a5
+- (PDPeridotCameraSystemCalibrationData)initWithPeridotModuleCalibration:(id)calibration platformId:(int)id sensorVersion:(int)version
 {
-  v9 = a3;
+  calibrationCopy = calibration;
   v22.receiver = self;
   v22.super_class = PDPeridotCameraSystemCalibrationData;
   v10 = [(PDPeridotCameraSystemCalibrationData *)&v22 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_peridotModule, a3);
-    if (a4 <= 96)
+    objc_storeStrong(&v10->_peridotModule, calibration);
+    if (id <= 96)
     {
-      if (a4 > 65)
+      if (id > 65)
       {
-        if ((a4 - 66) >= 2)
+        if ((id - 66) >= 2)
         {
-          if ((a4 - 69) >= 2)
+          if ((id - 69) >= 2)
           {
             goto LABEL_50;
           }
@@ -75,14 +75,14 @@ LABEL_11:
 
       else
       {
-        if ((a4 - 51) < 4)
+        if ((id - 51) < 4)
         {
 LABEL_5:
           v12 = 2;
           goto LABEL_46;
         }
 
-        if (a4 != -1)
+        if (id != -1)
         {
           goto LABEL_50;
         }
@@ -140,12 +140,12 @@ LABEL_43:
 LABEL_50:
             v11->_platform = -1;
             peridot_depth_log("Warning: PeridotDepth could not resolve platform type");
-            if (a5 < 3)
+            if (version < 3)
             {
 LABEL_52:
-              v11->_peridotChipRevision = a5;
-              v17 = [(PDPeridotModuleCalibrationData *)v11->_peridotModule calib];
-              v19 = peridot::CalibManager::getPeridotCamera(v17, v18);
+              v11->_peridotChipRevision = version;
+              calib = [(PDPeridotModuleCalibrationData *)v11->_peridotModule calib];
+              v19 = peridot::CalibManager::getPeridotCamera(calib, v18);
               peridotCamera = v11->_peridotCamera;
               v11->_peridotCamera = v19;
 
@@ -153,7 +153,7 @@ LABEL_52:
             }
 
 LABEL_51:
-            peridot_depth_log("Warning: unknown SensorVersion (%d)", a5);
+            peridot_depth_log("Warning: unknown SensorVersion (%d)", version);
             goto LABEL_52;
           }
 
@@ -189,7 +189,7 @@ LABEL_39:
 
 LABEL_15:
           v11->_platform = 0;
-          if (a5 < 3)
+          if (version < 3)
           {
             goto LABEL_52;
           }
@@ -214,16 +214,16 @@ LABEL_45:
       goto LABEL_46;
     }
 
-    if (a4 <= 99)
+    if (id <= 99)
     {
-      if ((a4 - 97) < 2)
+      if ((id - 97) < 2)
       {
 LABEL_13:
         v12 = 6;
         goto LABEL_46;
       }
 
-      if (a4 != 99)
+      if (id != 99)
       {
         goto LABEL_50;
       }
@@ -231,7 +231,7 @@ LABEL_13:
       v12 = 4;
 LABEL_46:
       v11->_platform = v12;
-      if (a5 < 3)
+      if (version < 3)
       {
         goto LABEL_52;
       }
@@ -239,12 +239,12 @@ LABEL_46:
       goto LABEL_51;
     }
 
-    if ((a4 - 100) < 4)
+    if ((id - 100) < 4)
     {
       goto LABEL_8;
     }
 
-    if ((a4 - 231) >= 2)
+    if ((id - 231) >= 2)
     {
       goto LABEL_50;
     }
@@ -257,12 +257,12 @@ LABEL_53:
   return v11;
 }
 
-+ (id)calibrationDataWithPeridotCalib:(id)a3 platformId:(int)a4 sensorVersion:(int)a5
++ (id)calibrationDataWithPeridotCalib:(id)calib platformId:(int)id sensorVersion:(int)version
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  v7 = a3;
-  v8 = [[PDPeridotModuleCalibrationData alloc] initWithPeridotCalib:v7];
+  v5 = *&version;
+  v6 = *&id;
+  calibCopy = calib;
+  v8 = [[PDPeridotModuleCalibrationData alloc] initWithPeridotCalib:calibCopy];
   if (v8)
   {
     v9 = [[PDPeridotCameraSystemCalibrationData alloc] initWithPeridotModuleCalibration:v8 platformId:v6 sensorVersion:v5];
@@ -276,37 +276,37 @@ LABEL_53:
   return v9;
 }
 
-+ (id)calibrationDataWithPeridotCalibDataDictionary:(id)a3
++ (id)calibrationDataWithPeridotCalibDataDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [[PDPeridotModuleCalibrationData alloc] initWithCalibrationDictionary:v3];
+  dictionaryCopy = dictionary;
+  v4 = [[PDPeridotModuleCalibrationData alloc] initWithCalibrationDictionary:dictionaryCopy];
   if (v4)
   {
-    v5 = [v3 objectForKeyedSubscript:@"PlatformId"];
+    v5 = [dictionaryCopy objectForKeyedSubscript:@"PlatformId"];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 intValue];
+      intValue = [v5 intValue];
     }
 
     else
     {
-      v7 = 0;
+      intValue = 0;
     }
 
-    v9 = [v3 objectForKeyedSubscript:@"SensorVersion"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"SensorVersion"];
     v10 = v9;
     if (v9)
     {
-      v11 = [v9 intValue];
+      intValue2 = [v9 intValue];
     }
 
     else
     {
-      v11 = 0;
+      intValue2 = 0;
     }
 
-    v8 = [[PDPeridotCameraSystemCalibrationData alloc] initWithPeridotModuleCalibration:v4 platformId:v7 sensorVersion:v11];
+    v8 = [[PDPeridotCameraSystemCalibrationData alloc] initWithPeridotModuleCalibration:v4 platformId:intValue sensorVersion:intValue2];
   }
 
   else

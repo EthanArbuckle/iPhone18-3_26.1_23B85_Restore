@@ -32,8 +32,8 @@
 
         v8 = *(*(&v12 + 1) + 8 * i);
         v9 = [v8 _accessibilityFindSubviewDescendant:&__block_literal_global_291_0];
-        v10 = [v9 accessibilityLabel];
-        [v8 setAccessibilityLabel:v10];
+        accessibilityLabel = [v9 accessibilityLabel];
+        [v8 setAccessibilityLabel:accessibilityLabel];
       }
 
       v5 = [v3 countByEnumeratingWithState:&v12 objects:v17 count:16];

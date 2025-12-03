@@ -1,14 +1,14 @@
 @interface FMSideBarViewController
-- (_TtC6FindMy23FMSideBarViewController)initWithCoder:(id)a3;
-- (_TtC6FindMy23FMSideBarViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)indexChangedWithSender:(id)a3;
-- (void)indexNotChangedWithSender:(id)a3;
+- (_TtC6FindMy23FMSideBarViewController)initWithCoder:(id)coder;
+- (_TtC6FindMy23FMSideBarViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)indexChangedWithSender:(id)sender;
+- (void)indexNotChangedWithSender:(id)sender;
 - (void)viewDidLoad;
 @end
 
 @implementation FMSideBarViewController
 
-- (_TtC6FindMy23FMSideBarViewController)initWithCoder:(id)a3
+- (_TtC6FindMy23FMSideBarViewController)initWithCoder:(id)coder
 {
   *&self->contentDelegate[OBJC_IVAR____TtC6FindMy23FMSideBarViewController_contentDelegate] = 0;
   swift_unknownObjectWeakInit();
@@ -22,25 +22,25 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10025AE30();
 }
 
-- (void)indexChangedWithSender:(id)a3
+- (void)indexChangedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_10025BAC8(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_10025BAC8(senderCopy);
 }
 
-- (void)indexNotChangedWithSender:(id)a3
+- (void)indexNotChangedWithSender:(id)sender
 {
-  v4 = a3;
-  v5 = self;
-  sub_10025BDB4(v4);
+  senderCopy = sender;
+  selfCopy = self;
+  sub_10025BDB4(senderCopy);
 }
 
-- (_TtC6FindMy23FMSideBarViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC6FindMy23FMSideBarViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

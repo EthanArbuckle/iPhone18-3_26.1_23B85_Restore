@@ -1,9 +1,9 @@
 @interface SFBookmarksCollectionViewController.Layout
-- (_TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout)initWithCoder:(id)a3;
-- (_TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout)initWithSection:(id)a3;
-- (_TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout)initWithSection:(id)a3 configuration:(id)a4;
-- (_TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout)initWithSectionProvider:(id)a3;
-- (_TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout)initWithSectionProvider:(id)a3 configuration:(id)a4;
+- (_TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout)initWithCoder:(id)coder;
+- (_TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout)initWithSection:(id)section;
+- (_TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout)initWithSection:(id)section configuration:(id)configuration;
+- (_TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout)initWithSectionProvider:(id)provider;
+- (_TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout)initWithSectionProvider:(id)provider configuration:(id)configuration;
 - (void)finalizeCollectionViewUpdates;
 @end
 
@@ -14,18 +14,18 @@
   v3 = (self + OBJC_IVAR____TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout_savedContentOffset);
   if (*(&self->super.super._collectionViewBoundsSize.width + OBJC_IVAR____TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout_savedContentOffset))
   {
-    v4 = self;
+    selfCopy = self;
   }
 
   else
   {
     v6 = *v3;
     v5 = v3[1];
-    v7 = [(SFBookmarksCollectionViewController.Layout *)self collectionView];
-    if (v7)
+    collectionView = [(SFBookmarksCollectionViewController.Layout *)self collectionView];
+    if (collectionView)
     {
-      v8 = v7;
-      [v7 setContentOffset:0 animated:{v6, v5}];
+      v8 = collectionView;
+      [collectionView setContentOffset:0 animated:{v6, v5}];
     }
   }
 
@@ -34,7 +34,7 @@
   [(SFBookmarksCollectionViewController.Layout *)&v9 finalizeCollectionViewUpdates];
 }
 
-- (_TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout)initWithSection:(id)a3
+- (_TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout)initWithSection:(id)section
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout_scrollLockActive) = 0;
   v4 = self + OBJC_IVAR____TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout_savedContentOffset;
@@ -43,10 +43,10 @@
   v4[16] = 1;
   v6.receiver = self;
   v6.super_class = _s6LayoutCMa();
-  return [(SFBookmarksCollectionViewController.Layout *)&v6 initWithSection:a3];
+  return [(SFBookmarksCollectionViewController.Layout *)&v6 initWithSection:section];
 }
 
-- (_TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout)initWithSection:(id)a3 configuration:(id)a4
+- (_TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout)initWithSection:(id)section configuration:(id)configuration
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout_scrollLockActive) = 0;
   v6 = self + OBJC_IVAR____TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout_savedContentOffset;
@@ -55,12 +55,12 @@
   v6[16] = 1;
   v8.receiver = self;
   v8.super_class = _s6LayoutCMa();
-  return [(SFBookmarksCollectionViewController.Layout *)&v8 initWithSection:a3 configuration:a4];
+  return [(SFBookmarksCollectionViewController.Layout *)&v8 initWithSection:section configuration:configuration];
 }
 
-- (_TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout)initWithSectionProvider:(id)a3
+- (_TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout)initWithSectionProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout_scrollLockActive) = 0;
@@ -85,9 +85,9 @@
   return v8;
 }
 
-- (_TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout)initWithSectionProvider:(id)a3 configuration:(id)a4
+- (_TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout)initWithSectionProvider:(id)provider configuration:(id)configuration
 {
-  v6 = _Block_copy(a3);
+  v6 = _Block_copy(provider);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout_scrollLockActive) = 0;
@@ -102,18 +102,18 @@
   aBlock[2] = sub_18B9B53C0;
   aBlock[3] = &block_descriptor_0;
   v9 = _Block_copy(aBlock);
-  v10 = a4;
+  configurationCopy = configuration;
   sub_18BC1E1A8();
 
   v13.receiver = self;
   v13.super_class = _s6LayoutCMa();
-  v11 = [(SFBookmarksCollectionViewController.Layout *)&v13 initWithSectionProvider:v9 configuration:v10];
+  v11 = [(SFBookmarksCollectionViewController.Layout *)&v13 initWithSectionProvider:v9 configuration:configurationCopy];
 
   _Block_release(v9);
   return v11;
 }
 
-- (_TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout)initWithCoder:(id)a3
+- (_TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout_scrollLockActive) = 0;
   v4 = self + OBJC_IVAR____TtCC12MobileSafari35SFBookmarksCollectionViewController6Layout_savedContentOffset;
@@ -122,8 +122,8 @@
   v4[16] = 1;
   v8.receiver = self;
   v8.super_class = _s6LayoutCMa();
-  v5 = a3;
-  v6 = [(SFBookmarksCollectionViewController.Layout *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(SFBookmarksCollectionViewController.Layout *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

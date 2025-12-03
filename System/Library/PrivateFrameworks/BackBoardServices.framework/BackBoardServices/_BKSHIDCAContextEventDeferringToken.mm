@@ -1,11 +1,11 @@
 @interface _BKSHIDCAContextEventDeferringToken
 + (id)protobufSchema;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (_BKSHIDCAContextEventDeferringToken)init;
-- (_BKSHIDCAContextEventDeferringToken)initWithCoder:(id)a3;
-- (id)_initWithIdentifier:(unsigned int)a3;
+- (_BKSHIDCAContextEventDeferringToken)initWithCoder:(id)coder;
+- (id)_initWithIdentifier:(unsigned int)identifier;
 - (id)initForProtobufDecoding;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation _BKSHIDCAContextEventDeferringToken
@@ -15,7 +15,7 @@
   v24 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = _BKSHIDCAContextEventDeferringToken;
-  v3 = [(BKSHIDEventDeferringToken *)&v11 _init];
+  _init = [(BKSHIDEventDeferringToken *)&v11 _init];
   v4 = objc_opt_class();
   if (v4 != objc_opt_class())
   {
@@ -30,7 +30,7 @@
       v14 = 2114;
       v15 = v10;
       v16 = 2048;
-      v17 = v3;
+      v17 = _init;
       v18 = 2114;
       v19 = @"BKSHIDEventDeferringToken.m";
       v20 = 1024;
@@ -47,7 +47,7 @@
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v3;
+  return _init;
 }
 
 + (id)protobufSchema
@@ -56,7 +56,7 @@
   block[1] = 3221225472;
   block[2] = __53___BKSHIDCAContextEventDeferringToken_protobufSchema__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (protobufSchema_onceToken_5177 != -1)
   {
     dispatch_once(&protobufSchema_onceToken_5177, block);
@@ -67,16 +67,16 @@
   return v2;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v5 = a3;
-  v4 = [v5 appendUInt64:-[_BKSHIDCAContextEventDeferringToken _identifierOfCAContext](self withName:"_identifierOfCAContext") format:{0, 1}];
+  formatterCopy = formatter;
+  v4 = [formatterCopy appendUInt64:-[_BKSHIDCAContextEventDeferringToken _identifierOfCAContext](self withName:"_identifierOfCAContext") format:{0, 1}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -84,27 +84,27 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = v5 == objc_opt_class() && self->_CAContextID == v4->_CAContextID;
+    v6 = v5 == objc_opt_class() && self->_CAContextID == equalCopy->_CAContextID;
   }
 
   return v6;
 }
 
-- (_BKSHIDCAContextEventDeferringToken)initWithCoder:(id)a3
+- (_BKSHIDCAContextEventDeferringToken)initWithCoder:(id)coder
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = _BKSHIDCAContextEventDeferringToken;
-  v5 = [(BKSHIDEventDeferringToken *)&v19 _init];
+  _init = [(BKSHIDEventDeferringToken *)&v19 _init];
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
   {
-    v16 = [v4 decodeInt32ForKey:@"CAContext"];
+    v16 = [coderCopy decodeInt32ForKey:@"CAContext"];
     if (v16)
     {
-      v5[2] = v16;
-      v15 = v5;
+      _init[2] = v16;
+      v15 = _init;
       goto LABEL_6;
     }
 
@@ -132,7 +132,7 @@
 
   v13 = [v10 dictionaryWithObjects:v11 forKeys:v12 count:1];
   v14 = [v7 errorWithDomain:v8 code:4866 userInfo:v13];
-  [v4 failWithError:v14];
+  [coderCopy failWithError:v14];
 
   v15 = 0;
 LABEL_6:
@@ -141,14 +141,14 @@ LABEL_6:
   return v15;
 }
 
-- (id)_initWithIdentifier:(unsigned int)a3
+- (id)_initWithIdentifier:(unsigned int)identifier
 {
   v5.receiver = self;
   v5.super_class = _BKSHIDCAContextEventDeferringToken;
   result = [(BKSHIDEventDeferringToken *)&v5 _init];
   if (result)
   {
-    *(result + 2) = a3;
+    *(result + 2) = identifier;
   }
 
   return result;
@@ -167,7 +167,7 @@ LABEL_6:
     v11 = 2114;
     v12 = v7;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2114;
     v16 = @"BKSHIDEventDeferringToken.m";
     v17 = 1024;

@@ -1,25 +1,25 @@
 @interface MPSGraphIfElseOp
-- (BOOL)recurseOnBlocksFromOutput:(id)a3 withAutodiff:(void *)a4;
-- (MPSGraphIfElseOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 trueBlock:(id)a6 falseBlock:(id)a7 name:(id)a8;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
-- (void)partialDerivateForCFOpWithAutodiff:(void *)a3;
+- (BOOL)recurseOnBlocksFromOutput:(id)output withAutodiff:(void *)autodiff;
+- (MPSGraphIfElseOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies trueBlock:(id)block falseBlock:(id)falseBlock name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
+- (void)partialDerivateForCFOpWithAutodiff:(void *)autodiff;
 @end
 
 @implementation MPSGraphIfElseOp
 
-- (MPSGraphIfElseOp)initWithGraph:(id)a3 inputTensors:(id)a4 controlDependencies:(id)a5 trueBlock:(id)a6 falseBlock:(id)a7 name:(id)a8
+- (MPSGraphIfElseOp)initWithGraph:(id)graph inputTensors:(id)tensors controlDependencies:(id)dependencies trueBlock:(id)block falseBlock:(id)falseBlock name:(id)name
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = MEMORY[0x1E12E6580](v17);
+  graphCopy = graph;
+  tensorsCopy = tensors;
+  dependenciesCopy = dependencies;
+  blockCopy = block;
+  falseBlockCopy = falseBlock;
+  nameCopy = name;
+  v20 = MEMORY[0x1E12E6580](blockCopy);
   trueBlock = self->_trueBlock;
   self->_trueBlock = v20;
 
-  v22 = MEMORY[0x1E12E6580](v18);
+  v22 = MEMORY[0x1E12E6580](falseBlockCopy);
   falseBlock = self->_falseBlock;
   self->_falseBlock = v22;
 
@@ -33,34 +33,34 @@
   v25 = objc_alloc_init(MPSGraphRegion);
   v28.receiver = self;
   v28.super_class = MPSGraphIfElseOp;
-  v26 = [(MPSGraphOperation *)&v28 initWithGraph:v14 inputTensors:v15 controlDependencies:v16 region:v25 name:v19];
+  v26 = [(MPSGraphOperation *)&v28 initWithGraph:graphCopy inputTensors:tensorsCopy controlDependencies:dependenciesCopy region:v25 name:nameCopy];
 
   return v26;
 }
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v139 = *MEMORY[0x1E69E9840];
-  v11 = a7;
-  v105 = *(a3 + 1);
-  v106 = a3 + 16;
+  nameCopy = name;
+  v105 = *(builder + 1);
+  v106 = builder + 16;
   WeakRetained = objc_loadWeakRetained(&self->super._graph);
   obj = WeakRetained[22];
   v108 = obj;
 
-  v103 = v11;
+  v103 = nameCopy;
   mpsFileLoc("[MPSGraphIfElseOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphControlFlowOps.mm", __p);
-  v112 = v11;
+  v112 = nameCopy;
   LOWORD(v134) = 260;
   v133[0] = __p;
-  StringAttr = mlir::Builder::getStringAttr(a3, v133);
+  StringAttr = mlir::Builder::getStringAttr(builder, v133);
   v15 = mlir::FileLineColLoc::get(StringAttr, 0x891u, 0);
-  v111 = a3;
+  builderCopy = builder;
   if (v112)
   {
     v16 = v112;
-    v17 = [v112 UTF8String];
-    v18 = strlen(v17);
+    uTF8String = [v112 UTF8String];
+    v18 = strlen(uTF8String);
     if (v18 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -75,7 +75,7 @@
     BYTE7(v127) = v18;
     if (v18)
     {
-      memmove(&__dst, v17, v18);
+      memmove(&__dst, uTF8String, v18);
     }
 
     v20 = &__dst + v19;
@@ -89,7 +89,7 @@
   }
 
   *v20 = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, &__dst, v14, &v116);
+  MPSSymbolTable::insertOpInSymbolTable(table, &__dst, v14, &v116);
   v21 = v116.__r_.__value_.__r.__words[0];
   if ((v116.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -105,7 +105,7 @@
   }
 
   LOBYTE(v134) = v22;
-  v23 = mlir::Builder::getStringAttr(a3, v133);
+  v23 = mlir::Builder::getStringAttr(builder, v133);
   v109 = mlir::NameLoc::get(v23, v15);
   if (SHIBYTE(v116.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -129,12 +129,12 @@ LABEL_16:
     operator delete(__p[0]);
   }
 
-  if (*(a5 + 1) == *a5)
+  if (*(values + 1) == *values)
   {
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
   }
 
-  v24 = mlir::OpBuilder::create<mlir::tensor::ExtractOp,mlir::Value &>(a3, v109, *a5);
+  v24 = mlir::OpBuilder::create<mlir::tensor::ExtractOp,mlir::Value &>(builder, v109, *values);
   v122 = 0;
   v123 = v24 - 16;
   v120 = 0;
@@ -145,12 +145,12 @@ LABEL_16:
   v137 = 0;
   v138 = 0;
   v136 = 0;
-  *(a3 + 2) = v133;
-  *(a3 + 3) = &v134;
-  v25 = [(MPSGraphRegion *)self->super._region appendNewBlock];
+  *(builder + 2) = v133;
+  *(builder + 3) = &v134;
+  appendNewBlock = [(MPSGraphRegion *)self->super._region appendNewBlock];
   v26 = objc_loadWeakRetained(&self->super._graph);
   v27 = v26[22];
-  v26[22] = v25;
+  v26[22] = appendNewBlock;
 
   v28 = (*(self->_trueBlock + 2))();
   trueResults = self->_trueResults;
@@ -185,15 +185,15 @@ LABEL_16:
   v131 = 0;
   v132 = 0;
   v130 = 0;
-  v113 = self;
+  selfCopy = self;
   if (self->_falseBlock)
   {
-    *(a3 + 2) = &__dst;
-    *(a3 + 3) = &v128;
-    v34 = [(MPSGraphRegion *)self->super._region appendNewBlock];
+    *(builder + 2) = &__dst;
+    *(builder + 3) = &v128;
+    appendNewBlock2 = [(MPSGraphRegion *)self->super._region appendNewBlock];
     v35 = objc_loadWeakRetained(&self->super._graph);
     v36 = v35[22];
-    v35[22] = v34;
+    v35[22] = appendNewBlock2;
 
     v37 = (*(self->_falseBlock + 2))();
     falseResults = self->_falseResults;
@@ -283,9 +283,9 @@ LABEL_16:
           memcpy(0, 0, v55);
         }
 
-        self = v113;
+        self = selfCopy;
 
-        v42 = v113->_trueResults;
+        v42 = selfCopy->_trueResults;
       }
 
       v121 = v43;
@@ -301,7 +301,7 @@ LABEL_16:
   {
     *v106 = 0;
     v106[1] = 0;
-    v58 = v111;
+    v58 = builderCopy;
     v119 = 0;
     if (self->_falseBlock)
     {
@@ -337,7 +337,7 @@ LABEL_55:
   }
 
   *v106 = v105;
-  v58 = v111;
+  v58 = builderCopy;
   v119 = 0;
   if (!self->_falseBlock)
   {
@@ -484,17 +484,17 @@ LABEL_60:
   }
 
   v93 = *(v80 + 8);
-  v94 = [(NSMutableArray *)v113->super._region->_blocks objectAtIndexedSubscript:0, v103];
+  v103 = [(NSMutableArray *)selfCopy->super._region->_blocks objectAtIndexedSubscript:0, v103];
   v95 = v93 - 8;
   if (!v93)
   {
     v95 = 0;
   }
 
-  v94[3] = v95;
+  v103[3] = v95;
 
   v96 = *(v88 + 32);
-  v97 = [(NSMutableArray *)v113->super._region->_blocks objectAtIndexedSubscript:1];
+  v97 = [(NSMutableArray *)selfCopy->super._region->_blocks objectAtIndexedSubscript:1];
   v98 = v96 - 8;
   if (!v96)
   {
@@ -532,20 +532,20 @@ LABEL_60:
   return DefiningOp;
 }
 
-- (BOOL)recurseOnBlocksFromOutput:(id)a3 withAutodiff:(void *)a4
+- (BOOL)recurseOnBlocksFromOutput:(id)output withAutodiff:(void *)autodiff
 {
-  v6 = a3;
+  outputCopy = output;
   OpData = getOpData(&self->super);
-  LOBYTE(a4) = (*(*OpData + 24))(OpData, a4, v6);
+  LOBYTE(autodiff) = (*(*OpData + 24))(OpData, autodiff, outputCopy);
 
-  return a4;
+  return autodiff;
 }
 
-- (void)partialDerivateForCFOpWithAutodiff:(void *)a3
+- (void)partialDerivateForCFOpWithAutodiff:(void *)autodiff
 {
   OpData = getOpData(&self->super);
 
-  AutodiffOpData::createPartialDerivatives(OpData, a3);
+  AutodiffOpData::createPartialDerivatives(OpData, autodiff);
 }
 
 @end

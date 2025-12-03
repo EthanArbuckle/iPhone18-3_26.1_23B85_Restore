@@ -1,19 +1,19 @@
 @interface MRDBannerCenter
 - (MRBannerDelegate)delegate;
 - (MRBannerRequestRepresentable)activeRequest;
-- (MRDBannerCenter)initWithDelegate:(id)a3;
-- (void)bannerWithIdentifier:(id)a3 postedEvent:(unint64_t)a4;
+- (MRDBannerCenter)initWithDelegate:(id)delegate;
+- (void)bannerWithIdentifier:(id)identifier postedEvent:(unint64_t)event;
 - (void)dismissAllBannerRequests;
-- (void)dismissBannerWithIdentifier:(id)a3;
-- (void)postBannerRequest:(id)a3;
-- (void)setActiveRequest:(id)a3;
+- (void)dismissBannerWithIdentifier:(id)identifier;
+- (void)postBannerRequest:(id)request;
+- (void)setActiveRequest:(id)request;
 @end
 
 @implementation MRDBannerCenter
 
-- (MRDBannerCenter)initWithDelegate:(id)a3
+- (MRDBannerCenter)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = MRDBannerCenter;
   v5 = [(MRDBannerCenter *)&v8 init];
@@ -22,7 +22,7 @@
     v6 = [MRDUIControllerProvider bannerUIControllerWithDelegate:v5];
     [(MRDBannerCenter *)v5 setBannerControllable:v6];
 
-    [(MRDBannerCenter *)v5 setDelegate:v4];
+    [(MRDBannerCenter *)v5 setDelegate:delegateCopy];
   }
 
   return v5;
@@ -30,78 +30,78 @@
 
 - (MRBannerRequestRepresentable)activeRequest
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_activeRequest;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_activeRequest;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setActiveRequest:(id)a3
+- (void)setActiveRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   obj = self;
   objc_sync_enter(obj);
   activeRequest = obj->_activeRequest;
-  obj->_activeRequest = v4;
+  obj->_activeRequest = requestCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)postBannerRequest:(id)a3
+- (void)postBannerRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 requestIdentifier];
+    requestIdentifier = [requestCopy requestIdentifier];
     v10 = 134218242;
-    v11 = self;
+    selfCopy2 = self;
     v12 = 2112;
-    v13 = v6;
+    v13 = requestIdentifier;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[MRDRRC].BC <%p> postBannerRequest: %@", &v10, 0x16u);
   }
 
-  v7 = [(MRDBannerCenter *)self activeRequest];
+  activeRequest = [(MRDBannerCenter *)self activeRequest];
 
-  if (v7)
+  if (activeRequest)
   {
-    v8 = _MRLogForCategory();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    bannerControllable = _MRLogForCategory();
+    if (os_log_type_enabled(bannerControllable, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = [(MRDBannerCenter *)self activeRequest];
+      activeRequest2 = [(MRDBannerCenter *)self activeRequest];
       v10 = 134218242;
-      v11 = self;
+      selfCopy2 = self;
       v12 = 2112;
-      v13 = v9;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[MRDRRC].BC <%p> already presenting %@, bailing out", &v10, 0x16u);
+      v13 = activeRequest2;
+      _os_log_impl(&_mh_execute_header, bannerControllable, OS_LOG_TYPE_DEFAULT, "[MRDRRC].BC <%p> already presenting %@, bailing out", &v10, 0x16u);
     }
   }
 
   else
   {
-    [(MRDBannerCenter *)self setActiveRequest:v4];
-    v8 = [(MRDBannerCenter *)self bannerControllable];
-    [v8 postBannerRequest:v4];
+    [(MRDBannerCenter *)self setActiveRequest:requestCopy];
+    bannerControllable = [(MRDBannerCenter *)self bannerControllable];
+    [bannerControllable postBannerRequest:requestCopy];
   }
 }
 
-- (void)dismissBannerWithIdentifier:(id)a3
+- (void)dismissBannerWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _MRLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 134218242;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
-    v10 = v4;
+    v10 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[MRDRRC].BC <%p> dismissBannerWithIdentifier: %@", &v7, 0x16u);
   }
 
-  v6 = [(MRDBannerCenter *)self bannerControllable];
-  [v6 dismissBannerWithIdentifier:v4];
+  bannerControllable = [(MRDBannerCenter *)self bannerControllable];
+  [bannerControllable dismissBannerWithIdentifier:identifierCopy];
 }
 
 - (void)dismissAllBannerRequests
@@ -110,37 +110,37 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[MRDRRC].BC <%p> dismissAllBannerRequests", &v5, 0xCu);
   }
 
-  v4 = [(MRDBannerCenter *)self bannerControllable];
-  [v4 dismissAllBanners];
+  bannerControllable = [(MRDBannerCenter *)self bannerControllable];
+  [bannerControllable dismissAllBanners];
 }
 
-- (void)bannerWithIdentifier:(id)a3 postedEvent:(unint64_t)a4
+- (void)bannerWithIdentifier:(id)identifier postedEvent:(unint64_t)event
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v7 = _MRLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = MRBannerEventDescription();
     v10 = 134218498;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v6;
+    v13 = identifierCopy;
     v14 = 2112;
     v15 = v8;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[MRDRRC].BC <%p> bannerWithIdentifier: %@ postedEvent: %@", &v10, 0x20u);
   }
 
-  if (!a4)
+  if (!event)
   {
     [(MRDBannerCenter *)self setActiveRequest:0];
   }
 
-  v9 = [(MRDBannerCenter *)self delegate];
-  [v9 bannerWithRequestIdentifier:v6 didReceiveEvent:a4];
+  delegate = [(MRDBannerCenter *)self delegate];
+  [delegate bannerWithRequestIdentifier:identifierCopy didReceiveEvent:event];
 }
 
 - (MRBannerDelegate)delegate

@@ -1,26 +1,26 @@
 @interface NSMutableArray
 + (NSMutableArray)arrayWithCapacity:(NSUInteger)numItems;
 - (NSMutableArray)initWithCapacity:(NSUInteger)numItems;
-- (NSMutableArray)initWithObjects:(const void *)a3 count:(unint64_t)a4;
-- (id)arrayByAddingObjectsFromArray:(id)a3;
-- (id)sortedArrayFromRange:(_NSRange)a3 options:(unint64_t)a4 usingComparator:(id)a5;
+- (NSMutableArray)initWithObjects:(const void *)objects count:(unint64_t)count;
+- (id)arrayByAddingObjectsFromArray:(id)array;
+- (id)sortedArrayFromRange:(_NSRange)range options:(unint64_t)options usingComparator:(id)comparator;
 - (void)addObject:(id)anObject;
-- (void)addObjects:(const void *)a3 count:(unint64_t)a4;
+- (void)addObjects:(const void *)objects count:(unint64_t)count;
 - (void)addObjectsFromArray:(NSArray *)otherArray;
-- (void)addObjectsFromArray:(id)a3 range:(_NSRange)a4;
-- (void)addObjectsFromOrderedSet:(id)a3;
-- (void)addObjectsFromOrderedSet:(id)a3 range:(_NSRange)a4;
-- (void)addObjectsFromSet:(id)a3;
+- (void)addObjectsFromArray:(id)array range:(_NSRange)range;
+- (void)addObjectsFromOrderedSet:(id)set;
+- (void)addObjectsFromOrderedSet:(id)set range:(_NSRange)range;
+- (void)addObjectsFromSet:(id)set;
 - (void)exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2;
 - (void)insertObject:(id)anObject atIndex:(NSUInteger)index;
 - (void)insertObjects:(NSArray *)objects atIndexes:(NSIndexSet *)indexes;
-- (void)insertObjects:(const void *)a3 count:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)insertObjectsFromArray:(id)a3 atIndex:(unint64_t)a4;
-- (void)insertObjectsFromArray:(id)a3 range:(_NSRange)a4 atIndex:(unint64_t)a5;
-- (void)insertObjectsFromOrderedSet:(id)a3 atIndex:(unint64_t)a4;
-- (void)insertObjectsFromOrderedSet:(id)a3 range:(_NSRange)a4 atIndex:(unint64_t)a5;
-- (void)insertObjectsFromSet:(id)a3 atIndex:(unint64_t)a4;
-- (void)moveObjectsAtIndexes:(id)a3 toIndex:(unint64_t)a4;
+- (void)insertObjects:(const void *)objects count:(unint64_t)count atIndex:(unint64_t)index;
+- (void)insertObjectsFromArray:(id)array atIndex:(unint64_t)index;
+- (void)insertObjectsFromArray:(id)array range:(_NSRange)range atIndex:(unint64_t)index;
+- (void)insertObjectsFromOrderedSet:(id)set atIndex:(unint64_t)index;
+- (void)insertObjectsFromOrderedSet:(id)set range:(_NSRange)range atIndex:(unint64_t)index;
+- (void)insertObjectsFromSet:(id)set atIndex:(unint64_t)index;
+- (void)moveObjectsAtIndexes:(id)indexes toIndex:(unint64_t)index;
 - (void)removeAllObjects;
 - (void)removeFirstObject;
 - (void)removeLastObject;
@@ -30,39 +30,39 @@
 - (void)removeObjectIdenticalTo:(id)anObject;
 - (void)removeObjectIdenticalTo:(id)anObject inRange:(NSRange)range;
 - (void)removeObjectsAtIndexes:(NSIndexSet *)indexes;
-- (void)removeObjectsAtIndexes:(id)a3 options:(unint64_t)a4 passingTest:(id)a5;
+- (void)removeObjectsAtIndexes:(id)indexes options:(unint64_t)options passingTest:(id)test;
 - (void)removeObjectsInArray:(NSArray *)otherArray;
-- (void)removeObjectsInArray:(id)a3 range:(_NSRange)a4;
-- (void)removeObjectsInOrderedSet:(id)a3;
-- (void)removeObjectsInOrderedSet:(id)a3 range:(_NSRange)a4;
+- (void)removeObjectsInArray:(id)array range:(_NSRange)range;
+- (void)removeObjectsInOrderedSet:(id)set;
+- (void)removeObjectsInOrderedSet:(id)set range:(_NSRange)range;
 - (void)removeObjectsInRange:(NSRange)range;
-- (void)removeObjectsInRange:(_NSRange)a3 inArray:(id)a4;
-- (void)removeObjectsInRange:(_NSRange)a3 inArray:(id)a4 range:(_NSRange)a5;
-- (void)removeObjectsInRange:(_NSRange)a3 inOrderedSet:(id)a4;
-- (void)removeObjectsInRange:(_NSRange)a3 inOrderedSet:(id)a4 range:(_NSRange)a5;
-- (void)removeObjectsInRange:(_NSRange)a3 inSet:(id)a4;
-- (void)removeObjectsInSet:(id)a3;
-- (void)removeObjectsPassingTest:(id)a3;
-- (void)removeObjectsWithOptions:(unint64_t)a3 passingTest:(id)a4;
-- (void)replaceObject:(id)a3;
-- (void)replaceObject:(id)a3 inRange:(_NSRange)a4;
+- (void)removeObjectsInRange:(_NSRange)range inArray:(id)array;
+- (void)removeObjectsInRange:(_NSRange)range inArray:(id)array range:(_NSRange)a5;
+- (void)removeObjectsInRange:(_NSRange)range inOrderedSet:(id)set;
+- (void)removeObjectsInRange:(_NSRange)range inOrderedSet:(id)set range:(_NSRange)a5;
+- (void)removeObjectsInRange:(_NSRange)range inSet:(id)set;
+- (void)removeObjectsInSet:(id)set;
+- (void)removeObjectsPassingTest:(id)test;
+- (void)removeObjectsWithOptions:(unint64_t)options passingTest:(id)test;
+- (void)replaceObject:(id)object;
+- (void)replaceObject:(id)object inRange:(_NSRange)range;
 - (void)replaceObjectAtIndex:(NSUInteger)index withObject:(id)anObject;
 - (void)replaceObjectsAtIndexes:(NSIndexSet *)indexes withObjects:(NSArray *)objects;
 - (void)replaceObjectsInRange:(NSRange)range withObjectsFromArray:(NSArray *)otherArray;
 - (void)replaceObjectsInRange:(NSRange)range withObjectsFromArray:(NSArray *)otherArray range:(NSRange)otherRange;
-- (void)replaceObjectsInRange:(_NSRange)a3 withObjects:(const void *)a4 count:(unint64_t)a5;
-- (void)replaceObjectsInRange:(_NSRange)a3 withObjectsFromOrderedSet:(id)a4;
-- (void)replaceObjectsInRange:(_NSRange)a3 withObjectsFromOrderedSet:(id)a4 range:(_NSRange)a5;
-- (void)replaceObjectsInRange:(_NSRange)a3 withObjectsFromSet:(id)a4;
+- (void)replaceObjectsInRange:(_NSRange)range withObjects:(const void *)objects count:(unint64_t)count;
+- (void)replaceObjectsInRange:(_NSRange)range withObjectsFromOrderedSet:(id)set;
+- (void)replaceObjectsInRange:(_NSRange)range withObjectsFromOrderedSet:(id)set range:(_NSRange)a5;
+- (void)replaceObjectsInRange:(_NSRange)range withObjectsFromSet:(id)set;
 - (void)setArray:(NSArray *)otherArray;
-- (void)setObject:(id)a3 atIndex:(unint64_t)a4;
 - (void)setObject:(id)obj atIndexedSubscript:(NSUInteger)idx;
-- (void)setOrderedSet:(id)a3;
-- (void)setSet:(id)a3;
-- (void)sortRange:(_NSRange)a3 options:(unint64_t)a4 usingComparator:(id)a5;
+- (void)setObject:(id)object atIndex:(unint64_t)index;
+- (void)setOrderedSet:(id)set;
+- (void)setSet:(id)set;
+- (void)sortRange:(_NSRange)range options:(unint64_t)options usingComparator:(id)comparator;
 - (void)sortUsingComparator:(NSComparator)cmptr;
 - (void)sortUsingFunction:(NSInteger (__cdecl *)compare context:;
-- (void)sortUsingFunction:(void *)a3 context:(void *)a4 range:(_NSRange)a5;
+- (void)sortUsingFunction:(void *)function context:(void *)context range:(_NSRange)range;
 - (void)sortUsingSelector:(SEL)comparator;
 - (void)sortWithOptions:(NSSortOptions)opts usingComparator:(NSComparator)cmptr;
 @end
@@ -124,25 +124,25 @@ LABEL_3:
   [(NSMutableArray *)self insertObject:anObject atIndex:v6];
 }
 
-- (void)addObjects:(const void *)a3 count:(unint64_t)a4
+- (void)addObjects:(const void *)objects count:(unint64_t)count
 {
   v21[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableArray);
-    if (a3)
+    if (objects)
     {
       goto LABEL_4;
     }
   }
 
-  else if (a3)
+  else if (objects)
   {
     goto LABEL_4;
   }
 
-  if (a4)
+  if (count)
   {
     v15 = _os_log_pack_size();
     v16 = v21 - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -150,13 +150,13 @@ LABEL_3:
     *v17 = 136315394;
     *(v17 + 4) = "[NSMutableArray addObjects:count:]";
     *(v17 + 12) = 2048;
-    *(v17 + 14) = a4;
-    v18 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[NSMutableArray addObjects:count:]", a4);
+    *(v17 + 14) = count;
+    v18 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[NSMutableArray addObjects:count:]", count);
     goto LABEL_17;
   }
 
 LABEL_4:
-  if (a4 >> 61)
+  if (count >> 61)
   {
     v15 = _os_log_pack_size();
     v16 = v21 - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -164,19 +164,19 @@ LABEL_4:
     *v19 = 136315394;
     *(v19 + 4) = "[NSMutableArray addObjects:count:]";
     *(v19 + 12) = 2048;
-    *(v19 + 14) = a4;
-    v18 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSMutableArray addObjects:count:]", a4);
+    *(v19 + 14) = count;
+    v18 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSMutableArray addObjects:count:]", count);
 LABEL_17:
     v20 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v18) osLogPack:0 size:v16, v15];
     objc_exception_throw(v20);
   }
 
-  if (a4)
+  if (count)
   {
     v8 = 0;
     do
     {
-      if (!a3[v8])
+      if (!objects[v8])
       {
         v11 = _os_log_pack_size();
         v12 = _os_log_pack_fill();
@@ -192,36 +192,36 @@ LABEL_17:
       ++v8;
     }
 
-    while (a4 != v8);
+    while (count != v8);
   }
 
   v9 = [(NSArray *)self count];
   v10 = *MEMORY[0x1E69E9840];
 
-  [(NSMutableArray *)self insertObjects:a3 count:a4 atIndex:v9];
+  [(NSMutableArray *)self insertObjects:objects count:count atIndex:v9];
 }
 
-- (void)addObjectsFromArray:(id)a3 range:(_NSRange)a4
+- (void)addObjectsFromArray:(id)array range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v25[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableArray);
-    if (!a3)
+    if (!array)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!a3)
+  else if (!array)
   {
     goto LABEL_4;
   }
 
-  if ((_NSIsNSArray(a3) & 1) == 0)
+  if ((_NSIsNSArray(array) & 1) == 0)
   {
     v17 = _os_log_pack_size();
     v18 = _os_log_pack_fill();
@@ -233,7 +233,7 @@ LABEL_17:
   }
 
 LABEL_4:
-  v9 = [a3 count];
+  v9 = [array count];
   if ((location & 0x8000000000000000) != 0 || (length & 0x8000000000000000) != 0 || v9 < location + length)
   {
     if (v9)
@@ -262,7 +262,7 @@ LABEL_4:
   v10 = [(NSArray *)self count];
   v11 = *MEMORY[0x1E69E9840];
 
-  [(NSMutableArray *)self insertObjectsFromArray:a3 range:location atIndex:length, v10];
+  [(NSMutableArray *)self insertObjectsFromArray:array range:location atIndex:length, v10];
 }
 
 - (void)addObjectsFromArray:(NSArray *)otherArray
@@ -343,27 +343,27 @@ LABEL_15:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addObjectsFromOrderedSet:(id)a3 range:(_NSRange)a4
+- (void)addObjectsFromOrderedSet:(id)set range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v25[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableArray);
-    if (!a3)
+    if (!set)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!a3)
+  else if (!set)
   {
     goto LABEL_4;
   }
 
-  if ((_NSIsNSOrderedSet(a3) & 1) == 0)
+  if ((_NSIsNSOrderedSet(set) & 1) == 0)
   {
     v17 = _os_log_pack_size();
     v18 = _os_log_pack_fill();
@@ -375,7 +375,7 @@ LABEL_15:
   }
 
 LABEL_4:
-  v9 = [a3 count];
+  v9 = [set count];
   if ((location & 0x8000000000000000) != 0 || (length & 0x8000000000000000) != 0 || v9 < location + length)
   {
     if (v9)
@@ -404,28 +404,28 @@ LABEL_4:
   v10 = [(NSArray *)self count];
   v11 = *MEMORY[0x1E69E9840];
 
-  [(NSMutableArray *)self insertObjectsFromOrderedSet:a3 range:location atIndex:length, v10];
+  [(NSMutableArray *)self insertObjectsFromOrderedSet:set range:location atIndex:length, v10];
 }
 
-- (void)addObjectsFromOrderedSet:(id)a3
+- (void)addObjectsFromOrderedSet:(id)set
 {
   v15[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v3, __CFTSANTagMutableArray);
-    if (!a3)
+    if (!set)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!a3)
+  else if (!set)
   {
     goto LABEL_4;
   }
 
-  if ((_NSIsNSOrderedSet(a3) & 1) == 0)
+  if ((_NSIsNSOrderedSet(set) & 1) == 0)
   {
     v9 = _os_log_pack_size();
     v11 = v15 - ((MEMORY[0x1EEE9AC00](v9, v10) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -439,31 +439,31 @@ LABEL_4:
 
 LABEL_4:
   v6 = [(NSArray *)self count];
-  v7 = [a3 count];
+  v7 = [set count];
   v8 = *MEMORY[0x1E69E9840];
 
-  [(NSMutableArray *)self insertObjectsFromOrderedSet:a3 range:0 atIndex:v7, v6];
+  [(NSMutableArray *)self insertObjectsFromOrderedSet:set range:0 atIndex:v7, v6];
 }
 
-- (void)addObjectsFromSet:(id)a3
+- (void)addObjectsFromSet:(id)set
 {
   v12[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v3, __CFTSANTagMutableArray);
-    if (!a3)
+    if (!set)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!a3)
+  else if (!set)
   {
     goto LABEL_4;
   }
 
-  if ((_NSIsNSSet(a3) & 1) == 0)
+  if ((_NSIsNSSet(set) & 1) == 0)
   {
     v8 = _os_log_pack_size();
     v9 = _os_log_pack_fill();
@@ -478,7 +478,7 @@ LABEL_4:
   v6 = [(NSArray *)self count];
   v7 = *MEMORY[0x1E69E9840];
 
-  [(NSMutableArray *)self insertObjectsFromSet:a3 atIndex:v6];
+  [(NSMutableArray *)self insertObjectsFromSet:set atIndex:v6];
 }
 
 - (void)exchangeObjectAtIndex:(NSUInteger)idx1 withObjectAtIndex:(NSUInteger)idx2
@@ -584,25 +584,25 @@ LABEL_25:
   }
 }
 
-- (void)insertObjects:(const void *)a3 count:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)insertObjects:(const void *)objects count:(unint64_t)count atIndex:(unint64_t)index
 {
   v32[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v5, __CFTSANTagMutableArray);
-    if (a3)
+    if (objects)
     {
       goto LABEL_4;
     }
   }
 
-  else if (a3)
+  else if (objects)
   {
     goto LABEL_4;
   }
 
-  if (a4)
+  if (count)
   {
     v18 = _os_log_pack_size();
     v19 = v32 - ((v18 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -610,13 +610,13 @@ LABEL_25:
     *v20 = 136315394;
     *(v20 + 4) = "[NSMutableArray insertObjects:count:atIndex:]";
     *(v20 + 12) = 2048;
-    *(v20 + 14) = a4;
-    v21 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[NSMutableArray insertObjects:count:atIndex:]", a4);
+    *(v20 + 14) = count;
+    v21 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[NSMutableArray insertObjects:count:atIndex:]", count);
     goto LABEL_19;
   }
 
 LABEL_4:
-  if (a4 >> 61)
+  if (count >> 61)
   {
     v18 = _os_log_pack_size();
     v19 = v32 - ((v18 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -624,19 +624,19 @@ LABEL_4:
     *v22 = 136315394;
     *(v22 + 4) = "[NSMutableArray insertObjects:count:atIndex:]";
     *(v22 + 12) = 2048;
-    *(v22 + 14) = a4;
-    v21 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSMutableArray insertObjects:count:atIndex:]", a4);
+    *(v22 + 14) = count;
+    v21 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSMutableArray insertObjects:count:atIndex:]", count);
 LABEL_19:
     v23 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v21) osLogPack:0 size:v19, v18];
     objc_exception_throw(v23);
   }
 
-  if (a4)
+  if (count)
   {
     v10 = 0;
     do
     {
-      if (!a3[v10])
+      if (!objects[v10])
       {
         v14 = _os_log_pack_size();
         v15 = _os_log_pack_fill();
@@ -652,11 +652,11 @@ LABEL_19:
       ++v10;
     }
 
-    while (a4 != v10);
+    while (count != v10);
   }
 
   v11 = [(NSArray *)self count];
-  if ((a5 & 0x8000000000000000) != 0 || v11 < a5)
+  if ((index & 0x8000000000000000) != 0 || v11 < index)
   {
     if (v11)
     {
@@ -664,8 +664,8 @@ LABEL_19:
       v24 = _os_log_pack_size();
       v25 = v32 - ((v24 + 15) & 0xFFFFFFFFFFFFFFF0);
       v29 = _os_log_pack_fill();
-      v30 = __os_log_helper_1_2_3_8_32_8_0_8_0(v29, "[NSMutableArray insertObjects:count:atIndex:]", a5, --v28);
-      v27 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds [0 .. %lu]", v30, "[NSMutableArray insertObjects:count:atIndex:]", a5, v28);
+      v30 = __os_log_helper_1_2_3_8_32_8_0_8_0(v29, "[NSMutableArray insertObjects:count:atIndex:]", index, --v28);
+      v27 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds [0 .. %lu]", v30, "[NSMutableArray insertObjects:count:atIndex:]", index, v28);
     }
 
     else
@@ -676,44 +676,44 @@ LABEL_19:
       *v26 = 136315394;
       *(v26 + 4) = "[NSMutableArray insertObjects:count:atIndex:]";
       *(v26 + 12) = 2048;
-      *(v26 + 14) = a5;
-      v27 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds for empty array", "[NSMutableArray insertObjects:count:atIndex:]", a5);
+      *(v26 + 14) = index;
+      v27 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds for empty array", "[NSMutableArray insertObjects:count:atIndex:]", index);
     }
 
     v31 = [NSException exceptionWithName:@"NSRangeException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v27) osLogPack:0 size:v25, v24];
     objc_exception_throw(v31);
   }
 
-  for (; a4; --a4)
+  for (; count; --count)
   {
-    v12 = *a3++;
-    [(NSMutableArray *)self insertObject:v12 atIndex:a5++];
+    v12 = *objects++;
+    [(NSMutableArray *)self insertObject:v12 atIndex:index++];
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)insertObjectsFromArray:(id)a3 range:(_NSRange)a4 atIndex:(unint64_t)a5
+- (void)insertObjectsFromArray:(id)array range:(_NSRange)range atIndex:(unint64_t)index
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v57[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v5, __CFTSANTagMutableArray);
-    if (!a3)
+    if (!array)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!a3)
+  else if (!array)
   {
     goto LABEL_4;
   }
 
-  if ((_NSIsNSArray(a3) & 1) == 0)
+  if ((_NSIsNSArray(array) & 1) == 0)
   {
     v35 = _os_log_pack_size();
     v37 = v57 - ((MEMORY[0x1EEE9AC00](v35, v36) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -726,7 +726,7 @@ LABEL_19:
   }
 
 LABEL_4:
-  v11 = [a3 count];
+  v11 = [array count];
   if ((location & 0x8000000000000000) != 0 || (length & 0x8000000000000000) != 0 || v11 < location + length)
   {
     if (!v11)
@@ -751,7 +751,7 @@ LABEL_4:
   }
 
   v12 = [(NSArray *)self count];
-  if ((a5 & 0x8000000000000000) != 0 || v12 < a5)
+  if ((index & 0x8000000000000000) != 0 || v12 < index)
   {
     if (!v12)
     {
@@ -761,8 +761,8 @@ LABEL_4:
       *v30 = 136315394;
       *(v30 + 4) = "[NSMutableArray insertObjectsFromArray:range:atIndex:]";
       *(v30 + 12) = 2048;
-      *(v30 + 14) = a5;
-      v31 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds for empty array", "[NSMutableArray insertObjectsFromArray:range:atIndex:]", a5);
+      *(v30 + 14) = index;
+      v31 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds for empty array", "[NSMutableArray insertObjectsFromArray:range:atIndex:]", index);
       v32 = [NSException exceptionWithName:@"NSRangeException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v31) osLogPack:0 size:v29, v27];
       objc_exception_throw(v32);
     }
@@ -771,8 +771,8 @@ LABEL_4:
     v50 = _os_log_pack_size();
     v52 = v57 - ((MEMORY[0x1EEE9AC00](v50, v51) + 15) & 0xFFFFFFFFFFFFFFF0);
     v53 = _os_log_pack_fill();
-    v54 = __os_log_helper_1_2_3_8_32_8_0_8_0(v53, "[NSMutableArray insertObjectsFromArray:range:atIndex:]", a5, --v49);
-    v55 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds [0 .. %lu]", v54, "[NSMutableArray insertObjectsFromArray:range:atIndex:]", a5, v49);
+    v54 = __os_log_helper_1_2_3_8_32_8_0_8_0(v53, "[NSMutableArray insertObjectsFromArray:range:atIndex:]", index, --v49);
+    v55 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds [0 .. %lu]", v54, "[NSMutableArray insertObjectsFromArray:range:atIndex:]", index, v49);
     v56 = [NSException exceptionWithName:@"NSRangeException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v55) osLogPack:0 size:v52, v50];
     objc_exception_throw(v56);
   }
@@ -809,31 +809,31 @@ LABEL_4:
     v18 = 0;
   }
 
-  [a3 getObjects:v17 range:{location, length, v57[0]}];
-  [(NSMutableArray *)self insertObjects:v17 count:length atIndex:a5];
+  [array getObjects:v17 range:{location, length, v57[0]}];
+  [(NSMutableArray *)self insertObjects:v17 count:length atIndex:index];
   free(v18);
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)insertObjectsFromArray:(id)a3 atIndex:(unint64_t)a4
+- (void)insertObjectsFromArray:(id)array atIndex:(unint64_t)index
 {
   v40[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableArray);
-    if (!a3)
+    if (!array)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!a3)
+  else if (!array)
   {
     goto LABEL_4;
   }
 
-  if ((_NSIsNSArray(a3) & 1) == 0)
+  if ((_NSIsNSArray(array) & 1) == 0)
   {
     v26 = _os_log_pack_size();
     v28 = v40 - ((MEMORY[0x1EEE9AC00](v26, v27) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -848,7 +848,7 @@ LABEL_4:
 LABEL_4:
   v8 = [(NSArray *)self count];
   v9 = v8;
-  if ((a4 & 0x8000000000000000) != 0 || v8 < a4)
+  if ((index & 0x8000000000000000) != 0 || v8 < index)
   {
     if (!v8)
     {
@@ -858,8 +858,8 @@ LABEL_4:
       *v21 = 136315394;
       *(v21 + 4) = "[NSMutableArray insertObjectsFromArray:atIndex:]";
       *(v21 + 12) = 2048;
-      *(v21 + 14) = a4;
-      v22 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds for empty array", "[NSMutableArray insertObjectsFromArray:atIndex:]", a4);
+      *(v21 + 14) = index;
+      v22 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds for empty array", "[NSMutableArray insertObjectsFromArray:atIndex:]", index);
       v23 = [NSException exceptionWithName:@"NSRangeException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v22) osLogPack:0 size:v20, v18];
       objc_exception_throw(v23);
     }
@@ -868,13 +868,13 @@ LABEL_4:
     v34 = v40 - ((MEMORY[0x1EEE9AC00](v32, v33) + 15) & 0xFFFFFFFFFFFFFFF0);
     v35 = _os_log_pack_fill();
     v36 = v9 - 1;
-    v37 = __os_log_helper_1_2_3_8_32_8_0_8_0(v35, "[NSMutableArray insertObjectsFromArray:atIndex:]", a4, v36);
-    v38 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds [0 .. %lu]", v37, "[NSMutableArray insertObjectsFromArray:atIndex:]", a4, v36);
+    v37 = __os_log_helper_1_2_3_8_32_8_0_8_0(v35, "[NSMutableArray insertObjectsFromArray:atIndex:]", index, v36);
+    v38 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds [0 .. %lu]", v37, "[NSMutableArray insertObjectsFromArray:atIndex:]", index, v36);
     v39 = [NSException exceptionWithName:@"NSRangeException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v38) osLogPack:0 size:v34, v32];
     objc_exception_throw(v39);
   }
 
-  v10 = [a3 count];
+  v10 = [array count];
   v12 = v10;
   if (v10 >> 60)
   {
@@ -903,33 +903,33 @@ LABEL_4:
     v16 = 0;
   }
 
-  [a3 getObjects:v15 range:{0, v12, v40[0]}];
-  [(NSMutableArray *)self insertObjects:v15 count:v12 atIndex:a4];
+  [array getObjects:v15 range:{0, v12, v40[0]}];
+  [(NSMutableArray *)self insertObjects:v15 count:v12 atIndex:index];
   free(v16);
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)insertObjectsFromOrderedSet:(id)a3 range:(_NSRange)a4 atIndex:(unint64_t)a5
+- (void)insertObjectsFromOrderedSet:(id)set range:(_NSRange)range atIndex:(unint64_t)index
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v57[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v5, __CFTSANTagMutableArray);
-    if (!a3)
+    if (!set)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!a3)
+  else if (!set)
   {
     goto LABEL_4;
   }
 
-  if ((_NSIsNSOrderedSet(a3) & 1) == 0)
+  if ((_NSIsNSOrderedSet(set) & 1) == 0)
   {
     v35 = _os_log_pack_size();
     v37 = v57 - ((MEMORY[0x1EEE9AC00](v35, v36) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -942,7 +942,7 @@ LABEL_4:
   }
 
 LABEL_4:
-  v11 = [a3 count];
+  v11 = [set count];
   if ((location & 0x8000000000000000) != 0 || (length & 0x8000000000000000) != 0 || v11 < location + length)
   {
     if (!v11)
@@ -967,7 +967,7 @@ LABEL_4:
   }
 
   v12 = [(NSArray *)self count];
-  if ((a5 & 0x8000000000000000) != 0 || v12 < a5)
+  if ((index & 0x8000000000000000) != 0 || v12 < index)
   {
     if (!v12)
     {
@@ -977,8 +977,8 @@ LABEL_4:
       *v30 = 136315394;
       *(v30 + 4) = "[NSMutableArray insertObjectsFromOrderedSet:range:atIndex:]";
       *(v30 + 12) = 2048;
-      *(v30 + 14) = a5;
-      v31 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds for empty array", "[NSMutableArray insertObjectsFromOrderedSet:range:atIndex:]", a5);
+      *(v30 + 14) = index;
+      v31 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds for empty array", "[NSMutableArray insertObjectsFromOrderedSet:range:atIndex:]", index);
       v32 = [NSException exceptionWithName:@"NSRangeException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v31) osLogPack:0 size:v29, v27];
       objc_exception_throw(v32);
     }
@@ -987,8 +987,8 @@ LABEL_4:
     v50 = _os_log_pack_size();
     v52 = v57 - ((MEMORY[0x1EEE9AC00](v50, v51) + 15) & 0xFFFFFFFFFFFFFFF0);
     v53 = _os_log_pack_fill();
-    v54 = __os_log_helper_1_2_3_8_32_8_0_8_0(v53, "[NSMutableArray insertObjectsFromOrderedSet:range:atIndex:]", a5, --v49);
-    v55 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds [0 .. %lu]", v54, "[NSMutableArray insertObjectsFromOrderedSet:range:atIndex:]", a5, v49);
+    v54 = __os_log_helper_1_2_3_8_32_8_0_8_0(v53, "[NSMutableArray insertObjectsFromOrderedSet:range:atIndex:]", index, --v49);
+    v55 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds [0 .. %lu]", v54, "[NSMutableArray insertObjectsFromOrderedSet:range:atIndex:]", index, v49);
     v56 = [NSException exceptionWithName:@"NSRangeException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v55) osLogPack:0 size:v52, v50];
     objc_exception_throw(v56);
   }
@@ -1025,31 +1025,31 @@ LABEL_4:
     v18 = 0;
   }
 
-  [a3 getObjects:v17 range:{location, length, v57[0]}];
-  [(NSMutableArray *)self insertObjects:v17 count:length atIndex:a5];
+  [set getObjects:v17 range:{location, length, v57[0]}];
+  [(NSMutableArray *)self insertObjects:v17 count:length atIndex:index];
   free(v18);
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)insertObjectsFromOrderedSet:(id)a3 atIndex:(unint64_t)a4
+- (void)insertObjectsFromOrderedSet:(id)set atIndex:(unint64_t)index
 {
   v40[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableArray);
-    if (!a3)
+    if (!set)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!a3)
+  else if (!set)
   {
     goto LABEL_4;
   }
 
-  if ((_NSIsNSOrderedSet(a3) & 1) == 0)
+  if ((_NSIsNSOrderedSet(set) & 1) == 0)
   {
     v26 = _os_log_pack_size();
     v28 = v40 - ((MEMORY[0x1EEE9AC00](v26, v27) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -1064,7 +1064,7 @@ LABEL_4:
 LABEL_4:
   v8 = [(NSArray *)self count];
   v9 = v8;
-  if ((a4 & 0x8000000000000000) != 0 || v8 < a4)
+  if ((index & 0x8000000000000000) != 0 || v8 < index)
   {
     if (!v8)
     {
@@ -1074,8 +1074,8 @@ LABEL_4:
       *v21 = 136315394;
       *(v21 + 4) = "[NSMutableArray insertObjectsFromOrderedSet:atIndex:]";
       *(v21 + 12) = 2048;
-      *(v21 + 14) = a4;
-      v22 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds for empty array", "[NSMutableArray insertObjectsFromOrderedSet:atIndex:]", a4);
+      *(v21 + 14) = index;
+      v22 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds for empty array", "[NSMutableArray insertObjectsFromOrderedSet:atIndex:]", index);
       v23 = [NSException exceptionWithName:@"NSRangeException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v22) osLogPack:0 size:v20, v18];
       objc_exception_throw(v23);
     }
@@ -1084,13 +1084,13 @@ LABEL_4:
     v34 = v40 - ((MEMORY[0x1EEE9AC00](v32, v33) + 15) & 0xFFFFFFFFFFFFFFF0);
     v35 = _os_log_pack_fill();
     v36 = v9 - 1;
-    v37 = __os_log_helper_1_2_3_8_32_8_0_8_0(v35, "[NSMutableArray insertObjectsFromOrderedSet:atIndex:]", a4, v36);
-    v38 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds [0 .. %lu]", v37, "[NSMutableArray insertObjectsFromOrderedSet:atIndex:]", a4, v36);
+    v37 = __os_log_helper_1_2_3_8_32_8_0_8_0(v35, "[NSMutableArray insertObjectsFromOrderedSet:atIndex:]", index, v36);
+    v38 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds [0 .. %lu]", v37, "[NSMutableArray insertObjectsFromOrderedSet:atIndex:]", index, v36);
     v39 = [NSException exceptionWithName:@"NSRangeException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v38) osLogPack:0 size:v34, v32];
     objc_exception_throw(v39);
   }
 
-  v10 = [a3 count];
+  v10 = [set count];
   v12 = v10;
   if (v10 >> 60)
   {
@@ -1119,31 +1119,31 @@ LABEL_4:
     v16 = 0;
   }
 
-  [a3 getObjects:v15 range:{0, v12, v40[0]}];
-  [(NSMutableArray *)self insertObjects:v15 count:v12 atIndex:a4];
+  [set getObjects:v15 range:{0, v12, v40[0]}];
+  [(NSMutableArray *)self insertObjects:v15 count:v12 atIndex:index];
   free(v16);
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)insertObjectsFromSet:(id)a3 atIndex:(unint64_t)a4
+- (void)insertObjectsFromSet:(id)set atIndex:(unint64_t)index
 {
   v40[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableArray);
-    if (!a3)
+    if (!set)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!a3)
+  else if (!set)
   {
     goto LABEL_4;
   }
 
-  if ((_NSIsNSSet(a3) & 1) == 0)
+  if ((_NSIsNSSet(set) & 1) == 0)
   {
     v26 = _os_log_pack_size();
     v28 = v40 - ((MEMORY[0x1EEE9AC00](v26, v27) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -1158,7 +1158,7 @@ LABEL_4:
 LABEL_4:
   v8 = [(NSArray *)self count];
   v9 = v8;
-  if ((a4 & 0x8000000000000000) != 0 || v8 < a4)
+  if ((index & 0x8000000000000000) != 0 || v8 < index)
   {
     if (!v8)
     {
@@ -1168,8 +1168,8 @@ LABEL_4:
       *v21 = 136315394;
       *(v21 + 4) = "[NSMutableArray insertObjectsFromSet:atIndex:]";
       *(v21 + 12) = 2048;
-      *(v21 + 14) = a4;
-      v22 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds for empty array", "[NSMutableArray insertObjectsFromSet:atIndex:]", a4);
+      *(v21 + 14) = index;
+      v22 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds for empty array", "[NSMutableArray insertObjectsFromSet:atIndex:]", index);
       v23 = [NSException exceptionWithName:@"NSRangeException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v22) osLogPack:0 size:v20, v18];
       objc_exception_throw(v23);
     }
@@ -1178,13 +1178,13 @@ LABEL_4:
     v34 = v40 - ((MEMORY[0x1EEE9AC00](v32, v33) + 15) & 0xFFFFFFFFFFFFFFF0);
     v35 = _os_log_pack_fill();
     v36 = v9 - 1;
-    v37 = __os_log_helper_1_2_3_8_32_8_0_8_0(v35, "[NSMutableArray insertObjectsFromSet:atIndex:]", a4, v36);
-    v38 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds [0 .. %lu]", v37, "[NSMutableArray insertObjectsFromSet:atIndex:]", a4, v36);
+    v37 = __os_log_helper_1_2_3_8_32_8_0_8_0(v35, "[NSMutableArray insertObjectsFromSet:atIndex:]", index, v36);
+    v38 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds [0 .. %lu]", v37, "[NSMutableArray insertObjectsFromSet:atIndex:]", index, v36);
     v39 = [NSException exceptionWithName:@"NSRangeException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v38) osLogPack:0 size:v34, v32];
     objc_exception_throw(v39);
   }
 
-  v10 = [a3 count];
+  v10 = [set count];
   v12 = v10;
   if (v10 >> 60)
   {
@@ -1213,8 +1213,8 @@ LABEL_4:
     v16 = 0;
   }
 
-  [a3 getObjects:v15 count:{v12, v40[0]}];
-  [(NSMutableArray *)self insertObjects:v15 count:v12 atIndex:a4];
+  [set getObjects:v15 count:{v12, v40[0]}];
+  [(NSMutableArray *)self insertObjects:v15 count:v12 atIndex:index];
   free(v16);
   v17 = *MEMORY[0x1E69E9840];
 }
@@ -1276,20 +1276,20 @@ LABEL_4:
 
   v8 = [(NSArray *)self count];
   v9 = [(NSArray *)objects count];
-  v10 = [(NSIndexSet *)indexes lastIndex];
-  if ((v10 & 0x8000000000000000) != 0)
+  lastIndex = [(NSIndexSet *)indexes lastIndex];
+  if ((lastIndex & 0x8000000000000000) != 0)
   {
-    v39 = v10;
+    v39 = lastIndex;
     v11 = v9 + v8;
     goto LABEL_26;
   }
 
-  if (v10 != 0x7FFFFFFFFFFFFFFFLL)
+  if (lastIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = v9 + v8;
-    if (v11 <= v10)
+    if (v11 <= lastIndex)
     {
-      v39 = v10;
+      v39 = lastIndex;
 LABEL_26:
       if (!v11)
       {
@@ -1365,13 +1365,13 @@ LABEL_26:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-- (void)moveObjectsAtIndexes:(id)a3 toIndex:(unint64_t)a4
+- (void)moveObjectsAtIndexes:(id)indexes toIndex:(unint64_t)index
 {
   v65[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (!__cf_tsanWriteFunction)
   {
-    if (a3)
+    if (indexes)
     {
       goto LABEL_3;
     }
@@ -1388,7 +1388,7 @@ LABEL_17:
   }
 
   __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableArray);
-  if (!a3)
+  if (!indexes)
   {
     goto LABEL_17;
   }
@@ -1408,20 +1408,20 @@ LABEL_3:
 
   v8 = [(NSArray *)self count];
   v9 = [0 count];
-  v10 = [a3 lastIndex];
-  if ((v10 & 0x8000000000000000) != 0)
+  lastIndex = [indexes lastIndex];
+  if ((lastIndex & 0x8000000000000000) != 0)
   {
-    v36 = v10;
+    v36 = lastIndex;
     v11 = v9 + v8;
     goto LABEL_21;
   }
 
-  if (v10 != 0x7FFFFFFFFFFFFFFFLL)
+  if (lastIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = v9 + v8;
-    if (v11 <= v10)
+    if (v11 <= lastIndex)
     {
-      v36 = v10;
+      v36 = lastIndex;
 LABEL_21:
       if (!v11)
       {
@@ -1448,9 +1448,9 @@ LABEL_21:
   }
 
   v12 = [(NSArray *)self count];
-  v13 = [a3 countOfIndexesInRange:{0, a4}];
+  v13 = [indexes countOfIndexesInRange:{0, index}];
   v14 = v12 - v13;
-  if ((a4 & 0x8000000000000000) != 0 || v14 < a4)
+  if ((index & 0x8000000000000000) != 0 || v14 < index)
   {
     if (v12 == v13)
     {
@@ -1460,8 +1460,8 @@ LABEL_21:
       *v53 = 136315394;
       *(v53 + 4) = "[NSMutableArray moveObjectsAtIndexes:toIndex:]";
       *(v53 + 12) = 2048;
-      *(v53 + 14) = a4;
-      v54 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds for empty array", "[NSMutableArray moveObjectsAtIndexes:toIndex:]", a4);
+      *(v53 + 14) = index;
+      v54 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds for empty array", "[NSMutableArray moveObjectsAtIndexes:toIndex:]", index);
       v55 = [NSException exceptionWithName:@"NSRangeException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v54) osLogPack:0 size:v52, v50];
       objc_exception_throw(v55);
     }
@@ -1469,14 +1469,14 @@ LABEL_21:
     v58 = _os_log_pack_size();
     v60 = v65 - ((MEMORY[0x1EEE9AC00](v58, v59) + 15) & 0xFFFFFFFFFFFFFFF0);
     v61 = _os_log_pack_fill();
-    v62 = __os_log_helper_1_2_3_8_32_8_0_8_0(v61, "[NSMutableArray moveObjectsAtIndexes:toIndex:]", a4, v14 - 1);
-    v63 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds [0 .. %lu]", v62, "[NSMutableArray moveObjectsAtIndexes:toIndex:]", a4, v14 - 1);
+    v62 = __os_log_helper_1_2_3_8_32_8_0_8_0(v61, "[NSMutableArray moveObjectsAtIndexes:toIndex:]", index, v14 - 1);
+    v63 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds [0 .. %lu]", v62, "[NSMutableArray moveObjectsAtIndexes:toIndex:]", index, v14 - 1);
     v64 = [NSException exceptionWithName:@"NSRangeException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v63) osLogPack:0 size:v60, v58];
     objc_exception_throw(v64);
   }
 
-  v15 = [(NSArray *)self objectsAtIndexes:a3];
-  [(NSMutableArray *)self removeObjectsAtIndexes:a3];
+  v15 = [(NSArray *)self objectsAtIndexes:indexes];
+  [(NSMutableArray *)self removeObjectsAtIndexes:indexes];
   v16 = [(NSArray *)v15 count];
   v18 = v16;
   if (v16 >> 60)
@@ -1507,7 +1507,7 @@ LABEL_21:
   }
 
   [(NSArray *)v15 getObjects:v21 range:0, v18, v65[0]];
-  [(NSMutableArray *)self insertObjects:v21 count:v18 atIndex:a4];
+  [(NSMutableArray *)self insertObjects:v21 count:v18 atIndex:index];
   free(v22);
   v23 = *MEMORY[0x1E69E9840];
 }
@@ -1825,20 +1825,20 @@ LABEL_14:
 
   v6 = [(NSArray *)self count];
   v7 = [0 count];
-  v8 = [(NSIndexSet *)indexes lastIndex];
-  if ((v8 & 0x8000000000000000) != 0)
+  lastIndex = [(NSIndexSet *)indexes lastIndex];
+  if ((lastIndex & 0x8000000000000000) != 0)
   {
-    v21 = v8;
+    v21 = lastIndex;
     v9 = v7 + v6;
     goto LABEL_17;
   }
 
-  if (v8 != 0x7FFFFFFFFFFFFFFFLL)
+  if (lastIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = v7 + v6;
-    if (v9 <= v8)
+    if (v9 <= lastIndex)
     {
-      v21 = v8;
+      v21 = lastIndex;
 LABEL_17:
       v22 = _os_log_pack_size();
       v23 = _os_log_pack_fill();
@@ -1863,10 +1863,10 @@ LABEL_17:
     }
   }
 
-  v10 = [(NSIndexSet *)indexes rangeCount];
-  if (v10)
+  rangeCount = [(NSIndexSet *)indexes rangeCount];
+  if (rangeCount)
   {
-    v11 = v10 - 1;
+    v11 = rangeCount - 1;
     do
     {
       v12 = [(NSIndexSet *)indexes rangeAtIndex:v11];
@@ -1880,12 +1880,12 @@ LABEL_17:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObjectsInRange:(_NSRange)a3 inArray:(id)a4 range:(_NSRange)a5
+- (void)removeObjectsInRange:(_NSRange)range inArray:(id)array range:(_NSRange)a5
 {
   length = a5.length;
   location = a5.location;
-  v9 = a3.length;
-  v10 = a3.location;
+  v9 = range.length;
+  v10 = range.location;
   v42[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
@@ -1922,7 +1922,7 @@ LABEL_28:
     objc_exception_throw([NSException exceptionWithName:@"NSRangeException" reason:v37 userInfo:0 osLogPack:v38 size:v39]);
   }
 
-  if (a4 && (_NSIsNSArray(a4) & 1) == 0)
+  if (array && (_NSIsNSArray(array) & 1) == 0)
   {
     v31 = _os_log_pack_size();
     v32 = _os_log_pack_fill();
@@ -1933,7 +1933,7 @@ LABEL_28:
     objc_exception_throw(v34);
   }
 
-  v14 = [a4 count];
+  v14 = [array count];
   v15 = v14;
   if ((location & 0x8000000000000000) != 0 || (length & 0x8000000000000000) != 0 || v14 < location + length)
   {
@@ -1962,7 +1962,7 @@ LABEL_28:
   }
 
   v16 = _CFAutoreleasePoolPush();
-  v17 = [NSSet setWithArray:a4 range:location copyItems:length, 0];
+  v17 = [NSSet setWithArray:array range:location copyItems:length, 0];
   if (v9)
   {
     v18 = v17;
@@ -1985,10 +1985,10 @@ LABEL_28:
   _CFAutoreleasePoolPop(v16);
 }
 
-- (void)removeObjectsInRange:(_NSRange)a3 inArray:(id)a4
+- (void)removeObjectsInRange:(_NSRange)range inArray:(id)array
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v29[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
@@ -2022,7 +2022,7 @@ LABEL_28:
     objc_exception_throw(v28);
   }
 
-  if (a4 && (_NSIsNSArray(a4) & 1) == 0)
+  if (array && (_NSIsNSArray(array) & 1) == 0)
   {
     v18 = _os_log_pack_size();
     v20 = v29 - ((MEMORY[0x1EEE9AC00](v18, v19) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -2034,33 +2034,33 @@ LABEL_28:
     objc_exception_throw(v23);
   }
 
-  v10 = [a4 count];
+  v10 = [array count];
   v11 = *MEMORY[0x1E69E9840];
 
-  [(NSMutableArray *)self removeObjectsInRange:location inArray:length range:a4, 0, v10];
+  [(NSMutableArray *)self removeObjectsInRange:location inArray:length range:array, 0, v10];
 }
 
-- (void)removeObjectsInArray:(id)a3 range:(_NSRange)a4
+- (void)removeObjectsInArray:(id)array range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v29[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableArray);
-    if (!a3)
+    if (!array)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!a3)
+  else if (!array)
   {
     goto LABEL_4;
   }
 
-  if ((_NSIsNSArray(a3) & 1) == 0)
+  if ((_NSIsNSArray(array) & 1) == 0)
   {
     v18 = _os_log_pack_size();
     v20 = v29 - ((MEMORY[0x1EEE9AC00](v18, v19) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -2073,7 +2073,7 @@ LABEL_28:
   }
 
 LABEL_4:
-  v9 = [a3 count];
+  v9 = [array count];
   if ((location & 0x8000000000000000) != 0 || (length & 0x8000000000000000) != 0 || v9 < location + length)
   {
     if (v9)
@@ -2102,7 +2102,7 @@ LABEL_4:
   v10 = [(NSArray *)self count];
   v11 = *MEMORY[0x1E69E9840];
 
-  [(NSMutableArray *)self removeObjectsInRange:0 inArray:v10 range:a3, location, length];
+  [(NSMutableArray *)self removeObjectsInRange:0 inArray:v10 range:array, location, length];
 }
 
 - (void)removeObjectsInArray:(NSArray *)otherArray
@@ -2143,12 +2143,12 @@ LABEL_4:
   [(NSMutableArray *)self removeObjectsInRange:0 inArray:v6 range:otherArray, 0, v7];
 }
 
-- (void)removeObjectsInRange:(_NSRange)a3 inOrderedSet:(id)a4 range:(_NSRange)a5
+- (void)removeObjectsInRange:(_NSRange)range inOrderedSet:(id)set range:(_NSRange)a5
 {
   length = a5.length;
   location = a5.location;
-  v9 = a3.length;
-  v10 = a3.location;
+  v9 = range.length;
+  v10 = range.location;
   v39[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
@@ -2185,7 +2185,7 @@ LABEL_26:
     objc_exception_throw([NSException exceptionWithName:@"NSRangeException" reason:v33 userInfo:0 osLogPack:v34 size:v35]);
   }
 
-  if (a4 && (_NSIsNSOrderedSet(a4) & 1) == 0)
+  if (set && (_NSIsNSOrderedSet(set) & 1) == 0)
   {
     v26 = _os_log_pack_size();
     v27 = _os_log_pack_fill();
@@ -2196,7 +2196,7 @@ LABEL_26:
     objc_exception_throw(v29);
   }
 
-  v13 = [a4 count];
+  v13 = [set count];
   if ((location & 0x8000000000000000) != 0 || (length & 0x8000000000000000) != 0 || v13 < location + length)
   {
     if (v13)
@@ -2229,7 +2229,7 @@ LABEL_26:
     v14 = v9 - 1;
     do
     {
-      if ([a4 containsObject:-[NSArray objectAtIndex:](self inRange:{"objectAtIndex:", v10 + v14), location, length}])
+      if ([set containsObject:-[NSArray objectAtIndex:](self inRange:{"objectAtIndex:", v10 + v14), location, length}])
       {
         [(NSMutableArray *)self removeObjectAtIndex:v14];
       }
@@ -2243,10 +2243,10 @@ LABEL_26:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObjectsInRange:(_NSRange)a3 inOrderedSet:(id)a4
+- (void)removeObjectsInRange:(_NSRange)range inOrderedSet:(id)set
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v29[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
@@ -2280,7 +2280,7 @@ LABEL_26:
     objc_exception_throw(v28);
   }
 
-  if (a4 && (_NSIsNSOrderedSet(a4) & 1) == 0)
+  if (set && (_NSIsNSOrderedSet(set) & 1) == 0)
   {
     v18 = _os_log_pack_size();
     v20 = v29 - ((MEMORY[0x1EEE9AC00](v18, v19) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -2292,33 +2292,33 @@ LABEL_26:
     objc_exception_throw(v23);
   }
 
-  v10 = [a4 count];
+  v10 = [set count];
   v11 = *MEMORY[0x1E69E9840];
 
-  [(NSMutableArray *)self removeObjectsInRange:location inOrderedSet:length range:a4, 0, v10];
+  [(NSMutableArray *)self removeObjectsInRange:location inOrderedSet:length range:set, 0, v10];
 }
 
-- (void)removeObjectsInOrderedSet:(id)a3 range:(_NSRange)a4
+- (void)removeObjectsInOrderedSet:(id)set range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v29[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableArray);
-    if (!a3)
+    if (!set)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!a3)
+  else if (!set)
   {
     goto LABEL_4;
   }
 
-  if ((_NSIsNSOrderedSet(a3) & 1) == 0)
+  if ((_NSIsNSOrderedSet(set) & 1) == 0)
   {
     v18 = _os_log_pack_size();
     v20 = v29 - ((MEMORY[0x1EEE9AC00](v18, v19) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -2331,7 +2331,7 @@ LABEL_26:
   }
 
 LABEL_4:
-  v9 = [a3 count];
+  v9 = [set count];
   if ((location & 0x8000000000000000) != 0 || (length & 0x8000000000000000) != 0 || v9 < location + length)
   {
     if (v9)
@@ -2360,28 +2360,28 @@ LABEL_4:
   v10 = [(NSArray *)self count];
   v11 = *MEMORY[0x1E69E9840];
 
-  [(NSMutableArray *)self removeObjectsInRange:0 inOrderedSet:v10 range:a3, location, length];
+  [(NSMutableArray *)self removeObjectsInRange:0 inOrderedSet:v10 range:set, location, length];
 }
 
-- (void)removeObjectsInOrderedSet:(id)a3
+- (void)removeObjectsInOrderedSet:(id)set
 {
   v15[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v3, __CFTSANTagMutableArray);
-    if (!a3)
+    if (!set)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!a3)
+  else if (!set)
   {
     goto LABEL_4;
   }
 
-  if ((_NSIsNSOrderedSet(a3) & 1) == 0)
+  if ((_NSIsNSOrderedSet(set) & 1) == 0)
   {
     v9 = _os_log_pack_size();
     v11 = v15 - ((MEMORY[0x1EEE9AC00](v9, v10) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -2395,16 +2395,16 @@ LABEL_4:
 
 LABEL_4:
   v6 = [(NSArray *)self count];
-  v7 = [a3 count];
+  v7 = [set count];
   v8 = *MEMORY[0x1E69E9840];
 
-  [(NSMutableArray *)self removeObjectsInRange:0 inOrderedSet:v6 range:a3, 0, v7];
+  [(NSMutableArray *)self removeObjectsInRange:0 inOrderedSet:v6 range:set, 0, v7];
 }
 
-- (void)removeObjectsInRange:(_NSRange)a3 inSet:(id)a4
+- (void)removeObjectsInRange:(_NSRange)range inSet:(id)set
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v25[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
@@ -2438,7 +2438,7 @@ LABEL_4:
     objc_exception_throw(v24);
   }
 
-  if (a4 && (_NSIsNSSet(a4) & 1) == 0)
+  if (set && (_NSIsNSSet(set) & 1) == 0)
   {
     v17 = _os_log_pack_size();
     v18 = _os_log_pack_fill();
@@ -2454,7 +2454,7 @@ LABEL_4:
     v10 = length - 1;
     do
     {
-      if ([a4 containsObject:{-[NSArray objectAtIndex:](self, "objectAtIndex:", location + v10)}])
+      if ([set containsObject:{-[NSArray objectAtIndex:](self, "objectAtIndex:", location + v10)}])
       {
         [(NSMutableArray *)self removeObjectAtIndex:v10];
       }
@@ -2468,25 +2468,25 @@ LABEL_4:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObjectsInSet:(id)a3
+- (void)removeObjectsInSet:(id)set
 {
   v14[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v3, __CFTSANTagMutableArray);
-    if (!a3)
+    if (!set)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!a3)
+  else if (!set)
   {
     goto LABEL_4;
   }
 
-  if ((_NSIsNSSet(a3) & 1) == 0)
+  if ((_NSIsNSSet(set) & 1) == 0)
   {
     v8 = _os_log_pack_size();
     v10 = v14 - ((MEMORY[0x1EEE9AC00](v8, v9) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -2502,16 +2502,16 @@ LABEL_4:
   v6 = [(NSArray *)self count];
   v7 = *MEMORY[0x1E69E9840];
 
-  [(NSMutableArray *)self removeObjectsInRange:0 inSet:v6, a3];
+  [(NSMutableArray *)self removeObjectsInRange:0 inSet:v6, set];
 }
 
-- (void)removeObjectsAtIndexes:(id)a3 options:(unint64_t)a4 passingTest:(id)a5
+- (void)removeObjectsAtIndexes:(id)indexes options:(unint64_t)options passingTest:(id)test
 {
   v24[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (!__cf_tsanWriteFunction)
   {
-    if (a3)
+    if (indexes)
     {
       goto LABEL_3;
     }
@@ -2527,7 +2527,7 @@ LABEL_12:
   }
 
   __cf_tsanWriteFunction(self, v5, __CFTSANTagMutableArray);
-  if (!a3)
+  if (!indexes)
   {
     goto LABEL_12;
   }
@@ -2544,7 +2544,7 @@ LABEL_3:
     goto LABEL_15;
   }
 
-  if (!a5)
+  if (!test)
   {
     v17 = _os_log_pack_size();
     v18 = v24 - ((v17 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -2557,17 +2557,17 @@ LABEL_15:
     objc_exception_throw(v23);
   }
 
-  if ((a4 & 2) != 0)
+  if ((options & 2) != 0)
   {
-    a4 &= 0xAFFFFFFFFFFFFFFELL;
+    options &= 0xAFFFFFFFFFFFFFFELL;
   }
 
-  __NSArrayParameterCheckIterate(self, a2, a5, a4 | 0x5000000000000000, a3);
-  IndexesPassingTest = __NSArrayGetIndexesPassingTest(self, a5, a4 | 0x5000000000000000, a3);
-  v12 = [IndexesPassingTest rangeCount];
-  if (v12)
+  __NSArrayParameterCheckIterate(self, a2, test, options | 0x5000000000000000, indexes);
+  IndexesPassingTest = __NSArrayGetIndexesPassingTest(self, test, options | 0x5000000000000000, indexes);
+  rangeCount = [IndexesPassingTest rangeCount];
+  if (rangeCount)
   {
-    v13 = v12 - 1;
+    v13 = rangeCount - 1;
     do
     {
       v14 = [IndexesPassingTest rangeAtIndex:v13];
@@ -2581,13 +2581,13 @@ LABEL_15:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObjectsWithOptions:(unint64_t)a3 passingTest:(id)a4
+- (void)removeObjectsWithOptions:(unint64_t)options passingTest:(id)test
 {
   v19[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (!__cf_tsanWriteFunction)
   {
-    if (a4)
+    if (test)
     {
       goto LABEL_3;
     }
@@ -2603,23 +2603,23 @@ LABEL_10:
   }
 
   __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableArray);
-  if (!a4)
+  if (!test)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if ((a3 & 2) != 0)
+  if ((options & 2) != 0)
   {
-    a3 &= 0xBFFFFFFFFFFFFFFELL;
+    options &= 0xBFFFFFFFFFFFFFFELL;
   }
 
-  __NSArrayParameterCheckIterate(self, a2, a4, a3 | 0x4000000000000000, 0);
-  IndexesPassingTest = __NSArrayGetIndexesPassingTest(self, a4, a3 | 0x4000000000000000, 0);
-  v10 = [IndexesPassingTest rangeCount];
-  if (v10)
+  __NSArrayParameterCheckIterate(self, a2, test, options | 0x4000000000000000, 0);
+  IndexesPassingTest = __NSArrayGetIndexesPassingTest(self, test, options | 0x4000000000000000, 0);
+  rangeCount = [IndexesPassingTest rangeCount];
+  if (rangeCount)
   {
-    v11 = v10 - 1;
+    v11 = rangeCount - 1;
     do
     {
       v12 = [IndexesPassingTest rangeAtIndex:v11];
@@ -2633,10 +2633,10 @@ LABEL_3:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeObjectsPassingTest:(id)a3
+- (void)removeObjectsPassingTest:(id)test
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!test)
   {
     v4 = _os_log_pack_size();
     v5 = _os_log_pack_fill();
@@ -2649,14 +2649,14 @@ LABEL_3:
 
   v3 = *MEMORY[0x1E69E9840];
 
-  [(NSMutableArray *)self removeObjectsWithOptions:0 passingTest:a3];
+  [(NSMutableArray *)self removeObjectsWithOptions:0 passingTest:test];
 }
 
-- (void)replaceObject:(id)a3 inRange:(_NSRange)a4
+- (void)replaceObject:(id)object inRange:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
-  v25[0] = a3;
+  length = range.length;
+  location = range.location;
+  v25[0] = object;
   v25[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
@@ -2722,9 +2722,9 @@ LABEL_3:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)replaceObject:(id)a3
+- (void)replaceObject:(id)object
 {
-  v13[0] = a3;
+  v13[0] = object;
   v13[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
@@ -2764,10 +2764,10 @@ LABEL_3:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)replaceObjectsInRange:(_NSRange)a3 withObjects:(const void *)a4 count:(unint64_t)a5
+- (void)replaceObjectsInRange:(_NSRange)range withObjects:(const void *)objects count:(unint64_t)count
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v47[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
@@ -2801,7 +2801,7 @@ LABEL_3:
     objc_exception_throw(v46);
   }
 
-  if (!a4 && a5)
+  if (!objects && count)
   {
     v28 = _os_log_pack_size();
     v30 = v47 - ((MEMORY[0x1EEE9AC00](v28, v29) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -2809,12 +2809,12 @@ LABEL_3:
     *v31 = 136315394;
     *(v31 + 4) = "[NSMutableArray replaceObjectsInRange:withObjects:count:]";
     *(v31 + 12) = 2048;
-    *(v31 + 14) = a5;
-    v32 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[NSMutableArray replaceObjectsInRange:withObjects:count:]", a5);
+    *(v31 + 14) = count;
+    v32 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[NSMutableArray replaceObjectsInRange:withObjects:count:]", count);
     goto LABEL_37;
   }
 
-  if (a5 >> 61)
+  if (count >> 61)
   {
     v28 = _os_log_pack_size();
     v30 = v47 - ((MEMORY[0x1EEE9AC00](v28, v39) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -2822,19 +2822,19 @@ LABEL_3:
     *v40 = 136315394;
     *(v40 + 4) = "[NSMutableArray replaceObjectsInRange:withObjects:count:]";
     *(v40 + 12) = 2048;
-    *(v40 + 14) = a5;
-    v32 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSMutableArray replaceObjectsInRange:withObjects:count:]", a5);
+    *(v40 + 14) = count;
+    v32 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSMutableArray replaceObjectsInRange:withObjects:count:]", count);
 LABEL_37:
     v41 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v32) osLogPack:0 size:v30, v28];
     objc_exception_throw(v41);
   }
 
-  if (a5)
+  if (count)
   {
     v12 = 0;
     do
     {
-      if (!a4[v12])
+      if (!objects[v12])
       {
         v22 = _os_log_pack_size();
         v24 = v47 - ((MEMORY[0x1EEE9AC00](v22, v23) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -2851,41 +2851,41 @@ LABEL_37:
       ++v12;
     }
 
-    while (a5 != v12);
-    v13 = a5;
-    v14 = a4;
+    while (count != v12);
+    countCopy = count;
+    objectsCopy = objects;
     do
     {
-      if ((*v14 & 0x8000000000000000) == 0)
+      if ((*objectsCopy & 0x8000000000000000) == 0)
       {
-        v15 = *v14;
+        v15 = *objectsCopy;
       }
 
-      ++v14;
-      --v13;
+      ++objectsCopy;
+      --countCopy;
     }
 
-    while (v13);
+    while (countCopy);
   }
 
-  if (length >= a5)
+  if (length >= count)
   {
-    v16 = a5;
+    countCopy2 = count;
   }
 
   else
   {
-    v16 = length;
+    countCopy2 = length;
   }
 
-  if (v16)
+  if (countCopy2)
   {
     v17 = location;
-    v18 = a4;
-    v19 = v16;
+    objectsCopy2 = objects;
+    v19 = countCopy2;
     do
     {
-      v20 = *v18++;
+      v20 = *objectsCopy2++;
       [(NSMutableArray *)self replaceObjectAtIndex:v17++ withObject:v20];
       --v19;
     }
@@ -2893,16 +2893,16 @@ LABEL_37:
     while (v19);
   }
 
-  if (length > a5)
+  if (length > count)
   {
-    [(NSMutableArray *)self removeObjectsInRange:v16 + location, length - v16];
+    [(NSMutableArray *)self removeObjectsInRange:countCopy2 + location, length - countCopy2];
     goto LABEL_27;
   }
 
-  if (length >= a5)
+  if (length >= count)
   {
 LABEL_27:
-    if (!a5)
+    if (!count)
     {
       goto LABEL_31;
     }
@@ -2910,19 +2910,19 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  [(NSMutableArray *)self insertObjects:&a4[v16] count:a5 - v16 atIndex:v16 + location];
+  [(NSMutableArray *)self insertObjects:&objects[countCopy2] count:count - countCopy2 atIndex:countCopy2 + location];
   do
   {
 LABEL_28:
-    if ((*a4 & 0x8000000000000000) == 0)
+    if ((*objects & 0x8000000000000000) == 0)
     {
     }
 
-    ++a4;
-    --a5;
+    ++objects;
+    --count;
   }
 
-  while (a5);
+  while (count);
 LABEL_31:
   v21 = *MEMORY[0x1E69E9840];
 }
@@ -2984,20 +2984,20 @@ LABEL_4:
 
   v8 = [(NSArray *)self count];
   v9 = [(NSArray *)objects count];
-  v10 = [(NSIndexSet *)indexes lastIndex];
-  if ((v10 & 0x8000000000000000) != 0)
+  lastIndex = [(NSIndexSet *)indexes lastIndex];
+  if ((lastIndex & 0x8000000000000000) != 0)
   {
-    v39 = v10;
+    v39 = lastIndex;
     v11 = v9 + v8;
     goto LABEL_26;
   }
 
-  if (v10 != 0x7FFFFFFFFFFFFFFFLL)
+  if (lastIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
     v11 = v9 + v8;
-    if (v11 <= v10)
+    if (v11 <= lastIndex)
     {
-      v39 = v10;
+      v39 = lastIndex;
 LABEL_26:
       if (!v11)
       {
@@ -3287,29 +3287,29 @@ LABEL_4:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)replaceObjectsInRange:(_NSRange)a3 withObjectsFromOrderedSet:(id)a4 range:(_NSRange)a5
+- (void)replaceObjectsInRange:(_NSRange)range withObjectsFromOrderedSet:(id)set range:(_NSRange)a5
 {
   length = a5.length;
   location = a5.location;
-  v9 = a3.length;
-  v10 = a3.location;
+  v9 = range.length;
+  v10 = range.location;
   v59[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v5, __CFTSANTagMutableArray);
-    if (!a4)
+    if (!set)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!a4)
+  else if (!set)
   {
     goto LABEL_4;
   }
 
-  if ((_NSIsNSOrderedSet(a4) & 1) == 0)
+  if ((_NSIsNSOrderedSet(set) & 1) == 0)
   {
     v37 = _os_log_pack_size();
     v39 = v59 - ((MEMORY[0x1EEE9AC00](v37, v38) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -3322,7 +3322,7 @@ LABEL_4:
   }
 
 LABEL_4:
-  v12 = [a4 count];
+  v12 = [set count];
   if ((location & 0x8000000000000000) != 0 || (length & 0x8000000000000000) != 0 || v12 < location + length)
   {
     if (!v12)
@@ -3402,33 +3402,33 @@ LABEL_4:
     v19 = 0;
   }
 
-  [a4 getObjects:v18 range:{location, length, v59[0]}];
+  [set getObjects:v18 range:{location, length, v59[0]}];
   [(NSMutableArray *)self replaceObjectsInRange:v10 withObjects:v9 count:v18, length];
   free(v19);
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)replaceObjectsInRange:(_NSRange)a3 withObjectsFromOrderedSet:(id)a4
+- (void)replaceObjectsInRange:(_NSRange)range withObjectsFromOrderedSet:(id)set
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v42[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableArray);
-    if (!a4)
+    if (!set)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!a4)
+  else if (!set)
   {
     goto LABEL_4;
   }
 
-  if ((_NSIsNSOrderedSet(a4) & 1) == 0)
+  if ((_NSIsNSOrderedSet(set) & 1) == 0)
   {
     v28 = _os_log_pack_size();
     v30 = v42 - ((MEMORY[0x1EEE9AC00](v28, v29) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -3466,7 +3466,7 @@ LABEL_4:
     objc_exception_throw(v41);
   }
 
-  v11 = [a4 count];
+  v11 = [set count];
   v13 = v11;
   if (v11 >> 60)
   {
@@ -3495,33 +3495,33 @@ LABEL_4:
     v17 = 0;
   }
 
-  [a4 getObjects:v16 range:{0, v13, v42[0]}];
+  [set getObjects:v16 range:{0, v13, v42[0]}];
   [(NSMutableArray *)self replaceObjectsInRange:location withObjects:length count:v16, v13];
   free(v17);
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)replaceObjectsInRange:(_NSRange)a3 withObjectsFromSet:(id)a4
+- (void)replaceObjectsInRange:(_NSRange)range withObjectsFromSet:(id)set
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v42[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableArray);
-    if (!a4)
+    if (!set)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!a4)
+  else if (!set)
   {
     goto LABEL_4;
   }
 
-  if ((_NSIsNSSet(a4) & 1) == 0)
+  if ((_NSIsNSSet(set) & 1) == 0)
   {
     v28 = _os_log_pack_size();
     v30 = v42 - ((MEMORY[0x1EEE9AC00](v28, v29) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -3559,7 +3559,7 @@ LABEL_4:
     objc_exception_throw(v41);
   }
 
-  v11 = [a4 count];
+  v11 = [set count];
   v13 = v11;
   if (v11 >> 60)
   {
@@ -3588,20 +3588,20 @@ LABEL_4:
     v17 = 0;
   }
 
-  [a4 getObjects:v16 count:{v13, v42[0]}];
+  [set getObjects:v16 count:{v13, v42[0]}];
   [(NSMutableArray *)self replaceObjectsInRange:location withObjects:length count:v16, v13];
   free(v17);
   v18 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setObject:(id)a3 atIndex:(unint64_t)a4
+- (void)setObject:(id)object atIndex:(unint64_t)index
 {
   v23[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v4, __CFTSANTagMutableArray);
-    if (a3)
+    if (object)
     {
       goto LABEL_3;
     }
@@ -3616,14 +3616,14 @@ LABEL_13:
     objc_exception_throw(v14);
   }
 
-  if (!a3)
+  if (!object)
   {
     goto LABEL_13;
   }
 
 LABEL_3:
   v8 = [(NSArray *)self count];
-  if ((a4 & 0x8000000000000000) != 0 || v8 < a4)
+  if ((index & 0x8000000000000000) != 0 || v8 < index)
   {
     if (v8)
     {
@@ -3631,8 +3631,8 @@ LABEL_3:
       v15 = _os_log_pack_size();
       v16 = v23 - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0);
       v20 = _os_log_pack_fill();
-      v21 = __os_log_helper_1_2_3_8_32_8_0_8_0(v20, "[NSMutableArray setObject:atIndex:]", a4, --v19);
-      v18 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds [0 .. %lu]", v21, "[NSMutableArray setObject:atIndex:]", a4, v19);
+      v21 = __os_log_helper_1_2_3_8_32_8_0_8_0(v20, "[NSMutableArray setObject:atIndex:]", index, --v19);
+      v18 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds [0 .. %lu]", v21, "[NSMutableArray setObject:atIndex:]", index, v19);
     }
 
     else
@@ -3643,26 +3643,26 @@ LABEL_3:
       *v17 = 136315394;
       *(v17 + 4) = "[NSMutableArray setObject:atIndex:]";
       *(v17 + 12) = 2048;
-      *(v17 + 14) = a4;
-      v18 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds for empty array", "[NSMutableArray setObject:atIndex:]", a4);
+      *(v17 + 14) = index;
+      v18 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: index %lu beyond bounds for empty array", "[NSMutableArray setObject:atIndex:]", index);
     }
 
     v22 = [NSException exceptionWithName:@"NSRangeException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v18) osLogPack:0 size:v16, v15];
     objc_exception_throw(v22);
   }
 
-  if ([(NSArray *)self count]== a4)
+  if ([(NSArray *)self count]== index)
   {
     v9 = *MEMORY[0x1E69E9840];
 
-    [(NSMutableArray *)self insertObject:a3 atIndex:a4];
+    [(NSMutableArray *)self insertObject:object atIndex:index];
   }
 
   else
   {
     v10 = *MEMORY[0x1E69E9840];
 
-    [(NSMutableArray *)self replaceObjectAtIndex:a4 withObject:a3];
+    [(NSMutableArray *)self replaceObjectAtIndex:index withObject:object];
   }
 }
 
@@ -3748,35 +3748,35 @@ LABEL_4:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (id)sortedArrayFromRange:(_NSRange)a3 options:(unint64_t)a4 usingComparator:(id)a5
+- (id)sortedArrayFromRange:(_NSRange)range options:(unint64_t)options usingComparator:(id)comparator
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = NSMutableArray;
-  result = [-[NSArray sortedArrayFromRange:options:usingComparator:](&v7 sortedArrayFromRange:a3.location options:a3.length usingComparator:{a4, a5), "copy"}];
+  result = [-[NSArray sortedArrayFromRange:options:usingComparator:](&v7 sortedArrayFromRange:range.location options:range.length usingComparator:{options, comparator), "copy"}];
   v6 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (void)setOrderedSet:(id)a3
+- (void)setOrderedSet:(id)set
 {
   v23[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v3, __CFTSANTagMutableArray);
-    if (!a3)
+    if (!set)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!a3)
+  else if (!set)
   {
     goto LABEL_4;
   }
 
-  if ((_NSIsNSOrderedSet(a3) & 1) == 0)
+  if ((_NSIsNSOrderedSet(set) & 1) == 0)
   {
     v17 = _os_log_pack_size();
     v19 = v23 - ((MEMORY[0x1EEE9AC00](v17, v18) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -3790,7 +3790,7 @@ LABEL_4:
 
 LABEL_4:
   v6 = [(NSArray *)self count];
-  v7 = [a3 count];
+  v7 = [set count];
   v9 = v7;
   if (v7 >> 60)
   {
@@ -3819,31 +3819,31 @@ LABEL_4:
     v13 = 0;
   }
 
-  [a3 getObjects:v12 range:{0, v9, v23[0]}];
+  [set getObjects:v12 range:{0, v9, v23[0]}];
   [(NSMutableArray *)self replaceObjectsInRange:0 withObjects:v6 count:v12, v9];
   free(v13);
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSet:(id)a3
+- (void)setSet:(id)set
 {
   v23[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v3, __CFTSANTagMutableArray);
-    if (!a3)
+    if (!set)
     {
       goto LABEL_4;
     }
   }
 
-  else if (!a3)
+  else if (!set)
   {
     goto LABEL_4;
   }
 
-  if ((_NSIsNSSet(a3) & 1) == 0)
+  if ((_NSIsNSSet(set) & 1) == 0)
   {
     v17 = _os_log_pack_size();
     v19 = v23 - ((MEMORY[0x1EEE9AC00](v17, v18) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -3857,7 +3857,7 @@ LABEL_4:
 
 LABEL_4:
   v6 = [(NSArray *)self count];
-  v7 = [a3 count];
+  v7 = [set count];
   v9 = v7;
   if (v7 >> 60)
   {
@@ -3886,23 +3886,23 @@ LABEL_4:
     v13 = 0;
   }
 
-  [a3 getObjects:v12 count:{v9, v23[0]}];
+  [set getObjects:v12 count:{v9, v23[0]}];
   [(NSMutableArray *)self replaceObjectsInRange:0 withObjects:v6 count:v12, v9];
   free(v13);
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sortRange:(_NSRange)a3 options:(unint64_t)a4 usingComparator:(id)a5
+- (void)sortRange:(_NSRange)range options:(unint64_t)options usingComparator:(id)comparator
 {
-  v7 = a4;
-  length = a3.length;
-  location = a3.location;
+  optionsCopy = options;
+  length = range.length;
+  location = range.location;
   v54[1] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v5, __CFTSANTagMutableArray);
-    if (a5)
+    if (comparator)
     {
       goto LABEL_3;
     }
@@ -3918,7 +3918,7 @@ LABEL_27:
     objc_exception_throw(v34);
   }
 
-  if (!a5)
+  if (!comparator)
   {
     goto LABEL_27;
   }
@@ -3996,9 +3996,9 @@ LABEL_3:
     v53[1] = 3221225472;
     v53[2] = __52__NSMutableArray_sortRange_options_usingComparator___block_invoke;
     v53[3] = &unk_1E6D7D7A0;
-    v53[4] = a5;
+    v53[4] = comparator;
     v53[5] = v17;
-    CFSortIndexes(v22, length, v7, v53);
+    CFSortIndexes(v22, length, optionsCopy, v53);
     MEMORY[0x1EEE9AC00](v23, v24);
     v25 = 0;
     v52 = 0;
@@ -4158,16 +4158,16 @@ LABEL_3:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sortUsingFunction:(void *)a3 context:(void *)a4 range:(_NSRange)a5
+- (void)sortUsingFunction:(void *)function context:(void *)context range:(_NSRange)range
 {
-  length = a5.length;
-  location = a5.location;
+  length = range.length;
+  location = range.location;
   v25[6] = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self _mutate];
   if (__cf_tsanWriteFunction)
   {
     __cf_tsanWriteFunction(self, v5, __CFTSANTagMutableArray);
-    if (a3)
+    if (function)
     {
       goto LABEL_3;
     }
@@ -4178,7 +4178,7 @@ LABEL_10:
     objc_exception_throw(v14);
   }
 
-  if (!a3)
+  if (!function)
   {
     goto LABEL_10;
   }
@@ -4216,8 +4216,8 @@ LABEL_3:
     v25[1] = 3221225472;
     v25[2] = __50__NSMutableArray_sortUsingFunction_context_range___block_invoke;
     v25[3] = &__block_descriptor_48_e11_q24__0_8_16l;
-    v25[4] = a3;
-    v25[5] = a4;
+    v25[4] = function;
+    v25[5] = context;
     [(NSMutableArray *)self sortRange:location options:length usingComparator:0, v25];
   }
 
@@ -4255,10 +4255,10 @@ LABEL_4:
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (NSMutableArray)initWithObjects:(const void *)a3 count:(unint64_t)a4
+- (NSMutableArray)initWithObjects:(const void *)objects count:(unint64_t)count
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  if (!a3 && a4)
+  if (!objects && count)
   {
     v14 = _os_log_pack_size();
     v15 = v20 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -4266,12 +4266,12 @@ LABEL_4:
     *v16 = 136315394;
     *(v16 + 4) = "[NSMutableArray initWithObjects:count:]";
     *(v16 + 12) = 2048;
-    *(v16 + 14) = a4;
-    v17 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[NSMutableArray initWithObjects:count:]", a4);
+    *(v16 + 14) = count;
+    v17 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: pointer to objects array is NULL but length is %lu", "[NSMutableArray initWithObjects:count:]", count);
     goto LABEL_12;
   }
 
-  if (a4 >> 61)
+  if (count >> 61)
   {
     v14 = _os_log_pack_size();
     v15 = v20 - ((v14 + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -4279,18 +4279,18 @@ LABEL_4:
     *v18 = 136315394;
     *(v18 + 4) = "[NSMutableArray initWithObjects:count:]";
     *(v18 + 12) = 2048;
-    *(v18 + 14) = a4;
-    v17 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSMutableArray initWithObjects:count:]", a4);
+    *(v18 + 14) = count;
+    v17 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"*** %s: count (%lu) of objects array is ridiculous", "[NSMutableArray initWithObjects:count:]", count);
 LABEL_12:
     v19 = [NSException exceptionWithName:@"NSInvalidArgumentException" reason:_CFAutoreleasePoolAddObject(0 userInfo:v17) osLogPack:0 size:v15, v14];
     objc_exception_throw(v19);
   }
 
-  if (a4)
+  if (count)
   {
-    for (i = 0; i != a4; ++i)
+    for (i = 0; i != count; ++i)
     {
-      if (!a3[i])
+      if (!objects[i])
       {
         v10 = _os_log_pack_size();
         v11 = _os_log_pack_fill();
@@ -4305,16 +4305,16 @@ LABEL_12:
     }
   }
 
-  v7 = [(NSMutableArray *)self initWithCapacity:a4];
-  [(NSMutableArray *)v7 insertObjects:a3 count:a4 atIndex:0];
+  v7 = [(NSMutableArray *)self initWithCapacity:count];
+  [(NSMutableArray *)v7 insertObjects:objects count:count atIndex:0];
   v8 = *MEMORY[0x1E69E9840];
   return v7;
 }
 
-- (id)arrayByAddingObjectsFromArray:(id)a3
+- (id)arrayByAddingObjectsFromArray:(id)array
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a3 && (_NSIsNSArray(a3) & 1) == 0)
+  if (array && (_NSIsNSArray(array) & 1) == 0)
   {
     v20 = _os_log_pack_size();
     v22 = &v26 - ((MEMORY[0x1EEE9AC00](v20, v21) + 15) & 0xFFFFFFFFFFFFFFF0);
@@ -4331,7 +4331,7 @@ LABEL_12:
     __cf_tsanReadFunction(self, v3, __CFTSANTagMutableArray);
   }
 
-  v6 = [a3 count];
+  v6 = [array count];
   v7 = [(NSArray *)self count];
   v8 = v7 + v6;
   if ((v7 + v6) >> 60)
@@ -4362,7 +4362,7 @@ LABEL_12:
 
   if (v6)
   {
-    [a3 getObjects:&v11[v9] range:{0, v6}];
+    [array getObjects:&v11[v9] range:{0, v6}];
   }
 
   if (v11)
@@ -4395,7 +4395,7 @@ LABEL_12:
 
 + (NSMutableArray)arrayWithCapacity:(NSUInteger)numItems
 {
-  v3 = [[a1 alloc] initWithCapacity:numItems];
+  v3 = [[self alloc] initWithCapacity:numItems];
 
   return v3;
 }

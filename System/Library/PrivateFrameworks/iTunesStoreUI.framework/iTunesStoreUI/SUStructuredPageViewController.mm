@@ -1,29 +1,29 @@
 @interface SUStructuredPageViewController
-- (BOOL)_gotoURLForItem:(id)a3 withURLIndex:(int64_t)a4;
-- (BOOL)_handleLoadMoreForIndexPath:(id)a3;
-- (BOOL)handleSelectionForIndexPath:(id)a3 tapCount:(int64_t)a4;
-- (BOOL)loadMoreWithURL:(id)a3;
+- (BOOL)_gotoURLForItem:(id)item withURLIndex:(int64_t)index;
+- (BOOL)_handleLoadMoreForIndexPath:(id)path;
+- (BOOL)handleSelectionForIndexPath:(id)path tapCount:(int64_t)count;
+- (BOOL)loadMoreWithURL:(id)l;
 - (CGRect)documentBounds;
 - (SUStructuredPageViewController)init;
 - (id)newDataSource;
 - (id)newNoItemsOverlayLabel;
 - (id)newTermsAndConditionsFooter;
-- (void)_loadMoreOperation:(id)a3 finishedWithOutput:(id)a4;
-- (void)_loadMoreWithURL:(id)a3;
-- (void)_reloadLoadMoreCellAtIndexPath:(id)a3;
+- (void)_loadMoreOperation:(id)operation finishedWithOutput:(id)output;
+- (void)_loadMoreWithURL:(id)l;
+- (void)_reloadLoadMoreCellAtIndexPath:(id)path;
 - (void)_reloadNoItemsLabel;
 - (void)_reloadTermsAndConditions;
-- (void)bannerCell:(id)a3 tappedButtonAtIndex:(int64_t)a4;
+- (void)bannerCell:(id)cell tappedButtonAtIndex:(int64_t)index;
 - (void)dealloc;
-- (void)operation:(id)a3 failedWithError:(id)a4;
-- (void)operation:(id)a3 finishedWithOutput:(id)a4;
+- (void)operation:(id)operation failedWithError:(id)error;
+- (void)operation:(id)operation finishedWithOutput:(id)output;
 - (void)reloadData;
-- (void)reloadWithStorePage:(id)a3 forURL:(id)a4;
-- (void)setDataSourceClass:(Class)a3;
-- (void)setSkLoading:(BOOL)a3;
-- (void)setStructuredPage:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)reloadWithStorePage:(id)page forURL:(id)l;
+- (void)setDataSourceClass:(Class)class;
+- (void)setSkLoading:(BOOL)loading;
+- (void)setStructuredPage:(id)page;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SUStructuredPageViewController
@@ -52,15 +52,15 @@
 {
   v3 = objc_alloc_init(self->_dataSourceClass);
   [v3 setClientInterface:{-[SUViewController clientInterface](self, "clientInterface")}];
-  v4 = [(SUStructuredPage *)self->_structuredPage type];
-  if (v4 == 2)
+  type = [(SUStructuredPage *)self->_structuredPage type];
+  if (type == 2)
   {
     v5 = 2;
   }
 
   else
   {
-    v5 = v4 == 7;
+    v5 = type == 7;
   }
 
   [v3 setStyle:v5];
@@ -90,8 +90,8 @@
   v3 = objc_alloc_init(SUTermsAndConditionsView);
   [(SUTermsAndConditionsView *)v3 setClientInterface:[(SUViewController *)self clientInterface]];
   [(SUTermsAndConditionsView *)v3 setDelegate:self];
-  v4 = [(SUTableDataSource *)[(SUTableViewController *)self dataSource] style]== 1 || [(SUStructuredPage *)self->_structuredPage shouldHideSignInButton];
-  [(SUTermsAndConditionsView *)v3 setHideAccountButton:v4];
+  shouldHideSignInButton = [(SUTableDataSource *)[(SUTableViewController *)self dataSource] style]== 1 || [(SUStructuredPage *)self->_structuredPage shouldHideSignInButton];
+  [(SUTermsAndConditionsView *)v3 setHideAccountButton:shouldHideSignInButton];
   if (([(SUTableView *)self->super.super._tableView isIndexHidden]& 1) == 0)
   {
     [(SUTableView *)self->super.super._tableView indexFrame];
@@ -131,18 +131,18 @@
   return result;
 }
 
-- (BOOL)handleSelectionForIndexPath:(id)a3 tapCount:(int64_t)a4
+- (BOOL)handleSelectionForIndexPath:(id)path tapCount:(int64_t)count
 {
-  v6 = [objc_msgSend(-[SUTableDataSource structuredPage](-[SUTableViewController dataSource](self dataSource];
-  if ([v6 itemType] == 4)
+  dataSource = [objc_msgSend(-[SUTableDataSource structuredPage](-[SUTableViewController dataSource](self dataSource];
+  if ([dataSource itemType] == 4)
   {
 
-    LOBYTE(v7) = [(SUStructuredPageViewController *)self _handleLoadMoreForIndexPath:a3];
+    LOBYTE(v7) = [(SUStructuredPageViewController *)self _handleLoadMoreForIndexPath:path];
   }
 
-  else if ([v6 itemType] == 3 && -[SUTableDataSource style](-[SUTableViewController dataSource](self, "dataSource"), "style") == 1)
+  else if ([dataSource itemType] == 3 && -[SUTableDataSource style](-[SUTableViewController dataSource](self, "dataSource"), "style") == 1)
   {
-    v8 = [v6 itemLinksForType:0];
+    v8 = [dataSource itemLinksForType:0];
     v7 = [v8 count];
     if (v7)
     {
@@ -156,19 +156,19 @@
   else
   {
 
-    LOBYTE(v7) = [(SUStructuredPageViewController *)self _gotoURLForItem:v6 withURLIndex:0];
+    LOBYTE(v7) = [(SUStructuredPageViewController *)self _gotoURLForItem:dataSource withURLIndex:0];
   }
 
   return v7;
 }
 
-- (BOOL)loadMoreWithURL:(id)a3
+- (BOOL)loadMoreWithURL:(id)l
 {
   v6.receiver = self;
   v6.super_class = SUStructuredPageViewController;
   if (![(UIViewController *)&v6 loadMoreWithURL:?])
   {
-    [(SUStructuredPageViewController *)self _loadMoreWithURL:a3];
+    [(SUStructuredPageViewController *)self _loadMoreWithURL:l];
   }
 
   return 1;
@@ -176,9 +176,9 @@
 
 - (void)reloadData
 {
-  v3 = [(SUStructuredPageViewController *)self structuredPage];
-  [(SUViewController *)self setTitle:[(SUStructuredPage *)v3 title] changeTabBarItem:0];
-  v4 = [(SUTableDataSource *)[(SUTableViewController *)self dataSource] structuredPage];
+  structuredPage = [(SUStructuredPageViewController *)self structuredPage];
+  [(SUViewController *)self setTitle:[(SUStructuredPage *)structuredPage title] changeTabBarItem:0];
+  structuredPage2 = [(SUTableDataSource *)[(SUTableViewController *)self dataSource] structuredPage];
   if ([(SUViewController *)self isSkLoading])
   {
     v5 = 0;
@@ -186,14 +186,14 @@
 
   else
   {
-    v5 = v3;
+    v5 = structuredPage;
   }
 
-  if (v4 != v5)
+  if (structuredPage2 != v5)
   {
-    v6 = [(SUStructuredPageViewController *)self newDataSource];
-    [v6 setStructuredPage:v3];
-    [(SUTableViewController *)self setDataSource:v6];
+    newDataSource = [(SUStructuredPageViewController *)self newDataSource];
+    [newDataSource setStructuredPage:structuredPage];
+    [(SUTableViewController *)self setDataSource:newDataSource];
   }
 
   [(SUStructuredPageViewController *)self _reloadNoItemsLabel];
@@ -203,9 +203,9 @@
   [(SUItemTableViewController *)&v7 reloadData];
 }
 
-- (void)reloadWithStorePage:(id)a3 forURL:(id)a4
+- (void)reloadWithStorePage:(id)page forURL:(id)l
 {
-  if (a3)
+  if (page)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -214,46 +214,46 @@
     }
   }
 
-  [(SUStructuredPageViewController *)self setStructuredPage:a3, a4];
+  [(SUStructuredPageViewController *)self setStructuredPage:page, l];
   [(SUStructuredPageViewController *)self reloadData];
-  v7 = [(SUStructuredPage *)self->_structuredPage sectionsGroup];
+  sectionsGroup = [(SUStructuredPage *)self->_structuredPage sectionsGroup];
 
-  [(UIViewController *)self reloadForSectionsWithGroup:v7];
+  [(UIViewController *)self reloadForSectionsWithGroup:sectionsGroup];
 }
 
-- (void)setSkLoading:(BOOL)a3
+- (void)setSkLoading:(BOOL)loading
 {
-  v3 = a3;
-  v5 = [(UIViewController *)self isSkLoaded];
+  loadingCopy = loading;
+  isSkLoaded = [(UIViewController *)self isSkLoaded];
   v9.receiver = self;
   v9.super_class = SUStructuredPageViewController;
-  [(SUViewController *)&v9 setSkLoading:v3];
-  if (v5 != [(UIViewController *)self isSkLoaded])
+  [(SUViewController *)&v9 setSkLoading:loadingCopy];
+  if (isSkLoaded != [(UIViewController *)self isSkLoaded])
   {
-    v6 = [(SUTableViewController *)self tableView];
-    v7 = v6;
-    if (v3)
+    tableView = [(SUTableViewController *)self tableView];
+    v7 = tableView;
+    if (loadingCopy)
     {
-      v8 = 0;
+      selfCopy = 0;
     }
 
     else
     {
-      v8 = self;
+      selfCopy = self;
     }
 
-    [(UITableView *)v6 setDataSource:v8];
-    [(UITableView *)v7 setDelegate:v8];
+    [(UITableView *)tableView setDataSource:selfCopy];
+    [(UITableView *)v7 setDelegate:selfCopy];
     [(SUStructuredPageViewController *)self reloadData];
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(SUStructuredPage *)self->_structuredPage protocol];
-  v6 = [(SUStorePageProtocol *)v5 focusedItemIdentifier];
-  if (v6)
+  appearCopy = appear;
+  protocol = [(SUStructuredPage *)self->_structuredPage protocol];
+  focusedItemIdentifier = [(SUStorePageProtocol *)protocol focusedItemIdentifier];
+  if (focusedItemIdentifier)
   {
     v7 = [objc_msgSend(-[SUTableDataSource structuredPage](-[SUTableViewController dataSource](self "dataSource")];
     if (v7)
@@ -261,17 +261,17 @@
       [(SUTableViewController *)self scrollToRowAtIndexPath:v7 atScrollPosition:1 animated:0];
     }
 
-    [(SUStorePageProtocol *)v5 setFocusedItemIdentifier:0];
+    [(SUStorePageProtocol *)protocol setFocusedItemIdentifier:0];
   }
 
   v8.receiver = self;
   v8.super_class = SUStructuredPageViewController;
-  [(SUTableViewController *)&v8 viewDidAppear:v3];
+  [(SUTableViewController *)&v8 viewDidAppear:appearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   structuredPage = self->_structuredPage;
   if (structuredPage)
   {
@@ -280,81 +280,81 @@
 
   v6.receiver = self;
   v6.super_class = SUStructuredPageViewController;
-  [(SUTableViewController *)&v6 viewWillAppear:v3];
+  [(SUTableViewController *)&v6 viewWillAppear:appearCopy];
 }
 
-- (void)setDataSourceClass:(Class)a3
+- (void)setDataSourceClass:(Class)class
 {
   dataSourceClass = self->_dataSourceClass;
-  if (dataSourceClass != a3)
+  if (dataSourceClass != class)
   {
 
-    self->_dataSourceClass = a3;
+    self->_dataSourceClass = class;
   }
 }
 
-- (void)setStructuredPage:(id)a3
+- (void)setStructuredPage:(id)page
 {
   structuredPage = self->_structuredPage;
-  if (structuredPage != a3)
+  if (structuredPage != page)
   {
 
-    self->_structuredPage = a3;
+    self->_structuredPage = page;
 
     [(SUViewController *)self storePageProtocolDidChange];
   }
 }
 
-- (void)bannerCell:(id)a3 tappedButtonAtIndex:(int64_t)a4
+- (void)bannerCell:(id)cell tappedButtonAtIndex:(int64_t)index
 {
-  v6 = [(UITableView *)[(SUTableViewController *)self tableView] indexPathForCell:a3];
+  v6 = [(UITableView *)[(SUTableViewController *)self tableView] indexPathForCell:cell];
   if (v6)
   {
     v7 = [objc_msgSend(-[SUTableDataSource structuredPage](-[SUTableViewController dataSource](self "dataSource")];
 
-    [(SUStructuredPageViewController *)self _gotoURLForItem:v7 withURLIndex:a4];
+    [(SUStructuredPageViewController *)self _gotoURLForItem:v7 withURLIndex:index];
   }
 }
 
-- (void)operation:(id)a3 failedWithError:(id)a4
+- (void)operation:(id)operation failedWithError:(id)error
 {
-  v7 = [(SUTableDataSource *)[(SUTableViewController *)self dataSource] activeLoadMoreItem];
-  if (v7)
+  activeLoadMoreItem = [(SUTableDataSource *)[(SUTableViewController *)self dataSource] activeLoadMoreItem];
+  if (activeLoadMoreItem)
   {
-    v8 = v7;
+    v8 = activeLoadMoreItem;
     v9 = [objc_msgSend(-[SUTableDataSource structuredPage](-[SUTableViewController dataSource](self "dataSource")];
     [(SUTableDataSource *)[(SUTableViewController *)self dataSource] setActiveLoadMoreItem:0];
     if (v9)
     {
-      v10 = [(SUTableViewController *)self tableView];
-      -[UITableView reloadRowsAtIndexPaths:withRowAnimation:](v10, "reloadRowsAtIndexPaths:withRowAnimation:", [MEMORY[0x1E695DEC8] arrayWithObjects:{v9, 0}], 5);
+      tableView = [(SUTableViewController *)self tableView];
+      -[UITableView reloadRowsAtIndexPaths:withRowAnimation:](tableView, "reloadRowsAtIndexPaths:withRowAnimation:", [MEMORY[0x1E695DEC8] arrayWithObjects:{v9, 0}], 5);
     }
 
-    [(SUViewController *)self presentDialogForError:a4 pendUntilVisible:1];
+    [(SUViewController *)self presentDialogForError:error pendUntilVisible:1];
   }
 
   [(SUStructuredPageViewController *)self setSkLoading:0];
   v11.receiver = self;
   v11.super_class = SUStructuredPageViewController;
-  [(SUViewController *)&v11 operation:a3 failedWithError:a4];
+  [(SUViewController *)&v11 operation:operation failedWithError:error];
 }
 
-- (void)operation:(id)a3 finishedWithOutput:(id)a4
+- (void)operation:(id)operation finishedWithOutput:(id)output
 {
   [(SUStructuredPageViewController *)self setSkLoading:0];
   if ([(SUTableDataSource *)[(SUTableViewController *)self dataSource] activeLoadMoreItem])
   {
 
-    [(SUStructuredPageViewController *)self _loadMoreOperation:a3 finishedWithOutput:a4];
+    [(SUStructuredPageViewController *)self _loadMoreOperation:operation finishedWithOutput:output];
   }
 }
 
-- (BOOL)_handleLoadMoreForIndexPath:(id)a3
+- (BOOL)_handleLoadMoreForIndexPath:(id)path
 {
   v5 = [objc_msgSend(-[SUTableDataSource structuredPage](-[SUTableViewController dataSource](self "dataSource")];
   [(SUTableDataSource *)[(SUTableViewController *)self dataSource] setActiveLoadMoreItem:v5];
-  [(UITableView *)[(SUTableViewController *)self tableView] deselectRowAtIndexPath:a3 animated:1];
-  [(SUStructuredPageViewController *)self performSelector:sel__reloadLoadMoreCellAtIndexPath_ withObject:a3 afterDelay:0.25];
+  [(UITableView *)[(SUTableViewController *)self tableView] deselectRowAtIndexPath:path animated:1];
+  [(SUStructuredPageViewController *)self performSelector:sel__reloadLoadMoreCellAtIndexPath_ withObject:path afterDelay:0.25];
   if ([v5 itemType] == 4)
   {
     v6 = [v5 itemLinksForType:0];
@@ -376,15 +376,15 @@
   return 1;
 }
 
-- (BOOL)_gotoURLForItem:(id)a3 withURLIndex:(int64_t)a4
+- (BOOL)_gotoURLForItem:(id)item withURLIndex:(int64_t)index
 {
-  v6 = [a3 itemLinks];
-  if ([v6 count] <= a4)
+  itemLinks = [item itemLinks];
+  if ([itemLinks count] <= index)
   {
     return 0;
   }
 
-  v7 = [v6 objectAtIndex:a4];
+  v7 = [itemLinks objectAtIndex:index];
   v8 = [objc_alloc(MEMORY[0x1E69D4A08]) initWithURL:{objc_msgSend(v7, "URL")}];
   if ([v7 linkType] == 1)
   {
@@ -396,8 +396,8 @@
 
   else if ([v7 linkTarget] == 1)
   {
-    v11 = [(SUTableViewController *)self tableView];
-    [(UITableView *)v11 deselectRowAtIndexPath:[(UITableView *)v11 indexPathForSelectedRow] animated:1];
+    tableView = [(SUTableViewController *)self tableView];
+    [(UITableView *)tableView deselectRowAtIndexPath:[(UITableView *)tableView indexPathForSelectedRow] animated:1];
     v10 = SUOpenExternalURL([v8 URL], -[SUViewController clientInterface](self, "clientInterface"));
   }
 
@@ -412,31 +412,31 @@
   return v10;
 }
 
-- (void)_loadMoreOperation:(id)a3 finishedWithOutput:(id)a4
+- (void)_loadMoreOperation:(id)operation finishedWithOutput:(id)output
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = [(SUTableDataSource *)[(SUTableViewController *)self dataSource] activeLoadMoreItem];
+  activeLoadMoreItem = [(SUTableDataSource *)[(SUTableViewController *)self dataSource] activeLoadMoreItem];
   v9 = [objc_msgSend(-[SUTableDataSource structuredPage](-[SUTableViewController dataSource](self "dataSource")];
   if (v9)
   {
     v10 = v9;
     [(SUTableDataSource *)[(SUTableViewController *)self dataSource] setActiveLoadMoreItem:0];
     [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__reloadLoadMoreCellAtIndexPath_ object:v10];
-    if ([objc_msgSend(a3 "dataProvider")])
+    if ([objc_msgSend(operation "dataProvider")])
     {
-      v11 = [MEMORY[0x1E69D4938] sharedConfig];
-      v12 = [v11 shouldLog];
-      if ([v11 shouldLogToDisk])
+      mEMORY[0x1E69D4938] = [MEMORY[0x1E69D4938] sharedConfig];
+      shouldLog = [mEMORY[0x1E69D4938] shouldLog];
+      if ([mEMORY[0x1E69D4938] shouldLogToDisk])
       {
-        v13 = v12 | 2;
+        v13 = shouldLog | 2;
       }
 
       else
       {
-        v13 = v12;
+        v13 = shouldLog;
       }
 
-      if (!os_log_type_enabled([v11 OSLogObject], OS_LOG_TYPE_DEFAULT))
+      if (!os_log_type_enabled([mEMORY[0x1E69D4938] OSLogObject], OS_LOG_TYPE_DEFAULT))
       {
         v13 &= 2u;
       }
@@ -458,22 +458,22 @@
         }
       }
 
-      v17 = [(SUTableViewController *)self tableView];
-      -[UITableView reloadRowsAtIndexPaths:withRowAnimation:](v17, "reloadRowsAtIndexPaths:withRowAnimation:", [MEMORY[0x1E695DEC8] arrayWithObjects:{v10, 0}], 5);
+      tableView = [(SUTableViewController *)self tableView];
+      -[UITableView reloadRowsAtIndexPaths:withRowAnimation:](tableView, "reloadRowsAtIndexPaths:withRowAnimation:", [MEMORY[0x1E695DEC8] arrayWithObjects:{v10, 0}], 5);
       [(SUViewController *)self presentDialogForError:SSError() pendUntilVisible:1];
     }
 
     else
     {
       v18 = [-[SUTableDataSource structuredPage](-[SUTableViewController dataSource](self "dataSource")];
-      if ([v8 BOOLValueForProperty:@"reload-in-place"])
+      if ([activeLoadMoreItem BOOLValueForProperty:@"reload-in-place"])
       {
-        -[SUStructuredPageViewController reloadWithStorePage:forURL:](self, "reloadWithStorePage:forURL:", a4, [objc_msgSend(a3 "response")]);
+        -[SUStructuredPageViewController reloadWithStorePage:forURL:](self, "reloadWithStorePage:forURL:", output, [objc_msgSend(operation "response")]);
       }
 
       else
       {
-        v19 = [objc_msgSend(a4 "itemList")];
+        v19 = [objc_msgSend(output "itemList")];
         [v18 replaceItemAtIndexPath:v10 withItems:v19];
         [(SUStructuredPageViewController *)self reloadData];
       }
@@ -486,28 +486,28 @@
   }
 }
 
-- (void)_loadMoreWithURL:(id)a3
+- (void)_loadMoreWithURL:(id)l
 {
   v6 = objc_alloc_init(MEMORY[0x1E69E47E0]);
   [v6 setDataProvider:{+[ISDataProvider provider](SUStorePageDataProvider, "provider")}];
-  v5 = [objc_alloc(MEMORY[0x1E69D4A08]) initWithURL:a3];
+  v5 = [objc_alloc(MEMORY[0x1E69D4A08]) initWithURL:l];
   [v6 setRequestProperties:v5];
 
   [(SUViewController *)self enqueueOperation:v6 cancelOnDealloc:1];
 }
 
-- (void)_reloadLoadMoreCellAtIndexPath:(id)a3
+- (void)_reloadLoadMoreCellAtIndexPath:(id)path
 {
-  [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:a2 object:a3];
-  v5 = [(SUTableViewController *)self tableView];
-  v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:{a3, 0}];
+  [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:a2 object:path];
+  tableView = [(SUTableViewController *)self tableView];
+  v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:{path, 0}];
 
-  [(UITableView *)v5 reloadRowsAtIndexPaths:v6 withRowAnimation:5];
+  [(UITableView *)tableView reloadRowsAtIndexPaths:v6 withRowAnimation:5];
 }
 
 - (void)_reloadNoItemsLabel
 {
-  v3 = [(SUStructuredPageViewController *)self view];
+  view = [(SUStructuredPageViewController *)self view];
   if (-[UIViewController isSkLoaded](self, "isSkLoaded") || [objc_msgSend(-[SUTableDataSource structuredPage](-[SUTableViewController dataSource](self "dataSource")] >= 1)
   {
     [(UILabel *)self->_noItemsLabel removeFromSuperview];
@@ -517,15 +517,15 @@
 
   else if (!self->_noItemsLabel)
   {
-    v11 = [(SUStructuredPageViewController *)self newNoItemsOverlayLabel];
-    if ([objc_msgSend(v11 "text")])
+    newNoItemsOverlayLabel = [(SUStructuredPageViewController *)self newNoItemsOverlayLabel];
+    if ([objc_msgSend(newNoItemsOverlayLabel "text")])
     {
-      v4 = v11;
+      v4 = newNoItemsOverlayLabel;
       self->_noItemsLabel = v4;
       [(UILabel *)v4 setAutoresizingMask:43];
       [(UILabel *)self->_noItemsLabel sizeToFit];
-      [v3 addSubview:self->_noItemsLabel];
-      [v3 bounds];
+      [view addSubview:self->_noItemsLabel];
+      [view bounds];
       v6 = v5;
       v8 = v7;
       [(UILabel *)self->_noItemsLabel frame];
@@ -536,10 +536,10 @@
 
 - (void)_reloadTermsAndConditions
 {
-  v3 = [(SUTableViewController *)self tableView];
-  if (v3)
+  tableView = [(SUTableViewController *)self tableView];
+  if (tableView)
   {
-    v4 = v3;
+    v4 = tableView;
     if ([(UIViewController *)self isSkLoaded])
     {
 
@@ -548,8 +548,8 @@
 
     else
     {
-      v5 = [(SUStructuredPageViewController *)self newTermsAndConditionsFooter];
-      [(UITableView *)v4 setTableFooterView:v5];
+      newTermsAndConditionsFooter = [(SUStructuredPageViewController *)self newTermsAndConditionsFooter];
+      [(UITableView *)v4 setTableFooterView:newTermsAndConditionsFooter];
     }
   }
 }

@@ -1,17 +1,17 @@
 @interface PPSocialHighlightServerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (PPSocialHighlightServerDelegate)init;
 @end
 
 @implementation PPSocialHighlightServerDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v26 = a3;
-  v5 = a4;
-  v6 = [PPXPCServerHelper hasTrueBooleanEntitlement:@"com.apple.private.sociallayer.highlights" connection:v5];
-  v25 = [PPXPCServerHelper hasTrueBooleanEntitlement:@"com.apple.developer.shared-with-you" connection:v5];
-  v7 = [PPXPCServerHelper hasTrueBooleanEntitlement:@"com.apple.developer.shared-with-you.collaboration" connection:v5];
+  listenerCopy = listener;
+  connectionCopy = connection;
+  v6 = [PPXPCServerHelper hasTrueBooleanEntitlement:@"com.apple.private.sociallayer.highlights" connection:connectionCopy];
+  v25 = [PPXPCServerHelper hasTrueBooleanEntitlement:@"com.apple.developer.shared-with-you" connection:connectionCopy];
+  v7 = [PPXPCServerHelper hasTrueBooleanEntitlement:@"com.apple.developer.shared-with-you.collaboration" connection:connectionCopy];
   v8 = &protocolRef_PPSocialHighlightInternalServerProtocol;
   if (!v6)
   {
@@ -61,7 +61,7 @@
   v27[3] = &unk_2789790A8;
   v28 = v30;
   v22 = v30;
-  v23 = [PPXPCServerHelper shouldAcceptConnection:v5 serviceName:@"com.apple.proactive.PersonalizationPortrait.SocialHighlight" allowedServerInterface:v9 allowedClientInterface:v18 requestHandler:v22 validateConnection:v21 setupClientProxy:v31 interruptionHandler:v29 invalidationHandler:v27];
+  v23 = [PPXPCServerHelper shouldAcceptConnection:connectionCopy serviceName:@"com.apple.proactive.PersonalizationPortrait.SocialHighlight" allowedServerInterface:v9 allowedClientInterface:v18 requestHandler:v22 validateConnection:v21 setupClientProxy:v31 interruptionHandler:v29 invalidationHandler:v27];
 
   return v23;
 }

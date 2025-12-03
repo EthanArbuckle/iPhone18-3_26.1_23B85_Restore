@@ -1,19 +1,19 @@
 @interface KeyboardBrightnessClient
-- (BOOL)enableAutoBrightness:(BOOL)a3 forKeyboard:(unint64_t)a4;
-- (BOOL)isAmbientFeatureAvailableOnKeyboard:(unint64_t)a3;
-- (BOOL)isAutoBrightnessEnabledForKeyboard:(unint64_t)a3;
-- (BOOL)isBacklightDimmedOnKeyboard:(unint64_t)a3;
-- (BOOL)isBacklightSaturatedOnKeyboard:(unint64_t)a3;
-- (BOOL)isBacklightSuppressedOnKeyboard:(unint64_t)a3;
-- (BOOL)isIdleDimmingSuspendedOnKeyboard:(unint64_t)a3;
-- (BOOL)isKeyboardBuiltIn:(unint64_t)a3;
-- (BOOL)setBrightness:(float)a3 fadeSpeed:(int)a4 commit:(BOOL)a5 forKeyboard:(unint64_t)a6;
-- (BOOL)setIdleDimTime:(double)a3 forKeyboard:(unint64_t)a4;
-- (BOOL)suspendIdleDimming:(BOOL)a3 forKeyboard:(unint64_t)a4;
+- (BOOL)enableAutoBrightness:(BOOL)brightness forKeyboard:(unint64_t)keyboard;
+- (BOOL)isAmbientFeatureAvailableOnKeyboard:(unint64_t)keyboard;
+- (BOOL)isAutoBrightnessEnabledForKeyboard:(unint64_t)keyboard;
+- (BOOL)isBacklightDimmedOnKeyboard:(unint64_t)keyboard;
+- (BOOL)isBacklightSaturatedOnKeyboard:(unint64_t)keyboard;
+- (BOOL)isBacklightSuppressedOnKeyboard:(unint64_t)keyboard;
+- (BOOL)isIdleDimmingSuspendedOnKeyboard:(unint64_t)keyboard;
+- (BOOL)isKeyboardBuiltIn:(unint64_t)in;
+- (BOOL)setBrightness:(float)brightness fadeSpeed:(int)speed commit:(BOOL)commit forKeyboard:(unint64_t)keyboard;
+- (BOOL)setIdleDimTime:(double)time forKeyboard:(unint64_t)keyboard;
+- (BOOL)suspendIdleDimming:(BOOL)dimming forKeyboard:(unint64_t)keyboard;
 - (KeyboardBrightnessClient)init;
-- (double)idleDimTimeForKeyboard:(unint64_t)a3;
-- (float)backlightLevelForKeyboard:(unint64_t)a3;
-- (float)brightnessForKeyboard:(unint64_t)a3;
+- (double)idleDimTimeForKeyboard:(unint64_t)keyboard;
+- (float)backlightLevelForKeyboard:(unint64_t)keyboard;
+- (float)brightnessForKeyboard:(unint64_t)keyboard;
 - (id)copyKeyboardBacklightIDs;
 - (void)dealloc;
 @end
@@ -22,28 +22,28 @@
 
 - (KeyboardBrightnessClient)init
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   v12.receiver = self;
   v12.super_class = KeyboardBrightnessClient;
-  v14 = [(KeyboardBrightnessClient *)&v12 init];
-  if (!v14)
+  selfCopy = [(KeyboardBrightnessClient *)&v12 init];
+  if (!selfCopy)
   {
-    return v14;
+    return selfCopy;
   }
 
   v2 = os_log_create("com.apple.CoreBrightness.KeyboardBrightnessClient", "Default");
-  v14->_logHandle = v2;
+  selfCopy->_logHandle = v2;
   v3 = objc_alloc_init(BrightnessSystemClient);
-  v14->bsc = v3;
-  if (v14->bsc)
+  selfCopy->bsc = v3;
+  if (selfCopy->bsc)
   {
-    return v14;
+    return selfCopy;
   }
 
-  if (v14->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    logHandle = v14->_logHandle;
+    logHandle = selfCopy->_logHandle;
   }
 
   else
@@ -71,22 +71,22 @@
     _os_log_error_impl(&dword_1DE8E5000, log, type, "failed to create XPC client", v9, 2u);
   }
 
-  MEMORY[0x1E69E5920](v14);
+  MEMORY[0x1E69E5920](selfCopy);
   return 0;
 }
 
 - (void)dealloc
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   if (self->_logHandle)
   {
-    MEMORY[0x1E69E5920](v5->_logHandle);
-    v5->_logHandle = 0;
+    MEMORY[0x1E69E5920](selfCopy->_logHandle);
+    selfCopy->_logHandle = 0;
   }
 
-  *&v2 = MEMORY[0x1E69E5920](v5->bsc).n128_u64[0];
-  v3.receiver = v5;
+  *&v2 = MEMORY[0x1E69E5920](selfCopy->bsc).n128_u64[0];
+  v3.receiver = selfCopy;
   v3.super_class = KeyboardBrightnessClient;
   [(KeyboardBrightnessClient *)&v3 dealloc];
 }
@@ -125,11 +125,11 @@
   return v5;
 }
 
-- (BOOL)isBacklightSuppressedOnKeyboard:(unint64_t)a3
+- (BOOL)isBacklightSuppressedOnKeyboard:(unint64_t)keyboard
 {
   v10 = *MEMORY[0x1E69E9840];
-  v7 = 0;
-  v6 = [(BrightnessSystemClient *)self->bsc copyPropertyForKey:@"KeyboardBacklightSuppressed" keyboardID:a3];
+  bOOLValue = 0;
+  v6 = [(BrightnessSystemClient *)self->bsc copyPropertyForKey:@"KeyboardBacklightSuppressed" keyboardID:keyboard];
   if (self->_logHandle)
   {
     logHandle = self->_logHandle;
@@ -159,19 +159,19 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   MEMORY[0x1E69E5920](v6);
   *MEMORY[0x1E69E9840];
-  return v7 & 1;
+  return bOOLValue & 1;
 }
 
-- (BOOL)isBacklightSaturatedOnKeyboard:(unint64_t)a3
+- (BOOL)isBacklightSaturatedOnKeyboard:(unint64_t)keyboard
 {
   v10 = *MEMORY[0x1E69E9840];
-  v7 = 0;
-  v6 = [(BrightnessSystemClient *)self->bsc copyPropertyForKey:@"KeyboardBacklightSaturated" keyboardID:a3];
+  bOOLValue = 0;
+  v6 = [(BrightnessSystemClient *)self->bsc copyPropertyForKey:@"KeyboardBacklightSaturated" keyboardID:keyboard];
   if (self->_logHandle)
   {
     logHandle = self->_logHandle;
@@ -201,19 +201,19 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   MEMORY[0x1E69E5920](v6);
   *MEMORY[0x1E69E9840];
-  return v7 & 1;
+  return bOOLValue & 1;
 }
 
-- (BOOL)isBacklightDimmedOnKeyboard:(unint64_t)a3
+- (BOOL)isBacklightDimmedOnKeyboard:(unint64_t)keyboard
 {
   v10 = *MEMORY[0x1E69E9840];
-  v7 = 0;
-  v6 = [(BrightnessSystemClient *)self->bsc copyPropertyForKey:@"KeyboardBacklightIdleDimActive" keyboardID:a3];
+  bOOLValue = 0;
+  v6 = [(BrightnessSystemClient *)self->bsc copyPropertyForKey:@"KeyboardBacklightIdleDimActive" keyboardID:keyboard];
   if (self->_logHandle)
   {
     logHandle = self->_logHandle;
@@ -243,19 +243,19 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   MEMORY[0x1E69E5920](v6);
   *MEMORY[0x1E69E9840];
-  return v7 & 1;
+  return bOOLValue & 1;
 }
 
-- (float)brightnessForKeyboard:(unint64_t)a3
+- (float)brightnessForKeyboard:(unint64_t)keyboard
 {
   v11 = *MEMORY[0x1E69E9840];
   v8 = -1.0;
-  v7 = [(BrightnessSystemClient *)self->bsc copyPropertyForKey:@"KeyboardBacklightBrightness" keyboardID:a3];
+  v7 = [(BrightnessSystemClient *)self->bsc copyPropertyForKey:@"KeyboardBacklightBrightness" keyboardID:keyboard];
   if (self->_logHandle)
   {
     logHandle = self->_logHandle;
@@ -294,11 +294,11 @@
   return v8;
 }
 
-- (float)backlightLevelForKeyboard:(unint64_t)a3
+- (float)backlightLevelForKeyboard:(unint64_t)keyboard
 {
   v11 = *MEMORY[0x1E69E9840];
   v8 = -1.0;
-  v7 = [(BrightnessSystemClient *)self->bsc copyPropertyForKey:@"KeyboardBacklightLevel" keyboardID:a3];
+  v7 = [(BrightnessSystemClient *)self->bsc copyPropertyForKey:@"KeyboardBacklightLevel" keyboardID:keyboard];
   if (self->_logHandle)
   {
     logHandle = self->_logHandle;
@@ -337,19 +337,19 @@
   return v8;
 }
 
-- (BOOL)setBrightness:(float)a3 fadeSpeed:(int)a4 commit:(BOOL)a5 forKeyboard:(unint64_t)a6
+- (BOOL)setBrightness:(float)brightness fadeSpeed:(int)speed commit:(BOOL)commit forKeyboard:(unint64_t)keyboard
 {
   v21[3] = *MEMORY[0x1E69E9840];
   context = objc_autoreleasePoolPush();
   v20[0] = @"Brightness";
-  *&v6 = a3;
+  *&v6 = brightness;
   v21[0] = [MEMORY[0x1E696AD98] numberWithFloat:v6];
   v20[1] = @"FadeSpeed";
-  v21[1] = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v21[1] = [MEMORY[0x1E696AD98] numberWithInteger:speed];
   v20[2] = @"Commit";
-  v21[2] = [MEMORY[0x1E696AD98] numberWithBool:a5];
+  v21[2] = [MEMORY[0x1E696AD98] numberWithBool:commit];
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:v20 count:3];
-  v12 = [(BrightnessSystemClient *)self->bsc setProperty:v13 withKey:@"KeyboardBacklightBrightness" keyboardID:a6];
+  v12 = [(BrightnessSystemClient *)self->bsc setProperty:v13 withKey:@"KeyboardBacklightBrightness" keyboardID:keyboard];
   if (self->_logHandle)
   {
     logHandle = self->_logHandle;
@@ -382,7 +382,7 @@
       v7 = "failed";
     }
 
-    __os_log_helper_16_2_6_8_64_8_64_8_0_4_0_4_0_8_32(v19, @"KeyboardBacklightBrightness", v13, a6, a4, a5, v7);
+    __os_log_helper_16_2_6_8_64_8_64_8_0_4_0_4_0_8_32(v19, @"KeyboardBacklightBrightness", v13, keyboard, speed, commit, v7);
     _os_log_debug_impl(&dword_1DE8E5000, logHandle, OS_LOG_TYPE_DEBUG, "key=%@ property=%@ forID = %lu fadeSpeed = %d commit = %d (%s)", v19, 0x36u);
   }
 
@@ -391,11 +391,11 @@
   return v12;
 }
 
-- (BOOL)enableAutoBrightness:(BOOL)a3 forKeyboard:(unint64_t)a4
+- (BOOL)enableAutoBrightness:(BOOL)brightness forKeyboard:(unint64_t)keyboard
 {
   v13 = *MEMORY[0x1E69E9840];
-  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:a3];
-  v8 = [(BrightnessSystemClient *)self->bsc setProperty:v9 withKey:@"KeyboardBacklightABEnabled" keyboardID:a4];
+  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:brightness];
+  v8 = [(BrightnessSystemClient *)self->bsc setProperty:v9 withKey:@"KeyboardBacklightABEnabled" keyboardID:keyboard];
   if (self->_logHandle)
   {
     logHandle = self->_logHandle;
@@ -437,17 +437,17 @@
   return v8;
 }
 
-- (BOOL)isAmbientFeatureAvailableOnKeyboard:(unint64_t)a3
+- (BOOL)isAmbientFeatureAvailableOnKeyboard:(unint64_t)keyboard
 {
   v19 = *MEMORY[0x1E69E9840];
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
+  keyboardCopy = keyboard;
   v14 = 0;
-  v13 = [(KeyboardBrightnessClient *)self copyKeyboardBacklightIDs];
+  copyKeyboardBacklightIDs = [(KeyboardBrightnessClient *)self copyKeyboardBacklightIDs];
   memset(__b, 0, sizeof(__b));
-  obj = v13;
-  v10 = [v13 countByEnumeratingWithState:__b objects:v18 count:16];
+  obj = copyKeyboardBacklightIDs;
+  v10 = [copyKeyboardBacklightIDs countByEnumeratingWithState:__b objects:v18 count:16];
   if (v10)
   {
     v6 = *__b[2];
@@ -463,14 +463,14 @@
 
       v12 = 0;
       v12 = *(__b[1] + 8 * v7);
-      if (v15 == 1)
+      if (keyboardCopy == 1)
       {
         v14 = 1;
         goto LABEL_11;
       }
 
-      v3 = [v12 unsignedIntegerValue];
-      if (v3 == v15)
+      unsignedIntegerValue = [v12 unsignedIntegerValue];
+      if (unsignedIntegerValue == keyboardCopy)
       {
         break;
       }
@@ -491,16 +491,16 @@
   }
 
 LABEL_11:
-  MEMORY[0x1E69E5920](v13);
+  MEMORY[0x1E69E5920](copyKeyboardBacklightIDs);
   *MEMORY[0x1E69E9840];
   return v14 & 1;
 }
 
-- (BOOL)isKeyboardBuiltIn:(unint64_t)a3
+- (BOOL)isKeyboardBuiltIn:(unint64_t)in
 {
   v10 = *MEMORY[0x1E69E9840];
-  v7 = 0;
-  v6 = [(BrightnessSystemClient *)self->bsc copyPropertyForKey:@"KeyboardBacklightBuiltIn" keyboardID:a3];
+  bOOLValue = 0;
+  v6 = [(BrightnessSystemClient *)self->bsc copyPropertyForKey:@"KeyboardBacklightBuiltIn" keyboardID:in];
   if (self->_logHandle)
   {
     logHandle = self->_logHandle;
@@ -530,19 +530,19 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   MEMORY[0x1E69E5920](v6);
   *MEMORY[0x1E69E9840];
-  return v7 & 1;
+  return bOOLValue & 1;
 }
 
-- (double)idleDimTimeForKeyboard:(unint64_t)a3
+- (double)idleDimTimeForKeyboard:(unint64_t)keyboard
 {
   v11 = *MEMORY[0x1E69E9840];
   v8 = -1.0;
-  v7 = [(BrightnessSystemClient *)self->bsc copyPropertyForKey:@"KeyboardBacklightIdleDimTime" keyboardID:a3];
+  v7 = [(BrightnessSystemClient *)self->bsc copyPropertyForKey:@"KeyboardBacklightIdleDimTime" keyboardID:keyboard];
   if (self->_logHandle)
   {
     logHandle = self->_logHandle;
@@ -581,11 +581,11 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)setIdleDimTime:(double)a3 forKeyboard:(unint64_t)a4
+- (BOOL)setIdleDimTime:(double)time forKeyboard:(unint64_t)keyboard
 {
   v13 = *MEMORY[0x1E69E9840];
-  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:a3];
-  v8 = [(BrightnessSystemClient *)self->bsc setProperty:v9 withKey:@"KeyboardBacklightIdleDimTime" keyboardID:a4];
+  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithDouble:time];
+  v8 = [(BrightnessSystemClient *)self->bsc setProperty:v9 withKey:@"KeyboardBacklightIdleDimTime" keyboardID:keyboard];
   if (self->_logHandle)
   {
     logHandle = self->_logHandle;
@@ -627,11 +627,11 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)suspendIdleDimming:(BOOL)a3 forKeyboard:(unint64_t)a4
+- (BOOL)suspendIdleDimming:(BOOL)dimming forKeyboard:(unint64_t)keyboard
 {
   v13 = *MEMORY[0x1E69E9840];
-  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:a3];
-  v8 = [(BrightnessSystemClient *)self->bsc setProperty:v9 withKey:@"KeyboardBacklightSuspendDimming" keyboardID:a4];
+  v9 = [objc_alloc(MEMORY[0x1E696AD98]) initWithBool:dimming];
+  v8 = [(BrightnessSystemClient *)self->bsc setProperty:v9 withKey:@"KeyboardBacklightSuspendDimming" keyboardID:keyboard];
   if (self->_logHandle)
   {
     logHandle = self->_logHandle;
@@ -673,11 +673,11 @@ LABEL_11:
   return v8;
 }
 
-- (BOOL)isIdleDimmingSuspendedOnKeyboard:(unint64_t)a3
+- (BOOL)isIdleDimmingSuspendedOnKeyboard:(unint64_t)keyboard
 {
   v10 = *MEMORY[0x1E69E9840];
-  v7 = 0;
-  v6 = [(BrightnessSystemClient *)self->bsc copyPropertyForKey:@"KeyboardBacklightSuspendDimming" keyboardID:a3];
+  bOOLValue = 0;
+  v6 = [(BrightnessSystemClient *)self->bsc copyPropertyForKey:@"KeyboardBacklightSuspendDimming" keyboardID:keyboard];
   if (self->_logHandle)
   {
     logHandle = self->_logHandle;
@@ -707,19 +707,19 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   MEMORY[0x1E69E5920](v6);
   *MEMORY[0x1E69E9840];
-  return v7 & 1;
+  return bOOLValue & 1;
 }
 
-- (BOOL)isAutoBrightnessEnabledForKeyboard:(unint64_t)a3
+- (BOOL)isAutoBrightnessEnabledForKeyboard:(unint64_t)keyboard
 {
   v10 = *MEMORY[0x1E69E9840];
-  v7 = 0;
-  v6 = [(BrightnessSystemClient *)self->bsc copyPropertyForKey:@"KeyboardBacklightABEnabled" keyboardID:a3];
+  bOOLValue = 0;
+  v6 = [(BrightnessSystemClient *)self->bsc copyPropertyForKey:@"KeyboardBacklightABEnabled" keyboardID:keyboard];
   if (self->_logHandle)
   {
     logHandle = self->_logHandle;
@@ -749,12 +749,12 @@ LABEL_11:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   MEMORY[0x1E69E5920](v6);
   *MEMORY[0x1E69E9840];
-  return v7 & 1;
+  return bOOLValue & 1;
 }
 
 @end

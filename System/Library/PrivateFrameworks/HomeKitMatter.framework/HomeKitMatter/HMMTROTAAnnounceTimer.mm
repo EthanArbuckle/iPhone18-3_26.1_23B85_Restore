@@ -1,11 +1,11 @@
 @interface HMMTROTAAnnounceTimer
 + (id)logCategory;
 - (HMMTRAccessoryServer)server;
-- (HMMTROTAAnnounceTimer)initWithServer:(id)a3 nodeId:(id)a4 endpoint:(id)a5 queue:(id)a6;
+- (HMMTROTAAnnounceTimer)initWithServer:(id)server nodeId:(id)id endpoint:(id)endpoint queue:(id)queue;
 - (id)logIdentifier;
 - (void)start;
 - (void)stop;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMMTROTAAnnounceTimer
@@ -21,54 +21,54 @@
 {
   v3 = MEMORY[0x277CCACA8];
   WeakRetained = objc_loadWeakRetained(&self->_server);
-  v5 = [WeakRetained nodeID];
+  nodeID = [WeakRetained nodeID];
   v6 = objc_loadWeakRetained(&self->_server);
-  v7 = [v6 fabricID];
-  v8 = [v3 stringWithFormat:@"%@/%@", v5, v7];
+  fabricID = [v6 fabricID];
+  v8 = [v3 stringWithFormat:@"%@/%@", nodeID, fabricID];
 
   return v8;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  fireCopy = fire;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [(HMMTROTAAnnounceTimer *)v6 server];
+    server = [(HMMTROTAAnnounceTimer *)selfCopy server];
     *buf = 138543618;
     v27 = v8;
     v28 = 2112;
-    v29 = v9;
+    v29 = server;
     _os_log_impl(&dword_22AEAE000, v7, OS_LOG_TYPE_INFO, "%{public}@OTA Announce triggered for [%@]", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   v10 = [HMMTRSoftwareUpdateProviderQueryImageRequestParams alloc];
-  WeakRetained = objc_loadWeakRetained(&v6->_server);
-  v12 = [WeakRetained vendorID];
-  v13 = objc_loadWeakRetained(&v6->_server);
-  v14 = [v13 productID];
-  v15 = objc_loadWeakRetained(&v6->_server);
-  v16 = [v15 softwareVersionNumber];
-  v17 = [(HMMTRSoftwareUpdateProviderQueryImageRequestParams *)v10 initWithVendorID:v12 productId:v14 softwareVersion:v16 protocolsSupported:&unk_283EE92A0 hardwareVersion:0 location:0 requestorCanConsent:&unk_283EE80B8 metadataForProvider:0];
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_server);
+  vendorID = [WeakRetained vendorID];
+  v13 = objc_loadWeakRetained(&selfCopy->_server);
+  productID = [v13 productID];
+  v15 = objc_loadWeakRetained(&selfCopy->_server);
+  softwareVersionNumber = [v15 softwareVersionNumber];
+  v17 = [(HMMTRSoftwareUpdateProviderQueryImageRequestParams *)v10 initWithVendorID:vendorID productId:productID softwareVersion:softwareVersionNumber protocolsSupported:&unk_283EE92A0 hardwareVersion:0 location:0 requestorCanConsent:&unk_283EE80B8 metadataForProvider:0];
 
-  objc_initWeak(buf, v6);
-  v18 = [(HMMTROTAAnnounceTimer *)v6 server];
-  v19 = [v18 browser];
-  v20 = [v19 softwareUpdateProvider];
-  v21 = objc_loadWeakRetained(&v6->_server);
-  v22 = [v21 currentPairing];
+  objc_initWeak(buf, selfCopy);
+  server2 = [(HMMTROTAAnnounceTimer *)selfCopy server];
+  browser = [server2 browser];
+  softwareUpdateProvider = [browser softwareUpdateProvider];
+  v21 = objc_loadWeakRetained(&selfCopy->_server);
+  currentPairing = [v21 currentPairing];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __38__HMMTROTAAnnounceTimer_timerDidFire___block_invoke;
   v24[3] = &unk_2786EDE88;
   objc_copyWeak(&v25, buf);
-  [v20 triggerQueryImageWithPairing:v22 accessoryInitiated:0 requestParams:v17 completionHandler:v24];
+  [softwareUpdateProvider triggerQueryImageWithPairing:currentPairing accessoryInitiated:0 requestParams:v17 completionHandler:v24];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(buf);
@@ -218,22 +218,22 @@ LABEL_6:
 {
   v14 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [(HMMTROTAAnnounceTimer *)v4 server];
+    server = [(HMMTROTAAnnounceTimer *)selfCopy server];
     v10 = 138543618;
     v11 = v6;
     v12 = 2112;
-    v13 = v7;
+    v13 = server;
     _os_log_impl(&dword_22AEAE000, v5, OS_LOG_TYPE_INFO, "%{public}@Stop OTA Announce timeout for accessory server [%@]", &v10, 0x16u);
   }
 
   objc_autoreleasePoolPop(v3);
-  v8 = [(HMMTROTAAnnounceTimer *)v4 announceTimer];
-  [v8 suspend];
+  announceTimer = [(HMMTROTAAnnounceTimer *)selfCopy announceTimer];
+  [announceTimer suspend];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -242,50 +242,50 @@ LABEL_6:
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    [(HMFTimer *)v4->_announceTimer timeInterval];
+    [(HMFTimer *)selfCopy->_announceTimer timeInterval];
     v8 = v7;
-    v9 = [(HMMTROTAAnnounceTimer *)v4 server];
+    server = [(HMMTROTAAnnounceTimer *)selfCopy server];
     v12 = 138543874;
     v13 = v6;
     v14 = 2048;
     v15 = v8;
     v16 = 2112;
-    v17 = v9;
+    v17 = server;
     _os_log_impl(&dword_22AEAE000, v5, OS_LOG_TYPE_INFO, "%{public}@Starting OTA Announce timeout with delay of %f for accessory server [%@]", &v12, 0x20u);
   }
 
   objc_autoreleasePoolPop(v3);
-  v10 = [(HMMTROTAAnnounceTimer *)v4 announceTimer];
-  [v10 resume];
+  announceTimer = [(HMMTROTAAnnounceTimer *)selfCopy announceTimer];
+  [announceTimer resume];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (HMMTROTAAnnounceTimer)initWithServer:(id)a3 nodeId:(id)a4 endpoint:(id)a5 queue:(id)a6
+- (HMMTROTAAnnounceTimer)initWithServer:(id)server nodeId:(id)id endpoint:(id)endpoint queue:(id)queue
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  serverCopy = server;
+  idCopy = id;
+  endpointCopy = endpoint;
+  queueCopy = queue;
   v19.receiver = self;
   v19.super_class = HMMTROTAAnnounceTimer;
   v14 = [(HMMTROTAAnnounceTimer *)&v19 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_server, v10);
-    objc_storeStrong(&v15->_nodeId, a4);
-    objc_storeStrong(&v15->_endpoint, a5);
+    objc_storeWeak(&v14->_server, serverCopy);
+    objc_storeStrong(&v15->_nodeId, id);
+    objc_storeStrong(&v15->_endpoint, endpoint);
     v16 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:(arc4random_uniform(0x258u) + 300)];
     announceTimer = v15->_announceTimer;
     v15->_announceTimer = v16;
 
-    [(HMFTimer *)v15->_announceTimer setDelegateQueue:v13];
+    [(HMFTimer *)v15->_announceTimer setDelegateQueue:queueCopy];
     [(HMFTimer *)v15->_announceTimer setDelegate:v15];
   }
 

@@ -1,14 +1,14 @@
 @interface MOEventBundleLabelFormat
-- (MOEventBundleLabelFormat)initWithFormat:(id)a3 capitalizationType:(unint64_t)a4;
+- (MOEventBundleLabelFormat)initWithFormat:(id)format capitalizationType:(unint64_t)type;
 - (id)description;
 @end
 
 @implementation MOEventBundleLabelFormat
 
-- (MOEventBundleLabelFormat)initWithFormat:(id)a3 capitalizationType:(unint64_t)a4
+- (MOEventBundleLabelFormat)initWithFormat:(id)format capitalizationType:(unint64_t)type
 {
-  v8 = a3;
-  if (v8)
+  formatCopy = format;
+  if (formatCopy)
   {
     v15.receiver = self;
     v15.super_class = MOEventBundleLabelFormat;
@@ -16,12 +16,12 @@
     v10 = v9;
     if (v9)
     {
-      objc_storeStrong(&v9->_format, a3);
-      v10->_capitalizationType = a4;
+      objc_storeStrong(&v9->_format, format);
+      v10->_capitalizationType = type;
     }
 
     self = v10;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
@@ -35,16 +35,16 @@
     v13 = +[NSAssertionHandler currentHandler];
     [v13 handleFailureInMethod:a2 object:self file:@"MOEventBundleLabelFormat.m" lineNumber:16 description:@"Invalid parameter not satisfying: format"];
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (id)description
 {
-  v3 = [(MOEventBundleLabelFormat *)self format];
-  v4 = [NSString stringWithFormat:@"labels, %@, capitalization type, %lu", v3, [(MOEventBundleLabelFormat *)self capitalizationType]];
+  format = [(MOEventBundleLabelFormat *)self format];
+  v4 = [NSString stringWithFormat:@"labels, %@, capitalization type, %lu", format, [(MOEventBundleLabelFormat *)self capitalizationType]];
 
   return v4;
 }

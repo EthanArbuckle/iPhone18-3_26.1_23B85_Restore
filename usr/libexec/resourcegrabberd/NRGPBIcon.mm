@@ -1,12 +1,12 @@
 @interface NRGPBIcon
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NRGPBIcon
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = NRGPBIcon;
   v3 = [(NRGPBIcon *)&v7 description];
-  v4 = [(NRGPBIcon *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NRGPBIcon *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -56,15 +56,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_bundleID)
   {
     sub_100010CF0();
   }
 
-  v7 = v4;
+  v7 = toCopy;
   PBDataWriterWriteStringField();
   iconVariant = self->_iconVariant;
   PBDataWriterWriteInt32Field();
@@ -86,37 +86,37 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  [v4 setBundleID:self->_bundleID];
-  *(v4 + 6) = self->_iconVariant;
-  [v4 setIconData:self->_iconData];
+  toCopy = to;
+  [toCopy setBundleID:self->_bundleID];
+  *(toCopy + 6) = self->_iconVariant;
+  [toCopy setIconData:self->_iconData];
   if (self->_version)
   {
-    [v4 setVersion:?];
+    [toCopy setVersion:?];
   }
 
   if (*&self->_has)
   {
-    *(v4 + 40) = self->_deletable;
-    *(v4 + 44) |= 1u;
+    *(toCopy + 40) = self->_deletable;
+    *(toCopy + 44) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_bundleID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_bundleID copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   *(v5 + 6) = self->_iconVariant;
-  v8 = [(NSData *)self->_iconData copyWithZone:a3];
+  v8 = [(NSData *)self->_iconData copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_version copyWithZone:a3];
+  v10 = [(NSString *)self->_version copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
@@ -129,16 +129,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_11;
   }
 
   bundleID = self->_bundleID;
-  if (bundleID | *(v4 + 1))
+  if (bundleID | *(equalCopy + 1))
   {
     if (![(NSString *)bundleID isEqual:?])
     {
@@ -146,13 +146,13 @@
     }
   }
 
-  if (self->_iconVariant != *(v4 + 6))
+  if (self->_iconVariant != *(equalCopy + 6))
   {
     goto LABEL_11;
   }
 
   iconData = self->_iconData;
-  if (iconData | *(v4 + 2))
+  if (iconData | *(equalCopy + 2))
   {
     if (![(NSData *)iconData isEqual:?])
     {
@@ -161,7 +161,7 @@
   }
 
   version = self->_version;
-  if (version | *(v4 + 4))
+  if (version | *(equalCopy + 4))
   {
     if (![(NSString *)version isEqual:?])
     {
@@ -169,10 +169,10 @@
     }
   }
 
-  v8 = (*(v4 + 44) & 1) == 0;
+  v8 = (*(equalCopy + 44) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0)
+    if ((*(equalCopy + 44) & 1) == 0)
     {
 LABEL_11:
       v8 = 0;
@@ -181,13 +181,13 @@ LABEL_11:
 
     if (self->_deletable)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_11;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_11;
     }
@@ -219,32 +219,32 @@ LABEL_12:
   return (2654435761 * iconVariant) ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 1))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 1))
   {
     [(NRGPBIcon *)self setBundleID:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_iconVariant = *(v4 + 6);
-  if (*(v4 + 2))
+  self->_iconVariant = *(fromCopy + 6);
+  if (*(fromCopy + 2))
   {
     [(NRGPBIcon *)self setIconData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(NRGPBIcon *)self setVersion:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 44))
+  if (*(fromCopy + 44))
   {
-    self->_deletable = *(v4 + 40);
+    self->_deletable = *(fromCopy + 40);
     *&self->_has |= 1u;
   }
 }

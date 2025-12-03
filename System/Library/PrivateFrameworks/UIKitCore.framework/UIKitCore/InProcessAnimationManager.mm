@@ -1,18 +1,18 @@
 @interface InProcessAnimationManager
-+ (void)handleScreenDisconnected:(id)a3;
-- (void)displayLinkFire:(id)a3;
++ (void)handleScreenDisconnected:(id)disconnected;
+- (void)displayLinkFire:(id)fire;
 @end
 
 @implementation InProcessAnimationManager
 
-- (void)displayLinkFire:(id)a3
+- (void)displayLinkFire:(id)fire
 {
-  v3 = a3;
+  fireCopy = fire;
 
-  sub_188A32A48(v3);
+  sub_188A32A48(fireCopy);
 }
 
-+ (void)handleScreenDisconnected:(id)a3
++ (void)handleScreenDisconnected:(id)disconnected
 {
   v3 = sub_18A4A2458();
   v4 = *(v3 - 8);

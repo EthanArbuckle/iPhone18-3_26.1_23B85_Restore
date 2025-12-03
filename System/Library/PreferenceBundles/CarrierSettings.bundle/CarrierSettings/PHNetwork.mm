@@ -1,24 +1,24 @@
 @interface PHNetwork
-+ (id)networkFromDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)networkFromDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
 - (NSString)code;
 - (NSString)displayName;
-- (PHNetwork)initWithName:(id)a3;
+- (PHNetwork)initWithName:(id)name;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation PHNetwork
 
-+ (id)networkFromDictionary:(id)a3
++ (id)networkFromDictionary:(id)dictionary
 {
-  if (a3)
+  if (dictionary)
   {
     v3 = *MEMORY[0x277CC3CF0];
-    v4 = a3;
-    v5 = [v4 objectForKey:v3];
+    dictionaryCopy = dictionary;
+    v5 = [dictionaryCopy objectForKey:v3];
     v6 = [[PHNetwork alloc] initWithName:v5];
-    [(PHNetwork *)v6 setDictionaryRepresentation:v4];
+    [(PHNetwork *)v6 setDictionaryRepresentation:dictionaryCopy];
   }
 
   else
@@ -29,16 +29,16 @@
   return v6;
 }
 
-- (PHNetwork)initWithName:(id)a3
+- (PHNetwork)initWithName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = PHNetwork;
   v6 = [(PHNetwork *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_name, a3);
+    objc_storeStrong(&v6->_name, name);
   }
 
   return v7;
@@ -47,20 +47,20 @@
 - (NSString)displayName
 {
   v3 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v4 = [(PHNetwork *)self name];
-  v5 = [v3 localizedStringForKey:v4 value:&stru_284EE7748 table:@"Carrier"];
+  name = [(PHNetwork *)self name];
+  v5 = [v3 localizedStringForKey:name value:&stru_284EE7748 table:@"Carrier"];
 
   return v5;
 }
 
 - (NSString)code
 {
-  v3 = [(PHNetwork *)self dictionaryRepresentation];
+  dictionaryRepresentation = [(PHNetwork *)self dictionaryRepresentation];
 
-  if (v3)
+  if (dictionaryRepresentation)
   {
-    v4 = [(PHNetwork *)self dictionaryRepresentation];
-    v5 = [v4 valueForKey:*MEMORY[0x277CC3CC8]];
+    dictionaryRepresentation2 = [(PHNetwork *)self dictionaryRepresentation];
+    v5 = [dictionaryRepresentation2 valueForKey:*MEMORY[0x277CC3CC8]];
   }
 
   else
@@ -71,25 +71,25 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(PHNetwork *)self dictionaryRepresentation];
-    if (v6 && (v7 = v6, [v5 dictionaryRepresentation], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
+    v5 = equalCopy;
+    dictionaryRepresentation = [(PHNetwork *)self dictionaryRepresentation];
+    if (dictionaryRepresentation && (v7 = dictionaryRepresentation, [v5 dictionaryRepresentation], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
     {
-      v9 = [(PHNetwork *)self code];
-      if (v9)
+      code = [(PHNetwork *)self code];
+      if (code)
       {
-        v10 = [v5 code];
-        if (v10)
+        code2 = [v5 code];
+        if (code2)
         {
-          v11 = [(PHNetwork *)self code];
-          v12 = [v5 code];
-          v13 = [v11 isEqualToString:v12];
+          code3 = [(PHNetwork *)self code];
+          code4 = [v5 code];
+          v13 = [code3 isEqualToString:code4];
         }
 
         else
@@ -120,8 +120,8 @@
 
 - (unint64_t)hash
 {
-  v3 = [(PHNetwork *)self dictionaryRepresentation];
-  if (v3)
+  dictionaryRepresentation = [(PHNetwork *)self dictionaryRepresentation];
+  if (dictionaryRepresentation)
   {
     [(PHNetwork *)self dictionaryRepresentation];
   }
@@ -139,9 +139,9 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(PHNetwork *)self name];
-  v5 = [(PHNetwork *)self code];
-  v6 = [v3 stringWithFormat:@"PHNetwork: '%@' %@. State:%lu", v4, v5, -[PHNetwork state](self, "state")];
+  name = [(PHNetwork *)self name];
+  code = [(PHNetwork *)self code];
+  v6 = [v3 stringWithFormat:@"PHNetwork: '%@' %@. State:%lu", name, code, -[PHNetwork state](self, "state")];
 
   return v6;
 }

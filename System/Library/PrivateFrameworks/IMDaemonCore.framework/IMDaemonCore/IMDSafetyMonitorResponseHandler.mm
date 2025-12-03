@@ -1,23 +1,23 @@
 @interface IMDSafetyMonitorResponseHandler
-- (BOOL)canHandleNotificationResponse:(id)a3 userNotificationCenter:(id)a4;
-- (void)handleNotificationResponse:(id)a3 userNotificationCenter:(id)a4 completionHandler:(id)a5;
+- (BOOL)canHandleNotificationResponse:(id)response userNotificationCenter:(id)center;
+- (void)handleNotificationResponse:(id)response userNotificationCenter:(id)center completionHandler:(id)handler;
 @end
 
 @implementation IMDSafetyMonitorResponseHandler
 
-- (BOOL)canHandleNotificationResponse:(id)a3 userNotificationCenter:(id)a4
+- (BOOL)canHandleNotificationResponse:(id)response userNotificationCenter:(id)center
 {
-  v4 = a3;
-  v5 = [v4 notification];
-  v6 = [v5 request];
-  v7 = [v6 content];
-  v8 = [v7 userInfo];
+  responseCopy = response;
+  notification = [responseCopy notification];
+  request = [notification request];
+  content = [request content];
+  userInfo = [content userInfo];
 
-  v9 = [v8 objectForKeyedSubscript:@"CKBBContextKeyBalloonBundleID"];
-  v10 = [v4 notification];
-  v11 = [v10 request];
-  v12 = [v11 content];
-  v13 = [v12 categoryIdentifier];
+  v9 = [userInfo objectForKeyedSubscript:@"CKBBContextKeyBalloonBundleID"];
+  notification2 = [responseCopy notification];
+  request2 = [notification2 request];
+  content2 = [request2 content];
+  categoryIdentifier = [content2 categoryIdentifier];
 
   if ([v9 isEqualToString:*MEMORY[0x277D19708]])
   {
@@ -34,16 +34,16 @@
 
     else
     {
-      v16 = [v4 actionIdentifier];
+      actionIdentifier = [responseCopy actionIdentifier];
       v17 = IMSMWorkoutAlwaysPromptActionIdentifier();
-      if ([v16 isEqualToString:v17])
+      if ([actionIdentifier isEqualToString:v17])
       {
         v14 = 1;
       }
 
       else
       {
-        v14 = [v13 isEqualToString:@"com.apple.SafetyMonitor.Suggestions.WorkoutAlwaysPrompt"];
+        v14 = [categoryIdentifier isEqualToString:@"com.apple.SafetyMonitor.Suggestions.WorkoutAlwaysPrompt"];
       }
     }
   }
@@ -51,43 +51,43 @@
   return v14;
 }
 
-- (void)handleNotificationResponse:(id)a3 userNotificationCenter:(id)a4 completionHandler:(id)a5
+- (void)handleNotificationResponse:(id)response userNotificationCenter:(id)center completionHandler:(id)handler
 {
-  v6 = a5;
-  v7 = a3;
-  v8 = [v7 notification];
-  v9 = [v8 request];
-  v10 = [v9 content];
-  v11 = [v10 userInfo];
+  handlerCopy = handler;
+  responseCopy = response;
+  notification = [responseCopy notification];
+  request = [notification request];
+  content = [request content];
+  userInfo = [content userInfo];
 
-  v12 = [v7 notification];
-  v13 = [v12 request];
-  v14 = [v13 identifier];
+  notification2 = [responseCopy notification];
+  request2 = [notification2 request];
+  identifier = [request2 identifier];
 
-  v15 = [v11 objectForKeyedSubscript:*MEMORY[0x277D1A508]];
-  v16 = [v7 actionIdentifier];
-  v17 = [v7 notification];
+  v15 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D1A508]];
+  actionIdentifier = [responseCopy actionIdentifier];
+  notification3 = [responseCopy notification];
 
-  v18 = [v17 request];
-  v19 = [v18 content];
-  v20 = [v19 categoryIdentifier];
+  request3 = [notification3 request];
+  content2 = [request3 content];
+  categoryIdentifier = [content2 categoryIdentifier];
 
-  if (v16)
+  if (actionIdentifier)
   {
-    if (-[__CFString isEqualToString:](v16, "isEqualToString:", *MEMORY[0x277CE20F0]) && [v20 isEqualToString:@"com.apple.SafetyMonitor.Suggestions.WorkoutAlwaysPrompt"])
+    if (-[__CFString isEqualToString:](actionIdentifier, "isEqualToString:", *MEMORY[0x277CE20F0]) && [categoryIdentifier isEqualToString:@"com.apple.SafetyMonitor.Suggestions.WorkoutAlwaysPrompt"])
     {
 
-      v16 = @"SMWorkoutAlwaysPromptDismissActionIdentifier";
+      actionIdentifier = @"SMWorkoutAlwaysPromptDismissActionIdentifier";
     }
 
-    v21 = [MEMORY[0x277D1AB78] sharedCoordinator];
+    mEMORY[0x277D1AB78] = [MEMORY[0x277D1AB78] sharedCoordinator];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = sub_22B54B760;
     v23[3] = &unk_278704180;
-    v25 = v6;
+    v25 = handlerCopy;
     v24 = v15;
-    [v21 respondToNotificationWithIdentifier:v14 sessionIdentifier:v24 actionIdentifier:v16 completion:v23];
+    [mEMORY[0x277D1AB78] respondToNotificationWithIdentifier:identifier sessionIdentifier:v24 actionIdentifier:actionIdentifier completion:v23];
   }
 
   else
@@ -98,7 +98,7 @@
       sub_22B7D20E8(v22);
     }
 
-    (*(v6 + 2))(v6, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 

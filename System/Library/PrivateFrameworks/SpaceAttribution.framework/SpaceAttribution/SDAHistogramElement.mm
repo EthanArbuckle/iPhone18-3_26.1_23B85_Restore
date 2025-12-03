@@ -1,6 +1,6 @@
 @interface SDAHistogramElement
 + (id)newElement;
-- (void)adjAge:(unint64_t)a3 andSize:(unint64_t)a4 nanoSecSinceUpdate:(unint64_t)a5;
+- (void)adjAge:(unint64_t)age andSize:(unint64_t)size nanoSecSinceUpdate:(unint64_t)update;
 @end
 
 @implementation SDAHistogramElement
@@ -25,14 +25,14 @@
 
   do
   {
-    v7 = [v2 ageGroupCount];
-    [v7 addObject:&off_1000689D0];
+    ageGroupCount = [v2 ageGroupCount];
+    [ageGroupCount addObject:&off_1000689D0];
 
-    v8 = [v2 sizeGroupCount];
-    [v8 addObject:&off_1000689D0];
+    sizeGroupCount = [v2 sizeGroupCount];
+    [sizeGroupCount addObject:&off_1000689D0];
 
-    v9 = [v2 sizeOfAgeGroupCount];
-    [v9 addObject:&off_1000689D0];
+    sizeOfAgeGroupCount = [v2 sizeOfAgeGroupCount];
+    [sizeOfAgeGroupCount addObject:&off_1000689D0];
 
     --v3;
   }
@@ -41,16 +41,16 @@
   return v2;
 }
 
-- (void)adjAge:(unint64_t)a3 andSize:(unint64_t)a4 nanoSecSinceUpdate:(unint64_t)a5
+- (void)adjAge:(unint64_t)age andSize:(unint64_t)size nanoSecSinceUpdate:(unint64_t)update
 {
-  v8 = a3 / 0x3B9ACA00;
+  v8 = age / 0x3B9ACA00;
   v9 = 7;
   do
   {
     v10 = [qword_100073738 objectAtIndexedSubscript:v9];
-    v11 = [v10 unsignedLongLongValue];
+    unsignedLongLongValue = [v10 unsignedLongLongValue];
 
-    if (v8 >= v11)
+    if (v8 >= unsignedLongLongValue)
     {
       break;
     }
@@ -64,16 +64,16 @@
   [(NSMutableArray *)self->_ageGroupCount setObject:v13 atIndexedSubscript:v9];
 
   v14 = [(NSMutableArray *)self->_sizeOfAgeGroupCount objectAtIndexedSubscript:v9];
-  v15 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v14 unsignedLongLongValue] + a4);
+  v15 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v14 unsignedLongLongValue] + size);
   [(NSMutableArray *)self->_sizeOfAgeGroupCount setObject:v15 atIndexedSubscript:v9];
 
   v16 = 7;
   do
   {
     v17 = [qword_100073730 objectAtIndexedSubscript:v16];
-    v18 = [v17 unsignedLongLongValue];
+    unsignedLongLongValue2 = [v17 unsignedLongLongValue];
 
-    if (v18 <= a4)
+    if (unsignedLongLongValue2 <= size)
     {
       break;
     }
@@ -86,7 +86,7 @@
   v20 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [v19 unsignedLongLongValue] + 1);
   [(NSMutableArray *)self->_sizeGroupCount setObject:v20 atIndexedSubscript:v16];
 
-  v21 = [NSNumber numberWithUnsignedLongLong:a5];
+  v21 = [NSNumber numberWithUnsignedLongLong:update];
   pristineClearedATimeThreshold = self->_pristineClearedATimeThreshold;
   self->_pristineClearedATimeThreshold = v21;
 
@@ -94,7 +94,7 @@
   pristineClearedCount = self->_pristineClearedCount;
   self->_pristineClearedCount = v23;
 
-  v25 = [NSNumber numberWithUnsignedLongLong:[(NSNumber *)self->_pristineClearedSize unsignedIntegerValue]+ a4];
+  v25 = [NSNumber numberWithUnsignedLongLong:[(NSNumber *)self->_pristineClearedSize unsignedIntegerValue]+ size];
   pristineClearedSize = self->_pristineClearedSize;
   self->_pristineClearedSize = v25;
 

@@ -1,26 +1,26 @@
 @interface SCLSingleGroupTableView
 - (CGSize)intrinsicContentSize;
-- (SCLSingleGroupTableView)initWithFrame:(CGRect)a3;
+- (SCLSingleGroupTableView)initWithFrame:(CGRect)frame;
 - (void)reloadData;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentSize:(CGSize)a3;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentSize:(CGSize)size;
 @end
 
 @implementation SCLSingleGroupTableView
 
-- (SCLSingleGroupTableView)initWithFrame:(CGRect)a3
+- (SCLSingleGroupTableView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SCLSingleGroupTableView;
-  v3 = [(SCLSingleGroupTableView *)&v7 initWithFrame:1 style:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SCLSingleGroupTableView *)&v7 initWithFrame:1 style:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v3 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_contentSizeCategoryDidChange_ name:*MEMORY[0x277D76810] object:0];
 
     [(SCLSingleGroupTableView *)v3 setScrollEnabled:0];
-    v5 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(SCLSingleGroupTableView *)v3 setBackgroundColor:v5];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(SCLSingleGroupTableView *)v3 setBackgroundColor:systemBackgroundColor];
   }
 
   return v3;
@@ -65,11 +65,11 @@
   return result;
 }
 
-- (void)setContentSize:(CGSize)a3
+- (void)setContentSize:(CGSize)size
 {
   v4.receiver = self;
   v4.super_class = SCLSingleGroupTableView;
-  [(SCLSingleGroupTableView *)&v4 setContentSize:a3.width, a3.height];
+  [(SCLSingleGroupTableView *)&v4 setContentSize:size.width, size.height];
   [(SCLSingleGroupTableView *)self invalidateIntrinsicContentSize];
 }
 
@@ -81,12 +81,12 @@
   [(SCLSingleGroupTableView *)self invalidateIntrinsicContentSize];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ([(SCLSingleGroupTableView *)self numberOfRowsInSection:0]>= 1)
   {
     v8 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:0];

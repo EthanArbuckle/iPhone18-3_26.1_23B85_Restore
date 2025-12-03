@@ -1,22 +1,22 @@
 @interface SUTableCellLayoutManager
-- (CGRect)accessoryEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5;
+- (CGRect)accessoryEndingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation;
 @end
 
 @implementation SUTableCellLayoutManager
 
-- (CGRect)accessoryEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5
+- (CGRect)accessoryEndingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation
 {
   v23.receiver = self;
   v23.super_class = SUTableCellLayoutManager;
-  [(UITableViewCellLayoutManager *)&v23 accessoryEndingRectForCell:a3 forNewEditingState:a4 showingDeleteConfirmation:a5];
+  [(UITableViewCellLayoutManager *)&v23 accessoryEndingRectForCell:cell forNewEditingState:state showingDeleteConfirmation:confirmation];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [a3 configuration];
-  if (v14)
+  configuration = [cell configuration];
+  if (configuration)
   {
-    [v14 frameForAccessoryViewWithFrame:{v7, v9, v11, v13}];
+    [configuration frameForAccessoryViewWithFrame:{v7, v9, v11, v13}];
     v7 = v15;
     v9 = v16;
     v11 = v17;

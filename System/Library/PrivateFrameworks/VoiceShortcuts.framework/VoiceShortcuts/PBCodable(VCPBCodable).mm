@@ -9,7 +9,7 @@
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v6 = a3;
-  v7 = [a1 readFrom:v6];
+  v7 = [self readFrom:v6];
   v8 = v7;
   if (a4 && (v7 & 1) == 0)
   {
@@ -27,7 +27,7 @@
 
 - (uint64_t)writeTo:()VCPBCodable error:
 {
-  [a1 writeTo:?];
+  [self writeTo:?];
   if (a4)
   {
     *a4 = 0;

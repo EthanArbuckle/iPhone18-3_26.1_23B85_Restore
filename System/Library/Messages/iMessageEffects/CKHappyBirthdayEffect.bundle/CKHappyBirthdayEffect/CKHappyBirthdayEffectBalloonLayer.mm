@@ -1,9 +1,9 @@
 @interface CKHappyBirthdayEffectBalloonLayer
 - (CKHappyBirthdayEffectBalloonLayer)init;
-- (id)assetWithName:(id)a3;
-- (void)setupAttachmentLayerWithStringColorIndex:(unint64_t)a3;
-- (void)setupBaloonLayerWithColorIndex:(unint64_t)a3;
-- (void)setupStringLayerWithStringColorIndex:(unint64_t)a3;
+- (id)assetWithName:(id)name;
+- (void)setupAttachmentLayerWithStringColorIndex:(unint64_t)index;
+- (void)setupBaloonLayerWithColorIndex:(unint64_t)index;
+- (void)setupStringLayerWithStringColorIndex:(unint64_t)index;
 @end
 
 @implementation CKHappyBirthdayEffectBalloonLayer
@@ -20,76 +20,76 @@
     [(CKHappyBirthdayEffectBalloonLayer *)v2 setupBaloonLayerWithColorIndex:v4 % 5];
     [(CKHappyBirthdayEffectBalloonLayer *)v2 setupStringLayerWithStringColorIndex:v3];
     [(CKHappyBirthdayEffectBalloonLayer *)v2 setupAttachmentLayerWithStringColorIndex:v3];
-    v5 = [(CKHappyBirthdayEffectBalloonLayer *)v2 balloonLayer];
-    [v5 bounds];
+    balloonLayer = [(CKHappyBirthdayEffectBalloonLayer *)v2 balloonLayer];
+    [balloonLayer bounds];
     [(CKHappyBirthdayEffectBalloonLayer *)v2 setBounds:?];
 
-    v6 = [(CKHappyBirthdayEffectBalloonLayer *)v2 balloonLayer];
-    [(CKHappyBirthdayEffectBalloonLayer *)v2 addSublayer:v6];
+    balloonLayer2 = [(CKHappyBirthdayEffectBalloonLayer *)v2 balloonLayer];
+    [(CKHappyBirthdayEffectBalloonLayer *)v2 addSublayer:balloonLayer2];
 
-    v7 = [(CKHappyBirthdayEffectBalloonLayer *)v2 stringLayer];
-    [(CKHappyBirthdayEffectBalloonLayer *)v2 addSublayer:v7];
+    stringLayer = [(CKHappyBirthdayEffectBalloonLayer *)v2 stringLayer];
+    [(CKHappyBirthdayEffectBalloonLayer *)v2 addSublayer:stringLayer];
 
-    v8 = [(CKHappyBirthdayEffectBalloonLayer *)v2 attachmentLayer];
-    [(CKHappyBirthdayEffectBalloonLayer *)v2 addSublayer:v8];
+    attachmentLayer = [(CKHappyBirthdayEffectBalloonLayer *)v2 attachmentLayer];
+    [(CKHappyBirthdayEffectBalloonLayer *)v2 addSublayer:attachmentLayer];
   }
 
   return v2;
 }
 
-- (id)assetWithName:(id)a3
+- (id)assetWithName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = [NSBundle bundleForClass:objc_opt_class()];
-  v5 = [UIImage imageNamed:v3 inBundle:v4 compatibleWithTraitCollection:0];
+  v5 = [UIImage imageNamed:nameCopy inBundle:v4 compatibleWithTraitCollection:0];
 
   return v5;
 }
 
-- (void)setupBaloonLayerWithColorIndex:(unint64_t)a3
+- (void)setupBaloonLayerWithColorIndex:(unint64_t)index
 {
-  v4 = (&unk_3630 + 24 * a3);
-  v5 = [UIColor colorWithRed:dbl_35B8[3 * a3] green:dbl_35B8[3 * a3 + 1] blue:dbl_35B8[3 * a3 + 2] alpha:1.0];
-  v6 = [v5 CGColor];
+  v4 = (&unk_3630 + 24 * index);
+  v5 = [UIColor colorWithRed:dbl_35B8[3 * index] green:dbl_35B8[3 * index + 1] blue:dbl_35B8[3 * index + 2] alpha:1.0];
+  cGColor = [v5 CGColor];
 
   v7 = [UIColor colorWithRed:*v4 green:v4[1] blue:v4[2] alpha:1.0];
-  v8 = [v7 CGColor];
+  cGColor2 = [v7 CGColor];
 
   v12 = +[CALayer layer];
   v9 = [(CKHappyBirthdayEffectBalloonLayer *)self assetWithName:@"balloonBase"];
   [v12 setContents:{objc_msgSend(v9, "CGImage")}];
 
-  [v12 setContentsMultiplyColor:v6];
+  [v12 setContentsMultiplyColor:cGColor];
   [v12 setFrame:{0.0, 0.0, 303.0, 402.0}];
   [v12 setAllowsGroupBlending:0];
   v10 = +[CALayer layer];
   v11 = [(CKHappyBirthdayEffectBalloonLayer *)self assetWithName:@"balloonHighlights"];
   [v10 setContents:{objc_msgSend(v11, "CGImage")}];
 
-  [v10 setContentsMultiplyColor:v8];
+  [v10 setContentsMultiplyColor:cGColor2];
   [v10 setFrame:{0.0, 0.0, 303.0, 402.0}];
   [v10 setCompositingFilter:kCAFilterPlusL];
   [v12 addSublayer:v10];
   [(CKHappyBirthdayEffectBalloonLayer *)self setBalloonLayer:v12];
 }
 
-- (void)setupStringLayerWithStringColorIndex:(unint64_t)a3
+- (void)setupStringLayerWithStringColorIndex:(unint64_t)index
 {
   v4 = +[NSMutableArray array];
   v5 = +[NSMutableArray array];
-  v6 = &unk_36E0 + 8 * a3;
+  v6 = &unk_36E0 + 8 * index;
   v7 = 7;
-  v8 = &unk_36A8 + 8 * a3;
+  v8 = &unk_36A8 + 8 * index;
   do
   {
-    v9 = [NSNumber numberWithDouble:*&v8[-56 * (a3 / 7)]];
+    v9 = [NSNumber numberWithDouble:*&v8[-56 * (index / 7)]];
     [v4 addObject:v9];
 
-    v10 = [UIColor colorWithWhite:*&v6[-56 * (a3 / 7)] alpha:1.0];
+    v10 = [UIColor colorWithWhite:*&v6[-56 * (index / 7)] alpha:1.0];
     [v5 addObject:{objc_msgSend(v10, "CGColor")}];
 
     v6 += 8;
-    ++a3;
+    ++index;
     v8 += 8;
     --v7;
   }
@@ -152,7 +152,7 @@
   [(CKHappyBirthdayEffectBalloonLayer *)self setStringLayer:v19];
 }
 
-- (void)setupAttachmentLayerWithStringColorIndex:(unint64_t)a3
+- (void)setupAttachmentLayerWithStringColorIndex:(unint64_t)index
 {
   v7 = +[CALayer layer];
   [v7 setBounds:{0.0, 0.0, 10.0, 7.0}];
@@ -161,7 +161,7 @@
   v5 = [(CKHappyBirthdayEffectBalloonLayer *)self assetWithName:@"balloonString"];
   [v7 setContents:{objc_msgSend(v5, "CGImage")}];
 
-  v6 = [UIColor colorWithWhite:dbl_36E0[a3] * 0.6 alpha:1.0];
+  v6 = [UIColor colorWithWhite:dbl_36E0[index] * 0.6 alpha:1.0];
   [v7 setContentsMultiplyColor:{objc_msgSend(v6, "CGColor")}];
 
   [(CKHappyBirthdayEffectBalloonLayer *)self setAttachmentLayer:v7];

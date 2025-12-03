@@ -3,10 +3,10 @@
 - (NSString)stateCaptureTitle;
 - (RBBundlePropertiesManager)init;
 - (RBBundlePropertiesManagerDelegate)delegate;
-- (id)propertiesForIdentity:(id)a3 identifier:(id)a4;
-- (void)addProcess:(id)a3;
-- (void)removeProcess:(id)a3;
-- (void)setDelegate:(id)a3;
+- (id)propertiesForIdentity:(id)identity identifier:(id)identifier;
+- (void)addProcess:(id)process;
+- (void)removeProcess:(id)process;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation RBBundlePropertiesManager
@@ -46,12 +46,12 @@
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_lock);
   delegate = self->_delegate;
-  self->_delegate = v4;
+  self->_delegate = delegateCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -67,45 +67,45 @@
   return v7;
 }
 
-- (id)propertiesForIdentity:(id)a3 identifier:(id)a4
+- (id)propertiesForIdentity:(id)identity identifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  identityCopy = identity;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v8 = [(RBProcessIndex *)self->_processIndex processForIdentifier:v7];
+  v8 = [(RBProcessIndex *)self->_processIndex processForIdentifier:identifierCopy];
   if (!v8)
   {
-    v8 = [(RBProcessIndex *)self->_processIndex processForIdentity:v6];
+    v8 = [(RBProcessIndex *)self->_processIndex processForIdentity:identityCopy];
   }
 
-  v9 = [v8 bundleProperties];
+  bundleProperties = [v8 bundleProperties];
   os_unfair_lock_unlock(&self->_lock);
-  if (!v9)
+  if (!bundleProperties)
   {
-    v9 = [[RBBundleProperties alloc] initWithLSProvider:self->_lsProvider xpcProvider:self->_xpcProvider processIdentity:v6 processIdentifier:v7];
+    bundleProperties = [[RBBundleProperties alloc] initWithLSProvider:self->_lsProvider xpcProvider:self->_xpcProvider processIdentity:identityCopy processIdentifier:identifierCopy];
   }
 
-  return v9;
+  return bundleProperties;
 }
 
-- (void)addProcess:(id)a3
+- (void)addProcess:(id)process
 {
-  v4 = a3;
+  processCopy = process;
   os_unfair_lock_lock(&self->_lock);
-  [(RBProcessIndex *)self->_processIndex addProcess:v4];
+  [(RBProcessIndex *)self->_processIndex addProcess:processCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removeProcess:(id)a3
+- (void)removeProcess:(id)process
 {
-  v4 = a3;
+  processCopy = process;
   os_unfair_lock_lock(&self->_lock);
-  [(RBProcessIndex *)self->_processIndex removeProcess:v4];
+  [(RBProcessIndex *)self->_processIndex removeProcess:processCopy];
   xpcProvider = self->_xpcProvider;
-  v6 = [v4 identifier];
+  identifier = [processCopy identifier];
 
-  [(RBBundlePropertiesBSXPCProvider *)xpcProvider removePropertiesForIdentifier:v6];
+  [(RBBundlePropertiesBSXPCProvider *)xpcProvider removePropertiesForIdentifier:identifier];
 
   os_unfair_lock_unlock(&self->_lock);
 }

@@ -1,44 +1,44 @@
 @interface PKSharingPushProvisioningInvitation
-- (BOOL)configureWithContent:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)configureWithContent:(id)content;
+- (BOOL)isEqual:(id)equal;
 - (NSString)provisioningCredentialHash;
-- (PKSharingPushProvisioningInvitation)initWithDisplayInformation:(id)a3 provisioningVouchersByOEM:(id)a4 activationOptions:(id)a5 proprietaryData:(id)a6;
+- (PKSharingPushProvisioningInvitation)initWithDisplayInformation:(id)information provisioningVouchersByOEM:(id)m activationOptions:(id)options proprietaryData:(id)data;
 - (id)description;
 @end
 
 @implementation PKSharingPushProvisioningInvitation
 
-- (PKSharingPushProvisioningInvitation)initWithDisplayInformation:(id)a3 provisioningVouchersByOEM:(id)a4 activationOptions:(id)a5 proprietaryData:(id)a6
+- (PKSharingPushProvisioningInvitation)initWithDisplayInformation:(id)information provisioningVouchersByOEM:(id)m activationOptions:(id)options proprietaryData:(id)data
 {
   v46 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v11)
+  informationCopy = information;
+  mCopy = m;
+  optionsCopy = options;
+  dataCopy = data;
+  if (mCopy)
   {
-    v14 = [v11 objectForKeyedSubscript:@"appleAuthorizationToken"];
+    v14 = [mCopy objectForKeyedSubscript:@"appleAuthorizationToken"];
 
     if (v14)
     {
-      v15 = [v11 mutableCopy];
-      v16 = v12;
+      v15 = [mCopy mutableCopy];
+      v16 = optionsCopy;
       v17 = v16;
       v18 = 0;
       if (self && v16)
       {
         v34 = v15;
-        v35 = v12;
-        v36 = self;
-        v37 = v11;
+        v35 = optionsCopy;
+        selfCopy = self;
+        v37 = mCopy;
         v38 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v40 = 0u;
         v41 = 0u;
         v42 = 0u;
         v43 = 0u;
         v33 = v17;
-        v19 = [v17 options];
-        v20 = [v19 countByEnumeratingWithState:&v40 objects:buf count:16];
+        options = [v17 options];
+        v20 = [options countByEnumeratingWithState:&v40 objects:buf count:16];
         if (v20)
         {
           v21 = v20;
@@ -49,7 +49,7 @@
             {
               if (*v41 != v22)
               {
-                objc_enumerationMutation(v19);
+                objc_enumerationMutation(options);
               }
 
               v24 = *(*(&v40 + 1) + 8 * i);
@@ -57,13 +57,13 @@
               {
                 v25 = objc_alloc_init(MEMORY[0x1E695DF90]);
                 [v25 setObject:@"pinCode" forKeyedSubscript:@"type"];
-                v26 = [v24 value];
-                [v25 setObject:v26 forKeyedSubscript:@"value"];
+                value = [v24 value];
+                [v25 setObject:value forKeyedSubscript:@"value"];
 
-                v27 = [v24 valueLength];
-                if (v27)
+                valueLength = [v24 valueLength];
+                if (valueLength)
                 {
-                  v28 = [MEMORY[0x1E696AD98] numberWithInteger:v27];
+                  v28 = [MEMORY[0x1E696AD98] numberWithInteger:valueLength];
                   [v25 setObject:v28 forKeyedSubscript:@"length"];
                 }
 
@@ -71,16 +71,16 @@
               }
             }
 
-            v21 = [v19 countByEnumeratingWithState:&v40 objects:buf count:16];
+            v21 = [options countByEnumeratingWithState:&v40 objects:buf count:16];
           }
 
           while (v21);
         }
 
         v18 = [v38 copy];
-        v11 = v37;
-        v12 = v35;
-        self = v36;
+        mCopy = v37;
+        optionsCopy = v35;
+        self = selfCopy;
         v15 = v34;
         v17 = v33;
       }
@@ -88,14 +88,14 @@
       [v15 setObject:v18 forKeyedSubscript:@"activationOptions"];
       v29 = objc_alloc_init(MEMORY[0x1E695DF90]);
       [v29 setObject:v15 forKeyedSubscript:@"genericData"];
-      v30 = [v13 dictionaryRepresentation];
-      [v29 setObject:v30 forKeyedSubscript:@"apple"];
+      dictionaryRepresentation = [dataCopy dictionaryRepresentation];
+      [v29 setObject:dictionaryRepresentation forKeyedSubscript:@"apple"];
 
       v39.receiver = self;
       v39.super_class = PKSharingPushProvisioningInvitation;
-      self = [(PKSharingMessage *)&v39 initWithContent:v29 format:1 type:1 displayInformation:v10];
+      self = [(PKSharingMessage *)&v39 initWithContent:v29 format:1 type:1 displayInformation:informationCopy];
 
-      v31 = self;
+      selfCopy2 = self;
     }
 
     else
@@ -104,48 +104,48 @@
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v45 = v11;
+        v45 = mCopy;
         _os_log_impl(&dword_1AD337000, v15, OS_LOG_TYPE_DEFAULT, "PKSharingPushProvisioningInvitation: provisioningDict missing Apple provisioning information. \n %@", buf, 0xCu);
       }
 
-      v31 = 0;
+      selfCopy2 = 0;
     }
   }
 
   else
   {
-    v31 = 0;
+    selfCopy2 = 0;
   }
 
-  return v31;
+  return selfCopy2;
 }
 
-- (BOOL)configureWithContent:(id)a3
+- (BOOL)configureWithContent:(id)content
 {
   v48 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  contentCopy = content;
   v41.receiver = self;
   v41.super_class = PKSharingPushProvisioningInvitation;
-  v5 = [(PKSharingMessage *)&v41 configureWithContent:v4];
+  v5 = [(PKSharingMessage *)&v41 configureWithContent:contentCopy];
   if (!v5)
   {
     goto LABEL_28;
   }
 
-  v6 = [v4 PKDictionaryForKey:@"genericData"];
+  v6 = [contentCopy PKDictionaryForKey:@"genericData"];
   v7 = [v6 PKDictionaryForKey:@"appleAuthorizationToken"];
   if (v7)
   {
     v8 = [[PKPushProvisioningTarget alloc] initWithProvisioningDict:v7];
     [(PKPushProvisioningTarget *)v8 setSecondarySource:@"share"];
     v9 = [[PKShareablePassMetadata alloc] initWithPushProvisioningTarget:v8];
-    v10 = [(PKShareablePassMetadata *)v9 preview];
-    v11 = [(PKSharingMessage *)self displayInformation];
-    v12 = [v11 title];
-    [v10 setLocalizedDescription:v12];
+    preview = [(PKShareablePassMetadata *)v9 preview];
+    displayInformation = [(PKSharingMessage *)self displayInformation];
+    title = [displayInformation title];
+    [preview setLocalizedDescription:title];
 
-    v13 = [v11 imageURL];
-    [v10 setThumbnailURL:v13];
+    imageURL = [displayInformation imageURL];
+    [preview setThumbnailURL:imageURL];
 
     v46 = v9;
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v46 count:1];
@@ -167,9 +167,9 @@
   }
 
   v36 = v7;
-  v37 = self;
+  selfCopy = self;
   v38 = v5;
-  v39 = v4;
+  v39 = contentCopy;
   v40 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v42 = 0u;
   v43 = 0u;
@@ -242,9 +242,9 @@ LABEL_23:
 LABEL_26:
 
   v17 = [[PKPassShareActivationOptions alloc] initWithOptions:v40];
-  v4 = v39;
+  contentCopy = v39;
   LOBYTE(v5) = v38;
-  self = v37;
+  self = selfCopy;
   v16 = v35;
   v7 = v36;
 LABEL_27:
@@ -253,7 +253,7 @@ LABEL_27:
   self->_activationOptions = v17;
 
   v30 = [PKSharingMesageProprietaryData alloc];
-  v31 = [v4 PKDictionaryForKey:@"apple"];
+  v31 = [contentCopy PKDictionaryForKey:@"apple"];
   v32 = [(PKSharingMesageProprietaryData *)v30 initWithDictionary:v31];
   proprietaryData = self->_proprietaryData;
   self->_proprietaryData = v32;
@@ -266,14 +266,14 @@ LABEL_28:
 
 - (NSString)provisioningCredentialHash
 {
-  v2 = [(NSArray *)self->_metadatas firstObject];
-  v3 = [v2 credentialIdentifier];
+  firstObject = [(NSArray *)self->_metadatas firstObject];
+  credentialIdentifier = [firstObject credentialIdentifier];
 
-  if (v3)
+  if (credentialIdentifier)
   {
-    v4 = [v3 dataUsingEncoding:4];
-    v5 = [v4 SHA256Hash];
-    v6 = [v5 base64EncodedStringWithOptions:0];
+    v4 = [credentialIdentifier dataUsingEncoding:4];
+    sHA256Hash = [v4 SHA256Hash];
+    v6 = [sHA256Hash base64EncodedStringWithOptions:0];
   }
 
   else
@@ -287,14 +287,14 @@ LABEL_28:
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
-  v4 = [(PKSharingMessage *)self identifier];
-  [v3 appendFormat:@"identifier: '%@'; ", v4];
+  identifier = [(PKSharingMessage *)self identifier];
+  [v3 appendFormat:@"identifier: '%@'; ", identifier];
 
   v5 = PKSharingMessageTypeToString([(PKSharingMessage *)self type]);
   [v3 appendFormat:@"type: '%@'; ", v5];
 
-  v6 = [(PKSharingMessage *)self displayInformation];
-  [v3 appendFormat:@"displayInformation: '%@'; ", v6];
+  displayInformation = [(PKSharingMessage *)self displayInformation];
+  [v3 appendFormat:@"displayInformation: '%@'; ", displayInformation];
 
   [v3 appendFormat:@"metadatas: '%@'; ", self->_metadatas];
   [v3 appendFormat:@"activationOptions: '%@'; ", self->_activationOptions];
@@ -305,16 +305,16 @@ LABEL_28:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     LOBYTE(self) = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = v5;
     if (self)

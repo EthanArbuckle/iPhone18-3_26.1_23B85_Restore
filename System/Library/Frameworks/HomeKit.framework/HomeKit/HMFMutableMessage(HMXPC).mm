@@ -7,7 +7,7 @@
 - (void)hm_setXPCTimeoutDisabled:()HMXPC
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  [a1 setHeaderValue:v2 forKey:@"HMXPCMessageHeaderKeyIsXPCTimeoutDisabled"];
+  [self setHeaderValue:v2 forKey:@"HMXPCMessageHeaderKeyIsXPCTimeoutDisabled"];
 }
 
 @end

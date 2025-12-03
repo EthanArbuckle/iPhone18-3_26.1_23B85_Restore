@@ -7,11 +7,11 @@
 
 - (uint64_t)textRangeInNote
 {
-  v1 = [a1 textAttachment];
-  v2 = [v1 attachment];
+  textAttachment = [self textAttachment];
+  attachment = [textAttachment attachment];
 
-  v3 = [v2 note];
-  v4 = [v3 rangeForAttachment:v2];
+  note = [attachment note];
+  v4 = [note rangeForAttachment:attachment];
 
   return v4;
 }
@@ -19,10 +19,10 @@
 - (id)supportedRotorTypes
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v1 = [a1 textAttachment];
-  v2 = [v1 attachment];
+  textAttachment = [self textAttachment];
+  attachment = [textAttachment attachment];
 
-  if ([v2 isMentionAttachment])
+  if ([attachment isMentionAttachment])
   {
     v9[0] = @"ICAccessibilityRotorTypeMentions";
     v3 = MEMORY[0x277CBEA60];
@@ -32,7 +32,7 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  if ([v2 isHashtagAttachment])
+  if ([attachment isHashtagAttachment])
   {
     v8 = @"ICAccessibilityRotorTypeTags";
     v3 = MEMORY[0x277CBEA60];

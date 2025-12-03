@@ -1,5 +1,5 @@
 @interface CKImageBalloonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsJellyfishVideo;
 - (BOOL)_axIsLocating;
 - (BOOL)_axIsLocation;
@@ -12,27 +12,27 @@
 - (id)accessibilityLabel;
 - (unint64_t)accessibilityTraits;
 - (unsigned)_accessibilityMediaAnalysisOptions;
-- (void)_axWarmLocationCoordinatePlacemarkIfNeededForMediaObject:(id)a3;
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5 hasInvisibleInkEffect:(BOOL)a6;
+- (void)_axWarmLocationCoordinatePlacemarkIfNeededForMediaObject:(id)object;
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation hasInvisibleInkEffect:(BOOL)effect;
 @end
 
 @implementation CKImageBalloonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKLocationMediaObject"];
-  [v3 validateClass:@"CKContactMediaObject" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKLocationMediaObject" isKindOfClass:@"CKContactMediaObject"];
-  [v3 validateClass:@"CKImageBalloonView" hasInstanceMethod:@"configureForMediaObject:previewWidth:orientation:hasInvisibleInkEffect:" withFullSignature:{"v", "@", "d", "c", "B", 0}];
-  [v3 validateClass:@"CKChatItem" hasInstanceMethod:@"isCommSafetySensitive" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKBalloonView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKImageBalloonView" isKindOfClass:@"CKObscurableBalloonView"];
-  [v3 validateClass:@"CKObscurableBalloonView" hasInstanceMethod:@"isObscured" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"CKObscurableBalloonView" hasInstanceMethod:@"warningButton" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"CKBalloonViewDelegate" hasRequiredInstanceMethod:@"balloonViewTapped:withModifierFlags:selectedText:"];
-  [v3 validateClass:@"CKChatController" hasInstanceMethod:@"actionMoreIsTappedForChatItem:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKLocationMediaObject"];
+  [validationsCopy validateClass:@"CKContactMediaObject" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKLocationMediaObject" isKindOfClass:@"CKContactMediaObject"];
+  [validationsCopy validateClass:@"CKImageBalloonView" hasInstanceMethod:@"configureForMediaObject:previewWidth:orientation:hasInvisibleInkEffect:" withFullSignature:{"v", "@", "d", "c", "B", 0}];
+  [validationsCopy validateClass:@"CKChatItem" hasInstanceMethod:@"isCommSafetySensitive" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKBalloonView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKTranscriptCollectionViewController" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKImageBalloonView" isKindOfClass:@"CKObscurableBalloonView"];
+  [validationsCopy validateClass:@"CKObscurableBalloonView" hasInstanceMethod:@"isObscured" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"CKObscurableBalloonView" hasInstanceMethod:@"warningButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"CKBalloonViewDelegate" hasRequiredInstanceMethod:@"balloonViewTapped:withModifierFlags:selectedText:"];
+  [validationsCopy validateClass:@"CKChatController" hasInstanceMethod:@"actionMoreIsTappedForChatItem:" withFullSignature:{"v", "@", 0}];
 }
 
 - (id)_axMediaObject
@@ -53,24 +53,24 @@
 
 - (BOOL)_axIsVideo
 {
-  v2 = [(CKImageBalloonViewAccessibility *)self _axMediaObject];
-  v3 = [v2 safeIntForKey:@"mediaType"] == 2;
+  _axMediaObject = [(CKImageBalloonViewAccessibility *)self _axMediaObject];
+  v3 = [_axMediaObject safeIntForKey:@"mediaType"] == 2;
 
   return v3;
 }
 
 - (BOOL)_axIsPhoto
 {
-  v2 = [(CKImageBalloonViewAccessibility *)self _axMediaObject];
-  v3 = [v2 safeIntForKey:@"mediaType"] == 3;
+  _axMediaObject = [(CKImageBalloonViewAccessibility *)self _axMediaObject];
+  v3 = [_axMediaObject safeIntForKey:@"mediaType"] == 3;
 
   return v3;
 }
 
 - (BOOL)_axIsLocation
 {
-  v2 = [(CKImageBalloonViewAccessibility *)self _axMediaObject];
-  v3 = [v2 safeIntForKey:@"mediaType"] == 5;
+  _axMediaObject = [(CKImageBalloonViewAccessibility *)self _axMediaObject];
+  v3 = [_axMediaObject safeIntForKey:@"mediaType"] == 5;
 
   return v3;
 }
@@ -86,7 +86,7 @@
 
 - (BOOL)_axIsJellyfishVideo
 {
-  v3 = [(CKImageBalloonViewAccessibility *)self _axMediaObject];
+  _axMediaObject = [(CKImageBalloonViewAccessibility *)self _axMediaObject];
   NSClassFromString(&cfstr_Ckmoviemediaob.isa);
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -95,16 +95,16 @@
     return 0;
   }
 
-  v5 = [(CKImageBalloonViewAccessibility *)self _axMediaObject];
-  v6 = [v5 safeBoolForKey:@"isJellyfishVideo"];
+  _axMediaObject2 = [(CKImageBalloonViewAccessibility *)self _axMediaObject];
+  v6 = [_axMediaObject2 safeBoolForKey:@"isJellyfishVideo"];
 
   return v6;
 }
 
 - (BOOL)_axIsSensitive
 {
-  v2 = [(CKImageBalloonViewAccessibility *)self _axChatItemForBalloon];
-  v3 = [v2 safeBoolForKey:@"isCommSafetySensitive"];
+  _axChatItemForBalloon = [(CKImageBalloonViewAccessibility *)self _axChatItemForBalloon];
+  v3 = [_axChatItemForBalloon safeBoolForKey:@"isCommSafetySensitive"];
 
   return v3;
 }
@@ -123,17 +123,17 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(CKImageBalloonViewAccessibility *)self _axMediaObject];
+  _axMediaObject = [(CKImageBalloonViewAccessibility *)self _axMediaObject];
   if ([(CKImageBalloonViewAccessibility *)self _axIsPhoto])
   {
-    v4 = [v3 _accessibilityValueForKey:@"AXCachedPhotoDescription"];
+    v4 = [_axMediaObject _accessibilityValueForKey:@"AXCachedPhotoDescription"];
     if (v4)
     {
       goto LABEL_24;
     }
 
-    v5 = accessibilityLocalizedString(@"includes.picture");
-    v6 = [v3 safeValueForKey:@"fileURL"];
+    _axLocationPlacemark = accessibilityLocalizedString(@"includes.picture");
+    _axDigitalTouchDescription = [_axMediaObject safeValueForKey:@"fileURL"];
     v7 = UIAccessibilityMetadataDescriptionForImage();
     v8 = UIAccessibilityEmojiDescription();
     if ([v8 length])
@@ -160,18 +160,18 @@
     }
 
     v4 = __UIAXStringForVariables();
-    [v3 _accessibilitySetRetainedValue:v4 forKey:{@"AXCachedPhotoDescription", v22, v24, @"__AXStringForVariablesSentinel"}];
+    [_axMediaObject _accessibilitySetRetainedValue:v4 forKey:{@"AXCachedPhotoDescription", v22, v24, @"__AXStringForVariablesSentinel"}];
 
     goto LABEL_22;
   }
 
   if ([(CKImageBalloonViewAccessibility *)self _axIsVideo])
   {
-    v5 = [v3 safeValueForKey:@"fileURL"];
-    v6 = UIAccessibilityMetadataDescriptionForVideo();
+    _axLocationPlacemark = [_axMediaObject safeValueForKey:@"fileURL"];
+    _axDigitalTouchDescription = UIAccessibilityMetadataDescriptionForVideo();
     if ([(CKImageBalloonViewAccessibility *)self _axIsJellyfishVideo])
     {
-      v10 = v6;
+      v10 = _axDigitalTouchDescription;
 LABEL_8:
       v4 = v10;
 LABEL_23:
@@ -191,12 +191,12 @@ LABEL_22:
 
   if ([(CKImageBalloonViewAccessibility *)self _axIsLocation])
   {
-    v5 = [(CKImageBalloonViewAccessibility *)self _axLocationPlacemark];
-    v11 = [v5 formattedAddressLines];
-    v6 = [v11 componentsJoinedByString:@" "];
+    _axLocationPlacemark = [(CKImageBalloonViewAccessibility *)self _axLocationPlacemark];
+    formattedAddressLines = [_axLocationPlacemark formattedAddressLines];
+    _axDigitalTouchDescription = [formattedAddressLines componentsJoinedByString:@" "];
 
-    v7 = [v3 safeStringForKey:@"title"];
-    v21 = v6;
+    v7 = [_axMediaObject safeStringForKey:@"title"];
+    v21 = _axDigitalTouchDescription;
     v23 = @"__AXStringForVariablesSentinel";
     goto LABEL_12;
   }
@@ -209,9 +209,9 @@ LABEL_22:
 
   if ([(CKImageBalloonViewAccessibility *)self _axIsDigitalTouch])
   {
-    v5 = accessibilityLocalizedString(@"digital.touch.label");
-    v6 = [(CKImageBalloonViewAccessibility *)self _axDigitalTouchDescription];
-    v21 = v6;
+    _axLocationPlacemark = accessibilityLocalizedString(@"digital.touch.label");
+    _axDigitalTouchDescription = [(CKImageBalloonViewAccessibility *)self _axDigitalTouchDescription];
+    v21 = _axDigitalTouchDescription;
     v23 = @"__AXStringForVariablesSentinel";
     v10 = __UIAXStringForVariables();
     goto LABEL_8;
@@ -221,18 +221,18 @@ LABEL_22:
 LABEL_24:
   objc_opt_class();
   v12 = __UIAccessibilityCastAsSafeCategory();
-  v13 = [v12 _axMessageSender];
-  v14 = [(CKImageBalloonViewAccessibility *)self _axIsObscured];
+  _axMessageSender = [v12 _axMessageSender];
+  _axIsObscured = [(CKImageBalloonViewAccessibility *)self _axIsObscured];
   v15 = 0;
-  if (v14)
+  if (_axIsObscured)
   {
     v15 = accessibilityLocalizedString(@"media.may.be.sensitive");
   }
 
-  v16 = [v12 _axReplyDescription];
-  v17 = [v12 _axStickerDescription];
-  v18 = [v12 _axAcknowledgmentDescription];
-  v25 = [v12 _axMessageTime];
+  _axReplyDescription = [v12 _axReplyDescription];
+  _axStickerDescription = [v12 _axStickerDescription];
+  _axAcknowledgmentDescription = [v12 _axAcknowledgmentDescription];
+  _axMessageTime = [v12 _axMessageTime];
   v19 = __UIAXStringForVariables();
 
   return v19;
@@ -242,15 +242,15 @@ LABEL_24:
 {
   v7.receiver = self;
   v7.super_class = CKImageBalloonViewAccessibility;
-  v3 = [(CKImageBalloonViewAccessibility *)&v7 accessibilityTraits];
-  v4 = [(CKImageBalloonViewAccessibility *)self _axIsPhoto];
+  accessibilityTraits = [(CKImageBalloonViewAccessibility *)&v7 accessibilityTraits];
+  _axIsPhoto = [(CKImageBalloonViewAccessibility *)self _axIsPhoto];
   v5 = *MEMORY[0x29EDC7F88];
-  if (!v4)
+  if (!_axIsPhoto)
   {
     v5 = 0;
   }
 
-  return v5 | v3 | *MEMORY[0x29EDC7F70];
+  return v5 | accessibilityTraits | *MEMORY[0x29EDC7F70];
 }
 
 - (unsigned)_accessibilityMediaAnalysisOptions
@@ -269,7 +269,7 @@ LABEL_24:
 {
   if ([(CKImageBalloonViewAccessibility *)self _axIsSensitive])
   {
-    v3 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v4 = [(CKImageBalloonViewAccessibility *)self safeValueForKey:@"delegate"];
     v5 = [v4 safeValueForKey:@"delegate"];
     v6 = objc_alloc(MEMORY[0x29EDC78E0]);
@@ -280,10 +280,10 @@ LABEL_24:
     v21[3] = &unk_29F2B09D0;
     v8 = v5;
     v22 = v8;
-    v23 = self;
+    selfCopy = self;
     v9 = [v6 initWithName:v7 actionHandler:v21];
 
-    [v3 axSafelyAddObject:v9];
+    [array axSafelyAddObject:v9];
     if ([(CKImageBalloonViewAccessibility *)self _axIsObscured])
     {
       v10 = objc_alloc(MEMORY[0x29EDC78E0]);
@@ -296,28 +296,28 @@ LABEL_24:
       v20 = v4;
       v12 = [v10 initWithName:v11 actionHandler:v19];
 
-      [v3 axSafelyAddObject:v12];
+      [array axSafelyAddObject:v12];
     }
 
     objc_opt_class();
     v13 = [(CKImageBalloonViewAccessibility *)self safeValueForKey:@"warningButton"];
     v14 = __UIAccessibilityCastAsClass();
 
-    v15 = [v14 menu];
-    v16 = [v15 children];
-    v17 = _AXCustomActionsForActions(v16);
+    menu = [v14 menu];
+    children = [menu children];
+    v17 = _AXCustomActionsForActions(children);
 
-    [v3 axSafelyAddObjectsFromArray:v17];
+    [array axSafelyAddObjectsFromArray:v17];
   }
 
   else
   {
     v24.receiver = self;
     v24.super_class = CKImageBalloonViewAccessibility;
-    v3 = [(CKImageBalloonViewAccessibility *)&v24 accessibilityCustomActions];
+    array = [(CKImageBalloonViewAccessibility *)&v24 accessibilityCustomActions];
   }
 
-  return v3;
+  return array;
 }
 
 uint64_t __61__CKImageBalloonViewAccessibility_accessibilityCustomActions__block_invoke(uint64_t a1)
@@ -349,21 +349,21 @@ void __61__CKImageBalloonViewAccessibility_accessibilityCustomActions__block_inv
   [*(a1 + 40) balloonViewTapped:v2 withModifierFlags:0 selectedText:0];
 }
 
-- (void)configureForMediaObject:(id)a3 previewWidth:(double)a4 orientation:(char)a5 hasInvisibleInkEffect:(BOOL)a6
+- (void)configureForMediaObject:(id)object previewWidth:(double)width orientation:(char)orientation hasInvisibleInkEffect:(BOOL)effect
 {
-  v6 = a6;
-  v7 = a5;
+  effectCopy = effect;
+  orientationCopy = orientation;
   v11.receiver = self;
   v11.super_class = CKImageBalloonViewAccessibility;
-  v10 = a3;
-  [(CKImageBalloonViewAccessibility *)&v11 configureForMediaObject:v10 previewWidth:v7 orientation:v6 hasInvisibleInkEffect:a4];
-  [(CKImageBalloonViewAccessibility *)self _axWarmLocationCoordinatePlacemarkIfNeededForMediaObject:v10, v11.receiver, v11.super_class];
+  objectCopy = object;
+  [(CKImageBalloonViewAccessibility *)&v11 configureForMediaObject:objectCopy previewWidth:orientationCopy orientation:effectCopy hasInvisibleInkEffect:width];
+  [(CKImageBalloonViewAccessibility *)self _axWarmLocationCoordinatePlacemarkIfNeededForMediaObject:objectCopy, v11.receiver, v11.super_class];
 }
 
-- (void)_axWarmLocationCoordinatePlacemarkIfNeededForMediaObject:(id)a3
+- (void)_axWarmLocationCoordinatePlacemarkIfNeededForMediaObject:(id)object
 {
-  v4 = a3;
-  if ([v4 safeIntForKey:@"mediaType"] == 5)
+  objectCopy = object;
+  if ([objectCopy safeIntForKey:@"mediaType"] == 5)
   {
     v18 = 0;
     v19 = &v18;
@@ -376,19 +376,19 @@ void __61__CKImageBalloonViewAccessibility_accessibilityCustomActions__block_inv
     v15[7] = __92__CKImageBalloonViewAccessibility__axWarmLocationCoordinatePlacemarkIfNeededForMediaObject___block_invoke;
     v15[8] = &unk_29F2B06F8;
     v17 = &v18;
-    v16 = v4;
+    v16 = objectCopy;
     AXPerformSafeBlock();
     v5 = v19[4];
     v6 = v19[5];
 
     _Block_object_dispose(&v18, 8);
-    v7 = [(CKImageBalloonViewAccessibility *)self _axLocationPlacemark];
-    v8 = [v7 location];
-    [v8 coordinate];
+    _axLocationPlacemark = [(CKImageBalloonViewAccessibility *)self _axLocationPlacemark];
+    location = [_axLocationPlacemark location];
+    [location coordinate];
     if (v9 == v5)
     {
-      v10 = [v7 location];
-      [v10 coordinate];
+      location2 = [_axLocationPlacemark location];
+      [location2 coordinate];
       v12 = v11;
 
       if (v12 == v6)

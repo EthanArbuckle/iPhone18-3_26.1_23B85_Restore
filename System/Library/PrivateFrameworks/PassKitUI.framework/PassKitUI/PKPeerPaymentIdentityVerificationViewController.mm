@@ -1,32 +1,32 @@
 @interface PKPeerPaymentIdentityVerificationViewController
-- (PKPeerPaymentIdentityVerificationViewController)initWithController:(id)a3 setupDelegate:(id)a4 visibleFieldIdentifiers:(id)a5;
-- (void)_handleCancelButtonTapped:(id)a3;
-- (void)_showSpinner:(BOOL)a3;
+- (PKPeerPaymentIdentityVerificationViewController)initWithController:(id)controller setupDelegate:(id)delegate visibleFieldIdentifiers:(id)identifiers;
+- (void)_handleCancelButtonTapped:(id)tapped;
+- (void)_showSpinner:(BOOL)spinner;
 - (void)_terminateFlow;
 - (void)_updateNavigationBarItems;
-- (void)explanationViewDidSelectContinue:(id)a3;
-- (void)handleNextButtonTapped:(id)a3;
-- (void)setShowCancelButton:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)explanationViewDidSelectContinue:(id)continue;
+- (void)handleNextButtonTapped:(id)tapped;
+- (void)setShowCancelButton:(BOOL)button;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation PKPeerPaymentIdentityVerificationViewController
 
-- (PKPeerPaymentIdentityVerificationViewController)initWithController:(id)a3 setupDelegate:(id)a4 visibleFieldIdentifiers:(id)a5
+- (PKPeerPaymentIdentityVerificationViewController)initWithController:(id)controller setupDelegate:(id)delegate visibleFieldIdentifiers:(id)identifiers
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a4;
-  v12 = [v9 context];
-  v13 = [v9 fieldsModel];
+  controllerCopy = controller;
+  identifiersCopy = identifiers;
+  delegateCopy = delegate;
+  context = [controllerCopy context];
+  fieldsModel = [controllerCopy fieldsModel];
   v16.receiver = self;
   v16.super_class = PKPeerPaymentIdentityVerificationViewController;
-  v14 = [(PKPaymentSetupFieldsViewController *)&v16 initWithWebService:0 context:v12 setupDelegate:v11 setupFieldsModel:v13];
+  v14 = [(PKPaymentSetupFieldsViewController *)&v16 initWithWebService:0 context:context setupDelegate:delegateCopy setupFieldsModel:fieldsModel];
 
   if (v14)
   {
-    objc_storeStrong(&v14->_controller, a3);
-    objc_storeStrong(&v14->_visibleFieldIdentifiers, a5);
+    objc_storeStrong(&v14->_controller, controller);
+    objc_storeStrong(&v14->_visibleFieldIdentifiers, identifiers);
     v14->_showCancelButton = 1;
     [(PKPeerPaymentIdentityVerificationViewController *)v14 _updateNavigationBarItems];
   }
@@ -34,30 +34,30 @@
   return v14;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKPeerPaymentIdentityVerificationViewController;
-  [(PKPeerPaymentIdentityVerificationViewController *)&v4 viewDidDisappear:a3];
+  [(PKPeerPaymentIdentityVerificationViewController *)&v4 viewDidDisappear:disappear];
   if (([(PKPeerPaymentIdentityVerificationViewController *)self isBeingDismissed]& 1) != 0 || [(PKPeerPaymentIdentityVerificationViewController *)self isMovingFromParentViewController])
   {
     [(PKPeerPaymentIdentityVerificationController *)self->_controller didDismissViewController];
   }
 }
 
-- (void)setShowCancelButton:(BOOL)a3
+- (void)setShowCancelButton:(BOOL)button
 {
-  if (self->_showCancelButton != a3)
+  if (self->_showCancelButton != button)
   {
-    self->_showCancelButton = a3;
+    self->_showCancelButton = button;
     [(PKPeerPaymentIdentityVerificationViewController *)self _updateNavigationBarItems];
   }
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
-  v4 = a3;
-  v5 = v4;
+  continueCopy = continue;
+  v5 = continueCopy;
   identityVerificaionError = self->_identityVerificaionError;
   if (identityVerificaionError <= 4)
   {
@@ -65,16 +65,16 @@
     {
       if (identityVerificaionError == 3)
       {
-        v16 = [v4 dockView];
-        [v16 setButtonsEnabled:0];
+        dockView = [continueCopy dockView];
+        [dockView setButtonsEnabled:0];
 
-        v17 = [v5 dockView];
-        v18 = [v17 primaryButton];
-        [v18 setShowSpinner:1];
+        dockView2 = [v5 dockView];
+        primaryButton = [dockView2 primaryButton];
+        [primaryButton setShowSpinner:1];
 
-        v19 = [v5 dockView];
-        v20 = [v19 footerView];
-        [v20 setButtonsEnabled:0];
+        dockView3 = [v5 dockView];
+        footerView = [dockView3 footerView];
+        [footerView setButtonsEnabled:0];
 
         [(PKPeerPaymentIdentityVerificationViewController *)self handleNextButtonTapped:0];
         goto LABEL_13;
@@ -85,16 +85,16 @@
 
     v13 = PKLocalizedPaymentString(&cfstr_CouldNotConnec.isa);
     v14 = PKLocalizedPaymentString(&cfstr_CouldNotConnec_0.isa);
-    v7 = PKDisplayableErrorCustom();
+    webService = PKDisplayableErrorCustom();
 
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __84__PKPeerPaymentIdentityVerificationViewController_explanationViewDidSelectContinue___block_invoke_29;
     v21[3] = &unk_1E8010970;
     v21[4] = self;
-    v9 = PKAlertForDisplayableErrorWithHandlers(v7, 0, v21, 0);
-    v15 = [(PKPeerPaymentIdentityVerificationViewController *)self navigationController];
-    [v15 presentViewController:v9 animated:1 completion:0];
+    account = PKAlertForDisplayableErrorWithHandlers(webService, 0, v21, 0);
+    navigationController = [(PKPeerPaymentIdentityVerificationViewController *)self navigationController];
+    [navigationController presentViewController:account animated:1 completion:0];
 
 LABEL_11:
     goto LABEL_13;
@@ -102,12 +102,12 @@ LABEL_11:
 
   if ((identityVerificaionError - 5) < 2)
   {
-    v7 = [(PKPeerPaymentIdentityVerificationController *)self->_controller webService];
-    v8 = [v7 peerPaymentService];
-    v9 = [v8 account];
+    webService = [(PKPeerPaymentIdentityVerificationController *)self->_controller webService];
+    peerPaymentService = [webService peerPaymentService];
+    account = [peerPaymentService account];
 
     v10 = objc_alloc_init(MEMORY[0x1E69B8A60]);
-    v11 = [[PKPeerPaymentAccountResolutionController alloc] initWithAccount:v9 webService:v7 context:[(PKPaymentSetupTableViewController *)self context] delegate:self passLibraryDataProvider:v10];
+    v11 = [[PKPeerPaymentAccountResolutionController alloc] initWithAccount:account webService:webService context:[(PKPaymentSetupTableViewController *)self context] delegate:self passLibraryDataProvider:v10];
     v12 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
@@ -144,9 +144,9 @@ void __84__PKPeerPaymentIdentityVerificationViewController_explanationViewDidSel
   }
 }
 
-- (void)handleNextButtonTapped:(id)a3
+- (void)handleNextButtonTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   [(PKPeerPaymentIdentityVerificationViewController *)self _showSpinner:1];
   objc_initWeak(&location, self);
   controller = self->_controller;
@@ -253,11 +253,11 @@ LABEL_3:
   [v2 pushViewController:v3 animated:1];
 }
 
-- (void)_showSpinner:(BOOL)a3
+- (void)_showSpinner:(BOOL)spinner
 {
-  v3 = a3;
-  v5 = [(PKPaymentSetupTableViewController *)self dockView];
-  if (v3)
+  spinnerCopy = spinner;
+  dockView = [(PKPaymentSetupTableViewController *)self dockView];
+  if (spinnerCopy)
   {
     [(PKPaymentSetupFieldsViewController *)self showActivitySpinnerWithTitle:0 subtitle:0];
   }
@@ -267,7 +267,7 @@ LABEL_3:
     [(PKPaymentSetupFieldsViewController *)self hideActivitySpinner];
   }
 
-  [v5 setButtonsEnabled:!v3];
+  [dockView setButtonsEnabled:!spinnerCopy];
 }
 
 - (void)_updateNavigationBarItems
@@ -300,13 +300,13 @@ LABEL_3:
   }
 }
 
-- (void)_handleCancelButtonTapped:(id)a3
+- (void)_handleCancelButtonTapped:(id)tapped
 {
-  MEMORY[0x1BFB41980](*MEMORY[0x1E69BA0D0], 0, a3);
-  v4 = [(PKPaymentSetupFieldsViewController *)self setupDelegate];
+  MEMORY[0x1BFB41980](*MEMORY[0x1E69BA0D0], 0, tapped);
+  setupDelegate = [(PKPaymentSetupFieldsViewController *)self setupDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 viewControllerDidCancelSetupFlow:self];
+    [setupDelegate viewControllerDidCancelSetupFlow:self];
   }
 
   else
@@ -317,17 +317,17 @@ LABEL_3:
 
 - (void)_terminateFlow
 {
-  v3 = [(PKPaymentSetupFieldsViewController *)self setupDelegate];
-  v5 = v3;
-  if (v3)
+  setupDelegate = [(PKPaymentSetupFieldsViewController *)self setupDelegate];
+  v5 = setupDelegate;
+  if (setupDelegate)
   {
-    [v3 viewControllerDidTerminateSetupFlow:self];
+    [setupDelegate viewControllerDidTerminateSetupFlow:self];
   }
 
   else
   {
-    v4 = [(PKPeerPaymentIdentityVerificationViewController *)self presentingViewController];
-    [v4 dismissViewControllerAnimated:1 completion:0];
+    presentingViewController = [(PKPeerPaymentIdentityVerificationViewController *)self presentingViewController];
+    [presentingViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 

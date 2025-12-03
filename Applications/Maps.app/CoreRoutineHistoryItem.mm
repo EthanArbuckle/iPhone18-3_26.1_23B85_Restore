@@ -1,95 +1,95 @@
 @interface CoreRoutineHistoryItem
-- (CoreRoutineHistoryItem)initWithSearchResult:(id)a3 andLocationOfInterestType:(int64_t)a4;
+- (CoreRoutineHistoryItem)initWithSearchResult:(id)result andLocationOfInterestType:(int64_t)type;
 - (double)timestamp;
-- (id)entryWithTicket:(id)a3;
-- (void)updateModel:(id)a3;
+- (id)entryWithTicket:(id)ticket;
+- (void)updateModel:(id)model;
 @end
 
 @implementation CoreRoutineHistoryItem
 
 - (double)timestamp
 {
-  v2 = [(CoreRoutineHistoryItem *)self searchResult];
-  [v2 timestamp];
+  searchResult = [(CoreRoutineHistoryItem *)self searchResult];
+  [searchResult timestamp];
   v4 = v3;
 
   return v4;
 }
 
-- (CoreRoutineHistoryItem)initWithSearchResult:(id)a3 andLocationOfInterestType:(int64_t)a4
+- (CoreRoutineHistoryItem)initWithSearchResult:(id)result andLocationOfInterestType:(int64_t)type
 {
-  v6 = a3;
+  resultCopy = result;
   v11.receiver = self;
   v11.super_class = CoreRoutineHistoryItem;
   v7 = [(CoreRoutineHistoryItem *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [resultCopy copy];
     [(CoreRoutineHistoryItem *)v7 setSearchResult:v8];
-    [(CoreRoutineHistoryItem *)v7 setLocationOfInterestType:a4];
+    [(CoreRoutineHistoryItem *)v7 setLocationOfInterestType:type];
     v9 = v7;
   }
 
   return v7;
 }
 
-- (void)updateModel:(id)a3
+- (void)updateModel:(id)model
 {
-  v4 = a3;
-  v5 = [(CoreRoutineHistoryItem *)self searchResult];
-  [v5 updateModel:v4];
+  modelCopy = model;
+  searchResult = [(CoreRoutineHistoryItem *)self searchResult];
+  [searchResult updateModel:modelCopy];
 
   v6 = objc_opt_class();
   v8 = NSStringFromClass(v6);
   v7 = [NSString stringWithFormat:@"[%@]", v8];
-  [v4 setDebugSubtitle:v7];
+  [modelCopy setDebugSubtitle:v7];
 }
 
-- (id)entryWithTicket:(id)a3
+- (id)entryWithTicket:(id)ticket
 {
   v4 = [[GEORPSuggestionEntry alloc] initWithType:3];
-  v5 = [(CoreRoutineHistoryItem *)self searchResult];
-  v6 = [v5 title];
-  v7 = [v5 mapItem];
-  v8 = [v7 _geoMapItem];
+  searchResult = [(CoreRoutineHistoryItem *)self searchResult];
+  title = [searchResult title];
+  mapItem = [searchResult mapItem];
+  _geoMapItem = [mapItem _geoMapItem];
 
-  v9 = [v8 eventName];
-  v10 = [v9 length];
+  eventName = [_geoMapItem eventName];
+  v10 = [eventName length];
 
   if (!v10)
   {
-    v17 = [v5 singleLineAddress];
+    singleLineAddress = [searchResult singleLineAddress];
 
-    if (!v17)
+    if (!singleLineAddress)
     {
       v16 = 0;
       goto LABEL_20;
     }
 
-    v18 = +[NSBundle mainBundle];
-    v19 = [v18 localizedStringForKey:@"CoreRoutine Non Event PLOI" value:@"localized string not found" table:0];
-    v20 = [v5 singleLineAddress];
-    v16 = [NSString stringWithFormat:v19, v20];
+    eventName3 = +[NSBundle mainBundle];
+    v19 = [eventName3 localizedStringForKey:@"CoreRoutine Non Event PLOI" value:@"localized string not found" table:0];
+    singleLineAddress2 = [searchResult singleLineAddress];
+    v16 = [NSString stringWithFormat:v19, singleLineAddress2];
 
     goto LABEL_18;
   }
 
-  if ([v8 isEventAllDay])
+  if ([_geoMapItem isEventAllDay])
   {
     v30 = v4;
     v11 = +[NSBundle mainBundle];
     v12 = [v11 localizedStringForKey:@"Source of All Day CoreRoutine Event" value:@"localized string not found" table:0];
-    v13 = [v5 mapItem];
-    v14 = [v13 _geoMapItem];
-    v15 = [v14 eventName];
-    v16 = [NSString stringWithFormat:v12, v15];
+    mapItem2 = [searchResult mapItem];
+    _geoMapItem2 = [mapItem2 _geoMapItem];
+    eventName2 = [_geoMapItem2 eventName];
+    v16 = [NSString stringWithFormat:v12, eventName2];
   }
 
   else
   {
-    v21 = [v8 eventDate];
+    eventDate = [_geoMapItem eventDate];
 
-    if (!v21)
+    if (!eventDate)
     {
       v16 = 0;
       goto LABEL_16;
@@ -102,47 +102,47 @@
 
     v30 = v4;
     v22 = qword_10195F390;
-    v23 = [v8 eventDate];
-    v24 = [v22 stringFromDate:v23];
+    eventDate2 = [_geoMapItem eventDate];
+    v24 = [v22 stringFromDate:eventDate2];
 
     v25 = [v24 length];
     v26 = +[NSBundle mainBundle];
     if (v25)
     {
       v12 = v26;
-      v13 = [v26 localizedStringForKey:@"Source of CoreRoutine Item With Time" value:@"localized string not found" table:0];
-      v14 = [v5 mapItem];
-      v15 = [v14 _geoMapItem];
-      v27 = [v15 eventName];
+      mapItem2 = [v26 localizedStringForKey:@"Source of CoreRoutine Item With Time" value:@"localized string not found" table:0];
+      _geoMapItem2 = [searchResult mapItem];
+      eventName2 = [_geoMapItem2 _geoMapItem];
+      v15EventName = [eventName2 eventName];
       v11 = v24;
-      [NSString stringWithFormat:v13, v27, v24];
+      [NSString stringWithFormat:mapItem2, v15EventName, v24];
     }
 
     else
     {
       v11 = v24;
       v12 = v26;
-      v13 = [v26 localizedStringForKey:@"Source of CoreRoutine Item" value:@"localized string not found" table:0];
-      v14 = [v5 mapItem];
-      v15 = [v14 _geoMapItem];
-      v27 = [v15 eventName];
-      [NSString stringWithFormat:v13, v27, v29];
+      mapItem2 = [v26 localizedStringForKey:@"Source of CoreRoutine Item" value:@"localized string not found" table:0];
+      _geoMapItem2 = [searchResult mapItem];
+      eventName2 = [_geoMapItem2 _geoMapItem];
+      v15EventName = [eventName2 eventName];
+      [NSString stringWithFormat:mapItem2, v15EventName, v29];
     }
     v16 = ;
   }
 
   v4 = v30;
 LABEL_16:
-  v18 = [v8 eventName];
-  if ([v18 isEqualToString:v6])
+  eventName3 = [_geoMapItem eventName];
+  if ([eventName3 isEqualToString:title])
   {
-    [v5 singleLineAddress];
-    v6 = v19 = v6;
+    [searchResult singleLineAddress];
+    title = v19 = title;
 LABEL_18:
   }
 
 LABEL_20:
-  [v4 safeAddDisplayLine:v6];
+  [v4 safeAddDisplayLine:title];
   [v4 safeAddDisplayLine:v16];
 
   return v4;

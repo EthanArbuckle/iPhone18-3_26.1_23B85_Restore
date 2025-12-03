@@ -1,16 +1,16 @@
 @interface LiveVoicemailWelcomeViewController
-- (_TtC11MobilePhone34LiveVoicemailWelcomeViewController)initWithDelegate:(id)a3;
-- (_TtC11MobilePhone34LiveVoicemailWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC11MobilePhone34LiveVoicemailWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
+- (_TtC11MobilePhone34LiveVoicemailWelcomeViewController)initWithDelegate:(id)delegate;
+- (_TtC11MobilePhone34LiveVoicemailWelcomeViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC11MobilePhone34LiveVoicemailWelcomeViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
 - (void)didTapContinueButton;
 - (void)didTapLinkButton;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation LiveVoicemailWelcomeViewController
 
-- (_TtC11MobilePhone34LiveVoicemailWelcomeViewController)initWithDelegate:(id)a3
+- (_TtC11MobilePhone34LiveVoicemailWelcomeViewController)initWithDelegate:(id)delegate
 {
   swift_getObjectType();
   v4 = swift_unknownObjectRetain();
@@ -27,9 +27,9 @@
   LiveVoicemailWelcomeViewController.configureViewHierarchy()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s6TipKit4TipsO5EventVy_AC13EmptyDonationVGMd);
   v6 = *(v5 - 8);
   __chkstk_darwin(v5);
@@ -37,8 +37,8 @@
   v9 = type metadata accessor for LiveVoicemailWelcomeViewController();
   v11.receiver = self;
   v11.super_class = v9;
-  v10 = self;
-  [(LiveVoicemailWelcomeViewController *)&v11 viewDidAppear:v3];
+  selfCopy = self;
+  [(LiveVoicemailWelcomeViewController *)&v11 viewDidAppear:appearCopy];
   static LiveVoicemailTip.onboardingViewedEvent.getter();
   Tips.Event.sendDonation<>(_:)();
   (*(v6 + 8))(v8, v5);
@@ -56,18 +56,18 @@
 
 - (void)didTapLinkButton
 {
-  v2 = self;
+  selfCopy = self;
   LiveVoicemailWelcomeViewController.didTapLinkButton()();
 }
 
-- (_TtC11MobilePhone34LiveVoicemailWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC11MobilePhone34LiveVoicemailWelcomeViewController)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  if (!a4)
+  if (!text)
   {
     v13 = 0;
-    if (a5)
+    if (name)
     {
       goto LABEL_3;
     }
@@ -75,12 +75,12 @@
 LABEL_5:
     v14 = 0;
     v16 = 0;
-    return LiveVoicemailWelcomeViewController.init(title:detailText:symbolName:contentLayout:)(v9, v11, a4, v13, v14, v16, a6);
+    return LiveVoicemailWelcomeViewController.init(title:detailText:symbolName:contentLayout:)(v9, v11, text, v13, v14, v16, layout);
   }
 
-  a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+  text = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v13 = v12;
-  if (!a5)
+  if (!name)
   {
     goto LABEL_5;
   }
@@ -88,16 +88,16 @@ LABEL_5:
 LABEL_3:
   v14 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v16 = v15;
-  return LiveVoicemailWelcomeViewController.init(title:detailText:symbolName:contentLayout:)(v9, v11, a4, v13, v14, v16, a6);
+  return LiveVoicemailWelcomeViewController.init(title:detailText:symbolName:contentLayout:)(v9, v11, text, v13, v14, v16, layout);
 }
 
-- (_TtC11MobilePhone34LiveVoicemailWelcomeViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC11MobilePhone34LiveVoicemailWelcomeViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   v9 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v11 = v10;
-  if (a4)
+  if (text)
   {
-    a4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
+    text = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v13 = v12;
   }
 
@@ -106,8 +106,8 @@ LABEL_3:
     v13 = 0;
   }
 
-  v14 = a5;
-  return LiveVoicemailWelcomeViewController.init(title:detailText:icon:contentLayout:)(v9, v11, a4, v13, a5, a6);
+  iconCopy = icon;
+  return LiveVoicemailWelcomeViewController.init(title:detailText:icon:contentLayout:)(v9, v11, text, v13, icon, layout);
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface NTKFacesBundleArrayGalleryCollection
-- (NTKFacesBundleArrayGalleryCollection)initWithDevice:(id)a3 faceBundle:(id)a4;
+- (NTKFacesBundleArrayGalleryCollection)initWithDevice:(id)device faceBundle:(id)bundle;
 - (void)dealloc;
 - (void)galleryFacesDidUpdate;
 - (void)loadFaces;
@@ -7,25 +7,25 @@
 
 @implementation NTKFacesBundleArrayGalleryCollection
 
-- (NTKFacesBundleArrayGalleryCollection)initWithDevice:(id)a3 faceBundle:(id)a4
+- (NTKFacesBundleArrayGalleryCollection)initWithDevice:(id)device faceBundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  bundleCopy = bundle;
   v15.receiver = self;
   v15.super_class = NTKFacesBundleArrayGalleryCollection;
   v9 = [(NTKFacesBundleArrayGalleryCollection *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_device, a3);
-    objc_storeStrong(&v10->_faceBundle, a4);
-    v11 = [v8 galleryTitleForDevice:v7];
+    objc_storeStrong(&v9->_device, device);
+    objc_storeStrong(&v10->_faceBundle, bundle);
+    v11 = [bundleCopy galleryTitleForDevice:deviceCopy];
     [(NTKGalleryCollection *)v10 setTitle:v11];
 
-    v12 = [v8 galleryDescriptionForDevice:v7];
+    v12 = [bundleCopy galleryDescriptionForDevice:deviceCopy];
     [(NTKGalleryCollection *)v10 setDescriptionText:v12];
 
-    v13 = [v8 galleryRowPrioritiesForDevice:v7];
+    v13 = [bundleCopy galleryRowPrioritiesForDevice:deviceCopy];
     [(NTKGalleryCollection *)v10 setPriorities:v13];
 
     [(NTKFaceBundle *)v10->_faceBundle addObserver:v10];
@@ -45,14 +45,14 @@
 - (void)loadFaces
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(NTKFacesBundleArrayGalleryCollection *)self device];
-  v4 = [(NTKFacesBundleArrayGalleryCollection *)self faceBundle];
-  v5 = [objc_opt_class() identifier];
+  device = [(NTKFacesBundleArrayGalleryCollection *)self device];
+  faceBundle = [(NTKFacesBundleArrayGalleryCollection *)self faceBundle];
+  identifier = [objc_opt_class() identifier];
   v6 = _NTKLoggingObjectForDomain(45, "NTKLoggingDomainFaceGallery");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v19 = v5;
+    v19 = identifier;
     _os_log_impl(&dword_22D9C5000, v6, OS_LOG_TYPE_DEFAULT, "Loading faces for %{public}@", buf, 0xCu);
   }
 
@@ -62,13 +62,13 @@
   block[2] = __49__NTKFacesBundleArrayGalleryCollection_loadFaces__block_invoke;
   block[3] = &unk_278784160;
   objc_copyWeak(&v17, buf);
-  v7 = v5;
+  v7 = identifier;
   v13 = v7;
-  v8 = v4;
+  v8 = faceBundle;
   v14 = v8;
-  v9 = v3;
+  v9 = device;
   v15 = v9;
-  v16 = self;
+  selfCopy = self;
   v10 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, QOS_CLASS_UTILITY, -1, block);
   v11 = NTKFacesArrayGalleryCollectionLoadQueue();
   dispatch_async(v11, v10);
@@ -199,7 +199,7 @@ void __49__NTKFacesBundleArrayGalleryCollection_loadFaces__block_invoke_2(uint64
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&dword_22D9C5000, v3, OS_LOG_TYPE_DEFAULT, "Reloading faces for collection: %@", &v4, 0xCu);
   }
 

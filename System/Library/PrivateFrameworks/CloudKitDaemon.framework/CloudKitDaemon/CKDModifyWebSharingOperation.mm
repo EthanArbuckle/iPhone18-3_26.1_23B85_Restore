@@ -1,37 +1,37 @@
 @interface CKDModifyWebSharingOperation
-+ (id)nameForState:(unint64_t)a3;
++ (id)nameForState:(unint64_t)state;
 - (BOOL)makeStateTransition;
-- (CKDModifyWebSharingOperation)initWithOperationInfo:(id)a3 container:(id)a4;
-- (_PCSIdentityData)_copyShareProtectionFromRecord:(id)a3 error:(id *)a4;
+- (CKDModifyWebSharingOperation)initWithOperationInfo:(id)info container:(id)container;
+- (_PCSIdentityData)_copyShareProtectionFromRecord:(id)record error:(id *)error;
 - (id)activityCreate;
 - (id)relevantZoneIDs;
 - (void)_fetchRecords;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
-- (void)_handleRecordFetched:(id)a3 recordID:(id)a4 error:(id)a5;
-- (void)_handleRecordSaved:(id)a3 error:(id)a4;
+- (void)_finishOnCallbackQueueWithError:(id)error;
+- (void)_handleRecordFetched:(id)fetched recordID:(id)d error:(id)error;
+- (void)_handleRecordSaved:(id)saved error:(id)error;
 - (void)_saveRecords;
 - (void)main;
 @end
 
 @implementation CKDModifyWebSharingOperation
 
-- (CKDModifyWebSharingOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDModifyWebSharingOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v25.receiver = self;
   v25.super_class = CKDModifyWebSharingOperation;
-  v9 = [(CKDDatabaseOperation *)&v25 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDDatabaseOperation *)&v25 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v10 = objc_msgSend_recordIDsToShare(v6, v7, v8);
+    v10 = objc_msgSend_recordIDsToShare(infoCopy, v7, v8);
     recordIDsToShare = v9->_recordIDsToShare;
     v9->_recordIDsToShare = v10;
 
-    v14 = objc_msgSend_recordIDsToUnshare(v6, v12, v13);
+    v14 = objc_msgSend_recordIDsToUnshare(infoCopy, v12, v13);
     recordIDsToUnshare = v9->_recordIDsToUnshare;
     v9->_recordIDsToUnshare = v14;
 
-    v18 = objc_msgSend_recordIDsToShareReadWrite(v6, v16, v17);
+    v18 = objc_msgSend_recordIDsToShareReadWrite(infoCopy, v16, v17);
     recordIDsToShareReadWrite = v9->_recordIDsToShareReadWrite;
     v9->_recordIDsToShareReadWrite = v18;
 
@@ -253,14 +253,14 @@ LABEL_8:
   return 1;
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 == 2)
+  if (state == 2)
   {
     v5 = @"Fetching Records";
   }
 
-  else if (a3 == 3)
+  else if (state == 3)
   {
     v5 = @"Saving Records";
   }
@@ -269,7 +269,7 @@ LABEL_8:
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDModifyWebSharingOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
@@ -277,13 +277,13 @@ LABEL_8:
   return v5;
 }
 
-- (void)_handleRecordSaved:(id)a3 error:(id)a4
+- (void)_handleRecordSaved:(id)saved error:(id)error
 {
   v75 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  savedCopy = saved;
+  errorCopy = error;
   v10 = objc_msgSend_recordIDsToShare(self, v8, v9);
-  v12 = objc_msgSend_containsObject_(v10, v11, v6);
+  v12 = objc_msgSend_containsObject_(v10, v11, savedCopy);
 
   v13 = MEMORY[0x277CBC880];
   if (*MEMORY[0x277CBC880] != -1)
@@ -306,17 +306,17 @@ LABEL_8:
     v53 = @" with error ";
     v68 = v51;
     v69 = 2112;
-    v70 = v6;
-    if (!v7)
+    v70 = savedCopy;
+    if (!errorCopy)
     {
       v53 = &stru_28385ED00;
     }
 
     v71 = 2114;
     v72 = v53;
-    if (v7)
+    if (errorCopy)
     {
-      v52 = v7;
+      v52 = errorCopy;
     }
 
     v73 = 2112;
@@ -324,7 +324,7 @@ LABEL_8:
     _os_log_debug_impl(&dword_22506F000, v15, OS_LOG_TYPE_DEBUG, "Record for %{public}@share (%@) was saved%{public}@%@", buf, 0x2Au);
   }
 
-  if (objc_msgSend_code(v7, v16, v17) == 2037 && (v20 = objc_msgSend_numSaveAttempts(self, v18, v19), objc_msgSend_sharedOptions(MEMORY[0x277CBC1D8], v21, v22), v23 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend_PCSRetryCount(v23, v24, v25), v23, v20 <= v26))
+  if (objc_msgSend_code(errorCopy, v16, v17) == 2037 && (v20 = objc_msgSend_numSaveAttempts(self, v18, v19), objc_msgSend_sharedOptions(MEMORY[0x277CBC1D8], v21, v22), v23 = objc_claimAutoreleasedReturnValue(), v26 = objc_msgSend_PCSRetryCount(v23, v24, v25), v23, v20 <= v26))
   {
     if (*v13 != -1)
     {
@@ -343,7 +343,7 @@ LABEL_8:
       *buf = 138543618;
       v68 = v54;
       v69 = 2112;
-      v70 = v6;
+      v70 = savedCopy;
       _os_log_debug_impl(&dword_22506F000, v49, OS_LOG_TYPE_DEBUG, "Oplock failure while trying to %{public}@share record %@. Retrying.", buf, 0x16u);
     }
   }
@@ -353,7 +353,7 @@ LABEL_8:
     if (v12)
     {
       v27 = objc_msgSend_recordsToSaveByID(self, v18, v19);
-      v29 = objc_msgSend_objectForKeyedSubscript_(v27, v28, v6);
+      v29 = objc_msgSend_objectForKeyedSubscript_(v27, v28, savedCopy);
 
       v32 = objc_msgSend_encryptedValues(v29, v30, v31);
       v34 = objc_msgSend_objectForKeyedSubscript_(v32, v33, *MEMORY[0x277CBC150]);
@@ -369,10 +369,10 @@ LABEL_8:
         block[2] = sub_22521D520;
         block[3] = &unk_278548978;
         block[4] = self;
-        v63 = v6;
+        v63 = savedCopy;
         v64 = v34;
         v65 = v36;
-        v66 = v7;
+        v66 = errorCopy;
         dispatch_async(v42, block);
       }
     }
@@ -388,15 +388,15 @@ LABEL_8:
         v56 = 3221225472;
         v57 = sub_22521D5A8;
         v58 = &unk_278546990;
-        v59 = self;
-        v60 = v6;
-        v61 = v7;
+        selfCopy = self;
+        v60 = savedCopy;
+        v61 = errorCopy;
         dispatch_async(v46, &v55);
       }
     }
 
-    v47 = objc_msgSend_recordsToSaveByID(self, v43, v44, v55, v56, v57, v58, v59);
-    objc_msgSend_removeObjectForKey_(v47, v48, v6);
+    v47 = objc_msgSend_recordsToSaveByID(self, v43, v44, v55, v56, v57, v58, selfCopy);
+    objc_msgSend_removeObjectForKey_(v47, v48, savedCopy);
   }
 
   v50 = *MEMORY[0x277D85DE8];
@@ -467,21 +467,21 @@ LABEL_8:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (_PCSIdentityData)_copyShareProtectionFromRecord:(id)a3 error:(id *)a4
+- (_PCSIdentityData)_copyShareProtectionFromRecord:(id)record error:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v9 = v6;
-  if (!a4)
+  recordCopy = record;
+  v9 = recordCopy;
+  if (!error)
   {
-    if (!v6)
+    if (!recordCopy)
     {
       v10 = 0;
       goto LABEL_25;
     }
 
 LABEL_5:
-    v11 = objc_msgSend_encryptedValues(v6, v7, v8);
+    v11 = objc_msgSend_encryptedValues(recordCopy, v7, v8);
     v13 = objc_msgSend_objectForKeyedSubscript_(v11, v12, *MEMORY[0x277CBC150]);
 
     if (v13)
@@ -513,12 +513,12 @@ LABEL_5:
           _os_log_impl(&dword_22506F000, v35, OS_LOG_TYPE_INFO, "Warn: Couldn't deserialize share protection data on record %@: %@.\nData was %@", buf, 0x20u);
         }
 
-        if (a4)
+        if (error)
         {
           v39 = MEMORY[0x277CBC560];
           v40 = *MEMORY[0x277CBC120];
           v41 = objc_msgSend_recordID(v9, v33, v34);
-          *a4 = objc_msgSend_errorWithDomain_code_error_format_(v39, v42, v40, 5001, v21, @"Couldn't deserialize share protection data on record %@", v41);
+          *error = objc_msgSend_errorWithDomain_code_error_format_(v39, v42, v40, 5001, v21, @"Couldn't deserialize share protection data on record %@", v41);
         }
 
         if (v10)
@@ -551,7 +551,7 @@ LABEL_5:
         _os_log_impl(&dword_22506F000, v25, OS_LOG_TYPE_INFO, "Warn: Record %@ didn't have any share protection data on it", buf, 0xCu);
       }
 
-      if (!a4)
+      if (!error)
       {
         v10 = 0;
         goto LABEL_24;
@@ -561,35 +561,35 @@ LABEL_5:
       v30 = *MEMORY[0x277CBC120];
       v21 = objc_msgSend_recordID(v9, v23, v24);
       objc_msgSend_errorWithDomain_code_format_(v29, v31, v30, 5001, @"Record %@ didn't contain any share protection data", v21);
-      *a4 = v10 = 0;
+      *error = v10 = 0;
     }
 
 LABEL_24:
     goto LABEL_25;
   }
 
-  *a4 = 0;
-  if (v6)
+  *error = 0;
+  if (recordCopy)
   {
     goto LABEL_5;
   }
 
   objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v7, *MEMORY[0x277CBC120], 2003, @"Couldn't fetch record from the server");
-  *a4 = v10 = 0;
+  *error = v10 = 0;
 LABEL_25:
 
   v43 = *MEMORY[0x277D85DE8];
   return v10;
 }
 
-- (void)_handleRecordFetched:(id)a3 recordID:(id)a4 error:(id)a5
+- (void)_handleRecordFetched:(id)fetched recordID:(id)d error:(id)error
 {
   v119 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fetchedCopy = fetched;
+  dCopy = d;
+  errorCopy = error;
   v13 = objc_msgSend_recordIDsToShare(self, v11, v12);
-  v15 = objc_msgSend_containsObject_(v13, v14, v9);
+  v15 = objc_msgSend_containsObject_(v13, v14, dCopy);
 
   if (v15)
   {
@@ -604,7 +604,7 @@ LABEL_5:
     v23 = _Block_copy(v18);
     v24 = *MEMORY[0x277CBC878];
     v25 = *MEMORY[0x277CBC880];
-    if (v8 && !v10)
+    if (fetchedCopy && !errorCopy)
     {
       if (v25 != -1)
       {
@@ -621,18 +621,18 @@ LABEL_5:
         }
 
         *buf = 138412546;
-        v114 = v9;
+        v114 = dCopy;
         v115 = 2114;
         v116 = v76;
         _os_log_debug_impl(&dword_22506F000, v26, OS_LOG_TYPE_DEBUG, "Fetched record with ID %@ from the server. Unwrapping sharing identity and %{public}@sharing the record", buf, 0x16u);
       }
 
       v110 = 0;
-      v28 = objc_msgSend__copyShareProtectionFromRecord_error_(self, v27, v8, &v110);
+      v28 = objc_msgSend__copyShareProtectionFromRecord_error_(self, v27, fetchedCopy, &v110);
       v31 = v110;
       if (!v31 && v28)
       {
-        v34 = objc_msgSend_recordPCS(v8, v29, v30);
+        v34 = objc_msgSend_recordPCS(fetchedCopy, v29, v30);
         if (v34)
         {
           v107 = objc_msgSend_container(self, v32, v33);
@@ -669,20 +669,20 @@ LABEL_5:
 
               v114 = v50;
               v115 = 2112;
-              v116 = v9;
+              v116 = dCopy;
               v117 = 2112;
               v118 = v31;
               _os_log_impl(&dword_22506F000, v49, OS_LOG_TYPE_INFO, "Warn: Error %{public}@sharing record %@: %@", buf, 0x20u);
             }
 
-            v23[2](v23, v9, v31);
+            v23[2](v23, dCopy, v31);
           }
 
           else
           {
             v51 = objc_msgSend_pcsManager(v107, v47, v48);
-            v54 = objc_msgSend_pcsKeysToRemove(v8, v52, v53);
-            v57 = objc_msgSend_protectionEtag(v8, v55, v56);
+            v54 = objc_msgSend_pcsKeysToRemove(fetchedCopy, v52, v53);
+            v57 = objc_msgSend_protectionEtag(fetchedCopy, v55, v56);
             v59 = objc_msgSend_removePCSKeys_fromPCS_withProtectionEtag_forOperation_(v51, v58, v54, v34, v57, self);
 
             if (v59)
@@ -695,17 +695,17 @@ LABEL_5:
               objc_msgSend_updateCloudKitMetrics_(self, v60, v109);
             }
 
-            v62 = objc_msgSend_protectionData(v8, v60, v61);
+            v62 = objc_msgSend_protectionData(fetchedCopy, v60, v61);
             v64 = objc_msgSend_etagFromPCSData_(CKDPCSManager, v63, v62);
-            objc_msgSend_setPreviousProtectionEtag_(v8, v65, v64);
+            objc_msgSend_setPreviousProtectionEtag_(fetchedCopy, v65, v64);
 
             v68 = objc_msgSend_pcsManager(v107, v66, v67);
             v108 = 0;
             v70 = objc_msgSend_dataFromRecordPCS_error_(v68, v69, v34, &v108);
             v31 = v108;
-            objc_msgSend_setProtectionData_(v8, v71, v70);
+            objc_msgSend_setProtectionData_(fetchedCopy, v71, v70);
 
-            if (v31 || (objc_msgSend_protectionData(v8, v72, v73), v77 = objc_claimAutoreleasedReturnValue(), v78 = v77 == 0, v77, v78))
+            if (v31 || (objc_msgSend_protectionData(fetchedCopy, v72, v73), v77 = objc_claimAutoreleasedReturnValue(), v78 = v77 == 0, v77, v78))
             {
               if (*MEMORY[0x277CBC880] != -1)
               {
@@ -724,25 +724,25 @@ LABEL_5:
 
                 v114 = v75;
                 v115 = 2112;
-                v116 = v9;
+                v116 = dCopy;
                 v117 = 2112;
                 v118 = v31;
                 _os_log_impl(&dword_22506F000, v74, OS_LOG_TYPE_INFO, "Warn: Error serializing record PCS data for %{public}@share of record %@: %@", buf, 0x20u);
               }
 
-              v23[2](v23, v9, v31);
+              v23[2](v23, dCopy, v31);
             }
 
             else
             {
               v80 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v79, v15);
-              objc_msgSend_setObject_forKeyedSubscript_(v8, v81, v80, *MEMORY[0x277CBC148]);
+              objc_msgSend_setObject_forKeyedSubscript_(fetchedCopy, v81, v80, *MEMORY[0x277CBC148]);
 
               v84 = objc_msgSend_recordIDsToShareReadWrite(self, v82, v83);
-              v86 = objc_msgSend_containsObject_(v84, v85, v9);
+              v86 = objc_msgSend_containsObject_(v84, v85, dCopy);
 
               v88 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v87, v86 ^ 1u);
-              objc_msgSend_setObject_forKeyedSubscript_(v8, v89, v88, *MEMORY[0x277CBC140]);
+              objc_msgSend_setObject_forKeyedSubscript_(fetchedCopy, v89, v88, *MEMORY[0x277CBC140]);
 
               if (*MEMORY[0x277CBC880] != -1)
               {
@@ -755,9 +755,9 @@ LABEL_5:
               {
                 v101 = v15 ? &stru_28385ED00 : @"un";
                 v102 = v91;
-                v105 = objc_msgSend_protectionData(v8, v103, v104);
+                v105 = objc_msgSend_protectionData(fetchedCopy, v103, v104);
                 *buf = 138412802;
-                v114 = v9;
+                v114 = dCopy;
                 v115 = 2114;
                 v116 = v101;
                 v117 = 2112;
@@ -783,14 +783,14 @@ LABEL_5:
                 *buf = 138543618;
                 v114 = v106;
                 v115 = 2112;
-                v116 = v9;
+                v116 = dCopy;
                 _os_log_debug_impl(&dword_22506F000, v92, OS_LOG_TYPE_DEBUG, "Successfully %{public}@ sharing info to record %@. Preparing to save the record back to the server", buf, 0x16u);
               }
 
               v95 = objc_msgSend_recordsToSaveByID(self, v93, v94);
               objc_sync_enter(v95);
               v98 = objc_msgSend_recordsToSaveByID(self, v96, v97);
-              objc_msgSend_setObject_forKeyedSubscript_(v98, v99, v8, v9);
+              objc_msgSend_setObject_forKeyedSubscript_(v98, v99, fetchedCopy, dCopy);
 
               objc_sync_exit(v95);
               v31 = 0;
@@ -809,18 +809,18 @@ LABEL_5:
           if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v114 = v9;
+            v114 = dCopy;
             _os_log_debug_impl(&dword_22506F000, v45, OS_LOG_TYPE_DEBUG, "Fetched record %@ had no PCS data", buf, 0xCu);
           }
 
-          v31 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v46, *MEMORY[0x277CBC120], 5001, @"Fetched record %@ had no PCS data", v9);
-          v23[2](v23, v9, v31);
+          v31 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v46, *MEMORY[0x277CBC120], 5001, @"Fetched record %@ had no PCS data", dCopy);
+          v23[2](v23, dCopy, v31);
           CFRelease(v28);
         }
 
 LABEL_68:
 
-        v10 = v23;
+        errorCopy = v23;
         goto LABEL_69;
       }
 
@@ -833,14 +833,14 @@ LABEL_68:
       if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412546;
-        v114 = v9;
+        v114 = dCopy;
         v115 = 2112;
         v116 = v31;
         _os_log_debug_impl(&dword_22506F000, v43, OS_LOG_TYPE_DEBUG, "Error getting share identity from record %@: %@", buf, 0x16u);
         if (v31)
         {
 LABEL_30:
-          v23[2](v23, v9, v31);
+          v23[2](v23, dCopy, v31);
           if (v28)
           {
             CFRelease(v28);
@@ -855,7 +855,7 @@ LABEL_30:
         goto LABEL_30;
       }
 
-      v31 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v44, *MEMORY[0x277CBC120], 2003, @"Couldn't get a web sharing identity from record %@", v9);
+      v31 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v44, *MEMORY[0x277CBC120], 2003, @"Couldn't get a web sharing identity from record %@", dCopy);
       goto LABEL_30;
     }
 
@@ -868,30 +868,30 @@ LABEL_30:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412546;
-      v114 = v9;
+      v114 = dCopy;
       v115 = 2112;
-      v116 = v10;
+      v116 = errorCopy;
       _os_log_debug_impl(&dword_22506F000, v40, OS_LOG_TYPE_DEBUG, "Couldn't fetch record %@ from the server: %@", buf, 0x16u);
-      if (v10)
+      if (errorCopy)
       {
         goto LABEL_20;
       }
     }
 
-    else if (v10)
+    else if (errorCopy)
     {
 LABEL_20:
-      v23[2](v23, v9, v10);
+      v23[2](v23, dCopy, errorCopy);
 
       goto LABEL_69;
     }
 
-    v10 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v41, *MEMORY[0x277CBC120], 2003, @"Couldn't find record %@ on the server", v9);
+    errorCopy = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v41, *MEMORY[0x277CBC120], 2003, @"Couldn't find record %@ on the server", dCopy);
     goto LABEL_20;
   }
 
   v20 = objc_msgSend_recordIDsToUnshare(self, v16, v17);
-  v22 = objc_msgSend_containsObject_(v20, v21, v9);
+  v22 = objc_msgSend_containsObject_(v20, v21, dCopy);
 
   if (v22)
   {
@@ -911,7 +911,7 @@ LABEL_20:
   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v114 = v9;
+    v114 = dCopy;
     _os_log_error_impl(&dword_22506F000, v42, OS_LOG_TYPE_ERROR, "Received a record ID that we don't know anything about: %@", buf, 0xCu);
   }
 
@@ -972,7 +972,7 @@ LABEL_69:
     v30 = 138544130;
     v31 = v19;
     v32 = 2048;
-    v33 = self;
+    selfCopy = self;
     v34 = 2114;
     v35 = v24;
     v36 = 2112;
@@ -996,10 +996,10 @@ LABEL_69:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v59 = 0u;
   v60 = 0u;
@@ -1114,7 +1114,7 @@ LABEL_69:
   objc_msgSend_setRecordWebUnsharedBlock_(self, v46, 0);
   v48.receiver = self;
   v48.super_class = CKDModifyWebSharingOperation;
-  [(CKDOperation *)&v48 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v48 _finishOnCallbackQueueWithError:errorCopy];
 
   v47 = *MEMORY[0x277D85DE8];
 }

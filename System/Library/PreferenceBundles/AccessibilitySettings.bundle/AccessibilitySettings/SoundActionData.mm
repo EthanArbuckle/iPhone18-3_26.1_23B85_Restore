@@ -1,29 +1,29 @@
 @interface SoundActionData
-- (SoundActionData)initWithName:(id)a3 tip:(id)a4 url:(id)a5 usage:(int64_t)a6;
+- (SoundActionData)initWithName:(id)name tip:(id)tip url:(id)url usage:(int64_t)usage;
 @end
 
 @implementation SoundActionData
 
-- (SoundActionData)initWithName:(id)a3 tip:(id)a4 url:(id)a5 usage:(int64_t)a6
+- (SoundActionData)initWithName:(id)name tip:(id)tip url:(id)url usage:(int64_t)usage
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  nameCopy = name;
+  tipCopy = tip;
+  urlCopy = url;
   v18.receiver = self;
   v18.super_class = SoundActionData;
   v13 = [(SoundActionData *)&v18 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [nameCopy copy];
     [(SoundActionData *)v13 setName:v14];
 
-    v15 = [v11 copy];
+    v15 = [tipCopy copy];
     [(SoundActionData *)v13 setTip:v15];
 
-    v16 = [v12 copy];
+    v16 = [urlCopy copy];
     [(SoundActionData *)v13 setSoundURL:v16];
 
-    [(SoundActionData *)v13 setUsage:a6];
+    [(SoundActionData *)v13 setUsage:usage];
   }
 
   return v13;

@@ -1,11 +1,11 @@
 @interface HMCameraSnapshotControl
 - (HMCameraSnapshot)mostRecentSnapshot;
 - (HMCameraSnapshotControl)init;
-- (HMCameraSnapshotControl)initWithSnapshotControl:(id)a3;
+- (HMCameraSnapshotControl)initWithSnapshotControl:(id)control;
 - (id)delegate;
-- (void)cameraSnapshotControl:(id)a3 didTakeSnapshot:(id)a4 error:(id)a5;
-- (void)cameraSnapshotControlDidUpdateMostRecentSnapshot:(id)a3;
-- (void)fetchCameraSnapshotForBulletinContext:(id)a3 completionHandler:(id)a4;
+- (void)cameraSnapshotControl:(id)control didTakeSnapshot:(id)snapshot error:(id)error;
+- (void)cameraSnapshotControlDidUpdateMostRecentSnapshot:(id)snapshot;
+- (void)fetchCameraSnapshotForBulletinContext:(id)context completionHandler:(id)handler;
 - (void)setDelegate:(id)delegate;
 - (void)takeSnapshot;
 @end
@@ -57,12 +57,12 @@ uint64_t __39___HMCameraSnapshotControl_logCategory__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)cameraSnapshotControlDidUpdateMostRecentSnapshot:(id)a3
+- (void)cameraSnapshotControlDidUpdateMostRecentSnapshot:(id)snapshot
 {
-  v4 = [(HMCameraSnapshotControl *)self delegate];
-  if ([v4 conformsToProtocol:&unk_1F0F635A0])
+  delegate = [(HMCameraSnapshotControl *)self delegate];
+  if ([delegate conformsToProtocol:&unk_1F0F635A0])
   {
-    v5 = v4;
+    v5 = delegate;
   }
 
   else
@@ -78,23 +78,23 @@ uint64_t __39___HMCameraSnapshotControl_logCategory__block_invoke()
   }
 }
 
-- (void)cameraSnapshotControl:(id)a3 didTakeSnapshot:(id)a4 error:(id)a5
+- (void)cameraSnapshotControl:(id)control didTakeSnapshot:(id)snapshot error:(id)error
 {
-  v9 = a4;
-  v7 = a5;
-  v8 = [(HMCameraSnapshotControl *)self delegate];
+  snapshotCopy = snapshot;
+  errorCopy = error;
+  delegate = [(HMCameraSnapshotControl *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 cameraSnapshotControl:self didTakeSnapshot:v9 error:v7];
+    [delegate cameraSnapshotControl:self didTakeSnapshot:snapshotCopy error:errorCopy];
   }
 }
 
-- (void)fetchCameraSnapshotForBulletinContext:(id)a3 completionHandler:(id)a4
+- (void)fetchCameraSnapshotForBulletinContext:(id)context completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMCameraSnapshotControl *)self snapshotControl];
-  [v8 fetchCameraSnapshotForBulletinContext:v7 completionHandler:v6];
+  handlerCopy = handler;
+  contextCopy = context;
+  snapshotControl = [(HMCameraSnapshotControl *)self snapshotControl];
+  [snapshotControl fetchCameraSnapshotForBulletinContext:contextCopy completionHandler:handlerCopy];
 }
 
 - (void)takeSnapshot
@@ -105,18 +105,18 @@ uint64_t __39___HMCameraSnapshotControl_logCategory__block_invoke()
   v7 = [v5 stringWithFormat:@"%@, %s:%ld", v6, "/Library/Caches/com.apple.xbs/Sources/HomeKit/Sources/HomeKit/Camera/Source/Snapshot/HMCameraSnapshotControl.m", 64];
   v9 = [v4 initWithName:v7];
 
-  v8 = [(HMCameraSnapshotControl *)self snapshotControl];
-  [v8 takeSnapshot];
+  snapshotControl = [(HMCameraSnapshotControl *)self snapshotControl];
+  [snapshotControl takeSnapshot];
 
   __HMFActivityScopeLeave();
 }
 
 - (HMCameraSnapshot)mostRecentSnapshot
 {
-  v2 = [(HMCameraSnapshotControl *)self snapshotControl];
-  v3 = [v2 mostRecentSnapshot];
+  snapshotControl = [(HMCameraSnapshotControl *)self snapshotControl];
+  mostRecentSnapshot = [snapshotControl mostRecentSnapshot];
 
-  return v3;
+  return mostRecentSnapshot;
 }
 
 - (void)setDelegate:(id)delegate
@@ -137,16 +137,16 @@ uint64_t __39___HMCameraSnapshotControl_logCategory__block_invoke()
   return WeakRetained;
 }
 
-- (HMCameraSnapshotControl)initWithSnapshotControl:(id)a3
+- (HMCameraSnapshotControl)initWithSnapshotControl:(id)control
 {
-  v5 = a3;
+  controlCopy = control;
   v9.receiver = self;
   v9.super_class = HMCameraSnapshotControl;
   v6 = [(HMCameraControl *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_snapshotControl, a3);
+    objc_storeStrong(&v6->_snapshotControl, control);
     [(_HMCameraSnapshotControl *)v7->_snapshotControl setDelegate:v7];
   }
 

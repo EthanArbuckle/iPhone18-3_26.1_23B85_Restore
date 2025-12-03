@@ -10,8 +10,8 @@
 + (id)makeBrandPlacecardForBrand:()BusinessServicesUI
 {
   v3 = MEMORY[0x277CF3690];
-  v4 = [a3 shim];
-  v5 = [v3 wrapperFor:v4];
+  shim = [a3 shim];
+  v5 = [v3 wrapperFor:shim];
   v6 = [_BSUIBrandPlacecardViewControllerObjcShim makeBrandPlacecardViewControllerWithBrandObjcShimOpaqueWrapper:v5];
 
   return v6;
@@ -20,8 +20,8 @@
 - (id)hoursConfig
 {
   v1 = MEMORY[0x277CF3690];
-  v2 = [a1 shim];
-  v3 = [v1 wrapperFor:v2];
+  shim = [self shim];
+  v3 = [v1 wrapperFor:shim];
   v4 = [_BSUIBrandPlacecardViewControllerObjcShim hoursConfigurationFor:v3];
 
   return v4;
@@ -30,8 +30,8 @@
 - (id)primaryBrandColor
 {
   v2 = objc_alloc(MEMORY[0x277D75348]);
-  v3 = [a1 _primaryBrandColorHexString];
-  v4 = [v2 initWithHexString:v3];
+  _primaryBrandColorHexString = [self _primaryBrandColorHexString];
+  v4 = [v2 initWithHexString:_primaryBrandColorHexString];
 
   return v4;
 }
@@ -39,8 +39,8 @@
 - (id)secondaryBrandColor
 {
   v2 = objc_alloc(MEMORY[0x277D75348]);
-  v3 = [a1 _secondaryBrandColorHexString];
-  v4 = [v2 initWithHexString:v3];
+  _secondaryBrandColorHexString = [self _secondaryBrandColorHexString];
+  v4 = [v2 initWithHexString:_secondaryBrandColorHexString];
 
   return v4;
 }

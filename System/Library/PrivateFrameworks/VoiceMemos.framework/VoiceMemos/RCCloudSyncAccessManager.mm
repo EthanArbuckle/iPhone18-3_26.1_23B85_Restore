@@ -6,7 +6,7 @@
 - (void)_availabilityChanged;
 - (void)_startMonitoringAccountChanges;
 - (void)dealloc;
-- (void)setTccCloudAccess:(int)a3;
+- (void)setTccCloudAccess:(int)access;
 - (void)startMonitoringAccountChanges;
 - (void)tccCloudAccess;
 @end
@@ -15,10 +15,10 @@
 
 - (BOOL)cloudSyncIsAvailable
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(RCCloudSyncAccessManager *)v2 accountStore];
-  if ([v3 aa_isUsingiCloud])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  accountStore = [(RCCloudSyncAccessManager *)selfCopy accountStore];
+  if ([accountStore aa_isUsingiCloud])
   {
     v4 = +[RCManagedConfigurationHelper cloudSyncIsAllowed];
   }
@@ -28,7 +28,7 @@
     v4 = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 
@@ -61,20 +61,20 @@
 
 - (void)_startMonitoringAccountChanges
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_monitoringAccountChanges)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_monitoringAccountChanges)
   {
-    v2->_monitoringAccountChanges = 1;
-    v3 = [(RCCloudSyncAccessManager *)v2 accountStore];
-    [v3 registerWithCompletion:&__block_literal_global_12];
+    selfCopy->_monitoringAccountChanges = 1;
+    accountStore = [(RCCloudSyncAccessManager *)selfCopy accountStore];
+    [accountStore registerWithCompletion:&__block_literal_global_12];
 
     v4 = objc_opt_new();
-    managedConfigurationHelper = v2->_managedConfigurationHelper;
-    v2->_managedConfigurationHelper = v4;
+    managedConfigurationHelper = selfCopy->_managedConfigurationHelper;
+    selfCopy->_managedConfigurationHelper = v4;
 
-    [(RCManagedConfigurationHelper *)v2->_managedConfigurationHelper setDelegate:v2];
-    objc_initWeak(&location, v2);
+    [(RCManagedConfigurationHelper *)selfCopy->_managedConfigurationHelper setDelegate:selfCopy];
+    objc_initWeak(&location, selfCopy);
     v6 = MEMORY[0x277D85CD0];
     v7 = MEMORY[0x277D85CD0];
     v8[0] = MEMORY[0x277D85DD0];
@@ -82,13 +82,13 @@
     v8[2] = __58__RCCloudSyncAccessManager__startMonitoringAccountChanges__block_invoke_2;
     v8[3] = &unk_279E44830;
     objc_copyWeak(&v9, &location);
-    notify_register_dispatch("com.apple.tcc.access.changed", &v2->_tccNotifyToken, v6, v8);
+    notify_register_dispatch("com.apple.tcc.access.changed", &selfCopy->_tccNotifyToken, v6, v8);
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 void __58__RCCloudSyncAccessManager__startMonitoringAccountChanges__block_invoke_2(uint64_t a1)
@@ -188,9 +188,9 @@ LABEL_14:
   return v12;
 }
 
-- (void)setTccCloudAccess:(int)a3
+- (void)setTccCloudAccess:(int)access
 {
-  if (a3 == 2)
+  if (access == 2)
   {
     if (![(RCCloudSyncAccessManager *)self cloudSyncIsAvailable])
     {
@@ -207,7 +207,7 @@ LABEL_14:
     goto LABEL_11;
   }
 
-  if (a3 == 1)
+  if (access == 1)
   {
     v8 = *MEMORY[0x277D6C190];
 LABEL_11:
@@ -219,13 +219,13 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (a3 || (v6 = *MEMORY[0x277D6C190], !TCCAccessResetForBundleId()))
+  if (access || (v6 = *MEMORY[0x277D6C190], !TCCAccessResetForBundleId()))
   {
 LABEL_12:
     v7 = OSLogForCategory(@"Default");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      [(RCCloudSyncAccessManager *)a3 setTccCloudAccess:v7];
+      [(RCCloudSyncAccessManager *)access setTccCloudAccess:v7];
     }
 
 LABEL_14:

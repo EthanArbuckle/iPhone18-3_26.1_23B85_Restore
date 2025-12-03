@@ -1,13 +1,13 @@
 @interface SRCSSpokenCommandUtilities
-+ (__CFStringTokenizer)wordUnitStringTokenizerRefForLocaleIdentifier:(id)a3;
-+ (id)_suffixedURLsForURL:(id)a3;
++ (__CFStringTokenizer)wordUnitStringTokenizerRefForLocaleIdentifier:(id)identifier;
++ (id)_suffixedURLsForURL:(id)l;
 + (id)sharedSpokenCommandUtilities;
 - (SRCSSpokenCommandUtilities)init;
 - (id)commandAttributes;
-- (id)commandStringsTableForLocaleIdentifier:(id)a3;
-- (id)dictionaryForLocaleIdentifier:(id)a3 bundle:(id)a4 resourceFileName:(id)a5 resourceFileExtension:(id)a6;
-- (id)dictionaryForLocaleIdentifier:(id)a3 bundle:(id)a4 subDirectory:(id)a5 rootFileName:(id)a6 rootFileExtension:(id)a7;
-- (id)dictionaryForLocaleIdentifier:(id)a3 resourceFileName:(id)a4 resourceFileExtension:(id)a5;
+- (id)commandStringsTableForLocaleIdentifier:(id)identifier;
+- (id)dictionaryForLocaleIdentifier:(id)identifier bundle:(id)bundle resourceFileName:(id)name resourceFileExtension:(id)extension;
+- (id)dictionaryForLocaleIdentifier:(id)identifier bundle:(id)bundle subDirectory:(id)directory rootFileName:(id)name rootFileExtension:(id)extension;
+- (id)dictionaryForLocaleIdentifier:(id)identifier resourceFileName:(id)name resourceFileExtension:(id)extension;
 - (void)_flushBuiltInCommandsStringsTable;
 @end
 
@@ -32,19 +32,19 @@ uint64_t __58__SRCSSpokenCommandUtilities_sharedSpokenCommandUtilities__block_in
   return MEMORY[0x2821F96F8]();
 }
 
-+ (__CFStringTokenizer)wordUnitStringTokenizerRefForLocaleIdentifier:(id)a3
++ (__CFStringTokenizer)wordUnitStringTokenizerRefForLocaleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (wordUnitStringTokenizerRefForLocaleIdentifier__onceToken != -1)
   {
     +[SRCSSpokenCommandUtilities wordUnitStringTokenizerRefForLocaleIdentifier:];
   }
 
-  v5 = a1;
-  objc_sync_enter(v5);
-  if ([(__CFString *)v4 length])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(__CFString *)identifierCopy length])
   {
-    v6 = [MEMORY[0x277CCACA8] stringWithString:v4];
+    v6 = [MEMORY[0x277CCACA8] stringWithString:identifierCopy];
   }
 
   else
@@ -55,9 +55,9 @@ uint64_t __58__SRCSSpokenCommandUtilities_sharedSpokenCommandUtilities__block_in
   v7 = [wordUnitStringTokenizerRefForLocaleIdentifier__sStringTokenizerForLocaleIdentifierTable objectForKey:v6];
   if (!v7)
   {
-    if ([(__CFString *)v4 length])
+    if ([(__CFString *)identifierCopy length])
     {
-      v8 = CFLocaleCreate(0, v4);
+      v8 = CFLocaleCreate(0, identifierCopy);
     }
 
     else
@@ -80,7 +80,7 @@ uint64_t __58__SRCSSpokenCommandUtilities_sharedSpokenCommandUtilities__block_in
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
   return v7;
 }
 
@@ -124,22 +124,22 @@ uint64_t __76__SRCSSpokenCommandUtilities_wordUnitStringTokenizerRefForLocaleIde
   return commandAttributes;
 }
 
-- (id)commandStringsTableForLocaleIdentifier:(id)a3
+- (id)commandStringsTableForLocaleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_commandStringsTablesByLocaleIdentifier objectForKey:v4];
-  objc_sync_exit(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_commandStringsTablesByLocaleIdentifier objectForKey:identifierCopy];
+  objc_sync_exit(selfCopy);
 
   if (!v6)
   {
-    v6 = [[SRCSCommandStringsTable alloc] initWithLocaleIdentifier:v4];
+    v6 = [[SRCSCommandStringsTable alloc] initWithLocaleIdentifier:identifierCopy];
     if (v6)
     {
-      v7 = v5;
+      v7 = selfCopy;
       objc_sync_enter(v7);
-      [(NSMutableDictionary *)v5->_commandStringsTablesByLocaleIdentifier setObject:v6 forKey:v4];
+      [(NSMutableDictionary *)selfCopy->_commandStringsTablesByLocaleIdentifier setObject:v6 forKey:identifierCopy];
       objc_sync_exit(v7);
     }
   }
@@ -155,35 +155,35 @@ uint64_t __76__SRCSSpokenCommandUtilities_wordUnitStringTokenizerRefForLocaleIde
   objc_sync_exit(obj);
 }
 
-- (id)dictionaryForLocaleIdentifier:(id)a3 resourceFileName:(id)a4 resourceFileExtension:(id)a5
+- (id)dictionaryForLocaleIdentifier:(id)identifier resourceFileName:(id)name resourceFileExtension:(id)extension
 {
   v8 = MEMORY[0x277CCA8D8];
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  extensionCopy = extension;
+  nameCopy = name;
+  identifierCopy = identifier;
   v12 = [v8 bundleForClass:objc_opt_class()];
-  v13 = [(SRCSSpokenCommandUtilities *)self dictionaryForLocaleIdentifier:v11 bundle:v12 resourceFileName:v10 resourceFileExtension:v9];
+  v13 = [(SRCSSpokenCommandUtilities *)self dictionaryForLocaleIdentifier:identifierCopy bundle:v12 resourceFileName:nameCopy resourceFileExtension:extensionCopy];
 
   return v13;
 }
 
-+ (id)_suffixedURLsForURL:(id)a3
++ (id)_suffixedURLsForURL:(id)l
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  lCopy = l;
   v24 = objc_opt_new();
-  v4 = [v3 URLByDeletingLastPathComponent];
-  v25 = [v3 pathExtension];
-  v5 = [v3 URLByDeletingPathExtension];
-  v6 = [v5 lastPathComponent];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  pathExtension = [lCopy pathExtension];
+  uRLByDeletingPathExtension = [lCopy URLByDeletingPathExtension];
+  lastPathComponent = [uRLByDeletingPathExtension lastPathComponent];
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v23 = v4;
-  v8 = [v7 contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:0 options:0 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v23 = uRLByDeletingLastPathComponent;
+  v8 = [defaultManager contentsOfDirectoryAtURL:uRLByDeletingLastPathComponent includingPropertiesForKeys:0 options:0 error:0];
 
   v9 = [v8 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v9)
@@ -200,20 +200,20 @@ uint64_t __76__SRCSSpokenCommandUtilities_wordUnitStringTokenizerRefForLocaleIde
         }
 
         v13 = *(*(&v26 + 1) + 8 * i);
-        v14 = [v13 lastPathComponent];
-        v15 = [v3 lastPathComponent];
-        v16 = [v14 isEqualToString:v15];
+        lastPathComponent2 = [v13 lastPathComponent];
+        lastPathComponent3 = [lCopy lastPathComponent];
+        v16 = [lastPathComponent2 isEqualToString:lastPathComponent3];
 
         if ((v16 & 1) == 0)
         {
-          v17 = [v13 lastPathComponent];
-          v18 = [v17 hasPrefix:v6];
+          lastPathComponent4 = [v13 lastPathComponent];
+          v18 = [lastPathComponent4 hasPrefix:lastPathComponent];
 
           if (v18)
           {
-            v19 = [v13 pathExtension];
-            v20 = v19;
-            if (!(v25 | v19) || (v25 == 0) == (v19 == 0) && [v25 isEqualToString:v19])
+            pathExtension2 = [v13 pathExtension];
+            v20 = pathExtension2;
+            if (!(pathExtension | pathExtension2) || (pathExtension == 0) == (pathExtension2 == 0) && [pathExtension isEqualToString:pathExtension2])
             {
               [v24 addObject:v13];
             }
@@ -232,14 +232,14 @@ uint64_t __76__SRCSSpokenCommandUtilities_wordUnitStringTokenizerRefForLocaleIde
   return v24;
 }
 
-- (id)dictionaryForLocaleIdentifier:(id)a3 bundle:(id)a4 resourceFileName:(id)a5 resourceFileExtension:(id)a6
+- (id)dictionaryForLocaleIdentifier:(id)identifier bundle:(id)bundle resourceFileName:(id)name resourceFileExtension:(id)extension
 {
   v58[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [SRCSCommandStringsTable componentsFromLocaleIdentifier:v9];
+  identifierCopy = identifier;
+  bundleCopy = bundle;
+  nameCopy = name;
+  extensionCopy = extension;
+  v13 = [SRCSCommandStringsTable componentsFromLocaleIdentifier:identifierCopy];
   v14 = [v13 objectForKey:*MEMORY[0x277CBE6C8]];
 
   if ([(__CFString *)v14 isEqualToString:@"nb"])
@@ -248,31 +248,31 @@ uint64_t __76__SRCSSpokenCommandUtilities_wordUnitStringTokenizerRefForLocaleIde
     v14 = @"no";
   }
 
-  v15 = [v10 pathForResource:v11 ofType:v12 inDirectory:0 forLocalization:v9];
+  v15 = [bundleCopy pathForResource:nameCopy ofType:extensionCopy inDirectory:0 forLocalization:identifierCopy];
   if (!v15)
   {
-    v30 = v9;
+    v30 = identifierCopy;
     goto LABEL_19;
   }
 
   v16 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v15];
-  v17 = v9;
+  v17 = identifierCopy;
   if (!v16)
   {
 LABEL_19:
     v48 = v15;
     v31 = MEMORY[0x277CCA8D8];
-    v32 = [v10 localizations];
-    [&unk_287C0D648 arrayByAddingObjectsFromArray:v32];
+    localizations = [bundleCopy localizations];
+    [&unk_287C0D648 arrayByAddingObjectsFromArray:localizations];
     v34 = v33 = v14;
-    v58[0] = v9;
+    v58[0] = identifierCopy;
     v35 = [MEMORY[0x277CBEA60] arrayWithObjects:v58 count:1];
     v36 = [v31 preferredLocalizationsFromArray:v34 forPreferences:v35];
 
     v14 = v33;
-    v37 = [v36 firstObject];
-    v38 = v37;
-    if (!v37 || ([v37 isEqualToString:@"zxx"] & 1) != 0 || objc_msgSend(v38, "isEqualToString:", @"en") && !-[__CFString isEqualToString:](v33, "isEqualToString:", @"en"))
+    firstObject = [v36 firstObject];
+    v38 = firstObject;
+    if (!firstObject || ([firstObject isEqualToString:@"zxx"] & 1) != 0 || objc_msgSend(v38, "isEqualToString:", @"en") && !-[__CFString isEqualToString:](v33, "isEqualToString:", @"en"))
     {
 
       v18 = 0;
@@ -283,7 +283,7 @@ LABEL_19:
     {
       v18 = v38;
 
-      v15 = [v10 pathForResource:v11 ofType:v12 inDirectory:0 forLocalization:v18];
+      v15 = [bundleCopy pathForResource:nameCopy ofType:extensionCopy inDirectory:0 forLocalization:v18];
 
       if (v15)
       {
@@ -304,9 +304,9 @@ LABEL_19:
   v18 = v17;
 LABEL_6:
   v43 = v14;
-  v44 = v12;
-  v45 = v11;
-  v46 = v10;
+  v44 = extensionCopy;
+  v45 = nameCopy;
+  v46 = bundleCopy;
   v47 = v15;
   v42 = [MEMORY[0x277CBEBC0] fileURLWithPath:v15];
   v19 = [objc_opt_class() _suffixedURLsForURL:v42];
@@ -335,9 +335,9 @@ LABEL_6:
         v27 = SRCSLogGeneral();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
         {
-          v28 = [v25 lastPathComponent];
+          lastPathComponent = [v25 lastPathComponent];
           *buf = 138412290;
-          v54 = v28;
+          v54 = lastPathComponent;
           _os_log_impl(&dword_26B44D000, v27, OS_LOG_TYPE_DEFAULT, "Loaded override table: %@", buf, 0xCu);
         }
 
@@ -354,20 +354,20 @@ LABEL_6:
     while (v21);
   }
 
-  v10 = v46;
+  bundleCopy = v46;
   if (v16)
   {
     v29 = SRCSLogGeneral();
     v15 = v47;
-    v12 = v44;
-    v11 = v45;
+    extensionCopy = v44;
+    nameCopy = v45;
     v14 = v43;
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
       v54 = v18;
       v55 = 2112;
-      v56 = v9;
+      v56 = identifierCopy;
       _os_log_impl(&dword_26B44D000, v29, OS_LOG_TYPE_DEFAULT, "Found commands localization: %@ for desired locale: %@", buf, 0x16u);
     }
 
@@ -375,18 +375,18 @@ LABEL_6:
   }
 
   v15 = v47;
-  v12 = v44;
-  v11 = v45;
+  extensionCopy = v44;
+  nameCopy = v45;
   v14 = v43;
 LABEL_29:
   v29 = SRCSLogGeneral();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
-    v39 = [v10 localizations];
+    localizations2 = [bundleCopy localizations];
     *buf = 138412546;
-    v54 = v9;
+    v54 = identifierCopy;
     v55 = 2112;
-    v56 = v39;
+    v56 = localizations2;
     _os_log_impl(&dword_26B44D000, v29, OS_LOG_TYPE_DEFAULT, "Failed to find commands for desired locale: %@ from localizations: %@", buf, 0x16u);
   }
 
@@ -398,17 +398,17 @@ LABEL_32:
   return v16;
 }
 
-- (id)dictionaryForLocaleIdentifier:(id)a3 bundle:(id)a4 subDirectory:(id)a5 rootFileName:(id)a6 rootFileExtension:(id)a7
+- (id)dictionaryForLocaleIdentifier:(id)identifier bundle:(id)bundle subDirectory:(id)directory rootFileName:(id)name rootFileExtension:(id)extension
 {
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  v14 = a5;
-  v15 = a3;
-  v16 = [SRCSCommandStringsTable componentsFromLocaleIdentifier:v15];
+  bundleCopy = bundle;
+  nameCopy = name;
+  extensionCopy = extension;
+  directoryCopy = directory;
+  identifierCopy = identifier;
+  v16 = [SRCSCommandStringsTable componentsFromLocaleIdentifier:identifierCopy];
   v17 = [v16 objectForKey:*MEMORY[0x277CBE6C8]];
 
-  v18 = [SRCSCommandStringsTable componentsFromLocaleIdentifier:v15];
+  v18 = [SRCSCommandStringsTable componentsFromLocaleIdentifier:identifierCopy];
 
   v19 = [v18 objectForKey:*MEMORY[0x277CBE690]];
 
@@ -418,20 +418,20 @@ LABEL_32:
     v17 = @"no";
   }
 
-  [v11 resourcePath];
-  v20 = v30 = v11;
-  v21 = [v20 stringByAppendingPathComponent:v14];
+  [bundleCopy resourcePath];
+  v20 = v30 = bundleCopy;
+  v21 = [v20 stringByAppendingPathComponent:directoryCopy];
 
-  v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@_%@.%@", v12, v17, v19, v13];
+  extensionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@_%@.%@", nameCopy, v17, v19, extensionCopy];
   v23 = MEMORY[0x277CBEAC0];
-  v24 = [v21 stringByAppendingPathComponent:v22];
+  v24 = [v21 stringByAppendingPathComponent:extensionCopy];
   v25 = [v23 dictionaryWithContentsOfFile:v24];
 
   if (!v25)
   {
-    v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@.%@", v12, v17, v13];
+    extensionCopy2 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@.%@", nameCopy, v17, extensionCopy];
     v27 = MEMORY[0x277CBEAC0];
-    v28 = [v21 stringByAppendingPathComponent:v26];
+    v28 = [v21 stringByAppendingPathComponent:extensionCopy2];
     v25 = [v27 dictionaryWithContentsOfFile:v28];
   }
 

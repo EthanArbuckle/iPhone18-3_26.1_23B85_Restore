@@ -1,7 +1,7 @@
 @interface PLSearchIndexingEngineLibraryServicesProvider
-- (PLSearchIndexingEngineLibraryServicesProvider)initWithLSM:(id)a3;
+- (PLSearchIndexingEngineLibraryServicesProvider)initWithLSM:(id)m;
 - (id)createLogger;
-- (id)libraryWithName:(const char *)a3;
+- (id)libraryWithName:(const char *)name;
 - (id)redactedDescription;
 @end
 
@@ -10,72 +10,72 @@
 - (id)createLogger
 {
   v69 = *MEMORY[0x1E69E9840];
-  v3 = [(PLSearchIndexingEngineLibraryServicesProvider *)self pathManager];
-  v4 = [v3 libraryURL];
+  pathManager = [(PLSearchIndexingEngineLibraryServicesProvider *)self pathManager];
+  libraryURL = [pathManager libraryURL];
 
-  v5 = [PLPhotoLibraryIdentifier photoLibraryIdentifierWithPhotoLibraryURL:v4 createIfMissing:0 error:0];
-  v6 = [v5 uuid];
-  if (!v6)
+  v5 = [PLPhotoLibraryIdentifier photoLibraryIdentifierWithPhotoLibraryURL:libraryURL createIfMissing:0 error:0];
+  uuid = [v5 uuid];
+  if (!uuid)
   {
-    v7 = [(PLSearchIndexingEngineLibraryServicesProvider *)self libraryIdentifier];
-    if (v7 > 1)
+    libraryIdentifier = [(PLSearchIndexingEngineLibraryServicesProvider *)self libraryIdentifier];
+    if (libraryIdentifier > 1)
     {
       v11 = @"UBF_SYND";
-      if (v7 != 3)
+      if (libraryIdentifier != 3)
       {
         v11 = 0;
       }
 
-      if (v7 == 2)
+      if (libraryIdentifier == 2)
       {
-        v6 = @"UBF_MSGX";
+        uuid = @"UBF_MSGX";
       }
 
       else
       {
-        v6 = v11;
+        uuid = v11;
       }
     }
 
-    else if (v7)
+    else if (libraryIdentifier)
     {
-      if (v7 == 1)
+      if (libraryIdentifier == 1)
       {
-        v8 = [(PLSearchIndexingEngineLibraryServicesProvider *)self pathManager];
-        v9 = [v8 isDCIM];
+        pathManager2 = [(PLSearchIndexingEngineLibraryServicesProvider *)self pathManager];
+        isDCIM = [pathManager2 isDCIM];
         v10 = @"UBF_SPLX";
-        if (v9)
+        if (isDCIM)
         {
           v10 = @"DCIM_SPL";
         }
 
-        v6 = v10;
+        uuid = v10;
       }
 
       else
       {
-        v6 = 0;
+        uuid = 0;
       }
     }
 
     else
     {
-      v12 = [(PLLibraryServicesManager *)self->_lsm isAppPhotoLibrary];
+      isAppPhotoLibrary = [(PLLibraryServicesManager *)self->_lsm isAppPhotoLibrary];
       v13 = @"UBF_USER";
-      if (v12)
+      if (isAppPhotoLibrary)
       {
         v13 = @"UBF_APPX";
       }
 
-      v6 = v13;
+      uuid = v13;
     }
   }
 
-  v14 = [MEMORY[0x1E69BF210] setupWithLibraryIdentifier:v6 type:2];
+  v14 = [MEMORY[0x1E69BF210] setupWithLibraryIdentifier:uuid type:2];
   [v14 setEnableAutoFlush:1];
   v15 = PLSearchBackendIndexStatusGetLog();
   v16 = v15;
-  if (v6)
+  if (uuid)
   {
     v17 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
 
@@ -119,11 +119,11 @@
       memset(buf, 0, sizeof(buf));
       v18 = PLSearchBackendIndexStatusGetLog();
       os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
-      v19 = [v4 lastPathComponent];
+      lastPathComponent = [libraryURL lastPathComponent];
       v34 = 138543618;
-      v35 = v6;
+      v35 = uuid;
       v36 = 2114;
-      v37 = v19;
+      v37 = lastPathComponent;
       LODWORD(v33) = 22;
       v20 = _os_log_send_and_compose_impl();
 
@@ -142,11 +142,11 @@ LABEL_26:
     v26 = PLSearchBackendIndexStatusGetLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [v4 lastPathComponent];
+      lastPathComponent2 = [libraryURL lastPathComponent];
       *buf = 138543618;
-      *&buf[4] = v6;
+      *&buf[4] = uuid;
       *&buf[12] = 2114;
-      *&buf[14] = v27;
+      *&buf[14] = lastPathComponent2;
       v28 = "[Search Logger]: Library identifier for library : [%{public}@ : %{public}@]";
       v29 = v26;
       v30 = OS_LOG_TYPE_DEFAULT;
@@ -200,9 +200,9 @@ LABEL_31:
       memset(buf, 0, sizeof(buf));
       v23 = PLSearchBackendIndexStatusGetLog();
       os_log_type_enabled(v23, OS_LOG_TYPE_ERROR);
-      v24 = [v4 lastPathComponent];
+      lastPathComponent3 = [libraryURL lastPathComponent];
       v34 = 138543362;
-      v35 = v24;
+      v35 = lastPathComponent3;
       LODWORD(v33) = 12;
       v25 = _os_log_send_and_compose_impl();
 
@@ -219,9 +219,9 @@ LABEL_31:
     v26 = PLSearchBackendIndexStatusGetLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      v27 = [v4 lastPathComponent];
+      lastPathComponent2 = [libraryURL lastPathComponent];
       *buf = 138543362;
-      *&buf[4] = v27;
+      *&buf[4] = lastPathComponent2;
       v28 = "[Search Logger]: Failed to obtain library identifier for library : %{public}@";
       v29 = v26;
       v30 = OS_LOG_TYPE_ERROR;
@@ -238,8 +238,8 @@ LABEL_33:
 - (id)redactedDescription
 {
   v3 = MEMORY[0x1E69BF238];
-  v4 = [(PLLibraryServicesManager *)self->_lsm pathManager];
-  v5 = [v4 photoDirectoryWithType:1];
+  pathManager = [(PLLibraryServicesManager *)self->_lsm pathManager];
+  v5 = [pathManager photoDirectoryWithType:1];
   v6 = [v3 redactedDescriptionForPath:v5];
 
   v7 = MEMORY[0x1E696AEC0];
@@ -251,24 +251,24 @@ LABEL_33:
   return v10;
 }
 
-- (id)libraryWithName:(const char *)a3
+- (id)libraryWithName:(const char *)name
 {
-  v4 = [(PLLibraryServicesManager *)self->_lsm databaseContext];
-  v5 = [v4 newShortLivedLibraryWithName:a3];
+  databaseContext = [(PLLibraryServicesManager *)self->_lsm databaseContext];
+  v5 = [databaseContext newShortLivedLibraryWithName:name];
 
   return v5;
 }
 
-- (PLSearchIndexingEngineLibraryServicesProvider)initWithLSM:(id)a3
+- (PLSearchIndexingEngineLibraryServicesProvider)initWithLSM:(id)m
 {
-  v5 = a3;
+  mCopy = m;
   v9.receiver = self;
   v9.super_class = PLSearchIndexingEngineLibraryServicesProvider;
   v6 = [(PLSearchIndexingEngineLibraryServicesProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lsm, a3);
+    objc_storeStrong(&v6->_lsm, m);
   }
 
   return v7;

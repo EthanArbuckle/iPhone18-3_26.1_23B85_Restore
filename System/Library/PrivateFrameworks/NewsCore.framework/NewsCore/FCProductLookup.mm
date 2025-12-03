@@ -1,34 +1,34 @@
 @interface FCProductLookup
-- (id)initWithOfferName:(void *)a3 appAdamID:(void *)a4 storeExternalVersionID:(void *)a5 bundleID:;
+- (id)initWithOfferName:(void *)name appAdamID:(void *)d storeExternalVersionID:(void *)iD bundleID:;
 - (void)lookup;
-- (void)productsRequest:(id)a3 didReceiveResponse:(id)a4;
-- (void)request:(id)a3 didFailWithError:(id)a4;
-- (void)requestDidFinish:(id)a3;
-- (void)setProductLookupError:(uint64_t)a1;
+- (void)productsRequest:(id)request didReceiveResponse:(id)response;
+- (void)request:(id)request didFailWithError:(id)error;
+- (void)requestDidFinish:(id)finish;
+- (void)setProductLookupError:(uint64_t)error;
 @end
 
 @implementation FCProductLookup
 
-- (id)initWithOfferName:(void *)a3 appAdamID:(void *)a4 storeExternalVersionID:(void *)a5 bundleID:
+- (id)initWithOfferName:(void *)name appAdamID:(void *)d storeExternalVersionID:(void *)iD bundleID:
 {
   v10 = a2;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  if (a1)
+  nameCopy = name;
+  dCopy = d;
+  iDCopy = iD;
+  if (self)
   {
-    v27.receiver = a1;
+    v27.receiver = self;
     v27.super_class = FCProductLookup;
     v14 = objc_msgSendSuper2(&v27, sel_init);
-    a1 = v14;
+    self = v14;
     if (v14)
     {
       objc_storeStrong(v14 + 1, a2);
-      objc_storeStrong(a1 + 2, a3);
-      objc_storeStrong(a1 + 3, a4);
+      objc_storeStrong(self + 2, name);
+      objc_storeStrong(self + 3, d);
       v15 = dispatch_group_create();
-      v16 = a1[5];
-      a1[5] = v15;
+      v16 = self[5];
+      self[5] = v15;
 
       v33 = 0;
       v34 = &v33;
@@ -51,8 +51,8 @@
       v19 = [v17 alloc];
       v20 = [MEMORY[0x1E695DFD8] setWithObjects:{v10, 0}];
       v21 = [v19 initWithProductIdentifiers:v20];
-      v22 = a1[6];
-      a1[6] = v21;
+      v22 = self[6];
+      self[6] = v21;
 
       v33 = 0;
       v34 = &v33;
@@ -74,35 +74,35 @@
       _Block_object_dispose(&v33, 8);
       v25 = objc_alloc_init(v23);
       [v25 setBundleIdentifier:@"com.apple.news"];
-      [v25 setProductsRequestBundleIdentifier:v13];
+      [v25 setProductsRequestBundleIdentifier:iDCopy];
       [v25 setBundleVersion:@"1.0"];
-      [v25 setStoreExternalVersion:v12];
-      [v25 setStoreItemIdentifier:v11];
-      [a1[6] setPaymentQueueClient:v25];
-      [a1[6] setDelegate:a1];
+      [v25 setStoreExternalVersion:dCopy];
+      [v25 setStoreItemIdentifier:nameCopy];
+      [self[6] setPaymentQueueClient:v25];
+      [self[6] setDelegate:self];
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)lookup
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    if (a1[7])
+    selfCopy = self;
+    if (self[7])
     {
-      a1 = [objc_alloc(MEMORY[0x1E69B68F8]) initWithValue:a1[7]];
+      self = [objc_alloc(MEMORY[0x1E69B68F8]) initWithValue:self[7]];
     }
 
     else
     {
-      v3 = a1[8];
+      v3 = self[8];
       v4 = objc_alloc(MEMORY[0x1E69B68F8]);
       if (v3)
       {
-        a1 = [v4 initWithError:v2[8]];
+        self = [v4 initWithError:selfCopy[8]];
       }
 
       else
@@ -111,15 +111,15 @@
         var38[1] = 3221225472;
         var38[2] = __25__FCProductLookup_lookup__block_invoke;
         var38[3] = &unk_1E7C39ED0;
-        var38[4] = v2;
-        a1 = [v4 initWithResolver:var38];
+        var38[4] = selfCopy;
+        self = [v4 initWithResolver:var38];
       }
     }
 
     v1 = var38[8];
   }
 
-  return a1;
+  return self;
 }
 
 void __25__FCProductLookup_lookup__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -216,34 +216,34 @@ LABEL_9:
   return v4();
 }
 
-- (void)setProductLookupError:(uint64_t)a1
+- (void)setProductLookupError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
-    objc_storeStrong((a1 + 64), a2);
+    objc_storeStrong((error + 64), a2);
   }
 }
 
-- (void)productsRequest:(id)a3 didReceiveResponse:(id)a4
+- (void)productsRequest:(id)request didReceiveResponse:(id)response
 {
-  v8 = [a4 products];
-  v5 = [v8 count];
-  v6 = v8;
+  products = [response products];
+  v5 = [products count];
+  v6 = products;
   if (v5)
   {
-    v7 = [v8 firstObject];
+    firstObject = [products firstObject];
     if (self)
     {
-      objc_storeStrong(&self->_product, v7);
+      objc_storeStrong(&self->_product, firstObject);
     }
 
-    v6 = v8;
+    v6 = products;
   }
 
   MEMORY[0x1EEE66BB8](v5, v6);
 }
 
-- (void)requestDidFinish:(id)a3
+- (void)requestDidFinish:(id)finish
 {
   if (self)
   {
@@ -253,9 +253,9 @@ LABEL_9:
   dispatch_group_leave(&self->super);
 }
 
-- (void)request:(id)a3 didFailWithError:(id)a4
+- (void)request:(id)request didFailWithError:(id)error
 {
-  [(FCProductLookup *)self setProductLookupError:a4];
+  [(FCProductLookup *)self setProductLookupError:error];
   if (self)
   {
     productRequestGroup = self->_productRequestGroup;

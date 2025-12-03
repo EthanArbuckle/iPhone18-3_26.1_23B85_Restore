@@ -1,11 +1,11 @@
 @interface SAMountStatusData
-- (SAMountStatusData)initWithMount:(statfs *)a3 status:(netfs_status *)a4;
+- (SAMountStatusData)initWithMount:(statfs *)mount status:(netfs_status *)status;
 - (void)dealloc;
 @end
 
 @implementation SAMountStatusData
 
-- (SAMountStatusData)initWithMount:(statfs *)a3 status:(netfs_status *)a4
+- (SAMountStatusData)initWithMount:(statfs *)mount status:(netfs_status *)status
 {
   v10.receiver = self;
   v10.super_class = SAMountStatusData;
@@ -13,8 +13,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_mount = a3;
-    v6->_status = a4;
+    v6->_mount = mount;
+    v6->_status = status;
     v8 = v6;
   }
 

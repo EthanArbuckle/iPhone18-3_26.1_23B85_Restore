@@ -1,17 +1,17 @@
 @interface _SUUICounterTimeFieldView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_SUUICounterTimeFieldView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_SUUICounterTimeFieldView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation _SUUICounterTimeFieldView
 
-- (_SUUICounterTimeFieldView)initWithFrame:(CGRect)a3
+- (_SUUICounterTimeFieldView)initWithFrame:(CGRect)frame
 {
   v13.receiver = self;
   v13.super_class = _SUUICounterTimeFieldView;
-  v3 = [(_SUUICounterTimeFieldView *)&v13 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_SUUICounterTimeFieldView *)&v13 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -98,21 +98,21 @@
   [(UILabel *)labelLabel setFrame:v31.origin.x, v31.origin.y, v31.size.width, v31.size.height];
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   labelLabel = self->_labelLabel;
-  v5 = a3;
-  [(UILabel *)labelLabel setBackgroundColor:v5];
-  [(UILabel *)self->_valueLabel setBackgroundColor:v5];
+  colorCopy = color;
+  [(UILabel *)labelLabel setBackgroundColor:colorCopy];
+  [(UILabel *)self->_valueLabel setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = _SUUICounterTimeFieldView;
-  [(_SUUICounterTimeFieldView *)&v6 setBackgroundColor:v5];
+  [(_SUUICounterTimeFieldView *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UILabel *)self->_labelLabel sizeThatFits:?];
   v7 = v6;
   v9 = v8;

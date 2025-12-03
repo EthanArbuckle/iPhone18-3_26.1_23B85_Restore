@@ -1,18 +1,18 @@
 @interface CRLBoardFileWriteAssistant
 - (_TtC8Freeform26CRLBoardFileWriteAssistant)init;
-- (void)writeBoard:(_TtC8Freeform8CRLBoard *)a3 completionHandler:(id)a4;
+- (void)writeBoard:(_TtC8Freeform8CRLBoard *)board completionHandler:(id)handler;
 @end
 
 @implementation CRLBoardFileWriteAssistant
 
-- (void)writeBoard:(_TtC8Freeform8CRLBoard *)a3 completionHandler:(id)a4
+- (void)writeBoard:(_TtC8Freeform8CRLBoard *)board completionHandler:(id)handler
 {
   v7 = sub_1005B981C(&qword_1019FB750);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(handler);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = board;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -27,8 +27,8 @@
   v14[3] = 0;
   v14[4] = &unk_1014938A0;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  boardCopy = board;
+  selfCopy = self;
   sub_10119D67C(0, 0, v9, &unk_101470870, v14);
 }
 

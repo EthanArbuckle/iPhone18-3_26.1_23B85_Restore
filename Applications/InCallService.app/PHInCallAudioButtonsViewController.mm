@@ -1,9 +1,9 @@
 @interface PHInCallAudioButtonsViewController
 - (PHAudioButtonsViewControllerProtocolDelegate)delegate;
-- (PHInCallAudioButtonsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PHInCallAudioButtonsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (TUCall)prioritizedCall;
-- (void)setDelegate:(id)a3;
-- (void)setPrioritizedCall:(id)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setPrioritizedCall:(id)call;
 @end
 
 @implementation PHInCallAudioButtonsViewController
@@ -15,10 +15,10 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1001F8D94();
 }
 
@@ -29,21 +29,21 @@
   return v2;
 }
 
-- (void)setPrioritizedCall:(id)a3
+- (void)setPrioritizedCall:(id)call
 {
-  v5 = a3;
-  v6 = self;
-  sub_1001F8E9C(a3);
+  callCopy = call;
+  selfCopy = self;
+  sub_1001F8E9C(call);
 }
 
-- (PHInCallAudioButtonsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PHInCallAudioButtonsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1001F9578();
 }
 

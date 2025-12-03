@@ -7,11 +7,11 @@
 
 - (id)iconForTable
 {
-  v1 = [a1 contact];
-  v2 = v1;
-  if (v1)
+  contact = [self contact];
+  v2 = contact;
+  if (contact)
   {
-    v3 = v1;
+    v3 = contact;
   }
 
   else
@@ -28,11 +28,11 @@
 
 - (id)iconForDetail
 {
-  v1 = [a1 contact];
-  v2 = v1;
-  if (v1)
+  contact = [self contact];
+  v2 = contact;
+  if (contact)
   {
-    v3 = v1;
+    v3 = contact;
   }
 
   else

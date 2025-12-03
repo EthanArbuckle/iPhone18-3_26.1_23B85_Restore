@@ -1,10 +1,10 @@
 @interface AssistiveTouchIdleOpacityDetailController
-- (id)idleOpacity:(id)a3;
+- (id)idleOpacity:(id)opacity;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)_handleSliderIsChanging:(id)a3;
-- (void)setIdleOpacity:(id)a3 specifier:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)_handleSliderIsChanging:(id)changing;
+- (void)setIdleOpacity:(id)opacity specifier:(id)specifier;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 @end
 
 @implementation AssistiveTouchIdleOpacityDetailController
@@ -25,40 +25,40 @@
   return v4;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v13 = a4;
+  cellCopy = cell;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v13 contentView];
-    [v5 frame];
+    contentView = [cellCopy contentView];
+    [contentView frame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
 
-    v12 = [v13 control];
-    [v12 setFrame:{(v9 - v9 * 0.8) * 0.5, v7, v9 * 0.8, v11}];
+    control = [cellCopy control];
+    [control setFrame:{(v9 - v9 * 0.8) * 0.5, v7, v9 * 0.8, v11}];
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v8.receiver = self;
   v8.super_class = AssistiveTouchIdleOpacityDetailController;
-  v5 = [(AssistiveTouchIdleOpacityDetailController *)&v8 tableView:a3 cellForRowAtIndexPath:a4];
+  v5 = [(AssistiveTouchIdleOpacityDetailController *)&v8 tableView:view cellForRowAtIndexPath:path];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 control];
-    [v6 setContinuous:1];
-    [v6 addTarget:self action:"_handleSliderIsChanging:" forControlEvents:4096];
+    control = [v5 control];
+    [control setContinuous:1];
+    [control addTarget:self action:"_handleSliderIsChanging:" forControlEvents:4096];
   }
 
   return v5;
 }
 
-- (id)idleOpacity:(id)a3
+- (id)idleOpacity:(id)opacity
 {
   v3 = +[AXSettings sharedInstance];
   [v3 assistiveTouchIdleOpacity];
@@ -67,17 +67,17 @@
   return v4;
 }
 
-- (void)setIdleOpacity:(id)a3 specifier:(id)a4
+- (void)setIdleOpacity:(id)opacity specifier:(id)specifier
 {
-  [a3 floatValue];
+  [opacity floatValue];
   v5 = v4;
   v6 = +[AXSettings sharedInstance];
   [v6 setAssistiveTouchIdleOpacity:v5];
 }
 
-- (void)_handleSliderIsChanging:(id)a3
+- (void)_handleSliderIsChanging:(id)changing
 {
-  [a3 value];
+  [changing value];
   v4 = v3;
   v5 = +[AXSettings sharedInstance];
   [v5 setAssistiveTouchIdleOpacity:v4];

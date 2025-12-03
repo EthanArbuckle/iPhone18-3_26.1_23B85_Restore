@@ -1,12 +1,12 @@
 @interface SingleValueView
-- (_TtC15HealthRecordsUI15SingleValueView)initWithCoder:(id)a3;
+- (_TtC15HealthRecordsUI15SingleValueView)initWithCoder:(id)coder;
 - (void)didMoveToSuperview;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation SingleValueView
 
-- (_TtC15HealthRecordsUI15SingleValueView)initWithCoder:(id)a3
+- (_TtC15HealthRecordsUI15SingleValueView)initWithCoder:(id)coder
 {
   v3 = self + OBJC_IVAR____TtC15HealthRecordsUI15SingleValueView_viewData;
   *v3 = 0u;
@@ -33,11 +33,11 @@
   sub_1D11C2EA8();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D11C23C8(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1D11C23C8(change);
 }
 
 @end

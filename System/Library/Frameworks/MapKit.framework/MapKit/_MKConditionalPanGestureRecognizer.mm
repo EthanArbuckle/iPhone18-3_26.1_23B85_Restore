@@ -1,14 +1,14 @@
 @interface _MKConditionalPanGestureRecognizer
-- (BOOL)_shouldReceiveEvent:(id)a3;
-- (_MKConditionalPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (BOOL)_shouldReceiveEvent:(id)event;
+- (_MKConditionalPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 @end
 
 @implementation _MKConditionalPanGestureRecognizer
 
-- (BOOL)_shouldReceiveEvent:(id)a3
+- (BOOL)_shouldReceiveEvent:(id)event
 {
-  v4 = a3;
-  if (!-[_MKConditionalPanGestureRecognizer state](self, "state") && (self->_requiredModifierFlags & ~[v4 modifierFlags]) != 0)
+  eventCopy = event;
+  if (!-[_MKConditionalPanGestureRecognizer state](self, "state") && (self->_requiredModifierFlags & ~[eventCopy modifierFlags]) != 0)
   {
     [(_MKConditionalPanGestureRecognizer *)self setState:5];
     v5 = 0;
@@ -18,17 +18,17 @@
   {
     v7.receiver = self;
     v7.super_class = _MKConditionalPanGestureRecognizer;
-    v5 = [(_MKConditionalPanGestureRecognizer *)&v7 _shouldReceiveEvent:v4];
+    v5 = [(_MKConditionalPanGestureRecognizer *)&v7 _shouldReceiveEvent:eventCopy];
   }
 
   return v5;
 }
 
-- (_MKConditionalPanGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_MKConditionalPanGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v5.receiver = self;
   v5.super_class = _MKConditionalPanGestureRecognizer;
-  return [(_MKConditionalPanGestureRecognizer *)&v5 initWithTarget:a3 action:a4];
+  return [(_MKConditionalPanGestureRecognizer *)&v5 initWithTarget:target action:action];
 }
 
 @end

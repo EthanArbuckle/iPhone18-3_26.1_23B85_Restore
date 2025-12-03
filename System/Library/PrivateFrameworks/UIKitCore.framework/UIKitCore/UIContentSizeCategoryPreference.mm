@@ -1,17 +1,17 @@
 @interface UIContentSizeCategoryPreference
 + (id)system;
-+ (void)_overrideSystemPreferenceToContentSizeCategory:(id)a3;
-+ (void)_overrideSystemPreferenceToContentSizeCategory:(id)a3 forBlock:(id)a4;
-+ (void)_populateUserDefaultsContentSizeCategory:(id *)a3 carPlay:(id *)a4;
++ (void)_overrideSystemPreferenceToContentSizeCategory:(id)category;
++ (void)_overrideSystemPreferenceToContentSizeCategory:(id)category forBlock:(id)block;
++ (void)_populateUserDefaultsContentSizeCategory:(id *)category carPlay:(id *)play;
 + (void)_resetSystemPreferenceOverride;
-+ (void)asyncOverrideSystemWithPreference:(id)a3;
++ (void)asyncOverrideSystemWithPreference:(id)preference;
 + (void)asyncResetSystemPreferenceOverride;
-+ (void)overrideSystemWithPreference:(id)a3;
-+ (void)overrideSystemWithPreference:(id)a3 forBlock:(id)a4;
++ (void)overrideSystemWithPreference:(id)preference;
++ (void)overrideSystemWithPreference:(id)preference forBlock:(id)block;
 + (void)resetSystemPreferenceOverride;
-- (BOOL)isEqual:(id)a3;
-- (UIContentSizeCategoryPreference)initWithContentSizeCategory:(id)a3;
-- (UIContentSizeCategoryPreference)initWithContentSizeCategory:(id)a3 carPlay:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (UIContentSizeCategoryPreference)initWithContentSizeCategory:(id)category;
+- (UIContentSizeCategoryPreference)initWithContentSizeCategory:(id)category carPlay:(id)play;
 - (UIContentSizeCategoryPreference)initWithRawUserDefaults;
 - (id)description;
 - (unint64_t)hash;
@@ -24,9 +24,9 @@
   v2 = __preferences;
   if (!__preferences)
   {
-    v3 = [[_UIContentSizeCategoryPreferenceSystem alloc] initAsSystem];
+    initAsSystem = [[_UIContentSizeCategoryPreferenceSystem alloc] initAsSystem];
     v4 = __preferences;
-    __preferences = v3;
+    __preferences = initAsSystem;
 
     [__preferences _readAndObservePreferences];
     v2 = __preferences;
@@ -35,54 +35,54 @@
   return v2;
 }
 
-+ (void)overrideSystemWithPreference:(id)a3 forBlock:(id)a4
++ (void)overrideSystemWithPreference:(id)preference forBlock:(id)block
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [a1 system];
-  if (v9)
+  preferenceCopy = preference;
+  blockCopy = block;
+  system = [self system];
+  if (preferenceCopy)
   {
-    v8 = [__preferences overridePreferences];
-    [__preferences setOverridePreferences:v9];
-    if (v6)
+    overridePreferences = [__preferences overridePreferences];
+    [__preferences setOverridePreferences:preferenceCopy];
+    if (blockCopy)
     {
-      v6[2](v6);
+      blockCopy[2](blockCopy);
     }
 
-    [__preferences setOverridePreferences:v8];
+    [__preferences setOverridePreferences:overridePreferences];
   }
 }
 
-+ (void)overrideSystemWithPreference:(id)a3
++ (void)overrideSystemWithPreference:(id)preference
 {
-  v6 = a3;
-  v4 = [a1 system];
-  v5 = v6;
-  if (v6)
+  preferenceCopy = preference;
+  system = [self system];
+  v5 = preferenceCopy;
+  if (preferenceCopy)
   {
-    [__preferences setOverridePreferences:v6];
-    v5 = v6;
+    [__preferences setOverridePreferences:preferenceCopy];
+    v5 = preferenceCopy;
   }
 }
 
 + (void)resetSystemPreferenceOverride
 {
-  v2 = [a1 system];
+  system = [self system];
   v3 = __preferences;
 
   [v3 setOverridePreferences:0];
 }
 
-+ (void)asyncOverrideSystemWithPreference:(id)a3
++ (void)asyncOverrideSystemWithPreference:(id)preference
 {
-  v4 = a3;
+  preferenceCopy = preference;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69__UIContentSizeCategoryPreference_asyncOverrideSystemWithPreference___block_invoke;
   v6[3] = &unk_1E70F32F0;
-  v7 = v4;
-  v8 = a1;
-  v5 = v4;
+  v7 = preferenceCopy;
+  selfCopy = self;
+  v5 = preferenceCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -92,7 +92,7 @@
   block[1] = 3221225472;
   block[2] = __69__UIContentSizeCategoryPreference_asyncResetSystemPreferenceOverride__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -102,32 +102,32 @@
   __preferences = 0;
 }
 
-+ (void)_overrideSystemPreferenceToContentSizeCategory:(id)a3
++ (void)_overrideSystemPreferenceToContentSizeCategory:(id)category
 {
-  v4 = a3;
-  v5 = [[UIContentSizeCategoryPreference alloc] initWithContentSizeCategory:v4];
+  categoryCopy = category;
+  v5 = [[UIContentSizeCategoryPreference alloc] initWithContentSizeCategory:categoryCopy];
 
-  [a1 overrideSystemWithPreference:v5];
+  [self overrideSystemWithPreference:v5];
 }
 
-+ (void)_overrideSystemPreferenceToContentSizeCategory:(id)a3 forBlock:(id)a4
++ (void)_overrideSystemPreferenceToContentSizeCategory:(id)category forBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[UIContentSizeCategoryPreference alloc] initWithContentSizeCategory:v7 carPlay:@"_UICTContentSizeCategoryUnspecified"];
+  blockCopy = block;
+  categoryCopy = category;
+  v8 = [[UIContentSizeCategoryPreference alloc] initWithContentSizeCategory:categoryCopy carPlay:@"_UICTContentSizeCategoryUnspecified"];
 
-  [a1 overrideSystemWithPreference:v8 forBlock:v6];
+  [self overrideSystemWithPreference:v8 forBlock:blockCopy];
 }
 
-- (UIContentSizeCategoryPreference)initWithContentSizeCategory:(id)a3
+- (UIContentSizeCategoryPreference)initWithContentSizeCategory:(id)category
 {
-  v4 = a3;
+  categoryCopy = category;
   v9.receiver = self;
   v9.super_class = UIContentSizeCategoryPreference;
   v5 = [(UIContentSizeCategoryPreference *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [categoryCopy copy];
     preferredContentSizeCategory = v5->_preferredContentSizeCategory;
     v5->_preferredContentSizeCategory = v6;
 
@@ -137,20 +137,20 @@
   return v5;
 }
 
-- (UIContentSizeCategoryPreference)initWithContentSizeCategory:(id)a3 carPlay:(id)a4
+- (UIContentSizeCategoryPreference)initWithContentSizeCategory:(id)category carPlay:(id)play
 {
-  v6 = a3;
-  v7 = a4;
+  categoryCopy = category;
+  playCopy = play;
   v14.receiver = self;
   v14.super_class = UIContentSizeCategoryPreference;
   v8 = [(UIContentSizeCategoryPreference *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [categoryCopy copy];
     preferredContentSizeCategory = v8->_preferredContentSizeCategory;
     v8->_preferredContentSizeCategory = v9;
 
-    v11 = [v7 copy];
+    v11 = [playCopy copy];
     preferredContentSizeCategoryCarPlay = v8->_preferredContentSizeCategoryCarPlay;
     v8->_preferredContentSizeCategoryCarPlay = v11;
   }
@@ -160,43 +160,43 @@
 
 - (UIContentSizeCategoryPreference)initWithRawUserDefaults
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     v4 = 0;
     v5 = 0;
     [objc_opt_class() _populateUserDefaultsContentSizeCategory:&v5 carPlay:&v4];
-    v2 = [(UIContentSizeCategoryPreference *)v2 initWithContentSizeCategory:v5 carPlay:v4];
+    selfCopy = [(UIContentSizeCategoryPreference *)selfCopy initWithContentSizeCategory:v5 carPlay:v4];
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
+  equalCopy = equal;
   v7 = objc_opt_class();
   if (v7 == objc_opt_class())
   {
-    v9 = [(UIContentSizeCategoryPreference *)self preferredContentSizeCategory];
-    v10 = [v6 preferredContentSizeCategory];
-    if (v9 == v10 || (-[UIContentSizeCategoryPreference preferredContentSizeCategory](self, "preferredContentSizeCategory"), v3 = objc_claimAutoreleasedReturnValue(), [v6 preferredContentSizeCategory], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqualToString:", v4)))
+    preferredContentSizeCategory = [(UIContentSizeCategoryPreference *)self preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [equalCopy preferredContentSizeCategory];
+    if (preferredContentSizeCategory == preferredContentSizeCategory2 || (-[UIContentSizeCategoryPreference preferredContentSizeCategory](self, "preferredContentSizeCategory"), v3 = objc_claimAutoreleasedReturnValue(), [equalCopy preferredContentSizeCategory], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "isEqualToString:", v4)))
     {
-      v11 = [(UIContentSizeCategoryPreference *)self preferredContentSizeCategoryCarPlay];
-      v12 = [v6 preferredContentSizeCategoryCarPlay];
-      if (v11 == v12)
+      preferredContentSizeCategoryCarPlay = [(UIContentSizeCategoryPreference *)self preferredContentSizeCategoryCarPlay];
+      preferredContentSizeCategoryCarPlay2 = [equalCopy preferredContentSizeCategoryCarPlay];
+      if (preferredContentSizeCategoryCarPlay == preferredContentSizeCategoryCarPlay2)
       {
         v8 = 1;
       }
 
       else
       {
-        v13 = [(UIContentSizeCategoryPreference *)self preferredContentSizeCategoryCarPlay];
-        v14 = [v6 preferredContentSizeCategoryCarPlay];
-        v8 = [v13 isEqualToString:v14];
+        preferredContentSizeCategoryCarPlay3 = [(UIContentSizeCategoryPreference *)self preferredContentSizeCategoryCarPlay];
+        preferredContentSizeCategoryCarPlay4 = [equalCopy preferredContentSizeCategoryCarPlay];
+        v8 = [preferredContentSizeCategoryCarPlay3 isEqualToString:preferredContentSizeCategoryCarPlay4];
       }
 
-      if (v9 == v10)
+      if (preferredContentSizeCategory == preferredContentSizeCategory2)
       {
         goto LABEL_11;
       }
@@ -220,9 +220,9 @@ LABEL_12:
 - (unint64_t)hash
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(UIContentSizeCategoryPreference *)self preferredContentSizeCategory];
-  v5 = [(UIContentSizeCategoryPreference *)self preferredContentSizeCategoryCarPlay];
-  v6 = [v3 stringWithFormat:@"%@%@", v4, v5];
+  preferredContentSizeCategory = [(UIContentSizeCategoryPreference *)self preferredContentSizeCategory];
+  preferredContentSizeCategoryCarPlay = [(UIContentSizeCategoryPreference *)self preferredContentSizeCategoryCarPlay];
+  v6 = [v3 stringWithFormat:@"%@%@", preferredContentSizeCategory, preferredContentSizeCategoryCarPlay];
   v7 = [v6 hash];
 
   return v7;
@@ -232,26 +232,26 @@ LABEL_12:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(UIContentSizeCategoryPreference *)self preferredContentSizeCategory];
-  v6 = [(UIContentSizeCategoryPreference *)self preferredContentSizeCategoryCarPlay];
-  v7 = [v3 stringWithFormat:@"<%@:%p %@ carplay=%@>", v4, self, v5, v6];
+  preferredContentSizeCategory = [(UIContentSizeCategoryPreference *)self preferredContentSizeCategory];
+  preferredContentSizeCategoryCarPlay = [(UIContentSizeCategoryPreference *)self preferredContentSizeCategoryCarPlay];
+  v7 = [v3 stringWithFormat:@"<%@:%p %@ carplay=%@>", v4, self, preferredContentSizeCategory, preferredContentSizeCategoryCarPlay];
 
   return v7;
 }
 
-+ (void)_populateUserDefaultsContentSizeCategory:(id *)a3 carPlay:(id *)a4
++ (void)_populateUserDefaultsContentSizeCategory:(id *)category carPlay:(id *)play
 {
   v13 = _UIKitUserDefaults();
   [v13 synchronize];
-  if (a3)
+  if (category)
   {
     v7 = v6 = _AXSCopyPreferredContentSizeCategoryName();
-    v8 = *a3;
-    *a3 = v7;
+    v8 = *category;
+    *category = v7;
   }
 
   v9 = v13;
-  if (a4)
+  if (play)
   {
     v10 = [v13 objectForKey:@"UICarPlayPreferredContentSizeCategoryName"];
     v11 = v10;
@@ -265,7 +265,7 @@ LABEL_12:
       v12 = @"UICTContentSizeCategoryL";
     }
 
-    objc_storeStrong(a4, v12);
+    objc_storeStrong(play, v12);
 
     v9 = v13;
   }

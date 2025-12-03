@@ -1,36 +1,36 @@
 @interface PersonalizedItemAutocompleteFilter
-- (BOOL)itemIsAllowed:(id)a3;
+- (BOOL)itemIsAllowed:(id)allowed;
 - (PersonalizedItemAutocompleteFilter)init;
 - (id)allItems;
 - (void)_invalidateResults;
 - (void)dealloc;
-- (void)personalizedItemManager:(id)a3 didChangeItems:(id)a4 itemGroups:(id)a5;
-- (void)setHasItemsWhenSearchStringIsEmpty:(BOOL)a3;
-- (void)setInputItems:(id)a3;
-- (void)setSearchString:(id)a3;
+- (void)personalizedItemManager:(id)manager didChangeItems:(id)items itemGroups:(id)groups;
+- (void)setHasItemsWhenSearchStringIsEmpty:(BOOL)empty;
+- (void)setInputItems:(id)items;
+- (void)setSearchString:(id)string;
 @end
 
 @implementation PersonalizedItemAutocompleteFilter
 
-- (void)personalizedItemManager:(id)a3 didChangeItems:(id)a4 itemGroups:(id)a5
+- (void)personalizedItemManager:(id)manager didChangeItems:(id)items itemGroups:(id)groups
 {
-  v6 = a4;
+  itemsCopy = items;
   lock = self->_lock;
   v9 = _NSConcreteStackBlock;
   v10 = 3221225472;
   v11 = sub_100D1D6A4;
   v12 = &unk_101661A90;
-  v13 = self;
-  v14 = v6;
-  v8 = v6;
+  selfCopy = self;
+  v14 = itemsCopy;
+  v8 = itemsCopy;
   dispatch_async(lock, &v9);
   [(PersonalizedItemAutocompleteFilter *)self _invalidateResults:v9];
 }
 
-- (BOOL)itemIsAllowed:(id)a3
+- (BOOL)itemIsAllowed:(id)allowed
 {
-  v3 = a3;
-  v4 = (+[AddressBookManager addressBookAllowed](AddressBookManager, "addressBookAllowed") || [v3 sourceType] != 4 && objc_msgSend(v3, "sourceSubtype") != 4 && objc_msgSend(v3, "sourceSubtype") != 7 && objc_msgSend(v3, "sourceSubtype") != 9 && objc_msgSend(v3, "sourceSubtype") != 14 && objc_msgSend(v3, "sourceSubtype") != 15 && objc_msgSend(v3, "sourceSubtype") != 32) && (objc_msgSend(v3, "sourceType") != 9 || objc_msgSend(v3, "sourceSubtype") != 37) && (objc_msgSend(v3, "sourceType") != 3 || objc_msgSend(v3, "sourceSubtype") != 1) && (objc_msgSend(v3, "sourceType") != 9 || objc_msgSend(v3, "sourceSubtype") != 14 && objc_msgSend(v3, "sourceSubtype") != 15 && objc_msgSend(v3, "sourceSubtype") != 32 && objc_msgSend(v3, "sourceSubtype") != 31);
+  allowedCopy = allowed;
+  v4 = (+[AddressBookManager addressBookAllowed](AddressBookManager, "addressBookAllowed") || [allowedCopy sourceType] != 4 && objc_msgSend(allowedCopy, "sourceSubtype") != 4 && objc_msgSend(allowedCopy, "sourceSubtype") != 7 && objc_msgSend(allowedCopy, "sourceSubtype") != 9 && objc_msgSend(allowedCopy, "sourceSubtype") != 14 && objc_msgSend(allowedCopy, "sourceSubtype") != 15 && objc_msgSend(allowedCopy, "sourceSubtype") != 32) && (objc_msgSend(allowedCopy, "sourceType") != 9 || objc_msgSend(allowedCopy, "sourceSubtype") != 37) && (objc_msgSend(allowedCopy, "sourceType") != 3 || objc_msgSend(allowedCopy, "sourceSubtype") != 1) && (objc_msgSend(allowedCopy, "sourceType") != 9 || objc_msgSend(allowedCopy, "sourceSubtype") != 14 && objc_msgSend(allowedCopy, "sourceSubtype") != 15 && objc_msgSend(allowedCopy, "sourceSubtype") != 32 && objc_msgSend(allowedCopy, "sourceSubtype") != 31);
 
   return v4;
 }
@@ -84,27 +84,27 @@
   dispatch_async(lock, block);
 }
 
-- (void)setHasItemsWhenSearchStringIsEmpty:(BOOL)a3
+- (void)setHasItemsWhenSearchStringIsEmpty:(BOOL)empty
 {
-  if (self->_hasItemsWhenSearchStringIsEmpty != a3)
+  if (self->_hasItemsWhenSearchStringIsEmpty != empty)
   {
-    self->_hasItemsWhenSearchStringIsEmpty = a3;
+    self->_hasItemsWhenSearchStringIsEmpty = empty;
     [(PersonalizedItemAutocompleteFilter *)self _invalidateResults];
   }
 }
 
-- (void)setInputItems:(id)a3
+- (void)setInputItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   inputItems = self->_inputItems;
-  if (inputItems != v5)
+  if (inputItems != itemsCopy)
   {
     if (inputItems)
     {
       [(PersonalizedItemManager *)inputItems removeObserver:self];
     }
 
-    objc_storeStrong(&self->_inputItems, a3);
+    objc_storeStrong(&self->_inputItems, items);
     v7 = self->_inputItems;
     if (v7)
     {
@@ -116,22 +116,22 @@
     v10 = 3221225472;
     v11 = sub_100D1E10C;
     v12 = &unk_101661A90;
-    v13 = self;
-    v14 = v5;
+    selfCopy = self;
+    v14 = itemsCopy;
     dispatch_async(lock, &v9);
     [(PersonalizedItemAutocompleteFilter *)self _invalidateResults:v9];
   }
 }
 
-- (void)setSearchString:(id)a3
+- (void)setSearchString:(id)string
 {
-  v5 = a3;
-  if (self->_searchString != v5)
+  stringCopy = string;
+  if (self->_searchString != stringCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_searchString, a3);
+    v6 = stringCopy;
+    objc_storeStrong(&self->_searchString, string);
     [(PersonalizedItemAutocompleteFilter *)self _invalidateResults];
-    v5 = v6;
+    stringCopy = v6;
   }
 }
 

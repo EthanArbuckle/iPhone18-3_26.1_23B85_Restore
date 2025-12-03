@@ -1,12 +1,12 @@
 @interface SFCreateContactCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFCreateContactCommand)initWithCoder:(id)a3;
-- (SFCreateContactCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFCreateContactCommand)initWithCoder:(id)coder;
+- (SFCreateContactCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFCreateContactCommand
@@ -16,33 +16,33 @@
   v8.receiver = self;
   v8.super_class = SFCreateContactCommand;
   v3 = [(SFCommand *)&v8 hash];
-  v4 = [(SFCreateContactCommand *)self person];
-  v5 = [v4 hash];
+  person = [(SFCreateContactCommand *)self person];
+  v5 = [person hash];
   v6 = v5 ^ [(SFCreateContactCommand *)self addToExistingContact];
 
   return v6 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
   }
 
   else
   {
-    if ([(SFCreateContactCommand *)v6 isMemberOfClass:objc_opt_class()])
+    if ([(SFCreateContactCommand *)equalCopy isMemberOfClass:objc_opt_class()])
     {
       v14.receiver = self;
       v14.super_class = SFCreateContactCommand;
-      if ([(SFCommand *)&v14 isEqual:v6])
+      if ([(SFCommand *)&v14 isEqual:equalCopy])
       {
-        v7 = v6;
-        v8 = [(SFCreateContactCommand *)self person];
-        v9 = [(SFCreateContactCommand *)v7 person];
-        if ((v8 != 0) == (v9 == 0))
+        v7 = equalCopy;
+        person = [(SFCreateContactCommand *)self person];
+        person2 = [(SFCreateContactCommand *)v7 person];
+        if ((person != 0) == (person2 == 0))
         {
           LOBYTE(v11) = 0;
 LABEL_14:
@@ -50,12 +50,12 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v10 = [(SFCreateContactCommand *)self person];
-        if (!v10 || (-[SFCreateContactCommand person](self, "person"), v3 = objc_claimAutoreleasedReturnValue(), -[SFCreateContactCommand person](v7, "person"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
+        person3 = [(SFCreateContactCommand *)self person];
+        if (!person3 || (-[SFCreateContactCommand person](self, "person"), v3 = objc_claimAutoreleasedReturnValue(), -[SFCreateContactCommand person](v7, "person"), v4 = objc_claimAutoreleasedReturnValue(), [v3 isEqual:v4]))
         {
-          v12 = [(SFCreateContactCommand *)self addToExistingContact];
-          v11 = v12 ^ [(SFCreateContactCommand *)v7 addToExistingContact]^ 1;
-          if (!v10)
+          addToExistingContact = [(SFCreateContactCommand *)self addToExistingContact];
+          v11 = addToExistingContact ^ [(SFCreateContactCommand *)v7 addToExistingContact]^ 1;
+          if (!person3)
           {
 LABEL_13:
 
@@ -80,13 +80,13 @@ LABEL_15:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFCreateContactCommand;
-  v4 = [(SFCommand *)&v8 copyWithZone:a3];
-  v5 = [(SFCreateContactCommand *)self person];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v8 copyWithZone:zone];
+  person = [(SFCreateContactCommand *)self person];
+  v6 = [person copy];
   [v4 setPerson:v6];
 
   [v4 setAddToExistingContact:{-[SFCreateContactCommand addToExistingContact](self, "addToExistingContact")}];
@@ -96,78 +96,78 @@ LABEL_15:
 - (NSData)jsonData
 {
   v2 = [[_SFPBCreateContactCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBCreateContactCommand *)v2 jsonData];
+  jsonData = [(_SFPBCreateContactCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBCreateContactCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBCreateContactCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBCreateContactCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFCreateContactCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFCreateContactCommand)initWithCoder:(id)a3
+- (SFCreateContactCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFCreateContactCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 person];
-    [(SFCreateContactCommand *)v5 setPerson:v9];
+    person = [(SFCommand *)v8 person];
+    [(SFCreateContactCommand *)v5 setPerson:person];
 
     [(SFCreateContactCommand *)v5 setAddToExistingContact:[(SFCommand *)v8 addToExistingContact]];
-    v10 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v10];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v11 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v11];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v12 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v12];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v13 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v13];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;
 }
 
-- (SFCreateContactCommand)initWithProtobuf:(id)a3
+- (SFCreateContactCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v12.receiver = self;
   v12.super_class = SFCreateContactCommand;
   v5 = [(SFCreateContactCommand *)&v12 init];
   if (v5)
   {
-    v6 = [v4 person];
+    person = [protobufCopy person];
 
-    if (v6)
+    if (person)
     {
       v7 = [SFPerson alloc];
-      v8 = [v4 person];
-      v9 = [(SFPerson *)v7 initWithProtobuf:v8];
+      person2 = [protobufCopy person];
+      v9 = [(SFPerson *)v7 initWithProtobuf:person2];
       [(SFCreateContactCommand *)v5 setPerson:v9];
     }
 
-    if ([v4 addToExistingContact])
+    if ([protobufCopy addToExistingContact])
     {
-      -[SFCreateContactCommand setAddToExistingContact:](v5, "setAddToExistingContact:", [v4 addToExistingContact]);
+      -[SFCreateContactCommand setAddToExistingContact:](v5, "setAddToExistingContact:", [protobufCopy addToExistingContact]);
     }
 
     v10 = v5;

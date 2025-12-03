@@ -1,25 +1,25 @@
 @interface PKPaymentOfferInstallmentFeeDetailItem
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOfferInstallmentFeeDetailItem)initWithCoder:(id)a3;
-- (PKPaymentOfferInstallmentFeeDetailItem)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOfferInstallmentFeeDetailItem)initWithCoder:(id)coder;
+- (PKPaymentOfferInstallmentFeeDetailItem)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentOfferInstallmentFeeDetailItem
 
-- (PKPaymentOfferInstallmentFeeDetailItem)initWithDictionary:(id)a3
+- (PKPaymentOfferInstallmentFeeDetailItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v21.receiver = self;
   v21.super_class = PKPaymentOfferInstallmentFeeDetailItem;
   v5 = [(PKPaymentOfferInstallmentFeeDetailItem *)&v21 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"type"];
+    v6 = [dictionaryCopy PKStringForKey:@"type"];
     v7 = v6;
     if (v6 != @"recurring")
     {
@@ -49,19 +49,19 @@ LABEL_5:
 LABEL_10:
 
     v5->_type = v9;
-    v13 = [v4 PKCurrencyAmountForKey:@"feeAmount"];
+    v13 = [dictionaryCopy PKCurrencyAmountForKey:@"feeAmount"];
     feeAmount = v5->_feeAmount;
     v5->_feeAmount = v13;
 
-    v15 = [v4 PKCurrencyAmountForKey:@"totalFees"];
+    v15 = [dictionaryCopy PKCurrencyAmountForKey:@"totalFees"];
     totalFees = v5->_totalFees;
     v5->_totalFees = v15;
 
-    v17 = [v4 PKStringForKey:@"feesPeriod"];
+    v17 = [dictionaryCopy PKStringForKey:@"feesPeriod"];
     v5->_feesPeriod = PKPaymentOfferPeriodFromString(v17);
 
-    v5->_feesInterval = [v4 PKIntegerForKey:@"feesInterval"];
-    v18 = [v4 PKDateForKey:@"feeDate"];
+    v5->_feesInterval = [dictionaryCopy PKIntegerForKey:@"feesInterval"];
+    v18 = [dictionaryCopy PKDateForKey:@"feeDate"];
     feeDate = v5->_feeDate;
     v5->_feeDate = v18;
   }
@@ -91,11 +91,11 @@ LABEL_10:
   }
 
   [v3 setObject:v7 forKeyedSubscript:@"type"];
-  v8 = [(PKCurrencyAmount *)self->_feeAmount dictionaryRepresentation];
-  [v4 setObject:v8 forKeyedSubscript:@"feeAmount"];
+  dictionaryRepresentation = [(PKCurrencyAmount *)self->_feeAmount dictionaryRepresentation];
+  [v4 setObject:dictionaryRepresentation forKeyedSubscript:@"feeAmount"];
 
-  v9 = [(PKCurrencyAmount *)self->_totalFees dictionaryRepresentation];
-  [v4 setObject:v9 forKeyedSubscript:@"totalFees"];
+  dictionaryRepresentation2 = [(PKCurrencyAmount *)self->_totalFees dictionaryRepresentation];
+  [v4 setObject:dictionaryRepresentation2 forKeyedSubscript:@"totalFees"];
 
   v10 = PKPaymentOfferPeriodToString(self->_feesPeriod);
   [v4 setObject:v10 forKeyedSubscript:@"feesPeriod"];
@@ -111,18 +111,18 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -243,58 +243,58 @@ LABEL_26:
   return v3;
 }
 
-- (PKPaymentOfferInstallmentFeeDetailItem)initWithCoder:(id)a3
+- (PKPaymentOfferInstallmentFeeDetailItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKPaymentOfferInstallmentFeeDetailItem;
   v5 = [(PKPaymentOfferInstallmentFeeDetailItem *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"feeAmount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"feeAmount"];
     feeAmount = v5->_feeAmount;
     v5->_feeAmount = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalFees"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalFees"];
     totalFees = v5->_totalFees;
     v5->_totalFees = v8;
 
-    v5->_feesPeriod = [v4 decodeIntegerForKey:@"feesPeriod"];
-    v5->_feesInterval = [v4 decodeIntegerForKey:@"feesInterval"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"feeDate"];
+    v5->_feesPeriod = [coderCopy decodeIntegerForKey:@"feesPeriod"];
+    v5->_feesInterval = [coderCopy decodeIntegerForKey:@"feesInterval"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"feeDate"];
     feeDate = v5->_feeDate;
     v5->_feeDate = v10;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   feeAmount = self->_feeAmount;
-  v5 = a3;
-  [v5 encodeObject:feeAmount forKey:@"feeAmount"];
-  [v5 encodeObject:self->_totalFees forKey:@"totalFees"];
-  [v5 encodeObject:self->_feeDate forKey:@"feeDate"];
-  [v5 encodeInteger:self->_feesPeriod forKey:@"feesPeriod"];
-  [v5 encodeInteger:self->_feesInterval forKey:@"feesInterval"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
+  coderCopy = coder;
+  [coderCopy encodeObject:feeAmount forKey:@"feeAmount"];
+  [coderCopy encodeObject:self->_totalFees forKey:@"totalFees"];
+  [coderCopy encodeObject:self->_feeDate forKey:@"feeDate"];
+  [coderCopy encodeInteger:self->_feesPeriod forKey:@"feesPeriod"];
+  [coderCopy encodeInteger:self->_feesInterval forKey:@"feesInterval"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentOfferInstallmentFeeDetailItem allocWithZone:](PKPaymentOfferInstallmentFeeDetailItem init];
-  v6 = [(PKCurrencyAmount *)self->_feeAmount copyWithZone:a3];
+  v6 = [(PKCurrencyAmount *)self->_feeAmount copyWithZone:zone];
   feeAmount = v5->_feeAmount;
   v5->_feeAmount = v6;
 
-  v8 = [(PKCurrencyAmount *)self->_totalFees copyWithZone:a3];
+  v8 = [(PKCurrencyAmount *)self->_totalFees copyWithZone:zone];
   totalFees = v5->_totalFees;
   v5->_totalFees = v8;
 
-  v10 = [(NSDate *)self->_feeDate copyWithZone:a3];
+  v10 = [(NSDate *)self->_feeDate copyWithZone:zone];
   feeDate = v5->_feeDate;
   v5->_feeDate = v10;
 

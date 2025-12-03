@@ -1,11 +1,11 @@
 @interface InteractiveTimelineLegendLabel
-- (_TtC24MenstrualCyclesAppPlugin30InteractiveTimelineLegendLabel)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin30InteractiveTimelineLegendLabel)initWithFrame:(CGRect)a3;
+- (_TtC24MenstrualCyclesAppPlugin30InteractiveTimelineLegendLabel)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin30InteractiveTimelineLegendLabel)initWithFrame:(CGRect)frame;
 @end
 
 @implementation InteractiveTimelineLegendLabel
 
-- (_TtC24MenstrualCyclesAppPlugin30InteractiveTimelineLegendLabel)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin30InteractiveTimelineLegendLabel)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC24MenstrualCyclesAppPlugin30InteractiveTimelineLegendLabel_textLabel;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x29EDC7B38]) init];
@@ -19,7 +19,7 @@
   return result;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin30InteractiveTimelineLegendLabel)initWithFrame:(CGRect)a3
+- (_TtC24MenstrualCyclesAppPlugin30InteractiveTimelineLegendLabel)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

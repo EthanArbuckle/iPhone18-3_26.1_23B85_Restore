@@ -12,7 +12,7 @@
 + (void)initialize
 {
   objc_opt_self();
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     pthread_mutexattr_init(&__PFLockNMAttr);
 

@@ -1,45 +1,45 @@
 @interface CNPickerItemCell
-- (CNPickerItemCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CNPickerItemCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)beginEditing;
 - (void)endEditing;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setTextFieldHidden:(BOOL)a3;
+- (void)setTextFieldHidden:(BOOL)hidden;
 @end
 
 @implementation CNPickerItemCell
 
-- (void)setTextFieldHidden:(BOOL)a3
+- (void)setTextFieldHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(CNPickerItemCell *)self textField];
-  [v5 setHidden:v3];
+  hiddenCopy = hidden;
+  textField = [(CNPickerItemCell *)self textField];
+  [textField setHidden:hiddenCopy];
 
-  v6 = [(CNPickerItemCell *)self textLabel];
-  [v6 setHidden:v3 ^ 1];
+  textLabel = [(CNPickerItemCell *)self textLabel];
+  [textLabel setHidden:hiddenCopy ^ 1];
 }
 
 - (void)endEditing
 {
-  v3 = [(CNPickerItemCell *)self textField];
-  v4 = [v3 text];
-  -[CNPickerItemCell setTextFieldHidden:](self, "setTextFieldHidden:", [v4 length] == 0);
+  textField = [(CNPickerItemCell *)self textField];
+  text = [textField text];
+  -[CNPickerItemCell setTextFieldHidden:](self, "setTextFieldHidden:", [text length] == 0);
 
-  v5 = [(CNPickerItemCell *)self textField];
-  LODWORD(v4) = [v5 isFirstResponder];
+  textField2 = [(CNPickerItemCell *)self textField];
+  LODWORD(text) = [textField2 isFirstResponder];
 
-  if (v4)
+  if (text)
   {
-    v6 = [(CNPickerItemCell *)self textField];
-    [v6 resignFirstResponder];
+    textField3 = [(CNPickerItemCell *)self textField];
+    [textField3 resignFirstResponder];
   }
 }
 
 - (void)beginEditing
 {
   [(CNPickerItemCell *)self setTextFieldHidden:0];
-  v3 = [(CNPickerItemCell *)self textField];
-  [v3 becomeFirstResponder];
+  textField = [(CNPickerItemCell *)self textField];
+  [textField becomeFirstResponder];
 }
 
 - (void)prepareForReuse
@@ -47,8 +47,8 @@
   v4.receiver = self;
   v4.super_class = CNPickerItemCell;
   [(CNPickerItemCell *)&v4 prepareForReuse];
-  v3 = [(CNPickerItemCell *)self textField];
-  [v3 setText:&stru_1F0CE7398];
+  textField = [(CNPickerItemCell *)self textField];
+  [textField setText:&stru_1F0CE7398];
 
   [(CNPickerItemCell *)self setTextFieldHidden:1];
 }
@@ -58,21 +58,21 @@
   v13.receiver = self;
   v13.super_class = CNPickerItemCell;
   [(CNPickerItemCell *)&v13 layoutSubviews];
-  v3 = [(CNPickerItemCell *)self textLabel];
-  [v3 frame];
+  textLabel = [(CNPickerItemCell *)self textLabel];
+  [textLabel frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(CNPickerItemCell *)self textField];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  textField = [(CNPickerItemCell *)self textField];
+  [textField setFrame:{v5, v7, v9, v11}];
 }
 
-- (CNPickerItemCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CNPickerItemCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v11.receiver = self;
   v11.super_class = CNPickerItemCell;
-  v4 = [(CNPickerItemCell *)&v11 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CNPickerItemCell *)&v11 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x1E69DD0B0]);
@@ -87,8 +87,8 @@
     v8 = [MEMORY[0x1E69DB878] ab_preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
     [(UITextField *)v4->_textField setFont:v8];
 
-    v9 = [(CNPickerItemCell *)v4 contentView];
-    [v9 addSubview:v4->_textField];
+    contentView = [(CNPickerItemCell *)v4 contentView];
+    [contentView addSubview:v4->_textField];
   }
 
   return v4;

@@ -1,28 +1,28 @@
 @interface BKUIPearlInstructionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_axNavigationControllerParent;
-- (void)setDetail:(id)a3;
+- (void)setDetail:(id)detail;
 @end
 
 @implementation BKUIPearlInstructionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BKUIPearlInstructionView" hasInstanceMethod:@"setDetail:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"BKUIPearlInstructionView" hasInstanceMethod:@"instruction" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BKUIPearlInstructionView" hasInstanceMethod:@"instructionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BKUIPearlInstructionView" hasInstanceMethod:@"detailLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BKUIPearlInstructionView" hasInstanceVariable:@"_detail" withType:"NSString"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BKUIPearlInstructionView" hasInstanceMethod:@"setDetail:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"BKUIPearlInstructionView" hasInstanceMethod:@"instruction" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BKUIPearlInstructionView" hasInstanceMethod:@"instructionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BKUIPearlInstructionView" hasInstanceMethod:@"detailLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BKUIPearlInstructionView" hasInstanceVariable:@"_detail" withType:"NSString"];
 }
 
 - (id)_axNavigationControllerParent
 {
   v2 = [(BKUIPearlInstructionViewAccessibility *)self _accessibilityFindViewAncestor:&__block_literal_global_0 startWithSelf:0];
-  v3 = [v2 _accessibilityViewController];
-  v4 = [v3 navigationController];
+  _accessibilityViewController = [v2 _accessibilityViewController];
+  navigationController = [_accessibilityViewController navigationController];
 
-  return v4;
+  return navigationController;
 }
 
 BOOL __70__BKUIPearlInstructionViewAccessibility__axNavigationControllerParent__block_invoke(uint64_t a1, void *a2)
@@ -34,38 +34,38 @@ BOOL __70__BKUIPearlInstructionViewAccessibility__axNavigationControllerParent__
   return v4;
 }
 
-- (void)setDetail:(id)a3
+- (void)setDetail:(id)detail
 {
-  v4 = a3;
+  detailCopy = detail;
   v5 = [(BKUIPearlInstructionViewAccessibility *)self safeStringForKey:@"_detail"];
-  if ([v5 isEqualToString:v4])
+  if ([v5 isEqualToString:detailCopy])
   {
     v14.receiver = self;
     v14.super_class = BKUIPearlInstructionViewAccessibility;
-    [(BKUIPearlInstructionViewAccessibility *)&v14 setDetail:v4];
+    [(BKUIPearlInstructionViewAccessibility *)&v14 setDetail:detailCopy];
   }
 
   else
   {
-    v6 = [v4 length];
+    v6 = [detailCopy length];
     v14.receiver = self;
     v14.super_class = BKUIPearlInstructionViewAccessibility;
-    [(BKUIPearlInstructionViewAccessibility *)&v14 setDetail:v4];
+    [(BKUIPearlInstructionViewAccessibility *)&v14 setDetail:detailCopy];
     if (v6)
     {
-      v7 = [(BKUIPearlInstructionViewAccessibility *)self _axNavigationControllerParent];
-      if ([v7 _isTransitioning])
+      _axNavigationControllerParent = [(BKUIPearlInstructionViewAccessibility *)self _axNavigationControllerParent];
+      if ([_axNavigationControllerParent _isTransitioning])
       {
       }
 
       else
       {
         v8 = [(BKUIPearlInstructionViewAccessibility *)self safeUIViewForKey:@"detailLabel"];
-        v9 = [v8 window];
+        window = [v8 window];
 
-        if (v9)
+        if (window)
         {
-          UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v4);
+          UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], detailCopy);
         }
       }
     }
@@ -73,7 +73,7 @@ BOOL __70__BKUIPearlInstructionViewAccessibility__axNavigationControllerParent__
 
   v10 = [(BKUIPearlInstructionViewAccessibility *)self safeStringForKey:@"instruction"];
   v11 = v10;
-  if (!v4 && v5 && v10)
+  if (!detailCopy && v5 && v10)
   {
     v12 = *MEMORY[0x29EDC7ED8];
     v13 = [(BKUIPearlInstructionViewAccessibility *)self safeUIViewForKey:@"instructionLabel"];

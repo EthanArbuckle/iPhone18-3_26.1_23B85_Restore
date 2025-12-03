@@ -1,69 +1,69 @@
 @interface BAEventReporter
 + (BAEventReporter)sharedReporter;
 - (BAEventReporter)init;
-- (int64_t)seriesTypeForContentID:(id)a3;
-- (void)emitAccountDidChangeEventWithTracker:(id)a3 type:(unint64_t)a4 reason:(unint64_t)a5;
-- (void)emitAllInSeriesViewEventWithTracker:(id)a3 collectionID:(id)a4 collectionItemCount:(int64_t)a5;
-- (void)emitAnnotationActionEventWithTracker:(id)a3 contentData:(id)a4 viewData:(id)a5;
-- (void)emitBrowseCollectionScreenViewEventWithTracker:(id)a3 startDate:(id)a4 summaryData:(id)a5;
-- (void)emitCollectionDescriptionEventWithTracker:(id)a3 collectionID:(id)a4;
-- (void)emitCollectionScreenViewEventWithTracker:(id)a3 startDate:(id)a4 collectionID:(id)a5 collectionItemCount:(int64_t)a6;
-- (void)emitContextualActionSheetExposureEventWithTracker:(id)a3 startDate:(id)a4 propertyProvider:(id)a5;
-- (void)emitDragDropEventWithContentIDs:(id)a3;
-- (void)emitExitLinkTapEventWithTracker:(id)a3 url:(id)a4;
-- (void)emitGetStartedActionEventWithTracker:(id)a3 type:(int64_t)a4;
-- (void)emitInBookSearchEventWithTracker:(id)a3 readingSessionData:(id)a4 contentData:(id)a5;
-- (void)emitLibraryDataEditEventWithTracker:(id)a3 contentIDs:(id)a4 actionType:(int64_t)a5 result:(BOOL)a6;
-- (void)emitLibraryViewEventWithTracker:(id)a3 startDate:(id)a4 librarySummary:(id)a5 displayType:(int64_t)a6 sortType:(int64_t)a7;
-- (void)emitMarkAsFinishedEventWithTracker:(id)a3 contentData:(id)a4 markedData:(id)a5;
-- (void)emitNotificationEngagementEventWithTracker:(id)a3 engagementData:(id)a4 notificationData:(id)a5;
-- (void)emitPurchaseAttemptEventWithTracker:(id)a3 contentData:(id)a4 purchaseData:(id)a5 upSellData:(id)a6;
-- (void)emitPurchaseFailEventWithTracker:(_TtC13BookAnalytics9BATracker *)a3 contentData:(BAContentData *)a4 purchaseData:(BAPurchaseData *)a5 upSellData:(BAUpSellData *)a6 failData:(BAPurchaseFailData *)a7 completion:(id)a8;
-- (void)emitPurchaseSuccessEventWithTracker:(_TtC13BookAnalytics9BATracker *)a3 contentData:(BAContentData *)a4 purchaseData:(BAPurchaseData *)a5 upSellData:(BAUpSellData *)a6 completion:(id)a7;
-- (void)emitRatingEventWithTracker:(id)a3 rating:(id)a4 contentID:(id)a5 contentAcquisitionType:(int64_t)a6 contentType:(int64_t)a7 supplementalContentCount:(id)a8 productionType:(int64_t)a9;
-- (void)emitReadEventWithTracker:(_TtC13BookAnalytics9BATracker *)a3 readingSessionData:(BAReadingSessionData *)a4 contentData:(BAContentData *)a5 readingSettingsData:(BAReadingSettingsData *)a6 upSellData:(BAUpSellData *)a7 contentSettingsData:(BAContentSettingsData *)a8 doNotDisturbData:(BADoNotDisturbData *)a9 startTime:(NSDate *)a10 completion:(id)a11;
-- (void)emitReadingAutoNightSettingChangeEventWithTracker:(id)a3 readingSessionData:(id)a4 contentData:(id)a5 isOn:(BOOL)a6;
-- (void)emitReadingBackgroundColorChangeEventWithTracker:(id)a3 readingSessionData:(id)a4 contentData:(id)a5 backgroundColorData:(id)a6;
-- (void)emitReadingBrightnessChangeEventWithTracker:(id)a3 readingSessionData:(id)a4 contentData:(id)a5 brightness:(int)a6;
-- (void)emitReadingFontChangeEventWithTracker:(id)a3 readingSessionData:(id)a4 contentData:(id)a5 fontName:(id)a6;
-- (void)emitReadingFontSizeChangeEventWithTracker:(id)a3 readingSessionData:(id)a4 contentData:(id)a5 fontSize:(float)a6;
-- (void)emitReadingOrientationChangeEventWithTracker:(id)a3 readingSessionData:(id)a4 contentData:(id)a5;
-- (void)emitReadingScrollViewSettingChangeEventWithTracker:(id)a3 readingSessionData:(id)a4 contentData:(id)a5 fontSize:(float)a6 isOn:(BOOL)a7;
-- (void)emitRemoveFromWantListEventWithTracker:(id)a3 contentData:(id)a4;
-- (void)emitRemoveFromWantListEventWithTracker:(id)a3 contentID:(id)a4 contentType:(int64_t)a5;
-- (void)emitScrubEventWithTracker:(id)a3 contentData:(id)a4 readingSettingsData:(id)a5 startPosition:(id)a6 endPosition:(id)a7 totalLength:(id)a8;
-- (void)emitShareEventWithTracker:(id)a3 propertyProvider:(id)a4;
-- (void)emitShareSheetExposureEventWithTracker:(id)a3 startDate:(id)a4 propertyProvider:(id)a5;
-- (void)emitUnifiedMessageActionEventWithTracker:(id)a3 startDate:(id)a4 messageType:(int64_t)a5 messageIdentifier:(id)a6 hasActionable:(BOOL)a7 actionIdentifier:(id)a8 placementName:(id)a9;
-- (void)emitUnifiedMessageExposureEventWithTracker:(id)a3 startDate:(id)a4 messageType:(int64_t)a5 messageIdentifier:(id)a6 hasActionable:(BOOL)a7 actionIdentifier:(id)a8 placementName:(id)a9;
-- (void)emitViewSupplementalContentWithTracker:(id)a3 contentID:(id)a4 sourceIsAction:(BOOL)a5 supplementalContentCount:(id)a6;
-- (void)emitWantListAddEventWithTracker:(id)a3 contentData:(id)a4;
+- (int64_t)seriesTypeForContentID:(id)d;
+- (void)emitAccountDidChangeEventWithTracker:(id)tracker type:(unint64_t)type reason:(unint64_t)reason;
+- (void)emitAllInSeriesViewEventWithTracker:(id)tracker collectionID:(id)d collectionItemCount:(int64_t)count;
+- (void)emitAnnotationActionEventWithTracker:(id)tracker contentData:(id)data viewData:(id)viewData;
+- (void)emitBrowseCollectionScreenViewEventWithTracker:(id)tracker startDate:(id)date summaryData:(id)data;
+- (void)emitCollectionDescriptionEventWithTracker:(id)tracker collectionID:(id)d;
+- (void)emitCollectionScreenViewEventWithTracker:(id)tracker startDate:(id)date collectionID:(id)d collectionItemCount:(int64_t)count;
+- (void)emitContextualActionSheetExposureEventWithTracker:(id)tracker startDate:(id)date propertyProvider:(id)provider;
+- (void)emitDragDropEventWithContentIDs:(id)ds;
+- (void)emitExitLinkTapEventWithTracker:(id)tracker url:(id)url;
+- (void)emitGetStartedActionEventWithTracker:(id)tracker type:(int64_t)type;
+- (void)emitInBookSearchEventWithTracker:(id)tracker readingSessionData:(id)data contentData:(id)contentData;
+- (void)emitLibraryDataEditEventWithTracker:(id)tracker contentIDs:(id)ds actionType:(int64_t)type result:(BOOL)result;
+- (void)emitLibraryViewEventWithTracker:(id)tracker startDate:(id)date librarySummary:(id)summary displayType:(int64_t)type sortType:(int64_t)sortType;
+- (void)emitMarkAsFinishedEventWithTracker:(id)tracker contentData:(id)data markedData:(id)markedData;
+- (void)emitNotificationEngagementEventWithTracker:(id)tracker engagementData:(id)data notificationData:(id)notificationData;
+- (void)emitPurchaseAttemptEventWithTracker:(id)tracker contentData:(id)data purchaseData:(id)purchaseData upSellData:(id)sellData;
+- (void)emitPurchaseFailEventWithTracker:(_TtC13BookAnalytics9BATracker *)tracker contentData:(BAContentData *)data purchaseData:(BAPurchaseData *)purchaseData upSellData:(BAUpSellData *)sellData failData:(BAPurchaseFailData *)failData completion:(id)completion;
+- (void)emitPurchaseSuccessEventWithTracker:(_TtC13BookAnalytics9BATracker *)tracker contentData:(BAContentData *)data purchaseData:(BAPurchaseData *)purchaseData upSellData:(BAUpSellData *)sellData completion:(id)completion;
+- (void)emitRatingEventWithTracker:(id)tracker rating:(id)rating contentID:(id)d contentAcquisitionType:(int64_t)type contentType:(int64_t)contentType supplementalContentCount:(id)count productionType:(int64_t)productionType;
+- (void)emitReadEventWithTracker:(_TtC13BookAnalytics9BATracker *)tracker readingSessionData:(BAReadingSessionData *)data contentData:(BAContentData *)contentData readingSettingsData:(BAReadingSettingsData *)settingsData upSellData:(BAUpSellData *)sellData contentSettingsData:(BAContentSettingsData *)contentSettingsData doNotDisturbData:(BADoNotDisturbData *)disturbData startTime:(NSDate *)self0 completion:(id)self1;
+- (void)emitReadingAutoNightSettingChangeEventWithTracker:(id)tracker readingSessionData:(id)data contentData:(id)contentData isOn:(BOOL)on;
+- (void)emitReadingBackgroundColorChangeEventWithTracker:(id)tracker readingSessionData:(id)data contentData:(id)contentData backgroundColorData:(id)colorData;
+- (void)emitReadingBrightnessChangeEventWithTracker:(id)tracker readingSessionData:(id)data contentData:(id)contentData brightness:(int)brightness;
+- (void)emitReadingFontChangeEventWithTracker:(id)tracker readingSessionData:(id)data contentData:(id)contentData fontName:(id)name;
+- (void)emitReadingFontSizeChangeEventWithTracker:(id)tracker readingSessionData:(id)data contentData:(id)contentData fontSize:(float)size;
+- (void)emitReadingOrientationChangeEventWithTracker:(id)tracker readingSessionData:(id)data contentData:(id)contentData;
+- (void)emitReadingScrollViewSettingChangeEventWithTracker:(id)tracker readingSessionData:(id)data contentData:(id)contentData fontSize:(float)size isOn:(BOOL)on;
+- (void)emitRemoveFromWantListEventWithTracker:(id)tracker contentData:(id)data;
+- (void)emitRemoveFromWantListEventWithTracker:(id)tracker contentID:(id)d contentType:(int64_t)type;
+- (void)emitScrubEventWithTracker:(id)tracker contentData:(id)data readingSettingsData:(id)settingsData startPosition:(id)position endPosition:(id)endPosition totalLength:(id)length;
+- (void)emitShareEventWithTracker:(id)tracker propertyProvider:(id)provider;
+- (void)emitShareSheetExposureEventWithTracker:(id)tracker startDate:(id)date propertyProvider:(id)provider;
+- (void)emitUnifiedMessageActionEventWithTracker:(id)tracker startDate:(id)date messageType:(int64_t)type messageIdentifier:(id)identifier hasActionable:(BOOL)actionable actionIdentifier:(id)actionIdentifier placementName:(id)name;
+- (void)emitUnifiedMessageExposureEventWithTracker:(id)tracker startDate:(id)date messageType:(int64_t)type messageIdentifier:(id)identifier hasActionable:(BOOL)actionable actionIdentifier:(id)actionIdentifier placementName:(id)name;
+- (void)emitViewSupplementalContentWithTracker:(id)tracker contentID:(id)d sourceIsAction:(BOOL)action supplementalContentCount:(id)count;
+- (void)emitWantListAddEventWithTracker:(id)tracker contentData:(id)data;
 @end
 
 @implementation BAEventReporter
 
-- (void)emitCollectionDescriptionEventWithTracker:(id)a3 collectionID:(id)a4
+- (void)emitCollectionDescriptionEventWithTracker:(id)tracker collectionID:(id)d
 {
   v5 = sub_1E1780();
   v7 = v6;
   v8 = swift_allocObject();
   *(v8 + 16) = v5;
   *(v8 + 24) = v7;
-  v9 = *(a3 + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
+  v9 = *(tracker + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
   v10 = swift_allocObject();
   *(v10 + 16) = sub_4C768;
   *(v10 + 24) = v8;
-  v11 = a3;
+  trackerCopy = tracker;
 
   sub_1E10C0();
 }
 
-- (void)emitLibraryDataEditEventWithTracker:(id)a3 contentIDs:(id)a4 actionType:(int64_t)a5 result:(BOOL)a6
+- (void)emitLibraryDataEditEventWithTracker:(id)tracker contentIDs:(id)ds actionType:(int64_t)type result:(BOOL)result
 {
   v10 = sub_1E18C0();
-  v18 = self;
-  v11 = a3;
-  if (a3)
+  selfCopy = self;
+  trackerCopy = tracker;
+  if (tracker)
   {
     goto LABEL_4;
   }
@@ -71,19 +71,19 @@
   v12 = sub_BFB78();
   if (v12)
   {
-    v11 = v12;
+    trackerCopy = v12;
 LABEL_4:
     v13 = swift_allocObject();
     *(v13 + 16) = v10;
-    *(v13 + 24) = v11;
-    *(v13 + 32) = a5;
-    *(v13 + 40) = a6;
-    v14 = *&v11[OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker];
+    *(v13 + 24) = trackerCopy;
+    *(v13 + 32) = type;
+    *(v13 + 40) = result;
+    v14 = *&trackerCopy[OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker];
     v15 = swift_allocObject();
     *(v15 + 16) = sub_4C674;
     *(v15 + 24) = v13;
-    v16 = a3;
-    v17 = v11;
+    trackerCopy2 = tracker;
+    v17 = trackerCopy;
 
     sub_1E10C0();
 
@@ -93,37 +93,37 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)emitMarkAsFinishedEventWithTracker:(id)a3 contentData:(id)a4 markedData:(id)a5
+- (void)emitMarkAsFinishedEventWithTracker:(id)tracker contentData:(id)data markedData:(id)markedData
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = self;
-  _s13BookAnalytics13EventReporterC018emitMarkAsFinishedC05using4with10markedDatayAA9BATrackerCSg_AA014BridgedContentL0CAA0n6MarkedL0CSgtF_0(a3, v10, a5);
+  trackerCopy = tracker;
+  dataCopy = data;
+  markedDataCopy = markedData;
+  selfCopy = self;
+  _s13BookAnalytics13EventReporterC018emitMarkAsFinishedC05using4with10markedDatayAA9BATrackerCSg_AA014BridgedContentL0CAA0n6MarkedL0CSgtF_0(tracker, dataCopy, markedData);
 }
 
-- (void)emitRemoveFromWantListEventWithTracker:(id)a3 contentID:(id)a4 contentType:(int64_t)a5
+- (void)emitRemoveFromWantListEventWithTracker:(id)tracker contentID:(id)d contentType:(int64_t)type
 {
   v7 = sub_1E1780();
   v9 = v8;
   v10 = swift_allocObject();
-  v10[2] = a3;
+  v10[2] = tracker;
   v10[3] = v7;
   v10[4] = v9;
-  v10[5] = a5;
-  v11 = *(a3 + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
+  v10[5] = type;
+  v11 = *(tracker + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
   v12 = swift_allocObject();
   *(v12 + 16) = sub_4C670;
   *(v12 + 24) = v10;
-  v13 = a3;
+  trackerCopy = tracker;
 
   sub_1E10C0();
 }
 
-- (void)emitRemoveFromWantListEventWithTracker:(id)a3 contentData:(id)a4
+- (void)emitRemoveFromWantListEventWithTracker:(id)tracker contentData:(id)data
 {
-  v5 = a3;
-  v6 = a4;
+  trackerCopy = tracker;
+  dataCopy = data;
   sub_A3F08(v14);
   v7 = swift_allocObject();
   v8 = v14[3];
@@ -135,7 +135,7 @@ LABEL_5:
   v10 = v14[1];
   v7[1] = v14[0];
   v7[2] = v10;
-  v11 = *&v5[OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker];
+  v11 = *&trackerCopy[OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker];
   v12 = swift_allocObject();
   *(v12 + 16) = sub_4C6FC;
   *(v12 + 24) = v7;
@@ -146,12 +146,12 @@ LABEL_5:
   sub_14424(v14);
 }
 
-- (void)emitWantListAddEventWithTracker:(id)a3 contentData:(id)a4
+- (void)emitWantListAddEventWithTracker:(id)tracker contentData:(id)data
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  _s13BookAnalytics13EventReporterC015emitWantListAddC05using4withyAA9BATrackerCSg_AA18BridgedContentDataCtF_0(a3);
+  trackerCopy = tracker;
+  dataCopy = data;
+  selfCopy = self;
+  _s13BookAnalytics13EventReporterC015emitWantListAddC05using4withyAA9BATrackerCSg_AA18BridgedContentDataCtF_0(tracker);
 }
 
 + (BAEventReporter)sharedReporter
@@ -166,42 +166,42 @@ LABEL_5:
   return v3;
 }
 
-- (int64_t)seriesTypeForContentID:(id)a3
+- (int64_t)seriesTypeForContentID:(id)d
 {
   v4 = sub_1E1780();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_7DDD0(v4, v6);
 
   return v8;
 }
 
-- (void)emitAccountDidChangeEventWithTracker:(id)a3 type:(unint64_t)a4 reason:(unint64_t)a5
+- (void)emitAccountDidChangeEventWithTracker:(id)tracker type:(unint64_t)type reason:(unint64_t)reason
 {
-  v8 = a3;
-  v9 = self;
-  sub_7DEC8(v8, a4, a5);
+  trackerCopy = tracker;
+  selfCopy = self;
+  sub_7DEC8(trackerCopy, type, reason);
 }
 
-- (void)emitDragDropEventWithContentIDs:(id)a3
+- (void)emitDragDropEventWithContentIDs:(id)ds
 {
   v4 = sub_1E18C0();
-  v5 = self;
+  selfCopy = self;
   sub_7E138(v4);
 }
 
-- (void)emitInBookSearchEventWithTracker:(id)a3 readingSessionData:(id)a4 contentData:(id)a5
+- (void)emitInBookSearchEventWithTracker:(id)tracker readingSessionData:(id)data contentData:(id)contentData
 {
-  v7 = a3;
-  v20 = a4;
-  v8 = a5;
+  trackerCopy = tracker;
+  dataCopy = data;
+  contentDataCopy = contentData;
   sub_A6684(&v22);
   v9 = v22;
   v10 = v23;
   v11 = v24;
   v12 = v25;
   v13 = v26;
-  LOBYTE(a4) = v27;
+  LOBYTE(data) = v27;
   sub_A3F08(v28);
   v14 = swift_allocObject();
   *(v14 + 16) = v9;
@@ -209,7 +209,7 @@ LABEL_5:
   *(v14 + 24) = v11;
   *(v14 + 28) = v12;
   *(v14 + 29) = v13;
-  *(v14 + 30) = a4;
+  *(v14 + 30) = data;
   v15 = v28[5];
   *(v14 + 96) = v28[4];
   *(v14 + 112) = v15;
@@ -219,7 +219,7 @@ LABEL_5:
   v17 = v28[1];
   *(v14 + 32) = v28[0];
   *(v14 + 48) = v17;
-  v18 = *&v7[OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker];
+  v18 = *&trackerCopy[OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker];
   v19 = swift_allocObject();
   *(v19 + 16) = sub_7EEEC;
   *(v19 + 24) = v14;
@@ -230,23 +230,23 @@ LABEL_5:
   sub_14424(v28);
 }
 
-- (void)emitRatingEventWithTracker:(id)a3 rating:(id)a4 contentID:(id)a5 contentAcquisitionType:(int64_t)a6 contentType:(int64_t)a7 supplementalContentCount:(id)a8 productionType:(int64_t)a9
+- (void)emitRatingEventWithTracker:(id)tracker rating:(id)rating contentID:(id)d contentAcquisitionType:(int64_t)type contentType:(int64_t)contentType supplementalContentCount:(id)count productionType:(int64_t)productionType
 {
   v14 = sub_1E1780();
   v16 = v15;
-  v17 = a3;
-  v18 = a4;
-  v19 = a8;
-  v20 = self;
-  sub_7CA0C(a3, v18, v14, v16, a6, a7, a8, a9);
+  trackerCopy = tracker;
+  ratingCopy = rating;
+  countCopy = count;
+  selfCopy = self;
+  sub_7CA0C(tracker, ratingCopy, v14, v16, type, contentType, count, productionType);
 }
 
-- (void)emitShareEventWithTracker:(id)a3 propertyProvider:(id)a4
+- (void)emitShareEventWithTracker:(id)tracker propertyProvider:(id)provider
 {
-  v7 = a3;
+  trackerCopy = tracker;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_7D39C(a3, a4);
+  selfCopy = self;
+  sub_7D39C(tracker, provider);
 
   swift_unknownObjectRelease();
 }
@@ -264,26 +264,26 @@ LABEL_5:
   return [(BAEventReporter *)&v6 init];
 }
 
-- (void)emitReadEventWithTracker:(_TtC13BookAnalytics9BATracker *)a3 readingSessionData:(BAReadingSessionData *)a4 contentData:(BAContentData *)a5 readingSettingsData:(BAReadingSettingsData *)a6 upSellData:(BAUpSellData *)a7 contentSettingsData:(BAContentSettingsData *)a8 doNotDisturbData:(BADoNotDisturbData *)a9 startTime:(NSDate *)a10 completion:(id)a11
+- (void)emitReadEventWithTracker:(_TtC13BookAnalytics9BATracker *)tracker readingSessionData:(BAReadingSessionData *)data contentData:(BAContentData *)contentData readingSettingsData:(BAReadingSettingsData *)settingsData upSellData:(BAUpSellData *)sellData contentSettingsData:(BAContentSettingsData *)contentSettingsData doNotDisturbData:(BADoNotDisturbData *)disturbData startTime:(NSDate *)self0 completion:(id)self1
 {
-  v36 = self;
-  v37 = a8;
+  selfCopy = self;
+  contentSettingsDataCopy = contentSettingsData;
   v16 = sub_3D68(&qword_287EC0, &qword_205170);
   v17 = *(*(v16 - 8) + 64);
   __chkstk_darwin(v16 - 8);
-  v19 = &v36 - v18;
-  v20 = _Block_copy(a11);
+  v19 = &selfCopy - v18;
+  v20 = _Block_copy(completion);
   v21 = swift_allocObject();
-  v21[2] = a3;
-  v21[3] = a4;
-  v21[4] = a5;
-  v21[5] = a6;
-  v22 = v36;
-  v23 = v37;
-  v21[6] = a7;
+  v21[2] = tracker;
+  v21[3] = data;
+  v21[4] = contentData;
+  v21[5] = settingsData;
+  v22 = selfCopy;
+  v23 = contentSettingsDataCopy;
+  v21[6] = sellData;
   v21[7] = v23;
-  v21[8] = a9;
-  v21[9] = a10;
+  v21[8] = disturbData;
+  v21[9] = time;
   v21[10] = v20;
   v21[11] = v22;
   v24 = sub_1E1900();
@@ -298,44 +298,44 @@ LABEL_5:
   v26[3] = 0;
   v26[4] = &unk_1EFF08;
   v26[5] = v25;
-  v27 = a3;
-  v28 = a4;
-  v29 = a5;
-  v30 = a6;
-  v31 = a7;
-  v32 = v37;
-  v33 = a9;
-  v34 = a10;
-  v35 = v36;
+  trackerCopy = tracker;
+  dataCopy = data;
+  contentDataCopy = contentData;
+  settingsDataCopy = settingsData;
+  sellDataCopy = sellData;
+  v32 = contentSettingsDataCopy;
+  disturbDataCopy = disturbData;
+  timeCopy = time;
+  v35 = selfCopy;
   sub_D0848(0, 0, v19, &unk_1EFF10, v26);
 }
 
-- (void)emitReadingAutoNightSettingChangeEventWithTracker:(id)a3 readingSessionData:(id)a4 contentData:(id)a5 isOn:(BOOL)a6
+- (void)emitReadingAutoNightSettingChangeEventWithTracker:(id)tracker readingSessionData:(id)data contentData:(id)contentData isOn:(BOOL)on
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = self;
-  _s13BookAnalytics13EventReporterC033emitReadingAutoNightSettingChangeC05using18readingSessionData07contentN04isOnyAA9BATrackerCSg_AA07BridgedfmN0CAA0s7ContentN0CSbtF_0(a3, v12, v13, a6);
+  trackerCopy = tracker;
+  dataCopy = data;
+  contentDataCopy = contentData;
+  selfCopy = self;
+  _s13BookAnalytics13EventReporterC033emitReadingAutoNightSettingChangeC05using18readingSessionData07contentN04isOnyAA9BATrackerCSg_AA07BridgedfmN0CAA0s7ContentN0CSbtF_0(tracker, dataCopy, contentDataCopy, on);
 }
 
-- (void)emitReadingBackgroundColorChangeEventWithTracker:(id)a3 readingSessionData:(id)a4 contentData:(id)a5 backgroundColorData:(id)a6
+- (void)emitReadingBackgroundColorChangeEventWithTracker:(id)tracker readingSessionData:(id)data contentData:(id)contentData backgroundColorData:(id)colorData
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = self;
-  _s13BookAnalytics13EventReporterC032emitReadingBackgroundColorChangeC05using18readingSessionData07contentM0010backgroundhM0yAA9BATrackerCSg_AA07BridgedflM0CAA0q7ContentM0CAA0qghM0CtF_0(a3, v12, v13, v14);
+  trackerCopy = tracker;
+  dataCopy = data;
+  contentDataCopy = contentData;
+  colorDataCopy = colorData;
+  selfCopy = self;
+  _s13BookAnalytics13EventReporterC032emitReadingBackgroundColorChangeC05using18readingSessionData07contentM0010backgroundhM0yAA9BATrackerCSg_AA07BridgedflM0CAA0q7ContentM0CAA0qghM0CtF_0(tracker, dataCopy, contentDataCopy, colorDataCopy);
 }
 
-- (void)emitReadingBrightnessChangeEventWithTracker:(id)a3 readingSessionData:(id)a4 contentData:(id)a5 brightness:(int)a6
+- (void)emitReadingBrightnessChangeEventWithTracker:(id)tracker readingSessionData:(id)data contentData:(id)contentData brightness:(int)brightness
 {
-  v10 = a4;
-  v11 = a5;
-  v21 = self;
-  v12 = a3;
-  if (!a3)
+  dataCopy = data;
+  contentDataCopy = contentData;
+  selfCopy = self;
+  trackerCopy = tracker;
+  if (!tracker)
   {
     v13 = sub_BFB78();
     if (!v13)
@@ -343,44 +343,44 @@ LABEL_5:
       goto LABEL_5;
     }
 
-    v12 = v13;
+    trackerCopy = v13;
   }
 
   v14 = swift_allocObject();
-  *(v14 + 16) = v10;
-  *(v14 + 24) = v11;
-  *(v14 + 32) = a6;
-  v15 = *&v12[OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker];
+  *(v14 + 16) = dataCopy;
+  *(v14 + 24) = contentDataCopy;
+  *(v14 + 32) = brightness;
+  v15 = *&trackerCopy[OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker];
   v16 = swift_allocObject();
   *(v16 + 16) = sub_92C94;
   *(v16 + 24) = v14;
-  v17 = a3;
-  v18 = v10;
-  v19 = v11;
-  v20 = v17;
+  trackerCopy2 = tracker;
+  v18 = dataCopy;
+  v19 = contentDataCopy;
+  v20 = trackerCopy2;
 
   sub_1E10C0();
 
 LABEL_5:
 }
 
-- (void)emitReadingFontChangeEventWithTracker:(id)a3 readingSessionData:(id)a4 contentData:(id)a5 fontName:(id)a6
+- (void)emitReadingFontChangeEventWithTracker:(id)tracker readingSessionData:(id)data contentData:(id)contentData fontName:(id)name
 {
   v10 = sub_1E1780();
   v12 = v11;
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = self;
-  _s13BookAnalytics13EventReporterC021emitReadingFontChangeC05using18readingSessionData07contentL08fontNameyAA9BATrackerCSg_AA07BridgedfkL0CAA0q7ContentL0CSStF_0(a3, v14, v15, v10, v12);
+  trackerCopy = tracker;
+  dataCopy = data;
+  contentDataCopy = contentData;
+  selfCopy = self;
+  _s13BookAnalytics13EventReporterC021emitReadingFontChangeC05using18readingSessionData07contentL08fontNameyAA9BATrackerCSg_AA07BridgedfkL0CAA0q7ContentL0CSStF_0(tracker, dataCopy, contentDataCopy, v10, v12);
 }
 
-- (void)emitReadingOrientationChangeEventWithTracker:(id)a3 readingSessionData:(id)a4 contentData:(id)a5
+- (void)emitReadingOrientationChangeEventWithTracker:(id)tracker readingSessionData:(id)data contentData:(id)contentData
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = self;
+  trackerCopy = tracker;
+  dataCopy = data;
+  contentDataCopy = contentData;
+  selfCopy = self;
   sub_A6684(&v20);
   v14 = v20;
   v15 = v21;
@@ -389,7 +389,7 @@ LABEL_5:
   v18 = v24;
   v19 = v25;
   sub_A3F08(v13);
-  _s13BookAnalytics13EventReporterC028emitReadingOrientationChangeC05using18readingSessionData07contentL0yAA9BATrackerCSg_AA0fkL0VAA07ContentL0VtF_0(a3, &v14, v13);
+  _s13BookAnalytics13EventReporterC028emitReadingOrientationChangeC05using18readingSessionData07contentL0yAA9BATrackerCSg_AA0fkL0VAA07ContentL0VtF_0(tracker, &v14, v13);
 
   v26[2] = v13[2];
   v26[3] = v13[3];
@@ -400,42 +400,42 @@ LABEL_5:
   sub_14424(v26);
 }
 
-- (void)emitReadingFontSizeChangeEventWithTracker:(id)a3 readingSessionData:(id)a4 contentData:(id)a5 fontSize:(float)a6
+- (void)emitReadingFontSizeChangeEventWithTracker:(id)tracker readingSessionData:(id)data contentData:(id)contentData fontSize:(float)size
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = self;
-  _s13BookAnalytics13EventReporterC025emitReadingFontSizeChangeC05using18readingSessionData07contentM004fontH0yAA9BATrackerCSg_AA07BridgedflM0CAA0q7ContentM0CSftF_0(a3, a6);
+  trackerCopy = tracker;
+  dataCopy = data;
+  contentDataCopy = contentData;
+  selfCopy = self;
+  _s13BookAnalytics13EventReporterC025emitReadingFontSizeChangeC05using18readingSessionData07contentM004fontH0yAA9BATrackerCSg_AA07BridgedflM0CAA0q7ContentM0CSftF_0(tracker, size);
 }
 
-- (void)emitReadingScrollViewSettingChangeEventWithTracker:(id)a3 readingSessionData:(id)a4 contentData:(id)a5 fontSize:(float)a6 isOn:(BOOL)a7
+- (void)emitReadingScrollViewSettingChangeEventWithTracker:(id)tracker readingSessionData:(id)data contentData:(id)contentData fontSize:(float)size isOn:(BOOL)on
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = self;
-  _s13BookAnalytics13EventReporterC034emitReadingScrollViewSettingChangeC05using18readingSessionData07contentN08fontSize4isOnyAA9BATrackerCSg_AA07BridgedfmN0CAA0u7ContentN0CSfSbtF_0(a3, a6, v14, v15, a7);
+  trackerCopy = tracker;
+  dataCopy = data;
+  contentDataCopy = contentData;
+  selfCopy = self;
+  _s13BookAnalytics13EventReporterC034emitReadingScrollViewSettingChangeC05using18readingSessionData07contentN08fontSize4isOnyAA9BATrackerCSg_AA07BridgedfmN0CAA0u7ContentN0CSfSbtF_0(tracker, size, dataCopy, contentDataCopy, on);
 }
 
-- (void)emitAllInSeriesViewEventWithTracker:(id)a3 collectionID:(id)a4 collectionItemCount:(int64_t)a5
+- (void)emitAllInSeriesViewEventWithTracker:(id)tracker collectionID:(id)d collectionItemCount:(int64_t)count
 {
   v7 = sub_1E1780();
   v9 = v8;
   v10 = swift_allocObject();
-  v10[2] = a5;
+  v10[2] = count;
   v10[3] = v7;
   v10[4] = v9;
-  v11 = *(a3 + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
+  v11 = *(tracker + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
   v12 = swift_allocObject();
   *(v12 + 16) = sub_98B94;
   *(v12 + 24) = v10;
-  v13 = a3;
+  trackerCopy = tracker;
 
   sub_1E10C0();
 }
 
-- (void)emitBrowseCollectionScreenViewEventWithTracker:(id)a3 startDate:(id)a4 summaryData:(id)a5
+- (void)emitBrowseCollectionScreenViewEventWithTracker:(id)tracker startDate:(id)date summaryData:(id)data
 {
   v7 = sub_1E09E0();
   v8 = *(v7 - 8);
@@ -449,20 +449,20 @@ LABEL_5:
   v14 = (*(v8 + 80) + 16) & ~*(v8 + 80);
   v15 = swift_allocObject();
   (*(v8 + 32))(v15 + v14, v11, v7);
-  *(v15 + ((v9 + v14 + 7) & 0xFFFFFFFFFFFFFFF8)) = a5;
-  v16 = *(a3 + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
+  *(v15 + ((v9 + v14 + 7) & 0xFFFFFFFFFFFFFFF8)) = data;
+  v16 = *(tracker + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
   v17 = swift_allocObject();
   *(v17 + 16) = sub_98BB0;
   *(v17 + 24) = v15;
-  v18 = a5;
-  v19 = a3;
+  dataCopy = data;
+  trackerCopy = tracker;
 
   sub_1E10C0();
 
   (*(v8 + 8))(v13, v7);
 }
 
-- (void)emitCollectionScreenViewEventWithTracker:(id)a3 startDate:(id)a4 collectionID:(id)a5 collectionItemCount:(int64_t)a6
+- (void)emitCollectionScreenViewEventWithTracker:(id)tracker startDate:(id)date collectionID:(id)d collectionItemCount:(int64_t)count
 {
   v8 = sub_1E09E0();
   v9 = *(v8 - 8);
@@ -477,22 +477,22 @@ LABEL_5:
   (*(v9 + 16))(v12, v14, v8);
   v18 = (*(v9 + 80) + 40) & ~*(v9 + 80);
   v19 = swift_allocObject();
-  *(v19 + 2) = a6;
+  *(v19 + 2) = count;
   *(v19 + 3) = v15;
   *(v19 + 4) = v17;
   (*(v9 + 32))(&v19[v18], v12, v8);
-  v20 = *(a3 + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
+  v20 = *(tracker + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
   v21 = swift_allocObject();
   *(v21 + 16) = sub_98BAC;
   *(v21 + 24) = v19;
-  v22 = a3;
+  trackerCopy = tracker;
 
   sub_1E10C0();
 
   (*(v9 + 8))(v14, v8);
 }
 
-- (void)emitContextualActionSheetExposureEventWithTracker:(id)a3 startDate:(id)a4 propertyProvider:(id)a5
+- (void)emitContextualActionSheetExposureEventWithTracker:(id)tracker startDate:(id)date propertyProvider:(id)provider
 {
   v8 = sub_1E09E0();
   v9 = *(v8 - 8);
@@ -500,18 +500,18 @@ LABEL_5:
   __chkstk_darwin(v8);
   v12 = &v15 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1E09B0();
-  v13 = a3;
+  trackerCopy = tracker;
   swift_unknownObjectRetain();
-  v14 = self;
-  EventReporter.emitContextualActionSheetExposureEvent(using:from:with:)(a3, v12, a5);
+  selfCopy = self;
+  EventReporter.emitContextualActionSheetExposureEvent(using:from:with:)(tracker, v12, provider);
 
   swift_unknownObjectRelease();
   (*(v9 + 8))(v12, v8);
 }
 
-- (void)emitLibraryViewEventWithTracker:(id)a3 startDate:(id)a4 librarySummary:(id)a5 displayType:(int64_t)a6 sortType:(int64_t)a7
+- (void)emitLibraryViewEventWithTracker:(id)tracker startDate:(id)date librarySummary:(id)summary displayType:(int64_t)type sortType:(int64_t)sortType
 {
-  v23 = a7;
+  sortTypeCopy = sortType;
   v9 = sub_1E09E0();
   v10 = *(v9 - 8);
   v11 = *(v10 + 64);
@@ -526,21 +526,21 @@ LABEL_5:
   v17 = (*(v10 + 80) + 40) & ~*(v10 + 80);
   v18 = swift_allocObject();
   *(v18 + 2) = v16;
-  *(v18 + 3) = a6;
-  *(v18 + 4) = v23;
+  *(v18 + 3) = type;
+  *(v18 + 4) = sortTypeCopy;
   (*(v10 + 32))(&v18[v17], v13, v9);
-  v19 = *(a3 + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
+  v19 = *(tracker + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
   v20 = swift_allocObject();
   *(v20 + 16) = sub_98BA4;
   *(v20 + 24) = v18;
-  v21 = a3;
+  trackerCopy = tracker;
 
   sub_1E10C0();
 
   (*(v10 + 8))(v15, v9);
 }
 
-- (void)emitShareSheetExposureEventWithTracker:(id)a3 startDate:(id)a4 propertyProvider:(id)a5
+- (void)emitShareSheetExposureEventWithTracker:(id)tracker startDate:(id)date propertyProvider:(id)provider
 {
   v8 = sub_1E09E0();
   v9 = *(v8 - 8);
@@ -554,17 +554,17 @@ LABEL_5:
   v15 = (*(v9 + 80) + 40) & ~*(v9 + 80);
   v16 = swift_allocObject();
   *(v16 + 2) = self;
-  *(v16 + 3) = a5;
-  *(v16 + 4) = a3;
+  *(v16 + 3) = provider;
+  *(v16 + 4) = tracker;
   (*(v9 + 32))(&v16[v15], v12, v8);
-  v17 = *(a3 + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
+  v17 = *(tracker + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
   v18 = swift_allocObject();
   *(v18 + 16) = sub_98BA0;
   *(v18 + 24) = v16;
-  v19 = a3;
+  trackerCopy = tracker;
   swift_unknownObjectRetain_n();
-  v20 = self;
-  v21 = v19;
+  selfCopy = self;
+  v21 = trackerCopy;
 
   sub_1E10C0();
   swift_unknownObjectRelease();
@@ -572,11 +572,11 @@ LABEL_5:
   (*(v9 + 8))(v14, v8);
 }
 
-- (void)emitUnifiedMessageExposureEventWithTracker:(id)a3 startDate:(id)a4 messageType:(int64_t)a5 messageIdentifier:(id)a6 hasActionable:(BOOL)a7 actionIdentifier:(id)a8 placementName:(id)a9
+- (void)emitUnifiedMessageExposureEventWithTracker:(id)tracker startDate:(id)date messageType:(int64_t)type messageIdentifier:(id)identifier hasActionable:(BOOL)actionable actionIdentifier:(id)actionIdentifier placementName:(id)name
 {
-  v32 = a7;
-  v31 = a5;
-  v33 = a3;
+  actionableCopy = actionable;
+  typeCopy = type;
+  trackerCopy = tracker;
   v11 = sub_1E09E0();
   v12 = *(v11 - 8);
   v13 = *(v12 + 64);
@@ -585,10 +585,10 @@ LABEL_5:
   __chkstk_darwin(v14);
   v17 = &v30 - v16;
   sub_1E09B0();
-  if (!a6)
+  if (!identifier)
   {
     v30 = 0;
-    if (!a8)
+    if (!actionIdentifier)
     {
       goto LABEL_4;
     }
@@ -597,11 +597,11 @@ LABEL_5:
   }
 
   v30 = sub_1E1780();
-  a6 = v18;
-  if (a8)
+  identifier = v18;
+  if (actionIdentifier)
   {
 LABEL_3:
-    a8 = sub_1E18C0();
+    actionIdentifier = sub_1E18C0();
   }
 
 LABEL_4:
@@ -612,16 +612,16 @@ LABEL_4:
   v23 = (*(v12 + 80) + 72) & ~*(v12 + 80);
   v24 = swift_allocObject();
   v25 = v30;
-  *(v24 + 16) = v31;
+  *(v24 + 16) = typeCopy;
   *(v24 + 24) = v25;
-  *(v24 + 32) = a6;
-  *(v24 + 40) = v32;
-  *(v24 + 48) = a8;
+  *(v24 + 32) = identifier;
+  *(v24 + 40) = actionableCopy;
+  *(v24 + 48) = actionIdentifier;
   *(v24 + 56) = v19;
   *(v24 + 64) = v21;
   (*(v12 + 32))(v24 + v23, v15, v22);
-  v26 = v33;
-  v27 = *&v33[OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker];
+  v26 = trackerCopy;
+  v27 = *&trackerCopy[OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker];
   v28 = swift_allocObject();
   *(v28 + 16) = sub_98B98;
   *(v28 + 24) = v24;
@@ -632,39 +632,39 @@ LABEL_4:
   (*(v12 + 8))(v17, v22);
 }
 
-- (void)emitPurchaseAttemptEventWithTracker:(id)a3 contentData:(id)a4 purchaseData:(id)a5 upSellData:(id)a6
+- (void)emitPurchaseAttemptEventWithTracker:(id)tracker contentData:(id)data purchaseData:(id)purchaseData upSellData:(id)sellData
 {
   v10 = swift_allocObject();
-  v10[2] = a4;
-  v10[3] = a5;
-  v10[4] = a6;
-  v11 = *(a3 + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
+  v10[2] = data;
+  v10[3] = purchaseData;
+  v10[4] = sellData;
+  v11 = *(tracker + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
   v12 = swift_allocObject();
   *(v12 + 16) = sub_D14B0;
   *(v12 + 24) = v10;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = v13;
-  v17 = v14;
-  v19 = v15;
-  v18 = a3;
+  dataCopy = data;
+  purchaseDataCopy = purchaseData;
+  sellDataCopy = sellData;
+  v16 = dataCopy;
+  v17 = purchaseDataCopy;
+  v19 = sellDataCopy;
+  trackerCopy = tracker;
 
   sub_1E10C0();
 }
 
-- (void)emitPurchaseSuccessEventWithTracker:(_TtC13BookAnalytics9BATracker *)a3 contentData:(BAContentData *)a4 purchaseData:(BAPurchaseData *)a5 upSellData:(BAUpSellData *)a6 completion:(id)a7
+- (void)emitPurchaseSuccessEventWithTracker:(_TtC13BookAnalytics9BATracker *)tracker contentData:(BAContentData *)data purchaseData:(BAPurchaseData *)purchaseData upSellData:(BAUpSellData *)sellData completion:(id)completion
 {
   v13 = sub_3D68(&qword_287EC0, &qword_205170);
   v14 = *(*(v13 - 8) + 64);
   __chkstk_darwin(v13 - 8);
   v16 = &v27 - v15;
-  v17 = _Block_copy(a7);
+  v17 = _Block_copy(completion);
   v18 = swift_allocObject();
-  v18[2] = a3;
-  v18[3] = a4;
-  v18[4] = a5;
-  v18[5] = a6;
+  v18[2] = tracker;
+  v18[3] = data;
+  v18[4] = purchaseData;
+  v18[5] = sellData;
   v18[6] = v17;
   v18[7] = self;
   v19 = sub_1E1900();
@@ -679,27 +679,27 @@ LABEL_4:
   v21[3] = 0;
   v21[4] = &unk_1F5E08;
   v21[5] = v20;
-  v22 = a3;
-  v23 = a4;
-  v24 = a5;
-  v25 = a6;
-  v26 = self;
+  trackerCopy = tracker;
+  dataCopy = data;
+  purchaseDataCopy = purchaseData;
+  sellDataCopy = sellData;
+  selfCopy = self;
   sub_D0848(0, 0, v16, &unk_1F5E10, v21);
 }
 
-- (void)emitPurchaseFailEventWithTracker:(_TtC13BookAnalytics9BATracker *)a3 contentData:(BAContentData *)a4 purchaseData:(BAPurchaseData *)a5 upSellData:(BAUpSellData *)a6 failData:(BAPurchaseFailData *)a7 completion:(id)a8
+- (void)emitPurchaseFailEventWithTracker:(_TtC13BookAnalytics9BATracker *)tracker contentData:(BAContentData *)data purchaseData:(BAPurchaseData *)purchaseData upSellData:(BAUpSellData *)sellData failData:(BAPurchaseFailData *)failData completion:(id)completion
 {
   v15 = sub_3D68(&qword_287EC0, &qword_205170);
   v16 = *(*(v15 - 8) + 64);
   __chkstk_darwin(v15 - 8);
   v18 = &v30 - v17;
-  v19 = _Block_copy(a8);
+  v19 = _Block_copy(completion);
   v20 = swift_allocObject();
-  v20[2] = a3;
-  v20[3] = a4;
-  v20[4] = a5;
-  v20[5] = a6;
-  v20[6] = a7;
+  v20[2] = tracker;
+  v20[3] = data;
+  v20[4] = purchaseData;
+  v20[5] = sellData;
+  v20[6] = failData;
   v20[7] = v19;
   v20[8] = self;
   v21 = sub_1E1900();
@@ -714,25 +714,25 @@ LABEL_4:
   v23[3] = 0;
   v23[4] = &unk_1EFF08;
   v23[5] = v22;
-  v24 = a3;
-  v25 = a4;
-  v26 = a5;
-  v27 = a6;
-  v28 = a7;
-  v29 = self;
+  trackerCopy = tracker;
+  dataCopy = data;
+  purchaseDataCopy = purchaseData;
+  sellDataCopy = sellData;
+  failDataCopy = failData;
+  selfCopy = self;
   sub_D0848(0, 0, v18, &unk_1EFF10, v23);
 }
 
-- (void)emitAnnotationActionEventWithTracker:(id)a3 contentData:(id)a4 viewData:(id)a5
+- (void)emitAnnotationActionEventWithTracker:(id)tracker contentData:(id)data viewData:(id)viewData
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  _s13BookAnalytics13EventReporterC020emitAnnotationActionC05using11contentData04viewJ0yAA9BATrackerC_AA014BridgedContentJ0CAA0m4ViewJ0CtF_0(v8);
+  trackerCopy = tracker;
+  dataCopy = data;
+  viewDataCopy = viewData;
+  selfCopy = self;
+  _s13BookAnalytics13EventReporterC020emitAnnotationActionC05using11contentData04viewJ0yAA9BATrackerC_AA014BridgedContentJ0CAA0m4ViewJ0CtF_0(trackerCopy);
 }
 
-- (void)emitExitLinkTapEventWithTracker:(id)a3 url:(id)a4
+- (void)emitExitLinkTapEventWithTracker:(id)tracker url:(id)url
 {
   v5 = sub_1E0930();
   v6 = *(v5 - 8);
@@ -746,68 +746,68 @@ LABEL_4:
   v12 = (*(v6 + 80) + 16) & ~*(v6 + 80);
   v13 = swift_allocObject();
   (*(v6 + 32))(v13 + v12, v9, v5);
-  v14 = *(a3 + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
+  v14 = *(tracker + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
   v15 = swift_allocObject();
   *(v15 + 16) = sub_E06D8;
   *(v15 + 24) = v13;
-  v16 = a3;
+  trackerCopy = tracker;
 
   sub_1E10C0();
 
   (*(v6 + 8))(v11, v5);
 }
 
-- (void)emitGetStartedActionEventWithTracker:(id)a3 type:(int64_t)a4
+- (void)emitGetStartedActionEventWithTracker:(id)tracker type:(int64_t)type
 {
   v6 = swift_allocObject();
-  *(v6 + 16) = a4;
-  v7 = *(a3 + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
+  *(v6 + 16) = type;
+  v7 = *(tracker + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
   v8 = swift_allocObject();
   *(v8 + 16) = sub_E06E4;
   *(v8 + 24) = v6;
-  v9 = a3;
+  trackerCopy = tracker;
 
   sub_1E10C0();
 }
 
-- (void)emitNotificationEngagementEventWithTracker:(id)a3 engagementData:(id)a4 notificationData:(id)a5
+- (void)emitNotificationEngagementEventWithTracker:(id)tracker engagementData:(id)data notificationData:(id)notificationData
 {
   v8 = swift_allocObject();
-  *(v8 + 16) = a5;
-  *(v8 + 24) = a4;
-  v9 = *(a3 + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
+  *(v8 + 16) = notificationData;
+  *(v8 + 24) = data;
+  v9 = *(tracker + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
   v10 = swift_allocObject();
   *(v10 + 16) = sub_E06E0;
   *(v10 + 24) = v8;
-  v11 = a4;
-  v14 = a5;
-  v12 = v11;
-  v13 = a3;
+  dataCopy = data;
+  notificationDataCopy = notificationData;
+  v12 = dataCopy;
+  trackerCopy = tracker;
 
   sub_1E10C0();
 }
 
-- (void)emitScrubEventWithTracker:(id)a3 contentData:(id)a4 readingSettingsData:(id)a5 startPosition:(id)a6 endPosition:(id)a7 totalLength:(id)a8
+- (void)emitScrubEventWithTracker:(id)tracker contentData:(id)data readingSettingsData:(id)settingsData startPosition:(id)position endPosition:(id)endPosition totalLength:(id)length
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = self;
-  _s13BookAnalytics13EventReporterC09emitScrubC05using11contentData015readingSettingsI013startPosition03endM011totalLengthyAA9BATrackerC_AA014BridgedContentI0CAA0r7ReadingkI0CSo8NSNumberCA2RtF_0(v14, v15, v16, v17, v18, v19);
+  trackerCopy = tracker;
+  dataCopy = data;
+  settingsDataCopy = settingsData;
+  positionCopy = position;
+  endPositionCopy = endPosition;
+  lengthCopy = length;
+  selfCopy = self;
+  _s13BookAnalytics13EventReporterC09emitScrubC05using11contentData015readingSettingsI013startPosition03endM011totalLengthyAA9BATrackerC_AA014BridgedContentI0CAA0r7ReadingkI0CSo8NSNumberCA2RtF_0(trackerCopy, dataCopy, settingsDataCopy, positionCopy, endPositionCopy, lengthCopy);
 }
 
-- (void)emitUnifiedMessageActionEventWithTracker:(id)a3 startDate:(id)a4 messageType:(int64_t)a5 messageIdentifier:(id)a6 hasActionable:(BOOL)a7 actionIdentifier:(id)a8 placementName:(id)a9
+- (void)emitUnifiedMessageActionEventWithTracker:(id)tracker startDate:(id)date messageType:(int64_t)type messageIdentifier:(id)identifier hasActionable:(BOOL)actionable actionIdentifier:(id)actionIdentifier placementName:(id)name
 {
   v13 = sub_1E1780();
   v15 = v14;
-  if (a6)
+  if (identifier)
   {
-    a6 = sub_1E1780();
+    identifier = sub_1E1780();
     v17 = v16;
-    if (!a8)
+    if (!actionIdentifier)
     {
       goto LABEL_4;
     }
@@ -816,42 +816,42 @@ LABEL_4:
   }
 
   v17 = 0;
-  if (a8)
+  if (actionIdentifier)
   {
 LABEL_3:
-    a8 = sub_1E18C0();
+    actionIdentifier = sub_1E18C0();
   }
 
 LABEL_4:
   v18 = sub_1E1780();
   v20 = v19;
   v21 = swift_allocObject();
-  *(v21 + 16) = a5;
+  *(v21 + 16) = type;
   *(v21 + 24) = v13;
   *(v21 + 32) = v15;
-  *(v21 + 40) = a6;
+  *(v21 + 40) = identifier;
   *(v21 + 48) = v17;
-  *(v21 + 56) = a7;
-  *(v21 + 64) = a8;
+  *(v21 + 56) = actionable;
+  *(v21 + 64) = actionIdentifier;
   *(v21 + 72) = v18;
   *(v21 + 80) = v20;
-  v22 = *(a3 + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
+  v22 = *(tracker + OBJC_IVAR____TtC13BookAnalytics9BATracker_aaTracker);
   v23 = swift_allocObject();
   *(v23 + 16) = sub_E06D4;
   *(v23 + 24) = v21;
-  v24 = a3;
+  trackerCopy = tracker;
 
   sub_1E10C0();
 }
 
-- (void)emitViewSupplementalContentWithTracker:(id)a3 contentID:(id)a4 sourceIsAction:(BOOL)a5 supplementalContentCount:(id)a6
+- (void)emitViewSupplementalContentWithTracker:(id)tracker contentID:(id)d sourceIsAction:(BOOL)action supplementalContentCount:(id)count
 {
   v10 = sub_1E1780();
   v12 = v11;
-  v13 = a3;
-  v14 = a6;
-  v15 = self;
-  EventReporter.emitViewSupplementalContent(using:for:sourceIsAction:with:)(a3, v10, v12, a5, a6);
+  trackerCopy = tracker;
+  countCopy = count;
+  selfCopy = self;
+  EventReporter.emitViewSupplementalContent(using:for:sourceIsAction:with:)(tracker, v10, v12, action, count);
 }
 
 @end

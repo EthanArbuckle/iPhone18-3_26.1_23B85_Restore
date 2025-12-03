@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneUtilStrictStringTokenizer
-- (OrgApacheLuceneUtilStrictStringTokenizer)initWithNSString:(id)a3 withChar:(unsigned __int16)a4;
+- (OrgApacheLuceneUtilStrictStringTokenizer)initWithNSString:(id)string withChar:(unsigned __int16)char;
 - (id)nextToken;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneUtilStrictStringTokenizer
 
-- (OrgApacheLuceneUtilStrictStringTokenizer)initWithNSString:(id)a3 withChar:(unsigned __int16)a4
+- (OrgApacheLuceneUtilStrictStringTokenizer)initWithNSString:(id)string withChar:(unsigned __int16)char
 {
-  JreStrongAssign(&self->s_, a3);
-  self->delimiter_ = a4;
+  JreStrongAssign(&self->s_, string);
+  self->delimiter_ = char;
   return self;
 }
 

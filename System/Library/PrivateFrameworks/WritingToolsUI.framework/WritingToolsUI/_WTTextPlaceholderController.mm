@@ -1,39 +1,39 @@
 @interface _WTTextPlaceholderController
-+ (BOOL)_delegateHasOpenPlaceholder:(id)a3;
-+ (BOOL)_delegateImplementsInsertionMethods:(id)a3;
-+ (BOOL)_delegateImplementsRemovalMethods:(id)a3;
-+ (id)placeholderControllerForDelegate:(id)a3;
-+ (void)removePlaceholderControllerForDelegate:(id)a3;
-- (_WTTextPlaceholderController)initWithDelegate:(id)a3;
-- (double)_widthRatioForIteration:(int)a3 isFinal:(BOOL)a4;
-- (id)_visualRectsForRects:(id)a3 containerBounds:(CGRect)a4 caretRect:(CGRect)a5;
-- (void)_beginShowingShimmerHighlightsWithCaretRect:(CGRect)a3;
-- (void)_endShowingShimmerHighlightsWithCompletion:(id)a3;
-- (void)_insertPlaceholderAndBeginShimmerWithCaretRect:(CGRect)a3 placeholderSize:(CGSize)a4;
++ (BOOL)_delegateHasOpenPlaceholder:(id)placeholder;
++ (BOOL)_delegateImplementsInsertionMethods:(id)methods;
++ (BOOL)_delegateImplementsRemovalMethods:(id)methods;
++ (id)placeholderControllerForDelegate:(id)delegate;
++ (void)removePlaceholderControllerForDelegate:(id)delegate;
+- (_WTTextPlaceholderController)initWithDelegate:(id)delegate;
+- (double)_widthRatioForIteration:(int)iteration isFinal:(BOOL)final;
+- (id)_visualRectsForRects:(id)rects containerBounds:(CGRect)bounds caretRect:(CGRect)rect;
+- (void)_beginShowingShimmerHighlightsWithCaretRect:(CGRect)rect;
+- (void)_endShowingShimmerHighlightsWithCompletion:(id)completion;
+- (void)_insertPlaceholderAndBeginShimmerWithCaretRect:(CGRect)rect placeholderSize:(CGSize)size;
 - (void)beginPlaceholder;
-- (void)endPlaceholderAndWillInsertText:(BOOL)a3 completion:(id)a4;
-- (void)textPreviewsForChunk:(id)a3 completion:(id)a4;
-- (void)updateIsTextVisible:(BOOL)a3 forChunk:(id)a4 completion:(id)a5;
+- (void)endPlaceholderAndWillInsertText:(BOOL)text completion:(id)completion;
+- (void)textPreviewsForChunk:(id)chunk completion:(id)completion;
+- (void)updateIsTextVisible:(BOOL)visible forChunk:(id)chunk completion:(id)completion;
 @end
 
 @implementation _WTTextPlaceholderController
 
-+ (id)placeholderControllerForDelegate:(id)a3
++ (id)placeholderControllerForDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  delegateCopy = delegate;
+  v5 = delegateCopy;
+  if (!delegateCopy)
   {
     goto LABEL_6;
   }
 
-  v6 = objc_getAssociatedObject(v4, &_WTTextPlaceholderControllerIdentifier);
+  v6 = objc_getAssociatedObject(delegateCopy, &_WTTextPlaceholderControllerIdentifier);
   if (v6)
   {
     goto LABEL_7;
   }
 
-  if ([a1 _delegateImplementsInsertionMethods:v5] && objc_msgSend(a1, "_delegateImplementsRemovalMethods:", v5))
+  if ([self _delegateImplementsInsertionMethods:v5] && objc_msgSend(self, "_delegateImplementsRemovalMethods:", v5))
   {
     v6 = [[_WTTextPlaceholderController alloc] initWithDelegate:v5];
     objc_setAssociatedObject(v5, &_WTTextPlaceholderControllerIdentifier, v6, 0x301);
@@ -50,17 +50,17 @@ LABEL_7:
   return v6;
 }
 
-+ (void)removePlaceholderControllerForDelegate:(id)a3
++ (void)removePlaceholderControllerForDelegate:(id)delegate
 {
-  if (a3)
+  if (delegate)
   {
-    objc_setAssociatedObject(a3, &_WTTextPlaceholderControllerIdentifier, 0, 0x301);
+    objc_setAssociatedObject(delegate, &_WTTextPlaceholderControllerIdentifier, 0, 0x301);
   }
 }
 
-+ (BOOL)_delegateImplementsInsertionMethods:(id)a3
++ (BOOL)_delegateImplementsInsertionMethods:(id)methods
 {
-  v3 = a3;
+  methodsCopy = methods;
   if (objc_opt_respondsToSelector())
   {
     v4 = 1;
@@ -74,9 +74,9 @@ LABEL_7:
   return v4 & 1;
 }
 
-+ (BOOL)_delegateImplementsRemovalMethods:(id)a3
++ (BOOL)_delegateImplementsRemovalMethods:(id)methods
 {
-  v3 = a3;
+  methodsCopy = methods;
   if (objc_opt_respondsToSelector())
   {
     v4 = 1;
@@ -90,14 +90,14 @@ LABEL_7:
   return v4 & 1;
 }
 
-+ (BOOL)_delegateHasOpenPlaceholder:(id)a3
++ (BOOL)_delegateHasOpenPlaceholder:(id)placeholder
 {
-  if (!a3)
+  if (!placeholder)
   {
     return 0;
   }
 
-  v3 = objc_getAssociatedObject(a3, &_WTTextPlaceholderControllerIdentifier);
+  v3 = objc_getAssociatedObject(placeholder, &_WTTextPlaceholderControllerIdentifier);
   if (v3)
   {
     v4 = v3[2] != 0;
@@ -111,16 +111,16 @@ LABEL_7:
   return v4;
 }
 
-- (_WTTextPlaceholderController)initWithDelegate:(id)a3
+- (_WTTextPlaceholderController)initWithDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = _WTTextPlaceholderController;
   v6 = [(_WTTextPlaceholderController *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_delegate, a3);
+    objc_storeStrong(&v6->_delegate, delegate);
     v8 = [MEMORY[0x1E695DF70] arrayWithCapacity:1];
     completionHandlers = v7->_completionHandlers;
     v7->_completionHandlers = v8;
@@ -146,12 +146,12 @@ LABEL_7:
     height = *(MEMORY[0x1E695F050] + 24);
     if (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector())
     {
-      v7 = [self->_delegate selectedTextRange];
-      v8 = [v7 start];
+      selectedTextRange = [self->_delegate selectedTextRange];
+      start = [selectedTextRange start];
 
-      if (v8)
+      if (start)
       {
-        [self->_delegate caretRectForPosition:v8];
+        [self->_delegate caretRectForPosition:start];
         x = v11.origin.x;
         y = v11.origin.y;
         width = v11.size.width;
@@ -182,14 +182,14 @@ LABEL_7:
   }
 }
 
-- (void)_insertPlaceholderAndBeginShimmerWithCaretRect:(CGRect)a3 placeholderSize:(CGSize)a4
+- (void)_insertPlaceholderAndBeginShimmerWithCaretRect:(CGRect)rect placeholderSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.size.height;
-  v7 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = size.height;
+  width = size.width;
+  v6 = rect.size.height;
+  v7 = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (objc_opt_respondsToSelector())
   {
     v11 = [self->_delegate insertTextPlaceholderWithSize:{width, height}];
@@ -221,7 +221,7 @@ LABEL_7:
   }
 }
 
-- (double)_widthRatioForIteration:(int)a3 isFinal:(BOOL)a4
+- (double)_widthRatioForIteration:(int)iteration isFinal:(BOOL)final
 {
   v9 = *MEMORY[0x1E69E9840];
   v7[0] = xmmword_1D455A350;
@@ -230,12 +230,12 @@ LABEL_7:
   pattern = self->_pattern;
   if (pattern == 1)
   {
-    return *(v7 + a3 % 5);
+    return *(v7 + iteration % 5);
   }
 
   result = 1.0;
   v6 = 0.5;
-  if (!a4)
+  if (!final)
   {
     v6 = 1.0;
   }
@@ -248,39 +248,39 @@ LABEL_7:
   return result;
 }
 
-- (id)_visualRectsForRects:(id)a3 containerBounds:(CGRect)a4 caretRect:(CGRect)a5
+- (id)_visualRectsForRects:(id)rects containerBounds:(CGRect)bounds caretRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v9 = a4.size.height;
-  v10 = a4.size.width;
-  v11 = a4.origin.y;
-  v12 = a4.origin.x;
-  v14 = a3;
-  if ([v14 count])
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = bounds.size.height;
+  v10 = bounds.size.width;
+  v11 = bounds.origin.y;
+  v12 = bounds.origin.x;
+  rectsCopy = rects;
+  if ([rectsCopy count])
   {
-    v15 = [v14 firstObject];
-    v16 = [v15 writingDirection];
+    firstObject = [rectsCopy firstObject];
+    writingDirection = [firstObject writingDirection];
 
     v17 = [MEMORY[0x1E695DF70] arrayWithCapacity:3];
-    if ([v14 count] == 1)
+    if ([rectsCopy count] == 1)
     {
-      v18 = [v14 firstObject];
+      firstObject2 = [rectsCopy firstObject];
       v47.origin.x = x;
       v47.origin.y = y;
       v47.size.width = width;
       v47.size.height = height;
-      if (CGRectIsNull(v47) || ([v18 rect], CGRectGetHeight(v48) < height))
+      if (CGRectIsNull(v47) || ([firstObject2 rect], CGRectGetHeight(v48) < height))
       {
-        [v18 rect];
+        [firstObject2 rect];
         height = CGRectGetHeight(v49);
       }
 
-      [v18 rect];
+      [firstObject2 rect];
       MinY = CGRectGetMinY(v50);
-      [v18 rect];
+      [firstObject2 rect];
       MaxY = CGRectGetMaxY(v51);
       v21 = objc_opt_class();
       v22 = NSStringFromClass(v21);
@@ -288,7 +288,7 @@ LABEL_7:
 
       if (v23)
       {
-        [v18 rect];
+        [firstObject2 rect];
         MaxY = y + v24;
         MinY = y;
       }
@@ -304,12 +304,12 @@ LABEL_7:
         v26 = height + MinY;
         [(_WTTextPlaceholderController *)self _widthRatioForIteration:v25 isFinal:height + MinY > MaxY];
         v28 = v10 * v27;
-        [v18 rect];
+        [firstObject2 rect];
         MinX = CGRectGetMinX(v52);
         v30 = MinY + 1.5;
-        [v18 rect];
+        [firstObject2 rect];
         v31 = v10 - (v28 + CGRectGetMinX(v53) * -2.0);
-        if (v16 != 1)
+        if (writingDirection != 1)
         {
           v31 = MinX;
         }
@@ -338,10 +338,10 @@ LABEL_7:
       v40 = v11;
       v41 = v10;
       v42 = v9;
-      v35 = v14;
-      v36 = self;
+      v35 = rectsCopy;
+      selfCopy = self;
       v38 = v44;
-      v43 = v16;
+      v43 = writingDirection;
       v17 = v17;
       v37 = v17;
       [v35 enumerateObjectsUsingBlock:v34];
@@ -358,29 +358,29 @@ LABEL_7:
   return v17;
 }
 
-- (void)_beginShowingShimmerHighlightsWithCaretRect:(CGRect)a3
+- (void)_beginShowingShimmerHighlightsWithCaretRect:(CGRect)rect
 {
   v43 = *MEMORY[0x1E69E9840];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [self->_delegate textInputView];
+    textInputView = [self->_delegate textInputView];
 LABEL_5:
-    v5 = v4;
+    v5 = textInputView;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = self->_delegate;
+    textInputView = self->_delegate;
     goto LABEL_5;
   }
 
   v5 = 0;
 LABEL_7:
-  v6 = [(UITextPlaceholder *)self->_placeholder rects];
+  rects = [(UITextPlaceholder *)self->_placeholder rects];
   [v5 bounds];
-  v7 = [_WTTextPlaceholderController _visualRectsForRects:"_visualRectsForRects:containerBounds:caretRect:" containerBounds:v6 caretRect:?];
+  v7 = [_WTTextPlaceholderController _visualRectsForRects:"_visualRectsForRects:containerBounds:caretRect:" containerBounds:rects caretRect:?];
 
   Mutable = CGPathCreateMutable();
   v38 = 0u;
@@ -462,9 +462,9 @@ LABEL_7:
   objc_storeStrong(&self->_effectView, v23);
   [v5 addSubview:self->_effectView];
   v24 = [[_WTTextRangeChunk alloc] initWithRange:0, 1];
-  v25 = [v5 _WTIsDarkMode];
+  _WTIsDarkMode = [v5 _WTIsDarkMode];
   v26 = 0.75;
-  if (v25)
+  if (_WTIsDarkMode)
   {
     v26 = 0.5;
   }
@@ -475,12 +475,12 @@ LABEL_7:
   self->_ponderingEffect = v28;
 
   [(_WTTextEffect *)self->_ponderingEffect setHidesOriginal:0];
-  v30 = [v9 firstObject];
-  [v30 rect];
+  firstObject = [v9 firstObject];
+  [firstObject rect];
   [(_WTSweepTextEffect *)self->_ponderingEffect setLineSize:v31, v32];
 
-  v33 = [MEMORY[0x1E69DC888] clearColor];
-  [(_WTSweepTextEffect *)self->_ponderingEffect setAnimateFromColor:v33];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [(_WTSweepTextEffect *)self->_ponderingEffect setAnimateFromColor:clearColor];
 
   [(_WTSweepTextEffect *)self->_ponderingEffect setBaseFillColor:v27];
   v34 = [[_WTReplaceTextEffect alloc] initWithChunk:v24 effectView:v23];
@@ -495,27 +495,27 @@ LABEL_7:
   self->_ponderingEffectUUID = v36;
 }
 
-- (void)textPreviewsForChunk:(id)a3 completion:(id)a4
+- (void)textPreviewsForChunk:(id)chunk completion:(id)completion
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v8[0] = self->_textPreview;
   v5 = MEMORY[0x1E695DEC8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = [v5 arrayWithObjects:v8 count:1];
-  (*(a4 + 2))(v6, v7);
+  (*(completion + 2))(completionCopy, v7);
 }
 
-- (void)updateIsTextVisible:(BOOL)a3 forChunk:(id)a4 completion:(id)a5
+- (void)updateIsTextVisible:(BOOL)visible forChunk:(id)chunk completion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    (*(a5 + 2))(a5);
+    (*(completion + 2))(completion);
   }
 }
 
-- (void)endPlaceholderAndWillInsertText:(BOOL)a3 completion:(id)a4
+- (void)endPlaceholderAndWillInsertText:(BOOL)text completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   if (objc_opt_respondsToSelector())
   {
@@ -526,7 +526,7 @@ LABEL_7:
     v16[3] = &unk_1E8480F88;
     v8 = &v17;
     objc_copyWeak(&v17, &location);
-    v16[4] = v6;
+    v16[4] = completionCopy;
     [(_WTTextPlaceholderController *)self _endShowingShimmerHighlightsWithCompletion:v16];
 LABEL_6:
     v9 = (v7 + 4);
@@ -542,7 +542,7 @@ LABEL_6:
     v10[3] = &unk_1E8480F88;
     v8 = &v11;
     objc_copyWeak(&v11, &location);
-    v10[4] = v6;
+    v10[4] = completionCopy;
     [(_WTTextPlaceholderController *)self _endShowingShimmerHighlightsWithCompletion:v10];
     goto LABEL_6;
   }
@@ -553,8 +553,8 @@ LABEL_6:
   v12[3] = &unk_1E84810C0;
   v8 = &v14;
   objc_copyWeak(&v14, &location);
-  v15 = a3;
-  v13 = v6;
+  textCopy = text;
+  v13 = completionCopy;
   [(_WTTextPlaceholderController *)self _endShowingShimmerHighlightsWithCompletion:v12];
   v9 = &v13;
 LABEL_7:
@@ -563,17 +563,17 @@ LABEL_7:
   objc_destroyWeak(&location);
 }
 
-- (void)_endShowingShimmerHighlightsWithCompletion:(id)a3
+- (void)_endShowingShimmerHighlightsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   effectView = self->_effectView;
   if (effectView && [(_WTTextEffectView *)effectView hasActiveEffects])
   {
-    if (v4)
+    if (completionCopy)
     {
       os_unfair_lock_lock(&self->_completionLock);
       completionHandlers = self->_completionHandlers;
-      v7 = MEMORY[0x1DA6D90E0](v4);
+      v7 = MEMORY[0x1DA6D90E0](completionCopy);
       [(NSMutableArray *)completionHandlers addObject:v7];
 
       os_unfair_lock_unlock(&self->_completionLock);
@@ -601,9 +601,9 @@ LABEL_7:
     }
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 

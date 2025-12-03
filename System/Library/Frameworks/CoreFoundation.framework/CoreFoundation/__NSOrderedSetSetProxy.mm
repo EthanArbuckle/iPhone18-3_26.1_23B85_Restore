@@ -1,6 +1,6 @@
 @interface __NSOrderedSetSetProxy
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)member:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)member:(id)member;
 - (void)dealloc;
 @end
 
@@ -16,9 +16,9 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (id)member:(id)a3
+- (id)member:(id)member
 {
-  v4 = [self->_orderedSet indexOfObject:a3];
+  v4 = [self->_orderedSet indexOfObject:member];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
@@ -30,9 +30,9 @@
   return [orderedSet objectAtIndex:v6];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [NSSet allocWithZone:a3];
+  v4 = [NSSet allocWithZone:zone];
 
   return [(NSSet *)v4 initWithSet:self copyItems:0];
 }

@@ -1,31 +1,31 @@
 @interface HAPCharacteristicResponseTuple
-+ (id)responseTupleForCharacteristic:(id)a3 error:(id)a4;
++ (id)responseTupleForCharacteristic:(id)characteristic error:(id)error;
 @end
 
 @implementation HAPCharacteristicResponseTuple
 
-+ (id)responseTupleForCharacteristic:(id)a3 error:(id)a4
++ (id)responseTupleForCharacteristic:(id)characteristic error:(id)error
 {
-  v5 = a3;
-  v6 = a4;
+  characteristicCopy = characteristic;
+  errorCopy = error;
   v7 = objc_alloc_init(HAPCharacteristicResponseTuple);
   v8 = v7;
   if (v7)
   {
-    [(HAPCharacteristicResponseTuple *)v7 setCharacteristic:v5];
-    v9 = [v5 value];
-    [(HAPCharacteristicResponseTuple *)v8 setValue:v9];
+    [(HAPCharacteristicResponseTuple *)v7 setCharacteristic:characteristicCopy];
+    value = [characteristicCopy value];
+    [(HAPCharacteristicResponseTuple *)v8 setValue:value];
 
-    v10 = [v5 valueUpdatedTime];
-    [(HAPCharacteristicResponseTuple *)v8 setValueUpdatedTime:v10];
+    valueUpdatedTime = [characteristicCopy valueUpdatedTime];
+    [(HAPCharacteristicResponseTuple *)v8 setValueUpdatedTime:valueUpdatedTime];
 
-    v11 = [v5 stateNumber];
-    [(HAPCharacteristicResponseTuple *)v8 setStateNumber:v11];
+    stateNumber = [characteristicCopy stateNumber];
+    [(HAPCharacteristicResponseTuple *)v8 setStateNumber:stateNumber];
 
-    v12 = [v5 notificationContext];
-    [(HAPCharacteristicResponseTuple *)v8 setNotificationContext:v12];
+    notificationContext = [characteristicCopy notificationContext];
+    [(HAPCharacteristicResponseTuple *)v8 setNotificationContext:notificationContext];
 
-    [(HAPCharacteristicResponseTuple *)v8 setError:v6];
+    [(HAPCharacteristicResponseTuple *)v8 setError:errorCopy];
   }
 
   return v8;

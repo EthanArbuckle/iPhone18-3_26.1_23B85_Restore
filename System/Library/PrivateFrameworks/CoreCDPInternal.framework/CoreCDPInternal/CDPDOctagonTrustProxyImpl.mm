@@ -1,39 +1,39 @@
 @interface CDPDOctagonTrustProxyImpl
-- (BOOL)cacheRecoveryKey:(id)a3 forAltDSID:(id)a4 error:(id *)a5;
-- (BOOL)disableRecoveryKey:(id *)a3;
-- (BOOL)registerRecoveryKey:(id)a3 error:(id *)a4;
-- (CDPDOctagonTrustProxyImpl)initWithContext:(id)a3;
-- (id)tlkRecoverabilityForEscrow:(id)a3 record:(id)a4 source:(int64_t)a5 error:(id *)a6;
-- (unint64_t)_cdpEscrowRecordViabilityStateFromRepairReason:(int64_t)a3;
-- (void)_retryableFetchAllEscrowRecordWithContext:(id)a3 completion:(id)a4;
-- (void)_retryableFetchEscrowRecordWithContext:(id)a3 completion:(id)a4;
-- (void)escrowCheckWithIsBackground:(BOOL)a3 completion:(id)a4;
-- (void)fetchAllEscrowRecords:(id)a3 forceFetch:(BOOL)a4 completion:(id)a5;
-- (void)fetchAllEscrowRecords:(id)a3 source:(int64_t)a4 completion:(id)a5;
-- (void)fetchEscrowRecords:(id)a3 forceFetch:(BOOL)a4 completion:(id)a5;
-- (void)fetchEscrowRecords:(id)a3 source:(int64_t)a4 completion:(id)a5;
+- (BOOL)cacheRecoveryKey:(id)key forAltDSID:(id)d error:(id *)error;
+- (BOOL)disableRecoveryKey:(id *)key;
+- (BOOL)registerRecoveryKey:(id)key error:(id *)error;
+- (CDPDOctagonTrustProxyImpl)initWithContext:(id)context;
+- (id)tlkRecoverabilityForEscrow:(id)escrow record:(id)record source:(int64_t)source error:(id *)error;
+- (unint64_t)_cdpEscrowRecordViabilityStateFromRepairReason:(int64_t)reason;
+- (void)_retryableFetchAllEscrowRecordWithContext:(id)context completion:(id)completion;
+- (void)_retryableFetchEscrowRecordWithContext:(id)context completion:(id)completion;
+- (void)escrowCheckWithIsBackground:(BOOL)background completion:(id)completion;
+- (void)fetchAllEscrowRecords:(id)records forceFetch:(BOOL)fetch completion:(id)completion;
+- (void)fetchAllEscrowRecords:(id)records source:(int64_t)source completion:(id)completion;
+- (void)fetchEscrowRecords:(id)records forceFetch:(BOOL)fetch completion:(id)completion;
+- (void)fetchEscrowRecords:(id)records source:(int64_t)source completion:(id)completion;
 @end
 
 @implementation CDPDOctagonTrustProxyImpl
 
-- (CDPDOctagonTrustProxyImpl)initWithContext:(id)a3
+- (CDPDOctagonTrustProxyImpl)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = CDPDOctagonTrustProxyImpl;
   v6 = [(CDPDOctagonTrustProxyImpl *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cdpContext, a3);
+    objc_storeStrong(&v6->_cdpContext, context);
   }
 
   return v7;
 }
 
-- (void)fetchEscrowRecords:(id)a3 forceFetch:(BOOL)a4 completion:(id)a5
+- (void)fetchEscrowRecords:(id)records forceFetch:(BOOL)fetch completion:(id)completion
 {
-  if (a4)
+  if (fetch)
   {
     v5 = 2;
   }
@@ -43,38 +43,38 @@
     v5 = 0;
   }
 
-  [(CDPDOctagonTrustProxyImpl *)self fetchEscrowRecords:a3 source:v5 completion:a5];
+  [(CDPDOctagonTrustProxyImpl *)self fetchEscrowRecords:records source:v5 completion:completion];
 }
 
-- (void)fetchEscrowRecords:(id)a3 source:(int64_t)a4 completion:(id)a5
+- (void)fetchEscrowRecords:(id)records source:(int64_t)source completion:(id)completion
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   v9 = MEMORY[0x277CDBD50];
-  v10 = a3;
+  recordsCopy = records;
   v11 = objc_alloc_init(v9);
   [v11 setContext:*MEMORY[0x277CDBD90]];
-  v12 = [(CDPContext *)self->_cdpContext altDSID];
-  [v11 setAltDSID:v12];
+  altDSID = [(CDPContext *)self->_cdpContext altDSID];
+  [v11 setAltDSID:altDSID];
 
-  v13 = [MEMORY[0x277D36DA0] dictionaryToEscrowAuthenticationInfo:v10];
+  v13 = [MEMORY[0x277D36DA0] dictionaryToEscrowAuthenticationInfo:recordsCopy];
 
   [v11 setEscrowAuth:v13];
   if (objc_opt_respondsToSelector())
   {
-    v14 = [(CDPContext *)self->_cdpContext telemetryFlowID];
-    [v11 setFlowID:v14];
+    telemetryFlowID = [(CDPContext *)self->_cdpContext telemetryFlowID];
+    [v11 setFlowID:telemetryFlowID];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [(CDPContext *)self->_cdpContext telemetryDeviceSessionID];
-    [v11 setDeviceSessionID:v15];
+    telemetryDeviceSessionID = [(CDPContext *)self->_cdpContext telemetryDeviceSessionID];
+    [v11 setDeviceSessionID:telemetryDeviceSessionID];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v11 setEscrowFetchSource:a4];
+    [v11 setEscrowFetchSource:source];
   }
 
   v16 = _CDPSignpostLogSystem();
@@ -99,11 +99,11 @@
 
   v23 = *MEMORY[0x277CFD930];
   v24 = [MEMORY[0x277CE44D8] analyticsEventWithContext:self->_cdpContext eventName:*MEMORY[0x277CFD738] category:*MEMORY[0x277CFD930]];
-  v25 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-  [v25 sendEvent:v24];
+  rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+  [rtcAnalyticsReporter sendEvent:v24];
 
   v26 = [MEMORY[0x277CE44D8] analyticsEventWithContext:self->_cdpContext eventName:*MEMORY[0x277CFD730] category:v23];
-  v27 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v27 = [MEMORY[0x277CCABB0] numberWithInteger:source];
   [v26 setObject:v27 forKeyedSubscript:*MEMORY[0x277CFD718]];
 
   v32 = MEMORY[0x277D85DD0];
@@ -113,8 +113,8 @@
   v38 = v17;
   v39 = v19;
   v36 = v26;
-  v37 = v8;
-  v28 = v8;
+  v37 = completionCopy;
+  v28 = completionCopy;
   v29 = v26;
   v30 = _Block_copy(&v32);
   [(CDPDOctagonTrustProxyImpl *)self _retryableFetchEscrowRecordWithContext:v11 completion:v30, v32, v33, v34, v35];
@@ -218,17 +218,17 @@ LABEL_24:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_retryableFetchEscrowRecordWithContext:(id)a3 completion:(id)a4
+- (void)_retryableFetchEscrowRecordWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  contextCopy = context;
   v8 = objc_alloc_init(_TtC15CoreCDPInternal28CDPExponentialRetryScheduler);
-  [(CDPExponentialRetryScheduler *)v8 retryFetchEscrowRecord:v7 cdpContext:self->_cdpContext completionHandler:v6];
+  [(CDPExponentialRetryScheduler *)v8 retryFetchEscrowRecord:contextCopy cdpContext:self->_cdpContext completionHandler:completionCopy];
 }
 
-- (void)fetchAllEscrowRecords:(id)a3 forceFetch:(BOOL)a4 completion:(id)a5
+- (void)fetchAllEscrowRecords:(id)records forceFetch:(BOOL)fetch completion:(id)completion
 {
-  if (a4)
+  if (fetch)
   {
     v5 = 2;
   }
@@ -238,44 +238,44 @@ LABEL_24:
     v5 = 0;
   }
 
-  [(CDPDOctagonTrustProxyImpl *)self fetchAllEscrowRecords:a3 source:v5 completion:a5];
+  [(CDPDOctagonTrustProxyImpl *)self fetchAllEscrowRecords:records source:v5 completion:completion];
 }
 
-- (void)fetchAllEscrowRecords:(id)a3 source:(int64_t)a4 completion:(id)a5
+- (void)fetchAllEscrowRecords:(id)records source:(int64_t)source completion:(id)completion
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   v9 = MEMORY[0x277CDBD50];
-  v10 = a3;
+  recordsCopy = records;
   v11 = objc_alloc_init(v9);
   [v11 setContext:*MEMORY[0x277CDBD90]];
-  v12 = [(CDPContext *)self->_cdpContext altDSID];
-  [v11 setAltDSID:v12];
+  altDSID = [(CDPContext *)self->_cdpContext altDSID];
+  [v11 setAltDSID:altDSID];
 
-  v13 = [MEMORY[0x277D36DA0] dictionaryToEscrowAuthenticationInfo:v10];
+  v13 = [MEMORY[0x277D36DA0] dictionaryToEscrowAuthenticationInfo:recordsCopy];
 
   [v11 setEscrowAuth:v13];
   if (objc_opt_respondsToSelector())
   {
-    v14 = [(CDPContext *)self->_cdpContext telemetryFlowID];
-    [v11 setFlowID:v14];
+    telemetryFlowID = [(CDPContext *)self->_cdpContext telemetryFlowID];
+    [v11 setFlowID:telemetryFlowID];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [(CDPContext *)self->_cdpContext telemetryDeviceSessionID];
-    [v11 setDeviceSessionID:v15];
+    telemetryDeviceSessionID = [(CDPContext *)self->_cdpContext telemetryDeviceSessionID];
+    [v11 setDeviceSessionID:telemetryDeviceSessionID];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [v11 setEscrowFetchSource:a4];
+    [v11 setEscrowFetchSource:source];
   }
 
   v16 = *MEMORY[0x277CFD930];
   v17 = [MEMORY[0x277CE44D8] analyticsEventWithContext:self->_cdpContext eventName:*MEMORY[0x277CFD738] category:*MEMORY[0x277CFD930]];
-  v18 = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
-  [v18 sendEvent:v17];
+  rtcAnalyticsReporter = [MEMORY[0x277CFD490] rtcAnalyticsReporter];
+  [rtcAnalyticsReporter sendEvent:v17];
 
   v19 = _CDPSignpostLogSystem();
   v20 = _CDPSignpostCreate();
@@ -298,7 +298,7 @@ LABEL_24:
   }
 
   v26 = [MEMORY[0x277CE44D8] analyticsEventWithContext:self->_cdpContext eventName:*MEMORY[0x277CFD730] category:v16];
-  v27 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v27 = [MEMORY[0x277CCABB0] numberWithInteger:source];
   [v26 setObject:v27 forKeyedSubscript:*MEMORY[0x277CFD718]];
 
   v32 = MEMORY[0x277D85DD0];
@@ -308,8 +308,8 @@ LABEL_24:
   v38 = v20;
   v39 = v22;
   v36 = v26;
-  v37 = v8;
-  v28 = v8;
+  v37 = completionCopy;
+  v28 = completionCopy;
   v29 = v26;
   v30 = _Block_copy(&v32);
   [(CDPDOctagonTrustProxyImpl *)self _retryableFetchAllEscrowRecordWithContext:v11 completion:v30, v32, v33, v34, v35];
@@ -413,44 +413,44 @@ LABEL_24:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_retryableFetchAllEscrowRecordWithContext:(id)a3 completion:(id)a4
+- (void)_retryableFetchAllEscrowRecordWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  contextCopy = context;
   v8 = objc_alloc_init(_TtC15CoreCDPInternal28CDPExponentialRetryScheduler);
-  [(CDPExponentialRetryScheduler *)v8 retryFetchAllEscrowRecord:v7 cdpContext:self->_cdpContext completionHandler:v6];
+  [(CDPExponentialRetryScheduler *)v8 retryFetchAllEscrowRecord:contextCopy cdpContext:self->_cdpContext completionHandler:completionCopy];
 }
 
-- (id)tlkRecoverabilityForEscrow:(id)a3 record:(id)a4 source:(int64_t)a5 error:(id *)a6
+- (id)tlkRecoverabilityForEscrow:(id)escrow record:(id)record source:(int64_t)source error:(id *)error
 {
   v46 = *MEMORY[0x277D85DE8];
   v10 = MEMORY[0x277CDBD50];
-  v11 = a4;
-  v12 = a3;
+  recordCopy = record;
+  escrowCopy = escrow;
   v13 = objc_alloc_init(v10);
   [v13 setContext:*MEMORY[0x277CDBD90]];
   if (objc_opt_respondsToSelector())
   {
-    v14 = [(CDPContext *)self->_cdpContext telemetryFlowID];
-    [v13 setFlowID:v14];
+    telemetryFlowID = [(CDPContext *)self->_cdpContext telemetryFlowID];
+    [v13 setFlowID:telemetryFlowID];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v15 = [(CDPContext *)self->_cdpContext telemetryDeviceSessionID];
-    [v13 setDeviceSessionID:v15];
+    telemetryDeviceSessionID = [(CDPContext *)self->_cdpContext telemetryDeviceSessionID];
+    [v13 setDeviceSessionID:telemetryDeviceSessionID];
   }
 
-  v16 = [MEMORY[0x277CFD480] sharedInstance];
-  v17 = [v16 primaryAccountAltDSID];
+  mEMORY[0x277CFD480] = [MEMORY[0x277CFD480] sharedInstance];
+  primaryAccountAltDSID = [mEMORY[0x277CFD480] primaryAccountAltDSID];
 
-  [v13 setAltDSID:v17];
-  v18 = [MEMORY[0x277D36DA0] dictionaryToEscrowAuthenticationInfo:v12];
+  [v13 setAltDSID:primaryAccountAltDSID];
+  v18 = [MEMORY[0x277D36DA0] dictionaryToEscrowAuthenticationInfo:escrowCopy];
 
   [v13 setEscrowAuth:v18];
   if (objc_opt_respondsToSelector())
   {
-    [v13 setEscrowFetchSource:a5];
+    [v13 setEscrowFetchSource:source];
   }
 
   v19 = _CDPSignpostLogSystem();
@@ -474,7 +474,7 @@ LABEL_24:
 
   v24 = [objc_alloc(MEMORY[0x277CDBD48]) initWithContextData:v13];
   v39 = 0;
-  v25 = [v24 tlkRecoverabilityForEscrowRecord:v11 error:&v39];
+  v25 = [v24 tlkRecoverabilityForEscrowRecord:recordCopy error:&v39];
 
   v26 = v39;
   Nanoseconds = _CDPSignpostGetNanoseconds();
@@ -482,22 +482,22 @@ LABEL_24:
   v29 = v28;
   if (v20 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v28))
   {
-    v30 = [v26 code];
+    code = [v26 code];
     *buf = 67240192;
-    LODWORD(v41) = v30;
+    LODWORD(v41) = code;
     _os_signpost_emit_with_name_impl(&dword_24510B000, v29, OS_SIGNPOST_INTERVAL_END, v20, "TLKRecoverability", " resultError=%{public,signpost.telemetry:number1,name=resultError}d ", buf, 8u);
   }
 
   v31 = _CDPSignpostLogSystem();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
   {
-    v32 = [v26 code];
+    code2 = [v26 code];
     *buf = 134218496;
     v41 = v20;
     v42 = 2048;
     v43 = Nanoseconds / 1000000000.0;
     v44 = 1026;
-    v45 = v32;
+    v45 = code2;
     _os_log_impl(&dword_24510B000, v31, OS_LOG_TYPE_DEFAULT, "END [%lld] %fs: TLKRecoverability  resultError=%{public,signpost.telemetry:number1,name=resultError}d ", buf, 0x1Cu);
   }
 
@@ -515,11 +515,11 @@ LABEL_24:
       [CDPDOctagonTrustProxyImpl tlkRecoverabilityForEscrow:record:source:error:];
     }
 
-    if (a6)
+    if (error)
     {
       v36 = v26;
       v34 = 0;
-      *a6 = v26;
+      *error = v26;
     }
 
     else
@@ -538,43 +538,43 @@ LABEL_24:
   return v34;
 }
 
-- (BOOL)disableRecoveryKey:(id *)a3
+- (BOOL)disableRecoveryKey:(id *)key
 {
-  v4 = [(CDPContext *)self->_cdpContext cliqueConfiguration];
-  v5 = [objc_alloc(MEMORY[0x277CDBD48]) initWithContextData:v4];
-  LOBYTE(a3) = [v5 removeRecoveryKey:v4 error:a3];
+  cliqueConfiguration = [(CDPContext *)self->_cdpContext cliqueConfiguration];
+  v5 = [objc_alloc(MEMORY[0x277CDBD48]) initWithContextData:cliqueConfiguration];
+  LOBYTE(key) = [v5 removeRecoveryKey:cliqueConfiguration error:key];
 
-  return a3;
+  return key;
 }
 
-- (BOOL)cacheRecoveryKey:(id)a3 forAltDSID:(id)a4 error:(id *)a5
+- (BOOL)cacheRecoveryKey:(id)key forAltDSID:(id)d error:(id *)error
 {
-  v7 = a3;
+  keyCopy = key;
   v8 = +[CDPRecoveryKeyCache sharedInstance];
-  v9 = [(CDPContext *)self->_cdpContext altDSID];
-  LOBYTE(a5) = [v8 cacheRecoveryKey:v7 forAltDSID:v9 error:a5];
+  altDSID = [(CDPContext *)self->_cdpContext altDSID];
+  LOBYTE(error) = [v8 cacheRecoveryKey:keyCopy forAltDSID:altDSID error:error];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)registerRecoveryKey:(id)a3 error:(id *)a4
+- (BOOL)registerRecoveryKey:(id)key error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
   cdpContext = self->_cdpContext;
-  v6 = a3;
-  v7 = [(CDPContext *)cdpContext octagonConfigurationContext];
-  [v7 setContext:*MEMORY[0x277CDBD90]];
+  keyCopy = key;
+  octagonConfigurationContext = [(CDPContext *)cdpContext octagonConfigurationContext];
+  [octagonConfigurationContext setContext:*MEMORY[0x277CDBD90]];
   v8 = _CDPLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 141558274;
     v15 = 1752392040;
     v16 = 2112;
-    v17 = v7;
+    v17 = octagonConfigurationContext;
     _os_log_impl(&dword_24510B000, v8, OS_LOG_TYPE_DEFAULT, "Registering recovery key with context %{mask.hash}@", &v14, 0x16u);
   }
 
-  v9 = [MEMORY[0x277CDBD48] registerRecoveryKeyWithContext:v7 recoveryKey:v6 error:a4];
+  v9 = [MEMORY[0x277CDBD48] registerRecoveryKeyWithContext:octagonConfigurationContext recoveryKey:keyCopy error:error];
   if (v9)
   {
     v10 = _CDPLogSystem();
@@ -589,11 +589,11 @@ LABEL_24:
   {
     v10 = _CDPLogSystem();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_ERROR);
-    if (a4)
+    if (error)
     {
       if (v11)
       {
-        [CDPDOctagonTrustProxyImpl registerRecoveryKey:a4 error:?];
+        [CDPDOctagonTrustProxyImpl registerRecoveryKey:error error:?];
       }
     }
 
@@ -607,10 +607,10 @@ LABEL_24:
   return v9;
 }
 
-- (void)escrowCheckWithIsBackground:(BOOL)a3 completion:(id)a4
+- (void)escrowCheckWithIsBackground:(BOOL)background completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(CDPContext *)self->_cdpContext octagonConfigurationContext];
+  completionCopy = completion;
+  octagonConfigurationContext = [(CDPContext *)self->_cdpContext octagonConfigurationContext];
   v27[0] = 0;
   v27[1] = v27;
   v27[2] = 0x3032000000;
@@ -633,7 +633,7 @@ LABEL_24:
   v9 = v8;
   v21 = v9;
   v24 = v25;
-  v10 = v6;
+  v10 = completionCopy;
   v22 = v10;
   v11 = _Block_copy(aBlock);
   v15[0] = MEMORY[0x277D85DD0];
@@ -641,8 +641,8 @@ LABEL_24:
   v15[2] = __68__CDPDOctagonTrustProxyImpl_escrowCheckWithIsBackground_completion___block_invoke_32;
   v15[3] = &unk_278E24CC0;
   v17 = v27;
-  v12 = v7;
-  v19 = a3;
+  v12 = octagonConfigurationContext;
+  backgroundCopy = background;
   v16 = v12;
   v18 = v25;
   v13 = _Block_copy(v15);
@@ -819,16 +819,16 @@ void __68__CDPDOctagonTrustProxyImpl_escrowCheckWithIsBackground_completion___bl
   v7[2](v7, v11, *(*(*(a1 + 48) + 8) + 40));
 }
 
-- (unint64_t)_cdpEscrowRecordViabilityStateFromRepairReason:(int64_t)a3
+- (unint64_t)_cdpEscrowRecordViabilityStateFromRepairReason:(int64_t)reason
 {
-  if ((a3 - 1) > 4)
+  if ((reason - 1) > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_245199B20[a3 - 1];
+    return qword_245199B20[reason - 1];
   }
 }
 

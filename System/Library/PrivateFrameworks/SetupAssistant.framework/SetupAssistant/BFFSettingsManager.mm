@@ -9,13 +9,13 @@
 + (void)loadConfigurationFromDisk;
 + (void)postDidRestoreSafeHavenNotification;
 - (BFFSettingsManager)init;
-- (BFFSettingsManager)initWithManagedConfiguration:(id)a3 flowSkipController:(id)a4;
+- (BFFSettingsManager)initWithManagedConfiguration:(id)configuration flowSkipController:(id)controller;
 - (BOOL)_commitStash;
-- (BOOL)_stashConfiguration:(BOOL)a3;
+- (BOOL)_stashConfiguration:(BOOL)configuration;
 - (BOOL)_stashPaths;
 - (BOOL)hasStashedValuesOnDisk;
-- (id)_preferencesForDomain:(id)a3;
-- (id)_shovePath:(id)a3 toPath:(id)a4;
+- (id)_preferencesForDomain:(id)domain;
+- (id)_shovePath:(id)path toPath:(id)toPath;
 - (unint64_t)_restoreConfiguration;
 - (void)_applyAssistantPreferences;
 - (void)_applyLocationServices;
@@ -27,24 +27,24 @@
 - (void)_applyStashedPreferences;
 - (void)_applyUpdatePreferences;
 - (void)_applyUserInterfaceStyleMode;
-- (void)_reset:(BOOL)a3;
+- (void)_reset:(BOOL)_reset;
 - (void)_restoreAccessibilityData;
 - (void)_restoreAnalyticsData;
 - (void)_restoreIPadMultitaskingMode;
 - (void)_restoreStashedFiles;
 - (void)_restoreWatchData;
-- (void)applySafeHavenStashWithIsIntelligenceEnabledBlock:(id)a3 notificationOnboardingDefaultsBlock:(id)a4;
+- (void)applySafeHavenStashWithIsIntelligenceEnabledBlock:(id)block notificationOnboardingDefaultsBlock:(id)defaultsBlock;
 - (void)populatePathsToStash;
-- (void)removeBoolSettingForManagedConfigurationSetting:(id)a3;
+- (void)removeBoolSettingForManagedConfigurationSetting:(id)setting;
 - (void)reset;
-- (void)setAssistantOutputVoice:(id)a3 languageCode:(id)a4;
-- (void)setIPadMultitaskingMode:(id)a3;
-- (void)setObject:(id)a3 forDomain:(id)a4 key:(id)a5;
-- (void)setSeedEnrollmentProgramName:(id)a3 assetAudience:(id)a4 programID:(id)a5;
-- (void)setUserInterfaceStyleMode:(int64_t)a3;
-- (void)stashAnalyticEvent:(id)a3 payload:(id)a4;
+- (void)setAssistantOutputVoice:(id)voice languageCode:(id)code;
+- (void)setIPadMultitaskingMode:(id)mode;
+- (void)setObject:(id)object forDomain:(id)domain key:(id)key;
+- (void)setSeedEnrollmentProgramName:(id)name assetAudience:(id)audience programID:(id)d;
+- (void)setUserInterfaceStyleMode:(int64_t)mode;
+- (void)stashAnalyticEvent:(id)event payload:(id)payload;
 - (void)stashCurrentActionButtonData;
-- (void)stashPath:(id)a3;
+- (void)stashPath:(id)path;
 @end
 
 @implementation BFFSettingsManager
@@ -52,24 +52,24 @@
 - (BFFSettingsManager)init
 {
   v3 = objc_alloc_init(BYFlowSkipController);
-  v4 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  v5 = [(BFFSettingsManager *)self initWithManagedConfiguration:v4 flowSkipController:v3];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  v5 = [(BFFSettingsManager *)self initWithManagedConfiguration:mEMORY[0x1E69ADFB8] flowSkipController:v3];
 
   return v5;
 }
 
-- (BFFSettingsManager)initWithManagedConfiguration:(id)a3 flowSkipController:(id)a4
+- (BFFSettingsManager)initWithManagedConfiguration:(id)configuration flowSkipController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  configurationCopy = configuration;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = BFFSettingsManager;
   v9 = [(BFFSettingsManager *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_managedConfiguration, a3);
-    objc_storeStrong(&v10->_flowSkipController, a4);
+    objc_storeStrong(&v9->_managedConfiguration, configuration);
+    objc_storeStrong(&v10->_flowSkipController, controller);
     [(BFFSettingsManager *)v10 _reset:1];
   }
 
@@ -94,9 +94,9 @@
     if (v4)
     {
       v5 = [v3 objectForKeyedSubscript:@"type"];
-      v6 = [v5 integerValue];
+      integerValue = [v5 integerValue];
 
-      v7 = v6 == 2;
+      v7 = integerValue == 2;
     }
 
     else
@@ -123,20 +123,20 @@
 
   if (v5)
   {
-    v6 = [v5 domain];
-    if (([v6 isEqualToString:*MEMORY[0x1E696A250]]& 1) == 0)
+    domain = [v5 domain];
+    if (([domain isEqualToString:*MEMORY[0x1E696A250]]& 1) == 0)
     {
-      v7 = [v5 code];
+      code = [v5 code];
 
-      if (v7 == 260)
+      if (code == 260)
       {
 LABEL_7:
         v8 = 0;
         goto LABEL_9;
       }
 
-      v6 = _BYLoggingFacility();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+      domain = _BYLoggingFacility();
+      if (os_log_type_enabled(domain, OS_LOG_TYPE_ERROR))
       {
         +[(BFFSettingsManager *)v5];
       }
@@ -153,148 +153,148 @@ LABEL_9:
 
 + (unint64_t)stashVersion
 {
-  v2 = [a1 loadConfigurationFromDisk];
-  v3 = [v2 objectForKeyedSubscript:@"version"];
-  v4 = [v3 unsignedIntegerValue];
+  loadConfigurationFromDisk = [self loadConfigurationFromDisk];
+  v3 = [loadConfigurationFromDisk objectForKeyedSubscript:@"version"];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 + (id)stashBuildVersion
 {
-  v2 = [a1 loadConfigurationFromDisk];
-  v3 = [v2 objectForKeyedSubscript:@"buildVersion"];
+  loadConfigurationFromDisk = [self loadConfigurationFromDisk];
+  v3 = [loadConfigurationFromDisk objectForKeyedSubscript:@"buildVersion"];
 
   return v3;
 }
 
 + (id)stashProductVersion
 {
-  v2 = [a1 loadConfigurationFromDisk];
-  v3 = [v2 objectForKeyedSubscript:@"productVersion"];
+  loadConfigurationFromDisk = [self loadConfigurationFromDisk];
+  v3 = [loadConfigurationFromDisk objectForKeyedSubscript:@"productVersion"];
 
   return v3;
 }
 
 + (int64_t)stashConfigurationType
 {
-  v2 = [a1 loadConfigurationFromDisk];
-  v3 = v2;
-  if (v2)
+  loadConfigurationFromDisk = [self loadConfigurationFromDisk];
+  v3 = loadConfigurationFromDisk;
+  if (loadConfigurationFromDisk)
   {
-    v4 = [v2 objectForKeyedSubscript:@"type"];
+    v4 = [loadConfigurationFromDisk objectForKeyedSubscript:@"type"];
 
     if (v4)
     {
       v5 = [v3 objectForKeyedSubscript:@"type"];
-      v6 = [v5 integerValue];
+      integerValue = [v5 integerValue];
     }
 
     else
     {
-      v6 = 2;
+      integerValue = 2;
     }
   }
 
   else
   {
-    v6 = 0;
+    integerValue = 0;
   }
 
-  return v6;
+  return integerValue;
 }
 
-- (void)removeBoolSettingForManagedConfigurationSetting:(id)a3
+- (void)removeBoolSettingForManagedConfigurationSetting:(id)setting
 {
   managedConfiguration = self->_managedConfiguration;
-  v5 = a3;
-  [(MCProfileConnection *)managedConfiguration removeBoolSetting:v5];
-  [(NSMutableDictionary *)self->_stashedManagedConfigurationSettings removeObjectForKey:v5];
+  settingCopy = setting;
+  [(MCProfileConnection *)managedConfiguration removeBoolSetting:settingCopy];
+  [(NSMutableDictionary *)self->_stashedManagedConfigurationSettings removeObjectForKey:settingCopy];
 }
 
-- (void)setObject:(id)a3 forDomain:(id)a4 key:(id)a5
+- (void)setObject:(id)object forDomain:(id)domain key:(id)key
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  CFPreferencesSetAppValue(v8, v10, v9);
-  CFPreferencesAppSynchronize(v9);
-  v11 = [(BFFSettingsManager *)self _preferencesForDomain:v9];
+  keyCopy = key;
+  domainCopy = domain;
+  objectCopy = object;
+  CFPreferencesSetAppValue(keyCopy, objectCopy, domainCopy);
+  CFPreferencesAppSynchronize(domainCopy);
+  v11 = [(BFFSettingsManager *)self _preferencesForDomain:domainCopy];
 
-  [v11 setObject:v10 forKey:v8];
+  [v11 setObject:objectCopy forKey:keyCopy];
 }
 
 - (void)populatePathsToStash
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1B862F000, a2, OS_LOG_TYPE_ERROR, "Failed to read Wallet preferences: %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
 
-- (void)stashPath:(id)a3
+- (void)stashPath:(id)path
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 length])
+  pathCopy = path;
+  if ([pathCopy length])
   {
     v5 = _BYLoggingFacility();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = pathCopy;
       _os_log_impl(&dword_1B862F000, v5, OS_LOG_TYPE_DEFAULT, "Adding %@ to the list of paths to stash...", &v7, 0xCu);
     }
 
-    [(NSMutableArray *)self->_stashedPaths addObject:v4];
+    [(NSMutableArray *)self->_stashedPaths addObject:pathCopy];
   }
 
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setAssistantOutputVoice:(id)a3 languageCode:(id)a4
+- (void)setAssistantOutputVoice:(id)voice languageCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
+  voiceCopy = voice;
+  codeCopy = code;
   stashedSiriOutputVoice = self->_stashedSiriOutputVoice;
-  self->_stashedSiriOutputVoice = v6;
-  v10 = v6;
+  self->_stashedSiriOutputVoice = voiceCopy;
+  v10 = voiceCopy;
 
   stashedSiriLanguage = self->_stashedSiriLanguage;
-  self->_stashedSiriLanguage = v7;
+  self->_stashedSiriLanguage = codeCopy;
 }
 
-- (void)setUserInterfaceStyleMode:(int64_t)a3
+- (void)setUserInterfaceStyleMode:(int64_t)mode
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
   stashedUserInterfaceStyleMode = self->_stashedUserInterfaceStyleMode;
   self->_stashedUserInterfaceStyleMode = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setSeedEnrollmentProgramName:(id)a3 assetAudience:(id)a4 programID:(id)a5
+- (void)setSeedEnrollmentProgramName:(id)name assetAudience:(id)audience programID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  audienceCopy = audience;
+  dCopy = d;
   stashedSeedEnrollmentProgramName = self->_stashedSeedEnrollmentProgramName;
-  self->_stashedSeedEnrollmentProgramName = v8;
-  v15 = v8;
+  self->_stashedSeedEnrollmentProgramName = nameCopy;
+  v15 = nameCopy;
 
   stashedSeedEnrollmentAssetAudience = self->_stashedSeedEnrollmentAssetAudience;
-  self->_stashedSeedEnrollmentAssetAudience = v9;
-  v13 = v9;
+  self->_stashedSeedEnrollmentAssetAudience = audienceCopy;
+  v13 = audienceCopy;
 
   stashedSeedEnrollmentProgramID = self->_stashedSeedEnrollmentProgramID;
-  self->_stashedSeedEnrollmentProgramID = v10;
+  self->_stashedSeedEnrollmentProgramID = dCopy;
 }
 
 - (void)stashCurrentActionButtonData
 {
-  v3 = [(BFFSettingsManager *)self _currentActionButtonData];
-  if (!v3)
+  _currentActionButtonData = [(BFFSettingsManager *)self _currentActionButtonData];
+  if (!_currentActionButtonData)
   {
     v4 = _BYLoggingFacility();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -303,32 +303,32 @@ LABEL_9:
     }
   }
 
-  [(BFFSettingsManager *)self stashActionButtonData:v3];
+  [(BFFSettingsManager *)self stashActionButtonData:_currentActionButtonData];
 }
 
-- (void)setIPadMultitaskingMode:(id)a3
+- (void)setIPadMultitaskingMode:(id)mode
 {
-  v7 = a3;
-  v5 = [getUIDeviceClass() currentDevice];
-  v6 = [v5 userInterfaceIdiom];
+  modeCopy = mode;
+  currentDevice = [getUIDeviceClass() currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v6 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    objc_storeStrong(&self->_stashedIPadMultitaskingMode, a3);
+    objc_storeStrong(&self->_stashedIPadMultitaskingMode, mode);
   }
 }
 
-- (void)stashAnalyticEvent:(id)a3 payload:(id)a4
+- (void)stashAnalyticEvent:(id)event payload:(id)payload
 {
   v12[2] = *MEMORY[0x1E69E9840];
   stashedAnalytics = self->_stashedAnalytics;
   v11[0] = @"event";
   v11[1] = @"payload";
-  v12[0] = a3;
-  v12[1] = a4;
+  v12[0] = event;
+  v12[1] = payload;
   v6 = MEMORY[0x1E695DF20];
-  v7 = a4;
-  v8 = a3;
+  payloadCopy = payload;
+  eventCopy = event;
   v9 = [v6 dictionaryWithObjects:v12 forKeys:v11 count:2];
   [(NSMutableArray *)stashedAnalytics addObject:v9];
 
@@ -358,13 +358,13 @@ void __56__BFFSettingsManager_hideStashInSafeHavenAsProvisional___block_invoke(u
   dispatch_semaphore_signal(*(a1 + 40));
 }
 
-- (BOOL)_stashConfiguration:(BOOL)a3
+- (BOOL)_stashConfiguration:(BOOL)configuration
 {
-  v3 = a3;
+  configurationCopy = configuration;
   v57 = *MEMORY[0x1E69E9840];
   v5 = objc_opt_new();
   [v5 setObject:&unk_1F30A77C0 forKeyedSubscript:@"version"];
-  if (v3)
+  if (configurationCopy)
   {
     v6 = &unk_1F30A77D8;
   }
@@ -539,10 +539,10 @@ void __56__BFFSettingsManager_hideStashInSafeHavenAsProvisional___block_invoke(u
 
   v32 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/private/var/buddy/Configuration.plist"];
   v54 = 0;
-  v33 = [v5 writeToURL:v32 error:&v54];
+  domain = [v5 writeToURL:v32 error:&v54];
   v34 = v54;
 
-  if ((v33 & 1) == 0)
+  if ((domain & 1) == 0)
   {
     v35 = _BYLoggingFacility();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
@@ -556,8 +556,8 @@ void __56__BFFSettingsManager_hideStashInSafeHavenAsProvisional___block_invoke(u
       else if (v34)
       {
         v38 = MEMORY[0x1E696AEC0];
-        v33 = [v34 domain];
-        v37 = [v38 stringWithFormat:@"<Error domain: %@, code %ld>", v33, objc_msgSend(v34, "code")];
+        domain = [v34 domain];
+        v37 = [v38 stringWithFormat:@"<Error domain: %@, code %ld>", domain, objc_msgSend(v34, "code")];
         v36 = 1;
       }
 
@@ -590,9 +590,9 @@ void __56__BFFSettingsManager_hideStashInSafeHavenAsProvisional___block_invoke(u
 
     v40 = objc_opt_new();
     [v40 setObject:&unk_1F30A77C0 forKeyedSubscript:@"version"];
-    v41 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/private/var/buddy/Configuration.plist"];
+    domain2 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/private/var/buddy/Configuration.plist"];
     v53 = v34;
-    v42 = [v40 writeToURL:v41 error:&v53];
+    v42 = [v40 writeToURL:domain2 error:&v53];
     v43 = v53;
 
     if ((v42 & 1) == 0)
@@ -609,8 +609,8 @@ void __56__BFFSettingsManager_hideStashInSafeHavenAsProvisional___block_invoke(u
         else if (v43)
         {
           v52 = MEMORY[0x1E696AEC0];
-          v41 = [v43 domain];
-          v51 = [v52 stringWithFormat:@"<Error domain: %@, code %ld>", v41, objc_msgSend(v43, "code")];
+          domain2 = [v43 domain];
+          v51 = [v52 stringWithFormat:@"<Error domain: %@, code %ld>", domain2, objc_msgSend(v43, "code")];
           v50 = 1;
         }
 
@@ -635,8 +635,8 @@ void __56__BFFSettingsManager_hideStashInSafeHavenAsProvisional___block_invoke(u
     v5 = v40;
   }
 
-  v44 = [MEMORY[0x1E696AC08] defaultManager];
-  v45 = [v44 fileExistsAtPath:@"/private/var/buddy/Configuration.plist"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v45 = [defaultManager fileExistsAtPath:@"/private/var/buddy/Configuration.plist"];
 
   if ((v45 & 1) == 0)
   {
@@ -674,14 +674,14 @@ LABEL_77:
     goto LABEL_68;
   }
 
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v69 = 0;
-  v4 = [v3 createDirectoryAtPath:@"/private/var/buddy/Root/" withIntermediateDirectories:0 attributes:0 error:&v69];
-  v5 = v69;
+  v4 = [defaultManager createDirectoryAtPath:@"/private/var/buddy/Root/" withIntermediateDirectories:0 attributes:0 error:&v69];
+  domain3 = v69;
 
   if ((v4 & 1) == 0)
   {
-    obja = v5;
+    obja = domain3;
     v26 = _BYLoggingFacility();
     if (!os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
@@ -695,23 +695,23 @@ LABEL_77:
 
     else
     {
-      v27 = v5;
-      if (v5)
+      v27 = domain3;
+      if (domain3)
       {
         v46 = MEMORY[0x1E696AEC0];
         p_super = [obja domain];
-        v5 = [v46 stringWithFormat:@"<Error domain: %@, code %ld>", p_super, objc_msgSend(obja, "code")];
+        domain3 = [v46 stringWithFormat:@"<Error domain: %@, code %ld>", p_super, objc_msgSend(obja, "code")];
         v27 = 1;
       }
 
       else
       {
-        v5 = 0;
+        domain3 = 0;
       }
     }
 
     *buf = 138543362;
-    v72 = v5;
+    v72 = domain3;
     _os_log_impl(&dword_1B862F000, v26, OS_LOG_TYPE_DEFAULT, "Unable to create root within safe haven: %{public}@", buf, 0xCu);
     if (!v27)
     {
@@ -747,10 +747,10 @@ LABEL_77:
 
       v9 = *(*(&v65 + 1) + 8 * i);
       v10 = [@"/private/var/buddy/Root/" stringByAppendingPathComponent:v9];
-      v11 = [MEMORY[0x1E696AC08] defaultManager];
-      v12 = [v10 stringByDeletingLastPathComponent];
-      v64 = v5;
-      v13 = [v11 createDirectoryAtPath:v12 withIntermediateDirectories:1 attributes:0 error:&v64];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      stringByDeletingLastPathComponent = [v10 stringByDeletingLastPathComponent];
+      v64 = domain3;
+      v13 = [defaultManager2 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v64];
       v14 = v64;
 
       v15 = _BYLoggingFacility();
@@ -768,8 +768,8 @@ LABEL_77:
           else if (v14)
           {
             v23 = MEMORY[0x1E696AEC0];
-            v53 = [v14 domain];
-            [v23 stringWithFormat:@"<Error domain: %@, code %ld>", v53, objc_msgSend(v14, "code")];
+            domain = [v14 domain];
+            [v23 stringWithFormat:@"<Error domain: %@, code %ld>", domain, objc_msgSend(v14, "code")];
             v52 = v21 = 1;
             v22 = v52;
           }
@@ -798,10 +798,10 @@ LABEL_77:
         _os_log_impl(&dword_1B862F000, v15, OS_LOG_TYPE_DEFAULT, "Copying %@ into the safe haven...", buf, 0xCu);
       }
 
-      v17 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
       v63 = v14;
-      v18 = [v17 copyItemAtPath:v9 toPath:v10 error:&v63];
-      v5 = v63;
+      v18 = [defaultManager3 copyItemAtPath:v9 toPath:v10 error:&v63];
+      domain3 = v63;
 
       if ((v18 & 1) == 0)
       {
@@ -811,14 +811,14 @@ LABEL_77:
           if (_BYIsInternalInstall())
           {
             v19 = 0;
-            v20 = v5;
+            v20 = domain3;
           }
 
-          else if (v5)
+          else if (domain3)
           {
             v24 = MEMORY[0x1E696AEC0];
-            v51 = [v5 domain];
-            [v24 stringWithFormat:@"<Error domain: %@, code %ld>", v51, objc_msgSend(v5, "code")];
+            domain2 = [domain3 domain];
+            [v24 stringWithFormat:@"<Error domain: %@, code %ld>", domain2, objc_msgSend(domain3, "code")];
             v50 = v19 = 1;
             v20 = v50;
           }
@@ -841,11 +841,11 @@ LABEL_77:
           }
         }
 
-        v14 = v5;
+        v14 = domain3;
 LABEL_29:
 
         v56 = 0;
-        v5 = v14;
+        domain3 = v14;
       }
     }
 
@@ -855,9 +855,9 @@ LABEL_29:
   while (v7);
 LABEL_38:
 
-  v28 = [MEMORY[0x1E696AC08] defaultManager];
-  v62 = v5;
-  v26 = [v28 subpathsOfDirectoryAtPath:@"/private/var/buddy/Root/" error:&v62];
+  defaultManager4 = [MEMORY[0x1E696AC08] defaultManager];
+  v62 = domain3;
+  v26 = [defaultManager4 subpathsOfDirectoryAtPath:@"/private/var/buddy/Root/" error:&v62];
   obja = v62;
 
   if (!v26)
@@ -880,8 +880,8 @@ LABEL_38:
       if (obja)
       {
         v47 = MEMORY[0x1E696AEC0];
-        v5 = [obja domain];
-        v45 = [v47 stringWithFormat:@"<Error domain: %@, code %ld>", v5, objc_msgSend(obja, "code")];
+        domain3 = [obja domain];
+        v45 = [v47 stringWithFormat:@"<Error domain: %@, code %ld>", domain3, objc_msgSend(obja, "code")];
         v44 = 1;
       }
 
@@ -971,8 +971,8 @@ LABEL_68:
 - (BOOL)_commitStash
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [objc_opt_class() loadConfigurationFromDisk];
-  v4 = [v3 mutableCopy];
+  loadConfigurationFromDisk = [objc_opt_class() loadConfigurationFromDisk];
+  v4 = [loadConfigurationFromDisk mutableCopy];
 
   [v4 setObject:&unk_1F30A77F0 forKeyedSubscript:@"type"];
   v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/private/var/buddy/Configuration.plist"];
@@ -994,8 +994,8 @@ LABEL_68:
       else if (v7)
       {
         v11 = MEMORY[0x1E696AEC0];
-        v2 = [v7 domain];
-        v10 = [v11 stringWithFormat:@"<Error domain: %@, code %ld>", v2, objc_msgSend(v7, "code")];
+        domain = [v7 domain];
+        v10 = [v11 stringWithFormat:@"<Error domain: %@, code %ld>", domain, objc_msgSend(v7, "code")];
         v9 = 1;
       }
 
@@ -1043,9 +1043,9 @@ LABEL_68:
   [(BFFSettingsManager *)self _reset:1];
 }
 
-- (void)_reset:(BOOL)a3
+- (void)_reset:(BOOL)_reset
 {
-  if (a3)
+  if (_reset)
   {
     v4 = objc_opt_new();
     stashedPaths = self->_stashedPaths;
@@ -1128,17 +1128,17 @@ LABEL_68:
   self->_stashedNotificationOnboardingDefaults = 0;
 }
 
-- (void)applySafeHavenStashWithIsIntelligenceEnabledBlock:(id)a3 notificationOnboardingDefaultsBlock:(id)a4
+- (void)applySafeHavenStashWithIsIntelligenceEnabledBlock:(id)block notificationOnboardingDefaultsBlock:(id)defaultsBlock
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  defaultsBlockCopy = defaultsBlock;
   if (([objc_opt_class() hasStashedValuesOnDisk] & 1) == 0)
   {
-    v12 = [objc_opt_class() stashConfigurationType];
+    stashConfigurationType = [objc_opt_class() stashConfigurationType];
     v13 = _BYLoggingFacility();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-    if (v12 == 1)
+    if (stashConfigurationType == 1)
     {
       if (v14)
       {
@@ -1170,17 +1170,17 @@ LABEL_108:
   {
     if (v11)
     {
-      v16 = [objc_opt_class() stashProductVersion];
-      v17 = [objc_opt_class() stashBuildVersion];
+      stashProductVersion = [objc_opt_class() stashProductVersion];
+      stashBuildVersion = [objc_opt_class() stashBuildVersion];
       v45 = 138412546;
-      *v46 = v16;
+      *v46 = stashProductVersion;
       *&v46[8] = 2112;
-      v47 = v17;
+      v47 = stashBuildVersion;
       _os_log_impl(&dword_1B862F000, v10, OS_LOG_TYPE_DEFAULT, "Applying safe haven stash from %@ (%@)", &v45, 0x16u);
     }
 
-    v18 = [(BFFSettingsManager *)self _restoreConfiguration];
-    if (v18 == 1)
+    _restoreConfiguration = [(BFFSettingsManager *)self _restoreConfiguration];
+    if (_restoreConfiguration == 1)
     {
       if ([(NSMutableDictionary *)self->_stashedPreferences count])
       {
@@ -1410,7 +1410,7 @@ LABEL_108:
       stashedIntelligenceState = self->_stashedIntelligenceState;
       if (stashedIntelligenceState)
       {
-        v6[2](v6, [(NSNumber *)stashedIntelligenceState BOOLValue]);
+        blockCopy[2](blockCopy, [(NSNumber *)stashedIntelligenceState BOOLValue]);
       }
 
       else
@@ -1425,7 +1425,7 @@ LABEL_108:
 
       if (self->_stashedNotificationOnboardingDefaults)
       {
-        v7[2](v7);
+        defaultsBlockCopy[2](defaultsBlockCopy);
       }
 
       else
@@ -1453,7 +1453,7 @@ LABEL_108:
 
     else
     {
-      v19 = v18;
+      v19 = _restoreConfiguration;
       v20 = _BYLoggingFacility();
       if (!os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
@@ -1603,9 +1603,9 @@ LABEL_109:
   self->_stashedNotificationOnboardingDefaults = v50;
 
   v52 = [v3 objectForKeyedSubscript:@"version"];
-  v53 = [v52 unsignedIntegerValue];
+  unsignedIntegerValue = [v52 unsignedIntegerValue];
 
-  return v53;
+  return unsignedIntegerValue;
 }
 
 - (void)_applyStashedPreferences
@@ -1637,8 +1637,8 @@ LABEL_109:
         v20 = 0u;
         v21 = 0u;
         v22 = 0u;
-        v5 = [v4 allKeys];
-        v6 = [v5 countByEnumeratingWithState:&v19 objects:v33 count:16];
+        allKeys = [v4 allKeys];
+        v6 = [allKeys countByEnumeratingWithState:&v19 objects:v33 count:16];
         if (v6)
         {
           v7 = v6;
@@ -1649,7 +1649,7 @@ LABEL_109:
             {
               if (*v20 != v8)
               {
-                objc_enumerationMutation(v5);
+                objc_enumerationMutation(allKeys);
               }
 
               v10 = *(*(&v19 + 1) + 8 * i);
@@ -1669,7 +1669,7 @@ LABEL_109:
               CFPreferencesSetAppValue(v10, v11, v3);
             }
 
-            v7 = [v5 countByEnumeratingWithState:&v19 objects:v33 count:16];
+            v7 = [allKeys countByEnumeratingWithState:&v19 objects:v33 count:16];
           }
 
           while (v7);
@@ -1716,8 +1716,8 @@ LABEL_109:
 
         v9 = *(*(&v21 + 1) + 8 * i);
         v10 = [(NSMutableDictionary *)self->_stashedManagedConfigurationSettings objectForKeyedSubscript:v9, v19];
-        v11 = [MEMORY[0x1E695DFB0] null];
-        v12 = [v10 isEqual:v11];
+        null = [MEMORY[0x1E695DFB0] null];
+        v12 = [v10 isEqual:null];
 
         v13 = _BYLoggingFacility();
         v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
@@ -1737,10 +1737,10 @@ LABEL_109:
         {
           if (v14)
           {
-            v15 = [v10 BOOLValue];
+            bOOLValue = [v10 BOOLValue];
             *buf = v19;
             v16 = @"NO";
-            if (v15)
+            if (bOOLValue)
             {
               v16 = @"YES";
             }
@@ -1777,13 +1777,13 @@ LABEL_109:
   if ((v9 & 1) == 0)
   {
     v10 = MEMORY[0x1E696AEC0];
-    v1 = [a1 domain];
-    v12 = v1;
-    v13 = [a1 code];
-    a1 = [v10 stringWithFormat:@"<Error domain: %@, code %ld>"];
+    domain = [self domain];
+    v12 = domain;
+    code = [self code];
+    self = [v10 stringWithFormat:@"<Error domain: %@, code %ld>"];
   }
 
-  OUTLINED_FUNCTION_0_2(&dword_1B862F000, v3, v4, "Failed to decode Siri output voice %{public}@", v5, v6, v7, v8, v12, v13, 2u);
+  OUTLINED_FUNCTION_0_2(&dword_1B862F000, v3, v4, "Failed to decode Siri output voice %{public}@", v5, v6, v7, v8, v12, code, 2u);
   if (!v9)
   {
   }
@@ -1814,9 +1814,9 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
     v3 = _BYLoggingFacility();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
-      v4 = [(NSNumber *)self->_stashedLocationServicesEnabled BOOLValue];
+      bOOLValue = [(NSNumber *)self->_stashedLocationServicesEnabled BOOLValue];
       v6[0] = 67109120;
-      v6[1] = v4;
+      v6[1] = bOOLValue;
       _os_log_impl(&dword_1B862F000, v3, OS_LOG_TYPE_DEFAULT, "Setting location services to %d...", v6, 8u);
     }
 
@@ -1911,12 +1911,12 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
 
   else
   {
-    v4 = [(NSNumber *)self->_stashedScreenTimeEnabled BOOLValue];
+    bOOLValue = [(NSNumber *)self->_stashedScreenTimeEnabled BOOLValue];
     v5 = _BYLoggingFacility();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v4)
+      if (bOOLValue)
       {
         v6 = @"YES";
       }
@@ -1946,14 +1946,14 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
     _Block_object_dispose(&v18, 8);
     v3 = objc_alloc_init(v7);
     v17 = 0;
-    v9 = [v3 setScreenTimeEnabled:v4 error:&v17];
+    v9 = [v3 setScreenTimeEnabled:bOOLValue error:&v17];
     v10 = v17;
     if ((v9 & 1) == 0)
     {
       v11 = _BYLoggingFacility();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
-        v13 = v4 ? @"enable" : @"disable";
+        v13 = bOOLValue ? @"enable" : @"disable";
         if (_BYIsInternalInstall())
         {
           v14 = 0;
@@ -1963,8 +1963,8 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
         else if (v10)
         {
           v16 = MEMORY[0x1E696AEC0];
-          v4 = [v10 domain];
-          v15 = [v16 stringWithFormat:@"<Error domain: %@, code %ld>", v4, objc_msgSend(v10, "code")];
+          bOOLValue = [v10 domain];
+          v15 = [v16 stringWithFormat:@"<Error domain: %@, code %ld>", bOOLValue, objc_msgSend(v10, "code")];
           v14 = 1;
         }
 
@@ -1998,9 +1998,9 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
     v4 = _BYLoggingFacility();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [(NSNumber *)self->_stashedAutoDownloadEnabled BOOLValue];
+      bOOLValue = [(NSNumber *)self->_stashedAutoDownloadEnabled BOOLValue];
       v6 = @"NO";
-      if (v5)
+      if (bOOLValue)
       {
         v6 = @"YES";
       }
@@ -2018,9 +2018,9 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
     v7 = _BYLoggingFacility();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(NSNumber *)self->_stashedAutoUpdateEnabled BOOLValue];
+      bOOLValue2 = [(NSNumber *)self->_stashedAutoUpdateEnabled BOOLValue];
       v9 = @"NO";
-      if (v8)
+      if (bOOLValue2)
       {
         v9 = @"YES";
       }
@@ -2039,8 +2039,8 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
 - (void)_restoreStashedFiles
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
-  v5 = [v4 fileExistsAtPath:@"/private/var/buddy/Root/"];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:@"/private/var/buddy/Root/"];
 
   if (v5)
   {
@@ -2056,8 +2056,8 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
         if ((v9 & 1) == 0)
         {
           v11 = MEMORY[0x1E696AEC0];
-          v2 = [v6 domain];
-          v10 = [v11 stringWithFormat:@"<Error domain: %@, code %ld>", v2, -[NSObject code](v6, "code")];
+          domain = [v6 domain];
+          v10 = [v11 stringWithFormat:@"<Error domain: %@, code %ld>", domain, -[NSObject code](v6, "code")];
         }
 
         *buf = 138543362;
@@ -2138,9 +2138,9 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
   v3 = _BYLoggingFacility();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(NSNumber *)self->_stashedUserInterfaceStyleMode integerValue];
+    integerValue = [(NSNumber *)self->_stashedUserInterfaceStyleMode integerValue];
     LODWORD(buf) = 134217984;
-    *(&buf + 4) = v4;
+    *(&buf + 4) = integerValue;
     _os_log_impl(&dword_1B862F000, v3, OS_LOG_TYPE_DEFAULT, "Setting user interface style mode to %ld", &buf, 0xCu);
   }
 
@@ -2178,25 +2178,25 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
 - (void)_restoreAnalyticsData
 {
   v7 = [a2 objectForKeyedSubscript:@"event"];
-  *a1 = 138412290;
+  *self = 138412290;
   *a3 = v7;
-  _os_log_debug_impl(&dword_1B862F000, a4, OS_LOG_TYPE_DEBUG, "Sending event %@...", a1, 0xCu);
+  _os_log_debug_impl(&dword_1B862F000, a4, OS_LOG_TYPE_DEBUG, "Sending event %@...", self, 0xCu);
 }
 
 - (void)_restoreIPadMultitaskingMode
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [getUIDeviceClass() currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [getUIDeviceClass() currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v4 != 1)
+  if (userInterfaceIdiom != 1)
   {
     v5 = _BYLoggingFacility();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(NSNumber *)self->_stashedIPadMultitaskingMode integerValue];
+      integerValue = [(NSNumber *)self->_stashedIPadMultitaskingMode integerValue];
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = v6;
+      *(&buf + 4) = integerValue;
       _os_log_impl(&dword_1B862F000, v5, OS_LOG_TYPE_DEFAULT, "Setting iPad multitasking mode %ld", &buf, 0xCu);
     }
 
@@ -2225,28 +2225,28 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_preferencesForDomain:(id)a3
+- (id)_preferencesForDomain:(id)domain
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_stashedPreferences objectForKeyedSubscript:v4];
+  domainCopy = domain;
+  v5 = [(NSMutableDictionary *)self->_stashedPreferences objectForKeyedSubscript:domainCopy];
   if (!v5)
   {
     v5 = objc_opt_new();
-    [(NSMutableDictionary *)self->_stashedPreferences setObject:v5 forKey:v4];
+    [(NSMutableDictionary *)self->_stashedPreferences setObject:v5 forKey:domainCopy];
   }
 
   return v5;
 }
 
-- (id)_shovePath:(id)a3 toPath:(id)a4
+- (id)_shovePath:(id)path toPath:(id)toPath
 {
   v147 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
+  pathCopy = path;
+  toPathCopy = toPath;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v133 = 0;
-  v117 = v5;
-  v8 = [v7 attributesOfItemAtPath:v5 error:&v133];
+  v117 = pathCopy;
+  v8 = [defaultManager attributesOfItemAtPath:pathCopy error:&v133];
   v9 = v133;
 
   if (!v8)
@@ -2254,7 +2254,7 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
     v10 = _BYLoggingFacility();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = v6;
+      v11 = toPathCopy;
       if (_BYIsInternalInstall())
       {
         v12 = 0;
@@ -2264,8 +2264,8 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
       else if (v9)
       {
         v14 = MEMORY[0x1E696AEC0];
-        v6 = [v9 domain];
-        v13 = [v14 stringWithFormat:@"<Error domain: %@, code %ld>", v6, -[NSObject code](v9, "code")];
+        toPathCopy = [v9 domain];
+        v13 = [v14 stringWithFormat:@"<Error domain: %@, code %ld>", toPathCopy, -[NSObject code](v9, "code")];
         v12 = 1;
       }
 
@@ -2282,14 +2282,14 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
       {
       }
 
-      v6 = v11;
+      toPathCopy = v11;
     }
   }
 
   v15 = *MEMORY[0x1E696A3D8];
   v16 = [v8 objectForKey:*MEMORY[0x1E696A3D8]];
   v17 = *MEMORY[0x1E696A3E0];
-  v18 = [v16 isEqual:*MEMORY[0x1E696A3E0]];
+  domain = [v16 isEqual:*MEMORY[0x1E696A3E0]];
 
   if (!v8)
   {
@@ -2299,10 +2299,10 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
   }
 
   v116 = v8;
-  v19 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v132 = v9;
-  v20 = [v19 attributesOfItemAtPath:v6 error:&v132];
-  v21 = v6;
+  v20 = [defaultManager2 attributesOfItemAtPath:toPathCopy error:&v132];
+  stringByDeletingLastPathComponent2 = toPathCopy;
   v22 = v132;
 
   v23 = v20;
@@ -2312,20 +2312,20 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
   if (v24 == v25)
   {
     v27 = v117;
-    if (realpath_DARWIN_EXTSN([v21 fileSystemRepresentation], buf))
+    if (realpath_DARWIN_EXTSN([stringByDeletingLastPathComponent2 fileSystemRepresentation], buf))
     {
-      v29 = [MEMORY[0x1E696AC08] defaultManager];
-      v30 = [v29 stringWithFileSystemRepresentation:buf length:strlen(buf)];
+      defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+      v30 = [defaultManager3 stringWithFileSystemRepresentation:buf length:strlen(buf)];
 
-      v31 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager4 = [MEMORY[0x1E696AC08] defaultManager];
       v131 = v22;
-      v32 = [v31 attributesOfItemAtPath:v30 error:&v131];
+      v32 = [defaultManager4 attributesOfItemAtPath:v30 error:&v131];
       v33 = v131;
 
       v27 = v117;
       v26 = v32;
       v22 = v33;
-      v21 = v30;
+      stringByDeletingLastPathComponent2 = v30;
     }
 
     else
@@ -2344,27 +2344,27 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
   v35 = [v34 isEqual:v17];
 
   v36 = v22;
-  if (v18)
+  if (domain)
   {
     if (!v26)
     {
-      v59 = v21;
-      v60 = [v21 stringByDeletingLastPathComponent];
-      v61 = [MEMORY[0x1E696AC08] defaultManager];
-      v62 = [v61 fileExistsAtPath:v60];
+      v59 = stringByDeletingLastPathComponent2;
+      stringByDeletingLastPathComponent = [stringByDeletingLastPathComponent2 stringByDeletingLastPathComponent];
+      defaultManager5 = [MEMORY[0x1E696AC08] defaultManager];
+      v62 = [defaultManager5 fileExistsAtPath:stringByDeletingLastPathComponent];
 
       if (v62)
       {
-        v56 = v60;
+        v56 = stringByDeletingLastPathComponent;
         v63 = v36;
       }
 
       else
       {
-        v75 = [MEMORY[0x1E696AC08] defaultManager];
+        defaultManager6 = [MEMORY[0x1E696AC08] defaultManager];
         v127 = v36;
-        v56 = v60;
-        v76 = [v75 createDirectoryAtPath:v60 withIntermediateDirectories:1 attributes:0 error:&v127];
+        v56 = stringByDeletingLastPathComponent;
+        v76 = [defaultManager6 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v127];
         v63 = v127;
 
         if ((v76 & 1) == 0)
@@ -2381,8 +2381,8 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
             else if (v63)
             {
               v94 = MEMORY[0x1E696AEC0];
-              v18 = [v63 domain];
-              v79 = [v94 stringWithFormat:@"<Error domain: %@, code %ld>", v18, -[NSObject code](v63, "code")];
+              domain = [v63 domain];
+              v79 = [v94 stringWithFormat:@"<Error domain: %@, code %ld>", domain, -[NSObject code](v63, "code")];
               v78 = 1;
             }
 
@@ -2406,9 +2406,9 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
         }
       }
 
-      v97 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager7 = [MEMORY[0x1E696AC08] defaultManager];
       v126 = v63;
-      v98 = [v97 moveItemAtPath:v27 toPath:v59 error:&v126];
+      v98 = [defaultManager7 moveItemAtPath:v27 toPath:v59 error:&v126];
       v36 = v126;
 
       if (v98)
@@ -2465,32 +2465,32 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
         v28 = [v104 errorWithDomain:@"BFFSettingsManagerErrorDomain" code:-2001 userInfo:v105];
       }
 
-      v6 = v59;
+      toPathCopy = v59;
       goto LABEL_115;
     }
 
-    v6 = v21;
+    toPathCopy = stringByDeletingLastPathComponent2;
     if (v35)
     {
       v115 = v26;
-      v118 = v21;
-      v37 = [MEMORY[0x1E696AC08] defaultManager];
+      v118 = stringByDeletingLastPathComponent2;
+      defaultManager8 = [MEMORY[0x1E696AC08] defaultManager];
       v125 = v36;
-      v38 = [v37 contentsOfDirectoryAtPath:v27 error:&v125];
-      v39 = v125;
+      v38 = [defaultManager8 contentsOfDirectoryAtPath:v27 error:&v125];
+      domain2 = v125;
 
-      if (v39)
+      if (domain2)
       {
         v40 = _BYLoggingFacility();
         if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
         {
           v41 = _BYIsInternalInstall();
-          v42 = v39;
+          v42 = domain2;
           if ((v41 & 1) == 0)
           {
             v43 = MEMORY[0x1E696AEC0];
-            v37 = [v39 domain];
-            v42 = [v43 stringWithFormat:@"<Error domain: %@, code %ld>", v37, -[NSObject code](v39, "code")];
+            defaultManager8 = [domain2 domain];
+            v42 = [v43 stringWithFormat:@"<Error domain: %@, code %ld>", defaultManager8, -[NSObject code](domain2, "code")];
           }
 
           *buf = 138412546;
@@ -2537,15 +2537,15 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
               v56 = v45;
               v28 = v74;
               v27 = v44;
-              v6 = v118;
+              toPathCopy = v118;
               goto LABEL_114;
             }
 
-            v39 = 0;
+            domain2 = 0;
           }
 
           v47 = [v45 countByEnumeratingWithState:&v121 objects:v134 count:16];
-          v39 = 0;
+          domain2 = 0;
           v54 = 0;
           if (v47)
           {
@@ -2558,21 +2558,21 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
 
       else
       {
-        v54 = v39;
+        v54 = domain2;
       }
 
       v87 = v45;
 
-      v88 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager9 = [MEMORY[0x1E696AC08] defaultManager];
       v120 = v54;
-      v89 = [v88 removeItemAtPath:v44 error:&v120];
+      v89 = [defaultManager9 removeItemAtPath:v44 error:&v120];
       v36 = v120;
 
       if (v89)
       {
         v28 = 0;
         v27 = v44;
-        v6 = v118;
+        toPathCopy = v118;
         v26 = v115;
       }
 
@@ -2580,7 +2580,7 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
       {
         v90 = _BYLoggingFacility();
         v27 = v44;
-        v6 = v118;
+        toPathCopy = v118;
         v26 = v115;
         if (os_log_type_enabled(v90, OS_LOG_TYPE_DEFAULT))
         {
@@ -2593,9 +2593,9 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
           else if (v36)
           {
             v96 = MEMORY[0x1E696AEC0];
-            v39 = [v36 domain];
+            domain2 = [v36 domain];
             v92 = v36;
-            v36 = [v96 stringWithFormat:@"<Error domain: %@, code %ld>", v39, -[NSObject code](v36, "code")];
+            v36 = [v96 stringWithFormat:@"<Error domain: %@, code %ld>", domain2, -[NSObject code](v36, "code")];
             v91 = 1;
           }
 
@@ -2630,7 +2630,7 @@ void __48__BFFSettingsManager__applyAssistantPreferences__block_invoke(uint64_t 
     v135[0] = @"source";
     v135[1] = @"target";
     v136[0] = v27;
-    v136[1] = v21;
+    v136[1] = stringByDeletingLastPathComponent2;
     v56 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v136 forKeys:v135 count:2];
     v57 = v68;
     v58 = -2002;
@@ -2643,36 +2643,36 @@ LABEL_115:
 
   if (v26)
   {
-    v6 = v21;
+    toPathCopy = stringByDeletingLastPathComponent2;
     if (v35)
     {
       v55 = MEMORY[0x1E696ABC0];
       v141[0] = @"source";
       v141[1] = @"target";
       v142[0] = v27;
-      v142[1] = v21;
+      v142[1] = stringByDeletingLastPathComponent2;
       v56 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v142 forKeys:v141 count:2];
       v57 = v55;
       v58 = -2003;
       goto LABEL_46;
     }
 
-    v69 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager10 = [MEMORY[0x1E696AC08] defaultManager];
     v129 = v36;
     v70 = v36;
-    v71 = v21;
-    v72 = [v69 removeItemAtPath:v21 error:&v129];
+    v71 = stringByDeletingLastPathComponent2;
+    domain3 = [defaultManager10 removeItemAtPath:stringByDeletingLastPathComponent2 error:&v129];
     v67 = v129;
 
     v115 = v26;
-    if (v72)
+    if (domain3)
     {
-      v73 = v21;
+      v73 = stringByDeletingLastPathComponent2;
       goto LABEL_103;
     }
 
-    v21 = _BYLoggingFacility();
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+    stringByDeletingLastPathComponent2 = _BYLoggingFacility();
+    if (os_log_type_enabled(stringByDeletingLastPathComponent2, OS_LOG_TYPE_DEFAULT))
     {
       if (_BYIsInternalInstall())
       {
@@ -2683,8 +2683,8 @@ LABEL_115:
       else if (v67)
       {
         v93 = MEMORY[0x1E696AEC0];
-        v72 = [v67 domain];
-        v86 = [v93 stringWithFormat:@"<Error domain: %@, code %ld>", v72, -[NSObject code](v67, "code")];
+        domain3 = [v67 domain];
+        v86 = [v93 stringWithFormat:@"<Error domain: %@, code %ld>", domain3, -[NSObject code](v67, "code")];
         v85 = 1;
       }
 
@@ -2698,7 +2698,7 @@ LABEL_115:
       v144 = v71;
       v145 = 2114;
       v146 = v86;
-      _os_log_impl(&dword_1B862F000, v21, OS_LOG_TYPE_DEFAULT, "Unable to remove file at path: %@ - %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_1B862F000, stringByDeletingLastPathComponent2, OS_LOG_TYPE_DEFAULT, "Unable to remove file at path: %@ - %{public}@", buf, 0x16u);
       if (v85)
       {
       }
@@ -2709,10 +2709,10 @@ LABEL_115:
 
   else
   {
-    v64 = v21;
-    v21 = [v21 stringByDeletingLastPathComponent];
-    v65 = [MEMORY[0x1E696AC08] defaultManager];
-    v66 = [v65 fileExistsAtPath:v21];
+    v64 = stringByDeletingLastPathComponent2;
+    stringByDeletingLastPathComponent2 = [stringByDeletingLastPathComponent2 stringByDeletingLastPathComponent];
+    defaultManager11 = [MEMORY[0x1E696AC08] defaultManager];
+    v66 = [defaultManager11 fileExistsAtPath:stringByDeletingLastPathComponent2];
 
     v115 = 0;
     if (v66)
@@ -2722,9 +2722,9 @@ LABEL_115:
 
     else
     {
-      v80 = [MEMORY[0x1E696AC08] defaultManager];
+      defaultManager12 = [MEMORY[0x1E696AC08] defaultManager];
       v130 = v36;
-      v81 = [v80 createDirectoryAtPath:v21 withIntermediateDirectories:1 attributes:0 error:&v130];
+      v81 = [defaultManager12 createDirectoryAtPath:stringByDeletingLastPathComponent2 withIntermediateDirectories:1 attributes:0 error:&v130];
       v67 = v130;
 
       if ((v81 & 1) == 0)
@@ -2741,8 +2741,8 @@ LABEL_115:
           else if (v67)
           {
             v95 = MEMORY[0x1E696AEC0];
-            v18 = [v67 domain];
-            v84 = [v95 stringWithFormat:@"<Error domain: %@, code %ld>", v18, -[NSObject code](v67, "code")];
+            domain = [v67 domain];
+            v84 = [v95 stringWithFormat:@"<Error domain: %@, code %ld>", domain, -[NSObject code](v67, "code")];
             v83 = 1;
           }
 
@@ -2753,7 +2753,7 @@ LABEL_115:
           }
 
           *buf = 138412546;
-          v144 = v21;
+          v144 = stringByDeletingLastPathComponent2;
           v145 = 2114;
           v146 = v84;
           _os_log_impl(&dword_1B862F000, v82, OS_LOG_TYPE_DEFAULT, "Failed to create target directory %@: %{public}@", buf, 0x16u);
@@ -2768,15 +2768,15 @@ LABEL_115:
   }
 
 LABEL_103:
-  v106 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager13 = [MEMORY[0x1E696AC08] defaultManager];
   v128 = v67;
-  v107 = [v106 moveItemAtPath:v27 toPath:v73 error:&v128];
+  v107 = [defaultManager13 moveItemAtPath:v27 toPath:v73 error:&v128];
   v36 = v128;
 
   if ((v107 & 1) == 0)
   {
     v108 = _BYLoggingFacility();
-    v6 = v73;
+    toPathCopy = v73;
     if (os_log_type_enabled(v108, OS_LOG_TYPE_DEFAULT))
     {
       if (_BYIsInternalInstall())
@@ -2788,8 +2788,8 @@ LABEL_103:
       else if (v36)
       {
         v111 = MEMORY[0x1E696AEC0];
-        v21 = [v36 domain];
-        v110 = [v111 stringWithFormat:@"<Error domain: %@, code %ld>", v21, -[NSObject code](v36, "code")];
+        stringByDeletingLastPathComponent2 = [v36 domain];
+        v110 = [v111 stringWithFormat:@"<Error domain: %@, code %ld>", stringByDeletingLastPathComponent2, -[NSObject code](v36, "code")];
         v109 = 1;
       }
 
@@ -2813,7 +2813,7 @@ LABEL_103:
     v139[0] = @"source";
     v139[1] = @"target";
     v140[0] = v27;
-    v140[1] = v6;
+    v140[1] = toPathCopy;
     v56 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v140 forKeys:v139 count:2];
     v28 = [v112 errorWithDomain:@"BFFSettingsManagerErrorDomain" code:-2001 userInfo:v56];
 LABEL_114:
@@ -2822,7 +2822,7 @@ LABEL_114:
   }
 
   v28 = 0;
-  v6 = v73;
+  toPathCopy = v73;
   v26 = v115;
 LABEL_116:
 
@@ -2845,27 +2845,27 @@ LABEL_117:
     _os_log_impl(&dword_1B862F000, v2, OS_LOG_TYPE_DEFAULT, "Removing safe haven on disk...", buf, 2u);
   }
 
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v24 = 0;
-  v4 = [v3 removeItemAtPath:@"/private/var/buddy/Configuration.plist" error:&v24];
+  v4 = [defaultManager removeItemAtPath:@"/private/var/buddy/Configuration.plist" error:&v24];
   v5 = v24;
 
   if ((v4 & 1) == 0)
   {
-    v6 = [v5 domain];
-    v7 = v6;
-    if (v6 == *MEMORY[0x1E696A250])
+    domain = [v5 domain];
+    v7 = domain;
+    if (domain == *MEMORY[0x1E696A250])
     {
     }
 
     else
     {
-      v8 = [v5 code];
+      code = [v5 code];
 
-      if (v8 != 4)
+      if (code != 4)
       {
-        v9 = _BYLoggingFacility();
-        if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+        domain2 = _BYLoggingFacility();
+        if (os_log_type_enabled(domain2, OS_LOG_TYPE_DEFAULT))
         {
           if (_BYIsInternalInstall())
           {
@@ -2876,8 +2876,8 @@ LABEL_117:
           else if (v5)
           {
             v19 = MEMORY[0x1E696AEC0];
-            v8 = [v5 domain];
-            v11 = [v19 stringWithFormat:@"<Error domain: %@, code %ld>", v8, objc_msgSend(v5, "code")];
+            code = [v5 domain];
+            v11 = [v19 stringWithFormat:@"<Error domain: %@, code %ld>", code, objc_msgSend(v5, "code")];
             v10 = 1;
           }
 
@@ -2889,7 +2889,7 @@ LABEL_117:
 
           *buf = 138543362;
           v26 = v11;
-          _os_log_impl(&dword_1B862F000, v9, OS_LOG_TYPE_DEFAULT, "Unable to remove existing safe haven configuration: %{public}@", buf, 0xCu);
+          _os_log_impl(&dword_1B862F000, domain2, OS_LOG_TYPE_DEFAULT, "Unable to remove existing safe haven configuration: %{public}@", buf, 0xCu);
           if (v10)
           {
           }
@@ -2901,30 +2901,30 @@ LABEL_117:
     }
   }
 
-  v12 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
   v23 = v5;
-  v13 = [v12 removeItemAtPath:@"/private/var/buddy/Root/" error:&v23];
+  v13 = [defaultManager2 removeItemAtPath:@"/private/var/buddy/Root/" error:&v23];
   v14 = v23;
 
   if ((v13 & 1) == 0)
   {
-    v9 = [v14 domain];
-    if (v9 == *MEMORY[0x1E696A250])
+    domain2 = [v14 domain];
+    if (domain2 == *MEMORY[0x1E696A250])
     {
       v16 = 1;
     }
 
     else
     {
-      v15 = [v14 code];
+      code2 = [v14 code];
 
-      if (v15 == 4)
+      if (code2 == 4)
       {
         goto LABEL_13;
       }
 
-      v9 = _BYLoggingFacility();
-      if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+      domain2 = _BYLoggingFacility();
+      if (os_log_type_enabled(domain2, OS_LOG_TYPE_DEFAULT))
       {
         if (_BYIsInternalInstall())
         {
@@ -2935,8 +2935,8 @@ LABEL_117:
         else if (v14)
         {
           v20 = MEMORY[0x1E696AEC0];
-          v15 = [v14 domain];
-          v18 = [v20 stringWithFormat:@"<Error domain: %@, code %ld>", v15, objc_msgSend(v14, "code")];
+          code2 = [v14 domain];
+          v18 = [v20 stringWithFormat:@"<Error domain: %@, code %ld>", code2, objc_msgSend(v14, "code")];
           v17 = 1;
         }
 
@@ -2948,7 +2948,7 @@ LABEL_117:
 
         *buf = 138543362;
         v26 = v18;
-        _os_log_impl(&dword_1B862F000, v9, OS_LOG_TYPE_DEFAULT, "Unable to remove existing safe haven paths: %{public}@", buf, 0xCu);
+        _os_log_impl(&dword_1B862F000, domain2, OS_LOG_TYPE_DEFAULT, "Unable to remove existing safe haven paths: %{public}@", buf, 0xCu);
         if (v17)
         {
         }
@@ -2979,13 +2979,13 @@ LABEL_32:
   if ((v9 & 1) == 0)
   {
     v10 = MEMORY[0x1E696AEC0];
-    v1 = [a1 domain];
-    v12 = v1;
-    v13 = [a1 code];
-    a1 = [v10 stringWithFormat:@"<Error domain: %@, code %ld>"];
+    domain = [self domain];
+    v12 = domain;
+    code = [self code];
+    self = [v10 stringWithFormat:@"<Error domain: %@, code %ld>"];
   }
 
-  OUTLINED_FUNCTION_0_2(&dword_1B862F000, v3, v4, "Unable to read configuration for stash values: %{public}@", v5, v6, v7, v8, v12, v13, 2u);
+  OUTLINED_FUNCTION_0_2(&dword_1B862F000, v3, v4, "Unable to read configuration for stash values: %{public}@", v5, v6, v7, v8, v12, code, 2u);
   if (!v9)
   {
   }

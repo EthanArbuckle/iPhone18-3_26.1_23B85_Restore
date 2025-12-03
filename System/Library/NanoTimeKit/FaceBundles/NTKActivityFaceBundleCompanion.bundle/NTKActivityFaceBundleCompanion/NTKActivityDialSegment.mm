@@ -1,35 +1,35 @@
 @interface NTKActivityDialSegment
 - (CGRect)_computeArcFrame;
-- (NTKActivityDialSegment)initWithHourIndex:(int64_t)a3 LayoutConstants:(id *)a4 dialRadius:(double)a5 device:(id)a6;
-- (id)_createArcImageWithFrame:(CGRect)a3 insetAngle:(double)a4;
+- (NTKActivityDialSegment)initWithHourIndex:(int64_t)index LayoutConstants:(id *)constants dialRadius:(double)radius device:(id)device;
+- (id)_createArcImageWithFrame:(CGRect)frame insetAngle:(double)angle;
 - (void)_updateTransform;
-- (void)setAlpha:(double)a3;
-- (void)setColorScheme:(id)a3;
-- (void)setTickScale:(double)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setColorScheme:(id)scheme;
+- (void)setTickScale:(double)scale;
 @end
 
 @implementation NTKActivityDialSegment
 
-- (NTKActivityDialSegment)initWithHourIndex:(int64_t)a3 LayoutConstants:(id *)a4 dialRadius:(double)a5 device:(id)a6
+- (NTKActivityDialSegment)initWithHourIndex:(int64_t)index LayoutConstants:(id *)constants dialRadius:(double)radius device:(id)device
 {
-  v11 = a6;
+  deviceCopy = device;
   v47.receiver = self;
   v47.super_class = NTKActivityDialSegment;
   v12 = [(NTKActivityDialSegment *)&v47 init];
   v13 = v12;
   if (v12)
   {
-    var1 = a4->var1;
-    var0 = a4->var0;
-    v14 = a4->var0;
-    v12->_dialCenter.x = a5;
-    v12->_dialCenter.y = a5;
+    var1 = constants->var1;
+    var0 = constants->var0;
+    v14 = constants->var0;
+    v12->_dialCenter.x = radius;
+    v12->_dialCenter.y = radius;
     v16 = v14 * 0.5;
-    v12->_midRadius = a5 - v16;
-    v12->_outerRadius = a5;
-    v12->_innerRadius = a5 - v16 - v16;
-    v17 = 6.28318531 / a4->var2;
-    v18 = v17 * a3;
+    v12->_midRadius = radius - v16;
+    v12->_outerRadius = radius;
+    v12->_innerRadius = radius - v16 - v16;
+    v17 = 6.28318531 / constants->var2;
+    v18 = v17 * index;
     v12->_tickRotation = v18;
     v12->_startAngle = v18 + -1.57079633;
     v12->_endAngle = v17 + v18 + -1.57079633;
@@ -78,7 +78,7 @@
     -[CALayer setContents:](v13->_arcLayer, "setContents:", [v33 CGImage]);
     [(CALayer *)v13->_arcLayer setFrame:v20, v22, v24, v26];
     [(NTKActivityDialSegment *)v13 _updateTransform];
-    objc_storeStrong(&v13->_device, a6);
+    objc_storeStrong(&v13->_device, device);
   }
 
   return v13;
@@ -187,15 +187,15 @@
   return result;
 }
 
-- (id)_createArcImageWithFrame:(CGRect)a3 insetAngle:(double)a4
+- (id)_createArcImageWithFrame:(CGRect)frame insetAngle:(double)angle
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v8 = self->_dialCenter.x - a3.origin.x;
-  v9 = self->_dialCenter.y - a3.origin.y;
+  height = frame.size.height;
+  width = frame.size.width;
+  v8 = self->_dialCenter.x - frame.origin.x;
+  v9 = self->_dialCenter.y - frame.origin.y;
   v10 = objc_alloc_init(UIBezierPath);
-  [v10 addArcWithCenter:1 radius:v8 startAngle:v9 endAngle:self->_outerRadius clockwise:{self->_startAngle + a4, self->_endAngle - a4}];
-  [v10 addArcWithCenter:0 radius:v8 startAngle:v9 endAngle:self->_innerRadius clockwise:{self->_endAngle - a4, self->_startAngle + a4}];
+  [v10 addArcWithCenter:1 radius:v8 startAngle:v9 endAngle:self->_outerRadius clockwise:{self->_startAngle + angle, self->_endAngle - angle}];
+  [v10 addArcWithCenter:0 radius:v8 startAngle:v9 endAngle:self->_innerRadius clockwise:{self->_endAngle - angle, self->_startAngle + angle}];
   [v10 closePath];
   v16.width = width;
   v16.height = height;
@@ -216,35 +216,35 @@
   return v13;
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v5 = a3;
+  schemeCopy = scheme;
   p_colorScheme = &self->_colorScheme;
-  if (self->_colorScheme != v5)
+  if (self->_colorScheme != schemeCopy)
   {
-    v11 = v5;
-    objc_storeStrong(p_colorScheme, a3);
+    v11 = schemeCopy;
+    objc_storeStrong(p_colorScheme, scheme);
     arcLayer = self->_arcLayer;
-    v8 = [(NTKFaceColorScheme *)v11 shiftedBackgroundColor];
-    -[CALayer setContentsMultiplyColor:](arcLayer, "setContentsMultiplyColor:", [v8 CGColor]);
+    shiftedBackgroundColor = [(NTKFaceColorScheme *)v11 shiftedBackgroundColor];
+    -[CALayer setContentsMultiplyColor:](arcLayer, "setContentsMultiplyColor:", [shiftedBackgroundColor CGColor]);
 
     tickLayer = self->_tickLayer;
-    v10 = [(NTKFaceColorScheme *)v11 activityTickColor];
-    -[CALayer setBackgroundColor:](tickLayer, "setBackgroundColor:", [v10 CGColor]);
+    activityTickColor = [(NTKFaceColorScheme *)v11 activityTickColor];
+    -[CALayer setBackgroundColor:](tickLayer, "setBackgroundColor:", [activityTickColor CGColor]);
 
-    v5 = v11;
+    schemeCopy = v11;
   }
 
-  _objc_release_x1(p_colorScheme, v5);
+  _objc_release_x1(p_colorScheme, schemeCopy);
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   alpha = self->_alpha;
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    self->_alpha = a3;
-    *&v6 = a3;
+    self->_alpha = alpha;
+    *&v6 = alpha;
     [(CALayer *)self->_tickLayer setOpacity:v6];
     arcLayer = self->_arcLayer;
     v8 = self->_alpha;
@@ -254,12 +254,12 @@
   }
 }
 
-- (void)setTickScale:(double)a3
+- (void)setTickScale:(double)scale
 {
   tickScale = self->_tickScale;
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    self->_tickScale = a3;
+    self->_tickScale = scale;
 
     [(NTKActivityDialSegment *)self _updateTransform];
   }

@@ -1,7 +1,7 @@
 @interface CKContextUIClasses
-+ (BOOL)isPDFView:(id)a3;
-+ (BOOL)isSFSafariView:(id)a3;
-+ (BOOL)isWKWebView:(id)a3;
++ (BOOL)isPDFView:(id)view;
++ (BOOL)isSFSafariView:(id)view;
++ (BOOL)isWKWebView:(id)view;
 + (void)lookupClasses;
 @end
 
@@ -14,7 +14,7 @@
   classSFSafariView = objc_lookUpClass("SFSafariView");
 }
 
-+ (BOOL)isWKWebView:(id)a3
++ (BOOL)isWKWebView:(id)view
 {
   if (classWKWebView)
   {
@@ -29,7 +29,7 @@
   return isKindOfClass & 1;
 }
 
-+ (BOOL)isPDFView:(id)a3
++ (BOOL)isPDFView:(id)view
 {
   if (classPDFView)
   {
@@ -44,7 +44,7 @@
   return isKindOfClass & 1;
 }
 
-+ (BOOL)isSFSafariView:(id)a3
++ (BOOL)isSFSafariView:(id)view
 {
   if (classSFSafariView)
   {

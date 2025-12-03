@@ -1,11 +1,11 @@
 @interface CropResizeView
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)cancelCrop;
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5;
-- (void)gestureRecognizerDidTap:(id)a3;
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator;
+- (void)gestureRecognizerDidTap:(id)tap;
 - (void)layoutSubviews;
 @end
 
@@ -13,92 +13,92 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   CropResizeView.layoutSubviews()();
 }
 
 - (void)cancelCrop
 {
-  v2 = self;
+  selfCopy = self;
   CropResizeView.cancelCrop()();
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
-  if ([(CropResizeView *)v8 isHidden])
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
+  selfCopy = self;
+  if ([(CropResizeView *)selfCopy isHidden])
   {
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    v11.receiver = v8;
+    v11.receiver = selfCopy;
     v11.super_class = type metadata accessor for CropResizeView(0);
-    v9 = [(ResizeView *)&v11 hitTest:v7 withEvent:x, y];
+    v9 = [(ResizeView *)&v11 hitTest:eventCopy withEvent:x, y];
 
     if (v9)
     {
 
-      v8 = v9;
+      selfCopy = v9;
     }
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = CropResizeView.gestureRecognizerShouldBegin(_:)(v4);
+  beginCopy = begin;
+  selfCopy = self;
+  LOBYTE(self) = CropResizeView.gestureRecognizerShouldBegin(_:)(beginCopy);
 
   return self & 1;
 }
 
-- (void)gestureRecognizerDidTap:(id)a3
+- (void)gestureRecognizerDidTap:(id)tap
 {
-  v5 = a3;
-  v6 = self;
-  CropResizeView.gestureRecognizerDidTap(_:)(a3);
+  tapCopy = tap;
+  selfCopy = self;
+  CropResizeView.gestureRecognizerDidTap(_:)(tap);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = CropResizeView.gestureRecognizer(_:shouldBeRequiredToFailBy:)(v6, v7);
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
+  selfCopy = self;
+  v9 = CropResizeView.gestureRecognizer(_:shouldBeRequiredToFailBy:)(recognizerCopy, gestureRecognizerCopy);
 
   return v9;
 }
 
-- (id)editMenuInteraction:(id)a3 menuForConfiguration:(id)a4 suggestedActions:(id)a5
+- (id)editMenuInteraction:(id)interaction menuForConfiguration:(id)configuration suggestedActions:(id)actions
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
+  interactionCopy = interaction;
+  configurationCopy = configuration;
+  selfCopy = self;
   v10.super.super.isa = specialized CropResizeView.editMenuInteraction(_:menuFor:suggestedActions:)().super.super.isa;
 
   return v10.super.super.isa;
 }
 
-- (void)editMenuInteraction:(id)a3 willDismissMenuForConfiguration:(id)a4 animator:(id)a5
+- (void)editMenuInteraction:(id)interaction willDismissMenuForConfiguration:(id)configuration animator:(id)animator
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&_s10Foundation4DateVSgMd);
   MEMORY[0x1EEE9AC00](v6 - 8);
   v8 = &v12 - v7;
-  v9 = self;
+  selfCopy = self;
   static Date.now.getter();
   v10 = type metadata accessor for Date();
   (*(*(v10 - 8) + 56))(v8, 0, 1, v10);
   v11 = OBJC_IVAR____TtC8PaperKit14CropResizeView_lastTimeEditMenuDismissed;
   swift_beginAccess();
-  outlined assign with take of Date?(v8, v9 + v11);
+  outlined assign with take of Date?(v8, selfCopy + v11);
   swift_endAccess();
 }
 

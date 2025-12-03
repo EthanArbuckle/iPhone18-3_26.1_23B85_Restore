@@ -1,35 +1,35 @@
 @interface FigSDOFBlurMapRendering
-- (BOOL)detectFacesOnTele:(__CVBuffer *)a3 meta:(id)a4 to:(id *)a5 maxFacesCount:(int)a6 facesCount:(int *)a7;
-- (BOOL)sanityChecksBlurMapWithImage:(__CVBuffer *)a3 shiftMap:(__CVBuffer *)a4 segmentationMask:(__CVBuffer *)a5 semanticSegmentationHairMask:(__CVBuffer *)a6 semanticSegmentationGlassesMask:(__CVBuffer *)a7 resultFaceAdjBlurMap:(__CVBuffer *)a8;
-- (FigSDOFBlurMapRendering)initWithCommandQueue:(id)a3;
-- (int)_prewarm:(id)a3;
-- (int)computeBlurMapWithImage:(opaqueCMSampleBuffer *)a3 shiftMap:(__CVBuffer *)a4 personSegmentationMask:(__CVBuffer *)a5 hairSemanticSegmentationMask:(__CVBuffer *)a6 glassesSemanticSegmentationMask:(__CVBuffer *)a7 resultFaceAdjustedBlurMap:(__CVBuffer *)a8;
-- (int)prewarmWithTuningParameters:(id)a3;
-- (int)setOptionsInternal:(id)a3 isPrewarm:(BOOL)a4;
+- (BOOL)detectFacesOnTele:(__CVBuffer *)tele meta:(id)meta to:(id *)to maxFacesCount:(int)count facesCount:(int *)facesCount;
+- (BOOL)sanityChecksBlurMapWithImage:(__CVBuffer *)image shiftMap:(__CVBuffer *)map segmentationMask:(__CVBuffer *)mask semanticSegmentationHairMask:(__CVBuffer *)hairMask semanticSegmentationGlassesMask:(__CVBuffer *)glassesMask resultFaceAdjBlurMap:(__CVBuffer *)blurMap;
+- (FigSDOFBlurMapRendering)initWithCommandQueue:(id)queue;
+- (int)_prewarm:(id)_prewarm;
+- (int)computeBlurMapWithImage:(opaqueCMSampleBuffer *)image shiftMap:(__CVBuffer *)map personSegmentationMask:(__CVBuffer *)mask hairSemanticSegmentationMask:(__CVBuffer *)segmentationMask glassesSemanticSegmentationMask:(__CVBuffer *)semanticSegmentationMask resultFaceAdjustedBlurMap:(__CVBuffer *)blurMap;
+- (int)prewarmWithTuningParameters:(id)parameters;
+- (int)setOptionsInternal:(id)internal isPrewarm:(BOOL)prewarm;
 - (void)dealloc;
 - (void)releaseResources;
 @end
 
 @implementation FigSDOFBlurMapRendering
 
-- (int)prewarmWithTuningParameters:(id)a3
+- (int)prewarmWithTuningParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = [FigSDOFBlurMapRendering alloc];
   v8 = objc_msgSend_initWithCommandQueue_(v5, v6, self->_metalCommandQueue, v7);
-  v11 = objc_msgSend__prewarm_(v8, v9, v4, v10);
+  v11 = objc_msgSend__prewarm_(v8, v9, parametersCopy, v10);
 
   return v11;
 }
 
-- (int)_prewarm:(id)a3
+- (int)_prewarm:(id)_prewarm
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4)
+  _prewarmCopy = _prewarm;
+  v6 = _prewarmCopy;
+  if (_prewarmCopy)
   {
     v11 = *MEMORY[0x29EDC0298];
-    v12 = v4;
+    v12 = _prewarmCopy;
     v7 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x29EDB8DC0], v5, &v12, &v11, 1);
     objc_msgSend_setOptionsInternal_isPrewarm_(self, v8, v7, 1);
 
@@ -45,9 +45,9 @@
   return v9;
 }
 
-- (FigSDOFBlurMapRendering)initWithCommandQueue:(id)a3
+- (FigSDOFBlurMapRendering)initWithCommandQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v31.receiver = self;
   v31.super_class = FigSDOFBlurMapRendering;
   v7 = [(FigSDOFBlurMapRendering *)&v31 init];
@@ -67,7 +67,7 @@ LABEL_11:
   }
 
   v9 = objc_alloc(MEMORY[0x29EDC0A40]);
-  inited = objc_msgSend_initWithbundle_andOptionalCommandQueue_(v9, v10, v8, v4);
+  inited = objc_msgSend_initWithbundle_andOptionalCommandQueue_(v9, v10, v8, queueCopy);
   metalContext = v7->_metalContext;
   v7->_metalContext = inited;
 
@@ -104,11 +104,11 @@ LABEL_7:
   return v29;
 }
 
-- (int)setOptionsInternal:(id)a3 isPrewarm:(BOOL)a4
+- (int)setOptionsInternal:(id)internal isPrewarm:(BOOL)prewarm
 {
-  v6 = a3;
-  objc_storeStrong(&self->_options, a3);
-  v9 = objc_msgSend_objectForKeyedSubscript_(v6, v7, *MEMORY[0x29EDC0298], v8);
+  internalCopy = internal;
+  objc_storeStrong(&self->_options, internal);
+  v9 = objc_msgSend_objectForKeyedSubscript_(internalCopy, v7, *MEMORY[0x29EDC0298], v8);
   v10 = v9;
   if (v9)
   {
@@ -180,29 +180,29 @@ LABEL_7:
   self->_resources = 0;
 }
 
-- (BOOL)detectFacesOnTele:(__CVBuffer *)a3 meta:(id)a4 to:(id *)a5 maxFacesCount:(int)a6 facesCount:(int *)a7
+- (BOOL)detectFacesOnTele:(__CVBuffer *)tele meta:(id)meta to:(id *)to maxFacesCount:(int)count facesCount:(int *)facesCount
 {
-  v12 = a4;
-  v15 = v12;
-  if (!a3)
+  metaCopy = meta;
+  v15 = metaCopy;
+  if (!tele)
   {
     sub_295EB6D40();
     goto LABEL_10;
   }
 
-  if (!v12)
+  if (!metaCopy)
   {
     sub_295EB6CC8();
     goto LABEL_10;
   }
 
-  if (!a5)
+  if (!to)
   {
     sub_295EB6C50();
     goto LABEL_10;
   }
 
-  if (!a7)
+  if (!facesCount)
   {
     sub_295EB6BD8();
     goto LABEL_10;
@@ -210,15 +210,15 @@ LABEL_7:
 
   v18 = 1;
   v19 = 1;
-  if (!sub_295EB0ED4(v12, &v18, v13, v14) || (sub_295EB0F2C(v18, &v19) & 1) == 0)
+  if (!sub_295EB0ED4(metaCopy, &v18, v13, v14) || (sub_295EB0F2C(v18, &v19) & 1) == 0)
   {
     sub_295EB6B60();
     goto LABEL_10;
   }
 
-  if (!sub_295EB0F50(self->_faceLandmarksArray, v19, a6, a5, a7))
+  if (!sub_295EB0F50(self->_faceLandmarksArray, v19, count, to, facesCount))
   {
-    *a7 = 0;
+    *facesCount = 0;
     fig_log_get_emitter();
     FigDebugAssert3();
 LABEL_10:
@@ -232,16 +232,16 @@ LABEL_11:
   return v16;
 }
 
-- (int)computeBlurMapWithImage:(opaqueCMSampleBuffer *)a3 shiftMap:(__CVBuffer *)a4 personSegmentationMask:(__CVBuffer *)a5 hairSemanticSegmentationMask:(__CVBuffer *)a6 glassesSemanticSegmentationMask:(__CVBuffer *)a7 resultFaceAdjustedBlurMap:(__CVBuffer *)a8
+- (int)computeBlurMapWithImage:(opaqueCMSampleBuffer *)image shiftMap:(__CVBuffer *)map personSegmentationMask:(__CVBuffer *)mask hairSemanticSegmentationMask:(__CVBuffer *)segmentationMask glassesSemanticSegmentationMask:(__CVBuffer *)semanticSegmentationMask resultFaceAdjustedBlurMap:(__CVBuffer *)blurMap
 {
   size.width = 0.0;
   size.height = 0.0;
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a8);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(blurMap);
   objc_msgSend_clearDiagnostics(self->_diagnostics, v15, v16, v17);
-  ImageBuffer = CMSampleBufferGetImageBuffer(a3);
-  v19 = CMGetAttachment(a3, *MEMORY[0x29EDBFF98], 0);
-  target = a3;
-  v20 = CMGetAttachment(a3, *MEMORY[0x29EDC0850], 0);
+  ImageBuffer = CMSampleBufferGetImageBuffer(image);
+  v19 = CMGetAttachment(image, *MEMORY[0x29EDBFF98], 0);
+  target = image;
+  v20 = CMGetAttachment(image, *MEMORY[0x29EDC0850], 0);
   v23 = v20;
   if (!v20)
   {
@@ -338,7 +338,7 @@ LABEL_76:
     goto LABEL_76;
   }
 
-  if ((objc_msgSend_sanityChecksBlurMapWithImage_shiftMap_segmentationMask_semanticSegmentationHairMask_semanticSegmentationGlassesMask_resultFaceAdjBlurMap_(self, v37, ImageBuffer, a4, a5, a6, a7, a8) & 1) == 0)
+  if ((objc_msgSend_sanityChecksBlurMapWithImage_shiftMap_segmentationMask_semanticSegmentationHairMask_semanticSegmentationGlassesMask_resultFaceAdjBlurMap_(self, v37, ImageBuffer, map, mask, segmentationMask, semanticSegmentationMask, blurMap) & 1) == 0)
   {
     sub_295EB6EA8();
     goto LABEL_76;
@@ -442,7 +442,7 @@ LABEL_83:
     goto LABEL_80;
   }
 
-  v75 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v73, a4, 25, 17, 0);
+  v75 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v73, map, 25, 17, 0);
   if (!v75)
   {
     sub_295EB725C(&v292);
@@ -452,12 +452,12 @@ LABEL_83:
   metalContext = self->_metalContext;
   if (v275 == 843264056)
   {
-    objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(metalContext, v74, a8, 30, 23, 0);
+    objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(metalContext, v74, blurMap, 30, 23, 0);
   }
 
   else
   {
-    objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(metalContext, v74, a8, 10, 23, 0);
+    objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(metalContext, v74, blurMap, 10, 23, 0);
   }
   v276 = ;
   if (!v276)
@@ -466,9 +466,9 @@ LABEL_83:
     goto LABEL_83;
   }
 
-  if (a5)
+  if (mask)
   {
-    objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v77, a5, 10, 17, 0);
+    objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v77, mask, 10, 17, 0);
     v274 = v79 = v269;
     if (!v274)
     {
@@ -477,7 +477,7 @@ LABEL_83:
       goto LABEL_87;
     }
 
-    if (a6)
+    if (segmentationMask)
     {
       goto LABEL_34;
     }
@@ -489,13 +489,13 @@ LABEL_37:
 
   v274 = 0;
   v79 = v269;
-  if (!a6)
+  if (!segmentationMask)
   {
     goto LABEL_37;
   }
 
 LABEL_34:
-  v273 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v77, a6, 10, 17, 0);
+  v273 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v77, segmentationMask, 10, 17, 0);
   if (!v273)
   {
     sub_295EB6FCC(&v292);
@@ -505,10 +505,10 @@ LABEL_87:
   }
 
 LABEL_38:
-  v80 = a7;
-  if (a7)
+  semanticSegmentationMaskCopy = semanticSegmentationMask;
+  if (semanticSegmentationMask)
   {
-    v272 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v77, a7, 10, 17, 0);
+    v272 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v77, semanticSegmentationMask, 10, 17, 0);
     if (!v272)
     {
       sub_295EB7078(&v292);
@@ -526,7 +526,7 @@ LABEL_88:
     v272 = 0;
   }
 
-  v264 = objc_msgSend_activateResources(self->_resources, v77, v80, v78);
+  v264 = objc_msgSend_activateResources(self->_resources, v77, semanticSegmentationMaskCopy, v78);
   v81 = *&v290[0].width;
   v82 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
   if (v288 >= 1)
@@ -728,9 +728,9 @@ LABEL_66:
   return v236;
 }
 
-- (BOOL)sanityChecksBlurMapWithImage:(__CVBuffer *)a3 shiftMap:(__CVBuffer *)a4 segmentationMask:(__CVBuffer *)a5 semanticSegmentationHairMask:(__CVBuffer *)a6 semanticSegmentationGlassesMask:(__CVBuffer *)a7 resultFaceAdjBlurMap:(__CVBuffer *)a8
+- (BOOL)sanityChecksBlurMapWithImage:(__CVBuffer *)image shiftMap:(__CVBuffer *)map segmentationMask:(__CVBuffer *)mask semanticSegmentationHairMask:(__CVBuffer *)hairMask semanticSegmentationGlassesMask:(__CVBuffer *)glassesMask resultFaceAdjBlurMap:(__CVBuffer *)blurMap
 {
-  if (!a3 || !a4 || !a8)
+  if (!image || !map || !blurMap)
   {
     fig_log_get_emitter();
     sub_295EADC88();
@@ -740,18 +740,18 @@ LABEL_66:
 
   inputImageWidth = self->_inputImageWidth;
   inputImageHeight = self->_inputImageHeight;
-  if (CVPixelBufferGetWidth(a3) != inputImageWidth || CVPixelBufferGetHeight(a3) != inputImageHeight)
+  if (CVPixelBufferGetWidth(image) != inputImageWidth || CVPixelBufferGetHeight(image) != inputImageHeight)
   {
     goto LABEL_31;
   }
 
   inputShiftMapWidth = self->_inputShiftMapWidth;
   inputShiftMapHeight = self->_inputShiftMapHeight;
-  if (CVPixelBufferGetWidth(a4) != inputShiftMapWidth || CVPixelBufferGetHeight(a4) != inputShiftMapHeight)
+  if (CVPixelBufferGetWidth(map) != inputShiftMapWidth || CVPixelBufferGetHeight(map) != inputShiftMapHeight)
   {
     upsampledShiftMapWidth = self->_upsampledShiftMapWidth;
     upsampledShiftMapHeight = self->_upsampledShiftMapHeight;
-    if (CVPixelBufferGetWidth(a4) != upsampledShiftMapWidth || CVPixelBufferGetHeight(a4) != upsampledShiftMapHeight)
+    if (CVPixelBufferGetWidth(map) != upsampledShiftMapWidth || CVPixelBufferGetHeight(map) != upsampledShiftMapHeight)
     {
       goto LABEL_31;
     }
@@ -759,51 +759,51 @@ LABEL_66:
 
   v22 = self->_upsampledShiftMapWidth;
   v21 = self->_upsampledShiftMapHeight;
-  if (CVPixelBufferGetWidth(a8) != v22 || CVPixelBufferGetHeight(a8) != v21)
+  if (CVPixelBufferGetWidth(blurMap) != v22 || CVPixelBufferGetHeight(blurMap) != v21)
   {
     goto LABEL_31;
   }
 
-  v23 = sub_295EAEADC(a3);
+  v23 = sub_295EAEADC(image);
   if (!v23)
   {
     return v23;
   }
 
-  if (CVPixelBufferGetPixelFormatType(a8) != 1278226488 && CVPixelBufferGetPixelFormatType(a8) != 843264056)
+  if (CVPixelBufferGetPixelFormatType(blurMap) != 1278226488 && CVPixelBufferGetPixelFormatType(blurMap) != 843264056)
   {
 LABEL_31:
     LOBYTE(v23) = 0;
     return v23;
   }
 
-  if (CVPixelBufferGetPixelFormatType(a4) != 1278226536 && CVPixelBufferGetPixelFormatType(a4) != 1751411059)
+  if (CVPixelBufferGetPixelFormatType(map) != 1278226536 && CVPixelBufferGetPixelFormatType(map) != 1751411059)
   {
 LABEL_33:
     LOBYTE(v23) = 1;
     return v23;
   }
 
-  if (a5)
+  if (mask)
   {
     v25 = self->_upsampledShiftMapWidth;
     v24 = self->_upsampledShiftMapHeight;
-    if (CVPixelBufferGetWidth(a5) != v25 || CVPixelBufferGetHeight(a5) != v24 || CVPixelBufferGetPixelFormatType(a5) != 1278226488)
+    if (CVPixelBufferGetWidth(mask) != v25 || CVPixelBufferGetHeight(mask) != v24 || CVPixelBufferGetPixelFormatType(mask) != 1278226488)
     {
       goto LABEL_31;
     }
   }
 
-  if (!a6)
+  if (!hairMask)
   {
-    if (a7)
+    if (glassesMask)
     {
 LABEL_28:
       v30 = self->_upsampledShiftMapWidth;
       v29 = self->_upsampledShiftMapHeight;
-      if (CVPixelBufferGetWidth(a7) == v30 && CVPixelBufferGetHeight(a7) == v29)
+      if (CVPixelBufferGetWidth(glassesMask) == v30 && CVPixelBufferGetHeight(glassesMask) == v29)
       {
-        LOBYTE(v23) = CVPixelBufferGetPixelFormatType(a7) == 1278226488;
+        LOBYTE(v23) = CVPixelBufferGetPixelFormatType(glassesMask) == 1278226488;
         return v23;
       }
 
@@ -815,14 +815,14 @@ LABEL_28:
 
   v27 = self->_upsampledShiftMapWidth;
   v26 = self->_upsampledShiftMapHeight;
-  if (CVPixelBufferGetWidth(a6) != v27 || CVPixelBufferGetHeight(a6) != v26)
+  if (CVPixelBufferGetWidth(hairMask) != v27 || CVPixelBufferGetHeight(hairMask) != v26)
   {
     goto LABEL_31;
   }
 
-  v28 = CVPixelBufferGetPixelFormatType(a6) == 1278226488;
+  v28 = CVPixelBufferGetPixelFormatType(hairMask) == 1278226488;
   LOBYTE(v23) = v28;
-  if (a7 && v28)
+  if (glassesMask && v28)
   {
     goto LABEL_28;
   }

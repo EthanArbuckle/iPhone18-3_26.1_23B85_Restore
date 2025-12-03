@@ -1,17 +1,17 @@
 @interface LanguageAwareText.Coordinator
 - (_TtCV17SequoiaTranslator17LanguageAwareText11Coordinator)init;
-- (id)textView:(id)a3 menuConfigurationForTextItem:(id)a4 defaultMenu:(id)a5;
+- (id)textView:(id)view menuConfigurationForTextItem:(id)item defaultMenu:(id)menu;
 @end
 
 @implementation LanguageAwareText.Coordinator
 
-- (id)textView:(id)a3 menuConfigurationForTextItem:(id)a4 defaultMenu:(id)a5
+- (id)textView:(id)view menuConfigurationForTextItem:(id)item defaultMenu:(id)menu
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = sub_1001370CC(v8, v9);
+  viewCopy = view;
+  itemCopy = item;
+  menuCopy = menu;
+  selfCopy = self;
+  v12 = sub_1001370CC(viewCopy, itemCopy);
 
   return v12;
 }

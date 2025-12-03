@@ -1,28 +1,28 @@
 @interface HalfSheetPageView
 - (void)layoutSubviews;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HalfSheetPageView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_AE80C();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_B08D4(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_B08D4(change);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   sub_B0C6C();
 }
 

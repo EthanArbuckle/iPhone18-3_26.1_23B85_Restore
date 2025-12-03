@@ -8,10 +8,10 @@
 
 - (double)vui_heightToBaseline
 {
-  v1 = [a1 font];
-  [v1 lineHeight];
+  font = [self font];
+  [font lineHeight];
   v3 = v2;
-  [v1 descender];
+  [font descender];
   v5 = v3 + v4;
 
   return v5;
@@ -23,9 +23,9 @@
   aBlock[1] = 3221225472;
   aBlock[2] = __41__UILabel_VideosUI__vui_textSizeForSize___block_invoke;
   aBlock[3] = &unk_1E872EB88;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   v6 = _Block_copy(aBlock);
-  [a1 tv_sizeThatFits:v6 withSizeCalculation:{a2, a3}];
+  [self tv_sizeThatFits:v6 withSizeCalculation:{a2, a3}];
   v8 = v7;
 
   return v8;
@@ -51,24 +51,24 @@
   aBlock[4] = v15;
   aBlock[5] = &v16;
   v3 = _Block_copy(aBlock);
-  v4 = [a1 attributedText];
-  if ([v4 length])
+  attributedText = [self attributedText];
+  if ([attributedText length])
   {
-    v5 = [v4 length];
+    v5 = [attributedText length];
     v6 = *MEMORY[0x1E69DB648];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __57__UILabel_VideosUI__vui_alignmentInsetsForExpectedWidth___block_invoke_2;
     v12[3] = &unk_1E8732690;
     v13 = v3;
-    [v4 enumerateAttribute:v6 inRange:0 options:v5 usingBlock:{0, v12}];
-    v7 = v13;
+    [attributedText enumerateAttribute:v6 inRange:0 options:v5 usingBlock:{0, v12}];
+    _defaultAttributes = v13;
   }
 
   else
   {
-    v7 = [a1 _defaultAttributes];
-    v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
+    _defaultAttributes = [self _defaultAttributes];
+    v8 = [_defaultAttributes objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
     (*(v3 + 2))(v3, v8);
   }
 

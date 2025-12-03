@@ -2,15 +2,15 @@
 - (AccessoryVoiceControlController)init;
 - (id)clickHoldModeLeft;
 - (id)clickHoldModeRight;
-- (id)getVolumeControlEnabled:(id)a3;
+- (id)getVolumeControlEnabled:(id)enabled;
 - (id)specifiers;
 - (void)dealloc;
-- (void)deviceDisconnectedHandler:(id)a3;
-- (void)deviceRemoved:(id)a3;
+- (void)deviceDisconnectedHandler:(id)handler;
+- (void)deviceRemoved:(id)removed;
 - (void)dismissPressAndHold;
-- (void)powerChangedHandler:(id)a3;
-- (void)setGestureMode:(id)a3 specifier:(id)a4;
-- (void)setVolumeControlEnabled:(id)a3 specifier:(id)a4;
+- (void)powerChangedHandler:(id)handler;
+- (void)setGestureMode:(id)mode specifier:(id)specifier;
+- (void)setVolumeControlEnabled:(id)enabled specifier:(id)specifier;
 @end
 
 @implementation AccessoryVoiceControlController
@@ -27,17 +27,17 @@
     v2->_dismissed = 0;
     v2->_volumeControlEnabled = 0;
     v2->_setEnableVolumeControlAtStart = 0;
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v3 selector:sel_deviceRemoved_ name:*MEMORY[0x277CF31C8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_deviceRemoved_ name:*MEMORY[0x277CF31C8] object:0];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v3 selector:sel_deviceDisconnectedHandler_ name:*MEMORY[0x277CF3198] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v3 selector:sel_deviceDisconnectedHandler_ name:*MEMORY[0x277CF3198] object:0];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v3 selector:sel_deviceDisconnectedHandler_ name:*MEMORY[0x277CF31A0] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v3 selector:sel_deviceDisconnectedHandler_ name:*MEMORY[0x277CF31A0] object:0];
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v3 selector:sel_powerChangedHandler_ name:*MEMORY[0x277CF3168] object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v3 selector:sel_powerChangedHandler_ name:*MEMORY[0x277CF3168] object:0];
   }
 
   return v3;
@@ -45,8 +45,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   currentDevice = self->_currentDevice;
   self->_currentDevice = 0;
@@ -62,41 +62,41 @@
   v3 = MEMORY[0x277CBEB18];
   v126.receiver = self;
   v126.super_class = AccessoryVoiceControlController;
-  v4 = [(AccessoryVoiceControlController *)&v126 specifiers];
-  v5 = [v3 arrayWithArray:v4];
+  specifiers = [(AccessoryVoiceControlController *)&v126 specifiers];
+  v5 = [v3 arrayWithArray:specifiers];
   volumeControlSpecifiers = self->_volumeControlSpecifiers;
   self->_volumeControlSpecifiers = v5;
 
-  v7 = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
+  userInfo = [*(&self->super.super.super.super.super.isa + *MEMORY[0x277D3FD20]) userInfo];
   v8 = +[HPSDevice deviceKey];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  v9 = [userInfo objectForKeyedSubscript:v8];
   currentDevice = self->_currentDevice;
   self->_currentDevice = v9;
 
-  v11 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
-  v116 = [v11 productId];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+  productId = [classicDevice productId];
 
   v125 = 0;
-  v12 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
-  [v12 clickHoldMode:&v125 + 4 rightAction:&v125];
+  classicDevice2 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+  [classicDevice2 clickHoldMode:&v125 + 4 rightAction:&v125];
 
   v13 = objc_alloc(MEMORY[0x277CBEAC0]);
   v14 = [MEMORY[0x277CCABB0] numberWithInteger:HIDWORD(v125)];
   v15 = [MEMORY[0x277CCABB0] numberWithInteger:v125];
   v16 = [v13 initWithObjectsAndKeys:{v14, @"pressHoldLeftBudValue", v15, @"pressHoldRightBudValue", 0}];
 
-  v17 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v123 = v16;
-  [v17 postNotificationName:@"BTAccessoryPressAndHoldModeSelected" object:0 userInfo:v16];
+  [defaultCenter postNotificationName:@"BTAccessoryPressAndHoldModeSelected" object:0 userInfo:v16];
 
   v18 = HIDWORD(v125);
   if (!HIDWORD(v125) || (v19 = v125) == 0)
   {
-    v20 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
-    [v20 setClickHoldMode:5 rightMode:5];
+    classicDevice3 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+    [classicDevice3 setClickHoldMode:5 rightMode:5];
 
-    v21 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
-    [v21 clickHoldMode:&v125 + 4 rightAction:&v125];
+    classicDevice4 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+    [classicDevice4 clickHoldMode:&v125 + 4 rightAction:&v125];
 
     v19 = v125;
     v18 = HIDWORD(v125);
@@ -116,8 +116,8 @@
   v27 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v28 = [v27 localizedStringForKey:@"VOLUME_CONTROL_FOOTER" value:&stru_286339F58 table:@"DeviceConfig-B494"];
 
-  v29 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
-  LODWORD(v24) = [v29 productId];
+  classicDevice5 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+  LODWORD(v24) = [classicDevice5 productId];
 
   if (v24 == 8209)
   {
@@ -127,10 +127,10 @@
     v28 = v31;
   }
 
-  v32 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
-  v33 = [v32 productId];
+  classicDevice6 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+  productId2 = [classicDevice6 productId];
 
-  if (v33 == 8214)
+  if (productId2 == 8214)
   {
     v34 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v35 = [v34 localizedStringForKey:@"VOLUME_CONTROL_FOOTER" value:&stru_286339F58 table:@"DeviceConfig-B607"];
@@ -138,10 +138,10 @@
     v28 = v35;
   }
 
-  v36 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
-  v37 = [v36 productId];
+  classicDevice7 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+  productId3 = [classicDevice7 productId];
 
-  if (v37 == 8218)
+  if (productId3 == 8218)
   {
     v38 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v39 = [v38 localizedStringForKey:@"VOLUME_CONTROL_FOOTER" value:&stru_286339F58 table:@"DeviceConfig-B487"];
@@ -149,10 +149,10 @@
     v28 = v39;
   }
 
-  v40 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
-  v41 = [v40 productId];
+  classicDevice8 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+  productId4 = [classicDevice8 productId];
 
-  if (v41 == 8230)
+  if (productId4 == 8230)
   {
     v42 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v43 = [v42 localizedStringForKey:@"VOLUME_CONTROL_FOOTER" value:&stru_286339F58 table:@"DeviceConfig-B463"];
@@ -160,10 +160,10 @@
     v28 = v43;
   }
 
-  v44 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
-  v45 = [v44 productId];
+  classicDevice9 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+  productId5 = [classicDevice9 productId];
 
-  if (v45 == 8239)
+  if (productId5 == 8239)
   {
     v46 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v47 = [v46 localizedStringForKey:@"VOLUME_CONTROL_FOOTER" value:&stru_286339F58 table:@"DeviceConfig-B494b"];
@@ -197,8 +197,8 @@
 
   v118 = v58;
   [(NSMutableArray *)self->_volumeControlSpecifiers addObject:v58];
-  v59 = [HPSProductUtils getProductSpecificString:v116 descriptionKey:@"LEFT_BUD"];
-  [HPSProductUtils getProductSpecificString:v116 descriptionKey:@"RIGHT_BUD"];
+  v59 = [HPSProductUtils getProductSpecificString:productId descriptionKey:@"LEFT_BUD"];
+  [HPSProductUtils getProductSpecificString:productId descriptionKey:@"RIGHT_BUD"];
   v124 = v59;
   v117 = v121 = v28;
   if ([(AccessoryVoiceControlController *)self isVolumeControlEnabled])
@@ -246,12 +246,12 @@
 
   else
   {
-    v88 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
-    v89 = [v88 productId];
+    classicDevice10 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+    productId6 = [classicDevice10 productId];
 
     v90 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v91 = v90;
-    if (v89 == 8230)
+    if (productId6 == 8230)
     {
       v92 = [v90 localizedStringForKey:@"SIRI" value:&stru_286339F58 table:@"DeviceConfig"];
       v132[0] = v92;
@@ -292,9 +292,9 @@
     }
 
     v76 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v104 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+    classicDevice11 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
     v105 = +[HPSDevice deviceKey];
-    [v76 setObject:v104 forKey:v105];
+    [v76 setObject:classicDevice11 forKey:v105];
 
     v77 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:v124 target:self set:sel_setGestureMode_specifier_ get:sel_clickHoldModeLeft detail:objc_opt_class() cell:2 edit:0];
     [v77 setIdentifier:@"LEFT_ID"];
@@ -327,22 +327,22 @@
   return v112;
 }
 
-- (id)getVolumeControlEnabled:(id)a3
+- (id)getVolumeControlEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(AccessoryVoiceControlController *)self isVolumeControlEnabled];
+  isVolumeControlEnabled = [(AccessoryVoiceControlController *)self isVolumeControlEnabled];
 
-  return [v3 numberWithBool:v4];
+  return [v3 numberWithBool:isVolumeControlEnabled];
 }
 
-- (void)setVolumeControlEnabled:(id)a3 specifier:(id)a4
+- (void)setVolumeControlEnabled:(id)enabled specifier:(id)specifier
 {
   v36 = *MEMORY[0x277D85DE8];
-  self->_volumeControlEnabled = [a3 BOOLValue];
+  self->_volumeControlEnabled = [enabled BOOLValue];
   v24 = 0;
   v25 = 0;
-  v5 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
-  [v5 clickHoldModes:&v24];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+  [classicDevice clickHoldModes:&v24];
 
   v6 = v24;
   v7 = HIDWORD(v24);
@@ -408,10 +408,10 @@
 
   else
   {
-    v17 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
-    v18 = [v17 productId];
+    classicDevice2 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+    productId = [classicDevice2 productId];
 
-    if (v18 == 8230)
+    if (productId == 8230)
     {
       v19 = 1;
     }
@@ -442,8 +442,8 @@
     }
   }
 
-  v22 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
-  [v22 setClickHoldModes:{v24, v25}];
+  classicDevice3 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+  [classicDevice3 setClickHoldModes:{v24, v25}];
 
   [(AccessoryVoiceControlController *)self performSelector:sel_reloadSpecifiers withObject:0 afterDelay:0.5];
   v23 = *MEMORY[0x277D85DE8];
@@ -452,8 +452,8 @@
 - (id)clickHoldModeLeft
 {
   v5 = 0;
-  v2 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
-  [v2 clickHoldMode:&v5 + 4 rightAction:&v5];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+  [classicDevice clickHoldMode:&v5 + 4 rightAction:&v5];
 
   v3 = [MEMORY[0x277CCABB0] numberWithInt:HIDWORD(v5)];
 
@@ -463,47 +463,47 @@
 - (id)clickHoldModeRight
 {
   v5 = 0;
-  v2 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
-  [v2 clickHoldMode:&v5 + 4 rightAction:&v5];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+  [classicDevice clickHoldMode:&v5 + 4 rightAction:&v5];
 
   v3 = [MEMORY[0x277CCABB0] numberWithInt:v5];
 
   return v3;
 }
 
-- (void)setGestureMode:(id)a3 specifier:(id)a4
+- (void)setGestureMode:(id)mode specifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
+  modeCopy = mode;
+  specifierCopy = specifier;
   v18 = 0;
-  v8 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
-  [v8 clickHoldMode:&v18 + 4 rightAction:&v18];
+  classicDevice = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+  [classicDevice clickHoldMode:&v18 + 4 rightAction:&v18];
 
-  v9 = [v7 identifier];
-  v10 = [v9 isEqualToString:@"LEFT_ID"];
+  identifier = [specifierCopy identifier];
+  v10 = [identifier isEqualToString:@"LEFT_ID"];
 
   if (v10)
   {
-    v11 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
-    v12 = [v6 intValue];
-    v13 = v18;
-    v14 = v11;
+    classicDevice2 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+    intValue = [modeCopy intValue];
+    intValue2 = v18;
+    v14 = classicDevice2;
 LABEL_5:
-    [v14 setClickHoldMode:v12 rightMode:v13];
+    [v14 setClickHoldMode:intValue rightMode:intValue2];
 
     goto LABEL_6;
   }
 
-  v15 = [v7 identifier];
-  v16 = [v15 isEqualToString:@"RIGHT_ID"];
+  identifier2 = [specifierCopy identifier];
+  v16 = [identifier2 isEqualToString:@"RIGHT_ID"];
 
   if (v16)
   {
-    v11 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
+    classicDevice2 = [(BluetoothDeviceProtocol *)self->_currentDevice classicDevice];
     v17 = HIDWORD(v18);
-    v13 = [v6 intValue];
-    v14 = v11;
-    v12 = v17;
+    intValue2 = [modeCopy intValue];
+    v14 = classicDevice2;
+    intValue = v17;
     goto LABEL_5;
   }
 
@@ -511,12 +511,12 @@ LABEL_6:
   [(AccessoryVoiceControlController *)self performSelector:sel_reloadSpecifiers withObject:0 afterDelay:0.5];
 }
 
-- (void)deviceDisconnectedHandler:(id)a3
+- (void)deviceDisconnectedHandler:(id)handler
 {
-  v7 = [a3 object];
-  v4 = [v7 address];
-  v5 = [(BluetoothDeviceProtocol *)self->_currentDevice identifier];
-  if (v4 == v5)
+  object = [handler object];
+  address = [object address];
+  identifier = [(BluetoothDeviceProtocol *)self->_currentDevice identifier];
+  if (address == identifier)
   {
     dismissed = self->_dismissed;
 
@@ -531,26 +531,26 @@ LABEL_6:
   }
 }
 
-- (void)powerChangedHandler:(id)a3
+- (void)powerChangedHandler:(id)handler
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CF3248] sharedInstance];
-  v6 = [v5 enabled];
+  handlerCopy = handler;
+  mEMORY[0x277CF3248] = [MEMORY[0x277CF3248] sharedInstance];
+  enabled = [mEMORY[0x277CF3248] enabled];
 
   v7 = sharedBluetoothSettingsLogComponent();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v4 name];
-    v9 = v8;
+    name = [handlerCopy name];
+    v9 = name;
     v10 = "off";
-    if (v6)
+    if (enabled)
     {
       v10 = "on";
     }
 
     v12 = 138412546;
-    v13 = v8;
+    v13 = name;
     v14 = 2080;
     v15 = v10;
     _os_log_impl(&dword_251143000, v7, OS_LOG_TYPE_DEFAULT, "Received %@ with power state %s", &v12, 0x16u);
@@ -560,12 +560,12 @@ LABEL_6:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deviceRemoved:(id)a3
+- (void)deviceRemoved:(id)removed
 {
-  v7 = [a3 object];
-  v4 = [v7 address];
-  v5 = [(BluetoothDeviceProtocol *)self->_currentDevice identifier];
-  if (v4 == v5)
+  object = [removed object];
+  address = [object address];
+  identifier = [(BluetoothDeviceProtocol *)self->_currentDevice identifier];
+  if (address == identifier)
   {
     dismissed = self->_dismissed;
 
@@ -583,8 +583,8 @@ LABEL_6:
 - (void)dismissPressAndHold
 {
   self->_dismissed = 1;
-  v3 = [(AccessoryVoiceControlController *)self navigationController];
-  v2 = [v3 popViewControllerAnimated:1];
+  navigationController = [(AccessoryVoiceControlController *)self navigationController];
+  v2 = [navigationController popViewControllerAnimated:1];
 }
 
 @end

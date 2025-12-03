@@ -1,13 +1,13 @@
 @interface VCControlChannelFaceTime
-- (BOOL)sendReliableMessageAndWait:(id)a3 withTopic:(id)a4;
-- (VCControlChannelFaceTime)initWithCallID:(unsigned int)a3 reportingAgent:(opaqueRTCReporting *)a4;
+- (BOOL)sendReliableMessageAndWait:(id)wait withTopic:(id)topic;
+- (VCControlChannelFaceTime)initWithCallID:(unsigned int)d reportingAgent:(opaqueRTCReporting *)agent;
 - (void)dealloc;
-- (void)sendReliableMessage:(id)a3 withTopic:(id)a4;
+- (void)sendReliableMessage:(id)message withTopic:(id)topic;
 @end
 
 @implementation VCControlChannelFaceTime
 
-- (VCControlChannelFaceTime)initWithCallID:(unsigned int)a3 reportingAgent:(opaqueRTCReporting *)a4
+- (VCControlChannelFaceTime)initWithCallID:(unsigned int)d reportingAgent:(opaqueRTCReporting *)agent
 {
   v13 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
@@ -16,7 +16,7 @@
   v7 = v6;
   if (v6)
   {
-    v6->_callID = a3;
+    v6->_callID = d;
     v6->_SIPHandle = [+[VideoConferenceManager defaultVideoConferenceManager](VideoConferenceManager "defaultVideoConferenceManager")];
     v8 = [MEMORY[0x1E6986630] weakObjectHolderWithObject:v7];
     v11[0] = MEMORY[0x1E69E9820];
@@ -27,7 +27,7 @@
     v9 = _Block_copy(v11);
     SIPSetMessageDelegateForCallID(v7->_SIPHandle, v7->_callID, v9);
     _Block_release(v9);
-    v7->super.super._reportingAgent = a4;
+    v7->super.super._reportingAgent = agent;
   }
 
   return v7;
@@ -50,11 +50,11 @@ uint64_t __58__VCControlChannelFaceTime_initWithCallID_reportingAgent___block_in
   [(VCControlChannel *)&v3 dealloc];
 }
 
-- (BOOL)sendReliableMessageAndWait:(id)a3 withTopic:(id)a4
+- (BOOL)sendReliableMessageAndWait:(id)wait withTopic:(id)topic
 {
   v8 = *MEMORY[0x1E69E9840];
   v7 = 0;
-  v4 = SIPSendMessage(&self->_SIPHandle, self->_callID, [objc_msgSend(a3 "VCCCString")], &v7);
+  v4 = SIPSendMessage(&self->_SIPHandle, self->_callID, [objc_msgSend(wait "VCCCString")], &v7);
   if (v7)
   {
     v5 = 1;
@@ -68,7 +68,7 @@ uint64_t __58__VCControlChannelFaceTime_initWithCallID_reportingAgent___block_in
   return !v5;
 }
 
-- (void)sendReliableMessage:(id)a3 withTopic:(id)a4
+- (void)sendReliableMessage:(id)message withTopic:(id)topic
 {
   v5[7] = *MEMORY[0x1E69E9840];
   asyncProcessingQueue = self->super._asyncProcessingQueue;
@@ -77,8 +77,8 @@ uint64_t __58__VCControlChannelFaceTime_initWithCallID_reportingAgent___block_in
   v5[2] = __58__VCControlChannelFaceTime_sendReliableMessage_withTopic___block_invoke;
   v5[3] = &unk_1E85F3E30;
   v5[4] = self;
-  v5[5] = a3;
-  v5[6] = a4;
+  v5[5] = message;
+  v5[6] = topic;
   dispatch_async(asyncProcessingQueue, v5);
 }
 

@@ -1,8 +1,8 @@
 @interface ProcessInfoGenerator
-+ (id)configureClass:(id)a3;
-+ (id)generateAdditionalInfo:(id)a3;
++ (id)configureClass:(id)class;
++ (id)generateAdditionalInfo:(id)info;
 + (id)sharedInstance;
-- (id)generateAdditionalInfo:(id)a3;
+- (id)generateAdditionalInfo:(id)info;
 @end
 
 @implementation ProcessInfoGenerator
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __38__ProcessInfoGenerator_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_28 != -1)
   {
     dispatch_once(&sharedInstance_pred_28, block);
@@ -36,34 +36,34 @@ void __38__ProcessInfoGenerator_sharedInstance__block_invoke(uint64_t a1)
   [ConfigurationHandler setConfigurationObject:v3 forName:v5];
 }
 
-+ (id)generateAdditionalInfo:(id)a3
++ (id)generateAdditionalInfo:(id)info
 {
-  v3 = a3;
+  infoCopy = info;
   v4 = +[ProcessInfoGenerator sharedInstance];
-  v5 = [v4 generateAdditionalInfo:v3];
+  v5 = [v4 generateAdditionalInfo:infoCopy];
 
   return v5;
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[ProcessInfoGenerator sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }
 
-- (id)generateAdditionalInfo:(id)a3
+- (id)generateAdditionalInfo:(id)info
 {
   v17 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB38];
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_alloc_init(v3);
   v6 = MEMORY[0x277CCACA8];
-  v7 = [v4 originatorForLogging];
+  originatorForLogging = [infoCopy originatorForLogging];
 
-  v8 = [v6 stringWithUTF8String:v7];
+  v8 = [v6 stringWithUTF8String:originatorForLogging];
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:0];
   v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:kSymptomManagedEventKeyBundleDetails];
   [v5 setObject:v8 forKey:v10];

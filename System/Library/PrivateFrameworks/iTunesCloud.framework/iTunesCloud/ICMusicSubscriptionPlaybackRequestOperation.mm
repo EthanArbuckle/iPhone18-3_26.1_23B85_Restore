@@ -41,11 +41,11 @@
   v10 = v7;
   v27 = v10;
   v11 = MEMORY[0x1B8C781E0](v25);
-  v12 = [(ICStoreRequestContext *)self->_requestContext identity];
-  v13 = [ICPrivacyInfo sharedPrivacyInfoForUserIdentity:v12];
-  v14 = [v13 shouldBlockPersonalizedNetworkRequestsForMusic];
+  identity = [(ICStoreRequestContext *)self->_requestContext identity];
+  v13 = [ICPrivacyInfo sharedPrivacyInfoForUserIdentity:identity];
+  shouldBlockPersonalizedNetworkRequestsForMusic = [v13 shouldBlockPersonalizedNetworkRequestsForMusic];
 
-  if (v14)
+  if (shouldBlockPersonalizedNetworkRequestsForMusic)
   {
     v15 = [MEMORY[0x1E696ABC0] errorWithDomain:@"ICError" code:-7007 userInfo:0];
     (v11)[2](v11, 0, 0, 0, v15);
@@ -63,13 +63,13 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v32 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1B4491000, v16, OS_LOG_TYPE_DEFAULT, "%{public}@ Fetching bag", buf, 0xCu);
     }
 
     v17 = +[ICURLBagProvider sharedBagProvider];
     requestContext = self->_requestContext;
-    v19 = [(ICMusicSubscriptionPlaybackRequestOperation *)self qualityOfService];
+    qualityOfService = [(ICMusicSubscriptionPlaybackRequestOperation *)self qualityOfService];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __52__ICMusicSubscriptionPlaybackRequestOperation_start__block_invoke_22;
@@ -77,7 +77,7 @@
     v20[4] = self;
     v21 = v11;
     v22 = v23;
-    [v17 getBagForRequestContext:requestContext qualityOfService:v19 forceRefetch:0 withCompletionHandler:v20];
+    [v17 getBagForRequestContext:requestContext qualityOfService:qualityOfService forceRefetch:0 withCompletionHandler:v20];
 
     _Block_object_dispose(v23, 8);
   }

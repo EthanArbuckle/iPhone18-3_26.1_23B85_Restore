@@ -1,7 +1,7 @@
 @interface ATXHeuristicCacheExpirationEntry
-- (ATXHeuristicCacheExpirationEntry)initWithHeuristic:(id)a3 cache:(id)a4;
+- (ATXHeuristicCacheExpirationEntry)initWithHeuristic:(id)heuristic cache:(id)cache;
 - (ATXHeuristicResultCache)cache;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
@@ -16,14 +16,14 @@
   return v5;
 }
 
-- (ATXHeuristicCacheExpirationEntry)initWithHeuristic:(id)a3 cache:(id)a4
+- (ATXHeuristicCacheExpirationEntry)initWithHeuristic:(id)heuristic cache:(id)cache
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  heuristicCopy = heuristic;
+  cacheCopy = cache;
+  v9 = cacheCopy;
+  if (heuristicCopy)
   {
-    if (v8)
+    if (cacheCopy)
     {
       goto LABEL_3;
     }
@@ -46,17 +46,17 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_heuristicName, a3);
+    objc_storeStrong(&v10->_heuristicName, heuristic);
     objc_storeWeak(&v11->_cache, v9);
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -66,7 +66,7 @@ LABEL_3:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_heuristicName;
       v7 = v6;
       if (v6 == v5->_heuristicName)

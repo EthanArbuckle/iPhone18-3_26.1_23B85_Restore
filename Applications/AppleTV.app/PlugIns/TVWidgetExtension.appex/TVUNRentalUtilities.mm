@@ -1,6 +1,6 @@
 @interface TVUNRentalUtilities
 + (id)fetchRentals;
-+ (id)validRentalWithIdentifier:(unint64_t)a3 inRentals:(id)a4;
++ (id)validRentalWithIdentifier:(unint64_t)identifier inRentals:(id)rentals;
 @end
 
 @implementation TVUNRentalUtilities
@@ -33,11 +33,11 @@
   v10 = [MPMediaCompoundAnyPredicate predicateMatchingPredicates:v9];
 
   [v4 addFilterPredicate:v10];
-  v11 = [v4 items];
+  items = [v4 items];
   v12 = sub_100002C80();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
-    v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v11 count]);
+    v13 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [items count]);
     v14 = +[NSDate date];
     [v14 timeIntervalSinceDate:v3];
     v17 = 138412546;
@@ -47,17 +47,17 @@
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "TVUNRentalUtilities- End fetchRentals [%@] elapsed:%.5f", &v17, 0x16u);
   }
 
-  return v11;
+  return items;
 }
 
-+ (id)validRentalWithIdentifier:(unint64_t)a3 inRentals:(id)a4
++ (id)validRentalWithIdentifier:(unint64_t)identifier inRentals:(id)rentals
 {
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = a4;
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  rentalsCopy = rentals;
+  v6 = [rentalsCopy countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -69,21 +69,21 @@ LABEL_3:
     {
       if (*v19 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(rentalsCopy);
       }
 
       v11 = *(*(&v18 + 1) + 8 * v10);
       v12 = [v11 valueForProperty:{v9, v18}];
-      v13 = [v12 longLongValue];
+      longLongValue = [v12 longLongValue];
 
-      if (v13 == a3)
+      if (longLongValue == identifier)
       {
         break;
       }
 
       if (v7 == ++v10)
       {
-        v7 = [v5 countByEnumeratingWithState:&v18 objects:v24 count:16];
+        v7 = [rentalsCopy countByEnumeratingWithState:&v18 objects:v24 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -97,7 +97,7 @@ LABEL_3:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v23 = a3;
+      identifierCopy2 = identifier;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "TVUNRentalUtilities- Found rental: %llu", buf, 0xCu);
     }
 
@@ -111,7 +111,7 @@ LABEL_3:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v23 = a3;
+      identifierCopy2 = identifier;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "TVUNRentalUtilities -Skipping expired rental: %llu", buf, 0xCu);
     }
   }

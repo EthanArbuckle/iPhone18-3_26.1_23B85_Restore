@@ -1,14 +1,14 @@
 @interface PLModelMigrationAction_FixAssetDeferredProcessingNeededState
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_FixAssetDeferredProcessingNeededState
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v22[2] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E695D5E0];
-  v7 = a3;
+  contextCopy = context;
   v8 = +[PLManagedAsset entityName];
   v9 = [v6 fetchRequestWithEntityName:v8];
 
@@ -23,16 +23,16 @@
 
   [v9 setFetchBatchSize:100];
   v21 = 0;
-  v15 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:v7 fetchRequest:v9 pendingParentUnitCount:0 error:&v21 processingBlock:&__block_literal_global_735];
+  v15 = [PLModelMigrationActionUtility processManagedObjectsWithAction:self managedObjectContext:contextCopy fetchRequest:v9 pendingParentUnitCount:0 error:&v21 processingBlock:&__block_literal_global_735];
 
   v16 = v21;
   [(PLModelMigrationActionCore *)self finalizeProgress];
   v17 = v16;
   v18 = v17;
-  if (v15 != 1 && a4)
+  if (v15 != 1 && error)
   {
     v19 = v17;
-    *a4 = v18;
+    *error = v18;
   }
 
   return v15;

@@ -1,14 +1,14 @@
 @interface _TUIElementAnimationValueBuilder
 - (id)finalizeAnimationValues;
-- (void)addAnimationValue:(id)a3 forAttributeName:(id)a4;
+- (void)addAnimationValue:(id)value forAttributeName:(id)name;
 @end
 
 @implementation _TUIElementAnimationValueBuilder
 
-- (void)addAnimationValue:(id)a3 forAttributeName:(id)a4
+- (void)addAnimationValue:(id)value forAttributeName:(id)name
 {
-  v10 = a3;
-  v6 = a4;
+  valueCopy = value;
+  nameCopy = name;
   if (!self->_values)
   {
     v7 = objc_opt_new();
@@ -16,9 +16,9 @@
     self->_values = v7;
   }
 
-  v9 = [v6 copy];
+  v9 = [nameCopy copy];
 
-  [(NSMutableDictionary *)self->_values setObject:v10 forKeyedSubscript:v9];
+  [(NSMutableDictionary *)self->_values setObject:valueCopy forKeyedSubscript:v9];
 }
 
 - (id)finalizeAnimationValues

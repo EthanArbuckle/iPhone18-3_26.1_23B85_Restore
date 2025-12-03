@@ -1,17 +1,17 @@
 @interface PGThrowbackThursdayMemoryTitleGenerator
-- (PGThrowbackThursdayMemoryTitleGenerator)initWithMomentNode:(id)a3 numberOfYearsAgo:(int64_t)a4 titleGenerationContext:(id)a5;
-- (void)_generateTitleAndSubtitleWithResult:(id)a3;
+- (PGThrowbackThursdayMemoryTitleGenerator)initWithMomentNode:(id)node numberOfYearsAgo:(int64_t)ago titleGenerationContext:(id)context;
+- (void)_generateTitleAndSubtitleWithResult:(id)result;
 @end
 
 @implementation PGThrowbackThursdayMemoryTitleGenerator
 
-- (void)_generateTitleAndSubtitleWithResult:(id)a3
+- (void)_generateTitleAndSubtitleWithResult:(id)result
 {
-  v21 = a3;
-  v4 = [(PGTitleGenerator *)self momentNodes];
-  v5 = [v4 anyObject];
-  v6 = [v5 universalStartDate];
-  [v6 timeIntervalSince1970];
+  resultCopy = result;
+  momentNodes = [(PGTitleGenerator *)self momentNodes];
+  anyObject = [momentNodes anyObject];
+  universalStartDate = [anyObject universalStartDate];
+  [universalStartDate timeIntervalSince1970];
   v8 = v7;
 
   if (v8)
@@ -42,8 +42,8 @@
 
   v16 = [PGTitle titleWithString:v15 category:1];
   v17 = objc_alloc_init(PGTimeTitleOptions);
-  v18 = [(PGTitleGenerator *)self momentNodes];
-  [(PGTimeTitleOptions *)v17 setMomentNodes:v18];
+  momentNodes2 = [(PGTitleGenerator *)self momentNodes];
+  [(PGTimeTitleOptions *)v17 setMomentNodes:momentNodes2];
 
   [(PGTimeTitleOptions *)v17 setAllowedFormats:1];
   v19 = [PGTimeTitleUtility timeTitleWithOptions:v17];
@@ -57,20 +57,20 @@
     v20 = 0;
   }
 
-  if (v21)
+  if (resultCopy)
   {
-    v21[2](v21, v16, v20);
+    resultCopy[2](resultCopy, v16, v20);
   }
 }
 
-- (PGThrowbackThursdayMemoryTitleGenerator)initWithMomentNode:(id)a3 numberOfYearsAgo:(int64_t)a4 titleGenerationContext:(id)a5
+- (PGThrowbackThursdayMemoryTitleGenerator)initWithMomentNode:(id)node numberOfYearsAgo:(int64_t)ago titleGenerationContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = PGThrowbackThursdayMemoryTitleGenerator;
-  result = [(PGTitleGenerator *)&v7 initWithMomentNode:a3 type:6 titleGenerationContext:a5];
+  result = [(PGTitleGenerator *)&v7 initWithMomentNode:node type:6 titleGenerationContext:context];
   if (result)
   {
-    result->_numberOfYearsAgo = a4;
+    result->_numberOfYearsAgo = ago;
   }
 
   return result;

@@ -1,8 +1,8 @@
 @interface PXFeedViewConfiguration
 - (PXFeedViewConfiguration)init;
-- (PXFeedViewConfiguration)initWithFeedConfiguration:(id)a3 extendedTraitCollection:(id)a4;
+- (PXFeedViewConfiguration)initWithFeedConfiguration:(id)configuration extendedTraitCollection:(id)collection;
 - (UIViewController)containerViewController;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXFeedViewConfiguration
@@ -14,33 +14,33 @@
   return WeakRetained;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(PXFeedViewConfiguration *)self feedConfiguration];
-  v6 = [(PXFeedViewConfiguration *)self extendedTraitCollection];
-  v7 = [v4 initWithFeedConfiguration:v5 extendedTraitCollection:v6];
+  feedConfiguration = [(PXFeedViewConfiguration *)self feedConfiguration];
+  extendedTraitCollection = [(PXFeedViewConfiguration *)self extendedTraitCollection];
+  v7 = [v4 initWithFeedConfiguration:feedConfiguration extendedTraitCollection:extendedTraitCollection];
 
-  v8 = [(PXFeedViewConfiguration *)self containerViewController];
-  [v7 setContainerViewController:v8];
+  containerViewController = [(PXFeedViewConfiguration *)self containerViewController];
+  [v7 setContainerViewController:containerViewController];
 
   return v7;
 }
 
-- (PXFeedViewConfiguration)initWithFeedConfiguration:(id)a3 extendedTraitCollection:(id)a4
+- (PXFeedViewConfiguration)initWithFeedConfiguration:(id)configuration extendedTraitCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  collectionCopy = collection;
   v12.receiver = self;
   v12.super_class = PXFeedViewConfiguration;
   v8 = [(PXFeedViewConfiguration *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [configurationCopy copy];
     feedConfiguration = v8->_feedConfiguration;
     v8->_feedConfiguration = v9;
 
-    objc_storeStrong(&v8->_extendedTraitCollection, a4);
+    objc_storeStrong(&v8->_extendedTraitCollection, collection);
   }
 
   return v8;
@@ -48,8 +48,8 @@
 
 - (PXFeedViewConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXFeedViewConfiguration.m" lineNumber:18 description:{@"%s is not available as initializer", "-[PXFeedViewConfiguration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXFeedViewConfiguration.m" lineNumber:18 description:{@"%s is not available as initializer", "-[PXFeedViewConfiguration init]"}];
 
   abort();
 }

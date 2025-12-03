@@ -1,12 +1,12 @@
 @interface MessageSPI
-+ (BOOL)canSendIMessage:(id)a3;
++ (BOOL)canSendIMessage:(id)message;
 @end
 
 @implementation MessageSPI
 
-+ (BOOL)canSendIMessage:(id)a3
++ (BOOL)canSendIMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
@@ -27,7 +27,7 @@
   }
 
   v6 = *v4;
-  v7 = v3;
+  v7 = messageCopy;
   v8 = v6;
   v13 = 0;
   v14 = &v13;

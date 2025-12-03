@@ -1,30 +1,30 @@
 @interface UISIntentForwardingAction
 - (INIntent)intent;
 - (INIntentForwardingAction)intentForwardingAction;
-- (UISIntentForwardingAction)initWithIntent:(id)a3 responseQueue:(id)a4 reply:(id)a5;
-- (UISIntentForwardingAction)initWithIntentForwardingAction:(id)a3 responseQueue:(id)a4 responseHandler:(id)a5;
-- (id)keyDescriptionForSetting:(unint64_t)a3;
+- (UISIntentForwardingAction)initWithIntent:(id)intent responseQueue:(id)queue reply:(id)reply;
+- (UISIntentForwardingAction)initWithIntentForwardingAction:(id)action responseQueue:(id)queue responseHandler:(id)handler;
+- (id)keyDescriptionForSetting:(unint64_t)setting;
 @end
 
 @implementation UISIntentForwardingAction
 
-- (UISIntentForwardingAction)initWithIntentForwardingAction:(id)a3 responseQueue:(id)a4 responseHandler:(id)a5
+- (UISIntentForwardingAction)initWithIntentForwardingAction:(id)action responseQueue:(id)queue responseHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  actionCopy = action;
+  queueCopy = queue;
+  handlerCopy = handler;
   v11 = objc_alloc_init(MEMORY[0x1E698E700]);
-  if ([v8 conformsToProtocol:&unk_1F0A86238])
+  if ([actionCopy conformsToProtocol:&unk_1F0A86238])
   {
-    [v11 setObject:v8 forSetting:5];
+    [v11 setObject:actionCopy forSetting:5];
   }
 
   else
   {
     v12 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
-    [v12 encodeObject:v8 forKey:@"INIntentForwardingActionObjectKey"];
-    v13 = [v12 encodedData];
-    [v11 setObject:v13 forSetting:3];
+    [v12 encodeObject:actionCopy forKey:@"INIntentForwardingActionObjectKey"];
+    encodedData = [v12 encodedData];
+    [v11 setObject:encodedData forSetting:3];
   }
 
   v14 = MEMORY[0x1E698E5F8];
@@ -32,13 +32,13 @@
   v20[1] = 3221225472;
   v20[2] = __90__UISIntentForwardingAction_initWithIntentForwardingAction_responseQueue_responseHandler___block_invoke;
   v20[3] = &unk_1E74593F0;
-  v21 = v10;
-  v15 = v10;
+  v21 = handlerCopy;
+  v15 = handlerCopy;
   v16 = [v14 responderWithHandler:v20];
   v17 = v16;
-  if (v9)
+  if (queueCopy)
   {
-    [v16 setQueue:v9];
+    [v16 setQueue:queueCopy];
   }
 
   [v17 setTimeout:{dispatch_time(0, 10000000000)}];
@@ -59,29 +59,29 @@ void __90__UISIntentForwardingAction_initWithIntentForwardingAction_responseQueu
   }
 }
 
-- (UISIntentForwardingAction)initWithIntent:(id)a3 responseQueue:(id)a4 reply:(id)a5
+- (UISIntentForwardingAction)initWithIntent:(id)intent responseQueue:(id)queue reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  intentCopy = intent;
+  queueCopy = queue;
+  replyCopy = reply;
   v11 = objc_alloc_init(MEMORY[0x1E698E700]);
   v12 = [objc_alloc(MEMORY[0x1E696ACC8]) initRequiringSecureCoding:1];
-  [v12 encodeObject:v8 forKey:@"INIntentObjectKey"];
-  v13 = [v12 encodedData];
-  [v11 setObject:v13 forSetting:1];
+  [v12 encodeObject:intentCopy forKey:@"INIntentObjectKey"];
+  encodedData = [v12 encodedData];
+  [v11 setObject:encodedData forSetting:1];
 
   v14 = MEMORY[0x1E698E5F8];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __64__UISIntentForwardingAction_initWithIntent_responseQueue_reply___block_invoke;
   v20[3] = &unk_1E74593F0;
-  v21 = v10;
-  v15 = v10;
+  v21 = replyCopy;
+  v15 = replyCopy;
   v16 = [v14 responderWithHandler:v20];
   v17 = v16;
-  if (v9)
+  if (queueCopy)
   {
-    [v16 setQueue:v9];
+    [v16 setQueue:queueCopy];
   }
 
   [v17 setTimeout:{dispatch_time(0, 10000000000)}];
@@ -112,8 +112,8 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v4 = [(UISIntentForwardingAction *)self info];
-  v5 = [v4 objectForSetting:1];
+  info = [(UISIntentForwardingAction *)self info];
+  v5 = [info objectForSetting:1];
 
   if (v5)
   {
@@ -160,8 +160,8 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v4 = [(UISIntentForwardingAction *)self info];
-  v5 = [v4 objectForSetting:5];
+  info = [(UISIntentForwardingAction *)self info];
+  v5 = [info objectForSetting:5];
 
   if (v5)
   {
@@ -174,8 +174,8 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v6 = [(UISIntentForwardingAction *)self info];
-  v7 = [v6 objectForSetting:3];
+  info2 = [(UISIntentForwardingAction *)self info];
+  v7 = [info2 objectForSetting:3];
 
   if (v7)
   {
@@ -213,15 +213,15 @@ LABEL_10:
   return v13;
 }
 
-- (id)keyDescriptionForSetting:(unint64_t)a3
+- (id)keyDescriptionForSetting:(unint64_t)setting
 {
   v3 = @"intent forwarding action";
-  if (a3 != 3)
+  if (setting != 3)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (setting == 1)
   {
     return @"intent";
   }

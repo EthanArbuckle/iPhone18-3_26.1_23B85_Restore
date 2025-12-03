@@ -1,23 +1,23 @@
 @interface TRISelectRolloutNotificationListTask
-+ (id)parseFromData:(id)a3;
-+ (id)taskWithNamespaceNames:(id)a3 taskAttribution:(id)a4;
-- ($A5A652246548B43F8BC05201A1C72A70)_processRolloutArtifact:(id)a3 rolloutsProcessed:(id)a4 remainingNamespaces:(id)a5 targeter:(id)a6 context:(id)a7 taskQueue:(id)a8;
-- (BOOL)isEqual:(id)a3;
++ (id)parseFromData:(id)data;
++ (id)taskWithNamespaceNames:(id)names taskAttribution:(id)attribution;
+- ($A5A652246548B43F8BC05201A1C72A70)_processRolloutArtifact:(id)artifact rolloutsProcessed:(id)processed remainingNamespaces:(id)namespaces targeter:(id)targeter context:(id)context taskQueue:(id)queue;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)tags;
 - (NSString)description;
-- (TRISelectRolloutNotificationListTask)initWithCoder:(id)a3;
-- (TRISelectRolloutNotificationListTask)initWithNamespaceNames:(id)a3 taskAttribution:(id)a4;
+- (TRISelectRolloutNotificationListTask)initWithCoder:(id)coder;
+- (TRISelectRolloutNotificationListTask)initWithNamespaceNames:(id)names taskAttribution:(id)attribution;
 - (id)_asPersistedTask;
 - (id)dimensions;
 - (id)metrics;
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4;
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue;
 - (id)serialize;
 - (id)trialSystemTelemetry;
 - (unint64_t)hash;
 - (unint64_t)requiredCapabilities;
-- (void)_addDimension:(id)a3;
-- (void)_addMetric:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_addDimension:(id)dimension;
+- (void)_addMetric:(id)metric;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TRISelectRolloutNotificationListTask
@@ -30,27 +30,27 @@
   return v3;
 }
 
-+ (id)taskWithNamespaceNames:(id)a3 taskAttribution:(id)a4
++ (id)taskWithNamespaceNames:(id)names taskAttribution:(id)attribution
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[TRISelectRolloutNotificationListTask alloc] initWithNamespaceNames:v6 taskAttribution:v5];
+  attributionCopy = attribution;
+  namesCopy = names;
+  v7 = [[TRISelectRolloutNotificationListTask alloc] initWithNamespaceNames:namesCopy taskAttribution:attributionCopy];
 
   return v7;
 }
 
-- (TRISelectRolloutNotificationListTask)initWithNamespaceNames:(id)a3 taskAttribution:(id)a4
+- (TRISelectRolloutNotificationListTask)initWithNamespaceNames:(id)names taskAttribution:(id)attribution
 {
-  v7 = a3;
-  v8 = a4;
+  namesCopy = names;
+  attributionCopy = attribution;
   v18.receiver = self;
   v18.super_class = TRISelectRolloutNotificationListTask;
   v9 = [(TRISelectRolloutNotificationListTask *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_namespaceNames, a3);
-    objc_storeStrong(&v10->_taskAttribution, a4);
+    objc_storeStrong(&v9->_namespaceNames, names);
+    objc_storeStrong(&v10->_taskAttribution, attribution);
     v11 = objc_opt_new();
     nextTasks = v10->_nextTasks;
     v10->_nextTasks = v11;
@@ -65,47 +65,47 @@
   return v10;
 }
 
-- ($A5A652246548B43F8BC05201A1C72A70)_processRolloutArtifact:(id)a3 rolloutsProcessed:(id)a4 remainingNamespaces:(id)a5 targeter:(id)a6 context:(id)a7 taskQueue:(id)a8
+- ($A5A652246548B43F8BC05201A1C72A70)_processRolloutArtifact:(id)artifact rolloutsProcessed:(id)processed remainingNamespaces:(id)namespaces targeter:(id)targeter context:(id)context taskQueue:(id)queue
 {
   v129 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v104 = a7;
-  v103 = a8;
+  artifactCopy = artifact;
+  processedCopy = processed;
+  namespacesCopy = namespaces;
+  targeterCopy = targeter;
+  contextCopy = context;
+  queueCopy = queue;
   v102 = objc_autoreleasePoolPush();
   v119[0] = MEMORY[0x277D85DD0];
   v119[1] = 3221225472;
   v119[2] = __129__TRISelectRolloutNotificationListTask__processRolloutArtifact_rolloutsProcessed_remainingNamespaces_targeter_context_taskQueue___block_invoke;
   v119[3] = &unk_279DE4DB0;
-  v19 = v17;
+  v19 = namespacesCopy;
   v120 = v19;
   v20 = MEMORY[0x2743948D0](v119);
-  v21 = [v15 deployment];
-  v22 = [v21 rolloutId];
-  LODWORD(a7) = [v16 containsObject:v22];
+  deployment = [artifactCopy deployment];
+  rolloutId = [deployment rolloutId];
+  LODWORD(context) = [processedCopy containsObject:rolloutId];
 
-  if (a7)
+  if (context)
   {
     v23 = TRILogCategory_Server();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
-      v24 = [v21 shortDesc];
-      v25 = [v21 rolloutId];
-      _NamespaceNamesForArtifact(v15);
+      shortDesc = [deployment shortDesc];
+      rolloutId2 = [deployment rolloutId];
+      _NamespaceNamesForArtifact(artifactCopy);
       v26 = v20;
       v27 = v19;
-      v29 = v28 = v18;
+      v29 = v28 = targeterCopy;
       *buf = 138543874;
-      v124 = v24;
+      v124 = shortDesc;
       v125 = 2114;
-      v126 = v25;
+      v126 = rolloutId2;
       v127 = 2114;
       v128 = v29;
       _os_log_impl(&dword_26F567000, v23, OS_LOG_TYPE_INFO, "Ignoring rollout deployment %{public}@ because rolloutId %{public}@ has already been processed for namespaces %{public}@.", buf, 0x20u);
 
-      v18 = v28;
+      targeterCopy = v28;
       v19 = v27;
       v20 = v26;
     }
@@ -115,20 +115,20 @@
     goto LABEL_61;
   }
 
-  v100 = self;
+  selfCopy = self;
   v116[0] = MEMORY[0x277D85DD0];
   v116[1] = 3221225472;
   v116[2] = __129__TRISelectRolloutNotificationListTask__processRolloutArtifact_rolloutsProcessed_remainingNamespaces_targeter_context_taskQueue___block_invoke_45;
   v116[3] = &unk_279DE4DD8;
-  v117 = v16;
+  v117 = processedCopy;
   v32 = v19;
   v118 = v32;
   v101 = MEMORY[0x2743948D0](v116);
   v114 = 0;
   v115 = 0;
   v113 = 0;
-  v33 = [v15 rollout];
-  v34 = [v18 targetRollout:v33 factorPackSetId:&v115 relatedRampDeployment:&v114 error:&v113];
+  rollout = [artifactCopy rollout];
+  v34 = [targeterCopy targetRollout:rollout factorPackSetId:&v115 relatedRampDeployment:&v114 error:&v113];
 
   if (v34 != 3)
   {
@@ -137,14 +137,14 @@
       if (!v34)
       {
         v94 = v20;
-        v95 = v16;
-        v97 = v18;
+        v95 = processedCopy;
+        v97 = targeterCopy;
         v111 = 0u;
         v112 = 0u;
         v109 = 0u;
         v110 = 0u;
-        v35 = [(TRISelectRolloutNotificationListTask *)v100 metrics];
-        v36 = [v35 countByEnumeratingWithState:&v109 objects:v122 count:16];
+        metrics = [(TRISelectRolloutNotificationListTask *)selfCopy metrics];
+        v36 = [metrics countByEnumeratingWithState:&v109 objects:v122 count:16];
         if (v36)
         {
           v37 = v36;
@@ -156,11 +156,11 @@
             {
               if (*v110 != v38)
               {
-                objc_enumerationMutation(v35);
+                objc_enumerationMutation(metrics);
               }
 
-              v41 = [*(*(&v109 + 1) + 8 * i) name];
-              v42 = [@"targeting_error" isEqual:v41];
+              name = [*(*(&v109 + 1) + 8 * i) name];
+              v42 = [@"targeting_error" isEqual:name];
 
               if (v42)
               {
@@ -170,7 +170,7 @@
               }
             }
 
-            v37 = [v35 countByEnumeratingWithState:&v109 objects:v122 count:16];
+            v37 = [metrics countByEnumeratingWithState:&v109 objects:v122 count:16];
             v19 = v39;
             if (v37)
             {
@@ -181,8 +181,8 @@
           }
         }
 
-        v43 = [v113 userInfo];
-        v44 = [v43 objectForKeyedSubscript:@"logMessage"];
+        userInfo = [v113 userInfo];
+        v44 = [userInfo objectForKeyedSubscript:@"logMessage"];
         v45 = v44;
         v46 = @"unknown";
         if (v44)
@@ -192,21 +192,21 @@
 
         v47 = v46;
 
-        v35 = [MEMORY[0x277D73B40] metricWithName:@"targeting_error" categoricalValue:v47];
+        metrics = [MEMORY[0x277D73B40] metricWithName:@"targeting_error" categoricalValue:v47];
 
-        [(TRISelectRolloutNotificationListTask *)v100 _addMetric:v35];
+        [(TRISelectRolloutNotificationListTask *)selfCopy _addMetric:metrics];
         v31 = v102;
 LABEL_40:
 
         v20 = v94;
         v30.var0 = v94[2](v94);
-        v16 = v95;
-        v18 = v97;
+        processedCopy = v95;
+        targeterCopy = v97;
         goto LABEL_60;
       }
 
       v96 = v19;
-      v53 = v16;
+      v53 = processedCopy;
       goto LABEL_26;
     }
 
@@ -217,61 +217,61 @@ LABEL_59:
     goto LABEL_60;
   }
 
-  v98 = v18;
+  v98 = targeterCopy;
   v48 = TRILogCategory_Server();
   if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
   {
-    v49 = [v21 shortDesc];
+    shortDesc2 = [deployment shortDesc];
     *buf = 138543362;
-    v124 = v49;
+    v124 = shortDesc2;
     _os_log_impl(&dword_26F567000, v48, OS_LOG_TYPE_DEFAULT, "Rollout deployment %{public}@ will not be applied because it represents an already-active ramp. Prior deployment will be reprocessed.", buf, 0xCu);
   }
 
-  v50 = [v104 rolloutDatabase];
+  rolloutDatabase = [contextCopy rolloutDatabase];
   v51 = v114;
   if (!v51)
   {
-    v91 = [MEMORY[0x277CCA890] currentHandler];
-    [v91 handleFailureInMethod:a2 object:v100 file:@"TRISelectRolloutNotificationListTask.m" lineNumber:171 description:{@"Expression was unexpectedly nil/false: %@", @"relatedRampDeployment"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"TRISelectRolloutNotificationListTask.m" lineNumber:171 description:{@"Expression was unexpectedly nil/false: %@", @"relatedRampDeployment"}];
   }
 
-  v52 = [v50 recordWithDeployment:v51 usingTransaction:0];
+  v52 = [rolloutDatabase recordWithDeployment:v51 usingTransaction:0];
 
   if (!v52)
   {
     v82 = TRILogCategory_Server();
-    v18 = v98;
+    targeterCopy = v98;
     if (os_log_type_enabled(v82, OS_LOG_TYPE_ERROR))
     {
-      v89 = [v114 shortDesc];
-      v90 = _NamespaceNamesForArtifact(v15);
+      shortDesc3 = [v114 shortDesc];
+      v90 = _NamespaceNamesForArtifact(artifactCopy);
       *buf = 138543618;
-      v124 = v89;
+      v124 = shortDesc3;
       v125 = 2114;
       v126 = v90;
       _os_log_error_impl(&dword_26F567000, v82, OS_LOG_TYPE_ERROR, "Unexpected failure to find related ramp deployment %{public}@ for namespaces %{public}@.", buf, 0x16u);
 
-      v18 = v98;
+      targeterCopy = v98;
     }
 
     goto LABEL_51;
   }
 
   v96 = v19;
-  v53 = v16;
-  v54 = [v52 artifact];
+  v53 = processedCopy;
+  artifact = [v52 artifact];
 
   v55 = v114;
-  v21 = v55;
-  v15 = v54;
-  v18 = v98;
+  deployment = v55;
+  artifactCopy = artifact;
+  targeterCopy = v98;
 LABEL_26:
   v107 = 0u;
   v108 = 0u;
   v105 = 0u;
   v106 = 0u;
-  v56 = [v15 namespaceNames];
-  v57 = [v56 countByEnumeratingWithState:&v105 objects:v121 count:16];
+  namespaceNames = [artifactCopy namespaceNames];
+  v57 = [namespaceNames countByEnumeratingWithState:&v105 objects:v121 count:16];
   if (!v57)
   {
     goto LABEL_34;
@@ -285,24 +285,24 @@ LABEL_26:
     {
       if (*v106 != v59)
       {
-        objc_enumerationMutation(v56);
+        objc_enumerationMutation(namespaceNames);
       }
 
       if ([v32 containsObject:*(*(&v105 + 1) + 8 * j)])
       {
-        v99 = v18;
+        v99 = targeterCopy;
 
-        v65 = [v21 rolloutId];
-        v66 = [v15 namespaceNames];
-        (v101)[2](v101, v65, v66);
+        rolloutId3 = [deployment rolloutId];
+        namespaceNames2 = [artifactCopy namespaceNames];
+        (v101)[2](v101, rolloutId3, namespaceNames2);
 
         v67 = [TRIRolloutRecord alloc];
-        v68 = [v15 rollout];
-        v69 = [v68 hasRampId];
-        if (v69)
+        rollout2 = [artifactCopy rollout];
+        hasRampId = [rollout2 hasRampId];
+        if (hasRampId)
         {
-          v93 = [v15 rollout];
-          v92 = [v93 rampId];
+          rollout3 = [artifactCopy rollout];
+          rampId = [rollout3 rampId];
           v70 = TRIValidateRampId();
         }
 
@@ -311,31 +311,31 @@ LABEL_26:
           v70 = 0;
         }
 
-        v16 = v53;
-        v71 = [v15 namespaceNames];
-        v72 = [(TRIRolloutRecord *)v67 initWithDeployment:v21 rampId:v70 activeFactorPackSetId:0 activeTargetingRuleIndex:0 targetedFactorPackSetId:0 targetedTargetingRuleIndex:0 status:0 namespaces:v71 artifact:v15];
+        processedCopy = v53;
+        namespaceNames3 = [artifactCopy namespaceNames];
+        v72 = [(TRIRolloutRecord *)v67 initWithDeployment:deployment rampId:v70 activeFactorPackSetId:0 activeTargetingRuleIndex:0 targetedFactorPackSetId:0 targetedTargetingRuleIndex:0 status:0 namespaces:namespaceNames3 artifact:artifactCopy];
 
         v19 = v96;
-        if (v69)
+        if (hasRampId)
         {
         }
 
-        v73 = [v104 rolloutDatabase];
-        [v73 addNewRolloutWithRecord:v72];
+        rolloutDatabase2 = [contextCopy rolloutDatabase];
+        [rolloutDatabase2 addNewRolloutWithRecord:v72];
 
-        v74 = [v104 rolloutDatabase];
-        v75 = [v74 recordWithDeployment:v21 usingTransaction:0];
+        rolloutDatabase3 = [contextCopy rolloutDatabase];
+        v75 = [rolloutDatabase3 recordWithDeployment:deployment usingTransaction:0];
 
         if (!v75)
         {
           v83 = TRILogCategory_Server();
-          v18 = v99;
+          targeterCopy = v99;
           if (os_log_type_enabled(v83, OS_LOG_TYPE_ERROR))
           {
-            v84 = [v21 shortDesc];
-            v85 = _NamespaceNamesForArtifact(v15);
+            shortDesc4 = [deployment shortDesc];
+            v85 = _NamespaceNamesForArtifact(artifactCopy);
             *buf = 138543618;
-            v124 = v84;
+            v124 = shortDesc4;
             v125 = 2114;
             v126 = v85;
             _os_log_error_impl(&dword_26F567000, v83, OS_LOG_TYPE_ERROR, "Unexpected failure to find rollout deployment %{public}@ for namespaces %{public}@.", buf, 0x16u);
@@ -344,19 +344,19 @@ LABEL_26:
           goto LABEL_58;
         }
 
-        v76 = [v75 activeFactorPackSetId];
+        activeFactorPackSetId = [v75 activeFactorPackSetId];
 
         v77 = TRILogCategory_Server();
         v78 = os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT);
-        v18 = v99;
-        if (v76)
+        targeterCopy = v99;
+        if (activeFactorPackSetId)
         {
           if (v78)
           {
-            v79 = [v21 shortDesc];
-            v80 = _NamespaceNamesForArtifact(v15);
+            shortDesc5 = [deployment shortDesc];
+            v80 = _NamespaceNamesForArtifact(artifactCopy);
             *buf = 138543618;
-            v124 = v79;
+            v124 = shortDesc5;
             v125 = 2114;
             v126 = v80;
             v81 = "Rollout deployment %{public}@ was selected, but is already active. Scheduling re-activation for namespaces %{public}@";
@@ -367,21 +367,21 @@ LABEL_56:
 
         else if (v78)
         {
-          v79 = [v21 shortDesc];
-          v80 = _NamespaceNamesForArtifact(v15);
+          shortDesc5 = [deployment shortDesc];
+          v80 = _NamespaceNamesForArtifact(artifactCopy);
           *buf = 138543618;
-          v124 = v79;
+          v124 = shortDesc5;
           v125 = 2114;
           v126 = v80;
           v81 = "Rollout deployment %{public}@ is selected and not yet active; scheduling activation for namespaces %{public}@.";
           goto LABEL_56;
         }
 
-        v86 = [v21 rolloutId];
-        [v103 cancelTasksWithTag:v86];
+        rolloutId4 = [deployment rolloutId];
+        [queueCopy cancelTasksWithTag:rolloutId4];
 
-        v83 = [TRIRolloutTargetingTask taskWithRolloutDeployment:v21 includeDependencies:0 taskAttribution:v100->_taskAttribution triggerEvent:0];
-        [(TRISelectRolloutNotificationListTask *)v100 _addNextTask:v83];
+        v83 = [TRIRolloutTargetingTask taskWithRolloutDeployment:deployment includeDependencies:0 taskAttribution:selfCopy->_taskAttribution triggerEvent:0];
+        [(TRISelectRolloutNotificationListTask *)selfCopy _addNextTask:v83];
 LABEL_58:
 
         v30.var0 = v20[2](v20);
@@ -389,7 +389,7 @@ LABEL_58:
       }
     }
 
-    v58 = [v56 countByEnumeratingWithState:&v105 objects:v121 count:16];
+    v58 = [namespaceNames countByEnumeratingWithState:&v105 objects:v121 count:16];
     if (v58)
     {
       continue;
@@ -400,21 +400,21 @@ LABEL_58:
 
 LABEL_34:
 
-  v61 = [v21 rolloutId];
-  v62 = [v15 namespaceNames];
-  (v101)[2](v101, v61, v62);
+  rolloutId5 = [deployment rolloutId];
+  namespaceNames4 = [artifactCopy namespaceNames];
+  (v101)[2](v101, rolloutId5, namespaceNames4);
 
   v63 = TRILogCategory_Server();
   if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
   {
-    v64 = [v21 shortDesc];
+    shortDesc6 = [deployment shortDesc];
     *buf = 138543362;
-    v124 = v64;
+    v124 = shortDesc6;
     _os_log_impl(&dword_26F567000, v63, OS_LOG_TYPE_DEFAULT, "Ignoring rollout deployment %{public}@ because it does not impact unhandled namespaces.", buf, 0xCu);
   }
 
   v30.var0 = v20[2](v20);
-  v16 = v53;
+  processedCopy = v53;
   v31 = v102;
   v19 = v96;
 LABEL_60:
@@ -464,54 +464,54 @@ void __129__TRISelectRolloutNotificationListTask__processRolloutArtifact_rollout
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)runUsingContext:(id)a3 withTaskQueue:(id)a4
+- (id)runUsingContext:(id)context withTaskQueue:(id)queue
 {
   v110 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v71 = a4;
+  contextCopy = context;
+  queueCopy = queue;
   context = objc_autoreleasePoolPush();
   v69 = os_transaction_create();
-  v7 = [v6 keyValueStore];
-  v73 = [TRIFetchDateManager managerWithKeyValueStore:v7];
+  keyValueStore = [contextCopy keyValueStore];
+  v73 = [TRIFetchDateManager managerWithKeyValueStore:keyValueStore];
 
-  v8 = [v6 namespaceDatabase];
-  v9 = [v6 paths];
-  v10 = [v9 namespaceDescriptorsDefaultDir];
-  v74 = [TRINamespaceDescriptorProvider providerWithNamespaceDatabase:v8 defaultDescriptorDirectoryPath:v10];
+  namespaceDatabase = [contextCopy namespaceDatabase];
+  paths = [contextCopy paths];
+  namespaceDescriptorsDefaultDir = [paths namespaceDescriptorsDefaultDir];
+  v74 = [TRINamespaceDescriptorProvider providerWithNamespaceDatabase:namespaceDatabase defaultDescriptorDirectoryPath:namespaceDescriptorsDefaultDir];
 
-  v11 = [(TRITaskAttributing *)self->_taskAttribution triCloudKitContainer];
-  v12 = [(TRITaskAttributing *)self->_taskAttribution teamIdentifier];
-  v13 = [(TRITaskAttributing *)self->_taskAttribution applicationBundleIdentifier];
-  v70 = [TRICKNativeArtifactProvider providerForContainer:v11 teamId:v12 bundleId:v13 dateProvider:v73 namespaceDescriptorProvider:v74 serverContext:v6];
+  triCloudKitContainer = [(TRITaskAttributing *)self->_taskAttribution triCloudKitContainer];
+  teamIdentifier = [(TRITaskAttributing *)self->_taskAttribution teamIdentifier];
+  applicationBundleIdentifier = [(TRITaskAttributing *)self->_taskAttribution applicationBundleIdentifier];
+  v70 = [TRICKNativeArtifactProvider providerForContainer:triCloudKitContainer teamId:teamIdentifier bundleId:applicationBundleIdentifier dateProvider:v73 namespaceDescriptorProvider:v74 serverContext:contextCopy];
 
-  v14 = [(TRITaskAttributing *)self->_taskAttribution networkOptions];
-  if ([v14 allowsCellularAccess])
+  networkOptions = [(TRITaskAttributing *)self->_taskAttribution networkOptions];
+  if ([networkOptions allowsCellularAccess])
   {
-    v15 = [MEMORY[0x277D73B40] metricWithName:@"allows_cellular_download" integerValue:{objc_msgSend(v14, "allowsCellularAccess")}];
+    v15 = [MEMORY[0x277D73B40] metricWithName:@"allows_cellular_download" integerValue:{objc_msgSend(networkOptions, "allowsCellularAccess")}];
     [(TRISelectRolloutNotificationListTask *)self _addMetric:v15];
   }
 
-  if (![v14 discretionaryBehavior])
+  if (![networkOptions discretionaryBehavior])
   {
     goto LABEL_6;
   }
 
-  v16 = [v14 requiredCapability];
-  v17 = [(TRIBaseTask *)self stateProvider];
-  v18 = [v17 activeActivityGrantingCapability:v16];
+  requiredCapability = [networkOptions requiredCapability];
+  stateProvider = [(TRIBaseTask *)self stateProvider];
+  v18 = [stateProvider activeActivityGrantingCapability:requiredCapability];
 
   if (v18)
   {
-    [v14 setActivity:v18];
+    [networkOptions setActivity:v18];
 
 LABEL_6:
     v19 = [TRIRolloutTargeter alloc];
-    v20 = [v6 rolloutDatabase];
+    rolloutDatabase = [contextCopy rolloutDatabase];
     v21 = [TRISystemCovariates alloc];
-    v22 = [v6 paths];
-    v23 = [(TRISystemCovariates *)v21 initWithPaths:v22];
-    v24 = [[TRIUserCovariates alloc] initWithContext:v6];
-    v72 = [(TRIRolloutTargeter *)v19 initWithDatabase:v20 systemCovariateProvider:v23 userCovariateProvider:v24];
+    paths2 = [contextCopy paths];
+    v23 = [(TRISystemCovariates *)v21 initWithPaths:paths2];
+    v24 = [[TRIUserCovariates alloc] initWithContext:contextCopy];
+    v72 = [(TRIRolloutTargeter *)v19 initWithDatabase:rolloutDatabase systemCovariateProvider:v23 userCovariateProvider:v24];
 
     v25 = objc_opt_new();
     v103[0] = MEMORY[0x277D85DD0];
@@ -521,19 +521,19 @@ LABEL_6:
     v26 = v25;
     v104 = v26;
     [v74 enumerateDefaultDescriptorsWithBlock:v103];
-    v27 = [(TRISelectRolloutNotificationListTask *)self namespaceNames];
-    LOBYTE(v22) = [v27 count] == 0;
+    namespaceNames = [(TRISelectRolloutNotificationListTask *)self namespaceNames];
+    LOBYTE(paths2) = [namespaceNames count] == 0;
 
-    if ((v22 & 1) == 0)
+    if ((paths2 & 1) == 0)
     {
-      v28 = [(TRISelectRolloutNotificationListTask *)self namespaceNames];
-      [v26 intersectSet:v28];
+      namespaceNames2 = [(TRISelectRolloutNotificationListTask *)self namespaceNames];
+      [v26 intersectSet:namespaceNames2];
     }
 
     if ([v26 count])
     {
       v29 = objc_autoreleasePoolPush();
-      v30 = [v26 allObjects];
+      allObjects = [v26 allObjects];
       v31 = [v26 count];
       if (v31 >= 3)
       {
@@ -545,7 +545,7 @@ LABEL_6:
         v32 = v31;
       }
 
-      v33 = [v30 subarrayWithRange:{0, v32}];
+      v33 = [allObjects subarrayWithRange:{0, v32}];
 
       v34 = [v33 componentsJoinedByString:{@", "}];
       v35 = TRILogCategory_Server();
@@ -590,17 +590,17 @@ LABEL_6:
       v89 = &v93;
       v90 = buf;
       v81 = v26;
-      v82 = self;
+      selfCopy = self;
       v64 = v37;
       v83 = v64;
       v84 = v72;
-      v85 = v6;
-      v86 = v71;
+      v85 = contextCopy;
+      v86 = queueCopy;
       v91 = v92;
       v39 = v38;
       v87 = v39;
       v67 = MEMORY[0x2743948D0](v80);
-      v66 = [[TRIFetchOptions alloc] initWithDownloadOptions:v14 cacheDeleteAvailableSpaceClass:&unk_287FC4DC8];
+      v66 = [[TRIFetchOptions alloc] initWithDownloadOptions:networkOptions cacheDeleteAvailableSpaceClass:&unk_287FC4DC8];
       v40 = TRILogCategory_Server();
       v41 = os_signpost_id_generate(v40);
 
@@ -657,13 +657,13 @@ LABEL_6:
         }
       }
 
-      v51 = [(TRISelectRolloutNotificationListTask *)self namespaceNames];
-      if (v51)
+      namespaceNames3 = [(TRISelectRolloutNotificationListTask *)self namespaceNames];
+      if (namespaceNames3)
       {
         v52 = MEMORY[0x277D73698];
-        v53 = [(TRISelectRolloutNotificationListTask *)self namespaceNames];
-        v54 = [v53 allObjects];
-        v55 = [v52 immediateDownloadNotificationKeyForNamespaceNames:v54];
+        namespaceNames4 = [(TRISelectRolloutNotificationListTask *)self namespaceNames];
+        allObjects2 = [namespaceNames4 allObjects];
+        v55 = [v52 immediateDownloadNotificationKeyForNamespaceNames:allObjects2];
       }
 
       else
@@ -697,9 +697,9 @@ LABEL_6:
       v56 = TRILogCategory_Server();
       if (os_log_type_enabled(v56, OS_LOG_TYPE_ERROR))
       {
-        v63 = [(TRISelectRolloutNotificationListTask *)self namespaceNames];
+        namespaceNames5 = [(TRISelectRolloutNotificationListTask *)self namespaceNames];
         *buf = 138543362;
-        *&buf[4] = v63;
+        *&buf[4] = namespaceNames5;
         _os_log_error_impl(&dword_26F567000, v56, OS_LOG_TYPE_ERROR, "Request to select best rollout deployments specified unregistered namespaces: %{public}@", buf, 0xCu);
       }
 
@@ -863,28 +863,28 @@ LABEL_9:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = TRISelectRolloutNotificationListTask;
-  if ([(TRIBaseTask *)&v12 isEqual:v4])
+  if ([(TRIBaseTask *)&v12 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     if ([(TRITaskAttributing *)self->_taskAttribution isEqual:v5[4]])
     {
-      v6 = [(TRISelectRolloutNotificationListTask *)self namespaceNames];
-      v7 = [v5 namespaceNames];
-      v8 = v7;
-      if (v6 == v7)
+      namespaceNames = [(TRISelectRolloutNotificationListTask *)self namespaceNames];
+      namespaceNames2 = [v5 namespaceNames];
+      v8 = namespaceNames2;
+      if (namespaceNames == namespaceNames2)
       {
 
         goto LABEL_10;
       }
 
-      if (v6 && v7)
+      if (namespaceNames && namespaceNames2)
       {
-        v9 = [v6 isEqualToSet:v7];
+        v9 = [namespaceNames isEqualToSet:namespaceNames2];
 
         if ((v9 & 1) == 0)
         {
@@ -915,11 +915,11 @@ LABEL_14:
   v8.receiver = self;
   v8.super_class = TRISelectRolloutNotificationListTask;
   v3 = [(TRIBaseTask *)&v8 hash];
-  v4 = [(TRISelectRolloutNotificationListTask *)self namespaceNames];
-  if (v4)
+  namespaceNames = [(TRISelectRolloutNotificationListTask *)self namespaceNames];
+  if (namespaceNames)
   {
-    v5 = [(TRISelectRolloutNotificationListTask *)self namespaceNames];
-    v6 = [v5 hash];
+    namespaceNames2 = [(TRISelectRolloutNotificationListTask *)self namespaceNames];
+    v6 = [namespaceNames2 hash];
   }
 
   else
@@ -934,22 +934,22 @@ LABEL_14:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(TRISelectRolloutNotificationListTask *)self namespaceNames];
-  v6 = [v3 stringWithFormat:@"<%@:%@>", v4, v5];
+  namespaceNames = [(TRISelectRolloutNotificationListTask *)self namespaceNames];
+  v6 = [v3 stringWithFormat:@"<%@:%@>", v4, namespaceNames];
 
   return v6;
 }
 
-- (void)_addMetric:(id)a3
+- (void)_addMetric:(id)metric
 {
-  v4 = a3;
+  metricCopy = metric;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__TRISelectRolloutNotificationListTask__addMetric___block_invoke;
   v7[3] = &unk_279DE4E50;
-  v8 = v4;
-  v6 = v4;
+  v8 = metricCopy;
+  v6 = metricCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -971,16 +971,16 @@ uint64_t __51__TRISelectRolloutNotificationListTask__addMetric___block_invoke(ui
   return [v3 addObject:v8];
 }
 
-- (void)_addDimension:(id)a3
+- (void)_addDimension:(id)dimension
 {
-  v4 = a3;
+  dimensionCopy = dimension;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__TRISelectRolloutNotificationListTask__addDimension___block_invoke;
   v7[3] = &unk_279DE4E50;
-  v8 = v4;
-  v6 = v4;
+  v8 = dimensionCopy;
+  v6 = dimensionCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -1067,8 +1067,8 @@ uint64_t __50__TRISelectRolloutNotificationListTask_dimensions__block_invoke(uin
 - (id)trialSystemTelemetry
 {
   v3 = [TRITelemetryFactory containerOriginTelemetryForTaskAttribution:self->_taskAttribution];
-  v4 = [(TRITaskAttributing *)self->_taskAttribution teamIdentifier];
-  [v3 setClientTeamId:v4];
+  teamIdentifier = [(TRITaskAttributing *)self->_taskAttribution teamIdentifier];
+  [v3 setClientTeamId:teamIdentifier];
 
   return v3;
 }
@@ -1076,17 +1076,17 @@ uint64_t __50__TRISelectRolloutNotificationListTask_dimensions__block_invoke(uin
 - (id)_asPersistedTask
 {
   v3 = objc_opt_new();
-  v4 = [(TRITaskAttributing *)self->_taskAttribution asPersistedTaskAttribution];
-  [v3 setTaskAttribution:v4];
+  asPersistedTaskAttribution = [(TRITaskAttributing *)self->_taskAttribution asPersistedTaskAttribution];
+  [v3 setTaskAttribution:asPersistedTaskAttribution];
 
-  v5 = [(TRISelectRolloutNotificationListTask *)self namespaceNames];
-  v6 = [v5 count];
+  namespaceNames = [(TRISelectRolloutNotificationListTask *)self namespaceNames];
+  v6 = [namespaceNames count];
 
   if (v6)
   {
-    v7 = [(TRISelectRolloutNotificationListTask *)self namespaceNames];
-    v8 = [v7 allObjects];
-    v9 = [v8 mutableCopy];
+    namespaceNames2 = [(TRISelectRolloutNotificationListTask *)self namespaceNames];
+    allObjects = [namespaceNames2 allObjects];
+    v9 = [allObjects mutableCopy];
     [v3 setNamespacesArray:v9];
   }
 
@@ -1097,25 +1097,25 @@ uint64_t __50__TRISelectRolloutNotificationListTask_dimensions__block_invoke(uin
 
 - (id)serialize
 {
-  v4 = [(TRISelectRolloutNotificationListTask *)self _asPersistedTask];
-  v5 = [v4 data];
+  _asPersistedTask = [(TRISelectRolloutNotificationListTask *)self _asPersistedTask];
+  data = [_asPersistedTask data];
 
-  if (!v5)
+  if (!data)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [v7 handleFailureInMethod:a2 object:self file:@"TRISelectRolloutNotificationListTask.m" lineNumber:543 description:{@"Unexpected failure to serialize %@", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRISelectRolloutNotificationListTask.m" lineNumber:543 description:{@"Unexpected failure to serialize %@", v9}];
   }
 
-  return v5;
+  return data;
 }
 
-+ (id)parseFromData:(id)a3
++ (id)parseFromData:(id)data
 {
   v20 = *MEMORY[0x277D85DE8];
   v17 = 0;
-  v4 = [(TRIPBMessage *)TRISelectRolloutNotificationListPersistedTask parseFromData:a3 error:&v17];
+  v4 = [(TRIPBMessage *)TRISelectRolloutNotificationListPersistedTask parseFromData:data error:&v17];
   v5 = v17;
   if (!v4)
   {
@@ -1147,16 +1147,16 @@ LABEL_10:
     goto LABEL_20;
   }
 
-  v6 = [v4 taskAttribution];
-  v7 = [TRITaskAttributionInternalInsecure taskAttributionFromPersistedTask:v6];
+  taskAttribution = [v4 taskAttribution];
+  v7 = [TRITaskAttributionInternalInsecure taskAttributionFromPersistedTask:taskAttribution];
 
   if (v7)
   {
     if ([v4 namespacesArray_Count])
     {
       v8 = objc_alloc(MEMORY[0x277CBEB98]);
-      v9 = [v4 namespacesArray];
-      v10 = [v8 initWithArray:v9];
+      namespacesArray = [v4 namespacesArray];
+      v10 = [v8 initWithArray:namespacesArray];
     }
 
     else
@@ -1164,18 +1164,18 @@ LABEL_10:
       v10 = 0;
     }
 
-    v11 = [[a1 alloc] initWithNamespaceNames:v10 taskAttribution:v7];
+    v11 = [[self alloc] initWithNamespaceNames:v10 taskAttribution:v7];
     if ([v4 hasRetryCount])
     {
-      v12 = [v4 retryCount];
+      retryCount = [v4 retryCount];
     }
 
     else
     {
-      v12 = 0;
+      retryCount = 0;
     }
 
-    [v11 setRetryCount:v12];
+    [v11 setRetryCount:retryCount];
   }
 
   else
@@ -1198,29 +1198,29 @@ LABEL_20:
 
 - (unint64_t)requiredCapabilities
 {
-  v3 = [(TRITaskAttributing *)self->_taskAttribution networkOptions];
-  v4 = [v3 requiredCapability];
+  networkOptions = [(TRITaskAttributing *)self->_taskAttribution networkOptions];
+  requiredCapability = [networkOptions requiredCapability];
 
   if ([(TRISelectRolloutNotificationListTask *)self retryCount])
   {
-    return v4 | 4;
+    return requiredCapability | 4;
   }
 
   else
   {
-    return v4;
+    return requiredCapability;
   }
 }
 
-- (TRISelectRolloutNotificationListTask)initWithCoder:(id)a3
+- (TRISelectRolloutNotificationListTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = TRISelectRolloutNotificationListTask;
   v5 = [(TRISelectRolloutNotificationListTask *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pb"];
     if (v6)
     {
       v7 = [objc_opt_class() parseFromData:v6];
@@ -1240,18 +1240,18 @@ LABEL_20:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [MEMORY[0x277CCA890] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"TRISelectRolloutNotificationListTask.m" lineNumber:581 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRISelectRolloutNotificationListTask.m" lineNumber:581 description:{@"Don't use NSSecureCoding to persist tasks to disk, use -[TRITask serialize]."}];
   }
 
-  v5 = [(TRISelectRolloutNotificationListTask *)self serialize];
-  [v7 encodeObject:v5 forKey:@"pb"];
+  serialize = [(TRISelectRolloutNotificationListTask *)self serialize];
+  [coderCopy encodeObject:serialize forKey:@"pb"];
 }
 
 @end

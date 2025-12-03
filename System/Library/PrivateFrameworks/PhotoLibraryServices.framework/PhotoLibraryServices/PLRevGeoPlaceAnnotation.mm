@@ -1,6 +1,6 @@
 @interface PLRevGeoPlaceAnnotation
 - (PLRevGeoPlaceAnnotation)init;
-- (PLRevGeoPlaceAnnotation)initWithData:(id)a3;
+- (PLRevGeoPlaceAnnotation)initWithData:(id)data;
 - (id)description;
 @end
 
@@ -10,17 +10,17 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = [MEMORY[0x1E696AD98] numberWithInt:{-[PLRevGeoPlaceAnnotation placeLevel](self, "placeLevel")}];
-  v5 = [(PLRevGeoPlaceAnnotation *)self placeName];
-  v6 = [v3 stringWithFormat:@"place type: %@, place string: %@", v4, v5];
+  placeName = [(PLRevGeoPlaceAnnotation *)self placeName];
+  v6 = [v3 stringWithFormat:@"place type: %@, place string: %@", v4, placeName];
 
   return v6;
 }
 
-- (PLRevGeoPlaceAnnotation)initWithData:(id)a3
+- (PLRevGeoPlaceAnnotation)initWithData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = [MEMORY[0x1E696AE40] propertyListWithData:a3 options:0 format:0 error:0];
+    v4 = [MEMORY[0x1E696AE40] propertyListWithData:data options:0 format:0 error:0];
     v5 = [v4 objectForKeyedSubscript:@"level"];
     v6 = v5;
     if (v5)
@@ -32,15 +32,15 @@
     placeName = self->_placeName;
     self->_placeName = v7;
 
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = [(PLRevGeoPlaceAnnotation *)self init];
+    selfCopy = [(PLRevGeoPlaceAnnotation *)self init];
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (PLRevGeoPlaceAnnotation)init

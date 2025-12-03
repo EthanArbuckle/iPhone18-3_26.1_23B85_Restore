@@ -1,23 +1,23 @@
 @interface MRUNowPlayingTimeControlsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsTrackInfoEmpty;
 - (id)accessibilityValue;
-- (void)_accessibilityAdjustElapsedTime:(BOOL)a3;
+- (void)_accessibilityAdjustElapsedTime:(BOOL)time;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation MRUNowPlayingTimeControlsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MRUNowPlayingTimeControlsView" hasInstanceMethod:@"slider" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRUSlider" isKindOfClass:@"UISlider"];
-  [v3 validateClass:@"MRUNowPlayingTimeControlsView" hasInstanceMethod:@"liveLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRUNowPlayingTimeControlsView" hasInstanceMethod:@"accessibilityTotalDuration" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"MRUNowPlayingTimeControlsView" hasInstanceMethod:@"accessibilityElapsedDuration" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"MRUNowPlayingTimeControlsView" hasInstanceMethod:@"timeControls" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MRUTimeControls" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MRUNowPlayingTimeControlsView" hasInstanceMethod:@"slider" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRUSlider" isKindOfClass:@"UISlider"];
+  [validationsCopy validateClass:@"MRUNowPlayingTimeControlsView" hasInstanceMethod:@"liveLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRUNowPlayingTimeControlsView" hasInstanceMethod:@"accessibilityTotalDuration" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"MRUNowPlayingTimeControlsView" hasInstanceMethod:@"accessibilityElapsedDuration" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"MRUNowPlayingTimeControlsView" hasInstanceMethod:@"timeControls" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MRUTimeControls" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityValue
@@ -31,18 +31,18 @@
     v5 = AXDurationStringForDuration();
     v6 = MEMORY[0x29EDBA0F8];
     v7 = accessibilityLocalizedString(@"track.position.value");
-    v8 = [v6 stringWithFormat:v7, v5, v4];
+    accessibilityLabel = [v6 stringWithFormat:v7, v5, v4];
   }
 
   else
   {
-    v8 = [v3 accessibilityLabel];
+    accessibilityLabel = [v3 accessibilityLabel];
   }
 
-  return v8;
+  return accessibilityLabel;
 }
 
-- (void)_accessibilityAdjustElapsedTime:(BOOL)a3
+- (void)_accessibilityAdjustElapsedTime:(BOOL)time
 {
   v4 = [(MRUNowPlayingTimeControlsViewAccessibility *)self safeValueForKey:@"timeControls"];
   [(MRUNowPlayingTimeControlsViewAccessibility *)self safeDoubleForKey:@"accessibilityElapsedDuration"];

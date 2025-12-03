@@ -1,37 +1,37 @@
 @interface TransparencyConsistencyProofVerifier
-- (BOOL)verifyConsistencyProof:(id)a3 startHash:(id)a4 startSize:(unint64_t)a5 endHash:(id)a6 endSize:(unint64_t)a7 error:(id *)a8;
-- (TransparencyConsistencyProofVerifier)initWithTrustedKeyStore:(id)a3;
-- (unint64_t)verifyConsistencyProof:(id)a3 startLogHead:(id)a4 endLogHead:(id)a5 error:(id *)a6;
+- (BOOL)verifyConsistencyProof:(id)proof startHash:(id)hash startSize:(unint64_t)size endHash:(id)endHash endSize:(unint64_t)endSize error:(id *)error;
+- (TransparencyConsistencyProofVerifier)initWithTrustedKeyStore:(id)store;
+- (unint64_t)verifyConsistencyProof:(id)proof startLogHead:(id)head endLogHead:(id)logHead error:(id *)error;
 @end
 
 @implementation TransparencyConsistencyProofVerifier
 
-- (TransparencyConsistencyProofVerifier)initWithTrustedKeyStore:(id)a3
+- (TransparencyConsistencyProofVerifier)initWithTrustedKeyStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = TransparencyConsistencyProofVerifier;
   v6 = [(TransparencyConsistencyProofVerifier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_trustedKeyStore, a3);
+    objc_storeStrong(&v6->_trustedKeyStore, store);
   }
 
   return v7;
 }
 
-- (BOOL)verifyConsistencyProof:(id)a3 startHash:(id)a4 startSize:(unint64_t)a5 endHash:(id)a6 endSize:(unint64_t)a7 error:(id *)a8
+- (BOOL)verifyConsistencyProof:(id)proof startHash:(id)hash startSize:(unint64_t)size endHash:(id)endHash endSize:(unint64_t)endSize error:(id *)error
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = v15;
-  if (!a5 || a7 <= a5)
+  proofCopy = proof;
+  hashCopy = hash;
+  endHashCopy = endHash;
+  v16 = endHashCopy;
+  if (!size || endSize <= size)
   {
-    if (a8)
+    if (error)
     {
-      *a8 = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-180 description:@"first size (%llu) is <= 0 or second size (%llu) is <= first", a5, a7];
+      *error = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-180 description:@"first size (%llu) is <= 0 or second size (%llu) is <= first", size, endSize];
     }
 
     if (qword_100156030 != -1)
@@ -43,29 +43,29 @@
     if (os_log_type_enabled(qword_100156038, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      v60 = a5;
+      sizeCopy = size;
       v61 = 2048;
-      v62 = a7;
+      endSizeCopy = endSize;
       _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_ERROR, "first size (%llu) is <= 0 or second size (%llu) is <= first", buf, 0x16u);
     }
 
     goto LABEL_42;
   }
 
-  v49 = v15;
+  v49 = endHashCopy;
   context = objc_autoreleasePoolPush();
-  v17 = [v13 mutableCopy];
+  v17 = [proofCopy mutableCopy];
   v18 = v17;
-  v19 = a5 - 1;
-  if ((a5 & (a5 - 1)) == 0)
+  v19 = size - 1;
+  if ((size & (size - 1)) == 0)
   {
-    [v17 insertObject:v14 atIndex:0];
+    [v17 insertObject:hashCopy atIndex:0];
   }
 
-  v20 = a7 - 1;
-  v50 = v14;
-  v51 = v13;
-  v47 = a8;
+  v20 = endSize - 1;
+  v50 = hashCopy;
+  v51 = proofCopy;
+  errorCopy = error;
   if (v19)
   {
     do
@@ -81,7 +81,7 @@
 
   else
   {
-    v21 = a5 - 1;
+    v21 = size - 1;
   }
 
   v23 = [v18 objectAtIndexedSubscript:0];
@@ -111,7 +111,7 @@
         if (!v20)
         {
 
-          v14 = v50;
+          hashCopy = v50;
           goto LABEL_32;
         }
 
@@ -125,9 +125,9 @@
           [v30 appendData:v23];
           [v32 appendData:v29];
           [v32 appendData:v24];
-          v34 = [v30 kt_sha256];
+          kt_sha256 = [v30 kt_sha256];
 
-          v35 = [v32 kt_sha256];
+          kt_sha2562 = [v32 kt_sha256];
 
           if ((v21 & 1) == 0)
           {
@@ -141,17 +141,17 @@
             while (v36 && (v36 & 2) == 0);
           }
 
-          v24 = v35;
-          v23 = v34;
+          v24 = kt_sha2562;
+          v23 = kt_sha256;
         }
 
         else
         {
           [v31 appendData:v24];
           [v32 appendData:v29];
-          v33 = [v32 kt_sha256];
+          kt_sha2563 = [v32 kt_sha256];
 
-          v24 = v33;
+          v24 = kt_sha2563;
         }
 
         v21 >>= 1;
@@ -168,14 +168,14 @@
     }
   }
 
-  v14 = v50;
+  hashCopy = v50;
   if (v20)
   {
     goto LABEL_35;
   }
 
 LABEL_32:
-  if (![v23 isEqualToData:v14])
+  if (![v23 isEqualToData:hashCopy])
   {
 LABEL_35:
 
@@ -191,12 +191,12 @@ LABEL_35:
   if ((v38 & 1) == 0)
   {
 LABEL_36:
-    v13 = v51;
-    if (v47)
+    proofCopy = v51;
+    if (errorCopy)
     {
-      v40 = [v14 kt_hexString];
-      v41 = [v16 kt_hexString];
-      *v47 = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-179 description:@"failed to verify consistency proof from head %@ to head %@", v40, v41];
+      kt_hexString = [hashCopy kt_hexString];
+      kt_hexString2 = [v16 kt_hexString];
+      *errorCopy = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-179 description:@"failed to verify consistency proof from head %@ to head %@", kt_hexString, kt_hexString2];
     }
 
     if (qword_100156030 != -1)
@@ -208,12 +208,12 @@ LABEL_36:
     if (os_log_type_enabled(qword_100156038, OS_LOG_TYPE_ERROR))
     {
       v43 = v42;
-      v44 = [v14 kt_hexString];
-      v45 = [v16 kt_hexString];
+      kt_hexString3 = [hashCopy kt_hexString];
+      kt_hexString4 = [v16 kt_hexString];
       *buf = 138412546;
-      v60 = v44;
+      sizeCopy = kt_hexString3;
       v61 = 2112;
-      v62 = v45;
+      endSizeCopy = kt_hexString4;
       _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_ERROR, "failed to verify consistency proof from head %@ to head %@", buf, 0x16u);
     }
 
@@ -223,28 +223,28 @@ LABEL_42:
   }
 
   v39 = 1;
-  v13 = v51;
+  proofCopy = v51;
 LABEL_43:
 
   return v39;
 }
 
-- (unint64_t)verifyConsistencyProof:(id)a3 startLogHead:(id)a4 endLogHead:(id)a5 error:(id *)a6
+- (unint64_t)verifyConsistencyProof:(id)proof startLogHead:(id)head endLogHead:(id)logHead error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v11 verifyWithError:a6];
-  if (v13 == 1 && (v13 = [v12 verifyWithError:a6], v13 == 1))
+  proofCopy = proof;
+  headCopy = head;
+  logHeadCopy = logHead;
+  v13 = [headCopy verifyWithError:error];
+  if (v13 == 1 && (v13 = [logHeadCopy verifyWithError:error], v13 == 1))
   {
-    v24 = [v11 parsedLogHead];
-    v23 = [v24 logHeadHash];
-    v14 = [v11 parsedLogHead];
-    v15 = [v14 logSize];
-    v16 = [v12 parsedLogHead];
-    v17 = [v16 logHeadHash];
-    v18 = [v12 parsedLogHead];
-    v19 = -[TransparencyConsistencyProofVerifier verifyConsistencyProof:startHash:startSize:endHash:endSize:error:](self, "verifyConsistencyProof:startHash:startSize:endHash:endSize:error:", v10, v23, v15, v17, [v18 logSize], a6);
+    parsedLogHead = [headCopy parsedLogHead];
+    logHeadHash = [parsedLogHead logHeadHash];
+    parsedLogHead2 = [headCopy parsedLogHead];
+    logSize = [parsedLogHead2 logSize];
+    parsedLogHead3 = [logHeadCopy parsedLogHead];
+    logHeadHash2 = [parsedLogHead3 logHeadHash];
+    parsedLogHead4 = [logHeadCopy parsedLogHead];
+    v19 = -[TransparencyConsistencyProofVerifier verifyConsistencyProof:startHash:startSize:endHash:endSize:error:](self, "verifyConsistencyProof:startHash:startSize:endHash:endSize:error:", proofCopy, logHeadHash, logSize, logHeadHash2, [parsedLogHead4 logSize], error);
 
     v20 = v19;
   }
@@ -252,9 +252,9 @@ LABEL_43:
   else
   {
     v20 = v13;
-    if (a6)
+    if (error)
     {
-      *a6 = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-188 underlyingError:*a6 description:@"SLH in consistency proof failed signature verification"];
+      *error = [TransparencyError errorWithDomain:@"TransparencyErrorVerify" code:-188 underlyingError:*error description:@"SLH in consistency proof failed signature verification"];
     }
 
     if (qword_100156030 != -1)

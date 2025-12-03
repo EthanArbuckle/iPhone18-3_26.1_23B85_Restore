@@ -7,8 +7,8 @@
 - (id)hf_imageRepresentation
 {
   v1 = MEMORY[0x277D755B8];
-  v2 = [a1 dataRepresentation];
-  v3 = [v1 imageWithData:v2];
+  dataRepresentation = [self dataRepresentation];
+  v3 = [v1 imageWithData:dataRepresentation];
 
   return v3;
 }

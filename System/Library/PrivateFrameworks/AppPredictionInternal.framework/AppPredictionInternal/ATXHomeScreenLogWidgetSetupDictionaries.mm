@@ -2,15 +2,15 @@
 - (ATXHomeScreenLogWidgetSetupDictionaries)init;
 - (id)dryRunResult;
 - (void)_copyAllowedWidgetBundleIds;
-- (void)_createNewWidgetSetupDictionaryForWidget:(id)a3 stackKind:(unint64_t)a4 stackLocation:(unint64_t)a5 rowCoordinate:(int64_t)a6 columnCoordinate:(int64_t)a7;
-- (void)_createStackConfigStatisticsForWidget:(id)a3 stackKind:(unint64_t)a4;
+- (void)_createNewWidgetSetupDictionaryForWidget:(id)widget stackKind:(unint64_t)kind stackLocation:(unint64_t)location rowCoordinate:(int64_t)coordinate columnCoordinate:(int64_t)columnCoordinate;
+- (void)_createStackConfigStatisticsForWidget:(id)widget stackKind:(unint64_t)kind;
 - (void)_finalizeWidgetSetupDictionaries;
 - (void)_persistStackConfigStatistics;
 - (void)_removeAuxiliaryFieldsFromWidgetSetupDictionaries;
 - (void)sendToCoreAnalytics;
-- (void)updateTotalUnlockSessions:(unint64_t)a3;
-- (void)updateWidgetLevelParentAppLaunches:(id)a3;
-- (void)updateWidgetSetupSummaryForHomeScreenPages:(id)a3;
+- (void)updateTotalUnlockSessions:(unint64_t)sessions;
+- (void)updateWidgetLevelParentAppLaunches:(id)launches;
+- (void)updateWidgetSetupSummaryForHomeScreenPages:(id)pages;
 @end
 
 @implementation ATXHomeScreenLogWidgetSetupDictionaries
@@ -30,22 +30,22 @@
     stackConfigDictionary = v2->_stackConfigDictionary;
     v2->_stackConfigDictionary = v5;
 
-    v7 = [MEMORY[0x277CEB5C8] sharedInstance];
+    mEMORY[0x277CEB5C8] = [MEMORY[0x277CEB5C8] sharedInstance];
     informationStore = v2->_informationStore;
-    v2->_informationStore = v7;
+    v2->_informationStore = mEMORY[0x277CEB5C8];
   }
 
   return v2;
 }
 
-- (void)updateWidgetSetupSummaryForHomeScreenPages:(id)a3
+- (void)updateWidgetSetupSummaryForHomeScreenPages:(id)pages
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __86__ATXHomeScreenLogWidgetSetupDictionaries_updateWidgetSetupSummaryForHomeScreenPages___block_invoke;
   v4[3] = &unk_27859F538;
   v4[4] = self;
-  [a3 enumerateObjectsUsingBlock:v4];
+  [pages enumerateObjectsUsingBlock:v4];
   [(ATXHomeScreenLogWidgetSetupDictionaries *)self _persistStackConfigStatistics];
 }
 
@@ -131,8 +131,8 @@ void __86__ATXHomeScreenLogWidgetSetupDictionaries_updateWidgetSetupSummaryForHo
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(NSMutableDictionary *)self->_stackConfigDictionary allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v20 count:16];
+  allKeys = [(NSMutableDictionary *)self->_stackConfigDictionary allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -144,7 +144,7 @@ void __86__ATXHomeScreenLogWidgetSetupDictionaries_updateWidgetSetupSummaryForHo
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v14 + 1) + 8 * v7);
@@ -167,7 +167,7 @@ void __86__ATXHomeScreenLogWidgetSetupDictionaries_updateWidgetSetupSummaryForHo
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v20 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v14 objects:v20 count:16];
     }
 
     while (v5);
@@ -176,48 +176,48 @@ void __86__ATXHomeScreenLogWidgetSetupDictionaries_updateWidgetSetupSummaryForHo
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createStackConfigStatisticsForWidget:(id)a3 stackKind:(unint64_t)a4
+- (void)_createStackConfigStatisticsForWidget:(id)widget stackKind:(unint64_t)kind
 {
-  v19 = a3;
+  widgetCopy = widget;
   v6 = objc_alloc(MEMORY[0x277CCACA8]);
-  v7 = [v19 extensionBundleId];
-  v8 = [v19 widgetKind];
-  [v19 size];
+  extensionBundleId = [widgetCopy extensionBundleId];
+  widgetKind = [widgetCopy widgetKind];
+  [widgetCopy size];
   v9 = ATXStringForStackLayoutSize();
-  v10 = [v19 appBundleId];
-  v11 = [v6 initWithFormat:@"%@:%@:%@:%@", v7, v8, v9, v10];
+  appBundleId = [widgetCopy appBundleId];
+  v11 = [v6 initWithFormat:@"%@:%@:%@:%@", extensionBundleId, widgetKind, v9, appBundleId];
 
   v12 = [(NSMutableDictionary *)self->_stackConfigDictionary objectForKeyedSubscript:v11];
 
   if (!v12)
   {
     v13 = objc_alloc(MEMORY[0x277D420E0]);
-    v14 = [v19 extensionBundleId];
-    v15 = [v19 widgetKind];
-    v16 = [v19 appBundleId];
-    [v19 size];
-    v17 = [v13 initWithWidgetBundleId:v14 widgetKind:v15 containerBundleIdentifier:v16 widgetFamily:CHSWidgetFamilyFromATXStackLayoutSize()];
+    extensionBundleId2 = [widgetCopy extensionBundleId];
+    widgetKind2 = [widgetCopy widgetKind];
+    appBundleId2 = [widgetCopy appBundleId];
+    [widgetCopy size];
+    v17 = [v13 initWithWidgetBundleId:extensionBundleId2 widgetKind:widgetKind2 containerBundleIdentifier:appBundleId2 widgetFamily:CHSWidgetFamilyFromATXStackLayoutSize()];
 
     [(NSMutableDictionary *)self->_stackConfigDictionary setObject:v17 forKeyedSubscript:v11];
   }
 
-  if (a4 <= 7)
+  if (kind <= 7)
   {
-    if (((1 << a4) & 0x54) != 0)
+    if (((1 << kind) & 0x54) != 0)
     {
       v18 = [(NSMutableDictionary *)self->_stackConfigDictionary objectForKeyedSubscript:v11];
       [v18 setCountOfSmartStacksWithWidget:{objc_msgSend(v18, "countOfSmartStacksWithWidget") + 1}];
       goto LABEL_12;
     }
 
-    if (((1 << a4) & 0xA8) != 0)
+    if (((1 << kind) & 0xA8) != 0)
     {
       v18 = [(NSMutableDictionary *)self->_stackConfigDictionary objectForKeyedSubscript:v11];
       [v18 setCountOfNonSmartStacksWithWidget:{objc_msgSend(v18, "countOfNonSmartStacksWithWidget") + 1}];
       goto LABEL_12;
     }
 
-    if (a4 == 1)
+    if (kind == 1)
     {
       v18 = [(NSMutableDictionary *)self->_stackConfigDictionary objectForKeyedSubscript:v11];
       [v18 setCountOfStandaloneWidgets:{objc_msgSend(v18, "countOfStandaloneWidgets") + 1}];
@@ -225,7 +225,7 @@ void __86__ATXHomeScreenLogWidgetSetupDictionaries_updateWidgetSetupSummaryForHo
     }
   }
 
-  if (a4)
+  if (kind)
   {
     goto LABEL_13;
   }
@@ -237,28 +237,28 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)_createNewWidgetSetupDictionaryForWidget:(id)a3 stackKind:(unint64_t)a4 stackLocation:(unint64_t)a5 rowCoordinate:(int64_t)a6 columnCoordinate:(int64_t)a7
+- (void)_createNewWidgetSetupDictionaryForWidget:(id)widget stackKind:(unint64_t)kind stackLocation:(unint64_t)location rowCoordinate:(int64_t)coordinate columnCoordinate:(int64_t)columnCoordinate
 {
-  v10 = a3;
-  v11 = [v10 extensionBundleId];
-  v12 = [v10 widgetKind];
-  if ([v11 length] && objc_msgSend(v12, "length"))
+  widgetCopy = widget;
+  extensionBundleId = [widgetCopy extensionBundleId];
+  widgetKind = [widgetCopy widgetKind];
+  if ([extensionBundleId length] && objc_msgSend(widgetKind, "length"))
   {
-    v34 = a7;
+    columnCoordinateCopy = columnCoordinate;
     v13 = objc_opt_new();
     v14 = MEMORY[0x277CEB9B0];
-    [v10 extensionBundleId];
+    [widgetCopy extensionBundleId];
     v15 = v35 = self;
-    v16 = [v10 widgetKind];
-    v17 = [v14 stringRepresentationForExtensionBundleId:v15 kind:v16];
+    widgetKind2 = [widgetCopy widgetKind];
+    v17 = [v14 stringRepresentationForExtensionBundleId:v15 kind:widgetKind2];
     [v13 setObject:v17 forKeyedSubscript:@"WidgetBundleIdAndKind"];
 
     v18 = MEMORY[0x277CCABB0];
-    v19 = [v10 extensionBundleId];
-    v20 = [v18 numberWithBool:{+[ATXHomeScreenLogUploaderUtilities isFirstPartyApp:](ATXHomeScreenLogUploaderUtilities, "isFirstPartyApp:", v19)}];
+    extensionBundleId2 = [widgetCopy extensionBundleId];
+    v20 = [v18 numberWithBool:{+[ATXHomeScreenLogUploaderUtilities isFirstPartyApp:](ATXHomeScreenLogUploaderUtilities, "isFirstPartyApp:", extensionBundleId2)}];
     [v13 setObject:v20 forKeyedSubscript:@"widgetIsFirstParty"];
 
-    [v10 size];
+    [widgetCopy size];
     v21 = ATXStringForStackLayoutSize();
     [v13 setObject:v21 forKeyedSubscript:@"widgetSize"];
 
@@ -268,28 +268,28 @@ LABEL_13:
     v23 = ATXStringForStackLocation();
     [v13 setObject:v23 forKeyedSubscript:@"stackLocation"];
 
-    v24 = [MEMORY[0x277CCABB0] numberWithInteger:a6];
+    v24 = [MEMORY[0x277CCABB0] numberWithInteger:coordinate];
     [v13 setObject:v24 forKeyedSubscript:@"stackLocationRowCoordinate"];
 
-    v25 = [MEMORY[0x277CCABB0] numberWithInteger:v34];
+    v25 = [MEMORY[0x277CCABB0] numberWithInteger:columnCoordinateCopy];
     [v13 setObject:v25 forKeyedSubscript:@"stackLocationColumnCoordinate"];
 
-    v26 = [v10 appBundleId];
-    [v13 setObject:v26 forKeyedSubscript:@"ParentAppBundleId"];
+    appBundleId = [widgetCopy appBundleId];
+    [v13 setObject:appBundleId forKeyedSubscript:@"ParentAppBundleId"];
 
     [v13 setObject:&unk_283A56F90 forKeyedSubscript:@"NumberOfLaunchesOfParentApp"];
     v27 = +[ATXHomeScreenLogUploaderUtilities abGroup];
     [v13 setObject:v27 forKeyedSubscript:@"abGroup"];
 
     v28 = MEMORY[0x277CCABB0];
-    v29 = [v10 intent];
-    v30 = [v28 numberWithInt:v29 != 0];
+    intent = [widgetCopy intent];
+    v30 = [v28 numberWithInt:intent != 0];
     [v13 setObject:v30 forKeyedSubscript:@"AcceptsIntent"];
 
-    v31 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v10, "isOnboardingWidget")}];
+    v31 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(widgetCopy, "isOnboardingWidget")}];
     [v13 setObject:v31 forKeyedSubscript:@"isOnboarding"];
 
-    v32 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v10, "isSuggestedWidget")}];
+    v32 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(widgetCopy, "isSuggestedWidget")}];
     [v13 setObject:v32 forKeyedSubscript:@"isSuggestedWidget"];
 
     [(NSMutableArray *)v35->_widgetSetupDictionaries addObject:v13];
@@ -300,12 +300,12 @@ LABEL_13:
     v33 = __atxlog_handle_home_screen();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
     {
-      [ATXHomeScreenLogWidgetSetupDictionaries _createNewWidgetSetupDictionaryForWidget:v11 stackKind:v12 stackLocation:v33 rowCoordinate:? columnCoordinate:?];
+      [ATXHomeScreenLogWidgetSetupDictionaries _createNewWidgetSetupDictionaryForWidget:extensionBundleId stackKind:widgetKind stackLocation:v33 rowCoordinate:? columnCoordinate:?];
     }
   }
 }
 
-- (void)updateTotalUnlockSessions:(unint64_t)a3
+- (void)updateTotalUnlockSessions:(unint64_t)sessions
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
@@ -329,7 +329,7 @@ LABEL_13:
         }
 
         v9 = *(*(&v12 + 1) + 8 * v8);
-        v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{a3, v12}];
+        v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{sessions, v12}];
         [v9 setObject:v10 forKeyedSubscript:@"NumberOfLockUnlockSessions"];
 
         ++v8;
@@ -345,10 +345,10 @@ LABEL_13:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWidgetLevelParentAppLaunches:(id)a3
+- (void)updateWidgetLevelParentAppLaunches:(id)launches
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  launchesCopy = launches;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
@@ -372,11 +372,11 @@ LABEL_13:
         v11 = [v10 objectForKeyedSubscript:{@"ParentAppBundleId", v15}];
         if ([v11 length])
         {
-          v12 = [v4 objectForKeyedSubscript:v11];
+          v12 = [launchesCopy objectForKeyedSubscript:v11];
 
           if (v12)
           {
-            v13 = [v4 objectForKeyedSubscript:v11];
+            v13 = [launchesCopy objectForKeyedSubscript:v11];
             [v10 setObject:v13 forKeyedSubscript:@"NumberOfLaunchesOfParentApp"];
           }
         }

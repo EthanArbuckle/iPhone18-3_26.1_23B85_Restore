@@ -1,43 +1,43 @@
 @interface MSDServer
-- (void)sendQueryForRequest:(id)a3 toPath:(id)a4 maxRetry:(int64_t)a5;
-- (void)sendRequest:(id)a3 toEndpoint:(id)a4 postData:(BOOL)a5 maxRetry:(int64_t)a6;
+- (void)sendQueryForRequest:(id)request toPath:(id)path maxRetry:(int64_t)retry;
+- (void)sendRequest:(id)request toEndpoint:(id)endpoint postData:(BOOL)data maxRetry:(int64_t)retry;
 @end
 
 @implementation MSDServer
 
-- (void)sendQueryForRequest:(id)a3 toPath:(id)a4 maxRetry:(int64_t)a5
+- (void)sendQueryForRequest:(id)request toPath:(id)path maxRetry:(int64_t)retry
 {
-  v8 = a3;
-  v9 = a4;
+  requestCopy = request;
+  pathCopy = path;
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_10007C20C;
   v22[3] = &unk_10016B6D8;
-  v10 = v8;
+  v10 = requestCopy;
   v23 = v10;
   v11 = objc_retainBlock(v22);
   if ([v10 isValid])
   {
-    v12 = [v10 getQueryItems];
+    getQueryItems = [v10 getQueryItems];
 
-    if (v12)
+    if (getQueryItems)
     {
-      if (v9)
+      if (pathCopy)
       {
-        v13 = objc_alloc_init(NSURLComponents);
-        v14 = [v10 getQueryItems];
-        [v13 setQueryItems:v14];
+        completion2 = objc_alloc_init(NSURLComponents);
+        getQueryItems2 = [v10 getQueryItems];
+        [completion2 setQueryItems:getQueryItems2];
 
-        [v13 setPath:v9];
+        [completion2 setPath:pathCopy];
         v15 = [(MSDServer *)self taskInfoFromCommandRequest:v10];
-        v16 = [v13 URL];
-        v17 = [v16 absoluteString];
-        [(MSDServerResponse *)v15 setEndpoint:v17];
+        v16 = [completion2 URL];
+        absoluteString = [v16 absoluteString];
+        [(MSDServerResponse *)v15 setEndpoint:absoluteString];
 
-        [(MSDServerResponse *)v15 setMaxRetry:a5];
+        [(MSDServerResponse *)v15 setMaxRetry:retry];
         [(MSDServerResponse *)v15 setHandler:v11];
-        v18 = [(MSDServer *)self session];
-        [v18 launchTaskWithInfo:v15];
+        session = [(MSDServer *)self session];
+        [session launchTaskWithInfo:v15];
 
         v19 = 0;
         goto LABEL_5;
@@ -60,31 +60,31 @@
   v21 = 0;
   sub_1000C1390(&v21, 3727744769, @"Input is invalid");
   v19 = v21;
-  v20 = [v10 completion];
+  completion = [v10 completion];
 
-  if (!v20)
+  if (!completion)
   {
     goto LABEL_6;
   }
 
-  v13 = [v10 completion];
+  completion2 = [v10 completion];
   v15 = [[MSDServerResponse alloc] initWithError:v19];
-  (*(v13 + 2))(v13, v15);
+  (*(completion2 + 2))(completion2, v15);
 LABEL_5:
 
 LABEL_6:
 }
 
-- (void)sendRequest:(id)a3 toEndpoint:(id)a4 postData:(BOOL)a5 maxRetry:(int64_t)a6
+- (void)sendRequest:(id)request toEndpoint:(id)endpoint postData:(BOOL)data maxRetry:(int64_t)retry
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  dataCopy = data;
+  requestCopy = request;
+  endpointCopy = endpoint;
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_10007C558;
   v22[3] = &unk_10016B6D8;
-  v12 = v10;
+  v12 = requestCopy;
   v23 = v12;
   v13 = objc_retainBlock(v22);
   if (([v12 isValid] & 1) == 0)
@@ -98,10 +98,10 @@ LABEL_6:
     goto LABEL_14;
   }
 
-  if (v7)
+  if (dataCopy)
   {
-    v14 = [v12 getPostData];
-    if (!v14)
+    getPostData = [v12 getPostData];
+    if (!getPostData)
     {
       v15 = sub_100063A54();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -110,28 +110,28 @@ LABEL_6:
       }
 
 LABEL_14:
-      v14 = 0;
+      getPostData = 0;
       goto LABEL_19;
     }
   }
 
   else
   {
-    v14 = 0;
+    getPostData = 0;
   }
 
-  if (v11)
+  if (endpointCopy)
   {
     v16 = [(MSDServer *)self taskInfoFromCommandRequest:v12];
     if (v16)
     {
-      v17 = v16;
-      [v16 setEndpoint:v11];
-      [v17 setMaxRetry:a6];
-      [v17 setPostData:v14];
-      [v17 setHandler:v13];
-      v18 = [(MSDServer *)self session];
-      [(MSDServerResponse *)v18 launchTaskWithInfo:v17];
+      completion2 = v16;
+      [v16 setEndpoint:endpointCopy];
+      [completion2 setMaxRetry:retry];
+      [completion2 setPostData:getPostData];
+      [completion2 setHandler:v13];
+      session = [(MSDServer *)self session];
+      [(MSDServerResponse *)session launchTaskWithInfo:completion2];
       v19 = 0;
       goto LABEL_10;
     }
@@ -157,16 +157,16 @@ LABEL_19:
   v21 = 0;
   sub_1000C1390(&v21, 3727744769, @"Input is invalid");
   v19 = v21;
-  v20 = [v12 completion];
+  completion = [v12 completion];
 
-  if (!v20)
+  if (!completion)
   {
     goto LABEL_11;
   }
 
-  v17 = [v12 completion];
-  v18 = [[MSDServerResponse alloc] initWithError:v19];
-  (v17)[2](v17, v18);
+  completion2 = [v12 completion];
+  session = [[MSDServerResponse alloc] initWithError:v19];
+  (completion2)[2](completion2, session);
 LABEL_10:
 
 LABEL_11:

@@ -1,10 +1,10 @@
 @interface _BlastDoorLPVideoMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
 - (_BlastDoorLPVideoMetadata)init;
-- (_BlastDoorLPVideoMetadata)initWithCoder:(id)a3;
-- (id)_initWithDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_BlastDoorLPVideoMetadata)initWithCoder:(id)coder;
+- (id)_initWithDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _BlastDoorLPVideoMetadata
@@ -26,18 +26,18 @@
   return v3;
 }
 
-- (id)_initWithDictionary:(id)a3
+- (id)_initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(_BlastDoorLPVideoMetadata *)self init];
-  if (v5 && (URLForKey(v4, @"LPMetadataVideoURL"), v6 = objc_claimAutoreleasedReturnValue(), URL = v5->_URL, v5->_URL = v6, URL, v5->_URL))
+  if (v5 && (URLForKey(dictionaryCopy, @"LPMetadataVideoURL"), v6 = objc_claimAutoreleasedReturnValue(), URL = v5->_URL, v5->_URL = v6, URL, v5->_URL))
   {
-    v8 = stringForKey(v4, @"LPMetadataVideoType");
+    v8 = stringForKey(dictionaryCopy, @"LPMetadataVideoType");
     type = v5->_type;
     v5->_type = v8;
 
-    v10 = numberForKey(v4, @"LPMetadataVideoWidth");
-    v11 = numberForKey(v4, @"LPMetadataVideoHeight");
+    v10 = numberForKey(dictionaryCopy, @"LPMetadataVideoWidth");
+    v11 = numberForKey(dictionaryCopy, @"LPMetadataVideoHeight");
     v12 = v11;
     if (v10 && v11)
     {
@@ -59,28 +59,28 @@
   return v16;
 }
 
-- (_BlastDoorLPVideoMetadata)initWithCoder:(id)a3
+- (_BlastDoorLPVideoMetadata)initWithCoder:(id)coder
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = _BlastDoorLPVideoMetadata;
   v5 = [(_BlastDoorLPVideoMetadata *)&v17 init];
   if (v5)
   {
-    v5->_version = [v4 decodeInt32ForKey:@"version"];
-    v6 = decodeURLForKey(v4, @"URL");
+    v5->_version = [coderCopy decodeInt32ForKey:@"version"];
+    v6 = decodeURLForKey(coderCopy, @"URL");
     URL = v5->_URL;
     v5->_URL = v6;
 
-    v8 = decodeStringForKey(v4, @"type");
+    v8 = decodeStringForKey(coderCopy, @"type");
     type = v5->_type;
     v5->_type = v8;
 
-    [v4 decodeSizeForKey:@"size"];
+    [coderCopy decodeSizeForKey:@"size"];
     v5->_size.width = v10;
     v5->_size.height = v11;
-    v12 = decodeStringForKey(v4, @"accessibilityText");
+    v12 = decodeStringForKey(coderCopy, @"accessibilityText");
     accessibilityText = v5->_accessibilityText;
     v5->_accessibilityText = v12;
 
@@ -91,24 +91,24 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   version = self->_version;
-  v5 = a3;
-  [v5 encodeInt32:version forKey:@"version"];
-  [v5 _bd_lp_encodeURLIfNotNilOrLocalFile:self->_URL forKey:@"URL"];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_type forKey:@"type"];
-  [v5 encodeSize:@"size" forKey:{self->_size.width, self->_size.height}];
-  [v5 _bd_lp_encodeObjectIfNotNil:self->_accessibilityText forKey:@"accessibilityText"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:version forKey:@"version"];
+  [coderCopy _bd_lp_encodeURLIfNotNilOrLocalFile:self->_URL forKey:@"URL"];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_type forKey:@"type"];
+  [coderCopy encodeSize:@"size" forKey:{self->_size.width, self->_size.height}];
+  [coderCopy _bd_lp_encodeObjectIfNotNil:self->_accessibilityText forKey:@"accessibilityText"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  equalCopy = equal;
   v14.receiver = self;
   v14.super_class = _BlastDoorLPVideoMetadata;
-  if ([(_BlastDoorLPVideoMetadata *)&v14 isEqual:v4])
+  if ([(_BlastDoorLPVideoMetadata *)&v14 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -118,7 +118,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       v7 = v6;
       if (*(v6 + 2) == self->_version && ((v8 = v6[2], !(v8 | self->_URL)) || [v8 isEqual:?]) && ((v9 = *(v7 + 3), !(v9 | self->_type)) || objc_msgSend(v9, "isEqual:")) && (v7[5] == self->_size.width ? (v10 = v7[6] == self->_size.height) : (v10 = 0), v10))
       {

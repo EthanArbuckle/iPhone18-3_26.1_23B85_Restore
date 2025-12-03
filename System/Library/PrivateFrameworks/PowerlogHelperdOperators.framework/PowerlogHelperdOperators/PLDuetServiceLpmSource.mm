@@ -2,7 +2,7 @@
 + (id)entryEventForwardDefinitionLpmSourceInformation;
 - (PLDuetServiceLpmSource)init;
 - (PLService)duetService;
-- (void)initOperatorDependanciesLpmSource:(id)a3;
+- (void)initOperatorDependanciesLpmSource:(id)source;
 @end
 
 @implementation PLDuetServiceLpmSource
@@ -11,7 +11,7 @@
 {
   if ([MEMORY[0x277D3F208] isHomePod])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -19,10 +19,10 @@
     v5.receiver = self;
     v5.super_class = PLDuetServiceLpmSource;
     self = [(PLDuetServiceLpmSource *)&v5 init];
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 + (id)entryEventForwardDefinitionLpmSourceInformation
@@ -35,13 +35,13 @@
   v16[0] = v2;
   v15[1] = *MEMORY[0x277D3F540];
   v11[0] = @"Source";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_StringFormat];
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198] commonTypeDict_StringFormat];
   v11[1] = @"LpmEnabled";
-  v12[0] = v4;
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v12[1] = v6;
+  v12[0] = commonTypeDict_StringFormat;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v12[1] = commonTypeDict_IntegerFormat;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v16[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
@@ -51,30 +51,30 @@
   return v8;
 }
 
-- (void)initOperatorDependanciesLpmSource:(id)a3
+- (void)initOperatorDependanciesLpmSource:(id)source
 {
-  v4 = a3;
-  if (v4 && !+[PLUtilities isPowerlogHelperd](PLUtilities, "isPowerlogHelperd") && !+[PLUtilities isPerfPowerMetricd])
+  sourceCopy = source;
+  if (sourceCopy && !+[PLUtilities isPowerlogHelperd](PLUtilities, "isPowerlogHelperd") && !+[PLUtilities isPerfPowerMetricd])
   {
-    [(PLDuetServiceLpmSource *)self setDuetService:v4];
+    [(PLDuetServiceLpmSource *)self setDuetService:sourceCopy];
     v5 = objc_alloc(MEMORY[0x277D3F270]);
-    v6 = [(PLDuetServiceLpmSource *)self duetService];
+    duetService = [(PLDuetServiceLpmSource *)self duetService];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __60__PLDuetServiceLpmSource_initOperatorDependanciesLpmSource___block_invoke;
     v12[3] = &unk_279A5BCB8;
     v12[4] = self;
-    v7 = [v5 initWithOperator:v6 withRegistration:&unk_28714B010 withBlock:v12];
+    v7 = [v5 initWithOperator:duetService withRegistration:&unk_28714B010 withBlock:v12];
     [(PLDuetServiceLpmSource *)self setLpmEnabledXPCListener:v7];
 
     v8 = objc_alloc(MEMORY[0x277D3F270]);
-    v9 = [(PLDuetServiceLpmSource *)self duetService];
+    duetService2 = [(PLDuetServiceLpmSource *)self duetService];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __60__PLDuetServiceLpmSource_initOperatorDependanciesLpmSource___block_invoke_2;
     v11[3] = &unk_279A5BCB8;
     v11[4] = self;
-    v10 = [v8 initWithOperator:v9 withRegistration:&unk_28714B038 withBlock:v11];
+    v10 = [v8 initWithOperator:duetService2 withRegistration:&unk_28714B038 withBlock:v11];
     [(PLDuetServiceLpmSource *)self setLpmDisabledXPCListener:v10];
   }
 }

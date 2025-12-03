@@ -1,25 +1,25 @@
 @interface WFRemoteExecutionRunRequestResponse
-- (BOOL)readMessageFromData:(id)a3 error:(id *)a4;
-- (WFRemoteExecutionRunRequestResponse)initWithData:(id)a3 error:(id *)a4;
-- (WFRemoteExecutionRunRequestResponse)initWithRunRequestIdentifier:(id)a3 variables:(id)a4 output:(id)a5 error:(id)a6;
-- (id)writeMessageToWriter:(id)a3 error:(id *)a4;
-- (void)inflateOutputData:(id)a3 fileCoordinator:(id)a4 completion:(id)a5;
-- (void)inflateVariablesData:(id)a3 fileCoordinator:(id)a4 completion:(id)a5;
-- (void)inflateWithFileCoordinator:(id)a3 completion:(id)a4;
+- (BOOL)readMessageFromData:(id)data error:(id *)error;
+- (WFRemoteExecutionRunRequestResponse)initWithData:(id)data error:(id *)error;
+- (WFRemoteExecutionRunRequestResponse)initWithRunRequestIdentifier:(id)identifier variables:(id)variables output:(id)output error:(id)error;
+- (id)writeMessageToWriter:(id)writer error:(id *)error;
+- (void)inflateOutputData:(id)data fileCoordinator:(id)coordinator completion:(id)completion;
+- (void)inflateVariablesData:(id)data fileCoordinator:(id)coordinator completion:(id)completion;
+- (void)inflateWithFileCoordinator:(id)coordinator completion:(id)completion;
 @end
 
 @implementation WFRemoteExecutionRunRequestResponse
 
-- (id)writeMessageToWriter:(id)a3 error:(id *)a4
+- (id)writeMessageToWriter:(id)writer error:(id *)error
 {
   v59 = *MEMORY[0x1E69E9840];
-  v49 = a3;
+  writerCopy = writer;
   v5 = objc_opt_new();
-  v6 = [(WFRemoteExecutionRunRequestResponse *)self runRequestIdentifier];
-  [v5 setRunRequestIdentifier:v6];
+  runRequestIdentifier = [(WFRemoteExecutionRunRequestResponse *)self runRequestIdentifier];
+  [v5 setRunRequestIdentifier:runRequestIdentifier];
 
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v8 = [(WFRemoteExecutionRunRequestResponse *)self variables];
+  variables = [(WFRemoteExecutionRunRequestResponse *)self variables];
   v56[0] = MEMORY[0x1E69E9820];
   v56[1] = 3221225472;
   v56[2] = __66__WFRemoteExecutionRunRequestResponse_writeMessageToWriter_error___block_invoke;
@@ -27,7 +27,7 @@
   v56[4] = self;
   v9 = v7;
   v57 = v9;
-  [v8 enumerateKeysAndObjectsUsingBlock:v56];
+  [variables enumerateKeysAndObjectsUsingBlock:v56];
 
   v47 = v9;
   v48 = v5;
@@ -37,11 +37,11 @@
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v10 = [(WFRemoteExecutionRunRequestResponse *)self output];
-  v11 = [v10 items];
+  output = [(WFRemoteExecutionRunRequestResponse *)self output];
+  items = [output items];
 
-  obj = v11;
-  v12 = [v11 countByEnumeratingWithState:&v52 objects:v58 count:16];
+  obj = items;
+  v12 = [items countByEnumeratingWithState:&v52 objects:v58 count:16];
   if (v12)
   {
     v13 = v12;
@@ -57,17 +57,17 @@
 
         v16 = *(*(&v52 + 1) + 8 * i);
         v17 = [WFRemoteExecutionFileCoder alloc];
-        v18 = [(WFRemoteExecutionRunRequestResponse *)self coordinator];
-        v19 = [(WFRemoteExecutionRequest *)self identifier];
-        v20 = [(WFRemoteExecutionFileCoder *)v17 initWithCoordinator:v18 requestIdentifier:v19];
+        coordinator = [(WFRemoteExecutionRunRequestResponse *)self coordinator];
+        identifier = [(WFRemoteExecutionRequest *)self identifier];
+        v20 = [(WFRemoteExecutionFileCoder *)v17 initWithCoordinator:coordinator requestIdentifier:identifier];
 
         v21 = objc_opt_new();
         v22 = [MEMORY[0x1E696ACC8] wf_securelyArchivedDataWithRootObject:v16 fileCoder:v20];
         [v21 setItem:v22];
 
         [v21 setEncodingType:2];
-        v23 = [v21 data];
-        [v51 addObject:v23];
+        data = [v21 data];
+        [v51 addObject:data];
       }
 
       v13 = [obj countByEnumeratingWithState:&v52 objects:v58 count:16];
@@ -77,54 +77,54 @@
   }
 
   [v48 setOutputDatas:v51];
-  v24 = [(WFRemoteExecutionRunRequestResponse *)self error];
+  error = [(WFRemoteExecutionRunRequestResponse *)self error];
 
-  if (v24)
+  if (error)
   {
     v25 = objc_opt_new();
-    v26 = [(WFRemoteExecutionRunRequestResponse *)self error];
-    [v25 setCode:{objc_msgSend(v26, "code")}];
+    error2 = [(WFRemoteExecutionRunRequestResponse *)self error];
+    [v25 setCode:{objc_msgSend(error2, "code")}];
 
-    v27 = [(WFRemoteExecutionRunRequestResponse *)self error];
-    v28 = [v27 domain];
-    [v25 setDomain:v28];
+    error3 = [(WFRemoteExecutionRunRequestResponse *)self error];
+    domain = [error3 domain];
+    [v25 setDomain:domain];
 
-    v29 = [(WFRemoteExecutionRunRequestResponse *)self error];
-    v30 = [v29 userInfo];
+    error4 = [(WFRemoteExecutionRunRequestResponse *)self error];
+    userInfo = [error4 userInfo];
     v31 = *MEMORY[0x1E696A578];
-    v32 = [v30 objectForKey:*MEMORY[0x1E696A578]];
+    v32 = [userInfo objectForKey:*MEMORY[0x1E696A578]];
 
     if (v32)
     {
-      v33 = [(WFRemoteExecutionRunRequestResponse *)self error];
-      v34 = [v33 userInfo];
-      v35 = [v34 objectForKey:v31];
+      error5 = [(WFRemoteExecutionRunRequestResponse *)self error];
+      userInfo2 = [error5 userInfo];
+      v35 = [userInfo2 objectForKey:v31];
       [v25 setLocalizedDescription:v35];
     }
 
-    v36 = [(WFRemoteExecutionRunRequestResponse *)self error];
-    v37 = [v36 userInfo];
+    error6 = [(WFRemoteExecutionRunRequestResponse *)self error];
+    userInfo3 = [error6 userInfo];
     v38 = *MEMORY[0x1E696A588];
-    v39 = [v37 objectForKey:*MEMORY[0x1E696A588]];
+    v39 = [userInfo3 objectForKey:*MEMORY[0x1E696A588]];
 
     if (v39)
     {
-      v40 = [(WFRemoteExecutionRunRequestResponse *)self error];
-      v41 = [v40 userInfo];
-      v42 = [v41 objectForKey:v38];
+      error7 = [(WFRemoteExecutionRunRequestResponse *)self error];
+      userInfo4 = [error7 userInfo];
+      v42 = [userInfo4 objectForKey:v38];
       [v25 setLocalizedFailureReason:v42];
     }
 
-    v43 = [v25 data];
-    [v48 setErrorData:v43];
+    data2 = [v25 data];
+    [v48 setErrorData:data2];
   }
 
-  [v48 writeTo:v49];
-  v44 = [v49 immutableData];
+  [v48 writeTo:writerCopy];
+  immutableData = [writerCopy immutableData];
 
   v45 = *MEMORY[0x1E69E9840];
 
-  return v44;
+  return immutableData;
 }
 
 void __66__WFRemoteExecutionRunRequestResponse_writeMessageToWriter_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -181,12 +181,12 @@ void __66__WFRemoteExecutionRunRequestResponse_writeMessageToWriter_error___bloc
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)readMessageFromData:(id)a3 error:(id *)a4
+- (BOOL)readMessageFromData:(id)data error:(id *)error
 {
   v26 = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69C65B8];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithData:v6];
+  dataCopy = data;
+  v7 = [[v5 alloc] initWithData:dataCopy];
 
   v8 = objc_alloc_init(WFREPBRunRequestResponse);
   v21 = 0;
@@ -194,21 +194,21 @@ void __66__WFRemoteExecutionRunRequestResponse_writeMessageToWriter_error___bloc
   v10 = v21;
   if (v9)
   {
-    v11 = [(WFREPBRunRequestResponse *)v8 runRequestIdentifier];
+    runRequestIdentifier = [(WFREPBRunRequestResponse *)v8 runRequestIdentifier];
     runRequestIdentifier = self->_runRequestIdentifier;
-    self->_runRequestIdentifier = v11;
+    self->_runRequestIdentifier = runRequestIdentifier;
 
-    v13 = [(WFREPBRunRequestResponse *)v8 variablesDatas];
+    variablesDatas = [(WFREPBRunRequestResponse *)v8 variablesDatas];
     variablesData = self->_variablesData;
-    self->_variablesData = v13;
+    self->_variablesData = variablesDatas;
 
-    v15 = [(WFREPBRunRequestResponse *)v8 outputDatas];
+    outputDatas = [(WFREPBRunRequestResponse *)v8 outputDatas];
     outputData = self->_outputData;
-    self->_outputData = v15;
+    self->_outputData = outputDatas;
 
-    v17 = [(WFREPBRunRequestResponse *)v8 errorData];
+    errorData = [(WFREPBRunRequestResponse *)v8 errorData];
     p_super = &self->_errorData->super;
-    self->_errorData = v17;
+    self->_errorData = errorData;
   }
 
   else
@@ -228,23 +228,23 @@ void __66__WFRemoteExecutionRunRequestResponse_writeMessageToWriter_error___bloc
   return v9;
 }
 
-- (void)inflateOutputData:(id)a3 fileCoordinator:(id)a4 completion:(id)a5
+- (void)inflateOutputData:(id)data fileCoordinator:(id)coordinator completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [a3 if_map:&__block_literal_global_192];
+  coordinatorCopy = coordinator;
+  completionCopy = completion;
+  v9 = [data if_map:&__block_literal_global_192];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __84__WFRemoteExecutionRunRequestResponse_inflateOutputData_fileCoordinator_completion___block_invoke_2;
   v14[3] = &unk_1E8376B78;
-  v15 = v7;
+  v15 = coordinatorCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __84__WFRemoteExecutionRunRequestResponse_inflateOutputData_fileCoordinator_completion___block_invoke_194;
   v12[3] = &unk_1E837F588;
-  v13 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = completionCopy;
+  v10 = completionCopy;
+  v11 = coordinatorCopy;
   [v9 if_mapAsynchronously:v14 completionHandler:v12];
 }
 
@@ -314,23 +314,23 @@ WFREPBContentItem *__84__WFRemoteExecutionRunRequestResponse_inflateOutputData_f
   return v3;
 }
 
-- (void)inflateVariablesData:(id)a3 fileCoordinator:(id)a4 completion:(id)a5
+- (void)inflateVariablesData:(id)data fileCoordinator:(id)coordinator completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [a3 if_map:&__block_literal_global_2691];
+  coordinatorCopy = coordinator;
+  completionCopy = completion;
+  v9 = [data if_map:&__block_literal_global_2691];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __87__WFRemoteExecutionRunRequestResponse_inflateVariablesData_fileCoordinator_completion___block_invoke_2;
   v14[3] = &unk_1E8376BA0;
-  v15 = v7;
+  v15 = coordinatorCopy;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __87__WFRemoteExecutionRunRequestResponse_inflateVariablesData_fileCoordinator_completion___block_invoke_2_189;
   v12[3] = &unk_1E837F588;
-  v13 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = completionCopy;
+  v10 = completionCopy;
+  v11 = coordinatorCopy;
   [v9 if_mapAsynchronously:v14 completionHandler:v12];
 }
 
@@ -473,10 +473,10 @@ WFREPBVariable *__87__WFRemoteExecutionRunRequestResponse_inflateVariablesData_f
   return v3;
 }
 
-- (void)inflateWithFileCoordinator:(id)a3 completion:(id)a4
+- (void)inflateWithFileCoordinator:(id)coordinator completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
+  coordinatorCopy = coordinator;
+  completionCopy = completion;
   v43[0] = 0;
   v43[1] = v43;
   v43[2] = 0x3032000000;
@@ -484,12 +484,12 @@ WFREPBVariable *__87__WFRemoteExecutionRunRequestResponse_inflateVariablesData_f
   v43[4] = __Block_byref_object_dispose_;
   v44 = 0;
   v9 = dispatch_group_create();
-  v10 = [(WFRemoteExecutionRunRequestResponse *)self variablesData];
+  variablesData = [(WFRemoteExecutionRunRequestResponse *)self variablesData];
 
-  if (v10)
+  if (variablesData)
   {
     dispatch_group_enter(v9);
-    v11 = [(WFRemoteExecutionRunRequestResponse *)self variablesData];
+    variablesData2 = [(WFRemoteExecutionRunRequestResponse *)self variablesData];
     v40[0] = MEMORY[0x1E69E9820];
     v40[1] = 3221225472;
     v40[2] = __77__WFRemoteExecutionRunRequestResponse_inflateWithFileCoordinator_completion___block_invoke;
@@ -497,15 +497,15 @@ WFREPBVariable *__87__WFRemoteExecutionRunRequestResponse_inflateVariablesData_f
     v40[4] = self;
     v42 = v43;
     v41 = v9;
-    [(WFRemoteExecutionRunRequestResponse *)self inflateVariablesData:v11 fileCoordinator:v7 completion:v40];
+    [(WFRemoteExecutionRunRequestResponse *)self inflateVariablesData:variablesData2 fileCoordinator:coordinatorCopy completion:v40];
   }
 
-  v12 = [(WFRemoteExecutionRunRequestResponse *)self outputData];
+  outputData = [(WFRemoteExecutionRunRequestResponse *)self outputData];
 
-  if (v12)
+  if (outputData)
   {
     dispatch_group_enter(v9);
-    v13 = [(WFRemoteExecutionRunRequestResponse *)self outputData];
+    outputData2 = [(WFRemoteExecutionRunRequestResponse *)self outputData];
     v37[0] = MEMORY[0x1E69E9820];
     v37[1] = 3221225472;
     v37[2] = __77__WFRemoteExecutionRunRequestResponse_inflateWithFileCoordinator_completion___block_invoke_2;
@@ -513,19 +513,19 @@ WFREPBVariable *__87__WFRemoteExecutionRunRequestResponse_inflateVariablesData_f
     v37[4] = self;
     v39 = v43;
     v38 = v9;
-    [(WFRemoteExecutionRunRequestResponse *)self inflateOutputData:v13 fileCoordinator:v7 completion:v37];
+    [(WFRemoteExecutionRunRequestResponse *)self inflateOutputData:outputData2 fileCoordinator:coordinatorCopy completion:v37];
   }
 
-  v14 = [(WFRemoteExecutionRunRequestResponse *)self errorData];
+  errorData = [(WFRemoteExecutionRunRequestResponse *)self errorData];
 
-  if (v14)
+  if (errorData)
   {
     v15 = [WFREPBError alloc];
-    v16 = [(WFRemoteExecutionRunRequestResponse *)self errorData];
-    v17 = [(WFREPBError *)v15 initWithData:v16];
+    errorData2 = [(WFRemoteExecutionRunRequestResponse *)self errorData];
+    v17 = [(WFREPBError *)v15 initWithData:errorData2];
 
-    v18 = [(WFREPBError *)v17 localizedDescription];
-    v19 = [v18 length];
+    localizedDescription = [(WFREPBError *)v17 localizedDescription];
+    v19 = [localizedDescription length];
     if (v19 || (-[WFREPBError localizedFailureReason](v17, "localizedFailureReason"), v4 = objc_claimAutoreleasedReturnValue(), [v4 length]))
     {
       v20 = objc_opt_new();
@@ -533,27 +533,27 @@ WFREPBVariable *__87__WFRemoteExecutionRunRequestResponse_inflateVariablesData_f
       {
 LABEL_12:
 
-        v21 = [(WFREPBError *)v17 localizedDescription];
-        v22 = [v21 length];
+        localizedDescription2 = [(WFREPBError *)v17 localizedDescription];
+        v22 = [localizedDescription2 length];
 
         if (v22)
         {
-          v23 = [(WFREPBError *)v17 localizedDescription];
-          [v20 setObject:v23 forKey:*MEMORY[0x1E696A578]];
+          localizedDescription3 = [(WFREPBError *)v17 localizedDescription];
+          [v20 setObject:localizedDescription3 forKey:*MEMORY[0x1E696A578]];
         }
 
-        v24 = [(WFREPBError *)v17 localizedFailureReason];
-        v25 = [v24 length];
+        localizedFailureReason = [(WFREPBError *)v17 localizedFailureReason];
+        v25 = [localizedFailureReason length];
 
         if (v25)
         {
-          v26 = [(WFREPBError *)v17 localizedFailureReason];
-          [v20 setObject:v26 forKey:*MEMORY[0x1E696A588]];
+          localizedFailureReason2 = [(WFREPBError *)v17 localizedFailureReason];
+          [v20 setObject:localizedFailureReason2 forKey:*MEMORY[0x1E696A588]];
         }
 
         v27 = MEMORY[0x1E696ABC0];
-        v28 = [(WFREPBError *)v17 domain];
-        v29 = [v27 errorWithDomain:v28 code:-[WFREPBError code](v17 userInfo:{"code"), v20}];
+        domain = [(WFREPBError *)v17 domain];
+        v29 = [v27 errorWithDomain:domain code:-[WFREPBError code](v17 userInfo:{"code"), v20}];
         error = self->_error;
         self->_error = v29;
 
@@ -579,9 +579,9 @@ LABEL_17:
   v34[2] = __77__WFRemoteExecutionRunRequestResponse_inflateWithFileCoordinator_completion___block_invoke_3;
   v34[3] = &unk_1E837E9A8;
   v34[4] = self;
-  v35 = v8;
+  v35 = completionCopy;
   v36 = v43;
-  v33 = v8;
+  v33 = completionCopy;
   dispatch_group_notify(v9, v32, v34);
 
   _Block_object_dispose(v43, 8);
@@ -621,16 +621,16 @@ void __77__WFRemoteExecutionRunRequestResponse_inflateWithFileCoordinator_comple
   dispatch_group_leave(*(a1 + 40));
 }
 
-- (WFRemoteExecutionRunRequestResponse)initWithRunRequestIdentifier:(id)a3 variables:(id)a4 output:(id)a5 error:(id)a6
+- (WFRemoteExecutionRunRequestResponse)initWithRunRequestIdentifier:(id)identifier variables:(id)variables output:(id)output error:(id)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (!v12)
+  identifierCopy = identifier;
+  variablesCopy = variables;
+  outputCopy = output;
+  errorCopy = error;
+  if (!identifierCopy)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionRunRequestResponse.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"runRequestIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFRemoteExecutionRunRequestResponse.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"runRequestIdentifier"}];
   }
 
   v21.receiver = self;
@@ -639,21 +639,21 @@ void __77__WFRemoteExecutionRunRequestResponse_inflateWithFileCoordinator_comple
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_runRequestIdentifier, a3);
-    objc_storeStrong(&v17->_variables, a4);
-    objc_storeStrong(&v17->_output, a5);
-    objc_storeStrong(&v17->_error, a6);
+    objc_storeStrong(&v16->_runRequestIdentifier, identifier);
+    objc_storeStrong(&v17->_variables, variables);
+    objc_storeStrong(&v17->_output, output);
+    objc_storeStrong(&v17->_error, error);
     v18 = v17;
   }
 
   return v17;
 }
 
-- (WFRemoteExecutionRunRequestResponse)initWithData:(id)a3 error:(id *)a4
+- (WFRemoteExecutionRunRequestResponse)initWithData:(id)data error:(id *)error
 {
   v5.receiver = self;
   v5.super_class = WFRemoteExecutionRunRequestResponse;
-  return [(WFRemoteExecutionRequest *)&v5 initWithData:a3 error:a4];
+  return [(WFRemoteExecutionRequest *)&v5 initWithData:data error:error];
 }
 
 @end

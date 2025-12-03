@@ -1,11 +1,11 @@
 @interface UniGuidedFilter
 - (UniGuidedFilter)init;
-- (UniGuidedFilter)initWithDevice:(id)a3;
-- (id)_combineRGB:(id)a3 weights:(id)a4 tmpRGBA:(id)a5 rgbWeight:(float)a6 buffer:(id)a7;
-- (id)_identifyGPU:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)outputImage:(id)a3;
-- (id)run:(id)a3;
+- (UniGuidedFilter)initWithDevice:(id)device;
+- (id)_combineRGB:(id)b weights:(id)weights tmpRGBA:(id)a rgbWeight:(float)weight buffer:(id)buffer;
+- (id)_identifyGPU:(id)u;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)outputImage:(id)image;
+- (id)run:(id)run;
 @end
 
 @implementation UniGuidedFilter
@@ -17,9 +17,9 @@
   return [(UniKernel *)&v3 init];
 }
 
-- (UniGuidedFilter)initWithDevice:(id)a3
+- (UniGuidedFilter)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v29.receiver = self;
   v29.super_class = UniGuidedFilter;
   v5 = [(UniKernel *)&v29 init];
@@ -29,7 +29,7 @@
     goto LABEL_5;
   }
 
-  objc_msgSend_setDevice_(v5, v6, v4);
+  objc_msgSend_setDevice_(v5, v6, deviceCopy);
   if (qword_2A18BA390 != -1)
   {
     sub_2956CD9A4();
@@ -40,7 +40,7 @@
 
   v9 = qword_2A18BA2E8;
   objc_sync_enter(v9);
-  v11 = objc_msgSend_objectForKey_(qword_2A18BA2E8, v10, v4);
+  v11 = objc_msgSend_objectForKey_(qword_2A18BA2E8, v10, deviceCopy);
   v12 = v7[9];
   v7[9] = v11;
 
@@ -73,7 +73,7 @@
 
   v26 = qword_2A18BA2E8;
   objc_sync_enter(v26);
-  objc_msgSend_setObject_forKey_(qword_2A18BA2E8, v27, v7[9], v4);
+  objc_msgSend_setObject_forKey_(qword_2A18BA2E8, v27, v7[9], deviceCopy);
   objc_sync_exit(v26);
 
   if (!v7[9])
@@ -90,30 +90,30 @@ LABEL_6:
   return v13;
 }
 
-- (id)_combineRGB:(id)a3 weights:(id)a4 tmpRGBA:(id)a5 rgbWeight:(float)a6 buffer:(id)a7
+- (id)_combineRGB:(id)b weights:(id)weights tmpRGBA:(id)a rgbWeight:(float)weight buffer:(id)buffer
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v51 = a6;
-  v15 = a7;
-  if (!v12)
+  bCopy = b;
+  weightsCopy = weights;
+  aCopy = a;
+  weightCopy = weight;
+  bufferCopy = buffer;
+  if (!bCopy)
   {
     sub_2956CDAB0();
   }
 
-  if (!v13)
+  if (!weightsCopy)
   {
     sub_2956CDA84();
   }
 
-  v16 = v15;
-  v17 = v14;
+  v16 = bufferCopy;
+  v17 = aCopy;
   v20 = v17;
   if (!v17 || (v21 = v17, (objc_msgSend_conformsToProtocol_(v17, v18, &unk_2A1CA0A70) & 1) == 0))
   {
-    v22 = objc_msgSend_pixelFormat(v12, v18, v19);
-    v21 = createSimilarTexture(v13, v22);
+    v22 = objc_msgSend_pixelFormat(bCopy, v18, v19);
+    v21 = createSimilarTexture(weightsCopy, v22);
 
     if (!v21)
     {
@@ -123,13 +123,13 @@ LABEL_6:
 
   v23 = objc_msgSend_computeCommandEncoder(v16, v18, v19);
   objc_msgSend_setComputePipelineState_(v23, v24, self->combineRGBA);
-  objc_msgSend_setTexture_atIndex_(v23, v25, v12, 0);
-  objc_msgSend_setTexture_atIndex_(v23, v26, v13, 1);
+  objc_msgSend_setTexture_atIndex_(v23, v25, bCopy, 0);
+  objc_msgSend_setTexture_atIndex_(v23, v26, weightsCopy, 1);
   objc_msgSend_setTexture_atIndex_(v23, v27, v21, 2);
-  objc_msgSend_setBytes_length_atIndex_(v23, v28, &v51, 4, 0);
-  v48 = v12;
-  v31 = objc_msgSend_width(v13, v29, v30);
-  v34 = objc_msgSend_height(v13, v32, v33);
+  objc_msgSend_setBytes_length_atIndex_(v23, v28, &weightCopy, 4, 0);
+  v48 = bCopy;
+  v31 = objc_msgSend_width(weightsCopy, v29, v30);
+  v34 = objc_msgSend_height(weightsCopy, v32, v33);
   v37 = objc_msgSend_threadExecutionWidth(self->combineRGBA, v35, v36);
   v40 = objc_msgSend_maxTotalThreadsPerThreadgroup(self->combineRGBA, v38, v39);
   v43 = objc_msgSend_threadExecutionWidth(self->combineRGBA, v41, v42);
@@ -145,9 +145,9 @@ LABEL_6:
   return v21;
 }
 
-- (id)run:(id)a3
+- (id)run:(id)run
 {
-  v4 = a3;
+  runCopy = run;
   v7 = objc_msgSend_inputs(self, v5, v6);
   v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, @"source");
   v11 = objc_msgSend__mtlTextureForImage_(UniKernel, v10, v9);
@@ -216,9 +216,9 @@ LABEL_6:
   v58 = ;
 
   v143 = v58;
-  if (v4)
+  if (runCopy)
   {
-    v61 = v4;
+    v61 = runCopy;
   }
 
   else
@@ -262,7 +262,7 @@ LABEL_6:
   v154[1] = @"spatialDiameter";
   v83 = objc_msgSend_inputs(self, v80, v81);
   v87 = objc_msgSend_objectForKeyedSubscript_(v83, v84, @"spatialDiameter");
-  v146 = v4;
+  v146 = runCopy;
   if (v87)
   {
     v18 = objc_msgSend_inputs(self, v85, v86);
@@ -347,16 +347,16 @@ LABEL_6:
   return v138;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = UniGuidedFilter;
-  return [(UniKernel *)&v4 copyWithZone:a3];
+  return [(UniKernel *)&v4 copyWithZone:zone];
 }
 
-- (id)outputImage:(id)a3
+- (id)outputImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v7 = objc_msgSend_copy(self, v5, v6);
   v10 = objc_msgSend_inputs(v7, v8, v9);
   v12 = objc_msgSend_objectForKeyedSubscript_(v10, v11, @"source");
@@ -505,7 +505,7 @@ LABEL_6:
   v205[3] = @"epsilon";
   v192 = objc_msgSend_inputs(v7, v120, v121);
   v127 = objc_msgSend_objectForKeyedSubscript_(v192, v124, @"epsilon");
-  v197 = v4;
+  v197 = imageCopy;
   if (v127)
   {
     v187 = objc_msgSend_inputs(v7, v125, v126);
@@ -613,10 +613,10 @@ LABEL_6:
   return v175;
 }
 
-- (id)_identifyGPU:(id)a3
+- (id)_identifyGPU:(id)u
 {
-  v3 = a3;
-  v6 = objc_msgSend_name(v3, v4, v5);
+  uCopy = u;
+  v6 = objc_msgSend_name(uCopy, v4, v5);
   if (objc_msgSend_containsString_(v6, v7, @"Apple"))
   {
     NSSelectorFromString(&cfstr_Architecture.isa);
@@ -628,7 +628,7 @@ LABEL_6:
       goto LABEL_15;
     }
 
-    v6 = objc_msgSend_architecture(v3, v9, v10);
+    v6 = objc_msgSend_architecture(uCopy, v9, v10);
     v13 = objc_msgSend_name(v6, v11, v12);
     v15 = objc_msgSend_stringByReplacingOccurrencesOfString_withString_(v13, v14, @"applegpu_", &stru_2A1C8D648);
     v18 = objc_msgSend_revision(v6, v16, v17);

@@ -1,16 +1,16 @@
 @interface PXMusicCurator
 + (OS_os_log)log;
-+ (id)_fetchFlexMusicAssetsWithIdentifiers:(id)a3;
++ (id)_fetchFlexMusicAssetsWithIdentifiers:(id)identifiers;
 + (id)_invalidPhotoAnalysisClientError;
-+ (id)_requestDebugInformationForAppleMusicAsset:(id)a3 assetContainer:(id)a4 resultHandler:(id)a5;
-+ (id)_requestDebugInformationForFlexMusicAsset:(id)a3 assetContainer:(id)a4 resultHandler:(id)a5;
++ (id)_requestDebugInformationForAppleMusicAsset:(id)asset assetContainer:(id)container resultHandler:(id)handler;
++ (id)_requestDebugInformationForFlexMusicAsset:(id)asset assetContainer:(id)container resultHandler:(id)handler;
 + (id)_requestQueue;
-+ (id)bestLocallyAvailableAudioAssetForAssetContainer:(id)a3;
-+ (id)requestAppleMusicCurationForAssetContainer:(id)a3 recentlyUsedAdamIDs:(id)a4 resultHandler:(id)a5;
-+ (id)requestAudioAssetFetchResultForAdamIDs:(id)a3 requestOptions:(id)a4 photoLibrary:(id)a5 completionHandler:(id)a6;
-+ (id)requestAudioAssetIdentifierForPurchasedSongID:(id)a3 requestOptions:(id)a4 photoLibrary:(id)a5 completionHandler:(id)a6;
-+ (id)requestDebugInformationForAudioAsset:(id)a3 assetContainer:(id)a4 resultHandler:(id)a5;
-+ (id)requestFlexMusicCurationForAssetContainer:(id)a3 recentlyUsedFlexSongIDs:(id)a4 resultHandler:(id)a5;
++ (id)bestLocallyAvailableAudioAssetForAssetContainer:(id)container;
++ (id)requestAppleMusicCurationForAssetContainer:(id)container recentlyUsedAdamIDs:(id)ds resultHandler:(id)handler;
++ (id)requestAudioAssetFetchResultForAdamIDs:(id)ds requestOptions:(id)options photoLibrary:(id)library completionHandler:(id)handler;
++ (id)requestAudioAssetIdentifierForPurchasedSongID:(id)d requestOptions:(id)options photoLibrary:(id)library completionHandler:(id)handler;
++ (id)requestDebugInformationForAudioAsset:(id)asset assetContainer:(id)container resultHandler:(id)handler;
++ (id)requestFlexMusicCurationForAssetContainer:(id)container recentlyUsedFlexSongIDs:(id)ds resultHandler:(id)handler;
 @end
 
 @implementation PXMusicCurator
@@ -27,28 +27,28 @@
   return v4;
 }
 
-+ (id)_requestDebugInformationForFlexMusicAsset:(id)a3 assetContainer:(id)a4 resultHandler:(id)a5
++ (id)_requestDebugInformationForFlexMusicAsset:(id)asset assetContainer:(id)container resultHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  assetCopy = asset;
+  containerCopy = container;
+  handlerCopy = handler;
   v10 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:2];
-  v11 = [v8 photoLibrary];
-  v12 = [v11 photoAnalysisClient];
+  photoLibrary = [containerCopy photoLibrary];
+  photoAnalysisClient = [photoLibrary photoAnalysisClient];
 
-  if (v12)
+  if (photoAnalysisClient)
   {
-    v13 = [v7 identifier];
+    identifier = [assetCopy identifier];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __89__PXMusicCurator__requestDebugInformationForFlexMusicAsset_assetContainer_resultHandler___block_invoke;
     v18[3] = &unk_1E77430F8;
     v14 = v10;
     v19 = v14;
-    v22 = v9;
-    v20 = v8;
-    v21 = v12;
-    [v21 requestFlexMusicCurationDebugInformationForSongWithUID:v13 reply:v18];
+    v22 = handlerCopy;
+    v20 = containerCopy;
+    v21 = photoAnalysisClient;
+    [v21 requestFlexMusicCurationDebugInformationForSongWithUID:identifier reply:v18];
 
     v15 = v21;
     v16 = v14;
@@ -58,7 +58,7 @@
   {
     [v10 setCompletedUnitCount:{objc_msgSend(v10, "totalUnitCount")}];
     v16 = +[PXMusicCurator _invalidPhotoAnalysisClientError];
-    (*(v9 + 2))(v9, 0, v16);
+    (*(handlerCopy + 2))(handlerCopy, 0, v16);
   }
 
   return v10;
@@ -115,28 +115,28 @@ void __89__PXMusicCurator__requestDebugInformationForFlexMusicAsset_assetContain
   }
 }
 
-+ (id)_requestDebugInformationForAppleMusicAsset:(id)a3 assetContainer:(id)a4 resultHandler:(id)a5
++ (id)_requestDebugInformationForAppleMusicAsset:(id)asset assetContainer:(id)container resultHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  assetCopy = asset;
+  containerCopy = container;
+  handlerCopy = handler;
   v10 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:2];
-  v11 = [v8 photoLibrary];
-  v12 = [v11 photoAnalysisClient];
+  photoLibrary = [containerCopy photoLibrary];
+  photoAnalysisClient = [photoLibrary photoAnalysisClient];
 
-  if (v12)
+  if (photoAnalysisClient)
   {
-    v13 = [v7 identifier];
+    identifier = [assetCopy identifier];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __90__PXMusicCurator__requestDebugInformationForAppleMusicAsset_assetContainer_resultHandler___block_invoke;
     v18[3] = &unk_1E77430F8;
     v14 = v10;
     v19 = v14;
-    v22 = v9;
-    v20 = v8;
-    v21 = v12;
-    [v21 requestMusicCurationDebugInformationForSongWithAdamID:v13 reply:v18];
+    v22 = handlerCopy;
+    v20 = containerCopy;
+    v21 = photoAnalysisClient;
+    [v21 requestMusicCurationDebugInformationForSongWithAdamID:identifier reply:v18];
 
     v15 = v21;
     v16 = v14;
@@ -146,7 +146,7 @@ void __89__PXMusicCurator__requestDebugInformationForFlexMusicAsset_assetContain
   {
     [v10 setCompletedUnitCount:{objc_msgSend(v10, "totalUnitCount")}];
     v16 = +[PXMusicCurator _invalidPhotoAnalysisClientError];
-    (*(v9 + 2))(v9, 0, v16);
+    (*(handlerCopy + 2))(handlerCopy, 0, v16);
   }
 
   return v10;
@@ -203,15 +203,15 @@ void __90__PXMusicCurator__requestDebugInformationForAppleMusicAsset_assetContai
   }
 }
 
-+ (id)requestDebugInformationForAudioAsset:(id)a3 assetContainer:(id)a4 resultHandler:(id)a5
++ (id)requestDebugInformationForAudioAsset:(id)asset assetContainer:(id)container resultHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  assetCopy = asset;
+  containerCopy = container;
+  handlerCopy = handler;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [objc_opt_class() _requestDebugInformationForFlexMusicAsset:v7 assetContainer:v8 resultHandler:v9];
+    v10 = [objc_opt_class() _requestDebugInformationForFlexMusicAsset:assetCopy assetContainer:containerCopy resultHandler:handlerCopy];
 LABEL_5:
     v11 = v10;
     goto LABEL_7;
@@ -220,7 +220,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [objc_opt_class() _requestDebugInformationForAppleMusicAsset:v7 assetContainer:v8 resultHandler:v9];
+    v10 = [objc_opt_class() _requestDebugInformationForAppleMusicAsset:assetCopy assetContainer:containerCopy resultHandler:handlerCopy];
     goto LABEL_5;
   }
 
@@ -229,7 +229,7 @@ LABEL_5:
   v14 = NSStringFromClass(v13);
   v15 = [v12 stringWithFormat:@"Unsupported audio asset class: %@", v14];
 
-  v9[2](v9, v15, 0);
+  handlerCopy[2](handlerCopy, v15, 0);
   v11 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
   [v11 setCompletedUnitCount:{objc_msgSend(v11, "totalUnitCount")}];
 
@@ -238,39 +238,39 @@ LABEL_7:
   return v11;
 }
 
-+ (id)_fetchFlexMusicAssetsWithIdentifiers:(id)a3
++ (id)_fetchFlexMusicAssetsWithIdentifiers:(id)identifiers
 {
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = +[PXFlexMusicLibrary sharedLibrary];
-  v5 = [v4 fetchAssetsWithIdentifiers:v3];
+  v5 = [v4 fetchAssetsWithIdentifiers:identifiersCopy];
 
   return v5;
 }
 
-+ (id)requestAudioAssetIdentifierForPurchasedSongID:(id)a3 requestOptions:(id)a4 photoLibrary:(id)a5 completionHandler:(id)a6
++ (id)requestAudioAssetIdentifierForPurchasedSongID:(id)d requestOptions:(id)options photoLibrary:(id)library completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  optionsCopy = options;
+  libraryCopy = library;
+  handlerCopy = handler;
   v14 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
-  v15 = [a1 _requestQueue];
+  _requestQueue = [self _requestQueue];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __110__PXMusicCurator_requestAudioAssetIdentifierForPurchasedSongID_requestOptions_photoLibrary_completionHandler___block_invoke;
   v24[3] = &unk_1E7743080;
-  v30 = a1;
-  v25 = v12;
+  selfCopy = self;
+  v25 = libraryCopy;
   v16 = v14;
   v26 = v16;
-  v27 = v11;
-  v28 = v10;
-  v29 = v13;
-  v17 = v10;
-  v18 = v11;
-  v19 = v13;
-  v20 = v12;
-  dispatch_async(v15, v24);
+  v27 = optionsCopy;
+  v28 = dCopy;
+  v29 = handlerCopy;
+  v17 = dCopy;
+  v18 = optionsCopy;
+  v19 = handlerCopy;
+  v20 = libraryCopy;
+  dispatch_async(_requestQueue, v24);
 
   v21 = v28;
   v22 = v16;
@@ -407,30 +407,30 @@ LABEL_14:
 LABEL_15:
 }
 
-+ (id)requestAudioAssetFetchResultForAdamIDs:(id)a3 requestOptions:(id)a4 photoLibrary:(id)a5 completionHandler:(id)a6
++ (id)requestAudioAssetFetchResultForAdamIDs:(id)ds requestOptions:(id)options photoLibrary:(id)library completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dsCopy = ds;
+  optionsCopy = options;
+  libraryCopy = library;
+  handlerCopy = handler;
   v14 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
-  v15 = [a1 _requestQueue];
+  _requestQueue = [self _requestQueue];
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __103__PXMusicCurator_requestAudioAssetFetchResultForAdamIDs_requestOptions_photoLibrary_completionHandler___block_invoke;
   v24[3] = &unk_1E7743080;
-  v30 = a1;
-  v25 = v10;
+  selfCopy = self;
+  v25 = dsCopy;
   v16 = v14;
   v26 = v16;
-  v27 = v12;
-  v28 = v11;
-  v29 = v13;
-  v17 = v11;
-  v18 = v12;
-  v19 = v13;
-  v20 = v10;
-  dispatch_async(v15, v24);
+  v27 = libraryCopy;
+  v28 = optionsCopy;
+  v29 = handlerCopy;
+  v17 = optionsCopy;
+  v18 = libraryCopy;
+  v19 = handlerCopy;
+  v20 = dsCopy;
+  dispatch_async(_requestQueue, v24);
 
   v21 = v28;
   v22 = v16;
@@ -584,27 +584,27 @@ void __103__PXMusicCurator_requestAudioAssetFetchResultForAdamIDs_requestOptions
   }
 }
 
-+ (id)requestFlexMusicCurationForAssetContainer:(id)a3 recentlyUsedFlexSongIDs:(id)a4 resultHandler:(id)a5
++ (id)requestFlexMusicCurationForAssetContainer:(id)container recentlyUsedFlexSongIDs:(id)ds resultHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  containerCopy = container;
+  dsCopy = ds;
+  handlerCopy = handler;
   v11 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
-  v12 = [a1 _requestQueue];
+  _requestQueue = [self _requestQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __98__PXMusicCurator_requestFlexMusicCurationForAssetContainer_recentlyUsedFlexSongIDs_resultHandler___block_invoke;
   block[3] = &unk_1E7743030;
-  v25 = a1;
-  v21 = v8;
+  selfCopy = self;
+  v21 = containerCopy;
   v13 = v11;
-  v23 = v9;
-  v24 = v10;
+  v23 = dsCopy;
+  v24 = handlerCopy;
   v22 = v13;
-  v14 = v9;
-  v15 = v10;
-  v16 = v8;
-  dispatch_async(v12, block);
+  v14 = dsCopy;
+  v15 = handlerCopy;
+  v16 = containerCopy;
+  dispatch_async(_requestQueue, block);
 
   v17 = v23;
   v18 = v13;
@@ -783,27 +783,27 @@ void __98__PXMusicCurator_requestFlexMusicCurationForAssetContainer_recentlyUsed
   }
 }
 
-+ (id)requestAppleMusicCurationForAssetContainer:(id)a3 recentlyUsedAdamIDs:(id)a4 resultHandler:(id)a5
++ (id)requestAppleMusicCurationForAssetContainer:(id)container recentlyUsedAdamIDs:(id)ds resultHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  containerCopy = container;
+  dsCopy = ds;
+  handlerCopy = handler;
   v11 = [MEMORY[0x1E696AE38] progressWithTotalUnitCount:1];
-  v12 = [a1 _requestQueue];
+  _requestQueue = [self _requestQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __95__PXMusicCurator_requestAppleMusicCurationForAssetContainer_recentlyUsedAdamIDs_resultHandler___block_invoke;
   block[3] = &unk_1E7743030;
-  v25 = a1;
-  v21 = v8;
+  selfCopy = self;
+  v21 = containerCopy;
   v13 = v11;
-  v23 = v9;
-  v24 = v10;
+  v23 = dsCopy;
+  v24 = handlerCopy;
   v22 = v13;
-  v14 = v9;
-  v15 = v10;
-  v16 = v8;
-  dispatch_async(v12, block);
+  v14 = dsCopy;
+  v15 = handlerCopy;
+  v16 = containerCopy;
+  dispatch_async(_requestQueue, block);
 
   v17 = v23;
   v18 = v13;
@@ -1027,12 +1027,12 @@ void __95__PXMusicCurator_requestAppleMusicCurationForAssetContainer_recentlyUse
   }
 }
 
-+ (id)bestLocallyAvailableAudioAssetForAssetContainer:(id)a3
++ (id)bestLocallyAvailableAudioAssetForAssetContainer:(id)container
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 log];
-  v6 = os_signpost_id_make_with_pointer(v5, a1);
+  containerCopy = container;
+  v5 = [self log];
+  v6 = os_signpost_id_make_with_pointer(v5, self);
   v7 = v5;
   v8 = v7;
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
@@ -1041,14 +1041,14 @@ void __95__PXMusicCurator_requestAppleMusicCurationForAssetContainer_recentlyUse
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "StoryMusicCuratorBestLocallyAvailable", "", &v21, 2u);
   }
 
-  v9 = [v4 container];
+  container = [containerCopy container];
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
-    v10 = v9;
+    v10 = container;
 
     if (v10)
     {
-      v11 = [v10 suggestedMood];
+      suggestedMood = [v10 suggestedMood];
       goto LABEL_10;
     }
   }
@@ -1059,21 +1059,21 @@ void __95__PXMusicCurator_requestAppleMusicCurationForAssetContainer_recentlyUse
     v10 = 0;
   }
 
-  v11 = 16;
+  suggestedMood = 16;
 LABEL_10:
   v12 = +[PXFlexMusicLibrary sharedLibrary];
-  v13 = [v12 fetchLocalAssetForMood:v11];
-  v14 = [v13 firstObject];
+  v13 = [v12 fetchLocalAssetForMood:suggestedMood];
+  firstObject = [v13 firstObject];
 
   v15 = PLStoryGetLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
-    v16 = [v4 identifier];
-    v17 = [v14 identifier];
+    identifier = [containerCopy identifier];
+    identifier2 = [firstObject identifier];
     v21 = 138412546;
-    v22 = v16;
+    v22 = identifier;
     v23 = 2112;
-    v24 = v17;
+    v24 = identifier2;
     _os_log_impl(&dword_1A3C1C000, v15, OS_LOG_TYPE_INFO, "[MemoriesMusic] (PXMusicCurator) bestLocallyAvailableAudioAssetForAssetContainer finished successfully for asset container (%@) with song: %@.", &v21, 0x16u);
   }
 
@@ -1085,7 +1085,7 @@ LABEL_10:
     _os_signpost_emit_with_name_impl(&dword_1A3C1C000, v19, OS_SIGNPOST_INTERVAL_END, v6, "StoryMusicCuratorBestLocallyAvailable", "", &v21, 2u);
   }
 
-  return v14;
+  return firstObject;
 }
 
 + (OS_os_log)log
@@ -1094,7 +1094,7 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __21__PXMusicCurator_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_197859 != -1)
   {
     dispatch_once(&log_onceToken_197859, block);

@@ -1,73 +1,73 @@
 @interface ATXUserNotificationDigestLoggingEvent
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
-- (ATXUserNotificationDigestLoggingEvent)initWithCoder:(id)a3;
-- (ATXUserNotificationDigestLoggingEvent)initWithNotificationDigest:(id)a3 eventType:(int64_t)a4 timestamp:(double)a5;
-- (ATXUserNotificationDigestLoggingEvent)initWithProto:(id)a3;
-- (ATXUserNotificationDigestLoggingEvent)initWithProtoData:(id)a3;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
+- (ATXUserNotificationDigestLoggingEvent)initWithCoder:(id)coder;
+- (ATXUserNotificationDigestLoggingEvent)initWithNotificationDigest:(id)digest eventType:(int64_t)type timestamp:(double)timestamp;
+- (ATXUserNotificationDigestLoggingEvent)initWithProto:(id)proto;
+- (ATXUserNotificationDigestLoggingEvent)initWithProtoData:(id)data;
 - (id)encodeAsProto;
-- (id)initFromJSON:(id)a3;
+- (id)initFromJSON:(id)n;
 - (id)json;
 - (id)jsonRepresentation;
 - (id)proto;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXUserNotificationDigestLoggingEvent
 
-- (ATXUserNotificationDigestLoggingEvent)initWithNotificationDigest:(id)a3 eventType:(int64_t)a4 timestamp:(double)a5
+- (ATXUserNotificationDigestLoggingEvent)initWithNotificationDigest:(id)digest eventType:(int64_t)type timestamp:(double)timestamp
 {
-  v9 = a3;
+  digestCopy = digest;
   v13.receiver = self;
   v13.super_class = ATXUserNotificationDigestLoggingEvent;
   v10 = [(ATXUserNotificationDigestLoggingEvent *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_notificationDigest, a3);
-    v11->_eventType = a4;
-    v11->_timestamp = a5;
+    objc_storeStrong(&v10->_notificationDigest, digest);
+    v11->_eventType = type;
+    v11->_timestamp = timestamp;
   }
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXUserNotificationDigestLoggingEvent *)self encodeAsProto];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  encodeAsProto = [(ATXUserNotificationDigestLoggingEvent *)self encodeAsProto];
+  [coderCopy encodeObject:encodeAsProto forKey:@"protobufData"];
 }
 
-- (ATXUserNotificationDigestLoggingEvent)initWithCoder:(id)a3
+- (ATXUserNotificationDigestLoggingEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   if (v5)
   {
     self = [(ATXUserNotificationDigestLoggingEvent *)self initWithProtoData:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)encodeAsProto
 {
-  v2 = [(ATXUserNotificationDigestLoggingEvent *)self proto];
-  v3 = [v2 data];
+  proto = [(ATXUserNotificationDigestLoggingEvent *)self proto];
+  data = [proto data];
 
-  return v3;
+  return data;
 }
 
-- (ATXUserNotificationDigestLoggingEvent)initWithProto:(id)a3
+- (ATXUserNotificationDigestLoggingEvent)initWithProto:(id)proto
 {
-  v4 = a3;
+  protoCopy = proto;
   v15.receiver = self;
   v15.super_class = ATXUserNotificationDigestLoggingEvent;
   v5 = [(ATXUserNotificationDigestLoggingEvent *)&v15 init];
@@ -76,7 +76,7 @@
     goto LABEL_5;
   }
 
-  if (!v4)
+  if (!protoCopy)
   {
 LABEL_9:
     v12 = 0;
@@ -95,10 +95,10 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v6 = v4;
+  v6 = protoCopy;
   v7 = [ATXUserNotificationDigest alloc];
-  v8 = [v6 digest];
-  v9 = [(ATXUserNotificationDigest *)v7 initWithProto:v8];
+  digest = [v6 digest];
+  v9 = [(ATXUserNotificationDigest *)v7 initWithProto:digest];
   notificationDigest = v5->_notificationDigest;
   v5->_notificationDigest = v9;
 
@@ -114,23 +114,23 @@ LABEL_10:
   return v12;
 }
 
-- (ATXUserNotificationDigestLoggingEvent)initWithProtoData:(id)a3
+- (ATXUserNotificationDigestLoggingEvent)initWithProtoData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[ATXPBUserNotificationDigestLoggingEvent alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[ATXPBUserNotificationDigestLoggingEvent alloc] initWithData:dataCopy];
 
     self = [(ATXUserNotificationDigestLoggingEvent *)self initWithProto:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (id)proto
@@ -139,17 +139,17 @@ LABEL_10:
   [v3 setEventType:{-[ATXUserNotificationDigestLoggingEvent eventType](self, "eventType")}];
   [(ATXUserNotificationDigestLoggingEvent *)self timestamp];
   [v3 setTimestamp:?];
-  v4 = [(ATXUserNotificationDigestLoggingEvent *)self notificationDigest];
-  v5 = [v4 proto];
-  [v3 setDigest:v5];
+  notificationDigest = [(ATXUserNotificationDigestLoggingEvent *)self notificationDigest];
+  proto = [notificationDigest proto];
+  [v3 setDigest:proto];
 
   return v3;
 }
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
-  v4 = a3;
-  v5 = [[ATXPBUserNotificationDigestLoggingEvent alloc] initFromJSON:v4];
+  nCopy = n;
+  v5 = [[ATXPBUserNotificationDigestLoggingEvent alloc] initFromJSON:nCopy];
 
   v6 = [(ATXUserNotificationDigestLoggingEvent *)self initWithProto:v5];
   return v6;
@@ -157,27 +157,27 @@ LABEL_10:
 
 - (id)jsonRepresentation
 {
-  v2 = [(ATXUserNotificationDigestLoggingEvent *)self proto];
-  v3 = [v2 jsonRepresentation];
+  proto = [(ATXUserNotificationDigestLoggingEvent *)self proto];
+  jsonRepresentation = [proto jsonRepresentation];
 
-  return v3;
+  return jsonRepresentation;
 }
 
 - (id)json
 {
   v2 = MEMORY[0x1E696ACB0];
-  v3 = [(ATXUserNotificationDigestLoggingEvent *)self jsonDict];
-  v4 = [v2 dataWithJSONObject:v3 options:1 error:0];
+  jsonDict = [(ATXUserNotificationDigestLoggingEvent *)self jsonDict];
+  v4 = [v2 dataWithJSONObject:jsonDict options:1 error:0];
 
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4 == 1)
+  if (version == 1)
   {
-    v5 = a3;
-    v6 = [[a1 alloc] initWithProtoData:v5];
+    dataCopy = data;
+    v6 = [[self alloc] initWithProtoData:dataCopy];
   }
 
   else

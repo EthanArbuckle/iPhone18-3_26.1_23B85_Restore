@@ -1,24 +1,24 @@
 @interface MXSpinTracerData
-- (MXSpinTracerData)initWithCoder:(id)a3;
-- (id)initPayloadDataWithDiagnostics:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (MXSpinTracerData)initWithCoder:(id)coder;
+- (id)initPayloadDataWithDiagnostics:(id)diagnostics;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MXSpinTracerData
 
-- (id)initPayloadDataWithDiagnostics:(id)a3
+- (id)initPayloadDataWithDiagnostics:(id)diagnostics
 {
-  v4 = a3;
+  diagnosticsCopy = diagnostics;
   v11.receiver = self;
   v11.super_class = MXSpinTracerData;
   v5 = [(MXSourceData *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"cpuExceptionDiagnostics"];
+    v6 = [diagnosticsCopy objectForKeyedSubscript:@"cpuExceptionDiagnostics"];
     cpuExceptionDiagnostic = v5->_cpuExceptionDiagnostic;
     v5->_cpuExceptionDiagnostic = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"diskWriteExceptionDiagnostics"];
+    v8 = [diagnosticsCopy objectForKeyedSubscript:@"diskWriteExceptionDiagnostics"];
     diskWriteExceptionDiagnostic = v5->_diskWriteExceptionDiagnostic;
     v5->_diskWriteExceptionDiagnostic = v8;
   }
@@ -26,27 +26,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   cpuExceptionDiagnostic = self->_cpuExceptionDiagnostic;
-  v5 = a3;
-  [v5 encodeObject:cpuExceptionDiagnostic forKey:@"cpuExceptionDiagnostics"];
-  [v5 encodeObject:self->_diskWriteExceptionDiagnostic forKey:@"diskWriteExceptionDiagnostics"];
+  coderCopy = coder;
+  [coderCopy encodeObject:cpuExceptionDiagnostic forKey:@"cpuExceptionDiagnostics"];
+  [coderCopy encodeObject:self->_diskWriteExceptionDiagnostic forKey:@"diskWriteExceptionDiagnostics"];
 }
 
-- (MXSpinTracerData)initWithCoder:(id)a3
+- (MXSpinTracerData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MXSpinTracerData;
   v5 = [(MXSourceData *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cpuExceptionDiagnostics"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cpuExceptionDiagnostics"];
     cpuExceptionDiagnostic = v5->_cpuExceptionDiagnostic;
     v5->_cpuExceptionDiagnostic = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"diskWriteExceptionDiagnostics"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"diskWriteExceptionDiagnostics"];
     diskWriteExceptionDiagnostic = v5->_diskWriteExceptionDiagnostic;
     v5->_diskWriteExceptionDiagnostic = v8;
   }

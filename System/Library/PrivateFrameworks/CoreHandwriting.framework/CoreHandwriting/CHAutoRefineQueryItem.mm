@@ -1,37 +1,37 @@
 @interface CHAutoRefineQueryItem
-- (CGRect)rotatedColumnBounds:(int64_t)a3;
-- (CHAutoRefineQueryItem)initWithAutoRefineResult:(id)a3;
+- (CGRect)rotatedColumnBounds:(int64_t)bounds;
+- (CHAutoRefineQueryItem)initWithAutoRefineResult:(id)result;
 - (NSLocale)locale;
-- (double)writingOrientationAngleAtColumn:(int64_t)a3;
+- (double)writingOrientationAngleAtColumn:(int64_t)column;
 - (id)debugDescription;
 @end
 
 @implementation CHAutoRefineQueryItem
 
-- (CHAutoRefineQueryItem)initWithAutoRefineResult:(id)a3
+- (CHAutoRefineQueryItem)initWithAutoRefineResult:(id)result
 {
   v267 = *MEMORY[0x1E69E9840];
-  v244 = a3;
+  resultCopy = result;
   v264.receiver = self;
   v264.super_class = CHAutoRefineQueryItem;
   v237 = [(CHAutoRefineQueryItem *)&v264 init];
   if (v237)
   {
-    objc_storeStrong(&v237->_autoRefineResult, a3);
-    v10 = objc_msgSend_refinedTokenColumns(v244, v5, v6, v7, v8, v9);
+    objc_storeStrong(&v237->_autoRefineResult, result);
+    v10 = objc_msgSend_refinedTokenColumns(resultCopy, v5, v6, v7, v8, v9);
     refinedTokenColumns = v237->_refinedTokenColumns;
     v237->_refinedTokenColumns = v10;
 
-    v17 = objc_msgSend_strokeGroup(v244, v12, v13, v14, v15, v16);
+    v17 = objc_msgSend_strokeGroup(resultCopy, v12, v13, v14, v15, v16);
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v238 = objc_msgSend_strokeGroup(v244, v19, v20, v21, v22, v23);
+      v238 = objc_msgSend_strokeGroup(resultCopy, v19, v20, v21, v22, v23);
       v240 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v24, v25, v26, v27, v28);
       v239 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v29, v30, v31, v32, v33);
-      v39 = objc_msgSend_textResult(v244, v34, v35, v36, v37, v38);
+      v39 = objc_msgSend_textResult(resultCopy, v34, v35, v36, v37, v38);
       v45 = objc_msgSend_tokenColumnCount(v39, v40, v41, v42, v43, v44) > 0;
 
       if (v45)
@@ -43,11 +43,11 @@
         v241 = *(MEMORY[0x1E695F050] + 16);
         do
         {
-          v52 = objc_msgSend_textResult(v244, v46, v47, v48, v49, v50);
+          v52 = objc_msgSend_textResult(resultCopy, v46, v47, v48, v49, v50);
           v245 = objc_msgSend_strokeIndexesForColumnsInRange_(v52, v53, v246, 1, v54, v55);
 
           v56 = MEMORY[0x1E695DFD8];
-          v62 = objc_msgSend_strokeGroupResult(v244, v57, v58, v59, v60, v61);
+          v62 = objc_msgSend_strokeGroupResult(resultCopy, v57, v58, v59, v60, v61);
           v68 = objc_msgSend_inputStrokeIdentifiers(v62, v63, v64, v65, v66, v67);
           v73 = objc_msgSend_objectsAtIndexes_(v68, v69, v245, v70, v71, v72);
           v78 = objc_msgSend_setWithArray_(v56, v74, v73, v75, v76, v77);
@@ -216,7 +216,7 @@
           objc_msgSend_setObject_forKeyedSubscript_(v239, v212, v206, v211, v213, v214);
 
           _Block_object_dispose(&v258, 8);
-          v220 = objc_msgSend_textResult(v244, v215, v216, v217, v218, v219);
+          v220 = objc_msgSend_textResult(resultCopy, v215, v216, v217, v218, v219);
           v226 = objc_msgSend_tokenColumnCount(v220, v221, v222, v223, v224, v225);
 
           ++v246;
@@ -246,10 +246,10 @@
   return v12;
 }
 
-- (double)writingOrientationAngleAtColumn:(int64_t)a3
+- (double)writingOrientationAngleAtColumn:(int64_t)column
 {
   orientationAnglePerColumn = self->_orientationAnglePerColumn;
-  v9 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], a2, a3, v3, v4, v5);
+  v9 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], a2, column, v3, v4, v5);
   v14 = objc_msgSend_objectForKeyedSubscript_(orientationAnglePerColumn, v10, v9, v11, v12, v13);
 
   if (!v14)
@@ -258,7 +258,7 @@
   }
 
   v19 = self->_orientationAnglePerColumn;
-  v20 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v15, a3, v16, v17, v18);
+  v20 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v15, column, v16, v17, v18);
   v25 = objc_msgSend_objectForKeyedSubscript_(v19, v21, v20, v22, v23, v24);
   objc_msgSend_floatValue(v25, v26, v27, v28, v29, v30);
   v32 = v31;
@@ -266,16 +266,16 @@
   return v32;
 }
 
-- (CGRect)rotatedColumnBounds:(int64_t)a3
+- (CGRect)rotatedColumnBounds:(int64_t)bounds
 {
   rotatedBoundsPerColumn = self->_rotatedBoundsPerColumn;
-  v9 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], a2, a3, v3, v4, v5);
+  v9 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], a2, bounds, v3, v4, v5);
   v14 = objc_msgSend_objectForKeyedSubscript_(rotatedBoundsPerColumn, v10, v9, v11, v12, v13);
 
   if (v14)
   {
     v19 = self->_rotatedBoundsPerColumn;
-    v20 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v15, a3, v16, v17, v18);
+    v20 = objc_msgSend_numberWithInteger_(MEMORY[0x1E696AD98], v15, bounds, v16, v17, v18);
     v25 = objc_msgSend_objectForKeyedSubscript_(v19, v21, v20, v22, v23, v24);
     objc_msgSend_ch_CGRectValue(v25, v26, v27, v28, v29, v30);
     v32 = v31;

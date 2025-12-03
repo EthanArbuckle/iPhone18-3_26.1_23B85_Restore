@@ -1,19 +1,19 @@
 @interface SUUISortDescriptorViewElement
-- (SUUISortDescriptorViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5;
-- (id)applyUpdatesWithElement:(id)a3;
+- (SUUISortDescriptorViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory;
+- (id)applyUpdatesWithElement:(id)element;
 @end
 
 @implementation SUUISortDescriptorViewElement
 
-- (SUUISortDescriptorViewElement)initWithDOMElement:(id)a3 parent:(id)a4 elementFactory:(id)a5
+- (SUUISortDescriptorViewElement)initWithDOMElement:(id)element parent:(id)parent elementFactory:(id)factory
 {
-  v8 = a3;
+  elementCopy = element;
   v14.receiver = self;
   v14.super_class = SUUISortDescriptorViewElement;
-  v9 = [(SUUIViewElement *)&v14 initWithDOMElement:v8 parent:a4 elementFactory:a5];
+  v9 = [(SUUIViewElement *)&v14 initWithDOMElement:elementCopy parent:parent elementFactory:factory];
   if (v9)
   {
-    v10 = [v8 getAttribute:@"direction"];
+    v10 = [elementCopy getAttribute:@"direction"];
     if ([v10 length])
     {
       v11 = [v10 isEqualToString:@"descending"] ^ 1;
@@ -25,7 +25,7 @@
     }
 
     v9->_ascending = v11;
-    v12 = [v8 getAttribute:@"property"];
+    v12 = [elementCopy getAttribute:@"property"];
     if ([v12 length])
     {
       objc_storeStrong(&v9->_property, v12);
@@ -35,19 +35,19 @@
   return v9;
 }
 
-- (id)applyUpdatesWithElement:(id)a3
+- (id)applyUpdatesWithElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v10.receiver = self;
   v10.super_class = SUUISortDescriptorViewElement;
-  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:v4];
+  v5 = [(SUUIViewElement *)&v10 applyUpdatesWithElement:elementCopy];
   v6 = v5;
-  if (v4 != self && v5 == self)
+  if (elementCopy != self && v5 == self)
   {
-    self->_ascending = [(SUUISortDescriptorViewElement *)v4 isAscending];
-    v7 = [(SUUISortDescriptorViewElement *)v4 property];
+    self->_ascending = [(SUUISortDescriptorViewElement *)elementCopy isAscending];
+    property = [(SUUISortDescriptorViewElement *)elementCopy property];
     property = self->_property;
-    self->_property = v7;
+    self->_property = property;
   }
 
   return v6;

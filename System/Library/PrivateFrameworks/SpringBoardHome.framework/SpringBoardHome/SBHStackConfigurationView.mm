@@ -1,23 +1,23 @@
 @interface SBHStackConfigurationView
 - (SBHStackConfigurationViewHitTestDelegate)delegate;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 @end
 
 @implementation SBHStackConfigurationView
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v12.receiver = self;
   v12.super_class = SBHStackConfigurationView;
-  v8 = [(SBHStackConfigurationView *)&v12 hitTest:v7 withEvent:x, y];
-  v9 = [(SBHStackConfigurationView *)self delegate];
-  v10 = v9;
-  if (v9)
+  v8 = [(SBHStackConfigurationView *)&v12 hitTest:eventCopy withEvent:x, y];
+  delegate = [(SBHStackConfigurationView *)self delegate];
+  v10 = delegate;
+  if (delegate)
   {
-    [v9 stackConfigurationView:self didHitTestView:v8 atPoint:v7 withEvent:{x, y}];
+    [delegate stackConfigurationView:self didHitTestView:v8 atPoint:eventCopy withEvent:{x, y}];
   }
 
   return v8;

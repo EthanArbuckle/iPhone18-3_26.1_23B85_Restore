@@ -1,11 +1,11 @@
 @interface AMDMemoryBasedProvider
-+ (BOOL)isValidFeatureObject:(id)a3;
-+ (BOOL)isValidMultiArray:(id)a3;
++ (BOOL)isValidFeatureObject:(id)object;
++ (BOOL)isValidMultiArray:(id)array;
 + (id)sharedProvider;
-- (id)fetchOutputRemapDictForUsecase:(id)a3;
-- (id)getFeatureWithName:(id)a3 withColumn:(id)a4 error:(id *)a5;
-- (void)storeFeatureData:(id)a3 error:(id *)a4;
-- (void)storeOutputRemapData:(id)a3 error:(id *)a4;
+- (id)fetchOutputRemapDictForUsecase:(id)usecase;
+- (id)getFeatureWithName:(id)name withColumn:(id)column error:(id *)error;
+- (void)storeFeatureData:(id)data error:(id *)error;
+- (void)storeOutputRemapData:(id)data error:(id *)error;
 @end
 
 @implementation AMDMemoryBasedProvider
@@ -37,19 +37,19 @@ uint64_t __40__AMDMemoryBasedProvider_sharedProvider__block_invoke()
   return MEMORY[0x277D82BD8](v3);
 }
 
-- (id)getFeatureWithName:(id)a3 withColumn:(id)a4 error:(id *)a5
+- (id)getFeatureWithName:(id)name withColumn:(id)column error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, name);
   v16 = 0;
-  objc_storeStrong(&v16, a4);
-  v15 = a5;
-  v11 = [(AMDMemoryBasedProvider *)v18 featureStore];
-  v14 = [(NSMutableDictionary *)v11 objectForKey:location[0]];
-  MEMORY[0x277D82BD8](v11);
+  objc_storeStrong(&v16, column);
+  errorCopy = error;
+  featureStore = [(AMDMemoryBasedProvider *)selfCopy featureStore];
+  v14 = [(NSMutableDictionary *)featureStore objectForKey:location[0]];
+  MEMORY[0x277D82BD8](featureStore);
   if (v14)
   {
     v19 = [AMDFeature featureFromValue:v14];
@@ -68,7 +68,7 @@ uint64_t __40__AMDMemoryBasedProvider_sharedProvider__block_invoke()
     objc_storeStrong(&v12, 0);
     v8 = [AMDError allocError:16 withMessage:v13];
     v5 = v8;
-    *v15 = v8;
+    *errorCopy = v8;
     v19 = 0;
     objc_storeStrong(&v13, 0);
   }
@@ -82,15 +82,15 @@ uint64_t __40__AMDMemoryBasedProvider_sharedProvider__block_invoke()
   return v6;
 }
 
-- (id)fetchOutputRemapDictForUsecase:(id)a3
+- (id)fetchOutputRemapDictForUsecase:(id)usecase
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(AMDMemoryBasedProvider *)v8 featureStore];
-  v6 = [(NSMutableDictionary *)v5 objectForKey:location[0]];
-  MEMORY[0x277D82BD8](v5);
+  objc_storeStrong(location, usecase);
+  featureStore = [(AMDMemoryBasedProvider *)selfCopy featureStore];
+  v6 = [(NSMutableDictionary *)featureStore objectForKey:location[0]];
+  MEMORY[0x277D82BD8](featureStore);
   if (v6)
   {
     objc_opt_class();
@@ -117,14 +117,14 @@ uint64_t __40__AMDMemoryBasedProvider_sharedProvider__block_invoke()
   return v3;
 }
 
-- (void)storeFeatureData:(id)a3 error:(id *)a4
+- (void)storeFeatureData:(id)data error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v27 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v25 = a4;
+  objc_storeStrong(location, data);
+  errorCopy = error;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -166,7 +166,7 @@ uint64_t __40__AMDMemoryBasedProvider_sharedProvider__block_invoke()
           objc_storeStrong(&oslog, 0);
           v7 = [AMDError allocError:16 withMessage:v18];
           v5 = v7;
-          *v25 = v7;
+          *errorCopy = v7;
           v23 = 1;
           objc_storeStrong(&v18, 0);
         }
@@ -199,9 +199,9 @@ LABEL_15:
     MEMORY[0x277D82BD8](obj);
     if (!v23)
     {
-      v6 = [(AMDMemoryBasedProvider *)v27 featureStore];
-      [(NSMutableDictionary *)v6 addEntriesFromDictionary:v22];
-      MEMORY[0x277D82BD8](v6);
+      featureStore = [(AMDMemoryBasedProvider *)selfCopy featureStore];
+      [(NSMutableDictionary *)featureStore addEntriesFromDictionary:v22];
+      MEMORY[0x277D82BD8](featureStore);
       v23 = 0;
     }
 
@@ -213,7 +213,7 @@ LABEL_15:
     v24 = MEMORY[0x277D82BE0](@"Inference input data not a dictionary");
     v15 = [AMDError allocError:15 withMessage:v24];
     v4 = v15;
-    *v25 = v15;
+    *errorCopy = v15;
     v23 = 1;
     objc_storeStrong(&v24, 0);
   }
@@ -222,20 +222,20 @@ LABEL_15:
   *MEMORY[0x277D85DE8];
 }
 
-- (void)storeOutputRemapData:(id)a3 error:(id *)a4
+- (void)storeOutputRemapData:(id)data error:(id *)error
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v11 = a4;
+  objc_storeStrong(location, data);
+  errorCopy = error;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8 = MEMORY[0x277D82BE0](location[0]);
-    v5 = [(AMDMemoryBasedProvider *)v13 featureStore];
-    [(NSMutableDictionary *)v5 addEntriesFromDictionary:v8];
-    MEMORY[0x277D82BD8](v5);
+    featureStore = [(AMDMemoryBasedProvider *)selfCopy featureStore];
+    [(NSMutableDictionary *)featureStore addEntriesFromDictionary:v8];
+    MEMORY[0x277D82BD8](featureStore);
     objc_storeStrong(&v8, 0);
     v9 = 0;
   }
@@ -245,7 +245,7 @@ LABEL_15:
     v10 = MEMORY[0x277D82BE0](@"Output mapping is data not a dictionary");
     v6 = [AMDError allocError:15 withMessage:v10];
     v4 = v6;
-    *v11 = v6;
+    *errorCopy = v6;
     v9 = 1;
     objc_storeStrong(&v10, 0);
   }
@@ -253,15 +253,15 @@ LABEL_15:
   objc_storeStrong(location, 0);
 }
 
-+ (BOOL)isValidMultiArray:(id)a3
++ (BOOL)isValidMultiArray:(id)array
 {
   v26 = *MEMORY[0x277D85DE8];
-  v22 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v20 = [location[0] firstObject];
-  if (v20)
+  objc_storeStrong(location, array);
+  firstObject = [location[0] firstObject];
+  if (firstObject)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -291,7 +291,7 @@ LABEL_15:
             goto LABEL_15;
           }
 
-          if (([v22 isValidMultiArray:v18] & 1) == 0)
+          if (([selfCopy isValidMultiArray:v18] & 1) == 0)
           {
             break;
           }
@@ -389,26 +389,26 @@ LABEL_25:
     v19 = 1;
   }
 
-  objc_storeStrong(&v20, 0);
+  objc_storeStrong(&firstObject, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
   return v23 & 1;
 }
 
-+ (BOOL)isValidFeatureObject:(id)a3
++ (BOOL)isValidFeatureObject:(id)object
 {
   v28 = *MEMORY[0x277D85DE8];
-  v24 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, object);
   v22 = 0;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [location[0] allValues];
+    allValues = [location[0] allValues];
     v4 = v22;
-    v22 = v3;
+    v22 = allValues;
     MEMORY[0x277D82BD8](v4);
     goto LABEL_9;
   }
@@ -418,7 +418,7 @@ LABEL_25:
   {
     objc_storeStrong(&v22, location[0]);
 LABEL_9:
-    v20 = [v22 firstObject];
+    firstObject = [v22 firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -482,7 +482,7 @@ LABEL_18:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v25 = [v24 isValidMultiArray:v22] & 1;
+          v25 = [selfCopy isValidMultiArray:v22] & 1;
         }
 
         else
@@ -549,7 +549,7 @@ LABEL_30:
     v25 = 1;
     v21 = 1;
 LABEL_38:
-    objc_storeStrong(&v20, 0);
+    objc_storeStrong(&firstObject, 0);
     goto LABEL_39;
   }
 

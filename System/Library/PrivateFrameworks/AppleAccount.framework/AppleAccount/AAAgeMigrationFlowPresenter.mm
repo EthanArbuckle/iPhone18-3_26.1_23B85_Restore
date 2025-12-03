@@ -1,17 +1,17 @@
 @interface AAAgeMigrationFlowPresenter
 - (AAAgeMigrationFlowPresenter)init;
-- (void)presentModel:(id)a3 completion:(id)a4;
+- (void)presentModel:(id)model completion:(id)completion;
 @end
 
 @implementation AAAgeMigrationFlowPresenter
 
-- (void)presentModel:(id)a3 completion:(id)a4
+- (void)presentModel:(id)model completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_1B7010BB4(a3, v7, v6);
+  selfCopy = self;
+  sub_1B7010BB4(model, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
   swift_unknownObjectRelease();

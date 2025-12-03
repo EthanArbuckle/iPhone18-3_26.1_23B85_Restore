@@ -1,10 +1,10 @@
 @interface BWStats
-- (BOOL)addDataPointP:(double)a3;
+- (BOOL)addDataPointP:(double)p;
 - (BWStats)init;
-- (BWStats)initWithStats:(id)a3;
+- (BWStats)initWithStats:(id)stats;
 - (double)average;
 - (double)standardDeviation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (void)dealloc;
@@ -47,7 +47,7 @@
   return v3 * self->_multiplier;
 }
 
-- (BWStats)initWithStats:(id)a3
+- (BWStats)initWithStats:(id)stats
 {
   v8.receiver = self;
   v8.super_class = BWStats;
@@ -55,10 +55,10 @@
   v5 = v4;
   if (v4)
   {
-    v4->_multiplier = *(a3 + 1);
-    if (*(a3 + 2))
+    v4->_multiplier = *(stats + 1);
+    if (*(stats + 2))
     {
-      v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:*(a3 + 2)];
+      v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:*(stats + 2)];
     }
 
     else
@@ -67,11 +67,11 @@
     }
 
     v5->_unitDesignator = v6;
-    v5->_numberOfSamples = *(a3 + 3);
-    v5->_min = *(a3 + 4);
-    v5->_max = *(a3 + 5);
-    v5->_sumX = *(a3 + 6);
-    v5->_sumXX = *(a3 + 7);
+    v5->_numberOfSamples = *(stats + 3);
+    v5->_min = *(stats + 4);
+    v5->_max = *(stats + 5);
+    v5->_sumX = *(stats + 6);
+    v5->_sumXX = *(stats + 7);
   }
 
   return v5;
@@ -84,27 +84,27 @@
   [(BWStats *)&v3 dealloc];
 }
 
-- (BOOL)addDataPointP:(double)a3
+- (BOOL)addDataPointP:(double)p
 {
-  if ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
+  if ((*&p & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL)
   {
     ++self->_numberOfSamples;
-    if (self->_min > a3)
+    if (self->_min > p)
     {
-      self->_min = a3;
+      self->_min = p;
     }
 
-    if (self->_max < a3)
+    if (self->_max < p)
     {
-      self->_max = a3;
+      self->_max = p;
     }
 
-    v3 = self->_sumXX + a3 * a3;
-    self->_sumX = self->_sumX + a3;
+    v3 = self->_sumXX + p * p;
+    self->_sumX = self->_sumX + p;
     self->_sumXX = v3;
   }
 
-  return (*&a3 & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000;
+  return (*&p & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000;
 }
 
 - (double)standardDeviation
@@ -161,9 +161,9 @@
   return [v3 stringWithFormat:@"<%@: %p> %@", NSStringFromClass(v4), self, -[BWStats description](self, "description")];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   [(BWStats *)self multiplier];
   [v4 setMultiplier:?];
   [v4 setUnitDesignator:{-[BWStats unitDesignator](self, "unitDesignator")}];

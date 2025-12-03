@@ -1,15 +1,15 @@
 @interface CATSharingSentMessage
-+ (id)instanceWithDictionary:(id)a3;
-- (CATSharingSentMessage)initWithContent:(id)a3;
++ (id)instanceWithDictionary:(id)dictionary;
+- (CATSharingSentMessage)initWithContent:(id)content;
 - (NSDictionary)dictionaryValue;
 @end
 
 @implementation CATSharingSentMessage
 
-- (CATSharingSentMessage)initWithContent:(id)a3
+- (CATSharingSentMessage)initWithContent:(id)content
 {
-  v5 = a3;
-  if (!v5)
+  contentCopy = content;
+  if (!contentCopy)
   {
     [(CATSharingSentMessage *)a2 initWithContent:?];
   }
@@ -19,7 +19,7 @@
   v6 = [(CATSharingSentMessage *)&v10 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [contentCopy copy];
     content = v6->_content;
     v6->_content = v7;
   }
@@ -31,8 +31,8 @@
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = @"SharingSendMessageContent";
-  v2 = [(CATSharingSentMessage *)self content];
-  v7[0] = v2;
+  content = [(CATSharingSentMessage *)self content];
+  v7[0] = content;
   v3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -40,10 +40,10 @@
   return v3;
 }
 
-+ (id)instanceWithDictionary:(id)a3
++ (id)instanceWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"SharingSendMessageContent"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"SharingSendMessageContent"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -59,7 +59,7 @@
 
   if (v7)
   {
-    v8 = [[a1 alloc] initWithContent:v7];
+    v8 = [[self alloc] initWithContent:v7];
   }
 
   else
@@ -72,7 +72,7 @@
     v9 = _CATLogGeneral_logObj_3;
     if (os_log_type_enabled(_CATLogGeneral_logObj_3, OS_LOG_TYPE_ERROR))
     {
-      [(CATSharingSentMessage *)v9 instanceWithDictionary:a1, v4];
+      [(CATSharingSentMessage *)v9 instanceWithDictionary:self, dictionaryCopy];
     }
 
     v8 = 0;

@@ -1,23 +1,23 @@
 @interface PXCMMComposeRecipientViewController
 - (PXCMMActionControllerDelegate)actionDelegate;
-- (PXCMMComposeRecipientViewController)initWithCoder:(id)a3;
-- (PXCMMComposeRecipientViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (PXCMMComposeRecipientViewController)initWithSession:(id)a3;
-- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)a3 inCoordinateSpace:(id)a4;
-- (void)_handleActionButton:(id)a3;
+- (PXCMMComposeRecipientViewController)initWithCoder:(id)coder;
+- (PXCMMComposeRecipientViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (PXCMMComposeRecipientViewController)initWithSession:(id)session;
+- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)point inCoordinateSpace:(id)space;
+- (void)_handleActionButton:(id)button;
 - (void)_setNeedsUpdate;
-- (void)_tapToRadarTapped:(id)a3;
+- (void)_tapToRadarTapped:(id)tapped;
 - (void)_updateFooter;
 - (void)_updateTableView;
 - (void)_updateUserInteraction;
 - (void)dealloc;
-- (void)dismissPresentedViewControllerAnimated:(BOOL)a3 forComposeRecipientTableViewController:(id)a4;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setActionProgress:(id)a3;
+- (void)dismissPresentedViewControllerAnimated:(BOOL)animated forComposeRecipientTableViewController:(id)controller;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setActionProgress:(id)progress;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PXCMMComposeRecipientViewController
@@ -29,66 +29,66 @@
   return WeakRetained;
 }
 
-- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)a3 inCoordinateSpace:(id)a4
+- (id)px_diagnosticsItemProvidersForPoint:(CGPoint)point inCoordinateSpace:(id)space
 {
   v18.receiver = self;
   v18.super_class = PXCMMComposeRecipientViewController;
-  v5 = [(UIViewController *)&v18 px_diagnosticsItemProvidersForPoint:a4 inCoordinateSpace:a3.x, a3.y];
+  v5 = [(UIViewController *)&v18 px_diagnosticsItemProvidersForPoint:space inCoordinateSpace:point.x, point.y];
   v6 = [v5 mutableCopy];
 
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  [v7 setObject:@"CMM Compose Recipient" forKeyedSubscript:@"PXDiagnosticsTitle"];
-  v8 = [(PXCMMComposeRecipientViewController *)self session];
-  v9 = [v8 diagnosticDictionary];
-  [v7 setObject:v9 forKeyedSubscript:@"Session"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:@"CMM Compose Recipient" forKeyedSubscript:@"PXDiagnosticsTitle"];
+  session = [(PXCMMComposeRecipientViewController *)self session];
+  diagnosticDictionary = [session diagnosticDictionary];
+  [dictionary setObject:diagnosticDictionary forKeyedSubscript:@"Session"];
 
-  v10 = [(PXCMMComposeRecipientViewController *)self tableViewModel];
-  v11 = [v10 composeRecipientDataSourceManager];
-  v12 = [v11 diagnosticDictionary];
-  [v7 setObject:v12 forKeyedSubscript:@"Recipient Manager"];
+  tableViewModel = [(PXCMMComposeRecipientViewController *)self tableViewModel];
+  composeRecipientDataSourceManager = [tableViewModel composeRecipientDataSourceManager];
+  diagnosticDictionary2 = [composeRecipientDataSourceManager diagnosticDictionary];
+  [dictionary setObject:diagnosticDictionary2 forKeyedSubscript:@"Recipient Manager"];
 
   v13 = objc_alloc_init(PXDiagnosticsItemProvider);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __93__PXCMMComposeRecipientViewController_px_diagnosticsItemProvidersForPoint_inCoordinateSpace___block_invoke;
   v16[3] = &unk_1E774BB70;
-  v17 = v7;
-  v14 = v7;
+  v17 = dictionary;
+  v14 = dictionary;
   [(PXDiagnosticsItemProvider *)v13 registerItemForIdentifier:@"PXDiagnosticsItemIdentifierDebugDictionary" loadHandler:v16];
   [v6 addObject:v13];
 
   return v6;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (PXProgressFinishedObservationContext == a6 || PXProgressCancelledObservationContext == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (PXProgressFinishedObservationContext == context || PXProgressCancelledObservationContext == context)
   {
     v20 = MEMORY[0x1E69E9820];
     v21 = 3221225472;
     v22 = __86__PXCMMComposeRecipientViewController_observeValueForKeyPath_ofObject_change_context___block_invoke;
     v23 = &unk_1E774C648;
-    v24 = self;
+    selfCopy = self;
     goto LABEL_10;
   }
 
-  if (PXProgressFractionCompletedObservationContext == a6)
+  if (PXProgressFractionCompletedObservationContext == context)
   {
     v15 = MEMORY[0x1E69E9820];
     v16 = 3221225472;
     v17 = __86__PXCMMComposeRecipientViewController_observeValueForKeyPath_ofObject_change_context___block_invoke_2;
     v18 = &unk_1E774C648;
-    v19 = self;
+    selfCopy2 = self;
 LABEL_10:
     px_dispatch_on_main_queue();
   }
 
   v14.receiver = self;
   v14.super_class = PXCMMComposeRecipientViewController;
-  [(PXCMMComposeRecipientViewController *)&v14 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+  [(PXCMMComposeRecipientViewController *)&v14 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
 }
 
 void __86__PXCMMComposeRecipientViewController_observeValueForKeyPath_ofObject_change_context___block_invoke(uint64_t a1)
@@ -106,29 +106,29 @@ void __86__PXCMMComposeRecipientViewController_observeValueForKeyPath_ofObject_c
   [v1 setNeedsUpdateOf:sel__updateFooter];
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if (PXComposeRecipientTableViewModelObservationContext_81277 == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXComposeRecipientTableViewModelObservationContext_81277 == context)
   {
-    if (v6)
+    if (changeCopy)
     {
-      v9 = [(PXCMMComposeRecipientViewController *)self session];
-      v10 = [v9 viewModel];
+      session = [(PXCMMComposeRecipientViewController *)self session];
+      viewModel = [session viewModel];
 
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __68__PXCMMComposeRecipientViewController_observable_didChange_context___block_invoke;
       v12[3] = &unk_1E7746A48;
       v12[4] = self;
-      [v10 performChanges:v12];
+      [viewModel performChanges:v12];
     }
 
-    if ((v6 & 2) != 0)
+    if ((changeCopy & 2) != 0)
     {
-      v11 = [(PXCMMComposeRecipientViewController *)self updater];
-      [v11 setNeedsUpdateOf:sel__updateFooter];
+      updater = [(PXCMMComposeRecipientViewController *)self updater];
+      [updater setNeedsUpdateOf:sel__updateFooter];
     }
   }
 }
@@ -143,44 +143,44 @@ void __68__PXCMMComposeRecipientViewController_observable_didChange_context___bl
   [v3 setRecipients:v5];
 }
 
-- (void)dismissPresentedViewControllerAnimated:(BOOL)a3 forComposeRecipientTableViewController:(id)a4
+- (void)dismissPresentedViewControllerAnimated:(BOOL)animated forComposeRecipientTableViewController:(id)controller
 {
-  v5 = [(PXCMMComposeRecipientViewController *)self presentedViewController:a3];
+  v5 = [(PXCMMComposeRecipientViewController *)self presentedViewController:animated];
   [(PXCMMComposeRecipientViewController *)self dismissViewControllerAnimated:v5 != 0 completion:0];
 }
 
 - (void)_updateUserInteraction
 {
-  v3 = [(PXCMMComposeRecipientViewController *)self actionProgress];
-  v12 = v3;
-  if (v3 && ([v3 isFinished] & 1) == 0)
+  actionProgress = [(PXCMMComposeRecipientViewController *)self actionProgress];
+  v12 = actionProgress;
+  if (actionProgress && ([actionProgress isFinished] & 1) == 0)
   {
-    v4 = [v12 isCancelled];
+    isCancelled = [v12 isCancelled];
   }
 
   else
   {
-    v4 = 1;
+    isCancelled = 1;
   }
 
-  v5 = [(PXCMMComposeRecipientViewController *)self navigationController];
-  v6 = [v5 viewControllers];
-  v7 = [v6 firstObject];
-  v8 = [v7 navigationItem];
-  v9 = [v8 leftBarButtonItem];
+  navigationController = [(PXCMMComposeRecipientViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  firstObject = [viewControllers firstObject];
+  navigationItem = [firstObject navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
 
-  [v9 setEnabled:v4];
-  v10 = [(PXCMMComposeRecipientViewController *)self tableViewController];
-  v11 = [v10 tableView];
+  [leftBarButtonItem setEnabled:isCancelled];
+  tableViewController = [(PXCMMComposeRecipientViewController *)self tableViewController];
+  tableView = [tableViewController tableView];
 
-  [v11 setUserInteractionEnabled:v4];
+  [tableView setUserInteractionEnabled:isCancelled];
 }
 
 - (void)_updateTableView
 {
-  v3 = [(PXCMMComposeRecipientViewController *)self specManager];
-  v4 = [v3 extendedTraitCollection];
-  [v4 safeAreaInsets];
+  specManager = [(PXCMMComposeRecipientViewController *)self specManager];
+  extendedTraitCollection = [specManager extendedTraitCollection];
+  [extendedTraitCollection safeAreaInsets];
   v6 = v5;
   v8 = v7;
 
@@ -188,21 +188,21 @@ void __68__PXCMMComposeRecipientViewController_observable_didChange_context___bl
   v9 = CGRectGetMinY(v15) - v6;
   [(PXComposeRecipientTableViewController *)self->_tableViewController tableViewHeight];
   v11 = v10 > v9;
-  v13 = [(PXComposeRecipientTableViewController *)self->_tableViewController tableView];
-  [v13 setScrollEnabled:v11];
+  tableView = [(PXComposeRecipientTableViewController *)self->_tableViewController tableView];
+  [tableView setScrollEnabled:v11];
   [(PXCMMComposeRecipientViewController *)self maximumContentWidth];
-  [v13 setFrame:{v8, v6, v12, v9}];
+  [tableView setFrame:{v8, v6, v12, v9}];
 }
 
 - (void)_updateFooter
 {
-  v3 = [(PXCMMComposeRecipientViewController *)self actionProgress];
-  v42 = v3;
-  if (!v3 || ([v3 isFinished] & 1) != 0 || objc_msgSend(v42, "isCancelled"))
+  actionProgress = [(PXCMMComposeRecipientViewController *)self actionProgress];
+  v42 = actionProgress;
+  if (!actionProgress || ([actionProgress isFinished] & 1) != 0 || objc_msgSend(v42, "isCancelled"))
   {
-    v4 = [(PXCMMComposeRecipientViewController *)self tableViewModel];
-    v5 = [v4 composeRecipients];
-    v6 = [v5 count] != 0;
+    tableViewModel = [(PXCMMComposeRecipientViewController *)self tableViewModel];
+    composeRecipients = [tableViewModel composeRecipients];
+    v6 = [composeRecipients count] != 0;
   }
 
   else
@@ -211,22 +211,22 @@ void __68__PXCMMComposeRecipientViewController_observable_didChange_context___bl
   }
 
   [(UIButton *)self->_sendButton setEnabled:v6];
-  v7 = [(PXCMMComposeRecipientViewController *)self view];
-  [v7 bounds];
+  view = [(PXCMMComposeRecipientViewController *)self view];
+  [view bounds];
   v9 = v8;
   v41 = v10;
 
-  v11 = [(PXCMMComposeRecipientViewController *)self specManager];
-  v12 = [v11 extendedTraitCollection];
+  specManager = [(PXCMMComposeRecipientViewController *)self specManager];
+  extendedTraitCollection = [specManager extendedTraitCollection];
 
-  [v12 safeAreaInsets];
+  [extendedTraitCollection safeAreaInsets];
   v14 = v13;
   v16 = v15;
   v18 = v9 - v13 - v17;
-  v19 = [(PXCMMComposeRecipientViewController *)self specManager];
-  v20 = [v19 spec];
+  specManager2 = [(PXCMMComposeRecipientViewController *)self specManager];
+  spec = [specManager2 spec];
 
-  [v20 composeFooterMargins];
+  [spec composeFooterMargins];
   v22 = v21;
   v24 = v23;
   v26 = v18 - (v21 + v25);
@@ -234,14 +234,14 @@ void __68__PXCMMComposeRecipientViewController_observable_didChange_context___bl
   v28 = v27;
   [(UIButton *)self->_sendButton sizeThatFits:v26, 1.79769313e308];
   v30 = v29;
-  [v20 composePrivacyMessageInset];
+  [spec composePrivacyMessageInset];
   v32 = v24 + v16 + v30 + v28 + v31 * 2.0;
   [(UIVisualEffectView *)self->_footerVisualEffectView setFrame:v14, v41 - v32, v18, v32];
-  [v20 composePrivacyMessageInset];
+  [spec composePrivacyMessageInset];
   [(UILabel *)self->_privacyMessageLabel setFrame:v22, v33, v26, v28];
   [(UILabel *)self->_privacyMessageLabel frame];
   MaxY = CGRectGetMaxY(v44);
-  [v20 composePrivacyMessageInset];
+  [spec composePrivacyMessageInset];
   [(UIButton *)self->_sendButton setFrame:v22, MaxY + v35, v26, v30];
   tapToRadarButton = self->_tapToRadarButton;
   if (tapToRadarButton)
@@ -252,26 +252,26 @@ void __68__PXCMMComposeRecipientViewController_observable_didChange_context___bl
     [(UIButton *)self->_tapToRadarButton setFrame:v22, CGRectGetMaxY(v45) + 3.0, v26, v38];
   }
 
-  v39 = [(PXCMMComposeRecipientViewController *)self tableViewController];
-  v40 = [v39 tableView];
+  tableViewController = [(PXCMMComposeRecipientViewController *)self tableViewController];
+  tableView = [tableViewController tableView];
 
-  [v40 setContentInset:{0.0, 0.0, v32 - v16, 0.0}];
-  [v40 setScrollIndicatorInsets:{0.0, 0.0, v32 - v16, 0.0}];
+  [tableView setContentInset:{0.0, 0.0, v32 - v16, 0.0}];
+  [tableView setScrollIndicatorInsets:{0.0, 0.0, v32 - v16, 0.0}];
 }
 
 - (void)_setNeedsUpdate
 {
   if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PXCMMComposeRecipientViewController.m" lineNumber:294 description:{@"%s must be called on the main thread", "-[PXCMMComposeRecipientViewController _setNeedsUpdate]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMComposeRecipientViewController.m" lineNumber:294 description:{@"%s must be called on the main thread", "-[PXCMMComposeRecipientViewController _setNeedsUpdate]"}];
   }
 
-  v5 = [(PXCMMComposeRecipientViewController *)self viewIfLoaded];
-  [v5 setNeedsLayout];
+  viewIfLoaded = [(PXCMMComposeRecipientViewController *)self viewIfLoaded];
+  [viewIfLoaded setNeedsLayout];
 }
 
-- (void)_tapToRadarTapped:(id)a3
+- (void)_tapToRadarTapped:(id)tapped
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
@@ -337,46 +337,46 @@ void __57__PXCMMComposeRecipientViewController__tapToRadarTapped___block_invoke(
   }
 }
 
-- (void)setActionProgress:(id)a3
+- (void)setActionProgress:(id)progress
 {
-  v5 = a3;
+  progressCopy = progress;
   actionProgress = self->_actionProgress;
-  if (actionProgress != v5)
+  if (actionProgress != progressCopy)
   {
-    v9 = v5;
+    v9 = progressCopy;
     [(NSProgress *)actionProgress removeObserver:self forKeyPath:@"finished" context:PXProgressFinishedObservationContext];
     [(NSProgress *)self->_actionProgress removeObserver:self forKeyPath:@"fractionCompleted" context:PXProgressFractionCompletedObservationContext];
     [(NSProgress *)self->_actionProgress removeObserver:self forKeyPath:@"cancelled" context:PXProgressCancelledObservationContext];
-    objc_storeStrong(&self->_actionProgress, a3);
+    objc_storeStrong(&self->_actionProgress, progress);
     [(NSProgress *)self->_actionProgress addObserver:self forKeyPath:@"finished" options:1 context:PXProgressFinishedObservationContext];
     [(NSProgress *)self->_actionProgress addObserver:self forKeyPath:@"fractionCompleted" options:1 context:PXProgressFractionCompletedObservationContext];
     [(NSProgress *)self->_actionProgress addObserver:self forKeyPath:@"cancelled" options:1 context:PXProgressCancelledObservationContext];
-    v7 = [(PXCMMComposeRecipientViewController *)self updater];
-    [v7 setNeedsUpdateOf:sel__updateFooter];
+    updater = [(PXCMMComposeRecipientViewController *)self updater];
+    [updater setNeedsUpdateOf:sel__updateFooter];
 
-    v8 = [(PXCMMComposeRecipientViewController *)self updater];
-    [v8 setNeedsUpdateOf:sel__updateUserInteraction];
+    updater2 = [(PXCMMComposeRecipientViewController *)self updater];
+    [updater2 setNeedsUpdateOf:sel__updateUserInteraction];
 
-    v5 = v9;
+    progressCopy = v9;
   }
 }
 
-- (void)_handleActionButton:(id)a3
+- (void)_handleActionButton:(id)button
 {
-  v4 = a3;
-  v5 = [(PXCMMComposeRecipientViewController *)self tableViewModel];
-  v6 = [v5 composeRecipientDataSourceManager];
-  v7 = [v6 dataSource];
+  buttonCopy = button;
+  tableViewModel = [(PXCMMComposeRecipientViewController *)self tableViewModel];
+  composeRecipientDataSourceManager = [tableViewModel composeRecipientDataSourceManager];
+  dataSource = [composeRecipientDataSourceManager dataSource];
 
-  v8 = [v7 composeRecipients];
-  v9 = [v5 composeRecipients];
-  v10 = [(PXCMMComposeRecipientViewController *)self actionDelegate];
-  v11 = [(PXCMMComposeRecipientViewController *)self session];
-  v12 = [v10 completeMyMomentViewController:self performActionForSession:v11];
+  composeRecipients = [dataSource composeRecipients];
+  composeRecipients2 = [tableViewModel composeRecipients];
+  actionDelegate = [(PXCMMComposeRecipientViewController *)self actionDelegate];
+  session = [(PXCMMComposeRecipientViewController *)self session];
+  v12 = [actionDelegate completeMyMomentViewController:self performActionForSession:session];
 
   [(PXCMMComposeRecipientViewController *)self setActionProgress:v12];
-  v13 = v8;
-  v14 = v9;
+  v13 = composeRecipients;
+  v14 = composeRecipients2;
   v23[0] = 0;
   v23[1] = v23;
   v23[2] = 0x2020000000;
@@ -405,16 +405,16 @@ void __57__PXCMMComposeRecipientViewController__tapToRadarTapped___block_invoke(
   _Block_object_dispose(v23, 8);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   v7.receiver = self;
   v7.super_class = PXCMMComposeRecipientViewController;
-  [(PXCMMComposeRecipientViewController *)&v7 viewWillTransitionToSize:a4 withTransitionCoordinator:a3.width, a3.height];
-  v5 = [(PXCMMComposeRecipientViewController *)self updater];
-  [v5 setNeedsUpdateOf:sel__updateFooter];
+  [(PXCMMComposeRecipientViewController *)&v7 viewWillTransitionToSize:coordinator withTransitionCoordinator:size.width, size.height];
+  updater = [(PXCMMComposeRecipientViewController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateFooter];
 
-  v6 = [(PXCMMComposeRecipientViewController *)self updater];
-  [v6 setNeedsUpdateOf:sel__updateTableView];
+  updater2 = [(PXCMMComposeRecipientViewController *)self updater];
+  [updater2 setNeedsUpdateOf:sel__updateTableView];
 }
 
 - (void)viewWillLayoutSubviews
@@ -422,19 +422,19 @@ void __57__PXCMMComposeRecipientViewController__tapToRadarTapped___block_invoke(
   v12.receiver = self;
   v12.super_class = PXCMMComposeRecipientViewController;
   [(PXCMMComposeRecipientViewController *)&v12 viewWillLayoutSubviews];
-  v3 = [(PXCMMComposeRecipientViewController *)self specManager];
-  v4 = [v3 extendedTraitCollection];
+  specManager = [(PXCMMComposeRecipientViewController *)self specManager];
+  extendedTraitCollection = [specManager extendedTraitCollection];
 
-  v5 = [(PXCMMComposeRecipientViewController *)self view];
-  [v5 bounds];
+  view = [(PXCMMComposeRecipientViewController *)self view];
+  [view bounds];
   v7 = v6;
 
-  [v4 safeAreaInsets];
+  [extendedTraitCollection safeAreaInsets];
   v9 = v8;
-  [v4 safeAreaInsets];
+  [extendedTraitCollection safeAreaInsets];
   [(PXCMMComposeRecipientViewController *)self setMaximumContentWidth:v7 - (v9 + v10)];
-  v11 = [(PXCMMComposeRecipientViewController *)self updater];
-  [v11 updateIfNeeded];
+  updater = [(PXCMMComposeRecipientViewController *)self updater];
+  [updater updateIfNeeded];
 }
 
 - (void)viewDidLoad
@@ -442,39 +442,39 @@ void __57__PXCMMComposeRecipientViewController__tapToRadarTapped___block_invoke(
   v56.receiver = self;
   v56.super_class = PXCMMComposeRecipientViewController;
   [(PXCMMComposeRecipientViewController *)&v56 viewDidLoad];
-  v3 = [(PXCMMComposeRecipientViewController *)self specManager];
-  v4 = [v3 spec];
+  specManager = [(PXCMMComposeRecipientViewController *)self specManager];
+  spec = [specManager spec];
 
-  v5 = [v4 composeRecipientViewBackgroundColor];
-  v6 = [(PXCMMComposeRecipientViewController *)self view];
-  [v6 setBackgroundColor:v5];
+  composeRecipientViewBackgroundColor = [spec composeRecipientViewBackgroundColor];
+  view = [(PXCMMComposeRecipientViewController *)self view];
+  [view setBackgroundColor:composeRecipientViewBackgroundColor];
 
-  v7 = [(PXCMMComposeRecipientViewController *)self tableViewModel];
-  [v7 performChanges:&__block_literal_global_24765];
-  [v7 registerChangeObserver:self context:PXComposeRecipientTableViewModelObservationContext_81277];
-  v8 = [[PXComposeRecipientTableViewController alloc] initWithViewModel:v7];
+  tableViewModel = [(PXCMMComposeRecipientViewController *)self tableViewModel];
+  [tableViewModel performChanges:&__block_literal_global_24765];
+  [tableViewModel registerChangeObserver:self context:PXComposeRecipientTableViewModelObservationContext_81277];
+  v8 = [[PXComposeRecipientTableViewController alloc] initWithViewModel:tableViewModel];
   tableViewController = self->_tableViewController;
   self->_tableViewController = v8;
 
   [(PXComposeRecipientTableViewController *)self->_tableViewController setDelegate:self];
-  v10 = [(PXCMMComposeRecipientViewController *)self view];
-  v11 = [(PXComposeRecipientTableViewController *)self->_tableViewController tableView];
-  [v10 addSubview:v11];
+  view2 = [(PXCMMComposeRecipientViewController *)self view];
+  tableView = [(PXComposeRecipientTableViewController *)self->_tableViewController tableView];
+  [view2 addSubview:tableView];
 
   v51 = [MEMORY[0x1E69DC730] effectWithBlurRadius:20.0];
   v12 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v51];
   footerVisualEffectView = self->_footerVisualEffectView;
   self->_footerVisualEffectView = v12;
 
-  v14 = [(PXCMMComposeRecipientViewController *)self view];
-  [v14 addSubview:self->_footerVisualEffectView];
+  view3 = [(PXCMMComposeRecipientViewController *)self view];
+  [view3 addSubview:self->_footerVisualEffectView];
 
   v15 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   privacyMessageLabel = self->_privacyMessageLabel;
   self->_privacyMessageLabel = v15;
 
-  v17 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [(UILabel *)self->_privacyMessageLabel setTextColor:v17];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [(UILabel *)self->_privacyMessageLabel setTextColor:secondaryLabelColor];
 
   [(UILabel *)self->_privacyMessageLabel setNumberOfLines:0];
   [(UILabel *)self->_privacyMessageLabel setTextAlignment:1];
@@ -484,8 +484,8 @@ void __57__PXCMMComposeRecipientViewController__tapToRadarTapped___block_invoke(
   v19 = PXLocalizedStringFromTable(@"PXComposeRecipientPrivacyMessage", @"PhotosUICore");
   [(UILabel *)self->_privacyMessageLabel setText:v19];
 
-  v20 = [(UIVisualEffectView *)self->_footerVisualEffectView contentView];
-  [v20 addSubview:self->_privacyMessageLabel];
+  contentView = [(UIVisualEffectView *)self->_footerVisualEffectView contentView];
+  [contentView addSubview:self->_privacyMessageLabel];
 
   v21 = [MEMORY[0x1E69DC738] buttonWithType:1];
   sendButton = self->_sendButton;
@@ -497,23 +497,23 @@ void __57__PXCMMComposeRecipientViewController__tapToRadarTapped___block_invoke(
   [(UIButton *)v23 setTitle:v24 forState:0];
 
   v25 = self->_sendButton;
-  v26 = [MEMORY[0x1E69DC888] whiteColor];
-  [(UIButton *)v25 setTitleColor:v26 forState:0];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(UIButton *)v25 setTitleColor:whiteColor forState:0];
 
   v27 = self->_sendButton;
   v28 = MEMORY[0x1E69DC738];
-  v29 = [(PXCMMComposeRecipientViewController *)self view];
-  v30 = [v29 tintColor];
-  v31 = [v28 px_buttonBackgroundImageForType:0 color:v30 cornerRadius:0 controlState:6.0];
+  view4 = [(PXCMMComposeRecipientViewController *)self view];
+  tintColor = [view4 tintColor];
+  v31 = [v28 px_buttonBackgroundImageForType:0 color:tintColor cornerRadius:0 controlState:6.0];
   [(UIButton *)v27 setBackgroundImage:v31 forState:0];
 
   v54 = 0.0;
   v55 = 0.0;
   v52 = 0;
   v53 = 0.0;
-  v32 = [(PXCMMComposeRecipientViewController *)self view];
-  v33 = [v32 tintColor];
-  [v33 getRed:&v55 green:&v54 blue:&v53 alpha:&v52];
+  view5 = [(PXCMMComposeRecipientViewController *)self view];
+  tintColor2 = [view5 tintColor];
+  [tintColor2 getRed:&v55 green:&v54 blue:&v53 alpha:&v52];
 
   v34 = self->_sendButton;
   v35 = MEMORY[0x1E69DC738];
@@ -522,23 +522,23 @@ void __57__PXCMMComposeRecipientViewController__tapToRadarTapped___block_invoke(
   [(UIButton *)v34 setBackgroundImage:v37 forState:2];
 
   v38 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:18.0];
-  v39 = [(UIButton *)self->_sendButton titleLabel];
-  [v39 setFont:v38];
+  titleLabel = [(UIButton *)self->_sendButton titleLabel];
+  [titleLabel setFont:v38];
 
-  [v4 composeCornerRadius];
+  [spec composeCornerRadius];
   v41 = v40;
-  v42 = [(UIButton *)self->_sendButton layer];
-  [v42 setCornerRadius:v41];
+  layer = [(UIButton *)self->_sendButton layer];
+  [layer setCornerRadius:v41];
 
-  [v4 composeFooterInsets];
+  [spec composeFooterInsets];
   [(UIButton *)self->_sendButton setContentEdgeInsets:?];
-  v43 = [(UIVisualEffectView *)self->_footerVisualEffectView contentView];
-  [v43 addSubview:self->_sendButton];
+  contentView2 = [(UIVisualEffectView *)self->_footerVisualEffectView contentView];
+  [contentView2 addSubview:self->_sendButton];
 
   v44 = +[PXRootSettings sharedInstance];
-  LODWORD(v39) = [v44 canShowInternalUI];
+  LODWORD(titleLabel) = [v44 canShowInternalUI];
 
-  if (v39)
+  if (titleLabel)
   {
     v45 = [MEMORY[0x1E69DC738] buttonWithType:1];
     v46 = +[PXRootSettings sharedInstance];
@@ -546,18 +546,18 @@ void __57__PXCMMComposeRecipientViewController__tapToRadarTapped___block_invoke(
 
     [(UIButton *)v45 setTitle:@"File Radar (Apple Internal)" forState:0];
     [(UIButton *)v45 addTarget:self action:sel__tapToRadarTapped_ forControlEvents:64];
-    v47 = [(UIVisualEffectView *)self->_footerVisualEffectView contentView];
-    [v47 addSubview:v45];
+    contentView3 = [(UIVisualEffectView *)self->_footerVisualEffectView contentView];
+    [contentView3 addSubview:v45];
 
     tapToRadarButton = self->_tapToRadarButton;
     self->_tapToRadarButton = v45;
   }
 
-  v49 = [(PXCMMComposeRecipientViewController *)self updater];
-  [v49 setNeedsUpdateOf:sel__updateFooter];
+  updater = [(PXCMMComposeRecipientViewController *)self updater];
+  [updater setNeedsUpdateOf:sel__updateFooter];
 
-  v50 = [(PXCMMComposeRecipientViewController *)self updater];
-  [v50 setNeedsUpdateOf:sel__updateTableView];
+  updater2 = [(PXCMMComposeRecipientViewController *)self updater];
+  [updater2 setNeedsUpdateOf:sel__updateTableView];
 }
 
 void __50__PXCMMComposeRecipientViewController_viewDidLoad__block_invoke(uint64_t a1, void *a2)
@@ -577,13 +577,13 @@ void __50__PXCMMComposeRecipientViewController_viewDidLoad__block_invoke(uint64_
   [(PXCMMComposeRecipientViewController *)&v3 dealloc];
 }
 
-- (PXCMMComposeRecipientViewController)initWithSession:(id)a3
+- (PXCMMComposeRecipientViewController)initWithSession:(id)session
 {
-  v6 = a3;
-  if (!v6)
+  sessionCopy = session;
+  if (!sessionCopy)
   {
-    v29 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v29 handleFailureInMethod:a2 object:self file:@"PXCMMComposeRecipientViewController.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"session"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMComposeRecipientViewController.m" lineNumber:99 description:{@"Invalid parameter not satisfying: %@", @"session"}];
   }
 
   v32.receiver = self;
@@ -592,10 +592,10 @@ void __50__PXCMMComposeRecipientViewController_viewDidLoad__block_invoke(uint64_
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_session, a3);
+    objc_storeStrong(&v7->_session, session);
     [(PXCMMComposeRecipientViewController *)v8 px_enableExtendedTraitCollection];
-    v9 = [(PXCMMComposeRecipientViewController *)v8 px_extendedTraitCollection];
-    v10 = [[PXCMMSpecManager alloc] initWithExtendedTraitCollection:v9 activityType:[(PXCMMSession *)v8->_session activityType]];
+    px_extendedTraitCollection = [(PXCMMComposeRecipientViewController *)v8 px_extendedTraitCollection];
+    v10 = [[PXCMMSpecManager alloc] initWithExtendedTraitCollection:px_extendedTraitCollection activityType:[(PXCMMSession *)v8->_session activityType]];
     specManager = v8->_specManager;
     v8->_specManager = v10;
 
@@ -607,23 +607,23 @@ void __50__PXCMMComposeRecipientViewController_viewDidLoad__block_invoke(uint64_
     [(PXUpdater *)v8->_updater addUpdateSelector:sel__updateFooter];
     [(PXUpdater *)v8->_updater addUpdateSelector:sel__updateTableView];
     [(PXUpdater *)v8->_updater addUpdateSelector:sel__updateUserInteraction];
-    v14 = [(PXCMMSession *)v8->_session peopleSuggestionsDataSourceManager];
-    v15 = [v14 dataSource];
-    v16 = [v15 numberOfItemsInSection:0];
+    peopleSuggestionsDataSourceManager = [(PXCMMSession *)v8->_session peopleSuggestionsDataSourceManager];
+    dataSource = [peopleSuggestionsDataSourceManager dataSource];
+    v16 = [dataSource numberOfItemsInSection:0];
 
     v17 = +[PXCompleteMyMomentSettings sharedInstance];
-    v18 = [v17 graphSuggestionEnabled];
+    graphSuggestionEnabled = [v17 graphSuggestionEnabled];
 
-    if (v18 && v16 > 0)
+    if (graphSuggestionEnabled && v16 > 0)
     {
       v19 = 1;
     }
 
     else
     {
-      v20 = [(PXCMMSession *)v8->_session peopleSuggestionsPreviewDataSourceManager];
-      v21 = [v20 dataSource];
-      v22 = [v21 numberOfItemsInSection:0];
+      peopleSuggestionsPreviewDataSourceManager = [(PXCMMSession *)v8->_session peopleSuggestionsPreviewDataSourceManager];
+      dataSource2 = [peopleSuggestionsPreviewDataSourceManager dataSource];
+      v22 = [dataSource2 numberOfItemsInSection:0];
 
       if (v22 < 1)
       {
@@ -633,14 +633,14 @@ void __50__PXCMMComposeRecipientViewController_viewDidLoad__block_invoke(uint64_
 
       else
       {
-        v23 = v20;
+        v23 = peopleSuggestionsPreviewDataSourceManager;
         v19 = 2;
       }
 
-      v14 = v23;
+      peopleSuggestionsDataSourceManager = v23;
     }
 
-    v24 = [[PXComposeRecipientDataSourceManager alloc] initWithPeopleSuggestionsDataSourceManager:v14 sourceType:v19];
+    v24 = [[PXComposeRecipientDataSourceManager alloc] initWithPeopleSuggestionsDataSourceManager:peopleSuggestionsDataSourceManager sourceType:v19];
     v25 = [[PXComposeRecipientTableViewModel alloc] initWithComposeRecipientDataSourceManager:v24];
     tableViewModel = v8->_tableViewModel;
     v8->_tableViewModel = v25;
@@ -680,21 +680,21 @@ void __55__PXCMMComposeRecipientViewController_initWithSession___block_invoke(ui
   [v3 setCanSelectRecipients:1];
 }
 
-- (PXCMMComposeRecipientViewController)initWithCoder:(id)a3
+- (PXCMMComposeRecipientViewController)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXCMMComposeRecipientViewController.m" lineNumber:95 description:{@"%s is not available as initializer", "-[PXCMMComposeRecipientViewController initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMComposeRecipientViewController.m" lineNumber:95 description:{@"%s is not available as initializer", "-[PXCMMComposeRecipientViewController initWithCoder:]"}];
 
   abort();
 }
 
-- (PXCMMComposeRecipientViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PXCMMComposeRecipientViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PXCMMComposeRecipientViewController.m" lineNumber:91 description:{@"%s is not available as initializer", "-[PXCMMComposeRecipientViewController initWithNibName:bundle:]"}];
+  nameCopy = name;
+  bundleCopy = bundle;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCMMComposeRecipientViewController.m" lineNumber:91 description:{@"%s is not available as initializer", "-[PXCMMComposeRecipientViewController initWithNibName:bundle:]"}];
 
   abort();
 }

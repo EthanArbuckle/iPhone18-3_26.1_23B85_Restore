@@ -3,23 +3,23 @@
 - (ARQATracer)init;
 - (ARQATracerDelegate)delegate;
 - (BOOL)_shouldDumpSemanticData;
-- (BOOL)isSemanticSegmentationDataAvailableForSession:(id)a3;
+- (BOOL)isSemanticSegmentationDataAvailableForSession:(id)session;
 - (CGPoint)offset;
-- (__CVBuffer)_createRecordablePixelBufferFromSegmentationBuffer:(__CVBuffer *)a3;
-- (__CVBuffer)_createRecordablePixelBufferFromSemanticsBuffer:(__CVBuffer *)a3;
+- (__CVBuffer)_createRecordablePixelBufferFromSegmentationBuffer:(__CVBuffer *)buffer;
+- (__CVBuffer)_createRecordablePixelBufferFromSemanticsBuffer:(__CVBuffer *)buffer;
 - (void)dealloc;
 - (void)flushDataBufferToFile;
 - (void)receiveDefaults;
 - (void)replaySensorDidFinishReplayingData;
-- (void)session:(id)a3 didChangeState:(unint64_t)a4;
-- (void)start:(id)a3;
+- (void)session:(id)session didChangeState:(unint64_t)state;
+- (void)start:(id)start;
 - (void)stop;
-- (void)trace:(id)a3 forKey:(id)a4;
-- (void)traceRaycastQuery:(id)a3;
-- (void)traceRaycastResults:(id)a3;
-- (void)update:(id)a3 session:(id)a4;
-- (void)writeJSONObjectToStream:(id)a3 prefix:(id)a4;
-- (void)writeStringToOutputStream:(id)a3;
+- (void)trace:(id)trace forKey:(id)key;
+- (void)traceRaycastQuery:(id)query;
+- (void)traceRaycastResults:(id)results;
+- (void)update:(id)update session:(id)session;
+- (void)writeJSONObjectToStream:(id)stream prefix:(id)prefix;
+- (void)writeStringToOutputStream:(id)stream;
 @end
 
 @implementation ARQATracer
@@ -50,13 +50,13 @@
     semanticsVideoQueue = v2->_semanticsVideoQueue;
     v2->_semanticsVideoQueue = v12;
 
-    v14 = [objc_opt_class() traceOutputDirectory];
-    v15 = [v14 stringByAppendingPathComponent:@"data.json"];
+    traceOutputDirectory = [objc_opt_class() traceOutputDirectory];
+    v15 = [traceOutputDirectory stringByAppendingPathComponent:@"data.json"];
     [(ARQATracer *)v2 setTraceOutputFilePath:v15];
 
     v16 = objc_alloc(MEMORY[0x1E695DFC0]);
-    v17 = [(ARQATracer *)v2 traceOutputFilePath];
-    v18 = [v16 initToFileAtPath:v17 append:0];
+    traceOutputFilePath = [(ARQATracer *)v2 traceOutputFilePath];
+    v18 = [v16 initToFileAtPath:traceOutputFilePath append:0];
     framesStreamToFile = v2->_framesStreamToFile;
     v2->_framesStreamToFile = v18;
 
@@ -65,9 +65,9 @@
     v2->_dataBuffer = v20;
 
     v2->_additionalResultsLock._os_unfair_lock_opaque = 0;
-    v22 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     additionalResults = v2->_additionalResults;
-    v2->_additionalResults = v22;
+    v2->_additionalResults = dictionary;
   }
 
   return v2;
@@ -107,43 +107,43 @@
   [(ARQATracer *)&v7 dealloc];
 }
 
-- (void)traceRaycastQuery:(id)a3
+- (void)traceRaycastQuery:(id)query
 {
-  v4 = [ARQAHelper dictionaryFromRaycastQuery:a3];
+  v4 = [ARQAHelper dictionaryFromRaycastQuery:query];
   raycastQueryData = self->_raycastQueryData;
   self->_raycastQueryData = v4;
 }
 
-- (void)traceRaycastResults:(id)a3
+- (void)traceRaycastResults:(id)results
 {
-  v4 = [ARQAHelper arrayFromRaycastResults:a3];
+  v4 = [ARQAHelper arrayFromRaycastResults:results];
   raycastResultData = self->_raycastResultData;
   self->_raycastResultData = v4;
 }
 
-- (void)trace:(id)a3 forKey:(id)a4
+- (void)trace:(id)trace forKey:(id)key
 {
-  v13 = a3;
-  v6 = a4;
+  traceCopy = trace;
+  keyCopy = key;
   os_unfair_lock_lock(&self->_additionalResultsLock);
-  v7 = [(ARQATracer *)self additionalResults];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  additionalResults = [(ARQATracer *)self additionalResults];
+  v8 = [additionalResults objectForKeyedSubscript:keyCopy];
 
   if (v8)
   {
-    v9 = [(ARQATracer *)self additionalResults];
-    v10 = [v9 objectForKeyedSubscript:v6];
-    v11 = [v13 encodeToDictionary];
-    [v10 addObject:v11];
+    additionalResults2 = [(ARQATracer *)self additionalResults];
+    v10 = [additionalResults2 objectForKeyedSubscript:keyCopy];
+    encodeToDictionary = [traceCopy encodeToDictionary];
+    [v10 addObject:encodeToDictionary];
   }
 
   else
   {
     v12 = MEMORY[0x1E695DF70];
-    v9 = [v13 encodeToDictionary];
-    v10 = [v12 arrayWithObject:v9];
-    v11 = [(ARQATracer *)self additionalResults];
-    [v11 setObject:v10 forKeyedSubscript:v6];
+    additionalResults2 = [traceCopy encodeToDictionary];
+    v10 = [v12 arrayWithObject:additionalResults2];
+    encodeToDictionary = [(ARQATracer *)self additionalResults];
+    [encodeToDictionary setObject:v10 forKeyedSubscript:keyCopy];
   }
 
   os_unfair_lock_unlock(&self->_additionalResultsLock);
@@ -155,51 +155,51 @@
   v13 = v3;
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  [(ARQATracer *)self setRecordScreen:v4];
+  [(ARQATracer *)self setRecordScreen:bOOLValue];
   v5 = [ARKitUserDefaults valueForKey:@"com.apple.arkit.session.qatracing.forceQuitApp"];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 BOOLValue];
+    bOOLValue2 = [v5 BOOLValue];
   }
 
   else
   {
-    v7 = 1;
+    bOOLValue2 = 1;
   }
 
-  [(ARQATracer *)self setForceQuitApp:v7];
+  [(ARQATracer *)self setForceQuitApp:bOOLValue2];
   v8 = [ARKitUserDefaults stringForKey:@"com.apple.arkit.session.qatracing.framesLabelOffset"];
   v9 = [v8 componentsSeparatedByString:{@", "}];
   if ([v9 count] == 2)
   {
     v10 = [v9 objectAtIndexedSubscript:0];
-    v11 = [v10 integerValue];
+    integerValue = [v10 integerValue];
     v12 = [v9 objectAtIndexedSubscript:1];
-    -[ARQATracer setOffset:](self, "setOffset:", v11, [v12 integerValue]);
+    -[ARQATracer setOffset:](self, "setOffset:", integerValue, [v12 integerValue]);
   }
 }
 
-- (void)writeJSONObjectToStream:(id)a3 prefix:(id)a4
+- (void)writeJSONObjectToStream:(id)stream prefix:(id)prefix
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  streamCopy = stream;
+  prefixCopy = prefix;
+  if (prefixCopy)
   {
-    [(ARQATracer *)self writeStringToOutputStream:v7];
+    [(ARQATracer *)self writeStringToOutputStream:prefixCopy];
   }
 
   v13 = 0;
-  v8 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v6 options:0 error:&v13];
+  v8 = [MEMORY[0x1E696ACB0] dataWithJSONObject:streamCopy options:0 error:&v13];
   v9 = v13;
   [(NSMutableData *)self->_dataBuffer appendData:v8];
 
@@ -213,7 +213,7 @@
       *buf = 138543874;
       v15 = v12;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
       v19 = v9;
       _os_log_impl(&dword_1C241C000, v10, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Error serializing JSON with error %@", buf, 0x20u);
@@ -223,9 +223,9 @@
   }
 }
 
-- (void)writeStringToOutputStream:(id)a3
+- (void)writeStringToOutputStream:(id)stream
 {
-  v4 = [a3 dataUsingEncoding:4];
+  v4 = [stream dataUsingEncoding:4];
   [(NSMutableData *)self->_dataBuffer appendData:v4];
 }
 
@@ -243,7 +243,7 @@
       v7 = 138543618;
       v8 = v6;
       v9 = 2048;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1C241C000, v4, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Not all bytes could be written to file", &v7, 0x16u);
     }
   }
@@ -251,17 +251,17 @@
   [(NSMutableData *)self->_dataBuffer setLength:0];
 }
 
-- (void)start:(id)a3
+- (void)start:(id)start
 {
-  v4 = a3;
+  startCopy = start;
   processingQueue = self->_processingQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __20__ARQATracer_start___block_invoke;
   v7[3] = &unk_1E817BEC8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = startCopy;
+  v6 = startCopy;
   dispatch_async(processingQueue, v7);
 }
 
@@ -626,17 +626,17 @@ void __18__ARQATracer_stop__block_invoke_84(uint64_t a1)
   }
 }
 
-- (void)update:(id)a3 session:(id)a4
+- (void)update:(id)update session:(id)session
 {
-  v5 = a3;
+  updateCopy = update;
   processingQueue = self->_processingQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __29__ARQATracer_update_session___block_invoke;
   v8[3] = &unk_1E817BEC8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = updateCopy;
+  v7 = updateCopy;
   dispatch_sync(processingQueue, v8);
 }
 
@@ -837,9 +837,9 @@ void __29__ARQATracer_update_session___block_invoke_4(uint64_t a1)
 
   else
   {
-    v6 = [MEMORY[0x1E696AAE8] mainBundle];
-    v7 = [v6 infoDictionary];
-    v8 = [v7 objectForKey:*MEMORY[0x1E695E4E8]];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    infoDictionary = [mainBundle infoDictionary];
+    v8 = [infoDictionary objectForKey:*MEMORY[0x1E695E4E8]];
 
     v9 = NSTemporaryDirectory();
     v10 = v9;
@@ -856,11 +856,11 @@ void __29__ARQATracer_update_session___block_invoke_4(uint64_t a1)
     v5 = [v9 stringByAppendingPathComponent:v11];
   }
 
-  v12 = [MEMORY[0x1E696AC08] defaultManager];
-  if (([v12 fileExistsAtPath:v5] & 1) == 0)
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  if (([defaultManager fileExistsAtPath:v5] & 1) == 0)
   {
     v24 = 0;
-    [v12 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:&v24];
+    [defaultManager createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:0 error:&v24];
     v13 = v24;
     v14 = _ARLogGeneral_35();
     v15 = v14;
@@ -873,7 +873,7 @@ void __29__ARQATracer_update_session___block_invoke_4(uint64_t a1)
         *buf = 138543874;
         v26 = v17;
         v27 = 2048;
-        v28 = a1;
+        selfCopy2 = self;
         v29 = 2112;
         v30 = v13;
         v18 = "%{public}@ <%p>: Error creating directory: %@";
@@ -891,7 +891,7 @@ LABEL_13:
       *buf = 138543874;
       v26 = v17;
       v27 = 2048;
-      v28 = a1;
+      selfCopy2 = self;
       v29 = 2114;
       v30 = v5;
       v18 = "%{public}@ <%p>: Created tracing output directory: %{public}@";
@@ -906,18 +906,18 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)isSemanticSegmentationDataAvailableForSession:(id)a3
+- (BOOL)isSemanticSegmentationDataAvailableForSession:(id)session
 {
-  v3 = a3;
-  v4 = [v3 configuration];
+  sessionCopy = session;
+  configuration = [sessionCopy configuration];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v6 = [v3 configuration];
-  v7 = v6;
+  configuration2 = [sessionCopy configuration];
+  v7 = configuration2;
   if (isKindOfClass)
   {
-    v8 = [v6 planeDetection] && (objc_msgSend(v7, "isMLModelEnabled") & 1) != 0 || objc_msgSend(v7, "sceneReconstruction") != 0;
+    isMLModelEnabled = [configuration2 planeDetection] && (objc_msgSend(v7, "isMLModelEnabled") & 1) != 0 || objc_msgSend(v7, "sceneReconstruction") != 0;
   }
 
   else
@@ -925,8 +925,8 @@ LABEL_13:
     objc_opt_class();
     v9 = objc_opt_isKindOfClass();
 
-    v10 = [v3 configuration];
-    v7 = v10;
+    configuration3 = [sessionCopy configuration];
+    v7 = configuration3;
     if ((v9 & 1) == 0)
     {
       objc_opt_class();
@@ -934,27 +934,27 @@ LABEL_13:
 
       if ((v11 & 1) == 0)
       {
-        v8 = 0;
+        isMLModelEnabled = 0;
         goto LABEL_14;
       }
 
-      v10 = [v3 configuration];
-      v7 = v10;
+      configuration3 = [sessionCopy configuration];
+      v7 = configuration3;
     }
 
-    if ([v10 planeDetection])
+    if ([configuration3 planeDetection])
     {
-      v8 = [v7 isMLModelEnabled];
+      isMLModelEnabled = [v7 isMLModelEnabled];
     }
 
     else
     {
-      v8 = 0;
+      isMLModelEnabled = 0;
     }
   }
 
 LABEL_14:
-  return v8;
+  return isMLModelEnabled;
 }
 
 - (BOOL)_shouldDumpSemanticData
@@ -985,45 +985,45 @@ BOOL __37__ARQATracer__shouldDumpSemanticData__block_invoke()
     v6 = 138543618;
     v7 = v5;
     v8 = 2048;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1C241C000, v3, OS_LOG_TYPE_INFO, "%{public}@ <%p>: Replay finished", &v6, 0x16u);
   }
 
   [(ARQATracer *)self stop];
 }
 
-- (void)session:(id)a3 didChangeState:(unint64_t)a4
+- (void)session:(id)session didChangeState:(unint64_t)state
 {
-  v6 = a3;
-  if (a4)
+  sessionCopy = session;
+  if (state)
   {
-    if (a4 != 1)
+    if (state != 1)
     {
       goto LABEL_6;
     }
 
-    v7 = v6;
-    [(ARQATracer *)self start:v6];
+    v7 = sessionCopy;
+    [(ARQATracer *)self start:sessionCopy];
   }
 
   else
   {
-    v7 = v6;
+    v7 = sessionCopy;
     [(ARQATracer *)self stop];
   }
 
-  v6 = v7;
+  sessionCopy = v7;
 LABEL_6:
 }
 
-- (__CVBuffer)_createRecordablePixelBufferFromSegmentationBuffer:(__CVBuffer *)a3
+- (__CVBuffer)_createRecordablePixelBufferFromSegmentationBuffer:(__CVBuffer *)buffer
 {
   v24 = *MEMORY[0x1E69E9840];
   p_segmentationYUVPixelBufferPool = &self->_segmentationYUVPixelBufferPool;
   if (!self->_segmentationYUVPixelBufferPool)
   {
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
     if (ar_pixelBufferPoolCreateNew(Width, Height, 875704422, p_segmentationYUVPixelBufferPool))
     {
       v7 = _ARLogGeneral_35();
@@ -1034,7 +1034,7 @@ LABEL_6:
         *buf = 138543618;
         v21 = v9;
         v22 = 2048;
-        v23 = self;
+        selfCopy4 = self;
         v10 = "%{public}@ <%p>: Could not create pixel buffer pool.";
         goto LABEL_12;
       }
@@ -1054,7 +1054,7 @@ LABEL_6:
       *buf = 138543618;
       v21 = v9;
       v22 = 2048;
-      v23 = self;
+      selfCopy4 = self;
       v10 = "%{public}@ <%p>: Could not create VTPixelTransferSession.";
       goto LABEL_12;
     }
@@ -1073,7 +1073,7 @@ LABEL_6:
       *buf = 138543618;
       v21 = v9;
       v22 = 2048;
-      v23 = self;
+      selfCopy4 = self;
       v10 = "%{public}@ <%p>: Could not create pixel buffer.";
 LABEL_12:
       _os_log_impl(&dword_1C241C000, v7, OS_LOG_TYPE_ERROR, v10, buf, 0x16u);
@@ -1084,7 +1084,7 @@ LABEL_13:
     return 0;
   }
 
-  if (VTPixelTransferSessionTransferImage(self->_segmentationTransferSession, a3, pixelBufferOut))
+  if (VTPixelTransferSessionTransferImage(self->_segmentationTransferSession, buffer, pixelBufferOut))
   {
     v16 = _ARLogGeneral_35();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1094,7 +1094,7 @@ LABEL_13:
       *buf = 138543618;
       v21 = v18;
       v22 = 2048;
-      v23 = self;
+      selfCopy4 = self;
       _os_log_impl(&dword_1C241C000, v16, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Could not create transfer pixel buffer.", buf, 0x16u);
     }
   }
@@ -1102,15 +1102,15 @@ LABEL_13:
   return pixelBufferOut;
 }
 
-- (__CVBuffer)_createRecordablePixelBufferFromSemanticsBuffer:(__CVBuffer *)a3
+- (__CVBuffer)_createRecordablePixelBufferFromSemanticsBuffer:(__CVBuffer *)buffer
 {
   v20 = *MEMORY[0x1E69E9840];
   p_semanticsYUVPixelBufferPool = &self->_semanticsYUVPixelBufferPool;
   semanticsYUVPixelBufferPool = self->_semanticsYUVPixelBufferPool;
   if (!semanticsYUVPixelBufferPool)
   {
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
+    Width = CVPixelBufferGetWidth(buffer);
+    Height = CVPixelBufferGetHeight(buffer);
     if (ar_pixelBufferPoolCreateNew(Width, Height, 1111970369, p_semanticsYUVPixelBufferPool))
     {
       v7 = _ARLogGeneral_35();
@@ -1121,7 +1121,7 @@ LABEL_13:
         *buf = 138543618;
         v17 = v9;
         v18 = 2048;
-        v19 = self;
+        selfCopy2 = self;
         v10 = "%{public}@ <%p>: Could not create pixel buffer pool.";
         goto LABEL_8;
       }
@@ -1145,7 +1145,7 @@ LABEL_9:
       *buf = 138543618;
       v17 = v9;
       v18 = 2048;
-      v19 = self;
+      selfCopy2 = self;
       v10 = "%{public}@ <%p>: Could not create pixel buffer.";
 LABEL_8:
       _os_log_impl(&dword_1C241C000, v7, OS_LOG_TYPE_ERROR, v10, buf, 0x16u);
@@ -1156,7 +1156,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  ARCreatePixelBufferFromSourceWithPixelConverter(a3, 0x42475241u, &pixelBufferOut, &__block_literal_global_103);
+  ARCreatePixelBufferFromSourceWithPixelConverter(buffer, 0x42475241u, &pixelBufferOut, &__block_literal_global_103);
   return pixelBufferOut;
 }
 

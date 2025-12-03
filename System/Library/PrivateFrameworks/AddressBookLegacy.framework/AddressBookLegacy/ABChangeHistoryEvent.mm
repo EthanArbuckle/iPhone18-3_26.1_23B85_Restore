@@ -1,181 +1,181 @@
 @interface ABChangeHistoryEvent
-+ (id)groupAddEventWithRecordID:(int)a3 identifier:(id)a4;
-+ (id)groupDeleteEventWithRecordID:(int)a3 identifier:(id)a4 externalID:(id)a5;
-+ (id)groupUpdateEventWithRecordID:(int)a3 identifier:(id)a4;
-+ (id)groupWithRecordID:(int)a3 identifier:(id)a4 eventType:(int)a5 externalID:(id)a6;
-+ (id)linkEventWithRecordID:(int)a3 identifier:(id)a4 linkToIdentifier:(id)a5 unifiedIdentifier:(id)a6;
-+ (id)meCardChangedEventWithRecordID:(int)a3 identifier:(id)a4;
-+ (id)personAddEventWithRecordID:(int)a3 identifier:(id)a4;
-+ (id)personDeleteEventWithRecordID:(int)a3 identifier:(id)a4 externalID:(id)a5 personLink:(int)a6;
-+ (id)personUpdateEventWithRecordID:(int)a3 identifier:(id)a4 imagesChanged:(BOOL)a5 personLink:(int)a6;
-+ (id)personWithRecordID:(int)a3 identifier:(id)a4 eventType:(int)a5;
-+ (id)personWithRecordID:(int)a3 identifier:(id)a4 eventType:(int)a5 imagesChanged:(BOOL)a6 externalID:(id)a7 personLink:(int)a8;
-+ (id)setPreferredImageEventWithRecordID:(int)a3 identifier:(id)a4;
-+ (id)setPreferredNameEventWithRecordID:(int)a3 identifier:(id)a4;
-+ (id)unifiedPersonAddEventWithUnifiedIdentifier:(id)a3;
-+ (id)unifiedPersonDeleteEventWithUnifiedIdentifier:(id)a3;
-+ (id)unifiedPersonUpdateEventWithUnifiedIdentifier:(id)a3;
-+ (id)unifiedPersonWithIdentifier:(id)a3 eventType:(int)a4;
-+ (id)unlinkEventWithRecordID:(int)a3 identifier:(id)a4;
-- (ABChangeHistoryEvent)initWithEntityType:(int)a3 eventType:(int)a4 sequenceNumber:(int64_t)a5 recordID:(int)a6 recordGUID:(id)a7 externalID:(id)a8 imagesChanged:(BOOL)a9 personLink:(int)a10 personLinkUUID:(id)a11 linkToPersonUUID:(id)a12;
-- (BOOL)isEqual:(id)a3;
++ (id)groupAddEventWithRecordID:(int)d identifier:(id)identifier;
++ (id)groupDeleteEventWithRecordID:(int)d identifier:(id)identifier externalID:(id)iD;
++ (id)groupUpdateEventWithRecordID:(int)d identifier:(id)identifier;
++ (id)groupWithRecordID:(int)d identifier:(id)identifier eventType:(int)type externalID:(id)iD;
++ (id)linkEventWithRecordID:(int)d identifier:(id)identifier linkToIdentifier:(id)toIdentifier unifiedIdentifier:(id)unifiedIdentifier;
++ (id)meCardChangedEventWithRecordID:(int)d identifier:(id)identifier;
++ (id)personAddEventWithRecordID:(int)d identifier:(id)identifier;
++ (id)personDeleteEventWithRecordID:(int)d identifier:(id)identifier externalID:(id)iD personLink:(int)link;
++ (id)personUpdateEventWithRecordID:(int)d identifier:(id)identifier imagesChanged:(BOOL)changed personLink:(int)link;
++ (id)personWithRecordID:(int)d identifier:(id)identifier eventType:(int)type;
++ (id)personWithRecordID:(int)d identifier:(id)identifier eventType:(int)type imagesChanged:(BOOL)changed externalID:(id)iD personLink:(int)link;
++ (id)setPreferredImageEventWithRecordID:(int)d identifier:(id)identifier;
++ (id)setPreferredNameEventWithRecordID:(int)d identifier:(id)identifier;
++ (id)unifiedPersonAddEventWithUnifiedIdentifier:(id)identifier;
++ (id)unifiedPersonDeleteEventWithUnifiedIdentifier:(id)identifier;
++ (id)unifiedPersonUpdateEventWithUnifiedIdentifier:(id)identifier;
++ (id)unifiedPersonWithIdentifier:(id)identifier eventType:(int)type;
++ (id)unlinkEventWithRecordID:(int)d identifier:(id)identifier;
+- (ABChangeHistoryEvent)initWithEntityType:(int)type eventType:(int)eventType sequenceNumber:(int64_t)number recordID:(int)d recordGUID:(id)iD externalID:(id)externalID imagesChanged:(BOOL)changed personLink:(int)self0 personLinkUUID:(id)self1 linkToPersonUUID:(id)self2;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
-- (id)descriptionForEntityType:(int)a3;
-- (id)descriptionForEventType:(int)a3;
+- (id)descriptionForEntityType:(int)type;
+- (id)descriptionForEventType:(int)type;
 - (void)dealloc;
 @end
 
 @implementation ABChangeHistoryEvent
 
-+ (id)personAddEventWithRecordID:(int)a3 identifier:(id)a4
++ (id)personAddEventWithRecordID:(int)d identifier:(id)identifier
 {
-  v5 = *&a3;
+  v5 = *&d;
   v6 = objc_opt_class();
 
-  return [v6 personWithRecordID:v5 identifier:a4 eventType:0];
+  return [v6 personWithRecordID:v5 identifier:identifier eventType:0];
 }
 
-+ (id)personUpdateEventWithRecordID:(int)a3 identifier:(id)a4 imagesChanged:(BOOL)a5 personLink:(int)a6
++ (id)personUpdateEventWithRecordID:(int)d identifier:(id)identifier imagesChanged:(BOOL)changed personLink:(int)link
 {
-  v6 = *&a6;
-  v7 = a5;
-  v9 = *&a3;
+  v6 = *&link;
+  changedCopy = changed;
+  v9 = *&d;
   v10 = objc_opt_class();
 
-  return [v10 personWithRecordID:v9 identifier:a4 eventType:1 imagesChanged:v7 externalID:0 personLink:v6];
+  return [v10 personWithRecordID:v9 identifier:identifier eventType:1 imagesChanged:changedCopy externalID:0 personLink:v6];
 }
 
-+ (id)personDeleteEventWithRecordID:(int)a3 identifier:(id)a4 externalID:(id)a5 personLink:(int)a6
++ (id)personDeleteEventWithRecordID:(int)d identifier:(id)identifier externalID:(id)iD personLink:(int)link
 {
-  v6 = *&a6;
-  v9 = *&a3;
+  v6 = *&link;
+  v9 = *&d;
   v10 = objc_opt_class();
 
-  return [v10 personWithRecordID:v9 identifier:a4 eventType:2 imagesChanged:0 externalID:a5 personLink:v6];
+  return [v10 personWithRecordID:v9 identifier:identifier eventType:2 imagesChanged:0 externalID:iD personLink:v6];
 }
 
-+ (id)unifiedPersonAddEventWithUnifiedIdentifier:(id)a3
++ (id)unifiedPersonAddEventWithUnifiedIdentifier:(id)identifier
 {
   v4 = objc_opt_class();
 
-  return [v4 unifiedPersonWithIdentifier:a3 eventType:3];
+  return [v4 unifiedPersonWithIdentifier:identifier eventType:3];
 }
 
-+ (id)unifiedPersonUpdateEventWithUnifiedIdentifier:(id)a3
++ (id)unifiedPersonUpdateEventWithUnifiedIdentifier:(id)identifier
 {
   v4 = objc_opt_class();
 
-  return [v4 unifiedPersonWithIdentifier:a3 eventType:4];
+  return [v4 unifiedPersonWithIdentifier:identifier eventType:4];
 }
 
-+ (id)unifiedPersonDeleteEventWithUnifiedIdentifier:(id)a3
++ (id)unifiedPersonDeleteEventWithUnifiedIdentifier:(id)identifier
 {
   v4 = objc_opt_class();
 
-  return [v4 unifiedPersonWithIdentifier:a3 eventType:5];
+  return [v4 unifiedPersonWithIdentifier:identifier eventType:5];
 }
 
-+ (id)linkEventWithRecordID:(int)a3 identifier:(id)a4 linkToIdentifier:(id)a5 unifiedIdentifier:(id)a6
++ (id)linkEventWithRecordID:(int)d identifier:(id)identifier linkToIdentifier:(id)toIdentifier unifiedIdentifier:(id)unifiedIdentifier
 {
   HIDWORD(v8) = -1;
   LOBYTE(v8) = 0;
-  v6 = [[ABChangeHistoryEvent alloc] initWithEntityType:0 eventType:6 sequenceNumber:-2 recordID:*&a3 recordGUID:a4 externalID:0 imagesChanged:v8 personLink:a6 personLinkUUID:a5 linkToPersonUUID:?];
+  v6 = [[ABChangeHistoryEvent alloc] initWithEntityType:0 eventType:6 sequenceNumber:-2 recordID:*&d recordGUID:identifier externalID:0 imagesChanged:v8 personLink:unifiedIdentifier personLinkUUID:toIdentifier linkToPersonUUID:?];
 
   return v6;
 }
 
-+ (id)unlinkEventWithRecordID:(int)a3 identifier:(id)a4
++ (id)unlinkEventWithRecordID:(int)d identifier:(id)identifier
 {
-  v5 = *&a3;
+  v5 = *&d;
   v6 = objc_opt_class();
 
-  return [v6 personWithRecordID:v5 identifier:a4 eventType:7];
+  return [v6 personWithRecordID:v5 identifier:identifier eventType:7];
 }
 
-+ (id)setPreferredNameEventWithRecordID:(int)a3 identifier:(id)a4
++ (id)setPreferredNameEventWithRecordID:(int)d identifier:(id)identifier
 {
-  v5 = *&a3;
+  v5 = *&d;
   v6 = objc_opt_class();
 
-  return [v6 personWithRecordID:v5 identifier:a4 eventType:8];
+  return [v6 personWithRecordID:v5 identifier:identifier eventType:8];
 }
 
-+ (id)setPreferredImageEventWithRecordID:(int)a3 identifier:(id)a4
++ (id)setPreferredImageEventWithRecordID:(int)d identifier:(id)identifier
 {
-  v5 = *&a3;
+  v5 = *&d;
   v6 = objc_opt_class();
 
-  return [v6 personWithRecordID:v5 identifier:a4 eventType:9];
+  return [v6 personWithRecordID:v5 identifier:identifier eventType:9];
 }
 
-+ (id)meCardChangedEventWithRecordID:(int)a3 identifier:(id)a4
++ (id)meCardChangedEventWithRecordID:(int)d identifier:(id)identifier
 {
-  v5 = *&a3;
+  v5 = *&d;
   v6 = objc_opt_class();
 
-  return [v6 personWithRecordID:v5 identifier:a4 eventType:10];
+  return [v6 personWithRecordID:v5 identifier:identifier eventType:10];
 }
 
-+ (id)groupAddEventWithRecordID:(int)a3 identifier:(id)a4
++ (id)groupAddEventWithRecordID:(int)d identifier:(id)identifier
 {
-  v5 = *&a3;
+  v5 = *&d;
   v6 = objc_opt_class();
 
-  return [v6 groupWithRecordID:v5 identifier:a4 eventType:0 externalID:0];
+  return [v6 groupWithRecordID:v5 identifier:identifier eventType:0 externalID:0];
 }
 
-+ (id)groupUpdateEventWithRecordID:(int)a3 identifier:(id)a4
++ (id)groupUpdateEventWithRecordID:(int)d identifier:(id)identifier
 {
-  v5 = *&a3;
+  v5 = *&d;
   v6 = objc_opt_class();
 
-  return [v6 groupWithRecordID:v5 identifier:a4 eventType:1 externalID:0];
+  return [v6 groupWithRecordID:v5 identifier:identifier eventType:1 externalID:0];
 }
 
-+ (id)groupDeleteEventWithRecordID:(int)a3 identifier:(id)a4 externalID:(id)a5
++ (id)groupDeleteEventWithRecordID:(int)d identifier:(id)identifier externalID:(id)iD
 {
-  v6 = *&a3;
+  v6 = *&d;
   v7 = objc_opt_class();
 
-  return [v7 groupWithRecordID:v6 identifier:a4 eventType:2 externalID:0];
+  return [v7 groupWithRecordID:v6 identifier:identifier eventType:2 externalID:0];
 }
 
-+ (id)personWithRecordID:(int)a3 identifier:(id)a4 eventType:(int)a5
++ (id)personWithRecordID:(int)d identifier:(id)identifier eventType:(int)type
 {
-  v5 = *&a5;
-  v7 = *&a3;
+  v5 = *&type;
+  v7 = *&d;
   v8 = objc_opt_class();
 
-  return [v8 personWithRecordID:v7 identifier:a4 eventType:v5 imagesChanged:0 externalID:0 personLink:0xFFFFFFFFLL];
+  return [v8 personWithRecordID:v7 identifier:identifier eventType:v5 imagesChanged:0 externalID:0 personLink:0xFFFFFFFFLL];
 }
 
-+ (id)unifiedPersonWithIdentifier:(id)a3 eventType:(int)a4
++ (id)unifiedPersonWithIdentifier:(id)identifier eventType:(int)type
 {
-  v4 = *&a4;
+  v4 = *&type;
   v6 = objc_opt_class();
 
-  return [v6 personWithRecordID:0xFFFFFFFFLL identifier:a3 eventType:v4 imagesChanged:0 externalID:0 personLink:0xFFFFFFFFLL];
+  return [v6 personWithRecordID:0xFFFFFFFFLL identifier:identifier eventType:v4 imagesChanged:0 externalID:0 personLink:0xFFFFFFFFLL];
 }
 
-+ (id)personWithRecordID:(int)a3 identifier:(id)a4 eventType:(int)a5 imagesChanged:(BOOL)a6 externalID:(id)a7 personLink:(int)a8
++ (id)personWithRecordID:(int)d identifier:(id)identifier eventType:(int)type imagesChanged:(BOOL)changed externalID:(id)iD personLink:(int)link
 {
-  HIDWORD(v10) = a8;
-  LOBYTE(v10) = a6;
-  v8 = [[ABChangeHistoryEvent alloc] initWithEntityType:0 eventType:*&a5 sequenceNumber:-2 recordID:*&a3 recordGUID:a4 externalID:a7 imagesChanged:v10 personLink:0 personLinkUUID:0 linkToPersonUUID:?];
+  HIDWORD(v10) = link;
+  LOBYTE(v10) = changed;
+  v8 = [[ABChangeHistoryEvent alloc] initWithEntityType:0 eventType:*&type sequenceNumber:-2 recordID:*&d recordGUID:identifier externalID:iD imagesChanged:v10 personLink:0 personLinkUUID:0 linkToPersonUUID:?];
 
   return v8;
 }
 
-+ (id)groupWithRecordID:(int)a3 identifier:(id)a4 eventType:(int)a5 externalID:(id)a6
++ (id)groupWithRecordID:(int)d identifier:(id)identifier eventType:(int)type externalID:(id)iD
 {
   HIDWORD(v8) = -1;
   LOBYTE(v8) = 0;
-  v6 = [[ABChangeHistoryEvent alloc] initWithEntityType:1 eventType:*&a5 sequenceNumber:-2 recordID:*&a3 recordGUID:a4 externalID:a6 imagesChanged:v8 personLink:0 personLinkUUID:0 linkToPersonUUID:?];
+  v6 = [[ABChangeHistoryEvent alloc] initWithEntityType:1 eventType:*&type sequenceNumber:-2 recordID:*&d recordGUID:identifier externalID:iD imagesChanged:v8 personLink:0 personLinkUUID:0 linkToPersonUUID:?];
 
   return v6;
 }
 
-- (ABChangeHistoryEvent)initWithEntityType:(int)a3 eventType:(int)a4 sequenceNumber:(int64_t)a5 recordID:(int)a6 recordGUID:(id)a7 externalID:(id)a8 imagesChanged:(BOOL)a9 personLink:(int)a10 personLinkUUID:(id)a11 linkToPersonUUID:(id)a12
+- (ABChangeHistoryEvent)initWithEntityType:(int)type eventType:(int)eventType sequenceNumber:(int64_t)number recordID:(int)d recordGUID:(id)iD externalID:(id)externalID imagesChanged:(BOOL)changed personLink:(int)self0 personLinkUUID:(id)self1 linkToPersonUUID:(id)self2
 {
   v21.receiver = self;
   v21.super_class = ABChangeHistoryEvent;
@@ -183,16 +183,16 @@
   v19 = v18;
   if (v18)
   {
-    v18->_entityType = a3;
-    v18->_eventType = a4;
-    v18->_sequenceNumber = a5;
-    v18->_recordID = a6;
-    v18->_recordGUID = [a7 copy];
-    v19->_externalID = [a8 copy];
-    v19->_imagesChanged = a9;
-    v19->_personLink = a10;
-    v19->_personLinkUUID = [a11 copy];
-    v19->_linkToPersonUUID = [a12 copy];
+    v18->_entityType = type;
+    v18->_eventType = eventType;
+    v18->_sequenceNumber = number;
+    v18->_recordID = d;
+    v18->_recordGUID = [iD copy];
+    v19->_externalID = [externalID copy];
+    v19->_imagesChanged = changed;
+    v19->_personLink = link;
+    v19->_personLinkUUID = [uID copy];
+    v19->_linkToPersonUUID = [uUID copy];
   }
 
   return v19;
@@ -249,9 +249,9 @@
   return [v3 build];
 }
 
-- (id)descriptionForEntityType:(int)a3
+- (id)descriptionForEntityType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   if (descriptionForEntityType__cn_once_token_1 != -1)
   {
     [ABChangeHistoryEvent descriptionForEntityType:];
@@ -280,9 +280,9 @@ uint64_t __49__ABChangeHistoryEvent_descriptionForEntityType___block_invoke()
   return result;
 }
 
-- (id)descriptionForEventType:(int)a3
+- (id)descriptionForEventType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   if (descriptionForEventType__cn_once_token_2 != -1)
   {
     [ABChangeHistoryEvent descriptionForEventType:];
@@ -327,28 +327,28 @@ uint64_t __48__ABChangeHistoryEvent_descriptionForEventType___block_invoke()
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v12[6] = MEMORY[0x1E69E9820];
   v12[7] = 3221225472;
   v12[8] = __32__ABChangeHistoryEvent_isEqual___block_invoke;
   v12[9] = &unk_1E7CCD5A8;
   v12[10] = self;
-  v12[11] = a3;
-  v11[5] = a3;
+  v12[11] = equal;
+  v11[5] = equal;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __32__ABChangeHistoryEvent_isEqual___block_invoke_2;
   v12[3] = &unk_1E7CCD5A8;
   v12[4] = self;
-  v12[5] = a3;
-  v10[5] = a3;
+  v12[5] = equal;
+  v10[5] = equal;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __32__ABChangeHistoryEvent_isEqual___block_invoke_3;
   v11[3] = &unk_1E7CCD5A8;
   v11[4] = self;
-  v9[5] = a3;
+  v9[5] = equal;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __32__ABChangeHistoryEvent_isEqual___block_invoke_4;
@@ -359,26 +359,26 @@ uint64_t __48__ABChangeHistoryEvent_descriptionForEventType___block_invoke()
   v9[2] = __32__ABChangeHistoryEvent_isEqual___block_invoke_5;
   v9[3] = &unk_1E7CCD5A8;
   v9[4] = self;
-  v7[5] = a3;
+  v7[5] = equal;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __32__ABChangeHistoryEvent_isEqual___block_invoke_6;
   v8[3] = &unk_1E7CCD5A8;
   v8[4] = self;
-  v8[5] = a3;
-  v6[5] = a3;
+  v8[5] = equal;
+  v6[5] = equal;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__ABChangeHistoryEvent_isEqual___block_invoke_7;
   v7[3] = &unk_1E7CCD5A8;
   v7[4] = self;
-  v5[5] = a3;
+  v5[5] = equal;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __32__ABChangeHistoryEvent_isEqual___block_invoke_8;
   v6[3] = &unk_1E7CCD5A8;
   v6[4] = self;
-  v4[5] = a3;
+  v4[5] = equal;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __32__ABChangeHistoryEvent_isEqual___block_invoke_9;

@@ -1,15 +1,15 @@
 @interface BRShareCopyiWorkShareURLOperation
-- (BRShareCopyiWorkShareURLOperation)initWithShare:(id)a3;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (BRShareCopyiWorkShareURLOperation)initWithShare:(id)share;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
 @end
 
 @implementation BRShareCopyiWorkShareURLOperation
 
-- (BRShareCopyiWorkShareURLOperation)initWithShare:(id)a3
+- (BRShareCopyiWorkShareURLOperation)initWithShare:(id)share
 {
-  v4 = a3;
-  if (v4)
+  shareCopy = share;
+  if (shareCopy)
   {
     v11.receiver = self;
     v11.super_class = BRShareCopyiWorkShareURLOperation;
@@ -17,11 +17,11 @@
     v6 = v5;
     if (v5)
     {
-      [(BRShareCopyiWorkShareURLOperation *)v5 setShare:v4];
+      [(BRShareCopyiWorkShareURLOperation *)v5 setShare:shareCopy];
     }
 
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -33,15 +33,15 @@
       [BRShareCopyiWorkShareURLOperation initWithShare:];
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (void)main
 {
-  v3 = [(BROperation *)self remoteObject];
+  remoteObject = [(BROperation *)self remoteObject];
   v4 = [(CKShare *)self->_share copy];
   br_setShareAssociatedURL(v4, 0);
   v5[0] = MEMORY[0x1E69E9820];
@@ -49,24 +49,24 @@
   v5[2] = __41__BRShareCopyiWorkShareURLOperation_main__block_invoke;
   v5[3] = &unk_1E7A14C08;
   v5[4] = self;
-  [v3 startOperation:self toCopyShareURLForShare:v4 reply:v5];
+  [remoteObject startOperation:self toCopyShareURLForShare:v4 reply:v5];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRShareCopyiWorkShareURLOperation *)self shareCopyURLCompletionBlock];
-  v9 = v8;
-  if (v8)
+  resultCopy = result;
+  errorCopy = error;
+  shareCopyURLCompletionBlock = [(BRShareCopyiWorkShareURLOperation *)self shareCopyURLCompletionBlock];
+  v9 = shareCopyURLCompletionBlock;
+  if (shareCopyURLCompletionBlock)
   {
-    (*(v8 + 16))(v8, v6, v7);
+    (*(shareCopyURLCompletionBlock + 16))(shareCopyURLCompletionBlock, resultCopy, errorCopy);
     [(BRShareCopyiWorkShareURLOperation *)self setShareCopyURLCompletionBlock:0];
   }
 
   v10.receiver = self;
   v10.super_class = BRShareCopyiWorkShareURLOperation;
-  [(BROperation *)&v10 finishWithResult:v6 error:v7];
+  [(BROperation *)&v10 finishWithResult:resultCopy error:errorCopy];
 }
 
 - (void)initWithShare:.cold.1()

@@ -1,12 +1,12 @@
 @interface NanoWeatherPreferencesMonitor
-- (BOOL)_nanoCityListNeedsUpdatingFrom:(id)a3;
-- (BOOL)_nanoCityNeedsUpdateDueToLocationInfoFrom:(id)a3;
-- (BOOL)_nanoCityNeedsUpdateDueToLocationInfoFrom:(id)a3 differentFrom:(id)a4;
+- (BOOL)_nanoCityListNeedsUpdatingFrom:(id)from;
+- (BOOL)_nanoCityNeedsUpdateDueToLocationInfoFrom:(id)from;
+- (BOOL)_nanoCityNeedsUpdateDueToLocationInfoFrom:(id)from differentFrom:(id)differentFrom;
 - (NanoWeatherPreferencesMonitor)init;
 - (id)_defaultCities;
 - (id)_deviceLangID;
-- (id)_getNanoCityFromList:(id)a3 forMatchingCompanionCity:(id)a4;
-- (void)_addOperationWithQOS:(int64_t)a3 usingBlock:(id)a4;
+- (id)_getNanoCityFromList:(id)list forMatchingCompanionCity:(id)city;
+- (void)_addOperationWithQOS:(int64_t)s usingBlock:(id)block;
 - (void)_beginXPCTransaction;
 - (void)_checkForInitialState;
 - (void)_cleanupSharedManagers;
@@ -14,19 +14,19 @@
 - (void)_completeMonitoringStartup;
 - (void)_endDelayingNanoPreferencesSync;
 - (void)_endXPCTransactionIfOK;
-- (void)_loadCompanionCityListOnCompletion:(id)a3;
+- (void)_loadCompanionCityListOnCompletion:(id)completion;
 - (void)_startMonitoring;
 - (void)_stopMonitoring;
 - (void)_updateCityList;
 - (void)dealloc;
-- (void)performBlockAsXPCXaction:(id)a3;
-- (void)performBlockOnOperationQueue:(id)a3;
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4;
-- (void)syncCoordinatorDidChangeSyncRestriction:(id)a3;
+- (void)performBlockAsXPCXaction:(id)xaction;
+- (void)performBlockOnOperationQueue:(id)queue;
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session;
+- (void)syncCoordinatorDidChangeSyncRestriction:(id)restriction;
 - (void)terminate;
-- (void)ubiquitousDefaultsDidChange:(id)a3;
-- (void)weatherAppInstallationStateDidChange:(unint64_t)a3;
-- (void)weatherPrefsDidGetUpdated:(id)a3;
+- (void)ubiquitousDefaultsDidChange:(id)change;
+- (void)weatherAppInstallationStateDidChange:(unint64_t)change;
+- (void)weatherPrefsDidGetUpdated:(id)updated;
 @end
 
 @implementation NanoWeatherPreferencesMonitor
@@ -144,12 +144,12 @@
 
 - (id)_defaultCities
 {
-  v2 = [(NanoWeatherPreferencesMonitor *)self _deviceLangID];
+  _deviceLangID = [(NanoWeatherPreferencesMonitor *)self _deviceLangID];
   v3 = +[ALCityManagerLoc sharedManager];
-  [v3 setLocaleForCityNames:v2];
+  [v3 setLocaleForCityNames:_deviceLangID];
 
   v4 = +[ALCityManagerLoc sharedManager];
-  v5 = [v4 defaultCitiesForLocaleCode:v2];
+  v5 = [v4 defaultCitiesForLocaleCode:_deviceLangID];
 
   if ([v5 count])
   {
@@ -173,7 +173,7 @@
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v11 name];
+          name = [v11 name];
           v13 = +[ALCityManagerLoc sharedManager];
           v14 = [NSArray arrayWithObject:v11];
           [v13 localizeCities:v14];
@@ -189,18 +189,18 @@
   return v5;
 }
 
-- (void)_addOperationWithQOS:(int64_t)a3 usingBlock:(id)a4
+- (void)_addOperationWithQOS:(int64_t)s usingBlock:(id)block
 {
-  v6 = [NSBlockOperation blockOperationWithBlock:a4];
-  [v6 setQualityOfService:a3];
+  v6 = [NSBlockOperation blockOperationWithBlock:block];
+  [v6 setQualityOfService:s];
   [(NSOperationQueue *)self->_utilityQueue addOperation:v6];
 }
 
-- (void)performBlockAsXPCXaction:(id)a3
+- (void)performBlockAsXPCXaction:(id)xaction
 {
-  v4 = a3;
+  xactionCopy = xaction;
   [(NanoWeatherPreferencesMonitor *)self _beginXPCTransaction];
-  v5 = v4[2](v4);
+  v5 = xactionCopy[2](xactionCopy);
 
   if ((v5 & 1) == 0)
   {
@@ -209,16 +209,16 @@
   }
 }
 
-- (void)performBlockOnOperationQueue:(id)a3
+- (void)performBlockOnOperationQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   objc_initWeak(&location, self);
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100002F3C;
   v6[3] = &unk_10000C5B8;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = queueCopy;
   v7 = v5;
   [(NanoWeatherPreferencesMonitor *)self _addOperationWithQOS:25 usingBlock:v6];
 
@@ -226,9 +226,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)weatherAppInstallationStateDidChange:(unint64_t)a3
+- (void)weatherAppInstallationStateDidChange:(unint64_t)change
 {
-  if (a3 == 1)
+  if (change == 1)
   {
     v8 = v3;
     v9 = v4;
@@ -244,10 +244,10 @@
   }
 }
 
-- (void)syncCoordinator:(id)a3 beginSyncSession:(id)a4
+- (void)syncCoordinator:(id)coordinator beginSyncSession:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  sessionCopy = session;
   [(NanoWeatherPreferencesMonitor *)self _beginXPCTransaction];
   objc_initWeak(&location, self);
   v9[0] = _NSConcreteStackBlock;
@@ -255,7 +255,7 @@
   v9[2] = sub_100003134;
   v9[3] = &unk_10000C5E0;
   objc_copyWeak(&v11, &location);
-  v8 = v7;
+  v8 = sessionCopy;
   v10 = v8;
   [(NanoWeatherPreferencesMonitor *)self _addOperationWithQOS:25 usingBlock:v9];
 
@@ -263,9 +263,9 @@
   objc_destroyWeak(&location);
 }
 
-- (void)syncCoordinatorDidChangeSyncRestriction:(id)a3
+- (void)syncCoordinatorDidChangeSyncRestriction:(id)restriction
 {
-  v4 = a3;
+  restrictionCopy = restriction;
   [(NanoWeatherPreferencesMonitor *)self _beginXPCTransaction];
   objc_initWeak(&location, self);
   v5[0] = _NSConcreteStackBlock;
@@ -279,15 +279,15 @@
   objc_destroyWeak(&location);
 }
 
-- (void)weatherPrefsDidGetUpdated:(id)a3
+- (void)weatherPrefsDidGetUpdated:(id)updated
 {
-  v4 = a3;
+  updatedCopy = updated;
   v5 = +[NSProcessInfo processInfo];
-  v6 = [v5 processName];
-  v7 = [v4 object];
+  processName = [v5 processName];
+  object = [updatedCopy object];
 
-  LOBYTE(v4) = [v6 isEqualToString:v7];
-  if ((v4 & 1) == 0)
+  LOBYTE(updatedCopy) = [processName isEqualToString:object];
+  if ((updatedCopy & 1) == 0)
   {
     [(NanoWeatherPreferencesMonitor *)self _beginXPCTransaction];
     v8 = sub_1000010B8(2);
@@ -307,7 +307,7 @@
   }
 }
 
-- (void)ubiquitousDefaultsDidChange:(id)a3
+- (void)ubiquitousDefaultsDidChange:(id)change
 {
   [(NanoWeatherPreferencesMonitor *)self _beginXPCTransaction];
   v4 = sub_1000010B8(2);
@@ -328,8 +328,8 @@
 
 - (void)_beginXPCTransaction
 {
-  v3 = [(NanoWeatherPreferencesMonitor *)self xactionRefCountLock];
-  [v3 lock];
+  xactionRefCountLock = [(NanoWeatherPreferencesMonitor *)self xactionRefCountLock];
+  [xactionRefCountLock lock];
 
   xpcXactionCount = self->_xpcXactionCount;
   self->_xpcXactionCount = xpcXactionCount + 1;
@@ -339,25 +339,25 @@
     [(NanoWeatherPreferencesMonitor *)self setTransaction:v5];
   }
 
-  v6 = [(NanoWeatherPreferencesMonitor *)self xactionRefCountLock];
-  [v6 unlock];
+  xactionRefCountLock2 = [(NanoWeatherPreferencesMonitor *)self xactionRefCountLock];
+  [xactionRefCountLock2 unlock];
 }
 
 - (void)_clearXPCTransaction
 {
-  v3 = [(NanoWeatherPreferencesMonitor *)self xactionRefCountLock];
-  [v3 lock];
+  xactionRefCountLock = [(NanoWeatherPreferencesMonitor *)self xactionRefCountLock];
+  [xactionRefCountLock lock];
 
   self->_xpcXactionCount = 0;
   [(NanoWeatherPreferencesMonitor *)self setTransaction:0];
-  v4 = [(NanoWeatherPreferencesMonitor *)self xactionRefCountLock];
-  [v4 unlock];
+  xactionRefCountLock2 = [(NanoWeatherPreferencesMonitor *)self xactionRefCountLock];
+  [xactionRefCountLock2 unlock];
 }
 
 - (void)_endXPCTransactionIfOK
 {
-  v3 = [(NanoWeatherPreferencesMonitor *)self xactionRefCountLock];
-  [v3 lock];
+  xactionRefCountLock = [(NanoWeatherPreferencesMonitor *)self xactionRefCountLock];
+  [xactionRefCountLock lock];
 
   xpcXactionCount = self->_xpcXactionCount;
   v5 = xpcXactionCount - 1;
@@ -374,8 +374,8 @@
 
   self->_xpcXactionCount = v5;
 LABEL_5:
-  v6 = [(NanoWeatherPreferencesMonitor *)self xactionRefCountLock];
-  [v6 unlock];
+  xactionRefCountLock2 = [(NanoWeatherPreferencesMonitor *)self xactionRefCountLock];
+  [xactionRefCountLock2 unlock];
 }
 
 - (void)_cleanupSharedManagers
@@ -390,19 +390,19 @@ LABEL_5:
   self->_delayPrefsSyncRequestCount = v3;
   if (!v3)
   {
-    v4 = [(NanoWeatherPreferencesMonitor *)self watchPreferences];
-    [v4 syncPreferencesToNano];
+    watchPreferences = [(NanoWeatherPreferencesMonitor *)self watchPreferences];
+    [watchPreferences syncPreferencesToNano];
   }
 }
 
 - (void)_updateCityList
 {
   os_unfair_lock_lock(&self->_companionCityListLock);
-  v3 = [(NanoWeatherPreferencesMonitor *)self companionCityList];
-  v4 = [v3 copy];
+  companionCityList = [(NanoWeatherPreferencesMonitor *)self companionCityList];
+  v4 = [companionCityList copy];
 
   os_unfair_lock_unlock(&self->_companionCityListLock);
-  v5 = [(NanoWeatherPreferencesMonitor *)self watchPreferences];
+  watchPreferences = [(NanoWeatherPreferencesMonitor *)self watchPreferences];
   if ([(NanoWeatherPreferencesMonitor *)self _nanoCityListNeedsUpdatingFrom:v4])
   {
     v6 = sub_1000010B8(2);
@@ -411,8 +411,8 @@ LABEL_5:
       v7 = NSStringFromSelector("name");
       v8 = [v4 valueForKeyPath:v7];
       v9 = [v8 componentsJoinedByString:{@", "}];
-      v10 = [v5 cityList];
-      v11 = [v10 valueForKeyPath:@"Name"];
+      cityList = [watchPreferences cityList];
+      v11 = [cityList valueForKeyPath:@"Name"];
       v12 = [v11 componentsJoinedByString:{@", "}];
       v15 = 138412546;
       v16 = v9;
@@ -421,33 +421,33 @@ LABEL_5:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Determined watch needs updated city list. Phone list? %@; Watch list? %@.", &v15, 0x16u);
     }
 
-    v13 = [(NanoWeatherPreferencesMonitor *)self companionWeatherPrefs];
-    v14 = [v13 lastUpdated];
+    companionWeatherPrefs = [(NanoWeatherPreferencesMonitor *)self companionWeatherPrefs];
+    lastUpdated = [companionWeatherPrefs lastUpdated];
 
-    [v5 setCityListFromCityObjs:v4 lastUpdated:v14];
+    [watchPreferences setCityListFromCityObjs:v4 lastUpdated:lastUpdated];
   }
 }
 
-- (BOOL)_nanoCityListNeedsUpdatingFrom:(id)a3
+- (BOOL)_nanoCityListNeedsUpdatingFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v5 = [(NanoWeatherPreferencesMonitor *)self watchPreferences];
-  v6 = [v5 cityObjectsListFromNanoPreferences];
+  watchPreferences = [(NanoWeatherPreferencesMonitor *)self watchPreferences];
+  cityObjectsListFromNanoPreferences = [watchPreferences cityObjectsListFromNanoPreferences];
 
-  v7 = [v4 count];
-  if (v7 == [v6 count])
+  v7 = [fromCopy count];
+  if (v7 == [cityObjectsListFromNanoPreferences count])
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_100003D38;
     v10[3] = &unk_10000C630;
-    v11 = v6;
+    v11 = cityObjectsListFromNanoPreferences;
     v12 = &v13;
-    [v4 enumerateObjectsUsingBlock:v10];
+    [fromCopy enumerateObjectsUsingBlock:v10];
 
     v8 = *(v14 + 24);
   }
@@ -462,17 +462,17 @@ LABEL_5:
   return v8 & 1;
 }
 
-- (id)_getNanoCityFromList:(id)a3 forMatchingCompanionCity:(id)a4
+- (id)_getNanoCityFromList:(id)list forMatchingCompanionCity:(id)city
 {
-  v5 = a3;
+  listCopy = list;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100003EF4;
   v11[3] = &unk_10000C658;
-  v12 = a4;
-  v6 = v12;
+  cityCopy = city;
+  v6 = cityCopy;
   v7 = objc_retainBlock(v11);
-  v8 = [v5 indexOfObjectPassingTest:v7];
+  v8 = [listCopy indexOfObjectPassingTest:v7];
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
@@ -480,47 +480,47 @@ LABEL_5:
 
   else
   {
-    v9 = [v5 objectAtIndexedSubscript:v8];
+    v9 = [listCopy objectAtIndexedSubscript:v8];
   }
 
   return v9;
 }
 
-- (BOOL)_nanoCityNeedsUpdateDueToLocationInfoFrom:(id)a3
+- (BOOL)_nanoCityNeedsUpdateDueToLocationInfoFrom:(id)from
 {
-  v4 = a3;
-  v5 = [(NanoWeatherPreferencesMonitor *)self watchPreferences];
-  v6 = [v5 cityList];
-  v7 = [(NanoWeatherPreferencesMonitor *)self _getNanoCityFromList:v6 forMatchingCompanionCity:v4];
+  fromCopy = from;
+  watchPreferences = [(NanoWeatherPreferencesMonitor *)self watchPreferences];
+  cityList = [watchPreferences cityList];
+  v7 = [(NanoWeatherPreferencesMonitor *)self _getNanoCityFromList:cityList forMatchingCompanionCity:fromCopy];
 
-  LOBYTE(self) = [(NanoWeatherPreferencesMonitor *)self _nanoCityNeedsUpdateDueToLocationInfoFrom:v4 differentFrom:v7];
+  LOBYTE(self) = [(NanoWeatherPreferencesMonitor *)self _nanoCityNeedsUpdateDueToLocationInfoFrom:fromCopy differentFrom:v7];
   return self;
 }
 
-- (BOOL)_nanoCityNeedsUpdateDueToLocationInfoFrom:(id)a3 differentFrom:(id)a4
+- (BOOL)_nanoCityNeedsUpdateDueToLocationInfoFrom:(id)from differentFrom:(id)differentFrom
 {
-  v6 = a3;
-  v7 = [a4 objectForKeyedSubscript:@"CountryAbbreviation"];
-  v8 = [v7 uppercaseString];
+  fromCopy = from;
+  v7 = [differentFrom objectForKeyedSubscript:@"CountryAbbreviation"];
+  uppercaseString = [v7 uppercaseString];
 
-  v9 = [v6 ISO3166CountryAbbreviation];
+  iSO3166CountryAbbreviation = [fromCopy ISO3166CountryAbbreviation];
 
-  v10 = [v9 uppercaseString];
+  uppercaseString2 = [iSO3166CountryAbbreviation uppercaseString];
 
-  if (v8)
+  if (uppercaseString)
   {
     v11 = 1;
   }
 
   else
   {
-    v11 = v10 == 0;
+    v11 = uppercaseString2 == 0;
   }
 
   v12 = !v11;
-  if (v10)
+  if (uppercaseString2)
   {
-    v13 = [v8 isEqualToString:v10] ^ 1;
+    v13 = [uppercaseString isEqualToString:uppercaseString2] ^ 1;
   }
 
   else
@@ -528,9 +528,9 @@ LABEL_5:
     LOBYTE(v13) = 0;
   }
 
-  v14 = a3 == 0;
-  v15 = a4 != 0;
-  if (!a4)
+  v14 = from == 0;
+  v15 = differentFrom != 0;
+  if (!differentFrom)
   {
     v14 = 1;
   }
@@ -544,11 +544,11 @@ LABEL_5:
       v19[0] = 67109890;
       v19[1] = v15;
       v20 = 1024;
-      v21 = a3 != 0;
+      v21 = from != 0;
       v22 = 2112;
-      v23 = v8;
+      v23 = uppercaseString;
       v24 = 2112;
-      v25 = v10;
+      v25 = uppercaseString2;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Nano city needs update. Nano City Exists? %d, Companion City Exists? %d. Nano City Country Abbreviation: %@, Companion City Country Abbreviation: %@.", v19, 0x22u);
     }
   }
@@ -558,10 +558,10 @@ LABEL_5:
 
 - (void)_checkForInitialState
 {
-  v3 = [(NanoWeatherPreferencesMonitor *)self watchPreferences];
-  v4 = [v3 cityList];
+  watchPreferences = [(NanoWeatherPreferencesMonitor *)self watchPreferences];
+  cityList = [watchPreferences cityList];
 
-  if (!v4)
+  if (!cityList)
   {
     v5 = sub_1000010B8(2);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -574,15 +574,15 @@ LABEL_5:
   }
 }
 
-- (void)_loadCompanionCityListOnCompletion:(id)a3
+- (void)_loadCompanionCityListOnCompletion:(id)completion
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10000431C;
   v5[3] = &unk_10000C6C0;
   v5[4] = self;
-  v6 = a3;
-  v3 = v6;
+  completionCopy = completion;
+  v3 = completionCopy;
   v4 = objc_retainBlock(v5);
   dispatch_async(&_dispatch_main_q, v4);
 }

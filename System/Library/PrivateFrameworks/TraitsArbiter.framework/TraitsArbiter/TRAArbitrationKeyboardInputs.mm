@@ -1,23 +1,23 @@
 @interface TRAArbitrationKeyboardInputs
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTraitsArbitrationKeyboardInputs:(id)a3;
-- (TRAArbitrationKeyboardInputs)initWithKeyboardFocusedParticipantUniqueIdentifier:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTraitsArbitrationKeyboardInputs:(id)inputs;
+- (TRAArbitrationKeyboardInputs)initWithKeyboardFocusedParticipantUniqueIdentifier:(id)identifier;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation TRAArbitrationKeyboardInputs
 
-- (TRAArbitrationKeyboardInputs)initWithKeyboardFocusedParticipantUniqueIdentifier:(id)a3
+- (TRAArbitrationKeyboardInputs)initWithKeyboardFocusedParticipantUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = TRAArbitrationKeyboardInputs;
   v5 = [(TRAArbitrationKeyboardInputs *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     focusedParticipantUniqueIdentifier = v5->_focusedParticipantUniqueIdentifier;
     v5->_focusedParticipantUniqueIdentifier = v6;
   }
@@ -25,10 +25,10 @@
   return v5;
 }
 
-- (BOOL)isEqualToTraitsArbitrationKeyboardInputs:(id)a3
+- (BOOL)isEqualToTraitsArbitrationKeyboardInputs:(id)inputs
 {
-  v4 = a3;
-  if (v4)
+  inputsCopy = inputs;
+  if (inputsCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -36,7 +36,7 @@
       [TRAArbitrationKeyboardInputs isEqualToTraitsArbitrationKeyboardInputs:];
     }
 
-    if (self == v4)
+    if (self == inputsCopy)
     {
       v7 = 1;
     }
@@ -44,8 +44,8 @@
     else
     {
       focusedParticipantUniqueIdentifier = self->_focusedParticipantUniqueIdentifier;
-      v6 = [(TRAArbitrationKeyboardInputs *)v4 focusedParticipantUniqueIdentifier];
-      v7 = [(NSString *)focusedParticipantUniqueIdentifier isEqualToString:v6];
+      focusedParticipantUniqueIdentifier = [(TRAArbitrationKeyboardInputs *)inputsCopy focusedParticipantUniqueIdentifier];
+      v7 = [(NSString *)focusedParticipantUniqueIdentifier isEqualToString:focusedParticipantUniqueIdentifier];
     }
   }
 
@@ -57,10 +57,10 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -68,7 +68,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TRAArbitrationKeyboardInputs *)self isEqualToTraitsArbitrationKeyboardInputs:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TRAArbitrationKeyboardInputs *)self isEqualToTraitsArbitrationKeyboardInputs:equalCopy];
   }
 
   return v5;
@@ -76,10 +76,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(TRAArbitrationKeyboardInputs *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(TRAArbitrationKeyboardInputs *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -90,12 +90,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(TRAArbitrationKeyboardInputs *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(TRAArbitrationKeyboardInputs *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 - (void)isEqualToTraitsArbitrationKeyboardInputs:.cold.1()

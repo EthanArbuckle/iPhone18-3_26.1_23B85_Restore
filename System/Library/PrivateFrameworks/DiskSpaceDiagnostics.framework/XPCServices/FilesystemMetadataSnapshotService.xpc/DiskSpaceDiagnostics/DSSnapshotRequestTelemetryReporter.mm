@@ -1,5 +1,5 @@
 @interface DSSnapshotRequestTelemetryReporter
-+ (id)telemetryReporterForSnapshotRequest:(id)a3;
++ (id)telemetryReporterForSnapshotRequest:(id)request;
 - (DSSnapshotRequest)__snapshotRequest;
 - (id)_eventDictionary;
 - (void)submit;
@@ -14,8 +14,8 @@
   v26[1] = @"DurationSec";
   snapshotDateEnd = self->_snapshotDateEnd;
   WeakRetained = objc_loadWeakRetained(&self->___snapshotRequest);
-  v24 = [WeakRetained beginDate];
-  [(NSDate *)snapshotDateEnd timeIntervalSinceDate:v24];
+  beginDate = [WeakRetained beginDate];
+  [(NSDate *)snapshotDateEnd timeIntervalSinceDate:beginDate];
   v23 = [NSNumber numberWithDouble:?];
   v27[1] = v23;
   v26[2] = @"ExitCode";
@@ -23,8 +23,8 @@
   v27[2] = v22;
   v26[3] = @"FormatVersion";
   v21 = objc_loadWeakRetained(&self->___snapshotRequest);
-  v20 = [v21 formatVersion];
-  v27[3] = v20;
+  formatVersion = [v21 formatVersion];
+  v27[3] = formatVersion;
   v26[4] = @"VolumeCount";
   v19 = [NSNumber numberWithUnsignedLongLong:self->_snapshotVolumeCount];
   v27[4] = v19;
@@ -33,8 +33,8 @@
   v27[5] = v18;
   v26[6] = @"HasHashedFSListings";
   v17 = objc_loadWeakRetained(&self->___snapshotRequest);
-  v16 = [v17 options];
-  v15 = [v16 objectForKeyedSubscript:@"FilesystemMetadatSnapshotOptionShouldHashVolumeListings"];
+  options = [v17 options];
+  v15 = [options objectForKeyedSubscript:@"FilesystemMetadatSnapshotOptionShouldHashVolumeListings"];
   v14 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v15 BOOLValue]);
   v27[6] = v14;
   v26[7] = @"PowerAssertionsDidTimeout";
@@ -66,11 +66,11 @@
   return v12;
 }
 
-+ (id)telemetryReporterForSnapshotRequest:(id)a3
++ (id)telemetryReporterForSnapshotRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = objc_alloc_init(DSSnapshotRequestTelemetryReporter);
-  [(DSSnapshotRequestTelemetryReporter *)v4 set__snapshotRequest:v3];
+  [(DSSnapshotRequestTelemetryReporter *)v4 set__snapshotRequest:requestCopy];
 
   return v4;
 }
@@ -80,13 +80,13 @@
   v3 = shared_filesystem_metadata_snapshot_service_log_handle();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(DSSnapshotRequestTelemetryReporter *)self __eventName];
+    __eventName = [(DSSnapshotRequestTelemetryReporter *)self __eventName];
     *buf = 138412290;
-    v7 = v4;
+    v7 = __eventName;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Submitting %@ to CoreAnalytics", buf, 0xCu);
   }
 
-  v5 = [(DSSnapshotRequestTelemetryReporter *)self __eventName];
+  __eventName2 = [(DSSnapshotRequestTelemetryReporter *)self __eventName];
   AnalyticsSendEventLazy();
 }
 

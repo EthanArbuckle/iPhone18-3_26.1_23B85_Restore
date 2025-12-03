@@ -11,19 +11,19 @@
   if (!v4)
   {
     [(CRDetailViewComponentTable *)self setTitle:0];
-    v5 = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
-    [v5 setIdentifier:@"PLACARD_GROUP"];
+    emptyGroupSpecifier = [MEMORY[0x277D3FAD8] emptyGroupSpecifier];
+    [emptyGroupSpecifier setIdentifier:@"PLACARD_GROUP"];
     v6 = objc_opt_new();
-    v7 = [(CRUDetailViewComponent *)self locale];
-    v8 = [v7 localizedStringWithKey:@"PARTS_AND_SERVICE" defaultString:@"PARTS_AND_SERVICE"];
+    locale = [(CRUDetailViewComponent *)self locale];
+    v8 = [locale localizedStringWithKey:@"PARTS_AND_SERVICE" defaultString:@"PARTS_AND_SERVICE"];
 
-    v9 = [(CRUDetailViewComponent *)self locale];
-    v10 = [v9 localizedStringWithKey:@"PARTS_SERVICE_SUBTEXT" defaultString:@"PARTS_SERVICE_SUBTEXT"];
+    locale2 = [(CRUDetailViewComponent *)self locale];
+    v10 = [locale2 localizedStringWithKey:@"PARTS_SERVICE_SUBTEXT" defaultString:@"PARTS_SERVICE_SUBTEXT"];
 
     if ([(CRUDetailViewComponent *)self deviceClass]== 3)
     {
-      v11 = [(CRUDetailViewComponent *)self locale];
-      v12 = [v11 localizedStringWithKey:@"PARTS_SERVICE_SUBTEXT_IPAD" defaultString:@"PARTS_SERVICE_SUBTEXT_IPAD"];
+      locale3 = [(CRUDetailViewComponent *)self locale];
+      v12 = [locale3 localizedStringWithKey:@"PARTS_SERVICE_SUBTEXT_IPAD" defaultString:@"PARTS_SERVICE_SUBTEXT_IPAD"];
 
       v10 = v12;
     }

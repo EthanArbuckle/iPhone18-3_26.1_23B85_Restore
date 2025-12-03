@@ -1,17 +1,17 @@
 @interface HDCloudSyncUpdateCachedZonesOperation
-- (HDCloudSyncUpdateCachedZonesOperation)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (uint64_t)_updateCKCachedZonesWithServerChangeToken:(void *)a3 recordZonesIDsToAdd:(void *)a4 recordZonesIDsToDelete:(void *)a5 container:(void *)a6 database:(void *)a7 error:;
-- (void)fetchChangesForContainer:(id)a3 database:(id)a4;
+- (HDCloudSyncUpdateCachedZonesOperation)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (uint64_t)_updateCKCachedZonesWithServerChangeToken:(void *)token recordZonesIDsToAdd:(void *)add recordZonesIDsToDelete:(void *)delete container:(void *)container database:(void *)database error:;
+- (void)fetchChangesForContainer:(id)container database:(id)database;
 - (void)main;
 @end
 
 @implementation HDCloudSyncUpdateCachedZonesOperation
 
-- (HDCloudSyncUpdateCachedZonesOperation)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncUpdateCachedZonesOperation)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v8.receiver = self;
   v8.super_class = HDCloudSyncUpdateCachedZonesOperation;
-  v4 = [(HDCloudSyncOperation *)&v8 initWithConfiguration:a3 cloudState:0];
+  v4 = [(HDCloudSyncOperation *)&v8 initWithConfiguration:configuration cloudState:0];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277D10BB0]);
@@ -28,20 +28,20 @@
 {
   v30 = *MEMORY[0x277D85DE8];
   [(HDSynchronousTaskGroup *)self->_taskGroup beginTask];
-  v3 = [(HDCloudSyncOperation *)self configuration];
-  v4 = [v3 repository];
-  v5 = [v4 allCKContainers];
-  v6 = [v5 allObjects];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  repository = [configuration repository];
+  allCKContainers = [repository allCKContainers];
+  allObjects = [allCKContainers allObjects];
 
   _HKInitializeLogging();
   v7 = *MEMORY[0x277CCC328];
   if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [v6 count];
-    v10 = [v6 componentsJoinedByString:{@", "}];
+    v9 = [allObjects count];
+    v10 = [allObjects componentsJoinedByString:{@", "}];
     *buf = 138543874;
-    v25 = self;
+    selfCopy = self;
     v26 = 2048;
     v27 = v9;
     v28 = 2114;
@@ -53,7 +53,7 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = v6;
+  v11 = allObjects;
   v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
@@ -69,8 +69,8 @@
         }
 
         v16 = *(*(&v19 + 1) + 8 * i);
-        v17 = [v16 privateCloudDatabase];
-        [(HDCloudSyncUpdateCachedZonesOperation *)self fetchChangesForContainer:v16 database:v17];
+        privateCloudDatabase = [v16 privateCloudDatabase];
+        [(HDCloudSyncUpdateCachedZonesOperation *)self fetchChangesForContainer:v16 database:privateCloudDatabase];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -83,11 +83,11 @@
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchChangesForContainer:(id)a3 database:(id)a4
+- (void)fetchChangesForContainer:(id)container database:(id)database
 {
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  containerCopy = container;
+  databaseCopy = database;
   v50[0] = 0;
   v50[1] = v50;
   v50[2] = 0x2810000000;
@@ -105,11 +105,11 @@
   v46[3] = __Block_byref_object_copy__2;
   v46[4] = __Block_byref_object_dispose__2;
   v47 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v8 = [(HDCloudSyncOperation *)self configuration];
-  v9 = [v8 cachedCloudState];
-  v10 = [v6 containerIdentifier];
+  configuration = [(HDCloudSyncOperation *)self configuration];
+  cachedCloudState = [configuration cachedCloudState];
+  containerIdentifier = [containerCopy containerIdentifier];
   v45 = 0;
-  v11 = [v9 serverChangeTokenForContainerIdentifier:v10 databaseScope:objc_msgSend(v7 error:{"databaseScope"), &v45}];
+  v11 = [cachedCloudState serverChangeTokenForContainerIdentifier:containerIdentifier databaseScope:objc_msgSend(databaseCopy error:{"databaseScope"), &v45}];
   v12 = v45;
 
   if (v12)
@@ -118,14 +118,14 @@
     v13 = *MEMORY[0x277CCC328];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      v24 = [v6 containerIdentifier];
-      v25 = [v7 databaseScope];
+      containerIdentifier2 = [containerCopy containerIdentifier];
+      databaseScope = [databaseCopy databaseScope];
       *buf = 138544130;
-      v53 = self;
+      selfCopy = self;
       v54 = 2114;
-      v55 = v24;
+      v55 = containerIdentifier2;
       v56 = 2048;
-      v57 = v25;
+      v57 = databaseScope;
       v58 = 2114;
       v59 = v12;
       _os_log_error_impl(&dword_228986000, v13, OS_LOG_TYPE_ERROR, "%{public}@ Failed to fetch server change token for container %{public}@, database, %ld, %{public}@", buf, 0x2Au);
@@ -163,9 +163,9 @@
   v41 = v46;
   v39 = v50;
   v36[4] = self;
-  v15 = v6;
+  v15 = containerCopy;
   v37 = v15;
-  v16 = v7;
+  v16 = databaseCopy;
   v38 = v16;
   [v14 setChangeTokenUpdatedBlock:v36];
   v26 = MEMORY[0x277D85DD0];
@@ -175,20 +175,20 @@
   v34 = v48;
   v35 = v46;
   v33 = v50;
-  v30 = self;
+  selfCopy2 = self;
   v17 = v15;
   v31 = v17;
   v18 = v16;
   v32 = v18;
   [v14 setFetchDatabaseChangesCompletionBlock:&v26];
   [(HDSynchronousTaskGroup *)self->_taskGroup beginTask:v26];
-  v19 = [(HDCloudSyncOperation *)self configuration];
-  v20 = [v19 cachedCloudState];
-  [v20 setOperationCountForAnalytics:{objc_msgSend(v20, "operationCountForAnalytics") + 1}];
+  configuration2 = [(HDCloudSyncOperation *)self configuration];
+  cachedCloudState2 = [configuration2 cachedCloudState];
+  [cachedCloudState2 setOperationCountForAnalytics:{objc_msgSend(cachedCloudState2, "operationCountForAnalytics") + 1}];
 
-  v21 = [(HDCloudSyncOperation *)self configuration];
-  v22 = [v21 operationGroup];
-  [v14 setGroup:v22];
+  configuration3 = [(HDCloudSyncOperation *)self configuration];
+  operationGroup = [configuration3 operationGroup];
+  [v14 setGroup:operationGroup];
 
   [v18 hd_addOperation:v14];
   _Block_object_dispose(v46, 8);
@@ -290,35 +290,35 @@ void __75__HDCloudSyncUpdateCachedZonesOperation_fetchChangesForContainer_databa
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_updateCKCachedZonesWithServerChangeToken:(void *)a3 recordZonesIDsToAdd:(void *)a4 recordZonesIDsToDelete:(void *)a5 container:(void *)a6 database:(void *)a7 error:
+- (uint64_t)_updateCKCachedZonesWithServerChangeToken:(void *)token recordZonesIDsToAdd:(void *)add recordZonesIDsToDelete:(void *)delete container:(void *)container database:(void *)database error:
 {
   v140 = *MEMORY[0x277D85DE8];
   v13 = a2;
-  v14 = a3;
-  v98 = a4;
-  v97 = a5;
-  v96 = a6;
-  v101 = a1;
-  if (a1)
+  tokenCopy = token;
+  addCopy = add;
+  deleteCopy = delete;
+  containerCopy = container;
+  selfCopy = self;
+  if (self)
   {
-    v15 = [v14 count];
+    v15 = [tokenCopy count];
     v16 = MEMORY[0x277CCC328];
     v95 = v13;
-    v92 = a7;
-    if (v15 || [v98 count])
+    databaseCopy = database;
+    if (v15 || [addCopy count])
     {
       _HKInitializeLogging();
       v17 = *v16;
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         v18 = v17;
-        v19 = [v14 count];
-        v20 = [v98 count];
-        [v96 databaseScope];
+        v19 = [tokenCopy count];
+        v20 = [addCopy count];
+        [containerCopy databaseScope];
         v21 = CKDatabaseScopeString();
-        v22 = [v97 containerIdentifier];
+        containerIdentifier = [deleteCopy containerIdentifier];
         *buf = 138544386;
-        v131 = a1;
+        selfCopy2 = self;
         v132 = 2048;
         v133 = v19;
         v134 = 2048;
@@ -326,7 +326,7 @@ void __75__HDCloudSyncUpdateCachedZonesOperation_fetchChangesForContainer_databa
         v136 = 2114;
         v137 = v21;
         v138 = 2114;
-        v139 = v22;
+        v139 = containerIdentifier;
         _os_log_impl(&dword_228986000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@: Found %ld modified and %ld deleted zone changes for %{public}@ database in %{public}@", buf, 0x34u);
       }
 
@@ -334,7 +334,7 @@ void __75__HDCloudSyncUpdateCachedZonesOperation_fetchChangesForContainer_databa
       v114 = 0u;
       v111 = 0u;
       v112 = 0u;
-      obj = v14;
+      obj = tokenCopy;
       v23 = [obj countByEnumeratingWithState:&v111 objects:v123 count:16];
       v24 = MEMORY[0x277CCC328];
       if (v23)
@@ -357,7 +357,7 @@ void __75__HDCloudSyncUpdateCachedZonesOperation_fetchChangesForContainer_databa
             if (os_log_type_enabled(*v24, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134218242;
-              v131 = v26;
+              selfCopy2 = v26;
               v132 = 2114;
               v133 = v29;
               _os_log_impl(&dword_228986000, v30, OS_LOG_TYPE_DEFAULT, "Modified:\t%ld: + %{public}@", buf, 0x16u);
@@ -376,7 +376,7 @@ void __75__HDCloudSyncUpdateCachedZonesOperation_fetchChangesForContainer_databa
       v110 = 0u;
       v107 = 0u;
       v108 = 0u;
-      v31 = v98;
+      v31 = addCopy;
       v32 = [v31 countByEnumeratingWithState:&v107 objects:v122 count:16];
       if (v32)
       {
@@ -398,7 +398,7 @@ void __75__HDCloudSyncUpdateCachedZonesOperation_fetchChangesForContainer_databa
             if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134218242;
-              v131 = v34;
+              selfCopy2 = v34;
               v132 = 2114;
               v133 = v37;
               _os_log_impl(&dword_228986000, v38, OS_LOG_TYPE_DEFAULT, "Deleted: \t%ld: + %{public}@", buf, 0x16u);
@@ -418,34 +418,34 @@ void __75__HDCloudSyncUpdateCachedZonesOperation_fetchChangesForContainer_databa
       v105[2] = __151__HDCloudSyncUpdateCachedZonesOperation__updateCKCachedZonesWithServerChangeToken_recordZonesIDsToAdd_recordZonesIDsToDelete_container_database_error___block_invoke;
       v105[3] = &unk_2786137E0;
       v106 = v31;
-      v14 = [obj hk_filter:v105];
+      tokenCopy = [obj hk_filter:v105];
 
       v13 = v95;
     }
 
-    v39 = [v101 configuration];
-    v40 = [v39 cachedCloudState];
-    [v40 setChangedZonesCount:{objc_msgSend(v40, "changedZonesCount") + objc_msgSend(v14, "count")}];
+    configuration = [selfCopy configuration];
+    cachedCloudState = [configuration cachedCloudState];
+    [cachedCloudState setChangedZonesCount:{objc_msgSend(cachedCloudState, "changedZonesCount") + objc_msgSend(tokenCopy, "count")}];
 
-    v41 = [v101 configuration];
-    v42 = [v41 cachedCloudState];
-    [v42 setDeletedZonesCount:{objc_msgSend(v42, "deletedZonesCount") + objc_msgSend(v98, "count")}];
+    configuration2 = [selfCopy configuration];
+    cachedCloudState2 = [configuration2 cachedCloudState];
+    [cachedCloudState2 setDeletedZonesCount:{objc_msgSend(cachedCloudState2, "deletedZonesCount") + objc_msgSend(addCopy, "count")}];
 
-    v43 = [v97 containerIdentifier];
-    obja = [v96 databaseScope];
-    v44 = v14;
-    v94 = v98;
+    containerIdentifier2 = [deleteCopy containerIdentifier];
+    obja = [containerCopy databaseScope];
+    v44 = tokenCopy;
+    v94 = addCopy;
     v93 = v13;
-    v45 = v43;
+    v45 = containerIdentifier2;
     v46 = v44;
     v47 = v45;
     v118 = 0u;
     v119 = 0u;
     v120 = 0u;
     v121 = 0u;
-    v14 = v46;
-    v48 = [v14 countByEnumeratingWithState:&v118 objects:buf count:16];
-    v102 = v14;
+    tokenCopy = v46;
+    v48 = [tokenCopy countByEnumeratingWithState:&v118 objects:buf count:16];
+    v102 = tokenCopy;
     if (v48)
     {
       v49 = v48;
@@ -464,10 +464,10 @@ void __75__HDCloudSyncUpdateCachedZonesOperation_fetchChangesForContainer_databa
 
           v54 = v47;
           v55 = [[HDCloudSyncZoneIdentifier alloc] initForZone:*(*(&v118 + 1) + 8 * v52) container:v47 scope:obja];
-          v56 = [v101 configuration];
-          v57 = [v56 cachedCloudState];
+          configuration3 = [selfCopy configuration];
+          cachedCloudState3 = [configuration3 cachedCloudState];
           v117 = v53;
-          v58 = [v57 addZoneWithIdentifier:v55 error:&v117];
+          v58 = [cachedCloudState3 addZoneWithIdentifier:v55 error:&v117];
           v50 = v117;
 
           if ((v58 & 1) == 0)
@@ -477,7 +477,7 @@ void __75__HDCloudSyncUpdateCachedZonesOperation_fetchChangesForContainer_databa
             if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
             {
               *v124 = 138543874;
-              v125 = v101;
+              v125 = selfCopy;
               v126 = 2114;
               v127 = v55;
               v128 = 2114;
@@ -486,14 +486,14 @@ void __75__HDCloudSyncUpdateCachedZonesOperation_fetchChangesForContainer_databa
             }
 
             v50 = v50;
-            v14 = v102;
+            tokenCopy = v102;
             v47 = v54;
             if (v50)
             {
-              if (v92)
+              if (databaseCopy)
               {
                 v60 = v50;
-                *v92 = v50;
+                *databaseCopy = v50;
               }
 
               else
@@ -512,7 +512,7 @@ void __75__HDCloudSyncUpdateCachedZonesOperation_fetchChangesForContainer_databa
         }
 
         while (v49 != v52);
-        v14 = v102;
+        tokenCopy = v102;
         v49 = [v102 countByEnumeratingWithState:&v118 objects:buf count:16];
         if (v49)
         {
@@ -566,24 +566,24 @@ LABEL_43:
           v70 = v63;
           v71 = [[HDCloudSyncZoneIdentifier alloc] initForZone:*(*(&v118 + 1) + 8 * v68) container:v63 scope:obja];
           v72 = [HDCloudSyncCachedZone alloc];
-          v73 = [v101 configuration];
-          v74 = [v73 repository];
-          v75 = [v101 configuration];
-          v76 = [v75 accessibilityAssertion];
-          v77 = [(HDCloudSyncCachedZone *)v72 initForZoneIdentifier:v71 repository:v74 accessibilityAssertion:v76];
+          configuration4 = [selfCopy configuration];
+          repository = [configuration4 repository];
+          configuration5 = [selfCopy configuration];
+          accessibilityAssertion = [configuration5 accessibilityAssertion];
+          v77 = [(HDCloudSyncCachedZone *)v72 initForZoneIdentifier:v71 repository:repository accessibilityAssertion:accessibilityAssertion];
 
           v117 = v69;
-          LOBYTE(v76) = [v77 deleteZoneWithError:&v117];
+          LOBYTE(accessibilityAssertion) = [v77 deleteZoneWithError:&v117];
           v67 = v117;
 
-          if ((v76 & 1) == 0)
+          if ((accessibilityAssertion & 1) == 0)
           {
             _HKInitializeLogging();
             v78 = *MEMORY[0x277CCC328];
             if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
             {
               *v124 = 138543874;
-              v125 = v101;
+              v125 = selfCopy;
               v126 = 2114;
               v127 = v71;
               v128 = 2114;
@@ -592,15 +592,15 @@ LABEL_43:
             }
 
             v67 = v67;
-            v14 = v102;
+            tokenCopy = v102;
             v63 = v70;
             v64 = v99;
             if (v67)
             {
-              if (v92)
+              if (databaseCopy)
               {
                 v79 = v67;
-                *v92 = v67;
+                *databaseCopy = v67;
               }
 
               else
@@ -636,17 +636,17 @@ LABEL_43:
     }
 
     v124[0] = 1;
-    v14 = v102;
+    tokenCopy = v102;
 LABEL_62:
 
     v80 = v124[0];
     v47 = v91;
     if (v80 == 1)
     {
-      v81 = [v101 configuration];
-      v82 = [v81 cachedCloudState];
+      configuration6 = [selfCopy configuration];
+      cachedCloudState4 = [configuration6 cachedCloudState];
       v116 = 0;
-      v83 = [v82 setServerChangeToken:v93 containerIdentifier:v63 databaseScope:obja error:&v116];
+      v83 = [cachedCloudState4 setServerChangeToken:v93 containerIdentifier:v63 databaseScope:obja error:&v116];
       v84 = v116;
 
       if (v83)
@@ -663,7 +663,7 @@ LABEL_75:
       if (os_log_type_enabled(*MEMORY[0x277CCC328], OS_LOG_TYPE_ERROR))
       {
         *buf = 138544130;
-        v131 = v101;
+        selfCopy2 = selfCopy;
         v132 = 2114;
         v133 = v63;
         v134 = 2048;
@@ -681,10 +681,10 @@ LABEL_75:
       }
 
       v89 = v88;
-      if (v92)
+      if (databaseCopy)
       {
         v90 = v88;
-        *v92 = v89;
+        *databaseCopy = v89;
       }
 
       else

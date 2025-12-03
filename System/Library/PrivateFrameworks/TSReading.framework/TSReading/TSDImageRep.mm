@@ -1,15 +1,15 @@
 @interface TSDImageRep
-+ (CGPath)p_newPathToBakeIntoSizedImageForSize:(CGSize)a3 withImageLayout:(id)a4 orientation:(int64_t)a5;
-+ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)a3 incomingObject:(id)a4;
-- (BOOL)containsPoint:(CGPoint)a3;
-- (BOOL)p_directlyManagesContentForLayer:(id)a3;
++ (CGPath)p_newPathToBakeIntoSizedImageForSize:(CGSize)size withImageLayout:(id)layout orientation:(int64_t)orientation;
++ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)object incomingObject:(id)incomingObject;
+- (BOOL)containsPoint:(CGPoint)point;
+- (BOOL)p_directlyManagesContentForLayer:(id)layer;
 - (BOOL)p_drawsInOneStep;
-- (BOOL)p_hitCacheGetCachedValue:(BOOL *)a3 forPoint:(CGPoint)a4;
+- (BOOL)p_hitCacheGetCachedValue:(BOOL *)value forPoint:(CGPoint)point;
 - (BOOL)p_okayToGenerateSizedImage;
 - (BOOL)p_shouldBakeMaskIntoSizedImage;
 - (BOOL)p_shouldMaskWithFrameLayers;
 - (BOOL)p_shouldRenderWithMaskToBounds;
-- (BOOL)p_takeSizedImageFromState:(id)a3;
+- (BOOL)p_takeSizedImageFromState:(id)state;
 - (BOOL)shouldAllowReplacementFromPaste;
 - (BOOL)shouldCreateSelectionKnobs;
 - (BOOL)shouldShowMediaReplaceUI;
@@ -18,22 +18,22 @@
 - (BOOL)shouldShowSmartMaskKnobs;
 - (BOOL)wantsToDistortWithImagerContext;
 - (CGAffineTransform)transformForHighlightLayer;
-- (CGImage)p_imageForDirectlyManagedLayer:(id)a3;
-- (CGImage)p_newImageByApplyingAdjustmentsToImage:(CGImage *)a3 alreadyEnhanced:(BOOL)a4;
+- (CGImage)p_imageForDirectlyManagedLayer:(id)layer;
+- (CGImage)p_newImageByApplyingAdjustmentsToImage:(CGImage *)image alreadyEnhanced:(BOOL)enhanced;
 - (CGPoint)centerForRotation;
-- (CGPoint)positionOfStandardKnob:(id)a3 forBounds:(CGRect)a4;
+- (CGPoint)positionOfStandardKnob:(id)knob forBounds:(CGRect)bounds;
 - (CGRect)boundsForHighlightLayer;
 - (CGRect)boundsForStandardKnobs;
 - (CGRect)frameInUnscaledCanvas;
 - (CGSize)p_desiredSizedImageSize;
-- (TSDImageRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (TSDImageRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (double)additionalRotationForKnobOrientation;
 - (id)additionalLayersOverLayer;
 - (id)contentsLayer;
-- (id)hitRepChrome:(CGPoint)a3;
+- (id)hitRepChrome:(CGPoint)chrome;
 - (id)imageInfo;
 - (id)imageLayout;
-- (id)imageOfStroke:(CGRect *)a3;
+- (id)imageOfStroke:(CGRect *)stroke;
 - (id)maskInfo;
 - (id)maskLayout;
 - (id)newCachedSizedImage;
@@ -44,60 +44,60 @@
 - (id)p_validatedBitmapImageProvider;
 - (id)p_validatedImageProvider;
 - (id)pathSourceForSelectionHighlightBehavior;
-- (id)textureForContext:(id)a3;
-- (int)dragTypeAtCanvasPoint:(CGPoint)a3;
+- (id)textureForContext:(id)context;
+- (int)dragTypeAtCanvasPoint:(CGPoint)point;
 - (int64_t)p_orientationForDirectlyManagedLayer;
-- (void)addBitmapsToRenderingQualityInfo:(id)a3 inContext:(CGContext *)a4;
-- (void)addKnobsToArray:(id)a3;
+- (void)addBitmapsToRenderingQualityInfo:(id)info inContext:(CGContext *)context;
+- (void)addKnobsToArray:(id)array;
 - (void)becameNotSelected;
 - (void)cacheImageAtCurrentSize;
 - (void)dealloc;
-- (void)didCreateLayer:(id)a3;
-- (void)didUpdateLayer:(id)a3;
-- (void)drawInContextWithoutEffects:(CGContext *)a3 withContent:(BOOL)a4 withStroke:(BOOL)a5 withOpacity:(BOOL)a6 forAlphaOnly:(BOOL)a7 drawChildren:(BOOL)a8;
+- (void)didCreateLayer:(id)layer;
+- (void)didUpdateLayer:(id)layer;
+- (void)drawInContextWithoutEffects:(CGContext *)effects withContent:(BOOL)content withStroke:(BOOL)stroke withOpacity:(BOOL)opacity forAlphaOnly:(BOOL)only drawChildren:(BOOL)children;
 - (void)generateSizedImageOnBackgroundThread;
 - (void)highlightImage;
 - (void)i_willEnterForeground;
-- (void)layoutInRootChangedFrom:(id)a3 to:(id)a4 translatedOnly:(BOOL)a5;
-- (void)p_createMaskLayerForLayer:(id)a3;
+- (void)layoutInRootChangedFrom:(id)from to:(id)to translatedOnly:(BOOL)only;
+- (void)p_createMaskLayerForLayer:(id)layer;
 - (void)p_disposeMaskLayer;
 - (void)p_disposeStrokeLayer;
-- (void)p_drawInContext:(CGContext *)a3 withContent:(BOOL)a4 withStroke:(BOOL)a5 withOpacity:(double)a6 withMask:(BOOL)a7 withIAMask:(BOOL)a8 forLayer:(BOOL)a9 forShadow:(BOOL)a10 forHitTest:(BOOL)a11;
-- (void)p_generateSizedImage:(id)a3;
+- (void)p_drawInContext:(CGContext *)context withContent:(BOOL)content withStroke:(BOOL)stroke withOpacity:(double)opacity withMask:(BOOL)mask withIAMask:(BOOL)aMask forLayer:(BOOL)layer forShadow:(BOOL)self0 forHitTest:(BOOL)self1;
+- (void)p_generateSizedImage:(id)image;
 - (void)p_generateSizedImageIfNecessary;
-- (void)p_getAliasedValuesForMaskToBoundsDirectLayerFrame:(CGRect *)a3 transform:(CGAffineTransform *)a4;
-- (void)p_hitCacheSetCachedValue:(BOOL)a3 forPoint:(CGPoint)a4;
+- (void)p_getAliasedValuesForMaskToBoundsDirectLayerFrame:(CGRect *)frame transform:(CGAffineTransform *)transform;
+- (void)p_hitCacheSetCachedValue:(BOOL)value forPoint:(CGPoint)point;
 - (void)p_invalidateSizedImage;
 - (void)p_invalidateSizedImageFromQueue;
 - (void)p_startSizing;
 - (void)p_takeSizedImageFromCache;
 - (void)p_takeSizedImageFromState;
 - (void)p_takeSizedImageFromStateIfReady;
-- (void)p_updateDirectlyManagesLayerContentForLayer:(id)a3;
-- (void)p_updateMaskLayer:(id)a3 forRepLayer:(id)a4 shouldIncludeMask:(BOOL)a5 shouldIncludeInstantAlpha:(BOOL)a6;
+- (void)p_updateDirectlyManagesLayerContentForLayer:(id)layer;
+- (void)p_updateMaskLayer:(id)layer forRepLayer:(id)repLayer shouldIncludeMask:(BOOL)mask shouldIncludeInstantAlpha:(BOOL)alpha;
 - (void)p_updateMaskSublayersForMaskEditMode;
-- (void)p_updateStrokeLayerForStroke:(id)a3 repLayer:(id)a4;
+- (void)p_updateStrokeLayerForStroke:(id)stroke repLayer:(id)layer;
 - (void)popDisableImageSizing;
-- (void)processChangedProperty:(int)a3;
-- (void)processChanges:(id)a3;
+- (void)processChangedProperty:(int)property;
+- (void)processChanges:(id)changes;
 - (void)unhighlightImage;
 - (void)updateFromLayout;
-- (void)updateLayerGeometryFromLayout:(id)a3;
-- (void)updatePositionsOfKnobs:(id)a3;
-- (void)useCachedSizedImage:(id)a3;
+- (void)updateLayerGeometryFromLayout:(id)layout;
+- (void)updatePositionsOfKnobs:(id)knobs;
+- (void)useCachedSizedImage:(id)image;
 - (void)viewScaleDidChange;
 - (void)wideGamutValueDidChange;
 - (void)willBeRemoved;
-- (void)willUpdateLayer:(id)a3;
+- (void)willUpdateLayer:(id)layer;
 @end
 
 @implementation TSDImageRep
 
-- (TSDImageRep)initWithLayout:(id)a3 canvas:(id)a4
+- (TSDImageRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v8.receiver = self;
   v8.super_class = TSDImageRep;
-  v4 = [(TSDRep *)&v8 initWithLayout:a3 canvas:a4];
+  v4 = [(TSDRep *)&v8 initWithLayout:layout canvas:canvas];
   v5 = v4;
   if (v4)
   {
@@ -169,32 +169,32 @@
 
 - (id)maskInfo
 {
-  v2 = [(TSDImageRep *)self imageInfo];
+  imageInfo = [(TSDImageRep *)self imageInfo];
 
-  return [v2 maskInfo];
+  return [imageInfo maskInfo];
 }
 
 - (id)maskLayout
 {
-  v2 = [(TSDImageRep *)self imageLayout];
+  imageLayout = [(TSDImageRep *)self imageLayout];
 
-  return [v2 maskLayout];
+  return [imageLayout maskLayout];
 }
 
 - (void)highlightImage
 {
   BYTE1(self->mLastPictureFrameLayerTransform.ty) = 1;
-  v2 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-  [(TSDInteractiveCanvasController *)v2 layoutInvalidated];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController layoutInvalidated];
 }
 
 - (void)unhighlightImage
 {
   BYTE1(self->mLastPictureFrameLayerTransform.ty) = 0;
-  v2 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-  [(TSDInteractiveCanvasController *)v2 layoutInvalidated];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController layoutInvalidated];
 }
 
 - (void)willBeRemoved
@@ -217,12 +217,12 @@
   [(TSDRep *)&v2 becameNotSelected];
 }
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
   v17.receiver = self;
   v17.super_class = TSDImageRep;
-  x = a3.x;
-  y = a3.y;
+  x = point.x;
+  y = point.y;
   v4 = [(TSDRep *)&v17 containsPoint:?];
   if (!v4 || ![(TSDCanvas *)[(TSDRep *)self canvas] isCanvasInteractive]|| ([(TSDRep *)self convertNaturalPointToUnscaledCanvas:x, y], ![(TSDMediaRep *)self replaceButtonContainsPoint:?]))
   {
@@ -233,8 +233,8 @@
       return v5;
     }
 
-    v6 = [(TSDImageRep *)self imageLayout];
-    if ([v6 maskLayout] && (v4 & (objc_msgSend(v6, "maskIntersectsImage") ^ 1) & 1) != 0)
+    imageLayout = [(TSDImageRep *)self imageLayout];
+    if ([imageLayout maskLayout] && (v4 & (objc_msgSend(imageLayout, "maskIntersectsImage") ^ 1) & 1) != 0)
     {
       v5 = 1;
     }
@@ -248,9 +248,9 @@
 
       if ([-[TSDImageRep imageLayout](self "imageLayout")])
       {
-        if (v6)
+        if (imageLayout)
         {
-          [v6 layoutToImageTransform];
+          [imageLayout layoutToImageTransform];
         }
 
         else
@@ -260,7 +260,7 @@
 
         CGAffineTransformInvert(&v15, &v14);
         point = vaddq_f64(*&v15.tx, vmlaq_n_f64(vmulq_n_f64(*&v15.c, y), *&v15.a, x));
-        [objc_msgSend(v6 "imageGeometry")];
+        [objc_msgSend(imageLayout "imageGeometry")];
         v19.origin.x = TSDRectWithSize();
         if (CGRectContainsPoint(v19, point))
         {
@@ -309,10 +309,10 @@ void *__29__TSDImageRep_containsPoint___block_invoke()
   return result;
 }
 
-- (int)dragTypeAtCanvasPoint:(CGPoint)a3
+- (int)dragTypeAtCanvasPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(TSDMediaRep *)self replaceButtonContainsPoint:?])
   {
     return 0;
@@ -330,10 +330,10 @@ LABEL_9:
   [(TSDRep *)self convertNaturalPointFromUnscaledCanvas:x, y];
   v24 = v18;
   point = v17;
-  v19 = [(TSDImageRep *)self imageLayout];
-  if (v19)
+  imageLayout = [(TSDImageRep *)self imageLayout];
+  if (imageLayout)
   {
-    [v19 layoutToImageTransform];
+    [imageLayout layoutToImageTransform];
   }
 
   else
@@ -346,10 +346,10 @@ LABEL_9:
   if ([-[TSDImageRep imageInfo](self "imageInfo")])
   {
     v21 = [objc_msgSend(-[TSDImageRep imageInfo](self "imageInfo")];
-    v22 = [(TSDImageRep *)self imageLayout];
-    if (v22)
+    imageLayout2 = [(TSDImageRep *)self imageLayout];
+    if (imageLayout2)
     {
-      [v22 imageDataToVisualSizeTransform];
+      [imageLayout2 imageDataToVisualSizeTransform];
     }
 
     else
@@ -374,8 +374,8 @@ LABEL_9:
   if (result)
   {
 LABEL_19:
-    v28 = self;
-    v20 = &v28;
+    selfCopy = self;
+    v20 = &selfCopy;
     goto LABEL_9;
   }
 
@@ -401,21 +401,21 @@ LABEL_19:
   return [v2 pathSource];
 }
 
-- (void)processChanges:(id)a3
+- (void)processChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = TSDImageRep;
-  [(TSDRep *)&v3 processChanges:a3];
+  [(TSDRep *)&v3 processChanges:changes];
 }
 
-- (void)processChangedProperty:(int)a3
+- (void)processChangedProperty:(int)property
 {
   v8.receiver = self;
   v8.super_class = TSDImageRep;
   [(TSDMediaRep *)&v8 processChangedProperty:?];
-  if (a3 > 527)
+  if (property > 527)
   {
-    switch(a3)
+    switch(property)
     {
       case 528:
         [(TSDImageRep *)self p_invalidateSizedImage];
@@ -436,7 +436,7 @@ LABEL_19:
 
   else
   {
-    switch(a3)
+    switch(property)
     {
       case 512:
         goto LABEL_16;
@@ -612,25 +612,25 @@ void __38__TSDImageRep_processChangedProperty___block_invoke_2(uint64_t a1)
   [(TSDRep *)&v23 updateFromLayout];
   if ([(TSDCanvas *)[(TSDRep *)self canvas] isCanvasInteractive]&& ![(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] isInDynamicOperation])
   {
-    v3 = [(TSDImageRep *)self imageLayout];
-    v4 = [v3 maskLayout];
+    imageLayout = [(TSDImageRep *)self imageLayout];
+    maskLayout = [imageLayout maskLayout];
     memset(&v22, 0, sizeof(v22));
-    if (v3)
+    if (imageLayout)
     {
-      [v3 layoutToImageTransform];
+      [imageLayout layoutToImageTransform];
     }
 
-    v5 = [v3 imageGeometryInRoot];
-    v6 = [v4 geometryInRoot];
+    imageGeometryInRoot = [imageLayout imageGeometryInRoot];
+    geometryInRoot = [maskLayout geometryInRoot];
     t1 = v22;
     v7 = *&self->mLastLayoutToImageTransform.b;
     *&t2.a = *&self->mLastMaskGeometryInRoot;
     *&t2.c = v7;
     *&t2.tx = *&self->mLastLayoutToImageTransform.d;
     v8 = CGAffineTransformEqualToTransform(&t1, &t2);
-    if (v4 && (([v5 isEqual:*&self->super.mLastPictureFrameLayerRect.size.height] & 1) == 0 ? (LOBYTE(v4) = objc_msgSend(v5, "differsInMoreThanTranslationFrom:", *&self->super.mLastPictureFrameLayerRect.size.height)) : (LOBYTE(v4) = 0), (objc_msgSend(v6, "isEqual:", self->mLastImageGeometryInRoot) & 1) == 0))
+    if (maskLayout && (([imageGeometryInRoot isEqual:*&self->super.mLastPictureFrameLayerRect.size.height] & 1) == 0 ? (LOBYTE(maskLayout) = objc_msgSend(imageGeometryInRoot, "differsInMoreThanTranslationFrom:", *&self->super.mLastPictureFrameLayerRect.size.height)) : (LOBYTE(maskLayout) = 0), (objc_msgSend(geometryInRoot, "isEqual:", self->mLastImageGeometryInRoot) & 1) == 0))
     {
-      v9 = [v6 differsInMoreThanTranslationFrom:self->mLastImageGeometryInRoot];
+      v9 = [geometryInRoot differsInMoreThanTranslationFrom:self->mLastImageGeometryInRoot];
       if (!v8)
       {
 LABEL_15:
@@ -639,8 +639,8 @@ LABEL_15:
         [(TSDRep *)self invalidateKnobPositions];
 LABEL_16:
 
-        *&self->super.mLastPictureFrameLayerRect.size.height = [v5 copy];
-        self->mLastImageGeometryInRoot = [v6 copy];
+        *&self->super.mLastPictureFrameLayerRect.size.height = [imageGeometryInRoot copy];
+        self->mLastImageGeometryInRoot = [geometryInRoot copy];
         v10 = *&v22.tx;
         *&self->mLastLayoutToImageTransform.b = *&v22.c;
         *&self->mLastLayoutToImageTransform.d = v10;
@@ -658,7 +658,7 @@ LABEL_16:
       }
     }
 
-    if ((v4 & 1) == 0 && !v9)
+    if ((maskLayout & 1) == 0 && !v9)
     {
       goto LABEL_16;
     }
@@ -700,12 +700,12 @@ LABEL_17:
   dispatch_semaphore_signal(&self->mUpdateFromLayoutBlocks->super.super);
 }
 
-- (void)layoutInRootChangedFrom:(id)a3 to:(id)a4 translatedOnly:(BOOL)a5
+- (void)layoutInRootChangedFrom:(id)from to:(id)to translatedOnly:(BOOL)only
 {
   v7.receiver = self;
   v7.super_class = TSDImageRep;
-  [(TSDRep *)&v7 layoutInRootChangedFrom:a3 to:a4 translatedOnly:?];
-  if (!a5)
+  [(TSDRep *)&v7 layoutInRootChangedFrom:from to:to translatedOnly:?];
+  if (!only)
   {
     LOBYTE(self->mFrameInUnscaledCanvasRelativeToSuper.size.height) = 0;
   }
@@ -716,10 +716,10 @@ LABEL_17:
   v26.receiver = self;
   v26.super_class = TSDImageRep;
   v3 = [MEMORY[0x277CBEB18] arrayWithArray:{-[TSDMediaRep overlayLayers](&v26, sel_overlayLayers)}];
-  v4 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
   if (BYTE1(self->mLastPictureFrameLayerTransform.ty) == 1)
   {
-    v5 = v4;
+    v5 = interactiveCanvasController;
     v6 = objc_alloc_init(MEMORY[0x277CD9F90]);
     DeviceRGB = TSUCGColorCreateDeviceRGB();
     [v6 setFillColor:DeviceRGB];
@@ -734,10 +734,10 @@ LABEL_17:
     v15 = v14;
     v17 = v16;
     memset(&v25, 0, sizeof(v25));
-    v18 = [(TSDRep *)self layout];
-    if (v18)
+    layout = [(TSDRep *)self layout];
+    if (layout)
     {
-      [(TSDAbstractLayout *)v18 transformInRoot];
+      [(TSDAbstractLayout *)layout transformInRoot];
     }
 
     else
@@ -760,10 +760,10 @@ LABEL_17:
   return v3;
 }
 
-- (id)hitRepChrome:(CGPoint)a3
+- (id)hitRepChrome:(CGPoint)chrome
 {
-  y = a3.y;
-  x = a3.x;
+  y = chrome.y;
+  x = chrome.x;
   v9.receiver = self;
   v9.super_class = TSDImageRep;
   v6 = [(TSDRep *)&v9 hitRepChrome:?];
@@ -826,19 +826,19 @@ LABEL_17:
   return result;
 }
 
-- (CGPoint)positionOfStandardKnob:(id)a3 forBounds:(CGRect)a4
+- (CGPoint)positionOfStandardKnob:(id)knob forBounds:(CGRect)bounds
 {
   v19.receiver = self;
   v19.super_class = TSDImageRep;
-  [(TSDRep *)&v19 positionOfStandardKnob:a3 forBounds:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(TSDRep *)&v19 positionOfStandardKnob:knob forBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   v14 = v6;
   v15 = v5;
   if ([-[TSDImageRep imageLayout](self "imageLayout")] == 3 && (-[TSDLayout layoutState](-[TSDRep layout](self, "layout"), "layoutState") != 4 || objc_msgSend(-[TSDImageRep imageLayout](self, "imageLayout"), "isInMaskScaleMode")))
   {
-    v7 = [(TSDImageRep *)self imageLayout];
-    if (v7)
+    imageLayout = [(TSDImageRep *)self imageLayout];
+    if (imageLayout)
     {
-      [v7 layoutToImageTransform];
+      [imageLayout layoutToImageTransform];
       v8 = v16;
       v9 = v17;
       v10 = v18;
@@ -867,20 +867,20 @@ LABEL_17:
 {
   if ([-[TSDImageRep imageLayout](self "imageLayout")] == 3)
   {
-    v10 = self;
+    selfCopy = self;
     v3 = &selRef_boundsForStandardKnobs;
-    v4 = &v10;
+    v4 = &selfCopy;
   }
 
   else
   {
-    v9 = self;
+    selfCopy2 = self;
     v3 = &selRef_boundsForHighlightLayer;
-    v4 = &v9;
+    v4 = &selfCopy2;
   }
 
   v4[1] = TSDImageRep;
-  objc_msgSendSuper2(v4, *v3, v9);
+  objc_msgSendSuper2(v4, *v3, selfCopy2);
   result.size.height = v8;
   result.size.width = v7;
   result.origin.y = v6;
@@ -931,9 +931,9 @@ LABEL_11:
 {
   if ([-[TSDImageRep imageLayout](self "imageLayout")])
   {
-    v3 = [(TSDImageRep *)self imageLayout];
+    imageLayout = [(TSDImageRep *)self imageLayout];
 
-    [v3 centerForRotationInMaskMode];
+    [imageLayout centerForRotationInMaskMode];
   }
 
   else
@@ -953,42 +953,42 @@ LABEL_11:
   result = *&self->mFrameInUnscaledCanvasIsValid;
   if (!result)
   {
-    v4 = [(TSDRep *)self interactiveCanvasController];
+    interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-    return [(TSDInteractiveCanvasController *)v4 layerForRep:self];
+    return [(TSDInteractiveCanvasController *)interactiveCanvasController layerForRep:self];
   }
 
   return result;
 }
 
-- (void)drawInContextWithoutEffects:(CGContext *)a3 withContent:(BOOL)a4 withStroke:(BOOL)a5 withOpacity:(BOOL)a6 forAlphaOnly:(BOOL)a7 drawChildren:(BOOL)a8
+- (void)drawInContextWithoutEffects:(CGContext *)effects withContent:(BOOL)content withStroke:(BOOL)stroke withOpacity:(BOOL)opacity forAlphaOnly:(BOOL)only drawChildren:(BOOL)children
 {
-  v9 = a5;
-  v10 = a4;
+  strokeCopy = stroke;
+  contentCopy = content;
   v13 = 1.0;
-  if (a6)
+  if (opacity)
   {
-    [(TSDStyledRep *)self opacity:a3];
+    [(TSDStyledRep *)self opacity:effects];
   }
 
-  LOWORD(v14) = a7;
-  [(TSDImageRep *)self p_drawInContext:a3 withContent:v10 withStroke:v9 withOpacity:1 withMask:1 withIAMask:0 forLayer:v13 forShadow:v14 forHitTest:?];
+  LOWORD(v14) = only;
+  [(TSDImageRep *)self p_drawInContext:effects withContent:contentCopy withStroke:strokeCopy withOpacity:1 withMask:1 withIAMask:0 forLayer:v13 forShadow:v14 forHitTest:?];
 }
 
-- (id)imageOfStroke:(CGRect *)a3
+- (id)imageOfStroke:(CGRect *)stroke
 {
   v5 = *MEMORY[0x277CBF3A0];
   v6 = *(MEMORY[0x277CBF3A0] + 8);
   v7 = *(MEMORY[0x277CBF3A0] + 16);
   v8 = *(MEMORY[0x277CBF3A0] + 24);
-  v9 = [(TSDLayout *)[(TSDRep *)self layout] stroke];
-  if (v9 && (v10 = v9, [v9 shouldRender]))
+  stroke = [(TSDLayout *)[(TSDRep *)self layout] stroke];
+  if (stroke && (v10 = stroke, [stroke shouldRender]))
   {
-    v11 = [(TSDImageRep *)self imageLayout];
-    [objc_msgSend(v11 "imageGeometry")];
-    if ([v11 pathToStroke])
+    imageLayout = [(TSDImageRep *)self imageLayout];
+    [objc_msgSend(imageLayout "imageGeometry")];
+    if ([imageLayout pathToStroke])
     {
-      TSDPathBoundsIncludingStroke([v11 pathToStroke], v10);
+      TSDPathBoundsIncludingStroke([imageLayout pathToStroke], v10);
       v5 = v12;
       v6 = v13;
       v7 = v14;
@@ -1035,38 +1035,38 @@ LABEL_11:
     v16 = 0;
   }
 
-  a3->origin.x = v5;
-  a3->origin.y = v6;
-  a3->size.width = v7;
-  a3->size.height = v8;
+  stroke->origin.x = v5;
+  stroke->origin.y = v6;
+  stroke->size.width = v7;
+  stroke->size.height = v8;
   return v16;
 }
 
-- (void)p_drawInContext:(CGContext *)a3 withContent:(BOOL)a4 withStroke:(BOOL)a5 withOpacity:(double)a6 withMask:(BOOL)a7 withIAMask:(BOOL)a8 forLayer:(BOOL)a9 forShadow:(BOOL)a10 forHitTest:(BOOL)a11
+- (void)p_drawInContext:(CGContext *)context withContent:(BOOL)content withStroke:(BOOL)stroke withOpacity:(double)opacity withMask:(BOOL)mask withIAMask:(BOOL)aMask forLayer:(BOOL)layer forShadow:(BOOL)self0 forHitTest:(BOOL)self1
 {
-  v11 = a9;
-  v12 = a8;
-  v13 = a7;
-  v15 = a5;
-  v16 = a4;
+  layerCopy = layer;
+  aMaskCopy = aMask;
+  maskCopy = mask;
+  strokeCopy = stroke;
+  contentCopy = content;
   if ([-[TSDStyledRep styledLayout](self "styledLayout")])
   {
     return;
   }
 
   v19 = [objc_msgSend(MEMORY[0x277CBEBD0] "standardUserDefaults")];
-  v93 = v11;
-  if (v11 && v19)
+  v93 = layerCopy;
+  if (layerCopy && v19)
   {
-    CGContextSetInterpolationQuality(a3, kCGInterpolationNone);
+    CGContextSetInterpolationQuality(context, kCGInterpolationNone);
   }
 
   [(TSDMediaRep *)self i_updateFrameRep];
-  v20 = [(TSDLayout *)[(TSDRep *)self layout] stroke];
-  v21 = v20;
-  if (v20)
+  stroke = [(TSDLayout *)[(TSDRep *)self layout] stroke];
+  v21 = stroke;
+  if (stroke)
   {
-    if ([(TSDStroke *)v20 shouldRender])
+    if ([(TSDStroke *)stroke shouldRender])
     {
       if ([(TSDCanvas *)[(TSDRep *)self canvas] shouldSuppressBackgrounds]&& ![(TSDStroke *)v21 isFrame])
       {
@@ -1074,17 +1074,17 @@ LABEL_11:
         -[TSDStroke setColor:](v21, "setColor:", [MEMORY[0x277D6C2A8] blackColor]);
       }
 
-      if (v21 && a11 && ![(TSDStroke *)v21 isFrame]&& ![(TSDStroke *)v21 prefersToApplyToShapeRenderableDuringManipulation])
+      if (v21 && test && ![(TSDStroke *)v21 isFrame]&& ![(TSDStroke *)v21 prefersToApplyToShapeRenderableDuringManipulation])
       {
         v94 = [TSDStroke alloc];
-        v92 = [(TSDStroke *)v21 color];
+        color = [(TSDStroke *)v21 color];
         [(TSDStroke *)v21 width];
         v23 = v22;
         v91 = [(TSDStroke *)v21 cap];
-        v24 = [(TSDStroke *)v21 join];
-        v25 = [(TSDStroke *)v21 pattern];
+        join = [(TSDStroke *)v21 join];
+        pattern = [(TSDStroke *)v21 pattern];
         [(TSDStroke *)v21 miterLimit];
-        v21 = [(TSDStroke *)v94 initWithColor:v92 width:v91 cap:v24 join:v25 pattern:v23 miterLimit:v26];
+        v21 = [(TSDStroke *)v94 initWithColor:color width:v91 cap:join join:pattern pattern:v23 miterLimit:v26];
       }
     }
 
@@ -1094,11 +1094,11 @@ LABEL_11:
     }
   }
 
-  v27 = a6 < 1.0 && v15;
-  v28 = v27 && v16;
-  if (v27 && v16 && (CGContextSaveGState(a3), CGContextSetAlpha(a3, a6), v21))
+  v27 = opacity < 1.0 && strokeCopy;
+  v28 = v27 && contentCopy;
+  if (v27 && contentCopy && (CGContextSaveGState(context), CGContextSetAlpha(context, opacity), v21))
   {
-    CGContextBeginTransparencyLayer(a3, 0);
+    CGContextBeginTransparencyLayer(context, 0);
     v95 = 1;
   }
 
@@ -1107,31 +1107,31 @@ LABEL_11:
     v95 = 0;
   }
 
-  CGContextSaveGState(a3);
-  v29 = [(TSDImageRep *)self imageLayout];
-  [objc_msgSend(v29 "imageGeometry")];
+  CGContextSaveGState(context);
+  imageLayout = [(TSDImageRep *)self imageLayout];
+  [objc_msgSend(imageLayout "imageGeometry")];
   v30 = TSDRectWithSize();
   v32 = v31;
   v34 = v33;
   v36 = v35;
-  if (v16)
+  if (contentCopy)
   {
-    v37 = [v29 maskLayout];
-    if (!v13)
+    maskLayout = [imageLayout maskLayout];
+    if (!maskCopy)
     {
       goto LABEL_38;
     }
 
-    v38 = v37;
+    v38 = maskLayout;
     if (!self->super.mFrameMaskLayer || ![(TSDStroke *)v21 hasMask])
     {
 LABEL_34:
       if (v38)
       {
         memset(&v103, 0, sizeof(v103));
-        if (v29)
+        if (imageLayout)
         {
-          [v29 layoutToMaskTransform];
+          [imageLayout layoutToMaskTransform];
         }
 
         [v38 pathBounds];
@@ -1141,18 +1141,18 @@ LABEL_34:
         v53 = +[TSDBezierPath bezierPathWithCGPath:](TSDBezierPath, "bezierPathWithCGPath:", [v38 path]);
         transform = v103;
         [(TSDBezierPath *)v53 transformUsingAffineTransform:&transform];
-        CGContextAddPath(a3, [-[TSDBezierPath aliasedPathInContext:effectiveStrokeWidth:](v53 aliasedPathInContext:a3 effectiveStrokeWidth:{0.0), "CGPath"}]);
-        CGContextClip(a3);
+        CGContextAddPath(context, [-[TSDBezierPath aliasedPathInContext:effectiveStrokeWidth:](v53 aliasedPathInContext:context effectiveStrokeWidth:{0.0), "CGPath"}]);
+        CGContextClip(context);
       }
 
 LABEL_38:
-      if ([-[TSDImageRep imageInfo](self "imageInfo")] && v12)
+      if ([-[TSDImageRep imageInfo](self "imageInfo")] && aMaskCopy)
       {
         v54 = [objc_msgSend(-[TSDImageRep imageInfo](self "imageInfo")];
-        v55 = [(TSDImageRep *)self imageLayout];
-        if (v55)
+        imageLayout2 = [(TSDImageRep *)self imageLayout];
+        if (imageLayout2)
         {
-          [v55 imageDataToVisualSizeTransform];
+          [imageLayout2 imageDataToVisualSizeTransform];
         }
 
         else
@@ -1161,10 +1161,10 @@ LABEL_38:
         }
 
         [v54 transformUsingAffineTransform:&v103];
-        v56 = [(TSDImageRep *)self imageLayout];
-        if (v56)
+        imageLayout3 = [(TSDImageRep *)self imageLayout];
+        if (imageLayout3)
         {
-          [v56 layoutToImageTransform];
+          [imageLayout3 layoutToImageTransform];
         }
 
         else
@@ -1173,13 +1173,13 @@ LABEL_38:
         }
 
         [v54 transformUsingAffineTransform:&v103];
-        CGContextAddPath(a3, [objc_msgSend(v54 aliasedPathInContext:a3 effectiveStrokeWidth:{0.0), "CGPath"}]);
-        CGContextClip(a3);
+        CGContextAddPath(context, [objc_msgSend(v54 aliasedPathInContext:context effectiveStrokeWidth:{0.0), "CGPath"}]);
+        CGContextClip(context);
       }
 
-      if (v29)
+      if (imageLayout)
       {
-        [v29 layoutToImageTransform];
+        [imageLayout layoutToImageTransform];
       }
 
       else
@@ -1187,11 +1187,11 @@ LABEL_38:
         memset(&v103, 0, sizeof(v103));
       }
 
-      CGContextConcatCTM(a3, &v103);
-      CGContextSaveGState(a3);
-      if (v13 && self->super.mFrameMaskLayer && [(TSDStroke *)v21 hasMask])
+      CGContextConcatCTM(context, &v103);
+      CGContextSaveGState(context);
+      if (maskCopy && self->super.mFrameMaskLayer && [(TSDStroke *)v21 hasMask])
       {
-        [(CALayer *)self->super.mFrameMaskLayer blendMaskBeforeRenderingImageInContext:a3];
+        [(CALayer *)self->super.mFrameMaskLayer blendMaskBeforeRenderingImageInContext:context];
       }
 
       transform.a = 0.0;
@@ -1216,14 +1216,14 @@ LABEL_38:
       block[6] = &v101;
       block[7] = &v97;
       dispatch_sync(v57, block);
-      if ((a10 || a11) && ([v29 hasAlpha] & 1) == 0)
+      if ((shadow || test) && ([imageLayout hasAlpha] & 1) == 0)
       {
-        CGContextSetRGBFillColor(a3, 0.0, 0.0, 0.0, 1.0);
+        CGContextSetRGBFillColor(context, 0.0, 0.0, 0.0, 1.0);
         v107.origin.x = v30;
         v107.origin.y = v32;
         v107.size.width = v34;
         v107.size.height = v36;
-        CGContextFillRect(a3, v107);
+        CGContextFillRect(context, v107);
 LABEL_79:
         v73 = *(*&transform.b + 24);
         if (v73)
@@ -1234,7 +1234,7 @@ LABEL_79:
         _Block_object_dispose(&v97, 8);
         _Block_object_dispose(&v101, 8);
         _Block_object_dispose(&transform, 8);
-        CGContextRestoreGState(a3);
+        CGContextRestoreGState(context);
         goto LABEL_82;
       }
 
@@ -1257,26 +1257,26 @@ LABEL_79:
         v105.size.width = v34;
         v105.size.height = v36;
         MaxY = CGRectGetMaxY(v105);
-        CGContextTranslateCTM(a3, 0.0, MinY + MaxY);
-        CGContextScaleCTM(a3, 1.0, -1.0);
+        CGContextTranslateCTM(context, 0.0, MinY + MaxY);
+        CGContextScaleCTM(context, 1.0, -1.0);
         TSUImageOrientationTransform();
-        CGContextConcatCTM(a3, &v103);
+        CGContextConcatCTM(context, &v103);
         v106.origin.x = v30;
         v106.origin.y = v32;
         v106.size.width = v34;
         v106.size.height = v36;
-        CGContextDrawImage(a3, v106, *(*&transform.b + 24));
+        CGContextDrawImage(context, v106, *(*&transform.b + 24));
         goto LABEL_79;
       }
 
-      v61 = [(TSDInteractiveCanvasController *)[(TSDCanvas *)[(TSDRep *)self canvas] canvasController] i_inPrintPreviewMode];
+      i_inPrintPreviewMode = [(TSDInteractiveCanvasController *)[(TSDCanvas *)[(TSDRep *)self canvas] canvasController] i_inPrintPreviewMode];
       v62 = [+[TSKApplicationDelegate sharedDelegate](TSKApplicationDelegate "sharedDelegate")];
-      if (!v61 && [(TSDCanvas *)[(TSDRep *)self canvas] isCanvasInteractive]&& ([(TSDCanvas *)[(TSDRep *)self canvas] viewScale], v63 < 0.5) || v93 && self->mLayerUpdateAndSizingStateLock || ![(TSDCanvas *)[(TSDRep *)self canvas] isCanvasInteractive]&& (v62 & 1) != 0)
+      if (!i_inPrintPreviewMode && [(TSDCanvas *)[(TSDRep *)self canvas] isCanvasInteractive]&& ([(TSDCanvas *)[(TSDRep *)self canvas] viewScale], v63 < 0.5) || v93 && self->mLayerUpdateAndSizingStateLock || ![(TSDCanvas *)[(TSDRep *)self canvas] isCanvasInteractive]&& (v62 & 1) != 0)
       {
-        v68 = [(TSDImageRep *)self p_validatedThumbnailImageProvider];
-        if (v68)
+        p_validatedThumbnailImageProvider = [(TSDImageRep *)self p_validatedThumbnailImageProvider];
+        if (p_validatedThumbnailImageProvider)
         {
-          v69 = [v68 CGImageForSize:a3 inContext:0 orLayer:{v34, v36}];
+          v69 = [p_validatedThumbnailImageProvider CGImageForSize:context inContext:0 orLayer:{v34, v36}];
           if ([-[TSDImageRep imageLayout](self "imageLayout")])
           {
             v69 = [(TSDImageRep *)self p_newImageByApplyingAdjustmentsToImage:v69 alreadyEnhanced:0];
@@ -1293,62 +1293,62 @@ LABEL_79:
           v109.size.width = v34;
           v109.size.height = v36;
           v72 = CGRectGetMaxY(v109);
-          CGContextTranslateCTM(a3, 0.0, v71 + v72);
-          CGContextScaleCTM(a3, 1.0, -1.0);
+          CGContextTranslateCTM(context, 0.0, v71 + v72);
+          CGContextScaleCTM(context, 1.0, -1.0);
           TSUImageOrientationTransform();
-          CGContextConcatCTM(a3, &v103);
+          CGContextConcatCTM(context, &v103);
           v110.origin.x = v30;
           v110.origin.y = v32;
           v110.size.width = v34;
           v110.size.height = v36;
-          CGContextDrawImage(a3, v110, v69);
+          CGContextDrawImage(context, v110, v69);
           goto LABEL_79;
         }
 
-        v67 = [(TSDImageRep *)self p_validatedImageProvider];
+        p_validatedImageProvider = [(TSDImageRep *)self p_validatedImageProvider];
       }
 
       else
       {
-        v64 = [(TSDImageRep *)self p_validatedImageProvider];
-        if (![v64 isError] || !-[TSDImageRep p_validatedThumbnailImageProvider](self, "p_validatedThumbnailImageProvider"))
+        p_validatedImageProvider2 = [(TSDImageRep *)self p_validatedImageProvider];
+        if (![p_validatedImageProvider2 isError] || !-[TSDImageRep p_validatedThumbnailImageProvider](self, "p_validatedThumbnailImageProvider"))
         {
           goto LABEL_78;
         }
 
         if (([-[TSDImageRep p_imageData](self "p_imageData")] & 1) == 0)
         {
-          v65 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler = [MEMORY[0x277D6C290] currentHandler];
           v66 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageRep p_drawInContext:withContent:withStroke:withOpacity:withMask:withIAMask:forLayer:forShadow:forHitTest:]"];
-          [v65 handleFailureInFunction:v66 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageRep.m"), 1993, @"Invalid image data %@! Rendering thumbnail data.", objc_msgSend(-[TSDImageRep p_imageData](self, "p_imageData"), "filename")}];
+          [currentHandler handleFailureInFunction:v66 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageRep.m"), 1993, @"Invalid image data %@! Rendering thumbnail data.", objc_msgSend(-[TSDImageRep p_imageData](self, "p_imageData"), "filename")}];
         }
 
-        v67 = [(TSDImageRep *)self p_validatedThumbnailImageProvider];
+        p_validatedImageProvider = [(TSDImageRep *)self p_validatedThumbnailImageProvider];
       }
 
-      v64 = v67;
+      p_validatedImageProvider2 = p_validatedImageProvider;
 LABEL_78:
-      [v64 drawImageInContext:a3 rect:{v30, v32, v34, v36}];
+      [p_validatedImageProvider2 drawImageInContext:context rect:{v30, v32, v34, v36}];
       goto LABEL_79;
     }
 
-    if ([v29 hasMaskingPath])
+    if ([imageLayout hasMaskingPath])
     {
-      TSDPathBoundsIncludingStroke([v29 pathToStroke], v21);
+      TSDPathBoundsIncludingStroke([imageLayout pathToStroke], v21);
       v40 = v39;
       v42 = v41;
       v44 = v43;
       v46 = v45;
-      if (v29)
+      if (imageLayout)
       {
-        [v29 layoutToMaskTransform];
+        [imageLayout layoutToMaskTransform];
 LABEL_33:
         v103 = transform;
-        CGContextConcatCTM(a3, &transform);
-        [(CALayer *)self->super.mFrameMaskLayer applyMaskForRectWithCoverage:a3 toContext:v40, v42, v44, v46];
+        CGContextConcatCTM(context, &transform);
+        [(CALayer *)self->super.mFrameMaskLayer applyMaskForRectWithCoverage:context toContext:v40, v42, v44, v46];
         v101 = v103;
         CGAffineTransformInvert(&transform, &v101);
-        CGContextConcatCTM(a3, &transform);
+        CGContextConcatCTM(context, &transform);
         goto LABEL_34;
       }
     }
@@ -1360,9 +1360,9 @@ LABEL_33:
       v42 = v48;
       v44 = v49;
       v46 = v50;
-      if (v29)
+      if (imageLayout)
       {
-        [v29 layoutToImageTransform];
+        [imageLayout layoutToImageTransform];
         goto LABEL_33;
       }
     }
@@ -1372,34 +1372,34 @@ LABEL_33:
   }
 
 LABEL_82:
-  CGContextRestoreGState(a3);
-  if (!v15 || !v21 || v93 && [(TSDImageRep *)self directlyManagesLayerContent])
+  CGContextRestoreGState(context);
+  if (!strokeCopy || !v21 || v93 && [(TSDImageRep *)self directlyManagesLayerContent])
   {
     goto LABEL_113;
   }
 
-  CGContextSaveGState(a3);
-  if ([v29 pathToStroke])
+  CGContextSaveGState(context);
+  if ([imageLayout pathToStroke])
   {
-    v74 = [v29 pathToStroke];
-    if (!v74)
+    pathToStroke = [imageLayout pathToStroke];
+    if (!pathToStroke)
     {
       goto LABEL_112;
     }
 
-    v75 = v74;
-    PathBoundingBox = CGPathGetPathBoundingBox(v74);
+    v75 = pathToStroke;
+    PathBoundingBox = CGPathGetPathBoundingBox(pathToStroke);
     x = PathBoundingBox.origin.x;
     y = PathBoundingBox.origin.y;
     width = PathBoundingBox.size.width;
     height = PathBoundingBox.size.height;
     if ([(TSDStroke *)v21 isFrame])
     {
-      if ([v29 shouldRenderFrameStroke])
+      if ([imageLayout shouldRenderFrameStroke])
       {
-        if (v29)
+        if (imageLayout)
         {
-          [v29 layoutToMaskTransform];
+          [imageLayout layoutToMaskTransform];
         }
 
         else
@@ -1407,9 +1407,9 @@ LABEL_82:
           memset(&v103, 0, sizeof(v103));
         }
 
-        CGContextConcatCTM(a3, &v103);
+        CGContextConcatCTM(context, &v103);
         mFrameMaskLayer = self->super.mFrameMaskLayer;
-        CGContextGetCTM(&v103, a3);
+        CGContextGetCTM(&v103, context);
         v84 = TSDTransformScale(&v103.a);
         v85 = mFrameMaskLayer;
         v86 = x;
@@ -1417,16 +1417,16 @@ LABEL_82:
         v88 = width;
         v89 = height;
 LABEL_111:
-        [(CALayer *)v85 frameRect:a3 inContext:v86 withTotalScale:v87, v88, v89, v84];
+        [(CALayer *)v85 frameRect:context inContext:v86 withTotalScale:v87, v88, v89, v84];
         goto LABEL_112;
       }
 
       goto LABEL_112;
     }
 
-    if (v29)
+    if (imageLayout)
     {
-      [v29 layoutToMaskTransform];
+      [imageLayout layoutToMaskTransform];
     }
 
     else
@@ -1434,19 +1434,19 @@ LABEL_111:
       memset(&v103, 0, sizeof(v103));
     }
 
-    CGContextConcatCTM(a3, &v103);
+    CGContextConcatCTM(context, &v103);
     v80 = v21;
     v81 = v75;
 LABEL_105:
-    [(TSDStroke *)v80 paintPath:v81 inContext:a3];
+    [(TSDStroke *)v80 paintPath:v81 inContext:context];
     goto LABEL_112;
   }
 
   if (![(TSDStroke *)v21 isFrame])
   {
-    if (v29)
+    if (imageLayout)
     {
-      [v29 layoutToImageTransform];
+      [imageLayout layoutToImageTransform];
     }
 
     else
@@ -1454,24 +1454,24 @@ LABEL_105:
       memset(&v103, 0, sizeof(v103));
     }
 
-    CGContextConcatCTM(a3, &v103);
-    v82 = [v29 pathToStroke];
-    if (!v82)
+    CGContextConcatCTM(context, &v103);
+    pathToStroke2 = [imageLayout pathToStroke];
+    if (!pathToStroke2)
     {
-      [(TSDStroke *)v21 paintRect:a3 inContext:v30, v32, v34, v36];
+      [(TSDStroke *)v21 paintRect:context inContext:v30, v32, v34, v36];
       goto LABEL_112;
     }
 
-    v81 = v82;
+    v81 = pathToStroke2;
     v80 = v21;
     goto LABEL_105;
   }
 
-  if ([v29 shouldRenderFrameStroke])
+  if ([imageLayout shouldRenderFrameStroke])
   {
-    if (v29)
+    if (imageLayout)
     {
-      [v29 layoutToImageTransform];
+      [imageLayout layoutToImageTransform];
     }
 
     else
@@ -1479,9 +1479,9 @@ LABEL_105:
       memset(&v103, 0, sizeof(v103));
     }
 
-    CGContextConcatCTM(a3, &v103);
+    CGContextConcatCTM(context, &v103);
     v90 = self->super.mFrameMaskLayer;
-    CGContextGetCTM(&v103, a3);
+    CGContextGetCTM(&v103, context);
     v84 = TSDTransformScale(&v103.a);
     v85 = v90;
     v86 = v30;
@@ -1492,16 +1492,16 @@ LABEL_105:
   }
 
 LABEL_112:
-  CGContextRestoreGState(a3);
+  CGContextRestoreGState(context);
 LABEL_113:
   if (v95)
   {
-    CGContextEndTransparencyLayer(a3);
+    CGContextEndTransparencyLayer(context);
   }
 
   if (v28)
   {
-    CGContextRestoreGState(a3);
+    CGContextRestoreGState(context);
   }
 }
 
@@ -1519,29 +1519,29 @@ CGImage *__116__TSDImageRep_p_drawInContext_withContent_withStroke_withOpacity_w
   return result;
 }
 
-- (void)addBitmapsToRenderingQualityInfo:(id)a3 inContext:(CGContext *)a4
+- (void)addBitmapsToRenderingQualityInfo:(id)info inContext:(CGContext *)context
 {
-  v6 = [(TSDImageRep *)self p_validatedBitmapImageProvider:a3];
+  v6 = [(TSDImageRep *)self p_validatedBitmapImageProvider:info];
   if (v6)
   {
     v7 = v6;
     [(TSDImageRep *)self p_desiredSizedImageSize];
 
-    [a3 cacheProvider:v7 ofSize:?];
+    [info cacheProvider:v7 ofSize:?];
   }
 }
 
-- (void)didCreateLayer:(id)a3
+- (void)didCreateLayer:(id)layer
 {
   [(TSDImageRep *)self p_generateSizedImageIfNecessary];
   [(TSDImageRep *)self p_takeSizedImageFromStateIfReady];
-  LOBYTE(self->mLastPictureFrameLayerTransform.ty) = [(TSDImageRep *)self p_directlyManagesContentForLayer:a3];
+  LOBYTE(self->mLastPictureFrameLayerTransform.ty) = [(TSDImageRep *)self p_directlyManagesContentForLayer:layer];
 }
 
-- (void)p_updateDirectlyManagesLayerContentForLayer:(id)a3
+- (void)p_updateDirectlyManagesLayerContentForLayer:(id)layer
 {
   ty_low = LOBYTE(self->mLastPictureFrameLayerTransform.ty);
-  v5 = [(TSDImageRep *)self p_directlyManagesContentForLayer:a3];
+  v5 = [(TSDImageRep *)self p_directlyManagesContentForLayer:layer];
   LOBYTE(self->mLastPictureFrameLayerTransform.ty) = v5;
   if (ty_low != 1 || v5)
   {
@@ -1560,7 +1560,7 @@ CGImage *__116__TSDImageRep_p_drawInContext_withContent_withStroke_withOpacity_w
   }
 }
 
-- (CGImage)p_imageForDirectlyManagedLayer:(id)a3
+- (CGImage)p_imageForDirectlyManagedLayer:(id)layer
 {
   v14 = 0;
   v15 = &v14;
@@ -1583,7 +1583,7 @@ CGImage *__116__TSDImageRep_p_drawInContext_withContent_withStroke_withOpacity_w
     v9[2] = __46__TSDImageRep_p_imageForDirectlyManagedLayer___block_invoke;
     v9[3] = &unk_279D48900;
     v9[4] = self;
-    v9[5] = a3;
+    v9[5] = layer;
     v9[6] = &v14;
     v9[7] = &v10;
     dispatch_sync(v6, v9);
@@ -1708,21 +1708,21 @@ void *__51__TSDImageRep_p_orientationForDirectlyManagedLayer__block_invoke(uint6
   return result;
 }
 
-- (BOOL)p_directlyManagesContentForLayer:(id)a3
+- (BOOL)p_directlyManagesContentForLayer:(id)layer
 {
-  v4 = [(TSDImageRep *)self p_imageForDirectlyManagedLayer:a3];
+  v4 = [(TSDImageRep *)self p_imageForDirectlyManagedLayer:layer];
   if (v4)
   {
-    v5 = [(TSDLayout *)[(TSDRep *)self layout] stroke];
-    if (![v5 shouldRender])
+    stroke = [(TSDLayout *)[(TSDRep *)self layout] stroke];
+    if (![stroke shouldRender])
     {
-      v5 = 0;
+      stroke = 0;
     }
 
     if ([(TSDLayout *)[(TSDRep *)self layout] isStrokeBeingManipulated])
     {
-      v6 = [v5 prefersToApplyToShapeRenderableDuringManipulation];
-      if (!v5)
+      prefersToApplyToShapeRenderableDuringManipulation = [stroke prefersToApplyToShapeRenderableDuringManipulation];
+      if (!stroke)
       {
         goto LABEL_9;
       }
@@ -1730,8 +1730,8 @@ void *__51__TSDImageRep_p_orientationForDirectlyManagedLayer__block_invoke(uint6
 
     else
     {
-      v6 = 0;
-      if (!v5)
+      prefersToApplyToShapeRenderableDuringManipulation = 0;
+      if (!stroke)
       {
 LABEL_9:
         LOBYTE(v4) = 1;
@@ -1739,19 +1739,19 @@ LABEL_9:
       }
     }
 
-    if (v6 & [v5 canApplyToShapeRenderable])
+    if (prefersToApplyToShapeRenderableDuringManipulation & [stroke canApplyToShapeRenderable])
     {
       goto LABEL_9;
     }
 
-    LODWORD(v4) = [v5 prefersToApplyToShapeRenderableDuringManipulation];
+    LODWORD(v4) = [stroke prefersToApplyToShapeRenderableDuringManipulation];
     if (v4)
     {
       [(TSDStyledRep *)self opacity];
       if (v7 == 1.0)
       {
 
-        LOBYTE(v4) = [v5 canApplyToShapeRenderable];
+        LOBYTE(v4) = [stroke canApplyToShapeRenderable];
       }
 
       else
@@ -1764,15 +1764,15 @@ LABEL_9:
   return v4;
 }
 
-- (CGImage)p_newImageByApplyingAdjustmentsToImage:(CGImage *)a3 alreadyEnhanced:(BOOL)a4
+- (CGImage)p_newImageByApplyingAdjustmentsToImage:(CGImage *)image alreadyEnhanced:(BOOL)enhanced
 {
-  v4 = a4;
+  enhancedCopy = enhanced;
   v7 = [-[TSDImageRep imageLayout](self "imageLayout")];
-  v8 = v7;
-  v14 = 0;
-  if (v4)
+  imageAdjustmentsWithoutEnhance = v7;
+  cGImageForNaturalSize = 0;
+  if (enhancedCopy)
   {
-    v8 = [v7 imageAdjustmentsWithoutEnhance];
+    imageAdjustmentsWithoutEnhance = [v7 imageAdjustmentsWithoutEnhance];
 LABEL_7:
     v9 = 0;
     goto LABEL_8;
@@ -1794,13 +1794,13 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v14 = [v10 CGImageForNaturalSize];
-    v9 = &v14;
+    cGImageForNaturalSize = [v10 CGImageForNaturalSize];
+    v9 = &cGImageForNaturalSize;
   }
 
 LABEL_8:
-  v11 = [[TSDImageAdjuster alloc] initWithImageAdjustments:v8];
-  v12 = [(TSDImageAdjuster *)v11 newFilteredImageForImage:a3 enhancedImage:v9];
+  v11 = [[TSDImageAdjuster alloc] initWithImageAdjustments:imageAdjustmentsWithoutEnhance];
+  v12 = [(TSDImageAdjuster *)v11 newFilteredImageForImage:image enhancedImage:v9];
 
   return v12;
 }
@@ -1814,29 +1814,29 @@ LABEL_8:
   y = v5;
   width = v7;
   height = v9;
-  v11 = [(TSDImageRep *)self imageLayout];
-  if ([v11 maskLayout] && objc_msgSend(v11, "pathToStroke"))
+  imageLayout = [(TSDImageRep *)self imageLayout];
+  if ([imageLayout maskLayout] && objc_msgSend(imageLayout, "pathToStroke"))
   {
     if (LOBYTE(self->mFrameInUnscaledCanvasRelativeToSuper.size.height) != 1)
     {
       memset(&v26[1], 0, sizeof(CGAffineTransform));
-      if (v11)
+      if (imageLayout)
       {
-        [v11 layoutToMaskTransform];
+        [imageLayout layoutToMaskTransform];
       }
 
-      v12 = [v11 pathToStroke];
+      pathToStroke = [imageLayout pathToStroke];
       v26[0] = v26[1];
-      v13 = TSDCreateTransformedPath(v12, v26);
+      v13 = TSDCreateTransformedPath(pathToStroke, v26);
       TSDPathBoundsIncludingStroke(v13, [(TSDLayout *)[(TSDRep *)self layout] stroke]);
       v15 = v14;
       v17 = v16;
       v19 = v18;
       v21 = v20;
       CGPathRelease(v13);
-      if (v11)
+      if (imageLayout)
       {
-        [v11 transformInRoot];
+        [imageLayout transformInRoot];
       }
 
       else
@@ -1871,7 +1871,7 @@ LABEL_8:
   return result;
 }
 
-- (void)p_getAliasedValuesForMaskToBoundsDirectLayerFrame:(CGRect *)a3 transform:(CGAffineTransform *)a4
+- (void)p_getAliasedValuesForMaskToBoundsDirectLayerFrame:(CGRect *)frame transform:(CGAffineTransform *)transform
 {
   v7 = [-[TSDImageRep imageLayout](self "imageLayout")];
   if (v7)
@@ -1926,10 +1926,10 @@ LABEL_8:
   CGAffineTransformConcat(&t1, &t2, &v12);
   t2 = t1;
   [v8 transformBy:&t2];
-  [(TSDRep *)self computeDirectLayerFrame:a3 andTransform:a4 basedOnLayoutGeometry:v8];
+  [(TSDRep *)self computeDirectLayerFrame:frame andTransform:transform basedOnLayoutGeometry:v8];
 }
 
-- (void)updateLayerGeometryFromLayout:(id)a3
+- (void)updateLayerGeometryFromLayout:(id)layout
 {
   if ([(TSDImageRep *)self directlyManagesLayerContent])
   {
@@ -1958,28 +1958,28 @@ LABEL_8:
     }
 
     v9 = v10;
-    [a3 setIfDifferentFrame:&v9 orTransform:{v11, v12}];
+    [layout setIfDifferentFrame:&v9 orTransform:{v11, v12}];
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = TSDImageRep;
-    [(TSDRep *)&v13 updateLayerGeometryFromLayout:a3];
+    [(TSDRep *)&v13 updateLayerGeometryFromLayout:layout];
   }
 
   [(TSDImageRep *)self p_invalidateHitTestCache];
 }
 
-- (void)willUpdateLayer:(id)a3
+- (void)willUpdateLayer:(id)layer
 {
   [(TSDImageRep *)self p_generateSizedImageIfNecessary];
   [*&self->mBaseMaskLayoutTransform.ty lock];
   v30.receiver = self;
   v30.super_class = TSDImageRep;
-  [(TSDStyledRep *)&v30 willUpdateLayer:a3];
+  [(TSDStyledRep *)&v30 willUpdateLayer:layer];
   [(TSDImageRep *)self p_takeSizedImageFromStateIfReady];
-  [(TSDImageRep *)self p_updateDirectlyManagesLayerContentForLayer:a3];
+  [(TSDImageRep *)self p_updateDirectlyManagesLayerContentForLayer:layer];
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -1989,7 +1989,7 @@ LABEL_8:
     goto LABEL_26;
   }
 
-  v5 = [(TSDImageRep *)self imageLayout];
+  imageLayout = [(TSDImageRep *)self imageLayout];
   v6 = *&self->mSizingStateReady;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -1997,26 +1997,26 @@ LABEL_8:
   block[3] = &unk_279D481D0;
   block[5] = self;
   block[6] = &v26;
-  block[4] = v5;
+  block[4] = imageLayout;
   dispatch_sync(v6, block);
   if (*(v27 + 24) == 1)
   {
-    [(TSDImageRep *)self p_createMaskLayerForLayer:a3];
+    [(TSDImageRep *)self p_createMaskLayerForLayer:layer];
   }
 
-  v7 = [(TSDLayout *)[(TSDRep *)self layout] stroke];
-  v8 = v7;
-  if (v7 && [v7 shouldRender] && (!objc_msgSend(v8, "isFrame") || objc_msgSend(v5, "shouldRenderFrameStroke")))
+  stroke = [(TSDLayout *)[(TSDRep *)self layout] stroke];
+  v8 = stroke;
+  if (stroke && [stroke shouldRender] && (!objc_msgSend(v8, "isFrame") || objc_msgSend(imageLayout, "shouldRenderFrameStroke")))
   {
-    v9 = [v8 isFrame];
-    if (v9 && [v8 hasMask])
+    isFrame = [v8 isFrame];
+    if (isFrame && [v8 hasMask])
     {
-      v10 = [v5 shouldRenderFrameStroke];
-      v11 = v10;
-      if ((v27[3] & 1) == 0 && ((v10 ^ 1) & 1) == 0)
+      shouldRenderFrameStroke = [imageLayout shouldRenderFrameStroke];
+      v11 = shouldRenderFrameStroke;
+      if ((v27[3] & 1) == 0 && ((shouldRenderFrameStroke ^ 1) & 1) == 0)
       {
         *(v27 + 24) = 1;
-        [(TSDImageRep *)self p_createMaskLayerForLayer:a3];
+        [(TSDImageRep *)self p_createMaskLayerForLayer:layer];
       }
     }
 
@@ -2031,7 +2031,7 @@ LABEL_8:
       self->super.mMaskLayer = v13;
       [(CAShapeLayer *)v13 setDelegate:self];
       [(CAShapeLayer *)self->super.mMaskLayer setFillColor:0];
-      if (v9)
+      if (isFrame)
       {
         mStrokeLayer = self->super.mStrokeLayer;
         if (mStrokeLayer)
@@ -2047,7 +2047,7 @@ LABEL_8:
         mMaskLayer = self->super.mMaskLayer;
         mTapToReplaceLayer = self->super.mTapToReplaceLayer;
         [(TSDCanvas *)[(TSDRep *)self canvas] viewScale];
-        self->super.mStrokeLayer = [(CALayer *)mFrameMaskLayer applyToCALayer:mMaskLayer withRepLayer:a3 maskLayer:mTapToReplaceLayer viewScale:v16 * v20];
+        self->super.mStrokeLayer = [(CALayer *)mFrameMaskLayer applyToCALayer:mMaskLayer withRepLayer:layer maskLayer:mTapToReplaceLayer viewScale:v16 * v20];
         v21 = *(MEMORY[0x277CBF3A0] + 16);
         *&self->super.mFrameRep = *MEMORY[0x277CBF3A0];
         *&self->super.mLastPictureFrameLayerRect.origin.y = v21;
@@ -2108,13 +2108,13 @@ uint64_t __31__TSDImageRep_willUpdateLayer___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)didUpdateLayer:(id)a3
+- (void)didUpdateLayer:(id)layer
 {
   v105.receiver = self;
   v105.super_class = TSDImageRep;
   [(TSDStyledRep *)&v105 didUpdateLayer:?];
-  v5 = [(TSDImageRep *)self imageLayout];
-  v6 = [(TSDImageRep *)self maskLayout];
+  imageLayout = [(TSDImageRep *)self imageLayout];
+  maskLayout = [(TSDImageRep *)self maskLayout];
   if (![(TSDImageRep *)self p_shouldRenderWithMaskToBounds])
   {
     v7 = *&self->mFrameInUnscaledCanvasIsValid;
@@ -2123,7 +2123,7 @@ uint64_t __31__TSDImageRep_willUpdateLayer___block_invoke(uint64_t a1)
       [v7 removeFromSuperlayer];
 
       *&self->mFrameInUnscaledCanvasIsValid = 0;
-      [a3 setMasksToBounds:0];
+      [layer setMasksToBounds:0];
     }
   }
 
@@ -2136,7 +2136,7 @@ uint64_t __31__TSDImageRep_willUpdateLayer___block_invoke(uint64_t a1)
     v101 = 0x3052000000;
     v102 = __Block_byref_object_copy__12;
     v103 = __Block_byref_object_dispose__12;
-    v104 = [(TSDImageRep *)self p_imageForDirectlyManagedLayer:a3];
+    v104 = [(TSDImageRep *)self p_imageForDirectlyManagedLayer:layer];
     v8 = *&self->mSizingStateReady;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -2145,10 +2145,10 @@ uint64_t __31__TSDImageRep_willUpdateLayer___block_invoke(uint64_t a1)
     block[4] = self;
     block[5] = &v99;
     dispatch_sync(v8, block);
-    v9 = [a3 contents];
-    if (v9 != v100[5])
+    contents = [layer contents];
+    if (contents != v100[5])
     {
-      [a3 setContents:?];
+      [layer setContents:?];
     }
 
     v10 = [-[TSDImageRep imageLayout](self "imageLayout")];
@@ -2164,15 +2164,15 @@ uint64_t __31__TSDImageRep_willUpdateLayer___block_invoke(uint64_t a1)
 
     if (TSDIsTransformAxisAligned(&v97.a))
     {
-      if ([a3 edgeAntialiasingMask])
+      if ([layer edgeAntialiasingMask])
       {
-        [a3 setEdgeAntialiasingMask:0];
+        [layer setEdgeAntialiasingMask:0];
       }
     }
 
-    else if ([a3 edgeAntialiasingMask] != 15)
+    else if ([layer edgeAntialiasingMask] != 15)
     {
-      [a3 setEdgeAntialiasingMask:15];
+      [layer setEdgeAntialiasingMask:15];
     }
 
     if ([objc_msgSend(MEMORY[0x277CBEBD0] "standardUserDefaults")])
@@ -2185,15 +2185,15 @@ uint64_t __31__TSDImageRep_willUpdateLayer___block_invoke(uint64_t a1)
       v11 = @"linear";
     }
 
-    [a3 setMagnificationFilter:v11];
-    v12 = [(TSDLayout *)[(TSDRep *)self layout] stroke];
-    v13 = v12;
-    if (v12 && [v12 shouldRender] && (!objc_msgSend(v13, "isFrame") || objc_msgSend(v5, "shouldRenderFrameStroke")))
+    [layer setMagnificationFilter:v11];
+    stroke = [(TSDLayout *)[(TSDRep *)self layout] stroke];
+    v13 = stroke;
+    if (stroke && [stroke shouldRender] && (!objc_msgSend(v13, "isFrame") || objc_msgSend(imageLayout, "shouldRenderFrameStroke")))
     {
-      [(TSDImageRep *)self p_updateStrokeLayerForStroke:v13 repLayer:a3];
+      [(TSDImageRep *)self p_updateStrokeLayerForStroke:v13 repLayer:layer];
     }
 
-    if (!v6 && ![-[TSDImageRep imageInfo](self "imageInfo")])
+    if (!maskLayout && ![-[TSDImageRep imageInfo](self "imageInfo")])
     {
       goto LABEL_67;
     }
@@ -2205,14 +2205,14 @@ uint64_t __31__TSDImageRep_willUpdateLayer___block_invoke(uint64_t a1)
         *&self->mFrameInUnscaledCanvasIsValid = objc_alloc_init(MEMORY[0x277CD9ED0]);
       }
 
-      if (([objc_msgSend(a3 "sublayers")] & 1) == 0)
+      if (([objc_msgSend(layer "sublayers")] & 1) == 0)
       {
-        [a3 addSublayer:*&self->mFrameInUnscaledCanvasIsValid];
+        [layer addSublayer:*&self->mFrameInUnscaledCanvasIsValid];
       }
 
-      [a3 setMasksToBounds:1];
+      [layer setMasksToBounds:1];
       [*&self->mFrameInUnscaledCanvasIsValid setContents:v100[5]];
-      [a3 setContents:0];
+      [layer setContents:0];
       [(TSDRep *)self scaleToConvertNaturalToLayerRelative];
       v85 = v14;
       [objc_msgSend(-[TSDImageRep imageLayout](self "imageLayout")];
@@ -2307,14 +2307,14 @@ uint64_t __31__TSDImageRep_willUpdateLayer___block_invoke(uint64_t a1)
       [(CALayer *)self->super.mTapToReplaceLayer setPath:0];
       if ([(CAShapeLayer *)self->super.mStrokeLayer mask]&& ([(CAShapeLayer *)self->super.mStrokeLayer mask], objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v34 = [(CAShapeLayer *)self->super.mStrokeLayer mask];
+        mask = [(CAShapeLayer *)self->super.mStrokeLayer mask];
       }
 
       else
       {
-        v34 = [MEMORY[0x277CD9F90] layer];
-        [v34 setBackgroundColor:{objc_msgSend(objc_msgSend(MEMORY[0x277D6C2A8], "blackColor"), "CGColor")}];
-        [(CAShapeLayer *)self->super.mStrokeLayer setMask:v34];
+        mask = [MEMORY[0x277CD9F90] layer];
+        [mask setBackgroundColor:{objc_msgSend(objc_msgSend(MEMORY[0x277D6C2A8], "blackColor"), "CGColor")}];
+        [(CAShapeLayer *)self->super.mStrokeLayer setMask:mask];
       }
 
       if ([-[TSDImageRep imageLayout](self "imageLayout")])
@@ -2377,7 +2377,7 @@ uint64_t __31__TSDImageRep_willUpdateLayer___block_invoke(uint64_t a1)
       *&v94.c = *&v93.c;
       v94.tx = tx * v53;
       v94.ty = ty * v55;
-      [v34 setAffineTransform:&v94];
+      [mask setAffineTransform:&v94];
       [MEMORY[0x277CD9FF0] commit];
       v56 = [-[TSDImageRep imageLayout](self "imageLayout")];
       if (!v56)
@@ -2386,22 +2386,22 @@ uint64_t __31__TSDImageRep_willUpdateLayer___block_invoke(uint64_t a1)
       }
 
       [(TSDImageRep *)self p_updateMaskSublayersForMaskEditMode];
-      [(TSDImageRep *)self p_updateMaskLayer:self->mIAMaskLayer forRepLayer:a3 shouldIncludeMask:1 shouldIncludeInstantAlpha:0];
-      [(TSDImageRep *)self p_updateMaskLayer:self->mMaskPathLayer forRepLayer:a3 shouldIncludeMask:0 shouldIncludeInstantAlpha:1];
-      if (([v5 isInInstantAlphaMode] & 1) == 0)
+      [(TSDImageRep *)self p_updateMaskLayer:self->mIAMaskLayer forRepLayer:layer shouldIncludeMask:1 shouldIncludeInstantAlpha:0];
+      [(TSDImageRep *)self p_updateMaskLayer:self->mMaskPathLayer forRepLayer:layer shouldIncludeMask:0 shouldIncludeInstantAlpha:1];
+      if (([imageLayout isInInstantAlphaMode] & 1) == 0)
       {
-        [(TSDImageRep *)self p_updateMaskLayer:self->mContentsLayer forRepLayer:a3 shouldIncludeMask:1 shouldIncludeInstantAlpha:0];
+        [(TSDImageRep *)self p_updateMaskLayer:self->mContentsLayer forRepLayer:layer shouldIncludeMask:1 shouldIncludeInstantAlpha:0];
       }
 
       if (![-[TSDImageRep imageInfo](self "imageInfo")])
       {
-        [v34 setPath:0];
+        [mask setPath:0];
       }
 
       else
       {
 LABEL_66:
-        [(TSDImageRep *)self p_updateMaskLayer:v34 forRepLayer:a3 shouldIncludeMask:v56 ^ 1u shouldIncludeInstantAlpha:1];
+        [(TSDImageRep *)self p_updateMaskLayer:mask forRepLayer:layer shouldIncludeMask:v56 ^ 1u shouldIncludeInstantAlpha:1];
       }
 
       goto LABEL_67;
@@ -2414,7 +2414,7 @@ LABEL_66:
       {
         v40 = &OBJC_IVAR___TSDMediaRep_mMaskLayer;
 LABEL_59:
-        [(TSDImageRep *)self p_updateMaskLayer:*(&self->super.super.super.super.isa + *v40) forRepLayer:a3 shouldIncludeMask:1 shouldIncludeInstantAlpha:v35 ^ 1u];
+        [(TSDImageRep *)self p_updateMaskLayer:*(&self->super.super.super.super.isa + *v40) forRepLayer:layer shouldIncludeMask:1 shouldIncludeInstantAlpha:v35 ^ 1u];
       }
 
 LABEL_67:
@@ -2422,7 +2422,7 @@ LABEL_67:
       {
         [MEMORY[0x277CD9FF0] begin];
         [MEMORY[0x277CD9FF0] setDisableActions:1];
-        [a3 bounds];
+        [layer bounds];
         v58 = v57;
         v60 = v59;
         v62 = v61;
@@ -2499,13 +2499,13 @@ LABEL_67:
 
     else
     {
-      [(TSDImageRep *)self p_updateMaskLayer:self->mIAMaskLayer forRepLayer:a3 shouldIncludeMask:1 shouldIncludeInstantAlpha:0];
+      [(TSDImageRep *)self p_updateMaskLayer:self->mIAMaskLayer forRepLayer:layer shouldIncludeMask:1 shouldIncludeInstantAlpha:0];
       v37 = self->mMaskPathLayer;
     }
 
-    [(TSDImageRep *)self p_updateMaskLayer:v37 forRepLayer:a3 shouldIncludeMask:0 shouldIncludeInstantAlpha:1];
+    [(TSDImageRep *)self p_updateMaskLayer:v37 forRepLayer:layer shouldIncludeMask:0 shouldIncludeInstantAlpha:1];
 LABEL_57:
-    if (([v5 isInInstantAlphaMode] & 1) == 0)
+    if (([imageLayout isInInstantAlphaMode] & 1) == 0)
     {
       v40 = &OBJC_IVAR___TSDImageRep_mMaskPathLayer;
       goto LABEL_59;
@@ -2514,32 +2514,32 @@ LABEL_57:
     goto LABEL_67;
   }
 
-  if ([a3 edgeAntialiasingMask] != 15)
+  if ([layer edgeAntialiasingMask] != 15)
   {
-    [a3 setEdgeAntialiasingMask:15];
+    [layer setEdgeAntialiasingMask:15];
   }
 
 LABEL_78:
   v79 = *MEMORY[0x277CBF348];
   v80 = *(MEMORY[0x277CBF348] + 8);
-  [a3 contentsRect];
+  [layer contentsRect];
   v115.size.width = 1.0;
   v115.size.height = 1.0;
   v115.origin.x = v79;
   v115.origin.y = v80;
   if (!CGRectEqualToRect(v111, v115))
   {
-    [a3 setContentsRect:{v79, v80, 1.0, 1.0}];
+    [layer setContentsRect:{v79, v80, 1.0, 1.0}];
   }
 
   [(TSDStyledRep *)self opacity];
   v82 = v81;
-  [a3 opacity];
+  [layer opacity];
   v84 = v83;
   if (v82 != v84)
   {
     *&v84 = v82;
-    [a3 setOpacity:v84];
+    [layer setOpacity:v84];
   }
 
   [*&self->mBaseMaskLayoutTransform.ty unlock];
@@ -2570,36 +2570,36 @@ uint64_t __30__TSDImageRep_didUpdateLayer___block_invoke(uint64_t a1)
 
 - (BOOL)p_shouldMaskWithFrameLayers
 {
-  v3 = [(TSDLayout *)[(TSDRep *)self layout] stroke];
-  if (!v3)
+  stroke = [(TSDLayout *)[(TSDRep *)self layout] stroke];
+  if (!stroke)
   {
     return 0;
   }
 
-  v4 = v3;
-  if (![v3 shouldRender] || !objc_msgSend(v4, "isFrame") || !objc_msgSend(v4, "hasMask"))
+  v4 = stroke;
+  if (![stroke shouldRender] || !objc_msgSend(v4, "isFrame") || !objc_msgSend(v4, "hasMask"))
   {
     return 0;
   }
 
-  v5 = [(TSDImageRep *)self imageLayout];
+  imageLayout = [(TSDImageRep *)self imageLayout];
 
-  return [v5 shouldRenderFrameStroke];
+  return [imageLayout shouldRenderFrameStroke];
 }
 
-- (void)p_updateMaskLayer:(id)a3 forRepLayer:(id)a4 shouldIncludeMask:(BOOL)a5 shouldIncludeInstantAlpha:(BOOL)a6
+- (void)p_updateMaskLayer:(id)layer forRepLayer:(id)repLayer shouldIncludeMask:(BOOL)mask shouldIncludeInstantAlpha:(BOOL)alpha
 {
-  v6 = a6;
-  v7 = a5;
+  alphaCopy = alpha;
+  maskCopy = mask;
   v11 = [-[TSDImageRep imageLayout](self "imageLayout")];
   if (![(TSDImageRep *)self directlyManagesLayerContent])
   {
-    v12 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageRep p_updateMaskLayer:forRepLayer:shouldIncludeMask:shouldIncludeInstantAlpha:]"];
-    [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageRep.m"), 2730, @"Updating mask layer for a non-directly managed layer!"}];
+    [currentHandler handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageRep.m"), 2730, @"Updating mask layer for a non-directly managed layer!"}];
   }
 
-  if (a3 && ![(TSDImageRep *)self p_shouldRenderWithMaskToBounds])
+  if (layer && ![(TSDImageRep *)self p_shouldRenderWithMaskToBounds])
   {
     [(TSDRep *)self scaleToConvertNaturalToLayerRelative];
     v15 = v14;
@@ -2608,7 +2608,7 @@ uint64_t __30__TSDImageRep_didUpdateLayer___block_invoke(uint64_t a1)
     *&v48.a = *MEMORY[0x277CBF2C0];
     *&v48.c = v17;
     *&v48.tx = *(MEMORY[0x277CBF2C0] + 32);
-    if (v11 && v7)
+    if (v11 && maskCopy)
     {
       [v11 pathBounds];
       CGAffineTransformMakeTranslation(&v48, -v18, -v19);
@@ -2623,13 +2623,13 @@ uint64_t __30__TSDImageRep_didUpdateLayer___block_invoke(uint64_t a1)
       MutableCopy = CGPathCreateMutableCopy([v11 path]);
     }
 
-    if ([-[TSDImageRep imageInfo](self "imageInfo")] && v6)
+    if ([-[TSDImageRep imageInfo](self "imageInfo")] && alphaCopy)
     {
       v20 = [objc_msgSend(-[TSDImageRep imageInfo](self "imageInfo")];
-      v21 = [(TSDImageRep *)self imageLayout];
-      if (v21)
+      imageLayout = [(TSDImageRep *)self imageLayout];
+      if (imageLayout)
       {
-        [v21 imageDataToVisualSizeTransform];
+        [imageLayout imageDataToVisualSizeTransform];
       }
 
       else
@@ -2658,9 +2658,9 @@ uint64_t __30__TSDImageRep_didUpdateLayer___block_invoke(uint64_t a1)
         v26 = [[TSDBezierPath bezierPathWithCGPath:?], "intersectBezierPath:", v20];
         if (!v26)
         {
-          v27 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
           v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageRep p_updateMaskLayer:forRepLayer:shouldIncludeMask:shouldIncludeInstantAlpha:]"];
-          [v27 handleFailureInFunction:v28 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageRep.m"), 2764, @"invalid nil value for '%s'", "maskBezierPath"}];
+          [currentHandler2 handleFailureInFunction:v28 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageRep.m"), 2764, @"invalid nil value for '%s'", "maskBezierPath"}];
         }
 
         CGPathRelease(MutableCopy);
@@ -2674,9 +2674,9 @@ uint64_t __30__TSDImageRep_didUpdateLayer___block_invoke(uint64_t a1)
         MutableCopy = [v20 CGPath];
         if (!MutableCopy)
         {
-          v22 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
           v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageRep p_updateMaskLayer:forRepLayer:shouldIncludeMask:shouldIncludeInstantAlpha:]"];
-          [v22 handleFailureInFunction:v23 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageRep.m"), 2772, @"invalid nil value for '%s'", "maskPath"}];
+          [currentHandler3 handleFailureInFunction:v23 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageRep.m"), 2772, @"invalid nil value for '%s'", "maskPath"}];
           MutableCopy = 0;
         }
       }
@@ -2686,7 +2686,7 @@ uint64_t __30__TSDImageRep_didUpdateLayer___block_invoke(uint64_t a1)
 
     if ([(TSDImageRep *)self p_orientationForDirectlyManagedLayer])
     {
-      [a4 bounds];
+      [repLayer bounds];
       v29 = TSDRectWithSize();
       v31 = v30;
       v33 = v32;
@@ -2712,26 +2712,26 @@ uint64_t __30__TSDImageRep_didUpdateLayer___block_invoke(uint64_t a1)
     {
       if ([-[TSDImageRep imageLayout](self "imageLayout")])
       {
-        v39 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler4 = [MEMORY[0x277D6C290] currentHandler];
         v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageRep p_updateMaskLayer:forRepLayer:shouldIncludeMask:shouldIncludeInstantAlpha:]"];
-        [v39 handleFailureInFunction:v40 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageRep.m"), 2794, @"maskPath is nil when it should not be"}];
+        [currentHandler4 handleFailureInFunction:v40 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageRep.m"), 2794, @"maskPath is nil when it should not be"}];
       }
     }
 
     v47 = v48;
     v41 = TSDCreateTransformedPath(MutableCopy, &v47);
-    [a3 setPath:v41];
+    [layer setPath:v41];
     CGPathRelease(v41);
     CGPathRelease(MutableCopy);
   }
 }
 
-- (void)p_updateStrokeLayerForStroke:(id)a3 repLayer:(id)a4
+- (void)p_updateStrokeLayerForStroke:(id)stroke repLayer:(id)layer
 {
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  v7 = [(TSDImageRep *)self imageLayout];
-  v8 = [(TSDImageRep *)self maskLayout];
+  imageLayout = [(TSDImageRep *)self imageLayout];
+  maskLayout = [(TSDImageRep *)self maskLayout];
   [(TSDRep *)self scaleToConvertNaturalToLayerRelative];
   v10 = v9;
   memset(&v111, 0, sizeof(v111));
@@ -2761,15 +2761,15 @@ uint64_t __30__TSDImageRep_didUpdateLayer___block_invoke(uint64_t a1)
     [(CAShapeLayer *)self->super.mMaskLayer setOpacity:v28];
   }
 
-  if (![a3 isFrame])
+  if (![stroke isFrame])
   {
     [(CAShapeLayer *)self->super.mMaskLayer setBounds:v12, v14, v16, v18];
-    [a3 applyToRepRenderable:+[TSDRenderable renderableFromLayer:](TSDRenderable withScale:{"renderableFromLayer:", self->super.mMaskLayer), v10}];
-    v49 = [v7 pathToStroke];
-    Mutable = v49;
-    if (v8)
+    [stroke applyToRepRenderable:+[TSDRenderable renderableFromLayer:](TSDRenderable withScale:{"renderableFromLayer:", self->super.mMaskLayer), v10}];
+    pathToStroke = [imageLayout pathToStroke];
+    Mutable = pathToStroke;
+    if (maskLayout)
     {
-      if (!v49)
+      if (!pathToStroke)
       {
         mMaskLayer = self->super.mMaskLayer;
         v79 = 1;
@@ -2777,16 +2777,16 @@ uint64_t __30__TSDImageRep_didUpdateLayer___block_invoke(uint64_t a1)
       }
 
       memset(&v108, 0, sizeof(v108));
-      [v8 transform];
+      [maskLayout transform];
       CGAffineTransformMakeScale(&t2, v10, v10);
       CGAffineTransformConcat(&v108, &t1, &t2);
       t1 = v108;
-      v51 = Mutable;
+      pathToStroke2 = Mutable;
     }
 
     else
     {
-      if (!v49)
+      if (!pathToStroke)
       {
         Mutable = CGPathCreateMutable();
         v115.origin.x = v12;
@@ -2799,11 +2799,11 @@ uint64_t __30__TSDImageRep_didUpdateLayer___block_invoke(uint64_t a1)
 
       memset(&v108, 0, sizeof(v108));
       CGAffineTransformMakeScale(&v108, v10, v10);
-      v51 = [v7 pathToStroke];
+      pathToStroke2 = [imageLayout pathToStroke];
       t1 = v108;
     }
 
-    Mutable = TSDCreateTransformedPath(v51, &t1);
+    Mutable = TSDCreateTransformedPath(pathToStroke2, &t1);
 LABEL_24:
     mMaskLayer = self->super.mMaskLayer;
     v79 = 0;
@@ -2817,13 +2817,13 @@ LABEL_26:
   v103 = v10;
   if ([-[TSDImageRep imageLayout](self "imageLayout")])
   {
-    v29 = [v7 pathToStroke];
-    if (!v29)
+    pathToStroke3 = [imageLayout pathToStroke];
+    if (!pathToStroke3)
     {
       goto LABEL_27;
     }
 
-    PathBoundingBox = CGPathGetPathBoundingBox(v29);
+    PathBoundingBox = CGPathGetPathBoundingBox(pathToStroke3);
     x = PathBoundingBox.origin.x;
     y = PathBoundingBox.origin.y;
     width = PathBoundingBox.size.width;
@@ -2833,19 +2833,19 @@ LABEL_26:
     v101 = v34;
     v95 = v37;
     v97 = v36;
-    [a3 coverageRectWithoutAdornment:?];
+    [stroke coverageRectWithoutAdornment:?];
     v39 = v38;
     v41 = v40;
     v43 = v42;
     v45 = v44;
     v46 = [TSDMutableLayoutGeometry alloc];
     v47 = v46;
-    if (v8)
+    if (maskLayout)
     {
       v48 = [(TSDLayoutGeometry *)v46 initWithFrame:*&v39, v41, v43, v45];
-      if (v7)
+      if (imageLayout)
       {
-        [v7 layoutToMaskTransform];
+        [imageLayout layoutToMaskTransform];
       }
 
       else
@@ -2856,9 +2856,9 @@ LABEL_26:
 
     else
     {
-      [a3 coverageRectWithoutAdornment:{x, y, width, height}];
+      [stroke coverageRectWithoutAdornment:{x, y, width, height}];
       v48 = [(TSDLayoutGeometry *)v47 initWithFrame:?];
-      [a3 coverageRect:{x, y, width, height}];
+      [stroke coverageRect:{x, y, width, height}];
       if (v81 <= 0.0)
       {
         v83 = -v81;
@@ -2883,9 +2883,9 @@ LABEL_26:
     }
 
     [(TSDMutableLayoutGeometry *)v48 transformBy:&v108];
-    if (v7)
+    if (imageLayout)
     {
-      [v7 transform];
+      [imageLayout transform];
     }
 
     else
@@ -2901,9 +2901,9 @@ LABEL_26:
     [(CAShapeLayer *)self->super.mMaskLayer setBounds:TSDRectWithSize()];
     if (([-[TSDImageRep imageLayout](self "imageLayout")] & 1) != 0 || !-[TSDImageRep p_shouldRenderWithMaskToBounds](self, "p_shouldRenderWithMaskToBounds") || objc_msgSend(-[TSDImageRep imageInfo](self, "imageInfo"), "instantAlphaPath"))
     {
-      if (v8)
+      if (maskLayout)
       {
-        [v8 transform];
+        [maskLayout transform];
         v106 = *&v108.a;
         v107 = *&v108.c;
         tx = v103 * v108.tx;
@@ -2923,7 +2923,7 @@ LABEL_54:
           *&v108.c = v107;
           v108.tx = tx;
           v108.ty = ty;
-          [(CALayer *)mFrameMaskLayer updateCALayer:v92 toRect:a4 withRepLayer:mTapToReplaceLayer maskLayer:&v108 viewScale:v101 maskLayerTransform:v99, v97, v95, v103];
+          [(CALayer *)mFrameMaskLayer updateCALayer:v92 toRect:layer withRepLayer:mTapToReplaceLayer maskLayer:&v108 viewScale:v101 maskLayerTransform:v99, v97, v95, v103];
           self->super.mFrameRep = v39;
           self->super.mLastPictureFrameLayerRect.origin.x = v41;
           self->super.mLastPictureFrameLayerRect.origin.y = v43;
@@ -2948,9 +2948,9 @@ LABEL_54:
         goto LABEL_54;
       }
 
-      v87 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler = [MEMORY[0x277D6C290] currentHandler];
       v88 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageRep p_updateStrokeLayerForStroke:repLayer:]"];
-      [v87 handleFailureInFunction:v88 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageRep.m"), 2887, @"This path should never be hit! Something is wrong with rendering the frame."}];
+      [currentHandler handleFailureInFunction:v88 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageRep.m"), 2887, @"This path should never be hit! Something is wrong with rendering the frame."}];
     }
 
     v89 = *(MEMORY[0x277CBF2C0] + 16);
@@ -2965,7 +2965,7 @@ LABEL_54:
   v54 = v53;
   v56 = v55;
   v58 = v57;
-  [a3 coverageRectWithoutAdornment:?];
+  [stroke coverageRectWithoutAdornment:?];
   v59 = v113.origin.x;
   v60 = v113.origin.y;
   v61 = v113.size.width;
@@ -3002,7 +3002,7 @@ LABEL_54:
     *&v108.a = *MEMORY[0x277CBF2C0];
     *&v108.c = v77;
     *&v108.tx = *(MEMORY[0x277CBF2C0] + 32);
-    [(CALayer *)v74 updateCALayer:v75 toRect:a4 withRepLayer:v76 maskLayer:&v108 viewScale:v102 maskLayerTransform:v100, v98, v96, v103];
+    [(CALayer *)v74 updateCALayer:v75 toRect:layer withRepLayer:v76 maskLayer:&v108 viewScale:v102 maskLayerTransform:v100, v98, v96, v103];
     *&self->super.mFrameRep = v59;
     self->super.mLastPictureFrameLayerRect.origin.x = v60;
     self->super.mLastPictureFrameLayerRect.origin.y = v61;
@@ -3038,10 +3038,10 @@ LABEL_27:
   v3 = [MEMORY[0x277CBEB18] arrayWithArray:{-[TSDMediaRep additionalLayersOverLayer](&v18, sel_additionalLayersOverLayer)}];
   if (self->super.mMaskLayer)
   {
-    v4 = [(TSDMediaRep *)self visibleMediaReplaceButtonLayer];
-    v5 = [v3 indexOfObject:v4];
+    visibleMediaReplaceButtonLayer = [(TSDMediaRep *)self visibleMediaReplaceButtonLayer];
+    v5 = [v3 indexOfObject:visibleMediaReplaceButtonLayer];
     mMaskLayer = self->super.mMaskLayer;
-    if (!v4 || (v6 = v5, v5 == 0x7FFFFFFFFFFFFFFFLL))
+    if (!visibleMediaReplaceButtonLayer || (v6 = v5, v5 == 0x7FFFFFFFFFFFFFFFLL))
     {
       [v3 addObject:{mMaskLayer, v6}];
     }
@@ -3099,11 +3099,11 @@ LABEL_27:
   v5.receiver = self;
   v5.super_class = TSDImageRep;
   [(TSDStyledRep *)&v5 viewScaleDidChange];
-  v3 = [(TSDLayout *)[(TSDRep *)self layout] stroke];
-  if (v3)
+  stroke = [(TSDLayout *)[(TSDRep *)self layout] stroke];
+  if (stroke)
   {
-    v4 = v3;
-    if ([v3 shouldRender])
+    v4 = stroke;
+    if ([stroke shouldRender])
     {
       if ([v4 isFrame])
       {
@@ -3117,7 +3117,7 @@ LABEL_27:
   }
 }
 
-- (id)textureForContext:(id)a3
+- (id)textureForContext:(id)context
 {
   if ([-[TSDImageRep p_imageProvider](self "p_imageProvider")])
   {
@@ -3126,10 +3126,10 @@ LABEL_27:
 
   v6.receiver = self;
   v6.super_class = TSDImageRep;
-  return [(TSDStyledRep *)&v6 textureForContext:a3];
+  return [(TSDStyledRep *)&v6 textureForContext:context];
 }
 
-+ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)a3 incomingObject:(id)a4
++ (double)magicMoveAttributeMatchPercentBetweenOutgoingObject:(id)object incomingObject:(id)incomingObject
 {
   objc_opt_class();
   v4 = TSUDynamicCast();
@@ -3186,25 +3186,25 @@ LABEL_27:
     }
   }
 
-  v4 = [(TSDImageRep *)self imageInfo];
+  imageInfo = [(TSDImageRep *)self imageInfo];
 
-  return [v4 imageData];
+  return [imageInfo imageData];
 }
 
 - (id)p_imageProvider
 {
   v3 = +[TSDImageProviderPool sharedPool];
-  v4 = [(TSDImageRep *)self p_imageData];
+  p_imageData = [(TSDImageRep *)self p_imageData];
 
-  return [v3 providerForData:v4 shouldValidate:0];
+  return [v3 providerForData:p_imageData shouldValidate:0];
 }
 
 - (id)p_validatedImageProvider
 {
   v3 = +[TSDImageProviderPool sharedPool];
-  v4 = [(TSDImageRep *)self p_imageData];
+  p_imageData = [(TSDImageRep *)self p_imageData];
 
-  return [v3 providerForData:v4 shouldValidate:1];
+  return [v3 providerForData:p_imageData shouldValidate:1];
 }
 
 - (id)p_validatedBitmapImageProvider
@@ -3262,7 +3262,7 @@ LABEL_27:
   }
 }
 
-- (void)p_createMaskLayerForLayer:(id)a3
+- (void)p_createMaskLayerForLayer:(id)layer
 {
   if (!self->super.mTapToReplaceLayer)
   {
@@ -3272,7 +3272,7 @@ LABEL_27:
     [(CALayer *)self->super.mTapToReplaceLayer setAnchorPoint:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
     mTapToReplaceLayer = self->super.mTapToReplaceLayer;
 
-    [a3 setMask:mTapToReplaceLayer];
+    [layer setMask:mTapToReplaceLayer];
   }
 }
 
@@ -3354,16 +3354,16 @@ LABEL_17:
 
 - (BOOL)p_drawsInOneStep
 {
-  v3 = [(TSDImageRep *)self imageInfo];
-  v4 = [objc_msgSend(v3 "stroke")];
-  if ([v3 maskInfo])
+  imageInfo = [(TSDImageRep *)self imageInfo];
+  v4 = [objc_msgSend(imageInfo "stroke")];
+  if ([imageInfo maskInfo])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v3 instantAlphaPath] != 0;
+    v5 = [imageInfo instantAlphaPath] != 0;
   }
 
   v10 = 0;
@@ -3410,13 +3410,13 @@ void *__31__TSDImageRep_p_drawsInOneStep__block_invoke(uint64_t a1)
 {
   v5.receiver = self;
   v5.super_class = TSDImageRep;
-  v3 = [(TSDStyledRep *)&v5 shouldShowShadow];
-  if (v3)
+  shouldShowShadow = [(TSDStyledRep *)&v5 shouldShowShadow];
+  if (shouldShowShadow)
   {
-    LOBYTE(v3) = ![(TSDCanvas *)[(TSDRep *)self canvas] shouldSuppressBackgrounds];
+    LOBYTE(shouldShowShadow) = ![(TSDCanvas *)[(TSDRep *)self canvas] shouldSuppressBackgrounds];
   }
 
-  return v3;
+  return shouldShowShadow;
 }
 
 - (CGSize)p_desiredSizedImageSize
@@ -3455,13 +3455,13 @@ void *__31__TSDImageRep_p_drawsInOneStep__block_invoke(uint64_t a1)
 
 - (BOOL)p_okayToGenerateSizedImage
 {
-  v3 = [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] shouldResampleImages];
-  if (v3)
+  shouldResampleImages = [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] shouldResampleImages];
+  if (shouldResampleImages)
   {
-    LOBYTE(v3) = ![(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] shouldSuppressRendering]&& self->mUpdateFromLayoutBlocksLock == 0;
+    LOBYTE(shouldResampleImages) = ![(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] shouldSuppressRendering]&& self->mUpdateFromLayoutBlocksLock == 0;
   }
 
-  return v3;
+  return shouldResampleImages;
 }
 
 - (void)popDisableImageSizing
@@ -3473,9 +3473,9 @@ void *__31__TSDImageRep_p_drawsInOneStep__block_invoke(uint64_t a1)
     self->mUpdateFromLayoutBlocksLock = v5;
     if (!v5)
     {
-      v6 = [(TSDRep *)self interactiveCanvasController];
+      interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-      [(TSDInteractiveCanvasController *)v6 invalidateLayers];
+      [(TSDInteractiveCanvasController *)interactiveCanvasController invalidateLayers];
     }
   }
 }
@@ -3484,10 +3484,10 @@ void *__31__TSDImageRep_p_drawsInOneStep__block_invoke(uint64_t a1)
 {
   if ([(TSDImageRep *)self p_okayToGenerateSizedImage])
   {
-    v3 = [(TSDImageRep *)self p_imageProvider];
-    if ([v3 isValid])
+    p_imageProvider = [(TSDImageRep *)self p_imageProvider];
+    if ([p_imageProvider isValid])
     {
-      if (([v3 isError] & 1) == 0)
+      if (([p_imageProvider isError] & 1) == 0)
       {
         [(TSDImageRep *)self p_desiredSizedImageSize];
         v4 = *&self->mSizingStateReady;
@@ -3498,7 +3498,7 @@ void *__31__TSDImageRep_p_drawsInOneStep__block_invoke(uint64_t a1)
         v7[6] = v5;
         v7[7] = v6;
         v7[4] = self;
-        v7[5] = v3;
+        v7[5] = p_imageProvider;
         dispatch_sync(v4, v7);
       }
     }
@@ -3589,32 +3589,32 @@ LABEL_29:
   return [v14 flushIfInterestLessThan:2];
 }
 
-+ (CGPath)p_newPathToBakeIntoSizedImageForSize:(CGSize)a3 withImageLayout:(id)a4 orientation:(int64_t)a5
++ (CGPath)p_newPathToBakeIntoSizedImageForSize:(CGSize)size withImageLayout:(id)layout orientation:(int64_t)orientation
 {
-  height = a3.height;
-  width = a3.width;
-  v8 = [a4 maskLayout];
+  height = size.height;
+  width = size.width;
+  maskLayout = [layout maskLayout];
   v25 = *(MEMORY[0x277CBF2C0] + 16);
   v26 = *MEMORY[0x277CBF2C0];
   *&v30.a = *MEMORY[0x277CBF2C0];
   *&v30.c = v25;
   v24 = *(MEMORY[0x277CBF2C0] + 32);
   *&v30.tx = v24;
-  [objc_msgSend(a4 "imageGeometry")];
+  [objc_msgSend(layout "imageGeometry")];
   v10 = width / v9;
-  [objc_msgSend(a4 "imageGeometry")];
+  [objc_msgSend(layout "imageGeometry")];
   v12 = height / v11;
-  if (v8)
+  if (maskLayout)
   {
-    [v8 pathBounds];
+    [maskLayout pathBounds];
     CGAffineTransformMakeTranslation(&t2, -v13, -v14);
     *&t1.a = v26;
     *&t1.c = v25;
     *&t1.tx = v24;
     CGAffineTransformConcat(&v30, &t1, &t2);
-    if (a4)
+    if (layout)
     {
-      [a4 layoutToMaskTransform];
+      [layout layoutToMaskTransform];
     }
 
     else
@@ -3625,9 +3625,9 @@ LABEL_29:
     v27 = v30;
     CGAffineTransformConcat(&t2, &v27, &t1);
     v30 = t2;
-    if (a4)
+    if (layout)
     {
-      [a4 layoutToImageTransform];
+      [layout layoutToImageTransform];
     }
 
     else
@@ -3643,22 +3643,22 @@ LABEL_29:
     v27 = v30;
     CGAffineTransformConcat(&t2, &v27, &t1);
     v30 = t2;
-    v16 = [v8 path];
+    path = [maskLayout path];
     t2 = v30;
-    v15 = TSDCreateTransformedPath(v16, &t2);
+    cGPath = TSDCreateTransformedPath(path, &t2);
   }
 
   else
   {
-    v15 = 0;
+    cGPath = 0;
   }
 
-  if ([objc_msgSend(a4 "imageInfo")])
+  if ([objc_msgSend(layout "imageInfo")])
   {
-    v17 = [objc_msgSend(objc_msgSend(a4 "imageInfo")];
-    if (a4)
+    v17 = [objc_msgSend(objc_msgSend(layout "imageInfo")];
+    if (layout)
     {
-      [a4 imageDataToVisualSizeTransform];
+      [layout imageDataToVisualSizeTransform];
     }
 
     else
@@ -3669,36 +3669,36 @@ LABEL_29:
     [v17 transformUsingAffineTransform:&t2];
     CGAffineTransformMakeScale(&t2, v10, v12);
     [v17 transformUsingAffineTransform:&t2];
-    if (v15)
+    if (cGPath)
     {
       v18 = [[TSDBezierPath bezierPathWithCGPath:?], "intersectBezierPath:", v17];
       if (!v18)
       {
-        v19 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDImageRep p_newPathToBakeIntoSizedImageForSize:withImageLayout:orientation:]"];
-        [v19 handleFailureInFunction:v20 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageRep.m"), 3608, @"invalid nil value for '%s'", "maskBezierPath"}];
+        [currentHandler handleFailureInFunction:v20 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageRep.m"), 3608, @"invalid nil value for '%s'", "maskBezierPath"}];
       }
 
-      CGPathRelease(v15);
-      v15 = [v18 CGPath];
+      CGPathRelease(cGPath);
+      cGPath = [v18 CGPath];
     }
 
     else
     {
-      v15 = [v17 CGPath];
-      if (!v15)
+      cGPath = [v17 CGPath];
+      if (!cGPath)
       {
-        v21 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
         v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDImageRep p_newPathToBakeIntoSizedImageForSize:withImageLayout:orientation:]"];
-        [v21 handleFailureInFunction:v22 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageRep.m"), 3614, @"invalid nil value for '%s'", "maskPath"}];
-        v15 = 0;
+        [currentHandler2 handleFailureInFunction:v22 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageRep.m"), 3614, @"invalid nil value for '%s'", "maskPath"}];
+        cGPath = 0;
       }
     }
 
-    CGPathRetain(v15);
+    CGPathRetain(cGPath);
   }
 
-  return v15;
+  return cGPath;
 }
 
 - (void)wideGamutValueDidChange
@@ -3715,9 +3715,9 @@ LABEL_29:
 {
   if (self->mLayerUpdateAndSizingStateLock)
   {
-    v3 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageRep p_startSizing]"];
-    [v3 handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageRep.m"), 3637, @"expected nil value for '%s'", "mSizingState"}];
+    [currentHandler handleFailureInFunction:v4 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageRep.m"), 3637, @"expected nil value for '%s'", "mSizingState"}];
   }
 
   [(TSDImageRep *)self p_desiredSizedImageSize];
@@ -3758,16 +3758,16 @@ LABEL_29:
   }
 
   [(TSDImageRep *)self p_generateSizedImage:self->mLayerUpdateAndSizingStateLock];
-  v12 = [(TSDRep *)self interactiveCanvasController];
+  interactiveCanvasController = [(TSDRep *)self interactiveCanvasController];
 
-  [(TSDInteractiveCanvasController *)v12 layoutInvalidated];
+  [(TSDInteractiveCanvasController *)interactiveCanvasController layoutInvalidated];
 }
 
-- (void)p_generateSizedImage:(id)a3
+- (void)p_generateSizedImage:(id)image
 {
-  [a3 generateSizedImage];
+  [image generateSizedImage];
   [*&self->mBaseMaskLayoutTransform.ty lock];
-  if (self->mLayerUpdateAndSizingStateLock == a3)
+  if (self->mLayerUpdateAndSizingStateLock == image)
   {
     LOBYTE(self->mSizingState) = 1;
   }
@@ -3807,16 +3807,16 @@ LABEL_29:
   }
 }
 
-- (BOOL)p_takeSizedImageFromState:(id)a3
+- (BOOL)p_takeSizedImageFromState:(id)state
 {
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  v5 = [a3 status];
-  if (v5)
+  status = [state status];
+  if (status)
   {
-    if (v5 == 1)
+    if (status == 1)
     {
 LABEL_3:
       *(v24 + 24) = 1;
@@ -3825,7 +3825,7 @@ LABEL_3:
 
   else
   {
-    if (![a3 sizedImage])
+    if (![state sizedImage])
     {
       goto LABEL_4;
     }
@@ -3833,7 +3833,7 @@ LABEL_3:
     [(TSDImageRep *)self p_desiredSizedImageSize];
     v9 = v8;
     v11 = v10;
-    [a3 desiredSize];
+    [state desiredSize];
     if (v9 != v13)
     {
       goto LABEL_3;
@@ -3844,8 +3844,8 @@ LABEL_3:
       goto LABEL_3;
     }
 
-    v14 = [(TSDImageRep *)self p_imageProvider];
-    if (v14 != [a3 provider])
+    p_imageProvider = [(TSDImageRep *)self p_imageProvider];
+    if (p_imageProvider != [state provider])
     {
       goto LABEL_3;
     }
@@ -3856,7 +3856,7 @@ LABEL_3:
     block[2] = __41__TSDImageRep_p_takeSizedImageFromState___block_invoke;
     block[3] = &unk_279D47708;
     block[4] = self;
-    block[5] = a3;
+    block[5] = state;
     dispatch_sync(v15, block);
     v16 = [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] layerForRep:self];
     [(TSDImageRep *)self p_updateDirectlyManagesLayerContentForLayer:v16];
@@ -3873,12 +3873,12 @@ LABEL_3:
     {
       if ([(TSDStyledRep *)self shadowLayer]|| [(TSDStyledRep *)self reflectionLayer])
       {
-        v18 = [MEMORY[0x277CCACC8] isMainThread];
-        if (v18 == [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] currentlyWaitingOnThreadedLayoutAndRender])
+        isMainThread = [MEMORY[0x277CCACC8] isMainThread];
+        if (isMainThread == [(TSDInteractiveCanvasController *)[(TSDRep *)self interactiveCanvasController] currentlyWaitingOnThreadedLayoutAndRender])
         {
-          v19 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler = [MEMORY[0x277D6C290] currentHandler];
           v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDImageRep p_takeSizedImageFromState:]"];
-          [v19 handleFailureInFunction:v20 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageRep.m"), 3753, @"Can't take sized image from state from the main thread while we are doing threaded layout and rendering if image has a shadow or reflection!"}];
+          [currentHandler handleFailureInFunction:v20 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDImageRep.m"), 3753, @"Can't take sized image from state from the main thread while we are doing threaded layout and rendering if image has a shadow or reflection!"}];
         }
 
         [(TSDStyledRep *)self invalidateShadowLayer];
@@ -4091,13 +4091,13 @@ uint64_t __34__TSDImageRep_newCachedSizedImage__block_invoke(uint64_t a1)
 
 - (id)newCachedSizedImageWithNaturalSize
 {
-  v2 = [(TSDImageRep *)self p_validatedBitmapImageProvider];
-  if (!v2)
+  p_validatedBitmapImageProvider = [(TSDImageRep *)self p_validatedBitmapImageProvider];
+  if (!p_validatedBitmapImageProvider)
   {
     return 0;
   }
 
-  v3 = v2;
+  v3 = p_validatedBitmapImageProvider;
   v4 = objc_alloc_init(TSDImageRepCachedSizedImage);
   -[TSDImageRepCachedSizedImage setImageRef:](v4, "setImageRef:", [v3 CGImageForNaturalSize]);
   [v3 naturalSize];
@@ -4106,7 +4106,7 @@ uint64_t __34__TSDImageRep_newCachedSizedImage__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)useCachedSizedImage:(id)a3
+- (void)useCachedSizedImage:(id)image
 {
   v3 = *&self->mSizingStateReady;
   v4[0] = MEMORY[0x277D85DD0];
@@ -4114,7 +4114,7 @@ uint64_t __34__TSDImageRep_newCachedSizedImage__block_invoke(uint64_t a1)
   v4[2] = __35__TSDImageRep_useCachedSizedImage___block_invoke;
   v4[3] = &unk_279D47708;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = image;
   dispatch_sync(v3, v4);
 }
 
@@ -4268,29 +4268,29 @@ void *__51__TSDImageRep_generateSizedImageOnBackgroundThread__block_invoke_3(uin
     v4 = TSUClassAndProtocolCast() != 0;
   }
 
-  v5 = [-[TSDImageRep imageInfo](self imageInfo];
-  LOBYTE(v6) = 0;
-  if (v5)
+  imageInfo = [-[TSDImageRep imageInfo](self imageInfo];
+  LOBYTE(isSelected) = 0;
+  if (imageInfo)
   {
     if (v4)
     {
-      v6 = [(TSDRep *)self isSelected];
-      if (v6)
+      isSelected = [(TSDRep *)self isSelected];
+      if (isSelected)
       {
         if ([-[TSDImageRep imageLayout](self "imageLayout")] && objc_msgSend(-[TSDImageRep imageLayout](self, "imageLayout"), "maskEditMode") != 2)
         {
-          LOBYTE(v6) = 0;
+          LOBYTE(isSelected) = 0;
         }
 
         else
         {
-          LOBYTE(v6) = [-[TSDImageRep imageLayout](self "imageLayout")] ^ 1;
+          LOBYTE(isSelected) = [-[TSDImageRep imageLayout](self "imageLayout")] ^ 1;
         }
       }
     }
   }
 
-  return v6;
+  return isSelected;
 }
 
 - (BOOL)shouldCreateSelectionKnobs
@@ -4305,7 +4305,7 @@ void *__51__TSDImageRep_generateSizedImageOnBackgroundThread__block_invoke_3(uin
   return [(TSDRep *)&v4 shouldCreateSelectionKnobs];
 }
 
-- (void)updatePositionsOfKnobs:(id)a3
+- (void)updatePositionsOfKnobs:(id)knobs
 {
   v27 = *MEMORY[0x277D85DE8];
   v25.receiver = self;
@@ -4317,7 +4317,7 @@ void *__51__TSDImageRep_generateSizedImageOnBackgroundThread__block_invoke_3(uin
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+    v5 = [knobs countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v5)
     {
       v6 = v5;
@@ -4328,7 +4328,7 @@ void *__51__TSDImageRep_generateSizedImageOnBackgroundThread__block_invoke_3(uin
         {
           if (*v22 != v7)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(knobs);
           }
 
           v9 = *(*(&v21 + 1) + 8 * i);
@@ -4337,10 +4337,10 @@ void *__51__TSDImageRep_generateSizedImageOnBackgroundThread__block_invoke_3(uin
             [-[TSDImageRep maskLayout](self "maskLayout")];
             v16 = v11;
             v17 = v10;
-            v12 = [(TSDImageRep *)self imageLayout];
-            if (v12)
+            imageLayout = [(TSDImageRep *)self imageLayout];
+            if (imageLayout)
             {
-              [v12 layoutToMaskTransform];
+              [imageLayout layoutToMaskTransform];
               v13 = v18;
               v14 = v19;
               v15 = v20;
@@ -4357,7 +4357,7 @@ void *__51__TSDImageRep_generateSizedImageOnBackgroundThread__block_invoke_3(uin
           }
         }
 
-        v6 = [a3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+        v6 = [knobs countByEnumeratingWithState:&v21 objects:v26 count:16];
       }
 
       while (v6);
@@ -4365,7 +4365,7 @@ void *__51__TSDImageRep_generateSizedImageOnBackgroundThread__block_invoke_3(uin
   }
 }
 
-- (void)addKnobsToArray:(id)a3
+- (void)addKnobsToArray:(id)array
 {
   v20.receiver = self;
   v20.super_class = TSDImageRep;
@@ -4382,10 +4382,10 @@ void *__51__TSDImageRep_generateSizedImageOnBackgroundThread__block_invoke_3(uin
         [-[TSDImageRep maskLayout](self "maskLayout")];
         v15 = v9;
         v16 = v8;
-        v10 = [(TSDImageRep *)self imageLayout];
-        if (v10)
+        imageLayout = [(TSDImageRep *)self imageLayout];
+        if (imageLayout)
         {
-          [v10 layoutToMaskTransform];
+          [imageLayout layoutToMaskTransform];
           v11 = v17;
           v12 = v18;
           v13 = v19;
@@ -4399,7 +4399,7 @@ void *__51__TSDImageRep_generateSizedImageOnBackgroundThread__block_invoke_3(uin
         }
 
         v14 = [[TSDKnob alloc] initWithType:0 position:v7 radius:self tag:vaddq_f64(v13 onRep:vmlaq_n_f64(vmulq_n_f64(v12, v15), v11, v16)), 15.0];
-        [a3 addObject:v14];
+        [array addObject:v14];
 
         ++v7;
         --v6;
@@ -4447,23 +4447,23 @@ void *__51__TSDImageRep_generateSizedImageOnBackgroundThread__block_invoke_3(uin
   return [(TSDMediaRep *)&v4 shouldShowMediaReplaceUI];
 }
 
-- (BOOL)p_hitCacheGetCachedValue:(BOOL *)a3 forPoint:(CGPoint)a4
+- (BOOL)p_hitCacheGetCachedValue:(BOOL *)value forPoint:(CGPoint)point
 {
-  v5 = [self->mCachedSizedImageOrientation objectForKey:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithCGPoint:", a4.x, a4.y)}];
+  v5 = [self->mCachedSizedImageOrientation objectForKey:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithCGPoint:", point.x, point.y)}];
   v6 = v5;
   if (v5)
   {
-    *a3 = [v5 BOOLValue];
+    *value = [v5 BOOLValue];
   }
 
   return v6 != 0;
 }
 
-- (void)p_hitCacheSetCachedValue:(BOOL)a3 forPoint:(CGPoint)a4
+- (void)p_hitCacheSetCachedValue:(BOOL)value forPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3;
+  y = point.y;
+  x = point.x;
+  valueCopy = value;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__TSDImageRep_p_hitCacheSetCachedValue_forPoint___block_invoke;
@@ -4475,7 +4475,7 @@ void *__51__TSDImageRep_generateSizedImageOnBackgroundThread__block_invoke_3(uin
   }
 
   mCachedSizedImageOrientation = self->mCachedSizedImageOrientation;
-  v9 = [MEMORY[0x277CCABB0] numberWithBool:v6];
+  v9 = [MEMORY[0x277CCABB0] numberWithBool:valueCopy];
   [mCachedSizedImageOrientation setObject:v9 forKey:{objc_msgSend(MEMORY[0x277CCAE60], "valueWithCGPoint:", x, y)}];
 }
 

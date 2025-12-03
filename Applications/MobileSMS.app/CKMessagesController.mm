@@ -6,9 +6,9 @@
 
 - (id)ppt_chatController
 {
-  v3 = [(CKMessagesController *)self composeChatController];
+  composeChatController = [(CKMessagesController *)self composeChatController];
 
-  if (v3)
+  if (composeChatController)
   {
     [(CKMessagesController *)self composeChatController];
   }

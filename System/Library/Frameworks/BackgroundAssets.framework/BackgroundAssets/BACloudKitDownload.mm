@@ -1,11 +1,11 @@
 @interface BACloudKitDownload
 - (BACloudKitDownload)init;
-- (BACloudKitDownload)initWithCoder:(id)a3;
-- (BACloudKitDownload)initWithIdentifier:(id)a3 recordType:(id)a4 expectedFieldKey:(id)a5 expectedFieldValue:(id)a6 assetKey:(id)a7 applicationGroupIdentifier:(id)a8;
-- (BACloudKitDownload)initWithIdentifier:(id)a3 recordType:(id)a4 expectedFieldKey:(id)a5 expectedFieldValue:(id)a6 assetKey:(id)a7 applicationGroupIdentifier:(id)a8 containerIdentifier:(id)a9 zoneID:(id)a10 databaseScope:(int64_t)a11 priority:(int64_t)a12;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initWithIdentifier:(void *)a3 query:(void *)a4 assetKey:(void *)a5 applicationGroupIdentifier:(void *)a6 containerIdentifier:(void *)a7 zoneID:(uint64_t)a8 databaseScope:(uint64_t)a9 priority:;
-- (void)encodeWithCoder:(id)a3;
+- (BACloudKitDownload)initWithCoder:(id)coder;
+- (BACloudKitDownload)initWithIdentifier:(id)identifier recordType:(id)type expectedFieldKey:(id)key expectedFieldValue:(id)value assetKey:(id)assetKey applicationGroupIdentifier:(id)groupIdentifier;
+- (BACloudKitDownload)initWithIdentifier:(id)identifier recordType:(id)type expectedFieldKey:(id)key expectedFieldValue:(id)value assetKey:(id)assetKey applicationGroupIdentifier:(id)groupIdentifier containerIdentifier:(id)containerIdentifier zoneID:(id)self0 databaseScope:(int64_t)self1 priority:(int64_t)self2;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initWithIdentifier:(void *)identifier query:(void *)query assetKey:(void *)key applicationGroupIdentifier:(void *)groupIdentifier containerIdentifier:(void *)containerIdentifier zoneID:(uint64_t)d databaseScope:(uint64_t)scope priority:;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BACloudKitDownload
@@ -25,48 +25,48 @@
   return result;
 }
 
-- (BACloudKitDownload)initWithIdentifier:(id)a3 recordType:(id)a4 expectedFieldKey:(id)a5 expectedFieldValue:(id)a6 assetKey:(id)a7 applicationGroupIdentifier:(id)a8
+- (BACloudKitDownload)initWithIdentifier:(id)identifier recordType:(id)type expectedFieldKey:(id)key expectedFieldValue:(id)value assetKey:(id)assetKey applicationGroupIdentifier:(id)groupIdentifier
 {
   v13 = MEMORY[0x277CBC218];
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
-  v26 = [v13 defaultContainer];
-  v20 = [v26 containerIdentifier];
-  v21 = [MEMORY[0x277CBC5E8] defaultRecordZone];
-  v22 = [v21 zoneID];
-  v23 = [(BACloudKitDownload *)self initWithIdentifier:v19 recordType:v18 expectedFieldKey:v17 expectedFieldValue:v16 assetKey:v15 applicationGroupIdentifier:v14 containerIdentifier:v20 zoneID:v22 databaseScope:1 priority:0];
+  groupIdentifierCopy = groupIdentifier;
+  assetKeyCopy = assetKey;
+  valueCopy = value;
+  keyCopy = key;
+  typeCopy = type;
+  identifierCopy = identifier;
+  defaultContainer = [v13 defaultContainer];
+  containerIdentifier = [defaultContainer containerIdentifier];
+  defaultRecordZone = [MEMORY[0x277CBC5E8] defaultRecordZone];
+  zoneID = [defaultRecordZone zoneID];
+  v23 = [(BACloudKitDownload *)self initWithIdentifier:identifierCopy recordType:typeCopy expectedFieldKey:keyCopy expectedFieldValue:valueCopy assetKey:assetKeyCopy applicationGroupIdentifier:groupIdentifierCopy containerIdentifier:containerIdentifier zoneID:zoneID databaseScope:1 priority:0];
 
   return v23;
 }
 
-- (BACloudKitDownload)initWithIdentifier:(id)a3 recordType:(id)a4 expectedFieldKey:(id)a5 expectedFieldValue:(id)a6 assetKey:(id)a7 applicationGroupIdentifier:(id)a8 containerIdentifier:(id)a9 zoneID:(id)a10 databaseScope:(int64_t)a11 priority:(int64_t)a12
+- (BACloudKitDownload)initWithIdentifier:(id)identifier recordType:(id)type expectedFieldKey:(id)key expectedFieldValue:(id)value assetKey:(id)assetKey applicationGroupIdentifier:(id)groupIdentifier containerIdentifier:(id)containerIdentifier zoneID:(id)self0 databaseScope:(int64_t)self1 priority:(int64_t)self2
 {
-  v33 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
+  identifierCopy = identifier;
+  typeCopy = type;
+  keyCopy = key;
+  valueCopy = value;
+  assetKeyCopy = assetKey;
+  groupIdentifierCopy = groupIdentifier;
+  containerIdentifierCopy = containerIdentifier;
+  dCopy = d;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v19 length])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [keyCopy length])
   {
-    if (v20)
+    if (valueCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
-        v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ == %%@", v19];
-        v32 = [MEMORY[0x277CCAC30] predicateWithFormat:v28, v20];
-        v31 = [objc_alloc(MEMORY[0x277CBC578]) initWithRecordType:v18 predicate:v32];
-        self = [(BACloudKitDownload *)self initWithIdentifier:v33 query:v31 assetKey:v21 applicationGroupIdentifier:v22 containerIdentifier:v23 zoneID:v24 databaseScope:a11 priority:a12];
+        keyCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ == %%@", keyCopy];
+        valueCopy = [MEMORY[0x277CCAC30] predicateWithFormat:keyCopy, valueCopy];
+        v31 = [objc_alloc(MEMORY[0x277CBC578]) initWithRecordType:typeCopy predicate:valueCopy];
+        self = [(BACloudKitDownload *)self initWithIdentifier:identifierCopy query:v31 assetKey:assetKeyCopy applicationGroupIdentifier:groupIdentifierCopy containerIdentifier:containerIdentifierCopy zoneID:dCopy databaseScope:scope priority:priority];
 
-        v29 = self;
+        selfCopy = self;
         goto LABEL_12;
       }
 
@@ -90,77 +90,77 @@
     v27 = @"expectedFieldKey must be a valid string.";
   }
 
-  v28 = [v25 exceptionWithName:v26 reason:v27 userInfo:0];
-  [v28 raise];
-  v29 = 0;
+  keyCopy = [v25 exceptionWithName:v26 reason:v27 userInfo:0];
+  [keyCopy raise];
+  selfCopy = 0;
 LABEL_12:
 
-  return v29;
+  return selfCopy;
 }
 
-- (BACloudKitDownload)initWithCoder:(id)a3
+- (BACloudKitDownload)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = BACloudKitDownload;
-  v5 = [(BADownload *)&v11 initWithCoder:v4];
+  v5 = [(BADownload *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BACKD.ContainerID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BACKD.ContainerID"];
     [(BACloudKitDownload *)v5 setContainerID:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BACKD.query"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BACKD.query"];
     [(BACloudKitDownload *)v5 setQuery:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BACKD.assetKey"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BACKD.assetKey"];
     [(BACloudKitDownload *)v5 setAssetKey:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BACKD.zoneID"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BACKD.zoneID"];
     [(BACloudKitDownload *)v5 setZoneID:v9];
 
-    -[BACloudKitDownload setDatabaseScope:](v5, "setDatabaseScope:", [v4 decodeIntegerForKey:@"BACKD.databaseScope"]);
+    -[BACloudKitDownload setDatabaseScope:](v5, "setDatabaseScope:", [coderCopy decodeIntegerForKey:@"BACKD.databaseScope"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = BACloudKitDownload;
-  v4 = a3;
-  [(BADownload *)&v9 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(BADownload *)&v9 encodeWithCoder:coderCopy];
   v5 = [(BACloudKitDownload *)self containerID:v9.receiver];
-  [v4 encodeObject:v5 forKey:@"BACKD.ContainerID"];
+  [coderCopy encodeObject:v5 forKey:@"BACKD.ContainerID"];
 
-  v6 = [(BACloudKitDownload *)self query];
-  [v4 encodeObject:v6 forKey:@"BACKD.query"];
+  query = [(BACloudKitDownload *)self query];
+  [coderCopy encodeObject:query forKey:@"BACKD.query"];
 
-  v7 = [(BACloudKitDownload *)self assetKey];
-  [v4 encodeObject:v7 forKey:@"BACKD.assetKey"];
+  assetKey = [(BACloudKitDownload *)self assetKey];
+  [coderCopy encodeObject:assetKey forKey:@"BACKD.assetKey"];
 
-  v8 = [(BACloudKitDownload *)self zoneID];
-  [v4 encodeObject:v8 forKey:@"BACKD.zoneID"];
+  zoneID = [(BACloudKitDownload *)self zoneID];
+  [coderCopy encodeObject:zoneID forKey:@"BACKD.zoneID"];
 
-  [v4 encodeInteger:-[BACloudKitDownload databaseScope](self forKey:{"databaseScope"), @"BACKD.databaseScope"}];
+  [coderCopy encodeInteger:-[BACloudKitDownload databaseScope](self forKey:{"databaseScope"), @"BACKD.databaseScope"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = BACloudKitDownload;
-  return [(BADownload *)&v4 copyWithZone:a3];
+  return [(BADownload *)&v4 copyWithZone:zone];
 }
 
-- (id)initWithIdentifier:(void *)a3 query:(void *)a4 assetKey:(void *)a5 applicationGroupIdentifier:(void *)a6 containerIdentifier:(void *)a7 zoneID:(uint64_t)a8 databaseScope:(uint64_t)a9 priority:
+- (id)initWithIdentifier:(void *)identifier query:(void *)query assetKey:(void *)key applicationGroupIdentifier:(void *)groupIdentifier containerIdentifier:(void *)containerIdentifier zoneID:(uint64_t)d databaseScope:(uint64_t)scope priority:
 {
   v15 = a2;
-  v16 = a3;
-  v17 = a4;
-  v36 = a5;
-  v18 = a6;
-  v19 = a7;
-  if (a1)
+  identifierCopy = identifier;
+  queryCopy = query;
+  keyCopy = key;
+  groupIdentifierCopy = groupIdentifier;
+  containerIdentifierCopy = containerIdentifier;
+  if (self)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0 || ![v15 length])
@@ -169,37 +169,37 @@ LABEL_12:
       [v20 raise];
     }
 
-    if (([v16 isMemberOfClass:objc_opt_class()] & 1) == 0)
+    if (([identifierCopy isMemberOfClass:objc_opt_class()] & 1) == 0)
     {
       v21 = [OUTLINED_FUNCTION_0_0() exceptionWithName:? reason:? userInfo:?];
       [v21 raise];
     }
 
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || ![v17 length])
+    if ((objc_opt_isKindOfClass() & 1) == 0 || ![queryCopy length])
     {
       v22 = [OUTLINED_FUNCTION_0_0() exceptionWithName:? reason:? userInfo:?];
       [v22 raise];
     }
 
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) == 0 || ![v18 length])
+    if ((objc_opt_isKindOfClass() & 1) == 0 || ![groupIdentifierCopy length])
     {
       v23 = [OUTLINED_FUNCTION_0_0() exceptionWithName:? reason:? userInfo:?];
       [v23 raise];
     }
 
-    if (([v19 isMemberOfClass:objc_opt_class()] & 1) == 0)
+    if (([containerIdentifierCopy isMemberOfClass:objc_opt_class()] & 1) == 0)
     {
       v24 = [OUTLINED_FUNCTION_0_0() exceptionWithName:? reason:? userInfo:?];
       [v24 raise];
     }
 
-    v37.receiver = a1;
+    v37.receiver = self;
     v37.super_class = BACloudKitDownload;
-    v25 = v36;
-    a1 = objc_msgSendSuper2(&v37, sel_initPrivatelyWithApplicationGroupIdentifier_, v36, a8);
-    if (a1)
+    v25 = keyCopy;
+    self = objc_msgSendSuper2(&v37, sel_initPrivatelyWithApplicationGroupIdentifier_, keyCopy, d);
+    if (self)
     {
       v26 = SecTaskCreateFromSelf(*MEMORY[0x277CBECE8]);
       if (v26)
@@ -233,7 +233,7 @@ LABEL_12:
         }
 
         CFRelease(v27);
-        v25 = v36;
+        v25 = keyCopy;
       }
 
       else
@@ -241,24 +241,24 @@ LABEL_12:
         v31 = 2;
       }
 
-      [a1 setIdentifier:v15];
-      [a1 setPriority:a9];
-      v32 = [objc_alloc(MEMORY[0x277CBC220]) initWithContainerIdentifier:v18 environment:v31];
-      [a1 setContainerID:v32];
+      [self setIdentifier:v15];
+      [self setPriority:scope];
+      v32 = [objc_alloc(MEMORY[0x277CBC220]) initWithContainerIdentifier:groupIdentifierCopy environment:v31];
+      [self setContainerID:v32];
 
-      [a1 setQuery:v16];
-      [a1 setAssetKey:v17];
-      [a1 setZoneID:v19];
-      [a1 setDatabaseScope:v35];
+      [self setQuery:identifierCopy];
+      [self setAssetKey:queryCopy];
+      [self setZoneID:containerIdentifierCopy];
+      [self setDatabaseScope:v35];
     }
   }
 
   else
   {
-    v25 = v36;
+    v25 = keyCopy;
   }
 
-  return a1;
+  return self;
 }
 
 @end

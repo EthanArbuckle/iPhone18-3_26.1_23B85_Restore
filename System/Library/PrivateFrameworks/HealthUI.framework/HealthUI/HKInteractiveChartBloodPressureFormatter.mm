@@ -1,59 +1,59 @@
 @interface HKInteractiveChartBloodPressureFormatter
-- (BOOL)_higherMaximum:(id)a3 currentMaximum:(id)a4;
-- (BOOL)_isRepresentedBySingleChartPoint:(id)a3;
-- (BOOL)_lowerMinimum:(id)a3 currentMinimum:(id)a4;
-- (id)_formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4;
-- (id)_formattedStringWithAverage:(id)a3 displayUnit:(BOOL)a4;
-- (id)_formattedStringWithRange:(id)a3 displayUnit:(BOOL)a4;
-- (id)_stringFromRange:(id)a3 numberFormatter:(id)a4 displayType:(id)a5 unitController:(id)a6;
-- (id)formattedSelectedAverageLabelDataWithChartData:(id)a3 context:(int64_t)a4;
+- (BOOL)_higherMaximum:(id)maximum currentMaximum:(id)currentMaximum;
+- (BOOL)_isRepresentedBySingleChartPoint:(id)point;
+- (BOOL)_lowerMinimum:(id)minimum currentMinimum:(id)currentMinimum;
+- (id)_formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context;
+- (id)_formattedStringWithAverage:(id)average displayUnit:(BOOL)unit;
+- (id)_formattedStringWithRange:(id)range displayUnit:(BOOL)unit;
+- (id)_stringFromRange:(id)range numberFormatter:(id)formatter displayType:(id)type unitController:(id)controller;
+- (id)formattedSelectedAverageLabelDataWithChartData:(id)data context:(int64_t)context;
 @end
 
 @implementation HKInteractiveChartBloodPressureFormatter
 
-- (id)_formattedStringWithRange:(id)a3 displayUnit:(BOOL)a4
+- (id)_formattedStringWithRange:(id)range displayUnit:(BOOL)unit
 {
-  v4 = a4;
+  unitCopy = unit;
   v39[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(HKInteractiveChartDataFormatter *)self unitController];
-  v8 = [(HKInteractiveChartDataFormatter *)self displayType];
-  v9 = [v7 unitForDisplayType:v8];
+  rangeCopy = range;
+  unitController = [(HKInteractiveChartDataFormatter *)self unitController];
+  displayType = [(HKInteractiveChartDataFormatter *)self displayType];
+  v9 = [unitController unitForDisplayType:displayType];
 
-  v10 = [(HKInteractiveChartDataFormatter *)self displayType];
+  displayType2 = [(HKInteractiveChartDataFormatter *)self displayType];
   v34 = v9;
-  v11 = [v10 hk_numberFormatterForUnit:v9];
+  v11 = [displayType2 hk_numberFormatterForUnit:v9];
 
-  v12 = [(HKInteractiveChartDataFormatter *)self displayType];
-  v13 = [(HKInteractiveChartDataFormatter *)self unitController];
-  v14 = [(HKInteractiveChartBloodPressureFormatter *)self _stringFromRange:v6 numberFormatter:v11 displayType:v12 unitController:v13];
+  displayType3 = [(HKInteractiveChartDataFormatter *)self displayType];
+  unitController2 = [(HKInteractiveChartDataFormatter *)self unitController];
+  v14 = [(HKInteractiveChartBloodPressureFormatter *)self _stringFromRange:rangeCopy numberFormatter:v11 displayType:displayType3 unitController:unitController2];
 
   v15 = objc_alloc(MEMORY[0x1E696AAB0]);
   v16 = *MEMORY[0x1E69DB648];
   v38[0] = *MEMORY[0x1E69DB648];
-  v17 = [(HKInteractiveChartDataFormatter *)self majorFont];
-  v39[0] = v17;
+  majorFont = [(HKInteractiveChartDataFormatter *)self majorFont];
+  v39[0] = majorFont;
   v18 = *MEMORY[0x1E69DB650];
   v38[1] = *MEMORY[0x1E69DB650];
-  v19 = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
-  v39[1] = v19;
+  hk_chartLollipopValueColor = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
+  v39[1] = hk_chartLollipopValueColor;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:2];
   v21 = [v15 initWithString:v14 attributes:v20];
 
-  v22 = [(HKInteractiveChartDataFormatter *)self unitController];
-  v23 = [(HKInteractiveChartDataFormatter *)self displayType];
-  v24 = HKUIUnitDisplayName(v22, v23, &unk_1F43824D0);
+  unitController3 = [(HKInteractiveChartDataFormatter *)self unitController];
+  displayType4 = [(HKInteractiveChartDataFormatter *)self displayType];
+  v24 = HKUIUnitDisplayName(unitController3, displayType4, &unk_1F43824D0);
 
-  if (v4 && [v24 length])
+  if (unitCopy && [v24 length])
   {
     v25 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@" "];
     v26 = objc_alloc(MEMORY[0x1E696AAB0]);
     v36[0] = v16;
-    v27 = [(HKInteractiveChartDataFormatter *)self minorFont];
+    minorFont = [(HKInteractiveChartDataFormatter *)self minorFont];
     v36[1] = v18;
-    v37[0] = v27;
-    v28 = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
-    v37[1] = v28;
+    v37[0] = minorFont;
+    hk_chartLollipopLabelColor = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
+    v37[1] = hk_chartLollipopLabelColor;
     v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:2];
     v30 = [v26 initWithString:v24 attributes:v29];
 
@@ -72,16 +72,16 @@
   return v32;
 }
 
-- (BOOL)_lowerMinimum:(id)a3 currentMinimum:(id)a4
+- (BOOL)_lowerMinimum:(id)minimum currentMinimum:(id)currentMinimum
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  minimumCopy = minimum;
+  currentMinimumCopy = currentMinimum;
+  v7 = currentMinimumCopy;
+  if (minimumCopy)
   {
-    if (v6)
+    if (currentMinimumCopy)
     {
-      v8 = [v5 compare:v6] == -1;
+      v8 = [minimumCopy compare:currentMinimumCopy] == -1;
     }
 
     else
@@ -98,16 +98,16 @@
   return v8;
 }
 
-- (BOOL)_higherMaximum:(id)a3 currentMaximum:(id)a4
+- (BOOL)_higherMaximum:(id)maximum currentMaximum:(id)currentMaximum
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  maximumCopy = maximum;
+  currentMaximumCopy = currentMaximum;
+  v7 = currentMaximumCopy;
+  if (maximumCopy)
   {
-    if (v6)
+    if (currentMaximumCopy)
     {
-      v8 = [v5 compare:v6] == 1;
+      v8 = [maximumCopy compare:currentMaximumCopy] == 1;
     }
 
     else
@@ -124,12 +124,12 @@
   return v8;
 }
 
-- (id)_formattedSelectedRangeLabelDataWithChartData:(id)a3 context:(int64_t)a4
+- (id)_formattedSelectedRangeLabelDataWithChartData:(id)data context:(int64_t)context
 {
   v59 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 count])
+  dataCopy = data;
+  v6 = dataCopy;
+  if (dataCopy && [dataCopy count])
   {
     v55 = 0u;
     v56 = 0u;
@@ -156,31 +156,31 @@
         }
 
         v10 = *(*(&v53 + 1) + 8 * i);
-        v11 = [v10 systolicRange];
-        v12 = v11;
+        systolicRange = [v10 systolicRange];
+        v12 = systolicRange;
         if (v8)
         {
-          v13 = [v11 minValue];
-          v14 = [v8 minValue];
-          v15 = [(HKInteractiveChartBloodPressureFormatter *)self _lowerMinimum:v13 currentMinimum:v14];
+          minValue = [systolicRange minValue];
+          minValue2 = [v8 minValue];
+          v15 = [(HKInteractiveChartBloodPressureFormatter *)self _lowerMinimum:minValue currentMinimum:minValue2];
 
           if (v15)
           {
-            v16 = [v10 systolicRange];
-            v17 = [v16 minValue];
-            [v8 setMinValue:v17];
+            systolicRange2 = [v10 systolicRange];
+            minValue3 = [systolicRange2 minValue];
+            [v8 setMinValue:minValue3];
           }
 
-          v18 = [v10 systolicRange];
-          v19 = [v18 maxValue];
-          v20 = [v8 maxValue];
-          v21 = [(HKInteractiveChartBloodPressureFormatter *)self _higherMaximum:v19 currentMaximum:v20];
+          systolicRange3 = [v10 systolicRange];
+          maxValue = [systolicRange3 maxValue];
+          maxValue2 = [v8 maxValue];
+          v21 = [(HKInteractiveChartBloodPressureFormatter *)self _higherMaximum:maxValue currentMaximum:maxValue2];
 
           if (v21)
           {
-            v22 = [v10 systolicRange];
-            v23 = [v22 maxValue];
-            [v8 setMaxValue:v23];
+            systolicRange4 = [v10 systolicRange];
+            maxValue3 = [systolicRange4 maxValue];
+            [v8 setMaxValue:maxValue3];
 LABEL_15:
           }
         }
@@ -190,11 +190,11 @@ LABEL_15:
 
           if (v12)
           {
-            v22 = [v10 systolicRange];
-            v23 = [v22 minValue];
-            v24 = [v10 systolicRange];
-            v25 = [v24 maxValue];
-            v8 = [HKValueRange valueRangeWithMinValue:v23 maxValue:v25];
+            systolicRange4 = [v10 systolicRange];
+            maxValue3 = [systolicRange4 minValue];
+            systolicRange5 = [v10 systolicRange];
+            maxValue4 = [systolicRange5 maxValue];
+            v8 = [HKValueRange valueRangeWithMinValue:maxValue3 maxValue:maxValue4];
 
             goto LABEL_15;
           }
@@ -202,31 +202,31 @@ LABEL_15:
           v8 = 0;
         }
 
-        v26 = [v10 diastolicRange];
-        v27 = v26;
+        diastolicRange = [v10 diastolicRange];
+        v27 = diastolicRange;
         if (v7)
         {
-          v28 = [v26 minValue];
-          v29 = [v7 minValue];
-          v30 = [(HKInteractiveChartBloodPressureFormatter *)self _lowerMinimum:v28 currentMinimum:v29];
+          minValue4 = [diastolicRange minValue];
+          minValue5 = [v7 minValue];
+          v30 = [(HKInteractiveChartBloodPressureFormatter *)self _lowerMinimum:minValue4 currentMinimum:minValue5];
 
           if (v30)
           {
-            v31 = [v10 diastolicRange];
-            v32 = [v31 minValue];
-            [v7 setMinValue:v32];
+            diastolicRange2 = [v10 diastolicRange];
+            minValue6 = [diastolicRange2 minValue];
+            [v7 setMinValue:minValue6];
           }
 
-          v33 = [v10 diastolicRange];
-          v34 = [v33 maxValue];
-          v35 = [v7 maxValue];
-          v36 = [(HKInteractiveChartBloodPressureFormatter *)self _higherMaximum:v34 currentMaximum:v35];
+          diastolicRange3 = [v10 diastolicRange];
+          maxValue5 = [diastolicRange3 maxValue];
+          maxValue6 = [v7 maxValue];
+          v36 = [(HKInteractiveChartBloodPressureFormatter *)self _higherMaximum:maxValue5 currentMaximum:maxValue6];
 
           if (v36)
           {
-            v37 = [v10 diastolicRange];
-            v38 = [v37 maxValue];
-            [v7 setMaxValue:v38];
+            diastolicRange4 = [v10 diastolicRange];
+            maxValue7 = [diastolicRange4 maxValue];
+            [v7 setMaxValue:maxValue7];
 LABEL_24:
 
             continue;
@@ -238,11 +238,11 @@ LABEL_24:
 
           if (v27)
           {
-            v37 = [v10 diastolicRange];
-            v38 = [v37 minValue];
-            v39 = [v10 diastolicRange];
-            v40 = [v39 maxValue];
-            v7 = [HKValueRange valueRangeWithMinValue:v38 maxValue:v40];
+            diastolicRange4 = [v10 diastolicRange];
+            maxValue7 = [diastolicRange4 minValue];
+            diastolicRange5 = [v10 diastolicRange];
+            maxValue8 = [diastolicRange5 maxValue];
+            v7 = [HKValueRange valueRangeWithMinValue:maxValue7 maxValue:maxValue8];
 
             goto LABEL_24;
           }
@@ -261,16 +261,16 @@ LABEL_28:
         v42 = [(HKInteractiveChartBloodPressureFormatter *)self _formattedStringWithRange:v8 displayUnit:0];
         [(HKSelectedRangeData *)v41 setAttributedString:v42];
 
-        v43 = [v8 maxValue];
-        [(HKSelectedRangeData *)v41 setValueAsNumber:v43];
+        maxValue9 = [v8 maxValue];
+        [(HKSelectedRangeData *)v41 setValueAsNumber:maxValue9];
 
         v44 = [[HKSelectedRangeData alloc] initWithStatisticsType:0];
         [(HKSelectedRangeData *)v44 setDataType:2];
         v45 = [(HKInteractiveChartBloodPressureFormatter *)self _formattedStringWithRange:v7 displayUnit:1];
         [(HKSelectedRangeData *)v44 setAttributedString:v45];
 
-        v46 = [v7 maxValue];
-        [(HKSelectedRangeData *)v44 setValueAsNumber:v46];
+        maxValue10 = [v7 maxValue];
+        [(HKSelectedRangeData *)v44 setValueAsNumber:maxValue10];
 
         v57[0] = v41;
         v57[1] = v44;
@@ -288,16 +288,16 @@ LABEL_30:
   return v47;
 }
 
-- (id)formattedSelectedAverageLabelDataWithChartData:(id)a3 context:(int64_t)a4
+- (id)formattedSelectedAverageLabelDataWithChartData:(id)data context:(int64_t)context
 {
   v43 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (v7 && [v7 count])
+  dataCopy = data;
+  v8 = dataCopy;
+  if (dataCopy && [dataCopy count])
   {
-    if (a4)
+    if (context)
     {
-      if (a4 == 1)
+      if (context == 1)
       {
         v4 = [(HKInteractiveChartBloodPressureFormatter *)self _formattedSelectedRangeLabelDataWithChartData:v8 context:1];
       }
@@ -309,23 +309,23 @@ LABEL_30:
       v11 = [[HKSelectedRangeData alloc] initWithStatisticsType:0];
       if ([v8 count] < 2)
       {
-        v26 = [v8 firstObject];
-        v27 = [v26 systolicAverage];
+        firstObject = [v8 firstObject];
+        systolicAverage = [firstObject systolicAverage];
 
-        if (v27)
+        if (systolicAverage)
         {
-          v27 = [v26 systolicAverage];
+          systolicAverage = [firstObject systolicAverage];
         }
 
-        v28 = [v26 diastolicAverage];
+        diastolicAverage = [firstObject diastolicAverage];
 
-        if (v28)
+        if (diastolicAverage)
         {
-          v28 = [v26 diastolicAverage];
+          diastolicAverage = [firstObject diastolicAverage];
         }
 
-        v29 = [v26 systolicRange];
-        v30 = [(HKInteractiveChartBloodPressureFormatter *)self _isRepresentedBySingleChartPoint:v29];
+        systolicRange = [firstObject systolicRange];
+        v30 = [(HKInteractiveChartBloodPressureFormatter *)self _isRepresentedBySingleChartPoint:systolicRange];
 
         if (v30)
         {
@@ -338,8 +338,8 @@ LABEL_30:
         }
 
         [(HKSelectedRangeData *)v10 setDataType:v31];
-        v32 = [v26 diastolicRange];
-        v33 = [(HKInteractiveChartBloodPressureFormatter *)self _isRepresentedBySingleChartPoint:v32];
+        diastolicRange = [firstObject diastolicRange];
+        v33 = [(HKInteractiveChartBloodPressureFormatter *)self _isRepresentedBySingleChartPoint:diastolicRange];
 
         if (v33)
         {
@@ -378,21 +378,21 @@ LABEL_30:
               }
 
               v19 = *(*(&v37 + 1) + 8 * i);
-              v20 = [v19 systolicAverage];
+              systolicAverage2 = [v19 systolicAverage];
 
-              if (v20)
+              if (systolicAverage2)
               {
-                v21 = [v19 systolicAverage];
-                [v21 doubleValue];
+                systolicAverage3 = [v19 systolicAverage];
+                [systolicAverage3 doubleValue];
                 v16 = v16 + v22;
               }
 
-              v23 = [v19 diastolicAverage];
+              diastolicAverage2 = [v19 diastolicAverage];
 
-              if (v23)
+              if (diastolicAverage2)
               {
-                v24 = [v19 diastolicAverage];
-                [v24 doubleValue];
+                diastolicAverage3 = [v19 diastolicAverage];
+                [diastolicAverage3 doubleValue];
                 v17 = v17 + v25;
               }
             }
@@ -409,20 +409,20 @@ LABEL_30:
           v17 = 0.0;
         }
 
-        v27 = [MEMORY[0x1E696AD98] numberWithInt:{(v16 / objc_msgSend(v12, "count"))}];
-        v28 = [MEMORY[0x1E696AD98] numberWithInt:{(v17 / objc_msgSend(v12, "count"))}];
+        systolicAverage = [MEMORY[0x1E696AD98] numberWithInt:{(v16 / objc_msgSend(v12, "count"))}];
+        diastolicAverage = [MEMORY[0x1E696AD98] numberWithInt:{(v17 / objc_msgSend(v12, "count"))}];
         [(HKSelectedRangeData *)v10 setDataType:40];
         [(HKSelectedRangeData *)v11 setDataType:41];
       }
 
-      v35 = [(HKInteractiveChartBloodPressureFormatter *)self _formattedStringWithAverage:v27 displayUnit:0, v37];
+      v35 = [(HKInteractiveChartBloodPressureFormatter *)self _formattedStringWithAverage:systolicAverage displayUnit:0, v37];
       [(HKSelectedRangeData *)v10 setAttributedString:v35];
 
-      [(HKSelectedRangeData *)v10 setValueAsNumber:v27];
-      v36 = [(HKInteractiveChartBloodPressureFormatter *)self _formattedStringWithAverage:v28 displayUnit:1];
+      [(HKSelectedRangeData *)v10 setValueAsNumber:systolicAverage];
+      v36 = [(HKInteractiveChartBloodPressureFormatter *)self _formattedStringWithAverage:diastolicAverage displayUnit:1];
       [(HKSelectedRangeData *)v11 setAttributedString:v36];
 
-      [(HKSelectedRangeData *)v11 setValueAsNumber:v27];
+      [(HKSelectedRangeData *)v11 setValueAsNumber:systolicAverage];
       v41[0] = v10;
       v41[1] = v11;
       v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v41 count:2];
@@ -437,19 +437,19 @@ LABEL_30:
   return v4;
 }
 
-- (BOOL)_isRepresentedBySingleChartPoint:(id)a3
+- (BOOL)_isRepresentedBySingleChartPoint:(id)point
 {
-  v4 = a3;
-  v5 = [(HKInteractiveChartDataFormatter *)self displayType];
-  v6 = [v5 presentation];
-  v7 = [v4 minValue];
-  v8 = [v6 adjustedValueForDaemonValue:v7];
+  pointCopy = point;
+  displayType = [(HKInteractiveChartDataFormatter *)self displayType];
+  presentation = [displayType presentation];
+  minValue = [pointCopy minValue];
+  v8 = [presentation adjustedValueForDaemonValue:minValue];
 
-  v9 = [(HKInteractiveChartDataFormatter *)self displayType];
-  v10 = [v9 presentation];
-  v11 = [v4 maxValue];
+  displayType2 = [(HKInteractiveChartDataFormatter *)self displayType];
+  presentation2 = [displayType2 presentation];
+  maxValue = [pointCopy maxValue];
 
-  v12 = [v10 adjustedValueForDaemonValue:v11];
+  v12 = [presentation2 adjustedValueForDaemonValue:maxValue];
 
   v16 = 0;
   if (v8)
@@ -469,49 +469,49 @@ LABEL_30:
   return v16;
 }
 
-- (id)_formattedStringWithAverage:(id)a3 displayUnit:(BOOL)a4
+- (id)_formattedStringWithAverage:(id)average displayUnit:(BOOL)unit
 {
-  v4 = a4;
+  unitCopy = unit;
   v39[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(HKInteractiveChartDataFormatter *)self unitController];
-  v8 = [(HKInteractiveChartDataFormatter *)self displayType];
-  v9 = [v7 unitForDisplayType:v8];
+  averageCopy = average;
+  unitController = [(HKInteractiveChartDataFormatter *)self unitController];
+  displayType = [(HKInteractiveChartDataFormatter *)self displayType];
+  v9 = [unitController unitForDisplayType:displayType];
 
-  v10 = [(HKInteractiveChartDataFormatter *)self displayType];
+  displayType2 = [(HKInteractiveChartDataFormatter *)self displayType];
   v34 = v9;
-  v11 = [v10 hk_numberFormatterForUnit:v9];
+  v11 = [displayType2 hk_numberFormatterForUnit:v9];
 
-  v12 = [(HKInteractiveChartDataFormatter *)self displayType];
-  v13 = [(HKInteractiveChartDataFormatter *)self unitController];
-  v14 = [v11 stringFromNumber:v6 displayType:v12 unitController:v13];
+  displayType3 = [(HKInteractiveChartDataFormatter *)self displayType];
+  unitController2 = [(HKInteractiveChartDataFormatter *)self unitController];
+  v14 = [v11 stringFromNumber:averageCopy displayType:displayType3 unitController:unitController2];
 
   v15 = objc_alloc(MEMORY[0x1E696AAB0]);
   v16 = *MEMORY[0x1E69DB648];
   v38[0] = *MEMORY[0x1E69DB648];
-  v17 = [(HKInteractiveChartDataFormatter *)self majorFont];
-  v39[0] = v17;
+  majorFont = [(HKInteractiveChartDataFormatter *)self majorFont];
+  v39[0] = majorFont;
   v18 = *MEMORY[0x1E69DB650];
   v38[1] = *MEMORY[0x1E69DB650];
-  v19 = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
-  v39[1] = v19;
+  hk_chartLollipopValueColor = [MEMORY[0x1E69DC888] hk_chartLollipopValueColor];
+  v39[1] = hk_chartLollipopValueColor;
   v20 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:2];
   v21 = [v15 initWithString:v14 attributes:v20];
 
-  v22 = [(HKInteractiveChartDataFormatter *)self unitController];
-  v23 = [(HKInteractiveChartDataFormatter *)self displayType];
-  v24 = HKUIUnitDisplayName(v22, v23, &unk_1F43824D0);
+  unitController3 = [(HKInteractiveChartDataFormatter *)self unitController];
+  displayType4 = [(HKInteractiveChartDataFormatter *)self displayType];
+  v24 = HKUIUnitDisplayName(unitController3, displayType4, &unk_1F43824D0);
 
-  if (v4 && [v24 length])
+  if (unitCopy && [v24 length])
   {
     v25 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@" "];
     v26 = objc_alloc(MEMORY[0x1E696AAB0]);
     v36[0] = v16;
-    v27 = [(HKInteractiveChartDataFormatter *)self minorFont];
+    minorFont = [(HKInteractiveChartDataFormatter *)self minorFont];
     v36[1] = v18;
-    v37[0] = v27;
-    v28 = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
-    v37[1] = v28;
+    v37[0] = minorFont;
+    hk_chartLollipopLabelColor = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
+    v37[1] = hk_chartLollipopLabelColor;
     v29 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:2];
     v30 = [v26 initWithString:v24 attributes:v29];
 
@@ -530,22 +530,22 @@ LABEL_30:
   return v32;
 }
 
-- (id)_stringFromRange:(id)a3 numberFormatter:(id)a4 displayType:(id)a5 unitController:(id)a6
+- (id)_stringFromRange:(id)range numberFormatter:(id)formatter displayType:(id)type unitController:(id)controller
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  rangeCopy = range;
+  formatterCopy = formatter;
+  typeCopy = type;
+  controllerCopy = controller;
   v13 = HKLocalizedNoDataString();
-  if (v9)
+  if (rangeCopy)
   {
-    v14 = [v11 presentation];
-    v15 = [v9 minValue];
-    v16 = [v14 adjustedValueForDaemonValue:v15];
+    presentation = [typeCopy presentation];
+    minValue = [rangeCopy minValue];
+    v16 = [presentation adjustedValueForDaemonValue:minValue];
 
-    v17 = [v11 presentation];
-    v18 = [v9 maxValue];
-    v19 = [v17 adjustedValueForDaemonValue:v18];
+    presentation2 = [typeCopy presentation];
+    maxValue = [rangeCopy maxValue];
+    v19 = [presentation2 adjustedValueForDaemonValue:maxValue];
 
     if (v16)
     {
@@ -555,10 +555,10 @@ LABEL_30:
         v21 = v20;
         [v19 doubleValue];
         v23 = vabdd_f64(v21, v22);
-        v24 = [v10 stringFromNumber:v16 displayType:v11 unitController:v12];
+        v24 = [formatterCopy stringFromNumber:v16 displayType:typeCopy unitController:controllerCopy];
         if (v23 >= 0.00000011920929)
         {
-          v25 = [v10 stringFromNumber:v19 displayType:v11 unitController:v12];
+          v25 = [formatterCopy stringFromNumber:v19 displayType:typeCopy unitController:controllerCopy];
           v30 = MEMORY[0x1E696AEC0];
           v32 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
           v26 = [v32 localizedStringForKey:@"RANGE_STRING %@ %@" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
@@ -571,7 +571,7 @@ LABEL_30:
         goto LABEL_10;
       }
 
-      v27 = v10;
+      v27 = formatterCopy;
       v28 = v16;
     }
 
@@ -584,11 +584,11 @@ LABEL_11:
         goto LABEL_12;
       }
 
-      v27 = v10;
+      v27 = formatterCopy;
       v28 = v19;
     }
 
-    v24 = [v27 stringFromNumber:v28 displayType:v11 unitController:v12];
+    v24 = [v27 stringFromNumber:v28 displayType:typeCopy unitController:controllerCopy];
 LABEL_10:
 
     v13 = v24;

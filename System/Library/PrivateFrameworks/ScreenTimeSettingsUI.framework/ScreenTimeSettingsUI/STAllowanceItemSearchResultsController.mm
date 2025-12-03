@@ -1,12 +1,12 @@
 @interface STAllowanceItemSearchResultsController
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation STAllowanceItemSearchResultsController
@@ -16,10 +16,10 @@
   v6.receiver = self;
   v6.super_class = STAllowanceItemSearchResultsController;
   [(STAllowanceItemSearchResultsController *)&v6 viewDidLoad];
-  v3 = [(STAllowanceItemSearchResultsController *)self tableView];
-  [v3 setEditing:1];
+  tableView = [(STAllowanceItemSearchResultsController *)self tableView];
+  [tableView setEditing:1];
   v4 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, 0.0, 2.22507386e-308}];
-  [v3 setTableHeaderView:v4];
+  [tableView setTableHeaderView:v4];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
   {
@@ -28,16 +28,16 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = STAllowanceItemSearchResultsController;
-  [(STAllowanceItemSearchResultsController *)&v7 viewWillAppear:a3];
-  v4 = [(STAllowanceItemSearchResultsController *)self selectedWebDomains];
-  [(STAllowanceItemSearchResultsController *)self setInitialWebDomains:v4];
+  [(STAllowanceItemSearchResultsController *)&v7 viewWillAppear:appear];
+  selectedWebDomains = [(STAllowanceItemSearchResultsController *)self selectedWebDomains];
+  [(STAllowanceItemSearchResultsController *)self setInitialWebDomains:selectedWebDomains];
 
-  v5 = [(STAllowanceItemSearchResultsController *)self selectedBundleIdentifiers];
-  [(STAllowanceItemSearchResultsController *)self setInitalBundleIdentifiers:v5];
+  selectedBundleIdentifiers = [(STAllowanceItemSearchResultsController *)self selectedBundleIdentifiers];
+  [(STAllowanceItemSearchResultsController *)self setInitalBundleIdentifiers:selectedBundleIdentifiers];
 
   [(STAllowanceItemSearchResultsController *)self setHasNewSelection:0];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -47,51 +47,51 @@
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(STAllowanceItemSearchResultsController *)self filteredAllowanceItemSpecifiers:a3];
+  v4 = [(STAllowanceItemSearchResultsController *)self filteredAllowanceItemSpecifiers:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"AllowanceItem"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"AllowanceItem"];
   v8 = objc_opt_new();
-  v9 = [MEMORY[0x277D75348] clearColor];
-  [v8 setBackgroundColor:v9];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v8 setBackgroundColor:clearColor];
 
   [v7 setSelectedBackgroundView:v8];
-  v10 = [(STAllowanceItemSearchResultsController *)self filteredAllowanceItemSpecifiers];
-  v11 = [v6 row];
+  filteredAllowanceItemSpecifiers = [(STAllowanceItemSearchResultsController *)self filteredAllowanceItemSpecifiers];
+  v11 = [pathCopy row];
 
-  v12 = [v10 objectAtIndexedSubscript:v11];
+  v12 = [filteredAllowanceItemSpecifiers objectAtIndexedSubscript:v11];
 
   v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277D3FF38]];
   v14 = v13;
   if (v13)
   {
-    v15 = [v13 BOOLValue];
+    bOOLValue = [v13 BOOLValue];
   }
 
   else
   {
-    v15 = 1;
+    bOOLValue = 1;
   }
 
-  [v7 setUserInteractionEnabled:v15];
-  v16 = [v7 iconImageView];
-  v17 = v16;
+  [v7 setUserInteractionEnabled:bOOLValue];
+  iconImageView = [v7 iconImageView];
+  v17 = iconImageView;
   v18 = 0.5;
-  if (v15)
+  if (bOOLValue)
   {
     v18 = 1.0;
   }
 
-  [v16 setAlpha:v18];
-  v19 = [MEMORY[0x277D4BD98] sharedCache];
+  [iconImageView setAlpha:v18];
+  mEMORY[0x277D4BD98] = [MEMORY[0x277D4BD98] sharedCache];
   v20 = [v12 objectForKeyedSubscript:@"CategoryIdentifier"];
   v21 = *MEMORY[0x277D4BCD8];
   v56 = v20;
@@ -99,34 +99,34 @@
   v58 = v8;
   if ([v20 isEqualToString:*MEMORY[0x277D4BCD8]])
   {
-    v55 = [MEMORY[0x277D75C80] currentTraitCollection];
-    v54 = [v55 userInterfaceStyle];
-    v22 = [v12 name];
-    if ([v22 length])
+    currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+    userInterfaceStyle = [currentTraitCollection userInterfaceStyle];
+    name = [v12 name];
+    if ([name length])
     {
       v51 = v21;
-      v52 = v19;
+      v52 = mEMORY[0x277D4BD98];
       v53 = v17;
       v23 = objc_opt_new();
       [v23 setScheme:@"https"];
-      [v23 setHost:v22];
+      [v23 setHost:name];
       v50 = [v23 URL];
-      v24 = [v50 _lp_highLevelDomain];
-      v25 = [v23 host];
+      _lp_highLevelDomain = [v50 _lp_highLevelDomain];
+      host = [v23 host];
       v26 = [v23 URL];
-      v27 = v24;
-      v28 = v25;
+      v27 = _lp_highLevelDomain;
+      v28 = host;
       v29 = v26;
       if ([v27 length])
       {
         v30 = [v27 substringToIndex:1];
-        v31 = [v30 uppercaseString];
+        uppercaseString = [v30 uppercaseString];
       }
 
       else
       {
         v36 = [v28 substringToIndex:1];
-        v31 = [v36 uppercaseString];
+        uppercaseString = [v36 uppercaseString];
 
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
         {
@@ -136,7 +136,7 @@
 
       v21 = v51;
 
-      v19 = v52;
+      mEMORY[0x277D4BD98] = v52;
       v17 = v53;
     }
 
@@ -144,20 +144,20 @@
     {
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
-        [STAllowanceItemSearchResultsController tableView:v22 cellForRowAtIndexPath:?];
+        [STAllowanceItemSearchResultsController tableView:name cellForRowAtIndexPath:?];
       }
 
-      v31 = 0;
+      uppercaseString = 0;
     }
 
-    v37 = [v19 monogramImageForInitial:v31 useDarkColors:v54 == 2];
+    v37 = [mEMORY[0x277D4BD98] monogramImageForInitial:uppercaseString useDarkColors:userInterfaceStyle == 2];
     [v17 setImage:v37];
   }
 
   else
   {
-    v32 = [v12 identifier];
-    v33 = [v19 imageForBundleIdentifier:v32];
+    identifier = [v12 identifier];
+    v33 = [mEMORY[0x277D4BD98] imageForBundleIdentifier:identifier];
     if (v33)
     {
       [v17 setImage:v33];
@@ -165,7 +165,7 @@
 
     else
     {
-      [v19 imageForBlankApplicationIcon];
+      [mEMORY[0x277D4BD98] imageForBlankApplicationIcon];
       v35 = v34 = v17;
       [v34 setImage:v35];
 
@@ -173,26 +173,26 @@
     }
   }
 
-  v38 = [v7 nameLabel];
-  v39 = [v12 name];
-  [v38 setText:v39];
+  nameLabel = [v7 nameLabel];
+  name2 = [v12 name];
+  [nameLabel setText:name2];
 
-  [v38 setEnabled:v15];
-  v40 = [v7 dashLabel];
-  [v40 setEnabled:v15];
+  [nameLabel setEnabled:bOOLValue];
+  dashLabel = [v7 dashLabel];
+  [dashLabel setEnabled:bOOLValue];
 
-  v41 = [v7 categoryLabel];
+  categoryLabel = [v7 categoryLabel];
   v42 = v56;
   if ([v42 isEqualToString:v21])
   {
     +[STScreenTimeSettingsUIBundle bundle];
     v43 = v12;
-    v44 = v19;
+    v44 = mEMORY[0x277D4BD98];
     v46 = v45 = v17;
     v47 = [v46 localizedStringForKey:@"MostUsedWebsites" value:&stru_28766E5A8 table:0];
 
     v17 = v45;
-    v19 = v44;
+    mEMORY[0x277D4BD98] = v44;
     v12 = v43;
   }
 
@@ -211,68 +211,68 @@
     v47 = v48;
   }
 
-  [v41 setText:v47];
-  [v41 setEnabled:v15];
+  [categoryLabel setText:v47];
+  [categoryLabel setEnabled:bOOLValue];
 
   return v7;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v19 = a3;
-  v7 = a4;
-  v8 = a5;
-  if (([v7 isUserInteractionEnabled] & 1) == 0 && (objc_msgSend(v7, "isSelected") & 1) == 0)
+  viewCopy = view;
+  cellCopy = cell;
+  pathCopy = path;
+  if (([cellCopy isUserInteractionEnabled] & 1) == 0 && (objc_msgSend(cellCopy, "isSelected") & 1) == 0)
   {
-    [v7 setUserInteractionEnabled:1];
-    [v19 selectRowAtIndexPath:v8 animated:0 scrollPosition:0];
-    [v7 setUserInteractionEnabled:0];
+    [cellCopy setUserInteractionEnabled:1];
+    [viewCopy selectRowAtIndexPath:pathCopy animated:0 scrollPosition:0];
+    [cellCopy setUserInteractionEnabled:0];
   }
 
-  [v7 separatorInset];
+  [cellCopy separatorInset];
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [v7 contentView];
-  [v15 frame];
+  contentView = [cellCopy contentView];
+  [contentView frame];
   MinX = CGRectGetMinX(v21);
-  v17 = [v7 nameLabel];
-  [v17 frame];
+  nameLabel = [cellCopy nameLabel];
+  [nameLabel frame];
   v18 = MinX + CGRectGetMinX(v22);
 
-  [v7 setSeparatorInset:{v10, v18, v12, v14}];
+  [cellCopy setSeparatorInset:{v10, v18, v12, v14}];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(STAllowanceItemSearchResultsController *)self filteredAllowanceItemSpecifiers];
-  v7 = [v5 row];
+  pathCopy = path;
+  filteredAllowanceItemSpecifiers = [(STAllowanceItemSearchResultsController *)self filteredAllowanceItemSpecifiers];
+  v7 = [pathCopy row];
 
-  v16 = [v6 objectAtIndexedSubscript:v7];
+  v16 = [filteredAllowanceItemSpecifiers objectAtIndexedSubscript:v7];
 
   v8 = [v16 objectForKeyedSubscript:@"CategoryIdentifier"];
-  v9 = [(STAllowanceItemSearchResultsController *)self selectedWebDomains];
-  v10 = [(STAllowanceItemSearchResultsController *)self selectedBundleIdentifiers];
+  selectedWebDomains = [(STAllowanceItemSearchResultsController *)self selectedWebDomains];
+  selectedBundleIdentifiers = [(STAllowanceItemSearchResultsController *)self selectedBundleIdentifiers];
   v11 = [v8 isEqualToString:*MEMORY[0x277D4BCD8]];
-  v12 = [v16 identifier];
+  identifier = [v16 identifier];
   if (v11)
   {
-    v13 = v9;
+    v13 = selectedWebDomains;
   }
 
   else
   {
-    v13 = v10;
+    v13 = selectedBundleIdentifiers;
   }
 
-  [v13 addObject:v12];
+  [v13 addObject:identifier];
 
-  v14 = [(STAllowanceItemSearchResultsController *)self initialWebDomains];
-  if ([v9 isSubsetOfOrderedSet:v14])
+  initialWebDomains = [(STAllowanceItemSearchResultsController *)self initialWebDomains];
+  if ([selectedWebDomains isSubsetOfOrderedSet:initialWebDomains])
   {
-    v15 = [(STAllowanceItemSearchResultsController *)self initalBundleIdentifiers];
-    -[STAllowanceItemSearchResultsController setHasNewSelection:](self, "setHasNewSelection:", [v10 isSubsetOfOrderedSet:v15] ^ 1);
+    initalBundleIdentifiers = [(STAllowanceItemSearchResultsController *)self initalBundleIdentifiers];
+    -[STAllowanceItemSearchResultsController setHasNewSelection:](self, "setHasNewSelection:", [selectedBundleIdentifiers isSubsetOfOrderedSet:initalBundleIdentifiers] ^ 1);
   }
 
   else
@@ -281,36 +281,36 @@
   }
 }
 
-- (void)tableView:(id)a3 didDeselectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didDeselectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(STAllowanceItemSearchResultsController *)self filteredAllowanceItemSpecifiers];
-  v7 = [v5 row];
+  pathCopy = path;
+  filteredAllowanceItemSpecifiers = [(STAllowanceItemSearchResultsController *)self filteredAllowanceItemSpecifiers];
+  v7 = [pathCopy row];
 
-  v16 = [v6 objectAtIndexedSubscript:v7];
+  v16 = [filteredAllowanceItemSpecifiers objectAtIndexedSubscript:v7];
 
   v8 = [v16 objectForKeyedSubscript:@"CategoryIdentifier"];
-  v9 = [(STAllowanceItemSearchResultsController *)self selectedWebDomains];
-  v10 = [(STAllowanceItemSearchResultsController *)self selectedBundleIdentifiers];
+  selectedWebDomains = [(STAllowanceItemSearchResultsController *)self selectedWebDomains];
+  selectedBundleIdentifiers = [(STAllowanceItemSearchResultsController *)self selectedBundleIdentifiers];
   v11 = [v8 isEqualToString:*MEMORY[0x277D4BCD8]];
-  v12 = [v16 identifier];
+  identifier = [v16 identifier];
   if (v11)
   {
-    v13 = v9;
+    v13 = selectedWebDomains;
   }
 
   else
   {
-    v13 = v10;
+    v13 = selectedBundleIdentifiers;
   }
 
-  [v13 removeObject:v12];
+  [v13 removeObject:identifier];
 
-  v14 = [(STAllowanceItemSearchResultsController *)self initialWebDomains];
-  if ([v9 isSubsetOfOrderedSet:v14])
+  initialWebDomains = [(STAllowanceItemSearchResultsController *)self initialWebDomains];
+  if ([selectedWebDomains isSubsetOfOrderedSet:initialWebDomains])
   {
-    v15 = [(STAllowanceItemSearchResultsController *)self initalBundleIdentifiers];
-    -[STAllowanceItemSearchResultsController setHasNewSelection:](self, "setHasNewSelection:", [v10 isSubsetOfOrderedSet:v15] ^ 1);
+    initalBundleIdentifiers = [(STAllowanceItemSearchResultsController *)self initalBundleIdentifiers];
+    -[STAllowanceItemSearchResultsController setHasNewSelection:](self, "setHasNewSelection:", [selectedBundleIdentifiers isSubsetOfOrderedSet:initalBundleIdentifiers] ^ 1);
   }
 
   else
@@ -319,22 +319,22 @@
   }
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v5 = objc_opt_new();
-  v30 = v4;
-  v6 = [v4 searchBar];
-  v7 = [v6 text];
+  v30 = controllerCopy;
+  searchBar = [controllerCopy searchBar];
+  text = [searchBar text];
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v29 = self;
-  v8 = [(STAllowanceItemSearchResultsController *)self allowanceItemSpecifiers];
-  v9 = [v8 countByEnumeratingWithState:&v37 objects:v41 count:16];
+  selfCopy = self;
+  allowanceItemSpecifiers = [(STAllowanceItemSearchResultsController *)self allowanceItemSpecifiers];
+  v9 = [allowanceItemSpecifiers countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v9)
   {
     v10 = v9;
@@ -351,12 +351,12 @@
       {
         if (*v38 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allowanceItemSpecifiers);
         }
 
         v14 = *(*(&v37 + 1) + 8 * v13);
-        v15 = [v14 name];
-        v16 = [v15 localizedCaseInsensitiveContainsString:v7];
+        name = [v14 name];
+        v16 = [name localizedCaseInsensitiveContainsString:text];
 
         if (v16)
         {
@@ -369,18 +369,18 @@
           if ([v17 isEqualToString:v12])
           {
             +[STScreenTimeSettingsUIBundle bundle];
-            v18 = v7;
+            v18 = text;
             v19 = v11;
             v20 = v5;
             v21 = v12;
-            v23 = v22 = v8;
+            v23 = v22 = allowanceItemSpecifiers;
             v24 = [v23 localizedStringForKey:@"MostUsedWebsites" value:&stru_28766E5A8 table:0];
 
-            v8 = v22;
+            allowanceItemSpecifiers = v22;
             v12 = v21;
             v5 = v20;
             v11 = v19;
-            v7 = v18;
+            text = v18;
             v10 = v34;
           }
 
@@ -399,7 +399,7 @@
             v24 = v25;
           }
 
-          if ([v24 localizedCaseInsensitiveContainsString:v7])
+          if ([v24 localizedCaseInsensitiveContainsString:text])
           {
             [v5 addObject:v14];
           }
@@ -409,23 +409,23 @@
       }
 
       while (v10 != v13);
-      v26 = [v8 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      v26 = [allowanceItemSpecifiers countByEnumeratingWithState:&v37 objects:v41 count:16];
       v10 = v26;
     }
 
     while (v26);
   }
 
-  [(STAllowanceItemSearchResultsController *)v29 setFilteredAllowanceItemSpecifiers:v5];
-  v27 = [(STAllowanceItemSearchResultsController *)v29 tableView];
-  [v27 reloadData];
+  [(STAllowanceItemSearchResultsController *)selfCopy setFilteredAllowanceItemSpecifiers:v5];
+  tableView = [(STAllowanceItemSearchResultsController *)selfCopy tableView];
+  [tableView reloadData];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __81__STAllowanceItemSearchResultsController_updateSearchResultsForSearchController___block_invoke;
   v35[3] = &unk_279B7C9C8;
-  v35[4] = v29;
-  v36 = v27;
-  v28 = v27;
+  v35[4] = selfCopy;
+  v36 = tableView;
+  v28 = tableView;
   [v5 enumerateObjectsUsingBlock:v35];
 }
 

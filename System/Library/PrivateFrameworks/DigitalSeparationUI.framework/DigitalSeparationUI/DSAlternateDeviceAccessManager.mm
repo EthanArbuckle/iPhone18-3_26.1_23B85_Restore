@@ -6,11 +6,11 @@
 - (DSAlternateDeviceAccessManager)init;
 - (id)mirroringDevices;
 - (id)syncingDevices;
-- (void)fetchAccessMethodsWithCompletion:(id)a3;
-- (void)performFetchWithCompletion:(id)a3;
-- (void)resetAllAccessMethodsWithCompletion:(id)a3;
-- (void)sendSummaryAnalyticsWithReviewAction:(BOOL)a3 resetAction:(BOOL)a4 exit:(BOOL)a5;
-- (void)startPresentationWithNavigationController:(id)a3;
+- (void)fetchAccessMethodsWithCompletion:(id)completion;
+- (void)performFetchWithCompletion:(id)completion;
+- (void)resetAllAccessMethodsWithCompletion:(id)completion;
+- (void)sendSummaryAnalyticsWithReviewAction:(BOOL)action resetAction:(BOOL)resetAction exit:(BOOL)exit;
+- (void)startPresentationWithNavigationController:(id)controller;
 @end
 
 @implementation DSAlternateDeviceAccessManager
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __47__DSAlternateDeviceAccessManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);
@@ -67,27 +67,27 @@ uint64_t __47__DSAlternateDeviceAccessManager_sharedManager__block_invoke(uint64
   return v3;
 }
 
-- (void)startPresentationWithNavigationController:(id)a3
+- (void)startPresentationWithNavigationController:(id)controller
 {
-  v4 = a3;
-  v5 = [(DSAlternateDeviceAccessManager *)self delegate];
+  controllerCopy = controller;
+  delegate = [(DSAlternateDeviceAccessManager *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(DSAlternateDeviceAccessManager *)self delegate];
-    [v6 tearDown];
+    delegate2 = [(DSAlternateDeviceAccessManager *)self delegate];
+    [delegate2 tearDown];
   }
 
-  v7 = [[DSAlternateDeviceAccessDelegate alloc] initWithPresentingViewController:v4];
+  v7 = [[DSAlternateDeviceAccessDelegate alloc] initWithPresentingViewController:controllerCopy];
 
   [(DSAlternateDeviceAccessManager *)self setDelegate:v7];
-  v8 = [(DSAlternateDeviceAccessManager *)self delegate];
-  [v8 startFlowWithType:2];
+  delegate3 = [(DSAlternateDeviceAccessManager *)self delegate];
+  [delegate3 startFlowWithType:2];
 }
 
-- (void)fetchAccessMethodsWithCompletion:(id)a3
+- (void)fetchAccessMethodsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = DSLog_11;
   if (os_log_type_enabled(DSLog_11, OS_LOG_TYPE_INFO))
   {
@@ -96,15 +96,15 @@ uint64_t __47__DSAlternateDeviceAccessManager_sharedManager__block_invoke(uint64
   }
 
   objc_initWeak(buf, self);
-  v6 = [(DSAlternateDeviceAccessManager *)self workQueue];
+  workQueue = [(DSAlternateDeviceAccessManager *)self workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __67__DSAlternateDeviceAccessManager_fetchAccessMethodsWithCompletion___block_invoke;
   v8[3] = &unk_278F75AC8;
   objc_copyWeak(&v10, buf);
-  v9 = v4;
-  v7 = v4;
-  dispatch_async(v6, v8);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_async(workQueue, v8);
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(buf);
@@ -116,9 +116,9 @@ void __67__DSAlternateDeviceAccessManager_fetchAccessMethodsWithCompletion___blo
   [WeakRetained performFetchWithCompletion:*(a1 + 32)];
 }
 
-- (void)performFetchWithCompletion:(id)a3
+- (void)performFetchWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_signpost_id_generate(DSLog_11);
   v6 = DSLog_11;
   v7 = v6;
@@ -128,19 +128,19 @@ void __67__DSAlternateDeviceAccessManager_fetchAccessMethodsWithCompletion___blo
     _os_signpost_emit_with_name_impl(&dword_248C7E000, v7, OS_SIGNPOST_INTERVAL_BEGIN, v5, "fetch", " enableTelemetry=YES ", buf, 2u);
   }
 
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [(DSAlternateDeviceAccessManager *)self continuityStore];
+  array = [MEMORY[0x277CBEB18] array];
+  continuityStore = [(DSAlternateDeviceAccessManager *)self continuityStore];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __61__DSAlternateDeviceAccessManager_performFetchWithCompletion___block_invoke;
   v12[3] = &unk_278F75BF0;
-  v13 = v8;
-  v14 = self;
-  v15 = v4;
+  v13 = array;
+  selfCopy = self;
+  v15 = completionCopy;
   v16 = v5;
-  v10 = v4;
-  v11 = v8;
-  [v9 fetchPairedDevicesWithCompletion:v12];
+  v10 = completionCopy;
+  v11 = array;
+  [continuityStore fetchPairedDevicesWithCompletion:v12];
 }
 
 void __61__DSAlternateDeviceAccessManager_performFetchWithCompletion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -227,9 +227,9 @@ void __61__DSAlternateDeviceAccessManager_performFetchWithCompletion___block_inv
   (*(*(a1 + 56) + 16))(*(a1 + 56), [*(a1 + 40) hasAlternateAccess], v11);
 }
 
-- (void)resetAllAccessMethodsWithCompletion:(id)a3
+- (void)resetAllAccessMethodsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = os_signpost_id_generate(DSLog_11);
   v6 = DSLog_11;
   v7 = v6;
@@ -243,8 +243,8 @@ void __61__DSAlternateDeviceAccessManager_performFetchWithCompletion___block_inv
   if ([(DSAlternateDeviceAccessManager *)self hasAlternateFaceID])
   {
     v9 = [DSBiometricManager alloc];
-    v10 = [(DSAlternateDeviceAccessManager *)self authContext];
-    v11 = [(DSBiometricManager *)v9 initWithContext:v10];
+    authContext = [(DSAlternateDeviceAccessManager *)self authContext];
+    v11 = [(DSBiometricManager *)v9 initWithContext:authContext];
 
     [(DSBiometricManager *)v11 deleteAllPearlIdentities];
   }
@@ -254,35 +254,35 @@ void __61__DSAlternateDeviceAccessManager_performFetchWithCompletion___block_inv
     +[DSBiometricManager deleteAllTouchIDs];
   }
 
-  v12 = [MEMORY[0x277CBEB18] array];
-  v13 = [MEMORY[0x277D262A0] sharedConnection];
-  if ([v13 recoveryPasscodeAvailable])
+  array = [MEMORY[0x277CBEB18] array];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  if ([mEMORY[0x277D262A0] recoveryPasscodeAvailable])
   {
     dispatch_group_enter(v8);
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = __70__DSAlternateDeviceAccessManager_resetAllAccessMethodsWithCompletion___block_invoke;
     v33[3] = &unk_278F759E8;
-    v34 = v12;
+    v34 = array;
     v35 = v8;
-    [v13 clearRecoveryPasscodeWithCompletion:v33];
+    [mEMORY[0x277D262A0] clearRecoveryPasscodeWithCompletion:v33];
   }
 
   dispatch_group_enter(v8);
-  v14 = [(DSAlternateDeviceAccessManager *)self continuityStore];
+  continuityStore = [(DSAlternateDeviceAccessManager *)self continuityStore];
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __70__DSAlternateDeviceAccessManager_resetAllAccessMethodsWithCompletion___block_invoke_2;
   v30[3] = &unk_278F759E8;
-  v15 = v12;
+  v15 = array;
   v31 = v15;
   v16 = v8;
   v32 = v16;
-  [v14 unpairAllDevicesWithCompletion:v30];
+  [continuityStore unpairAllDevicesWithCompletion:v30];
 
   dispatch_group_enter(v16);
-  v17 = [(DSAlternateDeviceAccessManager *)self remotePairingStore];
-  v18 = [(DSAlternateDeviceAccessManager *)self workQueue];
+  remotePairingStore = [(DSAlternateDeviceAccessManager *)self remotePairingStore];
+  workQueue = [(DSAlternateDeviceAccessManager *)self workQueue];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __70__DSAlternateDeviceAccessManager_resetAllAccessMethodsWithCompletion___block_invoke_315;
@@ -291,16 +291,16 @@ void __61__DSAlternateDeviceAccessManager_performFetchWithCompletion___block_inv
   v28 = v19;
   v29 = v16;
   v20 = v16;
-  [v17 removeAllPairedDevicesOnQueue:v18 completion:v27];
+  [remotePairingStore removeAllPairedDevicesOnQueue:workQueue completion:v27];
 
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __70__DSAlternateDeviceAccessManager_resetAllAccessMethodsWithCompletion___block_invoke_316;
   block[3] = &unk_278F75C18;
-  v25 = v4;
+  v25 = completionCopy;
   v26 = v5;
   v24 = v19;
-  v21 = v4;
+  v21 = completionCopy;
   v22 = v19;
   dispatch_group_notify(v20, MEMORY[0x277D85CD0], block);
 }
@@ -373,15 +373,15 @@ void __70__DSAlternateDeviceAccessManager_resetAllAccessMethodsWithCompletion___
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)sendSummaryAnalyticsWithReviewAction:(BOOL)a3 resetAction:(BOOL)a4 exit:(BOOL)a5
+- (void)sendSummaryAnalyticsWithReviewAction:(BOOL)action resetAction:(BOOL)resetAction exit:(BOOL)exit
 {
-  if (a4)
+  if (resetAction)
   {
-    v6 = [(DSAlternateDeviceAccessManager *)self mirroringDevices];
-    [v6 count];
+    mirroringDevices = [(DSAlternateDeviceAccessManager *)self mirroringDevices];
+    [mirroringDevices count];
 
-    v7 = [(DSAlternateDeviceAccessManager *)self syncingDevices];
-    [v7 count];
+    syncingDevices = [(DSAlternateDeviceAccessManager *)self syncingDevices];
+    [syncingDevices count];
 
     if (![(DSAlternateDeviceAccessManager *)self hasAlternateFaceID])
     {
@@ -417,8 +417,8 @@ id __88__DSAlternateDeviceAccessManager_sendSummaryAnalyticsWithReviewAction_res
 - (id)mirroringDevices
 {
   os_unfair_lock_lock(&self->_providerLock);
-  v3 = [(DSAlternateDeviceAccessManager *)self continuityDevices];
-  v4 = [v3 valueForKey:@"name"];
+  continuityDevices = [(DSAlternateDeviceAccessManager *)self continuityDevices];
+  v4 = [continuityDevices valueForKey:@"name"];
 
   os_unfair_lock_unlock(&self->_providerLock);
 
@@ -428,8 +428,8 @@ id __88__DSAlternateDeviceAccessManager_sendSummaryAnalyticsWithReviewAction_res
 - (id)syncingDevices
 {
   os_unfair_lock_lock(&self->_providerLock);
-  v3 = [(DSAlternateDeviceAccessManager *)self pairedComputers];
-  v4 = [v3 valueForKey:@"deviceName"];
+  pairedComputers = [(DSAlternateDeviceAccessManager *)self pairedComputers];
+  v4 = [pairedComputers valueForKey:@"deviceName"];
 
   os_unfair_lock_unlock(&self->_providerLock);
 
@@ -439,17 +439,17 @@ id __88__DSAlternateDeviceAccessManager_sendSummaryAnalyticsWithReviewAction_res
 - (BOOL)hasAlternateFaceID
 {
   os_unfair_lock_lock(&self->_providerLock);
-  v3 = [(DSAlternateDeviceAccessManager *)self hasMultipleFaceIDs];
+  hasMultipleFaceIDs = [(DSAlternateDeviceAccessManager *)self hasMultipleFaceIDs];
   os_unfair_lock_unlock(&self->_providerLock);
-  return v3;
+  return hasMultipleFaceIDs;
 }
 
 - (BOOL)hasAlternateTouchID
 {
   os_unfair_lock_lock(&self->_providerLock);
-  v3 = [(DSAlternateDeviceAccessManager *)self hasMultipleTouchIDs];
+  hasMultipleTouchIDs = [(DSAlternateDeviceAccessManager *)self hasMultipleTouchIDs];
   os_unfair_lock_unlock(&self->_providerLock);
-  return v3;
+  return hasMultipleTouchIDs;
 }
 
 - (BOOL)hasAlternateAccess
@@ -462,16 +462,16 @@ id __88__DSAlternateDeviceAccessManager_sendSummaryAnalyticsWithReviewAction_res
 
   else
   {
-    v4 = [(DSAlternateDeviceAccessManager *)self continuityDevices];
-    if ([v4 count])
+    continuityDevices = [(DSAlternateDeviceAccessManager *)self continuityDevices];
+    if ([continuityDevices count])
     {
       v3 = 1;
     }
 
     else
     {
-      v5 = [(DSAlternateDeviceAccessManager *)self pairedComputers];
-      v3 = [v5 count] != 0;
+      pairedComputers = [(DSAlternateDeviceAccessManager *)self pairedComputers];
+      v3 = [pairedComputers count] != 0;
     }
   }
 

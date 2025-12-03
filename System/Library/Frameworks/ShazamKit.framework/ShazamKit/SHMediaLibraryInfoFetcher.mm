@@ -1,17 +1,17 @@
 @interface SHMediaLibraryInfoFetcher
-+ (int64_t)libraryStatusForAccountStatus:(int64_t)a3;
++ (int64_t)libraryStatusForAccountStatus:(int64_t)status;
 - (NSString)currentUserID;
 - (void)clearCachedSyncStatus;
-- (void)fetchAccountTokensWithAccountInfo:(id)a3 completion:(id)a4;
-- (void)fetchLibraryInfoWithCompletionHandler:(id)a3;
-- (void)setCurrentUserID:(id)a3;
+- (void)fetchAccountTokensWithAccountInfo:(id)info completion:(id)completion;
+- (void)fetchLibraryInfoWithCompletionHandler:(id)handler;
+- (void)setCurrentUserID:(id)d;
 @end
 
 @implementation SHMediaLibraryInfoFetcher
 
-- (void)fetchLibraryInfoWithCompletionHandler:(id)a3
+- (void)fetchLibraryInfoWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   v5 = +[SHCloudContainer sharedContainer];
   v7[0] = _NSConcreteStackBlock;
@@ -19,7 +19,7 @@
   v7[2] = sub_10003C45C;
   v7[3] = &unk_10007DE38;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = handlerCopy;
   v8 = v6;
   [v5 accountInfoWithCompletionHandler:v7];
 
@@ -27,11 +27,11 @@
   objc_destroyWeak(&location);
 }
 
-- (void)fetchAccountTokensWithAccountInfo:(id)a3 completion:(id)a4
+- (void)fetchAccountTokensWithAccountInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 accountStatus] == 1)
+  infoCopy = info;
+  completionCopy = completion;
+  if ([infoCopy accountStatus] == 1)
   {
     objc_initWeak(&location, self);
     v8 = +[SHCloudContainer sharedContainer];
@@ -40,7 +40,7 @@
     v11[2] = sub_10003C7BC;
     v11[3] = &unk_10007DE60;
     objc_copyWeak(&v13, &location);
-    v12 = v7;
+    v12 = completionCopy;
     [v8 fetchUserRecordIDWithCompletionHandler:v11];
 
     objc_destroyWeak(&v13);
@@ -50,14 +50,14 @@
   else
   {
     v9 = +[NSFileManager defaultManager];
-    v10 = [v9 ubiquityIdentityToken];
+    ubiquityIdentityToken = [v9 ubiquityIdentityToken];
 
-    if (!v10)
+    if (!ubiquityIdentityToken)
     {
       [(SHMediaLibraryInfoFetcher *)self setCurrentUserID:0];
     }
 
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -69,11 +69,11 @@
   return v3;
 }
 
-- (void)setCurrentUserID:(id)a3
+- (void)setCurrentUserID:(id)d
 {
-  v4 = a3;
-  v5 = [(SHMediaLibraryInfoFetcher *)self currentUserID];
-  if (v4 | v5 && ([v4 isEqualToString:v5] & 1) == 0)
+  dCopy = d;
+  currentUserID = [(SHMediaLibraryInfoFetcher *)self currentUserID];
+  if (dCopy | currentUserID && ([dCopy isEqualToString:currentUserID] & 1) == 0)
   {
     v6 = sh_log_object();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -83,9 +83,9 @@
     }
 
     v7 = +[NSUserDefaults standardUserDefaults];
-    [v7 setObject:v4 forKey:@"SHLibraryAvailabilityListenerUserID"];
+    [v7 setObject:dCopy forKey:@"SHLibraryAvailabilityListenerUserID"];
 
-    if (v5)
+    if (currentUserID)
     {
       v8 = sh_log_object();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -107,9 +107,9 @@
 - (void)clearCachedSyncStatus
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  v4 = [v3 stringByAppendingPathComponent:@"com.apple.shazamlibrary.cloud"];
+  v4 = [firstObject stringByAppendingPathComponent:@"com.apple.shazamlibrary.cloud"];
   v31 = 0;
   v5 = +[NSFileManager defaultManager];
   v6 = [v5 fileExistsAtPath:v4 isDirectory:&v31];
@@ -125,7 +125,7 @@
     {
       v22 = v4;
       v9 = +[SHCloudContainer sharedContainer];
-      v10 = [v9 containerIdentifier];
+      containerIdentifier = [v9 containerIdentifier];
 
       v28 = 0u;
       v29 = 0u;
@@ -150,7 +150,7 @@
             v15 = *(*(&v26 + 1) + 8 * i);
             v16 = [SHLCloudLibraryCache alloc];
             v17 = +[NSUUID UUID];
-            v18 = [(SHLCloudLibraryCache *)v16 initWithCallingProcessIdentifier:v15 containerIdentifier:v10 transactionIdentifier:v17];
+            v18 = [(SHLCloudLibraryCache *)v16 initWithCallingProcessIdentifier:v15 containerIdentifier:containerIdentifier transactionIdentifier:v17];
 
             v25 = 0;
             LOBYTE(v17) = [(SHLCloudLibraryCache *)v18 resetWithError:&v25];
@@ -161,7 +161,7 @@
               if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412802;
-                v33 = v10;
+                v33 = containerIdentifier;
                 v34 = 2112;
                 v35 = v15;
                 v36 = 2112;
@@ -183,27 +183,27 @@
 
     else
     {
-      v10 = sh_log_object();
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
+      containerIdentifier = sh_log_object();
+      if (os_log_type_enabled(containerIdentifier, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
         v33 = v23;
-        _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "No cached sync status to reset %@", buf, 0xCu);
+        _os_log_impl(&_mh_execute_header, containerIdentifier, OS_LOG_TYPE_DEBUG, "No cached sync status to reset %@", buf, 0xCu);
       }
     }
   }
 }
 
-+ (int64_t)libraryStatusForAccountStatus:(int64_t)a3
++ (int64_t)libraryStatusForAccountStatus:(int64_t)status
 {
-  if (a3 > 4)
+  if (status > 4)
   {
     return 0;
   }
 
   else
   {
-    return qword_10005D0F8[a3];
+    return qword_10005D0F8[status];
   }
 }
 

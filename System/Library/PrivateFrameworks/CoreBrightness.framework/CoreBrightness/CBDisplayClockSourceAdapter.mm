@@ -1,23 +1,23 @@
 @interface CBDisplayClockSourceAdapter
-- (CBDisplayClockSourceAdapter)initWithDisplayRef:(__Display *)a3;
+- (CBDisplayClockSourceAdapter)initWithDisplayRef:(__Display *)ref;
 - (void)resume;
-- (void)setPreferredFramesPerSecond:(float)a3;
+- (void)setPreferredFramesPerSecond:(float)second;
 @end
 
 @implementation CBDisplayClockSourceAdapter
 
-- (CBDisplayClockSourceAdapter)initWithDisplayRef:(__Display *)a3
+- (CBDisplayClockSourceAdapter)initWithDisplayRef:(__Display *)ref
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  refCopy = ref;
   v4.receiver = self;
   v4.super_class = CBDisplayClockSourceAdapter;
-  v7 = [(CBDisplayClockSourceAdapter *)&v4 init];
-  v7->_display = v5;
-  v7->_preferredFramesPerSecond = 1.0;
-  v7->_running = 0;
-  return v7;
+  selfCopy = [(CBDisplayClockSourceAdapter *)&v4 init];
+  selfCopy->_display = refCopy;
+  selfCopy->_preferredFramesPerSecond = 1.0;
+  selfCopy->_running = 0;
+  return selfCopy;
 }
 
 - (void)resume
@@ -34,9 +34,9 @@
   objc_autoreleasePoolPop(context);
 }
 
-- (void)setPreferredFramesPerSecond:(float)a3
+- (void)setPreferredFramesPerSecond:(float)second
 {
-  self->_preferredFramesPerSecond = clamp(a3, 0.0, 1000.0);
+  self->_preferredFramesPerSecond = clamp(second, 0.0, 1000.0);
   if (self->_running)
   {
     [(CBDisplayClockSourceAdapter *)self resume];

@@ -1,5 +1,5 @@
 @interface HMDHH2MigrationLogEvent
-- (HMDHH2MigrationLogEvent)initWithAutoMigration:(BOOL)a3 isDryRun:(BOOL)a4 migrationSuccessful:(BOOL)a5 totalMigrationTime:(int64_t)a6 totalMigrationAttempt:(int64_t)a7 migrationError:(id)a8 failureReason:(id)a9 coreDataValidationEntityClassName:(id)a10 coreDataValidationAttributeName:(id)a11 localizedErrorDescription:(id)a12;
+- (HMDHH2MigrationLogEvent)initWithAutoMigration:(BOOL)migration isDryRun:(BOOL)run migrationSuccessful:(BOOL)successful totalMigrationTime:(int64_t)time totalMigrationAttempt:(int64_t)attempt migrationError:(id)error failureReason:(id)reason coreDataValidationEntityClassName:(id)self0 coreDataValidationAttributeName:(id)self1 localizedErrorDescription:(id)self2;
 - (NSDictionary)coreAnalyticsEventDictionary;
 @end
 
@@ -25,17 +25,17 @@
   v9 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HMDHH2MigrationLogEvent migrationAttempt](self, "migrationAttempt")}];
   [v3 setObject:v9 forKeyedSubscript:@"migrationAttemptCount"];
 
-  v10 = [(HMDHH2MigrationLogEvent *)self failureReason];
-  [v3 setObject:v10 forKeyedSubscript:@"migrationFailureReason"];
+  failureReason = [(HMDHH2MigrationLogEvent *)self failureReason];
+  [v3 setObject:failureReason forKeyedSubscript:@"migrationFailureReason"];
 
-  v11 = [(HMDHH2MigrationLogEvent *)self coreDataValidationEntityClassName];
-  [v3 setObject:v11 forKeyedSubscript:@"validationEntityClassName"];
+  coreDataValidationEntityClassName = [(HMDHH2MigrationLogEvent *)self coreDataValidationEntityClassName];
+  [v3 setObject:coreDataValidationEntityClassName forKeyedSubscript:@"validationEntityClassName"];
 
-  v12 = [(HMDHH2MigrationLogEvent *)self coreDataValidationAttributeName];
-  [v3 setObject:v12 forKeyedSubscript:@"validationAttributeName"];
+  coreDataValidationAttributeName = [(HMDHH2MigrationLogEvent *)self coreDataValidationAttributeName];
+  [v3 setObject:coreDataValidationAttributeName forKeyedSubscript:@"validationAttributeName"];
 
-  v13 = [(HMDHH2MigrationLogEvent *)self localizedErrorDescription];
-  [v3 setObject:v13 forKeyedSubscript:@"localizedDescription"];
+  localizedErrorDescription = [(HMDHH2MigrationLogEvent *)self localizedErrorDescription];
+  [v3 setObject:localizedErrorDescription forKeyedSubscript:@"localizedDescription"];
 
   v14 = objc_autoreleasePoolPush();
   v15 = objc_alloc_init(HMDHH2MigrationStateLogger);
@@ -47,29 +47,29 @@
   return v16;
 }
 
-- (HMDHH2MigrationLogEvent)initWithAutoMigration:(BOOL)a3 isDryRun:(BOOL)a4 migrationSuccessful:(BOOL)a5 totalMigrationTime:(int64_t)a6 totalMigrationAttempt:(int64_t)a7 migrationError:(id)a8 failureReason:(id)a9 coreDataValidationEntityClassName:(id)a10 coreDataValidationAttributeName:(id)a11 localizedErrorDescription:(id)a12
+- (HMDHH2MigrationLogEvent)initWithAutoMigration:(BOOL)migration isDryRun:(BOOL)run migrationSuccessful:(BOOL)successful totalMigrationTime:(int64_t)time totalMigrationAttempt:(int64_t)attempt migrationError:(id)error failureReason:(id)reason coreDataValidationEntityClassName:(id)self0 coreDataValidationAttributeName:(id)self1 localizedErrorDescription:(id)self2
 {
-  v15 = a8;
-  v25 = a9;
-  v24 = a10;
-  v16 = a11;
-  v17 = a12;
+  errorCopy = error;
+  reasonCopy = reason;
+  nameCopy = name;
+  attributeNameCopy = attributeName;
+  descriptionCopy = description;
   v26.receiver = self;
   v26.super_class = HMDHH2MigrationLogEvent;
   v18 = [(HMMLogEvent *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    v18->_autoMigration = a3;
-    v18->_dryRun = a4;
-    v18->_migrationSuccessful = a5;
-    v18->_totalTimeTakenForMigration = a6;
-    v18->_migrationAttempt = a7;
-    objc_storeStrong(&v18->_failureReason, a9);
-    objc_storeStrong(&v19->_coreDataValidationAttributeName, a11);
-    objc_storeStrong(&v19->_coreDataValidationEntityClassName, a10);
-    objc_storeStrong(&v19->_localizedErrorDescription, a12);
-    [(HMMLogEvent *)v19 setError:v15];
+    v18->_autoMigration = migration;
+    v18->_dryRun = run;
+    v18->_migrationSuccessful = successful;
+    v18->_totalTimeTakenForMigration = time;
+    v18->_migrationAttempt = attempt;
+    objc_storeStrong(&v18->_failureReason, reason);
+    objc_storeStrong(&v19->_coreDataValidationAttributeName, attributeName);
+    objc_storeStrong(&v19->_coreDataValidationEntityClassName, name);
+    objc_storeStrong(&v19->_localizedErrorDescription, description);
+    [(HMMLogEvent *)v19 setError:errorCopy];
   }
 
   return v19;

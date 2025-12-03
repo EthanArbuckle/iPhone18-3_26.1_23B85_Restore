@@ -1,21 +1,21 @@
 @interface ATXSportsFavoriteManager
-+ (void)favoritesWithCompletion:(id)a3;
-+ (void)isOnboarded:(id)a3;
++ (void)favoritesWithCompletion:(id)completion;
++ (void)isOnboarded:(id)onboarded;
 @end
 
 @implementation ATXSportsFavoriteManager
 
-+ (void)favoritesWithCompletion:(id)a3
++ (void)favoritesWithCompletion:(id)completion
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D7A970] defaultManager];
+  completionCopy = completion;
+  defaultManager = [MEMORY[0x277D7A970] defaultManager];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__ATXSportsFavoriteManager_favoritesWithCompletion___block_invoke;
   v6[3] = &unk_27859EF60;
-  v7 = v3;
-  v5 = v3;
-  [v4 favoritesWithCompletion:v6];
+  v7 = completionCopy;
+  v5 = completionCopy;
+  [defaultManager favoritesWithCompletion:v6];
 }
 
 uint64_t __52__ATXSportsFavoriteManager_favoritesWithCompletion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)
@@ -40,17 +40,17 @@ uint64_t __52__ATXSportsFavoriteManager_favoritesWithCompletion___block_invoke(u
   }
 }
 
-+ (void)isOnboarded:(id)a3
++ (void)isOnboarded:(id)onboarded
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D7A970] defaultManager];
+  onboardedCopy = onboarded;
+  defaultManager = [MEMORY[0x277D7A970] defaultManager];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __40__ATXSportsFavoriteManager_isOnboarded___block_invoke;
   v6[3] = &unk_27859EF88;
-  v7 = v3;
-  v5 = v3;
-  [v4 isOnboarded:v6];
+  v7 = onboardedCopy;
+  v5 = onboardedCopy;
+  [defaultManager isOnboarded:v6];
 }
 
 @end

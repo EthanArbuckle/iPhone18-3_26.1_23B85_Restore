@@ -1,21 +1,21 @@
 @interface NTKEsterbrookDensityEditOption
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4;
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device;
 - (id)_valueToFaceBundleStringDict;
 - (id)localizedName;
 @end
 
 @implementation NTKEsterbrookDensityEditOption
 
-+ (id)_snapshotKeyForValue:(unint64_t)a3 forDevice:(id)a4
++ (id)_snapshotKeyForValue:(unint64_t)value forDevice:(id)device
 {
-  if (a3 > 3)
+  if (value > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_278B9A8B8[a3];
+    return off_278B9A8B8[value];
   }
 }
 

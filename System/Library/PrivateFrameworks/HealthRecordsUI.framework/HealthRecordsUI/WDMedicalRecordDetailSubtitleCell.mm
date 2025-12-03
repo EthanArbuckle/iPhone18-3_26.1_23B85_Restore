@@ -4,8 +4,8 @@
 + (double)_titleLabelTopToFirstBaseline;
 - (NSString)subtitle;
 - (NSString)title;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
 - (void)setupSubviews;
 @end
 
@@ -19,132 +19,132 @@
   v3 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [(WDMedicalRecordDetailSubtitleCell *)self setTitleLabel:v3];
 
-  v4 = [objc_opt_class() _titleLabelFont];
-  v5 = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
-  [v5 setFont:v4];
+  _titleLabelFont = [objc_opt_class() _titleLabelFont];
+  titleLabel = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
+  [titleLabel setFont:_titleLabelFont];
 
-  v6 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v7 = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
-  [v7 setTextColor:v6];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  titleLabel2 = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
+  [titleLabel2 setTextColor:secondaryLabelColor];
 
-  v8 = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
-  [v8 setNumberOfLines:0];
+  titleLabel3 = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
+  [titleLabel3 setNumberOfLines:0];
 
-  v9 = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
-  [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel4 = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
+  [titleLabel4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v10 = [(WDMedicalRecordDetailSubtitleCell *)self contentView];
-  v11 = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
-  [v10 addSubview:v11];
+  contentView = [(WDMedicalRecordDetailSubtitleCell *)self contentView];
+  titleLabel5 = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
+  [contentView addSubview:titleLabel5];
 
   v12 = objc_alloc_init(MEMORY[0x1E69DCC10]);
   [(WDMedicalRecordDetailSubtitleCell *)self setSubtitleLabel:v12];
 
-  v13 = [objc_opt_class() _subtitleLabelFont];
-  v14 = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
-  [v14 setFont:v13];
+  _subtitleLabelFont = [objc_opt_class() _subtitleLabelFont];
+  subtitleLabel = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
+  [subtitleLabel setFont:_subtitleLabelFont];
 
-  v15 = [MEMORY[0x1E69DC888] labelColor];
-  v16 = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
-  [v16 setTextColor:v15];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  subtitleLabel2 = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
+  [subtitleLabel2 setTextColor:labelColor];
 
-  v17 = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
-  [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
+  subtitleLabel3 = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
+  [subtitleLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v18 = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
-  [v18 setNumberOfLines:0];
+  subtitleLabel4 = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
+  [subtitleLabel4 setNumberOfLines:0];
 
-  v19 = [(WDMedicalRecordDetailSubtitleCell *)self contentView];
-  v20 = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
-  [v19 addSubview:v20];
+  contentView2 = [(WDMedicalRecordDetailSubtitleCell *)self contentView];
+  subtitleLabel5 = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
+  [contentView2 addSubview:subtitleLabel5];
 
-  v21 = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
-  v22 = [v21 leadingAnchor];
-  v23 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v24 = [v23 leadingAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24 constant:16.0];
+  titleLabel6 = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
+  leadingAnchor = [titleLabel6 leadingAnchor];
+  pillBackgroundView = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  leadingAnchor2 = [pillBackgroundView leadingAnchor];
+  v25 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   [v25 setActive:1];
 
-  v26 = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
-  v27 = [v26 trailingAnchor];
-  v28 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v29 = [v28 trailingAnchor];
-  v30 = [v27 constraintEqualToAnchor:v29 constant:-16.0];
+  titleLabel7 = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
+  trailingAnchor = [titleLabel7 trailingAnchor];
+  pillBackgroundView2 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  trailingAnchor2 = [pillBackgroundView2 trailingAnchor];
+  v30 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   [v30 setActive:1];
 
-  v31 = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
-  v32 = [v31 firstBaselineAnchor];
-  v33 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v34 = [v33 topAnchor];
+  titleLabel8 = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
+  firstBaselineAnchor = [titleLabel8 firstBaselineAnchor];
+  pillBackgroundView3 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  topAnchor = [pillBackgroundView3 topAnchor];
   [objc_opt_class() _titleLabelTopToFirstBaseline];
-  v35 = [v32 constraintEqualToAnchor:v34 constant:?];
+  v35 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:?];
   [v35 setActive:1];
 
-  v36 = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
-  v37 = [v36 leadingAnchor];
-  v38 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v39 = [v38 leadingAnchor];
-  v40 = [v37 constraintEqualToAnchor:v39 constant:16.0];
+  subtitleLabel6 = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
+  leadingAnchor3 = [subtitleLabel6 leadingAnchor];
+  pillBackgroundView4 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  leadingAnchor4 = [pillBackgroundView4 leadingAnchor];
+  v40 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:16.0];
   [v40 setActive:1];
 
-  v41 = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
-  v42 = [v41 trailingAnchor];
-  v43 = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
-  v44 = [v43 trailingAnchor];
-  v45 = [v42 constraintEqualToAnchor:v44];
+  subtitleLabel7 = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
+  trailingAnchor3 = [subtitleLabel7 trailingAnchor];
+  titleLabel9 = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
+  trailingAnchor4 = [titleLabel9 trailingAnchor];
+  v45 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v45 setActive:1];
 
-  v46 = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
-  v47 = [v46 firstBaselineAnchor];
-  v48 = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
-  v49 = [v48 lastBaselineAnchor];
+  subtitleLabel8 = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
+  firstBaselineAnchor2 = [subtitleLabel8 firstBaselineAnchor];
+  titleLabel10 = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
+  lastBaselineAnchor = [titleLabel10 lastBaselineAnchor];
   [objc_opt_class() _subtitleLabelTopToFirstBaseline];
-  v50 = [v47 constraintEqualToAnchor:v49 constant:?];
+  v50 = [firstBaselineAnchor2 constraintEqualToAnchor:lastBaselineAnchor constant:?];
   [v50 setActive:1];
 
-  v51 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
-  v52 = [v51 bottomAnchor];
-  v53 = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
-  v54 = [v53 lastBaselineAnchor];
+  pillBackgroundView5 = [(WDMedicalRecordGroupableCell *)self pillBackgroundView];
+  bottomAnchor = [pillBackgroundView5 bottomAnchor];
+  subtitleLabel9 = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
+  lastBaselineAnchor2 = [subtitleLabel9 lastBaselineAnchor];
   [objc_opt_class() _subtitleLabelLastBaselineToBottom];
-  v55 = [v52 constraintEqualToAnchor:v54 constant:?];
+  v55 = [bottomAnchor constraintEqualToAnchor:lastBaselineAnchor2 constant:?];
   [v55 setActive:1];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
-  [v5 setText:v4];
+  titleCopy = title;
+  titleLabel = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
+  [titleLabel setText:titleCopy];
 }
 
 - (NSString)title
 {
-  v2 = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
-  v3 = [v2 text];
+  titleLabel = [(WDMedicalRecordDetailSubtitleCell *)self titleLabel];
+  text = [titleLabel text];
 
-  return v3;
+  return text;
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  v4 = a3;
-  v5 = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
-  [v5 setText:v4];
+  subtitleCopy = subtitle;
+  subtitleLabel = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
+  [subtitleLabel setText:subtitleCopy];
 }
 
 - (NSString)subtitle
 {
-  v2 = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
-  v3 = [v2 text];
+  subtitleLabel = [(WDMedicalRecordDetailSubtitleCell *)self subtitleLabel];
+  text = [subtitleLabel text];
 
-  return v3;
+  return text;
 }
 
 + (double)_titleLabelTopToFirstBaseline
 {
-  v2 = [objc_opt_class() _titleLabelFont];
-  [v2 _scaledValueForValue:24.0];
+  _titleLabelFont = [objc_opt_class() _titleLabelFont];
+  [_titleLabelFont _scaledValueForValue:24.0];
   v4 = v3;
 
   return v4;
@@ -152,8 +152,8 @@
 
 + (double)_subtitleLabelTopToFirstBaseline
 {
-  v2 = [objc_opt_class() _subtitleLabelFont];
-  [v2 _scaledValueForValue:22.0];
+  _subtitleLabelFont = [objc_opt_class() _subtitleLabelFont];
+  [_subtitleLabelFont _scaledValueForValue:22.0];
   v4 = v3;
 
   return v4;
@@ -161,8 +161,8 @@
 
 + (double)_subtitleLabelLastBaselineToBottom
 {
-  v2 = [objc_opt_class() _subtitleLabelFont];
-  [v2 _scaledValueForValue:13.0];
+  _subtitleLabelFont = [objc_opt_class() _subtitleLabelFont];
+  [_subtitleLabelFont _scaledValueForValue:13.0];
   v4 = v3;
 
   return v4;

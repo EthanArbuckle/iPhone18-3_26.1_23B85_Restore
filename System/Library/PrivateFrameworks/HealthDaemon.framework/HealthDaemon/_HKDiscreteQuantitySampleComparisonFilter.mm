@@ -6,20 +6,20 @@
 
 - (id)_comparisonQuantityAsNumber
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 value];
-    v3 = [v1 dataTypes];
-    v4 = [v3 anyObject];
+    value = [self value];
+    dataTypes = [selfCopy dataTypes];
+    anyObject = [dataTypes anyObject];
 
     v5 = MEMORY[0x277CCABB0];
-    v6 = [v4 canonicalUnit];
-    [v2 doubleValueForUnit:v6];
-    v1 = [v5 numberWithDouble:?];
+    canonicalUnit = [anyObject canonicalUnit];
+    [value doubleValueForUnit:canonicalUnit];
+    selfCopy = [v5 numberWithDouble:?];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 @end

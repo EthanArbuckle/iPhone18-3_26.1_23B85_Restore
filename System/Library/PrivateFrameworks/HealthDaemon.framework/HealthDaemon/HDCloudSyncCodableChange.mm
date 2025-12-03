@@ -1,22 +1,22 @@
 @interface HDCloudSyncCodableChange
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasChangeSize:(BOOL)a3;
-- (void)setHasFinalForSequence:(BOOL)a3;
-- (void)setHasProtocolVersion:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasChangeSize:(BOOL)size;
+- (void)setHasFinalForSequence:(BOOL)sequence;
+- (void)setHasProtocolVersion:(BOOL)version;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCloudSyncCodableChange
 
-- (void)setHasProtocolVersion:(BOOL)a3
+- (void)setHasProtocolVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -29,9 +29,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasChangeSize:(BOOL)a3
+- (void)setHasChangeSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 2;
   }
@@ -44,9 +44,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasFinalForSequence:(BOOL)a3
+- (void)setHasFinalForSequence:(BOOL)sequence
 {
-  if (a3)
+  if (sequence)
   {
     v3 = 8;
   }
@@ -65,27 +65,27 @@
   v8.receiver = self;
   v8.super_class = HDCloudSyncCodableChange;
   v4 = [(HDCloudSyncCodableChange *)&v8 description];
-  v5 = [(HDCloudSyncCodableChange *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCloudSyncCodableChange *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   anchorRangeMap = self->_anchorRangeMap;
   if (anchorRangeMap)
   {
-    v5 = [(HDCodableSyncAnchorRangeMap *)anchorRangeMap dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"anchorRangeMap"];
+    dictionaryRepresentation = [(HDCodableSyncAnchorRangeMap *)anchorRangeMap dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"anchorRangeMap"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_protocolVersion];
-    [v3 setObject:v9 forKey:@"protocolVersion"];
+    [dictionary setObject:v9 forKey:@"protocolVersion"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -106,7 +106,7 @@ LABEL_5:
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_changeSize];
-  [v3 setObject:v10 forKey:@"changeSize"];
+  [dictionary setObject:v10 forKey:@"changeSize"];
 
   has = self->_has;
   if ((has & 1) == 0)
@@ -122,28 +122,28 @@ LABEL_6:
 
 LABEL_13:
   v11 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_changeIndex];
-  [v3 setObject:v11 forKey:@"changeIndex"];
+  [dictionary setObject:v11 forKey:@"changeIndex"];
 
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
     v7 = [MEMORY[0x277CCABB0] numberWithBool:self->_finalForSequence];
-    [v3 setObject:v7 forKey:@"finalForSequence"];
+    [dictionary setObject:v7 forKey:@"finalForSequence"];
   }
 
 LABEL_8:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_anchorRangeMap)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -151,7 +151,7 @@ LABEL_8:
   {
     protocolVersion = self->_protocolVersion;
     PBDataWriterWriteInt64Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -172,7 +172,7 @@ LABEL_5:
 
   changeSize = self->_changeSize;
   PBDataWriterWriteInt64Field();
-  v4 = v10;
+  toCopy = v10;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -188,33 +188,33 @@ LABEL_6:
 LABEL_13:
   changeIndex = self->_changeIndex;
   PBDataWriterWriteInt64Field();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
     finalForSequence = self->_finalForSequence;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_8:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_anchorRangeMap)
   {
-    v6 = v4;
-    [v4 setAnchorRangeMap:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setAnchorRangeMap:?];
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(v4 + 3) = self->_protocolVersion;
-    *(v4 + 44) |= 4u;
+    *(toCopy + 3) = self->_protocolVersion;
+    *(toCopy + 44) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -233,8 +233,8 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  *(v4 + 2) = self->_changeSize;
-  *(v4 + 44) |= 2u;
+  *(toCopy + 2) = self->_changeSize;
+  *(toCopy + 44) |= 2u;
   has = self->_has;
   if ((has & 1) == 0)
   {
@@ -248,22 +248,22 @@ LABEL_6:
   }
 
 LABEL_13:
-  *(v4 + 1) = self->_changeIndex;
-  *(v4 + 44) |= 1u;
+  *(toCopy + 1) = self->_changeIndex;
+  *(toCopy + 44) |= 1u;
   if ((*&self->_has & 8) != 0)
   {
 LABEL_7:
-    *(v4 + 40) = self->_finalForSequence;
-    *(v4 + 44) |= 8u;
+    *(toCopy + 40) = self->_finalForSequence;
+    *(toCopy + 44) |= 8u;
   }
 
 LABEL_8:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(HDCodableSyncAnchorRangeMap *)self->_anchorRangeMap copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(HDCodableSyncAnchorRangeMap *)self->_anchorRangeMap copyWithZone:zone];
   v7 = *(v5 + 32);
   *(v5 + 32) = v6;
 
@@ -317,16 +317,16 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_21;
   }
 
   anchorRangeMap = self->_anchorRangeMap;
-  if (anchorRangeMap | *(v4 + 4))
+  if (anchorRangeMap | *(equalCopy + 4))
   {
     if (![(HDCodableSyncAnchorRangeMap *)anchorRangeMap isEqual:?])
     {
@@ -336,47 +336,47 @@ LABEL_5:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0 || self->_protocolVersion != *(v4 + 3))
+    if ((*(equalCopy + 44) & 4) == 0 || self->_protocolVersion != *(equalCopy + 3))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 44) & 4) != 0)
+  else if ((*(equalCopy + 44) & 4) != 0)
   {
     goto LABEL_21;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0 || self->_changeSize != *(v4 + 2))
+    if ((*(equalCopy + 44) & 2) == 0 || self->_changeSize != *(equalCopy + 2))
     {
       goto LABEL_21;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_21;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 44) & 1) == 0 || self->_changeIndex != *(v4 + 1))
+    if ((*(equalCopy + 44) & 1) == 0 || self->_changeIndex != *(equalCopy + 1))
     {
       goto LABEL_21;
     }
   }
 
-  else if (*(v4 + 44))
+  else if (*(equalCopy + 44))
   {
     goto LABEL_21;
   }
 
-  v6 = (*(v4 + 44) & 8) == 0;
+  v6 = (*(equalCopy + 44) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 44) & 8) == 0)
+    if ((*(equalCopy + 44) & 8) == 0)
     {
 LABEL_21:
       v6 = 0;
@@ -385,13 +385,13 @@ LABEL_21:
 
     if (self->_finalForSequence)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_21;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_21;
     }
@@ -459,11 +459,11 @@ LABEL_5:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   anchorRangeMap = self->_anchorRangeMap;
-  v6 = *(v4 + 4);
+  v6 = *(fromCopy + 4);
   if (anchorRangeMap)
   {
     if (!v6)
@@ -471,7 +471,7 @@ LABEL_5:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     anchorRangeMap = [(HDCodableSyncAnchorRangeMap *)anchorRangeMap mergeFrom:?];
   }
 
@@ -482,18 +482,18 @@ LABEL_5:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     anchorRangeMap = [(HDCloudSyncCodableChange *)self setAnchorRangeMap:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  v7 = *(v4 + 44);
+  v7 = *(fromCopy + 44);
   if ((v7 & 4) != 0)
   {
-    self->_protocolVersion = *(v4 + 3);
+    self->_protocolVersion = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v7 = *(v4 + 44);
+    v7 = *(fromCopy + 44);
     if ((v7 & 2) == 0)
     {
 LABEL_9:
@@ -506,14 +506,14 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 44) & 2) == 0)
+  else if ((*(fromCopy + 44) & 2) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_changeSize = *(v4 + 2);
+  self->_changeSize = *(fromCopy + 2);
   *&self->_has |= 2u;
-  v7 = *(v4 + 44);
+  v7 = *(fromCopy + 44);
   if ((v7 & 1) == 0)
   {
 LABEL_10:
@@ -526,18 +526,18 @@ LABEL_10:
   }
 
 LABEL_17:
-  self->_changeIndex = *(v4 + 1);
+  self->_changeIndex = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 44) & 8) != 0)
+  if ((*(fromCopy + 44) & 8) != 0)
   {
 LABEL_11:
-    self->_finalForSequence = *(v4 + 40);
+    self->_finalForSequence = *(fromCopy + 40);
     *&self->_has |= 8u;
   }
 
 LABEL_12:
 
-  MEMORY[0x2821F96F8](anchorRangeMap, v4);
+  MEMORY[0x2821F96F8](anchorRangeMap, fromCopy);
 }
 
 @end

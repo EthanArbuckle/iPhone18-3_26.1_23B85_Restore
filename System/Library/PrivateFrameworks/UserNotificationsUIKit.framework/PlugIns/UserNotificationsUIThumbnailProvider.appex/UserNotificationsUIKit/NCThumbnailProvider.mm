@@ -1,6 +1,6 @@
 @interface NCThumbnailProvider
 + (void)initialize;
-- (void)provideThumbnailForFileRequest:(id)a3 completionHandler:(id)a4;
+- (void)provideThumbnailForFileRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation NCThumbnailProvider
@@ -13,25 +13,25 @@
   }
 }
 
-- (void)provideThumbnailForFileRequest:(id)a3 completionHandler:(id)a4
+- (void)provideThumbnailForFileRequest:(id)request completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v59 = _os_activity_create(&_mh_execute_header, "com.apple.UserNotificationsUI.ThumbnailProvider.provideThumbnail", &_os_activity_current, OS_ACTIVITY_FLAG_DEFAULT);
   os_activity_scope_enter(v59, &state);
-  [v5 maximumSize];
+  [requestCopy maximumSize];
   v8 = v7;
   v10 = v9;
-  [v5 scale];
+  [requestCopy scale];
   v12 = v11;
-  v13 = [v5 fileURL];
-  inTag = [v13 pathExtension];
+  fileURL = [requestCopy fileURL];
+  inTag = [fileURL pathExtension];
   PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, inTag, 0);
   v14 = UNNotificationAttachmentFamilyFromTypeIdentifier();
-  v15 = [v5 generationData];
-  dict = [v15 bs_safeDictionaryForKey:UNNotificationAttachmentOptionsThumbnailClippingRectKey];
+  generationData = [requestCopy generationData];
+  dict = [generationData bs_safeDictionaryForKey:UNNotificationAttachmentOptionsThumbnailClippingRectKey];
   size = CGRectZero.size;
   origin = CGRectZero.origin;
   rect.origin = CGRectZero.origin;
@@ -57,13 +57,13 @@
     v22 = v21;
     v23 = UNNotificationAttachmentFamilyToString();
     *buf = 138544130;
-    *&buf[4] = v13;
+    *&buf[4] = fileURL;
     *&buf[12] = 2114;
     *&buf[14] = v23;
     *&buf[22] = 2114;
     v67 = PreferredIdentifierForTag;
     v68 = 2114;
-    v69 = v15;
+    v69 = generationData;
     _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Will generate thumbnail for attachment: fileURL=%{public}@ family=%{public}@, typeIdentifier=%{public}@, generatorOptions=%{public}@", buf, 0x2Au);
   }
 
@@ -75,12 +75,12 @@
   v67 = 0;
   if (v14 == 3)
   {
-    v36 = [v15 bs_safeDictionaryForKey:UNNotificationAttachmentOptionsThumbnailTimeKey];
+    v36 = [generationData bs_safeDictionaryForKey:UNNotificationAttachmentOptionsThumbnailTimeKey];
     x = rect.origin.x;
     y = rect.origin.y;
     width = rect.size.width;
     height = rect.size.height;
-    v56 = v13;
+    v56 = fileURL;
     v31 = v36;
     context = objc_autoreleasePoolPush();
     v73 = AVURLAssetReferenceRestrictionsKey;
@@ -90,9 +90,9 @@
 
     v42 = [[AVURLAsset alloc] initWithURL:v56 options:v58];
     v43 = [v42 tracksWithMediaType:AVMediaTypeVideo];
-    v44 = [v43 firstObject];
+    firstObject = [v43 firstObject];
 
-    if (v44)
+    if (firstObject)
     {
       v45 = [AVAssetImageGenerator assetImageGeneratorWithAsset:v42];
       memset(&v72, 0, sizeof(v72));
@@ -152,7 +152,7 @@
       goto LABEL_35;
     }
 
-    v26 = [v15 bs_safeNumberForKey:UNNotificationAttachmentOptionsThumbnailTimeKey];
+    v26 = [generationData bs_safeNumberForKey:UNNotificationAttachmentOptionsThumbnailTimeKey];
     v27 = rect.origin.x;
     v28 = rect.origin.y;
     v29 = rect.size.width;
@@ -160,7 +160,7 @@
     v31 = v26;
     v74 = kCGImageSourceShouldCache;
     time.value = kCFBooleanFalse;
-    v32 = v13;
+    v32 = fileURL;
     v33 = [NSDictionary dictionaryWithObjects:&time forKeys:&v74 count:1];
     v34 = CGImageSourceCreateWithURL(v32, v33);
 
@@ -168,12 +168,12 @@
     {
       if (v31)
       {
-        v35 = [(__CFDictionary *)v31 unsignedIntegerValue];
+        unsignedIntegerValue = [(__CFDictionary *)v31 unsignedIntegerValue];
       }
 
       else
       {
-        v35 = vcvtd_n_f64_u64(CGImageSourceGetCount(v34), 1uLL);
+        unsignedIntegerValue = vcvtd_n_f64_u64(CGImageSourceGetCount(v34), 1uLL);
       }
 
       v71.value = kCGImageSourceThumbnailMaxPixelSize;
@@ -185,7 +185,7 @@
       v72.epoch = kCFBooleanTrue;
       v48 = [NSDictionary dictionaryWithObjects:&v72 forKeys:&v71 count:3];
 
-      ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(v34, v35, v48);
+      ThumbnailAtIndex = CGImageSourceCreateThumbnailAtIndex(v34, unsignedIntegerValue, v48);
       v50 = ThumbnailAtIndex;
       if (ThumbnailAtIndex)
       {
@@ -212,7 +212,7 @@
 LABEL_35:
   if (*(*&buf[8] + 24))
   {
-    [v5 maximumSize];
+    [requestCopy maximumSize];
     v63[0] = _NSConcreteStackBlock;
     v63[1] = 3221225472;
     v63[2] = sub_10000164C;
@@ -221,12 +221,12 @@ LABEL_35:
     *&v63[6] = v25;
     v63[4] = buf;
     v53 = [QLThumbnailReply replyWithContextSize:v63 drawingBlock:?];
-    v6[2](v6, v53, 0);
+    handlerCopy[2](handlerCopy, v53, 0);
   }
 
   else
   {
-    v6[2](v6, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 
   os_activity_scope_leave(&state);

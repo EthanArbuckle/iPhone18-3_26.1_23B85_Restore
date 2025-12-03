@@ -1,40 +1,40 @@
 @interface CSDeviceUnblockViewModel
 - (CSDeviceBlockViewController)blockViewController;
-- (CSDeviceUnblockViewModel)initWithUnblockPolicy:(id)a3 blockViewController:(id)a4;
+- (CSDeviceUnblockViewModel)initWithUnblockPolicy:(id)policy blockViewController:(id)controller;
 - (id)_localizedProductName;
-- (id)_localizedStringForKey:(id)a3;
+- (id)_localizedStringForKey:(id)key;
 - (id)lastBackupTime;
 - (void)lastBackupTime;
 @end
 
 @implementation CSDeviceUnblockViewModel
 
-- (CSDeviceUnblockViewModel)initWithUnblockPolicy:(id)a3 blockViewController:(id)a4
+- (CSDeviceUnblockViewModel)initWithUnblockPolicy:(id)policy blockViewController:(id)controller
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  policyCopy = policy;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = CSDeviceUnblockViewModel;
   v9 = [(CSDeviceUnblockViewModel *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_unblockPolicy, a3);
-    objc_storeWeak(&v10->_blockViewController, v8);
-    v11 = [v8 findMyAccount];
+    objc_storeStrong(&v9->_unblockPolicy, policy);
+    objc_storeWeak(&v10->_blockViewController, controllerCopy);
+    findMyAccount = [controllerCopy findMyAccount];
     account = v10->_account;
-    v10->_account = v11;
+    v10->_account = findMyAccount;
 
     v13 = SBLogDashBoard();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(ACAccount *)v10->_account aa_altDSID];
-      v15 = [(ACAccount *)v10->_account aa_primaryEmail];
+      aa_altDSID = [(ACAccount *)v10->_account aa_altDSID];
+      aa_primaryEmail = [(ACAccount *)v10->_account aa_primaryEmail];
       *buf = 138412546;
-      v19 = v14;
+      v19 = aa_altDSID;
       v20 = 2112;
-      v21 = v15;
+      v21 = aa_primaryEmail;
       _os_log_impl(&dword_21EB05000, v13, OS_LOG_TYPE_DEFAULT, "_account is: %@, apple id: %@", buf, 0x16u);
     }
   }
@@ -44,18 +44,18 @@
 
 - (id)_localizedProductName
 {
-  v2 = [MEMORY[0x277CF0CA8] sharedInstance];
-  v3 = [v2 localizedProductName];
+  mEMORY[0x277CF0CA8] = [MEMORY[0x277CF0CA8] sharedInstance];
+  localizedProductName = [mEMORY[0x277CF0CA8] localizedProductName];
 
-  return v3;
+  return localizedProductName;
 }
 
-- (id)_localizedStringForKey:(id)a3
+- (id)_localizedStringForKey:(id)key
 {
   v3 = MEMORY[0x277CCA8D8];
-  v4 = a3;
+  keyCopy = key;
   v5 = [v3 bundleForClass:objc_opt_class()];
-  v6 = [v5 localizedStringForKey:v4 value:&stru_28302FDA0 table:@"CoverSheet"];
+  v6 = [v5 localizedStringForKey:keyCopy value:&stru_28302FDA0 table:@"CoverSheet"];
 
   return v6;
 }
@@ -170,11 +170,11 @@ LABEL_23:
 - (void)lastBackupTime
 {
   v10 = *MEMORY[0x277D85DE8];
-  v5 = [*a2 username];
+  username = [*a2 username];
   v6 = 138412546;
-  v7 = a1;
+  selfCopy = self;
   v8 = 2112;
-  v9 = v5;
+  v9 = username;
   _os_log_error_impl(&dword_21EB05000, a3, OS_LOG_TYPE_ERROR, "Error initializing MBManager: %@, for user: %@", &v6, 0x16u);
 }
 

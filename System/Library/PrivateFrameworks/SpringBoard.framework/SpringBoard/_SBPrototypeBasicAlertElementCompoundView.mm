@@ -1,19 +1,19 @@
 @interface _SBPrototypeBasicAlertElementCompoundView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_SBPrototypeBasicAlertElementCompoundView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_SBPrototypeBasicAlertElementCompoundView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setLayoutAxis:(unint64_t)a3;
-- (void)setLeadingImage:(id)a3;
-- (void)setTrailingImage:(id)a3;
+- (void)setLayoutAxis:(unint64_t)axis;
+- (void)setLeadingImage:(id)image;
+- (void)setTrailingImage:(id)image;
 @end
 
 @implementation _SBPrototypeBasicAlertElementCompoundView
 
-- (_SBPrototypeBasicAlertElementCompoundView)initWithFrame:(CGRect)a3
+- (_SBPrototypeBasicAlertElementCompoundView)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = _SBPrototypeBasicAlertElementCompoundView;
-  result = [(_SBPrototypeBasicAlertElementCompoundView *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(_SBPrototypeBasicAlertElementCompoundView *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_layoutAxis = 1;
@@ -22,23 +22,23 @@
   return result;
 }
 
-- (void)setLeadingImage:(id)a3
+- (void)setLeadingImage:(id)image
 {
-  v9 = a3;
-  v4 = [(_SBPrototypeBasicAlertElementCompoundView *)self leadingImage];
+  imageCopy = image;
+  leadingImage = [(_SBPrototypeBasicAlertElementCompoundView *)self leadingImage];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    v6 = v9;
-    if (v9 && !self->_leadingImageView)
+    v6 = imageCopy;
+    if (imageCopy && !self->_leadingImageView)
     {
       v7 = objc_alloc_init(MEMORY[0x277D755E8]);
       leadingImageView = self->_leadingImageView;
       self->_leadingImageView = v7;
 
       [(_SBPrototypeBasicAlertElementCompoundView *)self addSubview:self->_leadingImageView];
-      v6 = v9;
+      v6 = imageCopy;
     }
 
     [(UIImageView *)self->_leadingImageView setImage:v6];
@@ -46,23 +46,23 @@
   }
 }
 
-- (void)setTrailingImage:(id)a3
+- (void)setTrailingImage:(id)image
 {
-  v9 = a3;
-  v4 = [(_SBPrototypeBasicAlertElementCompoundView *)self trailingImage];
+  imageCopy = image;
+  trailingImage = [(_SBPrototypeBasicAlertElementCompoundView *)self trailingImage];
   v5 = BSEqualObjects();
 
   if ((v5 & 1) == 0)
   {
-    v6 = v9;
-    if (v9 && !self->_trailingImageView)
+    v6 = imageCopy;
+    if (imageCopy && !self->_trailingImageView)
     {
       v7 = objc_alloc_init(MEMORY[0x277D755E8]);
       trailingImageView = self->_trailingImageView;
       self->_trailingImageView = v7;
 
       [(_SBPrototypeBasicAlertElementCompoundView *)self addSubview:self->_trailingImageView];
-      v6 = v9;
+      v6 = imageCopy;
     }
 
     [(UIImageView *)self->_trailingImageView setImage:v6];
@@ -70,25 +70,25 @@
   }
 }
 
-- (void)setLayoutAxis:(unint64_t)a3
+- (void)setLayoutAxis:(unint64_t)axis
 {
-  if (a3 - 1 <= 1 && self->_layoutAxis != a3)
+  if (axis - 1 <= 1 && self->_layoutAxis != axis)
   {
-    self->_layoutAxis = a3;
+    self->_layoutAxis = axis;
     [(_SBPrototypeBasicAlertElementCompoundView *)self setNeedsLayout];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UIImageView *)self->_leadingImageView sizeThatFits:?];
   v7 = v6;
   v9 = v8;
-  v10 = [(_SBPrototypeBasicAlertElementCompoundView *)self trailingImage];
+  trailingImage = [(_SBPrototypeBasicAlertElementCompoundView *)self trailingImage];
 
-  if (v10)
+  if (trailingImage)
   {
     [(UIImageView *)self->_trailingImageView sizeThatFits:width, height];
     if (self->_layoutAxis == 2)
@@ -126,8 +126,8 @@
   [(_SBPrototypeBasicAlertElementCompoundView *)self bounds];
   v4 = v3;
   v6 = v5;
-  v7 = [(_SBPrototypeBasicAlertElementCompoundView *)self traitCollection];
-  [v7 displayScale];
+  traitCollection = [(_SBPrototypeBasicAlertElementCompoundView *)self traitCollection];
+  [traitCollection displayScale];
   v9 = v8;
 
   [(UIImageView *)self->_leadingImageView sizeThatFits:v4, v6];
@@ -137,9 +137,9 @@
   y = v12;
   width = v14;
   height = v16;
-  v18 = [(_SBPrototypeBasicAlertElementCompoundView *)self trailingImage];
+  trailingImage = [(_SBPrototypeBasicAlertElementCompoundView *)self trailingImage];
 
-  if (v18)
+  if (trailingImage)
   {
     [(UIImageView *)self->_trailingImageView sizeThatFits:v4, v6];
     BSRectWithSize();
@@ -147,8 +147,8 @@
     rect_8 = v20;
     v22 = v21;
     rect_16 = v23;
-    v24 = [(_SBPrototypeBasicAlertElementCompoundView *)self traitCollection];
-    v25 = [v24 layoutDirection];
+    traitCollection2 = [(_SBPrototypeBasicAlertElementCompoundView *)self traitCollection];
+    layoutDirection = [traitCollection2 layoutDirection];
 
     if (self->_layoutAxis == 2)
     {
@@ -169,7 +169,7 @@
       y = v27;
       width = v28;
       v30 = v29;
-      if (v25 == 1)
+      if (layoutDirection == 1)
       {
         CGRectGetMinX(*&v26);
         v36.origin.x = rect;

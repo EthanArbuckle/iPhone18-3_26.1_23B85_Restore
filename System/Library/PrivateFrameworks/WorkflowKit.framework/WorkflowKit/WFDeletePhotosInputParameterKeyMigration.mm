@@ -1,16 +1,16 @@
 @interface WFDeletePhotosInputParameterKeyMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFDeletePhotosInputParameterKeyMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"1093") == 3)
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"1093") == 3)
   {
-    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.deletephotos", v5);
+    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.deletephotos", migrationCopy);
   }
 
   else
@@ -28,8 +28,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = [(WFWorkflowMigration *)self actions];
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  actions = [(WFWorkflowMigration *)self actions];
+  v4 = [actions countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
   {
     v5 = v4;
@@ -40,17 +40,17 @@
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actions);
         }
 
         v8 = *(*(&v16 + 1) + 8 * i);
-        v9 = [(WFWorkflowMigration *)self actionIdentifierKey];
-        v10 = [v8 objectForKey:v9];
+        actionIdentifierKey = [(WFWorkflowMigration *)self actionIdentifierKey];
+        v10 = [v8 objectForKey:actionIdentifierKey];
 
         if ([v10 isEqualToString:@"is.workflow.actions.deletephotos"])
         {
-          v11 = [(WFWorkflowMigration *)self actionParametersKey];
-          v12 = [v8 objectForKeyedSubscript:v11];
+          actionParametersKey = [(WFWorkflowMigration *)self actionParametersKey];
+          v12 = [v8 objectForKeyedSubscript:actionParametersKey];
 
           v13 = [v12 objectForKey:@"WFInputPhotos"];
           if (v13)
@@ -66,7 +66,7 @@
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [actions countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);

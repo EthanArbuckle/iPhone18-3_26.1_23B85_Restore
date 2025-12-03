@@ -23,15 +23,15 @@
 
 - (uint64_t)avkit_isBestChoiceForRecentLanguage
 {
-  v1 = objc_getAssociatedObject(a1, _BestChoiceForRecentLanguageKey);
+  v1 = objc_getAssociatedObject(self, _BestChoiceForRecentLanguageKey);
   objc_opt_class();
-  v2 = 0;
+  bOOLValue = 0;
   if ((objc_opt_isKindOfClass() & 1) != 0 && v1)
   {
-    v2 = [v1 BOOLValue];
+    bOOLValue = [v1 BOOLValue];
   }
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)avkit_setBestChoiceForRecentLanguage:()AVPlayerController
@@ -46,20 +46,20 @@
     v3 = 0;
   }
 
-  objc_setAssociatedObject(a1, _BestChoiceForRecentLanguageKey, v3, 1);
+  objc_setAssociatedObject(self, _BestChoiceForRecentLanguageKey, v3, 1);
 }
 
 - (uint64_t)avkit_preferredSortIndex
 {
-  v1 = objc_getAssociatedObject(a1, _PreferredSortIndexKey);
+  v1 = objc_getAssociatedObject(self, _PreferredSortIndexKey);
   objc_opt_class();
-  v2 = 0x7FFFFFFFFFFFFFFFLL;
+  integerValue = 0x7FFFFFFFFFFFFFFFLL;
   if ((objc_opt_isKindOfClass() & 1) != 0 && v1)
   {
-    v2 = [v1 integerValue];
+    integerValue = [v1 integerValue];
   }
 
-  return v2;
+  return integerValue;
 }
 
 - (void)avkit_setPreferredSortIndex:()AVPlayerController
@@ -83,7 +83,7 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = [a1 _cachedDisplayNameForOption:v6];
+  v8 = [self _cachedDisplayNameForOption:v6];
   v9 = [v7 _cachedDisplayNameForOption:v6];
 
   v10 = [v8 localizedCaseInsensitiveCompare:v9];
@@ -94,35 +94,35 @@
 {
   v6 = a3;
   v7 = a4;
-  v8 = [v6 extendedLanguageTag];
-  v9 = [a1 extendedLanguageTag];
-  v10 = [v6 avkit_preferredSortIndex];
-  v11 = [a1 avkit_preferredSortIndex];
-  if ([v9 isEqualToString:v8])
+  extendedLanguageTag = [v6 extendedLanguageTag];
+  extendedLanguageTag2 = [self extendedLanguageTag];
+  avkit_preferredSortIndex = [v6 avkit_preferredSortIndex];
+  avkit_preferredSortIndex2 = [self avkit_preferredSortIndex];
+  if ([extendedLanguageTag2 isEqualToString:extendedLanguageTag])
   {
     v12 = 0;
     goto LABEL_19;
   }
 
-  if ([a1 isOriginal] && !objc_msgSend(v6, "isOriginal"))
+  if ([self isOriginal] && !objc_msgSend(v6, "isOriginal"))
   {
     v12 = -1;
     goto LABEL_19;
   }
 
-  if ([v6 isOriginal] && !objc_msgSend(a1, "isOriginal"))
+  if ([v6 isOriginal] && !objc_msgSend(self, "isOriginal"))
   {
     goto LABEL_17;
   }
 
-  if (v11 == 0x7FFFFFFFFFFFFFFFLL)
+  if (avkit_preferredSortIndex2 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v10 == 0x7FFFFFFFFFFFFFFFLL)
+    if (avkit_preferredSortIndex == 0x7FFFFFFFFFFFFFFFLL)
     {
-      v13 = [a1 avkit_isBestChoiceForRecentLanguage];
-      if (v13 != [v6 avkit_isBestChoiceForRecentLanguage])
+      avkit_isBestChoiceForRecentLanguage = [self avkit_isBestChoiceForRecentLanguage];
+      if (avkit_isBestChoiceForRecentLanguage != [v6 avkit_isBestChoiceForRecentLanguage])
       {
-        if ([a1 avkit_isBestChoiceForRecentLanguage])
+        if ([self avkit_isBestChoiceForRecentLanguage])
         {
           v12 = -1;
         }
@@ -136,7 +136,7 @@
       }
 
 LABEL_16:
-      v12 = [a1 cachedLocalizedCaseInsensitiveCompare:v6 cache:v7];
+      v12 = [self cachedLocalizedCaseInsensitiveCompare:v6 cache:v7];
       goto LABEL_19;
     }
 
@@ -146,9 +146,9 @@ LABEL_17:
   }
 
   v12 = -1;
-  if (v10 != 0x7FFFFFFFFFFFFFFFLL && v10 <= v11)
+  if (avkit_preferredSortIndex != 0x7FFFFFFFFFFFFFFFLL && avkit_preferredSortIndex <= avkit_preferredSortIndex2)
   {
-    if (v10 == v11)
+    if (avkit_preferredSortIndex == avkit_preferredSortIndex2)
     {
       goto LABEL_16;
     }
@@ -164,9 +164,9 @@ LABEL_19:
 - (uint64_t)audioLanguageCompare:()AVPlayerController
 {
   v4 = a3;
-  v5 = [a1 isOriginal];
-  v6 = [v4 isOriginal];
-  if (v5)
+  isOriginal = [self isOriginal];
+  isOriginal2 = [v4 isOriginal];
+  if (isOriginal)
   {
     v7 = -1;
   }
@@ -176,13 +176,13 @@ LABEL_19:
     v7 = 1;
   }
 
-  if (v5 == v6)
+  if (isOriginal == isOriginal2)
   {
-    v7 = [a1 languageCompare:v4 displayNameCache:0];
+    v7 = [self languageCompare:v4 displayNameCache:0];
     if (!v7)
     {
       v8 = *MEMORY[0x1E6987550];
-      if ([a1 hasMediaCharacteristic:*MEMORY[0x1E6987550]])
+      if ([self hasMediaCharacteristic:*MEMORY[0x1E6987550]])
       {
         v9 = v4;
         v10 = v8;
@@ -192,7 +192,7 @@ LABEL_8:
       }
 
       v11 = *MEMORY[0x1E6987530];
-      v12 = [a1 hasMediaCharacteristic:*MEMORY[0x1E6987530]];
+      v12 = [self hasMediaCharacteristic:*MEMORY[0x1E6987530]];
       v13 = [v4 hasMediaCharacteristic:v8];
       if (v12)
       {
@@ -221,7 +221,7 @@ LABEL_15:
 
 - (id)avkit_recentLanguageCode
 {
-  if ([a1 isAudio])
+  if ([self isAudio])
   {
     [MEMORY[0x1E6987FD8] avkit_recentAudioLanguageCode];
   }
@@ -237,28 +237,28 @@ LABEL_15:
 
 - (uint64_t)isAudio
 {
-  v1 = [a1 mediaType];
-  v2 = [v1 isEqualToString:*MEMORY[0x1E69875A0]];
+  mediaType = [self mediaType];
+  v2 = [mediaType isEqualToString:*MEMORY[0x1E69875A0]];
 
   return v2;
 }
 
 - (uint64_t)isCC
 {
-  v1 = [a1 mediaType];
-  v2 = [v1 isEqualToString:*MEMORY[0x1E69875B8]];
+  mediaType = [self mediaType];
+  v2 = [mediaType isEqualToString:*MEMORY[0x1E69875B8]];
 
   return v2;
 }
 
 - (uint64_t)isSDH
 {
-  result = [a1 hasMediaCharacteristic:*MEMORY[0x1E6987588]];
+  result = [self hasMediaCharacteristic:*MEMORY[0x1E6987588]];
   if (result)
   {
     v3 = *MEMORY[0x1E6987528];
 
-    return [a1 hasMediaCharacteristic:v3];
+    return [self hasMediaCharacteristic:v3];
   }
 
   return result;
@@ -266,22 +266,22 @@ LABEL_15:
 
 - (uint64_t)isMain
 {
-  if ([a1 isEasyReader])
+  if ([self isEasyReader])
   {
     return 0;
   }
 
   else
   {
-    return [a1 isAuxiliary] ^ 1;
+    return [self isAuxiliary] ^ 1;
   }
 }
 
 - (uint64_t)isAC3Only
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [a1 mediaSubTypes];
-  v3 = [v2 count];
+  mediaSubTypes = [self mediaSubTypes];
+  v3 = [mediaSubTypes count];
 
   if (!v3)
   {
@@ -292,8 +292,8 @@ LABEL_15:
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [a1 mediaSubTypes];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  mediaSubTypes2 = [self mediaSubTypes];
+  v5 = [mediaSubTypes2 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -305,11 +305,11 @@ LABEL_15:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(mediaSubTypes2);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * v8) unsignedIntValue];
-        if (v9 != 1885430579 && v9 != 1633889587)
+        unsignedIntValue = [*(*(&v13 + 1) + 8 * v8) unsignedIntValue];
+        if (unsignedIntValue != 1885430579 && unsignedIntValue != 1633889587)
         {
           v11 = 0;
           goto LABEL_16;
@@ -319,7 +319,7 @@ LABEL_15:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [mediaSubTypes2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -333,14 +333,14 @@ LABEL_16:
 
 - (void)avkit_persistentIdentifier
 {
-  v2 = [a1 propertyList];
+  propertyList = [self propertyList];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v4 = [a1 propertyList];
-    v5 = [v4 objectForKeyedSubscript:@"MediaSelectionOptionsPersistentID"];
+    propertyList2 = [self propertyList];
+    v5 = [propertyList2 objectForKeyedSubscript:@"MediaSelectionOptionsPersistentID"];
   }
 
   else
@@ -368,28 +368,28 @@ LABEL_16:
   v4 = a3;
   if (!v4)
   {
-    v9 = [a1 displayName];
+    displayName = [self displayName];
     goto LABEL_11;
   }
 
-  v5 = [a1 avkit_persistentIdentifier];
-  v6 = v5;
-  if (!v5 || ([v5 isEqualToNumber:&unk_1EFF12728] & 1) != 0)
+  avkit_persistentIdentifier = [self avkit_persistentIdentifier];
+  v6 = avkit_persistentIdentifier;
+  if (!avkit_persistentIdentifier || ([avkit_persistentIdentifier isEqualToNumber:&unk_1EFF12728] & 1) != 0)
   {
     v7 = 1;
 LABEL_5:
-    v8 = [a1 displayName];
-    v9 = v8;
-    if ((v7 & 1) == 0 && v8)
+    displayName2 = [self displayName];
+    displayName = displayName2;
+    if ((v7 & 1) == 0 && displayName2)
     {
-      [v4 setObject:v8 forKey:v6];
+      [v4 setObject:displayName2 forKey:v6];
     }
 
     goto LABEL_10;
   }
 
-  v9 = [v4 objectForKey:v6];
-  if (!v9)
+  displayName = [v4 objectForKey:v6];
+  if (!displayName)
   {
     v7 = 0;
     goto LABEL_5;
@@ -399,31 +399,31 @@ LABEL_10:
 
 LABEL_11:
 
-  return v9;
+  return displayName;
 }
 
 + (uint64_t)avkit_subtitleAutomaticallyEnabledState
 {
   v0 = +[AVKitGlobalSettings shared];
-  v1 = [v0 subtitleAutomaticallyEnabledState];
+  subtitleAutomaticallyEnabledState = [v0 subtitleAutomaticallyEnabledState];
 
-  return v1;
+  return subtitleAutomaticallyEnabledState;
 }
 
 + (id)avkit_recentLegibleLanguageCode
 {
   v0 = +[AVKitGlobalSettings shared];
-  v1 = [v0 mostRecentLegibleLanguageCode];
+  mostRecentLegibleLanguageCode = [v0 mostRecentLegibleLanguageCode];
 
-  return v1;
+  return mostRecentLegibleLanguageCode;
 }
 
 + (id)avkit_recentAudioLanguageCode
 {
   v0 = +[AVKitGlobalSettings shared];
-  v1 = [v0 mostRecentAudioLanguageCode];
+  mostRecentAudioLanguageCode = [v0 mostRecentAudioLanguageCode];
 
-  return v1;
+  return mostRecentAudioLanguageCode;
 }
 
 @end

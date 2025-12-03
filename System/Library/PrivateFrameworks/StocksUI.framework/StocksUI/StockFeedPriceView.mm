@@ -1,10 +1,10 @@
 @interface StockFeedPriceView
-- (_TtC8StocksUI18StockFeedPriceView)initWithCoder:(id)a3;
+- (_TtC8StocksUI18StockFeedPriceView)initWithCoder:(id)coder;
 @end
 
 @implementation StockFeedPriceView
 
-- (_TtC8StocksUI18StockFeedPriceView)initWithCoder:(id)a3
+- (_TtC8StocksUI18StockFeedPriceView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8StocksUI18StockFeedPriceView_quoteSummaryView;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(type metadata accessor for QuoteSummaryView()) initWithFrame_];

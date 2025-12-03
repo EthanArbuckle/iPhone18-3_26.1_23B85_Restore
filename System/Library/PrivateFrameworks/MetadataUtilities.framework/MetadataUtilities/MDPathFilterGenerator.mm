@@ -1,33 +1,33 @@
 @interface MDPathFilterGenerator
-- (MDPathFilterGenerator)initWithDefaultFieldsAndValues:(int *)a3 ignoreFields:(int *)a4 mappedPrefixes:(id)a5 hiddenExtensions:(id)a6 mappedExtensions:(id)a7;
-- (_MDPlistContainer)copyFilterMDPlistForMountDepth:(int)a3;
-- (void)addMappedExtensions:(id)a3;
-- (void)addNamed:(id)a3 auxValue:(unint64_t)a4 forPath:(id)a5;
-- (void)addRules:(id *)a3 withPrefix:(id)a4;
-- (void)addRules:(id *)a3 withPrefix:(id)a4 tableMapping:(id)a5;
+- (MDPathFilterGenerator)initWithDefaultFieldsAndValues:(int *)values ignoreFields:(int *)fields mappedPrefixes:(id)prefixes hiddenExtensions:(id)extensions mappedExtensions:(id)mappedExtensions;
+- (_MDPlistContainer)copyFilterMDPlistForMountDepth:(int)depth;
+- (void)addMappedExtensions:(id)extensions;
+- (void)addNamed:(id)named auxValue:(unint64_t)value forPath:(id)path;
+- (void)addRules:(id *)rules withPrefix:(id)prefix;
+- (void)addRules:(id *)rules withPrefix:(id)prefix tableMapping:(id)mapping;
 - (void)dealloc;
 - (void)dump;
-- (void)setAtBundleField:(unsigned int)a3 inBundleField:(unsigned int)a4;
+- (void)setAtBundleField:(unsigned int)field inBundleField:(unsigned int)bundleField;
 @end
 
 @implementation MDPathFilterGenerator
 
-- (MDPathFilterGenerator)initWithDefaultFieldsAndValues:(int *)a3 ignoreFields:(int *)a4 mappedPrefixes:(id)a5 hiddenExtensions:(id)a6 mappedExtensions:(id)a7
+- (MDPathFilterGenerator)initWithDefaultFieldsAndValues:(int *)values ignoreFields:(int *)fields mappedPrefixes:(id)prefixes hiddenExtensions:(id)extensions mappedExtensions:(id)mappedExtensions
 {
   v32 = *MEMORY[0x1E69E9840];
   v31.receiver = self;
   v31.super_class = MDPathFilterGenerator;
-  v11 = [(MDPathFilterGenerator *)&v31 init:a3];
+  v11 = [(MDPathFilterGenerator *)&v31 init:values];
   v12 = v11;
   if (v11)
   {
-    if (a4)
+    if (fields)
     {
-      v13 = *a4;
-      if (*a4)
+      v13 = *fields;
+      if (*fields)
       {
         ignoreMask = v11->_ignoreMask;
-        v15 = a4 + 1;
+        v15 = fields + 1;
         do
         {
           ignoreMask |= ~(-1 << (v13 >> 6)) << v13;
@@ -40,13 +40,13 @@
       }
     }
 
-    if (a3)
+    if (values)
     {
-      v17 = *a3;
-      if (*a3)
+      v17 = *values;
+      if (*values)
       {
         v18 = v11->_ignoreMask;
-        v19 = a3 + 2;
+        v19 = values + 2;
         do
         {
           v20 = ~(-1 << (v17 >> 6));
@@ -75,32 +75,32 @@
     v12->_namedRootArray = objc_alloc_init(MEMORY[0x1E695DF70]);
     v12->_namedRootIndexes = objc_alloc_init(MEMORY[0x1E695DF90]);
     v12->_auxValueArray = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v12->_processExtensions = (a5 | a7) != 0;
+    v12->_processExtensions = (prefixes | mappedExtensions) != 0;
     v24 = objc_alloc(MEMORY[0x1E695DF20]);
     v25 = MEMORY[0x1E695E0F8];
-    if (a5)
+    if (prefixes)
     {
-      v26 = a5;
+      prefixesCopy = prefixes;
     }
 
     else
     {
-      v26 = MEMORY[0x1E695E0F8];
+      prefixesCopy = MEMORY[0x1E695E0F8];
     }
 
-    v12->_namedLinkPrefixesDictionary = [v24 initWithDictionary:v26];
+    v12->_namedLinkPrefixesDictionary = [v24 initWithDictionary:prefixesCopy];
     v27 = objc_alloc(MEMORY[0x1E695DF90]);
-    if (a7)
+    if (mappedExtensions)
     {
-      v28 = a7;
+      mappedExtensionsCopy = mappedExtensions;
     }
 
     else
     {
-      v28 = v25;
+      mappedExtensionsCopy = v25;
     }
 
-    v12->_namedLinkExtensionsDictionary = [v27 initWithDictionary:v28];
+    v12->_namedLinkExtensionsDictionary = [v27 initWithDictionary:mappedExtensionsCopy];
   }
 
   v29 = *MEMORY[0x1E69E9840];
@@ -117,20 +117,20 @@
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addMappedExtensions:(id)a3
+- (void)addMappedExtensions:(id)extensions
 {
   v5 = *MEMORY[0x1E69E9840];
   namedLinkExtensionsDictionary = self->_namedLinkExtensionsDictionary;
   v4 = *MEMORY[0x1E69E9840];
 
-  [(NSMutableDictionary *)namedLinkExtensionsDictionary addEntriesFromDictionary:a3];
+  [(NSMutableDictionary *)namedLinkExtensionsDictionary addEntriesFromDictionary:extensions];
 }
 
-- (void)setAtBundleField:(unsigned int)a3 inBundleField:(unsigned int)a4
+- (void)setAtBundleField:(unsigned int)field inBundleField:(unsigned int)bundleField
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = vand_s8(__PAIR64__(a4, a3), 0x3F0000003FLL);
-  v5 = vand_s8(vshr_n_u32(__PAIR64__(a4, a3), 6uLL), 0x3F0000003FLL);
+  v4 = vand_s8(__PAIR64__(bundleField, field), 0x3F0000003FLL);
+  v5 = vand_s8(vshr_n_u32(__PAIR64__(bundleField, field), 6uLL), 0x3F0000003FLL);
   v6.i64[0] = v5.u32[0];
   v6.i64[1] = v5.u32[1];
   v7.i64[0] = -1;
@@ -142,40 +142,40 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addNamed:(id)a3 auxValue:(unint64_t)a4 forPath:(id)a5
+- (void)addNamed:(id)named auxValue:(unint64_t)value forPath:(id)path
 {
   v7 = *MEMORY[0x1E69E9840];
   ++self->_auxValueCount;
   LOWORD(v6) = 0;
-  [(MDPathFilterGenerator *)self addNamed:a3 field:0 value:0 hasAuxValue:1 auxValue:a4 forPath:a5 permitLink:v6 copyParentWildcardLink:?];
+  [(MDPathFilterGenerator *)self addNamed:named field:0 value:0 hasAuxValue:1 auxValue:value forPath:path permitLink:v6 copyParentWildcardLink:?];
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addRules:(id *)a3 withPrefix:(id)a4
+- (void)addRules:(id *)rules withPrefix:(id)prefix
 {
   v5 = *MEMORY[0x1E69E9840];
   v4 = *MEMORY[0x1E69E9840];
 
-  [(MDPathFilterGenerator *)self addRules:a3 withPrefix:a4 tableMapping:0];
+  [(MDPathFilterGenerator *)self addRules:rules withPrefix:prefix tableMapping:0];
 }
 
-- (void)addRules:(id *)a3 withPrefix:(id)a4 tableMapping:(id)a5
+- (void)addRules:(id *)rules withPrefix:(id)prefix tableMapping:(id)mapping
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (a3->var1)
+  if (rules->var1)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = self;
+    prefixCopy = prefix;
+    rulesCopy = rules;
+    selfCopy = self;
     v9 = 0;
-    p_var1 = &a3->var1;
-    v26 = self;
-    v27 = a4;
+    p_var1 = &rules->var1;
+    selfCopy2 = self;
+    prefixCopy2 = prefix;
     do
     {
       for (i = 0; ; ++i)
       {
-        v12 = v7->var0[i];
+        v12 = rulesCopy->var0[i];
         if (v12 == 0x1FFFF)
         {
           v9 = *p_var1;
@@ -190,13 +190,13 @@
           }
 
           v18 = *p_var1;
-          if (a5)
+          if (mapping)
           {
             v31 = 0u;
             v32 = 0u;
             v29 = 0u;
             v30 = 0u;
-            v19 = [a5 countByEnumeratingWithState:&v29 objects:v28 count:16];
+            v19 = [mapping countByEnumeratingWithState:&v29 objects:v28 count:16];
             if (v19)
             {
               v20 = v19;
@@ -207,18 +207,18 @@
                 {
                   if (*v30 != v21)
                   {
-                    objc_enumerationMutation(a5);
+                    objc_enumerationMutation(mapping);
                   }
 
                   v23 = *(*(&v29 + 1) + 8 * j);
-                  if ([v18 containsString:{v23, v26, v27}])
+                  if ([v18 containsString:{v23, selfCopy2, prefixCopy2}])
                   {
-                    v18 = [v18 stringByReplacingOccurrencesOfString:v23 withString:{objc_msgSend(a5, "objectForKeyedSubscript:", v23)}];
+                    v18 = [v18 stringByReplacingOccurrencesOfString:v23 withString:{objc_msgSend(mapping, "objectForKeyedSubscript:", v23)}];
                     goto LABEL_22;
                   }
                 }
 
-                v20 = [a5 countByEnumeratingWithState:&v29 objects:v28 count:16];
+                v20 = [mapping countByEnumeratingWithState:&v29 objects:v28 count:16];
                 if (v20)
                 {
                   continue;
@@ -228,13 +228,13 @@
               }
 
 LABEL_22:
-              v8 = v26;
-              v6 = v27;
+              selfCopy = selfCopy2;
+              prefixCopy = prefixCopy2;
             }
           }
 
-          v13 = [v6 stringByAppendingPathComponent:{v18, v26, v27}];
-          v15 = v8;
+          v13 = [prefixCopy stringByAppendingPathComponent:{v18, selfCopy2, prefixCopy2}];
+          v15 = selfCopy;
           v16 = v9;
           v14 = 196607;
           v17 = 0;
@@ -251,18 +251,18 @@ LABEL_22:
           [MDPathFilterGenerator addRules:withPrefix:tableMapping:];
         }
 
-        v13 = [v6 stringByAppendingPathComponent:*p_var1];
+        v13 = [prefixCopy stringByAppendingPathComponent:*p_var1];
         v14 = HIDWORD(v12);
-        v15 = v8;
+        v15 = selfCopy;
         v16 = v9;
         v17 = v12;
 LABEL_24:
-        [(MDPathFilterGenerator *)v15 addNamed:v16 field:v14 value:v17 forPath:v13 permitLink:1, v26, v27];
+        [(MDPathFilterGenerator *)v15 addNamed:v16 field:v14 value:v17 forPath:v13 permitLink:1, selfCopy2, prefixCopy2];
       }
 
-      p_var1 = &v7[1].var1;
-      var1 = v7[1].var1;
-      ++v7;
+      p_var1 = &rulesCopy[1].var1;
+      var1 = rulesCopy[1].var1;
+      ++rulesCopy;
     }
 
     while (var1);
@@ -271,9 +271,9 @@ LABEL_24:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (_MDPlistContainer)copyFilterMDPlistForMountDepth:(int)a3
+- (_MDPlistContainer)copyFilterMDPlistForMountDepth:(int)depth
 {
-  v3 = a3;
+  depthCopy = depth;
   v215 = *MEMORY[0x1E69E9840];
   if ([(NSMutableDictionary *)self->_namedRoots count])
   {
@@ -334,7 +334,7 @@ LABEL_24:
     auxValueCount = self->_auxValueCount;
     v61 = *&self->_inheritMask;
     v62 = *&self->_atBundleMask;
-    *BytePtr = v3;
+    *BytePtr = depthCopy;
     *(BytePtr + 2) = processExtensions;
     *(BytePtr + 4) = v12;
     *(BytePtr + 6) = v61;
@@ -380,8 +380,8 @@ LABEL_24:
     v204 = 0u;
     v201 = 0u;
     v202 = 0u;
-    v81 = [(NSMutableDictionary *)self->_namedLinkExtensionsDictionary allKeys];
-    v82 = [v81 countByEnumeratingWithState:&v201 objects:v200 count:16];
+    allKeys = [(NSMutableDictionary *)self->_namedLinkExtensionsDictionary allKeys];
+    v82 = [allKeys countByEnumeratingWithState:&v201 objects:v200 count:16];
     if (v82)
     {
       v89 = v82;
@@ -392,7 +392,7 @@ LABEL_24:
         {
           if (*v202 != v90)
           {
-            objc_enumerationMutation(v81);
+            objc_enumerationMutation(allKeys);
           }
 
           v92 = *(*(&v201 + 1) + 8 * j);
@@ -415,7 +415,7 @@ LABEL_24:
           }
         }
 
-        v89 = [v81 countByEnumeratingWithState:&v201 objects:v200 count:16];
+        v89 = [allKeys countByEnumeratingWithState:&v201 objects:v200 count:16];
       }
 
       while (v89);
@@ -428,8 +428,8 @@ LABEL_24:
     v199 = 0u;
     v196 = 0u;
     v197 = 0u;
-    v111 = [(NSMutableDictionary *)self->_namedLinkExtensionsDictionary allKeys];
-    v112 = [v111 countByEnumeratingWithState:&v196 objects:v195 count:16];
+    allKeys2 = [(NSMutableDictionary *)self->_namedLinkExtensionsDictionary allKeys];
+    v112 = [allKeys2 countByEnumeratingWithState:&v196 objects:v195 count:16];
     if (v112)
     {
       v119 = v112;
@@ -440,7 +440,7 @@ LABEL_24:
         {
           if (*v197 != v120)
           {
-            objc_enumerationMutation(v111);
+            objc_enumerationMutation(allKeys2);
           }
 
           v122 = *(*(&v196 + 1) + 8 * k);
@@ -463,7 +463,7 @@ LABEL_24:
           }
         }
 
-        v119 = [v111 countByEnumeratingWithState:&v196 objects:v195 count:16];
+        v119 = [allKeys2 countByEnumeratingWithState:&v196 objects:v195 count:16];
       }
 
       while (v119);

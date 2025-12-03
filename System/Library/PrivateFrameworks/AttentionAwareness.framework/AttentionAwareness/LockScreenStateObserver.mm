@@ -1,31 +1,31 @@
 @interface LockScreenStateObserver
-- (LockScreenStateObserver)initWithCallbackQueue:(id)a3 observer:(id)a4;
+- (LockScreenStateObserver)initWithCallbackQueue:(id)queue observer:(id)observer;
 @end
 
 @implementation LockScreenStateObserver
 
-- (LockScreenStateObserver)initWithCallbackQueue:(id)a3 observer:(id)a4
+- (LockScreenStateObserver)initWithCallbackQueue:(id)queue observer:(id)observer
 {
-  v7 = a3;
-  v8 = a4;
+  queueCopy = queue;
+  observerCopy = observer;
   v18.receiver = self;
   v18.super_class = LockScreenStateObserver;
   v9 = [(LockScreenStateObserver *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    if (!v7)
+    if (!queueCopy)
     {
       __assert_rtn("[LockScreenStateObserver initWithCallbackQueue:observer:]", "LockScreenStateObserver.m", 27, "callbackQueue != nil");
     }
 
-    if (!v8)
+    if (!observerCopy)
     {
       __assert_rtn("[LockScreenStateObserver initWithCallbackQueue:observer:]", "LockScreenStateObserver.m", 28, "observer != nil");
     }
 
-    objc_storeStrong(&v9->_callbackQueue, a3);
-    objc_storeStrong(&v10->_observer, a4);
+    objc_storeStrong(&v9->_callbackQueue, queue);
+    objc_storeStrong(&v10->_observer, observer);
     v10->_lockToken = 0;
     callbackQueue = v10->_callbackQueue;
     handler[0] = MEMORY[0x1E69E9820];

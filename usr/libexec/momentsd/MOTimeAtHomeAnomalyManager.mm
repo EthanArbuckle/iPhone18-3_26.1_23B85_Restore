@@ -1,38 +1,38 @@
 @interface MOTimeAtHomeAnomalyManager
-- (MOTimeAtHomeAnomalyManager)initWithUniverse:(id)a3;
-- (void)_performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 withBundleWindowStart:(id)a5 withBundleWindowEnd:(id)a6 handler:(id)a7;
-- (void)performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 withBundleWindowStart:(id)a5 withBundleWindowEnd:(id)a6 handler:(id)a7;
+- (MOTimeAtHomeAnomalyManager)initWithUniverse:(id)universe;
+- (void)_performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents withBundleWindowStart:(id)start withBundleWindowEnd:(id)end handler:(id)handler;
+- (void)performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents withBundleWindowStart:(id)start withBundleWindowEnd:(id)end handler:(id)handler;
 @end
 
 @implementation MOTimeAtHomeAnomalyManager
 
-- (MOTimeAtHomeAnomalyManager)initWithUniverse:(id)a3
+- (MOTimeAtHomeAnomalyManager)initWithUniverse:(id)universe
 {
-  v5 = a3;
+  universeCopy = universe;
   v25.receiver = self;
   v25.super_class = MOTimeAtHomeAnomalyManager;
   v6 = [(MOTimeAtHomeAnomalyManager *)&v25 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fUniverse, a3);
+    objc_storeStrong(&v6->_fUniverse, universe);
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v12 = dispatch_queue_create(v10, v11);
+    v12 = dispatch_queue_create(uTF8String, v11);
     queue = v7->_queue;
     v7->_queue = v12;
 
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
-    v16 = [v5 getService:v15];
+    v16 = [universeCopy getService:v15];
     routineServiceManager = v7->_routineServiceManager;
     v7->_routineServiceManager = v16;
 
     v18 = objc_opt_class();
     v19 = NSStringFromClass(v18);
-    v20 = [v5 getService:v19];
+    v20 = [universeCopy getService:v19];
     configurationManager = v7->_configurationManager;
     v7->_configurationManager = v20;
 
@@ -44,30 +44,30 @@
   return v7;
 }
 
-- (void)performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 withBundleWindowStart:(id)a5 withBundleWindowEnd:(id)a6 handler:(id)a7
+- (void)performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents withBundleWindowStart:(id)start withBundleWindowEnd:(id)end handler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(MOTimeAtHomeAnomalyManager *)self queue];
+  eventsCopy = events;
+  patternEventsCopy = patternEvents;
+  startCopy = start;
+  endCopy = end;
+  handlerCopy = handler;
+  queue = [(MOTimeAtHomeAnomalyManager *)self queue];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = __126__MOTimeAtHomeAnomalyManager_performAnnotationWithEvents_withPatternEvents_withBundleWindowStart_withBundleWindowEnd_handler___block_invoke;
   v23[3] = &unk_100338668;
   v23[4] = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v14;
-  v27 = v15;
-  v28 = v16;
-  v18 = v16;
-  v19 = v15;
-  v20 = v14;
-  v21 = v13;
-  v22 = v12;
-  dispatch_async(v17, v23);
+  v24 = eventsCopy;
+  v25 = patternEventsCopy;
+  v26 = startCopy;
+  v27 = endCopy;
+  v28 = handlerCopy;
+  v18 = handlerCopy;
+  v19 = endCopy;
+  v20 = startCopy;
+  v21 = patternEventsCopy;
+  v22 = eventsCopy;
+  dispatch_async(queue, v23);
 }
 
 void __126__MOTimeAtHomeAnomalyManager_performAnnotationWithEvents_withPatternEvents_withBundleWindowStart_withBundleWindowEnd_handler___block_invoke(uint64_t a1)
@@ -96,21 +96,21 @@ uint64_t __126__MOTimeAtHomeAnomalyManager_performAnnotationWithEvents_withPatte
   return result;
 }
 
-- (void)_performAnnotationWithEvents:(id)a3 withPatternEvents:(id)a4 withBundleWindowStart:(id)a5 withBundleWindowEnd:(id)a6 handler:(id)a7
+- (void)_performAnnotationWithEvents:(id)events withPatternEvents:(id)patternEvents withBundleWindowStart:(id)start withBundleWindowEnd:(id)end handler:(id)handler
 {
-  v154 = a3;
-  v146 = a4;
-  v177 = a5;
-  v165 = a6;
-  v145 = a7;
+  eventsCopy = events;
+  patternEventsCopy = patternEvents;
+  startCopy = start;
+  endCopy = end;
+  handlerCopy = handler;
   v152 = +[MOContextAnnotationUtilities predicateOfEventsWithPlaySessions];
-  v160 = [v154 filteredArrayUsingPredicate:v152];
+  v160 = [eventsCopy filteredArrayUsingPredicate:v152];
   v151 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 24];
-  v150 = [v154 filteredArrayUsingPredicate:v151];
+  v150 = [eventsCopy filteredArrayUsingPredicate:v151];
   v149 = [NSPredicate predicateWithFormat:@"stateOfMindEvent.reflectiveInterval = %d", 1];
   v159 = [v150 filteredArrayUsingPredicate:v149];
   v148 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 25];
-  v161 = [v154 filteredArrayUsingPredicate:v148];
+  v161 = [eventsCopy filteredArrayUsingPredicate:v148];
   v11 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -120,7 +120,7 @@ uint64_t __126__MOTimeAtHomeAnomalyManager_performAnnotationWithEvents_withPatte
   }
 
   v147 = [NSPredicate predicateWithFormat:@"%K = %lu", @"category", 1];
-  v153 = [v146 filteredArrayUsingPredicate:v147];
+  v153 = [patternEventsCopy filteredArrayUsingPredicate:v147];
   v12 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -134,7 +134,7 @@ uint64_t __126__MOTimeAtHomeAnomalyManager_performAnnotationWithEvents_withPatte
   {
     v144 = [NSString stringWithFormat:@"%@%@", @"%K = %lu", @" AND %K = %lu"];
     v143 = [NSPredicate predicateWithFormat:v144, @"category", 1, @"placeUserType", 1];
-    v142 = [v154 filteredArrayUsingPredicate:v143];
+    v142 = [eventsCopy filteredArrayUsingPredicate:v143];
     v141 = [[NSSortDescriptor alloc] initWithKey:@"startDate" ascending:1];
     v237 = v141;
     v14 = [NSArray arrayWithObjects:&v237 count:1];
@@ -171,15 +171,15 @@ uint64_t __126__MOTimeAtHomeAnomalyManager_performAnnotationWithEvents_withPatte
             }
 
             v20 = *(*(&v217 + 1) + 8 * i);
-            v21 = [v20 patterns];
-            v22 = [v21 objectForKeyedSubscript:@"kEventPatternAnomalyFeatureType"];
+            patterns = [v20 patterns];
+            v22 = [patterns objectForKeyedSubscript:@"kEventPatternAnomalyFeatureType"];
             if ([v22 unsignedIntValue] == 5)
             {
-              v23 = [v20 startDate];
-              if ([v23 isOnOrAfter:v177])
+              startDate = [v20 startDate];
+              if ([startDate isOnOrAfter:startCopy])
               {
-                v24 = [v20 endDate];
-                v25 = [v24 isOnOrBefore:v165];
+                endDate = [v20 endDate];
+                v25 = [endDate isOnOrBefore:endCopy];
 
                 if (v25)
                 {
@@ -214,10 +214,10 @@ uint64_t __126__MOTimeAtHomeAnomalyManager_performAnnotationWithEvents_withPatte
 
       if ([v158 count])
       {
-        v28 = [(MOTimeAtHomeAnomalyManager *)self fUniverse];
+        fUniverse = [(MOTimeAtHomeAnomalyManager *)self fUniverse];
         v29 = objc_opt_class();
         v30 = NSStringFromClass(v29);
-        v31 = [v28 getService:v30];
+        v31 = [fUniverse getService:v30];
 
         v32 = objc_opt_new();
         v215 = 0u;
@@ -254,14 +254,14 @@ uint64_t __126__MOTimeAtHomeAnomalyManager_performAnnotationWithEvents_withPatte
             v232 = __Block_byref_object_copy__17;
             v233 = __Block_byref_object_dispose__17;
             v234 = objc_opt_new();
-            v36 = [v35 startDate];
-            v37 = [v35 endDate];
+            startDate2 = [v35 startDate];
+            endDate2 = [v35 endDate];
             v212[0] = _NSConcreteStackBlock;
             v212[1] = 3221225472;
             v212[2] = __127__MOTimeAtHomeAnomalyManager__performAnnotationWithEvents_withPatternEvents_withBundleWindowStart_withBundleWindowEnd_handler___block_invoke;
             v212[3] = &unk_100338690;
             v212[4] = buf;
-            [MOContextAnnotationUtilities filterEventsIntersectingDateRange:v163 rangeStart:v36 rangeEnd:v37 handler:v212];
+            [MOContextAnnotationUtilities filterEventsIntersectingDateRange:v163 rangeStart:startDate2 rangeEnd:endDate2 handler:v212];
 
             if ([*(*&buf[8] + 40) count])
             {
@@ -278,45 +278,45 @@ uint64_t __126__MOTimeAtHomeAnomalyManager_performAnnotationWithEvents_withPatte
               [(MOEventBundle *)v42 setInterfaceType:7];
               [(MOEventBundle *)v42 setBundleSubType:501];
               [(MOEventBundle *)v42 setBundleSuperType:5];
-              v43 = [v35 startDate];
-              [(MOEventBundle *)v42 setStartDate:v43];
+              startDate3 = [v35 startDate];
+              [(MOEventBundle *)v42 setStartDate:startDate3];
 
-              v44 = [v35 endDate];
-              [(MOEventBundle *)v42 setEndDate:v44];
+              endDate3 = [v35 endDate];
+              [(MOEventBundle *)v42 setEndDate:endDate3];
 
-              v45 = [v35 endDate];
-              v46 = [MOTime timeForDate:v45 timeZoneManager:v31];
+              endDate4 = [v35 endDate];
+              v46 = [MOTime timeForDate:endDate4 timeZoneManager:v31];
               [(MOEventBundle *)v42 setTime:v46];
 
               v47 = [[MOAction alloc] initWithActionName:@"Time at Home" actionType:1 actionSubtype:1];
               [(MOEventBundle *)v42 setAction:v47];
 
-              v48 = [*(*&buf[8] + 40) firstObject];
-              v49 = [v48 eventIdentifier];
-              v50 = [(MOEventBundle *)v42 action];
-              [v50 setSourceEventIdentifier:v49];
+              firstObject = [*(*&buf[8] + 40) firstObject];
+              eventIdentifier = [firstObject eventIdentifier];
+              action = [(MOEventBundle *)v42 action];
+              [action setSourceEventIdentifier:eventIdentifier];
 
               v51 = [MOPlace alloc];
-              v52 = [*(*&buf[8] + 40) firstObject];
-              v53 = [v52 location];
-              v54 = [(MOPlace *)v51 initWithPlaceName:@"Home" placeType:1 placeUserType:1 location:v53 locationMode:1 poiCategory:0 categoryMuid:-1.0 distanceToHomeInMiles:-1.0 placeNameConfidence:0.0 familiarityIndexLOI:0];
+              firstObject2 = [*(*&buf[8] + 40) firstObject];
+              location = [firstObject2 location];
+              v54 = [(MOPlace *)v51 initWithPlaceName:@"Home" placeType:1 placeUserType:1 location:location locationMode:1 poiCategory:0 categoryMuid:-1.0 distanceToHomeInMiles:-1.0 placeNameConfidence:0.0 familiarityIndexLOI:0];
               [(MOEventBundle *)v42 setPlace:v54];
 
-              v55 = [*(*&buf[8] + 40) firstObject];
-              v56 = [v55 eventIdentifier];
-              v57 = [(MOEventBundle *)v42 place];
-              [v57 setSourceEventIdentifier:v56];
+              firstObject3 = [*(*&buf[8] + 40) firstObject];
+              eventIdentifier2 = [firstObject3 eventIdentifier];
+              place = [(MOEventBundle *)v42 place];
+              [place setSourceEventIdentifier:eventIdentifier2];
 
-              v58 = [(MOEventBundle *)v42 startDate];
-              v59 = [(MOEventBundle *)v42 endDate];
-              v174 = [MOContextAnnotationUtilities predicateOfEventsWithPlaySessionsWithStartDate:v58 endData:v59];
+              startDate4 = [(MOEventBundle *)v42 startDate];
+              endDate5 = [(MOEventBundle *)v42 endDate];
+              v174 = [MOContextAnnotationUtilities predicateOfEventsWithPlaySessionsWithStartDate:startDate4 endData:endDate5];
 
               v166 = [v160 filteredArrayUsingPredicate:v174];
               if ([v166 count])
               {
                 v60 = *(*&buf[8] + 40);
-                v61 = [(MOTimeAtHomeAnomalyManager *)self parameters];
-                [v61 mediaDurationThreshold];
+                parameters = [(MOTimeAtHomeAnomalyManager *)self parameters];
+                [parameters mediaDurationThreshold];
                 v62 = [MOContextAnnotationUtilities annotateEventBundle:v42 dateIntervalEvents:v60 playbackMediaEvents:v166 mediaDurationThreshold:?];
 
                 if ([v62 count])
@@ -325,14 +325,14 @@ uint64_t __126__MOTimeAtHomeAnomalyManager_performAnnotationWithEvents_withPatte
                 }
               }
 
-              v63 = [(MOEventBundle *)v42 startDate];
-              v64 = [(MOEventBundle *)v42 endDate];
-              v173 = [MOContextAnnotationUtilities predicateOfEmotionLogsWithStartDate:v63 endDate:v64];
+              startDate5 = [(MOEventBundle *)v42 startDate];
+              endDate6 = [(MOEventBundle *)v42 endDate];
+              v173 = [MOContextAnnotationUtilities predicateOfEmotionLogsWithStartDate:startDate5 endDate:endDate6];
 
               v172 = [v159 filteredArrayUsingPredicate:v173];
               v65 = *(*&buf[8] + 40);
-              v66 = [(MOTimeAtHomeAnomalyManager *)self parameters];
-              [v66 emotionAttachmentBundleDurationThreshold];
+              parameters2 = [(MOTimeAtHomeAnomalyManager *)self parameters];
+              [parameters2 emotionAttachmentBundleDurationThreshold];
               *&v67 = v67;
               obja = [MOContextAnnotationUtilities annotateEventBundle:v42 dateIntervalEvents:v65 emotionEvents:v172 bundleDurationThreshold:v67];
 
@@ -340,12 +340,12 @@ uint64_t __126__MOTimeAtHomeAnomalyManager_performAnnotationWithEvents_withPatte
               v68 = _mo_log_facility_get_os_log(&MOLogFacilityEventBundleManager);
               if (os_log_type_enabled(v68, OS_LOG_TYPE_INFO))
               {
-                v69 = [v35 startDate];
-                v70 = [v35 endDate];
+                startDate6 = [v35 startDate];
+                endDate7 = [v35 endDate];
                 *v227 = 138412546;
-                *&v227[4] = v69;
+                *&v227[4] = startDate6;
                 *&v227[12] = 2112;
-                *&v227[14] = v70;
+                *&v227[14] = endDate7;
                 _os_log_impl(&_mh_execute_header, v68, OS_LOG_TYPE_INFO, "T@H: Created bundle for range %@ to %@", v227, 0x16u);
               }
 
@@ -393,23 +393,23 @@ uint64_t __126__MOTimeAtHomeAnomalyManager_performAnnotationWithEvents_withPatte
               [(MOEventBundle *)v42 setPhotoTraits:v72];
 
               v73 = *(*&v227[8] + 40);
-              v74 = [(MOTimeAtHomeAnomalyManager *)self parameters];
-              [v74 photosCurationScoreThreshold];
+              parameters3 = [(MOTimeAtHomeAnomalyManager *)self parameters];
+              [parameters3 photosCurationScoreThreshold];
               v76 = v75;
-              v77 = [(MOTimeAtHomeAnomalyManager *)self parameters];
-              v78 = [v77 photosFaceCountThreshold];
-              v79 = [(MOTimeAtHomeAnomalyManager *)self parameters];
-              v80 = [v79 photosCountThreshold];
+              parameters4 = [(MOTimeAtHomeAnomalyManager *)self parameters];
+              photosFaceCountThreshold = [parameters4 photosFaceCountThreshold];
+              parameters5 = [(MOTimeAtHomeAnomalyManager *)self parameters];
+              photosCountThreshold = [parameters5 photosCountThreshold];
               *&v81 = v76;
-              v82 = [MOPhotosAtHomeManager chooseResourcesWithGoodPhotos:v73 withPhotoCurationScore:v78 andFaceCount:v80 numPhotosThreshold:v81];
+              v82 = [MOPhotosAtHomeManager chooseResourcesWithGoodPhotos:v73 withPhotoCurationScore:photosFaceCountThreshold andFaceCount:photosCountThreshold numPhotosThreshold:v81];
               [(MOEventBundle *)v42 setResources:v82];
 
               v187 = 0u;
               v188 = 0u;
               v185 = 0u;
               v186 = 0u;
-              v83 = [(MOEventBundle *)v42 resources];
-              v84 = [v83 countByEnumeratingWithState:&v185 objects:v226 count:16];
+              resources = [(MOEventBundle *)v42 resources];
+              v84 = [resources countByEnumeratingWithState:&v185 objects:v226 count:16];
               if (v84)
               {
                 v85 = *v186;
@@ -420,17 +420,17 @@ uint64_t __126__MOTimeAtHomeAnomalyManager_performAnnotationWithEvents_withPatte
                   {
                     if (*v186 != v85)
                     {
-                      objc_enumerationMutation(v83);
+                      objc_enumerationMutation(resources);
                     }
 
-                    v88 = [*(*(&v185 + 1) + 8 * j) photoCurationScore];
-                    [v88 floatValue];
+                    photoCurationScore = [*(*(&v185 + 1) + 8 * j) photoCurationScore];
+                    [photoCurationScore floatValue];
                     v90 = v89;
 
                     v86 = v86 + v90;
                   }
 
-                  v84 = [v83 countByEnumeratingWithState:&v185 objects:v226 count:16];
+                  v84 = [resources countByEnumeratingWithState:&v185 objects:v226 count:16];
                 }
 
                 while (v84);
@@ -441,13 +441,13 @@ uint64_t __126__MOTimeAtHomeAnomalyManager_performAnnotationWithEvents_withPatte
                 v86 = 0.0;
               }
 
-              v91 = [(MOEventBundle *)v42 resources];
-              v92 = [v91 count] == 0;
+              resources2 = [(MOEventBundle *)v42 resources];
+              v92 = [resources2 count] == 0;
 
               if (!v92)
               {
-                v94 = [(MOEventBundle *)v42 resources];
-                v95 = [v94 count];
+                resources3 = [(MOEventBundle *)v42 resources];
+                v95 = [resources3 count];
 
                 v86 = v86 / v95;
               }
@@ -462,20 +462,20 @@ uint64_t __126__MOTimeAtHomeAnomalyManager_performAnnotationWithEvents_withPatte
                 [MOContextAnnotationUtilities addStateOfMindMetaDataForRankForBundle:v42 withEmotionEvents:obja];
               }
 
-              v97 = [(MOEventBundle *)v42 startDate];
-              v98 = [(MOEventBundle *)v42 endDate];
-              v171 = [MOContextAnnotationUtilities predicateOfInviteEventsWithStartDate:v97 endDate:v98];
+              startDate7 = [(MOEventBundle *)v42 startDate];
+              endDate8 = [(MOEventBundle *)v42 endDate];
+              v171 = [MOContextAnnotationUtilities predicateOfInviteEventsWithStartDate:startDate7 endDate:endDate8];
 
               v170 = [v161 filteredArrayUsingPredicate:v171];
               v99 = *(*&buf[8] + 40);
-              v100 = [(MOTimeAtHomeAnomalyManager *)self parameters];
-              [v100 timeAtHomeInviteEventTimeOverlapWithVisitsThreshold];
+              parameters6 = [(MOTimeAtHomeAnomalyManager *)self parameters];
+              [parameters6 timeAtHomeInviteEventTimeOverlapWithVisitsThreshold];
               v102 = v101;
-              v103 = [(MOTimeAtHomeAnomalyManager *)self parameters];
-              [v103 timeAtHomeInviteEventDistanceFromVisitEventsThreshold];
+              parameters7 = [(MOTimeAtHomeAnomalyManager *)self parameters];
+              [parameters7 timeAtHomeInviteEventDistanceFromVisitEventsThreshold];
               v105 = v104;
-              v106 = [(MOTimeAtHomeAnomalyManager *)self parameters];
-              [v106 timeAtHomeInviteEventPhotoTimeThreshold];
+              parameters8 = [(MOTimeAtHomeAnomalyManager *)self parameters];
+              [parameters8 timeAtHomeInviteEventPhotoTimeThreshold];
               LODWORD(v107) = v105;
               v109 = [MOContextAnnotationUtilities annotateEventBundle:v42 visitEvents:v99 inviteEvents:v170 withTimeThreshold:v102 withDistanceThreshold:v107 withPhotoTimeThreshold:v108];
 
@@ -490,23 +490,23 @@ uint64_t __126__MOTimeAtHomeAnomalyManager_performAnnotationWithEvents_withPatte
                 }
 
                 [(MOEventBundle *)v42 addEvent:v109];
-                v111 = [(MOTimeAtHomeAnomalyManager *)self parameters];
-                v112 = [v111 timeAtHomeInviteEventStandardTimeThresholdForPhotoCheck];
-                v113 = [(MOTimeAtHomeAnomalyManager *)self parameters];
-                +[MOContextAnnotationUtilities removePhotoResourcesFarFromInvite:inviteEvent:withStandardTimeThreshold:missingEndDateTimeThreshold:](MOContextAnnotationUtilities, "removePhotoResourcesFarFromInvite:inviteEvent:withStandardTimeThreshold:missingEndDateTimeThreshold:", v42, v109, v112, [v113 timeAtHomeInviteEventMissingEndDateTimeThresholdForPhotoCheck]);
+                parameters9 = [(MOTimeAtHomeAnomalyManager *)self parameters];
+                timeAtHomeInviteEventStandardTimeThresholdForPhotoCheck = [parameters9 timeAtHomeInviteEventStandardTimeThresholdForPhotoCheck];
+                parameters10 = [(MOTimeAtHomeAnomalyManager *)self parameters];
+                +[MOContextAnnotationUtilities removePhotoResourcesFarFromInvite:inviteEvent:withStandardTimeThreshold:missingEndDateTimeThreshold:](MOContextAnnotationUtilities, "removePhotoResourcesFarFromInvite:inviteEvent:withStandardTimeThreshold:missingEndDateTimeThreshold:", v42, v109, timeAtHomeInviteEventStandardTimeThresholdForPhotoCheck, [parameters10 timeAtHomeInviteEventMissingEndDateTimeThresholdForPhotoCheck]);
               }
 
               v169 = [NSPredicate predicateWithFormat:@"%K = %lu", @"type", 2];
-              v114 = [(MOEventBundle *)v42 resources];
-              v167 = [v114 filteredArrayUsingPredicate:v169];
+              resources4 = [(MOEventBundle *)v42 resources];
+              v167 = [resources4 filteredArrayUsingPredicate:v169];
 
               v168 = [NSPredicate predicateWithFormat:@"%K = %lu", @"type", 3];
-              v115 = [(MOEventBundle *)v42 resources];
-              v116 = [v115 filteredArrayUsingPredicate:v168];
+              resources5 = [(MOEventBundle *)v42 resources];
+              v116 = [resources5 filteredArrayUsingPredicate:v168];
 
               v117 = [NSPredicate predicateWithFormat:@"%K = %lu", @"type", 16];
-              v118 = [(MOEventBundle *)v42 resources];
-              v119 = [v118 filteredArrayUsingPredicate:v117];
+              resources6 = [(MOEventBundle *)v42 resources];
+              v119 = [resources6 filteredArrayUsingPredicate:v117];
 
               [MOContextAnnotationUtilities assetPriorityScoringForTimeAtHomeBundlesWithBundle:v42 withMediaResources:v116 withPhotoResources:v167 withEmotionResources:v119];
               if (v109)
@@ -531,8 +531,8 @@ uint64_t __126__MOTimeAtHomeAnomalyManager_performAnnotationWithEvents_withPatte
               }
 
               v222 = @"TimeAtHomeDuration";
-              v122 = [v35 patterns];
-              v123 = [v122 objectForKeyedSubscript:@"kEventPatternFeatureValue"];
+              patterns2 = [v35 patterns];
+              v123 = [patterns2 objectForKeyedSubscript:@"kEventPatternFeatureValue"];
               v223 = v123;
               v124 = [NSDictionary dictionaryWithObjects:&v223 forKeys:&v222 count:1];
               [(MOEventBundle *)v42 setMetaDataForRank:v124];
@@ -548,8 +548,8 @@ uint64_t __126__MOTimeAtHomeAnomalyManager_performAnnotationWithEvents_withPatte
               }
 
               [(MOEventBundle *)v42 setBundleSubType:v125];
-              v126 = [(MOEventBundle *)v42 resources];
-              v127 = [v126 count] == 0;
+              resources7 = [(MOEventBundle *)v42 resources];
+              v127 = [resources7 count] == 0;
 
               if (v127)
               {
@@ -560,8 +560,8 @@ uint64_t __126__MOTimeAtHomeAnomalyManager_performAnnotationWithEvents_withPatte
               v184 = 0u;
               v181 = 0u;
               v182 = 0u;
-              v128 = [(MOEventBundle *)v42 resources];
-              v129 = [v128 countByEnumeratingWithState:&v181 objects:v221 count:16];
+              resources8 = [(MOEventBundle *)v42 resources];
+              v129 = [resources8 countByEnumeratingWithState:&v181 objects:v221 count:16];
               if (!v129)
               {
 
@@ -576,7 +576,7 @@ uint64_t __126__MOTimeAtHomeAnomalyManager_performAnnotationWithEvents_withPatte
                 {
                   if (*v182 != v131)
                   {
-                    objc_enumerationMutation(v128);
+                    objc_enumerationMutation(resources8);
                   }
 
                   if ([*(*(&v181 + 1) + 8 * k) type] == 2)
@@ -585,7 +585,7 @@ uint64_t __126__MOTimeAtHomeAnomalyManager_performAnnotationWithEvents_withPatte
                   }
                 }
 
-                v129 = [v128 countByEnumeratingWithState:&v181 objects:v221 count:16];
+                v129 = [resources8 countByEnumeratingWithState:&v181 objects:v221 count:16];
               }
 
               while (v129);
@@ -633,7 +633,7 @@ LABEL_81:
             }
 
             v137 = [v32 copy];
-            v145[2](v145, v137, 0);
+            handlerCopy[2](handlerCopy, v137, 0);
 
             goto LABEL_93;
           }
@@ -647,7 +647,7 @@ LABEL_81:
         _os_log_impl(&_mh_execute_header, v140, OS_LOG_TYPE_INFO, "T@H: Exiting bundling due to no pattern events with complete context available for bundling", buf, 2u);
       }
 
-      v145[2](v145, &__NSArray0__struct, 0);
+      handlerCopy[2](handlerCopy, &__NSArray0__struct, 0);
 LABEL_93:
     }
 
@@ -660,7 +660,7 @@ LABEL_93:
         _os_log_impl(&_mh_execute_header, v139, OS_LOG_TYPE_INFO, "T@H: Exiting bundling due to no visit events", buf, 2u);
       }
 
-      v145[2](v145, &__NSArray0__struct, 0);
+      handlerCopy[2](handlerCopy, &__NSArray0__struct, 0);
     }
   }
 
@@ -673,7 +673,7 @@ LABEL_93:
       _os_log_impl(&_mh_execute_header, v138, OS_LOG_TYPE_INFO, "T@H: Exiting bundling due to no visit pattern events", buf, 2u);
     }
 
-    v145[2](v145, &__NSArray0__struct, 0);
+    handlerCopy[2](handlerCopy, &__NSArray0__struct, 0);
   }
 }
 

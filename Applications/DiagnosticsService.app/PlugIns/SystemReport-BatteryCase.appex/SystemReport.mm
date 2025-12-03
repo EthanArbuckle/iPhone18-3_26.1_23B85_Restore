@@ -1,26 +1,26 @@
 @interface SystemReport
 - (BOOL)isPresent;
-- (void)populateAttributes:(id)a3;
-- (void)setupWithContext:(id)a3;
+- (void)populateAttributes:(id)attributes;
+- (void)setupWithContext:(id)context;
 @end
 
 @implementation SystemReport
 
-- (void)setupWithContext:(id)a3
+- (void)setupWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(SystemReport *)self componentIdentity];
-  v6 = [v5 type];
-  v7 = [@"Component" stringByAppendingString:v6];
+  contextCopy = context;
+  componentIdentity = [(SystemReport *)self componentIdentity];
+  type = [componentIdentity type];
+  v7 = [@"Component" stringByAppendingString:type];
 
-  v8 = [(SystemReport *)self componentIdentity];
-  v9 = [v8 identifier];
+  componentIdentity2 = [(SystemReport *)self componentIdentity];
+  identifier = [componentIdentity2 identifier];
 
-  if (v9)
+  if (identifier)
   {
-    v10 = [(SystemReport *)self componentIdentity];
-    v11 = [v10 identifier];
-    v12 = [v7 stringByAppendingString:v11];
+    componentIdentity3 = [(SystemReport *)self componentIdentity];
+    identifier2 = [componentIdentity3 identifier];
+    v12 = [v7 stringByAppendingString:identifier2];
 
     v7 = v12;
   }
@@ -59,8 +59,8 @@ LABEL_12:
   v14 = objc_opt_new();
   [(SystemReport *)self setComponent:v14];
 
-  v15 = [(SystemReport *)self component];
-  [v15 setupWithContext:v4];
+  component = [(SystemReport *)self component];
+  [component setupWithContext:contextCopy];
 
   v16 = DiagnosticLogHandleForCategory();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -75,17 +75,17 @@ LABEL_10:
 
 - (BOOL)isPresent
 {
-  v2 = [(SystemReport *)self component];
-  v3 = [v2 isPresent];
+  component = [(SystemReport *)self component];
+  isPresent = [component isPresent];
 
-  return v3;
+  return isPresent;
 }
 
-- (void)populateAttributes:(id)a3
+- (void)populateAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = [(SystemReport *)self component];
-  [v5 populateAttributes:v4];
+  attributesCopy = attributes;
+  component = [(SystemReport *)self component];
+  [component populateAttributes:attributesCopy];
 }
 
 @end

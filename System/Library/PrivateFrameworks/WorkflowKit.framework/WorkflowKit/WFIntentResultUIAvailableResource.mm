@@ -1,5 +1,5 @@
 @interface WFIntentResultUIAvailableResource
-- (WFIntentResultUIAvailableResource)initWithDefinition:(id)a3 resolvedIntentDescriptor:(id)a4 hasSuccessResponseWithDialog:(BOOL)a5;
+- (WFIntentResultUIAvailableResource)initWithDefinition:(id)definition resolvedIntentDescriptor:(id)descriptor hasSuccessResponseWithDialog:(BOOL)dialog;
 - (void)refreshAvailability;
 @end
 
@@ -9,29 +9,29 @@
 {
   if ([(WFIntentResultUIAvailableResource *)self hasSuccessResponseWithDialog])
   {
-    v3 = 1;
+    hasCustomUIExtension = 1;
   }
 
   else
   {
-    v4 = [(WFIntentResultUIAvailableResource *)self resolvedIntentDescriptor];
-    v3 = [v4 hasCustomUIExtension];
+    resolvedIntentDescriptor = [(WFIntentResultUIAvailableResource *)self resolvedIntentDescriptor];
+    hasCustomUIExtension = [resolvedIntentDescriptor hasCustomUIExtension];
   }
 
-  [(WFResource *)self updateAvailability:v3 withError:0];
+  [(WFResource *)self updateAvailability:hasCustomUIExtension withError:0];
 }
 
-- (WFIntentResultUIAvailableResource)initWithDefinition:(id)a3 resolvedIntentDescriptor:(id)a4 hasSuccessResponseWithDialog:(BOOL)a5
+- (WFIntentResultUIAvailableResource)initWithDefinition:(id)definition resolvedIntentDescriptor:(id)descriptor hasSuccessResponseWithDialog:(BOOL)dialog
 {
-  v9 = a4;
+  descriptorCopy = descriptor;
   v14.receiver = self;
   v14.super_class = WFIntentResultUIAvailableResource;
-  v10 = [(WFResource *)&v14 initWithDefinition:a3];
+  v10 = [(WFResource *)&v14 initWithDefinition:definition];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_resolvedIntentDescriptor, a4);
-    v11->_hasSuccessResponseWithDialog = a5;
+    objc_storeStrong(&v10->_resolvedIntentDescriptor, descriptor);
+    v11->_hasSuccessResponseWithDialog = dialog;
     v12 = v11;
   }
 

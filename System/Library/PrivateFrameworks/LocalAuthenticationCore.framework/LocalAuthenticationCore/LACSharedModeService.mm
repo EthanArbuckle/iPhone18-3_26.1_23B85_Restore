@@ -1,5 +1,5 @@
 @interface LACSharedModeService
-- (LACSharedModeService)initWithReplyQueue:(id)a3;
+- (LACSharedModeService)initWithReplyQueue:(id)queue;
 - (id)_dataSource;
 - (id)_policyCoordinator;
 - (id)_policyTraitsManager;
@@ -39,10 +39,10 @@ LACSharedModeDataSourceDefaultsDecorator *__35__LACSharedModeService__dataSource
 {
   v3 = [LACSharedModeProcessor alloc];
   replyQueue = self->_replyQueue;
-  v5 = [(LACSharedModeService *)self _dataSource];
-  v6 = [(LACSharedModeService *)self _policyTraitsManager];
-  v7 = [(LACSharedModeService *)self _policyCoordinator];
-  v8 = [(LACSharedModeProcessor *)v3 initWithReplyQueue:replyQueue dataSource:v5 policyTraitsManager:v6 policyCoordinator:v7];
+  _dataSource = [(LACSharedModeService *)self _dataSource];
+  _policyTraitsManager = [(LACSharedModeService *)self _policyTraitsManager];
+  _policyCoordinator = [(LACSharedModeService *)self _policyCoordinator];
+  v8 = [(LACSharedModeProcessor *)v3 initWithReplyQueue:replyQueue dataSource:_dataSource policyTraitsManager:_policyTraitsManager policyCoordinator:_policyCoordinator];
 
   return v8;
 }
@@ -68,16 +68,16 @@ LACSharedModeDataSourceDefaultsDecorator *__35__LACSharedModeService__dataSource
   return v5;
 }
 
-- (LACSharedModeService)initWithReplyQueue:(id)a3
+- (LACSharedModeService)initWithReplyQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = LACSharedModeService;
   v6 = [(LACSharedModeService *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_replyQueue, a3);
+    objc_storeStrong(&v6->_replyQueue, queue);
     v8 = objc_alloc_init(LACSharedModeDataSourceTaskDecoratorRuntime);
     runtime = v7->_runtime;
     v7->_runtime = v8;

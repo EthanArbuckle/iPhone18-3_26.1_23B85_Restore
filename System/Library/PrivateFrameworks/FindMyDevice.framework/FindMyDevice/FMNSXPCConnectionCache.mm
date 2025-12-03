@@ -1,7 +1,7 @@
 @interface FMNSXPCConnectionCache
 + (FMNSXPCConnectionCache)sharedCache;
 - (FMNSXPCConnectionCache)init;
-- (id)resumeConnectionWithConfiguration:(id)a3;
+- (id)resumeConnectionWithConfiguration:(id)configuration;
 - (void)dealloc;
 @end
 
@@ -37,9 +37,9 @@ uint64_t __37__FMNSXPCConnectionCache_sharedCache__block_invoke()
     modsSerialQueue = v2->_modsSerialQueue;
     v2->_modsSerialQueue = v3;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     connectionsByServiceName = v2->_connectionsByServiceName;
-    v2->_connectionsByServiceName = v5;
+    v2->_connectionsByServiceName = dictionary;
   }
 
   return v2;
@@ -47,13 +47,13 @@ uint64_t __37__FMNSXPCConnectionCache_sharedCache__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [(FMNSXPCConnectionCache *)self modsSerialQueue];
+  modsSerialQueue = [(FMNSXPCConnectionCache *)self modsSerialQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __33__FMNSXPCConnectionCache_dealloc__block_invoke;
   block[3] = &unk_1E86BD198;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(modsSerialQueue, block);
 
   v4.receiver = self;
   v4.super_class = FMNSXPCConnectionCache;
@@ -67,28 +67,28 @@ void __33__FMNSXPCConnectionCache_dealloc__block_invoke(uint64_t a1)
   [v1 enumerateObjectsUsingBlock:&__block_literal_global_5];
 }
 
-- (id)resumeConnectionWithConfiguration:(id)a3
+- (id)resumeConnectionWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy_;
   v18 = __Block_byref_object_dispose_;
   v19 = 0;
-  v5 = [v4 serviceName];
-  if (v5)
+  serviceName = [configurationCopy serviceName];
+  if (serviceName)
   {
-    v6 = [(FMNSXPCConnectionCache *)self modsSerialQueue];
+    modsSerialQueue = [(FMNSXPCConnectionCache *)self modsSerialQueue];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __60__FMNSXPCConnectionCache_resumeConnectionWithConfiguration___block_invoke;
     v10[3] = &unk_1E86BD210;
     v10[4] = self;
-    v11 = v5;
-    v12 = v4;
+    v11 = serviceName;
+    v12 = configurationCopy;
     v13 = &v14;
-    dispatch_sync(v6, v10);
+    dispatch_sync(modsSerialQueue, v10);
 
     v7 = v15[5];
   }

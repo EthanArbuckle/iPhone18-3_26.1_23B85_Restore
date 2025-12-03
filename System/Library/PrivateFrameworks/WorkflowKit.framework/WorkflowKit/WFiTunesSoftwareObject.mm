@@ -9,16 +9,16 @@
 
 + (id)iPadScreenshotURLsJSONTransformer
 {
-  v2 = [MEMORY[0x1E696B0A0] mtl_URLValueTransformer];
-  v3 = [(NSValueTransformer *)MTLValueTransformer mtl_arrayMappingTransformerWithTransformer:v2];
+  mtl_URLValueTransformer = [MEMORY[0x1E696B0A0] mtl_URLValueTransformer];
+  v3 = [(NSValueTransformer *)MTLValueTransformer mtl_arrayMappingTransformerWithTransformer:mtl_URLValueTransformer];
 
   return v3;
 }
 
 + (id)screenshotURLsJSONTransformer
 {
-  v2 = [MEMORY[0x1E696B0A0] mtl_URLValueTransformer];
-  v3 = [(NSValueTransformer *)MTLValueTransformer mtl_arrayMappingTransformerWithTransformer:v2];
+  mtl_URLValueTransformer = [MEMORY[0x1E696B0A0] mtl_URLValueTransformer];
+  v3 = [(NSValueTransformer *)MTLValueTransformer mtl_arrayMappingTransformerWithTransformer:mtl_URLValueTransformer];
 
   return v3;
 }
@@ -42,7 +42,7 @@ uint64_t __52__WFiTunesSoftwareObject_isUniversalJSONTransformer__block_invoke(u
 + (id)JSONKeyPathsByPropertyKey
 {
   v9[30] = *MEMORY[0x1E69E9840];
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___WFiTunesSoftwareObject;
   v2 = objc_msgSendSuper2(&v7, sel_JSONKeyPathsByPropertyKey);
   v3 = [v2 mutableCopy];
@@ -118,7 +118,7 @@ uint64_t __52__WFiTunesSoftwareObject_isUniversalJSONTransformer__block_invoke(u
 + (id)allowedSecureCodingClassesByPropertyKey
 {
   v14[2] = *MEMORY[0x1E69E9840];
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___WFiTunesSoftwareObject;
   v2 = objc_msgSendSuper2(&v10, sel_allowedSecureCodingClassesByPropertyKey);
   v3 = [v2 mutableCopy];

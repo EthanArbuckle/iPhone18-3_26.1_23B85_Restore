@@ -1,23 +1,23 @@
 @interface OCPPackageRelationship
-- (OCPPackageRelationship)initWithXmlElement:(_xmlNode *)a3 baseLocation:(id)a4;
-- (void)readFromElement:(_xmlNode *)a3 baseLocation:(id)a4;
+- (OCPPackageRelationship)initWithXmlElement:(_xmlNode *)element baseLocation:(id)location;
+- (void)readFromElement:(_xmlNode *)element baseLocation:(id)location;
 @end
 
 @implementation OCPPackageRelationship
 
-- (OCPPackageRelationship)initWithXmlElement:(_xmlNode *)a3 baseLocation:(id)a4
+- (OCPPackageRelationship)initWithXmlElement:(_xmlNode *)element baseLocation:(id)location
 {
-  v6 = a4;
+  locationCopy = location;
   self->mTargetMode = 0;
-  [(OCPPackageRelationship *)self readFromElement:a3 baseLocation:v6];
+  [(OCPPackageRelationship *)self readFromElement:element baseLocation:locationCopy];
 
   return self;
 }
 
-- (void)readFromElement:(_xmlNode *)a3 baseLocation:(id)a4
+- (void)readFromElement:(_xmlNode *)element baseLocation:(id)location
 {
-  v16 = a4;
-  properties = a3->properties;
+  locationCopy = location;
+  properties = element->properties;
   for (i = 0; properties; properties = properties->next)
   {
     if (!properties->ns)
@@ -46,7 +46,7 @@ LABEL_7:
         if (([v11 isEqualToString:@"NULL"] & 1) == 0)
         {
           [v11 replaceOccurrencesOfString:@"\\" withString:@"/" options:0 range:{0, objc_msgSend(v11, "length"")}];
-          v12 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v11 relativeToURL:v16];
+          v12 = [objc_alloc(MEMORY[0x277CBEBC0]) initWithString:v11 relativeToURL:locationCopy];
           mTargetLocation = self->mTargetLocation;
           self->mTargetLocation = v12;
         }

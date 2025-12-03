@@ -1,7 +1,7 @@
 @interface TVWorkoutPlanBrickItemCell
 - (BOOL)canBecomeFocused;
 - (NSArray)preferredFocusEnvironments;
-- (void)handleTappedButton:(id)a3;
+- (void)handleTappedButton:(id)button;
 - (void)prepareForReuse;
 @end
 
@@ -10,8 +10,8 @@
 - (BOOL)canBecomeFocused
 {
   v2 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI26TVWorkoutPlanBrickItemCell_buttonStackView);
-  v3 = self;
-  v4 = [v2 arrangedSubviews];
+  selfCopy = self;
+  arrangedSubviews = [v2 arrangedSubviews];
   sub_20B51C88C(0, &qword_27C762910);
   v5 = sub_20C13CC74();
 
@@ -31,8 +31,8 @@
 - (NSArray)preferredFocusEnvironments
 {
   v2 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC9SeymourUI26TVWorkoutPlanBrickItemCell_buttonStackView);
-  v3 = self;
-  v4 = [v2 arrangedSubviews];
+  selfCopy = self;
+  arrangedSubviews = [v2 arrangedSubviews];
   sub_20B51C88C(0, &qword_27C762910);
   v5 = sub_20C13CC74();
 
@@ -46,15 +46,15 @@
 
 - (void)prepareForReuse
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BAF45BC();
 }
 
-- (void)handleTappedButton:(id)a3
+- (void)handleTappedButton:(id)button
 {
-  v4 = a3;
-  v5 = self;
-  sub_20BAF5068(v4);
+  buttonCopy = button;
+  selfCopy = self;
+  sub_20BAF5068(buttonCopy);
 }
 
 @end

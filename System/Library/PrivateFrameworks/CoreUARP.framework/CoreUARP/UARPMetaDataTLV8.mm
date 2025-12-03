@@ -1,6 +1,6 @@
 @interface UARPMetaDataTLV8
 - (UARPMetaDataTLV8)init;
-- (id)tlvValue:(unsigned __int8)a3;
+- (id)tlvValue:(unsigned __int8)value;
 @end
 
 @implementation UARPMetaDataTLV8
@@ -12,10 +12,10 @@
   return [(UARPMetaDataTLV *)&v3 init];
 }
 
-- (id)tlvValue:(unsigned __int8)a3
+- (id)tlvValue:(unsigned __int8)value
 {
-  v5 = a3;
-  v3 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:&v5 length:1];
+  valueCopy = value;
+  v3 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBytes:&valueCopy length:1];
 
   return v3;
 }

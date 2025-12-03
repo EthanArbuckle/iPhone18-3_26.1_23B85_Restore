@@ -1,16 +1,16 @@
 @interface WLKBadgingUtilities
-+ (BOOL)addBadgeIdentifier:(id)a3;
++ (BOOL)addBadgeIdentifier:(id)identifier;
 + (BOOL)hasMigrated;
-+ (BOOL)removeBadgeIdentifier:(id)a3;
-+ (id)_createRequestContainer:(id)a3;
++ (BOOL)removeBadgeIdentifier:(id)identifier;
++ (id)_createRequestContainer:(id)container;
 + (id)_returnListofBadgingActionMetrics;
 + (id)badgeIdentifiers;
 + (id)currentBadgeNumber;
 + (id)sharedUtilities;
 + (void)clearSavedBadgeIdentifiers;
 + (void)processStoredODJBadgingRequestActions;
-+ (void)removeBadgeRequest:(id)a3;
-+ (void)storeBadgeRequest:(id)a3;
++ (void)removeBadgeRequest:(id)request;
++ (void)storeBadgeRequest:(id)request;
 - (id)_notificationCenter;
 - (void)migrateToNewBadgingSystemIfNeeded;
 @end
@@ -59,8 +59,8 @@ void __42__WLKBadgingUtilities__notificationCenter__block_invoke()
 
 + (id)currentBadgeNumber
 {
-  v2 = [MEMORY[0x277CBEBD0] wlk_userDefaults];
-  v3 = [v2 arrayForKey:@"badgeIdentifiers"];
+  wlk_userDefaults = [MEMORY[0x277CBEBD0] wlk_userDefaults];
+  v3 = [wlk_userDefaults arrayForKey:@"badgeIdentifiers"];
   v4 = v3;
   if (v3 && [v3 count])
   {
@@ -77,16 +77,16 @@ void __42__WLKBadgingUtilities__notificationCenter__block_invoke()
 
 + (id)badgeIdentifiers
 {
-  v2 = [MEMORY[0x277CBEBD0] wlk_userDefaults];
-  v3 = [v2 arrayForKey:@"badgeIdentifiers"];
+  wlk_userDefaults = [MEMORY[0x277CBEBD0] wlk_userDefaults];
+  v3 = [wlk_userDefaults arrayForKey:@"badgeIdentifiers"];
 
   return v3;
 }
 
 + (BOOL)hasMigrated
 {
-  v2 = [MEMORY[0x277CBEBD0] wlk_userDefaults];
-  v3 = [v2 BOOLForKey:@"hasMigratedToNewBadgingSystem"];
+  wlk_userDefaults = [MEMORY[0x277CBEBD0] wlk_userDefaults];
+  v3 = [wlk_userDefaults BOOLForKey:@"hasMigratedToNewBadgingSystem"];
 
   return v3;
 }
@@ -95,16 +95,16 @@ void __42__WLKBadgingUtilities__notificationCenter__block_invoke()
 {
   if (([objc_opt_class() hasMigrated] & 1) == 0)
   {
-    v3 = [(WLKBadgingUtilities *)self _notificationCenter];
+    _notificationCenter = [(WLKBadgingUtilities *)self _notificationCenter];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __56__WLKBadgingUtilities_migrateToNewBadgingSystemIfNeeded__block_invoke;
     v5[3] = &unk_279E5F1B0;
     v5[4] = self;
-    [v3 getBadgeNumberWithCompletionHandler:v5];
+    [_notificationCenter getBadgeNumberWithCompletionHandler:v5];
 
-    v4 = [MEMORY[0x277CBEBD0] wlk_userDefaults];
-    [v4 setBool:1 forKey:@"hasMigratedToNewBadgingSystem"];
+    wlk_userDefaults = [MEMORY[0x277CBEBD0] wlk_userDefaults];
+    [wlk_userDefaults setBool:1 forKey:@"hasMigratedToNewBadgingSystem"];
   }
 }
 
@@ -134,26 +134,26 @@ void __56__WLKBadgingUtilities_migrateToNewBadgingSystemIfNeeded__block_invoke(u
   }
 }
 
-+ (BOOL)addBadgeIdentifier:(id)a3
++ (BOOL)addBadgeIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEBD0] wlk_userDefaults];
-  v5 = [v4 arrayForKey:@"badgeIdentifiers"];
+  identifierCopy = identifier;
+  wlk_userDefaults = [MEMORY[0x277CBEBD0] wlk_userDefaults];
+  v5 = [wlk_userDefaults arrayForKey:@"badgeIdentifiers"];
   v6 = v5;
   if (!v5 || ![v5 count])
   {
     v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:1];
 LABEL_7:
     v9 = v8;
-    [v8 addObject:v3];
+    [v8 addObject:identifierCopy];
     v10 = [v9 copy];
-    [v4 setValue:v10 forKey:@"badgeIdentifiers"];
+    [wlk_userDefaults setValue:v10 forKey:@"badgeIdentifiers"];
 
     v7 = 1;
     goto LABEL_8;
   }
 
-  if (([v6 containsObject:v3] & 1) == 0)
+  if (([v6 containsObject:identifierCopy] & 1) == 0)
   {
     v8 = [v6 mutableCopy];
     goto LABEL_7;
@@ -165,25 +165,25 @@ LABEL_8:
   return v7;
 }
 
-+ (BOOL)removeBadgeIdentifier:(id)a3
++ (BOOL)removeBadgeIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEBD0] wlk_userDefaults];
-  v5 = [v4 objectForKey:@"badgeIdentifiers"];
+  identifierCopy = identifier;
+  wlk_userDefaults = [MEMORY[0x277CBEBD0] wlk_userDefaults];
+  v5 = [wlk_userDefaults objectForKey:@"badgeIdentifiers"];
   v6 = v5;
-  if (v5 && [v5 count] && objc_msgSend(v6, "containsObject:", v3))
+  if (v5 && [v5 count] && objc_msgSend(v6, "containsObject:", identifierCopy))
   {
     v7 = [v6 mutableCopy];
-    [v7 removeObject:v3];
+    [v7 removeObject:identifierCopy];
     if ([v7 count])
     {
       v8 = [v7 copy];
-      [v4 setValue:v8 forKey:@"badgeIdentifiers"];
+      [wlk_userDefaults setValue:v8 forKey:@"badgeIdentifiers"];
     }
 
     else
     {
-      [v4 removeObjectForKey:@"badgeIdentifiers"];
+      [wlk_userDefaults removeObjectForKey:@"badgeIdentifiers"];
     }
 
     v9 = 1;
@@ -199,17 +199,17 @@ LABEL_8:
 
 + (void)clearSavedBadgeIdentifiers
 {
-  v2 = [MEMORY[0x277CBEBD0] wlk_userDefaults];
-  [v2 removeObjectForKey:@"badgeIdentifiers"];
+  wlk_userDefaults = [MEMORY[0x277CBEBD0] wlk_userDefaults];
+  [wlk_userDefaults removeObjectForKey:@"badgeIdentifiers"];
 }
 
-+ (void)storeBadgeRequest:(id)a3
++ (void)storeBadgeRequest:(id)request
 {
-  v10 = a3;
+  requestCopy = request;
   v4 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.WatchListKit"];
   v5 = [v4 objectForKey:@"listOfODJBadges"];
   v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v5];
-  v7 = [a1 _createRequestContainer:v10];
+  v7 = [self _createRequestContainer:requestCopy];
   if (v6 && [v6 count])
   {
     if ([v6 containsObject:v7])
@@ -228,20 +228,20 @@ LABEL_8:
     v6 = v8;
   }
 
-  v9 = [v10 badgeIdentifier];
-  NSLog(&cfstr_Wlkbadgingutil.isa, v9);
+  badgeIdentifier = [requestCopy badgeIdentifier];
+  NSLog(&cfstr_Wlkbadgingutil.isa, badgeIdentifier);
 
 LABEL_7:
   [v4 setObject:v6 forKey:@"listOfODJBadges"];
 }
 
-+ (void)removeBadgeRequest:(id)a3
++ (void)removeBadgeRequest:(id)request
 {
-  v9 = a3;
+  requestCopy = request;
   v4 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.WatchListKit"];
   v5 = [v4 objectForKey:@"listOfODJBadges"];
   v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithArray:v5];
-  v7 = [a1 _createRequestContainer:v9];
+  v7 = [self _createRequestContainer:requestCopy];
   if (v6 && [v6 count] && objc_msgSend(v6, "containsObject:", v7))
   {
     [v6 removeObject:v7];
@@ -255,29 +255,29 @@ LABEL_7:
       [v4 removeObjectForKey:@"listOfODJBadges"];
     }
 
-    v8 = [v9 badgeIdentifier];
-    NSLog(&cfstr_Wlkbadgingutil_0.isa, v8);
+    badgeIdentifier = [requestCopy badgeIdentifier];
+    NSLog(&cfstr_Wlkbadgingutil_0.isa, badgeIdentifier);
   }
 }
 
-+ (id)_createRequestContainer:(id)a3
++ (id)_createRequestContainer:(id)container
 {
-  v3 = a3;
+  containerCopy = container;
   v4 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v5 = [v3 actionMetricsEvent];
+  actionMetricsEvent = [containerCopy actionMetricsEvent];
 
-  if (v5)
+  if (actionMetricsEvent)
   {
-    v6 = [v3 actionMetricsEvent];
-    [v4 setObject:v6 forKeyedSubscript:@"actionMetrics"];
+    actionMetricsEvent2 = [containerCopy actionMetricsEvent];
+    [v4 setObject:actionMetricsEvent2 forKeyedSubscript:@"actionMetrics"];
   }
 
-  v7 = [v3 badgeIdentifier];
+  badgeIdentifier = [containerCopy badgeIdentifier];
 
-  if (v7)
+  if (badgeIdentifier)
   {
-    v8 = [v3 badgeIdentifier];
-    [v4 setObject:v8 forKeyedSubscript:@"badgeIdentifier"];
+    badgeIdentifier2 = [containerCopy badgeIdentifier];
+    [v4 setObject:badgeIdentifier2 forKeyedSubscript:@"badgeIdentifier"];
   }
 
   return v4;
@@ -323,8 +323,8 @@ LABEL_7:
         {
           v11 = objc_alloc(MEMORY[0x277CEE598]);
           v12 = WLKTVAppBundleID();
-          v13 = [MEMORY[0x277CEE3F8] wlk_defaultBag];
-          v14 = [v11 initWithContainerID:v12 bag:v13];
+          wlk_defaultBag = [MEMORY[0x277CEE3F8] wlk_defaultBag];
+          v14 = [v11 initWithContainerID:v12 bag:wlk_defaultBag];
 
           v15 = [objc_alloc(MEMORY[0x277CEE5A8]) initWithUnderlyingDictionary:v7];
           NSLog(&cfstr_Wlkbadgingutil_1.isa, v9);

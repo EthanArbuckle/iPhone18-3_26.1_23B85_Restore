@@ -1,26 +1,26 @@
 @interface RTPointOfInterestMonitorVisitNotification
-- (RTPointOfInterestMonitorVisitNotification)initWithVisit:(id)a3;
+- (RTPointOfInterestMonitorVisitNotification)initWithVisit:(id)visit;
 @end
 
 @implementation RTPointOfInterestMonitorVisitNotification
 
-- (RTPointOfInterestMonitorVisitNotification)initWithVisit:(id)a3
+- (RTPointOfInterestMonitorVisitNotification)initWithVisit:(id)visit
 {
-  v4 = a3;
-  if (v4)
+  visitCopy = visit;
+  if (visitCopy)
   {
     v11.receiver = self;
     v11.super_class = RTPointOfInterestMonitorVisitNotification;
     v5 = [(RTNotification *)&v11 init];
     if (v5)
     {
-      v6 = [v4 copy];
+      v6 = [visitCopy copy];
       visit = v5->_visit;
       v5->_visit = v6;
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
@@ -32,10 +32,10 @@
       _os_log_error_impl(&dword_2304B3000, v9, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: visit", buf, 2u);
     }
 
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

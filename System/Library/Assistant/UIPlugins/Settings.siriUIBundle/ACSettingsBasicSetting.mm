@@ -1,6 +1,6 @@
 @interface ACSettingsBasicSetting
 + (id)setting;
-+ (id)settingWithAceString:(id)a3;
++ (id)settingWithAceString:(id)string;
 - (ACSettingsUpdateDelegate)delegate;
 - (NSURL)preferencesURL;
 - (SiriUISashItem)sashItem;
@@ -9,82 +9,82 @@
 
 @implementation ACSettingsBasicSetting
 
-+ (id)settingWithAceString:(id)a3
++ (id)settingWithAceString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:SASettingKeyAirplaneModeValue])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:SASettingKeyAirplaneModeValue])
   {
     v4 = off_8170;
   }
 
-  else if ([v3 isEqualToString:SASettingKeyAssistiveTouchValue])
+  else if ([stringCopy isEqualToString:SASettingKeyAssistiveTouchValue])
   {
     v4 = off_8160;
   }
 
-  else if ([v3 isEqualToString:SASettingKeyBluetoothValue])
+  else if ([stringCopy isEqualToString:SASettingKeyBluetoothValue])
   {
     v4 = off_8188;
   }
 
-  else if ([v3 isEqualToString:SASettingKeyDisplayBrightnessValue])
+  else if ([stringCopy isEqualToString:SASettingKeyDisplayBrightnessValue])
   {
     v4 = off_8190;
   }
 
-  else if ([v3 isEqualToString:SASettingKeyCellularDataValue])
+  else if ([stringCopy isEqualToString:SASettingKeyCellularDataValue])
   {
     v4 = off_8198;
   }
 
-  else if ([v3 isEqualToString:SASettingKeyDoNotDisturbValue])
+  else if ([stringCopy isEqualToString:SASettingKeyDoNotDisturbValue])
   {
     v4 = off_81A8;
   }
 
-  else if ([v3 isEqualToString:SASettingKeyGuidedAccessValue])
+  else if ([stringCopy isEqualToString:SASettingKeyGuidedAccessValue])
   {
     v4 = off_81B0;
   }
 
-  else if ([v3 isEqualToString:SASettingKeyInvertColorsValue])
+  else if ([stringCopy isEqualToString:SASettingKeyInvertColorsValue])
   {
     v4 = off_81B8;
   }
 
-  else if ([v3 isEqualToString:SASettingKeyVoiceOverValue])
+  else if ([stringCopy isEqualToString:SASettingKeyVoiceOverValue])
   {
     v4 = &off_81D8;
   }
 
-  else if ([v3 isEqualToString:SASettingKeyVoiceControlValue])
+  else if ([stringCopy isEqualToString:SASettingKeyVoiceControlValue])
   {
     v4 = off_81A0;
   }
 
-  else if ([v3 isEqualToString:SASettingKeyNoiseCancellationValue])
+  else if ([stringCopy isEqualToString:SASettingKeyNoiseCancellationValue])
   {
     v4 = off_81C0;
   }
 
-  else if ([v3 isEqualToString:SASettingKeyAudioTransparencyValue])
+  else if ([stringCopy isEqualToString:SASettingKeyAudioTransparencyValue])
   {
     v4 = off_8178;
   }
 
-  else if ([v3 isEqualToString:SASettingKeyWiFiValue])
+  else if ([stringCopy isEqualToString:SASettingKeyWiFiValue])
   {
     v4 = off_8168;
   }
 
-  else if ([v3 isEqualToString:SASettingKeyPowerSavingModeValue])
+  else if ([stringCopy isEqualToString:SASettingKeyPowerSavingModeValue])
   {
     v4 = off_81C8;
   }
 
   else
   {
-    v5 = [v3 isEqualToString:SASettingKeyLocationServicesValue];
+    v5 = [stringCopy isEqualToString:SASettingKeyLocationServicesValue];
     v4 = off_8180;
     if (v5)
     {
@@ -92,38 +92,38 @@
     }
   }
 
-  v6 = [(__objc2_class *)*v4 setting];
+  setting = [(__objc2_class *)*v4 setting];
 
-  return v6;
+  return setting;
 }
 
 + (id)setting
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
 - (UIImage)icon
 {
-  v2 = [(ACSettingsBasicSetting *)self settingsDetailClass];
+  settingsDetailClass = [(ACSettingsBasicSetting *)self settingsDetailClass];
 
-  return [(objc_class *)v2 iconImage];
+  return [(objc_class *)settingsDetailClass iconImage];
 }
 
 - (NSURL)preferencesURL
 {
-  v2 = [(ACSettingsBasicSetting *)self settingsDetailClass];
+  settingsDetailClass = [(ACSettingsBasicSetting *)self settingsDetailClass];
 
-  return [(objc_class *)v2 preferencesURL];
+  return [(objc_class *)settingsDetailClass preferencesURL];
 }
 
 - (SiriUISashItem)sashItem
 {
   v3 = [[SiriUISashItem alloc] initWithApplicationBundleIdentifier:@"com.apple.Preferences"];
   v4 = objc_alloc_init(SAUIAppPunchOut);
-  v5 = [(ACSettingsBasicSetting *)self preferencesURL];
-  [v4 setPunchOutUri:v5];
+  preferencesURL = [(ACSettingsBasicSetting *)self preferencesURL];
+  [v4 setPunchOutUri:preferencesURL];
 
   v8 = v4;
   v6 = [NSArray arrayWithObjects:&v8 count:1];

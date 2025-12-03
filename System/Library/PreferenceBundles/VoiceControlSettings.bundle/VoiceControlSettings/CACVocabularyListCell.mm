@@ -1,32 +1,32 @@
 @interface CACVocabularyListCell
-- (BOOL)hasPronunciationWithSpecifier:(id)a3;
-- (CACVocabularyListCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5;
+- (BOOL)hasPronunciationWithSpecifier:(id)specifier;
+- (CACVocabularyListCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier;
 - (CACVocabularyListCellDelegate)delegate;
 - (id)accessibilityCustomActions;
 - (id)accessibilityValue;
-- (id)menuForSpecifier:(id)a3;
+- (id)menuForSpecifier:(id)specifier;
 - (id)newControl;
 - (unint64_t)accessibilityTraits;
 - (void)didTapReRecord;
 - (void)didTapRecord;
 - (void)didTapRemovePronunciation;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
-- (void)willTransitionToState:(unint64_t)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
+- (void)willTransitionToState:(unint64_t)state;
 @end
 
 @implementation CACVocabularyListCell
 
-- (CACVocabularyListCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 specifier:(id)a5
+- (CACVocabularyListCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier specifier:(id)specifier
 {
-  v8 = a5;
+  specifierCopy = specifier;
   v30.receiver = self;
   v30.super_class = CACVocabularyListCell;
-  v9 = [(CACVocabularyListCell *)&v30 initWithStyle:a3 reuseIdentifier:a4 specifier:v8];
+  v9 = [(CACVocabularyListCell *)&v30 initWithStyle:style reuseIdentifier:identifier specifier:specifierCopy];
   v10 = v9;
   if (v9)
   {
-    v11 = [(CACVocabularyListCell *)v9 control];
-    [(CACVocabularyListCell *)v10 setAccessoryView:v11];
+    control = [(CACVocabularyListCell *)v9 control];
+    [(CACVocabularyListCell *)v10 setAccessoryView:control];
 
     v29 = [UIImage systemImageNamed:@"waveform"];
     v12 = [[UIImageView alloc] initWithImage:v29];
@@ -38,46 +38,46 @@
     v15 = +[UIColor secondaryLabelColor];
     [(UIImageView *)v14 setTintColor:v15];
 
-    v16 = [(CACVocabularyListCell *)v10 contentView];
-    [v16 addSubview:v10->_iconView];
+    contentView = [(CACVocabularyListCell *)v10 contentView];
+    [contentView addSubview:v10->_iconView];
 
     [(UIImageView *)v10->_iconView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v28 = [(UIImageView *)v10->_iconView widthAnchor];
-    v27 = [v28 constraintEqualToConstant:24.0];
+    widthAnchor = [(UIImageView *)v10->_iconView widthAnchor];
+    v27 = [widthAnchor constraintEqualToConstant:24.0];
     v31[0] = v27;
-    v25 = [(UIImageView *)v10->_iconView centerYAnchor];
-    v26 = [(CACVocabularyListCell *)v10 contentView];
-    v17 = [v26 centerYAnchor];
-    v18 = [v25 constraintEqualToAnchor:v17];
+    centerYAnchor = [(UIImageView *)v10->_iconView centerYAnchor];
+    contentView2 = [(CACVocabularyListCell *)v10 contentView];
+    centerYAnchor2 = [contentView2 centerYAnchor];
+    v18 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v31[1] = v18;
-    v19 = [(UIImageView *)v10->_iconView trailingAnchor];
-    v20 = [(CACVocabularyListCell *)v10 contentView];
-    v21 = [v20 trailingAnchor];
-    v22 = [v19 constraintEqualToAnchor:v21 constant:-0.0];
+    trailingAnchor = [(UIImageView *)v10->_iconView trailingAnchor];
+    contentView3 = [(CACVocabularyListCell *)v10 contentView];
+    trailingAnchor2 = [contentView3 trailingAnchor];
+    v22 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-0.0];
     v31[2] = v22;
     v23 = [NSArray arrayWithObjects:v31 count:3];
     [NSLayoutConstraint activateConstraints:v23];
 
-    [(UIImageView *)v10->_iconView setHidden:[(CACVocabularyListCell *)v10 hasPronunciationWithSpecifier:v8]^ 1];
+    [(UIImageView *)v10->_iconView setHidden:[(CACVocabularyListCell *)v10 hasPronunciationWithSpecifier:specifierCopy]^ 1];
   }
 
   return v10;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v8.receiver = self;
   v8.super_class = CACVocabularyListCell;
-  v4 = a3;
-  [(CACVocabularyListCell *)&v8 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(CACVocabularyListCell *)&v8 refreshCellContentsWithSpecifier:specifierCopy];
   v5 = [(CACVocabularyListCell *)self control:v8.receiver];
   [(CACVocabularyListCell *)self setAccessoryView:v5];
 
-  [(UIImageView *)self->_iconView setHidden:[(CACVocabularyListCell *)self hasPronunciationWithSpecifier:v4]^ 1];
-  v6 = [(CACVocabularyListCell *)self control];
-  v7 = [(CACVocabularyListCell *)self menuForSpecifier:v4];
+  [(UIImageView *)self->_iconView setHidden:[(CACVocabularyListCell *)self hasPronunciationWithSpecifier:specifierCopy]^ 1];
+  control = [(CACVocabularyListCell *)self control];
+  v7 = [(CACVocabularyListCell *)self menuForSpecifier:specifierCopy];
 
-  [v6 setMenu:v7];
+  [control setMenu:v7];
 }
 
 - (id)newControl
@@ -98,11 +98,11 @@
   return v3;
 }
 
-- (id)menuForSpecifier:(id)a3
+- (id)menuForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v5 = +[NSMutableArray array];
-  v6 = [(CACVocabularyListCell *)self hasPronunciationWithSpecifier:v4];
+  v6 = [(CACVocabularyListCell *)self hasPronunciationWithSpecifier:specifierCopy];
 
   if (v6)
   {
@@ -149,9 +149,9 @@
   return v16;
 }
 
-- (BOOL)hasPronunciationWithSpecifier:(id)a3
+- (BOOL)hasPronunciationWithSpecifier:(id)specifier
 {
-  v3 = [a3 propertyForKey:@"CACVocabularyListItem"];
+  v3 = [specifier propertyForKey:@"CACVocabularyListItem"];
   v4 = +[VCVocabularyObjC pronunciationsKey];
   v5 = [v3 objectForKey:v4];
 
@@ -170,42 +170,42 @@
 
 - (void)didTapReRecord
 {
-  v3 = [(CACVocabularyListCell *)self delegate];
+  delegate = [(CACVocabularyListCell *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(CACVocabularyListCell *)self delegate];
-    [v4 vocabularyListCellDidTapReRecord:self];
+    delegate2 = [(CACVocabularyListCell *)self delegate];
+    [delegate2 vocabularyListCellDidTapReRecord:self];
   }
 }
 
 - (void)didTapRemovePronunciation
 {
-  v3 = [(CACVocabularyListCell *)self delegate];
+  delegate = [(CACVocabularyListCell *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(CACVocabularyListCell *)self delegate];
-    [v4 vocabularyListCellDidTapRemovePronunciation:self];
+    delegate2 = [(CACVocabularyListCell *)self delegate];
+    [delegate2 vocabularyListCellDidTapRemovePronunciation:self];
   }
 }
 
 - (void)didTapRecord
 {
-  v3 = [(CACVocabularyListCell *)self delegate];
+  delegate = [(CACVocabularyListCell *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(CACVocabularyListCell *)self delegate];
-    [v4 vocabularyListCellDidTapRecord:self];
+    delegate2 = [(CACVocabularyListCell *)self delegate];
+    [delegate2 vocabularyListCellDidTapRecord:self];
   }
 }
 
-- (void)willTransitionToState:(unint64_t)a3
+- (void)willTransitionToState:(unint64_t)state
 {
-  v5 = [(CACVocabularyListCell *)self control];
-  v6 = v5;
-  if (a3)
+  control = [(CACVocabularyListCell *)self control];
+  v6 = control;
+  if (state)
   {
     v7 = 0.0;
   }
@@ -215,10 +215,10 @@
     v7 = 1.0;
   }
 
-  [v5 setAlpha:v7];
+  [control setAlpha:v7];
 
-  v8 = [(CACVocabularyListCell *)self iconView];
-  [v8 setAlpha:v7];
+  iconView = [(CACVocabularyListCell *)self iconView];
+  [iconView setAlpha:v7];
 }
 
 - (unint64_t)accessibilityTraits
@@ -232,11 +232,11 @@
 {
   v18.receiver = self;
   v18.super_class = CACVocabularyListCell;
-  v3 = [(CACVocabularyListCell *)&v18 accessibilityCustomActions];
-  v4 = [NSMutableArray arrayWithArray:v3];
+  accessibilityCustomActions = [(CACVocabularyListCell *)&v18 accessibilityCustomActions];
+  v4 = [NSMutableArray arrayWithArray:accessibilityCustomActions];
 
-  v5 = [(CACVocabularyListCell *)self specifier];
-  v6 = [(CACVocabularyListCell *)self hasPronunciationWithSpecifier:v5];
+  specifier = [(CACVocabularyListCell *)self specifier];
+  v6 = [(CACVocabularyListCell *)self hasPronunciationWithSpecifier:specifier];
 
   v7 = [UIAccessibilityCustomAction alloc];
   if (v6)
@@ -281,11 +281,11 @@
 
 - (id)accessibilityValue
 {
-  v2 = self;
-  v3 = [(CACVocabularyListCell *)self specifier];
-  LODWORD(v2) = [(CACVocabularyListCell *)v2 hasPronunciationWithSpecifier:v3];
+  selfCopy = self;
+  specifier = [(CACVocabularyListCell *)self specifier];
+  LODWORD(selfCopy) = [(CACVocabularyListCell *)selfCopy hasPronunciationWithSpecifier:specifier];
 
-  if (v2)
+  if (selfCopy)
   {
     v4 = settingsLocString(@"VOCABULARY_HAS_PRONUNCIATION", @"CommandAndControlSettings");
   }

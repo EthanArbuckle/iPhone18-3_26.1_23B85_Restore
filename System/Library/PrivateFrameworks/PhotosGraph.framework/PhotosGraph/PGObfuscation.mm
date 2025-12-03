@@ -1,21 +1,21 @@
 @interface PGObfuscation
-+ (id)obfuscatedStringFromPlaintextDate:(id)a3 usingDateFormatter:(id)a4;
-+ (id)obfuscatedStringFromPlaintextNumber:(id)a3;
-+ (id)obfuscatedStringFromPlaintextString:(id)a3;
-+ (id)plaintextDateFromObfuscatedString:(id)a3 usingDateFormatter:(id)a4;
-+ (id)plaintextNumberFromObfuscatedString:(id)a3;
-+ (id)plaintextStringFromObfuscatedString:(id)a3;
++ (id)obfuscatedStringFromPlaintextDate:(id)date usingDateFormatter:(id)formatter;
++ (id)obfuscatedStringFromPlaintextNumber:(id)number;
++ (id)obfuscatedStringFromPlaintextString:(id)string;
++ (id)plaintextDateFromObfuscatedString:(id)string usingDateFormatter:(id)formatter;
++ (id)plaintextNumberFromObfuscatedString:(id)string;
++ (id)plaintextStringFromObfuscatedString:(id)string;
 @end
 
 @implementation PGObfuscation
 
-+ (id)plaintextDateFromObfuscatedString:(id)a3 usingDateFormatter:(id)a4
++ (id)plaintextDateFromObfuscatedString:(id)string usingDateFormatter:(id)formatter
 {
-  v5 = a4;
-  v6 = [PGObfuscation plaintextStringFromObfuscatedString:a3];
+  formatterCopy = formatter;
+  v6 = [PGObfuscation plaintextStringFromObfuscatedString:string];
   if (v6)
   {
-    v7 = [v5 dateFromString:v6];
+    v7 = [formatterCopy dateFromString:v6];
   }
 
   else
@@ -26,11 +26,11 @@
   return v7;
 }
 
-+ (id)obfuscatedStringFromPlaintextDate:(id)a3 usingDateFormatter:(id)a4
++ (id)obfuscatedStringFromPlaintextDate:(id)date usingDateFormatter:(id)formatter
 {
-  if (a3)
+  if (date)
   {
-    v4 = [a4 stringFromDate:?];
+    v4 = [formatter stringFromDate:?];
     v5 = [PGObfuscation obfuscatedStringFromPlaintextString:v4];
   }
 
@@ -42,11 +42,11 @@
   return v5;
 }
 
-+ (id)plaintextNumberFromObfuscatedString:(id)a3
++ (id)plaintextNumberFromObfuscatedString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [@"aE45Bhwo2Wf4re1A" dataUsingEncoding:4];
-  v5 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v3 options:0];
+  v5 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:stringCopy options:0];
 
   v6 = [MEMORY[0x277CBEB28] dataWithLength:{objc_msgSend(v5, "length") + 16}];
   v12 = 0;
@@ -72,11 +72,11 @@
   return v7;
 }
 
-+ (id)obfuscatedStringFromPlaintextNumber:(id)a3
++ (id)obfuscatedStringFromPlaintextNumber:(id)number
 {
-  v3 = [a3 stringValue];
+  stringValue = [number stringValue];
   v4 = [@"aE45Bhwo2Wf4re1A" dataUsingEncoding:4];
-  v5 = [v3 dataUsingEncoding:4];
+  v5 = [stringValue dataUsingEncoding:4];
   v6 = [MEMORY[0x277CBEB28] dataWithLength:{objc_msgSend(v5, "length") + 16}];
   v9 = 0;
   v7 = 0;
@@ -89,11 +89,11 @@
   return v7;
 }
 
-+ (id)plaintextStringFromObfuscatedString:(id)a3
++ (id)plaintextStringFromObfuscatedString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [@"aE45Bhwo2Wf4re1A" dataUsingEncoding:4];
-  v5 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v3 options:0];
+  v5 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:stringCopy options:0];
 
   v6 = [MEMORY[0x277CBEB28] dataWithLength:{objc_msgSend(v5, "length") + 16}];
   v9 = 0;
@@ -107,11 +107,11 @@
   return v7;
 }
 
-+ (id)obfuscatedStringFromPlaintextString:(id)a3
++ (id)obfuscatedStringFromPlaintextString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = [@"aE45Bhwo2Wf4re1A" dataUsingEncoding:4];
-  v5 = [v3 dataUsingEncoding:4];
+  v5 = [stringCopy dataUsingEncoding:4];
 
   v6 = [MEMORY[0x277CBEB28] dataWithLength:{objc_msgSend(v5, "length") + 16}];
   v9 = 0;

@@ -1,24 +1,24 @@
 @interface HFZoneSuggestionItemProvider
 - (HFZoneSuggestionItemProvider)init;
-- (HFZoneSuggestionItemProvider)initWithHome:(id)a3;
+- (HFZoneSuggestionItemProvider)initWithHome:(id)home;
 - (id)_zoneSuggestions;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)invalidationReasons;
 - (id)reloadItems;
 @end
 
 @implementation HFZoneSuggestionItemProvider
 
-- (HFZoneSuggestionItemProvider)initWithHome:(id)a3
+- (HFZoneSuggestionItemProvider)initWithHome:(id)home
 {
-  v5 = a3;
+  homeCopy = home;
   v11.receiver = self;
   v11.super_class = HFZoneSuggestionItemProvider;
   v6 = [(HFItemProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_home, a3);
+    objc_storeStrong(&v6->_home, home);
     v8 = [MEMORY[0x277CBEB58] set];
     zoneBuilderItems = v7->_zoneBuilderItems;
     v7->_zoneBuilderItems = v8;
@@ -29,18 +29,18 @@
 
 - (HFZoneSuggestionItemProvider)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFZoneSuggestionItemProvider.m" lineNumber:35 description:{@"%s is unavailable; use %@ instead", "-[HFZoneSuggestionItemProvider init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFZoneSuggestionItemProvider.m" lineNumber:35 description:{@"%s is unavailable; use %@ instead", "-[HFZoneSuggestionItemProvider init]", v5}];
 
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(HFZoneSuggestionItemProvider *)self home];
-  v6 = [v4 initWithHome:v5];
+  home = [(HFZoneSuggestionItemProvider *)self home];
+  v6 = [v4 initWithHome:home];
 
   return v6;
 }
@@ -54,14 +54,14 @@
   aBlock[3] = &unk_277DFEF90;
   objc_copyWeak(&v21, &location);
   v3 = _Block_copy(aBlock);
-  v4 = [(HFZoneSuggestionItemProvider *)self _zoneSuggestions];
-  v5 = [v4 allObjects];
+  _zoneSuggestions = [(HFZoneSuggestionItemProvider *)self _zoneSuggestions];
+  allObjects = [_zoneSuggestions allObjects];
 
-  v6 = [(HFZoneSuggestionItemProvider *)self home];
-  v7 = [v6 zones];
-  v8 = [v7 count];
+  home = [(HFZoneSuggestionItemProvider *)self home];
+  zones = [home zones];
+  v8 = [zones count];
 
-  v9 = [v5 count];
+  v9 = [allObjects count];
   if (v9 >= 2)
   {
     v10 = 2;
@@ -85,7 +85,7 @@
     }
   }
 
-  v11 = [v5 sortedArrayUsingSelector:sel_localizedStandardCompare_];
+  v11 = [allObjects sortedArrayUsingSelector:sel_localizedStandardCompare_];
   v12 = v11;
   if (v10)
   {
@@ -104,8 +104,8 @@
 
   v12 = v13;
 LABEL_13:
-  v14 = [(HFZoneSuggestionItemProvider *)self filter];
-  v15 = [(HFItemProvider *)self reloadItemsWithObjects:v12 keyAdaptor:&__block_literal_global_178 itemAdaptor:&__block_literal_global_15_7 filter:v14 itemMap:v3];
+  filter = [(HFZoneSuggestionItemProvider *)self filter];
+  v15 = [(HFItemProvider *)self reloadItemsWithObjects:v12 keyAdaptor:&__block_literal_global_178 itemAdaptor:&__block_literal_global_15_7 filter:filter itemMap:v3];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __43__HFZoneSuggestionItemProvider_reloadItems__block_invoke_4;
@@ -163,17 +163,17 @@ id __43__HFZoneSuggestionItemProvider_reloadItems__block_invoke_4(uint64_t a1, v
 {
   v5.receiver = self;
   v5.super_class = HFZoneSuggestionItemProvider;
-  v2 = [(HFItemProvider *)&v5 invalidationReasons];
-  v3 = [v2 setByAddingObject:@"room"];
+  invalidationReasons = [(HFItemProvider *)&v5 invalidationReasons];
+  v3 = [invalidationReasons setByAddingObject:@"room"];
 
   return v3;
 }
 
 - (id)_zoneSuggestions
 {
-  v2 = [(HFZoneSuggestionItemProvider *)self home];
-  v3 = [v2 zones];
-  v4 = [v3 copy];
+  home = [(HFZoneSuggestionItemProvider *)self home];
+  zones = [home zones];
+  v4 = [zones copy];
 
   v5 = MEMORY[0x277CBEB98];
   v6 = _HFLocalizedStringWithDefaultValue(@"HFZoneSuggestionMainLevel", @"HFZoneSuggestionMainLevel", 1);

@@ -1,29 +1,29 @@
 @interface CoachingView
-- (void)coachingOverlayViewDidDeactivate:(id)a3;
-- (void)coachingOverlayViewDidRequestSessionReset:(id)a3;
-- (void)coachingOverlayViewWillActivate:(id)a3;
+- (void)coachingOverlayViewDidDeactivate:(id)deactivate;
+- (void)coachingOverlayViewDidRequestSessionReset:(id)reset;
+- (void)coachingOverlayViewWillActivate:(id)activate;
 @end
 
 @implementation CoachingView
 
-- (void)coachingOverlayViewWillActivate:(id)a3
+- (void)coachingOverlayViewWillActivate:(id)activate
 {
-  v4 = a3;
-  v5 = self;
+  activateCopy = activate;
+  selfCopy = self;
   sub_1000441DC();
 }
 
-- (void)coachingOverlayViewDidDeactivate:(id)a3
+- (void)coachingOverlayViewDidDeactivate:(id)deactivate
 {
-  v4 = a3;
-  v5 = self;
+  deactivateCopy = deactivate;
+  selfCopy = self;
   sub_1000443A0();
 }
 
-- (void)coachingOverlayViewDidRequestSessionReset:(id)a3
+- (void)coachingOverlayViewDidRequestSessionReset:(id)reset
 {
-  v4 = a3;
-  v5 = self;
+  resetCopy = reset;
+  selfCopy = self;
   sub_10004452C();
 }
 

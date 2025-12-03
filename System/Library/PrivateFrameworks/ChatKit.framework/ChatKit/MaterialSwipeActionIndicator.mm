@@ -1,9 +1,9 @@
 @interface MaterialSwipeActionIndicator
 - (CGSize)preferredSize;
-- (_TtC7ChatKit28MaterialSwipeActionIndicator)initWithFrame:(CGRect)a3;
+- (_TtC7ChatKit28MaterialSwipeActionIndicator)initWithFrame:(CGRect)frame;
 - (double)blurRadius;
 - (void)layoutSubviews;
-- (void)setBlurRadius:(double)a3;
+- (void)setBlurRadius:(double)radius;
 @end
 
 @implementation MaterialSwipeActionIndicator
@@ -18,24 +18,24 @@
 
 - (double)blurRadius
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_190A86BA4();
 
   return v3;
 }
 
-- (void)setBlurRadius:(double)a3
+- (void)setBlurRadius:(double)radius
 {
-  v3 = self;
+  selfCopy = self;
   sub_190921D3C();
 }
 
-- (_TtC7ChatKit28MaterialSwipeActionIndicator)initWithFrame:(CGRect)a3
+- (_TtC7ChatKit28MaterialSwipeActionIndicator)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC7ChatKit28MaterialSwipeActionIndicator_vibrancyStroke;
   if (qword_1EAD51A08 != -1)
   {
@@ -56,7 +56,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_190922278();
 }
 

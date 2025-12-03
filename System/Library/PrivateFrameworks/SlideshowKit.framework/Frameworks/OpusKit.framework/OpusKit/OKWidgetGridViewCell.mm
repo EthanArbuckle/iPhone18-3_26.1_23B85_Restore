@@ -1,17 +1,17 @@
 @interface OKWidgetGridViewCell
-- (OKWidgetGridViewCell)initWithFrame:(CGRect)a3;
+- (OKWidgetGridViewCell)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setWidgetView:(id)a3;
+- (void)setWidgetView:(id)view;
 @end
 
 @implementation OKWidgetGridViewCell
 
-- (OKWidgetGridViewCell)initWithFrame:(CGRect)a3
+- (OKWidgetGridViewCell)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = OKWidgetGridViewCell;
-  result = [(OKWidgetGridViewCell *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(OKWidgetGridViewCell *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_widgetView = 0;
@@ -43,7 +43,7 @@
   [(OKWidgetViewProxy *)self->_widgetView setFrame:?];
 }
 
-- (void)setWidgetView:(id)a3
+- (void)setWidgetView:(id)view
 {
   widgetView = self->_widgetView;
   if (widgetView)
@@ -52,15 +52,15 @@
     self->_widgetView = 0;
   }
 
-  if (a3)
+  if (view)
   {
-    self->_widgetView = a3;
+    self->_widgetView = view;
     [(OKWidgetGridViewCell *)self bounds];
     [(OKWidgetViewProxy *)self->_widgetView setFrame:?];
-    v6 = [(OKWidgetGridViewCell *)self contentView];
+    contentView = [(OKWidgetGridViewCell *)self contentView];
     v7 = self->_widgetView;
 
-    [v6 addSubview:v7];
+    [contentView addSubview:v7];
   }
 }
 

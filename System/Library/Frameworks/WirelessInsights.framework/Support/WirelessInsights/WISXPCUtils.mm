@@ -1,26 +1,26 @@
 @interface WISXPCUtils
-+ (id)dictionaryFromPrimitivesXPCDict:(dict)a3 error:(id *)a4;
-+ (id)extractValueFromDict:(id)a3 atKey:(id)a4 ofExpectedClass:(Class)a5 error:(id *)a6;
-+ (id)extractValueFromDict:(id)a3 atKey:(id)a4 ofExpectedClass:(Class)a5 orDefault:(id)a6;
-+ (void)setError:(id *)a3 code:(int64_t)a4 message:(id)a5;
++ (id)dictionaryFromPrimitivesXPCDict:(dict)dict error:(id *)error;
++ (id)extractValueFromDict:(id)dict atKey:(id)key ofExpectedClass:(Class)class error:(id *)error;
++ (id)extractValueFromDict:(id)dict atKey:(id)key ofExpectedClass:(Class)class orDefault:(id)default;
++ (void)setError:(id *)error code:(int64_t)code message:(id)message;
 @end
 
 @implementation WISXPCUtils
 
-+ (id)dictionaryFromPrimitivesXPCDict:(dict)a3 error:(id *)a4
++ (id)dictionaryFromPrimitivesXPCDict:(dict)dict error:(id *)error
 {
   v6 = objc_alloc_init(NSMutableDictionary);
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v7 = *a3.var0.fObj;
+  v7 = *dict.var0.fObj;
   v11 = _NSConcreteStackBlock;
   v12 = 3321888768;
   v13 = sub_10009E460;
   v14 = &unk_1002AEA60;
   v16 = &v19;
-  v17 = a4;
+  errorCopy = error;
   object = v7;
   if (v7)
   {
@@ -52,30 +52,30 @@
   return v9;
 }
 
-+ (id)extractValueFromDict:(id)a3 atKey:(id)a4 ofExpectedClass:(Class)a5 error:(id *)a6
++ (id)extractValueFromDict:(id)dict atKey:(id)key ofExpectedClass:(Class)class error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  dictCopy = dict;
+  keyCopy = key;
+  if (dictCopy)
   {
-    v10 = [v8 objectForKey:v9];
-    if (v10)
+    keyCopy2 = [dictCopy objectForKey:keyCopy];
+    if (keyCopy2)
     {
       if (objc_opt_isKindOfClass())
       {
-        v10 = v10;
-        v11 = v10;
+        keyCopy2 = keyCopy2;
+        v11 = keyCopy2;
         goto LABEL_9;
       }
 
-      v12 = [NSString stringWithFormat:@"Value for key %@ is not of expected class", v9];
-      [WISXPCUtils setError:a6 code:0 message:v12];
+      keyCopy = [NSString stringWithFormat:@"Value for key %@ is not of expected class", keyCopy];
+      [WISXPCUtils setError:error code:0 message:keyCopy];
     }
 
     else
     {
-      v12 = [NSString stringWithFormat:@"Value for key %@ is null", v9];
-      [WISXPCUtils setError:a6 code:0 message:v12];
+      keyCopy = [NSString stringWithFormat:@"Value for key %@ is null", keyCopy];
+      [WISXPCUtils setError:error code:0 message:keyCopy];
     }
 
     v11 = 0;
@@ -83,9 +83,9 @@
 
   else
   {
-    v10 = [NSString stringWithFormat:@"Cannot extract key %@, dict is null", v9];
+    keyCopy2 = [NSString stringWithFormat:@"Cannot extract key %@, dict is null", keyCopy];
     v11 = 0;
-    [WISXPCUtils setError:a6 code:0 message:v10];
+    [WISXPCUtils setError:error code:0 message:keyCopy2];
   }
 
 LABEL_9:
@@ -93,11 +93,11 @@ LABEL_9:
   return v11;
 }
 
-+ (id)extractValueFromDict:(id)a3 atKey:(id)a4 ofExpectedClass:(Class)a5 orDefault:(id)a6
++ (id)extractValueFromDict:(id)dict atKey:(id)key ofExpectedClass:(Class)class orDefault:(id)default
 {
-  v9 = a6;
+  defaultCopy = default;
   v16 = 0;
-  v10 = [WISXPCUtils extractValueFromDict:a3 atKey:a4 ofExpectedClass:a5 error:&v16];
+  v10 = [WISXPCUtils extractValueFromDict:dict atKey:key ofExpectedClass:class error:&v16];
   v11 = v10;
   if (v10)
   {
@@ -116,7 +116,7 @@ LABEL_9:
 
   else
   {
-    v13 = v9;
+    v13 = defaultCopy;
   }
 
   v14 = v13;
@@ -124,13 +124,13 @@ LABEL_9:
   return v14;
 }
 
-+ (void)setError:(id *)a3 code:(int64_t)a4 message:(id)a5
++ (void)setError:(id *)error code:(int64_t)code message:(id)message
 {
-  v7 = a5;
+  messageCopy = message;
   v9 = NSLocalizedDescriptionKey;
-  v10 = v7;
+  v10 = messageCopy;
   v8 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-  *a3 = [NSError errorWithDomain:@"WISXPCUtils" code:a4 userInfo:v8];
+  *error = [NSError errorWithDomain:@"WISXPCUtils" code:code userInfo:v8];
 }
 
 @end

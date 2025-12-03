@@ -1,9 +1,9 @@
 @interface CADEventOccurrenceSet
-- ($44047BC61FEF0381D9BD0B01E075E58F)infoForDB:(int)a3;
+- ($44047BC61FEF0381D9BD0B01E075E58F)infoForDB:(int)b;
 - (void)clear;
 - (void)dealloc;
-- (void)enumerateDatabases:(id)a3;
-- (void)enumerateOccurrenceRowIDsInDatabase:(int)a3 block:(id)a4;
+- (void)enumerateDatabases:(id)databases;
+- (void)enumerateOccurrenceRowIDsInDatabase:(int)database block:(id)block;
 @end
 
 @implementation CADEventOccurrenceSet
@@ -45,7 +45,7 @@
   self->_hasInvalidDates = 0;
 }
 
-- ($44047BC61FEF0381D9BD0B01E075E58F)infoForDB:(int)a3
+- ($44047BC61FEF0381D9BD0B01E075E58F)infoForDB:(int)b
 {
   dbCount = self->_dbCount;
   if (dbCount < 1)
@@ -80,7 +80,7 @@ LABEL_5:
       dbs = self->_dbs;
     }
 
-    dbs[dbCount].var0 = a3;
+    dbs[dbCount].var0 = b;
     self->_dbs[dbCount].var1 = CFDictionaryCreateMutable(0, 0, 0, 0);
     ++self->_dbCount;
     return &self->_dbs[dbCount];
@@ -90,7 +90,7 @@ LABEL_5:
   {
     result = self->_dbs;
     v7 = dbCount;
-    while (result->var0 != a3)
+    while (result->var0 != b)
     {
       ++result;
       if (!--v7)
@@ -103,9 +103,9 @@ LABEL_5:
   return result;
 }
 
-- (void)enumerateDatabases:(id)a3
+- (void)enumerateDatabases:(id)databases
 {
-  v10 = a3;
+  databasesCopy = databases;
   Mutable = CFArrayCreateMutable(0, self->_dbCount, 0);
   if (self->_dbCount >= 1)
   {
@@ -125,7 +125,7 @@ LABEL_5:
       for (i = 0; i != dbCount; ++i)
       {
         ValueAtIndex = CFArrayGetValueAtIndex(Mutable, i);
-        v10[2](v10, ValueAtIndex);
+        databasesCopy[2](databasesCopy, ValueAtIndex);
       }
     }
   }
@@ -133,14 +133,14 @@ LABEL_5:
   CFRelease(Mutable);
 }
 
-- (void)enumerateOccurrenceRowIDsInDatabase:(int)a3 block:(id)a4
+- (void)enumerateOccurrenceRowIDsInDatabase:(int)database block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   dbCount = self->_dbCount;
   if (dbCount >= 1)
   {
     p_var1 = &self->_dbs->var1;
-    while (*(p_var1 - 2) != a3)
+    while (*(p_var1 - 2) != database)
     {
       p_var1 += 2;
       if (!--dbCount)
@@ -152,7 +152,7 @@ LABEL_5:
     v9 = *p_var1;
     if (*p_var1)
     {
-      v14 = v6;
+      v14 = blockCopy;
       Count = CFDictionaryGetCount(v9);
       v11 = malloc_type_malloc(8 * Count, 0x100004000313F17uLL);
       CFDictionaryGetKeysAndValues(v9, v11, 0);
@@ -170,7 +170,7 @@ LABEL_5:
       }
 
       free(v11);
-      v6 = v14;
+      blockCopy = v14;
     }
   }
 

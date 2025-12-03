@@ -1,19 +1,19 @@
 @interface WBSURLCredentialCache
-- (WBSURLCredentialCache)initWithCachingMode:(int64_t)a3 credentialFetchBlock:(id)a4;
-- (WBSURLCredentialCache)initWithCredentialFetchBlock:(id)a3;
+- (WBSURLCredentialCache)initWithCachingMode:(int64_t)mode credentialFetchBlock:(id)block;
+- (WBSURLCredentialCache)initWithCredentialFetchBlock:(id)block;
 @end
 
 @implementation WBSURLCredentialCache
 
-- (WBSURLCredentialCache)initWithCredentialFetchBlock:(id)a3
+- (WBSURLCredentialCache)initWithCredentialFetchBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v12.receiver = self;
   v12.super_class = WBSURLCredentialCache;
   v5 = [(WBSURLCredentialCache *)&v12 init];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(blockCopy);
     credentialFetchBlock = v5->_credentialFetchBlock;
     v5->_credentialFetchBlock = v6;
 
@@ -27,16 +27,16 @@
   return v5;
 }
 
-- (WBSURLCredentialCache)initWithCachingMode:(int64_t)a3 credentialFetchBlock:(id)a4
+- (WBSURLCredentialCache)initWithCachingMode:(int64_t)mode credentialFetchBlock:(id)block
 {
-  v6 = a4;
-  if (!a3)
+  blockCopy = block;
+  if (!mode)
   {
     v7 = off_1E7CEF8E8;
     goto LABEL_5;
   }
 
-  if (a3 == 1)
+  if (mode == 1)
   {
     v7 = off_1E7CEF7C8;
 LABEL_5:
@@ -45,7 +45,7 @@ LABEL_5:
     self = v8;
   }
 
-  v9 = [(WBSURLCredentialCache *)self initWithCredentialFetchBlock:v6];
+  v9 = [(WBSURLCredentialCache *)self initWithCredentialFetchBlock:blockCopy];
 
   return v9;
 }

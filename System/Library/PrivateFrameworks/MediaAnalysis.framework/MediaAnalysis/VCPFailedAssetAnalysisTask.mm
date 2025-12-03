@@ -1,14 +1,14 @@
 @interface VCPFailedAssetAnalysisTask
-+ (id)taskWithPhotoLibrary:(id)a3 options:(id)a4;
++ (id)taskWithPhotoLibrary:(id)library options:(id)options;
 - (int)mainInternal;
 @end
 
 @implementation VCPFailedAssetAnalysisTask
 
-+ (id)taskWithPhotoLibrary:(id)a3 options:(id)a4
++ (id)taskWithPhotoLibrary:(id)library options:(id)options
 {
-  v4 = a3;
-  v5 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:v4];
+  libraryCopy = library;
+  v5 = [objc_alloc(objc_opt_class()) initWithPhotoLibrary:libraryCopy];
 
   return v5;
 }
@@ -45,19 +45,19 @@
   }
 
   v117 = v8;
-  v9 = [(VCPTask *)self photoLibrary];
-  v10 = [v9 isCloudPhotoLibraryEnabled];
+  photoLibrary = [(VCPTask *)self photoLibrary];
+  isCloudPhotoLibraryEnabled = [photoLibrary isCloudPhotoLibraryEnabled];
 
-  if (v10)
+  if (isCloudPhotoLibraryEnabled)
   {
     v11 = +[VCPInternetReachability sharedInstance];
-    v12 = [v11 hasWifiOrEthernetConnection];
+    hasWifiOrEthernetConnection = [v11 hasWifiOrEthernetConnection];
 
-    if (v12)
+    if (hasWifiOrEthernetConnection)
     {
-      v13 = [(VCPTask *)self cancel];
+      cancel = [(VCPTask *)self cancel];
       v14 = +[VCPDownloadManager sharedManager];
-      [v14 setCancel:v13];
+      [v14 setCancel:cancel];
 
       v109 = 1;
 LABEL_17:
@@ -67,7 +67,7 @@ LABEL_17:
 
     if (MediaAnalysisLogLevel() >= 6)
     {
-      v13 = &_os_log_default;
+      cancel = &_os_log_default;
       v15 = &_os_log_default;
       v16 = VCPLogToOSLogType[6];
       if (os_log_type_enabled(&_os_log_default, v16))
@@ -83,24 +83,24 @@ LABEL_17:
 
   v109 = 0;
 LABEL_19:
-  v17 = [(VCPTask *)self photoLibrary];
-  v113 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v17];
+  photoLibrary2 = [(VCPTask *)self photoLibrary];
+  v113 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:photoLibrary2];
 
   if (+[MADManagedProcessingStatus isMACDPersistEnabled])
   {
-    v18 = [(VCPTask *)self photoLibrary];
+    photoLibrary3 = [(VCPTask *)self photoLibrary];
     v140 = 0;
     v141[0] = _NSConcreteStackBlock;
     v141[1] = 3221225472;
     v141[2] = sub_100106120;
     v141[3] = &unk_100282F90;
     v141[4] = v117;
-    v19 = [v18 mad_performAnalysisDataStoreChanges:v141 error:&v140];
+    v19 = [photoLibrary3 mad_performAnalysisDataStoreChanges:v141 error:&v140];
     v20 = v140;
 
     if (!v19)
     {
-      v110 = [v20 code];
+      code = [v20 code];
       goto LABEL_193;
     }
 
@@ -115,30 +115,30 @@ LABEL_19:
     goto LABEL_194;
   }
 
-  v30 = [v113 commit];
-  if (v30 == -108 || v30 == -36)
+  commit = [v113 commit];
+  if (commit == -108 || commit == -36)
   {
-    v19 = v30;
+    v19 = commit;
   }
 
   else
   {
-    v19 = v30;
-    if (v30 != -23)
+    v19 = commit;
+    if (commit != -23)
     {
       v19 = v27;
     }
   }
 
-  if (v30 != -108 && v30 != -36 && v30 != -23)
+  if (commit != -108 && commit != -36 && commit != -23)
   {
 LABEL_22:
     if (+[MADManagedProcessingStatus isMACDReadEnabled])
     {
-      v21 = [(VCPTask *)self photoLibrary];
-      v22 = [v21 mad_fetchRequest];
+      photoLibrary4 = [(VCPTask *)self photoLibrary];
+      mad_fetchRequest = [photoLibrary4 mad_fetchRequest];
       v139 = 0;
-      v23 = [v22 fetchLocalIdentifiersEligibleForRetry:&v139 taskID:v117 fetchLimit:1000000];
+      v23 = [mad_fetchRequest fetchLocalIdentifiersEligibleForRetry:&v139 taskID:v117 fetchLimit:1000000];
       v24 = v139;
 
       if (v23 == -108 || v23 == -36)
@@ -148,7 +148,7 @@ LABEL_22:
 
       else
       {
-        v110 = v23;
+        code = v23;
         if (v23 == -23)
         {
           goto LABEL_48;
@@ -157,7 +157,7 @@ LABEL_22:
         v25 = v19;
       }
 
-      v110 = v25;
+      code = v25;
 LABEL_48:
       if (v23 == -108 || v23 == -36)
       {
@@ -185,7 +185,7 @@ LABEL_48:
 
     else
     {
-      v110 = v28;
+      code = v28;
       if (v28 == -23)
       {
 LABEL_42:
@@ -197,7 +197,7 @@ LABEL_42:
 LABEL_51:
         if (![v20 count])
         {
-          v110 = 0;
+          code = 0;
           goto LABEL_193;
         }
 
@@ -216,11 +216,11 @@ LABEL_51:
         }
 
         v35 = [v20 count];
-        v36 = [(VCPTask *)self progressHandler];
-        v112 = [VCPProgressReporter reporterWithIntervalSeconds:10 andTotalJobCount:v35 andBlock:v36];
+        progressHandler = [(VCPTask *)self progressHandler];
+        v112 = [VCPProgressReporter reporterWithIntervalSeconds:10 andTotalJobCount:v35 andBlock:progressHandler];
 
-        v37 = [(VCPTask *)self photoLibrary];
-        v103 = [VCPPhotosAssetChangeManager managerForPhotoLibrary:v37];
+        photoLibrary5 = [(VCPTask *)self photoLibrary];
+        v103 = [VCPPhotosAssetChangeManager managerForPhotoLibrary:photoLibrary5];
 
         if (!v103)
         {
@@ -234,15 +234,15 @@ LABEL_51:
             }
           }
 
-          v110 = -18;
+          code = -18;
           goto LABEL_192;
         }
 
         v38 = v104;
         if (+[VCPVideoCNNAnalyzer isMUBackboneEnabled])
         {
-          v39 = [(VCPTask *)self photoLibrary];
-          v102 = [MADVectorDatabaseChangeManager sharedManagerForPhotoLibrary:v39];
+          photoLibrary6 = [(VCPTask *)self photoLibrary];
+          v102 = [MADVectorDatabaseChangeManager sharedManagerForPhotoLibrary:photoLibrary6];
 
           v38 = v104;
           if (!v102)
@@ -279,22 +279,22 @@ LABEL_76:
 LABEL_166:
           if (+[VCPDatabaseWriter isLegacyPersistEnabled])
           {
-            v90 = [v113 commit];
-            if (v90 == -108 || v90 == -36)
+            commit2 = [v113 commit];
+            if (commit2 == -108 || commit2 == -36)
             {
-              v91 = v90;
+              v91 = commit2;
             }
 
             else
             {
-              v91 = v90;
-              if (v90 != -23)
+              v91 = commit2;
+              if (commit2 != -23)
               {
-                v91 = v110;
+                v91 = code;
               }
             }
 
-            if (v90 == -108 || v90 == -36 || v90 == -23)
+            if (commit2 == -108 || commit2 == -36 || commit2 == -23)
             {
               v41 = v91;
               goto LABEL_190;
@@ -304,8 +304,8 @@ LABEL_166:
           v92 = +[VCPDownloadManager sharedManager];
           [v92 flush];
 
-          v110 = [v102 publishPendingChanges];
-          if (v110)
+          code = [v102 publishPendingChanges];
+          if (code)
           {
             if (MediaAnalysisLogLevel() >= 3)
             {
@@ -324,7 +324,7 @@ LABEL_192:
             v20 = v104;
 LABEL_193:
 
-            v19 = v110;
+            v19 = code;
             goto LABEL_194;
           }
 
@@ -354,15 +354,15 @@ LABEL_193:
 
           v41 = v114;
 LABEL_190:
-          v110 = v41;
+          code = v41;
           goto LABEL_191;
         }
 
         context = objc_autoreleasePoolPush();
         [v104 count];
         v106 = [v104 subarrayWithRange:?];
-        v43 = [(VCPTask *)self photoLibrary];
-        v107 = [PHAsset vcp_fetchOptionsForLibrary:v43 forTaskID:v117];
+        photoLibrary7 = [(VCPTask *)self photoLibrary];
+        v107 = [PHAsset vcp_fetchOptionsForLibrary:photoLibrary7 forTaskID:v117];
 
         v44 = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:0];
         v146 = v44;
@@ -395,8 +395,8 @@ LABEL_163:
 
           v47 = objc_autoreleasePoolPush();
           v48 = [v121 objectAtIndexedSubscript:i];
-          v49 = [v48 localIdentifier];
-          v122 = [NSString stringWithFormat:@"[LegacyFailed][%@]", v49];
+          localIdentifier = [v48 localIdentifier];
+          v122 = [NSString stringWithFormat:@"[LegacyFailed][%@]", localIdentifier];
 
           if (MediaAnalysisLogLevel() >= 6)
           {
@@ -429,15 +429,15 @@ LABEL_140:
         [v52 pet];
 
         v120 = [PHAssetResource vcp_allAcceptableResourcesForAsset:v48];
-        v53 = [(VCPTask *)self photoLibrary];
-        if ([v53 isCloudPhotoLibraryEnabled])
+        photoLibrary8 = [(VCPTask *)self photoLibrary];
+        if ([photoLibrary8 isCloudPhotoLibraryEnabled])
         {
           if ([v48 vcp_isLivePhoto])
           {
 
 LABEL_88:
-            v54 = [v48 vcp_fullAnalysisTypes];
-            if ([v48 vcp_fullAnalysisTypesForResources:v120] != v54)
+            vcp_fullAnalysisTypes = [v48 vcp_fullAnalysisTypes];
+            if ([v48 vcp_fullAnalysisTypesForResources:v120] != vcp_fullAnalysisTypes)
             {
               if (v109)
               {
@@ -503,9 +503,9 @@ LABEL_139:
               _os_signpost_emit_with_name_impl(&_mh_execute_header, v59, OS_SIGNPOST_INTERVAL_BEGIN, v57, "VCPFailedAssetAnalysisTask_UnpackComputeSync", "", buf, 2u);
             }
 
-            v115 = [v120 mad_computeSyncResource];
-            v60 = [(VCPTask *)self cancel];
-            v118 = [v115 mad_existingAnalysisFromComputeSyncForAsset:v48 allowDownload:0 cancel:v60];
+            mad_computeSyncResource = [v120 mad_computeSyncResource];
+            cancel2 = [(VCPTask *)self cancel];
+            v118 = [mad_computeSyncResource mad_existingAnalysisFromComputeSyncForAsset:v48 allowDownload:0 cancel:cancel2];
 
             v61 = VCPSignPostLog();
             v62 = v61;
@@ -515,14 +515,14 @@ LABEL_139:
               _os_signpost_emit_with_name_impl(&_mh_execute_header, v62, OS_SIGNPOST_INTERVAL_END, v57, "VCPFailedAssetAnalysisTask_UnpackComputeSync", "", buf, 2u);
             }
 
-            v63 = [v118 fullAnalysisResults];
-            v64 = v63 == 0;
+            fullAnalysisResults = [v118 fullAnalysisResults];
+            v64 = fullAnalysisResults == 0;
 
             if (!v64)
             {
-              v65 = [v118 fullAnalysisResults];
+              fullAnalysisResults2 = [v118 fullAnalysisResults];
               v66 = v137;
-              v137 = v65;
+              v137 = fullAnalysisResults2;
 
               v55 = [(VCPBackgroundAnalysisTask *)self missingAnalysisForAsset:v48 withExistingComputeSyncAnalysis:&v137 resources:v120 forLocalResourcesOnly:v119 ^ 1];
               if (MediaAnalysisLogLevel() >= 5)
@@ -548,12 +548,12 @@ LABEL_139:
             v135 = 0;
             if (+[MADManagedProcessingStatus isMACDReadEnabled])
             {
-              v70 = [(VCPTask *)self photoLibrary];
-              v71 = [v70 mad_fetchRequest];
+              photoLibrary9 = [(VCPTask *)self photoLibrary];
+              mad_fetchRequest2 = [photoLibrary9 mad_fetchRequest];
               v134 = 0;
               v133 = 0;
-              v72 = [v48 localIdentifier];
-              [v71 fetchProcessingStatus:&v136 attempts:&v135 lastAttemptDate:&v134 nextAttemptDate:&v133 localIdentifier:v72 taskID:v117];
+              localIdentifier2 = [v48 localIdentifier];
+              [mad_fetchRequest2 fetchProcessingStatus:&v136 attempts:&v135 lastAttemptDate:&v134 nextAttemptDate:&v133 localIdentifier:localIdentifier2 taskID:v117];
               v73 = v134;
               v74 = v133;
             }
@@ -562,8 +562,8 @@ LABEL_139:
             {
               v131 = 0;
               v132 = 0;
-              v70 = [v48 localIdentifier];
-              [v113 queryProcessingStatus:&v136 attempts:&v135 lastAttemptDate:&v132 andNextAttemptDate:&v131 forLocalIdentifier:v70 andTaskID:v117];
+              photoLibrary9 = [v48 localIdentifier];
+              [v113 queryProcessingStatus:&v136 attempts:&v135 lastAttemptDate:&v132 andNextAttemptDate:&v131 forLocalIdentifier:photoLibrary9 andTaskID:v117];
               v73 = v132;
               v74 = v131;
             }
@@ -586,7 +586,7 @@ LABEL_139:
             v76 = +[NSDate now];
             if (+[MADManagedProcessingStatus isMACDPersistEnabled])
             {
-              v77 = [(VCPTask *)self photoLibrary];
+              photoLibrary10 = [(VCPTask *)self photoLibrary];
               v126[0] = _NSConcreteStackBlock;
               v126[1] = 3221225472;
               v126[2] = sub_10010612C;
@@ -596,12 +596,12 @@ LABEL_139:
               v129 = v117;
               v128 = v76;
               v125 = 0;
-              v78 = [v77 mad_performAnalysisDataStoreChanges:v126 error:&v125];
+              v78 = [photoLibrary10 mad_performAnalysisDataStoreChanges:v126 error:&v125];
               v79 = v125;
 
               if ((v78 & 1) == 0)
               {
-                v110 = [v79 code];
+                code = [v79 code];
               }
 
               if (v78)
@@ -614,12 +614,12 @@ LABEL_121:
                 [v80 setPreviousStatus:v136];
                 [v80 setPreviousAttempts:v135];
                 [v80 setLastAttemptDate:v73];
-                v81 = [(VCPTask *)self cancel];
-                [v80 setCancel:v81];
+                cancel3 = [(VCPTask *)self cancel];
+                [v80 setCancel:cancel3];
 
                 [v80 start];
-                v82 = [v80 error];
-                if (v82)
+                error = [v80 error];
+                if (error)
                 {
                   v51 = 38;
                 }
@@ -630,9 +630,9 @@ LABEL_121:
                 }
 
                 v83 = v114;
-                if (v82)
+                if (error)
                 {
-                  v83 = v82;
+                  v83 = error;
                 }
 
                 v114 = v83;
@@ -664,24 +664,24 @@ LABEL_121:
 
               if (v84 != -108 && v84 != -36 && v84 != -23)
               {
-                v86 = [v113 commit];
+                commit3 = [v113 commit];
                 v51 = 38;
-                if (v86 == -108 || v86 == -36)
+                if (commit3 == -108 || commit3 == -36)
                 {
-                  v114 = v86;
+                  v114 = commit3;
                 }
 
                 else
                 {
-                  v114 = v86;
-                  if (v86 != -23)
+                  v114 = commit3;
+                  if (commit3 != -23)
                   {
                     v51 = 0;
                     v114 = v85;
                   }
                 }
 
-                if (v86 == -108 || v86 == -36 || v86 == -23)
+                if (commit3 == -108 || commit3 == -36 || commit3 == -23)
                 {
                   goto LABEL_137;
                 }
@@ -699,9 +699,9 @@ LABEL_137:
 
           if ([v48 isVideo] && (objc_msgSend(v48, "vcp_isVideoSlowmo") & 1) == 0)
           {
-            v89 = [v48 vcp_isLongMovie];
+            vcp_isLongMovie = [v48 vcp_isLongMovie];
 
-            if (v89)
+            if (vcp_isLongMovie)
             {
               goto LABEL_96;
             }
@@ -716,7 +716,7 @@ LABEL_137:
       v29 = v19;
     }
 
-    v110 = v29;
+    code = v29;
     goto LABEL_42;
   }
 

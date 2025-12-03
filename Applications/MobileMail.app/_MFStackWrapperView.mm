@@ -1,16 +1,16 @@
 @interface _MFStackWrapperView
-- (_MFStackWrapperView)initWithFrame:(CGRect)a3;
-- (void)addWrappedView:(id)a3;
-- (void)setStackWrapperViewState:(unint64_t)a3;
+- (_MFStackWrapperView)initWithFrame:(CGRect)frame;
+- (void)addWrappedView:(id)view;
+- (void)setStackWrapperViewState:(unint64_t)state;
 @end
 
 @implementation _MFStackWrapperView
 
-- (_MFStackWrapperView)initWithFrame:(CGRect)a3
+- (_MFStackWrapperView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = _MFStackWrapperView;
-  v3 = [(_MFStackWrapperView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_MFStackWrapperView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -22,48 +22,48 @@
     v6 = [(_MFStackLoadingView *)v5 initWithFrame:?];
     [(_MFStackWrapperView *)v4 setLoadingView:v6];
 
-    v7 = [(_MFStackWrapperView *)v4 loadingView];
-    [v7 setAutoresizingMask:18];
+    loadingView = [(_MFStackWrapperView *)v4 loadingView];
+    [loadingView setAutoresizingMask:18];
 
-    v8 = [(_MFStackWrapperView *)v4 loadingView];
-    v9 = [v8 activityIndicatorView];
-    [v9 startAnimating];
+    loadingView2 = [(_MFStackWrapperView *)v4 loadingView];
+    activityIndicatorView = [loadingView2 activityIndicatorView];
+    [activityIndicatorView startAnimating];
 
-    v10 = [(_MFStackWrapperView *)v4 loadingView];
-    [(_MFStackWrapperView *)v4 addSubview:v10];
+    loadingView3 = [(_MFStackWrapperView *)v4 loadingView];
+    [(_MFStackWrapperView *)v4 addSubview:loadingView3];
   }
 
   return v4;
 }
 
-- (void)addWrappedView:(id)a3
+- (void)addWrappedView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   [(_MFStackWrapperView *)self bounds];
-  [v5 setFrame:?];
-  [v5 setAutoresizingMask:18];
+  [viewCopy setFrame:?];
+  [viewCopy setAutoresizingMask:18];
   if ([(_MFStackWrapperView *)self stackWrapperViewState])
   {
-    [(_MFStackWrapperView *)self addSubview:v5];
+    [(_MFStackWrapperView *)self addSubview:viewCopy];
   }
 
   else
   {
-    v4 = [(_MFStackWrapperView *)self loadingView];
-    [(_MFStackWrapperView *)self insertSubview:v5 below:v4];
+    loadingView = [(_MFStackWrapperView *)self loadingView];
+    [(_MFStackWrapperView *)self insertSubview:viewCopy below:loadingView];
   }
 
-  [(_MFStackWrapperView *)self setMessageContentView:v5];
+  [(_MFStackWrapperView *)self setMessageContentView:viewCopy];
 }
 
-- (void)setStackWrapperViewState:(unint64_t)a3
+- (void)setStackWrapperViewState:(unint64_t)state
 {
-  if (self->_stackWrapperViewState != a3)
+  if (self->_stackWrapperViewState != state)
   {
-    self->_stackWrapperViewState = a3;
-    v3 = a3 == 1;
-    v4 = [(_MFStackWrapperView *)self loadingView];
-    [v4 setHidden:v3];
+    self->_stackWrapperViewState = state;
+    v3 = state == 1;
+    loadingView = [(_MFStackWrapperView *)self loadingView];
+    [loadingView setHidden:v3];
   }
 }
 

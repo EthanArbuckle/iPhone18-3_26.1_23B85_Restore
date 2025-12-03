@@ -1,7 +1,7 @@
 @interface CKRecord
 - (BOOL)mt_isSynchronized;
 - (NSString)mt_secretValue;
-- (void)mt_setSecretValue:(id)a3;
+- (void)mt_setSecretValue:(id)value;
 @end
 
 @implementation CKRecord
@@ -9,9 +9,9 @@
 - (BOOL)mt_isSynchronized
 {
   v2 = objc_getAssociatedObject(self, "mt_isSynchronized");
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)mt_secretValue
@@ -25,18 +25,18 @@
 
   else
   {
-    v6 = [(CKRecord *)self encryptedValuesByKey];
-    v5 = [v6 objectForKeyedSubscript:@"secretValue"];
+    encryptedValuesByKey = [(CKRecord *)self encryptedValuesByKey];
+    v5 = [encryptedValuesByKey objectForKeyedSubscript:@"secretValue"];
   }
 
   return v5;
 }
 
-- (void)mt_setSecretValue:(id)a3
+- (void)mt_setSecretValue:(id)value
 {
-  value = a3;
-  v4 = [(CKRecord *)self encryptedValuesByKey];
-  [v4 setObject:value forKeyedSubscript:@"secretValue"];
+  value = value;
+  encryptedValuesByKey = [(CKRecord *)self encryptedValuesByKey];
+  [encryptedValuesByKey setObject:value forKeyedSubscript:@"secretValue"];
 
   objc_setAssociatedObject(self, "mt_secretValue", value, 3);
 }

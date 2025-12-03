@@ -1,20 +1,20 @@
 @interface MTCCRoundButton
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (MTCCRoundButton)init;
 - (NSString)title;
 - (UIImage)image;
 - (void)_updateCornerRadius;
 - (void)_updateForStateChange;
 - (void)dealloc;
-- (void)handleContentSizeChange:(id)a3;
+- (void)handleContentSizeChange:(id)change;
 - (void)layoutSubviews;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setBackgroundColor:(id)a3 forState:(unint64_t)a4;
-- (void)setBackgroundMaterialView:(id)a3 forState:(unint64_t)a4;
-- (void)setImage:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setBackgroundColor:(id)color forState:(unint64_t)state;
+- (void)setBackgroundMaterialView:(id)view forState:(unint64_t)state;
+- (void)setImage:(id)image;
+- (void)setTitle:(id)title;
 @end
 
 @implementation MTCCRoundButton
@@ -144,7 +144,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_29C9FA000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ deallocing", buf, 0xCu);
   }
 
@@ -157,11 +157,11 @@
   v7 = *MEMORY[0x29EDCA608];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v7 = objc_msgSend_titleLabel(self, v5, v6);
-  objc_msgSend_setText_(v7, v8, v4);
+  objc_msgSend_setText_(v7, v8, titleCopy);
 
   objc_msgSend_setNeedsLayout(self, v9, v10);
 }
@@ -174,20 +174,20 @@
   return v6;
 }
 
-- (void)setBackgroundColor:(id)a3 forState:(unint64_t)a4
+- (void)setBackgroundColor:(id)color forState:(unint64_t)state
 {
-  v6 = a3;
-  v7 = v6;
-  if (a4)
+  colorCopy = color;
+  v7 = colorCopy;
+  if (state)
   {
-    if (a4 == 4)
+    if (state == 4)
     {
       v8 = &OBJC_IVAR___MTCCRoundButton__selectedStateBackgroundView;
     }
 
     else
     {
-      if (a4 != 1)
+      if (state != 1)
       {
         goto LABEL_8;
       }
@@ -201,35 +201,35 @@
     v8 = &OBJC_IVAR___MTCCRoundButton__normalStateBackgroundView;
   }
 
-  v9 = v6;
-  v6 = objc_msgSend_setBackgroundColor_(*(&self->super.super.super.super.isa + *v8), v6, v6);
+  v9 = colorCopy;
+  colorCopy = objc_msgSend_setBackgroundColor_(*(&self->super.super.super.super.isa + *v8), colorCopy, colorCopy);
   v7 = v9;
 LABEL_8:
 
-  MEMORY[0x2A1C71028](v6, v7);
+  MEMORY[0x2A1C71028](colorCopy, v7);
 }
 
-- (void)setBackgroundMaterialView:(id)a3 forState:(unint64_t)a4
+- (void)setBackgroundMaterialView:(id)view forState:(unint64_t)state
 {
-  v7 = a3;
-  if (v7)
+  viewCopy = view;
+  if (viewCopy)
   {
-    if (a4 == 4)
+    if (state == 4)
     {
-      v22 = v7;
+      v22 = viewCopy;
       objc_msgSend_removeFromSuperview(self->_selectedStateBackgroundView, v8, v9);
-      objc_storeStrong(&self->_selectedStateBackgroundView, a3);
+      objc_storeStrong(&self->_selectedStateBackgroundView, view);
       objc_msgSend_setAutoresizingMask_(self->_selectedStateBackgroundView, v17, 18);
       objc_msgSend_setUserInteractionEnabled_(self->_selectedStateBackgroundView, v18, 0);
       objc_msgSend_setAlpha_(self->_selectedStateBackgroundView, v19, v20, 0.0);
       objc_msgSend_insertSubview_aboveSubview_(self->_containerView, v21, self->_selectedStateBackgroundView, self->_normalStateBackgroundView);
     }
 
-    else if (a4 == 1)
+    else if (state == 1)
     {
-      v22 = v7;
+      v22 = viewCopy;
       objc_msgSend_removeFromSuperview(self->_normalStateBackgroundView, v8, v9);
-      objc_storeStrong(&self->_normalStateBackgroundView, a3);
+      objc_storeStrong(&self->_normalStateBackgroundView, view);
       objc_msgSend_setAutoresizingMask_(self->_normalStateBackgroundView, v14, 18);
       objc_msgSend_setUserInteractionEnabled_(self->_normalStateBackgroundView, v15, 0);
       objc_msgSend_insertSubview_aboveSubview_(self->_containerView, v16, self->_normalStateBackgroundView, self->_backgroundView);
@@ -237,31 +237,31 @@ LABEL_8:
 
     else
     {
-      if (a4)
+      if (state)
       {
         goto LABEL_9;
       }
 
-      v22 = v7;
+      v22 = viewCopy;
       objc_msgSend_removeFromSuperview(self->_backgroundView, v8, v9);
-      objc_storeStrong(&self->_backgroundView, a3);
+      objc_storeStrong(&self->_backgroundView, view);
       objc_msgSend_setAutoresizingMask_(self->_backgroundView, v10, 18);
       objc_msgSend_setUserInteractionEnabled_(self->_backgroundView, v11, 0);
       objc_msgSend_addSubview_(self->_containerView, v12, self->_backgroundView);
       objc_msgSend_sendSubviewToBack_(self->_containerView, v13, self->_backgroundView);
     }
 
-    v7 = v22;
+    viewCopy = v22;
   }
 
 LABEL_9:
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v8 = objc_msgSend_imageView(self, v5, v6);
-  objc_msgSend_setImage_(v8, v7, v4);
+  objc_msgSend_setImage_(v8, v7, imageCopy);
 }
 
 - (UIImage)image
@@ -362,7 +362,7 @@ LABEL_9:
   objc_msgSend_setCenter_(v62, v63, v64, MidX, MidY);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 80.0;
   v4 = 80.0;
@@ -381,10 +381,10 @@ LABEL_9:
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v9 = objc_msgSend_view(v4, v5, v6);
+  beginCopy = begin;
+  v9 = objc_msgSend_view(beginCopy, v5, v6);
   if (v9 == self)
   {
     isDescendantOfView = 1;
@@ -392,33 +392,33 @@ LABEL_9:
 
   else
   {
-    v10 = objc_msgSend_view(v4, v7, v8);
+    v10 = objc_msgSend_view(beginCopy, v7, v8);
     isDescendantOfView = objc_msgSend_isDescendantOfView_(v10, v11, self);
   }
 
   return isDescendantOfView;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v8 = a3;
-  v9 = v8;
-  if (a4 == self)
+  pathCopy = path;
+  v9 = pathCopy;
+  if (object == self)
   {
-    v13 = v8;
-    isEqualToString = objc_msgSend_isEqualToString_(v8, v8, @"selected");
+    v13 = pathCopy;
+    isEqualToString = objc_msgSend_isEqualToString_(pathCopy, pathCopy, @"selected");
     v9 = v13;
-    if (isEqualToString & 1) != 0 || (v12 = objc_msgSend_isEqualToString_(v13, v13, @"enabled"), v9 = v13, (v12) || (v8 = objc_msgSend_isEqualToString_(v13, v13, @"highlighted"), v9 = v13, v8))
+    if (isEqualToString & 1) != 0 || (v12 = objc_msgSend_isEqualToString_(v13, v13, @"enabled"), v9 = v13, (v12) || (pathCopy = objc_msgSend_isEqualToString_(v13, v13, @"highlighted"), v9 = v13, pathCopy))
     {
-      v8 = objc_msgSend__updateForStateChange(self, v9, v11);
+      pathCopy = objc_msgSend__updateForStateChange(self, v9, v11);
       v9 = v13;
     }
   }
 
-  MEMORY[0x2A1C71028](v8, v9);
+  MEMORY[0x2A1C71028](pathCopy, v9);
 }
 
-- (void)handleContentSizeChange:(id)a3
+- (void)handleContentSizeChange:(id)change
 {
   v15 = objc_msgSend_preferredFontDescriptorWithTextStyle_addingSymbolicTraits_options_(MEMORY[0x29EDC76B8], a2, *MEMORY[0x29EDC8110], 2, 0);
   v4 = MEMORY[0x29EDC76B0];

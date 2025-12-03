@@ -1,22 +1,22 @@
 @interface PencilEducationViewController
 + (id)localizedTitle;
 - (BOOL)isAnimating;
-- (BOOL)shouldBeginAnimationForElementController:(id)a3;
+- (BOOL)shouldBeginAnimationForElementController:(id)controller;
 - (PencilEducationViewControllerDelegate)delegate;
-- (double)calculateFittingHeightByTemporarilyAdjustingFrameForWidth:(double)a3;
+- (double)calculateFittingHeightByTemporarilyAdjustingFrameForWidth:(double)width;
 - (id)traitCollection;
 - (void)_configureViewControllersIfNecessary;
-- (void)addControllerToContainer:(id)a3;
-- (void)beginAnimationIfNecessaryForElementController:(id)a3 delay:(double)a4;
+- (void)addControllerToContainer:(id)container;
+- (void)beginAnimationIfNecessaryForElementController:(id)controller delay:(double)delay;
 - (void)cancelScheduledAnimations;
 - (void)dealloc;
-- (void)elementControllerDidAppear:(id)a3;
-- (void)elementControllerWillReplay:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)segmentedControlDidChange:(id)a3;
-- (void)setDisplayedController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)elementControllerDidAppear:(id)appear;
+- (void)elementControllerWillReplay:(id)replay;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)segmentedControlDidChange:(id)change;
+- (void)setDisplayedController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -25,21 +25,21 @@
 
 + (id)localizedTitle
 {
-  v2 = [MEMORY[0x277CCA8D8] bundleForClass:a1];
+  v2 = [MEMORY[0x277CCA8D8] bundleForClass:self];
   v3 = [v2 localizedStringForKey:@"EDUCATION_PANEL_TITLE" value:&stru_286FDFDB8 table:@"PencilSettings"];
 
   return v3;
 }
 
-- (double)calculateFittingHeightByTemporarilyAdjustingFrameForWidth:(double)a3
+- (double)calculateFittingHeightByTemporarilyAdjustingFrameForWidth:(double)width
 {
   v24 = *MEMORY[0x277D85DE8];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = [(PencilEducationViewController *)self viewControllers];
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  viewControllers = [(PencilEducationViewController *)self viewControllers];
+  v6 = [viewControllers countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -51,17 +51,17 @@
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(viewControllers);
         }
 
-        [*(*(&v19 + 1) + 8 * i) calculateFittingHeightByTemporarilyAdjustingFrameForWidth:a3];
+        [*(*(&v19 + 1) + 8 * i) calculateFittingHeightByTemporarilyAdjustingFrameForWidth:width];
         if (v9 < v11)
         {
           v9 = v11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [viewControllers countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v7);
@@ -72,11 +72,11 @@
     v9 = 0.0;
   }
 
-  v12 = [(PencilEducationViewController *)self view];
-  [v12 bounds];
+  view = [(PencilEducationViewController *)self view];
+  [view bounds];
   v14 = v13;
-  v15 = [(PencilEducationViewController *)self containerView];
-  [v15 bounds];
+  containerView = [(PencilEducationViewController *)self containerView];
+  [containerView bounds];
   v17 = v16;
 
   return v9 + v14 - v17;
@@ -84,8 +84,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(PencilEducationViewController *)self removeObserver:self forKeyPath:@"displayedController.animationInProgress"];
   v4.receiver = self;
@@ -93,38 +93,38 @@
   [(PencilEducationViewController *)&v4 dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = PencilEducationViewController;
-  [(PencilEducationViewController *)&v7 viewDidAppear:a3];
+  [(PencilEducationViewController *)&v7 viewDidAppear:appear];
   if (![(PencilEducationViewController *)self didRunInitialAppearActions]|| [(PencilEducationViewController *)self didDisappear])
   {
-    v4 = [MEMORY[0x277CBEAA8] date];
-    [(PencilEducationViewController *)self setAppearDate:v4];
+    date = [MEMORY[0x277CBEAA8] date];
+    [(PencilEducationViewController *)self setAppearDate:date];
 
     [(PencilEducationViewController *)self setDidRunInitialAppearActions:1];
     [(PencilEducationViewController *)self setDidDisappear:0];
-    v5 = [(PencilEducationViewController *)self displayedController];
-    [(PencilEducationViewController *)self beginAnimationIfNecessaryForElementController:v5 delay:0.5];
+    displayedController = [(PencilEducationViewController *)self displayedController];
+    [(PencilEducationViewController *)self beginAnimationIfNecessaryForElementController:displayedController delay:0.5];
   }
 
-  v6 = [MEMORY[0x277CD9698] sharedSettings];
-  [v6 setForceUserTextInputSettingEnabled:1];
+  mEMORY[0x277CD9698] = [MEMORY[0x277CD9698] sharedSettings];
+  [mEMORY[0x277CD9698] setForceUserTextInputSettingEnabled:1];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v11.receiver = self;
   v11.super_class = PencilEducationViewController;
-  [(PencilEducationViewController *)&v11 viewDidDisappear:a3];
-  v4 = [(PencilEducationViewController *)self appearDate];
+  [(PencilEducationViewController *)&v11 viewDidDisappear:disappear];
+  appearDate = [(PencilEducationViewController *)self appearDate];
 
-  if (v4)
+  if (appearDate)
   {
-    v5 = [MEMORY[0x277CBEAA8] date];
-    v6 = [(PencilEducationViewController *)self appearDate];
-    [v5 timeIntervalSinceDate:v6];
+    date = [MEMORY[0x277CBEAA8] date];
+    appearDate2 = [(PencilEducationViewController *)self appearDate];
+    [date timeIntervalSinceDate:appearDate2];
     v8 = v7;
 
     v9 = +[PencilSettingsStatisticsManager sharedInstance];
@@ -132,8 +132,8 @@
   }
 
   [(PencilEducationViewController *)self setDidDisappear:1];
-  v10 = [MEMORY[0x277CD9698] sharedSettings];
-  [v10 setForceUserTextInputSettingEnabled:0];
+  mEMORY[0x277CD9698] = [MEMORY[0x277CD9698] sharedSettings];
+  [mEMORY[0x277CD9698] setForceUserTextInputSettingEnabled:0];
 }
 
 - (void)viewDidLoad
@@ -142,7 +142,7 @@
   v45.super_class = PencilEducationViewController;
   [(PencilEducationViewController *)&v45 viewDidLoad];
   [(PencilEducationViewController *)self _configureViewControllersIfNecessary];
-  v3 = [(PencilEducationViewController *)self view];
+  view = [(PencilEducationViewController *)self view];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = objc_alloc_init(MEMORY[0x277D75A08]);
   [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -166,19 +166,19 @@
   [v5 selectSegment:0];
   [v5 addTarget:self action:sel_segmentedControlDidChange_ forControlEvents:4096];
   v11 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v12 = [v5 centerXAnchor];
-  v13 = [v3 centerXAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  centerXAnchor = [v5 centerXAnchor];
+  centerXAnchor2 = [view centerXAnchor];
+  v14 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v11 addObject:v14];
 
-  v15 = [v5 topAnchor];
-  v16 = [v3 safeAreaLayoutGuide];
-  v17 = [v16 topAnchor];
-  v18 = [v15 constraintEqualToAnchor:v17 constant:0.0];
+  topAnchor = [v5 topAnchor];
+  safeAreaLayoutGuide = [view safeAreaLayoutGuide];
+  topAnchor2 = [safeAreaLayoutGuide topAnchor];
+  v18 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
   [v11 addObject:v18];
 
-  v19 = [v5 widthAnchor];
-  v20 = [v19 constraintEqualToConstant:448.0];
+  widthAnchor = [v5 widthAnchor];
+  v20 = [widthAnchor constraintEqualToConstant:448.0];
   segmentedControlWidthConstraint = self->_segmentedControlWidthConstraint;
   self->_segmentedControlWidthConstraint = v20;
 
@@ -187,52 +187,52 @@
   [v5 setContentHuggingPriority:1 forAxis:v22];
   v23 = objc_alloc_init(MEMORY[0x277D75D18]);
   [v23 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v24 = [v23 widthAnchor];
-  v25 = [v24 constraintEqualToConstant:448.0];
+  widthAnchor2 = [v23 widthAnchor];
+  v25 = [widthAnchor2 constraintEqualToConstant:448.0];
   containerViewWidthConstraint = self->_containerViewWidthConstraint;
   self->_containerViewWidthConstraint = v25;
 
   [v11 addObject:self->_containerViewWidthConstraint];
-  v27 = [v23 centerXAnchor];
-  v28 = [v3 centerXAnchor];
-  v29 = [v27 constraintEqualToAnchor:v28];
+  centerXAnchor3 = [v23 centerXAnchor];
+  centerXAnchor4 = [view centerXAnchor];
+  v29 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v11 addObject:v29];
 
-  v30 = [v23 topAnchor];
-  v31 = [v5 bottomAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31];
+  topAnchor3 = [v23 topAnchor];
+  bottomAnchor = [v5 bottomAnchor];
+  v32 = [topAnchor3 constraintEqualToAnchor:bottomAnchor];
   [v11 addObject:v32];
 
-  v33 = [v23 bottomAnchor];
-  v34 = [v3 safeAreaLayoutGuide];
-  v35 = [v34 bottomAnchor];
-  v36 = [v33 constraintEqualToAnchor:v35];
+  bottomAnchor2 = [v23 bottomAnchor];
+  safeAreaLayoutGuide2 = [view safeAreaLayoutGuide];
+  bottomAnchor3 = [safeAreaLayoutGuide2 bottomAnchor];
+  v36 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   [v11 addObject:v36];
 
   [v5 sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
   if (v37 > 0.0)
   {
     v38 = v37;
-    v39 = [v5 heightAnchor];
-    v40 = [v39 constraintEqualToConstant:v38];
+    heightAnchor = [v5 heightAnchor];
+    v40 = [heightAnchor constraintEqualToConstant:v38];
     [v11 addObject:v40];
   }
 
-  [v3 addSubview:v23];
-  [v3 addSubview:v5];
+  [view addSubview:v23];
+  [view addSubview:v5];
   [MEMORY[0x277CCAAD0] activateConstraints:v11];
   [(PencilEducationViewController *)self setContainerView:v23];
   [(PencilEducationViewController *)self setSegmentedControl:v5];
-  v41 = [(PencilEducationViewController *)self segmentedControl];
-  [v41 setSelectedSegment:0];
+  segmentedControl = [(PencilEducationViewController *)self segmentedControl];
+  [segmentedControl setSelectedSegment:0];
 
-  v42 = [(PencilEducationViewController *)self segmentedControl];
-  [(PencilEducationViewController *)self segmentedControlDidChange:v42];
+  segmentedControl2 = [(PencilEducationViewController *)self segmentedControl];
+  [(PencilEducationViewController *)self segmentedControlDidChange:segmentedControl2];
 
   v43 = objc_alloc_init(MEMORY[0x277CD9660]);
   [v43 setDelegate:self];
-  v44 = [(PencilEducationViewController *)self view];
-  [v44 addInteraction:v43];
+  view2 = [(PencilEducationViewController *)self view];
+  [view2 addInteraction:v43];
 
   [(PencilEducationViewController *)self addObserver:self forKeyPath:@"displayedController.animationInProgress" options:0 context:0];
   [(PencilEducationViewController *)self setSetupComplete:1];
@@ -243,8 +243,8 @@
   v9.receiver = self;
   v9.super_class = PencilEducationViewController;
   [(PencilEducationViewController *)&v9 viewDidLayoutSubviews];
-  v3 = [(PencilEducationViewController *)self view];
-  [v3 frame];
+  view = [(PencilEducationViewController *)self view];
+  [view frame];
   v5 = v4;
 
   if (v5 >= 488.0)
@@ -254,8 +254,8 @@
 
   else
   {
-    v6 = [(PencilEducationViewController *)self view];
-    [v6 frame];
+    view2 = [(PencilEducationViewController *)self view];
+    [view2 frame];
     v8 = v7 + -40.0;
   }
 
@@ -268,86 +268,86 @@
   v10[2] = *MEMORY[0x277D85DE8];
   v9.receiver = self;
   v9.super_class = PencilEducationViewController;
-  v2 = [(PencilEducationViewController *)&v9 traitCollection];
-  v3 = [v2 preferredContentSizeCategory];
-  if (([v3 isEqualToString:*MEMORY[0x277D76800]] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277D767F8]) & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277D767F0]) & 1) != 0 || objc_msgSend(v3, "isEqualToString:", *MEMORY[0x277D767E8]))
+  traitCollection = [(PencilEducationViewController *)&v9 traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  if (([preferredContentSizeCategory isEqualToString:*MEMORY[0x277D76800]] & 1) != 0 || (objc_msgSend(preferredContentSizeCategory, "isEqualToString:", *MEMORY[0x277D767F8]) & 1) != 0 || (objc_msgSend(preferredContentSizeCategory, "isEqualToString:", *MEMORY[0x277D767F0]) & 1) != 0 || objc_msgSend(preferredContentSizeCategory, "isEqualToString:", *MEMORY[0x277D767E8]))
   {
     v4 = MEMORY[0x277D75C80];
-    v10[0] = v2;
+    v10[0] = traitCollection;
     v5 = [MEMORY[0x277D75C80] traitCollectionWithPreferredContentSizeCategory:*MEMORY[0x277D76820]];
     v10[1] = v5;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
     v7 = [v4 traitCollectionWithTraitsFromCollections:v6];
 
-    v2 = v7;
+    traitCollection = v7;
   }
 
-  return v2;
+  return traitCollection;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{@"displayedController.animationInProgress", a4, a5, a6}])
+  if ([path isEqualToString:{@"displayedController.animationInProgress", object, change, context}])
   {
-    v7 = [(PencilEducationViewController *)self delegate];
-    [v7 educationController:self didChangeAnimationState:{-[PencilEducationViewController isAnimating](self, "isAnimating")}];
+    delegate = [(PencilEducationViewController *)self delegate];
+    [delegate educationController:self didChangeAnimationState:{-[PencilEducationViewController isAnimating](self, "isAnimating")}];
   }
 }
 
-- (void)segmentedControlDidChange:(id)a3
+- (void)segmentedControlDidChange:(id)change
 {
-  v4 = [a3 selectedSegment];
-  v5 = [(PencilEducationViewController *)self viewControllers];
-  v6 = [v5 objectAtIndexedSubscript:v4];
+  selectedSegment = [change selectedSegment];
+  viewControllers = [(PencilEducationViewController *)self viewControllers];
+  v6 = [viewControllers objectAtIndexedSubscript:selectedSegment];
   [(PencilEducationViewController *)self setDisplayedController:v6];
 
   if ([(PencilEducationViewController *)self setupComplete])
   {
     v7 = +[PencilSettingsStatisticsManager sharedInstance];
-    [v7 recordEducationPanelChanged:v4];
+    [v7 recordEducationPanelChanged:selectedSegment];
   }
 }
 
-- (void)setDisplayedController:(id)a3
+- (void)setDisplayedController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   displayedController = self->_displayedController;
-  if (displayedController != v5)
+  if (displayedController != controllerCopy)
   {
     if (displayedController)
     {
       v7 = displayedController;
-      objc_storeStrong(&self->_displayedController, a3);
-      v8 = [(PencilEducationElementViewController *)v5 view];
-      [v8 setAlpha:0.0];
+      objc_storeStrong(&self->_displayedController, controller);
+      view = [(PencilEducationElementViewController *)controllerCopy view];
+      [view setAlpha:0.0];
 
-      [(PencilEducationViewController *)self addControllerToContainer:v5];
+      [(PencilEducationViewController *)self addControllerToContainer:controllerCopy];
       v9 = MEMORY[0x277D75D18];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __56__PencilEducationViewController_setDisplayedController___block_invoke;
       v16[3] = &unk_279A0A1F0;
       v17 = v7;
-      v18 = v5;
+      v18 = controllerCopy;
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __56__PencilEducationViewController_setDisplayedController___block_invoke_2;
       v13[3] = &unk_279A0A218;
       v14 = v17;
-      v15 = self;
+      selfCopy = self;
       v10 = v17;
       [v9 animateWithDuration:v16 animations:v13 completion:0.25];
     }
 
     else
     {
-      objc_storeStrong(&self->_displayedController, a3);
+      objc_storeStrong(&self->_displayedController, controller);
       [(PencilEducationViewController *)self addControllerToContainer:self->_displayedController];
-      v11 = [(PencilEducationViewController *)self displayedController];
-      [(PencilEducationViewController *)self beginAnimationIfNecessaryForElementController:v11 delay:0.5];
+      displayedController = [(PencilEducationViewController *)self displayedController];
+      [(PencilEducationViewController *)self beginAnimationIfNecessaryForElementController:displayedController delay:0.5];
 
-      v12 = [(PencilEducationViewController *)self delegate];
-      [v12 educationControllerDidChangePanel:self];
+      delegate = [(PencilEducationViewController *)self delegate];
+      [delegate educationControllerDidChangePanel:self];
     }
   }
 }
@@ -375,57 +375,57 @@ void __56__PencilEducationViewController_setDisplayedController___block_invoke_2
   [v5 educationControllerDidChangePanel:*(a1 + 40)];
 }
 
-- (void)addControllerToContainer:(id)a3
+- (void)addControllerToContainer:(id)container
 {
-  v4 = a3;
-  [(PencilEducationViewController *)self addChildViewController:v4];
-  v18 = [v4 view];
+  containerCopy = container;
+  [(PencilEducationViewController *)self addChildViewController:containerCopy];
+  view = [containerCopy view];
 
-  [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(PencilEducationViewController *)self containerView];
-  [v5 addSubview:v18];
-  v6 = [v5 leadingAnchor];
-  v7 = [v18 leadingAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
+  containerView = [(PencilEducationViewController *)self containerView];
+  [containerView addSubview:view];
+  leadingAnchor = [containerView leadingAnchor];
+  leadingAnchor2 = [view leadingAnchor];
+  v8 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v8 setActive:1];
 
-  v9 = [v5 trailingAnchor];
-  v10 = [v18 trailingAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  trailingAnchor = [containerView trailingAnchor];
+  trailingAnchor2 = [view trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v11 setActive:1];
 
-  v12 = [v5 topAnchor];
-  v13 = [v18 topAnchor];
-  v14 = [v12 constraintEqualToAnchor:v13];
+  topAnchor = [containerView topAnchor];
+  topAnchor2 = [view topAnchor];
+  v14 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v14 setActive:1];
 
-  v15 = [v5 bottomAnchor];
-  v16 = [v18 bottomAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  bottomAnchor = [containerView bottomAnchor];
+  bottomAnchor2 = [view bottomAnchor];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v17 setActive:1];
 }
 
 - (BOOL)isAnimating
 {
-  v2 = [(PencilEducationViewController *)self displayedController];
-  v3 = [v2 animationInProgress];
+  displayedController = [(PencilEducationViewController *)self displayedController];
+  animationInProgress = [displayedController animationInProgress];
 
-  return v3;
+  return animationInProgress;
 }
 
 - (void)_configureViewControllersIfNecessary
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [(PencilEducationViewController *)self viewControllers];
-  v4 = [v3 count];
+  viewControllers = [(PencilEducationViewController *)self viewControllers];
+  v4 = [viewControllers count];
 
   if (!v4)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     [(PencilEducationViewController *)self setViewControllers:v5];
 
-    v6 = [MEMORY[0x277CD9698] sharedSettings];
-    v7 = [v6 recognitionLocaleIdentifier];
+    mEMORY[0x277CD9698] = [MEMORY[0x277CD9698] sharedSettings];
+    recognitionLocaleIdentifier = [mEMORY[0x277CD9698] recognitionLocaleIdentifier];
 
     v17 = 0u;
     v18 = 0u;
@@ -446,11 +446,11 @@ void __56__PencilEducationViewController_setDisplayedController___block_invoke_2
             objc_enumerationMutation(&unk_286FED410);
           }
 
-          v12 = +[PencilEducationElementData elementDataForType:languageID:](PencilEducationElementData, "elementDataForType:languageID:", [*(*(&v15 + 1) + 8 * v11) integerValue], v7);
+          v12 = +[PencilEducationElementData elementDataForType:languageID:](PencilEducationElementData, "elementDataForType:languageID:", [*(*(&v15 + 1) + 8 * v11) integerValue], recognitionLocaleIdentifier);
           v13 = [[PencilEducationElementViewController alloc] initWithElementData:v12];
           [(PencilEducationElementViewController *)v13 setDelegate:self];
-          v14 = [(PencilEducationViewController *)self viewControllers];
-          [v14 addObject:v13];
+          viewControllers2 = [(PencilEducationViewController *)self viewControllers];
+          [viewControllers2 addObject:v13];
 
           ++v11;
         }
@@ -464,21 +464,21 @@ void __56__PencilEducationViewController_setDisplayedController___block_invoke_2
   }
 }
 
-- (void)beginAnimationIfNecessaryForElementController:(id)a3 delay:(double)a4
+- (void)beginAnimationIfNecessaryForElementController:(id)controller delay:(double)delay
 {
-  v6 = a3;
+  controllerCopy = controller;
   v7 = ([(PencilEducationViewController *)self animationBeginRequestIndex]+ 1);
   [(PencilEducationViewController *)self setAnimationBeginRequestIndex:v7];
   objc_initWeak(&location, self);
-  v8 = dispatch_time(0, (a4 * 1000000000.0));
+  v8 = dispatch_time(0, (delay * 1000000000.0));
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __85__PencilEducationViewController_beginAnimationIfNecessaryForElementController_delay___block_invoke;
   v10[3] = &unk_279A0A300;
   objc_copyWeak(v12, &location);
   v12[1] = v7;
-  v11 = v6;
-  v9 = v6;
+  v11 = controllerCopy;
+  v9 = controllerCopy;
   dispatch_after(v8, MEMORY[0x277D85CD0], v10);
 
   objc_destroyWeak(v12);
@@ -505,30 +505,30 @@ void __85__PencilEducationViewController_beginAnimationIfNecessaryForElementCont
   }
 }
 
-- (BOOL)shouldBeginAnimationForElementController:(id)a3
+- (BOOL)shouldBeginAnimationForElementController:(id)controller
 {
-  v4 = a3;
-  v5 = [(PencilEducationViewController *)self view];
-  v6 = [v5 window];
-  if (v6 && !-[PencilEducationViewController isAnimating](self, "isAnimating") && [v4 hasRemainingAnimation])
+  controllerCopy = controller;
+  view = [(PencilEducationViewController *)self view];
+  window = [view window];
+  if (window && !-[PencilEducationViewController isAnimating](self, "isAnimating") && [controllerCopy hasRemainingAnimation])
   {
-    v7 = [v4 _appearState];
+    _appearState = [controllerCopy _appearState];
 
-    if (v7 != 2)
+    if (_appearState != 2)
     {
       v16 = 0;
       goto LABEL_8;
     }
 
-    v5 = [(PencilEducationViewController *)self view];
-    [v5 bounds];
-    [v5 convertRect:0 toView:?];
+    view = [(PencilEducationViewController *)self view];
+    [view bounds];
+    [view convertRect:0 toView:?];
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v15 = v14;
-    v6 = [v5 window];
-    [v6 bounds];
+    window = [view window];
+    [window bounds];
     v19.origin.x = v9;
     v19.origin.y = v11;
     v19.size.width = v13;
@@ -547,20 +547,20 @@ LABEL_8:
 
 - (void)cancelScheduledAnimations
 {
-  v2 = [(PencilEducationViewController *)self displayedController];
-  [v2 cancelScheduledAnimations];
+  displayedController = [(PencilEducationViewController *)self displayedController];
+  [displayedController cancelScheduledAnimations];
 }
 
-- (void)elementControllerWillReplay:(id)a3
+- (void)elementControllerWillReplay:(id)replay
 {
-  v4 = [(PencilEducationViewController *)self delegate];
-  [v4 educationControllerWillReplay:self];
+  delegate = [(PencilEducationViewController *)self delegate];
+  [delegate educationControllerWillReplay:self];
 }
 
-- (void)elementControllerDidAppear:(id)a3
+- (void)elementControllerDidAppear:(id)appear
 {
-  v4 = [(PencilEducationViewController *)self displayedController];
-  [(PencilEducationViewController *)self beginAnimationIfNecessaryForElementController:v4 delay:0.5];
+  displayedController = [(PencilEducationViewController *)self displayedController];
+  [(PencilEducationViewController *)self beginAnimationIfNecessaryForElementController:displayedController delay:0.5];
 }
 
 - (PencilEducationViewControllerDelegate)delegate

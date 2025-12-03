@@ -1,24 +1,24 @@
 @interface AAGrandSlamSigner
-- (AAGrandSlamSigner)initWithAccountStore:(id)a3 grandSlamAccount:(id)a4 appTokenID:(id)a5;
-- (AAGrandSlamSigner)initWithAppleAccount:(id)a3 grandSlamAccount:(id)a4 accountStore:(id)a5 appTokenID:(id)a6;
+- (AAGrandSlamSigner)initWithAccountStore:(id)store grandSlamAccount:(id)account appTokenID:(id)d;
+- (AAGrandSlamSigner)initWithAppleAccount:(id)account grandSlamAccount:(id)slamAccount accountStore:(id)store appTokenID:(id)d;
 @end
 
 @implementation AAGrandSlamSigner
 
-- (AAGrandSlamSigner)initWithAccountStore:(id)a3 grandSlamAccount:(id)a4 appTokenID:(id)a5
+- (AAGrandSlamSigner)initWithAccountStore:(id)store grandSlamAccount:(id)account appTokenID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  storeCopy = store;
+  accountCopy = account;
+  dCopy = d;
   v18.receiver = self;
   v18.super_class = AAGrandSlamSigner;
   v12 = [(AAGrandSlamSigner *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_accountStore, a3);
-    objc_storeStrong(&v13->_grandSlamAccount, a4);
-    v14 = [v11 copy];
+    objc_storeStrong(&v12->_accountStore, store);
+    objc_storeStrong(&v13->_grandSlamAccount, account);
+    v14 = [dCopy copy];
     appTokenID = v13->_appTokenID;
     v13->_appTokenID = v14;
 
@@ -29,26 +29,26 @@
   return v13;
 }
 
-- (AAGrandSlamSigner)initWithAppleAccount:(id)a3 grandSlamAccount:(id)a4 accountStore:(id)a5 appTokenID:(id)a6
+- (AAGrandSlamSigner)initWithAppleAccount:(id)account grandSlamAccount:(id)slamAccount accountStore:(id)store appTokenID:(id)d
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = a4;
-  v12 = [v11 accountStore];
-  v13 = v12;
-  if (v12)
+  accountCopy = account;
+  dCopy = d;
+  slamAccountCopy = slamAccount;
+  accountStore = [slamAccountCopy accountStore];
+  v13 = accountStore;
+  if (accountStore)
   {
-    v14 = v12;
+    accountStore2 = accountStore;
   }
 
   else
   {
-    v14 = [v9 accountStore];
+    accountStore2 = [accountCopy accountStore];
   }
 
-  v15 = v14;
+  v15 = accountStore2;
 
-  v16 = [(AAGrandSlamSigner *)self initWithAccountStore:v15 grandSlamAccount:v11 appTokenID:v10];
+  v16 = [(AAGrandSlamSigner *)self initWithAccountStore:v15 grandSlamAccount:slamAccountCopy appTokenID:dCopy];
   return v16;
 }
 

@@ -9,34 +9,34 @@
 - (id)hmd_attributeForSettingsPath:()HomeKitDaemon
 {
   v4 = a3;
-  v5 = [a1 hmd_attributesBySettingsPath];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  hmd_attributesBySettingsPath = [self hmd_attributesBySettingsPath];
+  v6 = [hmd_attributesBySettingsPath objectForKeyedSubscript:v4];
 
   return v6;
 }
 
 - (id)hmd_attributesBySettingsPath
 {
-  v2 = objc_getAssociatedObject(a1, sel_hmd_attributeForSettingsPath_);
+  v2 = objc_getAssociatedObject(self, sel_hmd_attributeForSettingsPath_);
   if (!v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
-    v4 = [a1 attributesByName];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    attributesByName = [self attributesByName];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __66__NSEntityDescription_HomeKitDaemon__hmd_attributesBySettingsPath__block_invoke;
     v9[3] = &unk_278677F78;
-    v5 = v3;
+    v5 = dictionary;
     v10 = v5;
-    [v4 enumerateKeysAndObjectsUsingBlock:v9];
+    [attributesByName enumerateKeysAndObjectsUsingBlock:v9];
 
     v2 = [v5 copy];
-    v6 = [a1 managedObjectModel];
-    v7 = [v6 hmd_isImmutable];
+    managedObjectModel = [self managedObjectModel];
+    hmd_isImmutable = [managedObjectModel hmd_isImmutable];
 
-    if (v7)
+    if (hmd_isImmutable)
     {
-      objc_setAssociatedObject(a1, sel_hmd_attributeForSettingsPath_, v2, 0x301);
+      objc_setAssociatedObject(self, sel_hmd_attributeForSettingsPath_, v2, 0x301);
     }
   }
 
@@ -64,7 +64,7 @@
   v10 = &v11;
   v6 = _Block_copy(aBlock);
   v12[3] = v6;
-  v6[2](v6, a1, 0, v16 + 3);
+  v6[2](v6, self, 0, v16 + 3);
 
   _Block_object_dispose(&v11, 8);
   _Block_object_dispose(&v15, 8);

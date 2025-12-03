@@ -1,22 +1,22 @@
 @interface ULConnection
-+ (id)_createNSXPCConnectionWithWeakProxy:(id)a3;
-+ (id)createServiceIdentifierForToken:(id)a3;
++ (id)_createNSXPCConnectionWithWeakProxy:(id)proxy;
++ (id)createServiceIdentifierForToken:(id)token;
 + (id)getMicroLocationInternalVersion;
-+ (id)getRecordingTriggerUUIDAndRequestMicroLocationRecordingScanWithAdditionalInformation:(id)a3 shouldForceRecording:(BOOL)a4 handler:(id)a5;
-+ (id)metadataForHomekitAccessoryControlEventWithUUID:(id)a3 stateString:(id)a4 serviceUUID:(id)a5 serviceType:(id)a6 characteristicType:(id)a7 serviceGroupUUID:(id)a8 source:(id)a9 roomUUID:(id)a10;
-+ (id)metadataForHomekitActionSetEventWithUUID:(id)a3 name:(id)a4 type:(id)a5 clientName:(id)a6 source:(id)a7 homeName:(id)a8;
-+ (void)createServiceWithServiceType:(unint64_t)a3 locationTypes:(id)a4 reply:(id)a5;
-+ (void)deleteServiceWithIdentifier:(id)a3 reply:(id)a4;
-+ (void)donateMicroLocationTruthTagWithTagUUID:(id)a3 correspondingToTriggerUUID:(id)a4 handler:(id)a5;
-+ (void)donateMicroLocationTruthTagWithTagUUID:(id)a3 forRecordingEventsBetweenDate:(id)a4 andDate:(id)a5 handler:(id)a6;
-+ (void)exportDatabaseWithReply:(id)a3;
-+ (void)imageFeaturesDebugWithTask:(unint64_t)a3 additionalInformation:(id)a4 reply:(id)a5;
-+ (void)polarisDebugWithTask:(unint64_t)a3 reply:(id)a4;
-+ (void)purgeDatabaseWithReply:(id)a3;
-+ (void)queryServicesWithReply:(id)a3;
-+ (void)requestCurrentMicroLocationWithAdditionalInformation:(id)a3;
-+ (void)requestMicroLocationRecordingScanWithAdditionalInformation:(id)a3 shouldForceRecording:(BOOL)a4;
-- (ULConnection)initWithDelegate:(id)a3 serviceIdentifier:(id)a4;
++ (id)getRecordingTriggerUUIDAndRequestMicroLocationRecordingScanWithAdditionalInformation:(id)information shouldForceRecording:(BOOL)recording handler:(id)handler;
++ (id)metadataForHomekitAccessoryControlEventWithUUID:(id)d stateString:(id)string serviceUUID:(id)iD serviceType:(id)type characteristicType:(id)characteristicType serviceGroupUUID:(id)uID source:(id)source roomUUID:(id)self0;
++ (id)metadataForHomekitActionSetEventWithUUID:(id)d name:(id)name type:(id)type clientName:(id)clientName source:(id)source homeName:(id)homeName;
++ (void)createServiceWithServiceType:(unint64_t)type locationTypes:(id)types reply:(id)reply;
++ (void)deleteServiceWithIdentifier:(id)identifier reply:(id)reply;
++ (void)donateMicroLocationTruthTagWithTagUUID:(id)d correspondingToTriggerUUID:(id)iD handler:(id)handler;
++ (void)donateMicroLocationTruthTagWithTagUUID:(id)d forRecordingEventsBetweenDate:(id)date andDate:(id)andDate handler:(id)handler;
++ (void)exportDatabaseWithReply:(id)reply;
++ (void)imageFeaturesDebugWithTask:(unint64_t)task additionalInformation:(id)information reply:(id)reply;
++ (void)polarisDebugWithTask:(unint64_t)task reply:(id)reply;
++ (void)purgeDatabaseWithReply:(id)reply;
++ (void)queryServicesWithReply:(id)reply;
++ (void)requestCurrentMicroLocationWithAdditionalInformation:(id)information;
++ (void)requestMicroLocationRecordingScanWithAdditionalInformation:(id)information shouldForceRecording:(BOOL)recording;
+- (ULConnection)initWithDelegate:(id)delegate serviceIdentifier:(id)identifier;
 - (ULConnectionDelegate)delegate;
 - (ULMap)currentMap;
 - (id)connect;
@@ -24,41 +24,41 @@
 - (id)requestAllModelsLearning;
 - (id)requestObservation;
 - (id)requestPrediction;
-- (id)runWithConfiguration:(id)a3;
-- (id)startUpdatingWithConfiguration:(id)a3;
+- (id)runWithConfiguration:(id)configuration;
+- (id)startUpdatingWithConfiguration:(id)configuration;
 - (id)stopUpdating;
 - (uint64_t)_xpcInterruptionHandler;
 - (uint64_t)_xpcInvalidationHandler;
 - (void)_checkAndRecoverIfNeeded;
 - (void)_invalidate;
-- (void)_manageConnectionAvailableNotificationObservation:(BOOL)a3;
-- (void)_performAsyncOnDelegateQueueIfRespondsToSelector:(SEL)a3 block:(id)a4;
+- (void)_manageConnectionAvailableNotificationObservation:(BOOL)observation;
+- (void)_performAsyncOnDelegateQueueIfRespondsToSelector:(SEL)selector block:(id)block;
 - (void)_xpcInterruptionHandler;
 - (void)_xpcInvalidationHandler;
-- (void)addLabel:(id)a3;
-- (void)addLabel:(id)a3 betweenStartDate:(id)a4 andEndDate:(id)a5;
+- (void)addLabel:(id)label;
+- (void)addLabel:(id)label betweenStartDate:(id)date andEndDate:(id)endDate;
 - (void)dealloc;
-- (void)didCompleteObservationWithMetaInformation:(id)a3;
-- (void)didCompletePredictionWithMetaInformation:(id)a3;
-- (void)didCompleteRequest:(id)a3 withError:(id)a4;
-- (void)didCreateCustomLocationOfInterestWithError:(id)a3;
-- (void)didFailWithError:(id)a3;
-- (void)didRemoveCustomLocationOfInterestWithIdentifier:(id)a3 withError:(id)a4;
-- (void)didSendGenericEvent:(unint64_t)a3 withDescription:(id)a4;
-- (void)didUpdateMap:(id)a3;
-- (void)didUpdatePredictionContext:(id)a3;
-- (void)disableMicrolocationAtlocationWithIdentifier:(id)a3;
+- (void)didCompleteObservationWithMetaInformation:(id)information;
+- (void)didCompletePredictionWithMetaInformation:(id)information;
+- (void)didCompleteRequest:(id)request withError:(id)error;
+- (void)didCreateCustomLocationOfInterestWithError:(id)error;
+- (void)didFailWithError:(id)error;
+- (void)didRemoveCustomLocationOfInterestWithIdentifier:(id)identifier withError:(id)error;
+- (void)didSendGenericEvent:(unint64_t)event withDescription:(id)description;
+- (void)didUpdateMap:(id)map;
+- (void)didUpdatePredictionContext:(id)context;
+- (void)disableMicrolocationAtlocationWithIdentifier:(id)identifier;
 - (void)enableMicrolocationAtCurrentLocation;
-- (void)enableMicrolocationAtCurrentLocationWithConfiguration:(id)a3;
-- (void)updateLegacyServiceIdentifier:(id)a3;
+- (void)enableMicrolocationAtCurrentLocationWithConfiguration:(id)configuration;
+- (void)updateLegacyServiceIdentifier:(id)identifier;
 @end
 
 @implementation ULConnection
 
-- (ULConnection)initWithDelegate:(id)a3 serviceIdentifier:(id)a4
+- (ULConnection)initWithDelegate:(id)delegate serviceIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  delegateCopy = delegate;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = ULConnection;
   v8 = [(ULConnection *)&v19 init];
@@ -72,15 +72,15 @@
     v12 = dispatch_queue_create("com.apple.ULConnection.delegateQueue", v11);
     [(ULConnection *)v8 setDelegateQueue:v12];
 
-    v13 = [(ULConnection *)v8 queue];
+    queue = [(ULConnection *)v8 queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __51__ULConnection_initWithDelegate_serviceIdentifier___block_invoke;
     block[3] = &unk_2798D2448;
     v16 = v8;
-    v17 = v6;
-    v18 = v7;
-    dispatch_sync(v13, block);
+    v17 = delegateCopy;
+    v18 = identifierCopy;
+    dispatch_sync(queue, block);
   }
 
   return v8;
@@ -183,10 +183,10 @@ void __51__ULConnection_initWithDelegate_serviceIdentifier___block_invoke_3(uint
   [(ULConnection *)&v3 dealloc];
 }
 
-+ (id)createServiceIdentifierForToken:(id)a3
++ (id)createServiceIdentifierForToken:(id)token
 {
   v44[8] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  tokenCopy = token;
   v43[0] = @"com.apple.intelligentroutingd";
   v41[0] = @"com.apple.mediaremoted";
   v41[1] = @"com.apple.Music";
@@ -261,14 +261,14 @@ void __51__ULConnection_initWithDelegate_serviceIdentifier___block_invoke_3(uint
   v44[7] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:v43 count:8];
 
-  v13 = [MEMORY[0x277CCAE80] signingIdentityForSelf];
-  if (v13)
+  signingIdentityForSelf = [MEMORY[0x277CCAE80] signingIdentityForSelf];
+  if (signingIdentityForSelf)
   {
-    v14 = [v12 objectForKeyedSubscript:v13];
+    v14 = [v12 objectForKeyedSubscript:signingIdentityForSelf];
     v15 = v14;
     if (v14)
     {
-      v16 = [v14 objectForKeyedSubscript:v3];
+      v16 = [v14 objectForKeyedSubscript:tokenCopy];
       if (v16)
       {
         v17 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v16];
@@ -294,7 +294,7 @@ void __51__ULConnection_initWithDelegate_serviceIdentifier___block_invoke_3(uint
         *buf = 138412546;
         v24 = objc_opt_class();
         v25 = 2112;
-        v26 = v13;
+        v26 = signingIdentityForSelf;
         v20 = v24;
         _os_log_impl(&dword_258FC9000, v19, OS_LOG_TYPE_ERROR, "[%@] invalid signing identity: %@", buf, 0x16u);
       }
@@ -313,10 +313,10 @@ void __51__ULConnection_initWithDelegate_serviceIdentifier___block_invoke_3(uint
   return v17;
 }
 
-+ (void)createServiceWithServiceType:(unint64_t)a3 locationTypes:(id)a4 reply:(id)a5
++ (void)createServiceWithServiceType:(unint64_t)type locationTypes:(id)types reply:(id)reply
 {
-  v7 = a4;
-  v8 = a5;
+  typesCopy = types;
+  replyCopy = reply;
   if (onceToken_MicroLocation_Default != -1)
   {
     _CLLogObjectForCategory_MicroLocation_Default_cold_1();
@@ -339,11 +339,11 @@ void __51__ULConnection_initWithDelegate_serviceIdentifier___block_invoke_3(uint
   v16[2] = __65__ULConnection_createServiceWithServiceType_locationTypes_reply___block_invoke;
   v16[3] = &unk_2798D2498;
   v17 = v12;
-  v18 = v7;
-  v19 = v8;
-  v20 = a3;
-  v13 = v8;
-  v14 = v7;
+  v18 = typesCopy;
+  v19 = replyCopy;
+  typeCopy = type;
+  v13 = replyCopy;
+  v14 = typesCopy;
   v15 = v12;
   dispatch_async(v11, v16);
 }
@@ -390,11 +390,11 @@ void __65__ULConnection_createServiceWithServiceType_locationTypes_reply___block
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)deleteServiceWithIdentifier:(id)a3 reply:(id)a4
++ (void)deleteServiceWithIdentifier:(id)identifier reply:(id)reply
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  replyCopy = reply;
   if (onceToken_MicroLocation_Default != -1)
   {
     _CLLogObjectForCategory_MicroLocation_Default_cold_1();
@@ -404,7 +404,7 @@ void __65__ULConnection_createServiceWithServiceType_locationTypes_reply___block
   if (os_log_type_enabled(logObject_MicroLocation_Default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v5;
+    v20 = identifierCopy;
     _os_log_impl(&dword_258FC9000, v7, OS_LOG_TYPE_DEFAULT, "Deleting service:%@", buf, 0xCu);
   }
 
@@ -418,10 +418,10 @@ void __65__ULConnection_createServiceWithServiceType_locationTypes_reply___block
   block[2] = __50__ULConnection_deleteServiceWithIdentifier_reply___block_invoke;
   block[3] = &unk_2798D24E8;
   v16 = v10;
-  v17 = v5;
-  v18 = v6;
-  v11 = v6;
-  v12 = v5;
+  v17 = identifierCopy;
+  v18 = replyCopy;
+  v11 = replyCopy;
+  v12 = identifierCopy;
   v13 = v10;
   dispatch_async(v9, block);
 
@@ -473,8 +473,8 @@ void __50__ULConnection_deleteServiceWithIdentifier_reply___block_invoke_2(uint6
 - (id)connect
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = [(ULConnection *)self queue];
-  dispatch_assert_queue_not_V2(v3);
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   if (onceToken_MicroLocation_Default != -1)
   {
@@ -488,14 +488,14 @@ void __50__ULConnection_deleteServiceWithIdentifier_reply___block_invoke_2(uint6
     _os_log_impl(&dword_258FC9000, v4, OS_LOG_TYPE_DEFAULT, "connect", v26, 2u);
   }
 
-  v5 = [(ULConnection *)self configuration];
-  v6 = [v5 contextLayers];
-  v7 = [v6 count];
+  configuration = [(ULConnection *)self configuration];
+  contextLayers = [configuration contextLayers];
+  v7 = [contextLayers count];
 
   if (!v7)
   {
-    v8 = [(ULConnection *)self serviceIdentifier];
-    v9 = [ULContextLayerUtilities getDefaultContextLayerForService:v8];
+    serviceIdentifier = [(ULConnection *)self serviceIdentifier];
+    v9 = [ULContextLayerUtilities getDefaultContextLayerForService:serviceIdentifier];
 
     if (onceToken_MicroLocation_Default != -1)
     {
@@ -506,35 +506,35 @@ void __50__ULConnection_deleteServiceWithIdentifier_reply___block_invoke_2(uint6
     if (os_log_type_enabled(logObject_MicroLocation_Default, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [(ULConnection *)self serviceIdentifier];
-      v13 = [v12 UUIDString];
-      v14 = [v13 UTF8String];
-      v15 = [v9 UTF8String];
+      serviceIdentifier2 = [(ULConnection *)self serviceIdentifier];
+      uUIDString = [serviceIdentifier2 UUIDString];
+      uTF8String = [uUIDString UTF8String];
+      uTF8String2 = [v9 UTF8String];
       v26[0] = 68289538;
       v26[1] = 0;
       v27 = 2082;
       v28 = &unk_258FDF03F;
       v29 = 2082;
-      v30 = v14;
+      v30 = uTF8String;
       v31 = 2082;
-      v32 = v15;
+      v32 = uTF8String2;
       _os_log_impl(&dword_258FC9000, v11, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:connect: No context layers provided. Setting default context layer for service, ServiceUUID:%{public, location:escape_only}s, ContextLayer:%{public, location:escape_only}s}", v26, 0x26u);
     }
 
-    v16 = [(ULConnection *)self configuration];
-    v17 = [v16 predictionsUpdateType];
+    configuration2 = [(ULConnection *)self configuration];
+    predictionsUpdateType = [configuration2 predictionsUpdateType];
 
     v18 = [ULConfiguration alloc];
     v19 = [MEMORY[0x277CBEB98] setWithObject:v9];
     v20 = [(ULConfiguration *)v18 initWithContextLayers:v19];
     [(ULConnection *)self setConfiguration:v20];
 
-    v21 = [(ULConnection *)self configuration];
-    [v21 setPredictionsUpdateType:v17];
+    configuration3 = [(ULConnection *)self configuration];
+    [configuration3 setPredictionsUpdateType:predictionsUpdateType];
   }
 
-  v22 = [(ULConnection *)self configuration];
-  v23 = [(ULConnection *)self runWithConfiguration:v22];
+  configuration4 = [(ULConnection *)self configuration];
+  v23 = [(ULConnection *)self runWithConfiguration:configuration4];
 
   v24 = *MEMORY[0x277D85DE8];
 
@@ -543,8 +543,8 @@ void __50__ULConnection_deleteServiceWithIdentifier_reply___block_invoke_2(uint6
 
 - (id)disconnect
 {
-  v3 = [(ULConnection *)self queue];
-  dispatch_assert_queue_not_V2(v3);
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v8 = 0;
   v9 = &v8;
@@ -552,14 +552,14 @@ void __50__ULConnection_deleteServiceWithIdentifier_reply___block_invoke_2(uint6
   v11 = __Block_byref_object_copy_;
   v12 = __Block_byref_object_dispose_;
   v13 = 0;
-  v4 = [(ULConnection *)self queue];
+  queue2 = [(ULConnection *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __26__ULConnection_disconnect__block_invoke;
   v7[3] = &unk_2798D2510;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v4, v7);
+  dispatch_sync(queue2, v7);
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -595,11 +595,11 @@ void __26__ULConnection_disconnect__block_invoke(uint64_t a1)
   [*(a1 + 32) setInternalMap:v8];
 }
 
-- (id)runWithConfiguration:(id)a3
+- (id)runWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(ULConnection *)self queue];
-  dispatch_assert_queue_not_V2(v5);
+  configurationCopy = configuration;
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v13 = 0;
   v14 = &v13;
@@ -607,16 +607,16 @@ void __26__ULConnection_disconnect__block_invoke(uint64_t a1)
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  v6 = [(ULConnection *)self queue];
+  queue2 = [(ULConnection *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __37__ULConnection_runWithConfiguration___block_invoke;
   block[3] = &unk_2798D2538;
-  v11 = v4;
+  v11 = configurationCopy;
   v12 = &v13;
   block[4] = self;
-  v7 = v4;
-  dispatch_sync(v6, block);
+  v7 = configurationCopy;
+  dispatch_sync(queue2, block);
 
   v8 = v14[5];
   _Block_object_dispose(&v13, 8);
@@ -657,8 +657,8 @@ void __37__ULConnection_runWithConfiguration___block_invoke(uint64_t a1)
 
 - (id)requestPrediction
 {
-  v3 = [(ULConnection *)self queue];
-  dispatch_assert_queue_not_V2(v3);
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v8 = 0;
   v9 = &v8;
@@ -666,14 +666,14 @@ void __37__ULConnection_runWithConfiguration___block_invoke(uint64_t a1)
   v11 = __Block_byref_object_copy_;
   v12 = __Block_byref_object_dispose_;
   v13 = 0;
-  v4 = [(ULConnection *)self queue];
+  queue2 = [(ULConnection *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__ULConnection_requestPrediction__block_invoke;
   v7[3] = &unk_2798D2510;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v4, v7);
+  dispatch_sync(queue2, v7);
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -708,8 +708,8 @@ void __33__ULConnection_requestPrediction__block_invoke(uint64_t a1)
 
 - (id)requestObservation
 {
-  v3 = [(ULConnection *)self queue];
-  dispatch_assert_queue_not_V2(v3);
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v8 = 0;
   v9 = &v8;
@@ -717,14 +717,14 @@ void __33__ULConnection_requestPrediction__block_invoke(uint64_t a1)
   v11 = __Block_byref_object_copy_;
   v12 = __Block_byref_object_dispose_;
   v13 = 0;
-  v4 = [(ULConnection *)self queue];
+  queue2 = [(ULConnection *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__ULConnection_requestObservation__block_invoke;
   v7[3] = &unk_2798D2510;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v4, v7);
+  dispatch_sync(queue2, v7);
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -757,21 +757,21 @@ void __34__ULConnection_requestObservation__block_invoke(uint64_t a1)
   [v7 requestObservationWithRequestIdentifier:*(*(*(a1 + 40) + 8) + 40)];
 }
 
-- (void)addLabel:(id)a3
+- (void)addLabel:(id)label
 {
-  v4 = a3;
-  v5 = [(ULConnection *)self queue];
-  dispatch_assert_queue_not_V2(v5);
+  labelCopy = label;
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  v6 = [(ULConnection *)self queue];
+  queue2 = [(ULConnection *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __25__ULConnection_addLabel___block_invoke;
   v8[3] = &unk_2798D2560;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = labelCopy;
+  selfCopy = self;
+  v7 = labelCopy;
+  dispatch_sync(queue2, v8);
 }
 
 void __25__ULConnection_addLabel___block_invoke(uint64_t a1)
@@ -819,27 +819,27 @@ void __25__ULConnection_addLabel___block_invoke(uint64_t a1)
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addLabel:(id)a3 betweenStartDate:(id)a4 andEndDate:(id)a5
+- (void)addLabel:(id)label betweenStartDate:(id)date andEndDate:(id)endDate
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ULConnection *)self queue];
-  dispatch_assert_queue_not_V2(v11);
+  labelCopy = label;
+  dateCopy = date;
+  endDateCopy = endDate;
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  v12 = [(ULConnection *)self queue];
+  queue2 = [(ULConnection *)self queue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __53__ULConnection_addLabel_betweenStartDate_andEndDate___block_invoke;
   v16[3] = &unk_2798D2588;
-  v17 = v8;
-  v18 = self;
-  v19 = v9;
-  v20 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  dispatch_sync(v12, v16);
+  v17 = labelCopy;
+  selfCopy = self;
+  v19 = dateCopy;
+  v20 = endDateCopy;
+  v13 = endDateCopy;
+  v14 = dateCopy;
+  v15 = labelCopy;
+  dispatch_sync(queue2, v16);
 }
 
 void __53__ULConnection_addLabel_betweenStartDate_andEndDate___block_invoke(uint64_t a1)
@@ -889,12 +889,12 @@ void __53__ULConnection_addLabel_betweenStartDate_andEndDate___block_invoke(uint
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)startUpdatingWithConfiguration:(id)a3
+- (id)startUpdatingWithConfiguration:(id)configuration
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ULConnection *)self queue];
-  dispatch_assert_queue_not_V2(v5);
+  configurationCopy = configuration;
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   if (onceToken_MicroLocation_Default != -1)
   {
@@ -905,19 +905,19 @@ void __53__ULConnection_addLabel_betweenStartDate_andEndDate___block_invoke(uint
   if (os_log_type_enabled(logObject_MicroLocation_Default, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412290;
-    v19 = v4;
+    v19 = configurationCopy;
     _os_log_impl(&dword_258FC9000, v6, OS_LOG_TYPE_DEFAULT, "startUpdatingWithConfiguration: %@", &v18, 0xCu);
   }
 
   v7 = [ULConfiguration alloc];
-  v8 = [(ULConnection *)self configuration];
-  v9 = [v8 contextLayers];
-  v10 = [(ULConfiguration *)v7 initWithContextLayers:v9];
+  configuration = [(ULConnection *)self configuration];
+  contextLayers = [configuration contextLayers];
+  v10 = [(ULConfiguration *)v7 initWithContextLayers:contextLayers];
   [(ULConnection *)self setConfiguration:v10];
 
-  LODWORD(v10) = [v4 isLowLatency];
-  v11 = [(ULConnection *)self configuration];
-  v12 = v11;
+  LODWORD(v10) = [configurationCopy isLowLatency];
+  configuration2 = [(ULConnection *)self configuration];
+  v12 = configuration2;
   if (v10)
   {
     v13 = 2;
@@ -928,10 +928,10 @@ void __53__ULConnection_addLabel_betweenStartDate_andEndDate___block_invoke(uint
     v13 = 1;
   }
 
-  [v11 setPredictionsUpdateType:v13];
+  [configuration2 setPredictionsUpdateType:v13];
 
-  v14 = [(ULConnection *)self configuration];
-  v15 = [(ULConnection *)self runWithConfiguration:v14];
+  configuration3 = [(ULConnection *)self configuration];
+  v15 = [(ULConnection *)self runWithConfiguration:configuration3];
 
   v16 = *MEMORY[0x277D85DE8];
 
@@ -940,8 +940,8 @@ void __53__ULConnection_addLabel_betweenStartDate_andEndDate___block_invoke(uint
 
 - (id)stopUpdating
 {
-  v3 = [(ULConnection *)self queue];
-  dispatch_assert_queue_not_V2(v3);
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   if (onceToken_MicroLocation_Default != -1)
   {
@@ -956,24 +956,24 @@ void __53__ULConnection_addLabel_betweenStartDate_andEndDate___block_invoke(uint
   }
 
   v5 = [ULConfiguration alloc];
-  v6 = [(ULConnection *)self configuration];
-  v7 = [v6 contextLayers];
-  v8 = [(ULConfiguration *)v5 initWithContextLayers:v7];
+  configuration = [(ULConnection *)self configuration];
+  contextLayers = [configuration contextLayers];
+  v8 = [(ULConfiguration *)v5 initWithContextLayers:contextLayers];
   [(ULConnection *)self setConfiguration:v8];
 
-  v9 = [(ULConnection *)self configuration];
-  [v9 setPredictionsUpdateType:0];
+  configuration2 = [(ULConnection *)self configuration];
+  [configuration2 setPredictionsUpdateType:0];
 
-  v10 = [(ULConnection *)self configuration];
-  v11 = [(ULConnection *)self runWithConfiguration:v10];
+  configuration3 = [(ULConnection *)self configuration];
+  v11 = [(ULConnection *)self runWithConfiguration:configuration3];
 
   return v11;
 }
 
 - (void)enableMicrolocationAtCurrentLocation
 {
-  v3 = [(ULConnection *)self queue];
-  dispatch_assert_queue_not_V2(v3);
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   if (onceToken_MicroLocation_Default != -1)
   {
@@ -991,21 +991,21 @@ void __53__ULConnection_addLabel_betweenStartDate_andEndDate___block_invoke(uint
   [(ULConnection *)self enableMicrolocationAtCurrentLocationWithConfiguration:v5];
 }
 
-- (void)enableMicrolocationAtCurrentLocationWithConfiguration:(id)a3
+- (void)enableMicrolocationAtCurrentLocationWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(ULConnection *)self queue];
-  dispatch_assert_queue_not_V2(v5);
+  configurationCopy = configuration;
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  v6 = [(ULConnection *)self queue];
+  queue2 = [(ULConnection *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __70__ULConnection_enableMicrolocationAtCurrentLocationWithConfiguration___block_invoke;
   v8[3] = &unk_2798D2560;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = configurationCopy;
+  selfCopy = self;
+  v7 = configurationCopy;
+  dispatch_sync(queue2, v8);
 }
 
 void __70__ULConnection_enableMicrolocationAtCurrentLocationWithConfiguration___block_invoke(uint64_t a1)
@@ -1034,8 +1034,8 @@ void __70__ULConnection_enableMicrolocationAtCurrentLocationWithConfiguration___
 
 - (ULMap)currentMap
 {
-  v3 = [(ULConnection *)self queue];
-  dispatch_assert_queue_not_V2(v3);
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
   v8 = 0;
   v9 = &v8;
@@ -1043,14 +1043,14 @@ void __70__ULConnection_enableMicrolocationAtCurrentLocationWithConfiguration___
   v11 = __Block_byref_object_copy_;
   v12 = __Block_byref_object_dispose_;
   v13 = 0;
-  v4 = [(ULConnection *)self queue];
+  queue2 = [(ULConnection *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __26__ULConnection_currentMap__block_invoke;
   v7[3] = &unk_2798D25B0;
   v7[4] = self;
   v7[5] = &v8;
-  dispatch_sync(v4, v7);
+  dispatch_sync(queue2, v7);
 
   v5 = v9[5];
   _Block_object_dispose(&v8, 8);
@@ -1067,24 +1067,24 @@ void __26__ULConnection_currentMap__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)didUpdateMap:(id)a3
+- (void)didUpdateMap:(id)map
 {
-  v4 = a3;
-  v5 = [(ULConnection *)self queue];
-  dispatch_assert_queue_V2(v5);
+  mapCopy = map;
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v15 = [ULMap alloc];
-  v6 = [v4 mapItems];
-  v16 = [(ULConnection *)self internalMap];
-  v7 = [v16 predictionContext];
-  v8 = [v4 locationOfInterest];
-  v9 = [v4 serviceState];
-  v10 = [v4 serviceSuspendReasons];
-  v11 = [v4 isMapValid];
-  v12 = [v4 metaInfo];
-  v13 = [v4 homeSlamModelData];
+  mapItems = [mapCopy mapItems];
+  internalMap = [(ULConnection *)self internalMap];
+  predictionContext = [internalMap predictionContext];
+  locationOfInterest = [mapCopy locationOfInterest];
+  serviceState = [mapCopy serviceState];
+  serviceSuspendReasons = [mapCopy serviceSuspendReasons];
+  isMapValid = [mapCopy isMapValid];
+  metaInfo = [mapCopy metaInfo];
+  homeSlamModelData = [mapCopy homeSlamModelData];
 
-  v14 = [(ULMap *)v15 initWithMapItems:v6 predictionContext:v7 locationOfInterest:v8 serviceState:v9 serviceSuspendReasons:v10 isMapValid:v11 metaInfo:v12 homeSlamModelData:v13];
+  v14 = [(ULMap *)v15 initWithMapItems:mapItems predictionContext:predictionContext locationOfInterest:locationOfInterest serviceState:serviceState serviceSuspendReasons:serviceSuspendReasons isMapValid:isMapValid metaInfo:metaInfo homeSlamModelData:homeSlamModelData];
   [(ULConnection *)self setInternalMap:v14];
 
   v17[0] = MEMORY[0x277D85DD0];
@@ -1101,14 +1101,14 @@ void __29__ULConnection_didUpdateMap___block_invoke(uint64_t a1)
   [v2 connectionDidUpdateMap:*(a1 + 32)];
 }
 
-- (void)didUpdatePredictionContext:(id)a3
+- (void)didUpdatePredictionContext:(id)context
 {
-  v4 = a3;
-  v5 = [(ULConnection *)self queue];
-  dispatch_assert_queue_V2(v5);
+  contextCopy = context;
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v6 = [(ULConnection *)self internalMap];
-  v7 = [v6 copyWithReplacementPredictionContext:v4];
+  internalMap = [(ULConnection *)self internalMap];
+  v7 = [internalMap copyWithReplacementPredictionContext:contextCopy];
 
   [(ULConnection *)self setInternalMap:v7];
   v8[0] = MEMORY[0x277D85DD0];
@@ -1125,22 +1125,22 @@ void __43__ULConnection_didUpdatePredictionContext___block_invoke(uint64_t a1)
   [v2 connectionDidUpdatePredictionContext:*(a1 + 32)];
 }
 
-- (void)didCompleteRequest:(id)a3 withError:(id)a4
+- (void)didCompleteRequest:(id)request withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ULConnection *)self queue];
-  dispatch_assert_queue_V2(v8);
+  requestCopy = request;
+  errorCopy = error;
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __45__ULConnection_didCompleteRequest_withError___block_invoke;
   v11[3] = &unk_2798D2448;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = requestCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = requestCopy;
   [(ULConnection *)self _performAsyncOnDelegateQueueIfRespondsToSelector:sel_connection_didCompleteRequest_withError_ block:v11];
 }
 
@@ -1150,19 +1150,19 @@ void __45__ULConnection_didCompleteRequest_withError___block_invoke(uint64_t a1)
   [v2 connection:*(a1 + 32) didCompleteRequest:*(a1 + 40) withError:*(a1 + 48)];
 }
 
-- (void)didCreateCustomLocationOfInterestWithError:(id)a3
+- (void)didCreateCustomLocationOfInterestWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(ULConnection *)self queue];
-  dispatch_assert_queue_V2(v5);
+  errorCopy = error;
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__ULConnection_didCreateCustomLocationOfInterestWithError___block_invoke;
   v7[3] = &unk_2798D2560;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = errorCopy;
+  v6 = errorCopy;
   [(ULConnection *)self _performAsyncOnDelegateQueueIfRespondsToSelector:sel_connection_didEnableMicrolocationAtCurrentLocationWithError_ block:v7];
 }
 
@@ -1172,22 +1172,22 @@ void __59__ULConnection_didCreateCustomLocationOfInterestWithError___block_invok
   [v2 connection:*(a1 + 32) didEnableMicrolocationAtCurrentLocationWithError:*(a1 + 40)];
 }
 
-- (void)didRemoveCustomLocationOfInterestWithIdentifier:(id)a3 withError:(id)a4
+- (void)didRemoveCustomLocationOfInterestWithIdentifier:(id)identifier withError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ULConnection *)self queue];
-  dispatch_assert_queue_V2(v8);
+  identifierCopy = identifier;
+  errorCopy = error;
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __74__ULConnection_didRemoveCustomLocationOfInterestWithIdentifier_withError___block_invoke;
   v11[3] = &unk_2798D2448;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = identifierCopy;
   [(ULConnection *)self _performAsyncOnDelegateQueueIfRespondsToSelector:sel_connection_didDisableMicrolocationAtLocationWithIdentifier_withError_ block:v11];
 }
 
@@ -1197,19 +1197,19 @@ void __74__ULConnection_didRemoveCustomLocationOfInterestWithIdentifier_withErro
   [v2 connection:*(a1 + 32) didDisableMicrolocationAtLocationWithIdentifier:*(a1 + 40) withError:*(a1 + 48)];
 }
 
-- (void)didFailWithError:(id)a3
+- (void)didFailWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(ULConnection *)self queue];
-  dispatch_assert_queue_V2(v5);
+  errorCopy = error;
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7 = MEMORY[0x277D85DD0];
   v8 = 3221225472;
   v9 = __33__ULConnection_didFailWithError___block_invoke;
   v10 = &unk_2798D2560;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = errorCopy;
+  v6 = errorCopy;
   [(ULConnection *)self _performAsyncOnDelegateQueueIfRespondsToSelector:sel_connection_didFailWithError_ block:&v7];
   [(ULConnection *)self _invalidate:v7];
 }
@@ -1220,20 +1220,20 @@ void __33__ULConnection_didFailWithError___block_invoke(uint64_t a1)
   [v2 connection:*(a1 + 32) didFailWithError:*(a1 + 40)];
 }
 
-- (void)didSendGenericEvent:(unint64_t)a3 withDescription:(id)a4
+- (void)didSendGenericEvent:(unint64_t)event withDescription:(id)description
 {
-  v6 = a4;
-  v7 = [(ULConnection *)self queue];
-  dispatch_assert_queue_V2(v7);
+  descriptionCopy = description;
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __52__ULConnection_didSendGenericEvent_withDescription___block_invoke;
   v9[3] = &unk_2798D2600;
-  v10 = v6;
-  v11 = a3;
+  v10 = descriptionCopy;
+  eventCopy = event;
   v9[4] = self;
-  v8 = v6;
+  v8 = descriptionCopy;
   [(ULConnection *)self _performAsyncOnDelegateQueueIfRespondsToSelector:sel_connection_didSendGenericEvent_withDescription_ block:v9];
 }
 
@@ -1243,19 +1243,19 @@ void __52__ULConnection_didSendGenericEvent_withDescription___block_invoke(uint6
   [v2 connection:*(a1 + 32) didSendGenericEvent:*(a1 + 48) withDescription:*(a1 + 40)];
 }
 
-- (void)didCompleteObservationWithMetaInformation:(id)a3
+- (void)didCompleteObservationWithMetaInformation:(id)information
 {
-  v4 = a3;
-  v5 = [(ULConnection *)self queue];
-  dispatch_assert_queue_V2(v5);
+  informationCopy = information;
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__ULConnection_didCompleteObservationWithMetaInformation___block_invoke;
   v7[3] = &unk_2798D2560;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = informationCopy;
+  v6 = informationCopy;
   [(ULConnection *)self _performAsyncOnDelegateQueueIfRespondsToSelector:sel_connection_didCompleteObservationWithMetaInformation_ block:v7];
 }
 
@@ -1265,19 +1265,19 @@ void __58__ULConnection_didCompleteObservationWithMetaInformation___block_invoke
   [v2 connection:*(a1 + 32) didCompleteObservationWithMetaInformation:*(a1 + 40)];
 }
 
-- (void)didCompletePredictionWithMetaInformation:(id)a3
+- (void)didCompletePredictionWithMetaInformation:(id)information
 {
-  v4 = a3;
-  v5 = [(ULConnection *)self queue];
-  dispatch_assert_queue_V2(v5);
+  informationCopy = information;
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__ULConnection_didCompletePredictionWithMetaInformation___block_invoke;
   v7[3] = &unk_2798D2560;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = informationCopy;
+  v6 = informationCopy;
   [(ULConnection *)self _performAsyncOnDelegateQueueIfRespondsToSelector:sel_connection_didCompletePredictionWithMetaInformation_ block:v7];
 }
 
@@ -1287,15 +1287,15 @@ void __57__ULConnection_didCompletePredictionWithMetaInformation___block_invoke(
   [v2 connection:*(a1 + 32) didCompletePredictionWithMetaInformation:*(a1 + 40)];
 }
 
-+ (id)_createNSXPCConnectionWithWeakProxy:(id)a3
++ (id)_createNSXPCConnectionWithWeakProxy:(id)proxy
 {
   v3 = MEMORY[0x277CCAE80];
-  v4 = a3;
+  proxyCopy = proxy;
   v5 = [[v3 alloc] initWithMachServiceName:@"com.apple.milod.xpc.service" options:4096];
   v6 = +[ULXPCProtocols responseInterface];
   [v5 setExportedInterface:v6];
 
-  [v5 setExportedObject:v4];
+  [v5 setExportedObject:proxyCopy];
   v7 = +[ULXPCProtocols requestInterface];
   [v5 setRemoteObjectInterface:v7];
 
@@ -1305,8 +1305,8 @@ void __57__ULConnection_didCompletePredictionWithMetaInformation___block_invoke(
 - (void)_xpcInterruptionHandler
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(ULConnection *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(ULConnection *)self interrupted])
   {
@@ -1324,10 +1324,10 @@ LABEL_3:
   if (os_log_type_enabled(logObject_MicroLocation_Default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
-    v6 = [(ULConnection *)self connection];
-    v7 = [v6 signingIdentity];
+    connection = [(ULConnection *)self connection];
+    signingIdentity = [connection signingIdentity];
     *buf = 138412290;
-    v12 = v7;
+    v12 = signingIdentity;
     _os_log_impl(&dword_258FC9000, v5, OS_LOG_TYPE_DEFAULT, "%@: connection interrupted", buf, 0xCu);
   }
 
@@ -1353,8 +1353,8 @@ void __39__ULConnection__xpcInterruptionHandler__block_invoke(uint64_t a1)
 - (void)_xpcInvalidationHandler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(ULConnection *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(ULConnection *)self interrupted])
   {
@@ -1372,10 +1372,10 @@ LABEL_3:
   if (os_log_type_enabled(logObject_MicroLocation_Default, OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
-    v6 = [(ULConnection *)self connection];
-    v7 = [v6 signingIdentity];
+    connection = [(ULConnection *)self connection];
+    signingIdentity = [connection signingIdentity];
     v10 = 138412290;
-    v11 = v7;
+    v11 = signingIdentity;
     _os_log_impl(&dword_258FC9000, v5, OS_LOG_TYPE_DEFAULT, "%@: connection invalidated", &v10, 0xCu);
   }
 
@@ -1387,32 +1387,32 @@ LABEL_3:
 
 - (void)_invalidate
 {
-  v3 = [(ULConnection *)self connection];
-  [v3 setInterruptionHandler:0];
+  connection = [(ULConnection *)self connection];
+  [connection setInterruptionHandler:0];
 
-  v4 = [(ULConnection *)self connection];
-  [v4 setInvalidationHandler:0];
+  connection2 = [(ULConnection *)self connection];
+  [connection2 setInvalidationHandler:0];
 
-  v5 = [(ULConnection *)self connection];
-  [v5 invalidate];
+  connection3 = [(ULConnection *)self connection];
+  [connection3 invalidate];
 
   [(ULConnection *)self setConnection:0];
 
   [(ULConnection *)self _manageConnectionAvailableNotificationObservation:0];
 }
 
-- (void)_manageConnectionAvailableNotificationObservation:(BOOL)a3
+- (void)_manageConnectionAvailableNotificationObservation:(BOOL)observation
 {
-  if (a3)
+  if (observation)
   {
     objc_initWeak(&location, self);
-    v4 = [(ULConnection *)self darwinNotificationHelper];
+    darwinNotificationHelper = [(ULConnection *)self darwinNotificationHelper];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __66__ULConnection__manageConnectionAvailableNotificationObservation___block_invoke;
     v6[3] = &unk_2798D2420;
     objc_copyWeak(&v7, &location);
-    [v4 addObserverForNotificationName:@"ULConnectionAvailableNotification" handler:v6];
+    [darwinNotificationHelper addObserverForNotificationName:@"ULConnectionAvailableNotification" handler:v6];
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
@@ -1420,8 +1420,8 @@ LABEL_3:
 
   else
   {
-    v5 = [(ULConnection *)self darwinNotificationHelper];
-    [v5 removeObserverForNotificationName:@"ULConnectionAvailableNotification"];
+    darwinNotificationHelper2 = [(ULConnection *)self darwinNotificationHelper];
+    [darwinNotificationHelper2 removeObserverForNotificationName:@"ULConnectionAvailableNotification"];
   }
 }
 
@@ -1458,15 +1458,15 @@ uint64_t __66__ULConnection__manageConnectionAvailableNotificationObservation___
   return [*(a1 + 32) _checkAndRecoverIfNeeded];
 }
 
-- (void)_performAsyncOnDelegateQueueIfRespondsToSelector:(SEL)a3 block:(id)a4
+- (void)_performAsyncOnDelegateQueueIfRespondsToSelector:(SEL)selector block:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [(ULConnection *)self queue];
-  dispatch_assert_queue_V2(v7);
+  blockCopy = block;
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v8 = [(ULConnection *)self delegate];
-  if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(ULConnection *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
     if (onceToken_MicroLocation_Default != -1)
     {
@@ -1477,14 +1477,14 @@ uint64_t __66__ULConnection__manageConnectionAvailableNotificationObservation___
     if (os_log_type_enabled(logObject_MicroLocation_Default, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = NSStringFromSelector(a3);
+      v11 = NSStringFromSelector(selector);
       v14 = 138412290;
       v15 = v11;
       _os_log_impl(&dword_258FC9000, v10, OS_LOG_TYPE_DEFAULT, "Performing block for selector: %@", &v14, 0xCu);
     }
 
-    v12 = [(ULConnection *)self delegateQueue];
-    dispatch_async(v12, v6);
+    delegateQueue = [(ULConnection *)self delegateQueue];
+    dispatch_async(delegateQueue, blockCopy);
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -1493,8 +1493,8 @@ uint64_t __66__ULConnection__manageConnectionAvailableNotificationObservation___
 - (void)_checkAndRecoverIfNeeded
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(ULConnection *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(ULConnection *)self interrupted])
   {
@@ -1507,22 +1507,22 @@ uint64_t __66__ULConnection__manageConnectionAvailableNotificationObservation___
     if (os_log_type_enabled(logObject_MicroLocation_Default, OS_LOG_TYPE_DEFAULT))
     {
       v5 = v4;
-      v6 = [(ULConnection *)self internalMap];
-      v7 = [(ULConnection *)self configuration];
+      internalMap = [(ULConnection *)self internalMap];
+      configuration = [(ULConnection *)self configuration];
       v15 = 138412546;
-      v16 = v6;
+      v16 = internalMap;
       v17 = 2112;
-      v18 = v7;
+      v18 = configuration;
       _os_log_impl(&dword_258FC9000, v5, OS_LOG_TYPE_DEFAULT, "Recovering: internalMap: %@, configuration: %@", &v15, 0x16u);
     }
 
-    v8 = [(ULConnection *)self connection];
-    v9 = [v8 remoteObjectProxy];
-    v10 = [(ULConnection *)self configuration];
-    v11 = [(ULConnection *)self serviceIdentifier];
-    v12 = [(ULConnection *)self legacyServiceIdentifier];
-    v13 = [MEMORY[0x277CCAD78] UUID];
-    [v9 runWithConfiguration:v10 serviceIdentifier:v11 legacyServiceIdentifier:v12 andRequestIdentifier:v13];
+    connection = [(ULConnection *)self connection];
+    remoteObjectProxy = [connection remoteObjectProxy];
+    configuration2 = [(ULConnection *)self configuration];
+    serviceIdentifier = [(ULConnection *)self serviceIdentifier];
+    legacyServiceIdentifier = [(ULConnection *)self legacyServiceIdentifier];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    [remoteObjectProxy runWithConfiguration:configuration2 serviceIdentifier:serviceIdentifier legacyServiceIdentifier:legacyServiceIdentifier andRequestIdentifier:uUID];
 
     [(ULConnection *)self setInterrupted:0];
   }
@@ -1537,9 +1537,9 @@ uint64_t __66__ULConnection__manageConnectionAvailableNotificationObservation___
   return WeakRetained;
 }
 
-+ (void)exportDatabaseWithReply:(id)a3
++ (void)exportDatabaseWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   if (onceToken_MicroLocation_Default != -1)
   {
     _CLLogObjectForCategory_MicroLocation_Default_cold_1();
@@ -1562,8 +1562,8 @@ uint64_t __66__ULConnection__manageConnectionAvailableNotificationObservation___
   v10[2] = __52__ULConnection_Diagnostic__exportDatabaseWithReply___block_invoke;
   v10[3] = &unk_2798D2650;
   v11 = v7;
-  v12 = v3;
-  v8 = v3;
+  v12 = replyCopy;
+  v8 = replyCopy;
   v9 = v7;
   dispatch_async(v6, v10);
 }
@@ -1608,9 +1608,9 @@ void __52__ULConnection_Diagnostic__exportDatabaseWithReply___block_invoke_2(uin
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)purgeDatabaseWithReply:(id)a3
++ (void)purgeDatabaseWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   if (onceToken_MicroLocation_Default != -1)
   {
     _CLLogObjectForCategory_MicroLocation_Default_cold_1();
@@ -1633,8 +1633,8 @@ void __52__ULConnection_Diagnostic__exportDatabaseWithReply___block_invoke_2(uin
   v10[2] = __51__ULConnection_Diagnostic__purgeDatabaseWithReply___block_invoke;
   v10[3] = &unk_2798D2650;
   v11 = v7;
-  v12 = v3;
-  v8 = v3;
+  v12 = replyCopy;
+  v8 = replyCopy;
   v9 = v7;
   dispatch_async(v6, v10);
 }
@@ -1676,9 +1676,9 @@ void __51__ULConnection_Diagnostic__purgeDatabaseWithReply___block_invoke_2(uint
   v7 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)queryServicesWithReply:(id)a3
++ (void)queryServicesWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   if (onceToken_MicroLocation_Default != -1)
   {
     _CLLogObjectForCategory_MicroLocation_Default_cold_1();
@@ -1701,8 +1701,8 @@ void __51__ULConnection_Diagnostic__purgeDatabaseWithReply___block_invoke_2(uint
   v10[2] = __51__ULConnection_Diagnostic__queryServicesWithReply___block_invoke;
   v10[3] = &unk_2798D2650;
   v11 = v7;
-  v12 = v3;
-  v8 = v3;
+  v12 = replyCopy;
+  v8 = replyCopy;
   v9 = v7;
   dispatch_async(v6, v10);
 }
@@ -1747,10 +1747,10 @@ void __51__ULConnection_Diagnostic__queryServicesWithReply___block_invoke_2(uint
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)imageFeaturesDebugWithTask:(unint64_t)a3 additionalInformation:(id)a4 reply:(id)a5
++ (void)imageFeaturesDebugWithTask:(unint64_t)task additionalInformation:(id)information reply:(id)reply
 {
-  v7 = a4;
-  v8 = a5;
+  informationCopy = information;
+  replyCopy = reply;
   if (onceToken_MicroLocation_Default != -1)
   {
     _CLLogObjectForCategory_MicroLocation_Default_cold_1();
@@ -1773,11 +1773,11 @@ void __51__ULConnection_Diagnostic__queryServicesWithReply___block_invoke_2(uint
   v16[2] = __83__ULConnection_Diagnostic__imageFeaturesDebugWithTask_additionalInformation_reply___block_invoke;
   v16[3] = &unk_2798D2498;
   v17 = v12;
-  v18 = v7;
-  v19 = v8;
-  v20 = a3;
-  v13 = v8;
-  v14 = v7;
+  v18 = informationCopy;
+  v19 = replyCopy;
+  taskCopy = task;
+  v13 = replyCopy;
+  v14 = informationCopy;
   v15 = v12;
   dispatch_async(v11, v16);
 }
@@ -1822,10 +1822,10 @@ void __83__ULConnection_Diagnostic__imageFeaturesDebugWithTask_additionalInforma
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)polarisDebugWithTask:(unint64_t)a3 reply:(id)a4
++ (void)polarisDebugWithTask:(unint64_t)task reply:(id)reply
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  replyCopy = reply;
   if (onceToken_MicroLocation_Default != -1)
   {
     _CLLogObjectForCategory_MicroLocation_Default_cold_1();
@@ -1835,7 +1835,7 @@ void __83__ULConnection_Diagnostic__imageFeaturesDebugWithTask_additionalInforma
   if (os_log_type_enabled(logObject_MicroLocation_Default, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = ULPolarisManagerTaskToString(a3);
+    v8 = ULPolarisManagerTaskToString(task);
     *buf = 138412290;
     v20 = v8;
     _os_log_impl(&dword_258FC9000, v7, OS_LOG_TYPE_DEFAULT, "polarisDebug. task: %@", buf, 0xCu);
@@ -1850,10 +1850,10 @@ void __83__ULConnection_Diagnostic__imageFeaturesDebugWithTask_additionalInforma
   block[1] = 3221225472;
   block[2] = __55__ULConnection_Diagnostic__polarisDebugWithTask_reply___block_invoke;
   block[3] = &unk_2798D26C8;
-  v17 = v5;
-  v18 = a3;
+  v17 = replyCopy;
+  taskCopy = task;
   v16 = v11;
-  v12 = v5;
+  v12 = replyCopy;
   v13 = v11;
   dispatch_async(v10, block);
 
@@ -1906,14 +1906,14 @@ void __55__ULConnection_Diagnostic__polarisDebugWithTask_reply___block_invoke_2(
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(ULConnection *)self queue];
+  queue = [(ULConnection *)self queue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__ULConnection_Diagnostic__requestAllModelsLearning__block_invoke;
   v6[3] = &unk_2798D2510;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(queue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1946,21 +1946,21 @@ void __52__ULConnection_Diagnostic__requestAllModelsLearning__block_invoke(uint6
   [v7 requestAllModelsLearningWithRequestIdentifier:*(*(*(a1 + 40) + 8) + 40)];
 }
 
-- (void)disableMicrolocationAtlocationWithIdentifier:(id)a3
+- (void)disableMicrolocationAtlocationWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ULConnection *)self queue];
-  dispatch_assert_queue_not_V2(v5);
+  identifierCopy = identifier;
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  v6 = [(ULConnection *)self queue];
+  queue2 = [(ULConnection *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __73__ULConnection_Diagnostic__disableMicrolocationAtlocationWithIdentifier___block_invoke;
   v8[3] = &unk_2798D2560;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = identifierCopy;
+  selfCopy = self;
+  v7 = identifierCopy;
+  dispatch_sync(queue2, v8);
 }
 
 void __73__ULConnection_Diagnostic__disableMicrolocationAtlocationWithIdentifier___block_invoke(uint64_t a1)
@@ -1987,9 +1987,9 @@ void __73__ULConnection_Diagnostic__disableMicrolocationAtlocationWithIdentifier
   v6 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)getRecordingTriggerUUIDAndRequestMicroLocationRecordingScanWithAdditionalInformation:(id)a3 shouldForceRecording:(BOOL)a4 handler:(id)a5
++ (id)getRecordingTriggerUUIDAndRequestMicroLocationRecordingScanWithAdditionalInformation:(id)information shouldForceRecording:(BOOL)recording handler:(id)handler
 {
-  v5 = a5;
+  handlerCopy = handler;
   v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v7 = dispatch_queue_create("com.apple.MicroLocation.getRecordingTriggerUUIDAndRequestMicroLocationRecordingScanWithAdditionalInformation", v6);
 
@@ -2009,18 +2009,18 @@ void __73__ULConnection_Diagnostic__disableMicrolocationAtlocationWithIdentifier
   block[1] = 3221225472;
   block[2] = __138__ULConnection_Legacy__getRecordingTriggerUUIDAndRequestMicroLocationRecordingScanWithAdditionalInformation_shouldForceRecording_handler___block_invoke;
   block[3] = &unk_2798D26F0;
-  v12 = v5;
-  v9 = v5;
+  v12 = handlerCopy;
+  v9 = handlerCopy;
   dispatch_async(v7, block);
 
   return 0;
 }
 
-+ (void)donateMicroLocationTruthTagWithTagUUID:(id)a3 correspondingToTriggerUUID:(id)a4 handler:(id)a5
++ (void)donateMicroLocationTruthTagWithTagUUID:(id)d correspondingToTriggerUUID:(id)iD handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  handlerCopy = handler;
   if (onceToken_MicroLocation_Default != -1)
   {
     _CLLogObjectForCategory_MicroLocation_Default_cold_1();
@@ -2034,12 +2034,12 @@ void __73__ULConnection_Diagnostic__disableMicrolocationAtlocationWithIdentifier
   }
 }
 
-+ (void)donateMicroLocationTruthTagWithTagUUID:(id)a3 forRecordingEventsBetweenDate:(id)a4 andDate:(id)a5 handler:(id)a6
++ (void)donateMicroLocationTruthTagWithTagUUID:(id)d forRecordingEventsBetweenDate:(id)date andDate:(id)andDate handler:(id)handler
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  dateCopy = date;
+  andDateCopy = andDate;
+  handlerCopy = handler;
   if (onceToken_MicroLocation_Default != -1)
   {
     _CLLogObjectForCategory_MicroLocation_Default_cold_1();
@@ -2053,10 +2053,10 @@ void __73__ULConnection_Diagnostic__disableMicrolocationAtlocationWithIdentifier
   }
 }
 
-+ (void)requestMicroLocationRecordingScanWithAdditionalInformation:(id)a3 shouldForceRecording:(BOOL)a4
++ (void)requestMicroLocationRecordingScanWithAdditionalInformation:(id)information shouldForceRecording:(BOOL)recording
 {
   v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v7 = a3;
+  informationCopy = information;
   v8 = dispatch_queue_create("com.apple.MicroLocation.requestMicroLocationRecordingScanWithAdditionalInformation", v6);
 
   v9 = [ULConnection _createNSXPCConnectionWithWeakProxy:0];
@@ -2066,14 +2066,14 @@ void __73__ULConnection_Diagnostic__disableMicrolocationAtlocationWithIdentifier
   v16[2] = 0x3032000000;
   v16[3] = __Block_byref_object_copy_;
   v16[4] = __Block_byref_object_dispose_;
-  v10 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:v7 copyItems:1];
+  v10 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:informationCopy copyItems:1];
 
   v17 = v10;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __104__ULConnection_Legacy__requestMicroLocationRecordingScanWithAdditionalInformation_shouldForceRecording___block_invoke;
   block[3] = &unk_2798D2740;
-  v15 = a4;
+  recordingCopy = recording;
   v13 = v9;
   v14 = v16;
   v11 = v9;
@@ -2201,9 +2201,9 @@ LABEL_23:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)requestCurrentMicroLocationWithAdditionalInformation:(id)a3
++ (void)requestCurrentMicroLocationWithAdditionalInformation:(id)information
 {
-  v3 = a3;
+  informationCopy = information;
   if (onceToken_MicroLocation_Default != -1)
   {
     _CLLogObjectForCategory_MicroLocation_Default_cold_1();
@@ -2226,7 +2226,7 @@ LABEL_23:
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
-  v17 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:v3 copyItems:1];
+  v17 = [objc_alloc(MEMORY[0x277CBEAC0]) initWithDictionary:informationCopy copyItems:1];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __77__ULConnection_Legacy__requestCurrentMicroLocationWithAdditionalInformation___block_invoke;
@@ -2382,12 +2382,12 @@ LABEL_16:
   v10 = logObject_MicroLocation_Default;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [*(v20 + 5) UTF8String];
+    uTF8String = [*(v20 + 5) UTF8String];
     v25 = 68289282;
     v26 = 2082;
     v27 = &unk_258FDF03F;
     v28 = 2082;
-    v29 = v11;
+    v29 = uTF8String;
     _os_log_impl(&dword_258FC9000, v10, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:MicroLocation Internal Version request, version:%{public, location:escape_only}s}", &v25, 0x1Cu);
   }
 
@@ -2421,72 +2421,72 @@ void __55__ULConnection_Legacy__getMicroLocationInternalVersion__block_invoke_2(
   [*(a1 + 40) invalidate];
 }
 
-+ (id)metadataForHomekitActionSetEventWithUUID:(id)a3 name:(id)a4 type:(id)a5 clientName:(id)a6 source:(id)a7 homeName:(id)a8
++ (id)metadataForHomekitActionSetEventWithUUID:(id)d name:(id)name type:(id)type clientName:(id)clientName source:(id)source homeName:(id)homeName
 {
   v13 = MEMORY[0x277CBEB38];
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  homeNameCopy = homeName;
+  sourceCopy = source;
+  clientNameCopy = clientName;
+  typeCopy = type;
+  nameCopy = name;
+  dCopy = d;
   v20 = objc_alloc_init(v13);
-  [v20 setValue:v19 forKey:@"private.HomeKit.scene.actionSetUUID"];
+  [v20 setValue:dCopy forKey:@"private.HomeKit.scene.actionSetUUID"];
 
-  [v20 setValue:v18 forKey:@"private.HomeKit.scene.actionSetName"];
-  [v20 setValue:v17 forKey:@"private.HomeKit.scene.actionSetType"];
+  [v20 setValue:nameCopy forKey:@"private.HomeKit.scene.actionSetName"];
+  [v20 setValue:typeCopy forKey:@"private.HomeKit.scene.actionSetType"];
 
-  [v20 setValue:v16 forKey:@"private.HomeKit.scene.clientName"];
-  [v20 setValue:v15 forKey:@"private.HomeKit.scene.source"];
+  [v20 setValue:clientNameCopy forKey:@"private.HomeKit.scene.clientName"];
+  [v20 setValue:sourceCopy forKey:@"private.HomeKit.scene.source"];
 
-  [v20 setValue:v14 forKey:@"private.HomeKit.scene.homeName"];
+  [v20 setValue:homeNameCopy forKey:@"private.HomeKit.scene.homeName"];
 
   return v20;
 }
 
-+ (id)metadataForHomekitAccessoryControlEventWithUUID:(id)a3 stateString:(id)a4 serviceUUID:(id)a5 serviceType:(id)a6 characteristicType:(id)a7 serviceGroupUUID:(id)a8 source:(id)a9 roomUUID:(id)a10
++ (id)metadataForHomekitAccessoryControlEventWithUUID:(id)d stateString:(id)string serviceUUID:(id)iD serviceType:(id)type characteristicType:(id)characteristicType serviceGroupUUID:(id)uID source:(id)source roomUUID:(id)self0
 {
   v16 = MEMORY[0x277CBEB38];
-  v17 = a10;
-  v18 = a9;
-  v19 = a8;
-  v20 = a7;
-  v21 = a6;
-  v22 = a5;
-  v23 = a4;
-  v24 = a3;
+  uUIDCopy = uUID;
+  sourceCopy = source;
+  uIDCopy = uID;
+  characteristicTypeCopy = characteristicType;
+  typeCopy = type;
+  iDCopy = iD;
+  stringCopy = string;
+  dCopy = d;
   v25 = objc_alloc_init(v16);
-  [v25 setValue:v24 forKey:@"private.HomeKit.accessory.accessoryUUID"];
+  [v25 setValue:dCopy forKey:@"private.HomeKit.accessory.accessoryUUID"];
 
-  [v25 setValue:v23 forKey:@"private.HomeKit.accessory.stateString"];
-  [v25 setValue:v22 forKey:@"private.HomeKit.accessory.serviceUUID"];
+  [v25 setValue:stringCopy forKey:@"private.HomeKit.accessory.stateString"];
+  [v25 setValue:iDCopy forKey:@"private.HomeKit.accessory.serviceUUID"];
 
-  [v25 setValue:v21 forKey:@"private.HomeKit.accessory.serviceType"];
-  [v25 setValue:v20 forKey:@"private.HomeKit.accessory.characteristicType"];
+  [v25 setValue:typeCopy forKey:@"private.HomeKit.accessory.serviceType"];
+  [v25 setValue:characteristicTypeCopy forKey:@"private.HomeKit.accessory.characteristicType"];
 
-  [v25 setValue:v19 forKey:@"private.HomeKit.accessory.serviceGroupUUID"];
-  [v25 setValue:v18 forKey:@"private.HomeKit.accessory.source"];
+  [v25 setValue:uIDCopy forKey:@"private.HomeKit.accessory.serviceGroupUUID"];
+  [v25 setValue:sourceCopy forKey:@"private.HomeKit.accessory.source"];
 
-  [v25 setValue:v17 forKey:@"private.HomeKit.accessory.roomUUID"];
+  [v25 setValue:uUIDCopy forKey:@"private.HomeKit.accessory.roomUUID"];
 
   return v25;
 }
 
-- (void)updateLegacyServiceIdentifier:(id)a3
+- (void)updateLegacyServiceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ULConnection *)self queue];
-  dispatch_assert_queue_not_V2(v5);
+  identifierCopy = identifier;
+  queue = [(ULConnection *)self queue];
+  dispatch_assert_queue_not_V2(queue);
 
-  v6 = [(ULConnection *)self queue];
+  queue2 = [(ULConnection *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__ULConnection_Legacy__updateLegacyServiceIdentifier___block_invoke;
   v8[3] = &unk_2798D2560;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = identifierCopy;
+  v7 = identifierCopy;
+  dispatch_sync(queue2, v8);
 }
 
 - (uint64_t)_xpcInterruptionHandler

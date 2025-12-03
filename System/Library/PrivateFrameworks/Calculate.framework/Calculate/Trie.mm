@@ -1,12 +1,12 @@
 @interface Trie
-+ (void)enumerateCharactersInKey:(uint64_t)a3 range:(uint64_t)a4 usingBlock:(void *)a5;
++ (void)enumerateCharactersInKey:(uint64_t)key range:(uint64_t)range usingBlock:(void *)block;
 - (Trie)init;
-- (id)objectForKeyedSubscript:(uint64_t)a1;
+- (id)objectForKeyedSubscript:(uint64_t)subscript;
 - (void)compress;
 - (void)dealloc;
-- (void)setObject:(void *)a3 forKeyedSubscript:;
-- (void)writeCharacter:(unsigned __int8)a3;
-- (void)writeNode:(id)a3;
+- (void)setObject:(void *)object forKeyedSubscript:;
+- (void)writeCharacter:(unsigned __int8)character;
+- (void)writeNode:(id)node;
 @end
 
 @implementation Trie
@@ -40,10 +40,10 @@
   return v3;
 }
 
-- (void)writeNode:(id)a3
+- (void)writeNode:(id)node
 {
-  var3 = a3.var3;
-  v4 = a3;
+  var3 = node.var3;
+  nodeCopy = node;
   nodeCount = self->_nodeCount;
   nodeSize = self->_nodeSize;
   if (nodeCount >= nodeSize)
@@ -68,11 +68,11 @@
 
   self->_nodeCount = nodeCount + 1;
   v10 = &nodes[nodeCount];
-  *v10 = v4;
+  *v10 = nodeCopy;
   v10->var3 = var3;
 }
 
-- (void)writeCharacter:(unsigned __int8)a3
+- (void)writeCharacter:(unsigned __int8)character
 {
   characterCount = self->_characterCount;
   characterSize = self->_characterSize;
@@ -102,7 +102,7 @@
   }
 
   self->_characterCount = characterCount + 1;
-  characters[characterCount] = a3;
+  characters[characterCount] = character;
 }
 
 - (void)dealloc
@@ -151,52 +151,52 @@
   return result;
 }
 
-+ (void)enumerateCharactersInKey:(uint64_t)a3 range:(uint64_t)a4 usingBlock:(void *)a5
++ (void)enumerateCharactersInKey:(uint64_t)key range:(uint64_t)range usingBlock:(void *)block
 {
-  v8 = a5;
+  blockCopy = block;
   v9 = a2;
   objc_opt_self();
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __50__Trie_enumerateCharactersInKey_range_usingBlock___block_invoke;
   v11[3] = &unk_1E815C258;
-  v12 = v8;
-  v10 = v8;
-  [v9 enumerateSubstringsInRange:a3 options:a4 usingBlock:{2, v11}];
+  v12 = blockCopy;
+  v10 = blockCopy;
+  [v9 enumerateSubstringsInRange:key options:range usingBlock:{2, v11}];
 }
 
-- (id)objectForKeyedSubscript:(uint64_t)a1
+- (id)objectForKeyedSubscript:(uint64_t)subscript
 {
-  if (a1)
+  if (subscript)
   {
-    v2 = [(TrieNode *)*(a1 + 32) objectForKeyedSubscript:a2];
+    v2 = [(TrieNode *)*(subscript + 32) objectForKeyedSubscript:a2];
     v3 = v2;
     if (v2)
     {
-      v4 = [(TrieNode *)v2 object];
+      object = [(TrieNode *)v2 object];
     }
 
     else
     {
-      v4 = 0;
+      object = 0;
     }
   }
 
   else
   {
-    v4 = 0;
+    object = 0;
   }
 
-  return v4;
+  return object;
 }
 
-- (void)setObject:(void *)a3 forKeyedSubscript:
+- (void)setObject:(void *)object forKeyedSubscript:
 {
-  if (a1)
+  if (self)
   {
-    v4 = *(a1 + 32);
+    v4 = *(self + 32);
     v5 = a2;
-    v6 = [(TrieNode *)v4 objectForKey:a3 create:1];
+    v6 = [(TrieNode *)v4 objectForKey:object create:1];
     [(TrieNode *)v6 setObject:v5];
   }
 }

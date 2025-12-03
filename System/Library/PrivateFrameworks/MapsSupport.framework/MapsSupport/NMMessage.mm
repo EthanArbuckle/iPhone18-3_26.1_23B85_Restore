@@ -1,25 +1,25 @@
 @interface NMMessage
 - (BOOL)decompressArguments;
-- (BOOL)isEqual:(id)a3;
-- (id)argumentForTag:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)argumentForTag:(int)tag;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)shortDebugDescription;
-- (int)StringAsPriority:(id)a3;
-- (int)StringAsType:(id)a3;
+- (int)StringAsPriority:(id)priority;
+- (int)StringAsType:(id)type;
 - (int)priority;
 - (int)type;
 - (int64_t)IDSMessagePriority;
 - (unint64_t)hash;
-- (void)addArgument:(id)a3;
-- (void)addCompressedArgument:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPriority:(BOOL)a3;
-- (void)setHasSentTimestamp:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addArgument:(id)argument;
+- (void)addCompressedArgument:(id)argument;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPriority:(BOOL)priority;
+- (void)setHasSentTimestamp:(BOOL)timestamp;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NMMessage
@@ -45,9 +45,9 @@
   return v4;
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 8;
   }
@@ -60,285 +60,285 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"FETCH_TILES"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"FETCH_TILES"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CANCEL_TILES"])
+  else if ([typeCopy isEqualToString:@"CANCEL_TILES"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"REPORT_CORRUPT_TILE"])
+  else if ([typeCopy isEqualToString:@"REPORT_CORRUPT_TILE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"FETCHED_TILE"])
+  else if ([typeCopy isEqualToString:@"FETCHED_TILE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"START_INITIAL_SYNC"])
+  else if ([typeCopy isEqualToString:@"START_INITIAL_SYNC"])
   {
     v4 = 50;
   }
 
-  else if ([v3 isEqualToString:@"FETCH_CURRENT_COUNTRY_CODE"])
+  else if ([typeCopy isEqualToString:@"FETCH_CURRENT_COUNTRY_CODE"])
   {
     v4 = 51;
   }
 
-  else if ([v3 isEqualToString:@"FETCH_EXPERIMENTS_CONFIG"])
+  else if ([typeCopy isEqualToString:@"FETCH_EXPERIMENTS_CONFIG"])
   {
     v4 = 52;
   }
 
-  else if ([v3 isEqualToString:@"DID_CHANGE_EXPERIMENTS_CONFIG"])
+  else if ([typeCopy isEqualToString:@"DID_CHANGE_EXPERIMENTS_CONFIG"])
   {
     v4 = 53;
   }
 
-  else if ([v3 isEqualToString:@"SYNC_UP_NEXT_ITEMS"])
+  else if ([typeCopy isEqualToString:@"SYNC_UP_NEXT_ITEMS"])
   {
     v4 = 54;
   }
 
-  else if ([v3 isEqualToString:@"REQUEST_UP_NEXT_ITEMS"])
+  else if ([typeCopy isEqualToString:@"REQUEST_UP_NEXT_ITEMS"])
   {
     v4 = 55;
   }
 
-  else if ([v3 isEqualToString:@"SYNC_CONFIG_STORE"])
+  else if ([typeCopy isEqualToString:@"SYNC_CONFIG_STORE"])
   {
     v4 = 56;
   }
 
-  else if ([v3 isEqualToString:@"CHECKIN_WITH_CONFIG_STORE"])
+  else if ([typeCopy isEqualToString:@"CHECKIN_WITH_CONFIG_STORE"])
   {
     v4 = 57;
   }
 
-  else if ([v3 isEqualToString:@"REQUEST_ANALYTIC_IDENTIFIERS"])
+  else if ([typeCopy isEqualToString:@"REQUEST_ANALYTIC_IDENTIFIERS"])
   {
     v4 = 58;
   }
 
-  else if ([v3 isEqualToString:@"CHECKIN_WITH_SUBSCRIPTION_INFO"])
+  else if ([typeCopy isEqualToString:@"CHECKIN_WITH_SUBSCRIPTION_INFO"])
   {
     v4 = 59;
   }
 
-  else if ([v3 isEqualToString:@"SYNC_SUBSCRIPTION_INFO"])
+  else if ([typeCopy isEqualToString:@"SYNC_SUBSCRIPTION_INFO"])
   {
     v4 = 60;
   }
 
-  else if ([v3 isEqualToString:@"SET_OBSERVED_SUBSCRIPTION_IDENTIFIERS"])
+  else if ([typeCopy isEqualToString:@"SET_OBSERVED_SUBSCRIPTION_IDENTIFIERS"])
   {
     v4 = 61;
   }
 
-  else if ([v3 isEqualToString:@"UPDATE_SUBSCRIPTION_STATE"])
+  else if ([typeCopy isEqualToString:@"UPDATE_SUBSCRIPTION_STATE"])
   {
     v4 = 63;
   }
 
-  else if ([v3 isEqualToString:@"START_STOP_SUBSCRIPTION_DOWNLOAD"])
+  else if ([typeCopy isEqualToString:@"START_STOP_SUBSCRIPTION_DOWNLOAD"])
   {
     v4 = 64;
   }
 
-  else if ([v3 isEqualToString:@"CHECKIN_WITH_SUBSCRIPTION_STATE_SUMMARY"])
+  else if ([typeCopy isEqualToString:@"CHECKIN_WITH_SUBSCRIPTION_STATE_SUMMARY"])
   {
     v4 = 65;
   }
 
-  else if ([v3 isEqualToString:@"SET_SUBSCRIPTION_STATE_SUMMARY"])
+  else if ([typeCopy isEqualToString:@"SET_SUBSCRIPTION_STATE_SUMMARY"])
   {
     v4 = 66;
   }
 
-  else if ([v3 isEqualToString:@"SET_SUBSCRIPTION_SHOULD_SYNC"])
+  else if ([typeCopy isEqualToString:@"SET_SUBSCRIPTION_SHOULD_SYNC"])
   {
     v4 = 67;
   }
 
-  else if ([v3 isEqualToString:@"CHECKIN_WITH_TILE_GROUP"])
+  else if ([typeCopy isEqualToString:@"CHECKIN_WITH_TILE_GROUP"])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:@"FORCE_UPDATE_MANIFEST"])
+  else if ([typeCopy isEqualToString:@"FORCE_UPDATE_MANIFEST"])
   {
     v4 = 101;
   }
 
-  else if ([v3 isEqualToString:@"DID_CHANGE_ACTIVE_TILE_GROUP"])
+  else if ([typeCopy isEqualToString:@"DID_CHANGE_ACTIVE_TILE_GROUP"])
   {
     v4 = 102;
   }
 
-  else if ([v3 isEqualToString:@"FETCH_RESOURCE"])
+  else if ([typeCopy isEqualToString:@"FETCH_RESOURCE"])
   {
     v4 = 103;
   }
 
-  else if ([v3 isEqualToString:@"START_LOCATION_UPDATE"])
+  else if ([typeCopy isEqualToString:@"START_LOCATION_UPDATE"])
   {
     v4 = 200;
   }
 
-  else if ([v3 isEqualToString:@"STOP_LOCATION_UPDATE"])
+  else if ([typeCopy isEqualToString:@"STOP_LOCATION_UPDATE"])
   {
     v4 = 201;
   }
 
-  else if ([v3 isEqualToString:@"UPDATED_LOCATION"])
+  else if ([typeCopy isEqualToString:@"UPDATED_LOCATION"])
   {
     v4 = 202;
   }
 
-  else if ([v3 isEqualToString:@"FAILED_TO_UPDATE_LOCATION"])
+  else if ([typeCopy isEqualToString:@"FAILED_TO_UPDATE_LOCATION"])
   {
     v4 = 203;
   }
 
-  else if ([v3 isEqualToString:@"DID_PAUSE_LOCATION_UPDATES"])
+  else if ([typeCopy isEqualToString:@"DID_PAUSE_LOCATION_UPDATES"])
   {
     v4 = 204;
   }
 
-  else if ([v3 isEqualToString:@"DID_RESUME_LOCATION_UPDATES"])
+  else if ([typeCopy isEqualToString:@"DID_RESUME_LOCATION_UPDATES"])
   {
     v4 = 205;
   }
 
-  else if ([v3 isEqualToString:@"APPLY_LOCATION_AUTHORIZATION"])
+  else if ([typeCopy isEqualToString:@"APPLY_LOCATION_AUTHORIZATION"])
   {
     v4 = 206;
   }
 
-  else if ([v3 isEqualToString:@"UPDATE_NAV_ROUTE_DETAILS"])
+  else if ([typeCopy isEqualToString:@"UPDATE_NAV_ROUTE_DETAILS"])
   {
     v4 = 300;
   }
 
-  else if ([v3 isEqualToString:@"UPDATE_NAV_ROUTE_STATUS"])
+  else if ([typeCopy isEqualToString:@"UPDATE_NAV_ROUTE_STATUS"])
   {
     v4 = 301;
   }
 
-  else if ([v3 isEqualToString:@"START_NAV"])
+  else if ([typeCopy isEqualToString:@"START_NAV"])
   {
     v4 = 302;
   }
 
-  else if ([v3 isEqualToString:@"STOP_NAV"])
+  else if ([typeCopy isEqualToString:@"STOP_NAV"])
   {
     v4 = 303;
   }
 
-  else if ([v3 isEqualToString:@"PREVIEW_NAV"])
+  else if ([typeCopy isEqualToString:@"PREVIEW_NAV"])
   {
     v4 = 304;
   }
 
-  else if ([v3 isEqualToString:@"CLEAR_NAV_PREVIEW"])
+  else if ([typeCopy isEqualToString:@"CLEAR_NAV_PREVIEW"])
   {
     v4 = 305;
   }
 
-  else if ([v3 isEqualToString:@"SET_WANTS_ALL_NAV_STATUS_UPDATES"])
+  else if ([typeCopy isEqualToString:@"SET_WANTS_ALL_NAV_STATUS_UPDATES"])
   {
     v4 = 306;
   }
 
-  else if ([v3 isEqualToString:@"DISMISS_NAV_SAFETY_ALERT"])
+  else if ([typeCopy isEqualToString:@"DISMISS_NAV_SAFETY_ALERT"])
   {
     v4 = 307;
   }
 
-  else if ([v3 isEqualToString:@"AVAILABLE_ROUTE"])
+  else if ([typeCopy isEqualToString:@"AVAILABLE_ROUTE"])
   {
     v4 = 308;
   }
 
-  else if ([v3 isEqualToString:@"SELECTED_ROUTE"])
+  else if ([typeCopy isEqualToString:@"SELECTED_ROUTE"])
   {
     v4 = 309;
   }
 
-  else if ([v3 isEqualToString:@"REQUEST_NAVIGATION_UPDATE"])
+  else if ([typeCopy isEqualToString:@"REQUEST_NAVIGATION_UPDATE"])
   {
     v4 = 310;
   }
 
-  else if ([v3 isEqualToString:@"UPDATE_NAV_ROUTE_UPDATE"])
+  else if ([typeCopy isEqualToString:@"UPDATE_NAV_ROUTE_UPDATE"])
   {
     v4 = 311;
   }
 
-  else if ([v3 isEqualToString:@"AVAILABLE_ROUTE_UPDATE"])
+  else if ([typeCopy isEqualToString:@"AVAILABLE_ROUTE_UPDATE"])
   {
     v4 = 312;
   }
 
-  else if ([v3 isEqualToString:@"PAUSE_NAV"])
+  else if ([typeCopy isEqualToString:@"PAUSE_NAV"])
   {
     v4 = 313;
   }
 
-  else if ([v3 isEqualToString:@"RESUME_NAV"])
+  else if ([typeCopy isEqualToString:@"RESUME_NAV"])
   {
     v4 = 314;
   }
 
-  else if ([v3 isEqualToString:@"SET_DISPLAYED_STEP"])
+  else if ([typeCopy isEqualToString:@"SET_DISPLAYED_STEP"])
   {
     v4 = 315;
   }
 
-  else if ([v3 isEqualToString:@"OPEN_URL"])
+  else if ([typeCopy isEqualToString:@"OPEN_URL"])
   {
     v4 = 401;
   }
 
-  else if ([v3 isEqualToString:@"PLACE_DATA_MUID_LOOKUP"])
+  else if ([typeCopy isEqualToString:@"PLACE_DATA_MUID_LOOKUP"])
   {
     v4 = 500;
   }
 
-  else if ([v3 isEqualToString:@"PLACE_DATA_IDENTIFIER_LOOKUP"])
+  else if ([typeCopy isEqualToString:@"PLACE_DATA_IDENTIFIER_LOOKUP"])
   {
     v4 = 501;
   }
 
-  else if ([v3 isEqualToString:@"SERVICE_REQUEST"])
+  else if ([typeCopy isEqualToString:@"SERVICE_REQUEST"])
   {
     v4 = 502;
   }
 
-  else if ([v3 isEqualToString:@"FETCH_ROUTE_GENIUS"])
+  else if ([typeCopy isEqualToString:@"FETCH_ROUTE_GENIUS"])
   {
     v4 = 600;
   }
 
-  else if ([v3 isEqualToString:@"PING"])
+  else if ([typeCopy isEqualToString:@"PING"])
   {
     v4 = 1000;
   }
 
-  else if ([v3 isEqualToString:@"DEBUG_FETCH_CONFIGURATION_INFO"])
+  else if ([typeCopy isEqualToString:@"DEBUG_FETCH_CONFIGURATION_INFO"])
   {
     v4 = 1500;
   }
 
-  else if ([v3 isEqualToString:@"DEBUG_FETCH_DIAGNOSTICS_STRING"])
+  else if ([typeCopy isEqualToString:@"DEBUG_FETCH_DIAGNOSTICS_STRING"])
   {
     v4 = 1501;
   }
@@ -351,40 +351,40 @@
   return v4;
 }
 
-- (void)addArgument:(id)a3
+- (void)addArgument:(id)argument
 {
-  v4 = a3;
+  argumentCopy = argument;
   arguments = self->_arguments;
-  v8 = v4;
+  v8 = argumentCopy;
   if (!arguments)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_arguments;
     self->_arguments = v6;
 
-    v4 = v8;
+    argumentCopy = v8;
     arguments = self->_arguments;
   }
 
-  [(NSMutableArray *)arguments addObject:v4];
+  [(NSMutableArray *)arguments addObject:argumentCopy];
 }
 
-- (void)addCompressedArgument:(id)a3
+- (void)addCompressedArgument:(id)argument
 {
-  v4 = a3;
+  argumentCopy = argument;
   compressedArguments = self->_compressedArguments;
-  v8 = v4;
+  v8 = argumentCopy;
   if (!compressedArguments)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_compressedArguments;
     self->_compressedArguments = v6;
 
-    v4 = v8;
+    argumentCopy = v8;
     compressedArguments = self->_compressedArguments;
   }
 
-  [(NSMutableArray *)compressedArguments addObject:v4];
+  [(NSMutableArray *)compressedArguments addObject:argumentCopy];
 }
 
 - (int)priority
@@ -400,9 +400,9 @@
   }
 }
 
-- (void)setHasPriority:(BOOL)a3
+- (void)setHasPriority:(BOOL)priority
 {
-  if (a3)
+  if (priority)
   {
     v3 = 4;
   }
@@ -415,20 +415,20 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsPriority:(id)a3
+- (int)StringAsPriority:(id)priority
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Sync"])
+  priorityCopy = priority;
+  if ([priorityCopy isEqualToString:@"Sync"])
   {
     v4 = 100;
   }
 
-  else if ([v3 isEqualToString:@"Default"])
+  else if ([priorityCopy isEqualToString:@"Default"])
   {
     v4 = 200;
   }
 
-  else if ([v3 isEqualToString:@"Urgent"])
+  else if ([priorityCopy isEqualToString:@"Urgent"])
   {
     v4 = 300;
   }
@@ -441,9 +441,9 @@
   return v4;
 }
 
-- (void)setHasSentTimestamp:(BOOL)a3
+- (void)setHasSentTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -461,8 +461,8 @@
   v7.receiver = self;
   v7.super_class = NMMessage;
   v3 = [(NMMessage *)&v7 description];
-  v4 = [(NMMessage *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NMMessage *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -794,8 +794,8 @@ LABEL_91:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v31 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
@@ -829,8 +829,8 @@ LABEL_91:
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v27 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation2 = [*(*(&v27 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation2];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v27 objects:v35 count:16];
@@ -890,9 +890,9 @@ LABEL_91:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 8) != 0)
   {
     type = self->_type;
@@ -1000,23 +1000,23 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 8) != 0)
   {
-    v4[14] = self->_type;
-    *(v4 + 60) |= 8u;
+    toCopy[14] = self->_type;
+    *(toCopy + 60) |= 8u;
   }
 
-  v14 = v4;
+  v14 = toCopy;
   if ([(NMMessage *)self argumentsCount])
   {
     [v14 clearArguments];
-    v5 = [(NMMessage *)self argumentsCount];
-    if (v5)
+    argumentsCount = [(NMMessage *)self argumentsCount];
+    if (argumentsCount)
     {
-      v6 = v5;
+      v6 = argumentsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NMMessage *)self argumentAtIndex:i];
@@ -1028,10 +1028,10 @@ LABEL_23:
   if ([(NMMessage *)self compressedArgumentsCount])
   {
     [v14 clearCompressedArguments];
-    v9 = [(NMMessage *)self compressedArgumentsCount];
-    if (v9)
+    compressedArgumentsCount = [(NMMessage *)self compressedArgumentsCount];
+    if (compressedArgumentsCount)
     {
-      v10 = v9;
+      v10 = compressedArgumentsCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(NMMessage *)self compressedArgumentAtIndex:j];
@@ -1080,9 +1080,9 @@ LABEL_16:
 LABEL_17:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 8) != 0)
   {
@@ -1109,7 +1109,7 @@ LABEL_17:
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v27 + 1) + 8 * i) copyWithZone:a3];
+        v12 = [*(*(&v27 + 1) + 8 * i) copyWithZone:zone];
         [v6 addArgument:v12];
       }
 
@@ -1138,7 +1138,7 @@ LABEL_17:
           objc_enumerationMutation(v13);
         }
 
-        v18 = [*(*(&v23 + 1) + 8 * j) copyWithZone:{a3, v23}];
+        v18 = [*(*(&v23 + 1) + 8 * j) copyWithZone:{zone, v23}];
         [v6 addCompressedArgument:v18];
       }
 
@@ -1148,7 +1148,7 @@ LABEL_17:
     while (v15);
   }
 
-  v19 = [(NSString *)self->_senderUUID copyWithZone:a3];
+  v19 = [(NSString *)self->_senderUUID copyWithZone:zone];
   v20 = *(v6 + 6);
   *(v6 + 6) = v19;
 
@@ -1190,24 +1190,24 @@ LABEL_20:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = *(v4 + 60);
+  v5 = *(equalCopy + 60);
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 60) & 8) == 0 || self->_type != *(v4 + 14))
+    if ((*(equalCopy + 60) & 8) == 0 || self->_type != *(equalCopy + 14))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 60) & 8) != 0)
+  else if ((*(equalCopy + 60) & 8) != 0)
   {
 LABEL_27:
     v9 = 0;
@@ -1215,13 +1215,13 @@ LABEL_27:
   }
 
   arguments = self->_arguments;
-  if (arguments | *(v4 + 3) && ![(NSMutableArray *)arguments isEqual:?])
+  if (arguments | *(equalCopy + 3) && ![(NSMutableArray *)arguments isEqual:?])
   {
     goto LABEL_27;
   }
 
   compressedArguments = self->_compressedArguments;
-  if (compressedArguments | *(v4 + 4))
+  if (compressedArguments | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)compressedArguments isEqual:?])
     {
@@ -1230,7 +1230,7 @@ LABEL_27:
   }
 
   senderUUID = self->_senderUUID;
-  if (senderUUID | *(v4 + 6))
+  if (senderUUID | *(equalCopy + 6))
   {
     if (![(NSString *)senderUUID isEqual:?])
     {
@@ -1240,34 +1240,34 @@ LABEL_27:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 60) & 4) == 0 || self->_priority != *(v4 + 10))
+    if ((*(equalCopy + 60) & 4) == 0 || self->_priority != *(equalCopy + 10))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 60) & 4) != 0)
+  else if ((*(equalCopy + 60) & 4) != 0)
   {
     goto LABEL_27;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 60) & 2) == 0 || self->_sentTimestamp != *(v4 + 2))
+    if ((*(equalCopy + 60) & 2) == 0 || self->_sentTimestamp != *(equalCopy + 2))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 60) & 2) != 0)
+  else if ((*(equalCopy + 60) & 2) != 0)
   {
     goto LABEL_27;
   }
 
-  v9 = (*(v4 + 60) & 1) == 0;
+  v9 = (*(equalCopy + 60) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 60) & 1) == 0 || self->_enqueuedTimeInterval != *(v4 + 1))
+    if ((*(equalCopy + 60) & 1) == 0 || self->_enqueuedTimeInterval != *(equalCopy + 1))
     {
       goto LABEL_27;
     }
@@ -1378,13 +1378,13 @@ LABEL_12:
   return v4 ^ v3 ^ v5 ^ v6 ^ v9 ^ v13 ^ v14;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((*(v4 + 60) & 8) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((*(fromCopy + 60) & 8) != 0)
   {
-    self->_type = *(v4 + 14);
+    self->_type = *(fromCopy + 14);
     *&self->_has |= 8u;
   }
 
@@ -1392,7 +1392,7 @@ LABEL_12:
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v7)
   {
@@ -1494,14 +1494,14 @@ LABEL_23:
     return 200;
   }
 
-  v3 = [(NMMessage *)self priority];
+  priority = [(NMMessage *)self priority];
   v4 = 200;
-  if (v3 == 300)
+  if (priority == 300)
   {
     v4 = 300;
   }
 
-  if (v3 == 100)
+  if (priority == 100)
   {
     return 100;
   }
@@ -1512,14 +1512,14 @@ LABEL_23:
   }
 }
 
-- (id)argumentForTag:(int)a3
+- (id)argumentForTag:(int)tag
 {
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(NMMessage *)self arguments];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  arguments = [(NMMessage *)self arguments];
+  v5 = [arguments countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1530,18 +1530,18 @@ LABEL_23:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(arguments);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 tag] == a3)
+        if ([v9 tag] == tag)
         {
           v10 = v9;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [arguments countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -1563,8 +1563,8 @@ LABEL_11:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NMMessage *)self compressedArguments];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  compressedArguments = [(NMMessage *)self compressedArguments];
+  v4 = [compressedArguments countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1576,24 +1576,24 @@ LABEL_11:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(compressedArguments);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * v7) _nm_uncompressedArgument];
-        if (!v8)
+        _nm_uncompressedArgument = [*(*(&v11 + 1) + 8 * v7) _nm_uncompressedArgument];
+        if (!_nm_uncompressedArgument)
         {
 
           return 0;
         }
 
-        v9 = v8;
-        [(NMMessage *)self addArgument:v8];
+        v9 = _nm_uncompressedArgument;
+        [(NMMessage *)self addArgument:_nm_uncompressedArgument];
 
         v7 = v7 + 1;
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [compressedArguments countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;

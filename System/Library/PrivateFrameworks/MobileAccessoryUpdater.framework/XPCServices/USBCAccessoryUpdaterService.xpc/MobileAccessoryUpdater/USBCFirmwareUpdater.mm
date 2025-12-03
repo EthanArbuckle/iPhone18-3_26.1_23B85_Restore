@@ -1,32 +1,32 @@
 @interface USBCFirmwareUpdater
-- (USBCFirmwareUpdater)initWithRegistryEntry:(unsigned int)a3;
-- (id)BlessArgumentsWithRemoteReset:(BOOL)a3;
-- (id)DeviceVIDDID:(unsigned int *)a3 andDid:(unsigned int *)a4 andUid:(id *)a5;
-- (id)LocatePortMicroForSerialNumber:(id)a3;
-- (id)applyFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6;
-- (id)finishFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6;
-- (id)prepareFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6;
-- (id)validateFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6;
+- (USBCFirmwareUpdater)initWithRegistryEntry:(unsigned int)entry;
+- (id)BlessArgumentsWithRemoteReset:(BOOL)reset;
+- (id)DeviceVIDDID:(unsigned int *)d andDid:(unsigned int *)did andUid:(id *)uid;
+- (id)LocatePortMicroForSerialNumber:(id)number;
+- (id)applyFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress;
+- (id)finishFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress;
+- (id)prepareFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress;
+- (id)validateFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress;
 @end
 
 @implementation USBCFirmwareUpdater
 
-- (USBCFirmwareUpdater)initWithRegistryEntry:(unsigned int)a3
+- (USBCFirmwareUpdater)initWithRegistryEntry:(unsigned int)entry
 {
   v5.receiver = self;
   v5.super_class = USBCFirmwareUpdater;
   result = [(USBCFirmwareUpdater *)&v5 init];
   if (result)
   {
-    result->_registryEntry = a3;
+    result->_registryEntry = entry;
   }
 
   return result;
 }
 
-- (id)LocatePortMicroForSerialNumber:(id)a3
+- (id)LocatePortMicroForSerialNumber:(id)number
 {
-  v38 = a3;
+  numberCopy = number;
   v36 = +[AppleHPMUserClientManager sharedInstance];
   if (!v36)
   {
@@ -115,9 +115,9 @@ LABEL_42:
 
           v45 = 0;
           v18 = self->_delegate;
-          v19 = [v13 address];
-          v20 = [v13 userClient];
-          -[FudPluginDelegate log:format:](v18, "log:format:", 7, @"%s - Testing alternate mode for Port %u on RID %u...", "-[USBCFirmwareUpdater LocatePortMicroForSerialNumber:]", v19, [v20 routerID]);
+          address = [v13 address];
+          userClient = [v13 userClient];
+          -[FudPluginDelegate log:format:](v18, "log:format:", 7, @"%s - Testing alternate mode for Port %u on RID %u...", "-[USBCFirmwareUpdater LocatePortMicroForSerialNumber:]", address, [userClient routerID]);
 
           v21 = [(USBCPDAccess *)self->_pdAccess DeviceInAlternateMode:&v45];
 
@@ -163,9 +163,9 @@ LABEL_42:
 
               v24 = [(USBCFirmwareUpdater *)self DeviceSerialNumber:0];
               v25 = v24;
-              if (!v24 || [v24 compare:v38])
+              if (!v24 || [v24 compare:numberCopy])
               {
-                [(FudPluginDelegate *)self->_delegate log:7 format:@"%s - Validating pdAccess.... S/N DID NOT Match.  (%@ vs. %@)", "[USBCFirmwareUpdater LocatePortMicroForSerialNumber:]", v25, v38];
+                [(FudPluginDelegate *)self->_delegate log:7 format:@"%s - Validating pdAccess.... S/N DID NOT Match.  (%@ vs. %@)", "[USBCFirmwareUpdater LocatePortMicroForSerialNumber:]", v25, numberCopy];
                 [(NSMutableDictionary *)self->_hardwareProperties setObject:0 forKeyedSubscript:@"Hardware S/N"];
 
                 goto LABEL_28;
@@ -230,7 +230,7 @@ LABEL_44:
     [v31 setObject:v7 forKeyedSubscript:@"Previous Error Response"];
     v32 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:9216 userInfo:v31];
 
-    v33 = v38;
+    v33 = numberCopy;
     v34 = v36;
     goto LABEL_49;
   }
@@ -240,14 +240,14 @@ LABEL_46:
   if (self->_pdAccess)
   {
     v32 = 0;
-    v33 = v38;
+    v33 = numberCopy;
     goto LABEL_50;
   }
 
   v31 = +[NSMutableDictionary dictionary];
   [v31 setObject:@"No valid PD Controller" forKeyedSubscript:@"Notes"];
   v32 = [NSError errorWithDomain:@"USBCAccessoryFirmwareUpdater Domain" code:9216 userInfo:v31];
-  v33 = v38;
+  v33 = numberCopy;
 LABEL_49:
 
 LABEL_50:
@@ -255,9 +255,9 @@ LABEL_50:
   return v32;
 }
 
-- (id)validateFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6
+- (id)validateFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress
 {
-  [(USBCFirmwareUpdater *)self doesNotRecognizeSelector:a2, a4, a5, a6];
+  [(USBCFirmwareUpdater *)self doesNotRecognizeSelector:a2, hardware, a5, progress];
   delegate = self->_delegate;
   v9 = NSStringFromSelector(a2);
   [(FudPluginDelegate *)delegate log:7 format:@"%s - doesNotRecognizeSelector = %@", "[USBCFirmwareUpdater validateFirmware:hardware:firmware:progress:]", v9];
@@ -273,9 +273,9 @@ LABEL_50:
   return v12;
 }
 
-- (id)prepareFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6
+- (id)prepareFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress
 {
-  [(USBCFirmwareUpdater *)self doesNotRecognizeSelector:a2, a4, a5, a6];
+  [(USBCFirmwareUpdater *)self doesNotRecognizeSelector:a2, hardware, a5, progress];
   delegate = self->_delegate;
   v9 = NSStringFromSelector(a2);
   [(FudPluginDelegate *)delegate log:7 format:@"%s - doesNotRecognizeSelector = %@", "[USBCFirmwareUpdater prepareFirmware:hardware:firmware:progress:]", v9];
@@ -291,9 +291,9 @@ LABEL_50:
   return v12;
 }
 
-- (id)applyFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6
+- (id)applyFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress
 {
-  [(USBCFirmwareUpdater *)self doesNotRecognizeSelector:a2, a4, a5, a6];
+  [(USBCFirmwareUpdater *)self doesNotRecognizeSelector:a2, hardware, a5, progress];
   delegate = self->_delegate;
   v9 = NSStringFromSelector(a2);
   [(FudPluginDelegate *)delegate log:7 format:@"%s - doesNotRecognizeSelector = %@", "[USBCFirmwareUpdater applyFirmware:hardware:firmware:progress:]", v9];
@@ -309,9 +309,9 @@ LABEL_50:
   return v12;
 }
 
-- (id)finishFirmware:(id)a3 hardware:(id)a4 firmware:(id)a5 progress:(id)a6
+- (id)finishFirmware:(id)firmware hardware:(id)hardware firmware:(id)a5 progress:(id)progress
 {
-  [(USBCFirmwareUpdater *)self doesNotRecognizeSelector:a2, a4, a5, a6];
+  [(USBCFirmwareUpdater *)self doesNotRecognizeSelector:a2, hardware, a5, progress];
   delegate = self->_delegate;
   v9 = NSStringFromSelector(a2);
   [(FudPluginDelegate *)delegate log:7 format:@"%s - doesNotRecognizeSelector = %@", "[USBCFirmwareUpdater finishFirmware:hardware:firmware:progress:]", v9];
@@ -327,9 +327,9 @@ LABEL_50:
   return v12;
 }
 
-- (id)BlessArgumentsWithRemoteReset:(BOOL)a3
+- (id)BlessArgumentsWithRemoteReset:(BOOL)reset
 {
-  v3 = a3;
+  resetCopy = reset;
   v5 = [NSMutableArray arrayWithCapacity:16];
   v6 = [NSMutableString alloc];
   v7 = [(NSMutableDictionary *)self->_firmwareAssetProperties objectForKeyedSubscript:@"Firmware Asset Path"];
@@ -370,7 +370,7 @@ LABEL_50:
   [v13 addObject:@"g"];
   [v13 addObject:@"-w1"];
   [v13 addObject:@"0x4"];
-  if (v3)
+  if (resetCopy)
   {
     [v13 addObject:@"-remote"];
   }
@@ -431,7 +431,7 @@ LABEL_50:
   return v5;
 }
 
-- (id)DeviceVIDDID:(unsigned int *)a3 andDid:(unsigned int *)a4 andUid:(id *)a5
+- (id)DeviceVIDDID:(unsigned int *)d andDid:(unsigned int *)did andUid:(id *)uid
 {
   v25 = 4;
   [(FudPluginDelegate *)self->_delegate log:7 format:@"%s - _pdAccess: %@ ", "[USBCFirmwareUpdater DeviceVIDDID:andDid:andUid:]", self->_pdAccess];
@@ -440,7 +440,7 @@ LABEL_50:
     goto LABEL_13;
   }
 
-  if (!a3)
+  if (!d)
   {
     goto LABEL_6;
   }
@@ -450,10 +450,10 @@ LABEL_50:
   if (v9)
   {
     v10 = [(NSMutableDictionary *)self->_hardwareProperties objectForKeyedSubscript:@"Hardware VID"];
-    *a3 = [v10 unsignedLongValue];
+    *d = [v10 unsignedLongValue];
   }
 
-  if (!*a3)
+  if (!*d)
   {
     v16 = [sub_100002294() IECSReadReg:? buffer:? bufferLength:? registerAddress:? returnedBufferLength:? canRetry:? canRecover:?];
     delegate = self->_delegate;
@@ -463,11 +463,11 @@ LABEL_50:
       goto LABEL_20;
     }
 
-    [(FudPluginDelegate *)delegate log:7 format:@"%s - VID: %08X", "[USBCFirmwareUpdater DeviceVIDDID:andDid:andUid:]", *a3];
-    v21 = [NSNumber numberWithUnsignedLong:*a3];
+    [(FudPluginDelegate *)delegate log:7 format:@"%s - VID: %08X", "[USBCFirmwareUpdater DeviceVIDDID:andDid:andUid:]", *d];
+    v21 = [NSNumber numberWithUnsignedLong:*d];
     [(NSMutableDictionary *)self->_hardwareProperties setObject:v21 forKeyedSubscript:@"Hardware VID"];
 
-    if (!a4)
+    if (!did)
     {
       goto LABEL_10;
     }
@@ -476,7 +476,7 @@ LABEL_50:
   else
   {
 LABEL_6:
-    if (!a4)
+    if (!did)
     {
       goto LABEL_10;
     }
@@ -487,17 +487,17 @@ LABEL_6:
   if (v11)
   {
     v12 = [(NSMutableDictionary *)self->_hardwareProperties objectForKeyedSubscript:@"Hardware DID"];
-    *a4 = [v12 unsignedLongValue];
+    *did = [v12 unsignedLongValue];
   }
 
-  if (!*a4)
+  if (!*did)
   {
     v16 = [sub_100002294() IECSReadReg:? buffer:? bufferLength:? registerAddress:? returnedBufferLength:? canRetry:? canRecover:?];
     v18 = self->_delegate;
     if (!v16)
     {
-      [(FudPluginDelegate *)v18 log:7 format:@"%s - DID: %08X", "[USBCFirmwareUpdater DeviceVIDDID:andDid:andUid:]", *a4];
-      v22 = [NSNumber numberWithUnsignedLong:*a4];
+      [(FudPluginDelegate *)v18 log:7 format:@"%s - DID: %08X", "[USBCFirmwareUpdater DeviceVIDDID:andDid:andUid:]", *did];
+      v22 = [NSNumber numberWithUnsignedLong:*did];
       [(NSMutableDictionary *)self->_hardwareProperties setObject:v22 forKeyedSubscript:@"Hardware DID"];
 
       goto LABEL_10;
@@ -514,7 +514,7 @@ LABEL_20:
   }
 
 LABEL_10:
-  if (!a5)
+  if (!uid)
   {
 LABEL_13:
     v15 = 0;
@@ -533,7 +533,7 @@ LABEL_13:
     {
       [(FudPluginDelegate *)v19 log:7 format:@"%s - UUID: %02X%02X%02X%02X-%02X%02X-%02X%02X-%02X%02X%02X%02X%02X%02X%02X%02X", "[USBCFirmwareUpdater DeviceVIDDID:andDid:andUid:]", v26[0], v26[1], v26[2], v26[3], v26[4], v26[5], v26[6], v26[7], v26[8], v26[9], v26[10], v26[11], v26[12], v26[13], v26[14], v26[15]];
       v23 = [[NSData alloc] initWithBytes:v26 length:16];
-      *a5 = v23;
+      *uid = v23;
       v14 = [v23 copy];
       [(NSMutableDictionary *)self->_hardwareProperties setObject:v14 forKeyedSubscript:@"Hardware UID"];
       v15 = 0;
@@ -546,7 +546,7 @@ LABEL_13:
 
   v14 = [(NSMutableDictionary *)self->_hardwareProperties objectForKeyedSubscript:@"Hardware UID"];
   v15 = 0;
-  *a5 = [v14 copy];
+  *uid = [v14 copy];
 LABEL_21:
 
 LABEL_22:

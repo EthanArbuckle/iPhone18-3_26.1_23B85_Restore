@@ -47,7 +47,7 @@
 - (void)jsonDictionaryRepresentation
 {
   OUTLINED_FUNCTION_8_2();
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   OUTLINED_FUNCTION_7_2();
   [v1 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }

@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneSearchTopScoreDocCollector_PagingTopScoreDocCollector_$1
-- (OrgApacheLuceneSearchTopScoreDocCollector_PagingTopScoreDocCollector_$1)initWithOrgApacheLuceneSearchTopScoreDocCollector_PagingTopScoreDocCollector:(id)a3 withInt:(int)a4 withInt:(int)a5;
-- (void)collectWithInt:(int)a3;
+- (OrgApacheLuceneSearchTopScoreDocCollector_PagingTopScoreDocCollector_$1)initWithOrgApacheLuceneSearchTopScoreDocCollector_PagingTopScoreDocCollector:(id)collector withInt:(int)int withInt:(int)withInt;
+- (void)collectWithInt:(int)int;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchTopScoreDocCollector_PagingTopScoreDocCollector_$1
 
-- (void)collectWithInt:(int)a3
+- (void)collectWithInt:(int)int
 {
   scorer = self->super.scorer_;
   if (!scorer)
@@ -24,7 +24,7 @@
   }
 
   score = after->score_;
-  if (v6 > score || v6 == score && self->val$afterDoc_ >= a3)
+  if (v6 > score || v6 == score && self->val$afterDoc_ >= int)
   {
     return;
   }
@@ -41,7 +41,7 @@
   }
 
   ++v7->collectedHits_;
-  self->this$0_->super.pqTop_->doc_ = self->val$docBase_ + a3;
+  self->this$0_->super.pqTop_->doc_ = self->val$docBase_ + int;
   self->this$0_->super.pqTop_->score_ = v6;
   v11 = self->this$0_;
   pq = v11->super.super.pq_;
@@ -51,16 +51,16 @@ LABEL_13:
     JreThrowNullPointerException();
   }
 
-  v13 = [(OrgApacheLuceneUtilPriorityQueue *)pq updateTop];
+  updateTop = [(OrgApacheLuceneUtilPriorityQueue *)pq updateTop];
 
-  JreStrongAssign(&v11->super.pqTop_, v13);
+  JreStrongAssign(&v11->super.pqTop_, updateTop);
 }
 
-- (OrgApacheLuceneSearchTopScoreDocCollector_PagingTopScoreDocCollector_$1)initWithOrgApacheLuceneSearchTopScoreDocCollector_PagingTopScoreDocCollector:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (OrgApacheLuceneSearchTopScoreDocCollector_PagingTopScoreDocCollector_$1)initWithOrgApacheLuceneSearchTopScoreDocCollector_PagingTopScoreDocCollector:(id)collector withInt:(int)int withInt:(int)withInt
 {
-  JreStrongAssign(&self->this$0_, a3);
-  self->val$afterDoc_ = a4;
-  self->val$docBase_ = a5;
+  JreStrongAssign(&self->this$0_, collector);
+  self->val$afterDoc_ = int;
+  self->val$docBase_ = withInt;
   return self;
 }
 

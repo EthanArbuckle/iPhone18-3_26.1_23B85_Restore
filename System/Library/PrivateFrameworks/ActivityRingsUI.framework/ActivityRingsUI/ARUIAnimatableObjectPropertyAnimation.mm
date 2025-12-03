@@ -1,30 +1,30 @@
 @interface ARUIAnimatableObjectPropertyAnimation
-+ (id)animationWithDuration:(double)a3 timingFunction:(id)a4 completion:(id)a5;
-+ (id)timingFunctionForMediaTimingFunction:(id)a3;
++ (id)animationWithDuration:(double)duration timingFunction:(id)function completion:(id)completion;
++ (id)timingFunctionForMediaTimingFunction:(id)function;
 - (BOOL)isFinishedAnimating;
 - (id)_currentValue;
 - (id)_endValue;
 - (id)_startValue;
-- (id)valueByAddingCurrentValueToValue:(id)a3;
-- (void)_setCurrentValue:(id)a3;
-- (void)_setEndValue:(id)a3;
-- (void)_setStartValue:(id)a3;
-- (void)_updateWithProgress:(float)a3;
+- (id)valueByAddingCurrentValueToValue:(id)value;
+- (void)_setCurrentValue:(id)value;
+- (void)_setEndValue:(id)value;
+- (void)_setStartValue:(id)value;
+- (void)_updateWithProgress:(float)progress;
 - (void)callAndReleaseCompletionHandler;
-- (void)update:(double)a3;
+- (void)update:(double)update;
 @end
 
 @implementation ARUIAnimatableObjectPropertyAnimation
 
-+ (id)timingFunctionForMediaTimingFunction:(id)a3
++ (id)timingFunctionForMediaTimingFunction:(id)function
 {
-  v3 = a3;
+  functionCopy = function;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __78__ARUIAnimatableObjectPropertyAnimation_timingFunctionForMediaTimingFunction___block_invoke;
   v7[3] = &unk_1E83CE478;
-  v8 = v3;
-  v4 = v3;
+  v8 = functionCopy;
+  v4 = functionCopy;
   v5 = MEMORY[0x1D3875270](v7);
 
   return v5;
@@ -37,20 +37,20 @@ double __78__ARUIAnimatableObjectPropertyAnimation_timingFunctionForMediaTimingF
   return v2;
 }
 
-+ (id)animationWithDuration:(double)a3 timingFunction:(id)a4 completion:(id)a5
++ (id)animationWithDuration:(double)duration timingFunction:(id)function completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = objc_alloc_init(a1);
+  functionCopy = function;
+  completionCopy = completion;
+  v10 = objc_alloc_init(self);
   v11 = v10;
   if (v10)
   {
-    *(v10 + 3) = a3;
-    v12 = MEMORY[0x1D3875270](v8);
+    *(v10 + 3) = duration;
+    v12 = MEMORY[0x1D3875270](functionCopy);
     v13 = v11[1];
     v11[1] = v12;
 
-    v14 = MEMORY[0x1D3875270](v9);
+    v14 = MEMORY[0x1D3875270](completionCopy);
     v15 = v11[4];
     v11[4] = v14;
   }
@@ -58,13 +58,13 @@ double __78__ARUIAnimatableObjectPropertyAnimation_timingFunctionForMediaTimingF
   return v11;
 }
 
-- (void)update:(double)a3
+- (void)update:(double)update
 {
   currentAnimationTime = self->_currentAnimationTime;
   duration = self->_duration;
   if (currentAnimationTime < duration)
   {
-    v7 = currentAnimationTime + a3;
+    v7 = currentAnimationTime + update;
     if (v7 >= duration)
     {
       v7 = self->_duration;
@@ -85,9 +85,9 @@ double __78__ARUIAnimatableObjectPropertyAnimation_timingFunctionForMediaTimingF
     return 1;
   }
 
-  v3 = [(ARUIAnimatableObjectPropertyAnimation *)self _currentValue];
-  v4 = [(ARUIAnimatableObjectPropertyAnimation *)self _endValue];
-  v5 = [v3 isEqual:v4];
+  _currentValue = [(ARUIAnimatableObjectPropertyAnimation *)self _currentValue];
+  _endValue = [(ARUIAnimatableObjectPropertyAnimation *)self _endValue];
+  v5 = [_currentValue isEqual:_endValue];
 
   return v5;
 }
@@ -129,7 +129,7 @@ double __78__ARUIAnimatableObjectPropertyAnimation_timingFunctionForMediaTimingF
   return 0;
 }
 
-- (void)_setStartValue:(id)a3
+- (void)_setStartValue:(id)value
 {
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_0();
@@ -137,7 +137,7 @@ double __78__ARUIAnimatableObjectPropertyAnimation_timingFunctionForMediaTimingF
   NSRequestConcreteImplementation();
 }
 
-- (void)_setEndValue:(id)a3
+- (void)_setEndValue:(id)value
 {
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_0();
@@ -145,7 +145,7 @@ double __78__ARUIAnimatableObjectPropertyAnimation_timingFunctionForMediaTimingF
   NSRequestConcreteImplementation();
 }
 
-- (void)_setCurrentValue:(id)a3
+- (void)_setCurrentValue:(id)value
 {
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_0();
@@ -153,7 +153,7 @@ double __78__ARUIAnimatableObjectPropertyAnimation_timingFunctionForMediaTimingF
   NSRequestConcreteImplementation();
 }
 
-- (void)_updateWithProgress:(float)a3
+- (void)_updateWithProgress:(float)progress
 {
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_0();
@@ -161,7 +161,7 @@ double __78__ARUIAnimatableObjectPropertyAnimation_timingFunctionForMediaTimingF
   NSRequestConcreteImplementation();
 }
 
-- (id)valueByAddingCurrentValueToValue:(id)a3
+- (id)valueByAddingCurrentValueToValue:(id)value
 {
   OUTLINED_FUNCTION_1_0();
   OUTLINED_FUNCTION_0_0();

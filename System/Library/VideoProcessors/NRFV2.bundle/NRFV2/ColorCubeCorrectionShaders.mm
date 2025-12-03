@@ -1,12 +1,12 @@
 @interface ColorCubeCorrectionShaders
-- (ColorCubeCorrectionShaders)initWithMetal:(id)a3;
+- (ColorCubeCorrectionShaders)initWithMetal:(id)metal;
 @end
 
 @implementation ColorCubeCorrectionShaders
 
-- (ColorCubeCorrectionShaders)initWithMetal:(id)a3
+- (ColorCubeCorrectionShaders)initWithMetal:(id)metal
 {
-  v4 = a3;
+  metalCopy = metal;
   v15.receiver = self;
   v15.super_class = ColorCubeCorrectionShaders;
   v6 = [(ColorCubeCorrectionShaders *)&v15 init];
@@ -16,7 +16,7 @@
     goto LABEL_10;
   }
 
-  v7 = objc_msgSend_computePipelineStateFor_constants_(v4, v5, @"red_face_fix", 0);
+  v7 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v5, @"red_face_fix", 0);
   colorCubeCorrectionComputePipeline = v6->colorCubeCorrectionComputePipeline;
   v6->colorCubeCorrectionComputePipeline = v7;
 
@@ -26,7 +26,7 @@
     goto LABEL_9;
   }
 
-  v10 = objc_msgSend_computePipelineStateFor_constants_(v4, v9, @"maskedCubeApply", 0);
+  v10 = objc_msgSend_computePipelineStateFor_constants_(metalCopy, v9, @"maskedCubeApply", 0);
   maskedColorCubeCorrectionComputePipeline = v6->maskedColorCubeCorrectionComputePipeline;
   v6->maskedColorCubeCorrectionComputePipeline = v10;
 

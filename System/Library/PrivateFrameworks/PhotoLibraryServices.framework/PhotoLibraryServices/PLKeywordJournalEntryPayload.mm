@@ -3,7 +3,7 @@
 + (id)modelPropertiesDescription;
 + (id)nonPersistedModelPropertiesDescription;
 + (id)persistedPropertyNamesForEntityNames;
-- (id)insertKeywordFromDataInManagedObjectContext:(id)a3;
+- (id)insertKeywordFromDataInManagedObjectContext:(id)context;
 @end
 
 @implementation PLKeywordJournalEntryPayload
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __68__PLKeywordJournalEntryPayload_persistedPropertyNamesForEntityNames__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (persistedPropertyNamesForEntityNames_onceToken_4221 != -1)
   {
     dispatch_once(&persistedPropertyNamesForEntityNames_onceToken_4221, block);
@@ -38,7 +38,7 @@ void __68__PLKeywordJournalEntryPayload_persistedPropertyNamesForEntityNames__bl
   block[1] = 3221225472;
   block[2] = __47__PLKeywordJournalEntryPayload_modelProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (modelProperties_onceToken_4223 != -1)
   {
     dispatch_once(&modelProperties_onceToken_4223, block);
@@ -89,12 +89,12 @@ uint64_t __47__PLKeywordJournalEntryPayload_modelProperties__block_invoke(uint64
   return v5;
 }
 
-- (id)insertKeywordFromDataInManagedObjectContext:(id)a3
+- (id)insertKeywordFromDataInManagedObjectContext:(id)context
 {
-  v4 = [(PLManagedObject *)PLManagedKeyword insertInManagedObjectContext:a3];
-  v5 = [(PLManagedObjectJournalEntryPayload *)self payloadID];
-  v6 = [v5 payloadIDString];
-  [v4 setUuid:v6];
+  v4 = [(PLManagedObject *)PLManagedKeyword insertInManagedObjectContext:context];
+  payloadID = [(PLManagedObjectJournalEntryPayload *)self payloadID];
+  payloadIDString = [payloadID payloadIDString];
+  [v4 setUuid:payloadIDString];
 
   [(PLManagedObjectJournalEntryPayload *)self applyPayloadToManagedObject:v4 payloadAttributesToUpdate:0];
 

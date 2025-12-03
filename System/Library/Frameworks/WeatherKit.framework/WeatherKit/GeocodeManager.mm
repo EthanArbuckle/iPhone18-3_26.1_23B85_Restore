@@ -1,10 +1,10 @@
 @interface GeocodeManager
-- (void)handleCountryConfigurationChange:(id)a3;
+- (void)handleCountryConfigurationChange:(id)change;
 @end
 
 @implementation GeocodeManager
 
-- (void)handleCountryConfigurationChange:(id)a3
+- (void)handleCountryConfigurationChange:(id)change
 {
   swift_unknownObjectRetain();
 

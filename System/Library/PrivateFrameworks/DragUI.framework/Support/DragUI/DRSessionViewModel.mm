@@ -1,6 +1,6 @@
 @interface DRSessionViewModel
 - ($1AB5FA073B851C12C2339EC22442E995)associatedObjectManipulationDragItemSize;
-- (BOOL)acceptsSynthesizedTouchAtLocation:(CGPoint)a3 displayIdentifier:(id)a4;
+- (BOOL)acceptsSynthesizedTouchAtLocation:(CGPoint)location displayIdentifier:(id)identifier;
 - (BOOL)canAddManipulatedTouch;
 - (BOOL)canManipulateTransform;
 - (CAPoint3D)centroid;
@@ -14,28 +14,28 @@
 - (DRSessionViewModelDelegate)delegate;
 - (NSArray)itemModels;
 - (double)_manipulatedScale;
-- (id)clientModelForClient:(id)a3;
+- (id)clientModelForClient:(id)client;
 - (id)modelsSortedByStackOrder;
 - (void)_invalidateElasticEffects;
-- (void)_takeDragImageWithComponent:(id)a3 forClient:(id)a4 itemModel:(id)a5;
-- (void)_takePreview:(id)a3 forClient:(id)a4 itemModel:(id)a5;
-- (void)_updateElasticEffectForLocation:(CAPoint3D)a3;
+- (void)_takeDragImageWithComponent:(id)component forClient:(id)client itemModel:(id)model;
+- (void)_takePreview:(id)preview forClient:(id)client itemModel:(id)model;
+- (void)_updateElasticEffectForLocation:(CAPoint3D)location;
 - (void)_updateElasticProperties;
 - (void)_updateElasticTransform;
-- (void)addInitialItemsWithCount:(int64_t)a3;
+- (void)addInitialItemsWithCount:(int64_t)count;
 - (void)addItem;
-- (void)addTouchID:(id)a3;
-- (void)endDragManipulationWithLocation:(CAPoint3D)a3;
-- (void)invalidateImageForClient:(id)a3 itemIndex:(unint64_t)a4;
-- (void)removeTouchID:(id)a3;
-- (void)setOrientation:(int64_t)a3;
-- (void)setPotentialDrop:(id)a3;
-- (void)setPotentialDropDestinationClient:(id)a3;
-- (void)setPrecisionMode:(id)a3;
-- (void)takePreviewAndImageComponents:(id)a3 forClient:(id)a4;
-- (void)updateDragManipulationWithLocation:(CAPoint3D)a3;
-- (void)updateLocation:(CAPoint3D)a3 ofTouchID:(id)a4;
-- (void)updateLocationWithoutTouches:(CAPoint3D)a3;
+- (void)addTouchID:(id)d;
+- (void)endDragManipulationWithLocation:(CAPoint3D)location;
+- (void)invalidateImageForClient:(id)client itemIndex:(unint64_t)index;
+- (void)removeTouchID:(id)d;
+- (void)setOrientation:(int64_t)orientation;
+- (void)setPotentialDrop:(id)drop;
+- (void)setPotentialDropDestinationClient:(id)client;
+- (void)setPrecisionMode:(id)mode;
+- (void)takePreviewAndImageComponents:(id)components forClient:(id)client;
+- (void)updateDragManipulationWithLocation:(CAPoint3D)location;
+- (void)updateLocation:(CAPoint3D)location ofTouchID:(id)d;
+- (void)updateLocationWithoutTouches:(CAPoint3D)touches;
 @end
 
 @implementation DRSessionViewModel
@@ -88,22 +88,22 @@
   return v2;
 }
 
-- (id)clientModelForClient:(id)a3
+- (id)clientModelForClient:(id)client
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_clientModelsByClient objectForKey:v4];
+  clientCopy = client;
+  v5 = [(NSMapTable *)self->_clientModelsByClient objectForKey:clientCopy];
   if (!v5)
   {
-    v5 = [(DRSessionViewModel *)self addClientModelForClient:v4 isSource:0];
+    v5 = [(DRSessionViewModel *)self addClientModelForClient:clientCopy isSource:0];
   }
 
   return v5;
 }
 
-- (BOOL)acceptsSynthesizedTouchAtLocation:(CGPoint)a3 displayIdentifier:(id)a4
+- (BOOL)acceptsSynthesizedTouchAtLocation:(CGPoint)location displayIdentifier:(id)identifier
 {
-  v5 = a4;
-  if (-[DRSessionViewModel usesSynthesizedTouch](self, "usesSynthesizedTouch") && (-[DRSessionViewModel displayIdentifierForSynthesizedTouch](self, "displayIdentifierForSynthesizedTouch"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isEqualToString:v5], v6, (v7 & 1) == 0))
+  identifierCopy = identifier;
+  if (-[DRSessionViewModel usesSynthesizedTouch](self, "usesSynthesizedTouch") && (-[DRSessionViewModel displayIdentifierForSynthesizedTouch](self, "displayIdentifierForSynthesizedTouch"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isEqualToString:identifierCopy], v6, (v7 & 1) == 0))
   {
     x = self->_centroidWithoutTouches.x;
     y = self->_centroidWithoutTouches.y;
@@ -119,25 +119,25 @@
   return v8;
 }
 
-- (void)addTouchID:(id)a3
+- (void)addTouchID:(id)d
 {
-  v7 = a3;
+  dCopy = d;
   v4 = [(NSMutableDictionary *)self->_touchModels objectForKeyedSubscript:?];
 
   if (!v4)
   {
-    [(NSMutableArray *)self->_touchIDs addObject:v7];
+    [(NSMutableArray *)self->_touchIDs addObject:dCopy];
     v5 = objc_opt_new();
-    [(NSMutableDictionary *)self->_touchModels setObject:v5 forKeyedSubscript:v7];
+    [(NSMutableDictionary *)self->_touchModels setObject:v5 forKeyedSubscript:dCopy];
 
-    v6 = [(DRSessionViewModel *)self delegate];
-    [v6 viewModelInvalidated:self];
+    delegate = [(DRSessionViewModel *)self delegate];
+    [delegate viewModelInvalidated:self];
   }
 }
 
-- (void)removeTouchID:(id)a3
+- (void)removeTouchID:(id)d
 {
-  v12 = a3;
+  dCopy = d;
   v4 = [(NSMutableDictionary *)self->_touchModels objectForKeyedSubscript:?];
 
   if (v4)
@@ -154,22 +154,22 @@
       self->_lastTouchEnded = 1;
     }
 
-    [(NSMutableArray *)self->_touchIDs removeObject:v12];
-    [(NSMutableDictionary *)self->_touchModels setObject:0 forKeyedSubscript:v12];
+    [(NSMutableArray *)self->_touchIDs removeObject:dCopy];
+    [(NSMutableDictionary *)self->_touchModels setObject:0 forKeyedSubscript:dCopy];
     [(DRSessionViewModel *)self centroid];
     if ((CAPoint3DEqualToPoint() & 1) == 0)
     {
-      v11 = [(DRSessionViewModel *)self delegate];
-      [v11 viewModelInvalidated:self];
+      delegate = [(DRSessionViewModel *)self delegate];
+      [delegate viewModelInvalidated:self];
     }
   }
 }
 
-- (void)addInitialItemsWithCount:(int64_t)a3
+- (void)addInitialItemsWithCount:(int64_t)count
 {
-  if (a3)
+  if (count)
   {
-    v3 = a3;
+    countCopy = count;
     do
     {
       v5 = [[DRItemViewModel alloc] initWithIndex:[(NSMutableArray *)self->_itemModels count]];
@@ -179,10 +179,10 @@
       [(DRItemViewModel *)v5 setAssociatedObjectManipulationDragItemSize:?];
       [(NSMutableArray *)self->_itemModels addObject:v5];
 
-      --v3;
+      --countCopy;
     }
 
-    while (v3);
+    while (countCopy);
   }
 }
 
@@ -202,62 +202,62 @@
   }
 }
 
-- (void)setOrientation:(int64_t)a3
+- (void)setOrientation:(int64_t)orientation
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    self->_orientation = a3;
-    v6 = [(DRSessionViewModel *)self delegate];
-    [v6 viewModelInvalidated:self];
+    self->_orientation = orientation;
+    delegate = [(DRSessionViewModel *)self delegate];
+    [delegate viewModelInvalidated:self];
 
-    v7 = [(DRSessionViewModel *)self precisionMode];
-    v8 = [v7 copy];
+    precisionMode = [(DRSessionViewModel *)self precisionMode];
+    v8 = [precisionMode copy];
 
-    [v8 setOrientation:a3];
+    [v8 setOrientation:orientation];
     [(DRSessionViewModel *)self setPrecisionMode:v8];
   }
 }
 
-- (void)setPotentialDrop:(id)a3
+- (void)setPotentialDrop:(id)drop
 {
-  v5 = a3;
+  dropCopy = drop;
   potentialDrop = self->_potentialDrop;
-  if (potentialDrop != v5 && ([(_DUIPotentialDrop *)potentialDrop isEqual:v5]& 1) == 0)
+  if (potentialDrop != dropCopy && ([(_DUIPotentialDrop *)potentialDrop isEqual:dropCopy]& 1) == 0)
   {
-    objc_storeStrong(&self->_potentialDrop, a3);
-    v7 = [(DRSessionViewModel *)self delegate];
-    [v7 viewModelInvalidated:self];
+    objc_storeStrong(&self->_potentialDrop, drop);
+    delegate = [(DRSessionViewModel *)self delegate];
+    [delegate viewModelInvalidated:self];
   }
 
   _objc_release_x1();
 }
 
-- (void)setPotentialDropDestinationClient:(id)a3
+- (void)setPotentialDropDestinationClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   p_potentialDropDestinationClient = &self->_potentialDropDestinationClient;
-  if (self->_potentialDropDestinationClient != v5)
+  if (self->_potentialDropDestinationClient != clientCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_potentialDropDestinationClient, a3);
-    v7 = [(DRSessionViewModel *)self delegate];
-    [v7 viewModelInvalidated:self];
+    v8 = clientCopy;
+    objc_storeStrong(p_potentialDropDestinationClient, client);
+    delegate = [(DRSessionViewModel *)self delegate];
+    [delegate viewModelInvalidated:self];
 
-    v5 = v8;
+    clientCopy = v8;
   }
 
-  _objc_release_x1(p_potentialDropDestinationClient, v5);
+  _objc_release_x1(p_potentialDropDestinationClient, clientCopy);
 }
 
-- (void)takePreviewAndImageComponents:(id)a3 forClient:(id)a4
+- (void)takePreviewAndImageComponents:(id)components forClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
+  componentsCopy = components;
+  clientCopy = client;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v8 = [componentsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -268,108 +268,108 @@
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(componentsCopy);
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 index];
-        if (v13 < [(NSMutableArray *)self->_itemModels count])
+        index = [v12 index];
+        if (index < [(NSMutableArray *)self->_itemModels count])
         {
           v14 = -[NSMutableArray objectAtIndexedSubscript:](self->_itemModels, "objectAtIndexedSubscript:", [v12 index]);
-          v15 = [v12 imageComponent];
-          [(DRSessionViewModel *)self _takeDragImageWithComponent:v15 forClient:v7 itemModel:v14];
+          imageComponent = [v12 imageComponent];
+          [(DRSessionViewModel *)self _takeDragImageWithComponent:imageComponent forClient:clientCopy itemModel:v14];
 
-          v16 = [v12 preview];
-          [(DRSessionViewModel *)self _takePreview:v16 forClient:v7 itemModel:v14];
+          preview = [v12 preview];
+          [(DRSessionViewModel *)self _takePreview:preview forClient:clientCopy itemModel:v14];
         }
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [componentsCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)_takeDragImageWithComponent:(id)a3 forClient:(id)a4 itemModel:(id)a5
+- (void)_takeDragImageWithComponent:(id)component forClient:(id)client itemModel:(id)model
 {
-  v11 = a3;
-  v8 = [a5 clientItemViewModelForClient:a4];
+  componentCopy = component;
+  v8 = [model clientItemViewModelForClient:client];
   [v8 fulfillImageRequest];
-  v9 = [v8 imageComponent];
-  if (v9 != v11 && ([v11 isEqual:v9] & 1) == 0)
+  imageComponent = [v8 imageComponent];
+  if (imageComponent != componentCopy && ([componentCopy isEqual:imageComponent] & 1) == 0)
   {
-    [v8 setImageComponent:v11];
-    v10 = [(DRSessionViewModel *)self delegate];
-    [v10 viewModelInvalidated:self];
+    [v8 setImageComponent:componentCopy];
+    delegate = [(DRSessionViewModel *)self delegate];
+    [delegate viewModelInvalidated:self];
   }
 }
 
-- (void)_takePreview:(id)a3 forClient:(id)a4 itemModel:(id)a5
+- (void)_takePreview:(id)preview forClient:(id)client itemModel:(id)model
 {
-  v18 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v18 preferredStackOrder];
-  if ((v10 & 0x8000000000000000) == 0)
+  previewCopy = preview;
+  clientCopy = client;
+  modelCopy = model;
+  preferredStackOrder = [previewCopy preferredStackOrder];
+  if ((preferredStackOrder & 0x8000000000000000) == 0)
   {
-    [v9 setPreferredStackOrder:v10];
-    v11 = [v9 preferredStackOrder];
+    [modelCopy setPreferredStackOrder:preferredStackOrder];
+    preferredStackOrder2 = [modelCopy preferredStackOrder];
     topStackOrder = self->_topStackOrder;
-    if (v11 <= topStackOrder + 1)
+    if (preferredStackOrder2 <= topStackOrder + 1)
     {
       v13 = topStackOrder + 1;
     }
 
     else
     {
-      v13 = v11;
+      v13 = preferredStackOrder2;
     }
 
     self->_topStackOrder = v13;
   }
 
-  v14 = [v9 clientItemViewModelForClient:v8];
+  v14 = [modelCopy clientItemViewModelForClient:clientCopy];
   self->_hasReceivedInitialPreviewReply = 1;
-  v15 = [v14 preview];
-  v16 = v15;
-  if (!v18 || v15 != v18 && ([v15 isEqual:v18] & 1) == 0)
+  preview = [v14 preview];
+  v16 = preview;
+  if (!previewCopy || preview != previewCopy && ([preview isEqual:previewCopy] & 1) == 0)
   {
-    [v14 setPreview:v18];
-    v17 = [(DRSessionViewModel *)self delegate];
-    [v17 viewModelInvalidated:self];
+    [v14 setPreview:previewCopy];
+    delegate = [(DRSessionViewModel *)self delegate];
+    [delegate viewModelInvalidated:self];
   }
 }
 
-- (void)invalidateImageForClient:(id)a3 itemIndex:(unint64_t)a4
+- (void)invalidateImageForClient:(id)client itemIndex:(unint64_t)index
 {
-  v9 = a3;
-  if ([(NSMutableArray *)self->_itemModels count]> a4)
+  clientCopy = client;
+  if ([(NSMutableArray *)self->_itemModels count]> index)
   {
-    v6 = [(NSMutableArray *)self->_itemModels objectAtIndexedSubscript:a4];
-    v7 = [v6 clientItemViewModelForClient:v9];
+    v6 = [(NSMutableArray *)self->_itemModels objectAtIndexedSubscript:index];
+    v7 = [v6 clientItemViewModelForClient:clientCopy];
     if ([v7 invalidateImage])
     {
-      v8 = [(DRSessionViewModel *)self delegate];
-      [v8 viewModelInvalidated:self];
+      delegate = [(DRSessionViewModel *)self delegate];
+      [delegate viewModelInvalidated:self];
     }
   }
 }
 
-- (void)updateLocation:(CAPoint3D)a3 ofTouchID:(id)a4
+- (void)updateLocation:(CAPoint3D)location ofTouchID:(id)d
 {
-  z = a3.z;
-  y = a3.y;
-  x = a3.x;
-  v8 = [(NSMutableDictionary *)self->_touchModels objectForKeyedSubscript:a4];
+  z = location.z;
+  y = location.y;
+  x = location.x;
+  v8 = [(NSMutableDictionary *)self->_touchModels objectForKeyedSubscript:d];
   if (v8)
   {
     v10 = v8;
     if (![v8 hasLocation] || (objc_msgSend(v10, "location"), (CAPoint3DEqualToPoint() & 1) == 0))
     {
       [v10 setLocation:{x, y, z}];
-      v9 = [(DRSessionViewModel *)self delegate];
-      [v9 viewModelInvalidated:self];
+      delegate = [(DRSessionViewModel *)self delegate];
+      [delegate viewModelInvalidated:self];
     }
 
     [(DRSessionViewModel *)self _updateElasticEffectForLocation:x, y, z];
@@ -379,68 +379,68 @@
 
 - (id)modelsSortedByStackOrder
 {
-  v3 = [(DRSessionViewModel *)self itemModels];
+  itemModels = [(DRSessionViewModel *)self itemModels];
   if ((self->_topStackOrder & 0x8000000000000000) == 0)
   {
-    v4 = [(DRSessionViewModel *)self itemModels];
-    v5 = [v4 sortedArrayUsingComparator:&stru_100054E78];
+    itemModels2 = [(DRSessionViewModel *)self itemModels];
+    v5 = [itemModels2 sortedArrayUsingComparator:&stru_100054E78];
 
-    v3 = v5;
+    itemModels = v5;
   }
 
-  return v3;
+  return itemModels;
 }
 
-- (void)updateLocationWithoutTouches:(CAPoint3D)a3
+- (void)updateLocationWithoutTouches:(CAPoint3D)touches
 {
-  z = a3.z;
-  y = a3.y;
-  x = a3.x;
-  self->_centroidWithoutTouches = a3;
-  v7 = [(DRSessionViewModel *)self delegate];
-  [v7 viewModelInvalidated:self];
+  z = touches.z;
+  y = touches.y;
+  x = touches.x;
+  self->_centroidWithoutTouches = touches;
+  delegate = [(DRSessionViewModel *)self delegate];
+  [delegate viewModelInvalidated:self];
 
   [(DRSessionViewModel *)self _updateElasticEffectForLocation:x, y, z];
 }
 
-- (void)setPrecisionMode:(id)a3
+- (void)setPrecisionMode:(id)mode
 {
-  v5 = a3;
+  modeCopy = mode;
   precisionMode = self->_precisionMode;
-  if (precisionMode != v5)
+  if (precisionMode != modeCopy)
   {
-    v9 = v5;
-    precisionMode = [precisionMode isEqual:v5];
-    v5 = v9;
+    v9 = modeCopy;
+    precisionMode = [precisionMode isEqual:modeCopy];
+    modeCopy = v9;
     if ((precisionMode & 1) == 0)
     {
-      objc_storeStrong(&self->_precisionMode, a3);
+      objc_storeStrong(&self->_precisionMode, mode);
       precisionMode = [(DRPrecisionMode *)v9 direction];
-      v5 = v9;
+      modeCopy = v9;
       if (precisionMode)
       {
         [(DRSessionViewModel *)self centroid];
         self->_enteredPrecisionModeY = v7;
         v8 = CACurrentMediaTime();
-        v5 = v9;
+        modeCopy = v9;
         self->_enteredPrecisionModeTime = v8;
       }
     }
   }
 
-  _objc_release_x1(precisionMode, v5);
+  _objc_release_x1(precisionMode, modeCopy);
 }
 
-- (void)updateDragManipulationWithLocation:(CAPoint3D)a3
+- (void)updateDragManipulationWithLocation:(CAPoint3D)location
 {
-  z = a3.z;
-  y = a3.y;
-  x = a3.x;
+  z = location.z;
+  y = location.y;
+  x = location.x;
   if ([(DRSessionViewModel *)self touchesCount])
   {
     touchModels = self->_touchModels;
-    v8 = [(NSMutableArray *)self->_touchIDs firstObject];
-    v22 = [(NSMutableDictionary *)touchModels objectForKey:v8];
+    firstObject = [(NSMutableArray *)self->_touchIDs firstObject];
+    v22 = [(NSMutableDictionary *)touchModels objectForKey:firstObject];
 
     if ([v22 hasLocation])
     {
@@ -457,15 +457,15 @@
       self->_rotationAngle.current = sub_100002658(v15, v16, v17, x, y);
       [v22 location];
       self->_scaleDistance.current = sub_100002630(v18, v19, v20, x, y, z);
-      v21 = [(DRSessionViewModel *)self delegate];
-      [v21 viewModelInvalidated:self];
+      delegate = [(DRSessionViewModel *)self delegate];
+      [delegate viewModelInvalidated:self];
     }
   }
 }
 
-- (void)endDragManipulationWithLocation:(CAPoint3D)a3
+- (void)endDragManipulationWithLocation:(CAPoint3D)location
 {
-  [(DRSessionViewModel *)self updateDragManipulationWithLocation:a3.x, a3.y, a3.z];
+  [(DRSessionViewModel *)self updateDragManipulationWithLocation:location.x, location.y, location.z];
   self->_isManipulatingTransform = 0;
   self->_rotationAngle.previousValue = self->_rotationAngle.previousValue + self->_rotationAngle.current - self->_rotationAngle.initial;
   self->_rotationAngle.initial = 0.0;
@@ -491,8 +491,8 @@
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v3 = [(NSMutableDictionary *)self->_touchModels objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  objectEnumerator = [(NSMutableDictionary *)self->_touchModels objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (!v4)
   {
 
@@ -515,7 +515,7 @@ LABEL_13:
     {
       if (*v20 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(objectEnumerator);
       }
 
       v12 = *(*(&v19 + 1) + 8 * i);
@@ -531,7 +531,7 @@ LABEL_13:
       }
     }
 
-    v5 = [v3 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v5 = [objectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
   }
 
   while (v5);
@@ -611,10 +611,10 @@ LABEL_14:
   [(DRSessionViewModel *)self maximumResizableSize];
   v13 = v12;
   v15 = v14;
-  v16 = [(DRSessionViewModel *)self itemModels];
-  v17 = [v16 firstObject];
-  v18 = [v17 preview];
-  [v18 unscaledSize];
+  itemModels = [(DRSessionViewModel *)self itemModels];
+  firstObject = [itemModels firstObject];
+  preview = [firstObject preview];
+  [preview unscaledSize];
   v20 = v19;
   v22 = v21;
 
@@ -707,21 +707,21 @@ LABEL_14:
     return 0;
   }
 
-  v3 = [(DRSessionViewModel *)self itemModels];
-  v4 = [v3 count] == 1;
+  itemModels = [(DRSessionViewModel *)self itemModels];
+  v4 = [itemModels count] == 1;
 
   return v4;
 }
 
 - (BOOL)canAddManipulatedTouch
 {
-  v3 = [(DRSessionViewModel *)self canManipulateTransform];
-  if (v3)
+  canManipulateTransform = [(DRSessionViewModel *)self canManipulateTransform];
+  if (canManipulateTransform)
   {
-    LOBYTE(v3) = [(DRSessionViewModel *)self touchesCount]!= 0;
+    LOBYTE(canManipulateTransform) = [(DRSessionViewModel *)self touchesCount]!= 0;
   }
 
-  return v3;
+  return canManipulateTransform;
 }
 
 - (CGAffineTransform)elasticTransform
@@ -756,13 +756,13 @@ LABEL_14:
   [(UIViewFloatAnimatableProperty *)elasticScaleY invalidate];
 }
 
-- (void)_updateElasticEffectForLocation:(CAPoint3D)a3
+- (void)_updateElasticEffectForLocation:(CAPoint3D)location
 {
-  z = a3.z;
-  y = a3.y;
-  x = a3.x;
-  v7 = [(DRSessionViewModel *)self delegate];
-  v8 = [v7 referenceScreenForViewModel:self];
+  z = location.z;
+  y = location.y;
+  x = location.x;
+  delegate = [(DRSessionViewModel *)self delegate];
+  v8 = [delegate referenceScreenForViewModel:self];
 
   if ([(DRSessionViewModel *)self wantsElasticEffects]&& v8)
   {
@@ -795,10 +795,10 @@ LABEL_14:
 
       [(UIViewFloatAnimatableProperty *)self->_elasticScaleY setValue:100.0];
       objc_initWeak(&location, self);
-      v20 = [(DRSessionViewModel *)self elasticPositionX];
-      v34[0] = v20;
-      v21 = [(DRSessionViewModel *)self elasticPositionY];
-      v34[1] = v21;
+      elasticPositionX = [(DRSessionViewModel *)self elasticPositionX];
+      v34[0] = elasticPositionX;
+      elasticPositionY = [(DRSessionViewModel *)self elasticPositionY];
+      v34[1] = elasticPositionY;
       v22 = [NSArray arrayWithObjects:v34 count:2];
       v30[0] = _NSConcreteStackBlock;
       v30[1] = 3221225472;
@@ -807,12 +807,12 @@ LABEL_14:
       objc_copyWeak(&v31, &location);
       [UIView _createTransformerWithInputAnimatableProperties:v22 presentationValueChangedCallback:v30];
 
-      v23 = [(DRSessionViewModel *)self elasticRotation];
-      v33[0] = v23;
-      v24 = [(DRSessionViewModel *)self elasticScaleX];
-      v33[1] = v24;
-      v25 = [(DRSessionViewModel *)self elasticScaleY];
-      v33[2] = v25;
+      elasticRotation = [(DRSessionViewModel *)self elasticRotation];
+      v33[0] = elasticRotation;
+      elasticScaleX = [(DRSessionViewModel *)self elasticScaleX];
+      v33[1] = elasticScaleX;
+      elasticScaleY = [(DRSessionViewModel *)self elasticScaleY];
+      v33[2] = elasticScaleY;
       v26 = [NSArray arrayWithObjects:v33 count:3];
       v28[0] = _NSConcreteStackBlock;
       v28[1] = 3221225472;
@@ -840,8 +840,8 @@ LABEL_14:
 
 - (void)_updateElasticProperties
 {
-  v3 = [(DRSessionViewModel *)self delegate];
-  v4 = [v3 referenceScreenForViewModel:self];
+  delegate = [(DRSessionViewModel *)self delegate];
+  v4 = [delegate referenceScreenForViewModel:self];
 
   if (v4 && ([(UIViewFloatAnimatableProperty *)self->_elasticRotation isInvalidated]& 1) == 0)
   {
@@ -933,8 +933,8 @@ LABEL_14:
       *&self->_elasticTransform.a = *&v24.a;
       *&self->_elasticTransform.c = v20;
       *&self->_elasticTransform.tx = *&v24.tx;
-      v21 = [(DRSessionViewModel *)self delegate];
-      [v21 viewModelInvalidated:self];
+      delegate = [(DRSessionViewModel *)self delegate];
+      [delegate viewModelInvalidated:self];
     }
   }
 }

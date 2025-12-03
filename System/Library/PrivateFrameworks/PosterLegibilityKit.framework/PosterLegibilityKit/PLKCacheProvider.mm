@@ -1,28 +1,28 @@
 @interface PLKCacheProvider
 - (PLKCacheProvider)init;
-- (PLKCacheProvider)initWithContentCache:(id)a3 legibilityCache:(id)a4;
-- (PLKCacheProvider)initWithContentCacheIdentifier:(id)a3 legibilityCacheIdentifier:(id)a4 pathProvider:(id)a5;
+- (PLKCacheProvider)initWithContentCache:(id)cache legibilityCache:(id)legibilityCache;
+- (PLKCacheProvider)initWithContentCacheIdentifier:(id)identifier legibilityCacheIdentifier:(id)cacheIdentifier pathProvider:(id)provider;
 @end
 
 @implementation PLKCacheProvider
 
-- (PLKCacheProvider)initWithContentCacheIdentifier:(id)a3 legibilityCacheIdentifier:(id)a4 pathProvider:(id)a5
+- (PLKCacheProvider)initWithContentCacheIdentifier:(id)identifier legibilityCacheIdentifier:(id)cacheIdentifier pathProvider:(id)provider
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  identifierCopy = identifier;
+  cacheIdentifierCopy = cacheIdentifier;
+  providerCopy = provider;
+  if (!identifierCopy)
   {
     [PLKCacheProvider initWithContentCacheIdentifier:a2 legibilityCacheIdentifier:? pathProvider:?];
   }
 
-  if (!v10)
+  if (!cacheIdentifierCopy)
   {
     [PLKCacheProvider initWithContentCacheIdentifier:a2 legibilityCacheIdentifier:? pathProvider:?];
   }
 
-  v12 = v11;
-  if ([v9 isEqualToString:v10])
+  v12 = providerCopy;
+  if ([identifierCopy isEqualToString:cacheIdentifierCopy])
   {
     [PLKCacheProvider initWithContentCacheIdentifier:a2 legibilityCacheIdentifier:? pathProvider:?];
   }
@@ -34,27 +34,27 @@
   {
     if (v12)
     {
-      v14 = v12;
+      pathProviderForCurrentContainer = v12;
     }
 
     else
     {
-      v14 = [MEMORY[0x277CF0CA0] pathProviderForCurrentContainer];
+      pathProviderForCurrentContainer = [MEMORY[0x277CF0CA0] pathProviderForCurrentContainer];
     }
 
     defaultPathProvider = v13->_defaultPathProvider;
-    v13->_defaultPathProvider = v14;
+    v13->_defaultPathProvider = pathProviderForCurrentContainer;
 
-    v16 = [v9 copy];
+    v16 = [identifierCopy copy];
     contentCacheIdentifier = v13->_contentCacheIdentifier;
     v13->_contentCacheIdentifier = v16;
 
-    v18 = [v10 copy];
+    v18 = [cacheIdentifierCopy copy];
     legibilityCacheIdentifier = v13->_legibilityCacheIdentifier;
     v13->_legibilityCacheIdentifier = v18;
 
-    v20 = [v9 hash];
-    v21 = [v10 hash];
+    v20 = [identifierCopy hash];
+    v21 = [cacheIdentifierCopy hash];
     v22 = 0xBF58476D1CE4E5B9 * (v21 ^ v20 ^ ((v21 ^ v20) >> 30));
     v13->_cachedHash = (0x94D049BB133111EBLL * (v22 ^ (v22 >> 27))) ^ ((0x94D049BB133111EBLL * (v22 ^ (v22 >> 27))) >> 31);
   }
@@ -62,22 +62,22 @@
   return v13;
 }
 
-- (PLKCacheProvider)initWithContentCache:(id)a3 legibilityCache:(id)a4
+- (PLKCacheProvider)initWithContentCache:(id)cache legibilityCache:(id)legibilityCache
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  cacheCopy = cache;
+  legibilityCacheCopy = legibilityCache;
+  if (!cacheCopy)
   {
     [PLKCacheProvider initWithContentCache:a2 legibilityCache:?];
   }
 
-  v10 = v9;
-  if (!v9)
+  v10 = legibilityCacheCopy;
+  if (!legibilityCacheCopy)
   {
     [PLKCacheProvider initWithContentCache:a2 legibilityCache:?];
   }
 
-  if (v9 == v8)
+  if (legibilityCacheCopy == cacheCopy)
   {
     [PLKCacheProvider initWithContentCache:a2 legibilityCache:?];
   }
@@ -88,12 +88,12 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_contentCache, a3);
-    objc_storeStrong(&v12->_legibilityCache, a4);
-    v13 = [MEMORY[0x277CF0C40] builder];
-    v14 = [v13 appendObject:v8];
-    v15 = [v13 appendObject:v10];
-    v12->_cachedHash = [v13 hash];
+    objc_storeStrong(&v11->_contentCache, cache);
+    objc_storeStrong(&v12->_legibilityCache, legibilityCache);
+    builder = [MEMORY[0x277CF0C40] builder];
+    v14 = [builder appendObject:cacheCopy];
+    v15 = [builder appendObject:v10];
+    v12->_cachedHash = [builder hash];
   }
 
   return v12;

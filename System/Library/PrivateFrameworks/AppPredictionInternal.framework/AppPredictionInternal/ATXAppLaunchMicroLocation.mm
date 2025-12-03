@@ -1,16 +1,16 @@
 @interface ATXAppLaunchMicroLocation
 - (ATXAppLaunchMicroLocation)init;
-- (ATXAppLaunchMicroLocation)initWithMicroLocationStream:(id)a3 appInFocusStream:(id)a4 combinedIntentStream:(id)a5 directory:(id)a6 forTesting:(BOOL)a7;
+- (ATXAppLaunchMicroLocation)initWithMicroLocationStream:(id)stream appInFocusStream:(id)focusStream combinedIntentStream:(id)intentStream directory:(id)directory forTesting:(BOOL)testing;
 - (BOOL)_loadCorrelationMatrices;
-- (double)popularityAtCurrentMicroLocationForActionKey:(id)a3;
-- (double)popularityAtCurrentMicroLocationForApp:(id)a3;
+- (double)popularityAtCurrentMicroLocationForActionKey:(id)key;
+- (double)popularityAtCurrentMicroLocationForApp:(id)app;
 - (id)_getActionKeyCorrelationMatrix;
 - (id)_getAppLaunchCorrelationMatrix;
 - (id)_getHistoricalData;
 - (void)_loadCorrelationMatrices;
-- (void)_receivedNotificationOfNewMicroLocation:(id)a3;
+- (void)_receivedNotificationOfNewMicroLocation:(id)location;
 - (void)_subscribeToMicroLocationEvents;
-- (void)_writeAppLaunchCorrelationMatrix:(id)a3 actionKeyCorrelationMatrix:(id)a4;
+- (void)_writeAppLaunchCorrelationMatrix:(id)matrix actionKeyCorrelationMatrix:(id)correlationMatrix;
 - (void)dealloc;
 - (void)train;
 - (void)tryLoadCorrelationMatricesImmediately;
@@ -23,30 +23,30 @@
   v3 = objc_opt_new();
   v4 = objc_opt_new();
   v5 = objc_opt_new();
-  v6 = [MEMORY[0x277CEBCB0] appPredictionDirectory];
-  v7 = [(ATXAppLaunchMicroLocation *)self initWithMicroLocationStream:v3 appInFocusStream:v4 combinedIntentStream:v5 directory:v6 forTesting:0];
+  appPredictionDirectory = [MEMORY[0x277CEBCB0] appPredictionDirectory];
+  v7 = [(ATXAppLaunchMicroLocation *)self initWithMicroLocationStream:v3 appInFocusStream:v4 combinedIntentStream:v5 directory:appPredictionDirectory forTesting:0];
 
   return v7;
 }
 
-- (ATXAppLaunchMicroLocation)initWithMicroLocationStream:(id)a3 appInFocusStream:(id)a4 combinedIntentStream:(id)a5 directory:(id)a6 forTesting:(BOOL)a7
+- (ATXAppLaunchMicroLocation)initWithMicroLocationStream:(id)stream appInFocusStream:(id)focusStream combinedIntentStream:(id)intentStream directory:(id)directory forTesting:(BOOL)testing
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  streamCopy = stream;
+  focusStreamCopy = focusStream;
+  intentStreamCopy = intentStream;
+  directoryCopy = directory;
   v27.receiver = self;
   v27.super_class = ATXAppLaunchMicroLocation;
   v17 = [(ATXAppLaunchMicroLocation *)&v27 init];
   if (v17)
   {
-    v18 = [v16 stringByAppendingPathComponent:@"ATXAppPredictionMicroLocation"];
+    v18 = [directoryCopy stringByAppendingPathComponent:@"ATXAppPredictionMicroLocation"];
     path = v17->_path;
     v17->_path = v18;
 
-    objc_storeStrong(&v17->_microLocationStream, a3);
-    objc_storeStrong(&v17->_combinedIntentStream, a5);
-    objc_storeStrong(&v17->_appInFocusStream, a4);
+    objc_storeStrong(&v17->_microLocationStream, stream);
+    objc_storeStrong(&v17->_combinedIntentStream, intentStream);
+    objc_storeStrong(&v17->_appInFocusStream, focusStream);
     v20 = [ATXAppLaunchMicroLocationGuardedData alloc];
     v21 = [(ATXMicroLocationVisitStream *)v17->_microLocationStream mostRecentMicroLocationWithinSeconds:600];
     v22 = microLocationEventFromATXMicroLocationVisitEvent(v21);
@@ -56,7 +56,7 @@
     lock = v17->_lock;
     v17->_lock = v24;
 
-    if (!a7)
+    if (!testing)
     {
       [(ATXAppLaunchMicroLocation *)v17 _subscribeToMicroLocationEvents];
     }
@@ -70,13 +70,13 @@
 - (void)_subscribeToMicroLocationEvents
 {
   objc_initWeak(&location, self);
-  v3 = [MEMORY[0x277CEBC98] sharedInstance];
+  mEMORY[0x277CEBC98] = [MEMORY[0x277CEBC98] sharedInstance];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __60__ATXAppLaunchMicroLocation__subscribeToMicroLocationEvents__block_invoke;
   v6[3] = &unk_278596D20;
   objc_copyWeak(&v7, &location);
-  v4 = [v3 subscribeWithCallback:v6];
+  v4 = [mEMORY[0x277CEBC98] subscribeWithCallback:v6];
   microLocationSchedulerToken = self->_microLocationSchedulerToken;
   self->_microLocationSchedulerToken = v4;
 
@@ -95,16 +95,16 @@ void __60__ATXAppLaunchMicroLocation__subscribeToMicroLocationEvents__block_invo
   }
 }
 
-- (void)_receivedNotificationOfNewMicroLocation:(id)a3
+- (void)_receivedNotificationOfNewMicroLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __69__ATXAppLaunchMicroLocation__receivedNotificationOfNewMicroLocation___block_invoke;
   v7[3] = &unk_2785A18A0;
-  v8 = v4;
-  v6 = v4;
+  v8 = locationCopy;
+  v6 = locationCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
@@ -116,11 +116,11 @@ void __69__ATXAppLaunchMicroLocation__receivedNotificationOfNewMicroLocation___b
   [v3 setCurrentMicroLocation:v4];
 }
 
-- (double)popularityAtCurrentMicroLocationForApp:(id)a3
+- (double)popularityAtCurrentMicroLocationForApp:(id)app
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  appCopy = app;
+  v5 = appCopy;
+  if (appCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -132,7 +132,7 @@ void __69__ATXAppLaunchMicroLocation__receivedNotificationOfNewMicroLocation___b
     v9[2] = __68__ATXAppLaunchMicroLocation_popularityAtCurrentMicroLocationForApp___block_invoke;
     v9[3] = &unk_2785A18C8;
     v11 = &v12;
-    v10 = v4;
+    v10 = appCopy;
     [(_PASLock *)lock runWithLockAcquired:v9];
     v7 = v13[3];
 
@@ -164,11 +164,11 @@ void __68__ATXAppLaunchMicroLocation_popularityAtCurrentMicroLocationForApp___bl
   *(*(*(a1 + 40) + 8) + 24) = v4;
 }
 
-- (double)popularityAtCurrentMicroLocationForActionKey:(id)a3
+- (double)popularityAtCurrentMicroLocationForActionKey:(id)key
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  keyCopy = key;
+  v5 = keyCopy;
+  if (keyCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -180,7 +180,7 @@ void __68__ATXAppLaunchMicroLocation_popularityAtCurrentMicroLocationForApp___bl
     v9[2] = __74__ATXAppLaunchMicroLocation_popularityAtCurrentMicroLocationForActionKey___block_invoke;
     v9[3] = &unk_2785A18C8;
     v11 = &v12;
-    v10 = v4;
+    v10 = keyCopy;
     [(_PASLock *)lock runWithLockAcquired:v9];
     v7 = v13[3];
 
@@ -238,20 +238,20 @@ void __74__ATXAppLaunchMicroLocation_popularityAtCurrentMicroLocationForActionKe
   }
 
   context = objc_autoreleasePoolPush();
-  v10 = [(ATXAppLaunchMicroLocation *)self _getHistoricalData];
-  v11 = v10;
+  _getHistoricalData = [(ATXAppLaunchMicroLocation *)self _getHistoricalData];
+  v11 = _getHistoricalData;
   v12 = MEMORY[0x277CBEBF8];
-  if (v10)
+  if (_getHistoricalData)
   {
-    v12 = v10;
+    v12 = _getHistoricalData;
   }
 
   v13 = v12;
 
   v14 = objc_opt_new();
   v15 = objc_autoreleasePoolPush();
-  v16 = [MEMORY[0x277CBEAA8] date];
-  v17 = [v16 dateByAddingTimeInterval:-2419200.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v17 = [date dateByAddingTimeInterval:-2419200.0];
   v18 = objc_opt_new();
   appInFocusStream = self->_appInFocusStream;
   v43[0] = MEMORY[0x277D85DD0];
@@ -260,7 +260,7 @@ void __74__ATXAppLaunchMicroLocation_popularityAtCurrentMicroLocationForActionKe
   v43[3] = &unk_278596DC8;
   v44 = v18;
   v20 = v18;
-  [(ATXAppInFocusStream *)appInFocusStream enumerateAppLaunchSessionsBetweenStartDate:v17 endDate:v16 shouldReverse:0 bundleIDFilter:0 block:v43];
+  [(ATXAppInFocusStream *)appInFocusStream enumerateAppLaunchSessionsBetweenStartDate:v17 endDate:date shouldReverse:0 bundleIDFilter:0 block:v43];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __34__ATXAppLaunchMicroLocation_train__block_invoke_2;
@@ -272,7 +272,7 @@ void __74__ATXAppLaunchMicroLocation_popularityAtCurrentMicroLocationForActionKe
   objc_autoreleasePoolPop(v15);
   v22 = objc_opt_new();
   v23 = objc_autoreleasePoolPush();
-  v24 = [(ATXCombinedIntentStream *)self->_combinedIntentStream getCombinedIntentEventsFromLastMonth];
+  getCombinedIntentEventsFromLastMonth = [(ATXCombinedIntentStream *)self->_combinedIntentStream getCombinedIntentEventsFromLastMonth];
   v38[0] = MEMORY[0x277D85DD0];
   v38[1] = 3221225472;
   v38[2] = __34__ATXAppLaunchMicroLocation_train__block_invoke_3;
@@ -281,7 +281,7 @@ void __74__ATXAppLaunchMicroLocation_popularityAtCurrentMicroLocationForActionKe
   v38[4] = self;
   v25 = v22;
   v39 = v25;
-  [ATXEvent joinLaunchEvents:v24 withVisits:v13 block:v38];
+  [ATXEvent joinLaunchEvents:getCombinedIntentEventsFromLastMonth withVisits:v13 block:v38];
 
   objc_autoreleasePoolPop(v23);
   lock = self->_lock;
@@ -291,7 +291,7 @@ void __74__ATXAppLaunchMicroLocation_popularityAtCurrentMicroLocationForActionKe
   v34[3] = &unk_2785A1940;
   v35 = v21;
   v36 = v25;
-  v37 = self;
+  selfCopy = self;
   v27 = v25;
   v28 = v21;
   [(_PASLock *)lock runWithLockAcquired:v34];
@@ -427,16 +427,16 @@ uint64_t __34__ATXAppLaunchMicroLocation_train__block_invoke_4(uint64_t a1, id *
   return [v5 _writeAppLaunchCorrelationMatrix:v7 actionKeyCorrelationMatrix:v6];
 }
 
-- (void)_writeAppLaunchCorrelationMatrix:(id)a3 actionKeyCorrelationMatrix:(id)a4
+- (void)_writeAppLaunchCorrelationMatrix:(id)matrix actionKeyCorrelationMatrix:(id)correlationMatrix
 {
   v20[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  matrixCopy = matrix;
+  correlationMatrixCopy = correlationMatrix;
   v8 = objc_autoreleasePoolPush();
   v19[0] = @"appLaunchMatrix";
   v19[1] = @"actionKeyMatrix";
-  v20[0] = v6;
-  v20[1] = v7;
+  v20[0] = matrixCopy;
+  v20[1] = correlationMatrixCopy;
   v19[2] = @"modelVersion";
   v20[2] = &unk_283A57C20;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:3];
@@ -627,19 +627,19 @@ void __66__ATXAppLaunchMicroLocation_tryLoadCorrelationMatricesImmediately__bloc
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = objc_opt_class();
-    v11 = [v7 setWithObjects:{v8, v9, v10, objc_opt_class(), 0}];
+    defaultManager2 = [v7 setWithObjects:{v8, v9, v10, objc_opt_class(), 0}];
     v12 = objc_autoreleasePoolPush();
     v35 = v6;
-    v13 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:v11 fromData:v5 error:&v35];
+    v13 = [MEMORY[0x277CCAAC8] unarchivedObjectOfClasses:defaultManager2 fromData:v5 error:&v35];
     v14 = v35;
 
     objc_autoreleasePoolPop(v12);
     if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v15 = [v13 objectForKeyedSubscript:@"modelVersion"];
-      v16 = [v15 integerValue];
+      integerValue = [v15 integerValue];
 
-      if (v16 == 1)
+      if (integerValue == 1)
       {
         lock = self->_lock;
         v33[0] = MEMORY[0x277D85DD0];
@@ -659,12 +659,12 @@ void __66__ATXAppLaunchMicroLocation_tryLoadCorrelationMatricesImmediately__bloc
         }
 
         v21 = 1;
-        v22 = v34;
+        defaultManager = v34;
         goto LABEL_12;
       }
 
-      v22 = __atxlog_handle_default();
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      defaultManager = __atxlog_handle_default();
+      if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_ERROR))
       {
         [ATXAppLaunchMicroLocation _loadCorrelationMatrices];
       }
@@ -687,8 +687,8 @@ void __66__ATXAppLaunchMicroLocation_tryLoadCorrelationMatricesImmediately__bloc
         _os_log_error_impl(&dword_2263AA000, v23, OS_LOG_TYPE_ERROR, "%@ - Error unarchiving model at %@: %@", buf, 0x20u);
       }
 
-      v22 = [MEMORY[0x277CCAA00] defaultManager];
-      [v22 removeItemAtPath:self->_path error:0];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      [defaultManager removeItemAtPath:self->_path error:0];
     }
 
     v21 = 0;
@@ -712,8 +712,8 @@ LABEL_12:
     _os_log_impl(&dword_2263AA000, v24, OS_LOG_TYPE_DEFAULT, "%@ - Could not open model at %@: %@", buf, 0x20u);
   }
 
-  v11 = [MEMORY[0x277CCAA00] defaultManager];
-  [v11 removeItemAtPath:self->_path error:0];
+  defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager2 removeItemAtPath:self->_path error:0];
   v21 = 0;
   v14 = v6;
 LABEL_16:
@@ -737,8 +737,8 @@ void __53__ATXAppLaunchMicroLocation__loadCorrelationMatrices__block_invoke(uint
 
 - (id)_getHistoricalData
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
-  v4 = [v3 dateByAddingTimeInterval:-2419200.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v4 = [date dateByAddingTimeInterval:-2419200.0];
   v5 = objc_opt_new();
   microLocationStream = self->_microLocationStream;
   v9[0] = MEMORY[0x277D85DD0];
@@ -747,7 +747,7 @@ void __53__ATXAppLaunchMicroLocation__loadCorrelationMatrices__block_invoke(uint
   v9[3] = &unk_27859E388;
   v7 = v5;
   v10 = v7;
-  [(ATXMicroLocationVisitStream *)microLocationStream enumerateMicroLocationVisitEventsFromStartDate:v4 endDate:v3 filterBlock:0 limit:1000000 ascending:1 block:v9];
+  [(ATXMicroLocationVisitStream *)microLocationStream enumerateMicroLocationVisitEventsFromStartDate:v4 endDate:date filterBlock:0 limit:1000000 ascending:1 block:v9];
 
   return v7;
 }
@@ -829,8 +829,8 @@ uint64_t __59__ATXAppLaunchMicroLocation__getActionKeyCorrelationMatrix__block_i
 {
   if (self->_microLocationSchedulerToken)
   {
-    v3 = [MEMORY[0x277CEBC98] sharedInstance];
-    [v3 unSubscribeWithToken:self->_microLocationSchedulerToken];
+    mEMORY[0x277CEBC98] = [MEMORY[0x277CEBC98] sharedInstance];
+    [mEMORY[0x277CEBC98] unSubscribeWithToken:self->_microLocationSchedulerToken];
 
     microLocationSchedulerToken = self->_microLocationSchedulerToken;
     self->_microLocationSchedulerToken = 0;

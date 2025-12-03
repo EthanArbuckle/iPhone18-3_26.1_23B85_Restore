@@ -2,27 +2,27 @@
 + (NSUUID)UUID;
 + (id)logCategory;
 - (HMAccessorySetupManager)init;
-- (HMAccessorySetupManager)initWithContext:(id)a3;
-- (void)_finishAccessorySetupWithSetupCompletedInfo:(void *)a3 completionHandler:(void *)a4 activity:;
-- (void)failAccessorySetupWithError:(id)a3 completionHandler:(id)a4;
-- (void)finishAccessorySetupWithCompletionHandler:(id)a3;
-- (void)finishAccessorySetupWithSetupCompletedInfo:(id)a3 completionHandler:(id)a4;
+- (HMAccessorySetupManager)initWithContext:(id)context;
+- (void)_finishAccessorySetupWithSetupCompletedInfo:(void *)info completionHandler:(void *)handler activity:;
+- (void)failAccessorySetupWithError:(id)error completionHandler:(id)handler;
+- (void)finishAccessorySetupWithCompletionHandler:(id)handler;
+- (void)finishAccessorySetupWithSetupCompletedInfo:(id)info completionHandler:(id)handler;
 - (void)performAccessorySetupUsingRequest:(HMAccessorySetupRequest *)request completionHandler:(void *)completion;
-- (void)resumeAccessorySetupWithUserInfo:(id)a3 completionHandler:(id)a4;
+- (void)resumeAccessorySetupWithUserInfo:(id)info completionHandler:(id)handler;
 @end
 
 @implementation HMAccessorySetupManager
 
-- (void)failAccessorySetupWithError:(id)a3 completionHandler:(id)a4
+- (void)failAccessorySetupWithError:(id)error completionHandler:(id)handler
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  errorCopy = error;
+  handlerCopy = handler;
+  if (!errorCopy)
   {
     v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessorySetupManager failAccessorySetupWithError:completionHandler:]", @"error"];
     v28 = objc_autoreleasePoolPush();
-    v29 = self;
+    selfCopy2 = self;
     v30 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
@@ -43,12 +43,12 @@ LABEL_12:
     objc_exception_throw(v32);
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = handlerCopy;
+  if (!handlerCopy)
   {
     v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessorySetupManager failAccessorySetupWithError:completionHandler:]", @"completion"];
     v28 = objc_autoreleasePoolPush();
-    v29 = self;
+    selfCopy2 = self;
     v30 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
@@ -60,25 +60,25 @@ LABEL_12:
 
   v9 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Failing accessory setup"];
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy3 = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 identifier];
-    v15 = [v14 shortDescription];
+    identifier = [v9 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v39 = v13;
     v40 = 2114;
-    v41 = v15;
+    v41 = shortDescription;
     v42 = 2112;
-    v43 = v6;
+    v43 = errorCopy;
     _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Failing accessory setup with error: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v10);
   v36 = @"HMASM.mk.error";
-  v37 = v6;
+  v37 = errorCopy;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
   v17 = objc_alloc(MEMORY[0x1E69A2A00]);
   v18 = +[HMAccessorySetupManager UUID];
@@ -89,15 +89,15 @@ LABEL_12:
   v33[1] = 3221225472;
   v33[2] = __73__HMAccessorySetupManager_failAccessorySetupWithError_completionHandler___block_invoke;
   v33[3] = &unk_1E754E480;
-  v33[4] = v11;
+  v33[4] = selfCopy3;
   v34 = v9;
   v35 = v8;
   v21 = v8;
   v22 = v9;
   [v20 setResponseHandler:v33];
-  if (v11)
+  if (selfCopy3)
   {
-    Property = objc_getProperty(v11, v23, 8, 1);
+    Property = objc_getProperty(selfCopy3, v23, 8, 1);
   }
 
   else
@@ -105,8 +105,8 @@ LABEL_12:
     Property = 0;
   }
 
-  v25 = [Property messageDispatcher];
-  [v25 sendMessage:v20];
+  messageDispatcher = [Property messageDispatcher];
+  [messageDispatcher sendMessage:v20];
 
   v26 = *MEMORY[0x1E69E9840];
 }
@@ -178,16 +178,16 @@ LABEL_7:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishAccessorySetupWithSetupCompletedInfo:(id)a3 completionHandler:(id)a4
+- (void)finishAccessorySetupWithSetupCompletedInfo:(id)info completionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  infoCopy = info;
+  handlerCopy = handler;
+  if (!infoCopy)
   {
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessorySetupManager finishAccessorySetupWithSetupCompletedInfo:completionHandler:]", @"setupCompletedInfo"];
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -208,12 +208,12 @@ LABEL_10:
     objc_exception_throw(v22);
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = handlerCopy;
+  if (!handlerCopy)
   {
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessorySetupManager finishAccessorySetupWithSetupCompletedInfo:completionHandler:]", @"completion"];
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v20 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -225,42 +225,42 @@ LABEL_10:
 
   v9 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Finishing accessory setup with completed info"];
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy3 = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 identifier];
-    v15 = [v14 shortDescription];
+    identifier = [v9 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v24 = v13;
     v25 = 2114;
-    v26 = v15;
+    v26 = shortDescription;
     v27 = 2112;
-    v28 = v6;
+    v28 = infoCopy;
     _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Finishing accessory setup with setup completed info: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v10);
-  [(HMAccessorySetupManager *)v11 _finishAccessorySetupWithSetupCompletedInfo:v6 completionHandler:v8 activity:v9];
+  [(HMAccessorySetupManager *)selfCopy3 _finishAccessorySetupWithSetupCompletedInfo:infoCopy completionHandler:v8 activity:v9];
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_finishAccessorySetupWithSetupCompletedInfo:(void *)a3 completionHandler:(void *)a4 activity:
+- (void)_finishAccessorySetupWithSetupCompletedInfo:(void *)info completionHandler:(void *)handler activity:
 {
   v33 = *MEMORY[0x1E69E9840];
   v7 = a2;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (a1)
+  infoCopy = info;
+  handlerCopy = handler;
+  v10 = handlerCopy;
+  if (self)
   {
-    if (!v9)
+    if (!handlerCopy)
     {
       v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessorySetupManager _finishAccessorySetupWithSetupCompletedInfo:completionHandler:activity:]", @"activity"];
       v21 = objc_autoreleasePoolPush();
-      v22 = a1;
+      selfCopy = self;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
@@ -277,27 +277,27 @@ LABEL_10:
       objc_exception_throw(v25);
     }
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     if (v7)
     {
       v12 = encodeRootObject(v7);
-      [v11 setObject:v12 forKeyedSubscript:@"HMASM.mk.accessorySetupCompletedInfo"];
+      [dictionary setObject:v12 forKeyedSubscript:@"HMASM.mk.accessorySetupCompletedInfo"];
     }
 
     v13 = objc_alloc(MEMORY[0x1E69A2A00]);
     v14 = +[HMAccessorySetupManager UUID];
     v15 = [v13 initWithTarget:v14];
 
-    v16 = [MEMORY[0x1E69A2A10] messageWithName:@"HMASM.m.finishAccessorySetup" destination:v15 payload:v11];
+    v16 = [MEMORY[0x1E69A2A10] messageWithName:@"HMASM.m.finishAccessorySetup" destination:v15 payload:dictionary];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __98__HMAccessorySetupManager__finishAccessorySetupWithSetupCompletedInfo_completionHandler_activity___block_invoke;
     v26[3] = &unk_1E754E480;
-    v26[4] = a1;
+    v26[4] = self;
     v27 = v10;
-    v28 = v8;
+    v28 = infoCopy;
     [v16 setResponseHandler:v26];
-    v18 = [objc_getProperty(a1 v17];
+    v18 = [objc_getProperty(self v17];
     [v18 sendMessage:v16];
   }
 
@@ -371,15 +371,15 @@ LABEL_7:
   v21 = *MEMORY[0x1E69E9840];
 }
 
-- (void)finishAccessorySetupWithCompletionHandler:(id)a3
+- (void)finishAccessorySetupWithCompletionHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessorySetupManager finishAccessorySetupWithCompletionHandler:]", @"completion"];
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -396,39 +396,39 @@ LABEL_7:
     objc_exception_throw(v19);
   }
 
-  v5 = v4;
+  v5 = handlerCopy;
   v6 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Finishing accessory setup"];
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy2 = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [v6 identifier];
-    v12 = [v11 shortDescription];
+    identifier = [v6 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543618;
     v21 = v10;
     v22 = 2114;
-    v23 = v12;
+    v23 = shortDescription;
     _os_log_impl(&dword_19BB39000, v9, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Finishing accessory setup", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v7);
-  [(HMAccessorySetupManager *)v8 _finishAccessorySetupWithSetupCompletedInfo:v5 completionHandler:v6 activity:?];
+  [(HMAccessorySetupManager *)selfCopy2 _finishAccessorySetupWithSetupCompletedInfo:v5 completionHandler:v6 activity:?];
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resumeAccessorySetupWithUserInfo:(id)a3 completionHandler:(id)a4
+- (void)resumeAccessorySetupWithUserInfo:(id)info completionHandler:(id)handler
 {
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  infoCopy = info;
+  handlerCopy = handler;
+  if (!infoCopy)
   {
     v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessorySetupManager resumeAccessorySetupWithUserInfo:completionHandler:]", @"userInfo"];
     v28 = objc_autoreleasePoolPush();
-    v29 = self;
+    selfCopy2 = self;
     v30 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
@@ -449,12 +449,12 @@ LABEL_12:
     objc_exception_throw(v32);
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = handlerCopy;
+  if (!handlerCopy)
   {
     v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessorySetupManager resumeAccessorySetupWithUserInfo:completionHandler:]", @"completion"];
     v28 = objc_autoreleasePoolPush();
-    v29 = self;
+    selfCopy2 = self;
     v30 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
@@ -466,19 +466,19 @@ LABEL_12:
 
   v9 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Resuming accessory setup"];
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy3 = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 identifier];
-    v15 = [v14 shortDescription];
+    identifier = [v9 identifier];
+    shortDescription = [identifier shortDescription];
     *buf = 138543874;
     v39 = v13;
     v40 = 2114;
-    v41 = v15;
+    v41 = shortDescription;
     v42 = 2112;
-    v43 = v6;
+    v43 = infoCopy;
     _os_log_impl(&dword_19BB39000, v12, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Launching HomeUIService with userInfo: %@", buf, 0x20u);
   }
 
@@ -488,22 +488,22 @@ LABEL_12:
   v18 = [v16 initWithTarget:v17];
 
   v36 = @"HMASM.mk.resumeAccessorySetupUserInfo";
-  v37 = v6;
+  v37 = infoCopy;
   v19 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v37 forKeys:&v36 count:1];
   v20 = [MEMORY[0x1E69A2A10] messageWithName:@"HMASM.m.resumeAccessorySetup" destination:v18 payload:v19];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __78__HMAccessorySetupManager_resumeAccessorySetupWithUserInfo_completionHandler___block_invoke;
   v33[3] = &unk_1E754E480;
-  v33[4] = v11;
+  v33[4] = selfCopy3;
   v34 = v9;
   v35 = v8;
   v21 = v8;
   v22 = v9;
   [v20 setResponseHandler:v33];
-  if (v11)
+  if (selfCopy3)
   {
-    Property = objc_getProperty(v11, v23, 8, 1);
+    Property = objc_getProperty(selfCopy3, v23, 8, 1);
   }
 
   else
@@ -511,8 +511,8 @@ LABEL_12:
     Property = 0;
   }
 
-  v25 = [Property messageDispatcher];
-  [v25 sendMessage:v20];
+  messageDispatcher = [Property messageDispatcher];
+  [messageDispatcher sendMessage:v20];
 
   v26 = *MEMORY[0x1E69E9840];
 }
@@ -593,7 +593,7 @@ LABEL_7:
   {
     v38 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessorySetupManager performAccessorySetupUsingRequest:completionHandler:]", @"request"];
     v39 = objc_autoreleasePoolPush();
-    v40 = self;
+    selfCopy2 = self;
     v41 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
     {
@@ -619,7 +619,7 @@ LABEL_21:
   {
     v38 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMAccessorySetupManager performAccessorySetupUsingRequest:completionHandler:]", @"completion"];
     v39 = objc_autoreleasePoolPush();
-    v40 = self;
+    selfCopy2 = self;
     v41 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
     {
@@ -629,8 +629,8 @@ LABEL_21:
     goto LABEL_20;
   }
 
-  v9 = [(HMAccessorySetupRequest *)v6 suggestedAccessoryName];
-  v10 = [v9 length];
+  suggestedAccessoryName = [(HMAccessorySetupRequest *)v6 suggestedAccessoryName];
+  v10 = [suggestedAccessoryName length];
   if (HMMaxLengthForNaming__hmf_once_t8[0] != -1)
   {
     dispatch_once(HMMaxLengthForNaming__hmf_once_t8, &__block_literal_global_70);
@@ -642,17 +642,17 @@ LABEL_21:
   {
     v21 = [objc_alloc(MEMORY[0x1E69A29C0]) initWithName:@"Performing accessory setup using request"];
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy3 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       v25 = HMFGetLogIdentifier();
-      v26 = [v21 identifier];
-      v27 = [v26 shortDescription];
+      identifier = [v21 identifier];
+      shortDescription = [identifier shortDescription];
       *buf = 138543874;
       v52 = v25;
       v53 = 2114;
-      v54 = v27;
+      v54 = shortDescription;
       v55 = 2112;
       v56 = v6;
       _os_log_impl(&dword_19BB39000, v24, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Performing accessory setup using request: %@", buf, 0x20u);
@@ -660,8 +660,8 @@ LABEL_21:
 
     objc_autoreleasePoolPop(v22);
     v28 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v29 = [objc_opt_class() UUID];
-    v19 = [v28 initWithTarget:v29];
+    uUID = [objc_opt_class() UUID];
+    v19 = [v28 initWithTarget:uUID];
 
     v49 = @"HMASM.mk.request";
     v30 = encodeRootObject(v6);
@@ -674,15 +674,15 @@ LABEL_21:
     v44[1] = 3221225472;
     v44[2] = __79__HMAccessorySetupManager_performAccessorySetupUsingRequest_completionHandler___block_invoke_46;
     v44[3] = &unk_1E754E480;
-    v44[4] = v23;
+    v44[4] = selfCopy3;
     v45 = v21;
     v46 = v8;
     v32 = v8;
     v33 = v21;
     [v31 setResponseHandler:v44];
-    if (v23)
+    if (selfCopy3)
     {
-      Property = objc_getProperty(v23, v34, 8, 1);
+      Property = objc_getProperty(selfCopy3, v34, 8, 1);
     }
 
     else
@@ -690,14 +690,14 @@ LABEL_21:
       Property = 0;
     }
 
-    v36 = [Property messageDispatcher];
-    [v36 sendMessage:v31 completionHandler:0];
+    messageDispatcher = [Property messageDispatcher];
+    [messageDispatcher sendMessage:v31 completionHandler:0];
   }
 
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy4 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -708,9 +708,9 @@ LABEL_21:
     }
 
     objc_autoreleasePoolPop(v12);
-    if (v13)
+    if (selfCopy4)
     {
-      v17 = objc_getProperty(v13, v16, 8, 1);
+      v17 = objc_getProperty(selfCopy4, v16, 8, 1);
     }
 
     else
@@ -718,14 +718,14 @@ LABEL_21:
       v17 = 0;
     }
 
-    v18 = [v17 delegateCaller];
+    delegateCaller = [v17 delegateCaller];
     v47[0] = MEMORY[0x1E69E9820];
     v47[1] = 3221225472;
     v47[2] = __79__HMAccessorySetupManager_performAccessorySetupUsingRequest_completionHandler___block_invoke;
     v47[3] = &unk_1E754E430;
     v48 = v8;
     v19 = v8;
-    [v18 invokeBlock:v47];
+    [delegateCaller invokeBlock:v47];
 
     v20 = v48;
   }
@@ -828,16 +828,16 @@ void __79__HMAccessorySetupManager_performAccessorySetupUsingRequest_completionH
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (HMAccessorySetupManager)initWithContext:(id)a3
+- (HMAccessorySetupManager)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = HMAccessorySetupManager;
   v6 = [(HMAccessorySetupManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
@@ -847,9 +847,9 @@ void __79__HMAccessorySetupManager_performAccessorySetupUsingRequest_completionH
 {
   v3 = [(HMXPCMessageTransportConfiguration *)[HMMutableXPCMessageTransportConfiguration alloc] initWithMachServiceName:@"com.apple.homed.xpc.accessory-setup"];
   v4 = HMDispatchQueueNameString(self, 0);
-  v5 = [v4 UTF8String];
+  uTF8String = [v4 UTF8String];
   v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v7 = dispatch_queue_create(v5, v6);
+  v7 = dispatch_queue_create(uTF8String, v6);
   [(HMXPCMessageTransportConfiguration *)v3 setQueue:v7];
 
   [(HMXPCMessageTransportConfiguration *)v3 setRequiresHomeDataAccess:0];

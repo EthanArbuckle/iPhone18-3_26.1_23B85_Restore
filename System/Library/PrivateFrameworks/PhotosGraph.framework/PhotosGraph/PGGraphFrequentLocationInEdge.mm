@@ -1,15 +1,15 @@
 @interface PGGraphFrequentLocationInEdge
 + (id)filter;
-- (id)initFromMomentNode:(id)a3 toFrequentLocationNode:(id)a4;
+- (id)initFromMomentNode:(id)node toFrequentLocationNode:(id)locationNode;
 @end
 
 @implementation PGGraphFrequentLocationInEdge
 
-- (id)initFromMomentNode:(id)a3 toFrequentLocationNode:(id)a4
+- (id)initFromMomentNode:(id)node toFrequentLocationNode:(id)locationNode
 {
   v5.receiver = self;
   v5.super_class = PGGraphFrequentLocationInEdge;
-  return [(PGGraphEdge *)&v5 initWithSourceNode:a3 targetNode:a4];
+  return [(PGGraphEdge *)&v5 initWithSourceNode:node targetNode:locationNode];
 }
 
 + (id)filter

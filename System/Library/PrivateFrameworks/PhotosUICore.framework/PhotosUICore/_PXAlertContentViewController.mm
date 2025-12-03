@@ -1,5 +1,5 @@
 @interface _PXAlertContentViewController
-- (_PXAlertContentViewController)initWithContentView:(id)a3;
+- (_PXAlertContentViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
 @end
 
@@ -10,9 +10,9 @@
   v9.receiver = self;
   v9.super_class = _PXAlertContentViewController;
   [(_PXAlertContentViewController *)&v9 viewDidLoad];
-  v3 = [(_PXAlertContentViewController *)self view];
-  [v3 addSubview:self->_contentView];
-  [v3 bounds];
+  view = [(_PXAlertContentViewController *)self view];
+  [view addSubview:self->_contentView];
+  [view bounds];
   x = v10.origin.x;
   y = v10.origin.y;
   width = v10.size.width;
@@ -26,16 +26,16 @@
   [(UIView *)self->_contentView setAutoresizingMask:45];
 }
 
-- (_PXAlertContentViewController)initWithContentView:(id)a3
+- (_PXAlertContentViewController)initWithContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = _PXAlertContentViewController;
   v6 = [(_PXAlertContentViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentView, a3);
+    objc_storeStrong(&v6->_contentView, view);
   }
 
   return v7;

@@ -1,19 +1,19 @@
 @interface GetNetworkInfoProbe
-- (BOOL)startNetDiagnosticsTask:(id)a3;
-- (GetNetworkInfoProbe)initWithQueue:(id)a3;
+- (BOOL)startNetDiagnosticsTask:(id)task;
+- (GetNetworkInfoProbe)initWithQueue:(id)queue;
 - (id)probeOutputFilePaths;
 - (void)dealloc;
-- (void)netDiagnosticTaskStatusChangedFor:(id)a3 toStatus:(int)a4;
+- (void)netDiagnosticTaskStatusChangedFor:(id)for toStatus:(int)status;
 - (void)stopTest;
 @end
 
 @implementation GetNetworkInfoProbe
 
-- (GetNetworkInfoProbe)initWithQueue:(id)a3
+- (GetNetworkInfoProbe)initWithQueue:(id)queue
 {
   v6.receiver = self;
   v6.super_class = GetNetworkInfoProbe;
-  v3 = [(TestProbe *)&v6 initWithQueue:a3];
+  v3 = [(TestProbe *)&v6 initWithQueue:queue];
   if (v3)
   {
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:kNetDiagTaskGetNetworkInfo[0]];
@@ -31,10 +31,10 @@
   [(NetDiagnosticProbe *)&v3 dealloc];
 }
 
-- (BOOL)startNetDiagnosticsTask:(id)a3
+- (BOOL)startNetDiagnosticsTask:(id)task
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  taskCopy = task;
   if ([(TestProbe *)self status]!= -1)
   {
     v5 = debuggabilityLogHandle;
@@ -48,10 +48,10 @@
     }
   }
 
-  v8 = [(NetDiagnosticProbe *)self setUpDefaultTaskDictionary];
+  setUpDefaultTaskDictionary = [(NetDiagnosticProbe *)self setUpDefaultTaskDictionary];
   v9 = +[SystemSettingsRelay defaultRelay];
-  v10 = [v9 autoBugCaptureConfiguration];
-  v11 = [v10 objectForKey:@"autoBugCaptureSensitivePayloads"];
+  autoBugCaptureConfiguration = [v9 autoBugCaptureConfiguration];
+  v11 = [autoBugCaptureConfiguration objectForKey:@"autoBugCaptureSensitivePayloads"];
 
   if (v11)
   {
@@ -63,33 +63,33 @@
     v12 = &unk_2847EFB18;
   }
 
-  [v8 setObject:v12 forKeyedSubscript:@"taskGNISensitive"];
-  [(GetNetworkInfoProbe *)self setCompletionBlock:_Block_copy(v4)];
+  [setUpDefaultTaskDictionary setObject:v12 forKeyedSubscript:@"taskGNISensitive"];
+  [(GetNetworkInfoProbe *)self setCompletionBlock:_Block_copy(taskCopy)];
   v15.receiver = self;
   v15.super_class = GetNetworkInfoProbe;
-  [(NetDiagnosticProbe *)&v15 startNetDiagnosticsTask:v4];
+  [(NetDiagnosticProbe *)&v15 startNetDiagnosticsTask:taskCopy];
 
   v13 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (void)netDiagnosticTaskStatusChangedFor:(id)a3 toStatus:(int)a4
+- (void)netDiagnosticTaskStatusChangedFor:(id)for toStatus:(int)status
 {
-  v6 = a3;
-  v10 = [(NetDiagnosticProbe *)self taskName];
-  v7 = [v6 isEqualToString:?];
+  forCopy = for;
+  taskName = [(NetDiagnosticProbe *)self taskName];
+  v7 = [forCopy isEqualToString:?];
 
-  if (a4 == 3)
+  if (status == 3)
   {
     if (v7)
     {
       [(TestProbe *)self setStatus:2];
-      v8 = [(GetNetworkInfoProbe *)self completionBlock];
+      completionBlock = [(GetNetworkInfoProbe *)self completionBlock];
 
-      if (v8)
+      if (completionBlock)
       {
-        v9 = [(GetNetworkInfoProbe *)self completionBlock];
-        v9[2](v9, [(TestProbe *)self status]);
+        completionBlock2 = [(GetNetworkInfoProbe *)self completionBlock];
+        completionBlock2[2](completionBlock2, [(TestProbe *)self status]);
       }
     }
   }
@@ -107,16 +107,16 @@
 
 - (id)probeOutputFilePaths
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(NetDiagnosticProbe *)self ndFilePath];
+  array = [MEMORY[0x277CBEB18] array];
+  ndFilePath = [(NetDiagnosticProbe *)self ndFilePath];
 
-  if (v4)
+  if (ndFilePath)
   {
-    v5 = [(NetDiagnosticProbe *)self ndFilePath];
-    [v3 addObject:v5];
+    ndFilePath2 = [(NetDiagnosticProbe *)self ndFilePath];
+    [array addObject:ndFilePath2];
   }
 
-  return v3;
+  return array;
 }
 
 @end

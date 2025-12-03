@@ -1,13 +1,13 @@
 @interface PXSharedAlbumsActivityEntryRepository
 - (PXSharedAlbumsActivityEntryRepository)init;
-- (PXSharedAlbumsActivityEntryRepository)initWithLogIdentifier:(id)a3;
+- (PXSharedAlbumsActivityEntryRepository)initWithLogIdentifier:(id)identifier;
 - (PXSharedAlbumsActivityEntryRepositoryDelegate)delegate;
 - (void)_clearPendingNotifications;
-- (void)_didFinishPostingNotifications:(id)a3;
-- (void)assetsDidChange:(id)a3;
-- (void)cloudCommentsDidChange:(id)a3;
-- (void)cloudFeedEntriesDidChange:(id)a3;
-- (void)shouldReload:(id)a3;
+- (void)_didFinishPostingNotifications:(id)notifications;
+- (void)assetsDidChange:(id)change;
+- (void)cloudCommentsDidChange:(id)change;
+- (void)cloudFeedEntriesDidChange:(id)change;
+- (void)shouldReload:(id)reload;
 @end
 
 @implementation PXSharedAlbumsActivityEntryRepository
@@ -28,7 +28,7 @@
   [(NSMutableArray *)pendingAssetsChangeNotifications removeAllObjects];
 }
 
-- (void)_didFinishPostingNotifications:(id)a3
+- (void)_didFinishPostingNotifications:(id)notifications
 {
   v22 = *MEMORY[0x1E69E9840];
   v5 = PLSharingGetLog();
@@ -55,12 +55,12 @@
   if ([(NSMutableArray *)self->_pendingFeedEntriesChangeNotifications count]|| [(NSMutableArray *)self->_pendingCommentsChangeNotifications count]|| [(NSMutableArray *)self->_pendingAssetsChangeNotifications count])
   {
     [(PXSharedAlbumsActivityEntryRepository *)self _clearPendingNotifications];
-    v11 = [(PXSharedAlbumsActivityEntryRepository *)self delegate];
-    [v11 activityEntryRepositoryDidChange:self];
+    delegate = [(PXSharedAlbumsActivityEntryRepository *)self delegate];
+    [delegate activityEntryRepositoryDidChange:self];
   }
 }
 
-- (void)shouldReload:(id)a3
+- (void)shouldReload:(id)reload
 {
   v9 = *MEMORY[0x1E69E9840];
   v4 = PLSharingGetLog();
@@ -73,14 +73,14 @@
   }
 
   [(PXSharedAlbumsActivityEntryRepository *)self _clearPendingNotifications];
-  v6 = [(PXSharedAlbumsActivityEntryRepository *)self delegate];
-  [v6 activityEntryRepositoryDidChange:self];
+  delegate = [(PXSharedAlbumsActivityEntryRepository *)self delegate];
+  [delegate activityEntryRepositoryDidChange:self];
 }
 
-- (void)cloudFeedEntriesDidChange:(id)a3
+- (void)cloudFeedEntriesDidChange:(id)change
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = PLSharingGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -90,13 +90,13 @@
     _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "[SharedAlbumsActivityEntryRepository - %{public}@] cloudFeedEntriesDidChange", &v7, 0xCu);
   }
 
-  [(NSMutableArray *)self->_pendingFeedEntriesChangeNotifications addObject:v4];
+  [(NSMutableArray *)self->_pendingFeedEntriesChangeNotifications addObject:changeCopy];
 }
 
-- (void)cloudCommentsDidChange:(id)a3
+- (void)cloudCommentsDidChange:(id)change
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = PLSharingGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -106,13 +106,13 @@
     _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "[SharedAlbumsActivityEntryRepository - %{public}@] cloudCommentsDidChange", &v7, 0xCu);
   }
 
-  [(NSMutableArray *)self->_pendingCommentsChangeNotifications addObject:v4];
+  [(NSMutableArray *)self->_pendingCommentsChangeNotifications addObject:changeCopy];
 }
 
-- (void)assetsDidChange:(id)a3
+- (void)assetsDidChange:(id)change
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = PLSharingGetLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -122,16 +122,16 @@
     _os_log_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_DEFAULT, "[SharedAlbumsActivityEntryRepository - %{public}@] assetsDidChange", &v7, 0xCu);
   }
 
-  [(NSMutableArray *)self->_pendingAssetsChangeNotifications addObject:v4];
+  [(NSMutableArray *)self->_pendingAssetsChangeNotifications addObject:changeCopy];
 }
 
-- (PXSharedAlbumsActivityEntryRepository)initWithLogIdentifier:(id)a3
+- (PXSharedAlbumsActivityEntryRepository)initWithLogIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:811 description:{@"Invalid parameter not satisfying: %@", @"logIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:811 description:{@"Invalid parameter not satisfying: %@", @"logIdentifier"}];
   }
 
   v18.receiver = self;
@@ -139,7 +139,7 @@
   v6 = [(PXSharedAlbumsActivityEntryRepository *)&v18 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [identifierCopy copy];
     logIdentifier = v6->_logIdentifier;
     v6->_logIdentifier = v7;
 
@@ -155,12 +155,12 @@
     pendingAssetsChangeNotifications = v6->_pendingAssetsChangeNotifications;
     v6->_pendingAssetsChangeNotifications = v13;
 
-    v15 = [MEMORY[0x1E69BE2F0] defaultCenter];
-    [v15 addCloudFeedEntriesObserver:v6];
-    [v15 addCloudCommentsChangeObserver:v6 asset:0];
-    [v15 addAssetChangeObserver:v6];
-    [v15 addShouldReloadObserver:v6];
-    [v15 addObserver:v6 selector:sel__didFinishPostingNotifications_ name:*MEMORY[0x1E69BE918] object:0];
+    defaultCenter = [MEMORY[0x1E69BE2F0] defaultCenter];
+    [defaultCenter addCloudFeedEntriesObserver:v6];
+    [defaultCenter addCloudCommentsChangeObserver:v6 asset:0];
+    [defaultCenter addAssetChangeObserver:v6];
+    [defaultCenter addShouldReloadObserver:v6];
+    [defaultCenter addObserver:v6 selector:sel__didFinishPostingNotifications_ name:*MEMORY[0x1E69BE918] object:0];
   }
 
   return v6;
@@ -168,8 +168,8 @@
 
 - (PXSharedAlbumsActivityEntryRepository)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:807 description:{@"%s is not available as initializer", "-[PXSharedAlbumsActivityEntryRepository init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedAlbumsActivityEntry.m" lineNumber:807 description:{@"%s is not available as initializer", "-[PXSharedAlbumsActivityEntryRepository init]"}];
 
   abort();
 }

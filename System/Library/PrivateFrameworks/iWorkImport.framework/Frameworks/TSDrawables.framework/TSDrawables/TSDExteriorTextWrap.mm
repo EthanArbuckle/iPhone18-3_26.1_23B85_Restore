@@ -1,59 +1,59 @@
 @interface TSDExteriorTextWrap
-+ (TSDExteriorTextWrap)exteriorTextWrapWithIsHTMLWrap:(BOOL)a3 type:(int)a4 direction:(int)a5 fitType:(int)a6 margin:(double)a7 alphaThreshold:(double)a8;
++ (TSDExteriorTextWrap)exteriorTextWrapWithIsHTMLWrap:(BOOL)wrap type:(int)type direction:(int)direction fitType:(int)fitType margin:(double)margin alphaThreshold:(double)threshold;
 + (id)exteriorTextWrap;
-- (BOOL)isEqual:(id)a3;
-- (TSDExteriorTextWrap)initWithArchive:(const void *)a3;
-- (TSDExteriorTextWrap)initWithIsHTMLWrap:(BOOL)a3 type:(int)a4 direction:(int)a5 fitType:(int)a6 margin:(double)a7 alphaThreshold:(double)a8;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (TSDExteriorTextWrap)initWithArchive:(const void *)archive;
+- (TSDExteriorTextWrap)initWithIsHTMLWrap:(BOOL)wrap type:(int)type direction:(int)direction fitType:(int)fitType margin:(double)margin alphaThreshold:(double)threshold;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
 @end
 
 @implementation TSDExteriorTextWrap
 
 + (id)exteriorTextWrap
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-+ (TSDExteriorTextWrap)exteriorTextWrapWithIsHTMLWrap:(BOOL)a3 type:(int)a4 direction:(int)a5 fitType:(int)a6 margin:(double)a7 alphaThreshold:(double)a8
++ (TSDExteriorTextWrap)exteriorTextWrapWithIsHTMLWrap:(BOOL)wrap type:(int)type direction:(int)direction fitType:(int)fitType margin:(double)margin alphaThreshold:(double)threshold
 {
-  v10 = *&a6;
-  v11 = *&a5;
-  v12 = *&a4;
-  v13 = a3;
-  v14 = [a1 alloc];
-  IsHTMLWrap_type_direction_fitType_margin_alphaThreshold = objc_msgSend_initWithIsHTMLWrap_type_direction_fitType_margin_alphaThreshold_(v14, v15, v13, v12, v11, v10, a7, a8);
+  v10 = *&fitType;
+  v11 = *&direction;
+  v12 = *&type;
+  wrapCopy = wrap;
+  v14 = [self alloc];
+  IsHTMLWrap_type_direction_fitType_margin_alphaThreshold = objc_msgSend_initWithIsHTMLWrap_type_direction_fitType_margin_alphaThreshold_(v14, v15, wrapCopy, v12, v11, v10, margin, threshold);
 
   return IsHTMLWrap_type_direction_fitType_margin_alphaThreshold;
 }
 
-- (TSDExteriorTextWrap)initWithIsHTMLWrap:(BOOL)a3 type:(int)a4 direction:(int)a5 fitType:(int)a6 margin:(double)a7 alphaThreshold:(double)a8
+- (TSDExteriorTextWrap)initWithIsHTMLWrap:(BOOL)wrap type:(int)type direction:(int)direction fitType:(int)fitType margin:(double)margin alphaThreshold:(double)threshold
 {
   v15.receiver = self;
   v15.super_class = TSDExteriorTextWrap;
   result = [(TSDExteriorTextWrap *)&v15 init];
   if (result)
   {
-    result->_isHTMLWrap = a3;
-    result->_type = a4;
-    result->_direction = a5;
-    result->_fitType = a6;
-    result->_margin = a7;
-    result->_alphaThreshold = a8;
+    result->_isHTMLWrap = wrap;
+    result->_type = type;
+    result->_direction = direction;
+    result->_fitType = fitType;
+    result->_margin = margin;
+    result->_alphaThreshold = threshold;
   }
 
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   isHTMLWrap = self->_isHTMLWrap;
   type = self->_type;
   direction = self->_direction;
@@ -64,9 +64,9 @@
   return objc_msgSend_initWithIsHTMLWrap_type_direction_fitType_margin_alphaThreshold_(v7, v8, isHTMLWrap, type, direction, fitType, margin, alphaThreshold);
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_allocWithZone_(TSDMutableExteriorTextWrap, a2, a3);
+  v4 = objc_msgSend_allocWithZone_(TSDMutableExteriorTextWrap, a2, zone);
   isHTMLWrap = self->_isHTMLWrap;
   type = self->_type;
   direction = self->_direction;
@@ -77,9 +77,9 @@
   return objc_msgSend_initWithIsHTMLWrap_type_direction_fitType_margin_alphaThreshold_(v4, v5, isHTMLWrap, type, direction, fitType, margin, alphaThreshold);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v4) = 1;
   }
@@ -171,12 +171,12 @@
   return objc_msgSend_stringWithFormat_(v19, v24, @"TSDExteriorTextWrap isHTMLWrap=%@, type=%@, direction=%@, fitType=%@, margin=%f, alphaThreshold=%f", v18, v8, v12, v17, v21, v25);
 }
 
-- (TSDExteriorTextWrap)initWithArchive:(const void *)a3
+- (TSDExteriorTextWrap)initWithArchive:(const void *)archive
 {
-  v3 = *(a3 + 4);
+  v3 = *(archive + 4);
   if ((v3 & 2) != 0)
   {
-    v4 = *(a3 + 7);
+    v4 = *(archive + 7);
   }
 
   else
@@ -184,36 +184,36 @@
     v4 = 2;
   }
 
-  v5 = *(a3 + 9);
+  v5 = *(archive + 9);
   if ((v3 & 8) == 0)
   {
     v5 = 0.0;
   }
 
-  v6 = *(a3 + 10);
+  v6 = *(archive + 10);
   if ((v3 & 0x10) == 0)
   {
     v6 = 0.0;
   }
 
-  return objc_msgSend_initWithIsHTMLWrap_type_direction_fitType_margin_alphaThreshold_(self, a2, *(a3 + 44) & ((*(a3 + 4) & 0x20u) >> 5), ((*(a3 + 4) << 31) >> 31) & *(a3 + 6), v4, *(a3 + 8) & ((*(a3 + 4) << 29) >> 31), v5, v6);
+  return objc_msgSend_initWithIsHTMLWrap_type_direction_fitType_margin_alphaThreshold_(self, a2, *(archive + 44) & ((*(archive + 4) & 0x20u) >> 5), ((*(archive + 4) << 31) >> 31) & *(archive + 6), v4, *(archive + 8) & ((*(archive + 4) << 29) >> 31), v5, v6);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v4 = *(a3 + 4);
+  v4 = *(archive + 4);
   type = self->_type;
-  *(a3 + 44) = self->_isHTMLWrap;
+  *(archive + 44) = self->_isHTMLWrap;
   margin = self->_margin;
   direction = self->_direction;
-  *(a3 + 6) = type;
-  *(a3 + 7) = direction;
-  *(a3 + 8) = self->_fitType;
+  *(archive + 6) = type;
+  *(archive + 7) = direction;
+  *(archive + 8) = self->_fitType;
   *&margin = margin;
   alphaThreshold = self->_alphaThreshold;
-  *(a3 + 4) = v4 | 0x3F;
-  *(a3 + 9) = LODWORD(margin);
-  *(a3 + 10) = alphaThreshold;
+  *(archive + 4) = v4 | 0x3F;
+  *(archive + 9) = LODWORD(margin);
+  *(archive + 10) = alphaThreshold;
 }
 
 @end

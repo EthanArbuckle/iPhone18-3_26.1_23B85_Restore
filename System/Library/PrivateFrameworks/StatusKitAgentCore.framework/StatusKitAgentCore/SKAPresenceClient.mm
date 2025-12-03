@@ -2,65 +2,65 @@
 + (id)logger;
 + (id)oversizeLogger;
 - (BOOL)activeAssertion;
-- (BOOL)presenceIdentifierMatchesClient:(id)a3;
+- (BOOL)presenceIdentifierMatchesClient:(id)client;
 - (NSString)description;
-- (SKAPresenceClient)initWithXPCConnection:(id)a3 queue:(id)a4 delegate:(id)a5 subscriptionManager:(id)a6 presenceManager:(id)a7 invitationManager:(id)a8 databaseManager:(id)a9 daemonProtocolDelegate:(id)a10;
+- (SKAPresenceClient)initWithXPCConnection:(id)connection queue:(id)queue delegate:(id)delegate subscriptionManager:(id)manager presenceManager:(id)presenceManager invitationManager:(id)invitationManager databaseManager:(id)databaseManager daemonProtocolDelegate:(id)self0;
 - (SKAPresenceClientDelegate)delegate;
-- (id)_shortHashOfClientID:(id)a3;
-- (id)clientPrefixedPresenceIdentifierForPresenceIdentifier:(id)a3;
-- (id)rawPresenceIdentifierForPrefixedPresenceIdentifier:(id)a3;
+- (id)_shortHashOfClientID:(id)d;
+- (id)clientPrefixedPresenceIdentifierForPresenceIdentifier:(id)identifier;
+- (id)rawPresenceIdentifierForPrefixedPresenceIdentifier:(id)identifier;
 - (void)_releaseAllSubscriptionsAndAssertionsForDisconnection;
-- (void)accountIsPresenceCapableWithCompletion:(id)a3;
-- (void)assertPresenceForIdentifier:(id)a3 withPresencePayload:(id)a4 assertionOptions:(id)a5 completion:(id)a6;
+- (void)accountIsPresenceCapableWithCompletion:(id)completion;
+- (void)assertPresenceForIdentifier:(id)identifier withPresencePayload:(id)payload assertionOptions:(id)options completion:(id)completion;
 - (void)dealloc;
-- (void)fetchHandleInvitability:(id)a3 fromHandle:(id)a4 forPresenceIdentifier:(id)a5 completion:(id)a6;
-- (void)fetchPresenceCapability:(id)a3;
-- (void)handleReceivedInvitationForPresenceIdentifier:(id)a3;
-- (void)handleReceivedPresentDevicesUpdate:(id)a3 forPresenceIdentifier:(id)a4;
-- (void)hasInitialCloudKitImportOccurredWithCompletion:(id)a3;
+- (void)fetchHandleInvitability:(id)invitability fromHandle:(id)handle forPresenceIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchPresenceCapability:(id)capability;
+- (void)handleReceivedInvitationForPresenceIdentifier:(id)identifier;
+- (void)handleReceivedPresentDevicesUpdate:(id)update forPresenceIdentifier:(id)identifier;
+- (void)hasInitialCloudKitImportOccurredWithCompletion:(id)completion;
 - (void)initialCloudKitImportReceived;
-- (void)inviteHandles:(id)a3 fromSenderHandle:(id)a4 presenceIdentifier:(id)a5 completion:(id)a6;
-- (void)invitedHandlesForPresenceIdentifier:(id)a3 completion:(id)a4;
-- (void)isHandleInvited:(id)a3 fromSenderHandle:(id)a4 forPresenceIdentifier:(id)a5 completion:(id)a6;
-- (void)presenceClientConnectionWasInterrupted:(id)a3;
-- (void)presenceClientConnectionWasInvalidated:(id)a3;
-- (void)presentDevicesForPresenceIdentifier:(id)a3 completion:(id)a4;
-- (void)registerForDelegateCallbacksWithPresenceIdentifier:(id)a3 options:(id)a4 completion:(id)a5;
-- (void)releasePresenceForIdentifier:(id)a3 completion:(id)a4;
-- (void)releaseTransientSubscriptionAssertionForPresenceIdentifier:(id)a3 completion:(id)a4;
-- (void)removeInvitedHandles:(id)a3 presenceIdentifier:(id)a4 completion:(id)a5;
-- (void)retainTransientSubscriptionAssertionForPresenceIdentifier:(id)a3 completion:(id)a4;
-- (void)rollChannelForPresenceIdentifier:(id)a3 completion:(id)a4;
+- (void)inviteHandles:(id)handles fromSenderHandle:(id)handle presenceIdentifier:(id)identifier completion:(id)completion;
+- (void)invitedHandlesForPresenceIdentifier:(id)identifier completion:(id)completion;
+- (void)isHandleInvited:(id)invited fromSenderHandle:(id)handle forPresenceIdentifier:(id)identifier completion:(id)completion;
+- (void)presenceClientConnectionWasInterrupted:(id)interrupted;
+- (void)presenceClientConnectionWasInvalidated:(id)invalidated;
+- (void)presentDevicesForPresenceIdentifier:(id)identifier completion:(id)completion;
+- (void)registerForDelegateCallbacksWithPresenceIdentifier:(id)identifier options:(id)options completion:(id)completion;
+- (void)releasePresenceForIdentifier:(id)identifier completion:(id)completion;
+- (void)releaseTransientSubscriptionAssertionForPresenceIdentifier:(id)identifier completion:(id)completion;
+- (void)removeInvitedHandles:(id)handles presenceIdentifier:(id)identifier completion:(id)completion;
+- (void)retainTransientSubscriptionAssertionForPresenceIdentifier:(id)identifier completion:(id)completion;
+- (void)rollChannelForPresenceIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation SKAPresenceClient
 
-- (SKAPresenceClient)initWithXPCConnection:(id)a3 queue:(id)a4 delegate:(id)a5 subscriptionManager:(id)a6 presenceManager:(id)a7 invitationManager:(id)a8 databaseManager:(id)a9 daemonProtocolDelegate:(id)a10
+- (SKAPresenceClient)initWithXPCConnection:(id)connection queue:(id)queue delegate:(id)delegate subscriptionManager:(id)manager presenceManager:(id)presenceManager invitationManager:(id)invitationManager databaseManager:(id)databaseManager daemonProtocolDelegate:(id)self0
 {
-  v28 = a3;
-  v16 = a4;
-  v17 = a5;
-  v27 = a6;
-  v26 = a7;
-  v25 = a8;
-  v18 = a9;
-  v19 = a10;
-  dispatch_assert_queue_V2(v16);
+  connectionCopy = connection;
+  queueCopy = queue;
+  delegateCopy = delegate;
+  managerCopy = manager;
+  presenceManagerCopy = presenceManager;
+  invitationManagerCopy = invitationManager;
+  databaseManagerCopy = databaseManager;
+  protocolDelegateCopy = protocolDelegate;
+  dispatch_assert_queue_V2(queueCopy);
   v29.receiver = self;
   v29.super_class = SKAPresenceClient;
   v20 = [(SKAPresenceClient *)&v29 init];
   if (v20)
   {
-    v21 = [[SKAPresenceClientConnection alloc] initWithXPCConnection:v28 queue:v16 daemonProtocolDelegate:v19 connectionLifecycleDelegate:v20, v25, v26, v27];
+    managerCopy = [[SKAPresenceClientConnection alloc] initWithXPCConnection:connectionCopy queue:queueCopy daemonProtocolDelegate:protocolDelegateCopy connectionLifecycleDelegate:v20, invitationManagerCopy, presenceManagerCopy, managerCopy];
     clientConnection = v20->_clientConnection;
-    v20->_clientConnection = v21;
+    v20->_clientConnection = managerCopy;
 
-    objc_storeWeak(&v20->_delegate, v17);
-    objc_storeStrong(&v20->_databaseManager, a9);
-    objc_storeStrong(&v20->_subscriptionManager, a6);
-    objc_storeStrong(&v20->_invitationManager, a8);
-    objc_storeStrong(&v20->_presenceManager, a7);
-    objc_storeStrong(&v20->_queue, a4);
+    objc_storeWeak(&v20->_delegate, delegateCopy);
+    objc_storeStrong(&v20->_databaseManager, databaseManager);
+    objc_storeStrong(&v20->_subscriptionManager, manager);
+    objc_storeStrong(&v20->_invitationManager, invitationManager);
+    objc_storeStrong(&v20->_presenceManager, presenceManager);
+    objc_storeStrong(&v20->_queue, queue);
     transaction = v20->_transaction;
     v20->_transaction = 0;
   }
@@ -92,22 +92,22 @@
 - (NSString)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SKAPresenceClient *)self presenceIdentifier];
-  v5 = [(SKAPresenceClient *)self options];
-  v6 = [v3 stringWithFormat:@"SKAPresenceClient: {presenceIdentifier: %@, presenceOptions: %@}", v4, v5];
+  presenceIdentifier = [(SKAPresenceClient *)self presenceIdentifier];
+  options = [(SKAPresenceClient *)self options];
+  v6 = [v3 stringWithFormat:@"SKAPresenceClient: {presenceIdentifier: %@, presenceOptions: %@}", presenceIdentifier, options];
 
   return v6;
 }
 
-- (void)presenceClientConnectionWasInterrupted:(id)a3
+- (void)presenceClientConnectionWasInterrupted:(id)interrupted
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  interruptedCopy = interrupted;
   v5 = +[SKAPresenceClient logger];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = interruptedCopy;
     _os_log_impl(&dword_220099000, v5, OS_LOG_TYPE_DEFAULT, "Presence client connection was interrupted: %@", &v9, 0xCu);
   }
 
@@ -125,15 +125,15 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presenceClientConnectionWasInvalidated:(id)a3
+- (void)presenceClientConnectionWasInvalidated:(id)invalidated
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  invalidatedCopy = invalidated;
   v5 = +[SKAPresenceClient logger];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = invalidatedCopy;
     _os_log_impl(&dword_220099000, v5, OS_LOG_TYPE_DEFAULT, "Presence client connection was invalidated: %@", &v9, 0xCu);
   }
 
@@ -154,35 +154,35 @@
 - (BOOL)activeAssertion
 {
   presenceManager = self->_presenceManager;
-  v4 = [(SKAPresenceClient *)self presenceIdentifier];
-  v5 = [(SKAPresenceClient *)self options];
-  LOBYTE(presenceManager) = -[SKAPresenceManaging activePresenceAssertionExistsForPresenceIdentifier:isPersonal:](presenceManager, "activePresenceAssertionExistsForPresenceIdentifier:isPersonal:", v4, [v5 isPersonal]);
+  presenceIdentifier = [(SKAPresenceClient *)self presenceIdentifier];
+  options = [(SKAPresenceClient *)self options];
+  LOBYTE(presenceManager) = -[SKAPresenceManaging activePresenceAssertionExistsForPresenceIdentifier:isPersonal:](presenceManager, "activePresenceAssertionExistsForPresenceIdentifier:isPersonal:", presenceIdentifier, [options isPersonal]);
 
   return presenceManager;
 }
 
 - (void)_releaseAllSubscriptionsAndAssertionsForDisconnection
 {
-  v3 = [(SKAPresenceClient *)self options];
-  v4 = [v3 isDaemonIdleExitEnabled];
+  options = [(SKAPresenceClient *)self options];
+  isDaemonIdleExitEnabled = [options isDaemonIdleExitEnabled];
 
   subscriptionManager = self->_subscriptionManager;
-  if (v4)
+  if (isDaemonIdleExitEnabled)
   {
-    v6 = [(SKAPresenceClient *)self presenceIdentifier];
-    [(SKAStatusSubscriptionManaging *)subscriptionManager releasePersistentPresenceSubscriptionForPresenceIdentifier:v6 completion:&__block_literal_global_19];
+    presenceIdentifier = [(SKAPresenceClient *)self presenceIdentifier];
+    [(SKAStatusSubscriptionManaging *)subscriptionManager releasePersistentPresenceSubscriptionForPresenceIdentifier:presenceIdentifier completion:&__block_literal_global_19];
 
     presenceManager = self->_presenceManager;
-    v10 = [(SKAPresenceClient *)self presenceIdentifier];
-    v8 = [(SKAPresenceClient *)self options];
-    [(SKAPresenceManaging *)presenceManager releasePersistentPresenceAssertionForPresenceIdentifier:v10 options:v8 completion:&__block_literal_global_11];
+    presenceIdentifier2 = [(SKAPresenceClient *)self presenceIdentifier];
+    options2 = [(SKAPresenceClient *)self options];
+    [(SKAPresenceManaging *)presenceManager releasePersistentPresenceAssertionForPresenceIdentifier:presenceIdentifier2 options:options2 completion:&__block_literal_global_11];
   }
 
   else
   {
     [(SKAStatusSubscriptionManaging *)self->_subscriptionManager releaseAllTransientPresenceSubscriptionsAssociatedWithClient:self completion:&__block_literal_global_14];
     v9 = self->_presenceManager;
-    v10 = [(SKAPresenceClient *)self options];
+    presenceIdentifier2 = [(SKAPresenceClient *)self options];
     [SKAPresenceManaging releaseAllTransientPresenceAssertionsAssociatedWithClient:v9 options:"releaseAllTransientPresenceAssertionsAssociatedWithClient:options:completion:" completion:self];
   }
 }
@@ -305,18 +305,18 @@ uint64_t __35__SKAPresenceClient_oversizeLogger__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)hasInitialCloudKitImportOccurredWithCompletion:(id)a3
+- (void)hasInitialCloudKitImportOccurredWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(SKAPresenceClient *)self databaseManager];
+  databaseManager = [(SKAPresenceClient *)self databaseManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__SKAPresenceClient_hasInitialCloudKitImportOccurredWithCompletion___block_invoke;
   v7[3] = &unk_27843DD10;
-  v8 = v4;
-  v6 = v4;
-  [v5 hasInitialCloudKitImportOccurred:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [databaseManager hasInitialCloudKitImportOccurred:v7];
 }
 
 uint64_t __68__SKAPresenceClient_hasInitialCloudKitImportOccurredWithCompletion___block_invoke(uint64_t a1, uint64_t a2)
@@ -330,17 +330,17 @@ uint64_t __68__SKAPresenceClient_hasInitialCloudKitImportOccurredWithCompletion_
   return result;
 }
 
-- (void)assertPresenceForIdentifier:(id)a3 withPresencePayload:(id)a4 assertionOptions:(id)a5 completion:(id)a6
+- (void)assertPresenceForIdentifier:(id)identifier withPresencePayload:(id)payload assertionOptions:(id)options completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  payloadCopy = payload;
+  optionsCopy = options;
+  completionCopy = completion;
   queue = self->_queue;
-  v14 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(queue);
-  v15 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:v14];
+  v15 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:identifierCopy];
 
-  if (v10)
+  if (payloadCopy)
   {
     if (v15)
     {
@@ -349,11 +349,11 @@ LABEL_3:
       v19[1] = 3221225472;
       v19[2] = __97__SKAPresenceClient_assertPresenceForIdentifier_withPresencePayload_assertionOptions_completion___block_invoke;
       v19[3] = &unk_27843F100;
-      v24 = v12;
+      v24 = completionCopy;
       v20 = v15;
-      v21 = self;
-      v22 = v10;
-      v23 = v11;
+      selfCopy = self;
+      v22 = payloadCopy;
+      v23 = optionsCopy;
       [(SKAPresenceClient *)self accountIsPresenceCapableWithCompletion:v19];
 
       v16 = v24;
@@ -370,7 +370,7 @@ LABEL_3:
       _os_log_impl(&dword_220099000, v17, OS_LOG_TYPE_DEFAULT, "Client did not specify a payload", buf, 2u);
     }
 
-    v10 = [objc_alloc(MEMORY[0x277D68108]) initWithData:0];
+    payloadCopy = [objc_alloc(MEMORY[0x277D68108]) initWithData:0];
     if (v15)
     {
       goto LABEL_3;
@@ -384,7 +384,7 @@ LABEL_3:
   }
 
   v16 = [SKAError errorWithCode:200];
-  (*(v12 + 2))(v12, v16);
+  (*(completionCopy + 2))(completionCopy, v16);
 LABEL_10:
 }
 
@@ -521,13 +521,13 @@ void __97__SKAPresenceClient_assertPresenceForIdentifier_withPresencePayload_ass
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)releasePresenceForIdentifier:(id)a3 completion:(id)a4
+- (void)releasePresenceForIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   queue = self->_queue;
-  v8 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(queue);
-  v9 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:v8];
+  v9 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:identifierCopy];
 
   if (v9)
   {
@@ -535,7 +535,7 @@ void __97__SKAPresenceClient_assertPresenceForIdentifier_withPresencePayload_ass
     v12[1] = 3221225472;
     v12[2] = __61__SKAPresenceClient_releasePresenceForIdentifier_completion___block_invoke;
     v12[3] = &unk_27843F128;
-    v14 = v6;
+    v14 = completionCopy;
     v12[4] = self;
     v13 = v9;
     [(SKAPresenceClient *)self accountIsPresenceCapableWithCompletion:v12];
@@ -552,7 +552,7 @@ void __97__SKAPresenceClient_assertPresenceForIdentifier_withPresencePayload_ass
     }
 
     v10 = [SKAError errorWithCode:200];
-    (*(v6 + 2))(v6, v10);
+    (*(completionCopy + 2))(completionCopy, v10);
   }
 }
 
@@ -659,15 +659,15 @@ void __61__SKAPresenceClient_releasePresenceForIdentifier_completion___block_inv
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchHandleInvitability:(id)a3 fromHandle:(id)a4 forPresenceIdentifier:(id)a5 completion:(id)a6
+- (void)fetchHandleInvitability:(id)invitability fromHandle:(id)handle forPresenceIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  invitabilityCopy = invitability;
+  handleCopy = handle;
+  completionCopy = completion;
   queue = self->_queue;
-  v14 = a5;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(queue);
-  v15 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:v14];
+  v15 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:identifierCopy];
 
   if (v15)
   {
@@ -675,10 +675,10 @@ void __61__SKAPresenceClient_releasePresenceForIdentifier_completion___block_inv
     v18[1] = 3221225472;
     v18[2] = __89__SKAPresenceClient_fetchHandleInvitability_fromHandle_forPresenceIdentifier_completion___block_invoke;
     v18[3] = &unk_27843F100;
-    v22 = v12;
+    v22 = completionCopy;
     v18[4] = self;
-    v19 = v10;
-    v20 = v11;
+    v19 = invitabilityCopy;
+    v20 = handleCopy;
     v21 = v15;
     [(SKAPresenceClient *)self accountIsPresenceCapableWithCompletion:v18];
 
@@ -694,7 +694,7 @@ void __61__SKAPresenceClient_releasePresenceForIdentifier_completion___block_inv
     }
 
     v16 = [SKAError errorWithCode:200];
-    (*(v12 + 2))(v12, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, v16);
   }
 }
 
@@ -729,16 +729,16 @@ void __89__SKAPresenceClient_fetchHandleInvitability_fromHandle_forPresenceIdent
   }
 }
 
-- (void)fetchPresenceCapability:(id)a3
+- (void)fetchPresenceCapability:(id)capability
 {
-  v4 = a3;
+  capabilityCopy = capability;
   dispatch_assert_queue_V2(self->_queue);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__SKAPresenceClient_fetchPresenceCapability___block_invoke;
   v6[3] = &unk_27843DD10;
-  v7 = v4;
-  v5 = v4;
+  v7 = capabilityCopy;
+  v5 = capabilityCopy;
   [(SKAPresenceClient *)self accountIsPresenceCapableWithCompletion:v6];
 }
 
@@ -758,20 +758,20 @@ uint64_t __45__SKAPresenceClient_fetchPresenceCapability___block_invoke(uint64_t
   return result;
 }
 
-- (void)inviteHandles:(id)a3 fromSenderHandle:(id)a4 presenceIdentifier:(id)a5 completion:(id)a6
+- (void)inviteHandles:(id)handles fromSenderHandle:(id)handle presenceIdentifier:(id)identifier completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  handlesCopy = handles;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v14 = [(SKAPresenceClient *)self options];
-  v15 = [v14 isPersonal];
+  options = [(SKAPresenceClient *)self options];
+  isPersonal = [options isPersonal];
 
   v16 = +[SKAPresenceClient logger];
   v17 = v16;
-  if (v15)
+  if (isPersonal)
   {
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -779,7 +779,7 @@ uint64_t __45__SKAPresenceClient_fetchPresenceCapability___block_invoke(uint64_t
     }
 
     v18 = [SKAError errorWithCode:904];
-    v13[2](v13, v18);
+    completionCopy[2](completionCopy, v18);
   }
 
   else
@@ -787,24 +787,24 @@ uint64_t __45__SKAPresenceClient_fetchPresenceCapability___block_invoke(uint64_t
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v28 = v12;
+      v28 = identifierCopy;
       v29 = 2112;
-      v30 = v10;
+      v30 = handlesCopy;
       _os_log_impl(&dword_220099000, v17, OS_LOG_TYPE_DEFAULT, "Received request to send invitation for presence channel with presence identifier %@ to handles: %@", buf, 0x16u);
     }
 
-    v18 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:v12];
+    v18 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:identifierCopy];
     if (v18)
     {
       v22[0] = MEMORY[0x277D85DD0];
       v22[1] = 3221225472;
       v22[2] = __82__SKAPresenceClient_inviteHandles_fromSenderHandle_presenceIdentifier_completion___block_invoke;
       v22[3] = &unk_27843F100;
-      v26 = v13;
+      v26 = completionCopy;
       v22[4] = self;
       v23 = v18;
-      v24 = v10;
-      v25 = v11;
+      v24 = handlesCopy;
+      v25 = handleCopy;
       [(SKAPresenceClient *)self accountIsPresenceCapableWithCompletion:v22];
 
       v19 = v26;
@@ -819,7 +819,7 @@ uint64_t __45__SKAPresenceClient_fetchPresenceCapability___block_invoke(uint64_t
       }
 
       v19 = [SKAError errorWithCode:200];
-      v13[2](v13, v19);
+      completionCopy[2](completionCopy, v19);
     }
   }
 
@@ -885,15 +885,15 @@ void __82__SKAPresenceClient_inviteHandles_fromSenderHandle_presenceIdentifier_c
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invitedHandlesForPresenceIdentifier:(id)a3 completion:(id)a4
+- (void)invitedHandlesForPresenceIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [(SKAPresenceClient *)self options];
-  v9 = [v8 isPersonal];
+  options = [(SKAPresenceClient *)self options];
+  isPersonal = [options isPersonal];
 
-  if (v9)
+  if (isPersonal)
   {
     v10 = +[SKAPresenceClient logger];
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -902,19 +902,19 @@ void __82__SKAPresenceClient_inviteHandles_fromSenderHandle_presenceIdentifier_c
     }
 
     v11 = [SKAError errorWithCode:904];
-    v7[2](v7, 0, v11);
+    completionCopy[2](completionCopy, 0, v11);
   }
 
   else
   {
-    v11 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:v6];
+    v11 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:identifierCopy];
     if (v11)
     {
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = __68__SKAPresenceClient_invitedHandlesForPresenceIdentifier_completion___block_invoke;
       v14[3] = &unk_27843F128;
-      v16 = v7;
+      v16 = completionCopy;
       v14[4] = self;
       v15 = v11;
       [(SKAPresenceClient *)self accountIsPresenceCapableWithCompletion:v14];
@@ -931,7 +931,7 @@ void __82__SKAPresenceClient_inviteHandles_fromSenderHandle_presenceIdentifier_c
       }
 
       v12 = [SKAError errorWithCode:200];
-      v7[2](v7, 0, v12);
+      completionCopy[2](completionCopy, 0, v12);
     }
   }
 }
@@ -1020,17 +1020,17 @@ void __68__SKAPresenceClient_invitedHandlesForPresenceIdentifier_completion___bl
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)isHandleInvited:(id)a3 fromSenderHandle:(id)a4 forPresenceIdentifier:(id)a5 completion:(id)a6
+- (void)isHandleInvited:(id)invited fromSenderHandle:(id)handle forPresenceIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  invitedCopy = invited;
+  handleCopy = handle;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v14 = [(SKAPresenceClient *)self options];
-  v15 = [v14 isPersonal];
+  options = [(SKAPresenceClient *)self options];
+  isPersonal = [options isPersonal];
 
-  if (v15)
+  if (isPersonal)
   {
     v16 = +[SKAPresenceClient logger];
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1039,23 +1039,23 @@ void __68__SKAPresenceClient_invitedHandlesForPresenceIdentifier_completion___bl
     }
 
     v17 = [SKAError errorWithCode:904];
-    v13[2](v13, 0, v17);
+    completionCopy[2](completionCopy, 0, v17);
   }
 
   else
   {
-    v17 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:v12];
+    v17 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:identifierCopy];
     if (v17)
     {
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __87__SKAPresenceClient_isHandleInvited_fromSenderHandle_forPresenceIdentifier_completion___block_invoke;
       v20[3] = &unk_27843F100;
-      v24 = v13;
+      v24 = completionCopy;
       v20[4] = self;
       v21 = v17;
-      v22 = v11;
-      v23 = v10;
+      v22 = handleCopy;
+      v23 = invitedCopy;
       [(SKAPresenceClient *)self accountIsPresenceCapableWithCompletion:v20];
 
       v18 = v24;
@@ -1070,7 +1070,7 @@ void __68__SKAPresenceClient_invitedHandlesForPresenceIdentifier_completion___bl
       }
 
       v18 = [SKAError errorWithCode:200];
-      v13[2](v13, 0, v18);
+      completionCopy[2](completionCopy, 0, v18);
     }
   }
 }
@@ -1212,32 +1212,32 @@ LABEL_34:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerForDelegateCallbacksWithPresenceIdentifier:(id)a3 options:(id)a4 completion:(id)a5
+- (void)registerForDelegateCallbacksWithPresenceIdentifier:(id)identifier options:(id)options completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  optionsCopy = options;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v11 = +[SKAPresenceClient logger];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = v8;
+    v21 = identifierCopy;
     _os_log_impl(&dword_220099000, v11, OS_LOG_TYPE_DEFAULT, "Registering for delegate callbacks with presence identifier %@", buf, 0xCu);
   }
 
-  v12 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:v8];
+  v12 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:identifierCopy];
   if (v12)
   {
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __91__SKAPresenceClient_registerForDelegateCallbacksWithPresenceIdentifier_options_completion___block_invoke;
     v16[3] = &unk_27843F1A0;
-    v19 = v10;
+    v19 = completionCopy;
     v16[4] = self;
     v17 = v12;
-    v18 = v9;
+    v18 = optionsCopy;
     [(SKAPresenceClient *)self accountIsPresenceCapableWithCompletion:v16];
 
     v13 = v19;
@@ -1252,7 +1252,7 @@ LABEL_34:
     }
 
     v13 = [SKAError errorWithCode:200];
-    (*(v10 + 2))(v10, v13);
+    (*(completionCopy + 2))(completionCopy, v13);
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -1327,16 +1327,16 @@ void __91__SKAPresenceClient_registerForDelegateCallbacksWithPresenceIdentifier_
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeInvitedHandles:(id)a3 presenceIdentifier:(id)a4 completion:(id)a5
+- (void)removeInvitedHandles:(id)handles presenceIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handlesCopy = handles;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
-  v11 = [(SKAPresenceClient *)self options];
-  v12 = [v11 isPersonal];
+  options = [(SKAPresenceClient *)self options];
+  isPersonal = [options isPersonal];
 
-  if (v12)
+  if (isPersonal)
   {
     v13 = +[SKAPresenceClient logger];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1345,22 +1345,22 @@ void __91__SKAPresenceClient_registerForDelegateCallbacksWithPresenceIdentifier_
     }
 
     v14 = [SKAError errorWithCode:904];
-    v10[2](v10, v14);
+    completionCopy[2](completionCopy, v14);
   }
 
   else
   {
-    v14 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:v9];
+    v14 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:identifierCopy];
     if (v14)
     {
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __72__SKAPresenceClient_removeInvitedHandles_presenceIdentifier_completion___block_invoke;
       v17[3] = &unk_27843F1A0;
-      v20 = v10;
+      v20 = completionCopy;
       v17[4] = self;
       v18 = v14;
-      v19 = v8;
+      v19 = handlesCopy;
       [(SKAPresenceClient *)self accountIsPresenceCapableWithCompletion:v17];
 
       v15 = v20;
@@ -1375,7 +1375,7 @@ void __91__SKAPresenceClient_registerForDelegateCallbacksWithPresenceIdentifier_
       }
 
       v15 = [SKAError errorWithCode:200];
-      v10[2](v10, v15);
+      completionCopy[2](completionCopy, v15);
     }
   }
 }
@@ -1437,30 +1437,30 @@ void __72__SKAPresenceClient_removeInvitedHandles_presenceIdentifier_completion_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retainTransientSubscriptionAssertionForPresenceIdentifier:(id)a3 completion:(id)a4
+- (void)retainTransientSubscriptionAssertionForPresenceIdentifier:(id)identifier completion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v8 = +[SKAPresenceClient logger];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v6;
+    v19 = identifierCopy;
     _os_log_impl(&dword_220099000, v8, OS_LOG_TYPE_DEFAULT, "Retaining transient subscription assertion for presence identifier %@", buf, 0xCu);
   }
 
-  v9 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:v6];
+  v9 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:identifierCopy];
   if (v9)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __90__SKAPresenceClient_retainTransientSubscriptionAssertionForPresenceIdentifier_completion___block_invoke;
     v13[3] = &unk_27843F1A0;
-    v17 = v7;
-    v14 = v6;
-    v15 = self;
+    v17 = completionCopy;
+    v14 = identifierCopy;
+    selfCopy = self;
     v16 = v9;
     [(SKAPresenceClient *)self accountIsPresenceCapableWithCompletion:v13];
 
@@ -1476,7 +1476,7 @@ void __72__SKAPresenceClient_removeInvitedHandles_presenceIdentifier_completion_
     }
 
     v10 = [SKAError errorWithCode:200];
-    (*(v7 + 2))(v7, v10);
+    (*(completionCopy + 2))(completionCopy, v10);
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -1712,13 +1712,13 @@ LABEL_10:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)releaseTransientSubscriptionAssertionForPresenceIdentifier:(id)a3 completion:(id)a4
+- (void)releaseTransientSubscriptionAssertionForPresenceIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   queue = self->_queue;
-  v8 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(queue);
-  v9 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:v8];
+  v9 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:identifierCopy];
 
   if (v9)
   {
@@ -1726,7 +1726,7 @@ LABEL_10:
     v12[1] = 3221225472;
     v12[2] = __91__SKAPresenceClient_releaseTransientSubscriptionAssertionForPresenceIdentifier_completion___block_invoke;
     v12[3] = &unk_27843F128;
-    v14 = v6;
+    v14 = completionCopy;
     v12[4] = self;
     v13 = v9;
     [(SKAPresenceClient *)self accountIsPresenceCapableWithCompletion:v12];
@@ -1743,7 +1743,7 @@ LABEL_10:
     }
 
     v10 = [SKAError errorWithCode:200];
-    (*(v6 + 2))(v6, v10);
+    (*(completionCopy + 2))(completionCopy, v10);
   }
 }
 
@@ -1906,13 +1906,13 @@ void __91__SKAPresenceClient_releaseTransientSubscriptionAssertionForPresenceIde
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentDevicesForPresenceIdentifier:(id)a3 completion:(id)a4
+- (void)presentDevicesForPresenceIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   queue = self->_queue;
-  v8 = a3;
+  identifierCopy = identifier;
   dispatch_assert_queue_V2(queue);
-  v9 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:v8];
+  v9 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:identifierCopy];
 
   if (v9)
   {
@@ -1920,7 +1920,7 @@ void __91__SKAPresenceClient_releaseTransientSubscriptionAssertionForPresenceIde
     v13[1] = 3221225472;
     v13[2] = __68__SKAPresenceClient_presentDevicesForPresenceIdentifier_completion___block_invoke;
     v13[3] = &unk_27843F128;
-    v15 = v6;
+    v15 = completionCopy;
     v13[4] = self;
     v14 = v9;
     [(SKAPresenceClient *)self accountIsPresenceCapableWithCompletion:v13];
@@ -1938,7 +1938,7 @@ void __91__SKAPresenceClient_releaseTransientSubscriptionAssertionForPresenceIde
 
     v10 = [SKAError errorWithCode:200];
     v12 = objc_alloc_init(MEMORY[0x277CBEA60]);
-    (*(v6 + 2))(v6, v12, v10);
+    (*(completionCopy + 2))(completionCopy, v12, v10);
   }
 }
 
@@ -1992,30 +1992,30 @@ void __68__SKAPresenceClient_presentDevicesForPresenceIdentifier_completion___bl
   }
 }
 
-- (void)rollChannelForPresenceIdentifier:(id)a3 completion:(id)a4
+- (void)rollChannelForPresenceIdentifier:(id)identifier completion:(id)completion
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_queue);
   v8 = +[SKAPresenceClient logger];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v18 = v6;
+    v18 = identifierCopy;
     _os_log_impl(&dword_220099000, v8, OS_LOG_TYPE_DEFAULT, "Rolling presence channel for presence identifier %@", buf, 0xCu);
   }
 
-  v9 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:v6];
+  v9 = [(SKAPresenceClient *)self clientPrefixedPresenceIdentifierForPresenceIdentifier:identifierCopy];
   if (v9)
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __65__SKAPresenceClient_rollChannelForPresenceIdentifier_completion___block_invoke;
     v13[3] = &unk_27843F128;
-    v16 = v7;
+    v16 = completionCopy;
     v14 = v9;
-    v15 = self;
+    selfCopy = self;
     [(SKAPresenceClient *)self accountIsPresenceCapableWithCompletion:v13];
 
     v10 = v16;
@@ -2030,7 +2030,7 @@ void __68__SKAPresenceClient_presentDevicesForPresenceIdentifier_completion___bl
     }
 
     v10 = [SKAError errorWithCode:200];
-    (*(v7 + 2))(v7, v10);
+    (*(completionCopy + 2))(completionCopy, v10);
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -2115,18 +2115,18 @@ void __65__SKAPresenceClient_rollChannelForPresenceIdentifier_completion___block
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)clientPrefixedPresenceIdentifierForPresenceIdentifier:(id)a3
+- (id)clientPrefixedPresenceIdentifierForPresenceIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(SKAPresenceClient *)self clientConnection];
-    v6 = [v5 clientID];
+    clientConnection = [(SKAPresenceClient *)self clientConnection];
+    clientID = [clientConnection clientID];
 
-    if (v6)
+    if (clientID)
     {
-      v7 = [(SKAPresenceClient *)self _shortHashOfClientID:v6];
-      v8 = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"%@-%@-%@", v6, v4, v7];
+      v7 = [(SKAPresenceClient *)self _shortHashOfClientID:clientID];
+      v8 = [objc_alloc(MEMORY[0x277CCAB68]) initWithFormat:@"%@-%@-%@", clientID, identifierCopy, v7];
     }
 
     else
@@ -2143,24 +2143,24 @@ void __65__SKAPresenceClient_rollChannelForPresenceIdentifier_completion___block
   return v8;
 }
 
-- (id)rawPresenceIdentifierForPrefixedPresenceIdentifier:(id)a3
+- (id)rawPresenceIdentifierForPrefixedPresenceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length] >= 4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy && [identifierCopy length] >= 4)
   {
-    v7 = [(SKAPresenceClient *)self clientConnection];
-    v8 = [v7 clientID];
+    clientConnection = [(SKAPresenceClient *)self clientConnection];
+    clientID = [clientConnection clientID];
 
-    if (v8)
+    if (clientID)
     {
-      v9 = [(SKAPresenceClient *)self _shortHashOfClientID:v8];
+      v9 = [(SKAPresenceClient *)self _shortHashOfClientID:clientID];
       v10 = [v5 componentsSeparatedByString:@"-"];
-      v11 = [v10 firstObject];
-      if ([v11 isEqualToString:v8])
+      firstObject = [v10 firstObject];
+      if ([firstObject isEqualToString:clientID])
       {
-        v12 = [v10 lastObject];
-        if ([v12 isEqualToString:v9])
+        lastObject = [v10 lastObject];
+        if ([lastObject isEqualToString:v9])
         {
           v13 = [v10 subarrayWithRange:{1, objc_msgSend(v10, "count") - 2}];
           v6 = [v13 componentsJoinedByString:@"-"];
@@ -2192,17 +2192,17 @@ void __65__SKAPresenceClient_rollChannelForPresenceIdentifier_completion___block
   return v6;
 }
 
-- (id)_shortHashOfClientID:(id)a3
+- (id)_shortHashOfClientID:(id)d
 {
-  v3 = [a3 ska_sha256Hash];
-  v4 = [v3 substringToIndex:4];
+  ska_sha256Hash = [d ska_sha256Hash];
+  v4 = [ska_sha256Hash substringToIndex:4];
 
   return v4;
 }
 
-- (void)accountIsPresenceCapableWithCompletion:(id)a3
+- (void)accountIsPresenceCapableWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = +[SKAPresenceClient logger];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2210,19 +2210,19 @@ void __65__SKAPresenceClient_rollChannelForPresenceIdentifier_completion___block
     _os_log_impl(&dword_220099000, v5, OS_LOG_TYPE_DEFAULT, "Checking if account is presence capable...", buf, 2u);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(SKAPresenceClient *)v6 databaseManager];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  databaseManager = [(SKAPresenceClient *)selfCopy databaseManager];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__SKAPresenceClient_accountIsPresenceCapableWithCompletion___block_invoke;
   v9[3] = &unk_27843DE28;
-  v9[4] = v6;
-  v8 = v4;
+  v9[4] = selfCopy;
+  v8 = completionCopy;
   v10 = v8;
-  [v7 deviceToDeviceEncryptedDatabaseCapableWithCompletion:v9];
+  [databaseManager deviceToDeviceEncryptedDatabaseCapableWithCompletion:v9];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
 void __60__SKAPresenceClient_accountIsPresenceCapableWithCompletion___block_invoke(uint64_t a1, char a2)
@@ -2237,17 +2237,17 @@ void __60__SKAPresenceClient_accountIsPresenceCapableWithCompletion___block_invo
   dispatch_async(v4, v5);
 }
 
-- (BOOL)presenceIdentifierMatchesClient:(id)a3
+- (BOOL)presenceIdentifierMatchesClient:(id)client
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = v5->_presenceIdentifier;
-  objc_sync_exit(v5);
+  clientCopy = client;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = selfCopy->_presenceIdentifier;
+  objc_sync_exit(selfCopy);
 
-  if (-[NSString length](v6, "length") || [v4 length])
+  if (-[NSString length](v6, "length") || [clientCopy length])
   {
-    v7 = [v4 isEqualToString:v6];
+    v7 = [clientCopy isEqualToString:v6];
   }
 
   else
@@ -2258,12 +2258,12 @@ void __60__SKAPresenceClient_accountIsPresenceCapableWithCompletion___block_invo
   return v7;
 }
 
-- (void)handleReceivedPresentDevicesUpdate:(id)a3 forPresenceIdentifier:(id)a4
+- (void)handleReceivedPresentDevicesUpdate:(id)update forPresenceIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SKAPresenceClient *)self presenceIdentifierMatchesClient:v7];
+  updateCopy = update;
+  identifierCopy = identifier;
+  v8 = [(SKAPresenceClient *)self presenceIdentifierMatchesClient:identifierCopy];
   v9 = +[SKAPresenceClient logger];
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
   if (v8)
@@ -2271,23 +2271,23 @@ void __60__SKAPresenceClient_accountIsPresenceCapableWithCompletion___block_invo
     if (v10)
     {
       v16 = 138543362;
-      v17 = v7;
+      v17 = identifierCopy;
       _os_log_impl(&dword_220099000, v9, OS_LOG_TYPE_DEFAULT, "Notifying client of updated present devices. Presence: %{public}@", &v16, 0xCu);
     }
 
     v11 = +[SKAPresenceClient logger];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v6 count];
+      v12 = [updateCopy count];
       v16 = 134218242;
       v17 = v12;
       v18 = 2112;
-      v19 = v6;
+      v19 = updateCopy;
       _os_log_impl(&dword_220099000, v11, OS_LOG_TYPE_DEFAULT, "Retrieved present devices. (%lu) %@", &v16, 0x16u);
     }
 
     v9 = [(SKAPresenceClientConnection *)self->_clientConnection asynchronousRemoteDaemonDelegateWithErrorHandler:&__block_literal_global_68];
-    v13 = [(SKAPresenceClient *)self rawPresenceIdentifierForPrefixedPresenceIdentifier:v7];
+    v13 = [(SKAPresenceClient *)self rawPresenceIdentifierForPrefixedPresenceIdentifier:identifierCopy];
     [v9 presentHandlesChangedForPresenceIdentifier:v13 completion:&__block_literal_global_71];
   }
 
@@ -2297,7 +2297,7 @@ void __60__SKAPresenceClient_accountIsPresenceCapableWithCompletion___block_invo
     v16 = 138412546;
     v17 = presenceIdentifier;
     v18 = 2112;
-    v19 = v7;
+    v19 = identifierCopy;
     _os_log_impl(&dword_220099000, v9, OS_LOG_TYPE_DEFAULT, "Connected client does not match presence identifier of changed channel. Client: %@ Presence: %@", &v16, 0x16u);
   }
 
@@ -2324,11 +2324,11 @@ void __78__SKAPresenceClient_handleReceivedPresentDevicesUpdate_forPresenceIdent
   }
 }
 
-- (void)handleReceivedInvitationForPresenceIdentifier:(id)a3
+- (void)handleReceivedInvitationForPresenceIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SKAPresenceClient *)self presenceIdentifierMatchesClient:v4];
+  identifierCopy = identifier;
+  v5 = [(SKAPresenceClient *)self presenceIdentifierMatchesClient:identifierCopy];
   v6 = +[SKAPresenceClient logger];
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
   if (v5)
@@ -2340,7 +2340,7 @@ void __78__SKAPresenceClient_handleReceivedPresentDevicesUpdate_forPresenceIdent
     }
 
     v6 = [(SKAPresenceClientConnection *)self->_clientConnection asynchronousRemoteDaemonDelegateWithErrorHandler:&__block_literal_global_73];
-    v8 = [(SKAPresenceClient *)self rawPresenceIdentifierForPrefixedPresenceIdentifier:v4];
+    v8 = [(SKAPresenceClient *)self rawPresenceIdentifierForPrefixedPresenceIdentifier:identifierCopy];
     [v6 invitedHandlesChangedForPresenceIdentifier:v8 completion:&__block_literal_global_76];
   }
 
@@ -2350,7 +2350,7 @@ void __78__SKAPresenceClient_handleReceivedPresentDevicesUpdate_forPresenceIdent
     v11 = 138412546;
     v12 = presenceIdentifier;
     v13 = 2112;
-    v14 = v4;
+    v14 = identifierCopy;
     _os_log_impl(&dword_220099000, v6, OS_LOG_TYPE_DEFAULT, "Connected client does not match presence identifier of changed channel. Client: %@ Presence: %@", &v11, 0x16u);
   }
 

@@ -1,24 +1,24 @@
 @interface SVXLEDStatusFactory
 - (SVXLEDStatusFactory)init;
-- (id)createCommandForStatus:(id)a3;
-- (id)createStatusForColor:(id)a3;
+- (id)createCommandForStatus:(id)status;
+- (id)createStatusForColor:(id)color;
 @end
 
 @implementation SVXLEDStatusFactory
 
-- (id)createStatusForColor:(id)a3
+- (id)createStatusForColor:(id)color
 {
   targetLEDSupplier = self->_targetLEDSupplier;
-  v4 = a3;
+  colorCopy = color;
   v5 = [(SVXTargetLEDSupplier *)targetLEDSupplier get];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"individual %d %@", v5, v4];
+  colorCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"individual %d %@", v5, colorCopy];
 
-  return v6;
+  return colorCopy;
 }
 
-- (id)createCommandForStatus:(id)a3
+- (id)createCommandForStatus:(id)status
 {
-  if (a3)
+  if (status)
   {
     v4 = [(NSDictionary *)self->_statusLEDCommands objectForKeyedSubscript:?];
     if (v4)

@@ -1,36 +1,36 @@
 @interface NEHotspot
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
-- (BOOL)overlapsWithConfiguration:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
+- (BOOL)overlapsWithConfiguration:(id)configuration;
 - (NEHotspot)init;
-- (NEHotspot)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (NEHotspot)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEHotspot
 
-- (BOOL)overlapsWithConfiguration:(id)a3
+- (BOOL)overlapsWithConfiguration:(id)configuration
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
-  v6 = [(NEHotspot *)self evaluatedSSIDs];
-  v7 = [v4 setWithArray:v6];
+  configurationCopy = configuration;
+  evaluatedSSIDs = [(NEHotspot *)self evaluatedSSIDs];
+  v7 = [v4 setWithArray:evaluatedSSIDs];
 
   v8 = MEMORY[0x1E695DFD8];
-  v9 = [v5 evaluatedSSIDs];
+  evaluatedSSIDs2 = [configurationCopy evaluatedSSIDs];
 
-  v10 = [v8 setWithArray:v9];
+  v10 = [v8 setWithArray:evaluatedSSIDs2];
 
-  LOBYTE(v5) = [v10 intersectsSet:v7];
-  return v5;
+  LOBYTE(configurationCopy) = [v10 intersectsSet:v7];
+  return configurationCopy;
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(NEHotspot *)self evaluationProviderBundleIdentifier];
-  v6 = [v5 length];
+  errorsCopy = errors;
+  evaluationProviderBundleIdentifier = [(NEHotspot *)self evaluationProviderBundleIdentifier];
+  v6 = [evaluationProviderBundleIdentifier length];
 
   if (!v6)
   {
@@ -38,8 +38,8 @@
     goto LABEL_9;
   }
 
-  v7 = [(NEHotspot *)self authenticationProviderBundleIdentifier];
-  v8 = [v7 length];
+  authenticationProviderBundleIdentifier = [(NEHotspot *)self authenticationProviderBundleIdentifier];
+  v8 = [authenticationProviderBundleIdentifier length];
 
   if (!v8)
   {
@@ -47,8 +47,8 @@
     goto LABEL_9;
   }
 
-  v9 = [(NEHotspot *)self pluginType];
-  v10 = [v9 length];
+  pluginType = [(NEHotspot *)self pluginType];
+  v10 = [pluginType length];
 
   if (!v10)
   {
@@ -56,8 +56,8 @@
     goto LABEL_9;
   }
 
-  v11 = [(NEHotspot *)self evaluatedSSIDs];
-  v12 = [v11 count];
+  evaluatedSSIDs = [(NEHotspot *)self evaluatedSSIDs];
+  v12 = [evaluatedSSIDs count];
 
   if (v12 >= 3)
   {
@@ -69,8 +69,8 @@
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v17 = [(NEHotspot *)self evaluatedSSIDs];
-  v18 = [v17 countByEnumeratingWithState:&v41 objects:v46 count:16];
+  evaluatedSSIDs2 = [(NEHotspot *)self evaluatedSSIDs];
+  v18 = [evaluatedSSIDs2 countByEnumeratingWithState:&v41 objects:v46 count:16];
   if (!v18)
   {
     goto LABEL_21;
@@ -84,32 +84,32 @@
     {
       if (*v42 != v20)
       {
-        objc_enumerationMutation(v17);
+        objc_enumerationMutation(evaluatedSSIDs2);
       }
 
       v22 = *(*(&v41 + 1) + 8 * i);
       if (!isa_nsstring(v22) || ![v22 length])
       {
-        [NEConfiguration addError:v4 toList:?];
+        [NEConfiguration addError:errorsCopy toList:?];
 
         goto LABEL_10;
       }
     }
 
-    v19 = [v17 countByEnumeratingWithState:&v41 objects:v46 count:16];
+    v19 = [evaluatedSSIDs2 countByEnumeratingWithState:&v41 objects:v46 count:16];
   }
 
   while (v19);
 LABEL_21:
 
-  v23 = [(NEHotspot *)self safariDomains];
-  v24 = [v23 count];
+  safariDomains = [(NEHotspot *)self safariDomains];
+  v24 = [safariDomains count];
 
   if (v24 >= 0xB)
   {
     v13 = @"hotspot configuration can have maximum 10 Safari Domains";
 LABEL_9:
-    [NEConfiguration addError:v13 toList:v4];
+    [NEConfiguration addError:v13 toList:errorsCopy];
 LABEL_10:
     v14 = 0;
     goto LABEL_11;
@@ -142,8 +142,8 @@ LABEL_26:
         break;
       }
 
-      v30 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-      v31 = [v29 rangeOfCharacterFromSet:v30];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+      v31 = [v29 rangeOfCharacterFromSet:whitespaceAndNewlineCharacterSet];
 
       if (v31 != 0x7FFFFFFFFFFFFFFFLL)
       {
@@ -185,7 +185,7 @@ LABEL_26:
 
     v34 = @"invalid or empty string in the safariDomains array";
 LABEL_43:
-    [NEConfiguration addError:v34 toList:v4];
+    [NEConfiguration addError:v34 toList:errorsCopy];
     goto LABEL_44;
   }
 
@@ -199,80 +199,80 @@ LABEL_11:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NEHotspot allocWithZone:?]];
   [(NEHotspot *)v4 setEnabled:[(NEHotspot *)self isEnabled]];
-  v5 = [(NEHotspot *)self evaluationProviderBundleIdentifier];
-  [(NEHotspot *)v4 setEvaluationProviderBundleIdentifier:v5];
+  evaluationProviderBundleIdentifier = [(NEHotspot *)self evaluationProviderBundleIdentifier];
+  [(NEHotspot *)v4 setEvaluationProviderBundleIdentifier:evaluationProviderBundleIdentifier];
 
-  v6 = [(NEHotspot *)self authenticationProviderBundleIdentifier];
-  [(NEHotspot *)v4 setAuthenticationProviderBundleIdentifier:v6];
+  authenticationProviderBundleIdentifier = [(NEHotspot *)self authenticationProviderBundleIdentifier];
+  [(NEHotspot *)v4 setAuthenticationProviderBundleIdentifier:authenticationProviderBundleIdentifier];
 
-  v7 = [(NEHotspot *)self pluginType];
-  [(NEHotspot *)v4 setPluginType:v7];
+  pluginType = [(NEHotspot *)self pluginType];
+  [(NEHotspot *)v4 setPluginType:pluginType];
 
-  v8 = [(NEHotspot *)self evaluatedSSIDs];
-  [(NEHotspot *)v4 setEvaluatedSSIDs:v8];
+  evaluatedSSIDs = [(NEHotspot *)self evaluatedSSIDs];
+  [(NEHotspot *)v4 setEvaluatedSSIDs:evaluatedSSIDs];
 
-  v9 = [(NEHotspot *)self safariDomains];
-  [(NEHotspot *)v4 setSafariDomains:v9];
+  safariDomains = [(NEHotspot *)self safariDomains];
+  [(NEHotspot *)v4 setSafariDomains:safariDomains];
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:-[NEHotspot isEnabled](self forKey:{"isEnabled"), @"Enabled"}];
-  v5 = [(NEHotspot *)self evaluationProviderBundleIdentifier];
-  [v4 encodeObject:v5 forKey:@"EvaluationProviderBundleID"];
+  coderCopy = coder;
+  [coderCopy encodeBool:-[NEHotspot isEnabled](self forKey:{"isEnabled"), @"Enabled"}];
+  evaluationProviderBundleIdentifier = [(NEHotspot *)self evaluationProviderBundleIdentifier];
+  [coderCopy encodeObject:evaluationProviderBundleIdentifier forKey:@"EvaluationProviderBundleID"];
 
-  v6 = [(NEHotspot *)self authenticationProviderBundleIdentifier];
-  [v4 encodeObject:v6 forKey:@"AuthenticationProviderBundleID"];
+  authenticationProviderBundleIdentifier = [(NEHotspot *)self authenticationProviderBundleIdentifier];
+  [coderCopy encodeObject:authenticationProviderBundleIdentifier forKey:@"AuthenticationProviderBundleID"];
 
-  v7 = [(NEHotspot *)self pluginType];
-  [v4 encodeObject:v7 forKey:@"PluginType"];
+  pluginType = [(NEHotspot *)self pluginType];
+  [coderCopy encodeObject:pluginType forKey:@"PluginType"];
 
-  v8 = [(NEHotspot *)self evaluatedSSIDs];
-  [v4 encodeObject:v8 forKey:@"EvaluatedSSIDs"];
+  evaluatedSSIDs = [(NEHotspot *)self evaluatedSSIDs];
+  [coderCopy encodeObject:evaluatedSSIDs forKey:@"EvaluatedSSIDs"];
 
-  v9 = [(NEHotspot *)self safariDomains];
-  [v4 encodeObject:v9 forKey:@"SafariDomains"];
+  safariDomains = [(NEHotspot *)self safariDomains];
+  [coderCopy encodeObject:safariDomains forKey:@"SafariDomains"];
 }
 
-- (NEHotspot)initWithCoder:(id)a3
+- (NEHotspot)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = NEHotspot;
   v5 = [(NEHotspot *)&v23 init];
   if (v5)
   {
-    v5->_enabled = [v4 decodeBoolForKey:@"Enabled"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EvaluationProviderBundleID"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"Enabled"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EvaluationProviderBundleID"];
     evaluationProviderBundleIdentifier = v5->_evaluationProviderBundleIdentifier;
     v5->_evaluationProviderBundleIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AuthenticationProviderBundleID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AuthenticationProviderBundleID"];
     authenticationProviderBundleIdentifier = v5->_authenticationProviderBundleIdentifier;
     v5->_authenticationProviderBundleIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PluginType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PluginType"];
     pluginType = v5->_pluginType;
     v5->_pluginType = v10;
 
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"EvaluatedSSIDs"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"EvaluatedSSIDs"];
     evaluatedSSIDs = v5->_evaluatedSSIDs;
     v5->_evaluatedSSIDs = v15;
 
     v17 = MEMORY[0x1E695DFD8];
     v18 = objc_opt_class();
     v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
-    v20 = [v4 decodeObjectOfClasses:v19 forKey:@"SafariDomains"];
+    v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"SafariDomains"];
     safariDomains = v5->_safariDomains;
     v5->_safariDomains = v20;
   }

@@ -1,13 +1,13 @@
 @interface VSAppDescription
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)shortenedDisplayName;
 - (VSAppDescription)init;
-- (VSAppDescription)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VSAppDescription)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)iconURLForSize:(CGSize)a3;
+- (id)iconURLForSize:(CGSize)size;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VSAppDescription
@@ -26,9 +26,9 @@
   return v2;
 }
 
-- (VSAppDescription)initWithCoder:(id)a3
+- (VSAppDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = VSAppDescription;
   v5 = [(VSAppDescription *)&v8 init];
@@ -41,14 +41,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = VSAppDescriptionValueType();
   VSValueTypeEncodeWithCoder();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v3 = VSAppDescriptionValueType();
   v4 = VSValueTypeCopyWithZone();
@@ -64,9 +64,9 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   v4 = VSAppDescriptionValueType();
   IsEqual = VSValueTypeIsEqual();
 
@@ -81,20 +81,20 @@
   return v3;
 }
 
-- (id)iconURLForSize:(CGSize)a3
+- (id)iconURLForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(VSAppDescription *)self artworkURLTemplate];
-  v6 = [v5 stringByReplacingOccurrencesOfString:@"{f}" withString:@"png"];
+  height = size.height;
+  width = size.width;
+  artworkURLTemplate = [(VSAppDescription *)self artworkURLTemplate];
+  v6 = [artworkURLTemplate stringByReplacingOccurrencesOfString:@"{f}" withString:@"png"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithDouble:width];
-  v8 = [v7 stringValue];
-  v9 = [v6 stringByReplacingOccurrencesOfString:@"{w}" withString:v8];
+  stringValue = [v7 stringValue];
+  v9 = [v6 stringByReplacingOccurrencesOfString:@"{w}" withString:stringValue];
 
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:height];
-  v11 = [v10 stringValue];
-  v12 = [v9 stringByReplacingOccurrencesOfString:@"{h}" withString:v11];
+  stringValue2 = [v10 stringValue];
+  v12 = [v9 stringByReplacingOccurrencesOfString:@"{h}" withString:stringValue2];
 
   v13 = [v12 stringByReplacingOccurrencesOfString:@"{c}" withString:&stru_2880B8BB0];
 
@@ -114,10 +114,10 @@
 - (NSString)shortenedDisplayName
 {
   v41 = *MEMORY[0x277D85DE8];
-  v2 = [(VSAppDescription *)self displayName];
-  if (v2)
+  displayName = [(VSAppDescription *)self displayName];
+  if (displayName)
   {
-    v3 = v2;
+    v3 = displayName;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;

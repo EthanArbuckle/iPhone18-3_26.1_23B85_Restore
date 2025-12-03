@@ -1,28 +1,28 @@
 @interface DMCServiceDiscoveryHelper
-- (id)_defaultServiceDiscoveryQueryItemsWithUserIdentifier:(id)a3;
+- (id)_defaultServiceDiscoveryQueryItemsWithUserIdentifier:(id)identifier;
 - (id)_fallbackServer;
-- (void)_checkForESSOWithMethod:(unint64_t)a3 authParams:(id)a4 httpResponse:(id)a5 completionHandler:(id)a6;
-- (void)_discoverAppleServerWithUserIdentifier:(id)a3 anchorCertificateRefs:(id)a4 completionHandler:(id)a5;
-- (void)_discoverServerURLForDomain:(id)a3 port:(id)a4 userIdentifier:(id)a5 anchorCertificateRefs:(id)a6 completionHandler:(id)a7;
-- (void)_discoverServerURLForUserIdentifier:(id)a3 anchorCertificateRefs:(id)a4 completionHandler:(id)a5;
-- (void)_fetchESSODictionaryFromURL:(id)a3 completionHandler:(id)a4;
-- (void)_serversFromWellKnownURL:(id)a3 anchorCertificateRefs:(id)a4 completionHandler:(id)a5;
-- (void)determineEnrollmentMethodWithServiceURL:(id)a3 enrollmentType:(unint64_t)a4 machineInfo:(id)a5 anchorCertificateRefs:(id)a6 completionHandler:(id)a7;
-- (void)discoverEnrollmentMethodWithServiceURL:(id)a3 enrollmentType:(unint64_t)a4 machineInfo:(id)a5 anchorCertificateRefs:(id)a6 completionHandler:(id)a7;
-- (void)discoverServerForUserIdentifier:(id)a3 anchorCertificateRefs:(id)a4 completionHandler:(id)a5;
-- (void)fetchEnrollmentProfileWithServiceURL:(id)a3 authToken:(id)a4 machineInfo:(id)a5 anchorCertificateRefs:(id)a6 completionHandler:(id)a7;
-- (void)fetchEnrollmentProfileWithServiceURL:(id)a3 username:(id)a4 password:(id)a5 authTokens:(id)a6 enrollmentMethod:(unint64_t)a7 machineInfo:(id)a8 anchorCertificateRefs:(id)a9 completionHandler:(id)a10;
+- (void)_checkForESSOWithMethod:(unint64_t)method authParams:(id)params httpResponse:(id)response completionHandler:(id)handler;
+- (void)_discoverAppleServerWithUserIdentifier:(id)identifier anchorCertificateRefs:(id)refs completionHandler:(id)handler;
+- (void)_discoverServerURLForDomain:(id)domain port:(id)port userIdentifier:(id)identifier anchorCertificateRefs:(id)refs completionHandler:(id)handler;
+- (void)_discoverServerURLForUserIdentifier:(id)identifier anchorCertificateRefs:(id)refs completionHandler:(id)handler;
+- (void)_fetchESSODictionaryFromURL:(id)l completionHandler:(id)handler;
+- (void)_serversFromWellKnownURL:(id)l anchorCertificateRefs:(id)refs completionHandler:(id)handler;
+- (void)determineEnrollmentMethodWithServiceURL:(id)l enrollmentType:(unint64_t)type machineInfo:(id)info anchorCertificateRefs:(id)refs completionHandler:(id)handler;
+- (void)discoverEnrollmentMethodWithServiceURL:(id)l enrollmentType:(unint64_t)type machineInfo:(id)info anchorCertificateRefs:(id)refs completionHandler:(id)handler;
+- (void)discoverServerForUserIdentifier:(id)identifier anchorCertificateRefs:(id)refs completionHandler:(id)handler;
+- (void)fetchEnrollmentProfileWithServiceURL:(id)l authToken:(id)token machineInfo:(id)info anchorCertificateRefs:(id)refs completionHandler:(id)handler;
+- (void)fetchEnrollmentProfileWithServiceURL:(id)l username:(id)username password:(id)password authTokens:(id)tokens enrollmentMethod:(unint64_t)method machineInfo:(id)info anchorCertificateRefs:(id)refs completionHandler:(id)self0;
 @end
 
 @implementation DMCServiceDiscoveryHelper
 
-- (void)discoverServerForUserIdentifier:(id)a3 anchorCertificateRefs:(id)a4 completionHandler:(id)a5
+- (void)discoverServerForUserIdentifier:(id)identifier anchorCertificateRefs:(id)refs completionHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 componentsSeparatedByString:@"@"];
+  identifierCopy = identifier;
+  refsCopy = refs;
+  handlerCopy = handler;
+  v11 = [identifierCopy componentsSeparatedByString:@"@"];
   if ([v11 count] == 2)
   {
     v12 = [v11 objectAtIndexedSubscript:1];
@@ -36,12 +36,12 @@
       }
 
       v14 = MEMORY[0x277D03578];
-      v15 = [MEMORY[0x277D03500] simulatedMDMEnrollmentMode];
-      v16 = [v14 buildWithVersion:v15 baseURL:@"https://mdm.example.com/sign-in"];
+      simulatedMDMEnrollmentMode = [MEMORY[0x277D03500] simulatedMDMEnrollmentMode];
+      v16 = [v14 buildWithVersion:simulatedMDMEnrollmentMode baseURL:@"https://mdm.example.com/sign-in"];
 
       v32 = v16;
       v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v32 count:1];
-      v10[2](v10, v17, 3, 0);
+      handlerCopy[2](handlerCopy, v17, 3, 0);
     }
 
     else
@@ -51,17 +51,17 @@
       v22 = MEMORY[0x277D03500];
       v23 = [MEMORY[0x277CCABB0] numberWithInteger:443];
       v24 = [v22 serviceDiscoveryDefaultPortWithValue:v23];
-      v25 = [v24 integerValue];
+      integerValue = [v24 integerValue];
 
-      v26 = [MEMORY[0x277CCABB0] numberWithInteger:v25];
+      v26 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __101__DMCServiceDiscoveryHelper_discoverServerForUserIdentifier_anchorCertificateRefs_completionHandler___block_invoke;
       v28[3] = &unk_278EE4268;
-      v31 = v10;
+      v31 = handlerCopy;
       v28[4] = self;
-      v29 = v8;
-      v30 = v9;
+      v29 = identifierCopy;
+      v30 = refsCopy;
       [(DMCServiceDiscoveryHelper *)self _discoverServerURLForDomain:v21 port:v26 userIdentifier:v29 anchorCertificateRefs:v30 completionHandler:v28];
 
       v16 = v31;
@@ -75,15 +75,15 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543362;
-      v34 = v8;
+      v34 = identifierCopy;
       _os_log_impl(&dword_247E39000, v18, OS_LOG_TYPE_ERROR, "User identifier is wrong format for discovery: %{public}@", buf, 0xCu);
     }
 
     v19 = MEMORY[0x277CCA9B8];
     v20 = *MEMORY[0x277D032F0];
     v12 = DMCErrorArray();
-    v16 = [v19 DMCErrorWithDomain:v20 code:15000 descriptionArray:v12 errorType:{*MEMORY[0x277D032F8], v8, 0}];
-    (v10)[2](v10, 0, 0, v16);
+    v16 = [v19 DMCErrorWithDomain:v20 code:15000 descriptionArray:v12 errorType:{*MEMORY[0x277D032F8], identifierCopy, 0}];
+    (handlerCopy)[2](handlerCopy, 0, 0, v16);
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -183,16 +183,16 @@ void __101__DMCServiceDiscoveryHelper_discoverServerForUserIdentifier_anchorCert
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)discoverEnrollmentMethodWithServiceURL:(id)a3 enrollmentType:(unint64_t)a4 machineInfo:(id)a5 anchorCertificateRefs:(id)a6 completionHandler:(id)a7
+- (void)discoverEnrollmentMethodWithServiceURL:(id)l enrollmentType:(unint64_t)type machineInfo:(id)info anchorCertificateRefs:(id)refs completionHandler:(id)handler
 {
-  v12 = a7;
+  handlerCopy = handler;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __135__DMCServiceDiscoveryHelper_discoverEnrollmentMethodWithServiceURL_enrollmentType_machineInfo_anchorCertificateRefs_completionHandler___block_invoke;
   v14[3] = &unk_278EE4290;
-  v15 = v12;
-  v13 = v12;
-  [(DMCServiceDiscoveryHelper *)self determineEnrollmentMethodWithServiceURL:a3 enrollmentType:a4 machineInfo:a5 anchorCertificateRefs:a6 completionHandler:v14];
+  v15 = handlerCopy;
+  v13 = handlerCopy;
+  [(DMCServiceDiscoveryHelper *)self determineEnrollmentMethodWithServiceURL:l enrollmentType:type machineInfo:info anchorCertificateRefs:refs completionHandler:v14];
 }
 
 void __135__DMCServiceDiscoveryHelper_discoverEnrollmentMethodWithServiceURL_enrollmentType_machineInfo_anchorCertificateRefs_completionHandler___block_invoke(uint64_t a1, uint64_t a2, void *a3, uint64_t a4, void *a5)
@@ -212,13 +212,13 @@ void __135__DMCServiceDiscoveryHelper_discoverEnrollmentMethodWithServiceURL_enr
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)determineEnrollmentMethodWithServiceURL:(id)a3 enrollmentType:(unint64_t)a4 machineInfo:(id)a5 anchorCertificateRefs:(id)a6 completionHandler:(id)a7
+- (void)determineEnrollmentMethodWithServiceURL:(id)l enrollmentType:(unint64_t)type machineInfo:(id)info anchorCertificateRefs:(id)refs completionHandler:(id)handler
 {
   v35[2] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  lCopy = l;
+  infoCopy = info;
+  refsCopy = refs;
+  handlerCopy = handler;
   if ([MEMORY[0x277D03500] shouldSimulateMDMAccountDrivenEnrollment])
   {
     v16 = *DMCLogObjects();
@@ -228,9 +228,9 @@ void __135__DMCServiceDiscoveryHelper_discoverEnrollmentMethodWithServiceURL_enr
       _os_log_impl(&dword_247E39000, v16, OS_LOG_TYPE_DEFAULT, "Simulating determination of enrollment method.", buf, 2u);
     }
 
-    v17 = [MEMORY[0x277D03500] simulatedMDMAccountDrivenEnrollmentAuthMethod];
-    v18 = [MEMORY[0x277D24620] authenticationMethod];
-    v19 = [v17 isEqualToString:v18];
+    simulatedMDMAccountDrivenEnrollmentAuthMethod = [MEMORY[0x277D03500] simulatedMDMAccountDrivenEnrollmentAuthMethod];
+    authenticationMethod = [MEMORY[0x277D24620] authenticationMethod];
+    v19 = [simulatedMDMAccountDrivenEnrollmentAuthMethod isEqualToString:authenticationMethod];
 
     if (v19)
     {
@@ -239,8 +239,8 @@ void __135__DMCServiceDiscoveryHelper_discoverEnrollmentMethodWithServiceURL_enr
 
     else
     {
-      v22 = [MEMORY[0x277D24680] authenticationMethod];
-      v23 = [v17 isEqualToString:v22];
+      authenticationMethod2 = [MEMORY[0x277D24680] authenticationMethod];
+      v23 = [simulatedMDMAccountDrivenEnrollmentAuthMethod isEqualToString:authenticationMethod2];
 
       if (v23)
       {
@@ -249,8 +249,8 @@ void __135__DMCServiceDiscoveryHelper_discoverEnrollmentMethodWithServiceURL_enr
 
       else
       {
-        v24 = [MEMORY[0x277D24670] authenticationMethod];
-        v25 = [v17 isEqualToString:v24];
+        authenticationMethod3 = [MEMORY[0x277D24670] authenticationMethod];
+        v25 = [simulatedMDMAccountDrivenEnrollmentAuthMethod isEqualToString:authenticationMethod3];
 
         if (v25)
         {
@@ -267,30 +267,30 @@ void __135__DMCServiceDiscoveryHelper_discoverEnrollmentMethodWithServiceURL_enr
     v26 = *MEMORY[0x277D245D0];
     v34[0] = *MEMORY[0x277D245B8];
     v34[1] = v26;
-    v35[0] = v17;
+    v35[0] = simulatedMDMAccountDrivenEnrollmentAuthMethod;
     v35[1] = @"https://mdm.example.com/auth";
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:2];
-    (*(v15 + 2))(v15, v20, v21, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, v20, v21, 0, 0);
   }
 
   else
   {
-    v17 = [MEMORY[0x277CCAB70] requestWithURL:v12];
-    [v17 setAttribution:1];
-    [v17 setHTTPMethod:*MEMORY[0x277D033A0]];
-    [v17 setTimeoutInterval:*MEMORY[0x277D033B0]];
-    [v17 setValue:@"application/pkcs7-signature" forHTTPHeaderField:@"Content-Type"];
-    [v17 setHTTPBody:v13];
+    simulatedMDMAccountDrivenEnrollmentAuthMethod = [MEMORY[0x277CCAB70] requestWithURL:lCopy];
+    [simulatedMDMAccountDrivenEnrollmentAuthMethod setAttribution:1];
+    [simulatedMDMAccountDrivenEnrollmentAuthMethod setHTTPMethod:*MEMORY[0x277D033A0]];
+    [simulatedMDMAccountDrivenEnrollmentAuthMethod setTimeoutInterval:*MEMORY[0x277D033B0]];
+    [simulatedMDMAccountDrivenEnrollmentAuthMethod setValue:@"application/pkcs7-signature" forHTTPHeaderField:@"Content-Type"];
+    [simulatedMDMAccountDrivenEnrollmentAuthMethod setHTTPBody:infoCopy];
     v21 = objc_opt_new();
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __136__DMCServiceDiscoveryHelper_determineEnrollmentMethodWithServiceURL_enrollmentType_machineInfo_anchorCertificateRefs_completionHandler___block_invoke;
     v28[3] = &unk_278EE42B8;
-    v29 = v12;
-    v31 = v15;
-    v32 = a4;
-    v30 = self;
-    [v21 startWithRequest:v17 username:0 password:0 anchorCertificateRefs:v14 completionBlock:v28];
+    v29 = lCopy;
+    v31 = handlerCopy;
+    typeCopy = type;
+    selfCopy = self;
+    [v21 startWithRequest:simulatedMDMAccountDrivenEnrollmentAuthMethod username:0 password:0 anchorCertificateRefs:refsCopy completionBlock:v28];
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -437,42 +437,42 @@ LABEL_16:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchEnrollmentProfileWithServiceURL:(id)a3 authToken:(id)a4 machineInfo:(id)a5 anchorCertificateRefs:(id)a6 completionHandler:(id)a7
+- (void)fetchEnrollmentProfileWithServiceURL:(id)l authToken:(id)token machineInfo:(id)info anchorCertificateRefs:(id)refs completionHandler:(id)handler
 {
   v21[1] = *MEMORY[0x277D85DE8];
   v20 = *MEMORY[0x277D245C8];
-  v21[0] = a4;
+  v21[0] = token;
   v12 = MEMORY[0x277CBEAC0];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  handlerCopy = handler;
+  refsCopy = refs;
+  infoCopy = info;
+  tokenCopy = token;
+  lCopy = l;
   v18 = [v12 dictionaryWithObjects:v21 forKeys:&v20 count:1];
 
-  [(DMCServiceDiscoveryHelper *)self fetchEnrollmentProfileWithServiceURL:v17 authTokens:v18 enrollmentMethod:1 machineInfo:v15 anchorCertificateRefs:v14 completionHandler:v13];
+  [(DMCServiceDiscoveryHelper *)self fetchEnrollmentProfileWithServiceURL:lCopy authTokens:v18 enrollmentMethod:1 machineInfo:infoCopy anchorCertificateRefs:refsCopy completionHandler:handlerCopy];
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchEnrollmentProfileWithServiceURL:(id)a3 username:(id)a4 password:(id)a5 authTokens:(id)a6 enrollmentMethod:(unint64_t)a7 machineInfo:(id)a8 anchorCertificateRefs:(id)a9 completionHandler:(id)a10
+- (void)fetchEnrollmentProfileWithServiceURL:(id)l username:(id)username password:(id)password authTokens:(id)tokens enrollmentMethod:(unint64_t)method machineInfo:(id)info anchorCertificateRefs:(id)refs completionHandler:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
+  lCopy = l;
+  usernameCopy = username;
+  passwordCopy = password;
+  tokensCopy = tokens;
+  infoCopy = info;
+  refsCopy = refs;
+  handlerCopy = handler;
   if (([MEMORY[0x277D03500] shouldSimulateMDMAccountDrivenEnrollment] & 1) == 0 && !objc_msgSend(MEMORY[0x277D03500], "shouldSimulateDEPCommunication"))
   {
-    v25 = [MEMORY[0x277CCAB70] requestWithURL:v15];
+    v25 = [MEMORY[0x277CCAB70] requestWithURL:lCopy];
     [v25 setAttribution:1];
     [v25 setHTTPMethod:*MEMORY[0x277D033A0]];
     [v25 setTimeoutInterval:*MEMORY[0x277D033B0]];
     [v25 setValue:@"application/pkcs7-signature" forHTTPHeaderField:@"Content-Type"];
-    [v25 setHTTPBody:v19];
+    [v25 setHTTPBody:infoCopy];
     v26 = objc_opt_new();
-    switch(a7)
+    switch(method)
     {
       case 5uLL:
         v27 = 0x277D24680;
@@ -489,15 +489,15 @@ LABEL_13:
         v30[1] = 3221225472;
         v30[2] = __164__DMCServiceDiscoveryHelper_fetchEnrollmentProfileWithServiceURL_username_password_authTokens_enrollmentMethod_machineInfo_anchorCertificateRefs_completionHandler___block_invoke_2;
         v30[3] = &unk_278EE42E0;
-        v31 = v15;
-        v32 = v21;
-        v29 = v21;
-        [v26 startWithRequest:v25 username:v16 password:v17 anchorCertificateRefs:v20 completionBlock:v30];
+        v31 = lCopy;
+        v32 = handlerCopy;
+        v29 = handlerCopy;
+        [v26 startWithRequest:v25 username:usernameCopy password:passwordCopy anchorCertificateRefs:refsCopy completionBlock:v30];
 
         goto LABEL_14;
     }
 
-    v28 = [objc_alloc(*v27) initWithTokens:v18];
+    v28 = [objc_alloc(*v27) initWithTokens:tokensCopy];
     [v26 setAuthenticator:v28];
 
     goto LABEL_13;
@@ -516,8 +516,8 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __164__DMCServiceDiscoveryHelper_fetchEnrollmentProfileWithServiceURL_username_password_authTokens_enrollmentMethod_machineInfo_anchorCertificateRefs_completionHandler___block_invoke;
   block[3] = &unk_278EE3A70;
-  v34 = v21;
-  v25 = v21;
+  v34 = handlerCopy;
+  v25 = handlerCopy;
   dispatch_after(v23, v24, block);
 
   v26 = v34;
@@ -627,24 +627,24 @@ void __164__DMCServiceDiscoveryHelper_fetchEnrollmentProfileWithServiceURL_usern
   v31 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_discoverServerURLForDomain:(id)a3 port:(id)a4 userIdentifier:(id)a5 anchorCertificateRefs:(id)a6 completionHandler:(id)a7
+- (void)_discoverServerURLForDomain:(id)domain port:(id)port userIdentifier:(id)identifier anchorCertificateRefs:(id)refs completionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
+  domainCopy = domain;
+  portCopy = port;
+  handlerCopy = handler;
+  refsCopy = refs;
+  identifierCopy = identifier;
   v17 = objc_opt_new();
   [v17 setScheme:@"https"];
-  [v17 setHost:v12];
-  if ([v13 intValue] != 443)
+  [v17 setHost:domainCopy];
+  if ([portCopy intValue] != 443)
   {
-    [v17 setPort:v13];
+    [v17 setPort:portCopy];
   }
 
   [v17 setPath:@"/.well-known/com.apple.remotemanagement"];
-  v18 = [(DMCServiceDiscoveryHelper *)self _defaultServiceDiscoveryQueryItemsWithUserIdentifier:v16];
+  v18 = [(DMCServiceDiscoveryHelper *)self _defaultServiceDiscoveryQueryItemsWithUserIdentifier:identifierCopy];
 
   v19 = [v18 mutableCopy];
   if ([MEMORY[0x277D034F8] isAppleInternal] && objc_msgSend(MEMORY[0x277D034E8], "DSLiveOnModeEnabled"))
@@ -659,7 +659,7 @@ void __164__DMCServiceDiscoveryHelper_fetchEnrollmentProfileWithServiceURL_usern
   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
   {
     v25 = 138543362;
-    v26 = v12;
+    v26 = domainCopy;
     _os_log_impl(&dword_247E39000, v22, OS_LOG_TYPE_DEFAULT, "Discovering servers with domain: %{public}@", &v25, 0xCu);
   }
 
@@ -671,18 +671,18 @@ void __164__DMCServiceDiscoveryHelper_fetchEnrollmentProfileWithServiceURL_usern
     _os_log_impl(&dword_247E39000, v23, OS_LOG_TYPE_DEBUG, "Well known url is: %{public}@", &v25, 0xCu);
   }
 
-  [(DMCServiceDiscoveryHelper *)self _serversFromWellKnownURL:v21 anchorCertificateRefs:v15 completionHandler:v14];
+  [(DMCServiceDiscoveryHelper *)self _serversFromWellKnownURL:v21 anchorCertificateRefs:refsCopy completionHandler:handlerCopy];
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_discoverServerURLForUserIdentifier:(id)a3 anchorCertificateRefs:(id)a4 completionHandler:(id)a5
+- (void)_discoverServerURLForUserIdentifier:(id)identifier anchorCertificateRefs:(id)refs completionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  refsCopy = refs;
   v10 = MEMORY[0x277D03500];
-  v11 = a5;
+  handlerCopy = handler;
   v12 = [v10 wellKnownDiscoveryURLWithValue:@"https://axm-servicediscovery.apple.com/mdmBaseURL"];
   if ([MEMORY[0x277D034F8] isWellKnownDiscoveryEnabled])
   {
@@ -690,12 +690,12 @@ void __164__DMCServiceDiscoveryHelper_fetchEnrollmentProfileWithServiceURL_usern
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v26 = v8;
+      v26 = identifierCopy;
       _os_log_impl(&dword_247E39000, v13, OS_LOG_TYPE_DEFAULT, "Discovering servers with user identifier: %{public}@", buf, 0xCu);
     }
 
     v14 = [MEMORY[0x277CCACE0] componentsWithString:v12];
-    v15 = [(DMCServiceDiscoveryHelper *)self _defaultServiceDiscoveryQueryItemsWithUserIdentifier:v8];
+    v15 = [(DMCServiceDiscoveryHelper *)self _defaultServiceDiscoveryQueryItemsWithUserIdentifier:identifierCopy];
     v16 = [v15 mutableCopy];
 
     if ([MEMORY[0x277D034F8] isAppleInternal] && objc_msgSend(MEMORY[0x277D034E8], "DSLiveOnModeEnabled"))
@@ -714,7 +714,7 @@ void __164__DMCServiceDiscoveryHelper_fetchEnrollmentProfileWithServiceURL_usern
       _os_log_impl(&dword_247E39000, v19, OS_LOG_TYPE_DEBUG, "DEP service discovery url is: %{public}@", buf, 0xCu);
     }
 
-    [(DMCServiceDiscoveryHelper *)self _serversFromWellKnownURL:v18 anchorCertificateRefs:v9 completionHandler:v11];
+    [(DMCServiceDiscoveryHelper *)self _serversFromWellKnownURL:v18 anchorCertificateRefs:refsCopy completionHandler:handlerCopy];
   }
 
   else
@@ -723,24 +723,24 @@ void __164__DMCServiceDiscoveryHelper_fetchEnrollmentProfileWithServiceURL_usern
     v21 = *MEMORY[0x277D032F0];
     v22 = DMCErrorArray();
     v23 = [v20 DMCErrorWithDomain:v21 code:15001 descriptionArray:v22 errorType:{*MEMORY[0x277D032F8], v12, 0}];
-    (*(v11 + 2))(v11, 0, v23);
+    (*(handlerCopy + 2))(handlerCopy, 0, v23);
   }
 
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_discoverAppleServerWithUserIdentifier:(id)a3 anchorCertificateRefs:(id)a4 completionHandler:(id)a5
+- (void)_discoverAppleServerWithUserIdentifier:(id)identifier anchorCertificateRefs:(id)refs completionHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  identifierCopy = identifier;
   v9 = MEMORY[0x277CCACE0];
   v10 = MEMORY[0x277D03500];
-  v11 = a5;
-  v12 = a4;
+  handlerCopy = handler;
+  refsCopy = refs;
   v13 = [v10 appleMDMWellKnownURLWithDefaultValue:@"https://axm-adm-enroll.apple.com/.well-known/com.apple.remotemanagement"];
   v14 = [v9 componentsWithString:v13];
 
-  v15 = [(DMCServiceDiscoveryHelper *)self _defaultServiceDiscoveryQueryItemsWithUserIdentifier:v8];
+  v15 = [(DMCServiceDiscoveryHelper *)self _defaultServiceDiscoveryQueryItemsWithUserIdentifier:identifierCopy];
   [v14 setQueryItems:v15];
 
   v16 = [v14 URL];
@@ -748,25 +748,25 @@ void __164__DMCServiceDiscoveryHelper_fetchEnrollmentProfileWithServiceURL_usern
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 138543362;
-    v20 = v8;
+    v20 = identifierCopy;
     _os_log_impl(&dword_247E39000, v17, OS_LOG_TYPE_DEFAULT, "Discovering Apple server with user identifier: %{public}@", &v19, 0xCu);
   }
 
-  [(DMCServiceDiscoveryHelper *)self _serversFromWellKnownURL:v16 anchorCertificateRefs:v12 completionHandler:v11];
+  [(DMCServiceDiscoveryHelper *)self _serversFromWellKnownURL:v16 anchorCertificateRefs:refsCopy completionHandler:handlerCopy];
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_defaultServiceDiscoveryQueryItemsWithUserIdentifier:(id)a3
+- (id)_defaultServiceDiscoveryQueryItemsWithUserIdentifier:(id)identifier
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D03500];
   v4 = MEMORY[0x277D03530];
-  v5 = a3;
-  v6 = [v4 deviceClass];
-  v7 = [v3 productNameWithDefaultValue:v6];
+  identifierCopy = identifier;
+  deviceClass = [v4 deviceClass];
+  v7 = [v3 productNameWithDefaultValue:deviceClass];
 
-  v8 = [MEMORY[0x277CCAD18] queryItemWithName:@"user-identifier" value:v5];
+  v8 = [MEMORY[0x277CCAD18] queryItemWithName:@"user-identifier" value:identifierCopy];
 
   v13[0] = v8;
   v9 = [MEMORY[0x277CCAD18] queryItemWithName:@"model-family" value:v7];
@@ -778,13 +778,13 @@ void __164__DMCServiceDiscoveryHelper_fetchEnrollmentProfileWithServiceURL_usern
   return v10;
 }
 
-- (void)_serversFromWellKnownURL:(id)a3 anchorCertificateRefs:(id)a4 completionHandler:(id)a5
+- (void)_serversFromWellKnownURL:(id)l anchorCertificateRefs:(id)refs completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  lCopy = l;
+  handlerCopy = handler;
   v9 = MEMORY[0x277CCAB70];
-  v10 = a4;
-  v11 = [v9 requestWithURL:v7];
+  refsCopy = refs;
+  v11 = [v9 requestWithURL:lCopy];
   [v11 setAttribution:1];
   [v11 setHTTPMethod:*MEMORY[0x277D03398]];
   [v11 setTimeoutInterval:90.0];
@@ -793,11 +793,11 @@ void __164__DMCServiceDiscoveryHelper_fetchEnrollmentProfileWithServiceURL_usern
   v15[1] = 3221225472;
   v15[2] = __94__DMCServiceDiscoveryHelper__serversFromWellKnownURL_anchorCertificateRefs_completionHandler___block_invoke;
   v15[3] = &unk_278EE42E0;
-  v16 = v7;
-  v17 = v8;
-  v13 = v8;
-  v14 = v7;
-  [v12 startWithRequest:v11 username:0 password:0 anchorCertificateRefs:v10 completionBlock:v15];
+  v16 = lCopy;
+  v17 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = lCopy;
+  [v12 startWithRequest:v11 username:0 password:0 anchorCertificateRefs:refsCopy completionBlock:v15];
 }
 
 void __94__DMCServiceDiscoveryHelper__serversFromWellKnownURL_anchorCertificateRefs_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -971,12 +971,12 @@ LABEL_26:
 {
   v14 = *MEMORY[0x277D85DE8];
   v2 = [MEMORY[0x277D03500] serviceDiscoveryFallbackURLWithValue:0];
-  v3 = [MEMORY[0x277D03500] serviceDiscoveryFallbackServerVersion];
+  serviceDiscoveryFallbackServerVersion = [MEMORY[0x277D03500] serviceDiscoveryFallbackServerVersion];
   v4 = [MEMORY[0x277CBEBC0] URLWithString:v2];
 
   if (v4)
   {
-    v5 = v3 == 0;
+    v5 = serviceDiscoveryFallbackServerVersion == 0;
   }
 
   else
@@ -992,7 +992,7 @@ LABEL_26:
       v10 = 138543618;
       v11 = v2;
       v12 = 2114;
-      v13 = v3;
+      v13 = serviceDiscoveryFallbackServerVersion;
       _os_log_impl(&dword_247E39000, v6, OS_LOG_TYPE_ERROR, "Invalid fallback service URL: %{public}@, fallabck server version: %{public}@", &v10, 0x16u);
     }
 
@@ -1001,7 +1001,7 @@ LABEL_26:
 
   else
   {
-    v7 = [MEMORY[0x277D03578] buildWithVersion:v3 baseURL:v2];
+    v7 = [MEMORY[0x277D03578] buildWithVersion:serviceDiscoveryFallbackServerVersion baseURL:v2];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -1009,20 +1009,20 @@ LABEL_26:
   return v7;
 }
 
-- (void)_checkForESSOWithMethod:(unint64_t)a3 authParams:(id)a4 httpResponse:(id)a5 completionHandler:(id)a6
+- (void)_checkForESSOWithMethod:(unint64_t)method authParams:(id)params httpResponse:(id)response completionHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a4;
-  v11 = a6;
-  v12 = a5;
+  paramsCopy = params;
+  handlerCopy = handler;
+  responseCopy = response;
   v13 = *DMCLogObjects();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     v14 = MEMORY[0x277D034E8];
     v15 = v13;
-    v16 = [v14 ESSOTestModeEnabled];
+    eSSOTestModeEnabled = [v14 ESSOTestModeEnabled];
     v17 = @"off";
-    if (v16)
+    if (eSSOTestModeEnabled)
     {
       v17 = @"on";
     }
@@ -1032,16 +1032,16 @@ LABEL_26:
     _os_log_impl(&dword_247E39000, v15, OS_LOG_TYPE_DEFAULT, "ESSO Test Mode is %{public}@", buf, 0xCu);
   }
 
-  v18 = [v12 allHeaderFields];
+  allHeaderFields = [responseCopy allHeaderFields];
 
-  v19 = [MEMORY[0x277D034E8] ESSOTestModeEnabled];
+  eSSOTestModeEnabled2 = [MEMORY[0x277D034E8] ESSOTestModeEnabled];
   v20 = MEMORY[0x277D03350];
-  if (!v19)
+  if (!eSSOTestModeEnabled2)
   {
     v20 = MEMORY[0x277D03348];
   }
 
-  v21 = [v18 objectForKeyedSubscript:*v20];
+  v21 = [allHeaderFields objectForKeyedSubscript:*v20];
 
   if (v21)
   {
@@ -1053,9 +1053,9 @@ LABEL_26:
       v29[1] = 3221225472;
       v29[2] = __95__DMCServiceDiscoveryHelper__checkForESSOWithMethod_authParams_httpResponse_completionHandler___block_invoke;
       v29[3] = &unk_278EE4308;
-      v31 = v11;
-      v32 = a3;
-      v30 = v10;
+      v31 = handlerCopy;
+      methodCopy = method;
+      v30 = paramsCopy;
       [(DMCServiceDiscoveryHelper *)self _fetchESSODictionaryFromURL:v23 completionHandler:v29];
     }
 
@@ -1066,13 +1066,13 @@ LABEL_26:
       v26 = DMCErrorArray();
       v27 = [v24 DMCErrorWithDomain:v25 code:15003 descriptionArray:v26 underlyingError:0 errorType:{*MEMORY[0x277D032F8], 0}];
 
-      (*(v11 + 2))(v11, 0, 0, 0, v27);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, v27);
     }
   }
 
   else
   {
-    (*(v11 + 2))(v11, a3, v10, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, method, paramsCopy, 0, 0);
   }
 
   v28 = *MEMORY[0x277D85DE8];
@@ -1104,11 +1104,11 @@ void __95__DMCServiceDiscoveryHelper__checkForESSOWithMethod_authParams_httpResp
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchESSODictionaryFromURL:(id)a3 completionHandler:(id)a4
+- (void)_fetchESSODictionaryFromURL:(id)l completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAB70] requestWithURL:v5];
+  lCopy = l;
+  handlerCopy = handler;
+  v7 = [MEMORY[0x277CCAB70] requestWithURL:lCopy];
   [v7 setAttribution:1];
   [v7 setHTTPMethod:*MEMORY[0x277D03398]];
   [v7 setTimeoutInterval:90.0];
@@ -1117,10 +1117,10 @@ void __95__DMCServiceDiscoveryHelper__checkForESSOWithMethod_authParams_httpResp
   v11[1] = 3221225472;
   v11[2] = __75__DMCServiceDiscoveryHelper__fetchESSODictionaryFromURL_completionHandler___block_invoke;
   v11[3] = &unk_278EE42E0;
-  v12 = v5;
-  v13 = v6;
-  v9 = v6;
-  v10 = v5;
+  v12 = lCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = lCopy;
   [v8 startWithRequest:v7 username:0 password:0 anchorCertificateRefs:0 completionBlock:v11];
 }
 

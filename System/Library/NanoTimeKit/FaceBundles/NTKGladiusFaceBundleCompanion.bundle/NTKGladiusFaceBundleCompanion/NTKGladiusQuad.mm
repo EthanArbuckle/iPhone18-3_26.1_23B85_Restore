@@ -1,26 +1,26 @@
 @interface NTKGladiusQuad
-- (BOOL)prepareForTime:(double)a3;
+- (BOOL)prepareForTime:(double)time;
 - (_TtC29NTKGladiusFaceBundleCompanion14NTKGladiusQuad)init;
-- (_TtC29NTKGladiusFaceBundleCompanion14NTKGladiusQuad)initWithDevice:(id)a3 stretchySecondHandData:(id)a4;
+- (_TtC29NTKGladiusFaceBundleCompanion14NTKGladiusQuad)initWithDevice:(id)device stretchySecondHandData:(id)data;
 - (void)purge;
-- (void)renderForDisplayWithEncoder:(id)a3;
-- (void)setColor:(id)a3;
-- (void)setOverrideDate:(id)a3 duration:(double)a4;
-- (void)setShadowDensity:(double)a3;
-- (void)setupForQuadView:(id)a3;
+- (void)renderForDisplayWithEncoder:(id)encoder;
+- (void)setColor:(id)color;
+- (void)setOverrideDate:(id)date duration:(double)duration;
+- (void)setShadowDensity:(double)density;
+- (void)setupForQuadView:(id)view;
 @end
 
 @implementation NTKGladiusQuad
 
-- (_TtC29NTKGladiusFaceBundleCompanion14NTKGladiusQuad)initWithDevice:(id)a3 stretchySecondHandData:(id)a4
+- (_TtC29NTKGladiusFaceBundleCompanion14NTKGladiusQuad)initWithDevice:(id)device stretchySecondHandData:(id)data
 {
   *&self->CLKUIQuad_opaque[OBJC_IVAR____TtC29NTKGladiusFaceBundleCompanion14NTKGladiusQuad_renderer] = 0;
   v7 = OBJC_IVAR____TtC29NTKGladiusFaceBundleCompanion14NTKGladiusQuad_dateOverride;
   v8 = type metadata accessor for GladiusUtilities.DateOverride();
   (*(*(v8 - 8) + 56))(&self->CLKUIQuad_opaque[v7], 1, 1, v8);
-  v9 = a3;
-  v10 = a4;
-  [v9 screenBounds];
+  deviceCopy = device;
+  dataCopy = data;
+  [deviceCopy screenBounds];
   v11 = &self->CLKUIQuad_opaque[OBJC_IVAR____TtC29NTKGladiusFaceBundleCompanion14NTKGladiusQuad_screenSize];
   *v11 = v12;
   *(v11 + 1) = v13;
@@ -32,10 +32,10 @@
   return v14;
 }
 
-- (void)setupForQuadView:(id)a3
+- (void)setupForQuadView:(id)view
 {
-  v4 = a3;
-  v5 = self;
+  viewCopy = view;
+  selfCopy = self;
   sub_B654();
 }
 
@@ -45,24 +45,24 @@
   *&self->CLKUIQuad_opaque[OBJC_IVAR____TtC29NTKGladiusFaceBundleCompanion14NTKGladiusQuad_renderer] = 0;
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
-  sub_AFC4(v4);
+  colorCopy = color;
+  selfCopy = self;
+  sub_AFC4(colorCopy);
 }
 
-- (void)setShadowDensity:(double)a3
+- (void)setShadowDensity:(double)density
 {
   v3 = *&self->CLKUIQuad_opaque[OBJC_IVAR____TtC29NTKGladiusFaceBundleCompanion14NTKGladiusQuad_renderer];
   if (v3)
   {
-    v4 = a3;
-    *(v3 + 128) = v4;
+    densityCopy = density;
+    *(v3 + 128) = densityCopy;
   }
 }
 
-- (void)setOverrideDate:(id)a3 duration:(double)a4
+- (void)setOverrideDate:(id)date duration:(double)duration
 {
   v7 = sub_AABC(&unk_29F50, &qword_16DC0);
   v8 = *(*(v7 - 8) + 64);
@@ -76,7 +76,7 @@
   v18 = &v25[-((v17 + 15) & 0xFFFFFFFFFFFFFFF0)];
   __chkstk_darwin(v16);
   v20 = &v25[-v19];
-  if (a3)
+  if (date)
   {
     sub_12910();
     v21 = sub_12920();
@@ -93,30 +93,30 @@
   swift_beginAccess();
   sub_BB0C(&self->CLKUIQuad_opaque[v23], v11, &unk_29F50, &qword_16DC0);
   sub_BB0C(v20, v18, &qword_29D88, qword_16D70);
-  v24 = self;
-  sub_BE14(v11, v18, v13, a4);
+  selfCopy = self;
+  sub_BE14(v11, v18, v13, duration);
   sub_BB74(v20, &qword_29D88, qword_16D70);
   swift_beginAccess();
   sub_BA9C(v13, &self->CLKUIQuad_opaque[v23]);
   swift_endAccess();
 }
 
-- (BOOL)prepareForTime:(double)a3
+- (BOOL)prepareForTime:(double)time
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_B898();
 
   return v4 & 1;
 }
 
-- (void)renderForDisplayWithEncoder:(id)a3
+- (void)renderForDisplayWithEncoder:(id)encoder
 {
   if (*&self->CLKUIQuad_opaque[OBJC_IVAR____TtC29NTKGladiusFaceBundleCompanion14NTKGladiusQuad_renderer])
   {
     swift_unknownObjectRetain();
-    v5 = self;
+    selfCopy = self;
 
-    sub_12548(a3);
+    sub_12548(encoder);
 
     swift_unknownObjectRelease();
   }

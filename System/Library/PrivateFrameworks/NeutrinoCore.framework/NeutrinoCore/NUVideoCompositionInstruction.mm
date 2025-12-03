@@ -1,18 +1,18 @@
 @interface NUVideoCompositionInstruction
-+ (id)defaultInstructionForAsset:(id)a3 error:(id *)a4;
-+ (id)instructionForVideoTrack:(id)a3;
++ (id)defaultInstructionForAsset:(id)asset error:(id *)error;
++ (id)instructionForVideoTrack:(id)track;
 - ($0AC6E346AE4835514AAA8AC86D8F4844)renderScale;
 - ($209B98C1CDF2DEBD503CBDE3C0ED7C90)timeRange;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToInstruction:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToInstruction:(id)instruction;
 - (NSString)description;
 - (NURenderJob)renderJob;
 - (NUVideoCompositionInstruction)init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)metadataTrackIDForSourceIdentifier:(id)a3;
-- (id)trackIDForSourceIdentifier:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)metadataTrackIDForSourceIdentifier:(id)identifier;
+- (id)trackIDForSourceIdentifier:(id)identifier;
 - (unint64_t)hash;
-- (void)setTimeRange:(id *)a3;
+- (void)setTimeRange:(id *)range;
 @end
 
 @implementation NUVideoCompositionInstruction
@@ -33,11 +33,11 @@
   return WeakRetained;
 }
 
-- (void)setTimeRange:(id *)a3
+- (void)setTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var3;
-  *&self->_timeRange.duration.timescale = *&a3->var1.var1;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var0.var3;
+  *&self->_timeRange.duration.timescale = *&range->var1.var1;
   *&self->_timeRange.start.epoch = v4;
   *&self->_timeRange.start.value = v3;
 }
@@ -58,11 +58,11 @@
   return [(NUVideoCompositionInstruction *)&v3 hash];
 }
 
-- (BOOL)isEqualToInstruction:(id)a3
+- (BOOL)isEqualToInstruction:(id)instruction
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ([v4 renderJob], v6 = objc_claimAutoreleasedReturnValue(), WeakRetained = objc_loadWeakRetained(&self->_renderJob), WeakRetained, v6, v6 == WeakRetained) && (objc_msgSend(v5, "videoRenderPrepareNode"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEquivalentToRenderNode:", self->_videoRenderPrepareNode), v8, v9) && (objc_msgSend(v5, "timeRange"), v10 = *&self->_timeRange.start.epoch, *&v20.start.value = *&self->_timeRange.start.value, *&v20.start.epoch = v10, *&v20.duration.timescale = *&self->_timeRange.duration.timescale, CMTimeRangeEqual(&range1, &v20)) && (v11 = objc_msgSend(v5, "renderScale"), NUScaleEqual(v11, v12, self->_renderScale.numerator, self->_renderScale.denominator)) && (objc_msgSend(v5, "requiredSourceTrackIDs"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToArray:", self->_requiredSourceTrackIDs), v13, v14) && (v15 = objc_msgSend(v5, "containsTweening"), v15 == -[NUVideoCompositionInstruction containsTweening](self, "containsTweening")) && (v16 = objc_msgSend(v5, "passthroughTrackID"), v16 == -[NUVideoCompositionInstruction passthroughTrackID](self, "passthroughTrackID")) && (v17 = objc_msgSend(v5, "enablePostProcessing"), v17 == -[NUVideoCompositionInstruction enablePostProcessing](self, "enablePostProcessing")))
+  instructionCopy = instruction;
+  v5 = instructionCopy;
+  if (instructionCopy && ([instructionCopy renderJob], v6 = objc_claimAutoreleasedReturnValue(), WeakRetained = objc_loadWeakRetained(&self->_renderJob), WeakRetained, v6, v6 == WeakRetained) && (objc_msgSend(v5, "videoRenderPrepareNode"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "isEquivalentToRenderNode:", self->_videoRenderPrepareNode), v8, v9) && (objc_msgSend(v5, "timeRange"), v10 = *&self->_timeRange.start.epoch, *&v20.start.value = *&self->_timeRange.start.value, *&v20.start.epoch = v10, *&v20.duration.timescale = *&self->_timeRange.duration.timescale, CMTimeRangeEqual(&range1, &v20)) && (v11 = objc_msgSend(v5, "renderScale"), NUScaleEqual(v11, v12, self->_renderScale.numerator, self->_renderScale.denominator)) && (objc_msgSend(v5, "requiredSourceTrackIDs"), v13 = objc_claimAutoreleasedReturnValue(), v14 = objc_msgSend(v13, "isEqualToArray:", self->_requiredSourceTrackIDs), v13, v14) && (v15 = objc_msgSend(v5, "containsTweening"), v15 == -[NUVideoCompositionInstruction containsTweening](self, "containsTweening")) && (v16 = objc_msgSend(v5, "passthroughTrackID"), v16 == -[NUVideoCompositionInstruction passthroughTrackID](self, "passthroughTrackID")) && (v17 = objc_msgSend(v5, "enablePostProcessing"), v17 == -[NUVideoCompositionInstruction enablePostProcessing](self, "enablePostProcessing")))
   {
     v18 = [v5[1] isEqual:self->_sourceIdentifiersByTrackID];
   }
@@ -75,10 +75,10 @@
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -86,22 +86,22 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUVideoCompositionInstruction *)self isEqualToInstruction:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUVideoCompositionInstruction *)self isEqualToInstruction:equalCopy];
   }
 
   return v5;
 }
 
-- (id)metadataTrackIDForSourceIdentifier:(id)a3
+- (id)metadataTrackIDForSourceIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(NSMutableDictionary *)self->_sourceIdentifiersByMetadataTrackID allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [(NSMutableDictionary *)self->_sourceIdentifiersByMetadataTrackID allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -112,12 +112,12 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [(NSMutableDictionary *)self->_sourceIdentifiersByMetadataTrackID objectForKeyedSubscript:v10];
-        v12 = [v11 isEqual:v4];
+        v12 = [v11 isEqual:identifierCopy];
 
         if (v12)
         {
@@ -126,7 +126,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -142,16 +142,16 @@ LABEL_11:
   return v13;
 }
 
-- (id)trackIDForSourceIdentifier:(id)a3
+- (id)trackIDForSourceIdentifier:(id)identifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(NSMutableDictionary *)self->_sourceIdentifiersByTrackID allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [(NSMutableDictionary *)self->_sourceIdentifiersByTrackID allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -162,12 +162,12 @@ LABEL_11:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = [(NSMutableDictionary *)self->_sourceIdentifiersByTrackID objectForKeyedSubscript:v10];
-        v12 = [v11 isEqual:v4];
+        v12 = [v11 isEqual:identifierCopy];
 
         if (v12)
         {
@@ -176,7 +176,7 @@ LABEL_11:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -192,7 +192,7 @@ LABEL_11:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(NUVideoCompositionInstruction);
   v6 = *&self->_timeRange.start.epoch;
@@ -200,17 +200,17 @@ LABEL_11:
   v17[1] = v6;
   v17[2] = *&self->_timeRange.duration.timescale;
   [(NUVideoCompositionInstruction *)v5 setTimeRange:v17];
-  v7 = [(NSArray *)self->_requiredSourceTrackIDs copyWithZone:a3];
+  v7 = [(NSArray *)self->_requiredSourceTrackIDs copyWithZone:zone];
   [(NUVideoCompositionInstruction *)v5 setRequiredSourceTrackIDs:v7];
 
   WeakRetained = objc_loadWeakRetained(&self->_renderJob);
   [(NUVideoCompositionInstruction *)v5 setRenderJob:WeakRetained];
 
-  v9 = [(NUComposition *)self->_adjustmentComposition copyWithZone:a3];
+  v9 = [(NUComposition *)self->_adjustmentComposition copyWithZone:zone];
   [(NUVideoCompositionInstruction *)v5 setAdjustmentComposition:v9];
 
   [(NUVideoCompositionInstruction *)v5 setVideoMedia:self->_videoMedia];
-  v10 = [(NSArray *)self->_pipelineFilters copyWithZone:a3];
+  v10 = [(NSArray *)self->_pipelineFilters copyWithZone:zone];
   [(NUVideoCompositionInstruction *)v5 setPipelineFilters:v10];
 
   [(NUVideoCompositionInstruction *)v5 setRenderScale:self->_renderScale.numerator, self->_renderScale.denominator];
@@ -219,11 +219,11 @@ LABEL_11:
   *&v11 = self->_playbackRate;
   [(NUVideoCompositionInstruction *)v5 setPlaybackRate:v11];
   [(NUVideoCompositionInstruction *)v5 setName:self->_name];
-  v12 = [(NSMutableDictionary *)self->_sourceIdentifiersByTrackID mutableCopyWithZone:a3];
+  v12 = [(NSMutableDictionary *)self->_sourceIdentifiersByTrackID mutableCopyWithZone:zone];
   sourceIdentifiersByTrackID = v5->_sourceIdentifiersByTrackID;
   v5->_sourceIdentifiersByTrackID = v12;
 
-  v14 = [(NSMutableDictionary *)self->_sourceIdentifiersByMetadataTrackID mutableCopyWithZone:a3];
+  v14 = [(NSMutableDictionary *)self->_sourceIdentifiersByMetadataTrackID mutableCopyWithZone:zone];
   sourceIdentifiersByMetadataTrackID = v5->_sourceIdentifiersByMetadataTrackID;
   v5->_sourceIdentifiersByMetadataTrackID = v14;
 
@@ -263,11 +263,11 @@ LABEL_11:
   return v6;
 }
 
-+ (id)instructionForVideoTrack:(id)a3
++ (id)instructionForVideoTrack:(id)track
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  trackCopy = track;
+  if (!trackCopy)
   {
     v10 = NUAssertLogger_28024();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -288,8 +288,8 @@ LABEL_11:
         v17 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v18 = MEMORY[0x1E696AF00];
         v19 = v17;
-        v20 = [v18 callStackSymbols];
-        v21 = [v20 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v18 callStackSymbols];
+        v21 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v17;
         *&buf[12] = 2114;
@@ -300,8 +300,8 @@ LABEL_11:
 
     else if (v14)
     {
-      v15 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v15 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v16 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v16;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -310,7 +310,7 @@ LABEL_11:
     _NUAssertFailHandler("+[NUVideoCompositionInstruction instructionForVideoTrack:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUVideoCompositionInstruction.m", 61, @"Invalid parameter not satisfying: %s", v22, v23, v24, v25, "videoTrack != nil");
   }
 
-  v4 = v3;
+  v4 = trackCopy;
   v5 = objc_alloc_init(NUVideoCompositionInstruction);
   v6 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "trackID")}];
   v31[0] = v6;
@@ -328,11 +328,11 @@ LABEL_11:
   return v5;
 }
 
-+ (id)defaultInstructionForAsset:(id)a3 error:(id *)a4
++ (id)defaultInstructionForAsset:(id)asset error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  assetCopy = asset;
+  if (!assetCopy)
   {
     v20 = NUAssertLogger_28024();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -353,8 +353,8 @@ LABEL_11:
         v27 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v37 = v27;
         v38 = 2114;
@@ -365,8 +365,8 @@ LABEL_11:
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v37 = v26;
       _os_log_error_impl(&dword_1C0184000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -375,17 +375,17 @@ LABEL_11:
     _NUAssertFailHandler("+[NUVideoCompositionInstruction defaultInstructionForAsset:error:]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Render/NUVideoCompositionInstruction.m", 32, @"Invalid parameter not satisfying: %s", v32, v33, v34, v35, "asset != nil");
   }
 
-  v7 = v6;
-  v8 = [NUVideoUtilities firstEnabledVideoTrackInAsset:v6 error:a4];
+  v7 = assetCopy;
+  v8 = [NUVideoUtilities firstEnabledVideoTrackInAsset:assetCopy error:error];
   if (v8)
   {
-    v9 = [a1 instructionForVideoTrack:v8];
-    v10 = [NUVideoUtilities auxiliaryTrackInAsset:v7 ofType:2 error:a4];
+    v9 = [self instructionForVideoTrack:v8];
+    v10 = [NUVideoUtilities auxiliaryTrackInAsset:v7 ofType:2 error:error];
     if (v10)
     {
-      v11 = [v9 requiredSourceTrackIDs];
+      requiredSourceTrackIDs = [v9 requiredSourceTrackIDs];
       v12 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v10, "trackID")}];
-      v13 = [v11 arrayByAddingObject:v12];
+      v13 = [requiredSourceTrackIDs arrayByAddingObject:v12];
       [v9 setRequiredSourceTrackIDs:v13];
 
       v14 = @"Disparity";

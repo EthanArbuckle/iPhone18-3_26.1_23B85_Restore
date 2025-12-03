@@ -1,6 +1,6 @@
 @interface SSLocalCEP
-+ (BOOL)isAllowlistedBundle:(id)a3;
-+ (BOOL)isLowEngagementBundle:(id)a3;
++ (BOOL)isAllowlistedBundle:(id)bundle;
++ (BOOL)isLowEngagementBundle:(id)bundle;
 + (id)getCEPValuesForCurrentLocale;
 @end
 
@@ -9,10 +9,10 @@
 + (id)getCEPValuesForCurrentLocale
 {
   v29 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E695DF58] currentLocale];
-  v3 = [v2 objectForKey:*MEMORY[0x1E695D9B0]];
-  v4 = [v2 objectForKey:*MEMORY[0x1E695D978]];
-  v5 = [v2 objectForKey:*MEMORY[0x1E695D9E8]];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  v3 = [currentLocale objectForKey:*MEMORY[0x1E695D9B0]];
+  v4 = [currentLocale objectForKey:*MEMORY[0x1E695D978]];
+  v5 = [currentLocale objectForKey:*MEMORY[0x1E695D9E8]];
   v6 = v5;
   if (v4)
   {
@@ -57,7 +57,7 @@
     }
 
     v26 = "iOS";
-    v27 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     v28 = 0;
     v11 = getCEPValuesForCurrentLocale_sCannedCepForLocale;
     getCEPValuesForCurrentLocale_sCannedCepForLocale = 0;
@@ -76,7 +76,7 @@
 
     if (!getCEPValuesForCurrentLocale_sCannedCepForLocale)
     {
-      v27 = "global";
+      uTF8String = "global";
       if (_MDPlistContainerGetPlistObjectAtKeyArray())
       {
         v15 = [SSPlistDataReader alloc];
@@ -120,26 +120,26 @@ void __42__SSLocalCEP_getCEPValuesForCurrentLocale__block_invoke()
   }
 }
 
-+ (BOOL)isLowEngagementBundle:(id)a3
++ (BOOL)isLowEngagementBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [a1 getCEPValuesForCurrentLocale];
-  [v5 doubleValueForBundle:v4];
+  bundleCopy = bundle;
+  getCEPValuesForCurrentLocale = [self getCEPValuesForCurrentLocale];
+  [getCEPValuesForCurrentLocale doubleValueForBundle:bundleCopy];
   v7 = v6;
 
   return v7 < 0.01;
 }
 
-+ (BOOL)isAllowlistedBundle:(id)a3
++ (BOOL)isAllowlistedBundle:(id)bundle
 {
   v3 = isAllowlistedBundle__onceToken;
-  v4 = a3;
+  bundleCopy = bundle;
   if (v3 != -1)
   {
     +[SSLocalCEP isAllowlistedBundle:];
   }
 
-  v5 = [isAllowlistedBundle__allowlistedBundles containsObject:v4];
+  v5 = [isAllowlistedBundle__allowlistedBundles containsObject:bundleCopy];
 
   return v5;
 }

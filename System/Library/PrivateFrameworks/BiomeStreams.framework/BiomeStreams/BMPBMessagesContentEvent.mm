@@ -1,68 +1,68 @@
 @interface BMPBMessagesContentEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addAccountHandles:(id)a3;
-- (void)addToHandles:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIsBusinessChat:(BOOL)a3;
-- (void)setHasIsFromMe:(BOOL)a3;
-- (void)setHasIsGroupThread:(BOOL)a3;
-- (void)setHasIsJunk:(BOOL)a3;
-- (void)setHasIsKnownSender:(BOOL)a3;
-- (void)setHasIsNew:(BOOL)a3;
-- (void)setHasIsPinned:(BOOL)a3;
-- (void)setHasIsRead:(BOOL)a3;
-- (void)setHasIsTwoFactorCode:(BOOL)a3;
-- (void)setHasMessageEffect:(BOOL)a3;
-- (void)setHasTapbackType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAccountHandles:(id)handles;
+- (void)addToHandles:(id)handles;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIsBusinessChat:(BOOL)chat;
+- (void)setHasIsFromMe:(BOOL)me;
+- (void)setHasIsGroupThread:(BOOL)thread;
+- (void)setHasIsJunk:(BOOL)junk;
+- (void)setHasIsKnownSender:(BOOL)sender;
+- (void)setHasIsNew:(BOOL)new;
+- (void)setHasIsPinned:(BOOL)pinned;
+- (void)setHasIsRead:(BOOL)read;
+- (void)setHasIsTwoFactorCode:(BOOL)code;
+- (void)setHasMessageEffect:(BOOL)effect;
+- (void)setHasTapbackType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBMessagesContentEvent
 
-- (void)addToHandles:(id)a3
+- (void)addToHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   toHandles = self->_toHandles;
-  v8 = v4;
+  v8 = handlesCopy;
   if (!toHandles)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_toHandles;
     self->_toHandles = v6;
 
-    v4 = v8;
+    handlesCopy = v8;
     toHandles = self->_toHandles;
   }
 
-  [(NSMutableArray *)toHandles addObject:v4];
+  [(NSMutableArray *)toHandles addObject:handlesCopy];
 }
 
-- (void)addAccountHandles:(id)a3
+- (void)addAccountHandles:(id)handles
 {
-  v4 = a3;
+  handlesCopy = handles;
   accountHandles = self->_accountHandles;
-  v8 = v4;
+  v8 = handlesCopy;
   if (!accountHandles)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_accountHandles;
     self->_accountHandles = v6;
 
-    v4 = v8;
+    handlesCopy = v8;
     accountHandles = self->_accountHandles;
   }
 
-  [(NSMutableArray *)accountHandles addObject:v4];
+  [(NSMutableArray *)accountHandles addObject:handlesCopy];
 }
 
-- (void)setHasIsNew:(BOOL)a3
+- (void)setHasIsNew:(BOOL)new
 {
-  if (a3)
+  if (new)
   {
     v3 = 256;
   }
@@ -75,9 +75,9 @@
   *&self->_has = *&self->_has & 0xFEFF | v3;
 }
 
-- (void)setHasIsTwoFactorCode:(BOOL)a3
+- (void)setHasIsTwoFactorCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 2048;
   }
@@ -90,9 +90,9 @@
   *&self->_has = *&self->_has & 0xF7FF | v3;
 }
 
-- (void)setHasIsFromMe:(BOOL)a3
+- (void)setHasIsFromMe:(BOOL)me
 {
-  if (a3)
+  if (me)
   {
     v3 = 16;
   }
@@ -105,9 +105,9 @@
   *&self->_has = *&self->_has & 0xFFEF | v3;
 }
 
-- (void)setHasIsGroupThread:(BOOL)a3
+- (void)setHasIsGroupThread:(BOOL)thread
 {
-  if (a3)
+  if (thread)
   {
     v3 = 32;
   }
@@ -120,9 +120,9 @@
   *&self->_has = *&self->_has & 0xFFDF | v3;
 }
 
-- (void)setHasIsJunk:(BOOL)a3
+- (void)setHasIsJunk:(BOOL)junk
 {
-  if (a3)
+  if (junk)
   {
     v3 = 64;
   }
@@ -135,9 +135,9 @@
   *&self->_has = *&self->_has & 0xFFBF | v3;
 }
 
-- (void)setHasIsRead:(BOOL)a3
+- (void)setHasIsRead:(BOOL)read
 {
-  if (a3)
+  if (read)
   {
     v3 = 1024;
   }
@@ -150,9 +150,9 @@
   *&self->_has = *&self->_has & 0xFBFF | v3;
 }
 
-- (void)setHasIsPinned:(BOOL)a3
+- (void)setHasIsPinned:(BOOL)pinned
 {
-  if (a3)
+  if (pinned)
   {
     v3 = 512;
   }
@@ -165,9 +165,9 @@
   *&self->_has = *&self->_has & 0xFDFF | v3;
 }
 
-- (void)setHasIsBusinessChat:(BOOL)a3
+- (void)setHasIsBusinessChat:(BOOL)chat
 {
-  if (a3)
+  if (chat)
   {
     v3 = 8;
   }
@@ -180,9 +180,9 @@
   *&self->_has = *&self->_has & 0xFFF7 | v3;
 }
 
-- (void)setHasTapbackType:(BOOL)a3
+- (void)setHasTapbackType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -195,9 +195,9 @@
   *&self->_has = *&self->_has & 0xFFFD | v3;
 }
 
-- (void)setHasMessageEffect:(BOOL)a3
+- (void)setHasMessageEffect:(BOOL)effect
 {
-  if (a3)
+  if (effect)
   {
     v3 = 4;
   }
@@ -210,9 +210,9 @@
   *&self->_has = *&self->_has & 0xFFFB | v3;
 }
 
-- (void)setHasIsKnownSender:(BOOL)a3
+- (void)setHasIsKnownSender:(BOOL)sender
 {
-  if (a3)
+  if (sender)
   {
     v3 = 128;
   }
@@ -231,8 +231,8 @@
   v8.receiver = self;
   v8.super_class = BMPBMessagesContentEvent;
   v4 = [(BMPBMessagesContentEvent *)&v8 description];
-  v5 = [(BMPBMessagesContentEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBMessagesContentEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -240,12 +240,12 @@
 - (id)dictionaryRepresentation
 {
   v57 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   uniqueId = self->_uniqueId;
   if (uniqueId)
   {
-    [v3 setObject:uniqueId forKey:@"uniqueId"];
+    [dictionary setObject:uniqueId forKey:@"uniqueId"];
   }
 
   domainId = self->_domainId;
@@ -305,8 +305,8 @@
   fromHandle = self->_fromHandle;
   if (fromHandle)
   {
-    v16 = [(BMPBNamedHandle *)fromHandle dictionaryRepresentation];
-    [v4 setObject:v16 forKey:@"fromHandle"];
+    dictionaryRepresentation = [(BMPBNamedHandle *)fromHandle dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"fromHandle"];
   }
 
   if ([(NSMutableArray *)self->_toHandles count])
@@ -331,8 +331,8 @@
             objc_enumerationMutation(v18);
           }
 
-          v23 = [*(*(&v52 + 1) + 8 * i) dictionaryRepresentation];
-          [v17 addObject:v23];
+          dictionaryRepresentation2 = [*(*(&v52 + 1) + 8 * i) dictionaryRepresentation];
+          [v17 addObject:dictionaryRepresentation2];
         }
 
         v20 = [(NSMutableArray *)v18 countByEnumeratingWithState:&v52 objects:v56 count:16];
@@ -365,8 +365,8 @@
   attachment = self->_attachment;
   if (attachment)
   {
-    v28 = [(BMPBContentAttachment *)attachment dictionaryRepresentation];
-    [v4 setObject:v28 forKey:@"attachment"];
+    dictionaryRepresentation3 = [(BMPBContentAttachment *)attachment dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"attachment"];
   }
 
   url = self->_url;
@@ -553,10 +553,10 @@ LABEL_55:
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_uniqueId)
   {
     PBDataWriterWriteStringField();
@@ -852,26 +852,26 @@ LABEL_58:
   v24 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v16 = v4;
+  toCopy = to;
+  v16 = toCopy;
   if (self->_uniqueId)
   {
-    [v4 setUniqueId:?];
-    v4 = v16;
+    [toCopy setUniqueId:?];
+    toCopy = v16;
   }
 
   if (self->_domainId)
   {
     [v16 setDomainId:?];
-    v4 = v16;
+    toCopy = v16;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_absoluteTimestamp;
-    *(v4 + 110) |= 1u;
+    *(toCopy + 1) = *&self->_absoluteTimestamp;
+    *(toCopy + 110) |= 1u;
   }
 
   if (self->_conversationId)
@@ -917,10 +917,10 @@ LABEL_58:
   if ([(BMPBMessagesContentEvent *)self toHandlesCount])
   {
     [v16 clearToHandles];
-    v5 = [(BMPBMessagesContentEvent *)self toHandlesCount];
-    if (v5)
+    toHandlesCount = [(BMPBMessagesContentEvent *)self toHandlesCount];
+    if (toHandlesCount)
     {
-      v6 = v5;
+      v6 = toHandlesCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(BMPBMessagesContentEvent *)self toHandlesAtIndex:i];
@@ -942,10 +942,10 @@ LABEL_58:
   if ([(BMPBMessagesContentEvent *)self accountHandlesCount])
   {
     [v16 clearAccountHandles];
-    v9 = [(BMPBMessagesContentEvent *)self accountHandlesCount];
-    if (v9)
+    accountHandlesCount = [(BMPBMessagesContentEvent *)self accountHandlesCount];
+    if (accountHandlesCount)
     {
-      v10 = v9;
+      v10 = accountHandlesCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(BMPBMessagesContentEvent *)self accountHandlesAtIndex:j];
@@ -1131,15 +1131,15 @@ LABEL_52:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v72 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_uniqueId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_uniqueId copyWithZone:zone];
   v7 = *(v5 + 192);
   *(v5 + 192) = v6;
 
-  v8 = [(NSString *)self->_domainId copyWithZone:a3];
+  v8 = [(NSString *)self->_domainId copyWithZone:zone];
   v9 = *(v5 + 104);
   *(v5 + 104) = v8;
 
@@ -1149,35 +1149,35 @@ LABEL_52:
     *(v5 + 220) |= 1u;
   }
 
-  v10 = [(NSString *)self->_conversationId copyWithZone:a3];
+  v10 = [(NSString *)self->_conversationId copyWithZone:zone];
   v11 = *(v5 + 88);
   *(v5 + 88) = v10;
 
-  v12 = [(NSString *)self->_author copyWithZone:a3];
+  v12 = [(NSString *)self->_author copyWithZone:zone];
   v13 = *(v5 + 64);
   *(v5 + 64) = v12;
 
-  v14 = [(NSString *)self->_suggestedNickname copyWithZone:a3];
+  v14 = [(NSString *)self->_suggestedNickname copyWithZone:zone];
   v15 = *(v5 + 160);
   *(v5 + 160) = v14;
 
-  v16 = [(NSString *)self->_suggestedPhotoPath copyWithZone:a3];
+  v16 = [(NSString *)self->_suggestedPhotoPath copyWithZone:zone];
   v17 = *(v5 + 168);
   *(v5 + 168) = v16;
 
-  v18 = [(NSString *)self->_recipients copyWithZone:a3];
+  v18 = [(NSString *)self->_recipients copyWithZone:zone];
   v19 = *(v5 + 152);
   *(v5 + 152) = v18;
 
-  v20 = [(NSString *)self->_attachmentURL copyWithZone:a3];
+  v20 = [(NSString *)self->_attachmentURL copyWithZone:zone];
   v21 = *(v5 + 56);
   *(v5 + 56) = v20;
 
-  v22 = [(NSString *)self->_content copyWithZone:a3];
+  v22 = [(NSString *)self->_content copyWithZone:zone];
   v23 = *(v5 + 72);
   *(v5 + 72) = v22;
 
-  v24 = [(BMPBNamedHandle *)self->_fromHandle copyWithZone:a3];
+  v24 = [(BMPBNamedHandle *)self->_fromHandle copyWithZone:zone];
   v25 = *(v5 + 112);
   *(v5 + 112) = v24;
 
@@ -1200,7 +1200,7 @@ LABEL_52:
           objc_enumerationMutation(v26);
         }
 
-        v31 = [*(*(&v66 + 1) + 8 * i) copyWithZone:a3];
+        v31 = [*(*(&v66 + 1) + 8 * i) copyWithZone:zone];
         [v5 addToHandles:v31];
       }
 
@@ -1210,11 +1210,11 @@ LABEL_52:
     while (v28);
   }
 
-  v32 = [(NSString *)self->_accountIdentifier copyWithZone:a3];
+  v32 = [(NSString *)self->_accountIdentifier copyWithZone:zone];
   v33 = *(v5 + 32);
   *(v5 + 32) = v32;
 
-  v34 = [(NSString *)self->_accountType copyWithZone:a3];
+  v34 = [(NSString *)self->_accountType copyWithZone:zone];
   v35 = *(v5 + 40);
   *(v5 + 40) = v34;
 
@@ -1237,7 +1237,7 @@ LABEL_52:
           objc_enumerationMutation(v36);
         }
 
-        v41 = [*(*(&v62 + 1) + 8 * j) copyWithZone:{a3, v62}];
+        v41 = [*(*(&v62 + 1) + 8 * j) copyWithZone:{zone, v62}];
         [v5 addAccountHandles:v41];
       }
 
@@ -1247,19 +1247,19 @@ LABEL_52:
     while (v38);
   }
 
-  v42 = [(BMPBContentAttachment *)self->_attachment copyWithZone:a3];
+  v42 = [(BMPBContentAttachment *)self->_attachment copyWithZone:zone];
   v43 = *(v5 + 48);
   *(v5 + 48) = v42;
 
-  v44 = [(NSString *)self->_url copyWithZone:a3];
+  v44 = [(NSString *)self->_url copyWithZone:zone];
   v45 = *(v5 + 200);
   *(v5 + 200) = v44;
 
-  v46 = [(NSString *)self->_contentProtection copyWithZone:a3];
+  v46 = [(NSString *)self->_contentProtection copyWithZone:zone];
   v47 = *(v5 + 80);
   *(v5 + 80) = v46;
 
-  v48 = [(NSString *)self->_personaId copyWithZone:a3];
+  v48 = [(NSString *)self->_personaId copyWithZone:zone];
   v49 = *(v5 + 144);
   *(v5 + 144) = v48;
 
@@ -1371,7 +1371,7 @@ LABEL_25:
   }
 
 LABEL_26:
-  v51 = [(NSString *)self->_tapbackAssociatedMessageID copyWithZone:a3, v62];
+  v51 = [(NSString *)self->_tapbackAssociatedMessageID copyWithZone:zone, v62];
   v52 = *(v5 + 176);
   *(v5 + 176) = v51;
 
@@ -1381,11 +1381,11 @@ LABEL_26:
     *(v5 + 220) |= 2u;
   }
 
-  v53 = [(NSString *)self->_messageType copyWithZone:a3];
+  v53 = [(NSString *)self->_messageType copyWithZone:zone];
   v54 = *(v5 + 128);
   *(v5 + 128) = v53;
 
-  v55 = [(NSString *)self->_messagesService copyWithZone:a3];
+  v55 = [(NSString *)self->_messagesService copyWithZone:zone];
   v56 = *(v5 + 136);
   *(v5 + 136) = v55;
 
@@ -1403,7 +1403,7 @@ LABEL_26:
     *(v5 + 220) |= 0x80u;
   }
 
-  v58 = [(NSString *)self->_conversationUUID copyWithZone:a3];
+  v58 = [(NSString *)self->_conversationUUID copyWithZone:zone];
   v59 = *(v5 + 96);
   *(v5 + 96) = v58;
 
@@ -1411,16 +1411,16 @@ LABEL_26:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_121;
   }
 
   uniqueId = self->_uniqueId;
-  if (uniqueId | *(v4 + 24))
+  if (uniqueId | *(equalCopy + 24))
   {
     if (![(NSString *)uniqueId isEqual:?])
     {
@@ -1429,7 +1429,7 @@ LABEL_26:
   }
 
   domainId = self->_domainId;
-  if (domainId | *(v4 + 13))
+  if (domainId | *(equalCopy + 13))
   {
     if (![(NSString *)domainId isEqual:?])
     {
@@ -1437,10 +1437,10 @@ LABEL_26:
     }
   }
 
-  v7 = *(v4 + 110);
+  v7 = *(equalCopy + 110);
   if (*&self->_has)
   {
-    if ((v7 & 1) == 0 || self->_absoluteTimestamp != *(v4 + 1))
+    if ((v7 & 1) == 0 || self->_absoluteTimestamp != *(equalCopy + 1))
     {
       goto LABEL_121;
     }
@@ -1452,13 +1452,13 @@ LABEL_26:
   }
 
   conversationId = self->_conversationId;
-  if (conversationId | *(v4 + 11) && ![(NSString *)conversationId isEqual:?])
+  if (conversationId | *(equalCopy + 11) && ![(NSString *)conversationId isEqual:?])
   {
     goto LABEL_121;
   }
 
   author = self->_author;
-  if (author | *(v4 + 8))
+  if (author | *(equalCopy + 8))
   {
     if (![(NSString *)author isEqual:?])
     {
@@ -1467,7 +1467,7 @@ LABEL_26:
   }
 
   suggestedNickname = self->_suggestedNickname;
-  if (suggestedNickname | *(v4 + 20))
+  if (suggestedNickname | *(equalCopy + 20))
   {
     if (![(NSString *)suggestedNickname isEqual:?])
     {
@@ -1476,7 +1476,7 @@ LABEL_26:
   }
 
   suggestedPhotoPath = self->_suggestedPhotoPath;
-  if (suggestedPhotoPath | *(v4 + 21))
+  if (suggestedPhotoPath | *(equalCopy + 21))
   {
     if (![(NSString *)suggestedPhotoPath isEqual:?])
     {
@@ -1485,7 +1485,7 @@ LABEL_26:
   }
 
   recipients = self->_recipients;
-  if (recipients | *(v4 + 19))
+  if (recipients | *(equalCopy + 19))
   {
     if (![(NSString *)recipients isEqual:?])
     {
@@ -1494,7 +1494,7 @@ LABEL_26:
   }
 
   attachmentURL = self->_attachmentURL;
-  if (attachmentURL | *(v4 + 7))
+  if (attachmentURL | *(equalCopy + 7))
   {
     if (![(NSString *)attachmentURL isEqual:?])
     {
@@ -1503,7 +1503,7 @@ LABEL_26:
   }
 
   content = self->_content;
-  if (content | *(v4 + 9))
+  if (content | *(equalCopy + 9))
   {
     if (![(NSString *)content isEqual:?])
     {
@@ -1512,7 +1512,7 @@ LABEL_26:
   }
 
   fromHandle = self->_fromHandle;
-  if (fromHandle | *(v4 + 14))
+  if (fromHandle | *(equalCopy + 14))
   {
     if (![(BMPBNamedHandle *)fromHandle isEqual:?])
     {
@@ -1521,7 +1521,7 @@ LABEL_26:
   }
 
   toHandles = self->_toHandles;
-  if (toHandles | *(v4 + 23))
+  if (toHandles | *(equalCopy + 23))
   {
     if (![(NSMutableArray *)toHandles isEqual:?])
     {
@@ -1530,7 +1530,7 @@ LABEL_26:
   }
 
   accountIdentifier = self->_accountIdentifier;
-  if (accountIdentifier | *(v4 + 4))
+  if (accountIdentifier | *(equalCopy + 4))
   {
     if (![(NSString *)accountIdentifier isEqual:?])
     {
@@ -1539,7 +1539,7 @@ LABEL_26:
   }
 
   accountType = self->_accountType;
-  if (accountType | *(v4 + 5))
+  if (accountType | *(equalCopy + 5))
   {
     if (![(NSString *)accountType isEqual:?])
     {
@@ -1548,7 +1548,7 @@ LABEL_26:
   }
 
   accountHandles = self->_accountHandles;
-  if (accountHandles | *(v4 + 3))
+  if (accountHandles | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)accountHandles isEqual:?])
     {
@@ -1557,7 +1557,7 @@ LABEL_26:
   }
 
   attachment = self->_attachment;
-  if (attachment | *(v4 + 6))
+  if (attachment | *(equalCopy + 6))
   {
     if (![(BMPBContentAttachment *)attachment isEqual:?])
     {
@@ -1566,7 +1566,7 @@ LABEL_26:
   }
 
   url = self->_url;
-  if (url | *(v4 + 25))
+  if (url | *(equalCopy + 25))
   {
     if (![(NSString *)url isEqual:?])
     {
@@ -1575,7 +1575,7 @@ LABEL_26:
   }
 
   contentProtection = self->_contentProtection;
-  if (contentProtection | *(v4 + 10))
+  if (contentProtection | *(equalCopy + 10))
   {
     if (![(NSString *)contentProtection isEqual:?])
     {
@@ -1584,7 +1584,7 @@ LABEL_26:
   }
 
   personaId = self->_personaId;
-  if (personaId | *(v4 + 18))
+  if (personaId | *(equalCopy + 18))
   {
     if (![(NSString *)personaId isEqual:?])
     {
@@ -1593,57 +1593,57 @@ LABEL_26:
   }
 
   has = self->_has;
-  v25 = *(v4 + 110);
+  v25 = *(equalCopy + 110);
   if ((has & 0x100) != 0)
   {
-    if ((*(v4 + 110) & 0x100) == 0)
+    if ((*(equalCopy + 110) & 0x100) == 0)
     {
       goto LABEL_121;
     }
 
-    v28 = *(v4 + 213);
+    v28 = *(equalCopy + 213);
     if (self->_isNew)
     {
-      if ((*(v4 + 213) & 1) == 0)
+      if ((*(equalCopy + 213) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 213))
+    else if (*(equalCopy + 213))
     {
       goto LABEL_121;
     }
   }
 
-  else if ((*(v4 + 110) & 0x100) != 0)
+  else if ((*(equalCopy + 110) & 0x100) != 0)
   {
     goto LABEL_121;
   }
 
   if ((*&self->_has & 0x800) != 0)
   {
-    if ((*(v4 + 110) & 0x800) == 0)
+    if ((*(equalCopy + 110) & 0x800) == 0)
     {
       goto LABEL_121;
     }
 
-    v29 = *(v4 + 216);
+    v29 = *(equalCopy + 216);
     if (self->_isTwoFactorCode)
     {
-      if ((*(v4 + 216) & 1) == 0)
+      if ((*(equalCopy + 216) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 216))
+    else if (*(equalCopy + 216))
     {
       goto LABEL_121;
     }
   }
 
-  else if ((*(v4 + 110) & 0x800) != 0)
+  else if ((*(equalCopy + 110) & 0x800) != 0)
   {
     goto LABEL_121;
   }
@@ -1655,16 +1655,16 @@ LABEL_26:
       goto LABEL_121;
     }
 
-    v30 = *(v4 + 209);
+    v30 = *(equalCopy + 209);
     if (self->_isFromMe)
     {
-      if ((*(v4 + 209) & 1) == 0)
+      if ((*(equalCopy + 209) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 209))
+    else if (*(equalCopy + 209))
     {
       goto LABEL_121;
     }
@@ -1682,16 +1682,16 @@ LABEL_26:
       goto LABEL_121;
     }
 
-    v31 = *(v4 + 210);
+    v31 = *(equalCopy + 210);
     if (self->_isGroupThread)
     {
-      if ((*(v4 + 210) & 1) == 0)
+      if ((*(equalCopy + 210) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 210))
+    else if (*(equalCopy + 210))
     {
       goto LABEL_121;
     }
@@ -1709,16 +1709,16 @@ LABEL_26:
       goto LABEL_121;
     }
 
-    v32 = *(v4 + 211);
+    v32 = *(equalCopy + 211);
     if (self->_isJunk)
     {
-      if ((*(v4 + 211) & 1) == 0)
+      if ((*(equalCopy + 211) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 211))
+    else if (*(equalCopy + 211))
     {
       goto LABEL_121;
     }
@@ -1731,54 +1731,54 @@ LABEL_26:
 
   if ((*&self->_has & 0x400) != 0)
   {
-    if ((*(v4 + 110) & 0x400) == 0)
+    if ((*(equalCopy + 110) & 0x400) == 0)
     {
       goto LABEL_121;
     }
 
-    v33 = *(v4 + 215);
+    v33 = *(equalCopy + 215);
     if (self->_isRead)
     {
-      if ((*(v4 + 215) & 1) == 0)
+      if ((*(equalCopy + 215) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 215))
+    else if (*(equalCopy + 215))
     {
       goto LABEL_121;
     }
   }
 
-  else if ((*(v4 + 110) & 0x400) != 0)
+  else if ((*(equalCopy + 110) & 0x400) != 0)
   {
     goto LABEL_121;
   }
 
   if ((*&self->_has & 0x200) != 0)
   {
-    if ((*(v4 + 110) & 0x200) == 0)
+    if ((*(equalCopy + 110) & 0x200) == 0)
     {
       goto LABEL_121;
     }
 
-    v34 = *(v4 + 214);
+    v34 = *(equalCopy + 214);
     if (self->_isPinned)
     {
-      if ((*(v4 + 214) & 1) == 0)
+      if ((*(equalCopy + 214) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 214))
+    else if (*(equalCopy + 214))
     {
       goto LABEL_121;
     }
   }
 
-  else if ((*(v4 + 110) & 0x200) != 0)
+  else if ((*(equalCopy + 110) & 0x200) != 0)
   {
     goto LABEL_121;
   }
@@ -1790,16 +1790,16 @@ LABEL_26:
       goto LABEL_121;
     }
 
-    v35 = *(v4 + 208);
+    v35 = *(equalCopy + 208);
     if (self->_isBusinessChat)
     {
-      if ((*(v4 + 208) & 1) == 0)
+      if ((*(equalCopy + 208) & 1) == 0)
       {
         goto LABEL_121;
       }
     }
 
-    else if (*(v4 + 208))
+    else if (*(equalCopy + 208))
     {
       goto LABEL_121;
     }
@@ -1811,7 +1811,7 @@ LABEL_26:
   }
 
   tapbackAssociatedMessageID = self->_tapbackAssociatedMessageID;
-  if (tapbackAssociatedMessageID | *(v4 + 22))
+  if (tapbackAssociatedMessageID | *(equalCopy + 22))
   {
     if (![(NSString *)tapbackAssociatedMessageID isEqual:?])
     {
@@ -1821,10 +1821,10 @@ LABEL_26:
     has = self->_has;
   }
 
-  v27 = *(v4 + 110);
+  v27 = *(equalCopy + 110);
   if ((has & 2) != 0)
   {
-    if ((v27 & 2) == 0 || self->_tapbackType != *(v4 + 2))
+    if ((v27 & 2) == 0 || self->_tapbackType != *(equalCopy + 2))
     {
       goto LABEL_121;
     }
@@ -1836,13 +1836,13 @@ LABEL_26:
   }
 
   messageType = self->_messageType;
-  if (messageType | *(v4 + 16) && ![(NSString *)messageType isEqual:?])
+  if (messageType | *(equalCopy + 16) && ![(NSString *)messageType isEqual:?])
   {
     goto LABEL_121;
   }
 
   messagesService = self->_messagesService;
-  if (messagesService | *(v4 + 17))
+  if (messagesService | *(equalCopy + 17))
   {
     if (![(NSString *)messagesService isEqual:?])
     {
@@ -1851,10 +1851,10 @@ LABEL_26:
   }
 
   v38 = self->_has;
-  v39 = *(v4 + 110);
+  v39 = *(equalCopy + 110);
   if ((v38 & 4) != 0)
   {
-    if ((v39 & 4) == 0 || self->_messageEffect != *(v4 + 30))
+    if ((v39 & 4) == 0 || self->_messageEffect != *(equalCopy + 30))
     {
       goto LABEL_121;
     }
@@ -1882,23 +1882,23 @@ LABEL_121:
     goto LABEL_121;
   }
 
-  v43 = *(v4 + 212);
+  v43 = *(equalCopy + 212);
   if (self->_isKnownSender)
   {
-    if ((*(v4 + 212) & 1) == 0)
+    if ((*(equalCopy + 212) & 1) == 0)
     {
       goto LABEL_121;
     }
   }
 
-  else if (*(v4 + 212))
+  else if (*(equalCopy + 212))
   {
     goto LABEL_121;
   }
 
 LABEL_127:
   conversationUUID = self->_conversationUUID;
-  if (conversationUUID | *(v4 + 12))
+  if (conversationUUID | *(equalCopy + 12))
   {
     v40 = [(NSString *)conversationUUID isEqual:?];
   }
@@ -2113,63 +2113,63 @@ LABEL_32:
   return v46 ^ v47 ^ v45 ^ v44 ^ v43 ^ v42 ^ v41 ^ v40 ^ v39 ^ v38 ^ v37 ^ v36 ^ v35 ^ v34 ^ v33 ^ v32 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v21 ^ v22 ^ [(NSString *)self->_conversationUUID hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 24))
+  fromCopy = from;
+  if (*(fromCopy + 24))
   {
     [(BMPBMessagesContentEvent *)self setUniqueId:?];
   }
 
-  if (*(v4 + 13))
+  if (*(fromCopy + 13))
   {
     [(BMPBMessagesContentEvent *)self setDomainId:?];
   }
 
-  if (*(v4 + 110))
+  if (*(fromCopy + 110))
   {
-    self->_absoluteTimestamp = *(v4 + 1);
+    self->_absoluteTimestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(BMPBMessagesContentEvent *)self setConversationId:?];
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(BMPBMessagesContentEvent *)self setAuthor:?];
   }
 
-  if (*(v4 + 20))
+  if (*(fromCopy + 20))
   {
     [(BMPBMessagesContentEvent *)self setSuggestedNickname:?];
   }
 
-  if (*(v4 + 21))
+  if (*(fromCopy + 21))
   {
     [(BMPBMessagesContentEvent *)self setSuggestedPhotoPath:?];
   }
 
-  if (*(v4 + 19))
+  if (*(fromCopy + 19))
   {
     [(BMPBMessagesContentEvent *)self setRecipients:?];
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(BMPBMessagesContentEvent *)self setAttachmentURL:?];
   }
 
-  if (*(v4 + 9))
+  if (*(fromCopy + 9))
   {
     [(BMPBMessagesContentEvent *)self setContent:?];
   }
 
   fromHandle = self->_fromHandle;
-  v6 = *(v4 + 14);
+  v6 = *(fromCopy + 14);
   if (fromHandle)
   {
     if (v6)
@@ -2187,7 +2187,7 @@ LABEL_32:
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = *(v4 + 23);
+  v7 = *(fromCopy + 23);
   v8 = [v7 countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v8)
   {
@@ -2211,12 +2211,12 @@ LABEL_32:
     while (v9);
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BMPBMessagesContentEvent *)self setAccountIdentifier:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(BMPBMessagesContentEvent *)self setAccountType:?];
   }
@@ -2225,7 +2225,7 @@ LABEL_32:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v12 = *(v4 + 3);
+  v12 = *(fromCopy + 3);
   v13 = [v12 countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v13)
   {
@@ -2250,7 +2250,7 @@ LABEL_32:
   }
 
   attachment = self->_attachment;
-  v18 = *(v4 + 6);
+  v18 = *(fromCopy + 6);
   if (attachment)
   {
     if (v18)
@@ -2264,27 +2264,27 @@ LABEL_32:
     [(BMPBMessagesContentEvent *)self setAttachment:?];
   }
 
-  if (*(v4 + 25))
+  if (*(fromCopy + 25))
   {
     [(BMPBMessagesContentEvent *)self setUrl:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(BMPBMessagesContentEvent *)self setContentProtection:?];
   }
 
-  if (*(v4 + 18))
+  if (*(fromCopy + 18))
   {
     [(BMPBMessagesContentEvent *)self setPersonaId:?];
   }
 
-  v19 = *(v4 + 110);
+  v19 = *(fromCopy + 110);
   if ((v19 & 0x100) != 0)
   {
-    self->_isNew = *(v4 + 213);
+    self->_isNew = *(fromCopy + 213);
     *&self->_has |= 0x100u;
-    v19 = *(v4 + 110);
+    v19 = *(fromCopy + 110);
     if ((v19 & 0x800) == 0)
     {
 LABEL_57:
@@ -2297,14 +2297,14 @@ LABEL_57:
     }
   }
 
-  else if ((*(v4 + 110) & 0x800) == 0)
+  else if ((*(fromCopy + 110) & 0x800) == 0)
   {
     goto LABEL_57;
   }
 
-  self->_isTwoFactorCode = *(v4 + 216);
+  self->_isTwoFactorCode = *(fromCopy + 216);
   *&self->_has |= 0x800u;
-  v19 = *(v4 + 110);
+  v19 = *(fromCopy + 110);
   if ((v19 & 0x10) == 0)
   {
 LABEL_58:
@@ -2317,9 +2317,9 @@ LABEL_58:
   }
 
 LABEL_81:
-  self->_isFromMe = *(v4 + 209);
+  self->_isFromMe = *(fromCopy + 209);
   *&self->_has |= 0x10u;
-  v19 = *(v4 + 110);
+  v19 = *(fromCopy + 110);
   if ((v19 & 0x20) == 0)
   {
 LABEL_59:
@@ -2332,9 +2332,9 @@ LABEL_59:
   }
 
 LABEL_82:
-  self->_isGroupThread = *(v4 + 210);
+  self->_isGroupThread = *(fromCopy + 210);
   *&self->_has |= 0x20u;
-  v19 = *(v4 + 110);
+  v19 = *(fromCopy + 110);
   if ((v19 & 0x40) == 0)
   {
 LABEL_60:
@@ -2347,9 +2347,9 @@ LABEL_60:
   }
 
 LABEL_83:
-  self->_isJunk = *(v4 + 211);
+  self->_isJunk = *(fromCopy + 211);
   *&self->_has |= 0x40u;
-  v19 = *(v4 + 110);
+  v19 = *(fromCopy + 110);
   if ((v19 & 0x400) == 0)
   {
 LABEL_61:
@@ -2362,9 +2362,9 @@ LABEL_61:
   }
 
 LABEL_84:
-  self->_isRead = *(v4 + 215);
+  self->_isRead = *(fromCopy + 215);
   *&self->_has |= 0x400u;
-  v19 = *(v4 + 110);
+  v19 = *(fromCopy + 110);
   if ((v19 & 0x200) == 0)
   {
 LABEL_62:
@@ -2377,52 +2377,52 @@ LABEL_62:
   }
 
 LABEL_85:
-  self->_isPinned = *(v4 + 214);
+  self->_isPinned = *(fromCopy + 214);
   *&self->_has |= 0x200u;
-  if ((*(v4 + 110) & 8) != 0)
+  if ((*(fromCopy + 110) & 8) != 0)
   {
 LABEL_63:
-    self->_isBusinessChat = *(v4 + 208);
+    self->_isBusinessChat = *(fromCopy + 208);
     *&self->_has |= 8u;
   }
 
 LABEL_64:
-  if (*(v4 + 22))
+  if (*(fromCopy + 22))
   {
     [(BMPBMessagesContentEvent *)self setTapbackAssociatedMessageID:?];
   }
 
-  if ((*(v4 + 110) & 2) != 0)
+  if ((*(fromCopy + 110) & 2) != 0)
   {
-    self->_tapbackType = *(v4 + 2);
+    self->_tapbackType = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 16))
+  if (*(fromCopy + 16))
   {
     [(BMPBMessagesContentEvent *)self setMessageType:?];
   }
 
-  if (*(v4 + 17))
+  if (*(fromCopy + 17))
   {
     [(BMPBMessagesContentEvent *)self setMessagesService:?];
   }
 
-  v20 = *(v4 + 110);
+  v20 = *(fromCopy + 110);
   if ((v20 & 4) != 0)
   {
-    self->_messageEffect = *(v4 + 30);
+    self->_messageEffect = *(fromCopy + 30);
     *&self->_has |= 4u;
-    v20 = *(v4 + 110);
+    v20 = *(fromCopy + 110);
   }
 
   if ((v20 & 0x80) != 0)
   {
-    self->_isKnownSender = *(v4 + 212);
+    self->_isKnownSender = *(fromCopy + 212);
     *&self->_has |= 0x80u;
   }
 
-  if (*(v4 + 12))
+  if (*(fromCopy + 12))
   {
     [(BMPBMessagesContentEvent *)self setConversationUUID:?];
   }

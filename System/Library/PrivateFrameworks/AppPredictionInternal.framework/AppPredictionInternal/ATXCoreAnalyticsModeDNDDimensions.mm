@@ -1,24 +1,24 @@
 @interface ATXCoreAnalyticsModeDNDDimensions
-- (ATXCoreAnalyticsModeDNDDimensions)initWithMode:(id)a3 nullableIsDND:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ATXCoreAnalyticsModeDNDDimensions)initWithMode:(id)mode nullableIsDND:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)coreAnalyticsDictionary;
 - (id)powerset;
 @end
 
 @implementation ATXCoreAnalyticsModeDNDDimensions
 
-- (ATXCoreAnalyticsModeDNDDimensions)initWithMode:(id)a3 nullableIsDND:(id)a4
+- (ATXCoreAnalyticsModeDNDDimensions)initWithMode:(id)mode nullableIsDND:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  modeCopy = mode;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = ATXCoreAnalyticsModeDNDDimensions;
   v9 = [(ATXCoreAnalyticsModeDNDDimensions *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mode, a3);
-    objc_storeStrong(&v10->_isDND, a4);
+    objc_storeStrong(&v9->_mode, mode);
+    objc_storeStrong(&v10->_isDND, d);
   }
 
   return v10;
@@ -34,9 +34,9 @@
   [v3 addObject:v5];
   v6 = [[ATXCoreAnalyticsModeDNDDimensions alloc] initWithMode:self->_mode nullableIsDND:0];
   [v3 addObject:v6];
-  v7 = [v3 allObjects];
+  allObjects = [v3 allObjects];
 
-  return v7;
+  return allObjects;
 }
 
 - (id)coreAnalyticsDictionary
@@ -44,22 +44,22 @@
   v11[2] = *MEMORY[0x277D85DE8];
   v10[0] = @"mode";
   mode = self->_mode;
-  v4 = mode;
+  null = mode;
   if (!mode)
   {
-    v4 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
   v10[1] = @"isDND";
-  v11[0] = v4;
+  v11[0] = null;
   isDND = self->_isDND;
-  v6 = isDND;
+  null2 = isDND;
   if (!isDND)
   {
-    v6 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v11[1] = v6;
+  v11[1] = null2;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
   if (isDND)
   {
@@ -84,9 +84,9 @@ LABEL_7:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ATXCoreAnalyticsModeDNDDimensions allocWithZone:a3];
+  v4 = [ATXCoreAnalyticsModeDNDDimensions allocWithZone:zone];
   mode = self->_mode;
   isDND = self->_isDND;
 

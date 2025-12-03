@@ -1,8 +1,8 @@
 @interface CompactMonthWeekDayOverlay
 + (id)_attributes;
-+ (id)_cachedImageForString:(id)a3 isWeekend:(BOOL)a4 underlineThickness:(double)a5 fontSize:(double)a6 style:(int64_t)a7;
-+ (id)_generateImageForString:(id)a3 isWeekend:(BOOL)a4 underlineThickness:(double)a5 fontSize:(double)a6 style:(int64_t)a7;
-- (void)setDate:(id)a3;
++ (id)_cachedImageForString:(id)string isWeekend:(BOOL)weekend underlineThickness:(double)thickness fontSize:(double)size style:(int64_t)style;
++ (id)_generateImageForString:(id)string isWeekend:(BOOL)weekend underlineThickness:(double)thickness fontSize:(double)size style:(int64_t)style;
+- (void)setDate:(id)date;
 - (void)update;
 @end
 
@@ -20,11 +20,11 @@
   return v3;
 }
 
-+ (id)_generateImageForString:(id)a3 isWeekend:(BOOL)a4 underlineThickness:(double)a5 fontSize:(double)a6 style:(int64_t)a7
++ (id)_generateImageForString:(id)string isWeekend:(BOOL)weekend underlineThickness:(double)thickness fontSize:(double)size style:(int64_t)style
 {
-  v11 = a3;
-  v12 = [a1 _attributes];
-  if (a4)
+  stringCopy = string;
+  _attributes = [self _attributes];
+  if (weekend)
   {
     WeekendTextColor();
   }
@@ -34,23 +34,23 @@
     +[UIColor labelColor];
   }
   v13 = ;
-  [v12 setObject:v13 forKeyedSubscript:NSForegroundColorAttributeName];
+  [_attributes setObject:v13 forKeyedSubscript:NSForegroundColorAttributeName];
 
-  v14 = [v12 objectForKeyedSubscript:NSFontAttributeName];
+  v14 = [_attributes objectForKeyedSubscript:NSFontAttributeName];
   [v14 pointSize];
-  if (vabdd_f64(v15, a6) >= 2.22044605e-16)
+  if (vabdd_f64(v15, size) >= 2.22044605e-16)
   {
-    v16 = [UIFont systemFontOfSize:a6];
-    [v12 setObject:v16 forKeyedSubscript:NSFontAttributeName];
+    v16 = [UIFont systemFontOfSize:size];
+    [_attributes setObject:v16 forKeyedSubscript:NSFontAttributeName];
   }
 
-  [v11 boundingRectWithSize:0 options:v12 attributes:0 context:{CGSizeZero.width, CGSizeZero.height}];
+  [stringCopy boundingRectWithSize:0 options:_attributes attributes:0 context:{CGSizeZero.width, CGSizeZero.height}];
   CalCeilToScreenScale();
   v18 = v17;
   CalCeilToScreenScale();
   v20 = v19;
-  v21 = a5 + 2.0 + v19;
-  if (a5 <= 0.0)
+  v21 = thickness + 2.0 + v19;
+  if (thickness <= 0.0)
   {
     v22 = v20;
   }
@@ -68,45 +68,45 @@
   v29[3] = &unk_10020FBA8;
   v32 = v18;
   v33 = v20;
-  v30 = v11;
-  v31 = v12;
-  v34 = a5;
-  v25 = v12;
-  v26 = v11;
+  v30 = stringCopy;
+  v31 = _attributes;
+  thicknessCopy = thickness;
+  v25 = _attributes;
+  v26 = stringCopy;
   v27 = [v24 imageWithActions:v29];
 
   return v27;
 }
 
-+ (id)_cachedImageForString:(id)a3 isWeekend:(BOOL)a4 underlineThickness:(double)a5 fontSize:(double)a6 style:(int64_t)a7
++ (id)_cachedImageForString:(id)string isWeekend:(BOOL)weekend underlineThickness:(double)thickness fontSize:(double)size style:(int64_t)style
 {
-  v10 = a4;
-  v12 = a3;
+  weekendCopy = weekend;
+  stringCopy = string;
   if (qword_1002519B8 != -1)
   {
     sub_10016FEA4();
   }
 
   v13 = @"weekday";
-  if (v10)
+  if (weekendCopy)
   {
     v13 = @"weekend";
   }
 
-  v14 = [NSString stringWithFormat:@"%@:%@:%f:%f:%tu", v12, v13, *&a5, *&a6, a7];
-  v15 = [qword_1002519B0 objectForKey:v14];
+  style = [NSString stringWithFormat:@"%@:%@:%f:%f:%tu", stringCopy, v13, *&thickness, *&size, style];
+  v15 = [qword_1002519B0 objectForKey:style];
   if (!v15)
   {
-    v15 = [a1 _generateImageForString:v12 isWeekend:v10 underlineThickness:a7 fontSize:a5 style:a6];
-    [qword_1002519B0 setObject:v15 forKey:v14];
+    v15 = [self _generateImageForString:stringCopy isWeekend:weekendCopy underlineThickness:style fontSize:thickness style:size];
+    [qword_1002519B0 setObject:v15 forKey:style];
   }
 
   return v15;
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  objc_storeStrong(&self->_date, a3);
+  objc_storeStrong(&self->_date, date);
 
   [(CompactMonthWeekDayOverlay *)self update];
 }
@@ -140,7 +140,7 @@
     v7 = CUIKGetOverlayCalendar();
     v8 = [CUIKDateStrings overlayShortStringForDate:date inCalendar:v7];
 
-    v9 = [(CompactMonthWeekDayOverlay *)self traitCollection];
+    traitCollection = [(CompactMonthWeekDayOverlay *)self traitCollection];
     LODWORD(v7) = EKUIUsesLargeTextLayout();
 
     v10 = CUIKCalendar();
@@ -152,7 +152,7 @@
     v38 = sub_10006F870;
     v39 = sub_10006F880;
     v40 = 0;
-    v12 = [(CompactMonthWeekDayOverlay *)self traitCollection];
+    traitCollection2 = [(CompactMonthWeekDayOverlay *)self traitCollection];
     v30[1] = 3221225472;
     v30[0] = _NSConcreteStackBlock;
     v30[2] = sub_10006F888;
@@ -168,11 +168,11 @@
     v31 = v13;
     v34 = v11;
     v33 = v5;
-    [v12 performAsCurrentTraitCollection:v30];
+    [traitCollection2 performAsCurrentTraitCollection:v30];
 
-    v14 = [v36[5] CGImage];
-    v15 = [(CompactMonthWeekDayOverlay *)self layer];
-    [v15 setContents:v14];
+    cGImage = [v36[5] CGImage];
+    layer = [(CompactMonthWeekDayOverlay *)self layer];
+    [layer setContents:cGImage];
 
     [(CompactMonthWeekDayOverlay *)self frame];
     v17 = v16;
@@ -185,8 +185,8 @@
       v25 = v24;
       [v36[5] size];
       [(CompactMonthWeekDayOverlay *)self setFrame:v23, v25, v26, v27];
-      v28 = [(CompactMonthWeekDayOverlay *)self superview];
-      [v28 setNeedsLayout];
+      superview = [(CompactMonthWeekDayOverlay *)self superview];
+      [superview setNeedsLayout];
     }
 
     _Block_object_dispose(&v35, 8);
@@ -194,8 +194,8 @@
 
   else
   {
-    v29 = [(CompactMonthWeekDayOverlay *)self layer];
-    [v29 setContents:0];
+    layer2 = [(CompactMonthWeekDayOverlay *)self layer];
+    [layer2 setContents:0];
   }
 }
 

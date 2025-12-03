@@ -7,7 +7,7 @@
 - (uint64_t)hk_midPointToValue:()_HKPropertyAnimationExtensions percentage:
 {
   v6 = a4;
-  [a1 doubleValue];
+  [self doubleValue];
   v8 = v7;
   [v6 doubleValue];
   v10 = v9;

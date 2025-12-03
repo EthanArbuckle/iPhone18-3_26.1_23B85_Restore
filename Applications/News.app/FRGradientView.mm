@@ -1,35 +1,35 @@
 @interface FRGradientView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGPoint)endPoint;
 - (CGPoint)startPoint;
 - (NSArray)colors;
 - (NSArray)locations;
-- (void)setColors:(id)a3;
-- (void)setEndPoint:(CGPoint)a3;
-- (void)setLocations:(id)a3;
-- (void)setStartPoint:(CGPoint)a3;
+- (void)setColors:(id)colors;
+- (void)setEndPoint:(CGPoint)point;
+- (void)setLocations:(id)locations;
+- (void)setStartPoint:(CGPoint)point;
 @end
 
 @implementation FRGradientView
 
 - (NSArray)colors
 {
-  v2 = [(FRGradientView *)self layer];
-  v3 = [v2 colors];
+  layer = [(FRGradientView *)self layer];
+  colors = [layer colors];
 
-  return v3;
+  return colors;
 }
 
-- (void)setColors:(id)a3
+- (void)setColors:(id)colors
 {
-  v4 = a3;
+  colorsCopy = colors;
   v5 = +[NSMutableArray array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = colorsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -50,8 +50,8 @@
         if (objc_opt_isKindOfClass())
         {
           v12 = v11;
-          v13 = [v12 CGColor];
-          [v5 addObject:v13];
+          cGColor = [v12 CGColor];
+          [v5 addObject:cGColor];
         }
 
         v10 = v10 + 1;
@@ -65,29 +65,29 @@
   }
 
   v14 = [v5 copy];
-  v15 = [(FRGradientView *)self layer];
-  [v15 setColors:v14];
+  layer = [(FRGradientView *)self layer];
+  [layer setColors:v14];
 }
 
 - (NSArray)locations
 {
-  v2 = [(FRGradientView *)self layer];
-  v3 = [v2 locations];
+  layer = [(FRGradientView *)self layer];
+  locations = [layer locations];
 
-  return v3;
+  return locations;
 }
 
-- (void)setLocations:(id)a3
+- (void)setLocations:(id)locations
 {
-  v4 = a3;
-  v5 = [(FRGradientView *)self layer];
-  [v5 setLocations:v4];
+  locationsCopy = locations;
+  layer = [(FRGradientView *)self layer];
+  [layer setLocations:locationsCopy];
 }
 
 - (CGPoint)startPoint
 {
-  v2 = [(FRGradientView *)self layer];
-  [v2 startPoint];
+  layer = [(FRGradientView *)self layer];
+  [layer startPoint];
   v4 = v3;
   v6 = v5;
 
@@ -98,18 +98,18 @@
   return result;
 }
 
-- (void)setStartPoint:(CGPoint)a3
+- (void)setStartPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(FRGradientView *)self layer];
-  [v5 setStartPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  layer = [(FRGradientView *)self layer];
+  [layer setStartPoint:{x, y}];
 }
 
 - (CGPoint)endPoint
 {
-  v2 = [(FRGradientView *)self layer];
-  [v2 endPoint];
+  layer = [(FRGradientView *)self layer];
+  [layer endPoint];
   v4 = v3;
   v6 = v5;
 
@@ -120,19 +120,19 @@
   return result;
 }
 
-- (void)setEndPoint:(CGPoint)a3
+- (void)setEndPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(FRGradientView *)self layer];
-  [v5 setEndPoint:{x, y}];
+  y = point.y;
+  x = point.x;
+  layer = [(FRGradientView *)self layer];
+  [layer setEndPoint:{x, y}];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   if ([(FRGradientView *)self passThroughTouches])
   {
     v8 = 0;
@@ -142,25 +142,25 @@
   {
     v10.receiver = self;
     v10.super_class = FRGradientView;
-    v8 = [(FRGradientView *)&v10 pointInside:v7 withEvent:x, y];
+    v8 = [(FRGradientView *)&v10 pointInside:eventCopy withEvent:x, y];
   }
 
   return v8;
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7.receiver = self;
   v7.super_class = FRGradientView;
-  if (-[FRGradientView _shouldAnimatePropertyWithKey:](&v7, "_shouldAnimatePropertyWithKey:", v4) || ([v4 isEqualToString:@"colors"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"startPoint") & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"endPoint") & 1) != 0)
+  if (-[FRGradientView _shouldAnimatePropertyWithKey:](&v7, "_shouldAnimatePropertyWithKey:", keyCopy) || ([keyCopy isEqualToString:@"colors"] & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"startPoint") & 1) != 0 || (objc_msgSend(keyCopy, "isEqualToString:", @"endPoint") & 1) != 0)
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 isEqualToString:@"locations"];
+    v5 = [keyCopy isEqualToString:@"locations"];
   }
 
   return v5;

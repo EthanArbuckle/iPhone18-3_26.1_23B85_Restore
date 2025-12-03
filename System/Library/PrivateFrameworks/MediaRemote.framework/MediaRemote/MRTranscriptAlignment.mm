@@ -1,66 +1,66 @@
 @interface MRTranscriptAlignment
-- (MRTranscriptAlignment)initWithCoder:(id)a3;
-- (MRTranscriptAlignment)initWithPlayerStartTime:(double)a3 playerEndTime:(double)a4 referenceStartTime:(double)a5 referenceEndTime:(double)a6 matchedBeginning:(BOOL)a7 matchedEnd:(BOOL)a8;
-- (MRTranscriptAlignment)initWithProtobuf:(id)a3;
+- (MRTranscriptAlignment)initWithCoder:(id)coder;
+- (MRTranscriptAlignment)initWithPlayerStartTime:(double)time playerEndTime:(double)endTime referenceStartTime:(double)startTime referenceEndTime:(double)referenceEndTime matchedBeginning:(BOOL)beginning matchedEnd:(BOOL)end;
+- (MRTranscriptAlignment)initWithProtobuf:(id)protobuf;
 - (NSDictionary)dictionaryRepresentation;
 - (_MRTranscriptAlignmentProtobuf)protobuf;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)data;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MRTranscriptAlignment
 
-- (MRTranscriptAlignment)initWithPlayerStartTime:(double)a3 playerEndTime:(double)a4 referenceStartTime:(double)a5 referenceEndTime:(double)a6 matchedBeginning:(BOOL)a7 matchedEnd:(BOOL)a8
+- (MRTranscriptAlignment)initWithPlayerStartTime:(double)time playerEndTime:(double)endTime referenceStartTime:(double)startTime referenceEndTime:(double)referenceEndTime matchedBeginning:(BOOL)beginning matchedEnd:(BOOL)end
 {
   v15.receiver = self;
   v15.super_class = MRTranscriptAlignment;
   result = [(MRTranscriptAlignment *)&v15 init];
   if (result)
   {
-    result->_playerStartTime = a3;
-    result->_playerEndTime = a4;
-    result->_referenceStartTime = a5;
-    result->_referenceEndTime = a6;
-    result->_matchedBeginning = a7;
-    result->_matchedEnd = a8;
+    result->_playerStartTime = time;
+    result->_playerEndTime = endTime;
+    result->_referenceStartTime = startTime;
+    result->_referenceEndTime = referenceEndTime;
+    result->_matchedBeginning = beginning;
+    result->_matchedEnd = end;
   }
 
   return result;
 }
 
-- (MRTranscriptAlignment)initWithProtobuf:(id)a3
+- (MRTranscriptAlignment)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  if (v4)
+  protobufCopy = protobuf;
+  if (protobufCopy)
   {
     v12.receiver = self;
     v12.super_class = MRTranscriptAlignment;
     v5 = [(MRTranscriptAlignment *)&v12 init];
     if (v5)
     {
-      [v4 playerStartTime];
+      [protobufCopy playerStartTime];
       v5->_playerStartTime = v6;
-      [v4 playerEndTime];
+      [protobufCopy playerEndTime];
       v5->_playerEndTime = v7;
-      [v4 referenceStartTime];
+      [protobufCopy referenceStartTime];
       v5->_referenceStartTime = v8;
-      [v4 referenceEndTime];
+      [protobufCopy referenceEndTime];
       v5->_referenceEndTime = v9;
-      v5->_matchedBeginning = [v4 matchedBeginning];
-      v5->_matchedEnd = [v4 matchedEnd];
+      v5->_matchedBeginning = [protobufCopy matchedBeginning];
+      v5->_matchedEnd = [protobufCopy matchedEnd];
     }
 
     self = v5;
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 - (_MRTranscriptAlignmentProtobuf)protobuf
@@ -82,10 +82,10 @@
 
 - (id)data
 {
-  v2 = [(MRTranscriptAlignment *)self protobuf];
-  v3 = [v2 data];
+  protobuf = [(MRTranscriptAlignment *)self protobuf];
+  data = [protobuf data];
 
-  return v3;
+  return data;
 }
 
 - (NSDictionary)dictionaryRepresentation
@@ -124,9 +124,9 @@
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(MRTranscriptAlignment *)self playerStartTime];
   [v4 setPlayerStartTime:?];
   [(MRTranscriptAlignment *)self playerEndTime];
@@ -140,23 +140,23 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  if ([v5 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
     [(MRTranscriptAlignment *)self playerStartTime];
-    [v5 encodeDouble:@"playerStartTime" forKey:?];
+    [coderCopy encodeDouble:@"playerStartTime" forKey:?];
     [(MRTranscriptAlignment *)self playerEndTime];
-    [v5 encodeDouble:@"playerEndTime" forKey:?];
+    [coderCopy encodeDouble:@"playerEndTime" forKey:?];
     [(MRTranscriptAlignment *)self referenceStartTime];
-    [v5 encodeDouble:@"referenceStartTime" forKey:?];
+    [coderCopy encodeDouble:@"referenceStartTime" forKey:?];
     [(MRTranscriptAlignment *)self referenceEndTime];
-    [v5 encodeDouble:@"referenceEndTime" forKey:?];
-    [v5 encodeBool:-[MRTranscriptAlignment matchedBeginning](self forKey:{"matchedBeginning"), @"matchedBeginning"}];
-    [v5 encodeBool:-[MRTranscriptAlignment matchedEnd](self forKey:{"matchedEnd"), @"matchedEnd"}];
-    v4 = [(MRTranscriptAlignment *)self protobuf];
-    [v5 encodeObject:v4 forKey:@"protobuf"];
+    [coderCopy encodeDouble:@"referenceEndTime" forKey:?];
+    [coderCopy encodeBool:-[MRTranscriptAlignment matchedBeginning](self forKey:{"matchedBeginning"), @"matchedBeginning"}];
+    [coderCopy encodeBool:-[MRTranscriptAlignment matchedEnd](self forKey:{"matchedEnd"), @"matchedEnd"}];
+    protobuf = [(MRTranscriptAlignment *)self protobuf];
+    [coderCopy encodeObject:protobuf forKey:@"protobuf"];
   }
 
   else
@@ -165,9 +165,9 @@
   }
 }
 
-- (MRTranscriptAlignment)initWithCoder:(id)a3
+- (MRTranscriptAlignment)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = MRTranscriptAlignment;
   v5 = [(MRTranscriptAlignment *)&v11 init];
@@ -176,17 +176,17 @@
     goto LABEL_11;
   }
 
-  if (![v4 allowsKeyedCoding])
+  if (![coderCopy allowsKeyedCoding])
   {
     v8 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithMRError:38];
-    [v4 failWithError:v8];
+    [coderCopy failWithError:v8];
 
 LABEL_11:
     v7 = v5;
     goto LABEL_12;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobuf"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -202,16 +202,16 @@ LABEL_11:
   if (!v6)
   {
 LABEL_10:
-    [v4 decodeDoubleForKey:@"playerStartTime"];
+    [coderCopy decodeDoubleForKey:@"playerStartTime"];
     [(MRTranscriptAlignment *)v5 setPlayerStartTime:?];
-    [v4 decodeDoubleForKey:@"playerEndTime"];
+    [coderCopy decodeDoubleForKey:@"playerEndTime"];
     [(MRTranscriptAlignment *)v5 setPlayerEndTime:?];
-    [v4 decodeDoubleForKey:@"referenceStartTime"];
+    [coderCopy decodeDoubleForKey:@"referenceStartTime"];
     [(MRTranscriptAlignment *)v5 setReferenceStartTime:?];
-    [v4 decodeDoubleForKey:@"referenceEndTime"];
+    [coderCopy decodeDoubleForKey:@"referenceEndTime"];
     [(MRTranscriptAlignment *)v5 setReferenceEndTime:?];
-    -[MRTranscriptAlignment setMatchedBeginning:](v5, "setMatchedBeginning:", [v4 decodeBoolForKey:@"matchedBeginning"]);
-    -[MRTranscriptAlignment setMatchedEnd:](v5, "setMatchedEnd:", [v4 decodeBoolForKey:@"matchedEnd"]);
+    -[MRTranscriptAlignment setMatchedBeginning:](v5, "setMatchedBeginning:", [coderCopy decodeBoolForKey:@"matchedBeginning"]);
+    -[MRTranscriptAlignment setMatchedEnd:](v5, "setMatchedEnd:", [coderCopy decodeBoolForKey:@"matchedEnd"]);
     goto LABEL_11;
   }
 

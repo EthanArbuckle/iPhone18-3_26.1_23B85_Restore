@@ -1,91 +1,91 @@
 @interface MFLocalActionPersistence_iOS
-- (BOOL)moveSupportedFromMailboxURL:(id)a3 toURL:(id)a4;
-- (MFLocalActionPersistence_iOS)initWithDatabase:(id)a3;
-- (MFLocalActionPersistence_iOS)initWithDatabase:(id)a3 gmailLabelPersistence:(id)a4;
-- (MFLocalActionPersistence_iOS)initWithLibrary:(id)a3 database:(id)a4;
+- (BOOL)moveSupportedFromMailboxURL:(id)l toURL:(id)rL;
+- (MFLocalActionPersistence_iOS)initWithDatabase:(id)database;
+- (MFLocalActionPersistence_iOS)initWithDatabase:(id)database gmailLabelPersistence:(id)persistence;
+- (MFLocalActionPersistence_iOS)initWithLibrary:(id)library database:(id)database;
 - (MFMailMessageLibrary)library;
-- (id)mailboxURLForDatabaseID:(int64_t)a3;
-- (id)messageForDatabaseID:(int64_t)a3;
-- (int64_t)mailboxDatabaseIDForURL:(id)a3;
+- (id)mailboxURLForDatabaseID:(int64_t)d;
+- (id)messageForDatabaseID:(int64_t)d;
+- (int64_t)mailboxDatabaseIDForURL:(id)l;
 @end
 
 @implementation MFLocalActionPersistence_iOS
 
-- (MFLocalActionPersistence_iOS)initWithDatabase:(id)a3 gmailLabelPersistence:(id)a4
+- (MFLocalActionPersistence_iOS)initWithDatabase:(id)database gmailLabelPersistence:(id)persistence
 {
-  v7 = a3;
-  v8 = a4;
+  databaseCopy = database;
+  persistenceCopy = persistence;
   [(MFLocalActionPersistence_iOS *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MFLocalActionPersistence_iOS initWithDatabase:gmailLabelPersistence:]", "MFLocalActionPersistence_iOS.m", 24, "0");
 }
 
-- (MFLocalActionPersistence_iOS)initWithLibrary:(id)a3 database:(id)a4
+- (MFLocalActionPersistence_iOS)initWithLibrary:(id)library database:(id)database
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 persistence];
-  v9 = [v8 gmailLabelPersistence];
+  libraryCopy = library;
+  databaseCopy = database;
+  persistence = [libraryCopy persistence];
+  gmailLabelPersistence = [persistence gmailLabelPersistence];
   v12.receiver = self;
   v12.super_class = MFLocalActionPersistence_iOS;
-  v10 = [(EDLocalActionPersistence *)&v12 initWithDatabase:v7 gmailLabelPersistence:v9];
+  v10 = [(EDLocalActionPersistence *)&v12 initWithDatabase:databaseCopy gmailLabelPersistence:gmailLabelPersistence];
 
   if (v10)
   {
-    objc_storeWeak(&v10->_library, v6);
+    objc_storeWeak(&v10->_library, libraryCopy);
   }
 
   return v10;
 }
 
-- (MFLocalActionPersistence_iOS)initWithDatabase:(id)a3
+- (MFLocalActionPersistence_iOS)initWithDatabase:(id)database
 {
-  v5 = a3;
+  databaseCopy = database;
   [(MFLocalActionPersistence_iOS *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MFLocalActionPersistence_iOS initWithDatabase:]", "MFLocalActionPersistence_iOS.m", 36, "0");
 }
 
-- (id)messageForDatabaseID:(int64_t)a3
+- (id)messageForDatabaseID:(int64_t)d
 {
-  v4 = [(MFLocalActionPersistence_iOS *)self library];
-  v5 = [v4 messageWithLibraryID:a3 options:7346239 inMailbox:0];
+  library = [(MFLocalActionPersistence_iOS *)self library];
+  v5 = [library messageWithLibraryID:d options:7346239 inMailbox:0];
 
   return v5;
 }
 
-- (BOOL)moveSupportedFromMailboxURL:(id)a3 toURL:(id)a4
+- (BOOL)moveSupportedFromMailboxURL:(id)l toURL:(id)rL
 {
-  v5 = a4;
-  v6 = [MailAccount accountWithURL:a3];
-  v7 = [MailAccount accountWithURL:v5];
+  rLCopy = rL;
+  v6 = [MailAccount accountWithURL:l];
+  v7 = [MailAccount accountWithURL:rLCopy];
   if (v6 == v7)
   {
-    v8 = [v6 moveSupported];
+    moveSupported = [v6 moveSupported];
   }
 
   else
   {
-    v8 = 0;
+    moveSupported = 0;
   }
 
-  return v8;
+  return moveSupported;
 }
 
-- (id)mailboxURLForDatabaseID:(int64_t)a3
+- (id)mailboxURLForDatabaseID:(int64_t)d
 {
   v4 = MEMORY[0x1E695DFF8];
-  v5 = [(MFLocalActionPersistence_iOS *)self library];
-  v6 = [v5 urlForMailboxID:a3];
+  library = [(MFLocalActionPersistence_iOS *)self library];
+  v6 = [library urlForMailboxID:d];
   v7 = [v4 URLWithString:v6];
 
   return v7;
 }
 
-- (int64_t)mailboxDatabaseIDForURL:(id)a3
+- (int64_t)mailboxDatabaseIDForURL:(id)l
 {
-  v4 = a3;
-  v5 = [(MFLocalActionPersistence_iOS *)self library];
-  v6 = [v4 absoluteString];
-  v7 = [v5 mailboxIDForURLString:v6 createIfNecessary:1];
+  lCopy = l;
+  library = [(MFLocalActionPersistence_iOS *)self library];
+  absoluteString = [lCopy absoluteString];
+  v7 = [library mailboxIDForURLString:absoluteString createIfNecessary:1];
 
   return v7;
 }

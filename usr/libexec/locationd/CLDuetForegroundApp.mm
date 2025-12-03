@@ -1,11 +1,11 @@
 @interface CLDuetForegroundApp
-- (CLDuetForegroundApp)initWithBundleId:(id)a3 launchReason:(id)a4;
+- (CLDuetForegroundApp)initWithBundleId:(id)id launchReason:(id)reason;
 - (void)dealloc;
 @end
 
 @implementation CLDuetForegroundApp
 
-- (CLDuetForegroundApp)initWithBundleId:(id)a3 launchReason:(id)a4
+- (CLDuetForegroundApp)initWithBundleId:(id)id launchReason:(id)reason
 {
   v9.receiver = self;
   v9.super_class = CLDuetForegroundApp;
@@ -13,8 +13,8 @@
   v7 = v6;
   if (v6)
   {
-    [(CLDuetForegroundApp *)v6 setBundleId:a3];
-    [(CLDuetForegroundApp *)v7 setLaunchReason:a4];
+    [(CLDuetForegroundApp *)v6 setBundleId:id];
+    [(CLDuetForegroundApp *)v7 setLaunchReason:reason];
   }
 
   return v7;

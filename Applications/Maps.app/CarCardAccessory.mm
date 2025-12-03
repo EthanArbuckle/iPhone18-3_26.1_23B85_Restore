@@ -1,7 +1,7 @@
 @interface CarCardAccessory
-- (BOOL)isEqual:(id)a3;
-- (CarCardAccessory)initWithSymbolName:(id)a3 identifier:(id)a4 handler:(id)a5;
-- (CarCardAccessory)initWithType:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (CarCardAccessory)initWithSymbolName:(id)name identifier:(id)identifier handler:(id)handler;
+- (CarCardAccessory)initWithType:(unint64_t)type;
 - (unint64_t)hash;
 @end
 
@@ -12,30 +12,30 @@
   v10.receiver = self;
   v10.super_class = CarCardAccessory;
   v3 = [(CarCardAccessory *)&v10 hash];
-  v4 = [(CarCardAccessory *)self identifier];
-  v5 = [v4 hash];
+  identifier = [(CarCardAccessory *)self identifier];
+  v5 = [identifier hash];
   v6 = v5 ^ [(CarCardAccessory *)self type];
-  v7 = [(CarCardAccessory *)self symbolName];
-  v8 = v6 ^ [v7 hash];
+  symbolName = [(CarCardAccessory *)self symbolName];
+  v8 = v6 ^ [symbolName hash];
 
   return v8 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v19 = 1;
   }
 
   else
   {
-    if ([(CarCardAccessory *)v4 isMemberOfClass:objc_opt_class()])
+    if ([(CarCardAccessory *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v5 = v4;
-      v6 = [(CarCardAccessory *)v5 type];
-      if (v6 != [(CarCardAccessory *)self type])
+      v5 = equalCopy;
+      type = [(CarCardAccessory *)v5 type];
+      if (type != [(CarCardAccessory *)self type])
       {
         v19 = 0;
 LABEL_25:
@@ -43,10 +43,10 @@ LABEL_25:
         goto LABEL_26;
       }
 
-      v7 = [(CarCardAccessory *)v5 identifier];
-      v8 = [(CarCardAccessory *)self identifier];
-      v9 = v7;
-      v10 = v8;
+      identifier = [(CarCardAccessory *)v5 identifier];
+      identifier2 = [(CarCardAccessory *)self identifier];
+      v9 = identifier;
+      v10 = identifier2;
       if (v9 | v10)
       {
         v11 = [v9 isEqual:v10];
@@ -60,10 +60,10 @@ LABEL_24:
         }
       }
 
-      v12 = [(CarCardAccessory *)v5 symbolName];
-      v13 = [(CarCardAccessory *)self symbolName];
-      v14 = v12;
-      v15 = v13;
+      symbolName = [(CarCardAccessory *)v5 symbolName];
+      symbolName2 = [(CarCardAccessory *)self symbolName];
+      v14 = symbolName;
+      v15 = symbolName2;
       if (v14 | v15)
       {
         v16 = [v14 isEqual:v15];
@@ -77,20 +77,20 @@ LABEL_23:
         }
       }
 
-      v17 = [(CarCardAccessory *)self handler];
-      if (v17 && ([(CarCardAccessory *)v5 handler], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
+      handler = [(CarCardAccessory *)self handler];
+      if (handler && ([(CarCardAccessory *)v5 handler], (v18 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v19 = 1;
       }
 
       else
       {
-        v20 = [(CarCardAccessory *)self handler];
-        if (v20)
+        handler2 = [(CarCardAccessory *)self handler];
+        if (handler2)
         {
 
           v19 = 0;
-          if (!v17)
+          if (!handler)
           {
             goto LABEL_22;
           }
@@ -98,10 +98,10 @@ LABEL_23:
 
         else
         {
-          v21 = [(CarCardAccessory *)v5 handler];
-          v19 = v21 == 0;
+          handler3 = [(CarCardAccessory *)v5 handler];
+          v19 = handler3 == 0;
 
-          if (!v17)
+          if (!handler)
           {
 LABEL_22:
 
@@ -123,23 +123,23 @@ LABEL_26:
   return v19;
 }
 
-- (CarCardAccessory)initWithSymbolName:(id)a3 identifier:(id)a4 handler:(id)a5
+- (CarCardAccessory)initWithSymbolName:(id)name identifier:(id)identifier handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v11 = [(CarCardAccessory *)self initWithType:4];
   if (v11)
   {
-    v12 = [v9 copy];
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    v14 = [v8 copy];
+    v14 = [nameCopy copy];
     symbolName = v11->_symbolName;
     v11->_symbolName = v14;
 
-    v16 = [v10 copy];
+    v16 = [handlerCopy copy];
     handler = v11->_handler;
     v11->_handler = v16;
   }
@@ -147,7 +147,7 @@ LABEL_26:
   return v11;
 }
 
-- (CarCardAccessory)initWithType:(unint64_t)a3
+- (CarCardAccessory)initWithType:(unint64_t)type
 {
   v12.receiver = self;
   v12.super_class = CarCardAccessory;
@@ -155,17 +155,17 @@ LABEL_26:
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3;
-    if (a3 > 2)
+    v4->_type = type;
+    if (type > 2)
     {
-      if (a3 == 3)
+      if (type == 3)
       {
         identifier = v4->_identifier;
         v7 = @"Share";
         goto LABEL_15;
       }
 
-      if (a3 == 4)
+      if (type == 4)
       {
         v8 = sub_10006D178();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -202,7 +202,7 @@ LABEL_26:
 
     else
     {
-      if (a3 - 1 < 2)
+      if (type - 1 < 2)
       {
         identifier = v4->_identifier;
         v7 = @"Back";
@@ -213,7 +213,7 @@ LABEL_16:
         return v5;
       }
 
-      if (!a3)
+      if (!type)
       {
         identifier = v4->_identifier;
         v7 = &stru_1016631F0;

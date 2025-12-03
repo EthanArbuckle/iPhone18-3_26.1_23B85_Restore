@@ -1,20 +1,20 @@
 @interface LACPreboardLauncher
-- (LACPreboardLauncher)initWithLifecycleManager:(id)a3;
+- (LACPreboardLauncher)initWithLifecycleManager:(id)manager;
 - (id)_alternateSystemApp;
-- (void)_finishLaunchingWithError:(id)a3;
-- (void)_terminateApp:(id)a3;
-- (void)alternateSystemApp:(id)a3 didExitWithStatus:(int)a4;
-- (void)alternateSystemApp:(id)a3 didFailToLaunchWithError:(id)a4;
-- (void)alternateSystemApp:(id)a3 didTerminateWithSignal:(int)a4;
-- (void)alternateSystemAppDidLaunch:(id)a3;
-- (void)launchPreboardWithCompletion:(id)a3;
+- (void)_finishLaunchingWithError:(id)error;
+- (void)_terminateApp:(id)app;
+- (void)alternateSystemApp:(id)app didExitWithStatus:(int)status;
+- (void)alternateSystemApp:(id)app didFailToLaunchWithError:(id)error;
+- (void)alternateSystemApp:(id)app didTerminateWithSignal:(int)signal;
+- (void)alternateSystemAppDidLaunch:(id)launch;
+- (void)launchPreboardWithCompletion:(id)completion;
 @end
 
 @implementation LACPreboardLauncher
 
-- (LACPreboardLauncher)initWithLifecycleManager:(id)a3
+- (LACPreboardLauncher)initWithLifecycleManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v14.receiver = self;
   v14.super_class = LACPreboardLauncher;
   v6 = [(LACPreboardLauncher *)&v14 init];
@@ -24,7 +24,7 @@
     launchCompletion = v6->_launchCompletion;
     v6->_launchCompletion = 0;
 
-    objc_storeStrong(&v7->_lifecycleManager, a3);
+    objc_storeStrong(&v7->_lifecycleManager, manager);
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
     v11 = [LACConcurrencyUtilities createUserInitiatedSerialQueueWithIdentifier:v10];
@@ -35,9 +35,9 @@
   return v7;
 }
 
-- (void)launchPreboardWithCompletion:(id)a3
+- (void)launchPreboardWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   workQueue = self->_workQueue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -46,8 +46,8 @@
   v7[3] = &unk_1E7A95568;
   objc_copyWeak(&v9, &location);
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(workQueue, v7);
 
   objc_destroyWeak(&v9);
@@ -97,7 +97,7 @@ void __52__LACPreboardLauncher_launchPreboardWithCompletion___block_invoke(uint6
   }
 }
 
-- (void)alternateSystemAppDidLaunch:(id)a3
+- (void)alternateSystemAppDidLaunch:(id)launch
 {
   v4 = LACLogPreboard();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -109,47 +109,47 @@ void __52__LACPreboardLauncher_launchPreboardWithCompletion___block_invoke(uint6
   [(LACPreboardLauncher *)self _finishLaunchingWithError:0];
 }
 
-- (void)alternateSystemApp:(id)a3 didFailToLaunchWithError:(id)a4
+- (void)alternateSystemApp:(id)app didFailToLaunchWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = LACLogPreboard();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
-    [LACPreboardLauncher alternateSystemApp:v5 didFailToLaunchWithError:v6];
+    [LACPreboardLauncher alternateSystemApp:errorCopy didFailToLaunchWithError:v6];
   }
 
-  [(LACPreboardLauncher *)self _finishLaunchingWithError:v5];
+  [(LACPreboardLauncher *)self _finishLaunchingWithError:errorCopy];
 }
 
-- (void)alternateSystemApp:(id)a3 didTerminateWithSignal:(int)a4
+- (void)alternateSystemApp:(id)app didTerminateWithSignal:(int)signal
 {
   v10 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  appCopy = app;
   v7 = LACLogPreboard();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109120;
-    v9[1] = a4;
+    v9[1] = signal;
     _os_log_impl(&dword_1B0233000, v7, OS_LOG_TYPE_DEFAULT, "Preboard terminated with signal: %d", v9, 8u);
   }
 
-  [(LACPreboardLauncher *)self _terminateApp:v6];
+  [(LACPreboardLauncher *)self _terminateApp:appCopy];
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)alternateSystemApp:(id)a3 didExitWithStatus:(int)a4
+- (void)alternateSystemApp:(id)app didExitWithStatus:(int)status
 {
   v10 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  appCopy = app;
   v7 = LACLogPreboard();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9[0] = 67109120;
-    v9[1] = a4;
+    v9[1] = status;
     _os_log_impl(&dword_1B0233000, v7, OS_LOG_TYPE_DEFAULT, "Preboard exited with code: %d", v9, 8u);
   }
 
-  [(LACPreboardLauncher *)self _terminateApp:v6];
+  [(LACPreboardLauncher *)self _terminateApp:appCopy];
   v8 = *MEMORY[0x1E69E9840];
 }
 
@@ -174,20 +174,20 @@ void __52__LACPreboardLauncher_launchPreboardWithCompletion___block_invoke(uint6
   return v2;
 }
 
-- (void)_terminateApp:(id)a3
+- (void)_terminateApp:(id)app
 {
-  v4 = a3;
+  appCopy = app;
   v5 = +[LACSysUtility sharedInstance];
-  v6 = [v5 txmSecurityBootMode];
+  txmSecurityBootMode = [v5 txmSecurityBootMode];
 
-  if (v6)
+  if (txmSecurityBootMode)
   {
     workQueue = self->_workQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __37__LACPreboardLauncher__terminateApp___block_invoke_2;
     block[3] = &unk_1E7A955B0;
-    v10 = v4;
+    v10 = appCopy;
     dispatch_async(workQueue, block);
   }
 
@@ -203,13 +203,13 @@ void __52__LACPreboardLauncher_launchPreboardWithCompletion___block_invoke(uint6
   }
 }
 
-- (void)_finishLaunchingWithError:(id)a3
+- (void)_finishLaunchingWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   launchCompletion = self->_launchCompletion;
   if (launchCompletion)
   {
-    v9 = v4;
+    v9 = errorCopy;
     v6 = _Block_copy(launchCompletion);
     v7 = self->_launchCompletion;
     self->_launchCompletion = 0;

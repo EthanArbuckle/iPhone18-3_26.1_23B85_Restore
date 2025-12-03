@@ -28,7 +28,7 @@
           goto LABEL_14;
         }
 
-        v9 = [v8 nextDoc];
+        nextDoc = [v8 nextDoc];
       }
 
       else
@@ -38,10 +38,10 @@
           goto LABEL_14;
         }
 
-        v9 = [v8 advanceWithInt:(doc + 1)];
+        nextDoc = [v8 advanceWithInt:(doc + 1)];
       }
 
-      *(v5 + 6) = v9;
+      *(v5 + 6) = nextDoc;
       head = self->head_;
       if (!head)
       {
@@ -60,31 +60,31 @@ LABEL_14:
 
 - (_DWORD)setDocAndFreq
 {
-  JreStrongAssign((a1 + 32), [*(a1 + 48) pop]);
-  v2 = *(a1 + 32);
+  JreStrongAssign((self + 32), [*(self + 48) pop]);
+  v2 = *(self + 32);
   if (!v2)
   {
     goto LABEL_7;
   }
 
   JreStrongAssign((v2 + 32), 0);
-  *(a1 + 44) = 1;
-  *(a1 + 40) = *(*(a1 + 32) + 24);
-  result = [*(a1 + 48) size];
+  *(self + 44) = 1;
+  *(self + 40) = *(*(self + 32) + 24);
+  result = [*(self + 48) size];
   if (result >= 1)
   {
     while (1)
     {
-      result = [*(a1 + 48) top];
+      result = [*(self + 48) top];
       if (!result)
       {
         break;
       }
 
-      if (result[6] == *(a1 + 40))
+      if (result[6] == *(self + 40))
       {
-        sub_100042F2C(a1, [*(a1 + 48) pop]);
-        result = [*(a1 + 48) size];
+        sub_100042F2C(self, [*(self + 48) pop]);
+        result = [*(self + 48) size];
         if (result > 0)
         {
           continue;
@@ -103,29 +103,29 @@ LABEL_7:
 
 - (uint64_t)doNext
 {
-  v2 = *(a1 + 44);
-  for (i = *(a1 + 16); v2 < i; i = *(a1 + 16))
+  v2 = *(self + 44);
+  for (i = *(self + 16); v2 < i; i = *(self + 16))
   {
-    if (*(a1 + 64) + v2 >= i)
+    if (*(self + 64) + v2 >= i)
     {
-      v5 = sub_10004349C(a1);
-      sub_100043004(a1, v5);
+      v5 = sub_10004349C(self);
+      sub_100043004(self, v5);
     }
 
     else
     {
-      for (j = *(a1 + 32); j; j = j[4])
+      for (j = *(self + 32); j; j = j[4])
       {
-        sub_10004330C(a1, j);
+        sub_10004330C(self, j);
       }
 
-      [OrgApacheLuceneSearchMinShouldMatchSumScorer setDocAndFreq]_0(a1);
+      [OrgApacheLuceneSearchMinShouldMatchSumScorer setDocAndFreq]_0(self);
     }
 
-    v2 = *(a1 + 44);
+    v2 = *(self + 44);
   }
 
-  return *(a1 + 40);
+  return *(self + 40);
 }
 
 - (void)pushBackLeads

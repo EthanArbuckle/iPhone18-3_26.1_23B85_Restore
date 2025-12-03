@@ -1,6 +1,6 @@
 @interface _GCSyntheticDevice
-+ (void)deviceWithDescription:(void *)a3 creator:;
-- (BOOL)isEqual:(id)a3;
++ (void)deviceWithDescription:(void *)description creator:;
+- (BOOL)isEqual:(id)equal;
 - (_GCSyntheticDevice)init;
 - (id)controllerIdentifier;
 - (id)debugDescription;
@@ -8,15 +8,15 @@
 - (id)persistentIdentifier;
 - (uint64_t)serviceIdentity;
 - (void)dealloc;
-- (void)initWithIdentifier:(void *)a3 controllerIdentifier:(void *)a4 persistentIdentifier:(int)a5 service:;
+- (void)initWithIdentifier:(void *)identifier controllerIdentifier:(void *)controllerIdentifier persistentIdentifier:(int)persistentIdentifier service:;
 @end
 
 @implementation _GCSyntheticDevice
 
-+ (void)deviceWithDescription:(void *)a3 creator:
++ (void)deviceWithDescription:(void *)description creator:
 {
   v4 = a2;
-  v5 = a3;
+  descriptionCopy = description;
   v6 = objc_opt_self();
   if (v6 == objc_opt_class())
   {
@@ -26,24 +26,24 @@
 
   else
   {
-    v7 = [v4 controllerIdentifier];
-    v8 = [v7 description];
+    controllerIdentifier = [v4 controllerIdentifier];
+    v8 = [controllerIdentifier description];
     v9 = [v6 devicePropertiesWithDescription:v4];
-    v10 = [v4 controllerIdentifier];
-    [v9 setObject:v10 forKey:@"_GCSyntheticDeviceIdentifier"];
+    controllerIdentifier2 = [v4 controllerIdentifier];
+    [v9 setObject:controllerIdentifier2 forKey:@"_GCSyntheticDeviceIdentifier"];
 
     if (!v9)
     {
       [_GCSyntheticDevice deviceWithDescription:v6 creator:?];
     }
 
-    v11 = v5[2](v5, v9);
+    v11 = descriptionCopy[2](descriptionCopy, v9);
     if (v11)
     {
       v12 = v11;
       v13 = [v6 alloc];
-      v14 = [v4 persistentIdentifier];
-      v15 = [(_GCSyntheticDevice *)v13 initWithIdentifier:v8 controllerIdentifier:v7 persistentIdentifier:v14 service:v12];
+      persistentIdentifier = [v4 persistentIdentifier];
+      v15 = [(_GCSyntheticDevice *)v13 initWithIdentifier:v8 controllerIdentifier:controllerIdentifier persistentIdentifier:persistentIdentifier service:v12];
     }
 
     else
@@ -70,13 +70,13 @@
   [(_GCSyntheticDevice *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(_GCSyntheticDevice *)self isEqual:v4, &v8];
+    [(_GCSyntheticDevice *)self isEqual:equalCopy, &v8];
     v6 = v8;
   }
 
@@ -86,7 +86,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(NSString *)self->_identifier isEqual:v4];
+      v6 = [(NSString *)self->_identifier isEqual:equalCopy];
     }
 
     else
@@ -108,17 +108,17 @@
   return v6;
 }
 
-- (void)initWithIdentifier:(void *)a3 controllerIdentifier:(void *)a4 persistentIdentifier:(int)a5 service:
+- (void)initWithIdentifier:(void *)identifier controllerIdentifier:(void *)controllerIdentifier persistentIdentifier:(int)persistentIdentifier service:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v19.receiver = a1;
+  v19.receiver = self;
   v19.super_class = _GCSyntheticDevice;
-  v8 = a4;
-  v9 = a3;
+  controllerIdentifierCopy = controllerIdentifier;
+  identifierCopy = identifier;
   v10 = a2;
   v11 = objc_msgSendSuper2(&v19, sel_init);
   v12 = [v10 copyWithZone:{0, v19.receiver, v19.super_class}];
@@ -126,15 +126,15 @@
   v13 = v11[2];
   v11[2] = v12;
 
-  v14 = [v9 copyWithZone:0];
+  v14 = [identifierCopy copyWithZone:0];
   v15 = v11[3];
   v11[3] = v14;
 
-  v16 = [v8 copy];
+  v16 = [controllerIdentifierCopy copy];
   v17 = v11[4];
   v11[4] = v16;
 
-  *(v11 + 2) = a5;
+  *(v11 + 2) = persistentIdentifier;
   return v11;
 }
 

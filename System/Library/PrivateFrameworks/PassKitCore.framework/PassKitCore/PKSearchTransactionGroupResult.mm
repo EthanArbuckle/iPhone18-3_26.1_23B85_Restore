@@ -1,19 +1,19 @@
 @interface PKSearchTransactionGroupResult
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (PKSearchTransactionGroupResult)initWithCoder:(id)a3;
+- (PKSearchTransactionGroupResult)initWithCoder:(id)coder;
 - (unint64_t)hash;
 @end
 
 @implementation PKSearchTransactionGroupResult
 
-- (PKSearchTransactionGroupResult)initWithCoder:(id)a3
+- (PKSearchTransactionGroupResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKSearchTransactionGroupResult *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"group"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"group"];
     group = v5->_group;
     v5->_group = v6;
   }
@@ -34,14 +34,14 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     group = self->_group;
-    v6 = v4[1];
+    v6 = equalCopy[1];
     if (group && v6)
     {
       v7 = [(PKPaymentTransactionGroup *)group isEqual:?];

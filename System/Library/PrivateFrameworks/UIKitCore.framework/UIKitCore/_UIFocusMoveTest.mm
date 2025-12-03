@@ -1,34 +1,34 @@
 @interface _UIFocusMoveTest
-- (BOOL)_dataSourceShouldResetFocusBeforeIteration:(unint64_t)a3;
+- (BOOL)_dataSourceShouldResetFocusBeforeIteration:(unint64_t)iteration;
 - (UIFocusEnvironment)containerFocusEnvironment;
-- (_UIFocusMoveTest)initWithIdentifier:(id)a3;
+- (_UIFocusMoveTest)initWithIdentifier:(id)identifier;
 - (_UIFocusMoveTestDataSource)dataSource;
 - (_UIFocusMoveTestDelegate)delegate;
-- (double)_dataSourceDelayBeforeMove:(unint64_t)a3 duringIteration:(unint64_t)a4;
-- (unint64_t)_dataSourceHeadingForMove:(unint64_t)a3 duringIteration:(unint64_t)a4;
-- (unint64_t)_dataSourceMaximumNumberOfMovesDuringIteration:(unint64_t)a3;
+- (double)_dataSourceDelayBeforeMove:(unint64_t)move duringIteration:(unint64_t)iteration;
+- (unint64_t)_dataSourceHeadingForMove:(unint64_t)move duringIteration:(unint64_t)iteration;
+- (unint64_t)_dataSourceMaximumNumberOfMovesDuringIteration:(unint64_t)iteration;
 - (unint64_t)_dataSourceNumberOfIterations;
-- (void)_notifyDelegateDidFinishIteration:(unint64_t)a3;
-- (void)_notifyDelegateDidMoveFocusAlongHeading:(unint64_t)a3 forMove:(unint64_t)a4 duringIteration:(unint64_t)a5;
-- (void)_notifyDelegateWillMoveFocusAlongHeading:(unint64_t)a3 forMove:(unint64_t)a4 duringIteration:(unint64_t)a5;
-- (void)_notifyDelegateWillStartIteration:(unint64_t)a3;
+- (void)_notifyDelegateDidFinishIteration:(unint64_t)iteration;
+- (void)_notifyDelegateDidMoveFocusAlongHeading:(unint64_t)heading forMove:(unint64_t)move duringIteration:(unint64_t)iteration;
+- (void)_notifyDelegateWillMoveFocusAlongHeading:(unint64_t)heading forMove:(unint64_t)move duringIteration:(unint64_t)iteration;
+- (void)_notifyDelegateWillStartIteration:(unint64_t)iteration;
 - (void)_performFocusMovement;
-- (void)_performFocusMovementAfterDelayForMove:(unint64_t)a3 iteration:(unint64_t)a4;
-- (void)_resetFocusIfNecessaryBeforeIteration:(unint64_t)a3;
+- (void)_performFocusMovementAfterDelayForMove:(unint64_t)move iteration:(unint64_t)iteration;
+- (void)_resetFocusIfNecessaryBeforeIteration:(unint64_t)iteration;
 - (void)main;
-- (void)prepareWithCompletionHandler:(id)a3;
+- (void)prepareWithCompletionHandler:(id)handler;
 - (void)reset;
-- (void)setDataSource:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)setDataSource:(id)source;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation _UIFocusMoveTest
 
-- (_UIFocusMoveTest)initWithIdentifier:(id)a3
+- (_UIFocusMoveTest)initWithIdentifier:(id)identifier
 {
   v4.receiver = self;
   v4.super_class = _UIFocusMoveTest;
-  result = [(_UIFocusTest *)&v4 initWithIdentifier:a3];
+  result = [(_UIFocusTest *)&v4 initWithIdentifier:identifier];
   if (result)
   {
     result->_numberOfIterations = 1;
@@ -51,19 +51,19 @@
   self->_currentIteration = 0;
 }
 
-- (void)prepareWithCompletionHandler:(id)a3
+- (void)prepareWithCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v5 = [(_UIFocusMoveTest *)self containerFocusEnvironment];
+  handlerCopy = handler;
+  containerFocusEnvironment = [(_UIFocusMoveTest *)self containerFocusEnvironment];
 
-  if (!v5)
+  if (!containerFocusEnvironment)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_UIFocusMoveTest.m" lineNumber:65 description:@"Focus move test must having a container focus environment before being run."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFocusMoveTest.m" lineNumber:65 description:@"Focus move test must having a container focus environment before being run."];
   }
 
   self->_activeNumberOfIterations = [(_UIFocusMoveTest *)self _dataSourceNumberOfIterations];
-  v7[2]();
+  handlerCopy[2]();
 }
 
 - (void)main
@@ -74,19 +74,19 @@
   }
 }
 
-- (void)_performFocusMovementAfterDelayForMove:(unint64_t)a3 iteration:(unint64_t)a4
+- (void)_performFocusMovementAfterDelayForMove:(unint64_t)move iteration:(unint64_t)iteration
 {
   v10[1] = *MEMORY[0x1E69E9840];
   [_UIFocusMoveTest _dataSourceDelayBeforeMove:"_dataSourceDelayBeforeMove:duringIteration:" duringIteration:?];
   v8 = v7;
-  if (!a3)
+  if (!move)
   {
-    [(_UIFocusMoveTest *)self _resetFocusIfNecessaryBeforeIteration:a4];
-    [(_UIFocusMoveTest *)self _notifyDelegateWillStartIteration:a4];
+    [(_UIFocusMoveTest *)self _resetFocusIfNecessaryBeforeIteration:iteration];
+    [(_UIFocusMoveTest *)self _notifyDelegateWillStartIteration:iteration];
   }
 
-  self->_currentMove = a3;
-  self->_currentIteration = a4;
+  self->_currentMove = move;
+  self->_currentIteration = iteration;
   v10[0] = *MEMORY[0x1E695DA28];
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:1];
   [(_UIFocusMoveTest *)self performSelector:sel__performFocusMovement withObject:0 afterDelay:v9 inModes:v8];
@@ -103,8 +103,8 @@
     v14 = [UIFocusSystem focusSystemForEnvironment:WeakRetained];
 
     v7 = [(_UIFocusMoveTest *)self _dataSourceHeadingForMove:currentMove duringIteration:currentIteration];
-    v8 = [UIApp delegate];
-    v9 = [v8 window];
+    delegate = [UIApp delegate];
+    window = [delegate window];
 
     v10 = [[_UIFocusMovementRequest alloc] initWithFocusSystem:v14];
     v11 = [[_UIFocusMovementInfo alloc] initWithHeading:v7 linearHeading:0 isInitial:1 shouldLoadScrollableContainer:1 looping:0 groupFilter:0 inputType:5];
@@ -131,15 +131,15 @@
   }
 }
 
-- (void)_resetFocusIfNecessaryBeforeIteration:(unint64_t)a3
+- (void)_resetFocusIfNecessaryBeforeIteration:(unint64_t)iteration
 {
-  if ([(_UIFocusMoveTest *)self _dataSourceShouldResetFocusBeforeIteration:a3])
+  if ([(_UIFocusMoveTest *)self _dataSourceShouldResetFocusBeforeIteration:iteration])
   {
-    v4 = [(_UIFocusMoveTest *)self containerFocusEnvironment];
-    v6 = [UIFocusSystem focusSystemForEnvironment:v4];
+    containerFocusEnvironment = [(_UIFocusMoveTest *)self containerFocusEnvironment];
+    v6 = [UIFocusSystem focusSystemForEnvironment:containerFocusEnvironment];
 
-    v5 = [(_UIFocusMoveTest *)self containerFocusEnvironment];
-    [v6 requestFocusUpdateToEnvironment:v5];
+    containerFocusEnvironment2 = [(_UIFocusMoveTest *)self containerFocusEnvironment];
+    [v6 requestFocusUpdateToEnvironment:containerFocusEnvironment2];
 
     [v6 updateFocusIfNeeded];
   }
@@ -149,20 +149,20 @@
 {
   v4.receiver = self;
   v4.super_class = _UIFocusMoveTest;
-  v2 = [(_UIFocusTest *)&v4 delegate];
+  delegate = [(_UIFocusTest *)&v4 delegate];
 
-  return v2;
+  return delegate;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(_UIFocusMoveTest *)self delegate];
+  delegateCopy = delegate;
+  delegate = [(_UIFocusMoveTest *)self delegate];
 
   v10.receiver = self;
   v10.super_class = _UIFocusMoveTest;
-  [(_UIFocusTest *)&v10 setDelegate:v4];
-  if (v5 != v4)
+  [(_UIFocusTest *)&v10 setDelegate:delegateCopy];
+  if (delegate != delegateCopy)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -211,53 +211,53 @@
   }
 }
 
-- (void)_notifyDelegateWillStartIteration:(unint64_t)a3
+- (void)_notifyDelegateWillStartIteration:(unint64_t)iteration
 {
-  v5 = [(_UIFocusMoveTest *)self delegate];
-  if (v5 && (*&self->_flags & 2) != 0)
+  delegate = [(_UIFocusMoveTest *)self delegate];
+  if (delegate && (*&self->_flags & 2) != 0)
   {
-    v6 = v5;
-    [v5 _focusMoveTest:self willStartIteration:a3];
-    v5 = v6;
+    v6 = delegate;
+    [delegate _focusMoveTest:self willStartIteration:iteration];
+    delegate = v6;
   }
 }
 
-- (void)_notifyDelegateDidFinishIteration:(unint64_t)a3
+- (void)_notifyDelegateDidFinishIteration:(unint64_t)iteration
 {
-  v5 = [(_UIFocusMoveTest *)self delegate];
-  if (v5 && (*&self->_flags & 4) != 0)
+  delegate = [(_UIFocusMoveTest *)self delegate];
+  if (delegate && (*&self->_flags & 4) != 0)
   {
-    v6 = v5;
-    [v5 _focusMoveTest:self didFinishIteration:a3];
-    v5 = v6;
+    v6 = delegate;
+    [delegate _focusMoveTest:self didFinishIteration:iteration];
+    delegate = v6;
   }
 }
 
-- (void)_notifyDelegateWillMoveFocusAlongHeading:(unint64_t)a3 forMove:(unint64_t)a4 duringIteration:(unint64_t)a5
+- (void)_notifyDelegateWillMoveFocusAlongHeading:(unint64_t)heading forMove:(unint64_t)move duringIteration:(unint64_t)iteration
 {
-  v9 = [(_UIFocusMoveTest *)self delegate];
-  if (v9 && (*&self->_flags & 8) != 0)
+  delegate = [(_UIFocusMoveTest *)self delegate];
+  if (delegate && (*&self->_flags & 8) != 0)
   {
-    v10 = v9;
-    [v9 _focusMoveTest:self willMoveFocusAlongHeading:a3 forMove:a4 duringIteration:a5];
-    v9 = v10;
+    v10 = delegate;
+    [delegate _focusMoveTest:self willMoveFocusAlongHeading:heading forMove:move duringIteration:iteration];
+    delegate = v10;
   }
 }
 
-- (void)_notifyDelegateDidMoveFocusAlongHeading:(unint64_t)a3 forMove:(unint64_t)a4 duringIteration:(unint64_t)a5
+- (void)_notifyDelegateDidMoveFocusAlongHeading:(unint64_t)heading forMove:(unint64_t)move duringIteration:(unint64_t)iteration
 {
-  v9 = [(_UIFocusMoveTest *)self delegate];
-  if (v9 && (*&self->_flags & 0x10) != 0)
+  delegate = [(_UIFocusMoveTest *)self delegate];
+  if (delegate && (*&self->_flags & 0x10) != 0)
   {
-    v10 = v9;
-    [v9 _focusMoveTest:self didMoveFocusAlongHeading:a3 forMove:a4 duringIteration:a5];
-    v9 = v10;
+    v10 = delegate;
+    [delegate _focusMoveTest:self didMoveFocusAlongHeading:heading forMove:move duringIteration:iteration];
+    delegate = v10;
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   if (WeakRetained != obj)
@@ -323,69 +323,69 @@
 
 - (unint64_t)_dataSourceNumberOfIterations
 {
-  v3 = [(_UIFocusMoveTest *)self numberOfIterations];
-  v4 = [(_UIFocusMoveTest *)self dataSource];
-  v5 = v4;
-  if (v4 && (*&self->_flags & 0x20) != 0)
+  numberOfIterations = [(_UIFocusMoveTest *)self numberOfIterations];
+  dataSource = [(_UIFocusMoveTest *)self dataSource];
+  v5 = dataSource;
+  if (dataSource && (*&self->_flags & 0x20) != 0)
   {
-    v3 = [v4 _numberOfIterationsInFocusMoveTest:self];
+    numberOfIterations = [dataSource _numberOfIterationsInFocusMoveTest:self];
   }
 
-  return v3;
+  return numberOfIterations;
 }
 
-- (unint64_t)_dataSourceMaximumNumberOfMovesDuringIteration:(unint64_t)a3
+- (unint64_t)_dataSourceMaximumNumberOfMovesDuringIteration:(unint64_t)iteration
 {
-  v5 = [(_UIFocusMoveTest *)self maximumMovesPerIteration];
-  v6 = [(_UIFocusMoveTest *)self dataSource];
-  v7 = v6;
-  if (v6 && (*&self->_flags & 0x40) != 0)
+  maximumMovesPerIteration = [(_UIFocusMoveTest *)self maximumMovesPerIteration];
+  dataSource = [(_UIFocusMoveTest *)self dataSource];
+  v7 = dataSource;
+  if (dataSource && (*&self->_flags & 0x40) != 0)
   {
-    v5 = [v6 _focusMoveTest:self maximumNumberOfMovesDuringIteration:a3];
+    maximumMovesPerIteration = [dataSource _focusMoveTest:self maximumNumberOfMovesDuringIteration:iteration];
   }
 
-  return v5;
+  return maximumMovesPerIteration;
 }
 
-- (double)_dataSourceDelayBeforeMove:(unint64_t)a3 duringIteration:(unint64_t)a4
+- (double)_dataSourceDelayBeforeMove:(unint64_t)move duringIteration:(unint64_t)iteration
 {
   [(_UIFocusMoveTest *)self movementDelay];
   v8 = v7;
-  v9 = [(_UIFocusMoveTest *)self dataSource];
-  v10 = v9;
-  if (v9 && (*&self->_flags & 0x80) != 0)
+  dataSource = [(_UIFocusMoveTest *)self dataSource];
+  v10 = dataSource;
+  if (dataSource && (*&self->_flags & 0x80) != 0)
   {
-    [v9 _focusMoveTest:self delayBeforeMove:a3 duringIteration:a4];
+    [dataSource _focusMoveTest:self delayBeforeMove:move duringIteration:iteration];
     v8 = v11;
   }
 
   return v8;
 }
 
-- (unint64_t)_dataSourceHeadingForMove:(unint64_t)a3 duringIteration:(unint64_t)a4
+- (unint64_t)_dataSourceHeadingForMove:(unint64_t)move duringIteration:(unint64_t)iteration
 {
-  v7 = [(_UIFocusMoveTest *)self movementHeading];
-  v8 = [(_UIFocusMoveTest *)self dataSource];
-  v9 = v8;
-  if (v8 && (*&self->_flags & 0x100) != 0)
+  movementHeading = [(_UIFocusMoveTest *)self movementHeading];
+  dataSource = [(_UIFocusMoveTest *)self dataSource];
+  v9 = dataSource;
+  if (dataSource && (*&self->_flags & 0x100) != 0)
   {
-    v7 = [v8 _focusMoveTest:self headingForMove:a3 duringIteration:a4];
+    movementHeading = [dataSource _focusMoveTest:self headingForMove:move duringIteration:iteration];
   }
 
-  return v7;
+  return movementHeading;
 }
 
-- (BOOL)_dataSourceShouldResetFocusBeforeIteration:(unint64_t)a3
+- (BOOL)_dataSourceShouldResetFocusBeforeIteration:(unint64_t)iteration
 {
-  v5 = [(_UIFocusMoveTest *)self resetsFocusBeforeIterations];
-  v6 = [(_UIFocusMoveTest *)self dataSource];
-  v7 = v6;
-  if (v6 && (*&self->_flags & 0x200) != 0)
+  resetsFocusBeforeIterations = [(_UIFocusMoveTest *)self resetsFocusBeforeIterations];
+  dataSource = [(_UIFocusMoveTest *)self dataSource];
+  v7 = dataSource;
+  if (dataSource && (*&self->_flags & 0x200) != 0)
   {
-    v5 = [v6 _focusMoveTest:self shouldResetFocusBeforeIteration:a3];
+    resetsFocusBeforeIterations = [dataSource _focusMoveTest:self shouldResetFocusBeforeIteration:iteration];
   }
 
-  return v5;
+  return resetsFocusBeforeIterations;
 }
 
 - (UIFocusEnvironment)containerFocusEnvironment

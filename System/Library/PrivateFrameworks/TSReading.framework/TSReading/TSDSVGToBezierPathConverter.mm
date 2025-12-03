@@ -1,19 +1,19 @@
 @interface TSDSVGToBezierPathConverter
-+ (CGAffineTransform)transformFromSVGTransformAttributeString:(SEL)a3;
-+ (CGPath)newPathFromSVGPathString:(id)a3 shouldClosePathAtEnd:(BOOL)a4;
-+ (CGPath)newPathFromSVGPolygonString:(id)a3;
-+ (CGPath)newPathFromSVGPolylineString:(id)a3;
-- (id)bezierPathFromSVGData:(id)a3;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
++ (CGAffineTransform)transformFromSVGTransformAttributeString:(SEL)string;
++ (CGPath)newPathFromSVGPathString:(id)string shouldClosePathAtEnd:(BOOL)end;
++ (CGPath)newPathFromSVGPolygonString:(id)string;
++ (CGPath)newPathFromSVGPolylineString:(id)string;
+- (id)bezierPathFromSVGData:(id)data;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
 @end
 
 @implementation TSDSVGToBezierPathConverter
 
-- (id)bezierPathFromSVGData:(id)a3
+- (id)bezierPathFromSVGData:(id)data
 {
   v26[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_alloc_init(TSDBezierPath);
   mFileBezierPath = self->mFileBezierPath;
   self->mFileBezierPath = v5;
@@ -33,7 +33,7 @@
   self->mViewBox.origin = *MEMORY[0x277CBF3A0];
   self->mViewBox.size = v10;
   self->mUsesEvenOdd = 0;
-  v11 = [objc_alloc(MEMORY[0x277CCAE70]) initWithData:v4];
+  v11 = [objc_alloc(MEMORY[0x277CCAE70]) initWithData:dataCopy];
 
   [v11 setDelegate:self];
   if ([v11 parse] && (objc_msgSend(v11, "parserError"), v12 = objc_claimAutoreleasedReturnValue(), v12, !v12))
@@ -55,10 +55,10 @@
 
   else
   {
-    v13 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDSVGToBezierPathConverter bezierPathFromSVGData:]"];
     v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDSVGToBezierPathConverter.m"];
-    [v13 handleFailureInFunction:v14 file:v15 lineNumber:62 description:@"Unable to Parse SVG File"];
+    [currentHandler handleFailureInFunction:v14 file:v15 lineNumber:62 description:@"Unable to Parse SVG File"];
 
     v16 = objc_alloc_init(TSDBezierPath);
     v17 = self->mFileBezierPath;
@@ -71,20 +71,20 @@
   return v18;
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
   v177 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a7;
-  v11 = [v10 objectForKeyedSubscript:@"style"];
+  elementCopy = element;
+  attributesCopy = attributes;
+  v11 = [attributesCopy objectForKeyedSubscript:@"style"];
   v165 = v11;
   if (v11)
   {
     v12 = v11;
-    v161 = v9;
-    v163 = self;
-    v160 = v10;
-    v10 = [v10 mutableCopy];
+    v161 = elementCopy;
+    selfCopy = self;
+    v160 = attributesCopy;
+    attributesCopy = [attributesCopy mutableCopy];
     v13 = [v12 componentsSeparatedByString:@""];;
     v171 = 0u;
     v172 = 0u;
@@ -107,24 +107,24 @@
           v18 = *(*(&v171 + 1) + 8 * i);
           if ([v18 length])
           {
-            v19 = v10;
+            v19 = attributesCopy;
             v20 = [v18 componentsSeparatedByString:@":"];
             if ([v20 count] != 2)
             {
-              v21 = [MEMORY[0x277D6C290] currentHandler];
+              currentHandler = [MEMORY[0x277D6C290] currentHandler];
               v22 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDSVGToBezierPathConverter parser:didStartElement:namespaceURI:qualifiedName:attributes:]"];
               v23 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDSVGToBezierPathConverter.m"];
-              [v21 handleFailureInFunction:v22 file:v23 lineNumber:90 description:@"Style components in SVG <style> tag should have one key and one value."];
+              [currentHandler handleFailureInFunction:v22 file:v23 lineNumber:90 description:@"Style components in SVG <style> tag should have one key and one value."];
             }
 
-            v24 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+            whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
             v25 = [v20 objectAtIndexedSubscript:0];
-            v26 = [v25 stringByTrimmingCharactersInSet:v24];
+            v26 = [v25 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
             v27 = [v20 objectAtIndexedSubscript:1];
-            v28 = [v27 stringByTrimmingCharactersInSet:v24];
+            v28 = [v27 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
-            v10 = v19;
+            attributesCopy = v19;
             [v19 setObject:v28 forKeyedSubscript:v26];
           }
         }
@@ -135,36 +135,36 @@
       while (v15);
     }
 
-    v9 = v161;
-    self = v163;
+    elementCopy = v161;
+    self = selfCopy;
   }
 
-  if ([v9 isEqualToString:@"svg"])
+  if ([elementCopy isEqualToString:@"svg"])
   {
-    v29 = [v10 objectForKeyedSubscript:@"preserveAspectRatio"];
-    v30 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v31 = [v29 componentsSeparatedByCharactersInSet:v30];
+    v29 = [attributesCopy objectForKeyedSubscript:@"preserveAspectRatio"];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v31 = [v29 componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     if (![v31 count])
     {
 LABEL_26:
-      v41 = [v10 objectForKeyedSubscript:@"viewBox"];
-      v42 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-      v37 = [v41 componentsSeparatedByCharactersInSet:v42];
+      v41 = [attributesCopy objectForKeyedSubscript:@"viewBox"];
+      whitespaceAndNewlineCharacterSet2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      currentHandler5 = [v41 componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet2];
 
-      if ([v37 count] == 4)
+      if ([currentHandler5 count] == 4)
       {
         self->mViewBoxFound = 1;
-        v43 = [v37 objectAtIndexedSubscript:0];
-        [v43 doubleValue];
+        currentHandler2 = [currentHandler5 objectAtIndexedSubscript:0];
+        [currentHandler2 doubleValue];
         v45 = v44;
-        v46 = [v37 objectAtIndexedSubscript:1];
+        v46 = [currentHandler5 objectAtIndexedSubscript:1];
         [v46 doubleValue];
         v48 = v47;
-        v49 = [v37 objectAtIndexedSubscript:2];
+        v49 = [currentHandler5 objectAtIndexedSubscript:2];
         [v49 doubleValue];
         v51 = v50;
-        v52 = [v37 objectAtIndexedSubscript:3];
+        v52 = [currentHandler5 objectAtIndexedSubscript:3];
         [v52 doubleValue];
         self->mViewBox.origin.x = v45;
         self->mViewBox.origin.y = v48;
@@ -174,10 +174,10 @@ LABEL_26:
 
       else
       {
-        v43 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
         v46 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDSVGToBezierPathConverter parser:didStartElement:namespaceURI:qualifiedName:attributes:]"];
         v49 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDSVGToBezierPathConverter.m"];
-        [v43 handleFailureInFunction:v46 file:v49 lineNumber:132 description:{@"Unexpected number of viewBox components! (%zu)", objc_msgSend(v37, "count")}];
+        [currentHandler2 handleFailureInFunction:v46 file:v49 lineNumber:132 description:{@"Unexpected number of viewBox components! (%zu)", objc_msgSend(currentHandler5, "count")}];
       }
 
       goto LABEL_30;
@@ -188,10 +188,10 @@ LABEL_26:
 
     if (v33)
     {
-      v34 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler3 = [MEMORY[0x277D6C290] currentHandler];
       v35 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDSVGToBezierPathConverter parser:didStartElement:namespaceURI:qualifiedName:attributes:]"];
       v36 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDSVGToBezierPathConverter.m"];
-      [v34 handleFailureInFunction:v35 file:v36 lineNumber:111 description:@"Unexpected 'defer' component"];
+      [currentHandler3 handleFailureInFunction:v35 file:v36 lineNumber:111 description:@"Unexpected 'defer' component"];
     }
 
     if ([v31 count] == 1)
@@ -201,13 +201,13 @@ LABEL_26:
 
     if ([v31 count] == 2)
     {
-      v37 = [v31 objectAtIndexedSubscript:1];
-      if ([v37 isEqualToString:@"meet"])
+      currentHandler5 = [v31 objectAtIndexedSubscript:1];
+      if ([currentHandler5 isEqualToString:@"meet"])
       {
 LABEL_30:
 
 LABEL_31:
-        v54 = [v10 objectForKeyedSubscript:@"style"];
+        v54 = [attributesCopy objectForKeyedSubscript:@"style"];
         if (v54)
         {
           v170 = 0;
@@ -223,23 +223,23 @@ LABEL_31:
         goto LABEL_36;
       }
 
-      if ([v37 isEqualToString:@"slice"])
+      if ([currentHandler5 isEqualToString:@"slice"])
       {
         goto LABEL_25;
       }
 
-      v38 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler4 = [MEMORY[0x277D6C290] currentHandler];
       v39 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDSVGToBezierPathConverter parser:didStartElement:namespaceURI:qualifiedName:attributes:]"];
       v40 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDSVGToBezierPathConverter.m"];
-      [v38 handleFailureInFunction:v39 file:v40 lineNumber:119 description:{@"Unknown component %@", v37}];
+      [currentHandler4 handleFailureInFunction:v39 file:v40 lineNumber:119 description:{@"Unknown component %@", currentHandler5}];
     }
 
     else
     {
-      v37 = [MEMORY[0x277D6C290] currentHandler];
-      v38 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDSVGToBezierPathConverter parser:didStartElement:namespaceURI:qualifiedName:attributes:]"];
+      currentHandler5 = [MEMORY[0x277D6C290] currentHandler];
+      currentHandler4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDSVGToBezierPathConverter parser:didStartElement:namespaceURI:qualifiedName:attributes:]"];
       v39 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDSVGToBezierPathConverter.m"];
-      [v37 handleFailureInFunction:v38 file:v39 lineNumber:122 description:{@"Unexpected number of preserveAspectRatio components! (%zu)", objc_msgSend(v31, "count")}];
+      [currentHandler5 handleFailureInFunction:currentHandler4 file:v39 lineNumber:122 description:{@"Unexpected number of preserveAspectRatio components! (%zu)", objc_msgSend(v31, "count")}];
     }
 
 LABEL_25:
@@ -248,33 +248,33 @@ LABEL_25:
 
 LABEL_36:
   v58 = v165;
-  if ([(NSString *)self->mHiddenOnTag isEqualToString:v9])
+  if ([(NSString *)self->mHiddenOnTag isEqualToString:elementCopy])
   {
     ++self->mHiddenOnTagNestedCount;
   }
 
   if (!self->mHiddenOnTag)
   {
-    v59 = [v10 objectForKeyedSubscript:@"display"];
+    v59 = [attributesCopy objectForKeyedSubscript:@"display"];
     if ([v59 isEqualToString:@"none"])
     {
 
 LABEL_42:
-      v61 = [v9 copy];
+      v61 = [elementCopy copy];
       mHiddenOnTag = self->mHiddenOnTag;
       self->mHiddenOnTag = v61;
 
       goto LABEL_82;
     }
 
-    v60 = [v9 isEqualToString:@"pattern"];
+    v60 = [elementCopy isEqualToString:@"pattern"];
 
     if (v60)
     {
       goto LABEL_42;
     }
 
-    v63 = [v9 isEqualToString:@"g"];
+    v63 = [elementCopy isEqualToString:@"g"];
     v64 = MEMORY[0x277CBF2C0];
     if (v63)
     {
@@ -288,11 +288,11 @@ LABEL_42:
       *&t2.tx = *(MEMORY[0x277CBF2C0] + 32);
       if (CGAffineTransformEqualToTransform(&t1, &t2))
       {
-        v67 = [v10 objectForKeyedSubscript:@"transform"];
+        v67 = [attributesCopy objectForKeyedSubscript:@"transform"];
 
         if (v67)
         {
-          v68 = [v10 objectForKeyedSubscript:@"transform"];
+          v68 = [attributesCopy objectForKeyedSubscript:@"transform"];
           [TSDSVGToBezierPathConverter transformFromSVGTransformAttributeString:v68];
           v69 = *&t1.c;
           *&self->mGroupedAffineTransform.a = *&t1.a;
@@ -307,20 +307,20 @@ LABEL_42:
       }
     }
 
-    v70 = [v9 isEqualToString:@"line"];
-    if ([v9 isEqualToString:@"path"])
+    v70 = [elementCopy isEqualToString:@"line"];
+    if ([elementCopy isEqualToString:@"path"])
     {
-      v71 = [v10 objectForKeyedSubscript:@"d"];
+      v71 = [attributesCopy objectForKeyedSubscript:@"d"];
       v72 = [TSDSVGToBezierPathConverter newPathFromSVGPathString:v71 shouldClosePathAtEnd:v70 ^ 1u];
     }
 
     else
     {
-      if (![v9 isEqualToString:@"polyline"])
+      if (![elementCopy isEqualToString:@"polyline"])
       {
-        if ([v9 isEqualToString:@"polygon"])
+        if ([elementCopy isEqualToString:@"polygon"])
         {
-          v101 = [v10 objectForKeyedSubscript:@"points"];
+          v101 = [attributesCopy objectForKeyedSubscript:@"points"];
           Mutable = [TSDSVGToBezierPathConverter newPathFromSVGPolygonString:v101];
 
           if (!v70)
@@ -333,18 +333,18 @@ LABEL_42:
         {
           if (!v70)
           {
-            if ([v9 isEqualToString:@"rect"])
+            if ([elementCopy isEqualToString:@"rect"])
             {
-              v112 = [v10 objectForKeyedSubscript:@"width"];
+              v112 = [attributesCopy objectForKeyedSubscript:@"width"];
               [v112 floatValue];
-              v113 = [v10 objectForKeyedSubscript:@"height"];
+              v113 = [attributesCopy objectForKeyedSubscript:@"height"];
               [v113 floatValue];
 
               memset(&t1, 0, sizeof(t1));
-              v114 = [v10 objectForKeyedSubscript:@"x"];
+              v114 = [attributesCopy objectForKeyedSubscript:@"x"];
               [v114 floatValue];
               v116 = v115;
-              v117 = [v10 objectForKeyedSubscript:@"y"];
+              v117 = [attributesCopy objectForKeyedSubscript:@"y"];
               [v117 floatValue];
               CGAffineTransformMakeTranslation(&t1, v116, v118);
 
@@ -352,7 +352,7 @@ LABEL_42:
               v121 = v120;
               v123 = v122;
               v125 = v124;
-              v126 = [v10 objectForKeyedSubscript:@"rx"];
+              v126 = [attributesCopy objectForKeyedSubscript:@"rx"];
               [v126 floatValue];
               v128 = TSDCreateRoundRectPathForRectWithRadius(v119, v121, v123, v125, v127);
 
@@ -361,17 +361,17 @@ LABEL_42:
               goto LABEL_69;
             }
 
-            if ([v9 isEqualToString:@"circle"])
+            if ([elementCopy isEqualToString:@"circle"])
             {
-              v129 = [v10 objectForKeyedSubscript:@"r"];
+              v129 = [attributesCopy objectForKeyedSubscript:@"r"];
               [v129 floatValue];
               v131 = v130;
 
-              v132 = [v10 objectForKeyedSubscript:@"cx"];
+              v132 = [attributesCopy objectForKeyedSubscript:@"cx"];
               [v132 floatValue];
               v134 = v133 - v131;
 
-              v135 = [v10 objectForKeyedSubscript:@"cy"];
+              v135 = [attributesCopy objectForKeyedSubscript:@"cy"];
               [v135 floatValue];
               v137 = v136 - v131;
 
@@ -383,25 +383,25 @@ LABEL_42:
 
             else
             {
-              if (![v9 isEqualToString:@"ellipse"])
+              if (![elementCopy isEqualToString:@"ellipse"])
               {
                 Mutable = CGPathCreateMutable();
                 goto LABEL_69;
               }
 
-              v147 = [v10 objectForKeyedSubscript:@"rx"];
+              v147 = [attributesCopy objectForKeyedSubscript:@"rx"];
               [v147 floatValue];
               v149 = v148;
 
-              v150 = [v10 objectForKeyedSubscript:@"ry"];
+              v150 = [attributesCopy objectForKeyedSubscript:@"ry"];
               [v150 floatValue];
               v152 = v151;
 
-              v153 = [v10 objectForKeyedSubscript:@"cx"];
+              v153 = [attributesCopy objectForKeyedSubscript:@"cx"];
               [v153 floatValue];
               v155 = v154 - v149;
 
-              v156 = [v10 objectForKeyedSubscript:@"cy"];
+              v156 = [attributesCopy objectForKeyedSubscript:@"cy"];
               [v156 floatValue];
               v158 = v157 - v152;
 
@@ -411,35 +411,35 @@ LABEL_42:
               v140 = v158;
             }
 
-            v159 = [TSDBezierPath bezierPathWithOvalInRect:v139, v140, v138, v141];
-            Mutable = [v159 CGPath];
+            v141 = [TSDBezierPath bezierPathWithOvalInRect:v139, v140, v138, v141];
+            Mutable = [v141 CGPath];
 
             CGPathRetain(Mutable);
             goto LABEL_69;
           }
 
           Mutable = CGPathCreateMutable();
-          v102 = [v10 objectForKeyedSubscript:@"x1"];
+          v102 = [attributesCopy objectForKeyedSubscript:@"x1"];
           [v102 floatValue];
           v104 = v103;
-          v105 = [v10 objectForKeyedSubscript:@"y1"];
+          v105 = [attributesCopy objectForKeyedSubscript:@"y1"];
           [v105 floatValue];
           CGPathMoveToPoint(Mutable, 0, v104, v106);
 
-          v107 = [v10 objectForKeyedSubscript:@"x2"];
+          v107 = [attributesCopy objectForKeyedSubscript:@"x2"];
           [v107 floatValue];
           v109 = v108;
-          v110 = [v10 objectForKeyedSubscript:@"y2"];
+          v110 = [attributesCopy objectForKeyedSubscript:@"y2"];
           [v110 floatValue];
           CGPathAddLineToPoint(Mutable, 0, v109, v111);
         }
 
 LABEL_53:
-        v164 = self;
-        v74 = [v10 objectForKeyedSubscript:@"stroke-width"];
-        v75 = [v10 objectForKeyedSubscript:@"stroke-linecap"];
-        v76 = [v10 objectForKeyedSubscript:@"stroke-linejoin"];
-        v77 = [v10 objectForKeyedSubscript:@"stroke-miterlimit"];
+        selfCopy2 = self;
+        v74 = [attributesCopy objectForKeyedSubscript:@"stroke-width"];
+        v75 = [attributesCopy objectForKeyedSubscript:@"stroke-linecap"];
+        v76 = [attributesCopy objectForKeyedSubscript:@"stroke-linejoin"];
+        v77 = [attributesCopy objectForKeyedSubscript:@"stroke-miterlimit"];
         v78 = 1.0;
         if (v74 && ([v74 isEqualToString:&stru_287D36338] & 1) == 0)
         {
@@ -461,23 +461,23 @@ LABEL_53:
             goto LABEL_60;
           }
 
-          v142 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler6 = [MEMORY[0x277D6C290] currentHandler];
           v143 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDSVGToBezierPathConverter parser:didStartElement:namespaceURI:qualifiedName:attributes:]"];
           v144 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDSVGToBezierPathConverter.m"];
-          [v142 handleFailureInFunction:v143 file:v144 lineNumber:242 description:{@"Unexpected Line Cap Style: %@", v75}];
+          [currentHandler6 handleFailureInFunction:v143 file:v144 lineNumber:242 description:{@"Unexpected Line Cap Style: %@", v75}];
         }
 
         v80 = 0;
 LABEL_60:
         if (!v76 || ([v76 isEqualToString:&stru_287D36338] & 1) != 0 || (objc_msgSend(v76, "isEqualToString:", @"miter") & 1) != 0)
         {
-          v81 = v9;
+          v81 = elementCopy;
 LABEL_64:
           v82 = 0;
           goto LABEL_65;
         }
 
-        v81 = v9;
+        v81 = elementCopy;
         if ([v75 isEqualToString:@"round"])
         {
           v82 = 1;
@@ -487,10 +487,10 @@ LABEL_64:
         {
           if (([v75 isEqualToString:@"bevel"] & 1) == 0)
           {
-            v162 = [MEMORY[0x277D6C290] currentHandler];
+            currentHandler7 = [MEMORY[0x277D6C290] currentHandler];
             v145 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDSVGToBezierPathConverter parser:didStartElement:namespaceURI:qualifiedName:attributes:]"];
             v146 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDSVGToBezierPathConverter.m"];
-            [v162 handleFailureInFunction:v145 file:v146 lineNumber:254 description:{@"Unexpected Line Join Style: %@", v76}];
+            [currentHandler7 handleFailureInFunction:v145 file:v146 lineNumber:254 description:{@"Unexpected Line Join Style: %@", v76}];
 
             goto LABEL_64;
           }
@@ -509,12 +509,12 @@ LABEL_65:
           [v83 setMiterLimit:v84];
         }
 
-        v85 = [v83 outlineStroke];
-        Mutable = [v85 CGPath];
+        outlineStroke = [v83 outlineStroke];
+        Mutable = [outlineStroke CGPath];
 
         CGPathRetain(Mutable);
-        v9 = v81;
-        self = v164;
+        elementCopy = v81;
+        self = selfCopy2;
         v58 = v165;
         v64 = MEMORY[0x277CBF2C0];
 LABEL_69:
@@ -522,12 +522,12 @@ LABEL_69:
         *&t1.a = *&self->mGroupedAffineTransform.a;
         *&t1.c = v86;
         *&t1.tx = *&self->mGroupedAffineTransform.tx;
-        v87 = [v10 objectForKeyedSubscript:@"transform"];
+        v87 = [attributesCopy objectForKeyedSubscript:@"transform"];
 
         if (v87)
         {
           memset(&t2, 0, sizeof(t2));
-          v88 = [v10 objectForKeyedSubscript:@"transform"];
+          v88 = [attributesCopy objectForKeyedSubscript:@"transform"];
           [TSDSVGToBezierPathConverter transformFromSVGTransformAttributeString:v88];
 
           v167 = t1;
@@ -598,7 +598,7 @@ LABEL_81:
         goto LABEL_82;
       }
 
-      v71 = [v10 objectForKeyedSubscript:@"points"];
+      v71 = [attributesCopy objectForKeyedSubscript:@"points"];
       v72 = [TSDSVGToBezierPathConverter newPathFromSVGPolylineString:v71];
     }
 
@@ -615,10 +615,10 @@ LABEL_81:
 LABEL_82:
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  v7 = a4;
-  if ([(NSString *)self->mHiddenOnTag isEqualToString:v7])
+  elementCopy = element;
+  if ([(NSString *)self->mHiddenOnTag isEqualToString:elementCopy])
   {
     mHiddenOnTagNestedCount = self->mHiddenOnTagNestedCount;
     if (mHiddenOnTagNestedCount)
@@ -633,7 +633,7 @@ LABEL_82:
     }
   }
 
-  if ([v7 isEqualToString:@"g"])
+  if ([elementCopy isEqualToString:@"g"])
   {
     v10 = *&self->mGroupedAffineTransform.c;
     *&t1.a = *&self->mGroupedAffineTransform.a;
@@ -664,17 +664,17 @@ LABEL_82:
   }
 }
 
-+ (CGPath)newPathFromSVGPathString:(id)a3 shouldClosePathAtEnd:(BOOL)a4
++ (CGPath)newPathFromSVGPathString:(id)string shouldClosePathAtEnd:(BOOL)end
 {
-  v51 = a4;
+  endCopy = end;
   v67 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   Mutable = CGPathCreateMutable();
   v6 = MEMORY[0x277CBF348];
   v55 = *MEMORY[0x277CBF348];
   *y = *MEMORY[0x277CBF348];
-  v52 = v4;
-  v7 = [MEMORY[0x277CCAC80] scannerWithString:v4];
+  v52 = stringCopy;
+  v7 = [MEMORY[0x277CCAC80] scannerWithString:stringCopy];
   v65 = *asc_26CA666D0;
   v66 = 2883717;
   v8 = MEMORY[0x277CCA900];
@@ -695,9 +695,9 @@ LABEL_82:
     while (1)
     {
       v24 = v12;
-      v25 = [MEMORY[0x277CCA900] letterCharacterSet];
+      letterCharacterSet = [MEMORY[0x277CCA900] letterCharacterSet];
       v63 = v12;
-      v26 = [v7 scanCharactersFromSet:v25 intoString:&v63];
+      v26 = [v7 scanCharactersFromSet:letterCharacterSet intoString:&v63];
       v12 = v63;
 
       if (v26)
@@ -715,8 +715,8 @@ LABEL_82:
         v27 = CurrentPoint.y;
       }
 
-      v30 = [MEMORY[0x277CCA900] lowercaseLetterCharacterSet];
-      v31 = [v30 characterIsMember:v13];
+      lowercaseLetterCharacterSet = [MEMORY[0x277CCA900] lowercaseLetterCharacterSet];
+      v31 = [lowercaseLetterCharacterSet characterIsMember:v13];
 
       v32 = v21;
       v33 = v20;
@@ -821,10 +821,10 @@ LABEL_69:
           if (v13 != 115)
           {
 LABEL_115:
-            v48 = [MEMORY[0x277D6C290] currentHandler];
+            currentHandler = [MEMORY[0x277D6C290] currentHandler];
             v49 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDSVGToBezierPathConverter newPathFromSVGPathString:shouldClosePathAtEnd:]"];
             v50 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDSVGToBezierPathConverter.m"];
-            [v48 handleFailureInFunction:v49 file:v50 lineNumber:570 description:{@"Cannot process path of type %@", v12}];
+            [currentHandler handleFailureInFunction:v49 file:v50 lineNumber:570 description:{@"Cannot process path of type %@", v12}];
 
             [v7 isAtEnd];
             v11 = 1;
@@ -1100,7 +1100,7 @@ LABEL_111:
   v12 = 0;
   v13 = 0;
 LABEL_3:
-  if (v51 && (v13 & 0xFFDF) != 0x5A)
+  if (endCopy && (v13 & 0xFFDF) != 0x5A)
   {
     MutableCopy = CGPathCreateMutableCopy(Mutable);
     CGPathRelease(Mutable);
@@ -1110,22 +1110,22 @@ LABEL_3:
 
   if (v11)
   {
-    v15 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
     v16 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDSVGToBezierPathConverter newPathFromSVGPathString:shouldClosePathAtEnd:]"];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDSVGToBezierPathConverter.m"];
-    [v15 handleFailureInFunction:v16 file:v17 lineNumber:590 description:{@"Bailing on operation %c", v13}];
+    [currentHandler2 handleFailureInFunction:v16 file:v17 lineNumber:590 description:{@"Bailing on operation %c", v13}];
   }
 
   return Mutable;
 }
 
-+ (CGPath)newPathFromSVGPolylineString:(id)a3
++ (CGPath)newPathFromSVGPolylineString:(id)string
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  stringCopy = string;
   Mutable = CGPathCreateMutable();
   *v13 = *MEMORY[0x277CBF348];
-  v5 = [MEMORY[0x277CCAC80] scannerWithString:v3];
+  v5 = [MEMORY[0x277CCAC80] scannerWithString:stringCopy];
   v14 = *asc_26CA666D0;
   v15 = 2883717;
   v6 = MEMORY[0x277CCA900];
@@ -1156,25 +1156,25 @@ LABEL_10:
 
   else
   {
-    v9 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDSVGToBezierPathConverter newPathFromSVGPolylineString:]"];
     v11 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDSVGToBezierPathConverter.m"];
-    [v9 handleFailureInFunction:v10 file:v11 lineNumber:607 description:@"No value for initial polyline point!"];
+    [currentHandler handleFailureInFunction:v10 file:v11 lineNumber:607 description:@"No value for initial polyline point!"];
   }
 
   return Mutable;
 }
 
-+ (CGPath)newPathFromSVGPolygonString:(id)a3
++ (CGPath)newPathFromSVGPolygonString:(id)string
 {
-  v3 = [TSDSVGToBezierPathConverter newPathFromSVGPolylineString:a3];
+  v3 = [TSDSVGToBezierPathConverter newPathFromSVGPolylineString:string];
   MutableCopy = CGPathCreateMutableCopy(v3);
   CGPathRelease(v3);
   CGPathCloseSubpath(MutableCopy);
   return MutableCopy;
 }
 
-+ (CGAffineTransform)transformFromSVGTransformAttributeString:(SEL)a3
++ (CGAffineTransform)transformFromSVGTransformAttributeString:(SEL)string
 {
   v93 = *MEMORY[0x277D85DE8];
   v5 = a4;
@@ -1223,7 +1223,7 @@ LABEL_10:
         v20 = [v18 characterSetWithCharactersInString:v19];
         [v17 setCharactersToBeSkipped:v20];
 
-        v21 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         if (([v17 isAtEnd] & 1) == 0)
         {
           v22 = 1;
@@ -1234,13 +1234,13 @@ LABEL_10:
             HIDWORD(v24) = HIDWORD(t1.a);
             *&v24 = t1.a;
             v25 = [MEMORY[0x277CCABB0] numberWithFloat:v24];
-            [v21 addObject:v25];
+            [array addObject:v25];
             if (v22 >= 7)
             {
-              v26 = [MEMORY[0x277D6C290] currentHandler];
+              currentHandler = [MEMORY[0x277D6C290] currentHandler];
               v27 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDSVGToBezierPathConverter transformFromSVGTransformAttributeString:]"];
               v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDSVGToBezierPathConverter.m"];
-              [v26 handleFailureInFunction:v27 file:v28 lineNumber:676 description:{@"Too many numbers for transform %@", v5}];
+              [currentHandler handleFailureInFunction:v27 file:v28 lineNumber:676 description:{@"Too many numbers for transform %@", v5}];
 
               v23 = 0;
             }
@@ -1259,40 +1259,40 @@ LABEL_10:
         v29 = v82;
         if ([v82 isEqualToString:@"matrix"])
         {
-          if ([v21 count] == 6)
+          if ([array count] == 6)
           {
-            v30 = [v21 objectAtIndexedSubscript:0];
+            v30 = [array objectAtIndexedSubscript:0];
             [v30 floatValue];
             v78 = v31;
-            v70 = [v21 objectAtIndexedSubscript:1];
+            v70 = [array objectAtIndexedSubscript:1];
             [v70 floatValue];
             v76 = v32;
-            v33 = [v21 objectAtIndexedSubscript:2];
+            v33 = [array objectAtIndexedSubscript:2];
             [v33 floatValue];
             v69 = v34;
-            v35 = [v21 objectAtIndexedSubscript:3];
+            v35 = [array objectAtIndexedSubscript:3];
             [v35 floatValue];
             v36 = vcvtq_f64_f32(__PAIR64__(v76, v78));
             v77 = vcvtq_f64_f32(__PAIR64__(v37, v69));
             v79 = v36;
-            v38 = [v21 objectAtIndexedSubscript:4];
+            v38 = [array objectAtIndexedSubscript:4];
             [v38 floatValue];
             tx = v39;
-            [v21 objectAtIndexedSubscript:5];
+            [array objectAtIndexedSubscript:5];
             v42 = v41 = retstr;
             [v42 floatValue];
             ty = v43;
 
             retstr = v41;
-            v45 = v30;
+            currentHandler2 = v30;
           }
 
           else
           {
-            v45 = [MEMORY[0x277D6C290] currentHandler];
+            currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
             v51 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDSVGToBezierPathConverter transformFromSVGTransformAttributeString:]"];
             v52 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDSVGToBezierPathConverter.m"];
-            [v45 handleFailureInFunction:v51 file:v52 lineNumber:694 description:{@"Not enough numbers for matrix transform! %@", v5}];
+            [currentHandler2 handleFailureInFunction:v51 file:v52 lineNumber:694 description:{@"Not enough numbers for matrix transform! %@", v5}];
 
             ty = v10;
             tx = v9;
@@ -1318,30 +1318,30 @@ LABEL_10:
             goto LABEL_33;
           }
 
-          if ([v21 count] == 2)
+          if ([array count] == 2)
           {
-            v45 = [v21 objectAtIndexedSubscript:0];
-            [v45 floatValue];
+            currentHandler2 = [array objectAtIndexedSubscript:0];
+            [currentHandler2 floatValue];
             v57 = v56;
-            v58 = v21;
+            v58 = array;
             v59 = 1;
           }
 
           else
           {
-            if ([v21 count] != 1)
+            if ([array count] != 1)
             {
-              v45 = [MEMORY[0x277D6C290] currentHandler];
+              currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
               v63 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDSVGToBezierPathConverter transformFromSVGTransformAttributeString:]"];
               v64 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDSVGToBezierPathConverter.m"];
-              [v45 handleFailureInFunction:v63 file:v64 lineNumber:715 description:{@"Wrong number of numbers for scale transform! %@", v5}];
+              [currentHandler2 handleFailureInFunction:v63 file:v64 lineNumber:715 description:{@"Wrong number of numbers for scale transform! %@", v5}];
               goto LABEL_31;
             }
 
-            v45 = [v21 objectAtIndexedSubscript:0];
-            [v45 floatValue];
+            currentHandler2 = [array objectAtIndexedSubscript:0];
+            [currentHandler2 floatValue];
             v57 = v61;
-            v58 = v21;
+            v58 = array;
             v59 = 0;
           }
 
@@ -1351,12 +1351,12 @@ LABEL_10:
           goto LABEL_28;
         }
 
-        if ([v21 count] == 2)
+        if ([array count] == 2)
         {
-          v45 = [v21 objectAtIndexedSubscript:0];
-          [v45 floatValue];
+          currentHandler2 = [array objectAtIndexedSubscript:0];
+          [currentHandler2 floatValue];
           v48 = v47;
-          v49 = [v21 objectAtIndexedSubscript:1];
+          v49 = [array objectAtIndexedSubscript:1];
           [v49 floatValue];
           CGAffineTransformMakeTranslation(&t1, v48, v50);
 LABEL_28:
@@ -1368,12 +1368,12 @@ LABEL_28:
           goto LABEL_32;
         }
 
-        if ([v21 count] != 1)
+        if ([array count] != 1)
         {
-          v45 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
           v63 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDSVGToBezierPathConverter transformFromSVGTransformAttributeString:]"];
           v64 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDSVGToBezierPathConverter.m"];
-          [v45 handleFailureInFunction:v63 file:v64 lineNumber:705 description:{@"Wrong number of numbers for translate transform! %@", v5}];
+          [currentHandler2 handleFailureInFunction:v63 file:v64 lineNumber:705 description:{@"Wrong number of numbers for translate transform! %@", v5}];
 LABEL_31:
 
           v29 = v82;
@@ -1384,8 +1384,8 @@ LABEL_31:
           goto LABEL_32;
         }
 
-        v45 = [v21 objectAtIndexedSubscript:0];
-        [v45 floatValue];
+        currentHandler2 = [array objectAtIndexedSubscript:0];
+        [currentHandler2 floatValue];
         CGAffineTransformMakeTranslation(&t1, v60, 0.0);
         v77 = *&t1.c;
         v79 = *&t1.a;

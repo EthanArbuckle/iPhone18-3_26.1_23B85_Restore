@@ -1,19 +1,19 @@
 @interface CLFileDownloadTaskDelegate
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation CLFileDownloadTaskDelegate
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  if ([objc_msgSend(objc_msgSend(objc_msgSend(a4 originalRequest] && (objc_msgSend(objc_msgSend(objc_msgSend(a6, "URL"), "scheme"), "isEqualToString:", @"http") & 1) != 0)
+  if ([objc_msgSend(objc_msgSend(objc_msgSend(task originalRequest] && (objc_msgSend(objc_msgSend(objc_msgSend(request, "URL"), "scheme"), "isEqualToString:", @"http") & 1) != 0)
   {
-    a6 = 0;
+    request = 0;
   }
 
-  v9 = *(a7 + 2);
+  v9 = *(handler + 2);
 
-  v9(a7, a6);
+  v9(handler, request);
 }
 
 @end

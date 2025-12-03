@@ -1,23 +1,23 @@
 @interface MPWeighter
-- (BOOL)itemAtIndex:(int64_t)a3 meetsContraints:(id)a4 oneMatch:(BOOL)a5;
+- (BOOL)itemAtIndex:(int64_t)index meetsContraints:(id)contraints oneMatch:(BOOL)match;
 - (MPWeighter)init;
-- (id)constraintsForItem:(id)a3;
-- (id)getRandomItemMeetingNumberOfFaceLandscapes:(int64_t)a3 facePortraits:(int64_t)a4 imageLandscapes:(int64_t)a5 imagePortraits:(int64_t)a6 vPanoramas:(int64_t)a7 hPanoramas:(int64_t)a8 movies:(int64_t)a9 fitsInExtraWide:(int64_t)a10 aspectRatios:(id)a11 previousTags:(id)a12;
+- (id)constraintsForItem:(id)item;
+- (id)getRandomItemMeetingNumberOfFaceLandscapes:(int64_t)landscapes facePortraits:(int64_t)portraits imageLandscapes:(int64_t)imageLandscapes imagePortraits:(int64_t)imagePortraits vPanoramas:(int64_t)panoramas hPanoramas:(int64_t)hPanoramas movies:(int64_t)movies fitsInExtraWide:(int64_t)self0 aspectRatios:(id)self1 previousTags:(id)self2;
 - (id)imageCounts;
-- (id)indicesEqualingConstraints:(id)a3;
-- (id)indicesMeetingConstraints:(id)a3;
+- (id)indicesEqualingConstraints:(id)constraints;
+- (id)indicesMeetingConstraints:(id)constraints;
 - (int64_t)getRandomIndex;
-- (int64_t)getRandomIndexInSubset:(id)a3;
-- (int64_t)getRandomIndexInSubset:(id)a3 withPreviousTags:(id)a4;
-- (int64_t)getRandomIndexMeetingContraints:(id)a3 oneMatch:(BOOL)a4;
-- (int64_t)getRandomIndexWithNoPanoramasForImageCount:(int64_t)a3;
-- (int64_t)numberOfItemsWithImageCount:(int64_t)a3;
-- (void)addItem:(id)a3 withWeight:(int64_t)a4 andContraints:(id)a5;
+- (int64_t)getRandomIndexInSubset:(id)subset;
+- (int64_t)getRandomIndexInSubset:(id)subset withPreviousTags:(id)tags;
+- (int64_t)getRandomIndexMeetingContraints:(id)contraints oneMatch:(BOOL)match;
+- (int64_t)getRandomIndexWithNoPanoramasForImageCount:(int64_t)count;
+- (int64_t)numberOfItemsWithImageCount:(int64_t)count;
+- (void)addItem:(id)item withWeight:(int64_t)weight andContraints:(id)contraints;
 - (void)clearAllItems;
 - (void)dealloc;
-- (void)ignoreIndex:(int64_t)a3;
-- (void)ignoreIndices:(id)a3;
-- (void)increaseUsageCountOfObjectAtIndex:(int64_t)a3;
+- (void)ignoreIndex:(int64_t)index;
+- (void)ignoreIndices:(id)indices;
+- (void)increaseUsageCountOfObjectAtIndex:(int64_t)index;
 @end
 
 @implementation MPWeighter
@@ -55,18 +55,18 @@
   [(MPWeighter *)&v3 dealloc];
 }
 
-- (void)addItem:(id)a3 withWeight:(int64_t)a4 andContraints:(id)a5
+- (void)addItem:(id)item withWeight:(int64_t)weight andContraints:(id)contraints
 {
-  [(NSMutableArray *)self->_items addObject:a3];
-  [(NSMutableArray *)self->_constraints addObject:a5];
-  [(NSMutableArray *)self->_weights addObject:[NSNumber numberWithInteger:a4]];
+  [(NSMutableArray *)self->_items addObject:item];
+  [(NSMutableArray *)self->_constraints addObject:contraints];
+  [(NSMutableArray *)self->_weights addObject:[NSNumber numberWithInteger:weight]];
   [(NSMutableArray *)self->_usageCount addObject:[NSNumber numberWithInteger:0]];
-  self->_totalWeight += a4;
+  self->_totalWeight += weight;
 }
 
-- (int64_t)getRandomIndexMeetingContraints:(id)a3 oneMatch:(BOOL)a4
+- (int64_t)getRandomIndexMeetingContraints:(id)contraints oneMatch:(BOOL)match
 {
-  v4 = a4;
+  matchCopy = match;
   v7 = [(MPWeighter *)self count];
   v8 = +[NSMutableIndexSet indexSet];
   v9 = +[NSMutableIndexSet indexSet];
@@ -74,7 +74,7 @@
   {
     for (i = 0; i != v7; ++i)
     {
-      if (([(NSMutableIndexSet *)self->_ignoreIndices containsIndex:i]& 1) == 0 && [(MPWeighter *)self itemAtIndex:i meetsContraints:a3 oneMatch:v4])
+      if (([(NSMutableIndexSet *)self->_ignoreIndices containsIndex:i]& 1) == 0 && [(MPWeighter *)self itemAtIndex:i meetsContraints:contraints oneMatch:matchCopy])
       {
         if (!self->_evenlyPickByID || (v11 = +[MPUtilities idOfCombinedID:](MPUtilities, "idOfCombinedID:", -[NSMutableArray objectAtIndex:](self->_items, "objectAtIndex:", i)), v12 = -[NSMutableIndexSet firstIndex](self->_ignoreIndices, "firstIndex"), v12 == 0x7FFFFFFFFFFFFFFFLL) || (v13 = [-[NSMutableArray objectAtIndex:](self->_items objectAtIndex:{v12), "hasPrefix:", v11}], v14 = v8, (v13 & 1) == 0))
         {
@@ -99,7 +99,7 @@
   return [(MPWeighter *)self getRandomIndexInSubset:v9];
 }
 
-- (int64_t)getRandomIndexWithNoPanoramasForImageCount:(int64_t)a3
+- (int64_t)getRandomIndexWithNoPanoramasForImageCount:(int64_t)count
 {
   v5 = [(MPWeighter *)self count];
   v6 = +[NSMutableIndexSet indexSet];
@@ -115,7 +115,7 @@
       if (([(NSMutableIndexSet *)self->_ignoreIndices containsIndex:i]& 1) == 0)
       {
         v13 = *(v9 + 128) != 1 || v10 + v11 == -v12;
-        if (v13 && v9[1] <= a3)
+        if (v13 && v9[1] <= count)
         {
           if (!self->_evenlyPickByID || (v14 = +[MPUtilities idOfCombinedID:](MPUtilities, "idOfCombinedID:", -[NSMutableArray objectAtIndex:](self->_items, "objectAtIndex:", i)), v15 = -[NSMutableIndexSet firstIndex](self->_ignoreIndices, "firstIndex"), v15 == 0x7FFFFFFFFFFFFFFFLL) || (v16 = [-[NSMutableArray objectAtIndex:](self->_items objectAtIndex:{v15), "hasPrefix:", v14}], v17 = v6, (v16 & 1) == 0))
           {
@@ -141,26 +141,26 @@
   return [(MPWeighter *)self getRandomIndexInSubset:v7];
 }
 
-- (id)getRandomItemMeetingNumberOfFaceLandscapes:(int64_t)a3 facePortraits:(int64_t)a4 imageLandscapes:(int64_t)a5 imagePortraits:(int64_t)a6 vPanoramas:(int64_t)a7 hPanoramas:(int64_t)a8 movies:(int64_t)a9 fitsInExtraWide:(int64_t)a10 aspectRatios:(id)a11 previousTags:(id)a12
+- (id)getRandomItemMeetingNumberOfFaceLandscapes:(int64_t)landscapes facePortraits:(int64_t)portraits imageLandscapes:(int64_t)imageLandscapes imagePortraits:(int64_t)imagePortraits vPanoramas:(int64_t)panoramas hPanoramas:(int64_t)hPanoramas movies:(int64_t)movies fitsInExtraWide:(int64_t)self0 aspectRatios:(id)self1 previousTags:(id)self2
 {
   v118 = objc_alloc_init(NSMutableIndexSet);
   v184 = 0u;
   v185 = 0u;
   v186 = 0u;
   v187 = 0u;
-  v127 = self;
+  selfCopy = self;
   obj = self->_constraints;
   v128 = [(NSMutableArray *)obj countByEnumeratingWithState:&v184 objects:v196 count:16];
   if (v128)
   {
     v140 = 0;
     v124 = *v185;
-    v16 = a7 > 0 || a8 > 0;
-    v119 = a8 + a7;
-    v129 = a4 + a3;
+    v16 = panoramas > 0 || hPanoramas > 0;
+    v119 = hPanoramas + panoramas;
+    v129 = portraits + landscapes;
     v120 = !v16;
-    v125 = a7;
-    v126 = a8;
+    panoramasCopy = panoramas;
+    hPanoramasCopy = hPanoramas;
     do
     {
       v17 = 0;
@@ -187,7 +187,7 @@
         v137 = v18[4].i64[1];
         v135 = v18[4].i64[0];
         v141 = v18[7].i64[1];
-        if (a8 <= 0 && a7 <= 0)
+        if (hPanoramas <= 0 && panoramas <= 0)
         {
           v24 = v19 <= 0 && v20 <= 0;
           if (v24 && v22.i64[1] < 1)
@@ -214,8 +214,8 @@
 
         if (v22.i64[1] < 1)
         {
-          v26 = a7 == v19 && a8 == v20;
-          v109 = v21.i64[1] >= a7 && v21.i64[0] >= a8;
+          v26 = panoramas == v19 && hPanoramas == v20;
+          v109 = v21.i64[1] >= panoramas && v21.i64[0] >= hPanoramas;
           if (v21.i64[1] > 0 || v21.i64[0] >= 1)
           {
             v26 = v109;
@@ -229,7 +229,7 @@
           goto LABEL_23;
         }
 
-        if (v119 == v22.i64[1] || ((v89 = a7 - v19, a7 == v19) ? (v90 = v22.i64[1] == a8) : (v90 = 0), v90 || (a8 == v20 ? (v91 = v22.i64[1] == a7) : (v91 = 0), v91 || (a8 > v20 ? (v92 = v119 - v20 == v22.i64[1]) : (v92 = 0), v92))))
+        if (v119 == v22.i64[1] || ((v89 = panoramas - v19, panoramas == v19) ? (v90 = v22.i64[1] == hPanoramas) : (v90 = 0), v90 || (hPanoramas == v20 ? (v91 = v22.i64[1] == panoramas) : (v91 = 0), v91 || (hPanoramas > v20 ? (v92 = v119 - v20 == v22.i64[1]) : (v92 = 0), v92))))
         {
 LABEL_22:
           v26 = 1;
@@ -237,15 +237,15 @@ LABEL_22:
 
         else
         {
-          v93 = v89 + a8;
-          v94 = v89 + a8 == v22.i64[1];
-          v95 = a8 - v20 + v89 == v22.i64[1];
+          v93 = v89 + hPanoramas;
+          v94 = v89 + hPanoramas == v22.i64[1];
+          v95 = hPanoramas - v20 + v89 == v22.i64[1];
           if (v93 == v22.i64[1])
           {
             v95 = v94;
           }
 
-          if (a8 > v20)
+          if (hPanoramas > v20)
           {
             v96 = v95;
           }
@@ -255,13 +255,13 @@ LABEL_22:
             v96 = v94;
           }
 
-          v26 = a7 > v19 && v96;
+          v26 = panoramas > v19 && v96;
         }
 
 LABEL_23:
         v134 = v26;
 LABEL_33:
-        ignorePanoramas = v127->_ignorePanoramas;
+        ignorePanoramas = selfCopy->_ignorePanoramas;
         v30 = v143;
         v142 = v23;
         if (![v143 count])
@@ -270,7 +270,7 @@ LABEL_33:
         }
 
         v144 = [v143 mutableCopy];
-        v150 = [a11 mutableCopy];
+        v150 = [ratios mutableCopy];
         v180 = 0u;
         v181 = 0u;
         v182 = 0u;
@@ -441,7 +441,7 @@ LABEL_229:
           if ([v23 count])
           {
             v145 = [v23 mutableCopy];
-            v151 = [a11 mutableCopy];
+            v151 = [ratios mutableCopy];
             v164 = 0u;
             v165 = 0u;
             v166 = 0u;
@@ -468,7 +468,7 @@ LABEL_229:
                   v161 = 0u;
                   v162 = 0u;
                   v163 = 0u;
-                  v68 = [a11 countByEnumeratingWithState:&v160 objects:v190 count:16];
+                  v68 = [ratios countByEnumeratingWithState:&v160 objects:v190 count:16];
                   if (v68)
                   {
                     v69 = v68;
@@ -479,7 +479,7 @@ LABEL_229:
                       {
                         if (*v161 != v70)
                         {
-                          objc_enumerationMutation(a11);
+                          objc_enumerationMutation(ratios);
                         }
 
                         v72 = *(*(&v160 + 1) + 8 * ii);
@@ -503,7 +503,7 @@ LABEL_229:
                         }
                       }
 
-                      v69 = [a11 countByEnumeratingWithState:&v160 objects:v190 count:16];
+                      v69 = [ratios countByEnumeratingWithState:&v160 objects:v190 count:16];
                       if (v69)
                       {
                         continue;
@@ -553,7 +553,7 @@ LABEL_104:
                       v153 = 0u;
                       v154 = 0u;
                       v155 = 0u;
-                      v83 = [a11 countByEnumeratingWithState:&v152 objects:v188 count:16];
+                      v83 = [ratios countByEnumeratingWithState:&v152 objects:v188 count:16];
                       if (v83)
                       {
                         v84 = v83;
@@ -564,7 +564,7 @@ LABEL_104:
                           {
                             if (*v153 != v85)
                             {
-                              objc_enumerationMutation(a11);
+                              objc_enumerationMutation(ratios);
                             }
 
                             v87 = *(*(&v152 + 1) + 8 * kk);
@@ -577,7 +577,7 @@ LABEL_104:
                             }
                           }
 
-                          v84 = [a11 countByEnumeratingWithState:&v152 objects:v188 count:16];
+                          v84 = [ratios countByEnumeratingWithState:&v152 objects:v188 count:16];
                           if (v84)
                           {
                             continue;
@@ -609,27 +609,27 @@ LABEL_123:
 
         v97 = v135 + v136;
         v98 = v135 + v136 + v138;
-        a8 = v126;
-        if (v129 == v98 + v137 && v136 <= a10 && (ignorePanoramas || v134) && !v60)
+        hPanoramas = hPanoramasCopy;
+        if (v129 == v98 + v137 && v136 <= wide && (ignorePanoramas || v134) && !v60)
         {
-          v99 = v97 == a3 && v137 == a4;
+          v99 = v97 == landscapes && v137 == portraits;
           v100 = v99;
           if (!v99 && v138)
           {
-            v100 = v138 == a3 && v137 == a4 || v138 == a4 && v97 == a3 || v138 == v129 || v137 + v138 == a4 || v98 == a3;
+            v100 = v138 == landscapes && v137 == portraits || v138 == portraits && v97 == landscapes || v138 == v129 || v137 + v138 == portraits || v98 == landscapes;
           }
 
-          if (a9 == 0 && v100)
+          if (movies == 0 && v100)
           {
-            v105 = (v131 ^ 1) & (v100 ^ v100 & (a9 > 0) & v130);
+            v105 = (v131 ^ 1) & (v100 ^ v100 & (movies > 0) & v130);
           }
 
           else
           {
-            v105 = v100 ^ v100 & (a9 > 0) & v130;
+            v105 = v100 ^ v100 & (movies > 0) & v130;
           }
 
-          if (v132 < a9)
+          if (v132 < movies)
           {
             v106 = v105;
           }
@@ -647,7 +647,7 @@ LABEL_123:
 
         ++v140;
         v17 = v139 + 1;
-        a7 = v125;
+        panoramas = panoramasCopy;
       }
 
       while ((v139 + 1) != v128);
@@ -666,10 +666,10 @@ LABEL_123:
 
   if ([v118 count] >= 2)
   {
-    v112 = [v118 firstIndex];
-    if (v112 != 0x7FFFFFFFFFFFFFFFLL)
+    firstIndex = [v118 firstIndex];
+    if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v113 = v112;
+      v113 = firstIndex;
       do
       {
         if ([v118 count] <= 1)
@@ -679,7 +679,7 @@ LABEL_123:
 
         else
         {
-          v114 = [(NSMutableIndexSet *)v127->_ignoreIndices containsIndex:v113];
+          v114 = [(NSMutableIndexSet *)selfCopy->_ignoreIndices containsIndex:v113];
           v113 = [v118 indexGreaterThanIndex:v113];
           if (v114)
           {
@@ -692,13 +692,13 @@ LABEL_123:
     }
   }
 
-  if (!a12 || (v115 = [(MPWeighter *)v127 getRandomIndexInSubset:v118 withPreviousTags:a12], v115 == 0x7FFFFFFFFFFFFFFFLL))
+  if (!tags || (v115 = [(MPWeighter *)selfCopy getRandomIndexInSubset:v118 withPreviousTags:tags], v115 == 0x7FFFFFFFFFFFFFFFLL))
   {
-    v116 = [(MPWeighter *)v127 getRandomIndexInSubset:v118];
+    v116 = [(MPWeighter *)selfCopy getRandomIndexInSubset:v118];
 
     if (v116 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      return [(NSMutableArray *)v127->_items objectAtIndex:v116];
+      return [(NSMutableArray *)selfCopy->_items objectAtIndex:v116];
     }
 
     return 0;
@@ -706,10 +706,10 @@ LABEL_123:
 
   v116 = v115;
 
-  return [(NSMutableArray *)v127->_items objectAtIndex:v116];
+  return [(NSMutableArray *)selfCopy->_items objectAtIndex:v116];
 }
 
-- (int64_t)getRandomIndexInSubset:(id)a3
+- (int64_t)getRandomIndexInSubset:(id)subset
 {
   v3 = 0x7FFFFFFFFFFFFFFFLL;
   if (!self->_totalWeight)
@@ -717,10 +717,10 @@ LABEL_123:
     return v3;
   }
 
-  v6 = [a3 firstIndex];
-  if (v6 != 0x7FFFFFFFFFFFFFFFLL)
+  firstIndex = [subset firstIndex];
+  if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = v6;
+    v7 = firstIndex;
     v8 = 0;
     do
     {
@@ -729,19 +729,19 @@ LABEL_123:
         v8 += [-[NSMutableArray objectAtIndex:](self->_weights objectAtIndex:{v7), "integerValue"}];
       }
 
-      v7 = [a3 indexGreaterThanIndex:v7];
+      v7 = [subset indexGreaterThanIndex:v7];
     }
 
     while (v7 != 0x7FFFFFFFFFFFFFFFLL);
     if (v8)
     {
       v9 = random();
-      v10 = [a3 firstIndex];
+      firstIndex2 = [subset firstIndex];
       v3 = 0x7FFFFFFFFFFFFFFFLL;
-      if (v10 != 0x7FFFFFFFFFFFFFFFLL)
+      if (firstIndex2 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v11 = v9 % v8;
-        v3 = v10;
+        v3 = firstIndex2;
         while (1)
         {
           v12 = [-[NSMutableArray objectAtIndex:](self->_weights objectAtIndex:{v3), "integerValue"}];
@@ -752,7 +752,7 @@ LABEL_123:
             break;
           }
 
-          v3 = [a3 indexGreaterThanIndex:v3];
+          v3 = [subset indexGreaterThanIndex:v3];
           if (v3 == 0x7FFFFFFFFFFFFFFFLL)
           {
             return 0x7FFFFFFFFFFFFFFFLL;
@@ -765,41 +765,41 @@ LABEL_123:
   }
 
   v15 = random();
-  v16 = v15 % [a3 count];
+  v16 = v15 % [subset count];
 
-  return [a3 indexAtIndex:v16];
+  return [subset indexAtIndex:v16];
 }
 
-- (int64_t)getRandomIndexInSubset:(id)a3 withPreviousTags:(id)a4
+- (int64_t)getRandomIndexInSubset:(id)subset withPreviousTags:(id)tags
 {
   v4 = 0x7FFFFFFFFFFFFFFFLL;
   if (self->_totalWeight)
   {
-    v6 = a3;
-    v7 = self;
-    v8 = [a3 firstIndex];
-    v9 = [v6 mutableCopy];
+    subsetCopy = subset;
+    selfCopy = self;
+    firstIndex = [subset firstIndex];
+    v9 = [subsetCopy mutableCopy];
     v10 = v9;
-    if (v8 != 0x7FFFFFFFFFFFFFFFLL)
+    if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v25 = v6;
-      v26 = v7;
+      v25 = subsetCopy;
+      v26 = selfCopy;
       v24 = v9;
       do
       {
-        if (([(NSMutableIndexSet *)v7->_ignoreIndices containsIndex:v8]& 1) != 0)
+        if (([(NSMutableIndexSet *)selfCopy->_ignoreIndices containsIndex:firstIndex]& 1) != 0)
         {
           goto LABEL_5;
         }
 
-        if (![(MPWeighter *)v7 itemAtIndex:v8 meetsContraints:[NSDictionary oneMatch:"dictionaryWithObjectsAndKeys:" dictionaryWithObjectsAndKeys:a4, @"tags", 0], 0])
+        if (![(MPWeighter *)selfCopy itemAtIndex:firstIndex meetsContraints:[NSDictionary oneMatch:"dictionaryWithObjectsAndKeys:" dictionaryWithObjectsAndKeys:tags, @"tags", 0], 0])
         {
-          v11 = [a4 mutableCopy];
+          v11 = [tags mutableCopy];
           v31 = 0u;
           v32 = 0u;
           v33 = 0u;
           v34 = 0u;
-          v12 = [a4 countByEnumeratingWithState:&v31 objects:v36 count:16];
+          v12 = [tags countByEnumeratingWithState:&v31 objects:v36 count:16];
           if (v12)
           {
             v13 = v12;
@@ -810,7 +810,7 @@ LABEL_123:
               {
                 if (*v32 != v14)
                 {
-                  objc_enumerationMutation(a4);
+                  objc_enumerationMutation(tags);
                 }
 
                 v16 = *(*(&v31 + 1) + 8 * i);
@@ -820,18 +820,18 @@ LABEL_123:
                 }
               }
 
-              v13 = [a4 countByEnumeratingWithState:&v31 objects:v36 count:16];
+              v13 = [tags countByEnumeratingWithState:&v31 objects:v36 count:16];
             }
 
             while (v13);
           }
 
-          v17 = [a4 mutableCopy];
+          v17 = [tags mutableCopy];
           v27 = 0u;
           v28 = 0u;
           v29 = 0u;
           v30 = 0u;
-          v18 = [a4 countByEnumeratingWithState:&v27 objects:v35 count:16];
+          v18 = [tags countByEnumeratingWithState:&v27 objects:v35 count:16];
           if (v18)
           {
             v19 = v18;
@@ -842,7 +842,7 @@ LABEL_123:
               {
                 if (*v28 != v20)
                 {
-                  objc_enumerationMutation(a4);
+                  objc_enumerationMutation(tags);
                 }
 
                 v22 = *(*(&v27 + 1) + 8 * j);
@@ -852,31 +852,31 @@ LABEL_123:
                 }
               }
 
-              v19 = [a4 countByEnumeratingWithState:&v27 objects:v35 count:16];
+              v19 = [tags countByEnumeratingWithState:&v27 objects:v35 count:16];
             }
 
             while (v19);
           }
 
-          v6 = v25;
-          v7 = v26;
+          subsetCopy = v25;
+          selfCopy = v26;
           v10 = v24;
-          if ((![v11 count] || !-[MPWeighter itemAtIndex:meetsContraints:oneMatch:](v26, "itemAtIndex:meetsContraints:oneMatch:", v8, +[NSDictionary dictionaryWithObjectsAndKeys:](NSDictionary, "dictionaryWithObjectsAndKeys:", v11, @"tags", 0), 0)) && (!objc_msgSend(v17, "count") || !-[MPWeighter itemAtIndex:meetsContraints:oneMatch:](v26, "itemAtIndex:meetsContraints:oneMatch:", v8, +[NSDictionary dictionaryWithObjectsAndKeys:](NSDictionary, "dictionaryWithObjectsAndKeys:", v17, @"tags", 0), 0)) && (!objc_msgSend(v11, "count") || !-[MPWeighter itemAtIndex:meetsContraints:oneMatch:](v26, "itemAtIndex:meetsContraints:oneMatch:", v8, +[NSDictionary dictionaryWithObjectsAndKeys:](NSDictionary, "dictionaryWithObjectsAndKeys:", v11, @"tags", 0), 1)) && (!objc_msgSend(v17, "count") || !-[MPWeighter itemAtIndex:meetsContraints:oneMatch:](v26, "itemAtIndex:meetsContraints:oneMatch:", v8, +[NSDictionary dictionaryWithObjectsAndKeys:](NSDictionary, "dictionaryWithObjectsAndKeys:", v17, @"tags", 0), 1)))
+          if ((![v11 count] || !-[MPWeighter itemAtIndex:meetsContraints:oneMatch:](v26, "itemAtIndex:meetsContraints:oneMatch:", firstIndex, +[NSDictionary dictionaryWithObjectsAndKeys:](NSDictionary, "dictionaryWithObjectsAndKeys:", v11, @"tags", 0), 0)) && (!objc_msgSend(v17, "count") || !-[MPWeighter itemAtIndex:meetsContraints:oneMatch:](v26, "itemAtIndex:meetsContraints:oneMatch:", firstIndex, +[NSDictionary dictionaryWithObjectsAndKeys:](NSDictionary, "dictionaryWithObjectsAndKeys:", v17, @"tags", 0), 0)) && (!objc_msgSend(v11, "count") || !-[MPWeighter itemAtIndex:meetsContraints:oneMatch:](v26, "itemAtIndex:meetsContraints:oneMatch:", firstIndex, +[NSDictionary dictionaryWithObjectsAndKeys:](NSDictionary, "dictionaryWithObjectsAndKeys:", v11, @"tags", 0), 1)) && (!objc_msgSend(v17, "count") || !-[MPWeighter itemAtIndex:meetsContraints:oneMatch:](v26, "itemAtIndex:meetsContraints:oneMatch:", firstIndex, +[NSDictionary dictionaryWithObjectsAndKeys:](NSDictionary, "dictionaryWithObjectsAndKeys:", v17, @"tags", 0), 1)))
           {
 LABEL_5:
-            [v10 removeIndex:v8];
+            [v10 removeIndex:firstIndex];
           }
         }
 
-        v8 = [v6 indexGreaterThanIndex:v8];
+        firstIndex = [subsetCopy indexGreaterThanIndex:firstIndex];
       }
 
-      while (v8 != 0x7FFFFFFFFFFFFFFFLL);
+      while (firstIndex != 0x7FFFFFFFFFFFFFFFLL);
     }
 
     if ([v10 count])
     {
-      return [(MPWeighter *)v7 getRandomIndexInSubset:v10];
+      return [(MPWeighter *)selfCopy getRandomIndexInSubset:v10];
     }
 
     else
@@ -894,10 +894,10 @@ LABEL_5:
   v3 = 0x7FFFFFFFFFFFFFFFLL;
   if (totalWeight)
   {
-    v5 = [(NSMutableIndexSet *)self->_ignoreIndices firstIndex];
-    if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+    firstIndex = [(NSMutableIndexSet *)self->_ignoreIndices firstIndex];
+    if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      for (i = v5; i != 0x7FFFFFFFFFFFFFFFLL; i = [(NSMutableIndexSet *)self->_ignoreIndices indexGreaterThanIndex:i])
+      for (i = firstIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [(NSMutableIndexSet *)self->_ignoreIndices indexGreaterThanIndex:i])
       {
         totalWeight -= [-[NSMutableArray objectAtIndex:](self->_weights objectAtIndex:{i), "integerValue"}];
       }
@@ -926,9 +926,9 @@ LABEL_5:
             objc_enumerationMutation(weights);
           }
 
-          v15 = [*(*(&v20 + 1) + 8 * j) integerValue];
-          v16 = v12 < v15;
-          v12 -= v15;
+          integerValue = [*(*(&v20 + 1) + 8 * j) integerValue];
+          v16 = v12 < integerValue;
+          v12 -= integerValue;
           if (v16 && ([(NSMutableIndexSet *)self->_ignoreIndices containsIndex:v3]& 1) == 0)
           {
             if (!self->_evenlyPickByID)
@@ -937,8 +937,8 @@ LABEL_5:
             }
 
             v17 = [MPUtilities idOfCombinedID:[(NSMutableArray *)self->_items objectAtIndex:v3]];
-            v18 = [(NSMutableIndexSet *)self->_ignoreIndices firstIndex];
-            if (v18 == 0x7FFFFFFFFFFFFFFFLL || ![-[NSMutableArray objectAtIndex:](self->_items objectAtIndex:{v18), "hasPrefix:", v17}])
+            firstIndex2 = [(NSMutableIndexSet *)self->_ignoreIndices firstIndex];
+            if (firstIndex2 == 0x7FFFFFFFFFFFFFFFLL || ![-[NSMutableArray objectAtIndex:](self->_items objectAtIndex:{firstIndex2), "hasPrefix:", v17}])
             {
               goto LABEL_22;
             }
@@ -971,15 +971,15 @@ LABEL_22:
   return v3;
 }
 
-- (BOOL)itemAtIndex:(int64_t)a3 meetsContraints:(id)a4 oneMatch:(BOOL)a5
+- (BOOL)itemAtIndex:(int64_t)index meetsContraints:(id)contraints oneMatch:(BOOL)match
 {
-  v5 = a5;
-  v24 = [(NSMutableArray *)self->_constraints objectAtIndex:a3];
+  matchCopy = match;
+  v24 = [(NSMutableArray *)self->_constraints objectAtIndex:index];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = [a4 countByEnumeratingWithState:&v29 objects:v34 count:16];
+  v7 = [contraints countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v7)
   {
     v8 = v7;
@@ -990,12 +990,12 @@ LABEL_22:
       {
         if (*v30 != v23)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(contraints);
         }
 
         v10 = *(*(&v29 + 1) + 8 * i);
         v11 = [v24 valueForKey:{v10, v23}];
-        v12 = [a4 objectForKey:v10];
+        v12 = [contraints objectForKey:v10];
         v13 = objc_opt_class();
         v14 = NSStringFromClass(v13);
         if (NSStringHasSuffix(v14, "Number"))
@@ -1008,8 +1008,8 @@ LABEL_22:
 
         else if (NSStringHasSuffix(v14, "Boolean"))
         {
-          v15 = [v12 BOOLValue];
-          if (v15 != [v11 BOOLValue])
+          bOOLValue = [v12 BOOLValue];
+          if (bOOLValue != [v11 BOOLValue])
           {
             goto LABEL_35;
           }
@@ -1020,7 +1020,7 @@ LABEL_22:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            if (v5)
+            if (matchCopy)
             {
               v16 = [v12 count];
               if (v16 != [v11 count])
@@ -1052,7 +1052,7 @@ LABEL_22:
                 }
 
                 LODWORD(v17) = [v11 containsObject:*(*(&v25 + 1) + 8 * j)];
-                if (v5)
+                if (matchCopy)
                 {
                   if (v17)
                   {
@@ -1097,7 +1097,7 @@ LABEL_31:
         ;
       }
 
-      v8 = [a4 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      v8 = [contraints countByEnumeratingWithState:&v29 objects:v34 count:16];
       LOBYTE(v17) = 1;
       if (v8)
       {
@@ -1116,16 +1116,16 @@ LABEL_31:
   return v17;
 }
 
-- (void)increaseUsageCountOfObjectAtIndex:(int64_t)a3
+- (void)increaseUsageCountOfObjectAtIndex:(int64_t)index
 {
   v5 = [-[NSMutableArray objectAtIndex:](self->_usageCount "objectAtIndex:"integerValue"")];
   usageCount = self->_usageCount;
   v7 = [NSNumber numberWithInteger:v5 + 1];
 
-  [(NSMutableArray *)usageCount replaceObjectAtIndex:a3 withObject:v7];
+  [(NSMutableArray *)usageCount replaceObjectAtIndex:index withObject:v7];
 }
 
-- (id)indicesMeetingConstraints:(id)a3
+- (id)indicesMeetingConstraints:(id)constraints
 {
   v5 = [(MPWeighter *)self count];
   v6 = +[NSMutableIndexSet indexSet];
@@ -1133,7 +1133,7 @@ LABEL_31:
   {
     for (i = 0; i != v5; ++i)
     {
-      if ([(MPWeighter *)self itemAtIndex:i meetsContraints:a3])
+      if ([(MPWeighter *)self itemAtIndex:i meetsContraints:constraints])
       {
         [v6 addIndex:i];
       }
@@ -1143,14 +1143,14 @@ LABEL_31:
   return v6;
 }
 
-- (id)indicesEqualingConstraints:(id)a3
+- (id)indicesEqualingConstraints:(id)constraints
 {
   v4 = +[NSMutableIndexSet indexSet];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v16 = [a3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  v16 = [constraints countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v16)
   {
     v14 = *v22;
@@ -1160,7 +1160,7 @@ LABEL_31:
       {
         if (*v22 != v14)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(constraints);
         }
 
         v6 = *(*(&v21 + 1) + 8 * i);
@@ -1184,7 +1184,7 @@ LABEL_31:
                 objc_enumerationMutation(constraints);
               }
 
-              if (![objc_msgSend(*(*(&v17 + 1) + 8 * j) valueForKey:{v6), "compare:", objc_msgSend(a3, "objectForKey:", v6)}])
+              if (![objc_msgSend(*(*(&v17 + 1) + 8 * j) valueForKey:{v6), "compare:", objc_msgSend(constraints, "objectForKey:", v6)}])
               {
                 [v4 addIndex:v10];
               }
@@ -1199,7 +1199,7 @@ LABEL_31:
         }
       }
 
-      v16 = [a3 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v16 = [constraints countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v16);
@@ -1208,7 +1208,7 @@ LABEL_31:
   return v4;
 }
 
-- (int64_t)numberOfItemsWithImageCount:(int64_t)a3
+- (int64_t)numberOfItemsWithImageCount:(int64_t)count
 {
   v11 = 0u;
   v12 = 0u;
@@ -1233,7 +1233,7 @@ LABEL_31:
         objc_enumerationMutation(constraints);
       }
 
-      if (*(*(*(&v11 + 1) + 8 * i) + 8) == a3)
+      if (*(*(*(&v11 + 1) + 8 * i) + 8) == count)
       {
         ++v7;
       }
@@ -1283,23 +1283,23 @@ LABEL_31:
   return v3;
 }
 
-- (void)ignoreIndex:(int64_t)a3
+- (void)ignoreIndex:(int64_t)index
 {
   [(NSMutableIndexSet *)self->_ignoreIndices removeAllIndexes];
   ignoreIndices = self->_ignoreIndices;
 
-  [(NSMutableIndexSet *)ignoreIndices addIndex:a3];
+  [(NSMutableIndexSet *)ignoreIndices addIndex:index];
 }
 
-- (void)ignoreIndices:(id)a3
+- (void)ignoreIndices:(id)indices
 {
   [(NSMutableIndexSet *)self->_ignoreIndices removeAllIndexes];
   ignoreIndices = self->_ignoreIndices;
 
-  [(NSMutableIndexSet *)ignoreIndices addIndexes:a3];
+  [(NSMutableIndexSet *)ignoreIndices addIndexes:indices];
 }
 
-- (id)constraintsForItem:(id)a3
+- (id)constraintsForItem:(id)item
 {
   if ([(NSMutableArray *)self->_items indexOfObject:?]== 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -1307,7 +1307,7 @@ LABEL_31:
   }
 
   constraints = self->_constraints;
-  v7 = [(NSMutableArray *)self->_items indexOfObject:a3];
+  v7 = [(NSMutableArray *)self->_items indexOfObject:item];
 
   return [(NSMutableArray *)constraints objectAtIndex:v7];
 }

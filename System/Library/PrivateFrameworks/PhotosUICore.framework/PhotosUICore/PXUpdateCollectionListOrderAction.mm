@@ -1,17 +1,17 @@
 @interface PXUpdateCollectionListOrderAction
-+ (BOOL)canPerformOnCollection:(id)a3;
++ (BOOL)canPerformOnCollection:(id)collection;
 - (BOOL)_canPerformUndo;
-- (PXUpdateCollectionListOrderAction)initWithCollectionList:(id)a3 orderedCollections:(id)a4;
+- (PXUpdateCollectionListOrderAction)initWithCollectionList:(id)list orderedCollections:(id)collections;
 - (id)standardFetchOptions;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXUpdateCollectionListOrderAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
-  v4 = a3;
+  undoCopy = undo;
   if ([(PXUpdateCollectionListOrderAction *)self _canPerformUndo])
   {
     v5 = self->_collectionList;
@@ -24,14 +24,14 @@
     v11 = v5;
     v7 = v5;
     v8 = v6;
-    [(PXPhotosAction *)self performChanges:v9 completionHandler:v4];
+    [(PXPhotosAction *)self performChanges:v9 completionHandler:undoCopy];
 
-    v4 = v7;
+    undoCopy = v7;
   }
 
   else
   {
-    (*&v4->super.super._propertyHintLock._os_unfair_lock_opaque)(v4, 0, 0);
+    (*&undoCopy->super.super._propertyHintLock._os_unfair_lock_opaque)(undoCopy, 0, 0);
   }
 }
 
@@ -43,12 +43,12 @@ void __49__PXUpdateCollectionListOrderAction_performUndo___block_invoke(uint64_t
   [v2 insertChildCollections:*(a1 + 32) atIndexes:v3];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = self->_collectionList;
-  v6 = [(PXUpdateCollectionListOrderAction *)self standardFetchOptions];
-  v7 = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:v5 options:v6];
+  standardFetchOptions = [(PXUpdateCollectionListOrderAction *)self standardFetchOptions];
+  v7 = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:v5 options:standardFetchOptions];
   beforeFetchResult = self->_beforeFetchResult;
   self->_beforeFetchResult = v7;
 
@@ -57,17 +57,17 @@ void __49__PXUpdateCollectionListOrderAction_performUndo___block_invoke(uint64_t
   v16[2] = __51__PXUpdateCollectionListOrderAction_performAction___block_invoke;
   v16[3] = &unk_1E774C620;
   v17 = v5;
-  v18 = self;
+  selfCopy = self;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __51__PXUpdateCollectionListOrderAction_performAction___block_invoke_2;
   v12[3] = &unk_1E774AD10;
   v12[4] = self;
   v13 = v17;
-  v14 = v6;
-  v15 = v4;
-  v9 = v4;
-  v10 = v6;
+  v14 = standardFetchOptions;
+  v15 = actionCopy;
+  v9 = actionCopy;
+  v10 = standardFetchOptions;
   v11 = v17;
   [(PXPhotosAction *)self performChanges:v16 completionHandler:v12];
 }
@@ -104,38 +104,38 @@ void __51__PXUpdateCollectionListOrderAction_performAction___block_invoke_2(void
 {
   v5.receiver = self;
   v5.super_class = PXUpdateCollectionListOrderAction;
-  v2 = [(PXPhotosAction *)&v5 standardFetchOptions];
-  [v2 setIncludeUserSmartAlbums:1];
-  v3 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind = %d OR kind = %d OR kind = %d", 2, 1507, 4000];
-  [v2 setInternalPredicate:v3];
+  standardFetchOptions = [(PXPhotosAction *)&v5 standardFetchOptions];
+  [standardFetchOptions setIncludeUserSmartAlbums:1];
+  4000 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind = %d OR kind = %d OR kind = %d", 2, 1507, 4000];
+  [standardFetchOptions setInternalPredicate:4000];
 
-  return v2;
+  return standardFetchOptions;
 }
 
 - (BOOL)_canPerformUndo
 {
-  v3 = [(PXUpdateCollectionListOrderAction *)self standardFetchOptions];
-  v4 = [MEMORY[0x1E6978760] fetchCollectionsInCollectionList:self->_collectionList options:v3];
-  v5 = [v4 fetchedObjectIDs];
-  v6 = [(PHFetchResult *)self->_afterFetchResult fetchedObjectIDs];
-  v7 = [v5 isEqualToArray:v6];
+  standardFetchOptions = [(PXUpdateCollectionListOrderAction *)self standardFetchOptions];
+  v4 = [MEMORY[0x1E6978760] fetchCollectionsInCollectionList:self->_collectionList options:standardFetchOptions];
+  fetchedObjectIDs = [v4 fetchedObjectIDs];
+  fetchedObjectIDs2 = [(PHFetchResult *)self->_afterFetchResult fetchedObjectIDs];
+  v7 = [fetchedObjectIDs isEqualToArray:fetchedObjectIDs2];
 
   return v7;
 }
 
-- (PXUpdateCollectionListOrderAction)initWithCollectionList:(id)a3 orderedCollections:(id)a4
+- (PXUpdateCollectionListOrderAction)initWithCollectionList:(id)list orderedCollections:(id)collections
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 photoLibrary];
+  listCopy = list;
+  collectionsCopy = collections;
+  photoLibrary = [listCopy photoLibrary];
   v14.receiver = self;
   v14.super_class = PXUpdateCollectionListOrderAction;
-  v10 = [(PXPhotosAction *)&v14 initWithPhotoLibrary:v9];
+  v10 = [(PXPhotosAction *)&v14 initWithPhotoLibrary:photoLibrary];
 
   if (v10)
   {
-    objc_storeStrong(&v10->_collectionList, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v10->_collectionList, list);
+    v11 = [collectionsCopy copy];
     orderedCollections = v10->_orderedCollections;
     v10->_orderedCollections = v11;
   }
@@ -143,12 +143,12 @@ void __51__PXUpdateCollectionListOrderAction_performAction___block_invoke_2(void
   return v10;
 }
 
-+ (BOOL)canPerformOnCollection:(id)a3
++ (BOOL)canPerformOnCollection:(id)collection
 {
-  v3 = a3;
-  if ([v3 canContainCollections])
+  collectionCopy = collection;
+  if ([collectionCopy canContainCollections])
   {
-    v4 = [v3 canPerformEditOperation:5];
+    v4 = [collectionCopy canPerformEditOperation:5];
   }
 
   else

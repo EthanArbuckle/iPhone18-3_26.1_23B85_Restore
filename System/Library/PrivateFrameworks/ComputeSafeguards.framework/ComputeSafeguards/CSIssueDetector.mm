@@ -1,23 +1,23 @@
 @interface CSIssueDetector
 + (CSIssueDetector)sharedInstance;
-- (BOOL)compareWithValue1:(float)a3 andValue2:(float)a4 andComparator:(int)a5;
+- (BOOL)compareWithValue1:(float)value1 andValue2:(float)value2 andComparator:(int)comparator;
 - (id)_init;
-- (id)evaluateRuleInFixedWindow:(id)a3 withStartDate:(id)a4 andEndDate:(id)a5;
-- (id)evaluateRuleWithSlidingWindow:(id)a3 withStartDate:(id)a4 andEndDate:(id)a5;
-- (id)getCPUIssueStartEndTime:(id)a3 valueThreshold:(float)a4;
-- (id)getValueOfMetric:(int)a3 startDate:(id)a4 endDate:(id)a5;
+- (id)evaluateRuleInFixedWindow:(id)window withStartDate:(id)date andEndDate:(id)endDate;
+- (id)evaluateRuleWithSlidingWindow:(id)window withStartDate:(id)date andEndDate:(id)endDate;
+- (id)getCPUIssueStartEndTime:(id)time valueThreshold:(float)threshold;
+- (id)getValueOfMetric:(int)metric startDate:(id)date endDate:(id)endDate;
 - (void)_init;
 - (void)clearFatalMitigatedProcessList;
-- (void)dayChangedNotificationReceived:(id)a3;
-- (void)detectIssuesFromStartTime:(id)a3 endDate:(id)a4 withRules:(id)a5;
-- (void)detectWithLookbackDuration:(double)a3;
-- (void)forceDetectorViolationForProcess:(id)a3 withHandler:(id)a4;
-- (void)handleDetectedIssues:(id)a3;
-- (void)logIssuesToPowerLogWithPayload:(id)a3;
-- (void)processCPUIntervalsForCondition:(id)a3 startDate:(id)a4 endDate:(id)a5 rule:(id)a6 normalizer:(id)a7 issueCandidates:(id)a8;
+- (void)dayChangedNotificationReceived:(id)received;
+- (void)detectIssuesFromStartTime:(id)time endDate:(id)date withRules:(id)rules;
+- (void)detectWithLookbackDuration:(double)duration;
+- (void)forceDetectorViolationForProcess:(id)process withHandler:(id)handler;
+- (void)handleDetectedIssues:(id)issues;
+- (void)logIssuesToPowerLogWithPayload:(id)payload;
+- (void)processCPUIntervalsForCondition:(id)condition startDate:(id)date endDate:(id)endDate rule:(id)rule normalizer:(id)normalizer issueCandidates:(id)candidates;
 - (void)registerForDayChangedNotification;
-- (void)resetRuleParameters:(id)a3 withHandler:(id)a4;
-- (void)setRuleParameters:(id)a3 withWindowSize:(id)a4 withStepSize:(id)a5 withMaxLookback:(id)a6 withDaemonOnly:(id)a7 withHandler:(id)a8;
+- (void)resetRuleParameters:(id)parameters withHandler:(id)handler;
+- (void)setRuleParameters:(id)parameters withWindowSize:(id)size withStepSize:(id)stepSize withMaxLookback:(id)lookback withDaemonOnly:(id)only withHandler:(id)handler;
 - (void)testDetectWithLookbackDuration;
 - (void)testHandleDetectedIssues;
 @end
@@ -86,9 +86,9 @@ uint64_t __33__CSIssueDetector_sharedInstance__block_invoke()
       }
 
       [v2 registerForDayChangedNotification];
-      v14 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v15 = *(v2 + 7);
-      *(v2 + 7) = v14;
+      *(v2 + 7) = array;
 
       v16 = [CSDetectionRule alloc];
       v17 = [CSDetectionRuleCondition alloc];
@@ -271,32 +271,32 @@ uint64_t __33__CSIssueDetector_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)detectWithLookbackDuration:(double)a3
+- (void)detectWithLookbackDuration:(double)duration
 {
   v7 = [MEMORY[0x277CBEAA8] now];
-  v5 = [v7 dateByAddingTimeInterval:-a3];
-  v6 = [(CSIssueDetector *)self rules];
-  [(CSIssueDetector *)self detectIssuesFromStartTime:v5 endDate:v7 withRules:v6];
+  v5 = [v7 dateByAddingTimeInterval:-duration];
+  rules = [(CSIssueDetector *)self rules];
+  [(CSIssueDetector *)self detectIssuesFromStartTime:v5 endDate:v7 withRules:rules];
 }
 
-- (void)detectIssuesFromStartTime:(id)a3 endDate:(id)a4 withRules:(id)a5
+- (void)detectIssuesFromStartTime:(id)time endDate:(id)date withRules:(id)rules
 {
   v67 = *MEMORY[0x277D85DE8];
-  v8 = COERCE_DOUBLE(a3);
-  v9 = a4;
-  v10 = a5;
+  v8 = COERCE_DOUBLE(time);
+  dateCopy = date;
+  rulesCopy = rules;
   if (_os_feature_enabled_impl())
   {
-    [v9 timeIntervalSinceDate:*&v8];
+    [dateCopy timeIntervalSinceDate:*&v8];
     v12 = v11;
-    v51 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     [(CSPowerlogDBReader *)self->_powerlogDBReader openConnection];
     v59 = 0u;
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v49 = v10;
-    obj = v10;
+    v49 = rulesCopy;
+    obj = rulesCopy;
     v13 = [obj countByEnumeratingWithState:&v57 objects:v66 count:16];
     if (v13)
     {
@@ -323,68 +323,68 @@ uint64_t __33__CSIssueDetector_sharedInstance__block_invoke()
               if (os_log_type_enabled(logger, OS_LOG_TYPE_INFO))
               {
                 v30 = logger;
-                v31 = [v17 ruleID];
+                ruleID = [v17 ruleID];
                 LODWORD(buf) = 67109634;
-                HIDWORD(buf) = v31;
+                HIDWORD(buf) = ruleID;
                 v62 = 2112;
                 v63 = v8;
                 v64 = 2112;
-                v65 = v9;
+                v65 = dateCopy;
                 _os_log_impl(&dword_243DC3000, v30, OS_LOG_TYPE_INFO, "Start detection for rule %d: From %@ to %@, with sliding window", &buf, 0x1Cu);
               }
 
-              v32 = [(CSIssueDetector *)self evaluateRuleWithSlidingWindow:v17 withStartDate:*&v8 andEndDate:v9];
+              v32 = [(CSIssueDetector *)self evaluateRuleWithSlidingWindow:v17 withStartDate:*&v8 andEndDate:dateCopy];
               v33 = self->_logger;
               if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
               {
                 v34 = v33;
-                v35 = [v17 ruleID];
+                ruleID2 = [v17 ruleID];
                 v36 = COERCE_DOUBLE([v32 count]);
                 LODWORD(buf) = 67109376;
-                HIDWORD(buf) = v35;
+                HIDWORD(buf) = ruleID2;
                 v8 = v50;
                 v62 = 2048;
                 v63 = v36;
                 _os_log_impl(&dword_243DC3000, v34, OS_LOG_TYPE_INFO, "Finish detection for rule %d: Detected %lu issues", &buf, 0x12u);
               }
 
-              [v51 addObjectsFromArray:v32];
+              [array addObjectsFromArray:v32];
             }
 
             else
             {
               [v17 windowSize];
-              [v9 dateByAddingTimeInterval:-v37];
+              [dateCopy dateByAddingTimeInterval:-v37];
               v38 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
               v39 = self->_logger;
               if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
               {
                 v40 = v39;
-                v41 = [v17 ruleID];
+                ruleID3 = [v17 ruleID];
                 LODWORD(buf) = 67109634;
-                HIDWORD(buf) = v41;
+                HIDWORD(buf) = ruleID3;
                 v62 = 2112;
                 v63 = v38;
                 v64 = 2112;
-                v65 = v9;
+                v65 = dateCopy;
                 _os_log_impl(&dword_243DC3000, v40, OS_LOG_TYPE_INFO, "Start detection for rule %d: From %@ to %@, without sliding window", &buf, 0x1Cu);
               }
 
-              v42 = [(CSIssueDetector *)self evaluateRuleInFixedWindow:v17 withStartDate:*&v38 andEndDate:v9];
+              v42 = [(CSIssueDetector *)self evaluateRuleInFixedWindow:v17 withStartDate:*&v38 andEndDate:dateCopy];
               v43 = self->_logger;
               if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
               {
                 v44 = v43;
-                v45 = [v17 ruleID];
+                ruleID4 = [v17 ruleID];
                 v46 = COERCE_DOUBLE([v42 count]);
                 LODWORD(buf) = 67109376;
-                HIDWORD(buf) = v45;
+                HIDWORD(buf) = ruleID4;
                 v62 = 2048;
                 v63 = v46;
                 _os_log_impl(&dword_243DC3000, v44, OS_LOG_TYPE_INFO, "Finish detection for rule %d: Detected %lu issues", &buf, 0x12u);
               }
 
-              [v51 addObjectsFromArray:v42];
+              [array addObjectsFromArray:v42];
 
               v8 = v50;
             }
@@ -396,10 +396,10 @@ uint64_t __33__CSIssueDetector_sharedInstance__block_invoke()
             if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
             {
               v21 = v20;
-              v22 = [v17 ruleID];
+              ruleID5 = [v17 ruleID];
               [v17 windowSize];
               LODWORD(buf) = 67109376;
-              HIDWORD(buf) = v22;
+              HIDWORD(buf) = ruleID5;
               v62 = 2048;
               v63 = v23 - v12;
               _os_log_impl(&dword_243DC3000, v21, OS_LOG_TYPE_INFO, "Prepare detection for rule %d: Waiting for %.0f seconds, without sliding window", &buf, 0x12u);
@@ -437,12 +437,12 @@ uint64_t __33__CSIssueDetector_sharedInstance__block_invoke()
     }
 
     [(CSPowerlogDBReader *)self->_powerlogDBReader closeConnection];
-    if ([v51 count])
+    if ([array count])
     {
-      [(CSIssueDetector *)self handleDetectedIssues:v51];
+      [(CSIssueDetector *)self handleDetectedIssues:array];
     }
 
-    v10 = v49;
+    rulesCopy = v49;
   }
 
   else
@@ -503,22 +503,22 @@ void __63__CSIssueDetector_detectIssuesFromStartTime_endDate_withRules___block_i
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)getValueOfMetric:(int)a3 startDate:(id)a4 endDate:(id)a5
+- (id)getValueOfMetric:(int)metric startDate:(id)date endDate:(id)endDate
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (a3 <= 3)
+  dateCopy = date;
+  endDateCopy = endDate;
+  v10 = endDateCopy;
+  if (metric <= 3)
   {
-    if (a3 > 1)
+    if (metric > 1)
     {
-      if (a3 == 2)
+      if (metric == 2)
       {
-        v15 = [(CSIssueDetector *)self powerlogDBReader];
-        v16 = [v15 getAPWakeIntervalListWithStartDate:v8 andEndDate:v10];
+        powerlogDBReader = [(CSIssueDetector *)self powerlogDBReader];
+        v16 = [powerlogDBReader getAPWakeIntervalListWithStartDate:dateCopy andEndDate:v10];
 
-        v17 = [(CSIssueDetector *)self powerlogDBReader];
-        v18 = [v17 getUnpluggedIntervalListWithStartDate:v8 andEndDate:v10];
+        powerlogDBReader2 = [(CSIssueDetector *)self powerlogDBReader];
+        v18 = [powerlogDBReader2 getUnpluggedIntervalListWithStartDate:dateCopy andEndDate:v10];
 
         v19 = [v16 intersectWithIntervalList:v18];
         [v19 durationInSeconds];
@@ -535,13 +535,13 @@ void __63__CSIssueDetector_detectIssuesFromStartTime_endDate_withRules___block_i
       goto LABEL_27;
     }
 
-    if (!a3)
+    if (!metric)
     {
       v14 = &unk_28570AF68;
       goto LABEL_28;
     }
 
-    if (a3 != 1)
+    if (metric != 1)
     {
 LABEL_25:
       if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_ERROR))
@@ -552,8 +552,8 @@ LABEL_25:
       goto LABEL_27;
     }
 
-    v11 = [(CSIssueDetector *)self powerlogDBReader];
-    v12 = [v11 getAPWakeIntervalListWithStartDate:v8 andEndDate:v10];
+    powerlogDBReader3 = [(CSIssueDetector *)self powerlogDBReader];
+    v12 = [powerlogDBReader3 getAPWakeIntervalListWithStartDate:dateCopy andEndDate:v10];
 LABEL_20:
     v20 = v12;
 
@@ -563,12 +563,12 @@ LABEL_20:
     goto LABEL_28;
   }
 
-  if (a3 <= 5)
+  if (metric <= 5)
   {
-    if (a3 != 4)
+    if (metric != 4)
     {
       v13 = MEMORY[0x277CCABB0];
-      [v9 timeIntervalSinceDate:v8];
+      [endDateCopy timeIntervalSinceDate:dateCopy];
       v14 = [v13 numberWithDouble:?];
       goto LABEL_28;
     }
@@ -581,14 +581,14 @@ LABEL_20:
     goto LABEL_27;
   }
 
-  if (a3 == 6)
+  if (metric == 6)
   {
-    v11 = [(CSIssueDetector *)self powerlogDBReader];
-    v12 = [v11 getUnpluggedIntervalListWithStartDate:v8 andEndDate:v10];
+    powerlogDBReader3 = [(CSIssueDetector *)self powerlogDBReader];
+    v12 = [powerlogDBReader3 getUnpluggedIntervalListWithStartDate:dateCopy andEndDate:v10];
     goto LABEL_20;
   }
 
-  if (a3 == 7)
+  if (metric == 7)
   {
     if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_ERROR))
     {
@@ -598,7 +598,7 @@ LABEL_20:
     goto LABEL_27;
   }
 
-  if (a3 != 8)
+  if (metric != 8)
   {
     goto LABEL_25;
   }
@@ -615,22 +615,22 @@ LABEL_28:
   return v14;
 }
 
-- (void)processCPUIntervalsForCondition:(id)a3 startDate:(id)a4 endDate:(id)a5 rule:(id)a6 normalizer:(id)a7 issueCandidates:(id)a8
+- (void)processCPUIntervalsForCondition:(id)condition startDate:(id)date endDate:(id)endDate rule:(id)rule normalizer:(id)normalizer issueCandidates:(id)candidates
 {
   v105 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v86 = a5;
-  v15 = a6;
-  v92 = a7;
-  v16 = a8;
-  v17 = [v13 scalarMetric] == 4 || objc_msgSend(v13, "scalarMetric") == 8;
+  conditionCopy = condition;
+  dateCopy = date;
+  endDateCopy = endDate;
+  ruleCopy = rule;
+  normalizerCopy = normalizer;
+  candidatesCopy = candidates;
+  v17 = [conditionCopy scalarMetric] == 4 || objc_msgSend(conditionCopy, "scalarMetric") == 8;
   v84 = "energy";
-  if ([v13 scalarMetric] != 8)
+  if ([conditionCopy scalarMetric] != 8)
   {
-    v18 = [v13 scalarMetric];
+    scalarMetric = [conditionCopy scalarMetric];
     v19 = "seconds";
-    if (v18 == 7)
+    if (scalarMetric == 7)
     {
       v19 = "energy";
     }
@@ -638,31 +638,31 @@ LABEL_28:
     v84 = v19;
   }
 
-  v20 = [v13 scalarMetric];
-  if ((v20 - 7) < 2)
+  scalarMetric2 = [conditionCopy scalarMetric];
+  if ((scalarMetric2 - 7) < 2)
   {
-    v85 = v16;
-    v21 = [(CSIssueDetector *)self powerlogDBReader];
-    v22 = [v15 processesAllowList];
-    v23 = [v15 processesDenyList];
-    v24 = [v21 getCPUEnergyIntervalListMapWithStartDate:v14 andEndDate:v86 andAllowListCoalitions:v22 andDenyListCoalitions:v23 andDaemonOnly:{objc_msgSend(v15, "daemonOnly")}];
+    v85 = candidatesCopy;
+    powerlogDBReader = [(CSIssueDetector *)self powerlogDBReader];
+    processesAllowList = [ruleCopy processesAllowList];
+    processesDenyList = [ruleCopy processesDenyList];
+    v24 = [powerlogDBReader getCPUEnergyIntervalListMapWithStartDate:dateCopy andEndDate:endDateCopy andAllowListCoalitions:processesAllowList andDenyListCoalitions:processesDenyList andDaemonOnly:{objc_msgSend(ruleCopy, "daemonOnly")}];
     goto LABEL_12;
   }
 
-  if ((v20 - 3) <= 1)
+  if ((scalarMetric2 - 3) <= 1)
   {
-    v85 = v16;
-    v21 = [(CSIssueDetector *)self powerlogDBReader];
-    v22 = [v15 processesAllowList];
-    v23 = [v15 processesDenyList];
-    v24 = [v21 getCPUPercentageIntervalListMapWithStartDate:v14 andEndDate:v86 andAllowListCoalitions:v22 andDenyListCoalitions:v23 andDaemonOnly:{objc_msgSend(v15, "daemonOnly")}];
+    v85 = candidatesCopy;
+    powerlogDBReader = [(CSIssueDetector *)self powerlogDBReader];
+    processesAllowList = [ruleCopy processesAllowList];
+    processesDenyList = [ruleCopy processesDenyList];
+    v24 = [powerlogDBReader getCPUPercentageIntervalListMapWithStartDate:dateCopy andEndDate:endDateCopy andAllowListCoalitions:processesAllowList andDenyListCoalitions:processesDenyList andDaemonOnly:{objc_msgSend(ruleCopy, "daemonOnly")}];
 LABEL_12:
     v25 = v24;
 
     if (v17)
     {
-      v26 = [(CSIssueDetector *)self powerlogDBReader];
-      v89 = [v26 getUnpluggedIntervalListWithStartDate:v14 andEndDate:v86];
+      powerlogDBReader2 = [(CSIssueDetector *)self powerlogDBReader];
+      v89 = [powerlogDBReader2 getUnpluggedIntervalListWithStartDate:dateCopy andEndDate:endDateCopy];
     }
 
     else
@@ -688,10 +688,10 @@ LABEL_12:
       v81 = v29;
       *&v28 = 138412290;
       v79 = v28;
-      v80 = v13;
+      v80 = conditionCopy;
       v87 = v27;
-      v82 = v15;
-      v83 = v14;
+      v82 = ruleCopy;
+      v83 = dateCopy;
       v88 = v17;
       do
       {
@@ -716,14 +716,14 @@ LABEL_12:
           [v34 timeWeightedSum];
           v37 = v36;
           v38 = v36;
-          [v13 value];
+          [conditionCopy value];
           v40 = v39;
-          [v92 doubleValue];
+          [normalizerCopy doubleValue];
           *&v40 = v41 * v40;
-          v42 = [v13 comparator];
+          comparator = [conditionCopy comparator];
           *&v43 = v38;
           LODWORD(v44) = LODWORD(v40);
-          if ([(CSIssueDetector *)self compareWithValue1:v42 andValue2:v43 andComparator:v44])
+          if ([(CSIssueDetector *)self compareWithValue1:comparator andValue2:v43 andComparator:v44])
           {
             v45 = [v31 rangeOfString:@":" options:4];
             if (v45 == 0x7FFFFFFFFFFFFFFFLL)
@@ -750,13 +750,13 @@ LABEL_12:
               v47 = [v31 substringToIndex:v49];
             }
 
-            v52 = [v15 processesAllowRegex];
+            processesAllowRegex = [ruleCopy processesAllowRegex];
 
-            if (!v52 || ([v15 processesAllowRegex], v53 = objc_claimAutoreleasedReturnValue(), v54 = objc_msgSend(v53, "rangeOfFirstMatchInString:options:range:", v47, 0, 0, objc_msgSend(v47, "length")), v53, v54 != 0x7FFFFFFFFFFFFFFFLL))
+            if (!processesAllowRegex || ([ruleCopy processesAllowRegex], v53 = objc_claimAutoreleasedReturnValue(), v54 = objc_msgSend(v53, "rangeOfFirstMatchInString:options:range:", v47, 0, 0, objc_msgSend(v47, "length")), v53, v54 != 0x7FFFFFFFFFFFFFFFLL))
             {
-              v55 = [v15 processesDenyRegex];
+              processesDenyRegex = [ruleCopy processesDenyRegex];
 
-              if (!v55 || ([v15 processesDenyRegex], v56 = objc_claimAutoreleasedReturnValue(), v57 = objc_msgSend(v56, "rangeOfFirstMatchInString:options:range:", v47, 0, 0, objc_msgSend(v47, "length")), v56, v57 == 0x7FFFFFFFFFFFFFFFLL))
+              if (!processesDenyRegex || ([ruleCopy processesDenyRegex], v56 = objc_claimAutoreleasedReturnValue(), v57 = objc_msgSend(v56, "rangeOfFirstMatchInString:options:range:", v47, 0, 0, objc_msgSend(v47, "length")), v56, v57 == 0x7FFFFFFFFFFFFFFFLL))
               {
                 v58 = self->_logger;
                 if (os_log_type_enabled(v58, OS_LOG_TYPE_INFO))
@@ -770,50 +770,50 @@ LABEL_12:
                   _os_log_impl(&dword_243DC3000, v58, OS_LOG_TYPE_INFO, "CPU %s %s threshold matches process with launchd name %@", buf, 0x20u);
                 }
 
-                v59 = -[CSIssueDetector getCPUIssueWithMitigationSuggestionForCoalitionID:withLaunchdName:fromStartDate:toEndDate:byRule:](self, "getCPUIssueWithMitigationSuggestionForCoalitionID:withLaunchdName:fromStartDate:toEndDate:byRule:", [v48 intValue], v47, v14, v86, v15);
-                [v59 setRule:v15];
+                v59 = -[CSIssueDetector getCPUIssueWithMitigationSuggestionForCoalitionID:withLaunchdName:fromStartDate:toEndDate:byRule:](self, "getCPUIssueWithMitigationSuggestionForCoalitionID:withLaunchdName:fromStartDate:toEndDate:byRule:", [v48 intValue], v47, dateCopy, endDateCopy, ruleCopy);
+                [v59 setRule:ruleCopy];
                 v60 = MEMORY[0x277CCABB0];
-                [v92 doubleValue];
+                [normalizerCopy doubleValue];
                 v62 = [v60 numberWithDouble:v37 / v61];
                 [v59 setValue:v62];
 
                 if ([v34 count])
                 {
-                  [v15 mainThresholdValue];
+                  [ruleCopy mainThresholdValue];
                   *&v64 = v63 / 10.0;
                   v65 = [(CSIssueDetector *)self getCPUIssueStartEndTime:v34 valueThreshold:v64];
                   if ([v65 count] == 2)
                   {
                     v66 = [v65 objectAtIndexedSubscript:0];
-                    v67 = [MEMORY[0x277CBEB68] null];
+                    null = [MEMORY[0x277CBEB68] null];
 
-                    if (v66 != v67)
+                    if (v66 != null)
                     {
-                      v68 = [(CSIssueDetector *)self powerlogDBReader];
+                      powerlogDBReader3 = [(CSIssueDetector *)self powerlogDBReader];
                       v69 = [v65 objectAtIndexedSubscript:0];
-                      v70 = [v68 getSystemTime:v69];
+                      v70 = [powerlogDBReader3 getSystemTime:v69];
                       [v59 setStartTime:v70];
 
-                      v13 = v80;
+                      conditionCopy = v80;
                     }
 
                     v71 = [v65 objectAtIndexedSubscript:1];
-                    v72 = [MEMORY[0x277CBEB68] null];
+                    null2 = [MEMORY[0x277CBEB68] null];
 
-                    v73 = v71 == v72;
-                    v15 = v82;
-                    v14 = v83;
+                    v73 = v71 == null2;
+                    ruleCopy = v82;
+                    dateCopy = v83;
                     if (!v73)
                     {
-                      v74 = [(CSIssueDetector *)self powerlogDBReader];
+                      powerlogDBReader4 = [(CSIssueDetector *)self powerlogDBReader];
                       v75 = [v65 objectAtIndexedSubscript:1];
-                      v76 = [v74 getSystemTime:v75];
+                      v76 = [powerlogDBReader4 getSystemTime:v75];
                       [v59 setEndTime:v76];
 
-                      v13 = v80;
-                      v15 = v82;
+                      conditionCopy = v80;
+                      ruleCopy = v82;
 
-                      v14 = v83;
+                      dateCopy = v83;
                     }
                   }
                 }
@@ -835,7 +835,7 @@ LABEL_12:
       while (v91);
     }
 
-    v16 = v85;
+    candidatesCopy = v85;
     [v85 count];
 
     goto LABEL_48;
@@ -852,32 +852,32 @@ LABEL_48:
   v77 = *MEMORY[0x277D85DE8];
 }
 
-- (id)evaluateRuleInFixedWindow:(id)a3 withStartDate:(id)a4 andEndDate:(id)a5
+- (id)evaluateRuleInFixedWindow:(id)window withStartDate:(id)date andEndDate:(id)endDate
 {
   v101 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (([v8 detectAcrossBoots] & 1) == 0)
+  windowCopy = window;
+  dateCopy = date;
+  endDateCopy = endDate;
+  if (([windowCopy detectAcrossBoots] & 1) == 0)
   {
-    v11 = [(CSIssueDetector *)self powerlogDBReader];
-    v12 = [v11 getDeviceBootTime];
+    powerlogDBReader = [(CSIssueDetector *)self powerlogDBReader];
+    getDeviceBootTime = [powerlogDBReader getDeviceBootTime];
 
-    if ([v9 compare:v12] == -1)
+    if ([dateCopy compare:getDeviceBootTime] == -1)
     {
       logger = self->_logger;
       if (os_log_type_enabled(logger, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        *v100 = v9;
+        *v100 = dateCopy;
         *&v100[8] = 2112;
-        *&v100[10] = v12;
+        *&v100[10] = getDeviceBootTime;
         _os_log_impl(&dword_243DC3000, logger, OS_LOG_TYPE_INFO, "Updated startDate (was %@) to deviceBootTime %@", buf, 0x16u);
       }
 
-      v14 = v12;
+      v14 = getDeviceBootTime;
 
-      v9 = v14;
+      dateCopy = v14;
     }
   }
 
@@ -885,48 +885,48 @@ LABEL_48:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v16 = v15;
-    v17 = [v8 ruleID];
+    ruleID = [windowCopy ruleID];
     *buf = 67109634;
-    *v100 = v17;
+    *v100 = ruleID;
     *&v100[4] = 2112;
-    *&v100[6] = v9;
+    *&v100[6] = dateCopy;
     *&v100[14] = 2112;
-    *&v100[16] = v10;
+    *&v100[16] = endDateCopy;
     _os_log_impl(&dword_243DC3000, v16, OS_LOG_TYPE_INFO, "Evaluating rule %d in a fixed window [%@, %@]", buf, 0x1Cu);
   }
 
-  [v10 timeIntervalSinceDate:v9];
+  [endDateCopy timeIntervalSinceDate:dateCopy];
   if (v18 < 0.0)
   {
     v19 = self->_logger;
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      *v100 = v9;
+      *v100 = dateCopy;
       *&v100[8] = 2112;
-      *&v100[10] = v10;
+      *&v100[10] = endDateCopy;
       _os_log_impl(&dword_243DC3000, v19, OS_LOG_TYPE_INFO, "Skip evaluating rule since startDate %@ is later than endDate %@", buf, 0x16u);
     }
 
 LABEL_15:
-    v26 = 0;
+    array = 0;
     goto LABEL_72;
   }
 
-  [v10 timeIntervalSinceDate:v9];
+  [endDateCopy timeIntervalSinceDate:dateCopy];
   v21 = v20;
-  [v8 windowSize];
+  [windowCopy windowSize];
   if (v21 < v22 * 0.9)
   {
     v23 = self->_logger;
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       v24 = v23;
-      [v8 windowSize];
+      [windowCopy windowSize];
       *buf = 138412802;
-      *v100 = v9;
+      *v100 = dateCopy;
       *&v100[8] = 2112;
-      *&v100[10] = v10;
+      *&v100[10] = endDateCopy;
       *&v100[18] = 2048;
       *&v100[20] = v25;
       _os_log_impl(&dword_243DC3000, v24, OS_LOG_TYPE_INFO, "Skip evaluating rule since duration from %@ to %@ is not enough for %f", buf, 0x20u);
@@ -935,12 +935,12 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v26 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v94 = 0u;
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
-  obj = [v8 conditions];
+  obj = [windowCopy conditions];
   v92 = [obj countByEnumeratingWithState:&v94 objects:v98 count:16];
   if (!v92)
   {
@@ -948,7 +948,7 @@ LABEL_15:
   }
 
   v93 = *v95;
-  v90 = v26;
+  v90 = array;
   do
   {
     v27 = 0;
@@ -961,7 +961,7 @@ LABEL_15:
 
       v28 = *(*(&v94 + 1) + 8 * v27);
       v29 = objc_autoreleasePoolPush();
-      v30 = -[CSIssueDetector getValueOfMetric:startDate:endDate:](self, "getValueOfMetric:startDate:endDate:", [v28 normalizerMetric], v9, v10);
+      v30 = -[CSIssueDetector getValueOfMetric:startDate:endDate:](self, "getValueOfMetric:startDate:endDate:", [v28 normalizerMetric], dateCopy, endDateCopy);
       v31 = v30;
       if (!v30)
       {
@@ -988,7 +988,7 @@ LABEL_15:
 
       if ([v28 scalarMetric] == 1)
       {
-        v33 = [(CSIssueDetector *)self getValueOfMetric:1 startDate:v9 endDate:v10];
+        v33 = [(CSIssueDetector *)self getValueOfMetric:1 startDate:dateCopy endDate:endDateCopy];
         v34 = v33;
         if (!v33)
         {
@@ -1006,10 +1006,10 @@ LABEL_15:
         v38 = v37;
         [v31 doubleValue];
         *&v38 = v39 * v38;
-        v40 = [v28 comparator];
+        comparator = [v28 comparator];
         *&v41 = v36;
         LODWORD(v42) = LODWORD(v38);
-        v43 = [(CSIssueDetector *)self compareWithValue1:v40 andValue2:v41 andComparator:v42];
+        v43 = [(CSIssueDetector *)self compareWithValue1:comparator andValue2:v41 andComparator:v42];
         v44 = self->_logger;
         v45 = os_log_type_enabled(v44, OS_LOG_TYPE_INFO);
         if (!v43)
@@ -1039,7 +1039,7 @@ LABEL_34:
 
       if ([v28 scalarMetric] == 2)
       {
-        v48 = [(CSIssueDetector *)self getValueOfMetric:2 startDate:v9 endDate:v10];
+        v48 = [(CSIssueDetector *)self getValueOfMetric:2 startDate:dateCopy endDate:endDateCopy];
         v34 = v48;
         if (!v48)
         {
@@ -1057,10 +1057,10 @@ LABEL_34:
         v52 = v51;
         [v31 doubleValue];
         *&v52 = v53 * v52;
-        v54 = [v28 comparator];
+        comparator2 = [v28 comparator];
         *&v55 = v50;
         LODWORD(v56) = LODWORD(v52);
-        v57 = [(CSIssueDetector *)self compareWithValue1:v54 andValue2:v55 andComparator:v56];
+        v57 = [(CSIssueDetector *)self compareWithValue1:comparator2 andValue2:v55 andComparator:v56];
         v44 = self->_logger;
         v58 = os_log_type_enabled(v44, OS_LOG_TYPE_INFO);
         if (!v57)
@@ -1090,7 +1090,7 @@ LABEL_34:
       {
         if ([v28 scalarMetric] == 5)
         {
-          v60 = [(CSIssueDetector *)self getValueOfMetric:5 startDate:v9 endDate:v10];
+          v60 = [(CSIssueDetector *)self getValueOfMetric:5 startDate:dateCopy endDate:endDateCopy];
           v34 = v60;
           if (!v60)
           {
@@ -1108,10 +1108,10 @@ LABEL_34:
           v64 = v63;
           [v31 doubleValue];
           *&v64 = v65 * v64;
-          v66 = [v28 comparator];
+          comparator3 = [v28 comparator];
           *&v67 = v62;
           LODWORD(v68) = LODWORD(v64);
-          v69 = [(CSIssueDetector *)self compareWithValue1:v66 andValue2:v67 andComparator:v68];
+          v69 = [(CSIssueDetector *)self compareWithValue1:comparator3 andValue2:v67 andComparator:v68];
           v44 = self->_logger;
           v70 = os_log_type_enabled(v44, OS_LOG_TYPE_INFO);
           if (!v69)
@@ -1147,7 +1147,7 @@ LABEL_58:
             goto LABEL_70;
           }
 
-          v71 = [(CSIssueDetector *)self getValueOfMetric:6 startDate:v9 endDate:v10];
+          v71 = [(CSIssueDetector *)self getValueOfMetric:6 startDate:dateCopy endDate:endDateCopy];
           v34 = v71;
           if (!v71)
           {
@@ -1166,10 +1166,10 @@ LABEL_58:
           v75 = v74;
           [v31 doubleValue];
           *&v75 = v76 * v75;
-          v77 = [v28 comparator];
+          comparator4 = [v28 comparator];
           *&v78 = v73;
           LODWORD(v79) = LODWORD(v75);
-          v80 = [(CSIssueDetector *)self compareWithValue1:v77 andValue2:v78 andComparator:v79];
+          v80 = [(CSIssueDetector *)self compareWithValue1:comparator4 andValue2:v78 andComparator:v79];
           v44 = self->_logger;
           v81 = os_log_type_enabled(v44, OS_LOG_TYPE_INFO);
           if (!v80)
@@ -1189,7 +1189,7 @@ LABEL_69:
 
 LABEL_70:
             objc_autoreleasePoolPop(v29);
-            v26 = v90;
+            array = v90;
             goto LABEL_71;
           }
 
@@ -1208,7 +1208,7 @@ LABEL_33:
       }
 
       v59 = v90;
-      [(CSIssueDetector *)self processCPUIntervalsForCondition:v28 startDate:v9 endDate:v10 rule:v8 normalizer:v31 issueCandidates:v90, v90];
+      [(CSIssueDetector *)self processCPUIntervalsForCondition:v28 startDate:dateCopy endDate:endDateCopy rule:windowCopy normalizer:v31 issueCandidates:v90, v90];
       if (![v59 count])
       {
         goto LABEL_70;
@@ -1222,7 +1222,7 @@ LABEL_40:
 
     while (v92 != v27);
     v82 = [obj countByEnumeratingWithState:&v94 objects:v98 count:16];
-    v26 = v90;
+    array = v90;
     v92 = v82;
   }
 
@@ -1232,45 +1232,45 @@ LABEL_71:
 LABEL_72:
   v87 = *MEMORY[0x277D85DE8];
 
-  return v26;
+  return array;
 }
 
-- (id)evaluateRuleWithSlidingWindow:(id)a3 withStartDate:(id)a4 andEndDate:(id)a5
+- (id)evaluateRuleWithSlidingWindow:(id)window withStartDate:(id)date andEndDate:(id)endDate
 {
   v74 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v8 maxSlidingLookback];
-  v12 = [v10 addTimeInterval:-v11];
-  if ([v12 compare:v9] == 1)
+  windowCopy = window;
+  dateCopy = date;
+  endDateCopy = endDate;
+  [windowCopy maxSlidingLookback];
+  v12 = [endDateCopy addTimeInterval:-v11];
+  if ([v12 compare:dateCopy] == 1)
   {
     v13 = v12;
 
-    v9 = v13;
+    dateCopy = v13;
   }
 
-  if (([v8 detectAcrossBoots] & 1) == 0)
+  if (([windowCopy detectAcrossBoots] & 1) == 0)
   {
     v14 = v12;
-    v15 = [(CSIssueDetector *)self powerlogDBReader];
-    v16 = [v15 getDeviceBootTime];
+    powerlogDBReader = [(CSIssueDetector *)self powerlogDBReader];
+    getDeviceBootTime = [powerlogDBReader getDeviceBootTime];
 
-    if ([v9 compare:v16] == -1)
+    if ([dateCopy compare:getDeviceBootTime] == -1)
     {
       logger = self->_logger;
       if (os_log_type_enabled(logger, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        *v73 = v9;
+        *v73 = dateCopy;
         *&v73[8] = 2112;
-        *&v73[10] = v16;
+        *&v73[10] = getDeviceBootTime;
         _os_log_impl(&dword_243DC3000, logger, OS_LOG_TYPE_INFO, "Updated startDate (was %@) to deviceBootTime %@", buf, 0x16u);
       }
 
-      v18 = v16;
+      v18 = getDeviceBootTime;
 
-      v9 = v18;
+      dateCopy = v18;
     }
 
     v12 = v14;
@@ -1280,48 +1280,48 @@ LABEL_72:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
     v20 = v19;
-    v21 = [v8 ruleID];
+    ruleID = [windowCopy ruleID];
     *buf = 67109634;
-    *v73 = v21;
+    *v73 = ruleID;
     *&v73[4] = 2112;
-    *&v73[6] = v9;
+    *&v73[6] = dateCopy;
     *&v73[14] = 2112;
-    *&v73[16] = v10;
+    *&v73[16] = endDateCopy;
     _os_log_impl(&dword_243DC3000, v20, OS_LOG_TYPE_INFO, "Evaluate rule %d in sliding windows in range [%@, %@]", buf, 0x1Cu);
   }
 
-  [v10 timeIntervalSinceDate:v9];
+  [endDateCopy timeIntervalSinceDate:dateCopy];
   if (v22 < 0.0)
   {
     v23 = self->_logger;
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      *v73 = v9;
+      *v73 = dateCopy;
       *&v73[8] = 2112;
-      *&v73[10] = v10;
+      *&v73[10] = endDateCopy;
       _os_log_impl(&dword_243DC3000, v23, OS_LOG_TYPE_INFO, "Skip evaluating rule since startDate %@ is later than endDate %@", buf, 0x16u);
     }
 
 LABEL_17:
-    v30 = 0;
+    array = 0;
     goto LABEL_38;
   }
 
-  [v10 timeIntervalSinceDate:v9];
+  [endDateCopy timeIntervalSinceDate:dateCopy];
   v25 = v24;
-  [v8 windowSize];
+  [windowCopy windowSize];
   if (v25 < v26 * 0.9)
   {
     v27 = self->_logger;
     if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
     {
       v28 = v27;
-      [v8 windowSize];
+      [windowCopy windowSize];
       *buf = 138412802;
-      *v73 = v9;
+      *v73 = dateCopy;
       *&v73[8] = 2112;
-      *&v73[10] = v10;
+      *&v73[10] = endDateCopy;
       *&v73[18] = 2048;
       *&v73[20] = v29;
       _os_log_impl(&dword_243DC3000, v28, OS_LOG_TYPE_INFO, "Skip evaluating rule since duration from %@ to %@ is not enough for %f", buf, 0x20u);
@@ -1330,8 +1330,8 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  [v8 slidingWindowStepSize];
-  v61 = v10;
+  [windowCopy slidingWindowStepSize];
+  v61 = endDateCopy;
   if (v31 >= 300.0)
   {
     v33 = v31;
@@ -1344,37 +1344,37 @@ LABEL_17:
     if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
     {
       v34 = v32;
-      [v8 slidingWindowStepSize];
+      [windowCopy slidingWindowStepSize];
       v36 = v35;
-      v37 = [v8 ruleID];
+      ruleID2 = [windowCopy ruleID];
       *buf = 134218496;
       *v73 = 0x4072C00000000000;
       *&v73[8] = 2048;
       *&v73[10] = v36;
       *&v73[18] = 1024;
-      *&v73[20] = v37;
+      *&v73[20] = ruleID2;
       _os_log_impl(&dword_243DC3000, v34, OS_LOG_TYPE_INFO, "Use step size %.1f instead of %.1f in rule %d since it was too small", buf, 0x1Cu);
     }
   }
 
   v60 = v12;
-  v30 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v38 = [MEMORY[0x277CBEB58] set];
   v39 = v61;
-  [v8 windowSize];
+  [windowCopy windowSize];
   v41 = [v39 dateByAddingTimeInterval:-v40];
-  [v41 timeIntervalSinceDate:v9];
+  [v41 timeIntervalSinceDate:dateCopy];
   if (v42 >= 0.0)
   {
     v45 = -v33;
-    v62 = v9;
-    v63 = v8;
+    v62 = dateCopy;
+    v63 = windowCopy;
     do
     {
       context = objc_autoreleasePoolPush();
       v65 = v39;
       v66 = v41;
-      v46 = [(CSIssueDetector *)self evaluateRuleInFixedWindow:v8 withStartDate:v41 andEndDate:v39];
+      v46 = [(CSIssueDetector *)self evaluateRuleInFixedWindow:windowCopy withStartDate:v41 andEndDate:v39];
       v67 = 0u;
       v68 = 0u;
       v69 = 0u;
@@ -1394,8 +1394,8 @@ LABEL_17:
             }
 
             v51 = *(*(&v67 + 1) + 8 * i);
-            v52 = [v51 identifier];
-            v53 = [v38 containsObject:v52];
+            identifier = [v51 identifier];
+            v53 = [v38 containsObject:identifier];
 
             if (v53)
             {
@@ -1408,10 +1408,10 @@ LABEL_17:
 
             else
             {
-              v55 = [v51 identifier];
-              [v38 addObject:v55];
+              identifier2 = [v51 identifier];
+              [v38 addObject:identifier2];
 
-              [v30 addObject:v51];
+              [array addObject:v51];
             }
           }
 
@@ -1423,12 +1423,12 @@ LABEL_17:
 
       v43 = [v65 dateByAddingTimeInterval:v45];
 
-      v8 = v63;
+      windowCopy = v63;
       [v63 windowSize];
       v44 = [v43 dateByAddingTimeInterval:-v56];
 
       objc_autoreleasePoolPop(context);
-      v9 = v62;
+      dateCopy = v62;
       [v44 timeIntervalSinceDate:v62];
       v41 = v44;
       v39 = v43;
@@ -1444,24 +1444,24 @@ LABEL_17:
   }
 
   v12 = v60;
-  v10 = v61;
+  endDateCopy = v61;
 LABEL_38:
 
   v58 = *MEMORY[0x277D85DE8];
 
-  return v30;
+  return array;
 }
 
-- (id)getCPUIssueStartEndTime:(id)a3 valueThreshold:(float)a4
+- (id)getCPUIssueStartEndTime:(id)time valueThreshold:(float)threshold
 {
   v35 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  timeCopy = time;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = [v5 intervalArray];
-  v7 = [v6 countByEnumeratingWithState:&v28 objects:v34 count:16];
+  intervalArray = [timeCopy intervalArray];
+  v7 = [intervalArray countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (!v7)
   {
 
@@ -1474,43 +1474,43 @@ LABEL_38:
   v9 = 0;
   v10 = 0;
   v11 = *v29;
-  v12 = a4;
+  thresholdCopy = threshold;
   do
   {
     for (i = 0; i != v8; ++i)
     {
       if (*v29 != v11)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(intervalArray);
       }
 
       v14 = *(*(&v28 + 1) + 8 * i);
       [v14 value];
-      if (v15 >= v12)
+      if (v15 >= thresholdCopy)
       {
-        v16 = [v14 startTime];
-        v17 = v16;
+        startTime = [v14 startTime];
+        v17 = startTime;
         if (!v9)
         {
-          v9 = v16;
+          v9 = startTime;
 LABEL_13:
-          v22 = [v14 endTime];
+          endTime = [v14 endTime];
 
-          v10 = v22;
+          v10 = endTime;
           continue;
         }
 
-        v18 = [v16 compare:v9];
+        v18 = [startTime compare:v9];
 
         if (v18 == -1)
         {
-          v19 = [v14 startTime];
+          startTime2 = [v14 startTime];
 
-          v9 = v19;
+          v9 = startTime2;
         }
 
-        v20 = [v14 endTime];
-        v21 = [v20 compare:v10];
+        endTime2 = [v14 endTime];
+        v21 = [endTime2 compare:v10];
 
         if (v21 == 1)
         {
@@ -1519,7 +1519,7 @@ LABEL_13:
       }
     }
 
-    v8 = [v6 countByEnumeratingWithState:&v28 objects:v34 count:16];
+    v8 = [intervalArray countByEnumeratingWithState:&v28 objects:v34 count:16];
   }
 
   while (v8);
@@ -1533,10 +1533,10 @@ LABEL_13:
   }
 
 LABEL_20:
-  v24 = [MEMORY[0x277CBEB68] null];
-  v32[0] = v24;
-  v25 = [MEMORY[0x277CBEB68] null];
-  v32[1] = v25;
+  null = [MEMORY[0x277CBEB68] null];
+  v32[0] = null;
+  null2 = [MEMORY[0x277CBEB68] null];
+  v32[1] = null2;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:2];
 
 LABEL_21:
@@ -1545,11 +1545,11 @@ LABEL_21:
   return v23;
 }
 
-- (void)handleDetectedIssues:(id)a3
+- (void)handleDetectedIssues:(id)issues
 {
   v185 = *MEMORY[0x277D85DE8];
-  v96 = a3;
-  v3 = [v96 sortedArrayUsingComparator:&__block_literal_global_98];
+  issuesCopy = issues;
+  v3 = [issuesCopy sortedArrayUsingComparator:&__block_literal_global_98];
   v4 = [MEMORY[0x277CBEB58] set];
   v153 = 0u;
   v154 = 0u;
@@ -1571,8 +1571,8 @@ LABEL_21:
         }
 
         v10 = *(*(&v153 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [v4 containsObject:v11];
+        identifier = [v10 identifier];
+        v12 = [v4 containsObject:identifier];
 
         if (v12)
         {
@@ -1584,8 +1584,8 @@ LABEL_21:
 
         else
         {
-          v13 = [v10 identifier];
-          [v4 addObject:v13];
+          identifier2 = [v10 identifier];
+          [v4 addObject:identifier2];
         }
       }
 
@@ -1620,43 +1620,43 @@ LABEL_21:
         context = objc_autoreleasePoolPush();
         v138 = MEMORY[0x277CCACA8];
         v134 = PEIssueTypeString([v15 issueType]);
-        v16 = [v15 rule];
-        if (v16)
+        rule = [v15 rule];
+        if (rule)
         {
-          v117 = [v15 rule];
-          v130 = [v117 ruleID];
+          rule2 = [v15 rule];
+          ruleID = [rule2 ruleID];
         }
 
         else
         {
-          v130 = 0xFFFFFFFFLL;
+          ruleID = 0xFFFFFFFFLL;
         }
 
-        v17 = [v15 processName];
-        v142 = v16;
-        if (v17)
+        processName = [v15 processName];
+        v142 = rule;
+        if (processName)
         {
-          v118 = [v15 processName];
-          v127 = [v118 UTF8String];
+          processName2 = [v15 processName];
+          uTF8String = [processName2 UTF8String];
         }
 
         else
         {
-          v127 = "UnknownProcessName";
+          uTF8String = "UnknownProcessName";
         }
 
-        v18 = [v15 coalitionID];
+        coalitionID = [v15 coalitionID];
         v19 = getDateFormatter();
-        v20 = [v15 startTime];
-        v21 = [v19 stringFromDate:v20];
-        v22 = [v21 UTF8String];
+        startTime = [v15 startTime];
+        v21 = [v19 stringFromDate:startTime];
+        uTF8String2 = [v21 UTF8String];
         v23 = getDateFormatter();
-        v24 = [v15 endTime];
-        v25 = [v23 stringFromDate:v24];
-        v26 = [v138 stringWithFormat:@"Found issue with IssueType:%s in Rule: %d for process: %s with coalitionID: %llu from time %s to %s", v134, v130, v127, v18, v22, objc_msgSend(v25, "UTF8String")];
+        endTime = [v15 endTime];
+        v25 = [v23 stringFromDate:endTime];
+        v26 = [v138 stringWithFormat:@"Found issue with IssueType:%s in Rule: %d for process: %s with coalitionID: %llu from time %s to %s", v134, ruleID, uTF8String, coalitionID, uTF8String2, objc_msgSend(v25, "UTF8String")];
         [v15 setDetectorString:v26];
 
-        if (v17)
+        if (processName)
         {
         }
 
@@ -1667,51 +1667,51 @@ LABEL_21:
         v27 = self->_logger;
         if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
         {
-          v145 = [v15 rule];
-          if (v145)
+          rule3 = [v15 rule];
+          if (rule3)
           {
-            v97 = [v15 rule];
-            v141 = [v97 ruleID];
+            rule4 = [v15 rule];
+            ruleID2 = [rule4 ruleID];
           }
 
           else
           {
-            v141 = -1;
+            ruleID2 = -1;
           }
 
-          v83 = [v15 processName];
-          v84 = v83;
+          processName3 = [v15 processName];
+          v84 = processName3;
           v85 = @"UnknownProcessName";
-          if (v83)
+          if (processName3)
           {
-            v85 = v83;
+            v85 = processName3;
           }
 
           v137 = v85;
-          v133 = [v15 coalitionID];
+          coalitionID2 = [v15 coalitionID];
           v86 = getDateFormatter();
-          v87 = [v15 startTime];
-          v88 = [v86 stringFromDate:v87];
-          v89 = [v88 UTF8String];
+          startTime2 = [v15 startTime];
+          v88 = [v86 stringFromDate:startTime2];
+          uTF8String3 = [v88 UTF8String];
           v90 = getDateFormatter();
-          v91 = [v15 endTime];
-          v92 = [v90 stringFromDate:v91];
-          v93 = [v92 UTF8String];
+          endTime2 = [v15 endTime];
+          v92 = [v90 stringFromDate:endTime2];
+          uTF8String4 = [v92 UTF8String];
           *buf = 67110402;
-          *v160 = v141;
+          *v160 = ruleID2;
           *&v160[4] = 2112;
           *&v160[6] = v15;
           *&v160[14] = 2112;
           *&v160[16] = v137;
           *&v160[24] = 2048;
-          *&v160[26] = v133;
+          *&v160[26] = coalitionID2;
           *&v160[34] = 2080;
-          *&v160[36] = v89;
+          *&v160[36] = uTF8String3;
           v161 = 2080;
-          v162 = v93;
+          v162 = uTF8String4;
           _os_log_error_impl(&dword_243DC3000, v27, OS_LOG_TYPE_ERROR, "handleDetectedIssues: Found issues with rule %d issue %@ for process %@ with coalitionID: %llu from time %s to %s", buf, 0x3Au);
 
-          if (v145)
+          if (rule3)
           {
           }
         }
@@ -1723,26 +1723,26 @@ LABEL_21:
 
           if ([v15 mitigationDecisionType] == 1)
           {
-            v30 = [v15 launchdName];
-            if (v30)
+            launchdName = [v15 launchdName];
+            if (launchdName)
             {
-              v31 = v30;
+              v31 = launchdName;
               fatalMitigatedProcessList = self->_fatalMitigatedProcessList;
-              v33 = [v15 launchdName];
-              LOBYTE(fatalMitigatedProcessList) = [(NSMutableArray *)fatalMitigatedProcessList containsObject:v33];
+              launchdName2 = [v15 launchdName];
+              LOBYTE(fatalMitigatedProcessList) = [(NSMutableArray *)fatalMitigatedProcessList containsObject:launchdName2];
 
               if ((fatalMitigatedProcessList & 1) == 0)
               {
                 v34 = self->_fatalMitigatedProcessList;
-                v35 = [v15 launchdName];
-                [(NSMutableArray *)v34 addObject:v35];
+                launchdName3 = [v15 launchdName];
+                [(NSMutableArray *)v34 addObject:launchdName3];
               }
             }
           }
 
-          v36 = [v15 errorString];
+          errorString = [v15 errorString];
 
-          if (v36)
+          if (errorString)
           {
             logger = self->_logger;
             if (os_log_type_enabled(logger, OS_LOG_TYPE_ERROR))
@@ -1750,11 +1750,11 @@ LABEL_21:
               v74 = logger;
               v75 = PEMitigationTypeString([v15 mitigationDecisionType]);
               v76 = PEReasonString([v15 mitigationDecisionReason]);
-              v77 = [v15 errorString];
-              v78 = v77;
-              if (v77)
+              errorString2 = [v15 errorString];
+              v78 = errorString2;
+              if (errorString2)
               {
-                v79 = v77;
+                v79 = errorString2;
               }
 
               else
@@ -1762,13 +1762,13 @@ LABEL_21:
                 v79 = @"NullString";
               }
 
-              v80 = [v15 processName];
-              v81 = v80;
+              processName4 = [v15 processName];
+              v81 = processName4;
               *buf = 136315906;
               v82 = @"UnknownProcessName";
-              if (v80)
+              if (processName4)
               {
-                v82 = v80;
+                v82 = processName4;
               }
 
               *v160 = v75;
@@ -1793,124 +1793,124 @@ LABEL_21:
         }
 
         v38 = +[CSLogger signpostCategory];
-        v39 = [v15 lastPID];
-        if ((v39 - 1) <= 0xFFFFFFFD)
+        lastPID = [v15 lastPID];
+        if ((lastPID - 1) <= 0xFFFFFFFD)
         {
-          v40 = v39;
+          v40 = lastPID;
           if (os_signpost_enabled(v38))
           {
-            v143 = [v15 processName];
-            if (v143)
+            processName5 = [v15 processName];
+            if (processName5)
             {
-              v102 = [v15 processName];
-              v119 = [v102 UTF8String];
+              processName6 = [v15 processName];
+              uTF8String5 = [processName6 UTF8String];
             }
 
             else
             {
-              v119 = 0;
+              uTF8String5 = 0;
             }
 
             v41 = getDateFormatter();
-            v135 = [v15 startTime];
+            startTime3 = [v15 startTime];
             v139 = v41;
             v131 = [v41 stringFromDate:?];
-            v110 = [v131 UTF8String];
+            uTF8String6 = [v131 UTF8String];
             v42 = getDateFormatter();
-            v125 = [v15 endTime];
+            endTime3 = [v15 endTime];
             v128 = v42;
             v123 = [v42 stringFromDate:?];
-            v109 = [v123 UTF8String];
+            uTF8String7 = [v123 UTF8String];
             v108 = PEIssueTypeString([v15 issueType]);
-            v43 = [v15 value];
-            if (v43)
+            value = [v15 value];
+            if (value)
             {
-              v101 = [v15 value];
-              v107 = [v101 intValue];
+              value2 = [v15 value];
+              intValue = [value2 intValue];
             }
 
             else
             {
-              v107 = -1;
+              intValue = -1;
             }
 
-            v106 = [v15 coalitionID];
-            v44 = [v15 launchdName];
-            if (v44)
+            coalitionID3 = [v15 coalitionID];
+            launchdName4 = [v15 launchdName];
+            if (launchdName4)
             {
-              v100 = [v15 launchdName];
-              v105 = [v100 UTF8String];
-            }
-
-            else
-            {
-              v105 = 0;
-            }
-
-            v45 = [v15 rule];
-            v121 = v43;
-            v111 = v44;
-            if (v45)
-            {
-              v99 = [v15 rule];
-              v104 = [v99 ruleID];
+              launchdName5 = [v15 launchdName];
+              uTF8String8 = [launchdName5 UTF8String];
             }
 
             else
             {
-              v104 = -1;
+              uTF8String8 = 0;
+            }
+
+            rule5 = [v15 rule];
+            v121 = value;
+            v111 = launchdName4;
+            if (rule5)
+            {
+              rule6 = [v15 rule];
+              ruleID3 = [rule6 ruleID];
+            }
+
+            else
+            {
+              ruleID3 = -1;
             }
 
             v103 = PEMitigationTypeString([v15 mitigationSuggestion]);
             v46 = PESuggestionReasonString([v15 mitigationSuggestionReason]);
-            v47 = [v15 forceMitigationSuggestion];
-            v48 = [v15 overridden];
+            forceMitigationSuggestion = [v15 forceMitigationSuggestion];
+            overridden = [v15 overridden];
             v49 = PEMitigationTypeString([v15 mitigationDecisionType]);
             v50 = PEReasonString([v15 mitigationDecisionReason]);
-            v51 = [v15 errorString];
-            v52 = v51;
-            if (v51)
+            errorString3 = [v15 errorString];
+            v52 = errorString3;
+            if (errorString3)
             {
-              v98 = [v15 errorString];
-              v51 = [v98 UTF8String];
+              errorString4 = [v15 errorString];
+              errorString3 = [errorString4 UTF8String];
             }
 
             *buf = 136449794;
-            *v160 = v119;
+            *v160 = uTF8String5;
             *&v160[8] = 2082;
-            *&v160[10] = v110;
+            *&v160[10] = uTF8String6;
             *&v160[18] = 2082;
-            *&v160[20] = v109;
+            *&v160[20] = uTF8String7;
             *&v160[28] = 2082;
             *&v160[30] = v108;
             *&v160[38] = 1026;
-            *&v160[40] = v107;
+            *&v160[40] = intValue;
             v161 = 2050;
-            v162 = v106;
+            v162 = coalitionID3;
             v163 = 2082;
-            v164 = v105;
+            v164 = uTF8String8;
             v165 = 1026;
-            v166 = v104;
+            v166 = ruleID3;
             v167 = 2082;
             v168 = v103;
             v169 = 2082;
             v170 = v46;
             v171 = 1026;
-            v172 = v47;
+            v172 = forceMitigationSuggestion;
             v173 = 1026;
-            v174 = v48;
+            v174 = overridden;
             v175 = 2082;
             v176 = v49;
             v177 = 2082;
             v178 = v50;
             v179 = 2082;
-            v180 = v51;
+            v180 = errorString3;
             _os_signpost_emit_with_name_impl(&dword_243DC3000, v38, OS_SIGNPOST_EVENT, v40, "Issue Detected", "Process name: %{public, name=processName}s\nSignpost ID is PID\nTime Stamp Start: %{public, name=timeStampStart}s\nTime Stamp End: %{public, name=timeStampEnd}s\nIssue Type: %{public, name=issueType}s\nValue: %{public, name=value}d\nCoalition ID: %{public, name=coalitionID}lld\nCoalition name: %{public, name=coalitionName}s\nRule ID: %{public, name=ruleID}d\nMitigation Suggestion: %{public, name=mitigationSuggestion}s\nMitigation Suggestion Reason: %{public, name=mitigationSuggestionReason}s\nForce Mitigation Suggestion: %{public, name=forceMitigationSuggestion}d\nOverridden: %{public, name=overridden}d\nMitigation Decision Type: %{public, name=mitigationDecisionType}s\nMitigation Decision Reason: %{public, name=mitigationDecisionReason}s\nError String: %{public, name=errorString}s\n", buf, 0x88u);
             if (v52)
             {
             }
 
-            if (v45)
+            if (rule5)
             {
             }
 
@@ -1922,7 +1922,7 @@ LABEL_21:
             {
             }
 
-            if (v143)
+            if (processName5)
             {
             }
           }
@@ -1931,14 +1931,14 @@ LABEL_21:
         v126 = MEMORY[0x277CBEB38];
         v157[0] = @"timestampStart";
         v53 = MEMORY[0x277CCABB0];
-        v144 = [v15 startTime];
-        [v144 timeIntervalSince1970];
+        startTime4 = [v15 startTime];
+        [startTime4 timeIntervalSince1970];
         v140 = [v53 numberWithDouble:?];
         v158[0] = v140;
         v157[1] = @"timestampEnd";
         v54 = MEMORY[0x277CCABB0];
-        v136 = [v15 endTime];
-        [v136 timeIntervalSince1970];
+        endTime4 = [v15 endTime];
+        [endTime4 timeIntervalSince1970];
         v132 = [v54 numberWithDouble:?];
         v158[1] = v132;
         v157[2] = @"IssueType";
@@ -1952,19 +1952,19 @@ LABEL_21:
         v158[4] = v122;
         v157[5] = @"RuleID";
         v55 = MEMORY[0x277CCABB0];
-        v120 = [v15 rule];
-        if (v120)
+        rule7 = [v15 rule];
+        if (rule7)
         {
-          v116 = [v15 rule];
-          v56 = [v116 ruleID];
+          rule8 = [v15 rule];
+          ruleID4 = [rule8 ruleID];
         }
 
         else
         {
-          v56 = 0xFFFFFFFFLL;
+          ruleID4 = 0xFFFFFFFFLL;
         }
 
-        v57 = [v55 numberWithInt:v56];
+        v57 = [v55 numberWithInt:ruleID4];
         v158[5] = v57;
         v157[6] = @"MitigationSuggestion";
         v58 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(v15, "mitigationSuggestion")}];
@@ -1987,41 +1987,41 @@ LABEL_21:
         v64 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v158 forKeys:v157 count:12];
         v65 = [v126 dictionaryWithDictionary:v64];
 
-        if (v120)
+        if (rule7)
         {
         }
 
-        v66 = [v15 processName];
+        processName7 = [v15 processName];
 
         v4 = v114;
-        if (v66)
+        if (processName7)
         {
-          v67 = [v15 processName];
-          [v65 setObject:v67 forKeyedSubscript:@"ProcessName"];
+          processName8 = [v15 processName];
+          [v65 setObject:processName8 forKeyedSubscript:@"ProcessName"];
         }
 
-        v68 = [v15 value];
+        value3 = [v15 value];
 
-        if (v68)
+        if (value3)
         {
-          v69 = [v15 value];
-          [v65 setObject:v69 forKeyedSubscript:@"Value"];
+          value4 = [v15 value];
+          [v65 setObject:value4 forKeyedSubscript:@"Value"];
         }
 
-        v70 = [v15 launchdName];
+        launchdName6 = [v15 launchdName];
 
-        if (v70)
+        if (launchdName6)
         {
-          v71 = [v15 launchdName];
-          [v65 setObject:v71 forKeyedSubscript:@"LaunchdName"];
+          launchdName7 = [v15 launchdName];
+          [v65 setObject:launchdName7 forKeyedSubscript:@"LaunchdName"];
         }
 
-        v72 = [v15 errorString];
+        errorString5 = [v15 errorString];
 
-        if (v72)
+        if (errorString5)
         {
-          v73 = [v15 errorString];
-          [v65 setObject:v73 forKeyedSubscript:@"ErrorString"];
+          errorString6 = [v15 errorString];
+          [v65 setObject:errorString6 forKeyedSubscript:@"ErrorString"];
         }
 
         [(CSIssueDetector *)self logIssuesToPowerLogWithPayload:v65];
@@ -2051,13 +2051,13 @@ uint64_t __40__CSIssueDetector_handleDetectedIssues___block_invoke(uint64_t a1, 
   return v7;
 }
 
-- (void)logIssuesToPowerLogWithPayload:(id)a3
+- (void)logIssuesToPowerLogWithPayload:(id)payload
 {
-  v4 = a3;
+  payloadCopy = payload;
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
   {
-    [(CSIssueDetector *)v4 logIssuesToPowerLogWithPayload:?];
+    [(CSIssueDetector *)payloadCopy logIssuesToPowerLogWithPayload:?];
   }
 
   if (logIssuesToPowerLogWithPayload__onceToken != -1)
@@ -2075,24 +2075,24 @@ uint64_t __50__CSIssueDetector_logIssuesToPowerLogWithPayload___block_invoke()
   return result;
 }
 
-- (BOOL)compareWithValue1:(float)a3 andValue2:(float)a4 andComparator:(int)a5
+- (BOOL)compareWithValue1:(float)value1 andValue2:(float)value2 andComparator:(int)comparator
 {
-  if (a5 <= 1)
+  if (comparator <= 1)
   {
-    if (a5)
+    if (comparator)
     {
-      return a5 == 1 && a3 > a4;
+      return comparator == 1 && value1 > value2;
     }
 
-    if (a3 != a4)
+    if (value1 != value2)
     {
       return 0;
     }
   }
 
-  else if (a5 == 2)
+  else if (comparator == 2)
   {
-    if (a3 < a4)
+    if (value1 < value2)
     {
       return 0;
     }
@@ -2100,12 +2100,12 @@ uint64_t __50__CSIssueDetector_logIssuesToPowerLogWithPayload___block_invoke()
 
   else
   {
-    if (a5 != 3)
+    if (comparator != 3)
     {
-      return a5 == 4 && a3 <= a4;
+      return comparator == 4 && value1 <= value2;
     }
 
-    if (a3 >= a4)
+    if (value1 >= value2)
     {
       return 0;
     }
@@ -2138,11 +2138,11 @@ void __49__CSIssueDetector_clearFatalMitigatedProcessList__block_invoke(uint64_t
 
 - (void)registerForDayChangedNotification
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_dayChangedNotificationReceived_ name:*MEMORY[0x277CBE580] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_dayChangedNotificationReceived_ name:*MEMORY[0x277CBE580] object:0];
 }
 
-- (void)dayChangedNotificationReceived:(id)a3
+- (void)dayChangedNotificationReceived:(id)received
 {
   logger = self->_logger;
   if (os_log_type_enabled(logger, OS_LOG_TYPE_DEBUG))
@@ -2241,10 +2241,10 @@ void __49__CSIssueDetector_clearFatalMitigatedProcessList__block_invoke(uint64_t
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forceDetectorViolationForProcess:(id)a3 withHandler:(id)a4
+- (void)forceDetectorViolationForProcess:(id)process withHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  processCopy = process;
+  handlerCopy = handler;
   v8 = [MEMORY[0x277CBEAA8] now];
   v9 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-4.0];
   v20 = 0;
@@ -2258,17 +2258,17 @@ void __49__CSIssueDetector_clearFatalMitigatedProcessList__block_invoke(uint64_t
   block[1] = 3221225472;
   block[2] = __64__CSIssueDetector_forceDetectorViolationForProcess_withHandler___block_invoke;
   block[3] = &unk_278DF57D0;
-  v11 = v6;
+  v11 = processCopy;
   v15 = v11;
   v12 = v9;
   v16 = v12;
   v13 = v8;
   v17 = v13;
-  v18 = self;
+  selfCopy = self;
   v19 = &v20;
   dispatch_sync(v10, block);
 
-  v7[2](v7, v21[5]);
+  handlerCopy[2](handlerCopy, v21[5]);
   _Block_object_dispose(&v20, 8);
 }
 
@@ -2358,15 +2358,15 @@ void __64__CSIssueDetector_forceDetectorViolationForProcess_withHandler___block_
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setRuleParameters:(id)a3 withWindowSize:(id)a4 withStepSize:(id)a5 withMaxLookback:(id)a6 withDaemonOnly:(id)a7 withHandler:(id)a8
+- (void)setRuleParameters:(id)parameters withWindowSize:(id)size withStepSize:(id)stepSize withMaxLookback:(id)lookback withDaemonOnly:(id)only withHandler:(id)handler
 {
   v46 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v39 = a5;
-  v38 = a6;
-  v40 = a7;
-  v16 = a8;
+  parametersCopy = parameters;
+  sizeCopy = size;
+  stepSizeCopy = stepSize;
+  lookbackCopy = lookback;
+  onlyCopy = only;
+  handlerCopy = handler;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
@@ -2387,8 +2387,8 @@ LABEL_3:
       }
 
       v22 = *(*(&v41 + 1) + 8 * v21);
-      v23 = [v22 ruleID];
-      if (v23 == [v14 intValue])
+      ruleID = [v22 ruleID];
+      if (ruleID == [parametersCopy intValue])
       {
         break;
       }
@@ -2412,13 +2412,13 @@ LABEL_3:
       goto LABEL_15;
     }
 
-    v25 = v15;
-    v26 = [v15 intValue];
-    v27 = v26;
-    if (v26 != -1 && v26 <= 599)
+    v25 = sizeCopy;
+    intValue = [sizeCopy intValue];
+    v27 = intValue;
+    if (intValue != -1 && intValue <= 599)
     {
-      v28 = v38;
-      v29 = v39;
+      v28 = lookbackCopy;
+      v29 = stepSizeCopy;
       if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_ERROR))
       {
         [CSIssueDetector setRuleParameters:withWindowSize:withStepSize:withMaxLookback:withDaemonOnly:withHandler:];
@@ -2426,16 +2426,16 @@ LABEL_3:
 
 LABEL_29:
       v35 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CSRestrictionManagerErrorDomain" code:7 userInfo:0];
-      v16[2](v16, v35);
+      handlerCopy[2](handlerCopy, v35);
 
       goto LABEL_30;
     }
 
-    v29 = v39;
-    v30 = [v39 intValue];
-    v31 = v30;
-    v28 = v38;
-    if (v30 != -1 && v30 <= 59)
+    v29 = stepSizeCopy;
+    intValue2 = [stepSizeCopy intValue];
+    v31 = intValue2;
+    v28 = lookbackCopy;
+    if (intValue2 != -1 && intValue2 <= 59)
     {
       if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_ERROR))
       {
@@ -2445,9 +2445,9 @@ LABEL_29:
       goto LABEL_29;
     }
 
-    v32 = [v38 intValue];
-    v33 = v32;
-    if (v32 != -1 && v32 <= 599)
+    intValue3 = [lookbackCopy intValue];
+    v33 = intValue3;
+    if (intValue3 != -1 && intValue3 <= 599)
     {
       if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_ERROR))
       {
@@ -2457,8 +2457,8 @@ LABEL_29:
       goto LABEL_29;
     }
 
-    v37 = [v40 intValue];
-    if ((v37 - 2) <= 0xFFFFFFFC)
+    intValue4 = [onlyCopy intValue];
+    if ((intValue4 - 2) <= 0xFFFFFFFC)
     {
       if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_ERROR))
       {
@@ -2486,12 +2486,12 @@ LABEL_29:
       [v24 setMaxSlidingLookback:v34];
     }
 
-    if (v37 != -1)
+    if (intValue4 != -1)
     {
-      [v24 setDaemonOnly:v37 != 0];
+      [v24 setDaemonOnly:intValue4 != 0];
     }
 
-    v16[2](v16, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   else
@@ -2499,16 +2499,16 @@ LABEL_29:
 LABEL_9:
 
 LABEL_15:
-    v25 = v15;
+    v25 = sizeCopy;
     if (os_log_type_enabled(self->_logger, OS_LOG_TYPE_ERROR))
     {
       [CSIssueDetector setRuleParameters:withWindowSize:withStepSize:withMaxLookback:withDaemonOnly:withHandler:];
     }
 
     v24 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CSRestrictionManagerErrorDomain" code:6 userInfo:0];
-    v16[2](v16, v24);
-    v28 = v38;
-    v29 = v39;
+    handlerCopy[2](handlerCopy, v24);
+    v28 = lookbackCopy;
+    v29 = stepSizeCopy;
   }
 
 LABEL_30:
@@ -2516,11 +2516,11 @@ LABEL_30:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)resetRuleParameters:(id)a3 withHandler:(id)a4
+- (void)resetRuleParameters:(id)parameters withHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  handlerCopy = handler;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -2541,8 +2541,8 @@ LABEL_3:
       }
 
       v13 = *(*(&v18 + 1) + 8 * v12);
-      v14 = [v13 ruleID];
-      if (v14 == [v6 intValue])
+      ruleID = [v13 ruleID];
+      if (ruleID == [parametersCopy intValue])
       {
         break;
       }
@@ -2590,7 +2590,7 @@ LABEL_12:
     v15 = v16;
   }
 
-  v7[2](v7, v16);
+  handlerCopy[2](handlerCopy, v16);
 
   v17 = *MEMORY[0x277D85DE8];
 }

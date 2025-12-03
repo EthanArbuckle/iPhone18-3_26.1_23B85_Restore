@@ -1,88 +1,88 @@
 @interface UISymbolContentTransition
-+ (UISymbolContentTransition)transitionWithContentTransition:(id)a3;
-+ (UISymbolContentTransition)transitionWithContentTransition:(id)a3 options:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (UISymbolContentTransition)initWithCoder:(id)a3;
-- (id)_initWithContentTransition:(id)a3 options:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (UISymbolContentTransition)transitionWithContentTransition:(id)transition;
++ (UISymbolContentTransition)transitionWithContentTransition:(id)transition options:(id)options;
+- (BOOL)isEqual:(id)equal;
+- (UISymbolContentTransition)initWithCoder:(id)coder;
+- (id)_initWithContentTransition:(id)transition options:(id)options;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UISymbolContentTransition
 
-+ (UISymbolContentTransition)transitionWithContentTransition:(id)a3
++ (UISymbolContentTransition)transitionWithContentTransition:(id)transition
 {
   v4 = MEMORY[0x1E6982278];
-  v5 = a3;
-  v6 = [v4 options];
-  v7 = [a1 transitionWithContentTransition:v5 options:v6];
+  transitionCopy = transition;
+  options = [v4 options];
+  v7 = [self transitionWithContentTransition:transitionCopy options:options];
 
   return v7;
 }
 
-+ (UISymbolContentTransition)transitionWithContentTransition:(id)a3 options:(id)a4
++ (UISymbolContentTransition)transitionWithContentTransition:(id)transition options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] _initWithContentTransition:v7 options:v6];
+  optionsCopy = options;
+  transitionCopy = transition;
+  v8 = [[self alloc] _initWithContentTransition:transitionCopy options:optionsCopy];
 
   return v8;
 }
 
-- (id)_initWithContentTransition:(id)a3 options:(id)a4
+- (id)_initWithContentTransition:(id)transition options:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  transitionCopy = transition;
+  optionsCopy = options;
   v14.receiver = self;
   v14.super_class = UISymbolContentTransition;
   v8 = [(UISymbolContentTransition *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [transitionCopy copy];
     contentTransition = v8->_contentTransition;
     v8->_contentTransition = v9;
 
-    if (v7)
+    if (optionsCopy)
     {
-      v11 = [v7 copy];
+      options = [optionsCopy copy];
     }
 
     else
     {
-      v11 = [MEMORY[0x1E6982278] options];
+      options = [MEMORY[0x1E6982278] options];
     }
 
     options = v8->_options;
-    v8->_options = v11;
+    v8->_options = options;
   }
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contentTransition = self->_contentTransition;
-  v5 = a3;
-  [v5 encodeObject:contentTransition forKey:@"ContentTransition"];
-  [v5 encodeObject:self->_options forKey:@"Options"];
+  coderCopy = coder;
+  [coderCopy encodeObject:contentTransition forKey:@"ContentTransition"];
+  [coderCopy encodeObject:self->_options forKey:@"Options"];
 }
 
-- (UISymbolContentTransition)initWithCoder:(id)a3
+- (UISymbolContentTransition)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = UISymbolContentTransition;
   v5 = [(UISymbolContentTransition *)&v13 init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"ContentTransition"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"ContentTransition"];
     contentTransition = v5->_contentTransition;
     v5->_contentTransition = v7;
 
     v9 = objc_opt_self();
-    v10 = [v4 decodeObjectOfClass:v9 forKey:@"Options"];
+    v10 = [coderCopy decodeObjectOfClass:v9 forKey:@"Options"];
     options = v5->_options;
     v5->_options = v10;
   }
@@ -90,10 +90,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -105,7 +105,7 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
+      v7 = equalCopy;
       contentTransition = v7->_contentTransition;
       v9 = self->_contentTransition;
       v10 = contentTransition;
@@ -163,7 +163,7 @@ LABEL_18:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [UISymbolContentTransition alloc];
   contentTransition = self->_contentTransition;
@@ -177,9 +177,9 @@ LABEL_18:
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
   v4 = [v3 appendObject:self->_contentTransition withName:@"contentTransition"];
   v5 = [v3 appendObject:self->_options withName:@"options"];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 @end

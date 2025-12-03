@@ -1,71 +1,71 @@
 @interface IntentHandler
-- (id)_supportedIncidentTypesForIncidentLayout:(id)a3;
-- (void)handleReportIncident:(id)a3 completion:(id)a4;
-- (void)resolveIncidentTypeForReportIncident:(id)a3 withCompletion:(id)a4;
+- (id)_supportedIncidentTypesForIncidentLayout:(id)layout;
+- (void)handleReportIncident:(id)incident completion:(id)completion;
+- (void)resolveIncidentTypeForReportIncident:(id)incident withCompletion:(id)completion;
 @end
 
 @implementation IntentHandler
 
-- (void)handleReportIncident:(id)a3 completion:(id)a4
+- (void)handleReportIncident:(id)incident completion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = [[INReportIncidentIntentResponse alloc] initWithCode:2 userActivity:0];
-  (*(a4 + 2))(v5, v6);
+  (*(completion + 2))(completionCopy, v6);
 }
 
-- (void)resolveIncidentTypeForReportIncident:(id)a3 withCompletion:(id)a4
+- (void)resolveIncidentTypeForReportIncident:(id)incident withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  incidentCopy = incident;
+  completionCopy = completion;
   v8 = MAPSGetIncidentsReportingLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v6 incidentType];
-    v10 = [v6 isClear];
-    v11 = [v10 BOOLValue];
+    incidentType = [incidentCopy incidentType];
+    isClear = [incidentCopy isClear];
+    bOOLValue = [isClear BOOLValue];
     v12 = @"NO";
-    if (v11)
+    if (bOOLValue)
     {
       v12 = @"YES";
     }
 
     v13 = v12;
-    v14 = [v6 additionalDetails];
+    additionalDetails = [incidentCopy additionalDetails];
     *buf = 138412802;
-    v26 = v9;
+    v26 = incidentType;
     v27 = 2112;
     v28 = v13;
     v29 = 2112;
-    v30 = v14;
+    v30 = additionalDetails;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Received INReportIncidentIntent with type %@ isClear %@ additionalDetails %@", buf, 0x20u);
   }
 
   v15 = [GEOLocation alloc];
-  v16 = [v6 userLocation];
-  v17 = [v16 location];
-  v18 = [v15 initWithCLLocation:v17];
+  userLocation = [incidentCopy userLocation];
+  location = [userLocation location];
+  v18 = [v15 initWithCLLocation:location];
 
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_100001018;
   v21[3] = &unk_100008220;
-  v22 = v6;
-  v23 = self;
-  v24 = v7;
-  v19 = v7;
-  v20 = v6;
+  v22 = incidentCopy;
+  selfCopy = self;
+  v24 = completionCopy;
+  v19 = completionCopy;
+  v20 = incidentCopy;
   [TrafficIncidentIntentSupport fetchTrafficIncidentsLayoutForLocation:v18 completion:v21];
 }
 
-- (id)_supportedIncidentTypesForIncidentLayout:(id)a3
+- (id)_supportedIncidentTypesForIncidentLayout:(id)layout
 {
-  v3 = a3;
+  layoutCopy = layout;
   v4 = objc_alloc_init(NSMutableArray);
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  obj = [v3 layoutItems];
+  obj = [layoutCopy layoutItems];
   v5 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {

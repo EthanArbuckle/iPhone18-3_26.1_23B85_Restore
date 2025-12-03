@@ -1,20 +1,20 @@
 @interface _UIGraphicsViewBase
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 @end
 
 @implementation _UIGraphicsViewBase
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  v5 = [(_UIGraphicsViewBase *)self layer];
-  v6 = [v5 hasBeenCommitted];
+  keyCopy = key;
+  layer = [(_UIGraphicsViewBase *)self layer];
+  hasBeenCommitted = [layer hasBeenCommitted];
 
-  if (v6)
+  if (hasBeenCommitted)
   {
     v9.receiver = self;
     v9.super_class = _UIGraphicsViewBase;
-    v7 = [(_UIGraphicsViewBase *)&v9 _shouldAnimatePropertyWithKey:v4];
+    v7 = [(_UIGraphicsViewBase *)&v9 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   else

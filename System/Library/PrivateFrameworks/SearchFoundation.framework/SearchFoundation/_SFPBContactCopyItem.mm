@@ -1,38 +1,38 @@
 @interface _SFPBContactCopyItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBContactCopyItem)initWithDictionary:(id)a3;
-- (_SFPBContactCopyItem)initWithFacade:(id)a3;
-- (_SFPBContactCopyItem)initWithJSON:(id)a3;
+- (_SFPBContactCopyItem)initWithDictionary:(id)dictionary;
+- (_SFPBContactCopyItem)initWithFacade:(id)facade;
+- (_SFPBContactCopyItem)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBContactCopyItem
 
-- (_SFPBContactCopyItem)initWithFacade:(id)a3
+- (_SFPBContactCopyItem)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBContactCopyItem *)self init];
   if (v5)
   {
-    v6 = [v4 person];
+    person = [facadeCopy person];
 
-    if (v6)
+    if (person)
     {
       v7 = [_SFPBPerson alloc];
-      v8 = [v4 person];
-      v9 = [(_SFPBPerson *)v7 initWithFacade:v8];
+      person2 = [facadeCopy person];
+      v9 = [(_SFPBPerson *)v7 initWithFacade:person2];
       [(_SFPBContactCopyItem *)v5 setPerson:v9];
     }
 
-    v10 = [v4 contactFileLocation];
+    contactFileLocation = [facadeCopy contactFileLocation];
 
-    if (v10)
+    if (contactFileLocation)
     {
       v11 = [_SFPBURL alloc];
-      v12 = [v4 contactFileLocation];
-      v13 = [(_SFPBURL *)v11 initWithNSURL:v12];
+      contactFileLocation2 = [facadeCopy contactFileLocation];
+      v13 = [(_SFPBURL *)v11 initWithNSURL:contactFileLocation2];
       [(_SFPBContactCopyItem *)v5 setContactFileLocation:v13];
     }
 
@@ -42,15 +42,15 @@
   return v5;
 }
 
-- (_SFPBContactCopyItem)initWithDictionary:(id)a3
+- (_SFPBContactCopyItem)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = _SFPBContactCopyItem;
   v5 = [(_SFPBContactCopyItem *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"person"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"person"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,7 +58,7 @@
       [(_SFPBContactCopyItem *)v5 setPerson:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"contactFileLocation"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"contactFileLocation"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,30 +72,30 @@
   return v5;
 }
 
-- (_SFPBContactCopyItem)initWithJSON:(id)a3
+- (_SFPBContactCopyItem)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBContactCopyItem *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBContactCopyItem *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBContactCopyItem *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -108,64 +108,64 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_contactFileLocation)
   {
-    v4 = [(_SFPBContactCopyItem *)self contactFileLocation];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    contactFileLocation = [(_SFPBContactCopyItem *)self contactFileLocation];
+    dictionaryRepresentation = [contactFileLocation dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"contactFileLocation"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"contactFileLocation"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"contactFileLocation"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"contactFileLocation"];
     }
   }
 
   if (self->_person)
   {
-    v7 = [(_SFPBContactCopyItem *)self person];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    person = [(_SFPBContactCopyItem *)self person];
+    dictionaryRepresentation2 = [person dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"person"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"person"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"person"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"person"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBContactCopyItem *)self person];
-  v6 = [v4 person];
-  if ((v5 != 0) == (v6 == 0))
+  person = [(_SFPBContactCopyItem *)self person];
+  person2 = [equalCopy person];
+  if ((person != 0) == (person2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBContactCopyItem *)self person];
-  if (v7)
+  person3 = [(_SFPBContactCopyItem *)self person];
+  if (person3)
   {
-    v8 = v7;
-    v9 = [(_SFPBContactCopyItem *)self person];
-    v10 = [v4 person];
-    v11 = [v9 isEqual:v10];
+    v8 = person3;
+    person4 = [(_SFPBContactCopyItem *)self person];
+    person5 = [equalCopy person];
+    v11 = [person4 isEqual:person5];
 
     if (!v11)
     {
@@ -177,12 +177,12 @@
   {
   }
 
-  v5 = [(_SFPBContactCopyItem *)self contactFileLocation];
-  v6 = [v4 contactFileLocation];
-  if ((v5 != 0) != (v6 == 0))
+  person = [(_SFPBContactCopyItem *)self contactFileLocation];
+  person2 = [equalCopy contactFileLocation];
+  if ((person != 0) != (person2 == 0))
   {
-    v12 = [(_SFPBContactCopyItem *)self contactFileLocation];
-    if (!v12)
+    contactFileLocation = [(_SFPBContactCopyItem *)self contactFileLocation];
+    if (!contactFileLocation)
     {
 
 LABEL_15:
@@ -190,10 +190,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBContactCopyItem *)self contactFileLocation];
-    v15 = [v4 contactFileLocation];
-    v16 = [v14 isEqual:v15];
+    v13 = contactFileLocation;
+    contactFileLocation2 = [(_SFPBContactCopyItem *)self contactFileLocation];
+    contactFileLocation3 = [equalCopy contactFileLocation];
+    v16 = [contactFileLocation2 isEqual:contactFileLocation3];
 
     if (v16)
     {
@@ -213,17 +213,17 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_SFPBContactCopyItem *)self person];
-  if (v4)
+  toCopy = to;
+  person = [(_SFPBContactCopyItem *)self person];
+  if (person)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBContactCopyItem *)self contactFileLocation];
-  if (v5)
+  contactFileLocation = [(_SFPBContactCopyItem *)self contactFileLocation];
+  if (contactFileLocation)
   {
     PBDataWriterWriteSubmessage();
   }

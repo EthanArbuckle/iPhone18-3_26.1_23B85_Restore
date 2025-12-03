@@ -1,37 +1,37 @@
 @interface CHWorkoutDataProvider
-+ (id)localizedNameForWorkoutTypeKey:(id)a3;
-+ (id)localizedShortNameForWorkoutTypeKey:(id)a3;
++ (id)localizedNameForWorkoutTypeKey:(id)key;
++ (id)localizedShortNameForWorkoutTypeKey:(id)key;
 - (BOOL)hasWorkouts;
 - (BOOL)isCurrentFilterValid;
-- (BOOL)isWatchWorkout:(id)a3;
-- (CHWorkoutDataProvider)initWithHealthStore:(id)a3;
-- (id)_UUIDsForWorkoutsWithEndDate:(id)a3;
+- (BOOL)isWatchWorkout:(id)workout;
+- (CHWorkoutDataProvider)initWithHealthStore:(id)store;
+- (id)_UUIDsForWorkoutsWithEndDate:(id)date;
 - (id)unfilteredWorkouts;
-- (id)unfilteredWorkoutsWithMaxCount:(int64_t)a3;
-- (id)workoutsEndingInDateInterval:(id)a3;
+- (id)unfilteredWorkoutsWithMaxCount:(int64_t)count;
+- (id)workoutsEndingInDateInterval:(id)interval;
 - (void)_calculateStatistics;
 - (void)_commonInit;
 - (void)_countWorkouts;
-- (void)_handleInitialResults:(id)a3;
-- (void)_handleRemovedObjects:(id)a3;
+- (void)_handleInitialResults:(id)results;
+- (void)_handleRemovedObjects:(id)objects;
 - (void)_queue_sortAllWorkoutsByMonthAndYearWithCurrentFilter;
 - (void)_recreateFilterObjects;
-- (void)_retryAnchoredObjectQueryWithRetryCount:(unint64_t)a3;
-- (void)_runAnchoredObjectQueryWithRetryCount:(unint64_t)a3;
+- (void)_retryAnchoredObjectQueryWithRetryCount:(unint64_t)count;
+- (void)_runAnchoredObjectQueryWithRetryCount:(unint64_t)count;
 - (void)_runAnimatedUpdateHandlers;
 - (void)_runFilterActionFinishedHandlers;
 - (void)_runFilterActionStartedHandlers;
-- (void)_runHandlers:(id)a3;
+- (void)_runHandlers:(id)handlers;
 - (void)_runUpdateHandlers;
-- (void)_timeZoneDidChange:(id)a3;
-- (void)addAnimatedUpdateHandler:(id)a3;
-- (void)addFilterActionFinishedHandler:(id)a3;
-- (void)addFilterActionStartedHandler:(id)a3;
-- (void)addUpdateHandler:(id)a3;
+- (void)_timeZoneDidChange:(id)change;
+- (void)addAnimatedUpdateHandler:(id)handler;
+- (void)addFilterActionFinishedHandler:(id)handler;
+- (void)addFilterActionStartedHandler:(id)handler;
+- (void)addUpdateHandler:(id)handler;
 - (void)cancelAllFetches;
 - (void)dealloc;
-- (void)deleteWorkout:(id)a3 shouldDeleteAssociatedSamples:(BOOL)a4 completion:(id)a5;
-- (void)setCurrentFilteredTypeIdentifier:(id)a3 completion:(id)a4;
+- (void)deleteWorkout:(id)workout shouldDeleteAssociatedSamples:(BOOL)samples completion:(id)completion;
+- (void)setCurrentFilteredTypeIdentifier:(id)identifier completion:(id)completion;
 - (void)startFetching;
 @end
 
@@ -139,8 +139,8 @@
 {
   if ([(CHDemoDataProvider *)self->_demoDataProvider hasDemoWorkouts])
   {
-    v3 = [(CHDemoDataProvider *)self->_demoDataProvider workouts];
-    [(CHWorkoutDataProvider *)self _handleInitialResults:v3];
+    workouts = [(CHDemoDataProvider *)self->_demoDataProvider workouts];
+    [(CHWorkoutDataProvider *)self _handleInitialResults:workouts];
   }
 
   else
@@ -188,14 +188,14 @@
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v10 = [v3 allObjects];
+  allObjects = [v3 allObjects];
   [(CHWorkoutDataProvider *)self _countWorkouts];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100117CB4;
   v12[3] = &unk_10083CBB8;
   v12[4] = self;
-  v11 = [v10 sortedArrayUsingComparator:v12];
+  v11 = [allObjects sortedArrayUsingComparator:v12];
 
   [(CHWorkoutDataProvider *)self setSortedTypeIdentifiers:v11];
 }
@@ -208,7 +208,7 @@
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v14 = self;
+  selfCopy = self;
   obj = self->_workouts;
   v4 = [(HKSortedSampleArray *)obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
@@ -225,8 +225,8 @@
           objc_enumerationMutation(obj);
         }
 
-        v8 = [CHWorkoutTypeKey initForWorkout:*(*(&v16 + 1) + 8 * v7), v14];
-        v9 = [v3 objectForKeyedSubscript:v8];
+        selfCopy = [CHWorkoutTypeKey initForWorkout:*(*(&v16 + 1) + 8 * v7), selfCopy];
+        v9 = [v3 objectForKeyedSubscript:selfCopy];
         if (v9)
         {
           v10 = v9;
@@ -239,7 +239,7 @@
 
         v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v10 unsignedIntegerValue] + 1);
 
-        [v3 setObject:v11 forKeyedSubscript:v8];
+        [v3 setObject:v11 forKeyedSubscript:selfCopy];
         v7 = v7 + 1;
       }
 
@@ -250,17 +250,17 @@
     while (v5);
   }
 
-  os_unfair_lock_unlock(&v14->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v12 = [[NSDictionary alloc] initWithDictionary:v3];
-  workoutCountByTypeIdentifier = v14->_workoutCountByTypeIdentifier;
-  v14->_workoutCountByTypeIdentifier = v12;
+  workoutCountByTypeIdentifier = selfCopy->_workoutCountByTypeIdentifier;
+  selfCopy->_workoutCountByTypeIdentifier = v12;
 }
 
 - (void)_queue_sortAllWorkoutsByMonthAndYearWithCurrentFilter
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKSortedSampleArray *)self->_workouts allSamples];
-  v4 = [v3 copy];
+  allSamples = [(HKSortedSampleArray *)self->_workouts allSamples];
+  v4 = [allSamples copy];
 
   os_unfair_lock_unlock(&self->_lock);
   v69 = objc_alloc_init(NSMutableArray);
@@ -290,13 +290,13 @@
         }
 
         v12 = *(*(&v85 + 1) + 8 * i);
-        v13 = [v12 UUID];
-        v14 = [v13 UUIDString];
-        [v73 setObject:v12 forKeyedSubscript:v14];
+        uUID = [v12 UUID];
+        uUIDString = [uUID UUIDString];
+        [v73 setObject:v12 forKeyedSubscript:uUIDString];
 
         currentCalendar = self->_currentCalendar;
-        v16 = [v12 endDate];
-        v17 = [(NSCalendar *)currentCalendar components:12 fromDate:v16];
+        endDate = [v12 endDate];
+        v17 = [(NSCalendar *)currentCalendar components:12 fromDate:endDate];
 
         v18 = [v5 objectForKeyedSubscript:v17];
 
@@ -307,7 +307,7 @@
           [v5 setObject:v19 forKeyedSubscript:v17];
         }
 
-        v20 = [v12 startDate];
+        startDate = [v12 startDate];
         v21 = _HKActivityCacheDateComponentsFromDate();
 
         v22 = [v7 objectForKeyedSubscript:v21];
@@ -372,7 +372,7 @@
   v67 = v7;
 
   currentFilteredTypeIdentifier = self->_currentFilteredTypeIdentifier;
-  v66 = self;
+  selfCopy = self;
   if (currentFilteredTypeIdentifier)
   {
     v35 = +[CHWorkoutTypeKey emptyKey];
@@ -380,27 +380,27 @@
 
     if ((v36 & 1) == 0)
     {
-      v37 = [(CHWorkoutTypeKey *)self->_currentFilteredTypeIdentifier activityType];
-      v38 = [(CHWorkoutTypeKey *)self->_currentFilteredTypeIdentifier isIndoor];
-      if ([CHWorkoutTypeKey historyFilterDisambiguatesLocationForActivityType:v37])
+      activityType = [(CHWorkoutTypeKey *)self->_currentFilteredTypeIdentifier activityType];
+      isIndoor = [(CHWorkoutTypeKey *)self->_currentFilteredTypeIdentifier isIndoor];
+      if ([CHWorkoutTypeKey historyFilterDisambiguatesLocationForActivityType:activityType])
       {
         v79[0] = _NSConcreteStackBlock;
         v79[1] = 3221225472;
         v79[2] = sub_100117B9C;
         v79[3] = &unk_10083CB30;
-        v80 = v38;
-        v79[4] = v37;
+        v80 = isIndoor;
+        v79[4] = activityType;
         v39 = v79;
       }
 
-      else if (v37 == 77)
+      else if (activityType == 77)
       {
         v39 = &stru_10083CB90;
       }
 
       else
       {
-        if (v37 != 46)
+        if (activityType != 46)
         {
           v65 = [NSNumber numberWithUnsignedInteger:[(CHWorkoutTypeKey *)self->_currentFilteredTypeIdentifier activityType]];
           v41 = [NSPredicate predicateWithFormat:@"workoutActivityType==%@", v65];
@@ -408,12 +408,12 @@
           goto LABEL_30;
         }
 
-        v40 = [(CHWorkoutTypeKey *)self->_currentFilteredTypeIdentifier swimLocationType];
+        swimLocationType = [(CHWorkoutTypeKey *)self->_currentFilteredTypeIdentifier swimLocationType];
         v78[0] = _NSConcreteStackBlock;
         v78[1] = 3221225472;
         v78[2] = sub_100117C18;
         v78[3] = &unk_10083CB50;
-        v78[4] = v40;
+        v78[4] = swimLocationType;
         v39 = v78;
       }
 
@@ -446,8 +446,8 @@ LABEL_30:
 
         v48 = *(*(&v74 + 1) + 8 * k);
         v49 = +[NSCalendar currentCalendar];
-        v50 = [v48 endDate];
-        v51 = [v49 components:12 fromDate:v50];
+        endDate2 = [v48 endDate];
+        v51 = [v49 components:12 fromDate:endDate2];
 
         v52 = [v5 objectForKeyedSubscript:v51];
         [v52 addObject:v48];
@@ -461,30 +461,30 @@ LABEL_30:
   }
 
   v53 = [[NSDictionary alloc] initWithDictionary:v5];
-  workoutsByMonthAndYear = v66->_workoutsByMonthAndYear;
-  v66->_workoutsByMonthAndYear = v53;
+  workoutsByMonthAndYear = selfCopy->_workoutsByMonthAndYear;
+  selfCopy->_workoutsByMonthAndYear = v53;
 
   v55 = [[NSDictionary alloc] initWithDictionary:v67];
-  workoutsByDay = v66->_workoutsByDay;
-  v66->_workoutsByDay = v55;
+  workoutsByDay = selfCopy->_workoutsByDay;
+  selfCopy->_workoutsByDay = v55;
 
   v57 = [[NSArray alloc] initWithArray:v70];
-  sortedDateComponentKeys = v66->_sortedDateComponentKeys;
-  v66->_sortedDateComponentKeys = v57;
+  sortedDateComponentKeys = selfCopy->_sortedDateComponentKeys;
+  selfCopy->_sortedDateComponentKeys = v57;
 
   v59 = [[NSArray alloc] initWithArray:v68];
-  sortedYearDateComponents = v66->_sortedYearDateComponents;
-  v66->_sortedYearDateComponents = v59;
+  sortedYearDateComponents = selfCopy->_sortedYearDateComponents;
+  selfCopy->_sortedYearDateComponents = v59;
 
   v61 = [[NSDictionary alloc] initWithDictionary:v72];
-  dateComponentsByYear = v66->_dateComponentsByYear;
-  v66->_dateComponentsByYear = v61;
+  dateComponentsByYear = selfCopy->_dateComponentsByYear;
+  selfCopy->_dateComponentsByYear = v61;
 
   v63 = [[NSDictionary alloc] initWithDictionary:v73];
-  workoutsByIdentifier = v66->_workoutsByIdentifier;
-  v66->_workoutsByIdentifier = v63;
+  workoutsByIdentifier = selfCopy->_workoutsByIdentifier;
+  selfCopy->_workoutsByIdentifier = v63;
 
-  [(CHWorkoutDataProvider *)v66 _calculateStatistics];
+  [(CHWorkoutDataProvider *)selfCopy _calculateStatistics];
 }
 
 - (void)_calculateStatistics
@@ -611,11 +611,11 @@ LABEL_30:
   return v3 > 0;
 }
 
-+ (id)localizedNameForWorkoutTypeKey:(id)a3
++ (id)localizedNameForWorkoutTypeKey:(id)key
 {
-  v3 = a3;
-  v4 = [v3 activityType];
-  if (v4 == _HKWorkoutActivityTypeNone)
+  keyCopy = key;
+  activityType = [keyCopy activityType];
+  if (activityType == _HKWorkoutActivityTypeNone)
   {
     v5 = +[NSBundle mainBundle];
     v6 = v5;
@@ -628,23 +628,23 @@ LABEL_4:
     goto LABEL_9;
   }
 
-  v10 = [v3 activityType];
-  if (v10 > 0x3F)
+  activityType2 = [keyCopy activityType];
+  if (activityType2 > 0x3F)
   {
     goto LABEL_18;
   }
 
-  if (((1 << v10) & 0x8010102000010000) != 0)
+  if (((1 << activityType2) & 0x8010102000010000) != 0)
   {
     goto LABEL_7;
   }
 
-  if (v10 == 13)
+  if (activityType2 == 13)
   {
-    v14 = [v3 isIndoor];
+    isIndoor = [keyCopy isIndoor];
     v5 = +[NSBundle mainBundle];
     v6 = v5;
-    if (v14)
+    if (isIndoor)
     {
       v7 = @"WORKOUT_FILTER_INDOOR_CYCLE_DESCRIPTION";
     }
@@ -658,10 +658,10 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  if (v10 != 46)
+  if (activityType2 != 46)
   {
 LABEL_18:
-    if (v10 == 84)
+    if (activityType2 == 84)
     {
       v5 = +[NSBundle mainBundle];
       v6 = v5;
@@ -669,11 +669,11 @@ LABEL_18:
       goto LABEL_3;
     }
 
-    if (v10 != 3000)
+    if (activityType2 != 3000)
     {
-      [v3 activityType];
-      [v3 swimLocationType];
-      [v3 isIndoor];
+      [keyCopy activityType];
+      [keyCopy swimLocationType];
+      [keyCopy isIndoor];
       v11 = FILocalizedNameForActivityType();
       goto LABEL_8;
     }
@@ -685,8 +685,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v13 = [v3 swimLocationType];
-  if (!v13)
+  swimLocationType = [keyCopy swimLocationType];
+  if (!swimLocationType)
   {
     v5 = FIUIBundle();
     v6 = v5;
@@ -694,7 +694,7 @@ LABEL_8:
     goto LABEL_28;
   }
 
-  if (v13 == 2)
+  if (swimLocationType == 2)
   {
     v5 = FIUIBundle();
     v6 = v5;
@@ -702,7 +702,7 @@ LABEL_8:
     goto LABEL_28;
   }
 
-  if (v13 == 1)
+  if (swimLocationType == 1)
   {
     v5 = FIUIBundle();
     v6 = v5;
@@ -718,10 +718,10 @@ LABEL_9:
   return v9;
 }
 
-+ (id)localizedShortNameForWorkoutTypeKey:(id)a3
++ (id)localizedShortNameForWorkoutTypeKey:(id)key
 {
-  v4 = a3;
-  [v4 activityType];
+  keyCopy = key;
+  [keyCopy activityType];
   v5 = _HKWorkoutActivityNameForActivityType();
   v6 = [NSString stringWithFormat:@"WORKOUT_FILTER_SHORT_TITLE_%@", v5];
 
@@ -730,7 +730,7 @@ LABEL_9:
 
   if ([v8 isEqualToString:v6])
   {
-    v9 = [a1 localizedNameForWorkoutTypeKey:v4];
+    v9 = [self localizedNameForWorkoutTypeKey:keyCopy];
 
     v8 = v9;
   }
@@ -738,23 +738,23 @@ LABEL_9:
   return v8;
 }
 
-- (CHWorkoutDataProvider)initWithHealthStore:(id)a3
+- (CHWorkoutDataProvider)initWithHealthStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = CHWorkoutDataProvider;
   v6 = [(CHWorkoutDataProvider *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_healthStore, a3);
+    objc_storeStrong(&v6->_healthStore, store);
     [(CHWorkoutDataProvider *)v7 _commonInit];
   }
 
   return v7;
 }
 
-- (void)_timeZoneDidChange:(id)a3
+- (void)_timeZoneDidChange:(id)change
 {
   gregorianCalendar = self->_gregorianCalendar;
   v4 = +[NSTimeZone systemTimeZone];
@@ -773,8 +773,8 @@ LABEL_9:
 
 - (BOOL)isCurrentFilterValid
 {
-  v3 = [(CHWorkoutDataProvider *)self currentFilteredTypeIdentifier];
-  v4 = [(NSDictionary *)self->_workoutCountByTypeIdentifier objectForKeyedSubscript:v3];
+  currentFilteredTypeIdentifier = [(CHWorkoutDataProvider *)self currentFilteredTypeIdentifier];
+  v4 = [(NSDictionary *)self->_workoutCountByTypeIdentifier objectForKeyedSubscript:currentFilteredTypeIdentifier];
   v5 = [v4 integerValue] > 0;
 
   return v5;
@@ -783,32 +783,32 @@ LABEL_9:
 - (id)unfilteredWorkouts
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HKSortedSampleArray *)self->_workouts allSamples];
-  v4 = [NSArray arrayWithArray:v3];
+  allSamples = [(HKSortedSampleArray *)self->_workouts allSamples];
+  v4 = [NSArray arrayWithArray:allSamples];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v4;
 }
 
-- (id)unfilteredWorkoutsWithMaxCount:(int64_t)a3
+- (id)unfilteredWorkoutsWithMaxCount:(int64_t)count
 {
   v5 = objc_alloc_init(NSMutableArray);
   os_unfair_lock_lock(&self->_lock);
   v6 = [(HKSortedSampleArray *)self->_workouts count];
-  if (v6 >= a3)
+  if (v6 >= count)
   {
-    v7 = a3;
+    countCopy = count;
   }
 
   else
   {
-    v7 = v6;
+    countCopy = v6;
   }
 
-  if (v7 >= 1)
+  if (countCopy >= 1)
   {
-    for (i = 0; i != v7; ++i)
+    for (i = 0; i != countCopy; ++i)
     {
       v9 = [(HKSortedSampleArray *)self->_workouts sampleAtIndex:i];
       [v5 addObject:v9];
@@ -827,73 +827,73 @@ LABEL_9:
   self->_currentAnchoredObjectQuery = 0;
 }
 
-- (void)addUpdateHandler:(id)a3
+- (void)addUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   handlerQueue = self->_handlerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001166DC;
   v7[3] = &unk_10083C7F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(handlerQueue, v7);
 }
 
-- (void)addAnimatedUpdateHandler:(id)a3
+- (void)addAnimatedUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   handlerQueue = self->_handlerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001167C8;
   v7[3] = &unk_10083C7F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(handlerQueue, v7);
 }
 
-- (void)addFilterActionStartedHandler:(id)a3
+- (void)addFilterActionStartedHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   handlerQueue = self->_handlerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001168B4;
   v7[3] = &unk_10083C7F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(handlerQueue, v7);
 }
 
-- (void)addFilterActionFinishedHandler:(id)a3
+- (void)addFilterActionFinishedHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   handlerQueue = self->_handlerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001169A0;
   v7[3] = &unk_10083C7F8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(handlerQueue, v7);
 }
 
-- (id)workoutsEndingInDateInterval:(id)a3
+- (id)workoutsEndingInDateInterval:(id)interval
 {
-  v4 = a3;
+  intervalCopy = interval;
   os_unfair_lock_lock(&self->_lock);
   v5 = objc_alloc_init(NSMutableArray);
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v6 = [(HKSortedSampleArray *)self->_workouts allSamples];
-  v7 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  allSamples = [(HKSortedSampleArray *)self->_workouts allSamples];
+  v7 = [allSamples countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v7)
   {
     v8 = v7;
@@ -904,12 +904,12 @@ LABEL_9:
       {
         if (*v22 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allSamples);
         }
 
         v11 = *(*(&v21 + 1) + 8 * i);
-        v12 = [v11 endDate];
-        v13 = [v4 containsDate:v12];
+        endDate = [v11 endDate];
+        v13 = [intervalCopy containsDate:endDate];
 
         if (v13)
         {
@@ -918,11 +918,11 @@ LABEL_9:
 
         else
         {
-          v14 = [v4 endDate];
-          [v14 timeIntervalSinceReferenceDate];
+          endDate2 = [intervalCopy endDate];
+          [endDate2 timeIntervalSinceReferenceDate];
           v16 = v15;
-          v17 = [v11 endDate];
-          [v17 timeIntervalSinceReferenceDate];
+          endDate3 = [v11 endDate];
+          [endDate3 timeIntervalSinceReferenceDate];
           v19 = v18;
 
           if (v16 < v19)
@@ -932,7 +932,7 @@ LABEL_9:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v8 = [allSamples countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v8);
@@ -945,31 +945,31 @@ LABEL_11:
   return v5;
 }
 
-- (void)deleteWorkout:(id)a3 shouldDeleteAssociatedSamples:(BOOL)a4 completion:(id)a5
+- (void)deleteWorkout:(id)workout shouldDeleteAssociatedSamples:(BOOL)samples completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = v5;
+  samplesCopy = samples;
+  completionCopy = completion;
+  v9 = samplesCopy;
   healthStore = self->_healthStore;
-  v16 = a3;
-  v11 = a3;
-  v12 = [NSArray arrayWithObjects:&v16 count:1];
+  workoutCopy = workout;
+  workoutCopy2 = workout;
+  v12 = [NSArray arrayWithObjects:&workoutCopy count:1];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_100116CD4;
   v14[3] = &unk_10083CA98;
-  v15 = v8;
-  v13 = v8;
+  v15 = completionCopy;
+  v13 = completionCopy;
   [(HKHealthStore *)healthStore _deleteObjects:v12 options:v9 completion:v14];
 }
 
-- (void)setCurrentFilteredTypeIdentifier:(id)a3 completion:(id)a4
+- (void)setCurrentFilteredTypeIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   currentFilteredTypeIdentifier = self->_currentFilteredTypeIdentifier;
-  self->_currentFilteredTypeIdentifier = v6;
-  v9 = v6;
+  self->_currentFilteredTypeIdentifier = identifierCopy;
+  v9 = identifierCopy;
 
   [(CHWorkoutDataProvider *)self _runFilterActionStartedHandlers];
   sortingQueue = self->_sortingQueue;
@@ -978,12 +978,12 @@ LABEL_11:
   v12[2] = sub_100116E80;
   v12[3] = &unk_10083C7F8;
   v12[4] = self;
-  v13 = v7;
-  v11 = v7;
+  v13 = completionCopy;
+  v11 = completionCopy;
   dispatch_async(sortingQueue, v12);
 }
 
-- (void)_retryAnchoredObjectQueryWithRetryCount:(unint64_t)a3
+- (void)_retryAnchoredObjectQueryWithRetryCount:(unint64_t)count
 {
   os_unfair_lock_lock(&self->_lock);
   self->_isRetrying = 1;
@@ -998,23 +998,23 @@ LABEL_11:
     [(CHWorkoutDataProvider *)self _runUpdateHandlers];
   }
 
-  v7 = 5;
-  if (a3 < 5)
+  countCopy = 5;
+  if (count < 5)
   {
-    v7 = a3;
+    countCopy = count;
   }
 
-  v8 = dispatch_time(0, 1000000000 * v7);
+  v8 = dispatch_time(0, 1000000000 * countCopy);
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100117064;
   v9[3] = &unk_10083BFA0;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = count;
   dispatch_after(v8, &_dispatch_main_q, v9);
 }
 
-- (void)_runAnchoredObjectQueryWithRetryCount:(unint64_t)a3
+- (void)_runAnchoredObjectQueryWithRetryCount:(unint64_t)count
 {
   if (self->_currentAnchoredObjectQuery)
   {
@@ -1028,7 +1028,7 @@ LABEL_11:
     if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v17 = a3;
+      countCopy = count;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[CHWorkoutDataProvider] Running anchored object workout query with retry count: %lu", buf, 0xCu);
     }
 
@@ -1038,7 +1038,7 @@ LABEL_11:
     v12 = 3221225472;
     v13 = sub_100117264;
     v14 = &unk_10083CB10;
-    v15[1] = a3;
+    v15[1] = count;
     objc_copyWeak(v15, buf);
     v6 = objc_retainBlock(&v11);
     v7 = [HKAnchoredObjectQuery alloc];
@@ -1056,11 +1056,11 @@ LABEL_11:
   }
 }
 
-- (void)_handleInitialResults:(id)a3
+- (void)_handleInitialResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   os_unfair_lock_lock(&self->_lock);
-  [(HKSortedSampleArray *)self->_workouts insertSamples:v4];
+  [(HKSortedSampleArray *)self->_workouts insertSamples:resultsCopy];
 
   os_unfair_lock_unlock(&self->_lock);
   [(CHWorkoutDataProvider *)self _recreateFilterObjects];
@@ -1074,15 +1074,15 @@ LABEL_11:
   dispatch_async(sortingQueue, block);
 }
 
-- (void)_handleRemovedObjects:(id)a3
+- (void)_handleRemovedObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   v5 = objc_alloc_init(NSMutableSet);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = objectsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v20 count:16];
   if (v7)
   {
@@ -1098,8 +1098,8 @@ LABEL_11:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v14 + 1) + 8 * v10) UUID];
-        [v5 addObject:v11];
+        uUID = [*(*(&v14 + 1) + 8 * v10) UUID];
+        [v5 addObject:uUID];
 
         v10 = v10 + 1;
       }
@@ -1165,28 +1165,28 @@ LABEL_11:
   dispatch_async(handlerQueue, block);
 }
 
-- (void)_runHandlers:(id)a3
+- (void)_runHandlers:(id)handlers
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100118100;
   block[3] = &unk_10083A8B0;
-  v5 = a3;
-  v3 = v5;
+  handlersCopy = handlers;
+  v3 = handlersCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (id)_UUIDsForWorkoutsWithEndDate:(id)a3
+- (id)_UUIDsForWorkoutsWithEndDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = objc_alloc_init(NSMutableSet);
   os_unfair_lock_lock(&self->_lock);
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [(HKSortedSampleArray *)self->_workouts reverseSampleEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  reverseSampleEnumerator = [(HKSortedSampleArray *)self->_workouts reverseSampleEnumerator];
+  v7 = [reverseSampleEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1197,25 +1197,25 @@ LABEL_11:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(reverseSampleEnumerator);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 endDate];
-        if ([v12 compare:v4] == 1)
+        endDate = [v11 endDate];
+        if ([endDate compare:dateCopy] == 1)
         {
 
           goto LABEL_13;
         }
 
-        if ([v12 isEqualToDate:v4])
+        if ([endDate isEqualToDate:dateCopy])
         {
-          v13 = [v11 UUID];
-          [v5 addObject:v13];
+          uUID = [v11 UUID];
+          [v5 addObject:uUID];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [reverseSampleEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v8)
       {
         continue;
@@ -1232,9 +1232,9 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)isWatchWorkout:(id)a3
+- (BOOL)isWatchWorkout:(id)workout
 {
-  v4 = a3;
+  workoutCopy = workout;
   os_unfair_lock_lock(&self->_lock);
   v17 = 0u;
   v18 = 0u;
@@ -1245,7 +1245,7 @@ LABEL_13:
   if (v6)
   {
     v7 = v6;
-    v8 = 0;
+    _isWatchWorkout = 0;
     v9 = *v16;
     do
     {
@@ -1257,12 +1257,12 @@ LABEL_13:
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 UUID];
-        v13 = [v12 isEqual:v4];
+        uUID = [v11 UUID];
+        v13 = [uUID isEqual:workoutCopy];
 
         if (v13)
         {
-          v8 = [v11 _isWatchWorkout];
+          _isWatchWorkout = [v11 _isWatchWorkout];
         }
       }
 
@@ -1274,11 +1274,11 @@ LABEL_13:
 
   else
   {
-    v8 = 0;
+    _isWatchWorkout = 0;
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  return v8 & 1;
+  return _isWatchWorkout & 1;
 }
 
 @end

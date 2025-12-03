@@ -8,15 +8,15 @@
 
 - (uint64_t)_ui_isInterprocess
 {
-  v2 = objc_getAssociatedObject(a1, &_NSKeyedArchiverUIIsInterprocessKey);
-  v3 = [v2 BOOLValue];
+  v2 = objc_getAssociatedObject(self, &_NSKeyedArchiverUIIsInterprocessKey);
+  bOOLValue = [v2 BOOLValue];
 
-  if (v3)
+  if (bOOLValue)
   {
     return 1;
   }
 
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = NSKeyedArchiver_0;
   return objc_msgSendSuper2(&v5, sel__ui_isInterprocess);
 }
@@ -24,7 +24,7 @@
 - (void)_ui_setIsInterprocess:()UIKitAdditions
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  objc_setAssociatedObject(a1, &_NSKeyedArchiverUIIsInterprocessKey, v2, 1);
+  objc_setAssociatedObject(self, &_NSKeyedArchiverUIIsInterprocessKey, v2, 1);
 }
 
 + (id)_ui_archivedInterprocessDataWithRootObject:()UIKitAdditions requiringSecureCoding:error:
@@ -34,9 +34,9 @@
   [v6 _ui_setIsInterprocess:1];
   [v6 encodeObject:v5 forKey:*MEMORY[0x1E696A508]];
   [v6 finishEncoding];
-  v7 = [v6 encodedData];
+  encodedData = [v6 encodedData];
 
-  return v7;
+  return encodedData;
 }
 
 @end

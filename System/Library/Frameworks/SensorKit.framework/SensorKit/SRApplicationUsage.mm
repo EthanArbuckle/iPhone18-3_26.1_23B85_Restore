@@ -1,56 +1,56 @@
 @interface SRApplicationUsage
-+ (SRApplicationUsage)applicationUsageWithBundleIdentifier:(id)a3 reportApplicationIdentifier:(id)a4 totalUsageTime:(double)a5 relativeStartTime:(double)a6 textInputSessions:(id)a7 supplementalCategories:(id)a8;
-- (BOOL)isEqual:(id)a3;
++ (SRApplicationUsage)applicationUsageWithBundleIdentifier:(id)identifier reportApplicationIdentifier:(id)applicationIdentifier totalUsageTime:(double)time relativeStartTime:(double)startTime textInputSessions:(id)sessions supplementalCategories:(id)categories;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)supplementalCategories;
 - (NSArray)textInputSessions;
 - (NSString)description;
-- (SRApplicationUsage)initWithCoder:(id)a3;
+- (SRApplicationUsage)initWithCoder:(id)coder;
 - (id)sr_dictionaryRepresentation;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRApplicationUsage
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeObject:-[SRApplicationUsage bundleIdentifier](self forKey:{"bundleIdentifier"), @"bundleIdentifier"}];
+  [coder encodeObject:-[SRApplicationUsage bundleIdentifier](self forKey:{"bundleIdentifier"), @"bundleIdentifier"}];
   [(SRApplicationUsage *)self usageTime];
-  [a3 encodeDouble:@"totalUsageTime" forKey:?];
+  [coder encodeDouble:@"totalUsageTime" forKey:?];
   [(SRApplicationUsage *)self relativeStartTime];
-  [a3 encodeDouble:@"relativeStartTime" forKey:?];
-  [a3 encodeObject:-[SRApplicationUsage reportApplicationIdentifier](self forKey:{"reportApplicationIdentifier"), @"reportApplicationIdentifier"}];
-  [a3 encodeObject:-[SRApplicationUsage mutableTextInputSessions](self forKey:{"mutableTextInputSessions"), @"textInputSessions"}];
-  v6 = [(SRApplicationUsage *)self supplementalCategories];
+  [coder encodeDouble:@"relativeStartTime" forKey:?];
+  [coder encodeObject:-[SRApplicationUsage reportApplicationIdentifier](self forKey:{"reportApplicationIdentifier"), @"reportApplicationIdentifier"}];
+  [coder encodeObject:-[SRApplicationUsage mutableTextInputSessions](self forKey:{"mutableTextInputSessions"), @"textInputSessions"}];
+  supplementalCategories = [(SRApplicationUsage *)self supplementalCategories];
 
-  [a3 encodeObject:v6 forKey:@"supplementalCategories"];
+  [coder encodeObject:supplementalCategories forKey:@"supplementalCategories"];
 }
 
-- (SRApplicationUsage)initWithCoder:(id)a3
+- (SRApplicationUsage)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
-  [a3 decodeDoubleForKey:@"totalUsageTime"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  [coder decodeDoubleForKey:@"totalUsageTime"];
   v8 = v7;
-  [a3 decodeDoubleForKey:@"relativeStartTime"];
+  [coder decodeDoubleForKey:@"relativeStartTime"];
   v10 = v9;
-  v11 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"reportApplicationIdentifier"];
+  v11 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"reportApplicationIdentifier"];
   v12 = MEMORY[0x1E695DFD8];
   v13 = objc_opt_class();
-  v14 = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(v12 forKey:{"setWithObjects:", v13, objc_opt_class(), 0), @"textInputSessions", "mutableCopy"}];
+  v14 = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(v12 forKey:{"setWithObjects:", v13, objc_opt_class(), 0), @"textInputSessions", "mutableCopy"}];
   v15 = MEMORY[0x1E695DFD8];
   v16 = objc_opt_class();
   v17 = objc_opt_class();
-  v18 = [objc_msgSend(a3 decodeObjectOfClasses:objc_msgSend(v15 forKey:{"setWithObjects:", v16, v17, objc_opt_class(), 0), @"supplementalCategories", "mutableCopy"}];
+  v18 = [objc_msgSend(coder decodeObjectOfClasses:objc_msgSend(v15 forKey:{"setWithObjects:", v16, v17, objc_opt_class(), 0), @"supplementalCategories", "mutableCopy"}];
 
   v19 = objc_alloc_init(SRApplicationUsage);
   [(SRApplicationUsage *)v19 setBundleIdentifier:v6];
@@ -73,15 +73,15 @@
   return v19;
 }
 
-+ (SRApplicationUsage)applicationUsageWithBundleIdentifier:(id)a3 reportApplicationIdentifier:(id)a4 totalUsageTime:(double)a5 relativeStartTime:(double)a6 textInputSessions:(id)a7 supplementalCategories:(id)a8
++ (SRApplicationUsage)applicationUsageWithBundleIdentifier:(id)identifier reportApplicationIdentifier:(id)applicationIdentifier totalUsageTime:(double)time relativeStartTime:(double)startTime textInputSessions:(id)sessions supplementalCategories:(id)categories
 {
   v14 = objc_alloc_init(SRApplicationUsage);
-  [(SRApplicationUsage *)v14 setBundleIdentifier:a3];
-  [(SRApplicationUsage *)v14 setUsageTime:a5];
-  [(SRApplicationUsage *)v14 setRelativeStartTime:a6];
-  [(SRApplicationUsage *)v14 setReportApplicationIdentifier:a4];
-  -[SRApplicationUsage setMutableTextInputSessions:](v14, "setMutableTextInputSessions:", [MEMORY[0x1E695DF70] arrayWithArray:a7]);
-  -[SRApplicationUsage setMutableSupplementalCategories:](v14, "setMutableSupplementalCategories:", [MEMORY[0x1E695DF70] arrayWithArray:a8]);
+  [(SRApplicationUsage *)v14 setBundleIdentifier:identifier];
+  [(SRApplicationUsage *)v14 setUsageTime:time];
+  [(SRApplicationUsage *)v14 setRelativeStartTime:startTime];
+  [(SRApplicationUsage *)v14 setReportApplicationIdentifier:applicationIdentifier];
+  -[SRApplicationUsage setMutableTextInputSessions:](v14, "setMutableTextInputSessions:", [MEMORY[0x1E695DF70] arrayWithArray:sessions]);
+  -[SRApplicationUsage setMutableSupplementalCategories:](v14, "setMutableSupplementalCategories:", [MEMORY[0x1E695DF70] arrayWithArray:categories]);
 
   return v14;
 }
@@ -94,9 +94,9 @@
   }
 
   v3 = MEMORY[0x1E695DEC8];
-  v4 = [(SRApplicationUsage *)self mutableTextInputSessions];
+  mutableTextInputSessions = [(SRApplicationUsage *)self mutableTextInputSessions];
 
-  return [v3 arrayWithArray:v4];
+  return [v3 arrayWithArray:mutableTextInputSessions];
 }
 
 - (NSArray)supplementalCategories
@@ -107,9 +107,9 @@
   }
 
   v3 = MEMORY[0x1E695DEC8];
-  v4 = [(SRApplicationUsage *)self mutableSupplementalCategories];
+  mutableSupplementalCategories = [(SRApplicationUsage *)self mutableSupplementalCategories];
 
-  return [v3 arrayWithArray:v4];
+  return [v3 arrayWithArray:mutableSupplementalCategories];
 }
 
 - (void)dealloc
@@ -127,16 +127,16 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(SRApplicationUsage *)self bundleIdentifier];
+  bundleIdentifier = [(SRApplicationUsage *)self bundleIdentifier];
   [(SRApplicationUsage *)self usageTime];
   v8 = v7;
   [(SRApplicationUsage *)self relativeStartTime];
-  return [v3 stringWithFormat:@"%@ {bundleIdentifier: %@, totalUsageTime: %f, relativeStartTime:%f reportApplicationIdentifier: %@, textInputSessions: %@, supplementalCategories: %@}", v5, v6, v8, v9, -[SRApplicationUsage reportApplicationIdentifier](self, "reportApplicationIdentifier"), -[SRApplicationUsage textInputSessions](self, "textInputSessions"), -[SRApplicationUsage supplementalCategories](self, "supplementalCategories")];
+  return [v3 stringWithFormat:@"%@ {bundleIdentifier: %@, totalUsageTime: %f, relativeStartTime:%f reportApplicationIdentifier: %@, textInputSessions: %@, supplementalCategories: %@}", v5, bundleIdentifier, v8, v9, -[SRApplicationUsage reportApplicationIdentifier](self, "reportApplicationIdentifier"), -[SRApplicationUsage textInputSessions](self, "textInputSessions"), -[SRApplicationUsage supplementalCategories](self, "supplementalCategories")];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v19) = 1;
     return v19;
@@ -162,11 +162,11 @@ LABEL_16:
     goto LABEL_6;
   }
 
-  if ([a3 bundleIdentifier])
+  if ([equal bundleIdentifier])
   {
     bundleIdentifier = self->_bundleIdentifier;
 LABEL_6:
-    v14 = !-[NSString isEqualToString:](bundleIdentifier, "isEqualToString:", [a3 bundleIdentifier]);
+    v14 = !-[NSString isEqualToString:](bundleIdentifier, "isEqualToString:", [equal bundleIdentifier]);
     goto LABEL_7;
   }
 
@@ -175,7 +175,7 @@ LABEL_7:
   reportApplicationIdentifier = self->_reportApplicationIdentifier;
   if (!reportApplicationIdentifier)
   {
-    if (![a3 reportApplicationIdentifier])
+    if (![equal reportApplicationIdentifier])
     {
       v16 = 0;
       goto LABEL_11;
@@ -184,7 +184,7 @@ LABEL_7:
     reportApplicationIdentifier = self->_reportApplicationIdentifier;
   }
 
-  v16 = !-[NSString isEqualToString:](reportApplicationIdentifier, "isEqualToString:", [a3 reportApplicationIdentifier]);
+  v16 = !-[NSString isEqualToString:](reportApplicationIdentifier, "isEqualToString:", [equal reportApplicationIdentifier]);
 LABEL_11:
   if ((v14 | v16))
   {
@@ -192,20 +192,20 @@ LABEL_11:
   }
 
   usageTime = self->_usageTime;
-  [a3 usageTime];
+  [equal usageTime];
   if (usageTime != v18)
   {
     goto LABEL_16;
   }
 
-  v19 = -[NSArray isEqualToArray:](-[SRApplicationUsage textInputSessions](self, "textInputSessions"), "isEqualToArray:", [a3 textInputSessions]);
+  v19 = -[NSArray isEqualToArray:](-[SRApplicationUsage textInputSessions](self, "textInputSessions"), "isEqualToArray:", [equal textInputSessions]);
   if (v19)
   {
-    v19 = -[NSArray isEqualToArray:](-[SRApplicationUsage supplementalCategories](self, "supplementalCategories"), "isEqualToArray:", [a3 supplementalCategories]);
+    v19 = -[NSArray isEqualToArray:](-[SRApplicationUsage supplementalCategories](self, "supplementalCategories"), "isEqualToArray:", [equal supplementalCategories]);
     if (v19)
     {
       relativeStartTime = self->_relativeStartTime;
-      [a3 relativeStartTime];
+      [equal relativeStartTime];
       LOBYTE(v19) = relativeStartTime == v21;
     }
   }
@@ -221,8 +221,8 @@ LABEL_11:
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v4 = [(SRApplicationUsage *)self textInputSessions];
-  v5 = [(NSArray *)v4 countByEnumeratingWithState:&v28 objects:v37 count:16];
+  textInputSessions = [(SRApplicationUsage *)self textInputSessions];
+  v5 = [(NSArray *)textInputSessions countByEnumeratingWithState:&v28 objects:v37 count:16];
   if (v5)
   {
     v6 = v5;
@@ -233,13 +233,13 @@ LABEL_11:
       {
         if (*v29 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(textInputSessions);
         }
 
         [v3 addObject:{objc_msgSend(*(*(&v28 + 1) + 8 * i), "sr_dictionaryRepresentation")}];
       }
 
-      v6 = [(NSArray *)v4 countByEnumeratingWithState:&v28 objects:v37 count:16];
+      v6 = [(NSArray *)textInputSessions countByEnumeratingWithState:&v28 objects:v37 count:16];
     }
 
     while (v6);
@@ -250,9 +250,9 @@ LABEL_11:
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v23 = self;
-  v10 = [(SRApplicationUsage *)self supplementalCategories];
-  v11 = [(NSArray *)v10 countByEnumeratingWithState:&v24 objects:v36 count:16];
+  selfCopy = self;
+  supplementalCategories = [(SRApplicationUsage *)self supplementalCategories];
+  v11 = [(NSArray *)supplementalCategories countByEnumeratingWithState:&v24 objects:v36 count:16];
   if (v11)
   {
     v12 = v11;
@@ -263,7 +263,7 @@ LABEL_11:
       {
         if (*v25 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(supplementalCategories);
         }
 
         v15 = *(*(&v24 + 1) + 8 * j);
@@ -294,31 +294,31 @@ LABEL_11:
         }
       }
 
-      v12 = [(NSArray *)v10 countByEnumeratingWithState:&v24 objects:v36 count:16];
+      v12 = [(NSArray *)supplementalCategories countByEnumeratingWithState:&v24 objects:v36 count:16];
     }
 
     while (v12);
   }
 
   v32[0] = @"totalUsageTime";
-  v19 = [MEMORY[0x1E696AD98] numberWithDouble:v23->_usageTime];
+  v19 = [MEMORY[0x1E696AD98] numberWithDouble:selfCopy->_usageTime];
   bundleIdentifier = &stru_1F48BB5C0;
-  if (v23->_bundleIdentifier)
+  if (selfCopy->_bundleIdentifier)
   {
-    bundleIdentifier = v23->_bundleIdentifier;
+    bundleIdentifier = selfCopy->_bundleIdentifier;
   }
 
   v33[0] = v19;
   v33[1] = bundleIdentifier;
   v32[1] = @"bundleIdentifier";
   v32[2] = @"reportApplicationIdentifier";
-  v33[2] = v23->_reportApplicationIdentifier;
+  v33[2] = selfCopy->_reportApplicationIdentifier;
   v33[3] = v3;
   v32[3] = @"textInputSessions";
   v32[4] = @"supplementalCategories";
   v33[4] = v9;
   v32[5] = @"relativeStartTime";
-  v33[5] = [MEMORY[0x1E696AD98] numberWithDouble:v23->_relativeStartTime];
+  v33[5] = [MEMORY[0x1E696AD98] numberWithDouble:selfCopy->_relativeStartTime];
   result = [MEMORY[0x1E695DF20] dictionaryWithObjects:v33 forKeys:v32 count:6];
   v22 = *MEMORY[0x1E69E9840];
   return result;

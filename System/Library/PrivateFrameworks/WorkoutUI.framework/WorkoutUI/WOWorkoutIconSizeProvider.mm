@@ -1,13 +1,13 @@
 @interface WOWorkoutIconSizeProvider
-+ (int64_t)iconSizeWithUseSmallerIcon:(BOOL)a3;
++ (int64_t)iconSizeWithUseSmallerIcon:(BOOL)icon;
 - (WOWorkoutIconSizeProvider)init;
 @end
 
 @implementation WOWorkoutIconSizeProvider
 
-+ (int64_t)iconSizeWithUseSmallerIcon:(BOOL)a3
++ (int64_t)iconSizeWithUseSmallerIcon:(BOOL)icon
 {
-  if (a3)
+  if (icon)
   {
     return 0;
   }

@@ -17,7 +17,7 @@
     [NSProgress(BRCAdditions) brc_publish];
   }
 
-  return [a1 _publish];
+  return [self _publish];
 }
 
 - (uint64_t)brc_unpublish
@@ -29,36 +29,36 @@
     [NSProgress(BRCAdditions) brc_unpublish];
   }
 
-  return [a1 _unpublish];
+  return [self _unpublish];
 }
 
 - (id)brc_dumpDescription
 {
-  v2 = [MEMORY[0x277CBEB18] array];
-  if ([a1 isFinished])
+  array = [MEMORY[0x277CBEB18] array];
+  if ([self isFinished])
   {
-    [v2 addObject:@"finished"];
+    [array addObject:@"finished"];
   }
 
-  if ([a1 isIndeterminate])
+  if ([self isIndeterminate])
   {
-    [v2 addObject:@"indeterminate"];
+    [array addObject:@"indeterminate"];
   }
 
-  if ([a1 isCancelled])
+  if ([self isCancelled])
   {
-    [v2 addObject:@"cancelled"];
+    [array addObject:@"cancelled"];
   }
 
-  if ([a1 isPaused])
+  if ([self isPaused])
   {
-    [v2 addObject:@"paused"];
+    [array addObject:@"paused"];
   }
 
-  if ([v2 count])
+  if ([array count])
   {
     v3 = MEMORY[0x277CCACA8];
-    v4 = [v2 componentsJoinedByString:@"|"];
+    v4 = [array componentsJoinedByString:@"|"];
     v5 = [v3 stringWithFormat:@"s:%@ ", v4];
   }
 
@@ -68,8 +68,8 @@
   }
 
   v6 = MEMORY[0x277CCACA8];
-  [a1 fractionCompleted];
-  v8 = [v6 stringWithFormat:@"%@f:%.4f uc:%lld/%lld", v5, v7, objc_msgSend(a1, "completedUnitCount"), objc_msgSend(a1, "totalUnitCount")];
+  [self fractionCompleted];
+  v8 = [v6 stringWithFormat:@"%@f:%.4f uc:%lld/%lld", v5, v7, objc_msgSend(self, "completedUnitCount"), objc_msgSend(self, "totalUnitCount")];
 
   return v8;
 }

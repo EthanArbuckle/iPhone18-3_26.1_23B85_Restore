@@ -1,16 +1,16 @@
 @interface JavaNioChannelsSelectionKey
-- (id)attachWithId:(id)a3;
+- (id)attachWithId:(id)id;
 - (void)__javaClone;
 - (void)dealloc;
 @end
 
 @implementation JavaNioChannelsSelectionKey
 
-- (id)attachWithId:(id)a3
+- (id)attachWithId:(id)id
 {
   p_attachment = &self->attachment_;
   v4 = atomic_load(p_attachment);
-  JreVolatileStrongAssign(p_attachment, a3);
+  JreVolatileStrongAssign(p_attachment, id);
   return v4;
 }
 

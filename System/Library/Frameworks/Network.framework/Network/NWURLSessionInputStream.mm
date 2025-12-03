@@ -1,17 +1,17 @@
 @interface NWURLSessionInputStream
 - (BOOL)hasBytesAvailable;
 - (id)delegate;
-- (id)initWithStreamTask:(void *)a3 error:;
+- (id)initWithStreamTask:(void *)task error:;
 - (id)streamError;
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4;
+- (int64_t)read:(char *)read maxLength:(unint64_t)length;
 - (unint64_t)streamStatus;
 - (void)close;
 - (void)open;
 - (void)readCompletion;
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4;
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4;
-- (void)setDelegate:(id)a3;
-- (void)signalEvent:(uint64_t)a1;
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode;
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode;
+- (void)setDelegate:(id)delegate;
+- (void)signalEvent:(uint64_t)event;
 @end
 
 @implementation NWURLSessionInputStream
@@ -26,7 +26,7 @@
   return self != 0;
 }
 
-- (int64_t)read:(char *)a3 maxLength:(unint64_t)a4
+- (int64_t)read:(char *)read maxLength:(unint64_t)length
 {
   if (self)
   {
@@ -56,7 +56,7 @@
         break;
       }
 
-      self->_readSize = a4;
+      self->_readSize = length;
       os_unfair_lock_assert_owner(&self->lock);
       if (!self->_reading)
       {
@@ -84,13 +84,13 @@
   else
   {
     os_unfair_lock_lock(0x88);
-    v21 = [0 hasBytesAvailable];
+    hasBytesAvailable = [0 hasBytesAvailable];
     Property = 0;
-    if (v21)
+    if (hasBytesAvailable)
     {
 LABEL_11:
       size = dispatch_data_get_size(Property);
-      if (size <= a4)
+      if (size <= length)
       {
         if (self)
         {
@@ -109,16 +109,16 @@ LABEL_11:
         if (self)
         {
           v12 = objc_getProperty(self, v10, 200, 1);
-          subrange = dispatch_data_create_subrange(v12, 0, a4);
+          subrange = dispatch_data_create_subrange(v12, 0, length);
           v15 = objc_getProperty(self, v14, 200, 1);
-          v16 = dispatch_data_create_subrange(v15, a4, 0xFFFFFFFFFFFFFFFFLL);
+          v16 = dispatch_data_create_subrange(v15, length, 0xFFFFFFFFFFFFFFFFLL);
           objc_setProperty_atomic(self, v17, v16, 200);
         }
 
         else
         {
-          subrange = dispatch_data_create_subrange(0, 0, a4);
-          v16 = dispatch_data_create_subrange(0, a4, 0xFFFFFFFFFFFFFFFFLL);
+          subrange = dispatch_data_create_subrange(0, 0, length);
+          v16 = dispatch_data_create_subrange(0, length, 0xFFFFFFFFFFFFFFFFLL);
         }
       }
 
@@ -126,21 +126,21 @@ LABEL_11:
       applier[1] = 3221225472;
       applier[2] = __42__NWURLSessionInputStream_read_maxLength___block_invoke;
       applier[3] = &__block_descriptor_40_e47_B40__0__NSObject_OS_dispatch_data__8Q16r_v24Q32l;
-      applier[4] = a3;
+      applier[4] = read;
       dispatch_data_apply(subrange, applier);
       [(NWURLSessionInputStream *)self readCompletion];
       os_unfair_lock_unlock(&self->lock);
-      if (size >= a4)
+      if (size >= length)
       {
-        v20 = a4;
+        lengthCopy = length;
       }
 
       else
       {
-        v20 = size;
+        lengthCopy = size;
       }
 
-      return v20;
+      return lengthCopy;
     }
 
     else
@@ -155,57 +155,57 @@ LABEL_16:
 
 - (void)readCompletion
 {
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  os_unfair_lock_assert_owner((a1 + 136));
-  if (*(a1 + 144))
+  os_unfair_lock_assert_owner((self + 136));
+  if (*(self + 144))
   {
-    --*(a1 + 144);
-    v2 = *(a1 + 184);
+    --*(self + 144);
+    v2 = *(self + 184);
 
     dispatch_semaphore_signal(v2);
     return;
   }
 
-  if ([a1 hasBytesAvailable])
+  if ([self hasBytesAvailable])
   {
-    v4 = a1;
+    selfCopy2 = self;
     v5 = 2;
 LABEL_8:
 
-    [(NWURLSessionInputStream *)v4 signalEvent:v5];
+    [(NWURLSessionInputStream *)selfCopy2 signalEvent:v5];
     return;
   }
 
-  if (*(a1 + 142) == 1)
+  if (*(self + 142) == 1)
   {
-    if (*(a1 + 143))
+    if (*(self + 143))
     {
       return;
     }
 
-    *(a1 + 143) = 1;
-    v4 = a1;
+    *(self + 143) = 1;
+    selfCopy2 = self;
     v5 = 16;
     goto LABEL_8;
   }
 
-  if (!objc_getProperty(a1, v3, 208, 1))
+  if (!objc_getProperty(self, v3, 208, 1))
   {
-    os_unfair_lock_assert_owner((a1 + 136));
-    if ((*(a1 + 141) & 1) == 0)
+    os_unfair_lock_assert_owner((self + 136));
+    if ((*(self + 141) & 1) == 0)
     {
-      *(a1 + 141) = 1;
-      v6 = *(a1 + 152);
-      v7 = *(a1 + 192);
+      *(self + 141) = 1;
+      v6 = *(self + 152);
+      v7 = *(self + 192);
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __31__NWURLSessionInputStream_read__block_invoke;
       v8[3] = &unk_1E6A38828;
-      v8[4] = a1;
+      v8[4] = self;
       [v6 readDataOfMinLength:1 maxLength:v7 timeout:v8 completionHandler:0.0];
     }
   }
@@ -325,18 +325,18 @@ LABEL_21:
   os_unfair_lock_unlock((*(a1 + 32) + 136));
 }
 
-- (void)signalEvent:(uint64_t)a1
+- (void)signalEvent:(uint64_t)event
 {
-  if (a1)
+  if (event)
   {
-    os_unfair_lock_assert_owner((a1 + 136));
-    v4 = [a1 delegate];
-    if (!v4 || (objc_opt_respondsToSelector() & 1) == 0)
+    os_unfair_lock_assert_owner((event + 136));
+    delegate = [event delegate];
+    if (!delegate || (objc_opt_respondsToSelector() & 1) == 0)
     {
       goto LABEL_10;
     }
 
-    v5 = MEMORY[0x1865DB780](a1);
+    v5 = MEMORY[0x1865DB780](event);
     if (v5)
     {
       block[0] = MEMORY[0x1E69E9820];
@@ -344,15 +344,15 @@ LABEL_21:
       block[2] = __39__NWURLSessionInputStream_signalEvent___block_invoke;
       block[3] = &unk_1E6A3BCF0;
       v6 = v13;
-      v13[0] = v4;
-      v13[1] = a1;
+      v13[0] = delegate;
+      v13[1] = event;
       v13[2] = a2;
       dispatch_async(v5, block);
     }
 
     else
     {
-      v7 = *(a1 + 168);
+      v7 = *(event + 168);
       if (!v7)
       {
 LABEL_9:
@@ -361,14 +361,14 @@ LABEL_10:
         return;
       }
 
-      v8 = *(a1 + 176);
+      v8 = *(event + 176);
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __39__NWURLSessionInputStream_signalEvent___block_invoke_2;
       v10[3] = &unk_1E6A3BCF0;
       v6 = v11;
-      v11[0] = v4;
-      v11[1] = a1;
+      v11[0] = delegate;
+      v11[1] = event;
       v11[2] = a2;
       v9 = v7;
       [v9 performInModes:v8 block:v10];
@@ -442,23 +442,23 @@ LABEL_15:
   return v5;
 }
 
-- (void)removeFromRunLoop:(id)a3 forMode:(id)a4
+- (void)removeFromRunLoop:(id)loop forMode:(id)mode
 {
-  v12 = a4;
-  v6 = a3;
+  modeCopy = mode;
+  loopCopy = loop;
   os_unfair_lock_lock(&self->lock);
   if (self)
   {
     runLoop = self->_runLoop;
 
-    if (runLoop != v6)
+    if (runLoop != loopCopy)
     {
       goto LABEL_9;
     }
 
-    if ([(NSMutableArray *)self->_runLoopModes containsObject:v12])
+    if ([(NSMutableArray *)self->_runLoopModes containsObject:modeCopy])
     {
-      [(NSMutableArray *)self->_runLoopModes removeObject:v12];
+      [(NSMutableArray *)self->_runLoopModes removeObject:modeCopy];
     }
 
     runLoopModes = self->_runLoopModes;
@@ -467,16 +467,16 @@ LABEL_15:
   else
   {
 
-    if (v6)
+    if (loopCopy)
     {
       goto LABEL_9;
     }
 
-    v11 = [0 containsObject:v12];
+    v11 = [0 containsObject:modeCopy];
     runLoopModes = 0;
     if (v11)
     {
-      [0 removeObject:v12];
+      [0 removeObject:modeCopy];
       runLoopModes = 0;
     }
   }
@@ -492,35 +492,35 @@ LABEL_9:
   os_unfair_lock_unlock(&self->lock);
 }
 
-- (void)scheduleInRunLoop:(id)a3 forMode:(id)a4
+- (void)scheduleInRunLoop:(id)loop forMode:(id)mode
 {
-  v10 = a3;
-  v7 = a4;
+  loopCopy = loop;
+  modeCopy = mode;
   os_unfair_lock_lock(&self->lock);
   if (self)
   {
-    if (self->_runLoop != v10)
+    if (self->_runLoop != loopCopy)
     {
       [(NSMutableArray *)self->_runLoopModes removeAllObjects];
     }
 
-    objc_storeStrong(&self->_runLoop, a3);
-    if (([(NSMutableArray *)self->_runLoopModes containsObject:v7]& 1) == 0)
+    objc_storeStrong(&self->_runLoop, loop);
+    if (([(NSMutableArray *)self->_runLoopModes containsObject:modeCopy]& 1) == 0)
     {
       runLoopModes = self->_runLoopModes;
 LABEL_6:
-      [(NSMutableArray *)runLoopModes addObject:v7];
+      [(NSMutableArray *)runLoopModes addObject:modeCopy];
     }
   }
 
   else
   {
-    if (v10)
+    if (loopCopy)
     {
       [0 removeAllObjects];
     }
 
-    v9 = [0 containsObject:v7];
+    v9 = [0 containsObject:modeCopy];
     runLoopModes = 0;
     if ((v9 & 1) == 0)
     {
@@ -531,11 +531,11 @@ LABEL_6:
   os_unfair_lock_unlock(&self->lock);
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   if (self)
   {
-    objc_storeWeak(&self->_streamDelegate, a3);
+    objc_storeWeak(&self->_streamDelegate, delegate);
   }
 }
 
@@ -573,7 +573,7 @@ LABEL_6:
   os_unfair_lock_lock(&self->lock);
   if (!self)
   {
-    v4 = 0;
+    selfCopy = 0;
     v5 = 1;
     goto LABEL_4;
   }
@@ -581,10 +581,10 @@ LABEL_6:
   self->_opened = 1;
   if (objc_getProperty(self, v3, 208, 1))
   {
-    v4 = self;
+    selfCopy = self;
     v5 = 8;
 LABEL_4:
-    [(NWURLSessionInputStream *)v4 signalEvent:v5];
+    [(NWURLSessionInputStream *)selfCopy signalEvent:v5];
     goto LABEL_7;
   }
 
@@ -607,33 +607,33 @@ LABEL_7:
   os_unfair_lock_unlock(&self->lock);
 }
 
-- (id)initWithStreamTask:(void *)a3 error:
+- (id)initWithStreamTask:(void *)task error:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  taskCopy = task;
+  if (self)
   {
-    v14.receiver = a1;
+    v14.receiver = self;
     v14.super_class = NWURLSessionInputStream;
     v8 = objc_msgSendSuper2(&v14, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       objc_storeStrong(v8 + 19, a2);
-      objc_storeStrong(a1 + 26, a3);
+      objc_storeStrong(self + 26, task);
       v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-      v10 = a1[22];
-      a1[22] = v9;
+      v10 = self[22];
+      self[22] = v9;
 
       v11 = dispatch_semaphore_create(0);
-      v12 = a1[23];
-      a1[23] = v11;
+      v12 = self[23];
+      self[23] = v11;
 
-      a1[24] = 0x20000;
+      self[24] = 0x20000;
     }
   }
 
-  return a1;
+  return self;
 }
 
 @end

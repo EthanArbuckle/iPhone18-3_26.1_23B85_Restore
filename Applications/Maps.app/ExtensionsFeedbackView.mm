@@ -1,50 +1,50 @@
 @interface ExtensionsFeedbackView
-- (ExtensionsFeedbackView)initWithSubmitHandler:(id)a3;
+- (ExtensionsFeedbackView)initWithSubmitHandler:(id)handler;
 - (void)_commonInit;
-- (void)_submitTapped:(id)a3;
+- (void)_submitTapped:(id)tapped;
 - (void)_updateConstraints;
 - (void)_updateSubmitButton;
-- (void)configureHeaderImage:(id)a3;
-- (void)configureSubmitButtonTitle:(id)a3;
-- (void)setTippingOptions:(id)a3;
+- (void)configureHeaderImage:(id)image;
+- (void)configureSubmitButtonTitle:(id)title;
+- (void)setTippingOptions:(id)options;
 - (void)updateTheme;
 @end
 
 @implementation ExtensionsFeedbackView
 
-- (void)setTippingOptions:(id)a3
+- (void)setTippingOptions:(id)options
 {
-  v5 = a3;
+  optionsCopy = options;
   if (![(NSArray *)self->_tippingOptions isEqualToArray:?])
   {
-    objc_storeStrong(&self->_tippingOptions, a3);
-    [(RidesharingTippingView *)self->_tippingView setHidden:v5 == 0];
-    [(RidesharingTippingView *)self->_tippingView setTippingOptions:v5];
+    objc_storeStrong(&self->_tippingOptions, options);
+    [(RidesharingTippingView *)self->_tippingView setHidden:optionsCopy == 0];
+    [(RidesharingTippingView *)self->_tippingView setTippingOptions:optionsCopy];
   }
 }
 
-- (void)configureSubmitButtonTitle:(id)a3
+- (void)configureSubmitButtonTitle:(id)title
 {
-  v7 = a3;
-  v4 = [(ProminentActionButton *)self->_submitButton titleLabel];
-  v5 = [v4 text];
-  v6 = [v5 isEqualToString:v7];
+  titleCopy = title;
+  titleLabel = [(ProminentActionButton *)self->_submitButton titleLabel];
+  text = [titleLabel text];
+  v6 = [text isEqualToString:titleCopy];
 
   if ((v6 & 1) == 0)
   {
-    [(ProminentActionButton *)self->_submitButton setTitle:v7 forState:0];
+    [(ProminentActionButton *)self->_submitButton setTitle:titleCopy forState:0];
   }
 }
 
-- (void)configureHeaderImage:(id)a3
+- (void)configureHeaderImage:(id)image
 {
   [(UIImageView *)self->_headerImageView setImage:?];
   headerImageView = self->_headerImageView;
 
-  [(UIImageView *)headerImageView setHidden:a3 == 0];
+  [(UIImageView *)headerImageView setHidden:image == 0];
 }
 
-- (void)_submitTapped:(id)a3
+- (void)_submitTapped:(id)tapped
 {
   submitHandler = self->_submitHandler;
   if (submitHandler)
@@ -85,30 +85,30 @@
   }
 
   [(UIStackView *)self->_stackView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v24 = [(UIStackView *)self->_stackView topAnchor];
-  v23 = [(ExtensionsFeedbackView *)self topAnchor];
-  v22 = [v24 constraintEqualToAnchor:v23 constant:7.5];
+  topAnchor = [(UIStackView *)self->_stackView topAnchor];
+  topAnchor2 = [(ExtensionsFeedbackView *)self topAnchor];
+  v22 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:7.5];
   v25[0] = v22;
-  v21 = [(UIStackView *)self->_stackView leadingAnchor];
-  v20 = [(ExtensionsFeedbackView *)self leadingAnchor];
-  v19 = [v21 constraintEqualToAnchor:v20 constant:16.0];
+  leadingAnchor = [(UIStackView *)self->_stackView leadingAnchor];
+  leadingAnchor2 = [(ExtensionsFeedbackView *)self leadingAnchor];
+  v19 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v25[1] = v19;
-  v18 = [(UIStackView *)self->_stackView trailingAnchor];
-  v17 = [(ExtensionsFeedbackView *)self trailingAnchor];
-  v16 = [v18 constraintEqualToAnchor:v17 constant:-16.0];
+  trailingAnchor = [(UIStackView *)self->_stackView trailingAnchor];
+  trailingAnchor2 = [(ExtensionsFeedbackView *)self trailingAnchor];
+  v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-16.0];
   v25[2] = v16;
-  v15 = [(UIStackView *)self->_stackView bottomAnchor];
-  v4 = [(ExtensionsFeedbackView *)self bottomAnchor];
-  v5 = [v15 constraintEqualToAnchor:v4 constant:-15.0];
+  bottomAnchor = [(UIStackView *)self->_stackView bottomAnchor];
+  bottomAnchor2 = [(ExtensionsFeedbackView *)self bottomAnchor];
+  v5 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-15.0];
   v25[3] = v5;
-  v6 = [(UIImageView *)self->_headerImageView heightAnchor];
-  v7 = [v6 constraintEqualToConstant:57.0];
+  heightAnchor = [(UIImageView *)self->_headerImageView heightAnchor];
+  v7 = [heightAnchor constraintEqualToConstant:57.0];
   v25[4] = v7;
-  v8 = [(UIImageView *)self->_headerImageView widthAnchor];
-  v9 = [v8 constraintEqualToConstant:57.0];
+  widthAnchor = [(UIImageView *)self->_headerImageView widthAnchor];
+  v9 = [widthAnchor constraintEqualToConstant:57.0];
   v25[5] = v9;
-  v10 = [(ProminentActionButton *)self->_submitButton heightAnchor];
-  v11 = [v10 constraintEqualToConstant:50.0];
+  heightAnchor2 = [(ProminentActionButton *)self->_submitButton heightAnchor];
+  v11 = [heightAnchor2 constraintEqualToConstant:50.0];
   v25[6] = v11;
   v12 = [NSArray arrayWithObjects:v25 count:7];
 
@@ -121,9 +121,9 @@
 
 - (void)updateTheme
 {
-  v4 = [(ExtensionsFeedbackView *)self theme];
-  v3 = [v4 hairlineColor];
-  [(ExtensionsFeedbackView *)self setHairlineColor:v3];
+  theme = [(ExtensionsFeedbackView *)self theme];
+  hairlineColor = [theme hairlineColor];
+  [(ExtensionsFeedbackView *)self setHairlineColor:hairlineColor];
 }
 
 - (void)_commonInit
@@ -164,8 +164,8 @@
 
   [(ProminentActionButton *)self->_submitButton addTarget:self action:"_submitTapped:" forControlEvents:64];
   [(ExtensionsFeedbackView *)self _updateSubmitButton];
-  v11 = [(ProminentActionButton *)self->_submitButton titleLabel];
-  [DynamicTypeWizard autorefreshLabel:v11 withFontProvider:&stru_10165DAA8];
+  titleLabel = [(ProminentActionButton *)self->_submitButton titleLabel];
+  [DynamicTypeWizard autorefreshLabel:titleLabel withFontProvider:&stru_10165DAA8];
 
   v12 = objc_alloc_init(UIImageView);
   headerImageView = self->_headerImageView;
@@ -181,15 +181,15 @@
   [(ExtensionsFeedbackView *)self updateTheme];
 }
 
-- (ExtensionsFeedbackView)initWithSubmitHandler:(id)a3
+- (ExtensionsFeedbackView)initWithSubmitHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9.receiver = self;
   v9.super_class = ExtensionsFeedbackView;
   v5 = [(ExtensionsFeedbackView *)&v9 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [handlerCopy copy];
     submitHandler = v5->_submitHandler;
     v5->_submitHandler = v6;
 

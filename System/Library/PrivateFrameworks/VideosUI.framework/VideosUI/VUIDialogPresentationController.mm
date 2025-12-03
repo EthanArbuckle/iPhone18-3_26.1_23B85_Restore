@@ -1,9 +1,9 @@
 @interface VUIDialogPresentationController
 - (CGSize)modalSize;
 - (UIVisualEffectView)backdropView;
-- (VUIDialogPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (VUIDialogPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 - (void)_layoutPresentedView;
-- (void)_tapGesture:(id)a3;
+- (void)_tapGesture:(id)gesture;
 - (void)dealloc;
 - (void)dismissalTransitionWillBegin;
 - (void)presentationTransitionWillBegin;
@@ -11,16 +11,16 @@
 
 @implementation VUIDialogPresentationController
 
-- (VUIDialogPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (VUIDialogPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   v8.receiver = self;
   v8.super_class = VUIDialogPresentationController;
-  v4 = [(VUIDialogPresentationController *)&v8 initWithPresentedViewController:a3 presentingViewController:a4];
+  v4 = [(VUIDialogPresentationController *)&v8 initWithPresentedViewController:controller presentingViewController:viewController];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:v4 action:sel__tapGesture_];
-    v6 = [(VUIDialogPresentationController *)v4 backdropView];
-    [v6 addGestureRecognizer:v5];
+    backdropView = [(VUIDialogPresentationController *)v4 backdropView];
+    [backdropView addGestureRecognizer:v5];
   }
 
   return v4;
@@ -28,8 +28,8 @@
 
 - (void)dealloc
 {
-  v3 = [(VUIDialogPresentationController *)self backdropView];
-  [v3 removeAllGestureRecognizers];
+  backdropView = [(VUIDialogPresentationController *)self backdropView];
+  [backdropView removeAllGestureRecognizers];
 
   v4.receiver = self;
   v4.super_class = VUIDialogPresentationController;
@@ -41,32 +41,32 @@
   v14.receiver = self;
   v14.super_class = VUIDialogPresentationController;
   [(VUIDialogPresentationController *)&v14 presentationTransitionWillBegin];
-  v3 = [(VUIDialogPresentationController *)self presentedView];
-  [v3 _setContinuousCornerRadius:16.0];
+  presentedView = [(VUIDialogPresentationController *)self presentedView];
+  [presentedView _setContinuousCornerRadius:16.0];
 
-  v4 = [(VUIDialogPresentationController *)self presentedView];
-  [v4 setClipsToBounds:1];
+  presentedView2 = [(VUIDialogPresentationController *)self presentedView];
+  [presentedView2 setClipsToBounds:1];
 
-  v5 = [(VUIDialogPresentationController *)self containerView];
-  v6 = [(VUIDialogPresentationController *)self backdropView];
-  [v5 addSubview:v6];
+  containerView = [(VUIDialogPresentationController *)self containerView];
+  backdropView = [(VUIDialogPresentationController *)self backdropView];
+  [containerView addSubview:backdropView];
 
-  v7 = [(VUIDialogPresentationController *)self backdropView];
-  [v7 setAutoresizingMask:18];
+  backdropView2 = [(VUIDialogPresentationController *)self backdropView];
+  [backdropView2 setAutoresizingMask:18];
 
-  v8 = [(VUIDialogPresentationController *)self backdropView];
-  v9 = [MEMORY[0x1E69DC888] clearColor];
-  [v8 setBackgroundColor:v9];
+  backdropView3 = [(VUIDialogPresentationController *)self backdropView];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [backdropView3 setBackgroundColor:clearColor];
 
-  v10 = [(VUIDialogPresentationController *)self backdropView];
-  v11 = [(VUIDialogPresentationController *)self containerView];
-  [v11 bounds];
-  [v10 setFrame:?];
+  backdropView4 = [(VUIDialogPresentationController *)self backdropView];
+  containerView2 = [(VUIDialogPresentationController *)self containerView];
+  [containerView2 bounds];
+  [backdropView4 setFrame:?];
 
   [(VUIDialogPresentationController *)self _layoutPresentedView];
-  v12 = [(VUIDialogPresentationController *)self presentedViewController];
-  v13 = [v12 transitionCoordinator];
-  [v13 animateAlongsideTransition:0 completion:&__block_literal_global_146];
+  presentedViewController = [(VUIDialogPresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
+  [transitionCoordinator animateAlongsideTransition:0 completion:&__block_literal_global_146];
 }
 
 uint64_t __66__VUIDialogPresentationController_presentationTransitionWillBegin__block_invoke(uint64_t a1, void *a2)
@@ -87,9 +87,9 @@ uint64_t __66__VUIDialogPresentationController_presentationTransitionWillBegin__
   v5.receiver = self;
   v5.super_class = VUIDialogPresentationController;
   [(VUIDialogPresentationController *)&v5 dismissalTransitionWillBegin];
-  v3 = [(VUIDialogPresentationController *)self presentedViewController];
-  v4 = [v3 transitionCoordinator];
-  [v4 animateAlongsideTransition:0 completion:&__block_literal_global_12_1];
+  presentedViewController = [(VUIDialogPresentationController *)self presentedViewController];
+  transitionCoordinator = [presentedViewController transitionCoordinator];
+  [transitionCoordinator animateAlongsideTransition:0 completion:&__block_literal_global_12_1];
 }
 
 uint64_t __63__VUIDialogPresentationController_dismissalTransitionWillBegin__block_invoke(uint64_t a1, void *a2)
@@ -122,12 +122,12 @@ uint64_t __63__VUIDialogPresentationController_dismissalTransitionWillBegin__blo
 
 - (void)_layoutPresentedView
 {
-  v20 = [(VUIDialogPresentationController *)self presentedView];
+  presentedView = [(VUIDialogPresentationController *)self presentedView];
   [(VUIDialogPresentationController *)self modalSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(VUIDialogPresentationController *)self containerView];
-  [v7 bounds];
+  containerView = [(VUIDialogPresentationController *)self containerView];
+  [containerView bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -163,13 +163,13 @@ uint64_t __63__VUIDialogPresentationController_dismissalTransitionWillBegin__blo
     v19 = v17;
   }
 
-  [v20 setFrame:{(v13 - v18) * 0.5, (v15 - v19) * 0.5}];
+  [presentedView setFrame:{(v13 - v18) * 0.5, (v15 - v19) * 0.5}];
 }
 
-- (void)_tapGesture:(id)a3
+- (void)_tapGesture:(id)gesture
 {
-  v3 = [(VUIDialogPresentationController *)self presentedViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentedViewController = [(VUIDialogPresentationController *)self presentedViewController];
+  [presentedViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (CGSize)modalSize

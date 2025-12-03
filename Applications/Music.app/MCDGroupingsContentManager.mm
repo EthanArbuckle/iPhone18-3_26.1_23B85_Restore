@@ -1,102 +1,102 @@
 @interface MCDGroupingsContentManager
 - (id)_modelRequest;
-- (id)actionForHeaderInSection:(int64_t)a3;
-- (id)cellTitleAtIndexPath:(id)a3;
-- (id)childrenOfItemAtIndexPath:(id)a3;
-- (id)itemAtIndexPath:(id)a3;
-- (id)rowCellItemConfigurationsAtIndexPath:(id)a3;
-- (id)viewModelsAtIndexPath:(id)a3 prefersTallArtwork:(BOOL)a4 withSubtitleForPlaylists:(BOOL)a5 actionToPerform:(unint64_t)a6;
-- (int64_t)allowedNumberOfItemsForDisplayWithResponse:(id)a3 inSection:(int64_t)a4;
+- (id)actionForHeaderInSection:(int64_t)section;
+- (id)cellTitleAtIndexPath:(id)path;
+- (id)childrenOfItemAtIndexPath:(id)path;
+- (id)itemAtIndexPath:(id)path;
+- (id)rowCellItemConfigurationsAtIndexPath:(id)path;
+- (id)viewModelsAtIndexPath:(id)path prefersTallArtwork:(BOOL)artwork withSubtitleForPlaylists:(BOOL)playlists actionToPerform:(unint64_t)perform;
+- (int64_t)allowedNumberOfItemsForDisplayWithResponse:(id)response inSection:(int64_t)section;
 - (int64_t)maximumNumberOfItemsForDisplay;
-- (int64_t)maximumNumberOfLinesInSection:(int64_t)a3;
-- (unint64_t)cellTypeAtIndexPath:(id)a3;
-- (void)_actionForItem:(id)a3;
-- (void)_initiatePlaybackForItem:(id)a3;
+- (int64_t)maximumNumberOfLinesInSection:(int64_t)section;
+- (unint64_t)cellTypeAtIndexPath:(id)path;
+- (void)_actionForItem:(id)item;
+- (void)_initiatePlaybackForItem:(id)item;
 @end
 
 @implementation MCDGroupingsContentManager
 
-- (int64_t)allowedNumberOfItemsForDisplayWithResponse:(id)a3 inSection:(int64_t)a4
+- (int64_t)allowedNumberOfItemsForDisplayWithResponse:(id)response inSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = [v6 results];
-  v8 = [v7 sectionAtIndex:a4];
+  responseCopy = response;
+  results = [responseCopy results];
+  v8 = [results sectionAtIndex:section];
 
   if ([v8 sectionType] == 11)
   {
-    v9 = [v6 results];
+    results2 = [responseCopy results];
 
-    v10 = [v9 numberOfItemsInSection:a4];
+    v10 = [results2 numberOfItemsInSection:section];
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = MCDGroupingsContentManager;
-    v10 = [(MCDFuseContentManager *)&v12 allowedNumberOfItemsForDisplayWithResponse:v6 inSection:a4];
+    v10 = [(MCDFuseContentManager *)&v12 allowedNumberOfItemsForDisplayWithResponse:responseCopy inSection:section];
   }
 
   return v10;
 }
 
-- (id)itemAtIndexPath:(id)a3
+- (id)itemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MCDFuseContentManager *)self contentResults];
+  pathCopy = path;
+  contentResults = [(MCDFuseContentManager *)self contentResults];
 
-  if (v5)
+  if (contentResults)
   {
-    v6 = [(MCDFuseContentManager *)self contentResults];
-    v7 = [v6 itemsInSectionAtIndex:{objc_msgSend(v4, "section")}];
-    v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    contentResults2 = [(MCDFuseContentManager *)self contentResults];
+    v7 = [contentResults2 itemsInSectionAtIndex:{objc_msgSend(pathCopy, "section")}];
+    v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 firstSection];
+      firstSection = [v8 firstSection];
     }
 
     else
     {
-      v9 = v8;
+      firstSection = v8;
     }
 
-    v16 = v9;
+    v16 = firstSection;
   }
 
   else
   {
-    v10 = [(MCDFuseContentManager *)self lastReceivedResponse];
-    v11 = [v10 results];
-    v8 = [v11 sectionAtIndex:{objc_msgSend(v4, "section")}];
+    lastReceivedResponse = [(MCDFuseContentManager *)self lastReceivedResponse];
+    results = [lastReceivedResponse results];
+    v8 = [results sectionAtIndex:{objc_msgSend(pathCopy, "section")}];
 
-    v12 = [v8 sectionType];
-    v13 = [(MCDFuseContentManager *)self lastReceivedResponse];
-    v14 = v13;
-    if (v12 == 11)
+    sectionType = [v8 sectionType];
+    lastReceivedResponse2 = [(MCDFuseContentManager *)self lastReceivedResponse];
+    v14 = lastReceivedResponse2;
+    if (sectionType == 11)
     {
-      v15 = [v13 results];
-      v16 = [v15 itemAtIndexPath:v4];
+      results2 = [lastReceivedResponse2 results];
+      v16 = [results2 itemAtIndexPath:pathCopy];
     }
 
     else
     {
-      v17 = [v13 request];
+      request = [lastReceivedResponse2 request];
 
-      v18 = [v17 loadAdditionalContentURL];
-      if (v18 && (v19 = v18, -[MCDFuseContentManager lastReceivedResponse](self, "lastReceivedResponse"), v20 = objc_claimAutoreleasedReturnValue(), [v20 results], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "numberOfSections"), v21, v20, v19, v22 >= 1))
+      loadAdditionalContentURL = [request loadAdditionalContentURL];
+      if (loadAdditionalContentURL && (v19 = loadAdditionalContentURL, -[MCDFuseContentManager lastReceivedResponse](self, "lastReceivedResponse"), v20 = objc_claimAutoreleasedReturnValue(), [v20 results], v21 = objc_claimAutoreleasedReturnValue(), v22 = objc_msgSend(v21, "numberOfSections"), v21, v20, v19, v22 >= 1))
       {
-        v23 = [(MCDFuseContentManager *)self lastReceivedResponse];
-        v24 = [v23 results];
-        v25 = [v24 itemsInSectionAtIndex:0];
-        v16 = [v25 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+        lastReceivedResponse3 = [(MCDFuseContentManager *)self lastReceivedResponse];
+        results3 = [lastReceivedResponse3 results];
+        v25 = [results3 itemsInSectionAtIndex:0];
+        v16 = [v25 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
       }
 
       else
       {
         v27.receiver = self;
         v27.super_class = MCDGroupingsContentManager;
-        v16 = [(MCDFuseContentManager *)&v27 itemAtIndexPath:v4];
+        v16 = [(MCDFuseContentManager *)&v27 itemAtIndexPath:pathCopy];
       }
     }
   }
@@ -104,32 +104,32 @@
   return v16;
 }
 
-- (id)childrenOfItemAtIndexPath:(id)a3
+- (id)childrenOfItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MCDFuseContentManager *)self lastReceivedResponse];
-  v6 = [v5 results];
-  v7 = [v6 numberOfSections];
-  v8 = [v4 section];
+  pathCopy = path;
+  lastReceivedResponse = [(MCDFuseContentManager *)self lastReceivedResponse];
+  results = [lastReceivedResponse results];
+  numberOfSections = [results numberOfSections];
+  section = [pathCopy section];
 
-  if (v7 <= v8)
+  if (numberOfSections <= section)
   {
     v11 = &__NSArray0__struct;
   }
 
   else
   {
-    v9 = [(MCDFuseContentManager *)self lastReceivedResponse];
-    v10 = [v9 results];
-    v11 = [v10 itemsInSectionAtIndex:{objc_msgSend(v4, "section")}];
+    lastReceivedResponse2 = [(MCDFuseContentManager *)self lastReceivedResponse];
+    results2 = [lastReceivedResponse2 results];
+    v11 = [results2 itemsInSectionAtIndex:{objc_msgSend(pathCopy, "section")}];
   }
 
   return v11;
 }
 
-- (int64_t)maximumNumberOfLinesInSection:(int64_t)a3
+- (int64_t)maximumNumberOfLinesInSection:(int64_t)section
 {
-  v4 = [NSIndexPath indexPathForRow:0 inSection:a3];
+  v4 = [NSIndexPath indexPathForRow:0 inSection:section];
   v5 = [(MCDGroupingsContentManager *)self itemAtIndexPath:v4];
 
   if ([v5 displayStyle] == 2)
@@ -145,15 +145,15 @@
   return v6;
 }
 
-- (id)rowCellItemConfigurationsAtIndexPath:(id)a3
+- (id)rowCellItemConfigurationsAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v5 = objc_opt_new();
-  v45 = self;
-  v6 = self;
+  selfCopy = self;
+  selfCopy2 = self;
   v7 = v5;
-  v43 = v4;
-  v8 = [(MCDGroupingsContentManager *)v6 childrenOfItemAtIndexPath:v4];
+  v43 = pathCopy;
+  v8 = [(MCDGroupingsContentManager *)selfCopy2 childrenOfItemAtIndexPath:pathCopy];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
@@ -181,19 +181,19 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [v14 innerObject];
-          v16 = [MPModelGenericObject genericObjectWithModelObject:v15];
+          innerObject = [v14 innerObject];
+          v16 = [MPModelGenericObject genericObjectWithModelObject:innerObject];
 
-          v17 = [v16 artworkCatalog];
-          if (v17)
+          artworkCatalog = [v16 artworkCatalog];
+          if (artworkCatalog)
           {
-            v18 = v17;
+            v18 = artworkCatalog;
           }
 
           else if (-[NSObject type](v16, "type") != 4 || (-[NSObject playlist](v16, "playlist"), v20 = objc_claimAutoreleasedReturnValue(), [v20 tracksTiledArtworkCatalogWithRows:2 columns:2], v18 = objc_claimAutoreleasedReturnValue(), v20, !v18))
           {
-            v21 = [(MCDFuseContentManager *)v45 viewController];
-            [v21 traitCollection];
+            viewController = [(MCDFuseContentManager *)selfCopy viewController];
+            [viewController traitCollection];
             v22 = v8;
             v24 = v23 = v7;
             v25 = [UIImage defaultPlaceholderForTraitCollection:v24];
@@ -207,76 +207,76 @@
           switch([v14 itemType])
           {
             case 1uLL:
-              v26 = [v14 album];
+              album = [v14 album];
               goto LABEL_32;
             case 2uLL:
-              v27 = [v14 artist];
+              artist = [v14 artist];
               goto LABEL_30;
             case 3uLL:
-              v27 = [v14 curator];
+              artist = [v14 curator];
               goto LABEL_30;
             case 4uLL:
-              v27 = [v14 playlist];
+              artist = [v14 playlist];
               goto LABEL_30;
             case 5uLL:
-              v27 = [v14 radioStation];
+              artist = [v14 radioStation];
               goto LABEL_30;
             case 6uLL:
-              v27 = [v14 socialPerson];
+              artist = [v14 socialPerson];
               goto LABEL_30;
             case 7uLL:
-              v26 = [v14 song];
+              album = [v14 song];
               goto LABEL_32;
             case 8uLL:
-              v26 = [v14 episode];
+              album = [v14 episode];
               goto LABEL_32;
             case 9uLL:
-              v26 = [v14 show];
+              album = [v14 show];
               goto LABEL_32;
             case 0xAuLL:
-              v28 = [v14 season];
-              v29 = [v28 show];
-              v30 = [v29 title];
+              season = [v14 season];
+              show = [season show];
+              title = [show title];
 
               goto LABEL_34;
             case 0xBuLL:
-              v27 = [v14 showCreator];
+              artist = [v14 showCreator];
               goto LABEL_30;
             case 0xCuLL:
-              v26 = [v14 movie];
+              album = [v14 movie];
               goto LABEL_32;
             case 0xDuLL:
-              v26 = [v14 mediaClip];
+              album = [v14 mediaClip];
 LABEL_32:
-              v28 = v26;
-              v31 = [v26 title];
+              season = album;
+              title2 = [album title];
               goto LABEL_33;
             case 0xEuLL:
-              v27 = [v14 recordLabel];
+              artist = [v14 recordLabel];
               goto LABEL_30;
             case 0xFuLL:
-              v27 = [v14 creditsArtist];
+              artist = [v14 creditsArtist];
 LABEL_30:
-              v28 = v27;
-              v31 = [v27 name];
+              season = artist;
+              title2 = [artist name];
 LABEL_33:
-              v30 = v31;
+              title = title2;
 LABEL_34:
 
               break;
             default:
-              v30 = 0;
+              title = 0;
               break;
           }
 
-          v32 = [v14 itemType];
-          if (v32 == 7)
+          itemType = [v14 itemType];
+          if (itemType == 7)
           {
-            v33 = [v14 song];
+            song = [v14 song];
 LABEL_39:
-            v34 = v33;
-            v35 = [v33 artist];
-            v36 = [v35 name];
+            v34 = song;
+            artist2 = [song artist];
+            name = [artist2 name];
 
             if (!v18)
             {
@@ -286,13 +286,13 @@ LABEL_39:
 
           else
           {
-            if (v32 == 1)
+            if (itemType == 1)
             {
-              v33 = [v14 album];
+              song = [v14 album];
               goto LABEL_39;
             }
 
-            v36 = 0;
+            name = 0;
             if (!v18)
             {
 LABEL_41:
@@ -302,7 +302,7 @@ LABEL_41:
             }
           }
 
-          v37 = [[CPUIImageRowCellItemConfiguration alloc] initWithArtworkCatalog:v18 title:v30 subtitle:v36];
+          v37 = [[CPUIImageRowCellItemConfiguration alloc] initWithArtworkCatalog:v18 title:title subtitle:name];
           [v7 addObject:v37];
 
           goto LABEL_41;
@@ -338,10 +338,10 @@ LABEL_42:
   return v40;
 }
 
-- (unint64_t)cellTypeAtIndexPath:(id)a3
+- (unint64_t)cellTypeAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MCDGroupingsContentManager *)self itemAtIndexPath:v4];
+  pathCopy = path;
+  v5 = [(MCDGroupingsContentManager *)self itemAtIndexPath:pathCopy];
   if ([v5 sectionType] == 15)
   {
     v6 = 3;
@@ -351,20 +351,20 @@ LABEL_42:
   {
     v8.receiver = self;
     v8.super_class = MCDGroupingsContentManager;
-    v6 = [(MCDFuseContentManager *)&v8 cellTypeAtIndexPath:v4];
+    v6 = [(MCDFuseContentManager *)&v8 cellTypeAtIndexPath:pathCopy];
   }
 
   return v6;
 }
 
-- (id)viewModelsAtIndexPath:(id)a3 prefersTallArtwork:(BOOL)a4 withSubtitleForPlaylists:(BOOL)a5 actionToPerform:(unint64_t)a6
+- (id)viewModelsAtIndexPath:(id)path prefersTallArtwork:(BOOL)artwork withSubtitleForPlaylists:(BOOL)playlists actionToPerform:(unint64_t)perform
 {
-  v66 = a4;
-  v7 = a3;
+  artworkCopy = artwork;
+  pathCopy = path;
   v68 = objc_opt_new();
-  v69 = self;
-  v65 = v7;
-  v8 = [(MCDGroupingsContentManager *)self childrenOfItemAtIndexPath:v7];
+  selfCopy = self;
+  v65 = pathCopy;
+  v8 = [(MCDGroupingsContentManager *)self childrenOfItemAtIndexPath:pathCopy];
   v9 = objc_opt_new();
   v76 = 0u;
   v77 = 0u;
@@ -393,178 +393,178 @@ LABEL_42:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v15 = [v14 itemType];
-          if (v15 == 5)
+          itemType = [v14 itemType];
+          if (itemType == 5)
           {
-            v16 = [v14 radioStation];
+            radioStation = [v14 radioStation];
 LABEL_19:
-            v17 = v16;
+            v17 = radioStation;
             goto LABEL_21;
           }
 
-          if (v15 != 4)
+          if (itemType != 4)
           {
-            if (v15 != 1)
+            if (itemType != 1)
             {
               goto LABEL_28;
             }
 
-            v16 = [v14 album];
-            v17 = v16;
-            if (v66)
+            radioStation = [v14 album];
+            v17 = radioStation;
+            if (artworkCopy)
             {
-              v18 = [v16 superHeroTallEditorialArtworkCatalog];
+              superHeroTallEditorialArtworkCatalog = [radioStation superHeroTallEditorialArtworkCatalog];
 
-              if (!v18)
+              if (!superHeroTallEditorialArtworkCatalog)
               {
-                v16 = [v14 album];
+                radioStation = [v14 album];
                 goto LABEL_19;
               }
 
 LABEL_17:
-              v22 = v18;
-              v19 = v22;
+              v22 = superHeroTallEditorialArtworkCatalog;
+              artworkCatalog = v22;
 LABEL_30:
               switch([v14 itemType])
               {
                 case 1uLL:
-                  v29 = [v14 album];
+                  album = [v14 album];
                   goto LABEL_48;
                 case 2uLL:
-                  v30 = [v14 artist];
+                  artist = [v14 artist];
                   goto LABEL_46;
                 case 3uLL:
-                  v30 = [v14 curator];
+                  artist = [v14 curator];
                   goto LABEL_46;
                 case 4uLL:
-                  v30 = [v14 playlist];
+                  artist = [v14 playlist];
                   goto LABEL_46;
                 case 5uLL:
-                  v30 = [v14 radioStation];
+                  artist = [v14 radioStation];
                   goto LABEL_46;
                 case 6uLL:
-                  v30 = [v14 socialPerson];
+                  artist = [v14 socialPerson];
                   goto LABEL_46;
                 case 7uLL:
-                  v29 = [v14 song];
+                  album = [v14 song];
                   goto LABEL_48;
                 case 8uLL:
-                  v29 = [v14 episode];
+                  album = [v14 episode];
                   goto LABEL_48;
                 case 9uLL:
-                  v29 = [v14 show];
+                  album = [v14 show];
                   goto LABEL_48;
                 case 0xAuLL:
-                  v31 = [v14 season];
-                  v32 = [v31 show];
-                  v33 = [v32 title];
+                  season = [v14 season];
+                  show = [season show];
+                  title = [show title];
 
                   goto LABEL_50;
                 case 0xBuLL:
-                  v30 = [v14 showCreator];
+                  artist = [v14 showCreator];
                   goto LABEL_46;
                 case 0xCuLL:
-                  v29 = [v14 movie];
+                  album = [v14 movie];
                   goto LABEL_48;
                 case 0xDuLL:
-                  v29 = [v14 mediaClip];
+                  album = [v14 mediaClip];
 LABEL_48:
-                  v31 = v29;
-                  v34 = [v29 title];
+                  season = album;
+                  title2 = [album title];
                   goto LABEL_49;
                 case 0xEuLL:
-                  v30 = [v14 recordLabel];
+                  artist = [v14 recordLabel];
                   goto LABEL_46;
                 case 0xFuLL:
-                  v30 = [v14 creditsArtist];
+                  artist = [v14 creditsArtist];
 LABEL_46:
-                  v31 = v30;
-                  v34 = [v30 name];
+                  season = artist;
+                  title2 = [artist name];
 LABEL_49:
-                  v33 = v34;
+                  title = title2;
 LABEL_50:
 
                   break;
                 default:
-                  v33 = 0;
+                  title = 0;
                   break;
               }
 
-              v35 = [v14 itemType];
+              itemType2 = [v14 itemType];
               v74 = v22;
-              if (v35 == 7)
+              if (itemType2 == 7)
               {
-                v36 = [v14 song];
+                song = [v14 song];
 LABEL_55:
-                v37 = v36;
-                v38 = [v36 artist];
-                v39 = [v38 name];
+                v37 = song;
+                artist2 = [song artist];
+                name = [artist2 name];
               }
 
               else
               {
-                if (v35 == 1)
+                if (itemType2 == 1)
                 {
-                  v36 = [v14 album];
+                  song = [v14 album];
                   goto LABEL_55;
                 }
 
-                v39 = 0;
+                name = 0;
               }
 
-              v40 = [v14 itemType];
+              itemType3 = [v14 itemType];
               v41 = 0;
-              if (v40 > 4)
+              if (itemType3 > 4)
               {
-                if (v40 != 5)
+                if (itemType3 != 5)
                 {
-                  if (v40 != 7)
+                  if (itemType3 != 7)
                   {
                     goto LABEL_68;
                   }
 
                   v42 = v9;
-                  v43 = v33;
-                  v48 = [v14 song];
+                  v43 = title;
+                  song2 = [v14 song];
                   goto LABEL_65;
                 }
 
                 v42 = v9;
-                v43 = v33;
-                v44 = [v14 radioStation];
-                v45 = [v44 identifiers];
-                v46 = [v45 radio];
-                v47 = [v46 stationStringID];
+                v43 = title;
+                radioStation2 = [v14 radioStation];
+                identifiers = [radioStation2 identifiers];
+                radio = [identifiers radio];
+                stationStringID = [radio stationStringID];
               }
 
               else
               {
-                if (v40 != 1)
+                if (itemType3 != 1)
                 {
-                  if (v40 == 4)
+                  if (itemType3 == 4)
                   {
                     v42 = v9;
-                    v43 = v33;
-                    v44 = [v14 playlist];
-                    v45 = [v44 identifiers];
-                    v46 = [v45 universalStore];
-                    v47 = [v46 globalPlaylistID];
+                    v43 = title;
+                    radioStation2 = [v14 playlist];
+                    identifiers = [radioStation2 identifiers];
+                    radio = [identifiers universalStore];
+                    stationStringID = [radio globalPlaylistID];
                     goto LABEL_67;
                   }
 
 LABEL_68:
                   v49 = [v14 itemType] == 4;
-                  if (v41 && v19 && v33)
+                  if (v41 && artworkCatalog && title)
                   {
-                    v50 = v33;
+                    v50 = title;
                     v51 = [v9 objectForKey:v41];
                     if (v51)
                     {
                       v52 = [v9 objectForKey:v41];
-                      v53 = [v52 unsignedIntegerValue];
+                      unsignedIntegerValue = [v52 unsignedIntegerValue];
 
-                      v54 = v53 + 1;
-                      v55 = [NSNumber numberWithUnsignedInteger:v53 + 1];
+                      v54 = unsignedIntegerValue + 1;
+                      v55 = [NSNumber numberWithUnsignedInteger:unsignedIntegerValue + 1];
                       [v73 setValue:v55 forKey:v41];
 
                       v9 = v73;
@@ -585,14 +585,14 @@ LABEL_68:
                     v75[2] = sub_1000E9508;
                     v75[3] = &unk_101098068;
                     v75[5] = v14;
-                    v75[6] = a6;
-                    v75[4] = v69;
+                    v75[6] = perform;
+                    v75[4] = selfCopy;
                     BYTE2(v64) = 0;
                     LOWORD(v64) = 1;
                     LOBYTE(v63) = 0;
                     v59 = v57;
-                    v33 = v50;
-                    v60 = [v59 initWithId:v41 title:v50 subtitle:v39 titlePriority:v49 artworkCatalog:v19 imageShape:0 isTallArtwork:v63 placeholder:v58 accessorySystemImage:0 allowsTouches:v64 disabledAppearance:v75 isPressed:? action:?];
+                    title = v50;
+                    v60 = [v59 initWithId:v41 title:v50 subtitle:name titlePriority:v49 artworkCatalog:artworkCatalog imageShape:0 isTallArtwork:v63 placeholder:v58 accessorySystemImage:0 allowsTouches:v64 disabledAppearance:v75 isPressed:? action:?];
 
                     [v68 addObject:v60];
                   }
@@ -603,34 +603,34 @@ LABEL_68:
                 }
 
                 v42 = v9;
-                v43 = v33;
-                v48 = [v14 album];
+                v43 = title;
+                song2 = [v14 album];
 LABEL_65:
-                v44 = v48;
-                v45 = [v48 identifiers];
-                v46 = [v45 universalStore];
-                v47 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lld", [v46 adamID]);
+                radioStation2 = song2;
+                identifiers = [song2 identifiers];
+                radio = [identifiers universalStore];
+                stationStringID = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%lld", [radio adamID]);
               }
 
 LABEL_67:
-              v41 = v47;
+              v41 = stationStringID;
 
-              v33 = v43;
+              title = v43;
               v9 = v42;
               goto LABEL_68;
             }
 
 LABEL_21:
-            v19 = [v16 artworkCatalog];
+            artworkCatalog = [radioStation artworkCatalog];
 LABEL_27:
 
-            if (!v19)
+            if (!artworkCatalog)
             {
 LABEL_28:
-              v26 = [(MCDFuseContentManager *)v69 viewController];
-              v27 = [v26 traitCollection];
-              v28 = [UIImage defaultPlaceholderForTraitCollection:v27];
-              v19 = [MPArtworkCatalog staticArtworkCatalogWithImage:v28];
+              viewController = [(MCDFuseContentManager *)selfCopy viewController];
+              traitCollection = [viewController traitCollection];
+              v28 = [UIImage defaultPlaceholderForTraitCollection:traitCollection];
+              artworkCatalog = [MPArtworkCatalog staticArtworkCatalogWithImage:v28];
 
               v9 = v73;
             }
@@ -639,47 +639,47 @@ LABEL_28:
             goto LABEL_30;
           }
 
-          v21 = [v14 playlist];
-          v17 = v21;
-          if (v66)
+          playlist = [v14 playlist];
+          v17 = playlist;
+          if (artworkCopy)
           {
-            v18 = [v21 superHeroTallEditorialArtworkCatalog];
+            superHeroTallEditorialArtworkCatalog = [playlist superHeroTallEditorialArtworkCatalog];
 
-            if (v18)
+            if (superHeroTallEditorialArtworkCatalog)
             {
               goto LABEL_17;
             }
 
-            v21 = [v14 playlist];
-            v17 = v21;
+            playlist = [v14 playlist];
+            v17 = playlist;
           }
 
-          v23 = [v21 artworkCatalog];
-          v24 = v23;
-          if (v23)
+          artworkCatalog2 = [playlist artworkCatalog];
+          v24 = artworkCatalog2;
+          if (artworkCatalog2)
           {
-            v19 = v23;
+            artworkCatalog = artworkCatalog2;
           }
 
           else
           {
-            v25 = [v14 playlist];
-            v19 = [v25 tracksTiledArtworkCatalogWithRows:2 columns:2];
+            playlist2 = [v14 playlist];
+            artworkCatalog = [playlist2 tracksTiledArtworkCatalogWithRows:2 columns:2];
           }
 
           v9 = v73;
           goto LABEL_27;
         }
 
-        v19 = MCDMusicGeneralLogging();
-        if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+        artworkCatalog = MCDMusicGeneralLogging();
+        if (os_log_type_enabled(artworkCatalog, OS_LOG_TYPE_ERROR))
         {
           v20 = objc_opt_class();
           *buf = 138543618;
           v81 = v20;
           v82 = 2114;
           v83 = v65;
-          _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Wrong kind (%{public}@) of child found in childrenOfItemAtIndexPath at %{public}@", buf, 0x16u);
+          _os_log_error_impl(&_mh_execute_header, artworkCatalog, OS_LOG_TYPE_ERROR, "Wrong kind (%{public}@) of child found in childrenOfItemAtIndexPath at %{public}@", buf, 0x16u);
         }
 
 LABEL_76:
@@ -703,30 +703,30 @@ LABEL_76:
 {
   v12.receiver = self;
   v12.super_class = MCDGroupingsContentManager;
-  v3 = [(MCDFuseContentManager *)&v12 maximumNumberOfItemsForDisplay];
-  v4 = [(MCDFuseContentManager *)self lastReceivedResponse];
-  v5 = [v4 request];
+  maximumNumberOfItemsForDisplay = [(MCDFuseContentManager *)&v12 maximumNumberOfItemsForDisplay];
+  lastReceivedResponse = [(MCDFuseContentManager *)self lastReceivedResponse];
+  request = [lastReceivedResponse request];
 
-  v6 = [v5 loadAdditionalContentURL];
-  if (v6)
+  loadAdditionalContentURL = [request loadAdditionalContentURL];
+  if (loadAdditionalContentURL)
   {
-    v7 = v6;
-    v8 = [(MCDFuseContentManager *)self delegate];
+    v7 = loadAdditionalContentURL;
+    delegate = [(MCDFuseContentManager *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      v9 = [(MCDFuseContentManager *)self delegate];
-      v10 = [v9 showRankedList];
+      delegate2 = [(MCDFuseContentManager *)self delegate];
+      showRankedList = [delegate2 showRankedList];
 
-      if (v10)
+      if (showRankedList)
       {
         if ([(MCDFuseContentManager *)self limitedUI])
         {
-          v3 = 11;
+          maximumNumberOfItemsForDisplay = 11;
         }
 
         else
         {
-          v3 = 20;
+          maximumNumberOfItemsForDisplay = 20;
         }
       }
     }
@@ -736,55 +736,55 @@ LABEL_76:
     }
   }
 
-  return v3;
+  return maximumNumberOfItemsForDisplay;
 }
 
-- (id)cellTitleAtIndexPath:(id)a3
+- (id)cellTitleAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MCDFuseContentManager *)self lastReceivedResponse];
-  v6 = [v5 results];
-  v7 = [v6 sectionAtIndex:{objc_msgSend(v4, "section")}];
+  pathCopy = path;
+  lastReceivedResponse = [(MCDFuseContentManager *)self lastReceivedResponse];
+  results = [lastReceivedResponse results];
+  v7 = [results sectionAtIndex:{objc_msgSend(pathCopy, "section")}];
 
   if ([v7 sectionType] == 11)
   {
-    v8 = [v7 title];
+    title = [v7 title];
   }
 
   else
   {
-    v9 = [(MCDGroupingsContentManager *)self itemAtIndexPath:v4];
+    v9 = [(MCDGroupingsContentManager *)self itemAtIndexPath:pathCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       if ([v9 sectionType] == 9)
       {
         v10 = +[NSBundle mainBundle];
-        v11 = [v10 localizedStringForKey:@"Recently Played" value:&stru_101107168 table:0];
+        title2 = [v10 localizedStringForKey:@"Recently Played" value:&stru_101107168 table:0];
       }
 
       else
       {
-        v11 = [v9 title];
+        title2 = [v9 title];
       }
     }
 
     else
     {
-      v11 = 0;
+      title2 = 0;
     }
 
-    v8 = v11;
+    title = title2;
   }
 
-  return v8;
+  return title;
 }
 
-- (id)actionForHeaderInSection:(int64_t)a3
+- (id)actionForHeaderInSection:(int64_t)section
 {
-  v5 = [(MCDFuseContentManager *)self lastReceivedResponse];
-  v6 = [v5 results];
-  v7 = [v6 sectionAtIndex:a3];
+  lastReceivedResponse = [(MCDFuseContentManager *)self lastReceivedResponse];
+  results = [lastReceivedResponse results];
+  v7 = [results sectionAtIndex:section];
 
   if ([v7 sectionType] == 11)
   {
@@ -795,151 +795,151 @@ LABEL_76:
   {
     v10.receiver = self;
     v10.super_class = MCDGroupingsContentManager;
-    v8 = [(MCDFuseContentManager *)&v10 actionForHeaderInSection:a3];
+    v8 = [(MCDFuseContentManager *)&v10 actionForHeaderInSection:section];
   }
 
   return v8;
 }
 
-- (void)_initiatePlaybackForItem:(id)a3
+- (void)_initiatePlaybackForItem:(id)item
 {
-  v26 = a3;
-  v4 = [v26 itemType];
-  if (v4 <= 4)
+  itemCopy = item;
+  itemType = [itemCopy itemType];
+  if (itemType <= 4)
   {
-    if (v4 == 1)
+    if (itemType == 1)
     {
-      v5 = [(MCDFuseContentManager *)self playbackManager];
-      v6 = [v26 album];
-      v7 = [(MCDFuseContentManager *)self viewController];
-      v8 = [v7 combinedPlayActivityFeatureName];
-      [v5 initiatePlaybackForAlbum:v6 lastResponse:0 shuffled:0 playActivityFeatureName:v8];
+      playbackManager = [(MCDFuseContentManager *)self playbackManager];
+      album = [itemCopy album];
+      viewController = [(MCDFuseContentManager *)self viewController];
+      combinedPlayActivityFeatureName = [viewController combinedPlayActivityFeatureName];
+      [playbackManager initiatePlaybackForAlbum:album lastResponse:0 shuffled:0 playActivityFeatureName:combinedPlayActivityFeatureName];
     }
 
     else
     {
-      if (v4 != 4)
+      if (itemType != 4)
       {
         goto LABEL_18;
       }
 
-      v5 = [(MCDFuseContentManager *)self playbackManager];
-      v6 = [v26 playlist];
-      v7 = [(MCDFuseContentManager *)self viewController];
-      v8 = [v7 combinedPlayActivityFeatureName];
-      [v5 initiatePlaybackForPlaylist:v6 lastResponse:0 shuffled:0 playActivityFeatureName:v8];
+      playbackManager = [(MCDFuseContentManager *)self playbackManager];
+      album = [itemCopy playlist];
+      viewController = [(MCDFuseContentManager *)self viewController];
+      combinedPlayActivityFeatureName = [viewController combinedPlayActivityFeatureName];
+      [playbackManager initiatePlaybackForPlaylist:album lastResponse:0 shuffled:0 playActivityFeatureName:combinedPlayActivityFeatureName];
     }
 
 LABEL_16:
     goto LABEL_17;
   }
 
-  if (v4 != 5)
+  if (itemType != 5)
   {
-    if (v4 != 7)
+    if (itemType != 7)
     {
       goto LABEL_18;
     }
 
-    v9 = [(MCDFuseContentManager *)self delegate];
+    delegate = [(MCDFuseContentManager *)self delegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(MCDFuseContentManager *)self delegate];
-      v12 = [v11 queueListForPlayback];
+      delegate2 = [(MCDFuseContentManager *)self delegate];
+      queueListForPlayback = [delegate2 queueListForPlayback];
     }
 
     else
     {
-      v12 = 0;
+      queueListForPlayback = 0;
     }
 
-    v17 = [(MCDFuseContentManager *)self lastReceivedResponse];
-    v18 = [v17 results];
-    v5 = [v18 itemsInSectionAtIndex:0];
+    lastReceivedResponse = [(MCDFuseContentManager *)self lastReceivedResponse];
+    results = [lastReceivedResponse results];
+    playbackManager = [results itemsInSectionAtIndex:0];
 
-    v19 = [(MCDFuseContentManager *)self lastReceivedResponse];
-    v20 = [(MCDGroupingsContentManager *)self allowedNumberOfItemsForDisplayWithResponse:v19 inSection:0];
+    lastReceivedResponse2 = [(MCDFuseContentManager *)self lastReceivedResponse];
+    v20 = [(MCDGroupingsContentManager *)self allowedNumberOfItemsForDisplayWithResponse:lastReceivedResponse2 inSection:0];
 
-    if (v20 <= [v5 count])
+    if (v20 <= [playbackManager count])
     {
-      v21 = [v5 subarrayWithRange:{0, v20}];
+      v21 = [playbackManager subarrayWithRange:{0, v20}];
 
-      v5 = v21;
+      playbackManager = v21;
     }
 
-    v22 = [(MCDFuseContentManager *)self playbackManager];
-    v23 = [v26 song];
-    v24 = [(MCDFuseContentManager *)self viewController];
-    v25 = [v24 combinedPlayActivityFeatureName];
-    [v22 initiatePlaybackForSong:v23 useResultsAsPlaybackQueue:v12 itemList:v5 playActivityFeatureName:v25];
+    playbackManager2 = [(MCDFuseContentManager *)self playbackManager];
+    song = [itemCopy song];
+    viewController2 = [(MCDFuseContentManager *)self viewController];
+    combinedPlayActivityFeatureName2 = [viewController2 combinedPlayActivityFeatureName];
+    [playbackManager2 initiatePlaybackForSong:song useResultsAsPlaybackQueue:queueListForPlayback itemList:playbackManager playActivityFeatureName:combinedPlayActivityFeatureName2];
 
-    v6 = [(MCDFuseContentManager *)self viewController];
-    v7 = [v6 navigationController];
-    [v7 MCD_pushNowPlayingViewControllerAnimated:1];
+    album = [(MCDFuseContentManager *)self viewController];
+    viewController = [album navigationController];
+    [viewController MCD_pushNowPlayingViewControllerAnimated:1];
     goto LABEL_16;
   }
 
-  v13 = [(MCDFuseContentManager *)self playbackManager];
-  v14 = [v26 radioStation];
-  v15 = [(MCDFuseContentManager *)self viewController];
-  v16 = [v15 combinedPlayActivityFeatureName];
-  [v13 initiatePlaybackForRadioStation:v14 lastResponse:0 shuffled:0 playActivityFeatureName:v16];
+  playbackManager3 = [(MCDFuseContentManager *)self playbackManager];
+  radioStation = [itemCopy radioStation];
+  viewController3 = [(MCDFuseContentManager *)self viewController];
+  combinedPlayActivityFeatureName3 = [viewController3 combinedPlayActivityFeatureName];
+  [playbackManager3 initiatePlaybackForRadioStation:radioStation lastResponse:0 shuffled:0 playActivityFeatureName:combinedPlayActivityFeatureName3];
 
-  v5 = [(MCDFuseContentManager *)self viewController];
-  v6 = [v5 navigationController];
-  [v6 MCD_pushNowPlayingViewControllerAnimated:1];
+  playbackManager = [(MCDFuseContentManager *)self viewController];
+  album = [playbackManager navigationController];
+  [album MCD_pushNowPlayingViewControllerAnimated:1];
 LABEL_17:
 
 LABEL_18:
 }
 
-- (void)_actionForItem:(id)a3
+- (void)_actionForItem:(id)item
 {
-  v17 = a3;
-  v4 = [v17 itemType];
-  if (v4 == 4)
+  itemCopy = item;
+  itemType = [itemCopy itemType];
+  if (itemType == 4)
   {
     v8 = [_TtC5Music27MCDItemDetailViewController alloc];
-    v6 = [v17 playlist];
-    v7 = [(MCDItemDetailViewController *)v8 initWithPlaylist:v6 onlyDownloaded:0 preferCatalog:1];
+    playlist = [itemCopy playlist];
+    v7 = [(MCDItemDetailViewController *)v8 initWithPlaylist:playlist onlyDownloaded:0 preferCatalog:1];
   }
 
   else
   {
-    if (v4 != 1)
+    if (itemType != 1)
     {
       goto LABEL_7;
     }
 
     v5 = [_TtC5Music27MCDItemDetailViewController alloc];
-    v6 = [v17 album];
-    v7 = [(MCDItemDetailViewController *)v5 initWithAlbum:v6 onlyDownloaded:0 preferCatalog:1];
+    playlist = [itemCopy album];
+    v7 = [(MCDItemDetailViewController *)v5 initWithAlbum:playlist onlyDownloaded:0 preferCatalog:1];
   }
 
   v9 = v7;
 
   if (v9)
   {
-    v10 = [(MCDFuseContentManager *)self viewController];
-    [(MCDItemDetailViewController *)v9 setPlayActivityFeatureNameSourceViewController:v10];
+    viewController = [(MCDFuseContentManager *)self viewController];
+    [(MCDItemDetailViewController *)v9 setPlayActivityFeatureNameSourceViewController:viewController];
 
-    v11 = [v17 identifiers];
-    v12 = [v11 personalizedStore];
-    v13 = [v12 recommendationID];
-    v14 = [v13 dataUsingEncoding:4];
+    identifiers = [itemCopy identifiers];
+    personalizedStore = [identifiers personalizedStore];
+    recommendationID = [personalizedStore recommendationID];
+    v14 = [recommendationID dataUsingEncoding:4];
     [(MCDItemDetailViewController *)v9 setPlayActivityForwardedRecommendationData:v14];
 
-    v15 = [(MCDFuseContentManager *)self viewController];
-    v16 = [v15 navigationController];
-    [v16 pushViewController:v9 animated:1];
+    viewController2 = [(MCDFuseContentManager *)self viewController];
+    navigationController = [viewController2 navigationController];
+    [navigationController pushViewController:v9 animated:1];
 
     goto LABEL_8;
   }
 
 LABEL_7:
-  [(MCDGroupingsContentManager *)self _initiatePlaybackForItem:v17];
+  [(MCDGroupingsContentManager *)self _initiatePlaybackForItem:itemCopy];
 LABEL_8:
 }
 
@@ -947,23 +947,23 @@ LABEL_8:
 {
   v3 = objc_alloc_init(MPModelStoreBrowseRequest);
   [v3 setFilteringPolicy:1];
-  v4 = [(MCDFuseContentManager *)self dataSource];
+  dataSource = [(MCDFuseContentManager *)self dataSource];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(MCDFuseContentManager *)self dataSource];
-    v7 = [v6 parentSection];
-    [v3 configureWithParentSection:v7];
+    dataSource2 = [(MCDFuseContentManager *)self dataSource];
+    parentSection = [dataSource2 parentSection];
+    [v3 configureWithParentSection:parentSection];
   }
 
-  v8 = [(MCDFuseContentManager *)self dataSource];
+  dataSource3 = [(MCDFuseContentManager *)self dataSource];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(MCDFuseContentManager *)self dataSource];
-    [v3 setDomain:{objc_msgSend(v10, "domain")}];
+    dataSource4 = [(MCDFuseContentManager *)self dataSource];
+    [v3 setDomain:{objc_msgSend(dataSource4, "domain")}];
   }
 
   [v3 setClientIdentifier:MCDMusicCarPlayBundleIdentifier];

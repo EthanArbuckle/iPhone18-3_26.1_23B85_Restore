@@ -1,40 +1,40 @@
 @interface AVTCollapsibleHeaderController
-- (AVTCollapsibleHeaderController)initWithScrollView:(id)a3 headerView:(id)a4 minHeight:(double)a5 maxHeight:(double)a6;
-- (BOOL)respondsToSelector:(SEL)a3;
-- (BOOL)shouldResizeGivenMarginalScrollDistancesForScrollDirection:(unint64_t)a3;
-- (BOOL)shouldResizeGivenScrollDirection:(unint64_t)a3 currentHeaderHeight:(double)a4 targetHeaderHeight:(double)a5;
-- (CGPoint)topContentOffsetWithHeaderHeight:(double)a3;
-- (UIEdgeInsets)updatedScrollViewInsetsFromExistingInsets:(UIEdgeInsets)a3;
+- (AVTCollapsibleHeaderController)initWithScrollView:(id)view headerView:(id)headerView minHeight:(double)height maxHeight:(double)maxHeight;
+- (BOOL)respondsToSelector:(SEL)selector;
+- (BOOL)shouldResizeGivenMarginalScrollDistancesForScrollDirection:(unint64_t)direction;
+- (BOOL)shouldResizeGivenScrollDirection:(unint64_t)direction currentHeaderHeight:(double)height targetHeaderHeight:(double)headerHeight;
+- (CGPoint)topContentOffsetWithHeaderHeight:(double)height;
+- (UIEdgeInsets)updatedScrollViewInsetsFromExistingInsets:(UIEdgeInsets)insets;
 - (UIScrollViewDelegate)scrollViewDelegate;
 - (double)currentHeightForHeader;
-- (double)headerHeightForContentOffset:(double)a3 contentInset:(UIEdgeInsets)a4;
-- (id)forwardingTargetForSelector:(SEL)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
-- (void)animationDidUpdateWithDisplayLink:(id)a3;
-- (void)collapseAnimated:(BOOL)a3;
-- (void)expandAnimated:(BOOL)a3;
-- (void)expandAnimated:(BOOL)a3 withFocusRect:(CGRect)a4 standardItemHeight:(double)a5;
-- (void)scrollToTopAnimated:(BOOL)a3;
-- (void)scrollToTopPreservingHeaderHeight:(BOOL)a3 animated:(BOOL)a4;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setAdditionalTopContentInset:(double)a3;
-- (void)snapToMinMaxIfNeededAnimated:(BOOL)a3;
-- (void)updateHeaderForHeight:(double)a3 withOffset:(CGPoint)a4 animated:(BOOL)a5;
-- (void)updateHeaderHeightToMatchScrollViewStateForScrollDirection:(unint64_t)a3 animated:(BOOL)a4;
-- (void)updateHeaderSizeForGlobalHeaderHeight:(double)a3;
+- (double)headerHeightForContentOffset:(double)offset contentInset:(UIEdgeInsets)inset;
+- (id)forwardingTargetForSelector:(SEL)selector;
+- (id)methodSignatureForSelector:(SEL)selector;
+- (void)animationDidUpdateWithDisplayLink:(id)link;
+- (void)collapseAnimated:(BOOL)animated;
+- (void)expandAnimated:(BOOL)animated;
+- (void)expandAnimated:(BOOL)animated withFocusRect:(CGRect)rect standardItemHeight:(double)height;
+- (void)scrollToTopAnimated:(BOOL)animated;
+- (void)scrollToTopPreservingHeaderHeight:(BOOL)height animated:(BOOL)animated;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setAdditionalTopContentInset:(double)inset;
+- (void)snapToMinMaxIfNeededAnimated:(BOOL)animated;
+- (void)updateHeaderForHeight:(double)height withOffset:(CGPoint)offset animated:(BOOL)animated;
+- (void)updateHeaderHeightToMatchScrollViewStateForScrollDirection:(unint64_t)direction animated:(BOOL)animated;
+- (void)updateHeaderSizeForGlobalHeaderHeight:(double)height;
 - (void)updateInsetsIfNeeded;
-- (void)updateMinHeight:(double)a3 maxHeight:(double)a4 animated:(BOOL)a5;
+- (void)updateMinHeight:(double)height maxHeight:(double)maxHeight animated:(BOOL)animated;
 @end
 
 @implementation AVTCollapsibleHeaderController
 
-- (AVTCollapsibleHeaderController)initWithScrollView:(id)a3 headerView:(id)a4 minHeight:(double)a5 maxHeight:(double)a6
+- (AVTCollapsibleHeaderController)initWithScrollView:(id)view headerView:(id)headerView minHeight:(double)height maxHeight:(double)maxHeight
 {
-  v11 = a3;
-  v12 = a4;
+  viewCopy = view;
+  headerViewCopy = headerView;
   v23.receiver = self;
   v23.super_class = AVTCollapsibleHeaderController;
   v13 = [(AVTCollapsibleHeaderController *)&v23 init];
@@ -42,94 +42,94 @@
   if (v13)
   {
     v13->_shouldResizeHeaderForScrolling = 1;
-    v13->_minHeight = a5;
-    v13->_maxHeight = a6;
+    v13->_minHeight = height;
+    v13->_maxHeight = maxHeight;
     v13->_scrollToCompressionMultiplier = 1.0;
-    [v12 frame];
-    [v12 setFrame:?];
-    objc_storeStrong(&v14->_headerView, a4);
-    objc_storeStrong(&v14->_scrollView, a3);
-    [v11 contentInset];
+    [headerViewCopy frame];
+    [headerViewCopy setFrame:?];
+    objc_storeStrong(&v14->_headerView, headerView);
+    objc_storeStrong(&v14->_scrollView, view);
+    [viewCopy contentInset];
     [(AVTCollapsibleHeaderController *)v14 updatedScrollViewInsetsFromExistingInsets:?];
     v16 = v15;
     [(UIScrollView *)v14->_scrollView setContentInset:?];
-    [v11 verticalScrollIndicatorInsets];
+    [viewCopy verticalScrollIndicatorInsets];
     [(UIScrollView *)v14->_scrollView setScrollIndicatorInsets:v16];
-    [v11 contentOffset];
+    [viewCopy contentOffset];
     v18 = v17;
-    [v11 _effectiveContentInset];
+    [viewCopy _effectiveContentInset];
     [(UIScrollView *)v14->_scrollView setContentOffset:v18, -v19];
-    [v11 contentOffset];
+    [viewCopy contentOffset];
     v14->_previousOffset = v20;
-    v21 = [v11 delegate];
-    objc_storeWeak(&v14->_scrollViewDelegate, v21);
+    delegate = [viewCopy delegate];
+    objc_storeWeak(&v14->_scrollViewDelegate, delegate);
 
-    [v11 setDelegate:v14];
+    [viewCopy setDelegate:v14];
   }
 
   return v14;
 }
 
-- (void)setAdditionalTopContentInset:(double)a3
+- (void)setAdditionalTopContentInset:(double)inset
 {
-  if (self->_additionalTopContentInset != a3)
+  if (self->_additionalTopContentInset != inset)
   {
-    self->_additionalTopContentInset = a3;
+    self->_additionalTopContentInset = inset;
     [(AVTCollapsibleHeaderController *)self updateInsetsIfNeeded];
   }
 }
 
-- (void)updateMinHeight:(double)a3 maxHeight:(double)a4 animated:(BOOL)a5
+- (void)updateMinHeight:(double)height maxHeight:(double)maxHeight animated:(BOOL)animated
 {
   [(AVTCollapsibleHeaderController *)self minHeight];
-  if (v8 != a3 || ([(AVTCollapsibleHeaderController *)self maxHeight], v9 != a4))
+  if (v8 != height || ([(AVTCollapsibleHeaderController *)self maxHeight], v9 != maxHeight))
   {
-    [(AVTCollapsibleHeaderController *)self setMinHeight:a3];
+    [(AVTCollapsibleHeaderController *)self setMinHeight:height];
 
-    [(AVTCollapsibleHeaderController *)self setMaxHeight:a4];
+    [(AVTCollapsibleHeaderController *)self setMaxHeight:maxHeight];
   }
 }
 
-- (void)expandAnimated:(BOOL)a3
+- (void)expandAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(AVTCollapsibleHeaderController *)self scrollView];
-  [v5 contentOffset];
+  animatedCopy = animated;
+  scrollView = [(AVTCollapsibleHeaderController *)self scrollView];
+  [scrollView contentOffset];
 
   if ([(AVTCollapsibleHeaderController *)self shouldPushContentOffsetOnExpandOrCollapse])
   {
     [(AVTCollapsibleHeaderController *)self maxHeight];
-    v6 = [(AVTCollapsibleHeaderController *)self headerView];
-    [v6 bounds];
+    headerView = [(AVTCollapsibleHeaderController *)self headerView];
+    [headerView bounds];
   }
 
   [(AVTCollapsibleHeaderController *)self maxHeight];
 
-  [AVTCollapsibleHeaderController updateHeaderForHeight:"updateHeaderForHeight:withOffset:animated:" withOffset:v3 animated:?];
+  [AVTCollapsibleHeaderController updateHeaderForHeight:"updateHeaderForHeight:withOffset:animated:" withOffset:animatedCopy animated:?];
 }
 
-- (void)expandAnimated:(BOOL)a3 withFocusRect:(CGRect)a4 standardItemHeight:(double)a5
+- (void)expandAnimated:(BOOL)animated withFocusRect:(CGRect)rect standardItemHeight:(double)height
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v11 = [(AVTCollapsibleHeaderController *)self scrollView];
-  [v11 contentOffset];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  animatedCopy = animated;
+  scrollView = [(AVTCollapsibleHeaderController *)self scrollView];
+  [scrollView contentOffset];
 
   if ([(AVTCollapsibleHeaderController *)self shouldPushContentOffsetOnExpandOrCollapse])
   {
     [(AVTCollapsibleHeaderController *)self maxHeight];
-    v12 = [(AVTCollapsibleHeaderController *)self headerView];
-    [v12 bounds];
+    headerView = [(AVTCollapsibleHeaderController *)self headerView];
+    [headerView bounds];
   }
 
   else
   {
-    v38 = a5;
-    v13 = [(AVTCollapsibleHeaderController *)self scrollView];
-    [v13 bounds];
+    heightCopy = height;
+    scrollView2 = [(AVTCollapsibleHeaderController *)self scrollView];
+    [scrollView2 bounds];
     v14 = x;
     v15 = y;
     v16 = width;
@@ -138,12 +138,12 @@
     v22 = v21;
     v24 = v23;
 
-    v25 = [(AVTCollapsibleHeaderController *)self scrollView];
-    [v25 _effectiveContentInset];
+    scrollView3 = [(AVTCollapsibleHeaderController *)self scrollView];
+    [scrollView3 _effectiveContentInset];
     v27 = v20 + v26;
 
-    v28 = [(AVTCollapsibleHeaderController *)self scrollView];
-    [v28 _effectiveContentInset];
+    scrollView4 = [(AVTCollapsibleHeaderController *)self scrollView];
+    [scrollView4 _effectiveContentInset];
     v30 = v24 - v29;
 
     v39 = v27;
@@ -161,7 +161,7 @@
       v43.origin.x = v14;
       v43.origin.y = v15;
       v43.size.width = v16;
-      v43.size.height = height + v38;
+      v43.size.height = height + heightCopy;
       MinY = CGRectGetMinY(v43);
       v44.origin.y = v39;
       v44.origin.x = v18;
@@ -177,74 +177,74 @@
         v47.origin.x = v14;
         v47.origin.y = v15;
         v47.size.width = v16;
-        v47.size.height = height + v38;
+        v47.size.height = height + heightCopy;
         if (MaxY < CGRectGetMaxY(v47))
         {
           v48.origin.x = v14;
           v48.origin.y = v15;
           v48.size.width = v16;
-          v48.size.height = height + v38;
+          v48.size.height = height + heightCopy;
           CGRectGetMaxY(v48);
           v49.origin.y = v39;
           v49.origin.x = v18;
           v49.size.width = v22;
           v49.size.height = v31;
           CGRectGetMaxY(v49);
-          v36 = [(AVTCollapsibleHeaderController *)self scrollView];
-          [v36 contentSize];
-          v37 = [(AVTCollapsibleHeaderController *)self scrollView];
-          [v37 bounds];
+          scrollView5 = [(AVTCollapsibleHeaderController *)self scrollView];
+          [scrollView5 contentSize];
+          scrollView6 = [(AVTCollapsibleHeaderController *)self scrollView];
+          [scrollView6 bounds];
         }
       }
 
       else
       {
-        v33 = [(AVTCollapsibleHeaderController *)self scrollView];
-        [v33 _effectiveContentInset];
+        scrollView7 = [(AVTCollapsibleHeaderController *)self scrollView];
+        [scrollView7 _effectiveContentInset];
         v45.origin.x = v14;
         v45.origin.y = v15;
         v45.size.width = v16;
-        v45.size.height = height + v38;
+        v45.size.height = height + heightCopy;
         CGRectGetMinY(v45);
 
-        v34 = [(AVTCollapsibleHeaderController *)self scrollView];
-        [v34 _effectiveContentInset];
+        scrollView8 = [(AVTCollapsibleHeaderController *)self scrollView];
+        [scrollView8 _effectiveContentInset];
       }
     }
   }
 
   [(AVTCollapsibleHeaderController *)self maxHeight];
 
-  [AVTCollapsibleHeaderController updateHeaderForHeight:"updateHeaderForHeight:withOffset:animated:" withOffset:v9 animated:?];
+  [AVTCollapsibleHeaderController updateHeaderForHeight:"updateHeaderForHeight:withOffset:animated:" withOffset:animatedCopy animated:?];
 }
 
-- (void)collapseAnimated:(BOOL)a3
+- (void)collapseAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(AVTCollapsibleHeaderController *)self scrollView];
-  [v5 contentOffset];
+  animatedCopy = animated;
+  scrollView = [(AVTCollapsibleHeaderController *)self scrollView];
+  [scrollView contentOffset];
 
   if ([(AVTCollapsibleHeaderController *)self shouldPushContentOffsetOnExpandOrCollapse])
   {
-    v6 = [(AVTCollapsibleHeaderController *)self headerView];
-    [v6 bounds];
+    headerView = [(AVTCollapsibleHeaderController *)self headerView];
+    [headerView bounds];
     [(AVTCollapsibleHeaderController *)self minHeight];
   }
 
   [(AVTCollapsibleHeaderController *)self minHeight];
 
-  [AVTCollapsibleHeaderController updateHeaderForHeight:"updateHeaderForHeight:withOffset:animated:" withOffset:v3 animated:?];
+  [AVTCollapsibleHeaderController updateHeaderForHeight:"updateHeaderForHeight:withOffset:animated:" withOffset:animatedCopy animated:?];
 }
 
-- (void)snapToMinMaxIfNeededAnimated:(BOOL)a3
+- (void)snapToMinMaxIfNeededAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(AVTCollapsibleHeaderController *)self shouldSnapToMinOrMax])
   {
     [(AVTCollapsibleHeaderController *)self currentHeightForHeader];
     v6 = v5;
-    v7 = [(AVTCollapsibleHeaderController *)self scrollView];
-    [v7 contentOffset];
+    scrollView = [(AVTCollapsibleHeaderController *)self scrollView];
+    [scrollView contentOffset];
     v9 = v8;
 
     [(AVTCollapsibleHeaderController *)self minHeight];
@@ -257,31 +257,31 @@
         if (v9 >= -v12 && ([(AVTCollapsibleHeaderController *)self minHeight], v14 = v6 - v13, [(AVTCollapsibleHeaderController *)self maxHeight], v16 = v15, [(AVTCollapsibleHeaderController *)self minHeight], v14 <= (v16 - v17) * 0.5))
         {
 
-          [(AVTCollapsibleHeaderController *)self collapseAnimated:v3];
+          [(AVTCollapsibleHeaderController *)self collapseAnimated:animatedCopy];
         }
 
         else
         {
 
-          [(AVTCollapsibleHeaderController *)self expandAnimated:v3];
+          [(AVTCollapsibleHeaderController *)self expandAnimated:animatedCopy];
         }
       }
     }
   }
 }
 
-- (void)updateHeaderForHeight:(double)a3 withOffset:(CGPoint)a4 animated:(BOOL)a5
+- (void)updateHeaderForHeight:(double)height withOffset:(CGPoint)offset animated:(BOOL)animated
 {
-  v5 = a5;
-  y = a4.y;
-  x = a4.x;
+  animatedCopy = animated;
+  y = offset.y;
+  x = offset.x;
   [(AVTCollapsibleHeaderController *)self setShouldResizeHeaderForScrolling:0];
   v10 = [MEMORY[0x1E6979330] displayLinkWithTarget:self selector:sel_animationDidUpdateWithDisplayLink_];
-  v11 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [v10 addToRunLoop:v11 forMode:*MEMORY[0x1E695D918]];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [v10 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695D918]];
 
   v12 = MEMORY[0x1E69DD250];
-  if (v5)
+  if (animatedCopy)
   {
     v13 = 0.3;
   }
@@ -296,7 +296,7 @@
   v19[2] = __76__AVTCollapsibleHeaderController_updateHeaderForHeight_withOffset_animated___block_invoke;
   v19[3] = &unk_1E7F3AAA8;
   v19[4] = self;
-  *&v19[5] = a3;
+  *&v19[5] = height;
   *&v19[6] = x;
   *&v19[7] = y;
   v15[0] = MEMORY[0x1E69E9820];
@@ -304,8 +304,8 @@
   v15[2] = __76__AVTCollapsibleHeaderController_updateHeaderForHeight_withOffset_animated___block_invoke_2;
   v15[3] = &unk_1E7F3AAD0;
   v16 = v10;
-  v17 = self;
-  v18 = a3;
+  selfCopy = self;
+  heightCopy = height;
   v14 = v10;
   [v12 animateWithDuration:1 delay:v19 options:v15 animations:v13 completion:0.0];
 }
@@ -354,39 +354,39 @@ uint64_t __76__AVTCollapsibleHeaderController_updateHeaderForHeight_withOffset_a
   return result;
 }
 
-- (void)animationDidUpdateWithDisplayLink:(id)a3
+- (void)animationDidUpdateWithDisplayLink:(id)link
 {
-  v4 = [(AVTCollapsibleHeaderController *)self headerView];
-  v5 = [v4 layer];
-  v10 = [v5 presentationLayer];
+  headerView = [(AVTCollapsibleHeaderController *)self headerView];
+  layer = [headerView layer];
+  presentationLayer = [layer presentationLayer];
 
-  [v10 bounds];
+  [presentationLayer bounds];
   v7 = v6;
-  v8 = [(AVTCollapsibleHeaderController *)self delegate];
-  LOBYTE(v5) = objc_opt_respondsToSelector();
+  delegate = [(AVTCollapsibleHeaderController *)self delegate];
+  LOBYTE(layer) = objc_opt_respondsToSelector();
 
-  if (v5)
+  if (layer)
   {
-    v9 = [(AVTCollapsibleHeaderController *)self delegate];
-    [v9 collapsibleHeaderController:self isUpdatingHeaderWithIncrementalHeight:v7];
+    delegate2 = [(AVTCollapsibleHeaderController *)self delegate];
+    [delegate2 collapsibleHeaderController:self isUpdatingHeaderWithIncrementalHeight:v7];
   }
 }
 
-- (void)scrollToTopPreservingHeaderHeight:(BOOL)a3 animated:(BOOL)a4
+- (void)scrollToTopPreservingHeaderHeight:(BOOL)height animated:(BOOL)animated
 {
-  v4 = a4;
-  if (a3)
+  animatedCopy = animated;
+  if (height)
   {
     [(AVTCollapsibleHeaderController *)self setShouldResizeHeaderForScrolling:0];
     [(AVTCollapsibleHeaderController *)self currentHeightForHeader];
     [(AVTCollapsibleHeaderController *)self topContentOffsetWithHeaderHeight:?];
     v7 = v6;
     v9 = v8;
-    v10 = [(AVTCollapsibleHeaderController *)self scrollView];
-    [v10 setContentOffset:v4 animated:{v7, v9}];
+    scrollView = [(AVTCollapsibleHeaderController *)self scrollView];
+    [scrollView setContentOffset:animatedCopy animated:{v7, v9}];
 
-    v11 = [(AVTCollapsibleHeaderController *)self scrollView];
-    [v11 contentOffset];
+    scrollView2 = [(AVTCollapsibleHeaderController *)self scrollView];
+    [scrollView2 contentOffset];
     [(AVTCollapsibleHeaderController *)self setPreviousOffset:v12];
 
     [(AVTCollapsibleHeaderController *)self setShouldResizeHeaderForScrolling:1];
@@ -395,21 +395,21 @@ uint64_t __76__AVTCollapsibleHeaderController_updateHeaderForHeight_withOffset_a
   else
   {
 
-    [(AVTCollapsibleHeaderController *)self scrollToTopAnimated:a4];
+    [(AVTCollapsibleHeaderController *)self scrollToTopAnimated:animated];
   }
 }
 
-- (CGPoint)topContentOffsetWithHeaderHeight:(double)a3
+- (CGPoint)topContentOffsetWithHeaderHeight:(double)height
 {
-  v5 = [(AVTCollapsibleHeaderController *)self scrollView];
-  [v5 contentOffset];
+  scrollView = [(AVTCollapsibleHeaderController *)self scrollView];
+  [scrollView contentOffset];
   v7 = v6;
 
-  v8 = [(AVTCollapsibleHeaderController *)self scrollView];
-  [v8 _effectiveContentInset];
+  scrollView2 = [(AVTCollapsibleHeaderController *)self scrollView];
+  [scrollView2 _effectiveContentInset];
   v10 = v9;
   [(AVTCollapsibleHeaderController *)self maxHeight];
-  v12 = v11 - a3 - v10;
+  v12 = v11 - height - v10;
 
   v13 = v7;
   v14 = v12;
@@ -418,23 +418,23 @@ uint64_t __76__AVTCollapsibleHeaderController_updateHeaderForHeight_withOffset_a
   return result;
 }
 
-- (void)scrollToTopAnimated:(BOOL)a3
+- (void)scrollToTopAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v10 = [(AVTCollapsibleHeaderController *)self scrollView];
-  v5 = [(AVTCollapsibleHeaderController *)self scrollView];
-  [v5 contentOffset];
+  animatedCopy = animated;
+  scrollView = [(AVTCollapsibleHeaderController *)self scrollView];
+  scrollView2 = [(AVTCollapsibleHeaderController *)self scrollView];
+  [scrollView2 contentOffset];
   v7 = v6;
-  v8 = [(AVTCollapsibleHeaderController *)self scrollView];
-  [v8 _effectiveContentInset];
-  [v10 setContentOffset:v3 animated:{v7, -v9}];
+  scrollView3 = [(AVTCollapsibleHeaderController *)self scrollView];
+  [scrollView3 _effectiveContentInset];
+  [scrollView setContentOffset:animatedCopy animated:{v7, -v9}];
 }
 
-- (BOOL)shouldResizeGivenMarginalScrollDistancesForScrollDirection:(unint64_t)a3
+- (BOOL)shouldResizeGivenMarginalScrollDistancesForScrollDirection:(unint64_t)direction
 {
-  if (a3 != 2)
+  if (direction != 2)
   {
-    return a3 == 1 && (([(AVTCollapsibleHeaderController *)self singleTouchOffset], v4 >= 0.0) ? (v5 = v4) : (v5 = -v4), [(AVTCollapsibleHeaderController *)self expandMarginalScrollDistance], v5 > v6);
+    return direction == 1 && (([(AVTCollapsibleHeaderController *)self singleTouchOffset], v4 >= 0.0) ? (v5 = v4) : (v5 = -v4), [(AVTCollapsibleHeaderController *)self expandMarginalScrollDistance], v5 > v6);
   }
 
   [(AVTCollapsibleHeaderController *)self singleTouchOffset];
@@ -452,54 +452,54 @@ uint64_t __76__AVTCollapsibleHeaderController_updateHeaderForHeight_withOffset_a
   return v9 > v10;
 }
 
-- (BOOL)shouldResizeGivenScrollDirection:(unint64_t)a3 currentHeaderHeight:(double)a4 targetHeaderHeight:(double)a5
+- (BOOL)shouldResizeGivenScrollDirection:(unint64_t)direction currentHeaderHeight:(double)height targetHeaderHeight:(double)headerHeight
 {
-  if (a3 == 2 && a5 < a4)
+  if (direction == 2 && headerHeight < height)
   {
     return 1;
   }
 
-  return a5 > a4 && a3 == 1;
+  return headerHeight > height && direction == 1;
 }
 
-- (void)updateHeaderHeightToMatchScrollViewStateForScrollDirection:(unint64_t)a3 animated:(BOOL)a4
+- (void)updateHeaderHeightToMatchScrollViewStateForScrollDirection:(unint64_t)direction animated:(BOOL)animated
 {
-  v6 = [(AVTCollapsibleHeaderController *)self scrollView:a3];
+  v6 = [(AVTCollapsibleHeaderController *)self scrollView:direction];
   [v6 contentOffset];
   v8 = v7;
-  v9 = [(AVTCollapsibleHeaderController *)self scrollView];
-  [v9 contentInset];
+  scrollView = [(AVTCollapsibleHeaderController *)self scrollView];
+  [scrollView contentInset];
   [(AVTCollapsibleHeaderController *)self headerHeightForContentOffset:v8 contentInset:v10, v11, v12, v13];
   v15 = v14;
 
   [(AVTCollapsibleHeaderController *)self currentHeightForHeader];
   v17 = v16;
-  if ([(AVTCollapsibleHeaderController *)self shouldResizeGivenMarginalScrollDistancesForScrollDirection:a3]&& [(AVTCollapsibleHeaderController *)self shouldResizeGivenScrollDirection:a3 currentHeaderHeight:v17 targetHeaderHeight:v15])
+  if ([(AVTCollapsibleHeaderController *)self shouldResizeGivenMarginalScrollDistancesForScrollDirection:direction]&& [(AVTCollapsibleHeaderController *)self shouldResizeGivenScrollDirection:direction currentHeaderHeight:v17 targetHeaderHeight:v15])
   {
-    v18 = [(AVTCollapsibleHeaderController *)self delegate];
+    delegate = [(AVTCollapsibleHeaderController *)self delegate];
     v19 = objc_opt_respondsToSelector();
 
     if (v19)
     {
-      v20 = [(AVTCollapsibleHeaderController *)self delegate];
-      [v20 collapsibleHeaderController:self willUpdateHeaderToHeight:v15];
+      delegate2 = [(AVTCollapsibleHeaderController *)self delegate];
+      [delegate2 collapsibleHeaderController:self willUpdateHeaderToHeight:v15];
     }
 
     [(AVTCollapsibleHeaderController *)self updateHeaderSizeForGlobalHeaderHeight:v15];
-    v21 = [(AVTCollapsibleHeaderController *)self delegate];
+    delegate3 = [(AVTCollapsibleHeaderController *)self delegate];
     v22 = objc_opt_respondsToSelector();
 
     if (v22)
     {
-      v23 = [(AVTCollapsibleHeaderController *)self delegate];
-      [v23 collapsibleHeaderController:self didUpdateHeaderToHeight:v15];
+      delegate4 = [(AVTCollapsibleHeaderController *)self delegate];
+      [delegate4 collapsibleHeaderController:self didUpdateHeaderToHeight:v15];
     }
   }
 }
 
-- (double)headerHeightForContentOffset:(double)a3 contentInset:(UIEdgeInsets)a4
+- (double)headerHeightForContentOffset:(double)offset contentInset:(UIEdgeInsets)inset
 {
-  v6 = [(AVTCollapsibleHeaderController *)self scrollView:a3];
+  v6 = [(AVTCollapsibleHeaderController *)self scrollView:offset];
   [v6 contentSize];
   v8 = v7;
   v10 = v9;
@@ -516,8 +516,8 @@ uint64_t __76__AVTCollapsibleHeaderController_updateHeaderForHeight_withOffset_a
       v45 = v44;
       [(AVTCollapsibleHeaderController *)self scrollToCompressionMultiplier];
       v47 = v46;
-      v48 = [(AVTCollapsibleHeaderController *)self scrollView];
-      [v48 _effectiveContentInset];
+      scrollView = [(AVTCollapsibleHeaderController *)self scrollView];
+      [scrollView _effectiveContentInset];
       v50 = v49;
 
       [(AVTCollapsibleHeaderController *)self currentHeightForHeader];
@@ -525,7 +525,7 @@ uint64_t __76__AVTCollapsibleHeaderController_updateHeaderForHeight_withOffset_a
       [(AVTCollapsibleHeaderController *)self minHeight];
       v54 = v52 - v53;
       [(AVTCollapsibleHeaderController *)self scrollToCompressionMultiplier];
-      if (v54 * v55 + a3 < a3)
+      if (v54 * v55 + offset < offset)
       {
         [(AVTCollapsibleHeaderController *)self minHeight];
 LABEL_30:
@@ -546,9 +546,9 @@ LABEL_31:
         return result;
       }
 
-      if (-v50 <= a3)
+      if (-v50 <= offset)
       {
-        v40 = v45 + (v43 - a3) / v47;
+        v40 = v45 + (v43 - offset) / v47;
         goto LABEL_31;
       }
 
@@ -557,20 +557,20 @@ LABEL_27:
       goto LABEL_30;
     }
 
-    v14 = [(AVTCollapsibleHeaderController *)self scrollView];
-    [v14 _effectiveContentInset];
+    scrollView2 = [(AVTCollapsibleHeaderController *)self scrollView];
+    [scrollView2 _effectiveContentInset];
     v16 = v15;
     v17 = -v15;
 
-    v18 = [(AVTCollapsibleHeaderController *)self headerView];
-    [v18 frame];
+    headerView = [(AVTCollapsibleHeaderController *)self headerView];
+    [headerView frame];
     v20 = v19;
-    v21 = [(AVTCollapsibleHeaderController *)self scrollView];
-    [v21 frame];
+    scrollView3 = [(AVTCollapsibleHeaderController *)self scrollView];
+    [scrollView3 frame];
     v23 = v20 - v22;
 
-    v24 = -a3;
-    if (v17 > a3)
+    v24 = -offset;
+    if (v17 > offset)
     {
       v24 = v16;
     }
@@ -579,17 +579,17 @@ LABEL_27:
     [(AVTCollapsibleHeaderController *)self additionalTopContentInset];
     v26 = v25;
     [(AVTCollapsibleHeaderController *)self previousOffset];
-    v28 = v27 - a3;
+    v28 = v27 - offset;
     [(AVTCollapsibleHeaderController *)self currentHeightForHeader];
     v30 = v29;
     [(AVTCollapsibleHeaderController *)self scrollToCompressionMultiplier];
     v32 = v31;
-    v33 = [(AVTCollapsibleHeaderController *)self scrollView];
-    [v33 contentSize];
+    scrollView4 = [(AVTCollapsibleHeaderController *)self scrollView];
+    [scrollView4 contentSize];
     v35 = v34;
-    v36 = [(AVTCollapsibleHeaderController *)self scrollView];
-    [v36 bounds];
-    if (v35 - (v37 - v23) > a3)
+    scrollView5 = [(AVTCollapsibleHeaderController *)self scrollView];
+    [scrollView5 bounds];
+    if (v35 - (v37 - v23) > offset)
     {
 
       goto LABEL_10;
@@ -597,12 +597,12 @@ LABEL_27:
 
     if (v28 <= 0.0)
     {
-      v57 = [(AVTCollapsibleHeaderController *)self shouldCollapseOnBottomBounceScroll];
+      shouldCollapseOnBottomBounceScroll = [(AVTCollapsibleHeaderController *)self shouldCollapseOnBottomBounceScroll];
 
-      if (v57)
+      if (shouldCollapseOnBottomBounceScroll)
       {
 LABEL_10:
-        if (v17 <= a3)
+        if (v17 <= offset)
         {
           [(AVTCollapsibleHeaderController *)self minHeight];
           if (v30 + v28 / v32 >= v38)
@@ -649,45 +649,45 @@ LABEL_10:
   return result;
 }
 
-- (void)updateHeaderSizeForGlobalHeaderHeight:(double)a3
+- (void)updateHeaderSizeForGlobalHeaderHeight:(double)height
 {
-  v5 = [(AVTCollapsibleHeaderController *)self headerView];
-  [v5 frame];
+  headerView = [(AVTCollapsibleHeaderController *)self headerView];
+  [headerView frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(AVTCollapsibleHeaderController *)self headerView];
-  [v12 setFrame:{v7, v9, v11, a3}];
+  headerView2 = [(AVTCollapsibleHeaderController *)self headerView];
+  [headerView2 setFrame:{v7, v9, v11, height}];
 }
 
 - (double)currentHeightForHeader
 {
-  v2 = [(AVTCollapsibleHeaderController *)self headerView];
-  [v2 bounds];
+  headerView = [(AVTCollapsibleHeaderController *)self headerView];
+  [headerView bounds];
   v4 = v3;
 
   return v4;
 }
 
-- (UIEdgeInsets)updatedScrollViewInsetsFromExistingInsets:(UIEdgeInsets)a3
+- (UIEdgeInsets)updatedScrollViewInsetsFromExistingInsets:(UIEdgeInsets)insets
 {
-  bottom = a3.bottom;
-  v5 = [(AVTCollapsibleHeaderController *)self scrollView:a3.top];
+  bottom = insets.bottom;
+  v5 = [(AVTCollapsibleHeaderController *)self scrollView:insets.top];
   [v5 _systemContentInset];
   v7 = v6;
 
   v8 = 0.0;
   if (v7 > 0.0)
   {
-    v9 = [(AVTCollapsibleHeaderController *)self scrollView];
-    [v9 _systemContentInset];
+    scrollView = [(AVTCollapsibleHeaderController *)self scrollView];
+    [scrollView _systemContentInset];
     v11 = v10;
-    v12 = [(AVTCollapsibleHeaderController *)self headerView];
-    [v12 frame];
+    headerView = [(AVTCollapsibleHeaderController *)self headerView];
+    [headerView frame];
     v14 = v13;
-    v15 = [(AVTCollapsibleHeaderController *)self scrollView];
-    [v15 frame];
+    scrollView2 = [(AVTCollapsibleHeaderController *)self scrollView];
+    [scrollView2 frame];
     v8 = v11 - (v14 - v16);
   }
 
@@ -695,8 +695,8 @@ LABEL_10:
   v18 = v17;
   [(AVTCollapsibleHeaderController *)self additionalTopContentInset];
   v20 = v18 + v19 - v8;
-  v21 = [(AVTCollapsibleHeaderController *)self scrollView];
-  [v21 contentInset];
+  scrollView3 = [(AVTCollapsibleHeaderController *)self scrollView];
+  [scrollView3 contentInset];
   v23 = v22;
   v25 = v24;
 
@@ -713,8 +713,8 @@ LABEL_10:
 
 - (void)updateInsetsIfNeeded
 {
-  v3 = [(AVTCollapsibleHeaderController *)self scrollView];
-  [v3 contentInset];
+  scrollView = [(AVTCollapsibleHeaderController *)self scrollView];
+  [scrollView contentInset];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -725,8 +725,8 @@ LABEL_10:
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(AVTCollapsibleHeaderController *)self scrollView];
-  [v20 verticalScrollIndicatorInsets];
+  scrollView2 = [(AVTCollapsibleHeaderController *)self scrollView];
+  [scrollView2 verticalScrollIndicatorInsets];
   v31 = v22;
   v32 = v21;
   v30 = v23;
@@ -735,15 +735,15 @@ LABEL_10:
   {
     [(AVTCollapsibleHeaderController *)self previousOffset];
     [(AVTCollapsibleHeaderController *)self setPreviousOffset:v5 - v13 + v27];
-    v28 = [(AVTCollapsibleHeaderController *)self scrollView];
-    [v28 setContentInset:{v13, v15, v17, v19}];
+    scrollView3 = [(AVTCollapsibleHeaderController *)self scrollView];
+    [scrollView3 setContentInset:{v13, v15, v17, v19}];
 
-    v29 = [(AVTCollapsibleHeaderController *)self scrollView];
-    [v29 setScrollIndicatorInsets:{v13, v32, v31, v30}];
+    scrollView4 = [(AVTCollapsibleHeaderController *)self scrollView];
+    [scrollView4 setScrollIndicatorInsets:{v13, v32, v31, v30}];
   }
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = AVTCollapsibleHeaderController;
@@ -754,56 +754,56 @@ LABEL_10:
 
   else
   {
-    v5 = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
+    scrollViewDelegate = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
     v4 = objc_opt_respondsToSelector();
   }
 
   return v4 & 1;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v8.receiver = self;
   v8.super_class = AVTCollapsibleHeaderController;
   v5 = [(AVTCollapsibleHeaderController *)&v8 methodSignatureForSelector:?];
   if (!v5)
   {
-    v6 = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
-    v5 = [v6 methodSignatureForSelector:a3];
+    scrollViewDelegate = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
+    v5 = [scrollViewDelegate methodSignatureForSelector:selector];
   }
 
   return v5;
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
-  v5 = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
+  scrollViewDelegate = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
+    scrollViewDelegate2 = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = AVTCollapsibleHeaderController;
-    v7 = [(AVTCollapsibleHeaderController *)&v9 forwardingTargetForSelector:a3];
+    scrollViewDelegate2 = [(AVTCollapsibleHeaderController *)&v9 forwardingTargetForSelector:selector];
   }
 
-  return v7;
+  return scrollViewDelegate2;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v25 = a3;
+  scrollCopy = scroll;
   if ([(AVTCollapsibleHeaderController *)self shouldResizeHeaderForScrolling])
   {
     [(AVTCollapsibleHeaderController *)self updateInsetsIfNeeded];
     [(AVTCollapsibleHeaderController *)self previousOffset];
     v5 = v4;
-    v6 = v25;
+    v6 = scrollCopy;
     [v6 _verticalVelocity];
     if (v7 == 0.0)
     {
@@ -854,8 +854,8 @@ LABEL_10:
     v16 = v15;
     [(AVTCollapsibleHeaderController *)self previousOffset];
     v18 = v17;
-    v19 = [(AVTCollapsibleHeaderController *)self scrollView];
-    [v19 contentOffset];
+    scrollView = [(AVTCollapsibleHeaderController *)self scrollView];
+    [scrollView contentOffset];
     [(AVTCollapsibleHeaderController *)self setSingleTouchOffset:v16 + v18 - v20];
 
     [(AVTCollapsibleHeaderController *)self updateHeaderHeightToMatchScrollViewStateForScrollDirection:v12 animated:1];
@@ -863,26 +863,26 @@ LABEL_10:
     [(AVTCollapsibleHeaderController *)self setPreviousOffset:v21];
   }
 
-  v22 = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
+  scrollViewDelegate = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
   v23 = objc_opt_respondsToSelector();
 
   if (v23)
   {
-    v24 = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
-    [v24 scrollViewDidScroll:v25];
+    scrollViewDelegate2 = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
+    [scrollViewDelegate2 scrollViewDidScroll:scrollCopy];
   }
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  y = a4.y;
-  x = a4.x;
-  v29 = a3;
-  if ([(AVTCollapsibleHeaderController *)self shouldResizeHeaderForScrolling]&& [(AVTCollapsibleHeaderController *)self shouldSnapToMinOrMax]&& a5->y < 0.0)
+  y = velocity.y;
+  x = velocity.x;
+  draggingCopy = dragging;
+  if ([(AVTCollapsibleHeaderController *)self shouldResizeHeaderForScrolling]&& [(AVTCollapsibleHeaderController *)self shouldSnapToMinOrMax]&& offset->y < 0.0)
   {
     [(AVTCollapsibleHeaderController *)self maxHeight];
-    v10 = v9 - a5->y;
-    [v29 _effectiveContentInset];
+    v10 = v9 - offset->y;
+    [draggingCopy _effectiveContentInset];
     v12 = v10 - v11;
     if (y > 0.0)
     {
@@ -898,8 +898,8 @@ LABEL_10:
 LABEL_15:
       [(AVTCollapsibleHeaderController *)self maxHeight];
       v24 = v23 - v12;
-      [v29 _effectiveContentInset];
-      a5->y = v24 - v25;
+      [draggingCopy _effectiveContentInset];
+      offset->y = v24 - v25;
       goto LABEL_16;
     }
 
@@ -942,53 +942,53 @@ LABEL_15:
   }
 
 LABEL_16:
-  v26 = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
+  scrollViewDelegate = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
   v27 = objc_opt_respondsToSelector();
 
   if (v27)
   {
-    v28 = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
-    [v28 scrollViewWillEndDragging:v29 withVelocity:a5 targetContentOffset:{x, y}];
+    scrollViewDelegate2 = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
+    [scrollViewDelegate2 scrollViewWillEndDragging:draggingCopy withVelocity:offset targetContentOffset:{x, y}];
   }
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v4 = a4;
-  v9 = a3;
-  if (!v4)
+  decelerateCopy = decelerate;
+  draggingCopy = dragging;
+  if (!decelerateCopy)
   {
     [(AVTCollapsibleHeaderController *)self snapToMinMaxIfNeededAnimated:1];
     [(AVTCollapsibleHeaderController *)self setSingleTouchOffset:0.0];
     [(AVTCollapsibleHeaderController *)self setCurrentScrollDirection:0];
   }
 
-  v6 = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
+  scrollViewDelegate = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
-    [v8 scrollViewDidEndDragging:v9 willDecelerate:v4];
+    scrollViewDelegate2 = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
+    [scrollViewDelegate2 scrollViewDidEndDragging:draggingCopy willDecelerate:decelerateCopy];
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v7 = a3;
-  if (([v7 isDragging] & 1) == 0)
+  deceleratingCopy = decelerating;
+  if (([deceleratingCopy isDragging] & 1) == 0)
   {
     [(AVTCollapsibleHeaderController *)self setSingleTouchOffset:0.0];
     [(AVTCollapsibleHeaderController *)self setCurrentScrollDirection:0];
   }
 
-  v4 = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
+  scrollViewDelegate = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
-    [v6 scrollViewDidEndDecelerating:v7];
+    scrollViewDelegate2 = [(AVTCollapsibleHeaderController *)self scrollViewDelegate];
+    [scrollViewDelegate2 scrollViewDidEndDecelerating:deceleratingCopy];
   }
 }
 

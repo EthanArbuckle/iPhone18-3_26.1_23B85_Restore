@@ -1,62 +1,62 @@
 @interface ASDPromiseResult
-+ (id)resultWithError:(id)a3;
-+ (id)resultWithValue:(id)a3;
-- (id)_initWithValue:(void *)a3 error:;
++ (id)resultWithError:(id)error;
++ (id)resultWithValue:(id)value;
+- (id)_initWithValue:(void *)value error:;
 @end
 
 @implementation ASDPromiseResult
 
-+ (id)resultWithError:(id)a3
++ (id)resultWithError:(id)error
 {
-  v3 = a3;
-  v4 = [[ASDPromiseResult alloc] _initWithValue:v3 error:?];
+  errorCopy = error;
+  v4 = [[ASDPromiseResult alloc] _initWithValue:errorCopy error:?];
 
   return v4;
 }
 
-- (id)_initWithValue:(void *)a3 error:
+- (id)_initWithValue:(void *)value error:
 {
   v6 = a2;
-  v7 = a3;
-  if (a1)
+  valueCopy = value;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = ASDPromiseResult;
     v8 = objc_msgSendSuper2(&v12, sel_init);
-    a1 = v8;
+    self = v8;
     if (v8)
     {
       if (v6)
       {
         v9 = v8 + 2;
-        v10 = a2;
+        valueCopy2 = a2;
       }
 
       else
       {
-        if (!v7)
+        if (!valueCopy)
         {
           [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D930] format:@"PromiseResult must represent either a value or an error"];
           goto LABEL_8;
         }
 
         v9 = v8 + 1;
-        v10 = a3;
+        valueCopy2 = value;
       }
 
-      objc_storeStrong(v9, v10);
+      objc_storeStrong(v9, valueCopy2);
     }
   }
 
 LABEL_8:
 
-  return a1;
+  return self;
 }
 
-+ (id)resultWithValue:(id)a3
++ (id)resultWithValue:(id)value
 {
-  v3 = a3;
-  v4 = [[ASDPromiseResult alloc] _initWithValue:v3 error:0];
+  valueCopy = value;
+  v4 = [[ASDPromiseResult alloc] _initWithValue:valueCopy error:0];
 
   return v4;
 }

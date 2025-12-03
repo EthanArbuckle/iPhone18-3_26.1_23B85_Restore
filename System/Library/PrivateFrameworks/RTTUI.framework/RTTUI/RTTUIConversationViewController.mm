@@ -1,8 +1,8 @@
 @interface RTTUIConversationViewController
-+ (BOOL)_validRectangle:(CGRect)a3;
-+ (id)viewControllerForCall:(id)a3;
-+ (id)viewControllerForConversation:(id)a3;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
++ (BOOL)_validRectangle:(CGRect)rectangle;
++ (id)viewControllerForCall:(id)call;
++ (id)viewControllerForConversation:(id)conversation;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)currentCallIsDowngraded;
 - (BOOL)isCurrentCallConnected;
 - (BOOL)isCurrentCallOnHold;
@@ -10,95 +10,95 @@
 - (BOOL)isCurrentCallSendingOnHold;
 - (BOOL)isIncomingScreeningCall;
 - (BOOL)showTextViewForCurrentCall;
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
 - (BOOL)utteranceIsSelected;
 - (RTTUIConversationViewController)init;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_holdButtonItem;
 - (id)_muteButtonItem;
-- (id)_updateTableViewUtteranceOldCount:(unint64_t)a3 newCount:(unint64_t)a4;
-- (id)addTranscriptionText:(id)a3 isNew:(BOOL)a4;
-- (id)addTranslatedTranscriptionText:(id)a3 translatedText:(id)a4 isNew:(BOOL)a5;
-- (id)addUtterance:(id)a3;
+- (id)_updateTableViewUtteranceOldCount:(unint64_t)count newCount:(unint64_t)newCount;
+- (id)addTranscriptionText:(id)text isNew:(BOOL)new;
+- (id)addTranslatedTranscriptionText:(id)text translatedText:(id)translatedText isNew:(BOOL)new;
+- (id)addUtterance:(id)utterance;
 - (id)cannedResponses;
 - (id)contactDisplayString;
 - (id)currentContactPath;
-- (id)lastConversationRowPathForUtterance:(id)a3;
-- (id)serviceUpdateCellAtIndexPath:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)utteranceCellAtIndexPath:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_addServiceCellWithUpdate:(id)a3 options:(id)a4;
-- (void)_define:(id)a3;
+- (id)lastConversationRowPathForUtterance:(id)utterance;
+- (id)serviceUpdateCellAtIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)utteranceCellAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_addServiceCellWithUpdate:(id)update options:(id)options;
+- (void)_define:(id)_define;
 - (void)_processRealtimeTimeout;
-- (void)_removeServiceCellWithUpdate:(id)a3;
-- (void)_replaceServiceCellWithOldUpdate:(id)a3 withNewUpdate:(id)a4 options:(id)a5;
-- (void)_scrollToIndexPathIfNecessary:(id)a3 animated:(BOOL)a4;
-- (void)_updateTableViewRowAtIndexPath:(id)a3 action:(int64_t)a4 animation:(int64_t)a5;
-- (void)_updateTableViewRowsAtIndexPaths:(id)a3 action:(int64_t)a4 animation:(int64_t)a5;
-- (void)addServiceCellWithUpdate:(id)a3 options:(id)a4;
-- (void)callDidConnect:(id)a3;
+- (void)_removeServiceCellWithUpdate:(id)update;
+- (void)_replaceServiceCellWithOldUpdate:(id)update withNewUpdate:(id)newUpdate options:(id)options;
+- (void)_scrollToIndexPathIfNecessary:(id)necessary animated:(BOOL)animated;
+- (void)_updateTableViewRowAtIndexPath:(id)path action:(int64_t)action animation:(int64_t)animation;
+- (void)_updateTableViewRowsAtIndexPaths:(id)paths action:(int64_t)action animation:(int64_t)animation;
+- (void)addServiceCellWithUpdate:(id)update options:(id)options;
+- (void)callDidConnect:(id)connect;
 - (void)dealloc;
-- (void)deviceDidReceiveString:(id)a3 forUtterance:(id)a4;
-- (void)deviceDidReceiveTranslation:(id)a3 forUtterance:(id)a4;
-- (void)gaButtonPressed:(id)a3;
-- (void)logCallHold:(BOOL)a3;
+- (void)deviceDidReceiveString:(id)string forUtterance:(id)utterance;
+- (void)deviceDidReceiveTranslation:(id)translation forUtterance:(id)utterance;
+- (void)gaButtonPressed:(id)pressed;
+- (void)logCallHold:(BOOL)hold;
 - (void)realtimeTextDidChange;
-- (void)removeServiceCellWithUpdate:(id)a3;
-- (void)replaceServiceCellWithOldUpdate:(id)a3 withNewUpdate:(id)a4 options:(id)a5;
-- (void)setCall:(id)a3;
-- (void)setTextViewUtterance:(id)a3;
+- (void)removeServiceCellWithUpdate:(id)update;
+- (void)replaceServiceCellWithOldUpdate:(id)update withNewUpdate:(id)newUpdate options:(id)options;
+- (void)setCall:(id)call;
+- (void)setTextViewUtterance:(id)utterance;
 - (void)setupTableView;
-- (void)shareCallInfo:(id)a3;
+- (void)shareCallInfo:(id)info;
 - (void)showCallEnded;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidChangeSelection:(id)a3;
-- (void)toggleHold:(id)a3;
-- (void)toggleMute:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidChangeSelection:(id)selection;
+- (void)toggleHold:(id)hold;
+- (void)toggleMute:(id)mute;
 - (void)updateBarButtons;
 - (void)updateCallDowngradeStatus;
-- (void)updateCallHold:(id)a3;
-- (void)updateDeviceLockStatus:(BOOL)a3;
+- (void)updateCallHold:(id)hold;
+- (void)updateDeviceLockStatus:(BOOL)status;
 - (void)updateGAButton;
-- (void)updateTableViewSizeAnimated:(BOOL)a3;
-- (void)updateUtterance:(id)a3 forIndexPath:(id)a4;
-- (void)updateVoiceOverAnnouncement:(id)a3;
-- (void)utteranceCellDidUpdateContent:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateTableViewSizeAnimated:(BOOL)animated;
+- (void)updateUtterance:(id)utterance forIndexPath:(id)path;
+- (void)updateVoiceOverAnnouncement:(id)announcement;
+- (void)utteranceCellDidUpdateContent:(id)content;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation RTTUIConversationViewController
 
-+ (id)viewControllerForCall:(id)a3
++ (id)viewControllerForCall:(id)call
 {
-  v3 = a3;
+  callCopy = call;
   v4 = objc_alloc_init(RTTUIConversationViewController);
   v5 = +[RTTUIConversationControllerCoordinator sharedInstance];
   [v5 addConversationController:v4];
 
-  [(RTTUIConversationViewController *)v4 setCall:v3];
+  [(RTTUIConversationViewController *)v4 setCall:callCopy];
 
   return v4;
 }
 
-+ (id)viewControllerForConversation:(id)a3
++ (id)viewControllerForConversation:(id)conversation
 {
-  v3 = a3;
+  conversationCopy = conversation;
   v4 = objc_alloc_init(RTTUIConversationViewController);
-  [(RTTUIConversationViewController *)v4 setConversation:v3];
+  [(RTTUIConversationViewController *)v4 setConversation:conversationCopy];
   v5 = +[RTTUIConversationControllerCoordinator sharedInstance];
   [v5 addConversationController:v4];
 
   if (_AXSInUnitTestMode())
   {
-    v6 = [v3 call];
+    call = [conversationCopy call];
     call = v4->_call;
-    v4->_call = v6;
+    v4->_call = call;
   }
 
   return v4;
@@ -111,17 +111,17 @@
   v2 = [(RTTUIConversationViewController *)&v23 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_callDidConnect_ name:*MEMORY[0x277D6EFF0] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_callDidConnect_ name:*MEMORY[0x277D6EFF0] object:0];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v2 selector:sel_callDidConnect_ name:*MEMORY[0x277D6F100] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel_callDidConnect_ name:*MEMORY[0x277D6F100] object:0];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel_callDidConnect_ name:*MEMORY[0x277D6F078] object:0];
+    defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter3 addObserver:v2 selector:sel_callDidConnect_ name:*MEMORY[0x277D6F078] object:0];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 addObserver:v2 selector:sel_updateCallHold_ name:*MEMORY[0x277D6F0B8] object:0];
+    defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter4 addObserver:v2 selector:sel_updateCallHold_ name:*MEMORY[0x277D6F0B8] object:0];
 
     v7 = objc_alloc(MEMORY[0x277CE6950]);
     v8 = MEMORY[0x277D85CD0];
@@ -136,13 +136,13 @@
 
     [(AXDispatchTimer *)v2->_muteStatusTimeout setAutomaticallyCancelPendingBlockUponSchedulingNewBlock:1];
     objc_initWeak(&location, v2);
-    v13 = [MEMORY[0x277D440D8] sharedInstance];
+    mEMORY[0x277D440D8] = [MEMORY[0x277D440D8] sharedInstance];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __39__RTTUIConversationViewController_init__block_invoke;
     v20[3] = &unk_279AE4F50;
     objc_copyWeak(&v21, &location);
-    [v13 registerUpdateBlock:v20 forRetrieveSelector:sel_ttyShouldBeRealtime withListener:v2];
+    [mEMORY[0x277D440D8] registerUpdateBlock:v20 forRetrieveSelector:sel_ttyShouldBeRealtime withListener:v2];
 
     v14 = objc_opt_new();
     serviceUpdates = v2->_serviceUpdates;
@@ -213,19 +213,19 @@ void __39__RTTUIConversationViewController_init__block_invoke_339(uint64_t a1)
   [WeakRetained updateDeviceLockStatus:v2 != 0];
 }
 
-- (void)setCall:(id)a3
+- (void)setCall:(id)call
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  callCopy = call;
   if (!self->_conversation)
   {
     v6 = AXLogRTT();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v18 = self;
+      selfCopy = self;
       v19 = 2112;
-      v20 = v5;
+      v20 = callCopy;
       _os_log_impl(&dword_261725000, v6, OS_LOG_TYPE_INFO, "%@: No initial conversation, requesting conversation: %@", buf, 0x16u);
     }
 
@@ -236,15 +236,15 @@ void __39__RTTUIConversationViewController_init__block_invoke_339(uint64_t a1)
     v15[2] = __43__RTTUIConversationViewController_setCall___block_invoke;
     v15[3] = &unk_279AE4FC8;
     objc_copyWeak(&v16, buf);
-    [v7 conversationWithCall:v5 withCallback:v15];
+    [v7 conversationWithCall:callCopy withCallback:v15];
     objc_destroyWeak(&v16);
     objc_destroyWeak(buf);
   }
 
-  objc_storeStrong(&self->_call, a3);
-  v8 = [v5 supportsTTYWithVoice];
+  objc_storeStrong(&self->_call, call);
+  supportsTTYWithVoice = [callCopy supportsTTYWithVoice];
   asciiSubstitutions = self->_asciiSubstitutions;
-  if (v8)
+  if (supportsTTYWithVoice)
   {
     self->_asciiSubstitutions = &unk_2873FB870;
 
@@ -265,8 +265,8 @@ void __39__RTTUIConversationViewController_init__block_invoke_339(uint64_t a1)
   }
 
   [(RTTUIConversationViewController *)self updateBarButtons];
-  v14 = [MEMORY[0x277D440C8] sharedInstance];
-  [v14 setShouldSuppressIncomingNotification:{-[RTTUIConversationViewController isCurrentCallConnected](self, "isCurrentCallConnected")}];
+  mEMORY[0x277D440C8] = [MEMORY[0x277D440C8] sharedInstance];
+  [mEMORY[0x277D440C8] setShouldSuppressIncomingNotification:{-[RTTUIConversationViewController isCurrentCallConnected](self, "isCurrentCallConnected")}];
 }
 
 void __43__RTTUIConversationViewController_setCall___block_invoke(uint64_t a1, void *a2)
@@ -312,8 +312,8 @@ void __43__RTTUIConversationViewController_setCall___block_invoke_2(uint64_t a1)
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277D440C8] sharedInstance];
-  [v3 setShouldSuppressIncomingNotification:0];
+  mEMORY[0x277D440C8] = [MEMORY[0x277D440C8] sharedInstance];
+  [mEMORY[0x277D440C8] setShouldSuppressIncomingNotification:0];
 
   [(RTTUIConversationViewController *)self setLookupController:0];
   [(BSInvalidatable *)self->_sleepTimerDisabledAssertion invalidate];
@@ -332,31 +332,31 @@ void __43__RTTUIConversationViewController_setCall___block_invoke_2(uint64_t a1)
   [(RTTUIConversationViewController *)self callDidConnect:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v17 = *MEMORY[0x277D85DE8];
   v5 = AXLogRTT();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&dword_261725000, v5, OS_LOG_TYPE_INFO, "RTT view controller will appear: %@", buf, 0xCu);
   }
 
   v14.receiver = self;
   v14.super_class = RTTUIConversationViewController;
-  [(RTTUIConversationViewController *)&v14 viewWillAppear:v3];
+  [(RTTUIConversationViewController *)&v14 viewWillAppear:appearCopy];
   if ([(RTTUIConversationViewController *)self isCurrentCallConnected])
   {
-    v6 = [(RTTUIConversationViewController *)self call];
-    v7 = [v6 status];
+    call = [(RTTUIConversationViewController *)self call];
+    status = [call status];
 
-    if (v7 != 1)
+    if (status != 1)
     {
 LABEL_14:
-      v13 = [MEMORY[0x277D440C8] sharedInstance];
-      [v13 setShouldSuppressIncomingNotification:1];
+      mEMORY[0x277D440C8] = [MEMORY[0x277D440C8] sharedInstance];
+      [mEMORY[0x277D440C8] setShouldSuppressIncomingNotification:1];
 
       return;
     }
@@ -367,71 +367,71 @@ LABEL_14:
       [(RTTUITextView *)self->_textView updateTTYBar];
     }
 
-    v8 = [(RTTUIConversationViewController *)self conversation];
-    v9 = [v8 utterances];
-    v10 = [v9 lastObject];
+    conversation = [(RTTUIConversationViewController *)self conversation];
+    utterances = [conversation utterances];
+    lastObject = [utterances lastObject];
 
-    v11 = [(RTTUIConversationViewController *)self call];
-    if (+[RTTUIUtilities ttyShouldBeRealtimeForCall:](RTTUIUtilities, "ttyShouldBeRealtimeForCall:", v11) && [v10 isMe] && (objc_msgSend(v10, "isComplete") & 1) == 0)
+    call2 = [(RTTUIConversationViewController *)self call];
+    if (+[RTTUIUtilities ttyShouldBeRealtimeForCall:](RTTUIUtilities, "ttyShouldBeRealtimeForCall:", call2) && [lastObject isMe] && (objc_msgSend(lastObject, "isComplete") & 1) == 0)
     {
-      v12 = [v10 hasTimedOut];
+      hasTimedOut = [lastObject hasTimedOut];
 
-      if (v12)
+      if (hasTimedOut)
       {
 LABEL_13:
 
         goto LABEL_14;
       }
 
-      v11 = [v10 text];
-      [(RTTUIConversationViewController *)self setTextViewUtterance:v11];
+      call2 = [lastObject text];
+      [(RTTUIConversationViewController *)self setTextViewUtterance:call2];
     }
 
     goto LABEL_13;
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v10 = *MEMORY[0x277D85DE8];
   v5 = AXLogRTT();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&dword_261725000, v5, OS_LOG_TYPE_INFO, "RTT view controller will disappear: %@", buf, 0xCu);
   }
 
   v7.receiver = self;
   v7.super_class = RTTUIConversationViewController;
-  [(RTTUIConversationViewController *)&v7 viewWillDisappear:v3];
+  [(RTTUIConversationViewController *)&v7 viewWillDisappear:disappearCopy];
   [(RTTUITextView *)self->_textView overrideTTYPredictionsHidden:1];
-  v6 = [MEMORY[0x277D440C8] sharedInstance];
-  [v6 setShouldSuppressIncomingNotification:0];
+  mEMORY[0x277D440C8] = [MEMORY[0x277D440C8] sharedInstance];
+  [mEMORY[0x277D440C8] setShouldSuppressIncomingNotification:0];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v14 = *MEMORY[0x277D85DE8];
   v5 = AXLogRTT();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_261725000, v5, OS_LOG_TYPE_INFO, "RTT view controller disappeared: %@", buf, 0xCu);
   }
 
   v11.receiver = self;
   v11.super_class = RTTUIConversationViewController;
-  [(RTTUIConversationViewController *)&v11 viewDidDisappear:v3];
+  [(RTTUIConversationViewController *)&v11 viewDidDisappear:disappearCopy];
   if (soft_AXProcessIsInCallService())
   {
-    v6 = [MEMORY[0x277D440C8] sharedInstance];
-    v7 = [(RTTUIConversationViewController *)self call];
-    v8 = [v7 callUUID];
-    [v6 setViewControllerIsVisible:0 withCallID:v8];
+    mEMORY[0x277D440C8] = [MEMORY[0x277D440C8] sharedInstance];
+    call = [(RTTUIConversationViewController *)self call];
+    callUUID = [call callUUID];
+    [mEMORY[0x277D440C8] setViewControllerIsVisible:0 withCallID:callUUID];
   }
 
   sleepTimerDisabledAssertion = self->_sleepTimerDisabledAssertion;
@@ -443,9 +443,9 @@ LABEL_13:
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v23 = *MEMORY[0x277D85DE8];
   v5 = AXLogRTT();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -457,13 +457,13 @@ LABEL_13:
 
   v14.receiver = self;
   v14.super_class = RTTUIConversationViewController;
-  [(RTTUIConversationViewController *)&v14 viewDidAppear:v3];
+  [(RTTUIConversationViewController *)&v14 viewDidAppear:appearCopy];
   if (soft_AXProcessIsInCallService())
   {
-    v6 = [MEMORY[0x277D440C8] sharedInstance];
-    v7 = [(RTTUIConversationViewController *)self call];
-    v8 = [v7 callUUID];
-    [v6 setViewControllerIsVisible:1 withCallID:v8];
+    mEMORY[0x277D440C8] = [MEMORY[0x277D440C8] sharedInstance];
+    call = [(RTTUIConversationViewController *)self call];
+    callUUID = [call callUUID];
+    [mEMORY[0x277D440C8] setViewControllerIsVisible:1 withCallID:callUUID];
   }
 
   if (!self->_sleepTimerDisabledAssertion)
@@ -486,8 +486,8 @@ LABEL_13:
 
     v10 = v9;
     _Block_object_dispose(&v15, 8);
-    v11 = [v9 sharedInstance];
-    v12 = [v11 acquireAssertionToDisableIdleTimerWithReason:@"RealTimeText"];
+    sharedInstance = [v9 sharedInstance];
+    v12 = [sharedInstance acquireAssertionToDisableIdleTimerWithReason:@"RealTimeText"];
     sleepTimerDisabledAssertion = self->_sleepTimerDisabledAssertion;
     self->_sleepTimerDisabledAssertion = v12;
   }
@@ -495,10 +495,10 @@ LABEL_13:
   [(RTTUIConversationViewController *)self updateBarButtons];
 }
 
-- (void)updateDeviceLockStatus:(BOOL)a3
+- (void)updateDeviceLockStatus:(BOOL)status
 {
-  v3 = a3;
-  if ([(RTTUIConversationViewController *)self isIncomingScreeningCall]&& v3)
+  statusCopy = status;
+  if ([(RTTUIConversationViewController *)self isIncomingScreeningCall]&& statusCopy)
   {
     v5 = AXLogRTT();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -545,10 +545,10 @@ void __58__RTTUIConversationViewController_updateDeviceLockStatus___block_invoke
     }
 
     [(RTTUIConversationViewController *)self addServiceCellWithUpdate:*MEMORY[0x277D440F8] options:0];
-    v4 = [(RTTUIConversationViewController *)self call];
-    v5 = [v4 isUplinkMuted];
+    call = [(RTTUIConversationViewController *)self call];
+    isUplinkMuted = [call isUplinkMuted];
 
-    if (v5)
+    if (isUplinkMuted)
     {
       [(RTTUIConversationViewController *)self toggleMute:0];
     }
@@ -562,10 +562,10 @@ void __58__RTTUIConversationViewController_updateDeviceLockStatus___block_invoke
   [(RTTUIConversationViewController *)self updateInputEnabled];
 }
 
-- (void)callDidConnect:(id)a3
+- (void)callDidConnect:(id)connect
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  connectCopy = connect;
   v32 = 0;
   v33 = &v32;
   v34 = 0x3032000000;
@@ -595,9 +595,9 @@ void __58__RTTUIConversationViewController_updateDeviceLockStatus___block_invoke
   v5 = AXLogRTT();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [(RTTUIConversationViewController *)self call];
+    call = [(RTTUIConversationViewController *)self call];
     *buf = 138412290;
-    v39 = v6;
+    v39 = call;
     _os_log_impl(&dword_261725000, v5, OS_LOG_TYPE_INFO, "Call did connect %@", buf, 0xCu);
   }
 
@@ -611,8 +611,8 @@ void __58__RTTUIConversationViewController_updateDeviceLockStatus___block_invoke
   }
 
   objc_initWeak(buf, self);
-  v9 = [(RTTUIConversationViewController *)self call];
-  v10 = [v9 status];
+  call2 = [(RTTUIConversationViewController *)self call];
+  status = [call2 status];
 
   if ([(RTTUIConversationViewController *)self isCurrentCallConnected])
   {
@@ -633,9 +633,9 @@ void __58__RTTUIConversationViewController_updateDeviceLockStatus___block_invoke
       if (![(RTTUIConversationViewController *)self currentCallIsDowngraded])
       {
         v11 = +[RTTUIConversationControllerCoordinator sharedInstance];
-        v12 = [(RTTUIConversationViewController *)self call];
-        v13 = [v12 callUUID];
-        [v11 registerForCallUpdates:v13];
+        call3 = [(RTTUIConversationViewController *)self call];
+        callUUID = [call3 callUUID];
+        [v11 registerForCallUpdates:callUUID];
 
         v16[1] = MEMORY[0x277D85DD0];
         v16[2] = 3221225472;
@@ -645,15 +645,15 @@ void __58__RTTUIConversationViewController_updateDeviceLockStatus___block_invoke
         AXPerformBlockOnMainThread();
         BKSHIDServicesRequestProximityDetectionMode();
         [(RTTUIConversationViewController *)self updateCallHold:0];
-        v14 = [MEMORY[0x277D440C8] sharedInstance];
-        [v14 setShouldSuppressIncomingNotification:1];
+        mEMORY[0x277D440C8] = [MEMORY[0x277D440C8] sharedInstance];
+        [mEMORY[0x277D440C8] setShouldSuppressIncomingNotification:1];
 
         objc_destroyWeak(v17);
       }
     }
   }
 
-  else if ((v10 - 5) <= 1)
+  else if ((status - 5) <= 1)
   {
     v15 = self->_textView;
     objc_copyWeak(v16, buf);
@@ -749,37 +749,37 @@ void __50__RTTUIConversationViewController_callDidConnect___block_invoke_3(uint6
   }
 }
 
-- (void)updateCallHold:(id)a3
+- (void)updateCallHold:(id)hold
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = [(RTTUIConversationViewController *)self isCurrentCallReceivingOnHold];
-  v5 = [(RTTUIConversationViewController *)self isCurrentCallSendingOnHold];
-  v6 = [(TUCall *)self->_call isConnected];
+  isCurrentCallReceivingOnHold = [(RTTUIConversationViewController *)self isCurrentCallReceivingOnHold];
+  isCurrentCallSendingOnHold = [(RTTUIConversationViewController *)self isCurrentCallSendingOnHold];
+  isConnected = [(TUCall *)self->_call isConnected];
   v7 = AXLogRTT();
   v8 = v7;
-  if (v6)
+  if (isConnected)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       call = self->_call;
       *buf = 67109634;
-      v25 = v4;
+      v25 = isCurrentCallReceivingOnHold;
       v26 = 1024;
-      v27 = v5;
+      v27 = isCurrentCallSendingOnHold;
       v28 = 2112;
       v29 = call;
       _os_log_impl(&dword_261725000, v8, OS_LOG_TYPE_DEFAULT, "Call hold status: %d | %d, %@", buf, 0x18u);
     }
 
-    if (v5)
+    if (isCurrentCallSendingOnHold)
     {
       v10 = *MEMORY[0x277D44108];
       v11 = *MEMORY[0x277D44120];
       v22 = *MEMORY[0x277D440F0];
-      v12 = [(RTTUIConversationViewController *)self contactDisplayString];
-      v23 = v12;
+      contactDisplayString = [(RTTUIConversationViewController *)self contactDisplayString];
+      v23 = contactDisplayString;
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-      v14 = self;
+      selfCopy2 = self;
       v15 = v10;
       v16 = v11;
     }
@@ -787,7 +787,7 @@ void __50__RTTUIConversationViewController_callDidConnect___block_invoke_3(uint6
     else
     {
       v18 = *MEMORY[0x277D44120];
-      if (!v4)
+      if (!isCurrentCallReceivingOnHold)
       {
         [(RTTUIConversationViewController *)self removeServiceCellWithUpdate:*MEMORY[0x277D44120]];
         [(RTTUIConversationViewController *)self removeServiceCellWithUpdate:*MEMORY[0x277D44108]];
@@ -795,15 +795,15 @@ void __50__RTTUIConversationViewController_callDidConnect___block_invoke_3(uint6
       }
 
       v19 = *MEMORY[0x277D44108];
-      v12 = [(RTTUIConversationViewController *)self contactDisplayString];
-      v21 = v12;
+      contactDisplayString = [(RTTUIConversationViewController *)self contactDisplayString];
+      v21 = contactDisplayString;
       v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v21 forKeys:&v20 count:1];
-      v14 = self;
+      selfCopy2 = self;
       v15 = v18;
       v16 = v19;
     }
 
-    [(RTTUIConversationViewController *)v14 replaceServiceCellWithOldUpdate:v15 withNewUpdate:v16 options:v13];
+    [(RTTUIConversationViewController *)selfCopy2 replaceServiceCellWithOldUpdate:v15 withNewUpdate:v16 options:v13];
 
 LABEL_13:
     [(RTTUIConversationViewController *)self _updateBarButtonState];
@@ -815,9 +815,9 @@ LABEL_13:
   {
     v17 = self->_call;
     *buf = 67109634;
-    v25 = v4;
+    v25 = isCurrentCallReceivingOnHold;
     v26 = 1024;
-    v27 = v5;
+    v27 = isCurrentCallSendingOnHold;
     v28 = 2112;
     v29 = v17;
     _os_log_impl(&dword_261725000, v8, OS_LOG_TYPE_INFO, "Call not connected, not showing hold status: (hold: %d | %d): %@", buf, 0x18u);
@@ -839,8 +839,8 @@ LABEL_13:
 
 - (BOOL)showTextViewForCurrentCall
 {
-  v3 = [(RTTUIConversationViewController *)self call];
-  if ([v3 isConnected])
+  call = [(RTTUIConversationViewController *)self call];
+  if ([call isConnected])
   {
     v4 = ![(RTTUIConversationViewController *)self isIncomingScreeningCall];
   }
@@ -855,19 +855,19 @@ LABEL_13:
 
 - (BOOL)isIncomingScreeningCall
 {
-  v3 = [(RTTUIConversationViewController *)self call];
-  if ([v3 isScreening])
+  call = [(RTTUIConversationViewController *)self call];
+  if ([call isScreening])
   {
-    v4 = [(RTTUIConversationViewController *)self call];
-    v5 = [v4 isIncoming];
+    call2 = [(RTTUIConversationViewController *)self call];
+    isIncoming = [call2 isIncoming];
   }
 
   else
   {
-    v5 = 0;
+    isIncoming = 0;
   }
 
-  return v5;
+  return isIncoming;
 }
 
 void __56__RTTUIConversationViewController__updateBarButtonState__block_invoke(uint64_t a1)
@@ -983,43 +983,43 @@ LABEL_17:
 - (void)updateBarButtons
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(RTTUIConversationViewController *)self navigationController];
-  v4 = [v3 navigationBar];
-  v5 = [v4 topItem];
-  v6 = [v5 rightBarButtonItems];
-  v7 = [v6 count];
+  navigationController = [(RTTUIConversationViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  topItem = [navigationBar topItem];
+  rightBarButtonItems = [topItem rightBarButtonItems];
+  v7 = [rightBarButtonItems count];
 
   if (!v7)
   {
     v8 = objc_opt_new();
-    v9 = [(RTTUIConversationViewController *)self call];
+    call = [(RTTUIConversationViewController *)self call];
 
-    if (!v9)
+    if (!call)
     {
       v10 = [objc_alloc(MEMORY[0x277D751E0]) initWithBarButtonSystemItem:9 target:self action:sel_shareCallInfo_];
       [v8 addObject:v10];
     }
 
-    v11 = [(RTTUIConversationViewController *)self call];
-    v12 = [v11 supportsTTYWithVoice];
+    call2 = [(RTTUIConversationViewController *)self call];
+    supportsTTYWithVoice = [call2 supportsTTYWithVoice];
 
-    if (v12)
+    if (supportsTTYWithVoice)
     {
-      v13 = [(RTTUIConversationViewController *)self _muteButtonItem];
-      [v13 setAccessibilityIdentifier:@"BarButtonMuteIdentifier"];
-      [v8 addObject:v13];
+      _muteButtonItem = [(RTTUIConversationViewController *)self _muteButtonItem];
+      [_muteButtonItem setAccessibilityIdentifier:@"BarButtonMuteIdentifier"];
+      [v8 addObject:_muteButtonItem];
     }
 
-    v14 = [MEMORY[0x277D440E0] sharedUtilityProvider];
-    v15 = [(RTTUIConversationViewController *)self call];
-    v16 = [v14 contextForCall:v15];
+    mEMORY[0x277D440E0] = [MEMORY[0x277D440E0] sharedUtilityProvider];
+    call3 = [(RTTUIConversationViewController *)self call];
+    v16 = [mEMORY[0x277D440E0] contextForCall:call3];
 
-    v17 = [MEMORY[0x277D440D8] sharedInstance];
-    v18 = [v17 rttCallHoldEnabled];
+    mEMORY[0x277D440D8] = [MEMORY[0x277D440D8] sharedInstance];
+    rttCallHoldEnabled = [mEMORY[0x277D440D8] rttCallHoldEnabled];
 
     v19 = [MEMORY[0x277D440E0] isRTTCallHoldSupportedForContext:v16];
     v20 = v19;
-    if ((v18 & v12) == 1 && v19)
+    if ((rttCallHoldEnabled & supportsTTYWithVoice) == 1 && v19)
     {
       if ((_UISolariumEnabled() & 1) == 0)
       {
@@ -1028,12 +1028,12 @@ LABEL_17:
         [v8 addObject:v21];
       }
 
-      v22 = [(RTTUIConversationViewController *)self _holdButtonItem];
-      [v22 setAccessibilityIdentifier:@"BarButtonHoldIdentifier"];
-      v23 = [(RTTUIConversationViewController *)self call];
-      [v22 setEnabled:{objc_msgSend(v23, "isEmergency") ^ 1}];
+      _holdButtonItem = [(RTTUIConversationViewController *)self _holdButtonItem];
+      [_holdButtonItem setAccessibilityIdentifier:@"BarButtonHoldIdentifier"];
+      call4 = [(RTTUIConversationViewController *)self call];
+      [_holdButtonItem setEnabled:{objc_msgSend(call4, "isEmergency") ^ 1}];
 
-      [v8 addObject:v22];
+      [v8 addObject:_holdButtonItem];
     }
 
     else
@@ -1042,9 +1042,9 @@ LABEL_17:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
         v32[0] = 67109632;
-        v32[1] = v18;
+        v32[1] = rttCallHoldEnabled;
         v33 = 1024;
-        v34 = v12;
+        v34 = supportsTTYWithVoice;
         v35 = 1024;
         v36 = v20;
         _os_log_impl(&dword_261725000, v24, OS_LOG_TYPE_INFO, "Disabled RTT Hold Feature: %d %d %d", v32, 0x14u);
@@ -1054,22 +1054,22 @@ LABEL_17:
     if (_UISolariumEnabled())
     {
       v25 = objc_alloc(MEMORY[0x277D751F0]);
-      v26 = [v8 reverseObjectEnumerator];
-      v27 = [v26 allObjects];
-      v28 = [v25 initWithBarButtonItems:v27 representativeItem:0];
+      reverseObjectEnumerator = [v8 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
+      navigationController3 = [v25 initWithBarButtonItems:allObjects representativeItem:0];
 
-      v29 = [(RTTUIConversationViewController *)self navigationController];
-      v30 = [v29 navigationBar];
-      v31 = [v30 topItem];
-      [v31 setPinnedTrailingGroup:v28];
+      navigationController2 = [(RTTUIConversationViewController *)self navigationController];
+      navigationBar2 = [navigationController2 navigationBar];
+      topItem2 = [navigationBar2 topItem];
+      [topItem2 setPinnedTrailingGroup:navigationController3];
     }
 
     else
     {
-      v28 = [(RTTUIConversationViewController *)self navigationController];
-      v29 = [v28 navigationBar];
-      v30 = [v29 topItem];
-      [v30 setRightBarButtonItems:v8];
+      navigationController3 = [(RTTUIConversationViewController *)self navigationController];
+      navigationController2 = [navigationController3 navigationBar];
+      navigationBar2 = [navigationController2 topItem];
+      [navigationBar2 setRightBarButtonItems:v8];
     }
   }
 
@@ -1081,37 +1081,37 @@ LABEL_17:
   if (_UISolariumEnabled())
   {
     v3 = objc_alloc(MEMORY[0x277D751E0]);
-    v4 = [MEMORY[0x277D755B8] _systemImageNamed:@"mic.slash.fill"];
-    v5 = [v3 initWithImage:v4 style:0 target:self action:sel_toggleMute_];
+    _imageThatSuppressesAccessibilityHairlineThickening = [MEMORY[0x277D755B8] _systemImageNamed:@"mic.slash.fill"];
+    v5 = [v3 initWithImage:_imageThatSuppressesAccessibilityHairlineThickening style:0 target:self action:sel_toggleMute_];
   }
 
   else
   {
     v6 = [MEMORY[0x277D755B8] _systemImageNamed:@"mic.slash.fill"];
-    v4 = [v6 _imageThatSuppressesAccessibilityHairlineThickening];
+    _imageThatSuppressesAccessibilityHairlineThickening = [v6 _imageThatSuppressesAccessibilityHairlineThickening];
 
     v7 = ttyImageNamed(@"ttyMuteCircle");
-    v8 = [MEMORY[0x277D75348] systemFillColor];
-    v9 = [v7 imageWithTintColor:v8];
-    v10 = [v9 _imageThatSuppressesAccessibilityHairlineThickening];
+    systemFillColor = [MEMORY[0x277D75348] systemFillColor];
+    v9 = [v7 imageWithTintColor:systemFillColor];
+    _imageThatSuppressesAccessibilityHairlineThickening2 = [v9 _imageThatSuppressesAccessibilityHairlineThickening];
 
     v11 = ttyImageNamed(@"ttyMuteCircle");
-    v12 = [MEMORY[0x277D75348] systemWhiteColor];
-    v13 = [v11 imageWithTintColor:v12];
-    v14 = [v13 _imageThatSuppressesAccessibilityHairlineThickening];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    v13 = [v11 imageWithTintColor:systemWhiteColor];
+    _imageThatSuppressesAccessibilityHairlineThickening3 = [v13 _imageThatSuppressesAccessibilityHairlineThickening];
 
     v15 = [MEMORY[0x277D75220] buttonWithType:0];
     [v15 addTarget:self action:sel_toggleMute_ forControlEvents:64];
-    v16 = [MEMORY[0x277D75348] systemWhiteColor];
-    v17 = [v4 imageWithTintColor:v16 renderingMode:1];
+    systemWhiteColor2 = [MEMORY[0x277D75348] systemWhiteColor];
+    v17 = [_imageThatSuppressesAccessibilityHairlineThickening imageWithTintColor:systemWhiteColor2 renderingMode:1];
     [v15 setImage:v17 forState:0];
 
-    v18 = [MEMORY[0x277D75348] systemBlackColor];
-    v19 = [v4 imageWithTintColor:v18 renderingMode:1];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+    v19 = [_imageThatSuppressesAccessibilityHairlineThickening imageWithTintColor:systemBlackColor renderingMode:1];
     [v15 setImage:v19 forState:4];
 
-    [v15 setBackgroundImage:v10 forState:0];
-    [v15 setBackgroundImage:v14 forState:4];
+    [v15 setBackgroundImage:_imageThatSuppressesAccessibilityHairlineThickening2 forState:0];
+    [v15 setBackgroundImage:_imageThatSuppressesAccessibilityHairlineThickening3 forState:4];
     [v15 sizeToFit];
     v5 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v15];
   }
@@ -1124,37 +1124,37 @@ LABEL_17:
   if (_UISolariumEnabled())
   {
     v3 = objc_alloc(MEMORY[0x277D751E0]);
-    v4 = [MEMORY[0x277D755B8] _systemImageNamed:@"pause.fill"];
-    v5 = [v3 initWithImage:v4 style:0 target:self action:sel_toggleHold_];
+    _imageThatSuppressesAccessibilityHairlineThickening = [MEMORY[0x277D755B8] _systemImageNamed:@"pause.fill"];
+    v5 = [v3 initWithImage:_imageThatSuppressesAccessibilityHairlineThickening style:0 target:self action:sel_toggleHold_];
   }
 
   else
   {
     v6 = [MEMORY[0x277D755B8] _systemImageNamed:@"pause.fill"];
-    v4 = [v6 _imageThatSuppressesAccessibilityHairlineThickening];
+    _imageThatSuppressesAccessibilityHairlineThickening = [v6 _imageThatSuppressesAccessibilityHairlineThickening];
 
     v7 = ttyImageNamed(@"ttyMuteCircle");
-    v8 = [MEMORY[0x277D75348] systemFillColor];
-    v9 = [v7 imageWithTintColor:v8];
-    v10 = [v9 _imageThatSuppressesAccessibilityHairlineThickening];
+    systemFillColor = [MEMORY[0x277D75348] systemFillColor];
+    v9 = [v7 imageWithTintColor:systemFillColor];
+    _imageThatSuppressesAccessibilityHairlineThickening2 = [v9 _imageThatSuppressesAccessibilityHairlineThickening];
 
     v11 = ttyImageNamed(@"ttyMuteCircle");
-    v12 = [MEMORY[0x277D75348] systemWhiteColor];
-    v13 = [v11 imageWithTintColor:v12];
-    v14 = [v13 _imageThatSuppressesAccessibilityHairlineThickening];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    v13 = [v11 imageWithTintColor:systemWhiteColor];
+    _imageThatSuppressesAccessibilityHairlineThickening3 = [v13 _imageThatSuppressesAccessibilityHairlineThickening];
 
     v15 = [MEMORY[0x277D75220] buttonWithType:0];
     [v15 addTarget:self action:sel_toggleHold_ forControlEvents:64];
-    v16 = [MEMORY[0x277D75348] systemBlackColor];
-    v17 = [v4 imageWithTintColor:v16 renderingMode:1];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+    v17 = [_imageThatSuppressesAccessibilityHairlineThickening imageWithTintColor:systemBlackColor renderingMode:1];
     [v15 setImage:v17 forState:4];
 
-    v18 = [MEMORY[0x277D75348] systemWhiteColor];
-    v19 = [v4 imageWithTintColor:v18 renderingMode:1];
+    systemWhiteColor2 = [MEMORY[0x277D75348] systemWhiteColor];
+    v19 = [_imageThatSuppressesAccessibilityHairlineThickening imageWithTintColor:systemWhiteColor2 renderingMode:1];
     [v15 setImage:v19 forState:0];
 
-    [v15 setBackgroundImage:v10 forState:0];
-    [v15 setBackgroundImage:v14 forState:4];
+    [v15 setBackgroundImage:_imageThatSuppressesAccessibilityHairlineThickening2 forState:0];
+    [v15 setBackgroundImage:_imageThatSuppressesAccessibilityHairlineThickening3 forState:4];
     [v15 sizeToFit];
     v5 = [objc_alloc(MEMORY[0x277D751E0]) initWithCustomView:v15];
   }
@@ -1162,7 +1162,7 @@ LABEL_17:
   return v5;
 }
 
-- (void)toggleMute:(id)a3
+- (void)toggleMute:(id)mute
 {
   v3 = MEMORY[0x277D440E0];
   v6[0] = MEMORY[0x277D85DD0];
@@ -1170,9 +1170,9 @@ LABEL_17:
   v6[2] = __46__RTTUIConversationViewController_toggleMute___block_invoke;
   v6[3] = &unk_279AE4E98;
   v6[4] = self;
-  v4 = [(RTTUIConversationViewController *)self call];
-  v5 = [v4 callCenter];
-  [v3 performCallCenterTask:v6 callCenter:v5];
+  call = [(RTTUIConversationViewController *)self call];
+  callCenter = [call callCenter];
+  [v3 performCallCenterTask:v6 callCenter:callCenter];
 }
 
 void __46__RTTUIConversationViewController_toggleMute___block_invoke(uint64_t a1)
@@ -1270,7 +1270,7 @@ void __46__RTTUIConversationViewController_toggleMute___block_invoke_442(uint64_
   [WeakRetained removeServiceCellWithUpdate:*(a1 + 32)];
 }
 
-- (void)toggleHold:(id)a3
+- (void)toggleHold:(id)hold
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
@@ -1310,14 +1310,14 @@ uint64_t __46__RTTUIConversationViewController_toggleHold___block_invoke(uint64_
   return [*(a1 + 32) updateInputEnabled];
 }
 
-- (void)logCallHold:(BOOL)a3
+- (void)logCallHold:(BOOL)hold
 {
   v4 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__RTTUIConversationViewController_logCallHold___block_invoke;
   block[3] = &__block_descriptor_33_e5_v8__0l;
-  v6 = a3;
+  holdCopy = hold;
   dispatch_async(v4, block);
 }
 
@@ -1341,38 +1341,38 @@ void __47__RTTUIConversationViewController_logCallHold___block_invoke(uint64_t a
 
 - (id)contactDisplayString
 {
-  v3 = [(RTTUIConversationViewController *)self call];
-  v4 = [v3 displayName];
+  call = [(RTTUIConversationViewController *)self call];
+  displayName = [call displayName];
 
-  if (![v4 length])
+  if (![displayName length])
   {
     v5 = MEMORY[0x277CBDA78];
     v6 = MEMORY[0x277CBDA58];
-    v7 = [(RTTUIConversationViewController *)self conversation];
-    v8 = [v7 otherContactPath];
-    v9 = [v6 contactForPhoneNumber:v8];
+    conversation = [(RTTUIConversationViewController *)self conversation];
+    otherContactPath = [conversation otherContactPath];
+    v9 = [v6 contactForPhoneNumber:otherContactPath];
     v10 = [v5 stringFromContact:v9 style:0];
 
-    v4 = v10;
+    displayName = v10;
   }
 
-  if (![v4 length])
+  if (![displayName length])
   {
-    v11 = [(RTTUIConversationViewController *)self conversation];
-    v12 = [v11 otherContactPath];
+    conversation2 = [(RTTUIConversationViewController *)self conversation];
+    otherContactPath2 = [conversation2 otherContactPath];
 
-    v4 = v12;
+    displayName = otherContactPath2;
   }
 
-  return v4;
+  return displayName;
 }
 
 - (BOOL)isCurrentCallConnected
 {
-  v2 = [(RTTUIConversationViewController *)self call];
-  v3 = [v2 status];
+  call = [(RTTUIConversationViewController *)self call];
+  status = [call status];
 
-  return (v3 - 1) < 2;
+  return (status - 1) < 2;
 }
 
 - (BOOL)isCurrentCallOnHold
@@ -1387,14 +1387,14 @@ void __47__RTTUIConversationViewController_logCallHold___block_invoke(uint64_t a
 
 - (BOOL)isCurrentCallReceivingOnHold
 {
-  v2 = [(RTTUIConversationViewController *)self call];
-  v3 = [v2 providerContext];
+  call = [(RTTUIConversationViewController *)self call];
+  providerContext = [call providerContext];
   v4 = AXTTYIsTextHeldForRTTCall();
-  v5 = [v3 objectForKey:v4];
+  v5 = [providerContext objectForKey:v4];
 
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
   else
@@ -1405,24 +1405,24 @@ void __47__RTTUIConversationViewController_logCallHold___block_invoke(uint64_t a
       [(RTTUIConversationViewController *)v7 isCurrentCallReceivingOnHold];
     }
 
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 - (BOOL)isCurrentCallSendingOnHold
 {
-  v2 = [(RTTUIConversationViewController *)self call];
-  v3 = [v2 isOnHold];
+  call = [(RTTUIConversationViewController *)self call];
+  isOnHold = [call isOnHold];
 
-  return v3;
+  return isOnHold;
 }
 
 - (BOOL)currentCallIsDowngraded
 {
-  v2 = [(RTTUIConversationViewController *)self call];
-  v3 = [v2 ttyType] == 0;
+  call = [(RTTUIConversationViewController *)self call];
+  v3 = [call ttyType] == 0;
 
   return v3;
 }
@@ -1460,22 +1460,22 @@ uint64_t __53__RTTUIConversationViewController_updateInputEnabled__block_invoke(
   return [v9 setEnabled:v10];
 }
 
-- (void)addServiceCellWithUpdate:(id)a3 options:(id)a4
+- (void)addServiceCellWithUpdate:(id)update options:(id)options
 {
-  v5 = a3;
-  v8 = a4;
-  v6 = v8;
-  v7 = v5;
+  updateCopy = update;
+  optionsCopy = options;
+  v6 = optionsCopy;
+  v7 = updateCopy;
   AXPerformBlockOnMainThread();
 }
 
-- (void)_addServiceCellWithUpdate:(id)a3 options:(id)a4
+- (void)_addServiceCellWithUpdate:(id)update options:(id)options
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  optionsCopy = options;
   _AXAssertIsMainThread();
-  v8 = [objc_alloc(MEMORY[0x277D440D0]) initWithServiceUpdateType:v6 options:v7];
+  v8 = [objc_alloc(MEMORY[0x277D440D0]) initWithServiceUpdateType:updateCopy options:optionsCopy];
 
   if (([(NSMutableArray *)self->_serviceUpdates containsObject:v8]& 1) == 0)
   {
@@ -1485,7 +1485,7 @@ uint64_t __53__RTTUIConversationViewController_updateInputEnabled__block_invoke(
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v13 = 138412546;
-      v14 = v6;
+      v14 = updateCopy;
       v15 = 2112;
       v16 = v10;
       _os_log_impl(&dword_261725000, v11, OS_LOG_TYPE_INFO, "Add service cell %@ %@", &v13, 0x16u);
@@ -1495,30 +1495,30 @@ uint64_t __53__RTTUIConversationViewController_updateInputEnabled__block_invoke(
     if (v10)
     {
       [(RTTUIConversationViewController *)self _updateTableViewRowAtIndexPath:v10 action:1 animation:4];
-      v12 = [(RTTUIConversationViewController *)self tableView];
-      [v12 scrollToRowAtIndexPath:v10 atScrollPosition:3 animated:1];
+      tableView = [(RTTUIConversationViewController *)self tableView];
+      [tableView scrollToRowAtIndexPath:v10 atScrollPosition:3 animated:1];
     }
   }
 }
 
-- (void)removeServiceCellWithUpdate:(id)a3
+- (void)removeServiceCellWithUpdate:(id)update
 {
-  v4 = a3;
-  v3 = v4;
+  updateCopy = update;
+  v3 = updateCopy;
   AXPerformBlockOnMainThread();
 }
 
-- (void)_removeServiceCellWithUpdate:(id)a3
+- (void)_removeServiceCellWithUpdate:(id)update
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   _AXAssertIsMainThread();
   serviceUpdates = self->_serviceUpdates;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__RTTUIConversationViewController__removeServiceCellWithUpdate___block_invoke;
   v11[3] = &unk_279AE50B0;
-  v6 = v4;
+  v6 = updateCopy;
   v12 = v6;
   v7 = [(NSMutableArray *)serviceUpdates indexOfObjectPassingTest:v11];
   if (v7 != 0x7FFFFFFFFFFFFFFFLL)
@@ -1551,36 +1551,36 @@ BOOL __64__RTTUIConversationViewController__removeServiceCellWithUpdate___block_
   return v4;
 }
 
-- (void)replaceServiceCellWithOldUpdate:(id)a3 withNewUpdate:(id)a4 options:(id)a5
+- (void)replaceServiceCellWithOldUpdate:(id)update withNewUpdate:(id)newUpdate options:(id)options
 {
-  v7 = a3;
-  v11 = a4;
-  v12 = a5;
-  v8 = v12;
-  v9 = v11;
-  v10 = v7;
+  updateCopy = update;
+  newUpdateCopy = newUpdate;
+  optionsCopy = options;
+  v8 = optionsCopy;
+  v9 = newUpdateCopy;
+  v10 = updateCopy;
   AXPerformBlockOnMainThread();
 }
 
-- (void)_replaceServiceCellWithOldUpdate:(id)a3 withNewUpdate:(id)a4 options:(id)a5
+- (void)_replaceServiceCellWithOldUpdate:(id)update withNewUpdate:(id)newUpdate options:(id)options
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updateCopy = update;
+  newUpdateCopy = newUpdate;
+  optionsCopy = options;
   _AXAssertIsMainThread();
   serviceUpdates = self->_serviceUpdates;
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __90__RTTUIConversationViewController__replaceServiceCellWithOldUpdate_withNewUpdate_options___block_invoke;
   v17[3] = &unk_279AE50B0;
-  v12 = v8;
+  v12 = updateCopy;
   v18 = v12;
   v13 = [(NSMutableArray *)serviceUpdates indexOfObjectPassingTest:v17];
-  v14 = [objc_alloc(MEMORY[0x277D440D0]) initWithServiceUpdateType:v9 options:v10];
+  v14 = [objc_alloc(MEMORY[0x277D440D0]) initWithServiceUpdateType:newUpdateCopy options:optionsCopy];
   if (v13 == 0x7FFFFFFFFFFFFFFFLL || ([(NSMutableArray *)self->_serviceUpdates containsObject:v14]& 1) != 0)
   {
-    [(RTTUIConversationViewController *)self _addServiceCellWithUpdate:v9 options:v10];
+    [(RTTUIConversationViewController *)self _addServiceCellWithUpdate:newUpdateCopy options:optionsCopy];
   }
 
   else
@@ -1594,7 +1594,7 @@ BOOL __64__RTTUIConversationViewController__removeServiceCellWithUpdate___block_
       v21 = 2112;
       v22 = v15;
       v23 = 2112;
-      v24 = v9;
+      v24 = newUpdateCopy;
       _os_log_impl(&dword_261725000, v16, OS_LOG_TYPE_INFO, "Replace service cell %@ %@ with %@", buf, 0x20u);
     }
 
@@ -1611,30 +1611,30 @@ BOOL __90__RTTUIConversationViewController__replaceServiceCellWithOldUpdate_with
   return v4;
 }
 
-- (id)addTranscriptionText:(id)a3 isNew:(BOOL)a4
+- (id)addTranscriptionText:(id)text isNew:(BOOL)new
 {
-  v4 = a4;
+  newCopy = new;
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(RTTUIConversationViewController *)self conversation];
-  v8 = [v7 utterances];
-  v9 = [v8 count];
+  textCopy = text;
+  conversation = [(RTTUIConversationViewController *)self conversation];
+  utterances = [conversation utterances];
+  v9 = [utterances count];
 
-  v10 = [(RTTUIConversationViewController *)self conversation];
-  v11 = v10;
-  if (v4)
+  conversation2 = [(RTTUIConversationViewController *)self conversation];
+  v11 = conversation2;
+  if (newCopy)
   {
-    v12 = [v10 addTranscriptionFromOtherContactPath:v6];
+    v12 = [conversation2 addTranscriptionFromOtherContactPath:textCopy];
   }
 
   else
   {
-    v13 = [v10 updateTranscriptionFromOtherContactPath:v6];
+    v13 = [conversation2 updateTranscriptionFromOtherContactPath:textCopy];
   }
 
-  v14 = [(RTTUIConversationViewController *)self conversation];
-  v15 = [v14 utterances];
-  v16 = [v15 count];
+  conversation3 = [(RTTUIConversationViewController *)self conversation];
+  utterances2 = [conversation3 utterances];
+  v16 = [utterances2 count];
 
   v17 = objc_alloc(MEMORY[0x277D440D0]);
   v18 = [v17 initWithServiceUpdateType:*MEMORY[0x277D44110] options:0];
@@ -1657,7 +1657,7 @@ BOOL __90__RTTUIConversationViewController__replaceServiceCellWithOldUpdate_with
     if (v21)
     {
       v24 = 138412802;
-      v25 = v6;
+      v25 = textCopy;
       v26 = 1024;
       v27 = v9;
       v28 = 1024;
@@ -1671,31 +1671,31 @@ BOOL __90__RTTUIConversationViewController__replaceServiceCellWithOldUpdate_with
   return v22;
 }
 
-- (id)addTranslatedTranscriptionText:(id)a3 translatedText:(id)a4 isNew:(BOOL)a5
+- (id)addTranslatedTranscriptionText:(id)text translatedText:(id)translatedText isNew:(BOOL)new
 {
-  v5 = a5;
+  newCopy = new;
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(RTTUIConversationViewController *)self conversation];
-  v11 = [v10 utterances];
-  v12 = [v11 count];
+  textCopy = text;
+  translatedTextCopy = translatedText;
+  conversation = [(RTTUIConversationViewController *)self conversation];
+  utterances = [conversation utterances];
+  v12 = [utterances count];
 
-  v13 = [(RTTUIConversationViewController *)self conversation];
-  v14 = v13;
-  if (v5)
+  conversation2 = [(RTTUIConversationViewController *)self conversation];
+  v14 = conversation2;
+  if (newCopy)
   {
-    v15 = [v13 addTranslatedTranscriptionFromOtherContactPath:v9 original:v8];
+    v15 = [conversation2 addTranslatedTranscriptionFromOtherContactPath:translatedTextCopy original:textCopy];
   }
 
   else
   {
-    v16 = [v13 updateTranslatedTranscriptionFromOtherContactPath:v9 original:v8];
+    v16 = [conversation2 updateTranslatedTranscriptionFromOtherContactPath:translatedTextCopy original:textCopy];
   }
 
-  v17 = [(RTTUIConversationViewController *)self conversation];
-  v18 = [v17 utterances];
-  v19 = [v18 count];
+  conversation3 = [(RTTUIConversationViewController *)self conversation];
+  utterances2 = [conversation3 utterances];
+  v19 = [utterances2 count];
 
   v20 = objc_alloc(MEMORY[0x277D440D0]);
   v21 = [v20 initWithServiceUpdateType:*MEMORY[0x277D44110] options:0];
@@ -1718,7 +1718,7 @@ BOOL __90__RTTUIConversationViewController__replaceServiceCellWithOldUpdate_with
     if (v24)
     {
       v27 = 138412802;
-      v28 = v8;
+      v28 = textCopy;
       v29 = 1024;
       v30 = v12;
       v31 = 1024;
@@ -1732,20 +1732,20 @@ BOOL __90__RTTUIConversationViewController__replaceServiceCellWithOldUpdate_with
   return v25;
 }
 
-- (id)addUtterance:(id)a3
+- (id)addUtterance:(id)utterance
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RTTUIConversationViewController *)self conversation];
-  v6 = [v5 utterances];
-  v7 = [v6 count];
+  utteranceCopy = utterance;
+  conversation = [(RTTUIConversationViewController *)self conversation];
+  utterances = [conversation utterances];
+  v7 = [utterances count];
 
-  v8 = [(RTTUIConversationViewController *)self conversation];
-  [v8 addUtterance:v4];
+  conversation2 = [(RTTUIConversationViewController *)self conversation];
+  [conversation2 addUtterance:utteranceCopy];
 
-  v9 = [(RTTUIConversationViewController *)self conversation];
-  v10 = [v9 utterances];
-  v11 = [v10 count];
+  conversation3 = [(RTTUIConversationViewController *)self conversation];
+  utterances2 = [conversation3 utterances];
+  v11 = [utterances2 count];
 
   v12 = objc_alloc(MEMORY[0x277D440D0]);
   v13 = [v12 initWithServiceUpdateType:*MEMORY[0x277D44110] options:0];
@@ -1768,7 +1768,7 @@ BOOL __90__RTTUIConversationViewController__replaceServiceCellWithOldUpdate_with
     if (v16)
     {
       v19 = 138412802;
-      v20 = v4;
+      v20 = utteranceCopy;
       v21 = 1024;
       v22 = v7;
       v23 = 1024;
@@ -1782,30 +1782,30 @@ BOOL __90__RTTUIConversationViewController__replaceServiceCellWithOldUpdate_with
   return v17;
 }
 
-- (id)_updateTableViewUtteranceOldCount:(unint64_t)a3 newCount:(unint64_t)a4
+- (id)_updateTableViewUtteranceOldCount:(unint64_t)count newCount:(unint64_t)newCount
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = [MEMORY[0x277CBEB18] array];
-  if (a3 >= a4)
+  array = [MEMORY[0x277CBEB18] array];
+  if (count >= newCount)
   {
-    if (a3 > a4)
+    if (count > newCount)
     {
       do
       {
-        v10 = [MEMORY[0x277CCAA70] indexPathForRow:--a3 inSection:0];
-        [v7 addObject:v10];
+        v10 = [MEMORY[0x277CCAA70] indexPathForRow:--count inSection:0];
+        [array addObject:v10];
       }
 
-      while (a3 > a4);
-      a3 = a4;
+      while (count > newCount);
+      count = newCount;
     }
 
-    [(RTTUIConversationViewController *)self _updateTableViewRowsAtIndexPaths:v7 action:2 animation:4];
+    [(RTTUIConversationViewController *)self _updateTableViewRowsAtIndexPaths:array action:2 animation:4];
     v9 = AXLogRTT();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v24 = 138412290;
-      v25 = v7;
+      v25 = array;
       _os_log_impl(&dword_261725000, v9, OS_LOG_TYPE_INFO, "Deleting rows: %@", &v24, 0xCu);
     }
   }
@@ -1814,28 +1814,28 @@ BOOL __90__RTTUIConversationViewController__replaceServiceCellWithOldUpdate_with
   {
     do
     {
-      v8 = [MEMORY[0x277CCAA70] indexPathForRow:a3 inSection:0];
-      [v7 addObject:v8];
+      v8 = [MEMORY[0x277CCAA70] indexPathForRow:count inSection:0];
+      [array addObject:v8];
 
-      ++a3;
+      ++count;
     }
 
-    while (a4 != a3);
-    [(RTTUIConversationViewController *)self _updateTableViewRowsAtIndexPaths:v7 action:1 animation:4];
+    while (newCount != count);
+    [(RTTUIConversationViewController *)self _updateTableViewRowsAtIndexPaths:array action:1 animation:4];
     v9 = AXLogRTT();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v24 = 138412290;
-      v25 = v7;
+      v25 = array;
       _os_log_impl(&dword_261725000, v9, OS_LOG_TYPE_INFO, "Inserting rows: %@", &v24, 0xCu);
     }
 
-    a3 = a4;
+    count = newCount;
   }
 
-  if (a4)
+  if (newCount)
   {
-    v11 = a4 - 1;
+    v11 = newCount - 1;
   }
 
   else
@@ -1850,9 +1850,9 @@ BOOL __90__RTTUIConversationViewController__replaceServiceCellWithOldUpdate_with
     v24 = 134218754;
     v25 = v11;
     v26 = 2048;
-    v27 = a3;
+    countCopy = count;
     v28 = 2048;
-    v29 = a4;
+    newCountCopy = newCount;
     v30 = 2112;
     v31 = v12;
     _os_log_impl(&dword_261725000, v13, OS_LOG_TYPE_INFO, "Trying to update utterance and cell: %lld (old count, %lld, new count %lld) path: %@", &v24, 0x2Au);
@@ -1860,16 +1860,16 @@ BOOL __90__RTTUIConversationViewController__replaceServiceCellWithOldUpdate_with
 
   if ((v11 & 0x8000000000000000) == 0)
   {
-    v14 = [(RTTUIConversationViewController *)self tableView];
-    v15 = [v14 cellForRowAtIndexPath:v12];
+    tableView = [(RTTUIConversationViewController *)self tableView];
+    v15 = [tableView cellForRowAtIndexPath:v12];
 
-    v16 = [(RTTUIConversationViewController *)self conversation];
-    v17 = [v16 utterances];
-    v18 = [v17 lastObject];
-    [v15 updateUtterance:v18];
+    conversation = [(RTTUIConversationViewController *)self conversation];
+    utterances = [conversation utterances];
+    lastObject = [utterances lastObject];
+    [v15 updateUtterance:lastObject];
 
-    v19 = [(RTTUIConversationViewController *)self tableView];
-    v20 = [v19 numberOfRowsInSection:0];
+    tableView2 = [(RTTUIConversationViewController *)self tableView];
+    v20 = [tableView2 numberOfRowsInSection:0];
 
     v21 = AXLogRTT();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -1878,9 +1878,9 @@ BOOL __90__RTTUIConversationViewController__replaceServiceCellWithOldUpdate_with
       v24 = 138412802;
       v25 = v15;
       v26 = 2112;
-      v27 = v12;
+      countCopy = v12;
       v28 = 2112;
-      v29 = v22;
+      newCountCopy = v22;
       _os_log_impl(&dword_261725000, v21, OS_LOG_TYPE_INFO, "Updated cell: %@, index path: %@, number of rows: %@", &v24, 0x20u);
     }
 
@@ -1893,28 +1893,28 @@ BOOL __90__RTTUIConversationViewController__replaceServiceCellWithOldUpdate_with
   return v12;
 }
 
-- (void)updateUtterance:(id)a3 forIndexPath:(id)a4
+- (void)updateUtterance:(id)utterance forIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = [(RTTUIConversationViewController *)self utteranceCellAtIndexPath:a4];
-  [v7 updateUtterance:v6];
+  utteranceCopy = utterance;
+  v7 = [(RTTUIConversationViewController *)self utteranceCellAtIndexPath:path];
+  [v7 updateUtterance:utteranceCopy];
 
   [(RTTUIConversationViewController *)self utteranceCellDidUpdateContent:v7];
 }
 
-- (void)setTextViewUtterance:(id)a3
+- (void)setTextViewUtterance:(id)utterance
 {
-  [(RTTUITextView *)self->_textView setText:a3];
+  [(RTTUITextView *)self->_textView setText:utterance];
 
   [(RTTUIConversationViewController *)self updateTableViewSizeAnimated:1];
 }
 
-- (id)utteranceCellAtIndexPath:(id)a3
+- (id)utteranceCellAtIndexPath:(id)path
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RTTUIConversationViewController *)self tableView];
-  v6 = [v5 cellForRowAtIndexPath:v4];
+  pathCopy = path;
+  tableView = [(RTTUIConversationViewController *)self tableView];
+  v6 = [tableView cellForRowAtIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1937,7 +1937,7 @@ BOOL __90__RTTUIConversationViewController__replaceServiceCellWithOldUpdate_with
     else if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = pathCopy;
       _os_log_impl(&dword_261725000, v9, OS_LOG_TYPE_INFO, "No utterance cell found at index path: %@", &v11, 0xCu);
     }
 
@@ -1947,12 +1947,12 @@ BOOL __90__RTTUIConversationViewController__replaceServiceCellWithOldUpdate_with
   return v7;
 }
 
-- (id)serviceUpdateCellAtIndexPath:(id)a3
+- (id)serviceUpdateCellAtIndexPath:(id)path
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(RTTUIConversationViewController *)self tableView];
-  v6 = [v5 cellForRowAtIndexPath:v4];
+  pathCopy = path;
+  tableView = [(RTTUIConversationViewController *)self tableView];
+  v6 = [tableView cellForRowAtIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1975,7 +1975,7 @@ BOOL __90__RTTUIConversationViewController__replaceServiceCellWithOldUpdate_with
     else if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = pathCopy;
       _os_log_impl(&dword_261725000, v9, OS_LOG_TYPE_INFO, "No service update cell found at index path: %@", &v11, 0xCu);
     }
 
@@ -1987,35 +1987,35 @@ BOOL __90__RTTUIConversationViewController__replaceServiceCellWithOldUpdate_with
 
 - (id)cannedResponses
 {
-  v2 = [MEMORY[0x277D440D8] sharedInstance];
-  v3 = [v2 cannedResponses];
+  mEMORY[0x277D440D8] = [MEMORY[0x277D440D8] sharedInstance];
+  cannedResponses = [mEMORY[0x277D440D8] cannedResponses];
 
-  return v3;
+  return cannedResponses;
 }
 
 - (id)currentContactPath
 {
-  v3 = [MEMORY[0x277D440E0] sharedUtilityProvider];
-  v4 = [(RTTUIConversationViewController *)self call];
-  v5 = [v3 contactPathForCall:v4];
+  mEMORY[0x277D440E0] = [MEMORY[0x277D440E0] sharedUtilityProvider];
+  call = [(RTTUIConversationViewController *)self call];
+  v5 = [mEMORY[0x277D440E0] contactPathForCall:call];
 
   return v5;
 }
 
-+ (BOOL)_validRectangle:(CGRect)a3
++ (BOOL)_validRectangle:(CGRect)rectangle
 {
   result = 0;
-  if ((*&a3.origin.x & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && (*&a3.origin.y & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000)
+  if ((*&rectangle.origin.x & 0x7FFFFFFFFFFFFFFFuLL) <= 0x7FEFFFFFFFFFFFFFLL && (*&rectangle.origin.y & 0x7FFFFFFFFFFFFFFFuLL) < 0x7FF0000000000000)
   {
-    return !CGRectIsInfinite(a3);
+    return !CGRectIsInfinite(rectangle);
   }
 
   return result;
 }
 
-- (void)updateVoiceOverAnnouncement:(id)a3
+- (void)updateVoiceOverAnnouncement:(id)announcement
 {
-  v4 = a3;
+  announcementCopy = announcement;
   voAnnouncementTimer = self->_voAnnouncementTimer;
   if (!voAnnouncementTimer)
   {
@@ -2032,7 +2032,7 @@ BOOL __90__RTTUIConversationViewController__replaceServiceCellWithOldUpdate_with
   }
 
   [(AXDispatchTimer *)voAnnouncementTimer cancel];
-  if ([v4 length] && objc_msgSend(v4, "characterAtIndex:", 0) == 8)
+  if ([announcementCopy length] && objc_msgSend(announcementCopy, "characterAtIndex:", 0) == 8)
   {
     if ([(NSMutableString *)self->_voAnnouncementBuffer length])
     {
@@ -2042,11 +2042,11 @@ BOOL __90__RTTUIConversationViewController__replaceServiceCellWithOldUpdate_with
 
   else
   {
-    [(NSMutableString *)self->_voAnnouncementBuffer appendString:v4];
+    [(NSMutableString *)self->_voAnnouncementBuffer appendString:announcementCopy];
   }
 
-  v11 = [(NSMutableString *)self->_voAnnouncementBuffer trimmedString];
-  v12 = [v11 length];
+  trimmedString = [(NSMutableString *)self->_voAnnouncementBuffer trimmedString];
+  v12 = [trimmedString length];
 
   if (v12)
   {
@@ -2069,28 +2069,28 @@ void __63__RTTUIConversationViewController_updateVoiceOverAnnouncement___block_i
   [*(*(a1 + 32) + 1064) setString:&stru_2873F89E0];
 }
 
-- (void)_scrollToIndexPathIfNecessary:(id)a3 animated:(BOOL)a4
+- (void)_scrollToIndexPathIfNecessary:(id)necessary animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   *&v53[5] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(RTTUIConversationViewController *)self view];
-  v8 = [(RTTUIConversationViewController *)self tableView];
-  [v8 rectForRowAtIndexPath:v6];
+  necessaryCopy = necessary;
+  view = [(RTTUIConversationViewController *)self view];
+  tableView = [(RTTUIConversationViewController *)self tableView];
+  [tableView rectForRowAtIndexPath:necessaryCopy];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(RTTUIConversationViewController *)self tableView];
-  [v7 convertRect:v17 fromView:{v10, v12, v14, v16}];
+  tableView2 = [(RTTUIConversationViewController *)self tableView];
+  [view convertRect:tableView2 fromView:{v10, v12, v14, v16}];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
 
-  v26 = [(RTTUIConversationViewController *)self view];
+  view2 = [(RTTUIConversationViewController *)self view];
   [(RTTUITextView *)self->_textView bounds];
-  [v26 convertRect:self->_textView fromView:?];
+  [view2 convertRect:self->_textView fromView:?];
   v28 = v27;
   v30 = v29;
   v32 = v31;
@@ -2105,34 +2105,34 @@ void __63__RTTUIConversationViewController_updateVoiceOverAnnouncement___block_i
   v56.size.width = v32;
   v56.size.height = v34;
   v35 = CGRectIntersectsRect(v54, v56);
-  v36 = [(RTTUIConversationViewController *)self tableView];
-  v37 = [v36 indexPathsForVisibleRows];
-  v38 = [v37 containsObject:v6] ^ 1;
+  tableView3 = [(RTTUIConversationViewController *)self tableView];
+  indexPathsForVisibleRows = [tableView3 indexPathsForVisibleRows];
+  v38 = [indexPathsForVisibleRows containsObject:necessaryCopy] ^ 1;
 
   if ((v38 & 1) != 0 || v35)
   {
-    v39 = [v6 section];
-    v40 = [(RTTUIConversationViewController *)self tableView];
-    if (v39 >= [v40 numberOfSections])
+    section = [necessaryCopy section];
+    tableView4 = [(RTTUIConversationViewController *)self tableView];
+    if (section >= [tableView4 numberOfSections])
     {
     }
 
     else
     {
-      v41 = [v6 row];
-      v42 = [(RTTUIConversationViewController *)self tableView];
-      v43 = [v42 numberOfRowsInSection:{objc_msgSend(v6, "section")}];
+      v41 = [necessaryCopy row];
+      tableView5 = [(RTTUIConversationViewController *)self tableView];
+      v43 = [tableView5 numberOfRowsInSection:{objc_msgSend(necessaryCopy, "section")}];
 
       if (v41 < v43)
       {
         v44 = AXLogRTT();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
         {
-          v45 = [(RTTUIConversationViewController *)self tableView];
-          [v45 rectForRowAtIndexPath:v6];
+          tableView6 = [(RTTUIConversationViewController *)self tableView];
+          [tableView6 rectForRowAtIndexPath:necessaryCopy];
           v46 = NSStringFromRect(v55);
           v51 = 138412546;
-          *v52 = v6;
+          *v52 = necessaryCopy;
           *&v52[8] = 2112;
           *v53 = v46;
           _os_log_impl(&dword_261725000, v44, OS_LOG_TYPE_INFO, "Scrolling to row: %@ - %@", &v51, 0x16u);
@@ -2150,10 +2150,10 @@ void __63__RTTUIConversationViewController_updateVoiceOverAnnouncement___block_i
           _os_log_debug_impl(&dword_261725000, v47, OS_LOG_TYPE_DEBUG, "Scroll row options: %d, %d, %d", &v51, 0x14u);
         }
 
-        v48 = [(RTTUIConversationViewController *)self tableView];
-        v49 = v48;
-        v50 = v21 > v30 && v4;
-        [v48 scrollToRowAtIndexPath:v6 atScrollPosition:3 animated:v50];
+        tableView7 = [(RTTUIConversationViewController *)self tableView];
+        v49 = tableView7;
+        v50 = v21 > v30 && animatedCopy;
+        [tableView7 scrollToRowAtIndexPath:necessaryCopy atScrollPosition:3 animated:v50];
 LABEL_16:
 
         goto LABEL_17;
@@ -2164,11 +2164,11 @@ LABEL_16:
     if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
     {
       v51 = 138412802;
-      *v52 = v6;
+      *v52 = necessaryCopy;
       *&v52[8] = 1024;
-      *v53 = [v6 section];
+      *v53 = [necessaryCopy section];
       v53[2] = 1024;
-      *&v53[3] = [v6 row];
+      *&v53[3] = [necessaryCopy row];
       _os_log_impl(&dword_261725000, v49, OS_LOG_TYPE_INFO, "Not scrolling to path[%@], because tableview doesn't have any sections[%d] or rows[%d]", &v51, 0x18u);
     }
 
@@ -2178,18 +2178,18 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)deviceDidReceiveString:(id)a3 forUtterance:(id)a4
+- (void)deviceDidReceiveString:(id)string forUtterance:(id)utterance
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stringCopy = string;
+  utteranceCopy = utterance;
   v8 = AXLogRTT();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v17 = v6;
+    v17 = stringCopy;
     v18 = 2112;
-    v19 = v7;
+    v19 = utteranceCopy;
     _os_log_impl(&dword_261725000, v8, OS_LOG_TYPE_INFO, "TTY receive |%@|=%@", buf, 0x16u);
   }
 
@@ -2198,12 +2198,12 @@ LABEL_17:
   v15[2] = __71__RTTUIConversationViewController_deviceDidReceiveString_forUtterance___block_invoke;
   v15[3] = &unk_279AE5100;
   v15[4] = self;
-  v12 = v7;
-  v13 = v6;
+  v12 = utteranceCopy;
+  v13 = stringCopy;
   v14 = MEMORY[0x26670A470](v15);
   v9 = v14;
-  v10 = v6;
-  v11 = v7;
+  v10 = stringCopy;
+  v11 = utteranceCopy;
   AXPerformBlockOnMainThread();
 }
 
@@ -2451,24 +2451,24 @@ LABEL_27:
 LABEL_28:
 }
 
-- (void)deviceDidReceiveTranslation:(id)a3 forUtterance:(id)a4
+- (void)deviceDidReceiveTranslation:(id)translation forUtterance:(id)utterance
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  translationCopy = translation;
+  utteranceCopy = utterance;
   v7 = AXLogRTT();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v12 = v5;
+    v12 = translationCopy;
     v13 = 2112;
-    v14 = v6;
+    v14 = utteranceCopy;
     _os_log_impl(&dword_261725000, v7, OS_LOG_TYPE_INFO, "TTY receive translation |%@|=%@", buf, 0x16u);
   }
 
-  v10 = v5;
-  v8 = v5;
-  v9 = v6;
+  v10 = translationCopy;
+  v8 = translationCopy;
+  v9 = utteranceCopy;
   AXPerformBlockOnMainThread();
 }
 
@@ -2516,29 +2516,29 @@ void __76__RTTUIConversationViewController_deviceDidReceiveTranslation_forUttera
   }
 }
 
-- (void)gaButtonPressed:(id)a3
+- (void)gaButtonPressed:(id)pressed
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = AXLogRTT();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
-    v5 = [(RTTUIConversationViewController *)self textViewUtterance];
+    textViewUtterance = [(RTTUIConversationViewController *)self textViewUtterance];
     v11 = 138412290;
-    v12 = v5;
+    v12 = textViewUtterance;
     _os_log_impl(&dword_261725000, v4, OS_LOG_TYPE_INFO, "GA button pressed: %@", &v11, 0xCu);
   }
 
-  v6 = [(RTTUIConversationViewController *)self textViewUtterance];
-  if ([v6 length])
+  textViewUtterance2 = [(RTTUIConversationViewController *)self textViewUtterance];
+  if ([textViewUtterance2 length])
   {
-    v7 = [MEMORY[0x277D440D8] sharedInstance];
-    v8 = [v7 ttyShouldBeRealtime];
+    mEMORY[0x277D440D8] = [MEMORY[0x277D440D8] sharedInstance];
+    ttyShouldBeRealtime = [mEMORY[0x277D440D8] ttyShouldBeRealtime];
 
-    if ((v8 & 1) == 0)
+    if ((ttyShouldBeRealtime & 1) == 0)
     {
       v9 = +[RTTUIConversationControllerCoordinator sharedInstance];
-      v10 = [(RTTUIConversationViewController *)self textViewUtterance];
-      [v9 sendNewUtteranceString:v10 controller:self];
+      textViewUtterance3 = [(RTTUIConversationViewController *)self textViewUtterance];
+      [v9 sendNewUtteranceString:textViewUtterance3 controller:self];
 
       [(RTTUIConversationViewController *)self setTextViewUtterance:&stru_2873F89E0];
       [(RTTUIConversationViewController *)self setCurrentUtterance:0];
@@ -2551,13 +2551,13 @@ void __76__RTTUIConversationViewController_deviceDidReceiveTranslation_forUttera
   }
 }
 
-- (id)lastConversationRowPathForUtterance:(id)a3
+- (id)lastConversationRowPathForUtterance:(id)utterance
 {
   v4 = MEMORY[0x277CCAA70];
-  v5 = a3;
-  v6 = [(RTTUIConversationViewController *)self conversation];
-  v7 = [v6 utterances];
-  v8 = [v7 indexOfObjectIdenticalTo:v5];
+  utteranceCopy = utterance;
+  conversation = [(RTTUIConversationViewController *)self conversation];
+  utterances = [conversation utterances];
+  v8 = [utterances indexOfObjectIdenticalTo:utteranceCopy];
 
   v9 = [v4 indexPathForRow:v8 inSection:0];
 
@@ -2567,10 +2567,10 @@ void __76__RTTUIConversationViewController_deviceDidReceiveTranslation_forUttera
 - (void)realtimeTextDidChange
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = [(RTTUIConversationViewController *)self currentUtterance];
-  v4 = [(RTTUIConversationViewController *)self lastConversationRowPathForUtterance:v3];
+  currentUtterance = [(RTTUIConversationViewController *)self currentUtterance];
+  v4 = [(RTTUIConversationViewController *)self lastConversationRowPathForUtterance:currentUtterance];
   v5 = +[RTTUIConversationControllerCoordinator sharedInstance];
-  v6 = [v5 realtimeTextDidChange:self forUtterance:v3 lastRowPath:v4];
+  v6 = [v5 realtimeTextDidChange:self forUtterance:currentUtterance lastRowPath:v4];
 
   v7 = AXLogRTT();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
@@ -2578,7 +2578,7 @@ void __76__RTTUIConversationViewController_deviceDidReceiveTranslation_forUttera
     *buf = 67109634;
     *v36 = v6;
     *&v36[4] = 2112;
-    *&v36[6] = v3;
+    *&v36[6] = currentUtterance;
     *&v36[14] = 2112;
     *&v36[16] = v4;
     _os_log_impl(&dword_261725000, v7, OS_LOG_TYPE_INFO, "Real time text changed: %d, utterance: %@, path: %@", buf, 0x1Cu);
@@ -2589,26 +2589,26 @@ void __76__RTTUIConversationViewController_deviceDidReceiveTranslation_forUttera
     v8 = AXLogRTT();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v3 hasTimedOut];
+      hasTimedOut = [currentUtterance hasTimedOut];
       *buf = 138412546;
-      *v36 = v3;
+      *v36 = currentUtterance;
       *&v36[8] = 1024;
-      *&v36[10] = v9;
+      *&v36[10] = hasTimedOut;
       _os_log_impl(&dword_261725000, v8, OS_LOG_TYPE_INFO, "Realtime text changed. Last utterance: %@, timeout: %d", buf, 0x12u);
     }
 
-    if ([v3 isMe] && (objc_msgSend(v3, "hasTimedOut") & 1) == 0)
+    if ([currentUtterance isMe] && (objc_msgSend(currentUtterance, "hasTimedOut") & 1) == 0)
     {
-      v20 = [(RTTUIConversationViewController *)self tableView];
-      v21 = [v20 cellForRowAtIndexPath:v4];
+      tableView = [(RTTUIConversationViewController *)self tableView];
+      v21 = [tableView cellForRowAtIndexPath:v4];
 
-      [v21 updateUtterance:v3];
+      [v21 updateUtterance:currentUtterance];
       [v21 bounds];
       Height = CGRectGetHeight(v38);
-      v23 = [v21 utterance];
-      v24 = [(RTTUIConversationViewController *)self tableView];
-      [v24 bounds];
-      [RTTUIUtteranceCell heightForUtterance:v23 andWidth:CGRectGetWidth(v39)];
+      utterance = [v21 utterance];
+      tableView2 = [(RTTUIConversationViewController *)self tableView];
+      [tableView2 bounds];
+      [RTTUIUtteranceCell heightForUtterance:utterance andWidth:CGRectGetWidth(v39)];
       v26 = v25;
 
       if (Height != v26)
@@ -2622,18 +2622,18 @@ void __76__RTTUIConversationViewController_deviceDidReceiveTranslation_forUttera
         *buf = 138412546;
         *v36 = v21;
         *&v36[8] = 2112;
-        *&v36[10] = v3;
+        *&v36[10] = currentUtterance;
         _os_log_impl(&dword_261725000, v27, OS_LOG_TYPE_INFO, "Updating utterance since it's still me: %@ %@", buf, 0x16u);
       }
 
-      v28 = [v3 text];
-      v29 = [v28 length];
+      text = [currentUtterance text];
+      v29 = [text length];
 
       if (!v29)
       {
-        v30 = [(RTTUIConversationViewController *)self conversation];
-        v31 = [v30 utterances];
-        [v31 removeObject:v3];
+        conversation = [(RTTUIConversationViewController *)self conversation];
+        utterances = [conversation utterances];
+        [utterances removeObject:currentUtterance];
 
         [(RTTUIConversationViewController *)self setCurrentUtterance:0];
         if (v4 && [v4 row] != 0x7FFFFFFFFFFFFFFFLL)
@@ -2645,7 +2645,7 @@ void __76__RTTUIConversationViewController_deviceDidReceiveTranslation_forUttera
         if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
         {
           *buf = 138412290;
-          *v36 = v3;
+          *v36 = currentUtterance;
           _os_log_impl(&dword_261725000, v32, OS_LOG_TYPE_INFO, "Deleting utterance since text length was empty: %@", buf, 0xCu);
         }
       }
@@ -2653,36 +2653,36 @@ void __76__RTTUIConversationViewController_deviceDidReceiveTranslation_forUttera
 
     else
     {
-      v10 = [(RTTUIConversationViewController *)self textViewUtterance];
-      v11 = [v10 length];
+      textViewUtterance = [(RTTUIConversationViewController *)self textViewUtterance];
+      v11 = [textViewUtterance length];
 
       if (v11)
       {
         v12 = AXLogRTT();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
         {
-          v13 = [(RTTUIConversationViewController *)self textViewUtterance];
+          textViewUtterance2 = [(RTTUIConversationViewController *)self textViewUtterance];
           *buf = 138412546;
-          *v36 = v13;
+          *v36 = textViewUtterance2;
           *&v36[8] = 2112;
           *&v36[10] = self;
           _os_log_impl(&dword_261725000, v12, OS_LOG_TYPE_INFO, "Sending updated utterance: %@, from %@", buf, 0x16u);
         }
 
         v14 = +[RTTUIConversationControllerCoordinator sharedInstance];
-        v15 = [(RTTUIConversationViewController *)self textViewUtterance];
-        [v14 sendNewUtteranceString:v15 controller:self];
+        textViewUtterance3 = [(RTTUIConversationViewController *)self textViewUtterance];
+        [v14 sendNewUtteranceString:textViewUtterance3 controller:self];
 
-        v16 = [(RTTUIConversationViewController *)self conversation];
-        v17 = [v16 lastUtteranceForMe:1];
+        conversation2 = [(RTTUIConversationViewController *)self conversation];
+        v17 = [conversation2 lastUtteranceForMe:1];
         [(RTTUIConversationViewController *)self setCurrentUtterance:v17];
 
         v18 = AXLogRTT();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
-          v19 = [(RTTUIConversationViewController *)self currentUtterance];
+          currentUtterance2 = [(RTTUIConversationViewController *)self currentUtterance];
           *buf = 138412290;
-          *v36 = v19;
+          *v36 = currentUtterance2;
           _os_log_impl(&dword_261725000, v18, OS_LOG_TYPE_INFO, "Updating current utterance to last utterance from me: %@", buf, 0xCu);
         }
 
@@ -2702,8 +2702,8 @@ void __76__RTTUIConversationViewController_deviceDidReceiveTranslation_forUttera
 
 - (void)_processRealtimeTimeout
 {
-  v3 = [(RTTUIConversationViewController *)self currentUtterance];
-  if ([v3 hasTimedOut])
+  currentUtterance = [(RTTUIConversationViewController *)self currentUtterance];
+  if ([currentUtterance hasTimedOut])
   {
     [(RTTUIConversationViewController *)self setCurrentUtterance:0];
     [(RTTUIConversationViewController *)self setTextViewUtterance:&stru_2873F89E0];
@@ -2717,8 +2717,8 @@ void __76__RTTUIConversationViewController_deviceDidReceiveTranslation_forUttera
     goto LABEL_2;
   }
 
-  v6 = [(RTTUIConversationViewController *)self call];
-  v7 = [RTTUIUtilities ttyShouldBeRealtimeForCall:v6];
+  call = [(RTTUIConversationViewController *)self call];
+  v7 = [RTTUIUtilities ttyShouldBeRealtimeForCall:call];
 
   if (!v7)
   {
@@ -2745,8 +2745,8 @@ void __76__RTTUIConversationViewController_deviceDidReceiveTranslation_forUttera
     v13 = ttyLocString();
     [(UIButton *)v12 setAccessibilityLabel:v13];
 
-    v14 = [(RTTUIConversationViewController *)self view];
-    [v14 addSubview:self->_gaButton];
+    view = [(RTTUIConversationViewController *)self view];
+    [view addSubview:self->_gaButton];
 
 LABEL_11:
     goto LABEL_12;
@@ -2755,8 +2755,8 @@ LABEL_11:
   if (self->_gaButton)
   {
 LABEL_2:
-    v3 = [(RTTUIConversationViewController *)self call];
-    v4 = [RTTUIUtilities ttyShouldBeRealtimeForCall:v3];
+    call2 = [(RTTUIConversationViewController *)self call];
+    v4 = [RTTUIUtilities ttyShouldBeRealtimeForCall:call2];
 
     if (!v4)
     {
@@ -2774,12 +2774,12 @@ LABEL_12:
   [(RTTUIConversationViewController *)self updateInputEnabled];
 }
 
-- (void)updateTableViewSizeAnimated:(BOOL)a3
+- (void)updateTableViewSizeAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(RTTUIConversationViewController *)self updateGAButton];
-  v5 = [MEMORY[0x277D756A8] activeKeyboardSceneDelegate];
-  [v5 visibleFrameInView:0];
+  activeKeyboardSceneDelegate = [MEMORY[0x277D756A8] activeKeyboardSceneDelegate];
+  [activeKeyboardSceneDelegate visibleFrameInView:0];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -2816,12 +2816,12 @@ LABEL_12:
 
   if (!v15() || v13 == 0.0 || ([(RTTUITextView *)self->_textView isFirstResponder]& 1) == 0)
   {
-    v16 = [(RTTUIConversationViewController *)self view];
-    [v16 bounds];
+    view = [(RTTUIConversationViewController *)self view];
+    [view bounds];
     v18 = v17;
-    v19 = [(RTTUIConversationViewController *)self view];
-    v20 = [v19 window];
-    [v20 safeAreaInsets];
+    view2 = [(RTTUIConversationViewController *)self view];
+    window = [view2 window];
+    [window safeAreaInsets];
     MinY = v18 - v21;
   }
 
@@ -2830,11 +2830,11 @@ LABEL_12:
   v25 = v24;
   if (([MEMORY[0x277D12B60] deviceHasHomeButton] & 1) == 0 && objc_msgSend(MEMORY[0x277D12B60], "deviceIsPhone"))
   {
-    v26 = [(RTTUIConversationViewController *)self view];
-    v27 = [v26 window];
-    v28 = [v27 windowScene];
-    v29 = [v28 statusBarManager];
-    [v29 statusBarFrame];
+    view3 = [(RTTUIConversationViewController *)self view];
+    window2 = [view3 window];
+    windowScene = [window2 windowScene];
+    statusBarManager = [windowScene statusBarManager];
+    [statusBarManager statusBarFrame];
     CGRectGetHeight(v61);
   }
 
@@ -2844,22 +2844,22 @@ LABEL_12:
   v34 = v33;
 
   v35 = MEMORY[0x277D440E8];
-  v36 = [(RTTUIConversationViewController *)self currentContactPath];
-  v37 = [(RTTUIConversationViewController *)self textViewUtterance];
-  v38 = [v35 utteranceWithContactPath:v36 andText:v37];
-  v39 = [(RTTUIConversationViewController *)self view];
-  [v39 bounds];
+  currentContactPath = [(RTTUIConversationViewController *)self currentContactPath];
+  textViewUtterance = [(RTTUIConversationViewController *)self textViewUtterance];
+  v38 = [v35 utteranceWithContactPath:currentContactPath andText:textViewUtterance];
+  view4 = [(RTTUIConversationViewController *)self view];
+  [view4 bounds];
   [RTTUIUtteranceCell heightForUtterance:v38 andWidth:CGRectGetWidth(v62) + 20.0];
   v41 = v34 + v32 + v40;
 
   if (soft_AXProcessIsRTTNotificationContentExtension())
   {
-    v42 = [(RTTUIConversationViewController *)self view];
-    [v42 bounds];
+    view5 = [(RTTUIConversationViewController *)self view];
+    [view5 bounds];
     v44 = v43 - v41 + -5.0;
 
-    v45 = [(RTTUIConversationViewController *)self view];
-    [v45 bounds];
+    view6 = [(RTTUIConversationViewController *)self view];
+    [view6 bounds];
     v25 = v46 + -5.0;
   }
 
@@ -2880,7 +2880,7 @@ LABEL_12:
   *&v54[8] = v41;
   v48 = MEMORY[0x26670A470](v54);
   v49 = v48;
-  if (v3)
+  if (animatedCopy)
   {
     [MEMORY[0x277D75D18] animateWithDuration:v48 animations:0.2];
   }
@@ -2890,13 +2890,13 @@ LABEL_12:
     (*(v48 + 16))(v48);
   }
 
-  v50 = [(RTTUIConversationViewController *)self tableView];
-  v51 = [v50 numberOfRowsInSection:0];
+  tableView = [(RTTUIConversationViewController *)self tableView];
+  v51 = [tableView numberOfRowsInSection:0];
 
   if (v51)
   {
     v52 = [MEMORY[0x277CCAA70] indexPathForRow:v51 - 1 inSection:0];
-    [(RTTUIConversationViewController *)self _scrollToIndexPathIfNecessary:v52 animated:v3];
+    [(RTTUIConversationViewController *)self _scrollToIndexPathIfNecessary:v52 animated:animatedCopy];
   }
 }
 
@@ -2970,20 +2970,20 @@ uint64_t __63__RTTUIConversationViewController_updateTableViewSizeAnimated___blo
 
 - (void)setupTableView
 {
-  v3 = [MEMORY[0x277D440C8] sharedInstance];
-  [v3 setShouldSuppressIncomingNotification:{-[RTTUIConversationViewController isCurrentCallConnected](self, "isCurrentCallConnected")}];
+  mEMORY[0x277D440C8] = [MEMORY[0x277D440C8] sharedInstance];
+  [mEMORY[0x277D440C8] setShouldSuppressIncomingNotification:{-[RTTUIConversationViewController isCurrentCallConnected](self, "isCurrentCallConnected")}];
 
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 addObserver:self selector:sel_updateViewForKeyboard_ name:*MEMORY[0x277D76C60] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_updateViewForKeyboard_ name:*MEMORY[0x277D76C60] object:0];
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel_updateViewForKeyboard_ name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_updateViewForKeyboard_ name:*MEMORY[0x277D76C50] object:0];
 
-  v50 = [(RTTUIConversationViewController *)self contactDisplayString];
+  contactDisplayString = [(RTTUIConversationViewController *)self contactDisplayString];
   [(RTTUIConversationViewController *)self setTitle:?];
   v6 = objc_alloc(MEMORY[0x277D75B40]);
-  v7 = [(RTTUIConversationViewController *)self view];
-  [v7 bounds];
+  view = [(RTTUIConversationViewController *)self view];
+  [view bounds];
   v8 = [v6 initWithFrame:?];
 
   [v8 setDelegate:self];
@@ -2993,22 +2993,22 @@ uint64_t __63__RTTUIConversationViewController_updateTableViewSizeAnimated___blo
   IsRTTNotificationContentExtension = soft_AXProcessIsRTTNotificationContentExtension();
   if (![(RTTUIConversationViewController *)self isCurrentCallConnected]|| IsRTTNotificationContentExtension)
   {
-    v10 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [v8 setBackgroundColor:v10];
+    systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+    [v8 setBackgroundColor:systemBackgroundColor];
   }
 
   else
   {
-    v10 = [MEMORY[0x277D75348] whiteColor];
-    v11 = [v10 colorWithAlphaComponent:0.001];
+    systemBackgroundColor = [MEMORY[0x277D75348] whiteColor];
+    v11 = [systemBackgroundColor colorWithAlphaComponent:0.001];
     [v8 setBackgroundColor:v11];
   }
 
   [v8 setContentInset:{15.0, 0.0, 0.0, 0.0}];
   [v8 setCanCancelContentTouches:1];
   [(RTTUIConversationViewController *)self setTableView:v8];
-  v12 = [(RTTUIConversationViewController *)self view];
-  [v12 addSubview:v8];
+  view2 = [(RTTUIConversationViewController *)self view];
+  [view2 addSubview:v8];
 
   [(UITableView *)self->_tableView reloadData];
   v13 = objc_alloc(MEMORY[0x277CCA898]);
@@ -3016,8 +3016,8 @@ uint64_t __63__RTTUIConversationViewController_updateTableViewSizeAnimated___blo
   v15 = [v13 initWithString:v14];
 
   v16 = [RTTUITextView alloc];
-  v17 = [(RTTUIConversationViewController *)self view];
-  [v17 bounds];
+  view3 = [(RTTUIConversationViewController *)self view];
+  [view3 bounds];
   v18 = [(RTTUITextView *)v16 initWithFrame:0 textContainer:?];
   textView = self->_textView;
   self->_textView = v18;
@@ -3029,41 +3029,41 @@ uint64_t __63__RTTUIConversationViewController_updateTableViewSizeAnimated___blo
   v22 = self->_textView;
   if (v21)
   {
-    v23 = [MEMORY[0x277D75348] systemBackgroundColor];
-    [(RTTUITextView *)v22 setBackgroundColor:v23];
+    systemBackgroundColor2 = [MEMORY[0x277D75348] systemBackgroundColor];
+    [(RTTUITextView *)v22 setBackgroundColor:systemBackgroundColor2];
 
     v24 = self->_textView;
-    v25 = [MEMORY[0x277D75348] labelColor];
-    [(RTTUITextView *)v24 setTextColor:v25];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(RTTUITextView *)v24 setTextColor:labelColor];
   }
 
   else
   {
-    v26 = [MEMORY[0x277D75348] whiteColor];
-    [(RTTUITextView *)v22 setTextColor:v26];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(RTTUITextView *)v22 setTextColor:whiteColor];
 
     v27 = self->_textView;
-    v25 = [MEMORY[0x277D75348] clearColor];
-    [(RTTUITextView *)v27 setBackgroundColor:v25];
+    labelColor = [MEMORY[0x277D75348] clearColor];
+    [(RTTUITextView *)v27 setBackgroundColor:labelColor];
   }
 
   [(RTTUITextView *)self->_textView setDelegate:self];
-  v28 = [(RTTUIConversationViewController *)self view];
-  [v28 addSubview:self->_textView];
+  view4 = [(RTTUIConversationViewController *)self view];
+  [view4 addSubview:self->_textView];
 
-  v29 = [(RTTUITextView *)self->_textView textContainer];
-  [v29 setLineBreakMode:0];
+  textContainer = [(RTTUITextView *)self->_textView textContainer];
+  [textContainer setLineBreakMode:0];
 
-  v30 = [(RTTUITextView *)self->_textView textContainer];
-  [v30 setMaximumNumberOfLines:0];
+  textContainer2 = [(RTTUITextView *)self->_textView textContainer];
+  [textContainer2 setMaximumNumberOfLines:0];
 
   [(RTTUITextView *)self->_textView setDataDetectorTypes:-1];
   [(RTTUITextView *)self->_textView setEditable:1];
   [(RTTUITextView *)self->_textView setSelectable:1];
-  v31 = [(RTTUIConversationViewController *)self call];
-  LODWORD(v30) = [RTTUIUtilities ttyShouldBeRealtimeForCall:v31];
+  call = [(RTTUIConversationViewController *)self call];
+  LODWORD(textContainer2) = [RTTUIUtilities ttyShouldBeRealtimeForCall:call];
 
-  if (v30)
+  if (textContainer2)
   {
     [(RTTUITextView *)self->_textView setInlinePredictionType:1];
   }
@@ -3072,39 +3072,39 @@ uint64_t __63__RTTUIConversationViewController_updateTableViewSizeAnimated___blo
   [(RTTUITextView *)self->_textView setTextContainerInset:11.0, 24.0, 0.0, 50.0];
   [(RTTUITextView *)self->_textView setAttributedPlaceholder:v15];
   v32 = self->_textView;
-  v33 = [(RTTUIConversationViewController *)self call];
-  -[RTTUITextView setKeyboardType:](v32, "setKeyboardType:", [v33 supportsTTYWithVoice] ^ 1);
+  call2 = [(RTTUIConversationViewController *)self call];
+  -[RTTUITextView setKeyboardType:](v32, "setKeyboardType:", [call2 supportsTTYWithVoice] ^ 1);
 
   [(RTTUITextView *)self->_textView setAutoresizingMask:2];
   v34 = objc_alloc_init(MEMORY[0x277CD9F90]);
-  v35 = [MEMORY[0x277D75348] clearColor];
-  [v34 setFillColor:{objc_msgSend(v35, "cgColor")}];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v34 setFillColor:{objc_msgSend(clearColor, "cgColor")}];
 
   v36 = MEMORY[0x277D75208];
-  v37 = [(RTTUITextView *)self->_textView layer];
-  [v37 bounds];
+  layer = [(RTTUITextView *)self->_textView layer];
+  [layer bounds];
   v38 = [v36 bezierPathWithRect:?];
   [v34 setPath:{objc_msgSend(v38, "CGPath")}];
 
-  v39 = [(RTTUITextView *)self->_textView layer];
-  [v39 insertSublayer:v34 atIndex:0];
+  layer2 = [(RTTUITextView *)self->_textView layer];
+  [layer2 insertSublayer:v34 atIndex:0];
 
   v40 = objc_alloc_init(MEMORY[0x277CD9F90]);
   bubbleLayer = self->_bubbleLayer;
   self->_bubbleLayer = v40;
 
   v42 = self->_bubbleLayer;
-  v43 = [MEMORY[0x277D75348] clearColor];
-  -[CAShapeLayer setFillColor:](v42, "setFillColor:", [v43 cgColor]);
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  -[CAShapeLayer setFillColor:](v42, "setFillColor:", [clearColor2 cgColor]);
 
   v44 = self->_bubbleLayer;
-  v45 = [MEMORY[0x277D75348] grayColor];
-  -[CAShapeLayer setStrokeColor:](v44, "setStrokeColor:", [v45 cgColor]);
+  grayColor = [MEMORY[0x277D75348] grayColor];
+  -[CAShapeLayer setStrokeColor:](v44, "setStrokeColor:", [grayColor cgColor]);
 
   v46 = self->_bubbleLayer;
   v47 = MEMORY[0x277D75208];
-  v48 = [(RTTUITextView *)self->_textView layer];
-  [v48 bounds];
+  layer3 = [(RTTUITextView *)self->_textView layer];
+  [layer3 bounds];
   v53 = CGRectInset(v52, 5.0, 5.0);
   v49 = [v47 bezierPathWithRoundedRect:v53.origin.x cornerRadius:{v53.origin.y, v53.size.width, v53.size.height, 15.0}];
   -[CAShapeLayer setPath:](v46, "setPath:", [v49 CGPath]);
@@ -3113,14 +3113,14 @@ uint64_t __63__RTTUIConversationViewController_updateTableViewSizeAnimated___blo
   [(RTTUIConversationViewController *)self updateViewForKeyboard:0];
 }
 
-- (void)shareCallInfo:(id)a3
+- (void)shareCallInfo:(id)info
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = objc_opt_new();
   v6 = +[RTTUIUtilities sharedUtilityProvider];
-  v7 = [(RTTUIConversationViewController *)self conversation];
-  v8 = [v6 transcriptStringForConversation:v7];
+  conversation = [(RTTUIConversationViewController *)self conversation];
+  v8 = [v6 transcriptStringForConversation:conversation];
   [v5 setTranscript:v8];
 
   v9 = objc_alloc(MEMORY[0x277D546D8]);
@@ -3128,27 +3128,27 @@ uint64_t __63__RTTUIConversationViewController_updateTableViewSizeAnimated___blo
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
   v11 = [v9 initWithActivityItems:v10 applicationActivities:0];
 
-  v12 = [v11 popoverPresentationController];
-  [v12 setSourceView:v4];
+  popoverPresentationController = [v11 popoverPresentationController];
+  [popoverPresentationController setSourceView:infoCopy];
 
   [(RTTUIConversationViewController *)self presentViewController:v11 animated:1 completion:0];
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4 == 3)
+  viewCopy = view;
+  if (section == 3)
   {
-    v12 = [(RTTUIConversationViewController *)self cannedResponses];
-    v9 = [v12 count];
+    cannedResponses = [(RTTUIConversationViewController *)self cannedResponses];
+    v9 = [cannedResponses count];
   }
 
-  else if (a4 == 1)
+  else if (section == 1)
   {
     v9 = [(NSMutableArray *)self->_serviceUpdates count];
   }
 
-  else if (a4)
+  else if (section)
   {
     v9 = 0;
   }
@@ -3160,44 +3160,44 @@ uint64_t __63__RTTUIConversationViewController_updateTableViewSizeAnimated___blo
     v9 = 0;
     if (([(NSMutableArray *)self->_serviceUpdates containsObject:v8]& 1) == 0)
     {
-      v10 = [(RTTUIConversationViewController *)self conversation];
-      v11 = [v10 utterances];
-      v9 = [v11 count];
+      conversation = [(RTTUIConversationViewController *)self conversation];
+      utterances = [conversation utterances];
+      v9 = [utterances count];
     }
   }
 
   return v9;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(RTTUIConversationViewController *)self conversation];
-  v7 = [v6 utterances];
+  pathCopy = path;
+  conversation = [(RTTUIConversationViewController *)self conversation];
+  utterances = [conversation utterances];
 
-  v8 = [(RTTUIConversationViewController *)self cannedResponses];
-  v9 = [v5 row];
-  v10 = [v5 section];
+  cannedResponses = [(RTTUIConversationViewController *)self cannedResponses];
+  v9 = [pathCopy row];
+  section = [pathCopy section];
   v11 = 20.0;
-  if (v10 > 1)
+  if (section > 1)
   {
-    if (v10 == 2)
+    if (section == 2)
     {
       v11 = 50.0;
       goto LABEL_15;
     }
 
-    if (v10 == 3 && v9 < [v8 count])
+    if (section == 3 && v9 < [cannedResponses count])
     {
       v12 = objc_alloc_init(RTTUIResponseCell);
-      v15 = [(RTTUIResponseCell *)v12 textLabel];
-      v16 = [v8 objectAtIndex:v9];
-      [v15 setText:v16];
+      textLabel = [(RTTUIResponseCell *)v12 textLabel];
+      v16 = [cannedResponses objectAtIndex:v9];
+      [textLabel setText:v16];
 
-      v17 = [(RTTUIResponseCell *)v12 textLabel];
-      v18 = [(RTTUIConversationViewController *)self tableView];
-      [v18 bounds];
-      [v17 textRectForBounds:0 limitedToNumberOfLines:{0.0, 0.0, CGRectGetWidth(v25), 3.40282347e38}];
+      textLabel2 = [(RTTUIResponseCell *)v12 textLabel];
+      tableView = [(RTTUIConversationViewController *)self tableView];
+      [tableView bounds];
+      [textLabel2 textRectForBounds:0 limitedToNumberOfLines:{0.0, 0.0, CGRectGetWidth(v25), 3.40282347e38}];
       v20 = v19;
 
       if (v20 + 25.0 >= 35.0)
@@ -3214,13 +3214,13 @@ uint64_t __63__RTTUIConversationViewController_updateTableViewSizeAnimated___blo
     }
   }
 
-  else if (v10)
+  else if (section)
   {
-    if (v10 == 1)
+    if (section == 1)
     {
-      v12 = -[NSMutableArray objectAtIndex:](self->_serviceUpdates, "objectAtIndex:", [v5 row]);
-      v13 = [(RTTUIConversationViewController *)self tableView];
-      [v13 bounds];
+      v12 = -[NSMutableArray objectAtIndex:](self->_serviceUpdates, "objectAtIndex:", [pathCopy row]);
+      tableView2 = [(RTTUIConversationViewController *)self tableView];
+      [tableView2 bounds];
       [RTTUIServiceUpdateCell heightForWidth:self delegate:v12 serviceUpdate:CGRectGetWidth(v24)];
       v11 = v14;
 
@@ -3228,11 +3228,11 @@ LABEL_13:
     }
   }
 
-  else if (v9 < [v7 count])
+  else if (v9 < [utterances count])
   {
-    v12 = [v7 objectAtIndex:v9];
-    v21 = [(RTTUIConversationViewController *)self tableView];
-    [v21 bounds];
+    v12 = [utterances objectAtIndex:v9];
+    tableView3 = [(RTTUIConversationViewController *)self tableView];
+    [tableView3 bounds];
     [RTTUIUtteranceCell heightForUtterance:v12 andWidth:CGRectGetWidth(v26)];
     v11 = v22;
 
@@ -3244,24 +3244,24 @@ LABEL_15:
   return v11;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 row];
-  v9 = [v7 section];
-  switch(v9)
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [pathCopy row];
+  section = [pathCopy section];
+  switch(section)
   {
     case 3:
-      v10 = [v6 dequeueReusableCellWithIdentifier:@"AXRTTUIResponseCellIdentifier"];
+      v10 = [viewCopy dequeueReusableCellWithIdentifier:@"AXRTTUIResponseCellIdentifier"];
       if (!v10)
       {
         v10 = [[RTTUIResponseCell alloc] initWithStyle:0 reuseIdentifier:@"AXRTTUIResponseCellIdentifier"];
       }
 
-      v27 = [(RTTUIConversationViewController *)self cannedResponses];
-      v28 = [v27 count];
+      cannedResponses = [(RTTUIConversationViewController *)self cannedResponses];
+      v28 = [cannedResponses count];
 
       if (v8 >= v28)
       {
@@ -3270,12 +3270,12 @@ LABEL_15:
 
       else
       {
-        v29 = [(RTTUIConversationViewController *)self cannedResponses];
-        v26 = [v29 objectAtIndex:v8];
+        cannedResponses2 = [(RTTUIConversationViewController *)self cannedResponses];
+        v26 = [cannedResponses2 objectAtIndex:v8];
       }
 
-      v30 = [(RTTUIResponseCell *)v10 textLabel];
-      [v30 setText:v26];
+      textLabel = [(RTTUIResponseCell *)v10 textLabel];
+      [textLabel setText:v26];
 
       if ([(RTTUIConversationViewController *)self isCurrentCallOnHold])
       {
@@ -3290,54 +3290,54 @@ LABEL_15:
       [(RTTUIResponseCell *)v10 setUserInteractionEnabled:v31];
       goto LABEL_23;
     case 1:
-      v26 = -[NSMutableArray objectAtIndex:](self->_serviceUpdates, "objectAtIndex:", [v7 row]);
+      v26 = -[NSMutableArray objectAtIndex:](self->_serviceUpdates, "objectAtIndex:", [pathCopy row]);
       v10 = [[RTTUIServiceUpdateCell alloc] initWithStyle:0 reuseIdentifier:@"AXRTTUIServiceCellIdentifier" serviceUpdate:v26];
       [(RTTUIResponseCell *)v10 setDelegate:self];
 LABEL_23:
 
       goto LABEL_35;
     case 0:
-      v10 = [v6 dequeueReusableCellWithIdentifier:@"AXRTTConversationCellIdentifier" forIndexPath:v7];
+      v10 = [viewCopy dequeueReusableCellWithIdentifier:@"AXRTTConversationCellIdentifier" forIndexPath:pathCopy];
       if (!v10)
       {
         v10 = [[RTTUIUtteranceCell alloc] initWithStyle:0 reuseIdentifier:@"AXRTTConversationCellIdentifier"];
       }
 
-      v11 = [(RTTUIConversationViewController *)self conversation];
-      v12 = [v11 utterances];
-      v43 = [v12 objectAtIndex:v8];
+      conversation = [(RTTUIConversationViewController *)self conversation];
+      utterances = [conversation utterances];
+      v43 = [utterances objectAtIndex:v8];
 
       [(RTTUIResponseCell *)v10 setUtterance:v43];
       [(RTTUIResponseCell *)v10 setDelegate:self];
-      v13 = [(RTTUIConversationViewController *)self call];
-      if ([RTTUIUtilities ttyShouldBeRealtimeForCall:v13])
+      call = [(RTTUIConversationViewController *)self call];
+      if ([RTTUIUtilities ttyShouldBeRealtimeForCall:call])
       {
         v42 = +[RTTUIConversationControllerCoordinator sharedInstance];
-        v14 = [v42 inProgressRealTimeUtterance];
-        v15 = [v14 contactPath];
-        v16 = [v43 contactPath];
-        if ([v15 isEqualToString:v16])
+        inProgressRealTimeUtterance = [v42 inProgressRealTimeUtterance];
+        contactPath = [inProgressRealTimeUtterance contactPath];
+        contactPath2 = [v43 contactPath];
+        if ([contactPath isEqualToString:contactPath2])
         {
           v41 = +[RTTUIConversationControllerCoordinator sharedInstance];
-          v40 = [v41 inProgressRealTimeIndexPath];
-          if ([v40 isEqual:v7])
+          inProgressRealTimeIndexPath = [v41 inProgressRealTimeIndexPath];
+          if ([inProgressRealTimeIndexPath isEqual:pathCopy])
           {
             v39 = +[RTTUIConversationControllerCoordinator sharedInstance];
-            v38 = [v39 inProgressRealTimeUtterance];
-            v37 = [v38 text];
-            v17 = [v43 text];
-            v36 = [v37 isEqualToString:v17];
+            inProgressRealTimeUtterance2 = [v39 inProgressRealTimeUtterance];
+            text = [inProgressRealTimeUtterance2 text];
+            text2 = [v43 text];
+            v36 = [text isEqualToString:text2];
 
             if ((v36 & 1) == 0)
             {
               v18 = +[RTTUIConversationControllerCoordinator sharedInstance];
-              v19 = [v18 inProgressRealTimeUtterance];
-              v20 = [v19 text];
-              [v43 updateText:v20];
+              inProgressRealTimeUtterance3 = [v18 inProgressRealTimeUtterance];
+              text3 = [inProgressRealTimeUtterance3 text];
+              [v43 updateText:text3];
 
               textView = self->_textView;
-              v22 = [v43 text];
-              [(RTTUITextView *)textView setText:v22];
+              text4 = [v43 text];
+              [(RTTUITextView *)textView setText:text4];
 
               [(RTTUIConversationViewController *)self setCurrentUtterance:v43];
               realTimeTimeout = self->_realTimeTimeout;
@@ -3350,21 +3350,21 @@ LABEL_23:
               v24 = AXLogRTT();
               if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
               {
-                v25 = [(RTTUIConversationViewController *)self currentUtterance];
+                currentUtterance = [(RTTUIConversationViewController *)self currentUtterance];
                 *buf = 138412290;
-                v49 = v25;
+                v49 = currentUtterance;
                 _os_log_impl(&dword_261725000, v24, OS_LOG_TYPE_INFO, "this cell is not using the right utterance because we have one in flight, swapping with current utterance: %@", buf, 0xCu);
               }
             }
 
 LABEL_27:
-            v32 = [(RTTUIConversationViewController *)self conversation];
-            v33 = [v32 utterances];
-            if ([v33 count] - 1 == v8)
+            conversation2 = [(RTTUIConversationViewController *)self conversation];
+            utterances2 = [conversation2 utterances];
+            if ([utterances2 count] - 1 == v8)
             {
-              v34 = [v43 isMe];
+              isMe = [v43 isMe];
 
-              if (!v34)
+              if (!isMe)
               {
 LABEL_32:
                 objc_initWeak(buf, self);
@@ -3391,8 +3391,8 @@ LABEL_35:
                 break;
               }
 
-              v32 = [(RTTUIConversationViewController *)self call];
-              -[RTTUIResponseCell setEditingUtterance:](v10, "setEditingUtterance:", [v32 isConnected]);
+              conversation2 = [(RTTUIConversationViewController *)self call];
+              -[RTTUIResponseCell setEditingUtterance:](v10, "setEditingUtterance:", [conversation2 isConnected]);
             }
 
             else
@@ -3407,7 +3407,7 @@ LABEL_35:
       goto LABEL_27;
   }
 
-  v10 = [v6 dequeueReusableCellWithIdentifier:@"EmptyCell" forIndexPath:v7];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:@"EmptyCell" forIndexPath:pathCopy];
 LABEL_37:
 
   return v10;
@@ -3468,18 +3468,18 @@ LABEL_13:
   return v2;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 row];
-  v7 = [v5 section];
+  pathCopy = path;
+  v6 = [pathCopy row];
+  section = [pathCopy section];
 
-  if (v7 == 3)
+  if (section == 3)
   {
-    v8 = [(RTTUIConversationViewController *)self cannedResponses];
-    if (v6 < [v8 count])
+    cannedResponses = [(RTTUIConversationViewController *)self cannedResponses];
+    if (v6 < [cannedResponses count])
     {
-      v9 = [v8 objectAtIndex:v6];
+      v9 = [cannedResponses objectAtIndex:v6];
       v10 = [v9 stringByAppendingString:@" "];
 
       v11 = +[RTTUIConversationControllerCoordinator sharedInstance];
@@ -3503,25 +3503,25 @@ void __69__RTTUIConversationViewController_tableView_didSelectRowAtIndexPath___b
   }
 }
 
-- (void)_updateTableViewRowAtIndexPath:(id)a3 action:(int64_t)a4 animation:(int64_t)a5
+- (void)_updateTableViewRowAtIndexPath:(id)path action:(int64_t)action animation:(int64_t)animation
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (path)
   {
-    v11 = a3;
+    pathCopy = path;
     v8 = MEMORY[0x277CBEA60];
-    v9 = a3;
-    v10 = [v8 arrayWithObjects:&v11 count:1];
+    pathCopy2 = path;
+    v10 = [v8 arrayWithObjects:&pathCopy count:1];
 
-    [(RTTUIConversationViewController *)self _updateTableViewRowsAtIndexPaths:v10 action:a4 animation:a5, v11, v12];
+    [(RTTUIConversationViewController *)self _updateTableViewRowsAtIndexPaths:v10 action:action animation:animation, pathCopy, v12];
   }
 }
 
-- (void)_updateTableViewRowsAtIndexPaths:(id)a3 action:(int64_t)a4 animation:(int64_t)a5
+- (void)_updateTableViewRowsAtIndexPaths:(id)paths action:(int64_t)action animation:(int64_t)animation
 {
-  v8 = a3;
+  pathsCopy = paths;
   objc_initWeak(&location, self);
-  if (a4 == 2)
+  if (action == 2)
   {
     v9 = v14;
     v10 = &v15;
@@ -3530,7 +3530,7 @@ void __69__RTTUIConversationViewController_tableView_didSelectRowAtIndexPath___b
     v11 = __85__RTTUIConversationViewController__updateTableViewRowsAtIndexPaths_action_animation___block_invoke_3;
   }
 
-  else if (a4 == 1)
+  else if (action == 1)
   {
     v9 = v16;
     v10 = &v17;
@@ -3551,9 +3551,9 @@ void __69__RTTUIConversationViewController_tableView_didSelectRowAtIndexPath___b
   v9[2] = v11;
   v9[3] = &unk_279AE51A0;
   objc_copyWeak(v10, &location);
-  v12 = v8;
+  v12 = pathsCopy;
   v9[4] = v12;
-  v9[6] = a5;
+  v9[6] = animation;
   v13 = MEMORY[0x26670A470](v9);
 
   objc_destroyWeak(v10);
@@ -3582,22 +3582,22 @@ void __85__RTTUIConversationViewController__updateTableViewRowsAtIndexPaths_acti
   [v2 deleteRowsAtIndexPaths:*(a1 + 32) withRowAnimation:*(a1 + 48)];
 }
 
-- (void)utteranceCellDidUpdateContent:(id)a3
+- (void)utteranceCellDidUpdateContent:(id)content
 {
-  v4 = a3;
-  v5 = [(RTTUIConversationViewController *)self tableView];
-  v6 = [v5 indexPathForCell:v4];
+  contentCopy = content;
+  tableView = [(RTTUIConversationViewController *)self tableView];
+  v6 = [tableView indexPathForCell:contentCopy];
 
   if (v6)
   {
-    v7 = [(RTTUIConversationViewController *)self tableView];
+    tableView2 = [(RTTUIConversationViewController *)self tableView];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __65__RTTUIConversationViewController_utteranceCellDidUpdateContent___block_invoke;
     v8[3] = &unk_279AE4E50;
     v8[4] = self;
     v9 = v6;
-    [v7 performBatchUpdates:v8 completion:0];
+    [tableView2 performBatchUpdates:v8 completion:0];
   }
 }
 
@@ -3610,49 +3610,49 @@ uint64_t __65__RTTUIConversationViewController_utteranceCellDidUpdateContent___b
   return [v2 _scrollToIndexPathIfNecessary:v3 animated:1];
 }
 
-- (void)textViewDidChangeSelection:(id)a3
+- (void)textViewDidChangeSelection:(id)selection
 {
-  v7 = a3;
-  v4 = [(RTTUIConversationViewController *)self call];
-  if ([RTTUIUtilities ttyShouldBeRealtimeForCall:v4])
+  selectionCopy = selection;
+  call = [(RTTUIConversationViewController *)self call];
+  if ([RTTUIUtilities ttyShouldBeRealtimeForCall:call])
   {
-    v5 = [v7 text];
-    v6 = [v5 length];
+    text = [selectionCopy text];
+    v6 = [text length];
 
     if (!v6)
     {
       goto LABEL_5;
     }
 
-    v4 = [(RTTUIConversationViewController *)self currentUtterance];
-    [v4 resetTimeout];
+    call = [(RTTUIConversationViewController *)self currentUtterance];
+    [call resetTimeout];
   }
 
 LABEL_5:
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v38 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
-  v11 = [(RTTUIConversationViewController *)self call];
-  if (![RTTUIUtilities ttyShouldBeRealtimeForCall:v11])
+  viewCopy = view;
+  textCopy = text;
+  call = [(RTTUIConversationViewController *)self call];
+  if (![RTTUIUtilities ttyShouldBeRealtimeForCall:call])
   {
     goto LABEL_4;
   }
 
-  v12 = [v9 text];
-  if ([v12 length])
+  text = [viewCopy text];
+  if ([text length])
   {
 
 LABEL_4:
     goto LABEL_5;
   }
 
-  v24 = [v10 length];
+  v24 = [textCopy length];
 
   if (v24)
   {
@@ -3660,12 +3660,12 @@ LABEL_5:
     if (self->_unsupportedCharacterSet)
     {
       v33 = location;
-      v13 = [v10 length];
-      v14 = [v10 mutableCopy];
+      v13 = [textCopy length];
+      v14 = [textCopy mutableCopy];
       if (v13)
       {
         v31 = length;
-        v32 = v9;
+        v32 = viewCopy;
         v15 = 0;
         v16 = 0;
         v17 = 0;
@@ -3673,7 +3673,7 @@ LABEL_5:
         v34 = *MEMORY[0x277CBF100];
         do
         {
-          v18 = [v10 characterAtIndex:v17];
+          v18 = [textCopy characterAtIndex:v17];
           if ([(NSMutableCharacterSet *)self->_unsupportedCharacterSet characterIsMember:v18])
           {
             v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%C", v18];
@@ -3700,9 +3700,9 @@ LABEL_5:
         while (v13 != v17);
         if (v15)
         {
-          v9 = v32;
-          v21 = [v32 text];
-          v22 = [v21 stringByReplacingCharactersInRange:v33 withString:{v31, v14}];
+          viewCopy = v32;
+          text2 = [v32 text];
+          v22 = [text2 stringByReplacingCharactersInRange:v33 withString:{v31, v14}];
 
           [v32 setText:v22];
           [(RTTUIConversationViewController *)self textViewDidChange:v32];
@@ -3713,7 +3713,7 @@ LABEL_5:
         else
         {
           v23 = 1;
-          v9 = v32;
+          viewCopy = v32;
         }
       }
 
@@ -3731,20 +3731,20 @@ LABEL_5:
     goto LABEL_25;
   }
 
-  v25 = [(RTTUIConversationViewController *)self conversation];
-  v26 = [v25 lastUtteranceForMe:1];
+  conversation = [(RTTUIConversationViewController *)self conversation];
+  v26 = [conversation lastUtteranceForMe:1];
 
   [v26 resetTimeout];
-  v27 = [v26 text];
-  [(RTTUIConversationViewController *)self setTextViewUtterance:v27];
+  text3 = [v26 text];
+  [(RTTUIConversationViewController *)self setTextViewUtterance:text3];
 
   [(RTTUIConversationViewController *)self setCurrentUtterance:v26];
   v28 = AXLogRTT();
   if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
   {
-    v29 = [v26 text];
+    text4 = [v26 text];
     *buf = 138412290;
-    v37 = v29;
+    v37 = text4;
     _os_log_impl(&dword_261725000, v28, OS_LOG_TYPE_INFO, "Should text view change: %@", buf, 0xCu);
   }
 
@@ -3755,10 +3755,10 @@ LABEL_25:
   return v23;
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   [(RTTUIConversationViewController *)self updateTableViewSizeAnimated:1];
   [(RTTUITextView *)self->_textView setShowTTYPredictions:0];
   ttyPredictionsTimer = self->_ttyPredictionsTimer;
@@ -3782,8 +3782,8 @@ LABEL_25:
   v14[4] = self;
   objc_copyWeak(&v15, &location);
   [(AXDispatchTimer *)v9 afterDelay:v14 processBlock:1.75];
-  v10 = [(RTTUIConversationViewController *)self call];
-  v11 = [RTTUIUtilities ttyShouldBeRealtimeForCall:v10];
+  call = [(RTTUIConversationViewController *)self call];
+  v11 = [RTTUIUtilities ttyShouldBeRealtimeForCall:call];
 
   if (v11)
   {
@@ -3791,7 +3791,7 @@ LABEL_25:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v18 = v4;
+      v18 = changeCopy;
       _os_log_impl(&dword_261725000, v12, OS_LOG_TYPE_INFO, "Text view did change: %@", buf, 0xCu);
     }
 
@@ -3825,15 +3825,15 @@ void __53__RTTUIConversationViewController_textViewDidChange___block_invoke(uint
 
   else if (([(RTTUITextView *)self->_textView isEditing]& 1) == 0)
   {
-    v4 = [(RTTUIConversationViewController *)self tableView];
-    v5 = [v4 visibleCells];
+    tableView = [(RTTUIConversationViewController *)self tableView];
+    visibleCells = [tableView visibleCells];
 
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __54__RTTUIConversationViewController_utteranceIsSelected__block_invoke;
     v8[3] = &unk_279AE51E8;
     v8[4] = &v9;
-    [v5 enumerateObjectsUsingBlock:v8];
+    [visibleCells enumerateObjectsUsingBlock:v8];
   }
 
   v6 = *(v10 + 24);
@@ -3863,12 +3863,12 @@ uint64_t __54__RTTUIConversationViewController_utteranceIsSelected__block_invoke
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (sel__define_ == a3)
+  if (sel__define_ == action)
   {
-    v6 = [MEMORY[0x277D75688] sharedInputModeController];
-    v5 = ([v6 deviceStateIsLocked] & 1) == 0 && -[RTTUIConversationViewController utteranceIsSelected](self, "utteranceIsSelected");
+    mEMORY[0x277D75688] = [MEMORY[0x277D75688] sharedInputModeController];
+    v5 = ([mEMORY[0x277D75688] deviceStateIsLocked] & 1) == 0 && -[RTTUIConversationViewController utteranceIsSelected](self, "utteranceIsSelected");
   }
 
   else
@@ -3881,9 +3881,9 @@ uint64_t __54__RTTUIConversationViewController_utteranceIsSelected__block_invoke
   return v5;
 }
 
-- (void)_define:(id)a3
+- (void)_define:(id)_define
 {
-  v4 = a3;
+  _defineCopy = _define;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -3893,27 +3893,27 @@ uint64_t __54__RTTUIConversationViewController_utteranceIsSelected__block_invoke
   v21 = 0;
   v22 = &v21;
   v23 = 0x3010000000;
-  v25 = 0;
+  selectedRange = 0;
   v26 = 0;
   v24 = &unk_2617456BD;
-  v25 = [(RTTUITextView *)self->_textView selectedRange];
+  selectedRange = [(RTTUITextView *)self->_textView selectedRange];
   v26 = v5;
   if (v22[5])
   {
-    v6 = [(RTTUITextView *)self->_textView text];
+    text = [(RTTUITextView *)self->_textView text];
     v7 = v28[5];
-    v28[5] = v6;
+    v28[5] = text;
 
-    v8 = [(RTTUITextView *)self->_textView selectedRange];
+    selectedRange2 = [(RTTUITextView *)self->_textView selectedRange];
     v9 = v22;
-    v22[4] = v8;
+    v22[4] = selectedRange2;
     v9[5] = v10;
   }
 
   else
   {
-    v11 = [(RTTUIConversationViewController *)self tableView];
-    v12 = [v11 visibleCells];
+    tableView = [(RTTUIConversationViewController *)self tableView];
+    visibleCells = [tableView visibleCells];
 
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
@@ -3921,7 +3921,7 @@ uint64_t __54__RTTUIConversationViewController_utteranceIsSelected__block_invoke
     v20[3] = &unk_279AE5210;
     v20[4] = &v27;
     v20[5] = &v21;
-    [v12 enumerateObjectsUsingBlock:v20];
+    [visibleCells enumerateObjectsUsingBlock:v20];
   }
 
   if ([v28[5] length])
@@ -3949,12 +3949,12 @@ uint64_t __54__RTTUIConversationViewController_utteranceIsSelected__block_invoke
     v16 = [v15 initWithString:v28[5] range:{v22[4], v22[5]}];
     [(RTTUIConversationViewController *)self setLookupController:v16];
 
-    v17 = [(RTTUIConversationViewController *)self lookupController];
-    [v17 setModalPresentationStyle:6];
+    lookupController = [(RTTUIConversationViewController *)self lookupController];
+    [lookupController setModalPresentationStyle:6];
 
-    v18 = [(RTTUIConversationViewController *)self navigationController];
-    v19 = [(RTTUIConversationViewController *)self lookupController];
-    [v18 presentModalViewController:v19 withTransition:0];
+    navigationController = [(RTTUIConversationViewController *)self navigationController];
+    lookupController2 = [(RTTUIConversationViewController *)self lookupController];
+    [navigationController presentModalViewController:lookupController2 withTransition:0];
   }
 
   _Block_object_dispose(&v21, 8);

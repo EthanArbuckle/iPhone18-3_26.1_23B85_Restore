@@ -1,24 +1,24 @@
 @interface MTPrunePromise
-- (MTPrunePromise)initWithMaterialLayer:(id)a3;
+- (MTPrunePromise)initWithMaterialLayer:(id)layer;
 - (void)dealloc;
 - (void)fulfillPromise;
 @end
 
 @implementation MTPrunePromise
 
-- (MTPrunePromise)initWithMaterialLayer:(id)a3
+- (MTPrunePromise)initWithMaterialLayer:(id)layer
 {
-  v4 = a3;
+  layerCopy = layer;
   v10.receiver = self;
   v10.super_class = MTPrunePromise;
   v5 = [(MTPrunePromise *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_materialLayer, v4);
-    v7 = [MEMORY[0x1E695DF00] date];
+    objc_storeWeak(&v5->_materialLayer, layerCopy);
+    date = [MEMORY[0x1E695DF00] date];
     timeStamp = v6->_timeStamp;
-    v6->_timeStamp = v7;
+    v6->_timeStamp = date;
   }
 
   return v6;
@@ -33,7 +33,7 @@
     if (os_log_type_enabled(MTLogMaterials, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1BF527000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: deallocating with unfulfilled promise", buf, 0xCu);
     }
 
@@ -57,7 +57,7 @@
     if (os_log_type_enabled(MTLogMaterials, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138543618;
-      v7 = self;
+      selfCopy = self;
       v8 = 2114;
       v9 = WeakRetained;
       _os_log_impl(&dword_1BF527000, v4, OS_LOG_TYPE_DEFAULT, "%{public}@: pruning layer: %{public}@", &v6, 0x16u);

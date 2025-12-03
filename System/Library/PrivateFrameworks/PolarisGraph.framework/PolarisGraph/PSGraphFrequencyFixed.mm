@@ -1,18 +1,18 @@
 @interface PSGraphFrequencyFixed
-+ (id)fixedFrequency:(unint64_t)a3;
-+ (id)fixedInterval:(id *)a3;
-+ (id)fixedSystemPulseStride:(unint64_t)a3;
-- (PSGraphFrequencyFixed)initWithFrequency:(unint64_t)a3;
-- (PSGraphFrequencyFixed)initWithInterval:(id *)a3;
-- (PSGraphFrequencyFixed)initWithStride:(unint64_t)a3;
++ (id)fixedFrequency:(unint64_t)frequency;
++ (id)fixedInterval:(id *)interval;
++ (id)fixedSystemPulseStride:(unint64_t)stride;
+- (PSGraphFrequencyFixed)initWithFrequency:(unint64_t)frequency;
+- (PSGraphFrequencyFixed)initWithInterval:(id *)interval;
+- (PSGraphFrequencyFixed)initWithStride:(unint64_t)stride;
 - (unint64_t)frequency;
 - (void)convertToStrideRepresentation;
-- (void)setInterval:(id *)a3;
+- (void)setInterval:(id *)interval;
 @end
 
 @implementation PSGraphFrequencyFixed
 
-- (PSGraphFrequencyFixed)initWithFrequency:(unint64_t)a3
+- (PSGraphFrequencyFixed)initWithFrequency:(unint64_t)frequency
 {
   v10.receiver = self;
   v10.super_class = PSGraphFrequencyFixed;
@@ -21,9 +21,9 @@
   if (v4)
   {
     *(v4 + 1) = 0;
-    if (a3)
+    if (frequency)
     {
-      CMTimeMake(&v9, 1, a3);
+      CMTimeMake(&v9, 1, frequency);
       *(v5 + 24) = *&v9.value;
       epoch = v9.epoch;
     }
@@ -42,7 +42,7 @@
   return v5;
 }
 
-- (PSGraphFrequencyFixed)initWithInterval:(id *)a3
+- (PSGraphFrequencyFixed)initWithInterval:(id *)interval
 {
   v8.receiver = self;
   v8.super_class = PSGraphFrequencyFixed;
@@ -51,8 +51,8 @@
   if (v4)
   {
     *(v4 + 1) = 0;
-    v6 = *&a3->var0;
-    *(v4 + 5) = a3->var3;
+    v6 = *&interval->var0;
+    *(v4 + 5) = interval->var3;
     *(v4 + 24) = v6;
     [v4 convertToStrideRepresentation];
   }
@@ -60,7 +60,7 @@
   return v5;
 }
 
-- (PSGraphFrequencyFixed)initWithStride:(unint64_t)a3
+- (PSGraphFrequencyFixed)initWithStride:(unint64_t)stride
 {
   v9.receiver = self;
   v9.super_class = PSGraphFrequencyFixed;
@@ -69,8 +69,8 @@
   if (v4)
   {
     v4->_type = 0;
-    v4->_systemPulseStride = a3;
-    CMTimeMake(&v8, a3, 90);
+    v4->_systemPulseStride = stride;
+    CMTimeMake(&v8, stride, 90);
     v5->_interval = v8;
     v6 = v5;
   }
@@ -80,10 +80,10 @@
 
 - (void)convertToStrideRepresentation
 {
-  v3 = [(PSGraphFrequencyFixed *)self frequency];
-  if (v3)
+  frequency = [(PSGraphFrequencyFixed *)self frequency];
+  if (frequency)
   {
-    v4 = 0x5A / v3;
+    v4 = 0x5A / frequency;
   }
 
   else
@@ -94,25 +94,25 @@
   self->_systemPulseStride = v4;
 }
 
-+ (id)fixedFrequency:(unint64_t)a3
++ (id)fixedFrequency:(unint64_t)frequency
 {
-  v3 = [[a1 alloc] initWithFrequency:a3];
+  v3 = [[self alloc] initWithFrequency:frequency];
 
   return v3;
 }
 
-+ (id)fixedInterval:(id *)a3
++ (id)fixedInterval:(id *)interval
 {
-  v4 = [a1 alloc];
-  v7 = *a3;
+  v4 = [self alloc];
+  v7 = *interval;
   v5 = [v4 initWithInterval:&v7];
 
   return v5;
 }
 
-+ (id)fixedSystemPulseStride:(unint64_t)a3
++ (id)fixedSystemPulseStride:(unint64_t)stride
 {
-  v3 = [[a1 alloc] initWithStride:a3];
+  v3 = [[self alloc] initWithStride:stride];
 
   return v3;
 }
@@ -130,10 +130,10 @@
   }
 }
 
-- (void)setInterval:(id *)a3
+- (void)setInterval:(id *)interval
 {
-  v3 = *&a3->var0;
-  self->_interval.epoch = a3->var3;
+  v3 = *&interval->var0;
+  self->_interval.epoch = interval->var3;
   *&self->_interval.value = v3;
 }
 

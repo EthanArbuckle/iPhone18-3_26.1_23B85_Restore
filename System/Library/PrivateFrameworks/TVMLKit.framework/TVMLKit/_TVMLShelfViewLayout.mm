@@ -1,16 +1,16 @@
 @interface _TVMLShelfViewLayout
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset;
 - (TVCellMetrics)cellMetrics;
 - (_TVMLShelfViewLayout)init;
 - (double)expectedLineSpacing;
 - (double)headerAllowance;
-- (id)_animationForReusableView:(id)a3 toLayoutAttributes:(id)a4 type:(unint64_t)a5;
-- (id)contentRowMetricsForShowcase:(BOOL)a3;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4;
-- (void)invalidateLayoutWithContext:(id)a3;
-- (void)setCellMetrics:(TVCellMetrics *)a3;
-- (void)setShowcaseFactor:(double)a3;
+- (id)_animationForReusableView:(id)view toLayoutAttributes:(id)attributes type:(unint64_t)type;
+- (id)contentRowMetricsForShowcase:(BOOL)showcase;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path;
+- (void)invalidateLayoutWithContext:(id)context;
+- (void)setCellMetrics:(TVCellMetrics *)metrics;
+- (void)setShowcaseFactor:(double)factor;
 @end
 
 @implementation _TVMLShelfViewLayout
@@ -28,32 +28,32 @@
   return result;
 }
 
-- (void)setCellMetrics:(TVCellMetrics *)a3
+- (void)setCellMetrics:(TVCellMetrics *)metrics
 {
-  self->_cellMetrics.cellSize = a3->cellSize;
-  v3 = *&a3->cellInset.bottom;
-  v5 = *&a3->cellPadding.top;
-  v4 = *&a3->cellPadding.bottom;
-  *&self->_cellMetrics.cellInset.top = *&a3->cellInset.top;
+  self->_cellMetrics.cellSize = metrics->cellSize;
+  v3 = *&metrics->cellInset.bottom;
+  v5 = *&metrics->cellPadding.top;
+  v4 = *&metrics->cellPadding.bottom;
+  *&self->_cellMetrics.cellInset.top = *&metrics->cellInset.top;
   *&self->_cellMetrics.cellInset.bottom = v3;
   *&self->_cellMetrics.cellPadding.top = v5;
   *&self->_cellMetrics.cellPadding.bottom = v4;
-  v6 = *&a3->cellMargin.bottom;
-  v8 = *&a3->cellInsetAlt.top;
-  v7 = *&a3->cellInsetAlt.bottom;
-  *&self->_cellMetrics.cellMargin.top = *&a3->cellMargin.top;
+  v6 = *&metrics->cellMargin.bottom;
+  v8 = *&metrics->cellInsetAlt.top;
+  v7 = *&metrics->cellInsetAlt.bottom;
+  *&self->_cellMetrics.cellMargin.top = *&metrics->cellMargin.top;
   *&self->_cellMetrics.cellMargin.bottom = v6;
   *&self->_cellMetrics.cellInsetAlt.top = v8;
   *&self->_cellMetrics.cellInsetAlt.bottom = v7;
-  if (a3->cellSize.width > 2.22044605e-16 && a3->cellSize.height > 2.22044605e-16)
+  if (metrics->cellSize.width > 2.22044605e-16 && metrics->cellSize.height > 2.22044605e-16)
   {
-    [(_TVShelfViewLayout *)self setItemSize:a3->cellSize.width];
+    [(_TVShelfViewLayout *)self setItemSize:metrics->cellSize.width];
   }
 }
 
-- (void)setShowcaseFactor:(double)a3
+- (void)setShowcaseFactor:(double)factor
 {
-  self->_showcaseFactor = a3;
+  self->_showcaseFactor = factor;
   v4 = objc_alloc_init(_TVMLShelfViewLayoutInvalidationContext);
   [(_TVMLShelfViewLayoutInvalidationContext *)v4 setInvalidateShowcase:1];
   [(_TVMLShelfViewLayout *)self invalidateLayoutWithContext:v4];
@@ -91,11 +91,11 @@
   v12 = 0u;
   v10 = 0u;
   v5 = [TVMLUtilities rowSpacingMetricsForRowMetrics:v4, 0];
-  v6 = [v5 firstObject];
-  v7 = v6;
-  if (v6)
+  firstObject = [v5 firstObject];
+  v7 = firstObject;
+  if (firstObject)
   {
-    [v6 tv_rowMetricsValue];
+    [firstObject tv_rowMetricsValue];
   }
 
   else
@@ -117,8 +117,8 @@
   v4 = v3;
   if (v3 == -1.0)
   {
-    v7 = [(_TVMLShelfViewLayout *)self collectionView];
-    v8 = [v7 delegate];
+    collectionView = [(_TVMLShelfViewLayout *)self collectionView];
+    delegate = [collectionView delegate];
 
     v9 = objc_opt_respondsToSelector();
     v10 = 0.0;
@@ -128,17 +128,17 @@
       v10 = v11;
     }
 
-    v12 = [(_TVMLShelfViewLayout *)self collectionView];
-    v13 = [v12 numberOfSections];
+    collectionView2 = [(_TVMLShelfViewLayout *)self collectionView];
+    numberOfSections = [collectionView2 numberOfSections];
 
-    if (v13 >= 1)
+    if (numberOfSections >= 1)
     {
-      for (i = 0; i != v13; ++i)
+      for (i = 0; i != numberOfSections; ++i)
       {
         if (v9)
         {
-          v15 = [(_TVMLShelfViewLayout *)self collectionView];
-          [v8 collectionView:v15 layout:self referenceSizeForHeaderInSection:i];
+          collectionView3 = [(_TVMLShelfViewLayout *)self collectionView];
+          [delegate collectionView:collectionView3 layout:self referenceSizeForHeaderInSection:i];
           v17 = v16;
 
           if (v17 > v10)
@@ -171,15 +171,15 @@
   return v5;
 }
 
-- (id)contentRowMetricsForShowcase:(BOOL)a3
+- (id)contentRowMetricsForShowcase:(BOOL)showcase
 {
-  v5 = [(_TVMLShelfViewLayout *)self collectionView];
-  v6 = [v5 delegate];
+  collectionView = [(_TVMLShelfViewLayout *)self collectionView];
+  delegate = [collectionView delegate];
 
   v7 = objc_opt_respondsToSelector();
   v8 = objc_opt_respondsToSelector();
   v9 = 0.0;
-  if (!a3 && (v7 & 1) == 0)
+  if (!showcase && (v7 & 1) == 0)
   {
     [(_TVShelfViewLayout *)self headerReferenceSize];
     v9 = v10;
@@ -187,19 +187,19 @@
 
   v11 = *MEMORY[0x277D768C8];
   v12 = *(MEMORY[0x277D768C8] + 16);
-  v13 = [(_TVMLShelfViewLayout *)self collectionView];
-  v14 = [v13 numberOfSections];
+  collectionView2 = [(_TVMLShelfViewLayout *)self collectionView];
+  numberOfSections = [collectionView2 numberOfSections];
 
-  if (v14 >= 1)
+  if (numberOfSections >= 1)
   {
     v15 = 0;
-    v16 = a3 | v7 ^ 1;
+    v16 = showcase | v7 ^ 1;
     do
     {
       if ((v16 & 1) == 0)
       {
-        v17 = [(_TVMLShelfViewLayout *)self collectionView];
-        [v6 collectionView:v17 layout:self referenceSizeForHeaderInSection:v15];
+        collectionView3 = [(_TVMLShelfViewLayout *)self collectionView];
+        [delegate collectionView:collectionView3 layout:self referenceSizeForHeaderInSection:v15];
         v19 = v18;
 
         if (v19 > v9)
@@ -210,8 +210,8 @@
 
       if (v8)
       {
-        v20 = [(_TVMLShelfViewLayout *)self collectionView];
-        [v6 collectionView:v20 layout:self insetForSectionAtIndex:v15];
+        collectionView4 = [(_TVMLShelfViewLayout *)self collectionView];
+        [delegate collectionView:collectionView4 layout:self insetForSectionAtIndex:v15];
         v22 = v21;
         v24 = v23;
 
@@ -229,19 +229,19 @@
       ++v15;
     }
 
-    while (v14 != v15);
+    while (numberOfSections != v15);
   }
 
   v56 = v9;
-  v25 = [(_TVShelfViewLayout *)self computedRowCount];
+  computedRowCount = [(_TVShelfViewLayout *)self computedRowCount];
   v62 = 0u;
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
   v59 = 0u;
   [(_TVMLShelfViewLayout *)self cellMetrics];
-  v26 = [MEMORY[0x277CBEB18] arrayWithCapacity:{v25, TVRowMetricsMakeWithCellMetrics(v58, &v59)}];
-  if (v25 >= 1)
+  v26 = [MEMORY[0x277CBEB18] arrayWithCapacity:{computedRowCount, TVRowMetricsMakeWithCellMetrics(v58, &v59)}];
+  if (computedRowCount >= 1)
   {
     v27 = 0;
     do
@@ -289,7 +289,7 @@
       }
 
       v46 = v12 > 0.0;
-      v47 = --v25 == 0;
+      v47 = --computedRowCount == 0;
       v48 = v12 + v29;
       v49 = v12 + v31;
       if (!v47 || !v46)
@@ -320,7 +320,7 @@
       --v27;
     }
 
-    while (v25);
+    while (computedRowCount);
   }
 
   v52 = [v26 copy];
@@ -328,38 +328,38 @@
   return v52;
 }
 
-- (void)invalidateLayoutWithContext:(id)a3
+- (void)invalidateLayoutWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 invalidateShowcase])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [contextCopy invalidateShowcase])
   {
-    v5 = v4;
-    v6 = [(_TVMLShelfViewLayout *)self collectionView];
-    v7 = [v6 delegate];
-    if ([v7 conformsToProtocol:&unk_287E801C8])
+    v5 = contextCopy;
+    collectionView = [(_TVMLShelfViewLayout *)self collectionView];
+    delegate = [collectionView delegate];
+    if ([delegate conformsToProtocol:&unk_287E801C8])
     {
-      v8 = [v6 delegate];
+      delegate2 = [collectionView delegate];
     }
 
     else
     {
-      v8 = 0;
+      delegate2 = 0;
     }
 
     v9 = objc_opt_respondsToSelector();
-    v10 = [MEMORY[0x277CBEB18] array];
-    v11 = [(_TVMLShelfViewLayout *)self collectionView];
-    v12 = [v11 numberOfSections];
+    array = [MEMORY[0x277CBEB18] array];
+    collectionView2 = [(_TVMLShelfViewLayout *)self collectionView];
+    numberOfSections = [collectionView2 numberOfSections];
 
-    if (v12 >= 1)
+    if (numberOfSections >= 1)
     {
       v13 = 0;
       do
       {
         if (v9)
         {
-          [v8 collectionView:v6 layout:self referenceSizeForHeaderInSection:v13];
+          [delegate2 collectionView:collectionView layout:self referenceSizeForHeaderInSection:v13];
         }
 
         else
@@ -370,32 +370,32 @@
         if (v14 > 0.0)
         {
           v15 = [MEMORY[0x277CCAA70] indexPathForItem:0 inSection:v13];
-          [v10 addObject:v15];
+          [array addObject:v15];
         }
 
         ++v13;
-        v16 = [(_TVMLShelfViewLayout *)self collectionView];
-        v17 = [v16 numberOfSections];
+        collectionView3 = [(_TVMLShelfViewLayout *)self collectionView];
+        numberOfSections2 = [collectionView3 numberOfSections];
       }
 
-      while (v13 < v17);
+      while (v13 < numberOfSections2);
     }
 
     [(_TVMLShelfViewLayout *)self setCachedTallestHeaderHeight:-1.0];
-    [v5 invalidateSupplementaryElementsOfKind:@"TVShelfLayoutElementKindHeader" atIndexPaths:v10];
+    [v5 invalidateSupplementaryElementsOfKind:@"TVShelfLayoutElementKindHeader" atIndexPaths:array];
   }
 
   v18.receiver = self;
   v18.super_class = _TVMLShelfViewLayout;
-  [(_TVShelfViewLayout *)&v18 invalidateLayoutWithContext:v4];
+  [(_TVShelfViewLayout *)&v18 invalidateLayoutWithContext:contextCopy];
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
   v19 = *MEMORY[0x277D85DE8];
   v17.receiver = self;
   v17.super_class = _TVMLShelfViewLayout;
-  v4 = [(_TVShelfViewLayout *)&v17 layoutAttributesForElementsInRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [(_TVShelfViewLayout *)&v17 layoutAttributesForElementsInRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -417,8 +417,8 @@
         v9 = *(*(&v13 + 1) + 8 * i);
         if ([v9 representedElementCategory] == 1)
         {
-          v10 = [v9 representedElementKind];
-          v11 = [v10 isEqualToString:@"TVShelfLayoutElementKindHeader"];
+          representedElementKind = [v9 representedElementKind];
+          v11 = [representedElementKind isEqualToString:@"TVShelfLayoutElementKindHeader"];
 
           if (v11)
           {
@@ -438,13 +438,13 @@
   return v4;
 }
 
-- (id)layoutAttributesForSupplementaryViewOfKind:(id)a3 atIndexPath:(id)a4
+- (id)layoutAttributesForSupplementaryViewOfKind:(id)kind atIndexPath:(id)path
 {
   v10.receiver = self;
   v10.super_class = _TVMLShelfViewLayout;
-  v6 = a3;
-  v7 = [(_TVShelfViewLayout *)&v10 layoutAttributesForSupplementaryViewOfKind:v6 atIndexPath:a4];
-  v8 = [v6 isEqualToString:{@"TVShelfLayoutElementKindHeader", v10.receiver, v10.super_class}];
+  kindCopy = kind;
+  v7 = [(_TVShelfViewLayout *)&v10 layoutAttributesForSupplementaryViewOfKind:kindCopy atIndexPath:path];
+  v8 = [kindCopy isEqualToString:{@"TVShelfLayoutElementKindHeader", v10.receiver, v10.super_class}];
 
   if (v8)
   {
@@ -456,20 +456,20 @@
   return v7;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset
 {
   v31.receiver = self;
   v31.super_class = _TVMLShelfViewLayout;
-  [(_TVShelfViewLayout *)&v31 targetContentOffsetForProposedContentOffset:a3.x, a3.y];
+  [(_TVShelfViewLayout *)&v31 targetContentOffsetForProposedContentOffset:offset.x, offset.y];
   v5 = v4;
   v7 = v6;
-  v8 = [(_TVMLShelfViewLayout *)self collectionView];
-  v9 = [v8 delegate];
-  v10 = [v9 indexPathForPreferredFocusedViewInCollectionView:v8];
+  collectionView = [(_TVMLShelfViewLayout *)self collectionView];
+  delegate = [collectionView delegate];
+  v10 = [delegate indexPathForPreferredFocusedViewInCollectionView:collectionView];
 
   if (v10)
   {
-    v11 = [v8 layoutAttributesForItemAtIndexPath:v10];
+    v11 = [collectionView layoutAttributesForItemAtIndexPath:v10];
     [v11 frame];
     v13 = v12;
     v15 = v14;
@@ -479,9 +479,9 @@
     v18 = v17;
     v20 = v19;
 
-    [v8 contentOffset];
+    [collectionView contentOffset];
     v22 = v18 + v20 * 0.5 - (v13 - v21 + v15 * 0.5);
-    [v8 contentInset];
+    [collectionView contentInset];
     v25 = v24;
     v26 = v18 - v22;
     if (v18 - v22 < v23)
@@ -489,7 +489,7 @@
       v22 = v22 - (v23 - (v18 - v22));
     }
 
-    [v8 bounds];
+    [collectionView bounds];
     v28 = v27 - (v18 + v20 - v22);
     if (v28 >= v25)
     {
@@ -509,19 +509,19 @@
   return result;
 }
 
-- (id)_animationForReusableView:(id)a3 toLayoutAttributes:(id)a4 type:(unint64_t)a5
+- (id)_animationForReusableView:(id)view toLayoutAttributes:(id)attributes type:(unint64_t)type
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5 == 1)
+  viewCopy = view;
+  attributesCopy = attributes;
+  if (type == 1)
   {
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __74___TVMLShelfViewLayout__animationForReusableView_toLayoutAttributes_type___block_invoke;
     v12[3] = &unk_279D6EFC8;
-    v13 = v8;
-    v14 = self;
-    v15 = v9;
+    v13 = viewCopy;
+    selfCopy = self;
+    v15 = attributesCopy;
     v10 = [v12 copy];
   }
 

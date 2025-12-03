@@ -1,24 +1,24 @@
 @interface SBWindowingLayoutFormatAdapter
-- (SBWindowingLayoutFormatAdapter)initWithWindowScene:(id)a3;
-- (id)_modifySizeAndPositionForLayoutAttributes:(id)a3 forLayoutRequest:(id)a4;
+- (SBWindowingLayoutFormatAdapter)initWithWindowScene:(id)scene;
+- (id)_modifySizeAndPositionForLayoutAttributes:(id)attributes forLayoutRequest:(id)request;
 - (void)_createLayoutRoleToLayoutAttributesMap;
-- (void)parse:(id)a3 argumentType:(int64_t)a4 bundleIdentifiers:(id)a5 error:(id *)a6;
+- (void)parse:(id)parse argumentType:(int64_t)type bundleIdentifiers:(id)identifiers error:(id *)error;
 @end
 
 @implementation SBWindowingLayoutFormatAdapter
 
-- (SBWindowingLayoutFormatAdapter)initWithWindowScene:(id)a3
+- (SBWindowingLayoutFormatAdapter)initWithWindowScene:(id)scene
 {
-  v4 = a3;
+  sceneCopy = scene;
   v20.receiver = self;
   v20.super_class = SBWindowingLayoutFormatAdapter;
   v5 = [(SBWindowingLayoutFormatAdapter *)&v20 init];
   if (v5)
   {
-    v6 = [v4 switcherController];
-    v7 = [v6 contentViewController];
+    switcherController = [sceneCopy switcherController];
+    contentViewController = [switcherController contentViewController];
     v8 = objc_opt_class();
-    v9 = v7;
+    v9 = contentViewController;
     if (v8)
     {
       if (objc_opt_isKindOfClass())
@@ -39,17 +39,17 @@
 
     v11 = v10;
 
-    v12 = [v11 view];
-    [v12 bounds];
+    view = [v11 view];
+    [view bounds];
     v5->_containerViewBounds.origin.x = v13;
     v5->_containerViewBounds.origin.y = v14;
     v5->_containerViewBounds.size.width = v15;
     v5->_containerViewBounds.size.height = v16;
 
-    v17 = [v11 windowingConfiguration];
+    windowingConfiguration = [v11 windowingConfiguration];
 
     windowingConfiguration = v5->_windowingConfiguration;
-    v5->_windowingConfiguration = v17;
+    v5->_windowingConfiguration = windowingConfiguration;
   }
 
   return v5;
@@ -87,9 +87,9 @@
 
         v12 = [(SBWindowingLayoutFormatAdapter *)self _modifySizeAndPositionForLayoutAttributes:v11 forLayoutRequest:v9];
 
-        v13 = [v9 wantsFocus];
+        wantsFocus = [v9 wantsFocus];
         lastInteractionTime = v4;
-        if ((v13 & 1) == 0)
+        if ((wantsFocus & 1) == 0)
         {
           lastInteractionTime = self->_lastInteractionTime;
         }
@@ -120,26 +120,26 @@
   }
 }
 
-- (id)_modifySizeAndPositionForLayoutAttributes:(id)a3 forLayoutRequest:(id)a4
+- (id)_modifySizeAndPositionForLayoutAttributes:(id)attributes forLayoutRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  requestCopy = request;
   x = self->_containerViewBounds.origin.x;
   y = self->_containerViewBounds.origin.y;
   width = self->_containerViewBounds.size.width;
   height = self->_containerViewBounds.size.height;
   v12 = self->_windowingConfiguration;
-  v13 = [v7 position];
-  if (v13 > 3)
+  position = [requestCopy position];
+  if (position > 3)
   {
-    if (v13 == 4)
+    if (position == 4)
     {
       v14 = 9;
     }
 
     else
     {
-      if (v13 != 5)
+      if (position != 5)
       {
         goto LABEL_11;
       }
@@ -148,14 +148,14 @@
     }
   }
 
-  else if (v13 == 2)
+  else if (position == 2)
   {
     v14 = 8;
   }
 
   else
   {
-    if (v13 != 3)
+    if (position != 3)
     {
       goto LABEL_11;
     }
@@ -164,15 +164,15 @@
   }
 
   SBDisplayItemTileConfigurationMake(v14, v25, 1.79769313e308, 1.79769313e308);
-  v15 = [SBDisplayItemLayoutAttributes attributesByModifyingTileConfiguration:v6];
+  v15 = [SBDisplayItemLayoutAttributes attributesByModifyingTileConfiguration:attributesCopy];
 
-  v6 = [SBDisplayItemLayoutAttributes attributesByModifyingSizingPolicy:v15];
+  attributesCopy = [SBDisplayItemLayoutAttributes attributesByModifyingSizingPolicy:v15];
 
 LABEL_11:
-  v16 = [v7 size];
+  v16 = [requestCopy size];
   if (v16 == 2)
   {
-    v17 = [SBDisplayItemLayoutAttributes attributesByModifyingSizingPolicy:v6];
+    v17 = [SBDisplayItemLayoutAttributes attributesByModifyingSizingPolicy:attributesCopy];
 
     [(SBSwitcherWindowingConfiguration *)v12 minimumDefaultWindowSize];
     v20 = v19;
@@ -186,36 +186,36 @@ LABEL_11:
 
   if (v16 == 1)
   {
-    v17 = [SBDisplayItemLayoutAttributes attributesByModifyingSizingPolicy:v6];
+    v17 = [SBDisplayItemLayoutAttributes attributesByModifyingSizingPolicy:attributesCopy];
 
     SBDisplayItemAttributedSizeUnspecified(v25);
     v18 = [SBDisplayItemLayoutAttributes attributesByModifyingAttributedUserSizeBeforeOverlapping:v17];
 LABEL_15:
     v23 = v18;
-    v6 = v17;
+    attributesCopy = v17;
     goto LABEL_17;
   }
 
-  v23 = [SBDisplayItemLayoutAttributes attributesByModifyingSizingPolicy:v6];
+  v23 = [SBDisplayItemLayoutAttributes attributesByModifyingSizingPolicy:attributesCopy];
 LABEL_17:
 
   return v23;
 }
 
-- (void)parse:(id)a3 argumentType:(int64_t)a4 bundleIdentifiers:(id)a5 error:(id *)a6
+- (void)parse:(id)parse argumentType:(int64_t)type bundleIdentifiers:(id)identifiers error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  if (a4 == 1)
+  parseCopy = parse;
+  identifiersCopy = identifiers;
+  if (type == 1)
   {
     v18 = 0;
     v12 = &v18;
-    v13 = [SBWindowingLayoutFormatParser createLayoutRequestForArrangement:v10 bundleIdentifiersToLaunch:v11 error:&v18];
+    v13 = [SBWindowingLayoutFormatParser createLayoutRequestForArrangement:parseCopy bundleIdentifiersToLaunch:identifiersCopy error:&v18];
   }
 
   else
   {
-    if (a4)
+    if (type)
     {
 LABEL_7:
       [(SBWindowingLayoutFormatAdapter *)self _createLayoutRoleToLayoutAttributesMap];
@@ -224,7 +224,7 @@ LABEL_7:
 
     v19 = 0;
     v12 = &v19;
-    v13 = [SBWindowingLayoutFormatParser createLayoutRequestForFormat:v10 bundleIdentifiersToLaunch:v11 error:&v19];
+    v13 = [SBWindowingLayoutFormatParser createLayoutRequestForFormat:parseCopy bundleIdentifiersToLaunch:identifiersCopy error:&v19];
   }
 
   v14 = v13;
@@ -238,7 +238,7 @@ LABEL_7:
   }
 
   v17 = v15;
-  *a6 = v15;
+  *error = v15;
 
 LABEL_8:
 }

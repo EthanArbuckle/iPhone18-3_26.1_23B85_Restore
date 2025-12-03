@@ -12,18 +12,18 @@
 
 - (id)_toJSONString
 {
-  v2 = [a1 context];
-  v3 = [v2 JSGlobalContextRef];
-  v4 = [a1 JSValueRef];
-  v6 = WebKit::serializeJSObject(v3, v4, 0, v5);
+  context = [self context];
+  jSGlobalContextRef = [context JSGlobalContextRef];
+  jSValueRef = [self JSValueRef];
+  v6 = WebKit::serializeJSObject(jSGlobalContextRef, jSValueRef, 0, v5);
 
   return v6;
 }
 
 - (id)_toSortedJSONString
 {
-  v1 = [a1 _toJSONString];
-  v2 = [v1 dataUsingEncoding:4];
+  _toJSONString = [self _toJSONString];
+  v2 = [_toJSONString dataUsingEncoding:4];
 
   if (!v2)
   {
@@ -58,44 +58,44 @@ LABEL_9:
 
 - (BOOL)_isFunction
 {
-  v2 = [a1 context];
-  v3 = [v2 JSGlobalContextRef];
+  context = [self context];
+  jSGlobalContextRef = [context JSGlobalContextRef];
 
-  v4 = [a1 JSValueRef];
-  if (!v4)
+  jSValueRef = [self JSValueRef];
+  if (!jSValueRef)
   {
     return 0;
   }
 
-  v5 = v4;
-  if (!JSValueIsObject(v3, v4))
+  v5 = jSValueRef;
+  if (!JSValueIsObject(jSGlobalContextRef, jSValueRef))
   {
     return 0;
   }
 
-  v6 = JSValueToObject(v3, v5, 0);
+  v6 = JSValueToObject(jSGlobalContextRef, v5, 0);
   if (!v6)
   {
     return 0;
   }
 
-  return JSObjectIsFunction(v3, v6);
+  return JSObjectIsFunction(jSGlobalContextRef, v6);
 }
 
 - (uint64_t)_isDictionary
 {
-  if (![a1 isObject])
+  if (![self isObject])
   {
     return 0;
   }
 
-  v2 = [a1 objectForKeyedSubscript:@"__proto__"];
-  v3 = [a1 context];
-  v4 = [v3 objectForKeyedSubscript:@"Object"];
+  v2 = [self objectForKeyedSubscript:@"__proto__"];
+  context = [self context];
+  v4 = [context objectForKeyedSubscript:@"Object"];
   v5 = [v4 objectForKeyedSubscript:@"prototype"];
   if ([v2 isEqualToObject:v5])
   {
-    v6 = [a1 _isThenable] ^ 1;
+    v6 = [self _isThenable] ^ 1;
   }
 
   else
@@ -108,30 +108,30 @@ LABEL_9:
 
 - (uint64_t)_isRegularExpression
 {
-  if (![a1 isObject])
+  if (![self isObject])
   {
     return 0;
   }
 
-  v2 = [a1 context];
-  v3 = [v2 objectForKeyedSubscript:@"RegExp"];
-  v4 = [a1 isInstanceOf:v3];
+  context = [self context];
+  v3 = [context objectForKeyedSubscript:@"RegExp"];
+  v4 = [self isInstanceOf:v3];
 
   return v4;
 }
 
 - (uint64_t)_isThenable
 {
-  if (![a1 isObject])
+  if (![self isObject])
   {
     return 0;
   }
 
-  v2 = [a1 objectForKeyedSubscript:@"then"];
+  v2 = [self objectForKeyedSubscript:@"then"];
   v3 = WTF::dynamic_objc_cast<JSValue>(v2);
-  v4 = [v3 _isFunction];
+  _isFunction = [v3 _isFunction];
 
-  return v4;
+  return _isFunction;
 }
 
 - (void)_awaitThenableResolutionWithCompletionHandler:()WebKitExtras
@@ -157,7 +157,7 @@ LABEL_9:
   v10 = _Block_copy(v8);
   v17[1] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
-  v12 = [a1 invokeMethod:@"then" withArguments:v11];
+  v12 = [self invokeMethod:@"then" withArguments:v11];
 }
 
 @end

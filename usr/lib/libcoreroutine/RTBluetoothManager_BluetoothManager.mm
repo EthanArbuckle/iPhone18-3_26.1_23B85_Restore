@@ -1,13 +1,13 @@
 @interface RTBluetoothManager_BluetoothManager
 - (BluetoothManager)bluetoothManager;
-- (int64_t)getCarKitConnectionStateFromConnectedDevices:(id)a3;
-- (void)_fetchCarKitConnectedStateWithHandler:(id)a3;
-- (void)_shutdownWithHandler:(id)a3;
+- (int64_t)getCarKitConnectionStateFromConnectedDevices:(id)devices;
+- (void)_fetchCarKitConnectedStateWithHandler:(id)handler;
+- (void)_shutdownWithHandler:(id)handler;
 - (void)dealloc;
-- (void)internalAddObserver:(id)a3 name:(id)a4;
-- (void)internalRemoveObserver:(id)a3 name:(id)a4;
-- (void)setCarKitConnectionState:(int64_t)a3;
-- (void)setObservingConnections:(BOOL)a3;
+- (void)internalAddObserver:(id)observer name:(id)name;
+- (void)internalRemoveObserver:(id)observer name:(id)name;
+- (void)setCarKitConnectionState:(int64_t)state;
+- (void)setObservingConnections:(BOOL)connections;
 - (void)shouldObserveConnections;
 - (void)updateConnections;
 @end
@@ -26,81 +26,81 @@
     dispatch_once(&bluetoothManager_onceToken, block);
   }
 
-  v2 = [MEMORY[0x277CF3248] sharedInstance];
+  mEMORY[0x277CF3248] = [MEMORY[0x277CF3248] sharedInstance];
 
-  return v2;
+  return mEMORY[0x277CF3248];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = RTBluetoothManager_BluetoothManager;
   [(RTBluetoothManager_BluetoothManager *)&v4 dealloc];
 }
 
-- (void)_shutdownWithHandler:(id)a3
+- (void)_shutdownWithHandler:(id)handler
 {
-  v6 = a3;
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 removeObserver:self];
+  handlerCopy = handler;
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v5 = v6;
-  if (v6)
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v6 + 2))(v6, 0);
-    v5 = v6;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v5 = handlerCopy;
   }
 }
 
 - (void)updateConnections
 {
-  v3 = [(RTNotifier *)self queue];
+  queue = [(RTNotifier *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__RTBluetoothManager_BluetoothManager_updateConnections__block_invoke;
   block[3] = &unk_2788C4EA0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
-- (void)setObservingConnections:(BOOL)a3
+- (void)setObservingConnections:(BOOL)connections
 {
-  if (self->_observingConnections != a3)
+  if (self->_observingConnections != connections)
   {
-    self->_observingConnections = a3;
-    if (a3)
+    self->_observingConnections = connections;
+    if (connections)
     {
       v5 = MEMORY[0x277CBEB98];
-      v6 = [(RTBluetoothManager_BluetoothManager *)self bluetoothManager];
-      v7 = [v6 connectedDevices];
-      v8 = [v5 setWithArray:v7];
+      bluetoothManager = [(RTBluetoothManager_BluetoothManager *)self bluetoothManager];
+      connectedDevices = [bluetoothManager connectedDevices];
+      v8 = [v5 setWithArray:connectedDevices];
       [(RTBluetoothManager_BluetoothManager *)self setConnectedDevices:v8];
 
-      v9 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v9 addObserver:self selector:sel_updateConnections name:*MEMORY[0x277CF3190] object:0];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter addObserver:self selector:sel_updateConnections name:*MEMORY[0x277CF3190] object:0];
 
-      v10 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v10 addObserver:self selector:sel_updateConnections name:*MEMORY[0x277CF31A0] object:0];
+      defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel_updateConnections name:*MEMORY[0x277CF31A0] object:0];
 
-      v13 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v13 addObserver:self selector:sel_updateConnections name:*MEMORY[0x277CF3168] object:0];
+      defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter3 addObserver:self selector:sel_updateConnections name:*MEMORY[0x277CF3168] object:0];
     }
 
     else
     {
       [(RTBluetoothManager_BluetoothManager *)self setConnectedDevices:0];
       [(RTBluetoothManager_BluetoothManager *)self setCarKitConnectionState:0];
-      v11 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v11 removeObserver:self name:*MEMORY[0x277CF3190] object:0];
+      defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter4 removeObserver:self name:*MEMORY[0x277CF3190] object:0];
 
-      v12 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v12 removeObserver:self name:*MEMORY[0x277CF31A0] object:0];
+      defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter5 removeObserver:self name:*MEMORY[0x277CF31A0] object:0];
 
-      v13 = [MEMORY[0x277CCAB98] defaultCenter];
-      [v13 removeObserver:self name:*MEMORY[0x277CF3168] object:0];
+      defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+      [defaultCenter3 removeObserver:self name:*MEMORY[0x277CF3168] object:0];
     }
   }
 }
@@ -131,20 +131,20 @@
   [(RTBluetoothManager_BluetoothManager *)self setObservingConnections:v4];
 }
 
-- (void)internalAddObserver:(id)a3 name:(id)a4
+- (void)internalAddObserver:(id)observer name:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = RTBluetoothManager_BluetoothManager;
-  [(RTBluetoothManager *)&v11 internalAddObserver:a3 name:v6];
+  [(RTBluetoothManager *)&v11 internalAddObserver:observer name:nameCopy];
   v7 = +[(RTNotification *)RTBluetoothManagerNotificationConnected];
-  if (([v6 isEqualToString:v7] & 1) == 0)
+  if (([nameCopy isEqualToString:v7] & 1) == 0)
   {
     v8 = +[(RTNotification *)RTBluetoothManagerNotificationDisconnected];
-    if (![v6 isEqualToString:v8])
+    if (![nameCopy isEqualToString:v8])
     {
       v9 = +[(RTNotification *)RTBluetoothManagerNotificationCarKitConnectionStateChanged];
-      v10 = [v6 isEqualToString:v9];
+      v10 = [nameCopy isEqualToString:v9];
 
       if ((v10 & 1) == 0)
       {
@@ -160,20 +160,20 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)internalRemoveObserver:(id)a3 name:(id)a4
+- (void)internalRemoveObserver:(id)observer name:(id)name
 {
-  v6 = a4;
+  nameCopy = name;
   v11.receiver = self;
   v11.super_class = RTBluetoothManager_BluetoothManager;
-  [(RTBluetoothManager *)&v11 internalRemoveObserver:a3 name:v6];
+  [(RTBluetoothManager *)&v11 internalRemoveObserver:observer name:nameCopy];
   v7 = +[(RTNotification *)RTBluetoothManagerNotificationConnected];
-  if (([v6 isEqualToString:v7] & 1) == 0)
+  if (([nameCopy isEqualToString:v7] & 1) == 0)
   {
     v8 = +[(RTNotification *)RTBluetoothManagerNotificationDisconnected];
-    if (![v6 isEqualToString:v8])
+    if (![nameCopy isEqualToString:v8])
     {
       v9 = +[(RTNotification *)RTBluetoothManagerNotificationCarKitConnectionStateChanged];
-      v10 = [v6 isEqualToString:v9];
+      v10 = [nameCopy isEqualToString:v9];
 
       if ((v10 & 1) == 0)
       {
@@ -189,12 +189,12 @@ LABEL_5:
 LABEL_6:
 }
 
-- (int64_t)getCarKitConnectionStateFromConnectedDevices:(id)a3
+- (int64_t)getCarKitConnectionStateFromConnectedDevices:(id)devices
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  devicesCopy = devices;
   v5 = [v3 predicateWithBlock:&__block_literal_global_22];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  v6 = [devicesCopy filteredArrayUsingPredicate:v5];
 
   v7 = [v6 count];
   if (v7)
@@ -210,16 +210,16 @@ LABEL_6:
   return v8;
 }
 
-- (void)_fetchCarKitConnectedStateWithHandler:(id)a3
+- (void)_fetchCarKitConnectedStateWithHandler:(id)handler
 {
-  v8 = a3;
-  v4 = [(RTBluetoothManager_BluetoothManager *)self bluetoothManager];
+  handlerCopy = handler;
+  bluetoothManager = [(RTBluetoothManager_BluetoothManager *)self bluetoothManager];
 
-  if (v4)
+  if (bluetoothManager)
   {
-    v5 = [(RTBluetoothManager_BluetoothManager *)self bluetoothManager];
-    v6 = [v5 connectedDevices];
-    v7 = [(RTBluetoothManager_BluetoothManager *)self getCarKitConnectionStateFromConnectedDevices:v6];
+    bluetoothManager2 = [(RTBluetoothManager_BluetoothManager *)self bluetoothManager];
+    connectedDevices = [bluetoothManager2 connectedDevices];
+    v7 = [(RTBluetoothManager_BluetoothManager *)self getCarKitConnectionStateFromConnectedDevices:connectedDevices];
   }
 
   else
@@ -227,13 +227,13 @@ LABEL_6:
     v7 = 0;
   }
 
-  v8[2](v8, v7);
+  handlerCopy[2](handlerCopy, v7);
 }
 
-- (void)setCarKitConnectionState:(int64_t)a3
+- (void)setCarKitConnectionState:(int64_t)state
 {
   v13 = *MEMORY[0x277D85DE8];
-  if (self->_carKitConnectionState != a3)
+  if (self->_carKitConnectionState != state)
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -241,7 +241,7 @@ LABEL_6:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v6 = [RTBluetoothManager carKitConnectionStateToString:self->_carKitConnectionState];
-        v7 = [RTBluetoothManager carKitConnectionStateToString:a3];
+        v7 = [RTBluetoothManager carKitConnectionStateToString:state];
         v9 = 138412546;
         v10 = v6;
         v11 = 2112;
@@ -250,7 +250,7 @@ LABEL_6:
       }
     }
 
-    self->_carKitConnectionState = a3;
+    self->_carKitConnectionState = state;
     v8 = [[RTBluetoothManagerNotificationCarKitConnectionStateChanged alloc] initWithCarKitConnectionState:self->_carKitConnectionState];
     [(RTNotifier *)self postNotification:v8];
   }

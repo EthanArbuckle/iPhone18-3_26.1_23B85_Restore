@@ -1,36 +1,36 @@
 @interface LCSExtensionMonitor
-- (BOOL)hasExtensionForBundleIdentifier:(id)a3;
-- (LCSExtensionMonitor)initWithExtensionPointIdentifier:(id)a3;
+- (BOOL)hasExtensionForBundleIdentifier:(id)identifier;
+- (LCSExtensionMonitor)initWithExtensionPointIdentifier:(id)identifier;
 - (NSArray)knownExtensions;
-- (void)_queue_notifyUpdatedExtensions:(id)a3;
-- (void)addObserver:(id)a3;
+- (void)_queue_notifyUpdatedExtensions:(id)extensions;
+- (void)addObserver:(id)observer;
 - (void)invalidate;
-- (void)knownExtensionsWithCompletionHandler:(id)a3;
-- (void)queryControllerDidUpdate:(id)a3 resultDifference:(id)a4;
-- (void)removeObserver:(id)a3;
+- (void)knownExtensionsWithCompletionHandler:(id)handler;
+- (void)queryControllerDidUpdate:(id)update resultDifference:(id)difference;
+- (void)removeObserver:(id)observer;
 - (void)start;
 @end
 
 @implementation LCSExtensionMonitor
 
-- (LCSExtensionMonitor)initWithExtensionPointIdentifier:(id)a3
+- (LCSExtensionMonitor)initWithExtensionPointIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = LCSExtensionMonitor;
   v6 = [(LCSExtensionMonitor *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_extensionPointIdentifier, a3);
+    objc_storeStrong(&v6->_extensionPointIdentifier, identifier);
     v7->_lock._os_unfair_lock_opaque = 0;
     Serial = BSDispatchQueueCreateSerial();
     queue = v7->_queue;
     v7->_queue = Serial;
 
-    v10 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     queue_observers = v7->_queue_observers;
-    v7->_queue_observers = v10;
+    v7->_queue_observers = weakObjectsHashTable;
   }
 
   return v7;
@@ -97,10 +97,10 @@ void __28__LCSExtensionMonitor_start__block_invoke(uint64_t a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_notifyUpdatedExtensions:(id)a3
+- (void)_queue_notifyUpdatedExtensions:(id)extensions
 {
   v56 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  extensionsCopy = extensions;
   v5 = LCSLogExtension();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -108,13 +108,13 @@ void __28__LCSExtensionMonitor_start__block_invoke(uint64_t a1)
     *buf = 138412802;
     v51 = extensionPointIdentifier;
     v52 = 2048;
-    v53 = [v4 count];
+    v53 = [extensionsCopy count];
     v54 = 2112;
-    v55 = v4;
+    v55 = extensionsCopy;
     _os_log_impl(&dword_256175000, v5, OS_LOG_TYPE_DEFAULT, "Extensions updated for %@ monitoring; Received %lu extensions: %@", buf, 0x20u);
   }
 
-  v7 = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
+  weakToWeakObjectsMapTable = [MEMORY[0x277CCAB00] weakToWeakObjectsMapTable];
   os_unfair_lock_lock(&self->_lock);
   v46 = 0u;
   v47 = 0u;
@@ -136,8 +136,8 @@ void __28__LCSExtensionMonitor_start__block_invoke(uint64_t a1)
         }
 
         v13 = *(*(&v44 + 1) + 8 * i);
-        v14 = [v13 identity];
-        [v7 setObject:v13 forKey:v14];
+        identity = [v13 identity];
+        [weakToWeakObjectsMapTable setObject:v13 forKey:identity];
       }
 
       v10 = [(NSArray *)v8 countByEnumeratingWithState:&v44 objects:v49 count:16];
@@ -146,7 +146,7 @@ void __28__LCSExtensionMonitor_start__block_invoke(uint64_t a1)
     while (v10);
   }
 
-  v34 = self;
+  selfCopy = self;
   if (self->_lock_knownExtensions)
   {
     lock_knownExtensions = self->_lock_knownExtensions;
@@ -158,12 +158,12 @@ void __28__LCSExtensionMonitor_start__block_invoke(uint64_t a1)
   }
 
   v33 = [MEMORY[0x277CBEB98] setWithArray:lock_knownExtensions];
-  v16 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v4, "count")}];
+  v16 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(extensionsCopy, "count")}];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  obj = v4;
+  obj = extensionsCopy;
   v17 = [obj countByEnumeratingWithState:&v40 objects:v48 count:16];
   if (v17)
   {
@@ -188,7 +188,7 @@ void __28__LCSExtensionMonitor_start__block_invoke(uint64_t a1)
           _os_log_impl(&dword_256175000, v22, OS_LOG_TYPE_DEFAULT, "Examining extension identity %@", buf, 0xCu);
         }
 
-        v23 = [v7 objectForKey:v21];
+        v23 = [weakToWeakObjectsMapTable objectForKey:v21];
         if (v23)
         {
           v24 = v23;
@@ -235,7 +235,7 @@ LABEL_26:
   v27 = [v16 copy];
   if ([v33 isEqual:v27])
   {
-    os_unfair_lock_unlock(&v34->_lock);
+    os_unfair_lock_unlock(&selfCopy->_lock);
     v28 = LCSLogExtension();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
@@ -246,17 +246,17 @@ LABEL_26:
 
   else
   {
-    v29 = [v27 bs_array];
-    v30 = v34->_lock_knownExtensions;
-    v34->_lock_knownExtensions = v29;
+    bs_array = [v27 bs_array];
+    v30 = selfCopy->_lock_knownExtensions;
+    selfCopy->_lock_knownExtensions = bs_array;
 
-    os_unfair_lock_unlock(&v34->_lock);
-    queue = v34->_queue;
+    os_unfair_lock_unlock(&selfCopy->_lock);
+    queue = selfCopy->_queue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __54__LCSExtensionMonitor__queue_notifyUpdatedExtensions___block_invoke;
     block[3] = &unk_279824DF0;
-    block[4] = v34;
+    block[4] = selfCopy;
     v37 = v27;
     v38 = v33;
     v39 = v37;
@@ -322,9 +322,9 @@ void __54__LCSExtensionMonitor__queue_notifyUpdatedExtensions___block_invoke(voi
   return v3;
 }
 
-- (BOOL)hasExtensionForBundleIdentifier:(id)a3
+- (BOOL)hasExtensionForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
   v5 = [(NSArray *)self->_lock_knownExtensions copy];
   os_unfair_lock_unlock(&self->_lock);
@@ -337,7 +337,7 @@ void __54__LCSExtensionMonitor__queue_notifyUpdatedExtensions___block_invoke(voi
   v14[1] = 3221225472;
   v14[2] = __55__LCSExtensionMonitor_hasExtensionForBundleIdentifier___block_invoke;
   v14[3] = &unk_279824F38;
-  v15 = v4;
+  v15 = identifierCopy;
   v6 = [v5 bs_firstObjectPassingTest:v14];
 
   if (v6)
@@ -354,7 +354,7 @@ LABEL_4:
     v12[1] = 3221225472;
     v12[2] = __55__LCSExtensionMonitor_hasExtensionForBundleIdentifier___block_invoke_2;
     v12[3] = &unk_279824DA0;
-    v13 = v4;
+    v13 = identifierCopy;
     v10 = [v9 bs_firstObjectPassingTest:v12];
     v7 = v10 != 0;
   }
@@ -378,9 +378,9 @@ uint64_t __55__LCSExtensionMonitor_hasExtensionForBundleIdentifier___block_invok
   return v4;
 }
 
-- (void)knownExtensionsWithCompletionHandler:(id)a3
+- (void)knownExtensionsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [objc_alloc(MEMORY[0x277CC5DF8]) initWithExtensionPointIdentifier:self->_extensionPointIdentifier];
   objc_initWeak(&location, self);
   v6 = MEMORY[0x277CC5E00];
@@ -389,7 +389,7 @@ uint64_t __55__LCSExtensionMonitor_hasExtensionForBundleIdentifier___block_invok
   v8[2] = __60__LCSExtensionMonitor_knownExtensionsWithCompletionHandler___block_invoke;
   v8[3] = &unk_279824F88;
   objc_copyWeak(&v10, &location);
-  v7 = v4;
+  v7 = handlerCopy;
   v9 = v7;
   [v6 executeQuery:v5 completionHandler:v8];
 
@@ -433,17 +433,17 @@ void __60__LCSExtensionMonitor_knownExtensionsWithCompletionHandler___block_invo
   (*(*(a1 + 48) + 16))();
 }
 
-- (void)queryControllerDidUpdate:(id)a3 resultDifference:(id)a4
+- (void)queryControllerDidUpdate:(id)update resultDifference:(id)difference
 {
-  v5 = a3;
+  updateCopy = update;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __65__LCSExtensionMonitor_queryControllerDidUpdate_resultDifference___block_invoke;
   v8[3] = &unk_279824C98;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = updateCopy;
+  v7 = updateCopy;
   dispatch_async(queue, v8);
 }
 
@@ -454,11 +454,11 @@ void __65__LCSExtensionMonitor_queryControllerDidUpdate_resultDifference___block
   [v1 _queue_notifyUpdatedExtensions:v2];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -466,16 +466,16 @@ void __65__LCSExtensionMonitor_queryControllerDidUpdate_resultDifference___block
     v7[2] = __35__LCSExtensionMonitor_addObserver___block_invoke;
     v7[3] = &unk_279824C98;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -483,7 +483,7 @@ void __65__LCSExtensionMonitor_queryControllerDidUpdate_resultDifference___block
     v7[2] = __38__LCSExtensionMonitor_removeObserver___block_invoke;
     v7[3] = &unk_279824C98;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(queue, v7);
   }
 }

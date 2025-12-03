@@ -8,11 +8,11 @@
 {
   v5.receiver = self;
   v5.super_class = TIInputManagerHandwritingTraditional_yue;
-  v3 = [(TIInputManagerHandwriting *)&v5 initImplementation];
+  initImplementation = [(TIInputManagerHandwriting *)&v5 initImplementation];
   [(TIInputManagerHandwriting *)self updateAddressBook];
   [(TIInputManagerHandwriting *)self updateUserWordEntries];
   [(TIInputManagerHandwriting *)self updateDictionaryPaths];
-  return v3;
+  return initImplementation;
 }
 
 @end

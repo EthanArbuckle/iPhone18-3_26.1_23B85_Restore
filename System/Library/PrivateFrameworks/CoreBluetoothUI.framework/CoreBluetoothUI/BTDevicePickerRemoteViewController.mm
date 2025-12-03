@@ -1,24 +1,24 @@
 @interface BTDevicePickerRemoteViewController
 - (BTDevicePickerRemoteViewControllerHost)_delegate;
-- (void)didDismissWithResult:(int64_t)a3 deviceAddress:(id)a4;
-- (void)discoveredDevice:(id)a3 deviceAddress:(id)a4;
+- (void)didDismissWithResult:(int64_t)result deviceAddress:(id)address;
+- (void)discoveredDevice:(id)device deviceAddress:(id)address;
 @end
 
 @implementation BTDevicePickerRemoteViewController
 
-- (void)didDismissWithResult:(int64_t)a3 deviceAddress:(id)a4
+- (void)didDismissWithResult:(int64_t)result deviceAddress:(id)address
 {
-  v6 = a4;
+  addressCopy = address;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained didDismissWithResult:a3 deviceAddress:v6];
+  [WeakRetained didDismissWithResult:result deviceAddress:addressCopy];
 }
 
-- (void)discoveredDevice:(id)a3 deviceAddress:(id)a4
+- (void)discoveredDevice:(id)device deviceAddress:(id)address
 {
-  v6 = a4;
-  v7 = a3;
+  addressCopy = address;
+  deviceCopy = device;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained discoveredDevice:v7 deviceAddress:v6];
+  [WeakRetained discoveredDevice:deviceCopy deviceAddress:addressCopy];
 }
 
 - (BTDevicePickerRemoteViewControllerHost)_delegate

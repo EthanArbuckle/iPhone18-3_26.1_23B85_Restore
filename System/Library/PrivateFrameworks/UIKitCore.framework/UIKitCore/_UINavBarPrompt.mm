@@ -2,23 +2,23 @@
 - (CGRect)_labelFrame;
 - (CGRect)promptBounds;
 - (CGSize)_updateLabelTextColorAndFontReturningShadowOffset;
-- (_UINavBarPrompt)initWithNavBar:(id)a3;
+- (_UINavBarPrompt)initWithNavBar:(id)bar;
 - (void)layoutSubviews;
-- (void)setPrompt:(id)a3;
+- (void)setPrompt:(id)prompt;
 @end
 
 @implementation _UINavBarPrompt
 
-- (_UINavBarPrompt)initWithNavBar:(id)a3
+- (_UINavBarPrompt)initWithNavBar:(id)bar
 {
-  v4 = a3;
+  barCopy = bar;
   v14.receiver = self;
   v14.super_class = _UINavBarPrompt;
   v5 = [(UIView *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_navBar, v4);
+    objc_storeWeak(&v5->_navBar, barCopy);
     v7 = objc_alloc_init(UILabel);
     label = v6->_label;
     v6->_label = v7;
@@ -41,24 +41,24 @@
   return v6;
 }
 
-- (void)setPrompt:(id)a3
+- (void)setPrompt:(id)prompt
 {
-  v6 = a3;
-  v4 = [(UILabel *)self->_label text];
+  promptCopy = prompt;
+  text = [(UILabel *)self->_label text];
 
-  v5 = v6;
-  if (v4 != v6)
+  v5 = promptCopy;
+  if (text != promptCopy)
   {
-    [(UILabel *)self->_label setText:v6];
+    [(UILabel *)self->_label setText:promptCopy];
     [(UIView *)self setNeedsLayout];
-    v5 = v6;
+    v5 = promptCopy;
   }
 }
 
 - (CGRect)_labelFrame
 {
   WeakRetained = objc_loadWeakRetained(&self->_navBar);
-  v4 = [WeakRetained _currentVisualStyle];
+  _currentVisualStyle = [WeakRetained _currentVisualStyle];
 
   [(UIView *)self bounds];
   v6 = v5;
@@ -78,7 +78,7 @@
     v16 = 0.0;
   }
 
-  [v4 promptTextOffset];
+  [_currentVisualStyle promptTextOffset];
   v18 = v8 + v17;
 
   v19 = v16;
@@ -105,26 +105,26 @@
 - (CGSize)_updateLabelTextColorAndFontReturningShadowOffset
 {
   WeakRetained = objc_loadWeakRetained(&self->_navBar);
-  v4 = [WeakRetained _appearanceStorage];
-  v5 = [WeakRetained _currentVisualStyle];
-  v6 = [v4 textAttributes];
-  v7 = [v6 objectForKey:*off_1E70EC918];
+  _appearanceStorage = [WeakRetained _appearanceStorage];
+  _currentVisualStyle = [WeakRetained _currentVisualStyle];
+  textAttributes = [_appearanceStorage textAttributes];
+  v7 = [textAttributes objectForKey:*off_1E70EC918];
   if (v7)
   {
     v8 = v7;
     [v7 pointSize];
     if (v9 == 0.0)
     {
-      [v5 promptFontSize];
+      [_currentVisualStyle promptFontSize];
     }
 
     else
     {
       [v8 pointSize];
       v13 = v12;
-      [v5 promptFontSize];
+      [_currentVisualStyle promptFontSize];
       v15 = v13 * v14;
-      [v5 headingFontSize];
+      [_currentVisualStyle headingFontSize];
       v10 = round(v15 / v16);
     }
 
@@ -146,7 +146,7 @@
     +[UIColor blackColor];
   }
   v17 = ;
-  v18 = [v6 objectForKey:*off_1E70EC920];
+  v18 = [textAttributes objectForKey:*off_1E70EC920];
   v19 = v18;
   if (v18)
   {
@@ -160,11 +160,11 @@
 
   v21 = v20;
 
-  v22 = [v6 objectForKey:*off_1E70EC9B0];
+  v22 = [textAttributes objectForKey:*off_1E70EC9B0];
   v23 = v22;
   if (v22)
   {
-    v24 = [v22 shadowColor];
+    shadowColor = [v22 shadowColor];
     [v23 shadowOffset];
     v26 = v25;
     v28 = v27;
@@ -172,15 +172,15 @@
 
   else
   {
-    v24 = 0;
+    shadowColor = 0;
     v26 = *MEMORY[0x1E695F060];
     v28 = *(MEMORY[0x1E695F060] + 8);
   }
 
   [(UILabel *)self->_label setTextColor:v21];
-  if (v24)
+  if (shadowColor)
   {
-    [(UILabel *)self->_label setShadowColor:v24];
+    [(UILabel *)self->_label setShadowColor:shadowColor];
   }
 
   [(UILabel *)self->_label setFont:v11];
@@ -197,9 +197,9 @@
   [(_UINavBarPrompt *)self _updateLabelTextColorAndFontReturningShadowOffset];
   v4 = v3;
   v6 = v5;
-  v7 = [(UIView *)self->_label superview];
+  superview = [(UIView *)self->_label superview];
 
-  if (v7)
+  if (superview)
   {
     label = self->_label;
     [(_UINavBarPrompt *)self _labelFrame];

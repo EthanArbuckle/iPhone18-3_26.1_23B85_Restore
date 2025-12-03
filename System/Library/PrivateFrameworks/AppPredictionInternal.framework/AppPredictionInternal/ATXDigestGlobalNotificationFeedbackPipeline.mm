@@ -1,7 +1,7 @@
 @interface ATXDigestGlobalNotificationFeedbackPipeline
 - (ATXDigestGlobalNotificationFeedbackPipeline)init;
-- (ATXDigestGlobalNotificationFeedbackPipeline)initWithFeedbackStore:(id)a3 notificationQuantityProvider:(id)a4 lastRunTimestampKey:(id)a5 constants:(id)a6;
-- (void)logGlobalNotificationStatisticsToDigestFeedbackWithXPCActivity:(id)a3;
+- (ATXDigestGlobalNotificationFeedbackPipeline)initWithFeedbackStore:(id)store notificationQuantityProvider:(id)provider lastRunTimestampKey:(id)key constants:(id)constants;
+- (void)logGlobalNotificationStatisticsToDigestFeedbackWithXPCActivity:(id)activity;
 @end
 
 @implementation ATXDigestGlobalNotificationFeedbackPipeline
@@ -17,31 +17,31 @@
   return v6;
 }
 
-- (ATXDigestGlobalNotificationFeedbackPipeline)initWithFeedbackStore:(id)a3 notificationQuantityProvider:(id)a4 lastRunTimestampKey:(id)a5 constants:(id)a6
+- (ATXDigestGlobalNotificationFeedbackPipeline)initWithFeedbackStore:(id)store notificationQuantityProvider:(id)provider lastRunTimestampKey:(id)key constants:(id)constants
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  storeCopy = store;
+  providerCopy = provider;
+  keyCopy = key;
+  constantsCopy = constants;
   v18.receiver = self;
   v18.super_class = ATXDigestGlobalNotificationFeedbackPipeline;
   v15 = [(ATXDigestGlobalNotificationFeedbackPipeline *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_feedbackStore, a3);
-    objc_storeStrong(&v16->_notificationQuantityProvider, a4);
-    objc_storeStrong(&v16->_lastRunTimestampUserDefaultsKey, a5);
-    objc_storeStrong(&v16->_c, a6);
+    objc_storeStrong(&v15->_feedbackStore, store);
+    objc_storeStrong(&v16->_notificationQuantityProvider, provider);
+    objc_storeStrong(&v16->_lastRunTimestampUserDefaultsKey, key);
+    objc_storeStrong(&v16->_c, constants);
   }
 
   return v16;
 }
 
-- (void)logGlobalNotificationStatisticsToDigestFeedbackWithXPCActivity:(id)a3
+- (void)logGlobalNotificationStatisticsToDigestFeedbackWithXPCActivity:(id)activity
 {
   v63 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activityCopy = activity;
   v5 = __atxlog_handle_notification_management();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -81,7 +81,7 @@
     v17 = 0.0;
   }
 
-  if ([v4 didDefer])
+  if ([activityCopy didDefer])
   {
     v18 = __atxlog_handle_notification_management();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -97,7 +97,7 @@
   else
   {
     v18 = [(ATXNotificationQuantityProviderProtocol *)self->_notificationQuantityProvider totalNotificationsPerAppFromStartTime:v17 toEndTime:Current];
-    if ([v4 didDefer])
+    if ([activityCopy didDefer])
     {
       v21 = __atxlog_handle_notification_management();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -113,7 +113,7 @@
     else
     {
       v21 = [(ATXNotificationQuantityProviderProtocol *)self->_notificationQuantityProvider messageNotificationsPerAppFromStartTime:v17 toEndTime:Current];
-      if ([v4 didDefer])
+      if ([activityCopy didDefer])
       {
         v24 = __atxlog_handle_notification_management();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
@@ -129,7 +129,7 @@
       else
       {
         v24 = [(ATXNotificationQuantityProviderProtocol *)self->_notificationQuantityProvider timeSensitiveNonmessageNotificationsPerAppFromStartTime:v17 toEndTime:Current];
-        if ([v4 didDefer])
+        if ([activityCopy didDefer])
         {
           v27 = __atxlog_handle_notification_management();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
@@ -146,9 +146,9 @@
         {
           v53 = v24;
           v54 = v21;
-          v55 = self;
+          selfCopy = self;
           v50 = v13;
-          v51 = v4;
+          v51 = activityCopy;
           v58 = 0u;
           v59 = 0u;
           v56 = 0u;
@@ -199,11 +199,11 @@
 
                 v43 = v42;
 
-                -[ATXNotificationDigestFeedbackProtocol logBasicNotificationsSentForBundleId:numNotifications:](v55->_feedbackStore, "logBasicNotificationsSentForBundleId:numNotifications:", v34, [v35 unsignedIntegerValue] - (objc_msgSend(v39, "unsignedIntegerValue") + objc_msgSend(v43, "unsignedIntegerValue")));
-                v44 = v55->_feedbackStore;
-                v45 = [v43 unsignedIntegerValue];
+                -[ATXNotificationDigestFeedbackProtocol logBasicNotificationsSentForBundleId:numNotifications:](selfCopy->_feedbackStore, "logBasicNotificationsSentForBundleId:numNotifications:", v34, [v35 unsignedIntegerValue] - (objc_msgSend(v39, "unsignedIntegerValue") + objc_msgSend(v43, "unsignedIntegerValue")));
+                v44 = selfCopy->_feedbackStore;
+                unsignedIntegerValue = [v43 unsignedIntegerValue];
 
-                [(ATXNotificationDigestFeedbackProtocol *)v44 logTimeSensitiveNotificationsSentForBundleId:v34 numNotifications:v45];
+                [(ATXNotificationDigestFeedbackProtocol *)v44 logTimeSensitiveNotificationsSentForBundleId:v34 numNotifications:unsignedIntegerValue];
               }
 
               v32 = [v30 countByEnumeratingWithState:&v56 objects:v60 count:16];
@@ -213,7 +213,7 @@
           }
 
           v13 = v50;
-          [v50 setDouble:v55->_lastRunTimestampUserDefaultsKey forKey:Current];
+          [v50 setDouble:selfCopy->_lastRunTimestampUserDefaultsKey forKey:Current];
           v27 = __atxlog_handle_notification_management();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
           {
@@ -224,7 +224,7 @@
             _os_log_impl(&dword_2263AA000, v27, OS_LOG_TYPE_INFO, "[%@] Finished logging global notifications sent", buf, 0xCu);
           }
 
-          v4 = v51;
+          activityCopy = v51;
           v18 = v49;
           v24 = v53;
           v21 = v54;

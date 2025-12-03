@@ -1,58 +1,58 @@
 @interface ACHAchievementsDaemonExtension
-- (ACHAchievementsDaemonExtension)initWithDaemon:(id)a3 mobileAssetProvider:(id)a4;
-- (int64_t)purgeSpaceForUrgency:(int)a3 volume:(id)a4;
-- (int64_t)purgeableSpaceForUrgency:(int)a3 volume:(id)a4;
-- (void)daemonReady:(id)a3;
+- (ACHAchievementsDaemonExtension)initWithDaemon:(id)daemon mobileAssetProvider:(id)provider;
+- (int64_t)purgeSpaceForUrgency:(int)urgency volume:(id)volume;
+- (int64_t)purgeableSpaceForUrgency:(int)urgency volume:(id)volume;
+- (void)daemonReady:(id)ready;
 @end
 
 @implementation ACHAchievementsDaemonExtension
 
-- (ACHAchievementsDaemonExtension)initWithDaemon:(id)a3 mobileAssetProvider:(id)a4
+- (ACHAchievementsDaemonExtension)initWithDaemon:(id)daemon mobileAssetProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  daemonCopy = daemon;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = ACHAchievementsDaemonExtension;
   v8 = [(ACHAchievementsDaemonExtension *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_mobileAssetProvider, a4);
-    [v6 registerDaemonReadyObserver:v9 queue:0];
+    objc_storeStrong(&v8->_mobileAssetProvider, provider);
+    [daemonCopy registerDaemonReadyObserver:v9 queue:0];
   }
 
   return v9;
 }
 
-- (void)daemonReady:(id)a3
+- (void)daemonReady:(id)ready
 {
-  v4 = [a3 cacheDeleteCoordinator];
-  [v4 registerCacheDeleteProvider:self];
+  cacheDeleteCoordinator = [ready cacheDeleteCoordinator];
+  [cacheDeleteCoordinator registerCacheDeleteProvider:self];
 }
 
-- (int64_t)purgeableSpaceForUrgency:(int)a3 volume:(id)a4
+- (int64_t)purgeableSpaceForUrgency:(int)urgency volume:(id)volume
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if ([v6 isEqualToString:@"/private/var"])
+  volumeCopy = volume;
+  if ([volumeCopy isEqualToString:@"/private/var"])
   {
-    if (a3 == 4)
+    if (urgency == 4)
     {
-      v7 = [(ACHMobileAssetProvider *)self->_mobileAssetProvider downloadedAssetDiskUsageInBytes];
+      downloadedAssetDiskUsageInBytes = [(ACHMobileAssetProvider *)self->_mobileAssetProvider downloadedAssetDiskUsageInBytes];
     }
 
     else
     {
-      v7 = 0;
+      downloadedAssetDiskUsageInBytes = 0;
     }
 
     v8 = ACHLogAssets();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134218240;
-      v12 = v7;
+      v12 = downloadedAssetDiskUsageInBytes;
       v13 = 1024;
-      v14 = a3;
+      urgencyCopy = urgency;
       _os_log_impl(&dword_221DDC000, v8, OS_LOG_TYPE_DEFAULT, "Returning purgable space %llu for urgency %d", &v11, 0x12u);
     }
   }
@@ -63,40 +63,40 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543362;
-      v12 = v6;
+      v12 = volumeCopy;
       _os_log_impl(&dword_221DDC000, v8, OS_LOG_TYPE_DEFAULT, "No purgable space for requested volume %{public}@", &v11, 0xCu);
     }
 
-    v7 = 0;
+    downloadedAssetDiskUsageInBytes = 0;
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v7;
+  return downloadedAssetDiskUsageInBytes;
 }
 
-- (int64_t)purgeSpaceForUrgency:(int)a3 volume:(id)a4
+- (int64_t)purgeSpaceForUrgency:(int)urgency volume:(id)volume
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if ([v6 isEqualToString:@"/private/var"])
+  volumeCopy = volume;
+  if ([volumeCopy isEqualToString:@"/private/var"])
   {
-    if (a3 == 4)
+    if (urgency == 4)
     {
-      v7 = [(ACHMobileAssetProvider *)self->_mobileAssetProvider purgeAllDownloadedAssets];
+      purgeAllDownloadedAssets = [(ACHMobileAssetProvider *)self->_mobileAssetProvider purgeAllDownloadedAssets];
     }
 
     else
     {
-      v7 = 0;
+      purgeAllDownloadedAssets = 0;
     }
 
     v8 = ACHLogAssets();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134218240;
-      v12 = v7;
+      v12 = purgeAllDownloadedAssets;
       v13 = 1024;
-      v14 = a3;
+      urgencyCopy = urgency;
       _os_log_impl(&dword_221DDC000, v8, OS_LOG_TYPE_DEFAULT, "Returning purged space %llu for urgency %d", &v11, 0x12u);
     }
   }
@@ -107,15 +107,15 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138543362;
-      v12 = v6;
+      v12 = volumeCopy;
       _os_log_impl(&dword_221DDC000, v8, OS_LOG_TYPE_DEFAULT, "Nothing to purge for requested volume %{public}@", &v11, 0xCu);
     }
 
-    v7 = 0;
+    purgeAllDownloadedAssets = 0;
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v7;
+  return purgeAllDownloadedAssets;
 }
 
 @end

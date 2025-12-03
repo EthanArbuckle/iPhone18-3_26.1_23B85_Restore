@@ -1,12 +1,12 @@
 @interface WhatDidTheySayIntentResponse
-- (WhatDidTheySayIntentResponse)initWithPropertiesByName:(id)a3;
+- (WhatDidTheySayIntentResponse)initWithPropertiesByName:(id)name;
 @end
 
 @implementation WhatDidTheySayIntentResponse
 
-- (WhatDidTheySayIntentResponse)initWithPropertiesByName:(id)a3
+- (WhatDidTheySayIntentResponse)initWithPropertiesByName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v3 = sub_268B37B64();
   }

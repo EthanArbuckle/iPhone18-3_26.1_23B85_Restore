@@ -1,13 +1,13 @@
 @interface IPARemoveAutoSettings
 - (IPARemoveAutoSettings)init;
-- (IPARemoveAutoSettings)initWithIdentifier:(id)a3;
+- (IPARemoveAutoSettings)initWithIdentifier:(id)identifier;
 @end
 
 @implementation IPARemoveAutoSettings
 
-- (IPARemoveAutoSettings)initWithIdentifier:(id)a3
+- (IPARemoveAutoSettings)initWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = objc_opt_class();
   NSStringFromClass(v4);
   objc_claimAutoreleasedReturnValue();

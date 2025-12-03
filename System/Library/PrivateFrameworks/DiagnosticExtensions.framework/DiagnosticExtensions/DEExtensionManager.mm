@@ -1,8 +1,8 @@
 @interface DEExtensionManager
 + (id)sharedInstance;
 - (DEExtensionManager)init;
-- (id)extensionForIdentifier:(id)a3;
-- (id)extensionsWithFilter:(id)a3;
+- (id)extensionForIdentifier:(id)identifier;
+- (id)extensionsWithFilter:(id)filter;
 - (void)loadExtensions;
 @end
 
@@ -39,16 +39,16 @@ uint64_t __36__DEExtensionManager_sharedInstance__block_invoke()
   return [v5 setExtendedLoaded:0];
 }
 
-- (id)extensionForIdentifier:(id)a3
+- (id)extensionForIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [(DEExtensionManager *)self extensions];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  extensions = [(DEExtensionManager *)self extensions];
+  v6 = [extensions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -58,12 +58,12 @@ uint64_t __36__DEExtensionManager_sharedInstance__block_invoke()
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(extensions);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 identifier];
-        v11 = [v10 isEqualToString:v4];
+        identifier = [v9 identifier];
+        v11 = [identifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -72,7 +72,7 @@ uint64_t __36__DEExtensionManager_sharedInstance__block_invoke()
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [extensions countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -200,25 +200,25 @@ uint64_t __36__DEExtensionManager_loadExtensions__block_invoke_18(uint64_t a1, v
   return v7;
 }
 
-- (id)extensionsWithFilter:(id)a3
+- (id)extensionsWithFilter:(id)filter
 {
-  v4 = a3;
+  filterCopy = filter;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__1;
   v17 = __Block_byref_object_dispose__1;
   v18 = 0;
-  v5 = [(DEExtensionManager *)self initialLoadQueue];
+  initialLoadQueue = [(DEExtensionManager *)self initialLoadQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __43__DEExtensionManager_extensionsWithFilter___block_invoke;
   block[3] = &unk_278F63B20;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
-  v10 = v4;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v10 = filterCopy;
+  v6 = filterCopy;
+  dispatch_sync(initialLoadQueue, block);
 
   v7 = v14[5];
   _Block_object_dispose(&v13, 8);

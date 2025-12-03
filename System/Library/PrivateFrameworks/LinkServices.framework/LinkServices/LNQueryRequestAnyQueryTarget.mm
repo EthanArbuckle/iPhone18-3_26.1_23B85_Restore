@@ -1,31 +1,31 @@
 @interface LNQueryRequestAnyQueryTarget
-- (BOOL)isEqual:(id)a3;
-- (LNQueryRequestAnyQueryTarget)initWithCoder:(id)a3;
-- (LNQueryRequestAnyQueryTarget)initWithQueryMetadata:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNQueryRequestAnyQueryTarget)initWithCoder:(id)coder;
+- (LNQueryRequestAnyQueryTarget)initWithQueryMetadata:(id)metadata;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNQueryRequestAnyQueryTarget
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [(LNQueryRequestAnyQueryTarget *)self queryMetadata];
-      v8 = [(LNQueryRequestAnyQueryTarget *)v6 queryMetadata];
-      v9 = v7;
-      v10 = v8;
+      queryMetadata = [(LNQueryRequestAnyQueryTarget *)self queryMetadata];
+      queryMetadata2 = [(LNQueryRequestAnyQueryTarget *)v6 queryMetadata];
+      v9 = queryMetadata;
+      v10 = queryMetadata2;
       v11 = v10;
       if (v9 == v10)
       {
@@ -51,41 +51,41 @@
   return v12;
 }
 
-- (LNQueryRequestAnyQueryTarget)initWithCoder:(id)a3
+- (LNQueryRequestAnyQueryTarget)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"queryMetadata"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"queryMetadata"];
 
   v6 = [(LNQueryRequestAnyQueryTarget *)self initWithQueryMetadata:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNQueryRequestAnyQueryTarget *)self queryMetadata];
-  [v4 encodeObject:v5 forKey:@"queryMetadata"];
+  coderCopy = coder;
+  queryMetadata = [(LNQueryRequestAnyQueryTarget *)self queryMetadata];
+  [coderCopy encodeObject:queryMetadata forKey:@"queryMetadata"];
 }
 
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(LNQueryMetadata *)self->_queryMetadata identifier];
-  v4 = [v2 stringWithFormat:@"Query <%@>", v3];
+  identifier = [(LNQueryMetadata *)self->_queryMetadata identifier];
+  v4 = [v2 stringWithFormat:@"Query <%@>", identifier];
 
   return v4;
 }
 
-- (LNQueryRequestAnyQueryTarget)initWithQueryMetadata:(id)a3
+- (LNQueryRequestAnyQueryTarget)initWithQueryMetadata:(id)metadata
 {
-  v5 = a3;
+  metadataCopy = metadata;
   v10.receiver = self;
   v10.super_class = LNQueryRequestAnyQueryTarget;
-  v6 = [(LNQueryRequestTargetBase *)&v10 _init];
-  v7 = v6;
-  if (v6)
+  _init = [(LNQueryRequestTargetBase *)&v10 _init];
+  v7 = _init;
+  if (_init)
   {
-    objc_storeStrong(v6 + 1, a3);
+    objc_storeStrong(_init + 1, metadata);
     v8 = v7;
   }
 

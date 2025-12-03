@@ -2,26 +2,26 @@
 - (NSArray)attachments;
 - (NSArray)subproviders;
 - (NSDictionary)dictionary;
-- (PXTapToRadarConcreteDiagnosticContainer)initWithName:(id)a3;
-- (id)beginCollectionOperationWithName:(id)a3 timeout:(double)a4;
-- (id)objectForKeyedSubscript:(id)a3;
-- (void)addAttachment:(id)a3;
-- (void)addAttachmentWithData:(id)a3 name:(id)a4;
-- (void)addAttachmentWithDictionary:(id)a3 name:(id)a4;
-- (void)addAttachmentWithText:(id)a3 name:(id)a4 extension:(id)a5;
-- (void)addSubprovider:(id)a3;
-- (void)addSubproviders:(id)a3;
-- (void)finalizeWithCompletionHandler:(id)a3;
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4;
+- (PXTapToRadarConcreteDiagnosticContainer)initWithName:(id)name;
+- (id)beginCollectionOperationWithName:(id)name timeout:(double)timeout;
+- (id)objectForKeyedSubscript:(id)subscript;
+- (void)addAttachment:(id)attachment;
+- (void)addAttachmentWithData:(id)data name:(id)name;
+- (void)addAttachmentWithDictionary:(id)dictionary name:(id)name;
+- (void)addAttachmentWithText:(id)text name:(id)name extension:(id)extension;
+- (void)addSubprovider:(id)subprovider;
+- (void)addSubproviders:(id)subproviders;
+- (void)finalizeWithCompletionHandler:(id)handler;
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript;
 @end
 
 @implementation PXTapToRadarConcreteDiagnosticContainer
 
-- (void)finalizeWithCompletionHandler:(id)a3
+- (void)finalizeWithCompletionHandler:(id)handler
 {
-  v3 = a3;
+  handlerCopy = handler;
   v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  v4 = v3;
+  v4 = handlerCopy;
   v5 = v6;
   PXIterateAsynchronously();
 }
@@ -161,51 +161,51 @@ uint64_t __73__PXTapToRadarConcreteDiagnosticContainer_finalizeWithCompletionHan
   }
 }
 
-- (id)beginCollectionOperationWithName:(id)a3 timeout:(double)a4
+- (id)beginCollectionOperationWithName:(id)name timeout:(double)timeout
 {
-  v6 = a3;
-  v7 = [[_PXTapToRadarDiagnosticCollectionOperation alloc] initWithName:v6 timeout:a4];
-  v8 = self;
-  objc_sync_enter(v8);
-  [(NSMutableArray *)v8->_collectionOperations addObject:v7];
-  objc_sync_exit(v8);
+  nameCopy = name;
+  v7 = [[_PXTapToRadarDiagnosticCollectionOperation alloc] initWithName:nameCopy timeout:timeout];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_collectionOperations addObject:v7];
+  objc_sync_exit(selfCopy);
 
   return v7;
 }
 
-- (void)addSubproviders:(id)a3
+- (void)addSubproviders:(id)subproviders
 {
-  v4 = a3;
-  if (v4)
+  subprovidersCopy = subproviders;
+  if (subprovidersCopy)
   {
-    v6 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    [(NSMutableArray *)v5->_subproviders addObjectsFromArray:v6];
-    objc_sync_exit(v5);
+    v6 = subprovidersCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMutableArray *)selfCopy->_subproviders addObjectsFromArray:v6];
+    objc_sync_exit(selfCopy);
 
-    v4 = v6;
+    subprovidersCopy = v6;
   }
 }
 
-- (void)addSubprovider:(id)a3
+- (void)addSubprovider:(id)subprovider
 {
-  v4 = a3;
-  if (v4)
+  subproviderCopy = subprovider;
+  if (subproviderCopy)
   {
-    v6 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    [(NSMutableArray *)v5->_subproviders addObject:v6];
-    objc_sync_exit(v5);
+    v6 = subproviderCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMutableArray *)selfCopy->_subproviders addObject:v6];
+    objc_sync_exit(selfCopy);
 
-    v4 = v6;
+    subproviderCopy = v6;
   }
 }
 
-- (void)addAttachmentWithData:(id)a3 name:(id)a4
+- (void)addAttachmentWithData:(id)data name:(id)name
 {
-  v5 = PXFeedbackTapToRadarUtilitiesWriteDataToFile(a3, a4);
+  v5 = PXFeedbackTapToRadarUtilitiesWriteDataToFile(data, name);
   if (v5)
   {
     v6 = v5;
@@ -214,9 +214,9 @@ uint64_t __73__PXTapToRadarConcreteDiagnosticContainer_finalizeWithCompletionHan
   }
 }
 
-- (void)addAttachmentWithText:(id)a3 name:(id)a4 extension:(id)a5
+- (void)addAttachmentWithText:(id)text name:(id)name extension:(id)extension
 {
-  v6 = PXFeedbackTapToRadarUtilitiesWriteStringToFileWithExtension(a3, a4, a5);
+  v6 = PXFeedbackTapToRadarUtilitiesWriteStringToFileWithExtension(text, name, extension);
   if (v6)
   {
     v7 = v6;
@@ -225,9 +225,9 @@ uint64_t __73__PXTapToRadarConcreteDiagnosticContainer_finalizeWithCompletionHan
   }
 }
 
-- (void)addAttachmentWithDictionary:(id)a3 name:(id)a4
+- (void)addAttachmentWithDictionary:(id)dictionary name:(id)name
 {
-  v5 = PXFeedbackTapToRadarUtilitiesWriteDictionaryToPlistFile(a3, a4);
+  v5 = PXFeedbackTapToRadarUtilitiesWriteDictionaryToPlistFile(dictionary, name);
   if (v5)
   {
     v6 = v5;
@@ -236,84 +236,84 @@ uint64_t __73__PXTapToRadarConcreteDiagnosticContainer_finalizeWithCompletionHan
   }
 }
 
-- (void)addAttachment:(id)a3
+- (void)addAttachment:(id)attachment
 {
-  v4 = a3;
-  if (v4)
+  attachmentCopy = attachment;
+  if (attachmentCopy)
   {
-    v6 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    [(NSMutableArray *)v5->_attachments addObject:v6];
-    objc_sync_exit(v5);
+    v6 = attachmentCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMutableArray *)selfCopy->_attachments addObject:v6];
+    objc_sync_exit(selfCopy);
 
-    v4 = v6;
+    attachmentCopy = v6;
   }
 }
 
-- (void)setObject:(id)a3 forKeyedSubscript:(id)a4
+- (void)setObject:(id)object forKeyedSubscript:(id)subscript
 {
-  v8 = a3;
-  v6 = a4;
-  if (v6)
+  objectCopy = object;
+  subscriptCopy = subscript;
+  if (subscriptCopy)
   {
-    v7 = self;
-    objc_sync_enter(v7);
-    [(NSMutableDictionary *)v7->_dictionary setObject:v8 forKeyedSubscript:v6];
-    objc_sync_exit(v7);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMutableDictionary *)selfCopy->_dictionary setObject:objectCopy forKeyedSubscript:subscriptCopy];
+    objc_sync_exit(selfCopy);
   }
 }
 
 - (NSArray)subproviders
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_subproviders copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableArray *)selfCopy->_subproviders copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
 - (NSArray)attachments
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_attachments copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableArray *)selfCopy->_attachments copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (id)objectForKeyedSubscript:(id)a3
+- (id)objectForKeyedSubscript:(id)subscript
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_dictionary objectForKeyedSubscript:v4];
-  objc_sync_exit(v5);
+  subscriptCopy = subscript;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_dictionary objectForKeyedSubscript:subscriptCopy];
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (NSDictionary)dictionary
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableDictionary *)v2->_dictionary copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableDictionary *)selfCopy->_dictionary copy];
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (PXTapToRadarConcreteDiagnosticContainer)initWithName:(id)a3
+- (PXTapToRadarConcreteDiagnosticContainer)initWithName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = PXTapToRadarConcreteDiagnosticContainer;
   v5 = [(PXTapToRadarConcreteDiagnosticContainer *)&v17 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     name = v5->_name;
     v5->_name = v6;
 

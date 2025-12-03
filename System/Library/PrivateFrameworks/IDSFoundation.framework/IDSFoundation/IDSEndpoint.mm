@@ -1,12 +1,12 @@
 @interface IDSEndpoint
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToEndpoint:(id)a3;
-- (BOOL)isEqualToEndpoint:(id)a3 withDateTolerance:(double)a4;
-- (IDSEndpoint)initWithCoder:(id)a3;
-- (IDSEndpoint)initWithURI:(id)a3 capabilities:(id)a4 ngmVersion:(signed __int16)a5 legacyVersion:(char)a6 KTLoggableData:(id)a7 KTDeviceSignature:(id)a8 mismatchedAccountFlag:(BOOL)a9 ktCapableFlag:(BOOL)a10 transparency:(id)a11 pushTokenObject:(id)a12 sessionToken:(id)a13 expireDate:(id)a14 refreshDate:(id)a15 anonymizedSenderID:(id)a16 verifiedBusiness:(BOOL)a17 serializedPublicMessageProtectionIdentity:(id)a18 queryTimeInterval:(double)a19 serializedNGMDeviceIdentity:(id)a20 serializedNGMDevicePrekey:(id)a21 serializedApplicationPublicKey:(id)a22 endpointURIProperties:(id)a23 familyEndpointData:(id)a24 gameCenterData:(id)a25;
-- (IDSEndpoint)initWithURI:(id)a3 clientData:(id)a4 KTLoggableData:(id)a5 KTDeviceSignature:(id)a6 mismatchedAccountFlag:(BOOL)a7 ktCapableFlag:(BOOL)a8 transparency:(id)a9 pushToken:(id)a10 sessionToken:(id)a11 expireDate:(id)a12 refreshDate:(id)a13 anonymizedSenderID:(id)a14 verifiedBusiness:(BOOL)a15 serializedPublicMessageProtectionIdentity:(id)a16 queryTimeInterval:(double)a17 serializedNGMDeviceIdentity:(id)a18 serializedNGMDevicePrekey:(id)a19 serializedApplicationPublicKey:(id)a20 endpointURIProperties:(id)a21 familyEndpointData:(id)a22 gameCenterData:(id)a23;
-- (IDSEndpoint)initWithURI:(id)a3 clientData:(id)a4 pushToken:(id)a5 sessionToken:(id)a6 expireDate:(id)a7 refreshDate:(id)a8;
-- (IDSEndpoint)initWithURI:(id)a3 serviceIdentifier:(id)a4 clientData:(id)a5 KTLoggableData:(id)a6 KTDeviceSignature:(id)a7 mismatchedAccountFlag:(BOOL)a8 ktCapableFlag:(BOOL)a9 transparency:(id)a10 pushToken:(id)a11 sessionToken:(id)a12 expireDate:(id)a13 refreshDate:(id)a14 anonymizedSenderID:(id)a15 verifiedBusiness:(BOOL)a16 serializedPublicMessageProtectionIdentity:(id)a17 queryTimeInterval:(double)a18 serializedNGMDeviceIdentity:(id)a19 serializedNGMDevicePrekey:(id)a20 serializedApplicationPublicKey:(id)a21 endpointURIProperties:(id)a22 familyEndpointData:(id)a23 gameCenterData:(id)a24;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToEndpoint:(id)endpoint;
+- (BOOL)isEqualToEndpoint:(id)endpoint withDateTolerance:(double)tolerance;
+- (IDSEndpoint)initWithCoder:(id)coder;
+- (IDSEndpoint)initWithURI:(id)i capabilities:(id)capabilities ngmVersion:(signed __int16)version legacyVersion:(char)legacyVersion KTLoggableData:(id)data KTDeviceSignature:(id)signature mismatchedAccountFlag:(BOOL)flag ktCapableFlag:(BOOL)self0 transparency:(id)self1 pushTokenObject:(id)self2 sessionToken:(id)self3 expireDate:(id)self4 refreshDate:(id)self5 anonymizedSenderID:(id)self6 verifiedBusiness:(BOOL)self7 serializedPublicMessageProtectionIdentity:(id)self8 queryTimeInterval:(double)self9 serializedNGMDeviceIdentity:(id)deviceIdentity serializedNGMDevicePrekey:(id)prekey serializedApplicationPublicKey:(id)key endpointURIProperties:(id)properties familyEndpointData:(id)endpointData gameCenterData:(id)centerData;
+- (IDSEndpoint)initWithURI:(id)i clientData:(id)data KTLoggableData:(id)loggableData KTDeviceSignature:(id)signature mismatchedAccountFlag:(BOOL)flag ktCapableFlag:(BOOL)capableFlag transparency:(id)transparency pushToken:(id)self0 sessionToken:(id)self1 expireDate:(id)self2 refreshDate:(id)self3 anonymizedSenderID:(id)self4 verifiedBusiness:(BOOL)self5 serializedPublicMessageProtectionIdentity:(id)self6 queryTimeInterval:(double)self7 serializedNGMDeviceIdentity:(id)self8 serializedNGMDevicePrekey:(id)self9 serializedApplicationPublicKey:(id)key endpointURIProperties:(id)properties familyEndpointData:(id)endpointData gameCenterData:(id)centerData;
+- (IDSEndpoint)initWithURI:(id)i clientData:(id)data pushToken:(id)token sessionToken:(id)sessionToken expireDate:(id)date refreshDate:(id)refreshDate;
+- (IDSEndpoint)initWithURI:(id)i serviceIdentifier:(id)identifier clientData:(id)data KTLoggableData:(id)loggableData KTDeviceSignature:(id)signature mismatchedAccountFlag:(BOOL)flag ktCapableFlag:(BOOL)capableFlag transparency:(id)self0 pushToken:(id)self1 sessionToken:(id)self2 expireDate:(id)self3 refreshDate:(id)self4 anonymizedSenderID:(id)self5 verifiedBusiness:(BOOL)self6 serializedPublicMessageProtectionIdentity:(id)self7 queryTimeInterval:(double)self8 serializedNGMDeviceIdentity:(id)self9 serializedNGMDevicePrekey:(id)prekey serializedApplicationPublicKey:(id)key endpointURIProperties:(id)properties familyEndpointData:(id)endpointData gameCenterData:(id)centerData;
 - (IDSMPPublicDeviceIdentityContainer)publicDeviceIdentityContainer;
 - (NSString)debugDescription;
 - (NSString)description;
@@ -14,18 +14,18 @@
 - (id)destinationURIs;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateTransparency:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateTransparency:(id)transparency;
 @end
 
 @implementation IDSEndpoint
 
 - (unint64_t)hash
 {
-  v3 = [(IDSEndpoint *)self pushToken];
-  v4 = [v3 hash];
-  v5 = [(IDSEndpoint *)self sessionToken];
-  v6 = [v5 hash];
+  pushToken = [(IDSEndpoint *)self pushToken];
+  v4 = [pushToken hash];
+  sessionToken = [(IDSEndpoint *)self sessionToken];
+  v6 = [sessionToken hash];
 
   return v6 ^ v4;
 }
@@ -44,197 +44,197 @@
   [(IDSEndpoint *)&v4 dealloc];
 }
 
-- (IDSEndpoint)initWithURI:(id)a3 clientData:(id)a4 pushToken:(id)a5 sessionToken:(id)a6 expireDate:(id)a7 refreshDate:(id)a8
+- (IDSEndpoint)initWithURI:(id)i clientData:(id)data pushToken:(id)token sessionToken:(id)sessionToken expireDate:(id)date refreshDate:(id)refreshDate
 {
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  refreshDateCopy = refreshDate;
+  dateCopy = date;
+  sessionTokenCopy = sessionToken;
+  tokenCopy = token;
+  dataCopy = data;
+  iCopy = i;
   v20 = objc_alloc_init(IDSEndpointURIProperties);
   LOBYTE(v23) = 1;
-  v21 = [(IDSEndpoint *)self initWithURI:v19 clientData:v18 KTLoggableData:0 KTDeviceSignature:0 mismatchedAccountFlag:0 ktCapableFlag:0 transparency:0.0 pushToken:0 sessionToken:v17 expireDate:v16 refreshDate:v15 anonymizedSenderID:v14 verifiedBusiness:0 serializedPublicMessageProtectionIdentity:v23 queryTimeInterval:0 serializedNGMDeviceIdentity:0 serializedNGMDevicePrekey:0 serializedApplicationPublicKey:0 endpointURIProperties:v20 familyEndpointData:0 gameCenterData:0];
+  v21 = [(IDSEndpoint *)self initWithURI:iCopy clientData:dataCopy KTLoggableData:0 KTDeviceSignature:0 mismatchedAccountFlag:0 ktCapableFlag:0 transparency:0.0 pushToken:0 sessionToken:tokenCopy expireDate:sessionTokenCopy refreshDate:dateCopy anonymizedSenderID:refreshDateCopy verifiedBusiness:0 serializedPublicMessageProtectionIdentity:v23 queryTimeInterval:0 serializedNGMDeviceIdentity:0 serializedNGMDevicePrekey:0 serializedApplicationPublicKey:0 endpointURIProperties:v20 familyEndpointData:0 gameCenterData:0];
 
   return v21;
 }
 
-- (IDSEndpoint)initWithURI:(id)a3 clientData:(id)a4 KTLoggableData:(id)a5 KTDeviceSignature:(id)a6 mismatchedAccountFlag:(BOOL)a7 ktCapableFlag:(BOOL)a8 transparency:(id)a9 pushToken:(id)a10 sessionToken:(id)a11 expireDate:(id)a12 refreshDate:(id)a13 anonymizedSenderID:(id)a14 verifiedBusiness:(BOOL)a15 serializedPublicMessageProtectionIdentity:(id)a16 queryTimeInterval:(double)a17 serializedNGMDeviceIdentity:(id)a18 serializedNGMDevicePrekey:(id)a19 serializedApplicationPublicKey:(id)a20 endpointURIProperties:(id)a21 familyEndpointData:(id)a22 gameCenterData:(id)a23
+- (IDSEndpoint)initWithURI:(id)i clientData:(id)data KTLoggableData:(id)loggableData KTDeviceSignature:(id)signature mismatchedAccountFlag:(BOOL)flag ktCapableFlag:(BOOL)capableFlag transparency:(id)transparency pushToken:(id)self0 sessionToken:(id)self1 expireDate:(id)self2 refreshDate:(id)self3 anonymizedSenderID:(id)self4 verifiedBusiness:(BOOL)self5 serializedPublicMessageProtectionIdentity:(id)self6 queryTimeInterval:(double)self7 serializedNGMDeviceIdentity:(id)self8 serializedNGMDevicePrekey:(id)self9 serializedApplicationPublicKey:(id)key endpointURIProperties:(id)properties familyEndpointData:(id)endpointData gameCenterData:(id)centerData
 {
-  LOBYTE(v25) = a15;
-  LOBYTE(v24) = a8;
-  return [(IDSEndpoint *)self initWithURI:a3 serviceIdentifier:0 clientData:a4 KTLoggableData:a5 KTDeviceSignature:a6 mismatchedAccountFlag:a7 ktCapableFlag:a17 transparency:v24 pushToken:a9 sessionToken:a10 expireDate:a11 refreshDate:a12 anonymizedSenderID:a13 verifiedBusiness:a14 serializedPublicMessageProtectionIdentity:v25 queryTimeInterval:a16 serializedNGMDeviceIdentity:a18 serializedNGMDevicePrekey:a19 serializedApplicationPublicKey:a20 endpointURIProperties:a21 familyEndpointData:a22 gameCenterData:a23];
+  LOBYTE(v25) = business;
+  LOBYTE(v24) = capableFlag;
+  return [(IDSEndpoint *)self initWithURI:i serviceIdentifier:0 clientData:data KTLoggableData:loggableData KTDeviceSignature:signature mismatchedAccountFlag:flag ktCapableFlag:interval transparency:v24 pushToken:transparency sessionToken:token expireDate:sessionToken refreshDate:date anonymizedSenderID:refreshDate verifiedBusiness:d serializedPublicMessageProtectionIdentity:v25 queryTimeInterval:identity serializedNGMDeviceIdentity:deviceIdentity serializedNGMDevicePrekey:prekey serializedApplicationPublicKey:key endpointURIProperties:properties familyEndpointData:endpointData gameCenterData:centerData];
 }
 
-- (IDSEndpoint)initWithURI:(id)a3 serviceIdentifier:(id)a4 clientData:(id)a5 KTLoggableData:(id)a6 KTDeviceSignature:(id)a7 mismatchedAccountFlag:(BOOL)a8 ktCapableFlag:(BOOL)a9 transparency:(id)a10 pushToken:(id)a11 sessionToken:(id)a12 expireDate:(id)a13 refreshDate:(id)a14 anonymizedSenderID:(id)a15 verifiedBusiness:(BOOL)a16 serializedPublicMessageProtectionIdentity:(id)a17 queryTimeInterval:(double)a18 serializedNGMDeviceIdentity:(id)a19 serializedNGMDevicePrekey:(id)a20 serializedApplicationPublicKey:(id)a21 endpointURIProperties:(id)a22 familyEndpointData:(id)a23 gameCenterData:(id)a24
+- (IDSEndpoint)initWithURI:(id)i serviceIdentifier:(id)identifier clientData:(id)data KTLoggableData:(id)loggableData KTDeviceSignature:(id)signature mismatchedAccountFlag:(BOOL)flag ktCapableFlag:(BOOL)capableFlag transparency:(id)self0 pushToken:(id)self1 sessionToken:(id)self2 expireDate:(id)self3 refreshDate:(id)self4 anonymizedSenderID:(id)self5 verifiedBusiness:(BOOL)self6 serializedPublicMessageProtectionIdentity:(id)self7 queryTimeInterval:(double)self8 serializedNGMDeviceIdentity:(id)self9 serializedNGMDevicePrekey:(id)prekey serializedApplicationPublicKey:(id)key endpointURIProperties:(id)properties familyEndpointData:(id)endpointData gameCenterData:(id)centerData
 {
-  v75 = a3;
-  v74 = a4;
-  v29 = a5;
-  v73 = a6;
-  v72 = a7;
-  v71 = a10;
-  v79 = a11;
-  v76 = a12;
-  v78 = a13;
-  v30 = a14;
-  v31 = a15;
-  v69 = a17;
-  v32 = a19;
-  v67 = a20;
-  v68 = a21;
-  v33 = a22;
-  v34 = a23;
-  v35 = a24;
+  iCopy = i;
+  identifierCopy = identifier;
+  dataCopy = data;
+  loggableDataCopy = loggableData;
+  signatureCopy = signature;
+  transparencyCopy = transparency;
+  tokenCopy = token;
+  sessionTokenCopy = sessionToken;
+  dateCopy = date;
+  refreshDateCopy = refreshDate;
+  dCopy = d;
+  identityCopy = identity;
+  deviceIdentityCopy = deviceIdentity;
+  prekeyCopy = prekey;
+  keyCopy = key;
+  propertiesCopy = properties;
+  endpointDataCopy = endpointData;
+  centerDataCopy = centerData;
   v36 = 0;
-  v70 = v29;
-  v63 = v31;
-  v64 = v30;
-  if (!v29)
+  v70 = dataCopy;
+  v63 = dCopy;
+  v64 = refreshDateCopy;
+  if (!dataCopy)
   {
-    v50 = v75;
-    v40 = v76;
-    v38 = v71;
-    v37 = v72;
-    v42 = v78;
-    v49 = v67;
+    v50 = iCopy;
+    v40 = sessionTokenCopy;
+    v38 = transparencyCopy;
+    v37 = signatureCopy;
+    v42 = dateCopy;
+    v49 = prekeyCopy;
     goto LABEL_18;
   }
 
-  v66 = v34;
-  v38 = v71;
-  v37 = v72;
-  if (!v79)
+  v66 = endpointDataCopy;
+  v38 = transparencyCopy;
+  v37 = signatureCopy;
+  if (!tokenCopy)
   {
     goto LABEL_10;
   }
 
-  v39 = v31;
-  v40 = v76;
-  if (!v76)
+  v39 = dCopy;
+  v40 = sessionTokenCopy;
+  if (!sessionTokenCopy)
   {
 LABEL_11:
-    v42 = v78;
+    v42 = dateCopy;
     goto LABEL_12;
   }
 
-  v41 = v30;
-  v42 = v78;
-  if (!v78)
+  v41 = refreshDateCopy;
+  v42 = dateCopy;
+  if (!dateCopy)
   {
 LABEL_12:
-    v34 = v66;
-    v49 = v67;
-    v50 = v75;
+    endpointDataCopy = v66;
+    v49 = prekeyCopy;
+    v50 = iCopy;
     goto LABEL_18;
   }
 
   if (!v41)
   {
 LABEL_10:
-    v40 = v76;
+    v40 = sessionTokenCopy;
     goto LABEL_11;
   }
 
   v43 = v41;
-  v65 = v35;
-  if (!v33)
+  v65 = centerDataCopy;
+  if (!propertiesCopy)
   {
-    v33 = objc_alloc_init(IDSEndpointURIProperties);
+    propertiesCopy = objc_alloc_init(IDSEndpointURIProperties);
   }
 
-  v62 = v33;
-  v44 = v32;
-  v60 = [[IDSEndpointCapabilities alloc] initWithCapabilitiesMap:v29];
-  v45 = [v29 objectForKeyedSubscript:@"public-message-identity-ngm-version"];
-  v46 = [v29 objectForKeyedSubscript:@"public-message-identity-version"];
+  v62 = propertiesCopy;
+  v44 = deviceIdentityCopy;
+  v60 = [[IDSEndpointCapabilities alloc] initWithCapabilitiesMap:dataCopy];
+  v45 = [dataCopy objectForKeyedSubscript:@"public-message-identity-ngm-version"];
+  v46 = [dataCopy objectForKeyedSubscript:@"public-message-identity-version"];
   v47 = v39;
   if (v45)
   {
-    v48 = [v45 shortValue];
+    shortValue = [v45 shortValue];
   }
 
   else
   {
-    v48 = -1;
+    shortValue = -1;
   }
 
   v59 = v46;
   if (v46)
   {
-    v51 = [v46 shortValue];
+    shortValue2 = [v46 shortValue];
   }
 
   else
   {
-    v51 = -1;
+    shortValue2 = -1;
   }
 
-  v52 = [IDSPushToken pushTokenWithData:v79 withServiceLoggingHint:v74];
-  v34 = v66;
-  v33 = v62;
-  v49 = v67;
+  v52 = [IDSPushToken pushTokenWithData:tokenCopy withServiceLoggingHint:identifierCopy];
+  endpointDataCopy = v66;
+  propertiesCopy = v62;
+  v49 = prekeyCopy;
   v58 = v44;
-  LOBYTE(v57) = a16;
-  v53 = v51;
+  LOBYTE(v57) = business;
+  v53 = shortValue2;
   v54 = v52;
-  BYTE1(v56) = a9;
-  LOBYTE(v56) = a8;
-  v36 = [(IDSEndpoint *)self initWithURI:v75 capabilities:v60 ngmVersion:v48 legacyVersion:v53 KTLoggableData:v73 KTDeviceSignature:v72 mismatchedAccountFlag:a18 ktCapableFlag:v56 transparency:v71 pushTokenObject:v52 sessionToken:v76 expireDate:v78 refreshDate:v43 anonymizedSenderID:v47 verifiedBusiness:v57 serializedPublicMessageProtectionIdentity:v69 queryTimeInterval:v44 serializedNGMDeviceIdentity:v67 serializedNGMDevicePrekey:v68 serializedApplicationPublicKey:v62 endpointURIProperties:v66 familyEndpointData:v65 gameCenterData:?];
+  BYTE1(v56) = capableFlag;
+  LOBYTE(v56) = flag;
+  v36 = [(IDSEndpoint *)self initWithURI:iCopy capabilities:v60 ngmVersion:shortValue legacyVersion:v53 KTLoggableData:loggableDataCopy KTDeviceSignature:signatureCopy mismatchedAccountFlag:interval ktCapableFlag:v56 transparency:transparencyCopy pushTokenObject:v52 sessionToken:sessionTokenCopy expireDate:dateCopy refreshDate:v43 anonymizedSenderID:v47 verifiedBusiness:v57 serializedPublicMessageProtectionIdentity:identityCopy queryTimeInterval:v44 serializedNGMDeviceIdentity:prekeyCopy serializedNGMDevicePrekey:keyCopy serializedApplicationPublicKey:v62 endpointURIProperties:v66 familyEndpointData:v65 gameCenterData:?];
 
-  v38 = v71;
-  v37 = v72;
+  v38 = transparencyCopy;
+  v37 = signatureCopy;
 
-  v40 = v76;
-  v50 = v75;
-  v42 = v78;
-  v32 = v58;
-  v35 = v65;
+  v40 = sessionTokenCopy;
+  v50 = iCopy;
+  v42 = dateCopy;
+  deviceIdentityCopy = v58;
+  centerDataCopy = v65;
   self = v36;
 LABEL_18:
 
   return v36;
 }
 
-- (IDSEndpoint)initWithURI:(id)a3 capabilities:(id)a4 ngmVersion:(signed __int16)a5 legacyVersion:(char)a6 KTLoggableData:(id)a7 KTDeviceSignature:(id)a8 mismatchedAccountFlag:(BOOL)a9 ktCapableFlag:(BOOL)a10 transparency:(id)a11 pushTokenObject:(id)a12 sessionToken:(id)a13 expireDate:(id)a14 refreshDate:(id)a15 anonymizedSenderID:(id)a16 verifiedBusiness:(BOOL)a17 serializedPublicMessageProtectionIdentity:(id)a18 queryTimeInterval:(double)a19 serializedNGMDeviceIdentity:(id)a20 serializedNGMDevicePrekey:(id)a21 serializedApplicationPublicKey:(id)a22 endpointURIProperties:(id)a23 familyEndpointData:(id)a24 gameCenterData:(id)a25
+- (IDSEndpoint)initWithURI:(id)i capabilities:(id)capabilities ngmVersion:(signed __int16)version legacyVersion:(char)legacyVersion KTLoggableData:(id)data KTDeviceSignature:(id)signature mismatchedAccountFlag:(BOOL)flag ktCapableFlag:(BOOL)self0 transparency:(id)self1 pushTokenObject:(id)self2 sessionToken:(id)self3 expireDate:(id)self4 refreshDate:(id)self5 anonymizedSenderID:(id)self6 verifiedBusiness:(BOOL)self7 serializedPublicMessageProtectionIdentity:(id)self8 queryTimeInterval:(double)self9 serializedNGMDeviceIdentity:(id)deviceIdentity serializedNGMDevicePrekey:(id)prekey serializedApplicationPublicKey:(id)key endpointURIProperties:(id)properties familyEndpointData:(id)endpointData gameCenterData:(id)centerData
 {
-  v63 = a3;
-  v52 = a4;
-  v55 = a4;
-  v65 = a7;
-  v64 = a8;
-  v62 = a11;
-  v28 = a12;
-  v68 = a13;
-  v29 = a14;
-  v66 = a15;
-  v61 = a16;
-  v60 = a18;
-  v30 = a20;
-  v59 = a21;
-  v58 = a22;
-  v31 = a23;
-  v32 = a24;
-  v33 = a25;
+  iCopy = i;
+  capabilitiesCopy = capabilities;
+  capabilitiesCopy2 = capabilities;
+  dataCopy = data;
+  signatureCopy = signature;
+  transparencyCopy = transparency;
+  objectCopy = object;
+  tokenCopy = token;
+  dateCopy = date;
+  refreshDateCopy = refreshDate;
+  dCopy = d;
+  identityCopy = identity;
+  deviceIdentityCopy = deviceIdentity;
+  prekeyCopy = prekey;
+  keyCopy = key;
+  propertiesCopy = properties;
+  endpointDataCopy = endpointData;
+  centerDataCopy = centerData;
   v34 = 0;
-  if (!v55 || !v28)
+  if (!capabilitiesCopy2 || !objectCopy)
   {
-    v35 = v29;
+    v35 = dateCopy;
 LABEL_12:
-    v48 = self;
+    selfCopy = self;
     goto LABEL_13;
   }
 
-  v35 = v29;
-  if (!v68 || !v29 || !v66)
+  v35 = dateCopy;
+  if (!tokenCopy || !dateCopy || !refreshDateCopy)
   {
     goto LABEL_12;
   }
 
-  v56 = v33;
-  if (!v31)
+  v56 = centerDataCopy;
+  if (!propertiesCopy)
   {
-    v31 = objc_alloc_init(IDSEndpointURIProperties);
+    propertiesCopy = objc_alloc_init(IDSEndpointURIProperties);
   }
 
   v69.receiver = self;
@@ -243,51 +243,51 @@ LABEL_12:
   v37 = v36;
   if (v36)
   {
-    v36->_queryTimeInterval = a19;
+    v36->_queryTimeInterval = interval;
     objc_storeStrong(&v36->_URI, obja);
-    v38 = [v65 copy];
+    v38 = [dataCopy copy];
     KTLoggableData = v37->_KTLoggableData;
     v37->_KTLoggableData = v38;
 
-    v40 = [v64 copy];
+    v40 = [signatureCopy copy];
     KTDeviceSignature = v37->_KTDeviceSignature;
     v37->_KTDeviceSignature = v40;
 
-    v37->_mismatchedAccountFlag = a9;
-    v37->_ktCapableFlag = a10;
-    v35 = v29;
-    objc_storeStrong(&v37->_transparency, a11);
-    objc_storeStrong(&v37->_pushTokenObject, a12);
-    v42 = [v68 copy];
+    v37->_mismatchedAccountFlag = flag;
+    v37->_ktCapableFlag = capableFlag;
+    v35 = dateCopy;
+    objc_storeStrong(&v37->_transparency, transparency);
+    objc_storeStrong(&v37->_pushTokenObject, object);
+    v42 = [tokenCopy copy];
     sessionToken = v37->_sessionToken;
     v37->_sessionToken = v42;
 
-    objc_storeStrong(&v37->_expireDate, a14);
-    objc_storeStrong(&v37->_refreshDate, a15);
-    objc_storeStrong(&v37->_anonymizedSenderID, a16);
-    v37->_verifiedBusiness = a17;
-    v44 = [(IDSEndpointURIProperties *)v31 senderCorrelationIdentifier];
+    objc_storeStrong(&v37->_expireDate, date);
+    objc_storeStrong(&v37->_refreshDate, refreshDate);
+    objc_storeStrong(&v37->_anonymizedSenderID, d);
+    v37->_verifiedBusiness = business;
+    senderCorrelationIdentifier = [(IDSEndpointURIProperties *)propertiesCopy senderCorrelationIdentifier];
     senderCorrelationIdentifier = v37->_senderCorrelationIdentifier;
-    v37->_senderCorrelationIdentifier = v44;
+    v37->_senderCorrelationIdentifier = senderCorrelationIdentifier;
 
-    v46 = [(IDSEndpointURIProperties *)v31 shortHandle];
+    shortHandle = [(IDSEndpointURIProperties *)propertiesCopy shortHandle];
     shortHandle = v37->_shortHandle;
-    v37->_shortHandle = v46;
+    v37->_shortHandle = shortHandle;
 
-    objc_storeStrong(&v37->_capabilities, v52);
-    objc_storeStrong(&v37->_serializedLegacyPublicIdentity, a18);
-    objc_storeStrong(&v37->_serializedNGMDevicePrekey, a21);
-    objc_storeStrong(&v37->_serializedApplicationPublicKey, a22);
-    objc_storeStrong(&v37->_serializedNGMDeviceIdentity, a20);
-    v37->_ngmVersion = a5;
-    v37->_legacyVersion = a6;
-    objc_storeStrong(&v37->_familyEndpointData, a24);
-    objc_storeStrong(&v37->_gameCenterData, a25);
+    objc_storeStrong(&v37->_capabilities, capabilitiesCopy);
+    objc_storeStrong(&v37->_serializedLegacyPublicIdentity, identity);
+    objc_storeStrong(&v37->_serializedNGMDevicePrekey, prekey);
+    objc_storeStrong(&v37->_serializedApplicationPublicKey, key);
+    objc_storeStrong(&v37->_serializedNGMDeviceIdentity, deviceIdentity);
+    v37->_ngmVersion = version;
+    v37->_legacyVersion = legacyVersion;
+    objc_storeStrong(&v37->_familyEndpointData, endpointData);
+    objc_storeStrong(&v37->_gameCenterData, centerData);
   }
 
-  v48 = v37;
-  v34 = v48;
-  v33 = v56;
+  selfCopy = v37;
+  v34 = selfCopy;
+  centerDataCopy = v56;
 LABEL_13:
 
   return v34;
@@ -312,8 +312,8 @@ LABEL_13:
       self->_applicationPublicDeviceIdentity = SecKeyCreateWithData(self->_serializedApplicationPublicKey, v6, &error);
       if (error)
       {
-        v7 = [MEMORY[0x1E69A6138] registration];
-        if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+        registration = [MEMORY[0x1E69A6138] registration];
+        if (os_log_type_enabled(registration, OS_LOG_TYPE_ERROR))
         {
           URI = self->_URI;
           pushTokenObject = self->_pushTokenObject;
@@ -326,7 +326,7 @@ LABEL_13:
           v17 = pushTokenObject;
           v18 = 2113;
           v19 = serializedApplicationPublicKey;
-          _os_log_error_impl(&dword_1A7AD9000, v7, OS_LOG_TYPE_ERROR, "Endpoint failed creating public identity {error : %{public}@, URI: %{private}@, pushToken: %{private}@, serializedApplicationPublicKey: %{private}@}", buf, 0x2Au);
+          _os_log_error_impl(&dword_1A7AD9000, registration, OS_LOG_TYPE_ERROR, "Endpoint failed creating public identity {error : %{public}@, URI: %{private}@, pushToken: %{private}@, serializedApplicationPublicKey: %{private}@}", buf, 0x2Au);
         }
       }
 
@@ -374,10 +374,10 @@ LABEL_13:
         {
           if (self->_ngmVersion == -1)
           {
-            v32 = [MEMORY[0x1E69A6138] registration];
-            if (os_log_type_enabled(v32, OS_LOG_TYPE_FAULT))
+            registration = [MEMORY[0x1E69A6138] registration];
+            if (os_log_type_enabled(registration, OS_LOG_TYPE_FAULT))
             {
-              sub_1A7E1BBA0(self, v32);
+              sub_1A7E1BBA0(self, registration);
             }
 
             v33 = [MEMORY[0x1E696ABC0] errorWithDomain:IDSEndpointErrorDomain code:4 userInfo:0];
@@ -400,8 +400,8 @@ LABEL_13:
 
         else
         {
-          v31 = [MEMORY[0x1E69A6138] registration];
-          if (os_log_type_enabled(v31, OS_LOG_TYPE_FAULT))
+          registration2 = [MEMORY[0x1E69A6138] registration];
+          if (os_log_type_enabled(registration2, OS_LOG_TYPE_FAULT))
           {
             serializedNGMDeviceIdentity = self->_serializedNGMDeviceIdentity;
             URI = self->_URI;
@@ -414,7 +414,7 @@ LABEL_13:
             v55 = URI;
             v56 = 2113;
             v57 = pushTokenObject;
-            _os_log_fault_impl(&dword_1A7AD9000, v31, OS_LOG_TYPE_FAULT, "Failed to deserialize IDSNGMPublicDeviceIdentity -- creating legacy endpoint {error: %{public}@, serializedNGMDeviceIdentity: %{private}@, URI: %{private}@, pushToken: %{private}@}", buf, 0x2Au);
+            _os_log_fault_impl(&dword_1A7AD9000, registration2, OS_LOG_TYPE_FAULT, "Failed to deserialize IDSNGMPublicDeviceIdentity -- creating legacy endpoint {error: %{public}@, serializedNGMDeviceIdentity: %{private}@, URI: %{private}@, pushToken: %{private}@}", buf, 0x2Au);
           }
 
           if (v8)
@@ -440,8 +440,8 @@ LABEL_13:
 
       else
       {
-        v12 = [MEMORY[0x1E69A6138] registration];
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+        registration3 = [MEMORY[0x1E69A6138] registration];
+        if (os_log_type_enabled(registration3, OS_LOG_TYPE_DEFAULT))
         {
           v13 = self->_URI;
           v14 = self->_pushTokenObject;
@@ -449,12 +449,12 @@ LABEL_13:
           v51 = v13;
           v52 = 2113;
           v53 = v14;
-          _os_log_impl(&dword_1A7AD9000, v12, OS_LOG_TYPE_DEFAULT, "Endpoint missing serializedNGMDeviceIdentity -- creating legacy endpoint {URI: %{private}@, pushToken: %{private}@}", buf, 0x16u);
+          _os_log_impl(&dword_1A7AD9000, registration3, OS_LOG_TYPE_DEFAULT, "Endpoint missing serializedNGMDeviceIdentity -- creating legacy endpoint {URI: %{private}@, pushToken: %{private}@}", buf, 0x16u);
         }
 
         v15 = [(IDSEndpointCapabilities *)self->_capabilities valueForCapability:@"ec-version"];
         v16 = _IDSECVersion();
-        v17 = [v16 integerValue];
+        integerValue = [v16 integerValue];
 
         v18 = [(IDSEndpointCapabilities *)self->_capabilities valueForCapability:@"supports-certified-delivery-v1"];
         if (self->_serializedNGMDeviceIdentity)
@@ -465,7 +465,7 @@ LABEL_13:
         else
         {
           v22 = 3;
-          if (v15 < v17)
+          if (v15 < integerValue)
           {
             v22 = 10;
           }
@@ -504,10 +504,10 @@ LABEL_13:
 
       if (!self->_publicDeviceIdentityContainer)
       {
-        v26 = [MEMORY[0x1E69A6138] registration];
-        if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
+        registration4 = [MEMORY[0x1E69A6138] registration];
+        if (os_log_type_enabled(registration4, OS_LOG_TYPE_FAULT))
         {
-          sub_1A7E1BC2C(v6, self, v26);
+          sub_1A7E1BC2C(v6, self, registration4);
         }
 
         v27 = [MEMORY[0x1E696ABC0] errorWithDomain:IDSEndpointErrorDomain code:8 userInfo:v10];
@@ -518,8 +518,8 @@ LABEL_13:
 
     else
     {
-      v20 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v20, OS_LOG_TYPE_FAULT))
+      registration5 = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration5, OS_LOG_TYPE_FAULT))
       {
         v37 = self->_URI;
         v38 = self->_pushTokenObject;
@@ -532,7 +532,7 @@ LABEL_13:
         v55 = v38;
         v56 = 2113;
         v57 = v39;
-        _os_log_fault_impl(&dword_1A7AD9000, v20, OS_LOG_TYPE_FAULT, "Endpoint failed creating public identity {error : %{public}@, URI: %{private}@, pushToken: %{private}@, serializedPublicMessageProtectionIdentity: %{private}@}", buf, 0x2Au);
+        _os_log_fault_impl(&dword_1A7AD9000, registration5, OS_LOG_TYPE_FAULT, "Endpoint failed creating public identity {error : %{public}@, URI: %{private}@, pushToken: %{private}@, serializedPublicMessageProtectionIdentity: %{private}@}", buf, 0x2Au);
       }
 
       if (self->_serializedLegacyPublicIdentity)
@@ -573,14 +573,14 @@ LABEL_13:
   v14 = MEMORY[0x1E696AEC0];
   v3 = objc_opt_class();
   v4 = [(IDSEndpoint *)self URI];
-  v5 = [(IDSEndpoint *)self pushTokenObject];
-  v6 = [(IDSEndpoint *)self senderCorrelationIdentifier];
+  pushTokenObject = [(IDSEndpoint *)self pushTokenObject];
+  senderCorrelationIdentifier = [(IDSEndpoint *)self senderCorrelationIdentifier];
   publicDeviceIdentityContainer = self->_publicDeviceIdentityContainer;
-  v8 = [(IDSEndpoint *)self serializedNGMDeviceIdentity];
+  serializedNGMDeviceIdentity = [(IDSEndpoint *)self serializedNGMDeviceIdentity];
   applicationPublicDeviceIdentity = self->_applicationPublicDeviceIdentity;
-  v10 = [(IDSEndpoint *)self serializedApplicationPublicKey];
-  v11 = [(IDSEndpoint *)self capabilities];
-  v12 = [v14 stringWithFormat:@"<%@: %p URI: %@, pushToken: %@, mergeID: %@, publicDeviceIdentityContainer: %@, devicePublicIdentity: %@, applicationPublicDeviceIdentity: %@, applicationDevicePublicIdentity: %@, capabilities: %@>", v3, self, v4, v5, v6, publicDeviceIdentityContainer, v8, applicationPublicDeviceIdentity, v10, v11];
+  serializedApplicationPublicKey = [(IDSEndpoint *)self serializedApplicationPublicKey];
+  capabilities = [(IDSEndpoint *)self capabilities];
+  v12 = [v14 stringWithFormat:@"<%@: %p URI: %@, pushToken: %@, mergeID: %@, publicDeviceIdentityContainer: %@, devicePublicIdentity: %@, applicationPublicDeviceIdentity: %@, applicationDevicePublicIdentity: %@, capabilities: %@>", v3, self, v4, pushTokenObject, senderCorrelationIdentifier, publicDeviceIdentityContainer, serializedNGMDeviceIdentity, applicationPublicDeviceIdentity, serializedApplicationPublicKey, capabilities];
 
   return v12;
 }
@@ -590,33 +590,33 @@ LABEL_13:
   v15 = MEMORY[0x1E696AEC0];
   v14 = objc_opt_class();
   v3 = [(IDSEndpoint *)self URI];
-  v4 = [(IDSEndpoint *)self pushTokenObject];
-  v5 = [(IDSEndpoint *)self senderCorrelationIdentifier];
+  pushTokenObject = [(IDSEndpoint *)self pushTokenObject];
+  senderCorrelationIdentifier = [(IDSEndpoint *)self senderCorrelationIdentifier];
   publicDeviceIdentityContainer = self->_publicDeviceIdentityContainer;
-  v7 = [(IDSEndpoint *)self serializedNGMDeviceIdentity];
+  serializedNGMDeviceIdentity = [(IDSEndpoint *)self serializedNGMDeviceIdentity];
   applicationPublicDeviceIdentity = self->_applicationPublicDeviceIdentity;
-  v9 = [(IDSEndpoint *)self serializedApplicationPublicKey];
-  v10 = [(IDSEndpoint *)self capabilities];
-  v11 = [v10 debugDescription];
-  v12 = [v15 stringWithFormat:@"<%@: %p URI: %@, pushToken: %@, mergeID: %@, publicDeviceIdentityContainer: %@, devicePublicIdentity: %@, applicationPublicDeviceIdentity: %@, applicationDevicePublicIdentity: %@, capabilities: %@>", v14, self, v3, v4, v5, publicDeviceIdentityContainer, v7, applicationPublicDeviceIdentity, v9, v11];
+  serializedApplicationPublicKey = [(IDSEndpoint *)self serializedApplicationPublicKey];
+  capabilities = [(IDSEndpoint *)self capabilities];
+  v11 = [capabilities debugDescription];
+  v12 = [v15 stringWithFormat:@"<%@: %p URI: %@, pushToken: %@, mergeID: %@, publicDeviceIdentityContainer: %@, devicePublicIdentity: %@, applicationPublicDeviceIdentity: %@, applicationDevicePublicIdentity: %@, capabilities: %@>", v14, self, v3, pushTokenObject, senderCorrelationIdentifier, publicDeviceIdentityContainer, serializedNGMDeviceIdentity, applicationPublicDeviceIdentity, serializedApplicationPublicKey, v11];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSEndpoint *)self isEqualToEndpoint:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(IDSEndpoint *)self isEqualToEndpoint:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToEndpoint:(id)a3
+- (BOOL)isEqualToEndpoint:(id)endpoint
 {
-  v5 = a3;
-  v6 = v5;
-  if (self == v5)
+  endpointCopy = endpoint;
+  v6 = endpointCopy;
+  if (self == endpointCopy)
   {
     v16 = 1;
   }
@@ -624,7 +624,7 @@ LABEL_13:
   else
   {
     queryTimeInterval = self->_queryTimeInterval;
-    [(IDSEndpoint *)v5 queryTimeInterval];
+    [(IDSEndpoint *)endpointCopy queryTimeInterval];
     v9 = queryTimeInterval - v8;
     if (v9 < 0.0)
     {
@@ -644,75 +644,75 @@ LABEL_40:
       }
 
       shortHandle = self->_shortHandle;
-      v13 = [(IDSEndpoint *)v6 shortHandle];
-      if (shortHandle != v13)
+      shortHandle = [(IDSEndpoint *)v6 shortHandle];
+      if (shortHandle != shortHandle)
       {
         v14 = self->_shortHandle;
-        v15 = [(IDSEndpoint *)v6 shortHandle];
-        if (![(NSString *)v14 isEqual:v15])
+        shortHandle2 = [(IDSEndpoint *)v6 shortHandle];
+        if (![(NSString *)v14 isEqual:shortHandle2])
         {
           v16 = 0;
           goto LABEL_38;
         }
 
-        v87 = v15;
+        v87 = shortHandle2;
       }
 
       KTLoggableData = self->_KTLoggableData;
-      v18 = [(IDSEndpoint *)v6 KTLoggableData];
-      if (KTLoggableData != v18)
+      kTLoggableData = [(IDSEndpoint *)v6 KTLoggableData];
+      if (KTLoggableData != kTLoggableData)
       {
         v19 = self->_KTLoggableData;
-        v3 = [(IDSEndpoint *)v6 KTLoggableData];
-        if (([(NSData *)v19 isEqual:v3]& 1) == 0)
+        kTLoggableData2 = [(IDSEndpoint *)v6 KTLoggableData];
+        if (([(NSData *)v19 isEqual:kTLoggableData2]& 1) == 0)
         {
           goto LABEL_35;
         }
       }
 
       KTDeviceSignature = self->_KTDeviceSignature;
-      v21 = [(IDSEndpoint *)v6 KTDeviceSignature];
+      kTDeviceSignature = [(IDSEndpoint *)v6 KTDeviceSignature];
       v86 = KTDeviceSignature;
-      if (KTDeviceSignature == v21)
+      if (KTDeviceSignature == kTDeviceSignature)
       {
-        v85 = v3;
+        v85 = kTLoggableData2;
       }
 
       else
       {
         v22 = self->_KTDeviceSignature;
-        v23 = [(IDSEndpoint *)v6 KTDeviceSignature];
+        kTDeviceSignature2 = [(IDSEndpoint *)v6 KTDeviceSignature];
         v24 = v22;
-        v25 = v23;
-        if (([(NSData *)v24 isEqual:v23]& 1) == 0)
+        v25 = kTDeviceSignature2;
+        if (([(NSData *)v24 isEqual:kTDeviceSignature2]& 1) == 0)
         {
 
           goto LABEL_34;
         }
 
         v84 = v25;
-        v85 = v3;
+        v85 = kTLoggableData2;
       }
 
       pushTokenObject = self->_pushTokenObject;
-      v27 = [(IDSEndpoint *)v6 pushTokenObject];
-      if (![(IDSPushToken *)pushTokenObject isEqual:v27])
+      pushTokenObject = [(IDSEndpoint *)v6 pushTokenObject];
+      if (![(IDSPushToken *)pushTokenObject isEqual:pushTokenObject])
       {
         v16 = 0;
         v42 = v85;
 LABEL_28:
 
-        if (v86 != v21)
+        if (v86 != kTDeviceSignature)
         {
         }
 
-        if (KTLoggableData != v18)
+        if (KTLoggableData != kTLoggableData)
         {
         }
 
 LABEL_37:
-        v15 = v87;
-        if (shortHandle == v13)
+        shortHandle2 = v87;
+        if (shortHandle == shortHandle)
         {
 LABEL_39:
 
@@ -725,33 +725,33 @@ LABEL_38:
       }
 
       sessionToken = self->_sessionToken;
-      v29 = [(IDSEndpoint *)v6 sessionToken];
+      sessionToken = [(IDSEndpoint *)v6 sessionToken];
       v30 = sessionToken;
-      v31 = v29;
-      if (([(NSData *)v30 isEqual:v29]& 1) != 0)
+      v31 = sessionToken;
+      if (([(NSData *)v30 isEqual:sessionToken]& 1) != 0)
       {
         v83 = v31;
         expireDate = self->_expireDate;
-        v33 = [(IDSEndpoint *)v6 expireDate];
+        expireDate = [(IDSEndpoint *)v6 expireDate];
         v34 = expireDate;
-        v35 = v33;
-        if (([(NSDate *)v34 isEqual:v33]& 1) != 0)
+        v35 = expireDate;
+        if (([(NSDate *)v34 isEqual:expireDate]& 1) != 0)
         {
           v82 = v35;
           refreshDate = self->_refreshDate;
-          v37 = [(IDSEndpoint *)v6 refreshDate];
+          refreshDate = [(IDSEndpoint *)v6 refreshDate];
           v38 = refreshDate;
-          v39 = v37;
-          if (([(NSDate *)v38 isEqual:v37]& 1) != 0)
+          v39 = refreshDate;
+          if (([(NSDate *)v38 isEqual:refreshDate]& 1) != 0)
           {
             v80 = v39;
             anonymizedSenderID = self->_anonymizedSenderID;
-            v81 = [(IDSEndpoint *)v6 anonymizedSenderID];
+            anonymizedSenderID = [(IDSEndpoint *)v6 anonymizedSenderID];
             v79 = anonymizedSenderID;
-            if (anonymizedSenderID != v81)
+            if (anonymizedSenderID != anonymizedSenderID)
             {
               v41 = self->_anonymizedSenderID;
-              v78 = [(IDSEndpoint *)v6 anonymizedSenderID];
+              anonymizedSenderID2 = [(IDSEndpoint *)v6 anonymizedSenderID];
               if (![(NSString *)v41 isEqual:?])
               {
                 v16 = 0;
@@ -765,7 +765,7 @@ LABEL_38:
             {
               v16 = 0;
               v42 = v85;
-              if (v79 == v81)
+              if (v79 == anonymizedSenderID)
               {
 LABEL_56:
 
@@ -783,7 +783,7 @@ LABEL_55:
             if (senderCorrelationIdentifier != v77)
             {
               v46 = self->_senderCorrelationIdentifier;
-              v75 = [(IDSEndpoint *)v6 senderCorrelationIdentifier];
+              senderCorrelationIdentifier = [(IDSEndpoint *)v6 senderCorrelationIdentifier];
               if (![(NSString *)v46 isEqual:?])
               {
                 v16 = 0;
@@ -791,7 +791,7 @@ LABEL_55:
 LABEL_87:
 
 LABEL_88:
-                if (v79 == v81)
+                if (v79 == anonymizedSenderID)
                 {
                   goto LABEL_56;
                 }
@@ -801,10 +801,10 @@ LABEL_88:
             }
 
             capabilities = self->_capabilities;
-            v48 = [(IDSEndpoint *)v6 capabilities];
+            capabilities = [(IDSEndpoint *)v6 capabilities];
             v49 = capabilities;
-            v50 = v48;
-            if (![(IDSEndpointCapabilities *)v49 isEqual:v48])
+            v50 = capabilities;
+            if (![(IDSEndpointCapabilities *)v49 isEqual:capabilities])
             {
 
               v16 = 0;
@@ -826,7 +826,7 @@ LABEL_62:
             if (serializedLegacyPublicIdentity != v73)
             {
               v51 = self->_serializedLegacyPublicIdentity;
-              v70 = [(IDSEndpoint *)v6 serializedLegacyPublicIdentity];
+              serializedLegacyPublicIdentity = [(IDSEndpoint *)v6 serializedLegacyPublicIdentity];
               if (![(NSData *)v51 isEqual:?])
               {
                 v16 = 0;
@@ -836,12 +836,12 @@ LABEL_62:
             }
 
             serializedNGMDevicePrekey = self->_serializedNGMDevicePrekey;
-            v71 = [(IDSEndpoint *)v6 serializedNGMDevicePrekey];
+            serializedNGMDevicePrekey = [(IDSEndpoint *)v6 serializedNGMDevicePrekey];
             v68 = serializedNGMDevicePrekey;
-            if (serializedNGMDevicePrekey != v71)
+            if (serializedNGMDevicePrekey != serializedNGMDevicePrekey)
             {
               v54 = self->_serializedNGMDevicePrekey;
-              v67 = [(IDSEndpoint *)v6 serializedNGMDevicePrekey];
+              serializedNGMDevicePrekey2 = [(IDSEndpoint *)v6 serializedNGMDevicePrekey];
               if (![(NSData *)v54 isEqual:?])
               {
                 v16 = 0;
@@ -851,13 +851,13 @@ LABEL_62:
             }
 
             serializedNGMDeviceIdentity = self->_serializedNGMDeviceIdentity;
-            v69 = [(IDSEndpoint *)v6 serializedNGMDeviceIdentity];
+            serializedNGMDeviceIdentity = [(IDSEndpoint *)v6 serializedNGMDeviceIdentity];
             v66 = serializedNGMDeviceIdentity;
-            if (serializedNGMDeviceIdentity == v69 || (v56 = self->_serializedNGMDeviceIdentity, [(IDSEndpoint *)v6 serializedNGMDeviceIdentity], v64 = objc_claimAutoreleasedReturnValue(), [(NSData *)v56 isEqual:?]))
+            if (serializedNGMDeviceIdentity == serializedNGMDeviceIdentity || (v56 = self->_serializedNGMDeviceIdentity, [(IDSEndpoint *)v6 serializedNGMDeviceIdentity], v64 = objc_claimAutoreleasedReturnValue(), [(NSData *)v56 isEqual:?]))
             {
               serializedApplicationPublicKey = self->_serializedApplicationPublicKey;
-              v65 = [(IDSEndpoint *)v6 serializedApplicationPublicKey];
-              if (serializedApplicationPublicKey == v65)
+              serializedApplicationPublicKey = [(IDSEndpoint *)v6 serializedApplicationPublicKey];
+              if (serializedApplicationPublicKey == serializedApplicationPublicKey)
               {
                 ngmVersion = self->_ngmVersion;
                 if (ngmVersion == [(IDSEndpoint *)v6 ngmVersion])
@@ -875,7 +875,7 @@ LABEL_62:
               else
               {
                 v58 = self->_serializedApplicationPublicKey;
-                v63 = [(IDSEndpoint *)v6 serializedApplicationPublicKey];
+                serializedApplicationPublicKey2 = [(IDSEndpoint *)v6 serializedApplicationPublicKey];
                 if (([(NSData *)v58 isEqual:?]& 1) != 0 && (v59 = self->_ngmVersion, v59 == [(IDSEndpoint *)v6 ngmVersion]))
                 {
                   v60 = self->_legacyVersion;
@@ -889,11 +889,11 @@ LABEL_62:
               }
 
               v42 = v85;
-              if (v66 == v69)
+              if (v66 == serializedNGMDeviceIdentity)
               {
 LABEL_80:
 
-                if (v68 == v71)
+                if (v68 == serializedNGMDevicePrekey)
                 {
 
 LABEL_83:
@@ -930,14 +930,14 @@ LABEL_81:
             goto LABEL_80;
           }
 
-          v3 = v85;
-          if (v86 != v21)
+          kTLoggableData2 = v85;
+          if (v86 != kTDeviceSignature)
           {
           }
 
 LABEL_34:
 
-          if (KTLoggableData == v18)
+          if (KTLoggableData == kTLoggableData)
           {
 LABEL_36:
 
@@ -955,11 +955,11 @@ LABEL_35:
       {
       }
 
-      if (v86 != v21)
+      if (v86 != kTDeviceSignature)
       {
       }
 
-      if (KTLoggableData != v18)
+      if (KTLoggableData != kTLoggableData)
       {
       }
 
@@ -974,11 +974,11 @@ LABEL_41:
   return v16;
 }
 
-- (BOOL)isEqualToEndpoint:(id)a3 withDateTolerance:(double)a4
+- (BOOL)isEqualToEndpoint:(id)endpoint withDateTolerance:(double)tolerance
 {
-  v7 = a3;
-  v8 = v7;
-  if (self == v7)
+  endpointCopy = endpoint;
+  v8 = endpointCopy;
+  if (self == endpointCopy)
   {
     v17 = 1;
   }
@@ -986,14 +986,14 @@ LABEL_41:
   else
   {
     queryTimeInterval = self->_queryTimeInterval;
-    [(IDSEndpoint *)v7 queryTimeInterval];
+    [(IDSEndpoint *)endpointCopy queryTimeInterval];
     v11 = queryTimeInterval - v10;
     if (v11 < 0.0)
     {
       v11 = -v11;
     }
 
-    if (v11 < a4)
+    if (v11 < tolerance)
     {
       URI = self->_URI;
       v13 = [(IDSEndpoint *)v8 URI];
@@ -1006,12 +1006,12 @@ LABEL_31:
       }
 
       KTLoggableData = self->_KTLoggableData;
-      v15 = [(IDSEndpoint *)v8 KTLoggableData];
-      if (KTLoggableData != v15)
+      kTLoggableData = [(IDSEndpoint *)v8 KTLoggableData];
+      if (KTLoggableData != kTLoggableData)
       {
         v16 = self->_KTLoggableData;
-        v4 = [(IDSEndpoint *)v8 KTLoggableData];
-        if (![(NSData *)v16 isEqual:v4])
+        kTLoggableData2 = [(IDSEndpoint *)v8 KTLoggableData];
+        if (![(NSData *)v16 isEqual:kTLoggableData2])
         {
           v17 = 0;
           goto LABEL_29;
@@ -1019,60 +1019,60 @@ LABEL_31:
       }
 
       KTDeviceSignature = self->_KTDeviceSignature;
-      v19 = [(IDSEndpoint *)v8 KTDeviceSignature];
-      if (KTDeviceSignature != v19)
+      kTDeviceSignature = [(IDSEndpoint *)v8 KTDeviceSignature];
+      if (KTDeviceSignature != kTDeviceSignature)
       {
         v20 = self->_KTDeviceSignature;
-        v21 = [(IDSEndpoint *)v8 KTDeviceSignature];
-        if (([(NSData *)v20 isEqual:v21]& 1) == 0)
+        kTDeviceSignature2 = [(IDSEndpoint *)v8 KTDeviceSignature];
+        if (([(NSData *)v20 isEqual:kTDeviceSignature2]& 1) == 0)
         {
 
           goto LABEL_27;
         }
 
-        v79 = v21;
+        v79 = kTDeviceSignature2;
       }
 
       pushTokenObject = self->_pushTokenObject;
-      v23 = [(IDSEndpoint *)v8 pushTokenObject];
-      if (![(IDSPushToken *)pushTokenObject isEqual:v23])
+      pushTokenObject = [(IDSEndpoint *)v8 pushTokenObject];
+      if (![(IDSPushToken *)pushTokenObject isEqual:pushTokenObject])
       {
         v17 = 0;
         goto LABEL_23;
       }
 
-      v78 = v4;
+      v78 = kTLoggableData2;
       sessionToken = self->_sessionToken;
-      v25 = [(IDSEndpoint *)v8 sessionToken];
-      if (([(NSData *)sessionToken isEqual:v25]& 1) != 0)
+      sessionToken = [(IDSEndpoint *)v8 sessionToken];
+      if (([(NSData *)sessionToken isEqual:sessionToken]& 1) != 0)
       {
         expireDate = self->_expireDate;
-        v27 = [(IDSEndpoint *)v8 expireDate];
+        expireDate = [(IDSEndpoint *)v8 expireDate];
         v28 = expireDate;
-        v29 = v27;
-        [(NSDate *)v28 timeIntervalSinceDate:v27];
-        if (fabs(v30) < a4)
+        v29 = expireDate;
+        [(NSDate *)v28 timeIntervalSinceDate:expireDate];
+        if (fabs(v30) < tolerance)
         {
           v77 = v29;
           refreshDate = self->_refreshDate;
-          v32 = [(IDSEndpoint *)v8 refreshDate];
+          refreshDate = [(IDSEndpoint *)v8 refreshDate];
           v33 = refreshDate;
-          v34 = v32;
-          [(NSDate *)v33 timeIntervalSinceDate:v32];
-          if (fabs(v35) < a4)
+          v34 = refreshDate;
+          [(NSDate *)v33 timeIntervalSinceDate:refreshDate];
+          if (fabs(v35) < tolerance)
           {
             v75 = v34;
             anonymizedSenderID = self->_anonymizedSenderID;
-            v76 = [(IDSEndpoint *)v8 anonymizedSenderID];
+            anonymizedSenderID = [(IDSEndpoint *)v8 anonymizedSenderID];
             v74 = anonymizedSenderID;
-            if (anonymizedSenderID != v76)
+            if (anonymizedSenderID != anonymizedSenderID)
             {
               v37 = self->_anonymizedSenderID;
-              v73 = [(IDSEndpoint *)v8 anonymizedSenderID];
+              anonymizedSenderID2 = [(IDSEndpoint *)v8 anonymizedSenderID];
               if (![(NSString *)v37 isEqual:?])
               {
                 v17 = 0;
-                v4 = v78;
+                kTLoggableData2 = v78;
                 goto LABEL_45;
               }
             }
@@ -1081,12 +1081,12 @@ LABEL_31:
             if (verifiedBusiness != [(IDSEndpoint *)v8 verifiedBusiness])
             {
               v17 = 0;
-              v4 = v78;
-              if (v74 == v76)
+              kTLoggableData2 = v78;
+              if (v74 == anonymizedSenderID)
               {
 LABEL_46:
 
-                if (KTDeviceSignature == v19)
+                if (KTDeviceSignature == kTDeviceSignature)
                 {
                   goto LABEL_25;
                 }
@@ -1106,25 +1106,25 @@ LABEL_45:
             if (senderCorrelationIdentifier != v72)
             {
               v42 = self->_senderCorrelationIdentifier;
-              v70 = [(IDSEndpoint *)v8 senderCorrelationIdentifier];
+              senderCorrelationIdentifier = [(IDSEndpoint *)v8 senderCorrelationIdentifier];
               if (![(NSString *)v42 isEqual:?])
               {
                 v17 = 0;
-                v4 = v78;
+                kTLoggableData2 = v78;
                 goto LABEL_81;
               }
             }
 
             capabilities = self->_capabilities;
-            v44 = [(IDSEndpoint *)v8 capabilities];
+            capabilities = [(IDSEndpoint *)v8 capabilities];
             v45 = capabilities;
-            v46 = v44;
-            if (![(IDSEndpointCapabilities *)v45 isEqual:v44])
+            v46 = capabilities;
+            if (![(IDSEndpointCapabilities *)v45 isEqual:capabilities])
             {
 
               v17 = 0;
               v48 = v72;
-              v4 = v78;
+              kTLoggableData2 = v78;
               if (v71 != v72)
               {
                 goto LABEL_81;
@@ -1132,13 +1132,13 @@ LABEL_45:
 
 LABEL_53:
 
-              if (v74 != v76)
+              if (v74 != anonymizedSenderID)
               {
               }
 
 LABEL_23:
               v38 = v79;
-              if (KTDeviceSignature == v19)
+              if (KTDeviceSignature == kTDeviceSignature)
               {
 LABEL_25:
 
@@ -1156,37 +1156,37 @@ LABEL_24:
             if (serializedLegacyPublicIdentity != v68)
             {
               v47 = self->_serializedLegacyPublicIdentity;
-              v64 = [(IDSEndpoint *)v8 serializedLegacyPublicIdentity];
+              serializedLegacyPublicIdentity = [(IDSEndpoint *)v8 serializedLegacyPublicIdentity];
               if (![(NSData *)v47 isEqual:?])
               {
                 v17 = 0;
-                v4 = v78;
+                kTLoggableData2 = v78;
                 goto LABEL_78;
               }
             }
 
             serializedNGMDevicePrekey = self->_serializedNGMDevicePrekey;
-            v65 = [(IDSEndpoint *)v8 serializedNGMDevicePrekey];
-            if (serializedNGMDevicePrekey != v65)
+            serializedNGMDevicePrekey = [(IDSEndpoint *)v8 serializedNGMDevicePrekey];
+            if (serializedNGMDevicePrekey != serializedNGMDevicePrekey)
             {
               v49 = self->_serializedNGMDevicePrekey;
-              v62 = [(IDSEndpoint *)v8 serializedNGMDevicePrekey];
+              serializedNGMDevicePrekey2 = [(IDSEndpoint *)v8 serializedNGMDevicePrekey];
               if (![(NSData *)v49 isEqual:?])
               {
                 v17 = 0;
-                v4 = v78;
+                kTLoggableData2 = v78;
                 goto LABEL_75;
               }
             }
 
             serializedNGMDeviceIdentity = self->_serializedNGMDeviceIdentity;
-            v63 = [(IDSEndpoint *)v8 serializedNGMDeviceIdentity];
+            serializedNGMDeviceIdentity = [(IDSEndpoint *)v8 serializedNGMDeviceIdentity];
             v61 = serializedNGMDeviceIdentity;
-            if (serializedNGMDeviceIdentity == v63 || (v51 = self->_serializedNGMDeviceIdentity, [(IDSEndpoint *)v8 serializedNGMDeviceIdentity], v59 = objc_claimAutoreleasedReturnValue(), [(NSData *)v51 isEqual:?]))
+            if (serializedNGMDeviceIdentity == serializedNGMDeviceIdentity || (v51 = self->_serializedNGMDeviceIdentity, [(IDSEndpoint *)v8 serializedNGMDeviceIdentity], v59 = objc_claimAutoreleasedReturnValue(), [(NSData *)v51 isEqual:?]))
             {
               serializedApplicationPublicKey = self->_serializedApplicationPublicKey;
-              v60 = [(IDSEndpoint *)v8 serializedApplicationPublicKey];
-              if (serializedApplicationPublicKey == v60)
+              serializedApplicationPublicKey = [(IDSEndpoint *)v8 serializedApplicationPublicKey];
+              if (serializedApplicationPublicKey == serializedApplicationPublicKey)
               {
                 ngmVersion = self->_ngmVersion;
                 if (ngmVersion == [(IDSEndpoint *)v8 ngmVersion])
@@ -1204,7 +1204,7 @@ LABEL_24:
               else
               {
                 v53 = self->_serializedApplicationPublicKey;
-                v58 = [(IDSEndpoint *)v8 serializedApplicationPublicKey];
+                serializedApplicationPublicKey2 = [(IDSEndpoint *)v8 serializedApplicationPublicKey];
                 if (([(NSData *)v53 isEqual:?]& 1) != 0 && (v54 = self->_ngmVersion, v54 == [(IDSEndpoint *)v8 ngmVersion]))
                 {
                   v55 = self->_legacyVersion;
@@ -1217,12 +1217,12 @@ LABEL_24:
                 }
               }
 
-              v4 = v78;
-              if (v61 == v63)
+              kTLoggableData2 = v78;
+              if (v61 == serializedNGMDeviceIdentity)
               {
 
 LABEL_74:
-                if (serializedNGMDevicePrekey == v65)
+                if (serializedNGMDevicePrekey == serializedNGMDevicePrekey)
                 {
 
 LABEL_77:
@@ -1235,7 +1235,7 @@ LABEL_80:
                     {
 LABEL_81:
 
-                      if (v74 == v76)
+                      if (v74 == anonymizedSenderID)
                       {
                         goto LABEL_46;
                       }
@@ -1260,14 +1260,14 @@ LABEL_75:
             else
             {
               v17 = 0;
-              v4 = v78;
+              kTLoggableData2 = v78;
             }
 
             goto LABEL_74;
           }
 
-          v4 = v78;
-          if (KTDeviceSignature != v19)
+          kTLoggableData2 = v78;
+          if (KTDeviceSignature != kTDeviceSignature)
           {
           }
 
@@ -1275,7 +1275,7 @@ LABEL_27:
 
           v17 = 0;
 LABEL_28:
-          if (KTLoggableData == v15)
+          if (KTLoggableData == kTLoggableData)
           {
 LABEL_30:
 
@@ -1288,13 +1288,13 @@ LABEL_29:
         }
       }
 
-      if (KTDeviceSignature != v19)
+      if (KTDeviceSignature != kTDeviceSignature)
       {
       }
 
       v17 = 0;
-      v4 = v78;
-      if (KTLoggableData == v15)
+      kTLoggableData2 = v78;
+      if (KTLoggableData == kTLoggableData)
       {
         goto LABEL_30;
       }
@@ -1316,8 +1316,8 @@ LABEL_32:
   {
     v3 = MEMORY[0x1E695DFD8];
     v4 = [(IDSURI *)URI URIByAddingPushToken:?];
-    v5 = [v4 prefixedURI];
-    v6 = [v3 setWithObject:v5];
+    prefixedURI = [v4 prefixedURI];
+    v6 = [v3 setWithObject:prefixedURI];
   }
 
   else
@@ -1328,29 +1328,29 @@ LABEL_32:
   return v6;
 }
 
-- (IDSEndpoint)initWithCoder:(id)a3
+- (IDSEndpoint)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v75 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"uri"];
-  v69 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"KTLoggableData"];
-  v68 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"KTDeviceSignature"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"pushToken"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"pushTokenObj"];
-  v74 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"sessionToken"];
-  v73 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"expireDate"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"refreshDate"];
-  v67 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"anonymizedSenderID"];
-  [v3 decodeDoubleForKey:@"queryTimeInterval"];
+  coderCopy = coder;
+  v75 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uri"];
+  v69 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"KTLoggableData"];
+  v68 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"KTDeviceSignature"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pushToken"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pushTokenObj"];
+  v74 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sessionToken"];
+  v73 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expireDate"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"refreshDate"];
+  v67 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"anonymizedSenderID"];
+  [coderCopy decodeDoubleForKey:@"queryTimeInterval"];
   v8 = v7;
-  v66 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"serializedNGMDeviceIdentity"];
-  v65 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"serializedApplicationPublicKey"];
-  v9 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"familyEndpointData"];
-  v72 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"gameCenterData"];
+  v66 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serializedNGMDeviceIdentity"];
+  v65 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serializedApplicationPublicKey"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"familyEndpointData"];
+  v72 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gameCenterData"];
   v10 = objc_alloc_init(IDSEndpointURIProperties);
-  v11 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"senderCorrelationIdentifier"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"senderCorrelationIdentifier"];
   [(IDSEndpointURIProperties *)v10 setSenderCorrelationIdentifier:v11];
 
-  v12 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"shortHandle"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shortHandle"];
   v71 = v10;
   [(IDSEndpointURIProperties *)v10 setShortHandle:v12];
 
@@ -1358,7 +1358,7 @@ LABEL_32:
   v14 = objc_opt_class();
   v15 = objc_opt_class();
   v16 = [v13 setWithObjects:{v14, v15, objc_opt_class(), 0}];
-  v17 = [v3 decodeObjectOfClasses:v16 forKey:@"clientData"];
+  v17 = [coderCopy decodeObjectOfClasses:v16 forKey:@"clientData"];
 
   v70 = v4;
   v61 = v9;
@@ -1366,34 +1366,34 @@ LABEL_32:
   if (v17)
   {
     v62 = v5;
-    v18 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"verifiedBusiness"];
-    v19 = [v18 BOOLValue];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"verifiedBusiness"];
+    bOOLValue = [v18 BOOLValue];
 
-    v20 = [v3 decodeBoolForKey:@"KTMismatchedAccountFlag"];
-    v21 = [v3 decodeBoolForKey:@"KTCapableFlag"];
-    v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"Transparency"];
+    v20 = [coderCopy decodeBoolForKey:@"KTMismatchedAccountFlag"];
+    v21 = [coderCopy decodeBoolForKey:@"KTCapableFlag"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Transparency"];
     v23 = [v17 objectForKey:@"public-message-ngm-device-prekey-data-key"];
     v24 = [v17 objectForKey:@"public-message-identity-key"];
     if (v24 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      LOBYTE(v49) = v19;
+      LOBYTE(v49) = bOOLValue;
       v25 = [(IDSEndpoint *)self initWithURI:v75 clientData:v64 KTLoggableData:v69 KTDeviceSignature:v68 mismatchedAccountFlag:v20 ktCapableFlag:v21 transparency:v8 pushToken:v22 sessionToken:v70 expireDate:v74 refreshDate:v73 anonymizedSenderID:v6 verifiedBusiness:v67 serializedPublicMessageProtectionIdentity:v49 queryTimeInterval:v24 serializedNGMDeviceIdentity:v66 serializedNGMDevicePrekey:v23 serializedApplicationPublicKey:v65 endpointURIProperties:v71 familyEndpointData:v9 gameCenterData:v72];
-      v26 = v25;
+      selfCopy = v25;
     }
 
     else
     {
-      v27 = [MEMORY[0x1E69A6138] registration];
-      if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
+      registration = [MEMORY[0x1E69A6138] registration];
+      if (os_log_type_enabled(registration, OS_LOG_TYPE_FAULT))
       {
-        sub_1A7E1BCC4(v24, v27);
+        sub_1A7E1BCC4(v24, registration);
       }
 
       v28 = [MEMORY[0x1E696ABC0] errorWithDomain:IDSEndpointErrorDomain code:5 userInfo:0];
-      [v3 failWithError:v28];
+      [coderCopy failWithError:v28];
 
       v25 = 0;
-      v26 = self;
+      selfCopy = self;
     }
 
     v30 = v68;
@@ -1406,15 +1406,15 @@ LABEL_32:
 
   else
   {
-    v57 = [v3 decodeBoolForKey:@"verifiedBusinessb"];
-    v58 = [v3 decodeBoolForKey:@"KTMismatchedAccountFlag"];
-    v56 = [v3 decodeBoolForKey:@"KTCapableFlag"];
-    v60 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"Transparency"];
-    v59 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"serializedLegacyPublicIdentity"];
-    v35 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"serializedNGMDevicePrekey"];
-    v55 = [v3 decodeIntForKey:@"NGMVersion"];
-    v36 = [v3 decodeIntForKey:@"legacyVersion"];
-    v37 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"capabilities"];
+    v57 = [coderCopy decodeBoolForKey:@"verifiedBusinessb"];
+    v58 = [coderCopy decodeBoolForKey:@"KTMismatchedAccountFlag"];
+    v56 = [coderCopy decodeBoolForKey:@"KTCapableFlag"];
+    v60 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Transparency"];
+    v59 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serializedLegacyPublicIdentity"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serializedNGMDevicePrekey"];
+    v55 = [coderCopy decodeIntForKey:@"NGMVersion"];
+    v36 = [coderCopy decodeIntForKey:@"legacyVersion"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"capabilities"];
     v38 = v5;
     if (v5)
     {
@@ -1456,84 +1456,84 @@ LABEL_32:
     v44 = v37;
     v30 = v68;
     v29 = v69;
-    v26 = [(IDSEndpoint *)self initWithURI:v75 capabilities:v37 ngmVersion:v55 legacyVersion:v36 KTLoggableData:v69 KTDeviceSignature:v68 mismatchedAccountFlag:v8 ktCapableFlag:v46 transparency:v60 pushTokenObject:v38 sessionToken:v47 expireDate:v48 refreshDate:v6 anonymizedSenderID:v67 verifiedBusiness:v50 serializedPublicMessageProtectionIdentity:v59 queryTimeInterval:v32 serializedNGMDeviceIdentity:v51 serializedNGMDevicePrekey:v65 serializedApplicationPublicKey:v52 endpointURIProperties:v61 familyEndpointData:v53 gameCenterData:?];
+    selfCopy = [(IDSEndpoint *)self initWithURI:v75 capabilities:v37 ngmVersion:v55 legacyVersion:v36 KTLoggableData:v69 KTDeviceSignature:v68 mismatchedAccountFlag:v8 ktCapableFlag:v46 transparency:v60 pushTokenObject:v38 sessionToken:v47 expireDate:v48 refreshDate:v6 anonymizedSenderID:v67 verifiedBusiness:v50 serializedPublicMessageProtectionIdentity:v59 queryTimeInterval:v32 serializedNGMDeviceIdentity:v51 serializedNGMDevicePrekey:v65 serializedApplicationPublicKey:v52 endpointURIProperties:v61 familyEndpointData:v53 gameCenterData:?];
 
-    v25 = v26;
+    v25 = selfCopy;
   }
 
   return v25;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   queryTimeInterval = self->_queryTimeInterval;
-  v5 = a3;
-  [v5 encodeDouble:@"queryTimeInterval" forKey:queryTimeInterval];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"queryTimeInterval" forKey:queryTimeInterval];
   v6 = [(IDSEndpoint *)self URI];
-  [v5 encodeObject:v6 forKey:@"uri"];
+  [coderCopy encodeObject:v6 forKey:@"uri"];
 
-  v7 = [(IDSEndpoint *)self KTLoggableData];
-  [v5 encodeObject:v7 forKey:@"KTLoggableData"];
+  kTLoggableData = [(IDSEndpoint *)self KTLoggableData];
+  [coderCopy encodeObject:kTLoggableData forKey:@"KTLoggableData"];
 
-  v8 = [(IDSEndpoint *)self KTDeviceSignature];
-  [v5 encodeObject:v8 forKey:@"KTDeviceSignature"];
+  kTDeviceSignature = [(IDSEndpoint *)self KTDeviceSignature];
+  [coderCopy encodeObject:kTDeviceSignature forKey:@"KTDeviceSignature"];
 
-  v9 = [(IDSEndpoint *)self pushTokenObject];
-  [v5 encodeObject:v9 forKey:@"pushTokenObj"];
+  pushTokenObject = [(IDSEndpoint *)self pushTokenObject];
+  [coderCopy encodeObject:pushTokenObject forKey:@"pushTokenObj"];
 
-  v10 = [(IDSEndpoint *)self sessionToken];
-  [v5 encodeObject:v10 forKey:@"sessionToken"];
+  sessionToken = [(IDSEndpoint *)self sessionToken];
+  [coderCopy encodeObject:sessionToken forKey:@"sessionToken"];
 
-  v11 = [(IDSEndpoint *)self expireDate];
-  [v5 encodeObject:v11 forKey:@"expireDate"];
+  expireDate = [(IDSEndpoint *)self expireDate];
+  [coderCopy encodeObject:expireDate forKey:@"expireDate"];
 
-  v12 = [(IDSEndpoint *)self refreshDate];
-  [v5 encodeObject:v12 forKey:@"refreshDate"];
+  refreshDate = [(IDSEndpoint *)self refreshDate];
+  [coderCopy encodeObject:refreshDate forKey:@"refreshDate"];
 
-  v13 = [(IDSEndpoint *)self anonymizedSenderID];
-  [v5 encodeObject:v13 forKey:@"anonymizedSenderID"];
+  anonymizedSenderID = [(IDSEndpoint *)self anonymizedSenderID];
+  [coderCopy encodeObject:anonymizedSenderID forKey:@"anonymizedSenderID"];
 
-  [v5 encodeBool:-[IDSEndpoint verifiedBusiness](self forKey:{"verifiedBusiness"), @"verifiedBusinessb"}];
-  [v5 encodeBool:-[IDSEndpoint mismatchedAccountFlag](self forKey:{"mismatchedAccountFlag"), @"KTMismatchedAccountFlag"}];
-  [v5 encodeBool:-[IDSEndpoint ktCapableFlag](self forKey:{"ktCapableFlag"), @"KTCapableFlag"}];
-  v14 = [(IDSEndpoint *)self senderCorrelationIdentifier];
-  [v5 encodeObject:v14 forKey:@"senderCorrelationIdentifier"];
+  [coderCopy encodeBool:-[IDSEndpoint verifiedBusiness](self forKey:{"verifiedBusiness"), @"verifiedBusinessb"}];
+  [coderCopy encodeBool:-[IDSEndpoint mismatchedAccountFlag](self forKey:{"mismatchedAccountFlag"), @"KTMismatchedAccountFlag"}];
+  [coderCopy encodeBool:-[IDSEndpoint ktCapableFlag](self forKey:{"ktCapableFlag"), @"KTCapableFlag"}];
+  senderCorrelationIdentifier = [(IDSEndpoint *)self senderCorrelationIdentifier];
+  [coderCopy encodeObject:senderCorrelationIdentifier forKey:@"senderCorrelationIdentifier"];
 
-  v15 = [(IDSEndpoint *)self shortHandle];
-  [v5 encodeObject:v15 forKey:@"shortHandle"];
+  shortHandle = [(IDSEndpoint *)self shortHandle];
+  [coderCopy encodeObject:shortHandle forKey:@"shortHandle"];
 
-  v16 = [(IDSEndpoint *)self serializedNGMDeviceIdentity];
-  [v5 encodeObject:v16 forKey:@"serializedNGMDeviceIdentity"];
+  serializedNGMDeviceIdentity = [(IDSEndpoint *)self serializedNGMDeviceIdentity];
+  [coderCopy encodeObject:serializedNGMDeviceIdentity forKey:@"serializedNGMDeviceIdentity"];
 
-  v17 = [(IDSEndpoint *)self serializedLegacyPublicIdentity];
-  [v5 encodeObject:v17 forKey:@"serializedLegacyPublicIdentity"];
+  serializedLegacyPublicIdentity = [(IDSEndpoint *)self serializedLegacyPublicIdentity];
+  [coderCopy encodeObject:serializedLegacyPublicIdentity forKey:@"serializedLegacyPublicIdentity"];
 
-  v18 = [(IDSEndpoint *)self serializedNGMDevicePrekey];
-  [v5 encodeObject:v18 forKey:@"serializedNGMDevicePrekey"];
+  serializedNGMDevicePrekey = [(IDSEndpoint *)self serializedNGMDevicePrekey];
+  [coderCopy encodeObject:serializedNGMDevicePrekey forKey:@"serializedNGMDevicePrekey"];
 
-  v19 = [(IDSEndpoint *)self serializedApplicationPublicKey];
-  [v5 encodeObject:v19 forKey:@"serializedApplicationPublicKey"];
+  serializedApplicationPublicKey = [(IDSEndpoint *)self serializedApplicationPublicKey];
+  [coderCopy encodeObject:serializedApplicationPublicKey forKey:@"serializedApplicationPublicKey"];
 
-  [v5 encodeInt:-[IDSEndpoint ngmVersion](self forKey:{"ngmVersion"), @"NGMVersion"}];
-  [v5 encodeInt:-[IDSEndpoint legacyVersion](self forKey:{"legacyVersion"), @"legacyVersion"}];
-  v20 = [(IDSEndpoint *)self capabilities];
-  [v5 encodeObject:v20 forKey:@"capabilities"];
+  [coderCopy encodeInt:-[IDSEndpoint ngmVersion](self forKey:{"ngmVersion"), @"NGMVersion"}];
+  [coderCopy encodeInt:-[IDSEndpoint legacyVersion](self forKey:{"legacyVersion"), @"legacyVersion"}];
+  capabilities = [(IDSEndpoint *)self capabilities];
+  [coderCopy encodeObject:capabilities forKey:@"capabilities"];
 
-  v21 = [(IDSEndpoint *)self familyEndpointData];
-  [v5 encodeObject:v21 forKey:@"familyEndpointData"];
+  familyEndpointData = [(IDSEndpoint *)self familyEndpointData];
+  [coderCopy encodeObject:familyEndpointData forKey:@"familyEndpointData"];
 
-  v22 = [(IDSEndpoint *)self gameCenterData];
-  [v5 encodeObject:v22 forKey:@"gameCenterData"];
+  gameCenterData = [(IDSEndpoint *)self gameCenterData];
+  [coderCopy encodeObject:gameCenterData forKey:@"gameCenterData"];
 }
 
-- (void)updateTransparency:(id)a3
+- (void)updateTransparency:(id)transparency
 {
-  v4 = a3;
+  transparencyCopy = transparency;
   v5 = im_primary_queue();
   dispatch_assert_queue_V2(v5);
 
   transparency = self->_transparency;
-  self->_transparency = v4;
+  self->_transparency = transparencyCopy;
 }
 
 @end

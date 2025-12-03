@@ -1,33 +1,33 @@
 @interface PEAdjustmentPresetManager
 + (PEAdjustmentPresetManager)sharedPresetManager;
-- (BOOL)_assetHasVisibleAdjustments:(id)a3 shouldConsiderOpaqueAdjustments:(BOOL)a4;
-- (BOOL)assetHasCopyableAdjustments:(id)a3 removeCrop:(BOOL)a4;
+- (BOOL)_assetHasVisibleAdjustments:(id)adjustments shouldConsiderOpaqueAdjustments:(BOOL)opaqueAdjustments;
+- (BOOL)assetHasCopyableAdjustments:(id)adjustments removeCrop:(BOOL)crop;
 - (BOOL)hasPresetOnPasteboard;
 - (BOOL)isBusyWithBatchAction;
 - (PEAdjustmentPresetManager)init;
 - (PELoadingStatusDelegate)asyncLoadingStatusManager;
 - (PEPasteablePreset)presetFromPasteboard;
-- (id)_editActionEventBuilderForAction:(id)a3 assets:(id)a4;
-- (void)_copyPreset:(id)a3;
-- (void)_sendAnalyticsForCopyActionOnAsset:(id)a3 copiedCompositionController:(id)a4 configurationAnalyticsPayload:(id)a5;
+- (id)_editActionEventBuilderForAction:(id)action assets:(id)assets;
+- (void)_copyPreset:(id)preset;
+- (void)_sendAnalyticsForCopyActionOnAsset:(id)asset copiedCompositionController:(id)controller configurationAnalyticsPayload:(id)payload;
 - (void)_sendAnalyticsForCurrentEditAction;
-- (void)apply:(id)a3 onCompositionController:(id)a4 editSource:(id)a5 asset:(id)a6 completion:(id)a7;
-- (void)autoEnhanceAssets:(id)a3 enabled:(BOOL)a4 async:(BOOL)a5 progress:(id)a6 completion:(id)a7;
-- (void)batch:(id)a3 didCancelAction:(int64_t)a4;
-- (void)batch:(id)a3 didCompleteAction:(int64_t)a4 hasError:(BOOL)a5;
-- (void)batch:(id)a3 willStartAction:(int64_t)a4;
+- (void)apply:(id)apply onCompositionController:(id)controller editSource:(id)source asset:(id)asset completion:(id)completion;
+- (void)autoEnhanceAssets:(id)assets enabled:(BOOL)enabled async:(BOOL)async progress:(id)progress completion:(id)completion;
+- (void)batch:(id)batch didCancelAction:(int64_t)action;
+- (void)batch:(id)batch didCompleteAction:(int64_t)action hasError:(BOOL)error;
+- (void)batch:(id)batch willStartAction:(int64_t)action;
 - (void)cancelCurrentBatchAction;
 - (void)clearPasteboard;
-- (void)copyPresetFromAsset:(id)a3 removeCrop:(BOOL)a4;
-- (void)copyPresetFromCompositionController:(id)a3 sourceAsset:(id)a4 smartCopyEnabled:(BOOL)a5 configurationAnalyticsPayload:(id)a6;
-- (void)executeAction:(id)a3 onAssets:(id)a4 async:(BOOL)a5 progress:(id)a6 completion:(id)a7;
-- (void)pastePreset:(id)a3 onAssets:(id)a4 async:(BOOL)a5 progress:(id)a6 completion:(id)a7;
-- (void)replacePresets:(id)a3 onAssets:(id)a4 async:(BOOL)a5 progress:(id)a6 completion:(id)a7;
-- (void)revertAdjustmentsOnAssets:(id)a3 async:(BOOL)a4 progress:(id)a5 completion:(id)a6;
-- (void)rotateAssets:(id)a3 direction:(int64_t)a4 async:(BOOL)a5 progress:(id)a6 completion:(id)a7;
-- (void)setAudioMixModeOnAssets:(id)a3 audioMixMode:(id)a4 async:(BOOL)a5 progress:(id)a6 completion:(id)a7;
-- (void)setPlaybackRateOnAssets:(id)a3 playbackRate:(float)a4 async:(BOOL)a5 progress:(id)a6 completion:(id)a7;
-- (void)updateAnalyticsEventBuilderActionType:(id)a3 forAssets:(id)a4;
+- (void)copyPresetFromAsset:(id)asset removeCrop:(BOOL)crop;
+- (void)copyPresetFromCompositionController:(id)controller sourceAsset:(id)asset smartCopyEnabled:(BOOL)enabled configurationAnalyticsPayload:(id)payload;
+- (void)executeAction:(id)action onAssets:(id)assets async:(BOOL)async progress:(id)progress completion:(id)completion;
+- (void)pastePreset:(id)preset onAssets:(id)assets async:(BOOL)async progress:(id)progress completion:(id)completion;
+- (void)replacePresets:(id)presets onAssets:(id)assets async:(BOOL)async progress:(id)progress completion:(id)completion;
+- (void)revertAdjustmentsOnAssets:(id)assets async:(BOOL)async progress:(id)progress completion:(id)completion;
+- (void)rotateAssets:(id)assets direction:(int64_t)direction async:(BOOL)async progress:(id)progress completion:(id)completion;
+- (void)setAudioMixModeOnAssets:(id)assets audioMixMode:(id)mode async:(BOOL)async progress:(id)progress completion:(id)completion;
+- (void)setPlaybackRateOnAssets:(id)assets playbackRate:(float)rate async:(BOOL)async progress:(id)progress completion:(id)completion;
+- (void)updateAnalyticsEventBuilderActionType:(id)type forAssets:(id)assets;
 @end
 
 @implementation PEAdjustmentPresetManager
@@ -42,28 +42,28 @@
 - (void)clearPasteboard
 {
   v4 = objc_alloc_init(MEMORY[0x277CBEA90]);
-  v3 = [(PEAdjustmentPresetManager *)self pasteboard];
-  [v3 setData:v4 forPasteboardType:@"com.apple.photos.adjustmentstack"];
+  pasteboard = [(PEAdjustmentPresetManager *)self pasteboard];
+  [pasteboard setData:v4 forPasteboardType:@"com.apple.photos.adjustmentstack"];
 }
 
-- (void)apply:(id)a3 onCompositionController:(id)a4 editSource:(id)a5 asset:(id)a6 completion:(id)a7
+- (void)apply:(id)apply onCompositionController:(id)controller editSource:(id)source asset:(id)asset completion:(id)completion
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  completionCopy = completion;
+  assetCopy = asset;
+  sourceCopy = source;
+  controllerCopy = controller;
+  applyCopy = apply;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  if (v12 && (isKindOfClass & 1) != 0)
+  if (assetCopy && (isKindOfClass & 1) != 0)
   {
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __87__PEAdjustmentPresetManager_apply_onCompositionController_editSource_asset_completion___block_invoke;
     v26[3] = &unk_279A30200;
     v17 = &v27;
-    v27 = v11;
-    v18 = v11;
+    v27 = completionCopy;
+    v18 = completionCopy;
     v19 = v26;
   }
 
@@ -74,12 +74,12 @@
     v23 = __87__PEAdjustmentPresetManager_apply_onCompositionController_editSource_asset_completion___block_invoke_2;
     v24 = &unk_279A30200;
     v17 = &v25;
-    v25 = v11;
-    v20 = v11;
+    v25 = completionCopy;
+    v20 = completionCopy;
     v19 = &v21;
   }
 
-  [v15 applyToCompositionController:v14 asset:v12 editSource:v13 completion:{v19, v21, v22, v23, v24}];
+  [applyCopy applyToCompositionController:controllerCopy asset:assetCopy editSource:sourceCopy completion:{v19, v21, v22, v23, v24}];
 }
 
 uint64_t __87__PEAdjustmentPresetManager_apply_onCompositionController_editSource_asset_completion___block_invoke(uint64_t result, uint64_t a2)
@@ -113,18 +113,18 @@ uint64_t __87__PEAdjustmentPresetManager_apply_onCompositionController_editSourc
 - (void)_sendAnalyticsForCurrentEditAction
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(PEAdjustmentPresetManager *)self editActionEventBuilder];
+  editActionEventBuilder = [(PEAdjustmentPresetManager *)self editActionEventBuilder];
 
-  if (v3)
+  if (editActionEventBuilder)
   {
-    v4 = [(PEAdjustmentPresetManager *)self editActionEventBuilder];
-    v5 = [v4 buildEvents];
+    editActionEventBuilder2 = [(PEAdjustmentPresetManager *)self editActionEventBuilder];
+    buildEvents = [editActionEventBuilder2 buildEvents];
 
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
-    v6 = v5;
+    v6 = buildEvents;
     v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v7)
     {
@@ -154,94 +154,94 @@ uint64_t __87__PEAdjustmentPresetManager_apply_onCompositionController_editSourc
   }
 }
 
-- (id)_editActionEventBuilderForAction:(id)a3 assets:(id)a4
+- (id)_editActionEventBuilderForAction:(id)action assets:(id)assets
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[PEEditActionEventBuilder alloc] initWithBaseAction:v6 assets:v5];
+  assetsCopy = assets;
+  actionCopy = action;
+  v7 = [[PEEditActionEventBuilder alloc] initWithBaseAction:actionCopy assets:assetsCopy];
 
   return v7;
 }
 
-- (void)_sendAnalyticsForCopyActionOnAsset:(id)a3 copiedCompositionController:(id)a4 configurationAnalyticsPayload:(id)a5
+- (void)_sendAnalyticsForCopyActionOnAsset:(id)asset copiedCompositionController:(id)controller configurationAnalyticsPayload:(id)payload
 {
-  v11 = a3;
-  v7 = a5;
-  v8 = a4;
+  assetCopy = asset;
+  payloadCopy = payload;
+  controllerCopy = controller;
   v9 = objc_alloc_init(PECopyActionEventBuilder);
-  [(PECopyActionEventBuilder *)v9 setCopiedCompositionController:v8];
+  [(PECopyActionEventBuilder *)v9 setCopiedCompositionController:controllerCopy];
 
-  [(PECopyActionEventBuilder *)v9 setConfigurationAnalyticsPayload:v7];
-  if (v11)
+  [(PECopyActionEventBuilder *)v9 setConfigurationAnalyticsPayload:payloadCopy];
+  if (assetCopy)
   {
-    [(PECopyActionEventBuilder *)v9 setAsset:v11];
+    [(PECopyActionEventBuilder *)v9 setAsset:assetCopy];
   }
 
-  v10 = [(PECopyActionEventBuilder *)v9 buildEvent];
-  [MEMORY[0x277CF6EC0] sendEvent:@"com.apple.photos.CPAnalytics.edit.copyAdjustments" withPayload:v10];
+  buildEvent = [(PECopyActionEventBuilder *)v9 buildEvent];
+  [MEMORY[0x277CF6EC0] sendEvent:@"com.apple.photos.CPAnalytics.edit.copyAdjustments" withPayload:buildEvent];
 }
 
-- (void)updateAnalyticsEventBuilderActionType:(id)a3 forAssets:(id)a4
+- (void)updateAnalyticsEventBuilderActionType:(id)type forAssets:(id)assets
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PEAdjustmentPresetManager *)self editActionEventBuilder];
-  [v8 registerActionType:v7 forAssets:v6];
+  assetsCopy = assets;
+  typeCopy = type;
+  editActionEventBuilder = [(PEAdjustmentPresetManager *)self editActionEventBuilder];
+  [editActionEventBuilder registerActionType:typeCopy forAssets:assetsCopy];
 }
 
-- (void)setAudioMixModeOnAssets:(id)a3 audioMixMode:(id)a4 async:(BOOL)a5 progress:(id)a6 completion:(id)a7
+- (void)setAudioMixModeOnAssets:(id)assets audioMixMode:(id)mode async:(BOOL)async progress:(id)progress completion:(id)completion
 {
-  v8 = a5;
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
+  asyncCopy = async;
+  completionCopy = completion;
+  progressCopy = progress;
+  modeCopy = mode;
+  assetsCopy = assets;
   v16 = objc_alloc_init(PEAudioMixModeAction);
-  [(PEAudioMixModeAction *)v16 setAudioMixMode:v14];
+  [(PEAudioMixModeAction *)v16 setAudioMixMode:modeCopy];
 
-  [(PEAdjustmentPresetManager *)self executeAction:v16 onAssets:v15 async:v8 progress:v13 completion:v12];
+  [(PEAdjustmentPresetManager *)self executeAction:v16 onAssets:assetsCopy async:asyncCopy progress:progressCopy completion:completionCopy];
 }
 
-- (void)setPlaybackRateOnAssets:(id)a3 playbackRate:(float)a4 async:(BOOL)a5 progress:(id)a6 completion:(id)a7
+- (void)setPlaybackRateOnAssets:(id)assets playbackRate:(float)rate async:(BOOL)async progress:(id)progress completion:(id)completion
 {
-  v8 = a5;
-  v12 = a7;
-  v13 = a6;
-  v14 = a3;
+  asyncCopy = async;
+  completionCopy = completion;
+  progressCopy = progress;
+  assetsCopy = assets;
   v16 = objc_alloc_init(PEPlaybackRateAction);
-  *&v15 = a4;
+  *&v15 = rate;
   [(PEPlaybackRateAction *)v16 setPlaybackRate:v15];
-  [(PEAdjustmentPresetManager *)self executeAction:v16 onAssets:v14 async:v8 progress:v13 completion:v12];
+  [(PEAdjustmentPresetManager *)self executeAction:v16 onAssets:assetsCopy async:asyncCopy progress:progressCopy completion:completionCopy];
 }
 
-- (void)rotateAssets:(id)a3 direction:(int64_t)a4 async:(BOOL)a5 progress:(id)a6 completion:(id)a7
+- (void)rotateAssets:(id)assets direction:(int64_t)direction async:(BOOL)async progress:(id)progress completion:(id)completion
 {
-  v8 = a5;
-  v12 = a7;
-  v13 = a6;
-  v14 = a3;
+  asyncCopy = async;
+  completionCopy = completion;
+  progressCopy = progress;
+  assetsCopy = assets;
   v15 = objc_alloc_init(PERotateAction);
-  [(PERotateAction *)v15 setRotateDirection:a4];
-  [(PEAdjustmentPresetManager *)self executeAction:v15 onAssets:v14 async:v8 progress:v13 completion:v12];
+  [(PERotateAction *)v15 setRotateDirection:direction];
+  [(PEAdjustmentPresetManager *)self executeAction:v15 onAssets:assetsCopy async:asyncCopy progress:progressCopy completion:completionCopy];
 }
 
-- (void)autoEnhanceAssets:(id)a3 enabled:(BOOL)a4 async:(BOOL)a5 progress:(id)a6 completion:(id)a7
+- (void)autoEnhanceAssets:(id)assets enabled:(BOOL)enabled async:(BOOL)async progress:(id)progress completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v12 = a7;
-  v13 = a6;
-  v14 = a3;
+  asyncCopy = async;
+  enabledCopy = enabled;
+  completionCopy = completion;
+  progressCopy = progress;
+  assetsCopy = assets;
   v15 = objc_alloc_init(PEAutoEnhanceAction);
-  [(PEAutoEnhanceAction *)v15 setEnabled:v9];
-  [(PEAdjustmentPresetManager *)self executeAction:v15 onAssets:v14 async:v8 progress:v13 completion:v12];
+  [(PEAutoEnhanceAction *)v15 setEnabled:enabledCopy];
+  [(PEAdjustmentPresetManager *)self executeAction:v15 onAssets:assetsCopy async:asyncCopy progress:progressCopy completion:completionCopy];
 }
 
-- (void)batch:(id)a3 didCancelAction:(int64_t)a4
+- (void)batch:(id)batch didCancelAction:(int64_t)action
 {
-  v5 = a3;
-  v6 = [(PEAdjustmentPresetManager *)self currentBatchAction];
-  v7 = [v6 isEqual:v5];
+  batchCopy = batch;
+  currentBatchAction = [(PEAdjustmentPresetManager *)self currentBatchAction];
+  v7 = [currentBatchAction isEqual:batchCopy];
 
   if ((v7 & 1) == 0)
   {
@@ -259,12 +259,12 @@ uint64_t __87__PEAdjustmentPresetManager_apply_onCompositionController_editSourc
   [(PEAdjustmentPresetManager *)self setEditActionEventBuilder:0];
 }
 
-- (void)batch:(id)a3 didCompleteAction:(int64_t)a4 hasError:(BOOL)a5
+- (void)batch:(id)batch didCompleteAction:(int64_t)action hasError:(BOOL)error
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = [(PEAdjustmentPresetManager *)self currentBatchAction];
-  v9 = [v8 isEqual:v7];
+  errorCopy = error;
+  batchCopy = batch;
+  currentBatchAction = [(PEAdjustmentPresetManager *)self currentBatchAction];
+  v9 = [currentBatchAction isEqual:batchCopy];
 
   if ((v9 & 1) == 0)
   {
@@ -279,25 +279,25 @@ uint64_t __87__PEAdjustmentPresetManager_apply_onCompositionController_editSourc
   currentBatchAction = self->_currentBatchAction;
   self->_currentBatchAction = 0;
 
-  v12 = [(PEAdjustmentPresetManager *)self editActionEventBuilder];
-  if (v12)
+  editActionEventBuilder = [(PEAdjustmentPresetManager *)self editActionEventBuilder];
+  if (editActionEventBuilder)
   {
-    v13 = v12;
-    v14 = [v7 hasAssets];
+    v13 = editActionEventBuilder;
+    hasAssets = [batchCopy hasAssets];
 
-    if (v14)
+    if (hasAssets)
     {
-      v15 = [(PEAdjustmentPresetManager *)self editActionEventBuilder];
-      [v15 setHasError:v5];
+      editActionEventBuilder2 = [(PEAdjustmentPresetManager *)self editActionEventBuilder];
+      [editActionEventBuilder2 setHasError:errorCopy];
 
       [(PEAdjustmentPresetManager *)self _sendAnalyticsForCurrentEditAction];
     }
   }
 }
 
-- (void)batch:(id)a3 willStartAction:(int64_t)a4
+- (void)batch:(id)batch willStartAction:(int64_t)action
 {
-  v5 = a3;
+  batchCopy = batch;
   if ([(PEAdjustmentPresetManager *)self isBusyWithBatchAction])
   {
     v6 = PLPhotoEditGetLog();
@@ -309,24 +309,24 @@ uint64_t __87__PEAdjustmentPresetManager_apply_onCompositionController_editSourc
   }
 
   currentBatchAction = self->_currentBatchAction;
-  self->_currentBatchAction = v5;
+  self->_currentBatchAction = batchCopy;
 }
 
 - (void)cancelCurrentBatchAction
 {
-  v2 = [(PEAdjustmentPresetManager *)self currentBatchAction];
-  [v2 cancel];
+  currentBatchAction = [(PEAdjustmentPresetManager *)self currentBatchAction];
+  [currentBatchAction cancel];
 }
 
 - (BOOL)isBusyWithBatchAction
 {
-  v3 = [(PEAdjustmentPresetManager *)self currentBatchAction];
-  if (v3)
+  currentBatchAction = [(PEAdjustmentPresetManager *)self currentBatchAction];
+  if (currentBatchAction)
   {
-    v4 = [(PEAdjustmentPresetManager *)self currentBatchAction];
-    v5 = [v4 state];
+    currentBatchAction2 = [(PEAdjustmentPresetManager *)self currentBatchAction];
+    state = [currentBatchAction2 state];
 
-    v6 = v5 < 2;
+    v6 = state < 2;
   }
 
   else
@@ -337,23 +337,23 @@ uint64_t __87__PEAdjustmentPresetManager_apply_onCompositionController_editSourc
   return v6;
 }
 
-- (void)revertAdjustmentsOnAssets:(id)a3 async:(BOOL)a4 progress:(id)a5 completion:(id)a6
+- (void)revertAdjustmentsOnAssets:(id)assets async:(BOOL)async progress:(id)progress completion:(id)completion
 {
-  v7 = a4;
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
+  asyncCopy = async;
+  completionCopy = completion;
+  progressCopy = progress;
+  assetsCopy = assets;
   v13 = objc_alloc_init(PERevertPreset);
-  [(PEAdjustmentPresetManager *)self executeAction:v13 onAssets:v12 async:v7 progress:v11 completion:v10];
+  [(PEAdjustmentPresetManager *)self executeAction:v13 onAssets:assetsCopy async:asyncCopy progress:progressCopy completion:completionCopy];
 }
 
-- (void)replacePresets:(id)a3 onAssets:(id)a4 async:(BOOL)a5 progress:(id)a6 completion:(id)a7
+- (void)replacePresets:(id)presets onAssets:(id)assets async:(BOOL)async progress:(id)progress completion:(id)completion
 {
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  asyncCopy = async;
+  presetsCopy = presets;
+  assetsCopy = assets;
+  progressCopy = progress;
+  completionCopy = completion;
   if ([(PEAdjustmentPresetManager *)self isBusyWithBatchAction])
   {
     v16 = PLPhotoEditGetLog();
@@ -363,56 +363,56 @@ uint64_t __87__PEAdjustmentPresetManager_apply_onCompositionController_editSourc
       _os_log_impl(&dword_25E6E9000, v16, OS_LOG_TYPE_ERROR, "PEAdjustmentPresetManager: Cannot start replace while another batch is in process", v21, 2u);
     }
 
-    v15[2](v15, 0, 1);
+    completionCopy[2](completionCopy, 0, 1);
   }
 
   else
   {
-    v17 = [[PEEditActionBatch alloc] initWithAssets:v13 actionMap:v12 progress:v14];
+    v17 = [[PEEditActionBatch alloc] initWithAssets:assetsCopy actionMap:presetsCopy progress:progressCopy];
     [(PEEditActionBatch *)v17 setForceRunAsUnadjustedAsset:0];
-    [(PEEditActionBatch *)v17 setAsync:v9];
-    if (v9)
+    [(PEEditActionBatch *)v17 setAsync:asyncCopy];
+    if (asyncCopy)
     {
-      v18 = [(PEAdjustmentPresetManager *)self asyncLoadingStatusManager];
-      [(PEEditActionBatch *)v17 setLoadingStatusManager:v18];
+      asyncLoadingStatusManager = [(PEAdjustmentPresetManager *)self asyncLoadingStatusManager];
+      [(PEEditActionBatch *)v17 setLoadingStatusManager:asyncLoadingStatusManager];
     }
 
     [(PEEditActionBatch *)v17 setDelegate:self];
-    [(PEEditActionBatch *)v17 runActionWithBatchSize:3 completion:v15];
+    [(PEEditActionBatch *)v17 runActionWithBatchSize:3 completion:completionCopy];
 
     v19 = objc_alloc_init(PEAdjustmentPreset);
-    v20 = [(PEAdjustmentPresetManager *)self _editActionEventBuilderForAction:v19 assets:v13];
+    v20 = [(PEAdjustmentPresetManager *)self _editActionEventBuilderForAction:v19 assets:assetsCopy];
     [(PEAdjustmentPresetManager *)self setEditActionEventBuilder:v20];
   }
 }
 
-- (void)pastePreset:(id)a3 onAssets:(id)a4 async:(BOOL)a5 progress:(id)a6 completion:(id)a7
+- (void)pastePreset:(id)preset onAssets:(id)assets async:(BOOL)async progress:(id)progress completion:(id)completion
 {
-  v9 = a5;
+  asyncCopy = async;
   v34 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  v12 = a6;
-  v13 = a7;
-  v14 = [(PEAdjustmentPresetManager *)self presetFromPasteboard];
-  [v14 setAnalyticsEventBuilderDelegate:self];
-  if (![v11 count])
+  assetsCopy = assets;
+  progressCopy = progress;
+  completionCopy = completion;
+  presetFromPasteboard = [(PEAdjustmentPresetManager *)self presetFromPasteboard];
+  [presetFromPasteboard setAnalyticsEventBuilderDelegate:self];
+  if (![assetsCopy count])
   {
     goto LABEL_7;
   }
 
-  v15 = [v11 firstObject];
+  firstObject = [assetsCopy firstObject];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 
 LABEL_7:
-    v16 = 0;
+    photoLibrary = 0;
     goto LABEL_8;
   }
 
-  v16 = [v15 photoLibrary];
+  photoLibrary = [firstObject photoLibrary];
 
-  if (!v16)
+  if (!photoLibrary)
   {
 LABEL_8:
     v18 = 0;
@@ -420,31 +420,31 @@ LABEL_8:
   }
 
   v32 = 0;
-  v17 = [v14 isEligibleForSmartPasteWithPhotoLibrary:v16 fallbackPayload:&v32];
+  v17 = [presetFromPasteboard isEligibleForSmartPasteWithPhotoLibrary:photoLibrary fallbackPayload:&v32];
   v18 = v32;
   if (v17)
   {
-    v19 = [[PESmartPasteablePreset alloc] initWithPasteablePreset:v14];
-    [(PEAdjustmentPresetManager *)self executeAction:v19 onAssets:v11 async:v9 progress:v12 completion:v13];
+    v19 = [[PESmartPasteablePreset alloc] initWithPasteablePreset:presetFromPasteboard];
+    [(PEAdjustmentPresetManager *)self executeAction:v19 onAssets:assetsCopy async:asyncCopy progress:progressCopy completion:completionCopy];
 LABEL_19:
 
     goto LABEL_20;
   }
 
 LABEL_9:
-  [(PEAdjustmentPresetManager *)self executeAction:v14 onAssets:v11 async:v9 progress:v12 completion:v13];
+  [(PEAdjustmentPresetManager *)self executeAction:presetFromPasteboard onAssets:assetsCopy async:asyncCopy progress:progressCopy completion:completionCopy];
   v20 = +[PEGlobalSettings sharedSettings];
-  v21 = [v20 smartCopyPasteReviewUIEnabled];
+  smartCopyPasteReviewUIEnabled = [v20 smartCopyPasteReviewUIEnabled];
 
-  if (v21 && v18)
+  if (smartCopyPasteReviewUIEnabled && v18)
   {
-    v27 = v12;
+    v27 = progressCopy;
     v19 = +[PESCAPReviewManager sharedReviewManager];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v22 = v11;
+    v22 = assetsCopy;
     v23 = [v22 countByEnumeratingWithState:&v28 objects:v33 count:16];
     if (v23)
     {
@@ -470,71 +470,71 @@ LABEL_9:
       while (v24);
     }
 
-    v12 = v27;
+    progressCopy = v27;
     goto LABEL_19;
   }
 
 LABEL_20:
 }
 
-- (void)executeAction:(id)a3 onAssets:(id)a4 async:(BOOL)a5 progress:(id)a6 completion:(id)a7
+- (void)executeAction:(id)action onAssets:(id)assets async:(BOOL)async progress:(id)progress completion:(id)completion
 {
-  v9 = a5;
+  asyncCopy = async;
   v22 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  actionCopy = action;
+  assetsCopy = assets;
+  progressCopy = progress;
+  completionCopy = completion;
   if ([(PEAdjustmentPresetManager *)self isBusyWithBatchAction])
   {
     v16 = PLPhotoEditGetLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
       v20 = 138412290;
-      v21 = v12;
+      v21 = actionCopy;
       _os_log_impl(&dword_25E6E9000, v16, OS_LOG_TYPE_ERROR, "PEAdjustmentPresetManager: Cannot start action (%@) while another batch is in process", &v20, 0xCu);
     }
 
-    v15[2](v15, 0, 1);
+    completionCopy[2](completionCopy, 0, 1);
   }
 
   else
   {
-    v17 = [[PEEditActionBatch alloc] initWithAssets:v13 action:v12 progress:v14];
-    -[PEEditActionBatch setForceRunAsUnadjustedAsset:](v17, "setForceRunAsUnadjustedAsset:", [v12 forceRunAsUnadjustedAsset]);
-    [(PEEditActionBatch *)v17 setAsync:v9];
-    if (v9)
+    v17 = [[PEEditActionBatch alloc] initWithAssets:assetsCopy action:actionCopy progress:progressCopy];
+    -[PEEditActionBatch setForceRunAsUnadjustedAsset:](v17, "setForceRunAsUnadjustedAsset:", [actionCopy forceRunAsUnadjustedAsset]);
+    [(PEEditActionBatch *)v17 setAsync:asyncCopy];
+    if (asyncCopy)
     {
-      v18 = [(PEAdjustmentPresetManager *)self asyncLoadingStatusManager];
-      [(PEEditActionBatch *)v17 setLoadingStatusManager:v18];
+      asyncLoadingStatusManager = [(PEAdjustmentPresetManager *)self asyncLoadingStatusManager];
+      [(PEEditActionBatch *)v17 setLoadingStatusManager:asyncLoadingStatusManager];
     }
 
     [(PEEditActionBatch *)v17 setDelegate:self];
-    [(PEEditActionBatch *)v17 runActionWithBatchSize:3 completion:v15];
+    [(PEEditActionBatch *)v17 runActionWithBatchSize:3 completion:completionCopy];
 
-    v19 = [(PEAdjustmentPresetManager *)self _editActionEventBuilderForAction:v12 assets:v13];
+    v19 = [(PEAdjustmentPresetManager *)self _editActionEventBuilderForAction:actionCopy assets:assetsCopy];
     [(PEAdjustmentPresetManager *)self setEditActionEventBuilder:v19];
   }
 }
 
-- (void)copyPresetFromAsset:(id)a3 removeCrop:(BOOL)a4
+- (void)copyPresetFromAsset:(id)asset removeCrop:(BOOL)crop
 {
-  v4 = a4;
+  cropCopy = crop;
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  assetCopy = asset;
   v7 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 uuid];
+    uuid = [assetCopy uuid];
     v12 = 138543362;
-    v13 = v8;
+    v13 = uuid;
     _os_log_impl(&dword_25E6E9000, v7, OS_LOG_TYPE_DEFAULT, "PEAdjustmentPresetManager copyPresetFromAsset: %{public}@", &v12, 0xCu);
   }
 
-  v9 = [(PEAdjustmentPresetManager *)self resourceManager];
-  v10 = [v9 compositionControllerWithoutSource:v6];
+  resourceManager = [(PEAdjustmentPresetManager *)self resourceManager];
+  v10 = [resourceManager compositionControllerWithoutSource:assetCopy];
 
-  if (v4)
+  if (cropCopy)
   {
     [v10 removeAdjustmentWithKey:*MEMORY[0x277D3AA08]];
     [v10 removeAdjustmentWithKey:*MEMORY[0x277D3AA88]];
@@ -542,7 +542,7 @@ LABEL_20:
 
   if (v10)
   {
-    [(PEAdjustmentPresetManager *)self copyPresetFromCompositionController:v10 sourceAsset:v6 smartCopyEnabled:1];
+    [(PEAdjustmentPresetManager *)self copyPresetFromCompositionController:v10 sourceAsset:assetCopy smartCopyEnabled:1];
   }
 
   else
@@ -556,36 +556,36 @@ LABEL_20:
   }
 }
 
-- (BOOL)_assetHasVisibleAdjustments:(id)a3 shouldConsiderOpaqueAdjustments:(BOOL)a4
+- (BOOL)_assetHasVisibleAdjustments:(id)adjustments shouldConsiderOpaqueAdjustments:(BOOL)opaqueAdjustments
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  adjustmentsCopy = adjustments;
   v7 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 uuid];
+    uuid = [adjustmentsCopy uuid];
     *buf = 138543362;
-    v20 = v8;
+    v20 = uuid;
     _os_log_impl(&dword_25E6E9000, v7, OS_LOG_TYPE_DEFAULT, "PEAdjustmentPresetManager _assetHasVisibleAdjustments: %{public}@", buf, 0xCu);
   }
 
-  if ([v6 isAdjusted])
+  if ([adjustmentsCopy isAdjusted])
   {
-    v9 = [(PEAdjustmentPresetManager *)self resourceManager];
+    resourceManager = [(PEAdjustmentPresetManager *)self resourceManager];
     v18 = 0;
-    v10 = [v9 compositionControllerWithoutSource:v6 originalComposition:0 editorBundleID:&v18];
+    v10 = [resourceManager compositionControllerWithoutSource:adjustmentsCopy originalComposition:0 editorBundleID:&v18];
     v11 = v18;
 
-    if ((a4 || v10) && ([v11 isEqualToString:@"com.apple.camera"] & 1) == 0)
+    if ((opaqueAdjustments || v10) && ([v11 isEqualToString:@"com.apple.camera"] & 1) == 0)
     {
-      v13 = [(PEAdjustmentPresetManager *)self resourceManager];
-      v14 = [v13 originalCompositionControllerWithoutSource:v6 reconstructIfMissing:1];
+      resourceManager2 = [(PEAdjustmentPresetManager *)self resourceManager];
+      v14 = [resourceManager2 originalCompositionControllerWithoutSource:adjustmentsCopy reconstructIfMissing:1];
 
       v12 = 1;
       if (v14)
       {
-        v15 = [v14 composition];
-        v16 = [v10 isEqual:v15 visualChangesOnly:1];
+        composition = [v14 composition];
+        v16 = [v10 isEqual:composition visualChangesOnly:1];
 
         if (v16)
         {
@@ -608,17 +608,17 @@ LABEL_20:
   return v12;
 }
 
-- (BOOL)assetHasCopyableAdjustments:(id)a3 removeCrop:(BOOL)a4
+- (BOOL)assetHasCopyableAdjustments:(id)adjustments removeCrop:(BOOL)crop
 {
-  v4 = a4;
-  v6 = a3;
+  cropCopy = crop;
+  adjustmentsCopy = adjustments;
   v7 = 0;
-  if ([(PEAdjustmentPresetManager *)self _assetHasVisibleAdjustments:v6 shouldConsiderOpaqueAdjustments:0])
+  if ([(PEAdjustmentPresetManager *)self _assetHasVisibleAdjustments:adjustmentsCopy shouldConsiderOpaqueAdjustments:0])
   {
-    v8 = [(PEAdjustmentPresetManager *)self resourceManager];
-    v9 = [v8 compositionControllerWithoutSource:v6 originalComposition:0 editorBundleID:0];
+    resourceManager = [(PEAdjustmentPresetManager *)self resourceManager];
+    v9 = [resourceManager compositionControllerWithoutSource:adjustmentsCopy originalComposition:0 editorBundleID:0];
 
-    if (v4)
+    if (cropCopy)
     {
       [v9 removeAdjustmentWithKey:*MEMORY[0x277D3AA08]];
       [v9 removeAdjustmentWithKey:*MEMORY[0x277D3AA88]];
@@ -630,12 +630,12 @@ LABEL_20:
   return v7;
 }
 
-- (void)copyPresetFromCompositionController:(id)a3 sourceAsset:(id)a4 smartCopyEnabled:(BOOL)a5 configurationAnalyticsPayload:(id)a6
+- (void)copyPresetFromCompositionController:(id)controller sourceAsset:(id)asset smartCopyEnabled:(BOOL)enabled configurationAnalyticsPayload:(id)payload
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  enabledCopy = enabled;
+  payloadCopy = payload;
+  assetCopy = asset;
+  controllerCopy = controller;
   v13 = PLPhotoEditGetLog();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
@@ -643,17 +643,17 @@ LABEL_20:
     _os_log_impl(&dword_25E6E9000, v13, OS_LOG_TYPE_DEFAULT, "PEAdjustmentPresetManager copyPresetFromCompositionController", v16, 2u);
   }
 
-  v14 = [v12 copy];
-  v15 = [[PEPasteablePreset alloc] initWithCompositionController:v14 asset:v11 isSmart:v6];
+  v14 = [controllerCopy copy];
+  v15 = [[PEPasteablePreset alloc] initWithCompositionController:v14 asset:assetCopy isSmart:enabledCopy];
   [(PEAdjustmentPresetManager *)self _copyPreset:v15];
-  [(PEAdjustmentPresetManager *)self _sendAnalyticsForCopyActionOnAsset:v11 copiedCompositionController:v12 configurationAnalyticsPayload:v10];
+  [(PEAdjustmentPresetManager *)self _sendAnalyticsForCopyActionOnAsset:assetCopy copiedCompositionController:controllerCopy configurationAnalyticsPayload:payloadCopy];
 }
 
 - (PEPasteablePreset)presetFromPasteboard
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [(PEAdjustmentPresetManager *)self pasteboard];
-  v3 = [v2 dataForPasteboardType:@"com.apple.photos.adjustmentstack"];
+  pasteboard = [(PEAdjustmentPresetManager *)self pasteboard];
+  v3 = [pasteboard dataForPasteboardType:@"com.apple.photos.adjustmentstack"];
 
   if (v3)
   {
@@ -682,9 +682,9 @@ LABEL_11:
   }
 
   v8 = +[PEGlobalSettings sharedSettings];
-  v9 = [v8 smartCopyPasteReviewUIEnabled];
+  smartCopyPasteReviewUIEnabled = [v8 smartCopyPasteReviewUIEnabled];
 
-  if (v9)
+  if (smartCopyPasteReviewUIEnabled)
   {
     v5 = +[PESCAPReviewManager sharedReviewManager];
     [v5 clearAll];
@@ -698,27 +698,27 @@ LABEL_13:
   return v7;
 }
 
-- (void)_copyPreset:(id)a3
+- (void)_copyPreset:(id)preset
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = [a3 serializedDictionary];
+  serializedDictionary = [preset serializedDictionary];
   v8 = 0;
-  v5 = [MEMORY[0x277CCAC58] dataWithPropertyList:v4 format:100 options:0 error:&v8];
+  v5 = [MEMORY[0x277CCAC58] dataWithPropertyList:serializedDictionary format:100 options:0 error:&v8];
   v6 = v8;
   if (v5)
   {
-    v7 = [(PEAdjustmentPresetManager *)self pasteboard];
-    [v7 setData:v5 forPasteboardType:@"com.apple.photos.adjustmentstack"];
+    pasteboard = [(PEAdjustmentPresetManager *)self pasteboard];
+    [pasteboard setData:v5 forPasteboardType:@"com.apple.photos.adjustmentstack"];
   }
 
   else
   {
-    v7 = PLPhotoEditGetLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    pasteboard = PLPhotoEditGetLog();
+    if (os_log_type_enabled(pasteboard, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v10 = v6;
-      _os_log_impl(&dword_25E6E9000, v7, OS_LOG_TYPE_ERROR, "PEAdjustmentPresetManager failed to copy data with error: %@", buf, 0xCu);
+      _os_log_impl(&dword_25E6E9000, pasteboard, OS_LOG_TYPE_ERROR, "PEAdjustmentPresetManager failed to copy data with error: %@", buf, 0xCu);
     }
   }
 }
@@ -728,8 +728,8 @@ LABEL_13:
   v6[1] = *MEMORY[0x277D85DE8];
   v6[0] = @"com.apple.photos.adjustmentstack";
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
-  v4 = [(PEAdjustmentPresetManager *)self pasteboard];
-  LOBYTE(self) = [v4 containsPasteboardTypes:v3];
+  pasteboard = [(PEAdjustmentPresetManager *)self pasteboard];
+  LOBYTE(self) = [pasteboard containsPasteboardTypes:v3];
 
   return self;
 }
@@ -749,8 +749,8 @@ LABEL_13:
     resourceManager = v2->_resourceManager;
     v2->_resourceManager = v5;
 
-    v7 = [MEMORY[0x277D75810] generalPasteboard];
-    [(PEAdjustmentPresetManager *)v2 setPasteboard:v7];
+    generalPasteboard = [MEMORY[0x277D75810] generalPasteboard];
+    [(PEAdjustmentPresetManager *)v2 setPasteboard:generalPasteboard];
 
     v8 = v2;
   }

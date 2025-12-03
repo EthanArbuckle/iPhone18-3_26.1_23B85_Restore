@@ -1,23 +1,23 @@
 @interface CRKCourseInvitation
-- (BOOL)isEqual:(id)a3;
-- (CRKCourseInvitation)initWithCoder:(id)a3;
-- (CRKCourseInvitation)initWithCourseIdentifier:(id)a3 courseName:(id)a4 courseDescription:(id)a5 courseMascotType:(unint64_t)a6 courseColorType:(unint64_t)a7 instructorName:(id)a8 instructorImageData:(id)a9 anchorCertificateDatas:(id)a10;
-- (CRKCourseInvitation)initWithCourseIdentifier:(id)a3 courseName:(id)a4 courseDescription:(id)a5 courseMascotType:(unint64_t)a6 courseColorType:(unint64_t)a7 instructorName:(id)a8 instructorImageData:(id)a9 anchorCertificates:(id)a10;
+- (BOOL)isEqual:(id)equal;
+- (CRKCourseInvitation)initWithCoder:(id)coder;
+- (CRKCourseInvitation)initWithCourseIdentifier:(id)identifier courseName:(id)name courseDescription:(id)description courseMascotType:(unint64_t)type courseColorType:(unint64_t)colorType instructorName:(id)instructorName instructorImageData:(id)data anchorCertificateDatas:(id)self0;
+- (CRKCourseInvitation)initWithCourseIdentifier:(id)identifier courseName:(id)name courseDescription:(id)description courseMascotType:(unint64_t)type courseColorType:(unint64_t)colorType instructorName:(id)instructorName instructorImageData:(id)data anchorCertificates:(id)self0;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRKCourseInvitation
 
-- (CRKCourseInvitation)initWithCourseIdentifier:(id)a3 courseName:(id)a4 courseDescription:(id)a5 courseMascotType:(unint64_t)a6 courseColorType:(unint64_t)a7 instructorName:(id)a8 instructorImageData:(id)a9 anchorCertificates:(id)a10
+- (CRKCourseInvitation)initWithCourseIdentifier:(id)identifier courseName:(id)name courseDescription:(id)description courseMascotType:(unint64_t)type courseColorType:(unint64_t)colorType instructorName:(id)instructorName instructorImageData:(id)data anchorCertificates:(id)self0
 {
-  v17 = a9;
-  v18 = a8;
-  v19 = a5;
-  v20 = a4;
-  v21 = a3;
-  v22 = [a10 crk_mapUsingBlock:&__block_literal_global_31];
-  v23 = [(CRKCourseInvitation *)self initWithCourseIdentifier:v21 courseName:v20 courseDescription:v19 courseMascotType:a6 courseColorType:a7 instructorName:v18 instructorImageData:v17 anchorCertificateDatas:v22];
+  dataCopy = data;
+  instructorNameCopy = instructorName;
+  descriptionCopy = description;
+  nameCopy = name;
+  identifierCopy = identifier;
+  v22 = [certificates crk_mapUsingBlock:&__block_literal_global_31];
+  v23 = [(CRKCourseInvitation *)self initWithCourseIdentifier:identifierCopy courseName:nameCopy courseDescription:descriptionCopy courseMascotType:type courseColorType:colorType instructorName:instructorNameCopy instructorImageData:dataCopy anchorCertificateDatas:v22];
 
   return v23;
 }
@@ -32,42 +32,42 @@ id __164__CRKCourseInvitation_initWithCourseIdentifier_courseName_courseDescript
   return v4;
 }
 
-- (CRKCourseInvitation)initWithCourseIdentifier:(id)a3 courseName:(id)a4 courseDescription:(id)a5 courseMascotType:(unint64_t)a6 courseColorType:(unint64_t)a7 instructorName:(id)a8 instructorImageData:(id)a9 anchorCertificateDatas:(id)a10
+- (CRKCourseInvitation)initWithCourseIdentifier:(id)identifier courseName:(id)name courseDescription:(id)description courseMascotType:(unint64_t)type courseColorType:(unint64_t)colorType instructorName:(id)instructorName instructorImageData:(id)data anchorCertificateDatas:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
+  identifierCopy = identifier;
+  nameCopy = name;
+  descriptionCopy = description;
+  instructorNameCopy = instructorName;
+  dataCopy = data;
+  datasCopy = datas;
   v36.receiver = self;
   v36.super_class = CRKCourseInvitation;
   v22 = [(CRKCourseInvitation *)&v36 init];
   if (v22)
   {
-    v23 = [v16 copy];
+    v23 = [identifierCopy copy];
     courseIdentifier = v22->_courseIdentifier;
     v22->_courseIdentifier = v23;
 
-    v25 = [v17 copy];
+    v25 = [nameCopy copy];
     courseName = v22->_courseName;
     v22->_courseName = v25;
 
-    v27 = [v18 copy];
+    v27 = [descriptionCopy copy];
     courseDescription = v22->_courseDescription;
     v22->_courseDescription = v27;
 
-    v22->_courseMascotType = a6;
-    v22->_courseColorType = a7;
-    v29 = [v19 copy];
+    v22->_courseMascotType = type;
+    v22->_courseColorType = colorType;
+    v29 = [instructorNameCopy copy];
     instructorName = v22->_instructorName;
     v22->_instructorName = v29;
 
-    v31 = [v20 copy];
+    v31 = [dataCopy copy];
     instructorImageData = v22->_instructorImageData;
     v22->_instructorImageData = v31;
 
-    v33 = [v21 copy];
+    v33 = [datasCopy copy];
     anchorCertificateDatas = v22->_anchorCertificateDatas;
     v22->_anchorCertificateDatas = v33;
   }
@@ -79,58 +79,58 @@ id __164__CRKCourseInvitation_initWithCourseIdentifier_courseName_courseDescript
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CRKCourseInvitation *)self courseIdentifier];
-  v6 = [v5 stringValue];
-  v7 = [(CRKCourseInvitation *)self courseName];
-  v8 = [(CRKCourseInvitation *)self instructorName];
-  v9 = [v3 stringWithFormat:@"<%@: %p { identifier = %@, name = %@, instructor = %@ }>", v4, self, v6, v7, v8];
+  courseIdentifier = [(CRKCourseInvitation *)self courseIdentifier];
+  stringValue = [courseIdentifier stringValue];
+  courseName = [(CRKCourseInvitation *)self courseName];
+  instructorName = [(CRKCourseInvitation *)self instructorName];
+  v9 = [v3 stringWithFormat:@"<%@: %p { identifier = %@, name = %@, instructor = %@ }>", v4, self, stringValue, courseName, instructorName];
 
   return v9;
 }
 
-- (CRKCourseInvitation)initWithCoder:(id)a3
+- (CRKCourseInvitation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = CRKCourseInvitation;
   v5 = [(CRKCourseInvitation *)&v29 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"courseIdentifier"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"courseIdentifier"];
     courseIdentifier = v5->_courseIdentifier;
     v5->_courseIdentifier = v7;
 
     v9 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"courseName"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"courseName"];
     courseName = v5->_courseName;
     v5->_courseName = v10;
 
     v12 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"courseDescription"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"courseDescription"];
     courseDescription = v5->_courseDescription;
     v5->_courseDescription = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"courseMascotType"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"courseMascotType"];
     v5->_courseMascotType = [v15 unsignedIntegerValue];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"courseColorType"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"courseColorType"];
     v5->_courseColorType = [v16 unsignedIntegerValue];
 
     v17 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"instructorName"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"instructorName"];
     instructorName = v5->_instructorName;
     v5->_instructorName = v18;
 
     v20 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v21 = [v4 decodeObjectOfClasses:v20 forKey:@"instructorImageData"];
+    v21 = [coderCopy decodeObjectOfClasses:v20 forKey:@"instructorImageData"];
     instructorImageData = v5->_instructorImageData;
     v5->_instructorImageData = v21;
 
     v23 = MEMORY[0x277CBEB98];
     v24 = objc_opt_class();
     v25 = [v23 setWithObjects:{v24, objc_opt_class(), 0}];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"anchorCertificateDatas"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"anchorCertificateDatas"];
     anchorCertificateDatas = v5->_anchorCertificateDatas;
     v5->_anchorCertificateDatas = v26;
   }
@@ -138,40 +138,40 @@ id __164__CRKCourseInvitation_initWithCourseIdentifier_courseName_courseDescript
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CRKCourseInvitation *)self courseIdentifier];
-  [v4 encodeObject:v5 forKey:@"courseIdentifier"];
+  coderCopy = coder;
+  courseIdentifier = [(CRKCourseInvitation *)self courseIdentifier];
+  [coderCopy encodeObject:courseIdentifier forKey:@"courseIdentifier"];
 
-  v6 = [(CRKCourseInvitation *)self courseName];
-  [v4 encodeObject:v6 forKey:@"courseName"];
+  courseName = [(CRKCourseInvitation *)self courseName];
+  [coderCopy encodeObject:courseName forKey:@"courseName"];
 
-  v7 = [(CRKCourseInvitation *)self courseDescription];
-  [v4 encodeObject:v7 forKey:@"courseDescription"];
+  courseDescription = [(CRKCourseInvitation *)self courseDescription];
+  [coderCopy encodeObject:courseDescription forKey:@"courseDescription"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CRKCourseInvitation courseMascotType](self, "courseMascotType")}];
-  [v4 encodeObject:v8 forKey:@"courseMascotType"];
+  [coderCopy encodeObject:v8 forKey:@"courseMascotType"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CRKCourseInvitation courseColorType](self, "courseColorType")}];
-  [v4 encodeObject:v9 forKey:@"courseColorType"];
+  [coderCopy encodeObject:v9 forKey:@"courseColorType"];
 
-  v10 = [(CRKCourseInvitation *)self instructorName];
-  [v4 encodeObject:v10 forKey:@"instructorName"];
+  instructorName = [(CRKCourseInvitation *)self instructorName];
+  [coderCopy encodeObject:instructorName forKey:@"instructorName"];
 
-  v11 = [(CRKCourseInvitation *)self instructorImageData];
-  [v4 encodeObject:v11 forKey:@"instructorImageData"];
+  instructorImageData = [(CRKCourseInvitation *)self instructorImageData];
+  [coderCopy encodeObject:instructorImageData forKey:@"instructorImageData"];
 
-  v12 = [(CRKCourseInvitation *)self anchorCertificateDatas];
-  [v4 encodeObject:v12 forKey:@"anchorCertificateDatas"];
+  anchorCertificateDatas = [(CRKCourseInvitation *)self anchorCertificateDatas];
+  [coderCopy encodeObject:anchorCertificateDatas forKey:@"anchorCertificateDatas"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [CFSTR(""courseIdentifier courseName];
-  v6 = [v5 mutableCopy];
+  equalCopy = equal;
+  courseName = [CFSTR(""courseIdentifier courseName];
+  v6 = [courseName mutableCopy];
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -181,10 +181,10 @@ id __164__CRKCourseInvitation_initWithCourseIdentifier_courseName_courseDescript
   v29 = v7;
   [v7 enumerateObjectsUsingBlock:v28];
 
-  v8 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = equalCopy;
   v10 = v7;
-  if (v8 == v9)
+  if (selfCopy == v9)
   {
     v21 = 1;
   }
@@ -213,7 +213,7 @@ id __164__CRKCourseInvitation_initWithCourseIdentifier_courseName_courseDescript
 
           v16 = *(*(&v24 + 1) + 8 * i);
           v17 = v9;
-          v18 = [(CRKCourseInvitation *)v8 valueForKey:v16];
+          v18 = [(CRKCourseInvitation *)selfCopy valueForKey:v16];
           v19 = [(CRKCourseInvitation *)v17 valueForKey:v16];
 
           if (v18 | v19)

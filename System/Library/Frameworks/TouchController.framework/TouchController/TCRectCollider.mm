@@ -1,13 +1,13 @@
 @interface TCRectCollider
-- (BOOL)containsPoint:(CGPoint)a3;
-- (TCRectCollider)initWithControlLayout:(id)a3;
+- (BOOL)containsPoint:(CGPoint)point;
+- (TCRectCollider)initWithControlLayout:(id)layout;
 @end
 
 @implementation TCRectCollider
 
-- (TCRectCollider)initWithControlLayout:(id)a3
+- (TCRectCollider)initWithControlLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   v8.receiver = self;
   v8.super_class = TCRectCollider;
   v5 = [(TCRectCollider *)&v8 init];
@@ -15,21 +15,21 @@
   if (v5)
   {
     v5->_enabled = 1;
-    objc_storeWeak(&v5->_controlLayout, v4);
+    objc_storeWeak(&v5->_controlLayout, layoutCopy);
   }
 
   return v6;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
   if (!self->_enabled)
   {
     return 0;
   }
 
-  x = a3.x;
-  y = a3.y;
+  x = point.x;
+  y = point.y;
   WeakRetained = objc_loadWeakRetained(&self->_controlLayout);
   [WeakRetained size];
   v8 = v7;

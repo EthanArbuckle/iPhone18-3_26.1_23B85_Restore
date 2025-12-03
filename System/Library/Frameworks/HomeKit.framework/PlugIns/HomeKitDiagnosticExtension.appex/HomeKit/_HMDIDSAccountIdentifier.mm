@@ -1,33 +1,33 @@
 @interface _HMDIDSAccountIdentifier
 + (id)namespace;
-- (BOOL)isEqual:(id)a3;
-- (_HMDIDSAccountIdentifier)initWithCoder:(id)a3;
-- (_HMDIDSAccountIdentifier)initWithIdentifier:(id)a3;
-- (_HMDIDSAccountIdentifier)initWithIdentifierString:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_HMDIDSAccountIdentifier)initWithCoder:(id)coder;
+- (_HMDIDSAccountIdentifier)initWithIdentifier:(id)identifier;
+- (_HMDIDSAccountIdentifier)initWithIdentifierString:(id)string;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HMDIDSAccountIdentifier
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _HMDIDSAccountIdentifier;
-  v4 = a3;
-  [(_HMDAccountIdentifier *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(_HMDAccountIdentifier *)&v6 encodeWithCoder:coderCopy];
   v5 = [(_HMDIDSAccountIdentifier *)self identifierString:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"HM.string"];
+  [coderCopy encodeObject:v5 forKey:@"HM.string"];
 }
 
-- (_HMDIDSAccountIdentifier)initWithCoder:(id)a3
+- (_HMDIDSAccountIdentifier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _HMDIDSAccountIdentifier;
-  v5 = [(_HMDAccountIdentifier *)&v9 initWithCoder:v4];
+  v5 = [(_HMDAccountIdentifier *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.string"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.string"];
     identifierString = v5->_identifierString;
     v5->_identifierString = v6;
   }
@@ -35,10 +35,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -48,7 +48,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -59,9 +59,9 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(_HMDIDSAccountIdentifier *)self identifierString];
-      v8 = [(_HMDIDSAccountIdentifier *)v6 identifierString];
-      v9 = [v7 isEqualToString:v8];
+      identifierString = [(_HMDIDSAccountIdentifier *)self identifierString];
+      identifierString2 = [(_HMDIDSAccountIdentifier *)v6 identifierString];
+      v9 = [identifierString isEqualToString:identifierString2];
     }
 
     else
@@ -73,14 +73,14 @@
   return v9;
 }
 
-- (_HMDIDSAccountIdentifier)initWithIdentifierString:(id)a3
+- (_HMDIDSAccountIdentifier)initWithIdentifierString:(id)string
 {
-  v4 = a3;
-  if (v4)
+  stringCopy = string;
+  if (stringCopy)
   {
     v5 = [NSUUID alloc];
     v6 = +[_HMDIDSAccountIdentifier namespace];
-    v7 = [v4 dataUsingEncoding:4];
+    v7 = [stringCopy dataUsingEncoding:4];
     v8 = [v5 initWithNamespace:v6 data:v7];
 
     v14.receiver = self;
@@ -88,27 +88,27 @@
     v9 = [(_HMDAccountIdentifier *)&v14 initWithIdentifier:v8];
     if (v9)
     {
-      v10 = [v4 copy];
+      v10 = [stringCopy copy];
       identifierString = v9->_identifierString;
       v9->_identifierString = v10;
     }
 
     self = v9;
 
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (_HMDIDSAccountIdentifier)initWithIdentifier:(id)a3
+- (_HMDIDSAccountIdentifier)initWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = NSStringFromSelector(a2);
   v6 = [NSString stringWithFormat:@"%@ is unavailable", v5];
   v7 = [NSException exceptionWithName:NSInternalInconsistencyException reason:v6 userInfo:0];

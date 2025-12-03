@@ -1,19 +1,19 @@
 @interface CSLPressStateApplier
-- ($153C3A5BC4E016D58A1B9CA554FFC462)_computeTargetAttributesForHex:(Hex)a3 sourceAttributes:(id)a4 forPressState:(id *)a5;
-- ($153C3A5BC4E016D58A1B9CA554FFC462)_interpolateBetweenSourceAttributes:(id)a3 targetAttributes:(id)a4 fraction:(double)a5;
-- ($153C3A5BC4E016D58A1B9CA554FFC462)_interpolateBetweenSourceAttributes:(id)a3 targetAttributes:(id)a4 pressState:(id *)a5;
-- ($153C3A5BC4E016D58A1B9CA554FFC462)layoutAttributesForHex:(Hex)a3;
+- ($153C3A5BC4E016D58A1B9CA554FFC462)_computeTargetAttributesForHex:(Hex)hex sourceAttributes:(id)attributes forPressState:(id *)state;
+- ($153C3A5BC4E016D58A1B9CA554FFC462)_interpolateBetweenSourceAttributes:(id)attributes targetAttributes:(id)targetAttributes fraction:(double)fraction;
+- ($153C3A5BC4E016D58A1B9CA554FFC462)_interpolateBetweenSourceAttributes:(id)attributes targetAttributes:(id)targetAttributes pressState:(id *)state;
+- ($153C3A5BC4E016D58A1B9CA554FFC462)layoutAttributesForHex:(Hex)hex;
 - (CSLPressStateApplier)init;
 - (CSLPressStateApplierDelegate)delegate;
 - (id).cxx_construct;
-- (void)_displayLinkFired:(id)a3;
-- (void)_reversePressStatesAtTime:(double)a3;
+- (void)_displayLinkFired:(id)fired;
+- (void)_reversePressStatesAtTime:(double)time;
 - (void)_updateDisplayLink;
 - (void)cleanupAfterLayout;
 - (void)clearAllPresses;
 - (void)clearPressedHex;
 - (void)prepareForLayout;
-- (void)setPressedHex:(Hex)a3;
+- (void)setPressedHex:(Hex)hex;
 @end
 
 @implementation CSLPressStateApplier
@@ -41,7 +41,7 @@
   return v2;
 }
 
-- (void)_reversePressStatesAtTime:(double)a3
+- (void)_reversePressStatesAtTime:(double)time
 {
   begin = self->_pressStates.__map_.__begin_;
   if (self->_pressStates.__map_.__end_ != begin)
@@ -55,7 +55,7 @@
       if ((*(v6 + 16) & 1) == 0)
       {
         *(v6 + 16) = 1;
-        *(v6 + 24) = a3;
+        *(v6 + 24) = time;
       }
 
       v6 += 64;
@@ -117,18 +117,18 @@ LABEL_8:
   [(CSLPressStateApplier *)self _updateDisplayLink];
 }
 
-- (void)setPressedHex:(Hex)a3
+- (void)setPressedHex:(Hex)hex
 {
-  v14 = a3;
+  hexCopy = hex;
   v5 = CACurrentMediaTime();
   self->_updateTime = v5;
   *v10 = v5;
-  v10[1] = a3;
+  v10[1] = hex;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v7 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained originalLayoutAttributesForHex:a3];
+    [WeakRetained originalLayoutAttributesForHex:hex];
   }
 
   else
@@ -146,7 +146,7 @@ LABEL_8:
   sub_3B50();
 }
 
-- ($153C3A5BC4E016D58A1B9CA554FFC462)layoutAttributesForHex:(Hex)a3
+- ($153C3A5BC4E016D58A1B9CA554FFC462)layoutAttributesForHex:(Hex)hex
 {
   v6 = v3;
   *v3 = 0u;
@@ -155,7 +155,7 @@ LABEL_8:
   v8 = WeakRetained;
   if (WeakRetained)
   {
-    [WeakRetained originalLayoutAttributesForHex:a3];
+    [WeakRetained originalLayoutAttributesForHex:hex];
   }
 
   else
@@ -189,7 +189,7 @@ LABEL_8:
       v25 = v33;
       v26 = v34;
       v27 = v17;
-      [(CSLPressStateApplier *)self _computeTargetAttributesForHex:a3 sourceAttributes:&v28 forPressState:&v24];
+      [(CSLPressStateApplier *)self _computeTargetAttributesForHex:hex sourceAttributes:&v28 forPressState:&v24];
       v19 = v6[1];
       v23[0] = *v6;
       v23[1] = v19;
@@ -217,27 +217,27 @@ LABEL_8:
   return v9;
 }
 
-- ($153C3A5BC4E016D58A1B9CA554FFC462)_interpolateBetweenSourceAttributes:(id)a3 targetAttributes:(id)a4 fraction:(double)a5
+- ($153C3A5BC4E016D58A1B9CA554FFC462)_interpolateBetweenSourceAttributes:(id)attributes targetAttributes:(id)targetAttributes fraction:(double)fraction
 {
   v7[1].i64[1] = 0;
-  var0 = a3.var0;
+  var0 = attributes.var0;
   *v7 = vmlaq_n_f32(*v5, vsubq_f32(*v6, *v5), var0);
   *&v9.var0 = v6[1].i64[0];
   *v7[1].f32 = v9;
   return v9;
 }
 
-- ($153C3A5BC4E016D58A1B9CA554FFC462)_interpolateBetweenSourceAttributes:(id)a3 targetAttributes:(id)a4 pressState:(id *)a5
+- ($153C3A5BC4E016D58A1B9CA554FFC462)_interpolateBetweenSourceAttributes:(id)attributes targetAttributes:(id)targetAttributes pressState:(id *)state
 {
-  v8 = a5;
-  v9 = vsubq_f32(*&a5->var0, *v5);
-  v10 = vsubq_f32(*v5, *&a5->var0);
+  stateCopy = state;
+  v9 = vsubq_f32(*&state->var0, *v5);
+  v10 = vsubq_f32(*v5, *&state->var0);
   v11 = fmaxf(fmaxf(v10.f32[0], v10.f32[2]), v10.f32[1]);
   if (fmaxf(fmaxf(v9.f32[0], v9.f32[2]), v9.f32[1]) < 0.00000011921 && v11 < 0.00000011921)
   {
-    v20 = *&a5->var0;
-    v21 = *&a5->var2;
-    *v7 = *&a5->var0;
+    v20 = *&state->var0;
+    v21 = *&state->var2;
+    *v7 = *&state->var0;
     v7[1] = v21;
   }
 
@@ -248,8 +248,8 @@ LABEL_8:
     {
       v15 = v6 + 24;
       [(CASpringAnimation *)self->_spring _timeFunction:(*(v6 + 24) - *v6) / self->_springDuration];
-      v16 = *&v8->var2;
-      v25 = *&v8->var0;
+      v16 = *&stateCopy->var2;
+      v25 = *&stateCopy->var0;
       v26 = v16;
       v17 = v13[1];
       v23 = *v13;
@@ -260,14 +260,14 @@ LABEL_8:
 
     else
     {
-      v18 = *&a5->var2;
-      v27 = *&a5->var0;
+      v18 = *&state->var2;
+      v27 = *&state->var0;
       v28 = v18;
-      v8 = v5;
+      stateCopy = v5;
     }
 
-    v19 = *&v8->var2;
-    v25 = *&v8->var0;
+    v19 = *&stateCopy->var2;
+    v25 = *&stateCopy->var0;
     v26 = v19;
     [(CASpringAnimation *)self->_spring _timeFunction:(self->_updateTime - *v6) / self->_springDuration];
     v23 = v27;
@@ -280,21 +280,21 @@ LABEL_8:
   return v20;
 }
 
-- ($153C3A5BC4E016D58A1B9CA554FFC462)_computeTargetAttributesForHex:(Hex)a3 sourceAttributes:(id)a4 forPressState:(id *)a5
+- ($153C3A5BC4E016D58A1B9CA554FFC462)_computeTargetAttributesForHex:(Hex)hex sourceAttributes:(id)attributes forPressState:(id *)state
 {
   v8 = v5->i32[2];
   v7 = v5->i32[3];
-  v9 = a3.q - v8;
-  if (a3.q == v8 && a3.r == v7)
+  v9 = hex.q - v8;
+  if (hex.q == v8 && hex.r == v7)
   {
-    *&v21 = *&a5->var1.q * 0.884;
-    a5->var1.q = v21;
+    *&v21 = *&state->var1.q * 0.884;
+    state->var1.q = v21;
   }
 
   else
   {
-    v11 = v8 - (a3.r + a3.q) + v7;
-    v12 = a3.r - v7;
+    v11 = v8 - (hex.r + hex.q) + v7;
+    v12 = hex.r - v7;
     if (v9 < 0)
     {
       v9 = -v9;
@@ -337,9 +337,9 @@ LABEL_8:
 
     if (v16 <= 2)
     {
-      v17 = *&a5->var0;
+      v17 = *&state->var0;
       v18 = v5[2];
-      v19 = vsubq_f32(*&a5->var0, v18);
+      v19 = vsubq_f32(*&state->var0, v18);
       v19.i32[2] = 0;
       if (v16 == 2)
       {
@@ -350,19 +350,19 @@ LABEL_8:
       {
         v19 = vmulq_f32(v19, vdupq_n_s32(0x3F760419u));
         *&v20 = *(&v17 + 2) * 0.97;
-        a5->var1.q = v20;
+        state->var1.q = v20;
         v18 = v5[2];
-        v17 = *&a5->var0;
+        v17 = *&state->var0;
       }
 
-      a5->var1.q = DWORD2(v17);
-      *&a5->var0 = vaddq_f32(v19, v18).u64[0];
+      state->var1.q = DWORD2(v17);
+      *&state->var0 = vaddq_f32(v19, v18).u64[0];
     }
   }
 
-  v22 = *&a5->var0;
-  v23 = *&a5->var2;
-  *v6 = *&a5->var0;
+  v22 = *&state->var0;
+  v23 = *&state->var2;
+  *v6 = *&state->var0;
   v6[1] = v23;
   return v22;
 }
@@ -446,9 +446,9 @@ LABEL_8:
 
 - (void)_updateDisplayLink
 {
-  v3 = [(CSLPressStateApplier *)self _needsDisplayLink];
+  _needsDisplayLink = [(CSLPressStateApplier *)self _needsDisplayLink];
   displayLink = self->_displayLink;
-  if (v3)
+  if (_needsDisplayLink)
   {
     if (displayLink)
     {
@@ -478,7 +478,7 @@ LABEL_8:
   }
 }
 
-- (void)_displayLinkFired:(id)a3
+- (void)_displayLinkFired:(id)fired
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained pressStateApplierDidUpdate];

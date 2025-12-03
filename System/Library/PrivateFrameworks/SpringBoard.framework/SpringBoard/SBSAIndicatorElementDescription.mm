@@ -1,14 +1,14 @@
 @interface SBSAIndicatorElementDescription
-+ (id)instanceWithBlock:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)instanceWithBlock:(id)block;
+- (BOOL)isEqual:(id)equal;
 - (CGAffineTransform)fixedIndicatorViewTransform;
 - (CGAffineTransform)indicatorViewTransform;
 - (NSString)description;
-- (id)copyWithBlock:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithBlock:(id)block;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_setFixedIndicatorViewTransform:(CGAffineTransform *)a3;
-- (void)_setIndicatorViewTransform:(CGAffineTransform *)a3;
+- (void)_setFixedIndicatorViewTransform:(CGAffineTransform *)transform;
+- (void)_setIndicatorViewTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation SBSAIndicatorElementDescription
@@ -31,16 +31,16 @@
   return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v36 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v36 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   interfaceElementIdentifier = self->_interfaceElementIdentifier;
   v58[0] = MEMORY[0x277D85DD0];
   v58[1] = 3221225472;
   v58[2] = __43__SBSAIndicatorElementDescription_isEqual___block_invoke;
   v58[3] = &unk_2783ACDB8;
-  v6 = v4;
+  v6 = equalCopy;
   v59 = v6;
   v35 = [v36 appendObject:interfaceElementIdentifier counterpart:v58];
   associatedSystemApertureElementIdentity = self->_associatedSystemApertureElementIdentity;
@@ -166,8 +166,8 @@ double __43__SBSAIndicatorElementDescription_isEqual___block_invoke_9@<D0>(uint6
 
 - (unint64_t)hash
 {
-  v17 = [MEMORY[0x277CF0C40] builder];
-  v16 = [v17 appendObject:self->_interfaceElementIdentifier];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v16 = [builder appendObject:self->_interfaceElementIdentifier];
   v3 = [v16 appendObject:self->_associatedSystemApertureElementIdentity];
   v4 = [v3 appendInteger:self->_appearState];
   v5 = [v4 appendCGFloat:self->_indicatorViewBlurProgress];
@@ -218,7 +218,7 @@ double __43__SBSAIndicatorElementDescription_isEqual___block_invoke_9@<D0>(uint6
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v5 = [(NSUUID *)self->_interfaceElementIdentifier copy];
@@ -228,9 +228,9 @@ double __43__SBSAIndicatorElementDescription_isEqual___block_invoke_9@<D0>(uint6
   if (self->_associatedSystemApertureElementIdentity)
   {
     v7 = [SBSAElementIdentification alloc];
-    v8 = [(SAElementIdentifying *)self->_associatedSystemApertureElementIdentity clientIdentifier];
-    v9 = [(SAElementIdentifying *)self->_associatedSystemApertureElementIdentity elementIdentifier];
-    v10 = [(SBSAElementIdentification *)v7 initWithClientIdentifier:v8 elementIdentifier:v9];
+    clientIdentifier = [(SAElementIdentifying *)self->_associatedSystemApertureElementIdentity clientIdentifier];
+    elementIdentifier = [(SAElementIdentifying *)self->_associatedSystemApertureElementIdentity elementIdentifier];
+    v10 = [(SBSAElementIdentification *)v7 initWithClientIdentifier:clientIdentifier elementIdentifier:elementIdentifier];
     v11 = v4[3];
     v4[3] = v10;
   }
@@ -254,42 +254,42 @@ double __43__SBSAIndicatorElementDescription_isEqual___block_invoke_9@<D0>(uint6
   return v4;
 }
 
-+ (id)instanceWithBlock:(id)a3
++ (id)instanceWithBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [v4 copyWithBlock:v3];
+  v5 = [v4 copyWithBlock:blockCopy];
 
   return v5;
 }
 
-- (id)copyWithBlock:(id)a3
+- (id)copyWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(SBSAIndicatorElementDescription *)self copy];
-  if (v4)
+  if (blockCopy)
   {
     v6 = [objc_alloc(objc_msgSend(objc_opt_class() "mutatorClass"))];
-    v4[2](v4, v6);
+    blockCopy[2](blockCopy, v6);
   }
 
   return v5;
 }
 
-- (void)_setIndicatorViewTransform:(CGAffineTransform *)a3
+- (void)_setIndicatorViewTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_indicatorViewTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_indicatorViewTransform.c = *&transform->c;
   *&self->_indicatorViewTransform.tx = v4;
   *&self->_indicatorViewTransform.a = v3;
 }
 
-- (void)_setFixedIndicatorViewTransform:(CGAffineTransform *)a3
+- (void)_setFixedIndicatorViewTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_fixedIndicatorViewTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_fixedIndicatorViewTransform.c = *&transform->c;
   *&self->_fixedIndicatorViewTransform.tx = v4;
   *&self->_fixedIndicatorViewTransform.a = v3;
 }

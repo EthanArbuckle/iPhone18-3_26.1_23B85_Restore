@@ -1,49 +1,49 @@
 @interface IDSStewieDeviceInfo
-- (BOOL)isEqual:(id)a3;
-- (IDSStewieDeviceInfo)initWithCoder:(id)a3;
-- (IDSStewieDeviceInfo)initWithLocale:(id)a3 pushToken:(id)a4 dsid:(id)a5 accessTokens:(id)a6 featureIDs:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (IDSStewieDeviceInfo)initWithCoder:(id)coder;
+- (IDSStewieDeviceInfo)initWithLocale:(id)locale pushToken:(id)token dsid:(id)dsid accessTokens:(id)tokens featureIDs:(id)ds;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSStewieDeviceInfo
 
-- (IDSStewieDeviceInfo)initWithLocale:(id)a3 pushToken:(id)a4 dsid:(id)a5 accessTokens:(id)a6 featureIDs:(id)a7
+- (IDSStewieDeviceInfo)initWithLocale:(id)locale pushToken:(id)token dsid:(id)dsid accessTokens:(id)tokens featureIDs:(id)ds
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  localeCopy = locale;
+  tokenCopy = token;
+  dsidCopy = dsid;
+  tokensCopy = tokens;
+  dsCopy = ds;
   v21.receiver = self;
   v21.super_class = IDSStewieDeviceInfo;
   v17 = [(IDSStewieDeviceInfo *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_locale, a3);
-    objc_storeStrong(&v18->_pushToken, a4);
-    objc_storeStrong(&v18->_dsid, a5);
-    objc_storeStrong(&v18->_accessTokens, a6);
-    objc_storeStrong(&v18->_featureIDs, a7);
+    objc_storeStrong(&v17->_locale, locale);
+    objc_storeStrong(&v18->_pushToken, token);
+    objc_storeStrong(&v18->_dsid, dsid);
+    objc_storeStrong(&v18->_accessTokens, tokens);
+    objc_storeStrong(&v18->_featureIDs, ds);
   }
 
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4)
+  equalCopy = equal;
+  if (equalCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [v5 locale];
-      v7 = [(IDSStewieDeviceInfo *)self locale];
-      if (![v6 isEqualToString:v7])
+      v5 = equalCopy;
+      locale = [v5 locale];
+      locale2 = [(IDSStewieDeviceInfo *)self locale];
+      if (![locale isEqualToString:locale2])
       {
         v13 = 0;
 LABEL_16:
@@ -51,9 +51,9 @@ LABEL_16:
         goto LABEL_17;
       }
 
-      v8 = [v5 pushToken];
-      v9 = [(IDSStewieDeviceInfo *)self pushToken];
-      if (![v8 isEqualToData:v9])
+      pushToken = [v5 pushToken];
+      pushToken2 = [(IDSStewieDeviceInfo *)self pushToken];
+      if (![pushToken isEqualToData:pushToken2])
       {
         v13 = 0;
 LABEL_15:
@@ -61,14 +61,14 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v10 = [v5 dsid];
-      if (v10 || ([(IDSStewieDeviceInfo *)self dsid], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
+      dsid = [v5 dsid];
+      if (dsid || ([(IDSStewieDeviceInfo *)self dsid], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v11 = [v5 dsid];
-        v12 = [(IDSStewieDeviceInfo *)self dsid];
-        v13 = [v11 isEqualToString:v12];
+        dsid2 = [v5 dsid];
+        dsid3 = [(IDSStewieDeviceInfo *)self dsid];
+        v13 = [dsid2 isEqualToString:dsid3];
 
-        if (v10)
+        if (dsid)
         {
 LABEL_14:
 
@@ -94,33 +94,33 @@ LABEL_17:
 
 - (unint64_t)hash
 {
-  v3 = [(IDSStewieDeviceInfo *)self locale];
-  v4 = [v3 hash];
-  v5 = [(IDSStewieDeviceInfo *)self pushToken];
-  v6 = [v5 hash] ^ v4;
+  locale = [(IDSStewieDeviceInfo *)self locale];
+  v4 = [locale hash];
+  pushToken = [(IDSStewieDeviceInfo *)self pushToken];
+  v6 = [pushToken hash] ^ v4;
 
-  v7 = [(IDSStewieDeviceInfo *)self dsid];
+  dsid = [(IDSStewieDeviceInfo *)self dsid];
 
-  if (v7)
+  if (dsid)
   {
-    v8 = [(IDSStewieDeviceInfo *)self dsid];
-    v6 ^= [v8 hash];
+    dsid2 = [(IDSStewieDeviceInfo *)self dsid];
+    v6 ^= [dsid2 hash];
   }
 
-  v9 = [(IDSStewieDeviceInfo *)self accessTokens];
+  accessTokens = [(IDSStewieDeviceInfo *)self accessTokens];
 
-  if (v9)
+  if (accessTokens)
   {
-    v10 = [(IDSStewieDeviceInfo *)self accessTokens];
-    v6 ^= [v10 hash];
+    accessTokens2 = [(IDSStewieDeviceInfo *)self accessTokens];
+    v6 ^= [accessTokens2 hash];
   }
 
-  v11 = [(IDSStewieDeviceInfo *)self featureIDs];
+  featureIDs = [(IDSStewieDeviceInfo *)self featureIDs];
 
-  if (v11)
+  if (featureIDs)
   {
-    v12 = [(IDSStewieDeviceInfo *)self featureIDs];
-    v6 ^= [v12 hash];
+    featureIDs2 = [(IDSStewieDeviceInfo *)self featureIDs];
+    v6 ^= [featureIDs2 hash];
   }
 
   return v6;
@@ -129,50 +129,50 @@ LABEL_17:
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(IDSStewieDeviceInfo *)self locale];
-  v5 = [(IDSStewieDeviceInfo *)self pushToken];
-  v6 = [v5 debugDescription];
-  v7 = [(IDSStewieDeviceInfo *)self dsid];
-  v8 = [(IDSStewieDeviceInfo *)self accessTokens];
-  v9 = [v8 count];
-  v10 = [(IDSStewieDeviceInfo *)self featureIDs];
-  v11 = [NSString stringWithFormat:@"<%@: %p { loc: %@, tok: %@, dsid: %@, accessTokens count: %ld, featureIDs: %@ }>", v3, self, v4, v6, v7, v9, v10];
+  locale = [(IDSStewieDeviceInfo *)self locale];
+  pushToken = [(IDSStewieDeviceInfo *)self pushToken];
+  v6 = [pushToken debugDescription];
+  dsid = [(IDSStewieDeviceInfo *)self dsid];
+  accessTokens = [(IDSStewieDeviceInfo *)self accessTokens];
+  v9 = [accessTokens count];
+  featureIDs = [(IDSStewieDeviceInfo *)self featureIDs];
+  v11 = [NSString stringWithFormat:@"<%@: %p { loc: %@, tok: %@, dsid: %@, accessTokens count: %ld, featureIDs: %@ }>", v3, self, locale, v6, dsid, v9, featureIDs];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(IDSStewieDeviceInfo *)self locale];
-  [v4 encodeObject:v5 forKey:@"locale"];
+  coderCopy = coder;
+  locale = [(IDSStewieDeviceInfo *)self locale];
+  [coderCopy encodeObject:locale forKey:@"locale"];
 
-  v6 = [(IDSStewieDeviceInfo *)self pushToken];
-  [v4 encodeObject:v6 forKey:@"pushToken"];
+  pushToken = [(IDSStewieDeviceInfo *)self pushToken];
+  [coderCopy encodeObject:pushToken forKey:@"pushToken"];
 
-  v7 = [(IDSStewieDeviceInfo *)self dsid];
-  [v4 encodeObject:v7 forKey:@"dsid"];
+  dsid = [(IDSStewieDeviceInfo *)self dsid];
+  [coderCopy encodeObject:dsid forKey:@"dsid"];
 
-  v8 = [(IDSStewieDeviceInfo *)self accessTokens];
-  [v4 encodeObject:v8 forKey:@"accessTokens"];
+  accessTokens = [(IDSStewieDeviceInfo *)self accessTokens];
+  [coderCopy encodeObject:accessTokens forKey:@"accessTokens"];
 
-  v9 = [(IDSStewieDeviceInfo *)self featureIDs];
-  [v4 encodeObject:v9 forKey:@"featureIDs"];
+  featureIDs = [(IDSStewieDeviceInfo *)self featureIDs];
+  [coderCopy encodeObject:featureIDs forKey:@"featureIDs"];
 }
 
-- (IDSStewieDeviceInfo)initWithCoder:(id)a3
+- (IDSStewieDeviceInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pushToken"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dsid"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locale"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pushToken"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dsid"];
   v8 = objc_opt_class();
   v9 = [NSSet setWithObjects:v8, objc_opt_class(), 0];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"accessTokens"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"accessTokens"];
 
   v11 = objc_opt_class();
   v12 = [NSSet setWithObjects:v11, objc_opt_class(), 0];
-  v13 = [v4 decodeObjectOfClasses:v12 forKey:@"featureIDs"];
+  v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"featureIDs"];
 
   v14 = [(IDSStewieDeviceInfo *)self initWithLocale:v5 pushToken:v6 dsid:v7 accessTokens:v10 featureIDs:v13];
   return v14;

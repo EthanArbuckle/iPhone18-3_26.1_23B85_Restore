@@ -1,45 +1,45 @@
 @interface SBAssistantRootViewController
 - (BOOL)dimsContentBelow;
-- (SBAssistantRootViewController)initWithScreen:(id)a3;
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4;
+- (SBAssistantRootViewController)initWithScreen:(id)screen;
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute;
 - (id)childViewControllerForHomeIndicatorAutoHidden;
 - (id)childViewControllerForScreenEdgesDeferringSystemGestures;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_setStatusBarHidden:(BOOL)a3 animated:(BOOL)a4;
+- (void)_setStatusBarHidden:(BOOL)hidden animated:(BOOL)animated;
 - (void)_updateHomeAffordance;
 - (void)_updateKeyboardForHomeGesture;
-- (void)getRotationContentSettings:(id *)a3 forWindow:(id)a4;
+- (void)getRotationContentSettings:(id *)settings forWindow:(id)window;
 - (void)loadView;
 - (void)screen;
-- (void)setDimsContentBelow:(BOOL)a3;
-- (void)setFluidDismissalState:(id)a3;
+- (void)setDimsContentBelow:(BOOL)below;
+- (void)setFluidDismissalState:(id)state;
 - (void)setNeedsUpdateOfHomeIndicatorAutoHidden;
 - (void)setNeedsUpdateOfScreenEdgesDeferringSystemGestures;
-- (void)setOwnsHomeGesture:(BOOL)a3;
-- (void)setScreen:(uint64_t)a1;
-- (void)setShowsHomeAffordance:(BOOL)a3;
+- (void)setOwnsHomeGesture:(BOOL)gesture;
+- (void)setScreen:(uint64_t)screen;
+- (void)setShowsHomeAffordance:(BOOL)affordance;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation SBAssistantRootViewController
 
-- (SBAssistantRootViewController)initWithScreen:(id)a3
+- (SBAssistantRootViewController)initWithScreen:(id)screen
 {
-  v5 = a3;
+  screenCopy = screen;
   v11.receiver = self;
   v11.super_class = SBAssistantRootViewController;
   v6 = [(SBAssistantRootViewController *)&v11 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_screen, a3);
+    objc_storeStrong(&v6->_screen, screen);
   }
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 addObserver:v7 selector:sel__keyboardWillHideNotification_ name:*MEMORY[0x277D76C50] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:v7 selector:sel__keyboardWillHideNotification_ name:*MEMORY[0x277D76C50] object:0];
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 addObserver:v7 selector:sel__keyboardWillShowNotification_ name:*MEMORY[0x277D76C60] object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:v7 selector:sel__keyboardWillShowNotification_ name:*MEMORY[0x277D76C60] object:0];
 
   return v7;
 }
@@ -59,20 +59,20 @@
   self->_clippingView = v8;
 
   v10 = self->_clippingView;
-  v11 = [MEMORY[0x277D75348] clearColor];
-  [(SBFTouchPassThroughView *)v10 setBackgroundColor:v11];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(SBFTouchPassThroughView *)v10 setBackgroundColor:clearColor];
 
   [(SBFTouchPassThroughView *)self->_clippingView setClipsToBounds:1];
-  v12 = [(SBAssistantRootViewController *)self view];
-  [v12 addSubview:self->_clippingView];
+  view = [(SBAssistantRootViewController *)self view];
+  [view addSubview:self->_clippingView];
 
   v13 = [objc_alloc(MEMORY[0x277D65F80]) initWithFrame:{v4, v5, v6, v7}];
   contentView = self->_contentView;
   self->_contentView = v13;
 
   v15 = self->_contentView;
-  v16 = [MEMORY[0x277D75348] clearColor];
-  [(SBFTouchPassThroughView *)v15 setBackgroundColor:v16];
+  clearColor2 = [MEMORY[0x277D75348] clearColor];
+  [(SBFTouchPassThroughView *)v15 setBackgroundColor:clearColor2];
 
   [(SBFTouchPassThroughView *)self->_clippingView addSubview:self->_contentView];
   v17 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v4, v5, v6, v7}];
@@ -81,8 +81,8 @@
 
   [(UIView *)self->_dimmingView setAlpha:0.0];
   v19 = self->_dimmingView;
-  v20 = [MEMORY[0x277D75348] blackColor];
-  [(UIView *)v19 setBackgroundColor:v20];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [(UIView *)v19 setBackgroundColor:blackColor];
 
   [(UIView *)self->_dimmingView bs_setHitTestingDisabled:1];
   [(SBFTouchPassThroughView *)self->_clippingView addSubview:self->_dimmingView];
@@ -94,8 +94,8 @@
   v15.receiver = self;
   v15.super_class = SBAssistantRootViewController;
   [(SBAssistantRootViewController *)&v15 viewWillLayoutSubviews];
-  v3 = [(SBAssistantRootViewController *)self view];
-  [v3 bounds];
+  view = [(SBAssistantRootViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -114,12 +114,12 @@
   siriPresentationViewController = self->_siriPresentationViewController;
   if (siriPresentationViewController)
   {
-    v13 = [(SiriPresentationSpringBoardMainScreenViewController *)siriPresentationViewController view];
-    [v13 setFrame:{v5, v7, v9, v11}];
+    view2 = [(SiriPresentationSpringBoardMainScreenViewController *)siriPresentationViewController view];
+    [view2 setFrame:{v5, v7, v9, v11}];
   }
 
-  v14 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v14 postNotificationName:@"SBAssistantCanRepositionOrbIfNecessary" object:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SBAssistantCanRepositionOrbIfNecessary" object:self];
 }
 
 - (unint64_t)supportedInterfaceOrientations
@@ -138,9 +138,9 @@
 
 - (id)childViewControllerForHomeIndicatorAutoHidden
 {
-  v3 = [(SiriPresentationSpringBoardMainScreenViewController *)self->_siriPresentationViewController childViewControllerForHomeIndicatorAutoHidden];
-  siriPresentationViewController = v3;
-  if (!v3)
+  childViewControllerForHomeIndicatorAutoHidden = [(SiriPresentationSpringBoardMainScreenViewController *)self->_siriPresentationViewController childViewControllerForHomeIndicatorAutoHidden];
+  siriPresentationViewController = childViewControllerForHomeIndicatorAutoHidden;
+  if (!childViewControllerForHomeIndicatorAutoHidden)
   {
     siriPresentationViewController = self->_siriPresentationViewController;
   }
@@ -160,9 +160,9 @@
 
 - (id)childViewControllerForScreenEdgesDeferringSystemGestures
 {
-  v3 = [(SiriPresentationSpringBoardMainScreenViewController *)self->_siriPresentationViewController childViewControllerForScreenEdgesDeferringSystemGestures];
-  siriPresentationViewController = v3;
-  if (!v3)
+  childViewControllerForScreenEdgesDeferringSystemGestures = [(SiriPresentationSpringBoardMainScreenViewController *)self->_siriPresentationViewController childViewControllerForScreenEdgesDeferringSystemGestures];
+  siriPresentationViewController = childViewControllerForScreenEdgesDeferringSystemGestures;
+  if (!childViewControllerForScreenEdgesDeferringSystemGestures)
   {
     siriPresentationViewController = self->_siriPresentationViewController;
   }
@@ -180,29 +180,29 @@
   [(SBAssistantRootViewController *)self _updateHomeAffordance];
 }
 
-- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)a3 insetsAreAbsolute:(BOOL *)a4
+- (UIEdgeInsets)_edgeInsetsForChildViewController:(id)controller insetsAreAbsolute:(BOOL *)absolute
 {
-  v6 = [a3 _sbWindowScene];
-  v7 = [v6 statusBarManager];
+  _sbWindowScene = [controller _sbWindowScene];
+  statusBarManager = [_sbWindowScene statusBarManager];
 
-  v8 = [v7 statusBar];
-  [v8 defaultHeight];
+  statusBar = [statusBarManager statusBar];
+  [statusBar defaultHeight];
   v10 = v9;
 
-  v11 = [MEMORY[0x277D77750] sb_thisDeviceDisplayEdgeInfo];
-  v12 = [v11 sb_displayEdgeInfoWithSafeAreaInsetsForStatusBarHeight:v10];
+  sb_thisDeviceDisplayEdgeInfo = [MEMORY[0x277D77750] sb_thisDeviceDisplayEdgeInfo];
+  v12 = [sb_thisDeviceDisplayEdgeInfo sb_displayEdgeInfoWithSafeAreaInsetsForStatusBarHeight:v10];
 
-  v13 = [(SBAssistantRootViewController *)self interfaceOrientation];
-  v14 = [(SBAssistantRootViewController *)self traitCollection];
-  [v12 sb_orientedEdgeInsetsForInterfaceOrientation:v13 traitCollection:v14];
+  interfaceOrientation = [(SBAssistantRootViewController *)self interfaceOrientation];
+  traitCollection = [(SBAssistantRootViewController *)self traitCollection];
+  [v12 sb_orientedEdgeInsetsForInterfaceOrientation:interfaceOrientation traitCollection:traitCollection];
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
-  if (a4)
+  if (absolute)
   {
-    *a4 = 1;
+    *absolute = 1;
   }
 
   v23 = v16;
@@ -216,37 +216,37 @@
   return result;
 }
 
-- (void)getRotationContentSettings:(id *)a3 forWindow:(id)a4
+- (void)getRotationContentSettings:(id *)settings forWindow:(id)window
 {
-  if (a3)
+  if (settings)
   {
-    a3->var6 = 0;
+    settings->var6 = 0;
   }
 }
 
-- (void)setOwnsHomeGesture:(BOOL)a3
+- (void)setOwnsHomeGesture:(BOOL)gesture
 {
-  if (self->_ownsHomeGesture != a3)
+  if (self->_ownsHomeGesture != gesture)
   {
-    self->_ownsHomeGesture = a3;
+    self->_ownsHomeGesture = gesture;
     [(SBAssistantRootViewController *)self _updateHomeAffordance];
   }
 }
 
-- (void)setShowsHomeAffordance:(BOOL)a3
+- (void)setShowsHomeAffordance:(BOOL)affordance
 {
-  if (self->_showsHomeAffordance != a3)
+  if (self->_showsHomeAffordance != affordance)
   {
-    self->_showsHomeAffordance = a3;
+    self->_showsHomeAffordance = affordance;
     [(SBAssistantRootViewController *)self _updateHomeAffordance];
   }
 }
 
 - (void)_updateHomeAffordance
 {
-  v3 = [(SBAssistantRootViewController *)self viewIfLoaded];
+  viewIfLoaded = [(SBAssistantRootViewController *)self viewIfLoaded];
 
-  if (v3)
+  if (viewIfLoaded)
   {
     if (self->_showsHomeAffordance)
     {
@@ -279,18 +279,18 @@
     homeAffordanceView = self->_homeAffordanceView;
     if (homeAffordanceView)
     {
-      v6 = [(SBAssistantRootViewController *)self childViewControllerForHomeIndicatorAutoHidden];
-      -[SBHomeGrabberView setAutoHides:](homeAffordanceView, "setAutoHides:", [v6 prefersHomeIndicatorAutoHidden]);
+      childViewControllerForHomeIndicatorAutoHidden = [(SBAssistantRootViewController *)self childViewControllerForHomeIndicatorAutoHidden];
+      -[SBHomeGrabberView setAutoHides:](homeAffordanceView, "setAutoHides:", [childViewControllerForHomeIndicatorAutoHidden prefersHomeIndicatorAutoHidden]);
 
-      v7 = [(SBAssistantRootViewController *)self childViewControllerForScreenEdgesDeferringSystemGestures];
-      v8 = ([v7 preferredScreenEdgesDeferringSystemGestures] >> 2) & 1;
+      childViewControllerForScreenEdgesDeferringSystemGestures = [(SBAssistantRootViewController *)self childViewControllerForScreenEdgesDeferringSystemGestures];
+      v8 = ([childViewControllerForScreenEdgesDeferringSystemGestures preferredScreenEdgesDeferringSystemGestures] >> 2) & 1;
 
       [(SBHomeGrabberView *)self->_homeAffordanceView setEdgeProtectEnabled:v8];
-      v9 = [(SBAssistantRootViewController *)self fluidDismissalState];
-      v10 = v9;
-      if (v9)
+      fluidDismissalState = [(SBAssistantRootViewController *)self fluidDismissalState];
+      v10 = fluidDismissalState;
+      if (fluidDismissalState)
       {
-        [v9 contentRect];
+        [fluidDismissalState contentRect];
         v12 = v11;
         [(SBFTouchPassThroughView *)self->_clippingView bounds];
         v13 = self->_homeAffordanceView;
@@ -326,8 +326,8 @@
       }
       v20 = ;
       v21 = self->_homeAffordanceView;
-      v22 = [v20 BSAnimationSettings];
-      [(SBHomeGrabberView *)v21 setHidden:v4 ^ 1 forReason:@"hide assistant affordance when unowned" withAnimationSettings:v22];
+      bSAnimationSettings = [v20 BSAnimationSettings];
+      [(SBHomeGrabberView *)v21 setHidden:v4 ^ 1 forReason:@"hide assistant affordance when unowned" withAnimationSettings:bSAnimationSettings];
 
       [(SBHomeGrabberView *)self->_homeAffordanceView setHomeAffordanceInteractionEnabled:v4];
     }
@@ -367,24 +367,24 @@ void __54__SBAssistantRootViewController__updateHomeAffordance__block_invoke_2(u
 
 - (void)_updateKeyboardForHomeGesture
 {
-  v3 = [(SBAssistantRootViewController *)self fluidDismissalState];
+  fluidDismissalState = [(SBAssistantRootViewController *)self fluidDismissalState];
 
   if ([(SBAssistantRootViewController *)self ownsHomeGesture])
   {
     keyboardPresented = self->_keyboardPresented;
-    if (keyboardPresented && v3 == 0)
+    if (keyboardPresented && fluidDismissalState == 0)
     {
       goto LABEL_13;
     }
 
-    if (self->_keyboardPresented && v3 != 0)
+    if (self->_keyboardPresented && fluidDismissalState != 0)
     {
       keyboardStashed = 1;
       goto LABEL_20;
     }
 
-    keyboardStashed = (v3 != 0) & ~keyboardPresented & self->_keyboardStashed;
-    if (((v3 != 0) & ~keyboardPresented) == 0 && self->_keyboardStashed)
+    keyboardStashed = (fluidDismissalState != 0) & ~keyboardPresented & self->_keyboardStashed;
+    if (((fluidDismissalState != 0) & ~keyboardPresented) == 0 && self->_keyboardStashed)
     {
 LABEL_13:
       keyboardStashed = 0;
@@ -403,7 +403,7 @@ LABEL_20:
     goto LABEL_22;
   }
 
-  if (!v3)
+  if (!fluidDismissalState)
   {
     keyboardStashed = 0;
     goto LABEL_20;
@@ -423,9 +423,9 @@ LABEL_16:
 
   if (!self->_keyboardHomeAffordanceAssertion)
   {
-    v7 = [(SBAssistantRootViewController *)self view];
-    v8 = [v7 window];
-    v9 = [SBKeyboardHomeAffordanceAssertion assertionForGestureWindow:v8];
+    view = [(SBAssistantRootViewController *)self view];
+    window = [view window];
+    v9 = [SBKeyboardHomeAffordanceAssertion assertionForGestureWindow:window];
     v10 = self->_keyboardHomeAffordanceAssertion;
     self->_keyboardHomeAffordanceAssertion = v9;
   }
@@ -439,9 +439,9 @@ LABEL_22:
     }
 
     self->_keyboardStashed = 1;
-    v15 = [MEMORY[0x277D75830] sharedInstance];
+    mEMORY[0x277D75830] = [MEMORY[0x277D75830] sharedInstance];
     v14 = [MEMORY[0x277CCAE60] valueWithPointer:self];
-    [v15 _preserveInputViewsWithId:v14 animated:1];
+    [mEMORY[0x277D75830] _preserveInputViewsWithId:v14 animated:1];
   }
 
   else
@@ -452,9 +452,9 @@ LABEL_22:
     }
 
     self->_keyboardStashed = 0;
-    v15 = [MEMORY[0x277D75830] sharedInstance];
+    mEMORY[0x277D75830] = [MEMORY[0x277D75830] sharedInstance];
     v14 = [MEMORY[0x277CCAE60] valueWithPointer:self];
-    [v15 _restoreInputViewsWithId:v14 animated:1];
+    [mEMORY[0x277D75830] _restoreInputViewsWithId:v14 animated:1];
   }
 }
 
@@ -465,52 +465,52 @@ LABEL_22:
   return BSFloatGreaterThanFloat();
 }
 
-- (void)setDimsContentBelow:(BOOL)a3
+- (void)setDimsContentBelow:(BOOL)below
 {
-  v3 = a3;
-  v5 = [MEMORY[0x277D65F38] rootSettings];
-  v6 = [v5 systemAssistantExperienceSettings];
+  belowCopy = below;
+  rootSettings = [MEMORY[0x277D65F38] rootSettings];
+  systemAssistantExperienceSettings = [rootSettings systemAssistantExperienceSettings];
 
   v7 = 0;
-  if (v3)
+  if (belowCopy)
   {
-    v8 = [(SBAssistantRootViewController *)self traitCollection];
-    v9 = [v8 userInterfaceStyle];
+    traitCollection = [(SBAssistantRootViewController *)self traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v9 == 2)
+    if (userInterfaceStyle == 2)
     {
-      [v6 typeToSiriDarkInterfaceDimmingAlpha];
+      [systemAssistantExperienceSettings typeToSiriDarkInterfaceDimmingAlpha];
     }
 
     else
     {
-      [v6 typeToSiriLightInterfaceDimmingAlpha];
+      [systemAssistantExperienceSettings typeToSiriLightInterfaceDimmingAlpha];
     }
 
     v7 = v10;
   }
 
   v11 = MEMORY[0x277D75D18];
-  v12 = [v6 typeToSiriDimmingAnimationSettings];
+  typeToSiriDimmingAnimationSettings = [systemAssistantExperienceSettings typeToSiriDimmingAnimationSettings];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __53__SBAssistantRootViewController_setDimsContentBelow___block_invoke;
   v13[3] = &unk_2783A8BC8;
   v13[4] = self;
   v13[5] = v7;
-  [v11 sb_animateWithSettings:v12 mode:3 animations:v13 completion:0];
+  [v11 sb_animateWithSettings:typeToSiriDimmingAnimationSettings mode:3 animations:v13 completion:0];
 }
 
-- (void)_setStatusBarHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)_setStatusBarHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  if (a4)
+  if (animated)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __62__SBAssistantRootViewController__setStatusBarHidden_animated___block_invoke;
     v6[3] = &unk_2783A9F58;
     v6[4] = self;
-    v7 = a3;
+    hiddenCopy = hidden;
     [MEMORY[0x277D75D18] animateWithDuration:4 delay:v6 options:0 animations:0.35 completion:0.0];
   }
 
@@ -521,37 +521,37 @@ LABEL_22:
     v4[2] = __62__SBAssistantRootViewController__setStatusBarHidden_animated___block_invoke_2;
     v4[3] = &unk_2783A9F58;
     v4[4] = self;
-    v5 = a3;
+    hiddenCopy2 = hidden;
     [MEMORY[0x277D75D18] performWithoutAnimation:v4];
   }
 }
 
-- (void)setFluidDismissalState:(id)a3
+- (void)setFluidDismissalState:(id)state
 {
-  v15 = a3;
+  stateCopy = state;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_fluidDismissalState, a3);
-    [(SiriPresentationSpringBoardMainScreenViewController *)self->_siriPresentationViewController setFluidDismissalState:v15];
+    objc_storeStrong(&self->_fluidDismissalState, state);
+    [(SiriPresentationSpringBoardMainScreenViewController *)self->_siriPresentationViewController setFluidDismissalState:stateCopy];
     [(SBAssistantRootViewController *)self _updateHomeAffordance];
     [(SBAssistantRootViewController *)self _updateKeyboardForHomeGesture];
-    if (v15)
+    if (stateCopy)
     {
-      if ([v15 transitionPhase])
+      if ([stateCopy transitionPhase])
       {
-        v5 = [v15 transitionPhase] == 1;
+        v5 = [stateCopy transitionPhase] == 1;
       }
 
       else
       {
-        v6 = [(SBAssistantRootViewController *)self view];
-        [v6 bounds];
+        view = [(SBAssistantRootViewController *)self view];
+        [view bounds];
         v8 = v7;
         v10 = v9;
         v12 = v11;
         v14 = v13;
 
-        [v15 contentRect];
+        [stateCopy contentRect];
         v17.origin.x = v8;
         v17.origin.y = v10;
         v17.size.width = v12;
@@ -570,33 +570,33 @@ LABEL_22:
   }
 }
 
-- (void)setScreen:(uint64_t)a1
+- (void)setScreen:(uint64_t)screen
 {
-  if (a1)
+  if (screen)
   {
-    objc_storeStrong((a1 + 1032), a2);
+    objc_storeStrong((screen + 1032), a2);
   }
 }
 
 - (void)screen
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1[129];
+    v2 = self[129];
     if (v2)
     {
-      a1 = v2;
+      self = v2;
     }
 
     else
     {
-      a1 = [MEMORY[0x277D759A0] mainScreen];
+      self = [MEMORY[0x277D759A0] mainScreen];
     }
 
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 @end

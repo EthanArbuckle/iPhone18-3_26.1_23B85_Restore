@@ -1,10 +1,10 @@
 @interface MUPlaceHeaderETAFormatter
-+ (id)etaStringFromSeconds:(unint64_t)a3 isRenderingInFullWidth:(BOOL)a4;
++ (id)etaStringFromSeconds:(unint64_t)seconds isRenderingInFullWidth:(BOOL)width;
 @end
 
 @implementation MUPlaceHeaderETAFormatter
 
-+ (id)etaStringFromSeconds:(unint64_t)a3 isRenderingInFullWidth:(BOOL)a4
++ (id)etaStringFromSeconds:(unint64_t)seconds isRenderingInFullWidth:(BOOL)width
 {
   v4 = [MEMORY[0x1E696AEC0] _navigation_stringWithSeconds:? andAbbreviationType:?];
 

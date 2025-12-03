@@ -6,16 +6,16 @@
 
 - (id)hk_base64PaddedString
 {
-  if (([a1 length] & 3) != 0)
+  if (([self length] & 3) != 0)
   {
-    v2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v3 = [a1 stringByTrimmingCharactersInSet:v2];
-    v4 = [v3 mutableCopy];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v3 = [self stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
+    selfCopy = [v3 mutableCopy];
 
-    v5 = [v4 length] | 0xFFFFFFFFFFFFFFFCLL;
+    v5 = [selfCopy length] | 0xFFFFFFFFFFFFFFFCLL;
     do
     {
-      [v4 appendString:@"="];
+      [selfCopy appendString:@"="];
     }
 
     while (!__CFADD__(v5++, 1));
@@ -23,10 +23,10 @@
 
   else
   {
-    v4 = a1;
+    selfCopy = self;
   }
 
-  return v4;
+  return selfCopy;
 }
 
 @end

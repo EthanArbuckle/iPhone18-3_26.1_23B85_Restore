@@ -1,25 +1,25 @@
 @interface HFCameraAnalyticsEventHandler
-+ (id)decoratedPayloadFor:(id)a3;
-+ (id)sendAssociatedAccessoriesDidLaunchEventWithCount:(id)a3;
-+ (id)sendAssociatedAccessoriesDidModifyListEventWithPayload:(id)a3;
-+ (id)sendCameraClipPlayerDidUpdateEventWithError:(id)a3;
-+ (id)sendDonationEventWithCameraClipCount:(unint64_t)a3 processName:(id)a4 error:(id)a5;
-+ (void)sendEventNamed:(id)a3 payload:(id)a4;
++ (id)decoratedPayloadFor:(id)for;
++ (id)sendAssociatedAccessoriesDidLaunchEventWithCount:(id)count;
++ (id)sendAssociatedAccessoriesDidModifyListEventWithPayload:(id)payload;
++ (id)sendCameraClipPlayerDidUpdateEventWithError:(id)error;
++ (id)sendDonationEventWithCameraClipCount:(unint64_t)count processName:(id)name error:(id)error;
++ (void)sendEventNamed:(id)named payload:(id)payload;
 @end
 
 @implementation HFCameraAnalyticsEventHandler
 
-+ (void)sendEventNamed:(id)a3 payload:(id)a4
++ (void)sendEventNamed:(id)named payload:(id)payload
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [HFCameraAnalyticsEventHandler decoratedPayloadFor:a4];
+  namedCopy = named;
+  v6 = [HFCameraAnalyticsEventHandler decoratedPayloadFor:payload];
   v7 = AnalyticsSendEventLazy();
   v8 = HFLogForCategory(6uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412802;
-    v11 = v5;
+    v11 = namedCopy;
     v12 = 1024;
     v13 = v7;
     v14 = 2112;
@@ -30,75 +30,75 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)sendAssociatedAccessoriesDidLaunchEventWithCount:(id)a3
++ (id)sendAssociatedAccessoriesDidLaunchEventWithCount:(id)count
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = HFCameraAnalyticsCameraAccessoryCount;
-  v10[0] = a3;
+  v10[0] = count;
   v4 = MEMORY[0x277CBEAC0];
-  v5 = a3;
+  countCopy = count;
   v6 = [v4 dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
-  [a1 sendEventNamed:@"com.apple.Home.AssociatedAccessoriesDidLaunch" payload:v6];
+  [self sendEventNamed:@"com.apple.Home.AssociatedAccessoriesDidLaunch" payload:v6];
   v7 = *MEMORY[0x277D85DE8];
 
   return v6;
 }
 
-+ (id)sendAssociatedAccessoriesDidModifyListEventWithPayload:(id)a3
++ (id)sendAssociatedAccessoriesDidModifyListEventWithPayload:(id)payload
 {
-  v4 = a3;
-  [a1 sendEventNamed:@"com.apple.Home.AssociatedAccessoriesDidModifySet" payload:v4];
+  payloadCopy = payload;
+  [self sendEventNamed:@"com.apple.Home.AssociatedAccessoriesDidModifySet" payload:payloadCopy];
 
-  return v4;
+  return payloadCopy;
 }
 
-+ (id)sendCameraClipPlayerDidUpdateEventWithError:(id)a3
++ (id)sendCameraClipPlayerDidUpdateEventWithError:(id)error
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v12[0] = @"errorDomain";
-  v4 = a3;
-  v5 = [v4 domain];
-  v13[0] = v5;
+  errorCopy = error;
+  domain = [errorCopy domain];
+  v13[0] = domain;
   v12[1] = @"errorCode";
   v6 = MEMORY[0x277CCABB0];
-  v7 = [v4 code];
+  code = [errorCopy code];
 
-  v8 = [v6 numberWithInteger:v7];
+  v8 = [v6 numberWithInteger:code];
   v13[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
-  [a1 sendEventNamed:@"com.apple.Home.CameraClipPlayerDidUpdateError" payload:v9];
+  [self sendEventNamed:@"com.apple.Home.CameraClipPlayerDidUpdateError" payload:v9];
   v10 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-+ (id)sendDonationEventWithCameraClipCount:(unint64_t)a3 processName:(id)a4 error:(id)a5
++ (id)sendDonationEventWithCameraClipCount:(unint64_t)count processName:(id)name error:(id)error
 {
   v15[3] = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [HFCameraAnalyticsEvent errorCodeForError:a5];
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  nameCopy = name;
+  v9 = [HFCameraAnalyticsEvent errorCodeForError:error];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
   v14[0] = HFCameraAnalyticsErrorCode;
   v14[1] = HFCameraAnalyticsProcessName;
   v15[0] = v9;
-  v15[1] = v8;
+  v15[1] = nameCopy;
   v14[2] = HFCameraAnalyticsCountKey;
   v15[2] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:3];
 
-  [a1 sendEventNamed:@"com.apple.Home.CameraClipDonationEvent" payload:v11];
+  [self sendEventNamed:@"com.apple.Home.CameraClipDonationEvent" payload:v11];
   v12 = *MEMORY[0x277D85DE8];
 
   return v11;
 }
 
-+ (id)decoratedPayloadFor:(id)a3
++ (id)decoratedPayloadFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   v4 = +[HFCameraAnalyticsPayloadDecorator sharedDecorator];
-  v5 = [v4 decoratePayload:v3];
+  v5 = [v4 decoratePayload:forCopy];
 
   return v5;
 }

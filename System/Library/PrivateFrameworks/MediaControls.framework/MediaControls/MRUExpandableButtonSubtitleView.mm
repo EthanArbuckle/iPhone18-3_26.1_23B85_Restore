@@ -1,20 +1,20 @@
 @interface MRUExpandableButtonSubtitleView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MRUExpandableButtonSubtitleView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MRUExpandableButtonSubtitleView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 - (void)updateContentSizeCategory;
 - (void)updateVisualStyling;
 @end
 
 @implementation MRUExpandableButtonSubtitleView
 
-- (MRUExpandableButtonSubtitleView)initWithFrame:(CGRect)a3
+- (MRUExpandableButtonSubtitleView)initWithFrame:(CGRect)frame
 {
   v20[1] = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = MRUExpandableButtonSubtitleView;
-  v3 = [(MRUExpandableButtonSubtitleView *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUExpandableButtonSubtitleView *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCC10]);
@@ -26,8 +26,8 @@
     [(UILabel *)v3->_titleLabel setNumberOfLines:2];
     LODWORD(v7) = 1051931443;
     [(UILabel *)v3->_titleLabel _setHyphenationFactor:v7];
-    v8 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v3->_titleLabel setTextColor:v8];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v3->_titleLabel setTextColor:labelColor];
 
     [(MRUExpandableButtonSubtitleView *)v3 addSubview:v3->_titleLabel];
     v9 = objc_alloc(MEMORY[0x1E69DCAE0]);
@@ -86,10 +86,10 @@
   [(UIImageView *)self->_imageView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(UIImageView *)self->_imageView sizeThatFits:?];
   v7 = v6;
   [(UILabel *)self->_titleLabel sizeThatFits:width, height];
@@ -104,11 +104,11 @@
   return result;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  objc_storeStrong(&self->_text, a3);
-  v5 = a3;
-  [(UILabel *)self->_titleLabel setText:v5];
+  objc_storeStrong(&self->_text, text);
+  textCopy = text;
+  [(UILabel *)self->_titleLabel setText:textCopy];
 
   [(MRUExpandableButtonSubtitleView *)self setNeedsLayout];
 }
@@ -117,20 +117,20 @@
 {
   stylingProvider = self->_stylingProvider;
   titleLabel = self->_titleLabel;
-  v5 = [(MRUExpandableButtonSubtitleView *)self traitCollection];
-  [(MRUVisualStylingProvider *)stylingProvider applyStyle:0 toView:titleLabel traitCollection:v5];
+  traitCollection = [(MRUExpandableButtonSubtitleView *)self traitCollection];
+  [(MRUVisualStylingProvider *)stylingProvider applyStyle:0 toView:titleLabel traitCollection:traitCollection];
 
   v6 = self->_stylingProvider;
   imageView = self->_imageView;
-  v8 = [(MRUExpandableButtonSubtitleView *)self traitCollection];
-  [(MRUVisualStylingProvider *)v6 applyStyle:0 toView:imageView traitCollection:v8];
+  traitCollection2 = [(MRUExpandableButtonSubtitleView *)self traitCollection];
+  [(MRUVisualStylingProvider *)v6 applyStyle:0 toView:imageView traitCollection:traitCollection2];
 }
 
 - (void)updateContentSizeCategory
 {
-  v4 = [MEMORY[0x1E69DB878] mru_volumeButtonSubtitleFont];
-  [(UILabel *)self->_titleLabel setFont:v4];
-  v3 = [MEMORY[0x1E69DCAD8] configurationWithFont:v4];
+  mru_volumeButtonSubtitleFont = [MEMORY[0x1E69DB878] mru_volumeButtonSubtitleFont];
+  [(UILabel *)self->_titleLabel setFont:mru_volumeButtonSubtitleFont];
+  v3 = [MEMORY[0x1E69DCAD8] configurationWithFont:mru_volumeButtonSubtitleFont];
   [(UIImageView *)self->_imageView setSymbolConfiguration:v3];
 
   [(MRUExpandableButtonSubtitleView *)self setNeedsLayout];

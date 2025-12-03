@@ -1,39 +1,39 @@
 @interface MPModelStoreBrowseRequestOperation
-- (double)adjustTimeoutInterval:(double)a3;
+- (double)adjustTimeoutInterval:(double)interval;
 - (id)_nestedRequestsOperationQueue;
-- (id)configurationForLoadingModelDataWithStoreURLBag:(id)a3 error:(id *)a4;
-- (void)_produceCarPlayResponseWithParser:(id)a3 withNestedRequestsForEmptyBrickSectionsInOperationQueue:(id)a4 completion:(id)a5;
-- (void)_produceRegularResponseWithParser:(id)a3 completion:(id)a4;
-- (void)_produceResponseWithParser:(id)a3 results:(id)a4 changeDetails:(id)a5 completion:(id)a6;
+- (id)configurationForLoadingModelDataWithStoreURLBag:(id)bag error:(id *)error;
+- (void)_produceCarPlayResponseWithParser:(id)parser withNestedRequestsForEmptyBrickSectionsInOperationQueue:(id)queue completion:(id)completion;
+- (void)_produceRegularResponseWithParser:(id)parser completion:(id)completion;
+- (void)_produceResponseWithParser:(id)parser results:(id)results changeDetails:(id)details completion:(id)completion;
 - (void)cancel;
 - (void)execute;
-- (void)produceResponseWithLoadedOutput:(id)a3 completion:(id)a4;
+- (void)produceResponseWithLoadedOutput:(id)output completion:(id)completion;
 @end
 
 @implementation MPModelStoreBrowseRequestOperation
 
-- (void)_produceResponseWithParser:(id)a3 results:(id)a4 changeDetails:(id)a5 completion:(id)a6
+- (void)_produceResponseWithParser:(id)parser results:(id)results changeDetails:(id)details completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (!v11)
+  parserCopy = parser;
+  resultsCopy = results;
+  detailsCopy = details;
+  completionCopy = completion;
+  if (!resultsCopy)
   {
     goto LABEL_6;
   }
 
   v14 = [MPModelStoreBrowseResponse alloc];
-  v15 = [(MPStoreModelRequestOperation *)self request];
-  v16 = [(MPModelResponse *)v14 initWithRequest:v15];
+  request = [(MPStoreModelRequestOperation *)self request];
+  v16 = [(MPModelResponse *)v14 initWithRequest:request];
 
-  [(MPModelStoreBrowseResponse *)v16 setParser:v10];
-  if ([v11 numberOfSections] >= 1)
+  [(MPModelStoreBrowseResponse *)v16 setParser:parserCopy];
+  if ([resultsCopy numberOfSections] >= 1)
   {
-    [(MPModelResponse *)v16 setResults:v11];
+    [(MPModelResponse *)v16 setResults:resultsCopy];
   }
 
-  [(MPModelStoreBrowseResponse *)v16 setChangeDetails:v12];
+  [(MPModelStoreBrowseResponse *)v16 setChangeDetails:detailsCopy];
   if (v16)
   {
     v17 = 0;
@@ -56,8 +56,8 @@ LABEL_6:
     if (*(v22 + 24) == 1)
     {
       v18 = [MPModelStoreBrowseResponse alloc];
-      v19 = [(MPStoreModelRequestOperation *)self request];
-      v16 = [(MPModelResponse *)v18 initWithRequest:v19];
+      request2 = [(MPStoreModelRequestOperation *)self request];
+      v16 = [(MPModelResponse *)v18 initWithRequest:request2];
 
       v17 = 0;
     }
@@ -71,26 +71,26 @@ LABEL_6:
     _Block_object_dispose(&v21, 8);
   }
 
-  v13[2](v13, v16, v17);
+  completionCopy[2](completionCopy, v16, v17);
 }
 
-- (void)_produceRegularResponseWithParser:(id)a3 completion:(id)a4
+- (void)_produceRegularResponseWithParser:(id)parser completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [v7 results];
-  v8 = [v7 changeDetails];
-  [(MPModelStoreBrowseRequestOperation *)self _produceResponseWithParser:v7 results:v9 changeDetails:v8 completion:v6];
+  completionCopy = completion;
+  parserCopy = parser;
+  results = [parserCopy results];
+  changeDetails = [parserCopy changeDetails];
+  [(MPModelStoreBrowseRequestOperation *)self _produceResponseWithParser:parserCopy results:results changeDetails:changeDetails completion:completionCopy];
 }
 
-- (void)_produceCarPlayResponseWithParser:(id)a3 withNestedRequestsForEmptyBrickSectionsInOperationQueue:(id)a4 completion:(id)a5
+- (void)_produceCarPlayResponseWithParser:(id)parser withNestedRequestsForEmptyBrickSectionsInOperationQueue:(id)queue completion:(id)completion
 {
   v81 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v38 = a4;
-  v29 = v7;
-  v30 = a5;
-  v8 = [v7 results];
+  parserCopy = parser;
+  queueCopy = queue;
+  v29 = parserCopy;
+  completionCopy = completion;
+  results = [parserCopy results];
   v73 = 0;
   v74 = &v73;
   v75 = 0x3032000000;
@@ -101,7 +101,7 @@ LABEL_6:
   v70[1] = 3221225472;
   v70[2] = __139__MPModelStoreBrowseRequestOperation__produceCarPlayResponseWithParser_withNestedRequestsForEmptyBrickSectionsInOperationQueue_completion___block_invoke;
   v70[3] = &unk_1E767CA30;
-  v71 = v8;
+  v71 = results;
   v72 = &v73;
   v28 = v71;
   [v71 enumerateSectionsUsingBlock:v70];
@@ -144,8 +144,8 @@ LABEL_6:
           v16 = objc_alloc_init(MPModelStoreBrowseRequest);
           [(MPModelStoreBrowseRequest *)v16 setDomain:0];
           [(MPModelStoreBrowseRequest *)v16 setFilteringPolicy:1];
-          v17 = [v15 loadAdditionalContentURL];
-          [(MPModelStoreBrowseRequest *)v16 setLoadAdditionalContentURL:v17];
+          loadAdditionalContentURL = [v15 loadAdditionalContentURL];
+          [(MPModelStoreBrowseRequest *)v16 setLoadAdditionalContentURL:loadAdditionalContentURL];
 
           [(MPModelRequest *)v16 setSectionProperties:v35];
           [(MPModelRequest *)v16 setItemProperties:v34];
@@ -163,7 +163,7 @@ LABEL_6:
           v52[4] = self;
           v52[5] = v15;
           v55 = &v58;
-          v53 = queue;
+          queueCopy2 = queue;
           v56 = v68;
           v57 = 0;
           v54 = v11;
@@ -222,7 +222,7 @@ LABEL_6:
             objc_enumerationMutation(v24);
           }
 
-          [v38 addOperation:*(*(&v45 + 1) + 8 * j)];
+          [queueCopy addOperation:*(*(&v45 + 1) + 8 * j)];
         }
 
         v25 = [v24 countByEnumeratingWithState:&v45 objects:v79 count:16];
@@ -240,7 +240,7 @@ LABEL_6:
     v43 = &v73;
     v44 = v68;
     v41 = v29;
-    v42 = v30;
+    v42 = completionCopy;
     dispatch_group_notify(v22, queue, block);
 
     _Block_object_dispose(v68, 8);
@@ -248,7 +248,7 @@ LABEL_6:
 
   else
   {
-    [(MPModelStoreBrowseRequestOperation *)self _produceRegularResponseWithParser:v7 completion:v30];
+    [(MPModelStoreBrowseRequestOperation *)self _produceRegularResponseWithParser:parserCopy completion:completionCopy];
   }
 
   _Block_object_dispose(&v73, 8);
@@ -457,25 +457,25 @@ void __139__MPModelStoreBrowseRequestOperation__produceCarPlayResponseWithParser
   return nestedRequestsOperationQueue;
 }
 
-- (double)adjustTimeoutInterval:(double)a3
+- (double)adjustTimeoutInterval:(double)interval
 {
   [(MPStoreModelRequestOperation *)self assertRunningInAccessQueue];
   if (!self->_didInitializeTimeoutIntervalAdditions)
   {
-    v5 = [(MPStoreModelRequestOperation *)self request];
+    request = [(MPStoreModelRequestOperation *)self request];
     v6 = 0.0;
-    if (![v5 domain] && objc_msgSend(v5, "filteringPolicy") == 1)
+    if (![request domain] && objc_msgSend(request, "filteringPolicy") == 1)
     {
-      v7 = [v5 loadAdditionalContentURL];
+      loadAdditionalContentURL = [request loadAdditionalContentURL];
 
-      if (v7)
+      if (loadAdditionalContentURL)
       {
         v6 = 0.0;
       }
 
       else
       {
-        v6 = a3 + a3;
+        v6 = interval + interval;
       }
     }
 
@@ -483,18 +483,18 @@ void __139__MPModelStoreBrowseRequestOperation__produceCarPlayResponseWithParser
     self->_didInitializeTimeoutIntervalAdditions = 1;
   }
 
-  return self->_timeoutIntervalAdditions + a3;
+  return self->_timeoutIntervalAdditions + interval;
 }
 
-- (void)produceResponseWithLoadedOutput:(id)a3 completion:(id)a4
+- (void)produceResponseWithLoadedOutput:(id)output completion:(id)completion
 {
   v58[2] = *MEMORY[0x1E69E9840];
-  v41 = a3;
-  v38 = a4;
-  v6 = [(MPStoreModelRequestOperation *)self request];
-  v42 = [v6 previousResponse];
-  v7 = [v6 domain];
-  v8 = [v6 filteringPolicy];
+  outputCopy = output;
+  completionCopy = completion;
+  request = [(MPStoreModelRequestOperation *)self request];
+  previousResponse = [request previousResponse];
+  domain = [request domain];
+  filteringPolicy = [request filteringPolicy];
   v54 = 0;
   v55 = &v54;
   v56 = 0x2020000000;
@@ -515,51 +515,51 @@ void __139__MPModelStoreBrowseRequestOperation__produceCarPlayResponseWithParser
   v43[3] = &unk_1E767CA08;
   v43[4] = self;
   v43[5] = &v54;
-  v43[8] = v7;
-  v43[9] = v8;
+  v43[8] = domain;
+  v43[9] = filteringPolicy;
   v43[6] = &v50;
   v43[7] = &v44;
   [(MPStoreModelRequestOperation *)self dispatchSync:v43];
   v9 = 0;
   v10 = 0;
-  if (v8 == 1 && !v7)
+  if (filteringPolicy == 1 && !domain)
   {
     v9 = v55[3] == 0;
     v10 = v9 << 8;
   }
 
-  v11 = [v6 previousResponse];
-  v12 = [v11 request];
-  v13 = [v12 sectionProperties];
-  v14 = v13;
-  if (v13)
+  previousResponse2 = [request previousResponse];
+  request2 = [previousResponse2 request];
+  sectionProperties = [request2 sectionProperties];
+  v14 = sectionProperties;
+  if (sectionProperties)
   {
-    v40 = v13;
+    sectionProperties2 = sectionProperties;
   }
 
   else
   {
-    v40 = [v6 sectionProperties];
+    sectionProperties2 = [request sectionProperties];
   }
 
   v15 = +[MPModelStoreBrowseSectionBuilder allSupportedInternalOnlyProperties];
-  v39 = [v15 propertySetByCombiningWithPropertySet:v40];
+  v39 = [v15 propertySetByCombiningWithPropertySet:sectionProperties2];
 
   v37 = [[MPModelStoreBrowseSectionBuilder alloc] initWithRequestedPropertySet:v39];
-  v16 = [v42 request];
-  v17 = [v16 itemProperties];
-  v18 = v17;
-  if (v17)
+  request3 = [previousResponse request];
+  itemProperties = [request3 itemProperties];
+  v18 = itemProperties;
+  if (itemProperties)
   {
-    v19 = v17;
+    itemProperties2 = itemProperties;
   }
 
   else
   {
-    v19 = [v6 itemProperties];
+    itemProperties2 = [request itemProperties];
   }
 
-  v20 = v19;
+  v20 = itemProperties2;
 
   v58[0] = @"MPModelStoreBrowseContentItemPropertyItemType";
   v58[1] = @"MPModelStoreBrowseContentItemPropertyDetailedItemType";
@@ -570,24 +570,24 @@ void __139__MPModelStoreBrowseRequestOperation__produceCarPlayResponseWithParser
   v24 = [v20 propertySetByCombiningWithPropertySet:v22];
   v25 = [(MPModelStoreBrowseContentItemBuilder *)v23 initWithRequestedPropertySet:v24];
 
-  v27 = v8 != 1 || v7 == 1;
+  v27 = filteringPolicy != 1 || domain == 1;
   [(MPModelStoreBrowseContentItemBuilder *)v25 setAllowsRadioStations:v27];
-  [(MPModelStoreBrowseContentItemBuilder *)v25 setAllowsVideoContent:v8 != 1];
+  [(MPModelStoreBrowseContentItemBuilder *)v25 setAllowsVideoContent:filteringPolicy != 1];
   if (v55[3] != 2)
   {
     v33 = v10;
     v34 = [MPModelStoreBrowseResponseParser alloc];
-    v35 = [(MPAsyncOperation *)self userIdentity];
-    v28 = [(MPModelStoreBrowseResponseParser *)v34 initWithRawResponseOutput:v41 options:v33 | v9 sectionBuilder:v37 contentItemBuilder:v25 userIdentity:v35];
+    userIdentity = [(MPAsyncOperation *)self userIdentity];
+    v28 = [(MPModelStoreBrowseResponseParser *)v34 initWithRawResponseOutput:outputCopy options:v33 | v9 sectionBuilder:v37 contentItemBuilder:v25 userIdentity:userIdentity];
 
     if (*(v51 + 24) == 1)
     {
-      [(MPModelStoreBrowseRequestOperation *)self _produceCarPlayResponseWithParser:v28 withNestedRequestsForEmptyBrickSectionsInOperationQueue:v45[5] completion:v38];
+      [(MPModelStoreBrowseRequestOperation *)self _produceCarPlayResponseWithParser:v28 withNestedRequestsForEmptyBrickSectionsInOperationQueue:v45[5] completion:completionCopy];
     }
 
     else
     {
-      [(MPModelStoreBrowseRequestOperation *)self _produceRegularResponseWithParser:v28 completion:v38];
+      [(MPModelStoreBrowseRequestOperation *)self _produceRegularResponseWithParser:v28 completion:completionCopy];
     }
 
     goto LABEL_22;
@@ -597,13 +597,13 @@ void __139__MPModelStoreBrowseRequestOperation__produceCarPlayResponseWithParser
   if (objc_opt_isKindOfClass())
   {
     v36 = v10;
-    v28 = v41;
+    v28 = outputCopy;
     v29 = [MPModelStoreBrowseResponseParser alloc];
-    v30 = [v42 parser];
-    v31 = [(MPAsyncOperation *)self userIdentity];
-    v32 = [(MPModelStoreBrowseResponseParser *)v29 initWithPreviousParser:v30 additionalStoreItemMetadataResponse:v28 options:v36 | v9 sectionBuilder:v37 contentItemBuilder:v25 userIdentity:v31];
+    parser = [previousResponse parser];
+    userIdentity2 = [(MPAsyncOperation *)self userIdentity];
+    v32 = [(MPModelStoreBrowseResponseParser *)v29 initWithPreviousParser:parser additionalStoreItemMetadataResponse:v28 options:v36 | v9 sectionBuilder:v37 contentItemBuilder:v25 userIdentity:userIdentity2];
 
-    [(MPModelStoreBrowseRequestOperation *)self _produceRegularResponseWithParser:v32 completion:v38];
+    [(MPModelStoreBrowseRequestOperation *)self _produceRegularResponseWithParser:v32 completion:completionCopy];
 LABEL_22:
   }
 
@@ -625,14 +625,14 @@ void __81__MPModelStoreBrowseRequestOperation_produceResponseWithLoadedOutput_co
   }
 }
 
-- (id)configurationForLoadingModelDataWithStoreURLBag:(id)a3 error:(id *)a4
+- (id)configurationForLoadingModelDataWithStoreURLBag:(id)bag error:(id *)error
 {
-  v6 = a3;
-  v7 = [(MPStoreModelRequestOperation *)self request];
-  v8 = [v7 loadAdditionalContentURL];
-  if (v8)
+  bagCopy = bag;
+  request = [(MPStoreModelRequestOperation *)self request];
+  loadAdditionalContentURL = [request loadAdditionalContentURL];
+  if (loadAdditionalContentURL)
   {
-    v9 = v8;
+    v9 = loadAdditionalContentURL;
     v10 = 1;
 LABEL_3:
     v11 = [objc_alloc(MEMORY[0x1E696AD68]) initWithURL:v9];
@@ -644,15 +644,15 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  v15 = [v7 previousResponse];
-  v16 = [v15 parser];
-  v17 = [v16 allAdditionalContentIdentifiersNeedingLookup];
+  previousResponse = [request previousResponse];
+  parser = [previousResponse parser];
+  allAdditionalContentIdentifiersNeedingLookup = [parser allAdditionalContentIdentifiersNeedingLookup];
 
-  v18 = [v17 count];
+  v18 = [allAdditionalContentIdentifiersNeedingLookup count];
   if (v18)
   {
     v19 = v18;
-    v20 = v17;
+    v20 = allAdditionalContentIdentifiersNeedingLookup;
     v21 = +[MPStoreItemMetadataRequestController optimalBatchSize];
     v22 = v20;
     if (v19 > v21)
@@ -674,10 +674,10 @@ LABEL_3:
   {
   }
 
-  v23 = [v7 domain];
-  if (v23 == 1)
+  domain = [request domain];
+  if (domain == 1)
   {
-    v24 = [v6 dictionaryForBagKey:*MEMORY[0x1E69E4340]];
+    v24 = [bagCopy dictionaryForBagKey:*MEMORY[0x1E69E4340]];
     if (!_NSIsNSDictionary())
     {
 LABEL_21:
@@ -690,12 +690,12 @@ LABEL_21:
 
   else
   {
-    if (v23)
+    if (domain)
     {
       goto LABEL_22;
     }
 
-    v24 = [v6 dictionaryForBagKey:*MEMORY[0x1E69E4320]];
+    v24 = [bagCopy dictionaryForBagKey:*MEMORY[0x1E69E4320]];
     if (!_NSIsNSDictionary())
     {
       goto LABEL_21;
@@ -720,12 +720,12 @@ LABEL_21:
   }
 
 LABEL_22:
-  if (a4)
+  if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithDomain:*MEMORY[0x1E69E4198] code:-7201 userInfo:0];
     v9 = 0;
     v10 = 0;
-    *a4 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else
@@ -750,7 +750,7 @@ LABEL_4:
 
 - (void)execute
 {
-  v3 = [(MPStoreModelRequestOperation *)self request];
+  request = [(MPStoreModelRequestOperation *)self request];
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -767,9 +767,9 @@ LABEL_4:
   v6[1] = 3221225472;
   v6[2] = __45__MPModelStoreBrowseRequestOperation_execute__block_invoke;
   v6[3] = &unk_1E767FE70;
-  v4 = v3;
+  v4 = request;
   v7 = v4;
-  v8 = self;
+  selfCopy = self;
   v9 = &v17;
   v10 = &v11;
   [(MPStoreModelRequestOperation *)self dispatchSync:v6];

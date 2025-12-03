@@ -21,36 +21,36 @@
 {
   if (*MEMORY[0x1E695E108])
   {
-    (*MEMORY[0x1E695E108])(a1, v2, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E108])(self, v2, *MEMORY[0x1E695E0D0]);
   }
 
   v5 = NSClassFromString(@"NSMutableData");
-  NSRequestConcreteImplementation(a1, a2, v5);
+  NSRequestConcreteImplementation(self, a2, v5);
 }
 
 - (void)setLength:()NSMutableData
 {
   if (*MEMORY[0x1E695E108])
   {
-    (*MEMORY[0x1E695E108])(a1, v2, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E108])(self, v2, *MEMORY[0x1E695E0D0]);
   }
 
   v5 = NSClassFromString(@"NSMutableData");
 
-  NSRequestConcreteImplementation(a1, a2, v5);
+  NSRequestConcreteImplementation(self, a2, v5);
 }
 
 - (void)replaceBytesInRange:()NSMutableData withBytes:length:
 {
   if (*MEMORY[0x1E695E108])
   {
-    (*MEMORY[0x1E695E108])(a1, v6, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E108])(self, v6, *MEMORY[0x1E695E0D0]);
   }
 
-  v13 = [a1 length];
+  v13 = [self length];
   if (__CFADD__(a4, a3))
   {
-    v25 = _NSMethodExceptionProem(a1, a2);
+    v25 = _NSMethodExceptionProem(self, a2);
     v37.location = a3;
     v37.length = a4;
     v26 = [NSString stringWithFormat:@"%@: range %@ causes integer overflow", v25, NSStringFromRange(v37), v33];
@@ -61,7 +61,7 @@
   v15 = v13 - (a3 + a4);
   if (v13 < a3 + a4)
   {
-    v27 = _NSMethodExceptionProem(a1, a2);
+    v27 = _NSMethodExceptionProem(self, a2);
     v28 = v27;
     if (a4)
     {
@@ -88,7 +88,7 @@ LABEL_37:
 
   if (__CFADD__(a6, v13 - a4))
   {
-    v30 = _NSMethodExceptionProem(a1, a2);
+    v30 = _NSMethodExceptionProem(self, a2);
     v38.location = v14 - a4;
     v38.length = a6;
     v26 = [NSString stringWithFormat:@"%@: range %@ causes integer overflow", v30, NSStringFromRange(v38), v33];
@@ -96,19 +96,19 @@ LABEL_37:
   }
 
   v16 = v13 - a4 + a6;
-  v17 = [a1 mutableBytes];
-  v18 = v17;
+  mutableBytes = [self mutableBytes];
+  mutableBytes2 = mutableBytes;
   v19 = a5;
   if (a5)
   {
     v19 = a5;
-    if (v17)
+    if (mutableBytes)
     {
       v19 = a5;
-      if (v17 + v14 > a5)
+      if (mutableBytes + v14 > a5)
       {
         v19 = a5;
-        if (v17 < a5 + a6)
+        if (mutableBytes < a5 + a6)
         {
           v20 = malloc_type_malloc(a6, 0xD0ADD31FuLL);
           v19 = v20;
@@ -146,18 +146,18 @@ LABEL_15:
 LABEL_16:
   if (v16 > v14)
   {
-    [a1 setLength:v16];
-    v18 = [a1 mutableBytes];
+    [self setLength:v16];
+    mutableBytes2 = [self mutableBytes];
   }
 
   if (v16 != v14)
   {
-    memmove((v18 + a3 + a6), (v18 + a3 + a4), v15);
+    memmove((mutableBytes2 + a3 + a6), (mutableBytes2 + a3 + a4), v15);
   }
 
   if (a6)
   {
-    v24 = (v18 + a3);
+    v24 = (mutableBytes2 + a3);
     if (v19)
     {
       memmove(v24, v19, a6);
@@ -177,7 +177,7 @@ LABEL_16:
   if (v16 < v14)
   {
 
-    [a1 setLength:v16];
+    [self setLength:v16];
   }
 }
 
@@ -186,7 +186,7 @@ LABEL_16:
   v5 = a4;
   if (*MEMORY[0x1E695E108])
   {
-    (*MEMORY[0x1E695E108])(a1, v4, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E108])(self, v4, *MEMORY[0x1E695E0D0]);
     if (!v5)
     {
       return;
@@ -198,25 +198,25 @@ LABEL_16:
     return;
   }
 
-  v9 = [a1 length];
+  v9 = [self length];
   if (__CFADD__(v5, v9))
   {
-    v22 = _NSMethodExceptionProem(a1, a2);
+    v22 = _NSMethodExceptionProem(self, a2);
     v25.location = v9;
     v25.length = v5;
     v23 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: range %@ causes integer overflow", v22, NSStringFromRange(v25)), 0}];
     objc_exception_throw(v23);
   }
 
-  v10 = [a1 mutableBytes];
+  mutableBytes = [self mutableBytes];
   v11 = a3;
-  if (v10)
+  if (mutableBytes)
   {
     v11 = a3;
-    if (v10 + v9 > a3)
+    if (mutableBytes + v9 > a3)
     {
       v11 = a3;
-      if (v10 < a3 + v5)
+      if (mutableBytes < a3 + v5)
       {
         v12 = malloc_type_malloc(v5, 0xFA9650C7uLL);
         v11 = v12;
@@ -259,8 +259,8 @@ LABEL_12:
     }
   }
 
-  [a1 setLength:v9 + v5];
-  v18 = [a1 mutableBytes] + v9;
+  [self setLength:v9 + v5];
+  v18 = [self mutableBytes] + v9;
   if (v5 < 0x80000 || (v19 = MEMORY[0x1E69E9AC8], ((*MEMORY[0x1E69E9AC8] - 1) & (v18 | v11)) != 0) || (malloc_default_zone(), malloc_zone_claimed_address()))
   {
     v20 = v11;
@@ -291,49 +291,49 @@ LABEL_18:
 {
   if (*MEMORY[0x1E695E108])
   {
-    (*MEMORY[0x1E695E108])(a1, v3, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E108])(self, v3, *MEMORY[0x1E695E0D0]);
   }
 
   v7 = [a3 length];
   if (v7)
   {
     v8 = v7;
-    v9 = [a3 bytes];
-    v10 = [a1 length];
+    bytes = [a3 bytes];
+    v10 = [self length];
     v11 = [a3 length];
     if (__CFADD__(v11, v10))
     {
       v24 = v11;
-      v25 = _NSMethodExceptionProem(a1, a2);
+      v25 = _NSMethodExceptionProem(self, a2);
       v28.location = v10;
       v28.length = v24;
       v26 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@: range %@ causes integer overflow", v25, NSStringFromRange(v28)), 0}];
       objc_exception_throw(v26);
     }
 
-    v12 = [a1 mutableBytes];
-    if (v12 && v9 < v12 + v10 && v12 < v9 + v8)
+    mutableBytes = [self mutableBytes];
+    if (mutableBytes && bytes < mutableBytes + v10 && mutableBytes < bytes + v8)
     {
       v13 = malloc_type_malloc(v8, 0x9216C5BBuLL);
       v14 = v13;
-      if (v8 < 0x80000 || (v15 = MEMORY[0x1E69E9AC8], ((*MEMORY[0x1E69E9AC8] - 1) & (v13 | v9)) != 0) || (malloc_default_zone(), malloc_zone_claimed_address()))
+      if (v8 < 0x80000 || (v15 = MEMORY[0x1E69E9AC8], ((*MEMORY[0x1E69E9AC8] - 1) & (v13 | bytes)) != 0) || (malloc_default_zone(), malloc_zone_claimed_address()))
       {
         v16 = v14;
         v17 = v8;
-        v18 = v9;
+        v18 = bytes;
       }
 
       else
       {
         v23 = v8 & -*v15;
-        NSCopyMemoryPages(v9, v14, v23);
+        NSCopyMemoryPages(bytes, v14, v23);
         v17 = v8 - v23;
         if (v8 == v23)
         {
           goto LABEL_14;
         }
 
-        v18 = (v9 + v23);
+        v18 = (bytes + v23);
         v16 = (v14 + v23);
       }
 
@@ -342,12 +342,12 @@ LABEL_18:
 
     else
     {
-      v14 = v9;
+      v14 = bytes;
     }
 
 LABEL_14:
-    [a1 setLength:v10 + v8];
-    v19 = [a1 mutableBytes] + v10;
+    [self setLength:v10 + v8];
+    v19 = [self mutableBytes] + v10;
     if (v8 < 0x80000 || (v20 = MEMORY[0x1E69E9AC8], ((*MEMORY[0x1E69E9AC8] - 1) & (v19 | v14)) != 0) || (malloc_default_zone(), malloc_zone_claimed_address()))
     {
       v21 = v14;
@@ -361,7 +361,7 @@ LABEL_14:
       if (!v8)
       {
 LABEL_19:
-        if (v14 != v9)
+        if (v14 != bytes)
         {
 
           free(v14);
@@ -383,32 +383,32 @@ LABEL_19:
 {
   if (*MEMORY[0x1E695E108])
   {
-    (*MEMORY[0x1E695E108])(a1, v3, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E108])(self, v3, *MEMORY[0x1E695E0D0]);
   }
 
   if (a3 >= 0x8000000000000001)
   {
-    v9 = [NSString stringWithFormat:@"%@: absurd %s: %lu, maximum size: %llu bytes", _NSMethodExceptionProem(a1, a2), "extra length", a3, 0x8000000000000000];
+    0x8000000000000000 = [NSString stringWithFormat:@"%@: absurd %s: %lu, maximum size: %llu bytes", _NSMethodExceptionProem(self, a2), "extra length", a3, 0x8000000000000000];
     v10 = MEMORY[0x1E695DF30];
     v11 = MEMORY[0x1E695D940];
     goto LABEL_10;
   }
 
-  v7 = [(objc_class *)a1 length];
+  v7 = [(objc_class *)self length];
   if (__CFADD__(a3, v7))
   {
     v12 = v7;
-    v13 = _NSMethodExceptionProem(a1, a2);
+    v13 = _NSMethodExceptionProem(self, a2);
     v15.location = v12;
     v15.length = a3;
-    v9 = [NSString stringWithFormat:@"%@: range %@ causes integer overflow", v13, NSStringFromRange(v15)];
+    0x8000000000000000 = [NSString stringWithFormat:@"%@: range %@ causes integer overflow", v13, NSStringFromRange(v15)];
     v10 = MEMORY[0x1E695DF30];
     v11 = MEMORY[0x1E695DA20];
 LABEL_10:
-    objc_exception_throw([v10 exceptionWithName:*v11 reason:v9 userInfo:0]);
+    objc_exception_throw([v10 exceptionWithName:*v11 reason:0x8000000000000000 userInfo:0]);
   }
 
-  return [(objc_class *)a1 setLength:v7 + a3];
+  return [(objc_class *)self setLength:v7 + a3];
 }
 
 - (void)replaceBytesInRange:()NSMutableData withBytes:
@@ -416,7 +416,7 @@ LABEL_10:
   v7 = a4;
   if (*MEMORY[0x1E695E108])
   {
-    (*MEMORY[0x1E695E108])(a1, v5, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E108])(self, v5, *MEMORY[0x1E695E0D0]);
     if (!v7)
     {
       return;
@@ -428,17 +428,17 @@ LABEL_10:
     return;
   }
 
-  v11 = [a1 length];
+  v11 = [self length];
   v12 = v11;
   if (a3 > v11)
   {
-    v25 = [NSString stringWithFormat:@"%@: location %lu exceeds data length %lu", _NSMethodExceptionProem(a1, a2), a3, v11];
+    v25 = [NSString stringWithFormat:@"%@: location %lu exceeds data length %lu", _NSMethodExceptionProem(self, a2), a3, v11];
     goto LABEL_31;
   }
 
   if (__CFADD__(v7, a3))
   {
-    v26 = _NSMethodExceptionProem(a1, a2);
+    v26 = _NSMethodExceptionProem(self, a2);
     v29.location = a3;
     v29.length = v7;
     v25 = [NSString stringWithFormat:@"%@: range %@ causes integer overflow", v26, NSStringFromRange(v29), v27];
@@ -449,21 +449,21 @@ LABEL_31:
   v13 = a5;
   if (v11 < a3 + v7)
   {
-    v14 = [a1 mutableBytes];
+    mutableBytes = [self mutableBytes];
     v13 = a5;
-    if (!v14)
+    if (!mutableBytes)
     {
       goto LABEL_15;
     }
 
     v13 = a5;
-    if (v14 + v12 <= a5)
+    if (mutableBytes + v12 <= a5)
     {
       goto LABEL_15;
     }
 
     v13 = a5;
-    if (v14 >= a5 + v7)
+    if (mutableBytes >= a5 + v7)
     {
       goto LABEL_15;
     }
@@ -492,7 +492,7 @@ LABEL_31:
           if (v7 == v20)
           {
 LABEL_15:
-            [a1 setLength:a3 + v7];
+            [self setLength:a3 + v7];
             goto LABEL_16;
           }
 
@@ -507,7 +507,7 @@ LABEL_15:
   }
 
 LABEL_16:
-  v21 = [a1 mutableBytes] + a3;
+  v21 = [self mutableBytes] + a3;
   if (v7 < 0x80000 || (v22 = MEMORY[0x1E69E9AC8], ((*MEMORY[0x1E69E9AC8] - 1) & (v21 | a5)) != 0) || (malloc_default_zone(), malloc_zone_claimed_address()))
   {
     v23 = a5;
@@ -538,7 +538,7 @@ LABEL_21:
 {
   if (*MEMORY[0x1E695E108])
   {
-    (*MEMORY[0x1E695E108])(a1, v4, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E108])(self, v4, *MEMORY[0x1E695E0D0]);
     if (!a4)
     {
       return;
@@ -550,16 +550,16 @@ LABEL_21:
     return;
   }
 
-  v9 = [a1 length];
+  v9 = [self length];
   if (a3 > v9)
   {
-    v11 = [NSString stringWithFormat:@"%@: location %lu exceeds data length %lu", _NSMethodExceptionProem(a1, a2), a3, v9];
+    v11 = [NSString stringWithFormat:@"%@: location %lu exceeds data length %lu", _NSMethodExceptionProem(self, a2), a3, v9];
     goto LABEL_14;
   }
 
   if (__CFADD__(a4, a3))
   {
-    v12 = _NSMethodExceptionProem(a1, a2);
+    v12 = _NSMethodExceptionProem(self, a2);
     v15.location = a3;
     v15.length = a4;
     v11 = [NSString stringWithFormat:@"%@: range %@ causes integer overflow", v12, NSStringFromRange(v15), v13];
@@ -569,10 +569,10 @@ LABEL_14:
 
   if (v9 < a3 + a4)
   {
-    [a1 setLength:?];
+    [self setLength:?];
   }
 
-  v10 = ([a1 mutableBytes] + a3);
+  v10 = ([self mutableBytes] + a3);
 
   bzero(v10, a4);
 }
@@ -582,21 +582,21 @@ LABEL_14:
   v7[5] = *MEMORY[0x1E69E9840];
   if (*MEMORY[0x1E695E108])
   {
-    (*MEMORY[0x1E695E108])(a1, v3, *MEMORY[0x1E695E0D0]);
+    (*MEMORY[0x1E695E108])(self, v3, *MEMORY[0x1E695E0D0]);
   }
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__NSMutableData_NSMutableData__setData___block_invoke;
   v7[3] = &unk_1E69F2A48;
-  v7[4] = a1;
+  v7[4] = self;
   [a3 enumerateByteRangesUsingBlock:v7];
-  return [a1 setLength:{objc_msgSend(a3, "length")}];
+  return [self setLength:{objc_msgSend(a3, "length")}];
 }
 
 + (id)allocWithZone:()NSMutableData
 {
-  if (objc_opt_self() == a1)
+  if (objc_opt_self() == self)
   {
 
     return +[(NSData *)NSConcreteMutableData];
@@ -605,27 +605,27 @@ LABEL_14:
   else
   {
 
-    return NSAllocateObject(a1, 0, a3);
+    return NSAllocateObject(self, 0, a3);
   }
 }
 
 + (id)dataWithCapacity:()NSMutableData
 {
-  v3 = [objc_allocWithZone(a1) initWithCapacity:a3];
+  v3 = [objc_allocWithZone(self) initWithCapacity:a3];
 
   return v3;
 }
 
 + (id)dataWithLength:()NSMutableData
 {
-  v3 = [objc_allocWithZone(a1) initWithLength:a3];
+  v3 = [objc_allocWithZone(self) initWithLength:a3];
 
   return v3;
 }
 
 - (void)initWithLength:()NSMutableData
 {
-  v4 = [a1 initWithCapacity:?];
+  v4 = [self initWithCapacity:?];
   [v4 setLength:a3];
   return v4;
 }

@@ -1,12 +1,12 @@
 @interface NSCloudKitMirroringActivityVoucherManager
 - (NSCloudKitMirroringActivityVoucherManager)init;
-- (id)_vouchersForEventType:(uint64_t)a1;
-- (id)usableVoucherForEventType:(int64_t)a3;
+- (id)_vouchersForEventType:(uint64_t)type;
+- (id)usableVoucherForEventType:(int64_t)type;
 - (unint64_t)countVouchers;
-- (void)addVoucher:(id)a3;
+- (void)addVoucher:(id)voucher;
 - (void)dealloc;
-- (void)expireVoucher:(id)a3;
-- (void)expireVouchersForEventType:(int64_t)a3;
+- (void)expireVoucher:(id)voucher;
+- (void)expireVouchersForEventType:(int64_t)type;
 @end
 
 @implementation NSCloudKitMirroringActivityVoucherManager
@@ -73,66 +73,66 @@
   return v6;
 }
 
-- (void)addVoucher:(id)a3
+- (void)addVoucher:(id)voucher
 {
-  v4 = -[NSCloudKitMirroringActivityVoucherManager _vouchersForEventType:](self, [a3 eventType]);
-  [v4 addObject:a3];
+  v4 = -[NSCloudKitMirroringActivityVoucherManager _vouchersForEventType:](self, [voucher eventType]);
+  [v4 addObject:voucher];
 }
 
-- (id)_vouchersForEventType:(uint64_t)a1
+- (id)_vouchersForEventType:(uint64_t)type
 {
-  if (!a1)
+  if (!type)
   {
     return 0;
   }
 
-  v4 = [*(a1 + 8) objectForKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a2)}];
+  v4 = [*(type + 8) objectForKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a2)}];
   if (!v4)
   {
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [*(a1 + 8) setObject:v4 forKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a2)}];
+    [*(type + 8) setObject:v4 forKey:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithInteger:", a2)}];
   }
 
   return v4;
 }
 
-- (void)expireVoucher:(id)a3
+- (void)expireVoucher:(id)voucher
 {
-  v4 = -[NSCloudKitMirroringActivityVoucherManager _vouchersForEventType:](self, [a3 eventType]);
-  [v4 removeObject:a3];
+  v4 = -[NSCloudKitMirroringActivityVoucherManager _vouchersForEventType:](self, [voucher eventType]);
+  [v4 removeObject:voucher];
 }
 
-- (void)expireVouchersForEventType:(int64_t)a3
+- (void)expireVouchersForEventType:(int64_t)type
 {
-  v3 = [(NSCloudKitMirroringActivityVoucherManager *)self _vouchersForEventType:a3];
+  v3 = [(NSCloudKitMirroringActivityVoucherManager *)self _vouchersForEventType:type];
   [v3 removeAllObjects];
 }
 
-- (id)usableVoucherForEventType:(int64_t)a3
+- (id)usableVoucherForEventType:(int64_t)type
 {
   v15 = *MEMORY[0x1E69E9840];
-  if ((a3 - 1) < 2)
+  if ((type - 1) < 2)
   {
-    v5 = -[NSMutableDictionary objectForKey:](self->_vouchersByEventType, "objectForKey:", [MEMORY[0x1E696AD98] numberWithInteger:a3]);
+    v5 = -[NSMutableDictionary objectForKey:](self->_vouchersByEventType, "objectForKey:", [MEMORY[0x1E696AD98] numberWithInteger:type]);
     v6 = *MEMORY[0x1E69E9840];
 
     return [v5 lastObject];
   }
 
-  if (a3)
+  if (type)
   {
     LogStream = _PFLogGetLogStream(17);
     if (os_log_type_enabled(LogStream, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = [NSPersistentCloudKitContainerEvent eventTypeString:a3];
+      v14 = [NSPersistentCloudKitContainerEvent eventTypeString:type];
       _os_log_error_impl(&dword_18565F000, LogStream, OS_LOG_TYPE_ERROR, "CoreData: fault: Is there a new event type: %@\n", &v13, 0xCu);
     }
 
     v10 = _PFLogGetLogStream(17);
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
-      v12 = [NSPersistentCloudKitContainerEvent eventTypeString:a3];
+      v12 = [NSPersistentCloudKitContainerEvent eventTypeString:type];
       v13 = 138412290;
       v14 = v12;
       _os_log_fault_impl(&dword_18565F000, v10, OS_LOG_TYPE_FAULT, "CoreData: Is there a new event type: %@", &v13, 0xCu);

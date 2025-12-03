@@ -1,20 +1,20 @@
 @interface ICASAttachmentActionData
-- (ICASAttachmentActionData)initWithActionType:(id)a3;
+- (ICASAttachmentActionData)initWithActionType:(id)type;
 - (id)toDict;
 @end
 
 @implementation ICASAttachmentActionData
 
-- (ICASAttachmentActionData)initWithActionType:(id)a3
+- (ICASAttachmentActionData)initWithActionType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v9.receiver = self;
   v9.super_class = ICASAttachmentActionData;
   v6 = [(ICASAttachmentActionData *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_actionType, a3);
+    objc_storeStrong(&v6->_actionType, type);
   }
 
   return v7;
@@ -24,19 +24,19 @@
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9 = @"actionType";
-  v3 = [(ICASAttachmentActionData *)self actionType];
-  if (v3)
+  actionType = [(ICASAttachmentActionData *)self actionType];
+  if (actionType)
   {
-    v4 = [(ICASAttachmentActionData *)self actionType];
+    actionType2 = [(ICASAttachmentActionData *)self actionType];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    actionType2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v10[0] = v4;
+  v5 = actionType2;
+  v10[0] = actionType2;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v10 forKeys:&v9 count:1];
 
   v7 = *MEMORY[0x277D85DE8];

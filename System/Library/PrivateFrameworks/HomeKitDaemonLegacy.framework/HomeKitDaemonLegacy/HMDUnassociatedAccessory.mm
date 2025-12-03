@@ -2,107 +2,107 @@
 + (id)logCategory;
 + (id)otherAccessoryCategory;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMAccessoryCategory)category;
 - (HMDAccessoryAdvertisement)accessoryAdvertisement;
 - (HMDUnassociatedAccessory)init;
-- (HMDUnassociatedAccessory)initWithCoder:(id)a3;
-- (HMDUnassociatedAccessory)initWithIdentifier:(id)a3 name:(id)a4 category:(id)a5 messageDispatcher:(id)a6;
+- (HMDUnassociatedAccessory)initWithCoder:(id)coder;
+- (HMDUnassociatedAccessory)initWithIdentifier:(id)identifier name:(id)name category:(id)category messageDispatcher:(id)dispatcher;
 - (NSNumber)matterDeviceTypeID;
 - (NSString)name;
-- (id)descriptionWithPointer:(BOOL)a3 additionalDescription:(id)a4;
+- (id)descriptionWithPointer:(BOOL)pointer additionalDescription:(id)description;
 - (id)dumpDescription;
 - (id)messageDestination;
 - (id)shortDescription;
 - (unint64_t)hash;
 - (unint64_t)transportTypes;
-- (void)_handleIdentify:(id)a3;
+- (void)_handleIdentify:(id)identify;
 - (void)_registerForMessages;
-- (void)associateWithAccessoryAdvertisement:(id)a3;
+- (void)associateWithAccessoryAdvertisement:(id)advertisement;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)identifyWithCompletionHandler:(id)a3;
-- (void)setCategory:(id)a3;
-- (void)setMatterDeviceTypeID:(id)a3;
-- (void)setName:(id)a3;
-- (void)updateCategoryWithCategoryIdentifier:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)identifyWithCompletionHandler:(id)handler;
+- (void)setCategory:(id)category;
+- (void)setMatterDeviceTypeID:(id)d;
+- (void)setName:(id)name;
+- (void)updateCategoryWithCategoryIdentifier:(id)identifier;
 @end
 
 @implementation HMDUnassociatedAccessory
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v21 = a3;
-  if (([v21 hmd_isForXPCTransport] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy hmd_isForXPCTransport] & 1) == 0)
   {
-    v4 = [(HMDUnassociatedAccessory *)self identifier];
-    [v21 encodeObject:v4 forKey:@"accessoryServerIdentifier"];
+    identifier = [(HMDUnassociatedAccessory *)self identifier];
+    [coderCopy encodeObject:identifier forKey:@"accessoryServerIdentifier"];
   }
 
-  v5 = [(HMDUnassociatedAccessory *)self name];
-  [v21 encodeObject:v5 forKey:@"accessoryName"];
+  name = [(HMDUnassociatedAccessory *)self name];
+  [coderCopy encodeObject:name forKey:@"accessoryName"];
 
-  v6 = [(HMDUnassociatedAccessory *)self category];
-  [v21 encodeObject:v6 forKey:@"HM.accessoryCategory"];
+  category = [(HMDUnassociatedAccessory *)self category];
+  [coderCopy encodeObject:category forKey:@"HM.accessoryCategory"];
 
-  v7 = [(HMDUnassociatedAccessory *)self uuid];
-  v8 = [v7 UUIDString];
-  [v21 encodeObject:v8 forKey:@"accessoryUUID"];
+  uuid = [(HMDUnassociatedAccessory *)self uuid];
+  uUIDString = [uuid UUIDString];
+  [coderCopy encodeObject:uUIDString forKey:@"accessoryUUID"];
 
-  [v21 encodeBool:0 forKey:@"isBridged"];
-  [v21 encodeBool:0 forKey:@"paired"];
-  [v21 encodeBool:-[HMDUnassociatedAccessory isReachable](self forKey:{"isReachable"), @"reachable"}];
-  v9 = [(HMDUnassociatedAccessory *)self associationOptions];
-  [v21 encodeInteger:v9 forKey:*MEMORY[0x277CCE7F0]];
-  if ([v21 hmd_isForXPCTransportEntitledForSPIAccess])
+  [coderCopy encodeBool:0 forKey:@"isBridged"];
+  [coderCopy encodeBool:0 forKey:@"paired"];
+  [coderCopy encodeBool:-[HMDUnassociatedAccessory isReachable](self forKey:{"isReachable"), @"reachable"}];
+  associationOptions = [(HMDUnassociatedAccessory *)self associationOptions];
+  [coderCopy encodeInteger:associationOptions forKey:*MEMORY[0x277CCE7F0]];
+  if ([coderCopy hmd_isForXPCTransportEntitledForSPIAccess])
   {
-    [v21 encodeInteger:-[HMDUnassociatedAccessory transportTypes](self forKey:{"transportTypes"), @"HM.accessoryTransportTypes"}];
+    [coderCopy encodeInteger:-[HMDUnassociatedAccessory transportTypes](self forKey:{"transportTypes"), @"HM.accessoryTransportTypes"}];
   }
 
-  if ([v21 hmd_isForXPCTransportEntitledForSPIAccess])
+  if ([coderCopy hmd_isForXPCTransportEntitledForSPIAccess])
   {
-    v10 = [(HMDUnassociatedAccessory *)self supportsCHIP];
-    [v21 encodeBool:v10 forKey:*MEMORY[0x277CCEF68]];
-    v11 = [(HMDUnassociatedAccessory *)self isKnownToSystemCommissioner];
-    [v21 encodeBool:v11 forKey:*MEMORY[0x277CCEB38]];
-    v12 = [(HMDUnassociatedAccessory *)self rootPublicKey];
-    [v21 encodeObject:v12 forKey:*MEMORY[0x277CCECE0]];
+    supportsCHIP = [(HMDUnassociatedAccessory *)self supportsCHIP];
+    [coderCopy encodeBool:supportsCHIP forKey:*MEMORY[0x277CCEF68]];
+    isKnownToSystemCommissioner = [(HMDUnassociatedAccessory *)self isKnownToSystemCommissioner];
+    [coderCopy encodeBool:isKnownToSystemCommissioner forKey:*MEMORY[0x277CCEB38]];
+    rootPublicKey = [(HMDUnassociatedAccessory *)self rootPublicKey];
+    [coderCopy encodeObject:rootPublicKey forKey:*MEMORY[0x277CCECE0]];
 
-    v13 = [(HMDUnassociatedAccessory *)self nodeID];
-    [v21 encodeObject:v13 forKey:*MEMORY[0x277CCE9A0]];
+    nodeID = [(HMDUnassociatedAccessory *)self nodeID];
+    [coderCopy encodeObject:nodeID forKey:*MEMORY[0x277CCE9A0]];
 
-    v14 = [(HMDUnassociatedAccessory *)self commissioningID];
-    [v21 encodeObject:v14 forKey:*MEMORY[0x277CCE998]];
+    commissioningID = [(HMDUnassociatedAccessory *)self commissioningID];
+    [coderCopy encodeObject:commissioningID forKey:*MEMORY[0x277CCE998]];
 
-    v15 = [(HMDUnassociatedAccessory *)self serialNumber];
-    [v21 encodeObject:v15 forKey:@"HM.serialNumber"];
+    serialNumber = [(HMDUnassociatedAccessory *)self serialNumber];
+    [coderCopy encodeObject:serialNumber forKey:@"HM.serialNumber"];
 
-    v16 = [(HMDUnassociatedAccessory *)self productID];
-    [v21 encodeObject:v16 forKey:*MEMORY[0x277CCEC60]];
+    productID = [(HMDUnassociatedAccessory *)self productID];
+    [coderCopy encodeObject:productID forKey:*MEMORY[0x277CCEC60]];
 
-    v17 = [(HMDUnassociatedAccessory *)self vendorID];
-    [v21 encodeObject:v17 forKey:*MEMORY[0x277CCF0F0]];
+    vendorID = [(HMDUnassociatedAccessory *)self vendorID];
+    [coderCopy encodeObject:vendorID forKey:*MEMORY[0x277CCF0F0]];
 
-    v18 = [(HMDUnassociatedAccessory *)self matterDeviceTypeID];
-    [v21 encodeObject:v18 forKey:*MEMORY[0x277CCEB68]];
+    matterDeviceTypeID = [(HMDUnassociatedAccessory *)self matterDeviceTypeID];
+    [coderCopy encodeObject:matterDeviceTypeID forKey:*MEMORY[0x277CCEB68]];
 
-    v19 = [(HMDUnassociatedAccessory *)self requiresThreadRouter];
-    [v21 encodeBool:v19 forKey:*MEMORY[0x277CCECC0]];
-    v20 = [(HMDUnassociatedAccessory *)self identifier];
-    [v21 encodeObject:v20 forKey:@"accessoryServerIdentifier"];
+    requiresThreadRouter = [(HMDUnassociatedAccessory *)self requiresThreadRouter];
+    [coderCopy encodeBool:requiresThreadRouter forKey:*MEMORY[0x277CCECC0]];
+    identifier2 = [(HMDUnassociatedAccessory *)self identifier];
+    [coderCopy encodeObject:identifier2 forKey:@"accessoryServerIdentifier"];
   }
 }
 
-- (HMDUnassociatedAccessory)initWithCoder:(id)a3
+- (HMDUnassociatedAccessory)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessoryServerIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessoryName"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.accessoryCategory"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessoryServerIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessoryName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.accessoryCategory"];
   v8 = [(HMDUnassociatedAccessory *)self initWithIdentifier:v5 name:v6 category:v7 messageDispatcher:0];
   if (v8)
   {
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessoryUUID"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessoryUUID"];
     v10 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v9];
     uuid = v8->_uuid;
     v8->_uuid = v10;
@@ -114,8 +114,8 @@
 - (id)messageDestination
 {
   v3 = objc_alloc(MEMORY[0x277D0F820]);
-  v4 = [(HMDUnassociatedAccessory *)self uuid];
-  v5 = [v3 initWithTarget:v4];
+  uuid = [(HMDUnassociatedAccessory *)self uuid];
+  v5 = [v3 initWithTarget:uuid];
 
   return v5;
 }
@@ -129,22 +129,22 @@
   return v3;
 }
 
-- (void)associateWithAccessoryAdvertisement:(id)a3
+- (void)associateWithAccessoryAdvertisement:(id)advertisement
 {
-  v4 = a3;
+  advertisementCopy = advertisement;
   os_unfair_recursive_lock_lock_with_options();
   accessoryAdvertisement = self->_accessoryAdvertisement;
-  self->_accessoryAdvertisement = v4;
+  self->_accessoryAdvertisement = advertisementCopy;
 
   os_unfair_recursive_lock_unlock();
 }
 
-- (void)identifyWithCompletionHandler:(id)a3
+- (void)identifyWithCompletionHandler:(id)handler
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -155,21 +155,21 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  if (v4)
+  if (handlerCopy)
   {
     v9 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-    v4[2](v4, v9);
+    handlerCopy[2](handlerCopy, v9);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleIdentify:(id)a3
+- (void)_handleIdentify:(id)identify
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifyCopy = identify;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -180,15 +180,15 @@
   }
 
   objc_autoreleasePoolPop(v5);
-  objc_initWeak(buf, v6);
+  objc_initWeak(buf, selfCopy);
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __44__HMDUnassociatedAccessory__handleIdentify___block_invoke;
   v11[3] = &unk_2797338E8;
   objc_copyWeak(&v13, buf);
-  v9 = v4;
+  v9 = identifyCopy;
   v12 = v9;
-  [(HMDUnassociatedAccessory *)v6 identifyWithCompletionHandler:v11];
+  [(HMDUnassociatedAccessory *)selfCopy identifyWithCompletionHandler:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(buf);
@@ -226,11 +226,11 @@ void __44__HMDUnassociatedAccessory__handleIdentify___block_invoke(uint64_t a1, 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setMatterDeviceTypeID:(id)a3
+- (void)setMatterDeviceTypeID:(id)d
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (v5)
+  dCopy = d;
+  if (dCopy)
   {
     os_unfair_recursive_lock_lock_with_options();
     matterDeviceTypeID = self->_matterDeviceTypeID;
@@ -241,17 +241,17 @@ void __44__HMDUnassociatedAccessory__handleIdentify___block_invoke(uint64_t a1, 
 
     else
     {
-      objc_storeStrong(&self->_matterDeviceTypeID, a3);
+      objc_storeStrong(&self->_matterDeviceTypeID, d);
       os_unfair_recursive_lock_unlock();
       v7 = MEMORY[0x277D0F818];
-      v8 = [(HMDUnassociatedAccessory *)self messageDestination];
+      messageDestination = [(HMDUnassociatedAccessory *)self messageDestination];
       v13 = *MEMORY[0x277CCEB78];
-      v14[0] = v5;
+      v14[0] = dCopy;
       v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:&v13 count:1];
-      v10 = [v7 messageWithName:*MEMORY[0x277CCEB70] destination:v8 payload:v9];
+      v10 = [v7 messageWithName:*MEMORY[0x277CCEB70] destination:messageDestination payload:v9];
 
-      v11 = [(HMDUnassociatedAccessory *)self messageDispatcher];
-      [v11 sendMessage:v10 completionHandler:0];
+      messageDispatcher = [(HMDUnassociatedAccessory *)self messageDispatcher];
+      [messageDispatcher sendMessage:v10 completionHandler:0];
     }
   }
 
@@ -267,33 +267,33 @@ void __44__HMDUnassociatedAccessory__handleIdentify___block_invoke(uint64_t a1, 
   return v3;
 }
 
-- (void)updateCategoryWithCategoryIdentifier:(id)a3
+- (void)updateCategoryWithCategoryIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
-    v4 = a3;
+    identifierCopy = identifier;
     v10 = +[HMDHAPMetadata getSharedInstance];
-    v5 = [v10 categoryForIdentifier:v4];
+    categoryForOther = [v10 categoryForIdentifier:identifierCopy];
 
-    if (!v5)
+    if (!categoryForOther)
     {
-      v5 = [v10 categoryForOther];
+      categoryForOther = [v10 categoryForOther];
     }
 
     v6 = objc_alloc(MEMORY[0x277CD1680]);
-    v7 = [v5 uuidStr];
-    v8 = [v5 catDescription];
-    v9 = [v6 initWithType:v7 name:v8];
+    uuidStr = [categoryForOther uuidStr];
+    catDescription = [categoryForOther catDescription];
+    v9 = [v6 initWithType:uuidStr name:catDescription];
 
     [(HMDUnassociatedAccessory *)self setCategory:v9];
   }
 }
 
-- (void)setCategory:(id)a3
+- (void)setCategory:(id)category
 {
   v16[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  categoryCopy = category;
+  if (categoryCopy)
   {
     os_unfair_recursive_lock_lock_with_options();
     category = self->_category;
@@ -304,21 +304,21 @@ void __44__HMDUnassociatedAccessory__handleIdentify___block_invoke(uint64_t a1, 
 
     else
     {
-      v6 = [MEMORY[0x277CD1A18] cachedInstanceForHMAccessoryCategory:v4];
+      v6 = [MEMORY[0x277CD1A18] cachedInstanceForHMAccessoryCategory:categoryCopy];
       v7 = self->_category;
       self->_category = v6;
 
       os_unfair_recursive_lock_unlock();
-      v8 = encodeRootObjectForIncomingXPCMessage(v4, 0);
+      v8 = encodeRootObjectForIncomingXPCMessage(categoryCopy, 0);
       v9 = MEMORY[0x277D0F818];
-      v10 = [(HMDUnassociatedAccessory *)self messageDestination];
+      messageDestination = [(HMDUnassociatedAccessory *)self messageDestination];
       v15 = @"kAccessoryCategory";
       v16[0] = v8;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-      v12 = [v9 messageWithName:@"kAccessoryCategoryChangedNotificationKey" destination:v10 payload:v11];
+      v12 = [v9 messageWithName:@"kAccessoryCategoryChangedNotificationKey" destination:messageDestination payload:v11];
 
-      v13 = [(HMDUnassociatedAccessory *)self messageDispatcher];
-      [v13 sendMessage:v12 completionHandler:0];
+      messageDispatcher = [(HMDUnassociatedAccessory *)self messageDispatcher];
+      [messageDispatcher sendMessage:v12 completionHandler:0];
     }
   }
 
@@ -334,11 +334,11 @@ void __44__HMDUnassociatedAccessory__handleIdentify___block_invoke(uint64_t a1, 
   return v3;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
     os_unfair_recursive_lock_lock_with_options();
     name = self->_name;
@@ -349,20 +349,20 @@ void __44__HMDUnassociatedAccessory__handleIdentify___block_invoke(uint64_t a1, 
 
     else
     {
-      v6 = [v4 copy];
+      v6 = [nameCopy copy];
       v7 = self->_name;
       self->_name = v6;
 
       os_unfair_recursive_lock_unlock();
       v8 = MEMORY[0x277D0F818];
-      v9 = [(HMDUnassociatedAccessory *)self messageDestination];
+      messageDestination = [(HMDUnassociatedAccessory *)self messageDestination];
       v14 = *MEMORY[0x277CD1FC8];
-      v15[0] = v4;
+      v15[0] = nameCopy;
       v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-      v11 = [v8 messageWithName:*MEMORY[0x277CD1FC0] destination:v9 payload:v10];
+      v11 = [v8 messageWithName:*MEMORY[0x277CD1FC0] destination:messageDestination payload:v10];
 
-      v12 = [(HMDUnassociatedAccessory *)self messageDispatcher];
-      [v12 sendMessage:v11 completionHandler:0];
+      messageDispatcher = [(HMDUnassociatedAccessory *)self messageDispatcher];
+      [messageDispatcher sendMessage:v11 completionHandler:0];
     }
   }
 
@@ -381,11 +381,11 @@ void __44__HMDUnassociatedAccessory__handleIdentify___block_invoke(uint64_t a1, 
 - (void)_registerForMessages
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDUnassociatedAccessory *)self messageDispatcher];
+  messageDispatcher = [(HMDUnassociatedAccessory *)self messageDispatcher];
   v4 = [HMDXPCMessagePolicy policyWithEntitlements:1];
   v7[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
-  [v3 registerForMessage:@"kIdentifyAccessoryRequestKey" receiver:self policies:v5 selector:sel__handleIdentify_];
+  [messageDispatcher registerForMessage:@"kIdentifyAccessoryRequestKey" receiver:self policies:v5 selector:sel__handleIdentify_];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -394,25 +394,25 @@ void __44__HMDUnassociatedAccessory__handleIdentify___block_invoke(uint64_t a1, 
 {
   v3 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(HMDUnassociatedAccessory *)self name];
-  v6 = [(HMDUnassociatedAccessory *)self uuid];
-  v7 = [v6 UUIDString];
-  v8 = [(HMDUnassociatedAccessory *)self identifier];
-  v9 = [v4 stringWithFormat:@"Accessory '%@': uuid %@  identifier %@", v5, v7, v8];
+  name = [(HMDUnassociatedAccessory *)self name];
+  uuid = [(HMDUnassociatedAccessory *)self uuid];
+  uUIDString = [uuid UUIDString];
+  identifier = [(HMDUnassociatedAccessory *)self identifier];
+  v9 = [v4 stringWithFormat:@"Accessory '%@': uuid %@  identifier %@", name, uUIDString, identifier];
 
   [v3 setObject:v9 forKey:*MEMORY[0x277D0F170]];
 
   return v3;
 }
 
-- (id)descriptionWithPointer:(BOOL)a3 additionalDescription:(id)a4
+- (id)descriptionWithPointer:(BOOL)pointer additionalDescription:(id)description
 {
-  v4 = a3;
-  v25 = a4;
+  pointerCopy = pointer;
+  descriptionCopy = description;
   v19 = MEMORY[0x277CCACA8];
-  v24 = [objc_opt_class() shortDescription];
-  v21 = v4;
-  if (v4)
+  shortDescription = [objc_opt_class() shortDescription];
+  v21 = pointerCopy;
+  if (pointerCopy)
   {
     v22 = [MEMORY[0x277CCACA8] stringWithFormat:@" %p", self];
   }
@@ -422,27 +422,27 @@ void __44__HMDUnassociatedAccessory__handleIdentify___block_invoke(uint64_t a1, 
     v22 = &stru_286509E58;
   }
 
-  v20 = [(HMDUnassociatedAccessory *)self uuid];
-  v23 = [v20 UUIDString];
+  uuid = [(HMDUnassociatedAccessory *)self uuid];
+  uUIDString = [uuid UUIDString];
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDUnassociatedAccessory isKnownToSystemCommissioner](self, "isKnownToSystemCommissioner")}];
   v7 = MEMORY[0x277CCABB0];
-  v8 = [(HMDUnassociatedAccessory *)self rootPublicKey];
-  v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(v8, "hash")}];
-  v10 = [(HMDUnassociatedAccessory *)self nodeID];
-  v11 = [(HMDUnassociatedAccessory *)self identifier];
-  v12 = [(HMDUnassociatedAccessory *)self name];
-  v13 = [(HMDUnassociatedAccessory *)self category];
-  v14 = [v13 name];
-  v15 = v14;
-  if (v25)
+  rootPublicKey = [(HMDUnassociatedAccessory *)self rootPublicKey];
+  v9 = [v7 numberWithUnsignedInteger:{objc_msgSend(rootPublicKey, "hash")}];
+  nodeID = [(HMDUnassociatedAccessory *)self nodeID];
+  identifier = [(HMDUnassociatedAccessory *)self identifier];
+  name = [(HMDUnassociatedAccessory *)self name];
+  category = [(HMDUnassociatedAccessory *)self category];
+  name2 = [category name];
+  v15 = name2;
+  if (descriptionCopy)
   {
-    v16 = [MEMORY[0x277CCACA8] stringWithFormat:@", %@", v25];
-    v17 = [v19 stringWithFormat:@"<%@%@, UUID = %@, knownToSystemCommissioner = %@, RPK(Hash) = %@, NodeID = %@, Identifier = %@, Name = %@, Category = %@%@>", v24, v22, v23, v6, v9, v10, v11, v12, v15, v16];
+    descriptionCopy = [MEMORY[0x277CCACA8] stringWithFormat:@", %@", descriptionCopy];
+    v17 = [v19 stringWithFormat:@"<%@%@, UUID = %@, knownToSystemCommissioner = %@, RPK(Hash) = %@, NodeID = %@, Identifier = %@, Name = %@, Category = %@%@>", shortDescription, v22, uUIDString, v6, v9, nodeID, identifier, name, v15, descriptionCopy];
   }
 
   else
   {
-    v17 = [v19 stringWithFormat:@"<%@%@, UUID = %@, knownToSystemCommissioner = %@, RPK(Hash) = %@, NodeID = %@, Identifier = %@, Name = %@, Category = %@%@>", v24, v22, v23, v6, v9, v10, v11, v12, v14, &stru_286509E58];
+    v17 = [v19 stringWithFormat:@"<%@%@, UUID = %@, knownToSystemCommissioner = %@, RPK(Hash) = %@, NodeID = %@, Identifier = %@, Name = %@, Category = %@%@>", shortDescription, v22, uUIDString, v6, v9, nodeID, identifier, name, name2, &stru_286509E58];
   }
 
   if (v21)
@@ -455,17 +455,17 @@ void __44__HMDUnassociatedAccessory__handleIdentify___block_invoke(uint64_t a1, 
 - (id)shortDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [objc_opt_class() shortDescription];
-  v5 = [(HMDUnassociatedAccessory *)self identifier];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  shortDescription = [objc_opt_class() shortDescription];
+  identifier = [(HMDUnassociatedAccessory *)self identifier];
+  v6 = [v3 stringWithFormat:@"%@ %@", shortDescription, identifier];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -475,7 +475,7 @@ void __44__HMDUnassociatedAccessory__handleIdentify___block_invoke(uint64_t a1, 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -486,9 +486,9 @@ void __44__HMDUnassociatedAccessory__handleIdentify___block_invoke(uint64_t a1, 
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDUnassociatedAccessory *)self identifier];
-      v8 = [(HMDUnassociatedAccessory *)v6 identifier];
-      v9 = [v7 isEqualToString:v8];
+      identifier = [(HMDUnassociatedAccessory *)self identifier];
+      identifier2 = [(HMDUnassociatedAccessory *)v6 identifier];
+      v9 = [identifier isEqualToString:identifier2];
     }
 
     else
@@ -515,58 +515,58 @@ void __44__HMDUnassociatedAccessory__handleIdentify___block_invoke(uint64_t a1, 
 
 - (unint64_t)hash
 {
-  v2 = [(HMDUnassociatedAccessory *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(HMDUnassociatedAccessory *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
 - (void)dealloc
 {
-  v3 = [(HMDUnassociatedAccessory *)self messageDispatcher];
-  [v3 deregisterReceiver:self];
+  messageDispatcher = [(HMDUnassociatedAccessory *)self messageDispatcher];
+  [messageDispatcher deregisterReceiver:self];
 
   v4.receiver = self;
   v4.super_class = HMDUnassociatedAccessory;
   [(HMDUnassociatedAccessory *)&v4 dealloc];
 }
 
-- (HMDUnassociatedAccessory)initWithIdentifier:(id)a3 name:(id)a4 category:(id)a5 messageDispatcher:(id)a6
+- (HMDUnassociatedAccessory)initWithIdentifier:(id)identifier name:(id)name category:(id)category messageDispatcher:(id)dispatcher
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  nameCopy = name;
+  categoryCopy = category;
+  dispatcherCopy = dispatcher;
   v23.receiver = self;
   v23.super_class = HMDUnassociatedAccessory;
   v14 = [(HMDUnassociatedAccessory *)&v23 init];
   if (v14)
   {
-    v15 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     uuid = v14->_uuid;
-    v14->_uuid = v15;
+    v14->_uuid = uUID;
 
-    v17 = [v10 copy];
+    v17 = [identifierCopy copy];
     identifier = v14->_identifier;
     v14->_identifier = v17;
 
-    v19 = [v11 copy];
+    v19 = [nameCopy copy];
     name = v14->_name;
     v14->_name = v19;
 
-    v21 = v12;
-    if (!v12)
+    v21 = categoryCopy;
+    if (!categoryCopy)
     {
       v21 = +[HMDUnassociatedAccessory otherAccessoryCategory];
     }
 
     objc_storeStrong(&v14->_category, v21);
-    if (!v12)
+    if (!categoryCopy)
     {
     }
 
-    objc_storeStrong(&v14->_messageDispatcher, a6);
-    if (v13)
+    objc_storeStrong(&v14->_messageDispatcher, dispatcher);
+    if (dispatcherCopy)
     {
       [(HMDUnassociatedAccessory *)v14 _registerForMessages];
     }
@@ -620,12 +620,12 @@ uint64_t __39__HMDUnassociatedAccessory_logCategory__block_invoke()
 + (id)otherAccessoryCategory
 {
   v2 = +[HMDHAPMetadata getSharedInstance];
-  v3 = [v2 categoryForOther];
+  categoryForOther = [v2 categoryForOther];
 
   v4 = objc_alloc(MEMORY[0x277CD1680]);
-  v5 = [v3 uuidStr];
-  v6 = [v3 catDescription];
-  v7 = [v4 initWithType:v5 name:v6];
+  uuidStr = [categoryForOther uuidStr];
+  catDescription = [categoryForOther catDescription];
+  v7 = [v4 initWithType:uuidStr name:catDescription];
 
   v8 = [MEMORY[0x277CD1A18] cachedInstanceForHMAccessoryCategory:v7];
 

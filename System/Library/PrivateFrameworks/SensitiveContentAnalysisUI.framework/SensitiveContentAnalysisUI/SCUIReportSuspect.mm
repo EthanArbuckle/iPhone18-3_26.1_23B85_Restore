@@ -1,28 +1,28 @@
 @interface SCUIReportSuspect
-- (SCUIReportSuspect)initWithDisplayName:(id)a3 accountID:(id)a4 sensitiveMediaFiles:(id)a5;
+- (SCUIReportSuspect)initWithDisplayName:(id)name accountID:(id)d sensitiveMediaFiles:(id)files;
 @end
 
 @implementation SCUIReportSuspect
 
-- (SCUIReportSuspect)initWithDisplayName:(id)a3 accountID:(id)a4 sensitiveMediaFiles:(id)a5
+- (SCUIReportSuspect)initWithDisplayName:(id)name accountID:(id)d sensitiveMediaFiles:(id)files
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  dCopy = d;
+  filesCopy = files;
   v19.receiver = self;
   v19.super_class = SCUIReportSuspect;
   v11 = [(SCUIReportSuspect *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [nameCopy copy];
     displayName = v11->_displayName;
     v11->_displayName = v12;
 
-    v14 = [v9 copy];
+    v14 = [dCopy copy];
     accountID = v11->_accountID;
     v11->_accountID = v14;
 
-    v16 = [v10 copy];
+    v16 = [filesCopy copy];
     sensitiveMediaFiles = v11->_sensitiveMediaFiles;
     v11->_sensitiveMediaFiles = v16;
   }

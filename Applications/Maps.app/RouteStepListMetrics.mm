@@ -3,14 +3,14 @@
 + (id)navigationMetrics;
 + (id)rapMetrics;
 + (id)routePlanningMetrics;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RouteStepListMetrics
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v4 + 2) = *&self->_primaryTextTopMargin;
   *(v4 + 3) = *&self->_primaryTextTrailingMargin;
   objc_storeStrong(v4 + 4, self->_primaryTextActiveTextColor);

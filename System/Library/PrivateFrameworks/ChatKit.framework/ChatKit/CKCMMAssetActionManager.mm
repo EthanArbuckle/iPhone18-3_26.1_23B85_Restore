@@ -1,168 +1,168 @@
 @interface CKCMMAssetActionManager
-+ (id)assetActionManagerWithCMMSession:(id)a3 chatItem:(id)a4 presentedFromInlineReply:(BOOL)a5 chatActionHelper:(id)a6 performerDelegate:(id)a7;
-- (BOOL)canPerformActionType:(id)a3;
-- (BOOL)shouldEnableActionType:(id)a3 onAsset:(id)a4;
-- (BOOL)supportsActionType:(id)a3;
-- (id)_destinationActionManagerForActionType:(id)a3;
-- (id)actionPerformerForActionType:(id)a3;
-- (id)barButtonItemForActionType:(id)a3;
-- (id)previewActionForActionType:(id)a3 image:(id)a4;
-- (void)_propagateObjectReference:(id)a3;
-- (void)_propagatePerformerDelegate:(id)a3;
-- (void)executeActionForActionType:(id)a3 withCompletionHandler:(id)a4;
-- (void)setAdditionalPropertiesFromActionManager:(id)a3;
-- (void)setObjectReference:(id)a3;
-- (void)setPerformerDelegate:(id)a3;
++ (id)assetActionManagerWithCMMSession:(id)session chatItem:(id)item presentedFromInlineReply:(BOOL)reply chatActionHelper:(id)helper performerDelegate:(id)delegate;
+- (BOOL)canPerformActionType:(id)type;
+- (BOOL)shouldEnableActionType:(id)type onAsset:(id)asset;
+- (BOOL)supportsActionType:(id)type;
+- (id)_destinationActionManagerForActionType:(id)type;
+- (id)actionPerformerForActionType:(id)type;
+- (id)barButtonItemForActionType:(id)type;
+- (id)previewActionForActionType:(id)type image:(id)image;
+- (void)_propagateObjectReference:(id)reference;
+- (void)_propagatePerformerDelegate:(id)delegate;
+- (void)executeActionForActionType:(id)type withCompletionHandler:(id)handler;
+- (void)setAdditionalPropertiesFromActionManager:(id)manager;
+- (void)setObjectReference:(id)reference;
+- (void)setPerformerDelegate:(id)delegate;
 @end
 
 @implementation CKCMMAssetActionManager
 
-+ (id)assetActionManagerWithCMMSession:(id)a3 chatItem:(id)a4 presentedFromInlineReply:(BOOL)a5 chatActionHelper:(id)a6 performerDelegate:(id)a7
++ (id)assetActionManagerWithCMMSession:(id)session chatItem:(id)item presentedFromInlineReply:(BOOL)reply chatActionHelper:(id)helper performerDelegate:(id)delegate
 {
-  v8 = a5;
-  v12 = a7;
-  v13 = a6;
-  v14 = a4;
-  v15 = a3;
-  v16 = [v15 viewModel];
-  v17 = [v16 selectionManager];
+  replyCopy = reply;
+  delegateCopy = delegate;
+  helperCopy = helper;
+  itemCopy = item;
+  sessionCopy = session;
+  viewModel = [sessionCopy viewModel];
+  selectionManager = [viewModel selectionManager];
 
-  v18 = [[a1 alloc] initWithSelectionManager:v17];
-  [v18 setSession:v15];
-  [v18 setPresentedFromInlineReply:v8];
-  v19 = [MEMORY[0x1E69C3820] assetActionManagerWithCMMSession:v15];
+  v18 = [[self alloc] initWithSelectionManager:selectionManager];
+  [v18 setSession:sessionCopy];
+  [v18 setPresentedFromInlineReply:replyCopy];
+  v19 = [MEMORY[0x1E69C3820] assetActionManagerWithCMMSession:sessionCopy];
 
   [v18 setPhotosAssetActionManager:v19];
-  v20 = [[CKMediaObjectAssetActionManager alloc] initWithChatItem:v14 presentedFromInlineReply:v8 chatActionHelper:v13 selectionManager:v17];
+  v20 = [[CKMediaObjectAssetActionManager alloc] initWithChatItem:itemCopy presentedFromInlineReply:replyCopy chatActionHelper:helperCopy selectionManager:selectionManager];
 
   [v18 setMessagesAssetActionManager:v20];
-  [v18 _propagatePerformerDelegate:v12];
+  [v18 _propagatePerformerDelegate:delegateCopy];
 
   return v18;
 }
 
-- (id)barButtonItemForActionType:(id)a3
+- (id)barButtonItemForActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(CKCMMAssetActionManager *)self _destinationActionManagerForActionType:v4];
-  v6 = [v5 barButtonItemForActionType:v4];
+  typeCopy = type;
+  v5 = [(CKCMMAssetActionManager *)self _destinationActionManagerForActionType:typeCopy];
+  v6 = [v5 barButtonItemForActionType:typeCopy];
 
   return v6;
 }
 
-- (id)actionPerformerForActionType:(id)a3
+- (id)actionPerformerForActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(CKCMMAssetActionManager *)self _destinationActionManagerForActionType:v4];
-  v6 = [v5 actionPerformerForActionType:v4];
+  typeCopy = type;
+  v5 = [(CKCMMAssetActionManager *)self _destinationActionManagerForActionType:typeCopy];
+  v6 = [v5 actionPerformerForActionType:typeCopy];
 
   return v6;
 }
 
-- (BOOL)supportsActionType:(id)a3
+- (BOOL)supportsActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(CKCMMAssetActionManager *)self _destinationActionManagerForActionType:v4];
-  v6 = [v5 supportsActionType:v4];
+  typeCopy = type;
+  v5 = [(CKCMMAssetActionManager *)self _destinationActionManagerForActionType:typeCopy];
+  v6 = [v5 supportsActionType:typeCopy];
 
   return v6;
 }
 
-- (BOOL)canPerformActionType:(id)a3
+- (BOOL)canPerformActionType:(id)type
 {
-  v4 = a3;
-  v5 = [(CKCMMAssetActionManager *)self _destinationActionManagerForActionType:v4];
-  v6 = [v5 canPerformActionType:v4];
+  typeCopy = type;
+  v5 = [(CKCMMAssetActionManager *)self _destinationActionManagerForActionType:typeCopy];
+  v6 = [v5 canPerformActionType:typeCopy];
 
   return v6;
 }
 
-- (BOOL)shouldEnableActionType:(id)a3 onAsset:(id)a4
+- (BOOL)shouldEnableActionType:(id)type onAsset:(id)asset
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CKCMMAssetActionManager *)self _destinationActionManagerForActionType:v7];
-  v9 = [v8 shouldEnableActionType:v7 onAsset:v6];
+  assetCopy = asset;
+  typeCopy = type;
+  v8 = [(CKCMMAssetActionManager *)self _destinationActionManagerForActionType:typeCopy];
+  v9 = [v8 shouldEnableActionType:typeCopy onAsset:assetCopy];
 
   return v9;
 }
 
-- (id)previewActionForActionType:(id)a3 image:(id)a4
+- (id)previewActionForActionType:(id)type image:(id)image
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CKCMMAssetActionManager *)self _destinationActionManagerForActionType:v7];
-  v9 = [v8 previewActionForActionType:v7 image:v6];
+  imageCopy = image;
+  typeCopy = type;
+  v8 = [(CKCMMAssetActionManager *)self _destinationActionManagerForActionType:typeCopy];
+  v9 = [v8 previewActionForActionType:typeCopy image:imageCopy];
 
   return v9;
 }
 
-- (void)executeActionForActionType:(id)a3 withCompletionHandler:(id)a4
+- (void)executeActionForActionType:(id)type withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CKCMMAssetActionManager *)self _destinationActionManagerForActionType:v7];
-  [v8 executeActionForActionType:v7 withCompletionHandler:v6];
+  handlerCopy = handler;
+  typeCopy = type;
+  v8 = [(CKCMMAssetActionManager *)self _destinationActionManagerForActionType:typeCopy];
+  [v8 executeActionForActionType:typeCopy withCompletionHandler:handlerCopy];
 }
 
-- (void)setAdditionalPropertiesFromActionManager:(id)a3
+- (void)setAdditionalPropertiesFromActionManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v20.receiver = self;
   v20.super_class = CKCMMAssetActionManager;
-  [(CKCMMAssetActionManager *)&v20 setAdditionalPropertiesFromActionManager:v4];
+  [(CKCMMAssetActionManager *)&v20 setAdditionalPropertiesFromActionManager:managerCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 messagesAssetActionManager];
-    v7 = [v5 session];
+    v5 = managerCopy;
+    messagesAssetActionManager = [v5 messagesAssetActionManager];
+    session = [v5 session];
     session = self->_session;
-    self->_session = v7;
+    self->_session = session;
 
     v9 = [MEMORY[0x1E69C3820] assetActionManagerWithCMMSession:self->_session];
     photosAssetActionManager = self->_photosAssetActionManager;
     self->_photosAssetActionManager = v9;
 
     v11 = [CKMediaObjectAssetActionManager alloc];
-    v12 = [v6 chatItem];
-    v13 = [v5 presentedFromInlineReply];
+    chatItem = [messagesAssetActionManager chatItem];
+    presentedFromInlineReply = [v5 presentedFromInlineReply];
 
-    v14 = [v6 chatActionHelper];
-    v15 = [v6 selectionManager];
-    v16 = [(CKMediaObjectAssetActionManager *)v11 initWithChatItem:v12 presentedFromInlineReply:v13 chatActionHelper:v14 selectionManager:v15];
+    chatActionHelper = [messagesAssetActionManager chatActionHelper];
+    selectionManager = [messagesAssetActionManager selectionManager];
+    v16 = [(CKMediaObjectAssetActionManager *)v11 initWithChatItem:chatItem presentedFromInlineReply:presentedFromInlineReply chatActionHelper:chatActionHelper selectionManager:selectionManager];
     messagesAssetActionManager = self->_messagesAssetActionManager;
     self->_messagesAssetActionManager = v16;
 
-    v18 = [(PXActionManager *)self performerDelegate];
-    [(CKCMMAssetActionManager *)self _propagatePerformerDelegate:v18];
+    performerDelegate = [(PXActionManager *)self performerDelegate];
+    [(CKCMMAssetActionManager *)self _propagatePerformerDelegate:performerDelegate];
 
-    v19 = [(CKCMMAssetActionManager *)self objectReference];
-    [(CKCMMAssetActionManager *)self _propagateObjectReference:v19];
+    objectReference = [(CKCMMAssetActionManager *)self objectReference];
+    [(CKCMMAssetActionManager *)self _propagateObjectReference:objectReference];
   }
 }
 
-- (void)setPerformerDelegate:(id)a3
+- (void)setPerformerDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = CKCMMAssetActionManager;
-  v4 = a3;
-  [(PXActionManager *)&v5 setPerformerDelegate:v4];
-  [(CKCMMAssetActionManager *)self _propagatePerformerDelegate:v4, v5.receiver, v5.super_class];
+  delegateCopy = delegate;
+  [(PXActionManager *)&v5 setPerformerDelegate:delegateCopy];
+  [(CKCMMAssetActionManager *)self _propagatePerformerDelegate:delegateCopy, v5.receiver, v5.super_class];
 }
 
-- (void)setObjectReference:(id)a3
+- (void)setObjectReference:(id)reference
 {
   v5.receiver = self;
   v5.super_class = CKCMMAssetActionManager;
-  v4 = a3;
-  [(CKCMMAssetActionManager *)&v5 setObjectReference:v4];
-  [(CKCMMAssetActionManager *)self _propagateObjectReference:v4, v5.receiver, v5.super_class];
+  referenceCopy = reference;
+  [(CKCMMAssetActionManager *)&v5 setObjectReference:referenceCopy];
+  [(CKCMMAssetActionManager *)self _propagateObjectReference:referenceCopy, v5.receiver, v5.super_class];
 }
 
-- (id)_destinationActionManagerForActionType:(id)a3
+- (id)_destinationActionManagerForActionType:(id)type
 {
-  if ([a3 isEqualToString:*MEMORY[0x1E69C4630]])
+  if ([type isEqualToString:*MEMORY[0x1E69C4630]])
   {
     [(CKCMMAssetActionManager *)self photosAssetActionManager];
   }
@@ -176,36 +176,36 @@
   return v4;
 }
 
-- (void)_propagatePerformerDelegate:(id)a3
+- (void)_propagatePerformerDelegate:(id)delegate
 {
-  v8 = a3;
-  v4 = [(CKCMMAssetActionManager *)self photosAssetActionManager];
+  delegateCopy = delegate;
+  photosAssetActionManager = [(CKCMMAssetActionManager *)self photosAssetActionManager];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKCMMAssetActionManager *)self photosAssetActionManager];
-    [v6 setPerformerDelegate:v8];
+    photosAssetActionManager2 = [(CKCMMAssetActionManager *)self photosAssetActionManager];
+    [photosAssetActionManager2 setPerformerDelegate:delegateCopy];
   }
 
-  v7 = [(CKCMMAssetActionManager *)self messagesAssetActionManager];
-  [v7 setPerformerDelegate:v8];
+  messagesAssetActionManager = [(CKCMMAssetActionManager *)self messagesAssetActionManager];
+  [messagesAssetActionManager setPerformerDelegate:delegateCopy];
 }
 
-- (void)_propagateObjectReference:(id)a3
+- (void)_propagateObjectReference:(id)reference
 {
-  v8 = a3;
-  v4 = [(CKCMMAssetActionManager *)self photosAssetActionManager];
+  referenceCopy = reference;
+  photosAssetActionManager = [(CKCMMAssetActionManager *)self photosAssetActionManager];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKCMMAssetActionManager *)self photosAssetActionManager];
-    [v6 setObjectReference:v8];
+    photosAssetActionManager2 = [(CKCMMAssetActionManager *)self photosAssetActionManager];
+    [photosAssetActionManager2 setObjectReference:referenceCopy];
   }
 
-  v7 = [(CKCMMAssetActionManager *)self messagesAssetActionManager];
-  [v7 setObjectReference:v8];
+  messagesAssetActionManager = [(CKCMMAssetActionManager *)self messagesAssetActionManager];
+  [messagesAssetActionManager setObjectReference:referenceCopy];
 }
 
 @end

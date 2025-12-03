@@ -1,12 +1,12 @@
 @interface MSSPhotoStreamInAccountSettingsController
-- (void)navigationEventParameters:(id)a3;
+- (void)navigationEventParameters:(id)parameters;
 @end
 
 @implementation MSSPhotoStreamInAccountSettingsController
 
-- (void)navigationEventParameters:(id)a3
+- (void)navigationEventParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   v4 = SettingsBaseControllerLocalizedStringResource(@"NAVIGATION_COMPONENT_APPLE_ACCOUNT");
   v8[0] = v4;
   v5 = SettingsBaseControllerLocalizedStringResource(@"NAVIGATION_COMPONENT_ICLOUD");
@@ -14,7 +14,7 @@
   v6 = [NSArray arrayWithObjects:v8 count:2];
 
   v7 = [NSURL URLWithString:@"settings-navigation://com.apple.Settings.AppleAccount/ICLOUD_SERVICE/com.apple.Dataclass.CloudPhotos"];
-  v3[2](v3, v6, v7);
+  parametersCopy[2](parametersCopy, v6, v7);
 }
 
 @end

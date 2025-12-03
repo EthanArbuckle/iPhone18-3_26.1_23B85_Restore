@@ -1,82 +1,82 @@
 @interface MTATimerViewController
 - (BOOL)prefersStatusBarHidden;
 - (MTATimerRunningDelegate)delegate;
-- (MTATimerViewController)initWithDelegate:(id)a3;
-- (MTATimerViewController)initWithTimer:(id)a3 timerManager:(id)a4 dataSource:(id)a5 delegate:(id)a6;
-- (MTATimerViewController)initWithTimerManager:(id)a3 dataSource:(id)a4 delegate:(id)a5;
+- (MTATimerViewController)initWithDelegate:(id)delegate;
+- (MTATimerViewController)initWithTimer:(id)timer timerManager:(id)manager dataSource:(id)source delegate:(id)delegate;
+- (MTATimerViewController)initWithTimerManager:(id)manager dataSource:(id)source delegate:(id)delegate;
 - (id)defaultEditLabel;
 - (id)shortcutItemForCurrentState;
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3;
-- (void)addNewTimerWithDuration:(double)a3 title:(id)a4 sound:(id)a5;
-- (void)cancelTimer:(id)a3;
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations;
+- (void)addNewTimerWithDuration:(double)duration title:(id)title sound:(id)sound;
+- (void)cancelTimer:(id)timer;
 - (void)confirmPickingSound;
 - (void)dealloc;
-- (void)didUpdateWithLabel:(id)a3 sender:(id)a4;
+- (void)didUpdateWithLabel:(id)label sender:(id)sender;
 - (void)dismissSoundPicker;
-- (void)handleContentSizeChange:(id)a3;
+- (void)handleContentSizeChange:(id)change;
 - (void)handleResignActive;
 - (void)handleStartTimerShortcutAction;
 - (void)handleStopTimerShortcutAction;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
 - (void)loadView;
-- (void)menuBarAppearedWithBuilder:(id)a3 targetMenuIdentifier:(id)a4;
-- (void)moveViewFrameToVerticalPosition:(float)a3;
-- (void)pauseResumeTimer:(id)a3;
-- (void)popoverPresentationControllerDidDismissPopover:(id)a3;
-- (void)prepareUIForState:(unint64_t)a3 forceRefresh:(BOOL)a4;
-- (void)reloadStateForCurrentTimer:(id)a3;
-- (void)reloadStateForMultipleTimers:(id)a3;
-- (void)reloadTimerUiForceRefresh:(BOOL)a3;
+- (void)menuBarAppearedWithBuilder:(id)builder targetMenuIdentifier:(id)identifier;
+- (void)moveViewFrameToVerticalPosition:(float)position;
+- (void)pauseResumeTimer:(id)timer;
+- (void)popoverPresentationControllerDidDismissPopover:(id)popover;
+- (void)prepareUIForState:(unint64_t)state forceRefresh:(BOOL)refresh;
+- (void)reloadStateForCurrentTimer:(id)timer;
+- (void)reloadStateForMultipleTimers:(id)timers;
+- (void)reloadTimerUiForceRefresh:(BOOL)refresh;
 - (void)removeNotificationObserver;
 - (void)saveState;
-- (void)setStyle:(unint64_t)a3 forceRefresh:(BOOL)a4;
-- (void)setTimerViewStyleForceRefresh:(BOOL)a3;
-- (void)setupLayoutForTimerControlState:(unint64_t)a3;
-- (void)setupTimerUI:(id)a3;
-- (void)showSoundPicker:(id)a3;
-- (void)startTimer:(id)a3;
+- (void)setStyle:(unint64_t)style forceRefresh:(BOOL)refresh;
+- (void)setTimerViewStyleForceRefresh:(BOOL)refresh;
+- (void)setupLayoutForTimerControlState:(unint64_t)state;
+- (void)setupTimerUI:(id)i;
+- (void)showSoundPicker:(id)picker;
+- (void)startTimer:(id)timer;
 - (void)startUpdatingTimerUI;
 - (void)stopUpdatingTimerUI;
-- (void)timerTick:(id)a3;
-- (void)timersChanged:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)timerTick:(id)tick;
+- (void)timersChanged:(id)changed;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateSelectedSoundUI;
 - (void)updateShortcutItemForCurrentState;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation MTATimerViewController
 
 - (void)updateSelectedSoundUI
 {
-  v3 = [(MTATimerViewController *)self timer];
-  v4 = [v3 sound];
-  v5 = [v4 toneIdentifier];
-  v6 = v5;
-  if (v5)
+  timer = [(MTATimerViewController *)self timer];
+  sound = [timer sound];
+  toneIdentifier = [sound toneIdentifier];
+  v6 = toneIdentifier;
+  if (toneIdentifier)
   {
-    v17 = v5;
+    toneIdentifier2 = toneIdentifier;
   }
 
   else
   {
-    v7 = [(MTATimerViewController *)self sound];
-    v17 = [v7 toneIdentifier];
+    sound2 = [(MTATimerViewController *)self sound];
+    toneIdentifier2 = [sound2 toneIdentifier];
   }
 
   if ((+[UIApplication shouldMakeUIForDefaultPNG]& 1) == 0)
   {
-    v8 = [(MTATimerViewController *)self timer];
-    v9 = [v8 sound];
-    v10 = [v9 interruptAudio];
+    timer2 = [(MTATimerViewController *)self timer];
+    sound3 = [timer2 sound];
+    interruptAudio = [sound3 interruptAudio];
 
-    if (v10)
+    if (interruptAudio)
     {
       timerControlsView = self->_timerControlsView;
       v12 = +[NSBundle mainBundle];
@@ -87,9 +87,9 @@
     else
     {
       v12 = +[TLToneManager sharedToneManager];
-      if ([v12 toneWithIdentifierIsValid:v17])
+      if ([v12 toneWithIdentifierIsValid:toneIdentifier2])
       {
-        v15 = v17;
+        v15 = toneIdentifier2;
       }
 
       else
@@ -99,7 +99,7 @@
         v15 = v16;
       }
 
-      v17 = v15;
+      toneIdentifier2 = v15;
       v13 = [v12 nameForToneIdentifier:?];
       v14 = self->_timerControlsView;
     }
@@ -118,7 +118,7 @@
     if (v5)
     {
       v10 = 138543362;
-      v11 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ NSTimer exists", &v10, 0xCu);
     }
   }
@@ -128,7 +128,7 @@
     if (v5)
     {
       v10 = 138543362;
-      v11 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ Creating an NSTimer to update the UI", &v10, 0xCu);
     }
 
@@ -149,7 +149,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Invalidating NSTimer", &v5, 0xCu);
   }
 
@@ -158,59 +158,59 @@
   self->_updateTimer = 0;
 }
 
-- (MTATimerViewController)initWithTimer:(id)a3 timerManager:(id)a4 dataSource:(id)a5 delegate:(id)a6
+- (MTATimerViewController)initWithTimer:(id)timer timerManager:(id)manager dataSource:(id)source delegate:(id)delegate
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(MTATimerViewController *)self initWithDelegate:a6];
+  timerCopy = timer;
+  managerCopy = manager;
+  sourceCopy = source;
+  v13 = [(MTATimerViewController *)self initWithDelegate:delegate];
   v14 = v13;
   if (v13)
   {
-    [(MTATimerViewController *)v13 setTimer:v10];
-    v15 = [(MTATimerViewController *)v14 navigationItem];
-    [v15 setLargeTitleDisplayMode:2];
+    [(MTATimerViewController *)v13 setTimer:timerCopy];
+    navigationItem = [(MTATimerViewController *)v14 navigationItem];
+    [navigationItem setLargeTitleDisplayMode:2];
 
-    [v10 duration];
+    [timerCopy duration];
     v16 = [MTAUtilities durationStringFromInterval:?];
     [(MTATimerViewController *)v14 setTitle:v16];
 
-    objc_storeStrong(&v14->_timerManager, a4);
-    objc_storeStrong(&v14->_dataSource, a5);
+    objc_storeStrong(&v14->_timerManager, manager);
+    objc_storeStrong(&v14->_dataSource, source);
     timerControlsView = v14->_timerControlsView;
-    if ([v10 isCurrentTimer])
+    if ([timerCopy isCurrentTimer])
     {
       [(MTATimerControlsView *)timerControlsView setCurrentLabel:0];
     }
 
     else
     {
-      v18 = [v10 title];
-      [(MTATimerControlsView *)timerControlsView setCurrentLabel:v18];
+      title = [timerCopy title];
+      [(MTATimerControlsView *)timerControlsView setCurrentLabel:title];
     }
   }
 
   return v14;
 }
 
-- (MTATimerViewController)initWithTimerManager:(id)a3 dataSource:(id)a4 delegate:(id)a5
+- (MTATimerViewController)initWithTimerManager:(id)manager dataSource:(id)source delegate:(id)delegate
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = [(MTATimerViewController *)self initWithDelegate:a5];
+  managerCopy = manager;
+  sourceCopy = source;
+  v11 = [(MTATimerViewController *)self initWithDelegate:delegate];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_timerManager, a3);
-    objc_storeStrong(&v12->_dataSource, a4);
+    objc_storeStrong(&v11->_timerManager, manager);
+    objc_storeStrong(&v12->_dataSource, source);
   }
 
   return v12;
 }
 
-- (MTATimerViewController)initWithDelegate:(id)a3
+- (MTATimerViewController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v18.receiver = self;
   v18.super_class = MTATimerViewController;
   v5 = [(MTATimerViewController *)&v18 init];
@@ -222,25 +222,25 @@
       *buf = 138543618;
       v20 = v5;
       v21 = 2114;
-      v22 = v4;
+      v22 = delegateCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ initialized with delegate: %{public}@", buf, 0x16u);
     }
 
     v7 = [UIImage systemImageNamed:@"timer"];
-    v8 = [(MTATimerViewController *)v5 tabBarItem];
-    [v8 setImage:v7];
+    tabBarItem = [(MTATimerViewController *)v5 tabBarItem];
+    [tabBarItem setImage:v7];
 
     v9 = +[NSBundle mainBundle];
     v10 = [v9 localizedStringForKey:@"TIMER" value:&stru_1000AEF10 table:0];
     [(MTATimerViewController *)v5 setTitle:v10];
 
     [(MTATimerViewController *)v5 setShouldHandleTimerReload:1];
-    [(MTATimerViewController *)v5 setDelegate:v4];
-    v11 = [(MTTimerDataSource *)v5->_dataSource getLatestDuration];
-    v12 = [v11 sound];
-    if (v12)
+    [(MTATimerViewController *)v5 setDelegate:delegateCopy];
+    getLatestDuration = [(MTTimerDataSource *)v5->_dataSource getLatestDuration];
+    sound = [getLatestDuration sound];
+    if (sound)
     {
-      [(MTATimerViewController *)v5 setSound:v12];
+      [(MTATimerViewController *)v5 setSound:sound];
     }
 
     else
@@ -250,8 +250,8 @@
     }
 
     [(MTATimerViewController *)v5 setEdgesForExtendedLayout:5];
-    v14 = [(MTATimerViewController *)v5 title];
-    v15 = [NSUserActivity mtUserActivityWithActivityType:@"com.apple.clock.timer" title:v14];
+    title = [(MTATimerViewController *)v5 title];
+    v15 = [NSUserActivity mtUserActivityWithActivityType:@"com.apple.clock.timer" title:title];
     userActivity = v5->_userActivity;
     v5->_userActivity = v15;
 
@@ -272,13 +272,13 @@
 
 - (void)handleResignActive
 {
-  v2 = [(MTATimerViewController *)self view];
-  [v2 endEditing:1];
+  view = [(MTATimerViewController *)self view];
+  [view endEditing:1];
 }
 
-- (void)reloadStateForCurrentTimer:(id)a3
+- (void)reloadStateForCurrentTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -286,10 +286,10 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Reloading timer state", buf, 2u);
   }
 
-  v6 = [(MTATimerViewController *)self timerManager];
-  v7 = [(MTATimerViewController *)self timer];
-  v8 = [v7 timerIDString];
-  v9 = [v6 timerWithIdentifier:v8];
+  timerManager = [(MTATimerViewController *)self timerManager];
+  timer = [(MTATimerViewController *)self timer];
+  timerIDString = [timer timerIDString];
+  v9 = [timerManager timerWithIdentifier:timerIDString];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_1000100A8;
@@ -303,34 +303,34 @@
   v15[2] = sub_10001017C;
   v15[3] = &unk_1000ADBD0;
   v15[4] = self;
-  v16 = v4;
-  v13 = v4;
+  v16 = timerCopy;
+  v13 = timerCopy;
   v14 = [v12 addSuccessBlock:v15];
 }
 
-- (void)reloadStateForMultipleTimers:(id)a3
+- (void)reloadStateForMultipleTimers:(id)timers
 {
-  v4 = a3;
+  timersCopy = timers;
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v22 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Reloading timer state", buf, 0xCu);
   }
 
-  v6 = [(MTATimerViewController *)self timer];
+  timer = [(MTATimerViewController *)self timer];
 
-  if (v6)
+  if (timer)
   {
-    v7 = [(MTATimerViewController *)self timerManager];
-    v8 = [v7 timers];
+    timerManager = [(MTATimerViewController *)self timerManager];
+    timers = [timerManager timers];
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_100010558;
     v20[3] = &unk_1000ADC20;
     v20[4] = self;
-    v9 = [v8 flatMap:v20];
+    v9 = [timers flatMap:v20];
     v10 = +[NAScheduler mtMainThreadScheduler];
     v11 = [v9 reschedule:v10];
     v18[0] = _NSConcreteStackBlock;
@@ -338,7 +338,7 @@
     v18[2] = sub_10001073C;
     v18[3] = &unk_1000ADBD0;
     v18[4] = self;
-    v12 = v4;
+    v12 = timersCopy;
     v19 = v12;
     v13 = [v11 addSuccessBlock:v18];
     v16[0] = _NSConcreteStackBlock;
@@ -356,16 +356,16 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v22 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "%{public}@ new timer ui, not reloading state", buf, 0xCu);
     }
   }
 }
 
-- (void)setupTimerUI:(id)a3
+- (void)setupTimerUI:(id)i
 {
   timerControlsView = self->_timerControlsView;
-  [a3 duration];
+  [i duration];
   [(MTATimerControlsView *)timerControlsView setCountDownDuration:?];
   [(MTATimerViewController *)self reloadTimerUI];
 
@@ -378,14 +378,14 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Saving timer state", buf, 0xCu);
   }
 
-  v4 = [(MTATimerViewController *)self timerManager];
-  v5 = [(MTATimerViewController *)self timer];
-  v6 = [v5 timerIDString];
-  v7 = [v4 timerWithIdentifier:v6];
+  timerManager = [(MTATimerViewController *)self timerManager];
+  timer = [(MTATimerViewController *)self timer];
+  timerIDString = [timer timerIDString];
+  v7 = [timerManager timerWithIdentifier:timerIDString];
   v8 = +[NAScheduler mtMainThreadScheduler];
   v9 = [v7 reschedule:v8];
   v11[0] = _NSConcreteStackBlock;
@@ -396,27 +396,27 @@
   v10 = [v9 addSuccessBlock:v11];
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
+  collectionCopy = collection;
   v11.receiver = self;
   v11.super_class = MTATimerViewController;
-  [(MTATimerViewController *)&v11 willTransitionToTraitCollection:v6 withTransitionCoordinator:a4];
-  v7 = [(MTATimerViewController *)self traitCollection];
-  v8 = [v7 horizontalSizeClass];
-  if (v8 == [v6 horizontalSizeClass])
+  [(MTATimerViewController *)&v11 willTransitionToTraitCollection:collectionCopy withTransitionCoordinator:coordinator];
+  traitCollection = [(MTATimerViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
+  if (horizontalSizeClass == [collectionCopy horizontalSizeClass])
   {
   }
 
   else
   {
-    v9 = [v6 verticalSizeClass];
+    verticalSizeClass = [collectionCopy verticalSizeClass];
 
-    if (v9 == 2)
+    if (verticalSizeClass == 2)
     {
-      v10 = [(TKTonePickerViewController *)self->_tonePickerViewController presentingViewController];
+      presentingViewController = [(TKTonePickerViewController *)self->_tonePickerViewController presentingViewController];
 
-      if (v10)
+      if (presentingViewController)
       {
         [(MTATimerViewController *)self dismissSoundPicker];
       }
@@ -424,19 +424,19 @@
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   self->_layoutForTraitChange = 1;
   [(MTATimerViewController *)self setTimerViewStyleForceRefresh:1];
-  v4 = [(MTATimerViewController *)self view];
-  [v4 setNeedsLayout];
+  view = [(MTATimerViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (void)setStyle:(unint64_t)a3 forceRefresh:(BOOL)a4
+- (void)setStyle:(unint64_t)style forceRefresh:(BOOL)refresh
 {
-  if (self->_style != a3 || a4)
+  if (self->_style != style || refresh)
   {
-    self->_style = a3;
+    self->_style = style;
     [MTATimerControlsView setStyle:"setStyle:forceRefresh:" forceRefresh:?];
     timerControlsView = self->_timerControlsView;
 
@@ -451,31 +451,31 @@
   [(MTATimerViewController *)&v5 viewDidLayoutSubviews];
   [(MTATimerViewController *)self setTimerViewStyle];
   timerControlsView = self->_timerControlsView;
-  v4 = [(MTATimerViewController *)self view];
-  [v4 bounds];
+  view = [(MTATimerViewController *)self view];
+  [view bounds];
   [(MTATimerControlsView *)timerControlsView setFrame:?];
 
   self->_layoutForTraitChange = 0;
 }
 
-- (void)setTimerViewStyleForceRefresh:(BOOL)a3
+- (void)setTimerViewStyleForceRefresh:(BOOL)refresh
 {
-  v3 = a3;
+  refreshCopy = refresh;
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 windows];
-  v12 = [v6 firstObject];
+  windows = [v5 windows];
+  firstObject = [windows firstObject];
 
-  v7 = [(MTATimerViewController *)self traitCollection];
-  v8 = [v7 horizontalSizeClass];
-  [v12 frame];
-  LODWORD(v5) = [MTAUtilities shouldUseCompactLayoutForSizeClass:v8 windowWidth:v9];
+  traitCollection = [(MTATimerViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
+  [firstObject frame];
+  LODWORD(v5) = [MTAUtilities shouldUseCompactLayoutForSizeClass:horizontalSizeClass windowWidth:v9];
 
   if (v5)
   {
     if (MTIdiomIpad())
     {
-      v10 = [(MTATimerViewController *)self timer];
-      if ([v10 state] == 1)
+      timer = [(MTATimerViewController *)self timer];
+      if ([timer state] == 1)
       {
         v11 = 2;
       }
@@ -497,7 +497,7 @@
     v11 = 3;
   }
 
-  [(MTATimerViewController *)self setStyle:v11 forceRefresh:v3];
+  [(MTATimerViewController *)self setStyle:v11 forceRefresh:refreshCopy];
 }
 
 - (void)loadView
@@ -505,27 +505,27 @@
   v18.receiver = self;
   v18.super_class = MTATimerViewController;
   [(MTATimerViewController *)&v18 loadView];
-  v3 = [(MTATimerViewController *)self timer];
-  if ([v3 state] == 3)
+  timer = [(MTATimerViewController *)self timer];
+  if ([timer state] == 3)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(MTATimerViewController *)self timer];
-    v4 = [v5 state] == 2 || self->_style == 3;
+    timer2 = [(MTATimerViewController *)self timer];
+    v4 = [timer2 state] == 2 || self->_style == 3;
   }
 
   v6 = [[MTATimerControlsView alloc] initWithDelegate:self style:self->_style timerControlState:v4];
   timerControlsView = self->_timerControlsView;
   self->_timerControlsView = v6;
 
-  v8 = [(MTATimerViewController *)self view];
-  [v8 addSubview:self->_timerControlsView];
+  view = [(MTATimerViewController *)self view];
+  [view addSubview:self->_timerControlsView];
 
-  v9 = [(MTATimerViewController *)self timer];
-  if (v9 || MTIdiomIpad())
+  timer3 = [(MTATimerViewController *)self timer];
+  if (timer3 || MTIdiomIpad())
   {
 
     v10 = +[NSNotificationCenter defaultCenter];
@@ -557,32 +557,32 @@
   [(MTATimerViewController *)self reloadState];
 }
 
-- (void)setupLayoutForTimerControlState:(unint64_t)a3
+- (void)setupLayoutForTimerControlState:(unint64_t)state
 {
-  if (a3 == 1 && ([(MTATimerViewController *)self timer], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+  if (state == 1 && ([(MTATimerViewController *)self timer], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = [(MTATimerViewController *)self timer];
-    [(MTATimerViewController *)self setupTimerUI:v5];
+    timer = [(MTATimerViewController *)self timer];
+    [(MTATimerViewController *)self setupTimerUI:timer];
   }
 
   else
   {
     [(MTATimerViewController *)self reloadState];
     timerControlsView = self->_timerControlsView;
-    v5 = [(MTATimerViewController *)self dataSource];
-    v7 = [v5 getLatestDuration];
-    [v7 duration];
+    timer = [(MTATimerViewController *)self dataSource];
+    getLatestDuration = [timer getLatestDuration];
+    [getLatestDuration duration];
     [(MTATimerControlsView *)timerControlsView setCountDownDuration:?];
   }
 
   [(MTATimerViewController *)self setTimerViewStyle];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = MTATimerViewController;
-  [(MTATimerViewController *)&v6 viewWillAppear:a3];
+  [(MTATimerViewController *)&v6 viewWillAppear:appear];
   [(MTATimerViewController *)self reloadTimerUI];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"keyboardWillShow:" name:UIKeyboardWillShowNotification object:0];
@@ -591,77 +591,77 @@
   [v5 addObserver:self selector:"keyboardWillHide:" name:UIKeyboardWillHideNotification object:0];
 }
 
-- (void)reloadTimerUiForceRefresh:(BOOL)a3
+- (void)reloadTimerUiForceRefresh:(BOOL)refresh
 {
-  v3 = a3;
+  refreshCopy = refresh;
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543618;
-    v9 = self;
+    selfCopy = self;
     v10 = 1024;
-    v11 = v3;
+    v11 = refreshCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Reloading UI, force refresh: %i", &v8, 0x12u);
   }
 
-  v6 = [(MTATimerViewController *)self timer];
-  if (v6)
+  timer = [(MTATimerViewController *)self timer];
+  if (timer)
   {
-    v7 = [(MTATimerViewController *)self timer];
-    -[MTATimerViewController prepareUIForState:forceRefresh:](self, "prepareUIForState:forceRefresh:", [v7 state], v3);
+    timer2 = [(MTATimerViewController *)self timer];
+    -[MTATimerViewController prepareUIForState:forceRefresh:](self, "prepareUIForState:forceRefresh:", [timer2 state], refreshCopy);
   }
 
   else
   {
-    [(MTATimerViewController *)self prepareUIForState:1 forceRefresh:v3];
+    [(MTATimerViewController *)self prepareUIForState:1 forceRefresh:refreshCopy];
   }
 }
 
-- (void)prepareUIForState:(unint64_t)a3 forceRefresh:(BOOL)a4
+- (void)prepareUIForState:(unint64_t)state forceRefresh:(BOOL)refresh
 {
-  v4 = a4;
+  refreshCopy = refresh;
   v7 = MTLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v19 = self;
+    selfCopy = self;
     v20 = 2048;
-    v21 = a3;
+    stateCopy = state;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Preparing UI for state %lu", buf, 0x16u);
   }
 
   timerControlsView = self->_timerControlsView;
-  v9 = [(MTATimerViewController *)self timer];
-  [v9 remainingTime];
+  timer = [(MTATimerViewController *)self timer];
+  [timer remainingTime];
   v11 = v10;
-  v12 = [(MTATimerViewController *)self timer];
-  [v12 duration];
+  timer2 = [(MTATimerViewController *)self timer];
+  [timer2 duration];
   v14 = v13;
-  v15 = [(MTATimerViewController *)self timer];
-  if ([v15 isCurrentTimer])
+  timer3 = [(MTATimerViewController *)self timer];
+  if ([timer3 isCurrentTimer])
   {
-    [(MTATimerControlsView *)timerControlsView setRemainingTime:a3 duration:0 state:v4 title:v11 forceRefresh:v14];
+    [(MTATimerControlsView *)timerControlsView setRemainingTime:state duration:0 state:refreshCopy title:v11 forceRefresh:v14];
   }
 
   else
   {
-    v16 = [(MTATimerViewController *)self timer];
-    v17 = [v16 title];
-    [(MTATimerControlsView *)timerControlsView setRemainingTime:a3 duration:v17 state:v4 title:v11 forceRefresh:v14];
+    timer4 = [(MTATimerViewController *)self timer];
+    title = [timer4 title];
+    [(MTATimerControlsView *)timerControlsView setRemainingTime:state duration:title state:refreshCopy title:v11 forceRefresh:v14];
   }
 
-  if (a3 > 1)
+  if (state > 1)
   {
-    if (a3 == 2)
+    if (state == 2)
     {
       [(MTATimerViewController *)self stopUpdatingTimerUI];
       [(MTATimerViewController *)self timerTick:0];
       goto LABEL_16;
     }
 
-    if (a3 != 4)
+    if (state != 4)
     {
-      if (a3 == 3)
+      if (state == 3)
       {
         [(MTATimerViewController *)self timerTick:0];
         [(MTATimerViewController *)self startUpdatingTimerUI];
@@ -671,16 +671,16 @@
     }
 
 LABEL_14:
-    NSLog(@"Unexpected timer state %ld", a3);
+    NSLog(@"Unexpected timer state %ld", state);
     goto LABEL_16;
   }
 
-  if (!a3)
+  if (!state)
   {
     goto LABEL_14;
   }
 
-  if (a3 == 1)
+  if (state == 1)
   {
     [(MTATimerViewController *)self stopUpdatingTimerUI];
   }
@@ -689,29 +689,29 @@ LABEL_16:
   [(MTATimerViewController *)self updateShortcutItemForCurrentState];
 }
 
-- (void)timerTick:(id)a3
+- (void)timerTick:(id)tick
 {
   v4 = MTLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = self;
+    selfCopy2 = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}@ timerTick", buf, 0xCu);
   }
 
-  v5 = [(MTATimerViewController *)self timer];
-  [v5 remainingTime];
+  timer = [(MTATimerViewController *)self timer];
+  [timer remainingTime];
   v7 = v6;
-  v8 = [v5 state];
-  if (v8 > 1)
+  state = [timer state];
+  if (state > 1)
   {
-    if ((v8 - 2) < 2)
+    if ((state - 2) < 2)
     {
       v9 = MTLogForCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543618;
-        v13 = self;
+        selfCopy2 = self;
         v14 = 2048;
         v15 = v7;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ remainingTime: %f", buf, 0x16u);
@@ -722,22 +722,22 @@ LABEL_16:
       goto LABEL_11;
     }
 
-    if (v8 != 4)
+    if (state != 4)
     {
       goto LABEL_14;
     }
 
 LABEL_13:
-    NSLog(@"Unexpected timer state %ld", [v5 state]);
+    NSLog(@"Unexpected timer state %ld", [timer state]);
     goto LABEL_14;
   }
 
-  if (!v8)
+  if (!state)
   {
     goto LABEL_13;
   }
 
-  if (v8 == 1)
+  if (state == 1)
   {
     [(MTATimerViewController *)self prepareUIForState:1];
     timerControlsView = self->_timerControlsView;
@@ -749,33 +749,33 @@ LABEL_11:
 LABEL_14:
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = MTATimerViewController;
-  [(MTATimerViewController *)&v4 viewDidAppear:a3];
+  [(MTATimerViewController *)&v4 viewDidAppear:appear];
   [(NSUserActivity *)self->_userActivity becomeCurrent];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   [(MTATimerViewController *)self saveState];
   [(MTATimerViewController *)self stopUpdatingTimerUI];
   [(NSUserActivity *)self->_userActivity resignCurrent];
   v10.receiver = self;
   v10.super_class = MTATimerViewController;
-  [(MTATimerViewController *)&v10 viewWillDisappear:v3];
+  [(MTATimerViewController *)&v10 viewWillDisappear:disappearCopy];
   if ([(MTATimerViewController *)self isMovingFromParentViewController])
   {
     v5 = MTLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(MTATimerViewController *)self timer];
+      timer = [(MTATimerViewController *)self timer];
       *buf = 138543618;
-      v12 = self;
+      selfCopy = self;
       v13 = 2114;
-      v14 = v6;
+      v14 = timer;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ popping MTATimerViewController with timer: %{public}@", buf, 0x16u);
     }
 
@@ -790,69 +790,69 @@ LABEL_14:
   [v9 removeObserver:self name:UIKeyboardWillHideNotification object:0];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v9.receiver = self;
   v9.super_class = MTATimerViewController;
-  v7 = a4;
-  [(MTATimerViewController *)&v9 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
+  coordinatorCopy = coordinator;
+  [(MTATimerViewController *)&v9 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100011BC4;
   v8[3] = &unk_1000AD9C8;
   v8[4] = self;
-  [v7 animateAlongsideTransition:v8 completion:0];
+  [coordinatorCopy animateAlongsideTransition:v8 completion:0];
 }
 
 - (BOOL)prefersStatusBarHidden
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 0;
   }
 
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 delegate];
+  delegate = [v5 delegate];
 
-  v4 = [v6 interfaceOrientation] - 3 < 2;
+  v4 = [delegate interfaceOrientation] - 3 < 2;
   return v4;
 }
 
-- (void)handleContentSizeChange:(id)a3
+- (void)handleContentSizeChange:(id)change
 {
   [(MTATimerControlsView *)self->_timerControlsView handleContentSizeChange];
-  v4 = [(MTATimerViewController *)self view];
-  [v4 setNeedsDisplay];
+  view = [(MTATimerViewController *)self view];
+  [view setNeedsDisplay];
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v23 = a3;
-  v4 = [(MTATimerControlsView *)self->_timerControlsView editLabelCell];
-  v5 = v4;
-  if (v4)
+  showCopy = show;
+  editLabelCell = [(MTATimerControlsView *)self->_timerControlsView editLabelCell];
+  v5 = editLabelCell;
+  if (editLabelCell)
   {
-    [v4 frame];
+    [editLabelCell frame];
     v7 = v6;
     v9 = v8;
-    v10 = [(MTATimerViewController *)self view];
-    [v5 convertPoint:v10 toView:{v7, v9}];
+    view = [(MTATimerViewController *)self view];
+    [v5 convertPoint:view toView:{v7, v9}];
     v12 = v11;
 
     [v5 frame];
     v14 = v12 + v13;
-    v15 = [v23 userInfo];
-    v16 = [v15 objectForKey:UIKeyboardFrameEndUserInfoKey];
+    userInfo = [showCopy userInfo];
+    v16 = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
     [v16 CGRectValue];
     v18 = v17;
 
-    v19 = [(MTATimerViewController *)self view];
-    [v19 frame];
+    view2 = [(MTATimerViewController *)self view];
+    [view2 frame];
     v21 = v20 - v18;
 
     v22 = v14 - v21;
@@ -866,18 +866,18 @@ LABEL_14:
   }
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
-  [(MTATimerViewController *)self moveViewFrameToVerticalPosition:a3, 0.0];
+  [(MTATimerViewController *)self moveViewFrameToVerticalPosition:hide, 0.0];
   [(MTTimer *)self->_timer duration];
   v4 = [MTAUtilities durationStringFromInterval:?];
   [(MTATimerViewController *)self setTitle:v4];
 }
 
-- (void)moveViewFrameToVerticalPosition:(float)a3
+- (void)moveViewFrameToVerticalPosition:(float)position
 {
-  v5 = [(MTATimerViewController *)self view];
-  [v5 frame];
+  view = [(MTATimerViewController *)self view];
+  [view frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -888,7 +888,7 @@ LABEL_14:
   v12[3] = &unk_1000ADCC0;
   v12[4] = self;
   v12[5] = v7;
-  *&v12[6] = a3;
+  *&v12[6] = position;
   v12[7] = v9;
   v12[8] = v11;
   [UIView animateWithDuration:v12 animations:0.3];
@@ -896,24 +896,24 @@ LABEL_14:
 
 - (void)updateShortcutItemForCurrentState
 {
-  v3 = [(MTATimerViewController *)self timer];
+  timer = [(MTATimerViewController *)self timer];
 
-  if (!v3)
+  if (!timer)
   {
     return;
   }
 
-  v4 = [(MTATimerViewController *)self timer];
-  if ([v4 state] == 1)
+  timer2 = [(MTATimerViewController *)self timer];
+  if ([timer2 state] == 1)
   {
   }
 
   else
   {
-    v5 = [(MTATimerViewController *)self timer];
-    v6 = [v5 state];
+    timer3 = [(MTATimerViewController *)self timer];
+    state = [timer3 state];
 
-    if (v6 != 2)
+    if (state != 2)
     {
       v7 = 1;
       goto LABEL_8;
@@ -928,16 +928,16 @@ LABEL_8:
 
 - (id)shortcutItemForCurrentState
 {
-  v3 = [(MTATimerViewController *)self timer];
+  timer = [(MTATimerViewController *)self timer];
 
-  if (!v3)
+  if (!timer)
   {
     v5 = 0;
     goto LABEL_8;
   }
 
-  v4 = [(MTATimerViewController *)self timer];
-  if ([v4 state] == 1)
+  timer2 = [(MTATimerViewController *)self timer];
+  if ([timer2 state] == 1)
   {
 
 LABEL_6:
@@ -945,10 +945,10 @@ LABEL_6:
     goto LABEL_8;
   }
 
-  v6 = [(MTATimerViewController *)self timer];
-  v7 = [v6 state];
+  timer3 = [(MTATimerViewController *)self timer];
+  state = [timer3 state];
 
-  if (v7 == 2)
+  if (state == 2)
   {
     goto LABEL_6;
   }
@@ -979,27 +979,27 @@ LABEL_8:
   [(MTATimerViewController *)self reloadState:v2];
 }
 
-- (void)startTimer:(id)a3
+- (void)startTimer:(id)timer
 {
-  v4 = a3;
+  timerCopy = timer;
   [(MTATimerControlsView *)self->_timerControlsView countDownDuration];
   if (v5 > 0.0)
   {
-    v6 = [(MTATimerViewController *)self timer];
+    timer = [(MTATimerViewController *)self timer];
 
-    if (v6)
+    if (timer)
     {
-      v7 = [(MTATimerViewController *)self timer];
-      v8 = [v7 mutableCopy];
+      timer2 = [(MTATimerViewController *)self timer];
+      v8 = [timer2 mutableCopy];
 
       v9 = MTLogForCategory();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [v8 timerID];
+        timerID = [v8 timerID];
         *buf = 138543618;
-        v27 = self;
+        selfCopy = self;
         v28 = 2114;
-        v29 = v10;
+        v29 = timerID;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ Starting a timer: %{public}@", buf, 0x16u);
       }
 
@@ -1009,8 +1009,8 @@ LABEL_8:
       [v8 setState:3];
       [MTTimerManager setDefaultDuration:v12];
       objc_initWeak(buf, self);
-      v13 = [(MTATimerViewController *)self timerManager];
-      v14 = [v13 updateTimer:v8];
+      timerManager = [(MTATimerViewController *)self timerManager];
+      v14 = [timerManager updateTimer:v8];
       v15 = +[NAScheduler mtMainThreadScheduler];
       v16 = [v14 reschedule:v15];
 
@@ -1032,43 +1032,43 @@ LABEL_8:
     {
       [(MTATimerControlsView *)self->_timerControlsView countDownDuration];
       v20 = v19;
-      v21 = [(MTATimerControlsView *)self->_timerControlsView getCurrentLabel];
-      v22 = [(MTATimerViewController *)self sound];
-      [(MTATimerViewController *)self addNewTimerWithDuration:v21 title:v22 sound:v20];
+      getCurrentLabel = [(MTATimerControlsView *)self->_timerControlsView getCurrentLabel];
+      sound = [(MTATimerViewController *)self sound];
+      [(MTATimerViewController *)self addNewTimerWithDuration:getCurrentLabel title:sound sound:v20];
     }
   }
 }
 
-- (void)addNewTimerWithDuration:(double)a3 title:(id)a4 sound:(id)a5
+- (void)addNewTimerWithDuration:(double)duration title:(id)title sound:(id)sound
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [[MTMutableTimer alloc] initWithState:3 duration:a3];
+  titleCopy = title;
+  soundCopy = sound;
+  v10 = [[MTMutableTimer alloc] initWithState:3 duration:duration];
   v11 = v10;
-  if (v8)
+  if (titleCopy)
   {
-    [v10 setTitle:v8];
+    [v10 setTitle:titleCopy];
   }
 
-  if (v9)
+  if (soundCopy)
   {
-    [v11 setSound:v9];
+    [v11 setSound:soundCopy];
   }
 
   objc_initWeak(&location, self);
   v12 = MTLogForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [v11 timerID];
+    timerID = [v11 timerID];
     *buf = 138543618;
-    v25 = self;
+    selfCopy = self;
     v26 = 2114;
-    v27 = v13;
+    v27 = timerID;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "%{public}@ starting new timer: %{public}@ and dismissing add controller", buf, 0x16u);
   }
 
-  v14 = [(MTATimerViewController *)self dataSource];
-  v15 = [v14 addTimer:v11];
+  dataSource = [(MTATimerViewController *)self dataSource];
+  v15 = [dataSource addTimer:v11];
   v16 = +[NAScheduler mtMainThreadScheduler];
   v17 = [v15 reschedule:v16];
 
@@ -1086,26 +1086,26 @@ LABEL_8:
   objc_destroyWeak(&location);
 }
 
-- (void)cancelTimer:(id)a3
+- (void)cancelTimer:(id)timer
 {
-  v4 = a3;
-  v5 = [(MTATimerViewController *)self timer];
-  v6 = [v5 timerByUpdatingWithState:1];
+  timerCopy = timer;
+  timer = [(MTATimerViewController *)self timer];
+  v6 = [timer timerByUpdatingWithState:1];
 
   v7 = MTLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 timerID];
+    timerID = [v6 timerID];
     *buf = 138543618;
-    v19 = self;
+    selfCopy = self;
     v20 = 2114;
-    v21 = v8;
+    v21 = timerID;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@ Stopping a timer: %{public}@", buf, 0x16u);
   }
 
   objc_initWeak(buf, self);
-  v9 = [(MTATimerViewController *)self timerManager];
-  v10 = [v9 updateTimer:v6];
+  timerManager = [(MTATimerViewController *)self timerManager];
+  v10 = [timerManager updateTimer:v6];
   v11 = +[NAScheduler mtMainThreadScheduler];
   v12 = [v10 reschedule:v11];
 
@@ -1123,13 +1123,13 @@ LABEL_8:
   objc_destroyWeak(buf);
 }
 
-- (void)pauseResumeTimer:(id)a3
+- (void)pauseResumeTimer:(id)timer
 {
-  v4 = a3;
-  v5 = [(MTATimerViewController *)self timer];
-  v6 = [v5 state];
+  timerCopy = timer;
+  timer = [(MTATimerViewController *)self timer];
+  state = [timer state];
 
-  if (v6 == 3)
+  if (state == 3)
   {
     v7 = 2;
   }
@@ -1139,23 +1139,23 @@ LABEL_8:
     v7 = 3;
   }
 
-  v8 = [(MTATimerViewController *)self timer];
-  v9 = [v8 timerByUpdatingWithState:v7];
+  timer2 = [(MTATimerViewController *)self timer];
+  v9 = [timer2 timerByUpdatingWithState:v7];
 
   v10 = MTLogForCategory();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 timerID];
+    timerID = [v9 timerID];
     *buf = 138543618;
-    v24 = self;
+    selfCopy = self;
     v25 = 2114;
-    v26 = v11;
+    v26 = timerID;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}@ Pausing a timer: %{public}@", buf, 0x16u);
   }
 
   objc_initWeak(buf, self);
-  v12 = [(MTATimerViewController *)self timerManager];
-  v13 = [v12 updateTimer:v9];
+  timerManager = [(MTATimerViewController *)self timerManager];
+  v13 = [timerManager updateTimer:v9];
   v14 = +[NAScheduler mtMainThreadScheduler];
   v15 = [v13 reschedule:v14];
 
@@ -1180,40 +1180,40 @@ LABEL_8:
   objc_destroyWeak(buf);
 }
 
-- (void)timersChanged:(id)a3
+- (void)timersChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = MTLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [changedCopy name];
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v6;
+    v10 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ Received timer notification: %{public}@.  Reloading", &v7, 0x16u);
   }
 
   [(MTATimerViewController *)self reloadState];
 }
 
-- (void)menuBarAppearedWithBuilder:(id)a3 targetMenuIdentifier:(id)a4
+- (void)menuBarAppearedWithBuilder:(id)builder targetMenuIdentifier:(id)identifier
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(MTATimerViewController *)self delegate];
+  builderCopy = builder;
+  identifierCopy = identifier;
+  delegate = [(MTATimerViewController *)self delegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(MTATimerViewController *)self delegate];
-    [v9 performSelector:"menuBarAppearedWithBuilder:targetMenuIdentifier:" withObject:v10 withObject:v6];
+    delegate2 = [(MTATimerViewController *)self delegate];
+    [delegate2 performSelector:"menuBarAppearedWithBuilder:targetMenuIdentifier:" withObject:builderCopy withObject:identifierCopy];
   }
 }
 
-- (void)showSoundPicker:(id)a3
+- (void)showSoundPicker:(id)picker
 {
-  v35 = a3;
+  pickerCopy = picker;
   if (!self->_tonePickerViewController)
   {
     v4 = [[TKTonePickerViewController alloc] _initWithAlertType:13 tableViewStyle:2];
@@ -1233,25 +1233,25 @@ LABEL_8:
     v10 = objc_opt_new();
     [(TKTonePickerViewController *)self->_tonePickerViewController setStyleProvider:v10];
 
-    v11 = [(TKTonePickerViewController *)self->_tonePickerViewController navigationItem];
+    navigationItem = [(TKTonePickerViewController *)self->_tonePickerViewController navigationItem];
     v12 = +[NSBundle mainBundle];
     v13 = [v12 localizedStringForKey:@"WHEN_TIMER_ENDS" value:&stru_1000AEF10 table:0];
-    [v11 setTitle:v13];
+    [navigationItem setTitle:v13];
 
     v14 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"dismissSoundPicker"];
-    [v11 setLeftBarButtonItem:v14];
+    [navigationItem setLeftBarButtonItem:v14];
 
     v15 = [UIBarButtonItem alloc];
     v16 = +[NSBundle mainBundle];
     v17 = [v16 localizedStringForKey:@"SET" value:&stru_1000AEF10 table:0];
     v18 = [v15 initWithTitle:v17 style:2 target:self action:"confirmPickingSound"];
-    [v11 setRightBarButtonItem:v18];
+    [navigationItem setRightBarButtonItem:v18];
   }
 
-  v19 = [(MTATimerViewController *)self timer];
-  v20 = [v19 sound];
-  v21 = [v20 toneIdentifier];
-  [(TKTonePickerViewController *)self->_tonePickerViewController setSelectedToneIdentifier:v21];
+  timer = [(MTATimerViewController *)self timer];
+  sound = [timer sound];
+  toneIdentifier = [sound toneIdentifier];
+  [(TKTonePickerViewController *)self->_tonePickerViewController setSelectedToneIdentifier:toneIdentifier];
 
   [(TKTonePickerViewController *)self->_tonePickerViewController setShowsToneStore:MTShouldAllowToneStore()];
   v22 = +[NSNotificationCenter defaultCenter];
@@ -1262,12 +1262,12 @@ LABEL_8:
   if (self->_style == 3)
   {
     [v23 setModalPresentationStyle:2];
-    v24 = [v23 popoverPresentationController];
-    [v24 setDelegate:self];
+    popoverPresentationController = [v23 popoverPresentationController];
+    [popoverPresentationController setDelegate:self];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v25 = v35;
+      v25 = pickerCopy;
       [v25 bounds];
       x = v26;
       y = v28;
@@ -1284,10 +1284,10 @@ LABEL_8:
       height = CGRectZero.size.height;
     }
 
-    [v24 setSourceView:v25];
-    [v24 setSourceRect:{x, y, width, height}];
+    [popoverPresentationController setSourceView:v25];
+    [popoverPresentationController setSourceRect:{x, y, width, height}];
     v34 = +[UIColor mtui_backgroundColor];
-    [v24 setBackgroundColor:v34];
+    [popoverPresentationController setBackgroundColor:v34];
   }
 
   [(MTATimerViewController *)self presentViewController:v23 animated:1 completion:0];
@@ -1295,29 +1295,29 @@ LABEL_8:
 
 - (void)confirmPickingSound
 {
-  v3 = [(TKTonePickerViewController *)self->_tonePickerViewController selectedToneIdentifier];
-  if (!v3)
+  selectedToneIdentifier = [(TKTonePickerViewController *)self->_tonePickerViewController selectedToneIdentifier];
+  if (!selectedToneIdentifier)
   {
-    v3 = [(TKTonePickerViewController *)self->_tonePickerViewController defaultToneIdentifier];
+    selectedToneIdentifier = [(TKTonePickerViewController *)self->_tonePickerViewController defaultToneIdentifier];
   }
 
-  v4 = [(MTATimerViewController *)self timer];
+  timer = [(MTATimerViewController *)self timer];
 
-  if (v4)
+  if (timer)
   {
-    v5 = [(MTATimerViewController *)self timer];
-    v6 = [v5 sound];
+    timer2 = [(MTATimerViewController *)self timer];
+    sound = [timer2 sound];
 
-    v7 = [v6 vibrationIdentifier];
-    v8 = [v6 soundVolume];
-    v9 = [MTSound toneSoundWithIdentifier:v3 vibrationIdentifer:v7 volume:v8];
+    vibrationIdentifier = [sound vibrationIdentifier];
+    soundVolume = [sound soundVolume];
+    v9 = [MTSound toneSoundWithIdentifier:selectedToneIdentifier vibrationIdentifer:vibrationIdentifier volume:soundVolume];
 
-    v10 = [(MTATimerViewController *)self timer];
-    v11 = [v10 mutableCopy];
+    timer3 = [(MTATimerViewController *)self timer];
+    v11 = [timer3 mutableCopy];
 
     [v11 setSound:v9];
-    v12 = [(MTATimerViewController *)self timerManager];
-    v13 = [v12 updateTimer:v11];
+    timerManager = [(MTATimerViewController *)self timerManager];
+    v13 = [timerManager updateTimer:v11];
     v14 = +[NAScheduler mtMainThreadScheduler];
     v15 = [v13 reschedule:v14];
 
@@ -1325,7 +1325,7 @@ LABEL_8:
     v24 = 3221225472;
     v25 = sub_10001399C;
     v26 = &unk_1000ADC70;
-    v27 = self;
+    selfCopy = self;
     v28 = v11;
     v16 = v11;
     v17 = [v15 addSuccessBlock:&v23];
@@ -1333,11 +1333,11 @@ LABEL_8:
 
   else
   {
-    v18 = [(MTATimerViewController *)self sound];
-    v19 = [v18 vibrationIdentifier];
-    v20 = [(MTATimerViewController *)self sound];
-    v21 = [v20 soundVolume];
-    v22 = [MTSound toneSoundWithIdentifier:v3 vibrationIdentifer:v19 volume:v21];
+    sound2 = [(MTATimerViewController *)self sound];
+    vibrationIdentifier2 = [sound2 vibrationIdentifier];
+    sound3 = [(MTATimerViewController *)self sound];
+    soundVolume2 = [sound3 soundVolume];
+    v22 = [MTSound toneSoundWithIdentifier:selectedToneIdentifier vibrationIdentifer:vibrationIdentifier2 volume:soundVolume2];
     [(MTATimerViewController *)self setSound:v22];
 
     [(MTATimerViewController *)self updateSelectedSoundUI];
@@ -1351,21 +1351,21 @@ LABEL_8:
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 removeObserver:self name:UIApplicationSuspendedNotification object:0];
 
-  v4 = [(MTATimerViewController *)self presentedViewController];
-  v5 = [v4 popoverPresentationController];
+  presentedViewController = [(MTATimerViewController *)self presentedViewController];
+  popoverPresentationController = [presentedViewController popoverPresentationController];
 
-  if (v5)
+  if (popoverPresentationController)
   {
-    v6 = [(MTATimerViewController *)self navigationItem];
-    v7 = [v6 leftBarButtonItem];
-    [v7 setEnabled:1];
+    navigationItem = [(MTATimerViewController *)self navigationItem];
+    leftBarButtonItem = [navigationItem leftBarButtonItem];
+    [leftBarButtonItem setEnabled:1];
   }
 
   v8 = +[UIApplication sharedApplication];
   -[MTATimerViewController dismissViewControllerAnimated:completion:](self, "dismissViewControllerAnimated:completion:", [v8 isSuspended] ^ 1, 0);
 }
 
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations
 {
   if (MTUIIsPadIdiom())
   {
@@ -1378,29 +1378,29 @@ LABEL_8:
   }
 }
 
-- (void)popoverPresentationControllerDidDismissPopover:(id)a3
+- (void)popoverPresentationControllerDidDismissPopover:(id)popover
 {
   [(MTATimerViewController *)self confirmPickingSound];
-  v5 = [(MTATimerViewController *)self navigationItem];
-  v4 = [v5 leftBarButtonItem];
-  [v4 setEnabled:1];
+  navigationItem = [(MTATimerViewController *)self navigationItem];
+  leftBarButtonItem = [navigationItem leftBarButtonItem];
+  [leftBarButtonItem setEnabled:1];
 }
 
-- (void)didUpdateWithLabel:(id)a3 sender:(id)a4
+- (void)didUpdateWithLabel:(id)label sender:(id)sender
 {
-  [(MTATimerViewController *)self setTimerLabel:a3, a4];
-  v5 = [(MTATimerViewController *)self timer];
+  [(MTATimerViewController *)self setTimerLabel:label, sender];
+  timer = [(MTATimerViewController *)self timer];
 
-  if (v5)
+  if (timer)
   {
-    v6 = [(MTATimerViewController *)self timer];
-    v7 = [v6 mutableCopy];
+    timer2 = [(MTATimerViewController *)self timer];
+    v7 = [timer2 mutableCopy];
 
-    v8 = [(MTATimerViewController *)self timerLabel];
-    [v7 setTitle:v8];
+    timerLabel = [(MTATimerViewController *)self timerLabel];
+    [v7 setTitle:timerLabel];
 
-    v9 = [(MTATimerViewController *)self timerManager];
-    v10 = [v9 updateTimer:v7];
+    timerManager = [(MTATimerViewController *)self timerManager];
+    v10 = [timerManager updateTimer:v7];
     v11 = +[NAScheduler mtMainThreadScheduler];
     v12 = [v10 reschedule:v11];
 
@@ -1429,7 +1429,7 @@ LABEL_8:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ removing notification observer", &v5, 0xCu);
   }
 

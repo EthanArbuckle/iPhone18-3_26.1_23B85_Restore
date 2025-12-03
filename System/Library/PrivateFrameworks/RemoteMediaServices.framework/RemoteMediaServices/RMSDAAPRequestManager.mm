@@ -1,8 +1,8 @@
 @interface RMSDAAPRequestManager
 - (RMSDAAPRequestManager)init;
 - (RMSDAAPRequestManagerDelegate)delegate;
-- (id)requestControlCommand:(id)a3 text:(id)a4 promptRevision:(int64_t)a5 completionHandler:(id)a6;
-- (id)requestWithPath:(id)a3 method:(id)a4 postData:(id)a5 queryArgs:(id)a6 completionHandler:(id)a7;
+- (id)requestControlCommand:(id)command text:(id)text promptRevision:(int64_t)revision completionHandler:(id)handler;
+- (id)requestWithPath:(id)path method:(id)method postData:(id)data queryArgs:(id)args completionHandler:(id)handler;
 @end
 
 @implementation RMSDAAPRequestManager
@@ -18,7 +18,7 @@
     v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d.%d", 3, 12];
     v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld.%ld", 3, 10];
     v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld.%ld", 1, 2];
-    v6 = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
+    ephemeralSessionConfiguration = [MEMORY[0x277CCAD38] ephemeralSessionConfiguration];
     v14[0] = @"Accept-Encoding";
     v14[1] = @"Viewer-Only-Client";
     v15[0] = @"gzip";
@@ -30,11 +30,11 @@
     v14[4] = @"Client-ATV-Sharing-Version";
     v15[4] = v5;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:5];
-    [v6 setHTTPAdditionalHeaders:v7];
+    [ephemeralSessionConfiguration setHTTPAdditionalHeaders:v7];
 
     v8 = MEMORY[0x277CCAD30];
-    v9 = [MEMORY[0x277CCABD8] mainQueue];
-    v10 = [v8 sessionWithConfiguration:v6 delegate:0 delegateQueue:v9];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
+    v10 = [v8 sessionWithConfiguration:ephemeralSessionConfiguration delegate:0 delegateQueue:mainQueue];
     urlSession = v2->_urlSession;
     v2->_urlSession = v10;
   }
@@ -42,14 +42,14 @@
   return v2;
 }
 
-- (id)requestWithPath:(id)a3 method:(id)a4 postData:(id)a5 queryArgs:(id)a6 completionHandler:(id)a7
+- (id)requestWithPath:(id)path method:(id)method postData:(id)data queryArgs:(id)args completionHandler:(id)handler
 {
   v68[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  pathCopy = path;
+  methodCopy = method;
+  dataCopy = data;
+  argsCopy = args;
+  handlerCopy = handler;
   v53 = 0;
   v54 = &v53;
   v55 = 0x3032000000;
@@ -61,8 +61,8 @@
   v17 = [MEMORY[0x277CCABB0] numberWithInteger:self->_port];
   [v54[5] setPort:v17];
 
-  v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"/%@", v12];
-  [v54[5] setPath:v18];
+  pathCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"/%@", pathCopy];
+  [v54[5] setPath:pathCopy];
 
   if (self->_sessionIdentifier)
   {
@@ -105,13 +105,13 @@
   v52[2] = __85__RMSDAAPRequestManager_requestWithPath_method_postData_queryArgs_completionHandler___block_invoke;
   v52[3] = &unk_279B08FD0;
   v52[4] = &v53;
-  [v15 enumerateKeysAndObjectsUsingBlock:v52];
+  [argsCopy enumerateKeysAndObjectsUsingBlock:v52];
   v34 = MEMORY[0x277CCAB70];
   v35 = [v54[5] URL];
   v36 = [v34 requestWithURL:v35];
 
-  [v36 setHTTPMethod:v13];
-  [v36 setHTTPBody:v14];
+  [v36 setHTTPMethod:methodCopy];
+  [v36 setHTTPBody:dataCopy];
   if ([(RMSFairPlaySession *)self->_fairPlaySession isHandshakeComplete])
   {
     fairPlaySession = self->_fairPlaySession;
@@ -125,11 +125,11 @@
   if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
   {
     v41 = [v54[5] URL];
-    v42 = [v41 absoluteString];
+    absoluteString = [v41 absoluteString];
     *buf = 138412546;
-    v60 = v13;
+    v60 = methodCopy;
     v61 = 2112;
-    v62 = v42;
+    v62 = absoluteString;
     _os_log_impl(&dword_261E98000, v40, OS_LOG_TYPE_DEFAULT, "%@/ %@", buf, 0x16u);
   }
 
@@ -138,10 +138,10 @@
   v48[1] = 3221225472;
   v48[2] = __85__RMSDAAPRequestManager_requestWithPath_method_postData_queryArgs_completionHandler___block_invoke_51;
   v48[3] = &unk_279B08FF8;
-  v44 = v12;
+  v44 = pathCopy;
   v49 = v44;
-  v45 = v16;
-  v50 = self;
+  v45 = handlerCopy;
+  selfCopy = self;
   v51 = v45;
   v46 = [(NSURLSession *)urlSession dataTaskWithRequest:v36 completionHandler:v48];
   [v46 resume];
@@ -286,37 +286,37 @@ LABEL_15:
 LABEL_28:
 }
 
-- (id)requestControlCommand:(id)a3 text:(id)a4 promptRevision:(int64_t)a5 completionHandler:(id)a6
+- (id)requestControlCommand:(id)command text:(id)text promptRevision:(int64_t)revision completionHandler:(id)handler
 {
   v25[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  commandCopy = command;
+  textCopy = text;
+  handlerCopy = handler;
   v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s/1/%s", "ctrl-int", "controlpromptentry"];
   v14 = objc_opt_new();
   v15 = v14;
-  if (v10)
+  if (commandCopy)
   {
-    [v14 encodeString:v10 forCode:1668112997];
+    [v14 encodeString:commandCopy forCode:1668112997];
   }
 
-  if (v11)
+  if (textCopy)
   {
-    [v15 encodeString:v11 forCode:1668117605];
+    [v15 encodeString:textCopy forCode:1668117605];
   }
 
-  v16 = [v15 data];
+  data = [v15 data];
   v24 = @"prompt-id";
-  v17 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
+  v17 = [MEMORY[0x277CCABB0] numberWithInteger:revision];
   v25[0] = v17;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:&v24 count:1];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __85__RMSDAAPRequestManager_requestControlCommand_text_promptRevision_completionHandler___block_invoke;
   v22[3] = &unk_279B08CF0;
-  v23 = v12;
-  v19 = v12;
-  v20 = [(RMSDAAPRequestManager *)self requestWithPath:v13 method:@"POST" postData:v16 queryArgs:v18 completionHandler:v22];
+  v23 = handlerCopy;
+  v19 = handlerCopy;
+  v20 = [(RMSDAAPRequestManager *)self requestWithPath:v13 method:@"POST" postData:data queryArgs:v18 completionHandler:v22];
 
   return v20;
 }

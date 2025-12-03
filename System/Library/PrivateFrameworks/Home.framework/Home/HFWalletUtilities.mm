@@ -1,17 +1,17 @@
 @interface HFWalletUtilities
-+ (BOOL)isWalletKeyDeviceStateCompatible:(id)a3;
-+ (id)handleAddOrShowHomeKeyButtonTapForHome:(id)a3;
-+ (id)packageIconIdentifierForHome:(id)a3 shouldUseKeyholeAsset:(BOOL)a4;
-+ (id)walletKeyColorOfDeviceState:(id)a3;
-+ (id)walletKeyIconDescriptorForHome:(id)a3 shouldUseKeyholeAsset:(BOOL)a4 foriPhoneDevice:(BOOL)a5;
-+ (unint64_t)pkPassHomeKeyLiveRenderTypeForHMHomeWalletKeyColor:(int64_t)a3;
++ (BOOL)isWalletKeyDeviceStateCompatible:(id)compatible;
++ (id)handleAddOrShowHomeKeyButtonTapForHome:(id)home;
++ (id)packageIconIdentifierForHome:(id)home shouldUseKeyholeAsset:(BOOL)asset;
++ (id)walletKeyColorOfDeviceState:(id)state;
++ (id)walletKeyIconDescriptorForHome:(id)home shouldUseKeyholeAsset:(BOOL)asset foriPhoneDevice:(BOOL)device;
++ (unint64_t)pkPassHomeKeyLiveRenderTypeForHMHomeWalletKeyColor:(int64_t)color;
 @end
 
 @implementation HFWalletUtilities
 
-+ (id)handleAddOrShowHomeKeyButtonTapForHome:(id)a3
++ (id)handleAddOrShowHomeKeyButtonTapForHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x2020000000;
@@ -20,30 +20,30 @@
   v28[1] = v28;
   v28[2] = 0x2020000000;
   v29 = 0;
-  v5 = [v4 hf_hasWalletKey];
+  hf_hasWalletKey = [homeCopy hf_hasWalletKey];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __60__HFWalletUtilities_handleAddOrShowHomeKeyButtonTapForHome___block_invoke;
   v24[3] = &unk_277DFE8F0;
   v26 = v28;
-  v6 = v4;
+  v6 = homeCopy;
   v25 = v6;
   v27 = v30;
-  v7 = [v5 flatMap:v24];
+  v7 = [hf_hasWalletKey flatMap:v24];
 
   v22[0] = 0;
   v22[1] = v22;
   v22[2] = 0x2020000000;
   v23 = 0;
-  v8 = [v6 hf_walletKeyDeviceStatesOfCompatiblePairedWatches];
+  hf_walletKeyDeviceStatesOfCompatiblePairedWatches = [v6 hf_walletKeyDeviceStatesOfCompatiblePairedWatches];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __60__HFWalletUtilities_handleAddOrShowHomeKeyButtonTapForHome___block_invoke_3;
   v21[3] = &unk_277DFE938;
   v21[4] = v22;
-  v9 = [v8 flatMap:v21];
+  v9 = [hf_walletKeyDeviceStatesOfCompatiblePairedWatches flatMap:v21];
 
-  objc_initWeak(&location, a1);
+  objc_initWeak(&location, self);
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __60__HFWalletUtilities_handleAddOrShowHomeKeyButtonTapForHome___block_invoke_5;
@@ -344,34 +344,34 @@ uint64_t __60__HFWalletUtilities_handleAddOrShowHomeKeyButtonTapForHome___block_
   return isKindOfClass & 1;
 }
 
-+ (BOOL)isWalletKeyDeviceStateCompatible:(id)a3
++ (BOOL)isWalletKeyDeviceStateCompatible:(id)compatible
 {
-  v3 = a3;
-  v4 = ([v3 canAddWalletKey] & 1) != 0 || objc_msgSend(v3, "canAddWalletKeyErrorCode") != 4 && objc_msgSend(v3, "canAddWalletKeyErrorCode") != 3;
+  compatibleCopy = compatible;
+  v4 = ([compatibleCopy canAddWalletKey] & 1) != 0 || objc_msgSend(compatibleCopy, "canAddWalletKeyErrorCode") != 4 && objc_msgSend(compatibleCopy, "canAddWalletKeyErrorCode") != 3;
 
   return v4;
 }
 
-+ (id)walletKeyColorOfDeviceState:(id)a3
++ (id)walletKeyColorOfDeviceState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 walletKey];
+  stateCopy = state;
+  walletKey = [stateCopy walletKey];
 
-  if (v4)
+  if (walletKey)
   {
     v5 = MEMORY[0x277CCABB0];
-    v6 = [v3 walletKey];
-    v4 = [v5 numberWithInteger:{objc_msgSend(v6, "color")}];
+    walletKey2 = [stateCopy walletKey];
+    walletKey = [v5 numberWithInteger:{objc_msgSend(walletKey2, "color")}];
   }
 
-  return v4;
+  return walletKey;
 }
 
-+ (unint64_t)pkPassHomeKeyLiveRenderTypeForHMHomeWalletKeyColor:(int64_t)a3
++ (unint64_t)pkPassHomeKeyLiveRenderTypeForHMHomeWalletKeyColor:(int64_t)color
 {
-  if (a3 <= 14935010)
+  if (color <= 14935010)
   {
-    if (a3 == 14341582)
+    if (color == 14341582)
     {
       return 2;
     }
@@ -379,9 +379,9 @@ uint64_t __60__HFWalletUtilities_handleAddOrShowHomeKeyButtonTapForHome___block_
     return 3;
   }
 
-  if (a3 != 14935011)
+  if (color != 14935011)
   {
-    if (a3 == 15521450)
+    if (color == 15521450)
     {
       return 4;
     }
@@ -392,15 +392,15 @@ uint64_t __60__HFWalletUtilities_handleAddOrShowHomeKeyButtonTapForHome___block_
   return 1;
 }
 
-+ (id)packageIconIdentifierForHome:(id)a3 shouldUseKeyholeAsset:(BOOL)a4
++ (id)packageIconIdentifierForHome:(id)home shouldUseKeyholeAsset:(BOOL)asset
 {
-  v5 = [a3 hf_walletKeyColorToDisplay];
+  hf_walletKeyColorToDisplay = [home hf_walletKeyColorToDisplay];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __72__HFWalletUtilities_packageIconIdentifierForHome_shouldUseKeyholeAsset___block_invoke;
   v8[3] = &__block_descriptor_33_e28___NAFuture_16__0__NSNumber_8l;
-  v9 = a4;
-  v6 = [v5 flatMap:v8];
+  assetCopy = asset;
+  v6 = [hf_walletKeyColorToDisplay flatMap:v8];
 
   return v6;
 }
@@ -439,15 +439,15 @@ id __72__HFWalletUtilities_packageIconIdentifierForHome_shouldUseKeyholeAsset___
   return v8;
 }
 
-+ (id)walletKeyIconDescriptorForHome:(id)a3 shouldUseKeyholeAsset:(BOOL)a4 foriPhoneDevice:(BOOL)a5
++ (id)walletKeyIconDescriptorForHome:(id)home shouldUseKeyholeAsset:(BOOL)asset foriPhoneDevice:(BOOL)device
 {
-  v7 = [a1 packageIconIdentifierForHome:a3 shouldUseKeyholeAsset:?];
+  v7 = [self packageIconIdentifierForHome:home shouldUseKeyholeAsset:?];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __90__HFWalletUtilities_walletKeyIconDescriptorForHome_shouldUseKeyholeAsset_foriPhoneDevice___block_invoke;
   v10[3] = &__block_descriptor_34_e28___NAFuture_16__0__NSString_8l;
-  v11 = a4;
-  v12 = a5;
+  assetCopy = asset;
+  deviceCopy = device;
   v8 = [v7 flatMap:v10];
 
   return v8;

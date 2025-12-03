@@ -1,26 +1,26 @@
 @interface SBStartupTransitionToHome
-- (void)performTransitionWithCompletionBlock:(id)a3;
+- (void)performTransitionWithCompletionBlock:(id)block;
 @end
 
 @implementation SBStartupTransitionToHome
 
-- (void)performTransitionWithCompletionBlock:(id)a3
+- (void)performTransitionWithCompletionBlock:(id)block
 {
-  v5 = a3;
-  if (!v5)
+  blockCopy = block;
+  if (!blockCopy)
   {
     [(SBStartupTransitionToHome *)a2 performTransitionWithCompletionBlock:?];
   }
 
-  v6 = [(SBBaseStartupTransition *)self mainWorkspace];
+  mainWorkspace = [(SBBaseStartupTransition *)self mainWorkspace];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__SBStartupTransitionToHome_performTransitionWithCompletionBlock___block_invoke;
   v8[3] = &unk_2783AB410;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  [v6 requestTransitionWithOptions:0 builder:v8 validator:&__block_literal_global_16_0];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [mainWorkspace requestTransitionWithOptions:0 builder:v8 validator:&__block_literal_global_16_0];
 }
 
 void __66__SBStartupTransitionToHome_performTransitionWithCompletionBlock___block_invoke(uint64_t a1, void *a2)

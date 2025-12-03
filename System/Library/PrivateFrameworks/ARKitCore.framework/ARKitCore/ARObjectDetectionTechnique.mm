@@ -1,25 +1,25 @@
 @interface ARObjectDetectionTechnique
-- (ARObjectDetectionTechnique)initWithDetectionObjects:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)processData:(id)a3;
-- (id)processResultData:(id)a3 timestamp:(double)a4 context:(id)a5;
-- (void)_enqueueObjectForDetectionNonBlocking:(id)a3;
+- (ARObjectDetectionTechnique)initWithDetectionObjects:(id)objects;
+- (BOOL)isEqual:(id)equal;
+- (id)processData:(id)data;
+- (id)processResultData:(id)data timestamp:(double)timestamp context:(id)context;
+- (void)_enqueueObjectForDetectionNonBlocking:(id)blocking;
 - (void)_loadReferenceObjects;
-- (void)_processImageDataInBackgound:(id)a3;
-- (void)prepare:(BOOL)a3;
+- (void)_processImageDataInBackgound:(id)backgound;
+- (void)prepare:(BOOL)prepare;
 @end
 
 @implementation ARObjectDetectionTechnique
 
-- (ARObjectDetectionTechnique)initWithDetectionObjects:(id)a3
+- (ARObjectDetectionTechnique)initWithDetectionObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   v17.receiver = self;
   v17.super_class = ARObjectDetectionTechnique;
   v5 = [(ARImageBasedTechnique *)&v17 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [objectsCopy copy];
     detectionObjects = v5->_detectionObjects;
     v5->_detectionObjects = v6;
 
@@ -43,28 +43,28 @@
   return v5;
 }
 
-- (void)prepare:(BOOL)a3
+- (void)prepare:(BOOL)prepare
 {
   v20 = *MEMORY[0x1E69E9840];
   if (!self->_odtHandleManager)
   {
-    v3 = a3;
+    prepareCopy = prepare;
     v5 = [ARKitUserDefaults BOOLForKey:@"com.apple.arkit.objctdetection.regionProposalModel"];
     v6 = [ARODTHandleManager alloc];
     if (v5)
     {
-      v7 = [(ARODTHandleManager *)v6 initWithRegionProposalModelAndDeterministicMode:v3];
+      v7 = [(ARODTHandleManager *)v6 initWithRegionProposalModelAndDeterministicMode:prepareCopy];
     }
 
     else
     {
-      v7 = [(ARODTHandleManager *)v6 initWithDeterministicMode:v3];
+      v7 = [(ARODTHandleManager *)v6 initWithDeterministicMode:prepareCopy];
     }
 
     odtHandleManager = self->_odtHandleManager;
     self->_odtHandleManager = v7;
 
-    self->_deterministicMode = v3;
+    self->_deterministicMode = prepareCopy;
     objc_initWeak(&location, self);
     loadObjectsQueue = self->_loadObjectsQueue;
     v13[0] = MEMORY[0x1E69E9820];
@@ -91,7 +91,7 @@
       *buf = 138543618;
       v17 = v12;
       v18 = 2048;
-      v19 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1C241C000, v10, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: prepared.", buf, 0x16u);
     }
 
@@ -138,9 +138,9 @@ void __38__ARObjectDetectionTechnique_prepare___block_invoke(uint64_t a1)
           v12 = 0;
           if ([(ARODTHandleManager *)self->_odtHandleManager addReferenceObject:v7 tracking:0 pObjectID:&v12])
           {
-            v8 = [(ARTechnique *)self delegate];
+            delegate = [(ARTechnique *)self delegate];
             v9 = ARErrorWithCodeAndUserInfo(301, 0);
-            [v8 technique:self didFailWithError:v9];
+            [delegate technique:self didFailWithError:v9];
           }
 
           v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v12];
@@ -163,10 +163,10 @@ void __38__ARObjectDetectionTechnique_prepare___block_invoke(uint64_t a1)
   }
 }
 
-- (id)processResultData:(id)a3 timestamp:(double)a4 context:(id)a5
+- (id)processResultData:(id)data timestamp:(double)timestamp context:(id)context
 {
-  v6 = a3;
-  v7 = [v6 indexOfObjectPassingTest:&__block_literal_global_7_0];
+  dataCopy = data;
+  v7 = [dataCopy indexOfObjectPassingTest:&__block_literal_global_7_0];
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v8 = 0;
@@ -174,12 +174,12 @@ void __38__ARObjectDetectionTechnique_prepare___block_invoke(uint64_t a1)
 
   else
   {
-    v8 = [v6 objectAtIndexedSubscript:v7];
+    v8 = [dataCopy objectAtIndexedSubscript:v7];
   }
 
   [(ARObjectDetectionTechnique *)self setCurrentWorldTrackingPose:v8];
 
-  return v6;
+  return dataCopy;
 }
 
 uint64_t __66__ARObjectDetectionTechnique_processResultData_timestamp_context___block_invoke(uint64_t a1, void *a2)
@@ -191,16 +191,16 @@ uint64_t __66__ARObjectDetectionTechnique_processResultData_timestamp_context___
   return isKindOfClass & 1;
 }
 
-- (id)processData:(id)a3
+- (id)processData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v8.receiver = self;
     v8.super_class = ARObjectDetectionTechnique;
-    v5 = [(ARImageBasedTechnique *)&v8 processData:v4];
-    v6 = v4;
+    v5 = [(ARImageBasedTechnique *)&v8 processData:dataCopy];
+    v6 = dataCopy;
     if ([(ARObjectDetectionTechnique *)self finishedLoadingObjects])
     {
       [(ARObjectDetectionTechnique *)self _enqueueObjectForDetectionNonBlocking:v6];
@@ -217,16 +217,16 @@ uint64_t __66__ARObjectDetectionTechnique_processResultData_timestamp_context___
     }
   }
 
-  return v4;
+  return dataCopy;
 }
 
-- (void)_enqueueObjectForDetectionNonBlocking:(id)a3
+- (void)_enqueueObjectForDetectionNonBlocking:(id)blocking
 {
-  v4 = a3;
+  blockingCopy = blocking;
   v5 = self->_detectionSemaphore;
   if (dispatch_semaphore_wait(v5, 0))
   {
-    [v4 timestamp];
+    [blockingCopy timestamp];
     [(ARImageBasedTechnique *)self pushResultData:MEMORY[0x1E695E0F0] forTimestamp:?];
   }
 
@@ -240,7 +240,7 @@ uint64_t __66__ARObjectDetectionTechnique_processResultData_timestamp_context___
     v7[3] = &unk_1E817C350;
     objc_copyWeak(&v10, &location);
     v8 = v5;
-    v9 = v4;
+    v9 = blockingCopy;
     dispatch_async(processDataQueue, v7);
 
     objc_destroyWeak(&v10);
@@ -263,20 +263,20 @@ void __68__ARObjectDetectionTechnique__enqueueObjectForDetectionNonBlocking___bl
   }
 }
 
-- (void)_processImageDataInBackgound:(id)a3
+- (void)_processImageDataInBackgound:(id)backgound
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  backgoundCopy = backgound;
   dispatch_assert_queue_V2(self->_processDataQueue);
-  [v4 timestamp];
+  [backgoundCopy timestamp];
   kdebug_trace();
-  v5 = [(ARObjectDetectionTechnique *)self currentWorldTrackingPose];
-  if (v5 && (-[ARObjectDetectionTechnique currentWorldTrackingPose](self, "currentWorldTrackingPose"), v6 = objc_claimAutoreleasedReturnValue(), [v6 worldTrackingState], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "vioTrackingState"), v7, v6, v5, !v8))
+  currentWorldTrackingPose = [(ARObjectDetectionTechnique *)self currentWorldTrackingPose];
+  if (currentWorldTrackingPose && (-[ARObjectDetectionTechnique currentWorldTrackingPose](self, "currentWorldTrackingPose"), v6 = objc_claimAutoreleasedReturnValue(), [v6 worldTrackingState], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "vioTrackingState"), v7, v6, currentWorldTrackingPose, !v8))
   {
     odtHandleManager = self->_odtHandleManager;
-    v11 = [(ARObjectDetectionTechnique *)self currentWorldTrackingPose];
+    currentWorldTrackingPose2 = [(ARObjectDetectionTechnique *)self currentWorldTrackingPose];
     v35 = 0;
-    LODWORD(odtHandleManager) = [(ARODTHandleManager *)odtHandleManager detectReferenceObjectsForImageData:v4 worldTrackingPose:v11 imageContext:0 pResultArray:&v35];
+    LODWORD(odtHandleManager) = [(ARODTHandleManager *)odtHandleManager detectReferenceObjectsForImageData:backgoundCopy worldTrackingPose:currentWorldTrackingPose2 imageContext:0 pResultArray:&v35];
     v9 = v35;
 
     if (odtHandleManager)
@@ -293,11 +293,11 @@ void __68__ARObjectDetectionTechnique__enqueueObjectForDetectionNonBlocking___bl
       v34 = v14;
       while ([v9 count] > v13)
       {
-        v15 = [(ARObjectDetectionTechnique *)self referenceObjecteMap];
+        referenceObjecteMap = [(ARObjectDetectionTechnique *)self referenceObjecteMap];
         v16 = MEMORY[0x1E696AD98];
         v17 = [v9 objectAtIndexedSubscript:v13];
         v18 = [v16 numberWithInteger:{objc_msgSend(v17, "detectedObjectID")}];
-        v19 = [v15 objectForKeyedSubscript:v18];
+        v19 = [referenceObjecteMap objectForKeyedSubscript:v18];
 
         if (v19)
         {
@@ -327,13 +327,13 @@ void __68__ARObjectDetectionTechnique__enqueueObjectForDetectionNonBlocking___bl
               v24 = objc_opt_class();
               v25 = NSStringFromClass(v24);
               v26 = [v9 objectAtIndexedSubscript:v13];
-              v27 = [v26 detectedObjectID];
+              detectedObjectID = [v26 detectedObjectID];
               *buf = v34;
               v38 = v25;
               v39 = 2048;
-              v40 = self;
+              selfCopy2 = self;
               v41 = 2048;
-              v42 = v27;
+              v42 = detectedObjectID;
               _os_log_impl(&dword_1C241C000, v20, OS_LOG_TYPE_ERROR, "%{public}@ <%p>: Unknown 'detectedObjectID' %llu encountered.", buf, 0x20u);
             }
           }
@@ -343,13 +343,13 @@ void __68__ARObjectDetectionTechnique__enqueueObjectForDetectionNonBlocking___bl
             v28 = objc_opt_class();
             v29 = NSStringFromClass(v28);
             v30 = [v9 objectAtIndexedSubscript:v13];
-            v31 = [v30 detectedObjectID];
+            detectedObjectID2 = [v30 detectedObjectID];
             *buf = v34;
             v38 = v29;
             v39 = 2048;
-            v40 = self;
+            selfCopy2 = self;
             v41 = 2048;
-            v42 = v31;
+            v42 = detectedObjectID2;
             _os_log_impl(&dword_1C241C000, v20, OS_LOG_TYPE_INFO, "Error: %{public}@ <%p>: Unknown 'detectedObjectID' %llu encountered.", buf, 0x20u);
           }
         }
@@ -371,7 +371,7 @@ void __68__ARObjectDetectionTechnique__enqueueObjectForDetectionNonBlocking___bl
         [(ARImageBasedTechnique *)self pushResultData:MEMORY[0x1E695E0F0] forFrame:0];
       }
 
-      [v4 timestamp];
+      [backgoundCopy timestamp];
       [v9 count];
       kdebug_trace();
       dispatch_semaphore_signal(self->_detectionSemaphore);
@@ -386,15 +386,15 @@ void __68__ARObjectDetectionTechnique__enqueueObjectForDetectionNonBlocking___bl
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = ARObjectDetectionTechnique;
-  if ([(ARTechnique *)&v8 isEqual:v4])
+  if ([(ARTechnique *)&v8 isEqual:equalCopy])
   {
     detectionObjects = self->_detectionObjects;
-    if (detectionObjects == v4[19])
+    if (detectionObjects == equalCopy[19])
     {
       v6 = 1;
     }

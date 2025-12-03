@@ -1,11 +1,11 @@
 @interface CKPollDetailsViewControllerBuilder
-+ (id)buildViewControllerWithOptions:(id)a3 responses:(id)a4 chat:(id)a5;
++ (id)buildViewControllerWithOptions:(id)options responses:(id)responses chat:(id)chat;
 - (CKPollDetailsViewControllerBuilder)init;
 @end
 
 @implementation CKPollDetailsViewControllerBuilder
 
-+ (id)buildViewControllerWithOptions:(id)a3 responses:(id)a4 chat:(id)a5
++ (id)buildViewControllerWithOptions:(id)options responses:(id)responses chat:(id)chat
 {
   sub_190D57630();
   v6 = sub_190D57180();
@@ -14,8 +14,8 @@
   sub_190BF6828();
   v7 = sub_190D56D90();
   v8 = objc_allocWithZone(type metadata accessor for PollDetailsViewController(0));
-  v9 = a5;
-  v10 = sub_190BF5440(v6, v7, v9);
+  chatCopy = chat;
+  v10 = sub_190BF5440(v6, v7, chatCopy);
   v12 = v11;
 
   if (qword_1EAD51B88 != -1)

@@ -1,24 +1,24 @@
 @interface AVMobileVolumeChromelessButtonControl
 - (AVMobileVolumeChromelessButtonControl)init;
 - (AVMobileVolumeChromlesButtonControlDelegate)delegate;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)hitRect;
 - (CGSize)intrinsicContentSize;
 - (id)_imageNameForMicaPackageState;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)_updateMicaPackage:(id)a3;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)_updateMicaPackage:(id)package;
 - (void)_volumeControlButtonDidBeginPanning;
 - (void)_volumeControlButtonDidEndPanning;
-- (void)_volumeControlButtonPanningDidContinueWithXDelta:(double)a3;
-- (void)cancelTrackingWithEvent:(id)a3;
+- (void)_volumeControlButtonPanningDidContinueWithXDelta:(double)delta;
+- (void)cancelTrackingWithEvent:(id)event;
 - (void)didMoveToWindow;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setMicaPackage:(id)a3;
-- (void)setVolumeIconState:(id)a3;
+- (void)setMicaPackage:(id)package;
+- (void)setVolumeIconState:(id)state;
 @end
 
 @implementation AVMobileVolumeChromelessButtonControl
@@ -30,30 +30,30 @@
   return WeakRetained;
 }
 
-- (void)_updateMicaPackage:(id)a3
+- (void)_updateMicaPackage:(id)package
 {
-  v4 = a3;
-  if (v4)
+  packageCopy = package;
+  if (packageCopy)
   {
-    v5 = [(UIView *)self avkit_isBeingScrolled];
-    v6 = [(AVMobileVolumeChromelessButtonControl *)self volumeIconState];
-    [v4 setState:v6 color:0];
+    avkit_isBeingScrolled = [(UIView *)self avkit_isBeingScrolled];
+    volumeIconState = [(AVMobileVolumeChromelessButtonControl *)self volumeIconState];
+    [packageCopy setState:volumeIconState color:0];
 
-    v7 = [v4 rootLayer];
+    rootLayer = [packageCopy rootLayer];
     LODWORD(v8) = 1.0;
-    [v7 setOpacity:v8];
+    [rootLayer setOpacity:v8];
 
-    if (v5)
+    if (avkit_isBeingScrolled)
     {
       objc_initWeak(&location, self);
       v9 = MEMORY[0x1E69DCAB8];
-      v10 = [(AVMobileVolumeChromelessButtonControl *)self _imageNameForMicaPackageState];
+      _imageNameForMicaPackageState = [(AVMobileVolumeChromelessButtonControl *)self _imageNameForMicaPackageState];
       v36 = MEMORY[0x1E69E9820];
       v37 = 3221225472;
       v38 = __60__AVMobileVolumeChromelessButtonControl__updateMicaPackage___block_invoke;
       v39 = &unk_1E7209E30;
       objc_copyWeak(&v40, &location);
-      [v9 avkit_imageNamed:v10 completion:&v36];
+      [v9 avkit_imageNamed:_imageNameForMicaPackageState completion:&v36];
 
       objc_destroyWeak(&v40);
       objc_destroyWeak(&location);
@@ -63,48 +63,48 @@
 
   else
   {
-    v11 = [(AVMobileVolumeChromelessButtonControl *)self volumeIconState];
-    [0 setState:v11 color:0];
+    volumeIconState2 = [(AVMobileVolumeChromelessButtonControl *)self volumeIconState];
+    [0 setState:volumeIconState2 color:0];
 
-    v12 = [0 rootLayer];
+    rootLayer2 = [0 rootLayer];
     LODWORD(v13) = 1.0;
-    [v12 setOpacity:v13];
+    [rootLayer2 setOpacity:v13];
   }
 
-  v14 = [v4 rootLayer];
-  v15 = [v14 superlayer];
-  v16 = [(AVMobileVolumeChromelessButtonControl *)self micaPackageContainerView];
-  v17 = [v16 layer];
+  rootLayer3 = [packageCopy rootLayer];
+  superlayer = [rootLayer3 superlayer];
+  micaPackageContainerView = [(AVMobileVolumeChromelessButtonControl *)self micaPackageContainerView];
+  layer = [micaPackageContainerView layer];
 
-  if (v15 != v17)
+  if (superlayer != layer)
   {
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    v18 = [(AVMobileVolumeChromelessButtonControl *)self micaPackageContainerView];
-    [(AVMobileVolumeChromelessButtonControl *)self addSubview:v18];
+    micaPackageContainerView2 = [(AVMobileVolumeChromelessButtonControl *)self micaPackageContainerView];
+    [(AVMobileVolumeChromelessButtonControl *)self addSubview:micaPackageContainerView2];
 
-    v19 = [(AVMobileVolumeChromelessButtonControl *)self layer];
-    [v19 setCompositingFilter:0];
+    layer2 = [(AVMobileVolumeChromelessButtonControl *)self layer];
+    [layer2 setCompositingFilter:0];
 
-    v20 = [(AVMobileVolumeChromelessButtonControl *)self micaPackageContainerView];
-    v21 = [v20 layer];
-    [v21 setCompositingFilter:0];
+    micaPackageContainerView3 = [(AVMobileVolumeChromelessButtonControl *)self micaPackageContainerView];
+    layer3 = [micaPackageContainerView3 layer];
+    [layer3 setCompositingFilter:0];
 
-    v22 = [(AVMobileVolumeChromelessButtonControl *)self micaPackageContainerView];
-    v23 = [v22 layer];
-    v24 = [v4 rootLayer];
-    [v23 addSublayer:v24];
+    micaPackageContainerView4 = [(AVMobileVolumeChromelessButtonControl *)self micaPackageContainerView];
+    layer4 = [micaPackageContainerView4 layer];
+    rootLayer4 = [packageCopy rootLayer];
+    [layer4 addSublayer:rootLayer4];
 
     [MEMORY[0x1E6979518] commit];
   }
 
-  [v4 setTargetSize:{26.0, 26.0}];
+  [packageCopy setTargetSize:{26.0, 26.0}];
   [(AVMobileVolumeChromelessButtonControl *)self bounds];
   UIRectGetCenter();
   v26 = v25;
   v28 = v27;
-  v29 = [v4 rootLayer];
-  [v29 position];
+  rootLayer5 = [packageCopy rootLayer];
+  [rootLayer5 position];
   v31 = v30;
   v33 = v32;
 
@@ -112,16 +112,16 @@
   {
     [MEMORY[0x1E6979518] begin];
     [MEMORY[0x1E6979518] setDisableActions:1];
-    v34 = [v4 rootLayer];
+    rootLayer6 = [packageCopy rootLayer];
     [(AVMobileVolumeChromelessButtonControl *)self bounds];
     UIRectGetCenter();
-    [v34 setPosition:?];
+    [rootLayer6 setPosition:?];
 
     [MEMORY[0x1E6979518] commit];
   }
 
-  v35 = [(AVMobileVolumeChromelessButtonControl *)self imageView];
-  [v35 removeFromSuperview];
+  imageView = [(AVMobileVolumeChromelessButtonControl *)self imageView];
+  [imageView removeFromSuperview];
 
 LABEL_11:
   [(UIPointerInteraction *)self->_micaPackageContainerPointerInteraction invalidate:v36];
@@ -182,11 +182,11 @@ uint64_t __60__AVMobileVolumeChromelessButtonControl__updateMicaPackage___block_
   }
 
   v3 = _imageNameForMicaPackageState_imageNamesForStates;
-  v4 = [(AVMobileVolumeChromelessButtonControl *)self volumeIconState];
-  v5 = v4;
-  if (v4)
+  volumeIconState = [(AVMobileVolumeChromelessButtonControl *)self volumeIconState];
+  v5 = volumeIconState;
+  if (volumeIconState)
   {
-    v6 = v4;
+    v6 = volumeIconState;
   }
 
   else
@@ -219,45 +219,45 @@ void __70__AVMobileVolumeChromelessButtonControl__imageNameForMicaPackageState__
 
 - (void)_volumeControlButtonDidEndPanning
 {
-  v3 = [(AVMobileVolumeChromelessButtonControl *)self delegate];
+  delegate = [(AVMobileVolumeChromelessButtonControl *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(AVMobileVolumeChromelessButtonControl *)self delegate];
-    [v5 volumeControlButtonDidEndPanning:self];
+    delegate2 = [(AVMobileVolumeChromelessButtonControl *)self delegate];
+    [delegate2 volumeControlButtonDidEndPanning:self];
   }
 }
 
-- (void)_volumeControlButtonPanningDidContinueWithXDelta:(double)a3
+- (void)_volumeControlButtonPanningDidContinueWithXDelta:(double)delta
 {
-  v5 = [(AVMobileVolumeChromelessButtonControl *)self delegate];
+  delegate = [(AVMobileVolumeChromelessButtonControl *)self delegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(AVMobileVolumeChromelessButtonControl *)self delegate];
-    [v7 volumeControlButton:self didContinuePanningWithXDelta:a3];
+    delegate2 = [(AVMobileVolumeChromelessButtonControl *)self delegate];
+    [delegate2 volumeControlButton:self didContinuePanningWithXDelta:delta];
   }
 }
 
 - (void)_volumeControlButtonDidBeginPanning
 {
-  v3 = [(AVMobileVolumeChromelessButtonControl *)self delegate];
+  delegate = [(AVMobileVolumeChromelessButtonControl *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(AVMobileVolumeChromelessButtonControl *)self delegate];
-    [v5 volumeControlButtonDidBeginPanning:self];
+    delegate2 = [(AVMobileVolumeChromelessButtonControl *)self delegate];
+    [delegate2 volumeControlButtonDidBeginPanning:self];
   }
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v4 = a3;
-  v5 = [v4 view];
-  [v5 frame];
+  interactionCopy = interaction;
+  view = [interactionCopy view];
+  [view frame];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -265,19 +265,19 @@ void __70__AVMobileVolumeChromelessButtonControl__imageNameForMicaPackageState__
 
   v14 = [MEMORY[0x1E69DCDC8] shapeWithRoundedRect:v7 + -5.0 cornerRadius:{v9 + -5.0, v11 + 10.0, v13 + 10.0, 6.0}];
   v15 = objc_alloc(MEMORY[0x1E69DD070]);
-  v16 = [v4 view];
+  view2 = [interactionCopy view];
 
-  v17 = [v15 initWithView:v16];
+  v17 = [v15 initWithView:view2];
   v18 = [MEMORY[0x1E69DCDA0] effectWithPreview:v17];
   v19 = [MEMORY[0x1E69DCDD0] styleWithEffect:v18 shape:v14];
 
   return v19;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(AVMobileVolumeChromelessButtonControl *)self hitRect];
   v10 = x;
   v11 = y;
@@ -290,17 +290,17 @@ void __70__AVMobileVolumeChromelessButtonControl__imageNameForMicaPackageState__
   v6.receiver = self;
   v6.super_class = AVMobileVolumeChromelessButtonControl;
   [(AVMobileVolumeChromelessButtonControl *)&v6 layoutSubviews];
-  v3 = [(AVMobileVolumeChromelessButtonControl *)self micaPackageContainerView];
+  micaPackageContainerView = [(AVMobileVolumeChromelessButtonControl *)self micaPackageContainerView];
   [(AVMobileVolumeChromelessButtonControl *)self bounds];
-  [v3 setFrame:?];
+  [micaPackageContainerView setFrame:?];
 
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
-  v4 = [(AVMobileVolumeChromelessButtonControl *)self micaPackage];
-  v5 = [v4 rootLayer];
+  micaPackage = [(AVMobileVolumeChromelessButtonControl *)self micaPackage];
+  rootLayer = [micaPackage rootLayer];
   [(AVMobileVolumeChromelessButtonControl *)self bounds];
   UIRectGetCenter();
-  [v5 setPosition:?];
+  [rootLayer setPosition:?];
 
   [MEMORY[0x1E6979518] commit];
 }
@@ -330,10 +330,10 @@ void __70__AVMobileVolumeChromelessButtonControl__imageNameForMicaPackageState__
   return result;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = [a3 view];
-  LOBYTE(self) = [v4 isDescendantOfView:self];
+  view = [begin view];
+  LOBYTE(self) = [view isDescendantOfView:self];
 
   return self;
 }
@@ -353,11 +353,11 @@ void __70__AVMobileVolumeChromelessButtonControl__imageNameForMicaPackageState__
   }
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = AVMobileVolumeChromelessButtonControl;
-  [(AVMobileVolumeChromelessButtonControl *)&v5 cancelTrackingWithEvent:a3];
+  [(AVMobileVolumeChromelessButtonControl *)&v5 cancelTrackingWithEvent:event];
   hasStartedPanning = self->_hasStartedPanning;
   self->_hasStartedPanning = 0;
   [(AVMobileVolumeChromelessButtonControl *)self setTracking:0];
@@ -367,11 +367,11 @@ void __70__AVMobileVolumeChromelessButtonControl__imageNameForMicaPackageState__
   }
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = AVMobileVolumeChromelessButtonControl;
-  [(AVMobileVolumeChromelessButtonControl *)&v5 endTrackingWithTouch:a3 withEvent:a4];
+  [(AVMobileVolumeChromelessButtonControl *)&v5 endTrackingWithTouch:touch withEvent:event];
   if (self->_hasStartedPanning)
   {
     [(AVMobileVolumeChromelessButtonControl *)self setTracking:0];
@@ -386,21 +386,21 @@ void __70__AVMobileVolumeChromelessButtonControl__imageNameForMicaPackageState__
   self->_hasStartedPanning = 0;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 preciseLocationInView:self];
+  touchCopy = touch;
+  eventCopy = event;
+  [touchCopy preciseLocationInView:self];
   *&v8 = self->_startPoint.x - v8;
   *&v9 = self->_startPoint.y - v9;
   v10 = sqrt((*&v8 * *&v8) + (*&v9 * *&v9));
-  v11 = [(AVMobileVolumeChromelessButtonControl *)self delegate];
+  delegate = [(AVMobileVolumeChromelessButtonControl *)self delegate];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(AVMobileVolumeChromelessButtonControl *)self delegate];
-    v14 = [v13 volumeControlButtonCanBeginPanning:self];
+    delegate2 = [(AVMobileVolumeChromelessButtonControl *)self delegate];
+    v14 = [delegate2 volumeControlButtonCanBeginPanning:self];
 
     v15 = v14 ^ 1;
   }
@@ -418,63 +418,63 @@ void __70__AVMobileVolumeChromelessButtonControl__imageNameForMicaPackageState__
 
   if (self->_hasStartedPanning)
   {
-    [v6 preciseLocationInView:self];
+    [touchCopy preciseLocationInView:self];
     v17 = v16;
-    [v6 precisePreviousLocationInView:self];
+    [touchCopy precisePreviousLocationInView:self];
     [(AVMobileVolumeChromelessButtonControl *)self _volumeControlButtonPanningDidContinueWithXDelta:v17 - v18];
   }
 
   v21.receiver = self;
   v21.super_class = AVMobileVolumeChromelessButtonControl;
-  v19 = [(AVMobileVolumeChromelessButtonControl *)&v21 continueTrackingWithTouch:v6 withEvent:v7];
+  v19 = [(AVMobileVolumeChromelessButtonControl *)&v21 continueTrackingWithTouch:touchCopy withEvent:eventCopy];
 
   return v19;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v5 = self;
+  selfCopy = self;
   p_startPoint = &self->_startPoint;
-  v7 = a4;
-  v8 = a3;
-  [v8 preciseLocationInView:v5];
+  eventCopy = event;
+  touchCopy = touch;
+  [touchCopy preciseLocationInView:selfCopy];
   p_startPoint->x = v9;
   p_startPoint->y = v10;
-  v12.receiver = v5;
+  v12.receiver = selfCopy;
   v12.super_class = AVMobileVolumeChromelessButtonControl;
-  LOBYTE(v5) = [(AVMobileVolumeChromelessButtonControl *)&v12 beginTrackingWithTouch:v8 withEvent:v7];
+  LOBYTE(selfCopy) = [(AVMobileVolumeChromelessButtonControl *)&v12 beginTrackingWithTouch:touchCopy withEvent:eventCopy];
 
-  return v5;
+  return selfCopy;
 }
 
-- (void)setVolumeIconState:(id)a3
+- (void)setVolumeIconState:(id)state
 {
-  v7 = a3;
+  stateCopy = state;
   if (![(NSString *)self->_volumeIconState isEqualToString:?])
   {
-    v4 = [v7 copy];
+    v4 = [stateCopy copy];
     volumeIconState = self->_volumeIconState;
     self->_volumeIconState = v4;
 
-    v6 = [(AVMobileVolumeChromelessButtonControl *)self micaPackage];
-    [(AVMobileVolumeChromelessButtonControl *)self _updateMicaPackage:v6];
+    micaPackage = [(AVMobileVolumeChromelessButtonControl *)self micaPackage];
+    [(AVMobileVolumeChromelessButtonControl *)self _updateMicaPackage:micaPackage];
   }
 }
 
-- (void)setMicaPackage:(id)a3
+- (void)setMicaPackage:(id)package
 {
-  v5 = a3;
-  if (self->_micaPackage != v5)
+  packageCopy = package;
+  if (self->_micaPackage != packageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_micaPackage, a3);
+    v6 = packageCopy;
+    objc_storeStrong(&self->_micaPackage, package);
     if (v6)
     {
-      v5 = [(AVMobileVolumeChromelessButtonControl *)self _updateMicaPackage:v6];
+      packageCopy = [(AVMobileVolumeChromelessButtonControl *)self _updateMicaPackage:v6];
     }
   }
 
-  MEMORY[0x1EEE66BE0](v5);
+  MEMORY[0x1EEE66BE0](packageCopy);
 }
 
 - (AVMobileVolumeChromelessButtonControl)init
@@ -497,17 +497,17 @@ void __70__AVMobileVolumeChromelessButtonControl__imageNameForMicaPackageState__
     v2->_micaPackageContainerView = v7;
 
     [(UIView *)v2->_micaPackageContainerView setUserInteractionEnabled:0];
-    v9 = [(UIView *)v2->_micaPackageContainerView layer];
-    [v9 setAllowsGroupBlending:0];
+    layer = [(UIView *)v2->_micaPackageContainerView layer];
+    [layer setAllowsGroupBlending:0];
 
-    v10 = [(AVMobileVolumeChromelessButtonControl *)v2 effectiveUserInterfaceLayoutDirection];
+    effectiveUserInterfaceLayoutDirection = [(AVMobileVolumeChromelessButtonControl *)v2 effectiveUserInterfaceLayoutDirection];
     objc_initWeak(&location, v2);
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __45__AVMobileVolumeChromelessButtonControl_init__block_invoke;
     v12[3] = &unk_1E7209E08;
     objc_copyWeak(&v13, &location);
-    [AVMicaPackage asynchronouslyPrepareMicaPackageWithName:@"VolumeGlyph" layoutDirection:v10 completion:v12];
+    [AVMicaPackage asynchronouslyPrepareMicaPackageWithName:@"VolumeGlyph" layoutDirection:effectiveUserInterfaceLayoutDirection completion:v12];
     objc_destroyWeak(&v13);
     objc_destroyWeak(&location);
   }

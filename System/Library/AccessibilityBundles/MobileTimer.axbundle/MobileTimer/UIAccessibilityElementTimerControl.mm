@@ -8,14 +8,14 @@
 
 - (CGRect)accessibilityFrame
 {
-  v3 = [(UIAccessibilityElementTimerControl *)self icon];
-  [v3 accessibilityFrame];
+  icon = [(UIAccessibilityElementTimerControl *)self icon];
+  [icon accessibilityFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(UIAccessibilityElementTimerControl *)self name];
-  [v12 accessibilityFrame];
+  name = [(UIAccessibilityElementTimerControl *)self name];
+  [name accessibilityFrame];
   v28.origin.x = v13;
   v28.origin.y = v14;
   v28.size.width = v15;
@@ -45,21 +45,21 @@
 {
   v3 = MEMORY[0x29EDBA0F8];
   v4 = accessibilityLocalizedString(@"timer.alert.tone");
-  v5 = [(UIAccessibilityElementTimerControl *)self name];
-  v6 = [v5 accessibilityLabel];
-  v7 = [v3 stringWithFormat:v4, v6];
+  name = [(UIAccessibilityElementTimerControl *)self name];
+  accessibilityLabel = [name accessibilityLabel];
+  v7 = [v3 stringWithFormat:v4, accessibilityLabel];
 
   return v7;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v3 = [(UIAccessibilityElementTimerControl *)self icon];
-  v4 = [v3 accessibilityTraits];
-  v5 = [(UIAccessibilityElementTimerControl *)self name];
-  v6 = [v5 accessibilityTraits];
+  icon = [(UIAccessibilityElementTimerControl *)self icon];
+  accessibilityTraits = [icon accessibilityTraits];
+  name = [(UIAccessibilityElementTimerControl *)self name];
+  accessibilityTraits2 = [name accessibilityTraits];
 
-  return v6 | v4;
+  return accessibilityTraits2 | accessibilityTraits;
 }
 
 @end

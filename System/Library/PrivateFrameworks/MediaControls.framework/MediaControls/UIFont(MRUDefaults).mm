@@ -78,7 +78,7 @@
   v2 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD10] maximumContentSizeCategory:*MEMORY[0x1E69DDC40]];
   v3 = MEMORY[0x1E69DB878];
   [v2 pointSize];
-  v5 = [v3 monospacedDigitSystemFontOfSize:v4 * a1 weight:*MEMORY[0x1E69DB970]];
+  v5 = [v3 monospacedDigitSystemFontOfSize:v4 * self weight:*MEMORY[0x1E69DB970]];
 
   return v5;
 }
@@ -108,7 +108,7 @@
   v2 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD90] maximumContentSizeCategory:*MEMORY[0x1E69DDC58]];
   v3 = MEMORY[0x1E69DB878];
   [v2 pointSize];
-  v5 = [v3 systemFontOfSize:v4 * a1 weight:*MEMORY[0x1E69DB980]];
+  v5 = [v3 systemFontOfSize:v4 * self weight:*MEMORY[0x1E69DB980]];
 
   return v5;
 }
@@ -117,11 +117,11 @@
 {
   v2 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD90] maximumContentSizeCategory:*MEMORY[0x1E69DDC58]];
   v3 = v2;
-  if (fabs(a1 + -1.0) > 2.22044605e-16)
+  if (fabs(self + -1.0) > 2.22044605e-16)
   {
     v4 = MEMORY[0x1E69DB878];
     [v2 pointSize];
-    v6 = [v4 systemFontOfSize:v5 * a1];
+    v6 = [v4 systemFontOfSize:v5 * self];
 
     v3 = v6;
   }
@@ -134,7 +134,7 @@
   v2 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD80] maximumContentSizeCategory:*MEMORY[0x1E69DDC40]];
   v3 = MEMORY[0x1E69DB878];
   [v2 pointSize];
-  v5 = [v3 systemFontOfSize:v4 * a1 weight:*MEMORY[0x1E69DB980]];
+  v5 = [v3 systemFontOfSize:v4 * self weight:*MEMORY[0x1E69DB980]];
 
   return v5;
 }
@@ -143,11 +143,11 @@
 {
   v2 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD80] maximumContentSizeCategory:*MEMORY[0x1E69DDC40]];
   v3 = v2;
-  if (fabs(a1 + -1.0) > 2.22044605e-16)
+  if (fabs(self + -1.0) > 2.22044605e-16)
   {
     v4 = MEMORY[0x1E69DB878];
     [v2 pointSize];
-    v6 = [v4 systemFontOfSize:v5 * a1];
+    v6 = [v4 systemFontOfSize:v5 * self];
 
     v3 = v6;
   }
@@ -159,11 +159,11 @@
 {
   v2 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD28] maximumContentSizeCategory:*MEMORY[0x1E69DDC40]];
   v3 = v2;
-  if (fabs(a1 + -1.0) > 2.22044605e-16)
+  if (fabs(self + -1.0) > 2.22044605e-16)
   {
     v4 = MEMORY[0x1E69DB878];
     [v2 pointSize];
-    v6 = [v4 systemFontOfSize:v5 * a1];
+    v6 = [v4 systemFontOfSize:v5 * self];
 
     v3 = v6;
   }
@@ -175,11 +175,11 @@
 {
   v2 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD10] maximumContentSizeCategory:*MEMORY[0x1E69DDC40]];
   v3 = v2;
-  if (fabs(a1 + -1.0) > 2.22044605e-16)
+  if (fabs(self + -1.0) > 2.22044605e-16)
   {
     v4 = MEMORY[0x1E69DB878];
     [v2 pointSize];
-    v6 = [v4 systemFontOfSize:v5 * a1];
+    v6 = [v4 systemFontOfSize:v5 * self];
 
     v3 = v6;
   }

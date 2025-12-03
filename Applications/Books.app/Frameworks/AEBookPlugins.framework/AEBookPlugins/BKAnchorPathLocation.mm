@@ -1,39 +1,39 @@
 @interface BKAnchorPathLocation
-+ (id)deserializeLocationFromDictionary:(id)a3;
-- (BKAnchorPathLocation)initWithCoder:(id)a3;
-- (BKAnchorPathLocation)initWithLocationDictionary:(id)a3;
-- (BKAnchorPathLocation)initWithOrdinal:(int64_t)a3 anchor:(id)a4 andPath:(id)a5;
-- (BKAnchorPathLocation)initWithPath:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)deserializeLocationFromDictionary:(id)dictionary;
+- (BKAnchorPathLocation)initWithCoder:(id)coder;
+- (BKAnchorPathLocation)initWithLocationDictionary:(id)dictionary;
+- (BKAnchorPathLocation)initWithOrdinal:(int64_t)ordinal anchor:(id)anchor andPath:(id)path;
+- (BKAnchorPathLocation)initWithPath:(id)path;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (id)pathWithAnchor;
 - (id)serializeLocationToDictionary;
 - (id)stringValue;
 - (unint64_t)hash;
-- (void)updateOrdinalForBookInfo:(id)a3;
+- (void)updateOrdinalForBookInfo:(id)info;
 @end
 
 @implementation BKAnchorPathLocation
 
-- (BKAnchorPathLocation)initWithPath:(id)a3
+- (BKAnchorPathLocation)initWithPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 URLFragmentString];
-  v6 = [v4 stringByRemovingURLFragment];
+  pathCopy = path;
+  uRLFragmentString = [pathCopy URLFragmentString];
+  stringByRemovingURLFragment = [pathCopy stringByRemovingURLFragment];
 
-  v7 = [(BKAnchorPathLocation *)self initWithOrdinal:-1 anchor:v5 andPath:v6];
+  v7 = [(BKAnchorPathLocation *)self initWithOrdinal:-1 anchor:uRLFragmentString andPath:stringByRemovingURLFragment];
   return v7;
 }
 
-- (BKAnchorPathLocation)initWithOrdinal:(int64_t)a3 anchor:(id)a4 andPath:(id)a5
+- (BKAnchorPathLocation)initWithOrdinal:(int64_t)ordinal anchor:(id)anchor andPath:(id)path
 {
-  v8 = a5;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = BKAnchorPathLocation;
-  v9 = [(BKAnchorLocation *)&v13 initWithOrdinal:a3 andAnchor:a4];
+  v9 = [(BKAnchorLocation *)&v13 initWithOrdinal:ordinal andAnchor:anchor];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [pathCopy copy];
     path = v9->_path;
     v9->_path = v10;
   }
@@ -41,15 +41,15 @@
   return v9;
 }
 
-- (BKAnchorPathLocation)initWithCoder:(id)a3
+- (BKAnchorPathLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = BKAnchorPathLocation;
-  v5 = [(BKAnchorLocation *)&v10 initWithCoder:v4];
+  v5 = [(BKAnchorLocation *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"path"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"path"];
     v7 = [v6 copy];
     path = v5->_path;
     v5->_path = v7;
@@ -58,16 +58,16 @@
   return v5;
 }
 
-- (BKAnchorPathLocation)initWithLocationDictionary:(id)a3
+- (BKAnchorPathLocation)initWithLocationDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"super"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKey:@"super"];
   v11.receiver = self;
   v11.super_class = BKAnchorPathLocation;
   v6 = [(BKAnchorLocation *)&v11 initWithLocationDictionary:v5];
   if (v6)
   {
-    v7 = [v4 objectForKey:@"path"];
+    v7 = [dictionaryCopy objectForKey:@"path"];
     v8 = [v7 copy];
     path = v6->_path;
     v6->_path = v8;
@@ -76,15 +76,15 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v9.receiver = self, v9.super_class = BKAnchorPathLocation, [(BKAnchorLocation *)&v9 isEqual:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v9.receiver = self, v9.super_class = BKAnchorPathLocation, [(BKAnchorLocation *)&v9 isEqual:equalCopy]))
   {
-    v5 = [v4 path];
-    v6 = [(BKAnchorPathLocation *)self path];
-    v7 = [v5 isEqualToString:v6];
+    path = [equalCopy path];
+    path2 = [(BKAnchorPathLocation *)self path];
+    v7 = [path isEqualToString:path2];
   }
 
   else
@@ -107,8 +107,8 @@
 {
   v6.receiver = self;
   v6.super_class = BKAnchorPathLocation;
-  v3 = [(BKAnchorLocation *)&v6 stringValue];
-  v4 = [NSString stringWithFormat:@"{ %@, path:%@ }", v3, self->_path];
+  stringValue = [(BKAnchorLocation *)&v6 stringValue];
+  v4 = [NSString stringWithFormat:@"{ %@, path:%@ }", stringValue, self->_path];
 
   return v4;
 }
@@ -125,16 +125,16 @@
 
 - (id)pathWithAnchor
 {
-  v3 = [(BKAnchorPathLocation *)self path];
-  v4 = [v3 mutableCopy];
+  path = [(BKAnchorPathLocation *)self path];
+  v4 = [path mutableCopy];
 
-  v5 = [(BKAnchorLocation *)self anchor];
-  v6 = [v5 length];
+  anchor = [(BKAnchorLocation *)self anchor];
+  v6 = [anchor length];
 
   if (v6)
   {
-    v7 = [(BKAnchorLocation *)self anchor];
-    [v4 appendFormat:@"#%@", v7];
+    anchor2 = [(BKAnchorLocation *)self anchor];
+    [v4 appendFormat:@"#%@", anchor2];
   }
 
   v8 = [v4 copy];
@@ -142,27 +142,27 @@
   return v8;
 }
 
-- (void)updateOrdinalForBookInfo:(id)a3
+- (void)updateOrdinalForBookInfo:(id)info
 {
-  v15 = a3;
-  v4 = [v15 documentWithOrdinal:{-[BKLocation ordinal](self, "ordinal")}];
-  v5 = [(BKAnchorPathLocation *)self path];
-  v6 = CFURLCreateStringByReplacingPercentEscapes(0, v5, &stru_1E7188);
+  infoCopy = info;
+  v4 = [infoCopy documentWithOrdinal:{-[BKLocation ordinal](self, "ordinal")}];
+  path = [(BKAnchorPathLocation *)self path];
+  v6 = CFURLCreateStringByReplacingPercentEscapes(0, path, &stru_1E7188);
 
   if (!v4 || ([v4 manifestId], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isEqualToString:", v6), v7, (v8 & 1) == 0))
   {
-    v9 = [v15 databaseKey];
-    v10 = [NSPredicate predicateWithFormat:@"bookDatabaseKey == %@ AND manifestId == %@", v9, v6];
+    databaseKey = [infoCopy databaseKey];
+    v10 = [NSPredicate predicateWithFormat:@"bookDatabaseKey == %@ AND manifestId == %@", databaseKey, v6];
 
-    v11 = [v15 managedObjectContext];
-    v12 = [v11 entity:@"BKDocument" withPredicate:v10 sortBy:0 ascending:1 fetchLimit:1];
+    managedObjectContext = [infoCopy managedObjectContext];
+    v12 = [managedObjectContext entity:@"BKDocument" withPredicate:v10 sortBy:0 ascending:1 fetchLimit:1];
 
     if ([v12 count])
     {
       v13 = [v12 objectAtIndex:0];
 
-      v14 = [v13 documentOrdinal];
-      -[BKLocation setOrdinal:](self, "setOrdinal:", [v14 integerValue]);
+      documentOrdinal = [v13 documentOrdinal];
+      -[BKLocation setOrdinal:](self, "setOrdinal:", [documentOrdinal integerValue]);
 
       v4 = v13;
     }
@@ -173,20 +173,20 @@
 {
   v7.receiver = self;
   v7.super_class = BKAnchorPathLocation;
-  v3 = [(BKAnchorLocation *)&v7 serializeLocationToDictionary];
-  v4 = [(BKAnchorPathLocation *)self path];
-  v5 = [NSDictionary dictionaryWithObjectsAndKeys:v3, @"super", v4, @"path", @"BKAnchorPathLocation", @"class", 0];
+  serializeLocationToDictionary = [(BKAnchorLocation *)&v7 serializeLocationToDictionary];
+  path = [(BKAnchorPathLocation *)self path];
+  v5 = [NSDictionary dictionaryWithObjectsAndKeys:serializeLocationToDictionary, @"super", path, @"path", @"BKAnchorPathLocation", @"class", 0];
 
   return v5;
 }
 
-+ (id)deserializeLocationFromDictionary:(id)a3
++ (id)deserializeLocationFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKey:@"class"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKey:@"class"];
   if ([v4 isEqualToString:@"BKAnchorPathLocation"])
   {
-    v5 = [[BKAnchorPathLocation alloc] initWithLocationDictionary:v3];
+    v5 = [[BKAnchorPathLocation alloc] initWithLocationDictionary:dictionaryCopy];
   }
 
   else

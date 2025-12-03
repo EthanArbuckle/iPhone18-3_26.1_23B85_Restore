@@ -1,38 +1,38 @@
 @interface AWDLibnetcoreTCPECNStatsReport
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTcpECNClientNegotiationEnabled:(BOOL)a3;
-- (void)setHasTcpECNClientSuccess:(BOOL)a3;
-- (void)setHasTcpECNConnNoPacketLossCE:(BOOL)a3;
-- (void)setHasTcpECNConnPacketLossCE:(BOOL)a3;
-- (void)setHasTcpECNConnPacketLossNoCE:(BOOL)a3;
-- (void)setHasTcpECNConnRecvCE:(BOOL)a3;
-- (void)setHasTcpECNConnRecvECE:(BOOL)a3;
-- (void)setHasTcpECNFallbackCE:(BOOL)a3;
-- (void)setHasTcpECNFallbackReorder:(BOOL)a3;
-- (void)setHasTcpECNFallbackSynLoss:(BOOL)a3;
-- (void)setHasTcpECNNotSupportedPeer:(BOOL)a3;
-- (void)setHasTcpECNRecvCE:(BOOL)a3;
-- (void)setHasTcpECNRecvECE:(BOOL)a3;
-- (void)setHasTcpECNSentECE:(BOOL)a3;
-- (void)setHasTcpECNServerNegotiationEnabled:(BOOL)a3;
-- (void)setHasTcpECNServerSetup:(BOOL)a3;
-- (void)setHasTcpECNServerSuccess:(BOOL)a3;
-- (void)setHasTcpECNSynAckLost:(BOOL)a3;
-- (void)setHasTcpECNSynLost:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasTcpECNClientNegotiationEnabled:(BOOL)enabled;
+- (void)setHasTcpECNClientSuccess:(BOOL)success;
+- (void)setHasTcpECNConnNoPacketLossCE:(BOOL)e;
+- (void)setHasTcpECNConnPacketLossCE:(BOOL)e;
+- (void)setHasTcpECNConnPacketLossNoCE:(BOOL)e;
+- (void)setHasTcpECNConnRecvCE:(BOOL)e;
+- (void)setHasTcpECNConnRecvECE:(BOOL)e;
+- (void)setHasTcpECNFallbackCE:(BOOL)e;
+- (void)setHasTcpECNFallbackReorder:(BOOL)reorder;
+- (void)setHasTcpECNFallbackSynLoss:(BOOL)loss;
+- (void)setHasTcpECNNotSupportedPeer:(BOOL)peer;
+- (void)setHasTcpECNRecvCE:(BOOL)e;
+- (void)setHasTcpECNRecvECE:(BOOL)e;
+- (void)setHasTcpECNSentECE:(BOOL)e;
+- (void)setHasTcpECNServerNegotiationEnabled:(BOOL)enabled;
+- (void)setHasTcpECNServerSetup:(BOOL)setup;
+- (void)setHasTcpECNServerSuccess:(BOOL)success;
+- (void)setHasTcpECNSynAckLost:(BOOL)lost;
+- (void)setHasTcpECNSynLost:(BOOL)lost;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDLibnetcoreTCPECNStatsReport
 
-- (void)setHasTcpECNClientNegotiationEnabled:(BOOL)a3
+- (void)setHasTcpECNClientNegotiationEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x40000;
   }
@@ -45,9 +45,9 @@
   self->_has = (*&self->_has & 0xFFFBFFFF | v3);
 }
 
-- (void)setHasTcpECNServerNegotiationEnabled:(BOOL)a3
+- (void)setHasTcpECNServerNegotiationEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 0x80000;
   }
@@ -60,9 +60,9 @@
   self->_has = (*&self->_has & 0xFFF7FFFF | v3);
 }
 
-- (void)setHasTcpECNServerSetup:(BOOL)a3
+- (void)setHasTcpECNServerSetup:(BOOL)setup
 {
-  if (a3)
+  if (setup)
   {
     v3 = 0x4000;
   }
@@ -75,9 +75,9 @@
   self->_has = (*&self->_has & 0xFFFFBFFF | v3);
 }
 
-- (void)setHasTcpECNClientSuccess:(BOOL)a3
+- (void)setHasTcpECNClientSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 2;
   }
@@ -90,9 +90,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFD | v3);
 }
 
-- (void)setHasTcpECNServerSuccess:(BOOL)a3
+- (void)setHasTcpECNServerSuccess:(BOOL)success
 {
-  if (a3)
+  if (success)
   {
     v3 = 0x8000;
   }
@@ -105,9 +105,9 @@
   self->_has = (*&self->_has & 0xFFFF7FFF | v3);
 }
 
-- (void)setHasTcpECNNotSupportedPeer:(BOOL)a3
+- (void)setHasTcpECNNotSupportedPeer:(BOOL)peer
 {
-  if (a3)
+  if (peer)
   {
     v3 = 1024;
   }
@@ -120,9 +120,9 @@
   self->_has = (*&self->_has & 0xFFFFFBFF | v3);
 }
 
-- (void)setHasTcpECNSynLost:(BOOL)a3
+- (void)setHasTcpECNSynLost:(BOOL)lost
 {
-  if (a3)
+  if (lost)
   {
     v3 = 0x20000;
   }
@@ -135,9 +135,9 @@
   self->_has = (*&self->_has & 0xFFFDFFFF | v3);
 }
 
-- (void)setHasTcpECNSynAckLost:(BOOL)a3
+- (void)setHasTcpECNSynAckLost:(BOOL)lost
 {
-  if (a3)
+  if (lost)
   {
     v3 = 0x10000;
   }
@@ -150,9 +150,9 @@
   self->_has = (*&self->_has & 0xFFFEFFFF | v3);
 }
 
-- (void)setHasTcpECNRecvCE:(BOOL)a3
+- (void)setHasTcpECNRecvCE:(BOOL)e
 {
-  if (a3)
+  if (e)
   {
     v3 = 2048;
   }
@@ -165,9 +165,9 @@
   self->_has = (*&self->_has & 0xFFFFF7FF | v3);
 }
 
-- (void)setHasTcpECNRecvECE:(BOOL)a3
+- (void)setHasTcpECNRecvECE:(BOOL)e
 {
-  if (a3)
+  if (e)
   {
     v3 = 4096;
   }
@@ -180,9 +180,9 @@
   self->_has = (*&self->_has & 0xFFFFEFFF | v3);
 }
 
-- (void)setHasTcpECNSentECE:(BOOL)a3
+- (void)setHasTcpECNSentECE:(BOOL)e
 {
-  if (a3)
+  if (e)
   {
     v3 = 0x2000;
   }
@@ -195,9 +195,9 @@
   self->_has = (*&self->_has & 0xFFFFDFFF | v3);
 }
 
-- (void)setHasTcpECNConnRecvCE:(BOOL)a3
+- (void)setHasTcpECNConnRecvCE:(BOOL)e
 {
-  if (a3)
+  if (e)
   {
     v3 = 32;
   }
@@ -210,9 +210,9 @@
   self->_has = (*&self->_has & 0xFFFFFFDF | v3);
 }
 
-- (void)setHasTcpECNConnRecvECE:(BOOL)a3
+- (void)setHasTcpECNConnRecvECE:(BOOL)e
 {
-  if (a3)
+  if (e)
   {
     v3 = 64;
   }
@@ -225,9 +225,9 @@
   self->_has = (*&self->_has & 0xFFFFFFBF | v3);
 }
 
-- (void)setHasTcpECNConnPacketLossNoCE:(BOOL)a3
+- (void)setHasTcpECNConnPacketLossNoCE:(BOOL)e
 {
-  if (a3)
+  if (e)
   {
     v3 = 16;
   }
@@ -240,9 +240,9 @@
   self->_has = (*&self->_has & 0xFFFFFFEF | v3);
 }
 
-- (void)setHasTcpECNConnPacketLossCE:(BOOL)a3
+- (void)setHasTcpECNConnPacketLossCE:(BOOL)e
 {
-  if (a3)
+  if (e)
   {
     v3 = 8;
   }
@@ -255,9 +255,9 @@
   self->_has = (*&self->_has & 0xFFFFFFF7 | v3);
 }
 
-- (void)setHasTcpECNConnNoPacketLossCE:(BOOL)a3
+- (void)setHasTcpECNConnNoPacketLossCE:(BOOL)e
 {
-  if (a3)
+  if (e)
   {
     v3 = 4;
   }
@@ -270,9 +270,9 @@
   self->_has = (*&self->_has & 0xFFFFFFFB | v3);
 }
 
-- (void)setHasTcpECNFallbackSynLoss:(BOOL)a3
+- (void)setHasTcpECNFallbackSynLoss:(BOOL)loss
 {
-  if (a3)
+  if (loss)
   {
     v3 = 512;
   }
@@ -285,9 +285,9 @@
   self->_has = (*&self->_has & 0xFFFFFDFF | v3);
 }
 
-- (void)setHasTcpECNFallbackReorder:(BOOL)a3
+- (void)setHasTcpECNFallbackReorder:(BOOL)reorder
 {
-  if (a3)
+  if (reorder)
   {
     v3 = 256;
   }
@@ -300,9 +300,9 @@
   self->_has = (*&self->_has & 0xFFFFFEFF | v3);
 }
 
-- (void)setHasTcpECNFallbackCE:(BOOL)a3
+- (void)setHasTcpECNFallbackCE:(BOOL)e
 {
-  if (a3)
+  if (e)
   {
     v3 = 128;
   }
@@ -324,11 +324,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((*&has & 0x40000) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_tcpECNClientNegotiationEnabled), @"tcpECNClientNegotiationEnabled"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_tcpECNClientNegotiationEnabled), @"tcpECNClientNegotiationEnabled"}];
     has = self->_has;
     if ((*&has & 0x80000) == 0)
     {
@@ -347,7 +347,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_tcpECNServerNegotiationEnabled), @"tcpECNServerNegotiationEnabled"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithBool:", self->_tcpECNServerNegotiationEnabled), @"tcpECNServerNegotiationEnabled"}];
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -361,7 +361,7 @@ LABEL_4:
   }
 
 LABEL_25:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNClientSetup), @"tcpECNClientSetup"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNClientSetup), @"tcpECNClientSetup"}];
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -375,7 +375,7 @@ LABEL_5:
   }
 
 LABEL_26:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNServerSetup), @"tcpECNServerSetup"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNServerSetup), @"tcpECNServerSetup"}];
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -389,7 +389,7 @@ LABEL_6:
   }
 
 LABEL_27:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNClientSuccess), @"tcpECNClientSuccess"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNClientSuccess), @"tcpECNClientSuccess"}];
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -403,7 +403,7 @@ LABEL_7:
   }
 
 LABEL_28:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNServerSuccess), @"tcpECNServerSuccess"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNServerSuccess), @"tcpECNServerSuccess"}];
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -417,7 +417,7 @@ LABEL_8:
   }
 
 LABEL_29:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNNotSupportedPeer), @"tcpECNNotSupportedPeer"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNNotSupportedPeer), @"tcpECNNotSupportedPeer"}];
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -431,7 +431,7 @@ LABEL_9:
   }
 
 LABEL_30:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNSynLost), @"tcpECNSynLost"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNSynLost), @"tcpECNSynLost"}];
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -445,7 +445,7 @@ LABEL_10:
   }
 
 LABEL_31:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNSynAckLost), @"tcpECNSynAckLost"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNSynAckLost), @"tcpECNSynAckLost"}];
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -459,7 +459,7 @@ LABEL_11:
   }
 
 LABEL_32:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNRecvCE), @"tcpECNRecvCE"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNRecvCE), @"tcpECNRecvCE"}];
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -473,7 +473,7 @@ LABEL_12:
   }
 
 LABEL_33:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNRecvECE), @"tcpECNRecvECE"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNRecvECE), @"tcpECNRecvECE"}];
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -487,7 +487,7 @@ LABEL_13:
   }
 
 LABEL_34:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNSentECE), @"tcpECNSentECE"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNSentECE), @"tcpECNSentECE"}];
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -501,7 +501,7 @@ LABEL_14:
   }
 
 LABEL_35:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNConnRecvCE), @"tcpECNConnRecvCE"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNConnRecvCE), @"tcpECNConnRecvCE"}];
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -515,7 +515,7 @@ LABEL_15:
   }
 
 LABEL_36:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNConnRecvECE), @"tcpECNConnRecvECE"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNConnRecvECE), @"tcpECNConnRecvECE"}];
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -529,7 +529,7 @@ LABEL_16:
   }
 
 LABEL_37:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNConnPacketLossNoCE), @"tcpECNConnPacketLossNoCE"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNConnPacketLossNoCE), @"tcpECNConnPacketLossNoCE"}];
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -543,7 +543,7 @@ LABEL_17:
   }
 
 LABEL_38:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNConnPacketLossCE), @"tcpECNConnPacketLossCE"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNConnPacketLossCE), @"tcpECNConnPacketLossCE"}];
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -557,7 +557,7 @@ LABEL_18:
   }
 
 LABEL_39:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNConnNoPacketLossCE), @"tcpECNConnNoPacketLossCE"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNConnNoPacketLossCE), @"tcpECNConnNoPacketLossCE"}];
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -568,17 +568,17 @@ LABEL_19:
     }
 
 LABEL_41:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNFallbackReorder), @"tcpECNFallbackReorder"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNFallbackReorder), @"tcpECNFallbackReorder"}];
     if ((*&self->_has & 0x80) == 0)
     {
-      return v3;
+      return dictionary;
     }
 
     goto LABEL_21;
   }
 
 LABEL_40:
-  [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNFallbackSynLoss), @"tcpECNFallbackSynLoss"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNFallbackSynLoss), @"tcpECNFallbackSynLoss"}];
   has = self->_has;
   if ((*&has & 0x100) != 0)
   {
@@ -589,13 +589,13 @@ LABEL_20:
   if ((*&has & 0x80) != 0)
   {
 LABEL_21:
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNFallbackCE), @"tcpECNFallbackCE"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedLongLong:", self->_tcpECNFallbackCE), @"tcpECNFallbackCE"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((*&has & 0x40000) != 0)
@@ -888,13 +888,13 @@ LABEL_41:
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((*&has & 0x40000) != 0)
   {
-    *(a3 + 152) = self->_tcpECNClientNegotiationEnabled;
-    *(a3 + 39) |= 0x40000u;
+    *(to + 152) = self->_tcpECNClientNegotiationEnabled;
+    *(to + 39) |= 0x40000u;
     has = self->_has;
     if ((*&has & 0x80000) == 0)
     {
@@ -913,8 +913,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 153) = self->_tcpECNServerNegotiationEnabled;
-  *(a3 + 39) |= 0x80000u;
+  *(to + 153) = self->_tcpECNServerNegotiationEnabled;
+  *(to + 39) |= 0x80000u;
   has = self->_has;
   if ((*&has & 1) == 0)
   {
@@ -928,8 +928,8 @@ LABEL_4:
   }
 
 LABEL_24:
-  *(a3 + 1) = self->_tcpECNClientSetup;
-  *(a3 + 39) |= 1u;
+  *(to + 1) = self->_tcpECNClientSetup;
+  *(to + 39) |= 1u;
   has = self->_has;
   if ((*&has & 0x4000) == 0)
   {
@@ -943,8 +943,8 @@ LABEL_5:
   }
 
 LABEL_25:
-  *(a3 + 15) = self->_tcpECNServerSetup;
-  *(a3 + 39) |= 0x4000u;
+  *(to + 15) = self->_tcpECNServerSetup;
+  *(to + 39) |= 0x4000u;
   has = self->_has;
   if ((*&has & 2) == 0)
   {
@@ -958,8 +958,8 @@ LABEL_6:
   }
 
 LABEL_26:
-  *(a3 + 2) = self->_tcpECNClientSuccess;
-  *(a3 + 39) |= 2u;
+  *(to + 2) = self->_tcpECNClientSuccess;
+  *(to + 39) |= 2u;
   has = self->_has;
   if ((*&has & 0x8000) == 0)
   {
@@ -973,8 +973,8 @@ LABEL_7:
   }
 
 LABEL_27:
-  *(a3 + 16) = self->_tcpECNServerSuccess;
-  *(a3 + 39) |= 0x8000u;
+  *(to + 16) = self->_tcpECNServerSuccess;
+  *(to + 39) |= 0x8000u;
   has = self->_has;
   if ((*&has & 0x400) == 0)
   {
@@ -988,8 +988,8 @@ LABEL_8:
   }
 
 LABEL_28:
-  *(a3 + 11) = self->_tcpECNNotSupportedPeer;
-  *(a3 + 39) |= 0x400u;
+  *(to + 11) = self->_tcpECNNotSupportedPeer;
+  *(to + 39) |= 0x400u;
   has = self->_has;
   if ((*&has & 0x20000) == 0)
   {
@@ -1003,8 +1003,8 @@ LABEL_9:
   }
 
 LABEL_29:
-  *(a3 + 18) = self->_tcpECNSynLost;
-  *(a3 + 39) |= 0x20000u;
+  *(to + 18) = self->_tcpECNSynLost;
+  *(to + 39) |= 0x20000u;
   has = self->_has;
   if ((*&has & 0x10000) == 0)
   {
@@ -1018,8 +1018,8 @@ LABEL_10:
   }
 
 LABEL_30:
-  *(a3 + 17) = self->_tcpECNSynAckLost;
-  *(a3 + 39) |= 0x10000u;
+  *(to + 17) = self->_tcpECNSynAckLost;
+  *(to + 39) |= 0x10000u;
   has = self->_has;
   if ((*&has & 0x800) == 0)
   {
@@ -1033,8 +1033,8 @@ LABEL_11:
   }
 
 LABEL_31:
-  *(a3 + 12) = self->_tcpECNRecvCE;
-  *(a3 + 39) |= 0x800u;
+  *(to + 12) = self->_tcpECNRecvCE;
+  *(to + 39) |= 0x800u;
   has = self->_has;
   if ((*&has & 0x1000) == 0)
   {
@@ -1048,8 +1048,8 @@ LABEL_12:
   }
 
 LABEL_32:
-  *(a3 + 13) = self->_tcpECNRecvECE;
-  *(a3 + 39) |= 0x1000u;
+  *(to + 13) = self->_tcpECNRecvECE;
+  *(to + 39) |= 0x1000u;
   has = self->_has;
   if ((*&has & 0x2000) == 0)
   {
@@ -1063,8 +1063,8 @@ LABEL_13:
   }
 
 LABEL_33:
-  *(a3 + 14) = self->_tcpECNSentECE;
-  *(a3 + 39) |= 0x2000u;
+  *(to + 14) = self->_tcpECNSentECE;
+  *(to + 39) |= 0x2000u;
   has = self->_has;
   if ((*&has & 0x20) == 0)
   {
@@ -1078,8 +1078,8 @@ LABEL_14:
   }
 
 LABEL_34:
-  *(a3 + 6) = self->_tcpECNConnRecvCE;
-  *(a3 + 39) |= 0x20u;
+  *(to + 6) = self->_tcpECNConnRecvCE;
+  *(to + 39) |= 0x20u;
   has = self->_has;
   if ((*&has & 0x40) == 0)
   {
@@ -1093,8 +1093,8 @@ LABEL_15:
   }
 
 LABEL_35:
-  *(a3 + 7) = self->_tcpECNConnRecvECE;
-  *(a3 + 39) |= 0x40u;
+  *(to + 7) = self->_tcpECNConnRecvECE;
+  *(to + 39) |= 0x40u;
   has = self->_has;
   if ((*&has & 0x10) == 0)
   {
@@ -1108,8 +1108,8 @@ LABEL_16:
   }
 
 LABEL_36:
-  *(a3 + 5) = self->_tcpECNConnPacketLossNoCE;
-  *(a3 + 39) |= 0x10u;
+  *(to + 5) = self->_tcpECNConnPacketLossNoCE;
+  *(to + 39) |= 0x10u;
   has = self->_has;
   if ((*&has & 8) == 0)
   {
@@ -1123,8 +1123,8 @@ LABEL_17:
   }
 
 LABEL_37:
-  *(a3 + 4) = self->_tcpECNConnPacketLossCE;
-  *(a3 + 39) |= 8u;
+  *(to + 4) = self->_tcpECNConnPacketLossCE;
+  *(to + 39) |= 8u;
   has = self->_has;
   if ((*&has & 4) == 0)
   {
@@ -1138,8 +1138,8 @@ LABEL_18:
   }
 
 LABEL_38:
-  *(a3 + 3) = self->_tcpECNConnNoPacketLossCE;
-  *(a3 + 39) |= 4u;
+  *(to + 3) = self->_tcpECNConnNoPacketLossCE;
+  *(to + 39) |= 4u;
   has = self->_has;
   if ((*&has & 0x200) == 0)
   {
@@ -1153,8 +1153,8 @@ LABEL_19:
   }
 
 LABEL_39:
-  *(a3 + 10) = self->_tcpECNFallbackSynLoss;
-  *(a3 + 39) |= 0x200u;
+  *(to + 10) = self->_tcpECNFallbackSynLoss;
+  *(to + 39) |= 0x200u;
   has = self->_has;
   if ((*&has & 0x100) == 0)
   {
@@ -1165,23 +1165,23 @@ LABEL_20:
     }
 
 LABEL_41:
-    *(a3 + 8) = self->_tcpECNFallbackCE;
-    *(a3 + 39) |= 0x80u;
+    *(to + 8) = self->_tcpECNFallbackCE;
+    *(to + 39) |= 0x80u;
     return;
   }
 
 LABEL_40:
-  *(a3 + 9) = self->_tcpECNFallbackReorder;
-  *(a3 + 39) |= 0x100u;
+  *(to + 9) = self->_tcpECNFallbackReorder;
+  *(to + 39) |= 0x100u;
   if ((*&self->_has & 0x80) != 0)
   {
     goto LABEL_41;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((*&has & 0x40000) != 0)
   {
@@ -1473,16 +1473,16 @@ LABEL_21:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (!v5)
   {
     return v5;
   }
 
   has = self->_has;
-  v7 = *(a3 + 39);
+  v7 = *(equal + 39);
   if ((*&has & 0x40000) != 0)
   {
     if ((v7 & 0x40000) == 0)
@@ -1490,16 +1490,16 @@ LABEL_21:
       goto LABEL_107;
     }
 
-    v8 = *(a3 + 152);
+    v8 = *(equal + 152);
     if (self->_tcpECNClientNegotiationEnabled)
     {
-      if ((*(a3 + 152) & 1) == 0)
+      if ((*(equal + 152) & 1) == 0)
       {
         goto LABEL_107;
       }
     }
 
-    else if (*(a3 + 152))
+    else if (*(equal + 152))
     {
       goto LABEL_107;
     }
@@ -1514,16 +1514,16 @@ LABEL_21:
   {
     if ((v7 & 0x80000) != 0)
     {
-      v9 = *(a3 + 153);
+      v9 = *(equal + 153);
       if (self->_tcpECNServerNegotiationEnabled)
       {
-        if ((*(a3 + 153) & 1) == 0)
+        if ((*(equal + 153) & 1) == 0)
         {
           goto LABEL_107;
         }
       }
 
-      else if (*(a3 + 153))
+      else if (*(equal + 153))
       {
         goto LABEL_107;
       }
@@ -1544,7 +1544,7 @@ LABEL_107:
 LABEL_6:
   if (*&has)
   {
-    if ((v7 & 1) == 0 || self->_tcpECNClientSetup != *(a3 + 1))
+    if ((v7 & 1) == 0 || self->_tcpECNClientSetup != *(equal + 1))
     {
       goto LABEL_107;
     }
@@ -1557,7 +1557,7 @@ LABEL_6:
 
   if ((*&has & 0x4000) != 0)
   {
-    if ((v7 & 0x4000) == 0 || self->_tcpECNServerSetup != *(a3 + 15))
+    if ((v7 & 0x4000) == 0 || self->_tcpECNServerSetup != *(equal + 15))
     {
       goto LABEL_107;
     }
@@ -1570,7 +1570,7 @@ LABEL_6:
 
   if ((*&has & 2) != 0)
   {
-    if ((v7 & 2) == 0 || self->_tcpECNClientSuccess != *(a3 + 2))
+    if ((v7 & 2) == 0 || self->_tcpECNClientSuccess != *(equal + 2))
     {
       goto LABEL_107;
     }
@@ -1583,7 +1583,7 @@ LABEL_6:
 
   if ((*&has & 0x8000) != 0)
   {
-    if ((v7 & 0x8000) == 0 || self->_tcpECNServerSuccess != *(a3 + 16))
+    if ((v7 & 0x8000) == 0 || self->_tcpECNServerSuccess != *(equal + 16))
     {
       goto LABEL_107;
     }
@@ -1596,7 +1596,7 @@ LABEL_6:
 
   if ((*&has & 0x400) != 0)
   {
-    if ((v7 & 0x400) == 0 || self->_tcpECNNotSupportedPeer != *(a3 + 11))
+    if ((v7 & 0x400) == 0 || self->_tcpECNNotSupportedPeer != *(equal + 11))
     {
       goto LABEL_107;
     }
@@ -1609,7 +1609,7 @@ LABEL_6:
 
   if ((*&has & 0x20000) != 0)
   {
-    if ((v7 & 0x20000) == 0 || self->_tcpECNSynLost != *(a3 + 18))
+    if ((v7 & 0x20000) == 0 || self->_tcpECNSynLost != *(equal + 18))
     {
       goto LABEL_107;
     }
@@ -1622,7 +1622,7 @@ LABEL_6:
 
   if ((*&has & 0x10000) != 0)
   {
-    if ((v7 & 0x10000) == 0 || self->_tcpECNSynAckLost != *(a3 + 17))
+    if ((v7 & 0x10000) == 0 || self->_tcpECNSynAckLost != *(equal + 17))
     {
       goto LABEL_107;
     }
@@ -1635,7 +1635,7 @@ LABEL_6:
 
   if ((*&has & 0x800) != 0)
   {
-    if ((v7 & 0x800) == 0 || self->_tcpECNRecvCE != *(a3 + 12))
+    if ((v7 & 0x800) == 0 || self->_tcpECNRecvCE != *(equal + 12))
     {
       goto LABEL_107;
     }
@@ -1648,7 +1648,7 @@ LABEL_6:
 
   if ((*&has & 0x1000) != 0)
   {
-    if ((v7 & 0x1000) == 0 || self->_tcpECNRecvECE != *(a3 + 13))
+    if ((v7 & 0x1000) == 0 || self->_tcpECNRecvECE != *(equal + 13))
     {
       goto LABEL_107;
     }
@@ -1661,7 +1661,7 @@ LABEL_6:
 
   if ((*&has & 0x2000) != 0)
   {
-    if ((v7 & 0x2000) == 0 || self->_tcpECNSentECE != *(a3 + 14))
+    if ((v7 & 0x2000) == 0 || self->_tcpECNSentECE != *(equal + 14))
     {
       goto LABEL_107;
     }
@@ -1674,7 +1674,7 @@ LABEL_6:
 
   if ((*&has & 0x20) != 0)
   {
-    if ((v7 & 0x20) == 0 || self->_tcpECNConnRecvCE != *(a3 + 6))
+    if ((v7 & 0x20) == 0 || self->_tcpECNConnRecvCE != *(equal + 6))
     {
       goto LABEL_107;
     }
@@ -1687,7 +1687,7 @@ LABEL_6:
 
   if ((*&has & 0x40) != 0)
   {
-    if ((v7 & 0x40) == 0 || self->_tcpECNConnRecvECE != *(a3 + 7))
+    if ((v7 & 0x40) == 0 || self->_tcpECNConnRecvECE != *(equal + 7))
     {
       goto LABEL_107;
     }
@@ -1700,7 +1700,7 @@ LABEL_6:
 
   if ((*&has & 0x10) != 0)
   {
-    if ((v7 & 0x10) == 0 || self->_tcpECNConnPacketLossNoCE != *(a3 + 5))
+    if ((v7 & 0x10) == 0 || self->_tcpECNConnPacketLossNoCE != *(equal + 5))
     {
       goto LABEL_107;
     }
@@ -1713,7 +1713,7 @@ LABEL_6:
 
   if ((*&has & 8) != 0)
   {
-    if ((v7 & 8) == 0 || self->_tcpECNConnPacketLossCE != *(a3 + 4))
+    if ((v7 & 8) == 0 || self->_tcpECNConnPacketLossCE != *(equal + 4))
     {
       goto LABEL_107;
     }
@@ -1726,7 +1726,7 @@ LABEL_6:
 
   if ((*&has & 4) != 0)
   {
-    if ((v7 & 4) == 0 || self->_tcpECNConnNoPacketLossCE != *(a3 + 3))
+    if ((v7 & 4) == 0 || self->_tcpECNConnNoPacketLossCE != *(equal + 3))
     {
       goto LABEL_107;
     }
@@ -1739,7 +1739,7 @@ LABEL_6:
 
   if ((*&has & 0x200) != 0)
   {
-    if ((v7 & 0x200) == 0 || self->_tcpECNFallbackSynLoss != *(a3 + 10))
+    if ((v7 & 0x200) == 0 || self->_tcpECNFallbackSynLoss != *(equal + 10))
     {
       goto LABEL_107;
     }
@@ -1752,7 +1752,7 @@ LABEL_6:
 
   if ((*&has & 0x100) != 0)
   {
-    if ((v7 & 0x100) == 0 || self->_tcpECNFallbackReorder != *(a3 + 9))
+    if ((v7 & 0x100) == 0 || self->_tcpECNFallbackReorder != *(equal + 9))
     {
       goto LABEL_107;
     }
@@ -1763,10 +1763,10 @@ LABEL_6:
     goto LABEL_107;
   }
 
-  LOBYTE(v5) = (*(a3 + 39) & 0x80) == 0;
+  LOBYTE(v5) = (*(equal + 39) & 0x80) == 0;
   if ((*&has & 0x80) != 0)
   {
-    if ((v7 & 0x80) == 0 || self->_tcpECNFallbackCE != *(a3 + 8))
+    if ((v7 & 0x80) == 0 || self->_tcpECNFallbackCE != *(equal + 8))
     {
       goto LABEL_107;
     }
@@ -2050,14 +2050,14 @@ LABEL_37:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21 ^ v22;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 39);
+  v3 = *(from + 39);
   if ((v3 & 0x40000) != 0)
   {
-    self->_tcpECNClientNegotiationEnabled = *(a3 + 152);
+    self->_tcpECNClientNegotiationEnabled = *(from + 152);
     *&self->_has |= 0x40000u;
-    v3 = *(a3 + 39);
+    v3 = *(from + 39);
     if ((v3 & 0x80000) == 0)
     {
 LABEL_3:
@@ -2075,9 +2075,9 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  self->_tcpECNServerNegotiationEnabled = *(a3 + 153);
+  self->_tcpECNServerNegotiationEnabled = *(from + 153);
   *&self->_has |= 0x80000u;
-  v3 = *(a3 + 39);
+  v3 = *(from + 39);
   if ((v3 & 1) == 0)
   {
 LABEL_4:
@@ -2090,9 +2090,9 @@ LABEL_4:
   }
 
 LABEL_24:
-  self->_tcpECNClientSetup = *(a3 + 1);
+  self->_tcpECNClientSetup = *(from + 1);
   *&self->_has |= 1u;
-  v3 = *(a3 + 39);
+  v3 = *(from + 39);
   if ((v3 & 0x4000) == 0)
   {
 LABEL_5:
@@ -2105,9 +2105,9 @@ LABEL_5:
   }
 
 LABEL_25:
-  self->_tcpECNServerSetup = *(a3 + 15);
+  self->_tcpECNServerSetup = *(from + 15);
   *&self->_has |= 0x4000u;
-  v3 = *(a3 + 39);
+  v3 = *(from + 39);
   if ((v3 & 2) == 0)
   {
 LABEL_6:
@@ -2120,9 +2120,9 @@ LABEL_6:
   }
 
 LABEL_26:
-  self->_tcpECNClientSuccess = *(a3 + 2);
+  self->_tcpECNClientSuccess = *(from + 2);
   *&self->_has |= 2u;
-  v3 = *(a3 + 39);
+  v3 = *(from + 39);
   if ((v3 & 0x8000) == 0)
   {
 LABEL_7:
@@ -2135,9 +2135,9 @@ LABEL_7:
   }
 
 LABEL_27:
-  self->_tcpECNServerSuccess = *(a3 + 16);
+  self->_tcpECNServerSuccess = *(from + 16);
   *&self->_has |= 0x8000u;
-  v3 = *(a3 + 39);
+  v3 = *(from + 39);
   if ((v3 & 0x400) == 0)
   {
 LABEL_8:
@@ -2150,9 +2150,9 @@ LABEL_8:
   }
 
 LABEL_28:
-  self->_tcpECNNotSupportedPeer = *(a3 + 11);
+  self->_tcpECNNotSupportedPeer = *(from + 11);
   *&self->_has |= 0x400u;
-  v3 = *(a3 + 39);
+  v3 = *(from + 39);
   if ((v3 & 0x20000) == 0)
   {
 LABEL_9:
@@ -2165,9 +2165,9 @@ LABEL_9:
   }
 
 LABEL_29:
-  self->_tcpECNSynLost = *(a3 + 18);
+  self->_tcpECNSynLost = *(from + 18);
   *&self->_has |= 0x20000u;
-  v3 = *(a3 + 39);
+  v3 = *(from + 39);
   if ((v3 & 0x10000) == 0)
   {
 LABEL_10:
@@ -2180,9 +2180,9 @@ LABEL_10:
   }
 
 LABEL_30:
-  self->_tcpECNSynAckLost = *(a3 + 17);
+  self->_tcpECNSynAckLost = *(from + 17);
   *&self->_has |= 0x10000u;
-  v3 = *(a3 + 39);
+  v3 = *(from + 39);
   if ((v3 & 0x800) == 0)
   {
 LABEL_11:
@@ -2195,9 +2195,9 @@ LABEL_11:
   }
 
 LABEL_31:
-  self->_tcpECNRecvCE = *(a3 + 12);
+  self->_tcpECNRecvCE = *(from + 12);
   *&self->_has |= 0x800u;
-  v3 = *(a3 + 39);
+  v3 = *(from + 39);
   if ((v3 & 0x1000) == 0)
   {
 LABEL_12:
@@ -2210,9 +2210,9 @@ LABEL_12:
   }
 
 LABEL_32:
-  self->_tcpECNRecvECE = *(a3 + 13);
+  self->_tcpECNRecvECE = *(from + 13);
   *&self->_has |= 0x1000u;
-  v3 = *(a3 + 39);
+  v3 = *(from + 39);
   if ((v3 & 0x2000) == 0)
   {
 LABEL_13:
@@ -2225,9 +2225,9 @@ LABEL_13:
   }
 
 LABEL_33:
-  self->_tcpECNSentECE = *(a3 + 14);
+  self->_tcpECNSentECE = *(from + 14);
   *&self->_has |= 0x2000u;
-  v3 = *(a3 + 39);
+  v3 = *(from + 39);
   if ((v3 & 0x20) == 0)
   {
 LABEL_14:
@@ -2240,9 +2240,9 @@ LABEL_14:
   }
 
 LABEL_34:
-  self->_tcpECNConnRecvCE = *(a3 + 6);
+  self->_tcpECNConnRecvCE = *(from + 6);
   *&self->_has |= 0x20u;
-  v3 = *(a3 + 39);
+  v3 = *(from + 39);
   if ((v3 & 0x40) == 0)
   {
 LABEL_15:
@@ -2255,9 +2255,9 @@ LABEL_15:
   }
 
 LABEL_35:
-  self->_tcpECNConnRecvECE = *(a3 + 7);
+  self->_tcpECNConnRecvECE = *(from + 7);
   *&self->_has |= 0x40u;
-  v3 = *(a3 + 39);
+  v3 = *(from + 39);
   if ((v3 & 0x10) == 0)
   {
 LABEL_16:
@@ -2270,9 +2270,9 @@ LABEL_16:
   }
 
 LABEL_36:
-  self->_tcpECNConnPacketLossNoCE = *(a3 + 5);
+  self->_tcpECNConnPacketLossNoCE = *(from + 5);
   *&self->_has |= 0x10u;
-  v3 = *(a3 + 39);
+  v3 = *(from + 39);
   if ((v3 & 8) == 0)
   {
 LABEL_17:
@@ -2285,9 +2285,9 @@ LABEL_17:
   }
 
 LABEL_37:
-  self->_tcpECNConnPacketLossCE = *(a3 + 4);
+  self->_tcpECNConnPacketLossCE = *(from + 4);
   *&self->_has |= 8u;
-  v3 = *(a3 + 39);
+  v3 = *(from + 39);
   if ((v3 & 4) == 0)
   {
 LABEL_18:
@@ -2300,9 +2300,9 @@ LABEL_18:
   }
 
 LABEL_38:
-  self->_tcpECNConnNoPacketLossCE = *(a3 + 3);
+  self->_tcpECNConnNoPacketLossCE = *(from + 3);
   *&self->_has |= 4u;
-  v3 = *(a3 + 39);
+  v3 = *(from + 39);
   if ((v3 & 0x200) == 0)
   {
 LABEL_19:
@@ -2315,9 +2315,9 @@ LABEL_19:
   }
 
 LABEL_39:
-  self->_tcpECNFallbackSynLoss = *(a3 + 10);
+  self->_tcpECNFallbackSynLoss = *(from + 10);
   *&self->_has |= 0x200u;
-  v3 = *(a3 + 39);
+  v3 = *(from + 39);
   if ((v3 & 0x100) == 0)
   {
 LABEL_20:
@@ -2327,15 +2327,15 @@ LABEL_20:
     }
 
 LABEL_41:
-    self->_tcpECNFallbackCE = *(a3 + 8);
+    self->_tcpECNFallbackCE = *(from + 8);
     *&self->_has |= 0x80u;
     return;
   }
 
 LABEL_40:
-  self->_tcpECNFallbackReorder = *(a3 + 9);
+  self->_tcpECNFallbackReorder = *(from + 9);
   *&self->_has |= 0x100u;
-  if ((*(a3 + 39) & 0x80) != 0)
+  if ((*(from + 39) & 0x80) != 0)
   {
     goto LABEL_41;
   }

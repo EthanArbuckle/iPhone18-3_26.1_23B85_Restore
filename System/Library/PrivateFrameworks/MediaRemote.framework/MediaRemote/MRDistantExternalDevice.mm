@@ -5,16 +5,16 @@
 - (BOOL)isValid;
 - (MRAVDistantEndpoint)distantEndpoint;
 - (MRDeviceInfo)deviceInfo;
-- (MRDistantExternalDevice)initWithExternalDeviceListenerEndpoint:(id)a3 endpoint:(id)a4;
+- (MRDistantExternalDevice)initWithExternalDeviceListenerEndpoint:(id)endpoint endpoint:(id)a4;
 - (MRExternalOutputContextDataSource)externalOutputContext;
 - (NSString)debugDescription;
 - (NSString)description;
 - (NSXPCListenerEndpoint)listenerEndpoint;
 - (id)_hostedExternalDeviceConnection;
-- (id)_hostedExternalDeviceConnectionWithError:(uint64_t)a1;
+- (id)_hostedExternalDeviceConnectionWithError:(uint64_t)error;
 - (id)_nullableHostedExternalDeviceConnection;
-- (id)_remoteObjectProxyWithErrorHandler:(void *)a1;
-- (id)_synchronousObjectProxyWithErrorHandler:(void *)a1;
+- (id)_remoteObjectProxyWithErrorHandler:(void *)handler;
+- (id)_synchronousObjectProxyWithErrorHandler:(void *)handler;
 - (id)customOrigin;
 - (id)groupSessionToken;
 - (id)lastConnectionError;
@@ -26,56 +26,56 @@
 - (uint64_t)deviceNotifications;
 - (unint64_t)callbacks;
 - (unsigned)connectionState;
-- (void)_disconnectWithError:(uint64_t)a1;
-- (void)_onSerialQueue_callAllPendingCompletionsWithError:(uint64_t)a1;
-- (void)_onSerialQueue_handleConnectionStateDidChange:(void *)a3 withError:;
-- (void)_onSerialQueue_prepareToConnectWithOptions:(void *)a3 userInfo:(void *)a4 connectionAttemptDetails:(void *)a5 connectionHandler:;
-- (void)_updateHostedDeviceDesiredCallbacks:(uint64_t)a1;
-- (void)_updateHostedDeviceDesiredNotifications:(uint64_t)a1;
-- (void)adjustOutputDeviceVolume:(int64_t)a3 outputDeviceUID:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7;
-- (void)connectWithOptions:(unsigned int)a3 userInfo:(id)a4 completion:(id)a5;
-- (void)createHostedEndpointWithOutputDeviceUIDs:(id)a3 details:(id)a4 queue:(id)a5 completion:(id)a6;
+- (void)_disconnectWithError:(uint64_t)error;
+- (void)_onSerialQueue_callAllPendingCompletionsWithError:(uint64_t)error;
+- (void)_onSerialQueue_handleConnectionStateDidChange:(void *)change withError:;
+- (void)_onSerialQueue_prepareToConnectWithOptions:(void *)options userInfo:(void *)info connectionAttemptDetails:(void *)details connectionHandler:;
+- (void)_updateHostedDeviceDesiredCallbacks:(uint64_t)callbacks;
+- (void)_updateHostedDeviceDesiredNotifications:(uint64_t)notifications;
+- (void)adjustOutputDeviceVolume:(int64_t)volume outputDeviceUID:(id)d details:(id)details queue:(id)queue completion:(id)completion;
+- (void)connectWithOptions:(unsigned int)options userInfo:(id)info completion:(id)completion;
+- (void)createHostedEndpointWithOutputDeviceUIDs:(id)ds details:(id)details queue:(id)queue completion:(id)completion;
 - (void)dealloc;
-- (void)disconnect:(id)a3;
-- (void)discoveryOutputDevicesChanged:(id)a3 forConfiguration:(id)a4;
-- (void)hostedExternalDeviceConnectionStateDidChange:(unsigned int)a3 withError:(id)a4;
-- (void)hostedExternalDeviceDeviceInfoDidChange:(id)a3;
-- (void)hostedExternalDeviceDidAddOutputDevice:(id)a3;
-- (void)hostedExternalDeviceDidChangeOutputDevice:(id)a3;
-- (void)hostedExternalDeviceDidReceiveCustomData:(id)a3 withName:(id)a4;
-- (void)hostedExternalDeviceDidRemoveOutputDevice:(id)a3;
-- (void)hostedExternalDeviceEndpointDidChange:(id)a3;
-- (void)hostedExternalDeviceIsMutedDidChange:(BOOL)a3 forOutputDevice:(id)a4;
-- (void)hostedExternalDeviceVolumeCapabilitiesDidChange:(unsigned int)a3 forOutputDevice:(id)a4;
-- (void)hostedExternalDeviceVolumeDidChange:(float)a3 forOutputDevice:(id)a4;
-- (void)modifyTopologyWithRequest:(id)a3 withReplyQueue:(id)a4 completion:(id)a5;
-- (void)muteOutputDeviceVolume:(BOOL)a3 outputDeviceUID:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7;
-- (void)outputDeviceVolume:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)outputDeviceVolumeControlCapabilities:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)ping:(double)a3 callback:(id)a4 withQueue:(id)a5;
-- (void)removeFromParentGroup:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)requestGroupSessionWithDetails:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)requestMicrophoneConnectionWithDetails:(id)a3 queue:(id)a4 completion:(id)a5;
-- (void)sendButtonEvent:(_MRHIDButtonEvent)a3;
-- (void)sendCustomData:(id)a3 withName:(id)a4;
-- (void)setConnectionState:(uint64_t)a1;
-- (void)setConnectionStateCallback:(id)a3 withQueue:(id)a4;
-- (void)setConversationDetectionEnabled:(BOOL)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)setCustomDataCallback:(id)a3 withQueue:(id)a4;
-- (void)setDeviceInfo:(id)a3;
-- (void)setDiscoveryMode:(unsigned int)a3 forConfiguration:(id)a4;
-- (void)setDistantEndpoint:(id)a3;
-- (void)setExternalOutputContext:(id)a3;
-- (void)setHostedExternalDeviceConnection:(id)a3;
-- (void)setListeningMode:(id)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6;
-- (void)setOutputDeviceVolume:(float)a3 outputDeviceUID:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7;
-- (void)setSubscribedPlayerPaths:(id)a3;
-- (void)setVolumeCallback:(id)a3 withQueue:(id)a4;
-- (void)setWantsEndpointChangeNotifications:(BOOL)a3;
-- (void)setWantsNowPlayingNotifications:(BOOL)a3;
-- (void)setWantsOutputDeviceNotifications:(BOOL)a3;
-- (void)setWantsSystemEndpointNotifications:(BOOL)a3;
-- (void)setWantsVolumeNotifications:(BOOL)a3;
+- (void)disconnect:(id)disconnect;
+- (void)discoveryOutputDevicesChanged:(id)changed forConfiguration:(id)configuration;
+- (void)hostedExternalDeviceConnectionStateDidChange:(unsigned int)change withError:(id)error;
+- (void)hostedExternalDeviceDeviceInfoDidChange:(id)change;
+- (void)hostedExternalDeviceDidAddOutputDevice:(id)device;
+- (void)hostedExternalDeviceDidChangeOutputDevice:(id)device;
+- (void)hostedExternalDeviceDidReceiveCustomData:(id)data withName:(id)name;
+- (void)hostedExternalDeviceDidRemoveOutputDevice:(id)device;
+- (void)hostedExternalDeviceEndpointDidChange:(id)change;
+- (void)hostedExternalDeviceIsMutedDidChange:(BOOL)change forOutputDevice:(id)device;
+- (void)hostedExternalDeviceVolumeCapabilitiesDidChange:(unsigned int)change forOutputDevice:(id)device;
+- (void)hostedExternalDeviceVolumeDidChange:(float)change forOutputDevice:(id)device;
+- (void)modifyTopologyWithRequest:(id)request withReplyQueue:(id)queue completion:(id)completion;
+- (void)muteOutputDeviceVolume:(BOOL)volume outputDeviceUID:(id)d details:(id)details queue:(id)queue completion:(id)completion;
+- (void)outputDeviceVolume:(id)volume queue:(id)queue completion:(id)completion;
+- (void)outputDeviceVolumeControlCapabilities:(id)capabilities queue:(id)queue completion:(id)completion;
+- (void)ping:(double)ping callback:(id)callback withQueue:(id)queue;
+- (void)removeFromParentGroup:(id)group queue:(id)queue completion:(id)completion;
+- (void)requestGroupSessionWithDetails:(id)details queue:(id)queue completion:(id)completion;
+- (void)requestMicrophoneConnectionWithDetails:(id)details queue:(id)queue completion:(id)completion;
+- (void)sendButtonEvent:(_MRHIDButtonEvent)event;
+- (void)sendCustomData:(id)data withName:(id)name;
+- (void)setConnectionState:(uint64_t)state;
+- (void)setConnectionStateCallback:(id)callback withQueue:(id)queue;
+- (void)setConversationDetectionEnabled:(BOOL)enabled outputDeviceUID:(id)d queue:(id)queue completion:(id)completion;
+- (void)setCustomDataCallback:(id)callback withQueue:(id)queue;
+- (void)setDeviceInfo:(id)info;
+- (void)setDiscoveryMode:(unsigned int)mode forConfiguration:(id)configuration;
+- (void)setDistantEndpoint:(id)endpoint;
+- (void)setExternalOutputContext:(id)context;
+- (void)setHostedExternalDeviceConnection:(id)connection;
+- (void)setListeningMode:(id)mode outputDeviceUID:(id)d queue:(id)queue completion:(id)completion;
+- (void)setOutputDeviceVolume:(float)volume outputDeviceUID:(id)d details:(id)details queue:(id)queue completion:(id)completion;
+- (void)setSubscribedPlayerPaths:(id)paths;
+- (void)setVolumeCallback:(id)callback withQueue:(id)queue;
+- (void)setWantsEndpointChangeNotifications:(BOOL)notifications;
+- (void)setWantsNowPlayingNotifications:(BOOL)notifications;
+- (void)setWantsOutputDeviceNotifications:(BOOL)notifications;
+- (void)setWantsSystemEndpointNotifications:(BOOL)notifications;
+- (void)setWantsVolumeNotifications:(BOOL)notifications;
 @end
 
 @implementation MRDistantExternalDevice
@@ -90,10 +90,10 @@
 
 - (NSXPCListenerEndpoint)listenerEndpoint
 {
-  v2 = [(MRDistantExternalDevice *)self _nullableHostedExternalDeviceConnection];
-  v3 = [v2 endpoint];
+  _nullableHostedExternalDeviceConnection = [(MRDistantExternalDevice *)self _nullableHostedExternalDeviceConnection];
+  endpoint = [_nullableHostedExternalDeviceConnection endpoint];
 
-  return v3;
+  return endpoint;
 }
 
 void __48__MRDistantExternalDevice_externalOutputContext__block_invoke(uint64_t a1)
@@ -127,7 +127,7 @@ void __48__MRDistantExternalDevice_externalOutputContext__block_invoke(uint64_t 
 
 - (id)_nullableHostedExternalDeviceConnection
 {
-  if (a1)
+  if (self)
   {
     v4 = 0;
     v5 = &v4;
@@ -135,7 +135,7 @@ void __48__MRDistantExternalDevice_externalOutputContext__block_invoke(uint64_t 
     v7 = __Block_byref_object_copy__5;
     v8 = __Block_byref_object_dispose__5;
     v9 = 0;
-    v1 = *(a1 + 64);
+    v1 = *(self + 64);
     msv_dispatch_sync_on_queue();
     v2 = v5[5];
     _Block_object_dispose(&v4, 8);
@@ -186,31 +186,31 @@ void __48__MRDistantExternalDevice_externalOutputContext__block_invoke(uint64_t 
 
 - (BOOL)isValid
 {
-  v2 = [(MRDistantExternalDevice *)self _hostedExternalDeviceConnection];
-  v3 = v2 != 0;
+  _hostedExternalDeviceConnection = [(MRDistantExternalDevice *)self _hostedExternalDeviceConnection];
+  v3 = _hostedExternalDeviceConnection != 0;
 
   return v3;
 }
 
 - (id)_hostedExternalDeviceConnection
 {
-  if (a1)
+  if (self)
   {
-    a1 = [(MRDistantExternalDevice *)a1 _hostedExternalDeviceConnectionWithError:?];
+    self = [(MRDistantExternalDevice *)self _hostedExternalDeviceConnectionWithError:?];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AD60];
   v4 = objc_opt_class();
-  v5 = [(MRDistantExternalDevice *)self distantEndpoint];
-  v6 = [v5 debugName];
+  distantEndpoint = [(MRDistantExternalDevice *)self distantEndpoint];
+  debugName = [distantEndpoint debugName];
   v7 = MRExternalDeviceConnectionStateCopyDescription([(MRDistantExternalDevice *)self connectionState]);
-  v8 = [v3 stringWithFormat:@"<%@:%p %@ (%@)>", v4, self, v6, v7];
+  v8 = [v3 stringWithFormat:@"<%@:%p %@ (%@)>", v4, self, debugName, v7];
 
   return v8;
 }
@@ -445,53 +445,53 @@ void __37__MRDistantExternalDevice_deviceInfo__block_invoke_222(uint64_t a1, voi
   return v3;
 }
 
-- (MRDistantExternalDevice)initWithExternalDeviceListenerEndpoint:(id)a3 endpoint:(id)a4
+- (MRDistantExternalDevice)initWithExternalDeviceListenerEndpoint:(id)endpoint endpoint:(id)a4
 {
-  v6 = a3;
+  endpointCopy = endpoint;
   v7 = a4;
   v26.receiver = self;
   v26.super_class = MRDistantExternalDevice;
-  v8 = [(MRExternalDevice *)&v26 _init];
-  if (v8)
+  _init = [(MRExternalDevice *)&v26 _init];
+  if (_init)
   {
     v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.mediaremote.%@.serialQueue", objc_opt_class()];
-    v10 = [v9 UTF8String];
+    uTF8String = [v9 UTF8String];
     v11 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v12 = dispatch_queue_create(v10, v11);
-    serialQueue = v8->_serialQueue;
-    v8->_serialQueue = v12;
+    v12 = dispatch_queue_create(uTF8String, v11);
+    serialQueue = _init->_serialQueue;
+    _init->_serialQueue = v12;
 
     v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.mediaremote.%@.workerQueue", objc_opt_class()];
-    v15 = [v14 UTF8String];
+    uTF8String2 = [v14 UTF8String];
     v16 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v17 = dispatch_queue_create(v15, v16);
-    workerQueue = v8->_workerQueue;
-    v8->_workerQueue = v17;
+    v17 = dispatch_queue_create(uTF8String2, v16);
+    workerQueue = _init->_workerQueue;
+    _init->_workerQueue = v17;
 
     v19 = [MRAVDistantEndpoint alloc];
-    v20 = [v7 descriptor];
-    v21 = [(MRAVDistantEndpoint *)v19 initWithDescriptor:v20];
-    onLock_distantEndpoint = v8->_onLock_distantEndpoint;
-    v8->_onLock_distantEndpoint = v21;
+    descriptor = [v7 descriptor];
+    v21 = [(MRAVDistantEndpoint *)v19 initWithDescriptor:descriptor];
+    onLock_distantEndpoint = _init->_onLock_distantEndpoint;
+    _init->_onLock_distantEndpoint = v21;
 
-    v8->_lock._os_unfair_lock_opaque = 0;
-    v8->_deviceNotifications = 15;
-    v8->_onLock_connectionState = 3;
-    v8->_connectionOptions = 0;
-    v23 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v6];
-    [(MRDistantExternalDevice *)v8 setHostedExternalDeviceConnection:v23];
+    _init->_lock._os_unfair_lock_opaque = 0;
+    _init->_deviceNotifications = 15;
+    _init->_onLock_connectionState = 3;
+    _init->_connectionOptions = 0;
+    v23 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:endpointCopy];
+    [(MRDistantExternalDevice *)_init setHostedExternalDeviceConnection:v23];
 
     v24 = +[MRMediaRemoteServiceClient sharedServiceClient];
-    [v24 addDistantExternalDevice:v8];
+    [v24 addDistantExternalDevice:_init];
   }
 
-  return v8;
+  return _init;
 }
 
-- (void)setHostedExternalDeviceConnection:(id)a3
+- (void)setHostedExternalDeviceConnection:(id)connection
 {
   v35 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   if (self->_hostedExternalDeviceConnection)
   {
@@ -503,13 +503,13 @@ void __37__MRDistantExternalDevice_deviceInfo__block_invoke_222(uint64_t a1, voi
 
     hostedExternalDeviceConnection = self->_hostedExternalDeviceConnection;
     *buf = 138544130;
-    v28 = self;
+    selfCopy2 = self;
     v29 = 2114;
     v30 = @"HostedExternalDeviceConnection";
     v31 = 2112;
     v32 = hostedExternalDeviceConnection;
     v33 = 2112;
-    v34 = v5;
+    v34 = connectionCopy;
     v8 = "Set: %{public}@ setting %{public}@ from <%@> to <%@>";
     v9 = v6;
     v10 = 42;
@@ -524,11 +524,11 @@ void __37__MRDistantExternalDevice_deviceInfo__block_invoke_222(uint64_t a1, voi
     }
 
     *buf = 138543874;
-    v28 = self;
+    selfCopy2 = self;
     v29 = 2114;
     v30 = @"HostedExternalDeviceConnection";
     v31 = 2112;
-    v32 = v5;
+    v32 = connectionCopy;
     v8 = "Set: %{public}@ setting %{public}@ to <%@>";
     v9 = v6;
     v10 = 32;
@@ -537,7 +537,7 @@ void __37__MRDistantExternalDevice_deviceInfo__block_invoke_222(uint64_t a1, voi
   _os_log_impl(&dword_1A2860000, v9, OS_LOG_TYPE_DEFAULT, v8, buf, v10);
 LABEL_7:
 
-  if (v5)
+  if (connectionCopy)
   {
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
@@ -551,16 +551,16 @@ LABEL_7:
     v22[3] = &unk_1E769B178;
     objc_copyWeak(&v23, &location);
     v12 = MEMORY[0x1A58E3570](v22);
-    objc_storeStrong(&self->_hostedExternalDeviceConnection, a3);
-    v13 = [objc_opt_class() serviceInterface];
-    [(NSXPCConnection *)self->_hostedExternalDeviceConnection setRemoteObjectInterface:v13];
+    objc_storeStrong(&self->_hostedExternalDeviceConnection, connection);
+    serviceInterface = [objc_opt_class() serviceInterface];
+    [(NSXPCConnection *)self->_hostedExternalDeviceConnection setRemoteObjectInterface:serviceInterface];
 
-    v14 = [objc_opt_class() clientInterface];
-    [(NSXPCConnection *)self->_hostedExternalDeviceConnection setExportedInterface:v14];
+    clientInterface = [objc_opt_class() clientInterface];
+    [(NSXPCConnection *)self->_hostedExternalDeviceConnection setExportedInterface:clientInterface];
 
-    v15 = [(NSXPCConnection *)self->_hostedExternalDeviceConnection exportedInterface];
-    v16 = [v15 protocol];
-    v17 = [MRWeakProxy weakProxyWithObject:self protocol:v16];
+    exportedInterface = [(NSXPCConnection *)self->_hostedExternalDeviceConnection exportedInterface];
+    protocol = [exportedInterface protocol];
+    v17 = [MRWeakProxy weakProxyWithObject:self protocol:protocol];
     [(NSXPCConnection *)self->_hostedExternalDeviceConnection setExportedObject:v17];
 
     [(NSXPCConnection *)self->_hostedExternalDeviceConnection setInvalidationHandler:v11];
@@ -630,8 +630,8 @@ void __61__MRDistantExternalDevice_setHostedExternalDeviceConnection___block_inv
   [(NSXPCConnection *)self->_hostedExternalDeviceConnection setInvalidationHandler:0];
   [(NSXPCConnection *)self->_hostedExternalDeviceConnection setInterruptionHandler:0];
   [(NSXPCConnection *)self->_hostedExternalDeviceConnection invalidate];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5 = +[MRMediaRemoteServiceClient sharedServiceClient];
   [v5 removeDistantExternalDevice:self];
@@ -649,16 +649,16 @@ void __61__MRDistantExternalDevice_setHostedExternalDeviceConnection___block_inv
   v14 = __Block_byref_object_copy__5;
   v15 = __Block_byref_object_dispose__5;
   v16 = 0;
-  v3 = [(MRDistantExternalDevice *)self distantEndpoint];
+  distantEndpoint = [(MRDistantExternalDevice *)self distantEndpoint];
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __43__MRDistantExternalDevice_debugDescription__block_invoke;
   block[3] = &unk_1E769BBB8;
-  v9 = v3;
+  v9 = distantEndpoint;
   v10 = &v11;
   block[4] = self;
-  v5 = v3;
+  v5 = distantEndpoint;
   dispatch_sync(serialQueue, block);
   v6 = v12[5];
 
@@ -750,33 +750,33 @@ uint64_t __43__MRDistantExternalDevice_debugDescription__block_invoke(uint64_t a
   return [v31 appendString:@"}>"];
 }
 
-- (void)setDistantEndpoint:(id)a3
+- (void)setDistantEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   os_unfair_lock_lock(&self->_lock);
   onLock_distantEndpoint = self->_onLock_distantEndpoint;
-  self->_onLock_distantEndpoint = v4;
+  self->_onLock_distantEndpoint = endpointCopy;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
 - (id)name
 {
-  v2 = [(MRDistantExternalDevice *)self distantEndpoint];
-  v3 = [v2 localizedName];
+  distantEndpoint = [(MRDistantExternalDevice *)self distantEndpoint];
+  localizedName = [distantEndpoint localizedName];
 
-  return v3;
+  return localizedName;
 }
 
 - (id)uid
 {
-  v2 = [(MRDistantExternalDevice *)self deviceInfo];
-  v3 = [v2 WHAIdentifier];
+  deviceInfo = [(MRDistantExternalDevice *)self deviceInfo];
+  wHAIdentifier = [deviceInfo WHAIdentifier];
 
-  return v3;
+  return wHAIdentifier;
 }
 
-- (void)setWantsNowPlayingNotifications:(BOOL)a3
+- (void)setWantsNowPlayingNotifications:(BOOL)notifications
 {
   serialQueue = self->_serialQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -784,11 +784,11 @@ uint64_t __43__MRDistantExternalDevice_debugDescription__block_invoke(uint64_t a
   v4[2] = __59__MRDistantExternalDevice_setWantsNowPlayingNotifications___block_invoke;
   v4[3] = &unk_1E769BBE0;
   v4[4] = self;
-  v5 = a3;
+  notificationsCopy = notifications;
   dispatch_async(serialQueue, v4);
 }
 
-- (void)setWantsVolumeNotifications:(BOOL)a3
+- (void)setWantsVolumeNotifications:(BOOL)notifications
 {
   serialQueue = self->_serialQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -796,11 +796,11 @@ uint64_t __43__MRDistantExternalDevice_debugDescription__block_invoke(uint64_t a
   v4[2] = __55__MRDistantExternalDevice_setWantsVolumeNotifications___block_invoke;
   v4[3] = &unk_1E769BBE0;
   v4[4] = self;
-  v5 = a3;
+  notificationsCopy = notifications;
   dispatch_async(serialQueue, v4);
 }
 
-- (void)setWantsOutputDeviceNotifications:(BOOL)a3
+- (void)setWantsOutputDeviceNotifications:(BOOL)notifications
 {
   serialQueue = self->_serialQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -808,11 +808,11 @@ uint64_t __43__MRDistantExternalDevice_debugDescription__block_invoke(uint64_t a
   v4[2] = __61__MRDistantExternalDevice_setWantsOutputDeviceNotifications___block_invoke;
   v4[3] = &unk_1E769BBE0;
   v4[4] = self;
-  v5 = a3;
+  notificationsCopy = notifications;
   dispatch_async(serialQueue, v4);
 }
 
-- (void)setWantsEndpointChangeNotifications:(BOOL)a3
+- (void)setWantsEndpointChangeNotifications:(BOOL)notifications
 {
   serialQueue = self->_serialQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -820,11 +820,11 @@ uint64_t __43__MRDistantExternalDevice_debugDescription__block_invoke(uint64_t a
   v4[2] = __63__MRDistantExternalDevice_setWantsEndpointChangeNotifications___block_invoke;
   v4[3] = &unk_1E769BBE0;
   v4[4] = self;
-  v5 = a3;
+  notificationsCopy = notifications;
   dispatch_async(serialQueue, v4);
 }
 
-- (void)setWantsSystemEndpointNotifications:(BOOL)a3
+- (void)setWantsSystemEndpointNotifications:(BOOL)notifications
 {
   serialQueue = self->_serialQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -832,7 +832,7 @@ uint64_t __43__MRDistantExternalDevice_debugDescription__block_invoke(uint64_t a
   v4[2] = __63__MRDistantExternalDevice_setWantsSystemEndpointNotifications___block_invoke;
   v4[3] = &unk_1E769BBE0;
   v4[4] = self;
-  v5 = a3;
+  notificationsCopy = notifications;
   dispatch_async(serialQueue, v4);
 }
 
@@ -866,17 +866,17 @@ void __48__MRDistantExternalDevice_subscribedPlayerPaths__block_invoke(uint64_t 
   *(v3 + 40) = v2;
 }
 
-- (void)setSubscribedPlayerPaths:(id)a3
+- (void)setSubscribedPlayerPaths:(id)paths
 {
-  v4 = a3;
+  pathsCopy = paths;
   serialQueue = self->_serialQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__MRDistantExternalDevice_setSubscribedPlayerPaths___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = pathsCopy;
+  v6 = pathsCopy;
   dispatch_async(serialQueue, v7);
 }
 
@@ -905,20 +905,20 @@ void __52__MRDistantExternalDevice_setSubscribedPlayerPaths___block_invoke_2(uin
   [v2 setSubscribedPlayerPaths:*(a1 + 40)];
 }
 
-- (void)setExternalOutputContext:(id)a3
+- (void)setExternalOutputContext:(id)context
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   dispatch_assert_queue_V2(self->_serialQueue);
   externalOutputContext = self->_externalOutputContext;
-  if (externalOutputContext != v6)
+  if (externalOutputContext != contextCopy)
   {
-    if (v6 && externalOutputContext)
+    if (contextCopy && externalOutputContext)
     {
       [(MRDistantExternalDevice *)a2 setExternalOutputContext:?];
     }
 
-    objc_storeStrong(&self->_externalOutputContext, a3);
+    objc_storeStrong(&self->_externalOutputContext, context);
     if (self->_externalOutputContext)
     {
       v8 = MRLogCategoryDiscoveryOversize();
@@ -937,7 +937,7 @@ void __52__MRDistantExternalDevice_setSubscribedPlayerPaths___block_invoke_2(uin
         }
         v11 = ;
         v13 = 138543618;
-        v14 = self;
+        selfCopy = self;
         v15 = 2114;
         v16 = v11;
         _os_log_impl(&dword_1A2860000, v8, OS_LOG_TYPE_DEFAULT, "[MRDistantExternalDevice] Distant external device %{public}@ initialized externalOutputContext: %{public}@", &v13, 0x16u);
@@ -986,10 +986,10 @@ void __48__MRDistantExternalDevice_externalOutputContext__block_invoke_3(uint64_
 
 - (id)groupSessionToken
 {
-  v2 = [(MRDistantExternalDevice *)self deviceInfo];
-  v3 = [v2 groupSessionToken];
+  deviceInfo = [(MRDistantExternalDevice *)self deviceInfo];
+  groupSessionToken = [deviceInfo groupSessionToken];
 
-  return v3;
+  return groupSessionToken;
 }
 
 - (id)lastConnectionError
@@ -1033,17 +1033,17 @@ void __48__MRDistantExternalDevice_externalOutputContext__block_invoke_3(uint64_
   return v3;
 }
 
-- (void)setDeviceInfo:(id)a3
+- (void)setDeviceInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   dispatch_assert_queue_V2(self->_serialQueue);
   v6 = self->_deviceInfo;
-  objc_storeStrong(&self->_deviceInfo, a3);
-  if (![(MRDeviceInfo *)v6 isEqual:v5])
+  objc_storeStrong(&self->_deviceInfo, info);
+  if (![(MRDeviceInfo *)v6 isEqual:infoCopy])
   {
     v7 = objc_opt_new();
     [v7 setObject:v6 forKeyedSubscript:@"MRExternalDevicePreviousDeviceInfoUserInfoKey"];
-    [v7 setObject:v5 forKeyedSubscript:@"MRExternalDeviceDeviceInfoUserInfoKey"];
+    [v7 setObject:infoCopy forKeyedSubscript:@"MRExternalDeviceDeviceInfoUserInfoKey"];
     v8 = +[MRDistantExternalDevice _notificationSerialQueue];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
@@ -1101,8 +1101,8 @@ void __37__MRDistantExternalDevice_deviceInfo__block_invoke_3(uint64_t a1)
 - (id)supportedMessages
 {
   v3 = [MRSupportedProtocolMessages alloc];
-  v4 = [(MRDistantExternalDevice *)self deviceInfo];
-  v5 = -[MRSupportedProtocolMessages initWithLastSupportedMessageType:](v3, "initWithLastSupportedMessageType:", [v4 lastSupportedProtocolMessageType]);
+  deviceInfo = [(MRDistantExternalDevice *)self deviceInfo];
+  v5 = -[MRSupportedProtocolMessages initWithLastSupportedMessageType:](v3, "initWithLastSupportedMessageType:", [deviceInfo lastSupportedProtocolMessageType]);
 
   return v5;
 }
@@ -1188,14 +1188,14 @@ void __39__MRDistantExternalDevice_customOrigin__block_invoke_2_228(uint64_t a1)
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)connectWithOptions:(unsigned int)a3 userInfo:(id)a4 completion:(id)a5
+- (void)connectWithOptions:(unsigned int)options userInfo:(id)info completion:(id)completion
 {
   v67 = *MEMORY[0x1E69E9840];
-  v50 = a5;
+  completionCopy = completion;
   v8 = MEMORY[0x1E695DF00];
-  v9 = a4;
+  infoCopy = info;
   v49 = [v8 now];
-  v10 = [v9 mutableCopy];
+  v10 = [infoCopy mutableCopy];
 
   if (v10)
   {
@@ -1217,9 +1217,9 @@ void __39__MRDistantExternalDevice_customOrigin__block_invoke_2_228(uint64_t a1)
 
   else
   {
-    v14 = [MEMORY[0x1E696AFB0] UUID];
-    v15 = [v14 UUIDString];
-    [v12 setObject:v15 forKeyedSubscript:@"MRExternalDeviceConnectionCorrelationIDUserInfoKey"];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    [v12 setObject:uUIDString forKeyedSubscript:@"MRExternalDeviceConnectionCorrelationIDUserInfoKey"];
   }
 
   v16 = [v12 objectForKeyedSubscript:@"MRExternalDeviceConnectionReasonUserInfoKey"];
@@ -1250,18 +1250,18 @@ void __39__MRDistantExternalDevice_customOrigin__block_invoke_2_228(uint64_t a1)
   v16 = @"unspecified";
   [v12 setObject:@"unspecified" forKeyedSubscript:@"MRExternalDeviceConnectionReasonUserInfoKey"];
 LABEL_12:
-  v19 = [(MRDistantExternalDevice *)self distantEndpoint];
+  distantEndpoint = [(MRDistantExternalDevice *)self distantEndpoint];
   v20 = objc_alloc(MEMORY[0x1E696AEC0]);
   v21 = objc_opt_class();
-  v22 = [v19 uniqueIdentifier];
-  v52 = v19;
-  v23 = [v19 designatedGroupLeader];
-  v24 = [v23 name];
-  v25 = [v20 initWithFormat:@"%@:%p<%@(%@)>", v21, self, v22, v24];
+  uniqueIdentifier = [distantEndpoint uniqueIdentifier];
+  v52 = distantEndpoint;
+  designatedGroupLeader = [distantEndpoint designatedGroupLeader];
+  name = [designatedGroupLeader name];
+  v25 = [v20 initWithFormat:@"%@:%p<%@(%@)>", v21, self, uniqueIdentifier, name];
 
-  if (a3)
+  if (options)
   {
-    v26 = MRExternalDeviceConnectOptionsCopyDescription(a3);
+    v26 = MRExternalDeviceConnectOptionsCopyDescription(options);
     v27 = [v25 stringByAppendingFormat:@"(%@)", v26];
 
     v25 = v27;
@@ -1285,10 +1285,10 @@ LABEL_12:
 
   v31 = qos_class_self();
   v32 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"com.apple.mediaremote.distantExternalDevice.connect.%@", v17];
-  v33 = [v32 UTF8String];
+  uTF8String = [v32 UTF8String];
   v34 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v35 = dispatch_queue_attr_make_with_qos_class(v34, v31, 0);
-  v36 = dispatch_queue_create(v33, v35);
+  v36 = dispatch_queue_create(uTF8String, v35);
 
   v58[0] = MEMORY[0x1E69E9820];
   v58[1] = 3221225472;
@@ -1298,10 +1298,10 @@ LABEL_12:
   v59 = v17;
   v60 = v25;
   v62 = v36;
-  v63 = v50;
+  v63 = completionCopy;
   v61 = v49;
   v48 = v36;
-  v51 = v50;
+  v51 = completionCopy;
   v37 = v49;
   v38 = v25;
   v39 = v17;
@@ -1321,7 +1321,7 @@ LABEL_12:
   v54[3] = &unk_1E769BCA8;
   v54[4] = self;
   v55 = v41;
-  v57 = a3;
+  optionsCopy = options;
   v56 = v12;
   v44 = v12;
   v45 = v41;
@@ -1529,15 +1529,15 @@ void __122__MRDistantExternalDevice__onSerialQueue_prepareToConnectWithOptions_u
   v4(v3, a2);
 }
 
-- (void)disconnect:(id)a3
+- (void)disconnect:(id)disconnect
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  disconnectCopy = disconnect;
   v5 = MRLogCategoryConnections();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = disconnectCopy;
     _os_log_impl(&dword_1A2860000, v5, OS_LOG_TYPE_DEBUG, "[MRDistantExternalDevice] Client called disconnect on shared connection with error %@", buf, 0xCu);
   }
 
@@ -1547,27 +1547,27 @@ void __122__MRDistantExternalDevice__onSerialQueue_prepareToConnectWithOptions_u
   v9[2] = __38__MRDistantExternalDevice_disconnect___block_invoke;
   v9[3] = &unk_1E769A4A0;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
+  v10 = disconnectCopy;
+  v7 = disconnectCopy;
   dispatch_async(workerQueue, v9);
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setConnectionStateCallback:(id)a3 withQueue:(id)a4
+- (void)setConnectionStateCallback:(id)callback withQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  callbackCopy = callback;
+  queueCopy = queue;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __64__MRDistantExternalDevice_setConnectionStateCallback_withQueue___block_invoke;
   block[3] = &unk_1E769B250;
-  v12 = v7;
-  v13 = v6;
+  v12 = queueCopy;
+  v13 = callbackCopy;
   block[4] = self;
-  v9 = v7;
-  v10 = v6;
+  v9 = queueCopy;
+  v10 = callbackCopy;
   dispatch_async(serialQueue, block);
 }
 
@@ -1598,37 +1598,37 @@ uint64_t __64__MRDistantExternalDevice_setConnectionStateCallback_withQueue___bl
   return result;
 }
 
-- (void)setCustomDataCallback:(id)a3 withQueue:(id)a4
+- (void)setCustomDataCallback:(id)callback withQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  callbackCopy = callback;
+  queueCopy = queue;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__MRDistantExternalDevice_setCustomDataCallback_withQueue___block_invoke;
   block[3] = &unk_1E769B250;
-  v12 = v7;
-  v13 = v6;
+  v12 = queueCopy;
+  v13 = callbackCopy;
   block[4] = self;
-  v9 = v7;
-  v10 = v6;
+  v9 = queueCopy;
+  v10 = callbackCopy;
   dispatch_async(serialQueue, block);
 }
 
-- (void)setVolumeCallback:(id)a3 withQueue:(id)a4
+- (void)setVolumeCallback:(id)callback withQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  callbackCopy = callback;
+  queueCopy = queue;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __55__MRDistantExternalDevice_setVolumeCallback_withQueue___block_invoke;
   block[3] = &unk_1E769B250;
-  v12 = v7;
-  v13 = v6;
+  v12 = queueCopy;
+  v13 = callbackCopy;
   block[4] = self;
-  v9 = v7;
-  v10 = v6;
+  v9 = queueCopy;
+  v10 = callbackCopy;
   dispatch_sync(serialQueue, block);
 }
 
@@ -1659,44 +1659,44 @@ uint64_t __55__MRDistantExternalDevice_setVolumeCallback_withQueue___block_invok
   return result;
 }
 
-- (void)setDiscoveryMode:(unsigned int)a3 forConfiguration:(id)a4
+- (void)setDiscoveryMode:(unsigned int)mode forConfiguration:(id)configuration
 {
-  v6 = a4;
+  configurationCopy = configuration;
   workerQueue = self->_workerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __61__MRDistantExternalDevice_setDiscoveryMode_forConfiguration___block_invoke;
   block[3] = &unk_1E769BCF8;
-  v11 = a3;
+  modeCopy = mode;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = configurationCopy;
+  v8 = configurationCopy;
   dispatch_async(workerQueue, block);
 }
 
-- (void)requestGroupSessionWithDetails:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)requestGroupSessionWithDetails:(id)details queue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __75__MRDistantExternalDevice_requestGroupSessionWithDetails_queue_completion___block_invoke;
   v20[3] = &unk_1E769B768;
-  v21 = v9;
-  v22 = v10;
-  v11 = v10;
-  v12 = v9;
+  v21 = queueCopy;
+  v22 = completionCopy;
+  v11 = completionCopy;
+  v12 = queueCopy;
   v13 = MEMORY[0x1A58E3570](v20);
   workerQueue = self->_workerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__MRDistantExternalDevice_requestGroupSessionWithDetails_queue_completion___block_invoke_3;
   block[3] = &unk_1E769B250;
-  v18 = v8;
+  v18 = detailsCopy;
   v19 = v13;
   block[4] = self;
-  v15 = v8;
+  v15 = detailsCopy;
   v16 = v13;
   dispatch_async(workerQueue, block);
 }
@@ -1719,29 +1719,29 @@ void __75__MRDistantExternalDevice_requestGroupSessionWithDetails_queue_completi
   dispatch_async(v7, block);
 }
 
-- (void)requestMicrophoneConnectionWithDetails:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)requestMicrophoneConnectionWithDetails:(id)details queue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __83__MRDistantExternalDevice_requestMicrophoneConnectionWithDetails_queue_completion___block_invoke;
   v20[3] = &unk_1E769BD48;
-  v21 = v9;
-  v22 = v10;
-  v11 = v10;
-  v12 = v9;
+  v21 = queueCopy;
+  v22 = completionCopy;
+  v11 = completionCopy;
+  v12 = queueCopy;
   v13 = MEMORY[0x1A58E3570](v20);
   workerQueue = self->_workerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __83__MRDistantExternalDevice_requestMicrophoneConnectionWithDetails_queue_completion___block_invoke_3;
   block[3] = &unk_1E769B250;
-  v18 = v8;
+  v18 = detailsCopy;
   v19 = v13;
   block[4] = self;
-  v15 = v8;
+  v15 = detailsCopy;
   v16 = v13;
   dispatch_async(workerQueue, block);
 }
@@ -1761,26 +1761,26 @@ void __83__MRDistantExternalDevice_requestMicrophoneConnectionWithDetails_queue_
   dispatch_async(v6, block);
 }
 
-- (void)outputDeviceVolumeControlCapabilities:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)outputDeviceVolumeControlCapabilities:(id)capabilities queue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  capabilitiesCopy = capabilities;
+  queueCopy = queue;
+  completionCopy = completion;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __82__MRDistantExternalDevice_outputDeviceVolumeControlCapabilities_queue_completion___block_invoke;
   v19[3] = &unk_1E769BD98;
-  v11 = v9;
+  v11 = queueCopy;
   v20 = v11;
-  v12 = v10;
+  v12 = completionCopy;
   v21 = v12;
   v13 = MEMORY[0x1A58E3570](v19);
-  v14 = [(MRDistantExternalDevice *)self externalOutputContext];
-  v15 = v14;
-  if (v14)
+  externalOutputContext = [(MRDistantExternalDevice *)self externalOutputContext];
+  v15 = externalOutputContext;
+  if (externalOutputContext)
   {
     v18 = 0;
-    v16 = [v14 volumeControlCapabilitiesForOutputDeviceUID:v8 error:&v18];
+    v16 = [externalOutputContext volumeControlCapabilitiesForOutputDeviceUID:capabilitiesCopy error:&v18];
     v17 = v18;
   }
 
@@ -1809,26 +1809,26 @@ void __82__MRDistantExternalDevice_outputDeviceVolumeControlCapabilities_queue_c
   dispatch_async(v6, block);
 }
 
-- (void)setOutputDeviceVolume:(float)a3 outputDeviceUID:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)setOutputDeviceVolume:(float)volume outputDeviceUID:(id)d details:(id)details queue:(id)queue completion:(id)completion
 {
   v55 = *MEMORY[0x1E69E9840];
-  v38 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  dCopy = d;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
   v15 = [MEMORY[0x1E695DF00] now];
-  v16 = [(MRDistantExternalDevice *)self distantEndpoint];
+  distantEndpoint = [(MRDistantExternalDevice *)self distantEndpoint];
   v17 = objc_alloc(MEMORY[0x1E696AEC0]);
   v18 = objc_opt_class();
-  v19 = [v16 uniqueIdentifier];
-  v39 = v16;
-  v20 = [v16 designatedGroupLeader];
-  v21 = [v20 name];
-  v22 = [v17 initWithFormat:@"%@:%p<%@(%@)>", v18, self, v19, v21];
+  uniqueIdentifier = [distantEndpoint uniqueIdentifier];
+  v39 = distantEndpoint;
+  designatedGroupLeader = [distantEndpoint designatedGroupLeader];
+  name = [designatedGroupLeader name];
+  v22 = [v17 initWithFormat:@"%@:%p<%@(%@)>", v18, self, uniqueIdentifier, name];
 
   v23 = objc_alloc(MEMORY[0x1E696AD60]);
-  v24 = [v12 requestID];
-  v25 = [v23 initWithFormat:@"%@<%@>", @"DistantExternalDevice.setOutputDeviceVolume", v24];
+  requestID = [detailsCopy requestID];
+  v25 = [v23 initWithFormat:@"%@<%@>", @"DistantExternalDevice.setOutputDeviceVolume", requestID];
 
   if (v22)
   {
@@ -1847,16 +1847,16 @@ void __82__MRDistantExternalDevice_outputDeviceVolumeControlCapabilities_queue_c
   v45[1] = 3221225472;
   v45[2] = __90__MRDistantExternalDevice_setOutputDeviceVolume_outputDeviceUID_details_queue_completion___block_invoke;
   v45[3] = &unk_1E769BDC0;
-  v52 = a3;
+  volumeCopy = volume;
   v46 = v22;
   v47 = @"DistantExternalDevice.setOutputDeviceVolume";
-  v27 = v12;
+  v27 = detailsCopy;
   v48 = v27;
   v49 = v15;
-  v50 = v13;
-  v51 = v14;
-  v28 = v14;
-  v29 = v13;
+  v50 = queueCopy;
+  v51 = completionCopy;
+  v28 = completionCopy;
+  v29 = queueCopy;
   v30 = v15;
   v31 = v22;
   v32 = MEMORY[0x1A58E3570](v45);
@@ -1865,13 +1865,13 @@ void __82__MRDistantExternalDevice_outputDeviceVolumeControlCapabilities_queue_c
   block[1] = 3221225472;
   block[2] = __90__MRDistantExternalDevice_setOutputDeviceVolume_outputDeviceUID_details_queue_completion___block_invoke_2;
   block[3] = &unk_1E769BDE8;
-  v44 = a3;
+  volumeCopy2 = volume;
   block[4] = self;
-  v41 = v38;
+  v41 = dCopy;
   v42 = v27;
   v43 = v32;
   v34 = v27;
-  v35 = v38;
+  v35 = dCopy;
   v36 = v32;
   dispatch_async(workerQueue, block);
 
@@ -2051,26 +2051,26 @@ LABEL_21:
   v38 = *MEMORY[0x1E69E9840];
 }
 
-- (void)outputDeviceVolume:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)outputDeviceVolume:(id)volume queue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  volumeCopy = volume;
+  queueCopy = queue;
+  completionCopy = completion;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __63__MRDistantExternalDevice_outputDeviceVolume_queue_completion___block_invoke;
   v20[3] = &unk_1E769BE10;
-  v11 = v9;
+  v11 = queueCopy;
   v21 = v11;
-  v12 = v10;
+  v12 = completionCopy;
   v22 = v12;
   v13 = MEMORY[0x1A58E3570](v20);
-  v14 = [(MRDistantExternalDevice *)self externalOutputContext];
-  v15 = v14;
-  if (v14)
+  externalOutputContext = [(MRDistantExternalDevice *)self externalOutputContext];
+  v15 = externalOutputContext;
+  if (externalOutputContext)
   {
     v19 = 0;
-    [v14 volumeForOutputDeviceUID:v8 error:&v19];
+    [externalOutputContext volumeForOutputDeviceUID:volumeCopy error:&v19];
     v17 = v16;
     v18 = v19;
   }
@@ -2100,26 +2100,26 @@ void __63__MRDistantExternalDevice_outputDeviceVolume_queue_completion___block_i
   dispatch_async(v6, block);
 }
 
-- (void)adjustOutputDeviceVolume:(int64_t)a3 outputDeviceUID:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)adjustOutputDeviceVolume:(int64_t)volume outputDeviceUID:(id)d details:(id)details queue:(id)queue completion:(id)completion
 {
   v55 = *MEMORY[0x1E69E9840];
-  v38 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
+  dCopy = d;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
   v14 = [MEMORY[0x1E695DF00] now];
-  v15 = [(MRDistantExternalDevice *)self distantEndpoint];
+  distantEndpoint = [(MRDistantExternalDevice *)self distantEndpoint];
   v16 = objc_alloc(MEMORY[0x1E696AEC0]);
   v17 = objc_opt_class();
-  v18 = [v15 uniqueIdentifier];
-  v39 = v15;
-  v19 = [v15 designatedGroupLeader];
-  v20 = [v19 name];
-  v21 = [v16 initWithFormat:@"%@:%p<%@(%@)>", v17, self, v18, v20];
+  uniqueIdentifier = [distantEndpoint uniqueIdentifier];
+  v39 = distantEndpoint;
+  designatedGroupLeader = [distantEndpoint designatedGroupLeader];
+  name = [designatedGroupLeader name];
+  v21 = [v16 initWithFormat:@"%@:%p<%@(%@)>", v17, self, uniqueIdentifier, name];
 
   v22 = objc_alloc(MEMORY[0x1E696AD60]);
-  v23 = [v11 requestID];
-  v24 = [v22 initWithFormat:@"%@<%@>", @"DistantExternalDevice.adjustOutputDeviceVolume", v23];
+  requestID = [detailsCopy requestID];
+  v24 = [v22 initWithFormat:@"%@<%@>", @"DistantExternalDevice.adjustOutputDeviceVolume", requestID];
 
   if (v21)
   {
@@ -2138,16 +2138,16 @@ void __63__MRDistantExternalDevice_outputDeviceVolume_queue_completion___block_i
   v45[1] = 3221225472;
   v45[2] = __93__MRDistantExternalDevice_adjustOutputDeviceVolume_outputDeviceUID_details_queue_completion___block_invoke;
   v45[3] = &unk_1E769BE38;
-  v52 = a3;
+  volumeCopy = volume;
   v46 = v21;
   v47 = @"DistantExternalDevice.adjustOutputDeviceVolume";
-  v26 = v11;
+  v26 = detailsCopy;
   v48 = v26;
   v49 = v14;
-  v50 = v12;
-  v51 = v13;
-  v27 = v13;
-  v28 = v12;
+  v50 = queueCopy;
+  v51 = completionCopy;
+  v27 = completionCopy;
+  v28 = queueCopy;
   v29 = v14;
   v30 = v21;
   v31 = MEMORY[0x1A58E3570](v45);
@@ -2157,12 +2157,12 @@ void __63__MRDistantExternalDevice_outputDeviceVolume_queue_completion___block_i
   block[2] = __93__MRDistantExternalDevice_adjustOutputDeviceVolume_outputDeviceUID_details_queue_completion___block_invoke_2;
   block[3] = &unk_1E769BE60;
   v43 = v31;
-  v44 = a3;
+  volumeCopy2 = volume;
   block[4] = self;
-  v41 = v38;
+  v41 = dCopy;
   v42 = v26;
   v33 = v26;
-  v34 = v38;
+  v34 = dCopy;
   v35 = v31;
   dispatch_async(workerQueue, block);
 
@@ -2339,26 +2339,26 @@ LABEL_21:
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (void)muteOutputDeviceVolume:(BOOL)a3 outputDeviceUID:(id)a4 details:(id)a5 queue:(id)a6 completion:(id)a7
+- (void)muteOutputDeviceVolume:(BOOL)volume outputDeviceUID:(id)d details:(id)details queue:(id)queue completion:(id)completion
 {
   v55 = *MEMORY[0x1E69E9840];
-  v38 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = a7;
+  dCopy = d;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
   v14 = [MEMORY[0x1E695DF00] now];
-  v15 = [(MRDistantExternalDevice *)self distantEndpoint];
+  distantEndpoint = [(MRDistantExternalDevice *)self distantEndpoint];
   v16 = objc_alloc(MEMORY[0x1E696AEC0]);
   v17 = objc_opt_class();
-  v18 = [v15 uniqueIdentifier];
-  v39 = v15;
-  v19 = [v15 designatedGroupLeader];
-  v20 = [v19 name];
-  v21 = [v16 initWithFormat:@"%@:%p<%@(%@)>", v17, self, v18, v20];
+  uniqueIdentifier = [distantEndpoint uniqueIdentifier];
+  v39 = distantEndpoint;
+  designatedGroupLeader = [distantEndpoint designatedGroupLeader];
+  name = [designatedGroupLeader name];
+  v21 = [v16 initWithFormat:@"%@:%p<%@(%@)>", v17, self, uniqueIdentifier, name];
 
   v22 = objc_alloc(MEMORY[0x1E696AD60]);
-  v23 = [v11 requestID];
-  v24 = [v22 initWithFormat:@"%@<%@>", @"DistantExternalDevice.muteOutputDeviceVolume", v23];
+  requestID = [detailsCopy requestID];
+  v24 = [v22 initWithFormat:@"%@<%@>", @"DistantExternalDevice.muteOutputDeviceVolume", requestID];
 
   if (v21)
   {
@@ -2377,16 +2377,16 @@ LABEL_21:
   v45[1] = 3221225472;
   v45[2] = __91__MRDistantExternalDevice_muteOutputDeviceVolume_outputDeviceUID_details_queue_completion___block_invoke;
   v45[3] = &unk_1E769BE88;
-  v52 = a3;
+  volumeCopy = volume;
   v46 = v21;
   v47 = @"DistantExternalDevice.muteOutputDeviceVolume";
-  v26 = v11;
+  v26 = detailsCopy;
   v48 = v26;
   v49 = v14;
-  v50 = v12;
-  v51 = v13;
-  v27 = v13;
-  v28 = v12;
+  v50 = queueCopy;
+  v51 = completionCopy;
+  v27 = completionCopy;
+  v28 = queueCopy;
   v29 = v14;
   v30 = v21;
   v31 = MEMORY[0x1A58E3570](v45);
@@ -2395,13 +2395,13 @@ LABEL_21:
   block[1] = 3221225472;
   block[2] = __91__MRDistantExternalDevice_muteOutputDeviceVolume_outputDeviceUID_details_queue_completion___block_invoke_2;
   block[3] = &unk_1E769BEB0;
-  v44 = a3;
+  volumeCopy2 = volume;
   block[4] = self;
-  v41 = v38;
+  v41 = dCopy;
   v42 = v26;
   v43 = v31;
   v33 = v26;
-  v34 = v38;
+  v34 = dCopy;
   v35 = v31;
   dispatch_async(workerQueue, block);
 
@@ -2578,20 +2578,20 @@ LABEL_21:
   v35 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setListeningMode:(id)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)setListeningMode:(id)mode outputDeviceUID:(id)d queue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  modeCopy = mode;
+  dCopy = d;
+  queueCopy = queue;
+  completionCopy = completion;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __77__MRDistantExternalDevice_setListeningMode_outputDeviceUID_queue_completion___block_invoke;
   v25[3] = &unk_1E769BCD0;
-  v26 = v12;
-  v27 = v13;
-  v14 = v13;
-  v15 = v12;
+  v26 = queueCopy;
+  v27 = completionCopy;
+  v14 = completionCopy;
+  v15 = queueCopy;
   v16 = MEMORY[0x1A58E3570](v25);
   workerQueue = self->_workerQueue;
   v21[0] = MEMORY[0x1E69E9820];
@@ -2599,11 +2599,11 @@ LABEL_21:
   v21[2] = __77__MRDistantExternalDevice_setListeningMode_outputDeviceUID_queue_completion___block_invoke_3;
   v21[3] = &unk_1E769BED8;
   v21[4] = self;
-  v22 = v10;
-  v23 = v11;
+  v22 = modeCopy;
+  v23 = dCopy;
   v24 = v16;
-  v18 = v11;
-  v19 = v10;
+  v18 = dCopy;
+  v19 = modeCopy;
   v20 = v16;
   dispatch_async(workerQueue, v21);
 }
@@ -2623,30 +2623,30 @@ void __77__MRDistantExternalDevice_setListeningMode_outputDeviceUID_queue_comple
   dispatch_async(v4, v7);
 }
 
-- (void)setConversationDetectionEnabled:(BOOL)a3 outputDeviceUID:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)setConversationDetectionEnabled:(BOOL)enabled outputDeviceUID:(id)d queue:(id)queue completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  queueCopy = queue;
+  completionCopy = completion;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __92__MRDistantExternalDevice_setConversationDetectionEnabled_outputDeviceUID_queue_completion___block_invoke;
   v23[3] = &unk_1E769BCD0;
-  v24 = v11;
-  v25 = v12;
-  v13 = v12;
-  v14 = v11;
+  v24 = queueCopy;
+  v25 = completionCopy;
+  v13 = completionCopy;
+  v14 = queueCopy;
   v15 = MEMORY[0x1A58E3570](v23);
   workerQueue = self->_workerQueue;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __92__MRDistantExternalDevice_setConversationDetectionEnabled_outputDeviceUID_queue_completion___block_invoke_3;
   v19[3] = &unk_1E769BF00;
-  v20 = v10;
+  v20 = dCopy;
   v21 = v15;
-  v22 = a3;
+  enabledCopy = enabled;
   v19[4] = self;
-  v17 = v10;
+  v17 = dCopy;
   v18 = v15;
   dispatch_async(workerQueue, v19);
 }
@@ -2666,29 +2666,29 @@ void __92__MRDistantExternalDevice_setConversationDetectionEnabled_outputDeviceU
   dispatch_async(v4, v7);
 }
 
-- (void)modifyTopologyWithRequest:(id)a3 withReplyQueue:(id)a4 completion:(id)a5
+- (void)modifyTopologyWithRequest:(id)request withReplyQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  queueCopy = queue;
+  completionCopy = completion;
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __79__MRDistantExternalDevice_modifyTopologyWithRequest_withReplyQueue_completion___block_invoke;
   v20[3] = &unk_1E769BCD0;
-  v21 = v9;
-  v22 = v10;
-  v11 = v10;
-  v12 = v9;
+  v21 = queueCopy;
+  v22 = completionCopy;
+  v11 = completionCopy;
+  v12 = queueCopy;
   v13 = MEMORY[0x1A58E3570](v20);
   workerQueue = self->_workerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__MRDistantExternalDevice_modifyTopologyWithRequest_withReplyQueue_completion___block_invoke_3;
   block[3] = &unk_1E769B250;
-  v18 = v8;
+  v18 = requestCopy;
   v19 = v13;
   block[4] = self;
-  v15 = v8;
+  v15 = requestCopy;
   v16 = v13;
   dispatch_async(workerQueue, block);
 }
@@ -2708,20 +2708,20 @@ void __79__MRDistantExternalDevice_modifyTopologyWithRequest_withReplyQueue_comp
   dispatch_async(v4, v7);
 }
 
-- (void)createHostedEndpointWithOutputDeviceUIDs:(id)a3 details:(id)a4 queue:(id)a5 completion:(id)a6
+- (void)createHostedEndpointWithOutputDeviceUIDs:(id)ds details:(id)details queue:(id)queue completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dsCopy = ds;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
   v25[2] = __93__MRDistantExternalDevice_createHostedEndpointWithOutputDeviceUIDs_details_queue_completion___block_invoke;
   v25[3] = &unk_1E769B768;
-  v26 = v12;
-  v27 = v13;
-  v14 = v13;
-  v15 = v12;
+  v26 = queueCopy;
+  v27 = completionCopy;
+  v14 = completionCopy;
+  v15 = queueCopy;
   v16 = MEMORY[0x1A58E3570](v25);
   workerQueue = self->_workerQueue;
   v21[0] = MEMORY[0x1E69E9820];
@@ -2729,11 +2729,11 @@ void __79__MRDistantExternalDevice_modifyTopologyWithRequest_withReplyQueue_comp
   v21[2] = __93__MRDistantExternalDevice_createHostedEndpointWithOutputDeviceUIDs_details_queue_completion___block_invoke_3;
   v21[3] = &unk_1E769BED8;
   v21[4] = self;
-  v22 = v10;
-  v23 = v11;
+  v22 = dsCopy;
+  v23 = detailsCopy;
   v24 = v16;
-  v18 = v11;
-  v19 = v10;
+  v18 = detailsCopy;
+  v19 = dsCopy;
   v20 = v16;
   dispatch_async(workerQueue, v21);
 }
@@ -2756,18 +2756,18 @@ void __93__MRDistantExternalDevice_createHostedEndpointWithOutputDeviceUIDs_deta
   dispatch_async(v7, block);
 }
 
-- (void)ping:(double)a3 callback:(id)a4 withQueue:(id)a5
+- (void)ping:(double)ping callback:(id)callback withQueue:(id)queue
 {
-  v8 = a4;
-  v9 = a5;
+  callbackCopy = callback;
+  queueCopy = queue;
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __51__MRDistantExternalDevice_ping_callback_withQueue___block_invoke;
   v18[3] = &unk_1E769BCD0;
-  v19 = v9;
-  v20 = v8;
-  v10 = v8;
-  v11 = v9;
+  v19 = queueCopy;
+  v20 = callbackCopy;
+  v10 = callbackCopy;
+  v11 = queueCopy;
   v12 = MEMORY[0x1A58E3570](v18);
   workerQueue = self->_workerQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -2776,7 +2776,7 @@ void __93__MRDistantExternalDevice_createHostedEndpointWithOutputDeviceUIDs_deta
   block[3] = &unk_1E769BF28;
   block[4] = self;
   v16 = v12;
-  v17 = a3;
+  pingCopy = ping;
   v14 = v12;
   dispatch_async(workerQueue, block);
 }
@@ -2796,7 +2796,7 @@ void __51__MRDistantExternalDevice_ping_callback_withQueue___block_invoke(uint64
   dispatch_async(v4, v7);
 }
 
-- (void)sendButtonEvent:(_MRHIDButtonEvent)a3
+- (void)sendButtonEvent:(_MRHIDButtonEvent)event
 {
   workerQueue = self->_workerQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -2804,7 +2804,7 @@ void __51__MRDistantExternalDevice_ping_callback_withQueue___block_invoke(uint64
   block[2] = __43__MRDistantExternalDevice_sendButtonEvent___block_invoke;
   block[3] = &unk_1E769BF50;
   block[4] = self;
-  v5 = a3;
+  eventCopy = event;
   dispatch_async(workerQueue, block);
 }
 
@@ -2868,26 +2868,26 @@ void __48__MRDistantExternalDevice_personalOutputDevices__block_invoke_2(uint64_
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeFromParentGroup:(id)a3 queue:(id)a4 completion:(id)a5
+- (void)removeFromParentGroup:(id)group queue:(id)queue completion:(id)completion
 {
   v6 = MEMORY[0x1E696ABC0];
-  v7 = a5;
+  completionCopy = completion;
   v8 = [[v6 alloc] initWithMRError:3];
-  (*(a5 + 2))(v7, v8);
+  (*(completion + 2))(completionCopy, v8);
 }
 
-- (void)hostedExternalDeviceConnectionStateDidChange:(unsigned int)a3 withError:(id)a4
+- (void)hostedExternalDeviceConnectionStateDidChange:(unsigned int)change withError:(id)error
 {
-  v6 = a4;
+  errorCopy = error;
   workerQueue = self->_workerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __82__MRDistantExternalDevice_hostedExternalDeviceConnectionStateDidChange_withError___block_invoke;
   block[3] = &unk_1E769BCF8;
-  v11 = a3;
+  changeCopy = change;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = errorCopy;
+  v8 = errorCopy;
   dispatch_async(workerQueue, block);
 }
 
@@ -2905,17 +2905,17 @@ void __82__MRDistantExternalDevice_hostedExternalDeviceConnectionStateDidChange_
   dispatch_async(v2, block);
 }
 
-- (void)hostedExternalDeviceDeviceInfoDidChange:(id)a3
+- (void)hostedExternalDeviceDeviceInfoDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   workerQueue = self->_workerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __67__MRDistantExternalDevice_hostedExternalDeviceDeviceInfoDidChange___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_async(workerQueue, v7);
 }
 
@@ -2948,20 +2948,20 @@ void __67__MRDistantExternalDevice_hostedExternalDeviceDeviceInfoDidChange___blo
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)hostedExternalDeviceDidReceiveCustomData:(id)a3 withName:(id)a4
+- (void)hostedExternalDeviceDidReceiveCustomData:(id)data withName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  nameCopy = name;
   workerQueue = self->_workerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __77__MRDistantExternalDevice_hostedExternalDeviceDidReceiveCustomData_withName___block_invoke;
   block[3] = &unk_1E769BA00;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dataCopy;
+  v13 = nameCopy;
+  v9 = nameCopy;
+  v10 = dataCopy;
   dispatch_async(workerQueue, block);
 }
 
@@ -3028,17 +3028,17 @@ void __77__MRDistantExternalDevice_hostedExternalDeviceDidReceiveCustomData_with
   }
 }
 
-- (void)hostedExternalDeviceEndpointDidChange:(id)a3
+- (void)hostedExternalDeviceEndpointDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   workerQueue = self->_workerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__MRDistantExternalDevice_hostedExternalDeviceEndpointDidChange___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_async(workerQueue, v7);
 }
 
@@ -3090,18 +3090,18 @@ void __65__MRDistantExternalDevice_hostedExternalDeviceEndpointDidChange___block
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)hostedExternalDeviceVolumeCapabilitiesDidChange:(unsigned int)a3 forOutputDevice:(id)a4
+- (void)hostedExternalDeviceVolumeCapabilitiesDidChange:(unsigned int)change forOutputDevice:(id)device
 {
-  v6 = a4;
+  deviceCopy = device;
   workerQueue = self->_workerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __91__MRDistantExternalDevice_hostedExternalDeviceVolumeCapabilitiesDidChange_forOutputDevice___block_invoke;
   block[3] = &unk_1E769BCF8;
-  v11 = a3;
+  changeCopy = change;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = deviceCopy;
+  v8 = deviceCopy;
   dispatch_async(workerQueue, block);
 }
 
@@ -3151,18 +3151,18 @@ void __91__MRDistantExternalDevice_hostedExternalDeviceVolumeCapabilitiesDidChan
   [v1 updateVolumeControlCapabilities:v2 outputDeviceUID:v3];
 }
 
-- (void)hostedExternalDeviceVolumeDidChange:(float)a3 forOutputDevice:(id)a4
+- (void)hostedExternalDeviceVolumeDidChange:(float)change forOutputDevice:(id)device
 {
-  v6 = a4;
+  deviceCopy = device;
   workerQueue = self->_workerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __79__MRDistantExternalDevice_hostedExternalDeviceVolumeDidChange_forOutputDevice___block_invoke;
   block[3] = &unk_1E769BCF8;
-  v11 = a3;
+  changeCopy = change;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = deviceCopy;
+  v8 = deviceCopy;
   dispatch_async(workerQueue, block);
 }
 
@@ -3253,18 +3253,18 @@ void __79__MRDistantExternalDevice_hostedExternalDeviceVolumeDidChange_forOutput
   (*(v2 + 16))(v2, v4, v5, v3);
 }
 
-- (void)hostedExternalDeviceIsMutedDidChange:(BOOL)a3 forOutputDevice:(id)a4
+- (void)hostedExternalDeviceIsMutedDidChange:(BOOL)change forOutputDevice:(id)device
 {
-  v6 = a4;
+  deviceCopy = device;
   workerQueue = self->_workerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __80__MRDistantExternalDevice_hostedExternalDeviceIsMutedDidChange_forOutputDevice___block_invoke;
   block[3] = &unk_1E769BFC8;
-  v11 = a3;
+  changeCopy = change;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = deviceCopy;
+  v8 = deviceCopy;
   dispatch_async(workerQueue, block);
 }
 
@@ -3311,17 +3311,17 @@ void __80__MRDistantExternalDevice_hostedExternalDeviceIsMutedDidChange_forOutpu
   [v1 updateVolumeMuted:v2 outputDeviceUID:v3];
 }
 
-- (void)hostedExternalDeviceDidAddOutputDevice:(id)a3
+- (void)hostedExternalDeviceDidAddOutputDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   workerQueue = self->_workerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __66__MRDistantExternalDevice_hostedExternalDeviceDidAddOutputDevice___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = deviceCopy;
+  v6 = deviceCopy;
   dispatch_async(workerQueue, v7);
 }
 
@@ -3368,17 +3368,17 @@ void __66__MRDistantExternalDevice_hostedExternalDeviceDidAddOutputDevice___bloc
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)hostedExternalDeviceDidChangeOutputDevice:(id)a3
+- (void)hostedExternalDeviceDidChangeOutputDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   workerQueue = self->_workerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__MRDistantExternalDevice_hostedExternalDeviceDidChangeOutputDevice___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = deviceCopy;
+  v6 = deviceCopy;
   dispatch_async(workerQueue, v7);
 }
 
@@ -3425,17 +3425,17 @@ void __69__MRDistantExternalDevice_hostedExternalDeviceDidChangeOutputDevice___b
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)hostedExternalDeviceDidRemoveOutputDevice:(id)a3
+- (void)hostedExternalDeviceDidRemoveOutputDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   workerQueue = self->_workerQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__MRDistantExternalDevice_hostedExternalDeviceDidRemoveOutputDevice___block_invoke;
   v7[3] = &unk_1E769A4A0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = deviceCopy;
+  v6 = deviceCopy;
   dispatch_async(workerQueue, v7);
 }
 
@@ -3483,25 +3483,25 @@ void __69__MRDistantExternalDevice_hostedExternalDeviceDidRemoveOutputDevice___b
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)discoveryOutputDevicesChanged:(id)a3 forConfiguration:(id)a4
+- (void)discoveryOutputDevicesChanged:(id)changed forConfiguration:(id)configuration
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  configurationCopy = configuration;
+  changedCopy = changed;
   v8 = MRLogCategoryConnections();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [(MRDistantExternalDevice *)self distantEndpoint];
+    distantEndpoint = [(MRDistantExternalDevice *)self distantEndpoint];
     v11 = 134218498;
-    v12 = self;
+    selfCopy = self;
     v13 = 2114;
-    v14 = v6;
+    v14 = configurationCopy;
     v15 = 2114;
-    v16 = v9;
+    v16 = distantEndpoint;
     _os_log_impl(&dword_1A2860000, v8, OS_LOG_TYPE_DEBUG, "[MRDistantExternalDevice] Hosted external device connection for distant device %p discoveryOutputDevicesChanged for configuration %{public}@ for endpoint %{public}@", &v11, 0x20u);
   }
 
-  [(MRExternalDevice *)self notifyDiscoveryOutputDevicesChanged:v7 forConfiguration:v6];
+  [(MRExternalDevice *)self notifyDiscoveryOutputDevicesChanged:changedCopy forConfiguration:configurationCopy];
   v10 = *MEMORY[0x1E69E9840];
 }
 
@@ -3513,9 +3513,9 @@ void __51__MRDistantExternalDevice__notificationSerialQueue__block_invoke()
   _notificationSerialQueue___notificationSerialQueue = v0;
 }
 
-- (id)_hostedExternalDeviceConnectionWithError:(uint64_t)a1
+- (id)_hostedExternalDeviceConnectionWithError:(uint64_t)error
 {
-  if (a1)
+  if (error)
   {
     v12 = 0;
     v13 = &v12;
@@ -3527,7 +3527,7 @@ void __51__MRDistantExternalDevice__notificationSerialQueue__block_invoke()
     v7 = &v6;
     v8 = 0x3032000000;
     v9 = __Block_byref_object_copy__5;
-    v3 = *(a1 + 64);
+    v3 = *(error + 64);
     v10 = __Block_byref_object_dispose__5;
     v11 = 0;
     msv_dispatch_sync_on_queue();
@@ -3673,80 +3673,80 @@ void __67__MRDistantExternalDevice__updateHostedDeviceDesiredNotifications___blo
   [v2 setNotifications:*(a1 + 40)];
 }
 
-- (void)_disconnectWithError:(uint64_t)a1
+- (void)_disconnectWithError:(uint64_t)error
 {
   v3 = a2;
-  if (a1)
+  if (error)
   {
-    v4 = *(a1 + 56);
+    v4 = *(error + 56);
     OUTLINED_FUNCTION_1_0();
     OUTLINED_FUNCTION_13();
     v5[2] = __48__MRDistantExternalDevice__disconnectWithError___block_invoke;
     v5[3] = &unk_1E769A4A0;
-    v5[4] = a1;
+    v5[4] = error;
     v6 = v3;
     dispatch_async(v4, v5);
   }
 }
 
-- (void)_updateHostedDeviceDesiredNotifications:(uint64_t)a1
+- (void)_updateHostedDeviceDesiredNotifications:(uint64_t)notifications
 {
-  if (a1)
+  if (notifications)
   {
-    v4 = [(MRDistantExternalDevice *)a1 _nullableHostedExternalDeviceConnection];
-    if (v4)
+    _nullableHostedExternalDeviceConnection = [(MRDistantExternalDevice *)notifications _nullableHostedExternalDeviceConnection];
+    if (_nullableHostedExternalDeviceConnection)
     {
-      v5 = *(a1 + 56);
+      v5 = *(notifications + 56);
       OUTLINED_FUNCTION_1_0();
       OUTLINED_FUNCTION_13();
       v6[2] = __67__MRDistantExternalDevice__updateHostedDeviceDesiredNotifications___block_invoke;
       v6[3] = &unk_1E769C018;
-      v7 = v4;
+      v7 = _nullableHostedExternalDeviceConnection;
       v8 = a2;
       dispatch_async(v5, v6);
     }
   }
 }
 
-- (void)_updateHostedDeviceDesiredCallbacks:(uint64_t)a1
+- (void)_updateHostedDeviceDesiredCallbacks:(uint64_t)callbacks
 {
-  if (a1)
+  if (callbacks)
   {
-    v4 = [(MRDistantExternalDevice *)a1 _nullableHostedExternalDeviceConnection];
-    if (v4)
+    _nullableHostedExternalDeviceConnection = [(MRDistantExternalDevice *)callbacks _nullableHostedExternalDeviceConnection];
+    if (_nullableHostedExternalDeviceConnection)
     {
-      v5 = *(a1 + 56);
+      v5 = *(callbacks + 56);
       OUTLINED_FUNCTION_1_0();
       OUTLINED_FUNCTION_13();
       v6[2] = __63__MRDistantExternalDevice__updateHostedDeviceDesiredCallbacks___block_invoke;
       v6[3] = &unk_1E769C018;
-      v7 = v4;
+      v7 = _nullableHostedExternalDeviceConnection;
       v8 = a2;
       dispatch_async(v5, v6);
     }
   }
 }
 
-- (void)_onSerialQueue_callAllPendingCompletionsWithError:(uint64_t)a1
+- (void)_onSerialQueue_callAllPendingCompletionsWithError:(uint64_t)error
 {
   v44 = *MEMORY[0x1E69E9840];
   v3 = a2;
-  if (a1)
+  if (error)
   {
-    v4 = [*(a1 + 144) copy];
-    [*(a1 + 144) removeAllObjects];
+    v4 = [*(error + 144) copy];
+    [*(error + 144) removeAllObjects];
     if ([v4 count] >= 2)
     {
       v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Calling batched completions %@", v4];
       v6 = _MRLogForCategory(0xAuLL);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [v4 firstObject];
-        v8 = [v7 requestID];
+        firstObject = [v4 firstObject];
+        requestID = [firstObject requestID];
         *buf = 138543874;
         v36 = @"DistantExternalDevice.connectWithOptions";
         v37 = 2114;
-        v38 = v8;
+        v38 = requestID;
         v39 = 2112;
         v40 = v5;
         OUTLINED_FUNCTION_15_0(&dword_1A2860000, v6, v9, "Update: %{public}@<%{public}@> %@", buf);
@@ -3785,14 +3785,14 @@ void __67__MRDistantExternalDevice__updateHostedDeviceDesiredNotifications___blo
                 goto LABEL_22;
               }
 
-              v21 = [v14 requestID];
-              v22 = [MEMORY[0x1E695DF00] date];
-              v23 = [v14 startDate];
-              [v22 timeIntervalSinceDate:v23];
+              requestID2 = [v14 requestID];
+              date = [MEMORY[0x1E695DF00] date];
+              startDate = [v14 startDate];
+              [date timeIntervalSinceDate:startDate];
               *buf = 138544130;
               v36 = @"DistantExternalDevice.connectWithOptions";
               v37 = 2114;
-              v38 = v21;
+              v38 = requestID2;
               v39 = 2114;
               v40 = v3;
               v41 = 2048;
@@ -3809,11 +3809,11 @@ void __67__MRDistantExternalDevice__updateHostedDeviceDesiredNotifications___blo
             v18 = _MRLogForCategory(0xAuLL);
             if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
             {
-              v19 = [v14 requestID];
+              requestID3 = [v14 requestID];
               *buf = 138543874;
               v36 = @"DistantExternalDevice.connectWithOptions";
               v37 = 2114;
-              v38 = v19;
+              v38 = requestID3;
               v39 = 2112;
               v40 = v17;
               _os_log_impl(&dword_1A2860000, v18, OS_LOG_TYPE_DEFAULT, "Update: %{public}@<%{public}@> %@", buf, 0x20u);
@@ -3826,14 +3826,14 @@ void __67__MRDistantExternalDevice__updateHostedDeviceDesiredNotifications___blo
             goto LABEL_22;
           }
 
-          v21 = [v14 requestID];
-          v25 = [MEMORY[0x1E695DF00] date];
-          v26 = [v14 startDate];
-          [v25 timeIntervalSinceDate:v26];
+          requestID2 = [v14 requestID];
+          date2 = [MEMORY[0x1E695DF00] date];
+          startDate2 = [v14 startDate];
+          [date2 timeIntervalSinceDate:startDate2];
           *buf = 138543874;
           v36 = @"DistantExternalDevice.connectWithOptions";
           v37 = 2114;
-          v38 = v21;
+          v38 = requestID2;
           v39 = 2048;
           v40 = v27;
           _os_log_impl(&dword_1A2860000, v20, OS_LOG_TYPE_DEFAULT, "Response: %{public}@<%{public}@> returned in %.4lf seconds", buf, 0x20u);
@@ -3841,8 +3841,8 @@ void __67__MRDistantExternalDevice__updateHostedDeviceDesiredNotifications___blo
 LABEL_21:
 LABEL_22:
 
-          v28 = [v14 completion];
-          (v28)[2](v28, v3);
+          completion = [v14 completion];
+          (completion)[2](completion, v3);
         }
 
         v11 = [obj countByEnumeratingWithState:&v31 objects:v43 count:16];
@@ -3857,7 +3857,7 @@ LABEL_22:
 
 - (uint64_t)deviceNotifications
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -3866,12 +3866,12 @@ LABEL_22:
   v6 = &v5;
   v7 = 0x2020000000;
   v8 = 0;
-  v1 = *(a1 + 64);
+  v1 = *(self + 64);
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __46__MRDistantExternalDevice_deviceNotifications__block_invoke;
   v4[3] = &unk_1E769A2A0;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = &v5;
   dispatch_sync(v1, v4);
   v2 = v6[3];
@@ -3919,27 +3919,27 @@ void __63__MRDistantExternalDevice_setWantsSystemEndpointNotifications___block_i
   OUTLINED_FUNCTION_1_3(a1, v1);
 }
 
-- (void)setConnectionState:(uint64_t)a1
+- (void)setConnectionState:(uint64_t)state
 {
-  if (a1)
+  if (state)
   {
-    os_unfair_lock_lock((a1 + 72));
-    *(a1 + 176) = a2;
+    os_unfair_lock_lock((state + 72));
+    *(state + 176) = a2;
     v4 = [MEMORY[0x1E695DF00] now];
-    v5 = *(a1 + 168);
-    *(a1 + 168) = v4;
+    v5 = *(state + 168);
+    *(state + 168) = v4;
 
-    os_unfair_lock_unlock((a1 + 72));
+    os_unfair_lock_unlock((state + 72));
   }
 }
 
-- (id)_synchronousObjectProxyWithErrorHandler:(void *)a1
+- (id)_synchronousObjectProxyWithErrorHandler:(void *)handler
 {
   v3 = a2;
-  if (a1)
+  if (handler)
   {
     v17 = 0;
-    v4 = [(MRDistantExternalDevice *)a1 _hostedExternalDeviceConnectionWithError:?];
+    v4 = [(MRDistantExternalDevice *)handler _hostedExternalDeviceConnectionWithError:?];
     v5 = v17;
     if (v5)
     {
@@ -3955,9 +3955,9 @@ void __63__MRDistantExternalDevice_setWantsSystemEndpointNotifications___block_i
         OUTLINED_FUNCTION_3_2();
         v13 = __67__MRDistantExternalDevice__synchronousObjectProxyWithErrorHandler___block_invoke;
         v14 = &unk_1E769BCD0;
-        v15 = a1;
+        handlerCopy = handler;
         v16 = v3;
-        a1 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v12];
+        handler = [v4 synchronousRemoteObjectProxyWithErrorHandler:v12];
 
         goto LABEL_7;
       }
@@ -3967,11 +3967,11 @@ void __63__MRDistantExternalDevice_setWantsSystemEndpointNotifications___block_i
       v11(v10, v9);
     }
 
-    a1 = 0;
+    handler = 0;
 LABEL_7:
   }
 
-  return a1;
+  return handler;
 }
 
 void __66__MRDistantExternalDevice_connectWithOptions_userInfo_completion___block_invoke_5(uint64_t a1)
@@ -3993,44 +3993,44 @@ void __66__MRDistantExternalDevice_connectWithOptions_userInfo_completion___bloc
   [(MRDistantExternalDevice *)v3 _onSerialQueue_handleConnectionStateDidChange:v5 withError:v4];
 }
 
-- (void)_onSerialQueue_handleConnectionStateDidChange:(void *)a3 withError:
+- (void)_onSerialQueue_handleConnectionStateDidChange:(void *)change withError:
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a1)
+  changeCopy = change;
+  if (self)
   {
     if (a2 == 3)
     {
-      objc_storeStrong((a1 + 160), a3);
-      if (*(a1 + 256))
+      objc_storeStrong((self + 160), change);
+      if (*(self + 256))
       {
-        [a1 setHostedExternalDeviceConnection:0];
+        [self setHostedExternalDeviceConnection:0];
       }
     }
 
     else
     {
-      v7 = *(a1 + 160);
-      *(a1 + 160) = 0;
+      v7 = *(self + 160);
+      *(self + 160) = 0;
     }
 
-    if (!*(a1 + 256))
+    if (!*(self + 256))
     {
-      [a1 setDeviceInfo:0];
+      [self setDeviceInfo:0];
     }
 
-    if ([a1 connectionState] != a2)
+    if ([self connectionState] != a2)
     {
       v9 = MRLogCategoryConnections();
       v10 = v9;
-      if (v6)
+      if (changeCopy)
       {
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
           v11 = MRExternalDeviceConnectionStateCopyDescription(a2);
           OUTLINED_FUNCTION_12();
           v35 = v16;
-          v36 = v6;
+          v36 = changeCopy;
           v12 = "[MRDistantExternalDevice] Hosted external device connection for distant device %{public}@ state did change to %{public}@ with error %{public}@";
           v13 = v10;
           v14 = OS_LOG_TYPE_ERROR;
@@ -4053,25 +4053,25 @@ LABEL_15:
 
       if ((a2 & 0xFFFFFFFE) == 2)
       {
-        *(a1 + 136) = 0;
-        [(MRDistantExternalDevice *)a1 _onSerialQueue_callAllPendingCompletionsWithError:v6];
+        *(self + 136) = 0;
+        [(MRDistantExternalDevice *)self _onSerialQueue_callAllPendingCompletionsWithError:changeCopy];
       }
 
-      v17 = *(a1 + 128);
-      *(a1 + 128) = 0;
+      v17 = *(self + 128);
+      *(self + 128) = 0;
 
-      v18 = *(a1 + 104);
-      *(a1 + 104) = 0;
+      v18 = *(self + 104);
+      *(self + 104) = 0;
 
-      [(MRDistantExternalDevice *)a1 setConnectionState:a2];
-      v19 = [a1 connectionStateCallback];
-      v20 = [v19 copy];
+      [(MRDistantExternalDevice *)self setConnectionState:a2];
+      connectionStateCallback = [self connectionStateCallback];
+      v20 = [connectionStateCallback copy];
 
-      v21 = [a1 connectionStateCallbackQueue];
-      v22 = v21;
-      if (v21)
+      connectionStateCallbackQueue = [self connectionStateCallbackQueue];
+      v22 = connectionStateCallbackQueue;
+      if (connectionStateCallbackQueue)
       {
-        v23 = v21;
+        v23 = connectionStateCallbackQueue;
       }
 
       else
@@ -4088,7 +4088,7 @@ LABEL_15:
         block[3] = &unk_1E769BD70;
         v32 = v20;
         v33 = a2;
-        v31 = v6;
+        v31 = changeCopy;
         dispatch_async(v23, block);
       }
 
@@ -4098,8 +4098,8 @@ LABEL_15:
       v26[2] = __83__MRDistantExternalDevice__onSerialQueue_handleConnectionStateDidChange_withError___block_invoke_2;
       v26[3] = &unk_1E769BCF8;
       v29 = a2;
-      v27 = v6;
-      v28 = a1;
+      v27 = changeCopy;
+      selfCopy = self;
       dispatch_async(v25, v26);
     }
   }
@@ -4107,24 +4107,24 @@ LABEL_15:
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_onSerialQueue_prepareToConnectWithOptions:(void *)a3 userInfo:(void *)a4 connectionAttemptDetails:(void *)a5 connectionHandler:
+- (void)_onSerialQueue_prepareToConnectWithOptions:(void *)options userInfo:(void *)info connectionAttemptDetails:(void *)details connectionHandler:
 {
   v49 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (a1)
+  optionsCopy = options;
+  infoCopy = info;
+  detailsCopy = details;
+  if (self)
   {
     v11 = [MRBlockGuard alloc];
     v12 = objc_alloc(MEMORY[0x1E696AEC0]);
-    v13 = [v9 requestID];
-    v14 = [v9 reason];
-    v15 = [v12 initWithFormat:@"%@<%@:%@>", @"DistantExternalDevice.connectWithOptions", v13, v14];
+    requestID = [infoCopy requestID];
+    reason = [infoCopy reason];
+    v15 = [v12 initWithFormat:@"%@<%@:%@>", @"DistantExternalDevice.connectWithOptions", requestID, reason];
     v45[0] = MEMORY[0x1E69E9820];
     v45[1] = 3221225472;
     v45[2] = __122__MRDistantExternalDevice__onSerialQueue_prepareToConnectWithOptions_userInfo_connectionAttemptDetails_connectionHandler___block_invoke;
     v45[3] = &unk_1E769AD80;
-    v16 = v10;
+    v16 = detailsCopy;
     v46 = v16;
     v17 = [(MRBlockGuard *)v11 initWithTimeout:v15 reason:v45 handler:30.0];
 
@@ -4136,13 +4136,13 @@ LABEL_15:
     v43 = v18;
     v44 = v16;
     v19 = MEMORY[0x1A58E3570](v42);
-    if ([a1 connectionState] == 2)
+    if ([self connectionState] == 2)
     {
       v20 = _MRLogForCategory(0xAuLL);
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [v9 requestID];
-        OUTLINED_FUNCTION_4_2(v21, 5.8383e-34);
+        requestID2 = [infoCopy requestID];
+        OUTLINED_FUNCTION_4_2(requestID2, 5.8383e-34);
         v48 = @"Already Connected";
         OUTLINED_FUNCTION_15_0(&dword_1A2860000, v20, v22, "Update: %{public}@<%{public}@> %@", v47);
       }
@@ -4152,16 +4152,16 @@ LABEL_15:
 
     else
     {
-      if ([a1 connectionState] == 1)
+      if ([self connectionState] == 1)
       {
-        if (a2 & 1) == 0 || (*(a1 + 136))
+        if (a2 & 1) == 0 || (*(self + 136))
         {
-          v23 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Connection already in progress, batching connection attempt %@", *(a1 + 144)];
+          v23 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Connection already in progress, batching connection attempt %@", *(self + 144)];
           v24 = _MRLogForCategory(0xAuLL);
           if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
           {
-            v25 = [v9 requestID];
-            OUTLINED_FUNCTION_4_2(v25, 5.8383e-34);
+            requestID3 = [infoCopy requestID];
+            OUTLINED_FUNCTION_4_2(requestID3, 5.8383e-34);
             v48 = v23;
             OUTLINED_FUNCTION_15_0(&dword_1A2860000, v24, v26, "Update: %{public}@<%{public}@> %@", v47);
           }
@@ -4173,28 +4173,28 @@ LABEL_15:
         v28 = _MRLogForCategory(0xAuLL);
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
         {
-          v29 = [v9 requestID];
-          OUTLINED_FUNCTION_4_2(v29, 5.8383e-34);
+          requestID4 = [infoCopy requestID];
+          OUTLINED_FUNCTION_4_2(requestID4, 5.8383e-34);
           v48 = @"AuthUpgrade required";
           OUTLINED_FUNCTION_15_0(&dword_1A2860000, v28, v30, "Update: %{public}@<%{public}@> %@", v47);
         }
       }
 
-      *(a1 + 192) = 1;
-      v31 = [v9 startDate];
-      v32 = *(a1 + 96);
-      *(a1 + 96) = v31;
+      *(self + 192) = 1;
+      startDate = [infoCopy startDate];
+      v32 = *(self + 96);
+      *(self + 96) = startDate;
 
-      *(a1 + 136) = a2;
-      [(MRDistantExternalDevice *)a1 _onSerialQueue_handleConnectionStateDidChange:0 withError:?];
+      *(self + 136) = a2;
+      [(MRDistantExternalDevice *)self _onSerialQueue_handleConnectionStateDidChange:0 withError:?];
       v40[0] = MEMORY[0x1E69E9820];
       v40[1] = 3221225472;
       v40[2] = __122__MRDistantExternalDevice__onSerialQueue_prepareToConnectWithOptions_userInfo_connectionAttemptDetails_connectionHandler___block_invoke_277;
       v40[3] = &unk_1E769BCD0;
-      v40[4] = a1;
+      v40[4] = self;
       v33 = v19;
       v41 = v33;
-      v34 = [(MRDistantExternalDevice *)a1 _remoteObjectProxyWithErrorHandler:v40];
+      v34 = [(MRDistantExternalDevice *)self _remoteObjectProxyWithErrorHandler:v40];
       v37[0] = MEMORY[0x1E69E9820];
       v37[1] = 3221225472;
       v37[2] = __122__MRDistantExternalDevice__onSerialQueue_prepareToConnectWithOptions_userInfo_connectionAttemptDetails_connectionHandler___block_invoke_2_278;
@@ -4202,7 +4202,7 @@ LABEL_15:
       v38 = v34;
       v39 = v33;
       v35 = v34;
-      [v35 connectWithOptions:a2 userInfo:v8 completion:v37];
+      [v35 connectWithOptions:a2 userInfo:optionsCopy completion:v37];
     }
 
 LABEL_12:
@@ -4220,13 +4220,13 @@ void __122__MRDistantExternalDevice__onSerialQueue_prepareToConnectWithOptions_u
   (*(*(a1 + 40) + 16))();
 }
 
-- (id)_remoteObjectProxyWithErrorHandler:(void *)a1
+- (id)_remoteObjectProxyWithErrorHandler:(void *)handler
 {
   v3 = a2;
-  if (a1)
+  if (handler)
   {
     v17 = 0;
-    v4 = [(MRDistantExternalDevice *)a1 _hostedExternalDeviceConnectionWithError:?];
+    v4 = [(MRDistantExternalDevice *)handler _hostedExternalDeviceConnectionWithError:?];
     v5 = v17;
     if (v5)
     {
@@ -4242,9 +4242,9 @@ void __122__MRDistantExternalDevice__onSerialQueue_prepareToConnectWithOptions_u
         OUTLINED_FUNCTION_3_2();
         v13 = __62__MRDistantExternalDevice__remoteObjectProxyWithErrorHandler___block_invoke;
         v14 = &unk_1E769BCD0;
-        v15 = a1;
+        handlerCopy = handler;
         v16 = v3;
-        a1 = [v4 remoteObjectProxyWithErrorHandler:v12];
+        handler = [v4 remoteObjectProxyWithErrorHandler:v12];
 
         goto LABEL_7;
       }
@@ -4254,11 +4254,11 @@ void __122__MRDistantExternalDevice__onSerialQueue_prepareToConnectWithOptions_u
       v11(v10, v9);
     }
 
-    a1 = 0;
+    handler = 0;
 LABEL_7:
   }
 
-  return a1;
+  return handler;
 }
 
 void __38__MRDistantExternalDevice_disconnect___block_invoke(uint64_t a1)
@@ -4392,13 +4392,13 @@ void __93__MRDistantExternalDevice_createHostedEndpointWithOutputDeviceUIDs_deta
   [v7 createHostedEndpointWithOutputDeviceUIDs:a1[5] details:a1[6] completion:a1[7]];
 }
 
-- (void)sendCustomData:(id)a3 withName:(id)a4
+- (void)sendCustomData:(id)data withName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(MRDistantExternalDevice *)self _hostedExternalDeviceConnection];
-  v8 = [v9 remoteObjectProxy];
-  [v8 sendCustomData:v7 withName:v6];
+  nameCopy = name;
+  dataCopy = data;
+  _hostedExternalDeviceConnection = [(MRDistantExternalDevice *)self _hostedExternalDeviceConnection];
+  remoteObjectProxy = [_hostedExternalDeviceConnection remoteObjectProxy];
+  [remoteObjectProxy sendCustomData:dataCopy withName:nameCopy];
 }
 
 void __51__MRDistantExternalDevice_ping_callback_withQueue___block_invoke_3(uint64_t a1)

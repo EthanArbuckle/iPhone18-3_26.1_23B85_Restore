@@ -14,72 +14,72 @@
 
 + (id)fu_platterBlueColor
 {
-  v1 = [a1 fu_systemBlueColor];
-  v2 = [v1 colorWithAlphaComponent:0.17];
+  fu_systemBlueColor = [self fu_systemBlueColor];
+  v2 = [fu_systemBlueColor colorWithAlphaComponent:0.17];
 
   return v2;
 }
 
 + (id)fu_platterGreenColor
 {
-  v1 = [a1 fu_systemGreenColor];
-  v2 = [v1 colorWithAlphaComponent:0.14];
+  fu_systemGreenColor = [self fu_systemGreenColor];
+  v2 = [fu_systemGreenColor colorWithAlphaComponent:0.14];
 
   return v2;
 }
 
 + (id)fu_platterOrangeColor
 {
-  v1 = [a1 fu_systemOrangeColor];
-  v2 = [v1 colorWithAlphaComponent:0.15];
+  fu_systemOrangeColor = [self fu_systemOrangeColor];
+  v2 = [fu_systemOrangeColor colorWithAlphaComponent:0.15];
 
   return v2;
 }
 
 + (id)fu_platterRedColor
 {
-  v1 = [a1 fu_systemRedColor];
-  v2 = [v1 colorWithAlphaComponent:0.17];
+  fu_systemRedColor = [self fu_systemRedColor];
+  v2 = [fu_systemRedColor colorWithAlphaComponent:0.17];
 
   return v2;
 }
 
 + (id)fu_platterYellowColor
 {
-  v1 = [a1 fu_systemYellowColor];
-  v2 = [v1 colorWithAlphaComponent:0.14];
+  fu_systemYellowColor = [self fu_systemYellowColor];
+  v2 = [fu_systemYellowColor colorWithAlphaComponent:0.14];
 
   return v2;
 }
 
 + (id)fu_platterPinkColor
 {
-  v1 = [a1 fu_systemPinkColor];
-  v2 = [v1 colorWithAlphaComponent:0.17];
+  fu_systemPinkColor = [self fu_systemPinkColor];
+  v2 = [fu_systemPinkColor colorWithAlphaComponent:0.17];
 
   return v2;
 }
 
 + (id)fu_platterPurpleColor
 {
-  v1 = [a1 fu_systemPurpleColor];
-  v2 = [v1 colorWithAlphaComponent:0.2];
+  fu_systemPurpleColor = [self fu_systemPurpleColor];
+  v2 = [fu_systemPurpleColor colorWithAlphaComponent:0.2];
 
   return v2;
 }
 
 + (id)fu_platterTealBlueColor
 {
-  v1 = [a1 fu_systemTealBlueColor];
-  v2 = [v1 colorWithAlphaComponent:0.15];
+  fu_systemTealBlueColor = [self fu_systemTealBlueColor];
+  v2 = [fu_systemTealBlueColor colorWithAlphaComponent:0.15];
 
   return v2;
 }
 
 + (id)fu_platterMintColor
 {
-  v1 = [a1 fu_systemMintColor];
-  v2 = [v1 colorWithAlphaComponent:0.2];
+  fu_systemMintColor = [self fu_systemMintColor];
+  v2 = [fu_systemMintColor colorWithAlphaComponent:0.2];
 
   return v2;
 }

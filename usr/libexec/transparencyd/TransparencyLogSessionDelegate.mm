@@ -1,36 +1,36 @@
 @interface TransparencyLogSessionDelegate
 - (KTLogClient)logClient;
-- (TransparencyLogSessionDelegate)initWithDataStore:(id)a3 workloop:(id)a4;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didWriteData:(int64_t)a5 totalBytesWritten:(int64_t)a6 totalBytesExpectedToWrite:(int64_t)a7;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)handleDownloadRecord:(id)a3 downloadData:(id)a4 downloadMetadata:(id)a5;
-- (void)handleDownloadRecordFailure:(id)a3 task:(id)a4 downloadMetadata:(id)a5 error:(id)a6;
+- (TransparencyLogSessionDelegate)initWithDataStore:(id)store workloop:(id)workloop;
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l;
+- (void)URLSession:(id)session downloadTask:(id)task didWriteData:(int64_t)data totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)handleDownloadRecord:(id)record downloadData:(id)data downloadMetadata:(id)metadata;
+- (void)handleDownloadRecordFailure:(id)failure task:(id)task downloadMetadata:(id)metadata error:(id)error;
 @end
 
 @implementation TransparencyLogSessionDelegate
 
-- (TransparencyLogSessionDelegate)initWithDataStore:(id)a3 workloop:(id)a4
+- (TransparencyLogSessionDelegate)initWithDataStore:(id)store workloop:(id)workloop
 {
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  workloopCopy = workloop;
   v11.receiver = self;
   v11.super_class = TransparencyLogSessionDelegate;
   v8 = [(TransparencyLogSessionDelegate *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(TransparencyLogSessionDelegate *)v8 setDataStore:v6];
-    [(TransparencyLogSessionDelegate *)v9 setWorkloop:v7];
+    [(TransparencyLogSessionDelegate *)v8 setDataStore:storeCopy];
+    [(TransparencyLogSessionDelegate *)v9 setWorkloop:workloopCopy];
   }
 
   return v9;
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didWriteData:(int64_t)a5 totalBytesWritten:(int64_t)a6 totalBytesExpectedToWrite:(int64_t)a7
+- (void)URLSession:(id)session downloadTask:(id)task didWriteData:(int64_t)data totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write
 {
-  v10 = a3;
-  v11 = a4;
+  sessionCopy = session;
+  taskCopy = task;
   if (qword_10039CEB8 != -1)
   {
     sub_100260240();
@@ -40,41 +40,41 @@
   if (os_log_type_enabled(qword_10039CEC0, OS_LOG_TYPE_INFO))
   {
     v13 = v12;
-    v14 = [v11 currentRequest];
-    v15 = [v14 URL];
-    v16 = [v15 absoluteURL];
+    currentRequest = [taskCopy currentRequest];
+    v15 = [currentRequest URL];
+    absoluteURL = [v15 absoluteURL];
     v17 = 134218498;
-    v18 = a6;
+    writtenCopy = written;
     v19 = 2048;
-    v20 = a7;
+    writeCopy = write;
     v21 = 2112;
-    v22 = v16;
+    v22 = absoluteURL;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Wrote %lld bytes of %lld total bytes for request %@", &v17, 0x20u);
   }
 }
 
-- (void)handleDownloadRecord:(id)a3 downloadData:(id)a4 downloadMetadata:(id)a5
+- (void)handleDownloadRecord:(id)record downloadData:(id)data downloadMetadata:(id)metadata
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(TransparencyLogSessionDelegate *)self dataStore];
+  recordCopy = record;
+  dataCopy = data;
+  metadataCopy = metadata;
+  dataStore = [(TransparencyLogSessionDelegate *)self dataStore];
   v24 = 0;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10023C330;
   v19[3] = &unk_10032C968;
-  v12 = v9;
+  v12 = dataCopy;
   v20 = v12;
-  v13 = v10;
+  v13 = metadataCopy;
   v21 = v13;
-  v22 = self;
-  v14 = v8;
+  selfCopy = self;
+  v14 = recordCopy;
   v23 = v14;
-  LODWORD(v10) = [v11 performAndWaitForDownloadId:v14 error:&v24 block:v19];
+  LODWORD(metadataCopy) = [dataStore performAndWaitForDownloadId:v14 error:&v24 block:v19];
   v15 = v24;
 
-  if (!v10 || v15)
+  if (!metadataCopy || v15)
   {
     if (qword_10039CEB8 != -1)
     {
@@ -97,11 +97,11 @@
   }
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  lCopy = l;
   if (qword_10039CEB8 != -1)
   {
     sub_1002602B8();
@@ -111,33 +111,33 @@
   if (os_log_type_enabled(qword_10039CEC0, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v33 = v9;
+    v33 = taskCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Download task %@ completed successfully", buf, 0xCu);
   }
 
-  v12 = [v9 originalRequest];
-  v13 = [v9 response];
-  v14 = [v12 kt_requestId];
-  v15 = [NSData dataWithContentsOfURL:v10];
-  v16 = [(TransparencyLogSessionDelegate *)self workloop];
+  originalRequest = [taskCopy originalRequest];
+  response = [taskCopy response];
+  kt_requestId = [originalRequest kt_requestId];
+  v15 = [NSData dataWithContentsOfURL:lCopy];
+  workloop = [(TransparencyLogSessionDelegate *)self workloop];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_10023CB18;
   v26[3] = &unk_10032C9D0;
-  v17 = v13;
+  v17 = response;
   v27 = v17;
-  v28 = self;
-  v18 = v14;
+  selfCopy = self;
+  v18 = kt_requestId;
   v29 = v18;
   v19 = v15;
   v30 = v19;
-  v20 = v9;
+  v20 = taskCopy;
   v31 = v20;
-  [TransparencyLogSession dispatchToQueue:v16 block:v26];
+  [TransparencyLogSession dispatchToQueue:workloop block:v26];
 
   v21 = +[NSFileManager defaultManager];
   v25 = 0;
-  v22 = [v21 removeItemAtURL:v10 error:&v25];
+  v22 = [v21 removeItemAtURL:lCopy error:&v25];
   v23 = v25;
 
   if ((v22 & 1) == 0)
@@ -151,7 +151,7 @@
     if (os_log_type_enabled(qword_10039CEC0, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v33 = v10;
+      v33 = lCopy;
       v34 = 2112;
       v35 = v23;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "Failed to delete %@: %@", buf, 0x16u);
@@ -159,34 +159,34 @@
   }
 }
 
-- (void)handleDownloadRecordFailure:(id)a3 task:(id)a4 downloadMetadata:(id)a5 error:(id)a6
+- (void)handleDownloadRecordFailure:(id)failure task:(id)task downloadMetadata:(id)metadata error:(id)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(TransparencyLogSessionDelegate *)self dataStore];
+  failureCopy = failure;
+  taskCopy = task;
+  metadataCopy = metadata;
+  errorCopy = error;
+  dataStore = [(TransparencyLogSessionDelegate *)self dataStore];
   v40 = 0;
   v31 = _NSConcreteStackBlock;
   v32 = 3221225472;
   v33 = sub_10023CED8;
   v34 = &unk_10032CA98;
-  v15 = v13;
+  v15 = errorCopy;
   v35 = v15;
-  v16 = v11;
+  v16 = taskCopy;
   v36 = v16;
-  v17 = v10;
+  v17 = failureCopy;
   v37 = v17;
-  v18 = v12;
+  v18 = metadataCopy;
   v38 = v18;
-  v39 = self;
-  v19 = [v14 performAndWaitForDownloadId:v17 error:&v40 block:&v31];
+  selfCopy = self;
+  v19 = [dataStore performAndWaitForDownloadId:v17 error:&v40 block:&v31];
   v20 = v40;
 
-  v21 = [v15 domain];
-  if ([v21 isEqualToString:NSURLErrorDomain])
+  domain = [v15 domain];
+  if ([domain isEqualToString:NSURLErrorDomain])
   {
-    v22 = [v15 code];
+    code = [v15 code];
 
     if (v20)
     {
@@ -203,7 +203,7 @@
       goto LABEL_20;
     }
 
-    if (v22 == -999)
+    if (code == -999)
     {
       if (qword_10039CEB8 != -1)
       {
@@ -269,29 +269,29 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 originalRequest];
-  v10 = [v7 response];
-  v11 = [v9 kt_requestId];
-  v12 = [v7 response];
-  v13 = [TransparencyLogSession createErrorFromURLResonse:v12 data:0 allowEmptyData:1 error:v8];
+  taskCopy = task;
+  errorCopy = error;
+  originalRequest = [taskCopy originalRequest];
+  response = [taskCopy response];
+  kt_requestId = [originalRequest kt_requestId];
+  response2 = [taskCopy response];
+  v13 = [TransparencyLogSession createErrorFromURLResonse:response2 data:0 allowEmptyData:1 error:errorCopy];
 
   if (v13)
   {
-    v14 = [(TransparencyLogSessionDelegate *)self workloop];
+    workloop = [(TransparencyLogSessionDelegate *)self workloop];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10023D5D8;
     v15[3] = &unk_10032C9D0;
     v15[4] = self;
-    v16 = v11;
-    v17 = v7;
-    v18 = v10;
+    v16 = kt_requestId;
+    v17 = taskCopy;
+    v18 = response;
     v19 = v13;
-    [TransparencyLogSession dispatchToQueue:v14 block:v15];
+    [TransparencyLogSession dispatchToQueue:workloop block:v15];
   }
 }
 

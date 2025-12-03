@@ -6,7 +6,7 @@
 
 - (void)main
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     v3 = objc_alloc_init(NSMutableSet);
@@ -19,7 +19,7 @@
     v46 = v5;
     [v4 readUsingSession:v45];
 
-    installs = v2->_installs;
+    installs = selfCopy->_installs;
     v43[0] = _NSConcreteStackBlock;
     v43[1] = 3221225472;
     v43[2] = sub_100348564;
@@ -42,7 +42,7 @@
     v40[3] = &unk_100524408;
     v9 = objc_alloc_init(NSMutableIndexSet);
     v41 = v9;
-    v42 = v2;
+    v42 = selfCopy;
     [v8 enumerateObjectsUsingBlock:v40];
     if ([v9 count])
     {
@@ -60,15 +60,15 @@
       +[BagService appstoredService];
     }
     v11 = ;
-    v12 = [v11 lastBag];
+    lastBag = [v11 lastBag];
 
-    [_TtC9appstored10QOSMetrics cacheQOSPackageInstallMetricsCollectionChanceFromBag:v12];
+    [_TtC9appstored10QOSMetrics cacheQOSPackageInstallMetricsCollectionChanceFromBag:lastBag];
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v33 = v2;
-    v13 = v2->_installs;
+    v33 = selfCopy;
+    v13 = selfCopy->_installs;
     v14 = [(NSArray *)v13 countByEnumeratingWithState:&v36 objects:v47 count:16];
     if (v14)
     {
@@ -92,7 +92,7 @@
             v21 = sub_100408EB0(v18);
             v22 = sub_100403C3C(&v20->super.isa, v19, 0, v21);
 
-            v23 = [v12 itemIDForSystemAppWithBundleID:v19];
+            v23 = [lastBag itemIDForSystemAppWithBundleID:v19];
             v25 = v23;
             if (v22)
             {
@@ -129,18 +129,18 @@
     v35 = v8;
     [v28 modifyUsingTransaction:v34];
 
-    v2 = v33;
+    selfCopy = v33;
   }
 
-  [(Task *)v2 lock];
-  if (![(NSArray *)v2->_processedExternalIDs count])
+  [(Task *)selfCopy lock];
+  if (![(NSArray *)selfCopy->_processedExternalIDs count])
   {
-    v29 = sub_10036FDEC(v2->_installs, &stru_100524428);
-    processedExternalIDs = v2->_processedExternalIDs;
-    v2->_processedExternalIDs = v29;
+    v29 = sub_10036FDEC(selfCopy->_installs, &stru_100524428);
+    processedExternalIDs = selfCopy->_processedExternalIDs;
+    selfCopy->_processedExternalIDs = v29;
   }
 
-  [(Task *)v2 unlock];
+  [(Task *)selfCopy unlock];
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface HAPFragmentationPacket
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HAPFragmentationPacket)init;
-- (HAPFragmentationPacket)initWithData:(id)a3 transactionIdentifier:(unsigned __int16)a4 length:(unsigned int)a5 offset:(unsigned int)a6;
-- (HAPFragmentationPacket)initWithFragmentedPacketData:(id)a3;
+- (HAPFragmentationPacket)initWithData:(id)data transactionIdentifier:(unsigned __int16)identifier length:(unsigned int)length offset:(unsigned int)offset;
+- (HAPFragmentationPacket)initWithFragmentedPacketData:(id)data;
 - (id)debugDescription;
 - (id)description;
 - (id)serialize;
@@ -19,20 +19,20 @@
   v11 = WORD4(v9);
   v3 = [MEMORY[0x277CBEA90] dataWithBytes:&v10 length:12];
   v4 = MEMORY[0x277CBEB28];
-  v5 = [(HAPFragmentationPacket *)self data];
-  v6 = [v4 dataWithCapacity:{objc_msgSend(v5, "length") + 12}];
+  data = [(HAPFragmentationPacket *)self data];
+  v6 = [v4 dataWithCapacity:{objc_msgSend(data, "length") + 12}];
 
   [v6 appendData:v3];
-  v7 = [(HAPFragmentationPacket *)self data];
-  [v6 appendData:v7];
+  data2 = [(HAPFragmentationPacket *)self data];
+  [v6 appendData:data2];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -42,13 +42,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HAPFragmentationPacket *)self transactionIdentifier];
+      v5 = equalCopy;
+      transactionIdentifier = [(HAPFragmentationPacket *)self transactionIdentifier];
       v8 = 0;
-      if (v6 == [(HAPFragmentationPacket *)v5 transactionIdentifier])
+      if (transactionIdentifier == [(HAPFragmentationPacket *)v5 transactionIdentifier])
       {
-        v7 = [(HAPFragmentationPacket *)self offset];
-        if (v7 == [(HAPFragmentationPacket *)v5 offset])
+        offset = [(HAPFragmentationPacket *)self offset];
+        if (offset == [(HAPFragmentationPacket *)v5 offset])
         {
           v8 = 1;
         }
@@ -67,12 +67,12 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPFragmentationPacket *)self shortDescription];
-  v5 = [(HAPFragmentationPacket *)self transactionIdentifier];
+  shortDescription = [(HAPFragmentationPacket *)self shortDescription];
+  transactionIdentifier = [(HAPFragmentationPacket *)self transactionIdentifier];
   v6 = [(HAPFragmentationPacket *)self length];
-  v7 = [(HAPFragmentationPacket *)self offset];
-  v8 = [(HAPFragmentationPacket *)self data];
-  v9 = [v3 stringWithFormat:@"<%@, Transaction Identifier = %u, Transaction Length = %u, Offset = %u, Data Length = %tu>", v4, v5, v6, v7, objc_msgSend(v8, "length")];
+  offset = [(HAPFragmentationPacket *)self offset];
+  data = [(HAPFragmentationPacket *)self data];
+  v9 = [v3 stringWithFormat:@"<%@, Transaction Identifier = %u, Transaction Length = %u, Offset = %u, Data Length = %tu>", shortDescription, transactionIdentifier, v6, offset, objc_msgSend(data, "length")];
 
   return v9;
 }
@@ -80,40 +80,40 @@
 - (id)debugDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HAPFragmentationPacket *)self shortDescription];
-  v5 = [(HAPFragmentationPacket *)self transactionIdentifier];
+  shortDescription = [(HAPFragmentationPacket *)self shortDescription];
+  transactionIdentifier = [(HAPFragmentationPacket *)self transactionIdentifier];
   v6 = [(HAPFragmentationPacket *)self length];
-  v7 = [(HAPFragmentationPacket *)self offset];
-  v8 = [(HAPFragmentationPacket *)self data];
-  v9 = [v3 stringWithFormat:@"<%@ %p, Transaction Identifier = %u, Transaction Length = %u, Offset = %u, Data Length = %tu>", v4, self, v5, v6, v7, objc_msgSend(v8, "length")];
+  offset = [(HAPFragmentationPacket *)self offset];
+  data = [(HAPFragmentationPacket *)self data];
+  v9 = [v3 stringWithFormat:@"<%@ %p, Transaction Identifier = %u, Transaction Length = %u, Offset = %u, Data Length = %tu>", shortDescription, self, transactionIdentifier, v6, offset, objc_msgSend(data, "length")];
 
   return v9;
 }
 
-- (HAPFragmentationPacket)initWithData:(id)a3 transactionIdentifier:(unsigned __int16)a4 length:(unsigned int)a5 offset:(unsigned int)a6
+- (HAPFragmentationPacket)initWithData:(id)data transactionIdentifier:(unsigned __int16)identifier length:(unsigned int)length offset:(unsigned int)offset
 {
-  v11 = a3;
+  dataCopy = data;
   v15.receiver = self;
   v15.super_class = HAPFragmentationPacket;
   v12 = [(HAPFragmentationPacket *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_data, a3);
-    v13->_transactionIdentifier = a4;
-    v13->_length = a5;
-    v13->_offset = a6;
+    objc_storeStrong(&v12->_data, data);
+    v13->_transactionIdentifier = identifier;
+    v13->_length = length;
+    v13->_offset = offset;
   }
 
   return v13;
 }
 
-- (HAPFragmentationPacket)initWithFragmentedPacketData:(id)a3
+- (HAPFragmentationPacket)initWithFragmentedPacketData:(id)data
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (!dataCopy)
   {
     v6 = objc_autoreleasePoolPush();
     v7 = HMFGetOSLogHandle();
@@ -131,11 +131,11 @@
 LABEL_8:
 
     objc_autoreleasePoolPop(v6);
-    v12 = 0;
+    selfCopy = 0;
     goto LABEL_17;
   }
 
-  if ([v4 length] <= 0xB)
+  if ([dataCopy length] <= 0xB)
   {
     v6 = objc_autoreleasePoolPush();
     v7 = HMFGetOSLogHandle();
@@ -197,7 +197,7 @@ LABEL_7:
     }
 
     objc_autoreleasePoolPop(v27);
-    v12 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -211,12 +211,12 @@ LABEL_7:
     self = [(HAPFragmentationPacket *)self initWithData:v17 transactionIdentifier:v14 length:v15 offset:v16];
 
     v18 = 0;
-    v12 = self;
+    selfCopy = self;
   }
 
 LABEL_17:
   v30 = *MEMORY[0x277D85DE8];
-  return v12;
+  return selfCopy;
 }
 
 - (HAPFragmentationPacket)init

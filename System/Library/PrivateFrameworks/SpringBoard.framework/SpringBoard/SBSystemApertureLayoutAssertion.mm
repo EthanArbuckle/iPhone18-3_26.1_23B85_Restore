@@ -1,10 +1,10 @@
 @interface SBSystemApertureLayoutAssertion
 - (BOOL)isValid;
 - (NSString)description;
-- (SBSystemApertureLayoutAssertion)initWithMaximumPermittedLayoutMode:(int64_t)a3 reason:(id)a4 invalidationHandler:(id)a5;
-- (void)addInvalidationBlock:(id)a3;
+- (SBSystemApertureLayoutAssertion)initWithMaximumPermittedLayoutMode:(int64_t)mode reason:(id)reason invalidationHandler:(id)handler;
+- (void)addInvalidationBlock:(id)block;
 - (void)dealloc;
-- (void)invalidateWithReason:(id)a3;
+- (void)invalidateWithReason:(id)reason;
 @end
 
 @implementation SBSystemApertureLayoutAssertion
@@ -34,21 +34,21 @@
   return v8;
 }
 
-- (SBSystemApertureLayoutAssertion)initWithMaximumPermittedLayoutMode:(int64_t)a3 reason:(id)a4 invalidationHandler:(id)a5
+- (SBSystemApertureLayoutAssertion)initWithMaximumPermittedLayoutMode:(int64_t)mode reason:(id)reason invalidationHandler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  if ((a3 - 4) > 0xFFFFFFFFFFFFFFFALL)
+  reasonCopy = reason;
+  handlerCopy = handler;
+  if ((mode - 4) > 0xFFFFFFFFFFFFFFFALL)
   {
-    if (v8)
+    if (reasonCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_10:
     [SBSystemApertureLayoutAssertion initWithMaximumPermittedLayoutMode:reason:invalidationHandler:];
-    if (v9)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -57,13 +57,13 @@ LABEL_10:
   }
 
   [SBSystemApertureLayoutAssertion initWithMaximumPermittedLayoutMode:reason:invalidationHandler:];
-  if (!v8)
+  if (!reasonCopy)
   {
     goto LABEL_10;
   }
 
 LABEL_3:
-  if (v9)
+  if (handlerCopy)
   {
     goto LABEL_4;
   }
@@ -77,12 +77,12 @@ LABEL_4:
   v11 = v10;
   if (v10)
   {
-    v10->_maximumPermittedLayoutMode = a3;
-    v12 = [v8 copy];
+    v10->_maximumPermittedLayoutMode = mode;
+    v12 = [reasonCopy copy];
     reason = v11->_reason;
     v11->_reason = v12;
 
-    v14 = [v9 copy];
+    v14 = [handlerCopy copy];
     invalidationHandler = v11->_invalidationHandler;
     v11->_invalidationHandler = v14;
 
@@ -100,45 +100,45 @@ LABEL_4:
 
 - (BOOL)isValid
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_invalidationHandler != 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_invalidationHandler != 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)addInvalidationBlock:(id)a3
+- (void)addInvalidationBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v10 = v4;
-    v5 = self;
-    objc_sync_enter(v5);
-    invalidationBlocks = v5->_invalidationBlocks;
+    v10 = blockCopy;
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    invalidationBlocks = selfCopy->_invalidationBlocks;
     if (!invalidationBlocks)
     {
       v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
-      v8 = v5->_invalidationBlocks;
-      v5->_invalidationBlocks = v7;
+      v8 = selfCopy->_invalidationBlocks;
+      selfCopy->_invalidationBlocks = v7;
 
-      invalidationBlocks = v5->_invalidationBlocks;
+      invalidationBlocks = selfCopy->_invalidationBlocks;
     }
 
     v9 = MEMORY[0x223D6F7F0](v10);
     [(NSMutableSet *)invalidationBlocks addObject:v9];
 
-    objc_sync_exit(v5);
-    v4 = v10;
+    objc_sync_exit(selfCopy);
+    blockCopy = v10;
   }
 }
 
-- (void)invalidateWithReason:(id)a3
+- (void)invalidateWithReason:(id)reason
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 length])
+  reasonCopy = reason;
+  if (![reasonCopy length])
   {
     [SBSystemApertureLayoutAssertion invalidateWithReason:];
   }
@@ -148,24 +148,24 @@ LABEL_4:
     [SBSystemApertureLayoutAssertion invalidateWithReason:];
   }
 
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = MEMORY[0x223D6F7F0](v5->_invalidationHandler);
-  invalidationHandler = v5->_invalidationHandler;
-  v5->_invalidationHandler = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = MEMORY[0x223D6F7F0](selfCopy->_invalidationHandler);
+  invalidationHandler = selfCopy->_invalidationHandler;
+  selfCopy->_invalidationHandler = 0;
 
   v8 = SBLogSystemApertureController();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v21 = v5;
+    v21 = selfCopy;
     v22 = 2114;
-    v23 = v4;
+    v23 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Invalidated layout assertion: %{public}@; reason: %{public}@", buf, 0x16u);
   }
 
-  (v6)[2](v6, v5);
-  v9 = v5;
+  (v6)[2](v6, selfCopy);
+  v9 = selfCopy;
   objc_sync_enter(v9);
   v17 = 0u;
   v18 = 0u;

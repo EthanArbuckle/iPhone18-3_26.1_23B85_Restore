@@ -3,9 +3,9 @@
 - (id)liveText;
 - (id)locale;
 - (void)registerKeys;
-- (void)setInflection:(id)a3;
-- (void)setLiveText:(id)a3;
-- (void)setLocale:(id)a3;
+- (void)setInflection:(id)inflection;
+- (void)setLiveText:(id)text;
+- (void)setLocale:(id)locale;
 @end
 
 @implementation InternationalCloudMediator
@@ -18,31 +18,31 @@
   [(InternationalCloudMediator *)self registerKey:@"IP_Infection" getter:"inflection" setter:"setInflection:"];
 }
 
-- (void)setLocale:(id)a3
+- (void)setLocale:(id)locale
 {
-  v3 = a3;
+  localeCopy = locale;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IN XPCSERVICE - Update locale", buf, 2u);
   }
 
-  v4 = [v3 firstObject];
+  firstObject = [localeCopy firstObject];
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
   {
     sub_100002138();
   }
 
   v5 = +[IPLocaleCoder localePreferenceKeysAndClasses];
-  v6 = [v5 allKeys];
+  allKeys = [v5 allKeys];
 
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100001940;
   v9[3] = &unk_100004220;
-  v10 = v6;
-  v7 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v9];
+  v10 = allKeys;
+  v7 = allKeys;
+  [firstObject enumerateKeysAndObjectsUsingBlock:v9];
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"AppleDatePreferencesChangedNotification", 0, 0, 1u);
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"AppleTimePreferencesChangedNotification", 0, 0, 1u);
@@ -51,34 +51,34 @@
   CFNotificationCenterPostNotification(DarwinNotifyCenter, @"AppleTemperatureUnitPreferencesChangedNotification", 0, 0, 1u);
 }
 
-- (void)setLiveText:(id)a3
+- (void)setLiveText:(id)text
 {
-  v3 = a3;
+  textCopy = text;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *v7 = 0;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "IN XPCSERVICE - Update live text", v7, 2u);
   }
 
-  if (v3)
+  if (textCopy)
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEBUG))
     {
       sub_100002218();
     }
 
-    v4 = [v3 BOOLValue];
+    bOOLValue = [textCopy BOOLValue];
     v5 = +[NSUserDefaults standardUserDefaults];
-    v6 = [NSNumber numberWithBool:v4];
+    v6 = [NSNumber numberWithBool:bOOLValue];
     [v5 setObject:v6 forKey:@"AppleLiveTextEnabled" inDomain:NSGlobalDomain];
   }
 }
 
-- (void)setInflection:(id)a3
+- (void)setInflection:(id)inflection
 {
-  if (a3)
+  if (inflection)
   {
-    v3 = [a3 dataUsingEncoding:4];
+    v3 = [inflection dataUsingEncoding:4];
     v6 = 0;
     v4 = [[_NSAttributedStringGrammarInflection alloc] initWithExternalRepresentation:v3 error:&v6];
     v5 = v6;
@@ -146,7 +146,7 @@
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
@@ -156,10 +156,10 @@
     v6 = [NSArray arrayWithObjects:&v10 count:1];
     v7 = [NSLocale matchedLanguagesFromAvailableLanguages:&off_100004928 forPreferredLanguages:v6];
 
-    v4 = [v7 count] != 0;
+    bOOLValue = [v7 count] != 0;
   }
 
-  v8 = [NSNumber numberWithBool:v4];
+  v8 = [NSNumber numberWithBool:bOOLValue];
 
   return v8;
 }
@@ -174,8 +174,8 @@
 
   v2 = +[_NSAttributedStringGrammarInflection _currentGlobalUserInflection];
   v3 = [NSString alloc];
-  v4 = [v2 externalRepresentation];
-  v5 = [v3 initWithData:v4 encoding:4];
+  externalRepresentation = [v2 externalRepresentation];
+  v5 = [v3 initWithData:externalRepresentation encoding:4];
 
   return v5;
 }

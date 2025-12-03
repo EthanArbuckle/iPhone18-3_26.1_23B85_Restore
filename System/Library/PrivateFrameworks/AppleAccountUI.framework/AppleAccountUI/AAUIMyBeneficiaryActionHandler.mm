@@ -1,30 +1,30 @@
 @interface AAUIMyBeneficiaryActionHandler
-- (AAUIMyBeneficiaryActionHandler)initWithAccountManager:(id)a3 localContact:(id)a4;
-- (void)_doBeneficiaryRemoveWithViewController:(id)a3;
-- (void)_navigateToAccessKeyScreenFromViewController:(id)a3;
-- (void)_popViewController:(id)a3;
-- (void)_showAlert:(id)a3;
-- (void)_showAuthPromptInViewController:(id)a3;
-- (void)_startSpinnerInSpecifier:(id)a3;
+- (AAUIMyBeneficiaryActionHandler)initWithAccountManager:(id)manager localContact:(id)contact;
+- (void)_doBeneficiaryRemoveWithViewController:(id)controller;
+- (void)_navigateToAccessKeyScreenFromViewController:(id)controller;
+- (void)_popViewController:(id)controller;
+- (void)_showAlert:(id)alert;
+- (void)_showAuthPromptInViewController:(id)controller;
+- (void)_startSpinnerInSpecifier:(id)specifier;
 - (void)_stopAllSpinners;
-- (void)doDestructiveAction:(id)a3 specifier:(id)a4;
-- (void)doPrimaryAction:(id)a3 specifier:(id)a4;
+- (void)doDestructiveAction:(id)action specifier:(id)specifier;
+- (void)doPrimaryAction:(id)action specifier:(id)specifier;
 @end
 
 @implementation AAUIMyBeneficiaryActionHandler
 
-- (AAUIMyBeneficiaryActionHandler)initWithAccountManager:(id)a3 localContact:(id)a4
+- (AAUIMyBeneficiaryActionHandler)initWithAccountManager:(id)manager localContact:(id)contact
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  contactCopy = contact;
   v14.receiver = self;
   v14.super_class = AAUIMyBeneficiaryActionHandler;
   v9 = [(AAUIMyBeneficiaryActionHandler *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accountManager, a3);
-    objc_storeStrong(&v10->_contact, a4);
+    objc_storeStrong(&v9->_accountManager, manager);
+    objc_storeStrong(&v10->_contact, contact);
     v11 = objc_alloc_init(AAUISpinnerManager);
     spinnerManager = v10->_spinnerManager;
     v10->_spinnerManager = v11;
@@ -33,28 +33,28 @@
   return v10;
 }
 
-- (void)doDestructiveAction:(id)a3 specifier:(id)a4
+- (void)doDestructiveAction:(id)action specifier:(id)specifier
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v9 = [v8 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  actionCopy = action;
+  specifierCopy = specifier;
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v9 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
   if (v9)
   {
     v10 = _AAUILogSystem();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(AALocalContactInfo *)self->_contact handle];
+      handle = [(AALocalContactInfo *)self->_contact handle];
       *buf = 138412290;
-      v19 = v11;
+      v19 = handle;
       _os_log_impl(&dword_1C5355000, v10, OS_LOG_TYPE_DEFAULT, "Removing beneficiary %@.", buf, 0xCu);
     }
 
     spinnerManager = self->_spinnerManager;
-    v13 = [v7 identifier];
-    [(AAUISpinnerManager *)spinnerManager startSpinnerInSpecifier:v7 forKey:v13];
+    identifier = [specifierCopy identifier];
+    [(AAUISpinnerManager *)spinnerManager startSpinnerInSpecifier:specifierCopy forKey:identifier];
 
     v14 = objc_alloc_init(MEMORY[0x1E698DCC0]);
     objc_initWeak(buf, self);
@@ -63,7 +63,7 @@
     v15[2] = __64__AAUIMyBeneficiaryActionHandler_doDestructiveAction_specifier___block_invoke;
     v15[3] = &unk_1E820CC00;
     objc_copyWeak(&v17, buf);
-    v16 = v6;
+    v16 = actionCopy;
     [v14 aaui_authenticateAccount:v9 forceInteraction:0 presentingViewController:v16 completion:v15];
 
     objc_destroyWeak(&v17);
@@ -99,28 +99,28 @@ void __64__AAUIMyBeneficiaryActionHandler_doDestructiveAction_specifier___block_
   }
 }
 
-- (void)doPrimaryAction:(id)a3 specifier:(id)a4
+- (void)doPrimaryAction:(id)action specifier:(id)specifier
 {
-  v6 = a3;
-  [(AAUIMyBeneficiaryActionHandler *)self _startSpinnerInSpecifier:a4];
-  [(AAUIMyBeneficiaryActionHandler *)self _showAuthPromptInViewController:v6];
+  actionCopy = action;
+  [(AAUIMyBeneficiaryActionHandler *)self _startSpinnerInSpecifier:specifier];
+  [(AAUIMyBeneficiaryActionHandler *)self _showAuthPromptInViewController:actionCopy];
 }
 
-- (void)_doBeneficiaryRemoveWithViewController:(id)a3
+- (void)_doBeneficiaryRemoveWithViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_initWeak(&location, self);
   v5 = objc_alloc_init(MEMORY[0x1E698B8E0]);
-  v6 = [(AALocalContactInfo *)self->_contact inheritanceContactInfo];
+  inheritanceContactInfo = [(AALocalContactInfo *)self->_contact inheritanceContactInfo];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __73__AAUIMyBeneficiaryActionHandler__doBeneficiaryRemoveWithViewController___block_invoke;
   v8[3] = &unk_1E820DBD0;
   objc_copyWeak(&v10, &location);
   v8[4] = self;
-  v7 = v4;
+  v7 = controllerCopy;
   v9 = v7;
-  [v5 removeBeneficiary:v6 manifest:0 completion:v8];
+  [v5 removeBeneficiary:inheritanceContactInfo manifest:0 completion:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
@@ -164,15 +164,15 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_popViewController:(id)a3
+- (void)_popViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __53__AAUIMyBeneficiaryActionHandler__popViewController___block_invoke;
   block[3] = &unk_1E820B8F0;
-  v6 = v3;
-  v4 = v3;
+  v6 = controllerCopy;
+  v4 = controllerCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -182,9 +182,9 @@ void __53__AAUIMyBeneficiaryActionHandler__popViewController___block_invoke(uint
   [v1 aaui_removeLastViewControllerAnimated:1];
 }
 
-- (void)_showAlert:(id)a3
+- (void)_showAlert:(id)alert
 {
-  v3 = a3;
+  alertCopy = alert;
   v4 = MEMORY[0x1E69DC650];
   v5 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v6 = [v5 localizedStringForKey:@"LEGACY_CONTACT_DELETION_FAILURE_ALERT_TITLE" value:&stru_1F447F790 table:@"Localizable"];
@@ -200,7 +200,7 @@ void __53__AAUIMyBeneficiaryActionHandler__popViewController___block_invoke(uint
   v20[1] = 3221225472;
   v20[2] = __45__AAUIMyBeneficiaryActionHandler__showAlert___block_invoke;
   v20[3] = &unk_1E820BFA8;
-  v13 = v3;
+  v13 = alertCopy;
   v21 = v13;
   v14 = [v12 actionWithTitle:v11 style:0 handler:v20];
   [v9 addAction:v14];
@@ -232,11 +232,11 @@ void __45__AAUIMyBeneficiaryActionHandler__showAlert___block_invoke_2(uint64_t a
   [v1 aaui_removeLastViewControllerAnimated:1];
 }
 
-- (void)_showAuthPromptInViewController:(id)a3
+- (void)_showAuthPromptInViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  controllerCopy = controller;
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v6 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
   v7 = objc_alloc_init(MEMORY[0x1E698DCC0]);
   objc_initWeak(&location, self);
@@ -245,7 +245,7 @@ void __45__AAUIMyBeneficiaryActionHandler__showAlert___block_invoke_2(uint64_t a
   v9[2] = __66__AAUIMyBeneficiaryActionHandler__showAuthPromptInViewController___block_invoke;
   v9[3] = &unk_1E820CC00;
   objc_copyWeak(&v11, &location);
-  v8 = v4;
+  v8 = controllerCopy;
   v10 = v8;
   [v7 aaui_beneficiaryViewAccessKeyForAccount:v6 presentingViewController:v8 completion:v9];
 
@@ -290,37 +290,37 @@ void __66__AAUIMyBeneficiaryActionHandler__showAuthPromptInViewController___bloc
   }
 }
 
-- (void)_navigateToAccessKeyScreenFromViewController:(id)a3
+- (void)_navigateToAccessKeyScreenFromViewController:(id)controller
 {
   v4 = MEMORY[0x1E698B8D8];
-  v5 = a3;
+  controllerCopy = controller;
   v6 = [v4 alloc];
-  v7 = [(AALocalContactInfo *)self->_contact inheritanceContactInfo];
-  v15 = [v6 initWithContactInfo:v7 contactType:{-[AALocalContactInfo contactType](self->_contact, "contactType")}];
+  inheritanceContactInfo = [(AALocalContactInfo *)self->_contact inheritanceContactInfo];
+  v15 = [v6 initWithContactInfo:inheritanceContactInfo contactType:{-[AALocalContactInfo contactType](self->_contact, "contactType")}];
 
-  v8 = [v15 accessKeyString];
+  accessKeyString = [v15 accessKeyString];
   v9 = [v15 accessKeyQRCodeImageDataWithSize:155.0];
   v10 = [MEMORY[0x1E69DCAB8] imageWithData:v9];
-  v11 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E698C218]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v12 = [accounts objectForKeyedSubscript:*MEMORY[0x1E698C218]];
 
-  v13 = [[AAUIShowAccessKeyViewController alloc] initWithAppleAccount:v12 localContactInfo:self->_contact accessKey:v8 accessKeyQRCodeImage:v10];
-  v14 = [v5 navigationController];
+  v13 = [[AAUIShowAccessKeyViewController alloc] initWithAppleAccount:v12 localContactInfo:self->_contact accessKey:accessKeyString accessKeyQRCodeImage:v10];
+  navigationController = [controllerCopy navigationController];
 
-  [v14 aaui_showViewController:v13 sender:0];
+  [navigationController aaui_showViewController:v13 sender:0];
 }
 
-- (void)_startSpinnerInSpecifier:(id)a3
+- (void)_startSpinnerInSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __59__AAUIMyBeneficiaryActionHandler__startSpinnerInSpecifier___block_invoke;
   block[3] = &unk_1E820BE68;
   objc_copyWeak(&v8, &location);
-  v7 = v4;
-  v5 = v4;
+  v7 = specifierCopy;
+  v5 = specifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 
   objc_destroyWeak(&v8);

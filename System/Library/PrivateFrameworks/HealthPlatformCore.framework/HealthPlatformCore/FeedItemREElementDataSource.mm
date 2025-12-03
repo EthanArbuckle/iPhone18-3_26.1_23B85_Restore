@@ -3,7 +3,7 @@
 + (id)contentAttributes;
 - (NSArray)supportedSections;
 - (_TtC18HealthPlatformCore27FeedItemREElementDataSource)init;
-- (void)getElementsInSection:(id)a3 withHandler:(id)a4;
+- (void)getElementsInSection:(id)section withHandler:(id)handler;
 @end
 
 @implementation FeedItemREElementDataSource
@@ -37,14 +37,14 @@
   return v2;
 }
 
-- (void)getElementsInSection:(id)a3 withHandler:(id)a4
+- (void)getElementsInSection:(id)section withHandler:(id)handler
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(handler);
   v7 = v6;
-  if (a3)
+  if (section)
   {
     v8 = sub_2287CB220();
-    a3 = v9;
+    section = v9;
     if (v7)
     {
 LABEL_3:
@@ -66,8 +66,8 @@ LABEL_3:
 
   v10 = 0;
 LABEL_6:
-  v11 = self;
-  sub_22871240C(v8, a3, v7, v10);
+  selfCopy = self;
+  sub_22871240C(v8, section, v7, v10);
   sub_228714BC0(v7);
 }
 

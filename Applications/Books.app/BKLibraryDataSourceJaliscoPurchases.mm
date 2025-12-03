@@ -1,6 +1,6 @@
 @interface BKLibraryDataSourceJaliscoPurchases
 - (BKLibraryDataSourceJaliscoPurchases)init;
-- (void)fetchAssetIDsWithCompletion:(id)a3;
+- (void)fetchAssetIDsWithCompletion:(id)completion;
 @end
 
 @implementation BKLibraryDataSourceJaliscoPurchases
@@ -12,9 +12,9 @@
   return [(BKLibraryDataSourceJalisco *)&v3 initWithIdentifier:@"com.apple.ibooks.datasource.jalisco.purchases"];
 }
 
-- (void)fetchAssetIDsWithCompletion:(id)a3
+- (void)fetchAssetIDsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   kdebug_trace();
   v5 = +[BLJaliscoDAAPClient sharedClient];
 
@@ -50,7 +50,7 @@
     v25[2] = sub_1001E5B7C;
     v25[3] = &unk_100A05E68;
     v26 = v12;
-    v27 = v4;
+    v27 = completionCopy;
     v24.receiver = v23;
     v24.super_class = BKLibraryDataSourceJaliscoPurchases;
     v20 = v12;
@@ -67,7 +67,7 @@
       sub_1007959E0();
     }
 
-    v22 = objc_retainBlock(v4);
+    v22 = objc_retainBlock(completionCopy);
     v9 = v22;
     if (v22)
     {

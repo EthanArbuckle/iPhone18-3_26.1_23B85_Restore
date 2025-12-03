@@ -10,8 +10,8 @@
   v19.receiver = self;
   v19.super_class = IUIInputSourceViewController;
   [(IUIInputSourceViewController *)&v19 viewDidLoad];
-  v3 = [(IUIInputSourceViewController *)self sessionCoordinator];
-  [v3 reloadInputSource];
+  sessionCoordinator = [(IUIInputSourceViewController *)self sessionCoordinator];
+  [sessionCoordinator reloadInputSource];
 
   v4 = sub_100001928();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -32,34 +32,34 @@
   if (v5)
   {
     v7 = [UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.3];
-    v8 = [(IUIInputSourceViewController *)self view];
-    [v8 setBackgroundColor:v7];
+    view = [(IUIInputSourceViewController *)self view];
+    [view setBackgroundColor:v7];
 
-    v9 = [(IUIInputSourceViewController *)self view];
-    [v9 setUserInteractionEnabled:0];
+    view2 = [(IUIInputSourceViewController *)self view];
+    [view2 setUserInteractionEnabled:0];
 
     v10 = +[UIColor greenColor];
-    v11 = [v10 CGColor];
-    v12 = [(IUIInputSourceViewController *)self view];
-    v13 = [v12 layer];
-    [v13 setBorderColor:v11];
+    cGColor = [v10 CGColor];
+    view3 = [(IUIInputSourceViewController *)self view];
+    layer = [view3 layer];
+    [layer setBorderColor:cGColor];
 
-    v14 = [(IUIInputSourceViewController *)self view];
-    v15 = [v14 layer];
-    [v15 setBorderWidth:5.0];
+    view4 = [(IUIInputSourceViewController *)self view];
+    layer2 = [view4 layer];
+    [layer2 setBorderWidth:5.0];
 
-    v16 = [(IUIInputSourceViewController *)self view];
-    v17 = [v16 layer];
-    [v17 setAllowsHitTesting:0];
+    view5 = [(IUIInputSourceViewController *)self view];
+    layer3 = [view5 layer];
+    [layer3 setAllowsHitTesting:0];
   }
 }
 
 - (IUIRTIInputSource)textInputSource
 {
-  v2 = [(IUIInputSourceViewController *)self sessionCoordinator];
-  v3 = [v2 textInputSource];
+  sessionCoordinator = [(IUIInputSourceViewController *)self sessionCoordinator];
+  textInputSource = [sessionCoordinator textInputSource];
 
-  return v3;
+  return textInputSource;
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface JavaLangInstantiationException
-- (JavaLangInstantiationException)initWithIOSClass:(id)a3;
+- (JavaLangInstantiationException)initWithIOSClass:(id)class;
 @end
 
 @implementation JavaLangInstantiationException
 
-- (JavaLangInstantiationException)initWithIOSClass:(id)a3
+- (JavaLangInstantiationException)initWithIOSClass:(id)class
 {
-  if (!a3)
+  if (!class)
   {
     JreThrowNullPointerException();
   }
 
-  JavaLangReflectiveOperationException_initWithNSString_(self, [a3 getName]);
+  JavaLangReflectiveOperationException_initWithNSString_(self, [class getName]);
   return self;
 }
 

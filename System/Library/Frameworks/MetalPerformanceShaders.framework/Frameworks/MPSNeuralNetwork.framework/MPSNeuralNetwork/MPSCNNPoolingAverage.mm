@@ -2,9 +2,9 @@
 - (BOOL)pluginSupportsBatchEncode;
 - (MPSCNNPoolingAverage)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSCNNPoolingAverage)initWithDevice:(id)device kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight strideInPixelsX:(NSUInteger)strideInPixelsX strideInPixelsY:(NSUInteger)strideInPixelsY;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MPSCNNPoolingAverage
@@ -62,21 +62,21 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v15.receiver = self;
   v15.super_class = MPSCNNPoolingAverage;
   [(MPSCNNPooling *)&v15 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, self->_zeroPadSizeX, @"MPSCNNPooling.padSizeX", v6, v7, v8, v9);
-  objc_msgSend_encodeInt64_forKey_(a3, v10, self->_zeroPadSizeY, @"MPSCNNPooling.padSizeY", v11, v12, v13, v14);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, self->_zeroPadSizeX, @"MPSCNNPooling.padSizeX", v6, v7, v8, v9);
+  objc_msgSend_encodeInt64_forKey_(coder, v10, self->_zeroPadSizeY, @"MPSCNNPooling.padSizeY", v11, v12, v13, v14);
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v22.receiver = self;
   v22.super_class = MPSCNNPoolingAverage;
-  v5 = [(MPSCNNPooling *)&v22 copyWithZone:a3 device:a4];
+  v5 = [(MPSCNNPooling *)&v22 copyWithZone:zone device:device];
   v13 = v5;
   if (v5)
   {

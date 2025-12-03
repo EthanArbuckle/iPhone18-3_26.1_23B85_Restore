@@ -4,30 +4,30 @@
 - (double)insets;
 - (double)path;
 - (double)position;
-- (double)setExclusionRect:(double)a3;
+- (double)setExclusionRect:(double)rect;
 - (double)verticalAlignmentFactor;
 - (id)description;
-- (id)initWithTextRange:(uint64_t)a3 position:(double)a4 rect:(double)a5 withInsets:(double)a6;
+- (id)initWithTextRange:(uint64_t)range position:(double)position rect:(double)rect withInsets:(double)insets;
 - (uint64_t)lineVerticalAlignment;
 - (uint64_t)range;
-- (uint64_t)setActualPosition:(double)a3;
+- (uint64_t)setActualPosition:(double)position;
 - (uint64_t)setFullBleed:(uint64_t)result;
 - (uint64_t)setLineVerticalAlignment:(uint64_t)result;
-- (uint64_t)setRange:(uint64_t)a3;
+- (uint64_t)setRange:(uint64_t)range;
 - (uint64_t)setVerticalAlignmentFactor:(uint64_t)result;
 - (uint64_t)type;
-- (void)adjustYPositionWithCurrentPosition:(double)a3;
+- (void)adjustYPositionWithCurrentPosition:(double)position;
 - (void)callCompletionBlock;
 - (void)callStartBlock;
-- (void)setCompletionBlock:(void *)a1;
-- (void)setComponentIdentifier:(uint64_t)a1;
-- (void)setMinYBlock:(void *)a1;
+- (void)setCompletionBlock:(void *)block;
+- (void)setComponentIdentifier:(uint64_t)identifier;
+- (void)setMinYBlock:(void *)block;
 - (void)wrappable;
 @end
 
 @implementation SXTextExclusionPath
 
-- (id)initWithTextRange:(uint64_t)a3 position:(double)a4 rect:(double)a5 withInsets:(double)a6
+- (id)initWithTextRange:(uint64_t)range position:(double)position rect:(double)rect withInsets:(double)insets
 {
   if (result)
   {
@@ -38,14 +38,14 @@
     {
       *(result + 3) = 2;
       *(result + 16) = a2;
-      *(result + 17) = a3;
-      *(result + 12) = a4 - a13;
-      *(result + 13) = a5 - a12;
+      *(result + 17) = range;
+      *(result + 12) = position - a13;
+      *(result + 13) = rect - a12;
       *(result + 18) = a12;
       *(result + 19) = a13;
       *(result + 20) = a14;
       *(result + 21) = a15;
-      *(result + 22) = a6;
+      *(result + 22) = insets;
       *(result + 23) = a7;
       *(result + 24) = a8 + a13 + a15;
       *(result + 25) = a9 + a12 + a14;
@@ -55,12 +55,12 @@
   return result;
 }
 
-- (uint64_t)setActualPosition:(double)a3
+- (uint64_t)setActualPosition:(double)position
 {
   if (result)
   {
     *(result + 80) = a2;
-    *(result + 88) = a3;
+    *(result + 88) = position;
   }
 
   return result;
@@ -81,8 +81,8 @@
   }
 
   v6 = componentIdentifier;
-  v7 = [(SXTextExclusionPath *)self path];
-  [v7 bounds];
+  path = [(SXTextExclusionPath *)self path];
+  [path bounds];
   v8 = NSStringFromCGRect(v15);
   if (self)
   {
@@ -104,20 +104,20 @@
 
 - (double)path
 {
-  if (a1)
+  if (self)
   {
-    a1 = [MEMORY[0x1E69DC728] bezierPathWithRect:{a1[22], a1[23], a1[24], a1[25]}];
+    self = [MEMORY[0x1E69DC728] bezierPathWithRect:{self[22], self[23], self[24], self[25]}];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (double)actualPosition
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 80);
+    return *(self + 80);
   }
 
   else
@@ -128,85 +128,85 @@
 
 - (void)wrappable
 {
-  if (a1)
+  if (self)
   {
-    v2 = a1;
-    if (!a1[9])
+    selfCopy = self;
+    if (!self[9])
     {
-      v3 = [[SXTextExclusionPathWrapper alloc] initWithTextExclusionPath:a1];
-      v4 = v2[9];
-      v2[9] = v3;
+      v3 = [[SXTextExclusionPathWrapper alloc] initWithTextExclusionPath:self];
+      v4 = selfCopy[9];
+      selfCopy[9] = v3;
     }
 
-    a1 = v2[9];
+    self = selfCopy[9];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (void)callStartBlock
 {
-  if (a1 && a1[6])
+  if (self && self[6])
   {
     OUTLINED_FUNCTION_2_0();
     v2();
 
-    objc_setProperty_nonatomic_copy(a1, v3, 0, 48);
+    objc_setProperty_nonatomic_copy(self, v3, 0, 48);
   }
 }
 
-- (void)adjustYPositionWithCurrentPosition:(double)a3
+- (void)adjustYPositionWithCurrentPosition:(double)position
 {
-  if (a1 && *(a1 + 56))
+  if (self && *(self + 56))
   {
     OUTLINED_FUNCTION_2_0();
-    v6 = v5();
-    if (v6 < a3)
+    positionCopy = v5();
+    if (positionCopy < position)
     {
-      v6 = a3;
+      positionCopy = position;
     }
 
-    *(a1 + 104) = v6;
+    *(self + 104) = positionCopy;
   }
 }
 
 - (void)callCompletionBlock
 {
-  if (a1)
+  if (self)
   {
-    objc_setProperty_nonatomic_copy(a1, a2, 0, 56);
-    if (a1[8])
+    objc_setProperty_nonatomic_copy(self, a2, 0, 56);
+    if (self[8])
     {
       OUTLINED_FUNCTION_2_0();
       v3();
 
-      objc_setProperty_nonatomic_copy(a1, v4, 0, 64);
+      objc_setProperty_nonatomic_copy(self, v4, 0, 64);
     }
   }
 }
 
-- (void)setMinYBlock:(void *)a1
+- (void)setMinYBlock:(void *)block
 {
-  if (a1)
+  if (block)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 56);
+    objc_setProperty_nonatomic_copy(block, newValue, newValue, 56);
   }
 }
 
-- (void)setCompletionBlock:(void *)a1
+- (void)setCompletionBlock:(void *)block
 {
-  if (a1)
+  if (block)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 64);
+    objc_setProperty_nonatomic_copy(block, newValue, newValue, 64);
   }
 }
 
 - (double)exclusionRect
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 176);
+    return *(self + 176);
   }
 
   else
@@ -227,9 +227,9 @@
 
 - (double)position
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 96);
+    return *(self + 96);
   }
 
   else
@@ -248,12 +248,12 @@
   return result;
 }
 
-- (uint64_t)setRange:(uint64_t)a3
+- (uint64_t)setRange:(uint64_t)range
 {
   if (result)
   {
     *(result + 128) = a2;
-    *(result + 136) = a3;
+    *(result + 136) = range;
   }
 
   return result;
@@ -261,9 +261,9 @@
 
 - (double)verticalAlignmentFactor
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 32);
+    return *(self + 32);
   }
 
   else
@@ -304,9 +304,9 @@
 
 - (double)insets
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 144);
+    return *(self + 144);
   }
 
   else
@@ -325,20 +325,20 @@
   return result;
 }
 
-- (void)setComponentIdentifier:(uint64_t)a1
+- (void)setComponentIdentifier:(uint64_t)identifier
 {
-  if (a1)
+  if (identifier)
   {
-    objc_storeStrong((a1 + 40), a2);
+    objc_storeStrong((identifier + 40), a2);
   }
 }
 
-- (double)setExclusionRect:(double)a3
+- (double)setExclusionRect:(double)rect
 {
   if (result)
   {
     result[22] = a2;
-    result[23] = a3;
+    result[23] = rect;
     result[24] = a4;
     result[25] = a5;
   }

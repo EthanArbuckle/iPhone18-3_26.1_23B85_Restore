@@ -1,108 +1,108 @@
 @interface QLTThumbnailRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGSize)size;
 - (NSString)contentType;
-- (QLTThumbnailRequest)initWithCoder:(id)a3;
-- (QLTThumbnailRequest)initWithVersionedFileIdentifier:(id)a3 size:(CGSize)a4 scale:(double)a5 iconMode:(BOOL)a6 flavor:(int)a7 wantsBaseline:(BOOL)a8 minimumDimension:(double)a9 requestedTypes:(unint64_t)a10;
+- (QLTThumbnailRequest)initWithCoder:(id)coder;
+- (QLTThumbnailRequest)initWithVersionedFileIdentifier:(id)identifier size:(CGSize)size scale:(double)scale iconMode:(BOOL)mode flavor:(int)flavor wantsBaseline:(BOOL)baseline minimumDimension:(double)dimension requestedTypes:(unint64_t)self0;
 - (float)maximumPixelSize;
-- (id)copyWithZone:(_NSZone *)a3;
-- (int64_t)compare:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (int64_t)compare:(id)compare;
 - (int64_t)requestedMostRepresentativeType;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation QLTThumbnailRequest
 
-- (QLTThumbnailRequest)initWithCoder:(id)a3
+- (QLTThumbnailRequest)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"si"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"si"];
   v23 = 0.0;
   v24 = 0.0;
   [v8 getValue:&v23 size:16];
   v9 = objc_alloc(objc_opt_class());
-  v10 = [v5 decodeObjectOfClasses:v7 forKey:@"fi"];
-  [v5 decodeDoubleForKey:@"sc"];
+  v10 = [coderCopy decodeObjectOfClasses:v7 forKey:@"fi"];
+  [coderCopy decodeDoubleForKey:@"sc"];
   v12 = v11;
-  v13 = [v5 decodeBoolForKey:@"i"];
-  v14 = [v5 decodeIntForKey:@"flavor"];
-  v15 = [v5 decodeBoolForKey:@"baseline"];
-  [v5 decodeDoubleForKey:@"ms"];
+  v13 = [coderCopy decodeBoolForKey:@"i"];
+  v14 = [coderCopy decodeIntForKey:@"flavor"];
+  v15 = [coderCopy decodeBoolForKey:@"baseline"];
+  [coderCopy decodeDoubleForKey:@"ms"];
   v17 = v16;
-  v18 = [v5 decodeIntegerForKey:@"rt"];
+  v18 = [coderCopy decodeIntegerForKey:@"rt"];
   v19 = [v9 initWithVersionedFileIdentifier:v10 size:v13 scale:v14 iconMode:v15 flavor:v18 wantsBaseline:v23 minimumDimension:v24 requestedTypes:{v12, v17}];
 
-  v20 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+  v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
   [(QLTThumbnailRequest *)v19 setUuid:v20];
 
-  -[QLTThumbnailRequest setBadgeType:](v19, "setBadgeType:", [v5 decodeIntegerForKey:@"bt"]);
-  v21 = [v5 decodeIntegerForKey:@"generationBehavior"];
+  -[QLTThumbnailRequest setBadgeType:](v19, "setBadgeType:", [coderCopy decodeIntegerForKey:@"bt"]);
+  v21 = [coderCopy decodeIntegerForKey:@"generationBehavior"];
 
   [(QLTThumbnailRequest *)v19 setGenerationBehavior:v21];
   return v19;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   fileIdentifier = self->_fileIdentifier;
-  v6 = a3;
-  [v6 encodeObject:fileIdentifier forKey:@"fi"];
+  coderCopy = coder;
+  [coderCopy encodeObject:fileIdentifier forKey:@"fi"];
   v5 = [MEMORY[0x1E696B098] valueWithBytes:&self->_size objCType:"{CGSize=dd}"];
-  [v6 encodeObject:v5 forKey:@"si"];
+  [coderCopy encodeObject:v5 forKey:@"si"];
 
-  [v6 encodeDouble:@"sc" forKey:self->_scale];
-  [v6 encodeBool:self->_iconMode forKey:@"i"];
-  [v6 encodeInteger:self->_badgeType forKey:@"bt"];
-  [v6 encodeDouble:@"ms" forKey:self->_minimumDimension];
-  [v6 encodeInteger:self->_requestedTypes forKey:@"rt"];
-  [v6 encodeObject:self->_uuid forKey:@"uuid"];
-  [v6 encodeInteger:self->_flavor forKey:@"flavor"];
-  [v6 encodeBool:self->_wantsBaseline forKey:@"baseline"];
-  [v6 encodeInteger:self->_generationBehavior forKey:@"generationBehavior"];
+  [coderCopy encodeDouble:@"sc" forKey:self->_scale];
+  [coderCopy encodeBool:self->_iconMode forKey:@"i"];
+  [coderCopy encodeInteger:self->_badgeType forKey:@"bt"];
+  [coderCopy encodeDouble:@"ms" forKey:self->_minimumDimension];
+  [coderCopy encodeInteger:self->_requestedTypes forKey:@"rt"];
+  [coderCopy encodeObject:self->_uuid forKey:@"uuid"];
+  [coderCopy encodeInteger:self->_flavor forKey:@"flavor"];
+  [coderCopy encodeBool:self->_wantsBaseline forKey:@"baseline"];
+  [coderCopy encodeInteger:self->_generationBehavior forKey:@"generationBehavior"];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
-  v5 = [(QLTThumbnailRequest *)self iconMode];
-  v6 = [v4 iconMode];
-  if (!v5 && (v6 & 1) != 0)
+  compareCopy = compare;
+  iconMode = [(QLTThumbnailRequest *)self iconMode];
+  iconMode2 = [compareCopy iconMode];
+  if (!iconMode && (iconMode2 & 1) != 0)
   {
     goto LABEL_3;
   }
 
-  if (((!v5 | v6) & 1) == 0)
+  if (((!iconMode | iconMode2) & 1) == 0)
   {
 LABEL_9:
     v7 = 1;
     goto LABEL_10;
   }
 
-  v8 = [(QLTThumbnailRequest *)self badgeType];
-  v9 = [v4 badgeType];
-  if (v8 || !v9)
+  badgeType = [(QLTThumbnailRequest *)self badgeType];
+  badgeType2 = [compareCopy badgeType];
+  if (badgeType || !badgeType2)
   {
-    if (!v8 || v9)
+    if (!badgeType || badgeType2)
     {
       [(QLTThumbnailRequest *)self maximumPixelSize];
       v12 = v11;
-      [v4 maximumPixelSize];
+      [compareCopy maximumPixelSize];
       if (v12 >= v13)
       {
         [(QLTThumbnailRequest *)self maximumPixelSize];
         v21 = v20;
-        [v4 maximumPixelSize];
+        [compareCopy maximumPixelSize];
         v7 = v21 > v22;
         goto LABEL_10;
       }
 
       [(QLTThumbnailRequest *)self minimumDimension];
       v15 = v14;
-      [v4 minimumDimension];
+      [compareCopy minimumDimension];
       if (v15 <= v16)
       {
         goto LABEL_3;
@@ -110,7 +110,7 @@ LABEL_9:
 
       [(QLTThumbnailRequest *)self minimumDimension];
       v18 = v17;
-      [v4 minimumDimension];
+      [compareCopy minimumDimension];
       if (v18 <= v19)
       {
         v7 = 0;
@@ -128,30 +128,30 @@ LABEL_10:
   return v7;
 }
 
-- (QLTThumbnailRequest)initWithVersionedFileIdentifier:(id)a3 size:(CGSize)a4 scale:(double)a5 iconMode:(BOOL)a6 flavor:(int)a7 wantsBaseline:(BOOL)a8 minimumDimension:(double)a9 requestedTypes:(unint64_t)a10
+- (QLTThumbnailRequest)initWithVersionedFileIdentifier:(id)identifier size:(CGSize)size scale:(double)scale iconMode:(BOOL)mode flavor:(int)flavor wantsBaseline:(BOOL)baseline minimumDimension:(double)dimension requestedTypes:(unint64_t)self0
 {
-  height = a4.height;
-  width = a4.width;
-  v20 = a3;
+  height = size.height;
+  width = size.width;
+  identifierCopy = identifier;
   v26.receiver = self;
   v26.super_class = QLTThumbnailRequest;
   v21 = [(QLTThumbnailRequest *)&v26 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_fileIdentifier, a3);
+    objc_storeStrong(&v21->_fileIdentifier, identifier);
     v22->_size.width = width;
     v22->_size.height = height;
-    v22->_scale = a5;
-    v22->_iconMode = a6;
-    v22->_minimumDimension = a9;
-    v22->_requestedTypes = a10;
-    v23 = [MEMORY[0x1E696AFB0] UUID];
+    v22->_scale = scale;
+    v22->_iconMode = mode;
+    v22->_minimumDimension = dimension;
+    v22->_requestedTypes = types;
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     uuid = v22->_uuid;
-    v22->_uuid = v23;
+    v22->_uuid = uUID;
 
-    v22->_flavor = a7;
-    v22->_wantsBaseline = a8;
+    v22->_flavor = flavor;
+    v22->_wantsBaseline = baseline;
     v22->_badgeType = 1;
     v22->_generationBehavior = 2;
   }
@@ -159,7 +159,7 @@ LABEL_10:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [objc_alloc(objc_opt_class()) initWithVersionedFileIdentifier:self->_fileIdentifier size:self->_iconMode scale:self->_flavor iconMode:self->_wantsBaseline flavor:self->_requestedTypes wantsBaseline:self->_size.width minimumDimension:self->_size.height requestedTypes:{self->_scale, self->_minimumDimension}];
   v5 = [(NSUUID *)self->_uuid copy];
@@ -169,10 +169,10 @@ LABEL_10:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -182,10 +182,10 @@ LABEL_10:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       uuid = self->_uuid;
-      v7 = [(QLTThumbnailRequest *)v5 uuid];
-      if (![(NSUUID *)uuid isEqual:v7])
+      uuid = [(QLTThumbnailRequest *)v5 uuid];
+      if (![(NSUUID *)uuid isEqual:uuid])
       {
         v11 = 0;
 LABEL_19:
@@ -193,9 +193,9 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v8 = [(QLTThumbnailRequest *)self fileIdentifier];
-      v9 = [(QLTThumbnailRequest *)v5 fileIdentifier];
-      if (![v8 isEqual:v9])
+      fileIdentifier = [(QLTThumbnailRequest *)self fileIdentifier];
+      fileIdentifier2 = [(QLTThumbnailRequest *)v5 fileIdentifier];
+      if (![fileIdentifier isEqual:fileIdentifier2])
       {
         goto LABEL_17;
       }
@@ -263,9 +263,9 @@ LABEL_20:
   contentType = self->_contentType;
   if (!contentType)
   {
-    v4 = [(QLTThumbnailRequest *)self computeContentType];
+    computeContentType = [(QLTThumbnailRequest *)self computeContentType];
     v5 = self->_contentType;
-    self->_contentType = v4;
+    self->_contentType = computeContentType;
 
     contentType = self->_contentType;
   }

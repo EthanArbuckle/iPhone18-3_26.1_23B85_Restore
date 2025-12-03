@@ -5,36 +5,36 @@
 - (BOOL)isWakeUpResultsNotificationEnabled;
 - (HDSPEnvironment)environment;
 - (HDSPSleepEventDelegate)sleepEventDelegate;
-- (HDSPWakeUpResultsNotificationManager)initWithEnvironment:(id)a3;
-- (HDSPWakeUpResultsNotificationManager)initWithEnvironment:(id)a3 retryAttemptScheduler:(id)a4;
+- (HDSPWakeUpResultsNotificationManager)initWithEnvironment:(id)environment;
+- (HDSPWakeUpResultsNotificationManager)initWithEnvironment:(id)environment retryAttemptScheduler:(id)scheduler;
 - (NSDate)currentDate;
 - (NSString)providerIdentifier;
 - (double)_trackingDelayDuration;
 - (id)_currentState;
-- (id)_fetchSleepDaySummariesForMorningIndexRange:(id)a3 healthStore:(id)a4;
-- (id)_fetchUserFirstNameWithHealthStore:(id)a3;
-- (id)_sleepDaySummariesFromResult:(id)a3 error:(id *)a4;
+- (id)_fetchSleepDaySummariesForMorningIndexRange:(id)range healthStore:(id)store;
+- (id)_fetchUserFirstNameWithHealthStore:(id)store;
+- (id)_sleepDaySummariesFromResult:(id)result error:(id *)error;
 - (id)_sleepScheduleModel;
-- (id)_userFirstNameFromResult:(id)a3;
+- (id)_userFirstNameFromResult:(id)result;
 - (id)diagnosticDescription;
 - (id)eventIdentifiers;
-- (id)notificationAttemptWindowForWakeUpBeforeDate:(id)a3;
-- (id)notificationListener:(id)a3 didReceiveNotificationWithName:(id)a4;
+- (id)notificationAttemptWindowForWakeUpBeforeDate:(id)date;
+- (id)notificationListener:(id)listener didReceiveNotificationWithName:(id)name;
 - (id)performImmediateQueryForNotification;
-- (id)upcomingEventsDueAfterDate:(id)a3;
+- (id)upcomingEventsDueAfterDate:(id)date;
 - (int64_t)lastWakeUpResultsIntroductionNotificationVersionSent;
 - (void)_lock_startQuery;
 - (void)_updateState;
-- (void)environmentDidBecomeReady:(id)a3;
-- (void)environmentWillBecomeReady:(id)a3;
+- (void)environmentDidBecomeReady:(id)ready;
+- (void)environmentWillBecomeReady:(id)ready;
 - (void)executeQuery;
 - (void)postResultsNotification;
 - (void)scheduleRetryAttempt;
 - (void)scheduleStateExpiration;
-- (void)significantTimeChangeDetected:(id)a3;
-- (void)sleepEventIsDue:(id)a3;
-- (void)sleepScheduleModelManager:(id)a3 didUpdateSleepScheduleModel:(id)a4;
-- (void)sleepScheduleStateDidChange:(unint64_t)a3 previousState:(unint64_t)a4 reason:(unint64_t)a5;
+- (void)significantTimeChangeDetected:(id)detected;
+- (void)sleepEventIsDue:(id)due;
+- (void)sleepScheduleModelManager:(id)manager didUpdateSleepScheduleModel:(id)model;
+- (void)sleepScheduleStateDidChange:(unint64_t)change previousState:(unint64_t)state reason:(unint64_t)reason;
 - (void)startObservingProtectedHealthDataAvailability;
 - (void)stopObservingProtectedHealthDataAvailability;
 - (void)unscheduleRetryAttempt;
@@ -43,31 +43,31 @@
 
 @implementation HDSPWakeUpResultsNotificationManager
 
-- (HDSPWakeUpResultsNotificationManager)initWithEnvironment:(id)a3
+- (HDSPWakeUpResultsNotificationManager)initWithEnvironment:(id)environment
 {
-  v4 = a3;
+  environmentCopy = environment;
   v5 = [HDSPXPCActivityScheduler alloc];
-  v6 = [v4 defaultCallbackScheduler];
-  v7 = [(HDSPXPCActivityScheduler *)v5 initWithCallbackScheduler:v6];
-  v8 = [(HDSPWakeUpResultsNotificationManager *)self initWithEnvironment:v4 retryAttemptScheduler:v7];
+  defaultCallbackScheduler = [environmentCopy defaultCallbackScheduler];
+  v7 = [(HDSPXPCActivityScheduler *)v5 initWithCallbackScheduler:defaultCallbackScheduler];
+  v8 = [(HDSPWakeUpResultsNotificationManager *)self initWithEnvironment:environmentCopy retryAttemptScheduler:v7];
 
   return v8;
 }
 
-- (HDSPWakeUpResultsNotificationManager)initWithEnvironment:(id)a3 retryAttemptScheduler:(id)a4
+- (HDSPWakeUpResultsNotificationManager)initWithEnvironment:(id)environment retryAttemptScheduler:(id)scheduler
 {
-  v6 = a3;
-  v7 = a4;
+  environmentCopy = environment;
+  schedulerCopy = scheduler;
   v24.receiver = self;
   v24.super_class = HDSPWakeUpResultsNotificationManager;
   v8 = [(HDSPWakeUpResultsNotificationManager *)&v24 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_environment, v6);
-    objc_storeStrong(&v9->_retryAttemptScheduler, a4);
-    v10 = [v6 mutexGenerator];
-    v11 = v10[2]();
+    objc_storeWeak(&v8->_environment, environmentCopy);
+    objc_storeStrong(&v9->_retryAttemptScheduler, scheduler);
+    mutexGenerator = [environmentCopy mutexGenerator];
+    v11 = mutexGenerator[2]();
     mutexProvider = v9->_mutexProvider;
     v9->_mutexProvider = v11;
 
@@ -75,10 +75,10 @@
     v14 = objc_opt_class();
     v15 = NSStringFromClass(v14);
     v16 = objc_alloc(MEMORY[0x277D62558]);
-    v17 = [v6 userDefaults];
-    v18 = [v16 initWithUserDefaults:v17];
-    v19 = [v6 currentDateProvider];
-    v20 = [(HDSPWakeUpResultsNotificationStateMachine *)v13 initWithIdentifier:v15 persistence:v18 delegate:v9 infoProvider:v9 currentDateProvider:v19];
+    userDefaults = [environmentCopy userDefaults];
+    v18 = [v16 initWithUserDefaults:userDefaults];
+    currentDateProvider = [environmentCopy currentDateProvider];
+    v20 = [(HDSPWakeUpResultsNotificationStateMachine *)v13 initWithIdentifier:v15 persistence:v18 delegate:v9 infoProvider:v9 currentDateProvider:currentDateProvider];
     stateMachine = v9->_stateMachine;
     v9->_stateMachine = v20;
 
@@ -121,10 +121,10 @@ void __76__HDSPWakeUpResultsNotificationManager_performImmediateQueryForNotifica
 - (id)_sleepScheduleModel
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained sleepScheduleModelManager];
-  v4 = [v3 sleepScheduleModel];
+  sleepScheduleModelManager = [WeakRetained sleepScheduleModelManager];
+  sleepScheduleModel = [sleepScheduleModelManager sleepScheduleModel];
 
-  return v4;
+  return sleepScheduleModel;
 }
 
 - (void)_updateState
@@ -148,38 +148,38 @@ void __76__HDSPWakeUpResultsNotificationManager_performImmediateQueryForNotifica
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)environmentWillBecomeReady:(id)a3
+- (void)environmentWillBecomeReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v5 = [WeakRetained sleepScheduler];
-  [v5 addEventHandler:self];
+  sleepScheduler = [WeakRetained sleepScheduler];
+  [sleepScheduler addEventHandler:self];
 
   v6 = objc_loadWeakRetained(&self->_environment);
-  v7 = [v6 sleepScheduler];
-  [v7 addEventProvider:self];
+  sleepScheduler2 = [v6 sleepScheduler];
+  [sleepScheduler2 addEventProvider:self];
 
   v8 = objc_loadWeakRetained(&self->_environment);
-  v9 = [v8 notificationListener];
-  [v9 addObserver:self];
+  notificationListener = [v8 notificationListener];
+  [notificationListener addObserver:self];
 
   v10 = objc_loadWeakRetained(&self->_environment);
-  v11 = [v10 sleepCoordinator];
-  [v11 addObserver:self];
+  sleepCoordinator = [v10 sleepCoordinator];
+  [sleepCoordinator addObserver:self];
 
   v12 = objc_loadWeakRetained(&self->_environment);
-  v13 = [v12 sleepScheduleModelManager];
-  [v13 addObserver:self];
+  sleepScheduleModelManager = [v12 sleepScheduleModelManager];
+  [sleepScheduleModelManager addObserver:self];
 
   v14 = objc_loadWeakRetained(&self->_environment);
-  v15 = [v14 timeChangeListener];
-  [v15 addObserver:self];
+  timeChangeListener = [v14 timeChangeListener];
+  [timeChangeListener addObserver:self];
 
   v17 = objc_loadWeakRetained(&self->_environment);
-  v16 = [v17 diagnostics];
-  [v16 addProvider:self];
+  diagnostics = [v17 diagnostics];
+  [diagnostics addProvider:self];
 }
 
-- (void)environmentDidBecomeReady:(id)a3
+- (void)environmentDidBecomeReady:(id)ready
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();
@@ -195,12 +195,12 @@ void __76__HDSPWakeUpResultsNotificationManager_performImmediateQueryForNotifica
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)notificationListener:(id)a3 didReceiveNotificationWithName:(id)a4
+- (id)notificationListener:(id)listener didReceiveNotificationWithName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  nameCopy = name;
   v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:*MEMORY[0x277CCC8F0]];
-  v9 = [v7 isEqualToString:v8];
+  v9 = [nameCopy isEqualToString:v8];
 
   if (v9)
   {
@@ -220,24 +220,24 @@ void __76__HDSPWakeUpResultsNotificationManager_performImmediateQueryForNotifica
     v10 = v16[5];
     if (v10)
     {
-      v11 = v10;
+      futureWithNoResult = v10;
     }
 
     else
     {
-      v11 = [MEMORY[0x277D2C900] futureWithNoResult];
+      futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     }
 
-    v12 = v11;
+    futureWithNoResult2 = futureWithNoResult;
     _Block_object_dispose(&v15, 8);
   }
 
   else
   {
-    v12 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult2 = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v12;
+  return futureWithNoResult2;
 }
 
 void __92__HDSPWakeUpResultsNotificationManager_notificationListener_didReceiveNotificationWithName___block_invoke(uint64_t a1)
@@ -249,7 +249,7 @@ void __92__HDSPWakeUpResultsNotificationManager_notificationListener_didReceiveN
   objc_storeStrong(v3, v2);
 }
 
-- (void)significantTimeChangeDetected:(id)a3
+- (void)significantTimeChangeDetected:(id)detected
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = HKSPLogForCategory();
@@ -265,7 +265,7 @@ void __92__HDSPWakeUpResultsNotificationManager_notificationListener_didReceiveN
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepScheduleModelManager:(id)a3 didUpdateSleepScheduleModel:(id)a4
+- (void)sleepScheduleModelManager:(id)manager didUpdateSleepScheduleModel:(id)model
 {
   v10 = *MEMORY[0x277D85DE8];
   v5 = HKSPLogForCategory();
@@ -281,7 +281,7 @@ void __92__HDSPWakeUpResultsNotificationManager_notificationListener_didReceiveN
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepScheduleStateDidChange:(unint64_t)a3 previousState:(unint64_t)a4 reason:(unint64_t)a5
+- (void)sleepScheduleStateDidChange:(unint64_t)change previousState:(unint64_t)state reason:(unint64_t)reason
 {
   v23 = *MEMORY[0x277D85DE8];
   v7 = HKSPLogForCategory();
@@ -303,7 +303,7 @@ void __92__HDSPWakeUpResultsNotificationManager_notificationListener_didReceiveN
     _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] sleepScheduleStateChanged from %{public}@ to %{public}@ for %{public}@", buf, 0x2Au);
   }
 
-  if (a3 == 1 && HKSPSleepScheduleStateChangeReasonIsExpected())
+  if (change == 1 && HKSPSleepScheduleStateChangeReasonIsExpected())
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -328,10 +328,10 @@ void __92__HDSPWakeUpResultsNotificationManager_notificationListener_didReceiveN
   return NSStringFromClass(v2);
 }
 
-- (id)upcomingEventsDueAfterDate:(id)a3
+- (id)upcomingEventsDueAfterDate:(id)date
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dateCopy = date;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -343,7 +343,7 @@ void __92__HDSPWakeUpResultsNotificationManager_notificationListener_didReceiveN
   v13[2] = __67__HDSPWakeUpResultsNotificationManager_upcomingEventsDueAfterDate___block_invoke;
   v13[3] = &unk_279C7B6C8;
   v13[4] = self;
-  v5 = v4;
+  v5 = dateCopy;
   v14 = v5;
   v15 = &v16;
   [(HDSPWakeUpResultsNotificationManager *)self _withLock:v13];
@@ -391,20 +391,20 @@ void __67__HDSPWakeUpResultsNotificationManager_upcomingEventsDueAfterDate___blo
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sleepEventIsDue:(id)a3
+- (void)sleepEventIsDue:(id)due
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dueCopy = due;
   v5 = HKSPLogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 identifier];
+    identifier = [dueCopy identifier];
     *buf = 138543618;
     v14 = v6;
     v15 = 2114;
-    v16 = v8;
+    v16 = identifier;
     _os_log_impl(&dword_269B11000, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@] %{public}@ expired", buf, 0x16u);
   }
 
@@ -413,8 +413,8 @@ void __67__HDSPWakeUpResultsNotificationManager_upcomingEventsDueAfterDate___blo
   v11[2] = __56__HDSPWakeUpResultsNotificationManager_sleepEventIsDue___block_invoke;
   v11[3] = &unk_279C7B2D0;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
+  v12 = dueCopy;
+  v9 = dueCopy;
   [(HDSPWakeUpResultsNotificationManager *)self _withLock:v11];
 
   v10 = *MEMORY[0x277D85DE8];
@@ -477,8 +477,8 @@ void __56__HDSPWakeUpResultsNotificationManager_eventIdentifiers__block_invoke_2
 - (NSDate)currentDate
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained currentDateProvider];
-  v4 = v3[2]();
+  currentDateProvider = [WeakRetained currentDateProvider];
+  v4 = currentDateProvider[2]();
 
   return v4;
 }
@@ -486,24 +486,24 @@ void __56__HDSPWakeUpResultsNotificationManager_eventIdentifiers__block_invoke_2
 - (int64_t)lastWakeUpResultsIntroductionNotificationVersionSent
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v3 = [WeakRetained sleepScheduleModelManager];
-  v4 = [v3 sleepEventRecord];
-  v5 = [v4 lastWakeUpResultsIntroductionNotificationVersionSent];
+  sleepScheduleModelManager = [WeakRetained sleepScheduleModelManager];
+  sleepEventRecord = [sleepScheduleModelManager sleepEventRecord];
+  lastWakeUpResultsIntroductionNotificationVersionSent = [sleepEventRecord lastWakeUpResultsIntroductionNotificationVersionSent];
 
-  return v5;
+  return lastWakeUpResultsIntroductionNotificationVersionSent;
 }
 
 - (BOOL)isWakeUpResultsNotificationEnabled
 {
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v4 = [WeakRetained sleepScheduleModelManager];
-  v5 = [v4 sleepSettings];
-  if ([v5 wakeUpResults])
+  sleepScheduleModelManager = [WeakRetained sleepScheduleModelManager];
+  sleepSettings = [sleepScheduleModelManager sleepSettings];
+  if ([sleepSettings wakeUpResults])
   {
     v6 = objc_loadWeakRetained(&self->_environment);
-    v7 = [v6 behavior];
-    v8 = [v7 features];
-    v9 = [v8 sleepResultsNotificationsOnWatch] ^ 1;
+    behavior = [v6 behavior];
+    features = [behavior features];
+    v9 = [features sleepResultsNotificationsOnWatch] ^ 1;
   }
 
   else
@@ -514,12 +514,12 @@ void __56__HDSPWakeUpResultsNotificationManager_eventIdentifiers__block_invoke_2
   return v9;
 }
 
-- (id)notificationAttemptWindowForWakeUpBeforeDate:(id)a3
+- (id)notificationAttemptWindowForWakeUpBeforeDate:(id)date
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDSPWakeUpResultsNotificationManager *)self currentDate];
-  v6 = [v5 laterDate:v4];
+  dateCopy = date;
+  currentDate = [(HDSPWakeUpResultsNotificationManager *)self currentDate];
+  v6 = [currentDate laterDate:dateCopy];
 
   v7 = HKSPLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -529,13 +529,13 @@ void __56__HDSPWakeUpResultsNotificationManager_eventIdentifiers__block_invoke_2
     v17 = 2112;
     v18 = v6;
     v19 = 2112;
-    v20 = v4;
+    v20 = dateCopy;
     v8 = v16;
     _os_log_impl(&dword_269B11000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Resolved attempt window beforeDate: %@ (passed: %@)", &v15, 0x20u);
   }
 
-  v9 = [(HDSPWakeUpResultsNotificationManager *)self _sleepScheduleModel];
-  v10 = [v9 previousEventWithIdentifier:*MEMORY[0x277D621E0] dueBeforeDate:v6];
+  _sleepScheduleModel = [(HDSPWakeUpResultsNotificationManager *)self _sleepScheduleModel];
+  v10 = [_sleepScheduleModel previousEventWithIdentifier:*MEMORY[0x277D621E0] dueBeforeDate:v6];
 
   if (v10)
   {
@@ -557,8 +557,8 @@ void __56__HDSPWakeUpResultsNotificationManager_eventIdentifiers__block_invoke_2
 - (double)_trackingDelayDuration
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 objectForKey:@"WakeUpResultsNotificationDelayOverride"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults objectForKey:@"WakeUpResultsNotificationDelayOverride"];
 
   v4 = 900.0;
   if (v3)
@@ -599,8 +599,8 @@ void __56__HDSPWakeUpResultsNotificationManager_eventIdentifiers__block_invoke_2
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Requesting to schedule tracking delay", &v7, 0xCu);
   }
 
-  v5 = [(HDSPWakeUpResultsNotificationManager *)self sleepEventDelegate];
-  [v5 eventProviderHasUpcomingEvents:self];
+  sleepEventDelegate = [(HDSPWakeUpResultsNotificationManager *)self sleepEventDelegate];
+  [sleepEventDelegate eventProviderHasUpcomingEvents:self];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -617,8 +617,8 @@ void __56__HDSPWakeUpResultsNotificationManager_eventIdentifiers__block_invoke_2
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Requesting to cancel tracking delay", &v7, 0xCu);
   }
 
-  v5 = [(HDSPWakeUpResultsNotificationManager *)self sleepEventDelegate];
-  [v5 eventProviderCancelledEvents:self];
+  sleepEventDelegate = [(HDSPWakeUpResultsNotificationManager *)self sleepEventDelegate];
+  [sleepEventDelegate eventProviderCancelledEvents:self];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -636,14 +636,14 @@ void __56__HDSPWakeUpResultsNotificationManager_eventIdentifiers__block_invoke_2
   }
 
   objc_initWeak(buf, self);
-  v5 = [(HDSPWakeUpResultsNotificationManager *)self retryAttemptScheduler];
-  v6 = [objc_opt_class() retryActivity];
+  retryAttemptScheduler = [(HDSPWakeUpResultsNotificationManager *)self retryAttemptScheduler];
+  retryActivity = [objc_opt_class() retryActivity];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __60__HDSPWakeUpResultsNotificationManager_scheduleRetryAttempt__block_invoke;
   v8[3] = &unk_279C7B2F8;
   objc_copyWeak(&v9, buf);
-  [v5 scheduleActivity:v6 activityHandler:v8];
+  [retryAttemptScheduler scheduleActivity:retryActivity activityHandler:v8];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(buf);
@@ -685,8 +685,8 @@ void __60__HDSPWakeUpResultsNotificationManager_scheduleRetryAttempt__block_invo
     _os_log_impl(&dword_269B11000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Unscheduling retry attempt", &v7, 0xCu);
   }
 
-  v5 = [(HDSPWakeUpResultsNotificationManager *)self retryAttemptScheduler];
-  [v5 unscheduleActivities];
+  retryAttemptScheduler = [(HDSPWakeUpResultsNotificationManager *)self retryAttemptScheduler];
+  [retryAttemptScheduler unscheduleActivities];
 
   v6 = *MEMORY[0x277D85DE8];
 }
@@ -707,8 +707,8 @@ void __60__HDSPWakeUpResultsNotificationManager_scheduleRetryAttempt__block_invo
 + (id)retryActivity
 {
   v3 = [HDSPXPCActivity alloc];
-  v4 = [a1 retryCriteria];
-  v5 = [(HDSPXPCActivity *)v3 initWithEventName:@"com.apple.sleep.WakeUpResultsNotificationRetry.activity" options:0 criteria:v4];
+  retryCriteria = [self retryCriteria];
+  v5 = [(HDSPXPCActivity *)v3 initWithEventName:@"com.apple.sleep.WakeUpResultsNotificationRetry.activity" options:0 criteria:retryCriteria];
 
   return v5;
 }
@@ -726,11 +726,11 @@ void __60__HDSPWakeUpResultsNotificationManager_scheduleRetryAttempt__block_invo
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v6 = [WeakRetained notificationListener];
+  notificationListener = [WeakRetained notificationListener];
   v7 = *MEMORY[0x277CCC8F0];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  [v6 registerForLaunchNotificationWithName:v7 key:v9];
+  [notificationListener registerForLaunchNotificationWithName:v7 key:v9];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -748,11 +748,11 @@ void __60__HDSPWakeUpResultsNotificationManager_scheduleRetryAttempt__block_invo
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v6 = [WeakRetained notificationListener];
+  notificationListener = [WeakRetained notificationListener];
   v7 = *MEMORY[0x277CCC8F0];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  [v6 unregisterForLaunchNotificationWithName:v7 key:v9];
+  [notificationListener unregisterForLaunchNotificationWithName:v7 key:v9];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -804,8 +804,8 @@ void __60__HDSPWakeUpResultsNotificationManager_scheduleRetryAttempt__block_invo
 
   if (([(NAFuture *)self->_queryResultFuture isFinished]& 1) == 0)
   {
-    v9 = [MEMORY[0x277CCA890] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"HDSPWakeUpResultsNotificationManager.m" lineNumber:371 description:@"_queryResultFuture must be finished before we can post notification"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDSPWakeUpResultsNotificationManager.m" lineNumber:371 description:@"_queryResultFuture must be finished before we can post notification"];
   }
 
   objc_initWeak(buf, self);
@@ -861,16 +861,16 @@ void __63__HDSPWakeUpResultsNotificationManager_postResultsNotification__block_i
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_environment);
-  v6 = [WeakRetained healthStoreProvider];
-  v7 = [v6 healthStore];
+  healthStoreProvider = [WeakRetained healthStoreProvider];
+  healthStore = [healthStoreProvider healthStore];
 
   v8 = [MEMORY[0x277CBEA80] calendarWithIdentifier:*MEMORY[0x277CBE5C0]];
-  v9 = [(HDSPWakeUpResultsNotificationManager *)self currentDate];
-  v10 = [v9 hk_dayIndexWithCalendar:v8];
+  currentDate = [(HDSPWakeUpResultsNotificationManager *)self currentDate];
+  v10 = [currentDate hk_dayIndexWithCalendar:v8];
 
   v11 = HDSPWakeUpResultsNotificationDaySummaryCount;
   v12 = objc_loadWeakRetained(&self->_environment);
-  v13 = [v12 defaultCallbackScheduler];
+  defaultCallbackScheduler = [v12 defaultCallbackScheduler];
 
   v14 = HKSPLogForCategory();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -882,10 +882,10 @@ void __63__HDSPWakeUpResultsNotificationManager_postResultsNotification__block_i
     _os_log_impl(&dword_269B11000, v14, OS_LOG_TYPE_DEFAULT, "[%{public}@] Creating future dependencies...", buf, 0xCu);
   }
 
-  v17 = [(HDSPWakeUpResultsNotificationManager *)self _fetchUserFirstNameWithHealthStore:v7];
+  v17 = [(HDSPWakeUpResultsNotificationManager *)self _fetchUserFirstNameWithHealthStore:healthStore];
   v18 = (v10 - v11 + 1);
   v42[0] = v17;
-  v19 = [(HDSPWakeUpResultsNotificationManager *)self _fetchSleepDaySummariesForMorningIndexRange:v18 healthStore:v11, v7];
+  v19 = [(HDSPWakeUpResultsNotificationManager *)self _fetchSleepDaySummariesForMorningIndexRange:v18 healthStore:v11, healthStore];
   v42[1] = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v42 count:2];
 
@@ -900,7 +900,7 @@ void __63__HDSPWakeUpResultsNotificationManager_postResultsNotification__block_i
   }
 
   objc_initWeak(&location, self);
-  v24 = [MEMORY[0x277D2C900] combineAllFutures:v20 ignoringErrors:1 scheduler:v13];
+  v24 = [MEMORY[0x277D2C900] combineAllFutures:v20 ignoringErrors:1 scheduler:defaultCallbackScheduler];
   v39[0] = MEMORY[0x277D85DD0];
   v39[1] = 3221225472;
   v39[2] = __56__HDSPWakeUpResultsNotificationManager__lock_startQuery__block_invoke;
@@ -1066,10 +1066,10 @@ void __56__HDSPWakeUpResultsNotificationManager__lock_startQuery__block_invoke_2
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_fetchUserFirstNameWithHealthStore:(id)a3
+- (id)_fetchUserFirstNameWithHealthStore:(id)store
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_alloc_init(MEMORY[0x277D2C900]);
   objc_initWeak(&location, self);
   v20[0] = MEMORY[0x277D85DD0];
@@ -1094,7 +1094,7 @@ void __56__HDSPWakeUpResultsNotificationManager__lock_startQuery__block_invoke_2
     _os_log_impl(&dword_269B11000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Fetching user first name...", buf, 0xCu);
   }
 
-  v11 = [MEMORY[0x277CCD570] healthAppDefaultsDomainWithHealthStore:v4];
+  v11 = [MEMORY[0x277CCD570] healthAppDefaultsDomainWithHealthStore:storeCopy];
   v12 = *MEMORY[0x277CCE5A8];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -1208,12 +1208,12 @@ void __75__HDSPWakeUpResultsNotificationManager__fetchUserFirstNameWithHealthSto
   }
 }
 
-- (id)_fetchSleepDaySummariesForMorningIndexRange:(id)a3 healthStore:(id)a4
+- (id)_fetchSleepDaySummariesForMorningIndexRange:(id)range healthStore:(id)store
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  storeCopy = store;
   v8 = objc_alloc_init(MEMORY[0x277D2C900]);
   objc_initWeak(&location, self);
   v32[0] = MEMORY[0x277D85DD0];
@@ -1228,12 +1228,12 @@ void __75__HDSPWakeUpResultsNotificationManager__fetchUserFirstNameWithHealthSto
   v30[3] = &unk_279C7C5E0;
   objc_copyWeak(&v31, &location);
   v10 = [v8 addSuccessBlock:v30];
-  v11 = [MEMORY[0x277CCDD30] sharedBehavior];
-  v12 = [v11 features];
-  v13 = [v12 sleepDetails];
+  mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+  features = [mEMORY[0x277CCDD30] features];
+  sleepDetails = [features sleepDetails];
 
   v14 = objc_alloc(MEMORY[0x277CCD9C0]);
-  if (v13)
+  if (sleepDetails)
   {
     v15 = 132;
   }
@@ -1264,7 +1264,7 @@ void __75__HDSPWakeUpResultsNotificationManager__fetchUserFirstNameWithHealthSto
     _os_log_impl(&dword_269B11000, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@] Fetching sleep day summaries...", buf, 0xCu);
   }
 
-  [v7 executeQuery:v17];
+  [storeCopy executeQuery:v17];
   v22 = v16;
 
   objc_destroyWeak(&v31);
@@ -1328,13 +1328,13 @@ uint64_t __96__HDSPWakeUpResultsNotificationManager__fetchSleepDaySummariesForMo
   }
 }
 
-- (id)_userFirstNameFromResult:(id)a3
+- (id)_userFirstNameFromResult:(id)result
 {
-  v3 = a3;
+  resultCopy = result;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = resultCopy;
   }
 
   else
@@ -1345,22 +1345,22 @@ uint64_t __96__HDSPWakeUpResultsNotificationManager__fetchSleepDaySummariesForMo
   return v4;
 }
 
-- (id)_sleepDaySummariesFromResult:(id)a3 error:(id *)a4
+- (id)_sleepDaySummariesFromResult:(id)result error:(id *)error
 {
-  v5 = a3;
+  resultCopy = result;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v7 = v5;
+  v7 = resultCopy;
   v8 = v7;
   v9 = v7;
   if ((isKindOfClass & 1) == 0)
   {
     if (v7)
     {
-      if (a4)
+      if (error)
       {
         v10 = v7;
-        *a4 = v8;
+        *error = v8;
       }
 
       else
@@ -1434,8 +1434,8 @@ uint64_t __62__HDSPWakeUpResultsNotificationManager__isDelayingForTracking__bloc
 - (id)diagnosticDescription
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HDSPWakeUpResultsNotificationManager *)self _currentState];
-  v4 = [v2 stringWithFormat:@"Current State: %@", v3];
+  _currentState = [(HDSPWakeUpResultsNotificationManager *)self _currentState];
+  v4 = [v2 stringWithFormat:@"Current State: %@", _currentState];
 
   return v4;
 }

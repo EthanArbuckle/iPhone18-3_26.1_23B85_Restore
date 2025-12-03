@@ -1,41 +1,41 @@
 @interface JFXAnimojiEffectRenderer
 + (BOOL)isSupported;
-+ (CGSize)animojiBufferSizeWithImageSize:(CGSize)result interfaceOrientation:(int64_t)a4;
++ (CGSize)animojiBufferSizeWithImageSize:(CGSize)result interfaceOrientation:(int64_t)orientation;
 - (AVTAvatarStore)avatarStore;
-- (BOOL)JFX_getRenderer:(id *)a3 forAnimojiEffect:(id)a4 primeFrame:(id)a5 captureOrientation:(int64_t)a6 interfaceOrientation:(int64_t)a7 backgroundColor:(id)a8;
-- (BOOL)currentPuppetIsEqualTo:(id)a3;
-- (BOOL)setupHeadPoseAndBlendShapesForFrame:(id)a3 forRenderer:(id)a4 captureOrientation:(int64_t)a5 interfaceOrientation:(int64_t)a6 isInitialSetup:(BOOL)a7;
-- (BOOL)setupPoseForPreRecordedBlendShapes:(id)a3 forRenderer:(id)a4 captureOrientation:(int64_t)a5 interfaceOrientation:(int64_t)a6 withFrame:(id)a7;
+- (BOOL)JFX_getRenderer:(id *)renderer forAnimojiEffect:(id)effect primeFrame:(id)frame captureOrientation:(int64_t)orientation interfaceOrientation:(int64_t)interfaceOrientation backgroundColor:(id)color;
+- (BOOL)currentPuppetIsEqualTo:(id)to;
+- (BOOL)setupHeadPoseAndBlendShapesForFrame:(id)frame forRenderer:(id)renderer captureOrientation:(int64_t)orientation interfaceOrientation:(int64_t)interfaceOrientation isInitialSetup:(BOOL)setup;
+- (BOOL)setupPoseForPreRecordedBlendShapes:(id)shapes forRenderer:(id)renderer captureOrientation:(int64_t)orientation interfaceOrientation:(int64_t)interfaceOrientation withFrame:(id)frame;
 - (CGSize)workingSize;
-- (JFXAnimojiEffectRenderer)initWithConstrainedHeadPose:(BOOL)a3 rgbOnlyMemoji:(BOOL)a4;
+- (JFXAnimojiEffectRenderer)initWithConstrainedHeadPose:(BOOL)pose rgbOnlyMemoji:(BOOL)memoji;
 - (JFXAnimojiTrackingLossDelegate)trackingLossDelegate;
 - (NSString)description;
-- (__CVBuffer)JFX_depthDataToTexture:(id)a3;
-- (__CVBuffer)newPixelBufferRenderedFromARFrame:(id)a3 withEffect:(id)a4 depthData:(id)a5 captureOrientation:(int64_t)a6 interfaceOrientation:(int64_t)a7 preRecordedBlendShapes:(id)a8 backgroundColor:(id)a9;
-- (double)JFX_focalLengthForFrame:(id)a3 renderer:(id)a4 workingSize:(CGSize)a5 interfaceOrientation:(int64_t)a6;
-- (id)JFX_blendShapesForRenderer:(id)a3;
-- (id)createNewRendererForPuppet:(id)a3;
-- (id)preRecordedBlendShapesForFrame:(id)a3 captureOrientation:(int64_t)a4 interfaceOrientation:(int64_t)a5 backgroundColor:(id)a6;
-- (id)renderWithInputs:(id)a3 time:(id *)a4 userContext:(id)a5 compositeContext:(id)a6;
-- (id)renderWithTime:(id *)a3 metadata:(id)a4;
-- (void)asyncLoadNewPuppet:(id)a3 currentPuppet:(id)a4 captureOrientation:(int64_t)a5 interfaceOrientation:(int64_t)a6 primeFrame:(id)a7 backgroundColor:(id)a8;
+- (__CVBuffer)JFX_depthDataToTexture:(id)texture;
+- (__CVBuffer)newPixelBufferRenderedFromARFrame:(id)frame withEffect:(id)effect depthData:(id)data captureOrientation:(int64_t)orientation interfaceOrientation:(int64_t)interfaceOrientation preRecordedBlendShapes:(id)shapes backgroundColor:(id)color;
+- (double)JFX_focalLengthForFrame:(id)frame renderer:(id)renderer workingSize:(CGSize)size interfaceOrientation:(int64_t)orientation;
+- (id)JFX_blendShapesForRenderer:(id)renderer;
+- (id)createNewRendererForPuppet:(id)puppet;
+- (id)preRecordedBlendShapesForFrame:(id)frame captureOrientation:(int64_t)orientation interfaceOrientation:(int64_t)interfaceOrientation backgroundColor:(id)color;
+- (id)renderWithInputs:(id)inputs time:(id *)time userContext:(id)context compositeContext:(id)compositeContext;
+- (id)renderWithTime:(id *)time metadata:(id)metadata;
+- (void)asyncLoadNewPuppet:(id)puppet currentPuppet:(id)currentPuppet captureOrientation:(int64_t)orientation interfaceOrientation:(int64_t)interfaceOrientation primeFrame:(id)frame backgroundColor:(id)color;
 - (void)clear;
 - (void)clearRenderer_renderLocked;
-- (void)computeHighQualitySegmentation:(id)a3;
+- (void)computeHighQualitySegmentation:(id)segmentation;
 - (void)createTextureCaches;
 - (void)dealloc;
 - (void)flush;
-- (void)renderAnimoji:(id)a3 withPresentationTime:(id *)a4 frame:(id)a5 depthData:(id)a6 backgroundColor:(id)a7 completionBlock:(id)a8;
-- (void)renderFrame:(id)a3 withEffect:(id)a4 depthData:(id)a5 captureOrientation:(int64_t)a6 interfaceOrientation:(int64_t)a7 preRecordedBlendShapes:(id)a8 backgroundColor:(id)a9 completionBlock:(id)a10;
-- (void)setupInputBufferPoolForSize:(CGSize)a3 capturedImage:(__CVBuffer *)a4;
-- (void)updateCurrentRenderer:(id)a3 withPuppet:(id)a4;
+- (void)renderAnimoji:(id)animoji withPresentationTime:(id *)time frame:(id)frame depthData:(id)data backgroundColor:(id)color completionBlock:(id)block;
+- (void)renderFrame:(id)frame withEffect:(id)effect depthData:(id)data captureOrientation:(int64_t)orientation interfaceOrientation:(int64_t)interfaceOrientation preRecordedBlendShapes:(id)shapes backgroundColor:(id)color completionBlock:(id)self0;
+- (void)setupInputBufferPoolForSize:(CGSize)size capturedImage:(__CVBuffer *)image;
+- (void)updateCurrentRenderer:(id)renderer withPuppet:(id)puppet;
 @end
 
 @implementation JFXAnimojiEffectRenderer
 
-+ (CGSize)animojiBufferSizeWithImageSize:(CGSize)result interfaceOrientation:(int64_t)a4
++ (CGSize)animojiBufferSizeWithImageSize:(CGSize)result interfaceOrientation:(int64_t)orientation
 {
-  v5 = result.height > result.width || (a4 - 3) < 0xFFFFFFFFFFFFFFFELL;
+  v5 = result.height > result.width || (orientation - 3) < 0xFFFFFFFFFFFFFFFELL;
   if (v5)
   {
     height = result.height;
@@ -74,9 +74,9 @@ uint64_t __39__JFXAnimojiEffectRenderer_isSupported__block_invoke()
   return result;
 }
 
-- (JFXAnimojiEffectRenderer)initWithConstrainedHeadPose:(BOOL)a3 rgbOnlyMemoji:(BOOL)a4
+- (JFXAnimojiEffectRenderer)initWithConstrainedHeadPose:(BOOL)pose rgbOnlyMemoji:(BOOL)memoji
 {
-  v4 = a4;
+  memojiCopy = memoji;
   v29.receiver = self;
   v29.super_class = JFXAnimojiEffectRenderer;
   v6 = [(JFXAnimojiEffectRenderer *)&v29 init];
@@ -85,7 +85,7 @@ uint64_t __39__JFXAnimojiEffectRenderer_isSupported__block_invoke()
     v7 = objc_alloc_init(MEMORY[0x277CF0518]);
     [(JFXAnimojiEffectRenderer *)v6 setAvatarStore:v7];
 
-    v6->_rgbOnlyMemoji = v4;
+    v6->_rgbOnlyMemoji = memojiCopy;
     v8 = objc_alloc_init(MEMORY[0x277CCAAF8]);
     rendererLock = v6->_rendererLock;
     v6->_rendererLock = v8;
@@ -96,36 +96,36 @@ uint64_t __39__JFXAnimojiEffectRenderer_isSupported__block_invoke()
 
     v6->_systemTimeForAVTRenderer = 0.0;
     *&v6->_asynchronouslyLoadNewPuppets = 256;
-    if (v4)
+    if (memojiCopy)
     {
       VTPixelTransferSessionCreate(0, &v6->_transferSession);
     }
 
     v12 = MEMORY[0x277CCACA8];
-    v13 = [MEMORY[0x277CCA8D8] jfxBundle];
-    v14 = [v13 bundleIdentifier];
+    jfxBundle = [MEMORY[0x277CCA8D8] jfxBundle];
+    bundleIdentifier = [jfxBundle bundleIdentifier];
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
-    v17 = [v12 stringWithFormat:@"%@.%@.puppetLoading", v14, v16];
+    v17 = [v12 stringWithFormat:@"%@.%@.puppetLoading", bundleIdentifier, v16];
 
     v18 = dispatch_queue_create([v17 UTF8String], 0);
     puppetLoadingQ = v6->_puppetLoadingQ;
     v6->_puppetLoadingQ = v18;
 
     v20 = MEMORY[0x277CCACA8];
-    v21 = [MEMORY[0x277CCA8D8] jfxBundle];
-    v22 = [v21 bundleIdentifier];
+    jfxBundle2 = [MEMORY[0x277CCA8D8] jfxBundle];
+    bundleIdentifier2 = [jfxBundle2 bundleIdentifier];
     v23 = objc_opt_class();
     v24 = NSStringFromClass(v23);
-    v25 = [v20 stringWithFormat:@"%@.%@.puppetRendering", v22, v24];
+    v25 = [v20 stringWithFormat:@"%@.%@.puppetRendering", bundleIdentifier2, v24];
 
     v26 = dispatch_queue_create([v25 UTF8String], 0);
     puppetRenderingQ = v6->_puppetRenderingQ;
     v6->_puppetRenderingQ = v26;
 
     v6->_logged_render_failed = 0;
-    v6->_constrainHeadPose = a3;
-    v6->_rgbOnlyMemoji = v4;
+    v6->_constrainHeadPose = pose;
+    v6->_rgbOnlyMemoji = memojiCopy;
     VTPixelRotationSessionCreate(0, &v6->_rotationSession);
     [(JFXAnimojiEffectRenderer *)v6 createTextureCaches];
   }
@@ -160,8 +160,8 @@ uint64_t __39__JFXAnimojiEffectRenderer_isSupported__block_invoke()
 
 - (void)clear
 {
-  v3 = [(JFXAnimojiEffectRenderer *)self rendererLock];
-  [v3 lock];
+  rendererLock = [(JFXAnimojiEffectRenderer *)self rendererLock];
+  [rendererLock lock];
 
   [(JFXAnimojiEffectRenderer *)self setCurrentPuppet:0];
   [(JFXAnimojiEffectRenderer *)self clearRenderer_renderLocked];
@@ -186,14 +186,14 @@ uint64_t __39__JFXAnimojiEffectRenderer_isSupported__block_invoke()
     CVPixelBufferPoolFlush(inputBufferPool, 1uLL);
   }
 
-  v7 = [(JFXAnimojiEffectRenderer *)self rendererLock];
-  [v7 unlock];
+  rendererLock2 = [(JFXAnimojiEffectRenderer *)self rendererLock];
+  [rendererLock2 unlock];
 }
 
 - (void)flush
 {
-  v3 = [(JFXAnimojiEffectRenderer *)self rendererLock];
-  [v3 lock];
+  rendererLock = [(JFXAnimojiEffectRenderer *)self rendererLock];
+  [rendererLock lock];
 
   metalTextureCache = self->_metalTextureCache;
   if (metalTextureCache)
@@ -219,31 +219,31 @@ uint64_t __39__JFXAnimojiEffectRenderer_isSupported__block_invoke()
     CVPixelBufferPoolFlush(deviceOrientedColorBufferPool, 1uLL);
   }
 
-  v8 = [(JFXAnimojiEffectRenderer *)self rendererLock];
-  [v8 unlock];
+  rendererLock2 = [(JFXAnimojiEffectRenderer *)self rendererLock];
+  [rendererLock2 unlock];
 }
 
 - (void)clearRenderer_renderLocked
 {
-  v3 = [(JFXAnimojiEffectRenderer *)self renderer];
+  renderer = [(JFXAnimojiEffectRenderer *)self renderer];
 
-  if (v3)
+  if (renderer)
   {
-    v4 = [(JFXAnimojiEffectRenderer *)self renderer];
-    [v4 setEnableDepthMask:0];
+    renderer2 = [(JFXAnimojiEffectRenderer *)self renderer];
+    [renderer2 setEnableDepthMask:0];
 
-    LODWORD(v4) = [(JFXAnimojiEffectRenderer *)self constrainHeadPose];
-    v5 = [(JFXAnimojiEffectRenderer *)self renderer];
-    v7 = v5;
-    if (v4)
+    LODWORD(renderer2) = [(JFXAnimojiEffectRenderer *)self constrainHeadPose];
+    renderer3 = [(JFXAnimojiEffectRenderer *)self renderer];
+    v7 = renderer3;
+    if (renderer2)
     {
-      v6 = [v5 faceTracker];
-      [v6 discardARFrameData];
+      faceTracker = [renderer3 faceTracker];
+      [faceTracker discardARFrameData];
     }
 
     else
     {
-      [v5 setCapturedDepth:0];
+      [renderer3 setCapturedDepth:0];
     }
   }
 }
@@ -251,14 +251,14 @@ uint64_t __39__JFXAnimojiEffectRenderer_isSupported__block_invoke()
 - (NSString)description
 {
   [(NSLock *)self->_rendererLock lock];
-  v3 = [(JFXAnimojiEffectRenderer *)self currentPuppet];
-  v4 = [v3 effectID];
+  currentPuppet = [(JFXAnimojiEffectRenderer *)self currentPuppet];
+  effectID = [currentPuppet effectID];
 
   [(NSLock *)self->_rendererLock unlock];
   v8.receiver = self;
   v8.super_class = JFXAnimojiEffectRenderer;
   v5 = [(JFXAnimojiEffectRenderer *)&v8 description];
-  v6 = [v5 stringByAppendingFormat:@" %@", v4];
+  v6 = [v5 stringByAppendingFormat:@" %@", effectID];
 
   return v6;
 }
@@ -277,15 +277,15 @@ uint64_t __39__JFXAnimojiEffectRenderer_isSupported__block_invoke()
   return avatarStore;
 }
 
-- (void)setupInputBufferPoolForSize:(CGSize)a3 capturedImage:(__CVBuffer *)a4
+- (void)setupInputBufferPoolForSize:(CGSize)size capturedImage:(__CVBuffer *)image
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v43[3] = *MEMORY[0x277D85DE8];
   [(JFXAnimojiEffectRenderer *)self workingSize];
   if (width != v9 || height != v8)
   {
-    pixelBuffer = a4;
+    pixelBuffer = image;
     [(JFXAnimojiEffectRenderer *)self setWorkingSize:width, height];
     if ([(JFXAnimojiEffectRenderer *)self inputBufferPool])
     {
@@ -305,18 +305,18 @@ uint64_t __39__JFXAnimojiEffectRenderer_isSupported__block_invoke()
     v15 = *MEMORY[0x277CC4DD8];
     [v11 setObject:v14 forKeyedSubscript:*MEMORY[0x277CC4DD8]];
 
-    v16 = [MEMORY[0x277D415E0] sRGBColorSpace];
-    v17 = [v16 nclcTriplet];
+    sRGBColorSpace = [MEMORY[0x277D415E0] sRGBColorSpace];
+    nclcTriplet = [sRGBColorSpace nclcTriplet];
 
     v18 = *MEMORY[0x277CC4C00];
     v42[0] = *MEMORY[0x277CC4C00];
-    v43[0] = [v17 colorPrimary];
+    v43[0] = [nclcTriplet colorPrimary];
     v19 = *MEMORY[0x277CC4CC0];
     v42[1] = *MEMORY[0x277CC4CC0];
-    v43[1] = [v17 transferFunction];
+    v43[1] = [nclcTriplet transferFunction];
     v20 = *MEMORY[0x277CC4D10];
     v42[2] = *MEMORY[0x277CC4D10];
-    v43[2] = [v17 ycbcrMatrix];
+    v43[2] = [nclcTriplet ycbcrMatrix];
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v43 forKeys:v42 count:3];
     v22 = *MEMORY[0x277CC4B48];
     [v11 setObject:v21 forKeyedSubscript:*MEMORY[0x277CC4B48]];
@@ -325,7 +325,7 @@ uint64_t __39__JFXAnimojiEffectRenderer_isSupported__block_invoke()
     CVPixelBufferPoolCreate(*MEMORY[0x277CBECE8], 0, v11, &self->_inputBufferPool);
     if (self->_rgbOnlyMemoji)
     {
-      v35 = v17;
+      v35 = nclcTriplet;
       if ([(JFXAnimojiEffectRenderer *)self deviceOrientedColorBufferPool])
       {
         CVPixelBufferPoolRelease([(JFXAnimojiEffectRenderer *)self deviceOrientedColorBufferPool]);
@@ -359,8 +359,8 @@ uint64_t __39__JFXAnimojiEffectRenderer_isSupported__block_invoke()
       [v30 setColorSize:{height, width}];
       [v30 setAvailableEffectTypes:8];
       [v30 setActiveEffectType:8];
-      v31 = [(AVTRenderer *)self->_renderer commandQueue];
-      [v30 setMetalCommandQueue:v31];
+      commandQueue = [(AVTRenderer *)self->_renderer commandQueue];
+      [v30 setMetalCommandQueue:commandQueue];
 
       [v30 setSyncInitialization:1];
       v32 = [objc_alloc(MEMORY[0x277D3E868]) initWithDescriptor:v30];
@@ -371,7 +371,7 @@ uint64_t __39__JFXAnimojiEffectRenderer_isSupported__block_invoke()
       CVPixelBufferRelease(self->_segmentationPixelBuffer);
       v38 = *MEMORY[0x277CC4DE8];
       v39 = MEMORY[0x277CBEC10];
-      v17 = v35;
+      nclcTriplet = v35;
       if (CVPixelBufferCreate(0, 0.0, 0.0, 0, [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v39 forKeys:&v38 count:1], &self->_segmentationPixelBuffer))
       {
         v34 = JFXLog_effects();
@@ -384,47 +384,47 @@ uint64_t __39__JFXAnimojiEffectRenderer_isSupported__block_invoke()
   }
 }
 
-- (id)renderWithTime:(id *)a3 metadata:(id)a4
+- (id)renderWithTime:(id *)time metadata:(id)metadata
 {
-  v5 = a4;
-  v6 = [v5 objectForKeyedSubscript:@"JFXAnimojiRendererMetadata_JFXARMetadata"];
-  v27 = [v5 objectForKeyedSubscript:@"JFXAnimojiRendererMetadata_DepthData"];
-  v7 = [v5 objectForKeyedSubscript:@"JFXAnimojiRendererMetadata_Effect"];
-  v8 = [v5 objectForKeyedSubscript:@"JFXAnimojiRendererMetadata_DataRepresentation"];
-  v9 = [v5 objectForKeyedSubscript:@"JFXAnimojiRendererMetadata_BackgroundColor"];
-  v10 = [v6 arFrame];
-  v11 = [v7 dataRepresentation];
+  metadataCopy = metadata;
+  v6 = [metadataCopy objectForKeyedSubscript:@"JFXAnimojiRendererMetadata_JFXARMetadata"];
+  v27 = [metadataCopy objectForKeyedSubscript:@"JFXAnimojiRendererMetadata_DepthData"];
+  v7 = [metadataCopy objectForKeyedSubscript:@"JFXAnimojiRendererMetadata_Effect"];
+  v8 = [metadataCopy objectForKeyedSubscript:@"JFXAnimojiRendererMetadata_DataRepresentation"];
+  v9 = [metadataCopy objectForKeyedSubscript:@"JFXAnimojiRendererMetadata_BackgroundColor"];
+  arFrame = [v6 arFrame];
+  dataRepresentation = [v7 dataRepresentation];
   v25 = v8;
-  LODWORD(v8) = [v8 isEqualToData:v11];
+  LODWORD(v8) = [v8 isEqualToData:dataRepresentation];
 
   v26 = v6;
   if (v8)
   {
-    v12 = [v6 animojiPhysicsBlendShapes];
+    animojiPhysicsBlendShapes = [v6 animojiPhysicsBlendShapes];
   }
 
   else
   {
-    v12 = 0;
+    animojiPhysicsBlendShapes = 0;
   }
 
-  v13 = [v5 objectForKeyedSubscript:@"JFXAnimojiRendererMetadata_AVCaptureVideoOrientation"];
-  v14 = [v13 integerValue];
+  v13 = [metadataCopy objectForKeyedSubscript:@"JFXAnimojiRendererMetadata_AVCaptureVideoOrientation"];
+  integerValue = [v13 integerValue];
 
-  v15 = [v5 objectForKeyedSubscript:@"JFXAnimojiRendererMetadata_UIInterfaceOrientation"];
-  v16 = [v15 integerValue];
+  v15 = [metadataCopy objectForKeyedSubscript:@"JFXAnimojiRendererMetadata_UIInterfaceOrientation"];
+  integerValue2 = [v15 integerValue];
 
-  v17 = [v5 objectForKeyedSubscript:@"JFXAnimojiRendererMetadata_RenderSize"];
+  v17 = [metadataCopy objectForKeyedSubscript:@"JFXAnimojiRendererMetadata_RenderSize"];
   [v17 CGSizeValue];
-  -[JFXAnimojiEffectRenderer setupInputBufferPoolForSize:capturedImage:](self, "setupInputBufferPoolForSize:capturedImage:", [v10 capturedImage], v18, v19);
-  v20 = [(JFXAnimojiEffectRenderer *)self renderPassLock];
-  [v20 lock];
+  -[JFXAnimojiEffectRenderer setupInputBufferPoolForSize:capturedImage:](self, "setupInputBufferPoolForSize:capturedImage:", [arFrame capturedImage], v18, v19);
+  renderPassLock = [(JFXAnimojiEffectRenderer *)self renderPassLock];
+  [renderPassLock lock];
 
   kdebug_trace();
-  v21 = [(JFXAnimojiEffectRenderer *)self newPixelBufferRenderedFromARFrame:v10 withEffect:v7 depthData:v27 captureOrientation:v14 interfaceOrientation:v16 preRecordedBlendShapes:v12 backgroundColor:v9];
+  v21 = [(JFXAnimojiEffectRenderer *)self newPixelBufferRenderedFromARFrame:arFrame withEffect:v7 depthData:v27 captureOrientation:integerValue interfaceOrientation:integerValue2 preRecordedBlendShapes:animojiPhysicsBlendShapes backgroundColor:v9];
   kdebug_trace();
-  v22 = [(JFXAnimojiEffectRenderer *)self renderPassLock];
-  [v22 unlock];
+  renderPassLock2 = [(JFXAnimojiEffectRenderer *)self renderPassLock];
+  [renderPassLock2 unlock];
 
   if (v21)
   {
@@ -440,11 +440,11 @@ uint64_t __39__JFXAnimojiEffectRenderer_isSupported__block_invoke()
   return v23;
 }
 
-- (id)renderWithInputs:(id)a3 time:(id *)a4 userContext:(id)a5 compositeContext:(id)a6
+- (id)renderWithInputs:(id)inputs time:(id *)time userContext:(id)context compositeContext:(id)compositeContext
 {
-  v9 = a3;
-  v15 = *a4;
-  v10 = [(JFXAnimojiEffectRenderer *)self renderWithTime:&v15 metadata:a5];
+  inputsCopy = inputs;
+  v15 = *time;
+  v10 = [(JFXAnimojiEffectRenderer *)self renderWithTime:&v15 metadata:context];
   v11 = v10;
   if (v10)
   {
@@ -454,13 +454,13 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  if (v9)
+  if (inputsCopy)
   {
-    v13 = [v9 objectForKeyedSubscript:&unk_28556D0E0];
+    v13 = [inputsCopy objectForKeyedSubscript:&unk_28556D0E0];
 
     if (v13)
     {
-      v12 = [v9 objectForKeyedSubscript:&unk_28556D0E0];
+      v12 = [inputsCopy objectForKeyedSubscript:&unk_28556D0E0];
       goto LABEL_3;
     }
   }
@@ -475,38 +475,38 @@ LABEL_4:
   return v13;
 }
 
-- (id)createNewRendererForPuppet:(id)a3
+- (id)createNewRendererForPuppet:(id)puppet
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 dataRepresentation];
-  if (v5 && [MEMORY[0x277CF04B8] canLoadDataRepresentation:v5])
+  puppetCopy = puppet;
+  dataRepresentation = [puppetCopy dataRepresentation];
+  if (dataRepresentation && [MEMORY[0x277CF04B8] canLoadDataRepresentation:dataRepresentation])
   {
     v30 = 0;
-    v6 = [MEMORY[0x277CF04B8] avatarWithDataRepresentation:v5 error:&v30];
+    v6 = [MEMORY[0x277CF04B8] avatarWithDataRepresentation:dataRepresentation error:&v30];
     v7 = v30;
   }
 
   else
   {
     v8 = MEMORY[0x277CF0500];
-    v9 = [v4 effectID];
-    v10 = [v8 requestForAvatarWithIdentifier:v9];
+    effectID = [puppetCopy effectID];
+    v10 = [v8 requestForAvatarWithIdentifier:effectID];
 
-    v11 = [(JFXAnimojiEffectRenderer *)self avatarStore];
+    avatarStore = [(JFXAnimojiEffectRenderer *)self avatarStore];
     v29 = 0;
-    v12 = [v11 avatarsForFetchRequest:v10 error:&v29];
+    v12 = [avatarStore avatarsForFetchRequest:v10 error:&v29];
     v28 = v29;
 
-    v13 = [v12 firstObject];
+    firstObject = [v12 firstObject];
     v14 = MEMORY[0x277CCACA8];
     v15 = NSStringFromJFXEffectType(7);
-    v16 = [v4 effectID];
-    v17 = [v14 stringWithFormat:@"Unable to render effect - type: %@, name: %@, reason: An Animoji with the specified name does not exist", v15, v16];
+    effectID2 = [puppetCopy effectID];
+    v17 = [v14 stringWithFormat:@"Unable to render effect - type: %@, name: %@, reason: An Animoji with the specified name does not exist", v15, effectID2];
 
-    if (v13)
+    if (firstObject)
     {
-      v6 = [MEMORY[0x277CF0508] avatarForRecord:v13];
+      v6 = [MEMORY[0x277CF0508] avatarForRecord:firstObject];
     }
 
     else
@@ -524,10 +524,10 @@ LABEL_4:
   }
 
   v31[0] = *MEMORY[0x277CF0498];
-  v19 = [(JFXAnimojiEffectRenderer *)self constrainHeadPose];
+  constrainHeadPose = [(JFXAnimojiEffectRenderer *)self constrainHeadPose];
   v20 = MEMORY[0x277CBEC38];
   v21 = MEMORY[0x277CBEC28];
-  if (v19)
+  if (constrainHeadPose)
   {
     v22 = MEMORY[0x277CBEC28];
   }
@@ -564,28 +564,28 @@ LABEL_4:
   return v25;
 }
 
-- (void)asyncLoadNewPuppet:(id)a3 currentPuppet:(id)a4 captureOrientation:(int64_t)a5 interfaceOrientation:(int64_t)a6 primeFrame:(id)a7 backgroundColor:(id)a8
+- (void)asyncLoadNewPuppet:(id)puppet currentPuppet:(id)currentPuppet captureOrientation:(int64_t)orientation interfaceOrientation:(int64_t)interfaceOrientation primeFrame:(id)frame backgroundColor:(id)color
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
+  puppetCopy = puppet;
+  currentPuppetCopy = currentPuppet;
+  frameCopy = frame;
+  colorCopy = color;
   puppetLoadingQ = self->_puppetLoadingQ;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __128__JFXAnimojiEffectRenderer_asyncLoadNewPuppet_currentPuppet_captureOrientation_interfaceOrientation_primeFrame_backgroundColor___block_invoke;
   block[3] = &unk_278D7A5D8;
   block[4] = self;
-  v24 = v14;
-  v28 = a5;
-  v29 = a6;
-  v25 = v16;
-  v26 = v15;
-  v27 = v17;
-  v19 = v17;
-  v20 = v15;
-  v21 = v16;
-  v22 = v14;
+  v24 = puppetCopy;
+  orientationCopy = orientation;
+  interfaceOrientationCopy = interfaceOrientation;
+  v25 = frameCopy;
+  v26 = currentPuppetCopy;
+  v27 = colorCopy;
+  v19 = colorCopy;
+  v20 = currentPuppetCopy;
+  v21 = frameCopy;
+  v22 = puppetCopy;
   dispatch_async(puppetLoadingQ, block);
 }
 
@@ -644,20 +644,20 @@ LABEL_11:
   }
 }
 
-- (void)updateCurrentRenderer:(id)a3 withPuppet:(id)a4
+- (void)updateCurrentRenderer:(id)renderer withPuppet:(id)puppet
 {
-  v6 = a3;
-  v7 = a4;
+  rendererCopy = renderer;
+  puppetCopy = puppet;
   puppetRenderingQ = self->_puppetRenderingQ;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__JFXAnimojiEffectRenderer_updateCurrentRenderer_withPuppet___block_invoke;
   block[3] = &unk_278D7A600;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = puppetCopy;
+  v13 = rendererCopy;
+  v9 = rendererCopy;
+  v10 = puppetCopy;
   dispatch_async(puppetRenderingQ, block);
 }
 
@@ -679,29 +679,29 @@ void __61__JFXAnimojiEffectRenderer_updateCurrentRenderer_withPuppet___block_inv
   [v5 unlock];
 }
 
-- (BOOL)currentPuppetIsEqualTo:(id)a3
+- (BOOL)currentPuppetIsEqualTo:(id)to
 {
-  v4 = a3;
-  v5 = [(JFXAnimojiEffectRenderer *)self rendererLock];
-  [v5 lock];
+  toCopy = to;
+  rendererLock = [(JFXAnimojiEffectRenderer *)self rendererLock];
+  [rendererLock lock];
 
-  v6 = [(JFXAnimojiEffectRenderer *)self currentPuppet];
-  v7 = [v6 isEqual:v4];
+  currentPuppet = [(JFXAnimojiEffectRenderer *)self currentPuppet];
+  v7 = [currentPuppet isEqual:toCopy];
 
-  v8 = [(JFXAnimojiEffectRenderer *)self rendererLock];
-  [v8 unlock];
+  rendererLock2 = [(JFXAnimojiEffectRenderer *)self rendererLock];
+  [rendererLock2 unlock];
 
   return v7;
 }
 
-- (BOOL)setupPoseForPreRecordedBlendShapes:(id)a3 forRenderer:(id)a4 captureOrientation:(int64_t)a5 interfaceOrientation:(int64_t)a6 withFrame:(id)a7
+- (BOOL)setupPoseForPreRecordedBlendShapes:(id)shapes forRenderer:(id)renderer captureOrientation:(int64_t)orientation interfaceOrientation:(int64_t)interfaceOrientation withFrame:(id)frame
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  shapesCopy = shapes;
+  rendererCopy = renderer;
+  frameCopy = frame;
   if (objc_opt_respondsToSelector())
   {
-    [v13 _cek_beginTransaction];
+    [rendererCopy _cek_beginTransaction];
   }
 
   if ([(JFXAnimojiEffectRenderer *)self constrainHeadPose])
@@ -716,34 +716,34 @@ void __61__JFXAnimojiEffectRenderer_updateCurrentRenderer_withPuppet___block_inv
     v29[1] = 3221225472;
     v29[2] = __125__JFXAnimojiEffectRenderer_setupPoseForPreRecordedBlendShapes_forRenderer_captureOrientation_interfaceOrientation_withFrame___block_invoke;
     v29[3] = &unk_278D7A628;
-    v30 = v12;
-    [v13 _cek_applyBlendshapeWeightsInHierarchyUsingBlock:v29];
+    v30 = shapesCopy;
+    [rendererCopy _cek_applyBlendshapeWeightsInHierarchyUsingBlock:v29];
     v15 = 1;
     v16 = v30;
   }
 
   else
   {
-    if ((a5 - 1) > 3)
+    if ((orientation - 1) > 3)
     {
       v17 = 0;
     }
 
     else
     {
-      v17 = qword_242B5B7C0[a5 - 1];
+      v17 = qword_242B5B7C0[orientation - 1];
     }
 
-    v18 = [v13 faceTracker];
-    [v18 setInterfaceOrientation:a6];
+    faceTracker = [rendererCopy faceTracker];
+    [faceTracker setInterfaceOrientation:interfaceOrientation];
 
-    v16 = [MEMORY[0x277CF04D8] trackingInfoWithARFrame:v14 inputOrientation:v17 outputOrientation:a6];
+    v16 = [MEMORY[0x277CF04D8] trackingInfoWithARFrame:frameCopy inputOrientation:v17 outputOrientation:interfaceOrientation];
     v15 = v16 != 0;
     if (v16)
     {
-      v19 = [v13 avatar];
-      v20 = [v13 pointOfView];
-      [v19 applyHeadPoseWithTrackingInfo:v16 gazeCorrection:0 pointOfView:v20];
+      avatar = [rendererCopy avatar];
+      pointOfView = [rendererCopy pointOfView];
+      [avatar applyHeadPoseWithTrackingInfo:v16 gazeCorrection:0 pointOfView:pointOfView];
 
       if (objc_opt_respondsToSelector())
       {
@@ -751,13 +751,13 @@ void __61__JFXAnimojiEffectRenderer_updateCurrentRenderer_withPuppet___block_inv
         v25 = 3221225472;
         v26 = __125__JFXAnimojiEffectRenderer_setupPoseForPreRecordedBlendShapes_forRenderer_captureOrientation_interfaceOrientation_withFrame___block_invoke_2;
         v27 = &unk_278D7A628;
-        v28 = v12;
-        [v13 _cek_applyBlendshapeWeightsInHierarchyUsingBlock:&v24];
+        v28 = shapesCopy;
+        [rendererCopy _cek_applyBlendshapeWeightsInHierarchyUsingBlock:&v24];
       }
 
-      v21 = [v13 avatar];
-      v22 = [v13 pointOfView];
-      [v21 applyHeadPoseWithTrackingInfo:v16 gazeCorrection:0 pointOfView:v22];
+      avatar2 = [rendererCopy avatar];
+      pointOfView2 = [rendererCopy pointOfView];
+      [avatar2 applyHeadPoseWithTrackingInfo:v16 gazeCorrection:0 pointOfView:pointOfView2];
 
       v15 = 1;
     }
@@ -766,7 +766,7 @@ void __61__JFXAnimojiEffectRenderer_updateCurrentRenderer_withPuppet___block_inv
 LABEL_15:
   if (objc_opt_respondsToSelector())
   {
-    [v13 _cek_commitTransaction];
+    [rendererCopy _cek_commitTransaction];
   }
 
   return v15;
@@ -792,15 +792,15 @@ void __125__JFXAnimojiEffectRenderer_setupPoseForPreRecordedBlendShapes_forRende
   }
 }
 
-- (BOOL)setupHeadPoseAndBlendShapesForFrame:(id)a3 forRenderer:(id)a4 captureOrientation:(int64_t)a5 interfaceOrientation:(int64_t)a6 isInitialSetup:(BOOL)a7
+- (BOOL)setupHeadPoseAndBlendShapesForFrame:(id)frame forRenderer:(id)renderer captureOrientation:(int64_t)orientation interfaceOrientation:(int64_t)interfaceOrientation isInitialSetup:(BOOL)setup
 {
-  v7 = a7;
+  setupCopy = setup;
   v33 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = v13;
+  frameCopy = frame;
+  rendererCopy = renderer;
+  v14 = rendererCopy;
   v15 = 0;
-  if (v12 && v13)
+  if (frameCopy && rendererCopy)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -814,41 +814,41 @@ void __125__JFXAnimojiEffectRenderer_setupPoseForPreRecordedBlendShapes_forRende
 
     else
     {
-      if ((a5 - 1) > 3)
+      if ((orientation - 1) > 3)
       {
         v16 = 0;
       }
 
       else
       {
-        v16 = qword_242B5B7C0[a5 - 1];
+        v16 = qword_242B5B7C0[orientation - 1];
       }
 
-      v17 = [v14 faceTracker];
-      [v17 setInterfaceOrientation:a6];
+      faceTracker = [v14 faceTracker];
+      [faceTracker setInterfaceOrientation:interfaceOrientation];
 
-      v18 = [MEMORY[0x277CF04D8] trackingInfoWithARFrame:v12 inputOrientation:v16 outputOrientation:a6];
+      v18 = [MEMORY[0x277CF04D8] trackingInfoWithARFrame:frameCopy inputOrientation:v16 outputOrientation:interfaceOrientation];
       v15 = v18 != 0;
-      v19 = [(JFXAnimojiEffectRenderer *)self trackingLossDelegate];
-      v20 = [v19 shouldShowAnimojiFaceReticle];
+      trackingLossDelegate = [(JFXAnimojiEffectRenderer *)self trackingLossDelegate];
+      shouldShowAnimojiFaceReticle = [trackingLossDelegate shouldShowAnimojiFaceReticle];
 
       if (v18)
       {
-        if ((v20 & 1) == 0)
+        if ((shouldShowAnimojiFaceReticle & 1) == 0)
         {
-          v21 = [(JFXAnimojiEffectRenderer *)self trackingLossDelegate];
-          [v21 hideAnimojiFaceReticleForTrackingGain];
+          trackingLossDelegate2 = [(JFXAnimojiEffectRenderer *)self trackingLossDelegate];
+          [trackingLossDelegate2 hideAnimojiFaceReticleForTrackingGain];
         }
 
-        v22 = [v14 avatar];
-        v23 = [v14 pointOfView];
-        [v22 applyHeadPoseWithTrackingInfo:v18 gazeCorrection:0 pointOfView:v23];
+        avatar = [v14 avatar];
+        pointOfView = [v14 pointOfView];
+        [avatar applyHeadPoseWithTrackingInfo:v18 gazeCorrection:0 pointOfView:pointOfView];
 
-        [v22 applyBlendShapesWithTrackingInfo:v18];
-        if (v7)
+        [avatar applyBlendShapesWithTrackingInfo:v18];
+        if (setupCopy)
         {
-          v24 = [v14 pointOfView];
-          [v22 applyHeadPoseWithTrackingInfo:v18 gazeCorrection:0 pointOfView:v24];
+          pointOfView2 = [v14 pointOfView];
+          [avatar applyHeadPoseWithTrackingInfo:v18 gazeCorrection:0 pointOfView:pointOfView2];
         }
 
         if (self->_logged_render_failed)
@@ -868,13 +868,13 @@ void __125__JFXAnimojiEffectRenderer_setupPoseForPreRecordedBlendShapes_forRende
 
       else
       {
-        if (v20)
+        if (shouldShowAnimojiFaceReticle)
         {
-          v27 = [(JFXAnimojiEffectRenderer *)self trackingLossDelegate];
-          [v27 setupAnimojiFaceReticleForTrackingLoss];
+          trackingLossDelegate3 = [(JFXAnimojiEffectRenderer *)self trackingLossDelegate];
+          [trackingLossDelegate3 setupAnimojiFaceReticleForTrackingLoss];
 
-          v28 = [(JFXAnimojiEffectRenderer *)self trackingLossDelegate];
-          [v28 showAnimojiFaceReticleForTrackingLoss];
+          trackingLossDelegate4 = [(JFXAnimojiEffectRenderer *)self trackingLossDelegate];
+          [trackingLossDelegate4 showAnimojiFaceReticleForTrackingLoss];
         }
 
         if (!self->_logged_render_failed)
@@ -899,22 +899,22 @@ void __125__JFXAnimojiEffectRenderer_setupPoseForPreRecordedBlendShapes_forRende
   return v15;
 }
 
-- (id)preRecordedBlendShapesForFrame:(id)a3 captureOrientation:(int64_t)a4 interfaceOrientation:(int64_t)a5 backgroundColor:(id)a6
+- (id)preRecordedBlendShapesForFrame:(id)frame captureOrientation:(int64_t)orientation interfaceOrientation:(int64_t)interfaceOrientation backgroundColor:(id)color
 {
   v18 = 0;
-  v10 = a6;
-  v11 = a3;
-  v12 = [(JFXAnimojiEffectRenderer *)self currentPuppet];
-  [(JFXAnimojiEffectRenderer *)self JFX_getRenderer:&v18 forAnimojiEffect:v12 primeFrame:0 captureOrientation:a4 interfaceOrientation:a5 backgroundColor:v10];
+  colorCopy = color;
+  frameCopy = frame;
+  currentPuppet = [(JFXAnimojiEffectRenderer *)self currentPuppet];
+  [(JFXAnimojiEffectRenderer *)self JFX_getRenderer:&v18 forAnimojiEffect:currentPuppet primeFrame:0 captureOrientation:orientation interfaceOrientation:interfaceOrientation backgroundColor:colorCopy];
 
   v13 = v18;
-  LODWORD(a4) = [(JFXAnimojiEffectRenderer *)self setupHeadPoseAndBlendShapesForFrame:v11 forRenderer:v13 captureOrientation:a4 interfaceOrientation:a5 isInitialSetup:1];
-  [v11 timestamp];
+  LODWORD(orientation) = [(JFXAnimojiEffectRenderer *)self setupHeadPoseAndBlendShapesForFrame:frameCopy forRenderer:v13 captureOrientation:orientation interfaceOrientation:interfaceOrientation isInitialSetup:1];
+  [frameCopy timestamp];
   v15 = v14;
 
   [v13 updateAtTime:v15];
   v16 = 0;
-  if (a4)
+  if (orientation)
   {
     v16 = [(JFXAnimojiEffectRenderer *)self JFX_blendShapesForRenderer:v13];
   }
@@ -922,55 +922,55 @@ void __125__JFXAnimojiEffectRenderer_setupPoseForPreRecordedBlendShapes_forRende
   return v16;
 }
 
-- (BOOL)JFX_getRenderer:(id *)a3 forAnimojiEffect:(id)a4 primeFrame:(id)a5 captureOrientation:(int64_t)a6 interfaceOrientation:(int64_t)a7 backgroundColor:(id)a8
+- (BOOL)JFX_getRenderer:(id *)renderer forAnimojiEffect:(id)effect primeFrame:(id)frame captureOrientation:(int64_t)orientation interfaceOrientation:(int64_t)interfaceOrientation backgroundColor:(id)color
 {
-  v14 = a4;
-  v15 = a5;
-  v16 = a8;
-  v17 = [(JFXAnimojiEffectRenderer *)self rendererLock];
-  [v17 lock];
+  effectCopy = effect;
+  frameCopy = frame;
+  colorCopy = color;
+  rendererLock = [(JFXAnimojiEffectRenderer *)self rendererLock];
+  [rendererLock lock];
 
-  v18 = [(JFXAnimojiEffectRenderer *)self currentPuppet];
-  v19 = [v18 isEqual:v14];
+  currentPuppet = [(JFXAnimojiEffectRenderer *)self currentPuppet];
+  v19 = [currentPuppet isEqual:effectCopy];
 
   if ((v19 & 1) == 0)
   {
     if (![(JFXAnimojiEffectRenderer *)self asynchronouslyLoadNewPuppets])
     {
-      v22 = [(JFXAnimojiEffectRenderer *)self createNewRendererForPuppet:v14];
+      v22 = [(JFXAnimojiEffectRenderer *)self createNewRendererForPuppet:effectCopy];
       [(JFXAnimojiEffectRenderer *)self setRenderer:v22];
 
-      [(JFXAnimojiEffectRenderer *)self setCurrentPuppet:v14];
+      [(JFXAnimojiEffectRenderer *)self setCurrentPuppet:effectCopy];
       v21 = 1;
       goto LABEL_6;
     }
 
-    v20 = [(JFXAnimojiEffectRenderer *)self currentPuppet];
-    [(JFXAnimojiEffectRenderer *)self setCurrentPuppet:v14];
-    [(JFXAnimojiEffectRenderer *)self asyncLoadNewPuppet:v14 currentPuppet:v20 captureOrientation:a6 interfaceOrientation:a7 primeFrame:v15 backgroundColor:v16];
+    currentPuppet2 = [(JFXAnimojiEffectRenderer *)self currentPuppet];
+    [(JFXAnimojiEffectRenderer *)self setCurrentPuppet:effectCopy];
+    [(JFXAnimojiEffectRenderer *)self asyncLoadNewPuppet:effectCopy currentPuppet:currentPuppet2 captureOrientation:orientation interfaceOrientation:interfaceOrientation primeFrame:frameCopy backgroundColor:colorCopy];
   }
 
   v21 = 0;
 LABEL_6:
-  *a3 = [(JFXAnimojiEffectRenderer *)self renderer];
-  v23 = [(JFXAnimojiEffectRenderer *)self rendererLock];
-  [v23 unlock];
+  *renderer = [(JFXAnimojiEffectRenderer *)self renderer];
+  rendererLock2 = [(JFXAnimojiEffectRenderer *)self rendererLock];
+  [rendererLock2 unlock];
 
   return v21;
 }
 
-- (void)renderFrame:(id)a3 withEffect:(id)a4 depthData:(id)a5 captureOrientation:(int64_t)a6 interfaceOrientation:(int64_t)a7 preRecordedBlendShapes:(id)a8 backgroundColor:(id)a9 completionBlock:(id)a10
+- (void)renderFrame:(id)frame withEffect:(id)effect depthData:(id)data captureOrientation:(int64_t)orientation interfaceOrientation:(int64_t)interfaceOrientation preRecordedBlendShapes:(id)shapes backgroundColor:(id)color completionBlock:(id)self0
 {
   v72 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a4;
-  v50 = a5;
-  v51 = a8;
-  v18 = a9;
-  v48 = v17;
-  v49 = a10;
+  frameCopy = frame;
+  effectCopy = effect;
+  dataCopy = data;
+  shapesCopy = shapes;
+  colorCopy = color;
+  v48 = effectCopy;
+  blockCopy = block;
   v70 = 0;
-  v19 = [(JFXAnimojiEffectRenderer *)self JFX_getRenderer:&v70 forAnimojiEffect:v17 primeFrame:v16 captureOrientation:a6 interfaceOrientation:a7 backgroundColor:v18];
+  v19 = [(JFXAnimojiEffectRenderer *)self JFX_getRenderer:&v70 forAnimojiEffect:effectCopy primeFrame:frameCopy captureOrientation:orientation interfaceOrientation:interfaceOrientation backgroundColor:colorCopy];
   v20 = v70;
   v66 = 0;
   v67 = &v66;
@@ -980,22 +980,22 @@ LABEL_6:
   {
     if (v20)
     {
-      if ([v16 segmentationBuffer])
+      if ([frameCopy segmentationBuffer])
       {
-        v21 = [v20 faceTracker];
-        [v21 updateWithARFrame:v16 captureOrientation:a6 interfaceOrientation:a7 constrainHeadPose:-[JFXAnimojiEffectRenderer constrainHeadPose](self mirroredDepthData:{"constrainHeadPose"), 1}];
+        faceTracker = [v20 faceTracker];
+        [faceTracker updateWithARFrame:frameCopy captureOrientation:orientation interfaceOrientation:interfaceOrientation constrainHeadPose:-[JFXAnimojiEffectRenderer constrainHeadPose](self mirroredDepthData:{"constrainHeadPose"), 1}];
       }
 
       else
       {
-        v21 = [v20 faceTracker];
+        faceTracker = [v20 faceTracker];
         LOBYTE(v47) = 1;
-        [v21 updateWithARFrame:v16 worldAlignment:2 fallBackDepthData:v50 captureOrientation:a6 interfaceOrientation:a7 constrainHeadPose:-[JFXAnimojiEffectRenderer constrainHeadPose](self mirroredDepthData:{"constrainHeadPose"), v47}];
+        [faceTracker updateWithARFrame:frameCopy worldAlignment:2 fallBackDepthData:dataCopy captureOrientation:orientation interfaceOrientation:interfaceOrientation constrainHeadPose:-[JFXAnimojiEffectRenderer constrainHeadPose](self mirroredDepthData:{"constrainHeadPose"), v47}];
       }
 
-      if (v51)
+      if (shapesCopy)
       {
-        v27 = [(JFXAnimojiEffectRenderer *)self setupPoseForPreRecordedBlendShapes:v51 forRenderer:v20 captureOrientation:a6 interfaceOrientation:a7 withFrame:v16];
+        v27 = [(JFXAnimojiEffectRenderer *)self setupPoseForPreRecordedBlendShapes:shapesCopy forRenderer:v20 captureOrientation:orientation interfaceOrientation:interfaceOrientation withFrame:frameCopy];
         *(v67 + 24) = v27;
       }
 
@@ -1005,8 +1005,8 @@ LABEL_6:
         v65 = 0u;
         v62 = 0u;
         v63 = 0u;
-        v28 = [v16 anchors];
-        v29 = [v28 countByEnumeratingWithState:&v62 objects:v71 count:16];
+        anchors = [frameCopy anchors];
+        v29 = [anchors countByEnumeratingWithState:&v62 objects:v71 count:16];
         if (v29)
         {
           v30 = *v63;
@@ -1016,7 +1016,7 @@ LABEL_6:
             {
               if (*v63 != v30)
               {
-                objc_enumerationMutation(v28);
+                objc_enumerationMutation(anchors);
               }
 
               v32 = *(*(&v62 + 1) + 8 * i);
@@ -1033,7 +1033,7 @@ LABEL_6:
               }
             }
 
-            v29 = [v28 countByEnumeratingWithState:&v62 objects:v71 count:16];
+            v29 = [anchors countByEnumeratingWithState:&v62 objects:v71 count:16];
             if (v29)
             {
               continue;
@@ -1047,28 +1047,28 @@ LABEL_29:
 
         if (*(v67 + 24) == 1)
         {
-          v34 = [(JFXAnimojiEffectRenderer *)self trackingLossDelegate];
-          v35 = [v34 shouldShowAnimojiFaceReticle];
+          trackingLossDelegate = [(JFXAnimojiEffectRenderer *)self trackingLossDelegate];
+          shouldShowAnimojiFaceReticle = [trackingLossDelegate shouldShowAnimojiFaceReticle];
 
-          if ((v35 & 1) == 0)
+          if ((shouldShowAnimojiFaceReticle & 1) == 0)
           {
-            v36 = [(JFXAnimojiEffectRenderer *)self trackingLossDelegate];
-            [v36 hideAnimojiFaceReticleForTrackingGain];
+            trackingLossDelegate2 = [(JFXAnimojiEffectRenderer *)self trackingLossDelegate];
+            [trackingLossDelegate2 hideAnimojiFaceReticleForTrackingGain];
           }
         }
 
         else
         {
-          v37 = [(JFXAnimojiEffectRenderer *)self trackingLossDelegate];
-          v38 = [v37 shouldShowAnimojiFaceReticle];
+          trackingLossDelegate3 = [(JFXAnimojiEffectRenderer *)self trackingLossDelegate];
+          shouldShowAnimojiFaceReticle2 = [trackingLossDelegate3 shouldShowAnimojiFaceReticle];
 
-          if (v38)
+          if (shouldShowAnimojiFaceReticle2)
           {
-            v39 = [(JFXAnimojiEffectRenderer *)self trackingLossDelegate];
-            [v39 setupAnimojiFaceReticleForTrackingLoss];
+            trackingLossDelegate4 = [(JFXAnimojiEffectRenderer *)self trackingLossDelegate];
+            [trackingLossDelegate4 setupAnimojiFaceReticleForTrackingLoss];
 
-            v40 = [(JFXAnimojiEffectRenderer *)self trackingLossDelegate];
-            [v40 showAnimojiFaceReticleForTrackingLoss];
+            trackingLossDelegate5 = [(JFXAnimojiEffectRenderer *)self trackingLossDelegate];
+            [trackingLossDelegate5 showAnimojiFaceReticleForTrackingLoss];
           }
 
           *(v67 + 24) = 1;
@@ -1079,28 +1079,28 @@ LABEL_29:
 
   else
   {
-    if (v51)
+    if (shapesCopy)
     {
-      v22 = [(JFXAnimojiEffectRenderer *)self setupPoseForPreRecordedBlendShapes:v51 forRenderer:v20 captureOrientation:a6 interfaceOrientation:a7 withFrame:v16];
+      v22 = [(JFXAnimojiEffectRenderer *)self setupPoseForPreRecordedBlendShapes:shapesCopy forRenderer:v20 captureOrientation:orientation interfaceOrientation:interfaceOrientation withFrame:frameCopy];
     }
 
     else
     {
-      v22 = [(JFXAnimojiEffectRenderer *)self setupHeadPoseAndBlendShapesForFrame:v16 forRenderer:v20 captureOrientation:a6 interfaceOrientation:a7 isInitialSetup:v19];
+      v22 = [(JFXAnimojiEffectRenderer *)self setupHeadPoseAndBlendShapesForFrame:frameCopy forRenderer:v20 captureOrientation:orientation interfaceOrientation:interfaceOrientation isInitialSetup:v19];
     }
 
     *(v67 + 24) = v22;
     if (v20)
     {
-      if ([v16 segmentationBuffer] && self->_rgbOnlyMemoji)
+      if ([frameCopy segmentationBuffer] && self->_rgbOnlyMemoji)
       {
-        [(JFXAnimojiEffectRenderer *)self computeHighQualitySegmentation:v16];
-        v23 = [v20 faceTracker];
-        [v23 updateWithARFrame:v16 captureOrientation:a6 interfaceOrientation:a7 constrainHeadPose:-[JFXAnimojiEffectRenderer constrainHeadPose](self mirroredDepthData:{"constrainHeadPose"), 0}];
+        [(JFXAnimojiEffectRenderer *)self computeHighQualitySegmentation:frameCopy];
+        faceTracker2 = [v20 faceTracker];
+        [faceTracker2 updateWithARFrame:frameCopy captureOrientation:orientation interfaceOrientation:interfaceOrientation constrainHeadPose:-[JFXAnimojiEffectRenderer constrainHeadPose](self mirroredDepthData:{"constrainHeadPose"), 0}];
       }
 
       [(JFXAnimojiEffectRenderer *)self workingSize];
-      [(JFXAnimojiEffectRenderer *)self JFX_focalLengthForFrame:v16 renderer:v20 workingSize:a7 interfaceOrientation:?];
+      [(JFXAnimojiEffectRenderer *)self JFX_focalLengthForFrame:frameCopy renderer:v20 workingSize:interfaceOrientation interfaceOrientation:?];
       v25 = v24;
       if (objc_opt_respondsToSelector())
       {
@@ -1118,17 +1118,17 @@ LABEL_29:
   block[3] = &unk_278D7A650;
   objc_copyWeak(&v60, &location);
   v59 = &v66;
-  v53 = v16;
-  v54 = self;
+  v53 = frameCopy;
+  selfCopy = self;
   v55 = v20;
-  v56 = v50;
-  v57 = v18;
-  v58 = v49;
-  v42 = v49;
-  v43 = v18;
-  v44 = v50;
+  v56 = dataCopy;
+  v57 = colorCopy;
+  v58 = blockCopy;
+  v42 = blockCopy;
+  v43 = colorCopy;
+  v44 = dataCopy;
   v45 = v20;
-  v46 = v16;
+  v46 = frameCopy;
   dispatch_async(puppetRenderingQ, block);
 
   objc_destroyWeak(&v60);
@@ -1166,29 +1166,29 @@ void __156__JFXAnimojiEffectRenderer_renderFrame_withEffect_depthData_captureOri
   }
 }
 
-- (__CVBuffer)newPixelBufferRenderedFromARFrame:(id)a3 withEffect:(id)a4 depthData:(id)a5 captureOrientation:(int64_t)a6 interfaceOrientation:(int64_t)a7 preRecordedBlendShapes:(id)a8 backgroundColor:(id)a9
+- (__CVBuffer)newPixelBufferRenderedFromARFrame:(id)frame withEffect:(id)effect depthData:(id)data captureOrientation:(int64_t)orientation interfaceOrientation:(int64_t)interfaceOrientation preRecordedBlendShapes:(id)shapes backgroundColor:(id)color
 {
   v44[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a8;
-  v19 = a9;
+  frameCopy = frame;
+  effectCopy = effect;
+  dataCopy = data;
+  shapesCopy = shapes;
+  colorCopy = color;
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
   v42 = 0;
-  if (!v17)
+  if (!dataCopy)
   {
-    v17 = [v15 capturedDepthData];
+    dataCopy = [frameCopy capturedDepthData];
     if ((useMirroredFrontCameraInStreamMode() & 1) == 0)
     {
-      v20 = v17;
-      v21 = [v17 depthDataMap];
-      v22 = v21;
-      if (v21)
+      v20 = dataCopy;
+      depthDataMap = [dataCopy depthDataMap];
+      v22 = depthDataMap;
+      if (depthDataMap)
       {
-        Width = CVPixelBufferGetWidth(v21);
+        Width = CVPixelBufferGetWidth(depthDataMap);
         Height = CVPixelBufferGetHeight(v22);
         p_mirroredDepthBuffer = &self->_mirroredDepthBuffer;
         mirroredDepthBuffer = self->_mirroredDepthBuffer;
@@ -1245,7 +1245,7 @@ LABEL_12:
   v38 = &v39;
   v29 = v28;
   v37 = v29;
-  [(JFXAnimojiEffectRenderer *)self renderFrame:v15 withEffect:v16 depthData:v17 captureOrientation:a6 interfaceOrientation:a7 preRecordedBlendShapes:v18 backgroundColor:v19 completionBlock:v36];
+  [(JFXAnimojiEffectRenderer *)self renderFrame:frameCopy withEffect:effectCopy depthData:dataCopy captureOrientation:orientation interfaceOrientation:interfaceOrientation preRecordedBlendShapes:shapesCopy backgroundColor:colorCopy completionBlock:v36];
   dispatch_group_wait(v29, 0xFFFFFFFFFFFFFFFFLL);
   v30 = v40[3];
 
@@ -1261,25 +1261,25 @@ void __162__JFXAnimojiEffectRenderer_newPixelBufferRenderedFromARFrame_withEffec
   dispatch_group_leave(v3);
 }
 
-- (void)renderAnimoji:(id)a3 withPresentationTime:(id *)a4 frame:(id)a5 depthData:(id)a6 backgroundColor:(id)a7 completionBlock:(id)a8
+- (void)renderAnimoji:(id)animoji withPresentationTime:(id *)time frame:(id)frame depthData:(id)data backgroundColor:(id)color completionBlock:(id)block
 {
-  v14 = a3;
-  v46 = a5;
-  v15 = a6;
-  v16 = a7;
-  v47 = a8;
+  animojiCopy = animoji;
+  frameCopy = frame;
+  dataCopy = data;
+  colorCopy = color;
+  blockCopy = block;
   pixelBufferOut = 0;
-  time = *a4;
+  time = *time;
   [(JFXAnimojiEffectRenderer *)self setSystemTimeForAVTRenderer:CMTimeGetSeconds(&time)];
   v17 = *MEMORY[0x277CBECE8];
-  LODWORD(a4) = CVPixelBufferPoolCreatePixelBuffer(*MEMORY[0x277CBECE8], self->_inputBufferPool, &pixelBufferOut);
+  LODWORD(time) = CVPixelBufferPoolCreatePixelBuffer(*MEMORY[0x277CBECE8], self->_inputBufferPool, &pixelBufferOut);
   CVPixelBufferLockBaseAddress(pixelBufferOut, 0);
   BaseAddress = CVPixelBufferGetBaseAddress(pixelBufferOut);
   BytesPerRow = CVPixelBufferGetBytesPerRow(pixelBufferOut);
   Height = CVPixelBufferGetHeight(pixelBufferOut);
   bzero(BaseAddress, Height * BytesPerRow);
   CVPixelBufferUnlockBaseAddress(pixelBufferOut, 0);
-  if (a4)
+  if (time)
   {
     v21 = JFXLog_effects();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -1300,18 +1300,18 @@ void __162__JFXAnimojiEffectRenderer_newPixelBufferRenderedFromARFrame_withEffec
     }
   }
 
-  v25 = [MEMORY[0x277CD6F50] renderPassDescriptor];
-  v26 = [v25 colorAttachments];
-  v27 = [v26 objectAtIndexedSubscript:0];
+  renderPassDescriptor = [MEMORY[0x277CD6F50] renderPassDescriptor];
+  colorAttachments = [renderPassDescriptor colorAttachments];
+  v27 = [colorAttachments objectAtIndexedSubscript:0];
   [v27 setLoadAction:2];
 
   v54 = 0.0;
   v55 = 0.0;
   v52 = 0.0;
   v53 = 0.0;
-  if (v16)
+  if (colorCopy)
   {
-    [v16 getRed:&v55 green:&v54 blue:&v53 alpha:&v52];
+    [colorCopy getRed:&v55 green:&v54 blue:&v53 alpha:&v52];
     v28 = v54;
     v29 = v55;
     v30 = v52;
@@ -1326,25 +1326,25 @@ void __162__JFXAnimojiEffectRenderer_newPixelBufferRenderedFromARFrame_withEffec
     v29 = 0.0;
   }
 
-  v32 = [v25 colorAttachments];
-  v33 = [v32 objectAtIndexedSubscript:0];
+  colorAttachments2 = [renderPassDescriptor colorAttachments];
+  v33 = [colorAttachments2 objectAtIndexedSubscript:0];
   [v33 setClearColor:{v29, v28, v31, v30}];
 
   v34 = CVMetalTextureGetTexture(time.value);
-  v35 = [v25 colorAttachments];
-  v36 = [v35 objectAtIndexedSubscript:0];
+  colorAttachments3 = [renderPassDescriptor colorAttachments];
+  v36 = [colorAttachments3 objectAtIndexedSubscript:0];
   [v36 setTexture:v34];
 
-  v37 = [v14 commandQueue];
-  v38 = [v37 commandBuffer];
+  commandQueue = [animojiCopy commandQueue];
+  commandBuffer = [commandQueue commandBuffer];
 
-  v39 = [(JFXAnimojiEffectRenderer *)self useDepth];
+  useDepth = [(JFXAnimojiEffectRenderer *)self useDepth];
   v40 = 0;
-  if (v15)
+  if (dataCopy)
   {
-    if (v39)
+    if (useDepth)
     {
-      v41 = [(JFXAnimojiEffectRenderer *)self JFX_depthDataToTexture:v15];
+      v41 = [(JFXAnimojiEffectRenderer *)self JFX_depthDataToTexture:dataCopy];
       v40 = v41;
       if (v41)
       {
@@ -1352,7 +1352,7 @@ void __162__JFXAnimojiEffectRenderer_newPixelBufferRenderedFromARFrame_withEffec
         if (v42)
         {
           v43 = v42;
-          [v14 setCapturedDepth:v42];
+          [animojiCopy setCapturedDepth:v42];
         }
       }
     }
@@ -1361,7 +1361,7 @@ void __162__JFXAnimojiEffectRenderer_newPixelBufferRenderedFromARFrame_withEffec
   if (objc_opt_respondsToSelector())
   {
     [(JFXAnimojiEffectRenderer *)self systemTimeForAVTRenderer];
-    [v14 _cek_renderAtTime:-[JFXAnimojiEffectRenderer allowAntialiasing](self enableAntialiasing:"allowAntialiasing") viewport:v38 commandBuffer:v25 passDescriptor:{v44, 0.0, 0.0, WidthOfPlane, HeightOfPlane}];
+    [animojiCopy _cek_renderAtTime:-[JFXAnimojiEffectRenderer allowAntialiasing](self enableAntialiasing:"allowAntialiasing") viewport:commandBuffer commandBuffer:renderPassDescriptor passDescriptor:{v44, 0.0, 0.0, WidthOfPlane, HeightOfPlane}];
   }
 
   objc_initWeak(&location, self);
@@ -1370,13 +1370,13 @@ void __162__JFXAnimojiEffectRenderer_newPixelBufferRenderedFromARFrame_withEffec
   v48[2] = __111__JFXAnimojiEffectRenderer_renderAnimoji_withPresentationTime_frame_depthData_backgroundColor_completionBlock___block_invoke;
   v48[3] = &unk_278D7A6A0;
   objc_copyWeak(v50, &location);
-  v45 = v47;
+  v45 = blockCopy;
   v49 = v45;
   v50[1] = pixelBufferOut;
   v50[2] = time.value;
   v50[3] = v40;
-  [v38 addCompletedHandler:v48];
-  [v38 commit];
+  [commandBuffer addCompletedHandler:v48];
+  [commandBuffer commit];
 
   objc_destroyWeak(v50);
   objc_destroyWeak(&location);
@@ -1402,23 +1402,23 @@ void __111__JFXAnimojiEffectRenderer_renderAnimoji_withPresentationTime_frame_de
   [WeakRetained flush];
 }
 
-- (void)computeHighQualitySegmentation:(id)a3
+- (void)computeHighQualitySegmentation:(id)segmentation
 {
-  v4 = a3;
-  if ([v4 capturedImage])
+  segmentationCopy = segmentation;
+  if ([segmentationCopy capturedImage])
   {
-    if ([v4 segmentationBuffer])
+    if ([segmentationCopy segmentationBuffer])
     {
-      v5 = [(AVTRenderer *)self->_renderer commandQueue];
+      commandQueue = [(AVTRenderer *)self->_renderer commandQueue];
 
-      if (v5)
+      if (commandQueue)
       {
         pixelBufferOut = 0;
         CVPixelBufferPoolCreatePixelBuffer(*MEMORY[0x277CBECE8], [(JFXAnimojiEffectRenderer *)self deviceOrientedColorBufferPool], &pixelBufferOut);
         VTSessionSetProperty(self->_rotationSession, *MEMORY[0x277CE2850], *MEMORY[0x277CE2A30]);
         rotationSession = self->_rotationSession;
-        v7 = [v4 capturedImage];
-        VTPixelRotationSessionRotateImage(rotationSession, v7, pixelBufferOut);
+        capturedImage = [segmentationCopy capturedImage];
+        VTPixelRotationSessionRotateImage(rotationSession, capturedImage, pixelBufferOut);
         v8 = objc_opt_new();
         v9 = *(MEMORY[0x277CBF2C0] + 16);
         *&v13.a = *MEMORY[0x277CBF2C0];
@@ -1440,8 +1440,8 @@ void __111__JFXAnimojiEffectRenderer_renderAnimoji_withPresentationTime_frame_de
           }
         }
 
-        v11 = VTPixelTransferSessionTransferImage(self->_transferSession, self->_segmentationPixelBuffer, [v4 segmentationBuffer]);
-        [v4 setCapturedImage:pixelBufferOut];
+        v11 = VTPixelTransferSessionTransferImage(self->_transferSession, self->_segmentationPixelBuffer, [segmentationCopy segmentationBuffer]);
+        [segmentationCopy setCapturedImage:pixelBufferOut];
         CVPixelBufferRelease(pixelBufferOut);
         if (v11)
         {
@@ -1456,9 +1456,9 @@ void __111__JFXAnimojiEffectRenderer_renderAnimoji_withPresentationTime_frame_de
   }
 }
 
-- (id)JFX_blendShapesForRenderer:(id)a3
+- (id)JFX_blendShapesForRenderer:(id)renderer
 {
-  v3 = a3;
+  rendererCopy = renderer;
   v4 = objc_opt_new();
   if (objc_opt_respondsToSelector())
   {
@@ -1467,7 +1467,7 @@ void __111__JFXAnimojiEffectRenderer_renderAnimoji_withPresentationTime_frame_de
     v7[2] = __55__JFXAnimojiEffectRenderer_JFX_blendShapesForRenderer___block_invoke;
     v7[3] = &unk_278D7A6C8;
     v8 = v4;
-    [v3 _cek_fetchBlendshapeWeightsInHierarchyUsingBlock:v7];
+    [rendererCopy _cek_fetchBlendshapeWeightsInHierarchyUsingBlock:v7];
   }
 
   if ([v4 count])
@@ -1504,16 +1504,16 @@ void __111__JFXAnimojiEffectRenderer_renderAnimoji_withPresentationTime_frame_de
   }
 }
 
-- (__CVBuffer)JFX_depthDataToTexture:(id)a3
+- (__CVBuffer)JFX_depthDataToTexture:(id)texture
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  textureCopy = texture;
+  v5 = textureCopy;
+  if (!textureCopy)
   {
     goto LABEL_5;
   }
 
-  v6 = v4;
+  v6 = textureCopy;
   if ([v6 depthDataType] != 1717855600)
   {
     v7 = [v6 depthDataByConvertingToDepthDataType:1717855600];
@@ -1521,14 +1521,14 @@ void __111__JFXAnimojiEffectRenderer_renderAnimoji_withPresentationTime_frame_de
     v6 = v7;
   }
 
-  v8 = [v6 depthDataMap];
-  Width = CVPixelBufferGetWidth(v8);
-  Height = CVPixelBufferGetHeight(v8);
+  depthDataMap = [v6 depthDataMap];
+  Width = CVPixelBufferGetWidth(depthDataMap);
+  Height = CVPixelBufferGetHeight(depthDataMap);
   textureOut = 0;
-  LODWORD(v8) = CVMetalTextureCacheCreateTextureFromImage(*MEMORY[0x277CBECE8], self->_metalDepthTextureCache, v8, 0, MTLPixelFormatR32Float, Width, Height, 0, &textureOut);
+  LODWORD(depthDataMap) = CVMetalTextureCacheCreateTextureFromImage(*MEMORY[0x277CBECE8], self->_metalDepthTextureCache, depthDataMap, 0, MTLPixelFormatR32Float, Width, Height, 0, &textureOut);
   v11 = textureOut;
 
-  if (v8)
+  if (depthDataMap)
   {
 LABEL_5:
     v11 = 0;
@@ -1537,34 +1537,34 @@ LABEL_5:
   return v11;
 }
 
-- (double)JFX_focalLengthForFrame:(id)a3 renderer:(id)a4 workingSize:(CGSize)a5 interfaceOrientation:(int64_t)a6
+- (double)JFX_focalLengthForFrame:(id)frame renderer:(id)renderer workingSize:(CGSize)size interfaceOrientation:(int64_t)orientation
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a4;
-  v12 = a3;
-  v13 = [v12 camera];
-  [v13 intrinsics];
+  height = size.height;
+  width = size.width;
+  rendererCopy = renderer;
+  frameCopy = frame;
+  camera = [frameCopy camera];
+  [camera intrinsics];
   v31 = v15;
   v32 = v14;
   v29 = v16;
-  v17 = [v12 camera];
+  camera2 = [frameCopy camera];
 
-  [v17 imageResolution];
-  [JFXFaceTrackingUtilities adjustIntrinsics:a6 forRenderSize:v32 capturedSize:v31 interfaceOrientation:v29, width, height, v18, v19];
+  [camera2 imageResolution];
+  [JFXFaceTrackingUtilities adjustIntrinsics:orientation forRenderSize:v32 capturedSize:v31 interfaceOrientation:v29, width, height, v18, v19];
   v30.columns[0] = v20;
   v30.columns[1] = v21;
   v30.columns[2] = v22;
 
-  v23 = [(JFXAnimojiEffectRenderer *)self JFX_inputBufferIsPortraitAspect:width, height];
+  height = [(JFXAnimojiEffectRenderer *)self JFX_inputBufferIsPortraitAspect:width, height];
   v24 = 0.0;
   if (objc_opt_respondsToSelector())
   {
-    [v11 _cek_currentPointOfViewSensorHeight];
+    [rendererCopy _cek_currentPointOfViewSensorHeight];
     v24 = v25;
   }
 
-  if (v23)
+  if (height)
   {
     height = width;
   }

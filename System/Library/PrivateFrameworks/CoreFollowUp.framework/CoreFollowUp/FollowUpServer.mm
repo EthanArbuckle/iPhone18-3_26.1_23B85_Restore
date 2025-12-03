@@ -1,7 +1,7 @@
 @interface FollowUpServer
-+ (id)_executablePathForPID:(int)a3;
-- (BOOL)_connectionHasEntitlement:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
++ (id)_executablePathForPID:(int)d;
+- (BOOL)_connectionHasEntitlement:(id)entitlement;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (FollowUpServer)init;
 - (void)_beginObservingLanguageChangeNotfication;
 - (void)_stopObservingLanguageChangeNotification;
@@ -92,34 +92,34 @@
   [(NSXPCListener *)listener resume];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [(FollowUpServer *)self _connectionHasEntitlement:v5];
+  connectionCopy = connection;
+  v6 = [(FollowUpServer *)self _connectionHasEntitlement:connectionCopy];
   if (v6)
   {
-    v7 = [[ClientInterface alloc] initWithXPCConnection:v5];
+    v7 = [[ClientInterface alloc] initWithXPCConnection:connectionCopy];
     v8 = FLDaemonExportedInterface();
-    [v5 setExportedInterface:v8];
+    [connectionCopy setExportedInterface:v8];
 
-    [v5 setExportedObject:v7];
-    [v5 resume];
+    [connectionCopy setExportedObject:v7];
+    [connectionCopy resume];
   }
 
   else
   {
-    v7 = +[FollowUpServer fl_getProcNameForPID:](FollowUpServer, "fl_getProcNameForPID:", [v5 processIdentifier]);
-    v9 = [v5 processIdentifier];
+    v7 = +[FollowUpServer fl_getProcNameForPID:](FollowUpServer, "fl_getProcNameForPID:", [connectionCopy processIdentifier]);
+    processIdentifier = [connectionCopy processIdentifier];
 
-    v5 = [FollowUpServer _executablePathForPID:v9];
-    v10 = [(FollowUpServer *)self unentitledClients];
-    LOBYTE(v9) = [v10 containsObject:v7];
+    connectionCopy = [FollowUpServer _executablePathForPID:processIdentifier];
+    unentitledClients = [(FollowUpServer *)self unentitledClients];
+    LOBYTE(processIdentifier) = [unentitledClients containsObject:v7];
 
-    if ((v9 & 1) == 0)
+    if ((processIdentifier & 1) == 0)
     {
-      v11 = [NSString stringWithFormat:@"Unentitled connection to followupd from %@ at %@", v7, v5];
-      v12 = [(FollowUpServer *)self unentitledClients];
-      [v12 addObject:v7];
+      connectionCopy = [NSString stringWithFormat:@"Unentitled connection to followupd from %@ at %@", v7, connectionCopy];
+      unentitledClients2 = [(FollowUpServer *)self unentitledClients];
+      [unentitledClients2 addObject:v7];
 
       if (qword_100026BB0)
       {
@@ -127,12 +127,12 @@
         qword_100026BB0 = 0;
       }
 
-      qword_100026BB0 = strdup([v11 UTF8String]);
+      qword_100026BB0 = strdup([connectionCopy UTF8String]);
       qword_100026A20 = qword_100026BB0;
       v13 = _FLLogSystem();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
       {
-        sub_100010EB0(v11, v13);
+        sub_100010EB0(connectionCopy, v13);
       }
     }
   }
@@ -140,25 +140,25 @@
   return v6;
 }
 
-- (BOOL)_connectionHasEntitlement:(id)a3
+- (BOOL)_connectionHasEntitlement:(id)entitlement
 {
-  v3 = [a3 valueForEntitlement:@"com.apple.private.followup"];
+  v3 = [entitlement valueForEntitlement:@"com.apple.private.followup"];
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (id)_executablePathForPID:(int)a3
++ (id)_executablePathForPID:(int)d
 {
-  v3 = [[NSString alloc] initWithBytes:buffer length:proc_pidpath(a3 encoding:{buffer, 0x1000u), 4}];
+  v3 = [[NSString alloc] initWithBytes:buffer length:proc_pidpath(d encoding:{buffer, 0x1000u), 4}];
 
   return v3;
 }

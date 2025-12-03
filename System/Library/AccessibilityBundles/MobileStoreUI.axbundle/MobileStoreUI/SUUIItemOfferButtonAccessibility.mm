@@ -1,6 +1,6 @@
 @interface SUUIItemOfferButtonAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)accessibilityHint;
 - (id)accessibilityIdentifier;
 - (id)accessibilityLabel;
@@ -10,32 +10,32 @@
 
 @implementation SUUIItemOfferButtonAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SUUIItemOfferButton" hasInstanceMethod:@"confirmationTitle" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIItemOfferButton" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIItemOfferButton" hasInstanceMethod:@"progress" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"SUUIItemOfferButton" hasInstanceMethod:@"isShowingConfirmation" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SUUIItemOfferButton" hasInstanceMethod:@"progressType" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"SUUIItemBrowseCellLayout" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIItemOfferButton" hasInstanceVariable:@"_cloudImage" withType:"UIImage"];
-  [v3 validateClass:@"SUUIItemOfferButton" hasInstanceMethod:@"buttonDescriptor" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIItemOfferButton" hasInstanceMethod:@"_buttonPropertiesForState:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"SUUIItemOfferButtonProperties" hasInstanceMethod:@"image" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIItemOfferButton" hasInstanceMethod:@"element" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SUUIButtonViewElement" isKindOfClass:@"SUUIViewElement"];
-  [v3 validateClass:@"SUUIViewElement" isKindOfClass:@"IKViewElement"];
-  [v3 validateClass:@"IKViewElement" hasInstanceMethod:@"parent" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IKViewElement" hasInstanceMethod:@"attributes" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SUUIItemOfferButton" hasInstanceMethod:@"confirmationTitle" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIItemOfferButton" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIItemOfferButton" hasInstanceMethod:@"progress" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"SUUIItemOfferButton" hasInstanceMethod:@"isShowingConfirmation" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SUUIItemOfferButton" hasInstanceMethod:@"progressType" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"SUUIItemBrowseCellLayout" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIItemOfferButton" hasInstanceVariable:@"_cloudImage" withType:"UIImage"];
+  [validationsCopy validateClass:@"SUUIItemOfferButton" hasInstanceMethod:@"buttonDescriptor" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIItemOfferButton" hasInstanceMethod:@"_buttonPropertiesForState:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"SUUIItemOfferButtonProperties" hasInstanceMethod:@"image" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIItemOfferButton" hasInstanceMethod:@"element" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SUUIButtonViewElement" isKindOfClass:@"SUUIViewElement"];
+  [validationsCopy validateClass:@"SUUIViewElement" isKindOfClass:@"IKViewElement"];
+  [validationsCopy validateClass:@"IKViewElement" hasInstanceMethod:@"parent" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IKViewElement" hasInstanceMethod:@"attributes" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityValue
 {
   v3 = [(SUUIItemOfferButtonAccessibility *)self safeValueForKey:@"progressType"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((integerValue & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     [(SUUIItemOfferButtonAccessibility *)self safeCGFloatForKey:@"progress"];
     if (v5 == 0.0)
@@ -54,19 +54,19 @@
 
   else
   {
-    if (v4 == 4)
+    if (integerValue == 4)
     {
-      v7 = accessibilityLocalizedString(@"item.download.paused");
+      accessibilityValue = accessibilityLocalizedString(@"item.download.paused");
     }
 
     else
     {
       v12.receiver = self;
       v12.super_class = SUUIItemOfferButtonAccessibility;
-      v7 = [(SUUIItemOfferButtonAccessibility *)&v12 accessibilityValue];
+      accessibilityValue = [(SUUIItemOfferButtonAccessibility *)&v12 accessibilityValue];
     }
 
-    v6 = v7;
+    v6 = accessibilityValue;
   }
 
   return v6;
@@ -74,22 +74,22 @@
 
 - (id)accessibilityLabel
 {
-  v3 = [(SUUIItemOfferButtonAccessibility *)self accessibilityUserDefinedLabel];
+  accessibilityUserDefinedLabel = [(SUUIItemOfferButtonAccessibility *)self accessibilityUserDefinedLabel];
 
-  if (v3)
+  if (accessibilityUserDefinedLabel)
   {
-    v4 = [(SUUIItemOfferButtonAccessibility *)self accessibilityUserDefinedLabel];
+    accessibilityUserDefinedLabel2 = [(SUUIItemOfferButtonAccessibility *)self accessibilityUserDefinedLabel];
 LABEL_5:
-    v7 = v4;
+    v7 = accessibilityUserDefinedLabel2;
     goto LABEL_6;
   }
 
   v5 = [(SUUIItemOfferButtonAccessibility *)self safeValueForKey:@"progressType"];
-  v6 = [v5 integerValue];
+  integerValue = [v5 integerValue];
 
-  if (v6 == 1)
+  if (integerValue == 1)
   {
-    v4 = accessibilityLocalizedString(@"item.connecting");
+    accessibilityUserDefinedLabel2 = accessibilityLocalizedString(@"item.connecting");
     goto LABEL_5;
   }
 
@@ -131,9 +131,9 @@ LABEL_5:
   else
   {
     v18 = [(SUUIItemOfferButtonAccessibility *)self safeValueForKey:@"isShowingConfirmation"];
-    v19 = [v18 BOOLValue];
+    bOOLValue = [v18 BOOLValue];
 
-    if (!v19)
+    if (!bOOLValue)
     {
       v21 = 0;
       goto LABEL_21;
@@ -146,13 +146,13 @@ LABEL_5:
 LABEL_21:
   if (![v21 length])
   {
-    if (v6 == 3)
+    if (integerValue == 3)
     {
       v22 = @"item.downloading";
       goto LABEL_26;
     }
 
-    if (v6 == 2)
+    if (integerValue == 2)
     {
       v22 = @"item.downloading.cancelable";
 LABEL_26:
@@ -186,9 +186,9 @@ LABEL_26:
     v28 = __UIAccessibilityCastAsClass();
 
     v29 = [v28 objectForKey:@"supportsPlayButton"];
-    v30 = [v29 BOOLValue];
+    bOOLValue2 = [v29 BOOLValue];
 
-    if (v30)
+    if (bOOLValue2)
     {
       v31 = accessibilityLocalizedString(@"play.button");
 
@@ -205,9 +205,9 @@ LABEL_26:
 
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    v33 = [v21 lowercaseString];
+    lowercaseString = [v21 lowercaseString];
 
-    v21 = v33;
+    v21 = lowercaseString;
   }
 
   v7 = __UIAXStringForVariables();
@@ -231,35 +231,35 @@ void __54__SUUIItemOfferButtonAccessibility_accessibilityLabel__block_invoke(uin
 - (id)accessibilityHint
 {
   v3 = [(SUUIItemOfferButtonAccessibility *)self safeValueForKey:@"isShowingConfirmation"];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
-    v5 = accessibilityLocalizedString(@"item.offer.button.text.confirm.hint");
+    accessibilityHint = accessibilityLocalizedString(@"item.offer.button.text.confirm.hint");
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SUUIItemOfferButtonAccessibility;
-    v5 = [(SUUIItemOfferButtonAccessibility *)&v7 accessibilityHint];
+    accessibilityHint = [(SUUIItemOfferButtonAccessibility *)&v7 accessibilityHint];
   }
 
-  return v5;
+  return accessibilityHint;
 }
 
 - (unint64_t)accessibilityTraits
 {
   v3 = *MEMORY[0x29EDC7FF0];
   v4 = [(SUUIItemOfferButtonAccessibility *)self safeValueForKey:@"progressType"];
-  v5 = [v4 integerValue];
+  integerValue = [v4 integerValue];
 
-  if (v5 != 1)
+  if (integerValue != 1)
   {
     v7.receiver = self;
     v7.super_class = SUUIItemOfferButtonAccessibility;
     v3 |= [(SUUIItemOfferButtonAccessibility *)&v7 accessibilityTraits]| *MEMORY[0x29EDC7F70];
-    if (v5 == 5)
+    if (integerValue == 5)
     {
       v3 |= *MEMORY[0x29EDC7FC8];
     }
@@ -268,11 +268,11 @@ void __54__SUUIItemOfferButtonAccessibility_accessibilityLabel__block_invoke(uin
   return v3;
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   AXDeviceGetMainScreenScaleFactor();
   v9 = v8;
   [(SUUIItemOfferButtonAccessibility *)self bounds];
@@ -281,17 +281,17 @@ void __54__SUUIItemOfferButtonAccessibility_accessibilityLabel__block_invoke(uin
   v15.y = y;
   if (CGRectContainsPoint(v17, v15))
   {
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
     v13.receiver = self;
     v13.super_class = SUUIItemOfferButtonAccessibility;
-    v10 = [(SUUIItemOfferButtonAccessibility *)&v13 _accessibilityHitTest:v7 withEvent:x, y];
+    selfCopy = [(SUUIItemOfferButtonAccessibility *)&v13 _accessibilityHitTest:eventCopy withEvent:x, y];
   }
 
-  v11 = v10;
+  v11 = selfCopy;
 
   return v11;
 }
@@ -299,9 +299,9 @@ void __54__SUUIItemOfferButtonAccessibility_accessibilityLabel__block_invoke(uin
 - (id)accessibilityIdentifier
 {
   v3 = [(SUUIItemOfferButtonAccessibility *)self safeValueForKey:@"progressType"];
-  v4 = [v3 integerValue];
+  integerValue = [v3 integerValue];
 
-  if (v4 == 6)
+  if (integerValue == 6)
   {
     v5 = [(SUUIItemOfferButtonAccessibility *)self safeValueForKey:@"title"];
   }

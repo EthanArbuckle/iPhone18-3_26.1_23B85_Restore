@@ -1,6 +1,6 @@
 @interface __HMFThreadContext
 + (__HMFThreadContext)currentContext;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (__HMFThreadContext)init;
 - (id)__init;
 @end
@@ -9,12 +9,12 @@
 
 + (__HMFThreadContext)currentContext
 {
-  v2 = [MEMORY[0x277CCACC8] currentThread];
-  v3 = [objc_alloc(objc_opt_class()) __init];
-  v4 = v3;
-  if (v3)
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  __init = [objc_alloc(objc_opt_class()) __init];
+  v4 = __init;
+  if (__init)
   {
-    objc_storeStrong((v3 + 16), v2);
+    objc_storeStrong((__init + 16), currentThread);
     v5 = voucher_copy();
     v6 = v4[4];
     v4[4] = v5;
@@ -43,10 +43,10 @@
   objc_exception_throw(v7);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -56,7 +56,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else

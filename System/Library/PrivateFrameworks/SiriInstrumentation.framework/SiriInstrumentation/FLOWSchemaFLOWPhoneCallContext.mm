@@ -1,42 +1,42 @@
 @interface FLOWSchemaFLOWPhoneCallContext
-- (BOOL)isEqual:(id)a3;
-- (FLOWSchemaFLOWPhoneCallContext)initWithDictionary:(id)a3;
-- (FLOWSchemaFLOWPhoneCallContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (FLOWSchemaFLOWPhoneCallContext)initWithDictionary:(id)dictionary;
+- (FLOWSchemaFLOWPhoneCallContext)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (int)personTypeAtIndex:(unint64_t)a3;
-- (int)recipientTypeAtIndex:(unint64_t)a3;
+- (int)personTypeAtIndex:(unint64_t)index;
+- (int)recipientTypeAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (void)addPersonType:(int)a3;
-- (void)addRecipientType:(int)a3;
-- (void)setHasIsThirdPartyFaceTime:(BOOL)a3;
-- (void)setHasPhoneCallAppType:(BOOL)a3;
-- (void)setHasSearchCallHistoryIntent:(BOOL)a3;
-- (void)setHasUserPersona:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addPersonType:(int)type;
+- (void)addRecipientType:(int)type;
+- (void)setHasIsThirdPartyFaceTime:(BOOL)time;
+- (void)setHasPhoneCallAppType:(BOOL)type;
+- (void)setHasSearchCallHistoryIntent:(BOOL)intent;
+- (void)setHasUserPersona:(BOOL)persona;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FLOWSchemaFLOWPhoneCallContext
 
-- (FLOWSchemaFLOWPhoneCallContext)initWithDictionary:(id)a3
+- (FLOWSchemaFLOWPhoneCallContext)initWithDictionary:(id)dictionary
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v43.receiver = self;
   v43.super_class = FLOWSchemaFLOWPhoneCallContext;
   v5 = [(FLOWSchemaFLOWPhoneCallContext *)&v43 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"phoneCallType"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"phoneCallType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWPhoneCallContext setPhoneCallType:](v5, "setPhoneCallType:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"recipientType"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"recipientType"];
     objc_opt_class();
     v34 = v7;
     if (objc_opt_isKindOfClass())
@@ -78,7 +78,7 @@
       v6 = v8;
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"phoneCallAppType"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"phoneCallAppType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,7 +86,7 @@
     }
 
     v33 = v15;
-    v16 = [v4 objectForKeyedSubscript:@"emergencyContext"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"emergencyContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -94,7 +94,7 @@
       [(FLOWSchemaFLOWPhoneCallContext *)v5 setEmergencyContext:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"personType"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"personType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -135,28 +135,28 @@
       v6 = v32;
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"isThirdPartyFaceTime"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"isThirdPartyFaceTime"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWPhoneCallContext setIsThirdPartyFaceTime:](v5, "setIsThirdPartyFaceTime:", [v25 BOOLValue]);
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"searchCallHistoryIntent"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"searchCallHistoryIntent"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWPhoneCallContext setSearchCallHistoryIntent:](v5, "setSearchCallHistoryIntent:", [v26 intValue]);
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"userPersona"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"userPersona"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[FLOWSchemaFLOWPhoneCallContext setUserPersona:](v5, "setUserPersona:", [v27 intValue]);
     }
 
-    v28 = [v4 objectForKeyedSubscript:@"contact"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"contact"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -170,30 +170,30 @@
   return v5;
 }
 
-- (FLOWSchemaFLOWPhoneCallContext)initWithJSON:(id)a3
+- (FLOWSchemaFLOWPhoneCallContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(FLOWSchemaFLOWPhoneCallContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(FLOWSchemaFLOWPhoneCallContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(FLOWSchemaFLOWPhoneCallContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -206,50 +206,50 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_contact)
   {
-    v4 = [(FLOWSchemaFLOWPhoneCallContext *)self contact];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    contact = [(FLOWSchemaFLOWPhoneCallContext *)self contact];
+    dictionaryRepresentation = [contact dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"contact"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"contact"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"contact"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"contact"];
     }
   }
 
   if (self->_emergencyContext)
   {
-    v7 = [(FLOWSchemaFLOWPhoneCallContext *)self emergencyContext];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    emergencyContext = [(FLOWSchemaFLOWPhoneCallContext *)self emergencyContext];
+    dictionaryRepresentation2 = [emergencyContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"emergencyContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"emergencyContext"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"emergencyContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"emergencyContext"];
     }
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[FLOWSchemaFLOWPhoneCallContext isThirdPartyFaceTime](self, "isThirdPartyFaceTime")}];
-    [v3 setObject:v10 forKeyedSubscript:@"isThirdPartyFaceTime"];
+    [dictionary setObject:v10 forKeyedSubscript:@"isThirdPartyFaceTime"];
   }
 
   if ([(NSArray *)self->_personTypes count])
   {
-    v11 = [(FLOWSchemaFLOWPhoneCallContext *)self personTypes];
-    v12 = [v11 copy];
-    [v3 setObject:v12 forKeyedSubscript:@"personType"];
+    personTypes = [(FLOWSchemaFLOWPhoneCallContext *)self personTypes];
+    v12 = [personTypes copy];
+    [dictionary setObject:v12 forKeyedSubscript:@"personType"];
   }
 
   has = self->_has;
@@ -266,20 +266,20 @@
       v15 = off_1E78D6038[v14];
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"phoneCallAppType"];
+    [dictionary setObject:v15 forKeyedSubscript:@"phoneCallAppType"];
     has = self->_has;
   }
 
   if (has)
   {
-    v16 = [(FLOWSchemaFLOWPhoneCallContext *)self phoneCallType];
+    phoneCallType = [(FLOWSchemaFLOWPhoneCallContext *)self phoneCallType];
     v17 = @"FLOWPHONECALLTYPE_UNKNOWN";
-    if (v16 == 1)
+    if (phoneCallType == 1)
     {
       v17 = @"FLOWPHONECALLTYPE_AUDIO";
     }
 
-    if (v16 == 2)
+    if (phoneCallType == 2)
     {
       v18 = @"FLOWPHONECALLTYPE_VIDEO";
     }
@@ -289,27 +289,27 @@
       v18 = v17;
     }
 
-    [v3 setObject:v18 forKeyedSubscript:@"phoneCallType"];
+    [dictionary setObject:v18 forKeyedSubscript:@"phoneCallType"];
   }
 
   if ([(NSArray *)self->_recipientTypes count])
   {
-    v19 = [(FLOWSchemaFLOWPhoneCallContext *)self recipientTypes];
-    v20 = [v19 copy];
-    [v3 setObject:v20 forKeyedSubscript:@"recipientType"];
+    recipientTypes = [(FLOWSchemaFLOWPhoneCallContext *)self recipientTypes];
+    v20 = [recipientTypes copy];
+    [dictionary setObject:v20 forKeyedSubscript:@"recipientType"];
   }
 
   v21 = self->_has;
   if ((v21 & 8) != 0)
   {
-    v22 = [(FLOWSchemaFLOWPhoneCallContext *)self searchCallHistoryIntent];
+    searchCallHistoryIntent = [(FLOWSchemaFLOWPhoneCallContext *)self searchCallHistoryIntent];
     v23 = @"FLOWSEARCHCALLHISTORYINTENT_UNKNOWN";
-    if (v22 == 1)
+    if (searchCallHistoryIntent == 1)
     {
       v23 = @"FLOWSEARCHCALLHISTORYINTENT_VOICEMAIL";
     }
 
-    if (v22 == 2)
+    if (searchCallHistoryIntent == 2)
     {
       v24 = @"FLOWSEARCHCALLHISTORYINTENT_SEARCH_CALL_HISTORY";
     }
@@ -319,7 +319,7 @@
       v24 = v23;
     }
 
-    [v3 setObject:v24 forKeyedSubscript:@"searchCallHistoryIntent"];
+    [dictionary setObject:v24 forKeyedSubscript:@"searchCallHistoryIntent"];
     v21 = self->_has;
   }
 
@@ -336,12 +336,12 @@
       v26 = off_1E78D6058[v25];
     }
 
-    [v3 setObject:v26 forKeyedSubscript:@"userPersona"];
+    [dictionary setObject:v26 forKeyedSubscript:@"userPersona"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -407,15 +407,15 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ [(FLOWSchemaFLOWContact *)self->_contact hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_39;
   }
 
-  if ((*&self->_has & 1) != (v4[72] & 1))
+  if ((*&self->_has & 1) != (equalCopy[72] & 1))
   {
     goto LABEL_39;
   }
@@ -423,26 +423,26 @@ LABEL_10:
   if (*&self->_has)
   {
     phoneCallType = self->_phoneCallType;
-    if (phoneCallType != [v4 phoneCallType])
+    if (phoneCallType != [equalCopy phoneCallType])
     {
       goto LABEL_39;
     }
   }
 
-  v6 = [(FLOWSchemaFLOWPhoneCallContext *)self recipientTypes];
-  v7 = [v4 recipientTypes];
-  if ((v6 != 0) == (v7 == 0))
+  recipientTypes = [(FLOWSchemaFLOWPhoneCallContext *)self recipientTypes];
+  recipientTypes2 = [equalCopy recipientTypes];
+  if ((recipientTypes != 0) == (recipientTypes2 == 0))
   {
     goto LABEL_38;
   }
 
-  v8 = [(FLOWSchemaFLOWPhoneCallContext *)self recipientTypes];
-  if (v8)
+  recipientTypes3 = [(FLOWSchemaFLOWPhoneCallContext *)self recipientTypes];
+  if (recipientTypes3)
   {
-    v9 = v8;
-    v10 = [(FLOWSchemaFLOWPhoneCallContext *)self recipientTypes];
-    v11 = [v4 recipientTypes];
-    v12 = [v10 isEqual:v11];
+    v9 = recipientTypes3;
+    recipientTypes4 = [(FLOWSchemaFLOWPhoneCallContext *)self recipientTypes];
+    recipientTypes5 = [equalCopy recipientTypes];
+    v12 = [recipientTypes4 isEqual:recipientTypes5];
 
     if (!v12)
     {
@@ -455,7 +455,7 @@ LABEL_10:
   }
 
   v13 = (*&self->_has >> 1) & 1;
-  if (v13 != ((v4[72] >> 1) & 1))
+  if (v13 != ((equalCopy[72] >> 1) & 1))
   {
     goto LABEL_39;
   }
@@ -463,26 +463,26 @@ LABEL_10:
   if (v13)
   {
     phoneCallAppType = self->_phoneCallAppType;
-    if (phoneCallAppType != [v4 phoneCallAppType])
+    if (phoneCallAppType != [equalCopy phoneCallAppType])
     {
       goto LABEL_39;
     }
   }
 
-  v6 = [(FLOWSchemaFLOWPhoneCallContext *)self emergencyContext];
-  v7 = [v4 emergencyContext];
-  if ((v6 != 0) == (v7 == 0))
+  recipientTypes = [(FLOWSchemaFLOWPhoneCallContext *)self emergencyContext];
+  recipientTypes2 = [equalCopy emergencyContext];
+  if ((recipientTypes != 0) == (recipientTypes2 == 0))
   {
     goto LABEL_38;
   }
 
-  v15 = [(FLOWSchemaFLOWPhoneCallContext *)self emergencyContext];
-  if (v15)
+  emergencyContext = [(FLOWSchemaFLOWPhoneCallContext *)self emergencyContext];
+  if (emergencyContext)
   {
-    v16 = v15;
-    v17 = [(FLOWSchemaFLOWPhoneCallContext *)self emergencyContext];
-    v18 = [v4 emergencyContext];
-    v19 = [v17 isEqual:v18];
+    v16 = emergencyContext;
+    emergencyContext2 = [(FLOWSchemaFLOWPhoneCallContext *)self emergencyContext];
+    emergencyContext3 = [equalCopy emergencyContext];
+    v19 = [emergencyContext2 isEqual:emergencyContext3];
 
     if (!v19)
     {
@@ -494,20 +494,20 @@ LABEL_10:
   {
   }
 
-  v6 = [(FLOWSchemaFLOWPhoneCallContext *)self personTypes];
-  v7 = [v4 personTypes];
-  if ((v6 != 0) == (v7 == 0))
+  recipientTypes = [(FLOWSchemaFLOWPhoneCallContext *)self personTypes];
+  recipientTypes2 = [equalCopy personTypes];
+  if ((recipientTypes != 0) == (recipientTypes2 == 0))
   {
     goto LABEL_38;
   }
 
-  v20 = [(FLOWSchemaFLOWPhoneCallContext *)self personTypes];
-  if (v20)
+  personTypes = [(FLOWSchemaFLOWPhoneCallContext *)self personTypes];
+  if (personTypes)
   {
-    v21 = v20;
-    v22 = [(FLOWSchemaFLOWPhoneCallContext *)self personTypes];
-    v23 = [v4 personTypes];
-    v24 = [v22 isEqual:v23];
+    v21 = personTypes;
+    personTypes2 = [(FLOWSchemaFLOWPhoneCallContext *)self personTypes];
+    personTypes3 = [equalCopy personTypes];
+    v24 = [personTypes2 isEqual:personTypes3];
 
     if (!v24)
     {
@@ -521,7 +521,7 @@ LABEL_10:
 
   has = self->_has;
   v26 = (*&has >> 2) & 1;
-  v27 = v4[72];
+  v27 = equalCopy[72];
   if (v26 != ((v27 >> 2) & 1))
   {
     goto LABEL_39;
@@ -530,13 +530,13 @@ LABEL_10:
   if (v26)
   {
     isThirdPartyFaceTime = self->_isThirdPartyFaceTime;
-    if (isThirdPartyFaceTime != [v4 isThirdPartyFaceTime])
+    if (isThirdPartyFaceTime != [equalCopy isThirdPartyFaceTime])
     {
       goto LABEL_39;
     }
 
     has = self->_has;
-    v27 = v4[72];
+    v27 = equalCopy[72];
   }
 
   v29 = (*&has >> 3) & 1;
@@ -548,13 +548,13 @@ LABEL_10:
   if (v29)
   {
     searchCallHistoryIntent = self->_searchCallHistoryIntent;
-    if (searchCallHistoryIntent != [v4 searchCallHistoryIntent])
+    if (searchCallHistoryIntent != [equalCopy searchCallHistoryIntent])
     {
       goto LABEL_39;
     }
 
     has = self->_has;
-    v27 = v4[72];
+    v27 = equalCopy[72];
   }
 
   v31 = (*&has >> 4) & 1;
@@ -566,23 +566,23 @@ LABEL_10:
   if (v31)
   {
     userPersona = self->_userPersona;
-    if (userPersona != [v4 userPersona])
+    if (userPersona != [equalCopy userPersona])
     {
       goto LABEL_39;
     }
   }
 
-  v6 = [(FLOWSchemaFLOWPhoneCallContext *)self contact];
-  v7 = [v4 contact];
-  if ((v6 != 0) == (v7 == 0))
+  recipientTypes = [(FLOWSchemaFLOWPhoneCallContext *)self contact];
+  recipientTypes2 = [equalCopy contact];
+  if ((recipientTypes != 0) == (recipientTypes2 == 0))
   {
 LABEL_38:
 
     goto LABEL_39;
   }
 
-  v33 = [(FLOWSchemaFLOWPhoneCallContext *)self contact];
-  if (!v33)
+  contact = [(FLOWSchemaFLOWPhoneCallContext *)self contact];
+  if (!contact)
   {
 
 LABEL_42:
@@ -590,10 +590,10 @@ LABEL_42:
     goto LABEL_40;
   }
 
-  v34 = v33;
-  v35 = [(FLOWSchemaFLOWPhoneCallContext *)self contact];
-  v36 = [v4 contact];
-  v37 = [v35 isEqual:v36];
+  v34 = contact;
+  contact2 = [(FLOWSchemaFLOWPhoneCallContext *)self contact];
+  contact3 = [equalCopy contact];
+  v37 = [contact2 isEqual:contact3];
 
   if (v37)
   {
@@ -607,10 +607,10 @@ LABEL_40:
   return v38;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
@@ -650,11 +650,11 @@ LABEL_40:
     PBDataWriterWriteInt32Field();
   }
 
-  v10 = [(FLOWSchemaFLOWPhoneCallContext *)self emergencyContext];
+  emergencyContext = [(FLOWSchemaFLOWPhoneCallContext *)self emergencyContext];
 
-  if (v10)
+  if (emergencyContext)
   {
-    v11 = [(FLOWSchemaFLOWPhoneCallContext *)self emergencyContext];
+    emergencyContext2 = [(FLOWSchemaFLOWPhoneCallContext *)self emergencyContext];
     PBDataWriterWriteSubmessage();
   }
 
@@ -717,18 +717,18 @@ LABEL_24:
   }
 
 LABEL_25:
-  v18 = [(FLOWSchemaFLOWPhoneCallContext *)self contact];
+  contact = [(FLOWSchemaFLOWPhoneCallContext *)self contact];
 
-  if (v18)
+  if (contact)
   {
-    v19 = [(FLOWSchemaFLOWPhoneCallContext *)self contact];
+    contact2 = [(FLOWSchemaFLOWPhoneCallContext *)self contact];
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setHasUserPersona:(BOOL)a3
+- (void)setHasUserPersona:(BOOL)persona
 {
-  if (a3)
+  if (persona)
   {
     v3 = 16;
   }
@@ -741,9 +741,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasSearchCallHistoryIntent:(BOOL)a3
+- (void)setHasSearchCallHistoryIntent:(BOOL)intent
 {
-  if (a3)
+  if (intent)
   {
     v3 = 8;
   }
@@ -756,9 +756,9 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIsThirdPartyFaceTime:(BOOL)a3
+- (void)setHasIsThirdPartyFaceTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 4;
   }
@@ -771,23 +771,23 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)personTypeAtIndex:(unint64_t)a3
+- (int)personTypeAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_personTypes objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_personTypes objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addPersonType:(int)a3
+- (void)addPersonType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   personTypes = self->_personTypes;
   if (!personTypes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_personTypes;
-    self->_personTypes = v6;
+    self->_personTypes = array;
 
     personTypes = self->_personTypes;
   }
@@ -796,9 +796,9 @@ LABEL_25:
   [(NSArray *)personTypes addObject:v8];
 }
 
-- (void)setHasPhoneCallAppType:(BOOL)a3
+- (void)setHasPhoneCallAppType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -811,23 +811,23 @@ LABEL_25:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)recipientTypeAtIndex:(unint64_t)a3
+- (int)recipientTypeAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_recipientTypes objectAtIndexedSubscript:a3];
-  v4 = [v3 intValue];
+  v3 = [(NSArray *)self->_recipientTypes objectAtIndexedSubscript:index];
+  intValue = [v3 intValue];
 
-  return v4;
+  return intValue;
 }
 
-- (void)addRecipientType:(int)a3
+- (void)addRecipientType:(int)type
 {
-  v3 = *&a3;
+  v3 = *&type;
   recipientTypes = self->_recipientTypes;
   if (!recipientTypes)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_recipientTypes;
-    self->_recipientTypes = v6;
+    self->_recipientTypes = array;
 
     recipientTypes = self->_recipientTypes;
   }
@@ -836,26 +836,26 @@ LABEL_25:
   [(NSArray *)recipientTypes addObject:v8];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v13.receiver = self;
   v13.super_class = FLOWSchemaFLOWPhoneCallContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:v4];
-  v6 = [(FLOWSchemaFLOWPhoneCallContext *)self emergencyContext];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v13 applySensitiveConditionsPolicy:policyCopy];
+  emergencyContext = [(FLOWSchemaFLOWPhoneCallContext *)self emergencyContext];
+  v7 = [emergencyContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(FLOWSchemaFLOWPhoneCallContext *)self deleteEmergencyContext];
   }
 
-  v9 = [(FLOWSchemaFLOWPhoneCallContext *)self contact];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  contact = [(FLOWSchemaFLOWPhoneCallContext *)self contact];
+  v10 = [contact applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(FLOWSchemaFLOWPhoneCallContext *)self deleteContact];
   }

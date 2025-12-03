@@ -1,76 +1,76 @@
 @interface IMMenuItem
-+ (id)menuItemWithTitle:(id)a3 actionBlock:(id)a4;
-+ (id)menuItemWithTitle:(id)a3 target:(id)a4 action:(SEL)a5;
-- (IMMenuItem)initWithTitle:(id)a3 actionBlock:(id)a4;
-- (IMMenuItem)initWithTitle:(id)a3 target:(id)a4 action:(SEL)a5;
++ (id)menuItemWithTitle:(id)title actionBlock:(id)block;
++ (id)menuItemWithTitle:(id)title target:(id)target action:(SEL)action;
+- (IMMenuItem)initWithTitle:(id)title actionBlock:(id)block;
+- (IMMenuItem)initWithTitle:(id)title target:(id)target action:(SEL)action;
 - (SEL)action;
 - (id)target;
 - (void)dealloc;
-- (void)performActionBlock:(id)a3;
+- (void)performActionBlock:(id)block;
 @end
 
 @implementation IMMenuItem
 
-+ (id)menuItemWithTitle:(id)a3 target:(id)a4 action:(SEL)a5
++ (id)menuItemWithTitle:(id)title target:(id)target action:(SEL)action
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithTitle:v9 target:v8 action:a5];
+  targetCopy = target;
+  titleCopy = title;
+  v10 = [[self alloc] initWithTitle:titleCopy target:targetCopy action:action];
 
   return v10;
 }
 
-+ (id)menuItemWithTitle:(id)a3 actionBlock:(id)a4
++ (id)menuItemWithTitle:(id)title actionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithTitle:v7 actionBlock:v6];
+  blockCopy = block;
+  titleCopy = title;
+  v8 = [[self alloc] initWithTitle:titleCopy actionBlock:blockCopy];
 
   return v8;
 }
 
-- (IMMenuItem)initWithTitle:(id)a3 target:(id)a4 action:(SEL)a5
+- (IMMenuItem)initWithTitle:(id)title target:(id)target action:(SEL)action
 {
-  v8 = a3;
-  v9 = a4;
+  titleCopy = title;
+  targetCopy = target;
   v15.receiver = self;
   v15.super_class = IMMenuItem;
   v10 = [(IMMenuItem *)&v15 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [titleCopy copy];
     title = v10->_title;
     v10->_title = v11;
 
-    objc_storeWeak(&v10->_target, v9);
-    if (a5)
+    objc_storeWeak(&v10->_target, targetCopy);
+    if (action)
     {
-      v13 = a5;
+      actionCopy = action;
     }
 
     else
     {
-      v13 = 0;
+      actionCopy = 0;
     }
 
-    v10->_action = v13;
+    v10->_action = actionCopy;
   }
 
   return v10;
 }
 
-- (IMMenuItem)initWithTitle:(id)a3 actionBlock:(id)a4
+- (IMMenuItem)initWithTitle:(id)title actionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  blockCopy = block;
   v8 = [(IMMenuItem *)self init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [titleCopy copy];
     title = v8->_title;
     v8->_title = v9;
 
-    v11 = [v7 copy];
+    v11 = [blockCopy copy];
     actionBlock = v8->_actionBlock;
     v8->_actionBlock = v11;
   }
@@ -88,14 +88,14 @@
   [(IMMenuItem *)&v4 dealloc];
 }
 
-- (void)performActionBlock:(id)a3
+- (void)performActionBlock:(id)block
 {
-  v4 = [(IMMenuItem *)self actionBlock];
+  actionBlock = [(IMMenuItem *)self actionBlock];
 
-  if (v4)
+  if (actionBlock)
   {
-    v5 = [(IMMenuItem *)self actionBlock];
-    v5[2]();
+    actionBlock2 = [(IMMenuItem *)self actionBlock];
+    actionBlock2[2]();
   }
 }
 

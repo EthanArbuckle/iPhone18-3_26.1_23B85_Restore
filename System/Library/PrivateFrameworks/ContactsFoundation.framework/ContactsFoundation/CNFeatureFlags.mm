@@ -1,7 +1,7 @@
 @interface CNFeatureFlags
 + (CNFeatureFlags)currentFlags;
-+ (id)descriptionOfFeatureFlag:(unint64_t)a3;
-- (BOOL)isFeatureEnabled:(unint64_t)a3;
++ (id)descriptionOfFeatureFlag:(unint64_t)flag;
+- (BOOL)isFeatureEnabled:(unint64_t)enabled;
 @end
 
 @implementation CNFeatureFlags
@@ -25,11 +25,11 @@ uint64_t __30__CNFeatureFlags_currentFlags__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)isFeatureEnabled:(unint64_t)a3
+- (BOOL)isFeatureEnabled:(unint64_t)enabled
 {
-  v3 = self;
+  selfCopy = self;
   LOBYTE(self) = 1;
-  switch(a3)
+  switch(enabled)
   {
     case 0uLL:
     case 1uLL:
@@ -68,7 +68,7 @@ uint64_t __30__CNFeatureFlags_currentFlags__block_invoke()
       if (self)
       {
 
-        LOBYTE(self) = [(CNFeatureFlags *)v3 shouldRapportHandleLimitedAccessSyncs];
+        LOBYTE(self) = [(CNFeatureFlags *)selfCopy shouldRapportHandleLimitedAccessSyncs];
       }
 
       break;
@@ -79,16 +79,16 @@ uint64_t __30__CNFeatureFlags_currentFlags__block_invoke()
   return self;
 }
 
-+ (id)descriptionOfFeatureFlag:(unint64_t)a3
++ (id)descriptionOfFeatureFlag:(unint64_t)flag
 {
-  if (a3 - 1 > 0x1E)
+  if (flag - 1 > 0x1E)
   {
     return @"Account Cache";
   }
 
   else
   {
-    return off_1E6ED6F40[a3 - 1];
+    return off_1E6ED6F40[flag - 1];
   }
 }
 

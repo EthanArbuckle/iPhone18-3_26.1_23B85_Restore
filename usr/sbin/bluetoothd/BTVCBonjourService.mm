@@ -1,46 +1,46 @@
 @interface BTVCBonjourService
-- (BOOL)isLocalEndpoint:(id)a3;
-- (BOOL)sendData:(id)a3 toDevice:(id)a4 completionHandler:(id)a5;
+- (BOOL)isLocalEndpoint:(id)endpoint;
+- (BOOL)sendData:(id)data toDevice:(id)device completionHandler:(id)handler;
 - (BOOL)startDiscovery;
-- (BOOL)stopAdvertisingForData:(id)a3 completionHandler:(id)a4;
-- (BTVCBonjourService)initWithQueue:(id)a3;
-- (id)_endpointForUniqueID:(id)a3 connectionType:(unsigned __int8)a4;
-- (id)_handleConnection:(id)a3 connectionType:(unsigned __int8)a4;
+- (BOOL)stopAdvertisingForData:(id)data completionHandler:(id)handler;
+- (BTVCBonjourService)initWithQueue:(id)queue;
+- (id)_endpointForUniqueID:(id)d connectionType:(unsigned __int8)type;
+- (id)_handleConnection:(id)connection connectionType:(unsigned __int8)type;
 - (id)getUniqueServiceNameForAdvertiser;
 - (id)randomUUID;
 - (void)_cleanUp;
 - (void)_cleanupAdvertiser;
 - (void)_cleanupBrowser;
 - (void)_reportCachedDiscoveryResults;
-- (void)_sendAdvMessageWithData:(id)a3 isStart:(BOOL)a4 completionHandler:(id)a5;
-- (void)_sendMessage:(id)a3 withType:(id)a4 toDevice:(id)a5 connectionType:(unsigned __int8)a6 completionCallback:(id)a7;
-- (void)_sendMessage:(id)a3 withType:(id)a4 toEndpoint:(id)a5 completionCallback:(id)a6;
+- (void)_sendAdvMessageWithData:(id)data isStart:(BOOL)start completionHandler:(id)handler;
+- (void)_sendMessage:(id)message withType:(id)type toDevice:(id)device connectionType:(unsigned __int8)connectionType completionCallback:(id)callback;
+- (void)_sendMessage:(id)message withType:(id)type toEndpoint:(id)endpoint completionCallback:(id)callback;
 - (void)_startAdvertiser;
 - (void)_startBrowser;
 - (void)_stopAdvertising;
 - (void)_stopBrowser;
 - (void)_updateAdvertiserState;
 - (void)_updateBrowserState;
-- (void)connectToDevice:(id)a3 withParameters:(id)a4;
+- (void)connectToDevice:(id)device withParameters:(id)parameters;
 - (void)dealloc;
-- (void)disconnectFromDevice:(id)a3 withParameters:(id)a4;
-- (void)handleBrowseResults:(id)a3;
-- (void)startAdvertisingWithData:(id)a3 completionHandler:(id)a4;
+- (void)disconnectFromDevice:(id)device withParameters:(id)parameters;
+- (void)handleBrowseResults:(id)results;
+- (void)startAdvertisingWithData:(id)data completionHandler:(id)handler;
 - (void)stopDiscovery;
 @end
 
 @implementation BTVCBonjourService
 
-- (BTVCBonjourService)initWithQueue:(id)a3
+- (BTVCBonjourService)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v30.receiver = self;
   v30.super_class = BTVCBonjourService;
   v6 = [(BTVCBonjourService *)&v30 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_serialQueue, a3);
+    objc_storeStrong(&v6->_serialQueue, queue);
     v8 = objc_alloc_init(NSMutableSet);
     advertiserAdvs = v7->_advertiserAdvs;
     v7->_advertiserAdvs = v8;
@@ -71,13 +71,13 @@
     resultChanges = v7->_resultChanges;
     v7->_resultChanges = v20;
 
-    v22 = [(BTVCBonjourService *)v7 randomUUID];
+    randomUUID = [(BTVCBonjourService *)v7 randomUUID];
     localAdvertiserUUIDString = v7->_localAdvertiserUUIDString;
-    v7->_localAdvertiserUUIDString = v22;
+    v7->_localAdvertiserUUIDString = randomUUID;
 
-    v24 = [(BTVCBonjourService *)v7 randomUUID];
+    randomUUID2 = [(BTVCBonjourService *)v7 randomUUID];
     localBrowserUUIDString = v7->_localBrowserUUIDString;
-    v7->_localBrowserUUIDString = v24;
+    v7->_localBrowserUUIDString = randomUUID2;
 
     v26 = qword_100BCEA70;
     if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -98,15 +98,15 @@
 - (id)randomUUID
 {
   v2 = +[NSUUID UUID];
-  v3 = [v2 UUIDString];
+  uUIDString = [v2 UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)getUniqueServiceNameForAdvertiser
 {
-  v2 = [(NSString *)self->_localAdvertiserUUIDString lowercaseString];
-  v3 = [v2 substringWithRange:{12, 12}];
+  lowercaseString = [(NSString *)self->_localAdvertiserUUIDString lowercaseString];
+  v3 = [lowercaseString substringWithRange:{12, 12}];
 
   return v3;
 }
@@ -114,9 +114,9 @@
 - (void)_startAdvertiser
 {
   dispatch_assert_queue_V2(self->_serialQueue);
-  v3 = [(BTVCBonjourService *)self advertiserState];
+  advertiserState = [(BTVCBonjourService *)self advertiserState];
   v4 = qword_100BCEA70;
-  if (v3)
+  if (advertiserState)
   {
     v5 = qword_100BCEA70;
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -142,16 +142,16 @@
 
     if (self->_listener)
     {
-      v9 = [(BTVCBonjourService *)self getUniqueServiceNameForAdvertiser];
-      v10 = v9;
-      bonjour_service = nw_advertise_descriptor_create_bonjour_service([v9 UTF8String], "_btvc._tcp", 0);
+      getUniqueServiceNameForAdvertiser = [(BTVCBonjourService *)self getUniqueServiceNameForAdvertiser];
+      v10 = getUniqueServiceNameForAdvertiser;
+      bonjour_service = nw_advertise_descriptor_create_bonjour_service([getUniqueServiceNameForAdvertiser UTF8String], "_btvc._tcp", 0);
       if (bonjour_service)
       {
         v12 = qword_100BCEA70;
         if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          *&buf[4] = v9;
+          *&buf[4] = getUniqueServiceNameForAdvertiser;
           *&buf[12] = 2080;
           *&buf[14] = "_btvc._tcp";
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "[BTVCBonjourService] nw_advertise_descriptor_create_bonjour_service, %@, ServiceType %s success", buf, 0x16u);
@@ -211,10 +211,10 @@
   }
 }
 
-- (void)startAdvertisingWithData:(id)a3 completionHandler:(id)a4
+- (void)startAdvertisingWithData:(id)data completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   serialQueue = self->_serialQueue;
   if (!serialQueue)
   {
@@ -234,10 +234,10 @@
   block[2] = sub_10031B854;
   block[3] = &unk_100AEAFA0;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = dataCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = dataCopy;
   dispatch_async(serialQueue, block);
 }
 
@@ -264,20 +264,20 @@
   }
 }
 
-- (BOOL)stopAdvertisingForData:(id)a3 completionHandler:(id)a4
+- (BOOL)stopAdvertisingForData:(id)data completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10031BBFC;
   block[3] = &unk_100AEAFA0;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = dataCopy;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = dataCopy;
   dispatch_async(serialQueue, block);
 
   return 1;
@@ -295,8 +295,8 @@
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[BTVCBonjourService] Cleaning up the advertiser", v5, 2u);
     }
 
-    v4 = [(BTVCBonjourService *)self advToBrowserNwToSFendpoints];
-    [v4 enumerateKeysAndObjectsUsingBlock:&stru_100AEAFE0];
+    advToBrowserNwToSFendpoints = [(BTVCBonjourService *)self advToBrowserNwToSFendpoints];
+    [advToBrowserNwToSFendpoints enumerateKeysAndObjectsUsingBlock:&stru_100AEAFE0];
 
     [(BTVCBonjourService *)self _updateAdvertiserState];
   }
@@ -305,8 +305,8 @@
 - (void)_updateAdvertiserState
 {
   dispatch_assert_queue_V2(self->_serialQueue);
-  v3 = [(BTVCBonjourService *)self advToBrowserNwToSFendpoints];
-  v4 = [v3 keysOfEntriesPassingTest:&stru_100AEB020];
+  advToBrowserNwToSFendpoints = [(BTVCBonjourService *)self advToBrowserNwToSFendpoints];
+  v4 = [advToBrowserNwToSFendpoints keysOfEntriesPassingTest:&stru_100AEB020];
 
   if (![v4 count] && !self->_listener)
   {
@@ -322,9 +322,9 @@
 - (void)_startBrowser
 {
   dispatch_assert_queue_V2(self->_serialQueue);
-  v3 = [(BTVCBonjourService *)self browserState];
+  browserState = [(BTVCBonjourService *)self browserState];
   v4 = qword_100BCEA70;
-  if (v3)
+  if (browserState)
   {
     v5 = qword_100BCEA70;
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -454,24 +454,24 @@
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[BTVCBonjourService] Cleaning up browser", v7, 2u);
     }
 
-    v4 = [(BTVCBonjourService *)self browserToAdvNwToSFendpoints];
-    [v4 enumerateKeysAndObjectsUsingBlock:&stru_100AEB0E0];
+    browserToAdvNwToSFendpoints = [(BTVCBonjourService *)self browserToAdvNwToSFendpoints];
+    [browserToAdvNwToSFendpoints enumerateKeysAndObjectsUsingBlock:&stru_100AEB0E0];
 
     [(BTVCBonjourService *)self _updateBrowserState];
-    v5 = [(BTVCBonjourService *)self deviceDidStopScanning];
+    deviceDidStopScanning = [(BTVCBonjourService *)self deviceDidStopScanning];
 
-    if (v5)
+    if (deviceDidStopScanning)
     {
-      v6 = [(BTVCBonjourService *)self deviceDidStopScanning];
-      v6[2](v6, 0);
+      deviceDidStopScanning2 = [(BTVCBonjourService *)self deviceDidStopScanning];
+      deviceDidStopScanning2[2](deviceDidStopScanning2, 0);
     }
   }
 }
 
 - (void)_updateBrowserState
 {
-  v3 = [(BTVCBonjourService *)self browserToAdvNwToSFendpoints];
-  v4 = [v3 keysOfEntriesPassingTest:&stru_100AEB100];
+  browserToAdvNwToSFendpoints = [(BTVCBonjourService *)self browserToAdvNwToSFendpoints];
+  v4 = [browserToAdvNwToSFendpoints keysOfEntriesPassingTest:&stru_100AEB100];
 
   if (![v4 count] && !self->_browser)
   {
@@ -491,14 +491,14 @@
   }
 }
 
-- (void)handleBrowseResults:(id)a3
+- (void)handleBrowseResults:(id)results
 {
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v26 objects:v34 count:16];
+  resultsCopy = results;
+  v5 = [resultsCopy countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v5)
   {
     v7 = *v27;
@@ -510,19 +510,19 @@
       {
         if (*v27 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(resultsCopy);
         }
 
         v9 = *(*(&v26 + 1) + 8 * i);
         if (([v9 change] & 2) != 0)
         {
-          v15 = [v9 freshResult];
-          v11 = nw_browse_result_copy_endpoint(v15);
+          freshResult = [v9 freshResult];
+          v11 = nw_browse_result_copy_endpoint(freshResult);
 
           if (![(BTVCBonjourService *)self isLocalEndpoint:v11])
           {
-            v16 = [(BTVCBonjourService *)self browserToAdvNwToSFendpoints];
-            v17 = [v16 objectForKey:v11];
+            browserToAdvNwToSFendpoints = [(BTVCBonjourService *)self browserToAdvNwToSFendpoints];
+            v17 = [browserToAdvNwToSFendpoints objectForKey:v11];
             v18 = v17 == 0;
 
             v19 = qword_100BCEA70;
@@ -569,13 +569,13 @@
             continue;
           }
 
-          v10 = [v9 oldResult];
-          v11 = nw_browse_result_copy_endpoint(v10);
+          oldResult = [v9 oldResult];
+          v11 = nw_browse_result_copy_endpoint(oldResult);
 
           if (![(BTVCBonjourService *)self isLocalEndpoint:v11])
           {
-            v12 = [(BTVCBonjourService *)self browserToAdvNwToSFendpoints];
-            v13 = [v12 objectForKey:v11];
+            browserToAdvNwToSFendpoints2 = [(BTVCBonjourService *)self browserToAdvNwToSFendpoints];
+            v13 = [browserToAdvNwToSFendpoints2 objectForKey:v11];
 
             v14 = qword_100BCEA70;
             if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -592,32 +592,32 @@
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v26 objects:v34 count:16];
+      v5 = [resultsCopy countByEnumeratingWithState:&v26 objects:v34 count:16];
     }
 
     while (v5);
   }
 }
 
-- (id)_handleConnection:(id)a3 connectionType:(unsigned __int8)a4
+- (id)_handleConnection:(id)connection connectionType:(unsigned __int8)type
 {
-  v4 = a4;
-  v6 = a3;
+  typeCopy = type;
+  connectionCopy = connection;
   dispatch_assert_queue_V2(self->_serialQueue);
-  if (v6)
+  if (connectionCopy)
   {
     v7 = 32;
-    if ((v4 & 1) == 0)
+    if ((typeCopy & 1) == 0)
     {
       v7 = 40;
     }
 
     v8 = *(&self->super.isa + v7);
-    v9 = [[BTVCBonjourEndpoint alloc] initWithConnection:v6 connectionType:v4 localUniqueID:v8 withQueue:self->_serialQueue];
+    v9 = [[BTVCBonjourEndpoint alloc] initWithConnection:connectionCopy connectionType:typeCopy localUniqueID:v8 withQueue:self->_serialQueue];
     if (v9)
     {
-      v10 = nw_connection_copy_endpoint(v6);
-      if (v4)
+      v10 = nw_connection_copy_endpoint(connectionCopy);
+      if (typeCopy)
       {
         [(BTVCBonjourService *)self advToBrowserNwToSFendpoints];
       }
@@ -637,7 +637,7 @@
       v20[3] = &unk_100AEB148;
       objc_copyWeak(&v21, &from);
       objc_copyWeak(&v22, &location);
-      v23 = v4;
+      v23 = typeCopy;
       [(BTVCBonjourEndpoint *)v9 setDidConnectHandler:v20];
       v17[0] = _NSConcreteStackBlock;
       v17[1] = 3221225472;
@@ -684,17 +684,17 @@
   return v9;
 }
 
-- (void)_sendMessage:(id)a3 withType:(id)a4 toEndpoint:(id)a5 completionCallback:(id)a6
+- (void)_sendMessage:(id)message withType:(id)type toEndpoint:(id)endpoint completionCallback:(id)callback
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  typeCopy = type;
+  endpointCopy = endpoint;
+  callbackCopy = callback;
   dispatch_assert_queue_V2(self->_serialQueue);
   v29[0] = @"BTVCBonjourServiceMessageType";
   v29[1] = @"BTVCBonjourServiceMessageValue";
-  v30[0] = v11;
-  v30[1] = v10;
+  v30[0] = typeCopy;
+  v30[1] = messageCopy;
   v14 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:2];
   v15 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
@@ -702,7 +702,7 @@
     *buf = 138412546;
     v26 = v14;
     v27 = 2112;
-    v28 = v12;
+    v28 = endpointCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[BTVCBonjourService] Sending payload %@ to endpoint %@", buf, 0x16u);
   }
 
@@ -715,8 +715,8 @@
     v20[1] = 3221225472;
     v20[2] = sub_10031E780;
     v20[3] = &unk_100AEB1C0;
-    v21 = v13;
-    [v12 sendDataMessage:v16 completion:v20];
+    v21 = callbackCopy;
+    [endpointCopy sendDataMessage:v16 completion:v20];
     v18 = v21;
 LABEL_9:
 
@@ -728,26 +728,26 @@ LABEL_9:
     sub_100818380();
   }
 
-  if (v13)
+  if (callbackCopy)
   {
     v23 = NSLocalizedDescriptionKey;
     v24 = @"Unable to send message, failed to serialize payload";
     v19 = [NSDictionary dictionaryWithObjects:&v24 forKeys:&v23 count:1];
     v18 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-6700 userInfo:v19];
 
-    (*(v13 + 2))(v13, v18);
+    (*(callbackCopy + 2))(callbackCopy, v18);
     goto LABEL_9;
   }
 
 LABEL_10:
 }
 
-- (void)_sendMessage:(id)a3 withType:(id)a4 toDevice:(id)a5 connectionType:(unsigned __int8)a6 completionCallback:(id)a7
+- (void)_sendMessage:(id)message withType:(id)type toDevice:(id)device connectionType:(unsigned __int8)connectionType completionCallback:(id)callback
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  messageCopy = message;
+  typeCopy = type;
+  deviceCopy = device;
+  callbackCopy = callback;
   objc_initWeak(&location, self);
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
@@ -755,46 +755,46 @@ LABEL_10:
   block[2] = sub_10031E938;
   block[3] = &unk_100AEB1E8;
   objc_copyWeak(&v26, &location);
-  v27 = a6;
-  v22 = v14;
-  v23 = v13;
-  v24 = v12;
-  v25 = v15;
-  v17 = v15;
-  v18 = v12;
-  v19 = v13;
-  v20 = v14;
+  connectionTypeCopy = connectionType;
+  v22 = deviceCopy;
+  v23 = typeCopy;
+  v24 = messageCopy;
+  v25 = callbackCopy;
+  v17 = callbackCopy;
+  v18 = messageCopy;
+  v19 = typeCopy;
+  v20 = deviceCopy;
   dispatch_async(serialQueue, block);
 
   objc_destroyWeak(&v26);
   objc_destroyWeak(&location);
 }
 
-- (void)_sendAdvMessageWithData:(id)a3 isStart:(BOOL)a4 completionHandler:(id)a5
+- (void)_sendAdvMessageWithData:(id)data isStart:(BOOL)start completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  startCopy = start;
+  dataCopy = data;
+  handlerCopy = handler;
   v10 = @"BTVCBonjourServiceMessageTypeStopAdvertiseData";
-  if (v6)
+  if (startCopy)
   {
     v10 = @"BTVCBonjourServiceMessageTypeStartAdvertiseData";
   }
 
   v11 = v10;
-  v12 = [(BTVCBonjourService *)self advToBrowserUuidToSFendpoints];
+  advToBrowserUuidToSFendpoints = [(BTVCBonjourService *)self advToBrowserUuidToSFendpoints];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10031EC8C;
   v16[3] = &unk_100AEB238;
   v16[4] = self;
-  v13 = v8;
+  v13 = dataCopy;
   v17 = v13;
   v14 = v11;
   v18 = v14;
-  v15 = v9;
+  v15 = handlerCopy;
   v19 = v15;
-  [v12 enumerateKeysAndObjectsUsingBlock:v16];
+  [advToBrowserUuidToSFendpoints enumerateKeysAndObjectsUsingBlock:v16];
 
   if (v15)
   {
@@ -802,88 +802,88 @@ LABEL_10:
   }
 }
 
-- (void)connectToDevice:(id)a3 withParameters:(id)a4
+- (void)connectToDevice:(id)device withParameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 UUIDString];
+  deviceCopy = device;
+  parametersCopy = parameters;
+  uUIDString = [deviceCopy UUIDString];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10031EF80;
   v11[3] = &unk_100AEB260;
   v11[4] = self;
-  v9 = v6;
+  v9 = deviceCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = parametersCopy;
   v13 = v10;
-  [(BTVCBonjourService *)self _sendMessage:v10 withType:@"BTVCBonjourServiceMessageTypeConnect" toDevice:v8 connectionType:2 completionCallback:v11];
+  [(BTVCBonjourService *)self _sendMessage:v10 withType:@"BTVCBonjourServiceMessageTypeConnect" toDevice:uUIDString connectionType:2 completionCallback:v11];
 }
 
-- (void)disconnectFromDevice:(id)a3 withParameters:(id)a4
+- (void)disconnectFromDevice:(id)device withParameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 UUIDString];
+  deviceCopy = device;
+  parametersCopy = parameters;
+  uUIDString = [deviceCopy UUIDString];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10031F234;
   v11[3] = &unk_100AEB260;
   v11[4] = self;
-  v9 = v6;
+  v9 = deviceCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = parametersCopy;
   v13 = v10;
-  [(BTVCBonjourService *)self _sendMessage:v10 withType:@"BTVCBonjourServiceMessageTypeDisconnect" toDevice:v8 connectionType:4 completionCallback:v11];
+  [(BTVCBonjourService *)self _sendMessage:v10 withType:@"BTVCBonjourServiceMessageTypeDisconnect" toDevice:uUIDString connectionType:4 completionCallback:v11];
 }
 
-- (BOOL)sendData:(id)a3 toDevice:(id)a4 completionHandler:(id)a5
+- (BOOL)sendData:(id)data toDevice:(id)device completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 UUIDString];
+  dataCopy = data;
+  deviceCopy = device;
+  handlerCopy = handler;
+  uUIDString = [deviceCopy UUIDString];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10031F498;
   v16[3] = &unk_100AEB288;
-  v12 = v8;
+  v12 = dataCopy;
   v17 = v12;
-  v13 = v9;
+  v13 = deviceCopy;
   v18 = v13;
-  v14 = v10;
+  v14 = handlerCopy;
   v19 = v14;
-  [(BTVCBonjourService *)self _sendMessage:v12 withType:@"BTVCBonjourServiceMessageTypeDataPacket" toDevice:v11 connectionType:4 completionCallback:v16];
+  [(BTVCBonjourService *)self _sendMessage:v12 withType:@"BTVCBonjourServiceMessageTypeDataPacket" toDevice:uUIDString connectionType:4 completionCallback:v16];
 
   return 1;
 }
 
-- (BOOL)isLocalEndpoint:(id)a3
+- (BOOL)isLocalEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [NSString stringWithUTF8String:nw_endpoint_get_bonjour_service_name(v4)];
-  v6 = [(BTVCBonjourService *)self getUniqueServiceNameForAdvertiser];
-  v7 = [v5 isEqualToString:v6];
+  endpointCopy = endpoint;
+  v5 = [NSString stringWithUTF8String:nw_endpoint_get_bonjour_service_name(endpointCopy)];
+  getUniqueServiceNameForAdvertiser = [(BTVCBonjourService *)self getUniqueServiceNameForAdvertiser];
+  v7 = [v5 isEqualToString:getUniqueServiceNameForAdvertiser];
 
   return v7;
 }
 
-- (id)_endpointForUniqueID:(id)a3 connectionType:(unsigned __int8)a4
+- (id)_endpointForUniqueID:(id)d connectionType:(unsigned __int8)type
 {
-  v4 = a4;
-  v6 = a3;
+  typeCopy = type;
+  dCopy = d;
   v7 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v17 = 136315650;
     v18 = "[BTVCBonjourService _endpointForUniqueID:connectionType:]";
     v19 = 2112;
-    v20 = v6;
+    v20 = dCopy;
     v21 = 1024;
-    LODWORD(v22) = v4;
+    LODWORD(v22) = typeCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s device %@ connectionType %x", &v17, 0x1Cu);
   }
 
-  if (!v6)
+  if (!dCopy)
   {
     if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_ERROR))
     {
@@ -893,10 +893,10 @@ LABEL_10:
     goto LABEL_21;
   }
 
-  if (v4)
+  if (typeCopy)
   {
-    v12 = [(BTVCBonjourService *)self advToBrowserUuidToSFendpoints];
-    v9 = [v12 objectForKeyedSubscript:v6];
+    advToBrowserUuidToSFendpoints = [(BTVCBonjourService *)self advToBrowserUuidToSFendpoints];
+    v9 = [advToBrowserUuidToSFendpoints objectForKeyedSubscript:dCopy];
 
     if (v9)
     {
@@ -906,21 +906,21 @@ LABEL_10:
     v10 = qword_100BCEA70;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(BTVCBonjourService *)self browserToAdvUuidToSFendpoints];
+      browserToAdvUuidToSFendpoints = [(BTVCBonjourService *)self browserToAdvUuidToSFendpoints];
       v17 = 136315650;
       v18 = "[BTVCBonjourService _endpointForUniqueID:connectionType:]";
       v19 = 2112;
-      v20 = v6;
+      v20 = dCopy;
       v21 = 2112;
-      v22 = v13;
+      v22 = browserToAdvUuidToSFendpoints;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s device %@ is not in advToBrowserUuidToSFendpoints %@", &v17, 0x20u);
     }
   }
 
-  else if ((v4 & 2) != 0)
+  else if ((typeCopy & 2) != 0)
   {
-    v14 = [(BTVCBonjourService *)self browserToAdvUuidToSFendpoints];
-    v9 = [v14 objectForKeyedSubscript:v6];
+    browserToAdvUuidToSFendpoints2 = [(BTVCBonjourService *)self browserToAdvUuidToSFendpoints];
+    v9 = [browserToAdvUuidToSFendpoints2 objectForKeyedSubscript:dCopy];
 
     if (v9)
     {
@@ -930,26 +930,26 @@ LABEL_10:
     v10 = qword_100BCEA70;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(BTVCBonjourService *)self browserToAdvUuidToSFendpoints];
+      browserToAdvUuidToSFendpoints3 = [(BTVCBonjourService *)self browserToAdvUuidToSFendpoints];
       v17 = 136315650;
       v18 = "[BTVCBonjourService _endpointForUniqueID:connectionType:]";
       v19 = 2112;
-      v20 = v6;
+      v20 = dCopy;
       v21 = 2112;
-      v22 = v15;
+      v22 = browserToAdvUuidToSFendpoints3;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s device %@ is not in browserToAdvUuidToSFendpoints %@", &v17, 0x20u);
     }
   }
 
   else
   {
-    if ((v4 & 4) == 0)
+    if ((typeCopy & 4) == 0)
     {
       goto LABEL_19;
     }
 
-    v8 = [(BTVCBonjourService *)self connectionUuidToSFendpoints];
-    v9 = [v8 objectForKeyedSubscript:v6];
+    connectionUuidToSFendpoints = [(BTVCBonjourService *)self connectionUuidToSFendpoints];
+    v9 = [connectionUuidToSFendpoints objectForKeyedSubscript:dCopy];
 
     if (v9)
     {
@@ -959,13 +959,13 @@ LABEL_10:
     v10 = qword_100BCEA70;
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [(BTVCBonjourService *)self connectionUuidToSFendpoints];
+      connectionUuidToSFendpoints2 = [(BTVCBonjourService *)self connectionUuidToSFendpoints];
       v17 = 136315650;
       v18 = "[BTVCBonjourService _endpointForUniqueID:connectionType:]";
       v19 = 2112;
-      v20 = v6;
+      v20 = dCopy;
       v21 = 2112;
-      v22 = v11;
+      v22 = connectionUuidToSFendpoints2;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s device %@ is not in connectionUuidToSFendpoints %@", &v17, 0x20u);
     }
   }

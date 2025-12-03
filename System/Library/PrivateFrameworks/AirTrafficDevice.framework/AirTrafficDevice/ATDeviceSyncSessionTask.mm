@@ -1,25 +1,25 @@
 @interface ATDeviceSyncSessionTask
-- (ATDeviceSyncSessionTask)initWithDataClass:(id)a3 onMessageLink:(id)a4;
-- (void)messageLink:(id)a3 didReceiveRequest:(id)a4;
-- (void)updateProgressWithCount:(unint64_t)a3 totalItemCount:(unint64_t)a4;
+- (ATDeviceSyncSessionTask)initWithDataClass:(id)class onMessageLink:(id)link;
+- (void)messageLink:(id)link didReceiveRequest:(id)request;
+- (void)updateProgressWithCount:(unint64_t)count totalItemCount:(unint64_t)itemCount;
 @end
 
 @implementation ATDeviceSyncSessionTask
 
-- (void)messageLink:(id)a3 didReceiveRequest:(id)a4
+- (void)messageLink:(id)link didReceiveRequest:(id)request
 {
   v4.receiver = self;
   v4.super_class = ATDeviceSyncSessionTask;
-  [(ATDeviceSyncSessionTask *)&v4 doesNotRecognizeSelector:a2, a4];
+  [(ATDeviceSyncSessionTask *)&v4 doesNotRecognizeSelector:a2, request];
 }
 
-- (void)updateProgressWithCount:(unint64_t)a3 totalItemCount:(unint64_t)a4
+- (void)updateProgressWithCount:(unint64_t)count totalItemCount:(unint64_t)itemCount
 {
   [(ATSessionTask *)self setCompletedItemCount:?];
-  [(ATSessionTask *)self setTotalItemCount:a4];
-  if (a4)
+  [(ATSessionTask *)self setTotalItemCount:itemCount];
+  if (itemCount)
   {
-    v7 = a3 / a4;
+    v7 = count / itemCount;
   }
 
   else
@@ -30,19 +30,19 @@
   [(ATSessionTask *)self setProgress:v7];
 }
 
-- (ATDeviceSyncSessionTask)initWithDataClass:(id)a3 onMessageLink:(id)a4
+- (ATDeviceSyncSessionTask)initWithDataClass:(id)class onMessageLink:(id)link
 {
-  v7 = a4;
+  linkCopy = link;
   v17.receiver = self;
   v17.super_class = ATDeviceSyncSessionTask;
-  v8 = [(ATSessionTask *)&v17 initWithDataClass:a3];
+  v8 = [(ATSessionTask *)&v17 initWithDataClass:class];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_messageLink, a4);
-    v10 = [v7 identifier];
+    objc_storeStrong(&v8->_messageLink, link);
+    identifier = [linkCopy identifier];
     linkIdentifier = v9->_linkIdentifier;
-    v9->_linkIdentifier = v10;
+    v9->_linkIdentifier = identifier;
 
     v12 = objc_opt_class();
     Name = class_getName(v12);

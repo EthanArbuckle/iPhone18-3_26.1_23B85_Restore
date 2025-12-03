@@ -1,31 +1,31 @@
 @interface _UICollectionViewListDetailAccessoryButton
-- (_UICollectionViewListDetailAccessoryButton)initWithConstants:(id)a3;
+- (_UICollectionViewListDetailAccessoryButton)initWithConstants:(id)constants;
 - (id)_renderedImage;
 - (void)_executeActionHandler;
-- (void)setAccessoryBackgroundColor:(id)a3;
-- (void)setAccessoryTintColor:(id)a3;
-- (void)setAccessoryUsesMonochromaticTreatment:(BOOL)a3;
-- (void)setActionHandler:(id)a3;
-- (void)setConstants:(id)a3;
+- (void)setAccessoryBackgroundColor:(id)color;
+- (void)setAccessoryTintColor:(id)color;
+- (void)setAccessoryUsesMonochromaticTreatment:(BOOL)treatment;
+- (void)setActionHandler:(id)handler;
+- (void)setConstants:(id)constants;
 - (void)updateConfiguration;
 @end
 
 @implementation _UICollectionViewListDetailAccessoryButton
 
-- (_UICollectionViewListDetailAccessoryButton)initWithConstants:(id)a3
+- (_UICollectionViewListDetailAccessoryButton)initWithConstants:(id)constants
 {
-  v5 = a3;
+  constantsCopy = constants;
   v11.receiver = self;
   v11.super_class = _UICollectionViewListDetailAccessoryButton;
   v6 = [(UIButton *)&v11 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_constants, a3);
+    objc_storeStrong(&v6->_constants, constants);
     v8 = +[UIButtonConfiguration filledButtonConfiguration];
     [v8 setButtonSize:1];
-    v9 = [v5 defaultDetailAccessoryImage];
-    [v8 setImage:v9];
+    defaultDetailAccessoryImage = [constantsCopy defaultDetailAccessoryImage];
+    [v8 setImage:defaultDetailAccessoryImage];
 
     [(UIButton *)v7 setConfiguration:v8];
   }
@@ -33,16 +33,16 @@
   return v7;
 }
 
-- (void)setActionHandler:(id)a3
+- (void)setActionHandler:(id)handler
 {
   actionHandler = self->_actionHandler;
-  v6 = [a3 copy];
+  v6 = [handler copy];
   v7 = self->_actionHandler;
   self->_actionHandler = v6;
 
-  if (!a3 || actionHandler)
+  if (!handler || actionHandler)
   {
-    if (!a3 && actionHandler)
+    if (!handler && actionHandler)
     {
 
       [(UIControl *)self removeTarget:self action:sel__executeActionHandler forControlEvents:0x2000];
@@ -65,72 +65,72 @@
   }
 }
 
-- (void)setAccessoryTintColor:(id)a3
+- (void)setAccessoryTintColor:(id)color
 {
-  v5 = a3;
-  if (self->_accessoryTintColor != v5)
+  colorCopy = color;
+  if (self->_accessoryTintColor != colorCopy)
   {
-    objc_storeStrong(&self->_accessoryTintColor, a3);
+    objc_storeStrong(&self->_accessoryTintColor, color);
     v6.receiver = self;
     v6.super_class = _UICollectionViewListDetailAccessoryButton;
-    [(UIButton *)&v6 setTintColor:v5];
+    [(UIButton *)&v6 setTintColor:colorCopy];
   }
 }
 
-- (void)setAccessoryBackgroundColor:(id)a3
+- (void)setAccessoryBackgroundColor:(id)color
 {
-  v5 = a3;
-  if (self->_accessoryBackgroundColor != v5)
+  colorCopy = color;
+  if (self->_accessoryBackgroundColor != colorCopy)
   {
-    objc_storeStrong(&self->_accessoryBackgroundColor, a3);
+    objc_storeStrong(&self->_accessoryBackgroundColor, color);
     v6.receiver = self;
     v6.super_class = _UICollectionViewListDetailAccessoryButton;
-    [(UIView *)&v6 setBackgroundColor:v5];
+    [(UIView *)&v6 setBackgroundColor:colorCopy];
   }
 }
 
-- (void)setAccessoryUsesMonochromaticTreatment:(BOOL)a3
+- (void)setAccessoryUsesMonochromaticTreatment:(BOOL)treatment
 {
-  if (self->_accessoryUsesMonochromaticTreatment != a3)
+  if (self->_accessoryUsesMonochromaticTreatment != treatment)
   {
-    v4 = a3;
-    self->_accessoryUsesMonochromaticTreatment = a3;
-    if (a3)
+    treatmentCopy = treatment;
+    self->_accessoryUsesMonochromaticTreatment = treatment;
+    if (treatment)
     {
       [(UIView *)self _setMonochromaticTreatment:1];
     }
 
-    [(UIView *)self _setEnableMonochromaticTreatment:v4];
+    [(UIView *)self _setEnableMonochromaticTreatment:treatmentCopy];
   }
 }
 
 - (id)_renderedImage
 {
-  v2 = [(UIButton *)self configuration];
-  v3 = [v2 image];
+  configuration = [(UIButton *)self configuration];
+  image = [configuration image];
 
-  return v3;
+  return image;
 }
 
-- (void)setConstants:(id)a3
+- (void)setConstants:(id)constants
 {
-  v5 = a3;
-  if (self->_constants != v5)
+  constantsCopy = constants;
+  if (self->_constants != constantsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_constants, a3);
+    v6 = constantsCopy;
+    objc_storeStrong(&self->_constants, constants);
     [(UIButton *)self setNeedsUpdateConfiguration];
-    v5 = v6;
+    constantsCopy = v6;
   }
 }
 
 - (void)updateConfiguration
 {
-  v4 = [(UIButton *)self configuration];
-  v3 = [(UITableConstants *)self->_constants defaultDetailAccessoryImage];
-  [v4 setImage:v3];
+  configuration = [(UIButton *)self configuration];
+  defaultDetailAccessoryImage = [(UITableConstants *)self->_constants defaultDetailAccessoryImage];
+  [configuration setImage:defaultDetailAccessoryImage];
 
-  [(UIButton *)self setConfiguration:v4];
+  [(UIButton *)self setConfiguration:configuration];
 }
 
 @end

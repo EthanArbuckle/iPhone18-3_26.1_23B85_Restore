@@ -1,7 +1,7 @@
 @interface CameraSessionInformation
 - (_TtC11DockKitCore24CameraSessionInformation)init;
-- (_TtC11DockKitCore24CameraSessionInformation)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC11DockKitCore24CameraSessionInformation)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CameraSessionInformation
@@ -21,19 +21,19 @@
   return [(CameraSessionInformation *)&v6 init];
 }
 
-- (_TtC11DockKitCore24CameraSessionInformation)initWithCoder:(id)a3
+- (_TtC11DockKitCore24CameraSessionInformation)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_2246259CC(v3);
+  coderCopy = coder;
+  v4 = sub_2246259CC(coderCopy);
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  CameraSessionInformation.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  CameraSessionInformation.encode(with:)(coderCopy);
 }
 
 @end

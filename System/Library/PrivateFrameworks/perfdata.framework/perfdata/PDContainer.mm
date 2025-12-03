@@ -1,55 +1,55 @@
 @interface PDContainer
-+ (PDContainer)containerWithFileURL:(id)a3 error:(id *)a4;
-+ (PDContainer)containerWithJSONData:(id)a3 error:(id *)a4;
-+ (PDContainer)containerWithJSONDictionary:(id)a3 error:(id *)a4;
-+ (PDContainer)containerWithPath:(id)a3 error:(id *)a4;
-- (BOOL)enumerateAggregatedMeasurementsMatchingNullableFilter:(id)a3 ignoringVariables:(id)a4 error:(id *)a5 usingBlock:(id)a6;
-- (BOOL)enumerateMeasurementsMatchingNullableFilter:(id)a3 error:(id *)a4 usingBlock:(id)a5;
-- (BOOL)isComparableTo:(id)a3;
-- (BOOL)isLike:(id)a3;
-- (PDContainer)initWithFileURL:(id)a3 error:(id *)a4;
-- (PDContainer)initWithJSONData:(id)a3 error:(id *)a4;
-- (PDContainer)initWithJSONDictionary:(id)a3 error:(id *)p_isa;
-- (PDContainer)initWithPath:(id)a3 error:(id *)a4;
-- (id)aggregateMeasurementsMatchingFilter:(id)a3 error:(id *)a4;
++ (PDContainer)containerWithFileURL:(id)l error:(id *)error;
++ (PDContainer)containerWithJSONData:(id)data error:(id *)error;
++ (PDContainer)containerWithJSONDictionary:(id)dictionary error:(id *)error;
++ (PDContainer)containerWithPath:(id)path error:(id *)error;
+- (BOOL)enumerateAggregatedMeasurementsMatchingNullableFilter:(id)filter ignoringVariables:(id)variables error:(id *)error usingBlock:(id)block;
+- (BOOL)enumerateMeasurementsMatchingNullableFilter:(id)filter error:(id *)error usingBlock:(id)block;
+- (BOOL)isComparableTo:(id)to;
+- (BOOL)isLike:(id)like;
+- (PDContainer)initWithFileURL:(id)l error:(id *)error;
+- (PDContainer)initWithJSONData:(id)data error:(id *)error;
+- (PDContainer)initWithJSONDictionary:(id)dictionary error:(id *)p_isa;
+- (PDContainer)initWithPath:(id)path error:(id *)error;
+- (id)aggregateMeasurementsMatchingFilter:(id)filter error:(id *)error;
 - (id)description;
 - (unint64_t)measurementCount;
 @end
 
 @implementation PDContainer
 
-- (PDContainer)initWithPath:(id)a3 error:(id *)a4
+- (PDContainer)initWithPath:(id)path error:(id *)error
 {
-  v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:a3 isDirectory:0];
-  v7 = [(PDContainer *)self initWithFileURL:v6 error:a4];
+  v6 = [MEMORY[0x277CBEBC0] fileURLWithPath:path isDirectory:0];
+  v7 = [(PDContainer *)self initWithFileURL:v6 error:error];
 
   return v7;
 }
 
-+ (PDContainer)containerWithPath:(id)a3 error:(id *)a4
++ (PDContainer)containerWithPath:(id)path error:(id *)error
 {
-  v5 = a3;
-  v6 = [[PDContainer alloc] initWithPath:v5 error:a4];
+  pathCopy = path;
+  v6 = [[PDContainer alloc] initWithPath:pathCopy error:error];
 
   return v6;
 }
 
-- (PDContainer)initWithFileURL:(id)a3 error:(id *)a4
+- (PDContainer)initWithFileURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = PDContainer;
   v7 = [(PDContainer *)&v13 init];
   if (v7)
   {
     v8 = v7;
-    v9 = [MEMORY[0x277CBEAE0] inputStreamWithURL:v6];
+    v9 = [MEMORY[0x277CBEAE0] inputStreamWithURL:lCopy];
     [v9 open];
-    v10 = [MEMORY[0x277CCAAA0] JSONObjectWithStream:v9 options:3 error:a4];
+    v10 = [MEMORY[0x277CCAAA0] JSONObjectWithStream:v9 options:3 error:error];
     [v9 close];
     if (v10)
     {
-      v8 = [(PDContainer *)v8 initWithJSONDictionary:v10 error:a4];
+      v8 = [(PDContainer *)v8 initWithJSONDictionary:v10 error:error];
       v11 = v8;
     }
 
@@ -67,27 +67,27 @@
   return v11;
 }
 
-+ (PDContainer)containerWithFileURL:(id)a3 error:(id *)a4
++ (PDContainer)containerWithFileURL:(id)l error:(id *)error
 {
-  v5 = a3;
-  v6 = [[PDContainer alloc] initWithFileURL:v5 error:a4];
+  lCopy = l;
+  v6 = [[PDContainer alloc] initWithFileURL:lCopy error:error];
 
   return v6;
 }
 
-- (PDContainer)initWithJSONData:(id)a3 error:(id *)a4
+- (PDContainer)initWithJSONData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = PDContainer;
   v7 = [(PDContainer *)&v12 init];
   if (v7)
   {
     v8 = v7;
-    v9 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v6 options:3 error:a4];
+    v9 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:3 error:error];
     if (v9)
     {
-      v8 = [(PDContainer *)v8 initWithJSONDictionary:v9 error:a4];
+      v8 = [(PDContainer *)v8 initWithJSONDictionary:v9 error:error];
       v10 = v8;
     }
 
@@ -105,24 +105,24 @@
   return v10;
 }
 
-+ (PDContainer)containerWithJSONData:(id)a3 error:(id *)a4
++ (PDContainer)containerWithJSONData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [[PDContainer alloc] initWithJSONData:v5 error:a4];
+  dataCopy = data;
+  v6 = [[PDContainer alloc] initWithJSONData:dataCopy error:error];
 
   return v6;
 }
 
-- (PDContainer)initWithJSONDictionary:(id)a3 error:(id *)p_isa
+- (PDContainer)initWithJSONDictionary:(id)dictionary error:(id *)p_isa
 {
   v57[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(PDContainer *)self setPerfdata:v6];
-    v7 = [(PDContainer *)self perfdata];
-    v8 = [v7 objectForKeyedSubscript:@"$schema"];
+    [(PDContainer *)self setPerfdata:dictionaryCopy];
+    perfdata = [(PDContainer *)self perfdata];
+    v8 = [perfdata objectForKeyedSubscript:@"$schema"];
 
     if (!v8 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || ([v8 hasPrefix:@"https://perfdata.apple.com/schema/"] & 1) == 0)
     {
@@ -140,12 +140,12 @@
       goto LABEL_17;
     }
 
-    v9 = [(PDContainer *)self perfdata];
-    v10 = [v9 objectForKeyedSubscript:@"name"];
+    perfdata2 = [(PDContainer *)self perfdata];
+    v10 = [perfdata2 objectForKeyedSubscript:@"name"];
     [(PDContainer *)self setName:v10];
 
-    v11 = [(PDContainer *)self name];
-    if (!v11 || (v12 = v11, [(PDContainer *)self name], v13 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v13, v12, (isKindOfClass & 1) == 0))
+    name = [(PDContainer *)self name];
+    if (!name || (v12 = name, [(PDContainer *)self name], v13 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v13, v12, (isKindOfClass & 1) == 0))
     {
       p_isa = handle_malformed_data(p_isa, @"perfdata name");
 LABEL_17:
@@ -153,21 +153,21 @@ LABEL_17:
       goto LABEL_18;
     }
 
-    v15 = [(PDContainer *)self perfdata];
-    v16 = [v15 objectForKeyedSubscript:@"version"];
+    perfdata3 = [(PDContainer *)self perfdata];
+    v16 = [perfdata3 objectForKeyedSubscript:@"version"];
 
     if (v16 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       -[PDContainer setVersion:](self, "setVersion:", [v16 unsignedIntegerValue]);
-      v17 = [(PDContainer *)self perfdata];
-      v18 = [v17 objectForKeyedSubscript:@"description"];
+      perfdata4 = [(PDContainer *)self perfdata];
+      v18 = [perfdata4 objectForKeyedSubscript:@"description"];
       [(PDContainer *)self setTestDescription:v18];
 
-      v19 = [(PDContainer *)self testDescription];
-      if (!v19 || (v20 = v19, [(PDContainer *)self testDescription], v21 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v22 = objc_opt_isKindOfClass(), v21, v20, (v22 & 1) != 0))
+      testDescription = [(PDContainer *)self testDescription];
+      if (!testDescription || (v20 = testDescription, [(PDContainer *)self testDescription], v21 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v22 = objc_opt_isKindOfClass(), v21, v20, (v22 & 1) != 0))
       {
-        v23 = [(PDContainer *)self perfdata];
-        v24 = [v23 objectForKeyedSubscript:@"larger_better"];
+        perfdata5 = [(PDContainer *)self perfdata];
+        v24 = [perfdata5 objectForKeyedSubscript:@"larger_better"];
 
         if (v24)
         {
@@ -178,24 +178,24 @@ LABEL_17:
             goto LABEL_31;
           }
 
-          v25 = [v24 BOOLValue];
+          bOOLValue = [v24 BOOLValue];
         }
 
         else
         {
-          v25 = 0;
+          bOOLValue = 0;
         }
 
-        [(PDContainer *)self setLargerBetter:v25];
-        v31 = [(PDContainer *)self perfdata];
-        v32 = [v31 objectForKeyedSubscript:@"primary_metric"];
+        [(PDContainer *)self setLargerBetter:bOOLValue];
+        perfdata6 = [(PDContainer *)self perfdata];
+        v32 = [perfdata6 objectForKeyedSubscript:@"primary_metric"];
         [(PDContainer *)self setPrimaryMetricFilter:v32];
 
-        v33 = [(PDContainer *)self primaryMetricFilter];
-        if (v33)
+        primaryMetricFilter = [(PDContainer *)self primaryMetricFilter];
+        if (primaryMetricFilter)
         {
-          v34 = v33;
-          v35 = [(PDContainer *)self primaryMetricFilter];
+          v34 = primaryMetricFilter;
+          primaryMetricFilter2 = [(PDContainer *)self primaryMetricFilter];
           objc_opt_class();
           v36 = objc_opt_isKindOfClass();
 
@@ -206,15 +206,15 @@ LABEL_17:
           }
         }
 
-        v37 = [(PDContainer *)self perfdata];
-        v38 = [v37 objectForKeyedSubscript:@"generator"];
+        perfdata7 = [(PDContainer *)self perfdata];
+        v38 = [perfdata7 objectForKeyedSubscript:@"generator"];
         [(PDContainer *)self setGenerator:v38];
 
-        v39 = [(PDContainer *)self generator];
+        generator = [(PDContainer *)self generator];
 
-        if (v39)
+        if (generator)
         {
-          v40 = [(PDContainer *)self generator];
+          generator2 = [(PDContainer *)self generator];
           objc_opt_class();
           v41 = objc_opt_isKindOfClass();
 
@@ -230,46 +230,46 @@ LABEL_17:
           [(PDContainer *)self setGenerator:@"<unknown>"];
         }
 
-        v44 = [(PDContainer *)self perfdata];
-        v45 = expect_dictionary(v44, @"variables", p_isa, @"perfdata variables");
+        perfdata8 = [(PDContainer *)self perfdata];
+        v45 = expect_dictionary(perfdata8, @"variables", p_isa, @"perfdata variables");
         [(PDContainer *)self setVariables:v45];
 
-        v46 = [(PDContainer *)self variables];
+        variables = [(PDContainer *)self variables];
 
-        if (!v46)
+        if (!variables)
         {
           goto LABEL_41;
         }
 
-        v47 = [(PDContainer *)self perfdata];
-        v48 = expect_dictionary(v47, @"configuration", p_isa, @"perfdata configuration");
+        perfdata9 = [(PDContainer *)self perfdata];
+        v48 = expect_dictionary(perfdata9, @"configuration", p_isa, @"perfdata configuration");
         [(PDContainer *)self setConfiguration:v48];
 
-        v49 = [(PDContainer *)self configuration];
+        configuration = [(PDContainer *)self configuration];
 
-        if (!v49)
+        if (!configuration)
         {
 LABEL_41:
           p_isa = 0;
           goto LABEL_33;
         }
 
-        v50 = [(PDContainer *)self perfdata];
-        v51 = [v50 objectForKeyedSubscript:@"notes"];
+        perfdata10 = [(PDContainer *)self perfdata];
+        v51 = [perfdata10 objectForKeyedSubscript:@"notes"];
         [(PDContainer *)self setNotes:v51];
 
-        v52 = [(PDContainer *)self notes];
-        if (!v52 || (v53 = v52, [(PDContainer *)self notes], v54 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v55 = objc_opt_isKindOfClass(), v54, v53, (v55 & 1) != 0))
+        notes = [(PDContainer *)self notes];
+        if (!notes || (v53 = notes, [(PDContainer *)self notes], v54 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), v55 = objc_opt_isKindOfClass(), v54, v53, (v55 & 1) != 0))
         {
-          v43 = self;
+          selfCopy = self;
           goto LABEL_32;
         }
 
         v42 = @"perfdata notes";
 LABEL_31:
-        v43 = handle_malformed_data(p_isa, v42);
+        selfCopy = handle_malformed_data(p_isa, v42);
 LABEL_32:
-        p_isa = &v43->super.isa;
+        p_isa = &selfCopy->super.isa;
 LABEL_33:
 
         goto LABEL_34;
@@ -296,10 +296,10 @@ LABEL_18:
   return p_isa;
 }
 
-+ (PDContainer)containerWithJSONDictionary:(id)a3 error:(id *)a4
++ (PDContainer)containerWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v5 = a3;
-  v6 = [[PDContainer alloc] initWithJSONDictionary:v5 error:a4];
+  dictionaryCopy = dictionary;
+  v6 = [[PDContainer alloc] initWithJSONDictionary:dictionaryCopy error:error];
 
   return v6;
 }
@@ -307,21 +307,21 @@ LABEL_18:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(PDContainer *)self name];
-  v5 = [v3 stringWithFormat:@"PerfData: %@ v%lu", v4, -[PDContainer version](self, "version")];
+  name = [(PDContainer *)self name];
+  v5 = [v3 stringWithFormat:@"PerfData: %@ v%lu", name, -[PDContainer version](self, "version")];
 
   return v5;
 }
 
-- (BOOL)isComparableTo:(id)a3
+- (BOOL)isComparableTo:(id)to
 {
-  v4 = a3;
-  v5 = [(PDContainer *)self version];
-  if (v5 == [v4 version])
+  toCopy = to;
+  version = [(PDContainer *)self version];
+  if (version == [toCopy version])
   {
-    v6 = [(PDContainer *)self name];
-    v7 = [v4 name];
-    v8 = [v6 isEqualToString:v7];
+    name = [(PDContainer *)self name];
+    name2 = [toCopy name];
+    v8 = [name isEqualToString:name2];
   }
 
   else
@@ -332,11 +332,11 @@ LABEL_18:
   return v8;
 }
 
-- (BOOL)isLike:(id)a3
+- (BOOL)isLike:(id)like
 {
-  v4 = a3;
+  likeCopy = like;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) == 0 || [(PDContainer *)self isComparableTo:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) == 0 || [(PDContainer *)self isComparableTo:likeCopy];
 
   return v5;
 }
@@ -344,8 +344,8 @@ LABEL_18:
 - (unint64_t)measurementCount
 {
   v18 = *MEMORY[0x277D85DE8];
-  v2 = [(PDContainer *)self perfdata];
-  v3 = [v2 objectForKeyedSubscript:@"data"];
+  perfdata = [(PDContainer *)self perfdata];
+  v3 = [perfdata objectForKeyedSubscript:@"data"];
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
@@ -401,13 +401,13 @@ LABEL_18:
   return v7;
 }
 
-- (BOOL)enumerateMeasurementsMatchingNullableFilter:(id)a3 error:(id *)a4 usingBlock:(id)a5
+- (BOOL)enumerateMeasurementsMatchingNullableFilter:(id)filter error:(id *)error usingBlock:(id)block
 {
   v60 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(PDContainer *)self perfdata];
-  v11 = [v10 objectForKeyedSubscript:@"data"];
+  filterCopy = filter;
+  blockCopy = block;
+  perfdata = [(PDContainer *)self perfdata];
+  v11 = [perfdata objectForKeyedSubscript:@"data"];
 
   if (v11)
   {
@@ -415,30 +415,30 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (!v8)
+      if (!filterCopy)
       {
         v48 = 0;
         v15 = 0;
         goto LABEL_10;
       }
 
-      if ([v8 length])
+      if ([filterCopy length])
       {
-        v13 = strip_container_prefix(self, v8);
+        v13 = strip_container_prefix(self, filterCopy);
 
         v48 = get_metric_filter_metric(v13);
-        v14 = get_metric_filter_variables(v13, a4);
+        v14 = get_metric_filter_variables(v13, error);
         if (!v14)
         {
           v16 = 0;
-          v8 = v13;
+          filterCopy = v13;
 LABEL_42:
 
           goto LABEL_43;
         }
 
         v15 = v14;
-        v8 = v13;
+        filterCopy = v13;
 LABEL_10:
         v56 = 0u;
         v57 = 0u;
@@ -448,7 +448,7 @@ LABEL_10:
         v19 = [v18 countByEnumeratingWithState:&v54 objects:v59 count:16];
         if (v19)
         {
-          v46 = a4;
+          errorCopy = error;
           v47 = 0;
           v20 = *v55;
           v43 = v18;
@@ -456,7 +456,7 @@ LABEL_10:
           while (2)
           {
             v21 = 0;
-            a4 = v46;
+            error = errorCopy;
             v41 = v19;
             do
             {
@@ -468,9 +468,9 @@ LABEL_10:
               v22 = *(*(&v54 + 1) + 8 * v21);
               if (!v22 || (v23 = *(v12 + 2656), objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
               {
-                v38 = handle_malformed_data(a4, @"perfdata group");
+                v38 = handle_malformed_data(error, @"perfdata group");
                 v34 = 0;
-                LOBYTE(a4) = 0;
+                LOBYTE(error) = 0;
                 goto LABEL_41;
               }
 
@@ -484,8 +484,8 @@ LABEL_10:
               {
                 v25 = v24;
                 v26 = *v51;
-                v44 = v9;
-                v42 = v8;
+                v44 = blockCopy;
+                v42 = filterCopy;
                 v39 = v21;
                 while (2)
                 {
@@ -499,20 +499,20 @@ LABEL_10:
                     v28 = *(*(&v50 + 1) + 8 * i);
                     if (!v28 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
                     {
-                      v35 = handle_malformed_data(a4, @"perfdata measurement");
-                      LOBYTE(a4) = 0;
+                      v35 = handle_malformed_data(error, @"perfdata measurement");
+                      LOBYTE(error) = 0;
 LABEL_40:
 
                       v34 = 0;
-                      v9 = v44;
-                      v8 = v42;
+                      blockCopy = v44;
+                      filterCopy = v42;
                       v18 = v43;
                       goto LABEL_41;
                     }
 
-                    v29 = [[PDMeasurement alloc] initWithContainer:self dictionary:v28 group:v47 error:a4];
+                    v29 = [[PDMeasurement alloc] initWithContainer:self dictionary:v28 group:v47 error:error];
                     v30 = v29;
-                    LOBYTE(a4) = v29 != 0;
+                    LOBYTE(error) = v29 != 0;
                     if (!v29)
                     {
                       goto LABEL_39;
@@ -533,12 +533,12 @@ LABEL_39:
                       }
                     }
 
-                    a4 = v46;
+                    error = errorCopy;
                   }
 
                   v25 = [obj countByEnumeratingWithState:&v50 objects:v58 count:16];
-                  v9 = v44;
-                  v8 = v42;
+                  blockCopy = v44;
+                  filterCopy = v42;
                   v21 = v39;
                   if (v25)
                   {
@@ -575,7 +575,7 @@ LABEL_39:
 
 LABEL_41:
 
-        v16 = v34 | a4;
+        v16 = v34 | error;
         goto LABEL_42;
       }
 
@@ -584,7 +584,7 @@ LABEL_41:
 
     else
     {
-      v17 = handle_malformed_data(a4, @"perfdata data");
+      v17 = handle_malformed_data(error, @"perfdata data");
       v16 = 0;
     }
   }
@@ -600,31 +600,31 @@ LABEL_43:
   return v16 & 1;
 }
 
-- (BOOL)enumerateAggregatedMeasurementsMatchingNullableFilter:(id)a3 ignoringVariables:(id)a4 error:(id *)a5 usingBlock:(id)a6
+- (BOOL)enumerateAggregatedMeasurementsMatchingNullableFilter:(id)filter ignoringVariables:(id)variables error:(id *)error usingBlock:(id)block
 {
   v43 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  filterCopy = filter;
+  variablesCopy = variables;
+  blockCopy = block;
   v13 = objc_opt_new();
   v14 = objc_opt_new();
   v37[0] = MEMORY[0x277D85DD0];
   v37[1] = 3221225472;
   v37[2] = __104__PDContainer_enumerateAggregatedMeasurementsMatchingNullableFilter_ignoringVariables_error_usingBlock___block_invoke;
   v37[3] = &unk_27A70FF40;
-  v15 = v11;
+  v15 = variablesCopy;
   v38 = v15;
   v16 = v13;
   v39 = v16;
-  v40 = self;
+  selfCopy = self;
   v17 = v14;
   v41 = v17;
-  v18 = [(PDContainer *)self enumerateMeasurementsMatchingNullableFilter:v10 error:a5 usingBlock:v37];
+  v18 = [(PDContainer *)self enumerateMeasurementsMatchingNullableFilter:filterCopy error:error usingBlock:v37];
   v19 = v18;
   if (v18)
   {
     v30 = v18;
-    v31 = v10;
+    v31 = filterCopy;
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
@@ -652,11 +652,11 @@ LABEL_4:
 
         v26 = v25;
         v32 = 0;
-        v27 = [v25 measurement];
-        v12[2](v12, v27, &v32);
+        measurement = [v25 measurement];
+        blockCopy[2](blockCopy, measurement, &v32);
 
-        LOBYTE(v27) = v32;
-        if (v27)
+        LOBYTE(measurement) = v32;
+        if (measurement)
         {
           break;
         }
@@ -674,7 +674,7 @@ LABEL_4:
       }
     }
 
-    v10 = v31;
+    filterCopy = v31;
     v19 = v30;
   }
 
@@ -713,9 +713,9 @@ void __104__PDContainer_enumerateAggregatedMeasurementsMatchingNullableFilter_ig
   [(PDAggregateMeasurement *)v5 updateWithMeasurement:v11];
 }
 
-- (id)aggregateMeasurementsMatchingFilter:(id)a3 error:(id *)a4
+- (id)aggregateMeasurementsMatchingFilter:(id)filter error:(id *)error
 {
-  v6 = a3;
+  filterCopy = filter;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -728,19 +728,19 @@ void __104__PDContainer_enumerateAggregatedMeasurementsMatchingNullableFilter_ig
   v9[3] = &unk_27A70FF68;
   v9[4] = self;
   v9[5] = &v10;
-  if ([(PDContainer *)self enumerateMeasurementsMatchingFilter:v6 error:a4 usingBlock:v9])
+  if ([(PDContainer *)self enumerateMeasurementsMatchingFilter:filterCopy error:error usingBlock:v9])
   {
-    v7 = [v11[5] measurement];
+    measurement = [v11[5] measurement];
   }
 
   else
   {
-    v7 = 0;
+    measurement = 0;
   }
 
   _Block_object_dispose(&v10, 8);
 
-  return v7;
+  return measurement;
 }
 
 void __57__PDContainer_aggregateMeasurementsMatchingFilter_error___block_invoke(uint64_t a1, void *a2)

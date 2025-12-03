@@ -1,31 +1,31 @@
 @interface IKAppDocument
-- (IKAppDocument)initWithAppContext:(id)a3 document:(id)a4 owner:(id)a5 extraInfo:(id)a6;
+- (IKAppDocument)initWithAppContext:(id)context document:(id)document owner:(id)owner extraInfo:(id)info;
 - (IKJSNavigationDocument)navigationDocument;
 - (NSString)debugDescription;
-- (id)retrieveJSElementForViewElement:(id)a3 jsContext:(id)a4;
+- (id)retrieveJSElementForViewElement:(id)element jsContext:(id)context;
 - (void)dealloc;
-- (void)dispatchDocumentCallback:(id)a3 eventType:(unint64_t)a4;
+- (void)dispatchDocumentCallback:(id)callback eventType:(unint64_t)type;
 - (void)onAppear;
 - (void)onDisappear;
-- (void)onImpressionsChange:(id)a3;
+- (void)onImpressionsChange:(id)change;
 - (void)onLoad;
-- (void)onNeedsUpdateWithCompletion:(id)a3;
-- (void)onPerformanceMetricsChange:(id)a3;
+- (void)onNeedsUpdateWithCompletion:(id)completion;
+- (void)onPerformanceMetricsChange:(id)change;
 - (void)onUnload;
 - (void)onUpdate;
-- (void)onViewAttributesChangeWithArguments:(id)a3 completion:(id)a4;
-- (void)recordImpressionsForViewElements:(id)a3;
-- (void)snapshotImpressionsForViewElements:(id)a3;
+- (void)onViewAttributesChangeWithArguments:(id)arguments completion:(id)completion;
+- (void)recordImpressionsForViewElements:(id)elements;
+- (void)snapshotImpressionsForViewElements:(id)elements;
 @end
 
 @implementation IKAppDocument
 
-- (IKAppDocument)initWithAppContext:(id)a3 document:(id)a4 owner:(id)a5 extraInfo:(id)a6
+- (IKAppDocument)initWithAppContext:(id)context document:(id)document owner:(id)owner extraInfo:(id)info
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  contextCopy = context;
+  documentCopy = document;
+  ownerCopy = owner;
+  infoCopy = info;
   v25.receiver = self;
   v25.super_class = IKAppDocument;
   v14 = [(IKAppDocument *)&v25 init];
@@ -33,10 +33,10 @@
   if (v14)
   {
     v14->_isViewElementRegistryDirty = 1;
-    objc_storeWeak(&v14->_appContext, v10);
-    objc_storeWeak(&v15->_owner, v12);
-    v16 = objc_storeWeak(&v15->_jsDocument, v11);
-    [v11 prepareForPresentationWithExtraInfo:v13];
+    objc_storeWeak(&v14->_appContext, contextCopy);
+    objc_storeWeak(&v15->_owner, ownerCopy);
+    v16 = objc_storeWeak(&v15->_jsDocument, documentCopy);
+    [documentCopy prepareForPresentationWithExtraInfo:infoCopy];
 
     WeakRetained = objc_loadWeakRetained(&v15->_jsDocument);
     [WeakRetained setAppBridge:v15];
@@ -45,15 +45,15 @@
     [(IKAppDocument *)v15 _updateWithXML:v18];
 
     v19 = objc_loadWeakRetained(&v15->_appContext);
-    v20 = [v19 jsContext];
-    v21 = [v20 virtualMachine];
+    jsContext = [v19 jsContext];
+    virtualMachine = [jsContext virtualMachine];
     v22 = objc_loadWeakRetained(&v15->_jsDocument);
     v23 = objc_loadWeakRetained(&v15->_owner);
-    [v21 addManagedReference:v22 withOwner:v23];
+    [virtualMachine addManagedReference:v22 withOwner:v23];
 
     if (+[IKPreference logDocumentXML])
     {
-      NSLog(&cfstr_CreatedXmlDocu.isa, v11);
+      NSLog(&cfstr_CreatedXmlDocu.isa, documentCopy);
     }
   }
 
@@ -103,39 +103,39 @@ void __24__IKAppDocument_dealloc__block_invoke(uint64_t a1, void *a2)
 
 - (NSString)debugDescription
 {
-  v2 = [(IKAppDocument *)self templateElement];
-  v3 = [v2 debugDescription];
+  templateElement = [(IKAppDocument *)self templateElement];
+  v3 = [templateElement debugDescription];
 
   return v3;
 }
 
 - (IKJSNavigationDocument)navigationDocument
 {
-  v2 = [(IKAppDocument *)self jsDocument];
-  v3 = [v2 navigationDocument];
+  jsDocument = [(IKAppDocument *)self jsDocument];
+  navigationDocument = [jsDocument navigationDocument];
 
-  return v3;
+  return navigationDocument;
 }
 
-- (void)dispatchDocumentCallback:(id)a3 eventType:(unint64_t)a4
+- (void)dispatchDocumentCallback:(id)callback eventType:(unint64_t)type
 {
-  v6 = a3;
-  if (v6)
+  callbackCopy = callback;
+  if (callbackCopy)
   {
-    v7 = [(IKAppDocument *)self appContext];
+    appContext = [(IKAppDocument *)self appContext];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __52__IKAppDocument_dispatchDocumentCallback_eventType___block_invoke;
     v9[3] = &unk_279799A00;
     v9[4] = self;
-    v10 = v6;
-    [v7 evaluate:v9 completionBlock:0];
+    v10 = callbackCopy;
+    [appContext evaluate:v9 completionBlock:0];
   }
 
-  if (a4)
+  if (type)
   {
-    v8 = [(IKAppDocument *)self templateElement];
-    [v8 dispatchEventOfType:a4 canBubble:1 isCancelable:0 extraInfo:0 completionBlock:0];
+    templateElement = [(IKAppDocument *)self templateElement];
+    [templateElement dispatchEventOfType:type canBubble:1 isCancelable:0 extraInfo:0 completionBlock:0];
   }
 }
 
@@ -148,47 +148,47 @@ void __52__IKAppDocument_dispatchDocumentCallback_eventType___block_invoke(uint6
 - (void)onLoad
 {
   [(IKAppDocument *)self dispatchDocumentCallback:@"onLoad" eventType:7];
-  v4 = [(IKAppDocument *)self appContext];
-  v3 = [v4 webInspectorController];
-  [v3 appDocumentDidLoad:self];
+  appContext = [(IKAppDocument *)self appContext];
+  webInspectorController = [appContext webInspectorController];
+  [webInspectorController appDocumentDidLoad:self];
 }
 
 - (void)onUnload
 {
   [(IKAppDocument *)self dispatchDocumentCallback:@"onUnload" eventType:8];
-  v4 = [(IKAppDocument *)self appContext];
-  v3 = [v4 webInspectorController];
-  [v3 appDocumentDidUnload:self];
+  appContext = [(IKAppDocument *)self appContext];
+  webInspectorController = [appContext webInspectorController];
+  [webInspectorController appDocumentDidUnload:self];
 }
 
 - (void)onAppear
 {
   [(IKAppDocument *)self dispatchDocumentCallback:@"onAppear" eventType:9];
-  v4 = [(IKAppDocument *)self appContext];
-  v3 = [v4 webInspectorController];
-  [v3 appDocumentDidAppear:self];
+  appContext = [(IKAppDocument *)self appContext];
+  webInspectorController = [appContext webInspectorController];
+  [webInspectorController appDocumentDidAppear:self];
 }
 
 - (void)onDisappear
 {
   [(IKAppDocument *)self dispatchDocumentCallback:@"onDisappear" eventType:10];
-  v4 = [(IKAppDocument *)self appContext];
-  v3 = [v4 webInspectorController];
-  [v3 appDocumentDidDisappear:self];
+  appContext = [(IKAppDocument *)self appContext];
+  webInspectorController = [appContext webInspectorController];
+  [webInspectorController appDocumentDidDisappear:self];
 }
 
-- (void)onNeedsUpdateWithCompletion:(id)a3
+- (void)onNeedsUpdateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IKAppDocument *)self appContext];
+  completionCopy = completion;
+  appContext = [(IKAppDocument *)self appContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__IKAppDocument_onNeedsUpdateWithCompletion___block_invoke;
   v7[3] = &unk_279799A50;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 evaluate:v7 completionBlock:0];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [appContext evaluate:v7 completionBlock:0];
 }
 
 void __45__IKAppDocument_onNeedsUpdateWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -225,16 +225,16 @@ void __45__IKAppDocument_onNeedsUpdateWithCompletion___block_invoke_2(uint64_t a
 
 - (void)onUpdate
 {
-  v3 = [(IKAppDocument *)self appContext];
+  appContext = [(IKAppDocument *)self appContext];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __25__IKAppDocument_onUpdate__block_invoke;
   v5[3] = &unk_2797998D0;
   v5[4] = self;
-  [v3 evaluate:v5 completionBlock:0];
+  [appContext evaluate:v5 completionBlock:0];
 
-  v4 = [(IKAppDocument *)self templateElement];
-  [v4 dispatchEventOfType:12 canBubble:1 isCancelable:0 extraInfo:0 completionBlock:0];
+  templateElement = [(IKAppDocument *)self templateElement];
+  [templateElement dispatchEventOfType:12 canBubble:1 isCancelable:0 extraInfo:0 completionBlock:0];
 }
 
 void __25__IKAppDocument_onUpdate__block_invoke(uint64_t a1)
@@ -243,16 +243,16 @@ void __25__IKAppDocument_onUpdate__block_invoke(uint64_t a1)
   v1 = [v2 invokeMethod:@"onDidUpdate" withArguments:0];
 }
 
-- (void)onImpressionsChange:(id)a3
+- (void)onImpressionsChange:(id)change
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  changeCopy = change;
+  if ([changeCopy count])
   {
     v12 = @"impressions";
-    v13[0] = v4;
+    v13[0] = changeCopy;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v13 forKeys:&v12 count:1];
-    v6 = [(IKAppDocument *)self appContext];
+    appContext = [(IKAppDocument *)self appContext];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __37__IKAppDocument_onImpressionsChange___block_invoke;
@@ -260,10 +260,10 @@ void __25__IKAppDocument_onUpdate__block_invoke(uint64_t a1)
     v10[4] = self;
     v11 = v5;
     v7 = v5;
-    [v6 evaluate:v10 completionBlock:0];
+    [appContext evaluate:v10 completionBlock:0];
 
-    v8 = [(IKAppDocument *)self templateElement];
-    [v8 dispatchEvent:@"onImpressionsChange" eventAttribute:0 canBubble:1 isCancelable:0 extraInfo:v7 completionBlock:0];
+    templateElement = [(IKAppDocument *)self templateElement];
+    [templateElement dispatchEvent:@"onImpressionsChange" eventAttribute:0 canBubble:1 isCancelable:0 extraInfo:v7 completionBlock:0];
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -280,16 +280,16 @@ void __37__IKAppDocument_onImpressionsChange___block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)onPerformanceMetricsChange:(id)a3
+- (void)onPerformanceMetricsChange:(id)change
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 count])
+  changeCopy = change;
+  if ([changeCopy count])
   {
     v11 = @"metrics";
-    v12[0] = v4;
+    v12[0] = changeCopy;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-    v6 = [(IKAppDocument *)self appContext];
+    appContext = [(IKAppDocument *)self appContext];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __44__IKAppDocument_onPerformanceMetricsChange___block_invoke;
@@ -297,7 +297,7 @@ void __37__IKAppDocument_onImpressionsChange___block_invoke(uint64_t a1)
     v9[4] = self;
     v10 = v5;
     v7 = v5;
-    [v6 evaluate:v9 completionBlock:0];
+    [appContext evaluate:v9 completionBlock:0];
   }
 
   v8 = *MEMORY[0x277D85DE8];
@@ -314,21 +314,21 @@ void __44__IKAppDocument_onPerformanceMetricsChange___block_invoke(uint64_t a1)
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)onViewAttributesChangeWithArguments:(id)a3 completion:(id)a4
+- (void)onViewAttributesChangeWithArguments:(id)arguments completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IKAppDocument *)self appContext];
+  argumentsCopy = arguments;
+  completionCopy = completion;
+  appContext = [(IKAppDocument *)self appContext];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__IKAppDocument_onViewAttributesChangeWithArguments_completion___block_invoke;
   v11[3] = &unk_279799A78;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  [v8 evaluate:v11 completionBlock:0];
+  v12 = argumentsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = argumentsCopy;
+  [appContext evaluate:v11 completionBlock:0];
 }
 
 void __64__IKAppDocument_onViewAttributesChangeWithArguments_completion___block_invoke(uint64_t a1)
@@ -349,12 +349,12 @@ void __64__IKAppDocument_onViewAttributesChangeWithArguments_completion___block_
   }
 }
 
-- (void)recordImpressionsForViewElements:(id)a3
+- (void)recordImpressionsForViewElements:(id)elements
 {
-  v4 = a3;
-  v5 = [(IKAppDocument *)self impressions];
+  elementsCopy = elements;
+  impressions = [(IKAppDocument *)self impressions];
 
-  if (!v5)
+  if (!impressions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [(IKAppDocument *)self setImpressions:v6];
@@ -366,37 +366,37 @@ void __64__IKAppDocument_onViewAttributesChangeWithArguments_completion___block_
   v7 = v13.tv_sec + v13.tv_usec * 0.000001;
   [(IKAppDocument *)self impressionThreshold];
   v9 = (v8 * -1000.0 + v7 * 1000.0);
-  v10 = [(IKAppDocument *)self appContext];
-  v11 = [(IKAppDocument *)self impressions];
-  v12 = [IKJSImpression impressionsMapForViewElements:v4 appContext:v10 timestamp:v9 existingImpressionsMap:v11];
+  appContext = [(IKAppDocument *)self appContext];
+  impressions2 = [(IKAppDocument *)self impressions];
+  v12 = [IKJSImpression impressionsMapForViewElements:elementsCopy appContext:appContext timestamp:v9 existingImpressionsMap:impressions2];
 
   [(IKAppDocument *)self onImpressionsChange:v12];
 }
 
-- (void)snapshotImpressionsForViewElements:(id)a3
+- (void)snapshotImpressionsForViewElements:(id)elements
 {
   v8.tv_sec = 0;
   *&v8.tv_usec = 0;
-  v4 = a3;
+  elementsCopy = elements;
   gettimeofday(&v8, 0);
   v5 = ((v8.tv_sec + v8.tv_usec * 0.000001) * 1000.0);
-  v6 = [(IKAppDocument *)self appContext];
-  v7 = [IKJSImpression impressionsMapForViewElements:v4 appContext:v6 timestamp:v5];
+  appContext = [(IKAppDocument *)self appContext];
+  v7 = [IKJSImpression impressionsMapForViewElements:elementsCopy appContext:appContext timestamp:v5];
 
   [(IKAppDocument *)self setCachedSnapshotImpressionsMap:v7];
 }
 
-- (id)retrieveJSElementForViewElement:(id)a3 jsContext:(id)a4
+- (id)retrieveJSElementForViewElement:(id)element jsContext:(id)context
 {
-  v5 = a3;
-  v6 = [(IKAppDocument *)self jsDocument];
+  elementCopy = element;
+  jsDocument = [(IKAppDocument *)self jsDocument];
   v7 = MEMORY[0x277CCACA8];
-  v8 = [v5 itmlID];
+  itmlID = [elementCopy itmlID];
   }
 
 LABEL_7:
-  [(IKCSSToken *)v7 setStringValue:v8];
-  *a4 = v9;
+  [(IKCSSToken *)v7 setStringValue:itmlID];
+  *context = v9;
 
   return v7;
 }

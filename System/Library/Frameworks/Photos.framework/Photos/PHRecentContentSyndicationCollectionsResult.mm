@@ -1,16 +1,16 @@
 @interface PHRecentContentSyndicationCollectionsResult
-+ (id)pointerComparableIdentifiersFromIdentifiers:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (PHRecentContentSyndicationCollectionsResult)initWithObjects:(id)a3 photoLibrary:(id)a4 fetchOptions:(id)a5 maxNumberOfStacks:(int64_t)a6 maxNumberOfAssetsPerStack:(int64_t)a7 fetchType:(id)a8 fetchPropertySets:(id)a9 identifier:(id)a10 registerIfNeeded:(BOOL)a11;
-- (id)_transientCollectionForAssetOID:(id)a3;
-- (id)_transientCollectionForIdentifier:(id)a3;
-- (id)additionalChangedIdentifiersFromPreviousIdentifiers:(id)a3 currentIdentifiers:(id)a4 inFetchResultBeforeChanges:(id)a5;
-- (id)changeHandlingValueUsingSeedOids:(id)a3 withChange:(id)a4 usingManagedObjectContext:(id)a5;
-- (id)copyWithOptions:(id)a3;
++ (id)pointerComparableIdentifiersFromIdentifiers:(id)identifiers;
+- (BOOL)isEqual:(id)equal;
+- (PHRecentContentSyndicationCollectionsResult)initWithObjects:(id)objects photoLibrary:(id)library fetchOptions:(id)options maxNumberOfStacks:(int64_t)stacks maxNumberOfAssetsPerStack:(int64_t)stack fetchType:(id)type fetchPropertySets:(id)sets identifier:(id)self0 registerIfNeeded:(BOOL)self1;
+- (id)_transientCollectionForAssetOID:(id)d;
+- (id)_transientCollectionForIdentifier:(id)identifier;
+- (id)additionalChangedIdentifiersFromPreviousIdentifiers:(id)identifiers currentIdentifiers:(id)currentIdentifiers inFetchResultBeforeChanges:(id)changes;
+- (id)changeHandlingValueUsingSeedOids:(id)oids withChange:(id)change usingManagedObjectContext:(id)context;
+- (id)copyWithOptions:(id)options;
 - (id)description;
-- (id)objectIDAtIndex:(unint64_t)a3;
+- (id)objectIDAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (unint64_t)possibleChangesForChange:(id)a3 propertiesFetchResult:(id)a4;
+- (unint64_t)possibleChangesForChange:(id)change propertiesFetchResult:(id)result;
 @end
 
 @implementation PHRecentContentSyndicationCollectionsResult
@@ -24,16 +24,16 @@
   return v2;
 }
 
-- (unint64_t)possibleChangesForChange:(id)a3 propertiesFetchResult:(id)a4
+- (unint64_t)possibleChangesForChange:(id)change propertiesFetchResult:(id)result
 {
   v61 = *MEMORY[0x1E69E9840];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v44 = a3;
-  v4 = [v44 insertedObjectIDs];
-  v5 = [v4 countByEnumeratingWithState:&v53 objects:v60 count:16];
+  changeCopy = change;
+  insertedObjectIDs = [changeCopy insertedObjectIDs];
+  v5 = [insertedObjectIDs countByEnumeratingWithState:&v53 objects:v60 count:16];
   if (v5)
   {
     v6 = v5;
@@ -45,13 +45,13 @@ LABEL_3:
     {
       if (*v54 != v7)
       {
-        objc_enumerationMutation(v4);
+        objc_enumerationMutation(insertedObjectIDs);
       }
 
-      v10 = [*(*(&v53 + 1) + 8 * v9) entity];
-      v11 = [v10 name];
-      v12 = [MEMORY[0x1E69BE540] entityName];
-      v13 = [v11 isEqualToString:v12];
+      entity = [*(*(&v53 + 1) + 8 * v9) entity];
+      name = [entity name];
+      entityName = [MEMORY[0x1E69BE540] entityName];
+      v13 = [name isEqualToString:entityName];
 
       if (v13)
       {
@@ -60,7 +60,7 @@ LABEL_3:
 
       if (v6 == ++v9)
       {
-        v6 = [v4 countByEnumeratingWithState:&v53 objects:v60 count:16];
+        v6 = [insertedObjectIDs countByEnumeratingWithState:&v53 objects:v60 count:16];
         if (v6)
         {
           goto LABEL_3;
@@ -81,8 +81,8 @@ LABEL_9:
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v14 = [v44 deletedObjectIDs];
-  v15 = [v14 countByEnumeratingWithState:&v49 objects:v59 count:16];
+  deletedObjectIDs = [changeCopy deletedObjectIDs];
+  v15 = [deletedObjectIDs countByEnumeratingWithState:&v49 objects:v59 count:16];
   if (v15)
   {
     v16 = v15;
@@ -94,14 +94,14 @@ LABEL_9:
       {
         if (*v50 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(deletedObjectIDs);
         }
 
         v19 = *(*(&v49 + 1) + 8 * i);
-        v20 = [v19 entity];
-        v21 = [v20 name];
-        v22 = [MEMORY[0x1E69BE540] entityName];
-        v23 = [v21 isEqualToString:v22];
+        entity2 = [v19 entity];
+        name2 = [entity2 name];
+        entityName2 = [MEMORY[0x1E69BE540] entityName];
+        v23 = [name2 isEqualToString:entityName2];
 
         if (v23)
         {
@@ -115,7 +115,7 @@ LABEL_9:
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v49 objects:v59 count:16];
+      v16 = [deletedObjectIDs countByEnumeratingWithState:&v49 objects:v59 count:16];
       if (v16)
       {
         continue;
@@ -133,8 +133,8 @@ LABEL_21:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v25 = [v44 updatedObjectIDs];
-  v26 = [v25 countByEnumeratingWithState:&v45 objects:v58 count:16];
+  updatedObjectIDs = [changeCopy updatedObjectIDs];
+  v26 = [updatedObjectIDs countByEnumeratingWithState:&v45 objects:v58 count:16];
   if (v26)
   {
     v27 = v26;
@@ -146,14 +146,14 @@ LABEL_21:
       {
         if (*v46 != v28)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(updatedObjectIDs);
         }
 
         v30 = *(*(&v45 + 1) + 8 * j);
-        v31 = [v30 entity];
-        v32 = [v31 name];
-        v33 = [MEMORY[0x1E69BE540] entityName];
-        v34 = [v32 isEqualToString:v33];
+        entity3 = [v30 entity];
+        name3 = [entity3 name];
+        entityName3 = [MEMORY[0x1E69BE540] entityName];
+        v34 = [name3 isEqualToString:entityName3];
 
         if (v34)
         {
@@ -161,11 +161,11 @@ LABEL_21:
           v57[0] = @"syndicationState";
           v57[1] = @"savedAssetType";
           v36 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:2];
-          v37 = [MEMORY[0x1E69BE540] entityName];
-          v38 = [v35 indexValueForAttributeNames:v36 entity:v37];
+          entityName4 = [MEMORY[0x1E69BE540] entityName];
+          v38 = [v35 indexValueForAttributeNames:v36 entity:entityName4];
 
-          v39 = [v30 entity];
-          LOBYTE(v38) = [v44 anyUpdatedObjectsWithChangedAttributes:v38 ofEntity:v39];
+          entity4 = [v30 entity];
+          LOBYTE(v38) = [changeCopy anyUpdatedObjectsWithChangedAttributes:v38 ofEntity:entity4];
 
           if (v38)
           {
@@ -175,7 +175,7 @@ LABEL_21:
         }
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v45 objects:v58 count:16];
+      v27 = [updatedObjectIDs countByEnumeratingWithState:&v45 objects:v58 count:16];
       if (v27)
       {
         continue;
@@ -192,29 +192,29 @@ LABEL_32:
   return v8;
 }
 
-- (id)objectIDAtIndex:(unint64_t)a3
+- (id)objectIDAtIndex:(unint64_t)index
 {
-  v4 = [(PHRecentContentSyndicationCollectionsResult *)self objects];
-  v5 = [v4 objectAtIndex:a3];
-  v6 = [v5 objectID];
+  objects = [(PHRecentContentSyndicationCollectionsResult *)self objects];
+  v5 = [objects objectAtIndex:index];
+  objectID = [v5 objectID];
 
-  return v6;
+  return objectID;
 }
 
-- (id)additionalChangedIdentifiersFromPreviousIdentifiers:(id)a3 currentIdentifiers:(id)a4 inFetchResultBeforeChanges:(id)a5
+- (id)additionalChangedIdentifiersFromPreviousIdentifiers:(id)identifiers currentIdentifiers:(id)currentIdentifiers inFetchResultBeforeChanges:(id)changes
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v26 = v8;
-  v11 = [MEMORY[0x1E695DFA8] setWithArray:v8];
-  v25 = v9;
-  v12 = [MEMORY[0x1E695DFD8] setWithArray:v9];
+  identifiersCopy = identifiers;
+  currentIdentifiersCopy = currentIdentifiers;
+  changesCopy = changes;
+  v26 = identifiersCopy;
+  v11 = [MEMORY[0x1E695DFA8] setWithArray:identifiersCopy];
+  v25 = currentIdentifiersCopy;
+  v12 = [MEMORY[0x1E695DFD8] setWithArray:currentIdentifiersCopy];
   [v11 intersectSet:v12];
 
-  v30 = v10;
-  v29 = self;
+  v30 = changesCopy;
+  selfCopy = self;
   v27 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v11, "count")}];
   v31 = 0u;
   v32 = 0u;
@@ -238,10 +238,10 @@ LABEL_32:
         v17 = *(*(&v31 + 1) + 8 * i);
         v18 = objc_autoreleasePoolPush();
         v19 = [v30 _transientCollectionForIdentifier:v17];
-        v20 = [(PHRecentContentSyndicationCollectionsResult *)v29 _transientCollectionForIdentifier:v17];
-        v21 = [v19 assetOids];
-        v22 = [v20 assetOids];
-        v23 = [v21 isEqualToArray:v22];
+        v20 = [(PHRecentContentSyndicationCollectionsResult *)selfCopy _transientCollectionForIdentifier:v17];
+        assetOids = [v19 assetOids];
+        assetOids2 = [v20 assetOids];
+        v23 = [assetOids isEqualToArray:assetOids2];
 
         if ((v23 & 1) == 0)
         {
@@ -260,13 +260,13 @@ LABEL_32:
   return v27;
 }
 
-- (id)changeHandlingValueUsingSeedOids:(id)a3 withChange:(id)a4 usingManagedObjectContext:(id)a5
+- (id)changeHandlingValueUsingSeedOids:(id)oids withChange:(id)change usingManagedObjectContext:(id)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  changeCopy = change;
   v7 = [MEMORY[0x1E696AE18] predicateWithBlock:&__block_literal_global_30448];
-  v8 = [v6 deletedObjectIDs];
-  v9 = [v8 filteredSetUsingPredicate:v7];
+  deletedObjectIDs = [changeCopy deletedObjectIDs];
+  v9 = [deletedObjectIDs filteredSetUsingPredicate:v7];
 
   v24 = 0u;
   v25 = 0u;
@@ -306,22 +306,22 @@ LABEL_32:
     }
   }
 
-  v16 = [v6 updatedObjectIDs];
-  v17 = [v16 filteredSetUsingPredicate:v7];
+  updatedObjectIDs = [changeCopy updatedObjectIDs];
+  v17 = [updatedObjectIDs filteredSetUsingPredicate:v7];
 
   v18 = [v17 count];
   if (v18)
   {
 LABEL_12:
-    v19 = [PHAssetCollection fetchRecentContentSyndicationAssetCollectionsWithOptions:self->_fetchOptions maxNumberOfStacks:self->_maxNumberOfStacks maxNumberOfAssetsPerStack:self->_maxNumberOfAssetsPerStack, v22];
+    selfCopy = [PHAssetCollection fetchRecentContentSyndicationAssetCollectionsWithOptions:self->_fetchOptions maxNumberOfStacks:self->_maxNumberOfStacks maxNumberOfAssetsPerStack:self->_maxNumberOfAssetsPerStack, v22];
   }
 
   else
   {
-    v19 = self;
+    selfCopy = self;
   }
 
-  v20 = v19;
+  v20 = selfCopy;
 
   return v20;
 }
@@ -336,9 +336,9 @@ uint64_t __117__PHRecentContentSyndicationCollectionsResult_changeHandlingValueU
   return v5;
 }
 
-- (id)copyWithOptions:(id)a3
+- (id)copyWithOptions:(id)options
 {
-  v4 = [(PHRecentContentSyndicationCollectionsResult *)self objects];
+  objects = [(PHRecentContentSyndicationCollectionsResult *)self objects];
   v5 = [PHRecentContentSyndicationCollectionsResult alloc];
   photoLibrary = self->_photoLibrary;
   fetchOptions = self->_fetchOptions;
@@ -348,18 +348,18 @@ uint64_t __117__PHRecentContentSyndicationCollectionsResult_changeHandlingValueU
   fetchPropertySets = self->super._fetchPropertySets;
   identifier = self->_identifier;
   LOBYTE(v15) = [(PHFetchResult *)self isRegisteredForChangeNotificationDeltas];
-  v13 = [(PHRecentContentSyndicationCollectionsResult *)v5 initWithObjects:v4 photoLibrary:photoLibrary fetchOptions:fetchOptions maxNumberOfStacks:maxNumberOfStacks maxNumberOfAssetsPerStack:maxNumberOfAssetsPerStack fetchType:fetchType fetchPropertySets:fetchPropertySets identifier:identifier registerIfNeeded:v15];
+  v13 = [(PHRecentContentSyndicationCollectionsResult *)v5 initWithObjects:objects photoLibrary:photoLibrary fetchOptions:fetchOptions maxNumberOfStacks:maxNumberOfStacks maxNumberOfAssetsPerStack:maxNumberOfAssetsPerStack fetchType:fetchType fetchPropertySets:fetchPropertySets identifier:identifier registerIfNeeded:v15];
 
   return v13;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(PHRecentContentSyndicationCollectionsResult *)self identifier];
-  v4 = v3;
-  if (v3)
+  identifier = [(PHRecentContentSyndicationCollectionsResult *)self identifier];
+  v4 = identifier;
+  if (identifier)
   {
-    v5 = [v3 hash];
+    v5 = [identifier hash];
   }
 
   else
@@ -374,23 +374,23 @@ uint64_t __117__PHRecentContentSyndicationCollectionsResult_changeHandlingValueU
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = PHRecentContentSyndicationCollectionsResult;
-  if ([(PHRecentContentSyndicationCollectionsResult *)&v9 isEqual:v4])
+  if ([(PHRecentContentSyndicationCollectionsResult *)&v9 isEqual:equalCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(PHRecentContentSyndicationCollectionsResult *)self identifier];
-    if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+    identifier = [(PHRecentContentSyndicationCollectionsResult *)self identifier];
+    if (identifier && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [v4 identifier];
-      v5 = [v6 isEqualToString:v7];
+      identifier2 = [equalCopy identifier];
+      v5 = [identifier isEqualToString:identifier2];
     }
 
     else
@@ -402,53 +402,53 @@ uint64_t __117__PHRecentContentSyndicationCollectionsResult_changeHandlingValueU
   return v5;
 }
 
-- (PHRecentContentSyndicationCollectionsResult)initWithObjects:(id)a3 photoLibrary:(id)a4 fetchOptions:(id)a5 maxNumberOfStacks:(int64_t)a6 maxNumberOfAssetsPerStack:(int64_t)a7 fetchType:(id)a8 fetchPropertySets:(id)a9 identifier:(id)a10 registerIfNeeded:(BOOL)a11
+- (PHRecentContentSyndicationCollectionsResult)initWithObjects:(id)objects photoLibrary:(id)library fetchOptions:(id)options maxNumberOfStacks:(int64_t)stacks maxNumberOfAssetsPerStack:(int64_t)stack fetchType:(id)type fetchPropertySets:(id)sets identifier:(id)self0 registerIfNeeded:(BOOL)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
+  objectsCopy = objects;
+  libraryCopy = library;
+  optionsCopy = options;
+  typeCopy = type;
+  setsCopy = sets;
+  identifierCopy = identifier;
   v36.receiver = self;
   v36.super_class = PHRecentContentSyndicationCollectionsResult;
   v23 = [(PHFetchResult *)&v36 init];
   if (v23)
   {
-    v24 = [v17 copy];
+    v24 = [objectsCopy copy];
     objects = v23->_objects;
     v23->_objects = v24;
 
-    v26 = [v20 copy];
+    v26 = [typeCopy copy];
     fetchType = v23->super._fetchType;
     v23->super._fetchType = v26;
 
-    v28 = [v19 copy];
+    v28 = [optionsCopy copy];
     fetchOptions = v23->_fetchOptions;
     v23->_fetchOptions = v28;
 
-    v30 = [v21 copy];
+    v30 = [setsCopy copy];
     fetchPropertySets = v23->super._fetchPropertySets;
     v23->super._fetchPropertySets = v30;
 
-    v23->_maxNumberOfStacks = a6;
-    v23->_maxNumberOfAssetsPerStack = a7;
-    v32 = v18;
+    v23->_maxNumberOfStacks = stacks;
+    v23->_maxNumberOfAssetsPerStack = stack;
+    v32 = libraryCopy;
     if (!v32)
     {
-      v33 = [v17 firstObject];
-      v32 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:v19 object:v33];
+      firstObject = [objectsCopy firstObject];
+      v32 = [PHFetchOptions effectivePhotoLibraryForFetchOptions:optionsCopy object:firstObject];
     }
 
     objc_storeStrong(&v23->_photoLibrary, v32);
-    if (!v22)
+    if (!identifierCopy)
     {
-      v34 = [MEMORY[0x1E696AFB0] UUID];
-      v22 = [v34 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      identifierCopy = [uUID UUIDString];
     }
 
-    objc_storeStrong(&v23->_identifier, v22);
-    if (a11)
+    objc_storeStrong(&v23->_identifier, identifierCopy);
+    if (needed)
     {
       [(PHFetchResult *)v23 setRegisteredForChangeNotificationDeltas:1];
     }
@@ -457,17 +457,17 @@ uint64_t __117__PHRecentContentSyndicationCollectionsResult_changeHandlingValueU
   return v23;
 }
 
-- (id)_transientCollectionForAssetOID:(id)a3
+- (id)_transientCollectionForAssetOID:(id)d
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   memset(v10, 0, sizeof(v10));
   v5 = self->_objects;
   if ([(NSArray *)v5 countByEnumeratingWithState:v10 objects:v11 count:16])
   {
     v6 = **(&v10[0] + 1);
-    v7 = [**(&v10[0] + 1) assetOids];
-    [v7 containsObject:v4];
+    assetOids = [**(&v10[0] + 1) assetOids];
+    [assetOids containsObject:dCopy];
 
     v8 = v6;
   }
@@ -480,10 +480,10 @@ uint64_t __117__PHRecentContentSyndicationCollectionsResult_changeHandlingValueU
   return v8;
 }
 
-- (id)_transientCollectionForIdentifier:(id)a3
+- (id)_transientCollectionForIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -503,8 +503,8 @@ uint64_t __117__PHRecentContentSyndicationCollectionsResult_changeHandlingValueU
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 transientIdentifier];
-        v11 = [v10 isEqual:v4];
+        transientIdentifier = [v9 transientIdentifier];
+        v11 = [transientIdentifier isEqual:identifierCopy];
 
         if (v11)
         {
@@ -528,13 +528,13 @@ LABEL_11:
   return v6;
 }
 
-+ (id)pointerComparableIdentifiersFromIdentifiers:(id)a3
++ (id)pointerComparableIdentifiersFromIdentifiers:(id)identifiers
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 count])
+  identifiersCopy = identifiers;
+  if ([identifiersCopy count])
   {
-    v4 = v3;
+    v4 = identifiersCopy;
     v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
     v19 = 0u;
     v20 = 0u;
@@ -555,16 +555,16 @@ LABEL_11:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v19 + 1) + 8 * i) longLongValue];
-          v12 = [MEMORY[0x1E696AD98] numberWithLongLong:v11];
+          longLongValue = [*(*(&v19 + 1) + 8 * i) longLongValue];
+          v12 = [MEMORY[0x1E696AD98] numberWithLongLong:longLongValue];
           v13 = v12;
-          if (v11 < 1 || (v12 & 0x8000000000000000) == 0)
+          if (longLongValue < 1 || (v12 & 0x8000000000000000) == 0)
           {
             v14 = PLPhotoKitGetLog();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
             {
               *buf = 134217984;
-              v24 = v11;
+              v24 = longLongValue;
               _os_log_impl(&dword_19C86F000, v14, OS_LOG_TYPE_ERROR, "Unable to translate value: %lld in PHRecentContentSyndicationCollectionsResult to a tagged pointer equivalent.", buf, 0xCu);
             }
 
@@ -603,7 +603,7 @@ LABEL_15:
     v5 = 0;
   }
 
-  v16 = v3;
+  v16 = identifiersCopy;
 LABEL_20:
   v17 = v16;
 

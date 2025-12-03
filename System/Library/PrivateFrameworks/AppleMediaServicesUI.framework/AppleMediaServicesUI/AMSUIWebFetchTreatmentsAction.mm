@@ -1,7 +1,7 @@
 @interface AMSUIWebFetchTreatmentsAction
 + (NSISO8601DateFormatter)dateFormatter;
-+ (id)dictionaryRepresentationForTreatment:(id)a3;
-- (AMSUIWebFetchTreatmentsAction)initWithJSObject:(id)a3 context:(id)a4;
++ (id)dictionaryRepresentationForTreatment:(id)treatment;
+- (AMSUIWebFetchTreatmentsAction)initWithJSObject:(id)object context:(id)context;
 - (id)runAction;
 @end
 
@@ -14,22 +14,22 @@
   return v2;
 }
 
-+ (id)dictionaryRepresentationForTreatment:(id)a3
++ (id)dictionaryRepresentationForTreatment:(id)treatment
 {
   v15[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [a1 dateFormatter];
+  treatmentCopy = treatment;
+  dateFormatter = [self dateFormatter];
   v14[0] = @"endDate";
-  v6 = [v4 endDate];
-  v7 = [v5 stringFromDate:v6];
+  endDate = [treatmentCopy endDate];
+  v7 = [dateFormatter stringFromDate:endDate];
   v15[0] = v7;
   v14[1] = @"identifier";
-  v8 = [v4 identifier];
-  v15[1] = v8;
+  identifier = [treatmentCopy identifier];
+  v15[1] = identifier;
   v14[2] = @"startDate";
-  v9 = [v4 startDate];
+  startDate = [treatmentCopy startDate];
 
-  v10 = [v5 stringFromDate:v9];
+  v10 = [dateFormatter stringFromDate:startDate];
   v15[2] = v10;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:v14 count:3];
 
@@ -38,16 +38,16 @@
   return v11;
 }
 
-- (AMSUIWebFetchTreatmentsAction)initWithJSObject:(id)a3 context:(id)a4
+- (AMSUIWebFetchTreatmentsAction)initWithJSObject:(id)object context:(id)context
 {
   v48 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  objectCopy = object;
   v39.receiver = self;
   v39.super_class = AMSUIWebFetchTreatmentsAction;
-  v7 = [(AMSUIWebAction *)&v39 initWithJSObject:v6 context:a4];
+  v7 = [(AMSUIWebAction *)&v39 initWithJSObject:objectCopy context:context];
   if (v7)
   {
-    v8 = [v6 objectForKeyedSubscript:@"areaIds"];
+    v8 = [objectCopy objectForKeyedSubscript:@"areaIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -62,7 +62,7 @@
     areaIds = v7->_areaIds;
     v7->_areaIds = v9;
 
-    v11 = [v6 objectForKeyedSubscript:@"endDate"];
+    v11 = [objectCopy objectForKeyedSubscript:@"endDate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -84,14 +84,14 @@
 
       if (!v7->_endDate)
       {
-        v17 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-        if (!v17)
+        mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+        if (!mEMORY[0x1E698C968])
         {
-          v17 = [MEMORY[0x1E698C968] sharedConfig];
+          mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
         }
 
-        v18 = [v17 OSLogObject];
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+        oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+        if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
         {
           v19 = objc_opt_class();
           v20 = AMSLogKey();
@@ -105,15 +105,15 @@
           v45 = v21;
           v46 = 2114;
           v47 = v22;
-          _os_log_impl(&dword_1BB036000, v18, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Wrong '%{public}@' format (%{public}@)", buf, 0x2Au);
+          _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Wrong '%{public}@' format (%{public}@)", buf, 0x2Au);
         }
       }
     }
 
-    v23 = [v6 objectForKeyedSubscript:@"includeExperimentData"];
+    v23 = [objectCopy objectForKeyedSubscript:@"includeExperimentData"];
     if (objc_opt_respondsToSelector())
     {
-      v24 = [v6 objectForKeyedSubscript:@"includeExperimentData"];
+      v24 = [objectCopy objectForKeyedSubscript:@"includeExperimentData"];
       v7->_includeExperimentData = [v24 BOOLValue];
     }
 
@@ -122,10 +122,10 @@
       v7->_includeExperimentData = 0;
     }
 
-    v25 = [v6 objectForKeyedSubscript:@"includePayload"];
+    v25 = [objectCopy objectForKeyedSubscript:@"includePayload"];
     if (objc_opt_respondsToSelector())
     {
-      v26 = [v6 objectForKeyedSubscript:@"includePayload"];
+      v26 = [objectCopy objectForKeyedSubscript:@"includePayload"];
       v7->_includePayload = [v26 BOOLValue];
     }
 
@@ -134,7 +134,7 @@
       v7->_includePayload = 0;
     }
 
-    v27 = [v6 objectForKeyedSubscript:@"startDate"];
+    v27 = [objectCopy objectForKeyedSubscript:@"startDate"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -154,14 +154,14 @@
 
       if (!v7->_startDate)
       {
-        v31 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-        if (!v31)
+        mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+        if (!mEMORY[0x1E698C968]2)
         {
-          v31 = [MEMORY[0x1E698C968] sharedConfig];
+          mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
         }
 
-        v32 = [v31 OSLogObject];
-        if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
+        oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+        if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
         {
           v38 = objc_opt_class();
           v33 = AMSLogKey();
@@ -175,7 +175,7 @@
           v45 = v34;
           v46 = 2114;
           v47 = v35;
-          _os_log_impl(&dword_1BB036000, v32, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Wrong '%{public}@' format (%{public}@)", buf, 0x2Au);
+          _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Wrong '%{public}@' format (%{public}@)", buf, 0x2Au);
         }
       }
     }
@@ -190,20 +190,20 @@
   v81 = *MEMORY[0x1E69E9840];
   v70.receiver = self;
   v70.super_class = AMSUIWebFetchTreatmentsAction;
-  v3 = [(AMSUIWebAction *)&v70 runAction];
-  v4 = [(AMSUIWebFetchTreatmentsAction *)self areaIds];
-  if (v4)
+  runAction = [(AMSUIWebAction *)&v70 runAction];
+  areaIds = [(AMSUIWebFetchTreatmentsAction *)self areaIds];
+  if (areaIds)
   {
-    v65 = [MEMORY[0x1E698CB68] defaultTreatmentStore];
-    v5 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:v4];
-    v6 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-    if (!v6)
+    defaultTreatmentStore = [MEMORY[0x1E698CB68] defaultTreatmentStore];
+    v5 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithArray:areaIds];
+    mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedWebUIConfig];
+    if (!mEMORY[0x1E698C968])
     {
-      v6 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v7 = [v6 OSLogObject];
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
     {
       v8 = objc_opt_class();
       v9 = AMSLogKey();
@@ -214,20 +214,20 @@
       v74 = v9;
       v75 = 2114;
       v76 = v10;
-      _os_log_impl(&dword_1BB036000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching treatments (areas: %{public}@)", buf, 0x20u);
+      _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching treatments (areas: %{public}@)", buf, 0x20u);
     }
 
     v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
     if ([(AMSUIWebFetchTreatmentsAction *)self includeExperimentData])
     {
-      v12 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-      if (!v12)
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+      if (!mEMORY[0x1E698C968]2)
       {
-        v12 = [MEMORY[0x1E698C968] sharedConfig];
+        mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
       }
 
-      v13 = [v12 OSLogObject];
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+      oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+      if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_DEFAULT))
       {
         v14 = objc_opt_class();
         v15 = AMSLogKey();
@@ -238,11 +238,11 @@
         v74 = v15;
         v75 = 2114;
         v76 = v16;
-        _os_log_impl(&dword_1BB036000, v13, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching experiment data (areas: %{public}@)", buf, 0x20u);
+        _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching experiment data (areas: %{public}@)", buf, 0x20u);
       }
 
-      v17 = [MEMORY[0x1E698CB68] defaultTreatmentStore];
-      v18 = [v17 experimentDataForAreas:v5];
+      defaultTreatmentStore2 = [MEMORY[0x1E698CB68] defaultTreatmentStore];
+      v18 = [defaultTreatmentStore2 experimentDataForAreas:v5];
       v19 = [v18 thenWithBlock:&__block_literal_global_27];
 
       [v11 addObject:v19];
@@ -250,14 +250,14 @@
 
     if ([(AMSUIWebFetchTreatmentsAction *)self includePayload])
     {
-      v20 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-      if (!v20)
+      mEMORY[0x1E698C968]3 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+      if (!mEMORY[0x1E698C968]3)
       {
-        v20 = [MEMORY[0x1E698C968] sharedConfig];
+        mEMORY[0x1E698C968]3 = [MEMORY[0x1E698C968] sharedConfig];
       }
 
-      v21 = [v20 OSLogObject];
-      if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+      oSLogObject3 = [mEMORY[0x1E698C968]3 OSLogObject];
+      if (os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_DEFAULT))
       {
         v22 = objc_opt_class();
         v23 = AMSLogKey();
@@ -268,38 +268,38 @@
         v74 = v23;
         v75 = 2114;
         v76 = v24;
-        _os_log_impl(&dword_1BB036000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching payload (areas: %{public}@)", buf, 0x20u);
+        _os_log_impl(&dword_1BB036000, oSLogObject3, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching payload (areas: %{public}@)", buf, 0x20u);
       }
 
-      v25 = [MEMORY[0x1E698CB68] defaultTreatmentStore];
-      v26 = [v25 treatmentsPayloadForAreas:v5];
+      defaultTreatmentStore3 = [MEMORY[0x1E698CB68] defaultTreatmentStore];
+      v26 = [defaultTreatmentStore3 treatmentsPayloadForAreas:v5];
       v27 = [v26 thenWithBlock:&__block_literal_global_51];
 
       [v11 addObject:v27];
     }
 
-    v28 = [(AMSUIWebFetchTreatmentsAction *)self startDate];
-    v29 = [(AMSUIWebFetchTreatmentsAction *)self endDate];
+    startDate = [(AMSUIWebFetchTreatmentsAction *)self startDate];
+    endDate = [(AMSUIWebFetchTreatmentsAction *)self endDate];
     v64 = v11;
-    if (v28 | v29)
+    if (startDate | endDate)
     {
-      v60 = v4;
+      v60 = areaIds;
       v61 = +[AMSUIWebFetchTreatmentsAction dateFormatter];
-      v44 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-      if (!v44)
+      mEMORY[0x1E698C968]4 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+      if (!mEMORY[0x1E698C968]4)
       {
-        v44 = [MEMORY[0x1E698C968] sharedConfig];
+        mEMORY[0x1E698C968]4 = [MEMORY[0x1E698C968] sharedConfig];
       }
 
-      v45 = [v44 OSLogObject];
-      if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
+      oSLogObject4 = [mEMORY[0x1E698C968]4 OSLogObject];
+      if (os_log_type_enabled(oSLogObject4, OS_LOG_TYPE_DEFAULT))
       {
         v57 = objc_opt_class();
         v58 = AMSLogKey();
         AMSHashIfNeeded();
-        v46 = v59 = v29;
-        [v61 stringFromDate:v28];
-        v47 = v63 = v28;
+        v46 = v59 = endDate;
+        [v61 stringFromDate:startDate];
+        v47 = v63 = startDate;
         v48 = AMSHashIfNeeded();
         v49 = [v61 stringFromDate:v59];
         v50 = AMSHashIfNeeded();
@@ -313,14 +313,14 @@
         v78 = v48;
         v79 = 2114;
         v80 = v50;
-        _os_log_impl(&dword_1BB036000, v45, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching treatments (areas: %{public}@, startDate: %{public}@, endDate: %{public}@)", buf, 0x34u);
+        _os_log_impl(&dword_1BB036000, oSLogObject4, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching treatments (areas: %{public}@, startDate: %{public}@, endDate: %{public}@)", buf, 0x34u);
 
-        v28 = v63;
-        v29 = v59;
+        startDate = v63;
+        endDate = v59;
       }
 
-      v51 = [MEMORY[0x1E698CB68] defaultTreatmentStore];
-      v52 = [v51 treatmentsForAreas:v5 startDate:v28 endDate:v29];
+      defaultTreatmentStore4 = [MEMORY[0x1E698CB68] defaultTreatmentStore];
+      v52 = [defaultTreatmentStore4 treatmentsForAreas:v5 startDate:startDate endDate:endDate];
       v68[0] = MEMORY[0x1E69E9820];
       v68[1] = 3221225472;
       v68[2] = __42__AMSUIWebFetchTreatmentsAction_runAction__block_invoke_55;
@@ -331,24 +331,24 @@
       v40 = v64;
       [v64 addObject:v53];
 
-      v4 = v60;
-      v36 = v65;
-      v41 = v28;
+      areaIds = v60;
+      v36 = defaultTreatmentStore;
+      v41 = startDate;
       v37 = v5;
     }
 
     else
     {
-      v62 = v28;
+      v62 = startDate;
       v30 = v5;
-      v31 = [MEMORY[0x1E698C968] sharedWebUIConfig];
-      if (!v31)
+      mEMORY[0x1E698C968]5 = [MEMORY[0x1E698C968] sharedWebUIConfig];
+      if (!mEMORY[0x1E698C968]5)
       {
-        v31 = [MEMORY[0x1E698C968] sharedConfig];
+        mEMORY[0x1E698C968]5 = [MEMORY[0x1E698C968] sharedConfig];
       }
 
-      v32 = [v31 OSLogObject];
-      if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+      oSLogObject5 = [mEMORY[0x1E698C968]5 OSLogObject];
+      if (os_log_type_enabled(oSLogObject5, OS_LOG_TYPE_DEFAULT))
       {
         v33 = objc_opt_class();
         v34 = AMSLogKey();
@@ -359,12 +359,12 @@
         v74 = v34;
         v75 = 2114;
         v76 = v35;
-        _os_log_impl(&dword_1BB036000, v32, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching active treatments (areas: %{public}@)", buf, 0x20u);
+        _os_log_impl(&dword_1BB036000, oSLogObject5, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] Fetching active treatments (areas: %{public}@)", buf, 0x20u);
       }
 
-      v36 = v65;
+      v36 = defaultTreatmentStore;
       v37 = v30;
-      v38 = [v65 activeTreatmentsForAreas:v30];
+      v38 = [defaultTreatmentStore activeTreatmentsForAreas:v30];
       v69[0] = MEMORY[0x1E69E9820];
       v69[1] = 3221225472;
       v69[2] = __42__AMSUIWebFetchTreatmentsAction_runAction__block_invoke_52;

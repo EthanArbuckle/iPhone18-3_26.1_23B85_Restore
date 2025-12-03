@@ -1,15 +1,15 @@
 @interface CKIMGroupHeaderRecipient
-- (void)setDisplayString:(id)a3;
+- (void)setDisplayString:(id)string;
 @end
 
 @implementation CKIMGroupHeaderRecipient
 
-- (void)setDisplayString:(id)a3
+- (void)setDisplayString:(id)string
 {
-  v5 = a3;
+  stringCopy = string;
   if (![(NSString *)self->_displayString isEqualToString:?])
   {
-    objc_storeStrong(&self->_displayString, a3);
+    objc_storeStrong(&self->_displayString, string);
   }
 }
 

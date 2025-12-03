@@ -4,31 +4,31 @@
 + (SCNPhysicsBody)kinematicBody;
 + (SCNPhysicsBody)staticBody;
 - (BOOL)isResting;
-- (SCNPhysicsBody)initWithCoder:(id)a3;
-- (SCNPhysicsBody)initWithType:(int64_t)a3 shape:(id)a4;
+- (SCNPhysicsBody)initWithCoder:(id)coder;
+- (SCNPhysicsBody)initWithType:(int64_t)type shape:(id)shape;
 - (SCNVector3)angularVelocityFactor;
 - (SCNVector3)centerOfMassOffset;
 - (SCNVector3)momentOfInertia;
 - (SCNVector3)velocity;
 - (SCNVector3)velocityFactor;
 - (SCNVector4)angularVelocity;
-- (btCollisionShape)_shapeHandleWithShape:(id)a3 owner:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (btCollisionShape)_shapeHandleWithShape:(id)shape owner:(id)owner;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)_activate;
 - (void)_createBody;
 - (void)_removeOwner;
-- (void)_setOwner:(id)a3;
+- (void)_setOwner:(id)owner;
 - (void)applyForce:(SCNVector3)direction atPosition:(SCNVector3)position impulse:(BOOL)impulse;
 - (void)applyForce:(SCNVector3)direction impulse:(BOOL)impulse;
 - (void)applyTorque:(SCNVector4)torque impulse:(BOOL)impulse;
 - (void)clearAllForces;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)moveToPosition:(SCNVector3)a3;
-- (void)moveToTransform:(SCNMatrix4 *)a3;
-- (void)resetToTransform:(SCNMatrix4 *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)moveToPosition:(SCNVector3)position;
+- (void)moveToTransform:(SCNMatrix4 *)transform;
+- (void)resetToTransform:(SCNMatrix4 *)transform;
 - (void)resetTransform;
-- (void)rotateToAxisAngle:(SCNVector4)a3;
+- (void)rotateToAxisAngle:(SCNVector4)angle;
 - (void)setAffectedByGravity:(BOOL)affectedByGravity;
 - (void)setAllowsResting:(BOOL)allowsResting;
 - (void)setAngularDamping:(CGFloat)angularDamping;
@@ -54,12 +54,12 @@
 - (void)setUsesDefaultMomentOfInertia:(BOOL)usesDefaultMomentOfInertia;
 - (void)setVelocity:(SCNVector3)velocity;
 - (void)setVelocityFactor:(SCNVector3)velocityFactor;
-- (void)updateGlobalScale:(double)a3;
+- (void)updateGlobalScale:(double)scale;
 @end
 
 @implementation SCNPhysicsBody
 
-- (SCNPhysicsBody)initWithType:(int64_t)a3 shape:(id)a4
+- (SCNPhysicsBody)initWithType:(int64_t)type shape:(id)shape
 {
   v16.receiver = self;
   v16.super_class = SCNPhysicsBody;
@@ -67,10 +67,10 @@
   v7 = v6;
   if (v6)
   {
-    v6->_type = a3;
-    v6->_physicsShape = a4;
+    v6->_type = type;
+    v6->_physicsShape = shape;
     v8 = 0.0;
-    if (a3 == 1)
+    if (type == 1)
     {
       v8 = 1.0;
     }
@@ -89,13 +89,13 @@
     *&v7->_linearRestingThreshold = vdupq_n_s64(0x3FB999999999999AuLL);
     v7->_allowsResting = 1;
     v7->_ignoreGravity = 0;
-    *&_Q0 = vdup_n_s32(a3 == 0);
+    *&_Q0 = vdup_n_s32(type == 0);
     v14.i64[0] = _Q0;
     v14.i64[1] = DWORD1(_Q0);
     *&v7->_categoryBitMask = vbslq_s8(vcltzq_s64(vshlq_n_s64(v14, 0x3FuLL)), xmmword_21C2A1E60, xmmword_21C281170);
     v7->_contactTestBitMask = 0;
     v7->_body = [(SCNPhysicsBody *)v7 _createBody];
-    v7->_isDefaultShape = a4 == 0;
+    v7->_isDefaultShape = shape == 0;
   }
 
   return v7;
@@ -155,7 +155,7 @@
   v7.i64[0] = v6.i32[0];
   v7.i64[1] = v6.i32[1];
   *&self->_categoryBitMask = vbslq_s8(v7, xmmword_21C2A1E60, xmmword_21C281170);
-  v8 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -163,7 +163,7 @@
   v12[3] = &unk_2782FB7D0;
   v12[4] = self;
   v12[5] = type;
-  [SCNTransaction postCommandWithContext:v8 object:node applyBlock:v12];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v12];
   v10 = 0.0;
   if (v11)
   {
@@ -210,7 +210,7 @@ btCollisionObject *__26__SCNPhysicsBody_setType___block_invoke(uint64_t a1)
   *&v5 = *&self->_momentOfInertia.x;
   DWORD2(v5) = LODWORD(self->_momentOfInertia.z);
   v10 = v5;
-  v6 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -219,7 +219,7 @@ btCollisionObject *__26__SCNPhysicsBody_setType___block_invoke(uint64_t a1)
   *&v8[6] = mass;
   v8[4] = self;
   v8[5] = v9;
-  [SCNTransaction postCommandWithContext:v6 object:node applyBlock:v8];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v8];
   _Block_object_dispose(v9, 8);
 }
 
@@ -253,7 +253,7 @@ void __26__SCNPhysicsBody_setMass___block_invoke(uint64_t a1)
   y = momentOfInertia.y;
   z = momentOfInertia.z;
   v10 = *&momentOfInertia.x;
-  v6 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -261,7 +261,7 @@ void __26__SCNPhysicsBody_setMass___block_invoke(uint64_t a1)
   v8[3] = &unk_2782FE1E8;
   v8[4] = self;
   v8[5] = v9;
-  [SCNTransaction postCommandWithContext:v6 object:node applyBlock:v8];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v8];
   _Block_object_dispose(v9, 8);
 }
 
@@ -307,18 +307,18 @@ void __37__SCNPhysicsBody_setMomentOfInertia___block_invoke(uint64_t a1)
   v7 = self->_momentOfInertia.z;
   v11 = *&centerOfMassOffset.x;
   explicitMomentOfInertia = self->_explicitMomentOfInertia;
-  v9 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __40__SCNPhysicsBody_setCenterOfMassOffset___block_invoke;
   v13[3] = &unk_2782FE210;
-  v16 = self;
+  selfCopy = self;
   v17 = mass;
   v18 = explicitMomentOfInertia;
   v14 = v12;
   v15 = v11;
-  [SCNTransaction postCommandWithContext:v9 object:node applyBlock:v13];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v13];
 }
 
 void __40__SCNPhysicsBody_setCenterOfMassOffset___block_invoke(uint64_t a1)
@@ -375,7 +375,7 @@ void __40__SCNPhysicsBody_setCenterOfMassOffset___block_invoke(uint64_t a1)
   *&v3 = *&self->_momentOfInertia.x;
   DWORD2(v3) = LODWORD(self->_momentOfInertia.z);
   v9 = v3;
-  v5 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -383,7 +383,7 @@ void __40__SCNPhysicsBody_setCenterOfMassOffset___block_invoke(uint64_t a1)
   v7[3] = &unk_2782FE1E8;
   v7[4] = self;
   v7[5] = v8;
-  [SCNTransaction postCommandWithContext:v5 object:node applyBlock:v7];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v7];
   _Block_object_dispose(v8, 8);
 }
 
@@ -410,7 +410,7 @@ void __48__SCNPhysicsBody_setUsesDefaultMomentOfInertia___block_invoke(uint64_t 
 - (void)setCharge:(CGFloat)charge
 {
   self->_charge = charge;
-  v5 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -418,7 +418,7 @@ void __48__SCNPhysicsBody_setUsesDefaultMomentOfInertia___block_invoke(uint64_t 
   v7[3] = &unk_2782FB7D0;
   v7[4] = self;
   *&v7[5] = charge;
-  [SCNTransaction postCommandWithContext:v5 object:node applyBlock:v7];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v7];
 }
 
 float __28__SCNPhysicsBody_setCharge___block_invoke(uint64_t a1)
@@ -445,20 +445,20 @@ float __28__SCNPhysicsBody_setCharge___block_invoke(uint64_t a1)
   return v3 == 2 || v3 == 5;
 }
 
-- (void)updateGlobalScale:(double)a3
+- (void)updateGlobalScale:(double)scale
 {
   v3 = *(self->_body + 67);
   if (v3)
   {
-    v4 = a3;
-    *(v3 + 64) = v4;
+    scaleCopy = scale;
+    *(v3 + 64) = scaleCopy;
   }
 }
 
 - (void)setAllowsResting:(BOOL)allowsResting
 {
   self->_allowsResting = allowsResting;
-  v5 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -466,7 +466,7 @@ float __28__SCNPhysicsBody_setCharge___block_invoke(uint64_t a1)
   v7[3] = &unk_2782FB7F8;
   v7[4] = self;
   v8 = allowsResting;
-  [SCNTransaction postCommandWithContext:v5 object:node applyBlock:v7];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v7];
 }
 
 btCollisionObject *__35__SCNPhysicsBody_setAllowsResting___block_invoke(uint64_t a1)
@@ -495,7 +495,7 @@ btCollisionObject *__35__SCNPhysicsBody_setAllowsResting___block_invoke(uint64_t
 - (void)setFriction:(CGFloat)friction
 {
   self->_friction = friction;
-  v5 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -503,7 +503,7 @@ btCollisionObject *__35__SCNPhysicsBody_setAllowsResting___block_invoke(uint64_t
   v7[3] = &unk_2782FB7D0;
   v7[4] = self;
   *&v7[5] = friction;
-  [SCNTransaction postCommandWithContext:v5 object:node applyBlock:v7];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v7];
 }
 
 float __30__SCNPhysicsBody_setFriction___block_invoke(uint64_t a1)
@@ -521,7 +521,7 @@ float __30__SCNPhysicsBody_setFriction___block_invoke(uint64_t a1)
 - (void)setRestitution:(CGFloat)restitution
 {
   self->_restitution = restitution;
-  v5 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -529,7 +529,7 @@ float __30__SCNPhysicsBody_setFriction___block_invoke(uint64_t a1)
   v7[3] = &unk_2782FB7D0;
   v7[4] = self;
   *&v7[5] = restitution;
-  [SCNTransaction postCommandWithContext:v5 object:node applyBlock:v7];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v7];
 }
 
 float __33__SCNPhysicsBody_setRestitution___block_invoke(uint64_t a1)
@@ -547,7 +547,7 @@ float __33__SCNPhysicsBody_setRestitution___block_invoke(uint64_t a1)
 - (void)setRollingFriction:(CGFloat)rollingFriction
 {
   self->_rollingFriction = rollingFriction;
-  v5 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -555,7 +555,7 @@ float __33__SCNPhysicsBody_setRestitution___block_invoke(uint64_t a1)
   v7[3] = &unk_2782FB7D0;
   v7[4] = self;
   *&v7[5] = rollingFriction;
-  [SCNTransaction postCommandWithContext:v5 object:node applyBlock:v7];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v7];
 }
 
 float __37__SCNPhysicsBody_setRollingFriction___block_invoke(uint64_t a1)
@@ -573,7 +573,7 @@ float __37__SCNPhysicsBody_setRollingFriction___block_invoke(uint64_t a1)
 - (void)setDamping:(CGFloat)damping
 {
   self->_damping = damping;
-  v5 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -581,7 +581,7 @@ float __37__SCNPhysicsBody_setRollingFriction___block_invoke(uint64_t a1)
   v7[3] = &unk_2782FB7D0;
   v7[4] = self;
   *&v7[5] = damping;
-  [SCNTransaction postCommandWithContext:v5 object:node applyBlock:v7];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v7];
 }
 
 int8x8_t __29__SCNPhysicsBody_setDamping___block_invoke(uint64_t a1)
@@ -600,7 +600,7 @@ int8x8_t __29__SCNPhysicsBody_setDamping___block_invoke(uint64_t a1)
 - (void)setAngularDamping:(CGFloat)angularDamping
 {
   self->_angularDamping = angularDamping;
-  v5 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -608,7 +608,7 @@ int8x8_t __29__SCNPhysicsBody_setDamping___block_invoke(uint64_t a1)
   v7[3] = &unk_2782FB7D0;
   v7[4] = self;
   *&v7[5] = angularDamping;
-  [SCNTransaction postCommandWithContext:v5 object:node applyBlock:v7];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v7];
 }
 
 int8x8_t __36__SCNPhysicsBody_setAngularDamping___block_invoke(uint64_t a1)
@@ -630,7 +630,7 @@ int8x8_t __36__SCNPhysicsBody_setAngularDamping___block_invoke(uint64_t a1)
 {
   self->_linearRestingThreshold = linearRestingThreshold;
   angularRestingThreshold = self->_angularRestingThreshold;
-  v6 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -639,7 +639,7 @@ int8x8_t __36__SCNPhysicsBody_setAngularDamping___block_invoke(uint64_t a1)
   v8[4] = self;
   *&v8[5] = linearRestingThreshold;
   *&v8[6] = angularRestingThreshold;
-  [SCNTransaction postCommandWithContext:v6 object:node applyBlock:v8];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v8];
 }
 
 float32x2_t __44__SCNPhysicsBody_setLinearRestingThreshold___block_invoke(uint64_t a1)
@@ -658,7 +658,7 @@ float32x2_t __44__SCNPhysicsBody_setLinearRestingThreshold___block_invoke(uint64
 {
   self->_angularRestingThreshold = angularRestingThreshold;
   linearRestingThreshold = self->_linearRestingThreshold;
-  v6 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -667,7 +667,7 @@ float32x2_t __44__SCNPhysicsBody_setLinearRestingThreshold___block_invoke(uint64
   v8[4] = self;
   *&v8[5] = linearRestingThreshold;
   *&v8[6] = angularRestingThreshold;
-  [SCNTransaction postCommandWithContext:v6 object:node applyBlock:v8];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v8];
 }
 
 float32x2_t __45__SCNPhysicsBody_setAngularRestingThreshold___block_invoke(uint64_t a1)
@@ -682,20 +682,20 @@ float32x2_t __45__SCNPhysicsBody_setAngularRestingThreshold___block_invoke(uint6
   return result;
 }
 
-- (btCollisionShape)_shapeHandleWithShape:(id)a3 owner:(id)a4
+- (btCollisionShape)_shapeHandleWithShape:(id)shape owner:(id)owner
 {
-  if ([a3 referenceObject])
+  if ([shape referenceObject])
   {
 
-    return [a3 _handle];
+    return [shape _handle];
   }
 
   else
   {
-    [a3 setReferenceObject:a4];
-    v7 = [a3 _handle];
-    [a3 setReferenceObject:0];
-    return v7;
+    [shape setReferenceObject:owner];
+    _handle = [shape _handle];
+    [shape setReferenceObject:0];
+    return _handle;
   }
 }
 
@@ -714,20 +714,20 @@ float32x2_t __45__SCNPhysicsBody_setAngularRestingThreshold___block_invoke(uint6
     explicitMomentOfInertia = self->_explicitMomentOfInertia;
     *(&v7 + 1) = LODWORD(self->_centerOfMassOffset.z);
     v11 = v7;
-    v9 = [(SCNNode *)self->_node sceneRef];
+    sceneRef = [(SCNNode *)self->_node sceneRef];
     node = self->_node;
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3321888768;
     v13[2] = __34__SCNPhysicsBody_setPhysicsShape___block_invoke;
     v13[3] = &unk_282DC4FF0;
-    v16 = self;
+    selfCopy = self;
     v17 = physicsShape;
     v19 = mass;
     v20 = explicitMomentOfInertia;
     v14 = v12;
     v15 = v11;
     v18 = v3;
-    [SCNTransaction postCommandWithContext:v9 object:node applyBlock:v13];
+    [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v13];
   }
 }
 
@@ -777,7 +777,7 @@ void __34__SCNPhysicsBody_setPhysicsShape___block_invoke(uint64_t a1)
   if (v7)
   {
     v8 = v7;
-    v9 = [(SCNNode *)self->_node sceneRef];
+    sceneRef = [(SCNNode *)self->_node sceneRef];
     node = self->_node;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -788,7 +788,7 @@ void __34__SCNPhysicsBody_setPhysicsShape___block_invoke(uint64_t a1)
     v11[6] = categoryBitMask;
     v11[7] = collisionBitMask;
     v11[8] = contactTestBitMask;
-    [SCNTransaction postCommandWithContext:v9 object:node applyBlock:v11];
+    [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v11];
   }
 }
 
@@ -823,7 +823,7 @@ void __37__SCNPhysicsBody_setCategoryBitMask___block_invoke(uint64_t a1)
   if (v7)
   {
     v8 = v7;
-    v9 = [(SCNNode *)self->_node sceneRef];
+    sceneRef = [(SCNNode *)self->_node sceneRef];
     node = self->_node;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -834,7 +834,7 @@ void __37__SCNPhysicsBody_setCategoryBitMask___block_invoke(uint64_t a1)
     v11[6] = collisionBitMask;
     v11[7] = categoryBitMask;
     v11[8] = contactTestBitMask;
-    [SCNTransaction postCommandWithContext:v9 object:node applyBlock:v11];
+    [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v11];
   }
 }
 
@@ -869,7 +869,7 @@ void __38__SCNPhysicsBody_setCollisionBitMask___block_invoke(uint64_t a1)
   if (v7)
   {
     v8 = v7;
-    v9 = [(SCNNode *)self->_node sceneRef];
+    sceneRef = [(SCNNode *)self->_node sceneRef];
     node = self->_node;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -880,7 +880,7 @@ void __38__SCNPhysicsBody_setCollisionBitMask___block_invoke(uint64_t a1)
     v11[6] = contactTestBitMask;
     v11[7] = collisionBitMask;
     v11[8] = categoryBitMask;
-    [SCNTransaction postCommandWithContext:v9 object:node applyBlock:v11];
+    [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v11];
   }
 }
 
@@ -909,7 +909,7 @@ void __40__SCNPhysicsBody_setContactTestBitMask___block_invoke(uint64_t a1)
 - (void)setContinuousCollisionDetectionThreshold:(CGFloat)continuousCollisionDetectionThreshold
 {
   self->_continuousCollisionDetectionThreshold = continuousCollisionDetectionThreshold;
-  v5 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -917,7 +917,7 @@ void __40__SCNPhysicsBody_setContactTestBitMask___block_invoke(uint64_t a1)
   v7[3] = &unk_2782FB7D0;
   v7[4] = self;
   *&v7[5] = continuousCollisionDetectionThreshold;
-  [SCNTransaction postCommandWithContext:v5 object:node applyBlock:v7];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v7];
 }
 
 uint64_t __59__SCNPhysicsBody_setContinuousCollisionDetectionThreshold___block_invoke(uint64_t result)
@@ -939,7 +939,7 @@ uint64_t __59__SCNPhysicsBody_setContinuousCollisionDetectionThreshold___block_i
   y = velocity.y;
   x = velocity.x;
   self->_velocity = velocity;
-  v7 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -949,7 +949,7 @@ uint64_t __59__SCNPhysicsBody_setContinuousCollisionDetectionThreshold___block_i
   v10 = x;
   v11 = y;
   v12 = z;
-  [SCNTransaction postCommandWithContext:v7 object:node applyBlock:v9];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v9];
 }
 
 float __30__SCNPhysicsBody_setVelocity___block_invoke(uint64_t a1)
@@ -1006,7 +1006,7 @@ float __30__SCNPhysicsBody_setVelocity___block_invoke(uint64_t a1)
     v6 = 0;
   }
 
-  v7 = [(SCNNode *)node sceneRef];
+  sceneRef = [(SCNNode *)node sceneRef];
   v8 = self->_node;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -1015,7 +1015,7 @@ float __30__SCNPhysicsBody_setVelocity___block_invoke(uint64_t a1)
   v10 = affectedByGravity;
   v9[4] = self;
   v9[5] = v6;
-  [SCNTransaction postCommandWithContext:v7 object:v8 applyBlock:v9];
+  [SCNTransaction postCommandWithContext:sceneRef object:v8 applyBlock:v9];
 }
 
 double __39__SCNPhysicsBody_setAffectedByGravity___block_invoke(uint64_t a1)
@@ -1061,7 +1061,7 @@ double __39__SCNPhysicsBody_setAffectedByGravity___block_invoke(uint64_t a1)
   y = angularVelocity.y;
   x = angularVelocity.x;
   self->_angularVelocity = angularVelocity;
-  v8 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
@@ -1072,7 +1072,7 @@ double __39__SCNPhysicsBody_setAffectedByGravity___block_invoke(uint64_t a1)
   v12 = y;
   v13 = z;
   v14 = w;
-  [SCNTransaction postCommandWithContext:v8 object:node applyBlock:v10];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v10];
 }
 
 float32x4_t __37__SCNPhysicsBody_setAngularVelocity___block_invoke(uint64_t a1, float32x4_t result)
@@ -1132,7 +1132,7 @@ float32x4_t __37__SCNPhysicsBody_setAngularVelocity___block_invoke(uint64_t a1, 
   y = velocityFactor.y;
   x = velocityFactor.x;
   self->_velocityFactor = velocityFactor;
-  v7 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -1142,7 +1142,7 @@ float32x4_t __37__SCNPhysicsBody_setAngularVelocity___block_invoke(uint64_t a1, 
   v10 = x;
   v11 = y;
   v12 = z;
-  [SCNTransaction postCommandWithContext:v7 object:node applyBlock:v9];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v9];
 }
 
 __n128 __36__SCNPhysicsBody_setVelocityFactor___block_invoke(uint64_t a1)
@@ -1178,7 +1178,7 @@ __n128 __36__SCNPhysicsBody_setVelocityFactor___block_invoke(uint64_t a1)
   y = angularVelocityFactor.y;
   x = angularVelocityFactor.x;
   self->_angularVelocityFactor = angularVelocityFactor;
-  v7 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -1188,7 +1188,7 @@ __n128 __36__SCNPhysicsBody_setVelocityFactor___block_invoke(uint64_t a1)
   v10 = x;
   v11 = y;
   v12 = z;
-  [SCNTransaction postCommandWithContext:v7 object:node applyBlock:v9];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v9];
 }
 
 float __43__SCNPhysicsBody_setAngularVelocityFactor___block_invoke(uint64_t a1)
@@ -1220,7 +1220,7 @@ float __43__SCNPhysicsBody_setAngularVelocityFactor___block_invoke(uint64_t a1)
   z = direction.z;
   y = direction.y;
   x = direction.x;
-  v9 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -1231,7 +1231,7 @@ float __43__SCNPhysicsBody_setAngularVelocityFactor___block_invoke(uint64_t a1)
   v12 = x;
   v13 = y;
   v14 = z;
-  [SCNTransaction postCommandWithContext:v9 object:node applyBlock:v11];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v11];
 }
 
 float32x4_t __37__SCNPhysicsBody_applyForce_impulse___block_invoke(uint64_t a1)
@@ -1279,7 +1279,7 @@ float32x4_t __37__SCNPhysicsBody_applyForce_impulse___block_invoke(uint64_t a1)
   v9 = direction.z;
   v10 = direction.y;
   v11 = direction.x;
-  v13 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
@@ -1293,7 +1293,7 @@ float32x4_t __37__SCNPhysicsBody_applyForce_impulse___block_invoke(uint64_t a1)
   v19 = x;
   v20 = y;
   v21 = z;
-  [SCNTransaction postCommandWithContext:v13 object:node applyBlock:v15];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v15];
 }
 
 float32x4_t __48__SCNPhysicsBody_applyForce_atPosition_impulse___block_invoke(uint64_t a1)
@@ -1348,7 +1348,7 @@ float32x4_t __48__SCNPhysicsBody_applyForce_atPosition_impulse___block_invoke(ui
   z = torque.z;
   y = torque.y;
   x = torque.x;
-  v10 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -1360,7 +1360,7 @@ float32x4_t __48__SCNPhysicsBody_applyForce_atPosition_impulse___block_invoke(ui
   v15 = z;
   v16 = w;
   v17 = impulse;
-  [SCNTransaction postCommandWithContext:v10 object:node applyBlock:v12];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v12];
 }
 
 float32x4_t __38__SCNPhysicsBody_applyTorque_impulse___block_invoke(uint64_t a1)
@@ -1416,14 +1416,14 @@ float32x4_t __38__SCNPhysicsBody_applyTorque_impulse___block_invoke(uint64_t a1)
 
 - (void)clearAllForces
 {
-  v3 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __32__SCNPhysicsBody_clearAllForces__block_invoke;
   v5[3] = &unk_2782FB820;
   v5[4] = self;
-  [SCNTransaction postCommandWithContext:v3 object:node applyBlock:v5];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v5];
 }
 
 void __32__SCNPhysicsBody_clearAllForces__block_invoke(uint64_t a1)
@@ -1449,7 +1449,7 @@ void __32__SCNPhysicsBody_clearAllForces__block_invoke(uint64_t a1)
 
 - (void)setResting:(BOOL)resting
 {
-  v5 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -1457,7 +1457,7 @@ void __32__SCNPhysicsBody_clearAllForces__block_invoke(uint64_t a1)
   v7[3] = &unk_2782FB7F8;
   v7[4] = self;
   v8 = resting;
-  [SCNTransaction postCommandWithContext:v5 object:node applyBlock:v7];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v7];
 }
 
 btCollisionObject *__29__SCNPhysicsBody_setResting___block_invoke(uint64_t a1)
@@ -1479,22 +1479,22 @@ btCollisionObject *__29__SCNPhysicsBody_setResting___block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)resetToTransform:(SCNMatrix4 *)a3
+- (void)resetToTransform:(SCNMatrix4 *)transform
 {
-  v5 = [(SCNNode *)self->_node sceneRef];
+  sceneRef = [(SCNNode *)self->_node sceneRef];
   node = self->_node;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
-  v7 = *&a3->m21;
-  v10 = *&a3->m11;
+  v7 = *&transform->m21;
+  v10 = *&transform->m11;
   v11 = v7;
-  v8 = *&a3->m41;
-  v12 = *&a3->m31;
+  v8 = *&transform->m41;
+  v12 = *&transform->m31;
   v13 = v8;
   v9[2] = __35__SCNPhysicsBody_resetToTransform___block_invoke;
   v9[3] = &unk_2782FE328;
   v9[4] = self;
-  [SCNTransaction postCommandWithContext:v5 object:node applyBlock:v9];
+  [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v9];
 }
 
 uint64_t __35__SCNPhysicsBody_resetToTransform___block_invoke(uint64_t a1)
@@ -1519,7 +1519,7 @@ uint64_t __35__SCNPhysicsBody_resetToTransform___block_invoke(uint64_t a1)
     v11 = 0u;
     v12 = 0u;
     [(SCNNode *)node worldTransform];
-    v4 = [(SCNNode *)self->_node sceneRef];
+    sceneRef = [(SCNNode *)self->_node sceneRef];
     v5 = self->_node;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
@@ -1530,7 +1530,7 @@ uint64_t __35__SCNPhysicsBody_resetToTransform___block_invoke(uint64_t a1)
     v6[2] = __32__SCNPhysicsBody_resetTransform__block_invoke;
     v6[3] = &unk_2782FE328;
     v6[4] = self;
-    [SCNTransaction postCommandWithContext:v4 object:v5 applyBlock:v6];
+    [SCNTransaction postCommandWithContext:sceneRef object:v5 applyBlock:v6];
   }
 }
 
@@ -1546,19 +1546,19 @@ uint64_t __32__SCNPhysicsBody_resetTransform__block_invoke(uint64_t a1)
   return [v1 moveToTransform:v5];
 }
 
-- (void)moveToPosition:(SCNVector3)a3
+- (void)moveToPosition:(SCNVector3)position
 {
-  z = a3.z;
-  y = a3.y;
-  x = a3.x;
+  z = position.z;
+  y = position.y;
+  x = position.x;
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v7 = [(SCNNode *)self->_node presentationNode];
-  if (v7)
+  presentationNode = [(SCNNode *)self->_node presentationNode];
+  if (presentationNode)
   {
-    [(SCNNode *)v7 worldTransform];
+    [(SCNNode *)presentationNode worldTransform];
   }
 
   else
@@ -1578,21 +1578,21 @@ uint64_t __32__SCNPhysicsBody_resetTransform__block_invoke(uint64_t a1)
   [(SCNPhysicsBody *)self moveToTransform:v8];
 }
 
-- (void)rotateToAxisAngle:(SCNVector4)a3
+- (void)rotateToAxisAngle:(SCNVector4)angle
 {
-  w = a3.w;
-  z = a3.z;
-  y = a3.y;
-  x = a3.x;
+  w = angle.w;
+  z = angle.z;
+  y = angle.y;
+  x = angle.x;
   DWORD2(v14) = 0;
   *&v14 = 0;
   v13.i32[2] = 0;
   v13.i64[0] = 0;
   memset(&v12, 0, sizeof(v12));
-  v8 = [(SCNNode *)self->_node presentationNode];
-  if (v8)
+  presentationNode = [(SCNNode *)self->_node presentationNode];
+  if (presentationNode)
   {
-    [(SCNNode *)v8 worldTransform];
+    [(SCNNode *)presentationNode worldTransform];
   }
 
   else
@@ -1625,11 +1625,11 @@ uint64_t __32__SCNPhysicsBody_resetTransform__block_invoke(uint64_t a1)
   [(SCNPhysicsBody *)self moveToTransform:&a];
 }
 
-- (void)moveToTransform:(SCNMatrix4 *)a3
+- (void)moveToTransform:(SCNMatrix4 *)transform
 {
   if (self->_body)
   {
-    C3DMatrix4x4FromSCNMatrix4(v13, a3);
+    C3DMatrix4x4FromSCNMatrix4(v13, transform);
     v8.i32[2] = 0;
     v8.i64[0] = 0;
     C3DMatrix4x4GetScale(v13, &v8);
@@ -1661,7 +1661,7 @@ uint64_t __32__SCNPhysicsBody_resetTransform__block_invoke(uint64_t a1)
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   +[SCNTransaction begin];
   [SCNTransaction setImmediateMode:1];
@@ -1786,7 +1786,7 @@ uint64_t __32__SCNPhysicsBody_resetTransform__block_invoke(uint64_t a1)
   if (body)
   {
     v6 = v4;
-    v7 = [(SCNNode *)node sceneRef];
+    sceneRef = [(SCNNode *)node sceneRef];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __30__SCNPhysicsBody__removeOwner__block_invoke;
@@ -1795,7 +1795,7 @@ uint64_t __32__SCNPhysicsBody_resetTransform__block_invoke(uint64_t a1)
     v8[5] = v6;
     v8[6] = self;
     v8[7] = body;
-    [SCNTransaction postCommandWithContext:v7 object:node applyBlock:v8];
+    [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v8];
   }
 }
 
@@ -1809,7 +1809,7 @@ uint64_t __30__SCNPhysicsBody__removeOwner__block_invoke(uint64_t a1)
   return [v2 removePhysicsBody:v3 handle:v4];
 }
 
-- (void)_setOwner:(id)a3
+- (void)_setOwner:(id)owner
 {
   if (self->_node)
   {
@@ -1823,15 +1823,15 @@ uint64_t __30__SCNPhysicsBody__removeOwner__block_invoke(uint64_t a1)
     }
   }
 
-  self->_node = a3;
-  v6 = [a3 nodeRef];
+  self->_node = owner;
+  nodeRef = [owner nodeRef];
   body = self->_body;
-  v8 = [(SCNPhysicsBody *)self categoryBitMask];
-  v9 = [(SCNPhysicsBody *)self collisionBitMask];
-  v10 = [(SCNPhysicsBody *)self contactTestBitMask];
+  categoryBitMask = [(SCNPhysicsBody *)self categoryBitMask];
+  collisionBitMask = [(SCNPhysicsBody *)self collisionBitMask];
+  contactTestBitMask = [(SCNPhysicsBody *)self contactTestBitMask];
   if (self->_node)
   {
-    v12 = v10;
+    v12 = contactTestBitMask;
     mass = self->_mass;
     isDefaultShape = self->_isDefaultShape;
     *&v11 = *&self->_momentOfInertia.x;
@@ -1841,28 +1841,28 @@ uint64_t __30__SCNPhysicsBody__removeOwner__block_invoke(uint64_t a1)
     explicitMomentOfInertia = self->_explicitMomentOfInertia;
     *(&v14 + 1) = LODWORD(self->_centerOfMassOffset.z);
     v21 = v14;
-    v16 = v8;
+    v16 = categoryBitMask;
     physicsShape = self->_physicsShape;
-    v18 = [(SCNPhysicsBody *)self sceneRef];
+    sceneRef = [(SCNPhysicsBody *)self sceneRef];
     node = self->_node;
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3321888768;
     v24[2] = __28__SCNPhysicsBody__setOwner___block_invoke;
     v24[3] = &unk_282DC5028;
-    v30 = v6;
+    v30 = nodeRef;
     v31 = body;
     v36 = isDefaultShape;
-    v27 = a3;
-    v28 = self;
+    ownerCopy = owner;
+    selfCopy = self;
     v29 = physicsShape;
     v32 = mass;
     v37 = explicitMomentOfInertia;
     v25 = v23;
     v26 = v21;
     v33 = v16;
-    v34 = v9;
+    v34 = collisionBitMask;
     v35 = v12;
-    [SCNTransaction postCommandWithContext:v18 object:node applyBlock:v24];
+    [SCNTransaction postCommandWithContext:sceneRef object:node applyBlock:v24];
   }
 
   else
@@ -1918,43 +1918,43 @@ uint64_t __28__SCNPhysicsBody__setOwner___block_invoke(uint64_t a1)
   return [v2 addPhysicsBody:v11 nodeRef:v12 colGroup:v13 colMask:v14 colTest:v15];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeDouble:@"mass" forKey:self->_mass];
-  [a3 encodeDouble:@"charge" forKey:self->_charge];
-  [a3 encodeDouble:@"friction" forKey:self->_friction];
-  [a3 encodeDouble:@"restitution" forKey:self->_restitution];
-  [a3 encodeDouble:@"rollingFriction" forKey:self->_rollingFriction];
-  [a3 encodeDouble:@"ccdThreshold" forKey:self->_continuousCollisionDetectionThreshold];
+  [coder encodeDouble:@"mass" forKey:self->_mass];
+  [coder encodeDouble:@"charge" forKey:self->_charge];
+  [coder encodeDouble:@"friction" forKey:self->_friction];
+  [coder encodeDouble:@"restitution" forKey:self->_restitution];
+  [coder encodeDouble:@"rollingFriction" forKey:self->_rollingFriction];
+  [coder encodeDouble:@"ccdThreshold" forKey:self->_continuousCollisionDetectionThreshold];
   physicsShape = self->_physicsShape;
   if (physicsShape)
   {
-    [a3 encodeObject:physicsShape forKey:@"physicsShape"];
+    [coder encodeObject:physicsShape forKey:@"physicsShape"];
   }
 
-  [a3 encodeInteger:self->_type forKey:@"type"];
-  [a3 encodeDouble:@"damping" forKey:self->_damping];
-  SCNEncodeVector4(a3, @"angularVelocity", self->_angularVelocity.x, self->_angularVelocity.y, self->_angularVelocity.z, self->_angularVelocity.w);
-  [a3 encodeDouble:@"angularDamping" forKey:self->_angularDamping];
-  [a3 encodeDouble:@"linearRestingThreshold" forKey:self->_linearRestingThreshold];
-  [a3 encodeDouble:@"angularRestingThreshold" forKey:self->_angularRestingThreshold];
-  SCNEncodeVector3(a3, @"velocityFactor", self->_velocityFactor.x, self->_velocityFactor.y, self->_velocityFactor.z);
-  SCNEncodeVector3(a3, @"angularVelocityFactor", self->_angularVelocityFactor.x, self->_angularVelocityFactor.y, self->_angularVelocityFactor.z);
-  SCNEncodeVector3(a3, @"velocity", self->_velocity.x, self->_velocity.y, self->_velocity.z);
-  [a3 encodeBool:self->_ignoreGravity forKey:@"ignoreGravity"];
-  [a3 encodeBool:self->_explicitMomentOfInertia forKey:@"explicitMomentOfInertia"];
-  SCNEncodeVector3(a3, @"momentOfInertia", self->_momentOfInertia.x, self->_momentOfInertia.y, self->_momentOfInertia.z);
-  SCNEncodeVector3(a3, @"centerOfMassOffset", self->_centerOfMassOffset.x, self->_centerOfMassOffset.y, self->_centerOfMassOffset.z);
-  [a3 encodeInteger:self->_categoryBitMask forKey:@"categoryBitMask"];
-  [a3 encodeInteger:self->_collisionBitMask forKey:@"collisionBitMask"];
-  [a3 encodeInteger:self->_contactTestBitMask forKey:@"contactTestBitMask"];
-  [a3 encodeBool:self->_allowsResting forKey:@"allowsResting"];
+  [coder encodeInteger:self->_type forKey:@"type"];
+  [coder encodeDouble:@"damping" forKey:self->_damping];
+  SCNEncodeVector4(coder, @"angularVelocity", self->_angularVelocity.x, self->_angularVelocity.y, self->_angularVelocity.z, self->_angularVelocity.w);
+  [coder encodeDouble:@"angularDamping" forKey:self->_angularDamping];
+  [coder encodeDouble:@"linearRestingThreshold" forKey:self->_linearRestingThreshold];
+  [coder encodeDouble:@"angularRestingThreshold" forKey:self->_angularRestingThreshold];
+  SCNEncodeVector3(coder, @"velocityFactor", self->_velocityFactor.x, self->_velocityFactor.y, self->_velocityFactor.z);
+  SCNEncodeVector3(coder, @"angularVelocityFactor", self->_angularVelocityFactor.x, self->_angularVelocityFactor.y, self->_angularVelocityFactor.z);
+  SCNEncodeVector3(coder, @"velocity", self->_velocity.x, self->_velocity.y, self->_velocity.z);
+  [coder encodeBool:self->_ignoreGravity forKey:@"ignoreGravity"];
+  [coder encodeBool:self->_explicitMomentOfInertia forKey:@"explicitMomentOfInertia"];
+  SCNEncodeVector3(coder, @"momentOfInertia", self->_momentOfInertia.x, self->_momentOfInertia.y, self->_momentOfInertia.z);
+  SCNEncodeVector3(coder, @"centerOfMassOffset", self->_centerOfMassOffset.x, self->_centerOfMassOffset.y, self->_centerOfMassOffset.z);
+  [coder encodeInteger:self->_categoryBitMask forKey:@"categoryBitMask"];
+  [coder encodeInteger:self->_collisionBitMask forKey:@"collisionBitMask"];
+  [coder encodeInteger:self->_contactTestBitMask forKey:@"contactTestBitMask"];
+  [coder encodeBool:self->_allowsResting forKey:@"allowsResting"];
   isDefaultShape = self->_isDefaultShape;
 
-  [a3 encodeBool:isDefaultShape forKey:@"isDefaultShape"];
+  [coder encodeBool:isDefaultShape forKey:@"isDefaultShape"];
 }
 
-- (SCNPhysicsBody)initWithCoder:(id)a3
+- (SCNPhysicsBody)initWithCoder:(id)coder
 {
   v15.receiver = self;
   v15.super_class = SCNPhysicsBody;
@@ -1963,62 +1963,62 @@ uint64_t __28__SCNPhysicsBody__setOwner___block_invoke(uint64_t a1)
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    [a3 decodeDoubleForKey:@"charge"];
+    [coder decodeDoubleForKey:@"charge"];
     [(SCNPhysicsBody *)v4 setCharge:?];
-    [a3 decodeDoubleForKey:@"friction"];
+    [coder decodeDoubleForKey:@"friction"];
     [(SCNPhysicsBody *)v4 setFriction:?];
-    [a3 decodeDoubleForKey:@"restitution"];
+    [coder decodeDoubleForKey:@"restitution"];
     [(SCNPhysicsBody *)v4 setRestitution:?];
-    [a3 decodeDoubleForKey:@"rollingFriction"];
+    [coder decodeDoubleForKey:@"rollingFriction"];
     [(SCNPhysicsBody *)v4 setRollingFriction:?];
-    -[SCNPhysicsBody setPhysicsShape:](v4, "setPhysicsShape:", [a3 scn_decodeObjectOfClass:objc_opt_class() forKey:@"physicsShape"]);
-    if ([a3 containsValueForKey:@"ccdThreshold"])
+    -[SCNPhysicsBody setPhysicsShape:](v4, "setPhysicsShape:", [coder scn_decodeObjectOfClass:objc_opt_class() forKey:@"physicsShape"]);
+    if ([coder containsValueForKey:@"ccdThreshold"])
     {
-      [a3 decodeDoubleForKey:@"ccdThreshold"];
+      [coder decodeDoubleForKey:@"ccdThreshold"];
       [(SCNPhysicsBody *)v4 setContinuousCollisionDetectionThreshold:?];
     }
 
-    -[SCNPhysicsBody setType:](v4, "setType:", [a3 decodeIntegerForKey:@"type"]);
-    [a3 decodeDoubleForKey:@"mass"];
+    -[SCNPhysicsBody setType:](v4, "setType:", [coder decodeIntegerForKey:@"type"]);
+    [coder decodeDoubleForKey:@"mass"];
     [(SCNPhysicsBody *)v4 setMass:?];
-    [a3 decodeDoubleForKey:@"damping"];
+    [coder decodeDoubleForKey:@"damping"];
     [(SCNPhysicsBody *)v4 setDamping:?];
-    *&v6 = SCNDecodeVector4(a3, @"angularVelocity");
+    *&v6 = SCNDecodeVector4(coder, @"angularVelocity");
     [(SCNPhysicsBody *)v4 setAngularVelocity:v6];
-    [a3 decodeDoubleForKey:@"angularDamping"];
+    [coder decodeDoubleForKey:@"angularDamping"];
     [(SCNPhysicsBody *)v4 setAngularDamping:?];
     v7 = @"linearRestingThreshold";
-    if (([a3 containsValueForKey:@"linearRestingThreshold"] & 1) != 0 || (v7 = @"linearSleepingThreshold", objc_msgSend(a3, "containsValueForKey:", @"linearSleepingThreshold")))
+    if (([coder containsValueForKey:@"linearRestingThreshold"] & 1) != 0 || (v7 = @"linearSleepingThreshold", objc_msgSend(coder, "containsValueForKey:", @"linearSleepingThreshold")))
     {
-      [a3 decodeDoubleForKey:v7];
+      [coder decodeDoubleForKey:v7];
       [(SCNPhysicsBody *)v4 setLinearRestingThreshold:?];
     }
 
     v8 = @"angularRestingThreshold";
-    if (([a3 containsValueForKey:@"angularRestingThreshold"] & 1) != 0 || (v8 = @"angularSleepingThreshold", objc_msgSend(a3, "containsValueForKey:", @"angularSleepingThreshold")))
+    if (([coder containsValueForKey:@"angularRestingThreshold"] & 1) != 0 || (v8 = @"angularSleepingThreshold", objc_msgSend(coder, "containsValueForKey:", @"angularSleepingThreshold")))
     {
-      [a3 decodeDoubleForKey:v8];
+      [coder decodeDoubleForKey:v8];
       [(SCNPhysicsBody *)v4 setAngularRestingThreshold:?];
     }
 
-    *&v9 = SCNDecodeVector3(a3, @"velocityFactor");
+    *&v9 = SCNDecodeVector3(coder, @"velocityFactor");
     [(SCNPhysicsBody *)v4 setVelocityFactor:v9];
-    *&v10 = SCNDecodeVector3(a3, @"angularVelocityFactor");
+    *&v10 = SCNDecodeVector3(coder, @"angularVelocityFactor");
     [(SCNPhysicsBody *)v4 setAngularVelocityFactor:v10];
-    *&v11 = SCNDecodeVector3(a3, @"velocity");
+    *&v11 = SCNDecodeVector3(coder, @"velocity");
     [(SCNPhysicsBody *)v4 setVelocity:v11];
-    -[SCNPhysicsBody setAffectedByGravity:](v4, "setAffectedByGravity:", [a3 decodeBoolForKey:@"ignoreGravity"] ^ 1);
-    -[SCNPhysicsBody setUsesDefaultMomentOfInertia:](v4, "setUsesDefaultMomentOfInertia:", [a3 decodeBoolForKey:@"explicitMomentOfInertia"] ^ 1);
-    *&v12 = SCNDecodeVector3(a3, @"momentOfInertia");
+    -[SCNPhysicsBody setAffectedByGravity:](v4, "setAffectedByGravity:", [coder decodeBoolForKey:@"ignoreGravity"] ^ 1);
+    -[SCNPhysicsBody setUsesDefaultMomentOfInertia:](v4, "setUsesDefaultMomentOfInertia:", [coder decodeBoolForKey:@"explicitMomentOfInertia"] ^ 1);
+    *&v12 = SCNDecodeVector3(coder, @"momentOfInertia");
     [(SCNPhysicsBody *)v4 setMomentOfInertia:v12];
-    *&v13 = SCNDecodeVector3(a3, @"centerOfMassOffset");
+    *&v13 = SCNDecodeVector3(coder, @"centerOfMassOffset");
     [(SCNPhysicsBody *)v4 setCenterOfMassOffset:v13];
-    -[SCNPhysicsBody setCategoryBitMask:](v4, "setCategoryBitMask:", [a3 decodeIntegerForKey:@"categoryBitMask"]);
-    -[SCNPhysicsBody setCollisionBitMask:](v4, "setCollisionBitMask:", [a3 decodeIntegerForKey:@"collisionBitMask"]);
-    -[SCNPhysicsBody setContactTestBitMask:](v4, "setContactTestBitMask:", [a3 decodeIntegerForKey:@"contactTestBitMask"]);
-    -[SCNPhysicsBody setAllowsResting:](v4, "setAllowsResting:", [a3 decodeBoolForKey:@"allowsResting"]);
-    v4->_isDefaultShape = [a3 decodeBoolForKey:@"isDefaultShape"];
-    [(SCNPhysicsBody *)v4 _didDecodeSCNPhysicsBody:a3];
+    -[SCNPhysicsBody setCategoryBitMask:](v4, "setCategoryBitMask:", [coder decodeIntegerForKey:@"categoryBitMask"]);
+    -[SCNPhysicsBody setCollisionBitMask:](v4, "setCollisionBitMask:", [coder decodeIntegerForKey:@"collisionBitMask"]);
+    -[SCNPhysicsBody setContactTestBitMask:](v4, "setContactTestBitMask:", [coder decodeIntegerForKey:@"contactTestBitMask"]);
+    -[SCNPhysicsBody setAllowsResting:](v4, "setAllowsResting:", [coder decodeBoolForKey:@"allowsResting"]);
+    v4->_isDefaultShape = [coder decodeBoolForKey:@"isDefaultShape"];
+    [(SCNPhysicsBody *)v4 _didDecodeSCNPhysicsBody:coder];
     [SCNTransaction setImmediateMode:v5];
   }
 

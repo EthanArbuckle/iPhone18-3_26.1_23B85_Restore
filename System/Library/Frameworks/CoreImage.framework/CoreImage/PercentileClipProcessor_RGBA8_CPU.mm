@@ -1,27 +1,27 @@
 @interface PercentileClipProcessor_RGBA8_CPU
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (CGPoint)centerInImg:(id)a3 fromRect:(CGRect)a4 toRect:(CGRect)a5 offset:(CGPoint)a6;
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5;
-+ (int)formatForInputAtIndex:(int)a3;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (CGPoint)centerInImg:(id)img fromRect:(CGRect)rect toRect:(CGRect)toRect offset:(CGPoint)offset;
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect;
++ (int)formatForInputAtIndex:(int)index;
 @end
 
 @implementation PercentileClipProcessor_RGBA8_CPU
 
-+ (int)formatForInputAtIndex:(int)a3
++ (int)formatForInputAtIndex:(int)index
 {
-  if ((a3 - 1) < 2)
+  if ((index - 1) < 2)
   {
     v3 = &kCIFormatRGBAh;
     return *v3;
   }
 
-  if ((a3 - 3) < 2)
+  if ((index - 3) < 2)
   {
     v3 = &kCIFormatR8;
     return *v3;
   }
 
-  if (!a3)
+  if (!index)
   {
     v3 = &kCIFormatBGRA8;
     return *v3;
@@ -30,11 +30,11 @@
   return 0;
 }
 
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)a5
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)rect
 {
-  if ((a3 - 1) >= 2)
+  if ((input - 1) >= 2)
   {
-    [objc_msgSend(a4 objectForKeyedSubscript:{@"roi", a5.origin.x, a5.origin.y, a5.size.width, a5.size.height, v5, v6), "CGRectValue"}];
+    [objc_msgSend(arguments objectForKeyedSubscript:{@"roi", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height, v5, v6), "CGRectValue"}];
   }
 
   else
@@ -52,18 +52,18 @@
   return result;
 }
 
-+ (CGPoint)centerInImg:(id)a3 fromRect:(CGRect)a4 toRect:(CGRect)a5 offset:(CGPoint)a6
++ (CGPoint)centerInImg:(id)img fromRect:(CGRect)rect toRect:(CGRect)toRect offset:(CGPoint)offset
 {
-  height = a5.size.height;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = toRect.size.height;
+  y = toRect.origin.y;
+  x = toRect.origin.x;
   v14 = *MEMORY[0x1E69E9840];
   *&src.height = xmmword_19CF23040;
   src.rowBytes = 8;
   dest.data = v13;
   *&dest.height = xmmword_19CF23040;
   dest.rowBytes = 16;
-  src.data = [a3 baseAddress];
+  src.data = [img baseAddress];
   vImageConvert_Planar16FtoPlanarF(&src, &dest, 0x10u);
   v9 = roundf(v13[0]) - v15 - x;
   v10 = height - (roundf(v13[1]) - v16 - y) + -1.0;
@@ -72,54 +72,54 @@
   return result;
 }
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
   v211 = *MEMORY[0x1E69E9840];
-  v10 = [a4 objectForKeyedSubscript:@"threshold"];
-  v167 = [a4 objectForKeyedSubscript:@"area"];
-  v11 = [a4 objectForKeyedSubscript:@"centerOffsetLeft"];
-  v12 = [a4 objectForKeyedSubscript:@"centerOffsetRight"];
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"interPeakMinRepair", "floatValue"}];
+  v10 = [arguments objectForKeyedSubscript:@"threshold"];
+  v167 = [arguments objectForKeyedSubscript:@"area"];
+  v11 = [arguments objectForKeyedSubscript:@"centerOffsetLeft"];
+  v12 = [arguments objectForKeyedSubscript:@"centerOffsetRight"];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"interPeakMinRepair", "floatValue"}];
   v171 = v13;
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"abortMaxCenterDist", "floatValue"}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"abortMaxCenterDist", "floatValue"}];
   log = v14;
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"densityRadius", "floatValue"}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"densityRadius", "floatValue"}];
   v172 = v15;
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"minDensity", "floatValue"}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"minDensity", "floatValue"}];
   v173 = v16;
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"maxRelDensity", "floatValue"}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"maxRelDensity", "floatValue"}];
   v174 = v17;
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"minGobalLocalMeanDiff", "floatValue"}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"minGobalLocalMeanDiff", "floatValue"}];
   v166 = v18;
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"percentileRepair", "floatValue"}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"percentileRepair", "floatValue"}];
   v170 = v19;
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"percentileSpecular", "floatValue"}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"percentileSpecular", "floatValue"}];
   v169 = v20;
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"percentRepair", "floatValue"}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"percentRepair", "floatValue"}];
   v168 = v21;
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"percentSpecular", "floatValue"}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"percentSpecular", "floatValue"}];
   v175 = v22;
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"centerExtentLeft", "CGRectValue"}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"centerExtentLeft", "CGRectValue"}];
   v24 = v23;
   v26 = v25;
   v28 = v27;
   v30 = v29;
-  [objc_msgSend(a4 objectForKeyedSubscript:{@"centerExtentRight", "CGRectValue"}];
+  [objc_msgSend(arguments objectForKeyedSubscript:{@"centerExtentRight", "CGRectValue"}];
   v192 = v32;
   v195 = v31;
   v187 = v34;
   v190 = v33;
-  v35 = [a3 objectAtIndexedSubscript:0];
+  v35 = [inputs objectAtIndexedSubscript:0];
   [v35 format];
-  [a5 format];
+  [output format];
   [v35 region];
   v179 = v37;
   v181 = v36;
-  v178 = [v35 baseAddress];
-  v177 = [v35 bytesPerRow];
-  clearOutput(a5);
-  v38 = [a3 objectAtIndexedSubscript:1];
-  v39 = [a3 objectAtIndexedSubscript:2];
+  baseAddress = [v35 baseAddress];
+  bytesPerRow = [v35 bytesPerRow];
+  clearOutput(output);
+  v38 = [inputs objectAtIndexedSubscript:1];
+  v39 = [inputs objectAtIndexedSubscript:2];
   if ([v38 format] == 2056)
   {
     [v39 format];
@@ -131,7 +131,7 @@
   v45 = v44;
   v47 = v46;
   [v11 CGPointValue];
-  [a1 centerInImg:v38 fromRect:v24 toRect:v26 offset:{v28, v30, v41, v43, v45, v47, v48, v49}];
+  [self centerInImg:v38 fromRect:v24 toRect:v26 offset:{v28, v30, v41, v43, v45, v47, v48, v49}];
   v51 = v50;
   v53 = v52;
   [v35 region];
@@ -140,7 +140,7 @@
   v59 = v58;
   v61 = v60;
   [v12 CGPointValue];
-  [a1 centerInImg:v39 fromRect:v195 toRect:*&v192 offset:{v190, *&v187, v55, v57, v59, v61, v62, v63}];
+  [self centerInImg:v39 fromRect:v195 toRect:*&v192 offset:{v190, *&v187, v55, v57, v59, v61, v62, v63}];
   v65 = v64;
   v67 = v66;
   v68 = 0;
@@ -186,8 +186,8 @@
 
   v78 = v181;
   v79 = v179;
-  v80 = [a3 objectAtIndexedSubscript:3];
-  v81 = [a3 objectAtIndexedSubscript:4];
+  v80 = [inputs objectAtIndexedSubscript:3];
+  v81 = [inputs objectAtIndexedSubscript:4];
   if ([v80 format] == 261)
   {
     [v80 format];
@@ -208,10 +208,10 @@
     return 1;
   }
 
-  src.data = v178;
+  src.data = baseAddress;
   src.height = v179;
   src.width = v181;
-  src.rowBytes = v177;
+  src.rowBytes = bytesPerRow;
   v86 = malloc_type_calloc(0x400uLL, 8uLL, 0x100004000313F17uLL);
   histogram[0] = v86;
   histogram[1] = v86 + 256;
@@ -304,10 +304,10 @@
   }
 
   free(v86);
-  v114 = v178;
-  v115 = v178[(v51 * 4.0 + v53 * v177 + 2.0)];
-  v116 = v65 * 4.0 + v67 * v177 + 0.0;
-  v117 = v178[v116];
+  v114 = baseAddress;
+  v115 = baseAddress[(v51 * 4.0 + v53 * bytesPerRow + 2.0)];
+  v116 = v65 * 4.0 + v67 * bytesPerRow + 0.0;
+  v117 = baseAddress[v116];
   v118 = v115;
   v119 = vcvts_n_f32_u32(v197, 1uLL);
   v120 = v117;
@@ -315,12 +315,12 @@
   if (v119 >= v115 || v121 >= v120)
   {
     v122 = CI_LOG_DUALRED();
-    v114 = v178;
+    v114 = baseAddress;
     if (v122)
     {
       logb = ci_logger_api();
       v123 = os_log_type_enabled(logb, OS_LOG_TYPE_ERROR);
-      v114 = v178;
+      v114 = baseAddress;
       if (v123)
       {
         *buf = 4.8756e-34;
@@ -334,7 +334,7 @@
         v208 = 1024;
         v209 = v194;
         _os_log_error_impl(&dword_19CC36000, logb, OS_LOG_TYPE_ERROR, "%{public}s [abort] Center pixel failed: L = %hhu < %hhu | R = %hhu < %hhu", buf, 0x24u);
-        v114 = v178;
+        v114 = baseAddress;
       }
     }
   }
@@ -369,7 +369,7 @@
     {
       v212.x = v51;
       v212.y = v53;
-      computeDensity(v114, 2u, v78, v79, v177, v197, v212, v127, buf);
+      computeDensity(v114, 2u, v78, v79, bytesPerRow, v197, v212, v127, buf);
       if (CI_LOG_DUALRED())
       {
         v132 = ci_logger_api();
@@ -393,7 +393,7 @@
         }
       }
 
-      v114 = v178;
+      v114 = baseAddress;
     }
   }
 
@@ -407,7 +407,7 @@
   {
     v213.x = v65;
     v213.y = v67;
-    computeDensity(v114, 0, v78, v79, v177, v194, v213, v127, &v198);
+    computeDensity(v114, 0, v78, v79, bytesPerRow, v194, v213, v127, &v198);
     if (CI_LOG_DUALRED())
     {
       v136 = ci_logger_api();
@@ -483,7 +483,7 @@
       v140 = *&v116;
     }
 
-    [objc_msgSend(a4 objectForKeyedSubscript:{@"minInterDispersion", v116), "floatValue"}];
+    [objc_msgSend(arguments objectForKeyedSubscript:{@"minInterDispersion", v116), "floatValue"}];
     v143 = v142;
     if (v141 < v142)
     {
@@ -513,7 +513,7 @@
       v134 = 1;
     }
 
-    [objc_msgSend(a4 objectForKeyedSubscript:{@"maxInterDispersion", "floatValue"}];
+    [objc_msgSend(arguments objectForKeyedSubscript:{@"maxInterDispersion", "floatValue"}];
     v147 = vabds_f32(v141, v140);
     v148 = (v141 + v140);
     if (v148 < 0.000001)
@@ -564,16 +564,16 @@
       return v84;
     }
 
-    [objc_msgSend(a4 objectForKeyedSubscript:{@"areaMaxRatio", "floatValue"}];
+    [objc_msgSend(arguments objectForKeyedSubscript:{@"areaMaxRatio", "floatValue"}];
     v154 = v153;
-    if (v153 > 0.0 || ([v167 Y], radialFillRGBA8(v35, a5, 1, v180, v155, v51, v53) <= 8))
+    if (v153 > 0.0 || ([v167 Y], radialFillRGBA8(v35, output, 1, v180, v155, v51, v53) <= 8))
     {
       [v167 Y];
-      radialFillRGBA8_circular(v35, a5, 1, 0, v156, 0.2, v51, v53);
+      radialFillRGBA8_circular(v35, output, 1, 0, v156, 0.2, v51, v53);
     }
 
-    clipRepair(v35, a5, 2, v197);
-    calculateMeans(v135, a5, 2, v51, v53);
+    clipRepair(v35, output, 2, v197);
+    calculateMeans(v135, output, 2, v51, v53);
     if (v157 < v166)
     {
       v164 = v157;
@@ -589,14 +589,14 @@
       goto LABEL_132;
     }
 
-    if (v154 > 0.0 || ([v167 W], radialFillRGBA8(v35, a5, 3, v176, v158, v65, v67) <= 8))
+    if (v154 > 0.0 || ([v167 W], radialFillRGBA8(v35, output, 3, v176, v158, v65, v67) <= 8))
     {
       [v167 W];
-      radialFillRGBA8_circular(v35, a5, 3, 0, v159, 0.2, v65, v67);
+      radialFillRGBA8_circular(v35, output, 3, 0, v159, 0.2, v65, v67);
     }
 
-    clipRepair(v35, a5, 0, v194);
-    calculateMeans(v182, a5, 0, v65, v67);
+    clipRepair(v35, output, 0, v194);
+    calculateMeans(v182, output, 0, v65, v67);
     if (v160 < v166)
     {
       v161 = v160;
@@ -610,7 +610,7 @@
       }
 
 LABEL_132:
-      clearOutput(a5);
+      clearOutput(output);
     }
   }
 

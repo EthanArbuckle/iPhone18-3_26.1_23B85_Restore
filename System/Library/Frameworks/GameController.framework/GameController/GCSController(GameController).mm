@@ -79,29 +79,29 @@ LABEL_11:
 {
   v60 = *MEMORY[0x1E69E9840];
   v3 = a3;
-  v4 = [v3 vendorName];
-  v5 = [v3 identifier];
+  vendorName = [v3 vendorName];
+  identifier = [v3 identifier];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v54 = v4;
+  v54 = vendorName;
   if (isKindOfClass)
   {
-    v53 = [v3 identifier];
+    identifier2 = [v3 identifier];
   }
 
   else
   {
-    v53 = @"CONTROLLER";
+    identifier2 = @"CONTROLLER";
   }
 
-  v7 = [v3 physicalInputProfile];
-  v8 = [v7 buttons];
-  v9 = [v8 objectForKeyedSubscript:@"Button Share"];
+  physicalInputProfile = [v3 physicalInputProfile];
+  buttons = [physicalInputProfile buttons];
+  v9 = [buttons objectForKeyedSubscript:@"Button Share"];
 
-  v10 = [v3 physicalInputProfile];
-  v11 = [v10 buttons];
-  v12 = [v11 objectForKeyedSubscript:@"Button Options"];
+  physicalInputProfile2 = [v3 physicalInputProfile];
+  buttons2 = [physicalInputProfile2 buttons];
+  v12 = [buttons2 objectForKeyedSubscript:@"Button Options"];
 
   if (v9)
   {
@@ -111,9 +111,9 @@ LABEL_11:
 
   else
   {
-    v15 = [v3 physicalInputProfile];
-    v16 = [v15 buttons];
-    v17 = [v16 objectForKeyedSubscript:@"Button Options"];
+    physicalInputProfile3 = [v3 physicalInputProfile];
+    buttons3 = [physicalInputProfile3 buttons];
+    v17 = [buttons3 objectForKeyedSubscript:@"Button Options"];
 
     if (!v17)
     {
@@ -128,38 +128,38 @@ LABEL_11:
   v49 = [v13 initWithElement:v14];
 LABEL_9:
   v18 = MEMORY[0x1E69A0728];
-  v19 = [v3 physicalInputProfile];
-  v20 = [v19 allButtons];
-  v48 = [v18 generateElementDictionaryFromElements:v20];
+  physicalInputProfile4 = [v3 physicalInputProfile];
+  allButtons = [physicalInputProfile4 allButtons];
+  v48 = [v18 generateElementDictionaryFromElements:allButtons];
 
   v21 = MEMORY[0x1E69A0728];
-  v22 = [v3 physicalInputProfile];
-  v23 = [v22 allDpads];
-  v47 = [v21 generateElementDictionaryFromElements:v23];
+  physicalInputProfile5 = [v3 physicalInputProfile];
+  allDpads = [physicalInputProfile5 allDpads];
+  v47 = [v21 generateElementDictionaryFromElements:allDpads];
 
-  v24 = [v3 physicalInputProfile];
-  v25 = [v24 objectForKeyedSubscript:@"Button Home"];
-  v26 = [v25 unmappedSfSymbolsName];
+  physicalInputProfile6 = [v3 physicalInputProfile];
+  v25 = [physicalInputProfile6 objectForKeyedSubscript:@"Button Home"];
+  unmappedSfSymbolsName = [v25 unmappedSfSymbolsName];
 
   v51 = v9;
-  if (!v26 || ([(__CFString *)v26 hasPrefix:@"logo"]& 1) == 0)
+  if (!unmappedSfSymbolsName || ([(__CFString *)unmappedSfSymbolsName hasPrefix:@"logo"]& 1) == 0)
   {
 
-    v26 = @"gamecontroller.fill";
+    unmappedSfSymbolsName = @"gamecontroller.fill";
   }
 
-  v46 = v26;
-  v27 = [v3 haptics];
+  v46 = unmappedSfSymbolsName;
+  haptics = [v3 haptics];
 
-  v28 = [v3 light];
+  light = [v3 light];
 
-  v45 = [MEMORY[0x1E69A0748] newBaseProfile];
+  newBaseProfile = [MEMORY[0x1E69A0748] newBaseProfile];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v29 = [v3 components];
-  v30 = [v29 countByEnumeratingWithState:&v55 objects:v59 count:16];
+  components = [v3 components];
+  v30 = [components countByEnumeratingWithState:&v55 objects:v59 count:16];
   v50 = v12;
   if (v30)
   {
@@ -172,19 +172,19 @@ LABEL_9:
       {
         if (*v56 != v33)
         {
-          objc_enumerationMutation(v29);
+          objc_enumerationMutation(components);
         }
 
         v35 = *(*(&v55 + 1) + 8 * i);
         if ([v35 conformsToProtocol:&unk_1F4EA0998])
         {
-          v36 = [v35 miscellaneous];
+          miscellaneous = [v35 miscellaneous];
 
-          v32 = v36;
+          v32 = miscellaneous;
         }
       }
 
-      v31 = [v29 countByEnumeratingWithState:&v55 objects:v59 count:16];
+      v31 = [components countByEnumeratingWithState:&v55 objects:v59 count:16];
     }
 
     while (v31);
@@ -195,14 +195,14 @@ LABEL_9:
     v32 = 0;
   }
 
-  v37 = v28 != 0;
+  v37 = light != 0;
 
   v38 = MEMORY[0x1E69A0728];
-  v39 = [v3 detailedProductCategory];
-  v40 = [v38 productCategoryLocalizationKeyForProductCategory:v39];
+  detailedProductCategory = [v3 detailedProductCategory];
+  v40 = [v38 productCategoryLocalizationKeyForProductCategory:detailedProductCategory];
   BYTE1(v44) = v37;
-  LOBYTE(v44) = v27 != 0;
-  v41 = [a1 initWithName:v54 persistentIdentifier:v53 productCategoryKey:v40 hidden:0 shareButton:v49 buttons:v48 dpads:v47 logoSfSymbolsName:v46 supportsHaptics:v44 supportsLight:v45 baseProfile:v32 miscellaneous:?];
+  LOBYTE(v44) = haptics != 0;
+  v41 = [self initWithName:v54 persistentIdentifier:identifier2 productCategoryKey:v40 hidden:0 shareButton:v49 buttons:v48 dpads:v47 logoSfSymbolsName:v46 supportsHaptics:v44 supportsLight:newBaseProfile baseProfile:v32 miscellaneous:?];
 
   v42 = *MEMORY[0x1E69E9840];
   return v41;
@@ -239,8 +239,8 @@ LABEL_9:
           v12 = v11;
           if (v11)
           {
-            v13 = [v11 name];
-            [v4 setObject:v12 forKeyedSubscript:v13];
+            name = [v11 name];
+            [v4 setObject:v12 forKeyedSubscript:name];
           }
         }
       }

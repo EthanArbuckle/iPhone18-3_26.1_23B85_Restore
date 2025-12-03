@@ -67,8 +67,8 @@
   callObserver = self->_callObserver;
   if (callObserver)
   {
-    v5 = [(CXCallObserver *)callObserver calls];
-    self->_telephonyActivity = [v5 count] != 0;
+    calls = [(CXCallObserver *)callObserver calls];
+    self->_telephonyActivity = [calls count] != 0;
   }
 
   else
@@ -76,15 +76,15 @@
     self->_telephonyActivity = 0;
   }
 
-  v6 = [(_UIDictationTelephonyMonitor *)self activityChanged];
-  v7 = v6;
-  if (telephonyActivity != self->_telephonyActivity && v6 != 0)
+  activityChanged = [(_UIDictationTelephonyMonitor *)self activityChanged];
+  v7 = activityChanged;
+  if (telephonyActivity != self->_telephonyActivity && activityChanged != 0)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __48___UIDictationTelephonyMonitor__backgroundReset__block_invoke;
     block[3] = &unk_1E70F0F78;
-    v10 = v6;
+    v10 = activityChanged;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }

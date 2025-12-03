@@ -1,54 +1,54 @@
 @interface OspreyDeviceAuthentication
-- (OspreyDeviceAuthentication)initWithChannel:(id)a3 connectionPreferences:(id)a4 allPreferences:(id)a5;
+- (OspreyDeviceAuthentication)initWithChannel:(id)channel connectionPreferences:(id)preferences allPreferences:(id)allPreferences;
 - (id)_currentStrategy;
-- (void)setCurrentStrategyVersion:(unint64_t)a3;
-- (void)signData:(id)a3 success:(id)a4 failure:(id)a5;
+- (void)setCurrentStrategyVersion:(unint64_t)version;
+- (void)signData:(id)data success:(id)success failure:(id)failure;
 @end
 
 @implementation OspreyDeviceAuthentication
 
-- (OspreyDeviceAuthentication)initWithChannel:(id)a3 connectionPreferences:(id)a4 allPreferences:(id)a5
+- (OspreyDeviceAuthentication)initWithChannel:(id)channel connectionPreferences:(id)preferences allPreferences:(id)allPreferences
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  channelCopy = channel;
+  preferencesCopy = preferences;
+  allPreferencesCopy = allPreferences;
   v26.receiver = self;
   v26.super_class = OspreyDeviceAuthentication;
   v11 = [(OspreyDeviceAuthentication *)&v26 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_allPreferences, a5);
-    objc_storeStrong(&v12->_connectionPreferences, a4);
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v11->_allPreferences, allPreferences);
+    objc_storeStrong(&v12->_connectionPreferences, preferences);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __83__OspreyDeviceAuthentication_initWithChannel_connectionPreferences_allPreferences___block_invoke;
     v24[3] = &unk_2799F2498;
-    v14 = v13;
+    v14 = dictionary;
     v25 = v14;
     v15 = MEMORY[0x25F8A5BA0](v24);
-    v16 = [[OspreyMescalAuthentication alloc] initWithChannel:v8 connectionPreferences:v9];
+    v16 = [[OspreyMescalAuthentication alloc] initWithChannel:channelCopy connectionPreferences:preferencesCopy];
     (v15)[2](v15, v16);
-    v17 = [[OspreyAbsintheAuthenticator alloc] initWithChannel:v8 connectionPreferences:v9];
+    v17 = [[OspreyAbsintheAuthenticator alloc] initWithChannel:channelCopy connectionPreferences:preferencesCopy];
     (v15)[2](v15, v17);
     strategies = v12->_strategies;
     v12->_strategies = v14;
     v19 = v14;
 
-    v20 = [v9 deviceAuthenticationVersion];
-    v21 = v20;
-    if (v20)
+    deviceAuthenticationVersion = [preferencesCopy deviceAuthenticationVersion];
+    v21 = deviceAuthenticationVersion;
+    if (deviceAuthenticationVersion)
     {
-      v22 = [v20 integerValue];
+      integerValue = [deviceAuthenticationVersion integerValue];
     }
 
     else
     {
-      v22 = 1;
+      integerValue = 1;
     }
 
-    [(OspreyDeviceAuthentication *)v12 setCurrentStrategyVersion:v22];
+    [(OspreyDeviceAuthentication *)v12 setCurrentStrategyVersion:integerValue];
   }
 
   return v12;
@@ -63,11 +63,11 @@ void __83__OspreyDeviceAuthentication_initWithChannel_connectionPreferences_allP
   [v2 setObject:v4 forKey:v5];
 }
 
-- (void)setCurrentStrategyVersion:(unint64_t)a3
+- (void)setCurrentStrategyVersion:(unint64_t)version
 {
-  v5 = [(NSDictionary *)self->_strategies allKeys];
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v7 = [v5 containsObject:v6];
+  allKeys = [(NSDictionary *)self->_strategies allKeys];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:version];
+  v7 = [allKeys containsObject:v6];
 
   OspreyLoggingInit();
   if (v7)
@@ -77,18 +77,18 @@ void __83__OspreyDeviceAuthentication_initWithChannel_connectionPreferences_allP
       [OspreyDeviceAuthentication setCurrentStrategyVersion:];
     }
 
-    self->_currentStrategyVersion = a3;
+    self->_currentStrategyVersion = version;
     self->_hasCurrentStrategyVersion = 1;
-    v8 = [(OspreyConnectionPreferences *)self->_connectionPreferences deviceAttestionVersion];
-    v9 = [v8 integerValue];
+    deviceAttestionVersion = [(OspreyConnectionPreferences *)self->_connectionPreferences deviceAttestionVersion];
+    integerValue = [deviceAttestionVersion integerValue];
 
-    if (v9 != self->_currentStrategyVersion)
+    if (integerValue != self->_currentStrategyVersion)
     {
       OspreyLoggingInit();
       v10 = OspreyLogContextDeviceAuth;
       if (os_log_type_enabled(OspreyLogContextDeviceAuth, OS_LOG_TYPE_DEBUG))
       {
-        [(OspreyDeviceAuthentication *)&self->_currentStrategyVersion setCurrentStrategyVersion:v9, v10];
+        [(OspreyDeviceAuthentication *)&self->_currentStrategyVersion setCurrentStrategyVersion:integerValue, v10];
       }
 
       [(OspreyConnectionPreferences *)self->_connectionPreferences resetCachedDeviceAttestation];
@@ -120,22 +120,22 @@ void __83__OspreyDeviceAuthentication_initWithChannel_connectionPreferences_allP
   return v4;
 }
 
-- (void)signData:(id)a3 success:(id)a4 failure:(id)a5
+- (void)signData:(id)data success:(id)success failure:(id)failure
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(OspreyDeviceAuthentication *)self _currentStrategy];
-  if (v10)
+  dataCopy = data;
+  successCopy = success;
+  failureCopy = failure;
+  _currentStrategy = [(OspreyDeviceAuthentication *)self _currentStrategy];
+  if (_currentStrategy)
   {
-    v11 = [(OspreyDeviceAuthentication *)self _currentStrategy];
-    [v11 signData:v12 success:v8 failure:v9];
+    _currentStrategy2 = [(OspreyDeviceAuthentication *)self _currentStrategy];
+    [_currentStrategy2 signData:dataCopy success:successCopy failure:failureCopy];
   }
 
   else
   {
-    v11 = [MEMORY[0x277CCA9B8] errorWithDomain:@"OspreyDeviceAuthentication" code:1 userInfo:&unk_286FA6DD8];
-    v9[2](v9, v11);
+    _currentStrategy2 = [MEMORY[0x277CCA9B8] errorWithDomain:@"OspreyDeviceAuthentication" code:1 userInfo:&unk_286FA6DD8];
+    failureCopy[2](failureCopy, _currentStrategy2);
   }
 }
 

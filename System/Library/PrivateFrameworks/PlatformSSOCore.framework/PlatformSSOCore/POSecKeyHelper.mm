@@ -1,39 +1,39 @@
 @interface POSecKeyHelper
-+ (BOOL)_verifyCurve25519EncryptionKey:(__SecKey *)a3;
-+ (BOOL)_verifyCurve25519SigningKey:(__SecKey *)a3;
-+ (BOOL)checkIfBiometricConstraintsForSigning:(__SecAccessControl *)a3;
-+ (BOOL)checkIfBiometricConstraintsForSigningForKey:(__SecKey *)a3;
-+ (BOOL)evaluateTrustForCertificates:(id)a3 rootCertificates:(id)a4;
-+ (BOOL)isEncryptionAlgorithm:(id)a3 validForKey:(__SecKey *)a4;
-+ (BOOL)isSEPKey:(__SecKey *)a3;
-+ (BOOL)isSystemKey:(__SecKey *)a3;
-+ (BOOL)verifyKey:(__SecKey *)a3;
-+ (__SecCertificate)certificateForData:(id)a3;
-+ (__SecIdentity)identityForKey:(__SecKey *)a3 andCertificate:(__SecCertificate *)a4;
-+ (__SecKey)createEncryptionKeyForAlgorithm:(id)a3;
-+ (__SecKey)createSEPEncryptionKeyForAlgorithm:(id)a3 shared:(BOOL)a4 preboot:(BOOL)a5;
-+ (__SecKey)createSEPSigningKeyForAlgorithm:(id)a3 shared:(BOOL)a4 preboot:(BOOL)a5;
-+ (__SecKey)createUserSEPSigningKeyForAlgorithm:(id)a3 userPresence:(BOOL)a4 currentSet:(BOOL)a5;
-+ (__SecKey)ephemeralKeyForData:(id)a3;
-+ (__SecKey)ephemeralPublicKeyForData:(id)a3;
-+ (__SecKey)ephemeralX25529PublicKeyForData:(id)a3;
-+ (__SecKey)keyForData:(id)a3 context:(id)a4;
-+ (__SecKey)systemKeyForData:(id)a3 context:(id)a4;
-+ (id)dataForCertificate:(__SecCertificate *)a3;
-+ (id)dataForEphemeralKey:(__SecKey *)a3;
-+ (id)dataForKey:(__SecKey *)a3;
-+ (id)printKey:(__SecKey *)a3;
-+ (id)publicKeyHashForKey:(__SecKey *)a3;
++ (BOOL)_verifyCurve25519EncryptionKey:(__SecKey *)key;
++ (BOOL)_verifyCurve25519SigningKey:(__SecKey *)key;
++ (BOOL)checkIfBiometricConstraintsForSigning:(__SecAccessControl *)signing;
++ (BOOL)checkIfBiometricConstraintsForSigningForKey:(__SecKey *)key;
++ (BOOL)evaluateTrustForCertificates:(id)certificates rootCertificates:(id)rootCertificates;
++ (BOOL)isEncryptionAlgorithm:(id)algorithm validForKey:(__SecKey *)key;
++ (BOOL)isSEPKey:(__SecKey *)key;
++ (BOOL)isSystemKey:(__SecKey *)key;
++ (BOOL)verifyKey:(__SecKey *)key;
++ (__SecCertificate)certificateForData:(id)data;
++ (__SecIdentity)identityForKey:(__SecKey *)key andCertificate:(__SecCertificate *)certificate;
++ (__SecKey)createEncryptionKeyForAlgorithm:(id)algorithm;
++ (__SecKey)createSEPEncryptionKeyForAlgorithm:(id)algorithm shared:(BOOL)shared preboot:(BOOL)preboot;
++ (__SecKey)createSEPSigningKeyForAlgorithm:(id)algorithm shared:(BOOL)shared preboot:(BOOL)preboot;
++ (__SecKey)createUserSEPSigningKeyForAlgorithm:(id)algorithm userPresence:(BOOL)presence currentSet:(BOOL)set;
++ (__SecKey)ephemeralKeyForData:(id)data;
++ (__SecKey)ephemeralPublicKeyForData:(id)data;
++ (__SecKey)ephemeralX25529PublicKeyForData:(id)data;
++ (__SecKey)keyForData:(id)data context:(id)context;
++ (__SecKey)systemKeyForData:(id)data context:(id)context;
++ (id)dataForCertificate:(__SecCertificate *)certificate;
++ (id)dataForEphemeralKey:(__SecKey *)key;
++ (id)dataForKey:(__SecKey *)key;
++ (id)printKey:(__SecKey *)key;
++ (id)publicKeyHashForKey:(__SecKey *)key;
 @end
 
 @implementation POSecKeyHelper
 
-+ (__SecKey)createUserSEPSigningKeyForAlgorithm:(id)a3 userPresence:(BOOL)a4 currentSet:(BOOL)a5
++ (__SecKey)createUserSEPSigningKeyForAlgorithm:(id)algorithm userPresence:(BOOL)presence currentSet:(BOOL)set
 {
-  v5 = a5;
-  v6 = a4;
+  setCopy = set;
+  presenceCopy = presence;
   v58[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  algorithmCopy = algorithm;
   error = 0;
   v57 = @"osgn";
   v54 = @"com.apple.PlatformSSO.auth";
@@ -57,10 +57,10 @@
   }
 
   SecAccessControlSetConstraints();
-  if (v6)
+  if (presenceCopy)
   {
-    v12 = [MEMORY[0x277CBEA90] data];
-    if (v5)
+    data = [MEMORY[0x277CBEA90] data];
+    if (setCopy)
     {
       BiometryCurrentSet = SecAccessConstraintCreateBiometryCurrentSet();
     }
@@ -155,15 +155,15 @@ LABEL_23:
 
 LABEL_21:
   v30 = *MEMORY[0x277CDC040];
-  if (([v7 isEqualToNumber:0x2870A9198] & 1) == 0)
+  if (([algorithmCopy isEqualToNumber:0x2870A9198] & 1) == 0)
   {
-    if ([v7 isEqualToNumber:0x2870A91B0])
+    if ([algorithmCopy isEqualToNumber:0x2870A91B0])
     {
       v31 = &unk_2870A9150;
       goto LABEL_28;
     }
 
-    if ([v7 isEqualToNumber:0x2870A91C8])
+    if ([algorithmCopy isEqualToNumber:0x2870A91C8])
     {
       v32 = *MEMORY[0x277CDC050];
 
@@ -295,11 +295,11 @@ id __78__POSecKeyHelper_createUserSEPSigningKeyForAlgorithm_userPresence_current
   return v2;
 }
 
-+ (__SecKey)createSEPSigningKeyForAlgorithm:(id)a3 shared:(BOOL)a4 preboot:(BOOL)a5
++ (__SecKey)createSEPSigningKeyForAlgorithm:(id)algorithm shared:(BOOL)shared preboot:(BOOL)preboot
 {
-  v5 = a4;
+  sharedCopy = shared;
   v50[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  algorithmCopy = algorithm;
   error = 0;
   v49 = @"osgn";
   v46 = @"com.apple.PlatformSSO.auth";
@@ -323,7 +323,7 @@ id __78__POSecKeyHelper_createUserSEPSigningKeyForAlgorithm_userPresence_current
   }
 
   v11 = *MEMORY[0x277CDBF10];
-  if (!v5)
+  if (!sharedCopy)
   {
     v12 = *MEMORY[0x277CDBF10];
   }
@@ -344,15 +344,15 @@ id __78__POSecKeyHelper_createUserSEPSigningKeyForAlgorithm_userPresence_current
 
   SecAccessControlSetConstraints();
   v15 = *MEMORY[0x277CDC040];
-  if (([v6 isEqualToNumber:0x2870A9198] & 1) == 0)
+  if (([algorithmCopy isEqualToNumber:0x2870A9198] & 1) == 0)
   {
-    if ([v6 isEqualToNumber:0x2870A91B0])
+    if ([algorithmCopy isEqualToNumber:0x2870A91B0])
     {
       v16 = &unk_2870A9150;
       goto LABEL_13;
     }
 
-    if ([v6 isEqualToNumber:0x2870A91C8])
+    if ([algorithmCopy isEqualToNumber:0x2870A91C8])
     {
       v17 = *MEMORY[0x277CDC050];
 
@@ -365,7 +365,7 @@ id __78__POSecKeyHelper_createUserSEPSigningKeyForAlgorithm_userPresence_current
   v16 = &unk_2870A9138;
 LABEL_13:
   v18 = *MEMORY[0x277CDC018];
-  if (v5)
+  if (sharedCopy)
   {
     v40[0] = *MEMORY[0x277CDC028];
     v40[1] = v18;
@@ -476,11 +476,11 @@ id __65__POSecKeyHelper_createSEPSigningKeyForAlgorithm_shared_preboot___block_i
   return v2;
 }
 
-+ (__SecKey)createSEPEncryptionKeyForAlgorithm:(id)a3 shared:(BOOL)a4 preboot:(BOOL)a5
++ (__SecKey)createSEPEncryptionKeyForAlgorithm:(id)algorithm shared:(BOOL)shared preboot:(BOOL)preboot
 {
-  v5 = a5;
+  prebootCopy = preboot;
   v83[1] = *MEMORY[0x277D85DE8];
-  v51 = a3;
+  algorithmCopy = algorithm;
   error = 0;
   v81 = @"com.apple.PlatformSSO.auth";
   v82 = @"cag";
@@ -488,7 +488,7 @@ id __65__POSecKeyHelper_createSEPSigningKeyForAlgorithm_shared_preboot___block_i
   v83[0] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v83 forKeys:&v82 count:1];
 
-  if (v5)
+  if (prebootCopy)
   {
     v8 = [v7 mutableCopy];
     [v8 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"cisp"];
@@ -547,14 +547,14 @@ id __65__POSecKeyHelper_createSEPSigningKeyForAlgorithm_shared_preboot___block_i
     v25 = __68__POSecKeyHelper_createSEPEncryptionKeyForAlgorithm_shared_preboot___block_invoke(v54);
     v23 = 0;
     v24 = v50;
-    v21 = v51;
+    v21 = algorithmCopy;
     goto LABEL_16;
   }
 
   v19 = v18;
   v20 = *MEMORY[0x277CDBF10];
   SecAccessControlSetProtection();
-  v21 = v51;
+  v21 = algorithmCopy;
   if (error)
   {
     CFRelease(v19);
@@ -572,15 +572,15 @@ id __65__POSecKeyHelper_createSEPSigningKeyForAlgorithm_shared_preboot___block_i
   v26 = v17;
   SecAccessControlSetConstraints();
   v27 = *MEMORY[0x277CDC040];
-  if (([v51 isEqualToNumber:0x2870A9198] & 1) == 0 && (objc_msgSend(v51, "isEqualToNumber:", 0x2870A91B0) & 1) == 0)
+  if (([algorithmCopy isEqualToNumber:0x2870A9198] & 1) == 0 && (objc_msgSend(algorithmCopy, "isEqualToNumber:", 0x2870A91B0) & 1) == 0)
   {
-    if ([v51 isEqualToNumber:0x2870A91C8])
+    if ([algorithmCopy isEqualToNumber:0x2870A91C8])
     {
       v28 = &unk_2870A9150;
       goto LABEL_10;
     }
 
-    if ([v51 isEqualToNumber:0x2870A91E0])
+    if ([algorithmCopy isEqualToNumber:0x2870A91E0])
     {
       v46 = *MEMORY[0x277CDC078];
 
@@ -594,7 +594,7 @@ id __65__POSecKeyHelper_createSEPSigningKeyForAlgorithm_shared_preboot___block_i
 LABEL_10:
   v29 = *MEMORY[0x277CDC028];
   v30 = *MEMORY[0x277CDC018];
-  if (a4)
+  if (shared)
   {
     v58[0] = *MEMORY[0x277CDC028];
     v58[1] = v30;
@@ -708,25 +708,25 @@ id __68__POSecKeyHelper_createSEPEncryptionKeyForAlgorithm_shared_preboot___bloc
   return v2;
 }
 
-+ (__SecKey)createEncryptionKeyForAlgorithm:(id)a3
++ (__SecKey)createEncryptionKeyForAlgorithm:(id)algorithm
 {
   v17[4] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  algorithmCopy = algorithm;
   error = 0;
   v4 = *MEMORY[0x277CDC040];
-  if ([v3 isEqualToNumber:0x2870A9198] & 1) != 0 || (objc_msgSend(v3, "isEqualToNumber:", 0x2870A91B0))
+  if ([algorithmCopy isEqualToNumber:0x2870A9198] & 1) != 0 || (objc_msgSend(algorithmCopy, "isEqualToNumber:", 0x2870A91B0))
   {
     goto LABEL_3;
   }
 
-  if ([v3 isEqualToNumber:0x2870A91C8])
+  if ([algorithmCopy isEqualToNumber:0x2870A91C8])
   {
     v5 = &unk_2870A9150;
   }
 
   else
   {
-    if (![v3 isEqualToNumber:0x2870A91E0])
+    if (![algorithmCopy isEqualToNumber:0x2870A91E0])
     {
 LABEL_3:
       v5 = &unk_2870A9138;
@@ -780,19 +780,19 @@ id __50__POSecKeyHelper_createEncryptionKeyForAlgorithm___block_invoke(uint64_t 
   return v2;
 }
 
-+ (BOOL)checkIfBiometricConstraintsForSigningForKey:(__SecKey *)a3
++ (BOOL)checkIfBiometricConstraintsForSigningForKey:(__SecKey *)key
 {
-  if (!a3)
+  if (!key)
   {
     return 0;
   }
 
-  v4 = SecKeyCopyAttributes(a3);
+  v4 = SecKeyCopyAttributes(key);
   v5 = [(__CFDictionary *)v4 objectForKeyedSubscript:*MEMORY[0x277CDBEC0]];
 
   if (v5)
   {
-    v6 = [a1 checkIfBiometricConstraintsForSigning:v5];
+    v6 = [self checkIfBiometricConstraintsForSigning:v5];
   }
 
   else
@@ -803,7 +803,7 @@ id __50__POSecKeyHelper_createEncryptionKeyForAlgorithm___block_invoke(uint64_t 
   return v6;
 }
 
-+ (BOOL)checkIfBiometricConstraintsForSigning:(__SecAccessControl *)a3
++ (BOOL)checkIfBiometricConstraintsForSigning:(__SecAccessControl *)signing
 {
   v3 = SecAccessControlGetConstraint();
   v4 = [v3 objectForKeyedSubscript:@"ckon"];
@@ -822,11 +822,11 @@ id __50__POSecKeyHelper_createEncryptionKeyForAlgorithm___block_invoke(uint64_t 
   return v6;
 }
 
-+ (id)dataForKey:(__SecKey *)a3
++ (id)dataForKey:(__SecKey *)key
 {
-  if (a3)
+  if (key)
   {
-    v3 = SecKeyCopyAttributes(a3);
+    v3 = SecKeyCopyAttributes(key);
     v4 = [(__CFDictionary *)v3 objectForKeyedSubscript:*MEMORY[0x277CDC178]];
   }
 
@@ -838,11 +838,11 @@ id __50__POSecKeyHelper_createEncryptionKeyForAlgorithm___block_invoke(uint64_t 
   return v4;
 }
 
-+ (id)dataForEphemeralKey:(__SecKey *)a3
++ (id)dataForEphemeralKey:(__SecKey *)key
 {
-  if (a3)
+  if (key)
   {
-    v4 = SecKeyCopyExternalRepresentation(a3, 0);
+    v4 = SecKeyCopyExternalRepresentation(key, 0);
   }
 
   else
@@ -853,18 +853,18 @@ id __50__POSecKeyHelper_createEncryptionKeyForAlgorithm___block_invoke(uint64_t 
   return v4;
 }
 
-+ (__SecKey)keyForData:(id)a3 context:(id)a4
++ (__SecKey)keyForData:(id)data context:(id)context
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  contextCopy = context;
   v7 = PO_LOG_POSecKeyHelper();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     +[POSecKeyHelper keyForData:context:];
   }
 
-  if (v5)
+  if (dataCopy)
   {
     error = 0;
     v8 = *MEMORY[0x277CDC160];
@@ -872,17 +872,17 @@ id __50__POSecKeyHelper_createEncryptionKeyForAlgorithm___block_invoke(uint64_t 
     v19[0] = *MEMORY[0x277CDC158];
     v19[1] = v9;
     v20[0] = v8;
-    v20[1] = v5;
+    v20[1] = dataCopy;
     v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
     v11 = [v10 mutableCopy];
 
-    if (v6)
+    if (contextCopy)
     {
-      [v11 setObject:v6 forKeyedSubscript:*MEMORY[0x277CDC5A0]];
+      [v11 setObject:contextCopy forKeyedSubscript:*MEMORY[0x277CDC5A0]];
     }
 
-    v12 = [MEMORY[0x277CBEA90] data];
-    v13 = SecKeyCreateWithData(v12, v11, &error);
+    data = [MEMORY[0x277CBEA90] data];
+    v13 = SecKeyCreateWithData(data, v11, &error);
     if (!v13)
     {
       v17[0] = MEMORY[0x277D85DD0];
@@ -917,33 +917,33 @@ id __37__POSecKeyHelper_keyForData_context___block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (__SecKey)systemKeyForData:(id)a3 context:(id)a4
++ (__SecKey)systemKeyForData:(id)data context:(id)context
 {
   v19[3] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  dataCopy = data;
+  contextCopy = context;
   v7 = PO_LOG_POSecKeyHelper();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     +[POSecKeyHelper systemKeyForData:context:];
   }
 
-  if (v5)
+  if (dataCopy)
   {
     error = 0;
     v8 = *MEMORY[0x277CDC178];
     v18[0] = *MEMORY[0x277CDC158];
     v18[1] = v8;
     v19[0] = *MEMORY[0x277CDC160];
-    v19[1] = v5;
+    v19[1] = dataCopy;
     v18[2] = *MEMORY[0x277CDC5D8];
     v19[2] = MEMORY[0x277CBEC38];
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:3];
     v10 = [v9 mutableCopy];
 
-    if (v6)
+    if (contextCopy)
     {
-      [v10 setObject:v6 forKeyedSubscript:*MEMORY[0x277CDC5A0]];
+      [v10 setObject:contextCopy forKeyedSubscript:*MEMORY[0x277CDC5A0]];
     }
 
     v11 = objc_alloc_init(MEMORY[0x277CBEA90]);
@@ -983,17 +983,17 @@ id __43__POSecKeyHelper_systemKeyForData_context___block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (__SecKey)ephemeralKeyForData:(id)a3
++ (__SecKey)ephemeralKeyForData:(id)data
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dataCopy = data;
   v4 = PO_LOG_POSecKeyHelper();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     +[POSecKeyHelper ephemeralKeyForData:];
   }
 
-  if (v3)
+  if (dataCopy)
   {
     error = 0;
     v5 = *MEMORY[0x277CDBFE0];
@@ -1003,7 +1003,7 @@ id __43__POSecKeyHelper_systemKeyForData_context___block_invoke(uint64_t a1)
     v15[0] = *MEMORY[0x277CDC040];
     v15[1] = v6;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
-    v8 = SecKeyCreateWithData(v3, v7, &error);
+    v8 = SecKeyCreateWithData(dataCopy, v7, &error);
     if (!v8)
     {
       v12[0] = MEMORY[0x277D85DD0];
@@ -1038,17 +1038,17 @@ id __38__POSecKeyHelper_ephemeralKeyForData___block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (__SecKey)ephemeralPublicKeyForData:(id)a3
++ (__SecKey)ephemeralPublicKeyForData:(id)data
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dataCopy = data;
   v4 = PO_LOG_POSecKeyHelper();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     +[POSecKeyHelper ephemeralPublicKeyForData:];
   }
 
-  if (v3)
+  if (dataCopy)
   {
     error = 0;
     v5 = *MEMORY[0x277CDBFE0];
@@ -1058,7 +1058,7 @@ id __38__POSecKeyHelper_ephemeralKeyForData___block_invoke(uint64_t a1)
     v15[0] = *MEMORY[0x277CDC040];
     v15[1] = v6;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
-    v8 = SecKeyCreateWithData(v3, v7, &error);
+    v8 = SecKeyCreateWithData(dataCopy, v7, &error);
     if (!v8)
     {
       v12[0] = MEMORY[0x277D85DD0];
@@ -1093,17 +1093,17 @@ id __44__POSecKeyHelper_ephemeralPublicKeyForData___block_invoke(uint64_t a1)
   return v2;
 }
 
-+ (__SecKey)ephemeralX25529PublicKeyForData:(id)a3
++ (__SecKey)ephemeralX25529PublicKeyForData:(id)data
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dataCopy = data;
   v4 = PO_LOG_POSecKeyHelper();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     +[POSecKeyHelper ephemeralX25529PublicKeyForData:];
   }
 
-  if (v3)
+  if (dataCopy)
   {
     error = 0;
     v5 = *MEMORY[0x277CDBFE0];
@@ -1113,7 +1113,7 @@ id __44__POSecKeyHelper_ephemeralPublicKeyForData___block_invoke(uint64_t a1)
     v15[0] = *MEMORY[0x277CDC078];
     v15[1] = v6;
     v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
-    v8 = SecKeyCreateWithData(v3, v7, &error);
+    v8 = SecKeyCreateWithData(dataCopy, v7, &error);
     if (!v8)
     {
       v12[0] = MEMORY[0x277D85DD0];
@@ -1148,11 +1148,11 @@ id __50__POSecKeyHelper_ephemeralX25529PublicKeyForData___block_invoke(uint64_t 
   return v2;
 }
 
-+ (id)dataForCertificate:(__SecCertificate *)a3
++ (id)dataForCertificate:(__SecCertificate *)certificate
 {
-  if (a3)
+  if (certificate)
   {
-    v4 = SecCertificateCopyData(a3);
+    v4 = SecCertificateCopyData(certificate);
   }
 
   else
@@ -1163,20 +1163,20 @@ id __50__POSecKeyHelper_ephemeralX25529PublicKeyForData___block_invoke(uint64_t 
   return v4;
 }
 
-+ (__SecCertificate)certificateForData:(id)a3
++ (__SecCertificate)certificateForData:(id)data
 {
   result = 0;
-  if (a3)
+  if (data)
   {
-    return SecCertificateCreateWithData(0, a3);
+    return SecCertificateCreateWithData(0, data);
   }
 
   return result;
 }
 
-+ (__SecIdentity)identityForKey:(__SecKey *)a3 andCertificate:(__SecCertificate *)a4
++ (__SecIdentity)identityForKey:(__SecKey *)key andCertificate:(__SecCertificate *)certificate
 {
-  if (!a3 || !a4)
+  if (!key || !certificate)
   {
     return 0;
   }
@@ -1186,19 +1186,19 @@ id __50__POSecKeyHelper_ephemeralX25529PublicKeyForData___block_invoke(uint64_t 
   return SecIdentityCreate();
 }
 
-+ (BOOL)evaluateTrustForCertificates:(id)a3 rootCertificates:(id)a4
++ (BOOL)evaluateTrustForCertificates:(id)certificates rootCertificates:(id)rootCertificates
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  certificatesCopy = certificates;
+  rootCertificatesCopy = rootCertificates;
+  v7 = rootCertificatesCopy;
   trust = 0;
-  if (!v5 || ![(__CFArray *)v6 count])
+  if (!certificatesCopy || ![(__CFArray *)rootCertificatesCopy count])
   {
     goto LABEL_13;
   }
 
   BasicX509 = SecPolicyCreateBasicX509();
-  v9 = SecTrustCreateWithCertificates(v5, BasicX509, &trust);
+  v9 = SecTrustCreateWithCertificates(certificatesCopy, BasicX509, &trust);
   if (BasicX509)
   {
     CFRelease(BasicX509);
@@ -1321,14 +1321,14 @@ id __64__POSecKeyHelper_evaluateTrustForCertificates_rootCertificates___block_in
   return v2;
 }
 
-+ (BOOL)isSEPKey:(__SecKey *)a3
++ (BOOL)isSEPKey:(__SecKey *)key
 {
-  if (!a3)
+  if (!key)
   {
     return 0;
   }
 
-  v3 = SecKeyCopyAttributes(a3);
+  v3 = SecKeyCopyAttributes(key);
   v4 = [(__CFDictionary *)v3 objectForKeyedSubscript:*MEMORY[0x277CDC158]];
   if ([v4 isEqualToString:*MEMORY[0x277CDC160]])
   {
@@ -1343,41 +1343,41 @@ id __64__POSecKeyHelper_evaluateTrustForCertificates_rootCertificates___block_in
   return v5;
 }
 
-+ (BOOL)isSystemKey:(__SecKey *)a3
++ (BOOL)isSystemKey:(__SecKey *)key
 {
-  if (!a3)
+  if (!key)
   {
     return 0;
   }
 
-  v3 = SecKeyCopyAttributes(a3);
+  v3 = SecKeyCopyAttributes(key);
   v4 = [(__CFDictionary *)v3 objectForKeyedSubscript:*MEMORY[0x277CDC5D8]];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-+ (BOOL)isEncryptionAlgorithm:(id)a3 validForKey:(__SecKey *)a4
++ (BOOL)isEncryptionAlgorithm:(id)algorithm validForKey:(__SecKey *)key
 {
-  v5 = a3;
-  v6 = SecKeyCopyAttributes(a4);
+  algorithmCopy = algorithm;
+  v6 = SecKeyCopyAttributes(key);
   v7 = [(__CFDictionary *)v6 objectForKeyedSubscript:*MEMORY[0x277CDC028]];
   v8 = [(__CFDictionary *)v6 objectForKeyedSubscript:*MEMORY[0x277CDC018]];
   if ([v7 isEqualToString:*MEMORY[0x277CDC030]])
   {
     [v7 isEqualToString:*MEMORY[0x277CDC078]];
 LABEL_4:
-    v11 = [v8 intValue];
-    if (v11 == 384)
+    intValue = [v8 intValue];
+    if (intValue == 384)
     {
 LABEL_8:
       v12 = &POEncryptionAlgorithmHPKE_P384_SHA384_AES_GCM_256;
       goto LABEL_11;
     }
 
-    if (v11 == 256)
+    if (intValue == 256)
     {
-      if ([v5 isEqualToNumber:0x2870A9198] & 1) != 0 || (objc_msgSend(v5, "isEqualToNumber:", 0x2870A91B0))
+      if ([algorithmCopy isEqualToNumber:0x2870A9198] & 1) != 0 || (objc_msgSend(algorithmCopy, "isEqualToNumber:", 0x2870A91B0))
       {
         goto LABEL_12;
       }
@@ -1404,7 +1404,7 @@ LABEL_13:
 
   v12 = &POEncryptionAlgorithmHPKE_Curve25519_SHA256_ChachaPoly;
 LABEL_11:
-  if (([v5 isEqualToNumber:*v12] & 1) == 0)
+  if (([algorithmCopy isEqualToNumber:*v12] & 1) == 0)
   {
     goto LABEL_13;
   }
@@ -1416,28 +1416,28 @@ LABEL_14:
   return v13;
 }
 
-+ (BOOL)_verifyCurve25519SigningKey:(__SecKey *)a3
++ (BOOL)_verifyCurve25519SigningKey:(__SecKey *)key
 {
   v4 = objc_alloc_init(_TtC15PlatformSSOCore30POCryptoKitAlgorithmCurve25519);
-  LOBYTE(a3) = [(POCryptoKitAlgorithmCurve25519 *)v4 verifyKey:a3];
+  LOBYTE(key) = [(POCryptoKitAlgorithmCurve25519 *)v4 verifyKey:key];
 
-  return a3;
+  return key;
 }
 
-+ (BOOL)_verifyCurve25519EncryptionKey:(__SecKey *)a3
++ (BOOL)_verifyCurve25519EncryptionKey:(__SecKey *)key
 {
   v4 = objc_alloc_init(_TtC15PlatformSSOCore18POCurve25519Verify);
-  LOBYTE(a3) = [(POCurve25519Verify *)v4 verifyKey:a3];
+  LOBYTE(key) = [(POCurve25519Verify *)v4 verifyKey:key];
 
-  return a3;
+  return key;
 }
 
-+ (BOOL)verifyKey:(__SecKey *)a3
++ (BOOL)verifyKey:(__SecKey *)key
 {
-  v3 = a3;
-  if (a3)
+  keyCopy = key;
+  if (key)
   {
-    v5 = SecKeyCopyAttributes(a3);
+    v5 = SecKeyCopyAttributes(key);
     v6 = [(__CFDictionary *)v5 objectForKeyedSubscript:*MEMORY[0x277CDC028]];
     v7 = [(__CFDictionary *)v5 objectForKeyedSubscript:*MEMORY[0x277CDC018]];
     if ([v6 isEqualToString:*MEMORY[0x277CDC030]])
@@ -1454,28 +1454,28 @@ LABEL_14:
     v10 = [v6 isEqualToString:*MEMORY[0x277CDC050]];
     if (v8)
     {
-      v11 = [v7 intValue];
-      if (v11 == 256)
+      intValue = [v7 intValue];
+      if (intValue == 256)
       {
         v12 = MEMORY[0x277CDC2D0];
         goto LABEL_20;
       }
 
-      if (v11 == 384)
+      if (intValue == 384)
       {
         v12 = MEMORY[0x277CDC2D8];
 LABEL_20:
         v14 = *v12;
-        v15 = [MEMORY[0x277CCAD78] UUID];
-        v16 = [v15 UUIDString];
-        v13 = [v16 dataUsingEncoding:4];
+        uUID = [MEMORY[0x277CCAD78] UUID];
+        uUIDString = [uUID UUIDString];
+        v13 = [uUIDString dataUsingEncoding:4];
 
         *buf = 0;
-        Signature = SecKeyCreateSignature(v3, v14, v13, buf);
+        Signature = SecKeyCreateSignature(keyCopy, v14, v13, buf);
         if (Signature)
         {
           v18 = PO_LOG_POSecKeyHelper();
-          LOBYTE(v3) = 1;
+          LOBYTE(keyCopy) = 1;
           if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
           {
             *v25 = 0;
@@ -1486,9 +1486,9 @@ LABEL_20:
         else
         {
           v18 = *buf;
-          v19 = [*buf code];
-          LOBYTE(v3) = v19 == -1004;
-          if (v19 == -1004)
+          code = [*buf code];
+          LOBYTE(keyCopy) = code == -1004;
+          if (code == -1004)
           {
             v21 = PO_LOG_POSecKeyHelper();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -1514,21 +1514,21 @@ LABEL_20:
       }
 
 LABEL_18:
-      LOBYTE(v3) = 0;
+      LOBYTE(keyCopy) = 0;
 LABEL_30:
 
-      return v3;
+      return keyCopy;
     }
 
     if (v10)
     {
-      if (![a1 _verifyCurve25519SigningKey:v3])
+      if (![self _verifyCurve25519SigningKey:keyCopy])
       {
         goto LABEL_18;
       }
 
       v13 = PO_LOG_POSecKeyHelper();
-      LOBYTE(v3) = 1;
+      LOBYTE(keyCopy) = 1;
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
@@ -1539,13 +1539,13 @@ LABEL_17:
 
     else
     {
-      if (!v9 || ![a1 _verifyCurve25519EncryptionKey:v3])
+      if (!v9 || ![self _verifyCurve25519EncryptionKey:keyCopy])
       {
         goto LABEL_18;
       }
 
       v13 = PO_LOG_POSecKeyHelper();
-      LOBYTE(v3) = 1;
+      LOBYTE(keyCopy) = 1;
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
@@ -1558,7 +1558,7 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  return v3;
+  return keyCopy;
 }
 
 id __28__POSecKeyHelper_verifyKey___block_invoke(uint64_t a1)
@@ -1573,15 +1573,15 @@ id __28__POSecKeyHelper_verifyKey___block_invoke(uint64_t a1)
   return v1;
 }
 
-+ (id)publicKeyHashForKey:(__SecKey *)a3
++ (id)publicKeyHashForKey:(__SecKey *)key
 {
-  v3 = SecKeyCopyPublicKey(a3);
+  v3 = SecKeyCopyPublicKey(key);
   if (v3)
   {
     v4 = v3;
     v5 = SecKeyCopyExternalRepresentation(v3, 0);
-    v6 = [(__CFData *)v5 psso_sha256Hash];
-    v7 = [v6 base64EncodedStringWithOptions:0];
+    psso_sha256Hash = [(__CFData *)v5 psso_sha256Hash];
+    v7 = [psso_sha256Hash base64EncodedStringWithOptions:0];
     CFRelease(v4);
   }
 
@@ -1593,10 +1593,10 @@ id __28__POSecKeyHelper_verifyKey___block_invoke(uint64_t a1)
   return v7;
 }
 
-+ (id)printKey:(__SecKey *)a3
++ (id)printKey:(__SecKey *)key
 {
   error = 0;
-  v4 = SecKeyCopyExternalRepresentation(a3, &error);
+  v4 = SecKeyCopyExternalRepresentation(key, &error);
   v5 = v4;
   if (v4)
   {
@@ -1615,27 +1615,27 @@ id __28__POSecKeyHelper_verifyKey___block_invoke(uint64_t a1)
     v10 = objc_opt_new();
     [v10 setObject:@"EC" forKeyedSubscript:@"kty"];
     [v10 setObject:@"P-256" forKeyedSubscript:@"crv"];
-    v11 = [v6 psso_base64URLEncodedString];
-    [v10 setObject:v11 forKeyedSubscript:@"x"];
+    psso_base64URLEncodedString = [v6 psso_base64URLEncodedString];
+    [v10 setObject:psso_base64URLEncodedString forKeyedSubscript:@"x"];
 
-    v12 = [v7 psso_base64URLEncodedString];
-    [v10 setObject:v12 forKeyedSubscript:@"y"];
+    psso_base64URLEncodedString2 = [v7 psso_base64URLEncodedString];
+    [v10 setObject:psso_base64URLEncodedString2 forKeyedSubscript:@"y"];
 
     if (v8)
     {
-      v13 = [v8 psso_base64URLEncodedString];
-      [v10 setObject:v13 forKeyedSubscript:@"d"];
+      psso_base64URLEncodedString3 = [v8 psso_base64URLEncodedString];
+      [v10 setObject:psso_base64URLEncodedString3 forKeyedSubscript:@"d"];
     }
 
-    v14 = SecKeyCopyPublicKey(a3);
+    v14 = SecKeyCopyPublicKey(key);
     v15 = SecKeyCopyExternalRepresentation(v14, 0);
     if (v14)
     {
       CFRelease(v14);
     }
 
-    v16 = [(__CFData *)v15 psso_sha256Hash];
-    v17 = [v16 base64EncodedStringWithOptions:0];
+    psso_sha256Hash = [(__CFData *)v15 psso_sha256Hash];
+    v17 = [psso_sha256Hash base64EncodedStringWithOptions:0];
     [v10 setObject:v17 forKeyedSubscript:@"kid"];
 
     v20 = 0;

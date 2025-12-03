@@ -1,22 +1,22 @@
 @interface TSClockMetrics
-- (TSClockMetrics)initWithDaemonMetrics:(id)a3;
-- (TSClockMetrics)initWithInterfaceMetrics:(id *)a3;
+- (TSClockMetrics)initWithDaemonMetrics:(id)metrics;
+- (TSClockMetrics)initWithInterfaceMetrics:(id *)metrics;
 - (id)toDaemonMetrics;
 - (void)printMetrics;
 @end
 
 @implementation TSClockMetrics
 
-- (TSClockMetrics)initWithDaemonMetrics:(id)a3
+- (TSClockMetrics)initWithDaemonMetrics:(id)metrics
 {
-  v4 = a3;
-  self->_clockIdentity = [v4 clockIdentity];
-  self->_gmChangesCount = [v4 gmChangesCount];
-  self->_timeToChangeGm = [v4 timeToChangeGm];
-  self->_timeToLock = [v4 timeToLock];
-  v5 = [v4 coreAudioReanchors];
+  metricsCopy = metrics;
+  self->_clockIdentity = [metricsCopy clockIdentity];
+  self->_gmChangesCount = [metricsCopy gmChangesCount];
+  self->_timeToChangeGm = [metricsCopy timeToChangeGm];
+  self->_timeToLock = [metricsCopy timeToLock];
+  coreAudioReanchors = [metricsCopy coreAudioReanchors];
 
-  self->_coreAudioReanchors = v5;
+  self->_coreAudioReanchors = coreAudioReanchors;
   return self;
 }
 
@@ -32,11 +32,11 @@
   return v3;
 }
 
-- (TSClockMetrics)initWithInterfaceMetrics:(id *)a3
+- (TSClockMetrics)initWithInterfaceMetrics:(id *)metrics
 {
-  self->_clockIdentity = a3->var0;
-  v3 = *&a3->var3;
-  *&self->_gmChangesCount = *&a3->var1;
+  self->_clockIdentity = metrics->var0;
+  v3 = *&metrics->var3;
+  *&self->_gmChangesCount = *&metrics->var1;
   *&self->_timeToLock = v3;
   return self;
 }

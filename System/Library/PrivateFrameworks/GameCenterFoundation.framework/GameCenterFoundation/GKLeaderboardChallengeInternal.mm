@@ -1,6 +1,6 @@
 @interface GKLeaderboardChallengeInternal
 + (id)secureCodedPropertyKeys;
-- (GKLeaderboardChallengeInternal)initWithServerRepresentation:(id)a3;
+- (GKLeaderboardChallengeInternal)initWithServerRepresentation:(id)representation;
 @end
 
 @implementation GKLeaderboardChallengeInternal
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __57__GKLeaderboardChallengeInternal_secureCodedPropertyKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (secureCodedPropertyKeys_onceToken_194 != -1)
   {
     dispatch_once(&secureCodedPropertyKeys_onceToken_194, block);
@@ -69,17 +69,17 @@ void __57__GKLeaderboardChallengeInternal_secureCodedPropertyKeys__block_invoke(
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (GKLeaderboardChallengeInternal)initWithServerRepresentation:(id)a3
+- (GKLeaderboardChallengeInternal)initWithServerRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v22.receiver = self;
   v22.super_class = GKLeaderboardChallengeInternal;
   v5 = [(GKLeaderboardChallengeInternal *)&v22 init];
   v6 = v5;
   if (v5)
   {
-    [(GKBaseLeaderboardChallengeInternal *)v5 updateWithServerResponse:v4];
-    v7 = [v4 objectForKeyedSubscript:@"leaderboard-id"];
+    [(GKBaseLeaderboardChallengeInternal *)v5 updateWithServerResponse:representationCopy];
+    v7 = [representationCopy objectForKeyedSubscript:@"leaderboard-id"];
     v8 = v7;
     if (v7)
     {
@@ -93,30 +93,30 @@ void __57__GKLeaderboardChallengeInternal_secureCodedPropertyKeys__block_invoke(
 
     [(GKLeaderboardChallengeInternal *)v6 setLeaderboardID:v9];
 
-    v10 = [v4 objectForKeyedSubscript:@"attempt-limit"];
+    v10 = [representationCopy objectForKeyedSubscript:@"attempt-limit"];
     [(GKLeaderboardChallengeInternal *)v6 setAttemptLimit:v10];
 
-    v11 = [v4 objectForKeyedSubscript:@"state"];
+    v11 = [representationCopy objectForKeyedSubscript:@"state"];
     [(GKLeaderboardChallengeInternal *)v6 setState:v11];
 
-    v12 = [v4 objectForKeyedSubscript:@"creator-player-id"];
+    v12 = [representationCopy objectForKeyedSubscript:@"creator-player-id"];
     [(GKLeaderboardChallengeInternal *)v6 setCreatorPlayerID:v12];
 
-    v13 = [v4 objectForKeyedSubscript:@"scheduled-duration"];
+    v13 = [representationCopy objectForKeyedSubscript:@"scheduled-duration"];
     [v13 doubleValue];
     [(GKLeaderboardChallengeInternal *)v6 setScheduledDuration:v14 / 1000.0];
 
-    v15 = [v4 objectForKeyedSubscript:@"challenge-vendor-id"];
+    v15 = [representationCopy objectForKeyedSubscript:@"challenge-vendor-id"];
     [(GKLeaderboardChallengeInternal *)v6 setChallengeDefinitionID:v15];
 
-    v16 = [v4 objectForKeyedSubscript:@"durationCode"];
+    v16 = [representationCopy objectForKeyedSubscript:@"durationCode"];
     [(GKLeaderboardChallengeInternal *)v6 setDurationCode:v16];
 
-    v17 = [v4 objectForKeyedSubscript:@"participants"];
+    v17 = [representationCopy objectForKeyedSubscript:@"participants"];
     v18 = [v17 _gkMapWithBlock:&__block_literal_global_246];
     [(GKLeaderboardChallengeInternal *)v6 setParticipants:v18];
 
-    v19 = [v4 objectForKeyedSubscript:@"invited-players"];
+    v19 = [representationCopy objectForKeyedSubscript:@"invited-players"];
     v20 = [v19 _gkMapWithBlock:&__block_literal_global_251];
     [(GKLeaderboardChallengeInternal *)v6 setInvitees:v20];
   }

@@ -1,8 +1,8 @@
 @interface FBSceneUpdateContext
-+ (id)contextWithSceneID:(id)a3 transactionID:(unint64_t)a4 settings:(id)a5 settingsDiff:(id)a6 transitionContext:(id)a7;
++ (id)contextWithSceneID:(id)d transactionID:(unint64_t)iD settings:(id)settings settingsDiff:(id)diff transitionContext:(id)context;
 - (FBSSceneTransitionContext)transitionContext;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
@@ -16,24 +16,24 @@
   return WeakRetained;
 }
 
-+ (id)contextWithSceneID:(id)a3 transactionID:(unint64_t)a4 settings:(id)a5 settingsDiff:(id)a6 transitionContext:(id)a7
++ (id)contextWithSceneID:(id)d transactionID:(unint64_t)iD settings:(id)settings settingsDiff:(id)diff transitionContext:(id)context
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = objc_alloc_init(a1);
+  dCopy = d;
+  settingsCopy = settings;
+  diffCopy = diff;
+  contextCopy = context;
+  v16 = objc_alloc_init(self);
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [dCopy copy];
     v18 = *(v16 + 2);
     *(v16 + 2) = v17;
 
-    *(v16 + 3) = a4;
-    objc_storeStrong(v16 + 4, a5);
-    objc_storeStrong(v16 + 5, a6);
-    objc_storeWeak(v16 + 6, v15);
-    *(v16 + 8) = [v15 isRunningBoardAssertionDisabled];
+    *(v16 + 3) = iD;
+    objc_storeStrong(v16 + 4, settings);
+    objc_storeStrong(v16 + 5, diff);
+    objc_storeWeak(v16 + 6, contextCopy);
+    *(v16 + 8) = [contextCopy isRunningBoardAssertionDisabled];
   }
 
   return v16;
@@ -41,10 +41,10 @@
 
 - (id)succinctDescription
 {
-  v2 = [(FBSceneUpdateContext *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSceneUpdateContext *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -56,26 +56,26 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSceneUpdateContext *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSceneUpdateContext *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = a3;
-  v5 = [(FBSceneUpdateContext *)self succinctDescriptionBuilder];
+  prefixCopy = prefix;
+  succinctDescriptionBuilder = [(FBSceneUpdateContext *)self succinctDescriptionBuilder];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __62__FBSceneUpdateContext_descriptionBuilderWithMultilinePrefix___block_invoke;
   v9[3] = &unk_1E783B240;
-  v6 = v5;
+  v6 = succinctDescriptionBuilder;
   v10 = v6;
-  v11 = self;
-  [v6 appendBodySectionWithName:0 multilinePrefix:v4 block:v9];
+  selfCopy = self;
+  [v6 appendBodySectionWithName:0 multilinePrefix:prefixCopy block:v9];
 
   v7 = v6;
   return v6;

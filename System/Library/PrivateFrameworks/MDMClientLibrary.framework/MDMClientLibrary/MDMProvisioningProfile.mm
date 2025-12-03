@@ -1,18 +1,18 @@
 @interface MDMProvisioningProfile
-- (BOOL)allowsAppIDEntitlement:(id)a3;
-- (MDMProvisioningProfile)initWithProfile:(void *)a3;
+- (BOOL)allowsAppIDEntitlement:(id)entitlement;
+- (MDMProvisioningProfile)initWithProfile:(void *)profile;
 @end
 
 @implementation MDMProvisioningProfile
 
-- (MDMProvisioningProfile)initWithProfile:(void *)a3
+- (MDMProvisioningProfile)initWithProfile:(void *)profile
 {
   v12.receiver = self;
   v12.super_class = MDMProvisioningProfile;
   v4 = [(MDMProvisioningProfile *)&v12 init];
   if (v4)
   {
-    if (a3)
+    if (profile)
     {
       v5 = [MISProvisioningProfileGetUUID() copy];
       uuid = v4->_uuid;
@@ -39,35 +39,35 @@
   return v4;
 }
 
-- (BOOL)allowsAppIDEntitlement:(id)a3
+- (BOOL)allowsAppIDEntitlement:(id)entitlement
 {
-  v4 = a3;
+  entitlementCopy = entitlement;
   if ([(MDMProvisioningProfile *)self isAppleInternal])
   {
     v5 = 1;
   }
 
-  else if ([v4 length] && (-[MDMProvisioningProfile allowedAppIDEntitlement](self, "allowedAppIDEntitlement"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, v7))
+  else if ([entitlementCopy length] && (-[MDMProvisioningProfile allowedAppIDEntitlement](self, "allowedAppIDEntitlement"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "length"), v6, v7))
   {
-    v8 = [(MDMProvisioningProfile *)self allowedAppIDEntitlement];
-    v9 = [v8 hasSuffix:@"*"];
+    allowedAppIDEntitlement = [(MDMProvisioningProfile *)self allowedAppIDEntitlement];
+    v9 = [allowedAppIDEntitlement hasSuffix:@"*"];
 
-    v10 = [(MDMProvisioningProfile *)self allowedAppIDEntitlement];
-    v11 = v10;
+    allowedAppIDEntitlement2 = [(MDMProvisioningProfile *)self allowedAppIDEntitlement];
+    v11 = allowedAppIDEntitlement2;
     if (v9)
     {
-      v12 = [v10 length];
+      v12 = [allowedAppIDEntitlement2 length];
       v13 = v12 - [@"*" length];
 
-      v14 = [(MDMProvisioningProfile *)self allowedAppIDEntitlement];
-      v11 = [v14 substringToIndex:v13];
+      allowedAppIDEntitlement3 = [(MDMProvisioningProfile *)self allowedAppIDEntitlement];
+      v11 = [allowedAppIDEntitlement3 substringToIndex:v13];
 
-      v15 = [v4 hasPrefix:v11];
+      v15 = [entitlementCopy hasPrefix:v11];
     }
 
     else
     {
-      v15 = [v4 isEqualToString:v10];
+      v15 = [entitlementCopy isEqualToString:allowedAppIDEntitlement2];
     }
 
     v5 = v15;

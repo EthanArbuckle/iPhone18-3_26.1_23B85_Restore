@@ -1,8 +1,8 @@
 @interface CRLTableRep
-- (BOOL)containsPoint:(CGPoint)a3 withPrecision:(BOOL)a4;
-- (BOOL)handleDragOperation:(unint64_t)a3 withDragInfo:(id)a4 atUnscaledPoint:(CGPoint)a5;
-- (BOOL)handleSingleTapAtPoint:(CGPoint)a3 inputType:(int64_t)a4;
-- (BOOL)hitRepChrome:(CGPoint)a3;
+- (BOOL)containsPoint:(CGPoint)point withPrecision:(BOOL)precision;
+- (BOOL)handleDragOperation:(unint64_t)operation withDragInfo:(id)info atUnscaledPoint:(CGPoint)point;
+- (BOOL)handleSingleTapAtPoint:(CGPoint)point inputType:(int64_t)type;
+- (BOOL)hitRepChrome:(CGPoint)chrome;
 - (BOOL)isSelectedIgnoringLocking;
 - (BOOL)shouldShowSelectionHighlight;
 - (CGRect)boundsForCollaboratorCursorRenderable;
@@ -10,57 +10,57 @@
 - (CGRect)layerFrameInScaledCanvas;
 - (CRLContainerInfo)containerInfo;
 - (NSArray)overlayRenderables;
-- (_TtC8Freeform11CRLTableRep)initWithLayout:(id)a3 canvas:(id)a4;
-- (id)newTrackerForKnob:(id)a3;
-- (id)selectionBehaviorToCommitDragTrackerWithDraggedReps:(id)a3;
-- (unint64_t)dragOperationForDragInfo:(id)a3 atUnscaledPoint:(CGPoint)a4;
-- (void)addKnobsToArray:(id)a3;
+- (_TtC8Freeform11CRLTableRep)initWithLayout:(id)layout canvas:(id)canvas;
+- (id)newTrackerForKnob:(id)knob;
+- (id)selectionBehaviorToCommitDragTrackerWithDraggedReps:(id)reps;
+- (unint64_t)dragOperationForDragInfo:(id)info atUnscaledPoint:(CGPoint)point;
+- (void)addKnobsToArray:(id)array;
 - (void)becameNotSelected;
-- (void)collaboratorCursorChangedToSelectionPath:(id)a3;
-- (void)cursorMovedAtPoint:(CGPoint)a3 withPlatformObject:(id)a4;
-- (void)dragTrackerEnteredAt:(CGPoint)a3 withDraggedReps:(id)a4;
-- (void)dragTrackerExitedAt:(CGPoint)a3 withDraggedReps:(id)a4;
-- (void)drawInContext:(CGContext *)a3;
-- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)a3;
+- (void)collaboratorCursorChangedToSelectionPath:(id)path;
+- (void)cursorMovedAtPoint:(CGPoint)point withPlatformObject:(id)object;
+- (void)dragTrackerEnteredAt:(CGPoint)at withDraggedReps:(id)reps;
+- (void)dragTrackerExitedAt:(CGPoint)at withDraggedReps:(id)reps;
+- (void)drawInContext:(CGContext *)context;
+- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)commands;
 - (void)dynamicOperationDidEnd;
-- (void)dynamicallyResizingWithTracker:(id)a3;
+- (void)dynamicallyResizingWithTracker:(id)tracker;
 - (void)hideDragAndDropUI;
-- (void)processChangedProperty:(unint64_t)a3;
+- (void)processChangedProperty:(unint64_t)property;
 - (void)updateCellSelectionHighlight;
-- (void)updateDragAndDropUIForPoint:(CGPoint)a3 dragInfo:(id)a4;
+- (void)updateDragAndDropUIForPoint:(CGPoint)point dragInfo:(id)info;
 - (void)updateFromLayout;
-- (void)updatePositionsOfKnobs:(id)a3;
+- (void)updatePositionsOfKnobs:(id)knobs;
 - (void)willBeginZooming;
-- (void)willUpdateRenderable:(id)a3;
+- (void)willUpdateRenderable:(id)renderable;
 @end
 
 @implementation CRLTableRep
 
 - (CRLContainerInfo)containerInfo
 {
-  v2 = [(CRLCanvasRep *)self info];
-  v9 = sub_1003035DC(v2, 1, v3, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLContainerInfo);
+  info = [(CRLCanvasRep *)self info];
+  v9 = sub_1003035DC(info, 1, v3, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLContainerInfo);
 
   return v9;
 }
 
-- (_TtC8Freeform11CRLTableRep)initWithLayout:(id)a3 canvas:(id)a4
+- (_TtC8Freeform11CRLTableRep)initWithLayout:(id)layout canvas:(id)canvas
 {
-  v5 = a3;
-  v6 = a4;
-  return sub_1012138C8(v5, a4);
+  layoutCopy = layout;
+  canvasCopy = canvas;
+  return sub_1012138C8(layoutCopy, canvas);
 }
 
-- (void)drawInContext:(CGContext *)a3
+- (void)drawInContext:(CGContext *)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_101213B6C(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_101213B6C(contextCopy);
 }
 
 - (CGRect)frameInUnscaledCanvas
 {
-  v2 = self;
+  selfCopy = self;
   sub_101215E20();
   v4 = v3;
   v6 = v5;
@@ -80,12 +80,12 @@
 
 - (CGRect)layerFrameInScaledCanvas
 {
-  v2 = self;
-  v3 = [(CRLCanvasRep *)v2 canvas];
-  if (v3)
+  selfCopy = self;
+  canvas = [(CRLCanvasRep *)selfCopy canvas];
+  if (canvas)
   {
-    v4 = v3;
-    [(CRLTableRep *)v2 frameInUnscaledCanvas];
+    v4 = canvas;
+    [(CRLTableRep *)selfCopy frameInUnscaledCanvas];
     [(CRLCanvas *)v4 convertUnscaledToBoundsRect:?];
     v6 = v5;
     v8 = v7;
@@ -113,23 +113,23 @@
   return result;
 }
 
-- (BOOL)hitRepChrome:(CGPoint)a3
+- (BOOL)hitRepChrome:(CGPoint)chrome
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = self;
+  y = chrome.y;
+  x = chrome.x;
+  selfCopy = self;
   v6 = sub_10121650C(x, y);
 
   return v6;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3 withPrecision:(BOOL)a4
+- (BOOL)containsPoint:(CGPoint)point withPrecision:(BOOL)precision
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = self;
-  v7 = [(CRLCanvasRep *)v6 layout];
-  [(CRLCanvasLayout *)v7 boundsForStandardKnobs];
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
+  layout = [(CRLCanvasRep *)selfCopy layout];
+  [(CRLCanvasLayout *)layout boundsForStandardKnobs];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -142,16 +142,16 @@
   v19 = CGRectInset(v18, -25.0, -25.0);
   v17.x = x;
   v17.y = y;
-  LOBYTE(v7) = CGRectContainsPoint(v19, v17);
+  LOBYTE(layout) = CGRectContainsPoint(v19, v17);
 
-  return v7;
+  return layout;
 }
 
-- (void)willUpdateRenderable:(id)a3
+- (void)willUpdateRenderable:(id)renderable
 {
   v5 = *(&self->super.super.isa + OBJC_IVAR____TtC8Freeform11CRLTableRep_chrome);
-  v6 = a3;
-  v7 = self;
+  renderableCopy = renderable;
+  selfCopy = self;
   if (v5)
   {
     v8 = v5;
@@ -160,23 +160,23 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for CRLTableRep();
-  [(CRLCanvasRep *)&v9 willUpdateRenderable:a3];
+  [(CRLCanvasRep *)&v9 willUpdateRenderable:renderable];
 }
 
-- (void)processChangedProperty:(unint64_t)a3
+- (void)processChangedProperty:(unint64_t)property
 {
-  v4 = self;
-  sub_1012167B8(a3);
+  selfCopy = self;
+  sub_1012167B8(property);
 }
 
-- (void)dynamicallyResizingWithTracker:(id)a3
+- (void)dynamicallyResizingWithTracker:(id)tracker
 {
-  v5 = a3;
-  v6 = self;
-  sub_101216900(a3);
+  trackerCopy = tracker;
+  selfCopy = self;
+  sub_101216900(tracker);
 }
 
-- (id)newTrackerForKnob:(id)a3
+- (id)newTrackerForKnob:(id)knob
 {
   type metadata accessor for CRLTableKnob();
   v5 = swift_dynamicCastClass();
@@ -195,7 +195,7 @@
     {
       v6 = objc_allocWithZone(type metadata accessor for CRLTableRowColumnResizeKnobTracker());
 
-      return [v6 initWithRep:self knob:a3];
+      return [v6 initWithRep:self knob:knob];
     }
   }
 
@@ -203,7 +203,7 @@
   {
     v11.receiver = self;
     v11.super_class = type metadata accessor for CRLTableRep();
-    return [(CRLCanvasRep *)&v11 newTrackerForKnob:a3];
+    return [(CRLCanvasRep *)&v11 newTrackerForKnob:knob];
   }
 }
 
@@ -240,24 +240,24 @@
   return v7 & 1;
 }
 
-- (void)addKnobsToArray:(id)a3
+- (void)addKnobsToArray:(id)array
 {
-  v4 = a3;
-  v5 = self;
-  sub_101216C80(v4);
+  arrayCopy = array;
+  selfCopy = self;
+  sub_101216C80(arrayCopy);
 }
 
-- (void)updatePositionsOfKnobs:(id)a3
+- (void)updatePositionsOfKnobs:(id)knobs
 {
   sub_100006370(0, &unk_101A28760);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   sub_1012173B4(v4);
 }
 
 - (NSArray)overlayRenderables
 {
-  v2 = self;
+  selfCopy = self;
   sub_101218E44();
 
   sub_100006370(0, &qword_101A00020);
@@ -266,15 +266,15 @@
   return v3.super.isa;
 }
 
-- (void)collaboratorCursorChangedToSelectionPath:(id)a3
+- (void)collaboratorCursorChangedToSelectionPath:(id)path
 {
   v8.receiver = self;
   v8.super_class = type metadata accessor for CRLTableRep();
-  v4 = a3;
+  pathCopy = path;
   v5 = v8.receiver;
-  [(CRLCanvasRep *)&v8 collaboratorCursorChangedToSelectionPath:v4];
+  [(CRLCanvasRep *)&v8 collaboratorCursorChangedToSelectionPath:pathCopy];
   type metadata accessor for CRLTableCellSelection(0);
-  v6 = [v4 mostSpecificSelectionOfClass:{swift_getObjCClassFromMetadata(), v8.receiver, v8.super_class}];
+  v6 = [pathCopy mostSpecificSelectionOfClass:{swift_getObjCClassFromMetadata(), v8.receiver, v8.super_class}];
 
   if (v6)
   {
@@ -303,7 +303,7 @@
   if (v8)
   {
     v9 = v8;
-    v10 = [v2 layout];
+    layout = [v2 layout];
     type metadata accessor for CRLTableLayout();
     swift_dynamicCastClassUnconditional();
     sub_10120C9E4(v9);
@@ -337,7 +337,7 @@
 
 - (BOOL)shouldShowSelectionHighlight
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_101213504();
   if (v3 && (v4 = v3, v5 = sub_1011D78CC(), v4, v5))
   {
@@ -347,17 +347,17 @@
 
   else
   {
-    v8.receiver = v2;
+    v8.receiver = selfCopy;
     v8.super_class = type metadata accessor for CRLTableRep();
-    v6 = [(CRLCanvasRep *)&v8 shouldShowSelectionHighlight];
+    shouldShowSelectionHighlight = [(CRLCanvasRep *)&v8 shouldShowSelectionHighlight];
   }
 
-  return v6;
+  return shouldShowSelectionHighlight;
 }
 
 - (void)updateFromLayout
 {
-  v2 = self;
+  selfCopy = self;
   sub_10121A284();
 }
 
@@ -370,12 +370,12 @@
   sub_10121C3DC();
 }
 
-- (void)dragTrackerEnteredAt:(CGPoint)a3 withDraggedReps:(id)a4
+- (void)dragTrackerEnteredAt:(CGPoint)at withDraggedReps:(id)reps
 {
-  y = a3.y;
-  x = a3.x;
-  v11 = self;
-  v6 = [(CRLCanvasRep *)v11 layout];
+  y = at.y;
+  x = at.x;
+  selfCopy = self;
+  layout = [(CRLCanvasRep *)selfCopy layout];
   type metadata accessor for CRLTableLayout();
   v7 = swift_dynamicCastClassUnconditional() + OBJC_IVAR____TtC8Freeform14CRLTableLayout_dynamicAnchorCell;
   *v7 = 0;
@@ -383,17 +383,17 @@
   *(v7 + 16) = 1;
   sub_1012053C8();
 
-  [(CRLCanvasRep *)v11 convertNaturalPointFromUnscaledCanvas:x, y];
-  v8 = v11 + OBJC_IVAR____TtC8Freeform11CRLTableRep_currentDragPointOnRep;
+  [(CRLCanvasRep *)selfCopy convertNaturalPointFromUnscaledCanvas:x, y];
+  v8 = selfCopy + OBJC_IVAR____TtC8Freeform11CRLTableRep_currentDragPointOnRep;
   *v8 = v9;
   *(v8 + 1) = v10;
   v8[16] = 0;
 }
 
-- (void)dragTrackerExitedAt:(CGPoint)a3 withDraggedReps:(id)a4
+- (void)dragTrackerExitedAt:(CGPoint)at withDraggedReps:(id)reps
 {
-  v4 = self;
-  v5 = [(CRLCanvasRep *)v4 layout];
+  selfCopy = self;
+  layout = [(CRLCanvasRep *)selfCopy layout];
   type metadata accessor for CRLTableLayout();
   v6 = swift_dynamicCastClassUnconditional();
   v7 = &v6[OBJC_IVAR____TtC8Freeform14CRLTableLayout_dynamicTableState];
@@ -407,11 +407,11 @@
   sub_10121C12C();
 }
 
-- (id)selectionBehaviorToCommitDragTrackerWithDraggedReps:(id)a3
+- (id)selectionBehaviorToCommitDragTrackerWithDraggedReps:(id)reps
 {
   sub_100006370(0, &qword_1019FB7A0);
   v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_10121B708(v4);
 
   return v6;
@@ -419,7 +419,7 @@
 
 - (void)updateCellSelectionHighlight
 {
-  v2 = self;
+  selfCopy = self;
   sub_10121C3DC();
 }
 
@@ -427,51 +427,51 @@
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR____TtC8Freeform11CRLTableRep_rangeSelectionHighlightRenderable);
   *(&self->super.super.isa + OBJC_IVAR____TtC8Freeform11CRLTableRep_rangeSelectionHighlightRenderable) = 0;
-  v3 = self;
+  selfCopy = self;
 
-  v4 = v3 + OBJC_IVAR____TtC8Freeform11CRLTableRep_cachedBaseCellIndex;
+  v4 = selfCopy + OBJC_IVAR____TtC8Freeform11CRLTableRep_cachedBaseCellIndex;
   *v4 = 0;
   *(v4 + 1) = 0;
   v4[16] = 1;
-  v5 = v3 + OBJC_IVAR____TtC8Freeform11CRLTableRep_cachedCursorCellIndex;
+  v5 = selfCopy + OBJC_IVAR____TtC8Freeform11CRLTableRep_cachedCursorCellIndex;
   *v5 = 0;
   *(v5 + 1) = 0;
   v5[16] = 1;
-  v6.receiver = v3;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for CRLTableRep();
   [(CRLCanvasRep *)&v6 becameNotSelected];
 }
 
-- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)a3
+- (void)dynamicOperationDidBeginWithRealTimeCommands:(BOOL)commands
 {
-  v3 = a3;
+  commandsCopy = commands;
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC8Freeform11CRLTableRep_rangeSelectionHighlightRenderable);
   *(&self->super.super.isa + OBJC_IVAR____TtC8Freeform11CRLTableRep_rangeSelectionHighlightRenderable) = 0;
-  v5 = self;
+  selfCopy = self;
 
-  v6.receiver = v5;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for CRLTableRep();
-  [(CRLCanvasRep *)&v6 dynamicOperationDidBeginWithRealTimeCommands:v3];
+  [(CRLCanvasRep *)&v6 dynamicOperationDidBeginWithRealTimeCommands:commandsCopy];
 }
 
 - (void)willBeginZooming
 {
   v2 = *(&self->super.super.isa + OBJC_IVAR____TtC8Freeform11CRLTableRep_rangeSelectionHighlightRenderable);
   *(&self->super.super.isa + OBJC_IVAR____TtC8Freeform11CRLTableRep_rangeSelectionHighlightRenderable) = 0;
-  v3 = self;
+  selfCopy = self;
 
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for CRLTableRep();
   [(CRLCanvasRep *)&v4 willBeginZooming];
 }
 
-- (void)cursorMovedAtPoint:(CGPoint)a3 withPlatformObject:(id)a4
+- (void)cursorMovedAtPoint:(CGPoint)point withPlatformObject:(id)object
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v8 = *(&self->super.super.isa + OBJC_IVAR____TtC8Freeform11CRLTableRep_chrome);
-  v9 = a4;
-  v10 = self;
+  objectCopy = object;
+  selfCopy = self;
   if (v8)
   {
     v11 = v8;
@@ -480,24 +480,24 @@
 
   v12.receiver = self;
   v12.super_class = type metadata accessor for CRLTableRep();
-  [(CRLCanvasRep *)&v12 cursorMovedAtPoint:a4 withPlatformObject:x, y];
+  [(CRLCanvasRep *)&v12 cursorMovedAtPoint:object withPlatformObject:x, y];
 }
 
-- (BOOL)handleSingleTapAtPoint:(CGPoint)a3 inputType:(int64_t)a4
+- (BOOL)handleSingleTapAtPoint:(CGPoint)point inputType:(int64_t)type
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = self;
-  LOBYTE(a4) = sub_10121D740(a4, x, y);
+  y = point.y;
+  x = point.x;
+  selfCopy = self;
+  LOBYTE(type) = sub_10121D740(type, x, y);
 
-  return a4 & 1;
+  return type & 1;
 }
 
-- (unint64_t)dragOperationForDragInfo:(id)a3 atUnscaledPoint:(CGPoint)a4
+- (unint64_t)dragOperationForDragInfo:(id)info atUnscaledPoint:(CGPoint)point
 {
-  v5 = a3;
-  v6 = self;
-  if (-[CRLCanvasRep isLocked](v6, "isLocked") || (v7 = [v5 itemSource]) == 0)
+  infoCopy = info;
+  selfCopy = self;
+  if (-[CRLCanvasRep isLocked](selfCopy, "isLocked") || (v7 = [infoCopy itemSource]) == 0)
   {
   }
 
@@ -515,30 +515,30 @@
   return 0;
 }
 
-- (BOOL)handleDragOperation:(unint64_t)a3 withDragInfo:(id)a4 atUnscaledPoint:(CGPoint)a5
+- (BOOL)handleDragOperation:(unint64_t)operation withDragInfo:(id)info atUnscaledPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a4;
-  v9 = self;
-  sub_101224410(v8, x, y);
+  y = point.y;
+  x = point.x;
+  infoCopy = info;
+  selfCopy = self;
+  sub_101224410(infoCopy, x, y);
   LOBYTE(self) = v10;
 
   return self & 1;
 }
 
-- (void)updateDragAndDropUIForPoint:(CGPoint)a3 dragInfo:(id)a4
+- (void)updateDragAndDropUIForPoint:(CGPoint)point dragInfo:(id)info
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = self;
+  y = point.y;
+  x = point.x;
+  infoCopy = info;
+  selfCopy = self;
   sub_101224F84(x, y);
 }
 
 - (void)hideDragAndDropUI
 {
-  v2 = self;
+  selfCopy = self;
   sub_10121C12C();
 }
 

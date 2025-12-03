@@ -1,18 +1,18 @@
 @interface AXMTABedtimeUtilities
-+ (id)dayStringForRepeatSchedule:(unint64_t)a3;
++ (id)dayStringForRepeatSchedule:(unint64_t)schedule;
 @end
 
 @implementation AXMTABedtimeUtilities
 
-+ (id)dayStringForRepeatSchedule:(unint64_t)a3
++ (id)dayStringForRepeatSchedule:(unint64_t)schedule
 {
   v4 = objc_alloc_init(MEMORY[0x29EDB8DB8]);
   [v4 setMonth:1];
   [v4 setYear:2016];
   v5 = 0;
-  if (a3 <= 7)
+  if (schedule <= 7)
   {
-    switch(a3)
+    switch(schedule)
     {
       case 1uLL:
         v6 = 4;
@@ -28,16 +28,16 @@
     }
   }
 
-  else if (a3 > 31)
+  else if (schedule > 31)
   {
-    if (a3 == 32)
+    if (schedule == 32)
     {
       v6 = 9;
     }
 
     else
     {
-      if (a3 != 64)
+      if (schedule != 64)
       {
         goto LABEL_18;
       }
@@ -46,14 +46,14 @@
     }
   }
 
-  else if (a3 == 8)
+  else if (schedule == 8)
   {
     v6 = 7;
   }
 
   else
   {
-    if (a3 != 16)
+    if (schedule != 16)
     {
       goto LABEL_18;
     }
@@ -62,8 +62,8 @@
   }
 
   [v4 setDay:v6];
-  v7 = [MEMORY[0x29EDB8D98] currentCalendar];
-  v8 = [v7 dateFromComponents:v4];
+  currentCalendar = [MEMORY[0x29EDB8D98] currentCalendar];
+  v8 = [currentCalendar dateFromComponents:v4];
 
   v5 = AXDateStringForFormat();
 

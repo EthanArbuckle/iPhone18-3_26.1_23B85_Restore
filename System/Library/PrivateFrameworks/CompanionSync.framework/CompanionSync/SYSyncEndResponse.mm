@@ -1,14 +1,14 @@
 @interface SYSyncEndResponse
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsErrorResolution:(id)a3;
+- (int)StringAsErrorResolution:(id)resolution;
 - (int)errorResolution;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SYSyncEndResponse
@@ -26,17 +26,17 @@
   }
 }
 
-- (int)StringAsErrorResolution:(id)a3
+- (int)StringAsErrorResolution:(id)resolution
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Ignore"])
+  resolutionCopy = resolution;
+  if ([resolutionCopy isEqualToString:@"Ignore"])
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"Retry"];
+    v4 = [resolutionCopy isEqualToString:@"Retry"];
   }
 
   return v4;
@@ -48,33 +48,33 @@
   v8.receiver = self;
   v8.super_class = SYSyncEndResponse;
   v4 = [(SYSyncEndResponse *)&v8 description];
-  v5 = [(SYSyncEndResponse *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SYSyncEndResponse *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   header = self->_header;
   if (header)
   {
-    v5 = [(SYMessageHeader *)header dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"header"];
+    dictionaryRepresentation = [(SYMessageHeader *)header dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"header"];
   }
 
   syncID = self->_syncID;
   if (syncID)
   {
-    [v3 setObject:syncID forKey:@"syncID"];
+    [dictionary setObject:syncID forKey:@"syncID"];
   }
 
   error = self->_error;
   if (error)
   {
-    v8 = [(SYErrorInfo *)error dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"error"];
+    dictionaryRepresentation2 = [(SYErrorInfo *)error dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"error"];
   }
 
   if (*&self->_has)
@@ -98,21 +98,21 @@
       v10 = @"Ignore";
     }
 
-    [v3 setObject:v10 forKey:@"errorResolution"];
+    [dictionary setObject:v10 forKey:@"errorResolution"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_header)
   {
     [SYSyncEndResponse writeTo:];
   }
 
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteSubmessage();
   if (!self->_syncID)
   {
@@ -132,35 +132,35 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  [v4 setHeader:self->_header];
-  [v4 setSyncID:self->_syncID];
+  toCopy = to;
+  [toCopy setHeader:self->_header];
+  [toCopy setSyncID:self->_syncID];
   if (self->_error)
   {
-    [v4 setError:?];
+    [toCopy setError:?];
   }
 
   if (*&self->_has)
   {
-    *(v4 + 4) = self->_errorResolution;
-    *(v4 + 40) |= 1u;
+    *(toCopy + 4) = self->_errorResolution;
+    *(toCopy + 40) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(SYMessageHeader *)self->_header copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(SYMessageHeader *)self->_header copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(NSString *)self->_syncID copyWithZone:a3];
+  v8 = [(NSString *)self->_syncID copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
-  v10 = [(SYErrorInfo *)self->_error copyWithZone:a3];
+  v10 = [(SYErrorInfo *)self->_error copyWithZone:zone];
   v11 = *(v5 + 8);
   *(v5 + 8) = v10;
 
@@ -173,16 +173,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
   header = self->_header;
-  if (header | *(v4 + 3))
+  if (header | *(equalCopy + 3))
   {
     if (![(SYMessageHeader *)header isEqual:?])
     {
@@ -191,7 +191,7 @@
   }
 
   syncID = self->_syncID;
-  if (syncID | *(v4 + 4))
+  if (syncID | *(equalCopy + 4))
   {
     if (![(NSString *)syncID isEqual:?])
     {
@@ -200,7 +200,7 @@
   }
 
   error = self->_error;
-  if (error | *(v4 + 1))
+  if (error | *(equalCopy + 1))
   {
     if (![(SYErrorInfo *)error isEqual:?])
     {
@@ -208,10 +208,10 @@
     }
   }
 
-  v8 = (*(v4 + 40) & 1) == 0;
+  v8 = (*(equalCopy + 40) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 40) & 1) != 0 && self->_errorResolution == *(v4 + 4))
+    if ((*(equalCopy + 40) & 1) != 0 && self->_errorResolution == *(equalCopy + 4))
     {
       v8 = 1;
       goto LABEL_13;
@@ -244,12 +244,12 @@ LABEL_13:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   header = self->_header;
-  v6 = *(v4 + 3);
-  v9 = v4;
+  v6 = *(fromCopy + 3);
+  v9 = fromCopy;
   if (header)
   {
     if (!v6)
@@ -270,16 +270,16 @@ LABEL_13:
     [(SYSyncEndResponse *)self setHeader:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(SYSyncEndResponse *)self setSyncID:?];
-    v4 = v9;
+    fromCopy = v9;
   }
 
   error = self->_error;
-  v8 = *(v4 + 1);
+  v8 = *(fromCopy + 1);
   if (error)
   {
     if (!v8)
@@ -300,15 +300,15 @@ LABEL_7:
     error = [(SYSyncEndResponse *)self setError:?];
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_15:
-  if (*(v4 + 40))
+  if (*(fromCopy + 40))
   {
-    self->_errorResolution = *(v4 + 4);
+    self->_errorResolution = *(fromCopy + 4);
     *&self->_has |= 1u;
   }
 
-  MEMORY[0x1EEE66BB8](error, v4);
+  MEMORY[0x1EEE66BB8](error, fromCopy);
 }
 
 @end

@@ -1,30 +1,30 @@
 @interface IdleTimerController
-- (BOOL)_shouldIgnoreScene:(id)a3;
+- (BOOL)_shouldIgnoreScene:(id)scene;
 - (IdleTimerController)init;
 - (NSString)description;
 - (id)_assertionReasonString;
 - (id)_reasonString;
 - (id)_summaryString;
-- (void)_asyncUpdateForApplicationState:(BOOL)a3;
+- (void)_asyncUpdateForApplicationState:(BOOL)state;
 - (void)_releaseIdleTimerAssertion;
-- (void)_setDesiredIdleTimerState:(unint64_t)a3 forReason:(unint64_t)a4;
-- (void)_setIdleTimerDisabled:(BOOL)a3;
-- (void)_setMonitoringBattery:(BOOL)a3;
+- (void)_setDesiredIdleTimerState:(unint64_t)state forReason:(unint64_t)reason;
+- (void)_setIdleTimerDisabled:(BOOL)disabled;
+- (void)_setMonitoringBattery:(BOOL)battery;
 - (void)_startObservingApplicationState;
-- (void)_syncUpdateForApplicationState:(BOOL)a3;
+- (void)_syncUpdateForApplicationState:(BOOL)state;
 - (void)_takeIdleTimerAssertion;
 - (void)_updateApplicableStates;
 - (void)_updateBatteryMonitoring;
-- (void)_updateForApplicationState:(BOOL)a3;
+- (void)_updateForApplicationState:(BOOL)state;
 - (void)_updateIdleTimer;
-- (void)batteryMonitorTokenWitnessedChangeInBatteryState:(id)a3;
+- (void)batteryMonitorTokenWitnessedChangeInBatteryState:(id)state;
 - (void)dealloc;
-- (void)setDesiredIdleTimerState:(unint64_t)a3 forReason:(unint64_t)a4;
+- (void)setDesiredIdleTimerState:(unint64_t)state forReason:(unint64_t)reason;
 @end
 
 @implementation IdleTimerController
 
-- (void)batteryMonitorTokenWitnessedChangeInBatteryState:(id)a3
+- (void)batteryMonitorTokenWitnessedChangeInBatteryState:(id)state
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -45,8 +45,8 @@
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v4 = [(NSMutableDictionary *)self->_applicableStates allKeys];
-    v5 = [v4 sortedArrayUsingSelector:"compare:"];
+    allKeys = [(NSMutableDictionary *)self->_applicableStates allKeys];
+    v5 = [allKeys sortedArrayUsingSelector:"compare:"];
 
     v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v6)
@@ -64,18 +64,18 @@
 
           v10 = *(*(&v19 + 1) + 8 * i);
           v11 = [(NSMutableDictionary *)self->_applicableStates objectForKeyedSubscript:v10];
-          v12 = [v10 unsignedIntegerValue];
+          unsignedIntegerValue = [v10 unsignedIntegerValue];
           v13 = @"Unknown";
-          if (v12 <= 4)
+          if (unsignedIntegerValue <= 4)
           {
-            v13 = *(&off_10162BF88 + v12);
+            v13 = *(&off_10162BF88 + unsignedIntegerValue);
           }
 
-          v14 = [v11 unsignedIntegerValue];
+          unsignedIntegerValue2 = [v11 unsignedIntegerValue];
           v15 = @"Unknown";
-          if (v14 <= 2)
+          if (unsignedIntegerValue2 <= 2)
           {
-            v15 = *(&off_10162BFB0 + v14);
+            v15 = *(&off_10162BFB0 + unsignedIntegerValue2);
           }
 
           v16 = [NSString stringWithFormat:@"%@:%@", v13, v15];
@@ -102,30 +102,30 @@
 - (id)_assertionReasonString
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(IdleTimerController *)self _reasonString];
-  v4 = [NSString stringWithFormat:@"Maps {%@}", v3];
+  _reasonString = [(IdleTimerController *)self _reasonString];
+  v4 = [NSString stringWithFormat:@"Maps {%@}", _reasonString];
 
   return v4;
 }
 
-- (void)_updateForApplicationState:(BOOL)a3
+- (void)_updateForApplicationState:(BOOL)state
 {
   dispatch_assert_queue_V2(self->_queue);
-  self->_isForeground = a3;
+  self->_isForeground = state;
   [(IdleTimerController *)self _updateApplicableStates];
   [(IdleTimerController *)self _updateBatteryMonitoring];
 
   [(IdleTimerController *)self _updateIdleTimer];
 }
 
-- (void)_asyncUpdateForApplicationState:(BOOL)a3
+- (void)_asyncUpdateForApplicationState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = sub_100799E70();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "background";
-    if (v3)
+    if (stateCopy)
     {
       v6 = "foreground";
     }
@@ -142,18 +142,18 @@
   v8[2] = sub_10085D4C8;
   v8[3] = &unk_101661AE0;
   v8[4] = self;
-  v9 = v3;
+  v9 = stateCopy;
   dispatch_async(queue, v8);
 }
 
-- (void)_syncUpdateForApplicationState:(BOOL)a3
+- (void)_syncUpdateForApplicationState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v5 = sub_100799E70();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = "background";
-    if (v3)
+    if (stateCopy)
     {
       v6 = "foreground";
     }
@@ -170,18 +170,18 @@
   v8[2] = sub_10085D600;
   v8[3] = &unk_101661AE0;
   v8[4] = self;
-  v9 = v3;
+  v9 = stateCopy;
   dispatch_sync(queue, v8);
 }
 
-- (BOOL)_shouldIgnoreScene:(id)a3
+- (BOOL)_shouldIgnoreScene:(id)scene
 {
-  v3 = a3;
-  v4 = [v3 session];
-  v5 = [v4 role];
-  if ([v5 isEqualToString:UIWindowSceneSessionRoleApplication])
+  sceneCopy = scene;
+  session = [sceneCopy session];
+  role = [session role];
+  if ([role isEqualToString:UIWindowSceneSessionRoleApplication])
   {
-    v6 = [UIApplication _maps_shouldIgnoreActivationStateForScene:v3];
+    v6 = [UIApplication _maps_shouldIgnoreActivationStateForScene:sceneCopy];
   }
 
   else
@@ -255,9 +255,9 @@
     }
 
     v4 = +[ITIdleTimerState sharedInstance];
-    v5 = [(IdleTimerController *)self _assertionReasonString];
+    _assertionReasonString = [(IdleTimerController *)self _assertionReasonString];
     v10 = 0;
-    v6 = [v4 newAssertionToDisableIdleTimerForReason:v5 error:&v10];
+    v6 = [v4 newAssertionToDisableIdleTimerForReason:_assertionReasonString error:&v10];
     v7 = v10;
     idleTimerAssertion = self->_idleTimerAssertion;
     self->_idleTimerAssertion = v6;
@@ -275,11 +275,11 @@
   }
 }
 
-- (void)_setIdleTimerDisabled:(BOOL)a3
+- (void)_setIdleTimerDisabled:(BOOL)disabled
 {
-  v3 = a3;
+  disabledCopy = disabled;
   dispatch_assert_queue_V2(self->_queue);
-  if (v3)
+  if (disabledCopy)
   {
 
     [(IdleTimerController *)self _takeIdleTimerAssertion];
@@ -313,20 +313,20 @@
   [(NSMutableDictionary *)applicableStates enumerateKeysAndObjectsUsingBlock:v5];
   if (v11[3])
   {
-    v4 = 1;
+    batteryIsChargingOrFull = 1;
   }
 
   else if (*(v7 + 24) == 1)
   {
-    v4 = [(BatteryMonitorToken *)self->_batteryToken batteryIsChargingOrFull];
+    batteryIsChargingOrFull = [(BatteryMonitorToken *)self->_batteryToken batteryIsChargingOrFull];
   }
 
   else
   {
-    v4 = 0;
+    batteryIsChargingOrFull = 0;
   }
 
-  [(IdleTimerController *)self _setIdleTimerDisabled:v4];
+  [(IdleTimerController *)self _setIdleTimerDisabled:batteryIsChargingOrFull];
   _Block_object_dispose(&v6, 8);
   _Block_object_dispose(&v10, 8);
 }
@@ -349,15 +349,15 @@
   _Block_object_dispose(&v5, 8);
 }
 
-- (void)_setMonitoringBattery:(BOOL)a3
+- (void)_setMonitoringBattery:(BOOL)battery
 {
-  v3 = a3;
+  batteryCopy = battery;
   dispatch_assert_queue_V2(self->_queue);
-  if (self->_monitoringBattery != v3)
+  if (self->_monitoringBattery != batteryCopy)
   {
-    self->_monitoringBattery = v3;
+    self->_monitoringBattery = batteryCopy;
     batteryToken = self->_batteryToken;
-    if (v3)
+    if (batteryCopy)
     {
       if (!batteryToken)
       {
@@ -369,9 +369,9 @@
         }
 
         v7 = +[BatteryMonitorController sharedInstance];
-        v8 = [v7 beginMonitoringBattery];
+        beginMonitoringBattery = [v7 beginMonitoringBattery];
         v9 = self->_batteryToken;
-        self->_batteryToken = v8;
+        self->_batteryToken = beginMonitoringBattery;
 
         [(BatteryMonitorToken *)self->_batteryToken setDelegate:self];
       }
@@ -411,7 +411,7 @@
     v14 = 3221225472;
     v15 = sub_10085E16C;
     v16 = &unk_10162BF18;
-    v17 = self;
+    selfCopy = self;
     v18 = v6;
     v8 = v6;
     [(NSMutableDictionary *)v7 enumerateKeysAndObjectsUsingBlock:&v13];
@@ -423,9 +423,9 @@
   v11 = sub_100799E70();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [(IdleTimerController *)self _summaryString];
+    _summaryString = [(IdleTimerController *)self _summaryString];
     *buf = 138412290;
-    v20 = v12;
+    v20 = _summaryString;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Updated applicable states: %@", buf, 0xCu);
   }
 }
@@ -439,8 +439,8 @@
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v4 = [(NSMutableDictionary *)self->_states allKeys];
-    v5 = [v4 sortedArrayUsingSelector:"compare:"];
+    allKeys = [(NSMutableDictionary *)self->_states allKeys];
+    v5 = [allKeys sortedArrayUsingSelector:"compare:"];
 
     obj = v5;
     v6 = [v5 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -459,18 +459,18 @@
 
           v10 = *(*(&v22 + 1) + 8 * i);
           v11 = [(NSMutableDictionary *)self->_states objectForKeyedSubscript:v10];
-          v12 = [v10 unsignedIntegerValue];
+          unsignedIntegerValue = [v10 unsignedIntegerValue];
           v13 = @"Unknown";
-          if (v12 <= 4)
+          if (unsignedIntegerValue <= 4)
           {
-            v13 = *(&off_10162BF88 + v12);
+            v13 = *(&off_10162BF88 + unsignedIntegerValue);
           }
 
-          v14 = [v11 unsignedIntegerValue];
+          unsignedIntegerValue2 = [v11 unsignedIntegerValue];
           v15 = @"Unknown";
-          if (v14 <= 2)
+          if (unsignedIntegerValue2 <= 2)
           {
-            v15 = *(&off_10162BFB0 + v14);
+            v15 = *(&off_10162BFB0 + unsignedIntegerValue2);
           }
 
           v16 = [NSString stringWithFormat:@"%@:%@", v13, v15];
@@ -529,21 +529,21 @@
   return v6;
 }
 
-- (void)_setDesiredIdleTimerState:(unint64_t)a3 forReason:(unint64_t)a4
+- (void)_setDesiredIdleTimerState:(unint64_t)state forReason:(unint64_t)reason
 {
   dispatch_assert_queue_V2(self->_queue);
   states = self->_states;
-  v8 = [NSNumber numberWithUnsignedInteger:a4];
+  v8 = [NSNumber numberWithUnsignedInteger:reason];
   v13 = [(NSMutableDictionary *)states objectForKeyedSubscript:v8];
 
-  v9 = [NSNumber numberWithUnsignedInteger:a3];
+  v9 = [NSNumber numberWithUnsignedInteger:state];
   LOBYTE(v8) = [v13 isEqual:v9];
 
   if ((v8 & 1) == 0)
   {
-    v10 = [NSNumber numberWithUnsignedInteger:a3];
+    v10 = [NSNumber numberWithUnsignedInteger:state];
     v11 = self->_states;
-    v12 = [NSNumber numberWithUnsignedInteger:a4];
+    v12 = [NSNumber numberWithUnsignedInteger:reason];
     [(NSMutableDictionary *)v11 setObject:v10 forKeyedSubscript:v12];
 
     [(IdleTimerController *)self _updateApplicableStates];
@@ -552,7 +552,7 @@
   }
 }
 
-- (void)setDesiredIdleTimerState:(unint64_t)a3 forReason:(unint64_t)a4
+- (void)setDesiredIdleTimerState:(unint64_t)state forReason:(unint64_t)reason
 {
   dispatch_assert_queue_not_V2(self->_queue);
   objc_initWeak(&location, self);
@@ -562,8 +562,8 @@
   v8[2] = sub_10085E7C0;
   v8[3] = &unk_10164CBF8;
   objc_copyWeak(v9, &location);
-  v9[1] = a3;
-  v9[2] = a4;
+  v9[1] = state;
+  v9[2] = reason;
   dispatch_async(queue, v8);
   objc_destroyWeak(v9);
   objc_destroyWeak(&location);

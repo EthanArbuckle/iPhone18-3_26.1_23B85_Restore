@@ -1,54 +1,54 @@
 @interface OnboardingBuddyDeviceSceneViewController
-- (_TtC8CameraUI40OnboardingBuddyDeviceSceneViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)renderer:(id)a3 didRenderScene:(id)a4 atTime:(double)a5;
-- (void)stateController:(id)a3 transitionDidStart:(id)a4 speed:(float)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (_TtC8CameraUI40OnboardingBuddyDeviceSceneViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)renderer:(id)renderer didRenderScene:(id)scene atTime:(double)time;
+- (void)stateController:(id)controller transitionDidStart:(id)start speed:(float)speed;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 @end
 
 @implementation OnboardingBuddyDeviceSceneViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_1A391DBAC(a3);
+  selfCopy = self;
+  sub_1A391DBAC(appear);
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A391E548();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_1A3920668(a3);
+  selfCopy = self;
+  sub_1A3920668(disappear);
 }
 
-- (void)stateController:(id)a3 transitionDidStart:(id)a4 speed:(float)a5
+- (void)stateController:(id)controller transitionDidStart:(id)start speed:(float)speed
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_1A39246DC(a4);
+  controllerCopy = controller;
+  startCopy = start;
+  selfCopy = self;
+  sub_1A39246DC(start);
 }
 
-- (_TtC8CameraUI40OnboardingBuddyDeviceSceneViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8CameraUI40OnboardingBuddyDeviceSceneViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)renderer:(id)a3 didRenderScene:(id)a4 atTime:(double)a5
+- (void)renderer:(id)renderer didRenderScene:(id)scene atTime:(double)time
 {
   v6 = objc_opt_self();
-  v7 = self;
-  v8 = [v6 mainQueue];
+  selfCopy = self;
+  mainQueue = [v6 mainQueue];
   v9 = swift_allocObject();
-  *(v9 + 16) = v7;
+  *(v9 + 16) = selfCopy;
   v12[4] = sub_1A3923FD8;
   v12[5] = v9;
   v12[0] = MEMORY[0x1E69E9820];
@@ -56,9 +56,9 @@
   v12[2] = sub_1A3904E20;
   v12[3] = &block_descriptor_3;
   v10 = _Block_copy(v12);
-  v11 = v7;
+  v11 = selfCopy;
 
-  [v8 addOperationWithBlock_];
+  [mainQueue addOperationWithBlock_];
 
   _Block_release(v10);
 }

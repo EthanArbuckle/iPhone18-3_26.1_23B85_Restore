@@ -1,12 +1,12 @@
 @interface ATXProactiveSuggestionWidgetRotationFeedbackSessionMetadata
-- (ATXProactiveSuggestionWidgetRotationFeedbackSessionMetadata)initWithCoder:(id)a3;
+- (ATXProactiveSuggestionWidgetRotationFeedbackSessionMetadata)initWithCoder:(id)coder;
 @end
 
 @implementation ATXProactiveSuggestionWidgetRotationFeedbackSessionMetadata
 
-- (ATXProactiveSuggestionWidgetRotationFeedbackSessionMetadata)initWithCoder:(id)a3
+- (ATXProactiveSuggestionWidgetRotationFeedbackSessionMetadata)initWithCoder:(id)coder
 {
-  result = a3;
+  result = coder;
   __break(1u);
   return result;
 }

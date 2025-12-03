@@ -1,27 +1,27 @@
 @interface SFLinkRedirectionViewController
-- (SFLinkRedirectionViewController)initWithURL:(id)a3;
-- (void)remoteViewController:(id)a3 didResolveRedirectionWithURL:(id)a4 appLink:(id)a5;
-- (void)setDefersAddingRemoteViewController:(BOOL)a3;
+- (SFLinkRedirectionViewController)initWithURL:(id)l;
+- (void)remoteViewController:(id)controller didResolveRedirectionWithURL:(id)l appLink:(id)link;
+- (void)setDefersAddingRemoteViewController:(BOOL)controller;
 - (void)viewDidLoad;
 @end
 
 @implementation SFLinkRedirectionViewController
 
-- (SFLinkRedirectionViewController)initWithURL:(id)a3
+- (SFLinkRedirectionViewController)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc_init(SFSafariViewControllerConfiguration);
   [(SFSafariViewControllerConfiguration *)v5 setEntersReaderIfAvailable:0];
   [(SFSafariViewControllerConfiguration *)v5 _setEphemeral:1];
   v11.receiver = self;
   v11.super_class = SFLinkRedirectionViewController;
-  v6 = [(SFSafariViewController *)&v11 initWithURL:v4 configuration:v5];
+  v6 = [(SFSafariViewController *)&v11 initWithURL:lCopy configuration:v5];
 
   if (v6)
   {
-    v7 = [(SFSafariViewController *)v6 serviceProxy];
-    v8 = [(SFSafariViewController *)v6 initialURL];
-    [v7 startResolveRedirectionForURL:v8];
+    serviceProxy = [(SFSafariViewController *)v6 serviceProxy];
+    initialURL = [(SFSafariViewController *)v6 initialURL];
+    [serviceProxy startResolveRedirectionForURL:initialURL];
 
     [(SFSafariViewController *)v6 setDismissButtonStyle:1];
     [(SFLinkRedirectionViewController *)v6 setDefersAddingRemoteViewController:1];
@@ -31,15 +31,15 @@
   return v6;
 }
 
-- (void)setDefersAddingRemoteViewController:(BOOL)a3
+- (void)setDefersAddingRemoteViewController:(BOOL)controller
 {
-  v3 = a3;
-  if ([(SFSafariViewController *)self defersAddingRemoteViewController]!= a3)
+  controllerCopy = controller;
+  if ([(SFSafariViewController *)self defersAddingRemoteViewController]!= controller)
   {
     v5.receiver = self;
     v5.super_class = SFLinkRedirectionViewController;
-    [(SFSafariViewController *)&v5 setDefersAddingRemoteViewController:v3];
-    if (!v3)
+    [(SFSafariViewController *)&v5 setDefersAddingRemoteViewController:controllerCopy];
+    if (!controllerCopy)
     {
       [(SFSafariViewController *)self _addRemoteViewControllerIfNeeded];
     }
@@ -54,14 +54,14 @@
   [(SFLinkRedirectionViewController *)self setDefersAddingRemoteViewController:0];
 }
 
-- (void)remoteViewController:(id)a3 didResolveRedirectionWithURL:(id)a4 appLink:(id)a5
+- (void)remoteViewController:(id)controller didResolveRedirectionWithURL:(id)l appLink:(id)link
 {
-  v9 = a4;
-  v7 = a5;
-  v8 = [(SFSafariViewController *)self delegate];
+  lCopy = l;
+  linkCopy = link;
+  delegate = [(SFSafariViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 safariViewController:self didResolveRedirectionWithURL:v9 appLink:v7];
+    [delegate safariViewController:self didResolveRedirectionWithURL:lCopy appLink:linkCopy];
   }
 }
 

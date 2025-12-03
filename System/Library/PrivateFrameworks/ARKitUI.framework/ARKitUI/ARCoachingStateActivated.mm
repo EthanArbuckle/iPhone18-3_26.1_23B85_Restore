@@ -1,5 +1,5 @@
 @interface ARCoachingStateActivated
-- (id)doAction:(int64_t)a3;
+- (id)doAction:(int64_t)action;
 - (void)enter;
 @end
 
@@ -7,24 +7,24 @@
 
 - (void)enter
 {
-  v3 = [(ARCoachingState *)self view];
-  [v3 startup];
+  view = [(ARCoachingState *)self view];
+  [view startup];
 
-  v4 = [(ARCoachingState *)self view];
-  [v4 fadeInWithButton:0];
+  view2 = [(ARCoachingState *)self view];
+  [view2 fadeInWithButton:0];
 
-  v5 = [(ARCoachingState *)self view];
-  [v5 setHidden:0];
+  view3 = [(ARCoachingState *)self view];
+  [view3 setHidden:0];
 }
 
-- (id)doAction:(int64_t)a3
+- (id)doAction:(int64_t)action
 {
   v4 = 0;
-  if (a3 > 3)
+  if (action > 3)
   {
-    if (a3 > 5)
+    if (action > 5)
     {
-      if (a3 == 6)
+      if (action == 6)
       {
         nextState = self->_nextState;
         if (!nextState)
@@ -35,7 +35,7 @@
         goto LABEL_30;
       }
 
-      if (a3 != 7)
+      if (action != 7)
       {
         goto LABEL_23;
       }
@@ -45,27 +45,27 @@
 
     else
     {
-      if (a3 == 4)
+      if (action == 4)
       {
         if (self->_nextState)
         {
           goto LABEL_22;
         }
 
-        v10 = [(ARCoachingState *)self view];
-        v11 = [v10 checkDeactivationHeuristics];
+        view = [(ARCoachingState *)self view];
+        checkDeactivationHeuristics = [view checkDeactivationHeuristics];
 
-        if (v11)
+        if (checkDeactivationHeuristics)
         {
           v12 = ARCoachingStateDeactivating;
         }
 
         else
         {
-          v20 = [(ARCoachingState *)self view];
-          v21 = [v20 isRelocalizing];
+          view2 = [(ARCoachingState *)self view];
+          isRelocalizing = [view2 isRelocalizing];
 
-          if (!v21)
+          if (!isRelocalizing)
           {
             goto LABEL_22;
           }
@@ -74,8 +74,8 @@
         }
 
         v22 = [v12 alloc];
-        v14 = [(ARCoachingState *)self view];
-        v23 = [v22 initWithView:v14];
+        view3 = [(ARCoachingState *)self view];
+        v23 = [v22 initWithView:view3];
         v24 = self->_nextState;
         self->_nextState = v23;
 
@@ -88,26 +88,26 @@ LABEL_21:
 
 LABEL_20:
     v13 = [v6 alloc];
-    v14 = [(ARCoachingState *)self view];
-    v15 = [v13 initWithView:v14];
+    view3 = [(ARCoachingState *)self view];
+    v15 = [v13 initWithView:view3];
     v16 = self->_nextState;
     self->_nextState = v15;
 
     goto LABEL_21;
   }
 
-  if (a3 <= 1)
+  if (action <= 1)
   {
-    if (!a3)
+    if (!action)
     {
       v8 = [ARCoachingStateHidden alloc];
-      v9 = [(ARCoachingState *)self view];
-      v4 = [(ARCoachingState *)v8 initWithView:v9];
+      view4 = [(ARCoachingState *)self view];
+      v4 = [(ARCoachingState *)v8 initWithView:view4];
 
       goto LABEL_23;
     }
 
-    if (a3 != 1)
+    if (action != 1)
     {
       goto LABEL_23;
     }
@@ -118,14 +118,14 @@ LABEL_20:
     goto LABEL_22;
   }
 
-  if (a3 == 2)
+  if (action == 2)
   {
     v6 = ARCoachingStateDeactivating;
     goto LABEL_20;
   }
 
-  v7 = [(ARCoachingState *)self view];
-  if ([v7 isUIAnimating])
+  view5 = [(ARCoachingState *)self view];
+  if ([view5 isUIAnimating])
   {
 
 LABEL_22:

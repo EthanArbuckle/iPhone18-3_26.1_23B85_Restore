@@ -1,6 +1,6 @@
 @interface DMTMDMClientLibraryBackedAutomatedDeviceEnrollmentPrimitives
 - (DMTMDMClientLibraryBackedAutomatedDeviceEnrollmentPrimitives)init;
-- (void)enrollWithNonce:(id)a3 completionBlock:(id)a4;
+- (void)enrollWithNonce:(id)nonce completionBlock:(id)block;
 @end
 
 @implementation DMTMDMClientLibraryBackedAutomatedDeviceEnrollmentPrimitives
@@ -20,18 +20,18 @@
   return v2;
 }
 
-- (void)enrollWithNonce:(id)a3 completionBlock:(id)a4
+- (void)enrollWithNonce:(id)nonce completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(DMTMDMClientLibraryBackedAutomatedDeviceEnrollmentPrimitives *)self DEPClient];
+  blockCopy = block;
+  nonceCopy = nonce;
+  dEPClient = [(DMTMDMClientLibraryBackedAutomatedDeviceEnrollmentPrimitives *)self DEPClient];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __96__DMTMDMClientLibraryBackedAutomatedDeviceEnrollmentPrimitives_enrollWithNonce_completionBlock___block_invoke;
   v10[3] = &unk_278F5E458;
-  v11 = v6;
-  v9 = v6;
-  [v8 provisionallyEnrollWithNonce:v7 completionBlock:v10];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [dEPClient provisionallyEnrollWithNonce:nonceCopy completionBlock:v10];
 }
 
 void __96__DMTMDMClientLibraryBackedAutomatedDeviceEnrollmentPrimitives_enrollWithNonce_completionBlock___block_invoke(uint64_t a1, int a2, void *a3, void *a4)

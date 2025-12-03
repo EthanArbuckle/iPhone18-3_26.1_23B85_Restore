@@ -1,26 +1,26 @@
 @interface MSPMediaSyncOperation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)operationTypeAsString:(int)a3;
-- (int)StringAsOperationType:(id)a3;
+- (id)operationTypeAsString:(int)string;
+- (int)StringAsOperationType:(id)type;
 - (int)operationType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MSPMediaSyncOperation
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 80))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 80))
   {
-    self->_operationType = *(v4 + 14);
+    self->_operationType = *(fromCopy + 14);
     *&self->_has |= 1u;
   }
 
@@ -243,23 +243,23 @@ LABEL_51:
   return v9 ^ v10 ^ [(MIPLibraryPin *)self->_libraryPin hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 80) & 1) == 0 || self->_operationType != *(v4 + 14))
+    if ((*(equalCopy + 80) & 1) == 0 || self->_operationType != *(equalCopy + 14))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 80))
+  else if (*(equalCopy + 80))
   {
 LABEL_23:
     v13 = 0;
@@ -267,13 +267,13 @@ LABEL_23:
   }
 
   multiverseId = self->_multiverseId;
-  if (multiverseId | *(v4 + 6) && ![(MIPMultiverseIdentifier *)multiverseId isEqual:?])
+  if (multiverseId | *(equalCopy + 6) && ![(MIPMultiverseIdentifier *)multiverseId isEqual:?])
   {
     goto LABEL_23;
   }
 
   artist = self->_artist;
-  if (artist | *(v4 + 2))
+  if (artist | *(equalCopy + 2))
   {
     if (![(MIPArtist *)artist isEqual:?])
     {
@@ -282,7 +282,7 @@ LABEL_23:
   }
 
   album = self->_album;
-  if (album | *(v4 + 1))
+  if (album | *(equalCopy + 1))
   {
     if (![(MIPAlbum *)album isEqual:?])
     {
@@ -291,7 +291,7 @@ LABEL_23:
   }
 
   genre = self->_genre;
-  if (genre | *(v4 + 3))
+  if (genre | *(equalCopy + 3))
   {
     if (![(MIPGenre *)genre isEqual:?])
     {
@@ -300,7 +300,7 @@ LABEL_23:
   }
 
   series = self->_series;
-  if (series | *(v4 + 9))
+  if (series | *(equalCopy + 9))
   {
     if (![(MIPSeries *)series isEqual:?])
     {
@@ -309,7 +309,7 @@ LABEL_23:
   }
 
   mediaItem = self->_mediaItem;
-  if (mediaItem | *(v4 + 5))
+  if (mediaItem | *(equalCopy + 5))
   {
     if (![(MIPMediaItem *)mediaItem isEqual:?])
     {
@@ -318,7 +318,7 @@ LABEL_23:
   }
 
   playlist = self->_playlist;
-  if (playlist | *(v4 + 8))
+  if (playlist | *(equalCopy + 8))
   {
     if (![(MIPPlaylist *)playlist isEqual:?])
     {
@@ -327,7 +327,7 @@ LABEL_23:
   }
 
   libraryPin = self->_libraryPin;
-  if (libraryPin | *(v4 + 4))
+  if (libraryPin | *(equalCopy + 4))
   {
     v13 = [(MIPLibraryPin *)libraryPin isEqual:?];
   }
@@ -342,9 +342,9 @@ LABEL_24:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -352,162 +352,162 @@ LABEL_24:
     *(v5 + 80) |= 1u;
   }
 
-  v7 = [(MIPMultiverseIdentifier *)self->_multiverseId copyWithZone:a3];
+  v7 = [(MIPMultiverseIdentifier *)self->_multiverseId copyWithZone:zone];
   v8 = v6[6];
   v6[6] = v7;
 
-  v9 = [(MIPArtist *)self->_artist copyWithZone:a3];
+  v9 = [(MIPArtist *)self->_artist copyWithZone:zone];
   v10 = v6[2];
   v6[2] = v9;
 
-  v11 = [(MIPAlbum *)self->_album copyWithZone:a3];
+  v11 = [(MIPAlbum *)self->_album copyWithZone:zone];
   v12 = v6[1];
   v6[1] = v11;
 
-  v13 = [(MIPGenre *)self->_genre copyWithZone:a3];
+  v13 = [(MIPGenre *)self->_genre copyWithZone:zone];
   v14 = v6[3];
   v6[3] = v13;
 
-  v15 = [(MIPSeries *)self->_series copyWithZone:a3];
+  v15 = [(MIPSeries *)self->_series copyWithZone:zone];
   v16 = v6[9];
   v6[9] = v15;
 
-  v17 = [(MIPMediaItem *)self->_mediaItem copyWithZone:a3];
+  v17 = [(MIPMediaItem *)self->_mediaItem copyWithZone:zone];
   v18 = v6[5];
   v6[5] = v17;
 
-  v19 = [(MIPPlaylist *)self->_playlist copyWithZone:a3];
+  v19 = [(MIPPlaylist *)self->_playlist copyWithZone:zone];
   v20 = v6[8];
   v6[8] = v19;
 
-  v21 = [(MIPLibraryPin *)self->_libraryPin copyWithZone:a3];
+  v21 = [(MIPLibraryPin *)self->_libraryPin copyWithZone:zone];
   v22 = v6[4];
   v6[4] = v21;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[14] = self->_operationType;
-    *(v4 + 80) |= 1u;
+    toCopy[14] = self->_operationType;
+    *(toCopy + 80) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_multiverseId)
   {
-    [v4 setMultiverseId:?];
-    v4 = v5;
+    [toCopy setMultiverseId:?];
+    toCopy = v5;
   }
 
   if (self->_artist)
   {
     [v5 setArtist:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_album)
   {
     [v5 setAlbum:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_genre)
   {
     [v5 setGenre:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_series)
   {
     [v5 setSeries:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mediaItem)
   {
     [v5 setMediaItem:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_playlist)
   {
     [v5 setPlaylist:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_libraryPin)
   {
     [v5 setLibraryPin:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (*&self->_has)
   {
     PBDataWriterWriteInt32Field();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_multiverseId)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_artist)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_album)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_genre)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_series)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_mediaItem)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_playlist)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_libraryPin)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = self->_operationType - 1;
@@ -521,66 +521,66 @@ LABEL_24:
       v5 = off_278763AD8[v4];
     }
 
-    [v3 setObject:v5 forKey:@"operationType"];
+    [dictionary setObject:v5 forKey:@"operationType"];
   }
 
   multiverseId = self->_multiverseId;
   if (multiverseId)
   {
-    v7 = [(MIPMultiverseIdentifier *)multiverseId dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"multiverseId"];
+    dictionaryRepresentation = [(MIPMultiverseIdentifier *)multiverseId dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"multiverseId"];
   }
 
   artist = self->_artist;
   if (artist)
   {
-    v9 = [(MIPArtist *)artist dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"artist"];
+    dictionaryRepresentation2 = [(MIPArtist *)artist dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"artist"];
   }
 
   album = self->_album;
   if (album)
   {
-    v11 = [(MIPAlbum *)album dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"album"];
+    dictionaryRepresentation3 = [(MIPAlbum *)album dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"album"];
   }
 
   genre = self->_genre;
   if (genre)
   {
-    v13 = [(MIPGenre *)genre dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"genre"];
+    dictionaryRepresentation4 = [(MIPGenre *)genre dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"genre"];
   }
 
   series = self->_series;
   if (series)
   {
-    v15 = [(MIPSeries *)series dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"series"];
+    dictionaryRepresentation5 = [(MIPSeries *)series dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"series"];
   }
 
   mediaItem = self->_mediaItem;
   if (mediaItem)
   {
-    v17 = [(MIPMediaItem *)mediaItem dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"mediaItem"];
+    dictionaryRepresentation6 = [(MIPMediaItem *)mediaItem dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"mediaItem"];
   }
 
   playlist = self->_playlist;
   if (playlist)
   {
-    v19 = [(MIPPlaylist *)playlist dictionaryRepresentation];
-    [v3 setObject:v19 forKey:@"playlist"];
+    dictionaryRepresentation7 = [(MIPPlaylist *)playlist dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation7 forKey:@"playlist"];
   }
 
   libraryPin = self->_libraryPin;
   if (libraryPin)
   {
-    v21 = [(MIPLibraryPin *)libraryPin dictionaryRepresentation];
-    [v3 setObject:v21 forKey:@"libraryPin"];
+    dictionaryRepresentation8 = [(MIPLibraryPin *)libraryPin dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation8 forKey:@"libraryPin"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -589,26 +589,26 @@ LABEL_24:
   v8.receiver = self;
   v8.super_class = MSPMediaSyncOperation;
   v4 = [(MSPMediaSyncOperation *)&v8 description];
-  v5 = [(MSPMediaSyncOperation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MSPMediaSyncOperation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsOperationType:(id)a3
+- (int)StringAsOperationType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Add"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Add"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Update"])
+  else if ([typeCopy isEqualToString:@"Update"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Delete"])
+  else if ([typeCopy isEqualToString:@"Delete"])
   {
     v4 = 3;
   }
@@ -621,16 +621,16 @@ LABEL_24:
   return v4;
 }
 
-- (id)operationTypeAsString:(int)a3
+- (id)operationTypeAsString:(int)string
 {
-  if ((a3 - 1) >= 3)
+  if ((string - 1) >= 3)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_278763AD8[a3 - 1];
+    v4 = off_278763AD8[string - 1];
   }
 
   return v4;

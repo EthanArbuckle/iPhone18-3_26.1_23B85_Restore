@@ -1,19 +1,19 @@
 @interface PAEConcentricShapes
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInfo:(id *)a4;
-- (BOOL)frameSetup:(id *)a3 hardware:(BOOL *)a4 software:(BOOL *)a5;
-- (BOOL)parameterChanged:(unsigned int)a3;
-- (PAEConcentricShapes)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInfo:(id *)info;
+- (BOOL)frameSetup:(id *)setup hardware:(BOOL *)hardware software:(BOOL *)software;
+- (BOOL)parameterChanged:(unsigned int)changed;
+- (PAEConcentricShapes)initWithAPIManager:(id)manager;
 - (id)properties;
 @end
 
 @implementation PAEConcentricShapes
 
-- (PAEConcentricShapes)initWithAPIManager:(id)a3
+- (PAEConcentricShapes)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEConcentricShapes;
-  result = [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  result = [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
   if (result)
   {
     result->_lastWidth = 0.0;
@@ -53,7 +53,7 @@
   v6 = !v5;
   if (!v5)
   {
-    v7 = [v4 versionAtCreation];
+    versionAtCreation = [v4 versionAtCreation];
     v8 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     [v3 startParameterSubGroup:objc_msgSend(v8 parmId:"localizedStringForKey:value:table:" parmFlags:{@"ConcentricCircles::Geometry", 0, 0), 1, 0}];
     v9 = [v8 localizedStringForKey:@"ConcentricCircles::Shape" value:0 table:0];
@@ -64,7 +64,7 @@
     [v3 addPointParameterWithName:objc_msgSend(v8 parmId:"localizedStringForKey:value:table:" defaultX:@"ConcentricCircles::Center" defaultY:0 parmFlags:{0), 5, 0, 0.5, 0.5}];
     [v3 addFloatSliderWithName:objc_msgSend(v8 parmId:"localizedStringForKey:value:table:" defaultValue:@"ConcentricCircles::Inner Cutoff" parameterMin:0 parameterMax:0) sliderMin:17 sliderMax:0 delta:0.0 parmFlags:{0.0, 10000.0, 0.0, 2250.0, 10.0}];
     v10 = [v8 localizedStringForKey:@"ConcentricCircles::Cutoff" value:0 table:0];
-    if (v7)
+    if (versionAtCreation)
     {
       v11 = 4096.0;
     }
@@ -74,7 +74,7 @@
       v11 = 2048.0;
     }
 
-    if (v7)
+    if (versionAtCreation)
     {
       v12 = 4096.0;
     }
@@ -103,7 +103,7 @@
   return v6;
 }
 
-- (BOOL)parameterChanged:(unsigned int)a3
+- (BOOL)parameterChanged:(unsigned int)changed
 {
   v5 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v6 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E448];
@@ -123,7 +123,7 @@
     v9 = v6;
     v23 = *MEMORY[0x277CC08F0];
     v24 = *(MEMORY[0x277CC08F0] + 16);
-    if (a3 == 8)
+    if (changed == 8)
     {
       v21 = 0;
       v22 = 0;
@@ -198,7 +198,7 @@
       goto LABEL_27;
     }
 
-    if (a3 == 2)
+    if (changed == 2)
     {
       v22 = 0;
       [v5 getParameterFlags:&v22 + 4 fromParm:3];
@@ -219,11 +219,11 @@ LABEL_27:
   return v8;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInfo:(id *)a4
+- (BOOL)canThrowRenderOutput:(id)output withInfo:(id *)info
 {
-  self->_lastWidth = [a3 width];
-  self->_lastHeight = [a3 height];
-  self->_lastScale = a4->var4;
+  self->_lastWidth = [output width];
+  self->_lastHeight = [output height];
+  self->_lastScale = info->var4;
   v7 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735E258];
   v8 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735BD98];
   if (v7)
@@ -242,8 +242,8 @@ LABEL_27:
   }
 
   v11 = v8;
-  v12 = [a3 imageType];
-  v13 = [(PAESharedDefaultBase *)self getRenderMode:a4->var0.var1];
+  imageType = [output imageType];
+  v13 = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
   v83[0] = 0;
   v82 = 0uLL;
   v80 = 0.0;
@@ -262,26 +262,26 @@ LABEL_27:
   v67 = 2048.0;
   v68 = 0;
   v66 = 0.0;
-  [v7 getIntValue:v83 fromParm:2 atFxTime:a4->var0.var1];
-  [v7 getIntValue:&v71 fromParm:3 atFxTime:a4->var0.var1];
-  [v7 getFloatValue:&v70 fromParm:4 atFxTime:a4->var0.var1];
-  [v7 getXValue:&v82 YValue:&v82 + 8 fromParm:5 atFxTime:a4->var0.var1];
-  [(PAESharedDefaultBase *)self convertRelativeToPixelCoordinates:&v82 withImage:a3];
+  [v7 getIntValue:v83 fromParm:2 atFxTime:info->var0.var1];
+  [v7 getIntValue:&v71 fromParm:3 atFxTime:info->var0.var1];
+  [v7 getFloatValue:&v70 fromParm:4 atFxTime:info->var0.var1];
+  [v7 getXValue:&v82 YValue:&v82 + 8 fromParm:5 atFxTime:info->var0.var1];
+  [(PAESharedDefaultBase *)self convertRelativeToPixelCoordinates:&v82 withImage:output];
   v82 = v63;
-  [v7 getRedValue:&v81 greenValue:&v80 blueValue:&v79 alphaValue:&v78 fromParm:9 atFxTime:a4->var0.var1];
+  [v7 getRedValue:&v81 greenValue:&v80 blueValue:&v79 alphaValue:&v78 fromParm:9 atFxTime:info->var0.var1];
   v80 = v78 * v80;
   v81 = v78 * v81;
   v79 = v78 * v79;
-  [v7 getRedValue:&v77 greenValue:&v76 blueValue:&v75 alphaValue:&v74 fromParm:10 atFxTime:a4->var0.var1];
+  [v7 getRedValue:&v77 greenValue:&v76 blueValue:&v75 alphaValue:&v74 fromParm:10 atFxTime:info->var0.var1];
   v76 = v74 * v76;
   v77 = v74 * v77;
   v75 = v74 * v75;
-  [v7 getFloatValue:&v73 fromParm:13 atFxTime:a4->var0.var1];
+  [v7 getFloatValue:&v73 fromParm:13 atFxTime:info->var0.var1];
   v14 = v73;
-  [v7 getFloatValue:&v72 fromParm:14 atFxTime:a4->var0.var1];
+  [v7 getFloatValue:&v72 fromParm:14 atFxTime:info->var0.var1];
   v72 = 1.0 / (1.0 - fmin(log10(v72 * 10.0), 0.999999999));
-  [v7 getIntValue:&v68 + 4 fromParm:8 atFxTime:a4->var0.var1];
-  [v7 getFloatValue:&v69 fromParm:15 atFxTime:a4->var0.var1];
+  [v7 getIntValue:&v68 + 4 fromParm:8 atFxTime:info->var0.var1];
+  [v7 getFloatValue:&v69 fromParm:15 atFxTime:info->var0.var1];
   v15 = v69;
   v16 = -v69;
   v69 = -v69;
@@ -313,7 +313,7 @@ LABEL_27:
     v24 = HGObject::operator new(0x80uLL);
     *&v25 = HGBitmap::HGBitmap(v24, v21, v23, 29).n128_u64[0];
     v26 = *(v24 + 10);
-    [v11 getGradientSamples:v26 numSamples:256 depth:4 fromParm:11 atFxTime:{a4->var0.var1, v25}];
+    [v11 getGradientSamples:v26 numSamples:256 depth:4 fromParm:11 atFxTime:{info->var0.var1, v25}];
     v27 = (v26 + 8);
     v28 = 256;
     do
@@ -338,12 +338,12 @@ LABEL_27:
   }
 
 LABEL_18:
-  [v7 getIntValue:&v68 fromParm:12 atFxTime:a4->var0.var1];
-  [v7 getFloatValue:&v67 fromParm:16 atFxTime:a4->var0.var1];
-  [v7 getFloatValue:&v66 fromParm:17 atFxTime:a4->var0.var1];
+  [v7 getIntValue:&v68 fromParm:12 atFxTime:info->var0.var1];
+  [v7 getFloatValue:&v67 fromParm:16 atFxTime:info->var0.var1];
+  [v7 getFloatValue:&v66 fromParm:17 atFxTime:info->var0.var1];
   if (v13)
   {
-    v33 = v12 == 3;
+    v33 = imageType == 3;
   }
 
   else
@@ -402,7 +402,7 @@ LABEL_18:
       }
     }
 
-    [(PAESharedDefaultBase *)self getInversePixelTransformForImage:a3];
+    [(PAESharedDefaultBase *)self getInversePixelTransformForImage:output];
     v38 = *&v82;
     v39 = *(&v82 + 1);
     (*(*v36 + 96))(v36, 0, v38, v39, 0.0, 0.0);
@@ -438,7 +438,7 @@ LABEL_18:
     (*(*v36 + 96))(v36, HIDWORD(v62), v59, 0.0, 0.0, 0.0);
     v60 = v66;
     (*(*v36 + 96))(v36, v62, v60, 0.0, 0.0, 0.0);
-    [a3 setHeliumRef:&v65];
+    [output setHeliumRef:&v65];
     if (v65)
     {
       (*(*v65 + 24))(v65);
@@ -453,14 +453,14 @@ LABEL_18:
   return v10;
 }
 
-- (BOOL)frameSetup:(id *)a3 hardware:(BOOL *)a4 software:(BOOL *)a5
+- (BOOL)frameSetup:(id *)setup hardware:(BOOL *)hardware software:(BOOL *)software
 {
-  *a5 = 0;
-  *a4 = 0;
-  v5 = *&a3->var2;
-  v7[0] = *&a3->var0.var0;
+  *software = 0;
+  *hardware = 0;
+  v5 = *&setup->var2;
+  v7[0] = *&setup->var0.var0;
   v7[1] = v5;
-  v7[2] = *&a3->var4;
+  v7[2] = *&setup->var4;
   [PAESharedDefaultBase overrideFrameSetupForRenderMode:"overrideFrameSetupForRenderMode:hardware:software:" hardware:v7 software:?];
   return 1;
 }

@@ -1,23 +1,23 @@
 @interface _ICQDynamicUISpecification
-- (_ICQDynamicUISpecification)initWithRouteURL:(id)a3 pageContentsURL:(id)a4 attributionSuffix:(id)a5;
+- (_ICQDynamicUISpecification)initWithRouteURL:(id)l pageContentsURL:(id)rL attributionSuffix:(id)suffix;
 @end
 
 @implementation _ICQDynamicUISpecification
 
-- (_ICQDynamicUISpecification)initWithRouteURL:(id)a3 pageContentsURL:(id)a4 attributionSuffix:(id)a5
+- (_ICQDynamicUISpecification)initWithRouteURL:(id)l pageContentsURL:(id)rL attributionSuffix:(id)suffix
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  suffixCopy = suffix;
   v15.receiver = self;
   v15.super_class = _ICQDynamicUISpecification;
   v12 = [(_ICQDynamicUISpecification *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_routeURL, a3);
-    objc_storeStrong(&v13->_pageContentsURL, a4);
-    objc_storeStrong(&v13->_attributionSuffix, a5);
+    objc_storeStrong(&v12->_routeURL, l);
+    objc_storeStrong(&v13->_pageContentsURL, rL);
+    objc_storeStrong(&v13->_attributionSuffix, suffix);
   }
 
   return v13;

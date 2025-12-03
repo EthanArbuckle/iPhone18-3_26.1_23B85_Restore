@@ -1,26 +1,26 @@
 @interface MSDFMHSession
-- (void)authenticate:(id)a3 forTask:(id)a4 completion:(id)a5;
+- (void)authenticate:(id)authenticate forTask:(id)task completion:(id)completion;
 @end
 
 @implementation MSDFMHSession
 
-- (void)authenticate:(id)a3 forTask:(id)a4 completion:(id)a5
+- (void)authenticate:(id)authenticate forTask:(id)task completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  authenticateCopy = authenticate;
+  taskCopy = task;
+  completionCopy = completion;
   if (os_variant_has_internal_content())
   {
-    v10 = [v8 info];
-    v11 = [(MSDSessionFMHTrustEvaluate *)v10 fmhURLOverride];
+    info = [taskCopy info];
+    fmhURLOverride = [(MSDSessionFMHTrustEvaluate *)info fmhURLOverride];
 
-    if (v11)
+    if (fmhURLOverride)
     {
-      v12 = [v7 protectionSpace];
-      v13 = [v12 host];
-      v14 = [(MSDSessionFMHTrustEvaluate *)v10 fmhURLOverride];
-      v15 = [v14 host];
-      v16 = [v13 isEqualToString:v15];
+      protectionSpace = [authenticateCopy protectionSpace];
+      host = [protectionSpace host];
+      fmhURLOverride2 = [(MSDSessionFMHTrustEvaluate *)info fmhURLOverride];
+      host2 = [fmhURLOverride2 host];
+      v16 = [host isEqualToString:host2];
 
       if (v16)
       {
@@ -29,27 +29,27 @@
     }
   }
 
-  v10 = objc_alloc_init(MSDSessionFMHTrustEvaluate);
-  v17 = [v7 protectionSpace];
-  v18 = -[MSDSessionFMHTrustEvaluate trustServer:isRedirect:](v10, "trustServer:isRedirect:", [v17 serverTrust], objc_msgSend(v8, "redirected"));
+  info = objc_alloc_init(MSDSessionFMHTrustEvaluate);
+  protectionSpace2 = [authenticateCopy protectionSpace];
+  v18 = -[MSDSessionFMHTrustEvaluate trustServer:isRedirect:](info, "trustServer:isRedirect:", [protectionSpace2 serverTrust], objc_msgSend(taskCopy, "redirected"));
 
   if (v18)
   {
 LABEL_6:
-    v19 = [v7 protectionSpace];
-    v20 = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [v19 serverTrust]);
+    protectionSpace3 = [authenticateCopy protectionSpace];
+    v20 = +[NSURLCredential credentialForTrust:](NSURLCredential, "credentialForTrust:", [protectionSpace3 serverTrust]);
 
-    v9[2](v9, 0, v20);
+    completionCopy[2](completionCopy, 0, v20);
     goto LABEL_10;
   }
 
   v21 = sub_100063A54();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
   {
-    sub_1000CC3FC(v8, v21);
+    sub_1000CC3FC(taskCopy, v21);
   }
 
-  v9[2](v9, 2, 0);
+  completionCopy[2](completionCopy, 2, 0);
 LABEL_10:
 }
 

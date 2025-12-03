@@ -1,14 +1,14 @@
 @interface WFLink
-+ (id)linkWithNode:(_xmlNode *)a3;
++ (id)linkWithNode:(_xmlNode *)node;
 - (id)url;
 - (void)dealloc;
 @end
 
 @implementation WFLink
 
-+ (id)linkWithNode:(_xmlNode *)a3
++ (id)linkWithNode:(_xmlNode *)node
 {
-  v3 = [[a1 alloc] initWithNode:a3];
+  v3 = [[self alloc] initWithNode:node];
 
   return v3;
 }

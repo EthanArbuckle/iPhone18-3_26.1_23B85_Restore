@@ -1,34 +1,34 @@
 @interface VKEVChargeStationRouteWaypoint
 - (GEOComposedRouteEVChargingStationInfo)chargeInfo;
-- (VKEVChargeStationRouteWaypoint)initWithWaypoint:(id)a3 displayInfo:(id)a4 legIndex:(unint64_t)a5 routeCoordinate:(id)a6 adjacentRouteCoordinate:(id)a7 polylineCoordinate:(PolylineCoordinate)a8;
-- (void)setChargeTimeText:(id)a3;
+- (VKEVChargeStationRouteWaypoint)initWithWaypoint:(id)waypoint displayInfo:(id)info legIndex:(unint64_t)index routeCoordinate:(id)coordinate adjacentRouteCoordinate:(id)routeCoordinate polylineCoordinate:(PolylineCoordinate)polylineCoordinate;
+- (void)setChargeTimeText:(id)text;
 @end
 
 @implementation VKEVChargeStationRouteWaypoint
 
 - (GEOComposedRouteEVChargingStationInfo)chargeInfo
 {
-  v2 = [(VKRouteWaypointInfo *)self waypoint];
-  v3 = [v2 chargingInfo];
+  waypoint = [(VKRouteWaypointInfo *)self waypoint];
+  chargingInfo = [waypoint chargingInfo];
 
-  return v3;
+  return chargingInfo;
 }
 
-- (void)setChargeTimeText:(id)a3
+- (void)setChargeTimeText:(id)text
 {
-  v5 = a3;
+  textCopy = text;
   if (![(NSString *)self->_chargeTimeText isEqualToString:?])
   {
-    objc_storeStrong(&self->_chargeTimeText, a3);
+    objc_storeStrong(&self->_chargeTimeText, text);
     [(VKRouteWaypointInfo *)self setNeedsTextUpdate:1];
   }
 }
 
-- (VKEVChargeStationRouteWaypoint)initWithWaypoint:(id)a3 displayInfo:(id)a4 legIndex:(unint64_t)a5 routeCoordinate:(id)a6 adjacentRouteCoordinate:(id)a7 polylineCoordinate:(PolylineCoordinate)a8
+- (VKEVChargeStationRouteWaypoint)initWithWaypoint:(id)waypoint displayInfo:(id)info legIndex:(unint64_t)index routeCoordinate:(id)coordinate adjacentRouteCoordinate:(id)routeCoordinate polylineCoordinate:(PolylineCoordinate)polylineCoordinate
 {
   v12.receiver = self;
   v12.super_class = VKEVChargeStationRouteWaypoint;
-  v8 = [(VKRouteWaypointInfo *)&v12 initWithWaypoint:a3 displayInfo:a4 legIndex:a5 routeCoordinate:a8 adjacentRouteCoordinate:2 polylineCoordinate:a6.var0 waypointType:a6.var1, a6.var2, a7.var0, a7.var1, a7.var2];
+  v8 = [(VKRouteWaypointInfo *)&v12 initWithWaypoint:waypoint displayInfo:info legIndex:index routeCoordinate:polylineCoordinate adjacentRouteCoordinate:2 polylineCoordinate:coordinate.var0 waypointType:coordinate.var1, coordinate.var2, routeCoordinate.var0, routeCoordinate.var1, routeCoordinate.var2];
   v9 = v8;
   if (v8)
   {

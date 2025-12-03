@@ -1,40 +1,40 @@
 @interface PKTransactionHistoryTransactionGroupHeaderCell
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKTransactionHistoryTransactionGroupHeaderCell)initWithFrame:(CGRect)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKTransactionHistoryTransactionGroupHeaderCell)initWithFrame:(CGRect)frame;
 - (void)_setupImageView;
 - (void)_updateImageViewDynamicColors;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3 animated:(BOOL)a4;
-- (void)setStrokeImage:(BOOL)a3;
-- (void)setSubtitle:(id)a3;
-- (void)setTitle:(id)a3;
-- (void)setUseShadows:(BOOL)a3;
+- (void)setImage:(id)image animated:(BOOL)animated;
+- (void)setStrokeImage:(BOOL)image;
+- (void)setSubtitle:(id)subtitle;
+- (void)setTitle:(id)title;
+- (void)setUseShadows:(BOOL)shadows;
 @end
 
 @implementation PKTransactionHistoryTransactionGroupHeaderCell
 
-- (PKTransactionHistoryTransactionGroupHeaderCell)initWithFrame:(CGRect)a3
+- (PKTransactionHistoryTransactionGroupHeaderCell)initWithFrame:(CGRect)frame
 {
   v23.receiver = self;
   v23.super_class = PKTransactionHistoryTransactionGroupHeaderCell;
-  v3 = [(PKDashboardCollectionViewCell *)&v23 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKDashboardCollectionViewCell *)&v23 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(PKDashboardCollectionViewCell *)v3 setWantsCustomAppearance:1];
-    v5 = [(PKTransactionHistoryTransactionGroupHeaderCell *)v4 contentView];
+    contentView = [(PKTransactionHistoryTransactionGroupHeaderCell *)v4 contentView];
     v6 = objc_alloc_init(MEMORY[0x1E69DD250]);
     imageBackgroundView = v4->_imageBackgroundView;
     v4->_imageBackgroundView = v6;
 
-    [v5 addSubview:v4->_imageBackgroundView];
+    [contentView addSubview:v4->_imageBackgroundView];
     v8 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
     imageView = v4->_imageView;
     v4->_imageView = v8;
 
     [(PKTransactionHistoryTransactionGroupHeaderCell *)v4 _setupImageView];
-    [v5 addSubview:v4->_imageView];
+    [contentView addSubview:v4->_imageView];
     v10 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     titleLabel = v4->_titleLabel;
     v4->_titleLabel = v10;
@@ -43,10 +43,10 @@
     [(UILabel *)v4->_titleLabel setNumberOfLines:2];
     [(UILabel *)v4->_titleLabel setTextAlignment:1];
     v12 = v4->_titleLabel;
-    v13 = [MEMORY[0x1E69DC888] labelColor];
-    [(UILabel *)v12 setTextColor:v13];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    [(UILabel *)v12 setTextColor:labelColor];
 
-    [v5 addSubview:v4->_titleLabel];
+    [contentView addSubview:v4->_titleLabel];
     v14 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     subtitleLabel = v4->_subtitleLabel;
     v4->_subtitleLabel = v14;
@@ -58,12 +58,12 @@
     [(UILabel *)v16 setFont:v17];
 
     v18 = v4->_subtitleLabel;
-    v19 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v18 setTextColor:v19];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v18 setTextColor:secondaryLabelColor];
 
-    [v5 addSubview:v4->_subtitleLabel];
-    v20 = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
-    v21 = [(PKTransactionHistoryTransactionGroupHeaderCell *)v4 registerForTraitChanges:v20 withHandler:&__block_literal_global_100];
+    [contentView addSubview:v4->_subtitleLabel];
+    systemTraitsAffectingColorAppearance = [MEMORY[0x1E69DD1B8] systemTraitsAffectingColorAppearance];
+    v21 = [(PKTransactionHistoryTransactionGroupHeaderCell *)v4 registerForTraitChanges:systemTraitsAffectingColorAppearance withHandler:&__block_literal_global_100];
   }
 
   return v4;
@@ -74,20 +74,20 @@
   v4.receiver = self;
   v4.super_class = PKTransactionHistoryTransactionGroupHeaderCell;
   [(PKDashboardCollectionViewCell *)&v4 layoutSubviews];
-  v3 = [(PKTransactionHistoryTransactionGroupHeaderCell *)self contentView];
-  [v3 bounds];
+  contentView = [(PKTransactionHistoryTransactionGroupHeaderCell *)self contentView];
+  [contentView bounds];
   [(PKTransactionHistoryTransactionGroupHeaderCell *)self _layoutWithBounds:?];
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(PKTransactionHistoryTransactionGroupHeaderCell *)self _shouldReverseLayoutDirection];
-  v8 = [(UILabel *)self->_subtitleLabel text];
-  if ([v8 length])
+  text = [(UILabel *)self->_subtitleLabel text];
+  if ([text length])
   {
 
     memset(&v39, 0, sizeof(v39));
@@ -98,18 +98,18 @@
 
   else
   {
-    v12 = [(UIImageView *)self->_imageView image];
+    image = [(UIImageView *)self->_imageView image];
 
     memset(&v39, 0, sizeof(v39));
     v10 = -18.0;
     v11 = 18.0;
-    if (!v12)
+    if (!image)
     {
       v11 = 5.0;
       v10 = -5.0;
     }
 
-    v9 = v12 != 0;
+    v9 = image != 0;
   }
 
   v13 = y + v11;
@@ -195,10 +195,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   self->_isTemplateLayout = 1;
-  [(PKTransactionHistoryTransactionGroupHeaderCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, 3.40282347e38];
+  [(PKTransactionHistoryTransactionGroupHeaderCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, 3.40282347e38];
   self->_isTemplateLayout = 0;
   result.height = v5;
   result.width = v4;
@@ -207,13 +207,13 @@
 
 - (void)_updateImageViewDynamicColors
 {
-  v3 = [(PKTransactionHistoryTransactionGroupHeaderCell *)self traitCollection];
+  traitCollection = [(PKTransactionHistoryTransactionGroupHeaderCell *)self traitCollection];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __79__PKTransactionHistoryTransactionGroupHeaderCell__updateImageViewDynamicColors__block_invoke;
   v4[3] = &unk_1E8010970;
   v4[4] = self;
-  PKUIPerformWithEffectiveTraitCollection(v3, v4);
+  PKUIPerformWithEffectiveTraitCollection(traitCollection, v4);
 }
 
 void __79__PKTransactionHistoryTransactionGroupHeaderCell__updateImageViewDynamicColors__block_invoke(uint64_t a1)
@@ -223,30 +223,30 @@ void __79__PKTransactionHistoryTransactionGroupHeaderCell__updateImageViewDynami
   [v2 setBorderColor:{objc_msgSend(v1, "CGColor")}];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  [(UILabel *)self->_titleLabel setText:a3];
+  [(UILabel *)self->_titleLabel setText:title];
 
   [(PKTransactionHistoryTransactionGroupHeaderCell *)self setNeedsLayout];
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  [(UILabel *)self->_subtitleLabel setText:a3];
+  [(UILabel *)self->_subtitleLabel setText:subtitle];
 
   [(PKTransactionHistoryTransactionGroupHeaderCell *)self setNeedsLayout];
 }
 
-- (void)setUseShadows:(BOOL)a3
+- (void)setUseShadows:(BOOL)shadows
 {
-  if (self->_useShadows == !a3)
+  if (self->_useShadows == !shadows)
   {
-    v4 = a3;
-    self->_useShadows = a3;
-    v5 = [(UIView *)self->_imageBackgroundView layer];
-    v9 = v5;
+    shadowsCopy = shadows;
+    self->_useShadows = shadows;
+    layer = [(UIView *)self->_imageBackgroundView layer];
+    v9 = layer;
     v6 = 0.0;
-    if (v4)
+    if (shadowsCopy)
     {
       v6 = 20.0;
       v7 = 0.15;
@@ -257,32 +257,32 @@ void __79__PKTransactionHistoryTransactionGroupHeaderCell__updateImageViewDynami
       v7 = 0.0;
     }
 
-    [v5 setShadowRadius:v6];
+    [layer setShadowRadius:v6];
     *&v8 = v7;
     [v9 setShadowOpacity:v8];
   }
 }
 
-- (void)setImage:(id)a3 animated:(BOOL)a4
+- (void)setImage:(id)image animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_image != v7)
+  animatedCopy = animated;
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    objc_storeStrong(&self->_image, a3);
+    objc_storeStrong(&self->_image, image);
     imageView = self->_imageView;
     if (!self->_image)
     {
-      v14 = [(UIImageView *)imageView superview];
-      if (v14)
+      superview = [(UIImageView *)imageView superview];
+      if (superview)
       {
       }
 
       else
       {
-        v24 = [(UIView *)self->_imageBackgroundView superview];
+        superview2 = [(UIView *)self->_imageBackgroundView superview];
 
-        if (!v24)
+        if (!superview2)
         {
           goto LABEL_21;
         }
@@ -296,7 +296,7 @@ void __79__PKTransactionHistoryTransactionGroupHeaderCell__updateImageViewDynami
 
     if (imageView)
     {
-      if (v4)
+      if (animatedCopy)
       {
         v9 = imageView;
         v10 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:self->_image];
@@ -318,17 +318,17 @@ void __79__PKTransactionHistoryTransactionGroupHeaderCell__updateImageViewDynami
         v25[2] = __68__PKTransactionHistoryTransactionGroupHeaderCell_setImage_animated___block_invoke_2;
         v25[3] = &unk_1E8011D28;
         v26 = v28;
-        v13 = v28;
+        image = v28;
         [v12 pkui_animateUsingOptions:4 animations:v27 completion:v25];
       }
 
       else
       {
-        v13 = [(UIImageView *)imageView image];
+        image = [(UIImageView *)imageView image];
         [(UIImageView *)self->_imageView setImage:self->_image];
-        v17 = [(UIImageView *)self->_imageView image];
+        image2 = [(UIImageView *)self->_imageView image];
 
-        if (v17 == v13)
+        if (image2 == image)
         {
           [(UIImageView *)self->_imageView removeFromSuperview];
           v18 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:self->_image];
@@ -349,20 +349,20 @@ void __79__PKTransactionHistoryTransactionGroupHeaderCell__updateImageViewDynami
       [(PKTransactionHistoryTransactionGroupHeaderCell *)self _setupImageView];
     }
 
-    v20 = [(UIImageView *)self->_imageView superview];
+    superview3 = [(UIImageView *)self->_imageView superview];
 
-    if (!v20)
+    if (!superview3)
     {
-      v21 = [(PKTransactionHistoryTransactionGroupHeaderCell *)self contentView];
-      [v21 addSubview:self->_imageView];
+      contentView = [(PKTransactionHistoryTransactionGroupHeaderCell *)self contentView];
+      [contentView addSubview:self->_imageView];
     }
 
-    v22 = [(UIView *)self->_imageBackgroundView superview];
+    superview4 = [(UIView *)self->_imageBackgroundView superview];
 
-    if (!v22)
+    if (!superview4)
     {
-      v23 = [(PKTransactionHistoryTransactionGroupHeaderCell *)self contentView];
-      [v23 insertSubview:self->_imageBackgroundView below:self->_imageView];
+      contentView2 = [(PKTransactionHistoryTransactionGroupHeaderCell *)self contentView];
+      [contentView2 insertSubview:self->_imageBackgroundView below:self->_imageView];
 
 LABEL_18:
       [(PKTransactionHistoryTransactionGroupHeaderCell *)self setNeedsLayout];
@@ -370,7 +370,7 @@ LABEL_18:
       goto LABEL_21;
     }
 
-    if (!v20)
+    if (!superview3)
     {
       goto LABEL_18;
     }
@@ -392,14 +392,14 @@ uint64_t __68__PKTransactionHistoryTransactionGroupHeaderCell_setImage_animated_
   [(UIImageView *)self->_imageView setContentMode:1];
   [(UIImageView *)self->_imageView setClipsToBounds:1];
   [(UIImageView *)self->_imageView _setContinuousCornerRadius:8.0];
-  v3 = [(UIImageView *)self->_imageView layer];
+  layer = [(UIImageView *)self->_imageView layer];
   v4 = 0.0;
   if (self->_strokeImage)
   {
     v4 = PKUIPixelLength();
   }
 
-  [v3 setBorderWidth:v4];
+  [layer setBorderWidth:v4];
 
   [(PKTransactionHistoryTransactionGroupHeaderCell *)self _updateImageViewDynamicColors];
   imageBackgroundView = self->_imageBackgroundView;
@@ -407,22 +407,22 @@ uint64_t __68__PKTransactionHistoryTransactionGroupHeaderCell_setImage_animated_
   [(UIView *)imageBackgroundView _setContinuousCornerRadius:8.0];
 }
 
-- (void)setStrokeImage:(BOOL)a3
+- (void)setStrokeImage:(BOOL)image
 {
-  if (self->_strokeImage == !a3)
+  if (self->_strokeImage == !image)
   {
-    self->_strokeImage = a3;
+    self->_strokeImage = image;
     imageView = self->_imageView;
     if (imageView)
     {
-      v6 = [(UIImageView *)imageView layer];
+      layer = [(UIImageView *)imageView layer];
       v5 = 0.0;
       if (self->_strokeImage)
       {
         v5 = PKUIPixelLength();
       }
 
-      [v6 setBorderWidth:v5];
+      [layer setBorderWidth:v5];
     }
   }
 }

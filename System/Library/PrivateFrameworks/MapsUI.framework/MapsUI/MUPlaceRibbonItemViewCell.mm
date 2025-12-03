@@ -1,5 +1,5 @@
 @interface MUPlaceRibbonItemViewCell
-- (MUPlaceRibbonItemViewCell)initWithFrame:(CGRect)a3;
+- (MUPlaceRibbonItemViewCell)initWithFrame:(CGRect)frame;
 - (void)_setupItemView;
 @end
 
@@ -12,21 +12,21 @@
   itemView = self->_itemView;
   self->_itemView = v4;
 
-  v6 = [(MUPlaceRibbonItemViewCell *)self contentView];
-  [v6 addSubview:self->_itemView];
+  contentView = [(MUPlaceRibbonItemViewCell *)self contentView];
+  [contentView addSubview:self->_itemView];
 
   v7 = [MUEdgeLayout alloc];
   v8 = self->_itemView;
-  v10 = [(MUPlaceRibbonItemViewCell *)self contentView];
-  v9 = [(MUEdgeLayout *)v7 initWithItem:v8 container:v10];
+  contentView2 = [(MUPlaceRibbonItemViewCell *)self contentView];
+  v9 = [(MUEdgeLayout *)v7 initWithItem:v8 container:contentView2];
   [(MUConstraintLayout *)v9 activate];
 }
 
-- (MUPlaceRibbonItemViewCell)initWithFrame:(CGRect)a3
+- (MUPlaceRibbonItemViewCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = MUPlaceRibbonItemViewCell;
-  v3 = [(MUPlaceRibbonItemViewCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MUPlaceRibbonItemViewCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

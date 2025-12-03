@@ -8,8 +8,8 @@
 - (id)_cs_xpcObject
 {
   v13 = *MEMORY[0x1E69E9840];
-  v2 = [a1 objCType];
-  if (!v2)
+  objCType = [self objCType];
+  if (!objCType)
   {
     v6 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -25,25 +25,25 @@ LABEL_7:
     goto LABEL_13;
   }
 
-  v3 = *v2;
+  v3 = *objCType;
   v4 = v3 - 67;
   if ((v3 - 67) <= 0x30)
   {
     if (((1 << v4) & 0x14241) != 0)
     {
-      v5 = xpc_uint64_create([a1 unsignedLongLongValue]);
+      v5 = xpc_uint64_create([self unsignedLongLongValue]);
       goto LABEL_13;
     }
 
     if (((1 << v4) & 0x1424100000000) != 0)
     {
-      v5 = xpc_int64_create([a1 longLongValue]);
+      v5 = xpc_int64_create([self longLongValue]);
       goto LABEL_13;
     }
 
     if (((1 << v4) & 0xA00000000) != 0)
     {
-      [a1 doubleValue];
+      [self doubleValue];
       v5 = xpc_double_create(v7);
       goto LABEL_13;
     }
@@ -65,7 +65,7 @@ LABEL_19:
     goto LABEL_7;
   }
 
-  v5 = xpc_BOOL_create([a1 BOOLValue]);
+  v5 = xpc_BOOL_create([self BOOLValue]);
 LABEL_13:
   v8 = *MEMORY[0x1E69E9840];
 
@@ -96,17 +96,17 @@ LABEL_9:
   v6 = MEMORY[0x1E12BAC70](v4);
   if (v6 == MEMORY[0x1E69E9E58])
   {
-    v10 = [a1 initWithBool:xpc_BOOL_get_value(v5)];
+    v10 = [self initWithBool:xpc_BOOL_get_value(v5)];
   }
 
   else if (v6 == MEMORY[0x1E69E9E88])
   {
-    v10 = [a1 initWithDouble:xpc_double_get_value(v5)];
+    v10 = [self initWithDouble:xpc_double_get_value(v5)];
   }
 
   else if (v6 == MEMORY[0x1E69E9EB0])
   {
-    v10 = [a1 initWithLongLong:xpc_int64_get_value(v5)];
+    v10 = [self initWithLongLong:xpc_int64_get_value(v5)];
   }
 
   else
@@ -127,7 +127,7 @@ LABEL_19:
       goto LABEL_9;
     }
 
-    v10 = [a1 initWithUnsignedLongLong:xpc_uint64_get_value(v5)];
+    v10 = [self initWithUnsignedLongLong:xpc_uint64_get_value(v5)];
   }
 
   v9 = v10;

@@ -1,13 +1,13 @@
 @interface _FPDExtensionRequestRecord
 - (FPXPCAutomaticErrorProxy)proxy;
-- (_FPDExtensionRequestRecord)initWithSelector:(SEL)a3 proxy:(id)a4 timeout:(double)a5 queue:(id)a6 log:(id)a7 timeoutHandler:(id)a8;
+- (_FPDExtensionRequestRecord)initWithSelector:(SEL)selector proxy:(id)proxy timeout:(double)timeout queue:(id)queue log:(id)log timeoutHandler:(id)handler;
 - (const)_timeoutExpirationState;
 - (id)description;
 - (void)_handleTimeout;
 - (void)_setupProgressTimer;
-- (void)_setupTimer:(double)a3;
+- (void)_setupTimer:(double)timer;
 - (void)cancelTimeout;
-- (void)monitorProgress:(id)a3;
+- (void)monitorProgress:(id)progress;
 @end
 
 @implementation _FPDExtensionRequestRecord
@@ -46,53 +46,53 @@
   return WeakRetained;
 }
 
-- (_FPDExtensionRequestRecord)initWithSelector:(SEL)a3 proxy:(id)a4 timeout:(double)a5 queue:(id)a6 log:(id)a7 timeoutHandler:(id)a8
+- (_FPDExtensionRequestRecord)initWithSelector:(SEL)selector proxy:(id)proxy timeout:(double)timeout queue:(id)queue log:(id)log timeoutHandler:(id)handler
 {
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  proxyCopy = proxy;
+  queueCopy = queue;
+  logCopy = log;
+  handlerCopy = handler;
   v26.receiver = self;
   v26.super_class = _FPDExtensionRequestRecord;
   v18 = [(_FPDExtensionRequestRecord *)&v26 init];
   v19 = v18;
   if (v18)
   {
-    if (a3)
+    if (selector)
     {
-      v20 = a3;
+      selectorCopy = selector;
     }
 
     else
     {
-      v20 = 0;
+      selectorCopy = 0;
     }
 
-    v18->_selector = v20;
-    objc_storeWeak(&v18->_proxy, v14);
-    if (a5 > 0.0)
+    v18->_selector = selectorCopy;
+    objc_storeWeak(&v18->_proxy, proxyCopy);
+    if (timeout > 0.0)
     {
-      v21 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:a5];
+      v21 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSinceNow:timeout];
       timeout = v19->_timeout;
       v19->_timeout = v21;
     }
 
-    objc_storeStrong(&v19->_queue, a6);
-    objc_storeStrong(&v19->_log, a7);
-    v23 = _Block_copy(v17);
+    objc_storeStrong(&v19->_queue, queue);
+    objc_storeStrong(&v19->_log, log);
+    v23 = _Block_copy(handlerCopy);
     handler = v19->_handler;
     v19->_handler = v23;
 
-    [(_FPDExtensionRequestRecord *)v19 _setupTimer:a5];
+    [(_FPDExtensionRequestRecord *)v19 _setupTimer:timeout];
   }
 
   return v19;
 }
 
-- (void)monitorProgress:(id)a3
+- (void)monitorProgress:(id)progress
 {
-  v4 = a3;
-  v5 = v4;
+  progressCopy = progress;
+  v5 = progressCopy;
   if (self->_timeout)
   {
     queue = self->_queue;
@@ -101,7 +101,7 @@
     v7[2] = __46___FPDExtensionRequestRecord_monitorProgress___block_invoke;
     v7[3] = &unk_1E83BE158;
     v7[4] = self;
-    v8 = v4;
+    v8 = progressCopy;
     dispatch_async(queue, v7);
   }
 }
@@ -114,28 +114,28 @@
   v1 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_setupTimer:(double)a3
+- (void)_setupTimer:(double)timer
 {
   if (!self->_handler)
   {
-    v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[ASSERT] ‼️ setting up timer without a timeout handler", a3];
+    timer = [MEMORY[0x1E696AEC0] stringWithFormat:@"[ASSERT] ‼️ setting up timer without a timeout handler", timer];
     v14 = fp_current_or_default_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_FAULT))
     {
       __103__FPDDomainExtensionBackend_startProvidingItemAtURL_readerID_readingOptions_request_completionHandler___block_invoke_2_259_cold_5();
     }
 
-    __assert_rtn("-[_FPDExtensionRequestRecord _setupTimer:]", "/Library/Caches/com.apple.xbs/Sources/FileProviderTools/fileproviderd/FPDExtensionRequestRecord.m", 116, [v13 UTF8String]);
+    __assert_rtn("-[_FPDExtensionRequestRecord _setupTimer:]", "/Library/Caches/com.apple.xbs/Sources/FileProviderTools/fileproviderd/FPDExtensionRequestRecord.m", 116, [timer UTF8String]);
   }
 
-  if (a3 > 0.0)
+  if (timer > 0.0)
   {
     v5 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, self->_queue);
     timer = self->_timer;
     self->_timer = v5;
 
     v7 = self->_timer;
-    v8 = dispatch_time(0, (a3 * 1000000000.0));
+    v8 = dispatch_time(0, (timer * 1000000000.0));
     dispatch_source_set_timer(v7, v8, 0xFFFFFFFFFFFFFFFFLL, 0);
     v9 = self->_timer;
     dispatch_set_qos_class_fallback();
@@ -215,14 +215,14 @@
   v3 = WeakRetained;
   if (WeakRetained)
   {
-    v4 = [WeakRetained timeoutState];
+    timeoutState = [WeakRetained timeoutState];
     v5 = "not expired";
-    if (v4 == 1)
+    if (timeoutState == 1)
     {
       v5 = "soft expired";
     }
 
-    if (v4 == 2)
+    if (timeoutState == 2)
     {
       v6 = "hard expired";
     }

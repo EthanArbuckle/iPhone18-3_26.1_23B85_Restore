@@ -1,7 +1,7 @@
 @interface SBDeviceStationaryMotionDetector
-+ (int64_t)stateFromTimeSinceLastStationary:(double)a3 timeSinceLastNonStationary:(double)a4 stationaryThreshold:(double)a5 pickUpBuffer:(double)a6;
++ (int64_t)stateFromTimeSinceLastStationary:(double)stationary timeSinceLastNonStationary:(double)nonStationary stationaryThreshold:(double)threshold pickUpBuffer:(double)buffer;
 - (SBDeviceStationaryMotionDetector)init;
-- (void)queryWithStationaryThresholdTime:(double)a3 pickUpBufferTime:(double)a4 callbackOnMainQueue:(id)a5;
+- (void)queryWithStationaryThresholdTime:(double)time pickUpBufferTime:(double)bufferTime callbackOnMainQueue:(id)queue;
 @end
 
 @implementation SBDeviceStationaryMotionDetector
@@ -21,18 +21,18 @@
   return v2;
 }
 
-- (void)queryWithStationaryThresholdTime:(double)a3 pickUpBufferTime:(double)a4 callbackOnMainQueue:(id)a5
+- (void)queryWithStationaryThresholdTime:(double)time pickUpBufferTime:(double)bufferTime callbackOnMainQueue:(id)queue
 {
-  v9 = a5;
-  if (a3 <= 0.0)
+  queueCopy = queue;
+  if (time <= 0.0)
   {
     [SBDeviceStationaryMotionDetector queryWithStationaryThresholdTime:a2 pickUpBufferTime:self callbackOnMainQueue:?];
   }
 
-  if (a4 <= 0.0)
+  if (bufferTime <= 0.0)
   {
     [SBDeviceStationaryMotionDetector queryWithStationaryThresholdTime:a2 pickUpBufferTime:self callbackOnMainQueue:?];
-    if (v9)
+    if (queueCopy)
     {
       goto LABEL_5;
     }
@@ -42,27 +42,27 @@ LABEL_7:
     goto LABEL_5;
   }
 
-  if (!v9)
+  if (!queueCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_5:
   v10 = [MEMORY[0x277CBEAA8] now];
-  v11 = [v10 dateByAddingTimeInterval:-(a3 + a4 + 1.0)];
+  v11 = [v10 dateByAddingTimeInterval:-(time + bufferTime + 1.0)];
   activityManager = self->_activityManager;
-  v13 = [MEMORY[0x277CCABD8] mainQueue];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __106__SBDeviceStationaryMotionDetector_queryWithStationaryThresholdTime_pickUpBufferTime_callbackOnMainQueue___block_invoke;
   v16[3] = &unk_2783B0BA0;
-  v19 = a3;
-  v20 = a4;
+  timeCopy = time;
+  bufferTimeCopy = bufferTime;
   v17 = v10;
-  v18 = v9;
-  v14 = v9;
+  v18 = queueCopy;
+  v14 = queueCopy;
   v15 = v10;
-  [(CMMotionActivityManager *)activityManager queryActivityStartingFromDate:v11 toDate:v15 toQueue:v13 withHandler:v16];
+  [(CMMotionActivityManager *)activityManager queryActivityStartingFromDate:v11 toDate:v15 toQueue:mainQueue withHandler:v16];
 }
 
 void __106__SBDeviceStationaryMotionDetector_queryWithStationaryThresholdTime_pickUpBufferTime_callbackOnMainQueue___block_invoke(uint64_t a1, void *a2)
@@ -179,19 +179,19 @@ LABEL_5:
   (*(*(a1 + 40) + 16))(v15, v14);
 }
 
-+ (int64_t)stateFromTimeSinceLastStationary:(double)a3 timeSinceLastNonStationary:(double)a4 stationaryThreshold:(double)a5 pickUpBuffer:(double)a6
++ (int64_t)stateFromTimeSinceLastStationary:(double)stationary timeSinceLastNonStationary:(double)nonStationary stationaryThreshold:(double)threshold pickUpBuffer:(double)buffer
 {
-  if (a3 == a4)
+  if (stationary == nonStationary)
   {
     return 0;
   }
 
-  if (a4 <= a6)
+  if (nonStationary <= buffer)
   {
     return 1;
   }
 
-  if (a3 >= a5 && a3 < a4)
+  if (stationary >= threshold && stationary < nonStationary)
   {
     return 1;
   }

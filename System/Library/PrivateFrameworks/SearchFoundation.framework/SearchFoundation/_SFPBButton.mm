@@ -1,45 +1,45 @@
 @interface _SFPBButton
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBButton)initWithDictionary:(id)a3;
-- (_SFPBButton)initWithFacade:(id)a3;
-- (_SFPBButton)initWithJSON:(id)a3;
+- (_SFPBButton)initWithDictionary:(id)dictionary;
+- (_SFPBButton)initWithFacade:(id)facade;
+- (_SFPBButton)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBButton
 
-- (_SFPBButton)initWithFacade:(id)a3
+- (_SFPBButton)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBButton *)self init];
   if (v5)
   {
-    v6 = [v4 image];
+    image = [facadeCopy image];
 
-    if (v6)
+    if (image)
     {
       v7 = [_SFPBImage alloc];
-      v8 = [v4 image];
-      v9 = [(_SFPBImage *)v7 initWithFacade:v8];
+      image2 = [facadeCopy image];
+      v9 = [(_SFPBImage *)v7 initWithFacade:image2];
       [(_SFPBButton *)v5 setImage:v9];
     }
 
-    v10 = [v4 selectedImage];
+    selectedImage = [facadeCopy selectedImage];
 
-    if (v10)
+    if (selectedImage)
     {
       v11 = [_SFPBImage alloc];
-      v12 = [v4 selectedImage];
-      v13 = [(_SFPBImage *)v11 initWithFacade:v12];
+      selectedImage2 = [facadeCopy selectedImage];
+      v13 = [(_SFPBImage *)v11 initWithFacade:selectedImage2];
       [(_SFPBButton *)v5 setSelectedImage:v13];
     }
 
-    if ([v4 hasIsSelected])
+    if ([facadeCopy hasIsSelected])
     {
-      -[_SFPBButton setIsSelected:](v5, "setIsSelected:", [v4 isSelected]);
+      -[_SFPBButton setIsSelected:](v5, "setIsSelected:", [facadeCopy isSelected]);
     }
 
     v14 = v5;
@@ -48,15 +48,15 @@
   return v5;
 }
 
-- (_SFPBButton)initWithDictionary:(id)a3
+- (_SFPBButton)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = _SFPBButton;
   v5 = [(_SFPBButton *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"image"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"image"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,7 +64,7 @@
       [(_SFPBButton *)v5 setImage:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"selectedImage"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"selectedImage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,7 +72,7 @@
       [(_SFPBButton *)v5 setSelectedImage:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"isSelected"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"isSelected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,30 +85,30 @@
   return v5;
 }
 
-- (_SFPBButton)initWithJSON:(id)a3
+- (_SFPBButton)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBButton *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBButton *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBButton *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -121,46 +121,46 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_image)
   {
-    v4 = [(_SFPBButton *)self image];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    image = [(_SFPBButton *)self image];
+    dictionaryRepresentation = [image dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"image"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"image"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"image"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"image"];
     }
   }
 
   if (self->_isSelected)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBButton isSelected](self, "isSelected")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isSelected"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isSelected"];
   }
 
   if (self->_selectedImage)
   {
-    v8 = [(_SFPBButton *)self selectedImage];
-    v9 = [v8 dictionaryRepresentation];
-    if (v9)
+    selectedImage = [(_SFPBButton *)self selectedImage];
+    dictionaryRepresentation2 = [selectedImage dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v9 forKeyedSubscript:@"selectedImage"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"selectedImage"];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v10 forKeyedSubscript:@"selectedImage"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"selectedImage"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -176,28 +176,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBButton *)self image];
-  v6 = [v4 image];
-  if ((v5 != 0) == (v6 == 0))
+  image = [(_SFPBButton *)self image];
+  image2 = [equalCopy image];
+  if ((image != 0) == (image2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBButton *)self image];
-  if (v7)
+  image3 = [(_SFPBButton *)self image];
+  if (image3)
   {
-    v8 = v7;
-    v9 = [(_SFPBButton *)self image];
-    v10 = [v4 image];
-    v11 = [v9 isEqual:v10];
+    v8 = image3;
+    image4 = [(_SFPBButton *)self image];
+    image5 = [equalCopy image];
+    v11 = [image4 isEqual:image5];
 
     if (!v11)
     {
@@ -209,24 +209,24 @@
   {
   }
 
-  v5 = [(_SFPBButton *)self selectedImage];
-  v6 = [v4 selectedImage];
-  if ((v5 != 0) != (v6 == 0))
+  image = [(_SFPBButton *)self selectedImage];
+  image2 = [equalCopy selectedImage];
+  if ((image != 0) != (image2 == 0))
   {
-    v12 = [(_SFPBButton *)self selectedImage];
-    if (!v12)
+    selectedImage = [(_SFPBButton *)self selectedImage];
+    if (!selectedImage)
     {
 
 LABEL_15:
       isSelected = self->_isSelected;
-      v17 = isSelected == [v4 isSelected];
+      v17 = isSelected == [equalCopy isSelected];
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBButton *)self selectedImage];
-    v15 = [v4 selectedImage];
-    v16 = [v14 isEqual:v15];
+    v13 = selectedImage;
+    selectedImage2 = [(_SFPBButton *)self selectedImage];
+    selectedImage3 = [equalCopy selectedImage];
+    v16 = [selectedImage2 isEqual:selectedImage3];
 
     if (v16)
     {
@@ -246,17 +246,17 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_SFPBButton *)self image];
-  if (v4)
+  toCopy = to;
+  image = [(_SFPBButton *)self image];
+  if (image)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v5 = [(_SFPBButton *)self selectedImage];
-  if (v5)
+  selectedImage = [(_SFPBButton *)self selectedImage];
+  if (selectedImage)
   {
     PBDataWriterWriteSubmessage();
   }

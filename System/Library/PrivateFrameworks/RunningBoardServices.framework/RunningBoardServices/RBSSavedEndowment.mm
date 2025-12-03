@@ -1,44 +1,44 @@
 @interface RBSSavedEndowment
-+ (id)savedEndowment:(id)a3 withKey:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)savedEndowment:(id)endowment withKey:(id)key;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (RBSSavedEndowment)initWithRBSXPCCoder:(id)a3;
-- (id)_initWithEndowment:(id)a3 andKey:(id)a4;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (RBSSavedEndowment)initWithRBSXPCCoder:(id)coder;
+- (id)_initWithEndowment:(id)endowment andKey:(id)key;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSSavedEndowment
 
-- (id)_initWithEndowment:(id)a3 andKey:(id)a4
+- (id)_initWithEndowment:(id)endowment andKey:(id)key
 {
-  v7 = a3;
-  v8 = a4;
+  endowmentCopy = endowment;
+  keyCopy = key;
   v12.receiver = self;
   v12.super_class = RBSSavedEndowment;
   v9 = [(RBSSavedEndowment *)&v12 init];
   p_isa = &v9->super.isa;
   if (v9)
   {
-    objc_storeStrong(&v9->_endowment, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v9->_endowment, endowment);
+    objc_storeStrong(p_isa + 2, key);
   }
 
   return p_isa;
 }
 
-+ (id)savedEndowment:(id)a3 withKey:(id)a4
++ (id)savedEndowment:(id)endowment withKey:(id)key
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[RBSSavedEndowment alloc] _initWithEndowment:v6 andKey:v5];
+  keyCopy = key;
+  endowmentCopy = endowment;
+  v7 = [[RBSSavedEndowment alloc] _initWithEndowment:endowmentCopy andKey:keyCopy];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_8;
   }
@@ -51,7 +51,7 @@
   }
 
   key = self->_key;
-  v8 = v4->_key;
+  v8 = equalCopy->_key;
   if (key == v8)
   {
 LABEL_8:
@@ -81,44 +81,44 @@ LABEL_9:
   return v7;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   key = self->_key;
-  v5 = a3;
-  [v5 encodeObject:key forKey:@"_key"];
+  coderCopy = coder;
+  [coderCopy encodeObject:key forKey:@"_key"];
   v7 = RBSEndowmentEncode(self->_endowment);
   v6 = RBSXPCPackObject(v7);
-  [v5 encodeXPCObject:v6 forKey:@"_endowment"];
+  [coderCopy encodeXPCObject:v6 forKey:@"_endowment"];
 }
 
-- (RBSSavedEndowment)initWithRBSXPCCoder:(id)a3
+- (RBSSavedEndowment)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeStringForKey:@"_key"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeStringForKey:@"_key"];
   if (v5)
   {
-    v6 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"_endowment"];
+    v6 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E80] forKey:@"_endowment"];
     v7 = RBSXPCUnpackObject(v6);
     v8 = RBSEndowmentDecode(v7);
 
     if (v8)
     {
       self = [(RBSSavedEndowment *)self _initWithEndowment:v8 andKey:v5];
-      v9 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v9 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 @end

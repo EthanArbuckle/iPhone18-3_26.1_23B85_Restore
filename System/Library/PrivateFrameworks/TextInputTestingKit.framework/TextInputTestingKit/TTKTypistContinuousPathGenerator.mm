@@ -1,54 +1,54 @@
 @interface TTKTypistContinuousPathGenerator
-- (CGPoint)_pointOnCurve:(id)a3 atTime:(double)a4;
-- (TTKTypistContinuousPathGenerator)initWithParams:(id)a3;
-- (id)_generateControlPoints:(id)a3 alpha:(double)a4;
-- (id)_generateTouchPointsOnPath:(id)a3 withSegmentTiming:(id)a4;
-- (id)generatePathFromInflectionPoints:(id)a3 timestamp:(double)a4 segmentTiming:(id)a5 keys:(id)a6 string:(id)a7 layout:(id)a8;
+- (CGPoint)_pointOnCurve:(id)curve atTime:(double)time;
+- (TTKTypistContinuousPathGenerator)initWithParams:(id)params;
+- (id)_generateControlPoints:(id)points alpha:(double)alpha;
+- (id)_generateTouchPointsOnPath:(id)path withSegmentTiming:(id)timing;
+- (id)generatePathFromInflectionPoints:(id)points timestamp:(double)timestamp segmentTiming:(id)timing keys:(id)keys string:(id)string layout:(id)layout;
 @end
 
 @implementation TTKTypistContinuousPathGenerator
 
-- (id)generatePathFromInflectionPoints:(id)a3 timestamp:(double)a4 segmentTiming:(id)a5 keys:(id)a6 string:(id)a7 layout:(id)a8
+- (id)generatePathFromInflectionPoints:(id)points timestamp:(double)timestamp segmentTiming:(id)timing keys:(id)keys string:(id)string layout:(id)layout
 {
-  v10 = a3;
-  v11 = a5;
+  pointsCopy = points;
+  timingCopy = timing;
   v12 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v13 = [v10 objectAtIndexedSubscript:0];
+  v13 = [pointsCopy objectAtIndexedSubscript:0];
   [v12 addObject:v13];
 
-  [v12 addObjectsFromArray:v10];
-  v14 = [v10 objectAtIndexedSubscript:{objc_msgSend(v10, "count") - 1}];
+  [v12 addObjectsFromArray:pointsCopy];
+  v14 = [pointsCopy objectAtIndexedSubscript:{objc_msgSend(pointsCopy, "count") - 1}];
   [v12 addObject:v14];
 
-  if (!v11)
+  if (!timingCopy)
   {
     v18.receiver = self;
     v18.super_class = TTKTypistContinuousPathGenerator;
-    v11 = [(TTKDefaultContinuousPathGenerator *)&v18 generateTimingArray:v10];
+    timingCopy = [(TTKDefaultContinuousPathGenerator *)&v18 generateTimingArray:pointsCopy];
   }
 
   [(TTKTypistContinuousPathGenerator *)self alpha];
   v15 = [(TTKTypistContinuousPathGenerator *)self _generateControlPoints:v12 alpha:?];
-  v16 = [(TTKTypistContinuousPathGenerator *)self _generateTouchPointsOnPath:v15 withSegmentTiming:v11];
+  v16 = [(TTKTypistContinuousPathGenerator *)self _generateTouchPointsOnPath:v15 withSegmentTiming:timingCopy];
 
   return v16;
 }
 
-- (TTKTypistContinuousPathGenerator)initWithParams:(id)a3
+- (TTKTypistContinuousPathGenerator)initWithParams:(id)params
 {
-  v4 = a3;
+  paramsCopy = params;
   v14.receiver = self;
   v14.super_class = TTKTypistContinuousPathGenerator;
-  v5 = [(TTKDefaultContinuousPathGenerator *)&v14 initWithParams:v4];
+  v5 = [(TTKDefaultContinuousPathGenerator *)&v14 initWithParams:paramsCopy];
   v6 = v5;
   if (v5)
   {
-    if (v4)
+    if (paramsCopy)
     {
-      v7 = [v4 objectForKey:@"ALPHA"];
+      v7 = [paramsCopy objectForKey:@"ALPHA"];
       if (v7)
       {
-        v8 = [v4 objectForKey:@"ALPHA"];
+        v8 = [paramsCopy objectForKey:@"ALPHA"];
         [v8 floatValue];
         v10 = v9;
         if (v9 > 1.0)
@@ -81,24 +81,24 @@
   return v6;
 }
 
-- (id)_generateControlPoints:(id)a3 alpha:(double)a4
+- (id)_generateControlPoints:(id)points alpha:(double)alpha
 {
   v122[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (!v6 || (v8 = [v6 count], v8 < 4))
+  pointsCopy = points;
+  v7 = pointsCopy;
+  if (!pointsCopy || (v8 = [pointsCopy count], v8 < 4))
   {
     v9 = 0;
     goto LABEL_18;
   }
 
   v10 = v8;
-  v111 = [MEMORY[0x277D75208] bezierPath];
+  bezierPath = [MEMORY[0x277D75208] bezierPath];
   v9 = objc_opt_new();
   v11 = 0;
-  v12 = a4 + a4;
-  v13 = a4;
-  v109 = v13;
+  v12 = alpha + alpha;
+  alphaCopy = alpha;
+  v109 = alphaCopy;
   v110 = v12;
   do
   {
@@ -205,7 +205,7 @@
       }
 
 LABEL_13:
-      [v111 moveToPoint:{v121, v120, *&v108}];
+      [bezierPath moveToPoint:{v121, v120, *&v108}];
       v82 = [MEMORY[0x277CCAE60] valueWithCGPoint:{v121, v120}];
       [v9 addObject:v82];
 
@@ -240,7 +240,7 @@ LABEL_13:
     }
 
 LABEL_14:
-    [v111 addCurveToPoint:v79 controlPoint1:v78 controlPoint2:{v57, v56, v81, v80, *&v108}];
+    [bezierPath addCurveToPoint:v79 controlPoint1:v78 controlPoint2:{v57, v56, v81, v80, *&v108}];
     v83 = [MEMORY[0x277CCAE60] valueWithCGPoint:{v57, v56}];
     v122[0] = v83;
     v84 = [MEMORY[0x277CCAE60] valueWithCGPoint:{v81, v80}];
@@ -260,41 +260,41 @@ LABEL_18:
   return v9;
 }
 
-- (CGPoint)_pointOnCurve:(id)a3 atTime:(double)a4
+- (CGPoint)_pointOnCurve:(id)curve atTime:(double)time
 {
-  v5 = a3;
-  v6 = [v5 count];
-  v7 = [v5 objectAtIndexedSubscript:0];
+  curveCopy = curve;
+  v6 = [curveCopy count];
+  v7 = [curveCopy objectAtIndexedSubscript:0];
   [v7 CGPointValue];
   v10 = v9;
   if (v6 == 3)
   {
 
-    v19 = [v5 objectAtIndexedSubscript:1];
+    v19 = [curveCopy objectAtIndexedSubscript:1];
     [v19 CGPointValue];
     v21 = v20;
 
-    v22 = [v5 objectAtIndexedSubscript:2];
+    v22 = [curveCopy objectAtIndexedSubscript:2];
     [v22 CGPointValue];
     v24 = v23;
 
-    v25 = [v5 objectAtIndexedSubscript:0];
+    v25 = [curveCopy objectAtIndexedSubscript:0];
     [v25 CGPointValue];
     v27 = v26;
 
-    v28 = [v5 objectAtIndexedSubscript:1];
+    v28 = [curveCopy objectAtIndexedSubscript:1];
     [v28 CGPointValue];
     v30 = v29;
 
-    v31 = [v5 objectAtIndexedSubscript:2];
+    v31 = [curveCopy objectAtIndexedSubscript:2];
     [v31 CGPointValue];
     v33 = v32;
 
-    v34 = 1.0 - a4;
+    v34 = 1.0 - time;
     v35 = (v34 * v34);
-    v36 = (1.0 - a4 + 1.0 - a4) * a4;
-    v10 = v36 * v21 + v35 * v10 + a4 * a4 * v24;
-    v11 = v36 * v30 + v35 * v27 + a4 * a4 * v33;
+    v36 = (1.0 - time + 1.0 - time) * time;
+    v10 = v36 * v21 + v35 * v10 + time * time * v24;
+    v11 = v36 * v30 + v35 * v27 + time * time * v33;
     goto LABEL_9;
   }
 
@@ -302,14 +302,14 @@ LABEL_18:
   if (v6 == 2)
   {
 
-    v12 = [v5 objectAtIndexedSubscript:1];
+    v12 = [curveCopy objectAtIndexedSubscript:1];
     [v12 CGPointValue];
     v14 = v13;
     v16 = v15;
 
-    v17 = 1.0 - a4;
-    v10 = v14 * a4 + (1.0 - a4) * v10;
-    v18 = v16 * a4;
+    v17 = 1.0 - time;
+    v10 = v14 * time + (1.0 - time) * v10;
+    v18 = v16 * time;
 LABEL_8:
     v11 = v18 + v17 * v11;
     goto LABEL_9;
@@ -318,40 +318,40 @@ LABEL_8:
   if (v6 != 1)
   {
 
-    v37 = [v5 objectAtIndexedSubscript:1];
+    v37 = [curveCopy objectAtIndexedSubscript:1];
     [v37 CGPointValue];
     v63 = v38;
 
-    v39 = [v5 objectAtIndexedSubscript:2];
+    v39 = [curveCopy objectAtIndexedSubscript:2];
     [v39 CGPointValue];
     v62 = v40;
 
-    v41 = [v5 objectAtIndexedSubscript:3];
+    v41 = [curveCopy objectAtIndexedSubscript:3];
     [v41 CGPointValue];
     v61 = v42;
 
-    v43 = [v5 objectAtIndexedSubscript:0];
+    v43 = [curveCopy objectAtIndexedSubscript:0];
     [v43 CGPointValue];
     v60 = v44;
 
-    v45 = [v5 objectAtIndexedSubscript:1];
+    v45 = [curveCopy objectAtIndexedSubscript:1];
     [v45 CGPointValue];
     v59 = v46;
 
-    v47 = [v5 objectAtIndexedSubscript:2];
+    v47 = [curveCopy objectAtIndexedSubscript:2];
     [v47 CGPointValue];
     v49 = v48;
 
-    v50 = [v5 objectAtIndexedSubscript:3];
+    v50 = [curveCopy objectAtIndexedSubscript:3];
     [v50 CGPointValue];
     v11 = v51;
 
-    v52 = 1.0 - a4;
+    v52 = 1.0 - time;
     v53 = powf(v52, 3.0);
-    v54 = a4 * 3.0 * (v52 * v52);
-    v55 = a4;
-    v56 = (1.0 - a4) * ((v55 * v55) * 3.0);
-    v17 = powf(v55, 3.0);
+    v54 = time * 3.0 * (v52 * v52);
+    timeCopy = time;
+    v56 = (1.0 - time) * ((timeCopy * timeCopy) * 3.0);
+    v17 = powf(timeCopy, 3.0);
     v10 = v54 * v63 + v53 * v10 + v56 * v62 + v17 * v61;
     v18 = v54 * v59 + v53 * v60 + v56 * v49;
     goto LABEL_8;
@@ -365,31 +365,31 @@ LABEL_9:
   return result;
 }
 
-- (id)_generateTouchPointsOnPath:(id)a3 withSegmentTiming:(id)a4
+- (id)_generateTouchPointsOnPath:(id)path withSegmentTiming:(id)timing
 {
-  v6 = a3;
-  v21 = a4;
+  pathCopy = path;
+  timingCopy = timing;
   v7 = objc_alloc_init(TIContinuousPath);
-  if ([v6 count] != 1)
+  if ([pathCopy count] != 1)
   {
     v8 = 0;
     v9 = 0;
-    v20 = v6;
+    v20 = pathCopy;
     do
     {
-      if ([v6 count] - v8 > 3)
+      if ([pathCopy count] - v8 > 3)
       {
         v10 = 4;
       }
 
       else
       {
-        v10 = [v6 count] - v8;
+        v10 = [pathCopy count] - v8;
       }
 
-      v11 = [v6 subarrayWithRange:{v8, v10}];
+      v11 = [pathCopy subarrayWithRange:{v8, v10}];
       v22 = v9;
-      v12 = [v21 objectAtIndexedSubscript:v9];
+      v12 = [timingCopy objectAtIndexedSubscript:v9];
       if ([v12 count])
       {
         v13 = 0;
@@ -414,7 +414,7 @@ LABEL_9:
       v9 = v22 + 1;
 
       v8 += 3;
-      v6 = v20;
+      pathCopy = v20;
     }
 
     while ([v20 count] - 1 > v8);

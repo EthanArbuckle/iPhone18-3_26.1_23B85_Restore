@@ -1,70 +1,70 @@
 @interface LPFileMetadata
-+ (id)descriptionForUTI:(id)a3;
++ (id)descriptionForUTI:(id)i;
 - (BOOL)_isImage;
 - (BOOL)_isPlainText;
 - (BOOL)_isWatchFace;
 - (BOOL)_shouldUseBackground;
 - (BOOL)_shouldUseCircularIcon;
 - (BOOL)_shouldUseSquareIcon;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)sharedObjectPrefersIconAsImageForTransformer:(id)a3;
-- (LPFileMetadata)initWithCoder:(id)a3;
-- (id)_bottomCaptionStringForTransformer:(id)a3;
-- (id)_fileDetailStringForTransformer:(id)a3;
-- (id)_fileTypeStringForTransformer:(id)a3;
-- (id)_nameForTransformer:(id)a3;
-- (id)_singleLineDescriptionForRemoteFileWithTransformer:(id)a3;
-- (id)_valueForKeyPathIfLoaded:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)fallbackIconForTransformer:(id)a3;
-- (id)presentationPropertiesForTransformer:(id)a3;
-- (id)previewImageForTransformer:(id)a3;
-- (id)previewSummaryForTransformer:(id)a3;
-- (id)sharedObjectIconForTransformer:(id)a3;
-- (id)sharedObjectInformationForTransformer:(id)a3;
-- (id)sharedObjectPreviewSummaryForTransformer:(id)a3;
-- (id)sharedObjectSubtitleForTransformer:(id)a3;
-- (id)sharedObjectTitleForTransformer:(id)a3;
-- (int64_t)summaryTypeForTransformer:(id)a3;
-- (void)_enumerateAsynchronousFields:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)populateMetadataForBackwardCompatibility:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)sharedObjectPrefersIconAsImageForTransformer:(id)transformer;
+- (LPFileMetadata)initWithCoder:(id)coder;
+- (id)_bottomCaptionStringForTransformer:(id)transformer;
+- (id)_fileDetailStringForTransformer:(id)transformer;
+- (id)_fileTypeStringForTransformer:(id)transformer;
+- (id)_nameForTransformer:(id)transformer;
+- (id)_singleLineDescriptionForRemoteFileWithTransformer:(id)transformer;
+- (id)_valueForKeyPathIfLoaded:(id)loaded;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)fallbackIconForTransformer:(id)transformer;
+- (id)presentationPropertiesForTransformer:(id)transformer;
+- (id)previewImageForTransformer:(id)transformer;
+- (id)previewSummaryForTransformer:(id)transformer;
+- (id)sharedObjectIconForTransformer:(id)transformer;
+- (id)sharedObjectInformationForTransformer:(id)transformer;
+- (id)sharedObjectPreviewSummaryForTransformer:(id)transformer;
+- (id)sharedObjectSubtitleForTransformer:(id)transformer;
+- (id)sharedObjectTitleForTransformer:(id)transformer;
+- (int64_t)summaryTypeForTransformer:(id)transformer;
+- (void)_enumerateAsynchronousFields:(id)fields;
+- (void)encodeWithCoder:(id)coder;
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility;
 @end
 
 @implementation LPFileMetadata
 
-- (LPFileMetadata)initWithCoder:(id)a3
+- (LPFileMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = LPFileMetadata;
   v5 = [(LPFileMetadata *)&v21 init];
   if (v5)
   {
-    v6 = decodeStringForKey(v4, @"name");
+    v6 = decodeStringForKey(coderCopy, @"name");
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = decodeStringForKey(v4, @"type");
+    v8 = decodeStringForKey(coderCopy, @"type");
     type = v5->_type;
     v5->_type = v8;
 
-    v10 = decodeNumberForKey(v4, @"size");
+    v10 = decodeNumberForKey(coderCopy, @"size");
     v5->_size = [v10 unsignedLongLongValue];
 
-    v11 = [v4 _lp_strictlyDecodeLPImageForKey:@"thumbnail"];
+    v11 = [coderCopy _lp_strictlyDecodeLPImageForKey:@"thumbnail"];
     thumbnail = v5->_thumbnail;
     v5->_thumbnail = v11;
 
-    v13 = [v4 _lp_strictlyDecodeLPImageForKey:@"smallThumbnail"];
+    v13 = [coderCopy _lp_strictlyDecodeLPImageForKey:@"smallThumbnail"];
     smallThumbnail = v5->_smallThumbnail;
     v5->_smallThumbnail = v13;
 
-    v15 = [v4 _lp_strictlyDecodeLPImageForKey:@"icon"];
+    v15 = [coderCopy _lp_strictlyDecodeLPImageForKey:@"icon"];
     icon = v5->_icon;
     v5->_icon = v15;
 
-    v17 = [v4 _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
+    v17 = [coderCopy _lp_strictlyDecodeObjectOfClass:objc_opt_class() forKey:@"creationDate"];
     creationDate = v5->_creationDate;
     v5->_creationDate = v17;
 
@@ -74,46 +74,46 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 _lp_encodeStringIfNotNil:self->_name forKey:@"name"];
-  [v5 _lp_encodeStringIfNotNil:self->_type forKey:@"type"];
+  coderCopy = coder;
+  [coderCopy _lp_encodeStringIfNotNil:self->_name forKey:@"name"];
+  [coderCopy _lp_encodeStringIfNotNil:self->_type forKey:@"type"];
   if (self->_size)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
-    [v5 _lp_encodeObjectIfNotNil:v4 forKey:@"size"];
+    [coderCopy _lp_encodeObjectIfNotNil:v4 forKey:@"size"];
   }
 
-  [v5 _lp_encodeObjectIfNotNil:self->_thumbnail forKey:@"thumbnail"];
-  [v5 _lp_encodeObjectIfNotNil:self->_smallThumbnail forKey:@"smallThumbnail"];
-  [v5 _lp_encodeObjectIfNotNil:self->_icon forKey:@"icon"];
-  [v5 _lp_encodeObjectIfNotNil:self->_creationDate forKey:@"creationDate"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_thumbnail forKey:@"thumbnail"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_smallThumbnail forKey:@"smallThumbnail"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_icon forKey:@"icon"];
+  [coderCopy _lp_encodeObjectIfNotNil:self->_creationDate forKey:@"creationDate"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [LPFileMetadata allocWithZone:a3];
+  v4 = [LPFileMetadata allocWithZone:zone];
   if (v4)
   {
-    v5 = [(LPFileMetadata *)self name];
-    [(LPFileMetadata *)v4 setName:v5];
+    name = [(LPFileMetadata *)self name];
+    [(LPFileMetadata *)v4 setName:name];
 
-    v6 = [(LPFileMetadata *)self type];
-    [(LPFileMetadata *)v4 setType:v6];
+    type = [(LPFileMetadata *)self type];
+    [(LPFileMetadata *)v4 setType:type];
 
     [(LPFileMetadata *)v4 setSize:[(LPFileMetadata *)self size]];
-    v7 = [(LPFileMetadata *)self thumbnail];
-    [(LPFileMetadata *)v4 setThumbnail:v7];
+    thumbnail = [(LPFileMetadata *)self thumbnail];
+    [(LPFileMetadata *)v4 setThumbnail:thumbnail];
 
-    v8 = [(LPFileMetadata *)self smallThumbnail];
-    [(LPFileMetadata *)v4 setSmallThumbnail:v8];
+    smallThumbnail = [(LPFileMetadata *)self smallThumbnail];
+    [(LPFileMetadata *)v4 setSmallThumbnail:smallThumbnail];
 
-    v9 = [(LPFileMetadata *)self icon];
-    [(LPFileMetadata *)v4 setIcon:v9];
+    icon = [(LPFileMetadata *)self icon];
+    [(LPFileMetadata *)v4 setIcon:icon];
 
-    v10 = [(LPFileMetadata *)self creationDate];
-    [(LPFileMetadata *)v4 setCreationDate:v10];
+    creationDate = [(LPFileMetadata *)self creationDate];
+    [(LPFileMetadata *)v4 setCreationDate:creationDate];
 
     v11 = v4;
   }
@@ -121,12 +121,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = LPFileMetadata;
-  if ([(LPFileMetadata *)&v8 isEqual:v4])
+  if ([(LPFileMetadata *)&v8 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -136,7 +136,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = equalCopy;
       if ((objectsAreEqual_0(v6[2], self->_name) & 1) != 0 && objectsAreEqual_0(v6[3], self->_type) && v6[4] == self->_size && objectsAreEqual_0(v6[5], self->_thumbnail) && objectsAreEqual_0(v6[6], self->_smallThumbnail) && objectsAreEqual_0(v6[7], self->_icon))
       {
         v5 = objectsAreEqual_0(v6[8], self->_creationDate);
@@ -157,23 +157,23 @@
   return v5;
 }
 
-- (void)_enumerateAsynchronousFields:(id)a3
+- (void)_enumerateAsynchronousFields:(id)fields
 {
-  v3 = a3;
-  v3[2](v3, @"thumbnail");
-  v3[2](v3, @"smallThumbnail");
-  v3[2](v3, @"icon");
+  fieldsCopy = fields;
+  fieldsCopy[2](fieldsCopy, @"thumbnail");
+  fieldsCopy[2](fieldsCopy, @"smallThumbnail");
+  fieldsCopy[2](fieldsCopy, @"icon");
 }
 
-+ (id)descriptionForUTI:(id)a3
++ (id)descriptionForUTI:(id)i
 {
   v116[22] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (([(__CFString *)v3 _lp_hasCaseInsensitivePrefix:@"com.apple.iwork"]& 1) != 0 || ([(__CFString *)v3 _lp_hasCaseInsensitivePrefix:@"com.apple.itunes"]& 1) != 0 || ([(__CFString *)v3 _lp_hasCaseInsensitivePrefix:@"org.oasis-open"]& 1) != 0)
+  iCopy = i;
+  if (([(__CFString *)iCopy _lp_hasCaseInsensitivePrefix:@"com.apple.iwork"]& 1) != 0 || ([(__CFString *)iCopy _lp_hasCaseInsensitivePrefix:@"com.apple.itunes"]& 1) != 0 || ([(__CFString *)iCopy _lp_hasCaseInsensitivePrefix:@"org.oasis-open"]& 1) != 0)
   {
 
 LABEL_5:
-    v4 = UTTypeCopyDescription(v3);
+    v4 = UTTypeCopyDescription(iCopy);
     goto LABEL_6;
   }
 
@@ -262,7 +262,7 @@ LABEL_5:
         }
 
         v19 = *(*(&v81 + 1) + 8 * i);
-        if ([(__CFString *)v3 _lp_isEqualIgnoringCase:v19])
+        if ([(__CFString *)iCopy _lp_isEqualIgnoringCase:v19])
         {
           v4 = [v15 objectForKeyedSubscript:v19];
           v27 = v15;
@@ -319,7 +319,7 @@ LABEL_5:
         }
 
         v31 = *(*(&v77 + 1) + 8 * j);
-        if ([(__CFString *)v3 _lp_hasCaseInsensitivePrefix:v31])
+        if ([(__CFString *)iCopy _lp_hasCaseInsensitivePrefix:v31])
         {
           v4 = [v27 objectForKeyedSubscript:v31];
           v39 = v27;
@@ -414,7 +414,7 @@ LABEL_5:
 
         v42 = *(*(&v73 + 1) + 8 * k);
         v43 = [v42 objectAtIndexedSubscript:0];
-        v44 = UTTypeConformsTo(v3, v43);
+        v44 = UTTypeConformsTo(iCopy, v43);
 
         if (v44)
         {
@@ -448,28 +448,28 @@ LABEL_6:
   return v4;
 }
 
-- (id)_fileTypeStringForTransformer:(id)a3
+- (id)_fileTypeStringForTransformer:(id)transformer
 {
-  v4 = [(LPFileMetadata *)self type];
+  type = [(LPFileMetadata *)self type];
 
-  if (v4)
+  if (type)
   {
-    v5 = [(LPFileMetadata *)self type];
-    v4 = [LPFileMetadata descriptionForUTI:v5];
+    type2 = [(LPFileMetadata *)self type];
+    type = [LPFileMetadata descriptionForUTI:type2];
   }
 
-  return v4;
+  return type;
 }
 
-- (id)_fileDetailStringForTransformer:(id)a3
+- (id)_fileDetailStringForTransformer:(id)transformer
 {
-  v4 = a3;
-  v5 = [(LPFileMetadata *)self creationDate];
-  if (v5 && ([v4 sourceBundleIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "_lp_isEqualIgnoringCase:", @"com.apple.mobilephone"), v6, v5, v7))
+  transformerCopy = transformer;
+  creationDate = [(LPFileMetadata *)self creationDate];
+  if (creationDate && ([transformerCopy sourceBundleIdentifier], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "_lp_isEqualIgnoringCase:", @"com.apple.mobilephone"), v6, creationDate, v7))
   {
     v8 = MEMORY[0x1E696AB78];
-    v9 = [(LPFileMetadata *)self creationDate];
-    v10 = [v8 localizedStringFromDate:v9 dateStyle:1 timeStyle:1];
+    creationDate2 = [(LPFileMetadata *)self creationDate];
+    v10 = [v8 localizedStringFromDate:creationDate2 dateStyle:1 timeStyle:1];
   }
 
   else if ([(LPFileMetadata *)self size])
@@ -485,11 +485,11 @@ LABEL_6:
   return v10;
 }
 
-- (id)_bottomCaptionStringForTransformer:(id)a3
+- (id)_bottomCaptionStringForTransformer:(id)transformer
 {
-  v4 = a3;
-  v5 = [(LPFileMetadata *)self _fileTypeStringForTransformer:v4];
-  v6 = [(LPFileMetadata *)self _fileDetailStringForTransformer:v4];
+  transformerCopy = transformer;
+  v5 = [(LPFileMetadata *)self _fileTypeStringForTransformer:transformerCopy];
+  v6 = [(LPFileMetadata *)self _fileDetailStringForTransformer:transformerCopy];
   v7 = joinedByDot(v5, v6);
 
   return v7;
@@ -497,81 +497,81 @@ LABEL_6:
 
 - (BOOL)_isImage
 {
-  v2 = [(LPFileMetadata *)self type];
-  v3 = UTTypeConformsTo(v2, *MEMORY[0x1E69637F8]) != 0;
+  type = [(LPFileMetadata *)self type];
+  v3 = UTTypeConformsTo(type, *MEMORY[0x1E69637F8]) != 0;
 
   return v3;
 }
 
 - (BOOL)_isPlainText
 {
-  v2 = [(LPFileMetadata *)self type];
-  v3 = UTTypeConformsTo(v2, *MEMORY[0x1E6963870]) != 0;
+  type = [(LPFileMetadata *)self type];
+  v3 = UTTypeConformsTo(type, *MEMORY[0x1E6963870]) != 0;
 
   return v3;
 }
 
 - (BOOL)_isWatchFace
 {
-  v2 = [(LPFileMetadata *)self type];
-  v3 = UTTypeConformsTo(v2, @"com.apple.watchface") != 0;
+  type = [(LPFileMetadata *)self type];
+  v3 = UTTypeConformsTo(type, @"com.apple.watchface") != 0;
 
   return v3;
 }
 
 - (BOOL)_shouldUseSquareIcon
 {
-  v3 = [(LPFileMetadata *)self _thumbnailIfLoaded];
-  if (v3)
+  _thumbnailIfLoaded = [(LPFileMetadata *)self _thumbnailIfLoaded];
+  if (_thumbnailIfLoaded)
   {
-    v4 = [(LPFileMetadata *)self _isImage];
+    _isImage = [(LPFileMetadata *)self _isImage];
   }
 
   else
   {
-    v4 = 0;
+    _isImage = 0;
   }
 
-  return v4;
+  return _isImage;
 }
 
 - (BOOL)_shouldUseCircularIcon
 {
-  v2 = [(LPFileMetadata *)self type];
-  v3 = UTTypeConformsTo(v2, *MEMORY[0x1E69638D8]) != 0;
+  type = [(LPFileMetadata *)self type];
+  v3 = UTTypeConformsTo(type, *MEMORY[0x1E69638D8]) != 0;
 
   return v3;
 }
 
 - (BOOL)_shouldUseBackground
 {
-  v3 = [(LPFileMetadata *)self _thumbnailIfLoaded];
-  if (!v3)
+  _thumbnailIfLoaded = [(LPFileMetadata *)self _thumbnailIfLoaded];
+  if (!_thumbnailIfLoaded)
   {
     return 0;
   }
 
-  v4 = v3;
-  v5 = [(LPFileMetadata *)self _thumbnailIfLoaded];
-  v6 = [v5 properties];
-  v7 = [v6 type];
+  v4 = _thumbnailIfLoaded;
+  _thumbnailIfLoaded2 = [(LPFileMetadata *)self _thumbnailIfLoaded];
+  properties = [_thumbnailIfLoaded2 properties];
+  type = [properties type];
 
-  if (v7 == 5 || [(LPFileMetadata *)self _isWatchFace])
+  if (type == 5 || [(LPFileMetadata *)self _isWatchFace])
   {
     return 0;
   }
 
-  v10 = [(LPFileMetadata *)self _thumbnailIfLoaded];
-  v8 = [v10 _hasTransparency];
+  _thumbnailIfLoaded3 = [(LPFileMetadata *)self _thumbnailIfLoaded];
+  _hasTransparency = [_thumbnailIfLoaded3 _hasTransparency];
 
-  return v8;
+  return _hasTransparency;
 }
 
-- (id)_singleLineDescriptionForRemoteFileWithTransformer:(id)a3
+- (id)_singleLineDescriptionForRemoteFileWithTransformer:(id)transformer
 {
-  v4 = a3;
-  v5 = [(LPFileMetadata *)self _fileTypeStringForTransformer:v4];
-  v6 = [v4 URL];
+  transformerCopy = transformer;
+  v5 = [(LPFileMetadata *)self _fileTypeStringForTransformer:transformerCopy];
+  v6 = [transformerCopy URL];
   v7 = [v6 _lp_simplifiedStringForDisplayOnly:0];
 
   v8 = joinedByEmDash(v5, v7);
@@ -579,33 +579,33 @@ LABEL_6:
   return v8;
 }
 
-- (id)_nameForTransformer:(id)a3
+- (id)_nameForTransformer:(id)transformer
 {
   v31[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 effectiveSizeClass] != 2)
+  transformerCopy = transformer;
+  if ([transformerCopy effectiveSizeClass] != 2)
   {
     goto LABEL_14;
   }
 
-  v5 = [v4 metadata];
-  v6 = [v5 originalURL];
-  if (([v6 _lp_isHTTPFamilyURL] & 1) == 0)
+  metadata = [transformerCopy metadata];
+  originalURL = [metadata originalURL];
+  if (([originalURL _lp_isHTTPFamilyURL] & 1) == 0)
   {
 
     goto LABEL_14;
   }
 
-  v7 = [(LPFileMetadata *)self type];
+  type = [(LPFileMetadata *)self type];
 
-  if (!v7)
+  if (!type)
   {
 LABEL_14:
-    v21 = [(LPFileMetadata *)self name];
+    name = [(LPFileMetadata *)self name];
     goto LABEL_15;
   }
 
-  v8 = [(LPFileMetadata *)self type];
+  type2 = [(LPFileMetadata *)self type];
   v30[0] = @"public.image";
   v9 = LPLocalizedString(@"Image (file type)");
   v30[1] = v9;
@@ -638,7 +638,7 @@ LABEL_14:
 
         v18 = *(*(&v24 + 1) + 8 * i);
         v19 = [v18 objectAtIndexedSubscript:{0, v24}];
-        v20 = UTTypeConformsTo(v8, v19);
+        v20 = UTTypeConformsTo(type2, v19);
 
         if (v20)
         {
@@ -661,24 +661,24 @@ LABEL_19:
 
   if (v15)
   {
-    v23 = v15;
+    name2 = v15;
   }
 
   else
   {
-    v23 = [(LPFileMetadata *)self name];
+    name2 = [(LPFileMetadata *)self name];
   }
 
-  v21 = v23;
+  name = name2;
 
 LABEL_15:
 
-  return v21;
+  return name;
 }
 
-- (id)_valueForKeyPathIfLoaded:(id)a3
+- (id)_valueForKeyPathIfLoaded:(id)loaded
 {
-  v3 = [(LPFileMetadata *)self valueForKeyPath:a3];
+  v3 = [(LPFileMetadata *)self valueForKeyPath:loaded];
   v4 = [v3 conformsToProtocol:&unk_1F2493030];
   v5 = v3;
   v6 = v5;
@@ -699,23 +699,23 @@ LABEL_15:
   return v7;
 }
 
-- (id)presentationPropertiesForTransformer:(id)a3
+- (id)presentationPropertiesForTransformer:(id)transformer
 {
-  v4 = a3;
-  if (sizeClassIsCardHeading([v4 effectiveSizeClass]))
+  transformerCopy = transformer;
+  if (sizeClassIsCardHeading([transformerCopy effectiveSizeClass]))
   {
-    v5 = [(LPFileMetadata *)self _thumbnailIfLoaded];
-    v6 = v5;
-    if (v5)
+    _thumbnailIfLoaded = [(LPFileMetadata *)self _thumbnailIfLoaded];
+    v6 = _thumbnailIfLoaded;
+    if (_thumbnailIfLoaded)
     {
-      v7 = v5;
+      v7 = _thumbnailIfLoaded;
     }
 
     else
     {
-      v25 = [(LPFileMetadata *)self type];
-      [v4 scaleFactor];
-      v27 = customIconForUTI(v25, v26);
+      type = [(LPFileMetadata *)self type];
+      [transformerCopy scaleFactor];
+      v27 = customIconForUTI(type, v26);
       v28 = v27;
       if (v27)
       {
@@ -724,11 +724,11 @@ LABEL_15:
 
       else
       {
-        v38 = [(LPFileMetadata *)self _iconIfLoaded];
-        v39 = v38;
-        if (v38)
+        _iconIfLoaded = [(LPFileMetadata *)self _iconIfLoaded];
+        v39 = _iconIfLoaded;
+        if (_iconIfLoaded)
         {
-          v40 = v38;
+          v40 = _iconIfLoaded;
         }
 
         else
@@ -741,23 +741,23 @@ LABEL_15:
     }
 
     v42 = [LPCardHeadingPresentationProperties alloc];
-    v43 = [(LPFileMetadata *)self _nameForTransformer:v4];
-    v44 = [(LPFileMetadata *)self _bottomCaptionStringForTransformer:v4];
+    v43 = [(LPFileMetadata *)self _nameForTransformer:transformerCopy];
+    v44 = [(LPFileMetadata *)self _bottomCaptionStringForTransformer:transformerCopy];
     v8 = [(LPCardHeadingPresentationProperties *)v42 initWithStyle:33 topCaption:v43 bottomCaption:v44 icon:v7];
 
     v45 = objc_alloc_init(LPImagePresentationProperties);
-    v46 = [(LPWebLinkPresentationProperties *)v8 captionBar];
-    [v46 setLeadingIconProperties:v45];
+    captionBar = [(LPWebLinkPresentationProperties *)v8 captionBar];
+    [captionBar setLeadingIconProperties:v45];
 
     if ([(LPFileMetadata *)self _shouldUseSquareIcon])
     {
-      v47 = [(LPWebLinkPresentationProperties *)v8 captionBar];
-      v48 = [v47 leadingIconProperties];
-      [v48 setRequireFixedSize:1];
+      captionBar2 = [(LPWebLinkPresentationProperties *)v8 captionBar];
+      leadingIconProperties = [captionBar2 leadingIconProperties];
+      [leadingIconProperties setRequireFixedSize:1];
 
-      v49 = [(LPWebLinkPresentationProperties *)v8 captionBar];
-      v50 = [v49 leadingIconProperties];
-      [v50 setScalingMode:2];
+      captionBar3 = [(LPWebLinkPresentationProperties *)v8 captionBar];
+      leadingIconProperties2 = [captionBar3 leadingIconProperties];
+      [leadingIconProperties2 setScalingMode:2];
     }
 
     else
@@ -767,91 +767,91 @@ LABEL_15:
         goto LABEL_31;
       }
 
-      v49 = [(LPWebLinkPresentationProperties *)v8 captionBar];
-      v50 = [v49 leadingIconProperties];
-      [v50 setFilter:13];
+      captionBar3 = [(LPWebLinkPresentationProperties *)v8 captionBar];
+      leadingIconProperties2 = [captionBar3 leadingIconProperties];
+      [leadingIconProperties2 setFilter:13];
     }
 
 LABEL_31:
     if ([(LPFileMetadata *)self _shouldUseBackground])
     {
-      v51 = [(LPWebLinkPresentationProperties *)v8 captionBar];
-      v52 = [v51 leadingIconProperties];
-      [v52 setShouldApplyBackground:1];
+      captionBar4 = [(LPWebLinkPresentationProperties *)v8 captionBar];
+      leadingIconProperties3 = [captionBar4 leadingIconProperties];
+      [leadingIconProperties3 setShouldApplyBackground:1];
     }
 
     goto LABEL_41;
   }
 
-  v8 = [v4 commonPresentationPropertiesForStyle:33];
+  v8 = [transformerCopy commonPresentationPropertiesForStyle:33];
   v9 = objc_alloc_init(LPCaptionBarPresentationProperties);
   [(LPWebLinkPresentationProperties *)v8 setCaptionBar:v9];
 
-  if (![v4 _rowConfigurationForStyle:{-[LPWebLinkPresentationProperties style](v8, "style")}])
+  if (![transformerCopy _rowConfigurationForStyle:{-[LPWebLinkPresentationProperties style](v8, "style")}])
   {
-    v10 = [v4 URL];
-    v11 = [v10 isFileURL];
+    v10 = [transformerCopy URL];
+    isFileURL = [v10 isFileURL];
 
-    if ((v11 & 1) == 0)
+    if ((isFileURL & 1) == 0)
     {
-      v21 = [(LPFileMetadata *)self _singleLineDescriptionForRemoteFileWithTransformer:v4];
-      v22 = [(LPWebLinkPresentationProperties *)v8 captionBar];
-      v18 = [v22 top];
-      v23 = [v18 leading];
-      [v23 setText:v21];
+      v21 = [(LPFileMetadata *)self _singleLineDescriptionForRemoteFileWithTransformer:transformerCopy];
+      captionBar5 = [(LPWebLinkPresentationProperties *)v8 captionBar];
+      bottom = [captionBar5 top];
+      leading = [bottom leading];
+      [leading setText:v21];
       goto LABEL_11;
     }
   }
 
-  v12 = [(LPFileMetadata *)self _nameForTransformer:v4];
-  v13 = [(LPWebLinkPresentationProperties *)v8 captionBar];
-  v14 = [v13 top];
-  v15 = [v14 leading];
-  [v15 setText:v12];
+  v12 = [(LPFileMetadata *)self _nameForTransformer:transformerCopy];
+  captionBar6 = [(LPWebLinkPresentationProperties *)v8 captionBar];
+  v14 = [captionBar6 top];
+  leading2 = [v14 leading];
+  [leading2 setText:v12];
 
-  v16 = [(LPFileMetadata *)self _bottomCaptionStringForTransformer:v4];
-  v17 = [(LPWebLinkPresentationProperties *)v8 captionBar];
-  v18 = [v17 bottom];
-  v19 = [v18 leading];
-  [v19 setText:v16];
+  v16 = [(LPFileMetadata *)self _bottomCaptionStringForTransformer:transformerCopy];
+  captionBar7 = [(LPWebLinkPresentationProperties *)v8 captionBar];
+  bottom = [captionBar7 bottom];
+  leading3 = [bottom leading];
+  [leading3 setText:v16];
 
-  v20 = [v4 URL];
-  LOBYTE(v17) = [v20 isFileURL];
+  v20 = [transformerCopy URL];
+  LOBYTE(captionBar7) = [v20 isFileURL];
 
-  if ((v17 & 1) == 0)
+  if ((captionBar7 & 1) == 0)
   {
-    v21 = [v4 URL];
-    v22 = [v21 _lp_simplifiedStringForDisplayOnly:0];
-    v18 = [(LPWebLinkPresentationProperties *)v8 captionBar];
-    v23 = [v18 belowBottom];
-    v24 = [v23 leading];
-    [v24 setText:v22];
+    v21 = [transformerCopy URL];
+    captionBar5 = [v21 _lp_simplifiedStringForDisplayOnly:0];
+    bottom = [(LPWebLinkPresentationProperties *)v8 captionBar];
+    leading = [bottom belowBottom];
+    v23Leading = [leading leading];
+    [v23Leading setText:captionBar5];
 
 LABEL_11:
   }
 
-  v29 = [(LPFileMetadata *)self _smallThumbnailIfLoaded];
-  if (v29 && (v30 = [v4 effectiveSizeClass], v29, v30 == 8))
+  _smallThumbnailIfLoaded = [(LPFileMetadata *)self _smallThumbnailIfLoaded];
+  if (_smallThumbnailIfLoaded && (v30 = [transformerCopy effectiveSizeClass], _smallThumbnailIfLoaded, v30 == 8))
   {
-    v31 = [(LPFileMetadata *)self _smallThumbnailIfLoaded];
-    [v4 _populateProperties:v8 withPrimaryImage:v31];
+    _smallThumbnailIfLoaded2 = [(LPFileMetadata *)self _smallThumbnailIfLoaded];
+    [transformerCopy _populateProperties:v8 withPrimaryImage:_smallThumbnailIfLoaded2];
   }
 
   else
   {
-    v32 = [(LPFileMetadata *)self _thumbnailIfLoaded];
+    _thumbnailIfLoaded2 = [(LPFileMetadata *)self _thumbnailIfLoaded];
 
-    if (v32)
+    if (_thumbnailIfLoaded2)
     {
-      v31 = [(LPFileMetadata *)self _thumbnailIfLoaded];
-      [v4 _populateProperties:v8 withPrimaryImage:v31];
+      _smallThumbnailIfLoaded2 = [(LPFileMetadata *)self _thumbnailIfLoaded];
+      [transformerCopy _populateProperties:v8 withPrimaryImage:_smallThumbnailIfLoaded2];
     }
 
     else
     {
-      v31 = [(LPFileMetadata *)self type];
-      [v4 scaleFactor];
-      v34 = customIconForUTI(v31, v33);
+      _smallThumbnailIfLoaded2 = [(LPFileMetadata *)self type];
+      [transformerCopy scaleFactor];
+      v34 = customIconForUTI(_smallThumbnailIfLoaded2, v33);
       v35 = v34;
       if (v34)
       {
@@ -861,23 +861,23 @@ LABEL_11:
 
       else
       {
-        v41 = [(LPFileMetadata *)self _iconIfLoaded];
-        v18 = v41;
-        if (v41)
+        _iconIfLoaded2 = [(LPFileMetadata *)self _iconIfLoaded];
+        bottom = _iconIfLoaded2;
+        if (_iconIfLoaded2)
         {
           v36 = 0;
-          v37 = v41;
+          v37 = _iconIfLoaded2;
         }
 
         else
         {
           v37 = +[LPResources fileIcon];
-          v18 = 0;
+          bottom = 0;
           v36 = 1;
         }
       }
 
-      [v4 _populateProperties:v8 withPrimaryIcon:v37 iconProperties:0 canBecomeImage:0];
+      [transformerCopy _populateProperties:v8 withPrimaryIcon:v37 iconProperties:0 canBecomeImage:0];
       if (v36)
       {
       }
@@ -888,20 +888,20 @@ LABEL_11:
     }
   }
 
-  v53 = [v4 metadata];
-  v54 = [v53 video];
-  [(LPWebLinkPresentationProperties *)v8 setVideo:v54];
+  metadata = [transformerCopy metadata];
+  video = [metadata video];
+  [(LPWebLinkPresentationProperties *)v8 setVideo:video];
 
-  v55 = [v4 metadata];
-  v56 = [v55 audio];
-  [(LPWebLinkPresentationProperties *)v8 setAudio:v56];
+  metadata2 = [transformerCopy metadata];
+  audio = [metadata2 audio];
+  [(LPWebLinkPresentationProperties *)v8 setAudio:audio];
 
-  v57 = [(LPWebLinkPresentationProperties *)v8 audio];
+  audio2 = [(LPWebLinkPresentationProperties *)v8 audio];
 
-  if (v57)
+  if (audio2)
   {
-    v58 = [(LPWebLinkPresentationProperties *)v8 audio];
-    v7 = [LPInlineMediaPlaybackInformation audioFilePlaybackInformationWithAudio:v58];
+    audio3 = [(LPWebLinkPresentationProperties *)v8 audio];
+    v7 = [LPInlineMediaPlaybackInformation audioFilePlaybackInformationWithAudio:audio3];
 
     [(LPWebLinkPresentationProperties *)v8 setInlinePlaybackInformation:v7];
 LABEL_41:
@@ -910,57 +910,57 @@ LABEL_41:
   return v8;
 }
 
-- (id)previewSummaryForTransformer:(id)a3
+- (id)previewSummaryForTransformer:(id)transformer
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = LPLocalizedString(@"File: %@");
-  v6 = [(LPFileMetadata *)self name];
-  v7 = [v6 _lp_directionallyIsolatedString];
-  v8 = [v4 localizedStringWithFormat:v5, v7];
+  name = [(LPFileMetadata *)self name];
+  _lp_directionallyIsolatedString = [name _lp_directionallyIsolatedString];
+  v8 = [v4 localizedStringWithFormat:v5, _lp_directionallyIsolatedString];
 
   return v8;
 }
 
-- (id)previewImageForTransformer:(id)a3
+- (id)previewImageForTransformer:(id)transformer
 {
-  v4 = [(LPFileMetadata *)self thumbnail];
-  v5 = v4;
-  if (v4)
+  thumbnail = [(LPFileMetadata *)self thumbnail];
+  v5 = thumbnail;
+  if (thumbnail)
   {
-    v6 = v4;
+    icon = thumbnail;
   }
 
   else
   {
-    v6 = [(LPFileMetadata *)self icon];
+    icon = [(LPFileMetadata *)self icon];
   }
 
-  v7 = v6;
+  v7 = icon;
 
   return v7;
 }
 
-- (id)fallbackIconForTransformer:(id)a3
+- (id)fallbackIconForTransformer:(id)transformer
 {
   v3 = +[LPResources fileIcon];
 
   return v3;
 }
 
-- (void)populateMetadataForBackwardCompatibility:(id)a3
+- (void)populateMetadataForBackwardCompatibility:(id)compatibility
 {
-  v7 = a3;
-  v4 = [(LPFileMetadata *)self name];
-  [v7 setTitle:v4];
+  compatibilityCopy = compatibility;
+  name = [(LPFileMetadata *)self name];
+  [compatibilityCopy setTitle:name];
 
-  v5 = [(LPFileMetadata *)self thumbnail];
-  [v7 setImage:v5];
+  thumbnail = [(LPFileMetadata *)self thumbnail];
+  [compatibilityCopy setImage:thumbnail];
 
-  v6 = [(LPFileMetadata *)self icon];
-  [v7 setIcon:v6];
+  icon = [(LPFileMetadata *)self icon];
+  [compatibilityCopy setIcon:icon];
 }
 
-- (int64_t)summaryTypeForTransformer:(id)a3
+- (int64_t)summaryTypeForTransformer:(id)transformer
 {
   if ([(LPFileMetadata *)self _isImage])
   {
@@ -975,27 +975,27 @@ LABEL_41:
   return 2;
 }
 
-- (id)sharedObjectTitleForTransformer:(id)a3
+- (id)sharedObjectTitleForTransformer:(id)transformer
 {
-  v3 = [(LPFileMetadata *)self name];
+  name = [(LPFileMetadata *)self name];
 
-  return v3;
+  return name;
 }
 
-- (id)sharedObjectSubtitleForTransformer:(id)a3
+- (id)sharedObjectSubtitleForTransformer:(id)transformer
 {
-  v4 = [(LPFileMetadata *)self type];
+  type = [(LPFileMetadata *)self type];
 
-  if (v4)
+  if (type)
   {
-    v5 = [(LPFileMetadata *)self type];
-    v4 = [LPFileMetadata descriptionForUTI:v5];
+    type2 = [(LPFileMetadata *)self type];
+    type = [LPFileMetadata descriptionForUTI:type2];
   }
 
-  return v4;
+  return type;
 }
 
-- (id)sharedObjectInformationForTransformer:(id)a3
+- (id)sharedObjectInformationForTransformer:(id)transformer
 {
   v4 = [(LPFileMetadata *)self size];
   if (v4)
@@ -1006,21 +1006,21 @@ LABEL_41:
   return v4;
 }
 
-- (id)sharedObjectIconForTransformer:(id)a3
+- (id)sharedObjectIconForTransformer:(id)transformer
 {
-  v4 = a3;
-  v5 = [(LPFileMetadata *)self _thumbnailIfLoaded];
-  v6 = v5;
-  if (v5)
+  transformerCopy = transformer;
+  _thumbnailIfLoaded = [(LPFileMetadata *)self _thumbnailIfLoaded];
+  v6 = _thumbnailIfLoaded;
+  if (_thumbnailIfLoaded)
   {
-    v7 = v5;
+    v7 = _thumbnailIfLoaded;
   }
 
   else
   {
-    v8 = [(LPFileMetadata *)self type];
-    [v4 scaleFactor];
-    v10 = customIconForUTI(v8, v9);
+    type = [(LPFileMetadata *)self type];
+    [transformerCopy scaleFactor];
+    v10 = customIconForUTI(type, v9);
     v11 = v10;
     if (v10)
     {
@@ -1029,11 +1029,11 @@ LABEL_41:
 
     else
     {
-      v12 = [(LPFileMetadata *)self _iconIfLoaded];
-      v13 = v12;
-      if (v12)
+      _iconIfLoaded = [(LPFileMetadata *)self _iconIfLoaded];
+      v13 = _iconIfLoaded;
+      if (_iconIfLoaded)
       {
-        v14 = v12;
+        v14 = _iconIfLoaded;
       }
 
       else
@@ -1048,13 +1048,13 @@ LABEL_41:
   return v7;
 }
 
-- (BOOL)sharedObjectPrefersIconAsImageForTransformer:(id)a3
+- (BOOL)sharedObjectPrefersIconAsImageForTransformer:(id)transformer
 {
-  v4 = a3;
-  v5 = [(LPFileMetadata *)self _thumbnailIfLoaded];
-  if (v5)
+  transformerCopy = transformer;
+  _thumbnailIfLoaded = [(LPFileMetadata *)self _thumbnailIfLoaded];
+  if (_thumbnailIfLoaded)
   {
-    v6 = sizeClassRequiresLargeMedia([v4 effectiveSizeClass]);
+    v6 = sizeClassRequiresLargeMedia([transformerCopy effectiveSizeClass]);
   }
 
   else
@@ -1065,13 +1065,13 @@ LABEL_41:
   return v6;
 }
 
-- (id)sharedObjectPreviewSummaryForTransformer:(id)a3
+- (id)sharedObjectPreviewSummaryForTransformer:(id)transformer
 {
   v4 = MEMORY[0x1E696AEC0];
   v5 = LPLocalizedString(@"“%@”");
-  v6 = [(LPFileMetadata *)self name];
-  v7 = [v6 _lp_directionallyIsolatedString];
-  v8 = [v4 localizedStringWithFormat:v5, v7];
+  name = [(LPFileMetadata *)self name];
+  _lp_directionallyIsolatedString = [name _lp_directionallyIsolatedString];
+  v8 = [v4 localizedStringWithFormat:v5, _lp_directionallyIsolatedString];
 
   return v8;
 }

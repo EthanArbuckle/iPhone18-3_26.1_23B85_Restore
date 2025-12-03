@@ -13,27 +13,27 @@
 - (void)buttonPressed
 {
   [(SearchUIButtonItem *)self setStatus:[(SearchUIButtonItem *)self status]== 0];
-  v3 = [(SearchUIButtonItem *)self delegate];
-  [v3 stateDidChangeForButtonItem:self];
+  delegate = [(SearchUIButtonItem *)self delegate];
+  [delegate stateDidChangeForButtonItem:self];
 }
 
 - (id)offStateTitle
 {
-  v3 = [(SearchUIButtonItem *)self sfButtonItem];
-  v4 = [v3 toggleButtonConfiguration];
-  v5 = [v4 untoggledTitle];
-  v6 = v5;
-  if (v5)
+  sfButtonItem = [(SearchUIButtonItem *)self sfButtonItem];
+  toggleButtonConfiguration = [sfButtonItem toggleButtonConfiguration];
+  untoggledTitle = [toggleButtonConfiguration untoggledTitle];
+  v6 = untoggledTitle;
+  if (untoggledTitle)
   {
-    v7 = v5;
+    untoggledTitle2 = untoggledTitle;
   }
 
   else
   {
-    v7 = [(SearchUIToggleButtonItem *)self untoggledTitle];
+    untoggledTitle2 = [(SearchUIToggleButtonItem *)self untoggledTitle];
   }
 
-  v8 = v7;
+  v8 = untoggledTitle2;
 
   return v8;
 }
@@ -42,28 +42,28 @@
 {
   v4.receiver = self;
   v4.super_class = SearchUIToggleButtonItem;
-  v2 = [(SearchUIButtonItem *)&v4 offStateTitle];
+  offStateTitle = [(SearchUIButtonItem *)&v4 offStateTitle];
 
-  return v2;
+  return offStateTitle;
 }
 
 - (id)onStateTitle
 {
-  v3 = [(SearchUIButtonItem *)self sfButtonItem];
-  v4 = [v3 toggleButtonConfiguration];
-  v5 = [v4 toggledTitle];
-  v6 = v5;
-  if (v5)
+  sfButtonItem = [(SearchUIButtonItem *)self sfButtonItem];
+  toggleButtonConfiguration = [sfButtonItem toggleButtonConfiguration];
+  toggledTitle = [toggleButtonConfiguration toggledTitle];
+  v6 = toggledTitle;
+  if (toggledTitle)
   {
-    v7 = v5;
+    toggledTitle2 = toggledTitle;
   }
 
   else
   {
-    v7 = [(SearchUIToggleButtonItem *)self toggledTitle];
+    toggledTitle2 = [(SearchUIToggleButtonItem *)self toggledTitle];
   }
 
-  v8 = v7;
+  v8 = toggledTitle2;
 
   return v8;
 }
@@ -72,53 +72,53 @@
 {
   v4.receiver = self;
   v4.super_class = SearchUIToggleButtonItem;
-  v2 = [(SearchUIButtonItem *)&v4 onStateTitle];
+  onStateTitle = [(SearchUIButtonItem *)&v4 onStateTitle];
 
-  return v2;
+  return onStateTitle;
 }
 
 - (id)offStateImage
 {
-  v3 = [(SearchUIButtonItem *)self sfButtonItem];
-  v4 = [v3 toggleButtonConfiguration];
-  v5 = [v4 untoggledImage];
-  v6 = v5;
-  if (v5)
+  sfButtonItem = [(SearchUIButtonItem *)self sfButtonItem];
+  toggleButtonConfiguration = [sfButtonItem toggleButtonConfiguration];
+  untoggledImage = [toggleButtonConfiguration untoggledImage];
+  v6 = untoggledImage;
+  if (untoggledImage)
   {
-    v7 = v5;
+    offStateImage = untoggledImage;
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SearchUIToggleButtonItem;
-    v7 = [(SearchUIButtonItem *)&v10 offStateImage];
+    offStateImage = [(SearchUIButtonItem *)&v10 offStateImage];
   }
 
-  v8 = v7;
+  v8 = offStateImage;
 
   return v8;
 }
 
 - (id)onStateImage
 {
-  v3 = [(SearchUIButtonItem *)self sfButtonItem];
-  v4 = [v3 toggleButtonConfiguration];
-  v5 = [v4 toggledImage];
-  v6 = v5;
-  if (v5)
+  sfButtonItem = [(SearchUIButtonItem *)self sfButtonItem];
+  toggleButtonConfiguration = [sfButtonItem toggleButtonConfiguration];
+  toggledImage = [toggleButtonConfiguration toggledImage];
+  v6 = toggledImage;
+  if (toggledImage)
   {
-    v7 = v5;
+    onStateImage = toggledImage;
   }
 
   else
   {
     v10.receiver = self;
     v10.super_class = SearchUIToggleButtonItem;
-    v7 = [(SearchUIButtonItem *)&v10 onStateImage];
+    onStateImage = [(SearchUIButtonItem *)&v10 onStateImage];
   }
 
-  v8 = v7;
+  v8 = onStateImage;
 
   return v8;
 }

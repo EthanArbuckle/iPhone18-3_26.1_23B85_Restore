@@ -1,36 +1,36 @@
 @interface CRSIconLayoutService
-- (CRSIconLayoutService)initWithDelegate:(id)a3;
+- (CRSIconLayoutService)initWithDelegate:(id)delegate;
 - (CRSIconLayoutServiceDelegate)delegate;
 - (id)_newInvalidRequestErrorDueToInvalidDataProvider;
 - (id)_newInvalidRequestErrorDueToNilVehicleID;
-- (void)_connectionQueue_addConnection:(id)a3;
-- (void)_connectionQueue_removeConnection:(id)a3;
-- (void)fetchApplicationIconInformationForBundleIdentifier:(id)a3 vehicleID:(id)a4 drawBorder:(id)a5 completion:(id)a6;
-- (void)fetchIconStateForVehicleID:(id)a3 completion:(id)a4;
-- (void)fetchWidgetStateForVehicleID:(id)a3 completion:(id)a4;
+- (void)_connectionQueue_addConnection:(id)connection;
+- (void)_connectionQueue_removeConnection:(id)connection;
+- (void)fetchApplicationIconInformationForBundleIdentifier:(id)identifier vehicleID:(id)d drawBorder:(id)border completion:(id)completion;
+- (void)fetchIconStateForVehicleID:(id)d completion:(id)completion;
+- (void)fetchWidgetStateForVehicleID:(id)d completion:(id)completion;
 - (void)invalidate;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)refreshWidgetStateForVehicleID:(id)a3;
-- (void)resetIconStateForVehicleID:(id)a3;
-- (void)resetWidgetStateForVehicleID:(id)a3;
-- (void)setIconState:(id)a3 forVehicleID:(id)a4;
-- (void)setWidgetState:(id)a3 forVehicleID:(id)a4;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)refreshWidgetStateForVehicleID:(id)d;
+- (void)resetIconStateForVehicleID:(id)d;
+- (void)resetWidgetStateForVehicleID:(id)d;
+- (void)setIconState:(id)state forVehicleID:(id)d;
+- (void)setWidgetState:(id)state forVehicleID:(id)d;
 @end
 
 @implementation CRSIconLayoutService
 
-- (CRSIconLayoutService)initWithDelegate:(id)a3
+- (CRSIconLayoutService)initWithDelegate:(id)delegate
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = CRSIconLayoutService;
   v5 = [(CRSIconLayoutService *)&v22 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
-    v7 = [MEMORY[0x277CF0C18] serial];
+    objc_storeWeak(&v5->_delegate, delegateCopy);
+    serial = [MEMORY[0x277CF0C18] serial];
     v8 = BSDispatchQueueCreate();
     connectionQueue = v6->_connectionQueue;
     v6->_connectionQueue = v8;
@@ -82,9 +82,9 @@ void __41__CRSIconLayoutService_initWithDelegate___block_invoke(uint64_t a1, voi
   v3 = CRSLogForCategory(1uLL);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CRSIconLayoutService *)self listener];
+    listener = [(CRSIconLayoutService *)self listener];
     v6 = 138412290;
-    v7 = v4;
+    v7 = listener;
     _os_log_impl(&dword_242FB5000, v3, OS_LOG_TYPE_DEFAULT, "Invalidating listener! %@", &v6, 0xCu);
   }
 
@@ -92,22 +92,22 @@ void __41__CRSIconLayoutService_initWithDelegate___block_invoke(uint64_t a1, voi
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  listenerCopy = listener;
+  connectionCopy = connection;
+  contextCopy = context;
   v11 = CRSLogForCategory(1uLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v25 = v9;
+    v25 = connectionCopy;
     _os_log_impl(&dword_242FB5000, v11, OS_LOG_TYPE_INFO, "Received connection! %@", buf, 0xCu);
   }
 
-  v12 = [v9 remoteProcess];
-  v13 = [v12 hasEntitlement:@"com.apple.private.CarPlayServices.icon-layout"];
+  remoteProcess = [connectionCopy remoteProcess];
+  v13 = [remoteProcess hasEntitlement:@"com.apple.private.CarPlayServices.icon-layout"];
 
   if (v13)
   {
@@ -117,23 +117,23 @@ void __41__CRSIconLayoutService_initWithDelegate___block_invoke(uint64_t a1, voi
     v21[2] = __66__CRSIconLayoutService_listener_didReceiveConnection_withContext___block_invoke;
     v21[3] = &unk_278D8E058;
     objc_copyWeak(&v22, &location);
-    [v9 configureConnection:v21];
+    [connectionCopy configureConnection:v21];
     v14 = CRSLogForCategory(1uLL);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v25 = v9;
+      v25 = connectionCopy;
       _os_log_impl(&dword_242FB5000, v14, OS_LOG_TYPE_INFO, "Activating connection... %@", buf, 0xCu);
     }
 
-    v15 = [(CRSIconLayoutService *)self connectionQueue];
+    connectionQueue = [(CRSIconLayoutService *)self connectionQueue];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __66__CRSIconLayoutService_listener_didReceiveConnection_withContext___block_invoke_16;
     v18[3] = &unk_278D8E080;
     objc_copyWeak(&v20, &location);
-    v19 = v9;
-    dispatch_async(v15, v18);
+    v19 = connectionCopy;
+    dispatch_async(connectionQueue, v18);
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(&v22);
@@ -145,10 +145,10 @@ void __41__CRSIconLayoutService_initWithDelegate___block_invoke(uint64_t a1, voi
     v16 = CRSLogForCategory(1uLL);
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
-      [CRSIconLayoutService listener:v9 didReceiveConnection:v16 withContext:?];
+      [CRSIconLayoutService listener:connectionCopy didReceiveConnection:v16 withContext:?];
     }
 
-    [v9 invalidate];
+    [connectionCopy invalidate];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -212,20 +212,20 @@ void __66__CRSIconLayoutService_listener_didReceiveConnection_withContext___bloc
   }
 }
 
-- (void)fetchIconStateForVehicleID:(id)a3 completion:(id)a4
+- (void)fetchIconStateForVehicleID:(id)d completion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = CRSLogForCategory(1uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v15 = v6;
+    v15 = dCopy;
     _os_log_impl(&dword_242FB5000, v8, OS_LOG_TYPE_DEFAULT, "Received request for icon state for vehicle: %{public}@", buf, 0xCu);
   }
 
-  if (v7)
+  if (completionCopy)
   {
     objc_initWeak(buf, self);
     block[0] = MEMORY[0x277D85DD0];
@@ -233,8 +233,8 @@ void __66__CRSIconLayoutService_listener_didReceiveConnection_withContext___bloc
     block[2] = __62__CRSIconLayoutService_fetchIconStateForVehicleID_completion___block_invoke;
     block[3] = &unk_278D8E0A8;
     objc_copyWeak(&v13, buf);
-    v11 = v6;
-    v12 = v7;
+    v11 = dCopy;
+    v12 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
 
     objc_destroyWeak(&v13);
@@ -264,22 +264,22 @@ void __62__CRSIconLayoutService_fetchIconStateForVehicleID_completion___block_in
   }
 }
 
-- (void)setIconState:(id)a3 forVehicleID:(id)a4
+- (void)setIconState:(id)state forVehicleID:(id)d
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  dCopy = d;
   v8 = CRSLogForCategory(1uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v16 = v7;
+    v16 = dCopy;
     v17 = 2112;
-    v18 = v6;
+    v18 = stateCopy;
     _os_log_impl(&dword_242FB5000, v8, OS_LOG_TYPE_DEFAULT, "Received request to set icon state for vehicle: %{public}@ to %@", buf, 0x16u);
   }
 
-  if (v7)
+  if (dCopy)
   {
     objc_initWeak(buf, self);
     block[0] = MEMORY[0x277D85DD0];
@@ -287,8 +287,8 @@ void __62__CRSIconLayoutService_fetchIconStateForVehicleID_completion___block_in
     block[2] = __50__CRSIconLayoutService_setIconState_forVehicleID___block_invoke;
     block[3] = &unk_278D8E0D0;
     objc_copyWeak(&v14, buf);
-    v12 = v7;
-    v13 = v6;
+    v12 = dCopy;
+    v13 = stateCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
 
     objc_destroyWeak(&v14);
@@ -316,19 +316,19 @@ void __50__CRSIconLayoutService_setIconState_forVehicleID___block_invoke(uint64_
   [v3 setIconState:*(a1 + 40)];
 }
 
-- (void)resetIconStateForVehicleID:(id)a3
+- (void)resetIconStateForVehicleID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = CRSLogForCategory(1uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = v4;
+    v12 = dCopy;
     _os_log_impl(&dword_242FB5000, v5, OS_LOG_TYPE_DEFAULT, "Received request to reset icon state for vehicle: %{public}@", buf, 0xCu);
   }
 
-  if (v4)
+  if (dCopy)
   {
     objc_initWeak(buf, self);
     v8[0] = MEMORY[0x277D85DD0];
@@ -336,7 +336,7 @@ void __50__CRSIconLayoutService_setIconState_forVehicleID___block_invoke(uint64_
     v8[2] = __51__CRSIconLayoutService_resetIconStateForVehicleID___block_invoke;
     v8[3] = &unk_278D8E080;
     objc_copyWeak(&v10, buf);
-    v9 = v4;
+    v9 = dCopy;
     dispatch_async(MEMORY[0x277D85CD0], v8);
 
     objc_destroyWeak(&v10);
@@ -364,24 +364,24 @@ void __51__CRSIconLayoutService_resetIconStateForVehicleID___block_invoke(uint64
   [v3 resetIconState];
 }
 
-- (void)fetchApplicationIconInformationForBundleIdentifier:(id)a3 vehicleID:(id)a4 drawBorder:(id)a5 completion:(id)a6
+- (void)fetchApplicationIconInformationForBundleIdentifier:(id)identifier vehicleID:(id)d drawBorder:(id)border completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  dCopy = d;
+  borderCopy = border;
+  completionCopy = completion;
   v14 = CRSLogForCategory(1uLL);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v23 = v10;
+    v23 = identifierCopy;
     v24 = 2114;
-    v25 = v11;
+    v25 = dCopy;
     _os_log_impl(&dword_242FB5000, v14, OS_LOG_TYPE_DEFAULT, "Received request for icon information for %{public}@, vehicle: %{public}@", buf, 0x16u);
   }
 
-  if (v13)
+  if (completionCopy)
   {
     objc_initWeak(buf, self);
     block[0] = MEMORY[0x277D85DD0];
@@ -389,10 +389,10 @@ void __51__CRSIconLayoutService_resetIconStateForVehicleID___block_invoke(uint64
     block[2] = __107__CRSIconLayoutService_fetchApplicationIconInformationForBundleIdentifier_vehicleID_drawBorder_completion___block_invoke;
     block[3] = &unk_278D8E0F8;
     objc_copyWeak(&v21, buf);
-    v17 = v11;
-    v20 = v13;
-    v18 = v10;
-    v19 = v12;
+    v17 = dCopy;
+    v20 = completionCopy;
+    v18 = identifierCopy;
+    v19 = borderCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
 
     objc_destroyWeak(&v21);
@@ -422,20 +422,20 @@ void __107__CRSIconLayoutService_fetchApplicationIconInformationForBundleIdentif
   }
 }
 
-- (void)fetchWidgetStateForVehicleID:(id)a3 completion:(id)a4
+- (void)fetchWidgetStateForVehicleID:(id)d completion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = CRSLogForCategory(1uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v15 = v6;
+    v15 = dCopy;
     _os_log_impl(&dword_242FB5000, v8, OS_LOG_TYPE_DEFAULT, "Received request to fetch widget state for vehicle: %{public}@", buf, 0xCu);
   }
 
-  if (v7)
+  if (completionCopy)
   {
     objc_initWeak(buf, self);
     block[0] = MEMORY[0x277D85DD0];
@@ -443,8 +443,8 @@ void __107__CRSIconLayoutService_fetchApplicationIconInformationForBundleIdentif
     block[2] = __64__CRSIconLayoutService_fetchWidgetStateForVehicleID_completion___block_invoke;
     block[3] = &unk_278D8E0A8;
     objc_copyWeak(&v13, buf);
-    v11 = v6;
-    v12 = v7;
+    v11 = dCopy;
+    v12 = completionCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
 
     objc_destroyWeak(&v13);
@@ -484,20 +484,20 @@ void __64__CRSIconLayoutService_fetchWidgetStateForVehicleID_completion___block_
   }
 }
 
-- (void)setWidgetState:(id)a3 forVehicleID:(id)a4
+- (void)setWidgetState:(id)state forVehicleID:(id)d
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  dCopy = d;
   v8 = CRSLogForCategory(1uLL);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v16 = v7;
+    v16 = dCopy;
     _os_log_impl(&dword_242FB5000, v8, OS_LOG_TYPE_DEFAULT, "Received request to set widget state for vehicle: %{public}@", buf, 0xCu);
   }
 
-  if (v7)
+  if (dCopy)
   {
     objc_initWeak(buf, self);
     block[0] = MEMORY[0x277D85DD0];
@@ -505,8 +505,8 @@ void __64__CRSIconLayoutService_fetchWidgetStateForVehicleID_completion___block_
     block[2] = __52__CRSIconLayoutService_setWidgetState_forVehicleID___block_invoke;
     block[3] = &unk_278D8E0D0;
     objc_copyWeak(&v14, buf);
-    v12 = v7;
-    v13 = v6;
+    v12 = dCopy;
+    v13 = stateCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
 
     objc_destroyWeak(&v14);
@@ -534,19 +534,19 @@ void __52__CRSIconLayoutService_setWidgetState_forVehicleID___block_invoke(uint6
   [v3 setWidgetState:*(a1 + 40) initiatedBy:0];
 }
 
-- (void)resetWidgetStateForVehicleID:(id)a3
+- (void)resetWidgetStateForVehicleID:(id)d
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = CRSLogForCategory(1uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v12 = v4;
+    v12 = dCopy;
     _os_log_impl(&dword_242FB5000, v5, OS_LOG_TYPE_DEFAULT, "Received request to reset widget state for vehicle: %{public}@", buf, 0xCu);
   }
 
-  if (v4)
+  if (dCopy)
   {
     objc_initWeak(buf, self);
     v8[0] = MEMORY[0x277D85DD0];
@@ -554,7 +554,7 @@ void __52__CRSIconLayoutService_setWidgetState_forVehicleID___block_invoke(uint6
     v8[2] = __53__CRSIconLayoutService_resetWidgetStateForVehicleID___block_invoke;
     v8[3] = &unk_278D8E080;
     objc_copyWeak(&v10, buf);
-    v9 = v4;
+    v9 = dCopy;
     dispatch_async(MEMORY[0x277D85CD0], v8);
 
     objc_destroyWeak(&v10);
@@ -582,15 +582,15 @@ void __53__CRSIconLayoutService_resetWidgetStateForVehicleID___block_invoke(uint
   [v3 resetWidgetState];
 }
 
-- (void)refreshWidgetStateForVehicleID:(id)a3
+- (void)refreshWidgetStateForVehicleID:(id)d
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = CRSLogForCategory(1uLL);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v13 = v4;
+    v13 = dCopy;
     _os_log_impl(&dword_242FB5000, v5, OS_LOG_TYPE_DEFAULT, "Sending request to refresh widget state for vehicle: %{public}@", buf, 0xCu);
   }
 
@@ -601,8 +601,8 @@ void __53__CRSIconLayoutService_resetWidgetStateForVehicleID___block_invoke(uint
   v9[2] = __55__CRSIconLayoutService_refreshWidgetStateForVehicleID___block_invoke;
   v9[3] = &unk_278D8E080;
   objc_copyWeak(&v11, buf);
-  v10 = v4;
-  v7 = v4;
+  v10 = dCopy;
+  v7 = dCopy;
   dispatch_async(connectionQueue, v9);
 
   objc_destroyWeak(&v11);
@@ -650,35 +650,35 @@ void __55__CRSIconLayoutService_refreshWidgetStateForVehicleID___block_invoke(ui
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_connectionQueue_addConnection:(id)a3
+- (void)_connectionQueue_addConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(CRSIconLayoutService *)self connections];
-  [v5 addObject:v4];
+  connectionCopy = connection;
+  connections = [(CRSIconLayoutService *)self connections];
+  [connections addObject:connectionCopy];
 
-  v6 = [(CRSIconLayoutService *)self temporaryWatchdogMonitoringAssertion];
+  temporaryWatchdogMonitoringAssertion = [(CRSIconLayoutService *)self temporaryWatchdogMonitoringAssertion];
 
-  if (!v6)
+  if (!temporaryWatchdogMonitoringAssertion)
   {
-    v8 = [MEMORY[0x277D0AB10] sharedInstance];
-    v7 = [v8 assertWatchdogEnabledForLimitedDurationForReason:@"CarPlayIconLayoutService"];
+    mEMORY[0x277D0AB10] = [MEMORY[0x277D0AB10] sharedInstance];
+    v7 = [mEMORY[0x277D0AB10] assertWatchdogEnabledForLimitedDurationForReason:@"CarPlayIconLayoutService"];
     [(CRSIconLayoutService *)self setTemporaryWatchdogMonitoringAssertion:v7];
   }
 }
 
-- (void)_connectionQueue_removeConnection:(id)a3
+- (void)_connectionQueue_removeConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(CRSIconLayoutService *)self connections];
-  [v5 removeObject:v4];
+  connectionCopy = connection;
+  connections = [(CRSIconLayoutService *)self connections];
+  [connections removeObject:connectionCopy];
 
-  v6 = [(CRSIconLayoutService *)self connections];
-  v7 = [v6 count];
+  connections2 = [(CRSIconLayoutService *)self connections];
+  v7 = [connections2 count];
 
   if (!v7)
   {
-    v8 = [(CRSIconLayoutService *)self temporaryWatchdogMonitoringAssertion];
-    [v8 invalidate];
+    temporaryWatchdogMonitoringAssertion = [(CRSIconLayoutService *)self temporaryWatchdogMonitoringAssertion];
+    [temporaryWatchdogMonitoringAssertion invalidate];
 
     [(CRSIconLayoutService *)self setTemporaryWatchdogMonitoringAssertion:0];
   }

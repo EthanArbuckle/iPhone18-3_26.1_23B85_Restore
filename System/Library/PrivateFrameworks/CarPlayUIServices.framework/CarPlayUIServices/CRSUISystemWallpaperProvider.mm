@@ -1,9 +1,9 @@
 @interface CRSUISystemWallpaperProvider
 - (CRSUIWallpaperDataProvidingDelegate)dataProviderDelegate;
 - (id)defaultWallpapers;
-- (id)dynamicAppearanceWallpapersForVehicle:(id)a3;
-- (id)loadWallpaperFromData:(id)a3;
-- (id)resolveWallpaper:(id)a3;
+- (id)dynamicAppearanceWallpapersForVehicle:(id)vehicle;
+- (id)loadWallpaperFromData:(id)data;
+- (id)resolveWallpaper:(id)wallpaper;
 @end
 
 @implementation CRSUISystemWallpaperProvider
@@ -20,20 +20,20 @@
   return v3;
 }
 
-- (id)dynamicAppearanceWallpapersForVehicle:(id)a3
+- (id)dynamicAppearanceWallpapersForVehicle:(id)vehicle
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v4 = [a3 previousSystemWallpaperData];
-  if (v4)
+  previousSystemWallpaperData = [vehicle previousSystemWallpaperData];
+  if (previousSystemWallpaperData)
   {
-    v5 = [(CRSUISystemWallpaperProvider *)self loadWallpaperFromData:v4];
+    v5 = [(CRSUISystemWallpaperProvider *)self loadWallpaperFromData:previousSystemWallpaperData];
     v6 = v5;
     if (v5)
     {
-      v7 = [v5 traits];
-      v8 = [v7 supportsDynamicAppearance];
+      traits = [v5 traits];
+      supportsDynamicAppearance = [traits supportsDynamicAppearance];
 
-      if (v8)
+      if (supportsDynamicAppearance)
       {
         v17[0] = v6;
         v9 = MEMORY[0x277CBEA60];
@@ -45,8 +45,8 @@ LABEL_8:
     }
   }
 
-  v11 = [(CRSUISystemWallpaperProvider *)self wallpapers];
-  v6 = [v11 bs_firstObjectPassingTest:&__block_literal_global_235];
+  wallpapers = [(CRSUISystemWallpaperProvider *)self wallpapers];
+  v6 = [wallpapers bs_firstObjectPassingTest:&__block_literal_global_235];
 
   if (v6)
   {
@@ -78,15 +78,15 @@ uint64_t __70__CRSUISystemWallpaperProvider_dynamicAppearanceWallpapersForVehicl
   return v3;
 }
 
-- (id)loadWallpaperFromData:(id)a3
+- (id)loadWallpaperFromData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = [CRSUISystemWallpaper alloc];
-    v5 = [v3 identifier];
-    v6 = [(CRSUISystemWallpaper *)v4 initWithIdentifier:v5];
+    identifier = [dataCopy identifier];
+    v6 = [(CRSUISystemWallpaper *)v4 initWithIdentifier:identifier];
   }
 
   else
@@ -103,13 +103,13 @@ uint64_t __70__CRSUISystemWallpaperProvider_dynamicAppearanceWallpapersForVehicl
   return v6;
 }
 
-- (id)resolveWallpaper:(id)a3
+- (id)resolveWallpaper:(id)wallpaper
 {
-  v3 = a3;
+  wallpaperCopy = wallpaper;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 resolveWallpaper];
+    resolveWallpaper = [wallpaperCopy resolveWallpaper];
   }
 
   else
@@ -120,10 +120,10 @@ uint64_t __70__CRSUISystemWallpaperProvider_dynamicAppearanceWallpapersForVehicl
       [CRSUISystemWallpaperProvider loadWallpaperFromData:];
     }
 
-    v4 = 0;
+    resolveWallpaper = 0;
   }
 
-  return v4;
+  return resolveWallpaper;
 }
 
 - (CRSUIWallpaperDataProvidingDelegate)dataProviderDelegate

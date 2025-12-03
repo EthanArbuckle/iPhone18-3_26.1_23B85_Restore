@@ -1,49 +1,49 @@
 @interface MTLFunctionStitchingInputImageblock
-- (BOOL)isEqual:(id)a3;
-- (MTLFunctionStitchingInputImageblock)initWithBindIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTLFunctionStitchingInputImageblock)initWithBindIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)formattedDescription:(unint64_t)description;
 @end
 
 @implementation MTLFunctionStitchingInputImageblock
 
-- (MTLFunctionStitchingInputImageblock)initWithBindIndex:(unint64_t)a3
+- (MTLFunctionStitchingInputImageblock)initWithBindIndex:(unint64_t)index
 {
   v5.receiver = self;
   v5.super_class = MTLFunctionStitchingInputImageblock;
   result = [(MTLFunctionStitchingInputImageblock *)&v5 init];
-  result->_bindIndex = a3;
+  result->_bindIndex = index;
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setBindIndex:self->_bindIndex];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  if (Class != object_getClass(a3))
+  if (Class != object_getClass(equal))
   {
     return 0;
   }
 
-  v7 = [(MTLFunctionStitchingInputImageblock *)self bindIndex];
-  return v7 == [a3 bindIndex];
+  bindIndex = [(MTLFunctionStitchingInputImageblock *)self bindIndex];
+  return bindIndex == [equal bindIndex];
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v10[3] = *MEMORY[0x1E69E9840];
-  v4 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v4 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v5 = MEMORY[0x1E696AEC0];
   v9.receiver = self;
   v9.super_class = MTLFunctionStitchingInputImageblock;

@@ -1,46 +1,46 @@
 @interface FBAEnhancedLoggingInbox
 - (NSString)displayText;
 - (_TtC18Feedback_Assistant23FBAEnhancedLoggingInbox)init;
-- (id)inboxItemsForTeam:(id)a3 withSortDescriptors:(id)a4;
-- (unint64_t)unreadCountForTeam:(id)a3;
+- (id)inboxItemsForTeam:(id)team withSortDescriptors:(id)descriptors;
+- (unint64_t)unreadCountForTeam:(id)team;
 @end
 
 @implementation FBAEnhancedLoggingInbox
 
 - (NSString)displayText
 {
-  v2 = [objc_opt_self() mainBundle];
+  mainBundle = [objc_opt_self() mainBundle];
   v8._object = 0x80000001000CAD40;
   v3._object = 0x80000001000CAD00;
   v4._object = 0x80000001000CAD20;
   v8._countAndFlagsBits = 0xD000000000000022;
   v3._countAndFlagsBits = 0xD000000000000010;
   v4._countAndFlagsBits = 0xD000000000000010;
-  NSLocalizedString(_:tableName:bundle:value:comment:)(v3, 0, v2, v4, v8);
+  NSLocalizedString(_:tableName:bundle:value:comment:)(v3, 0, mainBundle, v4, v8);
 
   v5 = String._bridgeToObjectiveC()();
 
   return v5;
 }
 
-- (unint64_t)unreadCountForTeam:(id)a3
+- (unint64_t)unreadCountForTeam:(id)team
 {
-  v3 = [objc_opt_self() sharedInstance];
-  v4 = [v3 loggingSessionCount];
+  sharedInstance = [objc_opt_self() sharedInstance];
+  loggingSessionCount = [sharedInstance loggingSessionCount];
 
-  if ((v4 & 0x8000000000000000) == 0)
+  if ((loggingSessionCount & 0x8000000000000000) == 0)
   {
-    return v4;
+    return loggingSessionCount;
   }
 
   __break(1u);
   return result;
 }
 
-- (id)inboxItemsForTeam:(id)a3 withSortDescriptors:(id)a4
+- (id)inboxItemsForTeam:(id)team withSortDescriptors:(id)descriptors
 {
-  v4 = [objc_opt_self() sharedInstance];
-  v5 = [v4 items];
+  sharedInstance = [objc_opt_self() sharedInstance];
+  items = [sharedInstance items];
 
   sub_10004D424();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();

@@ -9,24 +9,24 @@
 - (id)_maps_mapItem;
 - (id)_maps_selectableRouteAnnotations;
 - (unint64_t)_maps_numLines;
-- (void)_maps_loadLineInfoUsingTraits:(id)a3 withCompletion:(id)a4;
-- (void)set_maps_lineShouldZoomMapRegionOnSelection:(BOOL)a3;
+- (void)_maps_loadLineInfoUsingTraits:(id)traits withCompletion:(id)completion;
+- (void)set_maps_lineShouldZoomMapRegionOnSelection:(BOOL)selection;
 @end
 
 @implementation VKLabelMarker
 
-- (void)set_maps_lineShouldZoomMapRegionOnSelection:(BOOL)a3
+- (void)set_maps_lineShouldZoomMapRegionOnSelection:(BOOL)selection
 {
-  v4 = [NSNumber numberWithBool:a3];
+  v4 = [NSNumber numberWithBool:selection];
   objc_setAssociatedObject(self, &unk_10195CB9A, v4, 3);
 }
 
 - (BOOL)_maps_lineShouldZoomMapRegionOnSelection
 {
   v2 = objc_getAssociatedObject(self, &unk_10195CB9A);
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)_maps_analyticsEventValue
@@ -36,8 +36,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(VKLabelMarker *)self _maps_lineIdentifiers];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  _maps_lineIdentifiers = [(VKLabelMarker *)self _maps_lineIdentifiers];
+  v5 = [_maps_lineIdentifiers countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -48,14 +48,14 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_maps_lineIdentifiers);
         }
 
         v9 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%llu", [*(*(&v12 + 1) + 8 * i) muid]);
         [v3 addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [_maps_lineIdentifiers countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -66,18 +66,18 @@
   return v10;
 }
 
-- (void)_maps_loadLineInfoUsingTraits:(id)a3 withCompletion:(id)a4
+- (void)_maps_loadLineInfoUsingTraits:(id)traits withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  traitsCopy = traits;
+  completionCopy = completion;
   if (([(VKLabelMarker *)self isTransitLine]& 1) != 0)
   {
     v8 = objc_getAssociatedObject(self, &unk_10195CB98);
     if (v8)
     {
-      if (v7)
+      if (completionCopy)
       {
-        v7[2](v7, v8, 0);
+        completionCopy[2](completionCopy, v8, 0);
       }
     }
 
@@ -87,18 +87,18 @@
       if (v9)
       {
         v10 = v9;
-        if (v7)
+        if (completionCopy)
         {
-          v11 = objc_retainBlock(v7);
+          v11 = objc_retainBlock(completionCopy);
           [v10 addObject:v11];
         }
       }
 
       else
       {
-        if (v7)
+        if (completionCopy)
         {
-          v12 = objc_retainBlock(v7);
+          v12 = objc_retainBlock(completionCopy);
           v13 = [NSMutableArray arrayWithObject:v12];
         }
 
@@ -109,8 +109,8 @@
 
         objc_setAssociatedObject(self, &unk_10195CB99, v13, 1);
         v14 = +[MKMapService sharedService];
-        v15 = [(VKLabelMarker *)self _maps_lineIdentifiers];
-        v16 = [v14 ticketForTransitLines:v15 traits:v6];
+        _maps_lineIdentifiers = [(VKLabelMarker *)self _maps_lineIdentifiers];
+        v16 = [v14 ticketForTransitLines:_maps_lineIdentifiers traits:traitsCopy];
 
         v17[0] = _NSConcreteStackBlock;
         v17[1] = 3221225472;
@@ -124,9 +124,9 @@
     }
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v7[2](v7, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 }
 
@@ -134,11 +134,11 @@
 {
   if ([(VKLabelMarker *)self isTransitLine])
   {
-    v3 = [(VKLabelMarker *)self _maps_numLines];
-    v4 = [[NSMutableArray alloc] initWithCapacity:v3];
-    if (v3)
+    _maps_numLines = [(VKLabelMarker *)self _maps_numLines];
+    v4 = [[NSMutableArray alloc] initWithCapacity:_maps_numLines];
+    if (_maps_numLines)
     {
-      for (i = 0; i != v3; ++i)
+      for (i = 0; i != _maps_numLines; ++i)
       {
         v6 = *([(VKLabelMarker *)self featureIDs]+ i);
         v7 = [MKMapItemIdentifier alloc];
@@ -175,17 +175,17 @@
 - (id)_maps_mapItem
 {
   v3 = +[UIApplication sharedMapsDelegate];
-  v4 = [v3 poiSearchManager];
-  v5 = [(VKLabelMarker *)self identifier];
-  v6 = [v4 searchResultForIdentifier:v5];
+  poiSearchManager = [v3 poiSearchManager];
+  identifier = [(VKLabelMarker *)self identifier];
+  v6 = [poiSearchManager searchResultForIdentifier:identifier];
 
-  v7 = [v6 mapItem];
-  if (!v7)
+  mapItem = [v6 mapItem];
+  if (!mapItem)
   {
-    v7 = [[MKMapItem alloc] _initWithLabelMarker:self];
+    mapItem = [[MKMapItem alloc] _initWithLabelMarker:self];
   }
 
-  return v7;
+  return mapItem;
 }
 
 - (BOOL)_maps_isOfflineClusterAnnotation
@@ -200,11 +200,11 @@
     v3 = 0;
   }
 
-  v4 = [(VKLabelMarker *)self clusterFeatureAnnotations];
-  v5 = [v4 firstObject];
+  clusterFeatureAnnotations = [(VKLabelMarker *)self clusterFeatureAnnotations];
+  firstObject = [clusterFeatureAnnotations firstObject];
 
   isKindOfClass = 0;
-  if (v3 && v5)
+  if (v3 && firstObject)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -215,8 +215,8 @@
 
 - (BOOL)_maps_isOfflineAnnotation
 {
-  v2 = [(VKLabelMarker *)self featureAnnotation];
-  if (v2)
+  featureAnnotation = [(VKLabelMarker *)self featureAnnotation];
+  if (featureAnnotation)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -232,9 +232,9 @@
 
 - (CustomPOIAnnotation)_maps_customPOIAnnotation
 {
-  v2 = [(VKLabelMarker *)self featureAnnotation];
-  v3 = v2;
-  if (v2 && [v2 conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation])
+  featureAnnotation = [(VKLabelMarker *)self featureAnnotation];
+  v3 = featureAnnotation;
+  if (featureAnnotation && [featureAnnotation conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation])
   {
     v4 = v3;
   }
@@ -249,11 +249,11 @@
 
 - (BOOL)_maps_hasCustomPOIAnnotation
 {
-  v2 = [(VKLabelMarker *)self featureAnnotation];
-  v3 = v2;
-  if (v2)
+  featureAnnotation = [(VKLabelMarker *)self featureAnnotation];
+  v3 = featureAnnotation;
+  if (featureAnnotation)
   {
-    v4 = [v2 conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation];
+    v4 = [featureAnnotation conformsToProtocol:&OBJC_PROTOCOL___CustomPOIAnnotation];
   }
 
   else
@@ -268,8 +268,8 @@
 {
   if ([(VKLabelMarker *)self isRouteAnnotation])
   {
-    v3 = [(VKLabelMarker *)self routeAnnotations];
-    v4 = sub_100021DB0(v3, &stru_1016577C8);
+    routeAnnotations = [(VKLabelMarker *)self routeAnnotations];
+    v4 = sub_100021DB0(routeAnnotations, &stru_1016577C8);
   }
 
   else

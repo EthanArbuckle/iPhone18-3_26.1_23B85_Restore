@@ -1,52 +1,52 @@
 @interface MSPSharingRestorationStorage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addMapsIdentifier:(id)a3;
-- (void)addMessagesIdentifier:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMapsIdentifier:(id)identifier;
+- (void)addMessagesIdentifier:(id)identifier;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MSPSharingRestorationStorage
 
-- (void)addMapsIdentifier:(id)a3
+- (void)addMapsIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   mapsIdentifiers = self->_mapsIdentifiers;
-  v8 = v4;
+  v8 = identifierCopy;
   if (!mapsIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_mapsIdentifiers;
     self->_mapsIdentifiers = v6;
 
-    v4 = v8;
+    identifierCopy = v8;
     mapsIdentifiers = self->_mapsIdentifiers;
   }
 
-  [(NSMutableArray *)mapsIdentifiers addObject:v4];
+  [(NSMutableArray *)mapsIdentifiers addObject:identifierCopy];
 }
 
-- (void)addMessagesIdentifier:(id)a3
+- (void)addMessagesIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   messagesIdentifiers = self->_messagesIdentifiers;
-  v8 = v4;
+  v8 = identifierCopy;
   if (!messagesIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_messagesIdentifiers;
     self->_messagesIdentifiers = v6;
 
-    v4 = v8;
+    identifierCopy = v8;
     messagesIdentifiers = self->_messagesIdentifiers;
   }
 
-  [(NSMutableArray *)messagesIdentifiers addObject:v4];
+  [(NSMutableArray *)messagesIdentifiers addObject:identifierCopy];
 }
 
 - (id)description
@@ -55,53 +55,53 @@
   v8.receiver = self;
   v8.super_class = MSPSharingRestorationStorage;
   v4 = [(MSPSharingRestorationStorage *)&v8 description];
-  v5 = [(MSPSharingRestorationStorage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(MSPSharingRestorationStorage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithDouble:self->_createdTimestamp];
-    [v3 setObject:v4 forKey:@"created_timestamp"];
+    [dictionary setObject:v4 forKey:@"created_timestamp"];
   }
 
   groupIdentifier = self->_groupIdentifier;
   if (groupIdentifier)
   {
-    [v3 setObject:groupIdentifier forKey:@"group_identifier"];
+    [dictionary setObject:groupIdentifier forKey:@"group_identifier"];
   }
 
   mapsIdentifiers = self->_mapsIdentifiers;
   if (mapsIdentifiers)
   {
-    [v3 setObject:mapsIdentifiers forKey:@"maps_identifier"];
+    [dictionary setObject:mapsIdentifiers forKey:@"maps_identifier"];
   }
 
   messagesIdentifiers = self->_messagesIdentifiers;
   if (messagesIdentifiers)
   {
-    [v3 setObject:messagesIdentifiers forKey:@"messages_identifier"];
+    [dictionary setObject:messagesIdentifiers forKey:@"messages_identifier"];
   }
 
   unknownFields = self->_unknownFields;
   if (unknownFields)
   {
-    v9 = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"Unknown Fields"];
+    dictionaryRepresentation = [(PBUnknownFields *)unknownFields dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"Unknown Fields"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     createdTimestamp = self->_createdTimestamp;
@@ -177,32 +177,32 @@
     while (v14);
   }
 
-  [(PBUnknownFields *)self->_unknownFields writeTo:v4, v19];
+  [(PBUnknownFields *)self->_unknownFields writeTo:toCopy, v19];
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[2] = *&self->_createdTimestamp;
-    *(v4 + 48) |= 1u;
+    toCopy[2] = *&self->_createdTimestamp;
+    *(toCopy + 48) |= 1u;
   }
 
-  v13 = v4;
+  v13 = toCopy;
   if (self->_groupIdentifier)
   {
-    [v4 setGroupIdentifier:?];
+    [toCopy setGroupIdentifier:?];
   }
 
   if ([(MSPSharingRestorationStorage *)self mapsIdentifiersCount])
   {
     [v13 clearMapsIdentifiers];
-    v5 = [(MSPSharingRestorationStorage *)self mapsIdentifiersCount];
-    if (v5)
+    mapsIdentifiersCount = [(MSPSharingRestorationStorage *)self mapsIdentifiersCount];
+    if (mapsIdentifiersCount)
     {
-      v6 = v5;
+      v6 = mapsIdentifiersCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(MSPSharingRestorationStorage *)self mapsIdentifierAtIndex:i];
@@ -214,10 +214,10 @@
   if ([(MSPSharingRestorationStorage *)self messagesIdentifiersCount])
   {
     [v13 clearMessagesIdentifiers];
-    v9 = [(MSPSharingRestorationStorage *)self messagesIdentifiersCount];
-    if (v9)
+    messagesIdentifiersCount = [(MSPSharingRestorationStorage *)self messagesIdentifiersCount];
+    if (messagesIdentifiersCount)
     {
-      v10 = v9;
+      v10 = messagesIdentifiersCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(MSPSharingRestorationStorage *)self messagesIdentifierAtIndex:j];
@@ -227,10 +227,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -238,7 +238,7 @@
     *(v5 + 48) |= 1u;
   }
 
-  v7 = [(NSString *)self->_groupIdentifier copyWithZone:a3];
+  v7 = [(NSString *)self->_groupIdentifier copyWithZone:zone];
   v8 = *(v6 + 24);
   *(v6 + 24) = v7;
 
@@ -262,7 +262,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v27 + 1) + 8 * v13) copyWithZone:a3];
+        v14 = [*(*(&v27 + 1) + 8 * v13) copyWithZone:zone];
         [v6 addMapsIdentifier:v14];
 
         ++v13;
@@ -295,7 +295,7 @@
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v23 + 1) + 8 * v19) copyWithZone:{a3, v23}];
+        v20 = [*(*(&v23 + 1) + 8 * v19) copyWithZone:{zone, v23}];
         [v6 addMessagesIdentifier:v20];
 
         ++v19;
@@ -313,24 +313,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_13;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_createdTimestamp != *(v4 + 2))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_createdTimestamp != *(equalCopy + 2))
     {
       goto LABEL_13;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_13:
     v9 = 0;
@@ -338,13 +338,13 @@ LABEL_13:
   }
 
   groupIdentifier = self->_groupIdentifier;
-  if (groupIdentifier | *(v4 + 3) && ![(NSString *)groupIdentifier isEqual:?])
+  if (groupIdentifier | *(equalCopy + 3) && ![(NSString *)groupIdentifier isEqual:?])
   {
     goto LABEL_13;
   }
 
   mapsIdentifiers = self->_mapsIdentifiers;
-  if (mapsIdentifiers | *(v4 + 4))
+  if (mapsIdentifiers | *(equalCopy + 4))
   {
     if (![(NSMutableArray *)mapsIdentifiers isEqual:?])
     {
@@ -353,7 +353,7 @@ LABEL_13:
   }
 
   messagesIdentifiers = self->_messagesIdentifiers;
-  if (messagesIdentifiers | *(v4 + 5))
+  if (messagesIdentifiers | *(equalCopy + 5))
   {
     v9 = [(NSMutableArray *)messagesIdentifiers isEqual:?];
   }
@@ -408,18 +408,18 @@ LABEL_14:
   return v9 ^ v10 ^ [(NSMutableArray *)self->_messagesIdentifiers hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 48))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 48))
   {
-    self->_createdTimestamp = *(v4 + 2);
+    self->_createdTimestamp = *(fromCopy + 2);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(MSPSharingRestorationStorage *)self setGroupIdentifier:?];
   }

@@ -1,16 +1,16 @@
 @interface HKHeartRateSummaryStatisticsBucket
-- (BOOL)isEqual:(id)a3;
-- (HKHeartRateSummaryStatisticsBucket)initWithBucketIndex:(int64_t)a3;
-- (HKHeartRateSummaryStatisticsBucket)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKHeartRateSummaryStatisticsBucket)initWithBucketIndex:(int64_t)index;
+- (HKHeartRateSummaryStatisticsBucket)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKHeartRateSummaryStatisticsBucket
 
-- (HKHeartRateSummaryStatisticsBucket)initWithBucketIndex:(int64_t)a3
+- (HKHeartRateSummaryStatisticsBucket)initWithBucketIndex:(int64_t)index
 {
   v9.receiver = self;
   v9.super_class = HKHeartRateSummaryStatisticsBucket;
@@ -18,43 +18,43 @@
   v5 = v4;
   if (v4)
   {
-    v4->_bucketIndex = a3;
-    v6 = [MEMORY[0x1E696AD50] indexSet];
+    v4->_bucketIndex = index;
+    indexSet = [MEMORY[0x1E696AD50] indexSet];
     heartRatesInBeatsPerMinute = v5->_heartRatesInBeatsPerMinute;
-    v5->_heartRatesInBeatsPerMinute = v6;
+    v5->_heartRatesInBeatsPerMinute = indexSet;
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [[HKHeartRateSummaryStatisticsBucket alloc] initWithBucketIndex:self->_bucketIndex];
-  v6 = [(NSMutableIndexSet *)self->_heartRatesInBeatsPerMinute mutableCopyWithZone:a3];
+  v6 = [(NSMutableIndexSet *)self->_heartRatesInBeatsPerMinute mutableCopyWithZone:zone];
   heartRatesInBeatsPerMinute = v5->_heartRatesInBeatsPerMinute;
   v5->_heartRatesInBeatsPerMinute = v6;
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   bucketIndex = self->_bucketIndex;
-  v5 = a3;
-  [v5 encodeInteger:bucketIndex forKey:@"BucketIndex"];
-  [v5 encodeObject:self->_heartRatesInBeatsPerMinute forKey:@"HeartRatesInBeatsPerMinute"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:bucketIndex forKey:@"BucketIndex"];
+  [coderCopy encodeObject:self->_heartRatesInBeatsPerMinute forKey:@"HeartRatesInBeatsPerMinute"];
 }
 
-- (HKHeartRateSummaryStatisticsBucket)initWithCoder:(id)a3
+- (HKHeartRateSummaryStatisticsBucket)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HKHeartRateSummaryStatisticsBucket;
   v5 = [(HKHeartRateSummaryStatisticsBucket *)&v9 init];
   if (v5)
   {
-    v5->_bucketIndex = [v4 decodeIntegerForKey:@"BucketIndex"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HeartRatesInBeatsPerMinute"];
+    v5->_bucketIndex = [coderCopy decodeIntegerForKey:@"BucketIndex"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HeartRatesInBeatsPerMinute"];
     heartRatesInBeatsPerMinute = v5->_heartRatesInBeatsPerMinute;
     v5->_heartRatesInBeatsPerMinute = v6;
   }
@@ -72,10 +72,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -83,23 +83,23 @@
   else
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(HKHeartRateSummaryStatisticsBucket *)self bucketIndex], v5 == [(HKHeartRateSummaryStatisticsBucket *)v4 bucketIndex]))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (v5 = [(HKHeartRateSummaryStatisticsBucket *)self bucketIndex], v5 == [(HKHeartRateSummaryStatisticsBucket *)equalCopy bucketIndex]))
     {
-      v6 = [(HKHeartRateSummaryStatisticsBucket *)self heartRatesInBeatsPerMinute];
-      v7 = [(HKHeartRateSummaryStatisticsBucket *)v4 heartRatesInBeatsPerMinute];
-      if (v6 == v7)
+      heartRatesInBeatsPerMinute = [(HKHeartRateSummaryStatisticsBucket *)self heartRatesInBeatsPerMinute];
+      heartRatesInBeatsPerMinute2 = [(HKHeartRateSummaryStatisticsBucket *)equalCopy heartRatesInBeatsPerMinute];
+      if (heartRatesInBeatsPerMinute == heartRatesInBeatsPerMinute2)
       {
         v11 = 1;
       }
 
       else
       {
-        v8 = [(HKHeartRateSummaryStatisticsBucket *)v4 heartRatesInBeatsPerMinute];
-        if (v8)
+        heartRatesInBeatsPerMinute3 = [(HKHeartRateSummaryStatisticsBucket *)equalCopy heartRatesInBeatsPerMinute];
+        if (heartRatesInBeatsPerMinute3)
         {
-          v9 = [(HKHeartRateSummaryStatisticsBucket *)self heartRatesInBeatsPerMinute];
-          v10 = [(HKHeartRateSummaryStatisticsBucket *)v4 heartRatesInBeatsPerMinute];
-          v11 = [v9 isEqual:v10];
+          heartRatesInBeatsPerMinute4 = [(HKHeartRateSummaryStatisticsBucket *)self heartRatesInBeatsPerMinute];
+          heartRatesInBeatsPerMinute5 = [(HKHeartRateSummaryStatisticsBucket *)equalCopy heartRatesInBeatsPerMinute];
+          v11 = [heartRatesInBeatsPerMinute4 isEqual:heartRatesInBeatsPerMinute5];
         }
 
         else
@@ -120,11 +120,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HKHeartRateSummaryStatisticsBucket *)self bucketIndex];
-  v4 = [(HKHeartRateSummaryStatisticsBucket *)self heartRatesInBeatsPerMinute];
-  v5 = [v4 hash];
+  bucketIndex = [(HKHeartRateSummaryStatisticsBucket *)self bucketIndex];
+  heartRatesInBeatsPerMinute = [(HKHeartRateSummaryStatisticsBucket *)self heartRatesInBeatsPerMinute];
+  v5 = [heartRatesInBeatsPerMinute hash];
 
-  return v5 ^ v3;
+  return v5 ^ bucketIndex;
 }
 
 @end

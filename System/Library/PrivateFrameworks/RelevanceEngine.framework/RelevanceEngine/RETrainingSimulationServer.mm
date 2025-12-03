@@ -1,18 +1,18 @@
 @interface RETrainingSimulationServer
 + (id)sharedServer;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (id)_init;
-- (void)_safelyEnumerateObserversWithBlock:(id)a3 observerAccessBlock:(id)a4 completion:(id)a5;
-- (void)availableRelevanceEngines:(id)a3;
+- (void)_safelyEnumerateObserversWithBlock:(id)block observerAccessBlock:(id)accessBlock completion:(id)completion;
+- (void)availableRelevanceEngines:(id)engines;
 - (void)availableRelevanceEnginesDidChange;
 - (void)dealloc;
-- (void)fetchAllElementIdentifiersInRelevanceEngine:(id)a3 completion:(id)a4;
-- (void)fetchAllElementsInRelevanceEngine:(id)a3 completion:(id)a4;
-- (void)gatherDiagnosticLogsForRelevanceEngine:(id)a3 completion:(id)a4;
-- (void)relevanceEngine:(id)a3 createElementFromDescription:(id)a4 completion:(id)a5;
-- (void)relevanceEngine:(id)a3 encodedObjectAtPath:(id)a4 completion:(id)a5;
-- (void)relevanceEngine:(id)a3 performCommand:(id)a4 withOptions:(id)a5 completion:(id)a6;
-- (void)relevanceEngine:(id)a3 runActionOfElementWithDescription1:(id)a4 completion:(id)a5;
+- (void)fetchAllElementIdentifiersInRelevanceEngine:(id)engine completion:(id)completion;
+- (void)fetchAllElementsInRelevanceEngine:(id)engine completion:(id)completion;
+- (void)gatherDiagnosticLogsForRelevanceEngine:(id)engine completion:(id)completion;
+- (void)relevanceEngine:(id)engine createElementFromDescription:(id)description completion:(id)completion;
+- (void)relevanceEngine:(id)engine encodedObjectAtPath:(id)path completion:(id)completion;
+- (void)relevanceEngine:(id)engine performCommand:(id)command withOptions:(id)options completion:(id)completion;
+- (void)relevanceEngine:(id)engine runActionOfElementWithDescription1:(id)description1 completion:(id)completion;
 @end
 
 @implementation RETrainingSimulationServer
@@ -71,10 +71,10 @@ uint64_t __42__RETrainingSimulationServer_sharedServer__block_invoke()
     queue = v2->_queue;
     v2->_queue = v7;
 
-    v9 = [MEMORY[0x277CCAC38] processInfo];
-    v10 = [v9 processName];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
 
-    v11 = RETrainingSimulationMachServiceForProcessName(v10);
+    v11 = RETrainingSimulationMachServiceForProcessName(processName);
     v12 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:v11];
     listener = v2->_listener;
     v2->_listener = v12;
@@ -158,11 +158,11 @@ void __64__RETrainingSimulationServer_availableRelevanceEnginesDidChange__block_
   }
 }
 
-- (void)relevanceEngine:(id)a3 createElementFromDescription:(id)a4 completion:(id)a5
+- (void)relevanceEngine:(id)engine createElementFromDescription:(id)description completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  engineCopy = engine;
+  descriptionCopy = description;
+  completionCopy = completion;
   v11 = dispatch_group_create();
   observers = self->_observers;
   v20[0] = MEMORY[0x277D85DD0];
@@ -170,10 +170,10 @@ void __64__RETrainingSimulationServer_availableRelevanceEnginesDidChange__block_
   v20[2] = __86__RETrainingSimulationServer_relevanceEngine_createElementFromDescription_completion___block_invoke;
   v20[3] = &unk_2785FA018;
   v21 = v11;
-  v22 = v8;
-  v23 = v9;
-  v13 = v9;
-  v14 = v8;
+  v22 = engineCopy;
+  v23 = descriptionCopy;
+  v13 = descriptionCopy;
+  v14 = engineCopy;
   v15 = v11;
   [(REObserverStore *)observers enumerateObserversWithBlock:v20];
   queue = self->_queue;
@@ -181,8 +181,8 @@ void __64__RETrainingSimulationServer_availableRelevanceEnginesDidChange__block_
   v18[1] = 3221225472;
   v18[2] = __86__RETrainingSimulationServer_relevanceEngine_createElementFromDescription_completion___block_invoke_3;
   v18[3] = &unk_2785FA040;
-  v19 = v10;
-  v17 = v10;
+  v19 = completionCopy;
+  v17 = completionCopy;
   dispatch_group_notify(v15, queue, v18);
 }
 
@@ -201,12 +201,12 @@ void __86__RETrainingSimulationServer_relevanceEngine_createElementFromDescripti
   [v4 relevanceEngine:v5 createElementFromDescription:v6 completion:v7];
 }
 
-- (void)relevanceEngine:(id)a3 performCommand:(id)a4 withOptions:(id)a5 completion:(id)a6
+- (void)relevanceEngine:(id)engine performCommand:(id)command withOptions:(id)options completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  engineCopy = engine;
+  commandCopy = command;
+  optionsCopy = options;
+  completionCopy = completion;
   v14 = dispatch_group_create();
   observers = self->_observers;
   v24[0] = MEMORY[0x277D85DD0];
@@ -214,12 +214,12 @@ void __86__RETrainingSimulationServer_relevanceEngine_createElementFromDescripti
   v24[2] = __84__RETrainingSimulationServer_relevanceEngine_performCommand_withOptions_completion___block_invoke;
   v24[3] = &unk_2785FA068;
   v25 = v14;
-  v26 = v10;
-  v27 = v11;
-  v28 = v12;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v26 = engineCopy;
+  v27 = commandCopy;
+  v28 = optionsCopy;
+  v16 = optionsCopy;
+  v17 = commandCopy;
+  v18 = engineCopy;
   v19 = v14;
   [(REObserverStore *)observers enumerateObserversWithBlock:v24];
   queue = self->_queue;
@@ -227,8 +227,8 @@ void __86__RETrainingSimulationServer_relevanceEngine_createElementFromDescripti
   block[1] = 3221225472;
   block[2] = __84__RETrainingSimulationServer_relevanceEngine_performCommand_withOptions_completion___block_invoke_3;
   block[3] = &unk_2785FA040;
-  v23 = v13;
-  v21 = v13;
+  v23 = completionCopy;
+  v21 = completionCopy;
   dispatch_group_notify(v19, queue, block);
 }
 
@@ -248,11 +248,11 @@ void __84__RETrainingSimulationServer_relevanceEngine_performCommand_withOptions
   [v4 relevanceEngine:v5 performCommand:v6 withOptions:v7 completion:v8];
 }
 
-- (void)_safelyEnumerateObserversWithBlock:(id)a3 observerAccessBlock:(id)a4 completion:(id)a5
+- (void)_safelyEnumerateObserversWithBlock:(id)block observerAccessBlock:(id)accessBlock completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  blockCopy = block;
+  accessBlockCopy = accessBlock;
+  completionCopy = completion;
   v11 = dispatch_group_create();
   v21[0] = 0;
   v21[1] = v21;
@@ -266,13 +266,13 @@ void __84__RETrainingSimulationServer_relevanceEngine_performCommand_withOptions
   v16[3] = &unk_2785FA0B8;
   v13 = v11;
   v17 = v13;
-  v14 = v9;
+  v14 = accessBlockCopy;
   v18 = v14;
   v20 = v21;
-  v15 = v8;
+  v15 = blockCopy;
   v19 = v15;
   [(REObserverStore *)observers enumerateObserversWithBlock:v16];
-  dispatch_group_notify(v13, self->_queue, v10);
+  dispatch_group_notify(v13, self->_queue, completionCopy);
 
   _Block_object_dispose(v21, 8);
 }
@@ -307,23 +307,23 @@ void __96__RETrainingSimulationServer__safelyEnumerateObserversWithBlock_observe
   dispatch_group_leave(v5);
 }
 
-- (void)availableRelevanceEngines:(id)a3
+- (void)availableRelevanceEngines:(id)engines
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  enginesCopy = engines;
+  array = [MEMORY[0x277CBEB18] array];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __56__RETrainingSimulationServer_availableRelevanceEngines___block_invoke;
   v11[3] = &unk_2785FA0E0;
-  v12 = v5;
+  v12 = array;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__RETrainingSimulationServer_availableRelevanceEngines___block_invoke_4;
   v8[3] = &unk_2785FA150;
   v9 = v12;
-  v10 = v4;
+  v10 = enginesCopy;
   v6 = v12;
-  v7 = v4;
+  v7 = enginesCopy;
   [(RETrainingSimulationServer *)self _safelyEnumerateObserversWithBlock:v11 observerAccessBlock:&__block_literal_global_16 completion:v8];
 }
 
@@ -339,10 +339,10 @@ void __56__RETrainingSimulationServer_availableRelevanceEngines___block_invoke_2
   [a2 availableRelevanceEngines:v6];
 }
 
-- (void)fetchAllElementIdentifiersInRelevanceEngine:(id)a3 completion:(id)a4
+- (void)fetchAllElementIdentifiersInRelevanceEngine:(id)engine completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  completionCopy = completion;
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x3032000000;
@@ -358,13 +358,13 @@ void __56__RETrainingSimulationServer_availableRelevanceEngines___block_invoke_2
   v13[1] = 3221225472;
   v13[2] = __85__RETrainingSimulationServer_fetchAllElementIdentifiersInRelevanceEngine_completion___block_invoke_2;
   v13[3] = &unk_2785FA1A0;
-  v8 = v6;
+  v8 = engineCopy;
   v14 = v8;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __85__RETrainingSimulationServer_fetchAllElementIdentifiersInRelevanceEngine_completion___block_invoke_4;
   v10[3] = &unk_2785FA1C8;
-  v9 = v7;
+  v9 = completionCopy;
   v11 = v9;
   v12 = v16;
   [(RETrainingSimulationServer *)self _safelyEnumerateObserversWithBlock:v15 observerAccessBlock:v13 completion:v10];
@@ -401,10 +401,10 @@ void __85__RETrainingSimulationServer_fetchAllElementIdentifiersInRelevanceEngin
   [a2 fetchAllElementIdentifiersInRelevanceEngine:v6 completion:v8];
 }
 
-- (void)fetchAllElementsInRelevanceEngine:(id)a3 completion:(id)a4
+- (void)fetchAllElementsInRelevanceEngine:(id)engine completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  completionCopy = completion;
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x3032000000;
@@ -420,13 +420,13 @@ void __85__RETrainingSimulationServer_fetchAllElementIdentifiersInRelevanceEngin
   v13[1] = 3221225472;
   v13[2] = __75__RETrainingSimulationServer_fetchAllElementsInRelevanceEngine_completion___block_invoke_2;
   v13[3] = &unk_2785FA1A0;
-  v8 = v6;
+  v8 = engineCopy;
   v14 = v8;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __75__RETrainingSimulationServer_fetchAllElementsInRelevanceEngine_completion___block_invoke_4;
   v10[3] = &unk_2785FA1C8;
-  v9 = v7;
+  v9 = completionCopy;
   v11 = v9;
   v12 = v16;
   [(RETrainingSimulationServer *)self _safelyEnumerateObserversWithBlock:v15 observerAccessBlock:v13 completion:v10];
@@ -463,10 +463,10 @@ void __75__RETrainingSimulationServer_fetchAllElementsInRelevanceEngine_completi
   [a2 fetchAllElementsInRelevanceEngine:v6 completion:v8];
 }
 
-- (void)gatherDiagnosticLogsForRelevanceEngine:(id)a3 completion:(id)a4
+- (void)gatherDiagnosticLogsForRelevanceEngine:(id)engine completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  engineCopy = engine;
+  completionCopy = completion;
   v19[0] = 0;
   v19[1] = v19;
   v19[2] = 0x3032000000;
@@ -489,13 +489,13 @@ void __75__RETrainingSimulationServer_fetchAllElementsInRelevanceEngine_completi
   v14[1] = 3221225472;
   v14[2] = __80__RETrainingSimulationServer_gatherDiagnosticLogsForRelevanceEngine_completion___block_invoke_2;
   v14[3] = &unk_2785FA1A0;
-  v8 = v6;
+  v8 = engineCopy;
   v15 = v8;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __80__RETrainingSimulationServer_gatherDiagnosticLogsForRelevanceEngine_completion___block_invoke_4;
   v10[3] = &unk_2785FA240;
-  v9 = v7;
+  v9 = completionCopy;
   v11 = v9;
   v12 = v19;
   v13 = v17;
@@ -569,11 +569,11 @@ uint64_t __80__RETrainingSimulationServer_gatherDiagnosticLogsForRelevanceEngine
   return (*(v3 + 16))(v3, a2);
 }
 
-- (void)relevanceEngine:(id)a3 runActionOfElementWithDescription1:(id)a4 completion:(id)a5
+- (void)relevanceEngine:(id)engine runActionOfElementWithDescription1:(id)description1 completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  engineCopy = engine;
+  description1Copy = description1;
+  completionCopy = completion;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x2020000000;
@@ -587,15 +587,15 @@ uint64_t __80__RETrainingSimulationServer_gatherDiagnosticLogsForRelevanceEngine
   v17[1] = 3221225472;
   v17[2] = __92__RETrainingSimulationServer_relevanceEngine_runActionOfElementWithDescription1_completion___block_invoke_2;
   v17[3] = &unk_2785FA290;
-  v11 = v8;
+  v11 = engineCopy;
   v18 = v11;
-  v12 = v9;
+  v12 = description1Copy;
   v19 = v12;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __92__RETrainingSimulationServer_relevanceEngine_runActionOfElementWithDescription1_completion___block_invoke_4;
   v14[3] = &unk_2785FA1C8;
-  v13 = v10;
+  v13 = completionCopy;
   v15 = v13;
   v16 = v21;
   [(RETrainingSimulationServer *)self _safelyEnumerateObserversWithBlock:v20 observerAccessBlock:v17 completion:v14];
@@ -642,11 +642,11 @@ void __92__RETrainingSimulationServer_relevanceEngine_runActionOfElementWithDesc
   (*(v2 + 16))(v2, v3);
 }
 
-- (void)relevanceEngine:(id)a3 encodedObjectAtPath:(id)a4 completion:(id)a5
+- (void)relevanceEngine:(id)engine encodedObjectAtPath:(id)path completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  engineCopy = engine;
+  pathCopy = path;
+  completionCopy = completion;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x3032000000;
@@ -662,15 +662,15 @@ void __92__RETrainingSimulationServer_relevanceEngine_runActionOfElementWithDesc
   v17[1] = 3221225472;
   v17[2] = __77__RETrainingSimulationServer_relevanceEngine_encodedObjectAtPath_completion___block_invoke_2;
   v17[3] = &unk_2785FA290;
-  v11 = v8;
+  v11 = engineCopy;
   v18 = v11;
-  v12 = v9;
+  v12 = pathCopy;
   v19 = v12;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __77__RETrainingSimulationServer_relevanceEngine_encodedObjectAtPath_completion___block_invoke_3;
   v14[3] = &unk_2785FA1C8;
-  v13 = v10;
+  v13 = completionCopy;
   v15 = v13;
   v16 = v21;
   [(RETrainingSimulationServer *)self _safelyEnumerateObserversWithBlock:v20 observerAccessBlock:v17 completion:v14];
@@ -694,24 +694,24 @@ uint64_t __77__RETrainingSimulationServer_relevanceEngine_encodedObjectAtPath_co
   return MEMORY[0x2821F96F8](v6, v4);
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = RETrainingSimulationClientInterface();
-  [v7 setRemoteObjectInterface:v8];
+  [connectionCopy setRemoteObjectInterface:v8];
 
   v9 = RETrainingSimulationServerInterface();
-  [v7 setExportedInterface:v9];
+  [connectionCopy setExportedInterface:v9];
 
-  [v7 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__RETrainingSimulationServer_listener_shouldAcceptNewConnection___block_invoke;
   block[3] = &unk_2785F9AE0;
   block[4] = self;
-  v11 = v7;
+  v11 = connectionCopy;
   v17 = v11;
   dispatch_async(queue, block);
   objc_initWeak(&location, v11);

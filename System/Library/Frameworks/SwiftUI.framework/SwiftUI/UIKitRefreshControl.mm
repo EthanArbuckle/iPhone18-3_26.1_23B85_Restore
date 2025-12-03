@@ -1,14 +1,14 @@
 @interface UIKitRefreshControl
 - (_TtC7SwiftUI19UIKitRefreshControl)init;
-- (_TtC7SwiftUI19UIKitRefreshControl)initWithCoder:(id)a3;
-- (_TtC7SwiftUI19UIKitRefreshControl)initWithFrame:(CGRect)a3;
+- (_TtC7SwiftUI19UIKitRefreshControl)initWithCoder:(id)coder;
+- (_TtC7SwiftUI19UIKitRefreshControl)initWithFrame:(CGRect)frame;
 - (void)_swiftui_handleRefreshControl;
 - (void)dealloc;
 @end
 
 @implementation UIKitRefreshControl
 
-- (_TtC7SwiftUI19UIKitRefreshControl)initWithCoder:(id)a3
+- (_TtC7SwiftUI19UIKitRefreshControl)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC7SwiftUI19UIKitRefreshControl_currentTask) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -21,14 +21,14 @@
   ObjectType = swift_getObjectType();
   if (*(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC7SwiftUI19UIKitRefreshControl_currentTask))
   {
-    v4 = self;
+    selfCopy = self;
 
     MEMORY[0x18D00D010](v5, MEMORY[0x1E69E7CA8] + 8, MEMORY[0x1E69E73E0], MEMORY[0x1E69E7410]);
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
   }
 
   v7.receiver = self;
@@ -38,7 +38,7 @@
 
 - (void)_swiftui_handleRefreshControl
 {
-  v2 = self;
+  selfCopy = self;
   UIKitRefreshControl._swiftui_handleRefreshControl()();
 }
 
@@ -49,7 +49,7 @@
   return result;
 }
 
-- (_TtC7SwiftUI19UIKitRefreshControl)initWithFrame:(CGRect)a3
+- (_TtC7SwiftUI19UIKitRefreshControl)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,20 +1,20 @@
 @interface HUSoftwareUpdateUIManager
 + (id)sharedManager;
-- (BOOL)_shouldPresentTermsAndConditionsForSoftwareLicenseAgreementVersion:(id)a3 home:(id)a4;
-- (BOOL)isLicensePresentationNecessaryForSoftwareUpdate:(id)a3 error:(id *)a4;
+- (BOOL)_shouldPresentTermsAndConditionsForSoftwareLicenseAgreementVersion:(id)version home:(id)home;
+- (BOOL)isLicensePresentationNecessaryForSoftwareUpdate:(id)update error:(id *)error;
 - (HUSoftwareUpdateUIManager)init;
-- (id)_fetchAvailableUpdatesForAccessories:(id)a3 options:(unint64_t)a4;
-- (id)_markTermsAndConditionsAsReadForLicenseAgreementVersion:(id)a3 inHome:(id)a4;
-- (id)fetchAvailableUpdatesForAccessories:(id)a3 options:(unint64_t)a4;
-- (id)fetchAvailableUpdatesForHome:(id)a3 options:(unint64_t)a4;
-- (id)presentLicensesIfNeededForSoftwareUpdate:(id)a3 presentationDelegate:(id)a4;
-- (id)startUpdateForAccessory:(id)a3 presentationDelegate:(id)a4;
-- (id)startUpdatesForAccessories:(id)a3 presentationDelegate:(id)a4;
-- (id)startUpdatesForAllAccessoriesInHome:(id)a3 presentationDelegate:(id)a4;
-- (int64_t)numberOfAccessoriesWithAvailableUpdates:(id)a3;
-- (int64_t)numberOfAccessoriesWithAvailableUpdatesInHome:(id)a3;
-- (void)executionEnvironmentDidEnterBackground:(id)a3;
-- (void)startSilentBackgroundCheckForHome:(id)a3;
+- (id)_fetchAvailableUpdatesForAccessories:(id)accessories options:(unint64_t)options;
+- (id)_markTermsAndConditionsAsReadForLicenseAgreementVersion:(id)version inHome:(id)home;
+- (id)fetchAvailableUpdatesForAccessories:(id)accessories options:(unint64_t)options;
+- (id)fetchAvailableUpdatesForHome:(id)home options:(unint64_t)options;
+- (id)presentLicensesIfNeededForSoftwareUpdate:(id)update presentationDelegate:(id)delegate;
+- (id)startUpdateForAccessory:(id)accessory presentationDelegate:(id)delegate;
+- (id)startUpdatesForAccessories:(id)accessories presentationDelegate:(id)delegate;
+- (id)startUpdatesForAllAccessoriesInHome:(id)home presentationDelegate:(id)delegate;
+- (int64_t)numberOfAccessoriesWithAvailableUpdates:(id)updates;
+- (int64_t)numberOfAccessoriesWithAvailableUpdatesInHome:(id)home;
+- (void)executionEnvironmentDidEnterBackground:(id)background;
+- (void)startSilentBackgroundCheckForHome:(id)home;
 @end
 
 @implementation HUSoftwareUpdateUIManager
@@ -45,29 +45,29 @@ void __42__HUSoftwareUpdateUIManager_sharedManager__block_invoke()
   v2 = [(HUSoftwareUpdateUIManager *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     homeBackgroundCheckMapTable = v2->_homeBackgroundCheckMapTable;
-    v2->_homeBackgroundCheckMapTable = v3;
+    v2->_homeBackgroundCheckMapTable = weakToStrongObjectsMapTable;
 
-    v5 = [MEMORY[0x277D14670] sharedInstance];
-    [v5 addObserver:v2];
+    mEMORY[0x277D14670] = [MEMORY[0x277D14670] sharedInstance];
+    [mEMORY[0x277D14670] addObserver:v2];
   }
 
   return v2;
 }
 
-- (void)startSilentBackgroundCheckForHome:(id)a3
+- (void)startSilentBackgroundCheckForHome:(id)home
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  homeCopy = home;
+  if (!homeCopy)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateUIManager.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"home"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateUIManager.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"home"}];
   }
 
-  v6 = [(HUSoftwareUpdateUIManager *)self homeBackgroundCheckMapTable];
-  v7 = [v6 objectForKey:v5];
+  homeBackgroundCheckMapTable = [(HUSoftwareUpdateUIManager *)self homeBackgroundCheckMapTable];
+  v7 = [homeBackgroundCheckMapTable objectForKey:homeCopy];
 
   v8 = HFLogForCategory();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -75,82 +75,82 @@ void __42__HUSoftwareUpdateUIManager_sharedManager__block_invoke()
   {
     if (v9)
     {
-      v11 = [v5 hf_prettyDescription];
+      hf_prettyDescription = [homeCopy hf_prettyDescription];
       *buf = 138412290;
-      v14 = v11;
+      v14 = hf_prettyDescription;
       _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "[FETCH] Begin executing background check for software updates: %@", buf, 0xCu);
     }
 
-    v8 = [(HUSoftwareUpdateUIManager *)self fetchAvailableUpdatesForHome:v5 options:1];
-    v10 = [(HUSoftwareUpdateUIManager *)self homeBackgroundCheckMapTable];
-    [v10 setObject:v8 forKey:v5];
+    v8 = [(HUSoftwareUpdateUIManager *)self fetchAvailableUpdatesForHome:homeCopy options:1];
+    homeBackgroundCheckMapTable2 = [(HUSoftwareUpdateUIManager *)self homeBackgroundCheckMapTable];
+    [homeBackgroundCheckMapTable2 setObject:v8 forKey:homeCopy];
     goto LABEL_9;
   }
 
   if (v9)
   {
-    v10 = [v5 hf_prettyDescription];
+    homeBackgroundCheckMapTable2 = [homeCopy hf_prettyDescription];
     *buf = 138412290;
-    v14 = v10;
+    v14 = homeBackgroundCheckMapTable2;
     _os_log_impl(&dword_20CEB6000, v8, OS_LOG_TYPE_DEFAULT, "[FETCH] Background check for software update already performed: %@", buf, 0xCu);
 LABEL_9:
   }
 }
 
-- (id)fetchAvailableUpdatesForHome:(id)a3 options:(unint64_t)a4
+- (id)fetchAvailableUpdatesForHome:(id)home options:(unint64_t)options
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  homeCopy = home;
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 hf_prettyDescription];
+    hf_prettyDescription = [homeCopy hf_prettyDescription];
     v12 = 136315394;
     v13 = "[HUSoftwareUpdateUIManager fetchAvailableUpdatesForHome:options:]";
     v14 = 2112;
-    v15 = v8;
+    v15 = hf_prettyDescription;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "[FETCH] %s: %@", &v12, 0x16u);
   }
 
-  v9 = [v6 accessoriesSupportingSoftwareUpdate];
-  v10 = [(HUSoftwareUpdateUIManager *)self _fetchAvailableUpdatesForAccessories:v9 options:a4];
+  accessoriesSupportingSoftwareUpdate = [homeCopy accessoriesSupportingSoftwareUpdate];
+  v10 = [(HUSoftwareUpdateUIManager *)self _fetchAvailableUpdatesForAccessories:accessoriesSupportingSoftwareUpdate options:options];
 
   return v10;
 }
 
-- (id)fetchAvailableUpdatesForAccessories:(id)a3 options:(unint64_t)a4
+- (id)fetchAvailableUpdatesForAccessories:(id)accessories options:(unint64_t)options
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = [a3 na_filter:&__block_literal_global_13];
+  v6 = [accessories na_filter:&__block_literal_global_13];
   v7 = HFLogForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v6 hf_prettyDescription];
+    hf_prettyDescription = [v6 hf_prettyDescription];
     v11 = 136315394;
     v12 = "[HUSoftwareUpdateUIManager fetchAvailableUpdatesForAccessories:options:]";
     v13 = 2112;
-    v14 = v8;
+    v14 = hf_prettyDescription;
     _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "[FETCH] %s: %@", &v11, 0x16u);
   }
 
-  v9 = [(HUSoftwareUpdateUIManager *)self _fetchAvailableUpdatesForAccessories:v6 options:a4];
+  v9 = [(HUSoftwareUpdateUIManager *)self _fetchAvailableUpdatesForAccessories:v6 options:options];
 
   return v9;
 }
 
-- (id)_fetchAvailableUpdatesForAccessories:(id)a3 options:(unint64_t)a4
+- (id)_fetchAvailableUpdatesForAccessories:(id)accessories options:(unint64_t)options
 {
-  v5 = [a3 allObjects];
+  allObjects = [accessories allObjects];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __74__HUSoftwareUpdateUIManager__fetchAvailableUpdatesForAccessories_options___block_invoke;
   v12[3] = &__block_descriptor_40_e21__16__0__HMAccessory_8l;
-  v12[4] = a4;
-  v6 = [v5 na_map:v12];
+  v12[4] = options;
+  v6 = [allObjects na_map:v12];
 
   v7 = MEMORY[0x277D2C900];
-  v8 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v9 = [v7 combineAllFutures:v6 ignoringErrors:1 scheduler:v8];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v9 = [v7 combineAllFutures:v6 ignoringErrors:1 scheduler:mainThreadScheduler];
   v10 = [v9 flatMap:&__block_literal_global_19];
 
   return v10;
@@ -209,9 +209,9 @@ uint64_t __74__HUSoftwareUpdateUIManager__fetchAvailableUpdatesForAccessories_op
   return isKindOfClass & 1;
 }
 
-- (int64_t)numberOfAccessoriesWithAvailableUpdates:(id)a3
+- (int64_t)numberOfAccessoriesWithAvailableUpdates:(id)updates
 {
-  v3 = [a3 na_filter:&__block_literal_global_26];
+  v3 = [updates na_filter:&__block_literal_global_26];
   v4 = [v3 count];
 
   return v4;
@@ -233,22 +233,22 @@ uint64_t __69__HUSoftwareUpdateUIManager_numberOfAccessoriesWithAvailableUpdates
   return v3;
 }
 
-- (int64_t)numberOfAccessoriesWithAvailableUpdatesInHome:(id)a3
+- (int64_t)numberOfAccessoriesWithAvailableUpdatesInHome:(id)home
 {
-  v4 = [a3 accessoriesSupportingSoftwareUpdate];
-  v5 = [(HUSoftwareUpdateUIManager *)self numberOfAccessoriesWithAvailableUpdates:v4];
+  accessoriesSupportingSoftwareUpdate = [home accessoriesSupportingSoftwareUpdate];
+  v5 = [(HUSoftwareUpdateUIManager *)self numberOfAccessoriesWithAvailableUpdates:accessoriesSupportingSoftwareUpdate];
 
   return v5;
 }
 
-- (id)startUpdatesForAccessories:(id)a3 presentationDelegate:(id)a4
+- (id)startUpdatesForAccessories:(id)accessories presentationDelegate:(id)delegate
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if ([v7 count])
+  accessoriesCopy = accessories;
+  delegateCopy = delegate;
+  if ([accessoriesCopy count])
   {
-    if (v8)
+    if (delegateCopy)
     {
       goto LABEL_3;
     }
@@ -256,17 +256,17 @@ uint64_t __69__HUSoftwareUpdateUIManager_numberOfAccessoriesWithAvailableUpdates
 
   else
   {
-    v23 = [MEMORY[0x277CCA890] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateUIManager.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"accessories.count > 0"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateUIManager.m" lineNumber:111 description:{@"Invalid parameter not satisfying: %@", @"accessories.count > 0"}];
 
-    if (v8)
+    if (delegateCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v24 = [MEMORY[0x277CCA890] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateUIManager.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"presentationDelegate"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateUIManager.m" lineNumber:112 description:{@"Invalid parameter not satisfying: %@", @"presentationDelegate"}];
 
 LABEL_3:
   v9 = objc_opt_new();
@@ -279,46 +279,46 @@ LABEL_3:
   v28 = v11;
   v12 = v10;
   v29 = v12;
-  [v7 na_each:v27];
+  [accessoriesCopy na_each:v27];
   v13 = HFLogForCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
-    v14 = [v7 hf_prettyExpensiveDescription];
+    hf_prettyExpensiveDescription = [accessoriesCopy hf_prettyExpensiveDescription];
     *buf = 138412290;
-    v31 = v14;
+    v31 = hf_prettyExpensiveDescription;
     _os_log_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEFAULT, "[START UPDATE] Requested updates: %@", buf, 0xCu);
   }
 
   v15 = HFLogForCategory();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v11 hf_prettyExpensiveDescription];
+    hf_prettyExpensiveDescription2 = [v11 hf_prettyExpensiveDescription];
     *buf = 138412290;
-    v31 = v16;
+    v31 = hf_prettyExpensiveDescription2;
     _os_log_impl(&dword_20CEB6000, v15, OS_LOG_TYPE_DEFAULT, "[START UPDATE] Ready to install updates: %@", buf, 0xCu);
   }
 
   if ([v11 count])
   {
-    v17 = [MEMORY[0x277CD1650] hf_softwareUpdateComparator];
-    v18 = [v12 sortedArrayUsingComparator:v17];
+    hf_softwareUpdateComparator = [MEMORY[0x277CD1650] hf_softwareUpdateComparator];
+    v18 = [v12 sortedArrayUsingComparator:hf_softwareUpdateComparator];
 
-    v19 = [v18 lastObject];
-    v20 = [(HUSoftwareUpdateUIManager *)self presentLicensesIfNeededForSoftwareUpdate:v19 presentationDelegate:v8];
+    lastObject = [v18 lastObject];
+    v20 = [(HUSoftwareUpdateUIManager *)self presentLicensesIfNeededForSoftwareUpdate:lastObject presentationDelegate:delegateCopy];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __77__HUSoftwareUpdateUIManager_startUpdatesForAccessories_presentationDelegate___block_invoke_36;
     v25[3] = &unk_277DB7AB8;
     v26 = v11;
-    v21 = [v20 flatMap:v25];
+    futureWithNoResult = [v20 flatMap:v25];
   }
 
   else
   {
-    v21 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  return v21;
+  return futureWithNoResult;
 }
 
 void __77__HUSoftwareUpdateUIManager_startUpdatesForAccessories_presentationDelegate___block_invoke(uint64_t a1, void *a2)
@@ -405,14 +405,14 @@ uint64_t __77__HUSoftwareUpdateUIManager_startUpdatesForAccessories_presentation
   return isKindOfClass & 1;
 }
 
-- (id)startUpdatesForAllAccessoriesInHome:(id)a3 presentationDelegate:(id)a4
+- (id)startUpdatesForAllAccessoriesInHome:(id)home presentationDelegate:(id)delegate
 {
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (v8)
+  homeCopy = home;
+  delegateCopy = delegate;
+  if (delegateCopy)
   {
-    if (v7)
+    if (homeCopy)
     {
       goto LABEL_3;
     }
@@ -420,23 +420,23 @@ uint64_t __77__HUSoftwareUpdateUIManager_startUpdatesForAccessories_presentation
 
   else
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateUIManager.m" lineNumber:174 description:{@"Invalid parameter not satisfying: %@", @"presentationDelegate"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateUIManager.m" lineNumber:174 description:{@"Invalid parameter not satisfying: %@", @"presentationDelegate"}];
 
-    if (v7)
+    if (homeCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v16 = [MEMORY[0x277CCA890] currentHandler];
-  [v16 handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateUIManager.m" lineNumber:175 description:{@"Invalid parameter not satisfying: %@", @"home"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateUIManager.m" lineNumber:175 description:{@"Invalid parameter not satisfying: %@", @"home"}];
 
 LABEL_3:
-  v9 = [v7 accessoriesSupportingSoftwareUpdate];
-  if ([v9 count])
+  accessoriesSupportingSoftwareUpdate = [homeCopy accessoriesSupportingSoftwareUpdate];
+  if ([accessoriesSupportingSoftwareUpdate count])
   {
-    v10 = [(HUSoftwareUpdateUIManager *)self startUpdatesForAccessories:v9 presentationDelegate:v8];
+    futureWithNoResult = [(HUSoftwareUpdateUIManager *)self startUpdatesForAccessories:accessoriesSupportingSoftwareUpdate presentationDelegate:delegateCopy];
   }
 
   else
@@ -444,49 +444,49 @@ LABEL_3:
     v11 = HFLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v7 hf_prettyDescription];
+      hf_prettyDescription = [homeCopy hf_prettyDescription];
       *buf = 138412290;
-      v18 = v12;
+      v18 = hf_prettyDescription;
       _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, "[START UPDATE] No accessories supporting software update: %@", buf, 0xCu);
     }
 
-    v10 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
   }
 
-  v13 = v10;
+  v13 = futureWithNoResult;
 
   return v13;
 }
 
-- (id)startUpdateForAccessory:(id)a3 presentationDelegate:(id)a4
+- (id)startUpdateForAccessory:(id)accessory presentationDelegate:(id)delegate
 {
   v6 = MEMORY[0x277CBEB98];
-  v7 = a4;
-  v8 = [v6 setWithObject:a3];
-  v9 = [(HUSoftwareUpdateUIManager *)self startUpdatesForAccessories:v8 presentationDelegate:v7];
+  delegateCopy = delegate;
+  v8 = [v6 setWithObject:accessory];
+  v9 = [(HUSoftwareUpdateUIManager *)self startUpdatesForAccessories:v8 presentationDelegate:delegateCopy];
 
   return v9;
 }
 
-- (BOOL)isLicensePresentationNecessaryForSoftwareUpdate:(id)a3 error:(id *)a4
+- (BOOL)isLicensePresentationNecessaryForSoftwareUpdate:(id)update error:(id *)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (!v7)
+  updateCopy = update;
+  if (!updateCopy)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateUIManager.m" lineNumber:195 description:{@"Invalid parameter not satisfying: %@", @"accessory"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateUIManager.m" lineNumber:195 description:{@"Invalid parameter not satisfying: %@", @"accessory"}];
   }
 
-  v8 = [v7 hf_softwareUpdateDocumentation];
-  v9 = [v8 licenseAgreementVersion];
-  v10 = [v8 licenseAgreement];
-  if (v10)
+  hf_softwareUpdateDocumentation = [updateCopy hf_softwareUpdateDocumentation];
+  licenseAgreementVersion = [hf_softwareUpdateDocumentation licenseAgreementVersion];
+  licenseAgreement = [hf_softwareUpdateDocumentation licenseAgreement];
+  if (licenseAgreement)
   {
-    if (v8)
+    if (hf_softwareUpdateDocumentation)
     {
-      v11 = [v7 home];
-      v12 = [(HUSoftwareUpdateUIManager *)self _shouldPresentTermsAndConditionsForSoftwareLicenseAgreementVersion:v9 home:v11];
+      home = [updateCopy home];
+      v12 = [(HUSoftwareUpdateUIManager *)self _shouldPresentTermsAndConditionsForSoftwareLicenseAgreementVersion:licenseAgreementVersion home:home];
 
       goto LABEL_12;
     }
@@ -494,25 +494,25 @@ LABEL_3:
 
   else
   {
-    v13 = [v7 hf_prettyExpensiveDescription];
-    NSLog(&cfstr_StartUpdateCan.isa, v8, v13);
+    hf_prettyExpensiveDescription = [updateCopy hf_prettyExpensiveDescription];
+    NSLog(&cfstr_StartUpdateCan.isa, hf_softwareUpdateDocumentation, hf_prettyExpensiveDescription);
   }
 
   v14 = HFLogForCategory();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v15 = [v7 hf_prettyExpensiveDescription];
+    hf_prettyExpensiveDescription2 = [updateCopy hf_prettyExpensiveDescription];
     *buf = 138412546;
-    v19 = v8;
+    v19 = hf_softwareUpdateDocumentation;
     v20 = 2112;
-    v21 = v15;
+    v21 = hf_prettyExpensiveDescription2;
     _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "[START UPDATE] Cannot start update due to nil license and/or documentation: %@ %@", buf, 0x16u);
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] hf_errorWithCode:26];
-    *a4 = v12 = 0;
+    *error = v12 = 0;
   }
 
   else
@@ -525,20 +525,20 @@ LABEL_12:
   return v12;
 }
 
-- (id)presentLicensesIfNeededForSoftwareUpdate:(id)a3 presentationDelegate:(id)a4
+- (id)presentLicensesIfNeededForSoftwareUpdate:(id)update presentationDelegate:(id)delegate
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 hf_isHomePod];
-  if (!v6 || (v8 & 1) == 0)
+  updateCopy = update;
+  delegateCopy = delegate;
+  hf_isHomePod = [updateCopy hf_isHomePod];
+  if (!updateCopy || (hf_isHomePod & 1) == 0)
   {
     v12 = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEC28]];
     goto LABEL_13;
   }
 
   v31 = 0;
-  v9 = [(HUSoftwareUpdateUIManager *)self isLicensePresentationNecessaryForSoftwareUpdate:v6 error:&v31];
+  v9 = [(HUSoftwareUpdateUIManager *)self isLicensePresentationNecessaryForSoftwareUpdate:updateCopy error:&v31];
   v10 = v31;
   if (v10)
   {
@@ -553,9 +553,9 @@ LABEL_11:
     v20 = HFLogForCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v6 hf_prettyExpensiveDescription];
+      hf_prettyExpensiveDescription = [updateCopy hf_prettyExpensiveDescription];
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v21;
+      *(location + 4) = hf_prettyExpensiveDescription;
       _os_log_impl(&dword_20CEB6000, v20, OS_LOG_TYPE_DEFAULT, "[START UPDATE] Not showing license for SW update (%@) because the user has already agreed.", location, 0xCu);
     }
 
@@ -563,25 +563,25 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v13 = [v6 hf_softwareUpdateDocumentation];
-  v14 = [v13 licenseAgreementVersion];
-  v15 = [v13 licenseAgreement];
+  hf_softwareUpdateDocumentation = [updateCopy hf_softwareUpdateDocumentation];
+  licenseAgreementVersion = [hf_softwareUpdateDocumentation licenseAgreementVersion];
+  licenseAgreement = [hf_softwareUpdateDocumentation licenseAgreement];
   objc_initWeak(location, self);
   v16 = MEMORY[0x277D2C900];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __91__HUSoftwareUpdateUIManager_presentLicensesIfNeededForSoftwareUpdate_presentationDelegate___block_invoke;
   v23[3] = &unk_277DB7B80;
-  v17 = v13;
+  v17 = hf_softwareUpdateDocumentation;
   v24 = v17;
-  v25 = v6;
-  v18 = v15;
+  v25 = updateCopy;
+  v18 = licenseAgreement;
   v26 = v18;
   objc_copyWeak(&v30, location);
-  v19 = v14;
+  v19 = licenseAgreementVersion;
   v27 = v19;
-  v28 = v7;
-  v29 = self;
+  v28 = delegateCopy;
+  selfCopy = self;
   v12 = [v16 lazyFutureWithBlock:v23];
 
   objc_destroyWeak(&v30);
@@ -726,11 +726,11 @@ void __91__HUSoftwareUpdateUIManager_presentLicensesIfNeededForSoftwareUpdate_pr
   [v1 finishWithError:v2];
 }
 
-- (BOOL)_shouldPresentTermsAndConditionsForSoftwareLicenseAgreementVersion:(id)a3 home:(id)a4
+- (BOOL)_shouldPresentTermsAndConditionsForSoftwareLicenseAgreementVersion:(id)version home:(id)home
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  versionCopy = version;
+  homeCopy = home;
   if ([MEMORY[0x277D14CE8] isInternalInstall])
   {
     if (HFPreferencesBoolForKey())
@@ -751,12 +751,12 @@ LABEL_11:
         _os_log_error_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_ERROR, "[START UPDATE] License version is missing!  Presenting terms and conditions irregardless of aberration...", buf, 2u);
       }
 
-      v7 = 0;
+      versionCopy = 0;
       goto LABEL_14;
     }
   }
 
-  if (!v7)
+  if (!versionCopy)
   {
     goto LABEL_11;
   }
@@ -765,27 +765,27 @@ LABEL_11:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v7;
+    v15 = versionCopy;
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "[START UPDATE] Check whether license version %@ needs presentation...", buf, 0xCu);
   }
 
-  if (!v8)
+  if (!homeCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateUIManager.m" lineNumber:288 description:{@"Invalid parameter not satisfying: %@", @"home"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateUIManager.m" lineNumber:288 description:{@"Invalid parameter not satisfying: %@", @"home"}];
   }
 
-  v10 = [v8 hf_hasAcceptedTermsAndConditionsForHomePodVersion:v7] ^ 1;
+  v10 = [homeCopy hf_hasAcceptedTermsAndConditionsForHomePodVersion:versionCopy] ^ 1;
 LABEL_15:
 
   return v10;
 }
 
-- (id)_markTermsAndConditionsAsReadForLicenseAgreementVersion:(id)a3 inHome:(id)a4
+- (id)_markTermsAndConditionsAsReadForLicenseAgreementVersion:(id)version inHome:(id)home
 {
   v16 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  versionCopy = version;
+  homeCopy = home;
   if ([MEMORY[0x277D14CE8] isInternalInstall] && HFPreferencesBoolForKey())
   {
 
@@ -797,11 +797,11 @@ LABEL_10:
       _os_log_error_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_ERROR, "[START UPDATE] License version is missing!  Unable to mark terms and conditions as read...", buf, 2u);
     }
 
-    v10 = [MEMORY[0x277D2C900] futureWithNoResult];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     goto LABEL_13;
   }
 
-  if (!v7)
+  if (!versionCopy)
   {
     goto LABEL_10;
   }
@@ -810,27 +810,27 @@ LABEL_10:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v7;
+    v15 = versionCopy;
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "[START UPDATE] License version %@ has been accepted!", buf, 0xCu);
   }
 
-  if (!v8)
+  if (!homeCopy)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateUIManager.m" lineNumber:306 description:{@"Invalid parameter not satisfying: %@", @"home"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUSoftwareUpdateUIManager.m" lineNumber:306 description:{@"Invalid parameter not satisfying: %@", @"home"}];
   }
 
-  v10 = [v8 hf_markTermsAndConditionsAsAcceptedForHomePodWithLicenseAgreementVersion:v7];
+  futureWithNoResult = [homeCopy hf_markTermsAndConditionsAsAcceptedForHomePodWithLicenseAgreementVersion:versionCopy];
 
 LABEL_13:
 
-  return v10;
+  return futureWithNoResult;
 }
 
-- (void)executionEnvironmentDidEnterBackground:(id)a3
+- (void)executionEnvironmentDidEnterBackground:(id)background
 {
-  v3 = [(HUSoftwareUpdateUIManager *)self homeBackgroundCheckMapTable];
-  [v3 removeAllObjects];
+  homeBackgroundCheckMapTable = [(HUSoftwareUpdateUIManager *)self homeBackgroundCheckMapTable];
+  [homeBackgroundCheckMapTable removeAllObjects];
 }
 
 @end

@@ -23,9 +23,9 @@
     [v9 applyThemeToNavigationController:v8];
 
     v10 = sub_13A8();
-    v11 = [v10 backgroundColor];
-    v12 = [(AXBuddySettingsNavigationController *)v8 view];
-    [v12 setBackgroundColor:v11];
+    backgroundColor = [v10 backgroundColor];
+    view = [(AXBuddySettingsNavigationController *)v8 view];
+    [view setBackgroundColor:backgroundColor];
 
     [(AXBuddySettingsNavigationController *)v8 setNavigationBarHidden:0];
     v22 = objc_opt_class();

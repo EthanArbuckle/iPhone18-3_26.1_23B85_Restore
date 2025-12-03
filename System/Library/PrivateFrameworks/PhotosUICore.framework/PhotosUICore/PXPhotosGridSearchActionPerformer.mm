@@ -1,14 +1,14 @@
 @interface PXPhotosGridSearchActionPerformer
 - (NSString)activitySystemImageName;
 - (NSString)activityType;
-- (PXPhotosGridSearchActionPerformer)initWithViewModel:(id)a3 actionType:(id)a4;
-- (id)localizedTitleForUseCase:(unint64_t)a3;
+- (PXPhotosGridSearchActionPerformer)initWithViewModel:(id)model actionType:(id)type;
+- (id)localizedTitleForUseCase:(unint64_t)case;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PXPhotosGridSearchActionPerformer
 
-- (id)localizedTitleForUseCase:(unint64_t)a3
+- (id)localizedTitleForUseCase:(unint64_t)case
 {
   v3 = sub_1A524C634();
   v4 = PXLocalizedString(v3);
@@ -36,15 +36,15 @@
 
 - (void)performUserInteractionTask
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A417F720();
 }
 
-- (PXPhotosGridSearchActionPerformer)initWithViewModel:(id)a3 actionType:(id)a4
+- (PXPhotosGridSearchActionPerformer)initWithViewModel:(id)model actionType:(id)type
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for PhotosGridSearchActionPerformer();
-  return [(PXPhotosGridActionPerformer *)&v7 initWithViewModel:a3 actionType:a4];
+  return [(PXPhotosGridActionPerformer *)&v7 initWithViewModel:model actionType:type];
 }
 
 @end

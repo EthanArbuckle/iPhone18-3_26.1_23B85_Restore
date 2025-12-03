@@ -1,10 +1,10 @@
 @interface ASDatabaseCompetitionListEntryEntity
-+ (BOOL)_insertCompetitionLists:(id)a3 profile:(id)a4 error:(id *)a5;
-+ (BOOL)enumerateAllCompetitionListsWithProfile:(id)a3 error:(id *)a4 handler:(id)a5;
-+ (BOOL)removeAllCompetitionListsWithProfile:(id)a3 error:(id *)a4;
-+ (BOOL)saveCompetitionList:(id)a3 profile:(id)a4 withError:(id *)a5;
-+ (id)_insertCompetitionList:(id)a3 database:(id)a4 error:(id *)a5;
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7;
++ (BOOL)_insertCompetitionLists:(id)lists profile:(id)profile error:(id *)error;
++ (BOOL)enumerateAllCompetitionListsWithProfile:(id)profile error:(id *)error handler:(id)handler;
++ (BOOL)removeAllCompetitionListsWithProfile:(id)profile error:(id *)error;
++ (BOOL)saveCompetitionList:(id)list profile:(id)profile withError:(id *)error;
++ (id)_insertCompetitionList:(id)list database:(id)database error:(id *)error;
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter;
 + (id)uniquedColumns;
 @end
 
@@ -21,48 +21,48 @@
   return v2;
 }
 
-+ (id)entityEncoderForProfile:(id)a3 transaction:(id)a4 purpose:(int64_t)a5 encodingOptions:(id)a6 authorizationFilter:(id)a7
++ (id)entityEncoderForProfile:(id)profile transaction:(id)transaction purpose:(int64_t)purpose encodingOptions:(id)options authorizationFilter:(id)filter
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a4;
-  v14 = a3;
-  v15 = [(HDEntityEncoder *)[ASDatabaseCompetitionListEntryEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:v14 transaction:v13 purpose:a5 encodingOptions:v12 authorizationFilter:v11];
+  filterCopy = filter;
+  optionsCopy = options;
+  transactionCopy = transaction;
+  profileCopy = profile;
+  v15 = [(HDEntityEncoder *)[ASDatabaseCompetitionListEntryEncoder alloc] initWithHealthEntityClass:objc_opt_class() profile:profileCopy transaction:transactionCopy purpose:purpose encodingOptions:optionsCopy authorizationFilter:filterCopy];
 
   return v15;
 }
 
-+ (BOOL)saveCompetitionList:(id)a3 profile:(id)a4 withError:(id *)a5
++ (BOOL)saveCompetitionList:(id)list profile:(id)profile withError:(id *)error
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a3;
+  profileCopy = profile;
+  listCopy = list;
   v9 = objc_opt_class();
-  v13[0] = v8;
+  v13[0] = listCopy;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:1];
 
-  LOBYTE(a5) = [v9 _insertCompetitionLists:v10 profile:v7 error:a5];
+  LOBYTE(error) = [v9 _insertCompetitionLists:v10 profile:profileCopy error:error];
   v11 = *MEMORY[0x277D85DE8];
-  return a5;
+  return error;
 }
 
-+ (BOOL)enumerateAllCompetitionListsWithProfile:(id)a3 error:(id *)a4 handler:(id)a5
++ (BOOL)enumerateAllCompetitionListsWithProfile:(id)profile error:(id *)error handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 database];
+  profileCopy = profile;
+  handlerCopy = handler;
+  database = [profileCopy database];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __94__ASDatabaseCompetitionListEntryEntity_enumerateAllCompetitionListsWithProfile_error_handler___block_invoke;
   v14[3] = &unk_278C4BEC8;
-  v16 = v9;
-  v17 = a1;
-  v15 = v8;
-  v11 = v9;
-  v12 = v8;
-  LOBYTE(a4) = [a1 performReadTransactionWithHealthDatabase:v10 error:a4 block:v14];
+  v16 = handlerCopy;
+  selfCopy = self;
+  v15 = profileCopy;
+  v11 = handlerCopy;
+  v12 = profileCopy;
+  LOBYTE(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v14];
 
-  return a4;
+  return error;
 }
 
 uint64_t __94__ASDatabaseCompetitionListEntryEntity_enumerateAllCompetitionListsWithProfile_error_handler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -128,23 +128,23 @@ BOOL __94__ASDatabaseCompetitionListEntryEntity_enumerateAllCompetitionListsWith
   return v8 != 0;
 }
 
-+ (BOOL)removeAllCompetitionListsWithProfile:(id)a3 error:(id *)a4
++ (BOOL)removeAllCompetitionListsWithProfile:(id)profile error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 database];
+  profileCopy = profile;
+  database = [profileCopy database];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __83__ASDatabaseCompetitionListEntryEntity_removeAllCompetitionListsWithProfile_error___block_invoke;
   v14[3] = &unk_278C4BEF0;
-  v16 = a1;
-  v15 = v6;
+  selfCopy = self;
+  v15 = profileCopy;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __83__ASDatabaseCompetitionListEntryEntity_removeAllCompetitionListsWithProfile_error___block_invoke_2;
   v12[3] = &unk_278C4BF18;
   v8 = v15;
   v13 = v8;
-  v9 = [a1 performWriteTransactionWithHealthDatabase:v7 error:a4 block:v14 inaccessibilityHandler:v12];
+  v9 = [self performWriteTransactionWithHealthDatabase:database error:error block:v14 inaccessibilityHandler:v12];
 
   if ((v9 & 1) == 0)
   {
@@ -152,7 +152,7 @@ BOOL __94__ASDatabaseCompetitionListEntryEntity_enumerateAllCompetitionListsWith
     v10 = *MEMORY[0x277CE8FE0];
     if (os_log_type_enabled(*MEMORY[0x277CE8FE0], OS_LOG_TYPE_ERROR))
     {
-      [ASDatabaseCompetitionListEntryEntity removeAllCompetitionListsWithProfile:a4 error:v10];
+      [ASDatabaseCompetitionListEntryEntity removeAllCompetitionListsWithProfile:error error:v10];
     }
   }
 
@@ -179,26 +179,26 @@ uint64_t __83__ASDatabaseCompetitionListEntryEntity_removeAllCompetitionListsWit
   return v7;
 }
 
-+ (BOOL)_insertCompetitionLists:(id)a3 profile:(id)a4 error:(id *)a5
++ (BOOL)_insertCompetitionLists:(id)lists profile:(id)profile error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v9 database];
+  listsCopy = lists;
+  profileCopy = profile;
+  database = [profileCopy database];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __78__ASDatabaseCompetitionListEntryEntity__insertCompetitionLists_profile_error___block_invoke;
   v19[3] = &unk_278C4BEF0;
-  v21 = a1;
-  v20 = v8;
+  selfCopy = self;
+  v20 = listsCopy;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __78__ASDatabaseCompetitionListEntryEntity__insertCompetitionLists_profile_error___block_invoke_2;
   v16[3] = &unk_278C4BF40;
   v11 = v20;
   v17 = v11;
-  v12 = v9;
+  v12 = profileCopy;
   v18 = v12;
-  v13 = [a1 performWriteTransactionWithHealthDatabase:v10 error:a5 block:v19 inaccessibilityHandler:v16];
+  v13 = [self performWriteTransactionWithHealthDatabase:database error:error block:v19 inaccessibilityHandler:v16];
 
   if ((v13 & 1) == 0)
   {
@@ -206,7 +206,7 @@ uint64_t __83__ASDatabaseCompetitionListEntryEntity_removeAllCompetitionListsWit
     v14 = *MEMORY[0x277CE8FE0];
     if (os_log_type_enabled(*MEMORY[0x277CE8FE0], OS_LOG_TYPE_ERROR))
     {
-      [ASDatabaseCompetitionListEntryEntity _insertCompetitionLists:v11 profile:a5 error:v14];
+      [ASDatabaseCompetitionListEntryEntity _insertCompetitionLists:v11 profile:error error:v14];
     }
   }
 
@@ -332,18 +332,18 @@ uint64_t __78__ASDatabaseCompetitionListEntryEntity__insertCompetitionLists_prof
   return v15;
 }
 
-+ (id)_insertCompetitionList:(id)a3 database:(id)a4 error:(id *)a5
++ (id)_insertCompetitionList:(id)list database:(id)database error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  listCopy = list;
+  databaseCopy = database;
   v10 = ASAllDatabaseCompetitionListEntryKeys();
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __78__ASDatabaseCompetitionListEntryEntity__insertCompetitionList_database_error___block_invoke;
   v14[3] = &unk_278C4BF68;
-  v15 = v8;
-  v11 = v8;
-  v12 = [a1 insertOrReplaceEntity:1 database:v9 properties:v10 error:a5 bindingHandler:v14];
+  v15 = listCopy;
+  v11 = listCopy;
+  v12 = [self insertOrReplaceEntity:1 database:databaseCopy properties:v10 error:error bindingHandler:v14];
 
   return v12;
 }

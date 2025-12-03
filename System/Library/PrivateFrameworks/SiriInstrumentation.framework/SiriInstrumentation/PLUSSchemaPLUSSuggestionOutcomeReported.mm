@@ -1,26 +1,26 @@
 @interface PLUSSchemaPLUSSuggestionOutcomeReported
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (PLUSSchemaPLUSSuggestionOutcomeReported)initWithDictionary:(id)a3;
-- (PLUSSchemaPLUSSuggestionOutcomeReported)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (PLUSSchemaPLUSSuggestionOutcomeReported)initWithDictionary:(id)dictionary;
+- (PLUSSchemaPLUSSuggestionOutcomeReported)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PLUSSchemaPLUSSuggestionOutcomeReported
 
-- (PLUSSchemaPLUSSuggestionOutcomeReported)initWithDictionary:(id)a3
+- (PLUSSchemaPLUSSuggestionOutcomeReported)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = PLUSSchemaPLUSSuggestionOutcomeReported;
   v5 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)&v17 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"suggestionDomainMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"suggestionDomainMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(PLUSSchemaPLUSSuggestionOutcomeReported *)v5 setSuggestionDomainMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"suggestionLinkId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"suggestionLinkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -36,7 +36,7 @@
       [(PLUSSchemaPLUSSuggestionOutcomeReported *)v5 setSuggestionLinkId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"originalRequestId"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"originalRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -44,14 +44,14 @@
       [(PLUSSchemaPLUSSuggestionOutcomeReported *)v5 setOriginalRequestId:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"suggestionOutcome"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"suggestionOutcome"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[PLUSSchemaPLUSSuggestionOutcomeReported setSuggestionOutcome:](v5, "setSuggestionOutcome:", [v12 intValue]);
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"domainOutcome"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"domainOutcome"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (PLUSSchemaPLUSSuggestionOutcomeReported)initWithJSON:(id)a3
+- (PLUSSchemaPLUSSuggestionOutcomeReported)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,68 +101,68 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_domainOutcome)
   {
-    v4 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self domainOutcome];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    domainOutcome = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self domainOutcome];
+    dictionaryRepresentation = [domainOutcome dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"domainOutcome"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"domainOutcome"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"domainOutcome"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"domainOutcome"];
     }
   }
 
   if (self->_originalRequestId)
   {
-    v7 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self originalRequestId];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    originalRequestId = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self originalRequestId];
+    dictionaryRepresentation2 = [originalRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"originalRequestId"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"originalRequestId"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"originalRequestId"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"originalRequestId"];
     }
   }
 
   if (self->_suggestionDomainMetadata)
   {
-    v10 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionDomainMetadata];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    suggestionDomainMetadata = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionDomainMetadata];
+    dictionaryRepresentation3 = [suggestionDomainMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"suggestionDomainMetadata"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"suggestionDomainMetadata"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"suggestionDomainMetadata"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"suggestionDomainMetadata"];
     }
   }
 
   if (self->_suggestionLinkId)
   {
-    v13 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionLinkId];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    suggestionLinkId = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionLinkId];
+    dictionaryRepresentation4 = [suggestionLinkId dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"suggestionLinkId"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"suggestionLinkId"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"suggestionLinkId"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"suggestionLinkId"];
     }
   }
 
@@ -179,12 +179,12 @@
       v17 = off_1E78E0B50[v16];
     }
 
-    [v3 setObject:v17 forKeyedSubscript:@"suggestionOutcome"];
+    [dictionary setObject:v17 forKeyedSubscript:@"suggestionOutcome"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -205,28 +205,28 @@
   return v4 ^ v3 ^ v5 ^ v6 ^ [(PLUSSchemaPLUSSuggestionDomainOutcome *)self->_domainOutcome hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
-  v5 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionDomainMetadata];
-  v6 = [v4 suggestionDomainMetadata];
-  if ((v5 != 0) == (v6 == 0))
+  suggestionDomainMetadata = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionDomainMetadata];
+  suggestionDomainMetadata2 = [equalCopy suggestionDomainMetadata];
+  if ((suggestionDomainMetadata != 0) == (suggestionDomainMetadata2 == 0))
   {
     goto LABEL_24;
   }
 
-  v7 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionDomainMetadata];
-  if (v7)
+  suggestionDomainMetadata3 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionDomainMetadata];
+  if (suggestionDomainMetadata3)
   {
-    v8 = v7;
-    v9 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionDomainMetadata];
-    v10 = [v4 suggestionDomainMetadata];
-    v11 = [v9 isEqual:v10];
+    v8 = suggestionDomainMetadata3;
+    suggestionDomainMetadata4 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionDomainMetadata];
+    suggestionDomainMetadata5 = [equalCopy suggestionDomainMetadata];
+    v11 = [suggestionDomainMetadata4 isEqual:suggestionDomainMetadata5];
 
     if (!v11)
     {
@@ -238,20 +238,20 @@
   {
   }
 
-  v5 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionLinkId];
-  v6 = [v4 suggestionLinkId];
-  if ((v5 != 0) == (v6 == 0))
+  suggestionDomainMetadata = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionLinkId];
+  suggestionDomainMetadata2 = [equalCopy suggestionLinkId];
+  if ((suggestionDomainMetadata != 0) == (suggestionDomainMetadata2 == 0))
   {
     goto LABEL_24;
   }
 
-  v12 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionLinkId];
-  if (v12)
+  suggestionLinkId = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionLinkId];
+  if (suggestionLinkId)
   {
-    v13 = v12;
-    v14 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionLinkId];
-    v15 = [v4 suggestionLinkId];
-    v16 = [v14 isEqual:v15];
+    v13 = suggestionLinkId;
+    suggestionLinkId2 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionLinkId];
+    suggestionLinkId3 = [equalCopy suggestionLinkId];
+    v16 = [suggestionLinkId2 isEqual:suggestionLinkId3];
 
     if (!v16)
     {
@@ -263,20 +263,20 @@
   {
   }
 
-  v5 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self originalRequestId];
-  v6 = [v4 originalRequestId];
-  if ((v5 != 0) == (v6 == 0))
+  suggestionDomainMetadata = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self originalRequestId];
+  suggestionDomainMetadata2 = [equalCopy originalRequestId];
+  if ((suggestionDomainMetadata != 0) == (suggestionDomainMetadata2 == 0))
   {
     goto LABEL_24;
   }
 
-  v17 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self originalRequestId];
-  if (v17)
+  originalRequestId = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self originalRequestId];
+  if (originalRequestId)
   {
-    v18 = v17;
-    v19 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self originalRequestId];
-    v20 = [v4 originalRequestId];
-    v21 = [v19 isEqual:v20];
+    v18 = originalRequestId;
+    originalRequestId2 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self originalRequestId];
+    originalRequestId3 = [equalCopy originalRequestId];
+    v21 = [originalRequestId2 isEqual:originalRequestId3];
 
     if (!v21)
     {
@@ -288,7 +288,7 @@
   {
   }
 
-  if ((*&self->_has & 1) != (v4[48] & 1))
+  if ((*&self->_has & 1) != (equalCopy[48] & 1))
   {
     goto LABEL_25;
   }
@@ -296,18 +296,18 @@
   if (*&self->_has)
   {
     suggestionOutcome = self->_suggestionOutcome;
-    if (suggestionOutcome != [v4 suggestionOutcome])
+    if (suggestionOutcome != [equalCopy suggestionOutcome])
     {
       goto LABEL_25;
     }
   }
 
-  v5 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self domainOutcome];
-  v6 = [v4 domainOutcome];
-  if ((v5 != 0) != (v6 == 0))
+  suggestionDomainMetadata = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self domainOutcome];
+  suggestionDomainMetadata2 = [equalCopy domainOutcome];
+  if ((suggestionDomainMetadata != 0) != (suggestionDomainMetadata2 == 0))
   {
-    v23 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self domainOutcome];
-    if (!v23)
+    domainOutcome = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self domainOutcome];
+    if (!domainOutcome)
     {
 
 LABEL_28:
@@ -315,10 +315,10 @@ LABEL_28:
       goto LABEL_26;
     }
 
-    v24 = v23;
-    v25 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self domainOutcome];
-    v26 = [v4 domainOutcome];
-    v27 = [v25 isEqual:v26];
+    v24 = domainOutcome;
+    domainOutcome2 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self domainOutcome];
+    domainOutcome3 = [equalCopy domainOutcome];
+    v27 = [domainOutcome2 isEqual:domainOutcome3];
 
     if (v27)
     {
@@ -338,30 +338,30 @@ LABEL_26:
   return v28;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v13 = a3;
-  v4 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionDomainMetadata];
+  toCopy = to;
+  suggestionDomainMetadata = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionDomainMetadata];
 
-  if (v4)
+  if (suggestionDomainMetadata)
   {
-    v5 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionDomainMetadata];
+    suggestionDomainMetadata2 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionDomainMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionLinkId];
+  suggestionLinkId = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionLinkId];
 
-  if (v6)
+  if (suggestionLinkId)
   {
-    v7 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionLinkId];
+    suggestionLinkId2 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionLinkId];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self originalRequestId];
+  originalRequestId = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self originalRequestId];
 
-  if (v8)
+  if (originalRequestId)
   {
-    v9 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self originalRequestId];
+    originalRequestId2 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self originalRequestId];
     PBDataWriterWriteSubmessage();
   }
 
@@ -370,56 +370,56 @@ LABEL_26:
     PBDataWriterWriteInt32Field();
   }
 
-  v10 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self domainOutcome];
+  domainOutcome = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self domainOutcome];
 
-  v11 = v13;
-  if (v10)
+  v11 = toCopy;
+  if (domainOutcome)
   {
-    v12 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self domainOutcome];
+    domainOutcome2 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self domainOutcome];
     PBDataWriterWriteSubmessage();
 
-    v11 = v13;
+    v11 = toCopy;
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v19.receiver = self;
   v19.super_class = PLUSSchemaPLUSSuggestionOutcomeReported;
-  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:v4];
-  v6 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionDomainMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v19 applySensitiveConditionsPolicy:policyCopy];
+  suggestionDomainMetadata = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionDomainMetadata];
+  v7 = [suggestionDomainMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(PLUSSchemaPLUSSuggestionOutcomeReported *)self deleteSuggestionDomainMetadata];
   }
 
-  v9 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionLinkId];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  suggestionLinkId = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self suggestionLinkId];
+  v10 = [suggestionLinkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(PLUSSchemaPLUSSuggestionOutcomeReported *)self deleteSuggestionLinkId];
   }
 
-  v12 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self originalRequestId];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  originalRequestId = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self originalRequestId];
+  v13 = [originalRequestId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(PLUSSchemaPLUSSuggestionOutcomeReported *)self deleteOriginalRequestId];
   }
 
-  v15 = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self domainOutcome];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  domainOutcome = [(PLUSSchemaPLUSSuggestionOutcomeReported *)self domainOutcome];
+  v16 = [domainOutcome applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(PLUSSchemaPLUSSuggestionOutcomeReported *)self deleteDomainOutcome];
   }

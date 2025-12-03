@@ -6,10 +6,10 @@
 
 - (NSString)detailIdentifier
 {
-  v2 = [(SAIntentGroupSnippetTemplate *)self detailSnippet];
-  v3 = [v2 aceId];
+  detailSnippet = [(SAIntentGroupSnippetTemplate *)self detailSnippet];
+  aceId = [detailSnippet aceId];
 
-  return v3;
+  return aceId;
 }
 
 @end

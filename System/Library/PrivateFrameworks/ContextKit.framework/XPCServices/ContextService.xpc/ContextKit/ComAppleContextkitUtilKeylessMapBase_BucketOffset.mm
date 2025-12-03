@@ -1,22 +1,22 @@
 @interface ComAppleContextkitUtilKeylessMapBase_BucketOffset
-- (ComAppleContextkitUtilKeylessMapBase_BucketOffset)initWithInt:(int)a3 withInt:(int)a4 withInt:(int)a5;
-- (int)compareToWithId:(id)a3;
+- (ComAppleContextkitUtilKeylessMapBase_BucketOffset)initWithInt:(int)int withInt:(int)withInt withInt:(int)a5;
+- (int)compareToWithId:(id)id;
 @end
 
 @implementation ComAppleContextkitUtilKeylessMapBase_BucketOffset
 
-- (ComAppleContextkitUtilKeylessMapBase_BucketOffset)initWithInt:(int)a3 withInt:(int)a4 withInt:(int)a5
+- (ComAppleContextkitUtilKeylessMapBase_BucketOffset)initWithInt:(int)int withInt:(int)withInt withInt:(int)a5
 {
-  self->start_ = a3;
-  self->end_ = a4;
+  self->start_ = int;
+  self->end_ = withInt;
   self->valueGroup_ = a5;
   return self;
 }
 
-- (int)compareToWithId:(id)a3
+- (int)compareToWithId:(id)id
 {
   objc_opt_class();
-  if (!a3)
+  if (!id)
   {
     JavaLangInteger_valueOfWithInt_(self->start_);
     JreThrowNullPointerException();
@@ -28,7 +28,7 @@
   }
 
   v5 = JavaLangInteger_valueOfWithInt_(self->start_);
-  v6 = JavaLangInteger_valueOfWithInt_(*(a3 + 2));
+  v6 = JavaLangInteger_valueOfWithInt_(*(id + 2));
 
   return [(JavaLangInteger *)v5 compareToWithId:v6];
 }

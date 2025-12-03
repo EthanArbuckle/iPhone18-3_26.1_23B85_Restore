@@ -1,9 +1,9 @@
 @interface APTCCManager
 + (id)sharedManager;
 - (APTCCManager)init;
-- (id)TCCServicesForBundleIdentifier:(id)a3;
-- (void)accessingRecordsForTCCService:(id)a3 completion:(id)a4;
-- (void)fetchUsersForRecord:(id)a3 completion:(id)a4;
+- (id)TCCServicesForBundleIdentifier:(id)identifier;
+- (void)accessingRecordsForTCCService:(id)service completion:(id)completion;
+- (void)fetchUsersForRecord:(id)record completion:(id)completion;
 @end
 
 @implementation APTCCManager
@@ -20,12 +20,12 @@
   return v3;
 }
 
-- (id)TCCServicesForBundleIdentifier:(id)a3
+- (id)TCCServicesForBundleIdentifier:(id)identifier
 {
   v4 = sub_185B67E4C();
   v6 = v5;
   v7 = qword_1EA8CC3A8;
-  v8 = self;
+  selfCopy = self;
   if (v7 != -1)
   {
     swift_once();
@@ -46,9 +46,9 @@
   return v13;
 }
 
-- (void)accessingRecordsForTCCService:(id)a3 completion:(id)a4
+- (void)accessingRecordsForTCCService:(id)service completion:(id)completion
 {
-  v4 = _Block_copy(a4);
+  v4 = _Block_copy(completion);
   v5 = sub_185B67E4C();
   v7 = v6;
   v8 = swift_allocObject();
@@ -66,14 +66,14 @@
   sub_185AEED40(v5, v7, sub_185AF371C, v10, v9);
 }
 
-- (void)fetchUsersForRecord:(id)a3 completion:(id)a4
+- (void)fetchUsersForRecord:(id)record completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_185AF3194(v8, sub_185AF318C, v7);
+  recordCopy = record;
+  selfCopy = self;
+  sub_185AF3194(recordCopy, sub_185AF318C, v7);
 }
 
 - (APTCCManager)init

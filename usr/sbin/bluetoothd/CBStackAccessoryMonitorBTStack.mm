@@ -1,20 +1,20 @@
 @interface CBStackAccessoryMonitorBTStack
 - (CBStackAccessoryMonitorBTStack)init;
 - (id)getAudioAccessoryDeviceArray;
-- (void)_accessoryContextMessageData:(id)a3 device:(id)a4;
-- (void)_accessoryConversationDetectMessageData:(id)a3 device:(id)a4;
-- (void)_accessoryPMEConfigData:(id)a3 device:(id)a4;
-- (void)_accessoryRawGestureMessageData:(id)a3 device:(id)a4;
-- (void)_accessorySleepDetectionMessageData:(id)a3 device:(id)a4;
-- (void)_accessoryUsageSummaryMessageData:(id)a3 device:(id)a4;
-- (void)_audioAccessoryEventWithType:(unsigned __int8)a3 data:(id)a4 device:(id)a5;
+- (void)_accessoryContextMessageData:(id)data device:(id)device;
+- (void)_accessoryConversationDetectMessageData:(id)data device:(id)device;
+- (void)_accessoryPMEConfigData:(id)data device:(id)device;
+- (void)_accessoryRawGestureMessageData:(id)data device:(id)device;
+- (void)_accessorySleepDetectionMessageData:(id)data device:(id)device;
+- (void)_accessoryUsageSummaryMessageData:(id)data device:(id)device;
+- (void)_audioAccessoryEventWithType:(unsigned __int8)type data:(id)data device:(id)device;
 - (void)_invalidated;
-- (void)_updateAudioAccessoryDeviceInfo:(void *)a3 flags:(unint64_t)a4;
+- (void)_updateAudioAccessoryDeviceInfo:(void *)info flags:(unint64_t)flags;
 - (void)_updateConnectedAudioAccessories;
 - (void)_updatePairedAudioAccessories;
 - (void)activate;
 - (void)invalidate;
-- (void)localDeviceEvent:(int)a3;
+- (void)localDeviceEvent:(int)event;
 - (void)updateAccessoryInfo;
 @end
 
@@ -42,16 +42,16 @@
   v10 = sub_100042264;
   v11 = sub_1000425C4;
   v12 = 0;
-  v2 = self;
-  objc_sync_enter(v2);
-  accessoryDeviceInfoMap = v2->_accessoryDeviceInfoMap;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  accessoryDeviceInfoMap = selfCopy->_accessoryDeviceInfoMap;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001624B4;
   v6[3] = &unk_100AE2DB0;
   v6[4] = &v7;
   [(NSMutableDictionary *)accessoryDeviceInfoMap enumerateKeysAndObjectsUsingBlock:v6];
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -164,16 +164,16 @@ LABEL_17:
   }
 }
 
-- (void)localDeviceEvent:(int)a3
+- (void)localDeviceEvent:(int)event
 {
   if (!self->_addedMonitor)
   {
     return;
   }
 
-  if (a3 != 4)
+  if (event != 4)
   {
-    if (a3 != 5)
+    if (event != 5)
     {
       return;
     }
@@ -197,88 +197,88 @@ LABEL_12:
   [(CBStackAccessoryMonitorBTStack *)self updateAccessoryInfo];
 }
 
-- (void)_audioAccessoryEventWithType:(unsigned __int8)a3 data:(id)a4 device:(id)a5
+- (void)_audioAccessoryEventWithType:(unsigned __int8)type data:(id)data device:(id)device
 {
-  v6 = a3;
-  v11 = a4;
-  v8 = a5;
+  typeCopy = type;
+  dataCopy = data;
+  deviceCopy = device;
   v9 = objc_retainBlock(self->_audioAccessoryEventHandler);
   v10 = v9;
   if (v9)
   {
-    (*(v9 + 2))(v9, v6, v11, v8);
+    (*(v9 + 2))(v9, typeCopy, dataCopy, deviceCopy);
   }
 }
 
-- (void)_accessoryContextMessageData:(id)a3 device:(id)a4
+- (void)_accessoryContextMessageData:(id)data device:(id)device
 {
-  v9 = a3;
-  v6 = a4;
+  dataCopy = data;
+  deviceCopy = device;
   v7 = objc_retainBlock(self->_audioAccessoryEventHandler);
   v8 = v7;
   if (v7)
   {
-    (*(v7 + 2))(v7, 4, v9, v6);
+    (*(v7 + 2))(v7, 4, dataCopy, deviceCopy);
   }
 }
 
-- (void)_accessoryConversationDetectMessageData:(id)a3 device:(id)a4
+- (void)_accessoryConversationDetectMessageData:(id)data device:(id)device
 {
-  v9 = a3;
-  v6 = a4;
+  dataCopy = data;
+  deviceCopy = device;
   v7 = objc_retainBlock(self->_audioAccessoryEventHandler);
   v8 = v7;
   if (v7)
   {
-    (*(v7 + 2))(v7, 2, v9, v6);
+    (*(v7 + 2))(v7, 2, dataCopy, deviceCopy);
   }
 }
 
-- (void)_accessoryPMEConfigData:(id)a3 device:(id)a4
+- (void)_accessoryPMEConfigData:(id)data device:(id)device
 {
-  v9 = a3;
-  v6 = a4;
+  dataCopy = data;
+  deviceCopy = device;
   v7 = objc_retainBlock(self->_audioAccessoryEventHandler);
   v8 = v7;
   if (v7)
   {
-    (*(v7 + 2))(v7, 5, v9, v6);
+    (*(v7 + 2))(v7, 5, dataCopy, deviceCopy);
   }
 }
 
-- (void)_accessorySleepDetectionMessageData:(id)a3 device:(id)a4
+- (void)_accessorySleepDetectionMessageData:(id)data device:(id)device
 {
-  v9 = a3;
-  v6 = a4;
+  dataCopy = data;
+  deviceCopy = device;
   v7 = objc_retainBlock(self->_audioAccessoryEventHandler);
   v8 = v7;
   if (v7)
   {
-    (*(v7 + 2))(v7, 8, v9, v6);
+    (*(v7 + 2))(v7, 8, dataCopy, deviceCopy);
   }
 }
 
-- (void)_accessoryRawGestureMessageData:(id)a3 device:(id)a4
+- (void)_accessoryRawGestureMessageData:(id)data device:(id)device
 {
-  v9 = a3;
-  v6 = a4;
+  dataCopy = data;
+  deviceCopy = device;
   v7 = objc_retainBlock(self->_audioAccessoryEventHandler);
   v8 = v7;
   if (v7)
   {
-    (*(v7 + 2))(v7, 9, v9, v6);
+    (*(v7 + 2))(v7, 9, dataCopy, deviceCopy);
   }
 }
 
-- (void)_accessoryUsageSummaryMessageData:(id)a3 device:(id)a4
+- (void)_accessoryUsageSummaryMessageData:(id)data device:(id)device
 {
-  v9 = a3;
-  v6 = a4;
+  dataCopy = data;
+  deviceCopy = device;
   v7 = objc_retainBlock(self->_audioAccessoryEventHandler);
   v8 = v7;
   if (v7)
   {
-    (*(v7 + 2))(v7, 11, v9, v6);
+    (*(v7 + 2))(v7, 11, dataCopy, deviceCopy);
   }
 }
 
@@ -286,16 +286,16 @@ LABEL_12:
 {
   if (self->_addedMonitor)
   {
-    v2 = self;
-    objc_sync_enter(v2);
-    [(NSMutableDictionary *)v2->_accessoryDeviceInfoMap enumerateKeysAndObjectsUsingBlock:&stru_100AE2DF0];
-    objc_sync_exit(v2);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(NSMutableDictionary *)selfCopy->_accessoryDeviceInfoMap enumerateKeysAndObjectsUsingBlock:&stru_100AE2DF0];
+    objc_sync_exit(selfCopy);
 
-    [(CBStackAccessoryMonitorBTStack *)v2 _updatePairedAudioAccessories];
-    [(CBStackAccessoryMonitorBTStack *)v2 _updateConnectedAudioAccessories];
-    v3 = v2;
+    [(CBStackAccessoryMonitorBTStack *)selfCopy _updatePairedAudioAccessories];
+    [(CBStackAccessoryMonitorBTStack *)selfCopy _updateConnectedAudioAccessories];
+    v3 = selfCopy;
     objc_sync_enter(v3);
-    accessoryDeviceInfoMap = v2->_accessoryDeviceInfoMap;
+    accessoryDeviceInfoMap = selfCopy->_accessoryDeviceInfoMap;
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100163434;
@@ -306,8 +306,8 @@ LABEL_12:
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(NSMutableDictionary *)v2->_accessoryDeviceInfoMap allKeys];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
+    allKeys = [(NSMutableDictionary *)selfCopy->_accessoryDeviceInfoMap allKeys];
+    v6 = [allKeys countByEnumeratingWithState:&v13 objects:v18 count:16];
     if (v6)
     {
       v7 = *v14;
@@ -317,27 +317,27 @@ LABEL_12:
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allKeys);
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
-          v10 = [(NSMutableDictionary *)v2->_accessoryDeviceInfoMap objectForKeyedSubscript:v9, v12];
+          v10 = [(NSMutableDictionary *)selfCopy->_accessoryDeviceInfoMap objectForKeyedSubscript:v9, identifier];
           if (([v10 discoveryFlags] & 0xA00000) == 0)
           {
             v11 = v3;
             objc_sync_enter(v11);
-            [(NSMutableDictionary *)v2->_accessoryDeviceInfoMap setObject:0 forKeyedSubscript:v9];
+            [(NSMutableDictionary *)selfCopy->_accessoryDeviceInfoMap setObject:0 forKeyedSubscript:v9];
             objc_sync_exit(v11);
 
             if (dword_100B51310 <= 30 && (dword_100B51310 != -1 || _LogCategory_Initialize()))
             {
-              v12 = [v10 identifier];
+              identifier = [v10 identifier];
               LogPrintF_safe();
             }
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v13 objects:v18 count:16];
+        v6 = [allKeys countByEnumeratingWithState:&v13 objects:v18 count:16];
       }
 
       while (v6);
@@ -423,41 +423,41 @@ LABEL_12:
   }
 }
 
-- (void)_updateAudioAccessoryDeviceInfo:(void *)a3 flags:(unint64_t)a4
+- (void)_updateAudioAccessoryDeviceInfo:(void *)info flags:(unint64_t)flags
 {
   memset(v16, 0, sizeof(v16));
-  if ((sub_1000DFC04(a3, v16) & 1) != 0 && ((a4 & 0x200000) == 0 || sub_100548DB8(a3)))
+  if ((sub_1000DFC04(info, v16) & 1) != 0 && ((flags & 0x200000) == 0 || sub_100548DB8(info)))
   {
     v15 = 0;
-    v7 = [[CBDevice alloc] initWithBTStackDevice:a3 error:&v15];
+    v7 = [[CBDevice alloc] initWithBTStackDevice:info error:&v15];
     v8 = v15;
     if (v7)
     {
-      v9 = [v7 identifier];
-      v10 = self;
-      objc_sync_enter(v10);
-      v11 = [(NSMutableDictionary *)v10->_accessoryDeviceInfoMap objectForKeyedSubscript:v9];
+      identifier = [v7 identifier];
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      v11 = [(NSMutableDictionary *)selfCopy->_accessoryDeviceInfoMap objectForKeyedSubscript:identifier];
       if (!v11)
       {
         v11 = objc_alloc_init(AudioAccessoryDeviceInfo);
-        [(AudioAccessoryDeviceInfo *)v11 setIdentifier:v9];
-        accessoryDeviceInfoMap = v10->_accessoryDeviceInfoMap;
+        [(AudioAccessoryDeviceInfo *)v11 setIdentifier:identifier];
+        accessoryDeviceInfoMap = selfCopy->_accessoryDeviceInfoMap;
         if (!accessoryDeviceInfoMap)
         {
           v13 = objc_alloc_init(NSMutableDictionary);
-          v14 = v10->_accessoryDeviceInfoMap;
-          v10->_accessoryDeviceInfoMap = v13;
+          v14 = selfCopy->_accessoryDeviceInfoMap;
+          selfCopy->_accessoryDeviceInfoMap = v13;
 
-          accessoryDeviceInfoMap = v10->_accessoryDeviceInfoMap;
+          accessoryDeviceInfoMap = selfCopy->_accessoryDeviceInfoMap;
         }
 
-        [(NSMutableDictionary *)accessoryDeviceInfoMap setObject:v11 forKeyedSubscript:v9];
+        [(NSMutableDictionary *)accessoryDeviceInfoMap setObject:v11 forKeyedSubscript:identifier];
       }
 
-      [(AudioAccessoryDeviceInfo *)v11 setChangeFlags:[(AudioAccessoryDeviceInfo *)v11 changeFlags]| [(AudioAccessoryDeviceInfo *)v11 updateWithClassicDevice:a3]];
-      [(AudioAccessoryDeviceInfo *)v11 setDiscoveryFlags:[(AudioAccessoryDeviceInfo *)v11 discoveryFlags]| a4];
+      [(AudioAccessoryDeviceInfo *)v11 setChangeFlags:[(AudioAccessoryDeviceInfo *)v11 changeFlags]| [(AudioAccessoryDeviceInfo *)v11 updateWithClassicDevice:info]];
+      [(AudioAccessoryDeviceInfo *)v11 setDiscoveryFlags:[(AudioAccessoryDeviceInfo *)v11 discoveryFlags]| flags];
 
-      objc_sync_exit(v10);
+      objc_sync_exit(selfCopy);
     }
 
     else
@@ -467,7 +467,7 @@ LABEL_12:
         goto LABEL_11;
       }
 
-      v9 = CUPrintNSError();
+      identifier = CUPrintNSError();
       LogPrintF_safe();
     }
 

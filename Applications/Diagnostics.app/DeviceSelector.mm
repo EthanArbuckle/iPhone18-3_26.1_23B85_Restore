@@ -1,31 +1,31 @@
 @interface DeviceSelector
-- (_TtC11Diagnostics14DeviceSelector)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (_TtC11Diagnostics14DeviceSelector)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (_TtC11Diagnostics14DeviceSelector)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (_TtC11Diagnostics14DeviceSelector)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (void)continueConsent;
 - (void)tryAgain;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DeviceSelector
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000BDFB4();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v4 = self;
+  appearCopy = appear;
+  selfCopy = self;
   sub_1000BE490();
-  v7.receiver = v4;
+  v7.receiver = selfCopy;
   v7.super_class = type metadata accessor for DeviceSelector();
-  [(DeviceSelector *)&v7 viewWillAppear:v3];
-  v5 = *&v4->OBWelcomeController_opaque[OBJC_IVAR____TtC11Diagnostics14DeviceSelector_devicesTableView];
+  [(DeviceSelector *)&v7 viewWillAppear:appearCopy];
+  v5 = *&selfCopy->OBWelcomeController_opaque[OBJC_IVAR____TtC11Diagnostics14DeviceSelector_devicesTableView];
   if (v5)
   {
     v6 = v5;
@@ -38,10 +38,10 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v4 = self;
+  disappearCopy = disappear;
+  selfCopy = self;
   sub_1000C1940();
   if (qword_1001FC7E8 != -1)
   {
@@ -53,41 +53,41 @@
     Session.stopDeviceDiscovery()();
   }
 
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = type metadata accessor for DeviceSelector();
-  [(DeviceSelector *)&v5 viewDidDisappear:v3];
+  [(DeviceSelector *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1000C3BF0(v6, a4);
+  viewCopy = view;
+  selfCopy = self;
+  v8 = sub_1000C3BF0(viewCopy, section);
 
   return v8;
 }
 
 - (void)continueConsent
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000C4224();
 }
 
 - (void)tryAgain
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000C171C();
   sub_1000BE490();
 }
 
-- (_TtC11Diagnostics14DeviceSelector)initWithTitle:(id)a3 detailText:(id)a4 symbolName:(id)a5 contentLayout:(int64_t)a6
+- (_TtC11Diagnostics14DeviceSelector)initWithTitle:(id)title detailText:(id)text symbolName:(id)name contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC11Diagnostics14DeviceSelector)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (_TtC11Diagnostics14DeviceSelector)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

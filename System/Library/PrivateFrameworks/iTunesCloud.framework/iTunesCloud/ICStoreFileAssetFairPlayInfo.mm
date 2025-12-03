@@ -1,5 +1,5 @@
 @interface ICStoreFileAssetFairPlayInfo
-- (ICStoreFileAssetFairPlayInfo)initWithResponseSinfDictionary:(id)a3;
+- (ICStoreFileAssetFairPlayInfo)initWithResponseSinfDictionary:(id)dictionary;
 - (NSData)dpInfoData;
 - (NSData)pinfData;
 - (NSData)sinf2Data;
@@ -17,33 +17,33 @@
 
   if (v4)
   {
-    v5 = [(ICStoreFileAssetFairPlayInfo *)self identifier];
-    v6 = [MEMORY[0x1E696AD98] numberWithLongLong:v5];
+    identifier = [(ICStoreFileAssetFairPlayInfo *)self identifier];
+    v6 = [MEMORY[0x1E696AD98] numberWithLongLong:identifier];
     [v3 setObject:v6 forKey:@"id"];
   }
 
-  v7 = [(ICStoreFileAssetFairPlayInfo *)self dpInfoData];
-  if (v7)
+  dpInfoData = [(ICStoreFileAssetFairPlayInfo *)self dpInfoData];
+  if (dpInfoData)
   {
-    [v3 setObject:v7 forKey:@"dpInfo"];
+    [v3 setObject:dpInfoData forKey:@"dpInfo"];
   }
 
-  v8 = [(ICStoreFileAssetFairPlayInfo *)self pinfData];
-  if (v8)
+  pinfData = [(ICStoreFileAssetFairPlayInfo *)self pinfData];
+  if (pinfData)
   {
-    [v3 setObject:v8 forKey:@"pinf"];
+    [v3 setObject:pinfData forKey:@"pinf"];
   }
 
-  v9 = [(ICStoreFileAssetFairPlayInfo *)self sinfData];
-  if (v9)
+  sinfData = [(ICStoreFileAssetFairPlayInfo *)self sinfData];
+  if (sinfData)
   {
-    [v3 setObject:v9 forKey:@"sinf"];
+    [v3 setObject:sinfData forKey:@"sinf"];
   }
 
-  v10 = [(ICStoreFileAssetFairPlayInfo *)self sinf2Data];
-  if (v10)
+  sinf2Data = [(ICStoreFileAssetFairPlayInfo *)self sinf2Data];
+  if (sinf2Data)
   {
-    [v3 setObject:v10 forKey:@"sinf2"];
+    [v3 setObject:sinf2Data forKey:@"sinf2"];
   }
 
   return v3;
@@ -86,24 +86,24 @@
   v2 = [(NSDictionary *)self->_responseSinfDictionary objectForKey:@"id"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 longLongValue];
+    longLongValue = [v2 longLongValue];
   }
 
   else
   {
-    v3 = 0;
+    longLongValue = 0;
   }
 
-  return v3;
+  return longLongValue;
 }
 
-- (ICStoreFileAssetFairPlayInfo)initWithResponseSinfDictionary:(id)a3
+- (ICStoreFileAssetFairPlayInfo)initWithResponseSinfDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [(ICStoreFileAssetFairPlayInfo *)self init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     responseSinfDictionary = v5->_responseSinfDictionary;
     v5->_responseSinfDictionary = v6;
   }

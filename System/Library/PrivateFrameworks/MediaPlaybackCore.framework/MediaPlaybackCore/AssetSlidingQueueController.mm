@@ -1,13 +1,13 @@
 @interface AssetSlidingQueueController
 - (NSDictionary)stateDictionary;
-- (void)resetWithReason:(id)a3;
+- (void)resetWithReason:(id)reason;
 @end
 
 @implementation AssetSlidingQueueController
 
-- (void)resetWithReason:(id)a3
+- (void)resetWithReason:(id)reason
 {
-  v3 = a3;
+  reasonCopy = reason;
 
   sub_1C5D4CB44();
 }

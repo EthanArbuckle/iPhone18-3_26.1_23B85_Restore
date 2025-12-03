@@ -1,54 +1,54 @@
 @interface FKAutoBugCaptureReporter
 - (BOOL)shouldReportIssue;
-- (void)handleResponse:(id)a3;
-- (void)reportIssueWithDomain:(id)a3 type:(id)a4 subtype:(id)a5 subtypeContext:(id)a6 event:(id)a7;
+- (void)handleResponse:(id)response;
+- (void)reportIssueWithDomain:(id)domain type:(id)type subtype:(id)subtype subtypeContext:(id)context event:(id)event;
 @end
 
 @implementation FKAutoBugCaptureReporter
 
-- (void)reportIssueWithDomain:(id)a3 type:(id)a4 subtype:(id)a5 subtypeContext:(id)a6 event:(id)a7
+- (void)reportIssueWithDomain:(id)domain type:(id)type subtype:(id)subtype subtypeContext:(id)context event:(id)event
 {
   v37 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  domainCopy = domain;
+  typeCopy = type;
+  subtypeCopy = subtype;
+  contextCopy = context;
+  eventCopy = event;
   if (![(FKAutoBugCaptureReporter *)self isRunningUnitTests])
   {
     v17 = os_log_create("com.apple.FinanceKit", "AutoBugCapture");
     if ([(FKAutoBugCaptureReporter *)self shouldReportIssue])
     {
-      v18 = [MEMORY[0x1E696AE30] processInfo];
-      v19 = [v18 processName];
-      v20 = v19;
-      if (v19)
+      processInfo = [MEMORY[0x1E696AE30] processInfo];
+      processName = [processInfo processName];
+      v20 = processName;
+      if (processName)
       {
-        v21 = v19;
+        v21 = processName;
       }
 
       else
       {
-        v22 = [MEMORY[0x1E696AAE8] mainBundle];
-        v25 = [v22 bundleIdentifier];
+        mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+        bundleIdentifier = [mainBundle bundleIdentifier];
 
-        v21 = v25;
+        v21 = bundleIdentifier;
       }
 
       v23 = objc_alloc_init(MEMORY[0x1E69D4F80]);
-      v24 = [v23 signatureWithDomain:v12 type:v13 subType:v14 subtypeContext:v15 detectedProcess:v21 triggerThresholdValues:0];
+      v24 = [v23 signatureWithDomain:domainCopy type:typeCopy subType:subtypeCopy subtypeContext:contextCopy detectedProcess:v21 triggerThresholdValues:0];
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138413314;
-        v28 = v12;
+        v28 = domainCopy;
         v29 = 2112;
-        v30 = v13;
+        v30 = typeCopy;
         v31 = 2112;
-        v32 = v14;
+        v32 = subtypeCopy;
         v33 = 2112;
-        v34 = v15;
+        v34 = contextCopy;
         v35 = 2112;
-        v36 = v16;
+        v36 = eventCopy;
         _os_log_impl(&dword_1B7198000, v17, OS_LOG_TYPE_DEFAULT, "Submitting snapshot request to ABC for signature: %@.%@.%@.%@ with event: %@", buf, 0x34u);
       }
 
@@ -57,34 +57,34 @@
       v26[2] = __84__FKAutoBugCaptureReporter_reportIssueWithDomain_type_subtype_subtypeContext_event___block_invoke;
       v26[3] = &unk_1E7CAA028;
       v26[4] = self;
-      [v23 snapshotWithSignature:v24 duration:v16 event:0 payload:v26 reply:{0.0, v25}];
+      [v23 snapshotWithSignature:v24 duration:eventCopy event:0 payload:v26 reply:{0.0, bundleIdentifier}];
     }
 
     else if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413058;
-      v28 = v12;
+      v28 = domainCopy;
       v29 = 2112;
-      v30 = v13;
+      v30 = typeCopy;
       v31 = 2112;
-      v32 = v14;
+      v32 = subtypeCopy;
       v33 = 2112;
-      v34 = v15;
+      v34 = contextCopy;
       _os_log_impl(&dword_1B7198000, v17, OS_LOG_TYPE_DEFAULT, "Not reporting to AutoBugCapture because we are rate limited: %@.%@.%@.%@", buf, 0x2Au);
     }
   }
 }
 
-- (void)handleResponse:(id)a3
+- (void)handleResponse:(id)response
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69D50D0]];
-  v6 = [v5 BOOLValue];
+  responseCopy = response;
+  v5 = [responseCopy objectForKeyedSubscript:*MEMORY[0x1E69D50D0]];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
-    v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69D50C0]];
+    v7 = [responseCopy objectForKeyedSubscript:*MEMORY[0x1E69D50C0]];
     v8 = os_log_create("com.apple.FinanceKit", "AutoBugCapture");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -96,11 +96,11 @@
 
   else
   {
-    v9 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69D50A0]];
-    v10 = [v9 intValue];
+    v9 = [responseCopy objectForKeyedSubscript:*MEMORY[0x1E69D50A0]];
+    intValue = [v9 intValue];
 
-    v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69D50B0]];
-    v11 = [(FKAutoBugCaptureReporter *)self isExpectedFailureReason:v10];
+    v7 = [responseCopy objectForKeyedSubscript:*MEMORY[0x1E69D50B0]];
+    v11 = [(FKAutoBugCaptureReporter *)self isExpectedFailureReason:intValue];
     v8 = os_log_create("com.apple.FinanceKit", "AutoBugCapture");
     v12 = os_log_type_enabled(v8, OS_LOG_TYPE_ERROR);
     if (v11)

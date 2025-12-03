@@ -1,38 +1,38 @@
 @interface PKTransactionReleasedDataApplication
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToReleasedDataApplication:(id)a3;
-- (PKTransactionReleasedDataApplication)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToReleasedDataApplication:(id)application;
+- (PKTransactionReleasedDataApplication)initWithCoder:(id)coder;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKTransactionReleasedDataApplication
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   client = self->_client;
-  v5 = a3;
-  [v5 encodeInteger:client forKey:@"client"];
-  [v5 encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
-  [v5 encodeObject:self->_usageDescription forKey:@"usageDescription"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:client forKey:@"client"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeObject:self->_usageDescription forKey:@"usageDescription"];
 }
 
-- (PKTransactionReleasedDataApplication)initWithCoder:(id)a3
+- (PKTransactionReleasedDataApplication)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKTransactionReleasedDataApplication;
   v5 = [(PKTransactionReleasedDataApplication *)&v11 init];
   if (v5)
   {
-    v5->_client = [v4 decodeIntegerForKey:@"client"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+    v5->_client = [coderCopy decodeIntegerForKey:@"client"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"usageDescription"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"usageDescription"];
     usageDescription = v5->_usageDescription;
     v5->_usageDescription = v8;
   }
@@ -42,42 +42,42 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_bundleIdentifier];
-  [v3 safelyAddObject:self->_usageDescription];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_bundleIdentifier];
+  [array safelyAddObject:self->_usageDescription];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_client - v4 + 32 * v4;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKTransactionReleasedDataApplication *)self isEqualToReleasedDataApplication:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKTransactionReleasedDataApplication *)self isEqualToReleasedDataApplication:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToReleasedDataApplication:(id)a3
+- (BOOL)isEqualToReleasedDataApplication:(id)application
 {
-  v4 = a3;
-  if (self->_client != v4[1])
+  applicationCopy = application;
+  if (self->_client != applicationCopy[1])
   {
     goto LABEL_8;
   }
 
   bundleIdentifier = self->_bundleIdentifier;
-  v6 = v4[2];
+  v6 = applicationCopy[2];
   if (bundleIdentifier)
   {
     v7 = v6 == 0;
@@ -107,7 +107,7 @@ LABEL_8:
 
 LABEL_11:
   usageDescription = self->_usageDescription;
-  v11 = v4[3];
+  v11 = applicationCopy[3];
   if (usageDescription && v11)
   {
     v8 = [(NSString *)usageDescription isEqual:?];

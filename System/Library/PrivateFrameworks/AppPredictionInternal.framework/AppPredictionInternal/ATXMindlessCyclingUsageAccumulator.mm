@@ -1,10 +1,10 @@
 @interface ATXMindlessCyclingUsageAccumulator
 - (ATXMindlessCyclingUsageAccumulator)init;
-- (ATXMindlessCyclingUsageAccumulator)initWithAppLaunchPublisher:(id)a3;
+- (ATXMindlessCyclingUsageAccumulator)initWithAppLaunchPublisher:(id)publisher;
 - (BOOL)accumulateMindlessCyclingEvents;
-- (id)eventWithBundleID:(id)a3 launchReason:(id)a4 startTime:(id)a5 endTime:(id)a6 duration:(double)a7;
+- (id)eventWithBundleID:(id)d launchReason:(id)reason startTime:(id)time endTime:(id)endTime duration:(double)duration;
 - (void)accumulateMindlessCyclingEvents;
-- (void)recordAppLaunchEndEvent:(id)a3;
+- (void)recordAppLaunchEndEvent:(id)event;
 @end
 
 @implementation ATXMindlessCyclingUsageAccumulator
@@ -14,16 +14,16 @@
   v3 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-2419200.0];
   v4 = BiomeLibrary();
   v5 = [v4 App];
-  v6 = [v5 InFocus];
-  v7 = [v6 atx_publisherFromStartDate:v3];
+  inFocus = [v5 InFocus];
+  v7 = [inFocus atx_publisherFromStartDate:v3];
 
   v8 = [(ATXMindlessCyclingUsageAccumulator *)self initWithAppLaunchPublisher:v7];
   return v8;
 }
 
-- (ATXMindlessCyclingUsageAccumulator)initWithAppLaunchPublisher:(id)a3
+- (ATXMindlessCyclingUsageAccumulator)initWithAppLaunchPublisher:(id)publisher
 {
-  v5 = a3;
+  publisherCopy = publisher;
   v12.receiver = self;
   v12.super_class = ATXMindlessCyclingUsageAccumulator;
   v6 = [(ATXMindlessCyclingUsageAccumulator *)&v12 init];
@@ -37,7 +37,7 @@
     mindlessCyclingEventsAccumulator = v6->_mindlessCyclingEventsAccumulator;
     v6->_mindlessCyclingEventsAccumulator = v9;
 
-    objc_storeStrong(&v6->_appLaunchPublisher, a3);
+    objc_storeStrong(&v6->_appLaunchPublisher, publisher);
   }
 
   return v6;
@@ -47,8 +47,8 @@
 {
   v3 = objc_alloc(MEMORY[0x277CBEB58]);
   v4 = +[_ATXAppIconState sharedInstance];
-  v5 = [v4 allInstalledAppsKnownToSpringBoard];
-  v6 = [v3 initWithArray:v5];
+  allInstalledAppsKnownToSpringBoard = [v4 allInstalledAppsKnownToSpringBoard];
+  v6 = [v3 initWithArray:allInstalledAppsKnownToSpringBoard];
 
   v18 = 0;
   v19[0] = &v18;
@@ -68,7 +68,7 @@
   v14[3] = &unk_2785988C8;
   v8 = v6;
   v15 = v8;
-  v16 = self;
+  selfCopy = self;
   v9 = [(BPSPublisher *)appLaunchPublisher sinkWithCompletion:v17 receiveInput:v14];
   v10 = *(v19[0] + 40);
   if (v10)
@@ -125,10 +125,10 @@ void __69__ATXMindlessCyclingUsageAccumulator_accumulateMindlessCyclingEvents__b
   }
 }
 
-- (void)recordAppLaunchEndEvent:(id)a3
+- (void)recordAppLaunchEndEvent:(id)event
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = [(NSMutableArray *)self->_appInFocusStartingEvents copy];
   v38 = 0u;
   v39 = 0u;
@@ -142,8 +142,8 @@ void __69__ATXMindlessCyclingUsageAccumulator_accumulateMindlessCyclingEvents__b
     v9 = *v39;
     v35 = v6;
     v36 = *v39;
-    v33 = self;
-    v34 = v4;
+    selfCopy = self;
+    v34 = eventCopy;
     do
     {
       v10 = 0;
@@ -156,62 +156,62 @@ void __69__ATXMindlessCyclingUsageAccumulator_accumulateMindlessCyclingEvents__b
         }
 
         v11 = *(*(&v38 + 1) + 8 * v10);
-        v12 = [v4 bundleID];
-        v13 = [v11 bundleID];
-        v14 = [v12 isEqualToString:v13];
+        bundleID = [eventCopy bundleID];
+        bundleID2 = [v11 bundleID];
+        v14 = [bundleID isEqualToString:bundleID2];
 
         if (v14)
         {
           stagedEventToAdd = self->_stagedEventToAdd;
           if (stagedEventToAdd)
           {
-            v16 = stagedEventToAdd;
+            lastObject = stagedEventToAdd;
           }
 
           else
           {
-            v16 = [(NSMutableArray *)self->_mindlessCyclingEventsAccumulator lastObject];
+            lastObject = [(NSMutableArray *)self->_mindlessCyclingEventsAccumulator lastObject];
           }
 
-          v17 = v16;
-          v18 = [(ATXUsageInsightsAppSessionEvent *)v16 endTime];
-          v19 = [v11 absoluteTimestamp];
-          v20 = [v4 absoluteTimestamp];
-          [v19 timeIntervalSinceReferenceDate];
+          v17 = lastObject;
+          endTime = [(ATXUsageInsightsAppSessionEvent *)lastObject endTime];
+          absoluteTimestamp = [v11 absoluteTimestamp];
+          absoluteTimestamp2 = [eventCopy absoluteTimestamp];
+          [absoluteTimestamp timeIntervalSinceReferenceDate];
           v22 = v21;
-          [v20 timeIntervalSinceReferenceDate];
+          [absoluteTimestamp2 timeIntervalSinceReferenceDate];
           if (v22 <= v23)
           {
-            v24 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v19 endDate:v20];
+            v24 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:absoluteTimestamp endDate:absoluteTimestamp2];
             [v24 duration];
             if (v25 <= 30.0)
             {
-              v26 = [v4 bundleID];
+              bundleID3 = [eventCopy bundleID];
               [v11 launchReason];
               v28 = v27 = self;
               [v24 duration];
-              v29 = [(ATXMindlessCyclingUsageAccumulator *)v27 eventWithBundleID:v26 launchReason:v28 startTime:v19 endTime:v20 duration:?];
+              v29 = [(ATXMindlessCyclingUsageAccumulator *)v27 eventWithBundleID:bundleID3 launchReason:v28 startTime:absoluteTimestamp endTime:absoluteTimestamp2 duration:?];
 
-              if (v18 && ([v19 timeIntervalSinceDate:v18], v30 <= 10.0))
+              if (endTime && ([absoluteTimestamp timeIntervalSinceDate:endTime], v30 <= 10.0))
               {
-                self = v33;
-                if (v33->_stagedEventToAdd)
+                self = selfCopy;
+                if (selfCopy->_stagedEventToAdd)
                 {
-                  [(NSMutableArray *)v33->_mindlessCyclingEventsAccumulator addObject:?];
-                  v31 = v33->_stagedEventToAdd;
-                  v33->_stagedEventToAdd = 0;
+                  [(NSMutableArray *)selfCopy->_mindlessCyclingEventsAccumulator addObject:?];
+                  v31 = selfCopy->_stagedEventToAdd;
+                  selfCopy->_stagedEventToAdd = 0;
                 }
 
-                [(NSMutableArray *)v33->_mindlessCyclingEventsAccumulator addObject:v29];
+                [(NSMutableArray *)selfCopy->_mindlessCyclingEventsAccumulator addObject:v29];
               }
 
               else
               {
-                self = v33;
-                objc_storeStrong(&v33->_stagedEventToAdd, v29);
+                self = selfCopy;
+                objc_storeStrong(&selfCopy->_stagedEventToAdd, v29);
               }
 
-              v4 = v34;
+              eventCopy = v34;
             }
 
             [(NSMutableArray *)self->_appInFocusStartingEvents removeObject:v11];
@@ -236,19 +236,19 @@ void __69__ATXMindlessCyclingUsageAccumulator_accumulateMindlessCyclingEvents__b
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (id)eventWithBundleID:(id)a3 launchReason:(id)a4 startTime:(id)a5 endTime:(id)a6 duration:(double)a7
+- (id)eventWithBundleID:(id)d launchReason:(id)reason startTime:(id)time endTime:(id)endTime duration:(double)duration
 {
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [ATXSessionTaggingAppEntity genreIdForBundleId:v14];
-  v16 = [v15 unsignedIntegerValue];
+  endTimeCopy = endTime;
+  timeCopy = time;
+  reasonCopy = reason;
+  dCopy = d;
+  v15 = [ATXSessionTaggingAppEntity genreIdForBundleId:dCopy];
+  unsignedIntegerValue = [v15 unsignedIntegerValue];
 
   v17 = objc_alloc(MEMORY[0x277CEB8F8]);
-  v18 = [MEMORY[0x277CEB8F8] usageInsightsAppLaunchReasonFromBMAppInFocus:v13];
+  v18 = [MEMORY[0x277CEB8F8] usageInsightsAppLaunchReasonFromBMAppInFocus:reasonCopy];
 
-  v19 = [v17 initWithBundleID:v14 category:v16 launchReason:v18 startTime:v12 endTime:v11 duration:a7];
+  v19 = [v17 initWithBundleID:dCopy category:unsignedIntegerValue launchReason:v18 startTime:timeCopy endTime:endTimeCopy duration:duration];
 
   return v19;
 }
@@ -256,7 +256,7 @@ void __69__ATXMindlessCyclingUsageAccumulator_accumulateMindlessCyclingEvents__b
 - (void)accumulateMindlessCyclingEvents
 {
   v8 = *MEMORY[0x277D85DE8];
-  v2 = *(*a1 + 40);
+  v2 = *(*self + 40);
   v4 = 136315394;
   v5 = "[ATXMindlessCyclingUsageAccumulator accumulateMindlessCyclingEvents]";
   v6 = 2112;

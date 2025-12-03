@@ -2,10 +2,10 @@
 + (id)secureCodableRequestClasses;
 + (id)secureCodableResponseClasses;
 - (PUIAnalysisService)init;
-- (PUIAnalysisService)initWithUnderlyingConnection:(id)a3;
-- (id)executeAnalysisRequest:(id)a3 completion:(id)a4;
-- (id)executeAnalysisRequest:(id)a3 error:(id *)a4;
-- (void)cancelRequest:(id)a3;
+- (PUIAnalysisService)initWithUnderlyingConnection:(id)connection;
+- (id)executeAnalysisRequest:(id)request completion:(id)completion;
+- (id)executeAnalysisRequest:(id)request error:(id *)error;
+- (void)cancelRequest:(id)request;
 @end
 
 @implementation PUIAnalysisService
@@ -33,16 +33,16 @@
   return v4;
 }
 
-- (PUIAnalysisService)initWithUnderlyingConnection:(id)a3
+- (PUIAnalysisService)initWithUnderlyingConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v11.receiver = self;
   v11.super_class = PUIAnalysisService;
   v6 = [(PUIAnalysisService *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingConnection, a3);
+    objc_storeStrong(&v6->_underlyingConnection, connection);
     Serial = BSDispatchQueueCreateSerial();
     timeoutQueue = v7->_timeoutQueue;
     v7->_timeoutQueue = Serial;
@@ -51,14 +51,14 @@
   return v7;
 }
 
-- (id)executeAnalysisRequest:(id)a3 error:(id *)a4
+- (id)executeAnalysisRequest:(id)request error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  requestCopy = request;
   v8 = PUILogAnalysisService();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    [(PUIAnalysisService *)a2 executeAnalysisRequest:v7 error:v8];
+    [(PUIAnalysisService *)a2 executeAnalysisRequest:requestCopy error:v8];
   }
 
   v28 = 0;
@@ -81,15 +81,15 @@
     if (!v12)
     {
       v26 = 0;
-      v13 = [v10 executeAnalysisRequest:v7 error:&v26];
+      v13 = [v10 executeAnalysisRequest:requestCopy error:&v26];
       v14 = v26;
       v15 = v14;
       if (v14)
       {
-        if (a4)
+        if (error)
         {
           v16 = v14;
-          *a4 = v15;
+          *error = v15;
         }
 
         v17 = PUILogAnalysisService();
@@ -99,7 +99,7 @@
           *buf = 138543874;
           v35 = v25;
           v36 = 2114;
-          v37 = v7;
+          v37 = requestCopy;
           v38 = 2114;
           v39 = v15;
           _os_log_error_impl(&dword_1A8C85000, v17, OS_LOG_TYPE_ERROR, "Fail %{public}@:%{public}@: %{public}@", buf, 0x20u);
@@ -110,7 +110,7 @@
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
         v19 = NSStringFromSelector(a2);
-        [(PUIAnalysisService *)v19 executeAnalysisRequest:v7 error:buf, v18];
+        [(PUIAnalysisService *)v19 executeAnalysisRequest:requestCopy error:buf, v18];
       }
 
       goto LABEL_21;
@@ -124,9 +124,9 @@
     v29[5] = v20;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = v29[5];
+    *error = v29[5];
   }
 
   v15 = PUILogAnalysisService();
@@ -137,7 +137,7 @@
     *buf = 138543874;
     v35 = v23;
     v36 = 2114;
-    v37 = v7;
+    v37 = requestCopy;
     v38 = 2114;
     v39 = v24;
     _os_log_error_impl(&dword_1A8C85000, v15, OS_LOG_TYPE_ERROR, "Fail %{public}@:%{public}@: %{public}@", buf, 0x20u);
@@ -151,11 +151,11 @@ LABEL_21:
   return v13;
 }
 
-- (id)executeAnalysisRequest:(id)a3 completion:(id)a4
+- (id)executeAnalysisRequest:(id)request completion:(id)completion
 {
   v50[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v9 = NSStringFromSelector(a2);
   v10 = PUILogAnalysisService();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
@@ -175,7 +175,7 @@ LABEL_21:
   v41[2] = 0x3032000000;
   v41[3] = __Block_byref_object_copy__10;
   v41[4] = __Block_byref_object_dispose__11;
-  v42 = [v8 copy];
+  v42 = [completionCopy copy];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __56__PUIAnalysisService_executeAnalysisRequest_completion___block_invoke;
@@ -184,7 +184,7 @@ LABEL_21:
   v36 = v12;
   v13 = v9;
   v37 = v13;
-  v14 = v7;
+  v14 = requestCopy;
   v38 = v14;
   v39 = v41;
   v40 = &v43;
@@ -281,12 +281,12 @@ void __56__PUIAnalysisService_executeAnalysisRequest_completion___block_invoke_2
   (*(v1 + 16))(v1, 0, v4);
 }
 
-- (void)cancelRequest:(id)a3
+- (void)cancelRequest:(id)request
 {
   underlyingConnection = self->_underlyingConnection;
-  v4 = a3;
+  requestCopy = request;
   v5 = [(PUIServiceConnection *)underlyingConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_26];
-  [v5 cancelRequest:v4];
+  [v5 cancelRequest:requestCopy];
 }
 
 - (void)executeAnalysisRequest:(NSObject *)a3 error:.cold.1(const char *a1, uint64_t a2, NSObject *a3)

@@ -1,43 +1,43 @@
 @interface DALocalDBWatcherCalConcernedParty
-- (BOOL)isEqual:(id)a3;
-- (DALocalDBWatcherCalConcernedParty)initWithConcernedParty:(id)a3 accountID:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (DALocalDBWatcherCalConcernedParty)initWithConcernedParty:(id)party accountID:(id)d;
 - (id)concernedParty;
 - (unint64_t)hash;
 @end
 
 @implementation DALocalDBWatcherCalConcernedParty
 
-- (DALocalDBWatcherCalConcernedParty)initWithConcernedParty:(id)a3 accountID:(id)a4
+- (DALocalDBWatcherCalConcernedParty)initWithConcernedParty:(id)party accountID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  partyCopy = party;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = DALocalDBWatcherCalConcernedParty;
   v8 = [(DALocalDBWatcherCalConcernedParty *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_concernedParty, v6);
-    objc_storeStrong(&v9->_accountID, a4);
+    objc_storeWeak(&v8->_concernedParty, partyCopy);
+    objc_storeStrong(&v9->_accountID, d);
   }
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     WeakRetained = objc_loadWeakRetained(&self->_concernedParty);
-    v7 = [v5 concernedParty];
-    if (WeakRetained == v7)
+    concernedParty = [v5 concernedParty];
+    if (WeakRetained == concernedParty)
     {
       accountID = self->_accountID;
-      v10 = [v5 accountID];
-      v8 = [(NSString *)accountID isEqual:v10];
+      accountID = [v5 accountID];
+      v8 = [(NSString *)accountID isEqual:accountID];
     }
 
     else

@@ -7,7 +7,7 @@
 
 - (int64_t)hash
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A6570();
 
   return v3;

@@ -19,7 +19,7 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   CategorizationSyncManager.start()();
 }
 

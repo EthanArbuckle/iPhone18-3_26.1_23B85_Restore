@@ -14,7 +14,7 @@
   v7 = 0;
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 rootViewController];
+    rootViewController = [v4 rootViewController];
     NSClassFromString(@"SPUIPlatterContainerViewController");
     isKindOfClass = objc_opt_isKindOfClass();
 

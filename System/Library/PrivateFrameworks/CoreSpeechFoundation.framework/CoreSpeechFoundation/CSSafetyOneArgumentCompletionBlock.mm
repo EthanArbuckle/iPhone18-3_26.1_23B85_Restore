@@ -1,7 +1,7 @@
 @interface CSSafetyOneArgumentCompletionBlock
-- (CSSafetyOneArgumentCompletionBlock)initWithDefaultValue:(id)a3 completionBlock:(id)a4;
+- (CSSafetyOneArgumentCompletionBlock)initWithDefaultValue:(id)value completionBlock:(id)block;
 - (void)dealloc;
-- (void)invokeWithValue:(id)a3;
+- (void)invokeWithValue:(id)value;
 @end
 
 @implementation CSSafetyOneArgumentCompletionBlock
@@ -24,10 +24,10 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)invokeWithValue:(id)a3
+- (void)invokeWithValue:(id)value
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  valueCopy = value;
   os_unfair_lock_lock(&self->_lock);
   if (!self->_isDirty)
   {
@@ -37,7 +37,7 @@
       v7 = 136315395;
       v8 = "[CSSafetyOneArgumentCompletionBlock invokeWithValue:]";
       v9 = 2113;
-      v10 = v4;
+      v10 = valueCopy;
       _os_log_impl(&dword_1DDA4B000, v5, OS_LOG_TYPE_DEFAULT, "%s invoking with value %{private}@", &v7, 0x16u);
     }
 
@@ -50,10 +50,10 @@
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (CSSafetyOneArgumentCompletionBlock)initWithDefaultValue:(id)a3 completionBlock:(id)a4
+- (CSSafetyOneArgumentCompletionBlock)initWithDefaultValue:(id)value completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a4;
+  valueCopy = value;
+  blockCopy = block;
   v14.receiver = self;
   v14.super_class = CSSafetyOneArgumentCompletionBlock;
   v9 = [(CSSafetyOneArgumentCompletionBlock *)&v14 init];
@@ -61,11 +61,11 @@
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    v11 = MEMORY[0x1E12BA300](v8);
+    v11 = MEMORY[0x1E12BA300](blockCopy);
     block = v10->_block;
     v10->_block = v11;
 
-    objc_storeStrong(&v10->_defaultValue, a3);
+    objc_storeStrong(&v10->_defaultValue, value);
   }
 
   return v10;

@@ -6,14 +6,14 @@
 
 - (BOOL)isValid
 {
-  v3 = [(HMDCameraSupportedConfigurationCache *)self supportedVideoStreamConfiguration];
-  if (v3)
+  supportedVideoStreamConfiguration = [(HMDCameraSupportedConfigurationCache *)self supportedVideoStreamConfiguration];
+  if (supportedVideoStreamConfiguration)
   {
-    v4 = [(HMDCameraSupportedConfigurationCache *)self supportedAudioStreamConfiguration];
-    if (v4)
+    supportedAudioStreamConfiguration = [(HMDCameraSupportedConfigurationCache *)self supportedAudioStreamConfiguration];
+    if (supportedAudioStreamConfiguration)
     {
-      v5 = [(HMDCameraSupportedConfigurationCache *)self supportedRTPConfiguration];
-      v6 = v5 != 0;
+      supportedRTPConfiguration = [(HMDCameraSupportedConfigurationCache *)self supportedRTPConfiguration];
+      v6 = supportedRTPConfiguration != 0;
     }
 
     else

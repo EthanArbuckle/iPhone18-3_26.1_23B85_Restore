@@ -1,31 +1,31 @@
 @interface PhotosSeparationCollectionShareResource
-+ (id)fetchCollectionShareResourcesInLibrary:(id)a3 error:(id *)a4;
-- (PhotosSeparationCollectionShareResource)initWithCollectionShare:(id)a3;
++ (id)fetchCollectionShareResourcesInLibrary:(id)library error:(id *)error;
+- (PhotosSeparationCollectionShareResource)initWithCollectionShare:(id)share;
 - (int64_t)visibility;
-- (void)_callCompletion:(id)a3 withErrorCode:(unint64_t)a4 description:(id)a5 underlyingError:(id)a6;
-- (void)stopSharingToParticipant:(id)a3 withCompletion:(id)a4;
-- (void)stopSharingWithCompletion:(id)a3;
-- (void)updateVisibility:(int64_t)a3 completion:(id)a4;
+- (void)_callCompletion:(id)completion withErrorCode:(unint64_t)code description:(id)description underlyingError:(id)error;
+- (void)stopSharingToParticipant:(id)participant withCompletion:(id)completion;
+- (void)stopSharingWithCompletion:(id)completion;
+- (void)updateVisibility:(int64_t)visibility completion:(id)completion;
 @end
 
 @implementation PhotosSeparationCollectionShareResource
 
-- (void)_callCompletion:(id)a3 withErrorCode:(unint64_t)a4 description:(id)a5 underlyingError:(id)a6
+- (void)_callCompletion:(id)completion withErrorCode:(unint64_t)code description:(id)description underlyingError:(id)error
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  v12 = v11;
-  if (v9)
+  completionCopy = completion;
+  descriptionCopy = description;
+  errorCopy = error;
+  v12 = errorCopy;
+  if (completionCopy)
   {
-    if (v11)
+    if (errorCopy)
     {
       v15[0] = NSLocalizedDescriptionKey;
       v15[1] = NSUnderlyingErrorKey;
-      v16[0] = v10;
-      v16[1] = v11;
+      v16[0] = descriptionCopy;
+      v16[1] = errorCopy;
       v13 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:2];
-      v14 = [NSError errorWithDomain:@"com.apple.photos.PhotosSeparation" code:a4 userInfo:v13];
+      v14 = [NSError errorWithDomain:@"com.apple.photos.PhotosSeparation" code:code userInfo:v13];
     }
 
     else
@@ -33,60 +33,60 @@
       v14 = 0;
     }
 
-    v9[2](v9, v14);
+    completionCopy[2](completionCopy, v14);
   }
 }
 
-- (void)updateVisibility:(int64_t)a3 completion:(id)a4
+- (void)updateVisibility:(int64_t)visibility completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   self->_visibilityIsStale = 1;
   if ([(PhotosSeparationCollectionShareResource *)self isOwnedByCurrentUser])
   {
-    v7 = [(PHCollectionShare *)self->_collectionShare photoLibrary];
+    photoLibrary = [(PHCollectionShare *)self->_collectionShare photoLibrary];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_3FAC;
     v10[3] = &unk_8428;
     v10[4] = self;
-    v10[5] = a3;
+    v10[5] = visibility;
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_4020;
     v8[3] = &unk_83D0;
     v8[4] = self;
-    v9 = v6;
-    [v7 performChanges:v10 completionHandler:v8];
+    v9 = completionCopy;
+    [photoLibrary performChanges:v10 completionHandler:v8];
   }
 
   else
   {
-    [(PhotosSeparationCollectionShareResource *)self _callCompletion:v6 withErrorCode:512 description:@"Failed to stop public sharing collection share link" underlyingError:0];
+    [(PhotosSeparationCollectionShareResource *)self _callCompletion:completionCopy withErrorCode:512 description:@"Failed to stop public sharing collection share link" underlyingError:0];
   }
 }
 
-- (void)stopSharingToParticipant:(id)a3 withCompletion:(id)a4
+- (void)stopSharingToParticipant:(id)participant withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PhotosSeparationCollectionShareResource *)self isOwnedByCurrentUser];
-  v9 = [(PHCollectionShare *)self->_collectionShare photoLibrary];
-  if (v8)
+  participantCopy = participant;
+  completionCopy = completion;
+  isOwnedByCurrentUser = [(PhotosSeparationCollectionShareResource *)self isOwnedByCurrentUser];
+  photoLibrary = [(PHCollectionShare *)self->_collectionShare photoLibrary];
+  if (isOwnedByCurrentUser)
   {
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_4220;
     v18[3] = &unk_83F8;
     v18[4] = self;
-    v19 = v6;
+    v19 = participantCopy;
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_42FC;
     v16[3] = &unk_83D0;
     v16[4] = self;
-    v17 = v7;
-    v10 = v7;
-    [v9 performChanges:v18 completionHandler:v16];
+    v17 = completionCopy;
+    v10 = completionCopy;
+    [photoLibrary performChanges:v18 completionHandler:v16];
 
     v11 = v19;
   }
@@ -103,20 +103,20 @@
     v13[2] = sub_43B0;
     v13[3] = &unk_83D0;
     v13[4] = self;
-    v14 = v7;
-    v12 = v7;
-    [v9 performChanges:v15 completionHandler:v13];
+    v14 = completionCopy;
+    v12 = completionCopy;
+    [photoLibrary performChanges:v15 completionHandler:v13];
 
     v11 = v14;
   }
 }
 
-- (void)stopSharingWithCompletion:(id)a3
+- (void)stopSharingWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(PhotosSeparationCollectionShareResource *)self isOwnedByCurrentUser];
-  v6 = [(PHCollectionShare *)self->_collectionShare photoLibrary];
-  if (v5)
+  completionCopy = completion;
+  isOwnedByCurrentUser = [(PhotosSeparationCollectionShareResource *)self isOwnedByCurrentUser];
+  photoLibrary = [(PHCollectionShare *)self->_collectionShare photoLibrary];
+  if (isOwnedByCurrentUser)
   {
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
@@ -129,8 +129,8 @@
     v19[3] = &unk_83D0;
     v7 = &v20;
     v19[4] = self;
-    v20 = v4;
-    v8 = v4;
+    v20 = completionCopy;
+    v8 = completionCopy;
     v9 = v21;
     v10 = v19;
   }
@@ -147,30 +147,30 @@
     v14 = sub_46CC;
     v15 = &unk_83D0;
     v7 = &v17;
-    v16 = self;
-    v17 = v4;
-    v11 = v4;
+    selfCopy = self;
+    v17 = completionCopy;
+    v11 = completionCopy;
     v9 = v18;
     v10 = &v12;
   }
 
-  [v6 performChanges:v9 completionHandler:{v10, v12, v13, v14, v15, v16}];
+  [photoLibrary performChanges:v9 completionHandler:{v10, v12, v13, v14, v15, selfCopy}];
 }
 
 - (int64_t)visibility
 {
   if (self->_visibilityIsStale)
   {
-    v3 = [(PHCollectionShare *)self->_collectionShare localIdentifier];
-    v11 = v3;
+    localIdentifier = [(PHCollectionShare *)self->_collectionShare localIdentifier];
+    v11 = localIdentifier;
     v4 = [NSArray arrayWithObjects:&v11 count:1];
-    v5 = [(PHCollectionShare *)self->_collectionShare photoLibrary];
-    v6 = [v5 librarySpecificFetchOptions];
-    v7 = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:v4 options:v6];
+    photoLibrary = [(PHCollectionShare *)self->_collectionShare photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+    v7 = [PHAssetCollection fetchAssetCollectionsWithLocalIdentifiers:v4 options:librarySpecificFetchOptions];
 
-    v8 = [v7 firstObject];
+    firstObject = [v7 firstObject];
     collectionShare = self->_collectionShare;
-    self->_collectionShare = v8;
+    self->_collectionShare = firstObject;
 
     self->_visibilityIsStale = 0;
   }
@@ -186,16 +186,16 @@
   }
 }
 
-- (PhotosSeparationCollectionShareResource)initWithCollectionShare:(id)a3
+- (PhotosSeparationCollectionShareResource)initWithCollectionShare:(id)share
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  shareCopy = share;
+  v6 = shareCopy;
+  if (shareCopy)
   {
-    v24 = self;
-    v7 = [v5 photoLibrary];
-    v8 = [v7 librarySpecificFetchOptions];
-    v9 = [PHShareParticipant fetchParticipantsInShare:v6 options:v8];
+    selfCopy = self;
+    photoLibrary = [shareCopy photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
+    v9 = [PHShareParticipant fetchParticipantsInShare:v6 options:librarySpecificFetchOptions];
 
     v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v9 count]);
     v26 = 0u;
@@ -218,11 +218,11 @@
           }
 
           v16 = *(*(&v26 + 1) + 8 * i);
-          v17 = [v16 role];
-          v18 = [v16 permission];
+          role = [v16 role];
+          permission = [v16 permission];
           if ([v16 acceptanceStatus] == 1 || objc_msgSend(v16, "acceptanceStatus") == 2)
           {
-            v19 = [[PhotosSeparationCollectionShareParticipant alloc] initWithParticipant:v16 isOwner:v17 == 1 readwrite:v18 == 3];
+            v19 = [[PhotosSeparationCollectionShareParticipant alloc] initWithParticipant:v16 isOwner:role == 1 readwrite:permission == 3];
             if (v19)
             {
               [v10 addObject:v19];
@@ -236,36 +236,36 @@
       while (v13);
     }
 
-    v25.receiver = v24;
+    v25.receiver = selfCopy;
     v25.super_class = PhotosSeparationCollectionShareResource;
     v20 = [(PhotosSeparationSharedResource *)&v25 initWithParticipants:v10];
     v21 = v20;
     if (v20)
     {
-      objc_storeStrong(&v20->_collectionShare, a3);
+      objc_storeStrong(&v20->_collectionShare, share);
     }
 
     self = v21;
 
-    v22 = self;
+    selfCopy2 = self;
   }
 
   else
   {
-    v22 = 0;
+    selfCopy2 = 0;
   }
 
-  return v22;
+  return selfCopy2;
 }
 
-+ (id)fetchCollectionShareResourcesInLibrary:(id)a3 error:(id *)a4
++ (id)fetchCollectionShareResourcesInLibrary:(id)library error:(id *)error
 {
-  v4 = a3;
+  libraryCopy = library;
   v5 = +[NSMutableArray array];
-  if (([v4 isSharedAlbumsEnabled] & 1) != 0 || (objc_msgSend(v4, "photoLibrary"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isUnitTesting"), v6, v7))
+  if (([libraryCopy isSharedAlbumsEnabled] & 1) != 0 || (objc_msgSend(libraryCopy, "photoLibrary"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isUnitTesting"), v6, v7))
   {
-    v8 = [v4 librarySpecificFetchOptions];
-    v9 = [PHAssetCollection fetchAssetCollectionsWithType:12 subtype:102 options:v8];
+    librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+    v9 = [PHAssetCollection fetchAssetCollectionsWithType:12 subtype:102 options:librarySpecificFetchOptions];
 
     v21 = 0u;
     v22 = 0u;

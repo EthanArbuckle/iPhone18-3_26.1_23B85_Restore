@@ -1,6 +1,6 @@
 @interface CKEnableEnhancedProtectionCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKEnableEnhancedProtectionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 conversation:(id)a5 shouldShowMacHeader:(BOOL)a6;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKEnableEnhancedProtectionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier conversation:(id)conversation shouldShowMacHeader:(BOOL)header;
 - (void)addConstraints;
 - (void)layoutSubviews;
 - (void)setupTitleLabel;
@@ -14,23 +14,23 @@
   v5.receiver = self;
   v5.super_class = CKEnableEnhancedProtectionCell;
   [(CKDetailsCell *)&v5 layoutSubviews];
-  v3 = [(CKDetailsCell *)self topSeperator];
-  [v3 setHidden:1];
+  topSeperator = [(CKDetailsCell *)self topSeperator];
+  [topSeperator setHidden:1];
 
-  v4 = [(CKDetailsCell *)self bottomSeperator];
-  [v4 setHidden:1];
+  bottomSeperator = [(CKDetailsCell *)self bottomSeperator];
+  [bottomSeperator setHidden:1];
 }
 
-- (CKEnableEnhancedProtectionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 conversation:(id)a5 shouldShowMacHeader:(BOOL)a6
+- (CKEnableEnhancedProtectionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier conversation:(id)conversation shouldShowMacHeader:(BOOL)header
 {
   v10.receiver = self;
   v10.super_class = CKEnableEnhancedProtectionCell;
-  v7 = [(CKDetailsCell *)&v10 initWithStyle:a3 reuseIdentifier:a4, a5];
-  v8 = v7;
-  if (v7)
+  conversation = [(CKDetailsCell *)&v10 initWithStyle:style reuseIdentifier:identifier, conversation];
+  v8 = conversation;
+  if (conversation)
   {
-    v7->_shouldShowMacHeader = a6;
-    [(CKEnableEnhancedProtectionCell *)v7 setupView];
+    conversation->_shouldShowMacHeader = header;
+    [(CKEnableEnhancedProtectionCell *)conversation setupView];
   }
 
   return v8;
@@ -45,8 +45,8 @@
     [(CKEnableEnhancedProtectionCell *)self setupSeparatorView];
   }
 
-  v3 = [(CKEnableEnhancedProtectionCell *)self contentView];
-  [v3 setBackgroundColor:0];
+  contentView = [(CKEnableEnhancedProtectionCell *)self contentView];
+  [contentView setBackgroundColor:0];
 
   [(CKEnableEnhancedProtectionCell *)self addConstraints];
 }
@@ -64,124 +64,124 @@
   [(UILabel *)v6 setText:v8];
 
   v9 = self->_ktTitleLabel;
-  v10 = [(CKEnableEnhancedProtectionCell *)self textLabel];
-  v11 = [v10 font];
-  [(UILabel *)v9 setFont:v11];
+  textLabel = [(CKEnableEnhancedProtectionCell *)self textLabel];
+  font = [textLabel font];
+  [(UILabel *)v9 setFont:font];
 
   v12 = self->_ktTitleLabel;
   v13 = +[CKUIBehavior sharedBehaviors];
-  v14 = [v13 theme];
-  v15 = [v14 detailsTextColor];
-  [(UILabel *)v12 setTextColor:v15];
+  theme = [v13 theme];
+  detailsTextColor = [theme detailsTextColor];
+  [(UILabel *)v12 setTextColor:detailsTextColor];
 
   [(UILabel *)self->_ktTitleLabel setNumberOfLines:0];
   [(UILabel *)self->_ktTitleLabel setLineBreakMode:4];
   [(UILabel *)self->_ktTitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
-  v16 = [MEMORY[0x1E69A5B00] sharedInstance];
-  LODWORD(v13) = [v16 isSatelliteConnectionActive];
+  mEMORY[0x1E69A5B00] = [MEMORY[0x1E69A5B00] sharedInstance];
+  LODWORD(v13) = [mEMORY[0x1E69A5B00] isSatelliteConnectionActive];
 
   [(CKEnableEnhancedProtectionCell *)self setUserInteractionEnabled:v13 ^ 1];
   [(UILabel *)self->_ktTitleLabel setEnabled:v13 ^ 1];
-  v17 = [(CKEnableEnhancedProtectionCell *)self contentView];
-  [v17 addSubview:self->_ktTitleLabel];
+  contentView = [(CKEnableEnhancedProtectionCell *)self contentView];
+  [contentView addSubview:self->_ktTitleLabel];
 }
 
 - (void)addConstraints
 {
   v74[4] = *MEMORY[0x1E69E9840];
-  v71 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (CKIsRunningInMacCatalyst() && self->_shouldShowMacHeader)
   {
-    v62 = [(UILabel *)self->_macHeaderLabel topAnchor];
-    v68 = [(CKEnableEnhancedProtectionCell *)self contentView];
-    v65 = [v68 layoutMarginsGuide];
-    v56 = [v65 topAnchor];
+    topAnchor = [(UILabel *)self->_macHeaderLabel topAnchor];
+    contentView = [(CKEnableEnhancedProtectionCell *)self contentView];
+    layoutMarginsGuide = [contentView layoutMarginsGuide];
+    topAnchor2 = [layoutMarginsGuide topAnchor];
     v59 = +[CKUIBehavior sharedBehaviors];
     [v59 detailsSectionHeaderPaddingAbove];
-    v53 = [v62 constraintEqualToAnchor:v56 constant:?];
+    v53 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:?];
     v74[0] = v53;
-    v47 = [(UILabel *)self->_macHeaderLabel heightAnchor];
-    v50 = [(UILabel *)self->_macHeaderLabel font];
-    [v50 pointSize];
-    v44 = [v47 constraintEqualToConstant:?];
+    heightAnchor = [(UILabel *)self->_macHeaderLabel heightAnchor];
+    font = [(UILabel *)self->_macHeaderLabel font];
+    [font pointSize];
+    v44 = [heightAnchor constraintEqualToConstant:?];
     v74[1] = v44;
-    v38 = [(UILabel *)self->_macHeaderLabel leadingAnchor];
-    v42 = [(CKEnableEnhancedProtectionCell *)self contentView];
-    v40 = [v42 layoutMarginsGuide];
-    v3 = [v40 leadingAnchor];
+    leadingAnchor = [(UILabel *)self->_macHeaderLabel leadingAnchor];
+    contentView2 = [(CKEnableEnhancedProtectionCell *)self contentView];
+    layoutMarginsGuide2 = [contentView2 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide2 leadingAnchor];
     v4 = +[CKUIBehavior sharedBehaviors];
     [v4 detailsSectionHeaderPaddingLeading];
-    v5 = [v38 constraintEqualToAnchor:v3 constant:?];
+    v5 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
     v74[2] = v5;
-    v6 = [(UILabel *)self->_macHeaderLabel trailingAnchor];
-    v7 = [(CKEnableEnhancedProtectionCell *)self contentView];
-    v8 = [v7 layoutMarginsGuide];
-    v9 = [v8 trailingAnchor];
-    v10 = [v6 constraintEqualToAnchor:v9];
+    trailingAnchor = [(UILabel *)self->_macHeaderLabel trailingAnchor];
+    contentView3 = [(CKEnableEnhancedProtectionCell *)self contentView];
+    layoutMarginsGuide3 = [contentView3 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide3 trailingAnchor];
+    v10 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v74[3] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v74 count:4];
-    [v71 addObjectsFromArray:v11];
+    [array addObjectsFromArray:v11];
 
-    v66 = [(UIView *)self->_separatorView leadingAnchor];
-    v69 = [(CKEnableEnhancedProtectionCell *)self contentView];
-    v63 = [v69 layoutMarginsGuide];
-    v60 = [v63 leadingAnchor];
-    v57 = [v66 constraintEqualToAnchor:v60];
+    leadingAnchor3 = [(UIView *)self->_separatorView leadingAnchor];
+    contentView4 = [(CKEnableEnhancedProtectionCell *)self contentView];
+    layoutMarginsGuide4 = [contentView4 layoutMarginsGuide];
+    leadingAnchor4 = [layoutMarginsGuide4 leadingAnchor];
+    v57 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v73[0] = v57;
-    v51 = [(UIView *)self->_separatorView trailingAnchor];
-    v54 = [(CKEnableEnhancedProtectionCell *)self contentView];
-    v48 = [v54 layoutMarginsGuide];
-    v45 = [v48 trailingAnchor];
-    v12 = [v51 constraintEqualToAnchor:v45];
+    trailingAnchor3 = [(UIView *)self->_separatorView trailingAnchor];
+    contentView5 = [(CKEnableEnhancedProtectionCell *)self contentView];
+    layoutMarginsGuide5 = [contentView5 layoutMarginsGuide];
+    trailingAnchor4 = [layoutMarginsGuide5 trailingAnchor];
+    v12 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
     v73[1] = v12;
-    v13 = [(UIView *)self->_separatorView bottomAnchor];
-    v14 = [(CKEnableEnhancedProtectionCell *)self contentView];
-    v15 = [v14 layoutMarginsGuide];
-    v16 = [v15 bottomAnchor];
-    v17 = [v13 constraintEqualToAnchor:v16];
+    bottomAnchor = [(UIView *)self->_separatorView bottomAnchor];
+    contentView6 = [(CKEnableEnhancedProtectionCell *)self contentView];
+    layoutMarginsGuide6 = [contentView6 layoutMarginsGuide];
+    bottomAnchor2 = [layoutMarginsGuide6 bottomAnchor];
+    v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v73[2] = v17;
-    v18 = [(UIView *)self->_separatorView heightAnchor];
-    v19 = [v18 constraintEqualToConstant:1.0];
+    heightAnchor2 = [(UIView *)self->_separatorView heightAnchor];
+    v19 = [heightAnchor2 constraintEqualToConstant:1.0];
     v73[3] = v19;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v73 count:4];
-    [v71 addObjectsFromArray:v20];
+    [array addObjectsFromArray:v20];
   }
 
-  v21 = [(UILabel *)self->_ktTitleLabel leadingAnchor];
-  v67 = [(CKEnableEnhancedProtectionCell *)self contentView];
-  v64 = [v67 layoutMarginsGuide];
-  [v64 leadingAnchor];
-  v61 = v70 = v21;
-  v58 = [v21 constraintEqualToAnchor:?];
+  leadingAnchor5 = [(UILabel *)self->_ktTitleLabel leadingAnchor];
+  contentView7 = [(CKEnableEnhancedProtectionCell *)self contentView];
+  layoutMarginsGuide7 = [contentView7 layoutMarginsGuide];
+  [layoutMarginsGuide7 leadingAnchor];
+  v61 = v70 = leadingAnchor5;
+  v58 = [leadingAnchor5 constraintEqualToAnchor:?];
   v72[0] = v58;
-  v22 = [(UILabel *)self->_ktTitleLabel trailingAnchor];
-  v52 = [(CKEnableEnhancedProtectionCell *)self contentView];
-  v49 = [v52 layoutMarginsGuide];
-  [v49 trailingAnchor];
-  v46 = v55 = v22;
-  v43 = [v22 constraintLessThanOrEqualToAnchor:?];
+  trailingAnchor5 = [(UILabel *)self->_ktTitleLabel trailingAnchor];
+  contentView8 = [(CKEnableEnhancedProtectionCell *)self contentView];
+  layoutMarginsGuide8 = [contentView8 layoutMarginsGuide];
+  [layoutMarginsGuide8 trailingAnchor];
+  v46 = v55 = trailingAnchor5;
+  v43 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:?];
   v72[1] = v43;
-  v23 = [(UILabel *)self->_ktTitleLabel topAnchor];
+  topAnchor3 = [(UILabel *)self->_ktTitleLabel topAnchor];
   macHeaderLabel = self->_macHeaderLabel;
   if (macHeaderLabel)
   {
-    v25 = [(UILabel *)self->_macHeaderLabel bottomAnchor];
-    v39 = v25;
+    bottomAnchor3 = [(UILabel *)self->_macHeaderLabel bottomAnchor];
+    contentView9 = bottomAnchor3;
   }
 
   else
   {
-    v39 = [(CKEnableEnhancedProtectionCell *)self contentView];
-    v37 = [v39 layoutMarginsGuide];
-    v25 = [v37 topAnchor];
+    contentView9 = [(CKEnableEnhancedProtectionCell *)self contentView];
+    layoutMarginsGuide9 = [contentView9 layoutMarginsGuide];
+    bottomAnchor3 = [layoutMarginsGuide9 topAnchor];
   }
 
   v26 = +[CKUIBehavior sharedBehaviors];
   [v26 detailsCellLabelPadding];
-  v41 = v23;
-  v27 = [v23 constraintEqualToAnchor:v25 constant:?];
+  v41 = topAnchor3;
+  v27 = [topAnchor3 constraintEqualToAnchor:bottomAnchor3 constant:?];
   v72[2] = v27;
-  v28 = [(UILabel *)self->_ktTitleLabel bottomAnchor];
+  bottomAnchor4 = [(UILabel *)self->_ktTitleLabel bottomAnchor];
   v29 = self->_macHeaderLabel;
   if (v29)
   {
@@ -190,43 +190,43 @@
 
   else
   {
-    v36 = [(CKEnableEnhancedProtectionCell *)self contentView];
-    v35 = [v36 layoutMarginsGuide];
-    [v35 bottomAnchor];
+    contentView10 = [(CKEnableEnhancedProtectionCell *)self contentView];
+    layoutMarginsGuide10 = [contentView10 layoutMarginsGuide];
+    [layoutMarginsGuide10 bottomAnchor];
   }
   v30 = ;
   v31 = +[CKUIBehavior sharedBehaviors];
   [v31 detailsCellLabelPadding];
-  v33 = [v28 constraintEqualToAnchor:v30 constant:-v32];
+  v33 = [bottomAnchor4 constraintEqualToAnchor:v30 constant:-v32];
   v72[3] = v33;
   v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v72 count:4];
-  [v71 addObjectsFromArray:v34];
+  [array addObjectsFromArray:v34];
 
   if (!v29)
   {
 
-    v30 = v36;
+    v30 = contentView10;
   }
 
   if (!macHeaderLabel)
   {
   }
 
-  [MEMORY[0x1E696ACD8] activateConstraints:v71];
+  [MEMORY[0x1E696ACD8] activateConstraints:array];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(CKEnableEnhancedProtectionCell *)self contentView:a3.width];
+  width = fits.width;
+  v5 = [(CKEnableEnhancedProtectionCell *)self contentView:fits.width];
   [v5 layoutMargins];
   v7 = v6;
-  v8 = [(CKEnableEnhancedProtectionCell *)self contentView];
-  [v8 layoutMargins];
+  contentView = [(CKEnableEnhancedProtectionCell *)self contentView];
+  [contentView layoutMargins];
   v10 = v7 + v9;
 
-  v11 = [(CKEnableEnhancedProtectionCell *)self contentView];
-  [v11 frame];
+  contentView2 = [(CKEnableEnhancedProtectionCell *)self contentView];
+  [contentView2 frame];
   v13 = v12 - v10;
 
   v14 = 0.0;
@@ -252,11 +252,11 @@
   [v24 detailsCellLabelPadding];
   v26 = v23 + v25 * 2.0;
 
-  v27 = [(CKEnableEnhancedProtectionCell *)self contentView];
-  [v27 layoutMargins];
+  contentView3 = [(CKEnableEnhancedProtectionCell *)self contentView];
+  [contentView3 layoutMargins];
   v29 = v26 + v28;
-  v30 = [(CKEnableEnhancedProtectionCell *)self contentView];
-  [v30 layoutMargins];
+  contentView4 = [(CKEnableEnhancedProtectionCell *)self contentView];
+  [contentView4 layoutMargins];
   v32 = v29 + v31;
 
   v33 = width;

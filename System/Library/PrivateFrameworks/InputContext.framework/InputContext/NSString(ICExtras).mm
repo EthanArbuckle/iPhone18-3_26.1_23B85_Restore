@@ -18,7 +18,7 @@
   v10 = 0;
   do
   {
-    v11 = [a1 characterAtIndex:a3];
+    v11 = [self characterAtIndex:a3];
     v12 = v11;
     if (!v10 && (v11 & 0xF800) != 0xD800)
     {

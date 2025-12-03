@@ -1,73 +1,73 @@
 @interface HKConditionRecord
-+ (id)_newConditionRecordWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 sortDate:(id)a12 country:(id)a13 state:(unint64_t)a14 conditionCodingCollection:(id)a15 categoriesCodingCollections:(id)a16 asserter:(id)a17 abatement:(id)a18 onset:(id)a19 recordedDate:(id)a20 clinicalStatusCoding:(id)a21 verificationStatusCoding:(id)a22 severityCodingCollection:(id)a23 bodySitesCodingCollections:(id)a24 config:(id)a25;
++ (id)_newConditionRecordWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 sortDate:(id)self2 country:(id)self3 state:(unint64_t)self4 conditionCodingCollection:(id)self5 categoriesCodingCollections:(id)self6 asserter:(id)self7 abatement:(id)self8 onset:(id)self9 recordedDate:(id)recordedDate clinicalStatusCoding:(id)coding verificationStatusCoding:(id)statusCoding severityCodingCollection:(id)codingCollection bodySitesCodingCollections:(id)codingCollections config:(id)config;
 + (id)cachedConceptRelationshipKeyPaths;
-+ (id)conditionRecordWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 country:(id)a12 state:(unint64_t)a13 conditionCodingCollection:(id)a14 categoriesCodingCollections:(id)a15 asserter:(id)a16 abatement:(id)a17 onset:(id)a18 recordedDate:(id)a19 clinicalStatusCoding:(id)a20 verificationStatusCoding:(id)a21 severityCodingCollection:(id)a22 bodySitesCodingCollections:(id)a23;
++ (id)conditionRecordWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 country:(id)self2 state:(unint64_t)self3 conditionCodingCollection:(id)self4 categoriesCodingCollections:(id)self5 asserter:(id)self6 abatement:(id)self7 onset:(id)self8 recordedDate:(id)self9 clinicalStatusCoding:(id)coding verificationStatusCoding:(id)statusCoding severityCodingCollection:(id)codingCollection bodySitesCodingCollections:(id)codingCollections;
 + (id)defaultDisplayString;
 + (id)indexableConceptKeyPaths;
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-- (BOOL)isEquivalent:(id)a3;
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error;
+- (BOOL)isEquivalent:(id)equivalent;
 - (HKConcept)clinicalStatus;
 - (HKConcept)condition;
 - (HKConcept)severity;
 - (HKConcept)verificationStatus;
 - (HKConditionRecord)init;
-- (HKConditionRecord)initWithCoder:(id)a3;
+- (HKConditionRecord)initWithCoder:(id)coder;
 - (NSArray)bodySites;
 - (NSArray)categories;
 - (NSString)description;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
 - (id)clinicalStatusCodingCollection;
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4;
+- (id)codingsForKeyPath:(id)path error:(id *)error;
 - (id)medicalRecordCodings;
 - (id)verificationStatusCodingCollection;
-- (void)_setAbatement:(id)a3;
-- (void)_setAsserter:(id)a3;
-- (void)_setBodySites:(id)a3;
-- (void)_setBodySitesCodingCollections:(id)a3;
-- (void)_setCategories:(id)a3;
-- (void)_setCategoriesCodingCollections:(id)a3;
-- (void)_setClinicalStatus:(id)a3;
-- (void)_setClinicalStatusCoding:(id)a3;
-- (void)_setCondition:(id)a3;
-- (void)_setConditionCodingCollection:(id)a3;
-- (void)_setOnset:(id)a3;
-- (void)_setRecordedDate:(id)a3;
-- (void)_setSeverity:(id)a3;
-- (void)_setSeverityCodingCollection:(id)a3;
-- (void)_setVerificationStatus:(id)a3;
-- (void)_setVerificationStatusCoding:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setAbatement:(id)abatement;
+- (void)_setAsserter:(id)asserter;
+- (void)_setBodySites:(id)sites;
+- (void)_setBodySitesCodingCollections:(id)collections;
+- (void)_setCategories:(id)categories;
+- (void)_setCategoriesCodingCollections:(id)collections;
+- (void)_setClinicalStatus:(id)status;
+- (void)_setClinicalStatusCoding:(id)coding;
+- (void)_setCondition:(id)condition;
+- (void)_setConditionCodingCollection:(id)collection;
+- (void)_setOnset:(id)onset;
+- (void)_setRecordedDate:(id)date;
+- (void)_setSeverity:(id)severity;
+- (void)_setSeverityCodingCollection:(id)collection;
+- (void)_setVerificationStatus:(id)status;
+- (void)_setVerificationStatusCoding:(id)coding;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKConditionRecord
 
-+ (id)conditionRecordWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 country:(id)a12 state:(unint64_t)a13 conditionCodingCollection:(id)a14 categoriesCodingCollections:(id)a15 asserter:(id)a16 abatement:(id)a17 onset:(id)a18 recordedDate:(id)a19 clinicalStatusCoding:(id)a20 verificationStatusCoding:(id)a21 severityCodingCollection:(id)a22 bodySitesCodingCollections:(id)a23
++ (id)conditionRecordWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 country:(id)self2 state:(unint64_t)self3 conditionCodingCollection:(id)self4 categoriesCodingCollections:(id)self5 asserter:(id)self6 abatement:(id)self7 onset:(id)self8 recordedDate:(id)self9 clinicalStatusCoding:(id)coding verificationStatusCoding:(id)statusCoding severityCodingCollection:(id)codingCollection bodySitesCodingCollections:(id)codingCollections
 {
-  v44 = a5;
-  v55 = a3;
-  v54 = a4;
-  v27 = a6;
-  v53 = a7;
-  v47 = a8;
-  v52 = a10;
-  v46 = a11;
-  v51 = a12;
-  v28 = a14;
-  v50 = a15;
-  v49 = a16;
-  v48 = a17;
-  v29 = a18;
-  v30 = a19;
-  v43 = a20;
-  v31 = a21;
-  v42 = a22;
-  v32 = a23;
+  errorCopy = error;
+  typeCopy = type;
+  noteCopy = note;
+  dateCopy = date;
+  identifierCopy = identifier;
+  localeCopy = locale;
+  deviceCopy = device;
+  metadataCopy = metadata;
+  countryCopy = country;
+  collectionCopy = collection;
+  collectionsCopy = collections;
+  asserterCopy = asserter;
+  abatementCopy = abatement;
+  onsetCopy = onset;
+  recordedDateCopy = recordedDate;
+  codingCopy = coding;
+  statusCodingCopy = statusCoding;
+  codingCollectionCopy = codingCollection;
+  codingCollectionsCopy = codingCollections;
   v33 = @"modifiedDate";
-  v34 = v27;
-  if (!v29 || ([v29 dateValueForUTC], v35 = objc_claimAutoreleasedReturnValue(), v35, !v35))
+  v34 = dateCopy;
+  if (!onsetCopy || ([onsetCopy dateValueForUTC], v35 = objc_claimAutoreleasedReturnValue(), v35, !v35))
   {
-    v37 = v34;
-    if (!v30)
+    dateValueForUTC = v34;
+    if (!recordedDateCopy)
     {
       goto LABEL_7;
     }
@@ -77,33 +77,33 @@
 
   v36 = @"onset";
 
-  v37 = [v29 dateValueForUTC];
+  dateValueForUTC = [onsetCopy dateValueForUTC];
 
   v33 = v36;
-  if (v30)
+  if (recordedDateCopy)
   {
 LABEL_6:
     v38 = @"recordedDate";
 
-    v39 = [v30 dateForUTC];
+    dateForUTC = [recordedDateCopy dateForUTC];
 
-    v37 = v39;
+    dateValueForUTC = dateForUTC;
     v33 = v38;
   }
 
 LABEL_7:
-  v40 = [HKSemanticDate semanticDateWithKeyPath:v33 date:v37];
-  v45 = [HKConditionRecord conditionRecordWithType:v55 note:v54 enteredInError:v44 modifiedDate:v34 originIdentifier:v53 locale:v47 extractionVersion:a9 device:v52 metadata:v46 sortDate:v40 country:v51 state:a13 conditionCodingCollection:v28 categoriesCodingCollections:v50 asserter:v49 abatement:v48 onset:v29 recordedDate:v30 clinicalStatusCoding:v43 verificationStatusCoding:v31 severityCodingCollection:v42 bodySitesCodingCollections:v32];
+  v40 = [HKSemanticDate semanticDateWithKeyPath:v33 date:dateValueForUTC];
+  v45 = [HKConditionRecord conditionRecordWithType:typeCopy note:noteCopy enteredInError:errorCopy modifiedDate:v34 originIdentifier:identifierCopy locale:localeCopy extractionVersion:version device:deviceCopy metadata:metadataCopy sortDate:v40 country:countryCopy state:state conditionCodingCollection:collectionCopy categoriesCodingCollections:collectionsCopy asserter:asserterCopy abatement:abatementCopy onset:onsetCopy recordedDate:recordedDateCopy clinicalStatusCoding:codingCopy verificationStatusCoding:statusCodingCopy severityCodingCollection:codingCollectionCopy bodySitesCodingCollections:codingCollectionsCopy];
 
   return v45;
 }
 
 - (id)medicalRecordCodings
 {
-  v2 = [(HKConditionRecord *)self conditionCodingCollection];
-  v3 = [v2 codings];
+  conditionCodingCollection = [(HKConditionRecord *)self conditionCodingCollection];
+  codings = [conditionCodingCollection codings];
 
-  return v3;
+  return codings;
 }
 
 + (id)defaultDisplayString
@@ -116,7 +116,7 @@ LABEL_7:
 
 + (id)indexableConceptKeyPaths
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___HKConditionRecord;
   v2 = objc_msgSendSuper2(&v5, sel_indexableConceptKeyPaths);
   v3 = [v2 mutableCopy];
@@ -133,18 +133,18 @@ LABEL_7:
 
 + (id)cachedConceptRelationshipKeyPaths
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___HKConditionRecord;
   v2 = objc_msgSendSuper2(&v4, sel_cachedConceptRelationshipKeyPaths);
 
   return v2;
 }
 
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4
+- (id)codingsForKeyPath:(id)path error:(id *)error
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [HKConceptIndexUtilities firstComponentForKeyPath:v6 error:a4];
+  pathCopy = path;
+  v7 = [HKConceptIndexUtilities firstComponentForKeyPath:pathCopy error:error];
   v8 = v7;
   if (!v7)
   {
@@ -154,8 +154,8 @@ LABEL_7:
 
   if ([v7 isEqualToString:@"condition"])
   {
-    v9 = [(HKConditionRecord *)self conditionCodingCollection];
-    v10 = [HKIndexableObject indexableObjectWithObject:v9];
+    conditionCodingCollection = [(HKConditionRecord *)self conditionCodingCollection];
+    v10 = [HKIndexableObject indexableObjectWithObject:conditionCodingCollection];
     v30[0] = v10;
     v11 = MEMORY[0x1E695DEC8];
     v12 = v30;
@@ -167,10 +167,10 @@ LABEL_4:
 
   if ([v8 isEqualToString:@"categories"])
   {
-    v14 = [(HKConditionRecord *)self categoriesCodingCollections];
+    categoriesCodingCollections = [(HKConditionRecord *)self categoriesCodingCollections];
 LABEL_8:
-    v15 = v14;
-    v13 = [HKConceptIndexUtilities indexedCodingsForCodingCollections:v14 context:v6 error:a4];
+    clinicalStatusCoding2 = categoriesCodingCollections;
+    v13 = [HKConceptIndexUtilities indexedCodingsForCodingCollections:categoriesCodingCollections context:pathCopy error:error];
 LABEL_16:
 
     goto LABEL_17;
@@ -178,12 +178,12 @@ LABEL_16:
 
   if ([v8 isEqualToString:@"clinicalStatus"])
   {
-    v16 = [(HKConditionRecord *)self clinicalStatusCoding];
+    clinicalStatusCoding = [(HKConditionRecord *)self clinicalStatusCoding];
 
-    if (v16)
+    if (clinicalStatusCoding)
     {
-      v15 = [(HKConditionRecord *)self clinicalStatusCoding];
-      v17 = [HKMedicalCodingCollection collectionWithCoding:v15];
+      clinicalStatusCoding2 = [(HKConditionRecord *)self clinicalStatusCoding];
+      v17 = [HKMedicalCodingCollection collectionWithCoding:clinicalStatusCoding2];
       v18 = [HKIndexableObject indexableObjectWithObject:v17];
       v29 = v18;
       v19 = MEMORY[0x1E695DEC8];
@@ -199,12 +199,12 @@ LABEL_15:
 
   if ([v8 isEqualToString:@"verificationStatus"])
   {
-    v21 = [(HKConditionRecord *)self verificationStatusCoding];
+    verificationStatusCoding = [(HKConditionRecord *)self verificationStatusCoding];
 
-    if (v21)
+    if (verificationStatusCoding)
     {
-      v15 = [(HKConditionRecord *)self verificationStatusCoding];
-      v17 = [HKMedicalCodingCollection collectionWithCoding:v15];
+      clinicalStatusCoding2 = [(HKConditionRecord *)self verificationStatusCoding];
+      v17 = [HKMedicalCodingCollection collectionWithCoding:clinicalStatusCoding2];
       v18 = [HKIndexableObject indexableObjectWithObject:v17];
       v28 = v18;
       v19 = MEMORY[0x1E695DEC8];
@@ -217,12 +217,12 @@ LABEL_15:
 
   if ([v8 isEqualToString:@"severity"])
   {
-    v24 = [(HKConditionRecord *)self severityCodingCollection];
+    severityCodingCollection = [(HKConditionRecord *)self severityCodingCollection];
 
-    if (v24)
+    if (severityCodingCollection)
     {
-      v9 = [(HKConditionRecord *)self severityCodingCollection];
-      v10 = [HKIndexableObject indexableObjectWithObject:v9];
+      conditionCodingCollection = [(HKConditionRecord *)self severityCodingCollection];
+      v10 = [HKIndexableObject indexableObjectWithObject:conditionCodingCollection];
       v27 = v10;
       v11 = MEMORY[0x1E695DEC8];
       v12 = &v27;
@@ -236,11 +236,11 @@ LABEL_26:
 
   if ([v8 isEqualToString:@"bodySites"])
   {
-    v25 = [(HKConditionRecord *)self bodySitesCodingCollections];
+    bodySitesCodingCollections = [(HKConditionRecord *)self bodySitesCodingCollections];
 
-    if (v25)
+    if (bodySitesCodingCollections)
     {
-      v14 = [(HKConditionRecord *)self bodySitesCodingCollections];
+      categoriesCodingCollections = [(HKConditionRecord *)self bodySitesCodingCollections];
       goto LABEL_8;
     }
 
@@ -249,7 +249,7 @@ LABEL_26:
 
   v26.receiver = self;
   v26.super_class = HKConditionRecord;
-  v13 = [(HKMedicalRecord *)&v26 codingsForKeyPath:v6 error:a4];
+  v13 = [(HKMedicalRecord *)&v26 codingsForKeyPath:pathCopy error:error];
 LABEL_17:
 
   v22 = *MEMORY[0x1E69E9840];
@@ -257,11 +257,11 @@ LABEL_17:
   return v13;
 }
 
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [HKConceptIndexUtilities firstComponentForKeyPath:v9 error:a5];
+  conceptsCopy = concepts;
+  pathCopy = path;
+  v10 = [HKConceptIndexUtilities firstComponentForKeyPath:pathCopy error:error];
   v11 = v10;
   if (!v10)
   {
@@ -272,10 +272,10 @@ LABEL_17:
   {
     if ([v11 isEqualToString:@"categories"])
     {
-      v13 = [(HKConditionRecord *)self categoriesCodingCollections];
-      v14 = +[HKConceptIndexUtilities conceptsForIndexedConcepts:expectedCount:context:error:](HKConceptIndexUtilities, "conceptsForIndexedConcepts:expectedCount:context:error:", v8, [v13 count], v9, a5);
+      categoriesCodingCollections = [(HKConditionRecord *)self categoriesCodingCollections];
+      v14 = +[HKConceptIndexUtilities conceptsForIndexedConcepts:expectedCount:context:error:](HKConceptIndexUtilities, "conceptsForIndexedConcepts:expectedCount:context:error:", conceptsCopy, [categoriesCodingCollections count], pathCopy, error);
 
-      LOBYTE(a5) = v14 != 0;
+      LOBYTE(error) = v14 != 0;
       if (v14)
       {
         [(HKConditionRecord *)self _setCategories:v14];
@@ -288,65 +288,65 @@ LABEL_10:
 
     if ([v11 isEqualToString:@"clinicalStatus"])
     {
-      v16 = [v8 count];
-      v17 = [(HKConditionRecord *)self clinicalStatusCoding];
-      LODWORD(a5) = HKIndexableObjectCheckCardinalityForIndexRestore(v16, v17 != 0, v9, a5);
+      v16 = [conceptsCopy count];
+      clinicalStatusCoding = [(HKConditionRecord *)self clinicalStatusCoding];
+      LODWORD(error) = HKIndexableObjectCheckCardinalityForIndexRestore(v16, clinicalStatusCoding != 0, pathCopy, error);
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_11;
       }
 
-      a5 = [v8 firstObject];
-      v12 = [a5 object];
-      [(HKConditionRecord *)self _setClinicalStatus:v12];
+      error = [conceptsCopy firstObject];
+      object = [error object];
+      [(HKConditionRecord *)self _setClinicalStatus:object];
       goto LABEL_5;
     }
 
     if ([v11 isEqualToString:@"verificationStatus"])
     {
-      v18 = [v8 count];
-      v19 = [(HKConditionRecord *)self verificationStatusCoding];
-      LODWORD(a5) = HKIndexableObjectCheckCardinalityForIndexRestore(v18, v19 != 0, v9, a5);
+      v18 = [conceptsCopy count];
+      verificationStatusCoding = [(HKConditionRecord *)self verificationStatusCoding];
+      LODWORD(error) = HKIndexableObjectCheckCardinalityForIndexRestore(v18, verificationStatusCoding != 0, pathCopy, error);
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_11;
       }
 
-      a5 = [v8 firstObject];
-      v12 = [a5 object];
-      [(HKConditionRecord *)self _setVerificationStatus:v12];
+      error = [conceptsCopy firstObject];
+      object = [error object];
+      [(HKConditionRecord *)self _setVerificationStatus:object];
       goto LABEL_5;
     }
 
     if ([v11 isEqualToString:@"severity"])
     {
-      v20 = [v8 count];
-      v21 = [(HKConditionRecord *)self severityCodingCollection];
-      LODWORD(a5) = HKIndexableObjectCheckCardinalityForIndexRestore(v20, v21 != 0, v9, a5);
+      v20 = [conceptsCopy count];
+      severityCodingCollection = [(HKConditionRecord *)self severityCodingCollection];
+      LODWORD(error) = HKIndexableObjectCheckCardinalityForIndexRestore(v20, severityCodingCollection != 0, pathCopy, error);
 
-      if (!a5)
+      if (!error)
       {
         goto LABEL_11;
       }
 
-      a5 = [v8 firstObject];
-      v12 = [a5 object];
-      [(HKConditionRecord *)self _setSeverity:v12];
+      error = [conceptsCopy firstObject];
+      object = [error object];
+      [(HKConditionRecord *)self _setSeverity:object];
       goto LABEL_5;
     }
 
     if ([v11 isEqualToString:@"bodySites"])
     {
-      v22 = [(HKConditionRecord *)self bodySitesCodingCollections];
+      bodySitesCodingCollections = [(HKConditionRecord *)self bodySitesCodingCollections];
 
-      if (v22)
+      if (bodySitesCodingCollections)
       {
-        v23 = [(HKConditionRecord *)self bodySitesCodingCollections];
-        v14 = +[HKConceptIndexUtilities conceptsForIndexedConcepts:expectedCount:context:error:](HKConceptIndexUtilities, "conceptsForIndexedConcepts:expectedCount:context:error:", v8, [v23 count], v9, a5);
+        bodySitesCodingCollections2 = [(HKConditionRecord *)self bodySitesCodingCollections];
+        v14 = +[HKConceptIndexUtilities conceptsForIndexedConcepts:expectedCount:context:error:](HKConceptIndexUtilities, "conceptsForIndexedConcepts:expectedCount:context:error:", conceptsCopy, [bodySitesCodingCollections2 count], pathCopy, error);
 
-        LOBYTE(a5) = v14 != 0;
+        LOBYTE(error) = v14 != 0;
         if (v14)
         {
           [(HKConditionRecord *)self _setBodySites:v14];
@@ -355,91 +355,91 @@ LABEL_10:
         goto LABEL_10;
       }
 
-      v24 = HKIndexableObjectCheckCardinalityForIndexRestore([v8 count], 0, v9, a5);
+      v24 = HKIndexableObjectCheckCardinalityForIndexRestore([conceptsCopy count], 0, pathCopy, error);
     }
 
     else
     {
       v25.receiver = self;
       v25.super_class = HKConditionRecord;
-      v24 = [(HKMedicalRecord *)&v25 applyConcepts:v8 forKeyPath:v9 error:a5];
+      v24 = [(HKMedicalRecord *)&v25 applyConcepts:conceptsCopy forKeyPath:pathCopy error:error];
     }
 
-    LOBYTE(a5) = v24;
+    LOBYTE(error) = v24;
     goto LABEL_11;
   }
 
-  if (!HKIndexableObjectCheckCardinalityForIndexRestore([v8 count], 1, v9, a5))
+  if (!HKIndexableObjectCheckCardinalityForIndexRestore([conceptsCopy count], 1, pathCopy, error))
   {
 LABEL_6:
-    LOBYTE(a5) = 0;
+    LOBYTE(error) = 0;
     goto LABEL_11;
   }
 
-  a5 = [v8 firstObject];
-  v12 = [a5 object];
-  [(HKConditionRecord *)self _setCondition:v12];
+  error = [conceptsCopy firstObject];
+  object = [error object];
+  [(HKConditionRecord *)self _setCondition:object];
 LABEL_5:
 
-  LOBYTE(a5) = 1;
+  LOBYTE(error) = 1;
 LABEL_11:
 
-  return a5;
+  return error;
 }
 
-+ (id)_newConditionRecordWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 sortDate:(id)a12 country:(id)a13 state:(unint64_t)a14 conditionCodingCollection:(id)a15 categoriesCodingCollections:(id)a16 asserter:(id)a17 abatement:(id)a18 onset:(id)a19 recordedDate:(id)a20 clinicalStatusCoding:(id)a21 verificationStatusCoding:(id)a22 severityCodingCollection:(id)a23 bodySitesCodingCollections:(id)a24 config:(id)a25
++ (id)_newConditionRecordWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 sortDate:(id)self2 country:(id)self3 state:(unint64_t)self4 conditionCodingCollection:(id)self5 categoriesCodingCollections:(id)self6 asserter:(id)self7 abatement:(id)self8 onset:(id)self9 recordedDate:(id)recordedDate clinicalStatusCoding:(id)coding verificationStatusCoding:(id)statusCoding severityCodingCollection:(id)codingCollection bodySitesCodingCollections:(id)codingCollections config:(id)config
 {
-  v64 = a5;
-  v52 = a15;
-  v25 = a16;
-  v26 = a17;
-  v27 = a18;
-  v28 = a19;
-  v29 = a20;
-  v30 = a21;
-  v31 = a22;
-  v32 = a23;
-  v33 = a24;
-  v34 = a25;
+  errorCopy = error;
+  collectionCopy = collection;
+  collectionsCopy = collections;
+  asserterCopy = asserter;
+  abatementCopy = abatement;
+  onsetCopy = onset;
+  recordedDateCopy = recordedDate;
+  codingCopy = coding;
+  statusCodingCopy = statusCoding;
+  codingCollectionCopy = codingCollection;
+  codingCollectionsCopy = codingCollections;
+  configCopy = config;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __360__HKConditionRecord__newConditionRecordWithType_note_enteredInError_modifiedDate_originIdentifier_locale_extractionVersion_device_metadata_sortDate_country_state_conditionCodingCollection_categoriesCodingCollections_asserter_abatement_onset_recordedDate_clinicalStatusCoding_verificationStatusCoding_severityCodingCollection_bodySitesCodingCollections_config___block_invoke;
   aBlock[3] = &unk_1E7384A40;
-  v68 = v52;
-  v69 = v25;
-  v70 = v26;
-  v71 = v27;
-  v72 = v28;
-  v73 = v29;
-  v74 = v30;
-  v75 = v31;
-  v76 = v32;
-  v77 = v33;
-  v78 = v34;
-  v63 = v34;
-  v62 = v33;
-  v61 = v32;
-  v60 = v31;
-  v59 = v30;
-  v58 = v29;
-  v57 = v28;
-  v56 = v27;
-  v55 = v26;
-  v54 = v25;
-  v53 = v52;
-  v35 = a13;
-  v36 = a12;
-  v37 = a11;
-  v38 = a10;
-  v39 = a8;
-  v40 = a7;
-  v41 = a6;
-  v42 = a4;
-  v43 = a3;
+  v68 = collectionCopy;
+  v69 = collectionsCopy;
+  v70 = asserterCopy;
+  v71 = abatementCopy;
+  v72 = onsetCopy;
+  v73 = recordedDateCopy;
+  v74 = codingCopy;
+  v75 = statusCodingCopy;
+  v76 = codingCollectionCopy;
+  v77 = codingCollectionsCopy;
+  v78 = configCopy;
+  v63 = configCopy;
+  v62 = codingCollectionsCopy;
+  v61 = codingCollectionCopy;
+  v60 = statusCodingCopy;
+  v59 = codingCopy;
+  v58 = recordedDateCopy;
+  v57 = onsetCopy;
+  v56 = abatementCopy;
+  v55 = asserterCopy;
+  v54 = collectionsCopy;
+  v53 = collectionCopy;
+  countryCopy = country;
+  sortDateCopy = sortDate;
+  metadataCopy = metadata;
+  deviceCopy = device;
+  localeCopy = locale;
+  identifierCopy = identifier;
+  dateCopy = date;
+  noteCopy = note;
+  typeCopy = type;
   v44 = _Block_copy(aBlock);
-  v66.receiver = a1;
+  v66.receiver = self;
   v66.super_class = &OBJC_METACLASS___HKConditionRecord;
-  v65 = objc_msgSendSuper2(&v66, sel__newMedicalRecordWithType_note_enteredInError_modifiedDate_originIdentifier_locale_extractionVersion_device_metadata_sortDate_country_state_config_, v43, v42, v64, v41, v40, v39, a9, v38, v37, v36, v35, a14, v44);
+  v65 = objc_msgSendSuper2(&v66, sel__newMedicalRecordWithType_note_enteredInError_modifiedDate_originIdentifier_locale_extractionVersion_device_metadata_sortDate_country_state_config_, typeCopy, noteCopy, errorCopy, dateCopy, identifierCopy, localeCopy, version, deviceCopy, metadataCopy, sortDateCopy, countryCopy, state, v44);
 
   return v65;
 }
@@ -519,103 +519,103 @@ void __360__HKConditionRecord__newConditionRecordWithType_note_enteredInError_mo
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKConditionRecord;
-  v4 = a3;
-  [(HKMedicalRecord *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_conditionCodingCollection forKey:{@"ConditionCodingCollection", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_categoriesCodingCollections forKey:@"CategoriesCodingCollections"];
-  [v4 encodeObject:self->_asserter forKey:@"Asserter"];
-  [v4 encodeObject:self->_abatement forKey:@"Abatement"];
-  [v4 encodeObject:self->_onset forKey:@"Onset"];
-  [v4 encodeObject:self->_recordedDate forKey:@"RecordedDate"];
-  [v4 encodeObject:self->_clinicalStatusCoding forKey:@"ClinicalStatusCoding"];
-  [v4 encodeObject:self->_verificationStatusCoding forKey:@"VerificationStatusCoding"];
-  [v4 encodeObject:self->_severityCodingCollection forKey:@"SeverityCodingCollection"];
-  [v4 encodeObject:self->_bodySitesCodingCollections forKey:@"BodySitesCodingCollections"];
-  [v4 encodeObject:self->_condition forKey:@"Condition"];
-  [v4 encodeObject:self->_categories forKey:@"Categories"];
-  [v4 encodeObject:self->_clinicalStatus forKey:@"ClinicalStatus"];
-  [v4 encodeObject:self->_verificationStatus forKey:@"VerificationStatus"];
-  [v4 encodeObject:self->_severity forKey:@"Severity"];
-  [v4 encodeObject:self->_bodySites forKey:@"BodySites"];
+  coderCopy = coder;
+  [(HKMedicalRecord *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_conditionCodingCollection forKey:{@"ConditionCodingCollection", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_categoriesCodingCollections forKey:@"CategoriesCodingCollections"];
+  [coderCopy encodeObject:self->_asserter forKey:@"Asserter"];
+  [coderCopy encodeObject:self->_abatement forKey:@"Abatement"];
+  [coderCopy encodeObject:self->_onset forKey:@"Onset"];
+  [coderCopy encodeObject:self->_recordedDate forKey:@"RecordedDate"];
+  [coderCopy encodeObject:self->_clinicalStatusCoding forKey:@"ClinicalStatusCoding"];
+  [coderCopy encodeObject:self->_verificationStatusCoding forKey:@"VerificationStatusCoding"];
+  [coderCopy encodeObject:self->_severityCodingCollection forKey:@"SeverityCodingCollection"];
+  [coderCopy encodeObject:self->_bodySitesCodingCollections forKey:@"BodySitesCodingCollections"];
+  [coderCopy encodeObject:self->_condition forKey:@"Condition"];
+  [coderCopy encodeObject:self->_categories forKey:@"Categories"];
+  [coderCopy encodeObject:self->_clinicalStatus forKey:@"ClinicalStatus"];
+  [coderCopy encodeObject:self->_verificationStatus forKey:@"VerificationStatus"];
+  [coderCopy encodeObject:self->_severity forKey:@"Severity"];
+  [coderCopy encodeObject:self->_bodySites forKey:@"BodySites"];
 }
 
-- (HKConditionRecord)initWithCoder:(id)a3
+- (HKConditionRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v43.receiver = self;
   v43.super_class = HKConditionRecord;
-  v5 = [(HKMedicalRecord *)&v43 initWithCoder:v4];
+  v5 = [(HKMedicalRecord *)&v43 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ConditionCodingCollection"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ConditionCodingCollection"];
     conditionCodingCollection = v5->_conditionCodingCollection;
     v5->_conditionCodingCollection = v6;
 
     v8 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"CategoriesCodingCollections"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"CategoriesCodingCollections"];
     categoriesCodingCollections = v5->_categoriesCodingCollections;
     v5->_categoriesCodingCollections = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Asserter"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Asserter"];
     asserter = v5->_asserter;
     v5->_asserter = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Abatement"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Abatement"];
     abatement = v5->_abatement;
     v5->_abatement = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Onset"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Onset"];
     onset = v5->_onset;
     v5->_onset = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RecordedDate"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RecordedDate"];
     recordedDate = v5->_recordedDate;
     v5->_recordedDate = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ClinicalStatusCoding"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ClinicalStatusCoding"];
     clinicalStatusCoding = v5->_clinicalStatusCoding;
     v5->_clinicalStatusCoding = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"VerificationStatusCoding"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"VerificationStatusCoding"];
     verificationStatusCoding = v5->_verificationStatusCoding;
     v5->_verificationStatusCoding = v21;
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SeverityCodingCollection"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SeverityCodingCollection"];
     severityCodingCollection = v5->_severityCodingCollection;
     v5->_severityCodingCollection = v23;
 
     v25 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-    v26 = [v4 decodeObjectOfClasses:v25 forKey:@"BodySitesCodingCollections"];
+    v26 = [coderCopy decodeObjectOfClasses:v25 forKey:@"BodySitesCodingCollections"];
     bodySitesCodingCollections = v5->_bodySitesCodingCollections;
     v5->_bodySitesCodingCollections = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Condition"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Condition"];
     condition = v5->_condition;
     v5->_condition = v28;
 
     v30 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-    v31 = [v4 decodeObjectOfClasses:v30 forKey:@"Categories"];
+    v31 = [coderCopy decodeObjectOfClasses:v30 forKey:@"Categories"];
     categories = v5->_categories;
     v5->_categories = v31;
 
-    v33 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ClinicalStatus"];
+    v33 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ClinicalStatus"];
     clinicalStatus = v5->_clinicalStatus;
     v5->_clinicalStatus = v33;
 
-    v35 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"VerificationStatus"];
+    v35 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"VerificationStatus"];
     verificationStatus = v5->_verificationStatus;
     v5->_verificationStatus = v35;
 
-    v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Severity"];
+    v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Severity"];
     severity = v5->_severity;
     v5->_severity = v37;
 
     v39 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-    v40 = [v4 decodeObjectOfClasses:v39 forKey:@"BodySites"];
+    v40 = [coderCopy decodeObjectOfClasses:v39 forKey:@"BodySites"];
     bodySites = v5->_bodySites;
     v5->_bodySites = v40;
   }
@@ -623,13 +623,13 @@ void __360__HKConditionRecord__newConditionRecordWithType_note_enteredInError_mo
   return v5;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v4 = a3;
+  equivalentCopy = equivalent;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equivalentCopy;
     v106.receiver = self;
     v106.super_class = HKConditionRecord;
     if (![(HKMedicalRecord *)&v106 isEquivalent:v5])
@@ -637,25 +637,25 @@ void __360__HKConditionRecord__newConditionRecordWithType_note_enteredInError_mo
       goto LABEL_84;
     }
 
-    v6 = [(HKConditionRecord *)self conditionCodingCollection];
-    v7 = [v5 conditionCodingCollection];
-    v8 = v7;
-    if (v6 == v7)
+    conditionCodingCollection = [(HKConditionRecord *)self conditionCodingCollection];
+    conditionCodingCollection2 = [v5 conditionCodingCollection];
+    v8 = conditionCodingCollection2;
+    if (conditionCodingCollection == conditionCodingCollection2)
     {
     }
 
     else
     {
-      v9 = [v5 conditionCodingCollection];
-      if (!v9)
+      conditionCodingCollection3 = [v5 conditionCodingCollection];
+      if (!conditionCodingCollection3)
       {
         goto LABEL_83;
       }
 
-      v10 = v9;
-      v11 = [(HKConditionRecord *)self conditionCodingCollection];
-      v12 = [v5 conditionCodingCollection];
-      v13 = [v11 isEqual:v12];
+      v10 = conditionCodingCollection3;
+      conditionCodingCollection4 = [(HKConditionRecord *)self conditionCodingCollection];
+      conditionCodingCollection5 = [v5 conditionCodingCollection];
+      v13 = [conditionCodingCollection4 isEqual:conditionCodingCollection5];
 
       if (!v13)
       {
@@ -663,25 +663,25 @@ void __360__HKConditionRecord__newConditionRecordWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKConditionRecord *)self categoriesCodingCollections];
-    v15 = [v5 categoriesCodingCollections];
-    v8 = v15;
-    if (v6 == v15)
+    conditionCodingCollection = [(HKConditionRecord *)self categoriesCodingCollections];
+    categoriesCodingCollections = [v5 categoriesCodingCollections];
+    v8 = categoriesCodingCollections;
+    if (conditionCodingCollection == categoriesCodingCollections)
     {
     }
 
     else
     {
-      v16 = [v5 categoriesCodingCollections];
-      if (!v16)
+      categoriesCodingCollections2 = [v5 categoriesCodingCollections];
+      if (!categoriesCodingCollections2)
       {
         goto LABEL_83;
       }
 
-      v17 = v16;
-      v18 = [(HKConditionRecord *)self categoriesCodingCollections];
-      v19 = [v5 categoriesCodingCollections];
-      v20 = [v18 isEqualToArray:v19];
+      v17 = categoriesCodingCollections2;
+      categoriesCodingCollections3 = [(HKConditionRecord *)self categoriesCodingCollections];
+      categoriesCodingCollections4 = [v5 categoriesCodingCollections];
+      v20 = [categoriesCodingCollections3 isEqualToArray:categoriesCodingCollections4];
 
       if (!v20)
       {
@@ -689,25 +689,25 @@ void __360__HKConditionRecord__newConditionRecordWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKConditionRecord *)self asserter];
-    v21 = [v5 asserter];
-    v8 = v21;
-    if (v6 == v21)
+    conditionCodingCollection = [(HKConditionRecord *)self asserter];
+    asserter = [v5 asserter];
+    v8 = asserter;
+    if (conditionCodingCollection == asserter)
     {
     }
 
     else
     {
-      v22 = [v5 asserter];
-      if (!v22)
+      asserter2 = [v5 asserter];
+      if (!asserter2)
       {
         goto LABEL_83;
       }
 
-      v23 = v22;
-      v24 = [(HKConditionRecord *)self asserter];
-      v25 = [v5 asserter];
-      v26 = [v24 isEqualToString:v25];
+      v23 = asserter2;
+      asserter3 = [(HKConditionRecord *)self asserter];
+      asserter4 = [v5 asserter];
+      v26 = [asserter3 isEqualToString:asserter4];
 
       if (!v26)
       {
@@ -715,25 +715,25 @@ void __360__HKConditionRecord__newConditionRecordWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKConditionRecord *)self abatement];
-    v27 = [v5 abatement];
-    v8 = v27;
-    if (v6 == v27)
+    conditionCodingCollection = [(HKConditionRecord *)self abatement];
+    abatement = [v5 abatement];
+    v8 = abatement;
+    if (conditionCodingCollection == abatement)
     {
     }
 
     else
     {
-      v28 = [v5 abatement];
-      if (!v28)
+      abatement2 = [v5 abatement];
+      if (!abatement2)
       {
         goto LABEL_83;
       }
 
-      v29 = v28;
-      v30 = [(HKConditionRecord *)self abatement];
-      v31 = [v5 abatement];
-      v32 = [v30 isEqual:v31];
+      v29 = abatement2;
+      abatement3 = [(HKConditionRecord *)self abatement];
+      abatement4 = [v5 abatement];
+      v32 = [abatement3 isEqual:abatement4];
 
       if (!v32)
       {
@@ -741,25 +741,25 @@ void __360__HKConditionRecord__newConditionRecordWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKConditionRecord *)self onset];
-    v33 = [v5 onset];
-    v8 = v33;
-    if (v6 == v33)
+    conditionCodingCollection = [(HKConditionRecord *)self onset];
+    onset = [v5 onset];
+    v8 = onset;
+    if (conditionCodingCollection == onset)
     {
     }
 
     else
     {
-      v34 = [v5 onset];
-      if (!v34)
+      onset2 = [v5 onset];
+      if (!onset2)
       {
         goto LABEL_83;
       }
 
-      v35 = v34;
-      v36 = [(HKConditionRecord *)self onset];
-      v37 = [v5 onset];
-      v38 = [v36 isEqual:v37];
+      v35 = onset2;
+      onset3 = [(HKConditionRecord *)self onset];
+      onset4 = [v5 onset];
+      v38 = [onset3 isEqual:onset4];
 
       if (!v38)
       {
@@ -767,25 +767,25 @@ void __360__HKConditionRecord__newConditionRecordWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKConditionRecord *)self recordedDate];
-    v39 = [v5 recordedDate];
-    v8 = v39;
-    if (v6 == v39)
+    conditionCodingCollection = [(HKConditionRecord *)self recordedDate];
+    recordedDate = [v5 recordedDate];
+    v8 = recordedDate;
+    if (conditionCodingCollection == recordedDate)
     {
     }
 
     else
     {
-      v40 = [v5 recordedDate];
-      if (!v40)
+      recordedDate2 = [v5 recordedDate];
+      if (!recordedDate2)
       {
         goto LABEL_83;
       }
 
-      v41 = v40;
-      v42 = [(HKConditionRecord *)self recordedDate];
-      v43 = [v5 recordedDate];
-      v44 = [v42 isEqual:v43];
+      v41 = recordedDate2;
+      recordedDate3 = [(HKConditionRecord *)self recordedDate];
+      recordedDate4 = [v5 recordedDate];
+      v44 = [recordedDate3 isEqual:recordedDate4];
 
       if (!v44)
       {
@@ -793,25 +793,25 @@ void __360__HKConditionRecord__newConditionRecordWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKConditionRecord *)self clinicalStatusCoding];
-    v45 = [v5 clinicalStatusCoding];
-    v8 = v45;
-    if (v6 == v45)
+    conditionCodingCollection = [(HKConditionRecord *)self clinicalStatusCoding];
+    clinicalStatusCoding = [v5 clinicalStatusCoding];
+    v8 = clinicalStatusCoding;
+    if (conditionCodingCollection == clinicalStatusCoding)
     {
     }
 
     else
     {
-      v46 = [v5 clinicalStatusCoding];
-      if (!v46)
+      clinicalStatusCoding2 = [v5 clinicalStatusCoding];
+      if (!clinicalStatusCoding2)
       {
         goto LABEL_83;
       }
 
-      v47 = v46;
-      v48 = [(HKConditionRecord *)self clinicalStatusCoding];
-      v49 = [v5 clinicalStatusCoding];
-      v50 = [v48 isEqual:v49];
+      v47 = clinicalStatusCoding2;
+      clinicalStatusCoding3 = [(HKConditionRecord *)self clinicalStatusCoding];
+      clinicalStatusCoding4 = [v5 clinicalStatusCoding];
+      v50 = [clinicalStatusCoding3 isEqual:clinicalStatusCoding4];
 
       if (!v50)
       {
@@ -819,25 +819,25 @@ void __360__HKConditionRecord__newConditionRecordWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKConditionRecord *)self verificationStatusCoding];
-    v51 = [v5 verificationStatusCoding];
-    v8 = v51;
-    if (v6 == v51)
+    conditionCodingCollection = [(HKConditionRecord *)self verificationStatusCoding];
+    verificationStatusCoding = [v5 verificationStatusCoding];
+    v8 = verificationStatusCoding;
+    if (conditionCodingCollection == verificationStatusCoding)
     {
     }
 
     else
     {
-      v52 = [v5 verificationStatusCoding];
-      if (!v52)
+      verificationStatusCoding2 = [v5 verificationStatusCoding];
+      if (!verificationStatusCoding2)
       {
         goto LABEL_83;
       }
 
-      v53 = v52;
-      v54 = [(HKConditionRecord *)self verificationStatusCoding];
-      v55 = [v5 verificationStatusCoding];
-      v56 = [v54 isEqual:v55];
+      v53 = verificationStatusCoding2;
+      verificationStatusCoding3 = [(HKConditionRecord *)self verificationStatusCoding];
+      verificationStatusCoding4 = [v5 verificationStatusCoding];
+      v56 = [verificationStatusCoding3 isEqual:verificationStatusCoding4];
 
       if (!v56)
       {
@@ -845,25 +845,25 @@ void __360__HKConditionRecord__newConditionRecordWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKConditionRecord *)self severityCodingCollection];
-    v57 = [v5 severityCodingCollection];
-    v8 = v57;
-    if (v6 == v57)
+    conditionCodingCollection = [(HKConditionRecord *)self severityCodingCollection];
+    severityCodingCollection = [v5 severityCodingCollection];
+    v8 = severityCodingCollection;
+    if (conditionCodingCollection == severityCodingCollection)
     {
     }
 
     else
     {
-      v58 = [v5 severityCodingCollection];
-      if (!v58)
+      severityCodingCollection2 = [v5 severityCodingCollection];
+      if (!severityCodingCollection2)
       {
         goto LABEL_83;
       }
 
-      v59 = v58;
-      v60 = [(HKConditionRecord *)self severityCodingCollection];
-      v61 = [v5 severityCodingCollection];
-      v62 = [v60 isEqual:v61];
+      v59 = severityCodingCollection2;
+      severityCodingCollection3 = [(HKConditionRecord *)self severityCodingCollection];
+      severityCodingCollection4 = [v5 severityCodingCollection];
+      v62 = [severityCodingCollection3 isEqual:severityCodingCollection4];
 
       if (!v62)
       {
@@ -871,25 +871,25 @@ void __360__HKConditionRecord__newConditionRecordWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKConditionRecord *)self bodySitesCodingCollections];
-    v63 = [v5 bodySitesCodingCollections];
-    v8 = v63;
-    if (v6 == v63)
+    conditionCodingCollection = [(HKConditionRecord *)self bodySitesCodingCollections];
+    bodySitesCodingCollections = [v5 bodySitesCodingCollections];
+    v8 = bodySitesCodingCollections;
+    if (conditionCodingCollection == bodySitesCodingCollections)
     {
     }
 
     else
     {
-      v64 = [v5 bodySitesCodingCollections];
-      if (!v64)
+      bodySitesCodingCollections2 = [v5 bodySitesCodingCollections];
+      if (!bodySitesCodingCollections2)
       {
         goto LABEL_83;
       }
 
-      v65 = v64;
-      v66 = [(HKConditionRecord *)self bodySitesCodingCollections];
-      v67 = [v5 bodySitesCodingCollections];
-      v68 = [v66 isEqualToArray:v67];
+      v65 = bodySitesCodingCollections2;
+      bodySitesCodingCollections3 = [(HKConditionRecord *)self bodySitesCodingCollections];
+      bodySitesCodingCollections4 = [v5 bodySitesCodingCollections];
+      v68 = [bodySitesCodingCollections3 isEqualToArray:bodySitesCodingCollections4];
 
       if (!v68)
       {
@@ -897,25 +897,25 @@ void __360__HKConditionRecord__newConditionRecordWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKConditionRecord *)self condition];
-    v69 = [v5 condition];
-    v8 = v69;
-    if (v6 == v69)
+    conditionCodingCollection = [(HKConditionRecord *)self condition];
+    condition = [v5 condition];
+    v8 = condition;
+    if (conditionCodingCollection == condition)
     {
     }
 
     else
     {
-      v70 = [v5 condition];
-      if (!v70)
+      condition2 = [v5 condition];
+      if (!condition2)
       {
         goto LABEL_83;
       }
 
-      v71 = v70;
-      v72 = [(HKConditionRecord *)self condition];
-      v73 = [v5 condition];
-      v74 = [v72 isEqual:v73];
+      v71 = condition2;
+      condition3 = [(HKConditionRecord *)self condition];
+      condition4 = [v5 condition];
+      v74 = [condition3 isEqual:condition4];
 
       if (!v74)
       {
@@ -923,25 +923,25 @@ void __360__HKConditionRecord__newConditionRecordWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKConditionRecord *)self categories];
-    v75 = [v5 categories];
-    v8 = v75;
-    if (v6 == v75)
+    conditionCodingCollection = [(HKConditionRecord *)self categories];
+    categories = [v5 categories];
+    v8 = categories;
+    if (conditionCodingCollection == categories)
     {
     }
 
     else
     {
-      v76 = [v5 categories];
-      if (!v76)
+      categories2 = [v5 categories];
+      if (!categories2)
       {
         goto LABEL_83;
       }
 
-      v77 = v76;
-      v78 = [(HKConditionRecord *)self categories];
-      v79 = [v5 categories];
-      v80 = [v78 isEqualToArray:v79];
+      v77 = categories2;
+      categories3 = [(HKConditionRecord *)self categories];
+      categories4 = [v5 categories];
+      v80 = [categories3 isEqualToArray:categories4];
 
       if (!v80)
       {
@@ -949,25 +949,25 @@ void __360__HKConditionRecord__newConditionRecordWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKConditionRecord *)self clinicalStatus];
-    v81 = [v5 clinicalStatus];
-    v8 = v81;
-    if (v6 == v81)
+    conditionCodingCollection = [(HKConditionRecord *)self clinicalStatus];
+    clinicalStatus = [v5 clinicalStatus];
+    v8 = clinicalStatus;
+    if (conditionCodingCollection == clinicalStatus)
     {
     }
 
     else
     {
-      v82 = [v5 clinicalStatus];
-      if (!v82)
+      clinicalStatus2 = [v5 clinicalStatus];
+      if (!clinicalStatus2)
       {
         goto LABEL_83;
       }
 
-      v83 = v82;
-      v84 = [(HKConditionRecord *)self clinicalStatus];
-      v85 = [v5 clinicalStatus];
-      v86 = [v84 isEqual:v85];
+      v83 = clinicalStatus2;
+      clinicalStatus3 = [(HKConditionRecord *)self clinicalStatus];
+      clinicalStatus4 = [v5 clinicalStatus];
+      v86 = [clinicalStatus3 isEqual:clinicalStatus4];
 
       if (!v86)
       {
@@ -975,25 +975,25 @@ void __360__HKConditionRecord__newConditionRecordWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKConditionRecord *)self verificationStatus];
-    v87 = [v5 verificationStatus];
-    v8 = v87;
-    if (v6 == v87)
+    conditionCodingCollection = [(HKConditionRecord *)self verificationStatus];
+    verificationStatus = [v5 verificationStatus];
+    v8 = verificationStatus;
+    if (conditionCodingCollection == verificationStatus)
     {
     }
 
     else
     {
-      v88 = [v5 verificationStatus];
-      if (!v88)
+      verificationStatus2 = [v5 verificationStatus];
+      if (!verificationStatus2)
       {
         goto LABEL_83;
       }
 
-      v89 = v88;
-      v90 = [(HKConditionRecord *)self verificationStatus];
-      v91 = [v5 verificationStatus];
-      v92 = [v90 isEqual:v91];
+      v89 = verificationStatus2;
+      verificationStatus3 = [(HKConditionRecord *)self verificationStatus];
+      verificationStatus4 = [v5 verificationStatus];
+      v92 = [verificationStatus3 isEqual:verificationStatus4];
 
       if (!v92)
       {
@@ -1001,25 +1001,25 @@ void __360__HKConditionRecord__newConditionRecordWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKConditionRecord *)self severity];
-    v93 = [v5 severity];
-    v8 = v93;
-    if (v6 == v93)
+    conditionCodingCollection = [(HKConditionRecord *)self severity];
+    severity = [v5 severity];
+    v8 = severity;
+    if (conditionCodingCollection == severity)
     {
     }
 
     else
     {
-      v94 = [v5 severity];
-      if (!v94)
+      severity2 = [v5 severity];
+      if (!severity2)
       {
         goto LABEL_83;
       }
 
-      v95 = v94;
-      v96 = [(HKConditionRecord *)self severity];
-      v97 = [v5 severity];
-      v98 = [v96 isEqual:v97];
+      v95 = severity2;
+      severity3 = [(HKConditionRecord *)self severity];
+      severity4 = [v5 severity];
+      v98 = [severity3 isEqual:severity4];
 
       if (!v98)
       {
@@ -1027,10 +1027,10 @@ void __360__HKConditionRecord__newConditionRecordWithType_note_enteredInError_mo
       }
     }
 
-    v6 = [(HKConditionRecord *)self bodySites];
-    v99 = [v5 bodySites];
-    v8 = v99;
-    if (v6 == v99)
+    conditionCodingCollection = [(HKConditionRecord *)self bodySites];
+    bodySites = [v5 bodySites];
+    v8 = bodySites;
+    if (conditionCodingCollection == bodySites)
     {
 
 LABEL_88:
@@ -1038,13 +1038,13 @@ LABEL_88:
       goto LABEL_85;
     }
 
-    v100 = [v5 bodySites];
-    if (v100)
+    bodySites2 = [v5 bodySites];
+    if (bodySites2)
     {
-      v101 = v100;
-      v102 = [(HKConditionRecord *)self bodySites];
-      v103 = [v5 bodySites];
-      v104 = [v102 isEqualToArray:v103];
+      v101 = bodySites2;
+      bodySites3 = [(HKConditionRecord *)self bodySites];
+      bodySites4 = [v5 bodySites];
+      v104 = [bodySites3 isEqualToArray:bodySites4];
 
       if (v104)
       {
@@ -1071,12 +1071,12 @@ LABEL_86:
 
 - (id)clinicalStatusCodingCollection
 {
-  v3 = [(HKConditionRecord *)self clinicalStatusCoding];
+  clinicalStatusCoding = [(HKConditionRecord *)self clinicalStatusCoding];
 
-  if (v3)
+  if (clinicalStatusCoding)
   {
-    v4 = [(HKConditionRecord *)self clinicalStatusCoding];
-    v5 = [HKMedicalCodingCollection collectionWithCoding:v4];
+    clinicalStatusCoding2 = [(HKConditionRecord *)self clinicalStatusCoding];
+    v5 = [HKMedicalCodingCollection collectionWithCoding:clinicalStatusCoding2];
   }
 
   else
@@ -1089,12 +1089,12 @@ LABEL_86:
 
 - (id)verificationStatusCodingCollection
 {
-  v3 = [(HKConditionRecord *)self verificationStatusCoding];
+  verificationStatusCoding = [(HKConditionRecord *)self verificationStatusCoding];
 
-  if (v3)
+  if (verificationStatusCoding)
   {
-    v4 = [(HKConditionRecord *)self verificationStatusCoding];
-    v5 = [HKMedicalCodingCollection collectionWithCoding:v4];
+    verificationStatusCoding2 = [(HKConditionRecord *)self verificationStatusCoding];
+    v5 = [HKMedicalCodingCollection collectionWithCoding:verificationStatusCoding2];
   }
 
   else
@@ -1105,80 +1105,80 @@ LABEL_86:
   return v5;
 }
 
-- (void)_setConditionCodingCollection:(id)a3
+- (void)_setConditionCodingCollection:(id)collection
 {
-  v4 = [a3 copy];
+  v4 = [collection copy];
   conditionCodingCollection = self->_conditionCodingCollection;
   self->_conditionCodingCollection = v4;
 
-  v8 = [(HKConditionRecord *)self conditionCodingCollection];
-  v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v8];
+  conditionCodingCollection = [(HKConditionRecord *)self conditionCodingCollection];
+  v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:conditionCodingCollection];
   condition = self->_condition;
   self->_condition = v6;
 }
 
-- (void)_setCategoriesCodingCollections:(id)a3
+- (void)_setCategoriesCodingCollections:(id)collections
 {
-  v4 = [a3 copy];
+  v4 = [collections copy];
   categoriesCodingCollections = self->_categoriesCodingCollections;
   self->_categoriesCodingCollections = v4;
 
-  v8 = [(HKConditionRecord *)self categoriesCodingCollections];
-  v6 = [v8 hk_map:&__block_literal_global_128];
+  categoriesCodingCollections = [(HKConditionRecord *)self categoriesCodingCollections];
+  v6 = [categoriesCodingCollections hk_map:&__block_literal_global_128];
   categories = self->_categories;
   self->_categories = v6;
 }
 
-- (void)_setAsserter:(id)a3
+- (void)_setAsserter:(id)asserter
 {
-  v4 = [a3 copy];
+  v4 = [asserter copy];
   asserter = self->_asserter;
   self->_asserter = v4;
 
   MEMORY[0x1EEE66BB8](v4, asserter);
 }
 
-- (void)_setAbatement:(id)a3
+- (void)_setAbatement:(id)abatement
 {
-  v4 = [a3 copy];
+  v4 = [abatement copy];
   abatement = self->_abatement;
   self->_abatement = v4;
 
   MEMORY[0x1EEE66BB8](v4, abatement);
 }
 
-- (void)_setOnset:(id)a3
+- (void)_setOnset:(id)onset
 {
-  v4 = [a3 copy];
+  v4 = [onset copy];
   onset = self->_onset;
   self->_onset = v4;
 
   MEMORY[0x1EEE66BB8](v4, onset);
 }
 
-- (void)_setRecordedDate:(id)a3
+- (void)_setRecordedDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   recordedDate = self->_recordedDate;
   self->_recordedDate = v4;
 
   MEMORY[0x1EEE66BB8](v4, recordedDate);
 }
 
-- (void)_setClinicalStatusCoding:(id)a3
+- (void)_setClinicalStatusCoding:(id)coding
 {
-  v4 = [a3 copy];
+  v4 = [coding copy];
   clinicalStatusCoding = self->_clinicalStatusCoding;
   self->_clinicalStatusCoding = v4;
 
   if (self->_clinicalStatusCoding)
   {
-    v9 = [(HKConditionRecord *)self clinicalStatusCodingCollection];
-    v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v9];
+    clinicalStatusCodingCollection = [(HKConditionRecord *)self clinicalStatusCodingCollection];
+    v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:clinicalStatusCodingCollection];
     clinicalStatus = self->_clinicalStatus;
     self->_clinicalStatus = v6;
 
-    v8 = v9;
+    v8 = clinicalStatusCodingCollection;
   }
 
   else
@@ -1188,20 +1188,20 @@ LABEL_86:
   }
 }
 
-- (void)_setVerificationStatusCoding:(id)a3
+- (void)_setVerificationStatusCoding:(id)coding
 {
-  v4 = [a3 copy];
+  v4 = [coding copy];
   verificationStatusCoding = self->_verificationStatusCoding;
   self->_verificationStatusCoding = v4;
 
   if (self->_verificationStatusCoding)
   {
-    v9 = [(HKConditionRecord *)self verificationStatusCodingCollection];
-    v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v9];
+    verificationStatusCodingCollection = [(HKConditionRecord *)self verificationStatusCodingCollection];
+    v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:verificationStatusCodingCollection];
     verificationStatus = self->_verificationStatus;
     self->_verificationStatus = v6;
 
-    v8 = v9;
+    v8 = verificationStatusCodingCollection;
   }
 
   else
@@ -1211,20 +1211,20 @@ LABEL_86:
   }
 }
 
-- (void)_setSeverityCodingCollection:(id)a3
+- (void)_setSeverityCodingCollection:(id)collection
 {
-  v4 = [a3 copy];
+  v4 = [collection copy];
   severityCodingCollection = self->_severityCodingCollection;
   self->_severityCodingCollection = v4;
 
   if (self->_severityCodingCollection)
   {
-    v9 = [(HKConditionRecord *)self severityCodingCollection];
-    v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v9];
+    severityCodingCollection = [(HKConditionRecord *)self severityCodingCollection];
+    v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:severityCodingCollection];
     severity = self->_severity;
     self->_severity = v6;
 
-    v8 = v9;
+    v8 = severityCodingCollection;
   }
 
   else
@@ -1234,20 +1234,20 @@ LABEL_86:
   }
 }
 
-- (void)_setBodySitesCodingCollections:(id)a3
+- (void)_setBodySitesCodingCollections:(id)collections
 {
-  v4 = [a3 copy];
+  v4 = [collections copy];
   bodySitesCodingCollections = self->_bodySitesCodingCollections;
   self->_bodySitesCodingCollections = v4;
 
   if (self->_bodySitesCodingCollections)
   {
-    v9 = [(HKConditionRecord *)self bodySitesCodingCollections];
-    v6 = [(NSArray *)v9 hk_map:&__block_literal_global_126_1];
+    bodySitesCodingCollections = [(HKConditionRecord *)self bodySitesCodingCollections];
+    v6 = [(NSArray *)bodySitesCodingCollections hk_map:&__block_literal_global_126_1];
     bodySites = self->_bodySites;
     self->_bodySites = v6;
 
-    v8 = v9;
+    v8 = bodySitesCodingCollections;
   }
 
   else
@@ -1267,17 +1267,17 @@ LABEL_86:
 
   else
   {
-    v4 = [(HKConditionRecord *)self conditionCodingCollection];
-    v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v4];
+    conditionCodingCollection = [(HKConditionRecord *)self conditionCodingCollection];
+    v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:conditionCodingCollection];
   }
 
   return v3;
 }
 
-- (void)_setCondition:(id)a3
+- (void)_setCondition:(id)condition
 {
-  v4 = a3;
-  if (!v4)
+  conditionCopy = condition;
+  if (!conditionCopy)
   {
     _HKInitializeLogging();
     v5 = HKLogHealthRecords;
@@ -1287,7 +1287,7 @@ LABEL_86:
     }
   }
 
-  v6 = [v4 copy];
+  v6 = [conditionCopy copy];
   condition = self->_condition;
   self->_condition = v6;
 }
@@ -1302,17 +1302,17 @@ LABEL_86:
 
   else
   {
-    v4 = [(HKConditionRecord *)self categoriesCodingCollections];
-    v3 = [v4 hk_map:&__block_literal_global_128_1];
+    categoriesCodingCollections = [(HKConditionRecord *)self categoriesCodingCollections];
+    v3 = [categoriesCodingCollections hk_map:&__block_literal_global_128_1];
   }
 
   return v3;
 }
 
-- (void)_setCategories:(id)a3
+- (void)_setCategories:(id)categories
 {
-  v4 = a3;
-  if (!v4)
+  categoriesCopy = categories;
+  if (!categoriesCopy)
   {
     _HKInitializeLogging();
     v5 = HKLogHealthRecords;
@@ -1322,7 +1322,7 @@ LABEL_86:
     }
   }
 
-  v6 = [v4 copy];
+  v6 = [categoriesCopy copy];
   categories = self->_categories;
   self->_categories = v6;
 }
@@ -1339,8 +1339,8 @@ LABEL_86:
 
     else
     {
-      v4 = [(HKConditionRecord *)self clinicalStatusCodingCollection];
-      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v4];
+      clinicalStatusCodingCollection = [(HKConditionRecord *)self clinicalStatusCodingCollection];
+      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:clinicalStatusCodingCollection];
     }
   }
 
@@ -1352,9 +1352,9 @@ LABEL_86:
   return v3;
 }
 
-- (void)_setClinicalStatus:(id)a3
+- (void)_setClinicalStatus:(id)status
 {
-  v4 = [a3 copy];
+  v4 = [status copy];
   clinicalStatus = self->_clinicalStatus;
   self->_clinicalStatus = v4;
 
@@ -1373,8 +1373,8 @@ LABEL_86:
 
     else
     {
-      v4 = [(HKConditionRecord *)self verificationStatusCodingCollection];
-      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v4];
+      verificationStatusCodingCollection = [(HKConditionRecord *)self verificationStatusCodingCollection];
+      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:verificationStatusCodingCollection];
     }
   }
 
@@ -1386,9 +1386,9 @@ LABEL_86:
   return v3;
 }
 
-- (void)_setVerificationStatus:(id)a3
+- (void)_setVerificationStatus:(id)status
 {
-  v4 = [a3 copy];
+  v4 = [status copy];
   verificationStatus = self->_verificationStatus;
   self->_verificationStatus = v4;
 
@@ -1407,8 +1407,8 @@ LABEL_86:
 
     else
     {
-      v4 = [(HKConditionRecord *)self severityCodingCollection];
-      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v4];
+      severityCodingCollection = [(HKConditionRecord *)self severityCodingCollection];
+      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:severityCodingCollection];
     }
   }
 
@@ -1420,9 +1420,9 @@ LABEL_86:
   return v3;
 }
 
-- (void)_setSeverity:(id)a3
+- (void)_setSeverity:(id)severity
 {
-  v4 = [a3 copy];
+  v4 = [severity copy];
   severity = self->_severity;
   self->_severity = v4;
 
@@ -1441,8 +1441,8 @@ LABEL_86:
 
     else
     {
-      v4 = [(HKConditionRecord *)self bodySitesCodingCollections];
-      v3 = [v4 hk_map:&__block_literal_global_130_0];
+      bodySitesCodingCollections = [(HKConditionRecord *)self bodySitesCodingCollections];
+      v3 = [bodySitesCodingCollections hk_map:&__block_literal_global_130_0];
     }
   }
 
@@ -1454,20 +1454,20 @@ LABEL_86:
   return v3;
 }
 
-- (void)_setBodySites:(id)a3
+- (void)_setBodySites:(id)sites
 {
-  v4 = [a3 copy];
+  v4 = [sites copy];
   bodySites = self->_bodySites;
   self->_bodySites = v4;
 
   MEMORY[0x1EEE66BB8](v4, bodySites);
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   v13.receiver = self;
   v13.super_class = HKConditionRecord;
-  v5 = [(HKMedicalRecord *)&v13 _validateWithConfiguration:a3.var0, a3.var1];
+  v5 = [(HKMedicalRecord *)&v13 _validateWithConfiguration:configuration.var0, configuration.var1];
   v6 = v5;
   if (v5)
   {

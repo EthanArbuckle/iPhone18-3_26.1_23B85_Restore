@@ -1,5 +1,5 @@
 @interface AVPlayerViewControllerCustomControlsViewLayoutMarginsGuideProvidingView
-- (AVPlayerViewControllerCustomControlsViewLayoutMarginsGuideProvidingView)initWithFrame:(CGRect)a3;
+- (AVPlayerViewControllerCustomControlsViewLayoutMarginsGuideProvidingView)initWithFrame:(CGRect)frame;
 - (CGSize)intrinsicContentSize;
 @end
 
@@ -14,11 +14,11 @@
   return result;
 }
 
-- (AVPlayerViewControllerCustomControlsViewLayoutMarginsGuideProvidingView)initWithFrame:(CGRect)a3
+- (AVPlayerViewControllerCustomControlsViewLayoutMarginsGuideProvidingView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = AVPlayerViewControllerCustomControlsViewLayoutMarginsGuideProvidingView;
-  v3 = [(AVPlayerViewControllerCustomControlsViewLayoutMarginsGuideProvidingView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVPlayerViewControllerCustomControlsViewLayoutMarginsGuideProvidingView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

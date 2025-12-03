@@ -1,14 +1,14 @@
 @interface FBWorkspaceEventQueueLock
-- (FBWorkspaceEventQueueLock)initWithReason:(id)a3;
+- (FBWorkspaceEventQueueLock)initWithReason:(id)reason;
 @end
 
 @implementation FBWorkspaceEventQueueLock
 
-- (FBWorkspaceEventQueueLock)initWithReason:(id)a3
+- (FBWorkspaceEventQueueLock)initWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   v5 = +[FBWorkspaceEventQueue sharedInstance];
-  v6 = [(BSEventQueueLock *)self initWithEventQueue:v5 reason:v4];
+  v6 = [(BSEventQueueLock *)self initWithEventQueue:v5 reason:reasonCopy];
 
   return v6;
 }

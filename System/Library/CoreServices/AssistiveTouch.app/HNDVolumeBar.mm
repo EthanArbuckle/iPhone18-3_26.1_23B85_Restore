@@ -1,23 +1,23 @@
 @interface HNDVolumeBar
 - (CGSize)intrinsicContentSize;
-- (HNDVolumeBar)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
+- (HNDVolumeBar)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation HNDVolumeBar
 
-- (HNDVolumeBar)initWithFrame:(CGRect)a3
+- (HNDVolumeBar)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = HNDVolumeBar;
-  v3 = [(HNDView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HNDView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = +[UIColor clearColor];
   [(HNDVolumeBar *)v3 setBackgroundColor:v4];
 
   return v3;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   for (i = 0; i != 16; ++i)
   {

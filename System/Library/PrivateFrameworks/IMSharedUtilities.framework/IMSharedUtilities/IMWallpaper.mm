@@ -1,29 +1,29 @@
 @interface IMWallpaper
-- (BOOL)isEqual:(id)a3;
-- (IMWallpaper)initWithCoder:(id)a3;
-- (IMWallpaper)initWithDictionaryRepresentation:(id)a3;
-- (IMWallpaper)initWithFileName:(id)a3 filePath:(id)a4 data:(id)a5 lowResFileName:(id)a6 lowResFilePath:(id)a7 lowResData:(id)a8 metadata:(id)a9 contentIsSensitive:(BOOL)a10 error:(id *)a11;
-- (IMWallpaper)initWithFileName:(id)a3 filePath:(id)a4 lowResFileName:(id)a5 lowResFilePath:(id)a6 metadata:(id)a7 contentIsSensitive:(BOOL)a8;
+- (BOOL)isEqual:(id)equal;
+- (IMWallpaper)initWithCoder:(id)coder;
+- (IMWallpaper)initWithDictionaryRepresentation:(id)representation;
+- (IMWallpaper)initWithFileName:(id)name filePath:(id)path data:(id)data lowResFileName:(id)fileName lowResFilePath:(id)filePath lowResData:(id)resData metadata:(id)metadata contentIsSensitive:(BOOL)self0 error:(id *)self1;
+- (IMWallpaper)initWithFileName:(id)name filePath:(id)path lowResFileName:(id)fileName lowResFilePath:(id)filePath metadata:(id)metadata contentIsSensitive:(BOOL)sensitive;
 - (id)lowResWallpaperData;
 - (id)wallpaperData;
 @end
 
 @implementation IMWallpaper
 
-- (IMWallpaper)initWithFileName:(id)a3 filePath:(id)a4 lowResFileName:(id)a5 lowResFilePath:(id)a6 metadata:(id)a7 contentIsSensitive:(BOOL)a8
+- (IMWallpaper)initWithFileName:(id)name filePath:(id)path lowResFileName:(id)fileName lowResFilePath:(id)filePath metadata:(id)metadata contentIsSensitive:(BOOL)sensitive
 {
-  v8 = a8;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  sensitiveCopy = sensitive;
+  nameCopy = name;
+  pathCopy = path;
+  fileNameCopy = fileName;
+  filePathCopy = filePath;
+  metadataCopy = metadata;
   v23.receiver = self;
   v23.super_class = IMWallpaper;
   v19 = [(IMWallpaper *)&v23 init];
   if (v19)
   {
-    v20 = [[IMWallpaper_SwiftImpl alloc] initWithFileName:v14 filePath:v15 lowResFileName:v16 lowResFilePath:v17 metadata:v18 contentIsSensitive:v8];
+    v20 = [[IMWallpaper_SwiftImpl alloc] initWithFileName:nameCopy filePath:pathCopy lowResFileName:fileNameCopy lowResFilePath:filePathCopy metadata:metadataCopy contentIsSensitive:sensitiveCopy];
     swiftImpl = v19->swiftImpl;
     v19->swiftImpl = v20;
   }
@@ -31,22 +31,22 @@
   return v19;
 }
 
-- (IMWallpaper)initWithFileName:(id)a3 filePath:(id)a4 data:(id)a5 lowResFileName:(id)a6 lowResFilePath:(id)a7 lowResData:(id)a8 metadata:(id)a9 contentIsSensitive:(BOOL)a10 error:(id *)a11
+- (IMWallpaper)initWithFileName:(id)name filePath:(id)path data:(id)data lowResFileName:(id)fileName lowResFilePath:(id)filePath lowResData:(id)resData metadata:(id)metadata contentIsSensitive:(BOOL)self0 error:(id *)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
+  nameCopy = name;
+  pathCopy = path;
+  dataCopy = data;
+  fileNameCopy = fileName;
+  filePathCopy = filePath;
+  resDataCopy = resData;
+  metadataCopy = metadata;
   v29.receiver = self;
   v29.super_class = IMWallpaper;
   v24 = [(IMWallpaper *)&v29 init];
   if (v24)
   {
-    LOBYTE(v28) = a10;
-    v25 = [[IMWallpaper_SwiftImpl alloc] initWithFileName:v17 filePath:v18 data:v19 lowResFileName:v20 lowResFilePath:v21 lowResData:v22 metadata:v23 contentIsSensitive:v28 error:a11];
+    LOBYTE(v28) = sensitive;
+    v25 = [[IMWallpaper_SwiftImpl alloc] initWithFileName:nameCopy filePath:pathCopy data:dataCopy lowResFileName:fileNameCopy lowResFilePath:filePathCopy lowResData:resDataCopy metadata:metadataCopy contentIsSensitive:v28 error:error];
     swiftImpl = v24->swiftImpl;
     v24->swiftImpl = v25;
   }
@@ -54,11 +54,11 @@
   return v24;
 }
 
-- (IMWallpaper)initWithDictionaryRepresentation:(id)a3
+- (IMWallpaper)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy && [representationCopy count])
   {
     v11.receiver = self;
     v11.super_class = IMWallpaper;
@@ -71,24 +71,24 @@
     }
 
     self = v6;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (IMWallpaper)initWithCoder:(id)a3
+- (IMWallpaper)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = IMWallpaper;
   v5 = [(IMWallpaper *)&v10 init];
-  if (v5 && (v6 = [[IMWallpaper_SwiftImpl alloc] initWithCoder:v4], swiftImpl = v5->swiftImpl, v5->swiftImpl = v6, swiftImpl, !v5->swiftImpl))
+  if (v5 && (v6 = [[IMWallpaper_SwiftImpl alloc] initWithCoder:coderCopy], swiftImpl = v5->swiftImpl, v5->swiftImpl = v6, swiftImpl, !v5->swiftImpl))
   {
     v8 = 0;
   }
@@ -143,10 +143,10 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -156,107 +156,107 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(IMWallpaper *)self fileName];
-      v7 = [(IMWallpaper *)v5 fileName];
-      if ([v6 isEqualToString:v7])
+      v5 = equalCopy;
+      fileName = [(IMWallpaper *)self fileName];
+      fileName2 = [(IMWallpaper *)v5 fileName];
+      if ([fileName isEqualToString:fileName2])
       {
         v34 = 0;
       }
 
       else
       {
-        v9 = [(IMWallpaper *)self fileName];
-        if (v9)
+        fileName3 = [(IMWallpaper *)self fileName];
+        if (fileName3)
         {
           v34 = 1;
         }
 
         else
         {
-          v10 = [(IMWallpaper *)v5 fileName];
-          v34 = v10 != 0;
+          fileName4 = [(IMWallpaper *)v5 fileName];
+          v34 = fileName4 != 0;
         }
       }
 
-      v11 = [(IMWallpaper *)self filePath];
-      v12 = [(IMWallpaper *)v5 filePath];
-      if ([v11 isEqualToString:v12])
+      filePath = [(IMWallpaper *)self filePath];
+      filePath2 = [(IMWallpaper *)v5 filePath];
+      if ([filePath isEqualToString:filePath2])
       {
         v33 = 0;
       }
 
       else
       {
-        v13 = [(IMWallpaper *)self filePath];
-        if (v13)
+        filePath3 = [(IMWallpaper *)self filePath];
+        if (filePath3)
         {
           v33 = 1;
         }
 
         else
         {
-          v14 = [(IMWallpaper *)v5 filePath];
-          v33 = v14 != 0;
+          filePath4 = [(IMWallpaper *)v5 filePath];
+          v33 = filePath4 != 0;
         }
       }
 
-      v15 = [(IMWallpaper *)self lowResFileName];
-      v16 = [(IMWallpaper *)v5 lowResFileName];
-      if ([v15 isEqualToString:v16])
+      lowResFileName = [(IMWallpaper *)self lowResFileName];
+      lowResFileName2 = [(IMWallpaper *)v5 lowResFileName];
+      if ([lowResFileName isEqualToString:lowResFileName2])
       {
         v17 = 0;
       }
 
       else
       {
-        v18 = [(IMWallpaper *)self lowResFileName];
-        if (v18)
+        lowResFileName3 = [(IMWallpaper *)self lowResFileName];
+        if (lowResFileName3)
         {
           v17 = 1;
         }
 
         else
         {
-          v19 = [(IMWallpaper *)v5 lowResFileName];
-          v17 = v19 != 0;
+          lowResFileName4 = [(IMWallpaper *)v5 lowResFileName];
+          v17 = lowResFileName4 != 0;
         }
       }
 
-      v20 = [(IMWallpaper *)self lowResFilePath];
-      v21 = [(IMWallpaper *)v5 lowResFilePath];
-      if ([v20 isEqualToString:v21])
+      lowResFilePath = [(IMWallpaper *)self lowResFilePath];
+      lowResFilePath2 = [(IMWallpaper *)v5 lowResFilePath];
+      if ([lowResFilePath isEqualToString:lowResFilePath2])
       {
         v22 = 0;
       }
 
       else
       {
-        v23 = [(IMWallpaper *)self lowResFilePath];
-        if (v23)
+        lowResFilePath3 = [(IMWallpaper *)self lowResFilePath];
+        if (lowResFilePath3)
         {
           v22 = 1;
         }
 
         else
         {
-          v24 = [(IMWallpaper *)v5 lowResFilePath];
-          v22 = v24 != 0;
+          lowResFilePath4 = [(IMWallpaper *)v5 lowResFilePath];
+          v22 = lowResFilePath4 != 0;
         }
       }
 
-      v25 = [(IMWallpaper *)self dataVersion];
-      v26 = [(IMWallpaper *)v5 dataVersion];
-      v27 = [(IMWallpaper *)self metadata];
-      v28 = [(IMWallpaper *)v5 metadata];
-      v29 = [v27 isEqual:v28];
+      dataVersion = [(IMWallpaper *)self dataVersion];
+      dataVersion2 = [(IMWallpaper *)v5 dataVersion];
+      metadata = [(IMWallpaper *)self metadata];
+      metadata2 = [(IMWallpaper *)v5 metadata];
+      v29 = [metadata isEqual:metadata2];
 
-      v30 = [(IMWallpaper *)self contentIsSensitive];
-      v31 = [(IMWallpaper *)v5 contentIsSensitive];
+      contentIsSensitive = [(IMWallpaper *)self contentIsSensitive];
+      contentIsSensitive2 = [(IMWallpaper *)v5 contentIsSensitive];
       v8 = 0;
-      if (!v34 && !v33 && !v17 && !v22 && v25 == v26)
+      if (!v34 && !v33 && !v17 && !v22 && dataVersion == dataVersion2)
       {
-        v8 = v29 & (v30 ^ v31 ^ 1);
+        v8 = v29 & (contentIsSensitive ^ contentIsSensitive2 ^ 1);
       }
     }
 
@@ -265,7 +265,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v8 = [(IMWallpaper_SwiftImpl *)self->swiftImpl isEqual:v4];
+        v8 = [(IMWallpaper_SwiftImpl *)self->swiftImpl isEqual:equalCopy];
       }
 
       else

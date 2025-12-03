@@ -1,13 +1,13 @@
 @interface IMAssistantMessageHandlerDefaultDataSource
 + (id)sharedInstance;
-- (BOOL)screentimeAllowedToShowChat:(id)a3 error:(id *)a4;
-- (BOOL)screentimeAllowedToShowConversationWithHandleIDs:(id)a3 error:(id *)a4;
+- (BOOL)screentimeAllowedToShowChat:(id)chat error:(id *)error;
+- (BOOL)screentimeAllowedToShowConversationWithHandleIDs:(id)ds error:(id *)error;
 - (IMAssistantCommSafetyManager)commSafetyDataSource;
 - (IMAssistantContactsDataSource)contactsDataSource;
 - (NSCache)contactIdentifierToUnifiedContactIdentifierCache;
 - (NSCache)handleToContactIdentifierCache;
 - (NSCache)spiHandleToPersonCache;
-- (void)contactStoreDidChange:(id)a3;
+- (void)contactStoreDidChange:(id)change;
 - (void)registerForContactStoreChangeNotificationsIfNecessary;
 @end
 
@@ -42,9 +42,9 @@
 - (IMAssistantCommSafetyManager)commSafetyDataSource
 {
   v2 = [IMAssistantCommSafetyManager alloc];
-  v3 = [MEMORY[0x277D1A950] sharedManager];
-  v4 = [MEMORY[0x277D1A958] sharedManager];
-  v5 = [(IMAssistantCommSafetyManager *)v2 initWithCommSafetyRequestsManager:v3 commSafetySettingsManager:v4];
+  mEMORY[0x277D1A950] = [MEMORY[0x277D1A950] sharedManager];
+  mEMORY[0x277D1A958] = [MEMORY[0x277D1A958] sharedManager];
+  v5 = [(IMAssistantCommSafetyManager *)v2 initWithCommSafetyRequestsManager:mEMORY[0x277D1A950] commSafetySettingsManager:mEMORY[0x277D1A958]];
 
   return v5;
 }
@@ -88,7 +88,7 @@
   return v3;
 }
 
-- (void)contactStoreDidChange:(id)a3
+- (void)contactStoreDidChange:(id)change
 {
   v4 = IMLogHandleForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -97,30 +97,30 @@
     _os_log_impl(&dword_25479E000, v4, OS_LOG_TYPE_INFO, "Contact store change notification received.", v8, 2u);
   }
 
-  v5 = [(IMAssistantMessageHandlerDefaultDataSource *)self handleToContactIdentifierCache];
-  [v5 removeAllObjects];
+  handleToContactIdentifierCache = [(IMAssistantMessageHandlerDefaultDataSource *)self handleToContactIdentifierCache];
+  [handleToContactIdentifierCache removeAllObjects];
 
-  v6 = [(IMAssistantMessageHandlerDefaultDataSource *)self spiHandleToPersonCache];
-  [v6 removeAllObjects];
+  spiHandleToPersonCache = [(IMAssistantMessageHandlerDefaultDataSource *)self spiHandleToPersonCache];
+  [spiHandleToPersonCache removeAllObjects];
 
-  v7 = [(IMAssistantMessageHandlerDefaultDataSource *)self contactIdentifierToUnifiedContactIdentifierCache];
-  [v7 removeAllObjects];
+  contactIdentifierToUnifiedContactIdentifierCache = [(IMAssistantMessageHandlerDefaultDataSource *)self contactIdentifierToUnifiedContactIdentifierCache];
+  [contactIdentifierToUnifiedContactIdentifierCache removeAllObjects];
 }
 
 - (void)registerForContactStoreChangeNotificationsIfNecessary
 {
   if (!self->_didRegisterForContactStoreChangeNotifications)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:self selector:sel_contactStoreDidChange_ name:*MEMORY[0x277CBD140] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel_contactStoreDidChange_ name:*MEMORY[0x277CBD140] object:0];
 
     self->_didRegisterForContactStoreChangeNotifications = 1;
   }
 }
 
-- (BOOL)screentimeAllowedToShowChat:(id)a3 error:(id *)a4
+- (BOOL)screentimeAllowedToShowChat:(id)chat error:(id *)error
 {
-  v5 = a3;
+  chatCopy = chat;
   v6 = _IMAssistantCoreGeneralSignpostLogHandle();
   v7 = os_signpost_id_generate(v6);
 
@@ -132,18 +132,18 @@
     _os_signpost_emit_with_name_impl(&dword_25479E000, v9, OS_SIGNPOST_INTERVAL_BEGIN, v7, "screentimeAllowedToShowChat", &unk_2547CAD0B, buf, 2u);
   }
 
-  v10 = [v5 allowedByScreenTime];
-  v11 = v10;
-  if (a4 && (v10 & 1) == 0)
+  allowedByScreenTime = [chatCopy allowedByScreenTime];
+  v11 = allowedByScreenTime;
+  if (error && (allowedByScreenTime & 1) == 0)
   {
-    v12 = [v5 allowedToShowConversationSync];
+    allowedToShowConversationSync = [chatCopy allowedToShowConversationSync];
     v13 = MEMORY[0x277CD4588];
-    if (!v12)
+    if (!allowedToShowConversationSync)
     {
       v13 = MEMORY[0x277CD4578];
     }
 
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"__kIMAssistantMessageHandlerErrorDomain" code:*v13 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"__kIMAssistantMessageHandlerErrorDomain" code:*v13 userInfo:0];
   }
 
   v14 = _IMAssistantCoreGeneralSignpostLogHandle();
@@ -157,9 +157,9 @@
   return v11;
 }
 
-- (BOOL)screentimeAllowedToShowConversationWithHandleIDs:(id)a3 error:(id *)a4
+- (BOOL)screentimeAllowedToShowConversationWithHandleIDs:(id)ds error:(id *)error
 {
-  v5 = a3;
+  dsCopy = ds;
   v6 = _IMAssistantCoreGeneralSignpostLogHandle();
   v7 = os_signpost_id_generate(v6);
 
@@ -173,22 +173,22 @@
 
   if ([MEMORY[0x277D18D70] isContactLimitsFeatureEnabled])
   {
-    v10 = [MEMORY[0x277D18D70] sharedInstance];
+    mEMORY[0x277D18D70] = [MEMORY[0x277D18D70] sharedInstance];
     v19 = 0;
-    v11 = [v10 allowedToShowConversationWithHandleIDs:v5 sync:1 context:&v19];
+    v11 = [mEMORY[0x277D18D70] allowedToShowConversationWithHandleIDs:dsCopy sync:1 context:&v19];
     v12 = v19;
 
-    if (a4 && (v11 & 1) == 0)
+    if (error && (v11 & 1) == 0)
     {
-      v13 = [v12 applicationCurrentlyLimited];
+      applicationCurrentlyLimited = [v12 applicationCurrentlyLimited];
       v14 = MEMORY[0x277CD4578];
-      if (!v13)
+      if (!applicationCurrentlyLimited)
       {
         v14 = MEMORY[0x277CD4588];
       }
 
       [MEMORY[0x277CCA9B8] errorWithDomain:@"__kIMAssistantMessageHandlerErrorDomain" code:*v14 userInfo:0];
-      *a4 = v11 = 0;
+      *error = v11 = 0;
     }
   }
 
@@ -215,7 +215,7 @@
   block[1] = 3221225472;
   block[2] = sub_2547BBB8C;
   block[3] = &unk_279786A78;
-  block[4] = a1;
+  block[4] = self;
   if (qword_28118F640 != -1)
   {
     dispatch_once(&qword_28118F640, block);

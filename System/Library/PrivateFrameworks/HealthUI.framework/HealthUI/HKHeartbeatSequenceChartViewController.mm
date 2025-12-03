@@ -1,24 +1,24 @@
 @interface HKHeartbeatSequenceChartViewController
-- (HKHeartbeatSequenceChartViewController)initWithMinimumHeight:(double)a3 startDate:(id)a4;
-- (id)_heartbeatSequenceSeriesForSource:(id)a3 axis:(id)a4 color:(id)a5 lineWidth:(double)a6 markerRadius:(double)a7 dashStyle:(int64_t)a8 annotate:(BOOL)a9;
+- (HKHeartbeatSequenceChartViewController)initWithMinimumHeight:(double)height startDate:(id)date;
+- (id)_heartbeatSequenceSeriesForSource:(id)source axis:(id)axis color:(id)color lineWidth:(double)width markerRadius:(double)radius dashStyle:(int64_t)style annotate:(BOOL)annotate;
 - (id)_verticalNumericalAxis;
 - (void)_adjustGraphViewOptions;
 - (void)_recomputeAxisRanges;
-- (void)addSequenceData:(id)a3;
-- (void)addSequenceData:(id)a3 color:(id)a4 lineWidth:(double)a5 markerRadius:(double)a6 dashStyle:(int64_t)a7 annotate:(BOOL)a8;
+- (void)addSequenceData:(id)data;
+- (void)addSequenceData:(id)data color:(id)color lineWidth:(double)width markerRadius:(double)radius dashStyle:(int64_t)style annotate:(BOOL)annotate;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation HKHeartbeatSequenceChartViewController
 
-- (HKHeartbeatSequenceChartViewController)initWithMinimumHeight:(double)a3 startDate:(id)a4
+- (HKHeartbeatSequenceChartViewController)initWithMinimumHeight:(double)height startDate:(id)date
 {
-  v7 = a4;
-  v8 = [[HKAxisLabelDimensionMinuteSecond alloc] initWithStartDate:v7];
+  dateCopy = date;
+  v8 = [[HKAxisLabelDimensionMinuteSecond alloc] initWithStartDate:dateCopy];
   v17.receiver = self;
   v17.super_class = HKHeartbeatSequenceChartViewController;
-  v9 = [(HKScalarGraphViewController *)&v17 initWithMinimumHeight:v8 labelDimension:0 labelEndings:0 numericAxisConfigurationOverrides:a3];
+  v9 = [(HKScalarGraphViewController *)&v17 initWithMinimumHeight:v8 labelDimension:0 labelEndings:0 numericAxisConfigurationOverrides:height];
   if (v9)
   {
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -29,11 +29,11 @@
     graphSeries = v9->_graphSeries;
     v9->_graphSeries = v12;
 
-    v14 = [(HKHeartbeatSequenceChartViewController *)v9 _verticalNumericalAxis];
+    _verticalNumericalAxis = [(HKHeartbeatSequenceChartViewController *)v9 _verticalNumericalAxis];
     commonVerticalAxis = v9->_commonVerticalAxis;
-    v9->_commonVerticalAxis = v14;
+    v9->_commonVerticalAxis = _verticalNumericalAxis;
 
-    objc_storeStrong(&v9->_startDate, a4);
+    objc_storeStrong(&v9->_startDate, date);
   }
 
   return v9;
@@ -53,39 +53,39 @@
   v13.receiver = self;
   v13.super_class = HKHeartbeatSequenceChartViewController;
   [(HKHeartbeatSequenceChartViewController *)&v13 viewWillLayoutSubviews];
-  v3 = [(HKHeartbeatSequenceChartViewController *)self view];
-  [v3 bounds];
+  view = [(HKHeartbeatSequenceChartViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(HKGraphViewController *)self graphView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  graphView = [(HKGraphViewController *)self graphView];
+  [graphView setFrame:{v5, v7, v9, v11}];
 }
 
-- (void)addSequenceData:(id)a3
+- (void)addSequenceData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = HKHealthKeyColor();
-  [(HKHeartbeatSequenceChartViewController *)self addSequenceData:v4 color:v5 lineWidth:0 markerRadius:1 dashStyle:2.0 annotate:3.0];
+  [(HKHeartbeatSequenceChartViewController *)self addSequenceData:dataCopy color:v5 lineWidth:0 markerRadius:1 dashStyle:2.0 annotate:3.0];
 }
 
-- (void)addSequenceData:(id)a3 color:(id)a4 lineWidth:(double)a5 markerRadius:(double)a6 dashStyle:(int64_t)a7 annotate:(BOOL)a8
+- (void)addSequenceData:(id)data color:(id)color lineWidth:(double)width markerRadius:(double)radius dashStyle:(int64_t)style annotate:(BOOL)annotate
 {
-  v14 = a4;
+  colorCopy = color;
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __106__HKHeartbeatSequenceChartViewController_addSequenceData_color_lineWidth_markerRadius_dashStyle_annotate___block_invoke;
   v16[3] = &unk_1E81B8CC8;
   v16[4] = self;
-  v17 = v14;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v15 = v14;
-  [a3 enumerateSequences:v16];
+  v17 = colorCopy;
+  widthCopy = width;
+  radiusCopy = radius;
+  styleCopy = style;
+  annotateCopy = annotate;
+  v15 = colorCopy;
+  [data enumerateSequences:v16];
 }
 
 uint64_t __106__HKHeartbeatSequenceChartViewController_addSequenceData_color_lineWidth_markerRadius_dashStyle_annotate___block_invoke(uint64_t a1, void *a2)
@@ -103,15 +103,15 @@ uint64_t __106__HKHeartbeatSequenceChartViewController_addSequenceData_color_lin
 
 - (void)_adjustGraphViewOptions
 {
-  v2 = [(HKGraphViewController *)self graphView];
-  [v2 setDisableSelection:1];
-  [v2 setOutlineOptions:4];
+  graphView = [(HKGraphViewController *)self graphView];
+  [graphView setDisableSelection:1];
+  [graphView setOutlineOptions:4];
 }
 
 - (void)_recomputeAxisRanges
 {
   v38 = *MEMORY[0x1E69E9840];
-  v3 = [(HKGraphViewController *)self graphView];
+  graphView = [(HKGraphViewController *)self graphView];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -159,7 +159,7 @@ uint64_t __106__HKHeartbeatSequenceChartViewController_addSequenceData_color_lin
   if (v9 >= 1.79769313e308 || v10 >= 1.79769313e308 || v8 <= -1.79769313e308 || v11 <= -1.79769313e308)
   {
     v19 = [HKValueRange valueRangeWithMinValue:&unk_1F4384930 maxValue:&unk_1F4384930, v33];
-    [v3 setEffectiveAxisRange:v19 effectiveVisibleRangeCadence:v19 effectiveVisibleRangeActive:v19];
+    [graphView setEffectiveAxisRange:v19 effectiveVisibleRangeCadence:v19 effectiveVisibleRangeActive:v19];
   }
 
   else
@@ -179,7 +179,7 @@ uint64_t __106__HKHeartbeatSequenceChartViewController_addSequenceData_color_lin
     v23 = [MEMORY[0x1E696AD98] numberWithDouble:v21];
     v24 = [HKValueRange valueRangeWithMinValue:v22 maxValue:v23];
 
-    [v3 setEffectiveAxisRange:v19 effectiveVisibleRangeCadence:v24 effectiveVisibleRangeActive:v24];
+    [graphView setEffectiveAxisRange:v19 effectiveVisibleRangeCadence:v24 effectiveVisibleRangeActive:v24];
     v25 = v10 + v11;
     v26 = v10 + v11 * 0.5;
     v27 = v26 + 20.0;
@@ -207,21 +207,21 @@ uint64_t __106__HKHeartbeatSequenceChartViewController_addSequenceData_color_lin
     v31 = [MEMORY[0x1E696AD98] numberWithDouble:v29];
     v32 = [HKValueRange valueRangeWithMinValue:v30 maxValue:v31];
 
-    [v3 autoscaleYAxesAnimated:0 specificRange:v32 onlyIfNeeded:0 completion:0];
+    [graphView autoscaleYAxesAnimated:0 specificRange:v32 onlyIfNeeded:0 completion:0];
   }
 }
 
-- (id)_heartbeatSequenceSeriesForSource:(id)a3 axis:(id)a4 color:(id)a5 lineWidth:(double)a6 markerRadius:(double)a7 dashStyle:(int64_t)a8 annotate:(BOOL)a9
+- (id)_heartbeatSequenceSeriesForSource:(id)source axis:(id)axis color:(id)color lineWidth:(double)width markerRadius:(double)radius dashStyle:(int64_t)style annotate:(BOOL)annotate
 {
-  v9 = a9;
+  annotateCopy = annotate;
   v48[1] = *MEMORY[0x1E69E9840];
-  v15 = a5;
-  v43 = a4;
-  v45 = a3;
+  colorCopy = color;
+  axisCopy = axis;
+  sourceCopy = source;
   v16 = objc_alloc_init(HKLineSeries);
   v17 = [HKGradientFillStyle alloc];
-  v18 = [v15 colorWithAlphaComponent:0.3];
-  v19 = [v15 colorWithAlphaComponent:0.0];
+  v18 = [colorCopy colorWithAlphaComponent:0.3];
+  v19 = [colorCopy colorWithAlphaComponent:0.0];
   v44 = [(HKGradientFillStyle *)v17 initWithFirstColor:v18 secondColor:v19];
 
   v20 = [HKGradientFillStyle alloc];
@@ -231,14 +231,14 @@ uint64_t __106__HKHeartbeatSequenceChartViewController_addSequenceData_color_lin
   v24 = [v23 colorWithAlphaComponent:0.0];
   v42 = [(HKGradientFillStyle *)v20 initWithFirstColor:v22 secondColor:v24];
 
-  v25 = HKUIOnePixel() + a6;
-  v26 = [[HKLineSeriesPointMarkerStyle alloc] initWithColor:v15 radius:1 style:a7];
-  v27 = [HKStrokeStyle strokeStyleWithColor:v15 lineWidth:v25];
-  [v27 setDashStyle:a8];
+  v25 = HKUIOnePixel() + width;
+  v26 = [[HKLineSeriesPointMarkerStyle alloc] initWithColor:colorCopy radius:1 style:radius];
+  v27 = [HKStrokeStyle strokeStyleWithColor:colorCopy lineWidth:v25];
+  [v27 setDashStyle:style];
   v28 = objc_alloc_init(HKLineSeriesPresentationStyle);
   [(HKLineSeriesPresentationStyle *)v28 setStrokeStyle:v27];
   v41 = v26;
-  if (v9)
+  if (annotateCopy)
   {
     [(HKLineSeriesPresentationStyle *)v28 setPointMarkerStyle:v26];
     [(HKLineSeriesPresentationStyle *)v28 setWaveForm:0];
@@ -247,7 +247,7 @@ uint64_t __106__HKHeartbeatSequenceChartViewController_addSequenceData_color_lin
     v30 = [MEMORY[0x1E69DB878] boldSystemFontOfSize:12.0];
     [(HKAxisLabelStyle *)v29 setFont:v30];
 
-    [(HKAxisLabelStyle *)v29 setTextColor:v15];
+    [(HKAxisLabelStyle *)v29 setTextColor:colorCopy];
     [(HKLineSeriesPresentationStyle *)v28 setAnnotationStyle:v29];
   }
 
@@ -280,12 +280,12 @@ uint64_t __106__HKHeartbeatSequenceChartViewController_addSequenceData_color_lin
   v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v46 count:1];
   [(HKLineSeries *)v16 setSelectedPresentationStyles:v37];
 
-  [(HKGraphSeries *)v16 setYAxis:v43];
+  [(HKGraphSeries *)v16 setYAxis:axisCopy];
   v38 = [HKValueRange valueRangeWithMinValue:&unk_1F4384940 maxValue:&unk_1F4384950];
   v39 = [HKNumericFixedAxisScalingRule ruleWithDefaultAxisBounds:v38 axisBoundsOverrides:0];
   [(HKGraphSeries *)v16 setAxisScalingRule:v39];
 
-  [(HKGraphSeries *)v16 setDataSource:v45];
+  [(HKGraphSeries *)v16 setDataSource:sourceCopy];
 
   return v16;
 }
@@ -293,8 +293,8 @@ uint64_t __106__HKHeartbeatSequenceChartViewController_addSequenceData_color_lin
 - (id)_verticalNumericalAxis
 {
   v2 = objc_alloc_init(HKSolidFillStyle);
-  v3 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-  [(HKSolidFillStyle *)v2 setColor:v3];
+  systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+  [(HKSolidFillStyle *)v2 setColor:systemBackgroundColor];
 
   v4 = objc_alloc_init(HKAxisStyle);
   v5 = HKDefaultChartYAxisColor();
@@ -304,8 +304,8 @@ uint64_t __106__HKHeartbeatSequenceChartViewController_addSequenceData_color_lin
   [(HKAxisStyle *)v4 setLabelStyle:v8];
 
   [(HKAxisStyle *)v4 setTickPositions:1];
-  v9 = [MEMORY[0x1E69DC888] hk_chartGrayGraphColor];
-  v10 = [HKStrokeStyle strokeStyleWithColor:v9 lineWidth:2.0];
+  hk_chartGrayGraphColor = [MEMORY[0x1E69DC888] hk_chartGrayGraphColor];
+  v10 = [HKStrokeStyle strokeStyleWithColor:hk_chartGrayGraphColor lineWidth:2.0];
   [(HKAxisStyle *)v4 setAxisLineStyle:v10];
 
   [(HKAxisStyle *)v4 setFillStyle:v2];
@@ -313,8 +313,8 @@ uint64_t __106__HKHeartbeatSequenceChartViewController_addSequenceData_color_lin
   [(HKAxisStyle *)v4 setFillOuterPadding:15.0];
   [(HKAxisStyle *)v4 setLocation:1];
   [(HKAxisStyle *)v4 setShowGridLines:1];
-  v11 = [MEMORY[0x1E69DC888] hk_chartGrayGraphColor];
-  v12 = [v11 colorWithAlphaComponent:0.5];
+  hk_chartGrayGraphColor2 = [MEMORY[0x1E69DC888] hk_chartGrayGraphColor];
+  v12 = [hk_chartGrayGraphColor2 colorWithAlphaComponent:0.5];
   v13 = [HKStrokeStyle strokeStyleWithColor:v12 lineWidth:HKUIOnePixel()];
   [(HKAxisStyle *)v4 setGridLineStyle:v13];
 

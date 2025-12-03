@@ -1,8 +1,8 @@
 @interface AVInputDeviceDiscoverySession
 + (void)initialize;
 - (AVInputDevice)fallbackInputDevice;
-- (AVInputDeviceDiscoverySession)initWithDeviceFeatures:(unint64_t)a3;
-- (AVInputDeviceDiscoverySession)initWithInputDeviceDiscoverySessionImpl:(id)a3;
+- (AVInputDeviceDiscoverySession)initWithDeviceFeatures:(unint64_t)features;
+- (AVInputDeviceDiscoverySession)initWithInputDeviceDiscoverySessionImpl:(id)impl;
 - (BOOL)devicePresenceDetected;
 - (BOOL)fastDiscoveryEnabled;
 - (NSArray)availableInputDevices;
@@ -11,18 +11,18 @@
 - (id)impl;
 - (int64_t)discoveryMode;
 - (void)dealloc;
-- (void)inputDeviceDiscoverySessionImpl:(id)a3 didExpireWithReplacement:(id)a4;
-- (void)inputDeviceDiscoverySessionImplDidChangeAvailableInputDevices:(id)a3;
-- (void)setAudioSessionID:(id)a3;
-- (void)setDiscoveryMode:(int64_t)a3 forClientIdentifiers:(id)a4;
-- (void)setFastDiscoveryEnabled:(BOOL)a3;
+- (void)inputDeviceDiscoverySessionImpl:(id)impl didExpireWithReplacement:(id)replacement;
+- (void)inputDeviceDiscoverySessionImplDidChangeAvailableInputDevices:(id)devices;
+- (void)setAudioSessionID:(id)d;
+- (void)setDiscoveryMode:(int64_t)mode forClientIdentifiers:(id)identifiers;
+- (void)setFastDiscoveryEnabled:(BOOL)enabled;
 @end
 
 @implementation AVInputDeviceDiscoverySession
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work();
@@ -92,14 +92,14 @@ id __37__AVInputDeviceDiscoverySession_impl__block_invoke(uint64_t a1)
 
 - (OpaqueFigRouteDiscoverer)routeDiscoverer
 {
-  v2 = [(AVInputDeviceDiscoverySession *)self impl];
+  impl = [(AVInputDeviceDiscoverySession *)self impl];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     return 0;
   }
 
-  return [v2 routeDiscoverer];
+  return [impl routeDiscoverer];
 }
 
 uint64_t __56__AVInputDeviceDiscoverySession_initWithDeviceFeatures___block_invoke(uint64_t a1)
@@ -112,16 +112,16 @@ uint64_t __56__AVInputDeviceDiscoverySession_initWithDeviceFeatures___block_invo
 
 - (NSNumber)audioSessionID
 {
-  v2 = [(AVInputDeviceDiscoverySession *)self impl];
+  impl = [(AVInputDeviceDiscoverySession *)self impl];
 
-  return [v2 audioSessionId];
+  return [impl audioSessionId];
 }
 
-- (void)setAudioSessionID:(id)a3
+- (void)setAudioSessionID:(id)d
 {
-  v4 = [(AVInputDeviceDiscoverySession *)self impl];
+  impl = [(AVInputDeviceDiscoverySession *)self impl];
 
-  [v4 setAudioSessionId:a3];
+  [impl setAudioSessionId:d];
 }
 
 - (int64_t)discoveryMode
@@ -143,7 +143,7 @@ uint64_t __56__AVInputDeviceDiscoverySession_initWithDeviceFeatures___block_invo
   return v3;
 }
 
-- (void)setDiscoveryMode:(int64_t)a3 forClientIdentifiers:(id)a4
+- (void)setDiscoveryMode:(int64_t)mode forClientIdentifiers:(id)identifiers
 {
   ivarAccessQueue = self->_inputDeviceDiscoverySession->ivarAccessQueue;
   v7[0] = MEMORY[0x1E69E9820];
@@ -151,23 +151,23 @@ uint64_t __56__AVInputDeviceDiscoverySession_initWithDeviceFeatures___block_invo
   v7[2] = __71__AVInputDeviceDiscoverySession_setDiscoveryMode_forClientIdentifiers___block_invoke;
   v7[3] = &unk_1E794ED50;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = mode;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, v7);
   [-[AVInputDeviceDiscoverySession impl](self "impl")];
 }
 
 - (NSArray)availableInputDevices
 {
-  v2 = [(AVInputDeviceDiscoverySession *)self impl];
+  impl = [(AVInputDeviceDiscoverySession *)self impl];
 
-  return [v2 availableInputDevices];
+  return [impl availableInputDevices];
 }
 
 - (BOOL)devicePresenceDetected
 {
-  v2 = [(AVInputDeviceDiscoverySession *)self impl];
+  impl = [(AVInputDeviceDiscoverySession *)self impl];
 
-  return [v2 devicePresenceDetected];
+  return [impl devicePresenceDetected];
 }
 
 - (BOOL)fastDiscoveryEnabled
@@ -189,7 +189,7 @@ uint64_t __56__AVInputDeviceDiscoverySession_initWithDeviceFeatures___block_invo
   return v3;
 }
 
-- (void)setFastDiscoveryEnabled:(BOOL)a3
+- (void)setFastDiscoveryEnabled:(BOOL)enabled
 {
   v12 = *MEMORY[0x1E69E9840];
   if (dword_1ED6F6BA8)
@@ -207,7 +207,7 @@ uint64_t __56__AVInputDeviceDiscoverySession_initWithDeviceFeatures___block_invo
   block[2] = __57__AVInputDeviceDiscoverySession_setFastDiscoveryEnabled___block_invoke;
   block[3] = &unk_1E794EF70;
   block[4] = self;
-  v9 = a3;
+  enabledCopy = enabled;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, block);
   [-[AVInputDeviceDiscoverySession impl](self "impl")];
   v7 = *MEMORY[0x1E69E9840];
@@ -215,20 +215,20 @@ uint64_t __56__AVInputDeviceDiscoverySession_initWithDeviceFeatures___block_invo
 
 - (AVInputDevice)fallbackInputDevice
 {
-  v2 = [(AVInputDeviceDiscoverySession *)self impl];
+  impl = [(AVInputDeviceDiscoverySession *)self impl];
 
-  return [v2 fallbackInputDevice];
+  return [impl fallbackInputDevice];
 }
 
-- (void)inputDeviceDiscoverySessionImplDidChangeAvailableInputDevices:(id)a3
+- (void)inputDeviceDiscoverySessionImplDidChangeAvailableInputDevices:(id)devices
 {
   v3 = [MEMORY[0x1E696AD80] notificationWithName:@"AVInputDeviceDiscoverySessionAvailableInputDevicesDidChangeNotification" object:self userInfo:0];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v4 postNotification:v3];
+  [defaultCenter postNotification:v3];
 }
 
-- (void)inputDeviceDiscoverySessionImpl:(id)a3 didExpireWithReplacement:(id)a4
+- (void)inputDeviceDiscoverySessionImpl:(id)impl didExpireWithReplacement:(id)replacement
 {
   v9 = 0;
   v10 = &v9;
@@ -241,15 +241,15 @@ uint64_t __56__AVInputDeviceDiscoverySession_initWithDeviceFeatures___block_invo
   block[1] = 3221225472;
   block[2] = __90__AVInputDeviceDiscoverySession_inputDeviceDiscoverySessionImpl_didExpireWithReplacement___block_invoke;
   block[3] = &unk_1E794EE90;
-  block[5] = a4;
+  block[5] = replacement;
   block[6] = &v9;
   block[4] = self;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, block);
   [v10[5] setParentInputDeviceDiscoverySession:0];
-  [a4 setParentInputDeviceDiscoverySession:self];
+  [replacement setParentInputDeviceDiscoverySession:self];
   [(AVInputDeviceDiscoverySession *)self inputDeviceDiscoverySessionImplDidChangeAvailableInputDevices:[(AVInputDeviceDiscoverySession *)self impl]];
-  v7 = [(AVInputDeviceDiscoverySession *)self impl];
-  [v7 inputDeviceDiscoverySessionDidChangeDiscoveryMode:self forClientIdentifiers:MEMORY[0x1E695E0F0]];
+  impl = [(AVInputDeviceDiscoverySession *)self impl];
+  [impl inputDeviceDiscoverySessionDidChangeDiscoveryMode:self forClientIdentifiers:MEMORY[0x1E695E0F0]];
   [-[AVInputDeviceDiscoverySession impl](self "impl")];
 
   _Block_object_dispose(&v9, 8);
@@ -264,14 +264,14 @@ id __90__AVInputDeviceDiscoverySession_inputDeviceDiscoverySessionImpl_didExpire
   return result;
 }
 
-- (AVInputDeviceDiscoverySession)initWithDeviceFeatures:(unint64_t)a3
+- (AVInputDeviceDiscoverySession)initWithDeviceFeatures:(unint64_t)features
 {
   v11.receiver = self;
   v11.super_class = AVInputDeviceDiscoverySession;
   v4 = [(AVInputDeviceDiscoverySession *)&v11 init];
   if (v4)
   {
-    if (a3 == 1)
+    if (features == 1)
     {
       v5 = [AVFigRouteDiscovererInputDeviceDiscoverySessionImpl alloc];
       v9[0] = MEMORY[0x1E69E9820];
@@ -298,12 +298,12 @@ id __90__AVInputDeviceDiscoverySession_inputDeviceDiscoverySessionImpl_didExpire
   return v7;
 }
 
-- (AVInputDeviceDiscoverySession)initWithInputDeviceDiscoverySessionImpl:(id)a3
+- (AVInputDeviceDiscoverySession)initWithInputDeviceDiscoverySessionImpl:(id)impl
 {
   v9.receiver = self;
   v9.super_class = AVInputDeviceDiscoverySession;
   v4 = [(AVInputDeviceDiscoverySession *)&v9 init];
-  if (v4 && (v5 = objc_alloc_init(AVInputDeviceDiscoverySessionInternal), (v4->_inputDeviceDiscoverySession = v5) != 0) && (v4->_inputDeviceDiscoverySession->ivarAccessQueue = av_readwrite_dispatch_queue_create("com.apple.avfoundation.avidds.ivars"), v4->_inputDeviceDiscoverySession->discoveryMode = 0, v4->_inputDeviceDiscoverySession->fastDiscoveryEnabled = 1, v4->_inputDeviceDiscoverySession->impl = a3, (impl = v4->_inputDeviceDiscoverySession->impl) != 0))
+  if (v4 && (v5 = objc_alloc_init(AVInputDeviceDiscoverySessionInternal), (v4->_inputDeviceDiscoverySession = v5) != 0) && (v4->_inputDeviceDiscoverySession->ivarAccessQueue = av_readwrite_dispatch_queue_create("com.apple.avfoundation.avidds.ivars"), v4->_inputDeviceDiscoverySession->discoveryMode = 0, v4->_inputDeviceDiscoverySession->fastDiscoveryEnabled = 1, v4->_inputDeviceDiscoverySession->impl = impl, (impl = v4->_inputDeviceDiscoverySession->impl) != 0))
   {
     [(AVInputDeviceDiscoverySessionImpl *)impl setParentInputDeviceDiscoverySession:v4];
     v7 = v4;

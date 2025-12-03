@@ -1,26 +1,26 @@
 @interface _TUISyncLayoutAssertion
 - (NSString)description;
-- (_TUISyncLayoutAssertion)initWithController:(id)a3 timeout:(double)a4 transaction:(id)a5 feedId:(id)a6;
-- (void)_invalidate:(id)a3;
+- (_TUISyncLayoutAssertion)initWithController:(id)controller timeout:(double)timeout transaction:(id)transaction feedId:(id)id;
+- (void)_invalidate:(id)_invalidate;
 - (void)dealloc;
 @end
 
 @implementation _TUISyncLayoutAssertion
 
-- (_TUISyncLayoutAssertion)initWithController:(id)a3 timeout:(double)a4 transaction:(id)a5 feedId:(id)a6
+- (_TUISyncLayoutAssertion)initWithController:(id)controller timeout:(double)timeout transaction:(id)transaction feedId:(id)id
 {
-  v10 = a3;
-  v11 = a5;
+  controllerCopy = controller;
+  transactionCopy = transaction;
   v15.receiver = self;
   v15.super_class = _TUISyncLayoutAssertion;
   v12 = [(_TUISyncLayoutAssertion *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeWeak(&v12->_controller, v10);
-    v13->_timeout = a4;
-    objc_storeStrong(&v13->_transaction, a5);
-    v13->_feedId.uniqueIdentifier = a6.var0;
+    objc_storeWeak(&v12->_controller, controllerCopy);
+    v13->_timeout = timeout;
+    objc_storeStrong(&v13->_transaction, transaction);
+    v13->_feedId.uniqueIdentifier = id.var0;
   }
 
   return v13;
@@ -34,12 +34,12 @@
   [(_TUISyncLayoutAssertion *)&v3 dealloc];
 }
 
-- (void)_invalidate:(id)a3
+- (void)_invalidate:(id)_invalidate
 {
-  v4 = a3;
+  _invalidateCopy = _invalidate;
   WeakRetained = objc_loadWeakRetained(&self->_controller);
   objc_storeWeak(&self->_controller, 0);
-  [WeakRetained removeAssertion:v4];
+  [WeakRetained removeAssertion:_invalidateCopy];
 }
 
 - (NSString)description

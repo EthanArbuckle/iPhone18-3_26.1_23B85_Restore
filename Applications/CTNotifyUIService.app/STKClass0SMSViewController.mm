@@ -8,11 +8,11 @@
 - (id)messageTextLabel;
 - (id)messageTitleLabel;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)dealloc;
 - (void)dismiss;
-- (void)learnMoreButtonClicked:(id)a3;
-- (void)setMessageString:(id)a3;
+- (void)learnMoreButtonClicked:(id)clicked;
+- (void)setMessageString:(id)string;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -30,9 +30,9 @@
 - (unint64_t)supportedInterfaceOrientations
 {
   v2 = +[UIDevice currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  userInterfaceIdiom = [v2 userInterfaceIdiom];
 
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
   {
     return 30;
   }
@@ -48,8 +48,8 @@
   v4.receiver = self;
   v4.super_class = STKClass0SMSViewController;
   [(STKClass0SMSViewController *)&v4 viewDidLoad];
-  v3 = [(STKClass0SMSViewController *)self _remoteViewControllerProxy];
-  [v3 setAllowsAlertStacking:1];
+  _remoteViewControllerProxy = [(STKClass0SMSViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setAllowsAlertStacking:1];
 }
 
 - (void)viewDidLayoutSubviews
@@ -57,34 +57,34 @@
   v74.receiver = self;
   v74.super_class = STKClass0SMSViewController;
   [(STKClass0SMSViewController *)&v74 viewDidLayoutSubviews];
-  v3 = [(STKClass0SMSViewController *)self view];
-  [v3 bounds];
+  view = [(STKClass0SMSViewController *)self view];
+  [view bounds];
   v71 = v5;
   v72 = v4;
   v70 = v6;
   v73 = v7;
 
-  v8 = [(STKClass0SMSViewController *)self view];
-  [v8 frame];
+  view2 = [(STKClass0SMSViewController *)self view];
+  [view2 frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
 
-  v17 = [(STKClass0SMSViewController *)self messageTitleLabel];
-  v18 = [(STKClass0SMSViewController *)self learnMoreButton];
-  v19 = [(STKClass0SMSViewController *)self messageTextLabel];
+  messageTitleLabel = [(STKClass0SMSViewController *)self messageTitleLabel];
+  learnMoreButton = [(STKClass0SMSViewController *)self learnMoreButton];
+  messageTextLabel = [(STKClass0SMSViewController *)self messageTextLabel];
   v75.origin.x = v10;
   v75.origin.y = v12;
   v20 = v12;
   v75.size.width = v14;
   v75.size.height = v16;
   v21 = CGRectGetHeight(v75) + -40.0 + -52.0 + -24.0;
-  [v17 frame];
+  [messageTitleLabel frame];
   v22 = v21 - (CGRectGetHeight(v76) + 16.0);
-  [v18 frame];
+  [learnMoreButton frame];
   v23 = v22 - (CGRectGetHeight(v77) + 32.0) + -44.0;
-  [v19 sizeThatFits:?];
+  [messageTextLabel sizeThatFits:?];
   if (v24 >= v23)
   {
     v24 = v23;
@@ -114,16 +114,16 @@
   v81.size.width = 270.0;
   v81.size.height = v26;
   v30 = v29 - CGRectGetHeight(v81) * 0.5;
-  v31 = [(STKClass0SMSViewController *)self contentContainerView];
-  v32 = [(STKClass0SMSViewController *)self blurEffectContainerView];
-  [v32 setFrame:{v28, v30, 270.0, v26}];
+  contentContainerView = [(STKClass0SMSViewController *)self contentContainerView];
+  blurEffectContainerView = [(STKClass0SMSViewController *)self blurEffectContainerView];
+  [blurEffectContainerView setFrame:{v28, v30, 270.0, v26}];
   recta = v30;
   v33 = v26;
-  [v31 setFrame:{v28, v30, 270.0, v26}];
-  v34 = [(STKClass0SMSViewController *)self view];
-  [v34 bringSubviewToFront:v31];
+  [contentContainerView setFrame:{v28, v30, 270.0, v26}];
+  view3 = [(STKClass0SMSViewController *)self view];
+  [view3 bringSubviewToFront:contentContainerView];
 
-  [v17 frame];
+  [messageTitleLabel frame];
   v36 = v35;
   v38 = v37;
   v40 = v39;
@@ -143,15 +143,15 @@
   v84.size.width = v40;
   v84.size.height = v42;
   v45 = 36.0 - CGRectGetHeight(v84);
-  [v17 setFrame:{v44, v45, v40, v42}];
+  [messageTitleLabel setFrame:{v44, v45, v40, v42}];
   v85.origin.x = v44;
   v85.origin.y = v45;
   v85.size.width = v40;
   v85.size.height = v42;
   v46 = CGRectGetMaxY(v85) + 16.0;
-  [v19 setFrame:{20.0, v46, 230.0, rect_16}];
-  v47 = [(STKClass0SMSViewController *)self dismissButton];
-  [v32 frame];
+  [messageTextLabel setFrame:{20.0, v46, 230.0, rect_16}];
+  dismissButton = [(STKClass0SMSViewController *)self dismissButton];
+  [blurEffectContainerView frame];
   Width = CGRectGetWidth(v86);
   v87.origin.x = v28;
   v87.size.width = 270.0;
@@ -167,18 +167,18 @@
   v89.origin.y = v46;
   v89.size.width = 230.0;
   v89.size.height = rect_16;
-  [v47 setFrame:{v50, CGRectGetMaxY(v89) + 24.0, Width, 44.0}];
+  [dismissButton setFrame:{v50, CGRectGetMaxY(v89) + 24.0, Width, 44.0}];
   lineLayer = self->_lineLayer;
-  [v47 frame];
+  [dismissButton frame];
   v53 = v52;
-  [v47 frame];
+  [dismissButton frame];
   [(CALayer *)lineLayer setFrame:v53, -1.0, CGRectGetWidth(v90), 1.0];
-  v54 = [(STKClass0SMSViewController *)self alertContainerView];
-  [v54 setFrame:{v72, v71, v70, v73}];
-  v55 = [(STKClass0SMSViewController *)self darkBlurView];
-  [v55 setFrame:{v72, v71, v70, v73}];
-  [v18 sizeToFit];
-  [v18 frame];
+  alertContainerView = [(STKClass0SMSViewController *)self alertContainerView];
+  [alertContainerView setFrame:{v72, v71, v70, v73}];
+  darkBlurView = [(STKClass0SMSViewController *)self darkBlurView];
+  [darkBlurView setFrame:{v72, v71, v70, v73}];
+  [learnMoreButton sizeToFit];
+  [learnMoreButton frame];
   v57 = v56;
   v59 = v58;
   v61 = v60;
@@ -202,18 +202,18 @@
   v94.origin.y = v65;
   v94.size.width = v61;
   v94.size.height = v63;
-  [v18 setFrame:{v66 - CGRectGetWidth(v94) * 0.5, v65, v61, v63}];
+  [learnMoreButton setFrame:{v66 - CGRectGetWidth(v94) * 0.5, v65, v61, v63}];
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [a3 actions];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  actions = [context actions];
+  v8 = [actions countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -224,7 +224,7 @@
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(actions);
         }
 
         v12 = [STKSessionAction _sessionActionFromBSAction:*(*(&v15 + 1) + 8 * i)];
@@ -238,7 +238,7 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v9 = [actions countByEnumeratingWithState:&v15 objects:v21 count:16];
       if (v9)
       {
         continue;
@@ -258,13 +258,13 @@ LABEL_11:
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "sessionAction = %@", buf, 0xCu);
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)learnMoreButtonClicked:(id)a3
+- (void)learnMoreButtonClicked:(id)clicked
 {
   v5 = [[STKClass0SMSAboutViewController alloc] initWithNibName:0 bundle:0];
   v4 = [[UINavigationController alloc] initWithRootViewController:v5];
@@ -287,32 +287,32 @@ LABEL_11:
   [UIView animateWithDuration:v4 animations:v3 completion:0.3];
 }
 
-- (void)setMessageString:(id)a3
+- (void)setMessageString:(id)string
 {
-  v4 = a3;
-  v5 = [(STKClass0SMSViewController *)self sessionAction];
-  v6 = [v5 sessionData];
+  stringCopy = string;
+  sessionAction = [(STKClass0SMSViewController *)self sessionAction];
+  sessionData = [sessionAction sessionData];
 
-  v7 = [v6 address];
-  if ([v7 length] && objc_msgSend(v6, "showsFromAddress"))
+  address = [sessionData address];
+  if ([address length] && objc_msgSend(sessionData, "showsFromAddress"))
   {
     v8 = [NSBundle bundleWithIdentifier:@"com.apple.CTNotifyUIService"];
     v9 = [v8 localizedStringForKey:@"CLASS_0_ALERT_MESSAGE_FROM" value:&stru_100018670 table:@"SIMToolkitUI"];
-    v10 = [NSString stringWithFormat:v9, v7];
+    v10 = [NSString stringWithFormat:v9, address];
 
     v15[0] = v10;
-    v15[1] = v4;
+    v15[1] = stringCopy;
     v11 = [NSArray arrayWithObjects:v15 count:2];
     v12 = [v11 componentsJoinedByString:@"\n"];
 
-    v4 = v12;
+    stringCopy = v12;
   }
 
-  v13 = [(STKClass0SMSViewController *)self messageTextLabel];
-  [v13 setText:v4];
+  messageTextLabel = [(STKClass0SMSViewController *)self messageTextLabel];
+  [messageTextLabel setText:stringCopy];
 
-  v14 = [(STKClass0SMSViewController *)self view];
-  [v14 setNeedsLayout];
+  view = [(STKClass0SMSViewController *)self view];
+  [view setNeedsLayout];
 }
 
 - (id)contentContainerView
@@ -328,8 +328,8 @@ LABEL_11:
     v7 = +[UIColor clearColor];
     [(UIView *)v6 setBackgroundColor:v7];
 
-    v8 = [(STKClass0SMSViewController *)self view];
-    [v8 addSubview:self->_contentContainerView];
+    view = [(STKClass0SMSViewController *)self view];
+    [view addSubview:self->_contentContainerView];
 
     contentContainerView = self->_contentContainerView;
   }
@@ -360,8 +360,8 @@ LABEL_11:
     [(UILabel *)v11 setTextColor:v12];
 
     [(UILabel *)self->_messageTitleLabel sizeToFit];
-    v13 = [(STKClass0SMSViewController *)self contentContainerView];
-    [v13 addSubview:self->_messageTitleLabel];
+    contentContainerView = [(STKClass0SMSViewController *)self contentContainerView];
+    [contentContainerView addSubview:self->_messageTitleLabel];
 
     messageTitleLabel = self->_messageTitleLabel;
   }
@@ -389,8 +389,8 @@ LABEL_11:
 
     [(UILabel *)self->_messageTextLabel setLineBreakMode:0];
     [(UILabel *)self->_messageTextLabel setNumberOfLines:0];
-    v10 = [(STKClass0SMSViewController *)self contentContainerView];
-    [v10 addSubview:self->_messageTextLabel];
+    contentContainerView = [(STKClass0SMSViewController *)self contentContainerView];
+    [contentContainerView addSubview:self->_messageTextLabel];
 
     messageTextLabel = self->_messageTextLabel;
   }
@@ -412,20 +412,20 @@ LABEL_11:
     v8 = [v7 localizedStringForKey:@"CLASS0SMS_DISMISS" value:&stru_100018670 table:@"SIMToolkitUI"];
     [(UIButton *)v6 setTitle:v8 forState:0];
 
-    v9 = [(UIButton *)self->_dismissButton titleLabel];
+    titleLabel = [(UIButton *)self->_dismissButton titleLabel];
     v10 = [UIFont boldSystemFontOfSize:17.0];
-    [v9 setFont:v10];
+    [titleLabel setFont:v10];
 
-    v11 = [(UIButton *)self->_dismissButton titleLabel];
-    [v11 sizeToFit];
+    titleLabel2 = [(UIButton *)self->_dismissButton titleLabel];
+    [titleLabel2 sizeToFit];
 
     v12 = self->_dismissButton;
     v13 = +[UIColor whiteColor];
     [(UIButton *)v12 setTitleColor:v13 forState:0];
 
     [(UIButton *)self->_dismissButton addTarget:self action:"dismissButtonClicked:" forControlEvents:64];
-    v14 = [(STKClass0SMSViewController *)self contentContainerView];
-    [v14 addSubview:self->_dismissButton];
+    contentContainerView = [(STKClass0SMSViewController *)self contentContainerView];
+    [contentContainerView addSubview:self->_dismissButton];
 
     v15 = +[CALayer layer];
     lineLayer = self->_lineLayer;
@@ -437,8 +437,8 @@ LABEL_11:
 
     LODWORD(v19) = 1036831949;
     [(CALayer *)self->_lineLayer setOpacity:v19];
-    v20 = [(UIButton *)self->_dismissButton layer];
-    [v20 addSublayer:self->_lineLayer];
+    layer = [(UIButton *)self->_dismissButton layer];
+    [layer addSublayer:self->_lineLayer];
 
     dismissButton = self->_dismissButton;
   }
@@ -465,9 +465,9 @@ LABEL_11:
     v10 = +[UIColor whiteColor];
     [(UIButton *)v9 setTitleColor:v10 forState:0];
 
-    v11 = [(STKClass0SMSViewController *)self alertContainerView];
-    v12 = [v11 contentView];
-    [v12 addSubview:self->_learnMoreButton];
+    alertContainerView = [(STKClass0SMSViewController *)self alertContainerView];
+    contentView = [alertContainerView contentView];
+    [contentView addSubview:self->_learnMoreButton];
 
     learnMoreButton = self->_learnMoreButton;
   }
@@ -486,8 +486,8 @@ LABEL_11:
 
     v6 = [UIBlurEffect effectWithStyle:2];
     [(UIVisualEffectView *)self->_darkBlurView setEffect:v6];
-    v7 = [(STKClass0SMSViewController *)self view];
-    [v7 insertSubview:self->_darkBlurView atIndex:0];
+    view = [(STKClass0SMSViewController *)self view];
+    [view insertSubview:self->_darkBlurView atIndex:0];
 
     darkBlurView = self->_darkBlurView;
   }
@@ -512,14 +512,14 @@ LABEL_11:
     v9 = +[UIColor clearColor];
     [v8 setBackgroundColor:v9];
 
-    v10 = [(UIVisualEffectView *)self->_alertContainerView contentView];
-    [v10 addSubview:v8];
+    contentView = [(UIVisualEffectView *)self->_alertContainerView contentView];
+    [contentView addSubview:v8];
 
-    v11 = [(STKClass0SMSViewController *)self view];
-    [v11 insertSubview:self->_alertContainerView atIndex:0];
+    view = [(STKClass0SMSViewController *)self view];
+    [view insertSubview:self->_alertContainerView atIndex:0];
 
-    v12 = [(STKClass0SMSViewController *)self view];
-    [v12 setNeedsLayout];
+    view2 = [(STKClass0SMSViewController *)self view];
+    [view2 setNeedsLayout];
 
     alertContainerView = self->_alertContainerView;
   }
@@ -539,12 +539,12 @@ LABEL_11:
     v6 = [UIBlurEffect effectWithStyle:1];
     [(UIVisualEffectView *)self->_blurEffectContainerView setEffect:v6];
     [(UIVisualEffectView *)self->_blurEffectContainerView setAlpha:0.6];
-    v7 = [(UIVisualEffectView *)self->_blurEffectContainerView layer];
-    [v7 setCornerRadius:13.0];
+    layer = [(UIVisualEffectView *)self->_blurEffectContainerView layer];
+    [layer setCornerRadius:13.0];
 
     [(UIVisualEffectView *)self->_blurEffectContainerView setClipsToBounds:1];
-    v8 = [(STKClass0SMSViewController *)self view];
-    [v8 addSubview:self->_blurEffectContainerView];
+    view = [(STKClass0SMSViewController *)self view];
+    [view addSubview:self->_blurEffectContainerView];
 
     blurEffectContainerView = self->_blurEffectContainerView;
   }

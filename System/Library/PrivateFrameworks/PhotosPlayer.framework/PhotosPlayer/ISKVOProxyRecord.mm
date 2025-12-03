@@ -1,21 +1,21 @@
 @interface ISKVOProxyRecord
-- (ISKVOProxyRecord)initWithProxy:(id)a3 queue:(id)a4;
+- (ISKVOProxyRecord)initWithProxy:(id)proxy queue:(id)queue;
 @end
 
 @implementation ISKVOProxyRecord
 
-- (ISKVOProxyRecord)initWithProxy:(id)a3 queue:(id)a4
+- (ISKVOProxyRecord)initWithProxy:(id)proxy queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  proxyCopy = proxy;
+  queueCopy = queue;
   v12.receiver = self;
   v12.super_class = ISKVOProxyRecord;
   v9 = [(ISKVOProxyRecord *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_proxy, a3);
-    objc_storeStrong(&v10->_queue, a4);
+    objc_storeStrong(&v9->_proxy, proxy);
+    objc_storeStrong(&v10->_queue, queue);
   }
 
   return v10;

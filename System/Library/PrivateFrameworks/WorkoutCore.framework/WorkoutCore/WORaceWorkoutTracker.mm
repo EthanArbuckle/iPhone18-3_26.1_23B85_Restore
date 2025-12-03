@@ -1,36 +1,36 @@
 @interface WORaceWorkoutTracker
 - (NSDictionary)metadata;
 - (WORaceWorkoutTracker)init;
-- (WORaceWorkoutTracker)initWithConfiguration:(id)a3;
-- (void)dataProvider:(id)a3 didUpdate:(unint64_t)a4;
-- (void)didUpdate:(id)a3;
-- (void)recoverWith:(id)a3 metadata:(id)a4;
-- (void)setRoutePoints:(id)a3;
+- (WORaceWorkoutTracker)initWithConfiguration:(id)configuration;
+- (void)dataProvider:(id)provider didUpdate:(unint64_t)update;
+- (void)didUpdate:(id)update;
+- (void)recoverWith:(id)with metadata:(id)metadata;
+- (void)setRoutePoints:(id)points;
 @end
 
 @implementation WORaceWorkoutTracker
 
-- (WORaceWorkoutTracker)initWithConfiguration:(id)a3
+- (WORaceWorkoutTracker)initWithConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = specialized RaceWorkoutTracker.init(configuration:)(v3);
+  configurationCopy = configuration;
+  v4 = specialized RaceWorkoutTracker.init(configuration:)(configurationCopy);
 
   return v4;
 }
 
-- (void)didUpdate:(id)a3
+- (void)didUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
-  RaceWorkoutTracker.didUpdate(_:)(v4);
+  updateCopy = update;
+  selfCopy = self;
+  RaceWorkoutTracker.didUpdate(_:)(updateCopy);
 }
 
-- (void)recoverWith:(id)a3 metadata:(id)a4
+- (void)recoverWith:(id)with metadata:(id)metadata
 {
   v6 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
-  RaceWorkoutTracker.recover(with:metadata:)(v7, v6);
+  withCopy = with;
+  selfCopy = self;
+  RaceWorkoutTracker.recover(with:metadata:)(withCopy, v6);
 }
 
 - (WORaceWorkoutTracker)init
@@ -42,7 +42,7 @@
 
 - (NSDictionary)metadata
 {
-  v2 = self;
+  selfCopy = self;
   RaceWorkoutTracker.metadata.getter();
 
   v3.super.isa = Dictionary._bridgeToObjectiveC()().super.isa;
@@ -50,22 +50,22 @@
   return v3.super.isa;
 }
 
-- (void)dataProvider:(id)a3 didUpdate:(unint64_t)a4
+- (void)dataProvider:(id)provider didUpdate:(unint64_t)update
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  RaceWorkoutTracker.dataProvider(_:didUpdate:)(a3, a4);
+  selfCopy = self;
+  RaceWorkoutTracker.dataProvider(_:didUpdate:)(provider, update);
   swift_unknownObjectRelease();
 }
 
-- (void)setRoutePoints:(id)a3
+- (void)setRoutePoints:(id)points
 {
   swift_beginAccess();
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
     v5 = Strong;
-    v6 = a3;
+    pointsCopy = points;
     [v5 setRoutePoints_];
 
     swift_unknownObjectRelease();

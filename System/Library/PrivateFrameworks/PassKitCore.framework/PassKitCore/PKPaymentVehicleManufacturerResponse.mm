@@ -1,24 +1,24 @@
 @interface PKPaymentVehicleManufacturerResponse
-- (PKPaymentVehicleManufacturerResponse)initWithData:(id)a3;
-- (PKPaymentVehicleManufacturerResponse)initWithEncryptionScheme:(id)a3 ephemeralPublicKey:(id)a4 publicKeyHash:(id)a5 encryptedData:(id)a6;
+- (PKPaymentVehicleManufacturerResponse)initWithData:(id)data;
+- (PKPaymentVehicleManufacturerResponse)initWithEncryptionScheme:(id)scheme ephemeralPublicKey:(id)key publicKeyHash:(id)hash encryptedData:(id)data;
 @end
 
 @implementation PKPaymentVehicleManufacturerResponse
 
-- (PKPaymentVehicleManufacturerResponse)initWithData:(id)a3
+- (PKPaymentVehicleManufacturerResponse)initWithData:(id)data
 {
   v26 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
   v21.super_class = PKPaymentVehicleManufacturerResponse;
-  v3 = [(PKWebServiceResponse *)&v21 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v21 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [v5 PKDictionaryForKey:@"oemData"];
+      v6 = [jSONObject PKDictionaryForKey:@"oemData"];
       v7 = [v6 PKStringForKey:@"version"];
       encryptionScheme = v4->_encryptionScheme;
       v4->_encryptionScheme = v7;
@@ -64,30 +64,30 @@
   return v4;
 }
 
-- (PKPaymentVehicleManufacturerResponse)initWithEncryptionScheme:(id)a3 ephemeralPublicKey:(id)a4 publicKeyHash:(id)a5 encryptedData:(id)a6
+- (PKPaymentVehicleManufacturerResponse)initWithEncryptionScheme:(id)scheme ephemeralPublicKey:(id)key publicKeyHash:(id)hash encryptedData:(id)data
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  schemeCopy = scheme;
+  keyCopy = key;
+  hashCopy = hash;
+  dataCopy = data;
   v24.receiver = self;
   v24.super_class = PKPaymentVehicleManufacturerResponse;
   v14 = [(PKPaymentVehicleManufacturerResponse *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [schemeCopy copy];
     encryptionScheme = v14->_encryptionScheme;
     v14->_encryptionScheme = v15;
 
-    v17 = [v11 copy];
+    v17 = [keyCopy copy];
     ephemeralPublicKey = v14->_ephemeralPublicKey;
     v14->_ephemeralPublicKey = v17;
 
-    v19 = [v12 copy];
+    v19 = [hashCopy copy];
     publicKeyHash = v14->_publicKeyHash;
     v14->_publicKeyHash = v19;
 
-    v21 = [v13 copy];
+    v21 = [dataCopy copy];
     encryptedData = v14->_encryptedData;
     v14->_encryptedData = v21;
   }

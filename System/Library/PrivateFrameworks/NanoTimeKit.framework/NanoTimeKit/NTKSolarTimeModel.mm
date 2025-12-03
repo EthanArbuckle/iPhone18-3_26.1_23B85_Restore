@@ -1,5 +1,5 @@
 @interface NTKSolarTimeModel
-- (BOOL)includesDate:(id)a3;
+- (BOOL)includesDate:(id)date;
 - (NSDate)endDateForReferenceDate;
 - (NSDate)localDawnDate;
 - (NSDate)localDuskDate;
@@ -8,28 +8,28 @@
 - (NSDate)localSunriseDate;
 - (NSDate)localSunsetDate;
 - (NSDate)startDateForReferenceDate;
-- (NTKSolarTimeModel)initWithReferenceDate:(id)a3 referenceLocation:(id)a4 twilightType:(unint64_t)a5;
-- (double)percentageThroughPeriodForDate:(id)a3;
+- (NTKSolarTimeModel)initWithReferenceDate:(id)date referenceLocation:(id)location twilightType:(unint64_t)type;
+- (double)percentageThroughPeriodForDate:(id)date;
 - (double)percentageThroughPeriodForIdealizedTimeInCurrentSolarDay;
-- (double)percentageThroughPeriodInCurrentSolarDayForDate:(id)a3;
-- (id)_nextEvent:(id)a3 ofType:(unsigned int)a4;
-- (id)dateForPercentageThroughPeriod:(double)a3;
-- (id)normalizeDateIntervalForDate:(id)a3;
+- (double)percentageThroughPeriodInCurrentSolarDayForDate:(id)date;
+- (id)_nextEvent:(id)event ofType:(unsigned int)type;
+- (id)dateForPercentageThroughPeriod:(double)period;
+- (id)normalizeDateIntervalForDate:(id)date;
 - (id)ntkCacheableKey;
 - (void)_updateDependentValues;
-- (void)setReferenceDate:(id)a3;
-- (void)setReferenceLocation:(id)a3;
-- (void)setUsePlaceholderData:(BOOL)a3;
+- (void)setReferenceDate:(id)date;
+- (void)setReferenceLocation:(id)location;
+- (void)setUsePlaceholderData:(BOOL)data;
 - (void)updateForTimeZoneChange;
 @end
 
 @implementation NTKSolarTimeModel
 
-- (NTKSolarTimeModel)initWithReferenceDate:(id)a3 referenceLocation:(id)a4 twilightType:(unint64_t)a5
+- (NTKSolarTimeModel)initWithReferenceDate:(id)date referenceLocation:(id)location twilightType:(unint64_t)type
 {
   v21 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
+  dateCopy = date;
+  locationCopy = location;
   v14.receiver = self;
   v14.super_class = NTKSolarTimeModel;
   v11 = [(NTKSolarTimeModel *)&v14 init];
@@ -39,36 +39,36 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412803;
-      v16 = v9;
+      v16 = dateCopy;
       v17 = 2113;
-      v18 = v10;
+      v18 = locationCopy;
       v19 = 2048;
-      v20 = a5;
+      typeCopy = type;
       _os_log_debug_impl(&dword_22D9C5000, v12, OS_LOG_TYPE_DEBUG, "SolarTimeModel initWithReferenceDate:%@, referenceLocation:%{private}@, twilightType:%lu", buf, 0x20u);
     }
 
-    objc_storeStrong(&v11->_referenceDate, a3);
-    objc_storeStrong(&v11->_referenceLocation, a4);
-    v11->_twilightType = a5;
+    objc_storeStrong(&v11->_referenceDate, date);
+    objc_storeStrong(&v11->_referenceLocation, location);
+    v11->_twilightType = type;
     v11->_dependentValuesNeedUpdate = 1;
   }
 
   return v11;
 }
 
-- (BOOL)includesDate:(id)a3
+- (BOOL)includesDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   [(NTKSolarTimeModel *)self _updateDependentValues];
-  v5 = [(NTKSolarTimeModel *)self startDateForReferenceDate];
-  [v5 timeIntervalSinceReferenceDate];
+  startDateForReferenceDate = [(NTKSolarTimeModel *)self startDateForReferenceDate];
+  [startDateForReferenceDate timeIntervalSinceReferenceDate];
   v7 = v6;
 
-  v8 = [(NTKSolarTimeModel *)self endDateForReferenceDate];
-  [v8 timeIntervalSinceReferenceDate];
+  endDateForReferenceDate = [(NTKSolarTimeModel *)self endDateForReferenceDate];
+  [endDateForReferenceDate timeIntervalSinceReferenceDate];
   v10 = v9;
 
-  [v4 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v12 = v11;
 
   return v12 <= v10 && v12 >= v7;
@@ -83,16 +83,16 @@
   return v5;
 }
 
-- (id)normalizeDateIntervalForDate:(id)a3
+- (id)normalizeDateIntervalForDate:(id)date
 {
-  [a3 timeIntervalSinceReferenceDate];
+  [date timeIntervalSinceReferenceDate];
   v5 = v4;
-  v6 = [(NTKSolarTimeModel *)self startDateForReferenceDate];
-  [v6 timeIntervalSinceReferenceDate];
+  startDateForReferenceDate = [(NTKSolarTimeModel *)self startDateForReferenceDate];
+  [startDateForReferenceDate timeIntervalSinceReferenceDate];
   v8 = v7;
 
-  v9 = [(NTKSolarTimeModel *)self endDateForReferenceDate];
-  [v9 timeIntervalSinceReferenceDate];
+  endDateForReferenceDate = [(NTKSolarTimeModel *)self endDateForReferenceDate];
+  [endDateForReferenceDate timeIntervalSinceReferenceDate];
   v11 = v10;
 
     ;
@@ -106,11 +106,11 @@
   return [v12 dateWithTimeIntervalSinceReferenceDate:v5];
 }
 
-- (double)percentageThroughPeriodInCurrentSolarDayForDate:(id)a3
+- (double)percentageThroughPeriodInCurrentSolarDayForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   [(NTKSolarTimeModel *)self _updateDependentValues];
-  v5 = [(NTKSolarTimeModel *)self normalizeDateIntervalForDate:v4];
+  v5 = [(NTKSolarTimeModel *)self normalizeDateIntervalForDate:dateCopy];
 
   [(NTKSolarTimeModel *)self percentageThroughPeriodForDate:v5];
   v7 = v6;
@@ -118,19 +118,19 @@
   return v7;
 }
 
-- (double)percentageThroughPeriodForDate:(id)a3
+- (double)percentageThroughPeriodForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   [(NTKSolarTimeModel *)self _updateDependentValues];
-  v5 = [(NTKSolarTimeModel *)self startDateForReferenceDate];
-  [v5 timeIntervalSinceReferenceDate];
+  startDateForReferenceDate = [(NTKSolarTimeModel *)self startDateForReferenceDate];
+  [startDateForReferenceDate timeIntervalSinceReferenceDate];
   v7 = v6;
 
-  v8 = [(NTKSolarTimeModel *)self endDateForReferenceDate];
-  [v8 timeIntervalSinceReferenceDate];
+  endDateForReferenceDate = [(NTKSolarTimeModel *)self endDateForReferenceDate];
+  [endDateForReferenceDate timeIntervalSinceReferenceDate];
   v10 = v9;
 
-  [v4 timeIntervalSinceReferenceDate];
+  [dateCopy timeIntervalSinceReferenceDate];
   v12 = v11;
 
   result = 0.0;
@@ -142,25 +142,25 @@
   return result;
 }
 
-- (id)dateForPercentageThroughPeriod:(double)a3
+- (id)dateForPercentageThroughPeriod:(double)period
 {
   [(NTKSolarTimeModel *)self _updateDependentValues];
-  v5 = [(NTKSolarTimeModel *)self startDateForReferenceDate];
-  [v5 timeIntervalSinceReferenceDate];
+  startDateForReferenceDate = [(NTKSolarTimeModel *)self startDateForReferenceDate];
+  [startDateForReferenceDate timeIntervalSinceReferenceDate];
   v7 = v6;
 
-  v8 = [(NTKSolarTimeModel *)self endDateForReferenceDate];
-  [v8 timeIntervalSinceReferenceDate];
+  endDateForReferenceDate = [(NTKSolarTimeModel *)self endDateForReferenceDate];
+  [endDateForReferenceDate timeIntervalSinceReferenceDate];
   v10 = v9;
 
   v11 = MEMORY[0x277CBEAA8];
 
-  return [v11 dateWithTimeIntervalSinceReferenceDate:v7 + (v10 - v7) * a3];
+  return [v11 dateWithTimeIntervalSinceReferenceDate:v7 + (v10 - v7) * period];
 }
 
-- (id)_nextEvent:(id)a3 ofType:(unsigned int)a4
+- (id)_nextEvent:(id)event ofType:(unsigned int)type
 {
-  [a3 nextEventOfType:*&a4];
+  [event nextEventOfType:*&type];
   if (v4 == 0.0)
   {
     [MEMORY[0x277CBEAA8] distantPast];
@@ -178,10 +178,10 @@
 - (void)_updateDependentValues
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = *a1;
-  [*a1 coordinate];
+  v4 = *self;
+  [*self coordinate];
   v6 = v5;
-  [*a1 coordinate];
+  [*self coordinate];
   v8 = 138478339;
   v9 = v4;
   v10 = 2049;
@@ -202,10 +202,10 @@
   [(NTKSolarTimeModel *)self setDependentValuesNeedUpdate:1];
 }
 
-- (void)setReferenceDate:(id)a3
+- (void)setReferenceDate:(id)date
 {
-  v5 = a3;
-  if (([v5 isEqualToDate:self->_referenceDate] & 1) == 0)
+  dateCopy = date;
+  if (([dateCopy isEqualToDate:self->_referenceDate] & 1) == 0)
   {
     v6 = _NTKLoggingObjectForDomain(34, "NTKLoggingDomainSolar");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -213,15 +213,15 @@
       [NTKSolarTimeModel setReferenceDate:];
     }
 
-    objc_storeStrong(&self->_referenceDate, a3);
+    objc_storeStrong(&self->_referenceDate, date);
     [(NTKSolarTimeModel *)self setDependentValuesNeedUpdate:1];
   }
 }
 
-- (void)setReferenceLocation:(id)a3
+- (void)setReferenceLocation:(id)location
 {
-  v5 = a3;
-  if (([v5 isEqual:self->_referenceLocation] & 1) == 0)
+  locationCopy = location;
+  if (([locationCopy isEqual:self->_referenceLocation] & 1) == 0)
   {
     v6 = _NTKLoggingObjectForDomain(34, "NTKLoggingDomainSolar");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -229,16 +229,16 @@
       [NTKSolarTimeModel setReferenceLocation:];
     }
 
-    objc_storeStrong(&self->_referenceLocation, a3);
+    objc_storeStrong(&self->_referenceLocation, location);
     [(NTKSolarTimeModel *)self setDependentValuesNeedUpdate:1];
   }
 }
 
-- (void)setUsePlaceholderData:(BOOL)a3
+- (void)setUsePlaceholderData:(BOOL)data
 {
-  if (self->_usePlaceholderData != a3)
+  if (self->_usePlaceholderData != data)
   {
-    self->_usePlaceholderData = a3;
+    self->_usePlaceholderData = data;
     [(NTKSolarTimeModel *)self setDependentValuesNeedUpdate:1];
   }
 }

@@ -1,5 +1,5 @@
 @interface PHAudioControlsButtonInvertColorsAccessibility
-- (PHAudioControlsButtonInvertColorsAccessibility)initWithFrame:(CGRect)a3;
+- (PHAudioControlsButtonInvertColorsAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadInvertColors;
 @end
 
@@ -35,10 +35,10 @@
         v32 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v8 = [v7 layer];
-        v9 = [v8 sublayers];
+        layer = [v7 layer];
+        sublayers = [layer sublayers];
 
-        v10 = [v9 countByEnumeratingWithState:&v31 objects:v40 count:16];
+        v10 = [sublayers countByEnumeratingWithState:&v31 objects:v40 count:16];
         if (v10)
         {
           v11 = v10;
@@ -49,7 +49,7 @@
             {
               if (*v32 != v12)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(sublayers);
               }
 
               v14 = *(*(&v31 + 1) + 8 * j);
@@ -63,7 +63,7 @@
               }
             }
 
-            v11 = [v9 countByEnumeratingWithState:&v31 objects:v40 count:16];
+            v11 = [sublayers countByEnumeratingWithState:&v31 objects:v40 count:16];
             if (v11)
             {
               continue;
@@ -87,8 +87,8 @@ LABEL_16:
     v5 = 0;
   }
 
-  v16 = [v5 layer];
-  [AXInvertColorsAppHelper toggleInvertColors:v16];
+  layer2 = [v5 layer];
+  [AXInvertColorsAppHelper toggleInvertColors:layer2];
 
   [v5 setAccessibilityIgnoresInvertColors:0];
   v39 = 0;
@@ -101,19 +101,19 @@ LABEL_16:
     abort();
   }
 
-  v19 = [(PHAudioControlsButtonInvertColorsAccessibility *)self _accessibilityBackgroundColor];
-  v20 = v19;
-  if (v19)
+  _accessibilityBackgroundColor = [(PHAudioControlsButtonInvertColorsAccessibility *)self _accessibilityBackgroundColor];
+  v20 = _accessibilityBackgroundColor;
+  if (_accessibilityBackgroundColor)
   {
-    v21 = v19;
+    backgroundColor = _accessibilityBackgroundColor;
   }
 
   else
   {
-    v21 = [v18 backgroundColor];
+    backgroundColor = [v18 backgroundColor];
   }
 
-  v22 = v21;
+  v22 = backgroundColor;
 
   if (_AXSInvertColorsEnabled())
   {
@@ -123,11 +123,11 @@ LABEL_16:
       goto LABEL_29;
     }
 
-    v23 = [v18 window];
-    v24 = [v23 traitCollection];
-    v25 = [v24 userInterfaceStyle];
+    window = [v18 window];
+    traitCollection = [window traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-    if (v25 == &dword_0 + 1)
+    if (userInterfaceStyle == &dword_0 + 1)
     {
       v26 = +[UIColor blackColor];
 LABEL_29:
@@ -140,11 +140,11 @@ LABEL_29:
   [v18 setBackgroundColor:v22];
 }
 
-- (PHAudioControlsButtonInvertColorsAccessibility)initWithFrame:(CGRect)a3
+- (PHAudioControlsButtonInvertColorsAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = PHAudioControlsButtonInvertColorsAccessibility;
-  v3 = [(PHAudioControlsButtonInvertColorsAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PHAudioControlsButtonInvertColorsAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(PHAudioControlsButtonInvertColorsAccessibility *)v3 _accessibilityLoadInvertColors];
   return v3;
 }

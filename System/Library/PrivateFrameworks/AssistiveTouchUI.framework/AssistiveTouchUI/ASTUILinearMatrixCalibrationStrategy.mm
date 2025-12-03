@@ -1,23 +1,23 @@
 @interface ASTUILinearMatrixCalibrationStrategy
-- (CGPoint)calibratedGazePointForGazePoint:(CGPoint)a3;
-- (id)calibratedArrayForGazePoint:(CGPoint)a3;
-- (id)learnCalibrationForPoints:(id)a3;
+- (CGPoint)calibratedGazePointForGazePoint:(CGPoint)point;
+- (id)calibratedArrayForGazePoint:(CGPoint)point;
+- (id)learnCalibrationForPoints:(id)points;
 @end
 
 @implementation ASTUILinearMatrixCalibrationStrategy
 
-- (id)calibratedArrayForGazePoint:(CGPoint)a3
+- (id)calibratedArrayForGazePoint:(CGPoint)point
 {
   v3 = objc_opt_new();
 
   return v3;
 }
 
-- (CGPoint)calibratedGazePointForGazePoint:(CGPoint)a3
+- (CGPoint)calibratedGazePointForGazePoint:(CGPoint)point
 {
   v17 = *MEMORY[0x277D85DE8];
-  x = a3.x;
-  y = a3.y;
+  x = point.x;
+  y = point.y;
   __A[0] = x;
   __A[1] = y;
   __A[2] = 1.0;
@@ -41,19 +41,19 @@
   return result;
 }
 
-- (id)learnCalibrationForPoints:(id)a3
+- (id)learnCalibrationForPoints:(id)points
 {
   v61 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  [v3 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_0];
-  v4 = [v3 allKeys];
+  pointsCopy = points;
+  [pointsCopy enumerateKeysAndObjectsUsingBlock:&__block_literal_global_0];
+  allKeys = [pointsCopy allKeys];
   v54[0] = MEMORY[0x277D85DD0];
   v54[1] = 3221225472;
   v54[2] = __66__ASTUILinearMatrixCalibrationStrategy_learnCalibrationForPoints___block_invoke_2;
   v54[3] = &unk_278CDC698;
-  v44 = v3;
+  v44 = pointsCopy;
   v55 = v44;
-  v5 = [v4 ax_mappedArrayUsingBlock:v54];
+  v5 = [allKeys ax_mappedArrayUsingBlock:v54];
   v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v50 = 0u;
   v51 = 0u;
@@ -96,7 +96,7 @@
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v17 = v4;
+  v17 = allKeys;
   v18 = [v17 countByEnumeratingWithState:&v46 objects:v59 count:16];
   if (v18)
   {

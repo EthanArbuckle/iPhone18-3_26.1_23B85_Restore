@@ -1,42 +1,42 @@
 @interface MTACountDownPicker
 - (BOOL)becomeFirstResponder;
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
 - (BOOL)decrementValue;
 - (BOOL)incrementValue;
 - (BOOL)resignFirstResponder;
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (CGRect)caretRectForPosition:(id)a3;
-- (CGRect)editingRectForBounds:(CGRect)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (CGRect)caretRectForPosition:(id)position;
+- (CGRect)editingRectForBounds:(CGRect)bounds;
 - (CGRect)hourHighlightFrame;
 - (CGRect)minuteHighlightFrame;
 - (CGRect)secondHighlightFrame;
-- (CGRect)textRectForBounds:(CGRect)a3;
-- (MTACountDownPicker)initWithFrame:(CGRect)a3;
+- (CGRect)textRectForBounds:(CGRect)bounds;
+- (MTACountDownPicker)initWithFrame:(CGRect)frame;
 - (void)activateNextKeyField;
 - (void)activatePreviousKeyField;
 - (void)decrementValueContinuouslly;
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4;
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator;
 - (void)endEditing;
 - (void)incrementValueContinuouslly;
 - (void)layoutSubviews;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)recognizeTapGesture:(id)a3;
-- (void)setDuration:(double)a3;
-- (void)setSelectedField:(int64_t)a3;
-- (void)setShowText:(BOOL)a3;
-- (void)setUsesSmallSize:(BOOL)a3;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)recognizeTapGesture:(id)gesture;
+- (void)setDuration:(double)duration;
+- (void)setSelectedField:(int64_t)field;
+- (void)setShowText:(BOOL)text;
+- (void)setUsesSmallSize:(BOOL)size;
 - (void)startEditing;
 - (void)updateHighlightPath;
 @end
 
 @implementation MTACountDownPicker
 
-- (MTACountDownPicker)initWithFrame:(CGRect)a3
+- (MTACountDownPicker)initWithFrame:(CGRect)frame
 {
   v22.receiver = self;
   v22.super_class = MTACountDownPicker;
-  v3 = [(MTACountDownPicker *)&v22 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTACountDownPicker *)&v22 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -66,8 +66,8 @@
 
     v15.receiver = v4;
     v15.super_class = MTACountDownPicker;
-    v8 = [(MTACountDownPicker *)&v15 layer];
-    [v8 addSublayer:v4->_highlightLayer];
+    layer = [(MTACountDownPicker *)&v15 layer];
+    [layer addSublayer:v4->_highlightLayer];
 
     v9 = objc_alloc_init(NSDateComponentsFormatter);
     formatter = v4->_formatter;
@@ -96,29 +96,29 @@
 {
   v5.receiver = self;
   v5.super_class = MTACountDownPicker;
-  v3 = [(MTACountDownPicker *)&v5 becomeFirstResponder];
-  if (v3)
+  becomeFirstResponder = [(MTACountDownPicker *)&v5 becomeFirstResponder];
+  if (becomeFirstResponder)
   {
     [(MTACountDownPicker *)self setSelectedField:1];
   }
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
 {
   v5.receiver = self;
   v5.super_class = MTACountDownPicker;
-  v3 = [(MTACountDownPicker *)&v5 resignFirstResponder];
-  if (v3)
+  resignFirstResponder = [(MTACountDownPicker *)&v5 resignFirstResponder];
+  if (resignFirstResponder)
   {
     [(MTACountDownPicker *)self setSelectedField:0];
   }
 
-  return v3;
+  return resignFirstResponder;
 }
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -131,16 +131,16 @@
   return result;
 }
 
-- (CGRect)textRectForBounds:(CGRect)a3
+- (CGRect)textRectForBounds:(CGRect)bounds
 {
-  v4 = CGRectInset(a3, 10.0, 10.0);
+  v4 = CGRectInset(bounds, 10.0, 10.0);
 
   return CGRectOffset(v4, 0.0, -2.0);
 }
 
-- (CGRect)editingRectForBounds:(CGRect)a3
+- (CGRect)editingRectForBounds:(CGRect)bounds
 {
-  v4 = CGRectInset(a3, 10.0, 10.0);
+  v4 = CGRectInset(bounds, 10.0, 10.0);
 
   return CGRectOffset(v4, 0.0, -2.0);
 }
@@ -153,8 +153,8 @@
   [(MTACountDownPicker *)self bounds];
   [(MTACountDownPicker *)self editingRectForBounds:?];
   v4 = v3;
-  v5 = [(MTACountDownPicker *)self beginningOfDocument];
-  v6 = [(MTACountDownPicker *)self positionFromPosition:v5 offset:0];
+  beginningOfDocument = [(MTACountDownPicker *)self beginningOfDocument];
+  v6 = [(MTACountDownPicker *)self positionFromPosition:beginningOfDocument offset:0];
 
   v7 = [(MTACountDownPicker *)self positionFromPosition:v6 offset:2];
   v8 = [(MTACountDownPicker *)self textRangeFromPosition:v6 toPosition:v7];
@@ -171,8 +171,8 @@
   v35.size.width = v12;
   v35.size.height = v14;
   [(MTACountDownPicker *)self setHourMidX:CGRectGetMidX(v35)];
-  v15 = [(MTACountDownPicker *)self beginningOfDocument];
-  v16 = [(MTACountDownPicker *)self positionFromPosition:v15 offset:3];
+  beginningOfDocument2 = [(MTACountDownPicker *)self beginningOfDocument];
+  v16 = [(MTACountDownPicker *)self positionFromPosition:beginningOfDocument2 offset:3];
 
   v17 = [(MTACountDownPicker *)self positionFromPosition:v16 offset:2];
 
@@ -188,8 +188,8 @@
   v36.size.width = v22;
   v36.size.height = v14;
   [(MTACountDownPicker *)self setMinuteMidX:CGRectGetMidX(v36)];
-  v24 = [(MTACountDownPicker *)self beginningOfDocument];
-  v25 = [(MTACountDownPicker *)self positionFromPosition:v24 offset:6];
+  beginningOfDocument3 = [(MTACountDownPicker *)self beginningOfDocument];
+  v25 = [(MTACountDownPicker *)self positionFromPosition:beginningOfDocument3 offset:6];
 
   v26 = [(MTACountDownPicker *)self positionFromPosition:v25 offset:2];
 
@@ -208,45 +208,45 @@
   [(MTACountDownPicker *)self updateHighlightPath];
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
   v10.receiver = self;
   v10.super_class = MTACountDownPicker;
-  v5 = [(MTACountDownPicker *)&v10 canPerformAction:a3 withSender:a4];
-  v8 = "copy:" != a3 || "paste:" != a3 || "selectAll:" != a3;
+  v5 = [(MTACountDownPicker *)&v10 canPerformAction:action withSender:sender];
+  v8 = "copy:" != action || "paste:" != action || "selectAll:" != action;
   return v8 & v5;
 }
 
-- (void)didUpdateFocusInContext:(id)a3 withAnimationCoordinator:(id)a4
+- (void)didUpdateFocusInContext:(id)context withAnimationCoordinator:(id)coordinator
 {
-  v6 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = MTACountDownPicker;
-  [(MTACountDownPicker *)&v12 didUpdateFocusInContext:v6 withAnimationCoordinator:a4];
-  v7 = [v6 previouslyFocusedView];
-  v8 = v7;
-  if (v7 == self)
+  [(MTACountDownPicker *)&v12 didUpdateFocusInContext:contextCopy withAnimationCoordinator:coordinator];
+  previouslyFocusedView = [contextCopy previouslyFocusedView];
+  v8 = previouslyFocusedView;
+  if (previouslyFocusedView == self)
   {
   }
 
   else
   {
-    v9 = [v6 nextFocusedView];
+    nextFocusedView = [contextCopy nextFocusedView];
 
-    if (v9 == self)
+    if (nextFocusedView == self)
     {
-      if ([v6 focusHeading] == 32)
+      if ([contextCopy focusHeading] == 32)
       {
-        v10 = self;
+        selfCopy2 = self;
         v11 = 3;
 LABEL_8:
-        [(MTACountDownPicker *)v10 setSelectedField:v11];
+        [(MTACountDownPicker *)selfCopy2 setSelectedField:v11];
         goto LABEL_9;
       }
 
-      if ([v6 focusHeading] == 16)
+      if ([contextCopy focusHeading] == 16)
       {
-        v10 = self;
+        selfCopy2 = self;
         v11 = 1;
         goto LABEL_8;
       }
@@ -256,14 +256,14 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setUsesSmallSize:(BOOL)a3
+- (void)setUsesSmallSize:(BOOL)size
 {
-  if (self->_usesSmallSize != a3)
+  if (self->_usesSmallSize != size)
   {
     v10 = v3;
-    self->_usesSmallSize = a3;
+    self->_usesSmallSize = size;
     v8 = 100.0;
-    if (a3)
+    if (size)
     {
       v8 = 54.0;
     }
@@ -275,47 +275,47 @@ LABEL_9:
   }
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  if (self->_duration != a3)
+  if (self->_duration != duration)
   {
     v12 = v6;
     v13 = v5;
     v14 = v3;
     v15 = v4;
-    v8 = 0.0;
-    if (a3 >= 0.0)
+    durationCopy = 0.0;
+    if (duration >= 0.0)
     {
-      v8 = a3;
-      if (a3 > 86399.0)
+      durationCopy = duration;
+      if (duration > 86399.0)
       {
-        v8 = 86399.0;
+        durationCopy = 86399.0;
       }
     }
 
-    self->_duration = v8;
-    v9 = [(MTACountDownPicker *)self formatter];
-    v10 = [v9 stringFromTimeInterval:v8];
+    self->_duration = durationCopy;
+    formatter = [(MTACountDownPicker *)self formatter];
+    v10 = [formatter stringFromTimeInterval:durationCopy];
     v11.receiver = self;
     v11.super_class = MTACountDownPicker;
     [(MTACountDownPicker *)&v11 setText:v10];
   }
 }
 
-- (void)setShowText:(BOOL)a3
+- (void)setShowText:(BOOL)text
 {
-  if (self->_showText != a3)
+  if (self->_showText != text)
   {
-    v10 = v3;
+    v10 = formatter;
     v11 = v4;
     v12 = v5;
-    v6 = a3;
-    self->_showText = a3;
-    if (a3)
+    textCopy = text;
+    self->_showText = text;
+    if (text)
     {
-      v3 = [(MTACountDownPicker *)self formatter];
+      formatter = [(MTACountDownPicker *)self formatter];
       [(MTACountDownPicker *)self duration];
-      v8 = [v3 stringFromTimeInterval:?];
+      v8 = [formatter stringFromTimeInterval:?];
     }
 
     else
@@ -326,17 +326,17 @@ LABEL_9:
     v9.receiver = self;
     v9.super_class = MTACountDownPicker;
     [(MTACountDownPicker *)&v9 setText:v8];
-    if (v6)
+    if (textCopy)
     {
     }
   }
 }
 
-- (void)setSelectedField:(int64_t)a3
+- (void)setSelectedField:(int64_t)field
 {
-  if (self->_selectedField != a3)
+  if (self->_selectedField != field)
   {
-    self->_selectedField = a3;
+    self->_selectedField = field;
     [(MTACountDownPicker *)self endEditing];
 
     [(MTACountDownPicker *)self updateHighlightPath];
@@ -345,8 +345,8 @@ LABEL_9:
 
 - (void)updateHighlightPath
 {
-  v3 = [(MTACountDownPicker *)self selectedField];
-  switch(v3)
+  selectedField = [(MTACountDownPicker *)self selectedField];
+  switch(selectedField)
   {
     case 3:
       [(MTACountDownPicker *)self secondHighlightFrame];
@@ -366,29 +366,29 @@ LABEL_9:
   }
 
   v8 = CGPathCreateWithRoundedRect(*&x, 3.0, 3.0, 0);
-  v9 = [(MTACountDownPicker *)self highlightLayer];
-  [v9 setPath:v8];
+  highlightLayer = [(MTACountDownPicker *)self highlightLayer];
+  [highlightLayer setPath:v8];
 
   CGPathRelease(v8);
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   if ([(MTACountDownPicker *)self isFocused])
   {
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v8 = v6;
+    v8 = beganCopy;
     v9 = [v8 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v9)
     {
       v10 = v9;
-      v23 = v7;
-      v22 = v6;
+      v23 = eventCopy;
+      v22 = beganCopy;
       v11 = 0;
       v12 = *v26;
       while (1)
@@ -405,21 +405,21 @@ LABEL_9:
           v15 = v14;
           if (v14)
           {
-            v16 = [v14 charactersIgnoringModifiers];
-            if ([v16 isEqualToString:UIKeyInputEscape])
+            charactersIgnoringModifiers = [v14 charactersIgnoringModifiers];
+            if ([charactersIgnoringModifiers isEqualToString:UIKeyInputEscape])
             {
-              v17 = [(MTACountDownPicker *)self superview];
-              [v17 pressesBegan:v8 withEvent:v23];
+              superview = [(MTACountDownPicker *)self superview];
+              [superview pressesBegan:v8 withEvent:v23];
 
 LABEL_23:
               goto LABEL_24;
             }
 
-            if ([v16 isEqualToString:UIKeyInputUpArrow])
+            if ([charactersIgnoringModifiers isEqualToString:UIKeyInputUpArrow])
             {
               if ([(MTACountDownPicker *)self incrementValue])
               {
-                v18 = self;
+                selfCopy2 = self;
                 v19 = "incrementValueContinuouslly";
                 goto LABEL_16;
               }
@@ -429,43 +429,43 @@ LABEL_17:
               goto LABEL_22;
             }
 
-            if ([v16 isEqualToString:UIKeyInputDownArrow])
+            if ([charactersIgnoringModifiers isEqualToString:UIKeyInputDownArrow])
             {
               if (![(MTACountDownPicker *)self decrementValue])
               {
                 goto LABEL_17;
               }
 
-              v18 = self;
+              selfCopy2 = self;
               v19 = "decrementValueContinuouslly";
 LABEL_16:
-              [(MTACountDownPicker *)v18 performSelector:v19 withObject:0 afterDelay:0.2];
+              [(MTACountDownPicker *)selfCopy2 performSelector:v19 withObject:0 afterDelay:0.2];
 LABEL_22:
               v11 = 1;
               goto LABEL_23;
             }
 
-            if ([v16 isEqualToString:UIKeyInputLeftArrow])
+            if ([charactersIgnoringModifiers isEqualToString:UIKeyInputLeftArrow])
             {
 LABEL_19:
               [(MTACountDownPicker *)self activatePreviousKeyField];
               goto LABEL_22;
             }
 
-            if ([v16 isEqualToString:UIKeyInputRightArrow])
+            if ([charactersIgnoringModifiers isEqualToString:UIKeyInputRightArrow])
             {
 LABEL_21:
               [(MTACountDownPicker *)self activateNextKeyField];
               goto LABEL_22;
             }
 
-            if (![v16 isEqualToString:@"\t"])
+            if (![charactersIgnoringModifiers isEqualToString:@"\t"])
             {
               goto LABEL_23;
             }
 
-            v20 = [v15 modifierFlags];
-            if (v20 == 0x20000)
+            modifierFlags = [v15 modifierFlags];
+            if (modifierFlags == 0x20000)
             {
               if ([(MTACountDownPicker *)self selectedField]!= 1)
               {
@@ -475,7 +475,7 @@ LABEL_21:
 
             else
             {
-              if (v20)
+              if (modifierFlags)
               {
                 goto LABEL_23;
               }
@@ -501,8 +501,8 @@ LABEL_24:
         if (!v21)
         {
 
-          v6 = v22;
-          v7 = v23;
+          beganCopy = v22;
+          eventCopy = v23;
           if (v11)
           {
             goto LABEL_38;
@@ -517,15 +517,15 @@ LABEL_24:
 LABEL_37:
   v24.receiver = self;
   v24.super_class = MTACountDownPicker;
-  [(MTACountDownPicker *)&v24 pressesBegan:v6 withEvent:v7];
+  [(MTACountDownPicker *)&v24 pressesBegan:beganCopy withEvent:eventCopy];
 LABEL_38:
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v22 = self;
+  endedCopy = ended;
+  eventCopy = event;
+  selfCopy = self;
   if (![(MTACountDownPicker *)self isFocused])
   {
     goto LABEL_17;
@@ -535,21 +535,21 @@ LABEL_38:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = v6;
+  v8 = endedCopy;
   v9 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v9)
   {
 
 LABEL_17:
-    v23.receiver = v22;
+    v23.receiver = selfCopy;
     v23.super_class = MTACountDownPicker;
-    [(MTACountDownPicker *)&v23 pressesEnded:v6 withEvent:v7];
+    [(MTACountDownPicker *)&v23 pressesEnded:endedCopy withEvent:eventCopy];
     goto LABEL_18;
   }
 
   v10 = v9;
-  v20 = v7;
-  v21 = v6;
+  v20 = eventCopy;
+  v21 = endedCopy;
   v11 = 0;
   v12 = *v25;
   do
@@ -565,12 +565,12 @@ LABEL_17:
       v15 = v14;
       if (v14)
       {
-        v16 = [v14 charactersIgnoringModifiers];
-        v17 = [v16 isEqualToString:UIKeyInputUpArrow];
+        charactersIgnoringModifiers = [v14 charactersIgnoringModifiers];
+        v17 = [charactersIgnoringModifiers isEqualToString:UIKeyInputUpArrow];
         v18 = "incrementValueContinuouslly";
-        if ((v17 & 1) != 0 || (v19 = [v16 isEqualToString:{UIKeyInputDownArrow, "incrementValueContinuouslly"}], v18 = "decrementValueContinuouslly", v19))
+        if ((v17 & 1) != 0 || (v19 = [charactersIgnoringModifiers isEqualToString:{UIKeyInputDownArrow, "incrementValueContinuouslly"}], v18 = "decrementValueContinuouslly", v19))
         {
-          [NSThread cancelPreviousPerformRequestsWithTarget:v22 selector:v18 object:0];
+          [NSThread cancelPreviousPerformRequestsWithTarget:selfCopy selector:v18 object:0];
           v11 = 1;
         }
       }
@@ -581,8 +581,8 @@ LABEL_17:
 
   while (v10);
 
-  v7 = v20;
-  v6 = v21;
+  eventCopy = v20;
+  endedCopy = v21;
   if ((v11 & 1) == 0)
   {
     goto LABEL_17;
@@ -593,8 +593,8 @@ LABEL_18:
 
 - (void)activateNextKeyField
 {
-  v3 = [(MTACountDownPicker *)self selectedField];
-  if ((v3 - 1) < 2)
+  selectedField = [(MTACountDownPicker *)self selectedField];
+  if ((selectedField - 1) < 2)
   {
     v4 = [(MTACountDownPicker *)self selectedField]+ 1;
   }
@@ -602,7 +602,7 @@ LABEL_18:
   else
   {
     v4 = 1;
-    if (v3 && v3 != 3)
+    if (selectedField && selectedField != 3)
     {
       return;
     }
@@ -613,15 +613,15 @@ LABEL_18:
 
 - (void)activatePreviousKeyField
 {
-  v3 = [(MTACountDownPicker *)self selectedField];
-  if (v3 < 2)
+  selectedField = [(MTACountDownPicker *)self selectedField];
+  if (selectedField < 2)
   {
     v4 = 3;
   }
 
   else
   {
-    if (v3 - 2 > 1)
+    if (selectedField - 2 > 1)
     {
       return;
     }
@@ -636,8 +636,8 @@ LABEL_18:
 {
   [(MTACountDownPicker *)self duration];
   v4 = v3;
-  v5 = [(MTACountDownPicker *)self selectedField];
-  if (v5 == 3)
+  selectedField = [(MTACountDownPicker *)self selectedField];
+  if (selectedField == 3)
   {
     v6 = 0.0;
     if (v4 % 60 >= 59)
@@ -653,7 +653,7 @@ LABEL_18:
 
   else
   {
-    if (v5 == 2)
+    if (selectedField == 2)
     {
       v8 = v4 % 3600 < 3540;
       v6 = 60.0;
@@ -662,7 +662,7 @@ LABEL_18:
     else
     {
       v7 = 0.0;
-      if (v5 != 1)
+      if (selectedField != 1)
       {
         goto LABEL_12;
       }
@@ -707,8 +707,8 @@ LABEL_12:
 {
   [(MTACountDownPicker *)self duration];
   v4 = v3;
-  v5 = [(MTACountDownPicker *)self selectedField];
-  if (v5 == 3)
+  selectedField = [(MTACountDownPicker *)self selectedField];
+  if (selectedField == 3)
   {
     v6 = 0.0;
     if (v4 % 60 <= 0)
@@ -724,7 +724,7 @@ LABEL_12:
 
   else
   {
-    if (v5 == 2)
+    if (selectedField == 2)
     {
       v8 = v4 % 3600 <= 59;
       v6 = -60.0;
@@ -733,7 +733,7 @@ LABEL_12:
     else
     {
       v7 = 0.0;
-      if (v5 != 1)
+      if (selectedField != 1)
       {
         goto LABEL_12;
       }
@@ -789,16 +789,16 @@ LABEL_12:
   [(MTACountDownPicker *)self setUnderEditing:0];
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  v6 = a5;
+  stringCopy = string;
   v7 = +[NSCharacterSet decimalDigitCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
+  v8 = [stringCopy stringByTrimmingCharactersInSet:v7];
 
   if (![v8 length])
   {
-    v9 = [(MTACountDownPicker *)self selectedField];
-    switch(v9)
+    selectedField = [(MTACountDownPicker *)self selectedField];
+    switch(selectedField)
     {
       case 3:
         [(MTACountDownPicker *)self duration];
@@ -826,8 +826,8 @@ LABEL_12:
         break;
     }
 
-    v16 = [v6 integerValue];
-    if (v16 >= 0xA || (v17 = v16, [(MTACountDownPicker *)self underEditing]) && (v17 += 10 * v11, v17 > v12))
+    integerValue = [stringCopy integerValue];
+    if (integerValue >= 0xA || (v17 = integerValue, [(MTACountDownPicker *)self underEditing]) && (v17 += 10 * v11, v17 > v12))
     {
       [(MTACountDownPicker *)self beep];
     }
@@ -843,9 +843,9 @@ LABEL_12:
   return 0;
 }
 
-- (void)recognizeTapGesture:(id)a3
+- (void)recognizeTapGesture:(id)gesture
 {
-  [a3 locationInView:self];
+  [gesture locationInView:self];
   v5 = v4;
   v7 = v6;
   [(MTACountDownPicker *)self hourHighlightFrame];

@@ -13,62 +13,62 @@
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(PXGPageControlAccessibility *)self _axPageControl];
-  v3 = [v2 accessibilityTraits];
+  _axPageControl = [(PXGPageControlAccessibility *)self _axPageControl];
+  accessibilityTraits = [_axPageControl accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (int64_t)_accessibilityPageCount
 {
-  v2 = [(PXGPageControlAccessibility *)self _axPageControl];
-  v3 = [v2 _accessibilityPageCount];
+  _axPageControl = [(PXGPageControlAccessibility *)self _axPageControl];
+  _accessibilityPageCount = [_axPageControl _accessibilityPageCount];
 
-  return v3;
+  return _accessibilityPageCount;
 }
 
 - (int64_t)_accessibilityPageIndex
 {
-  v2 = [(PXGPageControlAccessibility *)self _axPageControl];
-  v3 = [v2 _accessibilityPageIndex];
+  _axPageControl = [(PXGPageControlAccessibility *)self _axPageControl];
+  _accessibilityPageIndex = [_axPageControl _accessibilityPageIndex];
 
-  return v3;
+  return _accessibilityPageIndex;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(PXGPageControlAccessibility *)self _axPageControl];
-  v3 = [v2 isAccessibilityElement];
+  _axPageControl = [(PXGPageControlAccessibility *)self _axPageControl];
+  isAccessibilityElement = [_axPageControl isAccessibilityElement];
 
-  return v3;
+  return isAccessibilityElement;
 }
 
 - (id)accessibilityLabel
 {
-  v2 = [(PXGPageControlAccessibility *)self _axPageControl];
-  v3 = [v2 accessibilityLabel];
+  _axPageControl = [(PXGPageControlAccessibility *)self _axPageControl];
+  accessibilityLabel = [_axPageControl accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(PXGPageControlAccessibility *)self _axPageControl];
-  v3 = [v2 accessibilityValue];
+  _axPageControl = [(PXGPageControlAccessibility *)self _axPageControl];
+  accessibilityValue = [_axPageControl accessibilityValue];
 
-  return v3;
+  return accessibilityValue;
 }
 
 - (void)accessibilityIncrement
 {
-  v2 = [(PXGPageControlAccessibility *)self _axPageControl];
-  [v2 accessibilityIncrement];
+  _axPageControl = [(PXGPageControlAccessibility *)self _axPageControl];
+  [_axPageControl accessibilityIncrement];
 }
 
 - (void)accessibilityDecrement
 {
-  v2 = [(PXGPageControlAccessibility *)self _axPageControl];
-  [v2 accessibilityDecrement];
+  _axPageControl = [(PXGPageControlAccessibility *)self _axPageControl];
+  [_axPageControl accessibilityDecrement];
 }
 
 @end

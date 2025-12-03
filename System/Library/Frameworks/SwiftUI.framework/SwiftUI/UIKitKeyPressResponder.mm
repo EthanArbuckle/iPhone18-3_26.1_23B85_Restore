@@ -13,7 +13,7 @@
     v4 = *(v3 + 1);
     ObjectType = swift_getObjectType();
     v6 = *(v4 + 8);
-    v7 = self;
+    selfCopy = self;
     v8 = v6(ObjectType, v4);
     swift_unknownObjectRelease();
   }

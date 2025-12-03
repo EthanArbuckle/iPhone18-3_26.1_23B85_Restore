@@ -8,14 +8,14 @@
 
 - (BOOL)ams_isFraudReportInitURLResponse
 {
-  v2 = [a1 ams_fsrNameSpace];
-  if (v2)
+  ams_fsrNameSpace = [self ams_fsrNameSpace];
+  if (ams_fsrNameSpace)
   {
-    v3 = [a1 ams_fsrInitUrl];
-    if (v3)
+    ams_fsrInitUrl = [self ams_fsrInitUrl];
+    if (ams_fsrInitUrl)
     {
-      v4 = [a1 ams_fsrRequestInterval];
-      v5 = v4 != 0;
+      ams_fsrRequestInterval = [self ams_fsrRequestInterval];
+      v5 = ams_fsrRequestInterval != 0;
     }
 
     else
@@ -34,22 +34,22 @@
 
 - (BOOL)ams_isFraudReportRetryResponse
 {
-  if ([a1 statusCode] != 409)
+  if ([self statusCode] != 409)
   {
     return 0;
   }
 
-  v2 = [a1 ams_fsrNameSpace];
-  if (v2)
+  ams_fsrNameSpace = [self ams_fsrNameSpace];
+  if (ams_fsrNameSpace)
   {
-    v3 = [a1 ams_fsrTransactionID];
-    if (v3)
+    ams_fsrTransactionID = [self ams_fsrTransactionID];
+    if (ams_fsrTransactionID)
     {
-      v4 = [a1 ams_fsrAnonymousID];
-      if (v4)
+      ams_fsrAnonymousID = [self ams_fsrAnonymousID];
+      if (ams_fsrAnonymousID)
       {
-        v5 = [a1 ams_fsrData];
-        v6 = v5 != 0;
+        ams_fsrData = [self ams_fsrData];
+        v6 = ams_fsrData != 0;
       }
 
       else
@@ -74,20 +74,20 @@
 
 - (BOOL)ams_isFraudReportCallbackResponse
 {
-  v2 = [a1 ams_fsrNameSpace];
-  if (v2)
+  ams_fsrNameSpace = [self ams_fsrNameSpace];
+  if (ams_fsrNameSpace)
   {
-    v3 = [a1 ams_fsrTransactionID];
-    if (v3)
+    ams_fsrTransactionID = [self ams_fsrTransactionID];
+    if (ams_fsrTransactionID)
     {
-      v4 = [a1 ams_fsrAnonymousID];
-      if (v4)
+      ams_fsrAnonymousID = [self ams_fsrAnonymousID];
+      if (ams_fsrAnonymousID)
       {
-        v5 = [a1 ams_fsrData];
-        if (v5)
+        ams_fsrData = [self ams_fsrData];
+        if (ams_fsrData)
         {
-          v6 = [a1 ams_fsrCallbackUrl];
-          v7 = v6 != 0;
+          ams_fsrCallbackUrl = [self ams_fsrCallbackUrl];
+          v7 = ams_fsrCallbackUrl != 0;
         }
 
         else

@@ -1,38 +1,38 @@
 @interface FedStatsUtilsGammaDistribution
-+ (double)sampleLargeWithShape:(double)a3 scale:(double)a4 unitNumberGenerator:(id)a5;
-+ (id)distributionWithShape:(double)a3 scale:(double)a4 cap:(id)a5;
-- (FedStatsUtilsGammaDistribution)initWithShape:(double)a3 scale:(double)a4 cap:(id)a5;
++ (double)sampleLargeWithShape:(double)shape scale:(double)scale unitNumberGenerator:(id)generator;
++ (id)distributionWithShape:(double)shape scale:(double)scale cap:(id)cap;
+- (FedStatsUtilsGammaDistribution)initWithShape:(double)shape scale:(double)scale cap:(id)cap;
 - (double)mean;
 - (double)sample;
-- (double)sampleUncappedWithUnitNumberGenerator:(id)a3;
-- (double)sampleWithUnitNumberGenerator:(id)a3;
+- (double)sampleUncappedWithUnitNumberGenerator:(id)generator;
+- (double)sampleWithUnitNumberGenerator:(id)generator;
 - (double)variance;
 - (double)varianceOfSecondMoment;
 @end
 
 @implementation FedStatsUtilsGammaDistribution
 
-- (FedStatsUtilsGammaDistribution)initWithShape:(double)a3 scale:(double)a4 cap:(id)a5
+- (FedStatsUtilsGammaDistribution)initWithShape:(double)shape scale:(double)scale cap:(id)cap
 {
-  v9 = a5;
+  capCopy = cap;
   v13.receiver = self;
   v13.super_class = FedStatsUtilsGammaDistribution;
   v10 = [(FedStatsUtilsGammaDistribution *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_shape = a3;
-    v10->_scale = a4;
-    objc_storeStrong(&v10->_cap, a5);
+    v10->_shape = shape;
+    v10->_scale = scale;
+    objc_storeStrong(&v10->_cap, cap);
   }
 
   return v11;
 }
 
-+ (id)distributionWithShape:(double)a3 scale:(double)a4 cap:(id)a5
++ (id)distributionWithShape:(double)shape scale:(double)scale cap:(id)cap
 {
-  v7 = a5;
-  if (a3 <= 0.0)
+  capCopy = cap;
+  if (shape <= 0.0)
   {
     v9 = +[FedStatsLog logger];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -43,9 +43,9 @@
 
   else
   {
-    if (a4 > 0.0)
+    if (scale > 0.0)
     {
-      v8 = [[FedStatsUtilsGammaDistribution alloc] initWithShape:v7 scale:a3 cap:a4];
+      v8 = [[FedStatsUtilsGammaDistribution alloc] initWithShape:capCopy scale:shape cap:scale];
       goto LABEL_9;
     }
 
@@ -62,28 +62,28 @@ LABEL_9:
   return v8;
 }
 
-+ (double)sampleLargeWithShape:(double)a3 scale:(double)a4 unitNumberGenerator:(id)a5
++ (double)sampleLargeWithShape:(double)shape scale:(double)scale unitNumberGenerator:(id)generator
 {
-  v6 = a5;
+  generatorCopy = generator;
   if (sampleLargeWithShape_scale_unitNumberGenerator__onceToken != -1)
   {
     +[FedStatsUtilsGammaDistribution sampleLargeWithShape:scale:unitNumberGenerator:];
   }
 
-  v7 = a3 + -0.333333333;
-  v8 = 1.0 / sqrt((a3 + -0.333333333) * 9.0);
+  v7 = shape + -0.333333333;
+  v8 = 1.0 / sqrt((shape + -0.333333333) * 9.0);
   do
   {
     do
     {
-      [sampleLargeWithShape_scale_unitNumberGenerator__normal sampleWithUnitNumberGenerator:v6];
+      [sampleLargeWithShape_scale_unitNumberGenerator__normal sampleWithUnitNumberGenerator:generatorCopy];
       v10 = v9;
       v11 = v8 * v9 + 1.0;
     }
 
     while (v11 <= 0.0);
     v12 = v11 * (v11 * v11);
-    [v6 sample];
+    [generatorCopy sample];
     v14 = v10 * v10;
     if (v13 < v10 * v10 * -0.0331 * (v10 * v10) + 1.0)
     {
@@ -95,7 +95,7 @@ LABEL_9:
 
   while (v15 >= v7 * (1.0 - v12 + log(v12)) + v14 * 0.5);
 
-  return v7 * v12 * a4;
+  return v7 * v12 * scale;
 }
 
 uint64_t __81__FedStatsUtilsGammaDistribution_sampleLargeWithShape_scale_unitNumberGenerator___block_invoke()
@@ -105,34 +105,34 @@ uint64_t __81__FedStatsUtilsGammaDistribution_sampleLargeWithShape_scale_unitNum
   return MEMORY[0x2821F96F8]();
 }
 
-- (double)sampleUncappedWithUnitNumberGenerator:(id)a3
+- (double)sampleUncappedWithUnitNumberGenerator:(id)generator
 {
-  v4 = a3;
+  generatorCopy = generator;
   [(FedStatsUtilsGammaDistribution *)self scale];
   v6 = v5;
   [(FedStatsUtilsGammaDistribution *)self shape];
   v8 = v7;
   if (v7 >= 1.0)
   {
-    [FedStatsUtilsGammaDistribution sampleLargeWithShape:v4 scale:v7 unitNumberGenerator:v6];
+    [FedStatsUtilsGammaDistribution sampleLargeWithShape:generatorCopy scale:v7 unitNumberGenerator:v6];
     v12 = v13;
   }
 
   else
   {
-    [FedStatsUtilsGammaDistribution sampleLargeWithShape:v4 scale:v7 + 1.0 unitNumberGenerator:v6];
+    [FedStatsUtilsGammaDistribution sampleLargeWithShape:generatorCopy scale:v7 + 1.0 unitNumberGenerator:v6];
     v10 = v9;
-    [v4 sample];
+    [generatorCopy sample];
     v12 = v10 * pow(v11, 1.0 / v8);
   }
 
   return v12;
 }
 
-- (double)sampleWithUnitNumberGenerator:(id)a3
+- (double)sampleWithUnitNumberGenerator:(id)generator
 {
-  v4 = a3;
-  [(FedStatsUtilsGammaDistribution *)self sampleUncappedWithUnitNumberGenerator:v4];
+  generatorCopy = generator;
+  [(FedStatsUtilsGammaDistribution *)self sampleUncappedWithUnitNumberGenerator:generatorCopy];
   v6 = v5;
   v7 = [(FedStatsUtilsGammaDistribution *)self cap];
 
@@ -146,7 +146,7 @@ uint64_t __81__FedStatsUtilsGammaDistribution_sampleLargeWithShape_scale_unitNum
     {
       do
       {
-        [(FedStatsUtilsGammaDistribution *)self sampleUncappedWithUnitNumberGenerator:v4];
+        [(FedStatsUtilsGammaDistribution *)self sampleUncappedWithUnitNumberGenerator:generatorCopy];
       }
 
       while (v11 > v10);

@@ -14,8 +14,8 @@
 
 - (id)accessibilityValue
 {
-  v2 = [MEMORY[0x29EDBDFA0] sharedInstance];
-  if ([v2 hapticMusicActive])
+  mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+  if ([mEMORY[0x29EDBDFA0] hapticMusicActive])
   {
     v3 = @"music.haptics.active.value";
   }

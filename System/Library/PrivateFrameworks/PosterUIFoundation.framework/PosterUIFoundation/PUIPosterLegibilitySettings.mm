@@ -1,29 +1,29 @@
 @interface PUIPosterLegibilitySettings
-+ (id)legibilitySettingsForContentColor:(id)a3 contrast:(double)a4;
-+ (id)legibilitySettingsForStyle:(int64_t)a3 primaryColor:(id)a4 secondaryColor:(id)a5 shadowColor:(id)a6;
-+ (id)legibilitySettingsWithUILegibilitySettings:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLegibilitySettings:(id)a3;
++ (id)legibilitySettingsForContentColor:(id)color contrast:(double)contrast;
++ (id)legibilitySettingsForStyle:(int64_t)style primaryColor:(id)color secondaryColor:(id)secondaryColor shadowColor:(id)shadowColor;
++ (id)legibilitySettingsWithUILegibilitySettings:(id)settings;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLegibilitySettings:(id)settings;
 - (NSString)description;
-- (PUIPosterLegibilitySettings)initWithBSXPCCoder:(id)a3;
-- (PUIPosterLegibilitySettings)initWithCoder:(id)a3;
-- (PUIPosterLegibilitySettings)initWithStyle:(int64_t)a3 primaryColor:(id)a4 secondaryColor:(id)a5 shadowColor:(id)a6;
+- (PUIPosterLegibilitySettings)initWithBSXPCCoder:(id)coder;
+- (PUIPosterLegibilitySettings)initWithCoder:(id)coder;
+- (PUIPosterLegibilitySettings)initWithStyle:(int64_t)style primaryColor:(id)color secondaryColor:(id)secondaryColor shadowColor:(id)shadowColor;
 - (id)convertToUILegibility;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)legibilitySettingsByApplyingShadowRadiusMultiplier:(double)a3;
-- (id)legibilitySettingsByOverridingShadowAlpha:(double)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)legibilitySettingsByApplyingShadowRadiusMultiplier:(double)multiplier;
+- (id)legibilitySettingsByOverridingShadowAlpha:(double)alpha;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PUIPosterLegibilitySettings
 
-+ (id)legibilitySettingsWithUILegibilitySettings:(id)a3
++ (id)legibilitySettingsWithUILegibilitySettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   NSClassFromString(&cfstr_Uilegibilityse.isa);
-  if (!v4)
+  if (!settingsCopy)
   {
     [PUIPosterLegibilitySettings legibilitySettingsWithUILegibilitySettings:a2];
   }
@@ -33,36 +33,36 @@
     [PUIPosterLegibilitySettings legibilitySettingsWithUILegibilitySettings:a2];
   }
 
-  v5 = [v4 style];
-  if (v5 == 2)
+  style = [settingsCopy style];
+  if (style == 2)
   {
     v6 = 2;
   }
 
   else
   {
-    v6 = v5 == 1;
+    v6 = style == 1;
   }
 
   v7 = [PUIPosterLegibilitySettings alloc];
-  v8 = [v4 primaryColor];
-  v9 = [v4 secondaryColor];
-  v10 = [v4 shadowColor];
-  v11 = [(PUIPosterLegibilitySettings *)v7 initWithStyle:v6 primaryColor:v8 secondaryColor:v9 shadowColor:v10];
+  primaryColor = [settingsCopy primaryColor];
+  secondaryColor = [settingsCopy secondaryColor];
+  shadowColor = [settingsCopy shadowColor];
+  v11 = [(PUIPosterLegibilitySettings *)v7 initWithStyle:v6 primaryColor:primaryColor secondaryColor:secondaryColor shadowColor:shadowColor];
 
   v11->_source = 2;
-  v12 = [v4 copy];
+  v12 = [settingsCopy copy];
   specifiedLegibilitySettings = v11->_specifiedLegibilitySettings;
   v11->_specifiedLegibilitySettings = v12;
 
   return v11;
 }
 
-+ (id)legibilitySettingsForContentColor:(id)a3 contrast:(double)a4
++ (id)legibilitySettingsForContentColor:(id)color contrast:(double)contrast
 {
-  v7 = a3;
+  colorCopy = color;
   NSClassFromString(&cfstr_Uicolor.isa);
-  if (!v7)
+  if (!colorCopy)
   {
     [PUIPosterLegibilitySettings legibilitySettingsForContentColor:a2 contrast:?];
   }
@@ -72,54 +72,54 @@
     [PUIPosterLegibilitySettings legibilitySettingsForContentColor:a2 contrast:?];
   }
 
-  v8 = [objc_alloc(MEMORY[0x1E69DD5B8]) initWithContentColor:v7 contrast:a4];
-  v9 = [v8 style];
-  if (v9 == 2)
+  v8 = [objc_alloc(MEMORY[0x1E69DD5B8]) initWithContentColor:colorCopy contrast:contrast];
+  style = [v8 style];
+  if (style == 2)
   {
     v10 = 2;
   }
 
   else
   {
-    v10 = v9 == 1;
+    v10 = style == 1;
   }
 
-  v11 = [v8 primaryColor];
-  v12 = [v8 secondaryColor];
-  v13 = [v8 shadowColor];
-  v14 = [a1 legibilitySettingsForStyle:v10 primaryColor:v11 secondaryColor:v12 shadowColor:v13];
+  primaryColor = [v8 primaryColor];
+  secondaryColor = [v8 secondaryColor];
+  shadowColor = [v8 shadowColor];
+  v14 = [self legibilitySettingsForStyle:v10 primaryColor:primaryColor secondaryColor:secondaryColor shadowColor:shadowColor];
 
-  [v14 setContentColor:v7];
-  [v14 setContrast:a4];
+  [v14 setContentColor:colorCopy];
+  [v14 setContrast:contrast];
   v14[6] = 1;
 
   return v14;
 }
 
-+ (id)legibilitySettingsForStyle:(int64_t)a3 primaryColor:(id)a4 secondaryColor:(id)a5 shadowColor:(id)a6
++ (id)legibilitySettingsForStyle:(int64_t)style primaryColor:(id)color secondaryColor:(id)secondaryColor shadowColor:(id)shadowColor
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [[a1 alloc] initWithStyle:a3 primaryColor:v12 secondaryColor:v11 shadowColor:v10];
+  shadowColorCopy = shadowColor;
+  secondaryColorCopy = secondaryColor;
+  colorCopy = color;
+  v13 = [[self alloc] initWithStyle:style primaryColor:colorCopy secondaryColor:secondaryColorCopy shadowColor:shadowColorCopy];
 
   return v13;
 }
 
-- (PUIPosterLegibilitySettings)initWithStyle:(int64_t)a3 primaryColor:(id)a4 secondaryColor:(id)a5 shadowColor:(id)a6
+- (PUIPosterLegibilitySettings)initWithStyle:(int64_t)style primaryColor:(id)color secondaryColor:(id)secondaryColor shadowColor:(id)shadowColor
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (a3 >= 3)
+  colorCopy = color;
+  secondaryColorCopy = secondaryColor;
+  shadowColorCopy = shadowColor;
+  if (style >= 3)
   {
     [PUIPosterLegibilitySettings initWithStyle:a2 primaryColor:? secondaryColor:? shadowColor:?];
   }
 
-  v14 = v13;
-  if (a3)
+  v14 = shadowColorCopy;
+  if (style)
   {
-    v15 = v11;
+    v15 = colorCopy;
     NSClassFromString(&cfstr_Uicolor.isa);
     if (!v15)
     {
@@ -131,7 +131,7 @@
       [PUIPosterLegibilitySettings initWithStyle:a2 primaryColor:? secondaryColor:? shadowColor:?];
     }
 
-    v16 = v12;
+    v16 = secondaryColorCopy;
     NSClassFromString(&cfstr_Uicolor.isa);
     if (!v16)
     {
@@ -161,11 +161,11 @@
   v18 = [(PUIPosterLegibilitySettings *)&v31 init];
   if (v18)
   {
-    v19 = [v11 copy];
+    v19 = [colorCopy copy];
     v20 = *(v18 + 7);
     *(v18 + 7) = v19;
 
-    v21 = [v12 copy];
+    v21 = [secondaryColorCopy copy];
     v22 = *(v18 + 8);
     *(v18 + 8) = v21;
 
@@ -173,7 +173,7 @@
     v24 = *(v18 + 9);
     *(v18 + 9) = v23;
 
-    *(v18 + 5) = a3;
+    *(v18 + 5) = style;
     *(v18 + 6) = 0;
     __asm { FMOV            V0.2D, #1.0 }
 
@@ -183,7 +183,7 @@
   return v18;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[PUIPosterLegibilitySettings allocWithZone:?]primaryColor:"initWithStyle:primaryColor:secondaryColor:shadowColor:" secondaryColor:self->_style shadowColor:self->_primaryColor, self->_secondaryColor, self->_shadowColor];
   v4->_contrast = self->_contrast;
@@ -220,10 +220,10 @@
         v6 = style == 1;
       }
 
-      v7 = [(PUIPosterLegibilitySettings *)self primaryColor];
-      v8 = [(PUIPosterLegibilitySettings *)self secondaryColor];
-      v9 = [(PUIPosterLegibilitySettings *)self shadowColor];
-      v10 = [v4 initWithStyle:v6 primaryColor:v7 secondaryColor:v8 shadowColor:v9];
+      primaryColor = [(PUIPosterLegibilitySettings *)self primaryColor];
+      secondaryColor = [(PUIPosterLegibilitySettings *)self secondaryColor];
+      shadowColor = [(PUIPosterLegibilitySettings *)self shadowColor];
+      v10 = [v4 initWithStyle:v6 primaryColor:primaryColor secondaryColor:secondaryColor shadowColor:shadowColor];
       cachedLegibilitySettings = self->_cachedLegibilitySettings;
       self->_cachedLegibilitySettings = v10;
 
@@ -251,26 +251,26 @@
   return v16;
 }
 
-- (id)legibilitySettingsByApplyingShadowRadiusMultiplier:(double)a3
+- (id)legibilitySettingsByApplyingShadowRadiusMultiplier:(double)multiplier
 {
   v4 = [(PUIPosterLegibilitySettings *)self copyWithZone:0];
-  v4[4] = a3;
+  v4[4] = multiplier;
 
   return v4;
 }
 
-- (id)legibilitySettingsByOverridingShadowAlpha:(double)a3
+- (id)legibilitySettingsByOverridingShadowAlpha:(double)alpha
 {
   v4 = [(PUIPosterLegibilitySettings *)self copyWithZone:0];
-  v4[3] = a3;
+  v4[3] = alpha;
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -280,33 +280,33 @@
     v5 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v7 = (isKindOfClass & 1) != 0 && [(PUIPosterLegibilitySettings *)self isEqualToLegibilitySettings:v4];
+    v7 = (isKindOfClass & 1) != 0 && [(PUIPosterLegibilitySettings *)self isEqualToLegibilitySettings:equalCopy];
   }
 
   return v7;
 }
 
-- (BOOL)isEqualToLegibilitySettings:(id)a3
+- (BOOL)isEqualToLegibilitySettings:(id)settings
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  settingsCopy = settings;
+  v5 = settingsCopy;
+  if (self == settingsCopy)
   {
     v18 = 1;
   }
 
-  else if (v4 && (v6 = [(PUIPosterLegibilitySettings *)v4 style], v6 == [(PUIPosterLegibilitySettings *)self style]))
+  else if (settingsCopy && (v6 = [(PUIPosterLegibilitySettings *)settingsCopy style], v6 == [(PUIPosterLegibilitySettings *)self style]))
   {
-    v7 = [(PUIPosterLegibilitySettings *)self convertToUILegibility];
-    v8 = [(PUIPosterLegibilitySettings *)v5 convertToUILegibility];
-    v9 = [v8 primaryColor];
-    v10 = [v7 primaryColor];
+    convertToUILegibility = [(PUIPosterLegibilitySettings *)self convertToUILegibility];
+    convertToUILegibility2 = [(PUIPosterLegibilitySettings *)v5 convertToUILegibility];
+    primaryColor = [convertToUILegibility2 primaryColor];
+    primaryColor2 = [convertToUILegibility primaryColor];
     v11 = BSEqualObjects();
 
-    if (v11 && ([v8 secondaryColor], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "secondaryColor"), v13 = objc_claimAutoreleasedReturnValue(), v14 = BSEqualObjects(), v13, v12, v14) && (objc_msgSend(v8, "shadowColor"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "shadowColor"), v16 = objc_claimAutoreleasedReturnValue(), v17 = BSEqualObjects(), v16, v15, v17) && (objc_msgSend(v7, "shadowRadius"), objc_msgSend(v8, "shadowRadius"), BSFloatEqualToFloat()) && (objc_msgSend(v7, "shadowAlpha"), objc_msgSend(v8, "shadowAlpha"), BSFloatEqualToFloat()) && (objc_msgSend(v7, "imageOutset"), objc_msgSend(v8, "imageOutset"), BSFloatEqualToFloat()))
+    if (v11 && ([convertToUILegibility2 secondaryColor], v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(convertToUILegibility, "secondaryColor"), v13 = objc_claimAutoreleasedReturnValue(), v14 = BSEqualObjects(), v13, v12, v14) && (objc_msgSend(convertToUILegibility2, "shadowColor"), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend(convertToUILegibility, "shadowColor"), v16 = objc_claimAutoreleasedReturnValue(), v17 = BSEqualObjects(), v16, v15, v17) && (objc_msgSend(convertToUILegibility, "shadowRadius"), objc_msgSend(convertToUILegibility2, "shadowRadius"), BSFloatEqualToFloat()) && (objc_msgSend(convertToUILegibility, "shadowAlpha"), objc_msgSend(convertToUILegibility2, "shadowAlpha"), BSFloatEqualToFloat()) && (objc_msgSend(convertToUILegibility, "imageOutset"), objc_msgSend(convertToUILegibility2, "imageOutset"), BSFloatEqualToFloat()))
     {
-      [v7 minFillHeight];
-      [v8 minFillHeight];
+      [convertToUILegibility minFillHeight];
+      [convertToUILegibility2 minFillHeight];
       v18 = BSFloatEqualToFloat();
     }
 
@@ -326,27 +326,27 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PUIPosterLegibilitySettings *)self convertToUILegibility];
-  v3 = [MEMORY[0x1E698E6B8] builder];
-  v4 = [v3 appendInteger:{objc_msgSend(v2, "style")}];
-  v5 = [v2 primaryColor];
-  v6 = [v3 appendObject:v5];
+  convertToUILegibility = [(PUIPosterLegibilitySettings *)self convertToUILegibility];
+  builder = [MEMORY[0x1E698E6B8] builder];
+  v4 = [builder appendInteger:{objc_msgSend(convertToUILegibility, "style")}];
+  primaryColor = [convertToUILegibility primaryColor];
+  v6 = [builder appendObject:primaryColor];
 
-  v7 = [v2 secondaryColor];
-  v8 = [v3 appendObject:v7];
+  secondaryColor = [convertToUILegibility secondaryColor];
+  v8 = [builder appendObject:secondaryColor];
 
-  v9 = [v2 shadowColor];
-  v10 = [v3 appendObject:v9];
+  shadowColor = [convertToUILegibility shadowColor];
+  v10 = [builder appendObject:shadowColor];
 
-  [v2 shadowRadius];
-  v11 = [v3 appendCGFloat:?];
-  [v2 shadowAlpha];
-  v12 = [v3 appendCGFloat:?];
-  [v2 imageOutset];
-  v13 = [v3 appendCGFloat:?];
-  [v2 minFillHeight];
-  v14 = [v3 appendCGFloat:?];
-  v15 = [v3 hash];
+  [convertToUILegibility shadowRadius];
+  v11 = [builder appendCGFloat:?];
+  [convertToUILegibility shadowAlpha];
+  v12 = [builder appendCGFloat:?];
+  [convertToUILegibility imageOutset];
+  v13 = [builder appendCGFloat:?];
+  [convertToUILegibility minFillHeight];
+  v14 = [builder appendCGFloat:?];
+  v15 = [builder hash];
 
   return v15;
 }
@@ -354,8 +354,8 @@
 - (NSString)description
 {
   v3 = [MEMORY[0x1E698E680] builderWithObject:self];
-  v4 = [(PUIPosterLegibilitySettings *)self source];
-  switch(v4)
+  source = [(PUIPosterLegibilitySettings *)self source];
+  switch(source)
   {
     case 2:
       v20 = [v3 appendObject:self->_specifiedLegibilitySettings withName:@"specifiedLegibilitySettings"];
@@ -379,8 +379,8 @@
       }
 
       [v3 appendString:v16 withName:@"style"];
-      v17 = [(PUIPosterLegibilitySettings *)self contentColor];
-      v18 = [v3 appendObject:v17 withName:@"contentColor" skipIfNil:1];
+      contentColor = [(PUIPosterLegibilitySettings *)self contentColor];
+      v18 = [v3 appendObject:contentColor withName:@"contentColor" skipIfNil:1];
 
       [(PUIPosterLegibilitySettings *)self contrast];
       v19 = [v3 appendDouble:@"contrast" withName:5 decimalPrecision:?];
@@ -404,14 +404,14 @@
       }
 
       [v3 appendString:v7 withName:@"style"];
-      v8 = [(PUIPosterLegibilitySettings *)self primaryColor];
-      v9 = [v3 appendObject:v8 withName:@"primaryColor" skipIfNil:1];
+      primaryColor = [(PUIPosterLegibilitySettings *)self primaryColor];
+      v9 = [v3 appendObject:primaryColor withName:@"primaryColor" skipIfNil:1];
 
-      v10 = [(PUIPosterLegibilitySettings *)self secondaryColor];
-      v11 = [v3 appendObject:v10 withName:@"secondaryColor" skipIfNil:1];
+      secondaryColor = [(PUIPosterLegibilitySettings *)self secondaryColor];
+      v11 = [v3 appendObject:secondaryColor withName:@"secondaryColor" skipIfNil:1];
 
-      v12 = [(PUIPosterLegibilitySettings *)self shadowColor];
-      v13 = [v3 appendObject:v12 withName:@"shadowColor" skipIfNil:1];
+      shadowColor = [(PUIPosterLegibilitySettings *)self shadowColor];
+      v13 = [v3 appendObject:shadowColor withName:@"shadowColor" skipIfNil:1];
 
       break;
   }
@@ -426,77 +426,77 @@
     v22 = [v3 appendDouble:@"shadowRadiusMultiplier" withName:2 decimalPrecision:?];
   }
 
-  v23 = [v3 build];
+  build = [v3 build];
 
-  return v23;
+  return build;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   if ([(PUIPosterLegibilitySettings *)self source])
   {
     if ([(PUIPosterLegibilitySettings *)self source]== 1)
     {
-      v4 = [(PUIPosterLegibilitySettings *)self contentColor];
-      [v8 encodeObject:v4 forKey:@"contentColor"];
+      contentColor = [(PUIPosterLegibilitySettings *)self contentColor];
+      [coderCopy encodeObject:contentColor forKey:@"contentColor"];
 
       [(PUIPosterLegibilitySettings *)self contrast];
-      [v8 encodeDouble:@"contrast" forKey:?];
+      [coderCopy encodeDouble:@"contrast" forKey:?];
     }
 
     else if ([(PUIPosterLegibilitySettings *)self source]== 2)
     {
-      [v8 encodeObject:self->_specifiedLegibilitySettings forKey:@"specifiedLegibilitySettings"];
+      [coderCopy encodeObject:self->_specifiedLegibilitySettings forKey:@"specifiedLegibilitySettings"];
     }
   }
 
   else
   {
-    v5 = [(PUIPosterLegibilitySettings *)self primaryColor];
-    [v8 encodeObject:v5 forKey:@"primaryColor"];
+    primaryColor = [(PUIPosterLegibilitySettings *)self primaryColor];
+    [coderCopy encodeObject:primaryColor forKey:@"primaryColor"];
 
-    v6 = [(PUIPosterLegibilitySettings *)self shadowColor];
-    [v8 encodeObject:v6 forKey:@"shadowColor"];
+    shadowColor = [(PUIPosterLegibilitySettings *)self shadowColor];
+    [coderCopy encodeObject:shadowColor forKey:@"shadowColor"];
 
-    v7 = [(PUIPosterLegibilitySettings *)self secondaryColor];
-    [v8 encodeObject:v7 forKey:@"secondaryColor"];
+    secondaryColor = [(PUIPosterLegibilitySettings *)self secondaryColor];
+    [coderCopy encodeObject:secondaryColor forKey:@"secondaryColor"];
   }
 
-  [v8 encodeInt64:-[PUIPosterLegibilitySettings style](self forKey:{"style"), @"legibilityStyle"}];
-  [v8 encodeInt64:-[PUIPosterLegibilitySettings source](self forKey:{"source"), @"source"}];
-  [v8 encodeDouble:@"shadowAlphaOverride" forKey:self->_shadowAlphaOverride];
-  [v8 encodeDouble:@"shadowRadiusMultiplier" forKey:self->_shadowRadiusMultiplier];
+  [coderCopy encodeInt64:-[PUIPosterLegibilitySettings style](self forKey:{"style"), @"legibilityStyle"}];
+  [coderCopy encodeInt64:-[PUIPosterLegibilitySettings source](self forKey:{"source"), @"source"}];
+  [coderCopy encodeDouble:@"shadowAlphaOverride" forKey:self->_shadowAlphaOverride];
+  [coderCopy encodeDouble:@"shadowRadiusMultiplier" forKey:self->_shadowRadiusMultiplier];
 }
 
-- (PUIPosterLegibilitySettings)initWithBSXPCCoder:(id)a3
+- (PUIPosterLegibilitySettings)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = PUIPosterLegibilitySettings;
   v5 = [(PUIPosterLegibilitySettings *)&v23 init];
   if (v5)
   {
-    v5->_style = [v4 decodeInt64ForKey:@"legibilityStyle"];
-    v5->_source = [v4 decodeInt64ForKey:@"source"];
-    [v4 decodeDoubleForKey:@"shadowAlphaOverride"];
+    v5->_style = [coderCopy decodeInt64ForKey:@"legibilityStyle"];
+    v5->_source = [coderCopy decodeInt64ForKey:@"source"];
+    [coderCopy decodeDoubleForKey:@"shadowAlphaOverride"];
     v5->_shadowAlphaOverride = v6;
-    [v4 decodeDoubleForKey:@"shadowRadiusMultiplier"];
+    [coderCopy decodeDoubleForKey:@"shadowRadiusMultiplier"];
     v5->_shadowRadiusMultiplier = v7;
     if (![(PUIPosterLegibilitySettings *)v5 source])
     {
       v11 = objc_opt_self();
-      v12 = [v4 decodeObjectOfClass:v11 forKey:@"primaryColor"];
+      v12 = [coderCopy decodeObjectOfClass:v11 forKey:@"primaryColor"];
       primaryColor = v5->_primaryColor;
       v5->_primaryColor = v12;
 
       v14 = objc_opt_self();
-      v15 = [v4 decodeObjectOfClass:v14 forKey:@"shadowColor"];
+      v15 = [coderCopy decodeObjectOfClass:v14 forKey:@"shadowColor"];
       shadowColor = v5->_shadowColor;
       v5->_shadowColor = v15;
 
       v8 = objc_opt_self();
-      v17 = [v4 decodeObjectOfClass:v8 forKey:@"secondaryColor"];
+      v17 = [coderCopy decodeObjectOfClass:v8 forKey:@"secondaryColor"];
       secondaryColor = v5->_secondaryColor;
       v5->_secondaryColor = v17;
       goto LABEL_6;
@@ -505,7 +505,7 @@
     if ([(PUIPosterLegibilitySettings *)v5 source]== 2)
     {
       v8 = objc_opt_self();
-      v9 = [v4 decodeObjectOfClass:v8 forKey:@"specifiedLegibilitySettings"];
+      v9 = [coderCopy decodeObjectOfClass:v8 forKey:@"specifiedLegibilitySettings"];
       secondaryColor = v5->_specifiedLegibilitySettings;
       v5->_specifiedLegibilitySettings = v9;
 LABEL_6:
@@ -516,11 +516,11 @@ LABEL_6:
     if ([(PUIPosterLegibilitySettings *)v5 source]== 1)
     {
       v19 = objc_opt_self();
-      v20 = [v4 decodeObjectOfClass:v19 forKey:@"contentColor"];
+      v20 = [coderCopy decodeObjectOfClass:v19 forKey:@"contentColor"];
       contentColor = v5->_contentColor;
       v5->_contentColor = v20;
 
-      [v4 decodeDoubleForKey:@"contrast"];
+      [coderCopy decodeDoubleForKey:@"contrast"];
       v5->_contrast = v22;
     }
   }
@@ -530,34 +530,34 @@ LABEL_7:
   return v5;
 }
 
-- (PUIPosterLegibilitySettings)initWithCoder:(id)a3
+- (PUIPosterLegibilitySettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v23.receiver = self;
   v23.super_class = PUIPosterLegibilitySettings;
   v5 = [(PUIPosterLegibilitySettings *)&v23 init];
   if (v5)
   {
-    v5->_style = [v4 decodeInt64ForKey:@"legibilityStyle"];
-    v5->_source = [v4 decodeInt64ForKey:@"source"];
-    [v4 decodeDoubleForKey:@"shadowAlphaOverride"];
+    v5->_style = [coderCopy decodeInt64ForKey:@"legibilityStyle"];
+    v5->_source = [coderCopy decodeInt64ForKey:@"source"];
+    [coderCopy decodeDoubleForKey:@"shadowAlphaOverride"];
     v5->_shadowAlphaOverride = v6;
-    [v4 decodeDoubleForKey:@"shadowRadiusMultiplier"];
+    [coderCopy decodeDoubleForKey:@"shadowRadiusMultiplier"];
     v5->_shadowRadiusMultiplier = v7;
     if (![(PUIPosterLegibilitySettings *)v5 source])
     {
       v11 = objc_opt_self();
-      v12 = [v4 decodeObjectOfClass:v11 forKey:@"primaryColor"];
+      v12 = [coderCopy decodeObjectOfClass:v11 forKey:@"primaryColor"];
       primaryColor = v5->_primaryColor;
       v5->_primaryColor = v12;
 
       v14 = objc_opt_self();
-      v15 = [v4 decodeObjectOfClass:v14 forKey:@"shadowColor"];
+      v15 = [coderCopy decodeObjectOfClass:v14 forKey:@"shadowColor"];
       shadowColor = v5->_shadowColor;
       v5->_shadowColor = v15;
 
       v8 = objc_opt_self();
-      v17 = [v4 decodeObjectOfClass:v8 forKey:@"secondaryColor"];
+      v17 = [coderCopy decodeObjectOfClass:v8 forKey:@"secondaryColor"];
       secondaryColor = v5->_secondaryColor;
       v5->_secondaryColor = v17;
       goto LABEL_6;
@@ -566,7 +566,7 @@ LABEL_7:
     if ([(PUIPosterLegibilitySettings *)v5 source]== 2)
     {
       v8 = objc_opt_self();
-      v9 = [v4 decodeObjectOfClass:v8 forKey:@"specifiedLegibilitySettings"];
+      v9 = [coderCopy decodeObjectOfClass:v8 forKey:@"specifiedLegibilitySettings"];
       secondaryColor = v5->_specifiedLegibilitySettings;
       v5->_specifiedLegibilitySettings = v9;
 LABEL_6:
@@ -577,11 +577,11 @@ LABEL_6:
     if ([(PUIPosterLegibilitySettings *)v5 source]== 1)
     {
       v19 = objc_opt_self();
-      v20 = [v4 decodeObjectOfClass:v19 forKey:@"contentColor"];
+      v20 = [coderCopy decodeObjectOfClass:v19 forKey:@"contentColor"];
       contentColor = v5->_contentColor;
       v5->_contentColor = v20;
 
-      [v4 decodeDoubleForKey:@"contrast"];
+      [coderCopy decodeDoubleForKey:@"contrast"];
       v5->_contrast = v22;
     }
   }
@@ -591,42 +591,42 @@ LABEL_7:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
+  coderCopy = coder;
   if ([(PUIPosterLegibilitySettings *)self source])
   {
     if ([(PUIPosterLegibilitySettings *)self source]== 1)
     {
-      v4 = [(PUIPosterLegibilitySettings *)self contentColor];
-      [v8 encodeObject:v4 forKey:@"contentColor"];
+      contentColor = [(PUIPosterLegibilitySettings *)self contentColor];
+      [coderCopy encodeObject:contentColor forKey:@"contentColor"];
 
       [(PUIPosterLegibilitySettings *)self contrast];
-      [v8 encodeDouble:@"contrast" forKey:?];
+      [coderCopy encodeDouble:@"contrast" forKey:?];
     }
 
     else if ([(PUIPosterLegibilitySettings *)self source]== 2)
     {
-      [v8 encodeObject:self->_specifiedLegibilitySettings forKey:@"specifiedLegibilitySettings"];
+      [coderCopy encodeObject:self->_specifiedLegibilitySettings forKey:@"specifiedLegibilitySettings"];
     }
   }
 
   else
   {
-    v5 = [(PUIPosterLegibilitySettings *)self primaryColor];
-    [v8 encodeObject:v5 forKey:@"primaryColor"];
+    primaryColor = [(PUIPosterLegibilitySettings *)self primaryColor];
+    [coderCopy encodeObject:primaryColor forKey:@"primaryColor"];
 
-    v6 = [(PUIPosterLegibilitySettings *)self shadowColor];
-    [v8 encodeObject:v6 forKey:@"shadowColor"];
+    shadowColor = [(PUIPosterLegibilitySettings *)self shadowColor];
+    [coderCopy encodeObject:shadowColor forKey:@"shadowColor"];
 
-    v7 = [(PUIPosterLegibilitySettings *)self secondaryColor];
-    [v8 encodeObject:v7 forKey:@"secondaryColor"];
+    secondaryColor = [(PUIPosterLegibilitySettings *)self secondaryColor];
+    [coderCopy encodeObject:secondaryColor forKey:@"secondaryColor"];
   }
 
-  [v8 encodeInt64:-[PUIPosterLegibilitySettings style](self forKey:{"style"), @"legibilityStyle"}];
-  [v8 encodeInt64:-[PUIPosterLegibilitySettings source](self forKey:{"source"), @"source"}];
-  [v8 encodeDouble:@"shadowAlphaOverride" forKey:self->_shadowAlphaOverride];
-  [v8 encodeDouble:@"shadowRadiusMultiplier" forKey:self->_shadowRadiusMultiplier];
+  [coderCopy encodeInt64:-[PUIPosterLegibilitySettings style](self forKey:{"style"), @"legibilityStyle"}];
+  [coderCopy encodeInt64:-[PUIPosterLegibilitySettings source](self forKey:{"source"), @"source"}];
+  [coderCopy encodeDouble:@"shadowAlphaOverride" forKey:self->_shadowAlphaOverride];
+  [coderCopy encodeDouble:@"shadowRadiusMultiplier" forKey:self->_shadowRadiusMultiplier];
 }
 
 + (void)legibilitySettingsWithUILegibilitySettings:(char *)a1 .cold.1(char *a1)

@@ -1,15 +1,15 @@
 @interface LanguagesViewController
-- (_TtC13TranslationUI23LanguagesViewController)initWithCoder:(id)a3;
-- (_TtC13TranslationUI23LanguagesViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)closeActionWithSender:(id)a3;
+- (_TtC13TranslationUI23LanguagesViewController)initWithCoder:(id)coder;
+- (_TtC13TranslationUI23LanguagesViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)closeActionWithSender:(id)sender;
 - (void)updateSelectedTarget;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation LanguagesViewController
 
-- (_TtC13TranslationUI23LanguagesViewController)initWithCoder:(id)a3
+- (_TtC13TranslationUI23LanguagesViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC13TranslationUI23LanguagesViewController_segmentedControl) = 0;
   v4 = OBJC_IVAR____TtC13TranslationUI23LanguagesViewController_selectionModel;
@@ -28,34 +28,34 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_26F41D46C();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_26F41E09C(a3);
+  selfCopy = self;
+  sub_26F41E09C(appear);
 }
 
 - (void)updateSelectedTarget
 {
-  v2 = self;
+  selfCopy = self;
   sub_26F41F450();
 }
 
-- (void)closeActionWithSender:(id)a3
+- (void)closeActionWithSender:(id)sender
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_26F4A0038();
   swift_unknownObjectRelease();
-  [(LanguagesViewController *)v4 dismissViewControllerAnimated:1 completion:0];
+  [(LanguagesViewController *)selfCopy dismissViewControllerAnimated:1 completion:0];
 
   __swift_destroy_boxed_opaque_existential_0(v5);
 }
 
-- (_TtC13TranslationUI23LanguagesViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC13TranslationUI23LanguagesViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

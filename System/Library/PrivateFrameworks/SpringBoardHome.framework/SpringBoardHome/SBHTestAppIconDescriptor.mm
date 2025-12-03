@@ -1,21 +1,21 @@
 @interface SBHTestAppIconDescriptor
-- (BOOL)isEqual:(id)a3;
-- (BOOL)sbh_isValidWithError:(id *)a3;
-- (SBHTestAppIconDescriptor)initWithAppIconBundleIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)sbh_isValidWithError:(id *)error;
+- (SBHTestAppIconDescriptor)initWithAppIconBundleIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SBHTestAppIconDescriptor
 
-- (SBHTestAppIconDescriptor)initWithAppIconBundleIdentifier:(id)a3
+- (SBHTestAppIconDescriptor)initWithAppIconBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = SBHTestAppIconDescriptor;
   v5 = [(SBHTestAppIconDescriptor *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v6;
   }
@@ -23,27 +23,27 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   bundleIdentifier = self->_bundleIdentifier;
 
   return [v4 initWithAppIconBundleIdentifier:bundleIdentifier];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [(SBHTestAppIconDescriptor *)v5 bundleIdentifier];
-    v7 = [v6 isEqual:self->_bundleIdentifier];
+    bundleIdentifier = [(SBHTestAppIconDescriptor *)v5 bundleIdentifier];
+    v7 = [bundleIdentifier isEqual:self->_bundleIdentifier];
   }
 
   else
@@ -54,22 +54,22 @@
   return v7;
 }
 
-- (BOOL)sbh_isValidWithError:(id *)a3
+- (BOOL)sbh_isValidWithError:(id *)error
 {
-  v3 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:self->_bundleIdentifier allowPlaceholder:0 error:a3];
+  v3 = [objc_alloc(MEMORY[0x1E69635F8]) initWithBundleIdentifier:self->_bundleIdentifier allowPlaceholder:0 error:error];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 applicationState];
-    v6 = [v5 isValid];
+    applicationState = [v3 applicationState];
+    isValid = [applicationState isValid];
   }
 
   else
   {
-    v6 = 0;
+    isValid = 0;
   }
 
-  return v6;
+  return isValid;
 }
 
 @end

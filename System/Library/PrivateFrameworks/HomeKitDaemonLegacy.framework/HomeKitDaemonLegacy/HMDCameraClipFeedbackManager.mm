@@ -1,18 +1,18 @@
 @interface HMDCameraClipFeedbackManager
 + (id)logCategory;
 - (BOOL)isCurrentDeviceConfirmedPrimaryResident;
-- (HMDCameraClipFeedbackManager)initWithLocalZone:(id)a3 cloudZone:(id)a4 home:(id)a5 messageDispatcher:(id)a6 cameraProfileUUID:(id)a7 messageTargetUUID:(id)a8 workQueue:(id)a9;
-- (HMDCameraClipFeedbackManager)initWithLocalZone:(id)a3 cloudZone:(id)a4 home:(id)a5 messageDispatcher:(id)a6 cameraProfileUUID:(id)a7 messageTargetUUID:(id)a8 workQueue:(id)a9 feedbackUploader:(id)a10;
+- (HMDCameraClipFeedbackManager)initWithLocalZone:(id)zone cloudZone:(id)cloudZone home:(id)home messageDispatcher:(id)dispatcher cameraProfileUUID:(id)d messageTargetUUID:(id)iD workQueue:(id)queue;
+- (HMDCameraClipFeedbackManager)initWithLocalZone:(id)zone cloudZone:(id)cloudZone home:(id)home messageDispatcher:(id)dispatcher cameraProfileUUID:(id)d messageTargetUUID:(id)iD workQueue:(id)queue feedbackUploader:(id)self0;
 - (HMDHome)home;
 - (id)_performCloudPull;
 - (id)logIdentifier;
 - (void)_findAndUploadSubmittedClips;
-- (void)_handleFindAndUploadSubmittedClipsMessage:(id)a3;
-- (void)_handleSubmitClipsMessage:(id)a3;
+- (void)_handleFindAndUploadSubmittedClipsMessage:(id)message;
+- (void)_handleSubmitClipsMessage:(id)message;
 - (void)_notifyPrimaryResidentThatClipsWereSubmitted;
-- (void)_uploadNextClipFromQueryResult:(id)a3;
-- (void)configureWithIsCurrentDeviceResidentCapable:(BOOL)a3;
-- (void)handlePrimaryResidentUpdateNotification:(id)a3;
+- (void)_uploadNextClipFromQueryResult:(id)result;
+- (void)configureWithIsCurrentDeviceResidentCapable:(BOOL)capable;
+- (void)handlePrimaryResidentUpdateNotification:(id)notification;
 @end
 
 @implementation HMDCameraClipFeedbackManager
@@ -26,58 +26,58 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCameraClipFeedbackManager *)self cameraProfileUUID];
-  v3 = [v2 UUIDString];
+  cameraProfileUUID = [(HMDCameraClipFeedbackManager *)self cameraProfileUUID];
+  uUIDString = [cameraProfileUUID UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (void)_handleSubmitClipsMessage:(id)a3
+- (void)_handleSubmitClipsMessage:(id)message
 {
   v79 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraClipFeedbackManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDCameraClipFeedbackManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v4 messagePayload];
+    messagePayload = [messageCopy messagePayload];
     *buf = 138543618;
     v73 = v9;
     v74 = 2112;
-    v75 = v10;
+    v75 = messagePayload;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Handling submit clips message payload: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v11 = [v4 setForKey:*MEMORY[0x277CCF430]];
+  v11 = [messageCopy setForKey:*MEMORY[0x277CCF430]];
   if (!v11)
   {
     v51 = objc_autoreleasePoolPush();
-    v52 = v7;
+    v52 = selfCopy;
     v53 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
     {
       v54 = HMFGetLogIdentifier();
-      v55 = [v4 messagePayload];
+      messagePayload2 = [messageCopy messagePayload];
       *buf = 138543618;
       v73 = v54;
       v74 = 2112;
-      v75 = v55;
+      v75 = messagePayload2;
       _os_log_impl(&dword_2531F8000, v53, OS_LOG_TYPE_ERROR, "%{public}@Could not find clip UUIDs in message payload: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v51);
     v12 = [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-    [v4 respondWithError:v12];
+    [messageCopy respondWithError:v12];
     goto LABEL_41;
   }
 
-  v58 = v4;
+  v58 = messageCopy;
   v12 = [MEMORY[0x277CBEB58] set];
   v67 = 0u;
   v68 = 0u;
@@ -103,10 +103,10 @@ LABEL_6:
     }
 
     v17 = *(*(&v67 + 1) + 8 * v16);
-    v18 = [(HMDCameraClipFeedbackManager *)v7 localZone];
+    localZone = [(HMDCameraClipFeedbackManager *)selfCopy localZone];
     v19 = objc_opt_class();
     v66 = 0;
-    v20 = [v18 fetchModelWithModelID:v17 ofType:v19 error:&v66];
+    v20 = [localZone fetchModelWithModelID:v17 ofType:v19 error:&v66];
     v21 = v66;
 
     if (!v20)
@@ -147,12 +147,12 @@ LABEL_12:
             }
 
             v26 = *(*(&v62 + 1) + 8 * i);
-            v27 = [v26 feedbackStatus];
-            switch(v27)
+            feedbackStatus = [v26 feedbackStatus];
+            switch(feedbackStatus)
             {
               case 2:
                 v36 = objc_autoreleasePoolPush();
-                v37 = v7;
+                v37 = selfCopy;
                 v38 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
                 {
@@ -173,7 +173,7 @@ LABEL_28:
                 continue;
               case 1:
                 v36 = objc_autoreleasePoolPush();
-                v37 = v7;
+                v37 = selfCopy;
                 v38 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
                 {
@@ -190,7 +190,7 @@ LABEL_28:
                 goto LABEL_28;
               case 0:
                 v28 = objc_autoreleasePoolPush();
-                v29 = v7;
+                v29 = selfCopy;
                 v30 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
                 {
@@ -204,9 +204,9 @@ LABEL_28:
 
                 objc_autoreleasePoolPop(v28);
                 v32 = [HMDCameraClipModel alloc];
-                v33 = [v26 hmbModelID];
-                v34 = [v26 hmbParentModelID];
-                v35 = [(HMBModel *)v32 initWithModelID:v33 parentModelID:v34];
+                hmbModelID = [v26 hmbModelID];
+                hmbParentModelID = [v26 hmbParentModelID];
+                v35 = [(HMBModel *)v32 initWithModelID:hmbModelID parentModelID:hmbParentModelID];
 
                 [(HMDCameraClipModel *)v35 setFeedbackStatus:1];
                 [v59 addObject:v35];
@@ -222,19 +222,19 @@ LABEL_31:
 
             if ([v59 count])
             {
-              v42 = [(HMDCameraClipFeedbackManager *)v7 localZone];
+              localZone2 = [(HMDCameraClipFeedbackManager *)selfCopy localZone];
               v43 = [MEMORY[0x277D17108] optionsWithLabel:@"Marking clips for upload"];
-              v44 = [v42 updateModels:v59 options:v43];
+              v44 = [localZone2 updateModels:v59 options:v43];
 
               v61[0] = MEMORY[0x277D85DD0];
               v61[1] = 3221225472;
               v61[2] = __58__HMDCameraClipFeedbackManager__handleSubmitClipsMessage___block_invoke;
               v61[3] = &unk_2797330C8;
-              v61[4] = v7;
+              v61[4] = selfCopy;
               v45 = [v44 addSuccessBlock:v61];
             }
 
-            v4 = v58;
+            messageCopy = v58;
             [v58 respondWithSuccess];
 
             goto LABEL_37;
@@ -247,7 +247,7 @@ LABEL_31:
   }
 
   v46 = objc_autoreleasePoolPush();
-  v47 = v7;
+  v47 = selfCopy;
   v48 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
   {
@@ -263,7 +263,7 @@ LABEL_31:
 
   objc_autoreleasePoolPop(v46);
   v50 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:2];
-  v4 = v58;
+  messageCopy = v58;
   [v58 respondWithError:v50];
 
 LABEL_37:
@@ -288,43 +288,43 @@ void __58__HMDCameraClipFeedbackManager__handleSubmitClipsMessage___block_invoke
   v8 = [v7 addSuccessBlock:v9];
 }
 
-- (void)_handleFindAndUploadSubmittedClipsMessage:(id)a3
+- (void)_handleFindAndUploadSubmittedClipsMessage:(id)message
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraClipFeedbackManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  messageCopy = message;
+  workQueue = [(HMDCameraClipFeedbackManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [v4 shortDescription];
+    shortDescription = [messageCopy shortDescription];
     v12 = 138543618;
     v13 = v9;
     v14 = 2112;
-    v15 = v10;
+    v15 = shortDescription;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Handling find and upload submitted clips message: %@", &v12, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  [(HMDCameraClipFeedbackManager *)v7 _findAndUploadSubmittedClips];
-  [v4 respondWithSuccess];
+  [(HMDCameraClipFeedbackManager *)selfCopy _findAndUploadSubmittedClips];
+  [messageCopy respondWithSuccess];
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handlePrimaryResidentUpdateNotification:(id)a3
+- (void)handlePrimaryResidentUpdateNotification:(id)notification
 {
-  v4 = [(HMDCameraClipFeedbackManager *)self workQueue];
+  workQueue = [(HMDCameraClipFeedbackManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __72__HMDCameraClipFeedbackManager_handlePrimaryResidentUpdateNotification___block_invoke;
   block[3] = &unk_279735D00;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __72__HMDCameraClipFeedbackManager_handlePrimaryResidentUpdateNotification___block_invoke(uint64_t a1)
@@ -368,8 +368,8 @@ void __72__HMDCameraClipFeedbackManager_handlePrimaryResidentUpdateNotification_
 - (void)_notifyPrimaryResidentThatClipsWereSubmitted
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraClipFeedbackManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraClipFeedbackManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if ([(HMDCameraClipFeedbackManager *)self isCurrentDeviceConfirmedPrimaryResident])
   {
@@ -380,42 +380,42 @@ void __72__HMDCameraClipFeedbackManager_handlePrimaryResidentUpdateNotification_
 
   else
   {
-    v5 = [(HMDCameraClipFeedbackManager *)self home];
-    v6 = [v5 primaryResident];
+    home = [(HMDCameraClipFeedbackManager *)self home];
+    primaryResident = [home primaryResident];
 
-    if (v6)
+    if (primaryResident)
     {
       v7 = [HMDRemoteDeviceMessageDestination alloc];
-      v8 = [(HMDCameraClipFeedbackManager *)self messageTargetUUID];
-      v9 = [v6 device];
-      v10 = [(HMDRemoteDeviceMessageDestination *)v7 initWithTarget:v8 device:v9];
+      messageTargetUUID = [(HMDCameraClipFeedbackManager *)self messageTargetUUID];
+      device = [primaryResident device];
+      v10 = [(HMDRemoteDeviceMessageDestination *)v7 initWithTarget:messageTargetUUID device:device];
 
       v11 = [[HMDRemoteMessage alloc] initWithName:@"HMDCameraClipFeedbackFindAndUploadSubmittedClipsMessage" destination:v10 payload:0 type:3 timeout:1 secure:0.0];
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v15 = HMFGetLogIdentifier();
-        v16 = [(HMFObject *)v11 shortDescription];
+        shortDescription = [(HMFObject *)v11 shortDescription];
         v23 = 138543874;
         v24 = v15;
         v25 = 2112;
-        v26 = v16;
+        v26 = shortDescription;
         v27 = 2112;
-        v28 = v6;
+        v28 = primaryResident;
         _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_INFO, "%{public}@Sending message %@ that clips were submitted to %@", &v23, 0x20u);
       }
 
       objc_autoreleasePoolPop(v12);
-      v17 = [(HMDCameraClipFeedbackManager *)v13 messageDispatcher];
-      [v17 sendMessage:v11];
+      messageDispatcher = [(HMDCameraClipFeedbackManager *)selfCopy messageDispatcher];
+      [messageDispatcher sendMessage:v11];
     }
 
     else
     {
       v18 = objc_autoreleasePoolPush();
-      v19 = self;
+      selfCopy2 = self;
       v20 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
@@ -432,18 +432,18 @@ void __72__HMDCameraClipFeedbackManager_handlePrimaryResidentUpdateNotification_
   }
 }
 
-- (void)_uploadNextClipFromQueryResult:(id)a3
+- (void)_uploadNextClipFromQueryResult:(id)result
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraClipFeedbackManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  resultCopy = result;
+  workQueue = [(HMDCameraClipFeedbackManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [v4 nextObject];
-  if (!v6)
+  nextObject = [resultCopy nextObject];
+  if (!nextObject)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
@@ -467,7 +467,7 @@ LABEL_12:
   if (![(HMDCameraClipFeedbackManager *)self isCurrentDeviceConfirmedPrimaryResident])
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = self;
+    selfCopy2 = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
@@ -475,7 +475,7 @@ LABEL_12:
       *buf = 138543618;
       v33 = v18;
       v34 = 2112;
-      v35 = v6;
+      v35 = nextObject;
       v19 = "%{public}@Current device is not a confirmed primary resident, will not upload clip %@";
       v20 = v17;
       v21 = OS_LOG_TYPE_DEFAULT;
@@ -486,12 +486,12 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v7 = [v6 feedbackStatus];
+  feedbackStatus = [nextObject feedbackStatus];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy3 = self;
   v10 = HMFGetOSLogHandle();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
-  if (v7 == 2)
+  if (feedbackStatus == 2)
   {
     if (v11)
     {
@@ -499,19 +499,19 @@ LABEL_12:
       *buf = 138543618;
       v33 = v12;
       v34 = 2112;
-      v35 = v6;
+      v35 = nextObject;
       _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Clip %@ was already uploaded", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    v13 = [(HMDCameraClipFeedbackManager *)v9 workQueue];
+    workQueue2 = [(HMDCameraClipFeedbackManager *)selfCopy3 workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __63__HMDCameraClipFeedbackManager__uploadNextClipFromQueryResult___block_invoke;
     block[3] = &unk_2797359B0;
-    block[4] = v9;
-    v31 = v4;
-    dispatch_async(v13, block);
+    block[4] = selfCopy3;
+    v31 = resultCopy;
+    dispatch_async(workQueue2, block);
 
     v14 = v31;
   }
@@ -524,21 +524,21 @@ LABEL_12:
       *buf = 138543618;
       v33 = v23;
       v34 = 2112;
-      v35 = v6;
+      v35 = nextObject;
       _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Uploading clip %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    v24 = [(HMDCameraClipFeedbackManager *)v9 feedbackUploader];
-    v25 = [(HMDCameraClipFeedbackManager *)v9 cameraProfileUUID];
+    feedbackUploader = [(HMDCameraClipFeedbackManager *)selfCopy3 feedbackUploader];
+    cameraProfileUUID = [(HMDCameraClipFeedbackManager *)selfCopy3 cameraProfileUUID];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __63__HMDCameraClipFeedbackManager__uploadNextClipFromQueryResult___block_invoke_90;
     v27[3] = &unk_279734D88;
-    v27[4] = v9;
-    v28 = v6;
-    v29 = v4;
-    [v24 uploadFeedbackWithCameraProfileUUID:v25 clipModel:v28 completionHandler:v27];
+    v27[4] = selfCopy3;
+    v28 = nextObject;
+    v29 = resultCopy;
+    [feedbackUploader uploadFeedbackWithCameraProfileUUID:cameraProfileUUID clipModel:v28 completionHandler:v27];
 
     v14 = v28;
   }
@@ -614,24 +614,24 @@ void __63__HMDCameraClipFeedbackManager__uploadNextClipFromQueryResult___block_i
 - (void)_findAndUploadSubmittedClips
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraClipFeedbackManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraClipFeedbackManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   if ([(HMDCameraClipFeedbackManager *)self isCurrentDeviceConfirmedPrimaryResident])
   {
-    v4 = [(HMDCameraClipFeedbackManager *)self _performCloudPull];
+    _performCloudPull = [(HMDCameraClipFeedbackManager *)self _performCloudPull];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __60__HMDCameraClipFeedbackManager__findAndUploadSubmittedClips__block_invoke;
     v11[3] = &unk_279733BC0;
     v11[4] = self;
-    v5 = [v4 addCompletionBlock:v11];
+    v5 = [_performCloudPull addCompletionBlock:v11];
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -659,11 +659,11 @@ void __60__HMDCameraClipFeedbackManager__findAndUploadSubmittedClips__block_invo
 - (id)_performCloudPull
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCameraClipFeedbackManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraClipFeedbackManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -675,18 +675,18 @@ void __60__HMDCameraClipFeedbackManager__findAndUploadSubmittedClips__block_invo
 
   objc_autoreleasePoolPop(v4);
   v8 = [MEMORY[0x277D17108] optionsWithLabel:@"Explicit fetch"];
-  v9 = [(HMDCameraClipFeedbackManager *)v5 cloudZone];
-  v10 = [v9 performCloudPullWithOptions:v8];
+  cloudZone = [(HMDCameraClipFeedbackManager *)selfCopy cloudZone];
+  v10 = [cloudZone performCloudPullWithOptions:v8];
   v11 = MEMORY[0x277D2C938];
-  v12 = [(HMDCameraClipFeedbackManager *)v5 workQueue];
-  v13 = [v11 schedulerWithDispatchQueue:v12];
+  workQueue2 = [(HMDCameraClipFeedbackManager *)selfCopy workQueue];
+  v13 = [v11 schedulerWithDispatchQueue:workQueue2];
   v14 = [v10 reschedule:v13];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __49__HMDCameraClipFeedbackManager__performCloudPull__block_invoke;
   v18[3] = &unk_2797359D8;
-  v18[4] = v5;
+  v18[4] = selfCopy;
   v15 = [v14 addFailureBlock:v18];
 
   v16 = *MEMORY[0x277D85DE8];
@@ -717,23 +717,23 @@ void __49__HMDCameraClipFeedbackManager__performCloudPull__block_invoke(uint64_t
 
 - (BOOL)isCurrentDeviceConfirmedPrimaryResident
 {
-  v3 = [(HMDCameraClipFeedbackManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCameraClipFeedbackManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v4 = [(HMDCameraClipFeedbackManager *)self home];
-  LOBYTE(v3) = [v4 isCurrentDeviceConfirmedPrimaryResident];
+  home = [(HMDCameraClipFeedbackManager *)self home];
+  LOBYTE(workQueue) = [home isCurrentDeviceConfirmedPrimaryResident];
 
-  return v3;
+  return workQueue;
 }
 
-- (void)configureWithIsCurrentDeviceResidentCapable:(BOOL)a3
+- (void)configureWithIsCurrentDeviceResidentCapable:(BOOL)capable
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = [(HMDCameraClipFeedbackManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(HMDCameraClipFeedbackManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -744,37 +744,37 @@ void __49__HMDCameraClipFeedbackManager__performCloudPull__block_invoke(uint64_t
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDCameraClipFeedbackManager *)v7 home];
-  if (v10)
+  home = [(HMDCameraClipFeedbackManager *)selfCopy home];
+  if (home)
   {
     v11 = [HMDXPCMessagePolicy policyWithEntitlements:133];
-    v12 = [HMDUserMessagePolicy userMessagePolicyWithHome:v10 userPrivilege:0 remoteAccessRequired:0];
-    v13 = [(HMDCameraClipFeedbackManager *)v7 messageDispatcher];
+    v12 = [HMDUserMessagePolicy userMessagePolicyWithHome:home userPrivilege:0 remoteAccessRequired:0];
+    messageDispatcher = [(HMDCameraClipFeedbackManager *)selfCopy messageDispatcher];
     v14 = *MEMORY[0x277CCF4B8];
     v31[0] = v11;
     v31[1] = v12;
     v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:2];
-    [v13 registerForMessage:v14 receiver:v7 policies:v15 selector:sel__handleSubmitClipsMessage_];
+    [messageDispatcher registerForMessage:v14 receiver:selfCopy policies:v15 selector:sel__handleSubmitClipsMessage_];
 
-    if (a3)
+    if (capable)
     {
-      v16 = [MEMORY[0x277CCAB98] defaultCenter];
-      v17 = [v10 residentDeviceManager];
-      [v16 addObserver:v7 selector:sel_handlePrimaryResidentUpdateNotification_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:v17];
+      defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+      residentDeviceManager = [home residentDeviceManager];
+      [defaultCenter addObserver:selfCopy selector:sel_handlePrimaryResidentUpdateNotification_ name:@"HMDResidentDeviceManagerUpdatePrimaryResidentNotification" object:residentDeviceManager];
 
       v18 = +[HMDRemoteMessagePolicy defaultSecurePolicy];
-      v19 = [(HMDCameraClipFeedbackManager *)v7 messageDispatcher];
+      messageDispatcher2 = [(HMDCameraClipFeedbackManager *)selfCopy messageDispatcher];
       v30 = v18;
       v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v30 count:1];
-      [v19 registerForMessage:@"HMDCameraClipFeedbackFindAndUploadSubmittedClipsMessage" receiver:v7 policies:v20 selector:sel__handleFindAndUploadSubmittedClipsMessage_];
+      [messageDispatcher2 registerForMessage:@"HMDCameraClipFeedbackFindAndUploadSubmittedClipsMessage" receiver:selfCopy policies:v20 selector:sel__handleFindAndUploadSubmittedClipsMessage_];
 
-      [(HMDCameraClipFeedbackManager *)v7 _findAndUploadSubmittedClips];
+      [(HMDCameraClipFeedbackManager *)selfCopy _findAndUploadSubmittedClips];
     }
 
     else
     {
       v25 = objc_autoreleasePoolPush();
-      v26 = v7;
+      v26 = selfCopy;
       v27 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
@@ -791,7 +791,7 @@ void __49__HMDCameraClipFeedbackManager__performCloudPull__block_invoke(uint64_t
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = v7;
+    v22 = selfCopy;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
@@ -807,73 +807,73 @@ void __49__HMDCameraClipFeedbackManager__performCloudPull__block_invoke(uint64_t
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCameraClipFeedbackManager)initWithLocalZone:(id)a3 cloudZone:(id)a4 home:(id)a5 messageDispatcher:(id)a6 cameraProfileUUID:(id)a7 messageTargetUUID:(id)a8 workQueue:(id)a9 feedbackUploader:(id)a10
+- (HMDCameraClipFeedbackManager)initWithLocalZone:(id)zone cloudZone:(id)cloudZone home:(id)home messageDispatcher:(id)dispatcher cameraProfileUUID:(id)d messageTargetUUID:(id)iD workQueue:(id)queue feedbackUploader:(id)self0
 {
-  v15 = a3;
-  v39 = a4;
-  v16 = a4;
-  v17 = a5;
-  v40 = a6;
-  v18 = a6;
-  v19 = a7;
-  obj = a8;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  if (!v15)
+  zoneCopy = zone;
+  cloudZoneCopy = cloudZone;
+  cloudZoneCopy2 = cloudZone;
+  homeCopy = home;
+  dispatcherCopy = dispatcher;
+  dispatcherCopy2 = dispatcher;
+  dCopy = d;
+  obj = iD;
+  iDCopy = iD;
+  queueCopy = queue;
+  uploaderCopy = uploader;
+  if (!zoneCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_13;
   }
 
-  if (!v16)
+  if (!cloudZoneCopy2)
   {
 LABEL_13:
     _HMFPreconditionFailure();
     goto LABEL_14;
   }
 
-  if (!v17)
+  if (!homeCopy)
   {
 LABEL_14:
     _HMFPreconditionFailure();
     goto LABEL_15;
   }
 
-  if (!v18)
+  if (!dispatcherCopy2)
   {
 LABEL_15:
     _HMFPreconditionFailure();
     goto LABEL_16;
   }
 
-  if (!v19)
+  if (!dCopy)
   {
 LABEL_16:
     _HMFPreconditionFailure();
     goto LABEL_17;
   }
 
-  if (!v20)
+  if (!iDCopy)
   {
 LABEL_17:
     _HMFPreconditionFailure();
     goto LABEL_18;
   }
 
-  if (!v21)
+  if (!queueCopy)
   {
 LABEL_18:
     _HMFPreconditionFailure();
     goto LABEL_19;
   }
 
-  v23 = v22;
-  if (!v22)
+  v23 = uploaderCopy;
+  if (!uploaderCopy)
   {
 LABEL_19:
     v29 = _HMFPreconditionFailure();
-    return [(HMDCameraClipFeedbackManager *)v29 initWithLocalZone:v30 cloudZone:v31 home:v32 messageDispatcher:v33 cameraProfileUUID:v34 messageTargetUUID:v35 workQueue:v36, a9];
+    return [(HMDCameraClipFeedbackManager *)v29 initWithLocalZone:v30 cloudZone:v31 home:v32 messageDispatcher:v33 cameraProfileUUID:v34 messageTargetUUID:v35 workQueue:v36, queue];
   }
 
   v42.receiver = self;
@@ -882,77 +882,77 @@ LABEL_19:
   v25 = v24;
   if (v24)
   {
-    objc_storeWeak(&v24->_home, v17);
-    v26 = [v19 copy];
+    objc_storeWeak(&v24->_home, homeCopy);
+    v26 = [dCopy copy];
     cameraProfileUUID = v25->_cameraProfileUUID;
     v25->_cameraProfileUUID = v26;
 
     objc_storeStrong(&v25->_messageTargetUUID, obj);
-    objc_storeStrong(&v25->_feedbackUploader, a10);
-    objc_storeStrong(&v25->_workQueue, a9);
-    objc_storeStrong(&v25->_localZone, a3);
-    objc_storeStrong(&v25->_cloudZone, v39);
-    objc_storeStrong(&v25->_messageDispatcher, v40);
+    objc_storeStrong(&v25->_feedbackUploader, uploader);
+    objc_storeStrong(&v25->_workQueue, queue);
+    objc_storeStrong(&v25->_localZone, zone);
+    objc_storeStrong(&v25->_cloudZone, cloudZoneCopy);
+    objc_storeStrong(&v25->_messageDispatcher, dispatcherCopy);
   }
 
   return v25;
 }
 
-- (HMDCameraClipFeedbackManager)initWithLocalZone:(id)a3 cloudZone:(id)a4 home:(id)a5 messageDispatcher:(id)a6 cameraProfileUUID:(id)a7 messageTargetUUID:(id)a8 workQueue:(id)a9
+- (HMDCameraClipFeedbackManager)initWithLocalZone:(id)zone cloudZone:(id)cloudZone home:(id)home messageDispatcher:(id)dispatcher cameraProfileUUID:(id)d messageTargetUUID:(id)iD workQueue:(id)queue
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  if (!v15)
+  zoneCopy = zone;
+  cloudZoneCopy = cloudZone;
+  homeCopy = home;
+  dispatcherCopy = dispatcher;
+  dCopy = d;
+  iDCopy = iD;
+  queueCopy = queue;
+  if (!zoneCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_10;
   }
 
-  if (!v16)
+  if (!cloudZoneCopy)
   {
 LABEL_10:
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  if (!v17)
+  if (!homeCopy)
   {
 LABEL_11:
     _HMFPreconditionFailure();
     goto LABEL_12;
   }
 
-  if (!v18)
+  if (!dispatcherCopy)
   {
 LABEL_12:
     _HMFPreconditionFailure();
     goto LABEL_13;
   }
 
-  if (!v19)
+  if (!dCopy)
   {
 LABEL_13:
     _HMFPreconditionFailure();
     goto LABEL_14;
   }
 
-  if (!v20)
+  if (!iDCopy)
   {
 LABEL_14:
     _HMFPreconditionFailure();
     goto LABEL_15;
   }
 
-  v22 = v21;
-  if (v21)
+  v22 = queueCopy;
+  if (queueCopy)
   {
     v23 = objc_alloc_init(HMDCameraClipFeedbackUploader);
-    v24 = [(HMDCameraClipFeedbackManager *)self initWithLocalZone:v15 cloudZone:v16 home:v17 messageDispatcher:v18 cameraProfileUUID:v19 messageTargetUUID:v20 workQueue:v22 feedbackUploader:v23];
+    v24 = [(HMDCameraClipFeedbackManager *)self initWithLocalZone:zoneCopy cloudZone:cloudZoneCopy home:homeCopy messageDispatcher:dispatcherCopy cameraProfileUUID:dCopy messageTargetUUID:iDCopy workQueue:v22 feedbackUploader:v23];
 
     return v24;
   }

@@ -1,28 +1,28 @@
 @interface _UIActivityMatchingResults
 - (NSArray)hiddenActivities;
-- (_UIActivityMatchingResults)initWithActivityMatchingContext:(id)a3;
-- (void)setOrderedActivities:(id)a3;
+- (_UIActivityMatchingResults)initWithActivityMatchingContext:(id)context;
+- (void)setOrderedActivities:(id)activities;
 @end
 
 @implementation _UIActivityMatchingResults
 
-- (_UIActivityMatchingResults)initWithActivityMatchingContext:(id)a3
+- (_UIActivityMatchingResults)initWithActivityMatchingContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v15.receiver = self;
   v15.super_class = _UIActivityMatchingResults;
   v6 = [(_UIActivityMatchingResults *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
-    v8 = [MEMORY[0x1E695DF70] array];
+    objc_storeStrong(&v6->_context, context);
+    array = [MEMORY[0x1E695DF70] array];
     orderedActivities = v7->_orderedActivities;
-    v7->_orderedActivities = v8;
+    v7->_orderedActivities = array;
 
-    v10 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     hiddenActivitiesMutable = v7->_hiddenActivitiesMutable;
-    v7->_hiddenActivitiesMutable = v10;
+    v7->_hiddenActivitiesMutable = array2;
 
     v12 = [MEMORY[0x1E695DFA8] set];
     excludedActivityTypesSet = v7->_excludedActivityTypesSet;
@@ -32,19 +32,19 @@
   return v7;
 }
 
-- (void)setOrderedActivities:(id)a3
+- (void)setOrderedActivities:(id)activities
 {
-  if (a3)
+  if (activities)
   {
-    v3 = a3;
+    activitiesCopy = activities;
   }
 
   else
   {
-    v3 = MEMORY[0x1E695E0F0];
+    activitiesCopy = MEMORY[0x1E695E0F0];
   }
 
-  objc_storeStrong(&self->_orderedActivities, v3);
+  objc_storeStrong(&self->_orderedActivities, activitiesCopy);
 }
 
 - (NSArray)hiddenActivities

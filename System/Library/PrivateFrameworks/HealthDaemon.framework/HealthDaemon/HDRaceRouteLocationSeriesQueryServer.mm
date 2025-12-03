@@ -1,31 +1,31 @@
 @interface HDRaceRouteLocationSeriesQueryServer
 + (id)requiredEntitlements;
-- (HDRaceRouteLocationSeriesQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDRaceRouteLocationSeriesQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (void)_queue_start;
 @end
 
 @implementation HDRaceRouteLocationSeriesQueryServer
 
-- (HDRaceRouteLocationSeriesQueryServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDRaceRouteLocationSeriesQueryServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v10 = a4;
+  configurationCopy = configuration;
   v18.receiver = self;
   v18.super_class = HDRaceRouteLocationSeriesQueryServer;
-  v11 = [(HDQueryServer *)&v18 initWithUUID:a3 configuration:v10 client:a5 delegate:a6];
+  v11 = [(HDQueryServer *)&v18 initWithUUID:d configuration:configurationCopy client:client delegate:delegate];
   if (v11)
   {
-    v12 = [v10 clusterUUID];
+    clusterUUID = [configurationCopy clusterUUID];
     clusterUUID = v11->_clusterUUID;
-    v11->_clusterUUID = v12;
+    v11->_clusterUUID = clusterUUID;
 
-    v11->_workoutSelection = [v10 workoutSelection];
-    v14 = [v10 workoutUUID];
+    v11->_workoutSelection = [configurationCopy workoutSelection];
+    workoutUUID = [configurationCopy workoutUUID];
     workoutUUID = v11->_workoutUUID;
-    v11->_workoutUUID = v14;
+    v11->_workoutUUID = workoutUUID;
 
-    [v10 timestampAnchor];
+    [configurationCopy timestampAnchor];
     v11->_timestampAnchor = v16;
-    v11->_limit = [v10 limit];
+    v11->_limit = [configurationCopy limit];
   }
 
   return v11;
@@ -46,8 +46,8 @@
   v32.receiver = self;
   v32.super_class = HDRaceRouteLocationSeriesQueryServer;
   [(HDQueryServer *)&v32 _queue_start];
-  v3 = [(HDQueryServer *)self queryUUID];
-  v4 = [(HDQueryServer *)self clientProxy];
+  queryUUID = [(HDQueryServer *)self queryUUID];
+  clientProxy = [(HDQueryServer *)self clientProxy];
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -59,9 +59,9 @@
   aBlock[2] = __52__HDRaceRouteLocationSeriesQueryServer__queue_start__block_invoke;
   aBlock[3] = &unk_27861AA58;
   v25 = &v26;
-  v5 = v4;
+  v5 = clientProxy;
   v23 = v5;
-  v6 = v3;
+  v6 = queryUUID;
   v24 = v6;
   v7 = _Block_copy(aBlock);
   workoutUUID = self->_workoutUUID;
@@ -71,9 +71,9 @@
     workoutSelection = self->_workoutSelection;
     timestampAnchor = self->_timestampAnchor;
     limit = self->_limit;
-    v18 = [(HDQueryServer *)self profile];
+    profile = [(HDQueryServer *)self profile];
     v20 = 0;
-    v19 = [HDRaceRouteClusterEntity enumerateRoutePointsForClusterUUID:clusterUUID workoutSelection:workoutSelection timestampAnchor:limit limit:v18 profile:&v20 error:v7 dataHandler:timestampAnchor];
+    v19 = [HDRaceRouteClusterEntity enumerateRoutePointsForClusterUUID:clusterUUID workoutSelection:workoutSelection timestampAnchor:limit limit:profile profile:&v20 error:v7 dataHandler:timestampAnchor];
     v13 = v20;
 
     if (v19)
@@ -88,9 +88,9 @@ LABEL_5:
 
   v9 = self->_timestampAnchor;
   v10 = self->_limit;
-  v11 = [(HDQueryServer *)self profile];
+  profile2 = [(HDQueryServer *)self profile];
   v21 = 0;
-  v12 = [HDRaceRouteWorkoutEntity enumerateRoutePointsForWorkoutUUID:workoutUUID timestampAnchor:v10 limit:v11 profile:&v21 error:v7 dataHandler:v9];
+  v12 = [HDRaceRouteWorkoutEntity enumerateRoutePointsForWorkoutUUID:workoutUUID timestampAnchor:v10 limit:profile2 profile:&v21 error:v7 dataHandler:v9];
   v13 = v21;
 
   if (!v12)

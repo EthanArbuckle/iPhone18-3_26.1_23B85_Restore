@@ -1,6 +1,6 @@
 @interface CompilationResult
 - (CompilationResult)init;
-- (CompilationResult)initWithFunction:(id)a3 error:(id)a4;
+- (CompilationResult)initWithFunction:(id)function error:(id)error;
 - (MTLFunction)function;
 - (NSError)error;
 - (id)completionHandler;
@@ -21,15 +21,15 @@
   return 0;
 }
 
-- (CompilationResult)initWithFunction:(id)a3 error:(id)a4
+- (CompilationResult)initWithFunction:(id)function error:(id)error
 {
   v8.receiver = self;
   v8.super_class = CompilationResult;
   v6 = [(CompilationResult *)&v8 init];
   if (v6)
   {
-    v6->_function = a3;
-    v6->_error = a4;
+    v6->_function = function;
+    v6->_error = error;
     v6->_barrier = 0;
   }
 

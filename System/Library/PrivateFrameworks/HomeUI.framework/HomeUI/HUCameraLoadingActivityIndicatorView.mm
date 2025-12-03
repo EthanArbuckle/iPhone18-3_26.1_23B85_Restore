@@ -1,52 +1,52 @@
 @interface HUCameraLoadingActivityIndicatorView
-- (HUCameraLoadingActivityIndicatorView)initWithFrame:(CGRect)a3;
+- (HUCameraLoadingActivityIndicatorView)initWithFrame:(CGRect)frame;
 - (UIActivityIndicatorView)loadingActivityIndicator;
-- (void)willMoveToSuperview:(id)a3;
+- (void)willMoveToSuperview:(id)superview;
 @end
 
 @implementation HUCameraLoadingActivityIndicatorView
 
-- (HUCameraLoadingActivityIndicatorView)initWithFrame:(CGRect)a3
+- (HUCameraLoadingActivityIndicatorView)initWithFrame:(CGRect)frame
 {
   v15.receiver = self;
   v15.super_class = HUCameraLoadingActivityIndicatorView;
-  v3 = [(HUCameraLoadingActivityIndicatorView *)&v15 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUCameraLoadingActivityIndicatorView *)&v15 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x277D75348] clearColor];
-    [(HUCameraLoadingActivityIndicatorView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(HUCameraLoadingActivityIndicatorView *)v3 setBackgroundColor:clearColor];
 
-    v5 = [(HUCameraLoadingActivityIndicatorView *)v3 loadingActivityIndicator];
-    [(HUCameraLoadingActivityIndicatorView *)v3 addSubview:v5];
+    loadingActivityIndicator = [(HUCameraLoadingActivityIndicatorView *)v3 loadingActivityIndicator];
+    [(HUCameraLoadingActivityIndicatorView *)v3 addSubview:loadingActivityIndicator];
 
-    v6 = [(HUCameraLoadingActivityIndicatorView *)v3 loadingActivityIndicator];
-    v7 = [v6 centerXAnchor];
-    v8 = [(HUCameraLoadingActivityIndicatorView *)v3 centerXAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    loadingActivityIndicator2 = [(HUCameraLoadingActivityIndicatorView *)v3 loadingActivityIndicator];
+    centerXAnchor = [loadingActivityIndicator2 centerXAnchor];
+    centerXAnchor2 = [(HUCameraLoadingActivityIndicatorView *)v3 centerXAnchor];
+    v9 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     [v9 setActive:1];
 
-    v10 = [(HUCameraLoadingActivityIndicatorView *)v3 loadingActivityIndicator];
-    v11 = [v10 centerYAnchor];
-    v12 = [(HUCameraLoadingActivityIndicatorView *)v3 centerYAnchor];
-    v13 = [v11 constraintEqualToAnchor:v12];
+    loadingActivityIndicator3 = [(HUCameraLoadingActivityIndicatorView *)v3 loadingActivityIndicator];
+    centerYAnchor = [loadingActivityIndicator3 centerYAnchor];
+    centerYAnchor2 = [(HUCameraLoadingActivityIndicatorView *)v3 centerYAnchor];
+    v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     [v13 setActive:1];
   }
 
   return v3;
 }
 
-- (void)willMoveToSuperview:(id)a3
+- (void)willMoveToSuperview:(id)superview
 {
-  v4 = [(HUCameraLoadingActivityIndicatorView *)self loadingActivityIndicator];
-  v5 = v4;
-  if (a3)
+  loadingActivityIndicator = [(HUCameraLoadingActivityIndicatorView *)self loadingActivityIndicator];
+  v5 = loadingActivityIndicator;
+  if (superview)
   {
-    [v4 startAnimating];
+    [loadingActivityIndicator startAnimating];
   }
 
   else
   {
-    [v4 stopAnimating];
+    [loadingActivityIndicator stopAnimating];
   }
 }
 
@@ -56,8 +56,8 @@
   if (!loadingActivityIndicator)
   {
     v4 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:101];
-    v5 = [MEMORY[0x277D75348] systemWhiteColor];
-    [(UIActivityIndicatorView *)v4 setColor:v5];
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    [(UIActivityIndicatorView *)v4 setColor:systemWhiteColor];
 
     [(UIActivityIndicatorView *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
     v6 = self->_loadingActivityIndicator;

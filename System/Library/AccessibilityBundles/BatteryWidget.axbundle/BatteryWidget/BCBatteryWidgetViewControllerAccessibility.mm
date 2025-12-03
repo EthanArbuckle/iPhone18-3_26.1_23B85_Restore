@@ -1,14 +1,14 @@
 @interface BCBatteryWidgetViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation BCBatteryWidgetViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BCBatteryWidgetViewController" hasInstanceMethod:@"_updateRowView:withDevice:animated:" withFullSignature:{"v", "@", "@", "B", 0}];
-  [v3 validateClass:@"BCBatteryWidgetRowView" hasInstanceMethod:@"glyphImage" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BCBatteryWidgetViewController" hasInstanceMethod:@"_updateRowView:withDevice:animated:" withFullSignature:{"v", "@", "@", "B", 0}];
+  [validationsCopy validateClass:@"BCBatteryWidgetRowView" hasInstanceMethod:@"glyphImage" withFullSignature:{"@", 0}];
 }
 
 @end

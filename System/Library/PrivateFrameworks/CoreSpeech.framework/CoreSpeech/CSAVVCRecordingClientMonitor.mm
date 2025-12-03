@@ -1,15 +1,15 @@
 @interface CSAVVCRecordingClientMonitor
 + (id)sharedInstance;
 - (CSAVVCRecordingClientMonitor)init;
-- (void)CSAudioServerCrashMonitorDidReceiveServerCrash:(id)a3;
-- (void)_didReceiveAVVCRecordingClientNumberChange:(unint64_t)a3;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)CSAudioServerCrashMonitorDidReceiveServerCrash:(id)crash;
+- (void)_didReceiveAVVCRecordingClientNumberChange:(unint64_t)change;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
 @implementation CSAVVCRecordingClientMonitor
 
-- (void)_didReceiveAVVCRecordingClientNumberChange:(unint64_t)a3
+- (void)_didReceiveAVVCRecordingClientNumberChange:(unint64_t)change
 {
   v5 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -17,14 +17,14 @@
     v6 = 136315394;
     v7 = "[CSAVVCRecordingClientMonitor _didReceiveAVVCRecordingClientNumberChange:]";
     v8 = 2050;
-    v9 = a3;
+    changeCopy = change;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s update AVVC recording client # : %{public}lu", &v6, 0x16u);
   }
 
-  self->_numOfAVVCRecordingClients = a3;
+  self->_numOfAVVCRecordingClients = change;
 }
 
-- (void)CSAudioServerCrashMonitorDidReceiveServerCrash:(id)a3
+- (void)CSAudioServerCrashMonitorDidReceiveServerCrash:(id)crash
 {
   v4 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_INFO))
@@ -60,9 +60,9 @@
   }
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   objc_initWeak(&location, self);
   v5 = +[CSAVVoiceTriggerClientManager sharedVoiceTriggerClient];
   v10[0] = _NSConcreteStackBlock;

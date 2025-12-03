@@ -1,17 +1,17 @@
 @interface _LTDASRAssetModel
-+ (id)modelFromAsset:(id)a3;
++ (id)modelFromAsset:(id)asset;
 - (BOOL)isAvailable;
 - (BOOL)isDownloading;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isInstalled;
-- (BOOL)supportsLocale:(id)a3;
-- (BOOL)supportsTaskHint:(int64_t)a3;
+- (BOOL)supportsLocale:(id)locale;
+- (BOOL)supportsTaskHint:(int64_t)hint;
 - (NSArray)localeIdentifiers;
 - (NSArray)supportedLanguages;
 - (NSString)debugDescription;
 - (NSString)managedAssetType;
 - (NSURL)getLocalFileUrl;
-- (_LTDASRAssetModel)initWithAssetIdentifier:(id)a3 provider:(id)a4;
+- (_LTDASRAssetModel)initWithAssetIdentifier:(id)identifier provider:(id)provider;
 - (unint64_t)assetSubtype;
 - (unint64_t)hash;
 - (unint64_t)state;
@@ -19,10 +19,10 @@
 
 @implementation _LTDASRAssetModel
 
-- (_LTDASRAssetModel)initWithAssetIdentifier:(id)a3 provider:(id)a4
+- (_LTDASRAssetModel)initWithAssetIdentifier:(id)identifier provider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  providerCopy = provider;
   v21.receiver = self;
   v21.super_class = _LTDASRAssetModel;
   v9 = [(_LTDASRAssetModel *)&v21 init];
@@ -33,33 +33,33 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (([v7 hasPrefix:@"ASR-"] & 1) == 0)
+  if (([identifierCopy hasPrefix:@"ASR-"] & 1) == 0)
   {
     v19 = _LTOSLogAssets();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
-      [_LTDASRAssetModel initWithAssetIdentifier:v7 provider:v19];
+      [_LTDASRAssetModel initWithAssetIdentifier:identifierCopy provider:v19];
     }
 
     goto LABEL_10;
   }
 
-  objc_storeStrong(&v9->_assetName, a3);
-  v10 = [v7 substringFromIndex:{objc_msgSend(@"ASR-", "length")}];
-  v11 = [v10 lt_localeIdentifier];
+  objc_storeStrong(&v9->_assetName, identifier);
+  v10 = [identifierCopy substringFromIndex:{objc_msgSend(@"ASR-", "length")}];
+  lt_localeIdentifier = [v10 lt_localeIdentifier];
   ltIdentifier = v9->_ltIdentifier;
-  v9->_ltIdentifier = v11;
+  v9->_ltIdentifier = lt_localeIdentifier;
 
-  objc_storeStrong(&v9->_provider, a4);
-  v13 = [v8 assetType];
+  objc_storeStrong(&v9->_provider, provider);
+  assetType = [providerCopy assetType];
   v14 = 3;
-  if (v13 == 7)
+  if (assetType == 7)
   {
     v14 = 4;
   }
 
   v9->_assetSubtype = v14;
-  v15 = [_LTDASRAssetService assetSpecifierForSFConfig:v8];
+  v15 = [_LTDASRAssetService assetSpecifierForSFConfig:providerCopy];
   v16 = [MEMORY[0x277CE1AC0] discreteProgressWithIdentifier:v15 totalUnitCount:157286400];
   progress = v9->_progress;
   v9->_progress = v16;
@@ -75,15 +75,15 @@ LABEL_11:
   return v18;
 }
 
-+ (id)modelFromAsset:(id)a3
++ (id)modelFromAsset:(id)asset
 {
-  v3 = [a3 provider];
-  if (v3)
+  provider = [asset provider];
+  if (provider)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = provider;
     }
 
     else
@@ -107,14 +107,14 @@ LABEL_11:
   result = self->_assetSubtype;
   if (!result)
   {
-    v4 = [(SFEntitledAssetConfig *)self->_provider assetType];
+    assetType = [(SFEntitledAssetConfig *)self->_provider assetType];
     v5 = 2;
-    if (v4 == 3)
+    if (assetType == 3)
     {
       v5 = 3;
     }
 
-    if (v4 == 7)
+    if (assetType == 7)
     {
       result = 4;
     }
@@ -132,8 +132,8 @@ LABEL_11:
 
 - (NSURL)getLocalFileUrl
 {
-  v2 = [(_LTDASRAssetModel *)self provider];
-  v3 = [_LTDASRAssetService pathToSFAsset:v2];
+  provider = [(_LTDASRAssetModel *)self provider];
+  v3 = [_LTDASRAssetService pathToSFAsset:provider];
 
   if (v3)
   {
@@ -150,15 +150,15 @@ LABEL_11:
 
 - (NSString)managedAssetType
 {
-  v2 = [(_LTDASRAssetModel *)self assetSubtype];
+  assetSubtype = [(_LTDASRAssetModel *)self assetSubtype];
   v3 = kLTDASRAssetTypeNGASR;
   v4 = &kLTDASRAssetTypeGASR;
-  if (v2 != 4)
+  if (assetSubtype != 4)
   {
     v4 = kLTAssetTypeMT_MA;
   }
 
-  if (v2 != 3)
+  if (assetSubtype != 3)
   {
     v3 = v4;
   }
@@ -175,14 +175,14 @@ LABEL_11:
     return 1;
   }
 
-  v4 = [(_LTAssetProgress *)self->_progress offlineState];
+  offlineState = [(_LTAssetProgress *)self->_progress offlineState];
   v5 = 2;
-  if (v4 != 1)
+  if (offlineState != 1)
   {
     v5 = 3;
   }
 
-  if (v4 == 2)
+  if (offlineState == 2)
   {
     return 1;
   }
@@ -196,8 +196,8 @@ LABEL_11:
 - (NSArray)supportedLanguages
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v2 = [(_LTDASRAssetModel *)self assetLanguage];
-  v6[0] = v2;
+  assetLanguage = [(_LTDASRAssetModel *)self assetLanguage];
+  v6[0] = assetLanguage;
   v3 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
 
   v4 = *MEMORY[0x277D85DE8];
@@ -207,48 +207,48 @@ LABEL_11:
 
 - (BOOL)isAvailable
 {
-  v2 = [(_LTDASRAssetModel *)self progress];
-  v3 = [v2 offlineState] == 0;
+  progress = [(_LTDASRAssetModel *)self progress];
+  v3 = [progress offlineState] == 0;
 
   return v3;
 }
 
 - (BOOL)isDownloading
 {
-  v2 = [(_LTDASRAssetModel *)self progress];
-  v3 = [v2 offlineState] == 1;
+  progress = [(_LTDASRAssetModel *)self progress];
+  v3 = [progress offlineState] == 1;
 
   return v3;
 }
 
 - (BOOL)isInstalled
 {
-  v2 = [(_LTDASRAssetModel *)self getLocalFileUrl];
-  v3 = [v2 path];
+  getLocalFileUrl = [(_LTDASRAssetModel *)self getLocalFileUrl];
+  path = [getLocalFileUrl path];
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:path];
 
   return v5;
 }
 
-- (BOOL)supportsLocale:(id)a3
+- (BOOL)supportsLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [(_LTDASRAssetModel *)self assetLanguage];
-  v6 = [v4 _ltLocaleIdentifier];
+  localeCopy = locale;
+  assetLanguage = [(_LTDASRAssetModel *)self assetLanguage];
+  _ltLocaleIdentifier = [localeCopy _ltLocaleIdentifier];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(localeCopy) = [assetLanguage isEqualToString:_ltLocaleIdentifier];
+  return localeCopy;
 }
 
-- (BOOL)supportsTaskHint:(int64_t)a3
+- (BOOL)supportsTaskHint:(int64_t)hint
 {
-  v4 = a3 - 9;
-  v5 = [(_LTDASRAssetModel *)self assetSubtype];
+  v4 = hint - 9;
+  assetSubtype = [(_LTDASRAssetModel *)self assetSubtype];
   if (v4 > 1)
   {
-    if (v5 == 2)
+    if (assetSubtype == 2)
     {
       return 1;
     }
@@ -258,15 +258,15 @@ LABEL_11:
 
   else
   {
-    return v5 == 4;
+    return assetSubtype == 4;
   }
 }
 
 - (NSArray)localeIdentifiers
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v2 = [(_LTDASRAssetModel *)self identifier];
-  v3 = [v2 componentsSeparatedByString:@"-"];
+  identifier = [(_LTDASRAssetModel *)self identifier];
+  v3 = [identifier componentsSeparatedByString:@"-"];
 
   if ([v3 count] == 2)
   {
@@ -287,24 +287,24 @@ LABEL_11:
 
 - (unint64_t)hash
 {
-  v2 = [(_LTDASRAssetModel *)self assetName];
-  v3 = [v2 hash];
+  assetName = [(_LTDASRAssetModel *)self assetName];
+  v3 = [assetName hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -324,17 +324,17 @@ LABEL_11:
     }
 
     v8 = v6;
-    v9 = [(_LTDASRAssetModel *)self assetName];
-    v10 = [(_LTDASRAssetModel *)v8 assetName];
-    v11 = [v9 isEqualToString:v10];
+    assetName = [(_LTDASRAssetModel *)self assetName];
+    assetName2 = [(_LTDASRAssetModel *)v8 assetName];
+    v11 = [assetName isEqualToString:assetName2];
 
     if (v11)
     {
-      v12 = [(_LTDASRAssetModel *)self getLocalFileUrl];
-      v13 = [(_LTDASRAssetModel *)v8 getLocalFileUrl];
-      if (v12 | v13)
+      getLocalFileUrl = [(_LTDASRAssetModel *)self getLocalFileUrl];
+      getLocalFileUrl2 = [(_LTDASRAssetModel *)v8 getLocalFileUrl];
+      if (getLocalFileUrl | getLocalFileUrl2)
       {
-        v7 = [v12 isEqual:v13];
+        v7 = [getLocalFileUrl isEqual:getLocalFileUrl2];
       }
 
       else
@@ -357,10 +357,10 @@ LABEL_11:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(_LTDASRAssetModel *)self assetName];
-  v7 = [(_LTDASRAssetModel *)self provider];
-  v8 = [v7 debugDescription];
-  v9 = [v3 stringWithFormat:@"<%@ %@, %@>", v5, v6, v8];
+  assetName = [(_LTDASRAssetModel *)self assetName];
+  provider = [(_LTDASRAssetModel *)self provider];
+  v8 = [provider debugDescription];
+  v9 = [v3 stringWithFormat:@"<%@ %@, %@>", v5, assetName, v8];
 
   return v9;
 }

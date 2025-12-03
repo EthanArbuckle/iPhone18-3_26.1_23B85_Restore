@@ -1,5 +1,5 @@
 @interface ClientService
-- (ClientService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5;
+- (ClientService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service;
 - (ClientServiceManager)manager;
 - (void)notifyDidStart;
 - (void)start;
@@ -22,24 +22,24 @@
 
 - (void)stop
 {
-  v2 = [(ClientService *)self startTimer];
-  [v2 invalidate];
+  startTimer = [(ClientService *)self startTimer];
+  [startTimer invalidate];
 }
 
-- (ClientService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5
+- (ClientService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  peripheralCopy = peripheral;
+  serviceCopy = service;
   v15.receiver = self;
   v15.super_class = ClientService;
   v11 = [(ClientService *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_manager, v8);
-    objc_storeStrong(&v12->_peripheral, a4);
-    objc_storeStrong(&v12->_service, a5);
+    objc_storeWeak(&v11->_manager, managerCopy);
+    objc_storeStrong(&v12->_peripheral, peripheral);
+    objc_storeStrong(&v12->_service, service);
     *&v12->_isPrimary = 0;
     v12->_startTimeout = 10.0;
     startTimer = v12->_startTimer;
@@ -59,21 +59,21 @@
     {
       service = self->_service;
       v5 = v3;
-      v6 = [(CBService *)service UUID];
-      v7 = [(CBPeripheral *)self->_peripheral name];
+      uUID = [(CBService *)service UUID];
+      name = [(CBPeripheral *)self->_peripheral name];
       v10 = 138412546;
-      v11 = v6;
+      v11 = uUID;
       v12 = 2112;
-      v13 = v7;
+      v13 = name;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Service %@ has started on peripheral %@", &v10, 0x16u);
     }
 
     [(ClientService *)self setIsStarted:1];
-    v8 = [(ClientService *)self startTimer];
-    [v8 invalidate];
+    startTimer = [(ClientService *)self startTimer];
+    [startTimer invalidate];
 
-    v9 = [(ClientService *)self manager];
-    [v9 clientServiceDidStart:self];
+    manager = [(ClientService *)self manager];
+    [manager clientServiceDidStart:self];
   }
 }
 
@@ -85,8 +85,8 @@
     sub_100076454(self, v3);
   }
 
-  v4 = [(ClientService *)self manager];
-  [v4 clientServiceDidStart:self];
+  manager = [(ClientService *)self manager];
+  [manager clientServiceDidStart:self];
 }
 
 - (ClientServiceManager)manager

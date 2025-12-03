@@ -1,29 +1,29 @@
 @interface EMContentRepresentation
-+ (NSObject)_temporaryURLForClientIdentifier:(void *)a3 preferredFilename:(void *)a4 pathExtension:(void *)a5 cleanupInvocable:(void *)a6 error:;
++ (NSObject)_temporaryURLForClientIdentifier:(void *)identifier preferredFilename:(void *)filename pathExtension:(void *)extension cleanupInvocable:(void *)invocable error:;
 + (NSXPCInterface)contentRequestDelegateInterface;
 + (NSXPCInterface)distantContentRepresentationInterface;
-+ (id)temporaryURLWithData:(id)a3 clientIdentifier:(id)a4 preferredFilename:(id)a5 pathExtension:(id)a6 cleanupInvocable:(id *)a7 error:(id *)a8;
-+ (id)temporaryURLWithOriginalFileURL:(id)a3 clientIdentifier:(id)a4 preferredFilename:(id)a5 pathExtension:(id)a6 cleanupInvocable:(id *)a7 error:(id *)a8;
++ (id)temporaryURLWithData:(id)data clientIdentifier:(id)identifier preferredFilename:(id)filename pathExtension:(id)extension cleanupInvocable:(id *)invocable error:(id *)error;
++ (id)temporaryURLWithOriginalFileURL:(id)l clientIdentifier:(id)identifier preferredFilename:(id)filename pathExtension:(id)extension cleanupInvocable:(id *)invocable error:(id *)error;
 - (BOOL)showRemoteImages;
 - (BOOL)skipMessageReformatting;
 - (EMContentItem)contentItem;
-- (EMContentRepresentation)initWithCloneOfOriginalFileURL:(id)a3 clientIdentifier:(id)a4 preferredFilename:(id)a5 extension:(id)a6;
-- (EMContentRepresentation)initWithCoder:(id)a3;
-- (EMContentRepresentation)initWithContentMessage:(id)a3 data:(id)a4 clientIdentifier:(id)a5 preferredFilename:(id)a6 extension:(id)a7;
-- (EMContentRepresentation)initWithContentURL:(id)a3 relatedItems:(id)a4 securityInformation:(id)a5;
-- (EMContentRepresentation)initWithData:(id)a3 clientIdentifier:(id)a4 preferredFilename:(id)a5 extension:(id)a6 relatedItems:(id)a7 securityInformation:(id)a8;
+- (EMContentRepresentation)initWithCloneOfOriginalFileURL:(id)l clientIdentifier:(id)identifier preferredFilename:(id)filename extension:(id)extension;
+- (EMContentRepresentation)initWithCoder:(id)coder;
+- (EMContentRepresentation)initWithContentMessage:(id)message data:(id)data clientIdentifier:(id)identifier preferredFilename:(id)filename extension:(id)extension;
+- (EMContentRepresentation)initWithContentURL:(id)l relatedItems:(id)items securityInformation:(id)information;
+- (EMContentRepresentation)initWithData:(id)data clientIdentifier:(id)identifier preferredFilename:(id)filename extension:(id)extension relatedItems:(id)items securityInformation:(id)information;
 - (NSString)debugDescription;
 - (NSString)ef_publicDescription;
-- (id)_distantLoaderBlockForContentItem:(void *)a1;
-- (id)_initWithRelatedItems:(void *)a3 securityInformation:;
-- (id)_initWithSandboxedURLWrapper:(void *)a3 relatedItems:(void *)a4 securityInformation:;
-- (id)performUnsubscribeAction:(unint64_t)a3 completion:(id)a4;
-- (id)requestAdditionalContentWithCompletion:(id)a3;
+- (id)_distantLoaderBlockForContentItem:(void *)item;
+- (id)_initWithRelatedItems:(void *)items securityInformation:;
+- (id)_initWithSandboxedURLWrapper:(void *)wrapper relatedItems:(void *)items securityInformation:;
+- (id)performUnsubscribeAction:(unint64_t)action completion:(id)completion;
+- (id)requestAdditionalContentWithCompletion:(id)completion;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)mergeUpdatedRepresentation:(id)a3;
-- (void)requestOriginalContentMessagesInReplyToContentItemWithCompletion:(id)a3;
-- (void)setDistantContentRepresentation:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)mergeUpdatedRepresentation:(id)representation;
+- (void)requestOriginalContentMessagesInReplyToContentItemWithCompletion:(id)completion;
+- (void)setDistantContentRepresentation:(id)representation;
 @end
 
 @implementation EMContentRepresentation
@@ -73,7 +73,7 @@ void __58__EMContentRepresentation_contentRequestDelegateInterface__block_invoke
   block[1] = 3221225472;
   block[2] = __64__EMContentRepresentation_distantContentRepresentationInterface__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (distantContentRepresentationInterface_onceToken != -1)
   {
     dispatch_once(&distantContentRepresentationInterface_onceToken, block);
@@ -102,12 +102,12 @@ void __64__EMContentRepresentation_distantContentRepresentationInterface__block_
   [v5 setClasses:? forSelector:? argumentIndex:? ofReply:?];
 }
 
-+ (NSObject)_temporaryURLForClientIdentifier:(void *)a3 preferredFilename:(void *)a4 pathExtension:(void *)a5 cleanupInvocable:(void *)a6 error:
++ (NSObject)_temporaryURLForClientIdentifier:(void *)identifier preferredFilename:(void *)filename pathExtension:(void *)extension cleanupInvocable:(void *)invocable error:
 {
   v43[4] = *MEMORY[0x1E69E9840];
   v33 = a2;
-  v34 = a3;
-  v32 = a4;
+  identifierCopy = identifier;
+  filenameCopy = filename;
   objc_opt_self();
   v10 = NSTemporaryDirectory();
   v43[0] = v10;
@@ -115,40 +115,40 @@ void __64__EMContentRepresentation_distantContentRepresentationInterface__block_
   v12 = NSStringFromClass(v11);
   v43[1] = v12;
   v43[2] = v33;
-  v13 = [MEMORY[0x1E696AEC0] ef_UUID];
-  v43[3] = v13;
+  ef_UUID = [MEMORY[0x1E696AEC0] ef_UUID];
+  v43[3] = ef_UUID;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v43 count:4];
 
   v15 = [MEMORY[0x1E696AEC0] pathWithComponents:v14];
-  v16 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v39 = 0;
-  LOBYTE(a4) = [v16 createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:&v39];
+  LOBYTE(filename) = [defaultManager createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:&v39];
   v17 = v39;
   v18 = v17;
-  if (a4)
+  if (filename)
   {
-    if ([v34 length])
+    if ([identifierCopy length])
     {
-      v19 = v34;
+      v19 = identifierCopy;
     }
 
     else
     {
-      v24 = [MEMORY[0x1E696AEC0] ef_UUID];
+      ef_UUID2 = [MEMORY[0x1E696AEC0] ef_UUID];
 
-      v19 = v24;
+      v19 = ef_UUID2;
     }
 
     v25 = MEMORY[0x1E695DFF8];
     v40[0] = v15;
-    v34 = v19;
-    v26 = [v19 stringByAppendingPathExtension:v32];
+    identifierCopy = v19;
+    v26 = [v19 stringByAppendingPathExtension:filenameCopy];
     v27 = [v26 stringByReplacingOccurrencesOfString:@"/" withString:@"_"];
     v40[1] = v27;
     v28 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2];
     v23 = [v25 fileURLWithPathComponents:v28];
 
-    if (!a5)
+    if (!extension)
     {
       goto LABEL_13;
     }
@@ -160,22 +160,22 @@ void __64__EMContentRepresentation_distantContentRepresentationInterface__block_
     v35[3] = &unk_1E826C230;
     v23 = v23;
     v36 = v23;
-    v37 = v16;
+    v37 = defaultManager;
     v38 = v15;
-    *a5 = [v29 tokenWithInvocationBlock:v35];
+    *extension = [v29 tokenWithInvocationBlock:v35];
 
     v22 = v36;
   }
 
   else
   {
-    if (a6)
+    if (invocable)
     {
       v20 = MEMORY[0x1E696ABC0];
       v41 = *MEMORY[0x1E696AA08];
       v42 = v17;
       v21 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v42 forKeys:&v41 count:1];
-      *a6 = [v20 errorWithDomain:@"EMErrorDomain" code:2048 userInfo:v21];
+      *invocable = [v20 errorWithDomain:@"EMErrorDomain" code:2048 userInfo:v21];
     }
 
     v22 = EMLogCategoryMessageLoading();
@@ -227,18 +227,18 @@ void __115__EMContentRepresentation__temporaryURLForClientIdentifier_preferredFi
   v10 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)temporaryURLWithData:(id)a3 clientIdentifier:(id)a4 preferredFilename:(id)a5 pathExtension:(id)a6 cleanupInvocable:(id *)a7 error:(id *)a8
++ (id)temporaryURLWithData:(id)data clientIdentifier:(id)identifier preferredFilename:(id)filename pathExtension:(id)extension cleanupInvocable:(id *)invocable error:(id *)error
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = [(EMContentRepresentation *)a1 _temporaryURLForClientIdentifier:v15 preferredFilename:v16 pathExtension:v17 cleanupInvocable:a7 error:a8];
+  dataCopy = data;
+  identifierCopy = identifier;
+  filenameCopy = filename;
+  extensionCopy = extension;
+  v18 = [(EMContentRepresentation *)self _temporaryURLForClientIdentifier:identifierCopy preferredFilename:filenameCopy pathExtension:extensionCopy cleanupInvocable:invocable error:error];
   if (v18)
   {
     v28 = 0;
-    v19 = [v14 writeToURL:v18 options:1073741825 error:&v28];
+    v19 = [dataCopy writeToURL:v18 options:1073741825 error:&v28];
     v20 = v28;
     v21 = v20;
     if (v19)
@@ -248,13 +248,13 @@ void __115__EMContentRepresentation__temporaryURLForClientIdentifier_preferredFi
 
     else
     {
-      if (a8)
+      if (error)
       {
         v23 = MEMORY[0x1E696ABC0];
         v29 = *MEMORY[0x1E696AA08];
         v30[0] = v20;
         v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
-        *a8 = [v23 errorWithDomain:@"EMErrorDomain" code:2048 userInfo:v24];
+        *error = [v23 errorWithDomain:@"EMErrorDomain" code:2048 userInfo:v24];
       }
 
       v25 = EMLogCategoryMessageLoading();
@@ -279,19 +279,19 @@ void __115__EMContentRepresentation__temporaryURLForClientIdentifier_preferredFi
   return v22;
 }
 
-+ (id)temporaryURLWithOriginalFileURL:(id)a3 clientIdentifier:(id)a4 preferredFilename:(id)a5 pathExtension:(id)a6 cleanupInvocable:(id *)a7 error:(id *)a8
++ (id)temporaryURLWithOriginalFileURL:(id)l clientIdentifier:(id)identifier preferredFilename:(id)filename pathExtension:(id)extension cleanupInvocable:(id *)invocable error:(id *)error
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = [(EMContentRepresentation *)a1 _temporaryURLForClientIdentifier:v15 preferredFilename:v16 pathExtension:v17 cleanupInvocable:a7 error:a8];
+  lCopy = l;
+  identifierCopy = identifier;
+  filenameCopy = filename;
+  extensionCopy = extension;
+  v18 = [(EMContentRepresentation *)self _temporaryURLForClientIdentifier:identifierCopy preferredFilename:filenameCopy pathExtension:extensionCopy cleanupInvocable:invocable error:error];
   if (v18)
   {
-    v19 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v29 = 0;
-    v20 = [v19 copyItemAtURL:v14 toURL:v18 error:&v29];
+    v20 = [defaultManager copyItemAtURL:lCopy toURL:v18 error:&v29];
     v21 = v29;
 
     if (v20)
@@ -301,25 +301,25 @@ void __115__EMContentRepresentation__temporaryURLForClientIdentifier_preferredFi
 
     else
     {
-      if (a8)
+      if (error)
       {
         v23 = MEMORY[0x1E696ABC0];
         v36 = *MEMORY[0x1E696AA08];
         v37[0] = v21;
         v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:&v36 count:1];
-        *a8 = [v23 errorWithDomain:@"EMErrorDomain" code:2048 userInfo:v24];
+        *error = [v23 errorWithDomain:@"EMErrorDomain" code:2048 userInfo:v24];
       }
 
       v25 = EMLogCategoryMessageLoading();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
-        v28 = [v21 ef_publicDescription];
+        ef_publicDescription = [v21 ef_publicDescription];
         *buf = 138412802;
-        v31 = v14;
+        v31 = lCopy;
         v32 = 2112;
         v33 = v18;
         v34 = 2114;
-        v35 = v28;
+        v35 = ef_publicDescription;
         _os_log_error_impl(&dword_1C6655000, v25, OS_LOG_TYPE_ERROR, "failed to copy data from %@ to URL %@: %{public}@", buf, 0x20u);
       }
 
@@ -337,20 +337,20 @@ void __115__EMContentRepresentation__temporaryURLForClientIdentifier_preferredFi
   return v22;
 }
 
-- (id)_initWithRelatedItems:(void *)a3 securityInformation:
+- (id)_initWithRelatedItems:(void *)items securityInformation:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  itemsCopy = items;
+  if (self)
   {
-    v15.receiver = a1;
+    v15.receiver = self;
     v15.super_class = EMContentRepresentation;
-    a1 = objc_msgSendSuper2(&v15, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v15, sel_init);
+    if (self)
     {
       v7 = objc_alloc_init(MEMORY[0x1E699B7D8]);
-      v8 = a1[1];
-      a1[1] = v7;
+      v8 = self[1];
+      self[1] = v7;
 
       v9 = [v5 copy];
       v10 = v9;
@@ -364,26 +364,26 @@ void __115__EMContentRepresentation__temporaryURLForClientIdentifier_preferredFi
         v11 = MEMORY[0x1E695E0F0];
       }
 
-      objc_storeStrong(a1 + 7, v11);
+      objc_storeStrong(self + 7, v11);
 
-      objc_storeStrong(a1 + 8, a3);
-      v12 = [[EMMessageContentCachedMetadata alloc] initWithDelegate:a1];
-      v13 = a1[16];
-      a1[16] = v12;
+      objc_storeStrong(self + 8, items);
+      v12 = [[EMMessageContentCachedMetadata alloc] initWithDelegate:self];
+      v13 = self[16];
+      self[16] = v12;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)_initWithSandboxedURLWrapper:(void *)a3 relatedItems:(void *)a4 securityInformation:
+- (id)_initWithSandboxedURLWrapper:(void *)wrapper relatedItems:(void *)items securityInformation:
 {
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  if (a1 && v8)
+  wrapperCopy = wrapper;
+  itemsCopy = items;
+  if (self && v8)
   {
-    v11 = [(EMContentRepresentation *)a1 _initWithRelatedItems:v9 securityInformation:v10];
+    v11 = [(EMContentRepresentation *)self _initWithRelatedItems:wrapperCopy securityInformation:itemsCopy];
     v12 = v11;
     if (v11)
     {
@@ -396,43 +396,43 @@ void __115__EMContentRepresentation__temporaryURLForClientIdentifier_preferredFi
       v12[16] = v14;
     }
 
-    a1 = v12;
-    v16 = a1;
+    self = v12;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
-- (EMContentRepresentation)initWithContentURL:(id)a3 relatedItems:(id)a4 securityInformation:(id)a5
+- (EMContentRepresentation)initWithContentURL:(id)l relatedItems:(id)items securityInformation:(id)information
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [objc_alloc(MEMORY[0x1E699B970]) initWithFileURL:v8 readOnly:1];
-  v12 = [(EMContentRepresentation *)&self->super.isa _initWithSandboxedURLWrapper:v11 relatedItems:v9 securityInformation:v10];
+  lCopy = l;
+  itemsCopy = items;
+  informationCopy = information;
+  v11 = [objc_alloc(MEMORY[0x1E699B970]) initWithFileURL:lCopy readOnly:1];
+  v12 = [(EMContentRepresentation *)&self->super.isa _initWithSandboxedURLWrapper:v11 relatedItems:itemsCopy securityInformation:informationCopy];
 
   return v12;
 }
 
-- (EMContentRepresentation)initWithData:(id)a3 clientIdentifier:(id)a4 preferredFilename:(id)a5 extension:(id)a6 relatedItems:(id)a7 securityInformation:(id)a8
+- (EMContentRepresentation)initWithData:(id)data clientIdentifier:(id)identifier preferredFilename:(id)filename extension:(id)extension relatedItems:(id)items securityInformation:(id)information
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  dataCopy = data;
+  identifierCopy = identifier;
+  filenameCopy = filename;
+  extensionCopy = extension;
+  itemsCopy = items;
+  informationCopy = information;
   v26 = 0;
-  v20 = [objc_opt_class() temporaryURLWithData:v14 clientIdentifier:v15 preferredFilename:v16 pathExtension:v17 cleanupInvocable:&v26 error:0];
+  v20 = [objc_opt_class() temporaryURLWithData:dataCopy clientIdentifier:identifierCopy preferredFilename:filenameCopy pathExtension:extensionCopy cleanupInvocable:&v26 error:0];
   v21 = v26;
   if (v20)
   {
-    v22 = [(EMContentRepresentation *)self initWithContentURL:v20 relatedItems:v18 securityInformation:v19];
+    v22 = [(EMContentRepresentation *)self initWithContentURL:v20 relatedItems:itemsCopy securityInformation:informationCopy];
     v23 = v22;
     if (v22)
     {
@@ -445,25 +445,25 @@ void __115__EMContentRepresentation__temporaryURLForClientIdentifier_preferredFi
     }
 
     self = v23;
-    v24 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v24 = 0;
+    selfCopy = 0;
   }
 
-  return v24;
+  return selfCopy;
 }
 
-- (EMContentRepresentation)initWithCloneOfOriginalFileURL:(id)a3 clientIdentifier:(id)a4 preferredFilename:(id)a5 extension:(id)a6
+- (EMContentRepresentation)initWithCloneOfOriginalFileURL:(id)l clientIdentifier:(id)identifier preferredFilename:(id)filename extension:(id)extension
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  identifierCopy = identifier;
+  filenameCopy = filename;
+  extensionCopy = extension;
   v20 = 0;
-  v14 = [objc_opt_class() temporaryURLWithOriginalFileURL:v10 clientIdentifier:v11 preferredFilename:v12 pathExtension:v13 cleanupInvocable:&v20 error:0];
+  v14 = [objc_opt_class() temporaryURLWithOriginalFileURL:lCopy clientIdentifier:identifierCopy preferredFilename:filenameCopy pathExtension:extensionCopy cleanupInvocable:&v20 error:0];
   v15 = v20;
   if (v14)
   {
@@ -480,25 +480,25 @@ void __115__EMContentRepresentation__temporaryURLForClientIdentifier_preferredFi
     }
 
     self = v17;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
-- (EMContentRepresentation)initWithContentMessage:(id)a3 data:(id)a4 clientIdentifier:(id)a5 preferredFilename:(id)a6 extension:(id)a7
+- (EMContentRepresentation)initWithContentMessage:(id)message data:(id)data clientIdentifier:(id)identifier preferredFilename:(id)filename extension:(id)extension
 {
-  v13 = a3;
-  v14 = [(EMContentRepresentation *)self initWithData:a4 clientIdentifier:a5 preferredFilename:a6 extension:a7 relatedItems:MEMORY[0x1E695E0F0] securityInformation:0];
+  messageCopy = message;
+  v14 = [(EMContentRepresentation *)self initWithData:data clientIdentifier:identifier preferredFilename:filename extension:extension relatedItems:MEMORY[0x1E695E0F0] securityInformation:0];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_contentMessage, a3);
+    objc_storeStrong(&v14->_contentMessage, message);
   }
 
   return v15;
@@ -518,30 +518,30 @@ void __115__EMContentRepresentation__temporaryURLForClientIdentifier_preferredFi
   [(EMContentRepresentation *)&v4 dealloc];
 }
 
-- (EMContentRepresentation)initWithCoder:(id)a3
+- (EMContentRepresentation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_urlWrapper"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_urlWrapper"];
   v6 = MEMORY[0x1E695DFD8];
   v7 = objc_opt_class();
   v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-  v9 = [v4 decodeObjectOfClasses:v8 forKey:@"EFPropertyKey_relatedContentItems"];
+  v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"EFPropertyKey_relatedContentItems"];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_securityInformation"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_securityInformation"];
   v11 = [(EMContentRepresentation *)&self->super.isa _initWithSandboxedURLWrapper:v5 relatedItems:v9 securityInformation:v10];
   if (v11)
   {
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_searchableItem"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_searchableItem"];
     searchableItem = v11->_searchableItem;
     v11->_searchableItem = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_unsubscribeCommand"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_unsubscribeCommand"];
     unsubscribeCommand = v11->_unsubscribeCommand;
     v11->_unsubscribeCommand = v14;
 
-    v11->_hasMoreContent = [v4 decodeBoolForKey:@"EFPropertyKey_hasMoreContent"];
-    v11->_remainingByteCount = [v4 decodeInt64ForKey:@"EFPropertyKey_remainingByteCount"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_publicMessageURL"];
+    v11->_hasMoreContent = [coderCopy decodeBoolForKey:@"EFPropertyKey_hasMoreContent"];
+    v11->_remainingByteCount = [coderCopy decodeInt64ForKey:@"EFPropertyKey_remainingByteCount"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_publicMessageURL"];
     publicMessageURL = v11->_publicMessageURL;
     v11->_publicMessageURL = v16;
 
@@ -549,20 +549,20 @@ void __115__EMContentRepresentation__temporaryURLForClientIdentifier_preferredFi
     v19 = objc_opt_class();
     v20 = objc_opt_class();
     v21 = [v18 setWithObjects:{v19, v20, objc_opt_class(), 0}];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"EFPropertyKey_replyToList"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"EFPropertyKey_replyToList"];
     replyToList = v11->_replyToList;
     v11->_replyToList = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_contentMessage"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_contentMessage"];
     contentMessage = v11->_contentMessage;
     v11->_contentMessage = v24;
 
-    v11->_transportType = [v4 decodeIntegerForKey:@"EFPropertyKey_transportType"];
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_requestedHeaders"];
+    v11->_transportType = [coderCopy decodeIntegerForKey:@"EFPropertyKey_transportType"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_requestedHeaders"];
     requestedHeaders = v11->_requestedHeaders;
     v11->_requestedHeaders = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_cachedMetadataJSON"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_cachedMetadataJSON"];
     cachedMetadataJSON = v11->_cachedMetadataJSON;
     v11->_cachedMetadataJSON = v28;
   }
@@ -572,10 +572,10 @@ void __115__EMContentRepresentation__temporaryURLForClientIdentifier_preferredFi
 
 - (NSString)ef_publicDescription
 {
-  v3 = [MEMORY[0x1E699B7B0] currentDevice];
-  v4 = [v3 isInternal];
+  currentDevice = [MEMORY[0x1E699B7B0] currentDevice];
+  isInternal = [currentDevice isInternal];
 
-  if (v4)
+  if (isInternal)
   {
     if (self)
     {
@@ -589,12 +589,12 @@ void __115__EMContentRepresentation__temporaryURLForClientIdentifier_preferredFi
 
     v6 = MEMORY[0x1E699B858];
     v7 = [(EFSandboxedURLWrapper *)urlWrapper url];
-    v8 = [v7 absoluteString];
-    v9 = [v6 partiallyRedactedStringForString:v8];
+    absoluteString = [v7 absoluteString];
+    relatedContentItems2 = [v6 partiallyRedactedStringForString:absoluteString];
 
     v33 = MEMORY[0x1E696AEC0];
     v31 = objc_opt_class();
-    v35 = [(EMContentRepresentation *)self publicMessageURL];
+    publicMessageURL = [(EMContentRepresentation *)self publicMessageURL];
     if (self->_claimedScopedResource)
     {
       v10 = @"YES";
@@ -618,13 +618,13 @@ void __115__EMContentRepresentation__temporaryURLForClientIdentifier_preferredFi
     v28 = v11;
     v29 = v10;
     remainingByteCount = self->_remainingByteCount;
-    v12 = [(EMContentRepresentation *)self relatedContentItems];
-    v13 = [(EMContentRepresentation *)self transportType];
-    v14 = [(EMContentRepresentation *)self securityInformation];
-    v15 = [(EMContentRepresentation *)self searchableItem];
-    v16 = [(EMContentRepresentation *)self unsubscribeCommand];
-    v17 = [(EMContentRepresentation *)self cachedMetadataJSON];
-    if (v17)
+    relatedContentItems = [(EMContentRepresentation *)self relatedContentItems];
+    transportType = [(EMContentRepresentation *)self transportType];
+    securityInformation = [(EMContentRepresentation *)self securityInformation];
+    searchableItem = [(EMContentRepresentation *)self searchableItem];
+    unsubscribeCommand = [(EMContentRepresentation *)self unsubscribeCommand];
+    cachedMetadataJSON = [(EMContentRepresentation *)self cachedMetadataJSON];
+    if (cachedMetadataJSON)
     {
       v18 = @"YES";
     }
@@ -634,8 +634,8 @@ void __115__EMContentRepresentation__temporaryURLForClientIdentifier_preferredFi
       v18 = @"NO";
     }
 
-    v19 = v35;
-    v20 = [v33 stringWithFormat:@"<%@: %p> publicMessageURL=%@, URL=%@, extended-sandbox=%@, hasMoreContent=%@ (%lld bytes), related-items=%@, transport=%d, security-information=%@, searchableItem=%@, unsubscribeCommand=%@, cachedMetadataJSON=%@", v31, self, v35, v9, v29, v28, remainingByteCount, v12, v13, v14, v15, v16, v18];
+    v19 = publicMessageURL;
+    v20 = [v33 stringWithFormat:@"<%@: %p> publicMessageURL=%@, URL=%@, extended-sandbox=%@, hasMoreContent=%@ (%lld bytes), related-items=%@, transport=%d, security-information=%@, searchableItem=%@, unsubscribeCommand=%@, cachedMetadataJSON=%@", v31, self, publicMessageURL, relatedContentItems2, v29, v28, remainingByteCount, relatedContentItems, transportType, securityInformation, searchableItem, unsubscribeCommand, v18];
   }
 
   else
@@ -664,13 +664,13 @@ void __115__EMContentRepresentation__temporaryURLForClientIdentifier_preferredFi
     }
 
     v23 = self->_remainingByteCount;
-    v9 = [(EMContentRepresentation *)self relatedContentItems];
-    v24 = [(EMContentRepresentation *)self transportType];
-    v36 = [(EMContentRepresentation *)self securityInformation];
-    v12 = [(EMContentRepresentation *)self searchableItem];
-    v14 = [(EMContentRepresentation *)self unsubscribeCommand];
-    v15 = [(EMContentRepresentation *)self cachedMetadataJSON];
-    if (v15)
+    relatedContentItems2 = [(EMContentRepresentation *)self relatedContentItems];
+    transportType2 = [(EMContentRepresentation *)self transportType];
+    securityInformation2 = [(EMContentRepresentation *)self securityInformation];
+    relatedContentItems = [(EMContentRepresentation *)self searchableItem];
+    securityInformation = [(EMContentRepresentation *)self unsubscribeCommand];
+    searchableItem = [(EMContentRepresentation *)self cachedMetadataJSON];
+    if (searchableItem)
     {
       v25 = @"YES";
     }
@@ -680,30 +680,30 @@ void __115__EMContentRepresentation__temporaryURLForClientIdentifier_preferredFi
       v25 = @"NO";
     }
 
-    v19 = v36;
-    v20 = [v34 stringWithFormat:@"<%@: %p> extended-sandbox=%@, hasMoreContent=%@ (%lld bytes), related-items=%@, transport=%d, security-information=%@, searchableItem=%@, unsubscribeCommand=%@, cachedMetadataJSON=%@", v32, self, v30, v22, v23, v9, v24, v36, v12, v14, v25];
+    v19 = securityInformation2;
+    v20 = [v34 stringWithFormat:@"<%@: %p> extended-sandbox=%@, hasMoreContent=%@ (%lld bytes), related-items=%@, transport=%d, security-information=%@, searchableItem=%@, unsubscribeCommand=%@, cachedMetadataJSON=%@", v32, self, v30, v22, v23, relatedContentItems2, transportType2, securityInformation2, relatedContentItems, securityInformation, v25];
   }
 
   return v20;
 }
 
-- (id)_distantLoaderBlockForContentItem:(void *)a1
+- (id)_distantLoaderBlockForContentItem:(void *)item
 {
   v3 = a2;
-  if (a1)
+  if (item)
   {
-    v4 = [a1 distantContentRepresentation];
-    v5 = [v3 objectID];
-    objc_initWeak(&location, a1);
+    distantContentRepresentation = [item distantContentRepresentation];
+    objectID = [v3 objectID];
+    objc_initWeak(&location, item);
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __61__EMContentRepresentation__distantLoaderBlockForContentItem___block_invoke;
     v10[3] = &unk_1E826C8B0;
     objc_copyWeak(&v13, &location);
-    v11 = v5;
-    v12 = v4;
-    v6 = v4;
-    v7 = v5;
+    v11 = objectID;
+    v12 = distantContentRepresentation;
+    v6 = distantContentRepresentation;
+    v7 = objectID;
     v8 = _Block_copy(v10);
 
     objc_destroyWeak(&v13);
@@ -779,33 +779,33 @@ void __61__EMContentRepresentation__distantLoaderBlockForContentItem___block_inv
   }
 }
 
-- (void)setDistantContentRepresentation:(id)a3
+- (void)setDistantContentRepresentation:(id)representation
 {
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  representationCopy = representation;
   if (self->_distantContentRepresentation)
   {
-    v20 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"EMContentRepresentation.m" lineNumber:364 description:@"distantContentRepresentation should only be set once"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EMContentRepresentation.m" lineNumber:364 description:@"distantContentRepresentation should only be set once"];
   }
 
-  if (v6 != self)
+  if (representationCopy != self)
   {
-    objc_storeStrong(&self->_distantContentRepresentation, a3);
+    objc_storeStrong(&self->_distantContentRepresentation, representation);
     urlWrapper = self->_urlWrapper;
     v34[0] = MEMORY[0x1E69E9820];
     v34[1] = 3221225472;
     v34[2] = __59__EMContentRepresentation_setDistantContentRepresentation___block_invoke;
     v34[3] = &unk_1E826C098;
-    v8 = v6;
+    v8 = representationCopy;
     v35 = v8;
     [(EFSandboxedURLWrapper *)urlWrapper addInvalidationHandler:v34];
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v9 = [(EMContentRepresentation *)self relatedContentItems];
-    v10 = [v9 countByEnumeratingWithState:&v30 objects:v36 count:16];
+    relatedContentItems = [(EMContentRepresentation *)self relatedContentItems];
+    v10 = [relatedContentItems countByEnumeratingWithState:&v30 objects:v36 count:16];
     if (v10)
     {
       v11 = *v31;
@@ -815,7 +815,7 @@ void __61__EMContentRepresentation__distantLoaderBlockForContentItem___block_inv
         {
           if (*v31 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(relatedContentItems);
           }
 
           v13 = *(*(&v30 + 1) + 8 * i);
@@ -823,17 +823,17 @@ void __61__EMContentRepresentation__distantLoaderBlockForContentItem___block_inv
           [v13 setLoaderBlock:v14];
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v30 objects:v36 count:16];
+        v10 = [relatedContentItems countByEnumeratingWithState:&v30 objects:v36 count:16];
       }
 
       while (v10);
     }
 
-    v15 = [(EMContentRepresentation *)self contentMessage];
-    if (v15)
+    contentMessage = [(EMContentRepresentation *)self contentMessage];
+    if (contentMessage)
     {
-      v16 = [(EMContentRepresentation *)self _distantLoaderBlockForContentItem:v15];
-      [v15 setLoaderBlock:v16];
+      v16 = [(EMContentRepresentation *)self _distantLoaderBlockForContentItem:contentMessage];
+      [contentMessage setLoaderBlock:v16];
     }
 
     objc_initWeak(&location, self);
@@ -909,29 +909,29 @@ id __59__EMContentRepresentation_setDistantContentRepresentation___block_invoke_
   return v8;
 }
 
-- (id)requestAdditionalContentWithCompletion:(id)a3
+- (id)requestAdditionalContentWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v5 = EMLogCategoryMessageLoading();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(EMContentRepresentation *)self ef_publicDescription];
+    ef_publicDescription = [(EMContentRepresentation *)self ef_publicDescription];
     *buf = 138543362;
-    v17 = v6;
+    v17 = ef_publicDescription;
     _os_log_impl(&dword_1C6655000, v5, OS_LOG_TYPE_DEFAULT, "requesting additional content for content representation %{public}@", buf, 0xCu);
   }
 
-  v7 = [(EMContentRepresentation *)self requestMoreContentBlock];
+  requestMoreContentBlock = [(EMContentRepresentation *)self requestMoreContentBlock];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __66__EMContentRepresentation_requestAdditionalContentWithCompletion___block_invoke;
   v12[3] = &unk_1E826C950;
   objc_copyWeak(&v14, &location);
-  v8 = v4;
+  v8 = completionCopy;
   v13 = v8;
-  v9 = (v7)[2](v7, v12);
+  v9 = (requestMoreContentBlock)[2](requestMoreContentBlock, v12);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -958,30 +958,30 @@ void __66__EMContentRepresentation_requestAdditionalContentWithCompletion___bloc
   }
 }
 
-- (void)mergeUpdatedRepresentation:(id)a3
+- (void)mergeUpdatedRepresentation:(id)representation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  representationCopy = representation;
+  v5 = representationCopy;
+  if (representationCopy != self)
   {
-    v6 = [(EMContentRepresentation *)v4 relatedContentItems];
-    [(EMContentRepresentation *)self setRelatedContentItems:v6];
+    relatedContentItems = [(EMContentRepresentation *)representationCopy relatedContentItems];
+    [(EMContentRepresentation *)self setRelatedContentItems:relatedContentItems];
 
-    v7 = [(EMContentRepresentation *)v5 securityInformation];
-    [(EMContentRepresentation *)self setSecurityInformation:v7];
+    securityInformation = [(EMContentRepresentation *)v5 securityInformation];
+    [(EMContentRepresentation *)self setSecurityInformation:securityInformation];
 
     [(EMContentRepresentation *)self setHasMoreContent:[(EMContentRepresentation *)v5 hasMoreContent]];
     [(EMContentRepresentation *)self setRemainingByteCount:[(EMContentRepresentation *)v5 remainingByteCount]];
-    v8 = [(EMContentRepresentation *)self distantContentRepresentation];
-    if (v8)
+    distantContentRepresentation = [(EMContentRepresentation *)self distantContentRepresentation];
+    if (distantContentRepresentation)
     {
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v9 = [(EMContentRepresentation *)self relatedContentItems];
-      v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      relatedContentItems2 = [(EMContentRepresentation *)self relatedContentItems];
+      v10 = [relatedContentItems2 countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v10)
       {
         v11 = *v17;
@@ -991,7 +991,7 @@ void __66__EMContentRepresentation_requestAdditionalContentWithCompletion___bloc
           {
             if (*v17 != v11)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(relatedContentItems2);
             }
 
             v13 = *(*(&v16 + 1) + 8 * i);
@@ -999,7 +999,7 @@ void __66__EMContentRepresentation_requestAdditionalContentWithCompletion___bloc
             [v13 setLoaderBlock:v14];
           }
 
-          v10 = [v9 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v10 = [relatedContentItems2 countByEnumeratingWithState:&v16 objects:v20 count:16];
         }
 
         while (v10);
@@ -1010,41 +1010,41 @@ void __66__EMContentRepresentation_requestAdditionalContentWithCompletion___bloc
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)performUnsubscribeAction:(unint64_t)a3 completion:(id)a4
+- (id)performUnsubscribeAction:(unint64_t)action completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(EMContentRepresentation *)self listUnsubscribeBlock];
+  completionCopy = completion;
+  listUnsubscribeBlock = [(EMContentRepresentation *)self listUnsubscribeBlock];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __63__EMContentRepresentation_performUnsubscribeAction_completion___block_invoke;
   v11[3] = &unk_1E826C738;
-  v8 = v6;
+  v8 = completionCopy;
   v12 = v8;
-  v9 = (v7)[2](v7, a3, v11);
+  v9 = (listUnsubscribeBlock)[2](listUnsubscribeBlock, action, v11);
 
   return v9;
 }
 
-- (void)requestOriginalContentMessagesInReplyToContentItemWithCompletion:(id)a3
+- (void)requestOriginalContentMessagesInReplyToContentItemWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(EMContentRepresentation *)self requestOriginalContentMessagesInReplyToContentItemBlock];
+  completionCopy = completion;
+  requestOriginalContentMessagesInReplyToContentItemBlock = [(EMContentRepresentation *)self requestOriginalContentMessagesInReplyToContentItemBlock];
 
-  if (v5)
+  if (requestOriginalContentMessagesInReplyToContentItemBlock)
   {
-    v6 = [(EMContentRepresentation *)self requestOriginalContentMessagesInReplyToContentItemBlock];
+    requestOriginalContentMessagesInReplyToContentItemBlock2 = [(EMContentRepresentation *)self requestOriginalContentMessagesInReplyToContentItemBlock];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __92__EMContentRepresentation_requestOriginalContentMessagesInReplyToContentItemWithCompletion___block_invoke;
     v7[3] = &unk_1E826C978;
-    v8 = v4;
-    (v6)[2](v6, v7);
+    v8 = completionCopy;
+    (requestOriginalContentMessagesInReplyToContentItemBlock2)[2](requestOriginalContentMessagesInReplyToContentItemBlock2, v7);
   }
 
   else
   {
-    v6 = [MEMORY[0x1E696ABC0] em_internalErrorWithReason:@"Unable to retrieve original contents"];
-    (*(v4 + 2))(v4, 0, v6);
+    requestOriginalContentMessagesInReplyToContentItemBlock2 = [MEMORY[0x1E696ABC0] em_internalErrorWithReason:@"Unable to retrieve original contents"];
+    (*(completionCopy + 2))(completionCopy, 0, requestOriginalContentMessagesInReplyToContentItemBlock2);
   }
 }
 
@@ -1055,9 +1055,9 @@ void __66__EMContentRepresentation_requestAdditionalContentWithCompletion___bloc
   return WeakRetained;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (self)
   {
     urlWrapper = self->_urlWrapper;
@@ -1068,44 +1068,44 @@ void __66__EMContentRepresentation_requestAdditionalContentWithCompletion___bloc
     urlWrapper = 0;
   }
 
-  v78 = v4;
-  [v4 encodeObject:urlWrapper forKey:@"EFPropertyKey_urlWrapper"];
-  v6 = [(EMContentRepresentation *)self contentMessage];
-  OUTLINED_FUNCTION_1_0(v6, v7, v8, @"EFPropertyKey_contentMessage", v9, v10, v11, v12, v69, v78);
+  v78 = coderCopy;
+  [coderCopy encodeObject:urlWrapper forKey:@"EFPropertyKey_urlWrapper"];
+  contentMessage = [(EMContentRepresentation *)self contentMessage];
+  OUTLINED_FUNCTION_1_0(contentMessage, v7, v8, @"EFPropertyKey_contentMessage", v9, v10, v11, v12, v69, v78);
 
-  v13 = [(EMContentRepresentation *)self relatedContentItems];
-  OUTLINED_FUNCTION_1_0(v13, v14, v15, @"EFPropertyKey_relatedContentItems", v16, v17, v18, v19, v70, v79);
+  relatedContentItems = [(EMContentRepresentation *)self relatedContentItems];
+  OUTLINED_FUNCTION_1_0(relatedContentItems, v14, v15, @"EFPropertyKey_relatedContentItems", v16, v17, v18, v19, v70, v79);
 
-  v20 = [(EMContentRepresentation *)self securityInformation];
-  OUTLINED_FUNCTION_1_0(v20, v21, v22, @"EFPropertyKey_securityInformation", v23, v24, v25, v26, v71, v80);
+  securityInformation = [(EMContentRepresentation *)self securityInformation];
+  OUTLINED_FUNCTION_1_0(securityInformation, v21, v22, @"EFPropertyKey_securityInformation", v23, v24, v25, v26, v71, v80);
 
-  v27 = [(EMContentRepresentation *)self searchableItem];
-  OUTLINED_FUNCTION_1_0(v27, v28, v29, @"EFPropertyKey_searchableItem", v30, v31, v32, v33, v72, v81);
+  searchableItem = [(EMContentRepresentation *)self searchableItem];
+  OUTLINED_FUNCTION_1_0(searchableItem, v28, v29, @"EFPropertyKey_searchableItem", v30, v31, v32, v33, v72, v81);
 
-  v34 = [(EMContentRepresentation *)self unsubscribeCommand];
-  OUTLINED_FUNCTION_1_0(v34, v35, v36, @"EFPropertyKey_unsubscribeCommand", v37, v38, v39, v40, v73, v82);
+  unsubscribeCommand = [(EMContentRepresentation *)self unsubscribeCommand];
+  OUTLINED_FUNCTION_1_0(unsubscribeCommand, v35, v36, @"EFPropertyKey_unsubscribeCommand", v37, v38, v39, v40, v73, v82);
 
   [v83 encodeBool:-[EMContentRepresentation hasMoreContent](self forKey:{"hasMoreContent"), @"EFPropertyKey_hasMoreContent"}];
   [v83 encodeInt64:-[EMContentRepresentation remainingByteCount](self forKey:{"remainingByteCount"), @"EFPropertyKey_remainingByteCount"}];
-  v41 = [(EMContentRepresentation *)self publicMessageURL];
-  OUTLINED_FUNCTION_1_0(v41, v42, v43, @"EFPropertyKey_publicMessageURL", v44, v45, v46, v47, v74, v83);
+  publicMessageURL = [(EMContentRepresentation *)self publicMessageURL];
+  OUTLINED_FUNCTION_1_0(publicMessageURL, v42, v43, @"EFPropertyKey_publicMessageURL", v44, v45, v46, v47, v74, v83);
 
-  v48 = [(EMContentRepresentation *)self replyToList];
-  OUTLINED_FUNCTION_1_0(v48, v49, v50, @"EFPropertyKey_replyToList", v51, v52, v53, v54, v75, v84);
+  replyToList = [(EMContentRepresentation *)self replyToList];
+  OUTLINED_FUNCTION_1_0(replyToList, v49, v50, @"EFPropertyKey_replyToList", v51, v52, v53, v54, v75, v84);
 
   [v85 encodeInteger:-[EMContentRepresentation transportType](self forKey:{"transportType"), @"EFPropertyKey_transportType"}];
-  v55 = [(EMContentRepresentation *)self requestedHeaders];
-  OUTLINED_FUNCTION_1_0(v55, v56, v57, @"EFPropertyKey_requestedHeaders", v58, v59, v60, v61, v76, v85);
+  requestedHeaders = [(EMContentRepresentation *)self requestedHeaders];
+  OUTLINED_FUNCTION_1_0(requestedHeaders, v56, v57, @"EFPropertyKey_requestedHeaders", v58, v59, v60, v61, v76, v85);
 
-  v62 = [(EMContentRepresentation *)self cachedMetadataJSON];
-  OUTLINED_FUNCTION_1_0(v62, v63, v64, @"EFPropertyKey_cachedMetadataJSON", v65, v66, v67, v68, v77, v86);
+  cachedMetadataJSON = [(EMContentRepresentation *)self cachedMetadataJSON];
+  OUTLINED_FUNCTION_1_0(cachedMetadataJSON, v63, v64, @"EFPropertyKey_cachedMetadataJSON", v65, v66, v67, v68, v77, v86);
 }
 
 - (NSString)debugDescription
 {
   v16 = MEMORY[0x1E696AEC0];
   v15 = objc_opt_class();
-  v19 = [(EMContentRepresentation *)self publicMessageURL];
+  publicMessageURL = [(EMContentRepresentation *)self publicMessageURL];
   if (self)
   {
     urlWrapper = self->_urlWrapper;
@@ -1139,13 +1139,13 @@ void __66__EMContentRepresentation_requestAdditionalContentWithCompletion___bloc
 
   remainingByteCount = self->_remainingByteCount;
   invocable = self->_invocable;
-  v17 = [(EMContentRepresentation *)self relatedContentItems];
-  v8 = [(EMContentRepresentation *)self transportType];
-  v9 = [(EMContentRepresentation *)self securityInformation];
-  v10 = [(EMContentRepresentation *)self searchableItem];
-  v11 = [(EMContentRepresentation *)self unsubscribeCommand];
-  v12 = [(EMContentRepresentation *)self replyToList];
-  v13 = [v16 stringWithFormat:@"<%@: %p> publicMessageURL=%@, wrappedURL=%@, extended-sandbox=%@, hasMoreContent=%@ (%lld bytes), invocable=%@, related-items=%@, transport=%d, security-information=%@, searchableItem=%@, unsubscribeCommand=%@, replyToList=%@", v15, self, v19, v18, v4, v5, remainingByteCount, invocable, v17, v8, v9, v10, v11, v12];
+  relatedContentItems = [(EMContentRepresentation *)self relatedContentItems];
+  transportType = [(EMContentRepresentation *)self transportType];
+  securityInformation = [(EMContentRepresentation *)self securityInformation];
+  searchableItem = [(EMContentRepresentation *)self searchableItem];
+  unsubscribeCommand = [(EMContentRepresentation *)self unsubscribeCommand];
+  replyToList = [(EMContentRepresentation *)self replyToList];
+  v13 = [v16 stringWithFormat:@"<%@: %p> publicMessageURL=%@, wrappedURL=%@, extended-sandbox=%@, hasMoreContent=%@ (%lld bytes), invocable=%@, related-items=%@, transport=%d, security-information=%@, searchableItem=%@, unsubscribeCommand=%@, replyToList=%@", v15, self, publicMessageURL, v18, v4, v5, remainingByteCount, invocable, relatedContentItems, transportType, securityInformation, searchableItem, unsubscribeCommand, replyToList];
 
   return v13;
 }

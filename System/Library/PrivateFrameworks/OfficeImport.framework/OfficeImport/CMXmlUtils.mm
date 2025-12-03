@@ -1,12 +1,12 @@
 @interface CMXmlUtils
-+ (id)copyFilteredString:(id)a3;
++ (id)copyFilteredString:(id)string;
 + (id)copyHeadElement;
-+ (id)copyHeadElementForDeviceWidth:(int)a3;
-+ (id)copyHeadElementWithTitle:(id)a3;
-+ (id)copyHeadElementWithTitle:(id)a3 deviceWidth:(int)a4;
++ (id)copyHeadElementForDeviceWidth:(int)width;
++ (id)copyHeadElementWithTitle:(id)title;
++ (id)copyHeadElementWithTitle:(id)title deviceWidth:(int)width;
 + (id)copyXhtmlDocument;
-+ (id)xhtmlStringWithXmlData:(id)a3;
-+ (void)filterString:(id)a3;
++ (id)xhtmlStringWithXmlData:(id)data;
++ (void)filterString:(id)string;
 @end
 
 @implementation CMXmlUtils
@@ -32,23 +32,23 @@
   return v2;
 }
 
-+ (id)copyFilteredString:(id)a3
++ (id)copyFilteredString:(id)string
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:v4];
-  [a1 filterString:v5];
+  stringCopy = string;
+  v5 = [objc_alloc(MEMORY[0x277CCAB68]) initWithString:stringCopy];
+  [self filterString:v5];
 
   return v5;
 }
 
-+ (void)filterString:(id)a3
++ (void)filterString:(id)string
 {
-  v3 = a3;
-  v9 = v3;
+  stringCopy = string;
+  v9 = stringCopy;
   do
   {
-    v4 = [v9 replaceOccurrencesOfString:@"  " withString:@" &nbsp;" options:2 range:{0, objc_msgSend(v3, "length")}];
-    v3 = v9;
+    v4 = [v9 replaceOccurrencesOfString:@"  " withString:@" &nbsp;" options:2 range:{0, objc_msgSend(stringCopy, "length")}];
+    stringCopy = v9;
   }
 
   while (v4);
@@ -115,10 +115,10 @@ LABEL_13:
 LABEL_19:
 }
 
-+ (id)xhtmlStringWithXmlData:(id)a3
++ (id)xhtmlStringWithXmlData:(id)data
 {
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CCAB68]) initWithData:v3 encoding:4];
+  dataCopy = data;
+  v4 = [objc_alloc(MEMORY[0x277CCAB68]) initWithData:dataCopy encoding:4];
     ;
   }
 
@@ -162,10 +162,10 @@ LABEL_19:
   return v4;
 }
 
-+ (id)copyHeadElementForDeviceWidth:(int)a3
++ (id)copyHeadElementForDeviceWidth:(int)width
 {
-  v3 = *&a3;
-  v4 = [a1 copyHeadElement];
+  v3 = *&width;
+  copyHeadElement = [self copyHeadElement];
   v5 = [OIXMLElement elementWithType:12];
   v6 = [OIXMLAttribute attributeWithName:@"name" stringValue:@"viewport"];
   [v5 addAttribute:v6];
@@ -174,40 +174,40 @@ LABEL_19:
   v8 = [OIXMLAttribute attributeWithName:@"content" stringValue:v7];
   [v5 addAttribute:v8];
 
-  [v4 addChild:v5];
-  return v4;
+  [copyHeadElement addChild:v5];
+  return copyHeadElement;
 }
 
-+ (id)copyHeadElementWithTitle:(id)a3 deviceWidth:(int)a4
++ (id)copyHeadElementWithTitle:(id)title deviceWidth:(int)width
 {
-  v4 = *&a4;
-  v6 = a3;
-  v7 = [a1 copyHeadElementForDeviceWidth:v4];
-  if (v6)
+  v4 = *&width;
+  titleCopy = title;
+  v7 = [self copyHeadElementForDeviceWidth:v4];
+  if (titleCopy)
   {
-    v8 = [OIXMLElement elementWithType:20 stringValue:v6];
+    v8 = [OIXMLElement elementWithType:20 stringValue:titleCopy];
     [v7 addChild:v8];
   }
 
   return v7;
 }
 
-+ (id)copyHeadElementWithTitle:(id)a3
++ (id)copyHeadElementWithTitle:(id)title
 {
-  v4 = a3;
-  v5 = [a1 copyHeadElement];
-  if (v4)
+  titleCopy = title;
+  copyHeadElement = [self copyHeadElement];
+  if (titleCopy)
   {
-    v6 = [OIXMLElement elementWithType:20 stringValue:v4];
-    [v5 addChild:v6];
+    v6 = [OIXMLElement elementWithType:20 stringValue:titleCopy];
+    [copyHeadElement addChild:v6];
   }
 
   v7 = [OIXMLElement elementWithType:12];
   v8 = [OIXMLAttribute attributeWithName:@"name" stringValue:@"viewport"];
   [v7 addAttribute:v8];
 
-  [v5 addChild:v7];
-  return v5;
+  [copyHeadElement addChild:v7];
+  return copyHeadElement;
 }
 
 @end

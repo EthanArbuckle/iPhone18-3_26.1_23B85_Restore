@@ -1,24 +1,24 @@
 @interface RoutingAppSelectionCell
-+ (id)_labelForRoutingMode:(id)a3;
-+ (id)_labelForRoutingModeKeys:(id)a3 intendedTransportType:(int64_t)a4;
-+ (id)_preferredModesForTransportType:(int64_t)a3;
++ (id)_labelForRoutingMode:(id)mode;
++ (id)_labelForRoutingModeKeys:(id)keys intendedTransportType:(int64_t)type;
++ (id)_preferredModesForTransportType:(int64_t)type;
 + (id)sharedLockupViewGroup;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (RoutingAppSelectionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (RoutingAppSelectionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (RoutingAppSelectionCellDelegate)delegate;
-- (id)_artworkWithUIImage:(id)a3;
+- (id)_artworkWithUIImage:(id)image;
 - (id)_dummyArtwork;
 - (id)_dummyLockup;
-- (id)_lockupByAddingRoutingModes:(id)a3;
-- (id)_lockupWithAppProxy:(id)a3 appIcon:(id)a4;
-- (id)_lockupWithAppStoreApp:(id)a3;
+- (id)_lockupByAddingRoutingModes:(id)modes;
+- (id)_lockupWithAppProxy:(id)proxy appIcon:(id)icon;
+- (id)_lockupWithAppStoreApp:(id)app;
 - (void)_route;
 - (void)_updateContent;
-- (void)lockupViewDidFinishRequest:(id)a3;
+- (void)lockupViewDidFinishRequest:(id)request;
 - (void)prepareForReuse;
-- (void)setAppProxy:(id)a3;
-- (void)setAppStoreApp:(id)a3;
-- (void)setIntendedTransportType:(int64_t)a3;
+- (void)setAppProxy:(id)proxy;
+- (void)setAppStoreApp:(id)app;
+- (void)setIntendedTransportType:(int64_t)type;
 @end
 
 @implementation RoutingAppSelectionCell
@@ -30,28 +30,28 @@
   return WeakRetained;
 }
 
-- (void)lockupViewDidFinishRequest:(id)a3
+- (void)lockupViewDidFinishRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   request = self->_request;
-  v11 = v4;
-  v6 = [v4 request];
+  v11 = requestCopy;
+  request = [requestCopy request];
 
-  if (request == v6)
+  if (request == request)
   {
-    v7 = [v11 lockup];
-    v8 = [(RoutingAppSelectionCell *)self _lockupByAddingRoutingModes:v7];
+    lockup = [v11 lockup];
+    v8 = [(RoutingAppSelectionCell *)self _lockupByAddingRoutingModes:lockup];
     [v11 setLockup:v8];
 
-    v9 = [v11 lockup];
+    lockup2 = [v11 lockup];
     lockup = self->_lockup;
-    self->_lockup = v9;
+    self->_lockup = lockup2;
   }
 }
 
-- (id)_artworkWithUIImage:(id)a3
+- (id)_artworkWithUIImage:(id)image
 {
-  v3 = UIImagePNGRepresentation(a3);
+  v3 = UIImagePNGRepresentation(image);
   v4 = [v3 base64EncodedStringWithOptions:0];
 
   v5 = [NSString stringWithFormat:@"data:image/pngbase64, %@", v4];;
@@ -74,64 +74,64 @@
   v3 = [ASCLockup alloc];
   v4 = [[ASCAdamID alloc] initWithInt64:0];
   v5 = ASCLockupKindApp;
-  v6 = [(RoutingAppSelectionCell *)self _dummyArtwork];
-  v7 = [v3 initWithID:v4 kind:v5 metrics:0 icon:v6 heading:0 title:0 subtitle:0 ageRating:0 offer:0];
+  _dummyArtwork = [(RoutingAppSelectionCell *)self _dummyArtwork];
+  v7 = [v3 initWithID:v4 kind:v5 metrics:0 icon:_dummyArtwork heading:0 title:0 subtitle:0 ageRating:0 offer:0];
 
   return v7;
 }
 
-- (id)_lockupByAddingRoutingModes:(id)a3
+- (id)_lockupByAddingRoutingModes:(id)modes
 {
-  v4 = a3;
-  v5 = [(RoutingAppSelectionCell *)self appStoreApp];
-  v19 = [v5 transitModes];
+  modesCopy = modes;
+  appStoreApp = [(RoutingAppSelectionCell *)self appStoreApp];
+  transitModes = [appStoreApp transitModes];
 
-  v18 = [objc_opt_class() _labelForRoutingModeKeys:v19 intendedTransportType:self->_intendedTransportType];
+  v18 = [objc_opt_class() _labelForRoutingModeKeys:transitModes intendedTransportType:self->_intendedTransportType];
   v17 = [ASCLockup alloc];
-  v6 = [v4 id];
-  v7 = [v4 kind];
-  v8 = [v4 metrics];
-  v9 = [v4 icon];
-  v10 = [v4 heading];
-  v11 = [v4 title];
-  v12 = [v18 string];
-  v13 = [v4 ageRating];
-  v14 = [v4 offer];
+  v6 = [modesCopy id];
+  kind = [modesCopy kind];
+  metrics = [modesCopy metrics];
+  icon = [modesCopy icon];
+  heading = [modesCopy heading];
+  title = [modesCopy title];
+  string = [v18 string];
+  ageRating = [modesCopy ageRating];
+  offer = [modesCopy offer];
 
-  v15 = [v17 initWithID:v6 kind:v7 metrics:v8 icon:v9 heading:v10 title:v11 subtitle:v12 ageRating:v13 offer:v14];
+  v15 = [v17 initWithID:v6 kind:kind metrics:metrics icon:icon heading:heading title:title subtitle:string ageRating:ageRating offer:offer];
 
   return v15;
 }
 
-- (id)_lockupWithAppStoreApp:(id)a3
+- (id)_lockupWithAppStoreApp:(id)app
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 integerValue]);
+  appCopy = app;
+  identifier = [appCopy identifier];
+  v6 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [identifier integerValue]);
 
   v7 = [[ASCAdamID alloc] initWithNumberValue:v6];
-  v8 = [v4 transitModes];
-  v9 = [objc_opt_class() _labelForRoutingModeKeys:v8 intendedTransportType:self->_intendedTransportType];
+  transitModes = [appCopy transitModes];
+  v9 = [objc_opt_class() _labelForRoutingModeKeys:transitModes intendedTransportType:self->_intendedTransportType];
   v10 = [ASCLockup alloc];
   v11 = ASCLockupKindApp;
-  v12 = [(RoutingAppSelectionCell *)self _dummyArtwork];
-  v13 = [v4 displayName];
+  _dummyArtwork = [(RoutingAppSelectionCell *)self _dummyArtwork];
+  displayName = [appCopy displayName];
 
-  v14 = [v9 string];
-  v15 = [v10 initWithID:v7 kind:v11 metrics:0 icon:v12 heading:0 title:v13 subtitle:v14 ageRating:0 offer:0];
+  string = [v9 string];
+  v15 = [v10 initWithID:v7 kind:v11 metrics:0 icon:_dummyArtwork heading:0 title:displayName subtitle:string ageRating:0 offer:0];
 
   return v15;
 }
 
-- (id)_lockupWithAppProxy:(id)a3 appIcon:(id)a4
+- (id)_lockupWithAppProxy:(id)proxy appIcon:(id)icon
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 bundleIdentifier];
-  v22 = [[ASCAdamID alloc] initWithStringValue:v8];
-  v9 = [v6 directionsModes];
-  v10 = [objc_opt_class() _labelForRoutingModeKeys:v9 intendedTransportType:self->_intendedTransportType];
-  v11 = [v10 string];
+  proxyCopy = proxy;
+  iconCopy = icon;
+  bundleIdentifier = [proxyCopy bundleIdentifier];
+  v22 = [[ASCAdamID alloc] initWithStringValue:bundleIdentifier];
+  directionsModes = [proxyCopy directionsModes];
+  v10 = [objc_opt_class() _labelForRoutingModeKeys:directionsModes intendedTransportType:self->_intendedTransportType];
+  string = [v10 string];
 
   objc_initWeak(&location, self);
   v12 = +[NSBundle mainBundle];
@@ -146,9 +146,9 @@
   objc_copyWeak(&v24, &location);
   v16 = [v15 initWithMetadata:v14 action:v23];
   v17 = [ASCLockup alloc];
-  if (v7)
+  if (iconCopy)
   {
-    [(RoutingAppSelectionCell *)self _artworkWithUIImage:v7];
+    [(RoutingAppSelectionCell *)self _artworkWithUIImage:iconCopy];
   }
 
   else
@@ -156,8 +156,8 @@
     [(RoutingAppSelectionCell *)self _dummyArtwork];
   }
   v18 = ;
-  v19 = [v6 localizedName];
-  v20 = [v17 initWithID:v22 kind:ASCLockupKindApp metrics:0 icon:v18 heading:0 title:v19 subtitle:v11 ageRating:0 offer:v16];
+  localizedName = [proxyCopy localizedName];
+  v20 = [v17 initWithID:v22 kind:ASCLockupKindApp metrics:0 icon:v18 heading:0 title:localizedName subtitle:string ageRating:0 offer:v16];
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(&location);
@@ -176,41 +176,41 @@
 
   else
   {
-    v4 = [(RoutingAppSelectionCell *)self appProxy];
+    appProxy = [(RoutingAppSelectionCell *)self appProxy];
 
-    if (v4)
+    if (appProxy)
     {
-      v5 = [(RoutingAppSelectionCell *)self appProxy];
-      v6 = [(RoutingAppSelectionCell *)self _lockupWithAppProxy:v5 appIcon:0];
+      appProxy2 = [(RoutingAppSelectionCell *)self appProxy];
+      v6 = [(RoutingAppSelectionCell *)self _lockupWithAppProxy:appProxy2 appIcon:0];
       lockup = self->_lockup;
       self->_lockup = v6;
 
       [(ASCLockupView *)self->_lockupView setLockup:self->_lockup];
       [(ASCLockupView *)self->_lockupView setAutomaticallyPresentsProductDetails:0];
-      v8 = [(RoutingAppSelectionCell *)self appProxy];
-      v9 = [v8 bundleIdentifier];
+      appProxy3 = [(RoutingAppSelectionCell *)self appProxy];
+      bundleIdentifier = [appProxy3 bundleIdentifier];
 
       v10 = +[MapsUIImageCache sharedCache];
-      v11 = [(RoutingAppSelectionCell *)self appProxy];
-      v12 = [v11 bundleIdentifier];
+      appProxy4 = [(RoutingAppSelectionCell *)self appProxy];
+      bundleIdentifier2 = [appProxy4 bundleIdentifier];
       v23[0] = _NSConcreteStackBlock;
       v23[1] = 3221225472;
       v23[2] = sub_100AD1D18;
       v23[3] = &unk_10165FED0;
-      v24 = v9;
-      v25 = self;
-      v13 = v9;
-      [v10 getImageForAppIcon:v12 format:2 completion:v23];
+      v24 = bundleIdentifier;
+      selfCopy = self;
+      v13 = bundleIdentifier;
+      [v10 getImageForAppIcon:bundleIdentifier2 format:2 completion:v23];
     }
 
     else
     {
-      v14 = [(RoutingAppSelectionCell *)self appStoreApp];
+      appStoreApp = [(RoutingAppSelectionCell *)self appStoreApp];
 
-      if (v14)
+      if (appStoreApp)
       {
-        v15 = [(RoutingAppSelectionCell *)self appStoreApp];
-        v16 = [(RoutingAppSelectionCell *)self _lockupWithAppStoreApp:v15];
+        appStoreApp2 = [(RoutingAppSelectionCell *)self appStoreApp];
+        v16 = [(RoutingAppSelectionCell *)self _lockupWithAppStoreApp:appStoreApp2];
         v17 = self->_lockup;
         self->_lockup = v16;
 
@@ -240,20 +240,20 @@
   [WeakRetained routingAppSelectionCellRoutePressed:self];
 }
 
-- (void)setIntendedTransportType:(int64_t)a3
+- (void)setIntendedTransportType:(int64_t)type
 {
-  if (self->_intendedTransportType != a3)
+  if (self->_intendedTransportType != type)
   {
-    self->_intendedTransportType = a3;
+    self->_intendedTransportType = type;
     [(RoutingAppSelectionCell *)self _updateContent];
   }
 }
 
-- (void)setAppProxy:(id)a3
+- (void)setAppProxy:(id)proxy
 {
-  v5 = a3;
+  proxyCopy = proxy;
   appProxy = self->_appProxy;
-  v10 = v5;
+  v10 = proxyCopy;
   v7 = appProxy;
   v8 = v10;
   if (v10 | v7)
@@ -263,18 +263,18 @@
     v8 = v10;
     if ((v9 & 1) == 0)
     {
-      objc_storeStrong(&self->_appProxy, a3);
+      objc_storeStrong(&self->_appProxy, proxy);
       [(RoutingAppSelectionCell *)self _updateContent];
       v8 = v10;
     }
   }
 }
 
-- (void)setAppStoreApp:(id)a3
+- (void)setAppStoreApp:(id)app
 {
-  v5 = a3;
+  appCopy = app;
   appStoreApp = self->_appStoreApp;
-  v10 = v5;
+  v10 = appCopy;
   v7 = appStoreApp;
   v8 = v10;
   if (v10 | v7)
@@ -284,17 +284,17 @@
     v8 = v10;
     if ((v9 & 1) == 0)
     {
-      objc_storeStrong(&self->_appStoreApp, a3);
+      objc_storeStrong(&self->_appStoreApp, app);
       [(RoutingAppSelectionCell *)self _updateContent];
       v8 = v10;
     }
   }
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  width = a3.width;
-  v6 = [(RoutingAppSelectionCell *)self lockupView:a3.width];
+  width = size.width;
+  v6 = [(RoutingAppSelectionCell *)self lockupView:size.width];
   [v6 sizeThatFits:{width, 1.79769313e308}];
   v8 = v7;
 
@@ -320,8 +320,8 @@
   self->_lockup = 0;
 
   [(ASCLockupView *)self->_lockupView setRequest:0];
-  v7 = [(RoutingAppSelectionCell *)self _dummyLockup];
-  [(ASCLockupView *)self->_lockupView setLockup:v7];
+  _dummyLockup = [(RoutingAppSelectionCell *)self _dummyLockup];
+  [(ASCLockupView *)self->_lockupView setLockup:_dummyLockup];
 
   [(ASCLockupView *)self->_lockupView setAutomaticallyPresentsProductDetails:0];
   v8.receiver = self;
@@ -329,11 +329,11 @@
   [(RoutingAppSelectionCell *)&v8 prepareForReuse];
 }
 
-- (RoutingAppSelectionCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (RoutingAppSelectionCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v17.receiver = self;
   v17.super_class = RoutingAppSelectionCell;
-  v4 = [(MapsThemeTableViewCell *)&v17 initWithStyle:0 reuseIdentifier:a4];
+  v4 = [(MapsThemeTableViewCell *)&v17 initWithStyle:0 reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -342,64 +342,64 @@
     [(RoutingAppSelectionCell *)v5 setBackgroundColor:v6];
 
     v7 = [ASCLockupView alloc];
-    v8 = [(RoutingAppSelectionCell *)v5 contentView];
-    [v8 bounds];
+    contentView = [(RoutingAppSelectionCell *)v5 contentView];
+    [contentView bounds];
     v9 = [v7 initWithFrame:?];
 
     [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v9 setDelegate:v5];
-    v10 = [objc_opt_class() sharedLockupViewGroup];
-    [v9 setGroup:v10];
+    sharedLockupViewGroup = [objc_opt_class() sharedLockupViewGroup];
+    [v9 setGroup:sharedLockupViewGroup];
 
-    v11 = [(RoutingAppSelectionCell *)v5 contentView];
-    [v11 addSubview:v9];
+    contentView2 = [(RoutingAppSelectionCell *)v5 contentView];
+    [contentView2 addSubview:v9];
 
     [(RoutingAppSelectionCell *)v5 setLockupView:v9];
-    v12 = [(RoutingAppSelectionCell *)v5 contentView];
+    contentView3 = [(RoutingAppSelectionCell *)v5 contentView];
     LODWORD(v13) = 1148846080;
-    v14 = [v9 _maps_constraintsEqualToEdgesOfView:v12 insets:10.0 priority:{16.0, 10.0, 16.0, v13}];
-    v15 = [v14 allConstraints];
-    [NSLayoutConstraint activateConstraints:v15];
+    v14 = [v9 _maps_constraintsEqualToEdgesOfView:contentView3 insets:10.0 priority:{16.0, 10.0, 16.0, v13}];
+    allConstraints = [v14 allConstraints];
+    [NSLayoutConstraint activateConstraints:allConstraints];
   }
 
   return v5;
 }
 
-+ (id)_preferredModesForTransportType:(int64_t)a3
++ (id)_preferredModesForTransportType:(int64_t)type
 {
-  if ((a3 - 1) > 4)
+  if ((type - 1) > 4)
   {
     return &__NSArray0__struct;
   }
 
   else
   {
-    return off_101637528[a3 - 1];
+    return off_101637528[type - 1];
   }
 }
 
-+ (id)_labelForRoutingModeKeys:(id)a3 intendedTransportType:(int64_t)a4
++ (id)_labelForRoutingModeKeys:(id)keys intendedTransportType:(int64_t)type
 {
-  v6 = a3;
-  v43 = a1;
-  v7 = [a1 _preferredModesForTransportType:a4];
-  if ([v6 count] && objc_msgSend(v7, "count"))
+  keysCopy = keys;
+  selfCopy = self;
+  v7 = [self _preferredModesForTransportType:type];
+  if ([keysCopy count] && objc_msgSend(v7, "count"))
   {
     v48[0] = _NSConcreteStackBlock;
     v48[1] = 3221225472;
     v48[2] = sub_100AD2794;
     v48[3] = &unk_101637508;
     v49 = v7;
-    v50 = v6;
-    v6 = [v6 sortedArrayUsingComparator:v48];
+    v50 = keysCopy;
+    keysCopy = [keysCopy sortedArrayUsingComparator:v48];
   }
 
-  v8 = [v6 count];
+  v8 = [keysCopy count];
   if (v8 == 1)
   {
     v13 = [NSAttributedString alloc];
-    v11 = [v6 objectAtIndexedSubscript:0];
-    v14 = [v43 _labelForRoutingMode:v11];
+    v11 = [keysCopy objectAtIndexedSubscript:0];
+    v14 = [selfCopy _labelForRoutingMode:v11];
     v12 = [v13 initWithString:v14];
   }
 
@@ -421,8 +421,8 @@
       v16 = [[NSMutableArray alloc] initWithCapacity:v15];
       for (i = 0; i != v15; ++i)
       {
-        v18 = [v6 objectAtIndexedSubscript:i];
-        v19 = [a1 _labelForRoutingMode:v18];
+        v18 = [keysCopy objectAtIndexedSubscript:i];
+        v19 = [self _labelForRoutingMode:v18];
         if (v19)
         {
           [v16 addObject:v19];
@@ -450,12 +450,12 @@
 
       if ([v7 count])
       {
-        v41 = v6;
+        v41 = keysCopy;
         v26 = [UIFont preferredFontForTextStyle:UIFontTextStyleCaption1];
-        v27 = [v26 fontDescriptor];
+        fontDescriptor = [v26 fontDescriptor];
 
-        v40 = v27;
-        v28 = [v27 fontDescriptorWithSymbolicTraits:2];
+        v40 = fontDescriptor;
+        v28 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
         v29 = [UIFont fontWithDescriptor:v28 size:0.0];
 
         v30 = [[NSMutableAttributedString alloc] initWithString:v22];
@@ -478,7 +478,7 @@
                 objc_enumerationMutation(v31);
               }
 
-              v36 = [a1 _labelForRoutingMode:*(*(&v44 + 1) + 8 * j)];
+              v36 = [self _labelForRoutingMode:*(*(&v44 + 1) + 8 * j)];
               v37 = [v22 rangeOfString:v36];
               if (v37 != 0x7FFFFFFFFFFFFFFFLL)
               {
@@ -493,7 +493,7 @@
         }
 
         v12 = [v30 copy];
-        v6 = v41;
+        keysCopy = v41;
       }
 
       else
@@ -507,7 +507,7 @@
     else
     {
       v10 = [NSAttributedString alloc];
-      v11 = [a1 _labelForRoutingMode:@"other"];
+      v11 = [self _labelForRoutingMode:@"other"];
       v12 = [v10 initWithString:v11];
     }
   }
@@ -515,16 +515,16 @@
   return v12;
 }
 
-+ (id)_labelForRoutingMode:(id)a3
++ (id)_labelForRoutingMode:(id)mode
 {
   v3 = qword_10195E4D0;
-  v4 = a3;
+  modeCopy = mode;
   if (v3 != -1)
   {
     dispatch_once(&qword_10195E4D0, &stru_1016374E0);
   }
 
-  v5 = [qword_10195E4D8 objectForKeyedSubscript:v4];
+  v5 = [qword_10195E4D8 objectForKeyedSubscript:modeCopy];
 
   return v5;
 }

@@ -1,7 +1,7 @@
 @interface POKeyWrap
 - (POKeyWrap)init;
-- (id)unwrapBlob:(id)a3;
-- (id)wrapBlob:(id)a3;
+- (id)unwrapBlob:(id)blob;
+- (id)wrapBlob:(id)blob;
 @end
 
 @implementation POKeyWrap
@@ -13,13 +13,13 @@
   return [(POKeyWrap *)&v3 init];
 }
 
-- (id)wrapBlob:(id)a3
+- (id)wrapBlob:(id)blob
 {
   v51 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 length] < 0xFFFFFF80)
+  blobCopy = blob;
+  if ([blobCopy length] < 0xFFFFFF80)
   {
-    v5 = [v3 length];
+    v5 = [blobCopy length];
     v6 = *MEMORY[0x277CDC540];
     if (!SecRandomCopyBytes(*MEMORY[0x277CDC540], 0x20uLL, bytes) && !SecRandomCopyBytes(v6, 0x10uLL, &v49))
     {
@@ -59,16 +59,16 @@
               goto LABEL_26;
             }
 
-            v19 = [v17 mutableBytes];
-            *v19 = v11;
+            mutableBytes = [v17 mutableBytes];
+            *mutableBytes = v11;
             if (v11)
             {
-              v20 = v19 + 1;
-              memcpy(v19 + 1, __src, v11);
+              v20 = mutableBytes + 1;
+              memcpy(mutableBytes + 1, __src, v11);
               *(v20 + v11) = v49;
-              if ([v3 bytes] || !v5)
+              if ([blobCopy bytes] || !v5)
               {
-                [v3 bytes];
+                [blobCopy bytes];
                 v25 = CCCryptorGCMOneshotEncrypt();
                 memset_s(bytes, 0, 32, 0x20uLL);
                 if (!v25)
@@ -212,12 +212,12 @@ id __22__POKeyWrap_wrapBlob___block_invoke_36()
   return v0;
 }
 
-- (id)unwrapBlob:(id)a3
+- (id)unwrapBlob:(id)blob
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 length];
-  v5 = [v3 bytes];
+  blobCopy = blob;
+  v4 = [blobCopy length];
+  bytes = [blobCopy bytes];
 
   if (v4 <= 0xF)
   {
@@ -233,8 +233,8 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  v10 = *v5;
-  v9 = v5 + 1;
+  v10 = *bytes;
+  v9 = bytes + 1;
   v8 = v10;
   v11 = v4 - 20 - v10;
   if (v4 - 20 < v10)

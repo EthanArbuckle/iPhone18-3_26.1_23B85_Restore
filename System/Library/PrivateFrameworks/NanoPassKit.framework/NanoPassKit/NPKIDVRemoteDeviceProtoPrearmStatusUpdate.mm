@@ -1,32 +1,32 @@
 @interface NPKIDVRemoteDeviceProtoPrearmStatusUpdate
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsPrearmStatus:(id)a3;
+- (int)StringAsPrearmStatus:(id)status;
 @end
 
 @implementation NPKIDVRemoteDeviceProtoPrearmStatusUpdate
 
-- (int)StringAsPrearmStatus:(id)a3
+- (int)StringAsPrearmStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"Unknown"])
   {
     v4 = -1;
   }
 
-  else if ([v3 isEqualToString:@"ShouldBeDisarmed"])
+  else if ([statusCopy isEqualToString:@"ShouldBeDisarmed"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ReadyForPrearm"])
+  else if ([statusCopy isEqualToString:@"ReadyForPrearm"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Prearmed"])
+  else if ([statusCopy isEqualToString:@"Prearmed"])
   {
     v4 = 2;
   }
@@ -45,15 +45,15 @@
   v8.receiver = self;
   v8.super_class = NPKIDVRemoteDeviceProtoPrearmStatusUpdate;
   v4 = [(NPKIDVRemoteDeviceProtoPrearmStatusUpdate *)&v8 description];
-  v5 = [(NPKIDVRemoteDeviceProtoPrearmStatusUpdate *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKIDVRemoteDeviceProtoPrearmStatusUpdate *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v4 = self->_prearmStatus + 1;
   if (v4 >= 4)
   {
@@ -65,24 +65,24 @@
     v5 = off_279949800[v4];
   }
 
-  [v3 setObject:v5 forKey:@"prearmStatus"];
+  [dictionary setObject:v5 forKey:@"prearmStatus"];
 
-  return v3;
+  return dictionary;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 2) = self->_prearmStatus;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = self->_prearmStatus == v4[2];
+    v5 = self->_prearmStatus == equalCopy[2];
   }
 
   else

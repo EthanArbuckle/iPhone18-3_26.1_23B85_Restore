@@ -1,7 +1,7 @@
 @interface MSDCommandServerRequest
 - (BOOL)isValid;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)getDataDictFromPayload:(id)a3 error:(id *)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)getDataDictFromPayload:(id)payload error:(id *)error;
 @end
 
 @implementation MSDCommandServerRequest
@@ -15,17 +15,17 @@
     return 0;
   }
 
-  v3 = [(MSDCommandServerRequest *)self server];
-  if (v3)
+  server = [(MSDCommandServerRequest *)self server];
+  if (server)
   {
-    v4 = [(MSDCommandServerRequest *)self port];
-    if (v4)
+    port = [(MSDCommandServerRequest *)self port];
+    if (port)
     {
-      v5 = [(MSDCommandServerRequest *)self deviceUDID];
-      if (v5)
+      deviceUDID = [(MSDCommandServerRequest *)self deviceUDID];
+      if (deviceUDID)
       {
-        v6 = [(MSDCommandServerRequest *)self hubVersion];
-        v7 = v6 != 0;
+        hubVersion = [(MSDCommandServerRequest *)self hubVersion];
+        v7 = hubVersion != 0;
       }
 
       else
@@ -48,15 +48,15 @@
   return v7;
 }
 
-- (id)getDataDictFromPayload:(id)a3 error:(id *)a4
+- (id)getDataDictFromPayload:(id)payload error:(id *)error
 {
-  v6 = [a3 objectForKey:@"data"];
+  v6 = [payload objectForKey:@"data"];
   v7 = sub_100063A54();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(MSDServerRequest *)self getName];
+    getName = [(MSDServerRequest *)self getName];
     v11 = 138543618;
-    v12 = v8;
+    v12 = getName;
     v13 = 2114;
     v14 = v6;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: data from server: %{public}@", &v11, 0x16u);
@@ -67,24 +67,24 @@
     v9 = [NSDictionary dictionaryFromJsonData:v6];
     if (!v9)
     {
-      sub_1000E5DE8(self, a4);
+      sub_1000E5DE8(self, error);
     }
   }
 
   else
   {
-    sub_1000E5EB8(self, a4);
+    sub_1000E5EB8(self, error);
     v9 = 0;
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = MSDCommandServerRequest;
-  v4 = [(MSDServerRequest *)&v6 copyWithZone:a3];
+  v4 = [(MSDServerRequest *)&v6 copyWithZone:zone];
   [v4 setServer:self->_server];
   [v4 setPort:self->_port];
   [v4 setHubVersion:self->_hubVersion];

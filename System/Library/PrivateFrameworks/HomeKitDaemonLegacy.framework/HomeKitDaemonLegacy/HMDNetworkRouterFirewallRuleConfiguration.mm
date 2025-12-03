@@ -1,12 +1,12 @@
 @interface HMDNetworkRouterFirewallRuleConfiguration
-+ (BOOL)__decodeFullAccessFromNetworkDeclarations:(id)a3 key:(id)a4 fullAccess:(BOOL *)a5;
-+ (BOOL)__decodeNetworkDeclarationsFromJSONDictionary:(id)a3 networkDeclarations:(id *)a4;
-+ (id)__decodeRulesFromNetworkDeclarations:(id)a3 key:(id)a4 class:(Class)a5 required:(BOOL)a6;
++ (BOOL)__decodeFullAccessFromNetworkDeclarations:(id)declarations key:(id)key fullAccess:(BOOL *)access;
++ (BOOL)__decodeNetworkDeclarationsFromJSONDictionary:(id)dictionary networkDeclarations:(id *)declarations;
++ (id)__decodeRulesFromNetworkDeclarations:(id)declarations key:(id)key class:(Class)class required:(BOOL)required;
 + (id)logCategory;
 - (BOOL)hasAirplayRules;
-- (BOOL)isEqual:(id)a3;
-- (HMDNetworkRouterFirewallRuleConfiguration)initWithAccessoryIdentifier:(id)a3 jsonDictionary:(id)a4;
-- (HMDNetworkRouterFirewallRuleConfiguration)initWithAccessoryIdentifier:(id)a3 lastModifiedTime:(id)a4 fullAccessLAN:(BOOL)a5 lanRules:(id)a6 fullAccessWAN:(BOOL)a7 wanRules:(id)a8;
+- (BOOL)isEqual:(id)equal;
+- (HMDNetworkRouterFirewallRuleConfiguration)initWithAccessoryIdentifier:(id)identifier jsonDictionary:(id)dictionary;
+- (HMDNetworkRouterFirewallRuleConfiguration)initWithAccessoryIdentifier:(id)identifier lastModifiedTime:(id)time fullAccessLAN:(BOOL)n lanRules:(id)rules fullAccessWAN:(BOOL)aN wanRules:(id)wanRules;
 - (NSDictionary)prettyJSONDictionary;
 - (id)attributeDescriptions;
 - (unint64_t)hash;
@@ -21,8 +21,8 @@
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v2 = [(HMDNetworkRouterFirewallRuleConfiguration *)self lanRules];
-  v3 = [v2 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  lanRules = [(HMDNetworkRouterFirewallRuleConfiguration *)self lanRules];
+  v3 = [lanRules countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v3)
   {
     v4 = *v17;
@@ -32,7 +32,7 @@
       {
         if (*v17 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(lanRules);
         }
 
         v6 = *(*(&v16 + 1) + 8 * i);
@@ -51,12 +51,12 @@
 
         if (v8)
         {
-          v9 = [v8 direction];
-          v10 = [v8 advertisingProtocol];
-          v11 = [v8 serviceType];
-          v12 = [v11 isEqual:@"airplay"];
+          direction = [v8 direction];
+          advertisingProtocol = [v8 advertisingProtocol];
+          serviceType = [v8 serviceType];
+          v12 = [serviceType isEqual:@"airplay"];
 
-          v13 = v9 == 1 && v10 == 0;
+          v13 = direction == 1 && advertisingProtocol == 0;
           if (v13 && (v12 & 1) != 0)
           {
 
@@ -66,7 +66,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v3 = [lanRules countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v3)
       {
         continue;
@@ -86,52 +86,52 @@ LABEL_20:
 {
   v25[6] = *MEMORY[0x277D85DE8];
   v3 = [HMDNetworkRouterClientConfiguration configurationForFirewallConfiguration:self hapAccessory:1 airplayAccessory:0 withClientIdentifier:0];
-  v4 = [v3 fingerprint];
+  fingerprint = [v3 fingerprint];
 
   v24[0] = @"lastModifiedTime";
-  v23 = [(HMDNetworkRouterFirewallRuleConfiguration *)self lastModifiedTime];
-  v22 = [v23 description];
+  lastModifiedTime = [(HMDNetworkRouterFirewallRuleConfiguration *)self lastModifiedTime];
+  v22 = [lastModifiedTime description];
   v25[0] = v22;
   v24[1] = @"lanRules";
-  v21 = [(HMDNetworkRouterFirewallRuleConfiguration *)self lanRules];
-  v20 = [v21 na_map:&__block_literal_global_51_184296];
-  v5 = [v20 copy];
-  v6 = v5;
-  if (!v5)
+  lanRules = [(HMDNetworkRouterFirewallRuleConfiguration *)self lanRules];
+  v20 = [lanRules na_map:&__block_literal_global_51_184296];
+  null = [v20 copy];
+  v6 = null;
+  if (!null)
   {
-    v5 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v25[1] = v5;
+  v25[1] = null;
   v24[2] = @"hasFullAccessToLAN";
-  v19 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDNetworkRouterFirewallRuleConfiguration hasFullAccessToLAN](self, "hasFullAccessToLAN", v5)}];
+  v19 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDNetworkRouterFirewallRuleConfiguration hasFullAccessToLAN](self, "hasFullAccessToLAN", null)}];
   v25[2] = v19;
   v24[3] = @"wanRules";
-  v7 = [(HMDNetworkRouterFirewallRuleConfiguration *)self wanRules];
-  v8 = [v7 na_map:&__block_literal_global_61];
+  wanRules = [(HMDNetworkRouterFirewallRuleConfiguration *)self wanRules];
+  v8 = [wanRules na_map:&__block_literal_global_61];
   v9 = [v8 copy];
-  v10 = v9;
+  null2 = v9;
   if (!v9)
   {
-    v10 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v25[3] = v10;
+  v25[3] = null2;
   v24[4] = @"hasFullAccessToWAN";
   v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDNetworkRouterFirewallRuleConfiguration hasFullAccessToWAN](self, "hasFullAccessToWAN")}];
   v25[4] = v11;
   v24[5] = @"fingerprint";
-  v12 = v4;
-  v13 = [v4 UUIDString];
-  v14 = v13;
-  if (!v13)
+  v12 = fingerprint;
+  uUIDString = [fingerprint UUIDString];
+  null3 = uUIDString;
+  if (!uUIDString)
   {
-    v14 = [MEMORY[0x277CBEB68] null];
+    null3 = [MEMORY[0x277CBEB68] null];
   }
 
-  v25[5] = v14;
+  v25[5] = null3;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:6];
-  if (!v13)
+  if (!uUIDString)
   {
   }
 
@@ -152,12 +152,12 @@ LABEL_20:
 {
   v24[6] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v23 = [(HMDNetworkRouterFirewallRuleConfiguration *)self accessoryIdentifier];
-  v22 = [v3 initWithName:@"AccessoryIdentifier" value:v23];
+  accessoryIdentifier = [(HMDNetworkRouterFirewallRuleConfiguration *)self accessoryIdentifier];
+  v22 = [v3 initWithName:@"AccessoryIdentifier" value:accessoryIdentifier];
   v24[0] = v22;
   v4 = objc_alloc(MEMORY[0x277D0F778]);
-  v21 = [(HMDNetworkRouterFirewallRuleConfiguration *)self lastModifiedTime];
-  v5 = [v4 initWithName:@"LastModifiedTime" value:v21];
+  lastModifiedTime = [(HMDNetworkRouterFirewallRuleConfiguration *)self lastModifiedTime];
+  v5 = [v4 initWithName:@"LastModifiedTime" value:lastModifiedTime];
   v24[1] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[HMDNetworkRouterFirewallRuleConfiguration hasFullAccessToLAN](self, "hasFullAccessToLAN")}];
@@ -168,12 +168,12 @@ LABEL_20:
   v11 = [v9 initWithName:@"FullAccessWAN" value:v10];
   v24[3] = v11;
   v12 = objc_alloc(MEMORY[0x277D0F778]);
-  v13 = [(HMDNetworkRouterFirewallRuleConfiguration *)self lanRules];
-  v14 = [v12 initWithName:@"LANRules" value:v13];
+  lanRules = [(HMDNetworkRouterFirewallRuleConfiguration *)self lanRules];
+  v14 = [v12 initWithName:@"LANRules" value:lanRules];
   v24[4] = v14;
   v15 = objc_alloc(MEMORY[0x277D0F778]);
-  v16 = [(HMDNetworkRouterFirewallRuleConfiguration *)self wanRules];
-  v17 = [v15 initWithName:@"WANRules" value:v16];
+  wanRules = [(HMDNetworkRouterFirewallRuleConfiguration *)self wanRules];
+  v17 = [v15 initWithName:@"WANRules" value:wanRules];
   v24[5] = v17;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:6];
 
@@ -184,27 +184,27 @@ LABEL_20:
 
 - (unint64_t)hash
 {
-  v3 = [(HMDNetworkRouterFirewallRuleConfiguration *)self accessoryIdentifier];
-  v4 = [v3 hash];
+  accessoryIdentifier = [(HMDNetworkRouterFirewallRuleConfiguration *)self accessoryIdentifier];
+  v4 = [accessoryIdentifier hash];
 
-  v5 = [(HMDNetworkRouterFirewallRuleConfiguration *)self lanRules];
-  v6 = [v5 hash] ^ v4;
+  lanRules = [(HMDNetworkRouterFirewallRuleConfiguration *)self lanRules];
+  v6 = [lanRules hash] ^ v4;
 
-  v7 = [(HMDNetworkRouterFirewallRuleConfiguration *)self wanRules];
-  v8 = v6 ^ [v7 hash];
+  wanRules = [(HMDNetworkRouterFirewallRuleConfiguration *)self wanRules];
+  v8 = v6 ^ [wanRules hash];
 
-  v9 = [(HMDNetworkRouterFirewallRuleConfiguration *)self hasFullAccessToLAN];
-  v10 = v8 ^ v9 ^ [(HMDNetworkRouterFirewallRuleConfiguration *)self hasFullAccessToWAN];
-  v11 = [(HMDNetworkRouterFirewallRuleConfiguration *)self lastModifiedTime];
-  v12 = [v11 hash];
+  hasFullAccessToLAN = [(HMDNetworkRouterFirewallRuleConfiguration *)self hasFullAccessToLAN];
+  v10 = v8 ^ hasFullAccessToLAN ^ [(HMDNetworkRouterFirewallRuleConfiguration *)self hasFullAccessToWAN];
+  lastModifiedTime = [(HMDNetworkRouterFirewallRuleConfiguration *)self lastModifiedTime];
+  v12 = [lastModifiedTime hash];
 
   return v10 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -214,7 +214,7 @@ LABEL_20:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -225,21 +225,21 @@ LABEL_20:
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDNetworkRouterFirewallRuleConfiguration *)self accessoryIdentifier];
-      v8 = [(HMDNetworkRouterFirewallRuleConfiguration *)v6 accessoryIdentifier];
-      if ([v7 isEqual:v8])
+      accessoryIdentifier = [(HMDNetworkRouterFirewallRuleConfiguration *)self accessoryIdentifier];
+      accessoryIdentifier2 = [(HMDNetworkRouterFirewallRuleConfiguration *)v6 accessoryIdentifier];
+      if ([accessoryIdentifier isEqual:accessoryIdentifier2])
       {
-        v9 = [(HMDNetworkRouterFirewallRuleConfiguration *)self lanRules];
-        v10 = [(HMDNetworkRouterFirewallRuleConfiguration *)v6 lanRules];
-        if ([v9 isEqualToArray:v10])
+        lanRules = [(HMDNetworkRouterFirewallRuleConfiguration *)self lanRules];
+        lanRules2 = [(HMDNetworkRouterFirewallRuleConfiguration *)v6 lanRules];
+        if ([lanRules isEqualToArray:lanRules2])
         {
-          v11 = [(HMDNetworkRouterFirewallRuleConfiguration *)self wanRules];
-          v12 = [(HMDNetworkRouterFirewallRuleConfiguration *)v6 wanRules];
-          if ([v11 isEqualToArray:v12] && (v13 = -[HMDNetworkRouterFirewallRuleConfiguration hasFullAccessToLAN](self, "hasFullAccessToLAN"), v13 == -[HMDNetworkRouterFirewallRuleConfiguration hasFullAccessToLAN](v6, "hasFullAccessToLAN")) && (v14 = -[HMDNetworkRouterFirewallRuleConfiguration hasFullAccessToWAN](self, "hasFullAccessToWAN"), v14 == -[HMDNetworkRouterFirewallRuleConfiguration hasFullAccessToWAN](v6, "hasFullAccessToWAN")))
+          wanRules = [(HMDNetworkRouterFirewallRuleConfiguration *)self wanRules];
+          wanRules2 = [(HMDNetworkRouterFirewallRuleConfiguration *)v6 wanRules];
+          if ([wanRules isEqualToArray:wanRules2] && (v13 = -[HMDNetworkRouterFirewallRuleConfiguration hasFullAccessToLAN](self, "hasFullAccessToLAN"), v13 == -[HMDNetworkRouterFirewallRuleConfiguration hasFullAccessToLAN](v6, "hasFullAccessToLAN")) && (v14 = -[HMDNetworkRouterFirewallRuleConfiguration hasFullAccessToWAN](self, "hasFullAccessToWAN"), v14 == -[HMDNetworkRouterFirewallRuleConfiguration hasFullAccessToWAN](v6, "hasFullAccessToWAN")))
           {
-            v18 = [(HMDNetworkRouterFirewallRuleConfiguration *)self lastModifiedTime];
-            v17 = [(HMDNetworkRouterFirewallRuleConfiguration *)v6 lastModifiedTime];
-            v15 = [v18 isEqual:v17];
+            lastModifiedTime = [(HMDNetworkRouterFirewallRuleConfiguration *)self lastModifiedTime];
+            lastModifiedTime2 = [(HMDNetworkRouterFirewallRuleConfiguration *)v6 lastModifiedTime];
+            v15 = [lastModifiedTime isEqual:lastModifiedTime2];
           }
 
           else
@@ -269,22 +269,22 @@ LABEL_20:
   return v15;
 }
 
-- (HMDNetworkRouterFirewallRuleConfiguration)initWithAccessoryIdentifier:(id)a3 jsonDictionary:(id)a4
+- (HMDNetworkRouterFirewallRuleConfiguration)initWithAccessoryIdentifier:(id)identifier jsonDictionary:(id)dictionary
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 firmwareVersion];
+  identifierCopy = identifier;
+  dictionaryCopy = dictionary;
+  firmwareVersion = [identifierCopy firmwareVersion];
 
-  if (v8)
+  if (firmwareVersion)
   {
     v25 = 0;
-    v9 = decodeTimeFromJSONDictionary(v7, @"t", &v25);
+    v9 = decodeTimeFromJSONDictionary(dictionaryCopy, @"t", &v25);
     v10 = v25;
     if (v9)
     {
       v24 = 0;
-      v11 = [objc_opt_class() __decodeNetworkDeclarationsFromJSONDictionary:v7 networkDeclarations:&v24];
+      v11 = [objc_opt_class() __decodeNetworkDeclarationsFromJSONDictionary:dictionaryCopy networkDeclarations:&v24];
       v12 = v24;
       if (v11 && (buf[0] = 0, [objc_opt_class() __decodeFullAccessFromNetworkDeclarations:v12 key:@"l" fullAccess:buf]))
       {
@@ -296,31 +296,31 @@ LABEL_20:
           v16 = [v15 __decodeRulesFromNetworkDeclarations:v12 key:@"x" class:objc_opt_class() required:(v23 & 1) == 0];
           if (v16)
           {
-            self = [(HMDNetworkRouterFirewallRuleConfiguration *)self initWithAccessoryIdentifier:v6 lastModifiedTime:v10 fullAccessLAN:buf[0] lanRules:v14 fullAccessWAN:v23 wanRules:v16];
-            v17 = self;
+            self = [(HMDNetworkRouterFirewallRuleConfiguration *)self initWithAccessoryIdentifier:identifierCopy lastModifiedTime:v10 fullAccessLAN:buf[0] lanRules:v14 fullAccessWAN:v23 wanRules:v16];
+            selfCopy = self;
           }
 
           else
           {
-            v17 = 0;
+            selfCopy = 0;
           }
         }
 
         else
         {
-          v17 = 0;
+          selfCopy = 0;
         }
       }
 
       else
       {
-        v17 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v17 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -335,49 +335,49 @@ LABEL_20:
       *buf = 138543618;
       v27 = v20;
       v28 = 2112;
-      v29 = v6;
+      v29 = identifierCopy;
       _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_ERROR, "%{public}@Network declaration must contain firmware version: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v18);
-    v17 = 0;
+    selfCopy = 0;
   }
 
   v21 = *MEMORY[0x277D85DE8];
-  return v17;
+  return selfCopy;
 }
 
-- (HMDNetworkRouterFirewallRuleConfiguration)initWithAccessoryIdentifier:(id)a3 lastModifiedTime:(id)a4 fullAccessLAN:(BOOL)a5 lanRules:(id)a6 fullAccessWAN:(BOOL)a7 wanRules:(id)a8
+- (HMDNetworkRouterFirewallRuleConfiguration)initWithAccessoryIdentifier:(id)identifier lastModifiedTime:(id)time fullAccessLAN:(BOOL)n lanRules:(id)rules fullAccessWAN:(BOOL)aN wanRules:(id)wanRules
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
+  identifierCopy = identifier;
+  timeCopy = time;
+  rulesCopy = rules;
+  wanRulesCopy = wanRules;
   v23.receiver = self;
   v23.super_class = HMDNetworkRouterFirewallRuleConfiguration;
   v18 = [(HMDNetworkRouterFirewallRuleConfiguration *)&v23 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_accessoryIdentifier, a3);
-    objc_storeStrong(&v19->_lastModifiedTime, a4);
-    v19->_fullAccessLAN = a5;
-    objc_storeStrong(&v19->_lanRules, a6);
-    v19->_fullAccessWAN = a7;
-    objc_storeStrong(&v19->_wanRules, a8);
+    objc_storeStrong(&v18->_accessoryIdentifier, identifier);
+    objc_storeStrong(&v19->_lastModifiedTime, time);
+    v19->_fullAccessLAN = n;
+    objc_storeStrong(&v19->_lanRules, rules);
+    v19->_fullAccessWAN = aN;
+    objc_storeStrong(&v19->_wanRules, wanRules);
     v20 = v19;
   }
 
   return v19;
 }
 
-+ (id)__decodeRulesFromNetworkDeclarations:(id)a3 key:(id)a4 class:(Class)a5 required:(BOOL)a6
++ (id)__decodeRulesFromNetworkDeclarations:(id)declarations key:(id)key class:(Class)class required:(BOOL)required
 {
-  v6 = a6;
+  requiredCopy = required;
   v63 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = [v10 objectForKeyedSubscript:v11];
+  declarationsCopy = declarations;
+  keyCopy = key;
+  v12 = [declarationsCopy objectForKeyedSubscript:keyCopy];
   v13 = v12;
   if (v12)
   {
@@ -406,12 +406,12 @@ LABEL_20:
       if (v18)
       {
         v19 = v18;
-        v47 = a1;
+        selfCopy = self;
         v48 = v13;
         v20 = 0;
         v21 = *v53;
-        v49 = v11;
-        v50 = v10;
+        v49 = keyCopy;
+        v50 = declarationsCopy;
         while (2)
         {
           for (i = 0; i != v19; ++i)
@@ -438,10 +438,10 @@ LABEL_20:
             if (!v25)
             {
               v41 = objc_autoreleasePoolPush();
-              v42 = v47;
+              v42 = selfCopy;
               v43 = HMFGetOSLogHandle();
-              v11 = v49;
-              v10 = v50;
+              keyCopy = v49;
+              declarationsCopy = v50;
               if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
               {
                 v44 = HMFGetLogIdentifier();
@@ -461,7 +461,7 @@ LABEL_20:
             }
 
             v51 = 0;
-            v26 = [(objc_class *)a5 createWithJSONDictionary:v25 error:&v51];
+            v26 = [(objc_class *)class createWithJSONDictionary:v25 error:&v51];
             v27 = v51;
             v28 = v27;
             if (v26)
@@ -482,8 +482,8 @@ LABEL_20:
 
               v33 = 0;
               v39 = v17;
-              v11 = v49;
-              v10 = v50;
+              keyCopy = v49;
+              declarationsCopy = v50;
 LABEL_41:
               v13 = v48;
               goto LABEL_42;
@@ -491,8 +491,8 @@ LABEL_41:
           }
 
           v19 = [v17 countByEnumeratingWithState:&v52 objects:v56 count:16];
-          v11 = v49;
-          v10 = v50;
+          keyCopy = v49;
+          declarationsCopy = v50;
           v13 = v48;
           if (v19)
           {
@@ -523,7 +523,7 @@ LABEL_42:
     else
     {
       v34 = objc_autoreleasePoolPush();
-      v35 = a1;
+      selfCopy2 = self;
       v36 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
@@ -531,9 +531,9 @@ LABEL_42:
         *buf = 138543874;
         v58 = v37;
         v59 = 2112;
-        v60 = v11;
+        v60 = keyCopy;
         v61 = 2112;
-        v62 = v10;
+        v62 = declarationsCopy;
         _os_log_impl(&dword_2531F8000, v36, OS_LOG_TYPE_ERROR, "%{public}@Network declaration contains an invalid '%@' value: %@", buf, 0x20u);
       }
 
@@ -542,10 +542,10 @@ LABEL_42:
     }
   }
 
-  else if (v6)
+  else if (requiredCopy)
   {
     v29 = objc_autoreleasePoolPush();
-    v30 = a1;
+    selfCopy3 = self;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
@@ -553,9 +553,9 @@ LABEL_42:
       *buf = 138543874;
       v58 = v32;
       v59 = 2112;
-      v60 = v11;
+      v60 = keyCopy;
       v61 = 2112;
-      v62 = v10;
+      v62 = declarationsCopy;
       _os_log_impl(&dword_2531F8000, v31, OS_LOG_TYPE_ERROR, "%{public}@Network declaration contains no '%@' value: %@", buf, 0x20u);
     }
 
@@ -573,13 +573,13 @@ LABEL_42:
   return v33;
 }
 
-+ (BOOL)__decodeFullAccessFromNetworkDeclarations:(id)a3 key:(id)a4 fullAccess:(BOOL *)a5
++ (BOOL)__decodeFullAccessFromNetworkDeclarations:(id)declarations key:(id)key fullAccess:(BOOL *)access
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  declarationsCopy = declarations;
+  keyCopy = key;
   v21 = 0;
-  v10 = decodeUnsignedIntegerFromJSONDictionary(v8, v9, 1, 0xFFuLL, &v21);
+  v10 = decodeUnsignedIntegerFromJSONDictionary(declarationsCopy, keyCopy, 1, 0xFFuLL, &v21);
   v11 = v21;
   v12 = v11;
   if (!v10)
@@ -589,18 +589,18 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v13 = [v11 unsignedIntegerValue];
-  if (v13 == 1)
+  unsignedIntegerValue = [v11 unsignedIntegerValue];
+  if (unsignedIntegerValue == 1)
   {
-    *a5 = 0;
+    *access = 0;
     v14 = 1;
     goto LABEL_10;
   }
 
-  if (v13)
+  if (unsignedIntegerValue)
   {
     v15 = objc_autoreleasePoolPush();
-    v16 = a1;
+    selfCopy = self;
     v17 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
@@ -608,9 +608,9 @@ LABEL_9:
       *buf = 138543874;
       v23 = v18;
       v24 = 2112;
-      v25 = v9;
+      v25 = keyCopy;
       v26 = 2112;
-      v27 = v8;
+      v27 = declarationsCopy;
       _os_log_impl(&dword_2531F8000, v17, OS_LOG_TYPE_ERROR, "%{public}@Network declaration contains an invalid '%@' value: %@", buf, 0x20u);
     }
 
@@ -619,23 +619,23 @@ LABEL_9:
   }
 
   v14 = 1;
-  *a5 = 1;
+  *access = 1;
 LABEL_10:
 
   v19 = *MEMORY[0x277D85DE8];
   return v14;
 }
 
-+ (BOOL)__decodeNetworkDeclarationsFromJSONDictionary:(id)a3 networkDeclarations:(id *)a4
++ (BOOL)__decodeNetworkDeclarationsFromJSONDictionary:(id)dictionary networkDeclarations:(id *)declarations
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"n"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"n"];
   v8 = v7;
   if (!v7)
   {
     v14 = objc_autoreleasePoolPush();
-    v15 = a1;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -645,7 +645,7 @@ LABEL_10:
       v24 = 2112;
       v25 = @"n";
       v26 = 2112;
-      v27 = v6;
+      v27 = dictionaryCopy;
       v18 = "%{public}@JSON contains no '%@' value: %@";
 LABEL_11:
       _os_log_impl(&dword_2531F8000, v16, OS_LOG_TYPE_ERROR, v18, &v22, 0x20u);
@@ -673,11 +673,11 @@ LABEL_12:
 
   v12 = v11;
 
-  *a4 = v11;
+  *declarations = v11;
   if (!v10)
   {
     v14 = objc_autoreleasePoolPush();
-    v19 = a1;
+    selfCopy2 = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
     {
@@ -687,7 +687,7 @@ LABEL_12:
       v24 = 2112;
       v25 = @"n";
       v26 = 2112;
-      v27 = v6;
+      v27 = dictionaryCopy;
       v18 = "%{public}@JSON contains an invalid '%@' value: %@";
       goto LABEL_11;
     }

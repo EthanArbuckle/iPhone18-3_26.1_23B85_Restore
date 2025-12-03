@@ -15,8 +15,8 @@
 
 - (NSString)subtitleString
 {
-  v2 = [(PHSOSNewtonRestingViewModel *)self dateOfSOSEvent];
-  v3 = sub_100062F88(v2);
+  dateOfSOSEvent = [(PHSOSNewtonRestingViewModel *)self dateOfSOSEvent];
+  v3 = sub_100062F88(dateOfSOSEvent);
 
   return v3;
 }

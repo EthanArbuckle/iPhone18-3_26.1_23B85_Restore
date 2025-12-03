@@ -1,50 +1,50 @@
 @interface VDGDetectionUtilsV2
 - ($DC080E558804126FE14A0ED6851A46A4)configuration;
-- (BOOL)ghostIsHighConfidence:(id)a3;
-- (BOOL)isBoxSizeValidForProcessing:(float)a3 AndErodeBy:;
-- (BOOL)locIsInSearchRange:(float)a3 searchLocation:(float)a4 defaultSearchLocation:(BOOL)a5 searchRadius:defaultSearchRange:searchInGivenLocsOnly:;
-- (BOOL)updatePrevLSDoGAndLumaFeaturesWithMetalBuffers:(id *)a3;
-- (VDGDetectionUtilsV2)initWithMetalToolBox:(id)a3 configuration:(id *)a4 tuningParams:(id *)a5;
-- (double)getSearchLocation:(void *)a3;
-- (float)getTemporalDetectionSearchRadiusForReferenceFrameIndex:(float)a3 minSearchRadius:(float)a4 slope:(float)a5;
-- (float)getTrajectoryMatchingCostGG:(id)a3;
-- (float32x2_t)predictPrevLSLocation:(int32x4_t)a3 usingPrevToCurrentHomography:(uint64_t)a4;
-- (id)getBestROIInROIList:(id)a3 referenceROI:(id)a4;
-- (id)getReflLsListAsDetectedROIFromMeta:(id *)a3;
-- (id)pruneGhostList:(id)a3 againstReflLsList:(id)a4 dilation:(float)a5;
-- (id)removeRois:(id)a3 thatOverlapRefRois:(id)a4 dilationRadius:(float)a5;
-- (id)warpRoisUsingMv:(id *)a3;
-- (int64_t)generateDetectionRoiList:(id)a3 outputArray:(id *)a4;
-- (int64_t)getDetectionRoiListFromMeta:(id *)a3 outputArray:;
-- (int64_t)getReflLsListFromMeta:(id *)a3 outputArray:;
-- (signed)getClosestRoi:(id *)a3 forCoord:;
-- (void)clearReferencedROIsForROIList:(id)a3;
+- (BOOL)ghostIsHighConfidence:(id)confidence;
+- (BOOL)isBoxSizeValidForProcessing:(float)processing AndErodeBy:;
+- (BOOL)locIsInSearchRange:(float)range searchLocation:(float)location defaultSearchLocation:(BOOL)searchLocation searchRadius:defaultSearchRange:searchInGivenLocsOnly:;
+- (BOOL)updatePrevLSDoGAndLumaFeaturesWithMetalBuffers:(id *)buffers;
+- (VDGDetectionUtilsV2)initWithMetalToolBox:(id)box configuration:(id *)configuration tuningParams:(id *)params;
+- (double)getSearchLocation:(void *)location;
+- (float)getTemporalDetectionSearchRadiusForReferenceFrameIndex:(float)index minSearchRadius:(float)radius slope:(float)slope;
+- (float)getTrajectoryMatchingCostGG:(id)g;
+- (float32x2_t)predictPrevLSLocation:(int32x4_t)location usingPrevToCurrentHomography:(uint64_t)homography;
+- (id)getBestROIInROIList:(id)list referenceROI:(id)i;
+- (id)getReflLsListAsDetectedROIFromMeta:(id *)meta;
+- (id)pruneGhostList:(id)list againstReflLsList:(id)lsList dilation:(float)dilation;
+- (id)removeRois:(id)rois thatOverlapRefRois:(id)refRois dilationRadius:(float)radius;
+- (id)warpRoisUsingMv:(id *)mv;
+- (int64_t)generateDetectionRoiList:(id)list outputArray:(id *)array;
+- (int64_t)getDetectionRoiListFromMeta:(id *)meta outputArray:;
+- (int64_t)getReflLsListFromMeta:(id *)meta outputArray:;
+- (signed)getClosestRoi:(id *)roi forCoord:;
+- (void)clearReferencedROIsForROIList:(id)list;
 - (void)dealloc;
-- (void)findTinyKeypointLocationsFromLS:(id)a3 inputTexture:(id)a4 dilation:(float)a5 estimatedOpticalCenter:(id *)a6 metalBuffers:(int)a7 maxBufferLength:(float)a8 keypointSampleStepCount:;
-- (void)generateBoxesForDoGAndLumaAndForLSROIs:(id)a3 prevGGROIs:(id)a4 inputTexture:(id)a5 opticalCenter:(id *)a6 metalBuffers:(int)a7 maxBufferLength:;
-- (void)generateBoxesForDoGAndLumaAndForPrevLSROIs:(double)a3 homography:(double)a4 metalBuffers:(uint64_t)a5 maxBufferLength:(void *)a6;
-- (void)generateTrajectoryForROI:(id)a3 isGG:(BOOL)a4;
-- (void)generateTrajectoryForROIList:(id)a3 isGG:(BOOL)a4;
-- (void)getGGCandidatesFromROIList:(id)a3 GGList:(id *)a4;
-- (void)getGhostTrackIdFromLs:(id *)a3;
-- (void)getHighRiskLS:(id)a3;
-- (void)getRoiMvForRoiList:(id)a3 fromMeta:(id *)a4;
-- (void)getTopGhostsInList:(id)a3 k:(signed __int16)a4 opticalCenter:(int)a5 ghostCntGatingTh:;
-- (void)getTopLSInListByDroppingBottoms:(id)a3 k:(signed __int16)a4 dist2ghostTol:(float)a5;
-- (void)getTopLSInListByKeepingTops:(id)a3 k:(signed __int16)a4 dist2ghostTol:(float)a5;
-- (void)pruneGGList:(id *)a3 LSBBoxList:(id *)a4 reflectedLSBBoxList:getMatchedLS:pruneLS:pruneGG:;
-- (void)pruneGGList:(id *)a3 LSList:(id *)a4 opticalCenter:(float)a5 costToKeepLS:(float)a6 costToKeepGG:;
-- (void)pruneLSBasedOnDist2Ghost:(id)a3;
-- (void)pruneUsingTrajectoryGGList:(id)a3;
-- (void)removeDuplicateRois:(id)a3;
-- (void)removeRedundantLS:(id)a3;
-- (void)setConfiguration:(id *)a3;
-- (void)setDefaultOpticalCenterForList:(id)a3 opticalCenter:;
-- (void)setRoiMvForMeta:(id *)a3 fromRoiList:;
-- (void)sortKPs:(id)a3 opticalCenter:;
-- (void)trackMeta:(VDGDetectionUtilsV2 *)self refMeta:(SEL)a2 currMaxTrackId:(id *)a3;
-- (void)updateDoGAndLumaFeaturesWithMetalBuffers:(id *)a3;
-- (void)updateNewRoiPixFea:(VDGDetectionUtilsV2 *)self withRefPixFea:(SEL)a2;
+- (void)findTinyKeypointLocationsFromLS:(id)s inputTexture:(id)texture dilation:(float)dilation estimatedOpticalCenter:(id *)center metalBuffers:(int)buffers maxBufferLength:(float)length keypointSampleStepCount:;
+- (void)generateBoxesForDoGAndLumaAndForLSROIs:(id)is prevGGROIs:(id)oIs inputTexture:(id)texture opticalCenter:(id *)center metalBuffers:(int)buffers maxBufferLength:;
+- (void)generateBoxesForDoGAndLumaAndForPrevLSROIs:(double)is homography:(double)homography metalBuffers:(uint64_t)buffers maxBufferLength:(void *)length;
+- (void)generateTrajectoryForROI:(id)i isGG:(BOOL)g;
+- (void)generateTrajectoryForROIList:(id)list isGG:(BOOL)g;
+- (void)getGGCandidatesFromROIList:(id)list GGList:(id *)gList;
+- (void)getGhostTrackIdFromLs:(id *)ls;
+- (void)getHighRiskLS:(id)s;
+- (void)getRoiMvForRoiList:(id)list fromMeta:(id *)meta;
+- (void)getTopGhostsInList:(id)list k:(signed __int16)k opticalCenter:(int)center ghostCntGatingTh:;
+- (void)getTopLSInListByDroppingBottoms:(id)bottoms k:(signed __int16)k dist2ghostTol:(float)tol;
+- (void)getTopLSInListByKeepingTops:(id)tops k:(signed __int16)k dist2ghostTol:(float)tol;
+- (void)pruneGGList:(id *)list LSBBoxList:(id *)boxList reflectedLSBBoxList:getMatchedLS:pruneLS:pruneGG:;
+- (void)pruneGGList:(id *)list LSList:(id *)sList opticalCenter:(float)center costToKeepLS:(float)s costToKeepGG:;
+- (void)pruneLSBasedOnDist2Ghost:(id)ghost;
+- (void)pruneUsingTrajectoryGGList:(id)list;
+- (void)removeDuplicateRois:(id)rois;
+- (void)removeRedundantLS:(id)s;
+- (void)setConfiguration:(id *)configuration;
+- (void)setDefaultOpticalCenterForList:(id)list opticalCenter:;
+- (void)setRoiMvForMeta:(id *)meta fromRoiList:;
+- (void)sortKPs:(id)ps opticalCenter:;
+- (void)trackMeta:(VDGDetectionUtilsV2 *)self refMeta:(SEL)meta currMaxTrackId:(id *)id;
+- (void)updateDoGAndLumaFeaturesWithMetalBuffers:(id *)buffers;
+- (void)updateNewRoiPixFea:(VDGDetectionUtilsV2 *)self withRefPixFea:(SEL)fea;
 @end
 
 @implementation VDGDetectionUtilsV2
@@ -61,12 +61,12 @@
   [(VDGDetectionUtilsV2 *)&v3 dealloc];
 }
 
-- (BOOL)ghostIsHighConfidence:(id)a3
+- (BOOL)ghostIsHighConfidence:(id)confidence
 {
-  v3 = a3;
-  if (([v3 isTrajectoryPruningPassed] & 1) != 0 || objc_msgSend(v3, "trackedCnt") >= 1)
+  confidenceCopy = confidence;
+  if (([confidenceCopy isTrajectoryPruningPassed] & 1) != 0 || objc_msgSend(confidenceCopy, "trackedCnt") >= 1)
   {
-    v4 = [v3 isReflectedLS] ^ 1;
+    v4 = [confidenceCopy isReflectedLS] ^ 1;
   }
 
   else
@@ -77,19 +77,19 @@
   return v4;
 }
 
-- (void)generateTrajectoryForROI:(id)a3 isGG:(BOOL)a4
+- (void)generateTrajectoryForROI:(id)i isGG:(BOOL)g
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (a4)
+  iCopy = i;
+  v6 = iCopy;
+  if (g)
   {
-    [v5 temporalDetectionMatched];
+    [iCopy temporalDetectionMatched];
   }
 
   else
   {
-    [v5 LSTrackingMatched];
+    [iCopy LSTrackingMatched];
   }
   v7 = ;
   v8 = v7;
@@ -103,7 +103,7 @@
     v19 = v12;
     [v6 bbox];
     v14 = vadd_f32(v19, vmul_f32(*&vextq_s8(v13, v13, 8uLL), 0x3F0000003F000000));
-    if (!a4)
+    if (!g)
     {
       [v8 defaultOpticalCenter];
       v11 = reflectPointSimd(v11, v15);
@@ -171,16 +171,16 @@
   [v6 setDescriptor:&v20];
 }
 
-- (void)generateTrajectoryForROIList:(id)a3 isGG:(BOOL)a4
+- (void)generateTrajectoryForROIList:(id)list isGG:(BOOL)g
 {
-  v4 = a4;
+  gCopy = g;
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  listCopy = list;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v7 = [listCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -192,28 +192,28 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(listCopy);
         }
 
-        [(VDGDetectionUtilsV2 *)self generateTrajectoryForROI:*(*(&v11 + 1) + 8 * v10++) isGG:v4];
+        [(VDGDetectionUtilsV2 *)self generateTrajectoryForROI:*(*(&v11 + 1) + 8 * v10++) isGG:gCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [listCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
   }
 }
 
-- (float)getTrajectoryMatchingCostGG:(id)a3
+- (float)getTrajectoryMatchingCostGG:(id)g
 {
   v63 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 matchedLS];
-  if (v4)
+  gCopy = g;
+  matchedLS = [gCopy matchedLS];
+  if (gCopy)
   {
-    [v4 descriptor];
+    [gCopy descriptor];
     v6 = v62;
   }
 
@@ -233,7 +233,7 @@
   }
 
   v7 = 1.0;
-  if ([v5 count])
+  if ([matchedLS count])
   {
     v8 = vceq_f32(v6, vneg_f32(0x7F0000007FLL));
     if ((vpmin_u32(v8, v8).u32[0] & 0x80000000) == 0)
@@ -242,7 +242,7 @@
       v41 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v9 = v5;
+      v9 = matchedLS;
       v10 = [v9 countByEnumeratingWithState:&v38 objects:v52 count:16];
       if (v10)
       {
@@ -317,7 +317,7 @@
           if (v29 > 10.0)
           {
             v37 = v28;
-            [v4 setIsTrajectoryPruningPassed:1];
+            [gCopy setIsTrajectoryPruningPassed:1];
             v30 = sqrtf(v13);
             v7 = -1.0;
             if (v30 > 1.0)
@@ -349,17 +349,17 @@
   return v7;
 }
 
-- (void)pruneUsingTrajectoryGGList:(id)a3
+- (void)pruneUsingTrajectoryGGList:(id)list
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  listCopy = list;
+  v5 = listCopy;
   if (global_logLevel)
   {
-    NSLog(&cfstr_BeforePruningW.isa, [v4 count]);
+    NSLog(&cfstr_BeforePruningW.isa, [listCopy count]);
   }
 
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -385,7 +385,7 @@
           [(VDGDetectionUtilsV2 *)self getTrajectoryMatchingCostGG:v12];
           if (v13 <= 0.3)
           {
-            [v6 addObject:v12];
+            [array addObject:v12];
           }
         }
       }
@@ -396,22 +396,22 @@
     while (v9);
   }
 
-  [v7 removeObjectsInArray:v6];
+  [v7 removeObjectsInArray:array];
   if (global_logLevel)
   {
     NSLog(&cfstr_AfterPruningWT.isa, [v7 count]);
   }
 }
 
-- (void)getHighRiskLS:(id)a3
+- (void)getHighRiskLS:(id)s
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  sCopy = s;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v30 count:16];
+  v4 = [sCopy countByEnumeratingWithState:&v16 objects:v30 count:16];
   if (v4)
   {
     v5 = v4;
@@ -423,7 +423,7 @@
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(sCopy);
         }
 
         v9 = *(*(&v16 + 1) + 8 * i);
@@ -463,23 +463,23 @@
         [v9 setLSIsHighRisk:v15];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v16 objects:v30 count:16];
+      v5 = [sCopy countByEnumeratingWithState:&v16 objects:v30 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)setDefaultOpticalCenterForList:(id)a3 opticalCenter:
+- (void)setDefaultOpticalCenterForList:(id)list opticalCenter:
 {
   v4 = v3;
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  listCopy = list;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [listCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = v6;
@@ -491,34 +491,34 @@
       {
         if (*v11 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(listCopy);
         }
 
         [*(*(&v10 + 1) + 8 * v9++) setDefaultOpticalCenter:v4];
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v7 = [listCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v7);
   }
 }
 
-- (double)getSearchLocation:(void *)a3
+- (double)getSearchLocation:(void *)location
 {
   v50 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  [v3 bbox];
+  locationCopy = location;
+  [locationCopy bbox];
   v23 = v4;
-  [v3 bbox];
+  [locationCopy bbox];
   v22 = v5;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = [v3 matchedLS];
-  v7 = [v6 countByEnumeratingWithState:&v25 objects:v49 count:16];
+  matchedLS = [locationCopy matchedLS];
+  v7 = [matchedLS countByEnumeratingWithState:&v25 objects:v49 count:16];
   if (!v7)
   {
 
@@ -541,7 +541,7 @@
     {
       if (*v26 != v11)
       {
-        objc_enumerationMutation(v6);
+        objc_enumerationMutation(matchedLS);
         v15 = 0uLL;
       }
 
@@ -598,7 +598,7 @@ LABEL_13:
     }
 
     while (v8 != v14);
-    v8 = [v6 countByEnumeratingWithState:&v25 objects:v49 count:16];
+    v8 = [matchedLS countByEnumeratingWithState:&v25 objects:v49 count:16];
   }
 
   while (v8);
@@ -616,18 +616,18 @@ LABEL_19:
   return *&v20;
 }
 
-- (BOOL)locIsInSearchRange:(float)a3 searchLocation:(float)a4 defaultSearchLocation:(BOOL)a5 searchRadius:defaultSearchRange:searchInGivenLocsOnly:
+- (BOOL)locIsInSearchRange:(float)range searchLocation:(float)location defaultSearchLocation:(BOOL)searchLocation searchRadius:defaultSearchRange:searchInGivenLocsOnly:
 {
-  v8 = vsub_f32(*&a4, *&a3);
+  v8 = vsub_f32(*&location, *&range);
   v9 = sqrtf(vaddv_f32(vmul_f32(v8, v8))) <= v6;
-  v10 = vsub_f32(v5, *&a3);
-  v11 = !a5;
+  v10 = vsub_f32(v5, *&range);
+  v11 = !searchLocation;
   if (sqrtf(vaddv_f32(vmul_f32(v10, v10))) > v7)
   {
     v11 = 0;
   }
 
-  if (a4 == INFINITY)
+  if (location == INFINITY)
   {
     return v11;
   }
@@ -638,17 +638,17 @@ LABEL_19:
   }
 }
 
-- (void)removeRedundantLS:(id)a3
+- (void)removeRedundantLS:(id)s
 {
-  v45 = a3;
-  v3 = [MEMORY[0x277CBEB18] array];
-  if ([v45 count])
+  sCopy = s;
+  array = [MEMORY[0x277CBEB18] array];
+  if ([sCopy count])
   {
     v4 = 0;
     v5 = 1;
     while (1)
     {
-      v6 = [v45 objectAtIndexedSubscript:v4];
+      v6 = [sCopy objectAtIndexedSubscript:v4];
       [v6 bbox];
       v43 = v7;
       [v6 bbox];
@@ -657,7 +657,7 @@ LABEL_19:
       rect1_8 = v9;
       [v6 bbox];
       v40 = v10;
-      if ([v45 count] > ++v4)
+      if ([sCopy count] > ++v4)
       {
         break;
       }
@@ -665,7 +665,7 @@ LABEL_19:
 LABEL_27:
 
       ++v5;
-      if ([v45 count] <= v4)
+      if ([sCopy count] <= v4)
       {
         goto LABEL_28;
       }
@@ -677,7 +677,7 @@ LABEL_27:
     v11 = v5;
     while (1)
     {
-      v12 = [v45 objectAtIndexedSubscript:v11];
+      v12 = [sCopy objectAtIndexedSubscript:v11];
       [v12 bbox];
       v14 = v13;
       [v12 bbox];
@@ -767,10 +767,10 @@ LABEL_27:
         }
       }
 
-      [v3 addObject:v25];
+      [array addObject:v25];
 LABEL_8:
 
-      if ([v45 count] <= ++v11)
+      if ([sCopy count] <= ++v11)
       {
         goto LABEL_27;
       }
@@ -778,24 +778,24 @@ LABEL_8:
   }
 
 LABEL_28:
-  [v45 removeObjectsInArray:v3];
+  [sCopy removeObjectsInArray:array];
 }
 
-- (float32x2_t)predictPrevLSLocation:(int32x4_t)a3 usingPrevToCurrentHomography:(uint64_t)a4
+- (float32x2_t)predictPrevLSLocation:(int32x4_t)location usingPrevToCurrentHomography:(uint64_t)homography
 {
   if (a6)
   {
     v12 = a2;
-    v13 = a3;
-    v11 = a1;
+    locationCopy = location;
+    selfCopy = self;
     v6 = a6;
     [v6 descriptor];
     v14 = v16;
     [v6 descriptor];
 
-    a1 = v11;
+    self = selfCopy;
     a2 = v12;
-    a3 = v13;
+    location = locationCopy;
     v7 = v15;
   }
 
@@ -805,21 +805,21 @@ LABEL_28:
     v14 = 0.0;
   }
 
-  v8 = vtrn2q_s32(a1, a2);
-  v8.i32[2] = a3.i32[1];
-  v9 = vaddq_f32(vzip1q_s32(vzip2q_s32(a1, a3), vdupq_laneq_s32(a2, 2)), vmlaq_lane_f32(vmulq_n_f32(vzip1q_s32(vzip1q_s32(a1, a3), a2), v14), v8, v7, 1));
+  v8 = vtrn2q_s32(self, a2);
+  v8.i32[2] = location.i32[1];
+  v9 = vaddq_f32(vzip1q_s32(vzip2q_s32(self, location), vdupq_laneq_s32(a2, 2)), vmlaq_lane_f32(vmulq_n_f32(vzip1q_s32(vzip1q_s32(self, location), a2), v14), v8, v7, 1));
   return vdiv_f32(*v9.i8, vdup_laneq_s32(v9, 2));
 }
 
-- (void)pruneGGList:(id *)a3 LSBBoxList:(id *)a4 reflectedLSBBoxList:getMatchedLS:pruneLS:pruneGG:
+- (void)pruneGGList:(id *)list LSBBoxList:(id *)boxList reflectedLSBBoxList:getMatchedLS:pruneLS:pruneGG:
 {
   v8 = v4;
-  v10 = a3;
+  listCopy4 = list;
   v70 = *MEMORY[0x277D85DE8];
   if (v6)
   {
-    v40 = [MEMORY[0x277CBEB18] array];
-    if ([*a4 count])
+    array = [MEMORY[0x277CBEB18] array];
+    if ([*boxList count])
     {
       v11 = 0;
       v12 = 0;
@@ -831,7 +831,7 @@ LABEL_28:
         v46 = 0u;
         v47 = 0u;
         v48 = 0u;
-        v14 = *v10;
+        v14 = *listCopy4;
         v15 = [v14 countByEnumeratingWithState:&v45 objects:v69 count:16];
         if (v15)
         {
@@ -879,8 +879,8 @@ LABEL_28:
                 if ((vpmin_u32(v22, v22).u32[0] & 0x80000000) != 0)
                 {
 
-                  v14 = [*a4 objectAtIndexedSubscript:v11];
-                  [v40 addObject:v14];
+                  v14 = [*boxList objectAtIndexedSubscript:v11];
+                  [array addObject:v14];
                   goto LABEL_18;
                 }
               }
@@ -904,10 +904,10 @@ LABEL_28:
 LABEL_18:
 
         v11 = ++v13;
-        v10 = a3;
+        listCopy4 = list;
       }
 
-      while ([*a4 count] > v13);
+      while ([*boxList count] > v13);
     }
 
     else
@@ -915,8 +915,8 @@ LABEL_18:
       v12 = 0;
     }
 
-    v39 = *a4;
-    *a4 = v40;
+    v39 = *boxList;
+    *boxList = array;
 
 LABEL_43:
     return;
@@ -925,7 +925,7 @@ LABEL_43:
   if (v7)
   {
     v23 = v5;
-    if ([*a3 count])
+    if ([*list count])
     {
       v24 = 0;
       v12 = 0;
@@ -933,7 +933,7 @@ LABEL_43:
       do
       {
         v26 = v12;
-        v12 = [*v10 objectAtIndexedSubscript:v24];
+        v12 = [*listCopy4 objectAtIndexedSubscript:v24];
 
         if (v12)
         {
@@ -956,7 +956,7 @@ LABEL_43:
           v50 = 0u;
         }
 
-        if ([*a4 count])
+        if ([*boxList count])
         {
           v27 = 0;
           v28 = 0;
@@ -971,24 +971,24 @@ LABEL_43:
               v33 = vpmin_u32(v32, v32).u32[0];
               if ((v33 & 0x80000000) != 0 && v23)
               {
-                v34 = [v12 matchedLS];
+                matchedLS = [v12 matchedLS];
 
-                if (!v34)
+                if (!matchedLS)
                 {
-                  v35 = [MEMORY[0x277CBEB18] array];
-                  [v12 setMatchedLS:v35];
+                  array2 = [MEMORY[0x277CBEB18] array];
+                  [v12 setMatchedLS:array2];
                 }
 
-                v36 = [v12 matchedLS];
-                v37 = [*a4 objectAtIndexedSubscript:v27];
-                [v36 addObject:v37];
+                matchedLS2 = [v12 matchedLS];
+                v37 = [*boxList objectAtIndexedSubscript:v27];
+                [matchedLS2 addObject:v37];
 
                 v28 = 1;
               }
 
               else if ((v33 & 0x80000000) != 0)
               {
-                v10 = a3;
+                listCopy4 = list;
                 goto LABEL_38;
               }
             }
@@ -996,42 +996,42 @@ LABEL_43:
             v27 = v29;
           }
 
-          while ([*a4 count] > v29++);
-          v10 = a3;
+          while ([*boxList count] > v29++);
+          listCopy4 = list;
           if (v28)
           {
             goto LABEL_38;
           }
         }
 
-        [*v10 removeObjectAtIndex:v24];
+        [*listCopy4 removeObjectAtIndex:v24];
         --v25;
 LABEL_38:
         v24 = ++v25;
       }
 
-      while ([*v10 count] > v25);
+      while ([*listCopy4 count] > v25);
       goto LABEL_43;
     }
   }
 }
 
-- (float)getTemporalDetectionSearchRadiusForReferenceFrameIndex:(float)a3 minSearchRadius:(float)a4 slope:(float)a5
+- (float)getTemporalDetectionSearchRadiusForReferenceFrameIndex:(float)index minSearchRadius:(float)radius slope:(float)slope
 {
-  result = a3 * a5;
-  if (result <= a4)
+  result = index * slope;
+  if (result <= radius)
   {
-    return a4;
+    return radius;
   }
 
   return result;
 }
 
-- (id)getBestROIInROIList:(id)a3 referenceROI:(id)a4
+- (id)getBestROIInROIList:(id)list referenceROI:(id)i
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  listCopy = list;
+  iCopy = i;
+  if ([listCopy count])
   {
     v7 = 0;
     v8 = 0;
@@ -1044,13 +1044,13 @@ LABEL_38:
     {
       if (v10 == 1)
       {
-        v14 = [v5 objectAtIndexedSubscript:0];
+        v14 = [listCopy objectAtIndexedSubscript:0];
 
         if (v14)
         {
           [v14 descriptor];
           v15 = *(&v39 + 8);
-          if (v6)
+          if (iCopy)
           {
             goto LABEL_6;
           }
@@ -1064,13 +1064,13 @@ LABEL_11:
         {
           v39 = 0u;
           v15 = 0;
-          if (!v6)
+          if (!iCopy)
           {
             goto LABEL_11;
           }
 
 LABEL_6:
-          [v6 descriptor];
+          [iCopy descriptor];
           v16 = v38;
         }
 
@@ -1094,13 +1094,13 @@ LABEL_6:
         goto LABEL_30;
       }
 
-      v14 = [v5 objectAtIndexedSubscript:v7];
+      v14 = [listCopy objectAtIndexedSubscript:v7];
 
       if (v14)
       {
         [v14 descriptor];
         v17 = *(&v35 + 8);
-        if (v6)
+        if (iCopy)
         {
           goto LABEL_9;
         }
@@ -1110,10 +1110,10 @@ LABEL_6:
       {
         v35 = 0u;
         v17 = 0;
-        if (v6)
+        if (iCopy)
         {
 LABEL_9:
-          [v6 descriptor];
+          [iCopy descriptor];
           v18 = *(&v34 + 8);
           goto LABEL_16;
         }
@@ -1220,7 +1220,7 @@ LABEL_19:
       v14 = v8;
 LABEL_30:
       v7 = v10;
-      v21 = [v5 count] > v10++;
+      v21 = [listCopy count] > v10++;
       v8 = v14;
       v11 = v19;
       if (!v21)
@@ -1237,19 +1237,19 @@ LABEL_40:
   return v14;
 }
 
-- (void)pruneGGList:(id *)a3 LSList:(id *)a4 opticalCenter:(float)a5 costToKeepLS:(float)a6 costToKeepGG:
+- (void)pruneGGList:(id *)list LSList:(id *)sList opticalCenter:(float)center costToKeepLS:(float)s costToKeepGG:
 {
   v7 = v6;
-  v9 = *&a5;
+  v9 = *&center;
   v70 = *MEMORY[0x277D85DE8];
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   [MEMORY[0x277CBEB18] array];
-  v46 = v45 = a4;
+  v46 = v45 = sList;
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  obj = *a4;
+  obj = *sList;
   v12 = [obj countByEnumeratingWithState:&v62 objects:v69 count:16];
   if (v12)
   {
@@ -1274,7 +1274,7 @@ LABEL_40:
         v61 = 0u;
         v58 = 0u;
         v59 = 0u;
-        v17 = *a3;
+        v17 = *list;
         v18 = [v17 countByEnumeratingWithState:&v58 objects:v68 count:16];
         if (v18)
         {
@@ -1317,9 +1317,9 @@ LABEL_40:
           v22 = INFINITY;
         }
 
-        if (v22 <= a6)
+        if (v22 <= s)
         {
-          [v11 addObject:v14];
+          [array addObject:v14];
         }
 
         ++v15;
@@ -1337,7 +1337,7 @@ LABEL_40:
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v26 = *a3;
+  v26 = *list;
   v27 = [v26 countByEnumeratingWithState:&v54 objects:v67 count:16];
   if (v27)
   {
@@ -1358,7 +1358,7 @@ LABEL_40:
 
         v30 = *(*(&v54 + 1) + 8 * v32);
 
-        if ([v11 count])
+        if ([array count])
         {
           v34 = 0;
           v35 = 1;
@@ -1366,7 +1366,7 @@ LABEL_40:
           v37 = v29;
           do
           {
-            v29 = [v11 objectAtIndexedSubscript:v34];
+            v29 = [array objectAtIndexedSubscript:v34];
 
             [v30 getLocationMatchCostWith:v29];
             if (v38 < v36)
@@ -1375,7 +1375,7 @@ LABEL_40:
             }
 
             v34 = v35;
-            v39 = [v11 count] > v35++;
+            v39 = [array count] > v35++;
             v37 = v29;
           }
 
@@ -1408,8 +1408,8 @@ LABEL_40:
     v29 = 0;
   }
 
-  objc_storeStrong(a3, v46);
-  objc_storeStrong(v45, v11);
+  objc_storeStrong(list, v46);
+  objc_storeStrong(v45, array);
   v52 = 0u;
   v53 = 0u;
   v50 = 0u;
@@ -1439,14 +1439,14 @@ LABEL_40:
   }
 }
 
-- (void)sortKPs:(id)a3 opticalCenter:
+- (void)sortKPs:(id)ps opticalCenter:
 {
   v4 = v3;
-  v6 = a3;
-  v7 = [v6 count];
+  psCopy = ps;
+  v7 = [psCopy count];
   if (v7 > self->_locationListLen || (v8 = v7, v7 > self->_dist2OpticalCenterListLen) || v7 > self->_kpIsFromHWListLen)
   {
-    [v6 removeAllObjects];
+    [psCopy removeAllObjects];
   }
 
   else if (v7 >= 1)
@@ -1454,7 +1454,7 @@ LABEL_40:
     v9 = 0;
     do
     {
-      v10 = [v6 objectAtIndexedSubscript:{v9, v30, v31, v32, v33, v34, v35, v36, v37, v38, v39}];
+      v10 = [psCopy objectAtIndexedSubscript:{v9, v30, v31, v32, v33, v34, v35, v36, v37, v38, v39}];
       v11 = v10;
       if (v10)
       {
@@ -1481,7 +1481,7 @@ LABEL_40:
 
       v13 = vsub_f32(v4, *(*self->_locationList + 8 * v9));
       self->_dist2OpticalCenterList[v9] = sqrtf(vaddv_f32(vmul_f32(v13, v13)));
-      v14 = [v6 objectAtIndexedSubscript:v9];
+      v14 = [psCopy objectAtIndexedSubscript:v9];
       self->_kpIsFromHWList[v9] = [v14 kpIsFromHW];
 
       ++v9;
@@ -1523,7 +1523,7 @@ LABEL_40:
 
       if (v19 != v23)
       {
-        [v6 exchangeObjectAtIndex:v19 withObjectAtIndex:{v23, v15, v16, v17, v18}];
+        [psCopy exchangeObjectAtIndex:v19 withObjectAtIndex:{v23, v15, v16, v17, v18}];
         v28 = *self->_locationList;
         v15 = *(v28 + 8 * v19);
         v16 = *(v28 + 8 * v23);
@@ -1547,31 +1547,31 @@ LABEL_40:
   }
 }
 
-- (void)removeDuplicateRois:(id)a3
+- (void)removeDuplicateRois:(id)rois
 {
-  v50 = a3;
-  v4 = [v50 count];
+  roisCopy = rois;
+  v4 = [roisCopy count];
   if (v4 > self->_reflectedLSListLen || (v5 = v4, v4 > self->_bboxListLen))
   {
-    [v50 removeAllObjects];
+    [roisCopy removeAllObjects];
   }
 
   else
   {
-    v49 = [MEMORY[0x277CBEB18] array];
-    v6 = v50;
+    array = [MEMORY[0x277CBEB18] array];
+    v6 = roisCopy;
     if (v5 >= 1)
     {
       for (i = 0; i != v5; ++i)
       {
-        v8 = [v6 objectAtIndexedSubscript:{i, v49}];
+        v8 = [v6 objectAtIndexedSubscript:{i, array}];
         [v8 bbox];
         *(*self->_bboxList + 16 * i) = v9;
 
-        v10 = [v50 objectAtIndexedSubscript:i];
+        v10 = [roisCopy objectAtIndexedSubscript:i];
         self->_reflectedLSList[i] = [v10 isReflectedLS];
 
-        v6 = v50;
+        v6 = roisCopy;
       }
 
       v11 = 0;
@@ -1624,7 +1624,7 @@ LABEL_53:
         v56.size.width = v26;
         v56.size.height = v27;
         v28 = CGRectIntersectsRect(v52, v56);
-        v6 = v50;
+        v6 = roisCopy;
         if (!v28)
         {
           goto LABEL_52;
@@ -1653,35 +1653,35 @@ LABEL_53:
         v58.size.height = v27;
         if (CGRectContainsRect(v54, v58))
         {
-          v29 = [v50 objectAtIndexedSubscript:v14];
-          v31 = [v50 objectAtIndexedSubscript:v22];
+          v29 = [roisCopy objectAtIndexedSubscript:v14];
+          v31 = [roisCopy objectAtIndexedSubscript:v22];
           if (([v29 isTracked] & 1) != 0 || !objc_msgSend(v31, "isTracked"))
           {
             if ([v29 isTracked] && objc_msgSend(v31, "isTracked"))
             {
-              v35 = [v29 trackID];
-              v36 = [v31 trackID];
-              if (v35 >= v36)
+              trackID = [v29 trackID];
+              trackID2 = [v31 trackID];
+              if (trackID >= trackID2)
               {
-                v37 = v36;
+                v37 = trackID2;
               }
 
               else
               {
-                v37 = v35;
+                v37 = trackID;
               }
 
               [v29 setTrackID:v37];
-              v38 = [v29 trackedCnt];
-              v39 = [v31 trackedCnt];
-              if (v38 <= v39)
+              trackedCnt = [v29 trackedCnt];
+              trackedCnt2 = [v31 trackedCnt];
+              if (trackedCnt <= trackedCnt2)
               {
-                v40 = v39;
+                v40 = trackedCnt2;
               }
 
               else
               {
-                v40 = v38;
+                v40 = trackedCnt;
               }
 
               [v29 setTrackedCnt:v40];
@@ -1693,8 +1693,8 @@ LABEL_53:
             [v29 setIsTracked:1];
             [v29 setTrackedCnt:{objc_msgSend(v31, "trackedCnt")}];
             [v29 setTrackID:{objc_msgSend(v31, "trackID")}];
-            v32 = [v31 temporalDetectionMatched];
-            [v29 setTemporalDetectionMatched:v32];
+            temporalDetectionMatched = [v31 temporalDetectionMatched];
+            [v29 setTemporalDetectionMatched:temporalDetectionMatched];
 
             [v29 setIsPredictedFromPast:{objc_msgSend(v31, "isPredictedFromPast")}];
             [v29 setPredictedFromPastCnt:{objc_msgSend(v31, "predictedFromPastCnt")}];
@@ -1714,38 +1714,38 @@ LABEL_53:
         v59.size.width = v18;
         v59.size.height = v17;
         v33 = CGRectContainsRect(v55, v59);
-        v6 = v50;
+        v6 = roisCopy;
         if (v33)
         {
-          v31 = [v50 objectAtIndexedSubscript:v14];
-          v30 = [v50 objectAtIndexedSubscript:v22];
+          v31 = [roisCopy objectAtIndexedSubscript:v14];
+          v30 = [roisCopy objectAtIndexedSubscript:v22];
           if (([v30 isTracked] & 1) != 0 || !objc_msgSend(v31, "isTracked"))
           {
             if ([v31 isTracked] && objc_msgSend(v30, "isTracked"))
             {
-              v41 = [v31 trackID];
-              v42 = [v30 trackID];
-              if (v41 >= v42)
+              trackID3 = [v31 trackID];
+              trackID4 = [v30 trackID];
+              if (trackID3 >= trackID4)
               {
-                v43 = v42;
+                v43 = trackID4;
               }
 
               else
               {
-                v43 = v41;
+                v43 = trackID3;
               }
 
               [v30 setTrackID:v43];
-              v44 = [v31 trackedCnt];
-              v45 = [v30 trackedCnt];
-              if (v44 <= v45)
+              trackedCnt3 = [v31 trackedCnt];
+              trackedCnt4 = [v30 trackedCnt];
+              if (trackedCnt3 <= trackedCnt4)
               {
-                v46 = v45;
+                v46 = trackedCnt4;
               }
 
               else
               {
-                v46 = v44;
+                v46 = trackedCnt3;
               }
 
               [v30 setTrackedCnt:v46];
@@ -1757,8 +1757,8 @@ LABEL_53:
             [v30 setIsTracked:1];
             [v30 setTrackedCnt:{objc_msgSend(v31, "trackedCnt")}];
             [v30 setTrackID:{objc_msgSend(v31, "trackID")}];
-            v34 = [v31 temporalDetectionMatched];
-            [v30 setTemporalDetectionMatched:v34];
+            temporalDetectionMatched2 = [v31 temporalDetectionMatched];
+            [v30 setTemporalDetectionMatched:temporalDetectionMatched2];
 
             [v30 setIsPredictedFromPast:{objc_msgSend(v31, "isPredictedFromPast")}];
             [v30 setPredictedFromPastCnt:{objc_msgSend(v31, "predictedFromPastCnt")}];
@@ -1777,8 +1777,8 @@ LABEL_52:
         }
       }
 
-      v29 = [v50 objectAtIndexedSubscript:v14];
-      v30 = [v50 objectAtIndexedSubscript:v22];
+      v29 = [roisCopy objectAtIndexedSubscript:v14];
+      v30 = [roisCopy objectAtIndexedSubscript:v22];
       if (v29 != v30)
       {
         if ([v29 isTracked] && !objc_msgSend(v30, "isTracked"))
@@ -1797,21 +1797,21 @@ LABEL_52:
         if (v21 - 1 > v12)
         {
 LABEL_50:
-          [v49 addObject:v31];
+          [array addObject:v31];
         }
       }
 
-      v6 = v50;
+      v6 = roisCopy;
       goto LABEL_52;
     }
 
 LABEL_54:
-    v48 = v49;
-    [v6 removeObjectsInArray:{v49, v49}];
+    v48 = array;
+    [v6 removeObjectsInArray:{array, array}];
   }
 }
 
-- (void)updateNewRoiPixFea:(VDGDetectionUtilsV2 *)self withRefPixFea:(SEL)a2
+- (void)updateNewRoiPixFea:(VDGDetectionUtilsV2 *)self withRefPixFea:(SEL)fea
 {
   v4 = 0;
   v6 = v2[2];
@@ -1852,12 +1852,12 @@ LABEL_54:
   while (v4 != 32);
 }
 
-- (int64_t)generateDetectionRoiList:(id)a3 outputArray:(id *)a4
+- (int64_t)generateDetectionRoiList:(id)list outputArray:(id *)array
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  [*a4 removeAllObjects];
-  if ([v6 count])
+  listCopy = list;
+  [*array removeAllObjects];
+  if ([listCopy count])
   {
     v7 = 0;
     v8 = *MEMORY[0x277CBF398];
@@ -1866,7 +1866,7 @@ LABEL_54:
     v11 = *(MEMORY[0x277CBF398] + 24);
     while (1)
     {
-      v12 = [v6 objectAtIndexedSubscript:v7];
+      v12 = [listCopy objectAtIndexedSubscript:v7];
       [v12 bbox];
       v31 = v13;
       [v12 bbox];
@@ -1932,9 +1932,9 @@ LABEL_54:
       v24 = v23;
       *&v25 = getConfidenceOffline();
       [v24 setConfidence:v25];
-      [*a4 addObject:v24];
+      [*array addObject:v24];
 
-      if ([v6 count] <= ++v7)
+      if ([listCopy count] <= ++v7)
       {
         goto LABEL_13;
       }
@@ -1952,18 +1952,18 @@ LABEL_13:
   return v26;
 }
 
-- (int64_t)getDetectionRoiListFromMeta:(id *)a3 outputArray:
+- (int64_t)getDetectionRoiListFromMeta:(id *)meta outputArray:
 {
   v43 = *MEMORY[0x277D85DE8];
   if (v3)
   {
     v4 = v3;
     [*v3 removeAllObjects];
-    if (a3->var0 < 1)
+    if (meta->var0 < 1)
     {
 LABEL_6:
-      v17 = (COERCE_FLOAT(*&a3[1].var4) + -5.0);
-      v18 = (COERCE_FLOAT(HIDWORD(*&a3[1].var4)) + -5.0);
+      v17 = (COERCE_FLOAT(*&meta[1].var4) + -5.0);
+      v18 = (COERCE_FLOAT(HIDWORD(*&meta[1].var4)) + -5.0);
       v32 = 0;
       v30 = 0u;
       v31 = 0u;
@@ -1999,7 +1999,7 @@ LABEL_6:
         v34 = 0u;
         v22 = [(DetectedROI *)v21 initWithTrackingSessionId:0 roiId:0 roi:&v33 LSRoi:&v30 descriptor:955.0 propertiesForPostProcPipeVisualization:535.0, 10.0, 10.0, 955.0, 535.0, 10.0, 10.0];
         [*v4 addObject:v22];
-        var2 = a3[6].var9[10].var2;
+        var2 = meta[6].var9[10].var2;
         v24 = var2 + 960.0 + -10.0;
         v25 = var2 + 540.0 + -10.0;
         LODWORD(v30) = 0;
@@ -2034,15 +2034,15 @@ LABEL_6:
       v7 = 40;
       while (1)
       {
-        v8 = *(&a3->var0 + v7);
-        v9 = *(&a3->var2 + v7);
-        v10 = (*(&a3->var7 + v7) + *(&a3->var7 + v7));
-        v11 = (*(&a3->var8 + v7) + *(&a3->var8 + v7));
+        v8 = *(&meta->var0 + v7);
+        v9 = *(&meta->var2 + v7);
+        v10 = (*(&meta->var7 + v7) + *(&meta->var7 + v7));
+        v11 = (*(&meta->var8 + v7) + *(&meta->var8 + v7));
         v32 = 0;
-        v12 = a3->var11[v6 + 2];
+        v12 = meta->var11[v6 + 2];
         v30 = 0u;
         v31 = 0u;
-        v13 = a3[3].var14[v6 + 108];
+        v13 = meta[3].var14[v6 + 108];
         LODWORD(v30) = v12;
         *(&v30 + 2) = v13;
         v14 = [DetectedROI alloc];
@@ -2067,7 +2067,7 @@ LABEL_6:
 
         ++v6;
         v7 += 32;
-        if (v6 >= a3->var0)
+        if (v6 >= meta->var0)
         {
           goto LABEL_6;
         }
@@ -2087,7 +2087,7 @@ LABEL_6:
   return v28;
 }
 
-- (int64_t)getReflLsListFromMeta:(id *)a3 outputArray:
+- (int64_t)getReflLsListFromMeta:(id *)meta outputArray:
 {
   if (!v3)
   {
@@ -2097,12 +2097,12 @@ LABEL_6:
 
   v4 = v3;
   [*v3 removeAllObjects];
-  if (a3->var0 >= 1)
+  if (meta->var0 >= 1)
   {
     v6 = 0;
     for (i = 2059; ; ++i)
     {
-      v8 = *&a3->var9[v6].var2;
+      v8 = *&meta->var9[v6].var2;
       v9 = [[ROI alloc] initWithBbox:v8];
       if (!v9)
       {
@@ -2110,13 +2110,13 @@ LABEL_6:
       }
 
       v10 = v9;
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", *(&a3->var0 + i)];
+      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%d", *(&meta->var0 + i)];
       [(ROI *)v10 setLSTrackID:v11];
 
       [*v4 addObject:v10];
       v12 = i - 2058;
       ++v6;
-      if (v12 >= a3->var0)
+      if (v12 >= meta->var0)
       {
         return 0;
       }
@@ -2129,34 +2129,34 @@ LABEL_6:
   return 0;
 }
 
-- (id)warpRoisUsingMv:(id *)a3
+- (id)warpRoisUsingMv:(id *)mv
 {
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (a3->var0 >= 1)
+  if (mv->var0 >= 1)
   {
     v5 = 0;
     v6 = 40;
     do
     {
-      v7 = [[DetectedROI alloc] initWithTrackingSessionId:0 roiId:v5 roi:a3->var11[v5 + 2] trackId:(*(&a3->var0 + v6) + COERCE_FLOAT(*(&a3[3].var9[61].var5 + v5))), (*(&a3->var2 + v6) + COERCE_FLOAT(HIDWORD(*(&a3[3].var9[61].var5 + v5)))), (*(&a3->var7 + v6) + *(&a3->var7 + v6)), (*(&a3->var8 + v6) + *(&a3->var8 + v6))];
+      v7 = [[DetectedROI alloc] initWithTrackingSessionId:0 roiId:v5 roi:mv->var11[v5 + 2] trackId:(*(&mv->var0 + v6) + COERCE_FLOAT(*(&mv[3].var9[61].var5 + v5))), (*(&mv->var2 + v6) + COERCE_FLOAT(HIDWORD(*(&mv[3].var9[61].var5 + v5)))), (*(&mv->var7 + v6) + *(&mv->var7 + v6)), (*(&mv->var8 + v6) + *(&mv->var8 + v6))];
       [v4 addObject:v7];
 
       ++v5;
       v6 += 32;
     }
 
-    while (v5 < a3->var0);
+    while (v5 < mv->var0);
   }
 
   return v4;
 }
 
-- (void)trackMeta:(VDGDetectionUtilsV2 *)self refMeta:(SEL)a2 currMaxTrackId:(id *)a3
+- (void)trackMeta:(VDGDetectionUtilsV2 *)self refMeta:(SEL)meta currMaxTrackId:(id *)id
 {
   v5 = v4;
   v6 = v3;
   v25 = [(VDGDetectionUtilsV2 *)self warpRoisUsingMv:?];
-  if (a3->var0 >= 1)
+  if (id->var0 >= 1)
   {
     v8 = 0;
     do
@@ -2208,18 +2208,18 @@ LABEL_9:
         v19 = (*v5)++;
       }
 
-      a3->var11[v8 + 2] = v19;
+      id->var11[v8 + 2] = v19;
 
       ++v8;
     }
 
-    while (v8 < a3->var0);
+    while (v8 < id->var0);
   }
 }
 
-- (signed)getClosestRoi:(id *)a3 forCoord:
+- (signed)getClosestRoi:(id *)roi forCoord:
 {
-  var0 = a3->var0;
+  var0 = roi->var0;
   if (var0 < 1)
   {
     return 0;
@@ -2227,7 +2227,7 @@ LABEL_9:
 
   v5 = 0;
   v6 = 0;
-  v7 = &a3->var9[1];
+  v7 = &roi->var9[1];
   v8 = 255.0;
   do
   {
@@ -2273,12 +2273,12 @@ LABEL_9:
   return v6;
 }
 
-- (void)getGhostTrackIdFromLs:(id *)a3
+- (void)getGhostTrackIdFromLs:(id *)ls
 {
-  var0 = a3->var0;
+  var0 = ls->var0;
   if (var0 >= 1)
   {
-    v4 = &a3->var11[2];
+    v4 = &ls->var11[2];
     do
     {
       ++v4;
@@ -2289,13 +2289,13 @@ LABEL_9:
   }
 }
 
-- (id)getReflLsListAsDetectedROIFromMeta:(id *)a3
+- (id)getReflLsListAsDetectedROIFromMeta:(id *)meta
 {
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  if (a3->var2 >= 1)
+  if (meta->var2 >= 1)
   {
     v5 = 0;
-    p_var1 = &a3->var9[1].var1;
+    p_var1 = &meta->var9[1].var1;
     do
     {
       v7 = [[DetectedROI alloc] initWithTrackingSessionId:0 roiId:0 andRoi:*(p_var1 - 7), *(p_var1 - 6), (*(p_var1 - 1) + *(p_var1 - 1)), (*p_var1 + *p_var1)];
@@ -2305,21 +2305,21 @@ LABEL_9:
       p_var1 += 8;
     }
 
-    while (v5 < a3->var2);
+    while (v5 < meta->var2);
   }
 
   return v4;
 }
 
-- (void)getRoiMvForRoiList:(id)a3 fromMeta:(id *)a4
+- (void)getRoiMvForRoiList:(id)list fromMeta:(id *)meta
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  listCopy = list;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [listCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -2330,7 +2330,7 @@ LABEL_9:
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(listCopy);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
@@ -2340,27 +2340,27 @@ LABEL_9:
         MidY = CGRectGetMidY(v23);
         v13.f64[0] = MidX;
         v13.f64[1] = MidY;
-        v14 = [(VDGDetectionUtilsV2 *)self getClosestRoi:a4 forCoord:COERCE_DOUBLE(vcvt_f32_f64(v13))];
-        [v11 setRoiMv:*(&a4[3].var9[61].var5 + v14)];
-        [v11 setTrackedCnt:LODWORD(a4[3].var14[v14 + 108])];
+        v14 = [(VDGDetectionUtilsV2 *)self getClosestRoi:meta forCoord:COERCE_DOUBLE(vcvt_f32_f64(v13))];
+        [v11 setRoiMv:*(&meta[3].var9[61].var5 + v14)];
+        [v11 setTrackedCnt:LODWORD(meta[3].var14[v14 + 108])];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [listCopy countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
   }
 }
 
-- (void)setRoiMvForMeta:(id *)a3 fromRoiList:
+- (void)setRoiMvForMeta:(id *)meta fromRoiList:
 {
   v11 = v3;
   if ([v11 count])
   {
     v5 = 0;
     v6 = 0;
-    p_var5 = &a3[3].var9[61].var5;
-    v8 = &a3[3].var14[108];
+    p_var5 = &meta[3].var9[61].var5;
+    v8 = &meta[3].var14[108];
     do
     {
       v9 = [v11 objectAtIndexedSubscript:v5];
@@ -2375,23 +2375,23 @@ LABEL_9:
   }
 }
 
-- (id)pruneGhostList:(id)a3 againstReflLsList:(id)a4 dilation:(float)a5
+- (id)pruneGhostList:(id)list againstReflLsList:(id)lsList dilation:(float)dilation
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v30 = [MEMORY[0x277CBEB18] array];
+  listCopy = list;
+  lsListCopy = lsList;
+  array = [MEMORY[0x277CBEB18] array];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v9 = v7;
+  v9 = listCopy;
   v10 = [v9 countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v10)
   {
     v11 = v10;
     v12 = *v36;
-    v13 = -a5;
+    v13 = -dilation;
     do
     {
       for (i = 0; i != v11; ++i)
@@ -2411,7 +2411,7 @@ LABEL_9:
         v32 = 0u;
         v33 = 0u;
         v34 = 0u;
-        v24 = v8;
+        v24 = lsListCopy;
         v25 = [v24 countByEnumeratingWithState:&v31 objects:v39 count:16];
         if (v25)
         {
@@ -2449,7 +2449,7 @@ LABEL_9:
           }
         }
 
-        [v30 addObject:v15];
+        [array addObject:v15];
 LABEL_16:
         ;
       }
@@ -2460,28 +2460,28 @@ LABEL_16:
     while (v11);
   }
 
-  [v9 removeObjectsInArray:v30];
+  [v9 removeObjectsInArray:array];
 
   return v9;
 }
 
-- (id)removeRois:(id)a3 thatOverlapRefRois:(id)a4 dilationRadius:(float)a5
+- (id)removeRois:(id)rois thatOverlapRefRois:(id)refRois dilationRadius:(float)radius
 {
   v50 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v35 = [MEMORY[0x277CBEB18] array];
+  roisCopy = rois;
+  refRoisCopy = refRois;
+  array = [MEMORY[0x277CBEB18] array];
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v9 = v7;
+  v9 = roisCopy;
   v10 = [v9 countByEnumeratingWithState:&v44 objects:v49 count:16];
   if (v10)
   {
     v11 = v10;
     v12 = *v45;
-    v13 = -a5;
+    v13 = -radius;
     obj = v9;
     do
     {
@@ -2505,7 +2505,7 @@ LABEL_16:
         v41 = 0u;
         v42 = 0u;
         v43 = 0u;
-        v20 = v8;
+        v20 = refRoisCopy;
         v21 = [v20 countByEnumeratingWithState:&v40 objects:v48 count:16];
         if (v21)
         {
@@ -2539,7 +2539,7 @@ LABEL_16:
               v54.size.height = v36;
               if (CGRectIntersectsRect(v53, v54))
               {
-                [v35 addObject:v15];
+                [array addObject:v15];
                 goto LABEL_16;
               }
             }
@@ -2564,35 +2564,35 @@ LABEL_16:
     while (v11);
   }
 
-  [v9 removeObjectsInArray:v35];
+  [v9 removeObjectsInArray:array];
 
   return v9;
 }
 
-- (void)findTinyKeypointLocationsFromLS:(id)a3 inputTexture:(id)a4 dilation:(float)a5 estimatedOpticalCenter:(id *)a6 metalBuffers:(int)a7 maxBufferLength:(float)a8 keypointSampleStepCount:
+- (void)findTinyKeypointLocationsFromLS:(id)s inputTexture:(id)texture dilation:(float)dilation estimatedOpticalCenter:(id *)center metalBuffers:(int)buffers maxBufferLength:(float)length keypointSampleStepCount:
 {
-  v11 = *&a8;
-  v40 = *&a5;
+  v11 = *&length;
+  v40 = *&dilation;
   v42 = v8;
-  v44 = a3;
-  v13 = a4;
-  v14 = [a6->var5 contents];
-  v15 = [v13 width];
-  v16 = [v13 height];
-  if ([v44 count])
+  sCopy = s;
+  textureCopy = texture;
+  contents = [center->var5 contents];
+  width = [textureCopy width];
+  height = [textureCopy height];
+  if ([sCopy count])
   {
     v18 = 0;
     v19 = 0;
-    v20 = vadd_s32(__PAIR64__(v16, v15), 0x200000002);
+    v20 = vadd_s32(__PAIR64__(height, width), 0x200000002);
     *v17.i32 = *v40.i32 + *v40.i32;
     v21 = vdup_lane_s32(v40, 0);
     v22 = vdup_lane_s32(v17, 0);
-    v23 = vadd_s32(__PAIR64__(v16, v15), -1);
+    v23 = vadd_s32(__PAIR64__(height, width), -1);
     v24 = vdup_lane_s32(v42, 0);
     v43 = 0u;
     do
     {
-      v25 = [v44 objectAtIndexedSubscript:v18];
+      v25 = [sCopy objectAtIndexedSubscript:v18];
       [v25 reflectAroundCenter:v11];
       [v25 bbox];
       v41 = vmax_s32(vcvt_s32_f32(vsub_f32(v26, v21)), 0);
@@ -2625,9 +2625,9 @@ LABEL_16:
               if ((vpmin_u32(v36, v36).u32[0] & 0x80000000) != 0)
               {
                 v37 = vcge_s32(v20, v30);
-                if ((vpmin_u32(v37, v37).u32[0] & 0x80000000) != 0 && v19 < a7)
+                if ((vpmin_u32(v37, v37).u32[0] & 0x80000000) != 0 && v19 < buffers)
                 {
-                  *(v14 + 8 * v19++) = vcvt_f32_s32(v30);
+                  *(contents + 8 * v19++) = vcvt_f32_s32(v30);
                 }
               }
 
@@ -2652,7 +2652,7 @@ LABEL_16:
       ++v18;
     }
 
-    while ([v44 count] > v18);
+    while ([sCopy count] > v18);
   }
 
   else
@@ -2660,18 +2660,18 @@ LABEL_16:
     v19 = 0;
   }
 
-  *[a6->var7 contents] = v19;
+  *[center->var7 contents] = v19;
 }
 
-- (void)getGGCandidatesFromROIList:(id)a3 GGList:(id *)a4
+- (void)getGGCandidatesFromROIList:(id)list GGList:(id *)gList
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  listCopy = list;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v27 count:16];
+  v6 = [listCopy countByEnumeratingWithState:&v13 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -2684,7 +2684,7 @@ LABEL_16:
         v11 = v8;
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(listCopy);
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
@@ -2695,7 +2695,7 @@ LABEL_16:
           LODWORD(v12) = DWORD1(v20);
           if (*(&v20 + 1) > 0.99)
           {
-            [*a4 addObject:{v8, v12}];
+            [*gList addObject:{v8, v12}];
           }
         }
 
@@ -2714,14 +2714,14 @@ LABEL_16:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v27 count:16];
+      v7 = [listCopy countByEnumeratingWithState:&v13 objects:v27 count:16];
     }
 
     while (v7);
   }
 }
 
-- (BOOL)isBoxSizeValidForProcessing:(float)a3 AndErodeBy:
+- (BOOL)isBoxSizeValidForProcessing:(float)processing AndErodeBy:
 {
   v5 = v3;
   if (v3 >= v6)
@@ -2735,29 +2735,29 @@ LABEL_16:
     return 0;
   }
 
-  v7 = vsub_f32(*&vextq_s8(*&a3, *&a3, 8uLL), vdup_lane_s32(v4, 0));
+  v7 = vsub_f32(*&vextq_s8(*&processing, *&processing, 8uLL), vdup_lane_s32(v4, 0));
   return sqrtf(0.03125 * vmul_lane_f32(v7, v7, 1).f32[0]) > 0.0;
 }
 
-- (void)generateBoxesForDoGAndLumaAndForPrevLSROIs:(double)a3 homography:(double)a4 metalBuffers:(uint64_t)a5 maxBufferLength:(void *)a6
+- (void)generateBoxesForDoGAndLumaAndForPrevLSROIs:(double)is homography:(double)homography metalBuffers:(uint64_t)buffers maxBufferLength:(void *)length
 {
   v44 = *MEMORY[0x277D85DE8];
-  v11 = a6;
-  v12 = v11;
-  if (v11 && [v11 count])
+  lengthCopy = length;
+  v12 = lengthCopy;
+  if (lengthCopy && [lengthCopy count])
   {
     if (a7)
     {
-      v13 = [MEMORY[0x277CBEB18] array];
-      v14 = a1[4];
-      a1[4] = v13;
+      array = [MEMORY[0x277CBEB18] array];
+      v14 = self[4];
+      self[4] = array;
 
-      v15 = [MEMORY[0x277CBEB18] array];
-      v16 = a1[5];
-      a1[5] = v15;
+      array2 = [MEMORY[0x277CBEB18] array];
+      v16 = self[5];
+      self[5] = array2;
 
       v32 = a7;
-      v17 = [*(a7 + 72) contents];
+      contents = [*(a7 + 72) contents];
       v39 = 0u;
       v40 = 0u;
       v41 = 0u;
@@ -2780,7 +2780,7 @@ LABEL_16:
             }
 
             v24 = *(*(&v39 + 1) + 8 * i);
-            [a1 predictPrevLSLocation:v24 usingPrevToCurrentHomography:{a2, a3, a4}];
+            [self predictPrevLSLocation:v24 usingPrevToCurrentHomography:{a2, is, homography}];
             v26 = v25;
             [v24 bbox];
             v38 = vadd_f32(v26, vmul_f32(*&vextq_s8(v27, v27, 8uLL), 0xBF000000BF000000));
@@ -2788,7 +2788,7 @@ LABEL_16:
             *&v29 = vextq_s8(v28, v28, 8uLL).u64[0];
             v37 = *&v29;
             LODWORD(v29) = 5.0;
-            if ([a1 isBoxSizeValidForProcessing:*&v38 AndErodeBy:v29])
+            if ([self isBoxSizeValidForProcessing:*&v38 AndErodeBy:v29])
             {
               v30 = v21 < a8;
             }
@@ -2800,11 +2800,11 @@ LABEL_16:
 
             if (v30)
             {
-              [a1[4] addObject:v24];
-              [a1[5] addObject:&unk_285B42898];
+              [self[4] addObject:v24];
+              [self[5] addObject:&unk_285B42898];
               *v31.f32 = v38;
               v31.i64[1] = v37;
-              *(v17 + 16 * v21++) = vaddq_f32(v31, xmmword_2487C3AF0);
+              *(contents + 16 * v21++) = vaddq_f32(v31, xmmword_2487C3AF0);
             }
           }
 
@@ -2835,33 +2835,33 @@ LABEL_16:
   }
 }
 
-- (void)generateBoxesForDoGAndLumaAndForLSROIs:(id)a3 prevGGROIs:(id)a4 inputTexture:(id)a5 opticalCenter:(id *)a6 metalBuffers:(int)a7 maxBufferLength:
+- (void)generateBoxesForDoGAndLumaAndForLSROIs:(id)is prevGGROIs:(id)oIs inputTexture:(id)texture opticalCenter:(id *)center metalBuffers:(int)buffers maxBufferLength:
 {
   v10 = v7;
   v63 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  v14 = a4;
-  v15 = [MEMORY[0x277CBEB18] array];
+  isCopy = is;
+  oIsCopy = oIs;
+  array = [MEMORY[0x277CBEB18] array];
   processedROIs = self->_processedROIs;
-  self->_processedROIs = v15;
+  self->_processedROIs = array;
 
-  v17 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   processedType = self->_processedType;
-  self->_processedType = v17;
+  self->_processedType = array2;
 
-  LODWORD(a4) = [v13 count];
-  if ([v14 count] + 2 * a4)
+  LODWORD(oIs) = [isCopy count];
+  if ([oIsCopy count] + 2 * oIs)
   {
-    v46 = a6;
-    v19 = [a6->var8 contents];
+    centerCopy = center;
+    contents = [center->var8 contents];
     v57 = 0u;
     v58 = 0u;
     v59 = 0u;
     v60 = 0u;
-    v47 = v13;
-    v20 = v13;
+    v47 = isCopy;
+    v20 = isCopy;
     v21 = [v20 countByEnumeratingWithState:&v57 objects:v62 count:16];
-    v48 = v14;
+    v48 = oIsCopy;
     if (v21)
     {
       v22 = v21;
@@ -2884,7 +2884,7 @@ LABEL_16:
           [v24 bbox];
           if ([VDGDetectionUtilsV2 isBoxSizeValidForProcessing:"isBoxSizeValidForProcessing:AndErodeBy:" AndErodeBy:?])
           {
-            v28 = v23 < a7;
+            v28 = v23 < buffers;
           }
 
           else
@@ -2899,13 +2899,13 @@ LABEL_16:
             [v24 bbox];
             v50 = v29;
             [v24 bbox];
-            *(v19 + 16 * v23++) = vaddq_f32(__PAIR128__(v30, v50), xmmword_2487C3AF0);
+            *(contents + 16 * v23++) = vaddq_f32(__PAIR128__(v30, v50), xmmword_2487C3AF0);
           }
 
           [v24 getReflectedBboxAroundCenter:v10];
           if ([VDGDetectionUtilsV2 isBoxSizeValidForProcessing:"isBoxSizeValidForProcessing:AndErodeBy:" AndErodeBy:?])
           {
-            v31 = v23 < a7;
+            v31 = v23 < buffers;
           }
 
           else
@@ -2918,7 +2918,7 @@ LABEL_16:
             [(NSMutableArray *)self->_processedROIs addObject:v24];
             [(NSMutableArray *)self->_processedType addObject:&unk_285B428C8];
             [v24 getReflectedBboxAroundCenter:v10];
-            *(v19 + 16 * v23++) = v32;
+            *(contents + 16 * v23++) = v32;
           }
 
           ++v26;
@@ -2931,7 +2931,7 @@ LABEL_16:
 
       while (v22);
 
-      v14 = v48;
+      oIsCopy = v48;
     }
 
     else
@@ -2943,7 +2943,7 @@ LABEL_16:
     v56 = 0u;
     v53 = 0u;
     v54 = 0u;
-    v33 = v14;
+    v33 = oIsCopy;
     v34 = [v33 countByEnumeratingWithState:&v53 objects:v61 count:16];
     if (v34)
     {
@@ -2974,7 +2974,7 @@ LABEL_16:
             LODWORD(v43) = 5.0;
             if ([(VDGDetectionUtilsV2 *)self isBoxSizeValidForProcessing:*&v52 AndErodeBy:v43])
             {
-              v44 = v23 < a7;
+              v44 = v23 < buffers;
             }
 
             else
@@ -2988,7 +2988,7 @@ LABEL_16:
               [(NSMutableArray *)self->_processedType addObject:&unk_285B42898];
               *v45.f32 = v52;
               v45.i64[1] = v49;
-              *(v19 + 16 * v23++) = vaddq_f32(v45, xmmword_2487C3AF0);
+              *(contents + 16 * v23++) = vaddq_f32(v45, xmmword_2487C3AF0);
             }
           }
         }
@@ -2998,28 +2998,28 @@ LABEL_16:
 
       while (v35);
 
-      v14 = v48;
+      oIsCopy = v48;
     }
 
-    *[v46->var12 contents] = v23;
-    v13 = v47;
+    *[centerCopy->var12 contents] = v23;
+    isCopy = v47;
   }
 }
 
-- (void)updateDoGAndLumaFeaturesWithMetalBuffers:(id *)a3
+- (void)updateDoGAndLumaFeaturesWithMetalBuffers:(id *)buffers
 {
   v56 = *MEMORY[0x277D85DE8];
-  if (*[a3->var12 contents] <= 0)
+  if (*[buffers->var12 contents] <= 0)
   {
     [VDGDetectionUtilsV2 updateDoGAndLumaFeaturesWithMetalBuffers:];
   }
 
   else
   {
-    v5 = [a3->var10 contents];
+    contents = [buffers->var10 contents];
     v6 = [(NSMutableArray *)self->_processedROIs count];
     v7 = v6;
-    var20 = a3->var20;
+    var20 = buffers->var20;
     if (var20 >= v6)
     {
       var20 = v6;
@@ -3030,7 +3030,7 @@ LABEL_16:
       v9 = global_logger;
       if (os_log_type_enabled(global_logger, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = a3->var20;
+        v10 = buffers->var20;
         *buf = 67109376;
         *&buf[4] = v7;
         *&buf[8] = 1024;
@@ -3038,7 +3038,7 @@ LABEL_16:
         _os_log_impl(&dword_24874B000, v9, OS_LOG_TYPE_DEFAULT, "Total ROI count clipped from %d to %d in updateDoGAndLumaFeatures", buf, 0xEu);
       }
 
-      var20 = a3->var20;
+      var20 = buffers->var20;
     }
 
     if (var20 >= 1)
@@ -3056,7 +3056,7 @@ LABEL_16:
         v12 = [(NSMutableArray *)self->_processedROIs objectAtIndexedSubscript:v11, v31, v33, v35, v37];
 
         v15 = 0;
-        v16 = v5 + 136 * v11;
+        v16 = contents + 136 * v11;
         v44 = *(v16 + 128);
         v17 = *(v16 + 112);
         v43[6] = *(v16 + 96);
@@ -3096,18 +3096,18 @@ LABEL_16:
         v37 = v39;
         v26 = *(v16 + 128);
         v27 = [(NSMutableArray *)self->_processedType objectAtIndexedSubscript:v11];
-        v28 = [v27 intValue];
+        intValue = [v27 intValue];
 
-        if (v28)
+        if (intValue)
         {
           v29 = [(NSMutableArray *)self->_processedType objectAtIndexedSubscript:v11];
-          v30 = [v29 intValue];
+          intValue2 = [v29 intValue];
 
           *buf = v37;
           v47 = v31;
           v48 = v35;
           v49 = v33;
-          if (v30 == 1)
+          if (intValue2 == 1)
           {
             [v12 setLumaFeatureVectorReflection:buf];
             [v12 setDifferenceOfGaussianAndLumaFeatureReflection:v26];
@@ -3169,31 +3169,31 @@ LABEL_16:
   }
 }
 
-- (BOOL)updatePrevLSDoGAndLumaFeaturesWithMetalBuffers:(id *)a3
+- (BOOL)updatePrevLSDoGAndLumaFeaturesWithMetalBuffers:(id *)buffers
 {
   v55 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!buffers)
   {
     [VDGDetectionUtilsV2 updatePrevLSDoGAndLumaFeaturesWithMetalBuffers:buf];
     return buf[0];
   }
 
-  if (*[a3->var13 contents] <= 0)
+  if (*[buffers->var13 contents] <= 0)
   {
     [VDGDetectionUtilsV2 updatePrevLSDoGAndLumaFeaturesWithMetalBuffers:buf];
     return buf[0];
   }
 
-  v5 = [a3->var11 contents];
+  contents = [buffers->var11 contents];
   var21 = [(NSMutableArray *)self->_processedPrevLSROIs count];
-  if (a3->var20 < var21)
+  if (buffers->var20 < var21)
   {
     if ((global_logLevel & 2) != 0)
     {
       v7 = global_logger;
       if (os_log_type_enabled(global_logger, OS_LOG_TYPE_DEFAULT))
       {
-        var20 = a3->var20;
+        var20 = buffers->var20;
         *buf = 67109376;
         *&buf[4] = var21;
         *&buf[8] = 1024;
@@ -3202,7 +3202,7 @@ LABEL_16:
       }
     }
 
-    var21 = a3->var21;
+    var21 = buffers->var21;
   }
 
   if (var21 >= 1)
@@ -3220,7 +3220,7 @@ LABEL_16:
       v10 = [(NSMutableArray *)self->_processedPrevLSROIs objectAtIndexedSubscript:v9, v30, v32, v34, v36];
 
       v13 = 0;
-      v14 = v5 + 136 * v9;
+      v14 = contents + 136 * v9;
       v43 = *(v14 + 128);
       v15 = *(v14 + 112);
       v42[6] = *(v14 + 96);
@@ -3260,18 +3260,18 @@ LABEL_16:
       v36 = v38;
       v24 = *(v14 + 128);
       v25 = [(NSMutableArray *)self->_processedPrevLSType objectAtIndexedSubscript:v9];
-      v26 = [v25 intValue];
+      intValue = [v25 intValue];
 
-      if (v26)
+      if (intValue)
       {
         v27 = [(NSMutableArray *)self->_processedPrevLSType objectAtIndexedSubscript:v9];
-        v28 = [v27 intValue];
+        intValue2 = [v27 intValue];
 
         *buf = v36;
         v46 = v30;
         v47 = v34;
         v48 = v32;
-        if (v28 == 1)
+        if (intValue2 == 1)
         {
           [v10 setLumaFeatureVectorReflection:buf];
           [v10 setDifferenceOfGaussianAndLumaFeatureReflection:v24];
@@ -3334,15 +3334,15 @@ LABEL_16:
   return 1;
 }
 
-- (void)clearReferencedROIsForROIList:(id)a3
+- (void)clearReferencedROIsForROIList:(id)list
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  listCopy = list;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v4 = [listCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -3353,7 +3353,7 @@ LABEL_16:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(listCopy);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -3361,37 +3361,37 @@ LABEL_16:
         [v8 setLSTrackingMatched:0];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [listCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)getTopLSInListByDroppingBottoms:(id)a3 k:(signed __int16)a4 dist2ghostTol:(float)a5
+- (void)getTopLSInListByDroppingBottoms:(id)bottoms k:(signed __int16)k dist2ghostTol:(float)tol
 {
-  v6 = a4;
-  v15 = a3;
-  if ([v15 count] > v6)
+  kCopy = k;
+  bottomsCopy = bottoms;
+  if ([bottomsCopy count] > kCopy)
   {
-    v7 = v6;
+    v7 = kCopy;
     do
     {
-      v8 = [v15 objectAtIndexedSubscript:0];
-      if ([v15 count] < 2)
+      v8 = [bottomsCopy objectAtIndexedSubscript:0];
+      if ([bottomsCopy count] < 2)
       {
-        v11 = v15;
+        v11 = bottomsCopy;
       }
 
       else
       {
         v9 = 1;
         v10 = 1;
-        v11 = v15;
+        v11 = bottomsCopy;
         do
         {
           v12 = [v11 objectAtIndexedSubscript:v9];
-          if (shouldRankLS1OverLS2(v8, v12, a5))
+          if (shouldRankLS1OverLS2(v8, v12, tol))
           {
             v13 = v12;
 
@@ -3399,8 +3399,8 @@ LABEL_16:
           }
 
           v9 = ++v10;
-          v14 = [v15 count] > v10;
-          v11 = v15;
+          v14 = [bottomsCopy count] > v10;
+          v11 = bottomsCopy;
         }
 
         while (v14);
@@ -3409,36 +3409,36 @@ LABEL_16:
       [v11 removeObject:v8];
     }
 
-    while ([v15 count] > v7);
+    while ([bottomsCopy count] > v7);
   }
 }
 
-- (void)getTopLSInListByKeepingTops:(id)a3 k:(signed __int16)a4 dist2ghostTol:(float)a5
+- (void)getTopLSInListByKeepingTops:(id)tops k:(signed __int16)k dist2ghostTol:(float)tol
 {
-  v6 = a4;
-  v17 = a3;
-  if ([v17 count] > v6)
+  kCopy = k;
+  topsCopy = tops;
+  if ([topsCopy count] > kCopy)
   {
-    v7 = v6;
-    v8 = [MEMORY[0x277CBEB18] array];
-    v9 = v8;
-    while ([v8 count] < v7)
+    v7 = kCopy;
+    array = [MEMORY[0x277CBEB18] array];
+    v9 = array;
+    while ([array count] < v7)
     {
-      v10 = [v17 objectAtIndexedSubscript:0];
-      if ([v17 count] < 2)
+      v10 = [topsCopy objectAtIndexedSubscript:0];
+      if ([topsCopy count] < 2)
       {
-        v13 = v17;
+        v13 = topsCopy;
       }
 
       else
       {
         v11 = 1;
         v12 = 1;
-        v13 = v17;
+        v13 = topsCopy;
         do
         {
           v14 = [v13 objectAtIndexedSubscript:v11];
-          if (!shouldRankLS1OverLS2(v10, v14, a5))
+          if (!shouldRankLS1OverLS2(v10, v14, tol))
           {
             v15 = v14;
 
@@ -3446,8 +3446,8 @@ LABEL_16:
           }
 
           v11 = ++v12;
-          v16 = [v17 count] > v12;
-          v13 = v17;
+          v16 = [topsCopy count] > v12;
+          v13 = topsCopy;
         }
 
         while (v16);
@@ -3456,24 +3456,24 @@ LABEL_16:
       [v13 removeObject:v10];
       [v9 addObject:v10];
 
-      v8 = v9;
+      array = v9;
     }
 
-    [v17 removeAllObjects];
-    [v17 addObjectsFromArray:v9];
+    [topsCopy removeAllObjects];
+    [topsCopy addObjectsFromArray:v9];
   }
 }
 
-- (void)pruneLSBasedOnDist2Ghost:(id)a3
+- (void)pruneLSBasedOnDist2Ghost:(id)ghost
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  ghostCopy = ghost;
+  array = [MEMORY[0x277CBEB18] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = v3;
+  v5 = ghostCopy;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -3492,7 +3492,7 @@ LABEL_16:
         [v10 dist2ghost];
         if (v11 > 128.0)
         {
-          [v4 addObject:v10];
+          [array addObject:v10];
         }
       }
 
@@ -3502,18 +3502,18 @@ LABEL_16:
     while (v7);
   }
 
-  [v5 removeObjectsInArray:v4];
+  [v5 removeObjectsInArray:array];
 }
 
-- (void)getTopGhostsInList:(id)a3 k:(signed __int16)a4 opticalCenter:(int)a5 ghostCntGatingTh:
+- (void)getTopGhostsInList:(id)list k:(signed __int16)k opticalCenter:(int)center ghostCntGatingTh:
 {
   v7 = v5;
-  v8 = a4;
+  kCopy = k;
   v39 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  if ([v9 count] > v8)
+  listCopy = list;
+  if ([listCopy count] > kCopy)
   {
-    if ([v9 count] > a5)
+    if ([listCopy count] > center)
     {
       if ((global_logLevel & 2) != 0)
       {
@@ -3525,7 +3525,7 @@ LABEL_16:
         }
       }
 
-      [v9 removeAllObjects];
+      [listCopy removeAllObjects];
     }
 
     if ((global_logLevel & 2) != 0)
@@ -3534,17 +3534,17 @@ LABEL_16:
       if (os_log_type_enabled(global_logger, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 67109120;
-        v38 = v8;
+        v38 = kCopy;
         _os_log_impl(&dword_24874B000, v11, OS_LOG_TYPE_DEFAULT, "Ghost cnt (before merge) exceeds soft gating threshold. Only keeping top %d ghosts", buf, 8u);
       }
     }
 
-    v12 = v8;
+    v12 = kCopy;
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v13 = v9;
+    v13 = listCopy;
     v14 = [v13 countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v14)
     {
@@ -3655,24 +3655,24 @@ LABEL_32:
   return self;
 }
 
-- (void)setConfiguration:(id *)a3
+- (void)setConfiguration:(id *)configuration
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var7;
-  v5 = *&a3->var1.var4;
-  *&self->_configuration.externalCfg.lightMode = *&a3->var1.var0;
+  v3 = *&configuration->var0.var0;
+  v4 = *&configuration->var0.var7;
+  v5 = *&configuration->var1.var4;
+  *&self->_configuration.externalCfg.lightMode = *&configuration->var1.var0;
   *&self->_configuration.externalCfg.frameDelay = v5;
   *&self->_configuration.internalCfg.clipThreshold = v3;
   *&self->_configuration.internalCfg.enableColorMask = v4;
 }
 
-- (VDGDetectionUtilsV2)initWithMetalToolBox:(id)a3 configuration:(id *)a4 tuningParams:(id *)a5
+- (VDGDetectionUtilsV2)initWithMetalToolBox:(id)box configuration:(id *)configuration tuningParams:(id *)params
 {
-  v8 = a3;
+  boxCopy = box;
   v23.receiver = self;
   v23.super_class = VDGDetectionUtilsV2;
   v9 = [(VDGDetectionUtilsV2 *)&v23 init];
-  if (v9 && (!v8 ? (v10 = objc_alloc_init(GGMMetalToolBox)) : (v10 = v8), (metalToolBox = v9->_metalToolBox, v9->_metalToolBox = v10, metalToolBox, v12 = *&a4->var0.var0, v13 = *&a4->var0.var7, v14 = *&a4->var1.var4, *&v9->_configuration.externalCfg.lightMode = *&a4->var1.var0, *&v9->_configuration.externalCfg.frameDelay = v14, *&v9->_configuration.internalCfg.clipThreshold = v12, *&v9->_configuration.internalCfg.enableColorMask = v13, v15 = a5->var12 + a5->var15, v9->_reflectedLSListLen = v15, v9->_reflectedLSList = malloc_type_malloc(v15, 0x100004077774924uLL), v16 = a5->var12 + a5->var15, v9->_bboxListLen = v16, *v9->_bboxList = malloc_type_malloc(16 * v16, 0x1000040451B5BE8uLL), var15 = a5->var15, v9->_locationListLen = var15, *v9->_locationList = malloc_type_malloc(8 * var15, 0x100004000313F17uLL), v18 = a5->var15, v9->_kpIsFromHWListLen = v18, v9->_kpIsFromHWList = malloc_type_malloc(v18, 0x100004077774924uLL), v19 = a5->var15, v9->_dist2OpticalCenterListLen = v19, v20 = malloc_type_malloc(4 * v19, 0x100004052888210uLL), v9->_dist2OpticalCenterList = v20, v9->_reflectedLSList) && *v9->_bboxList && *v9->_locationList))
+  if (v9 && (!boxCopy ? (v10 = objc_alloc_init(GGMMetalToolBox)) : (v10 = boxCopy), (metalToolBox = v9->_metalToolBox, v9->_metalToolBox = v10, metalToolBox, v12 = *&configuration->var0.var0, v13 = *&configuration->var0.var7, v14 = *&configuration->var1.var4, *&v9->_configuration.externalCfg.lightMode = *&configuration->var1.var0, *&v9->_configuration.externalCfg.frameDelay = v14, *&v9->_configuration.internalCfg.clipThreshold = v12, *&v9->_configuration.internalCfg.enableColorMask = v13, v15 = params->var12 + params->var15, v9->_reflectedLSListLen = v15, v9->_reflectedLSList = malloc_type_malloc(v15, 0x100004077774924uLL), v16 = params->var12 + params->var15, v9->_bboxListLen = v16, *v9->_bboxList = malloc_type_malloc(16 * v16, 0x1000040451B5BE8uLL), var15 = params->var15, v9->_locationListLen = var15, *v9->_locationList = malloc_type_malloc(8 * var15, 0x100004000313F17uLL), v18 = params->var15, v9->_kpIsFromHWListLen = v18, v9->_kpIsFromHWList = malloc_type_malloc(v18, 0x100004077774924uLL), v19 = params->var15, v9->_dist2OpticalCenterListLen = v19, v20 = malloc_type_malloc(4 * v19, 0x100004052888210uLL), v9->_dist2OpticalCenterList = v20, v9->_reflectedLSList) && *v9->_bboxList && *v9->_locationList))
   {
     v21 = 0;
     if (v9->_kpIsFromHWList && v20)

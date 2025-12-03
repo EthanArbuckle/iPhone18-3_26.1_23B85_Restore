@@ -1,7 +1,7 @@
 @interface INTipNetworkRequest
-- (INTipNetworkRequest)initWithAccount:(id)a3 tip:(id)a4;
-- (INTipNetworkRequest)initWithAccountForDismissStatus:(id)a3 tip:(id)a4;
-- (INTipNetworkRequest)initWithAccountForDisplayStatus:(id)a3 tip:(id)a4;
+- (INTipNetworkRequest)initWithAccount:(id)account tip:(id)tip;
+- (INTipNetworkRequest)initWithAccountForDismissStatus:(id)status tip:(id)tip;
+- (INTipNetworkRequest)initWithAccountForDisplayStatus:(id)status tip:(id)tip;
 - (id)_bodyParameters;
 - (id)urlRequest;
 - (id)urlString;
@@ -9,26 +9,26 @@
 
 @implementation INTipNetworkRequest
 
-- (INTipNetworkRequest)initWithAccount:(id)a3 tip:(id)a4
+- (INTipNetworkRequest)initWithAccount:(id)account tip:(id)tip
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  tipCopy = tip;
   v12.receiver = self;
   v12.super_class = INTipNetworkRequest;
   v9 = [(INTipNetworkRequest *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeStrong(&v10->_tip, a4);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeStrong(&v10->_tip, tip);
   }
 
   return v10;
 }
 
-- (INTipNetworkRequest)initWithAccountForDismissStatus:(id)a3 tip:(id)a4
+- (INTipNetworkRequest)initWithAccountForDismissStatus:(id)status tip:(id)tip
 {
-  v4 = [(INTipNetworkRequest *)self initWithAccount:a3 tip:a4];
+  v4 = [(INTipNetworkRequest *)self initWithAccount:status tip:tip];
   v5 = v4;
   if (v4)
   {
@@ -39,9 +39,9 @@
   return v5;
 }
 
-- (INTipNetworkRequest)initWithAccountForDisplayStatus:(id)a3 tip:(id)a4
+- (INTipNetworkRequest)initWithAccountForDisplayStatus:(id)status tip:(id)tip
 {
-  v4 = [(INTipNetworkRequest *)self initWithAccount:a3 tip:a4];
+  v4 = [(INTipNetworkRequest *)self initWithAccount:status tip:tip];
   v5 = v4;
   if (v4)
   {
@@ -54,23 +54,23 @@
 
 - (id)urlString
 {
-  v3 = [(ACAccount *)self->_account aa_personID];
+  aa_personID = [(ACAccount *)self->_account aa_personID];
 
-  if (v3)
+  if (aa_personID)
   {
     if ([(NSString *)self->_tipStatus isEqualToString:@"displayed"])
     {
-      v4 = [(ICQInlineTip *)self->_tip displayURL];
+      displayURL = [(ICQInlineTip *)self->_tip displayURL];
 LABEL_9:
-      v6 = v4;
-      v7 = [v4 absoluteString];
+      v6 = displayURL;
+      absoluteString = [displayURL absoluteString];
 
       goto LABEL_11;
     }
 
     if ([(NSString *)self->_tipStatus isEqualToString:@"dismissed"])
     {
-      v4 = [(ICQInlineTip *)self->_tip dismissURL];
+      displayURL = [(ICQInlineTip *)self->_tip dismissURL];
       goto LABEL_9;
     }
   }
@@ -84,10 +84,10 @@ LABEL_9:
     }
   }
 
-  v7 = 0;
+  absoluteString = 0;
 LABEL_11:
 
-  return v7;
+  return absoluteString;
 }
 
 - (id)_bodyParameters
@@ -96,8 +96,8 @@ LABEL_11:
   v4 = [(ICQInlineTip *)self->_tip id];
   [v3 setObject:v4 forKeyedSubscript:@"notificationTipType"];
 
-  v5 = [(INTipNetworkRequest *)self tipStatus];
-  [v3 setObject:v5 forKeyedSubscript:@"action"];
+  tipStatus = [(INTipNetworkRequest *)self tipStatus];
+  [v3 setObject:tipStatus forKeyedSubscript:@"action"];
 
   v6 = [v3 copy];
 
@@ -106,13 +106,13 @@ LABEL_11:
 
 - (id)urlRequest
 {
-  v3 = [(INTipNetworkRequest *)self _bodyParameters];
-  if (v3 && self->_account)
+  _bodyParameters = [(INTipNetworkRequest *)self _bodyParameters];
+  if (_bodyParameters && self->_account)
   {
     v14.receiver = self;
     v14.super_class = INTipNetworkRequest;
-    v4 = [(INTipNetworkRequest *)&v14 urlRequest];
-    v5 = [v4 mutableCopy];
+    urlRequest = [(INTipNetworkRequest *)&v14 urlRequest];
+    v5 = [urlRequest mutableCopy];
 
     v6 = _INLogSystem();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -121,7 +121,7 @@ LABEL_11:
     }
 
     v13 = 0;
-    v7 = [NSJSONSerialization dataWithJSONObject:v3 options:0 error:&v13];
+    v7 = [NSJSONSerialization dataWithJSONObject:_bodyParameters options:0 error:&v13];
     v8 = v13;
     if (v8)
     {

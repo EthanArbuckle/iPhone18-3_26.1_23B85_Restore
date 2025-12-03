@@ -1,18 +1,18 @@
 @interface PSDiagnosticSysGraph
-- (PSDiagnosticSysGraph)initWithFile:(id)a3;
+- (PSDiagnosticSysGraph)initWithFile:(id)file;
 - (int)dumpCameraStreamsToFile;
-- (void)didReceiveContextForSessionName:(id)a3;
-- (void)didReceiveContextForSessionProvidingKeys:(id)a3;
-- (void)didReceiveResponseForResourceRequest:(id)a3;
-- (void)logToFile:(id)a3;
-- (void)serverRequestedResourcesWithStrides:(id)a3;
+- (void)didReceiveContextForSessionName:(id)name;
+- (void)didReceiveContextForSessionProvidingKeys:(id)keys;
+- (void)didReceiveResponseForResourceRequest:(id)request;
+- (void)logToFile:(id)file;
+- (void)serverRequestedResourcesWithStrides:(id)strides;
 @end
 
 @implementation PSDiagnosticSysGraph
 
-- (PSDiagnosticSysGraph)initWithFile:(id)a3
+- (PSDiagnosticSysGraph)initWithFile:(id)file
 {
-  v5 = a3;
+  fileCopy = file;
   v13.receiver = self;
   v13.super_class = PSDiagnosticSysGraph;
   v6 = [(PSDiagnosticSysGraph *)&v13 init];
@@ -29,16 +29,16 @@
     submission_semaphore = v6->_submission_semaphore;
     v6->_submission_semaphore = v10;
 
-    objc_storeStrong(&v6->_file, a3);
+    objc_storeStrong(&v6->_file, file);
   }
 
   return v6;
 }
 
-- (void)logToFile:(id)a3
+- (void)logToFile:(id)file
 {
   file = self->_file;
-  v4 = [a3 dataUsingEncoding:4];
+  v4 = [file dataUsingEncoding:4];
   [(NSFileHandle *)file writeData:v4];
 }
 
@@ -60,23 +60,23 @@
   v47 = _Block_copy(aBlock);
   [PSExecutionSession registerSessionCallback:"registerSessionCallback:withContext:" withContext:?];
   [(PSExecutionSession *)self->_currSession waitForContextFromExecutionSession:0];
-  v6 = [(PSExecutionSession *)self->_currSession context];
+  context = [(PSExecutionSession *)self->_currSession context];
   plsContext = self->_plsContext;
-  self->_plsContext = v6;
+  self->_plsContext = context;
 
   v8 = MEMORY[0x277CBEB58];
   v9 = [(PSContext *)self->_plsContext resourceStreamsForExecutionSession:@"CameraProvider"];
   v10 = [v8 setWithSet:v9];
 
   v11 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"key" ascending:1 selector:sel_caseInsensitiveCompare_];
-  v12 = [v10 allObjects];
+  allObjects = [v10 allObjects];
   v46 = v11;
   v61[0] = v11;
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:1];
-  v14 = [v12 sortedArrayUsingDescriptors:v13];
+  v14 = [allObjects sortedArrayUsingDescriptors:v13];
 
   v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Number of streams published by CameraProvider: %lu\n", objc_msgSend(v10, "count")];
-  v49 = self;
+  selfCopy = self;
   [(PSDiagnosticSysGraph *)self logToFile:v15];
 
   v56 = 0u;
@@ -124,7 +124,7 @@
   v45 = v16;
 
   v26 = [MEMORY[0x277CCACA8] stringWithFormat:@" %-*s    %-11s    %4s    %5s    %6s    %-6s\n", v19, "Name", "Type", "FPS", "Width", "Height", "Format"];
-  [(PSDiagnosticSysGraph *)v49 logToFile:v26];
+  [(PSDiagnosticSysGraph *)selfCopy logToFile:v26];
 
   v52 = 0u;
   v53 = 0u;
@@ -148,25 +148,25 @@
         v31 = *(*(&v50 + 1) + 8 * j);
         v32 = MEMORY[0x277CCAB68];
         v33 = [v31 key];
-        v34 = [v33 UTF8String];
+        uTF8String = [v33 UTF8String];
         [v31 resourceClass];
-        v35 = [v32 stringWithFormat:@" %-*s    %-11s    %4lu", v19, v34, ps_resource_class_description(), objc_msgSend(v31, "framerate")];
+        v35 = [v32 stringWithFormat:@" %-*s    %-11s    %4lu", v19, uTF8String, ps_resource_class_description(), objc_msgSend(v31, "framerate")];
 
         if ([v31 resourceClass] == 7 || objc_msgSend(v31, "resourceClass") == 8)
         {
           v36 = MEMORY[0x277CCACA8];
           v37 = v31;
-          v38 = [v37 width];
-          v39 = [v37 height];
-          v40 = [v37 pixelFormat];
+          width = [v37 width];
+          height = [v37 height];
+          pixelFormat = [v37 pixelFormat];
 
-          v41 = stringWithFourCharCode(v40);
-          v42 = [v36 stringWithFormat:@"    %5lu    %6lu    %@", v38, v39, v41];
+          v41 = stringWithFourCharCode(pixelFormat);
+          v42 = [v36 stringWithFormat:@"    %5lu    %6lu    %@", width, height, v41];
           [v35 appendString:v42];
         }
 
         [v35 appendString:@"\n"];
-        [(PSDiagnosticSysGraph *)v49 logToFile:v35];
+        [(PSDiagnosticSysGraph *)selfCopy logToFile:v35];
       }
 
       v28 = [obj countByEnumeratingWithState:&v50 objects:v59 count:16];
@@ -175,8 +175,8 @@
     while (v28);
   }
 
-  [(PSDiagnosticSysGraph *)v49 logToFile:@"\n"];
-  [(NSFileHandle *)v49->_file synchronizeFile];
+  [(PSDiagnosticSysGraph *)selfCopy logToFile:@"\n"];
+  [(NSFileHandle *)selfCopy->_file synchronizeFile];
 
   v43 = *MEMORY[0x277D85DE8];
   return 0;
@@ -192,36 +192,36 @@ uint64_t __47__PSDiagnosticSysGraph_dumpCameraStreamsToFile__block_invoke(uint64
   return result;
 }
 
-- (void)didReceiveContextForSessionName:(id)a3
+- (void)didReceiveContextForSessionName:(id)name
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"didReceiveContextForSessionName: %@", a3];
-  [(PSDiagnosticSysGraph *)self logToFile:v4];
+  name = [MEMORY[0x277CCACA8] stringWithFormat:@"didReceiveContextForSessionName: %@", name];
+  [(PSDiagnosticSysGraph *)self logToFile:name];
 }
 
-- (void)didReceiveContextForSessionProvidingKeys:(id)a3
+- (void)didReceiveContextForSessionProvidingKeys:(id)keys
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"didReceiveContextForSessionProvidingKeys: %@", a3];
-  [(PSDiagnosticSysGraph *)self logToFile:v4];
+  keys = [MEMORY[0x277CCACA8] stringWithFormat:@"didReceiveContextForSessionProvidingKeys: %@", keys];
+  [(PSDiagnosticSysGraph *)self logToFile:keys];
 }
 
-- (void)didReceiveResponseForResourceRequest:(id)a3
+- (void)didReceiveResponseForResourceRequest:(id)request
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [v5 resourcesWanted];
-  v7 = [v5 resourcesNoLongerWanted];
-  v8 = [v4 stringWithFormat:@"received resource request response: wanted: %@ no longer wanted: %@", v6, v7];
+  requestCopy = request;
+  resourcesWanted = [requestCopy resourcesWanted];
+  resourcesNoLongerWanted = [requestCopy resourcesNoLongerWanted];
+  v8 = [v4 stringWithFormat:@"received resource request response: wanted: %@ no longer wanted: %@", resourcesWanted, resourcesNoLongerWanted];
   [(PSDiagnosticSysGraph *)self logToFile:v8];
 
-  v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"received resource request response: %@", v5];
+  requestCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"received resource request response: %@", requestCopy];
 
-  [(PSDiagnosticSysGraph *)self logToFile:v9];
+  [(PSDiagnosticSysGraph *)self logToFile:requestCopy];
 }
 
-- (void)serverRequestedResourcesWithStrides:(id)a3
+- (void)serverRequestedResourcesWithStrides:(id)strides
 {
-  v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"serverRequestedResourcesWithStrides: %@", a3];
-  [(PSDiagnosticSysGraph *)self logToFile:v4];
+  strides = [MEMORY[0x277CCACA8] stringWithFormat:@"serverRequestedResourcesWithStrides: %@", strides];
+  [(PSDiagnosticSysGraph *)self logToFile:strides];
 }
 
 @end

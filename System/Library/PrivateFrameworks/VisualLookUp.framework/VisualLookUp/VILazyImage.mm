@@ -1,7 +1,7 @@
 @interface VILazyImage
 - (BOOL)isLoaded;
 - (CGSize)imageSize;
-- (VILazyImage)initWithImageLoader:(id)a3 imageSize:(CGSize)a4;
+- (VILazyImage)initWithImageLoader:(id)loader imageSize:(CGSize)size;
 - (__CVBuffer)pixelBuffer;
 - (id)_image;
 - (unsigned)orientation;
@@ -11,11 +11,11 @@
 
 @implementation VILazyImage
 
-- (VILazyImage)initWithImageLoader:(id)a3 imageSize:(CGSize)a4
+- (VILazyImage)initWithImageLoader:(id)loader imageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
+  height = size.height;
+  width = size.width;
+  loaderCopy = loader;
   v13.receiver = self;
   v13.super_class = VILazyImage;
   v8 = [(VILazyImage *)&v13 init];
@@ -23,7 +23,7 @@
   if (v8)
   {
     v8->_lock._os_unfair_lock_opaque = 0;
-    v10 = [v7 copy];
+    v10 = [loaderCopy copy];
     loader = v9->_loader;
     v9->_loader = v10;
 
@@ -51,18 +51,18 @@
 
 - (__CVBuffer)pixelBuffer
 {
-  v2 = [(VILazyImage *)self _image];
-  v3 = [v2 pixelBuffer];
+  _image = [(VILazyImage *)self _image];
+  pixelBuffer = [_image pixelBuffer];
 
-  return v3;
+  return pixelBuffer;
 }
 
 - (unsigned)orientation
 {
-  v2 = [(VILazyImage *)self _image];
-  v3 = [v2 orientation];
+  _image = [(VILazyImage *)self _image];
+  orientation = [_image orientation];
 
-  return v3;
+  return orientation;
 }
 
 - (BOOL)isLoaded

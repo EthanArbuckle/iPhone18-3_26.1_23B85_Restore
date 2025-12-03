@@ -1,19 +1,19 @@
 @interface IMCalloutButton
 - (IMCalloutBar)bar;
-- (IMCalloutButton)initWithFrame:(CGRect)a3;
+- (IMCalloutButton)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)pointerInsets;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
-- (void)setHighlighted:(BOOL)a3;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation IMCalloutButton
 
-- (IMCalloutButton)initWithFrame:(CGRect)a3
+- (IMCalloutButton)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = IMCalloutButton;
-  v3 = [(IMCalloutButton *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(IMCalloutButton *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -34,21 +34,21 @@
   return v4;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = IMCalloutButton;
   [(IMCalloutButton *)&v6 setHighlighted:?];
   v5 = [(IMCalloutButton *)self bar];
-  [v5 setHighlighted:v3 forControl:self];
+  [v5 setHighlighted:highlightedCopy forControl:self];
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v7 = a5;
-  v8 = v7;
-  if (self->_pointerInteraction == a3)
+  regionCopy = region;
+  v8 = regionCopy;
+  if (self->_pointerInteraction == interaction)
   {
     [(IMCalloutButton *)self bounds];
     v8 = [UIPointerRegion regionWithRect:0 identifier:v9 + self->_pointerInsets.left, v10 + self->_pointerInsets.top, v11 - (self->_pointerInsets.left + self->_pointerInsets.right), v12 - (self->_pointerInsets.top + self->_pointerInsets.bottom)];
@@ -57,7 +57,7 @@
   return v8;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
   v5 = [[UITargetedPreview alloc] initWithView:self];
   v6 = [UIPointerHighlightEffect effectWithPreview:v5];
@@ -71,8 +71,8 @@
   v18 = v10 + v17;
   v20 = v12 - (v15 + v19);
   v22 = v14 - (v17 + v21);
-  v23 = [(IMCalloutButton *)self superview];
-  [(IMCalloutButton *)self convertRect:v23 toView:v16, v18, v20, v22];
+  superview = [(IMCalloutButton *)self superview];
+  [(IMCalloutButton *)self convertRect:superview toView:v16, v18, v20, v22];
   v25 = v24;
   v27 = v26;
   v29 = v28;

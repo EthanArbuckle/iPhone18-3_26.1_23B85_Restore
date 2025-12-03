@@ -1,17 +1,17 @@
 @interface AVMobileChromelessTimelineViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (AVMobileChromelessTimelineViewAccessibility)initWithFrame:(CGRect)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (AVMobileChromelessTimelineViewAccessibility)initWithFrame:(CGRect)frame;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation AVMobileChromelessTimelineViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVMobileChromelessTimelineView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"AVMobileChromelessTimelineView" hasInstanceVariable:@"_leadingLabel" withType:"AVLabel"];
-  [v3 validateClass:@"AVMobileChromelessTimelineView" hasInstanceVariable:@"_trailingLabel" withType:"AVLabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVMobileChromelessTimelineView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"AVMobileChromelessTimelineView" hasInstanceVariable:@"_leadingLabel" withType:"AVLabel"];
+  [validationsCopy validateClass:@"AVMobileChromelessTimelineView" hasInstanceVariable:@"_trailingLabel" withType:"AVLabel"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -87,11 +87,11 @@ id __89__AVMobileChromelessTimelineViewAccessibility__accessibilityLoadAccessibi
   return v7;
 }
 
-- (AVMobileChromelessTimelineViewAccessibility)initWithFrame:(CGRect)a3
+- (AVMobileChromelessTimelineViewAccessibility)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = AVMobileChromelessTimelineViewAccessibility;
-  v3 = [(AVMobileChromelessTimelineViewAccessibility *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVMobileChromelessTimelineViewAccessibility *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(AVMobileChromelessTimelineViewAccessibility *)v3 _accessibilityLoadAccessibilityInformation];
 
   return v3;

@@ -1,24 +1,24 @@
 @interface AMSLookupItemOffer
-- (AMSLookupItemOffer)initWithLookupDictionary:(id)a3;
+- (AMSLookupItemOffer)initWithLookupDictionary:(id)dictionary;
 - (NSNumber)price;
 - (NSString)buyParameters;
 - (NSString)formattedPrice;
 - (NSString)offerType;
 - (NSString)subscriptionType;
-- (id)actionTextForType:(id)a3;
+- (id)actionTextForType:(id)type;
 @end
 
 @implementation AMSLookupItemOffer
 
-- (AMSLookupItemOffer)initWithLookupDictionary:(id)a3
+- (AMSLookupItemOffer)initWithLookupDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = AMSLookupItemOffer;
   v5 = [(AMSLookupItemOffer *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     lookupDictionary = v5->_lookupDictionary;
     v5->_lookupDictionary = v6;
   }
@@ -26,16 +26,16 @@
   return v5;
 }
 
-- (id)actionTextForType:(id)a3
+- (id)actionTextForType:(id)type
 {
-  v4 = a3;
-  v5 = [(AMSLookupItemOffer *)self lookupDictionary];
-  v6 = [v5 objectForKey:@"actionText"];
+  typeCopy = type;
+  lookupDictionary = [(AMSLookupItemOffer *)self lookupDictionary];
+  v6 = [lookupDictionary objectForKey:@"actionText"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 objectForKey:v4];
+    v7 = [v6 objectForKey:typeCopy];
   }
 
   else
@@ -48,8 +48,8 @@
 
 - (NSString)buyParameters
 {
-  v3 = [(AMSLookupItemOffer *)self lookupDictionary];
-  v4 = [v3 objectForKey:@"buyParams"];
+  lookupDictionary = [(AMSLookupItemOffer *)self lookupDictionary];
+  v4 = [lookupDictionary objectForKey:@"buyParams"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -59,8 +59,8 @@
 
   else
   {
-    v6 = [(AMSLookupItemOffer *)self lookupDictionary];
-    v5 = [v6 objectForKey:@"action-params"];
+    lookupDictionary2 = [(AMSLookupItemOffer *)self lookupDictionary];
+    v5 = [lookupDictionary2 objectForKey:@"action-params"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -81,8 +81,8 @@
 
 - (NSString)formattedPrice
 {
-  v2 = [(AMSLookupItemOffer *)self lookupDictionary];
-  v3 = [v2 objectForKey:@"priceFormatted"];
+  lookupDictionary = [(AMSLookupItemOffer *)self lookupDictionary];
+  v3 = [lookupDictionary objectForKey:@"priceFormatted"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -102,8 +102,8 @@
 
 - (NSString)offerType
 {
-  v2 = [(AMSLookupItemOffer *)self lookupDictionary];
-  v3 = [v2 objectForKey:@"type"];
+  lookupDictionary = [(AMSLookupItemOffer *)self lookupDictionary];
+  v3 = [lookupDictionary objectForKey:@"type"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -123,8 +123,8 @@
 
 - (NSNumber)price
 {
-  v2 = [(AMSLookupItemOffer *)self lookupDictionary];
-  v3 = [v2 objectForKey:@"price"];
+  lookupDictionary = [(AMSLookupItemOffer *)self lookupDictionary];
+  v3 = [lookupDictionary objectForKey:@"price"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -144,8 +144,8 @@
 
 - (NSString)subscriptionType
 {
-  v2 = [(AMSLookupItemOffer *)self lookupDictionary];
-  v3 = [v2 objectForKey:@"subscription"];
+  lookupDictionary = [(AMSLookupItemOffer *)self lookupDictionary];
+  v3 = [lookupDictionary objectForKey:@"subscription"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())

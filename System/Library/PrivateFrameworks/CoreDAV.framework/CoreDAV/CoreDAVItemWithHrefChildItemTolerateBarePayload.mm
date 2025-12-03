@@ -1,8 +1,8 @@
 @interface CoreDAVItemWithHrefChildItemTolerateBarePayload
 - (id)description;
 - (id)href;
-- (void)parserSuggestsBaseURL:(id)a3;
-- (void)setPayload:(id)a3;
+- (void)parserSuggestsBaseURL:(id)l;
+- (void)setPayload:(id)payload;
 @end
 
 @implementation CoreDAVItemWithHrefChildItemTolerateBarePayload
@@ -38,12 +38,12 @@
   return v5;
 }
 
-- (void)setPayload:(id)a3
+- (void)setPayload:(id)payload
 {
-  v10 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v10 encoding:4];
-  v5 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  payloadCopy = payload;
+  v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:payloadCopy encoding:4];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v6 = [v4 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   v7 = [v6 length];
 
   if (v7)
@@ -52,7 +52,7 @@
     virtualHref = self->_virtualHref;
     self->_virtualHref = v8;
 
-    [(CoreDAVItem *)self->_virtualHref setPayload:v10];
+    [(CoreDAVItem *)self->_virtualHref setPayload:payloadCopy];
     if (self->_baseURL)
     {
       [(CoreDAVHrefItem *)self->_virtualHref parserSuggestsBaseURL:?];
@@ -60,10 +60,10 @@
   }
 }
 
-- (void)parserSuggestsBaseURL:(id)a3
+- (void)parserSuggestsBaseURL:(id)l
 {
-  v6 = a3;
-  objc_storeStrong(&self->_baseURL, a3);
+  lCopy = l;
+  objc_storeStrong(&self->_baseURL, l);
   virtualHref = self->_virtualHref;
   if (virtualHref)
   {

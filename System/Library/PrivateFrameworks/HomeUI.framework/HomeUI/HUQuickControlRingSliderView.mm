@@ -2,50 +2,50 @@
 - ($F24F406B2B787EFB06265DBA3D28CBD5)_getPossibleAngleRange12OClock;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)modelRangeValue;
 - (BOOL)_areHandleViewsAnimating;
-- (BOOL)_isPoint:(CGPoint)a3 withInMarginOfRing:(double)a4;
-- (BOOL)_primaryHandleViewContainsPoint:(CGPoint)a3;
-- (BOOL)_secondaryHandleViewContainsPoint:(CGPoint)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)_isPoint:(CGPoint)point withInMarginOfRing:(double)ring;
+- (BOOL)_primaryHandleViewContainsPoint:(CGPoint)point;
+- (BOOL)_secondaryHandleViewContainsPoint:(CGPoint)point;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (CGPoint)_getCircleCenterPoint;
-- (CGPoint)_getClosestPointOnMiddleCircleOfRing:(CGPoint)a3;
-- (CGPoint)_getHandleCenterOnRingForValue:(double)a3;
-- (CGPoint)_getPointForAngleFrom12OClock:(double)a3;
+- (CGPoint)_getClosestPointOnMiddleCircleOfRing:(CGPoint)ring;
+- (CGPoint)_getHandleCenterOnRingForValue:(double)value;
+- (CGPoint)_getPointForAngleFrom12OClock:(double)clock;
 - (CGSize)_getEdgeRectSize;
 - (CGSize)intrinsicContentSize;
-- (HUQuickControlRingSliderView)initWithProfile:(id)a3;
+- (HUQuickControlRingSliderView)initWithProfile:(id)profile;
 - (HUQuickControlViewInteractionDelegate)interactionDelegate;
 - (NSMutableArray)currentDirectionTapticValues;
 - (NSMutableArray)gradationMarkingViews;
 - (NSMutableDictionary)markingValuesAndViewsDictionary;
-- (double)_getAngleFrom12OClockForPoint:(CGPoint)a3;
-- (double)_getAngleFrom12OClockForValue:(double)a3;
-- (double)_getClosestMarkingValueToValue:(double)a3;
+- (double)_getAngleFrom12OClockForPoint:(CGPoint)point;
+- (double)_getAngleFrom12OClockForValue:(double)value;
+- (double)_getClosestMarkingValueToValue:(double)value;
 - (double)_getMaxAngleFrom12OClock;
 - (double)_getMaximumMarkingValue;
 - (double)_getMinAngleFrom12OClock;
 - (double)_getMinimumMarkingValue;
 - (double)_getOneMarkerValueDifference;
 - (double)_getSecondarySliderValue;
-- (double)_getSliderValueForAngleFrom12OClock:(double)a3;
-- (double)_getSliderValueForPoint:(CGPoint)a3;
-- (double)_getStartAngleEdgeLocationShiftForBackgroundRing:(BOOL)a3;
-- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)a3;
+- (double)_getSliderValueForAngleFrom12OClock:(double)clock;
+- (double)_getSliderValueForPoint:(CGPoint)point;
+- (double)_getStartAngleEdgeLocationShiftForBackgroundRing:(BOOL)ring;
+- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)size;
 - (id)secondaryValue;
 - (id)value;
-- (unint64_t)_getRingSliderAreaForAngleFrom12Oclock:(double)a3;
-- (unint64_t)_getRingSliderAreaForAngleFrom12Oclock:(double)a3 minAngle:(double)a4 maxAngle:(double)a5;
-- (unint64_t)_getRingSliderAreaForPoint:(CGPoint)a3;
+- (unint64_t)_getRingSliderAreaForAngleFrom12Oclock:(double)oclock;
+- (unint64_t)_getRingSliderAreaForAngleFrom12Oclock:(double)oclock minAngle:(double)angle maxAngle:(double)maxAngle;
+- (unint64_t)_getRingSliderAreaForPoint:(CGPoint)point;
 - (void)_actuateImpactTapticFeedback;
 - (void)_actuateSelectionTapticFeedback;
-- (void)_animateToEnlargeHandleView:(id)a3;
+- (void)_animateToEnlargeHandleView:(id)view;
 - (void)_maskBackgroundImageViewToRingShape;
 - (void)_prepareForTapticFeedback;
 - (void)_redrawGradationMarkingViews;
 - (void)_touchEnded;
 - (void)_updateLabelsSize;
-- (void)_updateModelValue:(id)a3 roundValue:(BOOL)a4 notifyInteractionDelegate:(BOOL)a5;
-- (void)_updateModelValueWithNewPrimarySliderValue:(double)a3 roundValue:(BOOL)a4 notifyInteractionDelegate:(BOOL)a5;
-- (void)_updateModelValueWithNewSecondarySliderValue:(double)a3 roundValue:(BOOL)a4 notifyInteractionDelegate:(BOOL)a5;
+- (void)_updateModelValue:(id)value roundValue:(BOOL)roundValue notifyInteractionDelegate:(BOOL)delegate;
+- (void)_updateModelValueWithNewPrimarySliderValue:(double)value roundValue:(BOOL)roundValue notifyInteractionDelegate:(BOOL)delegate;
+- (void)_updateModelValueWithNewSecondarySliderValue:(double)value roundValue:(BOOL)roundValue notifyInteractionDelegate:(BOOL)delegate;
 - (void)_updateModelValueWithSlidersPositions;
 - (void)_updatePrimaryHandleViewPositionToSliderValue;
 - (void)_updateRingViewAndHandleViews;
@@ -54,18 +54,18 @@
 - (void)_updateSupplementaryValueMarkingView;
 - (void)_updateSupplementaryValueMarkingViewColor;
 - (void)_updateTransform;
-- (void)_updateUIForReachabilityState:(unint64_t)a3;
-- (void)_updateUIForThresholdModeForPrimaryHandleViewWithTouchPoint:(CGPoint)a3 didTouchBegin:(BOOL)a4;
-- (void)_updateUIForThresholdModeForSecondaryHandleViewWithTouchPoint:(CGPoint)a3 didTouchBegin:(BOOL)a4;
-- (void)_updateUIForTouchPoint:(CGPoint)a3 didTouchBegin:(BOOL)a4 forHandleView:(id)a5 minValue:(double)a6 maxValue:(double)a7;
-- (void)_updateUIWithTouchAtPoint:(CGPoint)a3 didTouchBegin:(BOOL)a4;
-- (void)handlePanGestureRecognizer:(id)a3;
+- (void)_updateUIForReachabilityState:(unint64_t)state;
+- (void)_updateUIForThresholdModeForPrimaryHandleViewWithTouchPoint:(CGPoint)point didTouchBegin:(BOOL)begin;
+- (void)_updateUIForThresholdModeForSecondaryHandleViewWithTouchPoint:(CGPoint)point didTouchBegin:(BOOL)begin;
+- (void)_updateUIForTouchPoint:(CGPoint)point didTouchBegin:(BOOL)begin forHandleView:(id)view minValue:(double)value maxValue:(double)maxValue;
+- (void)_updateUIWithTouchAtPoint:(CGPoint)point didTouchBegin:(BOOL)begin;
+- (void)handlePanGestureRecognizer:(id)recognizer;
 - (void)layoutSubviews;
-- (void)setProfile:(id)a3;
-- (void)setSecondaryValue:(id)a3;
-- (void)setValue:(id)a3;
-- (void)updatePrimaryLabelWithString:(id)a3 fontSize:(double)a4;
-- (void)updateSupplementaryLabelWithString:(id)a3;
+- (void)setProfile:(id)profile;
+- (void)setSecondaryValue:(id)value;
+- (void)setValue:(id)value;
+- (void)updatePrimaryLabelWithString:(id)string fontSize:(double)size;
+- (void)updateSupplementaryLabelWithString:(id)string;
 @end
 
 @implementation HUQuickControlRingSliderView
@@ -115,9 +115,9 @@
   return gradationMarkingViews;
 }
 
-- (HUQuickControlRingSliderView)initWithProfile:(id)a3
+- (HUQuickControlRingSliderView)initWithProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   v47.receiver = self;
   v47.super_class = HUQuickControlRingSliderView;
   v6 = [(HUQuickControlRingSliderView *)&v47 init];
@@ -125,7 +125,7 @@
   if (v6)
   {
     v6->_userInteractionActive = 0;
-    objc_storeStrong(&v6->_profile, a3);
+    objc_storeStrong(&v6->_profile, profile);
     v7->_reachabilityState = 0;
     v7->_modelRangeValue = HUFloatRangeNormal;
     v7->_supplementaryValue = 1.79769313e308;
@@ -149,36 +149,36 @@
 
     if ([MEMORY[0x277D14CE8] shouldUseControlCenterMaterials])
     {
-      v14 = [MEMORY[0x277CFC960] controlCenterTertiaryMaterial];
+      controlCenterTertiaryMaterial = [MEMORY[0x277CFC960] controlCenterTertiaryMaterial];
     }
 
     else
     {
-      v14 = objc_alloc_init(MEMORY[0x277D75D18]);
+      controlCenterTertiaryMaterial = objc_alloc_init(MEMORY[0x277D75D18]);
     }
 
     backgroundRingView = v7->_backgroundRingView;
-    v7->_backgroundRingView = v14;
+    v7->_backgroundRingView = controlCenterTertiaryMaterial;
 
-    v16 = [MEMORY[0x277D75348] quaternarySystemFillColor];
-    [(UIView *)v7->_backgroundRingView setBackgroundColor:v16];
+    quaternarySystemFillColor = [MEMORY[0x277D75348] quaternarySystemFillColor];
+    [(UIView *)v7->_backgroundRingView setBackgroundColor:quaternarySystemFillColor];
 
     [(HUQuickControlRingSliderView *)v7 addSubview:v7->_backgroundRingView];
     if ([MEMORY[0x277D14CE8] shouldUseControlCenterMaterials])
     {
-      v17 = [MEMORY[0x277CFC960] controlCenterTertiaryMaterial];
+      controlCenterTertiaryMaterial2 = [MEMORY[0x277CFC960] controlCenterTertiaryMaterial];
     }
 
     else
     {
-      v17 = objc_alloc_init(MEMORY[0x277D75D18]);
+      controlCenterTertiaryMaterial2 = objc_alloc_init(MEMORY[0x277D75D18]);
     }
 
     edgesAndColoredSupplementaryValueLineView = v7->_edgesAndColoredSupplementaryValueLineView;
-    v7->_edgesAndColoredSupplementaryValueLineView = v17;
+    v7->_edgesAndColoredSupplementaryValueLineView = controlCenterTertiaryMaterial2;
 
-    v19 = [MEMORY[0x277D75348] quaternarySystemFillColor];
-    [(UIView *)v7->_edgesAndColoredSupplementaryValueLineView setBackgroundColor:v19];
+    quaternarySystemFillColor2 = [MEMORY[0x277D75348] quaternarySystemFillColor];
+    [(UIView *)v7->_edgesAndColoredSupplementaryValueLineView setBackgroundColor:quaternarySystemFillColor2];
 
     [(HUQuickControlRingSliderView *)v7 addSubview:v7->_edgesAndColoredSupplementaryValueLineView];
     v20 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v7->_gradientRingImage];
@@ -200,35 +200,35 @@
     supplementaryValueMarkingView = v7->_supplementaryValueMarkingView;
     v7->_supplementaryValueMarkingView = v25;
 
-    v27 = [(UIView *)v7->_supplementaryValueMarkingView layer];
-    [v27 setCornerRadius:2.0];
+    layer = [(UIView *)v7->_supplementaryValueMarkingView layer];
+    [layer setCornerRadius:2.0];
 
-    v28 = [MEMORY[0x277D75348] systemBlackColor];
-    v29 = [v28 colorWithAlphaComponent:0.2];
+    systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+    v29 = [systemBlackColor colorWithAlphaComponent:0.2];
     [(UIView *)v7->_supplementaryValueMarkingView setBackgroundColor:v29];
 
     [(HUQuickControlRingSliderView *)v7 addSubview:v7->_supplementaryValueMarkingView];
-    v30 = -[HUQuickControlRingSliderHandleView initWithFrame:style:]([HUQuickControlRingSliderHandleView alloc], "initWithFrame:style:", [v5 handleViewStyle], 0.0, 0.0, v24, v24);
+    v30 = -[HUQuickControlRingSliderHandleView initWithFrame:style:]([HUQuickControlRingSliderHandleView alloc], "initWithFrame:style:", [profileCopy handleViewStyle], 0.0, 0.0, v24, v24);
     primaryHandleView = v7->_primaryHandleView;
     v7->_primaryHandleView = v30;
 
     [(HUQuickControlRingSliderView *)v7 addSubview:v7->_primaryHandleView];
-    v32 = -[HUQuickControlRingSliderHandleView initWithFrame:style:]([HUQuickControlRingSliderHandleView alloc], "initWithFrame:style:", [v5 handleViewStyle], 0.0, 0.0, v24, v24);
+    v32 = -[HUQuickControlRingSliderHandleView initWithFrame:style:]([HUQuickControlRingSliderHandleView alloc], "initWithFrame:style:", [profileCopy handleViewStyle], 0.0, 0.0, v24, v24);
     secondaryHandleView = v7->_secondaryHandleView;
     v7->_secondaryHandleView = v32;
 
     [(HUQuickControlRingSliderView *)v7 addSubview:v7->_secondaryHandleView];
-    -[HUQuickControlRingSliderHandleView setHidden:](v7->_secondaryHandleView, "setHidden:", [v5 hasSecondaryValue] ^ 1);
-    v34 = [MEMORY[0x277D75348] systemWhiteColor];
-    if (([v5 isHandleViewVisible] & 1) == 0)
+    -[HUQuickControlRingSliderHandleView setHidden:](v7->_secondaryHandleView, "setHidden:", [profileCopy hasSecondaryValue] ^ 1);
+    systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+    if (([profileCopy isHandleViewVisible] & 1) == 0)
     {
-      v35 = [MEMORY[0x277D75348] clearColor];
+      clearColor = [MEMORY[0x277D75348] clearColor];
 
-      v34 = v35;
+      systemWhiteColor = clearColor;
     }
 
-    [(HUQuickControlRingSliderHandleView *)v7->_primaryHandleView _setColor:v34];
-    [(HUQuickControlRingSliderHandleView *)v7->_secondaryHandleView _setColor:v34];
+    [(HUQuickControlRingSliderHandleView *)v7->_primaryHandleView _setColor:systemWhiteColor];
+    [(HUQuickControlRingSliderHandleView *)v7->_secondaryHandleView _setColor:systemWhiteColor];
     v36 = objc_alloc_init(MEMORY[0x277D756B8]);
     supplementaryLabel = v7->_supplementaryLabel;
     v7->_supplementaryLabel = v36;
@@ -236,8 +236,8 @@
     [(UILabel *)v7->_supplementaryLabel setTextAlignment:1];
     [(UILabel *)v7->_supplementaryLabel setNumberOfLines:1];
     [(UILabel *)v7->_supplementaryLabel setAdjustsFontSizeToFitWidth:1];
-    v38 = [MEMORY[0x277D75348] systemOrangeColor];
-    [(UILabel *)v7->_supplementaryLabel setTextColor:v38];
+    systemOrangeColor = [MEMORY[0x277D75348] systemOrangeColor];
+    [(UILabel *)v7->_supplementaryLabel setTextColor:systemOrangeColor];
 
     v39 = [MEMORY[0x277D74300] _preferredFontForTextStyle:*MEMORY[0x277D76918] variant:1024];
     [(UILabel *)v7->_supplementaryLabel setFont:v39];
@@ -273,10 +273,10 @@
 - (double)_getSecondarySliderValue
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(HUQuickControlRingSliderView *)self profile];
-  v4 = [v3 hasSecondaryValue];
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  hasSecondaryValue = [profile hasSecondaryValue];
 
-  if ((v4 & 1) == 0)
+  if ((hasSecondaryValue & 1) == 0)
   {
     v5 = HFLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -293,10 +293,10 @@
 
 - (id)value
 {
-  v3 = [(HUQuickControlRingSliderView *)self profile];
-  v4 = [v3 hasSecondaryValue];
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  hasSecondaryValue = [profile hasSecondaryValue];
 
-  if (v4)
+  if (hasSecondaryValue)
   {
     v5 = MEMORY[0x277D148D8];
     [(HUQuickControlRingSliderView *)self modelRangeValue];
@@ -314,14 +314,14 @@
   return v6;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v22 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    v4 = v22;
+    v4 = valueCopy;
     if (objc_opt_isKindOfClass())
     {
       v5 = v4;
@@ -360,8 +360,8 @@
 
     else
     {
-      v18 = [v6 midValue];
-      [v18 doubleValue];
+      midValue = [v6 midValue];
+      [midValue doubleValue];
       v20 = v19;
 
       [(HUQuickControlRingSliderView *)self _getClosestMarkingValueToValue:v20];
@@ -372,7 +372,7 @@
 
   else
   {
-    [v22 doubleValue];
+    [valueCopy doubleValue];
     [(HUQuickControlRingSliderView *)self _getClosestMarkingValueToValue:?];
     v14 = v17;
     v16 = 0.0;
@@ -390,13 +390,13 @@
   return [v2 numberWithDouble:?];
 }
 
-- (void)setSecondaryValue:(id)a3
+- (void)setSecondaryValue:(id)value
 {
-  v13 = a3;
-  if (v13)
+  valueCopy = value;
+  if (valueCopy)
   {
     objc_opt_class();
-    v4 = v13;
+    v4 = valueCopy;
     if (objc_opt_isKindOfClass())
     {
       v5 = v4;
@@ -435,48 +435,48 @@
   }
 }
 
-- (void)setProfile:(id)a3
+- (void)setProfile:(id)profile
 {
-  v4 = a3;
-  v5 = [(HUQuickControlViewProfile *)self->_profile controlSize];
-  v6 = [(HUQuickControlViewProfile *)v4 controlSize];
+  profileCopy = profile;
+  controlSize = [(HUQuickControlViewProfile *)self->_profile controlSize];
+  controlSize2 = [(HUQuickControlViewProfile *)profileCopy controlSize];
   profile = self->_profile;
-  self->_profile = v4;
+  self->_profile = profileCopy;
 
   [(HUQuickControlRingSliderView *)self setNeedsLayout];
-  if (v5 != v6)
+  if (controlSize != controlSize2)
   {
 
     [(HUQuickControlRingSliderView *)self invalidateIntrinsicContentSize];
   }
 }
 
-- (void)_updateUIForReachabilityState:(unint64_t)a3
+- (void)_updateUIForReachabilityState:(unint64_t)state
 {
-  if (a3 >= 2)
+  if (state >= 2)
   {
-    if (a3 == 2)
+    if (state == 2)
     {
       [(HUQuickControlRingSliderView *)self setAlpha:1.0];
-      v7 = [(HUQuickControlRingSliderView *)self primaryHandleView];
-      [v7 setHidden:{-[HUQuickControlRingSliderView showOffState](self, "showOffState")}];
+      primaryHandleView = [(HUQuickControlRingSliderView *)self primaryHandleView];
+      [primaryHandleView setHidden:{-[HUQuickControlRingSliderView showOffState](self, "showOffState")}];
 
-      v8 = [(HUQuickControlRingSliderView *)self secondaryHandleView];
-      v9 = [(HUQuickControlRingSliderView *)self profile];
-      if ([v9 hasSecondaryValue])
+      secondaryHandleView = [(HUQuickControlRingSliderView *)self secondaryHandleView];
+      profile = [(HUQuickControlRingSliderView *)self profile];
+      if ([profile hasSecondaryValue])
       {
-        v10 = [(HUQuickControlRingSliderView *)self showOffState];
+        showOffState = [(HUQuickControlRingSliderView *)self showOffState];
       }
 
       else
       {
-        v10 = 1;
+        showOffState = 1;
       }
 
-      [v8 setHidden:v10];
+      [secondaryHandleView setHidden:showOffState];
 
-      v11 = [(HUQuickControlRingSliderView *)self labelsBackgroundView];
-      [v11 setHidden:0];
+      labelsBackgroundView = [(HUQuickControlRingSliderView *)self labelsBackgroundView];
+      [labelsBackgroundView setHidden:0];
 
       [(HUQuickControlRingSliderView *)self _updateSupplementaryValueMarkingView];
     }
@@ -485,24 +485,24 @@
   else
   {
     [(HUQuickControlRingSliderView *)self setAlpha:0.5];
-    v4 = [(HUQuickControlRingSliderView *)self primaryHandleView];
-    [v4 setHidden:1];
+    primaryHandleView2 = [(HUQuickControlRingSliderView *)self primaryHandleView];
+    [primaryHandleView2 setHidden:1];
 
-    v5 = [(HUQuickControlRingSliderView *)self secondaryHandleView];
-    [v5 setHidden:1];
+    secondaryHandleView2 = [(HUQuickControlRingSliderView *)self secondaryHandleView];
+    [secondaryHandleView2 setHidden:1];
 
-    v6 = [(HUQuickControlRingSliderView *)self labelsBackgroundView];
-    [v6 setHidden:1];
+    labelsBackgroundView2 = [(HUQuickControlRingSliderView *)self labelsBackgroundView];
+    [labelsBackgroundView2 setHidden:1];
 
-    v12 = [(HUQuickControlRingSliderView *)self supplementaryValueMarkingView];
-    [v12 setHidden:1];
+    supplementaryValueMarkingView = [(HUQuickControlRingSliderView *)self supplementaryValueMarkingView];
+    [supplementaryValueMarkingView setHidden:1];
   }
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(HUQuickControlRingSliderView *)self profile];
-  v4 = -[HUQuickControlRingSliderView intrinsicSizeDescriptorForControlSize:](self, "intrinsicSizeDescriptorForControlSize:", [v3 controlSize]);
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  v4 = -[HUQuickControlRingSliderView intrinsicSizeDescriptorForControlSize:](self, "intrinsicSizeDescriptorForControlSize:", [profile controlSize]);
   [v4 intrinsicSize];
   v6 = v5;
   v8 = v7;
@@ -514,32 +514,32 @@
   return result;
 }
 
-- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)a3
+- (id)intrinsicSizeDescriptorForControlSize:(unint64_t)size
 {
-  v3 = HUQuickControlRingSliderMetricsForControlSize(a3);
-  v4 = [v3 sizeDescriptor];
+  v3 = HUQuickControlRingSliderMetricsForControlSize(size);
+  sizeDescriptor = [v3 sizeDescriptor];
 
-  return v4;
+  return sizeDescriptor;
 }
 
-- (void)_updateModelValueWithNewPrimarySliderValue:(double)a3 roundValue:(BOOL)a4 notifyInteractionDelegate:(BOOL)a5
+- (void)_updateModelValueWithNewPrimarySliderValue:(double)value roundValue:(BOOL)roundValue notifyInteractionDelegate:(BOOL)delegate
 {
-  v5 = a5;
-  v6 = a4;
+  delegateCopy = delegate;
+  roundValueCopy = roundValue;
   [(HUQuickControlRingSliderView *)self modelRangeValue];
 
-  [(HUQuickControlRingSliderView *)self _updateModelValue:v6 roundValue:v5 notifyInteractionDelegate:?];
+  [(HUQuickControlRingSliderView *)self _updateModelValue:roundValueCopy roundValue:delegateCopy notifyInteractionDelegate:?];
 }
 
-- (void)_updateModelValueWithNewSecondarySliderValue:(double)a3 roundValue:(BOOL)a4 notifyInteractionDelegate:(BOOL)a5
+- (void)_updateModelValueWithNewSecondarySliderValue:(double)value roundValue:(BOOL)roundValue notifyInteractionDelegate:(BOOL)delegate
 {
-  v5 = a5;
-  v6 = a4;
+  delegateCopy = delegate;
+  roundValueCopy = roundValue;
   v14 = *MEMORY[0x277D85DE8];
-  v9 = [(HUQuickControlRingSliderView *)self profile];
-  v10 = [v9 hasSecondaryValue];
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  hasSecondaryValue = [profile hasSecondaryValue];
 
-  if ((v10 & 1) == 0)
+  if ((hasSecondaryValue & 1) == 0)
   {
     v11 = HFLogForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -551,18 +551,18 @@
   }
 
   [(HUQuickControlRingSliderView *)self modelRangeValue];
-  [(HUQuickControlRingSliderView *)self _updateModelValue:v6 roundValue:v5 notifyInteractionDelegate:a3];
+  [(HUQuickControlRingSliderView *)self _updateModelValue:roundValueCopy roundValue:delegateCopy notifyInteractionDelegate:value];
 }
 
-- (void)_updateModelValue:(id)a3 roundValue:(BOOL)a4 notifyInteractionDelegate:(BOOL)a5
+- (void)_updateModelValue:(id)value roundValue:(BOOL)roundValue notifyInteractionDelegate:(BOOL)delegate
 {
-  v5 = a5;
-  [(HUQuickControlRingSliderView *)self setModelRangeValue:a4, a3.var0, a3.var1];
-  if (v5 && [(HUQuickControlRingSliderView *)self isUserInteractionActive])
+  delegateCopy = delegate;
+  [(HUQuickControlRingSliderView *)self setModelRangeValue:roundValue, value.var0, value.var1];
+  if (delegateCopy && [(HUQuickControlRingSliderView *)self isUserInteractionActive])
   {
-    v8 = [(HUQuickControlRingSliderView *)self interactionDelegate];
-    v7 = [(HUQuickControlRingSliderView *)self value];
-    [v8 controlView:self valueDidChange:v7];
+    interactionDelegate = [(HUQuickControlRingSliderView *)self interactionDelegate];
+    value = [(HUQuickControlRingSliderView *)self value];
+    [interactionDelegate controlView:self valueDidChange:value];
   }
 }
 
@@ -586,11 +586,11 @@
   }
 
   [(HUQuickControlRingSliderView *)self setOuterRadius:v6 * 0.5];
-  v7 = [(HUQuickControlRingSliderView *)self gradationMarkingViews];
-  v8 = [v7 count];
-  v9 = [(HUQuickControlRingSliderView *)self profile];
-  v10 = [v9 gradationMarkingValues];
-  v11 = [v10 count];
+  gradationMarkingViews = [(HUQuickControlRingSliderView *)self gradationMarkingViews];
+  v8 = [gradationMarkingViews count];
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  gradationMarkingValues = [profile gradationMarkingValues];
+  v11 = [gradationMarkingValues count];
 
   if (v8 != v11)
   {
@@ -602,18 +602,18 @@
   [(HUQuickControlRingSliderView *)self _updateUIForReachabilityState:[(HUQuickControlRingSliderView *)self reachabilityState]];
   if ([(HUQuickControlRingSliderView *)self showOffState]|| ![(HUQuickControlRingSliderView *)self reachabilityState]|| [(HUQuickControlRingSliderView *)self reachabilityState]== 1)
   {
-    v12 = [(HUQuickControlRingSliderView *)self selectedRangeImageView];
-    [(HUQuickControlRingSliderView *)self bringSubviewToFront:v12];
+    selectedRangeImageView = [(HUQuickControlRingSliderView *)self selectedRangeImageView];
+    [(HUQuickControlRingSliderView *)self bringSubviewToFront:selectedRangeImageView];
 
-    v13 = [(HUQuickControlRingSliderView *)self selectedRangeImageViewForEdges];
-    [(HUQuickControlRingSliderView *)self bringSubviewToFront:v13];
+    selectedRangeImageViewForEdges = [(HUQuickControlRingSliderView *)self selectedRangeImageViewForEdges];
+    [(HUQuickControlRingSliderView *)self bringSubviewToFront:selectedRangeImageViewForEdges];
 
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v14 = [(HUQuickControlRingSliderView *)self gradationMarkingViews];
-    v15 = [v14 countByEnumeratingWithState:&v32 objects:v38 count:16];
+    gradationMarkingViews2 = [(HUQuickControlRingSliderView *)self gradationMarkingViews];
+    v15 = [gradationMarkingViews2 countByEnumeratingWithState:&v32 objects:v38 count:16];
     if (v15)
     {
       v16 = v15;
@@ -624,13 +624,13 @@
         {
           if (*v33 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(gradationMarkingViews2);
           }
 
           [(HUQuickControlRingSliderView *)self bringSubviewToFront:*(*(&v32 + 1) + 8 * i)];
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v32 objects:v38 count:16];
+        v16 = [gradationMarkingViews2 countByEnumeratingWithState:&v32 objects:v38 count:16];
       }
 
       while (v16);
@@ -643,8 +643,8 @@
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v19 = [(HUQuickControlRingSliderView *)self gradationMarkingViews];
-    v20 = [v19 countByEnumeratingWithState:&v28 objects:v37 count:16];
+    gradationMarkingViews3 = [(HUQuickControlRingSliderView *)self gradationMarkingViews];
+    v20 = [gradationMarkingViews3 countByEnumeratingWithState:&v28 objects:v37 count:16];
     if (v20)
     {
       v21 = v20;
@@ -655,33 +655,33 @@
         {
           if (*v29 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(gradationMarkingViews3);
           }
 
           [(HUQuickControlRingSliderView *)self bringSubviewToFront:*(*(&v28 + 1) + 8 * j)];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v28 objects:v37 count:16];
+        v21 = [gradationMarkingViews3 countByEnumeratingWithState:&v28 objects:v37 count:16];
       }
 
       while (v21);
     }
 
-    v24 = [(HUQuickControlRingSliderView *)self selectedRangeImageView];
-    [(HUQuickControlRingSliderView *)self bringSubviewToFront:v24];
+    selectedRangeImageView2 = [(HUQuickControlRingSliderView *)self selectedRangeImageView];
+    [(HUQuickControlRingSliderView *)self bringSubviewToFront:selectedRangeImageView2];
 
-    v14 = [(HUQuickControlRingSliderView *)self selectedRangeImageViewForEdges];
-    [(HUQuickControlRingSliderView *)self bringSubviewToFront:v14];
+    gradationMarkingViews2 = [(HUQuickControlRingSliderView *)self selectedRangeImageViewForEdges];
+    [(HUQuickControlRingSliderView *)self bringSubviewToFront:gradationMarkingViews2];
   }
 
-  v25 = [(HUQuickControlRingSliderView *)self supplementaryValueMarkingView];
-  [(HUQuickControlRingSliderView *)self bringSubviewToFront:v25];
+  supplementaryValueMarkingView = [(HUQuickControlRingSliderView *)self supplementaryValueMarkingView];
+  [(HUQuickControlRingSliderView *)self bringSubviewToFront:supplementaryValueMarkingView];
 
-  v26 = [(HUQuickControlRingSliderView *)self primaryHandleView];
-  [(HUQuickControlRingSliderView *)self bringSubviewToFront:v26];
+  primaryHandleView = [(HUQuickControlRingSliderView *)self primaryHandleView];
+  [(HUQuickControlRingSliderView *)self bringSubviewToFront:primaryHandleView];
 
-  v27 = [(HUQuickControlRingSliderView *)self secondaryHandleView];
-  [(HUQuickControlRingSliderView *)self bringSubviewToFront:v27];
+  secondaryHandleView = [(HUQuickControlRingSliderView *)self secondaryHandleView];
+  [(HUQuickControlRingSliderView *)self bringSubviewToFront:secondaryHandleView];
 }
 
 - (void)_redrawGradationMarkingViews
@@ -691,8 +691,8 @@
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v3 = [(HUQuickControlRingSliderView *)self gradationMarkingViews];
-  v4 = [v3 copy];
+  gradationMarkingViews = [(HUQuickControlRingSliderView *)self gradationMarkingViews];
+  v4 = [gradationMarkingViews copy];
 
   v5 = [v4 countByEnumeratingWithState:&v48 objects:v53 count:16];
   if (v5)
@@ -710,8 +710,8 @@
 
         v9 = *(*(&v48 + 1) + 8 * i);
         [v9 removeFromSuperview];
-        v10 = [(HUQuickControlRingSliderView *)self gradationMarkingViews];
-        [v10 removeObject:v9];
+        gradationMarkingViews2 = [(HUQuickControlRingSliderView *)self gradationMarkingViews];
+        [gradationMarkingViews2 removeObject:v9];
       }
 
       v6 = [v4 countByEnumeratingWithState:&v48 objects:v53 count:16];
@@ -724,11 +724,11 @@
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v11 = [(HUQuickControlRingSliderView *)self profile];
-  v12 = [v11 gradationMarkingValues];
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  gradationMarkingValues = [profile gradationMarkingValues];
 
-  obj = v12;
-  v13 = [v12 countByEnumeratingWithState:&v44 objects:v52 count:16];
+  obj = gradationMarkingValues;
+  v13 = [gradationMarkingValues countByEnumeratingWithState:&v44 objects:v52 count:16];
   if (v13)
   {
     v14 = v13;
@@ -747,10 +747,10 @@
         }
 
         v18 = *(*(&v44 + 1) + 8 * j);
-        v19 = [(HUQuickControlRingSliderView *)self profile];
-        v20 = [v19 gradationMarkingViewStyle];
+        profile2 = [(HUQuickControlRingSliderView *)self profile];
+        gradationMarkingViewStyle = [profile2 gradationMarkingViewStyle];
 
-        if (v20 < 2)
+        if (gradationMarkingViewStyle < 2)
         {
           v22 = 2.0;
           v21 = 19.0;
@@ -758,7 +758,7 @@
 
         else
         {
-          if (v20 == 2)
+          if (gradationMarkingViewStyle == 2)
           {
             if (v15)
             {
@@ -775,7 +775,7 @@
           {
             v21 = 0.0;
             v22 = 0.0;
-            if (v20 != 3)
+            if (gradationMarkingViewStyle != 3)
             {
               goto LABEL_24;
             }
@@ -797,30 +797,30 @@
 LABEL_24:
         v23 = [objc_alloc(MEMORY[0x277D75D68]) initWithEffect:0];
         [v23 setFrame:{0.0, 0.0, v22, v21}];
-        v24 = [v23 layer];
-        [v24 setCornerRadius:1.0];
+        layer = [v23 layer];
+        [layer setCornerRadius:1.0];
 
         [v23 setClipsToBounds:1];
         if ([MEMORY[0x277D14CE8] shouldUseControlCenterMaterials])
         {
-          v25 = [MEMORY[0x277D75D00] controlCenterKeyLineOnLightVibrancyEffect];
-          [v23 setEffect:v25];
+          controlCenterKeyLineOnLightVibrancyEffect = [MEMORY[0x277D75D00] controlCenterKeyLineOnLightVibrancyEffect];
+          [v23 setEffect:controlCenterKeyLineOnLightVibrancyEffect];
         }
 
-        v26 = [(HUQuickControlRingSliderView *)self traitCollection];
-        if ([v26 userInterfaceStyle] == 1)
+        traitCollection = [(HUQuickControlRingSliderView *)self traitCollection];
+        if ([traitCollection userInterfaceStyle] == 1)
         {
 
 LABEL_29:
-          v28 = [MEMORY[0x277D75348] systemBlackColor];
-          v29 = v28;
+          systemBlackColor = [MEMORY[0x277D75348] systemBlackColor];
+          v29 = systemBlackColor;
           v30 = 0.1;
           goto LABEL_34;
         }
 
-        v27 = [(HUQuickControlRingSliderView *)self showOffState];
+        showOffState = [(HUQuickControlRingSliderView *)self showOffState];
 
-        if (v27)
+        if (showOffState)
         {
           goto LABEL_29;
         }
@@ -835,11 +835,11 @@ LABEL_29:
           v31 = 0.1;
         }
 
-        v28 = [MEMORY[0x277D75348] tertiarySystemFillColor];
-        v29 = v28;
+        systemBlackColor = [MEMORY[0x277D75348] tertiarySystemFillColor];
+        v29 = systemBlackColor;
         v30 = v31;
 LABEL_34:
-        v32 = [v28 colorWithAlphaComponent:v30];
+        v32 = [systemBlackColor colorWithAlphaComponent:v30];
         [v23 setBackgroundColor:v32];
 
         [v18 floatValue];
@@ -854,11 +854,11 @@ LABEL_34:
         v42 = v43;
         [v23 setTransform:&v42];
         [(HUQuickControlRingSliderView *)self addSubview:v23];
-        v36 = [(HUQuickControlRingSliderView *)self gradationMarkingViews];
-        [v36 addObject:v23];
+        gradationMarkingViews3 = [(HUQuickControlRingSliderView *)self gradationMarkingViews];
+        [gradationMarkingViews3 addObject:v23];
 
-        v37 = [(HUQuickControlRingSliderView *)self markingValuesAndViewsDictionary];
-        [v37 setObject:v23 forKey:v18];
+        markingValuesAndViewsDictionary = [(HUQuickControlRingSliderView *)self markingValuesAndViewsDictionary];
+        [markingValuesAndViewsDictionary setObject:v23 forKey:v18];
 
         ++v15;
       }
@@ -873,20 +873,20 @@ LABEL_34:
 - (void)_updateSupplementaryValueMarkingView
 {
   v38 = *MEMORY[0x277D85DE8];
-  v3 = [(HUQuickControlRingSliderView *)self profile];
-  if (![v3 shouldShowSupplementaryValue] || (-[HUQuickControlRingSliderView supplementaryValue](self, "supplementaryValue"), v4 > 1.0))
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  if (![profile shouldShowSupplementaryValue] || (-[HUQuickControlRingSliderView supplementaryValue](self, "supplementaryValue"), v4 > 1.0))
   {
 
 LABEL_4:
-    v30 = [(HUQuickControlRingSliderView *)self supplementaryValueMarkingView];
-    [v30 setHidden:1];
+    supplementaryValueMarkingView = [(HUQuickControlRingSliderView *)self supplementaryValueMarkingView];
+    [supplementaryValueMarkingView setHidden:1];
 
     return;
   }
 
-  v5 = [(HUQuickControlRingSliderView *)self showOffState];
+  showOffState = [(HUQuickControlRingSliderView *)self showOffState];
 
-  if (v5)
+  if (showOffState)
   {
     goto LABEL_4;
   }
@@ -895,12 +895,12 @@ LABEL_4:
   [(HUQuickControlRingSliderView *)self _getAngleFrom12OClockForValue:?];
   v7 = v6;
   [(HUQuickControlRingSliderView *)self _getPointForAngleFrom12OClock:?];
-  v8 = [(HUQuickControlRingSliderView *)self gradationMarkingViews];
-  v9 = [v8 firstObject];
+  gradationMarkingViews = [(HUQuickControlRingSliderView *)self gradationMarkingViews];
+  firstObject = [gradationMarkingViews firstObject];
 
-  v10 = [(HUQuickControlRingSliderView *)self gradationMarkingViews];
-  v11 = [v10 firstObject];
-  [v11 center];
+  gradationMarkingViews2 = [(HUQuickControlRingSliderView *)self gradationMarkingViews];
+  firstObject2 = [gradationMarkingViews2 firstObject];
+  [firstObject2 center];
   UIDistanceBetweenPoints();
   v13 = v12;
 
@@ -908,8 +908,8 @@ LABEL_4:
   v36 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v14 = [(HUQuickControlRingSliderView *)self gradationMarkingViews];
-  v15 = [v14 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  gradationMarkingViews3 = [(HUQuickControlRingSliderView *)self gradationMarkingViews];
+  v15 = [gradationMarkingViews3 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v15)
   {
     v16 = v15;
@@ -920,7 +920,7 @@ LABEL_4:
       {
         if (*v34 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(gradationMarkingViews3);
         }
 
         v19 = *(*(&v33 + 1) + 8 * i);
@@ -932,23 +932,23 @@ LABEL_4:
           v22 = v19;
 
           v13 = v21;
-          v9 = v22;
+          firstObject = v22;
         }
       }
 
-      v16 = [v14 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v16 = [gradationMarkingViews3 countByEnumeratingWithState:&v33 objects:v37 count:16];
     }
 
     while (v16);
   }
 
-  if (v9)
+  if (firstObject)
   {
-    [v9 center];
+    [firstObject center];
     v24 = v23;
     v26 = v25;
-    v27 = [(HUQuickControlRingSliderView *)self supplementaryValueMarkingView];
-    [v27 setCenter:{v24, v26}];
+    supplementaryValueMarkingView2 = [(HUQuickControlRingSliderView *)self supplementaryValueMarkingView];
+    [supplementaryValueMarkingView2 setCenter:{v24, v26}];
   }
 
   v28 = *(MEMORY[0x277CBF2C0] + 16);
@@ -956,9 +956,9 @@ LABEL_4:
   *&v31.c = v28;
   *&v31.tx = *(MEMORY[0x277CBF2C0] + 32);
   CGAffineTransformRotate(&v32, &v31, v7);
-  v29 = [(HUQuickControlRingSliderView *)self supplementaryValueMarkingView];
+  supplementaryValueMarkingView3 = [(HUQuickControlRingSliderView *)self supplementaryValueMarkingView];
   v31 = v32;
-  [v29 setTransform:&v31];
+  [supplementaryValueMarkingView3 setTransform:&v31];
 
   [(HUQuickControlRingSliderView *)self _updateSupplementaryValueMarkingViewColor];
 }
@@ -970,8 +970,8 @@ LABEL_4:
     goto LABEL_10;
   }
 
-  v3 = [(HUQuickControlRingSliderView *)self profile];
-  if (([v3 shouldShowSupplementaryValue] & 1) == 0)
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  if (([profile shouldShowSupplementaryValue] & 1) == 0)
   {
 
     goto LABEL_10;
@@ -983,8 +983,8 @@ LABEL_4:
   if (v5 > 1.0)
   {
 LABEL_10:
-    v21 = [(HUQuickControlRingSliderView *)self supplementaryValueMarkingView];
-    v24 = v21;
+    supplementaryValueMarkingView = [(HUQuickControlRingSliderView *)self supplementaryValueMarkingView];
+    v24 = supplementaryValueMarkingView;
     goto LABEL_11;
   }
 
@@ -1004,9 +1004,9 @@ LABEL_10:
   [(HUQuickControlRingSliderView *)self _getClosestMarkingValueToValue:?];
   v19 = v18;
   v20 = v15 + v13;
-  v21 = [(HUQuickControlRingSliderView *)self supplementaryValueMarkingView];
+  supplementaryValueMarkingView = [(HUQuickControlRingSliderView *)self supplementaryValueMarkingView];
   v22 = v19 < v17 || v19 > v20;
-  v24 = v21;
+  v24 = supplementaryValueMarkingView;
   if (!v22)
   {
     v23 = 0;
@@ -1016,13 +1016,13 @@ LABEL_10:
 LABEL_11:
   v23 = 1;
 LABEL_12:
-  [v21 setHidden:v23];
+  [supplementaryValueMarkingView setHidden:v23];
 }
 
 - (void)_updateRingViewAndHandleViews
 {
-  v3 = [(HUQuickControlRingSliderView *)self backgroundRingView];
-  [v3 frame];
+  backgroundRingView = [(HUQuickControlRingSliderView *)self backgroundRingView];
+  [backgroundRingView frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1033,35 +1033,35 @@ LABEL_12:
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(HUQuickControlRingSliderView *)self backgroundRingView];
-  [v20 setFrame:{v13, v15, v17, v19}];
+  backgroundRingView2 = [(HUQuickControlRingSliderView *)self backgroundRingView];
+  [backgroundRingView2 setFrame:{v13, v15, v17, v19}];
 
   [(HUQuickControlRingSliderView *)self bounds];
   v22 = v21;
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [(HUQuickControlRingSliderView *)self edgesAndColoredSupplementaryValueLineView];
-  [v29 setFrame:{v22, v24, v26, v28}];
+  edgesAndColoredSupplementaryValueLineView = [(HUQuickControlRingSliderView *)self edgesAndColoredSupplementaryValueLineView];
+  [edgesAndColoredSupplementaryValueLineView setFrame:{v22, v24, v26, v28}];
 
   [(HUQuickControlRingSliderView *)self bounds];
   v31 = v30;
   v33 = v32;
   v35 = v34;
   v37 = v36;
-  v38 = [(HUQuickControlRingSliderView *)self selectedRangeImageView];
-  [v38 setFrame:{v31, v33, v35, v37}];
+  selectedRangeImageView = [(HUQuickControlRingSliderView *)self selectedRangeImageView];
+  [selectedRangeImageView setFrame:{v31, v33, v35, v37}];
 
   [(HUQuickControlRingSliderView *)self bounds];
   v40 = v39;
   v42 = v41;
   v44 = v43;
   v46 = v45;
-  v47 = [(HUQuickControlRingSliderView *)self selectedRangeImageViewForEdges];
-  [v47 setFrame:{v40, v42, v44, v46}];
+  selectedRangeImageViewForEdges = [(HUQuickControlRingSliderView *)self selectedRangeImageViewForEdges];
+  [selectedRangeImageViewForEdges setFrame:{v40, v42, v44, v46}];
 
-  v48 = [(HUQuickControlRingSliderView *)self backgroundRingView];
-  [v48 frame];
+  backgroundRingView3 = [(HUQuickControlRingSliderView *)self backgroundRingView];
+  [backgroundRingView3 frame];
   v66.origin.x = v49;
   v66.origin.y = v50;
   v66.size.width = v51;
@@ -1080,28 +1080,28 @@ LABEL_12:
   [(HUQuickControlRingSliderView *)self _getCircleCenterPoint];
   v55 = v54;
   v57 = v56;
-  v58 = [(HUQuickControlRingSliderView *)self labelsBackgroundView];
-  [v58 setCenter:{v55, v57}];
+  labelsBackgroundView = [(HUQuickControlRingSliderView *)self labelsBackgroundView];
+  [labelsBackgroundView setCenter:{v55, v57}];
 
   [(HUQuickControlRingSliderView *)self _updatePrimaryHandleViewPositionToSliderValue];
-  v59 = [(HUQuickControlRingSliderView *)self secondaryHandleView];
-  v60 = [(HUQuickControlRingSliderView *)self profile];
-  if ([v60 hasSecondaryValue])
+  secondaryHandleView = [(HUQuickControlRingSliderView *)self secondaryHandleView];
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  if ([profile hasSecondaryValue])
   {
-    v61 = [(HUQuickControlRingSliderView *)self showOffState];
+    showOffState = [(HUQuickControlRingSliderView *)self showOffState];
   }
 
   else
   {
-    v61 = 1;
+    showOffState = 1;
   }
 
-  [v59 setHidden:v61];
+  [secondaryHandleView setHidden:showOffState];
 
-  v62 = [(HUQuickControlRingSliderView *)self profile];
-  v63 = [v62 hasSecondaryValue];
+  profile2 = [(HUQuickControlRingSliderView *)self profile];
+  hasSecondaryValue = [profile2 hasSecondaryValue];
 
-  if (v63)
+  if (hasSecondaryValue)
   {
     [(HUQuickControlRingSliderView *)self _updateSecondaryHandleViewPositionToSliderValue];
   }
@@ -1113,10 +1113,10 @@ LABEL_12:
 
 - (void)_updateTransform
 {
-  v3 = [(HUQuickControlRingSliderView *)self profile];
-  v4 = [v3 style];
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  style = [profile style];
 
-  if (v4)
+  if (style)
   {
     v9 = *(MEMORY[0x277CBF2C0] + 16);
     *&v12.a = *MEMORY[0x277CBF2C0];
@@ -1125,8 +1125,8 @@ LABEL_12:
     *&v12.tx = *(MEMORY[0x277CBF2C0] + 32);
     v8 = *&v12.tx;
     [(HUQuickControlRingSliderView *)self setTransform:&v12];
-    v5 = [(HUQuickControlRingSliderView *)self labelsBackgroundView];
-    v6 = v5;
+    labelsBackgroundView = [(HUQuickControlRingSliderView *)self labelsBackgroundView];
+    v6 = labelsBackgroundView;
     *&v12.a = v10;
     *&v12.c = v9;
     v7 = v8;
@@ -1138,15 +1138,15 @@ LABEL_12:
     v12 = v13;
     [(HUQuickControlRingSliderView *)self setTransform:&v12];
     CGAffineTransformMakeScale(&v11, -1.0, -1.0);
-    v5 = [(HUQuickControlRingSliderView *)self labelsBackgroundView];
-    v6 = v5;
+    labelsBackgroundView = [(HUQuickControlRingSliderView *)self labelsBackgroundView];
+    v6 = labelsBackgroundView;
     *&v12.a = *&v11.a;
     *&v12.c = *&v11.c;
     v7 = *&v11.tx;
   }
 
   *&v12.tx = v7;
-  [v5 setTransform:&v12];
+  [labelsBackgroundView setTransform:&v12];
 }
 
 - (void)_updatePrimaryHandleViewPositionToSliderValue
@@ -1156,8 +1156,8 @@ LABEL_12:
   [(HUQuickControlRingSliderView *)self _getHandleCenterOnRingForValue:?];
   v6 = v5;
   v8 = v7;
-  v9 = [(HUQuickControlRingSliderView *)self primaryHandleView];
-  [v9 setCenter:{v6, v8}];
+  primaryHandleView = [(HUQuickControlRingSliderView *)self primaryHandleView];
+  [primaryHandleView setCenter:{v6, v8}];
 
   [(HUQuickControlRingSliderView *)self _getAngleFrom12OClockForValue:v4];
   v10 = *(MEMORY[0x277CBF2C0] + 16);
@@ -1165,17 +1165,17 @@ LABEL_12:
   *&v13.c = v10;
   *&v13.tx = *(MEMORY[0x277CBF2C0] + 32);
   CGAffineTransformRotate(&v14, &v13, v11);
-  v12 = [(HUQuickControlRingSliderView *)self primaryHandleView];
+  primaryHandleView2 = [(HUQuickControlRingSliderView *)self primaryHandleView];
   v13 = v14;
-  [v12 setTransform:&v13];
+  [primaryHandleView2 setTransform:&v13];
 }
 
 - (void)_updateSecondaryHandleViewPositionToSliderValue
 {
-  v3 = [(HUQuickControlRingSliderView *)self profile];
-  v4 = [v3 hasSecondaryValue];
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  hasSecondaryValue = [profile hasSecondaryValue];
 
-  if ((v4 & 1) == 0)
+  if ((hasSecondaryValue & 1) == 0)
   {
     NSLog(&cfstr_SProfileHassec.isa, "[HUQuickControlRingSliderView _updateSecondaryHandleViewPositionToSliderValue]");
   }
@@ -1187,17 +1187,17 @@ LABEL_12:
   [(HUQuickControlRingSliderView *)self _getHandleCenterOnRingForValue:v6];
   v10 = v9;
   v12 = v11;
-  v13 = [(HUQuickControlRingSliderView *)self secondaryHandleView];
-  [v13 setCenter:{v10, v12}];
+  secondaryHandleView = [(HUQuickControlRingSliderView *)self secondaryHandleView];
+  [secondaryHandleView setCenter:{v10, v12}];
 
   v14 = *(MEMORY[0x277CBF2C0] + 16);
   *&v16.a = *MEMORY[0x277CBF2C0];
   *&v16.c = v14;
   *&v16.tx = *(MEMORY[0x277CBF2C0] + 32);
   CGAffineTransformRotate(&v17, &v16, v8);
-  v15 = [(HUQuickControlRingSliderView *)self secondaryHandleView];
+  secondaryHandleView2 = [(HUQuickControlRingSliderView *)self secondaryHandleView];
   v16 = v17;
-  [v15 setTransform:&v16];
+  [secondaryHandleView2 setTransform:&v16];
 }
 
 - (void)_maskBackgroundImageViewToRingShape
@@ -1213,43 +1213,43 @@ LABEL_12:
   v7 = MEMORY[0x277D75208];
   [(HUQuickControlRingSliderView *)self _getMiddleCircleRadius];
   v9 = [v7 bezierPathWithArcCenter:1 radius:*MEMORY[0x277CBF348] startAngle:*(MEMORY[0x277CBF348] + 8) endAngle:v8 clockwise:{v4, v6}];
-  v10 = [MEMORY[0x277CD9F90] layer];
-  [v10 setPath:{objc_msgSend(v9, "CGPath")}];
-  v11 = [MEMORY[0x277D75348] clearColor];
-  [v10 setFillColor:{objc_msgSend(v11, "CGColor")}];
+  layer = [MEMORY[0x277CD9F90] layer];
+  [layer setPath:{objc_msgSend(v9, "CGPath")}];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [layer setFillColor:{objc_msgSend(clearColor, "CGColor")}];
 
-  v12 = [MEMORY[0x277D75348] systemWhiteColor];
-  [v10 setStrokeColor:{objc_msgSend(v12, "CGColor")}];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  [layer setStrokeColor:{objc_msgSend(systemWhiteColor, "CGColor")}];
 
-  [v10 setLineWidth:35.0];
+  [layer setLineWidth:35.0];
   [(HUQuickControlRingSliderView *)self _getCircleCenterPoint];
-  [v10 setPosition:?];
-  v13 = [(HUQuickControlRingSliderView *)self backgroundRingView];
-  v14 = [v13 layer];
-  [v14 setMask:v10];
+  [layer setPosition:?];
+  backgroundRingView = [(HUQuickControlRingSliderView *)self backgroundRingView];
+  layer2 = [backgroundRingView layer];
+  [layer2 setMask:layer];
 
   [(HUQuickControlRingSliderView *)self _getInnerCircleRadius];
   v16 = v15;
-  v17 = [(HUQuickControlRingSliderView *)self profile];
-  v18 = [v17 gradationMarkingValues];
-  v19 = [v18 firstObject];
-  [v19 floatValue];
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  gradationMarkingValues = [profile gradationMarkingValues];
+  firstObject = [gradationMarkingValues firstObject];
+  [firstObject floatValue];
   v21 = v20;
 
-  v22 = [(HUQuickControlRingSliderView *)self profile];
-  v23 = [v22 gradationMarkingValues];
-  v24 = [v23 lastObject];
-  [v24 floatValue];
+  profile2 = [(HUQuickControlRingSliderView *)self profile];
+  gradationMarkingValues2 = [profile2 gradationMarkingValues];
+  lastObject = [gradationMarkingValues2 lastObject];
+  [lastObject floatValue];
   v26 = v25;
 
   v65 = 0u;
   v66 = 0u;
   v63 = 0u;
   v64 = 0u;
-  v27 = [(HUQuickControlRingSliderView *)self profile];
-  v28 = [v27 gradationMarkingValues];
+  profile3 = [(HUQuickControlRingSliderView *)self profile];
+  gradationMarkingValues3 = [profile3 gradationMarkingValues];
 
-  v29 = [v28 countByEnumeratingWithState:&v63 objects:v67 count:16];
+  v29 = [gradationMarkingValues3 countByEnumeratingWithState:&v63 objects:v67 count:16];
   if (v29)
   {
     v30 = v29;
@@ -1260,7 +1260,7 @@ LABEL_12:
       {
         if (*v64 != v31)
         {
-          objc_enumerationMutation(v28);
+          objc_enumerationMutation(gradationMarkingValues3);
         }
 
         v33 = *(*(&v63 + 1) + 8 * i);
@@ -1279,7 +1279,7 @@ LABEL_12:
         }
       }
 
-      v30 = [v28 countByEnumeratingWithState:&v63 objects:v67 count:16];
+      v30 = [gradationMarkingValues3 countByEnumeratingWithState:&v63 objects:v67 count:16];
     }
 
     while (v30);
@@ -1322,36 +1322,36 @@ LABEL_12:
   CGAffineTransformMakeTranslation(&v62, v16 * v52.__cosval, v16 * v52.__sinval);
   [v53 applyTransform:&v62];
   [v49 appendPath:v53];
-  v55 = [MEMORY[0x277CD9F90] layer];
-  [v55 setPath:{objc_msgSend(v49, "CGPath")}];
-  v56 = [MEMORY[0x277D75348] systemWhiteColor];
-  [v55 setFillColor:{objc_msgSend(v56, "CGColor")}];
+  layer3 = [MEMORY[0x277CD9F90] layer];
+  [layer3 setPath:{objc_msgSend(v49, "CGPath")}];
+  systemWhiteColor2 = [MEMORY[0x277D75348] systemWhiteColor];
+  [layer3 setFillColor:{objc_msgSend(systemWhiteColor2, "CGColor")}];
 
   [(HUQuickControlRingSliderView *)self _getCircleCenterPoint];
-  [v55 setPosition:?];
-  v57 = [(HUQuickControlRingSliderView *)self edgesAndColoredSupplementaryValueLineView];
-  v58 = [v57 layer];
-  [v58 setMask:v55];
+  [layer3 setPosition:?];
+  edgesAndColoredSupplementaryValueLineView = [(HUQuickControlRingSliderView *)self edgesAndColoredSupplementaryValueLineView];
+  layer4 = [edgesAndColoredSupplementaryValueLineView layer];
+  [layer4 setMask:layer3];
 }
 
-- (void)_updateUIWithTouchAtPoint:(CGPoint)a3 didTouchBegin:(BOOL)a4
+- (void)_updateUIWithTouchAtPoint:(CGPoint)point didTouchBegin:(BOOL)begin
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = [(HUQuickControlRingSliderView *)self profile];
-  v9 = [v8 hasSecondaryValue];
+  beginCopy = begin;
+  y = point.y;
+  x = point.x;
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  hasSecondaryValue = [profile hasSecondaryValue];
 
-  if (v9)
+  if (hasSecondaryValue)
   {
     if ([(HUQuickControlRingSliderView *)self isDraggingPrimaryHandleView])
     {
-      [(HUQuickControlRingSliderView *)self _updateUIForThresholdModeForPrimaryHandleViewWithTouchPoint:v4 didTouchBegin:x, y];
+      [(HUQuickControlRingSliderView *)self _updateUIForThresholdModeForPrimaryHandleViewWithTouchPoint:beginCopy didTouchBegin:x, y];
     }
 
     else if ([(HUQuickControlRingSliderView *)self isDraggingSecondaryHandleView])
     {
-      [(HUQuickControlRingSliderView *)self _updateUIForThresholdModeForSecondaryHandleViewWithTouchPoint:v4 didTouchBegin:x, y];
+      [(HUQuickControlRingSliderView *)self _updateUIForThresholdModeForSecondaryHandleViewWithTouchPoint:beginCopy didTouchBegin:x, y];
     }
   }
 
@@ -1361,23 +1361,23 @@ LABEL_12:
     v11 = v10;
     [(HUQuickControlRingSliderView *)self _getMaximumMarkingValue];
     v13 = v12;
-    v14 = [(HUQuickControlRingSliderView *)self primaryHandleView];
-    [(HUQuickControlRingSliderView *)self _updateUIForTouchPoint:v4 didTouchBegin:v14 forHandleView:x minValue:y maxValue:v11, v13];
+    primaryHandleView = [(HUQuickControlRingSliderView *)self primaryHandleView];
+    [(HUQuickControlRingSliderView *)self _updateUIForTouchPoint:beginCopy didTouchBegin:primaryHandleView forHandleView:x minValue:y maxValue:v11, v13];
   }
 
   [(HUQuickControlRingSliderView *)self _updateSelectedRangeImageView];
 }
 
-- (void)_updateUIForTouchPoint:(CGPoint)a3 didTouchBegin:(BOOL)a4 forHandleView:(id)a5 minValue:(double)a6 maxValue:(double)a7
+- (void)_updateUIForTouchPoint:(CGPoint)point didTouchBegin:(BOOL)begin forHandleView:(id)view minValue:(double)value maxValue:(double)maxValue
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   v76 = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  [(HUQuickControlRingSliderView *)self _getAngleFrom12OClockForValue:a6];
+  viewCopy = view;
+  [(HUQuickControlRingSliderView *)self _getAngleFrom12OClockForValue:value];
   v14 = v13;
-  v61 = a7;
-  [(HUQuickControlRingSliderView *)self _getAngleFrom12OClockForValue:a7];
+  maxValueCopy = maxValue;
+  [(HUQuickControlRingSliderView *)self _getAngleFrom12OClockForValue:maxValue];
   v16 = v15;
   [(HUQuickControlRingSliderView *)self _getClosestPointOnMiddleCircleOfRing:x, y];
   v18 = v17;
@@ -1385,15 +1385,15 @@ LABEL_12:
   [(HUQuickControlRingSliderView *)self _getAngleFrom12OClockForPoint:?];
   v22 = v21;
   v23 = [HUQuickControlRingSliderView _getRingSliderAreaForAngleFrom12Oclock:"_getRingSliderAreaForAngleFrom12Oclock:minAngle:maxAngle:" minAngle:? maxAngle:?];
-  [v12 center];
+  [viewCopy center];
   [(HUQuickControlRingSliderView *)self _getAngleFrom12OClockForPoint:?];
   v24 = [HUQuickControlRingSliderView _getRingSliderAreaForAngleFrom12Oclock:"_getRingSliderAreaForAngleFrom12Oclock:minAngle:maxAngle:" minAngle:? maxAngle:?];
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v25 = [(HUQuickControlRingSliderView *)self gradationMarkingViews];
-  v26 = [v25 countByEnumeratingWithState:&v70 objects:v75 count:16];
+  gradationMarkingViews = [(HUQuickControlRingSliderView *)self gradationMarkingViews];
+  v26 = [gradationMarkingViews countByEnumeratingWithState:&v70 objects:v75 count:16];
   if (v26)
   {
     v27 = v26;
@@ -1406,7 +1406,7 @@ LABEL_12:
       {
         if (*v71 != v29)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(gradationMarkingViews);
         }
 
         v32 = *(*(&v70 + 1) + 8 * i);
@@ -1422,7 +1422,7 @@ LABEL_12:
         }
       }
 
-      v27 = [v25 countByEnumeratingWithState:&v70 objects:v75 count:16];
+      v27 = [gradationMarkingViews countByEnumeratingWithState:&v70 objects:v75 count:16];
     }
 
     while (v27);
@@ -1447,7 +1447,7 @@ LABEL_12:
 LABEL_13:
         [v28 center];
 LABEL_34:
-        [v12 setCenter:{v37, v38}];
+        [viewCopy setCenter:{v37, v38}];
         goto LABEL_35;
       }
 
@@ -1498,7 +1498,7 @@ LABEL_31:
 
   if ([(HUQuickControlRingSliderView *)self prevTouchArea]== 2 && (v23 == 1 || v22 < v14))
   {
-    v39 = self;
+    selfCopy2 = self;
     v40 = v14;
     goto LABEL_69;
   }
@@ -1510,20 +1510,20 @@ LABEL_31:
 
   if ([(HUQuickControlRingSliderView *)self prevTouchArea]== 2 && (v23 == 3 || v22 > v16))
   {
-    v39 = self;
+    selfCopy2 = self;
     v40 = v16;
 LABEL_69:
-    [(HUQuickControlRingSliderView *)v39 _getPointForAngleFrom12OClock:v40];
+    [(HUQuickControlRingSliderView *)selfCopy2 _getPointForAngleFrom12OClock:v40];
     goto LABEL_34;
   }
 
 LABEL_35:
-  v41 = [(HUQuickControlRingSliderView *)self profile];
-  v42 = [v41 handleViewStyle];
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  handleViewStyle = [profile handleViewStyle];
 
-  if (v42 == 2)
+  if (handleViewStyle == 2)
   {
-    [v12 center];
+    [viewCopy center];
     [(HUQuickControlRingSliderView *)self _getAngleFrom12OClockForPoint:?];
     v43 = *(MEMORY[0x277CBF2C0] + 16);
     *&v68.a = *MEMORY[0x277CBF2C0];
@@ -1531,11 +1531,11 @@ LABEL_35:
     *&v68.tx = *(MEMORY[0x277CBF2C0] + 32);
     CGAffineTransformRotate(&v69, &v68, v44);
     v68 = v69;
-    [v12 setTransform:&v68];
+    [viewCopy setTransform:&v68];
   }
 
   [(HUQuickControlRingSliderView *)self setPrevTouchArea:v23];
-  [(HUQuickControlRingSliderView *)self _animateToEnlargeHandleView:v12];
+  [(HUQuickControlRingSliderView *)self _animateToEnlargeHandleView:viewCopy];
   [(HUQuickControlRingSliderView *)self _getSliderValueForPoint:v18, v20];
   v46 = v45;
   [(HUQuickControlRingSliderView *)self prevSliderValue];
@@ -1563,18 +1563,18 @@ LABEL_35:
 
   if ([(HUQuickControlRingSliderView *)self _isIncreasingOrDecreasing:[(HUQuickControlRingSliderView *)self prevSlidingDirection]]&& [(HUQuickControlRingSliderView *)self _isIncreasingOrDecreasing:v47]&& [(HUQuickControlRingSliderView *)self prevSlidingDirection]!= v47)
   {
-    v48 = [(HUQuickControlRingSliderView *)self currentDirectionTapticValues];
-    [v48 removeAllObjects];
+    currentDirectionTapticValues = [(HUQuickControlRingSliderView *)self currentDirectionTapticValues];
+    [currentDirectionTapticValues removeAllObjects];
   }
 
   v66 = 0u;
   v67 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v49 = [(HUQuickControlRingSliderView *)self profile];
-  v50 = [v49 gradationMarkingValues];
+  profile2 = [(HUQuickControlRingSliderView *)self profile];
+  gradationMarkingValues = [profile2 gradationMarkingValues];
 
-  v51 = [v50 countByEnumeratingWithState:&v64 objects:v74 count:16];
+  v51 = [gradationMarkingValues countByEnumeratingWithState:&v64 objects:v74 count:16];
   if (v51)
   {
     v52 = *v65;
@@ -1584,7 +1584,7 @@ LABEL_35:
       {
         if (*v65 != v52)
         {
-          objc_enumerationMutation(v50);
+          objc_enumerationMutation(gradationMarkingValues);
         }
 
         v54 = *(*(&v64 + 1) + 8 * j);
@@ -1600,7 +1600,7 @@ LABEL_35:
         }
       }
 
-      v51 = [v50 countByEnumeratingWithState:&v64 objects:v74 count:16];
+      v51 = [gradationMarkingValues countByEnumeratingWithState:&v64 objects:v74 count:16];
       if (v51)
       {
         continue;
@@ -1612,23 +1612,23 @@ LABEL_35:
 
 LABEL_59:
 
-  if (v51 && v46 >= a6 && v46 <= v61)
+  if (v51 && v46 >= value && v46 <= maxValueCopy)
   {
-    v57 = [(HUQuickControlRingSliderView *)self currentDirectionTapticValues];
+    currentDirectionTapticValues2 = [(HUQuickControlRingSliderView *)self currentDirectionTapticValues];
     v62[0] = MEMORY[0x277D85DD0];
     v62[1] = 3221225472;
     v62[2] = __101__HUQuickControlRingSliderView__updateUIForTouchPoint_didTouchBegin_forHandleView_minValue_maxValue___block_invoke;
     v62[3] = &unk_277DBEC28;
     v58 = v51;
     v63 = v58;
-    v59 = [v57 na_any:v62];
+    v59 = [currentDirectionTapticValues2 na_any:v62];
 
     if ((v59 & 1) == 0)
     {
       [(HUQuickControlRingSliderView *)self _prepareForTapticFeedback];
       [(HUQuickControlRingSliderView *)self _actuateSelectionTapticFeedback];
-      v60 = [(HUQuickControlRingSliderView *)self currentDirectionTapticValues];
-      [v60 addObject:v58];
+      currentDirectionTapticValues3 = [(HUQuickControlRingSliderView *)self currentDirectionTapticValues];
+      [currentDirectionTapticValues3 addObject:v58];
     }
   }
 
@@ -1639,28 +1639,28 @@ LABEL_59:
   }
 }
 
-- (void)_updateUIForThresholdModeForPrimaryHandleViewWithTouchPoint:(CGPoint)a3 didTouchBegin:(BOOL)a4
+- (void)_updateUIForThresholdModeForPrimaryHandleViewWithTouchPoint:(CGPoint)point didTouchBegin:(BOOL)begin
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  beginCopy = begin;
+  y = point.y;
+  x = point.x;
   v44 = *MEMORY[0x277D85DE8];
-  v8 = [(HUQuickControlRingSliderView *)self profile];
-  v9 = [v8 hasSecondaryValue];
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  hasSecondaryValue = [profile hasSecondaryValue];
 
-  if (v9)
+  if (hasSecondaryValue)
   {
     [(HUQuickControlRingSliderView *)self _getSecondarySliderValue];
     v11 = v10;
-    v12 = [(HUQuickControlRingSliderView *)self profile];
-    v13 = [v12 handleViewStyle];
+    profile2 = [(HUQuickControlRingSliderView *)self profile];
+    handleViewStyle = [profile2 handleViewStyle];
 
-    if (v13 == 1)
+    if (handleViewStyle == 1)
     {
       [(HUQuickControlRingSliderView *)self _getSecondarySliderValue];
       v15 = v14;
-      v16 = [(HUQuickControlRingSliderView *)self primaryHandleView];
-      [v16 outerRadius];
+      primaryHandleView = [(HUQuickControlRingSliderView *)self primaryHandleView];
+      [primaryHandleView outerRadius];
       v18 = v17 * 3.14159265;
       [(HUQuickControlRingSliderView *)self outerRadius];
       v11 = v15 + v18 / (v19 * 3.14159265 + v19 * 3.14159265);
@@ -1668,10 +1668,10 @@ LABEL_59:
 
     else
     {
-      v21 = [(HUQuickControlRingSliderView *)self profile];
-      v22 = [v21 handleViewStyle];
+      profile3 = [(HUQuickControlRingSliderView *)self profile];
+      handleViewStyle2 = [profile3 handleViewStyle];
 
-      if (v22 == 2)
+      if (handleViewStyle2 == 2)
       {
         [(HUQuickControlRingSliderView *)self modelRangeValue];
         [(HUQuickControlRingSliderView *)self _getClosestMarkingValueToValue:?];
@@ -1692,14 +1692,14 @@ LABEL_59:
     v31 = v30;
     [(HUQuickControlRingSliderView *)self _getMaximumMarkingValue];
     v33 = v32;
-    v34 = [(HUQuickControlRingSliderView *)self profile];
-    v35 = [v34 primaryValueConstraints];
-    v36 = [v35 minValue];
-    [v36 floatValue];
+    profile4 = [(HUQuickControlRingSliderView *)self profile];
+    primaryValueConstraints = [profile4 primaryValueConstraints];
+    minValue = [primaryValueConstraints minValue];
+    [minValue floatValue];
     v38 = fmax(fmax(v31, v11), v37);
 
-    v39 = [(HUQuickControlRingSliderView *)self primaryHandleView];
-    [(HUQuickControlRingSliderView *)self _updateUIForTouchPoint:v4 didTouchBegin:x forHandleView:y minValue:v38 maxValue:v33];
+    primaryHandleView2 = [(HUQuickControlRingSliderView *)self primaryHandleView];
+    [(HUQuickControlRingSliderView *)self _updateUIForTouchPoint:beginCopy didTouchBegin:x forHandleView:y minValue:v38 maxValue:v33];
   }
 
   else
@@ -1716,28 +1716,28 @@ LABEL_59:
   }
 }
 
-- (void)_updateUIForThresholdModeForSecondaryHandleViewWithTouchPoint:(CGPoint)a3 didTouchBegin:(BOOL)a4
+- (void)_updateUIForThresholdModeForSecondaryHandleViewWithTouchPoint:(CGPoint)point didTouchBegin:(BOOL)begin
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
+  beginCopy = begin;
+  y = point.y;
+  x = point.x;
   v45 = *MEMORY[0x277D85DE8];
-  v8 = [(HUQuickControlRingSliderView *)self profile];
-  v9 = [v8 hasSecondaryValue];
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  hasSecondaryValue = [profile hasSecondaryValue];
 
-  if (v9)
+  if (hasSecondaryValue)
   {
     [(HUQuickControlRingSliderView *)self _getPrimarySliderValue];
     v11 = v10;
-    v12 = [(HUQuickControlRingSliderView *)self profile];
-    v13 = [v12 handleViewStyle];
+    profile2 = [(HUQuickControlRingSliderView *)self profile];
+    handleViewStyle = [profile2 handleViewStyle];
 
-    if (v13 == 1)
+    if (handleViewStyle == 1)
     {
       [(HUQuickControlRingSliderView *)self _getPrimarySliderValue];
       v15 = v14;
-      v16 = [(HUQuickControlRingSliderView *)self secondaryHandleView];
-      [v16 outerRadius];
+      secondaryHandleView = [(HUQuickControlRingSliderView *)self secondaryHandleView];
+      [secondaryHandleView outerRadius];
       v18 = v17 * 3.14159265;
       [(HUQuickControlRingSliderView *)self outerRadius];
       v11 = v15 - v18 / (v19 * 3.14159265 + v19 * 3.14159265);
@@ -1745,10 +1745,10 @@ LABEL_59:
 
     else
     {
-      v21 = [(HUQuickControlRingSliderView *)self profile];
-      v22 = [v21 handleViewStyle];
+      profile3 = [(HUQuickControlRingSliderView *)self profile];
+      handleViewStyle2 = [profile3 handleViewStyle];
 
-      if (v22 == 2)
+      if (handleViewStyle2 == 2)
       {
         [(HUQuickControlRingSliderView *)self modelRangeValue];
         [(HUQuickControlRingSliderView *)self _getClosestMarkingValueToValue:?];
@@ -1769,15 +1769,15 @@ LABEL_59:
     v31 = v30;
     [(HUQuickControlRingSliderView *)self _getMaximumMarkingValue];
     v33 = v32;
-    v34 = [(HUQuickControlRingSliderView *)self profile];
-    v35 = [v34 secondaryValueConstraints];
-    v36 = [v35 maxValue];
-    [v36 floatValue];
+    profile4 = [(HUQuickControlRingSliderView *)self profile];
+    secondaryValueConstraints = [profile4 secondaryValueConstraints];
+    maxValue = [secondaryValueConstraints maxValue];
+    [maxValue floatValue];
     [(HUQuickControlRingSliderView *)self _getClosestMarkingValueToValue:v37];
     v39 = fmin(fmin(v38, v11), v33);
 
-    v40 = [(HUQuickControlRingSliderView *)self secondaryHandleView];
-    [(HUQuickControlRingSliderView *)self _updateUIForTouchPoint:v4 didTouchBegin:x forHandleView:y minValue:v31 maxValue:v39];
+    secondaryHandleView2 = [(HUQuickControlRingSliderView *)self secondaryHandleView];
+    [(HUQuickControlRingSliderView *)self _updateUIForTouchPoint:beginCopy didTouchBegin:x forHandleView:y minValue:v31 maxValue:v39];
   }
 
   else
@@ -1794,13 +1794,13 @@ LABEL_59:
   }
 }
 
-- (void)_animateToEnlargeHandleView:(id)a3
+- (void)_animateToEnlargeHandleView:(id)view
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  viewCopy = view;
+  v4 = viewCopy;
+  if (viewCopy)
   {
-    [v3 transform];
+    [viewCopy transform];
   }
 
   else
@@ -1855,22 +1855,22 @@ uint64_t __60__HUQuickControlRingSliderView__animateToEnlargeHandleView___block_
 
 - (CGSize)_getEdgeRectSize
 {
-  v3 = [(HUQuickControlRingSliderView *)self profile];
-  v4 = [v3 gradationMarkingValues];
-  v5 = [v4 count];
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  gradationMarkingValues = [profile gradationMarkingValues];
+  v5 = [gradationMarkingValues count];
 
   v6 = 0.0;
   if (v5 >= 2)
   {
-    v7 = [(HUQuickControlRingSliderView *)self profile];
-    v8 = [v7 gradationMarkingValues];
-    v9 = [v8 objectAtIndexedSubscript:1];
+    profile2 = [(HUQuickControlRingSliderView *)self profile];
+    gradationMarkingValues2 = [profile2 gradationMarkingValues];
+    v9 = [gradationMarkingValues2 objectAtIndexedSubscript:1];
     [v9 floatValue];
     v11 = v10;
-    v12 = [(HUQuickControlRingSliderView *)self profile];
-    v13 = [v12 gradationMarkingValues];
-    v14 = [v13 firstObject];
-    [v14 floatValue];
+    profile3 = [(HUQuickControlRingSliderView *)self profile];
+    gradationMarkingValues3 = [profile3 gradationMarkingValues];
+    firstObject = [gradationMarkingValues3 firstObject];
+    [firstObject floatValue];
     v6 = (v11 - v15);
   }
 
@@ -1888,24 +1888,24 @@ uint64_t __60__HUQuickControlRingSliderView__animateToEnlargeHandleView___block_
   return result;
 }
 
-- (double)_getStartAngleEdgeLocationShiftForBackgroundRing:(BOOL)a3
+- (double)_getStartAngleEdgeLocationShiftForBackgroundRing:(BOOL)ring
 {
-  v3 = a3;
-  v4 = [(HUQuickControlRingSliderView *)self profile];
-  v5 = [v4 controlSize];
+  ringCopy = ring;
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  controlSize = [profile controlSize];
 
-  if (v5 - 2 < 2)
+  if (controlSize - 2 < 2)
   {
     return -0.004;
   }
 
-  if (v5 > 1)
+  if (controlSize > 1)
   {
     return 0.0;
   }
 
   result = -0.005;
-  if (v3)
+  if (ringCopy)
   {
     return -0.001;
   }
@@ -1916,21 +1916,21 @@ uint64_t __60__HUQuickControlRingSliderView__animateToEnlargeHandleView___block_
 - (double)_getOneMarkerValueDifference
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(HUQuickControlRingSliderView *)self profile];
-  v4 = [v3 gradationMarkingValues];
-  v5 = [v4 count];
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  gradationMarkingValues = [profile gradationMarkingValues];
+  v5 = [gradationMarkingValues count];
 
   if (v5 < 2)
   {
     v21 = HFLogForCategory();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [(HUQuickControlRingSliderView *)self profile];
-      v23 = [v22 gradationMarkingValues];
+      profile2 = [(HUQuickControlRingSliderView *)self profile];
+      gradationMarkingValues2 = [profile2 gradationMarkingValues];
       v25 = 136315394;
       v26 = "[HUQuickControlRingSliderView _getOneMarkerValueDifference]";
       v27 = 2048;
-      v28 = [v23 count];
+      v28 = [gradationMarkingValues2 count];
       _os_log_impl(&dword_20CEB6000, v21, OS_LOG_TYPE_DEFAULT, "%s. profile gradation marking values count is %lu, not above 2", &v25, 0x16u);
     }
 
@@ -1939,13 +1939,13 @@ uint64_t __60__HUQuickControlRingSliderView__animateToEnlargeHandleView___block_
 
   else
   {
-    v6 = [(HUQuickControlRingSliderView *)self profile];
-    v7 = [v6 gradationMarkingValues];
-    v8 = [v7 objectAtIndexedSubscript:0];
+    profile3 = [(HUQuickControlRingSliderView *)self profile];
+    gradationMarkingValues3 = [profile3 gradationMarkingValues];
+    v8 = [gradationMarkingValues3 objectAtIndexedSubscript:0];
 
-    v9 = [(HUQuickControlRingSliderView *)self profile];
-    v10 = [v9 gradationMarkingValues];
-    v11 = [v10 objectAtIndexedSubscript:1];
+    profile4 = [(HUQuickControlRingSliderView *)self profile];
+    gradationMarkingValues4 = [profile4 gradationMarkingValues];
+    v11 = [gradationMarkingValues4 objectAtIndexedSubscript:1];
 
     [v8 floatValue];
     v13 = v12;
@@ -1985,20 +1985,20 @@ uint64_t __60__HUQuickControlRingSliderView__animateToEnlargeHandleView___block_
   [(HUQuickControlRingSliderView *)self _getEdgeRectSize];
   v65 = v4;
   v66 = v3;
-  v5 = [(HUQuickControlRingSliderView *)self profile];
-  v6 = [v5 gradationMarkingValues];
-  v7 = [v6 firstObject];
-  [v7 floatValue];
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  gradationMarkingValues = [profile gradationMarkingValues];
+  firstObject = [gradationMarkingValues firstObject];
+  [firstObject floatValue];
   v9 = v8;
 
   v71 = 0u;
   v72 = 0u;
   v69 = 0u;
   v70 = 0u;
-  v10 = [(HUQuickControlRingSliderView *)self profile];
-  v11 = [v10 gradationMarkingValues];
+  profile2 = [(HUQuickControlRingSliderView *)self profile];
+  gradationMarkingValues2 = [profile2 gradationMarkingValues];
 
-  v12 = [v11 countByEnumeratingWithState:&v69 objects:v73 count:16];
+  v12 = [gradationMarkingValues2 countByEnumeratingWithState:&v69 objects:v73 count:16];
   if (v12)
   {
     v13 = v12;
@@ -2009,7 +2009,7 @@ uint64_t __60__HUQuickControlRingSliderView__animateToEnlargeHandleView___block_
       {
         if (*v70 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(gradationMarkingValues2);
         }
 
         v16 = *(*(&v69 + 1) + 8 * i);
@@ -2021,14 +2021,14 @@ uint64_t __60__HUQuickControlRingSliderView__animateToEnlargeHandleView___block_
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v69 objects:v73 count:16];
+      v13 = [gradationMarkingValues2 countByEnumeratingWithState:&v69 objects:v73 count:16];
     }
 
     while (v13);
   }
 
-  v19 = [(HUQuickControlRingSliderView *)self profile];
-  if ([v19 hasSecondaryValue])
+  profile3 = [(HUQuickControlRingSliderView *)self profile];
+  if ([profile3 hasSecondaryValue])
   {
     [(HUQuickControlRingSliderView *)self _getSecondarySliderValue];
     v9 = v20;
@@ -2047,8 +2047,8 @@ uint64_t __60__HUQuickControlRingSliderView__animateToEnlargeHandleView___block_
 
   else
   {
-    v58 = [(HUQuickControlRingSliderView *)self primaryHandleView];
-    [v58 center];
+    primaryHandleView = [(HUQuickControlRingSliderView *)self primaryHandleView];
+    [primaryHandleView center];
     [(HUQuickControlRingSliderView *)self _getAngleFrom12OClockForPoint:?];
     v24 = v59;
   }
@@ -2057,23 +2057,23 @@ uint64_t __60__HUQuickControlRingSliderView__animateToEnlargeHandleView___block_
   v27 = fmodf(v26, 6.2832);
   v28 = v22 + 4.71238898;
   v64 = fmodf(v28, 6.2832);
-  v29 = [MEMORY[0x277CD9F90] layer];
+  layer = [MEMORY[0x277CD9F90] layer];
   [(HUQuickControlRingSliderView *)self _getMiddleCircleRadius];
   v63 = v30;
   v31 = [MEMORY[0x277D75208] bezierPathWithArcCenter:1 radius:*MEMORY[0x277CBF348] startAngle:*(MEMORY[0x277CBF348] + 8) endAngle:? clockwise:?];
-  [v29 setLineWidth:35.0];
+  [layer setLineWidth:35.0];
   [(HUQuickControlRingSliderView *)self _getCircleCenterPoint];
-  [v29 setPosition:?];
-  v32 = [MEMORY[0x277D75348] clearColor];
-  [v29 setFillColor:{objc_msgSend(v32, "CGColor")}];
+  [layer setPosition:?];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [layer setFillColor:{objc_msgSend(clearColor, "CGColor")}];
 
-  [v29 setPath:{objc_msgSend(v31, "CGPath")}];
+  [layer setPath:{objc_msgSend(v31, "CGPath")}];
   v33 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:1.0];
-  [v29 setStrokeColor:{objc_msgSend(v33, "CGColor")}];
+  [layer setStrokeColor:{objc_msgSend(v33, "CGColor")}];
 
-  v34 = [(HUQuickControlRingSliderView *)self selectedRangeImageView];
-  v35 = [v34 layer];
-  [v35 setMask:v29];
+  selectedRangeImageView = [(HUQuickControlRingSliderView *)self selectedRangeImageView];
+  layer2 = [selectedRangeImageView layer];
+  [layer2 setMask:layer];
 
   [(HUQuickControlRingSliderView *)self _updateSupplementaryValueMarkingViewColor];
   [(HUQuickControlRingSliderView *)self _getInnerCircleRadius];
@@ -2133,46 +2133,46 @@ uint64_t __60__HUQuickControlRingSliderView__animateToEnlargeHandleView___block_
     [v39 appendPath:v53];
   }
 
-  v54 = [MEMORY[0x277CD9F90] layer];
-  [v54 setPath:{objc_msgSend(v39, "CGPath")}];
-  v55 = [MEMORY[0x277D75348] systemWhiteColor];
-  [v54 setFillColor:{objc_msgSend(v55, "CGColor")}];
+  layer3 = [MEMORY[0x277CD9F90] layer];
+  [layer3 setPath:{objc_msgSend(v39, "CGPath")}];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  [layer3 setFillColor:{objc_msgSend(systemWhiteColor, "CGColor")}];
 
   [(HUQuickControlRingSliderView *)self _getCircleCenterPoint];
-  [v54 setPosition:?];
-  v56 = [(HUQuickControlRingSliderView *)self selectedRangeImageViewForEdges];
-  v57 = [v56 layer];
-  [v57 setMask:v54];
+  [layer3 setPosition:?];
+  selectedRangeImageViewForEdges = [(HUQuickControlRingSliderView *)self selectedRangeImageViewForEdges];
+  layer4 = [selectedRangeImageViewForEdges layer];
+  [layer4 setMask:layer3];
 }
 
-- (double)_getClosestMarkingValueToValue:(double)a3
+- (double)_getClosestMarkingValueToValue:(double)value
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = [(HUQuickControlRingSliderView *)self profile];
-  v6 = [v5 gradationMarkingValues];
-  v7 = [v6 firstObject];
-  [v7 floatValue];
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  gradationMarkingValues = [profile gradationMarkingValues];
+  firstObject = [gradationMarkingValues firstObject];
+  [firstObject floatValue];
   v9 = v8;
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v10 = [(HUQuickControlRingSliderView *)self profile];
-  v11 = [v10 gradationMarkingValues];
+  profile2 = [(HUQuickControlRingSliderView *)self profile];
+  gradationMarkingValues2 = [profile2 gradationMarkingValues];
 
-  v12 = [v11 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v12 = [gradationMarkingValues2 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v12)
   {
     v13 = v12;
-    if (v9 >= a3)
+    if (v9 >= value)
     {
-      v14 = v9 - a3;
+      v14 = v9 - value;
     }
 
     else
     {
-      v14 = a3 - v9;
+      v14 = value - v9;
     }
 
     v15 = *v28;
@@ -2182,7 +2182,7 @@ uint64_t __60__HUQuickControlRingSliderView__animateToEnlargeHandleView___block_
       {
         if (*v28 != v15)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(gradationMarkingValues2);
         }
 
         v17 = *(*(&v27 + 1) + 8 * i);
@@ -2190,9 +2190,9 @@ uint64_t __60__HUQuickControlRingSliderView__animateToEnlargeHandleView___block_
         v19 = v18;
         [v17 floatValue];
         v21 = v20;
-        v22 = a3 - v21;
-        v23 = v21 - a3;
-        if (v19 >= a3)
+        v22 = value - v21;
+        v23 = v21 - value;
+        if (v19 >= value)
         {
           v24 = v23;
         }
@@ -2210,7 +2210,7 @@ uint64_t __60__HUQuickControlRingSliderView__animateToEnlargeHandleView___block_
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v13 = [gradationMarkingValues2 countByEnumeratingWithState:&v27 objects:v31 count:16];
     }
 
     while (v13);
@@ -2221,20 +2221,20 @@ uint64_t __60__HUQuickControlRingSliderView__animateToEnlargeHandleView___block_
 
 - (BOOL)_areHandleViewsAnimating
 {
-  v3 = [(HUQuickControlRingSliderView *)self primaryHandleView];
-  v4 = [v3 layer];
-  v5 = [v4 animationKeys];
-  if (v5)
+  primaryHandleView = [(HUQuickControlRingSliderView *)self primaryHandleView];
+  layer = [primaryHandleView layer];
+  animationKeys = [layer animationKeys];
+  if (animationKeys)
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(HUQuickControlRingSliderView *)self secondaryHandleView];
-    v8 = [v7 layer];
-    v9 = [v8 animationKeys];
-    v6 = v9 != 0;
+    secondaryHandleView = [(HUQuickControlRingSliderView *)self secondaryHandleView];
+    layer2 = [secondaryHandleView layer];
+    animationKeys2 = [layer2 animationKeys];
+    v6 = animationKeys2 != 0;
   }
 
   return v6;
@@ -2242,19 +2242,19 @@ uint64_t __60__HUQuickControlRingSliderView__animateToEnlargeHandleView___block_
 
 - (void)_updateModelValueWithSlidersPositions
 {
-  v3 = [(HUQuickControlRingSliderView *)self primaryHandleView];
-  [v3 center];
+  primaryHandleView = [(HUQuickControlRingSliderView *)self primaryHandleView];
+  [primaryHandleView center];
   [(HUQuickControlRingSliderView *)self _getSliderValueForPoint:?];
   v5 = v4;
 
-  v6 = [(HUQuickControlRingSliderView *)self profile];
-  v7 = [v6 hasSecondaryValue];
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  hasSecondaryValue = [profile hasSecondaryValue];
 
   v8 = 0.0;
-  if (v7)
+  if (hasSecondaryValue)
   {
-    v9 = [(HUQuickControlRingSliderView *)self secondaryHandleView];
-    [v9 center];
+    secondaryHandleView = [(HUQuickControlRingSliderView *)self secondaryHandleView];
+    [secondaryHandleView center];
     [(HUQuickControlRingSliderView *)self _getSliderValueForPoint:?];
     v8 = v10;
   }
@@ -2271,11 +2271,11 @@ uint64_t __60__HUQuickControlRingSliderView__animateToEnlargeHandleView___block_
 
   if ([(HUQuickControlRingSliderView *)self isDraggingPrimaryHandleView])
   {
-    v3 = [(HUQuickControlRingSliderView *)self primaryHandleView];
-    v4 = v3;
-    if (v3)
+    primaryHandleView = [(HUQuickControlRingSliderView *)self primaryHandleView];
+    v4 = primaryHandleView;
+    if (primaryHandleView)
     {
-      [v3 transform];
+      [primaryHandleView transform];
     }
 
     else
@@ -2291,7 +2291,7 @@ uint64_t __60__HUQuickControlRingSliderView__animateToEnlargeHandleView___block_
 
     if (!v6)
     {
-      v9 = [(HUQuickControlRingSliderView *)self primaryHandleView];
+      primaryHandleView2 = [(HUQuickControlRingSliderView *)self primaryHandleView];
       v10 = &_MergedGlobals_1_2;
 LABEL_16:
       *v10 = 1;
@@ -2301,11 +2301,11 @@ LABEL_16:
 
   if ([(HUQuickControlRingSliderView *)self isDraggingSecondaryHandleView])
   {
-    v7 = [(HUQuickControlRingSliderView *)self secondaryHandleView];
-    v8 = v7;
-    if (v7)
+    secondaryHandleView = [(HUQuickControlRingSliderView *)self secondaryHandleView];
+    v8 = secondaryHandleView;
+    if (secondaryHandleView)
     {
-      [v7 transform];
+      [secondaryHandleView transform];
     }
 
     else
@@ -2321,34 +2321,34 @@ LABEL_16:
 
     if (!v12)
     {
-      v9 = [(HUQuickControlRingSliderView *)self secondaryHandleView];
+      primaryHandleView2 = [(HUQuickControlRingSliderView *)self secondaryHandleView];
       v10 = (&_MergedGlobals_1_2 + 1);
       goto LABEL_16;
     }
   }
 
-  v9 = 0;
+  primaryHandleView2 = 0;
 LABEL_17:
   [(HUQuickControlRingSliderView *)self _actuateImpactTapticFeedback];
-  v13 = [(HUQuickControlRingSliderView *)self profile];
-  v14 = [v13 handleViewStyle];
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  handleViewStyle = [profile handleViewStyle];
 
-  if (v14 == 1)
+  if (handleViewStyle == 1)
   {
-    if (v9)
+    if (primaryHandleView2)
     {
-      [v9 frame];
+      [primaryHandleView2 frame];
       v16 = v15 * 0.3 * 0.5;
-      [v9 transform];
+      [primaryHandleView2 transform];
       CGAffineTransformTranslate(&v23, &t1, v16, v16);
       t1 = v23;
-      [v9 setTransform:&t1];
+      [primaryHandleView2 setTransform:&t1];
       v17 = MEMORY[0x277D75D18];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __43__HUQuickControlRingSliderView__touchEnded__block_invoke;
       v21[3] = &unk_277DB8488;
-      v22 = v9;
+      v22 = primaryHandleView2;
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __43__HUQuickControlRingSliderView__touchEnded__block_invoke_2;
@@ -2366,12 +2366,12 @@ LABEL_17:
   }
 
   [(HUQuickControlRingSliderView *)self setPrevTouchArea:0];
-  v18 = [(HUQuickControlRingSliderView *)self interactionDelegate];
-  [v18 controlView:self interactionStateDidChange:0 forFirstTouch:0];
+  interactionDelegate = [(HUQuickControlRingSliderView *)self interactionDelegate];
+  [interactionDelegate controlView:self interactionStateDidChange:0 forFirstTouch:0];
 
   [(HUQuickControlRingSliderView *)self setUserInteractionActive:0];
-  v19 = [(HUQuickControlRingSliderView *)self currentDirectionTapticValues];
-  [v19 removeAllObjects];
+  currentDirectionTapticValues = [(HUQuickControlRingSliderView *)self currentDirectionTapticValues];
+  [currentDirectionTapticValues removeAllObjects];
 }
 
 uint64_t __43__HUQuickControlRingSliderView__touchEnded__block_invoke(uint64_t a1)
@@ -2392,29 +2392,29 @@ uint64_t __43__HUQuickControlRingSliderView__touchEnded__block_invoke_2(uint64_t
   return result;
 }
 
-- (void)updateSupplementaryLabelWithString:(id)a3
+- (void)updateSupplementaryLabelWithString:(id)string
 {
-  v5 = a3;
-  if ([v5 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v4 = [(HUQuickControlRingSliderView *)self supplementaryLabel];
-    [v4 setText:v5];
+    supplementaryLabel = [(HUQuickControlRingSliderView *)self supplementaryLabel];
+    [supplementaryLabel setText:stringCopy];
 
     [(HUQuickControlRingSliderView *)self _updateLabelsSize];
   }
 }
 
-- (void)updatePrimaryLabelWithString:(id)a3 fontSize:(double)a4
+- (void)updatePrimaryLabelWithString:(id)string fontSize:(double)size
 {
-  v9 = a3;
-  if ([v9 length])
+  stringCopy = string;
+  if ([stringCopy length])
   {
-    v6 = [(HUQuickControlRingSliderView *)self primaryLabel];
-    [v6 setText:v9];
+    primaryLabel = [(HUQuickControlRingSliderView *)self primaryLabel];
+    [primaryLabel setText:stringCopy];
 
-    v7 = [MEMORY[0x277D74300] monospacedDigitSystemFontOfSize:a4 weight:*MEMORY[0x277D743F8]];
-    v8 = [(HUQuickControlRingSliderView *)self primaryLabel];
-    [v8 setFont:v7];
+    v7 = [MEMORY[0x277D74300] monospacedDigitSystemFontOfSize:size weight:*MEMORY[0x277D743F8]];
+    primaryLabel2 = [(HUQuickControlRingSliderView *)self primaryLabel];
+    [primaryLabel2 setFont:v7];
 
     [(HUQuickControlRingSliderView *)self _updateLabelsSize];
   }
@@ -2422,18 +2422,18 @@ uint64_t __43__HUQuickControlRingSliderView__touchEnded__block_invoke_2(uint64_t
 
 - (void)_updateLabelsSize
 {
-  v3 = [(HUQuickControlRingSliderView *)self supplementaryLabel];
-  [v3 sizeToFit];
+  supplementaryLabel = [(HUQuickControlRingSliderView *)self supplementaryLabel];
+  [supplementaryLabel sizeToFit];
 
-  v4 = [(HUQuickControlRingSliderView *)self primaryLabel];
-  [v4 sizeToFit];
+  primaryLabel = [(HUQuickControlRingSliderView *)self primaryLabel];
+  [primaryLabel sizeToFit];
 
   [(HUQuickControlRingSliderView *)self frame];
   v6 = v5 + -70.0;
   [(HUQuickControlRingSliderView *)self frame];
   v8 = v6 + v7 * -0.1 * 2.0;
-  v9 = [(HUQuickControlRingSliderView *)self supplementaryLabel];
-  [v9 frame];
+  supplementaryLabel2 = [(HUQuickControlRingSliderView *)self supplementaryLabel];
+  [supplementaryLabel2 frame];
   if (v10 > v8)
   {
     [(HUQuickControlRingSliderView *)self frame];
@@ -2444,19 +2444,19 @@ uint64_t __43__HUQuickControlRingSliderView__touchEnded__block_invoke_2(uint64_t
       goto LABEL_5;
     }
 
-    v13 = [(HUQuickControlRingSliderView *)self supplementaryLabel];
-    [v13 frame];
+    supplementaryLabel3 = [(HUQuickControlRingSliderView *)self supplementaryLabel];
+    [supplementaryLabel3 frame];
     v15 = v14;
     v17 = v16;
     v19 = v18;
 
-    v9 = [(HUQuickControlRingSliderView *)self supplementaryLabel];
-    [v9 setFrame:{v15, v17, v8, v19}];
+    supplementaryLabel2 = [(HUQuickControlRingSliderView *)self supplementaryLabel];
+    [supplementaryLabel2 setFrame:{v15, v17, v8, v19}];
   }
 
 LABEL_5:
-  v20 = [(HUQuickControlRingSliderView *)self primaryLabel];
-  [v20 frame];
+  primaryLabel2 = [(HUQuickControlRingSliderView *)self primaryLabel];
+  [primaryLabel2 frame];
   if (v21 > v8)
   {
     [(HUQuickControlRingSliderView *)self frame];
@@ -2467,23 +2467,23 @@ LABEL_5:
       goto LABEL_9;
     }
 
-    v24 = [(HUQuickControlRingSliderView *)self primaryLabel];
-    [v24 frame];
+    primaryLabel3 = [(HUQuickControlRingSliderView *)self primaryLabel];
+    [primaryLabel3 frame];
     v26 = v25;
     v28 = v27;
     v30 = v29;
 
-    v20 = [(HUQuickControlRingSliderView *)self primaryLabel];
-    [v20 setFrame:{v26, v28, v8, v30}];
+    primaryLabel2 = [(HUQuickControlRingSliderView *)self primaryLabel];
+    [primaryLabel2 setFrame:{v26, v28, v8, v30}];
   }
 
 LABEL_9:
-  v31 = [(HUQuickControlRingSliderView *)self supplementaryLabel];
-  [v31 frame];
+  supplementaryLabel4 = [(HUQuickControlRingSliderView *)self supplementaryLabel];
+  [supplementaryLabel4 frame];
   v33 = v32;
 
-  v34 = [(HUQuickControlRingSliderView *)self primaryLabel];
-  [v34 frame];
+  primaryLabel4 = [(HUQuickControlRingSliderView *)self primaryLabel];
+  [primaryLabel4 frame];
   v36 = v35 + 3.0;
 
   if (v33 < v36)
@@ -2491,11 +2491,11 @@ LABEL_9:
     v33 = v36;
   }
 
-  v37 = [(HUQuickControlRingSliderView *)self supplementaryLabel];
-  [v37 frame];
+  supplementaryLabel5 = [(HUQuickControlRingSliderView *)self supplementaryLabel];
+  [supplementaryLabel5 frame];
   v39 = v38;
-  v40 = [(HUQuickControlRingSliderView *)self primaryLabel];
-  [v40 frame];
+  primaryLabel5 = [(HUQuickControlRingSliderView *)self primaryLabel];
+  [primaryLabel5 frame];
   v42 = v39 + v41;
 
   [(HUQuickControlRingSliderView *)self _getCircleCenterPoint];
@@ -2503,35 +2503,35 @@ LABEL_9:
   v45 = v44 - v33 * 0.5;
   [(HUQuickControlRingSliderView *)self _getCircleCenterPoint];
   v47 = v46 - v42 * 0.5;
-  v48 = [(HUQuickControlRingSliderView *)self labelsBackgroundView];
-  [v48 setFrame:{v45, v47, v33, v42}];
+  labelsBackgroundView = [(HUQuickControlRingSliderView *)self labelsBackgroundView];
+  [labelsBackgroundView setFrame:{v45, v47, v33, v42}];
 
-  v49 = [(HUQuickControlRingSliderView *)self supplementaryLabel];
-  [v49 frame];
+  supplementaryLabel6 = [(HUQuickControlRingSliderView *)self supplementaryLabel];
+  [supplementaryLabel6 frame];
   v51 = v33 * 0.5 - v50 * 0.5;
 
-  v52 = [(HUQuickControlRingSliderView *)self supplementaryLabel];
-  [v52 frame];
+  supplementaryLabel7 = [(HUQuickControlRingSliderView *)self supplementaryLabel];
+  [supplementaryLabel7 frame];
   v54 = v53;
   v56 = v55;
 
-  v57 = [(HUQuickControlRingSliderView *)self supplementaryLabel];
-  [v57 setFrame:{v51, 0.0, v54, v56}];
+  supplementaryLabel8 = [(HUQuickControlRingSliderView *)self supplementaryLabel];
+  [supplementaryLabel8 setFrame:{v51, 0.0, v54, v56}];
 
-  v58 = [(HUQuickControlRingSliderView *)self primaryLabel];
-  [v58 frame];
+  primaryLabel6 = [(HUQuickControlRingSliderView *)self primaryLabel];
+  [primaryLabel6 frame];
   v60 = v43 - v59 * 0.5 + 3.0;
 
-  v61 = [(HUQuickControlRingSliderView *)self primaryLabel];
-  [v61 frame];
+  primaryLabel7 = [(HUQuickControlRingSliderView *)self primaryLabel];
+  [primaryLabel7 frame];
   v63 = v62;
 
-  v64 = [(HUQuickControlRingSliderView *)self primaryLabel];
-  [v64 frame];
+  primaryLabel8 = [(HUQuickControlRingSliderView *)self primaryLabel];
+  [primaryLabel8 frame];
   v66 = v65;
 
-  v67 = [(HUQuickControlRingSliderView *)self primaryLabel];
-  [v67 setFrame:{v60, v56, v63, v66}];
+  primaryLabel9 = [(HUQuickControlRingSliderView *)self primaryLabel];
+  [primaryLabel9 setFrame:{v60, v56, v63, v66}];
 }
 
 - (void)_prepareForTapticFeedback
@@ -2539,55 +2539,55 @@ LABEL_9:
   v3 = objc_alloc_init(MEMORY[0x277D75A10]);
   [(HUQuickControlRingSliderView *)self setSelectionFeedbackGenerator:v3];
 
-  v4 = [(HUQuickControlRingSliderView *)self selectionFeedbackGenerator];
-  [v4 prepare];
+  selectionFeedbackGenerator = [(HUQuickControlRingSliderView *)self selectionFeedbackGenerator];
+  [selectionFeedbackGenerator prepare];
 
   v5 = [objc_alloc(MEMORY[0x277D755F0]) initWithStyle:1];
   [(HUQuickControlRingSliderView *)self setImpactFeedbackGenerator:v5];
 
-  v6 = [(HUQuickControlRingSliderView *)self impactFeedbackGenerator];
-  [v6 prepare];
+  impactFeedbackGenerator = [(HUQuickControlRingSliderView *)self impactFeedbackGenerator];
+  [impactFeedbackGenerator prepare];
 }
 
 - (void)_actuateSelectionTapticFeedback
 {
-  v3 = [(HUQuickControlRingSliderView *)self selectionFeedbackGenerator];
-  [v3 selectionChanged];
+  selectionFeedbackGenerator = [(HUQuickControlRingSliderView *)self selectionFeedbackGenerator];
+  [selectionFeedbackGenerator selectionChanged];
 
-  v4 = [(HUQuickControlRingSliderView *)self selectionFeedbackGenerator];
-  [v4 prepare];
+  selectionFeedbackGenerator2 = [(HUQuickControlRingSliderView *)self selectionFeedbackGenerator];
+  [selectionFeedbackGenerator2 prepare];
 }
 
 - (void)_actuateImpactTapticFeedback
 {
-  v3 = [(HUQuickControlRingSliderView *)self impactFeedbackGenerator];
-  [v3 impactOccurred];
+  impactFeedbackGenerator = [(HUQuickControlRingSliderView *)self impactFeedbackGenerator];
+  [impactFeedbackGenerator impactOccurred];
 
-  v4 = [(HUQuickControlRingSliderView *)self impactFeedbackGenerator];
-  [v4 prepare];
+  impactFeedbackGenerator2 = [(HUQuickControlRingSliderView *)self impactFeedbackGenerator];
+  [impactFeedbackGenerator2 prepare];
 }
 
-- (double)_getSliderValueForAngleFrom12OClock:(double)a3
+- (double)_getSliderValueForAngleFrom12OClock:(double)clock
 {
-  [(HUQuickControlRingSliderView *)self _getPointForAngleFrom12OClock:a3];
+  [(HUQuickControlRingSliderView *)self _getPointForAngleFrom12OClock:clock];
 
   [(HUQuickControlRingSliderView *)self _getSliderValueForPoint:?];
   return result;
 }
 
-- (double)_getSliderValueForPoint:(CGPoint)a3
+- (double)_getSliderValueForPoint:(CGPoint)point
 {
-  [(HUQuickControlRingSliderView *)self _getAngleFrom12OClockForPoint:a3.x, a3.y];
+  [(HUQuickControlRingSliderView *)self _getAngleFrom12OClockForPoint:point.x, point.y];
   v5 = v4;
   [(HUQuickControlRingSliderView *)self _getPossibleAngleRange12OClock];
   return (v5 - v6) / (v7 - v6);
 }
 
-- (double)_getAngleFrom12OClockForValue:(double)a3
+- (double)_getAngleFrom12OClockForValue:(double)value
 {
-  v3 = a3;
+  valueCopy = value;
   v12 = *MEMORY[0x277D85DE8];
-  if (a3 < 0.0)
+  if (value < 0.0)
   {
     v5 = HFLogForCategory();
     v6 = 0.0;
@@ -2596,7 +2596,7 @@ LABEL_9:
       *v11 = 136315394;
       *&v11[4] = "[HUQuickControlRingSliderView _getAngleFrom12OClockForValue:]";
       *&v11[12] = 2048;
-      *&v11[14] = v3;
+      *&v11[14] = valueCopy;
       v7 = "(%s) value = %f when expected to be between 0.0 and 1.0. Adjusting it to 0.0";
 LABEL_9:
       _os_log_debug_impl(&dword_20CEB6000, v5, OS_LOG_TYPE_DEBUG, v7, v11, 0x16u);
@@ -2607,7 +2607,7 @@ LABEL_9:
   }
 
   v6 = 1.0;
-  if (a3 > 1.0)
+  if (value > 1.0)
   {
     v5 = HFLogForCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -2615,23 +2615,23 @@ LABEL_9:
       *v11 = 136315394;
       *&v11[4] = "[HUQuickControlRingSliderView _getAngleFrom12OClockForValue:]";
       *&v11[12] = 2048;
-      *&v11[14] = v3;
+      *&v11[14] = valueCopy;
       v7 = "(%s) value = %f when expected to be between 0.0 and 1.0. Adjusting it to 1.0";
       goto LABEL_9;
     }
 
 LABEL_6:
 
-    v3 = v6;
+    valueCopy = v6;
   }
 
   [(HUQuickControlRingSliderView *)self _getPossibleAngleRange12OClock:*v11];
-  return v9 + (v8 - v9) * v3;
+  return v9 + (v8 - v9) * valueCopy;
 }
 
-- (CGPoint)_getHandleCenterOnRingForValue:(double)a3
+- (CGPoint)_getHandleCenterOnRingForValue:(double)value
 {
-  [(HUQuickControlRingSliderView *)self _getAngleFrom12OClockForValue:a3];
+  [(HUQuickControlRingSliderView *)self _getAngleFrom12OClockForValue:value];
   v5 = v4;
   [(HUQuickControlRingSliderView *)self _getMiddleCircleRadius];
   v7 = v6;
@@ -2646,10 +2646,10 @@ LABEL_6:
   return result;
 }
 
-- (double)_getAngleFrom12OClockForPoint:(CGPoint)a3
+- (double)_getAngleFrom12OClockForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(HUQuickControlRingSliderView *)self bounds];
   if (v6 != 0.0 || ([(HUQuickControlRingSliderView *)self bounds], result = 0.0, v8 != 0.0))
   {
@@ -2704,11 +2704,11 @@ LABEL_6:
   return result;
 }
 
-- (CGPoint)_getPointForAngleFrom12OClock:(double)a3
+- (CGPoint)_getPointForAngleFrom12OClock:(double)clock
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = fmodf(v5, 6.2832);
+  clockCopy = clock;
+  v6 = fmodf(clockCopy, 6.2832);
   [(HUQuickControlRingSliderView *)self _getMiddleCircleRadius];
   if (v7 <= 0.0)
   {
@@ -2778,10 +2778,10 @@ LABEL_6:
   return result;
 }
 
-- (CGPoint)_getClosestPointOnMiddleCircleOfRing:(CGPoint)a3
+- (CGPoint)_getClosestPointOnMiddleCircleOfRing:(CGPoint)ring
 {
-  y = a3.y;
-  x = a3.x;
+  y = ring.y;
+  x = ring.x;
   [(HUQuickControlRingSliderView *)self outerRadius];
   v7 = v6 + -17.5;
   [(HUQuickControlRingSliderView *)self frame];
@@ -2796,63 +2796,63 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)_primaryHandleViewContainsPoint:(CGPoint)a3
+- (BOOL)_primaryHandleViewContainsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(HUQuickControlRingSliderView *)self primaryHandleView];
-  [v6 convertPoint:self fromView:{x, y}];
+  y = point.y;
+  x = point.x;
+  primaryHandleView = [(HUQuickControlRingSliderView *)self primaryHandleView];
+  [primaryHandleView convertPoint:self fromView:{x, y}];
   v8 = v7;
   v10 = v9;
 
-  v11 = [(HUQuickControlRingSliderView *)self primaryHandleView];
-  [v11 bounds];
+  primaryHandleView2 = [(HUQuickControlRingSliderView *)self primaryHandleView];
+  [primaryHandleView2 bounds];
   v13.x = v8;
   v13.y = v10;
-  LOBYTE(v6) = CGRectContainsPoint(v14, v13);
+  LOBYTE(primaryHandleView) = CGRectContainsPoint(v14, v13);
 
-  return v6;
+  return primaryHandleView;
 }
 
-- (BOOL)_secondaryHandleViewContainsPoint:(CGPoint)a3
+- (BOOL)_secondaryHandleViewContainsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(HUQuickControlRingSliderView *)self profile];
-  v7 = [v6 hasSecondaryValue];
+  y = point.y;
+  x = point.x;
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  hasSecondaryValue = [profile hasSecondaryValue];
 
-  if (!v7)
+  if (!hasSecondaryValue)
   {
     return 0;
   }
 
-  v8 = [(HUQuickControlRingSliderView *)self secondaryHandleView];
-  [v8 convertPoint:self fromView:{x, y}];
+  secondaryHandleView = [(HUQuickControlRingSliderView *)self secondaryHandleView];
+  [secondaryHandleView convertPoint:self fromView:{x, y}];
   v10 = v9;
   v12 = v11;
 
-  v13 = [(HUQuickControlRingSliderView *)self secondaryHandleView];
-  [v13 bounds];
+  secondaryHandleView2 = [(HUQuickControlRingSliderView *)self secondaryHandleView];
+  [secondaryHandleView2 bounds];
   v15.x = v10;
   v15.y = v12;
-  LOBYTE(v8) = CGRectContainsPoint(v16, v15);
+  LOBYTE(secondaryHandleView) = CGRectContainsPoint(v16, v15);
 
-  return v8;
+  return secondaryHandleView;
 }
 
-- (BOOL)_isPoint:(CGPoint)a3 withInMarginOfRing:(double)a4
+- (BOOL)_isPoint:(CGPoint)point withInMarginOfRing:(double)ring
 {
   [(HUQuickControlRingSliderView *)self _getCircleCenterPoint];
   UIDistanceBetweenPoints();
   v7 = v6;
   [(HUQuickControlRingSliderView *)self outerRadius];
-  if (v7 > v8 + a4)
+  if (v7 > v8 + ring)
   {
     return 0;
   }
 
   [(HUQuickControlRingSliderView *)self outerRadius];
-  return v7 >= v10 + -35.0 - a4;
+  return v7 >= v10 + -35.0 - ring;
 }
 
 - (CGPoint)_getCircleCenterPoint
@@ -2881,13 +2881,13 @@ LABEL_6:
 
 - (double)_getMinAngleFrom12OClock
 {
-  v2 = [(HUQuickControlRingSliderView *)self profile];
-  v3 = [v2 style];
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  style = [profile style];
 
   result = 0.0;
-  if (v3 <= 2)
+  if (style <= 2)
   {
-    return dbl_20D5CAD40[v3];
+    return dbl_20D5CAD40[style];
   }
 
   return result;
@@ -2895,10 +2895,10 @@ LABEL_6:
 
 - (double)_getMaxAngleFrom12OClock
 {
-  v3 = [(HUQuickControlRingSliderView *)self profile];
-  v4 = [v3 style];
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  style = [profile style];
 
-  if (v4 > 2)
+  if (style > 2)
   {
     return 6.28318531;
   }
@@ -2907,13 +2907,13 @@ LABEL_6:
   return 6.28318531 - v5;
 }
 
-- (unint64_t)_getRingSliderAreaForAngleFrom12Oclock:(double)a3 minAngle:(double)a4 maxAngle:(double)a5
+- (unint64_t)_getRingSliderAreaForAngleFrom12Oclock:(double)oclock minAngle:(double)angle maxAngle:(double)maxAngle
 {
-  v5 = a4 + -0.05;
-  if (a3 >= 0.0)
+  v5 = angle + -0.05;
+  if (oclock >= 0.0)
   {
-    v6 = v5 == a3;
-    v7 = v5 < a3;
+    v6 = v5 == oclock;
+    v7 = v5 < oclock;
   }
 
   else
@@ -2927,11 +2927,11 @@ LABEL_6:
     return 4;
   }
 
-  v8 = a4 + 0.05;
-  if (v5 <= a3)
+  v8 = angle + 0.05;
+  if (v5 <= oclock)
   {
-    v9 = v8 == a3;
-    v10 = v8 < a3;
+    v9 = v8 == oclock;
+    v10 = v8 < oclock;
   }
 
   else
@@ -2945,11 +2945,11 @@ LABEL_6:
     return 1;
   }
 
-  v11 = a5 + -0.05;
-  if (v8 <= a3)
+  v11 = maxAngle + -0.05;
+  if (v8 <= oclock)
   {
-    v12 = v11 == a3;
-    v13 = v11 < a3;
+    v12 = v11 == oclock;
+    v13 = v11 < oclock;
   }
 
   else
@@ -2963,16 +2963,16 @@ LABEL_6:
     return 2;
   }
 
-  v14 = a5 + 0.05;
-  if (v11 <= a3 && v14 >= a3)
+  v14 = maxAngle + 0.05;
+  if (v11 <= oclock && v14 >= oclock)
   {
     return 3;
   }
 
-  if (v14 < a3)
+  if (v14 < oclock)
   {
-    v17 = a3 == 6.28318531;
-    v16 = a3 >= 6.28318531;
+    v17 = oclock == 6.28318531;
+    v16 = oclock >= 6.28318531;
   }
 
   else
@@ -2992,26 +2992,26 @@ LABEL_6:
   }
 }
 
-- (unint64_t)_getRingSliderAreaForPoint:(CGPoint)a3
+- (unint64_t)_getRingSliderAreaForPoint:(CGPoint)point
 {
-  [(HUQuickControlRingSliderView *)self _getAngleFrom12OClockForPoint:a3.x, a3.y];
+  [(HUQuickControlRingSliderView *)self _getAngleFrom12OClockForPoint:point.x, point.y];
 
   return [(HUQuickControlRingSliderView *)self _getRingSliderAreaForAngleFrom12Oclock:?];
 }
 
-- (unint64_t)_getRingSliderAreaForAngleFrom12Oclock:(double)a3
+- (unint64_t)_getRingSliderAreaForAngleFrom12Oclock:(double)oclock
 {
   [(HUQuickControlRingSliderView *)self _getMinAngleFrom12OClock];
   v6 = v5;
   [(HUQuickControlRingSliderView *)self _getMaxAngleFrom12OClock];
 
-  return [(HUQuickControlRingSliderView *)self _getRingSliderAreaForAngleFrom12Oclock:a3 minAngle:v6 maxAngle:v7];
+  return [(HUQuickControlRingSliderView *)self _getRingSliderAreaForAngleFrom12Oclock:oclock minAngle:v6 maxAngle:v7];
 }
 
-- (void)handlePanGestureRecognizer:(id)a3
+- (void)handlePanGestureRecognizer:(id)recognizer
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recognizerCopy = recognizer;
   if ([(HUQuickControlRingSliderView *)self conformsToProtocol:&unk_2824F3238]&& (objc_opt_respondsToSelector() & 1) != 0 && (![(HUQuickControlRingSliderView *)self reachabilityState]|| [(HUQuickControlRingSliderView *)self reachabilityState]== 1))
   {
     v5 = HUQuickControlReachabilityString([(HUQuickControlRingSliderView *)self reachabilityState]);
@@ -3019,7 +3019,7 @@ LABEL_6:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v32 = 138412802;
-      v33 = self;
+      selfCopy = self;
       v34 = 2112;
       v35 = v5;
       v36 = 2080;
@@ -3030,13 +3030,13 @@ LABEL_6:
 
   else if (![(HUQuickControlRingSliderView *)self showOffState])
   {
-    [v4 locationInView:self];
+    [recognizerCopy locationInView:self];
     v8 = v7;
     v10 = v9;
-    v11 = [v4 state];
-    if ((v11 - 3) >= 3)
+    state = [recognizerCopy state];
+    if ((state - 3) >= 3)
     {
-      if (v11 == 2)
+      if (state == 2)
       {
         if (![(HUQuickControlRingSliderView *)self isUserInteractionActive])
         {
@@ -3044,7 +3044,7 @@ LABEL_6:
         }
 
         [(HUQuickControlRingSliderView *)self setUserInteractionActive:1];
-        v27 = self;
+        selfCopy3 = self;
         v28 = v8;
         v29 = v10;
         v30 = 0;
@@ -3052,7 +3052,7 @@ LABEL_6:
 
       else
       {
-        if (v11 != 1)
+        if (state != 1)
         {
           goto LABEL_9;
         }
@@ -3067,13 +3067,13 @@ LABEL_6:
 
         if ([(HUQuickControlRingSliderView *)self isDraggingPrimaryHandleView]&& [(HUQuickControlRingSliderView *)self isDraggingSecondaryHandleView])
         {
-          v12 = [(HUQuickControlRingSliderView *)self primaryHandleView];
-          [v12 center];
+          primaryHandleView = [(HUQuickControlRingSliderView *)self primaryHandleView];
+          [primaryHandleView center];
           UIDistanceBetweenPoints();
           v14 = v13;
 
-          v15 = [(HUQuickControlRingSliderView *)self secondaryHandleView];
-          [v15 center];
+          secondaryHandleView = [(HUQuickControlRingSliderView *)self secondaryHandleView];
+          [secondaryHandleView center];
           UIDistanceBetweenPoints();
           v17 = v16;
 
@@ -3088,10 +3088,10 @@ LABEL_6:
         [(HUQuickControlRingSliderView *)self _getClosestMarkingValueToValue:v20];
         if (v19 == v21)
         {
-          v22 = [(HUQuickControlRingSliderView *)self profile];
-          v23 = [v22 hasSecondaryValue];
+          profile = [(HUQuickControlRingSliderView *)self profile];
+          hasSecondaryValue = [profile hasSecondaryValue];
 
-          if (v23)
+          if (hasSecondaryValue)
           {
             [(HUQuickControlRingSliderView *)self _getMinimumMarkingValue];
             v25 = v24;
@@ -3105,21 +3105,21 @@ LABEL_6:
 
         if (![(HUQuickControlRingSliderView *)self isDraggingPrimaryHandleView]&& ![(HUQuickControlRingSliderView *)self isDraggingSecondaryHandleView])
         {
-          v31 = [(HUQuickControlRingSliderView *)self interactionDelegate];
-          [v31 controlView:self interactionStateDidChange:0 forFirstTouch:1];
+          interactionDelegate = [(HUQuickControlRingSliderView *)self interactionDelegate];
+          [interactionDelegate controlView:self interactionStateDidChange:0 forFirstTouch:1];
 
           [(HUQuickControlRingSliderView *)self setUserInteractionActive:0];
           goto LABEL_9;
         }
 
         [(HUQuickControlRingSliderView *)self setUserInteractionActive:1];
-        v27 = self;
+        selfCopy3 = self;
         v28 = v8;
         v29 = v10;
         v30 = 1;
       }
 
-      [(HUQuickControlRingSliderView *)v27 _updateUIWithTouchAtPoint:v30 didTouchBegin:v28, v29];
+      [(HUQuickControlRingSliderView *)selfCopy3 _updateUIWithTouchAtPoint:v30 didTouchBegin:v28, v29];
       [(HUQuickControlRingSliderView *)self _updateModelValueWithSlidersPositions];
       goto LABEL_9;
     }
@@ -3135,19 +3135,19 @@ LABEL_6:
 LABEL_9:
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v5 = a3;
-  v6 = [(HUQuickControlRingSliderView *)self longPressPanGestureRecognizer];
-  v7 = [v5 isEqual:v6];
+  recognizerCopy = recognizer;
+  longPressPanGestureRecognizer = [(HUQuickControlRingSliderView *)self longPressPanGestureRecognizer];
+  v7 = [recognizerCopy isEqual:longPressPanGestureRecognizer];
 
   if (!v7)
   {
     return 1;
   }
 
-  v8 = [(HUQuickControlRingSliderView *)self longPressPanGestureRecognizer];
-  [v8 locationInView:self];
+  longPressPanGestureRecognizer2 = [(HUQuickControlRingSliderView *)self longPressPanGestureRecognizer];
+  [longPressPanGestureRecognizer2 locationInView:self];
 
   [(HUQuickControlRingSliderView *)self _getCircleCenterPoint];
   UIDistanceBetweenPoints();
@@ -3165,20 +3165,20 @@ LABEL_9:
 - (double)_getMinimumMarkingValue
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(HUQuickControlRingSliderView *)self profile];
-  v4 = [v3 gradationMarkingValues];
-  v5 = [v4 firstObject];
-  [v5 floatValue];
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  gradationMarkingValues = [profile gradationMarkingValues];
+  firstObject = [gradationMarkingValues firstObject];
+  [firstObject floatValue];
   v7 = v6;
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [(HUQuickControlRingSliderView *)self profile];
-  v9 = [v8 gradationMarkingValues];
+  profile2 = [(HUQuickControlRingSliderView *)self profile];
+  gradationMarkingValues2 = [profile2 gradationMarkingValues];
 
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v10 = [gradationMarkingValues2 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -3189,7 +3189,7 @@ LABEL_9:
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(gradationMarkingValues2);
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
@@ -3201,7 +3201,7 @@ LABEL_9:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [gradationMarkingValues2 countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);
@@ -3213,20 +3213,20 @@ LABEL_9:
 - (double)_getMaximumMarkingValue
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = [(HUQuickControlRingSliderView *)self profile];
-  v4 = [v3 gradationMarkingValues];
-  v5 = [v4 firstObject];
-  [v5 floatValue];
+  profile = [(HUQuickControlRingSliderView *)self profile];
+  gradationMarkingValues = [profile gradationMarkingValues];
+  firstObject = [gradationMarkingValues firstObject];
+  [firstObject floatValue];
   v7 = v6;
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = [(HUQuickControlRingSliderView *)self profile];
-  v9 = [v8 gradationMarkingValues];
+  profile2 = [(HUQuickControlRingSliderView *)self profile];
+  gradationMarkingValues2 = [profile2 gradationMarkingValues];
 
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v10 = [gradationMarkingValues2 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -3237,7 +3237,7 @@ LABEL_9:
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(gradationMarkingValues2);
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
@@ -3249,7 +3249,7 @@ LABEL_9:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [gradationMarkingValues2 countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);

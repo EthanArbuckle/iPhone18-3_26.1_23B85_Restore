@@ -2,22 +2,22 @@
 - (BOOL)_shouldBoostWhitePoint;
 - (BOOL)needsGradientBackground;
 - (SBHIconImageStyleConfiguration)imageStyleConfiguration;
-- (SBHWidgetStyleManager)initWithWidgetViewController:(id)a3 widgetDataSource:(id)a4 gridSizeClass:(id)a5 iconImageInfo:(SBIconImageInfo *)a6 delegate:(id)a7;
+- (SBHWidgetStyleManager)initWithWidgetViewController:(id)controller widgetDataSource:(id)source gridSizeClass:(id)class iconImageInfo:(SBIconImageInfo *)info delegate:(id)delegate;
 - (SBHWidgetStyleManagerDelegate)delegate;
 - (id)backdropGroupName;
 - (id)displayedIconImageAppearance;
 - (id)effectiveWidgetViewController;
 - (id)imageAppearance;
-- (id)makeBackgroundViewForType:(int64_t)a3 frame:(CGRect)a4;
+- (id)makeBackgroundViewForType:(int64_t)type frame:(CGRect)frame;
 - (id)succinctDescription;
 - (id)widgetHostViewController;
 - (int64_t)userInterfaceStyle;
-- (void)_updateBackgroundViewForBackgroundType:(int64_t)a3;
-- (void)appendDescriptionToStream:(id)a3;
+- (void)_updateBackgroundViewForBackgroundType:(int64_t)type;
+- (void)appendDescriptionToStream:(id)stream;
 - (void)dealloc;
-- (void)setAllowsGlassGrouping:(BOOL)a3;
-- (void)setOverrideIconImageAppearance:(id)a3;
-- (void)setOverrideIconImageStyleConfiguration:(id)a3;
+- (void)setAllowsGlassGrouping:(BOOL)grouping;
+- (void)setOverrideIconImageAppearance:(id)appearance;
+- (void)setOverrideIconImageStyleConfiguration:(id)configuration;
 - (void)updateConfiguration;
 @end
 
@@ -25,119 +25,119 @@
 
 - (void)updateConfiguration
 {
-  v3 = [(SBHWidgetStyleManager *)self delegate];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v3 widgetStyleManagerShouldDelayConfiguration:self] & 1) == 0)
+  delegate = [(SBHWidgetStyleManager *)self delegate];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([delegate widgetStyleManagerShouldDelayConfiguration:self] & 1) == 0)
   {
-    v4 = [(SBHWidgetStyleManager *)self effectiveWidgetViewController];
-    v5 = [(SBHWidgetStyleManager *)self widgetHostViewController];
-    v6 = [v5 sbh_customDisplayConfiguration];
-    v7 = [(SBHWidgetStyleManager *)self imageStyleConfiguration];
-    v8 = [(SBHWidgetStyleManager *)self userInterfaceStyle];
-    v41 = v4;
-    if (v6)
+    effectiveWidgetViewController = [(SBHWidgetStyleManager *)self effectiveWidgetViewController];
+    widgetHostViewController = [(SBHWidgetStyleManager *)self widgetHostViewController];
+    sbh_customDisplayConfiguration = [widgetHostViewController sbh_customDisplayConfiguration];
+    imageStyleConfiguration = [(SBHWidgetStyleManager *)self imageStyleConfiguration];
+    userInterfaceStyle = [(SBHWidgetStyleManager *)self userInterfaceStyle];
+    v41 = effectiveWidgetViewController;
+    if (sbh_customDisplayConfiguration)
     {
-      v37 = [v6 colorScheme];
+      colorScheme = [sbh_customDisplayConfiguration colorScheme];
       v9 = 1;
     }
 
     else
     {
-      v9 = v8;
-      v10 = [v7 variant];
+      v9 = userInterfaceStyle;
+      variant = [imageStyleConfiguration variant];
       v11 = 2;
-      if (v10 != 1)
+      if (variant != 1)
       {
-        v11 = v10 == 0;
+        v11 = variant == 0;
       }
 
-      v37 = v11;
+      colorScheme = v11;
     }
 
-    v45 = v7;
+    v45 = imageStyleConfiguration;
     v34 = v9;
-    v12 = [v7 widgetAppearanceWithUserInterfaceStyle:v9];
-    v39 = [v12 appearanceType];
-    v46 = [v12 tintColor];
-    v13 = [(SBHWidgetStyleManager *)self widgetDataSource];
-    v14 = [(SBHWidgetStyleManager *)self gridSizeClass];
-    v15 = [v5 sbh_widgetExtensionProvider];
-    v16 = [(SBHWidgetStyleManager *)self backdropGroupName];
+    v12 = [imageStyleConfiguration widgetAppearanceWithUserInterfaceStyle:v9];
+    appearanceType = [v12 appearanceType];
+    tintColor = [v12 tintColor];
+    widgetDataSource = [(SBHWidgetStyleManager *)self widgetDataSource];
+    gridSizeClass = [(SBHWidgetStyleManager *)self gridSizeClass];
+    sbh_widgetExtensionProvider = [widgetHostViewController sbh_widgetExtensionProvider];
+    backdropGroupName = [(SBHWidgetStyleManager *)self backdropGroupName];
     v17 = [SBHWidgetIconStyleConfiguration alloc];
-    v40 = v16;
+    v40 = backdropGroupName;
     LOBYTE(v33) = [(SBHWidgetStyleManager *)self _shouldBoostWhitePoint];
-    v43 = v14;
-    v44 = v13;
-    v42 = v15;
+    v43 = gridSizeClass;
+    v44 = widgetDataSource;
+    v42 = sbh_widgetExtensionProvider;
     v18 = v12;
     v19 = v41;
-    v20 = [SBHWidgetIconStyleConfiguration initWithWidgetDataSource:v17 gridSizeClass:"initWithWidgetDataSource:gridSizeClass:widgetViewController:widgetExtensionProvider:imageAppearance:customDisplayConfiguration:boostsWhitePoint:backdropGroupName:" widgetViewController:v13 widgetExtensionProvider:v14 imageAppearance:v33 customDisplayConfiguration:v16 boostsWhitePoint:? backdropGroupName:?];
-    v21 = [(SBHWidgetStyleManager *)self widgetIconStyleConfiguration];
-    v22 = [(SBHWidgetStyleManager *)self displayedIconImageAppearance];
-    if ([(SBHWidgetIconStyleConfiguration *)v20 isEqualToWidgetIconStyleConfiguration:v21]&& (BSEqualObjects() & 1) != 0)
+    v20 = [SBHWidgetIconStyleConfiguration initWithWidgetDataSource:v17 gridSizeClass:"initWithWidgetDataSource:gridSizeClass:widgetViewController:widgetExtensionProvider:imageAppearance:customDisplayConfiguration:boostsWhitePoint:backdropGroupName:" widgetViewController:widgetDataSource widgetExtensionProvider:gridSizeClass imageAppearance:v33 customDisplayConfiguration:backdropGroupName boostsWhitePoint:? backdropGroupName:?];
+    widgetIconStyleConfiguration = [(SBHWidgetStyleManager *)self widgetIconStyleConfiguration];
+    displayedIconImageAppearance = [(SBHWidgetStyleManager *)self displayedIconImageAppearance];
+    if ([(SBHWidgetIconStyleConfiguration *)v20 isEqualToWidgetIconStyleConfiguration:widgetIconStyleConfiguration]&& (BSEqualObjects() & 1) != 0)
     {
       goto LABEL_32;
     }
 
-    v35 = v22;
-    v36 = v6;
+    v35 = displayedIconImageAppearance;
+    v36 = sbh_customDisplayConfiguration;
     v23 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      [v41 tintWithHomeScreenTintColor:{objc_msgSend(v46, "CGColor")}];
+      [v41 tintWithHomeScreenTintColor:{objc_msgSend(tintColor, "CGColor")}];
       if (objc_opt_respondsToSelector())
       {
         [v41 setWidgetStyleToClear:{objc_msgSend(v45, "configurationType") == 1}];
       }
 
-      if (!v5)
+      if (!widgetHostViewController)
       {
         goto LABEL_18;
       }
     }
 
-    else if (!v5)
+    else if (!widgetHostViewController)
     {
       [v41 setOverrideUserInterfaceStyle:v34];
 LABEL_18:
-      v38 = v5;
-      v25 = [v21 imageAppearance];
-      v26 = [v25 appearanceType];
-      v27 = [(SBHWidgetIconStyleConfiguration *)v20 backgroundType];
-      v28 = [v21 backgroundType];
-      v29 = [(SBHWidgetIconStyleConfiguration *)v20 shouldBoostWhitePoint];
-      v30 = [v21 shouldBoostWhitePoint];
-      if (v27 != v28 || v39 != v26 || v29 != v30)
+      v38 = widgetHostViewController;
+      imageAppearance = [widgetIconStyleConfiguration imageAppearance];
+      appearanceType2 = [imageAppearance appearanceType];
+      backgroundType = [(SBHWidgetIconStyleConfiguration *)v20 backgroundType];
+      backgroundType2 = [widgetIconStyleConfiguration backgroundType];
+      shouldBoostWhitePoint = [(SBHWidgetIconStyleConfiguration *)v20 shouldBoostWhitePoint];
+      shouldBoostWhitePoint2 = [widgetIconStyleConfiguration shouldBoostWhitePoint];
+      if (backgroundType != backgroundType2 || appearanceType != appearanceType2 || shouldBoostWhitePoint != shouldBoostWhitePoint2)
       {
-        [(SBHWidgetStyleManager *)self _updateBackgroundViewForBackgroundType:v27];
+        [(SBHWidgetStyleManager *)self _updateBackgroundViewForBackgroundType:backgroundType];
       }
 
-      v31 = [(SBHWidgetIconStyleConfiguration *)v20 appropriateColorFilter];
-      v32 = [v21 appropriateColorFilter];
+      appropriateColorFilter = [(SBHWidgetIconStyleConfiguration *)v20 appropriateColorFilter];
+      appropriateColorFilter2 = [widgetIconStyleConfiguration appropriateColorFilter];
       v19 = v41;
-      v22 = v35;
+      displayedIconImageAppearance = v35;
       if ((BSEqualObjects() & 1) == 0)
       {
-        if (v32 && (objc_opt_respondsToSelector() & 1) != 0)
+        if (appropriateColorFilter2 && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [v3 widgetStyleManager:self needsToRemoveFilter:v32];
+          [delegate widgetStyleManager:self needsToRemoveFilter:appropriateColorFilter2];
         }
 
-        if (v31 && (objc_opt_respondsToSelector() & 1) != 0)
+        if (appropriateColorFilter && (objc_opt_respondsToSelector() & 1) != 0)
         {
-          [v3 widgetStyleManager:self needsToAddFilter:v31];
+          [delegate widgetStyleManager:self needsToAddFilter:appropriateColorFilter];
         }
       }
 
       [(SBHWidgetStyleManager *)self setWidgetIconStyleConfiguration:v20];
       if (objc_opt_respondsToSelector())
       {
-        [v3 widgetStyleManagerDidUpdateConfiguration:self];
+        [delegate widgetStyleManagerDidUpdateConfiguration:self];
       }
 
-      v6 = v36;
-      v5 = v38;
+      sbh_customDisplayConfiguration = v36;
+      widgetHostViewController = v38;
 LABEL_32:
 
       goto LABEL_33;
@@ -147,10 +147,10 @@ LABEL_32:
     v47[1] = 3221225472;
     v47[2] = __44__SBHWidgetStyleManager_updateConfiguration__block_invoke;
     v47[3] = &unk_1E808B200;
-    v48 = v5;
-    v51 = v37;
+    v48 = widgetHostViewController;
+    v51 = colorScheme;
     v49 = v20;
-    v50 = self;
+    selfCopy = self;
     [v48 performBatchUpdate:v47];
 
     goto LABEL_18;
@@ -161,12 +161,12 @@ LABEL_33:
 
 - (id)effectiveWidgetViewController
 {
-  v2 = [(SBHWidgetStyleManager *)self widgetViewController];
-  if ([v2 sbh_isMultiplexingViewController])
+  widgetViewController = [(SBHWidgetStyleManager *)self widgetViewController];
+  if ([widgetViewController sbh_isMultiplexingViewController])
   {
-    v3 = [v2 multiplexedViewController];
+    multiplexedViewController = [widgetViewController multiplexedViewController];
 
-    v2 = v3;
+    widgetViewController = multiplexedViewController;
   }
 
   v4 = objc_opt_self();
@@ -174,23 +174,23 @@ LABEL_33:
 
   if (isKindOfClass)
   {
-    v6 = [v2 contentViewController];
+    contentViewController = [widgetViewController contentViewController];
 
-    v2 = v6;
+    widgetViewController = contentViewController;
   }
 
-  return v2;
+  return widgetViewController;
 }
 
 - (id)widgetHostViewController
 {
-  v2 = [(SBHWidgetStyleManager *)self effectiveWidgetViewController];
+  effectiveWidgetViewController = [(SBHWidgetStyleManager *)self effectiveWidgetViewController];
   v3 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v5 = v2;
+    v5 = effectiveWidgetViewController;
   }
 
   else
@@ -203,22 +203,22 @@ LABEL_33:
 
 - (SBHIconImageStyleConfiguration)imageStyleConfiguration
 {
-  v3 = [(SBHWidgetStyleManager *)self overrideIconImageAppearance];
-  v4 = [(SBHWidgetStyleManager *)self overrideIconImageStyleConfiguration];
-  v5 = [(SBHWidgetStyleManager *)self widgetViewController];
-  v6 = [v5 traitCollection];
-  v7 = [MEMORY[0x1E69DD1B8] sbh_iconImageStyleConfigurationFromTraitCollection:v6 overrideIconImageAppearance:v3 overrideIconImageStyleConfiguration:v4];
+  overrideIconImageAppearance = [(SBHWidgetStyleManager *)self overrideIconImageAppearance];
+  overrideIconImageStyleConfiguration = [(SBHWidgetStyleManager *)self overrideIconImageStyleConfiguration];
+  widgetViewController = [(SBHWidgetStyleManager *)self widgetViewController];
+  traitCollection = [widgetViewController traitCollection];
+  v7 = [MEMORY[0x1E69DD1B8] sbh_iconImageStyleConfigurationFromTraitCollection:traitCollection overrideIconImageAppearance:overrideIconImageAppearance overrideIconImageStyleConfiguration:overrideIconImageStyleConfiguration];
 
   return v7;
 }
 
 - (int64_t)userInterfaceStyle
 {
-  v2 = [(SBHWidgetStyleManager *)self widgetViewController];
-  v3 = [v2 traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  widgetViewController = [(SBHWidgetStyleManager *)self widgetViewController];
+  traitCollection = [widgetViewController traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  return v4;
+  return userInterfaceStyle;
 }
 
 - (SBHWidgetStyleManagerDelegate)delegate
@@ -230,33 +230,33 @@ LABEL_33:
 
 - (id)imageAppearance
 {
-  v3 = [(SBHWidgetStyleManager *)self userInterfaceStyle];
-  v4 = [(SBHWidgetStyleManager *)self imageStyleConfiguration];
-  v5 = [v4 widgetAppearanceWithUserInterfaceStyle:v3];
+  userInterfaceStyle = [(SBHWidgetStyleManager *)self userInterfaceStyle];
+  imageStyleConfiguration = [(SBHWidgetStyleManager *)self imageStyleConfiguration];
+  v5 = [imageStyleConfiguration widgetAppearanceWithUserInterfaceStyle:userInterfaceStyle];
 
   return v5;
 }
 
-- (SBHWidgetStyleManager)initWithWidgetViewController:(id)a3 widgetDataSource:(id)a4 gridSizeClass:(id)a5 iconImageInfo:(SBIconImageInfo *)a6 delegate:(id)a7
+- (SBHWidgetStyleManager)initWithWidgetViewController:(id)controller widgetDataSource:(id)source gridSizeClass:(id)class iconImageInfo:(SBIconImageInfo *)info delegate:(id)delegate
 {
   v12 = v10;
   v13 = v9;
   v14 = v8;
   v15 = v7;
   v48[2] = *MEMORY[0x1E69E9840];
-  v41 = a3;
-  v40 = a4;
-  v20 = a5;
-  v21 = a6;
+  controllerCopy = controller;
+  sourceCopy = source;
+  classCopy = class;
+  infoCopy = info;
   v47.receiver = self;
   v47.super_class = SBHWidgetStyleManager;
   v22 = [(SBHWidgetStyleManager *)&v47 init];
   v23 = v22;
   if (v22)
   {
-    objc_storeStrong(&v22->_widgetViewController, a3);
-    objc_storeStrong(&v23->_widgetDataSource, a4);
-    v24 = [v20 copy];
+    objc_storeStrong(&v22->_widgetViewController, controller);
+    objc_storeStrong(&v23->_widgetDataSource, source);
+    v24 = [classCopy copy];
     gridSizeClass = v23->_gridSizeClass;
     v23->_gridSizeClass = v24;
 
@@ -264,38 +264,38 @@ LABEL_33:
     v23->_iconImageInfo.size.height = v14;
     v23->_iconImageInfo.scale = v13;
     v23->_iconImageInfo.continuousCornerRadius = v12;
-    objc_storeWeak(&v23->_delegate, v21);
+    objc_storeWeak(&v23->_delegate, infoCopy);
     v23->_allowsGlassGrouping = 1;
     [(SBHWidgetStyleManager *)v23 updateConfiguration];
-    v26 = [(SBHWidgetStyleManager *)v23 widgetHostViewController];
-    [v26 sbh_addObserver:v23];
+    widgetHostViewController = [(SBHWidgetStyleManager *)v23 widgetHostViewController];
+    [widgetHostViewController sbh_addObserver:v23];
     v27 = objc_opt_self();
     v48[0] = v27;
     v28 = objc_opt_self();
     v48[1] = v28;
     v29 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:2];
-    v30 = [v41 registerForTraitChanges:v29 withTarget:v23 action:sel_updateConfiguration];
+    v30 = [controllerCopy registerForTraitChanges:v29 withTarget:v23 action:sel_updateConfiguration];
 
     objc_initWeak(&location, v23);
-    v31 = [MEMORY[0x1E696AD88] defaultCenter];
-    v32 = [MEMORY[0x1E696ADC8] mainQueue];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
     v44[0] = MEMORY[0x1E69E9820];
     v44[1] = 3221225472;
     v44[2] = __108__SBHWidgetStyleManager_initWithWidgetViewController_widgetDataSource_gridSizeClass_iconImageInfo_delegate___block_invoke;
     v44[3] = &unk_1E808C6F0;
     objc_copyWeak(&v45, &location);
-    v33 = [v31 addObserverForName:@"SBHIconManagerWillPresentStyleEditingSheetNotification" object:0 queue:v32 usingBlock:v44];
+    v33 = [defaultCenter addObserverForName:@"SBHIconManagerWillPresentStyleEditingSheetNotification" object:0 queue:mainQueue usingBlock:v44];
     sheetPresentedNotificationObserver = v23->_sheetPresentedNotificationObserver;
     v23->_sheetPresentedNotificationObserver = v33;
 
-    v35 = [MEMORY[0x1E696AD88] defaultCenter];
-    v36 = [MEMORY[0x1E696ADC8] mainQueue];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    mainQueue2 = [MEMORY[0x1E696ADC8] mainQueue];
     v42[0] = MEMORY[0x1E69E9820];
     v42[1] = 3221225472;
     v42[2] = __108__SBHWidgetStyleManager_initWithWidgetViewController_widgetDataSource_gridSizeClass_iconImageInfo_delegate___block_invoke_2;
     v42[3] = &unk_1E808C6F0;
     objc_copyWeak(&v43, &location);
-    v37 = [v35 addObserverForName:@"SBHIconManagerDidDismissStyleEditingSheetNotification" object:0 queue:v36 usingBlock:v42];
+    v37 = [defaultCenter2 addObserverForName:@"SBHIconManagerDidDismissStyleEditingSheetNotification" object:0 queue:mainQueue2 usingBlock:v42];
     sheetDismissedNotificationObserver = v23->_sheetDismissedNotificationObserver;
     v23->_sheetDismissedNotificationObserver = v37;
 
@@ -327,11 +327,11 @@ void __108__SBHWidgetStyleManager_initWithWidgetViewController_widgetDataSource_
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self->_sheetPresentedNotificationObserver];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self->_sheetPresentedNotificationObserver];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self->_sheetDismissedNotificationObserver];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self->_sheetDismissedNotificationObserver];
 
   v5.receiver = self;
   v5.super_class = SBHWidgetStyleManager;
@@ -340,8 +340,8 @@ void __108__SBHWidgetStyleManager_initWithWidgetViewController_widgetDataSource_
 
 - (BOOL)needsGradientBackground
 {
-  v2 = [(SBHWidgetStyleManager *)self widgetIconStyleConfiguration];
-  v3 = [v2 backgroundType] == 2;
+  widgetIconStyleConfiguration = [(SBHWidgetStyleManager *)self widgetIconStyleConfiguration];
+  v3 = [widgetIconStyleConfiguration backgroundType] == 2;
 
   return v3;
 }
@@ -349,19 +349,19 @@ void __108__SBHWidgetStyleManager_initWithWidgetViewController_widgetDataSource_
 - (id)backdropGroupName
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(SBHWidgetStyleManager *)self widgetDataSource];
-  v5 = [v4 uniqueIdentifier];
-  v6 = [v3 initWithFormat:@"SBWidget-%@", v5];
+  widgetDataSource = [(SBHWidgetStyleManager *)self widgetDataSource];
+  uniqueIdentifier = [widgetDataSource uniqueIdentifier];
+  v6 = [v3 initWithFormat:@"SBWidget-%@", uniqueIdentifier];
 
   return v6;
 }
 
-- (void)setOverrideIconImageAppearance:(id)a3
+- (void)setOverrideIconImageAppearance:(id)appearance
 {
-  v6 = a3;
+  appearanceCopy = appearance;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [appearanceCopy copy];
     overrideIconImageAppearance = self->_overrideIconImageAppearance;
     self->_overrideIconImageAppearance = v4;
 
@@ -369,12 +369,12 @@ void __108__SBHWidgetStyleManager_initWithWidgetViewController_widgetDataSource_
   }
 }
 
-- (void)setOverrideIconImageStyleConfiguration:(id)a3
+- (void)setOverrideIconImageStyleConfiguration:(id)configuration
 {
-  v6 = a3;
+  configurationCopy = configuration;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [configurationCopy copy];
     overrideIconImageStyleConfiguration = self->_overrideIconImageStyleConfiguration;
     self->_overrideIconImageStyleConfiguration = v4;
 
@@ -384,14 +384,14 @@ void __108__SBHWidgetStyleManager_initWithWidgetViewController_widgetDataSource_
 
 - (BOOL)_shouldBoostWhitePoint
 {
-  v2 = [(SBHWidgetStyleManager *)self widgetViewController];
-  v3 = [v2 traitCollection];
+  widgetViewController = [(SBHWidgetStyleManager *)self widgetViewController];
+  traitCollection = [widgetViewController traitCollection];
   v4 = objc_opt_self();
-  v5 = [v3 valueForNSIntegerTrait:v4];
+  v5 = [traitCollection valueForNSIntegerTrait:v4];
 
   if (v5 == 1)
   {
-    v6 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:v3];
+    v6 = [MEMORY[0x1E69DD1B8] sbh_iconImageAppearanceFromTraitCollection:traitCollection];
     v7 = [v6 isDark] ^ 1;
   }
 
@@ -428,26 +428,26 @@ void __44__SBHWidgetStyleManager_updateConfiguration__block_invoke(uint64_t a1)
 
 - (id)displayedIconImageAppearance
 {
-  v3 = [(SBHWidgetStyleManager *)self widgetHostViewController];
-  v4 = [v3 tintParameters];
-  v5 = [(SBHWidgetStyleManager *)self userInterfaceStyle];
-  if (!v4)
+  widgetHostViewController = [(SBHWidgetStyleManager *)self widgetHostViewController];
+  tintParameters = [widgetHostViewController tintParameters];
+  userInterfaceStyle = [(SBHWidgetStyleManager *)self userInterfaceStyle];
+  if (!tintParameters)
   {
     v9 = 0;
     goto LABEL_15;
   }
 
-  v6 = v5;
-  v7 = [v4 filterStyle];
-  if (v7 <= 4)
+  v6 = userInterfaceStyle;
+  filterStyle = [tintParameters filterStyle];
+  if (filterStyle <= 4)
   {
-    if (v7 == 3)
+    if (filterStyle == 3)
     {
       v8 = +[SBHIconImageAppearance clearLightAppearance];
       goto LABEL_12;
     }
 
-    if (v7 == 4)
+    if (filterStyle == 4)
     {
       v8 = +[SBHIconImageAppearance clearDarkAppearance];
 LABEL_12:
@@ -460,23 +460,23 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  if (v7 == 5)
+  if (filterStyle == 5)
   {
-    v10 = [v4 primaryTintColor];
-    v11 = [v10 UIColor];
-    v12 = [SBHIconImageAppearance tintedLightAppearanceWithTintColor:v11];
+    primaryTintColor = [tintParameters primaryTintColor];
+    uIColor = [primaryTintColor UIColor];
+    v12 = [SBHIconImageAppearance tintedLightAppearanceWithTintColor:uIColor];
   }
 
   else
   {
-    if (v7 != 6)
+    if (filterStyle != 6)
     {
       goto LABEL_10;
     }
 
-    v10 = [v4 primaryTintColor];
-    v11 = [v10 UIColor];
-    v12 = [SBHIconImageAppearance tintedDarkAppearanceWithTintColor:v11];
+    primaryTintColor = [tintParameters primaryTintColor];
+    uIColor = [primaryTintColor UIColor];
+    v12 = [SBHIconImageAppearance tintedDarkAppearanceWithTintColor:uIColor];
   }
 
   v9 = v12;
@@ -486,12 +486,12 @@ LABEL_15:
   return v9;
 }
 
-- (id)makeBackgroundViewForType:(int64_t)a3 frame:(CGRect)a4
+- (id)makeBackgroundViewForType:(int64_t)type frame:(CGRect)frame
 {
   continuousCornerRadius = self->_iconImageInfo.continuousCornerRadius;
-  if (a3 == 1)
+  if (type == 1)
   {
-    v7 = [(SBHWidgetStyleManager *)self imageAppearance:a4.origin.x];
+    v7 = [(SBHWidgetStyleManager *)self imageAppearance:frame.origin.x];
     v8 = [MEMORY[0x1E69DD1B8] sbh_userInterfaceStyleForIconImageAppearance:v7];
     v18 = 0;
     v19 = &v18;
@@ -509,24 +509,24 @@ LABEL_15:
     v10 = v7;
     v17 = v8;
     v13 = v10;
-    v14 = self;
+    selfCopy = self;
     [v9 performWithoutAnimation:v12];
-    v5 = v19[5];
+    continuousCornerRadius = v19[5];
 
     _Block_object_dispose(&v18, 8);
   }
 
-  else if (a3 == 2)
+  else if (type == 2)
   {
-    v5 = [SBHWidgetContainerViewController buildGradientBackgroundViewWithFrame:a4.origin.x continuousCornerRadius:a4.origin.y, a4.size.width, a4.size.height, continuousCornerRadius];
+    continuousCornerRadius = [SBHWidgetContainerViewController buildGradientBackgroundViewWithFrame:frame.origin.x continuousCornerRadius:frame.origin.y, frame.size.width, frame.size.height, continuousCornerRadius];
   }
 
   else
   {
-    v5 = 0;
+    continuousCornerRadius = 0;
   }
 
-  return v5;
+  return continuousCornerRadius;
 }
 
 void __57__SBHWidgetStyleManager_makeBackgroundViewForType_frame___block_invoke(uint64_t a1)
@@ -547,38 +547,38 @@ void __57__SBHWidgetStyleManager_makeBackgroundViewForType_frame___block_invoke(
   [v8 sbh_backdropGroupName:v9];
 }
 
-- (void)setAllowsGlassGrouping:(BOOL)a3
+- (void)setAllowsGlassGrouping:(BOOL)grouping
 {
-  if (self->_allowsGlassGrouping != a3)
+  if (self->_allowsGlassGrouping != grouping)
   {
-    self->_allowsGlassGrouping = a3;
-    v4 = [(SBHWidgetStyleManager *)self backgroundView];
+    self->_allowsGlassGrouping = grouping;
+    backgroundView = [(SBHWidgetStyleManager *)self backgroundView];
 
-    if (v4)
+    if (backgroundView)
     {
-      v5 = [(SBHWidgetStyleManager *)self widgetIconStyleConfiguration];
-      -[SBHWidgetStyleManager _updateBackgroundViewForBackgroundType:](self, "_updateBackgroundViewForBackgroundType:", [v5 backgroundType]);
+      widgetIconStyleConfiguration = [(SBHWidgetStyleManager *)self widgetIconStyleConfiguration];
+      -[SBHWidgetStyleManager _updateBackgroundViewForBackgroundType:](self, "_updateBackgroundViewForBackgroundType:", [widgetIconStyleConfiguration backgroundType]);
     }
   }
 }
 
-- (void)_updateBackgroundViewForBackgroundType:(int64_t)a3
+- (void)_updateBackgroundViewForBackgroundType:(int64_t)type
 {
-  v9 = [(SBHWidgetStyleManager *)self backgroundView];
-  v5 = [(SBHWidgetStyleManager *)self delegate];
-  if (v9 && (objc_opt_respondsToSelector() & 1) != 0)
+  backgroundView = [(SBHWidgetStyleManager *)self backgroundView];
+  delegate = [(SBHWidgetStyleManager *)self delegate];
+  if (backgroundView && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 widgetStyleManager:self needsToRemoveBackgroundView:v9];
+    [delegate widgetStyleManager:self needsToRemoveBackgroundView:backgroundView];
   }
 
-  v6 = [(SBHWidgetStyleManager *)self widgetHostViewController];
-  v7 = [v6 view];
+  widgetHostViewController = [(SBHWidgetStyleManager *)self widgetHostViewController];
+  view = [widgetHostViewController view];
 
-  [v7 bounds];
-  v8 = [(SBHWidgetStyleManager *)self makeBackgroundViewForType:a3 frame:?];
+  [view bounds];
+  v8 = [(SBHWidgetStyleManager *)self makeBackgroundViewForType:type frame:?];
   if (v8 && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 widgetStyleManager:self needsToAddBackgroundView:v8];
+    [delegate widgetStyleManager:self needsToAddBackgroundView:v8];
   }
 
   [(SBHWidgetStyleManager *)self setBackgroundView:v8];
@@ -587,22 +587,22 @@ void __57__SBHWidgetStyleManager_makeBackgroundViewForType_frame___block_invoke(
 - (id)succinctDescription
 {
   v3 = MEMORY[0x1E698E688];
-  v4 = [MEMORY[0x1E698E690] succinctStyle];
-  v5 = [v3 descriptionForRootObject:self withStyle:v4];
+  succinctStyle = [MEMORY[0x1E698E690] succinctStyle];
+  v5 = [v3 descriptionForRootObject:self withStyle:succinctStyle];
 
   return v5;
 }
 
-- (void)appendDescriptionToStream:(id)a3
+- (void)appendDescriptionToStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __51__SBHWidgetStyleManager_appendDescriptionToStream___block_invoke;
   v6[3] = &unk_1E8088F18;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = streamCopy;
+  selfCopy = self;
+  v5 = streamCopy;
   [v5 appendProem:self block:v6];
 }
 

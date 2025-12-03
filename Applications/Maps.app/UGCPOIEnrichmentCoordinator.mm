@@ -1,12 +1,12 @@
 @interface UGCPOIEnrichmentCoordinator
-+ (id)_addCoordinatorWithMapItem:(id)a3 entryPoint:(int64_t)a4;
-+ (id)photoEmphasizedAddCoordinatorWithMapItem:(id)a3 originTarget:(id)a4;
-+ (id)photoEmphasizedAddCoordinatorWithMapItem:(id)a3 preferredSourceType:(int64_t)a4 originTarget:(id)a5;
-+ (id)photoEmphasizedAddCoordinatorWithMapItem:(id)a3 preferredSourceType:(int64_t)a4 originTarget:(id)a5 suppressRatings:(BOOL)a6;
-+ (id)photoThumbnailGalleryCoordinatorWithMapItem:(id)a3 albumIndex:(unint64_t)a4;
-+ (id)photoThumbnailGalleryCoordinatorWithMapItem:(id)a3 withStartingIndex:(unint64_t)a4;
-+ (id)ratingsAndPhotosCoordinatorWithMapItem:(id)a3 entryPoint:(int64_t)a4 originTarget:(id)a5;
-+ (id)ratingsAndPhotosCoordinatorWithMapItem:(id)a3 initialOverallState:(int64_t)a4 entryPoint:(int64_t)a5 originTarget:(id)a6;
++ (id)_addCoordinatorWithMapItem:(id)item entryPoint:(int64_t)point;
++ (id)photoEmphasizedAddCoordinatorWithMapItem:(id)item originTarget:(id)target;
++ (id)photoEmphasizedAddCoordinatorWithMapItem:(id)item preferredSourceType:(int64_t)type originTarget:(id)target;
++ (id)photoEmphasizedAddCoordinatorWithMapItem:(id)item preferredSourceType:(int64_t)type originTarget:(id)target suppressRatings:(BOOL)ratings;
++ (id)photoThumbnailGalleryCoordinatorWithMapItem:(id)item albumIndex:(unint64_t)index;
++ (id)photoThumbnailGalleryCoordinatorWithMapItem:(id)item withStartingIndex:(unint64_t)index;
++ (id)ratingsAndPhotosCoordinatorWithMapItem:(id)item entryPoint:(int64_t)point originTarget:(id)target;
++ (id)ratingsAndPhotosCoordinatorWithMapItem:(id)item initialOverallState:(int64_t)state entryPoint:(int64_t)point originTarget:(id)target;
 - (ContaineeViewControllerDelegate)containeeDelegate;
 - (ContainerViewController)containerViewController;
 - (MUActivityObserving)submissionLookupObserver;
@@ -86,13 +86,13 @@
 
 - (void)invokeSubmissionUpdate
 {
-  v3 = [(UGCPOIEnrichmentCoordinator *)self submissionStatusDelegate];
+  submissionStatusDelegate = [(UGCPOIEnrichmentCoordinator *)self submissionStatusDelegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(UGCPOIEnrichmentCoordinator *)self submissionStatusDelegate];
-    [v5 poiEnrichmentCoordinatorDidUpdateUserSubmission:self];
+    submissionStatusDelegate2 = [(UGCPOIEnrichmentCoordinator *)self submissionStatusDelegate];
+    [submissionStatusDelegate2 poiEnrichmentCoordinatorDidUpdateUserSubmission:self];
   }
 }
 
@@ -111,85 +111,85 @@
   return v2;
 }
 
-+ (id)photoThumbnailGalleryCoordinatorWithMapItem:(id)a3 albumIndex:(unint64_t)a4
++ (id)photoThumbnailGalleryCoordinatorWithMapItem:(id)item albumIndex:(unint64_t)index
 {
-  v5 = [a1 photoThumbnailGalleryCoordinatorWithMapItem:a3 withStartingIndex:0];
-  [v5 setAlbumIndex:a4];
+  v5 = [self photoThumbnailGalleryCoordinatorWithMapItem:item withStartingIndex:0];
+  [v5 setAlbumIndex:index];
 
   return v5;
 }
 
-+ (id)photoThumbnailGalleryCoordinatorWithMapItem:(id)a3 withStartingIndex:(unint64_t)a4
++ (id)photoThumbnailGalleryCoordinatorWithMapItem:(id)item withStartingIndex:(unint64_t)index
 {
-  v5 = a3;
+  itemCopy = item;
   v6 = objc_alloc_init(UGCPhotoGalleryCoordinator);
-  [(UGCPOIEnrichmentCoordinator *)v6 setMapItem:v5];
+  [(UGCPOIEnrichmentCoordinator *)v6 setMapItem:itemCopy];
 
-  [(UGCPhotoGalleryCoordinator *)v6 setSelectedIndex:a4];
+  [(UGCPhotoGalleryCoordinator *)v6 setSelectedIndex:index];
 
   return v6;
 }
 
-+ (id)ratingsAndPhotosCoordinatorWithMapItem:(id)a3 entryPoint:(int64_t)a4 originTarget:(id)a5
++ (id)ratingsAndPhotosCoordinatorWithMapItem:(id)item entryPoint:(int64_t)point originTarget:(id)target
 {
-  v7 = a5;
-  v8 = [(UGCPOIEnrichmentCoordinator *)UGCRatingsAndPhotosCoordinator _addCoordinatorWithMapItem:a3 entryPoint:a4];
-  [v8 setOriginTarget:v7];
+  targetCopy = target;
+  v8 = [(UGCPOIEnrichmentCoordinator *)UGCRatingsAndPhotosCoordinator _addCoordinatorWithMapItem:item entryPoint:point];
+  [v8 setOriginTarget:targetCopy];
 
   return v8;
 }
 
-+ (id)_addCoordinatorWithMapItem:(id)a3 entryPoint:(int64_t)a4
++ (id)_addCoordinatorWithMapItem:(id)item entryPoint:(int64_t)point
 {
-  v5 = a3;
+  itemCopy = item;
   v6 = objc_alloc_init(UGCRatingsAndPhotosCoordinator);
-  [(UGCPOIEnrichmentCoordinator *)v6 setMapItem:v5];
+  [(UGCPOIEnrichmentCoordinator *)v6 setMapItem:itemCopy];
 
-  [(UGCPOIEnrichmentCoordinator *)v6 setEntryPoint:a4];
+  [(UGCPOIEnrichmentCoordinator *)v6 setEntryPoint:point];
 
   return v6;
 }
 
-+ (id)photoEmphasizedAddCoordinatorWithMapItem:(id)a3 preferredSourceType:(int64_t)a4 originTarget:(id)a5
++ (id)photoEmphasizedAddCoordinatorWithMapItem:(id)item preferredSourceType:(int64_t)type originTarget:(id)target
 {
-  v7 = a5;
-  v8 = [UGCPOIEnrichmentCoordinator _addCoordinatorWithMapItem:a3 entryPoint:0];
+  targetCopy = target;
+  v8 = [UGCPOIEnrichmentCoordinator _addCoordinatorWithMapItem:item entryPoint:0];
   [v8 setHasPhotoPickerEmphasis:1];
-  [v8 setPreferredSourceType:a4];
-  [v8 setOriginTarget:v7];
+  [v8 setPreferredSourceType:type];
+  [v8 setOriginTarget:targetCopy];
 
   return v8;
 }
 
-+ (id)photoEmphasizedAddCoordinatorWithMapItem:(id)a3 preferredSourceType:(int64_t)a4 originTarget:(id)a5 suppressRatings:(BOOL)a6
++ (id)photoEmphasizedAddCoordinatorWithMapItem:(id)item preferredSourceType:(int64_t)type originTarget:(id)target suppressRatings:(BOOL)ratings
 {
-  v6 = a6;
-  v9 = a5;
-  v10 = [UGCPOIEnrichmentCoordinator _addCoordinatorWithMapItem:a3 entryPoint:0];
+  ratingsCopy = ratings;
+  targetCopy = target;
+  v10 = [UGCPOIEnrichmentCoordinator _addCoordinatorWithMapItem:item entryPoint:0];
   [v10 setHasPhotoPickerEmphasis:1];
-  [v10 setSuppressRatings:v6];
-  [v10 setPreferredSourceType:a4];
-  [v10 setOriginTarget:v9];
+  [v10 setSuppressRatings:ratingsCopy];
+  [v10 setPreferredSourceType:type];
+  [v10 setOriginTarget:targetCopy];
 
   return v10;
 }
 
-+ (id)photoEmphasizedAddCoordinatorWithMapItem:(id)a3 originTarget:(id)a4
++ (id)photoEmphasizedAddCoordinatorWithMapItem:(id)item originTarget:(id)target
 {
-  v5 = a4;
-  v6 = [UGCPOIEnrichmentCoordinator _addCoordinatorWithMapItem:a3 entryPoint:0];
+  targetCopy = target;
+  v6 = [UGCPOIEnrichmentCoordinator _addCoordinatorWithMapItem:item entryPoint:0];
   [v6 setHasPhotoPickerEmphasis:1];
-  [v6 setOriginTarget:v5];
+  [v6 setOriginTarget:targetCopy];
 
   return v6;
 }
 
-+ (id)ratingsAndPhotosCoordinatorWithMapItem:(id)a3 initialOverallState:(int64_t)a4 entryPoint:(int64_t)a5 originTarget:(id)a6
++ (id)ratingsAndPhotosCoordinatorWithMapItem:(id)item initialOverallState:(int64_t)state entryPoint:(int64_t)point originTarget:(id)target
 {
-  v9 = a6;
-  v10 = [UGCPOIEnrichmentCoordinator _addCoordinatorWithMapItem:a3 entryPoint:a5];
-  [v10 setInitialOverallState:a4];
-  [v10 setOriginTarget:v9];
+  targetCopy = target;
+  v10 = [UGCPOIEnrichmentCoordinator _addCoordinatorWithMapItem:item entryPoint:point];
+  [v10 setInitialOverallState:state];
+  [v10 setOriginTarget:targetCopy];
 
   return v10;
 }

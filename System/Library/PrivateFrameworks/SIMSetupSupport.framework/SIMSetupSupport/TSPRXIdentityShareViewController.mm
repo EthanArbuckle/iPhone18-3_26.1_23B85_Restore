@@ -3,7 +3,7 @@
 - (TSSIMSetupFlowDelegate)delegate;
 - (id)_createPKGlyphView;
 - (void)_failIdentityShare;
-- (void)_maybeFlowCompleted:(unint64_t)a3;
+- (void)_maybeFlowCompleted:(unint64_t)completed;
 - (void)_registerLockState;
 - (void)_reloadScreen;
 - (void)_startNFCIdentityShare;
@@ -11,7 +11,7 @@
 - (void)_successIdentityShare;
 - (void)_unlockScreen;
 - (void)_unregisterLockState;
-- (void)_updateCurrentAction:(id)a3;
+- (void)_updateCurrentAction:(id)action;
 - (void)dealloc;
 - (void)viewDidLoad;
 @end
@@ -43,26 +43,26 @@
 - (void)dealloc
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_3(&dword_262AA8000, a1, a3, "[Db] Stop NFC in dealloc @%s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_3(&dword_262AA8000, self, a3, "[Db] Stop NFC in dealloc @%s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateCurrentAction:(id)a3
+- (void)_updateCurrentAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   primaryAction = self->_primaryAction;
   if (primaryAction)
   {
-    [(TSPRXIdentityShareViewController *)self replaceAction:primaryAction withNewAction:v4];
+    [(TSPRXIdentityShareViewController *)self replaceAction:primaryAction withNewAction:actionCopy];
   }
 
   else
   {
-    v6 = [(TSPRXIdentityShareViewController *)self addAction:v4];
+    v6 = [(TSPRXIdentityShareViewController *)self addAction:actionCopy];
   }
 
   v7 = self->_primaryAction;
-  self->_primaryAction = v4;
+  self->_primaryAction = actionCopy;
 }
 
 - (id)_createPKGlyphView
@@ -79,14 +79,14 @@
   v93.super_class = TSPRXIdentityShareViewController;
   [(TSPRXIdentityShareViewController *)&v93 viewDidLoad];
   [(TSPRXIdentityShareViewController *)self _registerLockState];
-  v3 = [MEMORY[0x277D75348] systemBackgroundColor];
-  v4 = [(TSPRXIdentityShareViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemBackgroundColor = [MEMORY[0x277D75348] systemBackgroundColor];
+  view = [(TSPRXIdentityShareViewController *)self view];
+  [view setBackgroundColor:systemBackgroundColor];
 
-  LODWORD(v4) = +[TSUtilities isDeviceLocked];
+  LODWORD(view) = +[TSUtilities isDeviceLocked];
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v6 = v5;
-  if (v4)
+  if (view)
   {
     v7 = @"PRXCARD_IN_STORE_ESIM_LOCKED_TITLE";
   }
@@ -114,14 +114,14 @@
   [(TSPRXIdentityShareViewController *)self setSubtitle:v11];
 
   [(TSPRXIdentityShareViewController *)self setDismissalType:3];
-  v12 = [(TSPRXIdentityShareViewController *)self _createPKGlyphView];
+  _createPKGlyphView = [(TSPRXIdentityShareViewController *)self _createPKGlyphView];
   nfcAnimationView = self->_nfcAnimationView;
-  self->_nfcAnimationView = v12;
+  self->_nfcAnimationView = _createPKGlyphView;
 
   [(PKGlyphView *)self->_nfcAnimationView setTranslatesAutoresizingMaskIntoConstraints:0];
   v14 = self->_nfcAnimationView;
-  v15 = [MEMORY[0x277D759A0] mainScreen];
-  [v15 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   [(PKGlyphView *)v14 updateRasterizationScale:?];
 
   v16 = +[TSUtilities isDeviceLocked];
@@ -132,14 +132,14 @@
     v18 = [MEMORY[0x277D755B8] systemImageNamed:@"lock.iphone"];
     v19 = [MEMORY[0x277D755D0] configurationWithPointSize:70.0];
     v20 = [v18 imageByApplyingSymbolConfiguration:v19];
-    v21 = [(PKGlyphView *)self->_nfcAnimationView primaryColor];
-    v22 = [v20 _flatImageWithColor:v21];
+    primaryColor = [(PKGlyphView *)self->_nfcAnimationView primaryColor];
+    v22 = [v20 _flatImageWithColor:primaryColor];
 
     v23 = self->_nfcAnimationView;
     v24 = v22;
-    v25 = [v22 CGImage];
+    cGImage = [v22 CGImage];
     [v22 alignmentRectInsets];
-    [(PKGlyphView *)v23 setCustomImage:v25 withAlignmentEdgeInsets:?];
+    [(PKGlyphView *)v23 setCustomImage:cGImage withAlignmentEdgeInsets:?];
   }
 
   else
@@ -147,8 +147,8 @@
     [(PKGlyphView *)v17 setState:9 animated:1 completionHandler:0];
   }
 
-  v26 = [(TSPRXIdentityShareViewController *)self contentView];
-  [v26 addSubview:self->_nfcAnimationView];
+  contentView = [(TSPRXIdentityShareViewController *)self contentView];
+  [contentView addSubview:self->_nfcAnimationView];
 
   objc_initWeak(&location, self);
   v27 = MEMORY[0x277D432F0];
@@ -211,47 +211,47 @@
   }
 
   v58 = MEMORY[0x277CCAAD0];
-  v83 = [(PKGlyphView *)self->_nfcAnimationView heightAnchor];
-  v82 = [v83 constraintEqualToConstant:116.0];
+  heightAnchor = [(PKGlyphView *)self->_nfcAnimationView heightAnchor];
+  v82 = [heightAnchor constraintEqualToConstant:116.0];
   v94[0] = v82;
-  v81 = [(PKGlyphView *)self->_nfcAnimationView widthAnchor];
-  v80 = [v81 constraintEqualToConstant:116.0];
+  widthAnchor = [(PKGlyphView *)self->_nfcAnimationView widthAnchor];
+  v80 = [widthAnchor constraintEqualToConstant:116.0];
   v94[1] = v80;
-  v77 = [(PKGlyphView *)self->_nfcAnimationView centerXAnchor];
-  v79 = [(TSPRXIdentityShareViewController *)self contentView];
-  v78 = [v79 mainContentGuide];
-  v76 = [v78 centerXAnchor];
-  v75 = [v77 constraintEqualToAnchor:v76];
+  centerXAnchor = [(PKGlyphView *)self->_nfcAnimationView centerXAnchor];
+  contentView2 = [(TSPRXIdentityShareViewController *)self contentView];
+  mainContentGuide = [contentView2 mainContentGuide];
+  centerXAnchor2 = [mainContentGuide centerXAnchor];
+  v75 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v94[2] = v75;
-  v72 = [(PKGlyphView *)self->_nfcAnimationView centerYAnchor];
-  v74 = [(TSPRXIdentityShareViewController *)self contentView];
-  v73 = [v74 mainContentGuide];
-  v71 = [v73 centerYAnchor];
-  v70 = [v72 constraintEqualToAnchor:v71];
+  centerYAnchor = [(PKGlyphView *)self->_nfcAnimationView centerYAnchor];
+  contentView3 = [(TSPRXIdentityShareViewController *)self contentView];
+  mainContentGuide2 = [contentView3 mainContentGuide];
+  centerYAnchor2 = [mainContentGuide2 centerYAnchor];
+  v70 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v94[3] = v70;
-  v67 = [(PKGlyphView *)self->_nfcAnimationView leadingAnchor];
-  v69 = [(TSPRXIdentityShareViewController *)self contentView];
-  v68 = [v69 mainContentGuide];
-  v66 = [v68 leadingAnchor];
-  v65 = [v67 constraintGreaterThanOrEqualToAnchor:v66];
+  leadingAnchor = [(PKGlyphView *)self->_nfcAnimationView leadingAnchor];
+  contentView4 = [(TSPRXIdentityShareViewController *)self contentView];
+  mainContentGuide3 = [contentView4 mainContentGuide];
+  leadingAnchor2 = [mainContentGuide3 leadingAnchor];
+  v65 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
   v94[4] = v65;
-  v62 = [(PKGlyphView *)self->_nfcAnimationView trailingAnchor];
-  v64 = [(TSPRXIdentityShareViewController *)self contentView];
-  v63 = [v64 mainContentGuide];
-  v61 = [v63 trailingAnchor];
-  v60 = [v62 constraintLessThanOrEqualToAnchor:v61];
+  trailingAnchor = [(PKGlyphView *)self->_nfcAnimationView trailingAnchor];
+  contentView5 = [(TSPRXIdentityShareViewController *)self contentView];
+  mainContentGuide4 = [contentView5 mainContentGuide];
+  trailingAnchor2 = [mainContentGuide4 trailingAnchor];
+  v60 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
   v94[5] = v60;
-  v59 = [(PKGlyphView *)self->_nfcAnimationView topAnchor];
-  v47 = [(TSPRXIdentityShareViewController *)self contentView];
-  v48 = [v47 mainContentGuide];
-  v49 = [v48 topAnchor];
-  v50 = [v59 constraintGreaterThanOrEqualToAnchor:v49];
+  topAnchor = [(PKGlyphView *)self->_nfcAnimationView topAnchor];
+  contentView6 = [(TSPRXIdentityShareViewController *)self contentView];
+  mainContentGuide5 = [contentView6 mainContentGuide];
+  topAnchor2 = [mainContentGuide5 topAnchor];
+  v50 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v94[6] = v50;
-  v51 = [(PKGlyphView *)self->_nfcAnimationView bottomAnchor];
-  v52 = [(TSPRXIdentityShareViewController *)self contentView];
-  v53 = [v52 mainContentGuide];
-  v54 = [v53 bottomAnchor];
-  v55 = [v51 constraintLessThanOrEqualToAnchor:v54];
+  bottomAnchor = [(PKGlyphView *)self->_nfcAnimationView bottomAnchor];
+  contentView7 = [(TSPRXIdentityShareViewController *)self contentView];
+  mainContentGuide6 = [contentView7 mainContentGuide];
+  bottomAnchor2 = [mainContentGuide6 bottomAnchor];
+  v55 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v94[7] = v55;
   v56 = [MEMORY[0x277CBEA60] arrayWithObjects:v94 count:8];
   [v58 activateConstraints:v56];
@@ -330,14 +330,14 @@ void __47__TSPRXIdentityShareViewController_viewDidLoad__block_invoke_4(uint64_t
   v3 = [MEMORY[0x277D755B8] systemImageNamed:@"xmark"];
   v4 = [MEMORY[0x277D755D0] configurationWithPointSize:70.0];
   v5 = [v3 imageByApplyingSymbolConfiguration:v4];
-  v6 = [(PKGlyphView *)self->_nfcAnimationView primaryColor];
-  v14 = [v5 _flatImageWithColor:v6];
+  primaryColor = [(PKGlyphView *)self->_nfcAnimationView primaryColor];
+  v14 = [v5 _flatImageWithColor:primaryColor];
 
   nfcAnimationView = self->_nfcAnimationView;
   v8 = v14;
-  v9 = [v14 CGImage];
+  cGImage = [v14 CGImage];
   [v14 alignmentRectInsets];
-  [(PKGlyphView *)nfcAnimationView setCustomImage:v9 withAlignmentEdgeInsets:?];
+  [(PKGlyphView *)nfcAnimationView setCustomImage:cGImage withAlignmentEdgeInsets:?];
   v10 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"PRXCARD_IN_STORE_ESIM_FAIL_TITLE" value:&stru_28753DF48 table:@"Localizable"];
   [(TSPRXIdentityShareViewController *)self setTitle:v11];
@@ -354,7 +354,7 @@ void __47__TSPRXIdentityShareViewController_viewDidLoad__block_invoke_4(uint64_t
 - (void)_startNFCIdentityShare
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_3(&dword_262AA8000, a1, a3, "[Db] Start NFC @%s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_3(&dword_262AA8000, self, a3, "[Db] Start NFC @%s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
@@ -376,14 +376,14 @@ void __58__TSPRXIdentityShareViewController__startNFCIdentityShare__block_invoke
 - (void)_stopNFCIdentityShare
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_3(&dword_262AA8000, a1, a3, "[Db] Stop NFC @%s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_3(&dword_262AA8000, self, a3, "[Db] Stop NFC @%s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_unlockScreen
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0_3(&dword_262AA8000, a1, a3, "[Db] requesting unlock @%s", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0_3(&dword_262AA8000, self, a3, "[Db] requesting unlock @%s", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 
@@ -442,16 +442,16 @@ void __54__TSPRXIdentityShareViewController__registerLockState__block_invoke(uin
   }
 }
 
-- (void)_maybeFlowCompleted:(unint64_t)a3
+- (void)_maybeFlowCompleted:(unint64_t)completed
 {
   v5 = _TSLogDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(TSPRXIdentityShareViewController *)a3 _maybeFlowCompleted:v5];
+    [(TSPRXIdentityShareViewController *)completed _maybeFlowCompleted:v5];
   }
 
   [(TSPRXIdentityShareViewController *)self _stopNFCIdentityShare];
-  if (a3 == 2)
+  if (completed == 2)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained viewControllerDidComplete:self];

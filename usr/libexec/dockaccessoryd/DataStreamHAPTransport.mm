@@ -1,56 +1,56 @@
 @interface DataStreamHAPTransport
 - (BOOL)_isRunning;
-- (DataStreamHAPTransport)initWithAccessory:(id)a3 sessionIdentifier:(int64_t)a4 maxControllerTransportMTU:(unint64_t)a5 workQueue:(id)a6 logIdentifier:(id)a7;
+- (DataStreamHAPTransport)initWithAccessory:(id)accessory sessionIdentifier:(int64_t)identifier maxControllerTransportMTU:(unint64_t)u workQueue:(id)queue logIdentifier:(id)logIdentifier;
 - (DataStreamTransportDelegate)delegate;
 - (HAPAccessory)accessory;
-- (id)_buildWriteRequestWithError:(id *)a3 shouldForceClose:(BOOL)a4;
-- (id)_getPendingWritesUpToLength:(unint64_t)a3;
-- (void)_cancelAllPendingWritesWithError:(id)a3;
+- (id)_buildWriteRequestWithError:(id *)error shouldForceClose:(BOOL)close;
+- (id)_getPendingWritesUpToLength:(unint64_t)length;
+- (void)_cancelAllPendingWritesWithError:(id)error;
 - (void)_doNextWriteOperation;
-- (void)_handleCompletionWithResponseTuples:(id)a3;
-- (void)_handleInterruptCharacteristicValue:(id)a3;
-- (void)_handleReceivedData:(id)a3;
+- (void)_handleCompletionWithResponseTuples:(id)tuples;
+- (void)_handleInterruptCharacteristicValue:(id)value;
+- (void)_handleReceivedData:(id)data;
 - (void)_notifyDelegateDidClose;
-- (void)_notifyDelegateDidFailWithError:(id)a3;
+- (void)_notifyDelegateDidFailWithError:(id)error;
 - (void)_notifyDelegateDidOpen;
-- (void)_notifyDelegateDidReceiveFrame:(id)a3;
-- (void)_notifyWriteOperation:(id)a3 didCompleteWithError:(id)a4;
+- (void)_notifyDelegateDidReceiveFrame:(id)frame;
+- (void)_notifyWriteOperation:(id)operation didCompleteWithError:(id)error;
 - (void)_registerForMessages;
 - (void)_removeAndMarkCompleteAllCompletedWrites;
-- (void)_stopWithError:(id)a3;
-- (void)_teardownSessionWithError:(id)a3;
-- (void)_writeCharacteristicRequests:(id)a3 completion:(id)a4;
+- (void)_stopWithError:(id)error;
+- (void)_teardownSessionWithError:(id)error;
+- (void)_writeCharacteristicRequests:(id)requests completion:(id)completion;
 - (void)close;
 - (void)connect;
 - (void)dealloc;
-- (void)sendRawFrame:(id)a3 completion:(id)a4;
+- (void)sendRawFrame:(id)frame completion:(id)completion;
 @end
 
 @implementation DataStreamHAPTransport
 
-- (DataStreamHAPTransport)initWithAccessory:(id)a3 sessionIdentifier:(int64_t)a4 maxControllerTransportMTU:(unint64_t)a5 workQueue:(id)a6 logIdentifier:(id)a7
+- (DataStreamHAPTransport)initWithAccessory:(id)accessory sessionIdentifier:(int64_t)identifier maxControllerTransportMTU:(unint64_t)u workQueue:(id)queue logIdentifier:(id)logIdentifier
 {
-  v12 = a3;
-  v13 = a6;
-  v14 = a7;
+  accessoryCopy = accessory;
+  queueCopy = queue;
+  logIdentifierCopy = logIdentifier;
   v26.receiver = self;
   v26.super_class = DataStreamHAPTransport;
   v15 = [(DataStreamHAPTransport *)&v26 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_workQueue, a6);
-    objc_storeWeak(&v16->_accessory, v12);
-    v17 = [NSNumber numberWithInteger:a4];
+    objc_storeStrong(&v15->_workQueue, queue);
+    objc_storeWeak(&v16->_accessory, accessoryCopy);
+    v17 = [NSNumber numberWithInteger:identifier];
     sessionIdentifier = v16->_sessionIdentifier;
     v16->_sessionIdentifier = v17;
 
-    v16->_maxControllerTransportMTU = a5;
+    v16->_maxControllerTransportMTU = u;
     v19 = objc_opt_new();
     byteReader = v16->_byteReader;
     v16->_byteReader = v19;
 
-    v21 = [v14 copy];
+    v21 = [logIdentifierCopy copy];
     logIdentifier = v16->_logIdentifier;
     v16->_logIdentifier = v21;
 
@@ -71,8 +71,8 @@
 
 - (BOOL)_isRunning
 {
-  v2 = [(DataStreamHAPTransport *)self transportCharacteristic];
-  v3 = v2 != 0;
+  transportCharacteristic = [(DataStreamHAPTransport *)self transportCharacteristic];
+  v3 = transportCharacteristic != 0;
 
   return v3;
 }
@@ -81,11 +81,11 @@
 {
   if ([(DataStreamHAPTransport *)self _isRunning])
   {
-    v3 = self;
+    selfCopy = self;
     v4 = sub_10007FAA0();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
     {
-      v5 = sub_10007FAFC(v3);
+      v5 = sub_10007FAFC(selfCopy);
       v19 = 138543362;
       v20 = v5;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_ERROR, "%{public}@Connect called on an already-running transport", &v19, 0xCu);
@@ -95,106 +95,106 @@ LABEL_19:
 
   else
   {
-    v6 = [(DataStreamHAPTransport *)self accessory];
-    v3 = v6;
-    if (v6)
+    accessory = [(DataStreamHAPTransport *)self accessory];
+    selfCopy = accessory;
+    if (accessory)
     {
-      v4 = [(DataStreamHAPTransport *)v6 characteristicOfType:@"00000138-0000-1000-8000-4D69736D6574" serviceType:@"00000129-0000-1000-8000-4D69736D6574"];
+      v4 = [(DataStreamHAPTransport *)accessory characteristicOfType:@"00000138-0000-1000-8000-4D69736D6574" serviceType:@"00000129-0000-1000-8000-4D69736D6574"];
       if (v4)
       {
-        v5 = [(DataStreamHAPTransport *)v3 characteristicOfType:@"00000139-0000-1000-8000-4D69736D6574" serviceType:@"00000129-0000-1000-8000-4D69736D6574"];
-        v7 = self;
+        v5 = [(DataStreamHAPTransport *)selfCopy characteristicOfType:@"00000139-0000-1000-8000-4D69736D6574" serviceType:@"00000129-0000-1000-8000-4D69736D6574"];
+        selfCopy2 = self;
         v8 = sub_10007FAA0();
         v9 = v8;
         if (v5)
         {
           if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
           {
-            v10 = sub_10007FAFC(v7);
+            v10 = sub_10007FAFC(selfCopy2);
             v19 = 138543362;
             v20 = v10;
             _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%{public}@[Connect] All good; connected!", &v19, 0xCu);
           }
 
-          [(DataStreamHAPTransport *)v7 setTransportCharacteristic:v4];
-          [(DataStreamHAPTransport *)v7 setInterruptCharacteristic:v5];
-          [(DataStreamHAPTransport *)v7 _registerForMessages];
-          [(DataStreamHAPTransport *)v7 _notifyDelegateDidOpen];
+          [(DataStreamHAPTransport *)selfCopy2 setTransportCharacteristic:v4];
+          [(DataStreamHAPTransport *)selfCopy2 setInterruptCharacteristic:v5];
+          [(DataStreamHAPTransport *)selfCopy2 _registerForMessages];
+          [(DataStreamHAPTransport *)selfCopy2 _notifyDelegateDidOpen];
         }
 
         else
         {
           if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
           {
-            v17 = sub_10007FAFC(v7);
+            v17 = sub_10007FAFC(selfCopy2);
             v19 = 138543362;
             v20 = v17;
             _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%{public}@[Connect] Missing characteristics to create transport for HDS over HAP (Interrupt Characteristic does not exist)", &v19, 0xCu);
           }
 
           v18 = [NSError dkErrorWithCode:4];
-          [(DataStreamHAPTransport *)v7 _teardownSessionWithError:v18];
+          [(DataStreamHAPTransport *)selfCopy2 _teardownSessionWithError:v18];
         }
       }
 
       else
       {
-        v14 = self;
+        selfCopy3 = self;
         v15 = sub_10007FAA0();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          v16 = sub_10007FAFC(v14);
+          v16 = sub_10007FAFC(selfCopy3);
           v19 = 138543362;
           v20 = v16;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%{public}@[Connect] Missing characteristics to create transport for HDS over HAP (Transport Characteristic does not exist)", &v19, 0xCu);
         }
 
         v5 = [NSError dkErrorWithCode:4];
-        [(DataStreamHAPTransport *)v14 _teardownSessionWithError:v5];
+        [(DataStreamHAPTransport *)selfCopy3 _teardownSessionWithError:v5];
       }
 
       goto LABEL_19;
     }
 
-    v11 = self;
+    selfCopy4 = self;
     v12 = sub_10007FAA0();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = sub_10007FAFC(v11);
+      v13 = sub_10007FAFC(selfCopy4);
       v19 = 138543362;
       v20 = v13;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%{public}@Connect called but accessory is no longer valid", &v19, 0xCu);
     }
 
     v4 = [NSError errorWithDomain:@"DKErrorDomain" code:38 userInfo:0];
-    [(DataStreamHAPTransport *)v11 _teardownSessionWithError:v4];
+    [(DataStreamHAPTransport *)selfCopy4 _teardownSessionWithError:v4];
   }
 }
 
 - (void)close
 {
-  v3 = [(DataStreamHAPTransport *)self _isRunning];
-  v4 = self;
+  _isRunning = [(DataStreamHAPTransport *)self _isRunning];
+  selfCopy = self;
   v5 = sub_10007FAA0();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
-  if (v3)
+  if (_isRunning)
   {
     if (v6)
     {
-      v7 = sub_10007FAFC(v4);
+      v7 = sub_10007FAFC(selfCopy);
       v9 = 138543362;
       v10 = v7;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%{public}@DataStream transport closing.", &v9, 0xCu);
     }
 
-    [(DataStreamHAPTransport *)v4 _teardownSessionWithError:0];
+    [(DataStreamHAPTransport *)selfCopy _teardownSessionWithError:0];
   }
 
   else
   {
     if (v6)
     {
-      v8 = sub_10007FAFC(v4);
+      v8 = sub_10007FAFC(selfCopy);
       v9 = 138543362;
       v10 = v8;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%{public}@DataStream Socket invoked closed but nothing to clean up.", &v9, 0xCu);
@@ -202,9 +202,9 @@ LABEL_19:
   }
 }
 
-- (void)_stopWithError:(id)a3
+- (void)_stopWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if ([(DataStreamHAPTransport *)self _isRunning])
   {
     [(DataStreamHAPTransport *)self _deregisterForMessages];
@@ -212,7 +212,7 @@ LABEL_19:
 
   [(DataStreamHAPTransport *)self setTransportCharacteristic:0];
   [(DataStreamHAPTransport *)self setInterruptCharacteristic:0];
-  v5 = v4;
+  v5 = errorCopy;
   v6 = v5;
   if (!v5)
   {
@@ -232,9 +232,9 @@ LABEL_19:
   }
 }
 
-- (void)_teardownSessionWithError:(id)a3
+- (void)_teardownSessionWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   if ([(DataStreamHAPTransport *)self _isRunning])
   {
     v13 = 0;
@@ -258,11 +258,11 @@ LABEL_19:
 
     else
     {
-      v8 = self;
+      selfCopy = self;
       v9 = sub_10007FAA0();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        v10 = sub_10007FAFC(v8);
+        v10 = sub_10007FAFC(selfCopy);
         *location = 138543618;
         *&location[4] = v10;
         v16 = 2112;
@@ -270,103 +270,103 @@ LABEL_19:
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%{public}@[Transport] Unable to write: Closing after session force close failed; error=%@", location, 0x16u);
       }
 
-      [(DataStreamHAPTransport *)v8 _stopWithError:v4];
+      [(DataStreamHAPTransport *)selfCopy _stopWithError:errorCopy];
     }
   }
 
   else
   {
-    [(DataStreamHAPTransport *)self _stopWithError:v4];
+    [(DataStreamHAPTransport *)self _stopWithError:errorCopy];
   }
 }
 
 - (void)_registerForMessages
 {
-  v3 = [(DataStreamHAPTransport *)self accessory];
-  v4 = [v3 server];
+  accessory = [(DataStreamHAPTransport *)self accessory];
+  server = [accessory server];
 
-  v5 = [(DataStreamHAPTransport *)self interruptCharacteristic];
-  v9 = v5;
+  interruptCharacteristic = [(DataStreamHAPTransport *)self interruptCharacteristic];
+  v9 = interruptCharacteristic;
   v6 = [NSArray arrayWithObjects:&v9 count:1];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10002AF50;
   v8[3] = &unk_1002736F8;
   v8[4] = self;
-  v7 = [(DataStreamHAPTransport *)self workQueue];
-  [v4 enableEvents:1 forCharacteristics:v6 withCompletionHandler:v8 queue:v7];
+  workQueue = [(DataStreamHAPTransport *)self workQueue];
+  [server enableEvents:1 forCharacteristics:v6 withCompletionHandler:v8 queue:workQueue];
 }
 
 - (void)_notifyDelegateDidOpen
 {
-  v3 = [(DataStreamHAPTransport *)self workQueue];
+  workQueue = [(DataStreamHAPTransport *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002B178;
   block[3] = &unk_100273348;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 - (void)_notifyDelegateDidClose
 {
-  v3 = [(DataStreamHAPTransport *)self workQueue];
+  workQueue = [(DataStreamHAPTransport *)self workQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002B254;
   block[3] = &unk_100273348;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
-- (void)_notifyDelegateDidFailWithError:(id)a3
+- (void)_notifyDelegateDidFailWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(DataStreamHAPTransport *)self workQueue];
+  errorCopy = error;
+  workQueue = [(DataStreamHAPTransport *)self workQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002B35C;
   v7[3] = &unk_100273370;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = errorCopy;
+  v6 = errorCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)_notifyDelegateDidReceiveFrame:(id)a3
+- (void)_notifyDelegateDidReceiveFrame:(id)frame
 {
-  v4 = a3;
-  v5 = [(DataStreamHAPTransport *)self workQueue];
+  frameCopy = frame;
+  workQueue = [(DataStreamHAPTransport *)self workQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002B464;
   v7[3] = &unk_100273370;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = frameCopy;
+  v6 = frameCopy;
+  dispatch_async(workQueue, v7);
 }
 
-- (void)sendRawFrame:(id)a3 completion:(id)a4
+- (void)sendRawFrame:(id)frame completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [[DataStreamHAPPendingWrite alloc] initWithData:v7 completion:v6];
+  completionCopy = completion;
+  frameCopy = frame;
+  v9 = [[DataStreamHAPPendingWrite alloc] initWithData:frameCopy completion:completionCopy];
 
-  v8 = [(DataStreamHAPTransport *)self pendingWrites];
-  [v8 addObject:v9];
+  pendingWrites = [(DataStreamHAPTransport *)self pendingWrites];
+  [pendingWrites addObject:v9];
 
   [(DataStreamHAPTransport *)self _doNextWriteOperation];
 }
 
-- (id)_getPendingWritesUpToLength:(unint64_t)a3
+- (id)_getPendingWritesUpToLength:(unint64_t)length
 {
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(DataStreamHAPTransport *)self pendingWrites];
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  pendingWrites = [(DataStreamHAPTransport *)self pendingWrites];
+  v5 = [pendingWrites countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -380,10 +380,10 @@ LABEL_19:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(pendingWrites);
         }
 
-        v11 = [*(*(&v17 + 1) + 8 * v10) popNextFrameUpToMaxLength:a3];
+        v11 = [*(*(&v17 + 1) + 8 * v10) popNextFrameUpToMaxLength:length];
         if (![v11 length])
         {
           goto LABEL_13;
@@ -407,8 +407,8 @@ LABEL_11:
         v8 = v11;
         v7 = 0;
 LABEL_12:
-        a3 -= [v11 length];
-        if (!a3)
+        length -= [v11 length];
+        if (!length)
         {
 
           goto LABEL_20;
@@ -420,7 +420,7 @@ LABEL_13:
       }
 
       while (v6 != v10);
-      v13 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v13 = [pendingWrites countByEnumeratingWithState:&v17 objects:v21 count:16];
       v6 = v13;
       if (!v13)
       {
@@ -448,10 +448,10 @@ LABEL_20:
   return v14;
 }
 
-- (id)_buildWriteRequestWithError:(id *)a3 shouldForceClose:(BOOL)a4
+- (id)_buildWriteRequestWithError:(id *)error shouldForceClose:(BOOL)close
 {
-  v4 = a4;
-  if (a4)
+  closeCopy = close;
+  if (close)
   {
     v7 = 0;
     goto LABEL_5;
@@ -462,10 +462,10 @@ LABEL_20:
   {
 LABEL_5:
     v8 = [HAPTLVUnsignedNumberValue alloc];
-    v9 = [(DataStreamHAPTransport *)self sessionIdentifier];
-    v10 = [(HAPTLVNumberValueBase *)v8 initWithValue:v9];
+    sessionIdentifier = [(DataStreamHAPTransport *)self sessionIdentifier];
+    selfCopy2 = [(HAPTLVNumberValueBase *)v8 initWithValue:sessionIdentifier];
 
-    if (v4)
+    if (closeCopy)
     {
       v11 = [HAPTLVUnsignedNumberValue alloc];
       v12 = [NSNumber numberWithBool:1];
@@ -477,17 +477,17 @@ LABEL_5:
       v13 = 0;
     }
 
-    v14 = [[HAPDataStreamHAPControllerPayload alloc] initWithPayload:v7 sessionIdentifier:v10 forceClose:v13];
-    v15 = [(HAPDataStreamHAPControllerPayload *)v14 serializeWithError:a3];
-    v16 = *a3;
-    v17 = self;
+    v14 = [[HAPDataStreamHAPControllerPayload alloc] initWithPayload:v7 sessionIdentifier:selfCopy2 forceClose:v13];
+    v15 = [(HAPDataStreamHAPControllerPayload *)v14 serializeWithError:error];
+    v16 = *error;
+    selfCopy = self;
     v18 = sub_10007FAA0();
     v19 = v18;
     if (v16)
     {
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v20 = sub_10007FAFC(v17);
+        v20 = sub_10007FAFC(selfCopy);
         v25 = 138543362;
         v26 = v20;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "%{public}@Error: failed to serialize Controller Payload; should not happen!", &v25, 0xCu);
@@ -500,28 +500,28 @@ LABEL_5:
     {
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
       {
-        v22 = sub_10007FAFC(v17);
+        v22 = sub_10007FAFC(selfCopy);
         v25 = 138543874;
         v26 = v22;
         v27 = 1024;
         v28 = [v7 length];
         v29 = 1024;
-        v30 = [(DataStreamHAPTransport *)v17 lastAccessoryRequestToSendFlag];
+        lastAccessoryRequestToSendFlag = [(DataStreamHAPTransport *)selfCopy lastAccessoryRequestToSendFlag];
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEBUG, "%{public}@Writing: %u bytes (rts=%d)", &v25, 0x18u);
       }
 
-      v17 = [(DataStreamHAPTransport *)v17 transportCharacteristic];
-      v21 = [HAPCharacteristicWriteRequestTuple writeRequestTupleForCharacteristic:v17 value:v15 authorizationData:0 timedWrite:0 responseValue:1 type:0];
+      selfCopy = [(DataStreamHAPTransport *)selfCopy transportCharacteristic];
+      v21 = [HAPCharacteristicWriteRequestTuple writeRequestTupleForCharacteristic:selfCopy value:v15 authorizationData:0 timedWrite:0 responseValue:1 type:0];
     }
 
     goto LABEL_16;
   }
 
-  v10 = self;
+  selfCopy2 = self;
   v13 = sub_10007FAA0();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v24 = sub_10007FAFC(v10);
+    v24 = sub_10007FAFC(selfCopy2);
     v25 = 138543362;
     v26 = v24;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "%{public}@Writing: nothing to write", &v25, 0xCu);
@@ -533,25 +533,25 @@ LABEL_16:
   return v21;
 }
 
-- (void)_writeCharacteristicRequests:(id)a3 completion:(id)a4
+- (void)_writeCharacteristicRequests:(id)requests completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(DataStreamHAPTransport *)self accessory];
-  v8 = [(DataStreamHAPTransport *)self workQueue];
-  [v9 writeCharacteristicValues:v7 timeout:v8 completionQueue:v6 completionHandler:0.0];
+  completionCopy = completion;
+  requestsCopy = requests;
+  accessory = [(DataStreamHAPTransport *)self accessory];
+  workQueue = [(DataStreamHAPTransport *)self workQueue];
+  [accessory writeCharacteristicValues:requestsCopy timeout:workQueue completionQueue:completionCopy completionHandler:0.0];
 }
 
 - (void)_doNextWriteOperation
 {
   if (![(DataStreamHAPTransport *)self isWriteInProgress])
   {
-    v3 = [(DataStreamHAPTransport *)self pendingWrites];
-    if ([v3 hmf_isEmpty])
+    pendingWrites = [(DataStreamHAPTransport *)self pendingWrites];
+    if ([pendingWrites hmf_isEmpty])
     {
-      v4 = [(DataStreamHAPTransport *)self lastAccessoryRequestToSendFlag];
+      lastAccessoryRequestToSendFlag = [(DataStreamHAPTransport *)self lastAccessoryRequestToSendFlag];
 
-      if ((v4 & 1) == 0)
+      if ((lastAccessoryRequestToSendFlag & 1) == 0)
       {
         return;
       }
@@ -563,8 +563,8 @@ LABEL_16:
 
     if ([(DataStreamHAPTransport *)self _isRunning])
     {
-      v5 = [(DataStreamHAPTransport *)self accessory];
-      if (v5)
+      accessory = [(DataStreamHAPTransport *)self accessory];
+      if (accessory)
       {
         [(DataStreamHAPTransport *)self setIsWriteInProgress:1];
         v20 = 0;
@@ -572,17 +572,17 @@ LABEL_16:
         v7 = v20;
         if (v7)
         {
-          v8 = self;
+          selfCopy = self;
           v9 = sub_10007FAA0();
           if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
           {
-            v10 = sub_10007FAFC(v8);
+            v10 = sub_10007FAFC(selfCopy);
             *buf = 138543362;
             v23 = v10;
             _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%{public}@[Transport] Unable to write: building next payload failed and should not do that; closing.", buf, 0xCu);
           }
 
-          [(DataStreamHAPTransport *)v8 _stopTransportForWriteFailureError:v7];
+          [(DataStreamHAPTransport *)selfCopy _stopTransportForWriteFailureError:v7];
         }
 
         else if (v6)
@@ -610,55 +610,55 @@ LABEL_16:
 
       else
       {
-        v14 = self;
+        selfCopy2 = self;
         v15 = sub_10007FAA0();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          v16 = sub_10007FAFC(v14);
+          v16 = sub_10007FAFC(selfCopy2);
           *buf = 138543362;
           v23 = v16;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%{public}@[Transport] Unable to write: HAPAccessory is no longer active; closing.", buf, 0xCu);
         }
 
         v7 = [NSError dkErrorWithCode:40];
-        [(DataStreamHAPTransport *)v14 _stopTransportForWriteFailureError:v7];
+        [(DataStreamHAPTransport *)selfCopy2 _stopTransportForWriteFailureError:v7];
       }
     }
 
     else
     {
-      v11 = self;
+      selfCopy3 = self;
       v12 = sub_10007FAA0();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        v13 = sub_10007FAFC(v11);
+        v13 = sub_10007FAFC(selfCopy3);
         *buf = 138543362;
         v23 = v13;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%{public}@[Transport] Unable to write: transport already closed.", buf, 0xCu);
       }
 
-      v5 = [NSError errorWithDomain:@"DKErrorDomain" code:39 userInfo:0];
-      [(DataStreamHAPTransport *)v11 _cancelAllPendingWritesWithError:v5];
+      accessory = [NSError errorWithDomain:@"DKErrorDomain" code:39 userInfo:0];
+      [(DataStreamHAPTransport *)selfCopy3 _cancelAllPendingWritesWithError:accessory];
     }
   }
 }
 
-- (void)_handleCompletionWithResponseTuples:(id)a3
+- (void)_handleCompletionWithResponseTuples:(id)tuples
 {
-  v4 = a3;
-  v5 = [(DataStreamHAPTransport *)self isWriteInProgress];
-  v6 = self;
+  tuplesCopy = tuples;
+  isWriteInProgress = [(DataStreamHAPTransport *)self isWriteInProgress];
+  selfCopy = self;
   v7 = sub_10007FAA0();
   v8 = v7;
-  if (v5)
+  if (isWriteInProgress)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v9 = sub_10007FAFC(v6);
+      v9 = sub_10007FAFC(selfCopy);
       *buf = 138543618;
       v50 = v9;
       v51 = 2112;
-      v52 = v4;
+      v52 = tuplesCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "%{public}@[Transport] Handling responses: %@", buf, 0x16u);
     }
 
@@ -666,8 +666,8 @@ LABEL_16:
     v47 = 0u;
     v44 = 0u;
     v45 = 0u;
-    v42 = v4;
-    v10 = v4;
+    v42 = tuplesCopy;
+    v10 = tuplesCopy;
     v11 = [v10 countByEnumeratingWithState:&v44 objects:v48 count:16];
     if (v11)
     {
@@ -683,9 +683,9 @@ LABEL_6:
         }
 
         v15 = *(*(&v44 + 1) + 8 * v14);
-        v16 = [v15 characteristic];
-        v17 = [v16 type];
-        v18 = [v17 isEqualToString:@"00000138-0000-1000-8000-4D69736D6574"];
+        characteristic = [v15 characteristic];
+        type = [characteristic type];
+        v18 = [type isEqualToString:@"00000138-0000-1000-8000-4D69736D6574"];
 
         if (v18)
         {
@@ -711,40 +711,40 @@ LABEL_6:
         goto LABEL_21;
       }
 
-      v21 = [(DataStreamHAPTransport *)v20 error];
+      error = [(DataStreamHAPTransport *)v20 error];
 
-      if (v21)
+      if (error)
       {
-        v22 = v6;
+        v22 = selfCopy;
         v23 = sub_10007FAA0();
-        v4 = v42;
+        tuplesCopy = v42;
         if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
         {
           v24 = sub_10007FAFC(v22);
-          v25 = [(DataStreamHAPTransport *)v20 error];
+          error2 = [(DataStreamHAPTransport *)v20 error];
           *buf = 138543618;
           v50 = v24;
           v51 = 2112;
-          v52 = v25;
+          v52 = error2;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%{public}@[Transport] Write response errored out: %@", buf, 0x16u);
         }
 
-        v26 = [(DataStreamHAPTransport *)v20 error];
-        [(DataStreamHAPTransport *)v22 _stopTransportForWriteFailureError:v26];
+        error3 = [(DataStreamHAPTransport *)v20 error];
+        [(DataStreamHAPTransport *)v22 _stopTransportForWriteFailureError:error3];
       }
 
       else
       {
-        v30 = [(DataStreamHAPTransport *)v20 value];
+        value = [(DataStreamHAPTransport *)v20 value];
         v43 = 0;
-        v31 = [HAPDataStreamHAPAccessoryPayload parsedFromData:v30 error:&v43];
+        v31 = [HAPDataStreamHAPAccessoryPayload parsedFromData:value error:&v43];
         v32 = v43;
 
         if (v32 || !v31)
         {
-          v36 = v6;
+          v36 = selfCopy;
           v37 = sub_10007FAA0();
-          v4 = v42;
+          tuplesCopy = v42;
           if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
           {
             v38 = sub_10007FAFC(v36);
@@ -761,35 +761,35 @@ LABEL_6:
 
         else
         {
-          v33 = [v31 accessoryRequestToSend];
+          accessoryRequestToSend = [v31 accessoryRequestToSend];
 
-          v4 = v42;
-          if (v33)
+          tuplesCopy = v42;
+          if (accessoryRequestToSend)
           {
-            v34 = [v31 accessoryRequestToSend];
-            v35 = [v34 value];
-            -[DataStreamHAPTransport setLastAccessoryRequestToSendFlag:](v6, "setLastAccessoryRequestToSendFlag:", [v35 BOOLValue]);
+            accessoryRequestToSend2 = [v31 accessoryRequestToSend];
+            value2 = [accessoryRequestToSend2 value];
+            -[DataStreamHAPTransport setLastAccessoryRequestToSendFlag:](selfCopy, "setLastAccessoryRequestToSendFlag:", [value2 BOOLValue]);
           }
 
           else
           {
-            [(DataStreamHAPTransport *)v6 setLastAccessoryRequestToSendFlag:0];
+            [(DataStreamHAPTransport *)selfCopy setLastAccessoryRequestToSendFlag:0];
           }
 
-          [(DataStreamHAPTransport *)v6 _removeAndMarkCompleteAllCompletedWrites];
-          v40 = [v31 payload];
+          [(DataStreamHAPTransport *)selfCopy _removeAndMarkCompleteAllCompletedWrites];
+          payload = [v31 payload];
 
-          if (v40)
+          if (payload)
           {
-            v41 = [v31 payload];
-            [(DataStreamHAPTransport *)v6 _handleReceivedData:v41];
+            payload2 = [v31 payload];
+            [(DataStreamHAPTransport *)selfCopy _handleReceivedData:payload2];
           }
 
-          [(DataStreamHAPTransport *)v6 _doNextWriteOperation];
+          [(DataStreamHAPTransport *)selfCopy _doNextWriteOperation];
         }
       }
 
-      v6 = v20;
+      selfCopy = v20;
     }
 
     else
@@ -797,7 +797,7 @@ LABEL_6:
 LABEL_12:
 
 LABEL_21:
-      v27 = v6;
+      v27 = selfCopy;
       v28 = sub_10007FAA0();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
       {
@@ -807,9 +807,9 @@ LABEL_21:
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "%{public}@[Transport] Write-response contained no response; weird. Erroring out.", buf, 0xCu);
       }
 
-      v6 = [NSError dkErrorWithCode:1];
-      [(DataStreamHAPTransport *)v27 _stopTransportForWriteFailureError:v6];
-      v4 = v42;
+      selfCopy = [NSError dkErrorWithCode:1];
+      [(DataStreamHAPTransport *)v27 _stopTransportForWriteFailureError:selfCopy];
+      tuplesCopy = v42;
     }
   }
 
@@ -817,7 +817,7 @@ LABEL_21:
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v19 = sub_10007FAFC(v6);
+      v19 = sub_10007FAFC(selfCopy);
       *buf = 138543362;
       v50 = v19;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%{public}@[Transport] Write-response returned but nothing in progress; stale reply? Ignoring", buf, 0xCu);
@@ -831,8 +831,8 @@ LABEL_21:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(DataStreamHAPTransport *)self pendingWrites];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  pendingWrites = [(DataStreamHAPTransport *)self pendingWrites];
+  v4 = [pendingWrites countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (!v4)
   {
     goto LABEL_13;
@@ -850,7 +850,7 @@ LABEL_21:
     {
       if (*v12 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(pendingWrites);
       }
 
       v10 = *(*(&v11 + 1) + 8 * v8);
@@ -866,7 +866,7 @@ LABEL_21:
     }
 
     while (v5 != v8);
-    v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v5 = [pendingWrites countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       continue;
@@ -879,23 +879,23 @@ LABEL_11:
 
   if (v6)
   {
-    v3 = [(DataStreamHAPTransport *)self pendingWrites];
-    [v3 removeObjectsInRange:{0, v6}];
+    pendingWrites = [(DataStreamHAPTransport *)self pendingWrites];
+    [pendingWrites removeObjectsInRange:{0, v6}];
 LABEL_13:
   }
 
   [(DataStreamHAPTransport *)self setIsWriteInProgress:0];
 }
 
-- (void)_cancelAllPendingWritesWithError:(id)a3
+- (void)_cancelAllPendingWritesWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(DataStreamHAPTransport *)self pendingWrites];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  pendingWrites = [(DataStreamHAPTransport *)self pendingWrites];
+  v6 = [pendingWrites countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -907,102 +907,102 @@ LABEL_13:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(pendingWrites);
         }
 
-        [(DataStreamHAPTransport *)self _notifyWriteOperation:*(*(&v11 + 1) + 8 * v9) didCompleteWithError:v4];
+        [(DataStreamHAPTransport *)self _notifyWriteOperation:*(*(&v11 + 1) + 8 * v9) didCompleteWithError:errorCopy];
         v9 = v9 + 1;
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [pendingWrites countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 
-  v10 = [(DataStreamHAPTransport *)self pendingWrites];
-  [v10 removeAllObjects];
+  pendingWrites2 = [(DataStreamHAPTransport *)self pendingWrites];
+  [pendingWrites2 removeAllObjects];
 }
 
-- (void)_notifyWriteOperation:(id)a3 didCompleteWithError:(id)a4
+- (void)_notifyWriteOperation:(id)operation didCompleteWithError:(id)error
 {
-  v6 = a4;
-  v7 = [a3 completion];
-  v8 = [(DataStreamHAPTransport *)self workQueue];
+  errorCopy = error;
+  completion = [operation completion];
+  workQueue = [(DataStreamHAPTransport *)self workQueue];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10002C7D0;
   v11[3] = &unk_100273720;
-  v12 = v6;
-  v13 = v7;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, v11);
+  v12 = errorCopy;
+  v13 = completion;
+  v9 = errorCopy;
+  v10 = completion;
+  dispatch_async(workQueue, v11);
 }
 
-- (void)_handleReceivedData:(id)a3
+- (void)_handleReceivedData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_autoreleasePoolPush();
-  v6 = dispatch_data_create([v4 bytes], objc_msgSend(v4, "length"), 0, 0);
-  v7 = [(DataStreamHAPTransport *)self byteReader];
-  [v7 pushFrameData:v6];
+  v6 = dispatch_data_create([dataCopy bytes], objc_msgSend(dataCopy, "length"), 0, 0);
+  byteReader = [(DataStreamHAPTransport *)self byteReader];
+  [byteReader pushFrameData:v6];
 
-  v8 = [(DataStreamHAPTransport *)self byteReader];
-  v9 = [v8 hasFailed];
+  byteReader2 = [(DataStreamHAPTransport *)self byteReader];
+  hasFailed = [byteReader2 hasFailed];
 
-  if (v9)
+  if (hasFailed)
   {
-    v10 = self;
+    selfCopy = self;
     v11 = sub_10007FAA0();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = sub_10007FAFC(v10);
+      v12 = sub_10007FAFC(selfCopy);
       v20 = 138543362;
       v21 = v12;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%{public}@DataStream has encountered irrecoverable framing issue. Closing stream.", &v20, 0xCu);
     }
 
     v13 = [NSError errorWithDomain:@"DKErrorDomain" code:27 userInfo:0];
-    [(DataStreamHAPTransport *)v10 _teardownSessionWithError:v13];
+    [(DataStreamHAPTransport *)selfCopy _teardownSessionWithError:v13];
   }
 
   else
   {
-    v14 = [(DataStreamHAPTransport *)self byteReader];
-    v15 = [v14 hasCompleteFrame];
+    byteReader3 = [(DataStreamHAPTransport *)self byteReader];
+    hasCompleteFrame = [byteReader3 hasCompleteFrame];
 
-    if (v15)
+    if (hasCompleteFrame)
     {
       do
       {
-        v16 = [(DataStreamHAPTransport *)self byteReader];
-        v17 = [v16 popRawFrame];
+        byteReader4 = [(DataStreamHAPTransport *)self byteReader];
+        popRawFrame = [byteReader4 popRawFrame];
 
-        if (v17)
+        if (popRawFrame)
         {
-          [(DataStreamHAPTransport *)self _notifyDelegateDidReceiveFrame:v17];
+          [(DataStreamHAPTransport *)self _notifyDelegateDidReceiveFrame:popRawFrame];
         }
 
-        v18 = [(DataStreamHAPTransport *)self byteReader];
-        v19 = [v18 hasCompleteFrame];
+        byteReader5 = [(DataStreamHAPTransport *)self byteReader];
+        hasCompleteFrame2 = [byteReader5 hasCompleteFrame];
       }
 
-      while ((v19 & 1) != 0);
+      while ((hasCompleteFrame2 & 1) != 0);
     }
   }
 
   objc_autoreleasePoolPop(v5);
 }
 
-- (void)_handleInterruptCharacteristicValue:(id)a3
+- (void)_handleInterruptCharacteristicValue:(id)value
 {
-  v4 = a3;
-  v5 = [(DataStreamHAPTransport *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  valueCopy = value;
+  workQueue = [(DataStreamHAPTransport *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = v4;
+  v6 = valueCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1018,16 +1018,16 @@ LABEL_13:
 
   if (!v8)
   {
-    v10 = self;
+    selfCopy = self;
     v9 = sub_10007FAA0();
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_19;
     }
 
-    v18 = sub_10007FAFC(v10);
+    selfCopy3 = sub_10007FAFC(selfCopy);
     *buf = 138543362;
-    v26 = v18;
+    v26 = selfCopy3;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%{public}@[Interrupt] Received interrupt value but it was not of the expected type; IGNORING.", buf, 0xCu);
 LABEL_18:
 
@@ -1036,46 +1036,46 @@ LABEL_18:
 
   v24 = 0;
   v9 = [HAPDataStreamTransportInterruptPayload parsedFromData:v8 error:&v24];
-  v10 = v24;
-  if (v10 || !v9)
+  selfCopy = v24;
+  if (selfCopy || !v9)
   {
-    v18 = self;
+    selfCopy3 = self;
     v20 = sub_10007FAA0();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v22 = sub_10007FAFC(v18);
+      v22 = sub_10007FAFC(selfCopy3);
       *buf = 138543618;
       v26 = v22;
       v27 = 2112;
-      v28 = v10;
+      v28 = selfCopy;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "%{public}@[Interrupt] The interrupt value could not be parsed (error=%@)", buf, 0x16u);
     }
 
     goto LABEL_17;
   }
 
-  v11 = [v9 requestToSendIdentifiers];
-  v12 = [v11 bytes];
+  requestToSendIdentifiers = [v9 requestToSendIdentifiers];
+  bytes = [requestToSendIdentifiers bytes];
 
-  v13 = [v9 requestToSendIdentifiers];
-  v14 = [v13 length];
+  requestToSendIdentifiers2 = [v9 requestToSendIdentifiers];
+  v14 = [requestToSendIdentifiers2 length];
 
-  v15 = [(DataStreamHAPTransport *)self sessionIdentifier];
-  v16 = [v15 intValue];
+  sessionIdentifier = [(DataStreamHAPTransport *)self sessionIdentifier];
+  intValue = [sessionIdentifier intValue];
 
-  v17 = memchr(v12, v16, v14);
-  v18 = self;
+  v17 = memchr(bytes, intValue, v14);
+  selfCopy3 = self;
   v19 = sub_10007FAA0();
   v20 = v19;
   if (!v17)
   {
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
-      v23 = sub_10007FAFC(v18);
+      v23 = sub_10007FAFC(selfCopy3);
       *buf = 138543618;
       v26 = v23;
       v27 = 1024;
-      LODWORD(v28) = v16;
+      LODWORD(v28) = intValue;
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "%{public}@[Interrupt] The interrupt value does not contain any Request To Send (0x%x)", buf, 0x12u);
     }
 
@@ -1086,16 +1086,16 @@ LABEL_17:
 
   if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
   {
-    v21 = sub_10007FAFC(v18);
+    v21 = sub_10007FAFC(selfCopy3);
     *buf = 138543618;
     v26 = v21;
     v27 = 1024;
-    LODWORD(v28) = v16;
+    LODWORD(v28) = intValue;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "%{public}@[Interrupt] The interrupt value contains valid accessory Request To Send (0x%x)", buf, 0x12u);
   }
 
-  [(DataStreamHAPTransport *)v18 setLastAccessoryRequestToSendFlag:1];
-  [(DataStreamHAPTransport *)v18 _doNextWriteOperation];
+  [(DataStreamHAPTransport *)selfCopy3 setLastAccessoryRequestToSendFlag:1];
+  [(DataStreamHAPTransport *)selfCopy3 _doNextWriteOperation];
 LABEL_19:
 }
 

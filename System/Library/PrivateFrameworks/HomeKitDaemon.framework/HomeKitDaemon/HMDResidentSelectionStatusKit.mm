@@ -3,12 +3,12 @@
 - (HMDPreferredResidentsList)preferredResidentsList;
 - (HMDResidentDevice)elector;
 - (HMDResidentDeviceManagerContext)context;
-- (HMDResidentSelectionStatusKit)initWithWithContext:(id)a3 residentStatusList:(id)a4;
+- (HMDResidentSelectionStatusKit)initWithWithContext:(id)context residentStatusList:(id)list;
 - (id)logIdentifier;
-- (id)residentStatusWithValidPreferredResidentsListIn:(id)a3;
-- (id)selectionInfoWithLatestTimestampIn:(id)a3;
-- (id)sortResidentStatuses:(id)a3;
-- (void)_parseResidentStatus:(id)a3;
+- (id)residentStatusWithValidPreferredResidentsListIn:(id)in;
+- (id)selectionInfoWithLatestTimestampIn:(id)in;
+- (id)sortResidentStatuses:(id)statuses;
+- (void)_parseResidentStatus:(id)status;
 @end
 
 @implementation HMDResidentSelectionStatusKit
@@ -22,35 +22,35 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDResidentSelectionStatusKit *)self context];
-  v3 = [v2 home];
-  v4 = [v3 uuid];
-  v5 = [v4 UUIDString];
+  context = [(HMDResidentSelectionStatusKit *)self context];
+  home = [context home];
+  uuid = [home uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v5;
+  return uUIDString;
 }
 
-- (void)_parseResidentStatus:(id)a3
+- (void)_parseResidentStatus:(id)status
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  statusCopy = status;
   v5 = [MEMORY[0x277CBEB58] set];
   v6 = [MEMORY[0x277CBEB58] set];
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v24 = MEMORY[0x277D85DD0];
   v25 = 3221225472;
   v26 = __54__HMDResidentSelectionStatusKit__parseResidentStatus___block_invoke;
   v27 = &unk_278678108;
-  v28 = self;
-  v8 = v7;
+  selfCopy = self;
+  v8 = dictionary;
   v29 = v8;
   v9 = v5;
   v30 = v9;
   v10 = v6;
   v31 = v10;
-  [v4 hmf_enumerateWithAutoreleasePoolUsingBlock:&v24];
+  [statusCopy hmf_enumerateWithAutoreleasePoolUsingBlock:&v24];
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy2 = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -64,19 +64,19 @@
 
   objc_autoreleasePoolPop(v11);
   v15 = [v9 copy];
-  [(HMDResidentSelectionStatusKit *)v12 setWiredResidents:v15];
+  [(HMDResidentSelectionStatusKit *)selfCopy2 setWiredResidents:v15];
 
   v16 = objc_autoreleasePoolPush();
-  v17 = v12;
+  v17 = selfCopy2;
   v18 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     v19 = HMFGetLogIdentifier();
-    v20 = [v10 shortDescription];
+    shortDescription = [v10 shortDescription];
     *buf = 138543618;
     v33 = v19;
     v34 = 2112;
-    v35 = v20;
+    v35 = shortDescription;
     _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_INFO, "%{public}@Residents with reachable accessories are: %@", buf, 0x16u);
   }
 
@@ -137,15 +137,15 @@ void __54__HMDResidentSelectionStatusKit__parseResidentStatus___block_invoke(uin
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)selectionInfoWithLatestTimestampIn:(id)a3
+- (id)selectionInfoWithLatestTimestampIn:(id)in
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 allObjects];
-  v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_3_106315];
-  v7 = [v6 firstObject];
+  inCopy = in;
+  allObjects = [inCopy allObjects];
+  v6 = [allObjects sortedArrayUsingComparator:&__block_literal_global_3_106315];
+  firstObject = [v6 firstObject];
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -153,16 +153,16 @@ void __54__HMDResidentSelectionStatusKit__parseResidentStatus___block_invoke(uin
     v15 = 138543618;
     v16 = v11;
     v17 = 2112;
-    v18 = v7;
+    v18 = firstObject;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Latest selection info on StatusKit is from status: %@", &v15, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [v7 selectionInfo];
+  selectionInfo = [firstObject selectionInfo];
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return selectionInfo;
 }
 
 uint64_t __68__HMDResidentSelectionStatusKit_selectionInfoWithLatestTimestampIn___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -231,11 +231,11 @@ uint64_t __74__HMDResidentSelectionStatusKit_comparatorForPreferredResidentsList
   return v8;
 }
 
-- (id)sortResidentStatuses:(id)a3
+- (id)sortResidentStatuses:(id)statuses
 {
-  v4 = [a3 allObjects];
-  v5 = [(HMDResidentSelectionStatusKit *)self comparatorForPreferredResidentsListSource];
-  v6 = [v4 sortedArrayUsingComparator:v5];
+  allObjects = [statuses allObjects];
+  comparatorForPreferredResidentsListSource = [(HMDResidentSelectionStatusKit *)self comparatorForPreferredResidentsListSource];
+  v6 = [allObjects sortedArrayUsingComparator:comparatorForPreferredResidentsListSource];
 
   return v6;
 }
@@ -243,26 +243,26 @@ uint64_t __74__HMDResidentSelectionStatusKit_comparatorForPreferredResidentsList
 - (HMDResidentDevice)elector
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDResidentSelectionStatusKit *)self sortedResidentStatuses];
-  v4 = [v3 firstObject];
+  sortedResidentStatuses = [(HMDResidentSelectionStatusKit *)self sortedResidentStatuses];
+  firstObject = [sortedResidentStatuses firstObject];
 
   v5 = MEMORY[0x277CBEB98];
-  v6 = [(HMDResidentSelectionStatusKit *)self context];
-  v7 = [v6 availableResidentDevices];
-  v8 = [v5 setWithArray:v7];
-  v9 = [v4 matchingDeviceFromResidentDevices:v8];
+  context = [(HMDResidentSelectionStatusKit *)self context];
+  availableResidentDevices = [context availableResidentDevices];
+  v8 = [v5 setWithArray:availableResidentDevices];
+  v9 = [firstObject matchingDeviceFromResidentDevices:v8];
 
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     v13 = HMFGetLogIdentifier();
-    v14 = [v9 shortDescription];
+    shortDescription = [v9 shortDescription];
     v17 = 138543618;
     v18 = v13;
     v19 = 2112;
-    v20 = v14;
+    v20 = shortDescription;
     _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@Elector is: %@", &v17, 0x16u);
   }
 
@@ -272,18 +272,18 @@ uint64_t __74__HMDResidentSelectionStatusKit_comparatorForPreferredResidentsList
   return v9;
 }
 
-- (id)residentStatusWithValidPreferredResidentsListIn:(id)a3
+- (id)residentStatusWithValidPreferredResidentsListIn:(id)in
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  inCopy = in;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __81__HMDResidentSelectionStatusKit_residentStatusWithValidPreferredResidentsListIn___block_invoke;
   v12[3] = &unk_2786780C0;
   v12[4] = self;
-  v5 = [v4 na_firstObjectPassingTest:v12];
+  v5 = [inCopy na_firstObjectPassingTest:v12];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -333,29 +333,29 @@ BOOL __81__HMDResidentSelectionStatusKit_residentStatusWithValidPreferredResiden
 
 - (HMDPreferredResidentsList)preferredResidentsList
 {
-  v2 = [(HMDResidentSelectionStatusKit *)self sourceForPreferredResidentsList];
-  v3 = [v2 preferredResidentsList];
+  sourceForPreferredResidentsList = [(HMDResidentSelectionStatusKit *)self sourceForPreferredResidentsList];
+  preferredResidentsList = [sourceForPreferredResidentsList preferredResidentsList];
 
-  return v3;
+  return preferredResidentsList;
 }
 
-- (HMDResidentSelectionStatusKit)initWithWithContext:(id)a3 residentStatusList:(id)a4
+- (HMDResidentSelectionStatusKit)initWithWithContext:(id)context residentStatusList:(id)list
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  listCopy = list;
   v20.receiver = self;
   v20.super_class = HMDResidentSelectionStatusKit;
   v8 = [(HMDResidentSelectionStatusKit *)&v20 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_context, v6);
-    v10 = [v6 queue];
+    objc_storeWeak(&v8->_context, contextCopy);
+    queue = [contextCopy queue];
     queue = v9->_queue;
-    v9->_queue = v10;
+    v9->_queue = queue;
 
-    objc_storeStrong(&v9->_residentStatusList, a4);
-    v12 = [(HMDResidentSelectionStatusKit *)v9 sortResidentStatuses:v7];
+    objc_storeStrong(&v9->_residentStatusList, list);
+    v12 = [(HMDResidentSelectionStatusKit *)v9 sortResidentStatuses:listCopy];
     sortedResidentStatuses = v9->_sortedResidentStatuses;
     v9->_sortedResidentStatuses = v12;
     v14 = v12;
@@ -364,11 +364,11 @@ BOOL __81__HMDResidentSelectionStatusKit_residentStatusWithValidPreferredResiden
     sourceForPreferredResidentsList = v9->_sourceForPreferredResidentsList;
     v9->_sourceForPreferredResidentsList = v15;
 
-    v17 = [(HMDResidentSelectionStatusKit *)v9 selectionInfoWithLatestTimestampIn:v7];
+    v17 = [(HMDResidentSelectionStatusKit *)v9 selectionInfoWithLatestTimestampIn:listCopy];
     selectionInfo = v9->_selectionInfo;
     v9->_selectionInfo = v17;
 
-    [(HMDResidentSelectionStatusKit *)v9 _parseResidentStatus:v7];
+    [(HMDResidentSelectionStatusKit *)v9 _parseResidentStatus:listCopy];
   }
 
   return v9;

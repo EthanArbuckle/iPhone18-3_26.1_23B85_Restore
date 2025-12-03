@@ -1,32 +1,32 @@
 @interface HDAssertion
-- (BOOL)_consumeFromBudgetThroughTime:(double)a3;
-- (BOOL)_lock_setBudget:(double)a3 error:(id *)a4;
-- (HDAssertion)initWithAssertionIdentifier:(id)a3 ownerIdentifier:(id)a4;
+- (BOOL)_consumeFromBudgetThroughTime:(double)time;
+- (BOOL)_lock_setBudget:(double)budget error:(id *)error;
+- (HDAssertion)initWithAssertionIdentifier:(id)identifier ownerIdentifier:(id)ownerIdentifier;
 - (double)_lock_remainingBudget;
 - (double)remainingBudget;
-- (id)_lock_cloneWithOwnerIdentifier:(id)a3;
+- (id)_lock_cloneWithOwnerIdentifier:(id)identifier;
 - (id)_lock_description;
-- (id)_lock_setBudgetIntervalStartTime:(double)a3;
-- (id)cloneWithOwnerIdentifier:(id)a3;
+- (id)_lock_setBudgetIntervalStartTime:(double)time;
+- (id)cloneWithOwnerIdentifier:(id)identifier;
 - (id)description;
-- (int64_t)_lock_consumeBudgetThroughTime:(double)a3 error:(id *)a4;
+- (int64_t)_lock_consumeBudgetThroughTime:(double)time error:(id *)error;
 - (int64_t)_lock_state;
-- (int64_t)_takeWithManager:(id)a3;
+- (int64_t)_takeWithManager:(id)manager;
 - (int64_t)rawState;
 - (int64_t)state;
-- (void)_invalidateAndRelease:(BOOL)a3;
-- (void)_setBudgetIntervalStartTime:(double)a3;
+- (void)_invalidateAndRelease:(BOOL)release;
+- (void)_setBudgetIntervalStartTime:(double)time;
 - (void)dealloc;
-- (void)setBudget:(double)a3;
-- (void)setContextType:(int64_t)a3;
+- (void)setBudget:(double)budget;
+- (void)setContextType:(int64_t)type;
 @end
 
 @implementation HDAssertion
 
 - (void)dealloc
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a1 object:a2 file:@"HDAssertion.m" lineNumber:72 description:{@"Assertion %@ must be invalidated prior to deallocation", a2}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:self object:a2 file:@"HDAssertion.m" lineNumber:72 description:{@"Assertion %@ must be invalidated prior to deallocation", a2}];
 }
 
 - (int64_t)rawState
@@ -55,9 +55,9 @@
 - (int64_t)state
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HDAssertion *)self _lock_state];
+  _lock_state = [(HDAssertion *)self _lock_state];
   os_unfair_lock_unlock(&self->_lock);
-  return v3;
+  return _lock_state;
 }
 
 - (double)_lock_remainingBudget
@@ -79,16 +79,16 @@
   return result;
 }
 
-- (HDAssertion)initWithAssertionIdentifier:(id)a3 ownerIdentifier:(id)a4
+- (HDAssertion)initWithAssertionIdentifier:(id)identifier ownerIdentifier:(id)ownerIdentifier
 {
-  v7 = a3;
-  v8 = a4;
-  if (![v7 length])
+  identifierCopy = identifier;
+  ownerIdentifierCopy = ownerIdentifier;
+  if (![identifierCopy length])
   {
     [HDAssertion initWithAssertionIdentifier:a2 ownerIdentifier:self];
   }
 
-  if (![v8 length])
+  if (![ownerIdentifierCopy length])
   {
     [HDAssertion initWithAssertionIdentifier:a2 ownerIdentifier:self];
   }
@@ -98,15 +98,15 @@
   v9 = [(HDAssertion *)&v17 init];
   if (v9)
   {
-    v10 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     v11 = *(v9 + 6);
-    *(v9 + 6) = v10;
+    *(v9 + 6) = uUID;
 
-    v12 = [v7 copy];
+    v12 = [identifierCopy copy];
     v13 = *(v9 + 7);
     *(v9 + 7) = v12;
 
-    v14 = [v8 copy];
+    v14 = [ownerIdentifierCopy copy];
     v15 = *(v9 + 8);
     *(v9 + 8) = v14;
 
@@ -122,28 +122,28 @@
 - (id)description
 {
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(HDAssertion *)self _lock_description];
+  _lock_description = [(HDAssertion *)self _lock_description];
   os_unfair_lock_unlock(&self->_lock);
 
-  return v3;
+  return _lock_description;
 }
 
-- (id)cloneWithOwnerIdentifier:(id)a3
+- (id)cloneWithOwnerIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(HDAssertion *)self _lock_cloneWithOwnerIdentifier:v4];
+  v5 = [(HDAssertion *)self _lock_cloneWithOwnerIdentifier:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v5;
 }
 
-- (void)setBudget:(double)a3
+- (void)setBudget:(double)budget
 {
   os_unfair_lock_lock(&self->_lock);
   v7 = 0;
-  v5 = [(HDAssertion *)self _lock_setBudget:&v7 error:a3];
+  v5 = [(HDAssertion *)self _lock_setBudget:&v7 error:budget];
   v6 = v7;
   os_unfair_lock_unlock(&self->_lock);
   if (!v5)
@@ -152,23 +152,23 @@
   }
 }
 
-- (void)setContextType:(int64_t)a3
+- (void)setContextType:(int64_t)type
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_contextType = a3;
+  self->_contextType = type;
   if (HDAssertionTimeForContextType_onceToken != -1)
   {
     [HDAssertion setContextType:];
   }
 
   v5 = HDAssertionTimeForContextType_mapping;
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v7 = [v5 objectForKeyedSubscript:v6];
 
   if (v7)
   {
     v8 = HDAssertionTimeForContextType_mapping;
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:type];
     v10 = [v8 objectForKeyedSubscript:v9];
   }
 
@@ -216,14 +216,14 @@
   return v5;
 }
 
-- (int64_t)_takeWithManager:(id)a3
+- (int64_t)_takeWithManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   os_unfair_lock_lock(&self->_lock);
   if (self->_state == 1)
   {
     self->_state = 2;
-    objc_storeWeak(&self->_manager, v4);
+    objc_storeWeak(&self->_manager, managerCopy);
     _HKInitializeLogging();
     v5 = HKLogAssertions();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
@@ -233,7 +233,7 @@
       v7 = HKLogAssertions();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
       {
-        [(HDAssertion *)self _takeWithManager:v4, v7];
+        [(HDAssertion *)self _takeWithManager:managerCopy, v7];
       }
     }
   }
@@ -244,9 +244,9 @@
   return state;
 }
 
-- (void)_invalidateAndRelease:(BOOL)a3
+- (void)_invalidateAndRelease:(BOOL)release
 {
-  v3 = a3;
+  releaseCopy = release;
   os_unfair_lock_lock(&self->_lock);
   _HKInitializeLogging();
   v5 = HKLogAssertions();
@@ -277,17 +277,17 @@
     self->_state = 3;
     objc_storeWeak(&self->_manager, 0);
     os_unfair_lock_unlock(&self->_lock);
-    if (v3 && WeakRetained)
+    if (releaseCopy && WeakRetained)
     {
       [WeakRetained _releaseAssertion:self];
     }
   }
 }
 
-- (void)_setBudgetIntervalStartTime:(double)a3
+- (void)_setBudgetIntervalStartTime:(double)time
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(HDAssertion *)self _lock_setBudgetIntervalStartTime:a3];
+  v5 = [(HDAssertion *)self _lock_setBudgetIntervalStartTime:time];
   os_unfair_lock_unlock(&self->_lock);
   if (v5)
   {
@@ -297,11 +297,11 @@
   MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)_consumeFromBudgetThroughTime:(double)a3
+- (BOOL)_consumeFromBudgetThroughTime:(double)time
 {
   os_unfair_lock_lock(&self->_lock);
   v8 = 0;
-  v5 = [(HDAssertion *)self _lock_consumeBudgetThroughTime:&v8 error:a3];
+  v5 = [(HDAssertion *)self _lock_consumeBudgetThroughTime:&v8 error:time];
   v6 = v8;
   os_unfair_lock_unlock(&self->_lock);
   if (!v5)
@@ -317,7 +317,7 @@
   os_unfair_lock_assert_owner(&self->_lock);
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(NSUUID *)self->_UUID UUIDString];
+  uUIDString = [(NSUUID *)self->_UUID UUIDString];
   assertionIdentifier = self->_assertionIdentifier;
   state = self->_state;
   v8 = @"ready";
@@ -348,7 +348,7 @@
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@" (%.3fs/%.3fs)", *&self->_remainingBudget, *&budget];
   }
 
-  v13 = [v3 stringWithFormat:@"<%@ %@ %@ %@%@: %@>", v4, v5, assertionIdentifier, v10, v12, self->_ownerIdentifier];
+  v13 = [v3 stringWithFormat:@"<%@ %@ %@ %@%@: %@>", v4, uUIDString, assertionIdentifier, v10, v12, self->_ownerIdentifier];
   if (budget > 0.0)
   {
   }
@@ -356,9 +356,9 @@
   return v13;
 }
 
-- (id)_lock_cloneWithOwnerIdentifier:(id)a3
+- (id)_lock_cloneWithOwnerIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_assert_owner(&self->_lock);
   if ([(HDAssertion *)self _lock_state]== 3)
   {
@@ -367,7 +367,7 @@
 
   else
   {
-    v5 = [[HDAssertion alloc] initWithAssertionIdentifier:self->_assertionIdentifier ownerIdentifier:v4];
+    v5 = [[HDAssertion alloc] initWithAssertionIdentifier:self->_assertionIdentifier ownerIdentifier:identifierCopy];
     if (self->_budget > 0.0)
     {
       [(HDAssertion *)self _lock_remainingBudget];
@@ -379,20 +379,20 @@
   return v5;
 }
 
-- (BOOL)_lock_setBudget:(double)a3 error:(id *)a4
+- (BOOL)_lock_setBudget:(double)budget error:(id *)error
 {
   os_unfair_lock_assert_owner(&self->_lock);
   state = self->_state;
   if (state == 1)
   {
-    if (a3 > 0.0)
+    if (budget > 0.0)
     {
-      self->_budget = a3;
-      self->_remainingBudget = a3;
+      self->_budget = budget;
+      self->_remainingBudget = budget;
       return 1;
     }
 
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:{@"Cannot give assertion a non-postive budget of %f", *&a3, v11}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"Cannot give assertion a non-postive budget of %f", *&budget, v11}];
   }
 
   else
@@ -413,13 +413,13 @@
       v10 = v9;
     }
 
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:{@"Assertion state '%@', but expected '%@'", v10, @"ready"}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"Assertion state '%@', but expected '%@'", v10, @"ready"}];
   }
 
   return 0;
 }
 
-- (id)_lock_setBudgetIntervalStartTime:(double)a3
+- (id)_lock_setBudgetIntervalStartTime:(double)time
 {
   os_unfair_lock_assert_owner(&self->_lock);
   if (self->_state != 2 || self->_budget <= 0.0)
@@ -430,19 +430,19 @@
 
   if (self->_budgetIntervalStartTime == 0.0)
   {
-    if (a3 > 0.0)
+    if (time > 0.0)
     {
       v6 = 0;
-      self->_budgetIntervalStartTime = a3;
+      self->_budgetIntervalStartTime = time;
       goto LABEL_10;
     }
 
-    [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:{@"Budget interval start (%f) must be positive", *&a3, v8}];
+    [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:{@"Budget interval start (%f) must be positive", *&time, v8}];
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:{@"Budget interval already started with time (%f) cannot set to (%f)", *&self->_budgetIntervalStartTime, *&a3}];
+    [MEMORY[0x277CCA9B8] hk_errorForInvalidArgument:@"@" class:objc_opt_class() selector:a2 format:{@"Budget interval already started with time (%f) cannot set to (%f)", *&self->_budgetIntervalStartTime, *&time}];
   }
   v6 = ;
 LABEL_10:
@@ -450,7 +450,7 @@ LABEL_10:
   return v6;
 }
 
-- (int64_t)_lock_consumeBudgetThroughTime:(double)a3 error:(id *)a4
+- (int64_t)_lock_consumeBudgetThroughTime:(double)time error:(id *)error
 {
   os_unfair_lock_assert_owner(&self->_lock);
   if (self->_state != 2 || self->_budget <= 0.0)
@@ -461,18 +461,18 @@ LABEL_10:
   budgetIntervalStartTime = self->_budgetIntervalStartTime;
   if (budgetIntervalStartTime == 0.0)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:{@"Cannot end budget time interval (%f) before starting it", *&a3, v10}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"Cannot end budget time interval (%f) before starting it", *&time, v10}];
     return 0;
   }
 
-  if (budgetIntervalStartTime > a3)
+  if (budgetIntervalStartTime > time)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:{@"Cannot end budget time interval (%f) before interval start (%f)", *&a3, *&budgetIntervalStartTime}];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:{@"Cannot end budget time interval (%f) before interval start (%f)", *&time, *&budgetIntervalStartTime}];
     return 0;
   }
 
   self->_budgetIntervalStartTime = 0.0;
-  v9 = self->_remainingBudget - (a3 - budgetIntervalStartTime);
+  v9 = self->_remainingBudget - (time - budgetIntervalStartTime);
   if (v9 < 0.0)
   {
     v9 = 0.0;

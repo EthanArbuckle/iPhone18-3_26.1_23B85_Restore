@@ -1,57 +1,57 @@
 @interface SystemApertureElementViewController
 - (NSURL)launchURL;
 - (UIColor)keyColor;
-- (_TtC14WidgetRenderer35SystemApertureElementViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (id)_timelinesForDateInterval:(id)a3;
-- (void)_updateWithFrameSpecifier:(id)a3 completion:(id)a4;
+- (_TtC14WidgetRenderer35SystemApertureElementViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (id)_timelinesForDateInterval:(id)interval;
+- (void)_updateWithFrameSpecifier:(id)specifier completion:(id)completion;
 - (void)invalidate;
-- (void)setElementIdentifier:(id)a3;
-- (void)setLeadingView:(id)a3;
-- (void)setMinimalView:(id)a3;
-- (void)setPresentationBehaviors:(unint64_t)a3;
-- (void)setTrailingView:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3;
+- (void)setElementIdentifier:(id)identifier;
+- (void)setLeadingView:(id)view;
+- (void)setMinimalView:(id)view;
+- (void)setPresentationBehaviors:(unint64_t)behaviors;
+- (void)setTrailingView:(id)view;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SystemApertureElementViewController
 
-- (void)setElementIdentifier:(id)a3
+- (void)setElementIdentifier:(id)identifier
 {
   v4 = *(self + OBJC_IVAR____TtC14WidgetRenderer35SystemApertureElementViewController_elementIdentifier);
-  *(self + OBJC_IVAR____TtC14WidgetRenderer35SystemApertureElementViewController_elementIdentifier) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC14WidgetRenderer35SystemApertureElementViewController_elementIdentifier) = identifier;
+  identifierCopy = identifier;
 }
 
-- (void)setLeadingView:(id)a3
+- (void)setLeadingView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC14WidgetRenderer35SystemApertureElementViewController_leadingView);
-  *(self + OBJC_IVAR____TtC14WidgetRenderer35SystemApertureElementViewController_leadingView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC14WidgetRenderer35SystemApertureElementViewController_leadingView) = view;
+  viewCopy = view;
 }
 
-- (void)setTrailingView:(id)a3
+- (void)setTrailingView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC14WidgetRenderer35SystemApertureElementViewController_trailingView);
-  *(self + OBJC_IVAR____TtC14WidgetRenderer35SystemApertureElementViewController_trailingView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC14WidgetRenderer35SystemApertureElementViewController_trailingView) = view;
+  viewCopy = view;
 }
 
-- (void)setMinimalView:(id)a3
+- (void)setMinimalView:(id)view
 {
   v4 = *(self + OBJC_IVAR____TtC14WidgetRenderer35SystemApertureElementViewController_minimalView);
-  *(self + OBJC_IVAR____TtC14WidgetRenderer35SystemApertureElementViewController_minimalView) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR____TtC14WidgetRenderer35SystemApertureElementViewController_minimalView) = view;
+  viewCopy = view;
 }
 
-- (void)setPresentationBehaviors:(unint64_t)a3
+- (void)setPresentationBehaviors:(unint64_t)behaviors
 {
   v4 = *(self + OBJC_IVAR____TtC14WidgetRenderer35SystemApertureElementViewController_presentationBehaviors);
-  *(self + OBJC_IVAR____TtC14WidgetRenderer35SystemApertureElementViewController_presentationBehaviors) = a3;
-  if (v4 != a3)
+  *(self + OBJC_IVAR____TtC14WidgetRenderer35SystemApertureElementViewController_presentationBehaviors) = behaviors;
+  if (v4 != behaviors)
   {
-    v5 = self;
-    [-[SystemApertureElementViewController systemApertureElementContext](v5 systemApertureElementContext)];
+    selfCopy = self;
+    [-[SystemApertureElementViewController systemApertureElementContext](selfCopy systemApertureElementContext)];
     swift_unknownObjectRelease();
   }
 }
@@ -62,7 +62,7 @@
   v4 = *(*(v3 - 8) + 64);
   MEMORY[0x1EEE9AC00](v3 - 8);
   v6 = &v14 - v5;
-  v7 = self;
+  selfCopy = self;
   sub_1DAE54BBC(v6);
 
   v8 = sub_1DAECDBFC();
@@ -81,7 +81,7 @@
 
 - (UIColor)keyColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1DAE54D9C();
 
   return v3;
@@ -89,11 +89,11 @@
 
 - (void)invalidate
 {
-  v2 = self;
+  selfCopy = self;
   sub_1DAE55F54();
 }
 
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator
 {
   v5 = swift_allocObject();
   *(v5 + 16) = self;
@@ -104,23 +104,23 @@
   v8[2] = sub_1DADB7C8C;
   v8[3] = &block_descriptor_112;
   v6 = _Block_copy(v8);
-  v7 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
 
-  [a3 animateAlongsideTransition:v6 completion:0];
+  [coordinator animateAlongsideTransition:v6 completion:0];
   swift_unknownObjectRelease();
 
   _Block_release(v6);
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_1DAE56AA0(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_1DAE56AA0(change);
 }
 
-- (id)_timelinesForDateInterval:(id)a3
+- (id)_timelinesForDateInterval:(id)interval
 {
   v4 = sub_1DAECDA2C();
   v5 = *(v4 - 8);
@@ -128,7 +128,7 @@
   MEMORY[0x1EEE9AC00](v4);
   v8 = &v12 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1DAECD9EC();
-  v9 = self;
+  selfCopy = self;
   sub_1DAE57210(v8);
 
   (*(v5 + 8))(v8, v4);
@@ -138,17 +138,17 @@
   return v10;
 }
 
-- (void)_updateWithFrameSpecifier:(id)a3 completion:(id)a4
+- (void)_updateWithFrameSpecifier:(id)specifier completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   v7 = swift_allocObject();
   *(v7 + 16) = v6;
-  v8 = a3;
-  v9 = self;
-  sub_1DAE578FC(a3, sub_1DAE1034C, v7);
+  specifierCopy = specifier;
+  selfCopy = self;
+  sub_1DAE578FC(specifier, sub_1DAE1034C, v7);
 }
 
-- (_TtC14WidgetRenderer35SystemApertureElementViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC14WidgetRenderer35SystemApertureElementViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

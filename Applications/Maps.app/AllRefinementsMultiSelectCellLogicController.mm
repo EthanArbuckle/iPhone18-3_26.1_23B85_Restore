@@ -1,27 +1,27 @@
 @interface AllRefinementsMultiSelectCellLogicController
-- (BOOL)allowsSelectionWithViewModel:(id)a3;
-- (void)didTapOnMultiSelectElement:(id)a3 selectionSequenceNumber:(id)a4;
+- (BOOL)allowsSelectionWithViewModel:(id)model;
+- (void)didTapOnMultiSelectElement:(id)element selectionSequenceNumber:(id)number;
 @end
 
 @implementation AllRefinementsMultiSelectCellLogicController
 
-- (void)didTapOnMultiSelectElement:(id)a3 selectionSequenceNumber:(id)a4
+- (void)didTapOnMultiSelectElement:(id)element selectionSequenceNumber:(id)number
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 setIsSelected:{objc_msgSend(v6, "isSelected") ^ 1}];
-  [v6 setSelectionSequenceNumber:v5];
+  numberCopy = number;
+  elementCopy = element;
+  [elementCopy setIsSelected:{objc_msgSend(elementCopy, "isSelected") ^ 1}];
+  [elementCopy setSelectionSequenceNumber:numberCopy];
 }
 
-- (BOOL)allowsSelectionWithViewModel:(id)a3
+- (BOOL)allowsSelectionWithViewModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 elements];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  elements = [modelCopy elements];
+  v5 = [elements countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -33,13 +33,13 @@
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(elements);
         }
 
         v7 += [*(*(&v12 + 1) + 8 * i) isSelected];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [elements countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -50,7 +50,7 @@
     v7 = 0;
   }
 
-  v10 = v7 < [v3 maximumNumberOfSelectableElements];
+  v10 = v7 < [modelCopy maximumNumberOfSelectableElements];
   return v10;
 }
 

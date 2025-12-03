@@ -1,7 +1,7 @@
 @interface CARSettingsTableHeaderView
 - (void)prepareForReuse;
-- (void)setTextValue:(id)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)setTextValue:(id)value;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation CARSettingsTableHeaderView
@@ -14,24 +14,24 @@
   [(CARSettingsTableHeaderView *)self setTextValue:&stru_1000DE3D8];
 }
 
-- (void)setTextValue:(id)a3
+- (void)setTextValue:(id)value
 {
-  v4 = [a3 copy];
+  v4 = [value copy];
   textValue = self->_textValue;
   self->_textValue = v4;
 
   [(CARSettingsTableHeaderView *)self setNeedsUpdateConfiguration];
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
   v10 = +[UIListContentConfiguration headerConfiguration];
-  v4 = [(CARSettingsTableHeaderView *)self textValue];
-  [v10 setText:v4];
+  textValue = [(CARSettingsTableHeaderView *)self textValue];
+  [v10 setText:textValue];
 
   v5 = [UIFont _preferredFontForTextStyle:UIFontTextStyleCallout weight:UIFontWeightSemibold];
-  v6 = [v10 textProperties];
-  [v6 setFont:v5];
+  textProperties = [v10 textProperties];
+  [textProperties setFont:v5];
 
   if ([(CARSettingsTableHeaderView *)self previousSectionHasFooter])
   {
@@ -40,9 +40,9 @@
 
   else
   {
-    v8 = [(CARSettingsTableHeaderView *)self hasPreviousSection];
+    hasPreviousSection = [(CARSettingsTableHeaderView *)self hasPreviousSection];
     v7 = 16.0;
-    if (!v8)
+    if (!hasPreviousSection)
     {
       v7 = 0.0;
     }

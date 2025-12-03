@@ -1,6 +1,6 @@
 @interface MTRWiFiNetworkDiagnosticsClusterDisconnectionEvent
 - (MTRWiFiNetworkDiagnosticsClusterDisconnectionEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRWiFiNetworkDiagnosticsClusterDisconnectionEvent);
-  v5 = [(MTRWiFiNetworkDiagnosticsClusterDisconnectionEvent *)self reasonCode];
-  [(MTRWiFiNetworkDiagnosticsClusterDisconnectionEvent *)v4 setReasonCode:v5];
+  reasonCode = [(MTRWiFiNetworkDiagnosticsClusterDisconnectionEvent *)self reasonCode];
+  [(MTRWiFiNetworkDiagnosticsClusterDisconnectionEvent *)v4 setReasonCode:reasonCode];
 
   return v4;
 }

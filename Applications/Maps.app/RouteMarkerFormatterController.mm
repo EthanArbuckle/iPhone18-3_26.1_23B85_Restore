@@ -1,19 +1,19 @@
 @interface RouteMarkerFormatterController
-- (RouteMarkerFormatterController)initWithDelegate:(id)a3;
+- (RouteMarkerFormatterController)initWithDelegate:(id)delegate;
 - (RouteMarkerFormatterControllerDelegate)delegate;
 - (RouteMarkerFormatterCustomText)customTextFormatter;
 - (RouteMarkerFormatterETA)etaFormatter;
 - (RouteMarkerFormatterRouteName)nameFormatter;
 - (RouteMarkerFormatterTotal)totalTimeFormatter;
-- (id)_formatterForStyle:(unint64_t)a3;
-- (id)markerInfoForRoute:(id)a3;
-- (id)markerInfosForLegsInRoute:(id)a3;
+- (id)_formatterForStyle:(unint64_t)style;
+- (id)markerInfoForRoute:(id)route;
+- (id)markerInfosForLegsInRoute:(id)route;
 - (void)_clearFormatters;
-- (void)routeMarkerFormatterETA:(id)a3 didUpdateMarkerInfoForRoutes:(id)a4;
-- (void)setRoutes:(id)a3;
-- (void)setRoutes:(id)a3 selectedRouteIndex:(unint64_t)a4;
-- (void)setSelectedRouteCustomText:(id)a3;
-- (void)setSelectedRouteIndex:(unint64_t)a3;
+- (void)routeMarkerFormatterETA:(id)a didUpdateMarkerInfoForRoutes:(id)routes;
+- (void)setRoutes:(id)routes;
+- (void)setRoutes:(id)routes selectedRouteIndex:(unint64_t)index;
+- (void)setSelectedRouteCustomText:(id)text;
+- (void)setSelectedRouteIndex:(unint64_t)index;
 @end
 
 @implementation RouteMarkerFormatterController
@@ -25,13 +25,13 @@
   return WeakRetained;
 }
 
-- (void)routeMarkerFormatterETA:(id)a3 didUpdateMarkerInfoForRoutes:(id)a4
+- (void)routeMarkerFormatterETA:(id)a didUpdateMarkerInfoForRoutes:(id)routes
 {
-  v6 = a4;
+  routesCopy = routes;
   if ([(RouteMarkerFormatterController *)self formattingStyle]== 2)
   {
-    v5 = [(RouteMarkerFormatterController *)self delegate];
-    [v5 routeMarkerFormatterController:self didUpdateMarkerInfoForRoutes:v6];
+    delegate = [(RouteMarkerFormatterController *)self delegate];
+    [delegate routeMarkerFormatterController:self didUpdateMarkerInfoForRoutes:routesCopy];
   }
 }
 
@@ -42,9 +42,9 @@
   {
     v4 = [RouteMarkerFormatterCustomText alloc];
     routes = self->_routes;
-    v6 = [(RouteMarkerFormatterController *)self selectedRouteIndex];
-    v7 = [(RouteMarkerFormatterController *)self selectedRouteCustomText];
-    v8 = [(RouteMarkerFormatterCustomText *)v4 initWithRoutes:routes selectedRouteIndex:v6 customSelectedRouteText:v7];
+    selectedRouteIndex = [(RouteMarkerFormatterController *)self selectedRouteIndex];
+    selectedRouteCustomText = [(RouteMarkerFormatterController *)self selectedRouteCustomText];
+    v8 = [(RouteMarkerFormatterCustomText *)v4 initWithRoutes:routes selectedRouteIndex:selectedRouteIndex customSelectedRouteText:selectedRouteCustomText];
     v9 = self->_customTextFormatter;
     self->_customTextFormatter = v8;
 
@@ -96,41 +96,41 @@
     self->_totalTimeFormatter = v3;
   }
 
-  v5 = [(RouteMarkerFormatterController *)self suggestionEntry];
-  [(RouteMarkerFormatterTotal *)self->_totalTimeFormatter setCurrentSuggestionEntry:v5];
+  suggestionEntry = [(RouteMarkerFormatterController *)self suggestionEntry];
+  [(RouteMarkerFormatterTotal *)self->_totalTimeFormatter setCurrentSuggestionEntry:suggestionEntry];
 
   v6 = self->_totalTimeFormatter;
 
   return v6;
 }
 
-- (id)_formatterForStyle:(unint64_t)a3
+- (id)_formatterForStyle:(unint64_t)style
 {
-  v4 = 0;
-  if (a3 > 2)
+  nameFormatter = 0;
+  if (style > 2)
   {
-    if (a3 == 3)
+    if (style == 3)
     {
-      v4 = [(RouteMarkerFormatterController *)self nameFormatter];
+      nameFormatter = [(RouteMarkerFormatterController *)self nameFormatter];
     }
 
-    else if (a3 == 4)
+    else if (style == 4)
     {
-      v4 = [(RouteMarkerFormatterController *)self customTextFormatter];
+      nameFormatter = [(RouteMarkerFormatterController *)self customTextFormatter];
     }
   }
 
-  else if (a3 == 1)
+  else if (style == 1)
   {
-    v4 = [(RouteMarkerFormatterController *)self totalTimeFormatter];
+    nameFormatter = [(RouteMarkerFormatterController *)self totalTimeFormatter];
   }
 
-  else if (a3 == 2)
+  else if (style == 2)
   {
-    v4 = [(RouteMarkerFormatterController *)self etaFormatter];
+    nameFormatter = [(RouteMarkerFormatterController *)self etaFormatter];
   }
 
-  return v4;
+  return nameFormatter;
 }
 
 - (void)_clearFormatters
@@ -145,9 +145,9 @@
   self->_customTextFormatter = 0;
 }
 
-- (void)setSelectedRouteCustomText:(id)a3
+- (void)setSelectedRouteCustomText:(id)text
 {
-  v4 = [a3 copy];
+  v4 = [text copy];
   selectedRouteCustomText = self->_selectedRouteCustomText;
   self->_selectedRouteCustomText = v4;
 
@@ -155,37 +155,37 @@
   self->_customTextFormatter = 0;
 }
 
-- (void)setSelectedRouteIndex:(unint64_t)a3
+- (void)setSelectedRouteIndex:(unint64_t)index
 {
-  if (self->_selectedRouteIndex != a3)
+  if (self->_selectedRouteIndex != index)
   {
-    self->_selectedRouteIndex = a3;
-    v5 = [(RouteMarkerFormatterController *)self totalTimeFormatter];
-    [v5 setSelectedRouteIndex:a3];
+    self->_selectedRouteIndex = index;
+    totalTimeFormatter = [(RouteMarkerFormatterController *)self totalTimeFormatter];
+    [totalTimeFormatter setSelectedRouteIndex:index];
   }
 }
 
-- (void)setRoutes:(id)a3 selectedRouteIndex:(unint64_t)a4
+- (void)setRoutes:(id)routes selectedRouteIndex:(unint64_t)index
 {
-  v6 = a3;
+  routesCopy = routes;
   routes = self->_routes;
-  v11 = v6;
-  if (routes != v6 && (v8 = [(NSArray *)routes isEqualToArray:v6], v6 = v11, !v8) || self->_selectedRouteIndex != a4)
+  v11 = routesCopy;
+  if (routes != routesCopy && (v8 = [(NSArray *)routes isEqualToArray:routesCopy], routesCopy = v11, !v8) || self->_selectedRouteIndex != index)
   {
-    v9 = [(NSArray *)v6 copy];
+    v9 = [(NSArray *)routesCopy copy];
     v10 = self->_routes;
     self->_routes = v9;
 
-    self->_selectedRouteIndex = a4;
+    self->_selectedRouteIndex = index;
     [(RouteMarkerFormatterController *)self _clearFormatters];
-    v6 = v11;
+    routesCopy = v11;
   }
 }
 
-- (void)setRoutes:(id)a3
+- (void)setRoutes:(id)routes
 {
-  v5 = a3;
-  if ([v5 count])
+  routesCopy = routes;
+  if ([routesCopy count])
   {
     v4 = 0;
   }
@@ -195,16 +195,16 @@
     v4 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  [(RouteMarkerFormatterController *)self setRoutes:v5 selectedRouteIndex:v4];
+  [(RouteMarkerFormatterController *)self setRoutes:routesCopy selectedRouteIndex:v4];
 }
 
-- (id)markerInfosForLegsInRoute:(id)a3
+- (id)markerInfosForLegsInRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   v5 = [(RouteMarkerFormatterController *)self _formatterForStyle:[(RouteMarkerFormatterController *)self formattingStyle]];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 markerInfosForLegsInRoute:v4];
+    v6 = [v5 markerInfosForLegsInRoute:routeCopy];
   }
 
   else
@@ -215,25 +215,25 @@
   return v6;
 }
 
-- (id)markerInfoForRoute:(id)a3
+- (id)markerInfoForRoute:(id)route
 {
-  v4 = a3;
+  routeCopy = route;
   v5 = [(RouteMarkerFormatterController *)self _formatterForStyle:[(RouteMarkerFormatterController *)self formattingStyle]];
-  v6 = [v5 markerInfoForRoute:v4];
+  v6 = [v5 markerInfoForRoute:routeCopy];
 
   return v6;
 }
 
-- (RouteMarkerFormatterController)initWithDelegate:(id)a3
+- (RouteMarkerFormatterController)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = RouteMarkerFormatterController;
   v5 = [(RouteMarkerFormatterController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
   }
 
   return v6;

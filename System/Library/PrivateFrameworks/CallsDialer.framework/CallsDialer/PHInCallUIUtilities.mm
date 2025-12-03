@@ -1,19 +1,19 @@
 @interface PHInCallUIUtilities
 + (BOOL)hasMultipleSenderIdentities;
-+ (BOOL)isExplicitTransferSupportedForSubscriptionLabelIdentifier:(id)a3;
-+ (BOOL)layoutIsLocked:(id)a3;
++ (BOOL)isExplicitTransferSupportedForSubscriptionLabelIdentifier:(id)identifier;
++ (BOOL)layoutIsLocked:(id)locked;
 + (BOOL)shouldHideSensitiveUI;
-+ (BOOL)shouldRequestPasscodeUnlockForMMICode:(id)a3;
++ (BOOL)shouldRequestPasscodeUnlockForMMICode:(id)code;
 + (id)fbsOrientationObserver;
-+ (id)handleNavigationControllerIfNecessary:(id)a3;
++ (id)handleNavigationControllerIfNecessary:(id)necessary;
 + (id)sharedInstance;
 + (id)telephonyClient;
-+ (int64_t)deviceOrientationForBSInterfaceOrientation:(int64_t)a3;
++ (int64_t)deviceOrientationForBSInterfaceOrientation:(int64_t)orientation;
 + (int64_t)frontboardOrientation;
-+ (int64_t)interfaceOrientationForDeviceOrientation:(int64_t)a3;
++ (int64_t)interfaceOrientationForDeviceOrientation:(int64_t)orientation;
 - (PHInCallUIUtilities)init;
 - (uint64_t)init;
-- (void)layoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4 withContext:(id)a5;
+- (void)layoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout withContext:(id)context;
 @end
 
 @implementation PHInCallUIUtilities
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = __37__PHInCallUIUtilities_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken != -1)
   {
     dispatch_once(&sharedInstance_onceToken, block);
@@ -51,8 +51,8 @@ uint64_t __37__PHInCallUIUtilities_sharedInstance__block_invoke(uint64_t a1)
   {
     v3 = [MEMORY[0x277D0AD08] sharedMonitorForDisplayType:0];
     v4 = objc_opt_class();
-    v5 = [v3 currentLayout];
-    if ([v4 layoutIsLocked:v5])
+    currentLayout = [v3 currentLayout];
+    if ([v4 layoutIsLocked:currentLayout])
     {
       v6 = 1;
     }
@@ -114,60 +114,60 @@ uint64_t __38__PHInCallUIUtilities_telephonyClient__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (int64_t)interfaceOrientationForDeviceOrientation:(int64_t)a3
++ (int64_t)interfaceOrientationForDeviceOrientation:(int64_t)orientation
 {
-  if ((a3 - 2) >= 3)
+  if ((orientation - 2) >= 3)
   {
     return 1;
   }
 
   else
   {
-    return a3;
+    return orientation;
   }
 }
 
-+ (int64_t)deviceOrientationForBSInterfaceOrientation:(int64_t)a3
++ (int64_t)deviceOrientationForBSInterfaceOrientation:(int64_t)orientation
 {
-  if ((a3 - 2) > 2)
+  if ((orientation - 2) > 2)
   {
     return 1;
   }
 
   else
   {
-    return qword_2429ED228[a3 - 2];
+    return qword_2429ED228[orientation - 2];
   }
 }
 
-+ (id)handleNavigationControllerIfNecessary:(id)a3
++ (id)handleNavigationControllerIfNecessary:(id)necessary
 {
-  v3 = a3;
+  necessaryCopy = necessary;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 topViewController];
+    topViewController = [necessaryCopy topViewController];
   }
 
   else
   {
-    v4 = v3;
+    topViewController = necessaryCopy;
   }
 
-  v5 = v4;
+  v5 = topViewController;
 
   return v5;
 }
 
-+ (BOOL)shouldRequestPasscodeUnlockForMMICode:(id)a3
++ (BOOL)shouldRequestPasscodeUnlockForMMICode:(id)code
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 isEqualToString:@"*#06#"])
+  codeCopy = code;
+  if ([codeCopy isEqualToString:@"*#06#"])
   {
-    v5 = [a1 telephonyClient];
+    telephonyClient = [self telephonyClient];
     v34 = 0;
-    v6 = [v5 getSubscriptionInfoWithError:&v34];
+    v6 = [telephonyClient getSubscriptionInfoWithError:&v34];
     v7 = v34;
 
     if (v7)
@@ -181,8 +181,8 @@ uint64_t __38__PHInCallUIUtilities_telephonyClient__block_invoke()
 
     else
     {
-      v9 = [v6 subscriptions];
-      v10 = [v9 count];
+      subscriptions = [v6 subscriptions];
+      v10 = [subscriptions count];
 
       if (v10)
       {
@@ -191,13 +191,13 @@ uint64_t __38__PHInCallUIUtilities_telephonyClient__block_invoke()
         v31 = 0u;
         v32 = 0u;
         v33 = 0u;
-        v11 = [v6 subscriptions];
-        v12 = [v11 countByEnumeratingWithState:&v30 objects:v39 count:16];
+        subscriptions2 = [v6 subscriptions];
+        v12 = [subscriptions2 countByEnumeratingWithState:&v30 objects:v39 count:16];
         if (v12)
         {
           v13 = v12;
           v26 = v6;
-          v27 = v4;
+          v27 = codeCopy;
           v7 = 0;
           v14 = *v31;
           while (2)
@@ -206,15 +206,15 @@ uint64_t __38__PHInCallUIUtilities_telephonyClient__block_invoke()
             {
               if (*v31 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(subscriptions2);
               }
 
               v16 = *(*(&v30 + 1) + 8 * i);
               if (([v16 isSimHidden] & 1) == 0)
               {
-                v17 = [a1 telephonyClient];
+                telephonyClient2 = [self telephonyClient];
                 v29 = v7;
-                v18 = [v17 copyCarrierBundleValueWithDefault:v16 key:@"ShowIMEIsInLockScreen" bundleType:v28 error:&v29];
+                v18 = [telephonyClient2 copyCarrierBundleValueWithDefault:v16 key:@"ShowIMEIsInLockScreen" bundleType:v28 error:&v29];
                 v19 = v29;
 
                 if (v19)
@@ -232,28 +232,28 @@ uint64_t __38__PHInCallUIUtilities_telephonyClient__block_invoke()
                 {
                   if (objc_opt_respondsToSelector())
                   {
-                    v21 = [v18 BOOLValue];
+                    bOOLValue = [v18 BOOLValue];
                   }
 
                   else
                   {
-                    v21 = 0;
+                    bOOLValue = 0;
                   }
 
                   v22 = PHDefaultLog();
                   if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
                   {
-                    v23 = [v16 uuid];
+                    uuid = [v16 uuid];
                     *buf = 67109634;
-                    *v36 = v21;
+                    *v36 = bOOLValue;
                     *&v36[4] = 2112;
                     *&v36[6] = v18;
                     v37 = 2112;
-                    v38 = v23;
+                    v38 = uuid;
                     _os_log_impl(&dword_2429BC000, v22, OS_LOG_TYPE_DEFAULT, "Received regionWantsPasscodeBypassForIMEI: %d from carrierBundleValue: %@ subscription: %@", buf, 0x1Cu);
                   }
 
-                  if (v21)
+                  if (bOOLValue)
                   {
 
                     v8 = 0;
@@ -266,7 +266,7 @@ uint64_t __38__PHInCallUIUtilities_telephonyClient__block_invoke()
               }
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v30 objects:v39 count:16];
+            v13 = [subscriptions2 countByEnumeratingWithState:&v30 objects:v39 count:16];
             if (v13)
             {
               continue;
@@ -278,7 +278,7 @@ uint64_t __38__PHInCallUIUtilities_telephonyClient__block_invoke()
           v8 = 1;
 LABEL_34:
           v6 = v26;
-          v4 = v27;
+          codeCopy = v27;
         }
 
         else
@@ -332,18 +332,18 @@ LABEL_38:
     v4 = _UISolariumEnabled() ^ 1;
   }
 
-  return [a1 isSpringBoardPasscodeLocked] & v4;
+  return [self isSpringBoardPasscodeLocked] & v4;
 }
 
-+ (BOOL)layoutIsLocked:(id)a3
++ (BOOL)layoutIsLocked:(id)locked
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [a3 elements];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  elements = [locked elements];
+  v4 = [elements countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -355,11 +355,11 @@ LABEL_38:
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(elements);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) identifier];
-        v10 = [v9 isEqualToString:v7];
+        identifier = [*(*(&v14 + 1) + 8 * i) identifier];
+        v10 = [identifier isEqualToString:v7];
 
         if (v10)
         {
@@ -368,7 +368,7 @@ LABEL_38:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [elements countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v5)
       {
         continue;
@@ -392,8 +392,8 @@ LABEL_11:
     +[PHInCallUIUtilities hasMultipleSenderIdentities];
   }
 
-  v2 = [hasMultipleSenderIdentities_telephonyProvider prioritizedSenderIdentities];
-  v3 = [v2 count] > 1;
+  prioritizedSenderIdentities = [hasMultipleSenderIdentities_telephonyProvider prioritizedSenderIdentities];
+  v3 = [prioritizedSenderIdentities count] > 1;
 
   return v3;
 }
@@ -427,13 +427,13 @@ uint64_t __45__PHInCallUIUtilities_fbsOrientationObserver__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (BOOL)isExplicitTransferSupportedForSubscriptionLabelIdentifier:(id)a3
++ (BOOL)isExplicitTransferSupportedForSubscriptionLabelIdentifier:(id)identifier
 {
   v47 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [a1 telephonyClient];
+  identifierCopy = identifier;
+  telephonyClient = [self telephonyClient];
   v39 = 0;
-  v6 = [v5 getSubscriptionInfoWithError:&v39];
+  v6 = [telephonyClient getSubscriptionInfoWithError:&v39];
   v7 = v39;
 
   if (v7)
@@ -447,8 +447,8 @@ uint64_t __45__PHInCallUIUtilities_fbsOrientationObserver__block_invoke()
     goto LABEL_30;
   }
 
-  v8 = [v6 subscriptions];
-  v9 = [v8 count];
+  subscriptions = [v6 subscriptions];
+  v9 = [subscriptions count];
 
   v10 = PHDefaultLog();
   v11 = v10;
@@ -465,9 +465,9 @@ uint64_t __45__PHInCallUIUtilities_fbsOrientationObserver__block_invoke()
 
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v6 subscriptions];
+    subscriptions2 = [v6 subscriptions];
     *buf = 138412290;
-    v41 = v12;
+    v41 = subscriptions2;
     _os_log_impl(&dword_2429BC000, v11, OS_LOG_TYPE_DEFAULT, "ShowExplicitCallTransferButton: all the subscriptions are: %@", buf, 0xCu);
   }
 
@@ -475,9 +475,9 @@ uint64_t __45__PHInCallUIUtilities_fbsOrientationObserver__block_invoke()
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v13 = [v6 subscriptions];
-  v14 = [v13 countByEnumeratingWithState:&v35 objects:v46 count:16];
-  v33 = v13;
+  subscriptions3 = [v6 subscriptions];
+  v14 = [subscriptions3 countByEnumeratingWithState:&v35 objects:v46 count:16];
+  v33 = subscriptions3;
   if (!v14)
   {
 LABEL_29:
@@ -488,17 +488,17 @@ LABEL_30:
   }
 
   v15 = v14;
-  v32 = a1;
+  selfCopy = self;
   v16 = 0;
   v17 = *v36;
-  v31 = v4;
+  v31 = identifierCopy;
   while (2)
   {
     for (i = 0; i != v15; ++i)
     {
       if (*v36 != v17)
       {
-        objc_enumerationMutation(v13);
+        objc_enumerationMutation(subscriptions3);
       }
 
       v19 = *(*(&v35 + 1) + 8 * i);
@@ -512,26 +512,26 @@ LABEL_30:
 
       if (([v19 isSimHidden] & 1) == 0)
       {
-        v21 = [v19 labelID];
-        v22 = [v21 isEqualToString:v4];
+        labelID = [v19 labelID];
+        v22 = [labelID isEqualToString:identifierCopy];
 
         if (v22)
         {
           v23 = [objc_alloc(MEMORY[0x277CC3620]) initWithBundleType:1];
-          v24 = [v32 telephonyClient];
+          telephonyClient2 = [selfCopy telephonyClient];
           v34 = v16;
-          v25 = [v24 copyCarrierBundleValue:v19 keyHierarchy:&unk_285537D70 bundleType:v23 error:&v34];
+          v25 = [telephonyClient2 copyCarrierBundleValue:v19 keyHierarchy:&unk_285537D70 bundleType:v23 error:&v34];
           v7 = v34;
 
           objc_opt_class();
           if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
           {
-            v26 = [v25 BOOLValue];
+            bOOLValue = [v25 BOOLValue];
           }
 
           else
           {
-            v26 = 0;
+            bOOLValue = 0;
           }
 
           v27 = PHDefaultLog();
@@ -546,21 +546,21 @@ LABEL_30:
             _os_log_impl(&dword_2429BC000, v27, OS_LOG_TYPE_DEFAULT, "ShowExplicitCallTransferButton: retrieved ShowExplicitCallTransferButton value %@ for subscription %@ with error %@", buf, 0x20u);
           }
 
-          if (v26)
+          if (bOOLValue)
           {
             v28 = 1;
-            v4 = v31;
+            identifierCopy = v31;
             goto LABEL_31;
           }
 
           v16 = v7;
-          v4 = v31;
-          v13 = v33;
+          identifierCopy = v31;
+          subscriptions3 = v33;
         }
       }
     }
 
-    v15 = [v13 countByEnumeratingWithState:&v35 objects:v46 count:16];
+    v15 = [subscriptions3 countByEnumeratingWithState:&v35 objects:v46 count:16];
     if (v15)
     {
       continue;
@@ -579,25 +579,25 @@ LABEL_31:
 
 + (int64_t)frontboardOrientation
 {
-  v2 = [a1 fbsOrientationObserver];
-  v3 = [v2 activeInterfaceOrientation];
-  if ((v3 - 1) > 3)
+  fbsOrientationObserver = [self fbsOrientationObserver];
+  activeInterfaceOrientation = [fbsOrientationObserver activeInterfaceOrientation];
+  if ((activeInterfaceOrientation - 1) > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = qword_2429ED240[v3 - 1];
+    v4 = qword_2429ED240[activeInterfaceOrientation - 1];
   }
 
   return v4;
 }
 
-- (void)layoutMonitor:(id)a3 didUpdateDisplayLayout:(id)a4 withContext:(id)a5
+- (void)layoutMonitor:(id)monitor didUpdateDisplayLayout:(id)layout withContext:(id)context
 {
-  v6 = a4;
-  v7 = [objc_opt_class() layoutIsLocked:v6];
+  layoutCopy = layout;
+  v7 = [objc_opt_class() layoutIsLocked:layoutCopy];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;

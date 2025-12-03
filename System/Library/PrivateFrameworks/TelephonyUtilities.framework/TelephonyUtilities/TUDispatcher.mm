@@ -1,29 +1,29 @@
 @interface TUDispatcher
-+ (id)dispatcherWithIdentifier:(id)a3;
-+ (id)dispatcherWithQueue:(id)a3;
++ (id)dispatcherWithIdentifier:(id)identifier;
++ (id)dispatcherWithQueue:(id)queue;
 - (TUDispatcher)init;
-- (TUDispatcher)initWithIdentifier:(id)a3;
-- (TUDispatcher)initWithQueue:(id)a3;
-- (id)qosUserInteractiveDispatchBlockForBlock:(id)a3;
+- (TUDispatcher)initWithIdentifier:(id)identifier;
+- (TUDispatcher)initWithQueue:(id)queue;
+- (id)qosUserInteractiveDispatchBlockForBlock:(id)block;
 - (void)boostQualityOfService;
-- (void)dispatchAsynchronousBlock:(id)a3;
-- (void)dispatchSynchronousBlock:(id)a3;
+- (void)dispatchAsynchronousBlock:(id)block;
+- (void)dispatchSynchronousBlock:(id)block;
 @end
 
 @implementation TUDispatcher
 
-+ (id)dispatcherWithIdentifier:(id)a3
++ (id)dispatcherWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithIdentifier:v3];
+  identifierCopy = identifier;
+  v4 = [objc_alloc(objc_opt_class()) initWithIdentifier:identifierCopy];
 
   return v4;
 }
 
-+ (id)dispatcherWithQueue:(id)a3
++ (id)dispatcherWithQueue:(id)queue
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithQueue:v3];
+  queueCopy = queue;
+  v4 = [objc_alloc(objc_opt_class()) initWithQueue:queueCopy];
 
   return v4;
 }
@@ -35,25 +35,25 @@
 
   if (_TUAssertShouldCrashApplication())
   {
-    v5 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"TUDispatcher.m" lineNumber:49 description:{@"%s is not available for use. To create an object instance use the designated initializer.", "-[TUDispatcher init]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TUDispatcher.m" lineNumber:49 description:{@"%s is not available for use. To create an object instance use the designated initializer.", "-[TUDispatcher init]"}];
   }
 
   return 0;
 }
 
-- (void)dispatchSynchronousBlock:(id)a3
+- (void)dispatchSynchronousBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(TUDispatcher *)self dispatchQueue];
-  dispatch_sync(v5, v4);
+  blockCopy = block;
+  dispatchQueue = [(TUDispatcher *)self dispatchQueue];
+  dispatch_sync(dispatchQueue, blockCopy);
 }
 
-- (void)dispatchAsynchronousBlock:(id)a3
+- (void)dispatchAsynchronousBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(TUDispatcher *)self dispatchQueue];
-  dispatch_async(v5, v4);
+  blockCopy = block;
+  dispatchQueue = [(TUDispatcher *)self dispatchQueue];
+  dispatch_async(dispatchQueue, blockCopy);
 }
 
 - (void)boostQualityOfService
@@ -64,9 +64,9 @@
   aBlock[3] = &unk_1E7424950;
   aBlock[4] = self;
   v3 = _Block_copy(aBlock);
-  v4 = [(TUDispatcher *)self dispatchQueue];
+  dispatchQueue = [(TUDispatcher *)self dispatchQueue];
   v5 = [(TUDispatcher *)self qosUserInteractiveDispatchBlockForBlock:v3];
-  dispatch_async(v4, v5);
+  dispatch_async(dispatchQueue, v5);
 }
 
 void __37__TUDispatcher_boostQualityOfService__block_invoke(uint64_t a1)
@@ -85,33 +85,33 @@ void __37__TUDispatcher_boostQualityOfService__block_invoke_2(uint64_t a1)
   [v2 postNotificationName:@"TUDispatcherDidFinishBoostQualityOfServiceNotification" object:*(a1 + 32)];
 }
 
-- (TUDispatcher)initWithIdentifier:(id)a3
+- (TUDispatcher)initWithIdentifier:(id)identifier
 {
   v5 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UTILITY, 0);
-  v6 = dispatch_queue_create([a3 UTF8String], v5);
+  v6 = dispatch_queue_create([identifier UTF8String], v5);
   v7 = [(TUDispatcher *)self initWithQueue:v6];
 
   return v7;
 }
 
-- (TUDispatcher)initWithQueue:(id)a3
+- (TUDispatcher)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = TUDispatcher;
   v6 = [(TUDispatcher *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dispatchQueue, a3);
+    objc_storeStrong(&v6->_dispatchQueue, queue);
   }
 
   return v7;
 }
 
-- (id)qosUserInteractiveDispatchBlockForBlock:(id)a3
+- (id)qosUserInteractiveDispatchBlockForBlock:(id)block
 {
-  v3 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_USER_INTERACTIVE, 0, a3);
+  v3 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_USER_INTERACTIVE, 0, block);
 
   return v3;
 }

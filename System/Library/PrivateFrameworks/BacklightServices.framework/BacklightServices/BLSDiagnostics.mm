@@ -1,12 +1,12 @@
 @interface BLSDiagnostics
 + (id)defaultEndpoint;
 - (BLSDiagnostics)init;
-- (__IOSurface)rawSurfaceForFrame:(id)a3;
-- (__IOSurface)surfaceForFrame:(id)a3;
+- (__IOSurface)rawSurfaceForFrame:(id)frame;
+- (__IOSurface)surfaceForFrame:(id)frame;
 - (id)allFlipbookFrames;
 - (id)frameOnGlassNow;
 - (id)frameOnGlassWhenFlipbookLastCancelled;
-- (id)initWithEndpoint:(id)a1;
+- (id)initWithEndpoint:(id)endpoint;
 @end
 
 @implementation BLSDiagnostics
@@ -15,9 +15,9 @@
 {
   objc_opt_self();
   v0 = MEMORY[0x277CF3288];
-  v1 = [MEMORY[0x277CF3288] defaultShellMachName];
+  defaultShellMachName = [MEMORY[0x277CF3288] defaultShellMachName];
   v2 = +[BLSDiagnosticsXPCServiceSpecification identifier];
-  v3 = [v0 endpointForMachName:v1 service:v2 instance:0];
+  v3 = [v0 endpointForMachName:defaultShellMachName service:v2 instance:0];
   v4 = v3;
   if (v3)
   {
@@ -42,11 +42,11 @@
   return v4;
 }
 
-- (id)initWithEndpoint:(id)a1
+- (id)initWithEndpoint:(id)endpoint
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (endpoint)
   {
     v5 = v3;
     NSClassFromString(&cfstr_Bsserviceconne.isa);
@@ -60,16 +60,16 @@
       [BLSDiagnostics initWithEndpoint:?];
     }
 
-    v8.receiver = a1;
+    v8.receiver = endpoint;
     v8.super_class = BLSDiagnostics;
-    a1 = objc_msgSendSuper2(&v8, sel_init);
-    if (a1)
+    endpoint = objc_msgSendSuper2(&v8, sel_init);
+    if (endpoint)
     {
-      [(BLSDiagnostics *)v5 initWithEndpoint:a1, &v7];
+      [(BLSDiagnostics *)v5 initWithEndpoint:endpoint, &v7];
     }
   }
 
-  return a1;
+  return endpoint;
 }
 
 void __35__BLSDiagnostics_initWithEndpoint___block_invoke(uint64_t a1, void *a2)
@@ -88,14 +88,14 @@ void __35__BLSDiagnostics_initWithEndpoint___block_invoke(uint64_t a1, void *a2)
 - (id)allFlipbookFrames
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(BSServiceConnection *)self->_connection remoteTarget];
-  v4 = [v3 allFlipbookFrames];
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  allFlipbookFrames = [remoteTarget allFlipbookFrames];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = v4;
+  v5 = allFlipbookFrames;
   v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
@@ -126,42 +126,42 @@ void __35__BLSDiagnostics_initWithEndpoint___block_invoke(uint64_t a1, void *a2)
 
 - (id)frameOnGlassNow
 {
-  v3 = [(BSServiceConnection *)self->_connection remoteTarget];
-  v4 = [v3 frameOnGlassNow];
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  frameOnGlassNow = [remoteTarget frameOnGlassNow];
 
-  [v4 setSurfaceProvider:self];
+  [frameOnGlassNow setSurfaceProvider:self];
 
-  return v4;
+  return frameOnGlassNow;
 }
 
 - (id)frameOnGlassWhenFlipbookLastCancelled
 {
-  v3 = [(BSServiceConnection *)self->_connection remoteTarget];
-  v4 = [v3 frameOnGlassWhenFlipbookLastCancelled];
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  frameOnGlassWhenFlipbookLastCancelled = [remoteTarget frameOnGlassWhenFlipbookLastCancelled];
 
-  [v4 setSurfaceProvider:self];
+  [frameOnGlassWhenFlipbookLastCancelled setSurfaceProvider:self];
 
-  return v4;
+  return frameOnGlassWhenFlipbookLastCancelled;
 }
 
-- (__IOSurface)surfaceForFrame:(id)a3
+- (__IOSurface)surfaceForFrame:(id)frame
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  frameCopy = frame;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__0;
   v19 = __Block_byref_object_dispose__0;
   v20 = 0;
-  v5 = [(BSServiceConnection *)self->_connection remoteTarget];
-  v6 = [v4 uuid];
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  uuid = [frameCopy uuid];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __34__BLSDiagnostics_surfaceForFrame___block_invoke;
   v14[3] = &unk_278428A40;
   v14[4] = &v15;
-  [v5 surfaceForFrameUUID:v6 reply:v14];
+  [remoteTarget surfaceForFrameUUID:uuid reply:v14];
 
   v7 = v16[5];
   if (v7)
@@ -177,12 +177,12 @@ void __35__BLSDiagnostics_initWithEndpoint___block_invoke(uint64_t a1, void *a2)
   v9 = bls_diagnostics_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [v4 bls_shortLoggingString];
+    bls_shortLoggingString = [frameCopy bls_shortLoggingString];
     v13 = v16[5];
     *buf = 134218754;
-    v22 = self;
+    selfCopy = self;
     v23 = 2114;
-    v24 = v12;
+    v24 = bls_shortLoggingString;
     v25 = 2114;
     v26 = v8;
     v27 = 2114;
@@ -195,24 +195,24 @@ void __35__BLSDiagnostics_initWithEndpoint___block_invoke(uint64_t a1, void *a2)
   return v8;
 }
 
-- (__IOSurface)rawSurfaceForFrame:(id)a3
+- (__IOSurface)rawSurfaceForFrame:(id)frame
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  frameCopy = frame;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__0;
   v19 = __Block_byref_object_dispose__0;
   v20 = 0;
-  v5 = [(BSServiceConnection *)self->_connection remoteTarget];
-  v6 = [v4 uuid];
+  remoteTarget = [(BSServiceConnection *)self->_connection remoteTarget];
+  uuid = [frameCopy uuid];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __37__BLSDiagnostics_rawSurfaceForFrame___block_invoke;
   v14[3] = &unk_278428A40;
   v14[4] = &v15;
-  [v5 rawSurfaceForFrameUUID:v6 reply:v14];
+  [remoteTarget rawSurfaceForFrameUUID:uuid reply:v14];
 
   v7 = v16[5];
   if (v7)
@@ -228,12 +228,12 @@ void __35__BLSDiagnostics_initWithEndpoint___block_invoke(uint64_t a1, void *a2)
   v9 = bls_diagnostics_log();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    v12 = [v4 bls_shortLoggingString];
+    bls_shortLoggingString = [frameCopy bls_shortLoggingString];
     v13 = v16[5];
     *buf = 134218754;
-    v22 = self;
+    selfCopy = self;
     v23 = 2114;
-    v24 = v12;
+    v24 = bls_shortLoggingString;
     v25 = 2114;
     v26 = v8;
     v27 = 2114;

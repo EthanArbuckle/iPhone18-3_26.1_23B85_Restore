@@ -1,10 +1,10 @@
 @interface OrgApacheLuceneUtilNumericUtils_SeekingNumericFilteredTermsEnum
-- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)ref;
 @end
 
 @implementation OrgApacheLuceneUtilNumericUtils_SeekingNumericFilteredTermsEnum
 
-- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   tenum = self->super.tenum_;
   if (!tenum)
@@ -12,7 +12,7 @@
     JreThrowNullPointerException();
   }
 
-  v5 = [(OrgApacheLuceneIndexTermsEnum *)tenum seekCeilWithOrgApacheLuceneUtilBytesRef:a3];
+  v5 = [(OrgApacheLuceneIndexTermsEnum *)tenum seekCeilWithOrgApacheLuceneUtilBytesRef:ref];
   if ((atomic_load_explicit(OrgApacheLuceneIndexTermsEnum_SeekStatusEnum__initialized, memory_order_acquire) & 1) == 0)
   {
     sub_1000169C0();

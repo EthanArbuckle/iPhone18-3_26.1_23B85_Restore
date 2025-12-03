@@ -1,25 +1,25 @@
 @interface PXPhotosDetailsUIViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_axSetDetailsDismissedBlock:(id)a3;
+- (void)_axSetDetailsDismissedBlock:(id)block;
 - (void)_ensureScrollViewController;
 - (void)_loadWidgets;
-- (void)_setAXDetailsDismissedBlock:(id)a3;
+- (void)_setAXDetailsDismissedBlock:(id)block;
 @end
 
 @implementation PXPhotosDetailsUIViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PXUIScrollViewController"];
-  [v3 validateClass:@"PXPhotosDetailsUIViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"PXPhotosDetailsUIViewController" hasInstanceMethod:@"_scrollViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXPhotosDetailsUIViewController" hasInstanceMethod:@"_widgets" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PXUIScrollViewController" hasInstanceVariable:@"_scrollView" withType:"_PXUIScrollView"];
-  [v3 validateClass:@"PXPhotosDetailsUIViewController" hasInstanceMethod:@"_loadWidgets" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PXPhotosDetailsUIViewController" hasInstanceMethod:@"_ensureScrollViewController" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"PXPhotosDetailsUIViewController" hasInstanceMethod:@"widgetComposition:requestViewControllerDismissalAnimated:" withFullSignature:{"@", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PXUIScrollViewController"];
+  [validationsCopy validateClass:@"PXPhotosDetailsUIViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"PXPhotosDetailsUIViewController" hasInstanceMethod:@"_scrollViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXPhotosDetailsUIViewController" hasInstanceMethod:@"_widgets" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PXUIScrollViewController" hasInstanceVariable:@"_scrollView" withType:"_PXUIScrollView"];
+  [validationsCopy validateClass:@"PXPhotosDetailsUIViewController" hasInstanceMethod:@"_loadWidgets" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PXPhotosDetailsUIViewController" hasInstanceMethod:@"_ensureScrollViewController" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"PXPhotosDetailsUIViewController" hasInstanceMethod:@"widgetComposition:requestViewControllerDismissalAnimated:" withFullSignature:{"@", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -95,15 +95,15 @@
   [(PXPhotosDetailsUIViewControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)_setAXDetailsDismissedBlock:(id)a3
+- (void)_setAXDetailsDismissedBlock:(id)block
 {
-  v3 = MEMORY[0x29C2E6DD0](a3, a2);
+  v3 = MEMORY[0x29C2E6DD0](block, a2);
   __UIAccessibilitySetAssociatedObject();
 }
 
-- (void)_axSetDetailsDismissedBlock:(id)a3
+- (void)_axSetDetailsDismissedBlock:(id)block
 {
-  v4 = [a3 copy];
+  v4 = [block copy];
   [(PXPhotosDetailsUIViewControllerAccessibility *)self _setAXDetailsDismissedBlock:v4];
 }
 

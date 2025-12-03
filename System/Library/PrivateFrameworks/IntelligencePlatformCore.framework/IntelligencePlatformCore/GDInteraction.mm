@@ -1,17 +1,17 @@
 @interface GDInteraction
-- (BOOL)isEqual:(id)a3;
-- (GDInteraction)initWithStartDate:(id)a3 endDate:(id)a4 bundleId:(id)a5 mechanism:(int64_t)a6 direction:(int64_t)a7 sender:(id)a8 recipients:(id)a9 selfParticipantStatus:(int64_t)a10;
+- (BOOL)isEqual:(id)equal;
+- (GDInteraction)initWithStartDate:(id)date endDate:(id)endDate bundleId:(id)id mechanism:(int64_t)mechanism direction:(int64_t)direction sender:(id)sender recipients:(id)recipients selfParticipantStatus:(int64_t)self0;
 @end
 
 @implementation GDInteraction
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v9 = objc_msgSend_startDate(self, v6, v7, v8);
     v13 = objc_msgSend_startDate(v5, v10, v11, v12);
     if (!objc_msgSend_isEqual_(v9, v14, v13, v15))
@@ -108,27 +108,27 @@ LABEL_18:
   return v68;
 }
 
-- (GDInteraction)initWithStartDate:(id)a3 endDate:(id)a4 bundleId:(id)a5 mechanism:(int64_t)a6 direction:(int64_t)a7 sender:(id)a8 recipients:(id)a9 selfParticipantStatus:(int64_t)a10
+- (GDInteraction)initWithStartDate:(id)date endDate:(id)endDate bundleId:(id)id mechanism:(int64_t)mechanism direction:(int64_t)direction sender:(id)sender recipients:(id)recipients selfParticipantStatus:(int64_t)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v24 = a5;
-  v23 = a8;
-  v18 = a9;
+  dateCopy = date;
+  endDateCopy = endDate;
+  idCopy = id;
+  senderCopy = sender;
+  recipientsCopy = recipients;
   v25.receiver = self;
   v25.super_class = GDInteraction;
   v19 = [(GDInteraction *)&v25 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_startDate, a3);
-    objc_storeStrong(&v20->_endDate, a4);
-    objc_storeStrong(&v20->_bundleId, a5);
-    v20->_mechanism = a6;
-    v20->_direction = a7;
-    objc_storeStrong(&v20->_sender, a8);
-    objc_storeStrong(&v20->_recipients, a9);
-    v20->_selfParticipantStatus = a10;
+    objc_storeStrong(&v19->_startDate, date);
+    objc_storeStrong(&v20->_endDate, endDate);
+    objc_storeStrong(&v20->_bundleId, id);
+    v20->_mechanism = mechanism;
+    v20->_direction = direction;
+    objc_storeStrong(&v20->_sender, sender);
+    objc_storeStrong(&v20->_recipients, recipients);
+    v20->_selfParticipantStatus = status;
   }
 
   return v20;

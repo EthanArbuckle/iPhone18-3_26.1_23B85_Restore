@@ -1,27 +1,27 @@
 @interface VNImageBlurScoreRequest
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
 - (unint64_t)blurDeterminationMethod;
 - (unint64_t)maximumIntermediateSideLength;
-- (void)applyConfigurationOfRequest:(id)a3;
-- (void)setBlurDeterminationMethod:(unint64_t)a3;
-- (void)setMaximumIntermediateSideLength:(unint64_t)a3;
+- (void)applyConfigurationOfRequest:(id)request;
+- (void)setBlurDeterminationMethod:(unint64_t)method;
+- (void)setMaximumIntermediateSideLength:(unint64_t)length;
 @end
 
 @implementation VNImageBlurScoreRequest
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  contextCopy = context;
   VNValidatedLog(1, @"Processing VNImageBlurMetric request\n", v9, v10, v11, v12, v13, v14, v26);
-  v15 = [v8 imageBufferAndReturnError:a5];
+  v15 = [contextCopy imageBufferAndReturnError:error];
   if (v15)
   {
-    v16 = [v8 session];
+    session = [contextCopy session];
     v27 = 0;
-    v17 = [(VNRequest *)self applicableDetectorAndOptions:&v27 forRevision:a3 loadedInSession:v16 error:a5];
+    v17 = [(VNRequest *)self applicableDetectorAndOptions:&v27 forRevision:revision loadedInSession:session error:error];
     v18 = v27;
     if (v17)
     {
@@ -35,9 +35,9 @@
       v21 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:1];
       [v18 setObject:v21 forKeyedSubscript:@"VNDetectorProcessOption_InputImageBuffers"];
 
-      v22 = [v8 qosClass];
+      qosClass = [contextCopy qosClass];
       [(VNImageBasedRequest *)self regionOfInterest];
-      v23 = [v17 processUsingQualityOfServiceClass:v22 options:v18 regionOfInterest:self warningRecorder:a5 error:0 progressHandler:?];
+      v23 = [v17 processUsingQualityOfServiceClass:qosClass options:v18 regionOfInterest:self warningRecorder:error error:0 progressHandler:?];
       v24 = v23 != 0;
       if (v23)
       {
@@ -59,32 +59,32 @@
   return v24;
 }
 
-- (void)applyConfigurationOfRequest:(id)a3
+- (void)applyConfigurationOfRequest:(id)request
 {
-  v4 = a3;
-  if (self != v4)
+  requestCopy = request;
+  if (self != requestCopy)
   {
     v5.receiver = self;
     v5.super_class = VNImageBlurScoreRequest;
-    [(VNImageBasedRequest *)&v5 applyConfigurationOfRequest:v4];
+    [(VNImageBasedRequest *)&v5 applyConfigurationOfRequest:requestCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(VNImageBlurScoreRequest *)self setMaximumIntermediateSideLength:[(VNImageBlurScoreRequest *)v4 maximumIntermediateSideLength]];
-      [(VNImageBlurScoreRequest *)self setBlurDeterminationMethod:[(VNImageBlurScoreRequest *)v4 blurDeterminationMethod]];
+      [(VNImageBlurScoreRequest *)self setMaximumIntermediateSideLength:[(VNImageBlurScoreRequest *)requestCopy maximumIntermediateSideLength]];
+      [(VNImageBlurScoreRequest *)self setBlurDeterminationMethod:[(VNImageBlurScoreRequest *)requestCopy blurDeterminationMethod]];
     }
   }
 }
 
-- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)a3
+- (BOOL)willAcceptCachedResultsFromRequestWithConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(VNImageBlurScoreRequest *)self blurDeterminationMethod];
-  if (v5 == [v4 blurDeterminationMethod] && (v6 = -[VNImageBlurScoreRequest maximumIntermediateSideLength](self, "maximumIntermediateSideLength"), v6 == objc_msgSend(v4, "maximumIntermediateSideLength")))
+  configurationCopy = configuration;
+  blurDeterminationMethod = [(VNImageBlurScoreRequest *)self blurDeterminationMethod];
+  if (blurDeterminationMethod == [configurationCopy blurDeterminationMethod] && (v6 = -[VNImageBlurScoreRequest maximumIntermediateSideLength](self, "maximumIntermediateSideLength"), v6 == objc_msgSend(configurationCopy, "maximumIntermediateSideLength")))
   {
     v9.receiver = self;
     v9.super_class = VNImageBlurScoreRequest;
-    v7 = [(VNImageBasedRequest *)&v9 willAcceptCachedResultsFromRequestWithConfiguration:v4];
+    v7 = [(VNImageBasedRequest *)&v9 willAcceptCachedResultsFromRequestWithConfiguration:configurationCopy];
   }
 
   else
@@ -95,18 +95,18 @@
   return v7;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  if (a3 == 1)
+  if (revision == 1)
   {
     v4 = @"VNBlurDetectorType";
     v5 = @"VNBlurDetectorType";
   }
 
-  else if (a4)
+  else if (error)
   {
     [VNError errorForUnsupportedRevision:"errorForUnsupportedRevision:ofRequest:" ofRequest:?];
-    *a4 = v4 = 0;
+    *error = v4 = 0;
   }
 
   else
@@ -117,35 +117,35 @@
   return v4;
 }
 
-- (void)setMaximumIntermediateSideLength:(unint64_t)a3
+- (void)setMaximumIntermediateSideLength:(unint64_t)length
 {
-  v4 = [(VNRequest *)self configuration];
-  [v4 setMaximumIntermediateSideLength:a3];
+  configuration = [(VNRequest *)self configuration];
+  [configuration setMaximumIntermediateSideLength:length];
 }
 
 - (unint64_t)maximumIntermediateSideLength
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 maximumIntermediateSideLength];
+  configuration = [(VNRequest *)self configuration];
+  maximumIntermediateSideLength = [configuration maximumIntermediateSideLength];
 
-  return v3;
+  return maximumIntermediateSideLength;
 }
 
-- (void)setBlurDeterminationMethod:(unint64_t)a3
+- (void)setBlurDeterminationMethod:(unint64_t)method
 {
-  if (a3 <= 1)
+  if (method <= 1)
   {
-    v4 = [(VNRequest *)self configuration];
-    [v4 setBlurDeterminationMethod:a3];
+    configuration = [(VNRequest *)self configuration];
+    [configuration setBlurDeterminationMethod:method];
   }
 }
 
 - (unint64_t)blurDeterminationMethod
 {
-  v2 = [(VNRequest *)self configuration];
-  v3 = [v2 blurDeterminationMethod];
+  configuration = [(VNRequest *)self configuration];
+  blurDeterminationMethod = [configuration blurDeterminationMethod];
 
-  return v3;
+  return blurDeterminationMethod;
 }
 
 @end

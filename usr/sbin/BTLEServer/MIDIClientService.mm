@@ -1,15 +1,15 @@
 @interface MIDIClientService
-- (MIDIClientService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5;
+- (MIDIClientService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service;
 - (void)start;
 @end
 
 @implementation MIDIClientService
 
-- (MIDIClientService)initWithManager:(id)a3 peripheral:(id)a4 service:(id)a5
+- (MIDIClientService)initWithManager:(id)manager peripheral:(id)peripheral service:(id)service
 {
   v8.receiver = self;
   v8.super_class = MIDIClientService;
-  v5 = [(ClientService *)&v8 initWithManager:a3 peripheral:a4 service:a5];
+  v5 = [(ClientService *)&v8 initWithManager:manager peripheral:peripheral service:service];
   v6 = v5;
   if (v5)
   {
@@ -27,8 +27,8 @@
   v5.super_class = MIDIClientService;
   [(ClientService *)&v5 start];
   v3 = +[NSNotificationCenter defaultCenter];
-  v4 = [(ClientService *)self peripheral];
-  [v3 postNotificationName:@"PeerIsUsingBuiltinServiceNotification" object:v4];
+  peripheral = [(ClientService *)self peripheral];
+  [v3 postNotificationName:@"PeerIsUsingBuiltinServiceNotification" object:peripheral];
 
   [(ClientService *)self notifyDidStart];
 }

@@ -2,29 +2,29 @@
 + (id)supportedEventClasses;
 - (HMDCurrentResidentDeviceDataSource)currentHomeDataSource;
 - (HMDEventCountersManager)countersManager;
-- (HMDNetworkObserver)initWithLogEventDispatcher:(id)a3 countersManager:(id)a4 dailyScheduler:(id)a5 currentHomeDataSource:(id)a6 dateProvider:(id)a7;
-- (HMDNetworkObserver)initWithLogEventDispatcher:(id)a3 countersManager:(id)a4 dailyScheduler:(id)a5 currentHomeDataSource:(id)a6 dateProvider:(id)a7 wifiManager:(id)a8 notificationCenter:(id)a9 changeDebounceTimer:(id)a10 tickBlock:(id)a11;
+- (HMDNetworkObserver)initWithLogEventDispatcher:(id)dispatcher countersManager:(id)manager dailyScheduler:(id)scheduler currentHomeDataSource:(id)source dateProvider:(id)provider;
+- (HMDNetworkObserver)initWithLogEventDispatcher:(id)dispatcher countersManager:(id)manager dailyScheduler:(id)scheduler currentHomeDataSource:(id)source dateProvider:(id)provider wifiManager:(id)wifiManager notificationCenter:(id)center changeDebounceTimer:(id)self0 tickBlock:(id)self1;
 - (HMFWiFiManager)wifiManager;
 - (HMMDailyScheduler)dailyScheduler;
 - (HMMDateProvider)dateProvider;
 - (HMMLogEventDispatching)logEventDispatcher;
 - (NSNotificationCenter)notificationCenter;
-- (id)_keyOfLargestCountInHistogram:(id)a3;
-- (id)counterGroupForName:(id)a3 homeUUID:(id)a4 date:(id)a5;
-- (id)logEventForHomeWithUUID:(id)a3 associatedWithDate:(id)a4;
+- (id)_keyOfLargestCountInHistogram:(id)histogram;
+- (id)counterGroupForName:(id)name homeUUID:(id)d date:(id)date;
+- (id)logEventForHomeWithUUID:(id)d associatedWithDate:(id)date;
 - (void)_clearNonPersistentCounters;
-- (void)_handleAccessorySessionEvent:(id)a3;
-- (void)_handleCurrentNetworkChangedNotification:(id)a3;
-- (void)_handleReadWriteLogEvent:(id)a3;
-- (void)_incrementError:(id)a3 forHistogram:(id)a4 byValue:(unint64_t)a5;
+- (void)_handleAccessorySessionEvent:(id)event;
+- (void)_handleCurrentNetworkChangedNotification:(id)notification;
+- (void)_handleReadWriteLogEvent:(id)event;
+- (void)_incrementError:(id)error forHistogram:(id)histogram byValue:(unint64_t)value;
 - (void)checkNetworkChange;
-- (void)deleteCountersAfterDate:(id)a3;
-- (void)deleteCountersBeforeDate:(id)a3;
-- (void)observeEvent:(id)a3;
+- (void)deleteCountersAfterDate:(id)date;
+- (void)deleteCountersBeforeDate:(id)date;
+- (void)observeEvent:(id)event;
 - (void)runDailyTask;
 - (void)start;
 - (void)stop;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDNetworkObserver
@@ -78,12 +78,12 @@
   return WeakRetained;
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [(HMDNetworkObserver *)self changeDebounceTimer];
+  fireCopy = fire;
+  changeDebounceTimer = [(HMDNetworkObserver *)self changeDebounceTimer];
 
-  if (v5 == v4)
+  if (changeDebounceTimer == fireCopy)
   {
 
     [(HMDNetworkObserver *)self checkNetworkChange];
@@ -93,97 +93,97 @@
 - (void)checkNetworkChange
 {
   v41 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDNetworkObserver *)self wifiManager];
-  v4 = [v3 currentNetworkAssociation];
+  wifiManager = [(HMDNetworkObserver *)self wifiManager];
+  currentNetworkAssociation = [wifiManager currentNetworkAssociation];
 
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 SSID];
-    v10 = [v4 MACAddress];
-    v11 = [v4 BSSID];
-    v12 = [v4 gatewayIPAddress];
-    v13 = [v4 gatewayMACAddress];
+    sSID = [currentNetworkAssociation SSID];
+    mACAddress = [currentNetworkAssociation MACAddress];
+    bSSID = [currentNetworkAssociation BSSID];
+    gatewayIPAddress = [currentNetworkAssociation gatewayIPAddress];
+    gatewayMACAddress = [currentNetworkAssociation gatewayMACAddress];
     v29 = 138544642;
     v30 = v8;
     v31 = 2112;
-    v32 = v9;
+    v32 = sSID;
     v33 = 2112;
-    v34 = v10;
+    v34 = mACAddress;
     v35 = 2112;
-    v36 = v11;
+    v36 = bSSID;
     v37 = 2112;
-    v38 = v12;
+    v38 = gatewayIPAddress;
     v39 = 2112;
-    v40 = v13;
+    v40 = gatewayMACAddress;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_DEBUG, "%{public}@Network Change Detected.  New Network SSID %@ Local MAC %@, BSSID %@, gatewayIP %@,  gatewayMac %@", &v29, 0x3Eu);
   }
 
   objc_autoreleasePoolPop(v5);
-  v14 = [(HMDNetworkObserver *)v6 countersManager];
-  v15 = [(HMDNetworkObserver *)v6 dateProvider];
-  v16 = [v15 startOfCurrentDay];
-  v17 = [HMDDateCounterGroupSpecifier specifierWithGroupName:@"NetworkStatusEventGroup" date:v16];
-  v18 = [v14 objectForKeyedSubscript:v17];
+  countersManager = [(HMDNetworkObserver *)selfCopy countersManager];
+  dateProvider = [(HMDNetworkObserver *)selfCopy dateProvider];
+  startOfCurrentDay = [dateProvider startOfCurrentDay];
+  v17 = [HMDDateCounterGroupSpecifier specifierWithGroupName:@"NetworkStatusEventGroup" date:startOfCurrentDay];
+  v18 = [countersManager objectForKeyedSubscript:v17];
 
-  if (v4)
+  if (currentNetworkAssociation)
   {
-    v19 = [v4 SSID];
+    sSID2 = [currentNetworkAssociation SSID];
 
-    if (v19)
+    if (sSID2)
     {
-      if (!v6->_wifiAssociated)
+      if (!selfCopy->_wifiAssociated)
       {
         [v18 incrementEventCounterForEventName:@"WifiAssociationCount"];
-        ++v6->_numWifiAssociations;
+        ++selfCopy->_numWifiAssociations;
       }
 
-      v6->_wifiAssociated = 1;
-      v20 = [v4 BSSID];
-      v21 = [(HMDNetworkObserver *)v6 networkAssociation];
-      v22 = [v21 BSSID];
-      v23 = [v20 isEqualToAddress:v22];
+      selfCopy->_wifiAssociated = 1;
+      bSSID2 = [currentNetworkAssociation BSSID];
+      networkAssociation = [(HMDNetworkObserver *)selfCopy networkAssociation];
+      bSSID3 = [networkAssociation BSSID];
+      v23 = [bSSID2 isEqualToAddress:bSSID3];
 
       if ((v23 & 1) == 0)
       {
         [v18 incrementEventCounterForEventName:@"APChangeCount"];
-        ++v6->_numAPChanges;
+        ++selfCopy->_numAPChanges;
       }
 
-      v24 = [v4 gatewayMACAddress];
-      v25 = [(HMDNetworkObserver *)v6 networkAssociation];
-      v26 = [v25 gatewayMACAddress];
-      v27 = [v24 isEqualToAddress:v26];
+      gatewayMACAddress2 = [currentNetworkAssociation gatewayMACAddress];
+      networkAssociation2 = [(HMDNetworkObserver *)selfCopy networkAssociation];
+      gatewayMACAddress3 = [networkAssociation2 gatewayMACAddress];
+      v27 = [gatewayMACAddress2 isEqualToAddress:gatewayMACAddress3];
 
       if ((v27 & 1) == 0)
       {
         [v18 incrementEventCounterForEventName:@"GatewayChangeCount"];
-        ++v6->_numGatewayChanges;
+        ++selfCopy->_numGatewayChanges;
       }
 
       os_unfair_lock_lock_with_options();
-      objc_storeStrong(&v6->_networkAssociation, v4);
-      os_unfair_lock_unlock(&v6->_networkAssociationLock);
+      objc_storeStrong(&selfCopy->_networkAssociation, currentNetworkAssociation);
+      os_unfair_lock_unlock(&selfCopy->_networkAssociationLock);
     }
   }
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteCountersAfterDate:(id)a3
+- (void)deleteCountersAfterDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HMDNetworkObserver *)self countersManager];
+  dateCopy = date;
+  countersManager = [(HMDNetworkObserver *)self countersManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__HMDNetworkObserver_deleteCountersAfterDate___block_invoke;
   v7[3] = &unk_278681218;
-  v8 = v4;
-  v6 = v4;
-  [v5 removeCounterGroupsBasedOnPredicate:v7];
+  v8 = dateCopy;
+  v6 = dateCopy;
+  [countersManager removeCounterGroupsBasedOnPredicate:v7];
 }
 
 uint64_t __46__HMDNetworkObserver_deleteCountersAfterDate___block_invoke(uint64_t a1, void *a2)
@@ -232,17 +232,17 @@ uint64_t __46__HMDNetworkObserver_deleteCountersAfterDate___block_invoke(uint64_
   return v8;
 }
 
-- (void)deleteCountersBeforeDate:(id)a3
+- (void)deleteCountersBeforeDate:(id)date
 {
-  v4 = a3;
-  v5 = [(HMDNetworkObserver *)self countersManager];
+  dateCopy = date;
+  countersManager = [(HMDNetworkObserver *)self countersManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__HMDNetworkObserver_deleteCountersBeforeDate___block_invoke;
   v7[3] = &unk_278681218;
-  v8 = v4;
-  v6 = v4;
-  [v5 removeCounterGroupsBasedOnPredicate:v7];
+  v8 = dateCopy;
+  v6 = dateCopy;
+  [countersManager removeCounterGroupsBasedOnPredicate:v7];
 }
 
 uint64_t __47__HMDNetworkObserver_deleteCountersBeforeDate___block_invoke(uint64_t a1, void *a2)
@@ -291,22 +291,22 @@ uint64_t __47__HMDNetworkObserver_deleteCountersBeforeDate___block_invoke(uint64
   return v8;
 }
 
-- (id)logEventForHomeWithUUID:(id)a3 associatedWithDate:(id)a4
+- (id)logEventForHomeWithUUID:(id)d associatedWithDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDNetworkObserver *)self currentHomeDataSource];
-  v9 = [v8 homeUUIDForCurrentResidentDevice];
-  v10 = [v6 hmf_isEqualToUUID:v9];
+  dCopy = d;
+  dateCopy = date;
+  currentHomeDataSource = [(HMDNetworkObserver *)self currentHomeDataSource];
+  homeUUIDForCurrentResidentDevice = [currentHomeDataSource homeUUIDForCurrentResidentDevice];
+  v10 = [dCopy hmf_isEqualToUUID:homeUUIDForCurrentResidentDevice];
 
   if (v10)
   {
-    v11 = [(HMDNetworkObserver *)self countersManager];
-    v12 = [HMDDateCounterGroupSpecifier specifierWithGroupName:@"NetworkStatusEventGroup" date:v7];
-    v13 = [v11 objectForKeyedSubscript:v12];
+    countersManager = [(HMDNetworkObserver *)self countersManager];
+    v12 = [HMDDateCounterGroupSpecifier specifierWithGroupName:@"NetworkStatusEventGroup" date:dateCopy];
+    v13 = [countersManager objectForKeyedSubscript:v12];
 
-    v14 = [(HMDNetworkObserver *)self counterGroupForName:@"ReadWriteErrorEventGroup" homeUUID:v6 date:v7];
-    v15 = [(HMDNetworkObserver *)self counterGroupForName:@"AccessorySessionErrorGroup" homeUUID:v6 date:v7];
+    v14 = [(HMDNetworkObserver *)self counterGroupForName:@"ReadWriteErrorEventGroup" homeUUID:dCopy date:dateCopy];
+    v15 = [(HMDNetworkObserver *)self counterGroupForName:@"AccessorySessionErrorGroup" homeUUID:dCopy date:dateCopy];
     v39 = [v13 fetchEventCounterForEventName:@"WifiAssociationCount"];
     v38 = [v13 fetchEventCounterForEventName:@"WifiDissociationCount"];
     v37 = [v13 fetchEventCounterForEventName:@"APChangeCount"];
@@ -326,26 +326,26 @@ uint64_t __47__HMDNetworkObserver_deleteCountersBeforeDate___block_invoke(uint64
     os_unfair_lock_lock_with_options();
     if (!self->_networkAssociation)
     {
-      v17 = [(HMDNetworkObserver *)self wifiManager];
-      v18 = [v17 currentNetworkAssociation];
+      wifiManager = [(HMDNetworkObserver *)self wifiManager];
+      currentNetworkAssociation = [wifiManager currentNetworkAssociation];
       networkAssociation = self->_networkAssociation;
-      self->_networkAssociation = v18;
+      self->_networkAssociation = currentNetworkAssociation;
     }
 
-    v20 = [(HMDNetworkObserver *)self networkAssociation];
-    v21 = [v20 BSSID];
-    v22 = [v21 formattedString];
-    v23 = [v22 substringToIndex:8];
+    networkAssociation = [(HMDNetworkObserver *)self networkAssociation];
+    bSSID = [networkAssociation BSSID];
+    formattedString = [bSSID formattedString];
+    v23 = [formattedString substringToIndex:8];
 
-    v24 = [(HMDNetworkObserver *)self networkAssociation];
-    v25 = [v24 SSID];
+    networkAssociation2 = [(HMDNetworkObserver *)self networkAssociation];
+    sSID = [networkAssociation2 SSID];
 
-    v26 = [(HMDNetworkObserver *)self networkAssociation];
-    v27 = [v26 gatewayMACAddress];
-    v28 = [v27 formattedString];
+    networkAssociation3 = [(HMDNetworkObserver *)self networkAssociation];
+    gatewayMACAddress = [networkAssociation3 gatewayMACAddress];
+    formattedString2 = [gatewayMACAddress formattedString];
 
     os_unfair_lock_unlock(&self->_networkAssociationLock);
-    v29 = [[HMDNetworkStabilityLogEvent alloc] initWithHomeUUID:v6 numWifiAssociations:v39 wifiDisassociations:v38 apChanges:v37 gatewayChanges:v36 numReadWrites:v35 numReadErrors:v33 numWriteErrors:v32 topReadWriteError:v34 topSessionError:v16 numSessionErrors:v31 apOUI:v23 ssid:v25 gatewayMACAddress:v28 localHourOfDay:0 collectionDurationMinutes:0];
+    v29 = [[HMDNetworkStabilityLogEvent alloc] initWithHomeUUID:dCopy numWifiAssociations:v39 wifiDisassociations:v38 apChanges:v37 gatewayChanges:v36 numReadWrites:v35 numReadErrors:v33 numWriteErrors:v32 topReadWriteError:v34 topSessionError:v16 numSessionErrors:v31 apOUI:v23 ssid:sSID gatewayMACAddress:formattedString2 localHourOfDay:0 collectionDurationMinutes:0];
   }
 
   else
@@ -358,66 +358,66 @@ uint64_t __47__HMDNetworkObserver_deleteCountersBeforeDate___block_invoke(uint64
 
 - (void)runDailyTask
 {
-  v3 = [(HMDNetworkObserver *)self topWriteErrors];
-  v28 = [(HMDNetworkObserver *)self _keyOfLargestCountInHistogram:v3];
+  topWriteErrors = [(HMDNetworkObserver *)self topWriteErrors];
+  v28 = [(HMDNetworkObserver *)self _keyOfLargestCountInHistogram:topWriteErrors];
 
-  v4 = [(HMDNetworkObserver *)self topSessionErrors];
-  v5 = [(HMDNetworkObserver *)self _keyOfLargestCountInHistogram:v4];
+  topSessionErrors = [(HMDNetworkObserver *)self topSessionErrors];
+  unsignedIntValue = [(HMDNetworkObserver *)self _keyOfLargestCountInHistogram:topSessionErrors];
 
-  v24 = v5;
-  if (v5)
+  v24 = unsignedIntValue;
+  if (unsignedIntValue)
   {
-    v6 = [(HMDNetworkObserver *)self topSessionErrors];
-    v7 = [v6 objectForKeyedSubscript:v5];
-    v5 = [v7 unsignedIntValue];
+    topSessionErrors2 = [(HMDNetworkObserver *)self topSessionErrors];
+    v7 = [topSessionErrors2 objectForKeyedSubscript:unsignedIntValue];
+    unsignedIntValue = [v7 unsignedIntValue];
   }
 
   os_unfair_lock_lock_with_options();
   if (!self->_networkAssociation)
   {
-    v8 = [(HMDNetworkObserver *)self wifiManager];
-    v9 = [v8 currentNetworkAssociation];
+    wifiManager = [(HMDNetworkObserver *)self wifiManager];
+    currentNetworkAssociation = [wifiManager currentNetworkAssociation];
     networkAssociation = self->_networkAssociation;
-    self->_networkAssociation = v9;
+    self->_networkAssociation = currentNetworkAssociation;
   }
 
-  v11 = [(HMDNetworkObserver *)self networkAssociation];
-  v12 = [v11 BSSID];
-  v13 = [v12 formattedString];
-  v27 = [v13 substringToIndex:8];
+  networkAssociation = [(HMDNetworkObserver *)self networkAssociation];
+  bSSID = [networkAssociation BSSID];
+  formattedString = [bSSID formattedString];
+  v27 = [formattedString substringToIndex:8];
 
-  v14 = [(HMDNetworkObserver *)self networkAssociation];
-  v26 = [v14 SSID];
+  networkAssociation2 = [(HMDNetworkObserver *)self networkAssociation];
+  sSID = [networkAssociation2 SSID];
 
-  v15 = [(HMDNetworkObserver *)self networkAssociation];
-  v16 = [v15 gatewayMACAddress];
-  v25 = [v16 formattedString];
+  networkAssociation3 = [(HMDNetworkObserver *)self networkAssociation];
+  gatewayMACAddress = [networkAssociation3 gatewayMACAddress];
+  formattedString2 = [gatewayMACAddress formattedString];
 
   os_unfair_lock_unlock(&self->_networkAssociationLock);
-  v17 = [(HMDNetworkObserver *)self dateProvider];
-  v18 = [(HMDNetworkObserver *)self currentHomeDataSource];
-  v23 = [v18 homeUUIDForCurrentResidentDevice];
+  dateProvider = [(HMDNetworkObserver *)self dateProvider];
+  currentHomeDataSource = [(HMDNetworkObserver *)self currentHomeDataSource];
+  homeUUIDForCurrentResidentDevice = [currentHomeDataSource homeUUIDForCurrentResidentDevice];
 
-  v19 = [(HMDNetworkObserver *)self tickBlock];
-  v22 = ((v19[2]() - self->_collectionStartSeconds) / 0x3C);
+  tickBlock = [(HMDNetworkObserver *)self tickBlock];
+  v22 = ((tickBlock[2]() - self->_collectionStartSeconds) / 0x3C);
 
-  v20 = -[HMDNetworkStabilityLogEvent initWithHomeUUID:numWifiAssociations:wifiDisassociations:apChanges:gatewayChanges:numReadWrites:numReadErrors:numWriteErrors:topReadWriteError:topSessionError:numSessionErrors:apOUI:ssid:gatewayMACAddress:localHourOfDay:collectionDurationMinutes:]([HMDNetworkStabilityLogEvent alloc], "initWithHomeUUID:numWifiAssociations:wifiDisassociations:apChanges:gatewayChanges:numReadWrites:numReadErrors:numWriteErrors:topReadWriteError:topSessionError:numSessionErrors:apOUI:ssid:gatewayMACAddress:localHourOfDay:collectionDurationMinutes:", v23, -[HMDNetworkObserver numWifiAssociations](self, "numWifiAssociations"), -[HMDNetworkObserver numWifiDisassociations](self, "numWifiDisassociations"), -[HMDNetworkObserver numAPChanges](self, "numAPChanges"), -[HMDNetworkObserver numGatewayChanges](self, "numGatewayChanges"), -[HMDNetworkObserver numReadWrites](self, "numReadWrites"), -[HMDNetworkObserver numReadErrors](self, "numReadErrors"), -[HMDNetworkObserver numWriteErrors](self, "numWriteErrors"), v28, v24, v5, v27, v26, v25, [v17 localHourOfDay], v22);
+  v20 = -[HMDNetworkStabilityLogEvent initWithHomeUUID:numWifiAssociations:wifiDisassociations:apChanges:gatewayChanges:numReadWrites:numReadErrors:numWriteErrors:topReadWriteError:topSessionError:numSessionErrors:apOUI:ssid:gatewayMACAddress:localHourOfDay:collectionDurationMinutes:]([HMDNetworkStabilityLogEvent alloc], "initWithHomeUUID:numWifiAssociations:wifiDisassociations:apChanges:gatewayChanges:numReadWrites:numReadErrors:numWriteErrors:topReadWriteError:topSessionError:numSessionErrors:apOUI:ssid:gatewayMACAddress:localHourOfDay:collectionDurationMinutes:", homeUUIDForCurrentResidentDevice, -[HMDNetworkObserver numWifiAssociations](self, "numWifiAssociations"), -[HMDNetworkObserver numWifiDisassociations](self, "numWifiDisassociations"), -[HMDNetworkObserver numAPChanges](self, "numAPChanges"), -[HMDNetworkObserver numGatewayChanges](self, "numGatewayChanges"), -[HMDNetworkObserver numReadWrites](self, "numReadWrites"), -[HMDNetworkObserver numReadErrors](self, "numReadErrors"), -[HMDNetworkObserver numWriteErrors](self, "numWriteErrors"), v28, v24, unsignedIntValue, v27, sSID, formattedString2, [dateProvider localHourOfDay], v22);
   if (v20)
   {
-    v21 = [(HMDNetworkObserver *)self logEventDispatcher];
-    [v21 submitLogEvent:v20];
+    logEventDispatcher = [(HMDNetworkObserver *)self logEventDispatcher];
+    [logEventDispatcher submitLogEvent:v20];
   }
 
   [(HMDNetworkObserver *)self _clearNonPersistentCounters];
 }
 
-- (void)observeEvent:(id)a3
+- (void)observeEvent:(id)event
 {
-  v9 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v9;
+    v4 = eventCopy;
   }
 
   else
@@ -433,7 +433,7 @@ uint64_t __47__HMDNetworkObserver_deleteCountersBeforeDate___block_invoke(uint64
 
   else
   {
-    v6 = v9;
+    v6 = eventCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -458,49 +458,49 @@ uint64_t __47__HMDNetworkObserver_deleteCountersBeforeDate___block_invoke(uint64
 LABEL_12:
 }
 
-- (void)_handleAccessorySessionEvent:(id)a3
+- (void)_handleAccessorySessionEvent:(id)event
 {
-  v14 = a3;
-  v4 = [v14 topErrorDomain];
+  eventCopy = event;
+  topErrorDomain = [eventCopy topErrorDomain];
 
-  if (v4)
+  if (topErrorDomain)
   {
-    v5 = [v14 homeUUID];
-    v6 = [(HMDNetworkObserver *)self dateProvider];
-    v7 = [v6 startOfCurrentDay];
-    v8 = [(HMDNetworkObserver *)self counterGroupForName:@"AccessorySessionErrorGroup" homeUUID:v5 date:v7];
+    homeUUID = [eventCopy homeUUID];
+    dateProvider = [(HMDNetworkObserver *)self dateProvider];
+    startOfCurrentDay = [dateProvider startOfCurrentDay];
+    v8 = [(HMDNetworkObserver *)self counterGroupForName:@"AccessorySessionErrorGroup" homeUUID:homeUUID date:startOfCurrentDay];
 
     v9 = MEMORY[0x277CCA9B8];
-    v10 = [v14 topErrorDomain];
-    v11 = [v9 errorWithDomain:v10 code:objc_msgSend(v14 userInfo:{"topErrorCode"), 0}];
+    topErrorDomain2 = [eventCopy topErrorDomain];
+    v11 = [v9 errorWithDomain:topErrorDomain2 code:objc_msgSend(eventCopy userInfo:{"topErrorCode"), 0}];
     v12 = [HMDLogEventErrorEventsAnalyzer eventCounterNameForError:v11];
 
-    [v8 incrementEventCounterForEventName:v12 withValue:{objc_msgSend(v14, "sessionFailures")}];
-    v13 = [(HMDNetworkObserver *)self topSessionErrors];
-    -[HMDNetworkObserver _incrementError:forHistogram:byValue:](self, "_incrementError:forHistogram:byValue:", v12, v13, [v14 sessionFailures]);
+    [v8 incrementEventCounterForEventName:v12 withValue:{objc_msgSend(eventCopy, "sessionFailures")}];
+    topSessionErrors = [(HMDNetworkObserver *)self topSessionErrors];
+    -[HMDNetworkObserver _incrementError:forHistogram:byValue:](self, "_incrementError:forHistogram:byValue:", v12, topSessionErrors, [eventCopy sessionFailures]);
   }
 }
 
-- (void)_handleReadWriteLogEvent:(id)a3
+- (void)_handleReadWriteLogEvent:(id)event
 {
-  v18 = a3;
-  v4 = [(HMDNetworkObserver *)self dateProvider];
-  v5 = [v4 startOfCurrentDay];
+  eventCopy = event;
+  dateProvider = [(HMDNetworkObserver *)self dateProvider];
+  startOfCurrentDay = [dateProvider startOfCurrentDay];
 
-  v6 = [v18 homeUUID];
-  v7 = [(HMDNetworkObserver *)self countersManager];
-  v8 = [HMDDateCounterGroupSpecifier specifierWithGroupName:@"NetworkStatusEventGroup" date:v5];
-  v9 = [v7 objectForKeyedSubscript:v8];
+  homeUUID = [eventCopy homeUUID];
+  countersManager = [(HMDNetworkObserver *)self countersManager];
+  v8 = [HMDDateCounterGroupSpecifier specifierWithGroupName:@"NetworkStatusEventGroup" date:startOfCurrentDay];
+  v9 = [countersManager objectForKeyedSubscript:v8];
 
-  v10 = [(HMDNetworkObserver *)self counterGroupForName:@"ReadWriteErrorEventGroup" homeUUID:v6 date:v5];
+  v10 = [(HMDNetworkObserver *)self counterGroupForName:@"ReadWriteErrorEventGroup" homeUUID:homeUUID date:startOfCurrentDay];
   [v9 incrementEventCounterForEventName:@"ReadWriteCount"];
   ++self->_numReadWrites;
-  v11 = [v18 error];
+  error = [eventCopy error];
 
-  if (v11)
+  if (error)
   {
-    v12 = [v18 isWriteOperation];
-    if (v12)
+    isWriteOperation = [eventCopy isWriteOperation];
+    if (isWriteOperation)
     {
       v13 = @"WriteErrorCount";
     }
@@ -510,7 +510,7 @@ LABEL_12:
       v13 = @"ReadErrorCount";
     }
 
-    if (v12)
+    if (isWriteOperation)
     {
       v14 = 136;
     }
@@ -522,12 +522,12 @@ LABEL_12:
 
     [v9 incrementEventCounterForEventName:v13];
     ++*(&self->super.isa + v14);
-    v15 = [v18 error];
-    v16 = [HMDLogEventErrorEventsAnalyzer eventCounterNameForError:v15];
+    error2 = [eventCopy error];
+    v16 = [HMDLogEventErrorEventsAnalyzer eventCounterNameForError:error2];
 
     [v10 incrementEventCounterForEventName:v16];
-    v17 = [(HMDNetworkObserver *)self topWriteErrors];
-    [(HMDNetworkObserver *)self _incrementError:v16 forHistogram:v17 byValue:1];
+    topWriteErrors = [(HMDNetworkObserver *)self topWriteErrors];
+    [(HMDNetworkObserver *)self _incrementError:v16 forHistogram:topWriteErrors byValue:1];
   }
 }
 
@@ -537,19 +537,19 @@ LABEL_12:
   *&self->_numReadWrites = 0u;
   *&self->_numAPChanges = 0u;
   *&self->_numWifiAssociations = 0u;
-  v3 = [(HMDNetworkObserver *)self tickBlock];
-  self->_collectionStartSeconds = v3[2]();
+  tickBlock = [(HMDNetworkObserver *)self tickBlock];
+  self->_collectionStartSeconds = tickBlock[2]();
 
-  v4 = [(HMDNetworkObserver *)self topWriteErrors];
-  [v4 removeAllObjects];
+  topWriteErrors = [(HMDNetworkObserver *)self topWriteErrors];
+  [topWriteErrors removeAllObjects];
 
-  v5 = [(HMDNetworkObserver *)self topSessionErrors];
-  [v5 removeAllObjects];
+  topSessionErrors = [(HMDNetworkObserver *)self topSessionErrors];
+  [topSessionErrors removeAllObjects];
 }
 
-- (id)_keyOfLargestCountInHistogram:(id)a3
+- (id)_keyOfLargestCountInHistogram:(id)histogram
 {
-  v3 = a3;
+  histogramCopy = histogram;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x2020000000;
@@ -566,7 +566,7 @@ LABEL_12:
   v6[3] = &unk_2786811F0;
   v6[4] = v13;
   v6[5] = &v7;
-  [v3 enumerateKeysAndObjectsUsingBlock:v6];
+  [histogramCopy enumerateKeysAndObjectsUsingBlock:v6];
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
 
@@ -586,40 +586,40 @@ void __52__HMDNetworkObserver__keyOfLargestCountInHistogram___block_invoke(uint6
   }
 }
 
-- (void)_incrementError:(id)a3 forHistogram:(id)a4 byValue:(unint64_t)a5
+- (void)_incrementError:(id)error forHistogram:(id)histogram byValue:(unint64_t)value
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 objectForKeyedSubscript:v8];
+  histogramCopy = histogram;
+  errorCopy = error;
+  v9 = [histogramCopy objectForKeyedSubscript:errorCopy];
   v11 = v9;
   if (v9)
   {
-    [MEMORY[0x277CCABB0] numberWithUnsignedLong:{objc_msgSend(v9, "unsignedLongValue") + a5}];
+    [MEMORY[0x277CCABB0] numberWithUnsignedLong:{objc_msgSend(v9, "unsignedLongValue") + value}];
   }
 
   else
   {
-    [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+    [MEMORY[0x277CCABB0] numberWithUnsignedInteger:value];
   }
   v10 = ;
-  [v7 setObject:v10 forKeyedSubscript:v8];
+  [histogramCopy setObject:v10 forKeyedSubscript:errorCopy];
 }
 
-- (void)_handleCurrentNetworkChangedNotification:(id)a3
+- (void)_handleCurrentNetworkChangedNotification:(id)notification
 {
-  v4 = [(HMDNetworkObserver *)self wifiManager];
-  v12 = [v4 currentNetworkAssociation];
+  wifiManager = [(HMDNetworkObserver *)self wifiManager];
+  currentNetworkAssociation = [wifiManager currentNetworkAssociation];
 
-  v5 = [(HMDNetworkObserver *)self countersManager];
-  v6 = [(HMDNetworkObserver *)self dateProvider];
-  v7 = [v6 startOfCurrentDay];
-  v8 = [HMDDateCounterGroupSpecifier specifierWithGroupName:@"NetworkStatusEventGroup" date:v7];
-  v9 = [v5 objectForKeyedSubscript:v8];
+  countersManager = [(HMDNetworkObserver *)self countersManager];
+  dateProvider = [(HMDNetworkObserver *)self dateProvider];
+  startOfCurrentDay = [dateProvider startOfCurrentDay];
+  v8 = [HMDDateCounterGroupSpecifier specifierWithGroupName:@"NetworkStatusEventGroup" date:startOfCurrentDay];
+  v9 = [countersManager objectForKeyedSubscript:v8];
 
-  if (v12 && ([v12 SSID], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+  if (currentNetworkAssociation && ([currentNetworkAssociation SSID], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
   {
-    v11 = [(HMDNetworkObserver *)self changeDebounceTimer];
-    [v11 resume];
+    changeDebounceTimer = [(HMDNetworkObserver *)self changeDebounceTimer];
+    [changeDebounceTimer resume];
   }
 
   else if (self->_wifiAssociated)
@@ -630,17 +630,17 @@ void __52__HMDNetworkObserver__keyOfLargestCountInHistogram___block_invoke(uint6
   }
 }
 
-- (id)counterGroupForName:(id)a3 homeUUID:(id)a4 date:(id)a5
+- (id)counterGroupForName:(id)name homeUUID:(id)d date:(id)date
 {
-  if (a4)
+  if (d)
   {
-    v8 = a5;
-    v9 = a4;
-    v10 = a3;
-    v11 = [(HMDNetworkObserver *)self countersManager];
-    v12 = [HMDHouseholdDataEventCounterGroupSpecifier specifierWithGroupName:v10 homeUUID:v9 date:v8];
+    dateCopy = date;
+    dCopy = d;
+    nameCopy = name;
+    countersManager = [(HMDNetworkObserver *)self countersManager];
+    v12 = [HMDHouseholdDataEventCounterGroupSpecifier specifierWithGroupName:nameCopy homeUUID:dCopy date:dateCopy];
 
-    v13 = [v11 objectForKeyedSubscript:v12];
+    v13 = [countersManager objectForKeyedSubscript:v12];
   }
 
   else
@@ -657,7 +657,7 @@ void __52__HMDNetworkObserver__keyOfLargestCountInHistogram___block_invoke(uint6
   if (self->_started)
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = self;
+    selfCopy = self;
     v5 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -668,14 +668,14 @@ void __52__HMDNetworkObserver__keyOfLargestCountInHistogram___block_invoke(uint6
     }
 
     objc_autoreleasePoolPop(v3);
-    v7 = [(HMDNetworkObserver *)v4 changeDebounceTimer];
-    [v7 suspend];
+    changeDebounceTimer = [(HMDNetworkObserver *)selfCopy changeDebounceTimer];
+    [changeDebounceTimer suspend];
 
-    v8 = [(HMDNetworkObserver *)v4 logEventDispatcher];
-    [v8 removeObserver:v4];
+    logEventDispatcher = [(HMDNetworkObserver *)selfCopy logEventDispatcher];
+    [logEventDispatcher removeObserver:selfCopy];
 
-    v9 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v9 removeObserver:v4 name:*MEMORY[0x277D0F768] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:selfCopy name:*MEMORY[0x277D0F768] object:0];
 
     self->_started = 0;
   }
@@ -689,7 +689,7 @@ void __52__HMDNetworkObserver__keyOfLargestCountInHistogram___block_invoke(uint6
   if (!self->_started)
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = self;
+    selfCopy = self;
     v5 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -702,52 +702,52 @@ void __52__HMDNetworkObserver__keyOfLargestCountInHistogram___block_invoke(uint6
     objc_autoreleasePoolPop(v3);
     v7 = *MEMORY[0x277D0F768];
     v8 = [MEMORY[0x277CCAB88] notificationWithName:*MEMORY[0x277D0F768] object:0];
-    [(HMDNetworkObserver *)v4 _handleCurrentNetworkChangedNotification:v8];
+    [(HMDNetworkObserver *)selfCopy _handleCurrentNetworkChangedNotification:v8];
 
-    v9 = [(HMDNetworkObserver *)v4 logEventDispatcher];
-    v10 = [objc_opt_class() supportedEventClasses];
-    [v9 addObserver:v4 forEventClasses:v10];
+    logEventDispatcher = [(HMDNetworkObserver *)selfCopy logEventDispatcher];
+    supportedEventClasses = [objc_opt_class() supportedEventClasses];
+    [logEventDispatcher addObserver:selfCopy forEventClasses:supportedEventClasses];
 
-    v11 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v11 addObserver:v4 selector:sel__handleCurrentNetworkChangedNotification_ name:v7 object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:selfCopy selector:sel__handleCurrentNetworkChangedNotification_ name:v7 object:0];
 
-    v12 = [(HMDNetworkObserver *)v4 tickBlock];
-    v4->_collectionStartSeconds = v12[2]();
+    tickBlock = [(HMDNetworkObserver *)selfCopy tickBlock];
+    selfCopy->_collectionStartSeconds = tickBlock[2]();
 
     self->_started = 1;
-    v13 = [(HMDNetworkObserver *)v4 dailyScheduler];
-    [v13 registerDailyTaskRunner:v4];
+    dailyScheduler = [(HMDNetworkObserver *)selfCopy dailyScheduler];
+    [dailyScheduler registerDailyTaskRunner:selfCopy];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDNetworkObserver)initWithLogEventDispatcher:(id)a3 countersManager:(id)a4 dailyScheduler:(id)a5 currentHomeDataSource:(id)a6 dateProvider:(id)a7 wifiManager:(id)a8 notificationCenter:(id)a9 changeDebounceTimer:(id)a10 tickBlock:(id)a11
+- (HMDNetworkObserver)initWithLogEventDispatcher:(id)dispatcher countersManager:(id)manager dailyScheduler:(id)scheduler currentHomeDataSource:(id)source dateProvider:(id)provider wifiManager:(id)wifiManager notificationCenter:(id)center changeDebounceTimer:(id)self0 tickBlock:(id)self1
 {
-  v16 = a3;
-  v17 = a4;
-  obj = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v33 = a10;
-  v22 = a11;
+  dispatcherCopy = dispatcher;
+  managerCopy = manager;
+  obj = scheduler;
+  sourceCopy = source;
+  providerCopy = provider;
+  wifiManagerCopy = wifiManager;
+  centerCopy = center;
+  timerCopy = timer;
+  blockCopy = block;
   v35.receiver = self;
   v35.super_class = HMDNetworkObserver;
   v23 = [(HMDNetworkObserver *)&v35 init];
   v24 = v23;
   if (v23)
   {
-    objc_storeWeak(&v23->_logEventDispatcher, v16);
-    objc_storeWeak(&v24->_countersManager, v17);
-    objc_storeWeak(&v24->_wifiManager, v20);
-    objc_storeWeak(&v24->_notificationCenter, v21);
+    objc_storeWeak(&v23->_logEventDispatcher, dispatcherCopy);
+    objc_storeWeak(&v24->_countersManager, managerCopy);
+    objc_storeWeak(&v24->_wifiManager, wifiManagerCopy);
+    objc_storeWeak(&v24->_notificationCenter, centerCopy);
     v24->_wifiAssociated = 0;
-    objc_storeWeak(&v24->_currentHomeDataSource, v18);
-    objc_storeWeak(&v24->_dateProvider, v19);
+    objc_storeWeak(&v24->_currentHomeDataSource, sourceCopy);
+    objc_storeWeak(&v24->_dateProvider, providerCopy);
     objc_storeWeak(&v24->_dailyScheduler, obj);
-    v25 = _Block_copy(v22);
+    v25 = _Block_copy(blockCopy);
     tickBlock = v24->_tickBlock;
     v24->_tickBlock = v25;
 
@@ -756,7 +756,7 @@ void __52__HMDNetworkObserver__keyOfLargestCountInHistogram___block_invoke(uint6
     *&v24->_numAPChanges = 0u;
     *&v24->_numReadWrites = 0u;
     v24->_numWriteErrors = 0;
-    objc_storeStrong(&v24->_changeDebounceTimer, a10);
+    objc_storeStrong(&v24->_changeDebounceTimer, timer);
     [(HMFTimer *)v24->_changeDebounceTimer setDelegate:v24];
     v27 = objc_alloc_init(MEMORY[0x277CBEB38]);
     topWriteErrors = v24->_topWriteErrors;
@@ -772,18 +772,18 @@ void __52__HMDNetworkObserver__keyOfLargestCountInHistogram___block_invoke(uint6
   return v24;
 }
 
-- (HMDNetworkObserver)initWithLogEventDispatcher:(id)a3 countersManager:(id)a4 dailyScheduler:(id)a5 currentHomeDataSource:(id)a6 dateProvider:(id)a7
+- (HMDNetworkObserver)initWithLogEventDispatcher:(id)dispatcher countersManager:(id)manager dailyScheduler:(id)scheduler currentHomeDataSource:(id)source dateProvider:(id)provider
 {
   v12 = MEMORY[0x277D0F950];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
-  v18 = [v12 sharedManager];
-  v19 = [MEMORY[0x277CCAB98] defaultCenter];
+  providerCopy = provider;
+  sourceCopy = source;
+  schedulerCopy = scheduler;
+  managerCopy = manager;
+  dispatcherCopy = dispatcher;
+  sharedManager = [v12 sharedManager];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v20 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:1.0];
-  v21 = [(HMDNetworkObserver *)self initWithLogEventDispatcher:v17 countersManager:v16 dailyScheduler:v15 currentHomeDataSource:v14 dateProvider:v13 wifiManager:v18 notificationCenter:v19 changeDebounceTimer:v20 tickBlock:&__block_literal_global_42_81967];
+  v21 = [(HMDNetworkObserver *)self initWithLogEventDispatcher:dispatcherCopy countersManager:managerCopy dailyScheduler:schedulerCopy currentHomeDataSource:sourceCopy dateProvider:providerCopy wifiManager:sharedManager notificationCenter:defaultCenter changeDebounceTimer:v20 tickBlock:&__block_literal_global_42_81967];
 
   return v21;
 }

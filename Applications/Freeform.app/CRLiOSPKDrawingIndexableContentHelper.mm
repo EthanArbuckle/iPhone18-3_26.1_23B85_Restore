@@ -1,12 +1,12 @@
 @interface CRLiOSPKDrawingIndexableContentHelper
-+ (id)indexableStringFromDrawing:(id)a3;
++ (id)indexableStringFromDrawing:(id)drawing;
 - (CRLiOSPKDrawingIndexableContentHelper)init;
-- (id)drawingIndexedContentsFromBoardWithIdentifierString:(id)a3;
+- (id)drawingIndexedContentsFromBoardWithIdentifierString:(id)string;
 - (void)dealloc;
-- (void)p_currentActiveBoardDidUpdatePKDrawingIndexedContents:(id)a3;
-- (void)p_removeAllCachedDrawingIndexedContents:(id)a3;
-- (void)p_startCachingDrawingIndexedContents:(id)a3;
-- (void)removeDrawingIndexedContentsFromBoardWithIdentifierString:(id)a3;
+- (void)p_currentActiveBoardDidUpdatePKDrawingIndexedContents:(id)contents;
+- (void)p_removeAllCachedDrawingIndexedContents:(id)contents;
+- (void)p_startCachingDrawingIndexedContents:(id)contents;
+- (void)removeDrawingIndexedContentsFromBoardWithIdentifierString:(id)string;
 @end
 
 @implementation CRLiOSPKDrawingIndexableContentHelper
@@ -57,35 +57,35 @@
   [(CRLiOSPKDrawingIndexableContentHelper *)&v7 dealloc];
 }
 
-- (id)drawingIndexedContentsFromBoardWithIdentifierString:(id)a3
+- (id)drawingIndexedContentsFromBoardWithIdentifierString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   os_unfair_lock_lock(&self->_indexedContentsAccessLock);
-  v5 = [(NSMutableDictionary *)self->_boardIdentifierStringsToDrawingIndexedContents objectForKey:v4];
+  v5 = [(NSMutableDictionary *)self->_boardIdentifierStringsToDrawingIndexedContents objectForKey:stringCopy];
 
   os_unfair_lock_unlock(&self->_indexedContentsAccessLock);
 
   return v5;
 }
 
-- (void)removeDrawingIndexedContentsFromBoardWithIdentifierString:(id)a3
+- (void)removeDrawingIndexedContentsFromBoardWithIdentifierString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   os_unfair_lock_lock(&self->_indexedContentsAccessLock);
-  [(NSMutableDictionary *)self->_boardIdentifierStringsToDrawingIndexedContents removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_boardIdentifierStringsToDrawingIndexedContents removeObjectForKey:stringCopy];
 
   os_unfair_lock_unlock(&self->_indexedContentsAccessLock);
 }
 
-- (void)p_currentActiveBoardDidUpdatePKDrawingIndexedContents:(id)a3
+- (void)p_currentActiveBoardDidUpdatePKDrawingIndexedContents:(id)contents
 {
-  v11 = [a3 userInfo];
+  userInfo = [contents userInfo];
   v4 = objc_opt_class();
-  v5 = [v11 objectForKey:@"CRLActiveBoardDidUpdateDrawingIndexedContentsBoardIdentifierString"];
+  v5 = [userInfo objectForKey:@"CRLActiveBoardDidUpdateDrawingIndexedContentsBoardIdentifierString"];
   v6 = sub_100014370(v4, v5);
 
   v7 = objc_opt_class();
-  v8 = [v11 objectForKey:@"CRLActiveBoardDidUpdateDrawingIndexedContents"];
+  v8 = [userInfo objectForKey:@"CRLActiveBoardDidUpdateDrawingIndexedContents"];
   v9 = sub_100014370(v7, v8);
 
   if (v6)
@@ -103,7 +103,7 @@
   }
 }
 
-- (void)p_startCachingDrawingIndexedContents:(id)a3
+- (void)p_startCachingDrawingIndexedContents:(id)contents
 {
   os_unfair_lock_lock(&self->_indexedContentsAccessLock);
   self->_shouldCacheIndexedContents = 1;
@@ -111,7 +111,7 @@
   os_unfair_lock_unlock(&self->_indexedContentsAccessLock);
 }
 
-- (void)p_removeAllCachedDrawingIndexedContents:(id)a3
+- (void)p_removeAllCachedDrawingIndexedContents:(id)contents
 {
   os_unfair_lock_lock(&self->_indexedContentsAccessLock);
   self->_shouldCacheIndexedContents = 0;
@@ -120,16 +120,16 @@
   os_unfair_lock_unlock(&self->_indexedContentsAccessLock);
 }
 
-+ (id)indexableStringFromDrawing:(id)a3
++ (id)indexableStringFromDrawing:(id)drawing
 {
-  v3 = [a3 copy];
+  v3 = [drawing copy];
   [v3 setRecognitionEnabled:1];
-  v4 = [v3 indexableContent];
-  v5 = [v4 presentableTextRepresentation];
+  indexableContent = [v3 indexableContent];
+  presentableTextRepresentation = [indexableContent presentableTextRepresentation];
   v6 = +[_TtC8Freeform54CRLFreehandDrawingHandwrittenContentAccessibilityCache sharedInstance];
-  [v6 cacheString:v5 asAccessibilityDescriptionForDrawing:v3];
+  [v6 cacheString:presentableTextRepresentation asAccessibilityDescriptionForDrawing:v3];
 
-  return v5;
+  return presentableTextRepresentation;
 }
 
 @end

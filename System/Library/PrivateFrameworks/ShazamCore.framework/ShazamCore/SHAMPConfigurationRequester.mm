@@ -1,19 +1,19 @@
 @interface SHAMPConfigurationRequester
 - (SHStorefront)storefront;
-- (id)endpointURLWithHost:(id)a3 path:(id)a4 storefront:(id)a5;
-- (void)configurationEndpoint:(id)a3;
-- (void)fetchOffersAtURL:(id)a3 completionHandler:(id)a4;
-- (void)fetchShazamAMPConfiguration:(id)a3 completionHandler:(id)a4;
-- (void)fetchStreamingProvidersAtURL:(id)a3 completionHandler:(id)a4;
-- (void)offersWithCompletion:(id)a3;
-- (void)streamingProvidersWithCompletion:(id)a3;
+- (id)endpointURLWithHost:(id)host path:(id)path storefront:(id)storefront;
+- (void)configurationEndpoint:(id)endpoint;
+- (void)fetchOffersAtURL:(id)l completionHandler:(id)handler;
+- (void)fetchShazamAMPConfiguration:(id)configuration completionHandler:(id)handler;
+- (void)fetchStreamingProvidersAtURL:(id)l completionHandler:(id)handler;
+- (void)offersWithCompletion:(id)completion;
+- (void)streamingProvidersWithCompletion:(id)completion;
 @end
 
 @implementation SHAMPConfigurationRequester
 
-- (void)configurationEndpoint:(id)a3
+- (void)configurationEndpoint:(id)endpoint
 {
-  v4 = a3;
+  endpointCopy = endpoint;
   objc_initWeak(&location, self);
   v5 = +[SHRemoteConfiguration sharedInstance];
   v7[0] = MEMORY[0x277D85DD0];
@@ -22,7 +22,7 @@
   v7[3] = &unk_2788FB158;
   objc_copyWeak(&v9, &location);
   v7[4] = self;
-  v6 = v4;
+  v6 = endpointCopy;
   v8 = v6;
   [v5 shazamAMPConfigurationAPIHostWithCompletion:v7];
 
@@ -89,16 +89,16 @@ void __53__SHAMPConfigurationRequester_configurationEndpoint___block_invoke_3(ui
   }
 }
 
-- (void)offersWithCompletion:(id)a3
+- (void)offersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__SHAMPConfigurationRequester_offersWithCompletion___block_invoke;
   v6[3] = &unk_2788FB180;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v7 = v5;
   [(SHAMPConfigurationRequester *)self configurationEndpoint:v6];
 
@@ -113,16 +113,16 @@ void __52__SHAMPConfigurationRequester_offersWithCompletion___block_invoke(uint6
   [WeakRetained fetchOffersAtURL:v3 completionHandler:*(a1 + 32)];
 }
 
-- (void)streamingProvidersWithCompletion:(id)a3
+- (void)streamingProvidersWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __64__SHAMPConfigurationRequester_streamingProvidersWithCompletion___block_invoke;
   v6[3] = &unk_2788FB180;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v7 = v5;
   [(SHAMPConfigurationRequester *)self configurationEndpoint:v6];
 
@@ -137,32 +137,32 @@ void __64__SHAMPConfigurationRequester_streamingProvidersWithCompletion___block_
   [WeakRetained fetchStreamingProvidersAtURL:v3 completionHandler:*(a1 + 32)];
 }
 
-- (id)endpointURLWithHost:(id)a3 path:(id)a4 storefront:(id)a5
+- (id)endpointURLWithHost:(id)host path:(id)path storefront:(id)storefront
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  storefrontCopy = storefront;
+  pathCopy = path;
+  hostCopy = host;
   v10 = [SHTokenizedURL alloc];
-  v11 = [v9 name];
+  name = [hostCopy name];
 
-  v12 = [(SHTokenizedURL *)v10 initWithHost:v11 URLPath:v8];
-  [(SHTokenizedURL *)v12 updateToken:3 withValue:v7];
+  v12 = [(SHTokenizedURL *)v10 initWithHost:name URLPath:pathCopy];
+  [(SHTokenizedURL *)v12 updateToken:3 withValue:storefrontCopy];
 
-  v13 = [(SHTokenizedURL *)v12 URLRepresentation];
+  uRLRepresentation = [(SHTokenizedURL *)v12 URLRepresentation];
 
-  return v13;
+  return uRLRepresentation;
 }
 
-- (void)fetchOffersAtURL:(id)a3 completionHandler:(id)a4
+- (void)fetchOffersAtURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __66__SHAMPConfigurationRequester_fetchOffersAtURL_completionHandler___block_invoke;
   v8[3] = &unk_2788FB1A8;
-  v9 = v6;
-  v7 = v6;
-  [(SHAMPConfigurationRequester *)self fetchShazamAMPConfiguration:a3 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(SHAMPConfigurationRequester *)self fetchShazamAMPConfiguration:l completionHandler:v8];
 }
 
 void __66__SHAMPConfigurationRequester_fetchOffersAtURL_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -173,16 +173,16 @@ void __66__SHAMPConfigurationRequester_fetchOffersAtURL_completionHandler___bloc
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (void)fetchStreamingProvidersAtURL:(id)a3 completionHandler:(id)a4
+- (void)fetchStreamingProvidersAtURL:(id)l completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __78__SHAMPConfigurationRequester_fetchStreamingProvidersAtURL_completionHandler___block_invoke;
   v8[3] = &unk_2788FB1A8;
-  v9 = v6;
-  v7 = v6;
-  [(SHAMPConfigurationRequester *)self fetchShazamAMPConfiguration:a3 completionHandler:v8];
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  [(SHAMPConfigurationRequester *)self fetchShazamAMPConfiguration:l completionHandler:v8];
 }
 
 void __78__SHAMPConfigurationRequester_fetchStreamingProvidersAtURL_completionHandler___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -193,22 +193,22 @@ void __78__SHAMPConfigurationRequester_fetchStreamingProvidersAtURL_completionHa
   (*(v4 + 16))(v4, v6, v5);
 }
 
-- (void)fetchShazamAMPConfiguration:(id)a3 completionHandler:(id)a4
+- (void)fetchShazamAMPConfiguration:(id)configuration completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = MEMORY[0x277CCAB70];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithURL:v7];
+  configurationCopy = configuration;
+  v8 = [[v6 alloc] initWithURL:configurationCopy];
 
   [v8 setHTTPMethod:@"POST"];
-  v9 = [MEMORY[0x277CCAD30] sharedSession];
+  mEMORY[0x277CCAD30] = [MEMORY[0x277CCAD30] sharedSession];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __77__SHAMPConfigurationRequester_fetchShazamAMPConfiguration_completionHandler___block_invoke;
   v12[3] = &unk_2788FB1D0;
-  v13 = v5;
-  v10 = v5;
-  v11 = [v9 dataTaskWithRequest:v8 completionHandler:v12];
+  v13 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = [mEMORY[0x277CCAD30] dataTaskWithRequest:v8 completionHandler:v12];
 
   [v11 resume];
 }

@@ -1,27 +1,27 @@
 @interface MLSyncKeepLocalEvaluationResult
-- (BOOL)addTrackWithPersistentId:(int64_t)a3 properties:(id)a4 downloadType:(int)a5;
+- (BOOL)addTrackWithPersistentId:(int64_t)id properties:(id)properties downloadType:(int)type;
 - (MLSyncKeepLocalEvaluationResult)init;
 - (NSDictionary)trackProperties;
 - (NSOrderedSet)automaticDownloads;
 - (NSOrderedSet)manualDownloads;
-- (id)getTrackPropertiesForPersistentID:(int64_t)a3;
-- (void)updateTrackProperties:(id)a3 forPersistendID:(int64_t)a4;
+- (id)getTrackPropertiesForPersistentID:(int64_t)d;
+- (void)updateTrackProperties:(id)properties forPersistendID:(int64_t)d;
 @end
 
 @implementation MLSyncKeepLocalEvaluationResult
 
-- (void)updateTrackProperties:(id)a3 forPersistendID:(int64_t)a4
+- (void)updateTrackProperties:(id)properties forPersistendID:(int64_t)d
 {
   trackProperties = self->_trackProperties;
-  v6 = a3;
-  v7 = [NSNumber numberWithLongLong:a4];
-  [(NSMutableDictionary *)trackProperties setObject:v6 forKey:v7];
+  propertiesCopy = properties;
+  v7 = [NSNumber numberWithLongLong:d];
+  [(NSMutableDictionary *)trackProperties setObject:propertiesCopy forKey:v7];
 }
 
-- (id)getTrackPropertiesForPersistentID:(int64_t)a3
+- (id)getTrackPropertiesForPersistentID:(int64_t)d
 {
   trackProperties = self->_trackProperties;
-  v4 = [NSNumber numberWithLongLong:a3];
+  v4 = [NSNumber numberWithLongLong:d];
   v5 = [(NSMutableDictionary *)trackProperties objectForKey:v4];
 
   return v5;
@@ -48,32 +48,32 @@
   return v2;
 }
 
-- (BOOL)addTrackWithPersistentId:(int64_t)a3 properties:(id)a4 downloadType:(int)a5
+- (BOOL)addTrackWithPersistentId:(int64_t)id properties:(id)properties downloadType:(int)type
 {
-  v8 = a4;
-  v9 = [NSNumber numberWithLongLong:a3];
-  v10 = [v8 objectForKey:ML3TrackPropertyTotalSize];
-  v11 = [v10 longLongValue];
+  propertiesCopy = properties;
+  v9 = [NSNumber numberWithLongLong:id];
+  v10 = [propertiesCopy objectForKey:ML3TrackPropertyTotalSize];
+  longLongValue = [v10 longLongValue];
 
   v12 = [(NSMutableDictionary *)self->_trackProperties objectForKey:v9];
 
   if (!v12)
   {
-    [(NSMutableDictionary *)self->_trackProperties setObject:v8 forKey:v9];
-    if (a5 == 1)
+    [(NSMutableDictionary *)self->_trackProperties setObject:propertiesCopy forKey:v9];
+    if (type == 1)
     {
       v13 = 40;
       v14 = 16;
       goto LABEL_6;
     }
 
-    if (!a5)
+    if (!type)
     {
       v13 = 56;
       v14 = 8;
 LABEL_6:
       [*(&self->super.isa + v14) addObject:v9];
-      *(&self->super.isa + v13) = (*(&self->super.isa + v13) + v11);
+      *(&self->super.isa + v13) = (*(&self->super.isa + v13) + longLongValue);
     }
   }
 

@@ -4,12 +4,12 @@
 + (BOOL)_isExplicitContentRestrictedByDefaultInCurrentStoreFront;
 + (BOOL)isActiveAccountAllowedToUpdateRestrictions;
 + (id)setOfActiveRestrictionUUIDs;
-+ (void)didDisplayExplicitRestrictionAlertOfType:(int64_t)a3;
-+ (void)isExplicitContentDisallowedInCurrentStoreFront:(id)a3;
-+ (void)isExplicitContentRestrictedByDefaultInCurrentStoreFront:(id)a3;
-+ (void)isRestrictionsPasscodeSet:(id)a3;
++ (void)didDisplayExplicitRestrictionAlertOfType:(int64_t)type;
++ (void)isExplicitContentDisallowedInCurrentStoreFront:(id)front;
++ (void)isExplicitContentRestrictedByDefaultInCurrentStoreFront:(id)front;
++ (void)isRestrictionsPasscodeSet:(id)set;
 + (void)setAllowExplicitContent;
-+ (void)shouldDisplayExplicitRestrictionAlertOfType:(int64_t)a3 completionBlock:(id)a4;
++ (void)shouldDisplayExplicitRestrictionAlertOfType:(int64_t)type completionBlock:(id)block;
 @end
 
 @implementation SSRestrictions
@@ -17,7 +17,7 @@
 + (id)setOfActiveRestrictionUUIDs
 {
   v3 = [MEMORY[0x1E695DFA8] set];
-  if ([a1 _isExplicitContentDisallowedInCurrentStoreFront])
+  if ([self _isExplicitContentDisallowedInCurrentStoreFront])
   {
     [v3 addObject:@"com.apple.itunesstored.ExplicitPreferenceRestriction"];
   }
@@ -25,14 +25,14 @@
   return v3;
 }
 
-+ (void)isExplicitContentRestrictedByDefaultInCurrentStoreFront:(id)a3
++ (void)isExplicitContentRestrictedByDefaultInCurrentStoreFront:(id)front
 {
   v4 = [[SSURLBag alloc] initWithURLBagContext:[SSURLBagContext contextWithBagType:0]];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __74__SSRestrictions_isExplicitContentRestrictedByDefaultInCurrentStoreFront___block_invoke;
   v5[3] = &unk_1E84AEC90;
-  v5[4] = a3;
+  v5[4] = front;
   [(SSURLBag *)v4 loadValueForKey:@"ExplicitOffAndPreferencesEnabled" completionBlock:v5];
 }
 
@@ -48,14 +48,14 @@ uint64_t __74__SSRestrictions_isExplicitContentRestrictedByDefaultInCurrentStore
   return v4();
 }
 
-+ (void)isExplicitContentDisallowedInCurrentStoreFront:(id)a3
++ (void)isExplicitContentDisallowedInCurrentStoreFront:(id)front
 {
   v4 = [[SSURLBag alloc] initWithURLBagContext:[SSURLBagContext contextWithBagType:0]];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __65__SSRestrictions_isExplicitContentDisallowedInCurrentStoreFront___block_invoke;
   v5[3] = &unk_1E84AEC90;
-  v5[4] = a3;
+  v5[4] = front;
   [(SSURLBag *)v4 loadValueForKey:@"ExplicitOffAndPreferencesDisabled" completionBlock:v5];
 }
 
@@ -73,8 +73,8 @@ uint64_t __65__SSRestrictions_isExplicitContentDisallowedInCurrentStoreFront___b
 
 + (BOOL)isActiveAccountAllowedToUpdateRestrictions
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  if ([v2 isSettingLockedDownByRestrictions:*MEMORY[0x1E69ADE68]])
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  if ([mEMORY[0x1E69ADFB8] isSettingLockedDownByRestrictions:*MEMORY[0x1E69ADE68]])
   {
     return 0;
   }
@@ -85,15 +85,15 @@ uint64_t __65__SSRestrictions_isExplicitContentDisallowedInCurrentStoreFront___b
   }
 }
 
-+ (void)isRestrictionsPasscodeSet:(id)a3
++ (void)isRestrictionsPasscodeSet:(id)set
 {
   global_queue = dispatch_get_global_queue(0, 0);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __44__SSRestrictions_isRestrictionsPasscodeSet___block_invoke;
   v6[3] = &unk_1E84AC738;
-  v6[4] = a1;
-  v6[5] = a3;
+  v6[4] = self;
+  v6[5] = set;
   dispatch_async(global_queue, v6);
 }
 
@@ -108,33 +108,33 @@ uint64_t __44__SSRestrictions_isRestrictionsPasscodeSet___block_invoke(uint64_t 
 
 + (void)setAllowExplicitContent
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
   v3 = *MEMORY[0x1E69ADE68];
 
-  [v2 setBoolValue:1 forSetting:v3];
+  [mEMORY[0x1E69ADFB8] setBoolValue:1 forSetting:v3];
 }
 
-+ (void)shouldDisplayExplicitRestrictionAlertOfType:(int64_t)a3 completionBlock:(id)a4
++ (void)shouldDisplayExplicitRestrictionAlertOfType:(int64_t)type completionBlock:(id)block
 {
-  v7 = [MEMORY[0x1E69ADFB8] sharedConnection];
-  if ([v7 effectiveRestrictedBoolValueForSetting:*MEMORY[0x1E69ADE68]] == 2)
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+  if ([mEMORY[0x1E69ADFB8] effectiveRestrictedBoolValueForSetting:*MEMORY[0x1E69ADE68]] == 2)
   {
     global_queue = dispatch_get_global_queue(0, 0);
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __78__SSRestrictions_shouldDisplayExplicitRestrictionAlertOfType_completionBlock___block_invoke;
     block[3] = &unk_1E84AECB8;
-    block[5] = a4;
-    block[6] = a3;
-    block[4] = a1;
+    block[5] = block;
+    block[6] = type;
+    block[4] = self;
     dispatch_async(global_queue, block);
   }
 
   else
   {
-    v9 = *(a4 + 2);
+    v9 = *(block + 2);
 
-    v9(a4, 0, 0);
+    v9(block, 0, 0);
   }
 }
 
@@ -187,16 +187,16 @@ LABEL_15:
   return (*(*(a1 + 40) + 16))();
 }
 
-+ (void)didDisplayExplicitRestrictionAlertOfType:(int64_t)a3
++ (void)didDisplayExplicitRestrictionAlertOfType:(int64_t)type
 {
-  v3 = __UserDefaultsKeyForExplicitRestrictionAlertType(a3);
+  v3 = __UserDefaultsKeyForExplicitRestrictionAlertType(type);
   if (v3)
   {
     v4 = v3;
-    v5 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v6 = [v5 integerForKey:v4] + 1;
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v6 = [standardUserDefaults integerForKey:v4] + 1;
 
-    [v5 setInteger:v6 forKey:v4];
+    [standardUserDefaults setInteger:v6 forKey:v4];
   }
 }
 

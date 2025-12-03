@@ -9,7 +9,7 @@
   v6 = a3;
   v7 = a4;
   v15 = v6;
-  v8 = [a1 count];
+  v8 = [self count];
   v9 = [v15 count];
   if (v8 <= v9)
   {
@@ -25,14 +25,14 @@
   {
     for (i = 0; i != v10; ++i)
     {
-      if ([a1 count] <= i)
+      if ([self count] <= i)
       {
         v12 = 0;
       }
 
       else
       {
-        v12 = [a1 objectAtIndexedSubscript:i];
+        v12 = [self objectAtIndexedSubscript:i];
       }
 
       if ([v15 count] <= i)

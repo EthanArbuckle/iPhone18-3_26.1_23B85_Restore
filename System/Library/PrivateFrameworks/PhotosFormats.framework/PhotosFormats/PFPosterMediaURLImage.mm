@@ -1,23 +1,23 @@
 @interface PFPosterMediaURLImage
-- (BOOL)isEqual:(id)a3;
-- (PFPosterMediaURLImage)initWithCoder:(id)a3;
-- (PFPosterMediaURLImage)initWithImageAtURL:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PFPosterMediaURLImage)initWithCoder:(id)coder;
+- (PFPosterMediaURLImage)initWithImageAtURL:(id)l;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PFPosterMediaURLImage
 
-- (PFPosterMediaURLImage)initWithCoder:(id)a3
+- (PFPosterMediaURLImage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PFPosterMediaURLImage;
-  v5 = [(PFPosterMedia *)&v9 initWithCoder:v4];
+  v5 = [(PFPosterMedia *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"imageURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"imageURL"];
     imageURL = v5->_imageURL;
     v5->_imageURL = v6;
   }
@@ -25,20 +25,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = PFPosterMediaURLImage;
-  v4 = a3;
-  [(PFPosterMedia *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(PFPosterMedia *)&v6 encodeWithCoder:coderCopy];
   v5 = [(PFPosterMediaURLImage *)self imageURL:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"imageURL"];
+  [coderCopy encodeObject:v5 forKey:@"imageURL"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -48,21 +48,21 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v10.receiver = self;
       v10.super_class = PFPosterMediaURLImage;
       if ([(PFPosterMedia *)&v10 isEqual:v5])
       {
-        v6 = [(PFPosterMediaURLImage *)self imageURL];
-        v7 = [(PFPosterMediaURLImage *)v5 imageURL];
-        if (v6 == v7)
+        imageURL = [(PFPosterMediaURLImage *)self imageURL];
+        imageURL2 = [(PFPosterMediaURLImage *)v5 imageURL];
+        if (imageURL == imageURL2)
         {
           v8 = 1;
         }
 
         else
         {
-          v8 = [v6 isEqual:v7];
+          v8 = [imageURL isEqual:imageURL2];
         }
       }
 
@@ -86,23 +86,23 @@
   v7.receiver = self;
   v7.super_class = PFPosterMediaURLImage;
   v3 = [(PFPosterMedia *)&v7 hash];
-  v4 = [(PFPosterMediaURLImage *)self imageURL];
-  v5 = v3 ^ (2 * [v4 hash]);
+  imageURL = [(PFPosterMediaURLImage *)self imageURL];
+  v5 = v3 ^ (2 * [imageURL hash]);
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [PFPosterMediaURLImage allocWithZone:a3];
+  v4 = [PFPosterMediaURLImage allocWithZone:zone];
   imageURL = self->_imageURL;
 
   return [(PFPosterMediaURLImage *)v4 initWithImageAtURL:imageURL];
 }
 
-- (PFPosterMediaURLImage)initWithImageAtURL:(id)a3
+- (PFPosterMediaURLImage)initWithImageAtURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v8.receiver = self;
   v8.super_class = PFPosterMediaURLImage;
   v5 = [(PFPosterMedia *)&v8 initWithAssetUUID:0];
@@ -110,7 +110,7 @@
   if (v5)
   {
     [(PFPosterMedia *)v5 setMediaType:4];
-    [(PFPosterMediaURLImage *)v6 setImageURL:v4];
+    [(PFPosterMediaURLImage *)v6 setImageURL:lCopy];
   }
 
   return v6;

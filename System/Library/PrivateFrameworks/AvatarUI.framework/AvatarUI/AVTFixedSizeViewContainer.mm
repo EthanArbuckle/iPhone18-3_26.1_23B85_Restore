@@ -1,24 +1,24 @@
 @interface AVTFixedSizeViewContainer
-- (AVTFixedSizeViewContainer)initWithFixedSizeView:(id)a3;
+- (AVTFixedSizeViewContainer)initWithFixedSizeView:(id)view;
 - (void)layoutSubviews;
 @end
 
 @implementation AVTFixedSizeViewContainer
 
-- (AVTFixedSizeViewContainer)initWithFixedSizeView:(id)a3
+- (AVTFixedSizeViewContainer)initWithFixedSizeView:(id)view
 {
-  v5 = a3;
-  [v5 frame];
+  viewCopy = view;
+  [viewCopy frame];
   v9.receiver = self;
   v9.super_class = AVTFixedSizeViewContainer;
   v6 = [(AVTFixedSizeViewContainer *)&v9 initWithFrame:?];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fixedSizeView, a3);
+    objc_storeStrong(&v6->_fixedSizeView, view);
     [(UIView *)v7->_fixedSizeView setAutoresizingMask:0];
     [(UIView *)v7->_fixedSizeView _setSafeAreaInsetsFrozen:1];
-    [(AVTFixedSizeViewContainer *)v7 addSubview:v5];
+    [(AVTFixedSizeViewContainer *)v7 addSubview:viewCopy];
   }
 
   return v7;
@@ -30,25 +30,25 @@
   MidX = CGRectGetMidX(v15);
   [(AVTFixedSizeViewContainer *)self bounds];
   MidY = CGRectGetMidY(v16);
-  v5 = [(AVTFixedSizeViewContainer *)self fixedSizeView];
-  [v5 center];
+  fixedSizeView = [(AVTFixedSizeViewContainer *)self fixedSizeView];
+  [fixedSizeView center];
   v7 = v6;
   v9 = v8;
 
   if (MidX != v7 || MidY != v9)
   {
-    v11 = [(AVTFixedSizeViewContainer *)self fixedSizeView];
-    [v11 setCenter:{MidX, MidY}];
+    fixedSizeView2 = [(AVTFixedSizeViewContainer *)self fixedSizeView];
+    [fixedSizeView2 setCenter:{MidX, MidY}];
   }
 
-  v12 = [(AVTFixedSizeViewContainer *)self fixedSizeView];
-  [v12 bounds];
+  fixedSizeView3 = [(AVTFixedSizeViewContainer *)self fixedSizeView];
+  [fixedSizeView3 bounds];
 
   [(AVTFixedSizeViewContainer *)self bounds];
   _UIScaleTransformForAspectFitOfSizeInTargetSize();
-  v13 = [(AVTFixedSizeViewContainer *)self fixedSizeView];
+  fixedSizeView4 = [(AVTFixedSizeViewContainer *)self fixedSizeView];
   memset(v14, 0, sizeof(v14));
-  [v13 setTransform:v14];
+  [fixedSizeView4 setTransform:v14];
 }
 
 @end

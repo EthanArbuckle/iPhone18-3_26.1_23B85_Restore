@@ -7,18 +7,18 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(AXActivityWidgetHeaderValueView *)self headerView];
-  v3 = [v2 accessibilityLabel];
+  headerView = [(AXActivityWidgetHeaderValueView *)self headerView];
+  accessibilityLabel = [headerView accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (id)accessibilityValue
 {
-  v2 = [(AXActivityWidgetHeaderValueView *)self valueView];
-  v3 = [v2 accessibilityLabel];
+  valueView = [(AXActivityWidgetHeaderValueView *)self valueView];
+  accessibilityLabel = [valueView accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

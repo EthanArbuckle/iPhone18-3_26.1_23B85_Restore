@@ -17,9 +17,9 @@
   v29[2] = *MEMORY[0x1E69E9840];
   v14 = a7;
   v15 = a8;
-  [a1 size];
+  [self size];
   UIGraphicsBeginImageContext(v31);
-  [a1 drawAtPoint:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
+  [self drawAtPoint:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8)}];
   CurrentContext = UIGraphicsGetCurrentContext();
   [v14 setStroke];
   v32.origin.x = a2;
@@ -61,7 +61,7 @@
 
 - (id)px_ASTCCompressedImageWithBlockSize:()PhotosUICore
 {
-  v5 = [a1 CGImage];
+  cGImage = [self CGImage];
   if (PXCreateASTCCompressImage_onceToken != -1)
   {
     dispatch_once(&PXCreateASTCCompressImage_onceToken, &__block_literal_global_103_166385);
@@ -87,7 +87,7 @@
       dispatch_once(&PXCreateASTCCompressImage_onceToken_111, block);
     }
 
-    CGImageDestinationAddImage(v8, v5, PXCreateASTCCompressImage_properties);
+    CGImageDestinationAddImage(v8, cGImage, PXCreateASTCCompressImage_properties);
     v9 = CGImageDestinationFinalize(v8);
     CFRelease(v8);
     if (v9)
@@ -99,8 +99,8 @@
       if (ImageAtIndex)
       {
         v12 = MEMORY[0x1E69DCAB8];
-        [a1 scale];
-        v14 = [v12 imageWithCGImage:ImageAtIndex scale:objc_msgSend(a1 orientation:{"imageOrientation"), v13}];
+        [self scale];
+        v14 = [v12 imageWithCGImage:ImageAtIndex scale:objc_msgSend(self orientation:{"imageOrientation"), v13}];
         CGImageRelease(ImageAtIndex);
         goto LABEL_12;
       }
@@ -131,8 +131,8 @@ LABEL_12:
 
   else
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:a1 file:@"UIImage+PhotosUICore.m" lineNumber:185 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIImage+PhotosUICore.m" lineNumber:185 description:{@"Invalid parameter not satisfying: %@", @"handler"}];
 
     if (!a4)
     {
@@ -162,7 +162,7 @@ LABEL_5:
   v33 = a8;
   v34 = a9;
   v28 = v19;
-  v29 = a1;
+  selfCopy = self;
   v35 = a3;
   v36 = a4;
   v20 = v17;
@@ -188,7 +188,7 @@ LABEL_5:
 
 - (uint64_t)px_drawInRect:()PhotosUICore withContentMode:
 {
-  [a1 size];
+  [self size];
   if (a3)
   {
     if (a3 == 1)
@@ -201,18 +201,18 @@ LABEL_5:
       PXRectWithAspectRatioFillingRect();
     }
 
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"UIImage+PhotosUICore.m" lineNumber:177 description:{@"support for content mode %i not implemented", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIImage+PhotosUICore.m" lineNumber:177 description:{@"support for content mode %i not implemented", a3}];
   }
 
-  return [a1 drawInRect:{a4, a5, a6, a7}];
+  return [self drawInRect:{a4, a5, a6, a7}];
 }
 
 - (id)px_imageByCroppingRect:()PhotosUICore pixelTargetSize:cornerRadius:
 {
-  v15 = [a1 CGImage];
-  Width = CGImageGetWidth(v15);
-  Height = CGImageGetHeight(v15);
+  cGImage = [self CGImage];
+  Width = CGImageGetWidth(cGImage);
+  Height = CGImageGetHeight(cGImage);
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v19 = CGBitmapContextCreate(0, a6, a7, 8uLL, 0, DeviceRGB, 1u);
   CGColorSpaceRelease(DeviceRGB);
@@ -224,9 +224,9 @@ LABEL_5:
   if (a8 > 0.0)
   {
     v20 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:0.0 cornerRadius:{0.0, a6, a7, a8}];
-    v21 = [v20 CGPath];
+    cGPath = [v20 CGPath];
 
-    CGContextAddPath(v19, v21);
+    CGContextAddPath(v19, cGPath);
     CGContextClip(v19);
   }
 
@@ -239,7 +239,7 @@ LABEL_5:
   v28.origin.x = -a2;
   v28.size.width = Width;
   v28.size.height = Height;
-  CGContextDrawImage(v19, v28, v15);
+  CGContextDrawImage(v19, v28, cGImage);
   Image = CGBitmapContextCreateImage(v19);
   CGContextRelease(v19);
   v23 = [MEMORY[0x1E69DCAB8] imageWithCGImage:Image];
@@ -253,7 +253,7 @@ LABEL_5:
   if (a3)
   {
     v4 = a3;
-    [a1 px_pixelSize];
+    [self px_pixelSize];
     [v4 px_pixelSize];
 
     JUMPOUT(0x1A590D220);
@@ -273,7 +273,7 @@ LABEL_5:
   height = v19.height;
   UIGraphicsBeginImageContextWithOptions(v19, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
-  CGContextSetGrayFillColor(CurrentContext, a1, a2);
+  CGContextSetGrayFillColor(CurrentContext, self, a2);
   v20.origin.x = v12;
   v20.origin.y = v13;
   v20.size.width = width;
@@ -311,7 +311,7 @@ LABEL_5:
         block[1] = 3221225472;
         block[2] = __45__UIImage_PhotosUICore__px_playOverlayImage___block_invoke_4;
         block[3] = &__block_descriptor_40_e5_v8__0l;
-        block[4] = a1;
+        block[4] = self;
         if (px_playOverlayImage__onceToken_40 != -1)
         {
           dispatch_once(&px_playOverlayImage__onceToken_40, block);
@@ -355,7 +355,7 @@ LABEL_5:
       v8[1] = 3221225472;
       v8[2] = __45__UIImage_PhotosUICore__px_playOverlayImage___block_invoke_5;
       v8[3] = &__block_descriptor_40_e5_v8__0l;
-      v8[4] = a1;
+      v8[4] = self;
       if (px_playOverlayImage__onceToken_41 != -1)
       {
         dispatch_once(&px_playOverlayImage__onceToken_41, v8);
@@ -392,7 +392,7 @@ LABEL_5:
         v7[1] = 3221225472;
         v7[2] = __45__UIImage_PhotosUICore__px_playOverlayImage___block_invoke_8;
         v7[3] = &__block_descriptor_40_e5_v8__0l;
-        v7[4] = a1;
+        v7[4] = self;
         if (px_playOverlayImage__onceToken_57 != -1)
         {
           dispatch_once(&px_playOverlayImage__onceToken_57, v7);
@@ -405,7 +405,7 @@ LABEL_5:
         v6[1] = 3221225472;
         v6[2] = __45__UIImage_PhotosUICore__px_playOverlayImage___block_invoke_9;
         v6[3] = &__block_descriptor_40_e5_v8__0l;
-        v6[4] = a1;
+        v6[4] = self;
         if (px_playOverlayImage__onceToken_59 != -1)
         {
           dispatch_once(&px_playOverlayImage__onceToken_59, v6);
@@ -429,8 +429,8 @@ LABEL_39:
   v5 = a3;
   v6 = a4;
   v7 = objc_opt_class();
-  v8 = [MEMORY[0x1E696AAE8] px_bundle];
-  v9 = [v7 px_imageNamed:v5 configuration:v6 bundle:v8];
+  px_bundle = [MEMORY[0x1E696AAE8] px_bundle];
+  v9 = [v7 px_imageNamed:v5 configuration:v6 bundle:px_bundle];
 
   if (!v9)
   {

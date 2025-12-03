@@ -1,5 +1,5 @@
 @interface AVMobileGlassVolumeControlsViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySliderVolume;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_handleVolumeControlButtonTap;
@@ -7,17 +7,17 @@
 
 @implementation AVMobileGlassVolumeControlsViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AVMobileGlassVolumeControlsView" hasInstanceVariable:@"_volumeButton" withType:"AVMobileGlassVolumeButtonControl"];
-  [v3 validateClass:@"AVMobileGlassVolumeControlsView" hasInstanceVariable:@"_volumeSlider" withType:"AVMobileChromelessFluidSlider"];
-  [v3 validateClass:@"AVMobileGlassVolumeControlsView" hasInstanceMethod:@"isMuted" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"AVMobileGlassVolumeControlsView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AVMobileGlassVolumeControlsView" hasInstanceMethod:@"volume" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"AVMobileGlassControlsViewController" hasInstanceMethod:@"volumeControlsView:volumeDidChangeTo:" withFullSignature:{"v", "@", "d", 0}];
-  [v3 validateClass:@"AVMobileGlassVolumeControlsView" hasInstanceMethod:@"_setVolume:forUpdateReason:" withFullSignature:{"v", "d", "Q", 0}];
-  [v3 validateClass:@"AVMobileGlassVolumeControlsView" hasInstanceMethod:@"_handleVolumeControlButtonTap" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AVMobileGlassVolumeControlsView" hasInstanceVariable:@"_volumeButton" withType:"AVMobileGlassVolumeButtonControl"];
+  [validationsCopy validateClass:@"AVMobileGlassVolumeControlsView" hasInstanceVariable:@"_volumeSlider" withType:"AVMobileChromelessFluidSlider"];
+  [validationsCopy validateClass:@"AVMobileGlassVolumeControlsView" hasInstanceMethod:@"isMuted" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"AVMobileGlassVolumeControlsView" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AVMobileGlassVolumeControlsView" hasInstanceMethod:@"volume" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"AVMobileGlassControlsViewController" hasInstanceMethod:@"volumeControlsView:volumeDidChangeTo:" withFullSignature:{"v", "@", "d", 0}];
+  [validationsCopy validateClass:@"AVMobileGlassVolumeControlsView" hasInstanceMethod:@"_setVolume:forUpdateReason:" withFullSignature:{"v", "d", "Q", 0}];
+  [validationsCopy validateClass:@"AVMobileGlassVolumeControlsView" hasInstanceMethod:@"_handleVolumeControlButtonTap" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -30,8 +30,8 @@
   v4 = [(AVMobileGlassVolumeControlsViewAccessibility *)self safeValueForKey:@"_volumeSlider"];
   [v4 setIsAccessibilityElementBlock:&__block_literal_global_6];
   [v4 setAccessibilityValueBlock:&__block_literal_global_324];
-  v5 = [v3 accessibilityTraits];
-  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F70] | v5 | *MEMORY[0x29EDC7F60]];
+  accessibilityTraits = [v3 accessibilityTraits];
+  [v3 setAccessibilityTraits:*MEMORY[0x29EDC7F70] | accessibilityTraits | *MEMORY[0x29EDC7F60]];
   [v3 _setAccessibilityLabelBlock:&__block_literal_global_326];
   v10[0] = MEMORY[0x29EDCA5F8];
   v10[1] = 3221225472;
@@ -107,9 +107,9 @@ void __90__AVMobileGlassVolumeControlsViewAccessibility__accessibilityLoadAccess
 - (id)_accessibilitySliderVolume
 {
   v3 = [(AVMobileGlassVolumeControlsViewAccessibility *)self safeValueForKey:@"_volumeSlider"];
-  v4 = [v3 accessibilityUserDefinedValue];
+  accessibilityUserDefinedValue = [v3 accessibilityUserDefinedValue];
 
-  if (v4)
+  if (accessibilityUserDefinedValue)
   {
     [v3 accessibilityUserDefinedValue];
   }

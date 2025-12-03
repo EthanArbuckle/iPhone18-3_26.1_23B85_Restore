@@ -1,44 +1,44 @@
 @interface HMDAppleMediaAccessoryModel
 + (id)properties;
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5;
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info;
 @end
 
 @implementation HMDAppleMediaAccessoryModel
 
-- (id)cd_generateValueForModelObjectFromManagedObject:(id)a3 modelObjectField:(id)a4 modelFieldInfo:(id)a5
+- (id)cd_generateValueForModelObjectFromManagedObject:(id)object modelObjectField:(id)field modelFieldInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqual:@"deviceUUID"])
+  objectCopy = object;
+  fieldCopy = field;
+  infoCopy = info;
+  if ([fieldCopy isEqual:@"deviceUUID"])
   {
-    v11 = [v8 device];
-    v12 = [v11 identifier];
-    v13 = [v12 UUIDString];
-    v14 = v13;
+    device = [objectCopy device];
+    identifier = [device identifier];
+    uUIDString = [identifier UUIDString];
+    v12Identifier = uUIDString;
     v15 = *MEMORY[0x277CBEEE8];
-    if (v13)
+    if (uUIDString)
     {
-      v15 = v13;
+      v15 = uUIDString;
     }
 
     v16 = v15;
     goto LABEL_8;
   }
 
-  if ([v9 isEqual:@"device"])
+  if ([fieldCopy isEqual:@"device"])
   {
-    v17 = [v8 device];
-    v18 = [v17 identifier];
+    device2 = [objectCopy device];
+    identifier2 = [device2 identifier];
 
-    if (v18)
+    if (identifier2)
     {
-      v11 = +[HMDAccountRegistry sharedRegistry];
-      v12 = [v8 device];
-      v14 = [v12 identifier];
-      v16 = [v11 deviceForIdentifier:v14];
+      device = +[HMDAccountRegistry sharedRegistry];
+      identifier = [objectCopy device];
+      v12Identifier = [identifier identifier];
+      v16 = [device deviceForIdentifier:v12Identifier];
 LABEL_8:
-      v19 = v16;
+      idsIdentifier = v16;
 
 LABEL_9:
       goto LABEL_10;
@@ -47,36 +47,36 @@ LABEL_9:
 
   else
   {
-    if (![v9 isEqual:@"deviceAddress"])
+    if (![fieldCopy isEqual:@"deviceAddress"])
     {
       v23.receiver = self;
       v23.super_class = HMDAppleMediaAccessoryModel;
-      v19 = [(HMDAccessoryTransaction *)&v23 cd_generateValueForModelObjectFromManagedObject:v8 modelObjectField:v9 modelFieldInfo:v10];
+      idsIdentifier = [(HMDAccessoryTransaction *)&v23 cd_generateValueForModelObjectFromManagedObject:objectCopy modelObjectField:fieldCopy modelFieldInfo:infoCopy];
       goto LABEL_10;
     }
 
-    v19 = [v8 idsIdentifier];
-    if (!v19)
+    idsIdentifier = [objectCopy idsIdentifier];
+    if (!idsIdentifier)
     {
       goto LABEL_10;
     }
 
-    v21 = [v8 idsDestination];
+    idsDestination = [objectCopy idsDestination];
 
-    if (v21)
+    if (idsDestination)
     {
       v22 = [HMDDeviceAddress alloc];
-      v11 = [v8 idsIdentifier];
-      v12 = [v8 idsDestination];
-      v19 = [(HMDDeviceAddress *)v22 initWithIDSIdentifier:v11 idsDestination:v12];
+      device = [objectCopy idsIdentifier];
+      identifier = [objectCopy idsDestination];
+      idsIdentifier = [(HMDDeviceAddress *)v22 initWithIDSIdentifier:device idsDestination:identifier];
       goto LABEL_9;
     }
   }
 
-  v19 = 0;
+  idsIdentifier = 0;
 LABEL_10:
 
-  return v19;
+  return idsIdentifier;
 }
 
 + (id)properties
@@ -85,7 +85,7 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __41__HMDAppleMediaAccessoryModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_142258 != -1)
   {
     dispatch_once(&properties_onceToken_142258, block);

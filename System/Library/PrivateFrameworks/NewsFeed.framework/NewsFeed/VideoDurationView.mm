@@ -1,12 +1,12 @@
 @interface VideoDurationView
 - (CGSize)intrinsicContentSize;
-- (_TtC8NewsFeed17VideoDurationView)initWithCoder:(id)a3;
+- (_TtC8NewsFeed17VideoDurationView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation VideoDurationView
 
-- (_TtC8NewsFeed17VideoDurationView)initWithCoder:(id)a3
+- (_TtC8NewsFeed17VideoDurationView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC8NewsFeed17VideoDurationView_label;
   *(&self->super.super.super.isa + v3) = [objc_allocWithZone(MEMORY[0x1E69DCC10]) initWithFrame_];
@@ -30,12 +30,12 @@
 {
   v3 = OBJC_IVAR____TtC8NewsFeed17VideoDurationView_label;
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC8NewsFeed17VideoDurationView_label);
-  v5 = self;
-  v6 = [v4 font];
-  if (v6)
+  selfCopy = self;
+  font = [v4 font];
+  if (font)
   {
-    v9 = v6;
-    [v6 capHeight];
+    v9 = font;
+    [font capHeight];
     v11 = v10;
 
     [*(&self->super.super.super.isa + v3) intrinsicContentSize];

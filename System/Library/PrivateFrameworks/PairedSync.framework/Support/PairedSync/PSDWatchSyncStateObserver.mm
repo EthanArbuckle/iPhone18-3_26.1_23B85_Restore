@@ -1,13 +1,13 @@
 @interface PSDWatchSyncStateObserver
 + (id)pairdSyncStateDomainKey;
 - (PSDWatchSyncStateObserver)init;
-- (id)_watchSyncClientStateFromSyncSession:(id)a3;
-- (id)_watchSyncStateFromSyncSession:(id)a3;
-- (unint64_t)_watchSyncProgressStateFromSyncSession:(id)a3;
-- (void)_updateStateWithSyncSession:(id)a3;
-- (void)_updateWithSyncState:(id)a3 andSyncClientState:(id)a4;
+- (id)_watchSyncClientStateFromSyncSession:(id)session;
+- (id)_watchSyncStateFromSyncSession:(id)session;
+- (unint64_t)_watchSyncProgressStateFromSyncSession:(id)session;
+- (void)_updateStateWithSyncSession:(id)session;
+- (void)_updateWithSyncState:(id)state andSyncClientState:(id)clientState;
 - (void)dealloc;
-- (void)scheduler:(id)a3 didUpdateSyncSessionWithUpdate:(id)a4;
+- (void)scheduler:(id)scheduler didUpdateSyncSessionWithUpdate:(id)update;
 @end
 
 @implementation PSDWatchSyncStateObserver
@@ -61,15 +61,15 @@
   return v3;
 }
 
-- (void)_updateWithSyncState:(id)a3 andSyncClientState:(id)a4
+- (void)_updateWithSyncState:(id)state andSyncClientState:(id)clientState
 {
-  v15 = a3;
-  v7 = a4;
-  if (([v15 isEqual:self->_syncState] & 1) == 0 && (v15 || self->_syncState))
+  stateCopy = state;
+  clientStateCopy = clientState;
+  if (([stateCopy isEqual:self->_syncState] & 1) == 0 && (stateCopy || self->_syncState))
   {
-    objc_storeStrong(&self->_syncState, a3);
-    v9 = [(PSYWatchSyncState *)self->_syncState plistRepresentation];
-    [(NPSDomainAccessor *)self->_domainAccessor setObject:v9 forKey:@"PSYWatchSyncState"];
+    objc_storeStrong(&self->_syncState, state);
+    plistRepresentation = [(PSYWatchSyncState *)self->_syncState plistRepresentation];
+    [(NPSDomainAccessor *)self->_domainAccessor setObject:plistRepresentation forKey:@"PSYWatchSyncState"];
 
     v8 = 1;
   }
@@ -79,11 +79,11 @@
     v8 = 0;
   }
 
-  if (([v7 isEqual:self->_syncClientState] & 1) == 0 && (v7 || self->_syncClientState))
+  if (([clientStateCopy isEqual:self->_syncClientState] & 1) == 0 && (clientStateCopy || self->_syncClientState))
   {
-    objc_storeStrong(&self->_syncClientState, a4);
-    v10 = [(PSYWatchSyncClientState *)self->_syncClientState plistRepresentation];
-    [(NPSDomainAccessor *)self->_domainAccessor setObject:v10 forKey:@"PSYWatchSyncClientState"];
+    objc_storeStrong(&self->_syncClientState, clientState);
+    plistRepresentation2 = [(PSYWatchSyncClientState *)self->_syncClientState plistRepresentation];
+    [(NPSDomainAccessor *)self->_domainAccessor setObject:plistRepresentation2 forKey:@"PSYWatchSyncClientState"];
 
     goto LABEL_12;
   }
@@ -91,20 +91,20 @@
   if (v8)
   {
 LABEL_12:
-    v11 = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
+    synchronize = [(NPSDomainAccessor *)self->_domainAccessor synchronize];
     preferencesManager = self->_preferencesManager;
-    v13 = [(NPSDomainAccessor *)self->_domainAccessor domain];
-    v14 = [objc_opt_class() pairdSyncStateDomainKey];
-    [(NPSManager *)preferencesManager synchronizeNanoDomain:v13 keys:v14];
+    domain = [(NPSDomainAccessor *)self->_domainAccessor domain];
+    pairdSyncStateDomainKey = [objc_opt_class() pairdSyncStateDomainKey];
+    [(NPSManager *)preferencesManager synchronizeNanoDomain:domain keys:pairdSyncStateDomainKey];
   }
 }
 
-- (unint64_t)_watchSyncProgressStateFromSyncSession:(id)a3
+- (unint64_t)_watchSyncProgressStateFromSyncSession:(id)session
 {
-  v3 = [a3 syncSessionState];
-  if (v3 < 3)
+  syncSessionState = [session syncSessionState];
+  if (syncSessionState < 3)
   {
-    return v3 + 1;
+    return syncSessionState + 1;
   }
 
   else
@@ -113,22 +113,22 @@ LABEL_12:
   }
 }
 
-- (id)_watchSyncStateFromSyncSession:(id)a3
+- (id)_watchSyncStateFromSyncSession:(id)session
 {
-  v4 = a3;
-  if ([v4 syncSessionType] && objc_msgSend(v4, "syncSessionType") != 2)
+  sessionCopy = session;
+  if ([sessionCopy syncSessionType] && objc_msgSend(sessionCopy, "syncSessionType") != 2)
   {
     v12 = [[PSYWatchSyncState alloc] initWithActivityLabel:0 globalProgress:100 syncProgressState:3];
   }
 
   else
   {
-    v5 = [v4 firstIncompleteActivity];
-    v6 = [v5 activityInfo];
-    v7 = [v6 label];
+    firstIncompleteActivity = [sessionCopy firstIncompleteActivity];
+    activityInfo = [firstIncompleteActivity activityInfo];
+    label = [activityInfo label];
 
-    v8 = [(PSDWatchSyncStateObserver *)self _watchSyncProgressStateFromSyncSession:v4];
-    [v4 sessionProgress];
+    v8 = [(PSDWatchSyncStateObserver *)self _watchSyncProgressStateFromSyncSession:sessionCopy];
+    [sessionCopy sessionProgress];
     v10 = vcvtad_u64_f64(v9 * 100.0);
     if (v8 == 3)
     {
@@ -140,29 +140,29 @@ LABEL_12:
       v11 = v10;
     }
 
-    v12 = [[PSYWatchSyncState alloc] initWithActivityLabel:v7 globalProgress:v11 syncProgressState:v8];
+    v12 = [[PSYWatchSyncState alloc] initWithActivityLabel:label globalProgress:v11 syncProgressState:v8];
   }
 
   return v12;
 }
 
-- (id)_watchSyncClientStateFromSyncSession:(id)a3
+- (id)_watchSyncClientStateFromSyncSession:(id)session
 {
-  v4 = a3;
-  v5 = [(PSDWatchSyncStateObserver *)self _watchSyncProgressStateFromSyncSession:v4];
-  v6 = [(PSDWatchSyncStateObserver *)self _watchSyncSessionTypeFromSyncSession:v4];
-  v7 = [v4 syncSessionType];
+  sessionCopy = session;
+  v5 = [(PSDWatchSyncStateObserver *)self _watchSyncProgressStateFromSyncSession:sessionCopy];
+  v6 = [(PSDWatchSyncStateObserver *)self _watchSyncSessionTypeFromSyncSession:sessionCopy];
+  syncSessionType = [sessionCopy syncSessionType];
   if (v5 == 2)
   {
-    v30 = v7;
+    v30 = syncSessionType;
     v31 = v6;
-    v8 = [v4 runningActivities];
+    runningActivities = [sessionCopy runningActivities];
     v9 = objc_alloc_init(NSMutableArray);
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
     v39 = 0u;
-    v10 = v8;
+    v10 = runningActivities;
     v11 = [v10 countByEnumeratingWithState:&v36 objects:v41 count:16];
     if (v11)
     {
@@ -178,14 +178,14 @@ LABEL_12:
           }
 
           v15 = *(*(&v36 + 1) + 8 * i);
-          v16 = [v15 activityInfo];
-          v17 = [v16 label];
+          activityInfo = [v15 activityInfo];
+          label = [activityInfo label];
 
-          if (v17)
+          if (label)
           {
-            v18 = [v15 activityInfo];
-            v19 = [v18 label];
-            [v9 addObject:v19];
+            activityInfo2 = [v15 activityInfo];
+            label2 = [activityInfo2 label];
+            [v9 addObject:label2];
           }
         }
 
@@ -200,8 +200,8 @@ LABEL_12:
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v21 = [v4 completedActivities];
-    v22 = [v21 countByEnumeratingWithState:&v32 objects:v40 count:16];
+    completedActivities = [sessionCopy completedActivities];
+    v22 = [completedActivities countByEnumeratingWithState:&v32 objects:v40 count:16];
     if (v22)
     {
       v23 = v22;
@@ -212,15 +212,15 @@ LABEL_12:
         {
           if (*v33 != v24)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(completedActivities);
           }
 
-          v26 = [*(*(&v32 + 1) + 8 * j) activityInfo];
-          v27 = [v26 label];
-          [v20 addObject:v27];
+          activityInfo3 = [*(*(&v32 + 1) + 8 * j) activityInfo];
+          label3 = [activityInfo3 label];
+          [v20 addObject:label3];
         }
 
-        v23 = [v21 countByEnumeratingWithState:&v32 objects:v40 count:16];
+        v23 = [completedActivities countByEnumeratingWithState:&v32 objects:v40 count:16];
       }
 
       while (v23);
@@ -231,25 +231,25 @@ LABEL_12:
 
   else
   {
-    v28 = [[PSYWatchSyncClientState alloc] initWithSyncSessionState:v5 syncSessionType:v6 migrationSync:v7 == 2 activities:0 completedActivities:0];
+    v28 = [[PSYWatchSyncClientState alloc] initWithSyncSessionState:v5 syncSessionType:v6 migrationSync:syncSessionType == 2 activities:0 completedActivities:0];
   }
 
   return v28;
 }
 
-- (void)_updateStateWithSyncSession:(id)a3
+- (void)_updateStateWithSyncSession:(id)session
 {
-  v4 = a3;
-  v6 = [(PSDWatchSyncStateObserver *)self _watchSyncStateFromSyncSession:v4];
-  v5 = [(PSDWatchSyncStateObserver *)self _watchSyncClientStateFromSyncSession:v4];
+  sessionCopy = session;
+  v6 = [(PSDWatchSyncStateObserver *)self _watchSyncStateFromSyncSession:sessionCopy];
+  v5 = [(PSDWatchSyncStateObserver *)self _watchSyncClientStateFromSyncSession:sessionCopy];
 
   [(PSDWatchSyncStateObserver *)self _updateWithSyncState:v6 andSyncClientState:v5];
 }
 
-- (void)scheduler:(id)a3 didUpdateSyncSessionWithUpdate:(id)a4
+- (void)scheduler:(id)scheduler didUpdateSyncSessionWithUpdate:(id)update
 {
-  v5 = [a4 updatedSession];
-  [(PSDWatchSyncStateObserver *)self _updateStateWithSyncSession:v5];
+  updatedSession = [update updatedSession];
+  [(PSDWatchSyncStateObserver *)self _updateStateWithSyncSession:updatedSession];
 }
 
 @end

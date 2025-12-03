@@ -1,40 +1,40 @@
 @interface PFCameraMetadataSerialization
-+ (id)deserializedMetadataFromCameraClientMetadata:(id)a3 error:(id *)a4;
-+ (id)deserializedMetadataFromData:(id)a3 error:(id *)a4;
-+ (id)deserializedMetadataFromPrivateClientMetadata:(id)a3 error:(id *)a4;
-+ (id)serializedDataFromClientMetadata:(id)a3 contactIDsInProximity:(id)a4 sharedLibraryMode:(int64_t)a5 error:(id *)a6;
-+ (id)serializedDataFromClientMetadata:(id)a3 error:(id *)a4;
++ (id)deserializedMetadataFromCameraClientMetadata:(id)metadata error:(id *)error;
++ (id)deserializedMetadataFromData:(id)data error:(id *)error;
++ (id)deserializedMetadataFromPrivateClientMetadata:(id)metadata error:(id *)error;
++ (id)serializedDataFromClientMetadata:(id)metadata contactIDsInProximity:(id)proximity sharedLibraryMode:(int64_t)mode error:(id *)error;
++ (id)serializedDataFromClientMetadata:(id)metadata error:(id *)error;
 @end
 
 @implementation PFCameraMetadataSerialization
 
-+ (id)serializedDataFromClientMetadata:(id)a3 contactIDsInProximity:(id)a4 sharedLibraryMode:(int64_t)a5 error:(id *)a6
++ (id)serializedDataFromClientMetadata:(id)metadata contactIDsInProximity:(id)proximity sharedLibraryMode:(int64_t)mode error:(id *)error
 {
-  v10 = a4;
-  v11 = a3;
-  v12 = [[PFCameraClientMetadata alloc] initWithPrivateClientMetadata:v11 contactIDsInProximity:v10 sharedLibraryMode:a5];
+  proximityCopy = proximity;
+  metadataCopy = metadata;
+  v12 = [[PFCameraClientMetadata alloc] initWithPrivateClientMetadata:metadataCopy contactIDsInProximity:proximityCopy sharedLibraryMode:mode];
 
-  v13 = [a1 serializedDataFromCameraClientMetadata:v12 error:a6];
+  v13 = [self serializedDataFromCameraClientMetadata:v12 error:error];
 
   return v13;
 }
 
-+ (id)serializedDataFromClientMetadata:(id)a3 error:(id *)a4
++ (id)serializedDataFromClientMetadata:(id)metadata error:(id *)error
 {
-  v6 = a3;
-  v7 = [[PFCameraClientMetadata alloc] initWithPrivateClientMetadata:v6 contactIDsInProximity:0 sharedLibraryMode:0];
+  metadataCopy = metadata;
+  v7 = [[PFCameraClientMetadata alloc] initWithPrivateClientMetadata:metadataCopy contactIDsInProximity:0 sharedLibraryMode:0];
 
-  v8 = [a1 serializedDataFromCameraClientMetadata:v7 error:a4];
+  v8 = [self serializedDataFromCameraClientMetadata:v7 error:error];
 
   return v8;
 }
 
-+ (id)deserializedMetadataFromCameraClientMetadata:(id)a3 error:(id *)a4
++ (id)deserializedMetadataFromCameraClientMetadata:(id)metadata error:(id *)error
 {
   v149 = *MEMORY[0x1E69E9840];
-  v84 = a3;
-  v88 = [v84 privateClientMetadata];
-  v90 = [v88 inferenceAttachments];
+  metadataCopy = metadata;
+  privateClientMetadata = [metadataCopy privateClientMetadata];
+  inferenceAttachments = [privateClientMetadata inferenceAttachments];
   v4 = MEMORY[0x1E695DFD8];
   v5 = objc_opt_class();
   v6 = objc_opt_class();
@@ -67,8 +67,8 @@
   VNObservationClass = getVNObservationClass();
   VNRecognizedObjectObservationClass = getVNRecognizedObjectObservationClass();
   v85 = [v105 setWithObjects:{v108, v6, v7, v8, v9, VNClassificationObservationClass, v11, VNSaliencyImageObservationClass, VNSceneObservationClass, VNObservationClass, VNRecognizedObjectObservationClass, getVNFaceObservationClass(), 0}];
-  v83 = [v90 objectForKeyedSubscript:*MEMORY[0x1E6986A10]];
-  if (v83 && !*a4)
+  v83 = [inferenceAttachments objectForKeyedSubscript:*MEMORY[0x1E6986A10]];
+  if (v83 && !*error)
   {
     v70 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v85 fromData:v83 error:?];
   }
@@ -78,8 +78,8 @@
     v70 = 0;
   }
 
-  v82 = [v90 objectForKeyedSubscript:*MEMORY[0x1E69869F0]];
-  if (v82 && !*a4)
+  v82 = [inferenceAttachments objectForKeyedSubscript:*MEMORY[0x1E69869F0]];
+  if (v82 && !*error)
   {
     v17 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v85 fromData:v82 error:?];
   }
@@ -90,9 +90,9 @@
   }
 
   v68 = v17;
-  v72 = [v17 firstObject];
-  v81 = [v90 objectForKeyedSubscript:*MEMORY[0x1E6986A20]];
-  if (v81 && !*a4)
+  firstObject = [v17 firstObject];
+  v81 = [inferenceAttachments objectForKeyedSubscript:*MEMORY[0x1E6986A20]];
+  if (v81 && !*error)
   {
     v71 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v85 fromData:v81 error:?];
   }
@@ -102,8 +102,8 @@
     v71 = 0;
   }
 
-  v80 = [v90 objectForKeyedSubscript:*MEMORY[0x1E69869F8]];
-  if (v80 && !*a4)
+  v80 = [inferenceAttachments objectForKeyedSubscript:*MEMORY[0x1E69869F8]];
+  if (v80 && !*error)
   {
     v73 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v85 fromData:v80 error:?];
   }
@@ -113,8 +113,8 @@
     v73 = 0;
   }
 
-  v79 = [v90 objectForKeyedSubscript:*MEMORY[0x1E69869D0]];
-  if (v79 && !*a4)
+  v79 = [inferenceAttachments objectForKeyedSubscript:*MEMORY[0x1E69869D0]];
+  if (v79 && !*error)
   {
     v76 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v85 fromData:v79 error:?];
   }
@@ -124,8 +124,8 @@
     v76 = 0;
   }
 
-  v78 = [v90 objectForKeyedSubscript:*MEMORY[0x1E69869C8]];
-  if (v78 && !*a4)
+  v78 = [inferenceAttachments objectForKeyedSubscript:*MEMORY[0x1E69869C8]];
+  if (v78 && !*error)
   {
     v18 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v85 fromData:v78 error:?];
   }
@@ -146,8 +146,8 @@
   v74 = v19;
   v136 = v74;
   [v76 enumerateObjectsUsingBlock:v134];
-  v77 = [v90 objectForKeyedSubscript:*MEMORY[0x1E6986A00]];
-  if (v77 && !*a4)
+  v77 = [inferenceAttachments objectForKeyedSubscript:*MEMORY[0x1E6986A00]];
+  if (v77 && !*error)
   {
     v75 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v85 fromData:v77 error:?];
   }
@@ -164,7 +164,7 @@
   v109 = objc_opt_new();
   if (objc_opt_respondsToSelector())
   {
-    obj = [v88 detectedObjectInfo];
+    obj = [privateClientMetadata detectedObjectInfo];
     if (obj)
     {
       v132 = 0u;
@@ -373,18 +373,18 @@ LABEL_83:
 
   if (objc_opt_respondsToSelector())
   {
-    v99 = [v88 spatialOverCaptureImageStitchingConfidenceScore];
+    spatialOverCaptureImageStitchingConfidenceScore = [privateClientMetadata spatialOverCaptureImageStitchingConfidenceScore];
   }
 
   else
   {
-    v99 = 0;
+    spatialOverCaptureImageStitchingConfidenceScore = 0;
   }
 
   v53 = 0;
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v88 spatialOverCaptureImageHorizonLinePresent])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [privateClientMetadata spatialOverCaptureImageHorizonLinePresent])
   {
-    [v88 spatialOverCaptureImageHorizonLineAngleInDegrees];
+    [privateClientMetadata spatialOverCaptureImageHorizonLineAngleInDegrees];
     v53 = v54;
     v97 = 1;
   }
@@ -394,9 +394,9 @@ LABEL_83:
     v97 = 0;
   }
 
-  obja = [v90 objectForKeyedSubscript:*MEMORY[0x1E69869D8]];
-  v107 = [v90 objectForKeyedSubscript:*MEMORY[0x1E6986A08]];
-  if (v107 && !*a4)
+  obja = [inferenceAttachments objectForKeyedSubscript:*MEMORY[0x1E69869D8]];
+  v107 = [inferenceAttachments objectForKeyedSubscript:*MEMORY[0x1E6986A08]];
+  if (v107 && !*error)
   {
     v55 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v85 fromData:v107 error:?];
   }
@@ -407,9 +407,9 @@ LABEL_83:
   }
 
   v56 = v55;
-  v104 = [v55 firstObject];
-  v57 = [v90 objectForKeyedSubscript:*MEMORY[0x1E6986A18]];
-  if (v57 && !*a4)
+  firstObject2 = [v55 firstObject];
+  v57 = [inferenceAttachments objectForKeyedSubscript:*MEMORY[0x1E6986A18]];
+  if (v57 && !*error)
   {
     v58 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClasses:v85 fromData:v57 error:?];
   }
@@ -419,23 +419,23 @@ LABEL_83:
     v58 = 0;
   }
 
-  v59 = [v58 firstObject];
-  v60 = [v84 contactIDsInProximity];
-  v61 = [v84 sharedLibraryMode];
-  if (*a4)
+  firstObject3 = [v58 firstObject];
+  contactIDsInProximity = [metadataCopy contactIDsInProximity];
+  sharedLibraryMode = [metadataCopy sharedLibraryMode];
+  if (*error)
   {
     v100 = 0;
   }
 
   else
   {
-    v62 = v61;
+    v62 = sharedLibraryMode;
     v95 = [PFCameraMetadata alloc];
-    [v88 captureFolderClientPath];
+    [privateClientMetadata captureFolderClientPath];
     v67 = v62;
     v63 = LOBYTE(v66) = v97;
     LODWORD(v64) = v53;
-    v100 = [(PFCameraMetadata *)v95 initWithJunkImageClassificationObservations:v70 imageAestheticsObservation:v72 saliencyObservation:v104 scenePrintObservation:v59 detectedObjectsInfoHumanFaces:v20 detectedObjectsInfoHumanBodies:v21 detectedObjectsInfoCatBodies:v64 detectedObjectsInfoDogBodies:v22 detectedObjectsSalientObjects:v23 smartCamInfo:v109 stitchConfidence:obja horizonLinePresent:v99 horizonLineAngleInDegrees:v66 captureFolderPath:v63 semanticDevelopmentGatingObservations:v71 faceObservations:v73 torsoprints:v74 foodAndDrinkObservations:v75 semanticEnhanceScene:0 contactIDsInProximity:v60 sharedLibraryMode:v67];
+    v100 = [(PFCameraMetadata *)v95 initWithJunkImageClassificationObservations:v70 imageAestheticsObservation:firstObject saliencyObservation:firstObject2 scenePrintObservation:firstObject3 detectedObjectsInfoHumanFaces:v20 detectedObjectsInfoHumanBodies:v21 detectedObjectsInfoCatBodies:v64 detectedObjectsInfoDogBodies:v22 detectedObjectsSalientObjects:v23 smartCamInfo:v109 stitchConfidence:obja horizonLinePresent:spatialOverCaptureImageStitchingConfidenceScore horizonLineAngleInDegrees:v66 captureFolderPath:v63 semanticDevelopmentGatingObservations:v71 faceObservations:v73 torsoprints:v74 foodAndDrinkObservations:v75 semanticEnhanceScene:0 contactIDsInProximity:contactIDsInProximity sharedLibraryMode:v67];
   }
 
   return v100;
@@ -512,26 +512,26 @@ LABEL_8:
   [v18 addObject:v17];
 }
 
-+ (id)deserializedMetadataFromPrivateClientMetadata:(id)a3 error:(id *)a4
++ (id)deserializedMetadataFromPrivateClientMetadata:(id)metadata error:(id *)error
 {
-  v6 = a3;
-  v7 = [[PFCameraClientMetadata alloc] initWithPrivateClientMetadata:v6 contactIDsInProximity:0 sharedLibraryMode:0];
+  metadataCopy = metadata;
+  v7 = [[PFCameraClientMetadata alloc] initWithPrivateClientMetadata:metadataCopy contactIDsInProximity:0 sharedLibraryMode:0];
 
-  v8 = [a1 deserializedMetadataFromCameraClientMetadata:v7 error:a4];
+  v8 = [self deserializedMetadataFromCameraClientMetadata:v7 error:error];
 
   return v8;
 }
 
-+ (id)deserializedMetadataFromData:(id)a3 error:(id *)a4
++ (id)deserializedMetadataFromData:(id)data error:(id *)error
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  dataCopy = data;
   v14 = 0;
-  v6 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:&v14];
+  v6 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v14];
   v7 = v14;
   if (v6)
   {
-    v8 = [objc_opt_class() deserializedMetadataFromCameraClientMetadata:v6 error:a4];
+    v8 = [objc_opt_class() deserializedMetadataFromCameraClientMetadata:v6 error:error];
     v9 = v7;
     goto LABEL_13;
   }
@@ -546,7 +546,7 @@ LABEL_8:
   }
 
   v13 = v7;
-  v10 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:v5 error:&v13];
+  v10 = [MEMORY[0x1E696ACD0] unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v13];
   v9 = v13;
 
   if (!v10)
@@ -558,18 +558,18 @@ LABEL_8:
       v17 = 2112;
       v18 = v9;
       _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%s: Unable to deserialize legacy camera metadata: %@.", buf, 0x16u);
-      if (a4)
+      if (error)
       {
         goto LABEL_9;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
 LABEL_9:
       v11 = v9;
       v8 = 0;
-      *a4 = v9;
+      *error = v9;
       goto LABEL_12;
     }
 
@@ -577,7 +577,7 @@ LABEL_9:
     goto LABEL_12;
   }
 
-  v8 = [objc_opt_class() deserializedMetadataFromPrivateClientMetadata:v10 error:a4];
+  v8 = [objc_opt_class() deserializedMetadataFromPrivateClientMetadata:v10 error:error];
 LABEL_12:
 
 LABEL_13:

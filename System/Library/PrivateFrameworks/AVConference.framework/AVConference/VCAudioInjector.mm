@@ -1,34 +1,34 @@
 @interface VCAudioInjector
-+ (AudioStreamBasicDescription)internalAssetFormatWithFileFormat:(SEL)a3;
-+ (BOOL)isAudioAvailable:(id)a3 fileName:(id)a4;
-+ (id)defaultAudioFileNameWithFormat:(const AudioStreamBasicDescription *)a3;
++ (AudioStreamBasicDescription)internalAssetFormatWithFileFormat:(SEL)format;
++ (BOOL)isAudioAvailable:(id)available fileName:(id)name;
++ (id)defaultAudioFileNameWithFormat:(const AudioStreamBasicDescription *)format;
 + (id)defaultReaderOutputSettings;
-+ (int)setupReader:(id)a3 forAsset:(id)a4 assetAudioFormat:(AudioStreamBasicDescription *)a5 trackOutput:(id *)a6;
-- (BOOL)setupAssetInjectionWithConfig:(id)a3;
-- (VCAudioInjector)initWithConfig:(id)a3;
++ (int)setupReader:(id)reader forAsset:(id)asset assetAudioFormat:(AudioStreamBasicDescription *)format trackOutput:(id *)output;
+- (BOOL)setupAssetInjectionWithConfig:(id)config;
+- (VCAudioInjector)initWithConfig:(id)config;
 - (id)description;
-- (int)allocateSampleBufferWithTrackOutput:(id)a3 assetAudioFormat:(const AudioStreamBasicDescription *)a4 sampleBuffer:(opaqueVCAudioBufferList *)a5;
+- (int)allocateSampleBufferWithTrackOutput:(id)output assetAudioFormat:(const AudioStreamBasicDescription *)format sampleBuffer:(opaqueVCAudioBufferList *)buffer;
 - (int)loadAudioSamples;
 - (int)loadEncodedAudioSamples;
 - (int)loadRawAudioSamples;
-- (int)loadSamplesFromTrackOutput:(id)a3 audioConverter:(OpaqueAudioConverter *)a4 audioBuffer:(opaqueVCAudioBufferList *)a5;
-- (int)processSampleBuffer:(opaqueCMSampleBuffer *)a3 audioConverter:(OpaqueAudioConverter *)a4 audioBuffer:(opaqueVCAudioBufferList *)a5;
-- (int)setupAVSyncWithStartHostTime:(double)a3 loopLength:(double)a4;
-- (int)setupAudioConverterWithAssetFormat:(const AudioStreamBasicDescription *)a3 audioConverter:(OpaqueAudioConverter *)a4;
-- (int)setupSineInjectionWithConfig:(id)a3;
+- (int)loadSamplesFromTrackOutput:(id)output audioConverter:(OpaqueAudioConverter *)converter audioBuffer:(opaqueVCAudioBufferList *)buffer;
+- (int)processSampleBuffer:(opaqueCMSampleBuffer *)buffer audioConverter:(OpaqueAudioConverter *)converter audioBuffer:(opaqueVCAudioBufferList *)audioBuffer;
+- (int)setupAVSyncWithStartHostTime:(double)time loopLength:(double)length;
+- (int)setupAudioConverterWithAssetFormat:(const AudioStreamBasicDescription *)format audioConverter:(OpaqueAudioConverter *)converter;
+- (int)setupSineInjectionWithConfig:(id)config;
 - (void)cleanupAudioConverterProc;
-- (void)completeSetupWithSampleBuffer:(opaqueVCAudioBufferList *)a3;
+- (void)completeSetupWithSampleBuffer:(opaqueVCAudioBufferList *)buffer;
 - (void)dealloc;
 - (void)loadEncodedAudioSamples;
 - (void)loadRawAudioSamples;
-- (void)parseMediaTracksForAsset:(id)a3;
-- (void)reportInjectorInitWithPath:(id)a3;
-- (void)setAudioConverterProcAudioBufferList:(const AudioBufferList *)a3 blockBuffer:(OpaqueCMBlockBuffer *)a4;
+- (void)parseMediaTracksForAsset:(id)asset;
+- (void)reportInjectorInitWithPath:(id)path;
+- (void)setAudioConverterProcAudioBufferList:(const AudioBufferList *)list blockBuffer:(OpaqueCMBlockBuffer *)buffer;
 @end
 
 @implementation VCAudioInjector
 
-- (VCAudioInjector)initWithConfig:(id)a3
+- (VCAudioInjector)initWithConfig:(id)config
 {
   v24 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
@@ -52,7 +52,7 @@
           *&buf[22] = 1024;
           *&buf[24] = 121;
           *&buf[28] = 2112;
-          *&buf[30] = a3;
+          *&buf[30] = config;
           v9 = " [%s] %s:%d Loading audio: config=%@";
           v10 = v8;
           v11 = 38;
@@ -91,7 +91,7 @@ LABEL_12:
           *&buf[38] = 2048;
           v21 = v4;
           v22 = 2112;
-          v23 = a3;
+          configCopy = config;
           v9 = " [%s] %s:%d %@(%p) Loading audio: config=%@";
           v10 = v13;
           v11 = 58;
@@ -100,14 +100,14 @@ LABEL_12:
       }
     }
 
-    if ([a3 isValid])
+    if ([config isValid])
     {
       *(v4 + 46) = 0;
-      v4[188] = [a3 fromBeginning];
-      *(v4 + 22) = [a3 path];
-      if (a3)
+      v4[188] = [config fromBeginning];
+      *(v4 + 22) = [config path];
+      if (config)
       {
-        [a3 audioFormat];
+        [config audioFormat];
       }
 
       else
@@ -120,23 +120,23 @@ LABEL_12:
       *(v4 + 35) = *&buf[32];
       *(v4 + 248) = v14;
       *(v4 + 264) = v15;
-      *(v4 + 98) = [a3 loopCount];
-      [a3 loopLength];
+      *(v4 + 98) = [config loopCount];
+      [config loopLength];
       *(v4 + 51) = v16;
       *(v4 + 48) = 0;
-      v4[416] = [a3 forceVoiceActive];
-      v17 = [a3 reportingAgent];
-      if (v17)
+      v4[416] = [config forceVoiceActive];
+      reportingAgent = [config reportingAgent];
+      if (reportingAgent)
       {
-        v17 = CFRetain(v17);
+        reportingAgent = CFRetain(reportingAgent);
       }
 
-      *(v4 + 1) = v17;
+      *(v4 + 1) = reportingAgent;
       pthread_cond_init((v4 + 200), 0);
-      [v4 reportInjectorInitWithPath:{objc_msgSend(a3, "path")}];
-      if ([a3 sineWaveFrequencyHz])
+      [v4 reportInjectorInitWithPath:{objc_msgSend(config, "path")}];
+      if ([config sineWaveFrequencyHz])
       {
-        if (([v4 setupSineInjectionWithConfig:a3] & 0x80000000) != 0)
+        if (([v4 setupSineInjectionWithConfig:config] & 0x80000000) != 0)
         {
           [VCAudioInjector initWithConfig:];
 LABEL_26:
@@ -147,7 +147,7 @@ LABEL_26:
 
       else
       {
-        [v4 setupAssetInjectionWithConfig:a3];
+        [v4 setupAssetInjectionWithConfig:config];
       }
 
       [v5 drain];
@@ -161,13 +161,13 @@ LABEL_26:
   return v4;
 }
 
-- (void)reportInjectorInitWithPath:(id)a3
+- (void)reportInjectorInitWithPath:(id)path
 {
-  v5 = [MEMORY[0x1E695DF90] dictionary];
-  v6 = v5;
-  if (a3)
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v6 = dictionary;
+  if (path)
   {
-    v7 = [MEMORY[0x1E695DFF8] URLWithString:a3];
+    v7 = [MEMORY[0x1E695DFF8] URLWithString:path];
     v8 = [VCFileUtil sizeOfFile:v7];
     [VCFileUtil contentLengthOfFile:v7];
     v10 = v9;
@@ -178,7 +178,7 @@ LABEL_26:
 
   else
   {
-    [v5 setObject:&unk_1F579B400 forKeyedSubscript:@"CAIFS"];
+    [dictionary setObject:&unk_1F579B400 forKeyedSubscript:@"CAIFS"];
     [v6 setObject:&unk_1F579E3F0 forKeyedSubscript:@"CAIFL"];
   }
 
@@ -240,7 +240,7 @@ LABEL_11:
         v18 = 2112;
         v19 = v3;
         v20 = 2048;
-        v21 = self;
+        selfCopy = self;
         v6 = " [%s] %s:%d %@(%p) ";
         v7 = v10;
         v8 = 48;
@@ -272,10 +272,10 @@ LABEL_11:
   return [v3 stringWithFormat:@"%@ path=%@, fromBeginning=%d, base=%0.2f, modulo=%0.2f", v4, cannedMoviePath, fromBeginning, v8, v9];
 }
 
-- (BOOL)setupAssetInjectionWithConfig:(id)a3
+- (BOOL)setupAssetInjectionWithConfig:(id)config
 {
   v48 = *MEMORY[0x1E69E9840];
-  v5 = +[CannedVideoCapture cannedVideoTypeForPath:](CannedVideoCapture, "cannedVideoTypeForPath:", [a3 path]);
+  v5 = +[CannedVideoCapture cannedVideoTypeForPath:](CannedVideoCapture, "cannedVideoTypeForPath:", [config path]);
   self->_assetType = v5;
   if ((v5 - 3) <= 0xFFFFFFFD)
   {
@@ -320,7 +320,7 @@ LABEL_11:
           v42 = 2112;
           v43 = v24;
           v44 = 2048;
-          v45 = self;
+          selfCopy4 = self;
           v46 = 1024;
           v47 = assetType;
           v31 = " [%s] %s:%d %@(%p) Invalid asset type. assetType=%d";
@@ -334,16 +334,16 @@ LABEL_50:
 
   else
   {
-    if (!+[VCAudioInjector isAudioAvailable:fileName:](VCAudioInjector, "isAudioAvailable:fileName:", [a3 path], objc_msgSend(a3, "fileName")))
+    if (!+[VCAudioInjector isAudioAvailable:fileName:](VCAudioInjector, "isAudioAvailable:fileName:", [config path], objc_msgSend(config, "fileName")))
     {
       [VCAudioInjector setupAssetInjectionWithConfig:];
       v22 = v36;
       return v22 != 0;
     }
 
-    [a3 startHostTime];
+    [config startHostTime];
     v7 = v6;
-    [a3 loopLength];
+    [config loopLength];
     v9 = [(VCAudioInjector *)self setupAVSyncWithStartHostTime:v7 loopLength:v8];
     if (v9 < 0)
     {
@@ -389,7 +389,7 @@ LABEL_50:
             v42 = 2112;
             v43 = v26;
             v44 = 2048;
-            v45 = self;
+            selfCopy4 = self;
             v46 = 1024;
             v47 = v25;
             v31 = " [%s] %s:%d %@(%p) Failed to setup the AV sync. result=%x";
@@ -403,9 +403,9 @@ LABEL_49:
 
     else
     {
-      v10 = [(VCAudioInjector *)self loadAudioSamples];
+      loadAudioSamples = [(VCAudioInjector *)self loadAudioSamples];
       v11 = objc_opt_class();
-      if ((v10 & 0x80000000) == 0)
+      if ((loadAudioSamples & 0x80000000) == 0)
       {
         if (v11 == self)
         {
@@ -469,7 +469,7 @@ LABEL_49:
           v42 = 2112;
           v43 = v12;
           v44 = 2048;
-          v45 = self;
+          selfCopy4 = self;
           v46 = 1024;
           v47 = v21;
           v16 = " [%s] %s:%d %@(%p) Audio injector loaded successfully. assetType=%d";
@@ -479,7 +479,7 @@ LABEL_49:
 
         _os_log_impl(&dword_1DB56E000, v17, OS_LOG_TYPE_DEFAULT, v16, &v36, v18);
 LABEL_16:
-        v22 = v10;
+        v22 = loadAudioSamples;
         return v22 != 0;
       }
 
@@ -523,9 +523,9 @@ LABEL_16:
             v42 = 2112;
             v43 = v27;
             v44 = 2048;
-            v45 = self;
+            selfCopy4 = self;
             v46 = 1024;
-            v47 = v10;
+            v47 = loadAudioSamples;
             v31 = " [%s] %s:%d %@(%p) Failed to load the audio samples. result=%x";
             goto LABEL_49;
           }
@@ -611,7 +611,7 @@ LABEL_16:
       v21 = 2112;
       v22 = v5;
       v23 = 2048;
-      v24 = self;
+      selfCopy = self;
       v25 = 1024;
       v26 = v14;
       v9 = " [%s] %s:%d %@(%p) Unknown _assetType=%d";
@@ -626,20 +626,20 @@ LABEL_16:
   return [(VCAudioInjector *)self loadEncodedAudioSamples];
 }
 
-- (int)setupAVSyncWithStartHostTime:(double)a3 loopLength:(double)a4
+- (int)setupAVSyncWithStartHostTime:(double)time loopLength:(double)length
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (a3 >= 0.0)
+  if (time >= 0.0)
   {
     avSync = objc_alloc_init(VCCannedAVSync);
     self->_avSync = avSync;
-    if (a4 > 0.0)
+    if (length > 0.0)
     {
-      [(VCCannedAVSync *)avSync setModulo:a4];
+      [(VCCannedAVSync *)avSync setModulo:length];
       avSync = self->_avSync;
     }
 
-    [(VCCannedAVSync *)avSync setBase:a3];
+    [(VCCannedAVSync *)avSync setBase:time];
     v6 = self->_avSync;
   }
 
@@ -674,11 +674,11 @@ LABEL_16:
     v25 = 1024;
     v26 = 241;
     v27 = 2112;
-    v28 = self;
+    selfCopy = self;
     v29 = 1024;
     *v30 = samplesInLoop;
     *&v30[4] = 2048;
-    *&v30[6] = a4;
+    *&v30[6] = length;
     v14 = " [%s] %s:%d injector=%@, _samplesInLoop=%d, loopLength=%f";
     v15 = v12;
     v16 = 54;
@@ -709,7 +709,7 @@ LABEL_16:
       v25 = 1024;
       v26 = 241;
       v27 = 2112;
-      v28 = v10;
+      selfCopy = v10;
       v29 = 2048;
       *v30 = self;
       *&v30[8] = 2112;
@@ -717,7 +717,7 @@ LABEL_16:
       v31 = 1024;
       v32 = v19;
       v33 = 2048;
-      v34 = a4;
+      lengthCopy = length;
       v14 = " [%s] %s:%d %@(%p) injector=%@, _samplesInLoop=%d, loopLength=%f";
       v15 = v18;
       v16 = 74;
@@ -738,13 +738,13 @@ LABEL_17:
   }
 }
 
-+ (BOOL)isAudioAvailable:(id)a3 fileName:(id)a4
++ (BOOL)isAudioAvailable:(id)available fileName:(id)name
 {
   v22 = *MEMORY[0x1E69E9840];
   v6 = [CannedVideoCapture cannedVideoTypeForPath:?];
   if (v6 == 1)
   {
-    v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@/%@", a3, a4];
+    name = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"%@/%@", available, name];
     v13.tv_sec = 0xAAAAAAAAAAAAAAAALL;
     v13.tv_nsec = 0xAAAAAAAAAAAAAAAALL;
     *&v21.st_blksize = v13;
@@ -756,7 +756,7 @@ LABEL_17:
     *&v21.st_uid = v13;
     v21.st_atimespec = v13;
     *&v21.st_dev = v13;
-    v14 = stat([v12 UTF8String], &v21);
+    v14 = stat([name UTF8String], &v21);
 
     if (!v14 && (v21.st_mode & 0xF000) == 0x8000)
     {
@@ -785,7 +785,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v7 = [MEMORY[0x1E695DFF8] URLWithString:a3];
+  v7 = [MEMORY[0x1E695DFF8] URLWithString:available];
   v8 = objc_alloc(MEMORY[0x1E6988168]);
   v19 = *MEMORY[0x1E6987BB8];
   v20 = MEMORY[0x1E695E118];
@@ -826,30 +826,30 @@ LABEL_9:
   return v15;
 }
 
-- (void)completeSetupWithSampleBuffer:(opaqueVCAudioBufferList *)a3
+- (void)completeSetupWithSampleBuffer:(opaqueVCAudioBufferList *)buffer
 {
   os_unfair_lock_lock(&self->_samplesMutex);
-  v5 = *a3;
-  self->_sampleBuffer = *a3;
+  v5 = *buffer;
+  self->_sampleBuffer = *buffer;
   self->_audioSampleCount = VCAudioBufferList_GetSampleCount(v5);
   os_unfair_lock_unlock(&self->_samplesMutex);
-  *a3 = 0;
+  *buffer = 0;
   [(VCAudioInjector *)self setIsReadyToInject:1];
   [(VCObject *)self reportingAgent];
 
   reportingGenericEvent();
 }
 
-- (void)setAudioConverterProcAudioBufferList:(const AudioBufferList *)a3 blockBuffer:(OpaqueCMBlockBuffer *)a4
+- (void)setAudioConverterProcAudioBufferList:(const AudioBufferList *)list blockBuffer:(OpaqueCMBlockBuffer *)buffer
 {
-  v4 = *&a3->mNumberBuffers;
-  self->_audioConverterProc.audioBufferList.mBuffers[0].mData = a3->mBuffers[0].mData;
+  v4 = *&list->mNumberBuffers;
+  self->_audioConverterProc.audioBufferList.mBuffers[0].mData = list->mBuffers[0].mData;
   *&self->_audioConverterProc.audioBufferList.mNumberBuffers = v4;
   blockBuffer = self->_audioConverterProc.blockBuffer;
-  self->_audioConverterProc.blockBuffer = a4;
-  if (a4)
+  self->_audioConverterProc.blockBuffer = buffer;
+  if (buffer)
   {
-    CFRetain(a4);
+    CFRetain(buffer);
   }
 
   if (blockBuffer)
@@ -880,7 +880,7 @@ LABEL_9:
   p_audioConverterProc->audioBufferList.mBuffers[0].mDataByteSize = 0;
 }
 
-+ (AudioStreamBasicDescription)internalAssetFormatWithFileFormat:(SEL)a3
++ (AudioStreamBasicDescription)internalAssetFormatWithFileFormat:(SEL)format
 {
   v39 = *MEMORY[0x1E69E9840];
   mChannelsPerFrame = a4->mChannelsPerFrame;
@@ -991,22 +991,22 @@ LABEL_11:
   return [MEMORY[0x1E695DF20] dictionaryWithObjects:v6 forKeys:v5 count:5];
 }
 
-+ (int)setupReader:(id)a3 forAsset:(id)a4 assetAudioFormat:(AudioStreamBasicDescription *)a5 trackOutput:(id *)a6
++ (int)setupReader:(id)reader forAsset:(id)asset assetAudioFormat:(AudioStreamBasicDescription *)format trackOutput:(id *)output
 {
   v80 = *MEMORY[0x1E69E9840];
-  v11 = [a1 defaultReaderOutputSettings];
-  if (!v11)
+  defaultReaderOutputSettings = [self defaultReaderOutputSettings];
+  if (!defaultReaderOutputSettings)
   {
     +[VCAudioInjector setupReader:forAsset:assetAudioFormat:trackOutput:];
     return *buf;
   }
 
-  v12 = v11;
-  v13 = [a4 tracksWithMediaType:*MEMORY[0x1E69875A0]];
+  v12 = defaultReaderOutputSettings;
+  v13 = [asset tracksWithMediaType:*MEMORY[0x1E69875A0]];
   v14 = v13;
   if (!v13 || ![v13 count])
   {
-    if (objc_opt_class() == a1)
+    if (objc_opt_class() == self)
     {
       v21 = -2142699510;
       if (VRTraceGetErrorLogLevelForModule() < 3)
@@ -1030,7 +1030,7 @@ LABEL_11:
       *&buf[28] = 2112;
       *&buf[30] = v14;
       *&buf[38] = 2112;
-      v73 = a4;
+      selfCopy2 = asset;
       v30 = " [%s] %s:%d Failed to get audioTracks=%@ from asset=%@";
       v31 = v29;
       v32 = 48;
@@ -1040,7 +1040,7 @@ LABEL_11:
     {
       if (objc_opt_respondsToSelector())
       {
-        v24 = [a1 performSelector:sel_logPrefix];
+        v24 = [self performSelector:sel_logPrefix];
       }
 
       else
@@ -1070,11 +1070,11 @@ LABEL_11:
       *&buf[28] = 2112;
       *&buf[30] = v24;
       *&buf[38] = 2048;
-      v73 = a1;
+      selfCopy2 = self;
       v74 = 2112;
-      v75 = v14;
+      assetCopy3 = v14;
       v76 = 2112;
-      v77 = a4;
+      assetCopy2 = asset;
       v30 = " [%s] %s:%d %@(%p) Failed to get audioTracks=%@ from asset=%@";
       v31 = v39;
       v32 = 68;
@@ -1093,23 +1093,23 @@ LABEL_11:
     {
       v18 = v17;
       [v17 setAlwaysCopiesSampleData:0];
-      [a3 setPreparesMediaDataForRealTimeConsumption:1];
-      [a3 addOutput:v18];
-      v19 = [v16 formatDescriptions];
-      v20 = v19;
-      if (v19 && [v19 count])
+      [reader setPreparesMediaDataForRealTimeConsumption:1];
+      [reader addOutput:v18];
+      formatDescriptions = [v16 formatDescriptions];
+      v20 = formatDescriptions;
+      if (formatDescriptions && [formatDescriptions count])
       {
         +[VCAudioInjector internalAssetFormatWithFileFormat:](VCAudioInjector, "internalAssetFormatWithFileFormat:", CMAudioFormatDescriptionGetStreamBasicDescription([v20 objectAtIndex:0]));
         v21 = 0;
         v22 = *&buf[16];
-        *&a5->mSampleRate = *buf;
-        *&a5->mBytesPerPacket = v22;
-        *&a5->mBitsPerChannel = *&buf[32];
-        *a6 = v18;
+        *&format->mSampleRate = *buf;
+        *&format->mBytesPerPacket = v22;
+        *&format->mBitsPerChannel = *&buf[32];
+        *output = v18;
         return v21;
       }
 
-      if (objc_opt_class() == a1)
+      if (objc_opt_class() == self)
       {
         if (VRTraceGetErrorLogLevelForModule() < 3)
         {
@@ -1132,9 +1132,9 @@ LABEL_11:
         *&buf[28] = 2112;
         *&buf[30] = v20;
         *&buf[38] = 2112;
-        v73 = v16;
+        selfCopy2 = v16;
         v74 = 2112;
-        v75 = a4;
+        assetCopy3 = asset;
         v35 = " [%s] %s:%d Failed to retrieve the formatDescriptions=%@ for track=%@ asset=%@";
         v36 = v34;
         v37 = 58;
@@ -1144,7 +1144,7 @@ LABEL_11:
       {
         if (objc_opt_respondsToSelector())
         {
-          v25 = [a1 performSelector:sel_logPrefix];
+          v25 = [self performSelector:sel_logPrefix];
         }
 
         else
@@ -1173,13 +1173,13 @@ LABEL_11:
         *&buf[28] = 2112;
         *&buf[30] = v25;
         *&buf[38] = 2048;
-        v73 = a1;
+        selfCopy2 = self;
         v74 = 2112;
-        v75 = v20;
+        assetCopy3 = v20;
         v76 = 2112;
-        v77 = v16;
+        assetCopy2 = v16;
         v78 = 2112;
-        v79 = a4;
+        assetCopy4 = asset;
         v35 = " [%s] %s:%d %@(%p) Failed to retrieve the formatDescriptions=%@ for track=%@ asset=%@";
         v36 = v41;
         v37 = 78;
@@ -1190,14 +1190,14 @@ LABEL_11:
     }
 
     v21 = -2142699510;
-    if (objc_opt_class() == a1)
+    if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
         __str = 0;
         v44 = [objc_msgSend(v16 "description")];
         v45 = [objc_msgSend(v12 "description")];
-        v46 = a4 ? [objc_msgSend(a4 "description")] : "<nil>";
+        v46 = asset ? [objc_msgSend(asset "description")] : "<nil>";
         asprintf(&__str, "Instantiation of AVAssetReaderTrackOutput for track=%s with settings=%s failed for asset=%s", v44, v45, v46);
         if (__str)
         {
@@ -1221,7 +1221,7 @@ LABEL_11:
                 *&buf[28] = 2080;
                 *&buf[30] = "";
                 *&buf[38] = 2080;
-                v73 = v66;
+                selfCopy2 = v66;
                 _os_log_error_impl(&dword_1DB56E000, v69, OS_LOG_TYPE_ERROR, " [%s] %s:%d %s %s", buf, 0x30u);
               }
             }
@@ -1239,7 +1239,7 @@ LABEL_11:
     {
       if (objc_opt_respondsToSelector())
       {
-        v27 = [a1 performSelector:sel_logPrefix];
+        v27 = [self performSelector:sel_logPrefix];
       }
 
       else
@@ -1250,11 +1250,11 @@ LABEL_11:
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
         __str = 0;
-        v50 = [(__CFString *)v27 UTF8String];
+        uTF8String = [(__CFString *)v27 UTF8String];
         v51 = [objc_msgSend(v16 "description")];
         v52 = [objc_msgSend(v12 "description")];
-        v53 = a4 ? [objc_msgSend(a4 "description")] : "<nil>";
-        asprintf(&__str, "%s(%p) Instantiation of AVAssetReaderTrackOutput for track=%s with settings=%s failed for asset=%s", v50, a1, v51, v52, v53);
+        v53 = asset ? [objc_msgSend(asset "description")] : "<nil>";
+        asprintf(&__str, "%s(%p) Instantiation of AVAssetReaderTrackOutput for track=%s with settings=%s failed for asset=%s", uTF8String, self, v51, v52, v53);
         if (__str)
         {
           __lasts = 0;
@@ -1277,7 +1277,7 @@ LABEL_11:
                 *&buf[28] = 2080;
                 *&buf[30] = "";
                 *&buf[38] = 2080;
-                v73 = v58;
+                selfCopy2 = v58;
                 _os_log_error_impl(&dword_1DB56E000, v61, OS_LOG_TYPE_ERROR, " [%s] %s:%d %s %s", buf, 0x30u);
               }
             }
@@ -1296,13 +1296,13 @@ LABEL_83:
   else
   {
     v21 = -2142699510;
-    if (objc_opt_class() == a1)
+    if (objc_opt_class() == self)
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
         __str = 0;
         v42 = [objc_msgSend(v14 "description")];
-        v43 = a4 ? [objc_msgSend(a4 "description")] : "<nil>";
+        v43 = asset ? [objc_msgSend(asset "description")] : "<nil>";
         asprintf(&__str, "Failed to get audio track from tracks=%s asset=%s", v42, v43);
         if (__str)
         {
@@ -1326,7 +1326,7 @@ LABEL_83:
                 *&buf[28] = 2080;
                 *&buf[30] = "";
                 *&buf[38] = 2080;
-                v73 = v62;
+                selfCopy2 = v62;
                 _os_log_error_impl(&dword_1DB56E000, v65, OS_LOG_TYPE_ERROR, " [%s] %s:%d %s %s", buf, 0x30u);
               }
             }
@@ -1344,7 +1344,7 @@ LABEL_83:
     {
       if (objc_opt_respondsToSelector())
       {
-        v26 = [a1 performSelector:sel_logPrefix];
+        v26 = [self performSelector:sel_logPrefix];
       }
 
       else
@@ -1355,10 +1355,10 @@ LABEL_83:
       if (VRTraceGetErrorLogLevelForModule() >= 3)
       {
         __str = 0;
-        v47 = [(__CFString *)v26 UTF8String];
+        uTF8String2 = [(__CFString *)v26 UTF8String];
         v48 = [objc_msgSend(v14 "description")];
-        v49 = a4 ? [objc_msgSend(a4 "description")] : "<nil>";
-        asprintf(&__str, "%s(%p) Failed to get audio track from tracks=%s asset=%s", v47, a1, v48, v49);
+        v49 = asset ? [objc_msgSend(asset "description")] : "<nil>";
+        asprintf(&__str, "%s(%p) Failed to get audio track from tracks=%s asset=%s", uTF8String2, self, v48, v49);
         if (__str)
         {
           __lasts = 0;
@@ -1381,7 +1381,7 @@ LABEL_83:
                 *&buf[28] = 2080;
                 *&buf[30] = "";
                 *&buf[38] = 2080;
-                v73 = v54;
+                selfCopy2 = v54;
                 _os_log_error_impl(&dword_1DB56E000, v57, OS_LOG_TYPE_ERROR, " [%s] %s:%d %s %s", buf, 0x30u);
               }
             }
@@ -1399,7 +1399,7 @@ LABEL_83:
   return v21;
 }
 
-- (int)setupAudioConverterWithAssetFormat:(const AudioStreamBasicDescription *)a3 audioConverter:(OpaqueAudioConverter *)a4
+- (int)setupAudioConverterWithAssetFormat:(const AudioStreamBasicDescription *)format audioConverter:(OpaqueAudioConverter *)converter
 {
   v60 = *MEMORY[0x1E69E9840];
   p_outputFormat = &self->_outputFormat;
@@ -1407,7 +1407,7 @@ LABEL_83:
   *&v44.mSampleRate = *&self->_outputFormat.mSampleRate;
   *&v44.mBytesPerPacket = v8;
   *&v44.mBitsPerChannel = *&self->_outputFormat.mBitsPerChannel;
-  v9 = AudioConverterNew(a3, &v44, a4);
+  v9 = AudioConverterNew(format, &v44, converter);
   if (v9)
   {
     v26 = v9;
@@ -1457,7 +1457,7 @@ LABEL_83:
     v55 = 2112;
     *v56 = v27;
     *&v56[8] = 2048;
-    v57 = self;
+    selfCopy3 = self;
     v58 = 1024;
     *v59 = v26;
     v32 = " [%s] %s:%d %@(%p) Failed to create the audio converter! err=%d";
@@ -1469,7 +1469,7 @@ LABEL_38:
   }
 
   mChannelsPerFrame = p_outputFormat->mChannelsPerFrame;
-  if (mChannelsPerFrame == a3->mChannelsPerFrame)
+  if (mChannelsPerFrame == format->mChannelsPerFrame)
   {
     goto LABEL_5;
   }
@@ -1477,12 +1477,12 @@ LABEL_38:
   if (mChannelsPerFrame == 1)
   {
     inPropertyData = 1;
-    AudioConverterSetProperty(*a4, 0x63686D70u, 4u, &inPropertyData);
+    AudioConverterSetProperty(*converter, 0x63686D70u, 4u, &inPropertyData);
 LABEL_5:
     p_audioConverterProc = &self->_audioConverterProc;
-    v12 = *&a3->mBitsPerChannel;
-    v13 = *&a3->mBytesPerPacket;
-    *&self->_audioConverterProc.streamDesc.mSampleRate = *&a3->mSampleRate;
+    v12 = *&format->mBitsPerChannel;
+    v13 = *&format->mBytesPerPacket;
+    *&self->_audioConverterProc.streamDesc.mSampleRate = *&format->mSampleRate;
     *&self->_audioConverterProc.streamDesc.mBytesPerPacket = v13;
     *&self->_audioConverterProc.streamDesc.mBitsPerChannel = v12;
     *__str = 0u;
@@ -1551,7 +1551,7 @@ LABEL_5:
       v55 = 2112;
       *v56 = v14;
       *&v56[8] = 2048;
-      v57 = self;
+      selfCopy3 = self;
       v58 = 2080;
       *v59 = v23;
       v18 = " [%s] %s:%d %@(%p) streamDescription=%s";
@@ -1565,7 +1565,7 @@ LABEL_5:
 
   if (objc_opt_class() == self)
   {
-    v35 = a3;
+    formatCopy = format;
     v24 = -2142699505;
     if (VRTraceGetErrorLogLevelForModule() < 3)
     {
@@ -1579,7 +1579,7 @@ LABEL_5:
       return v24;
     }
 
-    v38 = v35->mChannelsPerFrame;
+    v38 = formatCopy->mChannelsPerFrame;
     v39 = p_outputFormat->mChannelsPerFrame;
     inPropertyData = 136316162;
     v50 = v36;
@@ -1597,7 +1597,7 @@ LABEL_5:
     goto LABEL_38;
   }
 
-  v28 = a3;
+  formatCopy2 = format;
   if (objc_opt_respondsToSelector())
   {
     v29 = [(VCAudioInjector *)self performSelector:sel_logPrefix];
@@ -1615,7 +1615,7 @@ LABEL_5:
     v41 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_ERROR))
     {
-      v42 = v28->mChannelsPerFrame;
+      v42 = formatCopy2->mChannelsPerFrame;
       v43 = p_outputFormat->mChannelsPerFrame;
       inPropertyData = 136316674;
       v50 = v40;
@@ -1626,7 +1626,7 @@ LABEL_5:
       v55 = 2112;
       *v56 = v29;
       *&v56[8] = 2048;
-      v57 = self;
+      selfCopy3 = self;
       v58 = 1024;
       *v59 = v42;
       *&v59[4] = 1024;
@@ -1641,12 +1641,12 @@ LABEL_5:
   return v24;
 }
 
-- (int)processSampleBuffer:(opaqueCMSampleBuffer *)a3 audioConverter:(OpaqueAudioConverter *)a4 audioBuffer:(opaqueVCAudioBufferList *)a5
+- (int)processSampleBuffer:(opaqueCMSampleBuffer *)buffer audioConverter:(OpaqueAudioConverter *)converter audioBuffer:(opaqueVCAudioBufferList *)audioBuffer
 {
   v64 = *MEMORY[0x1E69E9840];
   blockBufferOut = 0;
   memset(&bufferListOut, 170, sizeof(bufferListOut));
-  AudioBufferListWithRetainedBlockBuffer = CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer(a3, 0, &bufferListOut, 0x18uLL, 0, 0, 1u, &blockBufferOut);
+  AudioBufferListWithRetainedBlockBuffer = CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer(buffer, 0, &bufferListOut, 0x18uLL, 0, 0, 1u, &blockBufferOut);
   if (AudioBufferListWithRetainedBlockBuffer)
   {
     v32 = AudioBufferListWithRetainedBlockBuffer;
@@ -1697,7 +1697,7 @@ LABEL_5:
     v53 = 2112;
     *v54 = v33;
     *&v54[8] = 2048;
-    v55 = self;
+    selfCopy4 = self;
     v56 = 1024;
     v57 = v32;
     v29 = " [%s] %s:%d %@(%p) CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer failed! err=%d";
@@ -1711,7 +1711,7 @@ LABEL_32:
   [(VCAudioInjector *)self setAudioConverterProcAudioBufferList:&bufferListOut blockBuffer:blockBufferOut];
   ioPropertyDataSize = 4;
   outPropertyData = bufferListOut.mBuffers[0].mDataByteSize;
-  Property = AudioConverterGetProperty(a4, 0x636F6273u, &ioPropertyDataSize, &outPropertyData);
+  Property = AudioConverterGetProperty(converter, 0x636F6273u, &ioPropertyDataSize, &outPropertyData);
   if (Property)
   {
     v10 = Property;
@@ -1754,7 +1754,7 @@ LABEL_32:
           v53 = 2112;
           *v54 = v11;
           *&v54[8] = 2048;
-          v55 = self;
+          selfCopy4 = self;
           v56 = 1024;
           v57 = v10;
           _os_log_error_impl(&dword_1DB56E000, v13, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Fetching kAudioConverterPropertyCalculateOutputBufferSize failed with status=%d", buf, 0x36u);
@@ -1763,12 +1763,12 @@ LABEL_32:
     }
   }
 
-  AudioBufferList = VCAudioBufferList_GetAudioBufferList(a5);
+  AudioBufferList = VCAudioBufferList_GetAudioBufferList(audioBuffer);
   v15 = *(AudioBufferList + 16);
   *&outOutputData.mNumberBuffers = *AudioBufferList;
   outOutputData.mBuffers[0].mData = v15;
-  SampleCount = VCAudioBufferList_GetSampleCount(a5);
-  SampleCapacity = VCAudioBufferList_GetSampleCapacity(a5);
+  SampleCount = VCAudioBufferList_GetSampleCount(audioBuffer);
+  SampleCapacity = VCAudioBufferList_GetSampleCapacity(audioBuffer);
   v18 = outPropertyData;
   mBytesPerPacket = self->_outputFormat.mBytesPerPacket;
   v20 = outPropertyData / mBytesPerPacket;
@@ -1801,8 +1801,8 @@ LABEL_32:
       *v54 = v34 - SampleCount;
       *&v54[4] = 1024;
       *&v54[6] = v20;
-      LOWORD(v55) = 1024;
-      *(&v55 + 2) = v34;
+      LOWORD(selfCopy4) = 1024;
+      *(&selfCopy4 + 2) = v34;
       v29 = " [%s] %s:%d Didn't preallocate enough memory for the asset! remainingSampleCapacity=%u, neededSamples=%u, totalCapacity=%u";
       v30 = v37;
       v31 = 46;
@@ -1843,7 +1843,7 @@ LABEL_32:
       v53 = 2112;
       *v54 = v35;
       *&v54[8] = 2048;
-      v55 = self;
+      selfCopy4 = self;
       v56 = 1024;
       v57 = v34 - SampleCount;
       v58 = 1024;
@@ -1874,9 +1874,9 @@ LABEL_32:
     while (mNumberBuffers);
   }
 
-  if (!AudioConverterFillComplexBuffer(a4, _VCAudioInjector_AudioConverterInput, &self->_audioConverterProc, &ioOutputDataPacketSize, &outOutputData, 0))
+  if (!AudioConverterFillComplexBuffer(converter, _VCAudioInjector_AudioConverterInput, &self->_audioConverterProc, &ioOutputDataPacketSize, &outOutputData, 0))
   {
-    VCAudioBufferList_SetSampleCount(a5, ioOutputDataPacketSize + SampleCount);
+    VCAudioBufferList_SetSampleCount(audioBuffer, ioOutputDataPacketSize + SampleCount);
     pthread_cond_signal(&self->_samplesConditional);
     v24 = 0;
     goto LABEL_28;
@@ -1916,7 +1916,7 @@ LABEL_32:
     v53 = 2112;
     *v54 = v25;
     *&v54[8] = 2048;
-    v55 = self;
+    selfCopy4 = self;
     v29 = " [%s] %s:%d %@(%p) AudioConverterFillComplexBuffer failed!";
     v30 = v27;
     v31 = 48;
@@ -1941,25 +1941,25 @@ LABEL_28:
   return v24;
 }
 
-- (int)loadSamplesFromTrackOutput:(id)a3 audioConverter:(OpaqueAudioConverter *)a4 audioBuffer:(opaqueVCAudioBufferList *)a5
+- (int)loadSamplesFromTrackOutput:(id)output audioConverter:(OpaqueAudioConverter *)converter audioBuffer:(opaqueVCAudioBufferList *)buffer
 {
-  v9 = [a3 copyNextSampleBuffer];
-  if (v9)
+  copyNextSampleBuffer = [output copyNextSampleBuffer];
+  if (copyNextSampleBuffer)
   {
-    v10 = v9;
+    copyNextSampleBuffer2 = copyNextSampleBuffer;
     do
     {
-      v11 = [(VCAudioInjector *)self processSampleBuffer:v10 audioConverter:a4 audioBuffer:a5];
-      CFRelease(v10);
+      v11 = [(VCAudioInjector *)self processSampleBuffer:copyNextSampleBuffer2 audioConverter:converter audioBuffer:buffer];
+      CFRelease(copyNextSampleBuffer2);
       if (v11 < 0)
       {
         break;
       }
 
-      v10 = [a3 copyNextSampleBuffer];
+      copyNextSampleBuffer2 = [output copyNextSampleBuffer];
     }
 
-    while (v10);
+    while (copyNextSampleBuffer2);
   }
 
   else
@@ -1971,17 +1971,17 @@ LABEL_28:
   return v11;
 }
 
-- (int)allocateSampleBufferWithTrackOutput:(id)a3 assetAudioFormat:(const AudioStreamBasicDescription *)a4 sampleBuffer:(opaqueVCAudioBufferList *)a5
+- (int)allocateSampleBufferWithTrackOutput:(id)output assetAudioFormat:(const AudioStreamBasicDescription *)format sampleBuffer:(opaqueVCAudioBufferList *)buffer
 {
   v28 = *MEMORY[0x1E69E9840];
   *&v7 = 0xAAAAAAAAAAAAAAAALL;
   *(&v7 + 1) = 0xAAAAAAAAAAAAAAAALL;
   *(&v22[0] + 1) = 0xAAAAAAAAAAAAAAAALL;
   v22[1] = v7;
-  v8 = [a3 track];
-  if (v8)
+  track = [output track];
+  if (track)
   {
-    [v8 timeRange];
+    [track timeRange];
   }
 
   else
@@ -2067,7 +2067,7 @@ LABEL_15:
   *time = *&p_outputFormat->mSampleRate;
   *&time[16] = v20;
   *&time[32] = *&p_outputFormat->mBitsPerChannel;
-  if (VCAudioBufferList_Allocate(time, v11, a5))
+  if (VCAudioBufferList_Allocate(time, v11, buffer))
   {
     return 0;
   }
@@ -2078,7 +2078,7 @@ LABEL_15:
   }
 }
 
-- (void)parseMediaTracksForAsset:(id)a3
+- (void)parseMediaTracksForAsset:(id)asset
 {
   v55 = *MEMORY[0x1E69E9840];
   v40 = 0;
@@ -2086,14 +2086,14 @@ LABEL_15:
   inAudioConverter = 0;
   v38 = 0;
   v36 = 0;
-  if ([a3 statusOfValueForKey:@"tracks" error:0] != 2)
+  if ([asset statusOfValueForKey:@"tracks" error:0] != 2)
   {
     [VCAudioInjector parseMediaTracksForAsset:?];
     goto LABEL_27;
   }
 
   v35 = 0;
-  v5 = [MEMORY[0x1E6987E78] assetReaderWithAsset:a3 error:&v35];
+  v5 = [MEMORY[0x1E6987E78] assetReaderWithAsset:asset error:&v35];
   if (v5)
   {
     v6 = v35 == 0;
@@ -2111,7 +2111,7 @@ LABEL_15:
   }
 
   v7 = v5;
-  if ([VCAudioInjector setupReader:v5 forAsset:a3 assetAudioFormat:v39 trackOutput:&v38]< 0)
+  if ([VCAudioInjector setupReader:v5 forAsset:asset assetAudioFormat:v39 trackOutput:&v38]< 0)
   {
     [VCAudioInjector parseMediaTracksForAsset:];
     goto LABEL_27;
@@ -2235,9 +2235,9 @@ LABEL_21:
   }
 
 LABEL_27:
-  v19 = [(VCAudioInjector *)self isReadyToInject];
-  v20 = v19;
-  if (v19)
+  isReadyToInject = [(VCAudioInjector *)self isReadyToInject];
+  v20 = isReadyToInject;
+  if (isReadyToInject)
   {
     v21 = 7;
   }
@@ -2264,7 +2264,7 @@ LABEL_27:
         goto LABEL_47;
       }
 
-      v26 = [(VCAudioInjector *)self isReadyToInject];
+      isReadyToInject2 = [(VCAudioInjector *)self isReadyToInject];
       *buf = 136315906;
       v42 = v23;
       v43 = 2080;
@@ -2272,7 +2272,7 @@ LABEL_27:
       v45 = 1024;
       v46 = 518;
       v47 = 1024;
-      *v48 = v26;
+      *v48 = isReadyToInject2;
       v27 = " [%s] %s:%d isReadyToInject=%{BOOL}d";
       v28 = v24;
       v29 = 34;
@@ -2311,7 +2311,7 @@ LABEL_42:
           goto LABEL_47;
         }
 
-        v33 = [(VCAudioInjector *)self isReadyToInject];
+        isReadyToInject3 = [(VCAudioInjector *)self isReadyToInject];
         *buf = 136316418;
         v42 = v30;
         v43 = 2080;
@@ -2323,7 +2323,7 @@ LABEL_42:
         *&v48[8] = 2048;
         *v49 = self;
         *&v49[8] = 1024;
-        v50 = v33;
+        v50 = isReadyToInject3;
         v27 = " [%s] %s:%d %@(%p) isReadyToInject=%{BOOL}d";
         v28 = v31;
         v29 = 54;
@@ -2332,7 +2332,7 @@ LABEL_42:
 
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
-        v34 = [(VCAudioInjector *)self isReadyToInject];
+        isReadyToInject4 = [(VCAudioInjector *)self isReadyToInject];
         *buf = 136316418;
         v42 = v30;
         v43 = 2080;
@@ -2344,7 +2344,7 @@ LABEL_42:
         *&v48[8] = 2048;
         *v49 = self;
         *&v49[8] = 1024;
-        v50 = v34;
+        v50 = isReadyToInject4;
         _os_log_error_impl(&dword_1DB56E000, v31, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) isReadyToInject=%{BOOL}d", buf, 0x36u);
       }
     }
@@ -2425,7 +2425,7 @@ LABEL_47:
           v19 = 2112;
           v20 = v8;
           v21 = 2048;
-          v22 = self;
+          selfCopy = self;
           v23 = 2112;
           v24 = cannedMoviePath;
           _os_log_error_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Initialization of (audio) AVURLAsset for cannedMoviePath=%@ failed", buf, 0x3Au);
@@ -2473,15 +2473,15 @@ uint64_t __42__VCAudioInjector_loadEncodedAudioSamples__block_invoke(uint64_t a1
   return [v2 drain];
 }
 
-+ (id)defaultAudioFileNameWithFormat:(const AudioStreamBasicDescription *)a3
++ (id)defaultAudioFileNameWithFormat:(const AudioStreamBasicDescription *)format
 {
-  if ((a3->mFormatFlags & 1) == 0)
+  if ((format->mFormatFlags & 1) == 0)
   {
     return @"1x22050.raw";
   }
 
-  mSampleRate = a3->mSampleRate;
-  if (a3->mSampleRate == 22050.0)
+  mSampleRate = format->mSampleRate;
+  if (format->mSampleRate == 22050.0)
   {
     return @"1x22050-flt.raw";
   }
@@ -2553,7 +2553,7 @@ LABEL_48:
           LOWORD(buf.mChannelsPerFrame) = 2112;
           *(&buf.mChannelsPerFrame + 2) = v24;
           HIWORD(buf.mReserved) = 2048;
-          v38 = self;
+          selfCopy5 = self;
           _os_log_error_impl(&dword_1DB56E000, v29, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to retrieve audio file name", &buf, 0x30u);
           goto LABEL_48;
         }
@@ -2611,7 +2611,7 @@ LABEL_53:
           LOWORD(buf.mChannelsPerFrame) = 2112;
           *(&buf.mChannelsPerFrame + 2) = v25;
           HIWORD(buf.mReserved) = 2048;
-          v38 = self;
+          selfCopy5 = self;
           _os_log_error_impl(&dword_1DB56E000, v31, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to allocate the asset path", &buf, 0x30u);
         }
       }
@@ -2672,7 +2672,7 @@ LABEL_13:
         LOWORD(buf.mChannelsPerFrame) = 2112;
         *(&buf.mChannelsPerFrame + 2) = v7;
         HIWORD(buf.mReserved) = 2048;
-        v38 = self;
+        selfCopy5 = self;
         v39 = 2112;
         v40 = v5;
         v10 = " [%s] %s:%d %@(%p) reading sample data from assetPath=%@";
@@ -2747,7 +2747,7 @@ LABEL_13:
             LOWORD(buf.mChannelsPerFrame) = 2112;
             *(&buf.mChannelsPerFrame + 2) = v27;
             HIWORD(buf.mReserved) = 2048;
-            v38 = self;
+            selfCopy5 = self;
             _os_log_error_impl(&dword_1DB56E000, v35, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to allocate the sampleBuffer", &buf, 0x30u);
           }
         }
@@ -2798,7 +2798,7 @@ LABEL_13:
           LOWORD(buf.mChannelsPerFrame) = 2112;
           *(&buf.mChannelsPerFrame + 2) = v26;
           HIWORD(buf.mReserved) = 2048;
-          v38 = self;
+          selfCopy5 = self;
           _os_log_error_impl(&dword_1DB56E000, v33, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to load the asset data", &buf, 0x30u);
         }
       }
@@ -2816,15 +2816,15 @@ LABEL_17:
   return v22;
 }
 
-- (int)setupSineInjectionWithConfig:(id)a3
+- (int)setupSineInjectionWithConfig:(id)config
 {
   v47 = *MEMORY[0x1E69E9840];
   v42 = 0;
   p_outputFormat = &self->_outputFormat;
   mSampleRate = self->_outputFormat.mSampleRate;
-  [a3 startHostTime];
+  [config startHostTime];
   v8 = v7;
-  [a3 loopLength];
+  [config loopLength];
   mSampleRate_low = [(VCAudioInjector *)self setupAVSyncWithStartHostTime:v8 loopLength:v9];
   if (mSampleRate_low < 0)
   {
@@ -2867,7 +2867,7 @@ LABEL_17:
           LOWORD(buf.mChannelsPerFrame) = 2112;
           *(&buf.mChannelsPerFrame + 2) = v39;
           HIWORD(buf.mReserved) = 2048;
-          v44 = self;
+          selfCopy2 = self;
           v45 = 1024;
           v46 = mSampleRate_low;
           _os_log_error_impl(&dword_1DB56E000, v41, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to setup the AV sync. result=%x", &buf, 0x36u);
@@ -2893,13 +2893,13 @@ LABEL_17:
     AudioBufferList = VCAudioBufferList_GetAudioBufferList(v42);
     SampleFormat = VCAudioBufferList_GetSampleFormat(v42);
     Timestamp = VCAudioBufferList_GetTimestamp(v42);
-    [a3 sineWaveAmplitude];
+    [config sineWaveAmplitude];
     v17 = v16;
-    v18 = [a3 sineWaveFrequencyHz];
+    sineWaveFrequencyHz = [config sineWaveFrequencyHz];
     if (v11)
     {
       v19 = 0;
-      v20 = v18;
+      v20 = sineWaveFrequencyHz;
       v21 = *SampleFormat;
       v24 = *AudioBufferList;
       v22 = (AudioBufferList + 4);
@@ -2981,7 +2981,7 @@ LABEL_19:
           LOWORD(buf.mChannelsPerFrame) = 2112;
           *(&buf.mChannelsPerFrame + 2) = v30;
           HIWORD(buf.mReserved) = 2048;
-          v44 = self;
+          selfCopy2 = self;
           v33 = " [%s] %s:%d %@(%p) Successfully setup sine injection.";
           v34 = v37;
           v35 = 48;

@@ -1,12 +1,12 @@
 @interface PKPendingProvisioning
-- (BOOL)isEqual:(id)a3;
-- (PKPendingProvisioning)initWithCoder:(id)a3;
-- (PKPendingProvisioning)initWithUniqueIdentifier:(id)a3 status:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (PKPendingProvisioning)initWithCoder:(id)coder;
+- (PKPendingProvisioning)initWithUniqueIdentifier:(id)identifier status:(int64_t)status;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)_copyIntoPendingProvision:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_copyIntoPendingProvision:(id)provision;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPendingProvisioning
@@ -18,22 +18,22 @@
   return [(PKPendingProvisioning *)&v3 init];
 }
 
-- (PKPendingProvisioning)initWithUniqueIdentifier:(id)a3 status:(int64_t)a4
+- (PKPendingProvisioning)initWithUniqueIdentifier:(id)identifier status:(int64_t)status
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = PKPendingProvisioning;
   v7 = [(PKPendingProvisioning *)&v13 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [identifierCopy copy];
     uniqueIdentifier = v7->_uniqueIdentifier;
     v7->_uniqueIdentifier = v8;
 
-    v7->_status = a4;
-    v10 = [MEMORY[0x1E695DF00] date];
+    v7->_status = status;
+    date = [MEMORY[0x1E695DF00] date];
     createdAt = v7->_createdAt;
-    v7->_createdAt = v10;
+    v7->_createdAt = date;
 
     v7->_shouldAutoProvision = 0;
   }
@@ -48,8 +48,8 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 stringWithFormat:@"<%@: %p ", v5, self];;
 
-  v7 = [(PKPendingProvisioning *)self type];
-  [v6 appendFormat:@"type: '%@'; ", v7];
+  type = [(PKPendingProvisioning *)self type];
+  [v6 appendFormat:@"type: '%@'; ", type];
 
   [v6 appendFormat:@"id: '%@'; ", self->_uniqueIdentifier];
   v8 = self->_status - 1;
@@ -71,13 +71,13 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5[2];
     v7 = self->_uniqueIdentifier;
     v8 = v6;
@@ -105,10 +105,10 @@ LABEL_16:
       }
     }
 
-    v11 = [(PKPendingProvisioning *)self type];
-    v12 = [v5 type];
-    v7 = v11;
-    v13 = v12;
+    type = [(PKPendingProvisioning *)self type];
+    type2 = [v5 type];
+    v7 = type;
+    v13 = type2;
     v9 = v13;
     if (v7 == v13)
     {
@@ -133,41 +133,41 @@ LABEL_17:
   return v10;
 }
 
-- (PKPendingProvisioning)initWithCoder:(id)a3
+- (PKPendingProvisioning)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PKPendingProvisioning;
   v5 = [(PKPendingProvisioning *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueIdentifier"];
     uniqueIdentifier = v5->_uniqueIdentifier;
     v5->_uniqueIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"status"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"status"];
     v5->_status = PKPendingProvisioningStatusFromString(v8);
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"createdAt_timeIntervalSince1970"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"createdAt_timeIntervalSince1970"];
     createdAt = v5->_createdAt;
     v5->_createdAt = v9;
 
-    v5->_shouldAutoProvision = [v4 decodeBoolForKey:@"shouldAutoProvision"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"provisioningState"];
+    v5->_shouldAutoProvision = [coderCopy decodeBoolForKey:@"shouldAutoProvision"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"provisioningState"];
     provisioningState = v5->_provisioningState;
     v5->_provisioningState = v11;
 
-    v5->_provisioningAttemptCounter = [v4 decodeIntegerForKey:@"provisioningAttemptCounter"];
+    v5->_provisioningAttemptCounter = [coderCopy decodeIntegerForKey:@"provisioningAttemptCounter"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uniqueIdentifier = self->_uniqueIdentifier;
-  v7 = a3;
-  [v7 encodeObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uniqueIdentifier forKey:@"uniqueIdentifier"];
   v5 = self->_status - 1;
   if (v5 > 4)
   {
@@ -179,38 +179,38 @@ LABEL_17:
     v6 = off_1E79CEE10[v5];
   }
 
-  [v7 encodeObject:v6 forKey:@"status"];
-  [v7 encodeObject:self->_createdAt forKey:@"createdAt_timeIntervalSince1970"];
-  [v7 encodeBool:self->_shouldAutoProvision forKey:@"shouldAutoProvision"];
-  [v7 encodeObject:self->_provisioningState forKey:@"provisioningState"];
-  [v7 encodeInteger:self->_provisioningAttemptCounter forKey:@"provisioningAttemptCounter"];
+  [coderCopy encodeObject:v6 forKey:@"status"];
+  [coderCopy encodeObject:self->_createdAt forKey:@"createdAt_timeIntervalSince1970"];
+  [coderCopy encodeBool:self->_shouldAutoProvision forKey:@"shouldAutoProvision"];
+  [coderCopy encodeObject:self->_provisioningState forKey:@"provisioningState"];
+  [coderCopy encodeInteger:self->_provisioningAttemptCounter forKey:@"provisioningAttemptCounter"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_alloc(objc_opt_class()) _init];
-  [(PKPendingProvisioning *)self _copyIntoPendingProvision:v4];
-  return v4;
+  _init = [objc_alloc(objc_opt_class()) _init];
+  [(PKPendingProvisioning *)self _copyIntoPendingProvision:_init];
+  return _init;
 }
 
-- (void)_copyIntoPendingProvision:(id)a3
+- (void)_copyIntoPendingProvision:(id)provision
 {
   uniqueIdentifier = self->_uniqueIdentifier;
-  v5 = a3;
+  provisionCopy = provision;
   v6 = [(NSString *)uniqueIdentifier copy];
-  v7 = v5[2];
-  v5[2] = v6;
+  v7 = provisionCopy[2];
+  provisionCopy[2] = v6;
 
-  v5[3] = self->_status;
+  provisionCopy[3] = self->_status;
   v8 = [(NSDate *)self->_createdAt copy];
-  v9 = v5[4];
-  v5[4] = v8;
+  v9 = provisionCopy[4];
+  provisionCopy[4] = v8;
 
-  *(v5 + 8) = self->_shouldAutoProvision;
-  v5[5] = self->_provisioningAttemptCounter;
-  v10 = [(PKSecureElementProvisioningState *)self->_provisioningState createDivergentState];
-  v11 = v5[6];
-  v5[6] = v10;
+  *(provisionCopy + 8) = self->_shouldAutoProvision;
+  provisionCopy[5] = self->_provisioningAttemptCounter;
+  createDivergentState = [(PKSecureElementProvisioningState *)self->_provisioningState createDivergentState];
+  v11 = provisionCopy[6];
+  provisionCopy[6] = createDivergentState;
 }
 
 @end

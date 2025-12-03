@@ -1,5 +1,5 @@
 @interface _MPCQueueControllerEnumerator
-+ (_MPCQueueControllerEnumerator)enumeratorWithMusicBehavior:(id)a3 mode:(int64_t)a4 options:(unint64_t)a5 startPosition:(id)a6 endPosition:(id)a7;
++ (_MPCQueueControllerEnumerator)enumeratorWithMusicBehavior:(id)behavior mode:(int64_t)mode options:(unint64_t)options startPosition:(id)position endPosition:(id)endPosition;
 - (_MPCQueueControllerBehaviorMusic)musicBehavior;
 - (id)_init;
 - (id)nextObject;
@@ -19,56 +19,56 @@
 {
   v39[1] = *MEMORY[0x1E69E9840];
   v4 = self->_startPosition;
-  v5 = self->_endPosition;
+  autoPlayEndPosition2 = self->_endPosition;
   options = self->_options;
   WeakRetained = objc_loadWeakRetained(&self->_musicBehavior);
   if ([WeakRetained autoPlayEnabled] && objc_msgSend(WeakRetained, "repeatType") != 2)
   {
-    v12 = 0;
+    latestUpNextSectionID = 0;
   }
 
   else
   {
-    v7 = [WeakRetained autoPlayEndPosition];
-    v8 = v7;
-    if (v7)
+    autoPlayEndPosition = [WeakRetained autoPlayEndPosition];
+    v8 = autoPlayEndPosition;
+    if (autoPlayEndPosition)
     {
-      if ([v7 entryType] != 3)
+      if ([autoPlayEndPosition entryType] != 3)
       {
-        v37 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v37 handleFailureInMethod:a2 object:self file:@"_MPCQueueControllerBehaviorMusic.m" lineNumber:4797 description:{@"Unexpected autoPlayEndPosition.entryType: %d", objc_msgSend(v8, "entryType")}];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"_MPCQueueControllerBehaviorMusic.m" lineNumber:4797 description:{@"Unexpected autoPlayEndPosition.entryType: %d", objc_msgSend(v8, "entryType")}];
       }
 
-      v9 = [v8 sectionIdentifier];
-      v10 = [v8 itemIdentifier];
-      v11 = [MPCQueueControllerBehaviorMusicIdentifierComponents itemComponentsWithSectionID:v9 itemID:v10];
+      sectionIdentifier = [v8 sectionIdentifier];
+      itemIdentifier = [v8 itemIdentifier];
+      v11 = [MPCQueueControllerBehaviorMusicIdentifierComponents itemComponentsWithSectionID:sectionIdentifier itemID:itemIdentifier];
 
-      v12 = [WeakRetained _upNextSectionIdentifierForItem:v11 shouldLookInBaseList:0];
+      latestUpNextSectionID = [WeakRetained _upNextSectionIdentifierForItem:v11 shouldLookInBaseList:0];
     }
 
     else
     {
-      v12 = [WeakRetained latestUpNextSectionID];
-      if (v12)
+      latestUpNextSectionID = [WeakRetained latestUpNextSectionID];
+      if (latestUpNextSectionID)
       {
-        v13 = [WeakRetained autoPlayIdentifierList];
-        v14 = [WeakRetained latestUpNextSectionID];
-        v15 = [v13 hasSection:v14];
+        autoPlayIdentifierList = [WeakRetained autoPlayIdentifierList];
+        latestUpNextSectionID2 = [WeakRetained latestUpNextSectionID];
+        v15 = [autoPlayIdentifierList hasSection:latestUpNextSectionID2];
 
         if (v15)
         {
-          v12 = [WeakRetained latestUpNextSectionID];
+          latestUpNextSectionID = [WeakRetained latestUpNextSectionID];
         }
 
         else
         {
-          v12 = 0;
+          latestUpNextSectionID = 0;
         }
       }
     }
   }
 
-  v16 = 0;
+  identifierList = 0;
   nextEnumerator = self->_nextEnumerator;
   if (nextEnumerator > 1)
   {
@@ -82,7 +82,7 @@
       if (!self->_isEnumeratingFromRepeatAllBase || self->_hasEmittedItemFromRepeatAllBase)
       {
         self->_isEnumeratingFromRepeatAllBase = 1;
-        v16 = [WeakRetained identifierList];
+        identifierList = [WeakRetained identifierList];
         repeatBoundaryBlock = self->_repeatBoundaryBlock;
         if (repeatBoundaryBlock)
         {
@@ -99,8 +99,8 @@ LABEL_49:
         if (v4)
         {
 LABEL_50:
-          v26 = [(MPSectionedIdentifierListPosition *)v4 sectionIdentifier];
-          v27 = [v16 hasSection:v26];
+          sectionIdentifier2 = [(MPSectionedIdentifierListPosition *)v4 sectionIdentifier];
+          v27 = [identifierList hasSection:sectionIdentifier2];
 
           if ((v27 & 1) == 0)
           {
@@ -110,26 +110,26 @@ LABEL_50:
         }
 
 LABEL_52:
-        if (v5)
+        if (autoPlayEndPosition2)
         {
-          v28 = [(MPSectionedIdentifierListPosition *)v5 sectionIdentifier];
-          v29 = [v16 hasSection:v28];
+          sectionIdentifier3 = [(MPSectionedIdentifierListPosition *)autoPlayEndPosition2 sectionIdentifier];
+          v29 = [identifierList hasSection:sectionIdentifier3];
 
           if ((v29 & 1) == 0)
           {
 
-            v5 = 0;
+            autoPlayEndPosition2 = 0;
           }
         }
 
-        if ([(MPSectionedIdentifierListPosition *)v4 isEqual:v5])
+        if ([(MPSectionedIdentifierListPosition *)v4 isEqual:autoPlayEndPosition2])
         {
           self->_nextEnumerator = 0;
         }
 
         else
         {
-          v30 = [v16 enumeratorWithOptions:options startPosition:v4 endPosition:v5];
+          v30 = [identifierList enumeratorWithOptions:options startPosition:v4 endPosition:autoPlayEndPosition2];
           enumerator = self->_enumerator;
           self->_enumerator = v30;
         }
@@ -144,9 +144,9 @@ LABEL_52:
     {
       if (!v4)
       {
-        if (v12)
+        if (latestUpNextSectionID)
         {
-          [MEMORY[0x1E6970948] positionForTailOfSection:v12];
+          [MEMORY[0x1E6970948] positionForTailOfSection:latestUpNextSectionID];
         }
 
         else
@@ -161,20 +161,20 @@ LABEL_52:
 
     else
     {
-      if (v5)
+      if (autoPlayEndPosition2)
       {
 LABEL_38:
         v25 = 0;
         goto LABEL_47;
       }
 
-      if (v12)
+      if (latestUpNextSectionID)
       {
-        v5 = [MEMORY[0x1E6970948] positionForTailOfSection:v12];
+        autoPlayEndPosition2 = [MEMORY[0x1E6970948] positionForTailOfSection:latestUpNextSectionID];
         goto LABEL_38;
       }
 
-      v5 = [WeakRetained autoPlayEndPosition];
+      autoPlayEndPosition2 = [WeakRetained autoPlayEndPosition];
       v25 = 0;
       options |= 0x40uLL;
     }
@@ -182,25 +182,25 @@ LABEL_38:
 LABEL_47:
     self->_nextEnumerator = v25;
     self->_isEnumeratingFromRepeatAllBase = 0;
-    v23 = [WeakRetained autoPlayIdentifierList];
-    if (!v23)
+    autoPlayIdentifierList2 = [WeakRetained autoPlayIdentifierList];
+    if (!autoPlayIdentifierList2)
     {
       if ([WeakRetained autoPlayState] == 9 && self->_mode)
       {
         v32 = [_MPCAutoPlayEnumerationResult alloc];
-        v16 = [WeakRetained sessionID];
-        v33 = [(_MPCAutoPlayEnumerationResult *)v32 initWithSectionIdentifier:v16];
+        identifierList = [WeakRetained sessionID];
+        v33 = [(_MPCAutoPlayEnumerationResult *)v32 initWithSectionIdentifier:identifierList];
         v39[0] = v33;
         v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:1];
-        v35 = [v34 objectEnumerator];
+        objectEnumerator = [v34 objectEnumerator];
         v36 = self->_enumerator;
-        self->_enumerator = v35;
+        self->_enumerator = objectEnumerator;
 
 LABEL_58:
         goto LABEL_59;
       }
 
-      v16 = 0;
+      identifierList = 0;
       if (v4)
       {
         goto LABEL_50;
@@ -210,7 +210,7 @@ LABEL_58:
     }
 
 LABEL_48:
-    v16 = v23;
+    identifierList = autoPlayIdentifierList2;
     goto LABEL_49;
   }
 
@@ -224,7 +224,7 @@ LABEL_48:
     self->_nextEnumerator = 0;
     if ((self->_options & 8) == 0)
     {
-      if ((v18 = [WeakRetained repeatType], (objc_msgSend(WeakRetained, "autoPlayEnabled")) || (objc_msgSend(WeakRetained, "autoPlayEndPosition"), v19 = objc_claimAutoreleasedReturnValue(), v19, v19)) && !v18 || !self->_mode || v12)
+      if ((v18 = [WeakRetained repeatType], (objc_msgSend(WeakRetained, "autoPlayEnabled")) || (objc_msgSend(WeakRetained, "autoPlayEndPosition"), v19 = objc_claimAutoreleasedReturnValue(), v19, v19)) && !v18 || !self->_mode || latestUpNextSectionID)
       {
         self->_nextEnumerator = 2;
       }
@@ -232,8 +232,8 @@ LABEL_48:
 
     if ((self->_mode & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
-      v20 = [WeakRetained repeatType];
-      if (!self->_nextEnumerator && v20 == 2)
+      repeatType = [WeakRetained repeatType];
+      if (!self->_nextEnumerator && repeatType == 2)
       {
         self->_nextEnumerator = 3;
         startPosition = self->_startPosition;
@@ -245,7 +245,7 @@ LABEL_48:
     }
 
     self->_isEnumeratingFromRepeatAllBase = 0;
-    v23 = [WeakRetained identifierList];
+    autoPlayIdentifierList2 = [WeakRetained identifierList];
     goto LABEL_48;
   }
 
@@ -268,49 +268,49 @@ LABEL_59:
     enumerator = self->_enumerator;
   }
 
-  v4 = [(NSEnumerator *)enumerator nextObject];
-  if (!v4)
+  nextObject = [(NSEnumerator *)enumerator nextObject];
+  if (!nextObject)
   {
     [(_MPCQueueControllerEnumerator *)self _buildEnumerator];
-    v4 = [(NSEnumerator *)self->_enumerator nextObject];
+    nextObject = [(NSEnumerator *)self->_enumerator nextObject];
   }
 
-  if (self->_isEnumeratingFromRepeatAllBase && [v4 entryType] == 3)
+  if (self->_isEnumeratingFromRepeatAllBase && [nextObject entryType] == 3)
   {
     self->_hasEmittedItemFromRepeatAllBase = 1;
   }
 
-  return v4;
+  return nextObject;
 }
 
-+ (_MPCQueueControllerEnumerator)enumeratorWithMusicBehavior:(id)a3 mode:(int64_t)a4 options:(unint64_t)a5 startPosition:(id)a6 endPosition:(id)a7
++ (_MPCQueueControllerEnumerator)enumeratorWithMusicBehavior:(id)behavior mode:(int64_t)mode options:(unint64_t)options startPosition:(id)position endPosition:(id)endPosition
 {
-  v11 = a3;
-  v12 = a6;
-  v13 = a7;
-  v14 = [[_MPCQueueControllerEnumerator alloc] _init];
-  objc_storeWeak(v14 + 4, v11);
-  v14[5] = a4;
-  v14[6] = a5;
-  objc_storeStrong(v14 + 8, a6);
-  if ((a5 & 8) != 0)
+  behaviorCopy = behavior;
+  positionCopy = position;
+  endPositionCopy = endPosition;
+  _init = [[_MPCQueueControllerEnumerator alloc] _init];
+  objc_storeWeak(_init + 4, behaviorCopy);
+  _init[5] = mode;
+  _init[6] = options;
+  objc_storeStrong(_init + 8, position);
+  if ((options & 8) != 0)
   {
-    v14[1] = 2;
-    if (v12)
+    _init[1] = 2;
+    if (positionCopy)
     {
-      v22 = [v12 itemIdentifier];
-      v23 = [v22 isEqualToString:@"_PLACEHOLDER_AUTOPLAY_"];
+      itemIdentifier = [positionCopy itemIdentifier];
+      v23 = [itemIdentifier isEqualToString:@"_PLACEHOLDER_AUTOPLAY_"];
 
       if (v23)
       {
-        v14[1] = 1;
-        v24 = v14[8];
-        v14[8] = 0;
+        _init[1] = 1;
+        v24 = _init[8];
+        _init[8] = 0;
       }
 
-      v25 = [v11 identifierList];
-      v26 = [v12 sectionIdentifier];
-      v27 = [v25 hasSection:v26];
+      identifierList = [behaviorCopy identifierList];
+      sectionIdentifier = [positionCopy sectionIdentifier];
+      v27 = [identifierList hasSection:sectionIdentifier];
 
       if (v27)
       {
@@ -322,36 +322,36 @@ LABEL_59:
 
   else
   {
-    v14[1] = 1;
-    if (v12)
+    _init[1] = 1;
+    if (positionCopy)
     {
-      v15 = [v12 itemIdentifier];
-      v16 = [v15 isEqualToString:@"_PLACEHOLDER_AUTOPLAY_"];
+      itemIdentifier2 = [positionCopy itemIdentifier];
+      v16 = [itemIdentifier2 isEqualToString:@"_PLACEHOLDER_AUTOPLAY_"];
 
       if (v16)
       {
-        v14[1] = 2;
-        v17 = v14[8];
-        v14[8] = 0;
+        _init[1] = 2;
+        v17 = _init[8];
+        _init[8] = 0;
       }
 
-      v18 = [v11 autoPlayIdentifierList];
-      v19 = [v12 sectionIdentifier];
-      v20 = [v18 hasSection:v19];
+      autoPlayIdentifierList = [behaviorCopy autoPlayIdentifierList];
+      sectionIdentifier2 = [positionCopy sectionIdentifier];
+      v20 = [autoPlayIdentifierList hasSection:sectionIdentifier2];
 
       if (v20)
       {
         v21 = 2;
 LABEL_12:
-        v14[1] = v21;
+        _init[1] = v21;
       }
     }
   }
 
-  v28 = v14[9];
-  v14[9] = v13;
+  v28 = _init[9];
+  _init[9] = endPositionCopy;
 
-  return v14;
+  return _init;
 }
 
 @end

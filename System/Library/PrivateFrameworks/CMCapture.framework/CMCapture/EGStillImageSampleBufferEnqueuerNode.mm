@@ -1,53 +1,53 @@
 @interface EGStillImageSampleBufferEnqueuerNode
-- (EGStillImageSampleBufferEnqueuerNode)initWithName:(id)a3 primaryPortType:(id)a4 numPrimarySbufOutputs:(int)a5 numSecondarySbufOutputs:(int)a6 stillImageSettings:(id)a7;
-- (int)enqueueSampleBuffer:(opaqueCMSampleBuffer *)a3;
+- (EGStillImageSampleBufferEnqueuerNode)initWithName:(id)name primaryPortType:(id)type numPrimarySbufOutputs:(int)outputs numSecondarySbufOutputs:(int)sbufOutputs stillImageSettings:(id)settings;
+- (int)enqueueSampleBuffer:(opaqueCMSampleBuffer *)buffer;
 - (void)dealloc;
 @end
 
 @implementation EGStillImageSampleBufferEnqueuerNode
 
-- (EGStillImageSampleBufferEnqueuerNode)initWithName:(id)a3 primaryPortType:(id)a4 numPrimarySbufOutputs:(int)a5 numSecondarySbufOutputs:(int)a6 stillImageSettings:(id)a7
+- (EGStillImageSampleBufferEnqueuerNode)initWithName:(id)name primaryPortType:(id)type numPrimarySbufOutputs:(int)outputs numSecondarySbufOutputs:(int)sbufOutputs stillImageSettings:(id)settings
 {
   v18.receiver = self;
   v18.super_class = EGStillImageSampleBufferEnqueuerNode;
-  v10 = [(EGNode *)&v18 initWithName:a3, a4, *&a5, *&a6, a7];
-  if (v10)
+  settings = [(EGNode *)&v18 initWithName:name, type, *&outputs, *&sbufOutputs, settings];
+  if (settings)
   {
-    v10->_primaryPortType = a4;
-    v10->_primarySbufOutputs = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (a5 >= 1)
+    settings->_primaryPortType = type;
+    settings->_primarySbufOutputs = objc_alloc_init(MEMORY[0x1E695DF70]);
+    if (outputs >= 1)
     {
       v11 = 0;
       do
       {
         v12 = [EGStillImageOutput alloc];
         v13 = -[EGOutput initWithName:](v12, "initWithName:", [MEMORY[0x1E696AEC0] stringWithFormat:@"sbuf%d", v11]);
-        [(NSMutableArray *)v10->_primarySbufOutputs addObject:v13];
-        [(EGNode *)v10 installOutput:v13];
+        [(NSMutableArray *)settings->_primarySbufOutputs addObject:v13];
+        [(EGNode *)settings installOutput:v13];
         v11 = (v11 + 1);
       }
 
-      while (a5 != v11);
+      while (outputs != v11);
     }
 
-    v10->_secondarySbufOutputs = objc_alloc_init(MEMORY[0x1E695DF70]);
-    if (a6 >= 1)
+    settings->_secondarySbufOutputs = objc_alloc_init(MEMORY[0x1E695DF70]);
+    if (sbufOutputs >= 1)
     {
       v14 = 0;
       do
       {
         v15 = [EGStillImageOutput alloc];
         v16 = -[EGOutput initWithName:](v15, "initWithName:", [MEMORY[0x1E696AEC0] stringWithFormat:@"auxSbuf%d", v14]);
-        [(NSMutableArray *)v10->_secondarySbufOutputs addObject:v16];
-        [(EGNode *)v10 installOutput:v16];
+        [(NSMutableArray *)settings->_secondarySbufOutputs addObject:v16];
+        [(EGNode *)settings installOutput:v16];
         v14 = (v14 + 1);
       }
 
-      while (a6 != v14);
+      while (sbufOutputs != v14);
     }
   }
 
-  return v10;
+  return settings;
 }
 
 - (void)dealloc
@@ -57,9 +57,9 @@
   [(EGNode *)&v3 dealloc];
 }
 
-- (int)enqueueSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (int)enqueueSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v5 = [CMGetAttachment(a3 *off_1E798A3C8];
+  v5 = [CMGetAttachment(buffer *off_1E798A3C8];
   if (!v5)
   {
     return -12780;
@@ -86,7 +86,7 @@
   }
 
   v10 = [*v9 objectAtIndexedSubscript:(*p_primarySbufCount)++];
-  v11 = [[EGStillImageGraphPayload alloc] initWithSampleBuffer:a3];
+  v11 = [[EGStillImageGraphPayload alloc] initWithSampleBuffer:buffer];
   [v10 emitPayload:v11];
 
   return 0;

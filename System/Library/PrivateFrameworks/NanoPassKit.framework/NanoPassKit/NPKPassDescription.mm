@@ -1,28 +1,28 @@
 @interface NPKPassDescription
 + (BOOL)isCachingEnabled;
-+ (void)setCachingEnabled:(BOOL)a3;
++ (void)setCachingEnabled:(BOOL)enabled;
 - (BOOL)hasValidNFCPayload;
 - (BOOL)isAddValuePending;
 - (BOOL)isEnroute;
-- (BOOL)isEqual:(id)a3;
-- (NPKPassDescription)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NPKPassDescription)initWithCoder:(id)coder;
 - (NSData)backgroundImageEncoded;
 - (NSData)logoImageEncoded;
 - (PKImage)backgroundImage;
 - (PKImage)logoImage;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)encodeAsData:(id)a3;
-- (id)fieldForKey:(id)a3;
+- (id)encodeAsData:(id)data;
+- (id)fieldForKey:(id)key;
 - (id)transitProperties;
 - (int64_t)effectiveContactlessPaymentApplicationState;
 - (unint64_t)hash;
-- (void)encodeObject:(id)a3 asDataInCoder:(id)a4 withKey:(id)a5;
-- (void)encodeWithCoder:(id)a3;
-- (void)setBackgroundImage:(id)a3;
-- (void)setBackgroundImageEncoded:(id)a3;
-- (void)setLogoImage:(id)a3;
-- (void)setLogoImageEncoded:(id)a3;
+- (void)encodeObject:(id)object asDataInCoder:(id)coder withKey:(id)key;
+- (void)encodeWithCoder:(id)coder;
+- (void)setBackgroundImage:(id)image;
+- (void)setBackgroundImageEncoded:(id)encoded;
+- (void)setLogoImage:(id)image;
+- (void)setLogoImageEncoded:(id)encoded;
 @end
 
 @implementation NPKPassDescription
@@ -37,264 +37,264 @@
   return __IsCachingEnabled;
 }
 
-+ (void)setCachingEnabled:(BOOL)a3
++ (void)setCachingEnabled:(BOOL)enabled
 {
   if (__InitializeCachingIfNecessary_onceToken != -1)
   {
     +[NPKPassDescription isCachingEnabled];
   }
 
-  __IsCachingEnabled = a3;
+  __IsCachingEnabled = enabled;
 }
 
-- (NPKPassDescription)initWithCoder:(id)a3
+- (NPKPassDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v52.receiver = self;
   v52.super_class = NPKPassDescription;
   v5 = [(NPKPassDescription *)&v52 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueID"];
     [(NPKPassDescription *)v5 setUniqueID:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"groupID"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"groupID"];
     [(NPKPassDescription *)v5 setGroupID:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
     [(NPKPassDescription *)v5 setPassTypeIdentifier:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"manifestHash"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"manifestHash"];
     [(NPKPassDescription *)v5 setManifestHash:v9];
 
-    -[NPKPassDescription setStyle:](v5, "setStyle:", [v4 decodeIntegerForKey:@"style"]);
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relevantDate"];
+    -[NPKPassDescription setStyle:](v5, "setStyle:", [coderCopy decodeIntegerForKey:@"style"]);
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relevantDate"];
     [(NPKPassDescription *)v5 setRelevantDate:v10];
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ingestionDate"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ingestionDate"];
     [(NPKPassDescription *)v5 setIngestionDate:v11];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"logoText"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"logoText"];
     [(NPKPassDescription *)v5 setLogoText:v12];
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundColor"];
     [(NPKPassDescription *)v5 setBackgroundColor:v13];
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"foregroundColor"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"foregroundColor"];
     [(NPKPassDescription *)v5 setForegroundColor:v14];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"labelColor"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"labelColor"];
     [(NPKPassDescription *)v5 setLabelColor:v15];
 
     v16 = MEMORY[0x277CBEB98];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"devicePaymentApplications"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"devicePaymentApplications"];
     [(NPKPassDescription *)v5 setDevicePaymentApplications:v19];
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"devicePrimaryPaymentApplication"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"devicePrimaryPaymentApplication"];
     [(NPKPassDescription *)v5 setDevicePrimaryPaymentApplication:v20];
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"devicePrimaryContactlessPaymentApplication"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"devicePrimaryContactlessPaymentApplication"];
     [(NPKPassDescription *)v5 setDevicePrimaryContactlessPaymentApplication:v21];
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"devicePrimaryInAppPaymentApplication"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"devicePrimaryInAppPaymentApplication"];
     [(NPKPassDescription *)v5 setDevicePrimaryInAppPaymentApplication:v22];
 
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"preferredPaymentApplication"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"preferredPaymentApplication"];
     [(NPKPassDescription *)v5 setPreferredPaymentApplication:v23];
 
-    -[NPKPassDescription setEffectivePaymentApplicationState:](v5, "setEffectivePaymentApplicationState:", [v4 decodeIntegerForKey:@"effectivePaymentApplicationState"]);
-    -[NPKPassDescription setPrivateLabel:](v5, "setPrivateLabel:", [v4 decodeBoolForKey:@"privateLabel"]);
-    -[NPKPassDescription setCobranded:](v5, "setCobranded:", [v4 decodeBoolForKey:@"cobranded"]);
-    -[NPKPassDescription setDeletePending:](v5, "setDeletePending:", [v4 decodeBoolForKey:@"deletePending"]);
-    -[NPKPassDescription setHasUserSelectableContactlessPaymentApplications:](v5, "setHasUserSelectableContactlessPaymentApplications:", [v4 decodeBoolForKey:@"hasUserSelectablePaymentApplications"]);
-    v24 = [(NPKPassDescription *)v5 logoImage];
+    -[NPKPassDescription setEffectivePaymentApplicationState:](v5, "setEffectivePaymentApplicationState:", [coderCopy decodeIntegerForKey:@"effectivePaymentApplicationState"]);
+    -[NPKPassDescription setPrivateLabel:](v5, "setPrivateLabel:", [coderCopy decodeBoolForKey:@"privateLabel"]);
+    -[NPKPassDescription setCobranded:](v5, "setCobranded:", [coderCopy decodeBoolForKey:@"cobranded"]);
+    -[NPKPassDescription setDeletePending:](v5, "setDeletePending:", [coderCopy decodeBoolForKey:@"deletePending"]);
+    -[NPKPassDescription setHasUserSelectableContactlessPaymentApplications:](v5, "setHasUserSelectableContactlessPaymentApplications:", [coderCopy decodeBoolForKey:@"hasUserSelectablePaymentApplications"]);
+    logoImage = [(NPKPassDescription *)v5 logoImage];
 
-    if (!v24)
+    if (!logoImage)
     {
-      v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"logoImageEncoded"];
+      v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"logoImageEncoded"];
       [(NPKPassDescription *)v5 setLogoImageEncoded:v25];
     }
 
-    v26 = [(NPKPassDescription *)v5 backgroundImage];
+    backgroundImage = [(NPKPassDescription *)v5 backgroundImage];
 
-    if (!v26)
+    if (!backgroundImage)
     {
-      v27 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"backgroundImageEncoded"];
+      v27 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"backgroundImageEncoded"];
       [(NPKPassDescription *)v5 setBackgroundImageEncoded:v27];
     }
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedDescription"];
     [(NPKPassDescription *)v5 setLocalizedDescription:v28];
 
-    v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nfcPayload"];
+    v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nfcPayload"];
     [(NPKPassDescription *)v5 setNfcPayload:v29];
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"completeHash"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"completeHash"];
     [(NPKPassDescription *)v5 setCompleteHash:v30];
 
-    -[NPKPassDescription setHasStoredValue:](v5, "setHasStoredValue:", [v4 decodeBoolForKey:@"hasStoredValue"]);
-    v31 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"settings"];
+    -[NPKPassDescription setHasStoredValue:](v5, "setHasStoredValue:", [coderCopy decodeBoolForKey:@"hasStoredValue"]);
+    v31 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"settings"];
     v32 = v31;
     if (v31)
     {
-      v33 = [v31 unsignedIntegerValue];
+      unsignedIntegerValue = [v31 unsignedIntegerValue];
     }
 
     else if ([(NPKPassDescription *)v5 style]== 6)
     {
-      v33 = 72;
+      unsignedIntegerValue = 72;
     }
 
     else
     {
-      v33 = 3;
+      unsignedIntegerValue = 3;
     }
 
-    [(NPKPassDescription *)v5 setSettings:v33];
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"issuerCountryCode"];
+    [(NPKPassDescription *)v5 setSettings:unsignedIntegerValue];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"issuerCountryCode"];
     [(NPKPassDescription *)v5 setIssuerCountryCode:v34];
 
     v35 = MEMORY[0x277CBEB98];
     v36 = objc_opt_class();
     v37 = [v35 setWithObjects:{v36, objc_opt_class(), 0}];
-    v38 = [v4 decodeObjectOfClasses:v37 forKey:@"availableActions"];
+    v38 = [coderCopy decodeObjectOfClasses:v37 forKey:@"availableActions"];
     [(NPKPassDescription *)v5 setAvailableActions:v38];
 
-    v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"organizationName"];
+    v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"organizationName"];
     [(NPKPassDescription *)v5 setOrganizationName:v39];
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"felicaTransitAppletState"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"felicaTransitAppletState"];
     [(NPKPassDescription *)v5 setTransitAppletState:v40];
 
     v41 = MEMORY[0x277CBEB98];
     v42 = objc_opt_class();
     v43 = [v41 setWithObjects:{v42, objc_opt_class(), 0}];
-    v44 = [v4 decodeObjectOfClasses:v43 forKey:@"frontFieldBuckets"];
+    v44 = [coderCopy decodeObjectOfClasses:v43 forKey:@"frontFieldBuckets"];
     [(NPKPassDescription *)v5 setFrontFieldBuckets:v44];
 
     v45 = MEMORY[0x277CBEB98];
     v46 = objc_opt_class();
     v47 = [v45 setWithObjects:{v46, objc_opt_class(), 0}];
-    v48 = [v4 decodeObjectOfClasses:v47 forKey:@"backFieldBuckets"];
+    v48 = [coderCopy decodeObjectOfClasses:v47 forKey:@"backFieldBuckets"];
     [(NPKPassDescription *)v5 setBackFieldBuckets:v48];
 
-    v49 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastAddValueAmount"];
+    v49 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastAddValueAmount"];
     [(NPKPassDescription *)v5 setLastAddValueAmount:v49];
 
-    v50 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pendingAddValueDate"];
+    v50 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pendingAddValueDate"];
     [(NPKPassDescription *)v5 setPendingAddValueDate:v50];
 
-    -[NPKPassDescription setExpressPassTypesMask:](v5, "setExpressPassTypesMask:", [v4 decodeIntegerForKey:@"expressPassTypesMask"]);
-    -[NPKPassDescription setHasAssociatedPeerPaymentAccount:](v5, "setHasAssociatedPeerPaymentAccount:", [v4 decodeBoolForKey:@"hasAssociatedPeerPaymentAccount"]);
+    -[NPKPassDescription setExpressPassTypesMask:](v5, "setExpressPassTypesMask:", [coderCopy decodeIntegerForKey:@"expressPassTypesMask"]);
+    -[NPKPassDescription setHasAssociatedPeerPaymentAccount:](v5, "setHasAssociatedPeerPaymentAccount:", [coderCopy decodeBoolForKey:@"hasAssociatedPeerPaymentAccount"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v33 = a3;
-  v4 = [(NPKPassDescription *)self uniqueID];
-  [v33 encodeObject:v4 forKey:@"uniqueID"];
+  coderCopy = coder;
+  uniqueID = [(NPKPassDescription *)self uniqueID];
+  [coderCopy encodeObject:uniqueID forKey:@"uniqueID"];
 
-  v5 = [(NPKPassDescription *)self groupID];
-  [v33 encodeObject:v5 forKey:@"groupID"];
+  groupID = [(NPKPassDescription *)self groupID];
+  [coderCopy encodeObject:groupID forKey:@"groupID"];
 
-  v6 = [(NPKPassDescription *)self passTypeIdentifier];
-  [v33 encodeObject:v6 forKey:@"passTypeIdentifier"];
+  passTypeIdentifier = [(NPKPassDescription *)self passTypeIdentifier];
+  [coderCopy encodeObject:passTypeIdentifier forKey:@"passTypeIdentifier"];
 
-  v7 = [(NPKPassDescription *)self manifestHash];
-  [v33 encodeObject:v7 forKey:@"manifestHash"];
+  manifestHash = [(NPKPassDescription *)self manifestHash];
+  [coderCopy encodeObject:manifestHash forKey:@"manifestHash"];
 
-  [v33 encodeInteger:-[NPKPassDescription style](self forKey:{"style"), @"style"}];
-  v8 = [(NPKPassDescription *)self relevantDate];
-  [v33 encodeObject:v8 forKey:@"relevantDate"];
+  [coderCopy encodeInteger:-[NPKPassDescription style](self forKey:{"style"), @"style"}];
+  relevantDate = [(NPKPassDescription *)self relevantDate];
+  [coderCopy encodeObject:relevantDate forKey:@"relevantDate"];
 
-  v9 = [(NPKPassDescription *)self ingestionDate];
-  [v33 encodeObject:v9 forKey:@"ingestionDate"];
+  ingestionDate = [(NPKPassDescription *)self ingestionDate];
+  [coderCopy encodeObject:ingestionDate forKey:@"ingestionDate"];
 
-  v10 = [(NPKPassDescription *)self logoText];
-  [v33 encodeObject:v10 forKey:@"logoText"];
+  logoText = [(NPKPassDescription *)self logoText];
+  [coderCopy encodeObject:logoText forKey:@"logoText"];
 
-  v11 = [(NPKPassDescription *)self backgroundColor];
-  [v33 encodeObject:v11 forKey:@"backgroundColor"];
+  backgroundColor = [(NPKPassDescription *)self backgroundColor];
+  [coderCopy encodeObject:backgroundColor forKey:@"backgroundColor"];
 
-  v12 = [(NPKPassDescription *)self foregroundColor];
-  [v33 encodeObject:v12 forKey:@"foregroundColor"];
+  foregroundColor = [(NPKPassDescription *)self foregroundColor];
+  [coderCopy encodeObject:foregroundColor forKey:@"foregroundColor"];
 
-  v13 = [(NPKPassDescription *)self labelColor];
-  [v33 encodeObject:v13 forKey:@"labelColor"];
+  labelColor = [(NPKPassDescription *)self labelColor];
+  [coderCopy encodeObject:labelColor forKey:@"labelColor"];
 
-  v14 = [(NPKPassDescription *)self devicePaymentApplications];
-  [v33 encodeObject:v14 forKey:@"devicePaymentApplications"];
+  devicePaymentApplications = [(NPKPassDescription *)self devicePaymentApplications];
+  [coderCopy encodeObject:devicePaymentApplications forKey:@"devicePaymentApplications"];
 
-  v15 = [(NPKPassDescription *)self devicePrimaryPaymentApplication];
-  [v33 encodeObject:v15 forKey:@"devicePrimaryPaymentApplication"];
+  devicePrimaryPaymentApplication = [(NPKPassDescription *)self devicePrimaryPaymentApplication];
+  [coderCopy encodeObject:devicePrimaryPaymentApplication forKey:@"devicePrimaryPaymentApplication"];
 
-  v16 = [(NPKPassDescription *)self devicePrimaryContactlessPaymentApplication];
-  [v33 encodeObject:v16 forKey:@"devicePrimaryContactlessPaymentApplication"];
+  devicePrimaryContactlessPaymentApplication = [(NPKPassDescription *)self devicePrimaryContactlessPaymentApplication];
+  [coderCopy encodeObject:devicePrimaryContactlessPaymentApplication forKey:@"devicePrimaryContactlessPaymentApplication"];
 
-  v17 = [(NPKPassDescription *)self devicePrimaryInAppPaymentApplication];
-  [v33 encodeObject:v17 forKey:@"devicePrimaryInAppPaymentApplication"];
+  devicePrimaryInAppPaymentApplication = [(NPKPassDescription *)self devicePrimaryInAppPaymentApplication];
+  [coderCopy encodeObject:devicePrimaryInAppPaymentApplication forKey:@"devicePrimaryInAppPaymentApplication"];
 
-  v18 = [(NPKPassDescription *)self preferredPaymentApplication];
-  [v33 encodeObject:v18 forKey:@"preferredPaymentApplication"];
+  preferredPaymentApplication = [(NPKPassDescription *)self preferredPaymentApplication];
+  [coderCopy encodeObject:preferredPaymentApplication forKey:@"preferredPaymentApplication"];
 
-  [v33 encodeInteger:-[NPKPassDescription effectivePaymentApplicationState](self forKey:{"effectivePaymentApplicationState"), @"effectivePaymentApplicationState"}];
-  [v33 encodeBool:-[NPKPassDescription isPrivateLabel](self forKey:{"isPrivateLabel"), @"privateLabel"}];
-  [v33 encodeBool:-[NPKPassDescription isCobranded](self forKey:{"isCobranded"), @"cobranded"}];
-  [v33 encodeBool:-[NPKPassDescription deletePending](self forKey:{"deletePending"), @"deletePending"}];
-  [v33 encodeBool:-[NPKPassDescription hasUserSelectableContactlessPaymentApplications](self forKey:{"hasUserSelectableContactlessPaymentApplications"), @"hasUserSelectablePaymentApplications"}];
-  v19 = [(NPKPassDescription *)self logoImageEncoded];
-  [v33 encodeObject:v19 forKey:@"logoImageEncoded"];
+  [coderCopy encodeInteger:-[NPKPassDescription effectivePaymentApplicationState](self forKey:{"effectivePaymentApplicationState"), @"effectivePaymentApplicationState"}];
+  [coderCopy encodeBool:-[NPKPassDescription isPrivateLabel](self forKey:{"isPrivateLabel"), @"privateLabel"}];
+  [coderCopy encodeBool:-[NPKPassDescription isCobranded](self forKey:{"isCobranded"), @"cobranded"}];
+  [coderCopy encodeBool:-[NPKPassDescription deletePending](self forKey:{"deletePending"), @"deletePending"}];
+  [coderCopy encodeBool:-[NPKPassDescription hasUserSelectableContactlessPaymentApplications](self forKey:{"hasUserSelectableContactlessPaymentApplications"), @"hasUserSelectablePaymentApplications"}];
+  logoImageEncoded = [(NPKPassDescription *)self logoImageEncoded];
+  [coderCopy encodeObject:logoImageEncoded forKey:@"logoImageEncoded"];
 
-  v20 = [(NPKPassDescription *)self backgroundImageEncoded];
-  [v33 encodeObject:v20 forKey:@"backgroundImageEncoded"];
+  backgroundImageEncoded = [(NPKPassDescription *)self backgroundImageEncoded];
+  [coderCopy encodeObject:backgroundImageEncoded forKey:@"backgroundImageEncoded"];
 
-  v21 = [(NPKPassDescription *)self localizedDescription];
-  [v33 encodeObject:v21 forKey:@"localizedDescription"];
+  localizedDescription = [(NPKPassDescription *)self localizedDescription];
+  [coderCopy encodeObject:localizedDescription forKey:@"localizedDescription"];
 
-  v22 = [(NPKPassDescription *)self nfcPayload];
-  [v33 encodeObject:v22 forKey:@"nfcPayload"];
+  nfcPayload = [(NPKPassDescription *)self nfcPayload];
+  [coderCopy encodeObject:nfcPayload forKey:@"nfcPayload"];
 
-  v23 = [(NPKPassDescription *)self completeHash];
-  [v33 encodeObject:v23 forKey:@"completeHash"];
+  completeHash = [(NPKPassDescription *)self completeHash];
+  [coderCopy encodeObject:completeHash forKey:@"completeHash"];
 
-  [v33 encodeBool:-[NPKPassDescription hasStoredValue](self forKey:{"hasStoredValue"), @"hasStoredValue"}];
+  [coderCopy encodeBool:-[NPKPassDescription hasStoredValue](self forKey:{"hasStoredValue"), @"hasStoredValue"}];
   v24 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[NPKPassDescription settings](self, "settings")}];
-  [v33 encodeObject:v24 forKey:@"settings"];
+  [coderCopy encodeObject:v24 forKey:@"settings"];
 
-  v25 = [(NPKPassDescription *)self issuerCountryCode];
-  [v33 encodeObject:v25 forKey:@"issuerCountryCode"];
+  issuerCountryCode = [(NPKPassDescription *)self issuerCountryCode];
+  [coderCopy encodeObject:issuerCountryCode forKey:@"issuerCountryCode"];
 
-  v26 = [(NPKPassDescription *)self availableActions];
-  [v33 encodeObject:v26 forKey:@"availableActions"];
+  availableActions = [(NPKPassDescription *)self availableActions];
+  [coderCopy encodeObject:availableActions forKey:@"availableActions"];
 
-  v27 = [(NPKPassDescription *)self organizationName];
-  [v33 encodeObject:v27 forKey:@"organizationName"];
+  organizationName = [(NPKPassDescription *)self organizationName];
+  [coderCopy encodeObject:organizationName forKey:@"organizationName"];
 
-  v28 = [(NPKPassDescription *)self transitAppletState];
-  [v33 encodeObject:v28 forKey:@"felicaTransitAppletState"];
+  transitAppletState = [(NPKPassDescription *)self transitAppletState];
+  [coderCopy encodeObject:transitAppletState forKey:@"felicaTransitAppletState"];
 
-  v29 = [(NPKPassDescription *)self frontFieldBuckets];
-  [v33 encodeObject:v29 forKey:@"frontFieldBuckets"];
+  frontFieldBuckets = [(NPKPassDescription *)self frontFieldBuckets];
+  [coderCopy encodeObject:frontFieldBuckets forKey:@"frontFieldBuckets"];
 
-  v30 = [(NPKPassDescription *)self backFieldBuckets];
-  [v33 encodeObject:v30 forKey:@"backFieldBuckets"];
+  backFieldBuckets = [(NPKPassDescription *)self backFieldBuckets];
+  [coderCopy encodeObject:backFieldBuckets forKey:@"backFieldBuckets"];
 
-  v31 = [(NPKPassDescription *)self lastAddValueAmount];
-  [v33 encodeObject:v31 forKey:@"lastAddValueAmount"];
+  lastAddValueAmount = [(NPKPassDescription *)self lastAddValueAmount];
+  [coderCopy encodeObject:lastAddValueAmount forKey:@"lastAddValueAmount"];
 
-  v32 = [(NPKPassDescription *)self pendingAddValueDate];
-  [v33 encodeObject:v32 forKey:@"pendingAddValueDate"];
+  pendingAddValueDate = [(NPKPassDescription *)self pendingAddValueDate];
+  [coderCopy encodeObject:pendingAddValueDate forKey:@"pendingAddValueDate"];
 
-  [v33 encodeInteger:-[NPKPassDescription expressPassTypesMask](self forKey:{"expressPassTypesMask"), @"expressPassTypesMask"}];
-  [v33 encodeBool:-[NPKPassDescription hasAssociatedPeerPaymentAccount](self forKey:{"hasAssociatedPeerPaymentAccount"), @"hasAssociatedPeerPaymentAccount"}];
+  [coderCopy encodeInteger:-[NPKPassDescription expressPassTypesMask](self forKey:{"expressPassTypesMask"), @"expressPassTypesMask"}];
+  [coderCopy encodeBool:-[NPKPassDescription hasAssociatedPeerPaymentAccount](self forKey:{"hasAssociatedPeerPaymentAccount"), @"hasAssociatedPeerPaymentAccount"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(NPKPassDescription);
   objc_storeStrong(&v4->_uniqueID, self->_uniqueID);
@@ -341,10 +341,10 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v36 = 1;
   }
@@ -358,7 +358,7 @@
     }
 
     uniqueID = self->_uniqueID;
-    if (uniqueID | v4->_uniqueID)
+    if (uniqueID | equalCopy->_uniqueID)
     {
       if (![(NSString *)uniqueID isEqualToString:?])
       {
@@ -367,7 +367,7 @@
     }
 
     groupID = self->_groupID;
-    if (groupID | v4->_groupID)
+    if (groupID | equalCopy->_groupID)
     {
       if (![(NSNumber *)groupID isEqual:?])
       {
@@ -376,7 +376,7 @@
     }
 
     passTypeIdentifier = self->_passTypeIdentifier;
-    if (passTypeIdentifier | v4->_passTypeIdentifier)
+    if (passTypeIdentifier | equalCopy->_passTypeIdentifier)
     {
       if (![(NSString *)passTypeIdentifier isEqualToString:?])
       {
@@ -385,7 +385,7 @@
     }
 
     manifestHash = self->_manifestHash;
-    if (manifestHash | v4->_manifestHash)
+    if (manifestHash | equalCopy->_manifestHash)
     {
       if (![(NSData *)manifestHash isEqualToData:?])
       {
@@ -393,13 +393,13 @@
       }
     }
 
-    if (self->_style != v4->_style)
+    if (self->_style != equalCopy->_style)
     {
       goto LABEL_72;
     }
 
     relevantDate = self->_relevantDate;
-    if (relevantDate | v4->_relevantDate)
+    if (relevantDate | equalCopy->_relevantDate)
     {
       if (![(NSDate *)relevantDate isEqualToDate:?])
       {
@@ -408,7 +408,7 @@
     }
 
     ingestionDate = self->_ingestionDate;
-    if (ingestionDate | v4->_ingestionDate)
+    if (ingestionDate | equalCopy->_ingestionDate)
     {
       if (![(NSDate *)ingestionDate isEqualToDate:?])
       {
@@ -417,7 +417,7 @@
     }
 
     logoText = self->_logoText;
-    if (logoText | v4->_logoText)
+    if (logoText | equalCopy->_logoText)
     {
       if (![(NSString *)logoText isEqualToString:?])
       {
@@ -426,7 +426,7 @@
     }
 
     logoImageEncoded = self->_logoImageEncoded;
-    if (logoImageEncoded | v4->_logoImageEncoded)
+    if (logoImageEncoded | equalCopy->_logoImageEncoded)
     {
       if (![(NSData *)logoImageEncoded isEqualToData:?])
       {
@@ -435,104 +435,104 @@
     }
 
     backgroundColor = self->_backgroundColor;
-    if (backgroundColor || v4->_backgroundColor)
+    if (backgroundColor || equalCopy->_backgroundColor)
     {
       v14 = [(PKColor *)backgroundColor hash];
-      if (v14 != [(PKColor *)v4->_backgroundColor hash])
+      if (v14 != [(PKColor *)equalCopy->_backgroundColor hash])
       {
         goto LABEL_72;
       }
     }
 
     foregroundColor = self->_foregroundColor;
-    if (foregroundColor || v4->_foregroundColor)
+    if (foregroundColor || equalCopy->_foregroundColor)
     {
       v16 = [(PKColor *)foregroundColor hash];
-      if (v16 != [(PKColor *)v4->_foregroundColor hash])
+      if (v16 != [(PKColor *)equalCopy->_foregroundColor hash])
       {
         goto LABEL_72;
       }
     }
 
     labelColor = self->_labelColor;
-    if (labelColor || v4->_labelColor)
+    if (labelColor || equalCopy->_labelColor)
     {
       v18 = [(PKColor *)labelColor hash];
-      if (v18 != [(PKColor *)v4->_labelColor hash])
+      if (v18 != [(PKColor *)equalCopy->_labelColor hash])
       {
         goto LABEL_72;
       }
     }
 
     localizedDescription = self->_localizedDescription;
-    if (localizedDescription | v4->_localizedDescription && ![(NSString *)localizedDescription isEqualToString:?])
+    if (localizedDescription | equalCopy->_localizedDescription && ![(NSString *)localizedDescription isEqualToString:?])
     {
       goto LABEL_72;
     }
 
     backgroundImageEncoded = self->_backgroundImageEncoded;
-    if (backgroundImageEncoded | v4->_backgroundImageEncoded && ![(NSData *)backgroundImageEncoded isEqualToData:?])
+    if (backgroundImageEncoded | equalCopy->_backgroundImageEncoded && ![(NSData *)backgroundImageEncoded isEqualToData:?])
     {
       goto LABEL_72;
     }
 
     devicePaymentApplications = self->_devicePaymentApplications;
-    if (devicePaymentApplications | v4->_devicePaymentApplications && ![(NSSet *)devicePaymentApplications isEqual:?])
+    if (devicePaymentApplications | equalCopy->_devicePaymentApplications && ![(NSSet *)devicePaymentApplications isEqual:?])
     {
       goto LABEL_72;
     }
 
     devicePrimaryPaymentApplication = self->_devicePrimaryPaymentApplication;
-    if (devicePrimaryPaymentApplication | v4->_devicePrimaryPaymentApplication && ![(PKPaymentApplication *)devicePrimaryPaymentApplication isEqual:?])
+    if (devicePrimaryPaymentApplication | equalCopy->_devicePrimaryPaymentApplication && ![(PKPaymentApplication *)devicePrimaryPaymentApplication isEqual:?])
     {
       goto LABEL_72;
     }
 
     devicePrimaryContactlessPaymentApplication = self->_devicePrimaryContactlessPaymentApplication;
-    if (devicePrimaryContactlessPaymentApplication | v4->_devicePrimaryContactlessPaymentApplication && ![(PKPaymentApplication *)devicePrimaryContactlessPaymentApplication isEqual:?])
+    if (devicePrimaryContactlessPaymentApplication | equalCopy->_devicePrimaryContactlessPaymentApplication && ![(PKPaymentApplication *)devicePrimaryContactlessPaymentApplication isEqual:?])
     {
       goto LABEL_72;
     }
 
     devicePrimaryInAppPaymentApplication = self->_devicePrimaryInAppPaymentApplication;
-    if (devicePrimaryInAppPaymentApplication | v4->_devicePrimaryInAppPaymentApplication && ![(PKPaymentApplication *)devicePrimaryInAppPaymentApplication isEqual:?])
+    if (devicePrimaryInAppPaymentApplication | equalCopy->_devicePrimaryInAppPaymentApplication && ![(PKPaymentApplication *)devicePrimaryInAppPaymentApplication isEqual:?])
     {
       goto LABEL_72;
     }
 
     preferredPaymentApplication = self->_preferredPaymentApplication;
-    if (preferredPaymentApplication | v4->_preferredPaymentApplication && ![(PKPaymentApplication *)preferredPaymentApplication isEqual:?])
+    if (preferredPaymentApplication | equalCopy->_preferredPaymentApplication && ![(PKPaymentApplication *)preferredPaymentApplication isEqual:?])
     {
       goto LABEL_72;
     }
 
-    if (self->_effectivePaymentApplicationState != v4->_effectivePaymentApplicationState)
+    if (self->_effectivePaymentApplicationState != equalCopy->_effectivePaymentApplicationState)
     {
       goto LABEL_72;
     }
 
-    if (self->_privateLabel != v4->_privateLabel)
+    if (self->_privateLabel != equalCopy->_privateLabel)
     {
       goto LABEL_72;
     }
 
-    if (self->_cobranded != v4->_cobranded)
+    if (self->_cobranded != equalCopy->_cobranded)
     {
       goto LABEL_72;
     }
 
-    if (self->_deletePending != v4->_deletePending)
+    if (self->_deletePending != equalCopy->_deletePending)
     {
       goto LABEL_72;
     }
 
-    if (self->_hasUserSelectableContactlessPaymentApplications != v4->_hasUserSelectableContactlessPaymentApplications)
+    if (self->_hasUserSelectableContactlessPaymentApplications != equalCopy->_hasUserSelectableContactlessPaymentApplications)
     {
       goto LABEL_72;
     }
 
     nfcPayload = self->_nfcPayload;
-    if (nfcPayload | v4->_nfcPayload)
+    if (nfcPayload | equalCopy->_nfcPayload)
     {
       if (![(PKNFCPayload *)nfcPayload isEqual:?])
       {
@@ -541,23 +541,23 @@
     }
 
     completeHash = self->_completeHash;
-    if (completeHash | v4->_completeHash && ![(NSData *)completeHash isEqual:?])
+    if (completeHash | equalCopy->_completeHash && ![(NSData *)completeHash isEqual:?])
     {
       goto LABEL_72;
     }
 
-    if (self->_hasStoredValue != v4->_hasStoredValue)
+    if (self->_hasStoredValue != equalCopy->_hasStoredValue)
     {
       goto LABEL_72;
     }
 
-    if (self->_settings != v4->_settings)
+    if (self->_settings != equalCopy->_settings)
     {
       goto LABEL_72;
     }
 
     issuerCountryCode = self->_issuerCountryCode;
-    if (issuerCountryCode | v4->_issuerCountryCode)
+    if (issuerCountryCode | equalCopy->_issuerCountryCode)
     {
       if (![(NSString *)issuerCountryCode isEqualToString:?])
       {
@@ -565,9 +565,9 @@
       }
     }
 
-    if (((availableActions = self->_availableActions, !(availableActions | v4->_availableActions)) || [(NSArray *)availableActions isEqual:?]) && ((organizationName = self->_organizationName, !(organizationName | v4->_organizationName)) || [(NSString *)organizationName isEqual:?]) && ((transitAppletState = self->_transitAppletState, !(transitAppletState | v4->_transitAppletState)) || [(PKTransitAppletState *)transitAppletState isEqual:?]) && ((frontFieldBuckets = self->_frontFieldBuckets, !(frontFieldBuckets | v4->_frontFieldBuckets)) || [(NSArray *)frontFieldBuckets isEqual:?]) && ((backFieldBuckets = self->_backFieldBuckets, !(backFieldBuckets | v4->_backFieldBuckets)) || [(NSArray *)backFieldBuckets isEqual:?]) && ((lastAddValueAmount = self->_lastAddValueAmount, !(lastAddValueAmount | v4->_lastAddValueAmount)) || [(NSDecimalNumber *)lastAddValueAmount isEqual:?]) && ((pendingAddValueDate = self->_pendingAddValueDate, !(pendingAddValueDate | v4->_pendingAddValueDate)) || [(NSDate *)pendingAddValueDate isEqual:?]) && self->_expressPassTypesMask == v4->_expressPassTypesMask)
+    if (((availableActions = self->_availableActions, !(availableActions | equalCopy->_availableActions)) || [(NSArray *)availableActions isEqual:?]) && ((organizationName = self->_organizationName, !(organizationName | equalCopy->_organizationName)) || [(NSString *)organizationName isEqual:?]) && ((transitAppletState = self->_transitAppletState, !(transitAppletState | equalCopy->_transitAppletState)) || [(PKTransitAppletState *)transitAppletState isEqual:?]) && ((frontFieldBuckets = self->_frontFieldBuckets, !(frontFieldBuckets | equalCopy->_frontFieldBuckets)) || [(NSArray *)frontFieldBuckets isEqual:?]) && ((backFieldBuckets = self->_backFieldBuckets, !(backFieldBuckets | equalCopy->_backFieldBuckets)) || [(NSArray *)backFieldBuckets isEqual:?]) && ((lastAddValueAmount = self->_lastAddValueAmount, !(lastAddValueAmount | equalCopy->_lastAddValueAmount)) || [(NSDecimalNumber *)lastAddValueAmount isEqual:?]) && ((pendingAddValueDate = self->_pendingAddValueDate, !(pendingAddValueDate | equalCopy->_pendingAddValueDate)) || [(NSDate *)pendingAddValueDate isEqual:?]) && self->_expressPassTypesMask == equalCopy->_expressPassTypesMask)
     {
-      v36 = self->_hasAssociatedPeerPaymentAccount == v4->_hasAssociatedPeerPaymentAccount;
+      v36 = self->_hasAssociatedPeerPaymentAccount == equalCopy->_hasAssociatedPeerPaymentAccount;
     }
 
     else
@@ -653,58 +653,58 @@ LABEL_72:
   v47.receiver = self;
   v47.super_class = NPKPassDescription;
   v46 = [(NPKPassDescription *)&v47 description];
-  v45 = [(NPKPassDescription *)self uniqueID];
-  v44 = [(NPKPassDescription *)self groupID];
-  v43 = [(NPKPassDescription *)self passTypeIdentifier];
-  v42 = [(NPKPassDescription *)self manifestHash];
-  v32 = [(NPKPassDescription *)self style];
-  v41 = [(NPKPassDescription *)self relevantDate];
-  v40 = [(NPKPassDescription *)self ingestionDate];
-  v38 = [(NPKPassDescription *)self logoText];
+  uniqueID = [(NPKPassDescription *)self uniqueID];
+  groupID = [(NPKPassDescription *)self groupID];
+  passTypeIdentifier = [(NPKPassDescription *)self passTypeIdentifier];
+  manifestHash = [(NPKPassDescription *)self manifestHash];
+  style = [(NPKPassDescription *)self style];
+  relevantDate = [(NPKPassDescription *)self relevantDate];
+  ingestionDate = [(NPKPassDescription *)self ingestionDate];
+  logoText = [(NPKPassDescription *)self logoText];
   logoImage = self->_logoImage;
-  v39 = [(NPKPassDescription *)self logoImageEncoded];
-  v37 = [(NPKPassDescription *)self backgroundColor];
-  v36 = [(NPKPassDescription *)self foregroundColor];
-  v30 = [(NPKPassDescription *)self labelColor];
+  logoImageEncoded = [(NPKPassDescription *)self logoImageEncoded];
+  backgroundColor = [(NPKPassDescription *)self backgroundColor];
+  foregroundColor = [(NPKPassDescription *)self foregroundColor];
+  labelColor = [(NPKPassDescription *)self labelColor];
   backgroundImage = self->_backgroundImage;
-  v28 = [(NPKPassDescription *)self backgroundImageEncoded];
-  v29 = [(NPKPassDescription *)self localizedDescription];
-  v26 = [(NPKPassDescription *)self devicePaymentApplications];
-  v25 = [(NPKPassDescription *)self devicePrimaryPaymentApplication];
-  v24 = [(NPKPassDescription *)self devicePrimaryContactlessPaymentApplication];
-  v35 = [(NPKPassDescription *)self devicePrimaryInAppPaymentApplication];
-  v23 = [(NPKPassDescription *)self preferredPaymentApplication];
-  v22 = [(NPKPassDescription *)self effectivePaymentApplicationState];
-  v3 = [(NPKPassDescription *)self isPrivateLabel];
-  v4 = [(NPKPassDescription *)self isCobranded];
-  v5 = [(NPKPassDescription *)self deletePending];
-  v6 = [(NPKPassDescription *)self hasUserSelectableContactlessPaymentApplications];
-  v21 = [(NPKPassDescription *)self nfcPayload];
-  v7 = [(NPKPassDescription *)self completeHash];
-  v8 = [(NPKPassDescription *)self hasStoredValue];
-  v9 = [(NPKPassDescription *)self settings];
+  backgroundImageEncoded = [(NPKPassDescription *)self backgroundImageEncoded];
+  localizedDescription = [(NPKPassDescription *)self localizedDescription];
+  devicePaymentApplications = [(NPKPassDescription *)self devicePaymentApplications];
+  devicePrimaryPaymentApplication = [(NPKPassDescription *)self devicePrimaryPaymentApplication];
+  devicePrimaryContactlessPaymentApplication = [(NPKPassDescription *)self devicePrimaryContactlessPaymentApplication];
+  devicePrimaryInAppPaymentApplication = [(NPKPassDescription *)self devicePrimaryInAppPaymentApplication];
+  preferredPaymentApplication = [(NPKPassDescription *)self preferredPaymentApplication];
+  effectivePaymentApplicationState = [(NPKPassDescription *)self effectivePaymentApplicationState];
+  isPrivateLabel = [(NPKPassDescription *)self isPrivateLabel];
+  isCobranded = [(NPKPassDescription *)self isCobranded];
+  deletePending = [(NPKPassDescription *)self deletePending];
+  hasUserSelectableContactlessPaymentApplications = [(NPKPassDescription *)self hasUserSelectableContactlessPaymentApplications];
+  nfcPayload = [(NPKPassDescription *)self nfcPayload];
+  completeHash = [(NPKPassDescription *)self completeHash];
+  hasStoredValue = [(NPKPassDescription *)self hasStoredValue];
+  settings = [(NPKPassDescription *)self settings];
   [(NPKPassDescription *)self issuerCountryCode];
-  v10 = v20 = v3;
-  v34 = [v33 stringWithFormat:@"<%@> (uniqueID %@ groupID %@ passTypeIdentifier %@ manifestHash %@ style %d relevantDate %@ ingestionDate %@ logoText %@ logoImage %@ logoImageEncoded %p backgroundColor %@ foregroundColor %@ labelColor %@ backgroundImage %@ backgroundImageEncoded %p, localizedDescription %@, devicePaymentApplications (%@) devicePrimaryPaymentApplication (%@) devicePrimaryContactlessPaymentApplication (%@) devicePrimaryInAppPaymentApplication (%@) preferredPaymentApplication (%@) effectivePaymentApplicationState %d privateLabel %d cobranded %d deletePending %d hasUserSelectableContactlessPaymentApplications %d nfcPayload %@ completeHash %@ hasStoredValue %d settings %d issuerCountryCode %@ expressPassTypesMask %lu)", v46, v45, v44, v43, v42, v32, v41, v40, v38, logoImage, v39, v37, v36, v30, backgroundImage, v28, v29, v26, v25, v24, v35, v23, v22, v20, v4, v5, v6, v21, v7, v8, v9, v10, -[NPKPassDescription expressPassTypesMask](self, "expressPassTypesMask")];
+  v10 = v20 = isPrivateLabel;
+  v34 = [v33 stringWithFormat:@"<%@> (uniqueID %@ groupID %@ passTypeIdentifier %@ manifestHash %@ style %d relevantDate %@ ingestionDate %@ logoText %@ logoImage %@ logoImageEncoded %p backgroundColor %@ foregroundColor %@ labelColor %@ backgroundImage %@ backgroundImageEncoded %p, localizedDescription %@, devicePaymentApplications (%@) devicePrimaryPaymentApplication (%@) devicePrimaryContactlessPaymentApplication (%@) devicePrimaryInAppPaymentApplication (%@) preferredPaymentApplication (%@) effectivePaymentApplicationState %d privateLabel %d cobranded %d deletePending %d hasUserSelectableContactlessPaymentApplications %d nfcPayload %@ completeHash %@ hasStoredValue %d settings %d issuerCountryCode %@ expressPassTypesMask %lu)", v46, uniqueID, groupID, passTypeIdentifier, manifestHash, style, relevantDate, ingestionDate, logoText, logoImage, logoImageEncoded, backgroundColor, foregroundColor, labelColor, backgroundImage, backgroundImageEncoded, localizedDescription, devicePaymentApplications, devicePrimaryPaymentApplication, devicePrimaryContactlessPaymentApplication, devicePrimaryInAppPaymentApplication, preferredPaymentApplication, effectivePaymentApplicationState, v20, isCobranded, deletePending, hasUserSelectableContactlessPaymentApplications, nfcPayload, completeHash, hasStoredValue, settings, v10, -[NPKPassDescription expressPassTypesMask](self, "expressPassTypesMask")];
 
-  v11 = [(NPKPassDescription *)self availableActions];
-  v12 = [(NPKPassDescription *)self organizationName];
-  v13 = [(NPKPassDescription *)self transitAppletState];
-  v14 = [(NPKPassDescription *)self frontFieldBuckets];
-  v15 = [(NPKPassDescription *)self backFieldBuckets];
-  v16 = [(NPKPassDescription *)self lastAddValueAmount];
-  v17 = [(NPKPassDescription *)self pendingAddValueDate];
-  v18 = [v34 stringByAppendingFormat:@" (availableActions %@ organizationName %@ transitAppletState %@ frontFieldBuckets %@ backFieldBuckets %@ lastAddValueAmount %@ pendingAddValueDate %@  hasAssociatedPeerPaymentAccount %d)", v11, v12, v13, v14, v15, v16, v17, -[NPKPassDescription hasAssociatedPeerPaymentAccount](self, "hasAssociatedPeerPaymentAccount")];
+  availableActions = [(NPKPassDescription *)self availableActions];
+  organizationName = [(NPKPassDescription *)self organizationName];
+  transitAppletState = [(NPKPassDescription *)self transitAppletState];
+  frontFieldBuckets = [(NPKPassDescription *)self frontFieldBuckets];
+  backFieldBuckets = [(NPKPassDescription *)self backFieldBuckets];
+  lastAddValueAmount = [(NPKPassDescription *)self lastAddValueAmount];
+  pendingAddValueDate = [(NPKPassDescription *)self pendingAddValueDate];
+  v18 = [v34 stringByAppendingFormat:@" (availableActions %@ organizationName %@ transitAppletState %@ frontFieldBuckets %@ backFieldBuckets %@ lastAddValueAmount %@ pendingAddValueDate %@  hasAssociatedPeerPaymentAccount %d)", availableActions, organizationName, transitAppletState, frontFieldBuckets, backFieldBuckets, lastAddValueAmount, pendingAddValueDate, -[NPKPassDescription hasAssociatedPeerPaymentAccount](self, "hasAssociatedPeerPaymentAccount")];
 
   return v18;
 }
 
-- (id)encodeAsData:(id)a3
+- (id)encodeAsData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v3 = MEMORY[0x277CBEA90];
-    v4 = NPKSecureArchiveObject(a3);
+    v4 = NPKSecureArchiveObject(data);
     v5 = [v3 dataWithData:v4];
   }
 
@@ -716,18 +716,18 @@ LABEL_72:
   return v5;
 }
 
-- (void)encodeObject:(id)a3 asDataInCoder:(id)a4 withKey:(id)a5
+- (void)encodeObject:(id)object asDataInCoder:(id)coder withKey:(id)key
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(NPKPassDescription *)self encodeAsData:a3];
-  [v9 encodeObject:v10 forKey:v8];
+  keyCopy = key;
+  coderCopy = coder;
+  v10 = [(NPKPassDescription *)self encodeAsData:object];
+  [coderCopy encodeObject:v10 forKey:keyCopy];
 }
 
-- (void)setLogoImage:(id)a3
+- (void)setLogoImage:(id)image
 {
-  v7 = a3;
-  objc_storeStrong(&self->_logoImage, a3);
+  imageCopy = image;
+  objc_storeStrong(&self->_logoImage, image);
   if ([(NPKPassDescription *)self lazyLoadEncodedImages]|| !self->_logoImage)
   {
     v5 = 0;
@@ -742,10 +742,10 @@ LABEL_72:
   self->_logoImageEncoded = v5;
 }
 
-- (void)setBackgroundImage:(id)a3
+- (void)setBackgroundImage:(id)image
 {
-  v7 = a3;
-  objc_storeStrong(&self->_backgroundImage, a3);
+  imageCopy = image;
+  objc_storeStrong(&self->_backgroundImage, image);
   if ([(NPKPassDescription *)self lazyLoadEncodedImages]|| !self->_backgroundImage)
   {
     v5 = 0;
@@ -783,14 +783,14 @@ LABEL_72:
   return v5;
 }
 
-- (void)setLogoImageEncoded:(id)a3
+- (void)setLogoImageEncoded:(id)encoded
 {
-  v4 = a3;
+  encodedCopy = encoded;
   logoImage = self->_logoImage;
   self->_logoImage = 0;
 
   logoImageEncoded = self->_logoImageEncoded;
-  self->_logoImageEncoded = v4;
+  self->_logoImageEncoded = encodedCopy;
 }
 
 - (NSData)logoImageEncoded
@@ -816,14 +816,14 @@ LABEL_72:
   return v5;
 }
 
-- (void)setBackgroundImageEncoded:(id)a3
+- (void)setBackgroundImageEncoded:(id)encoded
 {
-  v4 = a3;
+  encodedCopy = encoded;
   backgroundImage = self->_backgroundImage;
   self->_backgroundImage = 0;
 
   backgroundImageEncoded = self->_backgroundImageEncoded;
-  self->_backgroundImageEncoded = v4;
+  self->_backgroundImageEncoded = encodedCopy;
 }
 
 - (PKImage)logoImage
@@ -832,14 +832,14 @@ LABEL_72:
   logoImage = self->_logoImage;
   if (logoImage)
   {
-    v4 = logoImage;
+    logoImageEncoded = logoImage;
   }
 
   else
   {
-    v4 = [(NPKPassDescription *)self logoImageEncoded];
+    logoImageEncoded = [(NPKPassDescription *)self logoImageEncoded];
 
-    if (v4)
+    if (logoImageEncoded)
     {
       v7 = pk_ui_log();
       v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -854,18 +854,18 @@ LABEL_72:
         }
       }
 
-      v10 = [(NPKPassDescription *)self logoImageEncoded];
+      logoImageEncoded2 = [(NPKPassDescription *)self logoImageEncoded];
       v11 = objc_opt_class();
-      v4 = NPKSecureUnarchiveObject(v10, v11);
+      logoImageEncoded = NPKSecureUnarchiveObject(logoImageEncoded2, v11);
 
-      if (v4 && [objc_opt_class() isCachingEnabled])
+      if (logoImageEncoded && [objc_opt_class() isCachingEnabled])
       {
-        objc_storeStrong(p_logoImage, v4);
+        objc_storeStrong(p_logoImage, logoImageEncoded);
       }
     }
   }
 
-  return v4;
+  return logoImageEncoded;
 }
 
 - (PKImage)backgroundImage
@@ -874,14 +874,14 @@ LABEL_72:
   backgroundImage = self->_backgroundImage;
   if (backgroundImage)
   {
-    v4 = backgroundImage;
+    backgroundImageEncoded = backgroundImage;
   }
 
   else
   {
-    v4 = [(NPKPassDescription *)self backgroundImageEncoded];
+    backgroundImageEncoded = [(NPKPassDescription *)self backgroundImageEncoded];
 
-    if (v4)
+    if (backgroundImageEncoded)
     {
       v7 = pk_ui_log();
       v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -896,34 +896,34 @@ LABEL_72:
         }
       }
 
-      v10 = [(NPKPassDescription *)self backgroundImageEncoded];
+      backgroundImageEncoded2 = [(NPKPassDescription *)self backgroundImageEncoded];
       v11 = objc_opt_class();
-      v4 = NPKSecureUnarchiveObject(v10, v11);
+      backgroundImageEncoded = NPKSecureUnarchiveObject(backgroundImageEncoded2, v11);
 
-      if (v4 && [objc_opt_class() isCachingEnabled])
+      if (backgroundImageEncoded && [objc_opt_class() isCachingEnabled])
       {
-        objc_storeStrong(p_backgroundImage, v4);
+        objc_storeStrong(p_backgroundImage, backgroundImageEncoded);
       }
     }
   }
 
-  return v4;
+  return backgroundImageEncoded;
 }
 
 - (int64_t)effectiveContactlessPaymentApplicationState
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(NPKPassDescription *)self devicePrimaryPaymentApplication];
-  v4 = [v3 state];
+  devicePrimaryPaymentApplication = [(NPKPassDescription *)self devicePrimaryPaymentApplication];
+  state = [devicePrimaryPaymentApplication state];
 
-  if (v4 == 1)
+  if (state == 1)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(NPKPassDescription *)self devicePaymentApplications];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    devicePaymentApplications = [(NPKPassDescription *)self devicePaymentApplications];
+    v6 = [devicePaymentApplications countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -935,13 +935,13 @@ LABEL_72:
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(devicePaymentApplications);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * v9) state];
-          if (v10 != 1)
+          state2 = [*(*(&v13 + 1) + 8 * v9) state];
+          if (state2 != 1)
           {
-            v4 = v10;
+            state = state2;
             goto LABEL_12;
           }
 
@@ -949,7 +949,7 @@ LABEL_72:
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [devicePaymentApplications countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v7)
         {
           continue;
@@ -959,21 +959,21 @@ LABEL_72:
       }
     }
 
-    v4 = 1;
+    state = 1;
 LABEL_12:
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v4;
+  return state;
 }
 
 - (id)transitProperties
 {
-  v3 = [(NPKPassDescription *)self transitAppletState];
-  if (v3)
+  transitAppletState = [(NPKPassDescription *)self transitAppletState];
+  if (transitAppletState)
   {
-    v4 = [(NPKPassDescription *)self devicePrimaryPaymentApplication];
-    v5 = [v3 transitPassPropertiesWithPaymentApplication:v4];
+    devicePrimaryPaymentApplication = [(NPKPassDescription *)self devicePrimaryPaymentApplication];
+    v5 = [transitAppletState transitPassPropertiesWithPaymentApplication:devicePrimaryPaymentApplication];
   }
 
   else
@@ -984,16 +984,16 @@ LABEL_12:
   return v5;
 }
 
-- (id)fieldForKey:(id)a3
+- (id)fieldForKey:(id)key
 {
   v59 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  keyCopy = key;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v5 = [(NPKPassDescription *)self frontFieldBuckets];
-  v37 = [v5 countByEnumeratingWithState:&v51 objects:v58 count:16];
+  frontFieldBuckets = [(NPKPassDescription *)self frontFieldBuckets];
+  v37 = [frontFieldBuckets countByEnumeratingWithState:&v51 objects:v58 count:16];
   if (!v37)
   {
 
@@ -1039,7 +1039,7 @@ LABEL_21:
 
                 v26 = *(*(&v39 + 1) + 8 * j);
                 v27 = [v26 key];
-                v28 = [v27 isEqual:v4];
+                v28 = [v27 isEqual:keyCopy];
 
                 if (v28)
                 {
@@ -1073,8 +1073,8 @@ LABEL_36:
     goto LABEL_39;
   }
 
-  v32 = self;
-  obj = v5;
+  selfCopy = self;
+  obj = frontFieldBuckets;
   v6 = 0;
   v35 = *v52;
   do
@@ -1108,7 +1108,7 @@ LABEL_36:
 
             v14 = *(*(&v47 + 1) + 8 * m);
             v15 = [v14 key];
-            v16 = [v15 isEqual:v4];
+            v16 = [v15 isEqual:keyCopy];
 
             if (v16)
             {
@@ -1137,7 +1137,7 @@ LABEL_16:
 
   while (v37);
 
-  self = v32;
+  self = selfCopy;
   if (!v6)
   {
     goto LABEL_21;
@@ -1152,11 +1152,11 @@ LABEL_39:
 
 - (BOOL)isAddValuePending
 {
-  v3 = [(NPKPassDescription *)self pendingAddValueDate];
-  if (v3)
+  pendingAddValueDate = [(NPKPassDescription *)self pendingAddValueDate];
+  if (pendingAddValueDate)
   {
-    v4 = [(NPKPassDescription *)self pendingAddValueDate];
-    [v4 timeIntervalSinceNow];
+    pendingAddValueDate2 = [(NPKPassDescription *)self pendingAddValueDate];
+    [pendingAddValueDate2 timeIntervalSinceNow];
     v6 = fabs(v5) < 600.0;
   }
 
@@ -1170,29 +1170,29 @@ LABEL_39:
 
 - (BOOL)isEnroute
 {
-  v2 = [(NPKPassDescription *)self transitProperties];
-  if ([v2 isInStation])
+  transitProperties = [(NPKPassDescription *)self transitProperties];
+  if ([transitProperties isInStation])
   {
-    v3 = 1;
+    isInShinkansenStation = 1;
   }
 
   else
   {
-    v4 = [v2 felicaProperties];
-    v3 = [v4 isInShinkansenStation];
+    felicaProperties = [transitProperties felicaProperties];
+    isInShinkansenStation = [felicaProperties isInShinkansenStation];
   }
 
-  return v3;
+  return isInShinkansenStation;
 }
 
 - (BOOL)hasValidNFCPayload
 {
-  v2 = [(NPKPassDescription *)self nfcPayload];
-  v3 = [v2 message];
-  if (v3)
+  nfcPayload = [(NPKPassDescription *)self nfcPayload];
+  message = [nfcPayload message];
+  if (message)
   {
-    v4 = [v2 encryptionPublicKeyData];
-    if (v4)
+    encryptionPublicKeyData = [nfcPayload encryptionPublicKeyData];
+    if (encryptionPublicKeyData)
     {
       v5 = 1;
     }

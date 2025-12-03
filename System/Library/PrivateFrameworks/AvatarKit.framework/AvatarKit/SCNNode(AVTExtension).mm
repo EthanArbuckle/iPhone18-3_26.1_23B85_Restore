@@ -25,7 +25,7 @@
     v7[3] = &__block_descriptor_41_e21_v24__0__SCNNode_8_B16l;
     v8 = a4;
     v7[4] = a3;
-    [a1 enumerateHierarchyUsingBlock:v7];
+    [self enumerateHierarchyUsingBlock:v7];
   }
 }
 
@@ -59,14 +59,14 @@
           if ([*(*(&v16 + 1) + 8 * v10) count])
           {
 
-            v11 = [a1 geometry];
-            v12 = [v11 geometryElements];
+            geometry = [self geometry];
+            geometryElements = [geometry geometryElements];
             v14[0] = MEMORY[0x1E69E9820];
             v14[1] = 3221225472;
             v14[2] = __75__SCNNode_AVTExtension__avt_setGeometryPrimitiveRangesFromFaceIndexRanges___block_invoke;
             v14[3] = &unk_1E7F49A38;
             v15 = v6;
-            [v12 enumerateObjectsUsingBlock:v14];
+            [geometryElements enumerateObjectsUsingBlock:v14];
 
             goto LABEL_12;
           }
@@ -85,7 +85,7 @@
       }
     }
 
-    [a1 setGeometry:0];
+    [self setGeometry:0];
   }
 
 LABEL_12:

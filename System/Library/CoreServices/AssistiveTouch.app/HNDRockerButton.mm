@@ -1,77 +1,77 @@
 @interface HNDRockerButton
-+ (HNDRockerButton)buttonWithTitle:(id)a3 imageName:(id)a4 downBlock:(id)a5 upBlock:(id)a6 showWithGuidedAccess:(BOOL)a7 showWithAssistiveAccess:(BOOL)a8;
++ (HNDRockerButton)buttonWithTitle:(id)title imageName:(id)name downBlock:(id)block upBlock:(id)upBlock showWithGuidedAccess:(BOOL)access showWithAssistiveAccess:(BOOL)assistiveAccess;
 + (id)_dummyImage;
 - (BOOL)_inSelectedState;
 - (BOOL)isAccessibilityElement;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)accessibilityFrame;
-- (HNDRockerButton)initWithImageName:(id)a3;
+- (HNDRockerButton)initWithImageName:(id)name;
 - (UIImage)deviceSpecificImage;
 - (double)_screenHeight;
-- (id)_deviceSpecificImageForName:(id)a3 screenHeight:(double)a4;
+- (id)_deviceSpecificImageForName:(id)name screenHeight:(double)height;
 - (id)accessibilityLabel;
 - (id)description;
-- (void)__applyUpdatedImage:(id)a3;
-- (void)_retrieveCurrentImage:(id)a3;
-- (void)_traitCollectionDidChange:(id)a3;
+- (void)__applyUpdatedImage:(id)image;
+- (void)_retrieveCurrentImage:(id)image;
+- (void)_traitCollectionDidChange:(id)change;
 - (void)_updateFont;
 - (void)_updateImage;
 - (void)_updateImageView;
 - (void)_updateLabelText;
 - (void)dealloc;
-- (void)getDeviceSpecificImageForColor:(id)a3 withCompletion:(id)a4;
+- (void)getDeviceSpecificImageForColor:(id)color withCompletion:(id)completion;
 - (void)handleFingerDriftedAway;
-- (void)handleRealCancelEvent:(CGPoint)a3;
-- (void)handleRealDownEvent:(CGPoint)a3;
-- (void)handleRealUpEvent:(CGPoint)a3 maxOrb:(double)a4;
-- (void)performPress:(BOOL)a3;
+- (void)handleRealCancelEvent:(CGPoint)event;
+- (void)handleRealDownEvent:(CGPoint)event;
+- (void)handleRealUpEvent:(CGPoint)event maxOrb:(double)orb;
+- (void)performPress:(BOOL)press;
 - (void)resetImages;
-- (void)setDisabled:(BOOL)a3;
-- (void)setDownBlock:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImageName:(id)a3;
-- (void)setOverrideImage:(id)a3;
-- (void)setSelected:(BOOL)a3;
-- (void)setTitle:(id)a3;
-- (void)setType:(id)a3;
-- (void)setUpBlock:(id)a3;
+- (void)setDisabled:(BOOL)disabled;
+- (void)setDownBlock:(id)block;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImageName:(id)name;
+- (void)setOverrideImage:(id)image;
+- (void)setSelected:(BOOL)selected;
+- (void)setTitle:(id)title;
+- (void)setType:(id)type;
+- (void)setUpBlock:(id)block;
 - (void)updateTextColor;
 @end
 
 @implementation HNDRockerButton
 
-+ (HNDRockerButton)buttonWithTitle:(id)a3 imageName:(id)a4 downBlock:(id)a5 upBlock:(id)a6 showWithGuidedAccess:(BOOL)a7 showWithAssistiveAccess:(BOOL)a8
++ (HNDRockerButton)buttonWithTitle:(id)title imageName:(id)name downBlock:(id)block upBlock:(id)upBlock showWithGuidedAccess:(BOOL)access showWithAssistiveAccess:(BOOL)assistiveAccess
 {
-  v8 = a8;
-  v9 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [objc_allocWithZone(HNDRockerButton) initWithImageName:v15];
+  assistiveAccessCopy = assistiveAccess;
+  accessCopy = access;
+  upBlockCopy = upBlock;
+  blockCopy = block;
+  nameCopy = name;
+  titleCopy = title;
+  v17 = [objc_allocWithZone(HNDRockerButton) initWithImageName:nameCopy];
 
-  [v17 setTitle:v16];
-  [v17 setDownBlock:v14];
+  [v17 setTitle:titleCopy];
+  [v17 setDownBlock:blockCopy];
 
-  [v17 setUpBlock:v13];
-  [v17 setShowWithGuidedAccess:v9];
-  [v17 setShowWithAssistiveAccess:v8];
+  [v17 setUpBlock:upBlockCopy];
+  [v17 setShowWithGuidedAccess:accessCopy];
+  [v17 setShowWithAssistiveAccess:assistiveAccessCopy];
   [v17 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v18 = [v17 imageView];
+  imageView = [v17 imageView];
   LODWORD(v19) = 1148846080;
-  [v18 setContentCompressionResistancePriority:0 forAxis:v19];
+  [imageView setContentCompressionResistancePriority:0 forAxis:v19];
 
-  v20 = [v17 imageView];
+  imageView2 = [v17 imageView];
   LODWORD(v21) = 1148846080;
-  [v20 setContentCompressionResistancePriority:1 forAxis:v21];
+  [imageView2 setContentCompressionResistancePriority:1 forAxis:v21];
 
-  v22 = [v17 imageView];
+  imageView3 = [v17 imageView];
   LODWORD(v23) = 1148846080;
-  [v22 setContentHuggingPriority:0 forAxis:v23];
+  [imageView3 setContentHuggingPriority:0 forAxis:v23];
 
-  v24 = [v17 imageView];
+  imageView4 = [v17 imageView];
   LODWORD(v25) = 1148846080;
-  [v24 setContentHuggingPriority:1 forAxis:v25];
+  [imageView4 setContentHuggingPriority:1 forAxis:v25];
 
   return v17;
 }
@@ -88,9 +88,9 @@
   return v3;
 }
 
-- (HNDRockerButton)initWithImageName:(id)a3
+- (HNDRockerButton)initWithImageName:(id)name
 {
-  v60 = a3;
+  nameCopy = name;
   v70.receiver = self;
   v70.super_class = HNDRockerButton;
   v4 = [(HNDRockerButton *)&v70 init];
@@ -111,10 +111,10 @@
 
   objc_storeStrong(&v4->_imageView, obj);
   [(UIImageView *)v4->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
-  v9 = [objc_opt_class() _dummyImage];
-  [(UIImageView *)v4->_imageView setImage:v9];
+  _dummyImage = [objc_opt_class() _dummyImage];
+  [(UIImageView *)v4->_imageView setImage:_dummyImage];
 
-  [(HNDRockerButton *)v4 setImageName:v60];
+  [(HNDRockerButton *)v4 setImageName:nameCopy];
   v10 = objc_alloc_init(UILabel);
   label = v4->_label;
   v4->_label = v10;
@@ -130,72 +130,72 @@
   [(HNDRockerButton *)v4 updateTextColor];
   [(HNDRockerButton *)v4 addSubview:v4->_imageView];
   [(HNDRockerButton *)v4 addSubview:v4->_label];
-  v13 = [(UILabel *)v4->_label topAnchor];
-  v14 = [(UIImageView *)v4->_imageView centerYAnchor];
-  v65 = [v13 constraintEqualToAnchor:v14 constant:32.0];
+  topAnchor = [(UILabel *)v4->_label topAnchor];
+  centerYAnchor = [(UIImageView *)v4->_imageView centerYAnchor];
+  v65 = [topAnchor constraintEqualToAnchor:centerYAnchor constant:32.0];
 
   LODWORD(v15) = 1148829696;
   [v65 setPriority:v15];
-  v16 = [(HNDRockerButton *)v4 leadingAnchor];
-  v17 = [(UIImageView *)v4->_imageView leadingAnchor];
-  v64 = [v16 constraintEqualToAnchor:v17];
+  leadingAnchor = [(HNDRockerButton *)v4 leadingAnchor];
+  leadingAnchor2 = [(UIImageView *)v4->_imageView leadingAnchor];
+  v64 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
 
   LODWORD(v18) = 1132003328;
   [v64 setPriority:v18];
-  v19 = [(HNDRockerButton *)v4 leadingAnchor];
-  v20 = [(UILabel *)v4->_label leadingAnchor];
-  v63 = [v19 constraintEqualToAnchor:v20];
+  leadingAnchor3 = [(HNDRockerButton *)v4 leadingAnchor];
+  leadingAnchor4 = [(UILabel *)v4->_label leadingAnchor];
+  v63 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
 
   LODWORD(v21) = 1132003328;
   [v63 setPriority:v21];
-  v22 = [(HNDRockerButton *)v4 trailingAnchor];
-  v23 = [(UIImageView *)v4->_imageView trailingAnchor];
-  v62 = [v22 constraintEqualToAnchor:v23];
+  trailingAnchor = [(HNDRockerButton *)v4 trailingAnchor];
+  trailingAnchor2 = [(UIImageView *)v4->_imageView trailingAnchor];
+  v62 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
 
   LODWORD(v24) = 1132003328;
   [v62 setPriority:v24];
-  v25 = [(HNDRockerButton *)v4 trailingAnchor];
-  v26 = [(UILabel *)v4->_label trailingAnchor];
-  v61 = [v25 constraintEqualToAnchor:v26];
+  trailingAnchor3 = [(HNDRockerButton *)v4 trailingAnchor];
+  trailingAnchor4 = [(UILabel *)v4->_label trailingAnchor];
+  v61 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
 
   LODWORD(v27) = 1132003328;
   [v61 setPriority:v27];
-  v59 = [(UIImageView *)v4->_imageView topAnchor];
-  v58 = [(HNDRockerButton *)v4 topAnchor];
-  v57 = [v59 constraintEqualToAnchor:v58];
+  topAnchor2 = [(UIImageView *)v4->_imageView topAnchor];
+  topAnchor3 = [(HNDRockerButton *)v4 topAnchor];
+  v57 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
   v72[0] = v57;
   v72[1] = v65;
-  v56 = [(UILabel *)v4->_label topAnchor];
-  v55 = [(UIImageView *)v4->_imageView bottomAnchor];
-  v54 = [v56 constraintGreaterThanOrEqualToAnchor:v55];
+  topAnchor4 = [(UILabel *)v4->_label topAnchor];
+  bottomAnchor = [(UIImageView *)v4->_imageView bottomAnchor];
+  v54 = [topAnchor4 constraintGreaterThanOrEqualToAnchor:bottomAnchor];
   v72[2] = v54;
-  v53 = [(UILabel *)v4->_label bottomAnchor];
-  v52 = [(HNDRockerButton *)v4 bottomAnchor];
-  v51 = [v53 constraintEqualToAnchor:v52];
+  bottomAnchor2 = [(UILabel *)v4->_label bottomAnchor];
+  bottomAnchor3 = [(HNDRockerButton *)v4 bottomAnchor];
+  v51 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
   v72[3] = v51;
-  v50 = [(UILabel *)v4->_label centerXAnchor];
-  v49 = [(UIImageView *)v4->_imageView centerXAnchor];
-  v48 = [v50 constraintEqualToAnchor:v49];
+  centerXAnchor = [(UILabel *)v4->_label centerXAnchor];
+  centerXAnchor2 = [(UIImageView *)v4->_imageView centerXAnchor];
+  v48 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v72[4] = v48;
-  v47 = [(UIImageView *)v4->_imageView centerXAnchor];
-  v46 = [(HNDRockerButton *)v4 centerXAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46];
+  centerXAnchor3 = [(UIImageView *)v4->_imageView centerXAnchor];
+  centerXAnchor4 = [(HNDRockerButton *)v4 centerXAnchor];
+  v45 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   v72[5] = v45;
-  v44 = [(UIImageView *)v4->_imageView leadingAnchor];
-  v43 = [(HNDRockerButton *)v4 leadingAnchor];
-  v42 = [v44 constraintGreaterThanOrEqualToAnchor:v43];
+  leadingAnchor5 = [(UIImageView *)v4->_imageView leadingAnchor];
+  leadingAnchor6 = [(HNDRockerButton *)v4 leadingAnchor];
+  v42 = [leadingAnchor5 constraintGreaterThanOrEqualToAnchor:leadingAnchor6];
   v72[6] = v42;
-  v41 = [(UILabel *)v4->_label leadingAnchor];
-  v28 = [(HNDRockerButton *)v4 leadingAnchor];
-  v29 = [v41 constraintGreaterThanOrEqualToAnchor:v28];
+  leadingAnchor7 = [(UILabel *)v4->_label leadingAnchor];
+  leadingAnchor8 = [(HNDRockerButton *)v4 leadingAnchor];
+  v29 = [leadingAnchor7 constraintGreaterThanOrEqualToAnchor:leadingAnchor8];
   v72[7] = v29;
-  v30 = [(UIImageView *)v4->_imageView trailingAnchor];
-  v31 = [(HNDRockerButton *)v4 trailingAnchor];
-  v32 = [v30 constraintLessThanOrEqualToAnchor:v31];
+  trailingAnchor5 = [(UIImageView *)v4->_imageView trailingAnchor];
+  trailingAnchor6 = [(HNDRockerButton *)v4 trailingAnchor];
+  v32 = [trailingAnchor5 constraintLessThanOrEqualToAnchor:trailingAnchor6];
   v72[8] = v32;
-  v33 = [(UILabel *)v4->_label trailingAnchor];
-  v34 = [(HNDRockerButton *)v4 trailingAnchor];
-  v35 = [v33 constraintLessThanOrEqualToAnchor:v34];
+  trailingAnchor7 = [(UILabel *)v4->_label trailingAnchor];
+  trailingAnchor8 = [(HNDRockerButton *)v4 trailingAnchor];
+  v35 = [trailingAnchor7 constraintLessThanOrEqualToAnchor:trailingAnchor8];
   v72[9] = v35;
   v72[10] = v64;
   v72[11] = v63;
@@ -221,12 +221,12 @@
   return v4;
 }
 
-- (void)_traitCollectionDidChange:(id)a3
+- (void)_traitCollectionDidChange:(id)change
 {
-  v4 = [a3 preferredContentSizeCategory];
-  v5 = [(HNDRockerButton *)self traitCollection];
-  v6 = [v5 preferredContentSizeCategory];
-  v7 = [v4 isEqual:v6];
+  preferredContentSizeCategory = [change preferredContentSizeCategory];
+  traitCollection = [(HNDRockerButton *)self traitCollection];
+  preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
+  v7 = [preferredContentSizeCategory isEqual:preferredContentSizeCategory2];
 
   if ((v7 & 1) == 0)
   {
@@ -259,29 +259,29 @@
   [(HNDRockerButton *)self _retrieveCurrentImage:v2];
 }
 
-- (void)__applyUpdatedImage:(id)a3
+- (void)__applyUpdatedImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if ([UIApp userInterfaceLayoutDirection] == 1 && AXUIAssistiveTouchIconRequiresRTLFlipping())
   {
-    v5 = [v4 imageWithHorizontallyFlippedOrientation];
+    imageWithHorizontallyFlippedOrientation = [imageCopy imageWithHorizontallyFlippedOrientation];
 
-    v4 = v5;
+    imageCopy = imageWithHorizontallyFlippedOrientation;
   }
 
   if ([(NSString *)self->_imageName isEqualToString:@"AT_pinned_narrow_for_flipping"])
   {
-    v6 = [v4 imageWithHorizontallyFlippedOrientation];
+    imageWithHorizontallyFlippedOrientation2 = [imageCopy imageWithHorizontallyFlippedOrientation];
 
-    v4 = v6;
+    imageCopy = imageWithHorizontallyFlippedOrientation2;
   }
 
-  if (!v4)
+  if (!imageCopy)
   {
-    v4 = [objc_opt_class() _dummyImage];
+    imageCopy = [objc_opt_class() _dummyImage];
   }
 
-  [(UIImageView *)self->_imageView setImage:v4];
+  [(UIImageView *)self->_imageView setImage:imageCopy];
   v7 = 1.0;
   if (self->_disabled)
   {
@@ -289,38 +289,38 @@
   }
 
   [(UIImageView *)self->_imageView setAlpha:v7];
-  v8 = [(HNDRockerButton *)self type];
-  v9 = [v8 isEqualToString:AXAssistiveTouchIconTypeDwellToggleKeyboardContinuousPath];
+  type = [(HNDRockerButton *)self type];
+  v9 = [type isEqualToString:AXAssistiveTouchIconTypeDwellToggleKeyboardContinuousPath];
 
   if (v9)
   {
-    v10 = [(HNDRockerButton *)self alternateImageView];
+    alternateImageView = [(HNDRockerButton *)self alternateImageView];
 
-    if (!v10)
+    if (!alternateImageView)
     {
       v11 = [[_AXSlideToTypeImageView alloc] initWithFrame:0.0, 0.0, 60.0, 60.0];
       [(HNDRockerButton *)self setAlternateImageView:v11];
 
-      v12 = [(HNDRockerButton *)self alternateImageView];
-      [v12 setAutoresizingMask:18];
+      alternateImageView2 = [(HNDRockerButton *)self alternateImageView];
+      [alternateImageView2 setAutoresizingMask:18];
 
       imageView = self->_imageView;
-      v14 = [(HNDRockerButton *)self alternateImageView];
-      [(UIImageView *)imageView addSubview:v14];
+      alternateImageView3 = [(HNDRockerButton *)self alternateImageView];
+      [(UIImageView *)imageView addSubview:alternateImageView3];
 
-      v15 = [(HNDRockerButton *)self alternateImageView];
-      v16 = [v15 widthAnchor];
-      v17 = [v16 constraintEqualToConstant:60.0];
+      alternateImageView4 = [(HNDRockerButton *)self alternateImageView];
+      widthAnchor = [alternateImageView4 widthAnchor];
+      v17 = [widthAnchor constraintEqualToConstant:60.0];
       v24[0] = v17;
-      v18 = [(HNDRockerButton *)self alternateImageView];
-      v19 = [v18 heightAnchor];
-      v20 = [v19 constraintEqualToConstant:60.0];
+      alternateImageView5 = [(HNDRockerButton *)self alternateImageView];
+      heightAnchor = [alternateImageView5 heightAnchor];
+      v20 = [heightAnchor constraintEqualToConstant:60.0];
       v24[1] = v20;
       v21 = [NSArray arrayWithObjects:v24 count:2];
       [NSLayoutConstraint activateConstraints:v21];
     }
 
-    v22 = [(HNDRockerButton *)self alternateImageView];
+    alternateImageView6 = [(HNDRockerButton *)self alternateImageView];
     if ([(HNDRockerButton *)self _inSelectedState])
     {
       [UIColor colorWithRed:0.37 green:0.79 blue:0.96 alpha:1.0];
@@ -331,28 +331,28 @@
       +[UIColor whiteColor];
     }
     v23 = ;
-    [v22 setTintColor:v23];
+    [alternateImageView6 setTintColor:v23];
 
     [(UIImageView *)self->_imageView setImage:0];
   }
 }
 
-- (void)setImageName:(id)a3
+- (void)setImageName:(id)name
 {
-  v5 = a3;
-  if (self->_imageName != v5)
+  nameCopy = name;
+  if (self->_imageName != nameCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_imageName, a3);
+    v6 = nameCopy;
+    objc_storeStrong(&self->_imageName, name);
     [(HNDRockerButton *)self _updateImage];
-    v5 = v6;
+    nameCopy = v6;
   }
 }
 
-- (void)setOverrideImage:(id)a3
+- (void)setOverrideImage:(id)image
 {
-  objc_storeStrong(&self->_overrideImage, a3);
-  v5 = a3;
+  objc_storeStrong(&self->_overrideImage, image);
+  imageCopy = image;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100063460;
@@ -361,37 +361,37 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)setUpBlock:(id)a3
+- (void)setUpBlock:(id)block
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(block);
   upBlock = self->_upBlock;
   self->_upBlock = v4;
 
   _objc_release_x1(v4, upBlock);
 }
 
-- (void)setDownBlock:(id)a3
+- (void)setDownBlock:(id)block
 {
-  v4 = objc_retainBlock(a3);
+  v4 = objc_retainBlock(block);
   downBlock = self->_downBlock;
   self->_downBlock = v4;
 
   _objc_release_x1(v4, downBlock);
 }
 
-- (void)setType:(id)a3
+- (void)setType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   if (![(NSString *)self->_type isEqualToString:?])
   {
-    objc_storeStrong(&self->_type, a3);
+    objc_storeStrong(&self->_type, type);
     [(HNDRockerButton *)self _updateImageView];
   }
 }
 
-- (void)handleRealDownEvent:(CGPoint)a3
+- (void)handleRealDownEvent:(CGPoint)event
 {
-  if (![(HNDRockerButton *)self highlighted:a3.x])
+  if (![(HNDRockerButton *)self highlighted:event.x])
   {
 
     [(HNDRockerButton *)self performPress:1];
@@ -408,25 +408,25 @@
   }
 }
 
-- (void)handleRealCancelEvent:(CGPoint)a3
+- (void)handleRealCancelEvent:(CGPoint)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = event.y;
+  x = event.x;
   if ([(HNDRockerButton *)self isModalDown])
   {
     v6 = +[HNDHandManager sharedManager];
-    v7 = [v6 isVoiceControlRunning];
+    isVoiceControlRunning = [v6 isVoiceControlRunning];
 
-    if (v7)
+    if (isVoiceControlRunning)
     {
       [(HNDRockerButton *)self setHighlighted:0];
       v13 = +[HNDHandManager sharedManager];
-      v8 = [(HNDRockerButton *)self window];
-      v9 = [v8 screen];
-      v10 = [v9 displayIdentity];
-      v11 = [v13 displayManagerForDisplayId:{objc_msgSend(v10, "displayID")}];
-      v12 = [v11 hardwareIdentifier];
-      [v13 menuExitedOnDisplay:v12];
+      window = [(HNDRockerButton *)self window];
+      screen = [window screen];
+      displayIdentity = [screen displayIdentity];
+      v11 = [v13 displayManagerForDisplayId:{objc_msgSend(displayIdentity, "displayID")}];
+      hardwareIdentifier = [v11 hardwareIdentifier];
+      [v13 menuExitedOnDisplay:hardwareIdentifier];
     }
 
     else
@@ -443,9 +443,9 @@
   }
 }
 
-- (void)handleRealUpEvent:(CGPoint)a3 maxOrb:(double)a4
+- (void)handleRealUpEvent:(CGPoint)event maxOrb:(double)orb
 {
-  if ([(HNDRockerButton *)self pointInside:0 withEvent:a3.x, a3.y, a4])
+  if ([(HNDRockerButton *)self pointInside:0 withEvent:event.x, event.y, orb])
   {
 
     [(HNDRockerButton *)self performPress:0];
@@ -459,12 +459,12 @@
   }
 }
 
-- (void)performPress:(BOOL)a3
+- (void)performPress:(BOOL)press
 {
-  v3 = a3;
+  pressCopy = press;
   if (![(HNDRockerButton *)self disabled])
   {
-    if (v3)
+    if (pressCopy)
     {
       [(HNDRockerButton *)self setHighlighted:1];
       v5 = 32;
@@ -486,10 +486,10 @@
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(UIImageView *)self->_imageView frame];
   v8 = v7;
   v10 = v9;
@@ -531,9 +531,9 @@
   self->_unselectedImage = 0;
 }
 
-- (void)_retrieveCurrentImage:(id)a3
+- (void)_retrieveCurrentImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if ([(HNDRockerButton *)self _inSelectedState])
   {
     p_selectedImage = &self->_selectedImage;
@@ -545,12 +545,12 @@
       v17 = 3221225472;
       v18 = sub_100063B7C;
       v19 = &unk_1001D5660;
-      v20 = self;
+      selfCopy = self;
       v8 = &v21;
-      v21 = v4;
+      v21 = imageCopy;
       v9 = &v16;
 LABEL_6:
-      [(HNDRockerButton *)self getDeviceSpecificImageForColor:v7 withCompletion:v9, v10, v11, v12, v13, v14, v15, v16, v17, v18, v19, v20, v21];
+      [(HNDRockerButton *)self getDeviceSpecificImageForColor:v7 withCompletion:v9, v10, v11, v12, v13, selfCopy2, v15, v16, v17, v18, v19, selfCopy, v21];
 
       selectedImage = *p_selectedImage;
     }
@@ -567,23 +567,23 @@ LABEL_6:
       v11 = 3221225472;
       v12 = sub_100063C14;
       v13 = &unk_1001D5660;
-      v14 = self;
+      selfCopy2 = self;
       v8 = &v15;
-      v15 = v4;
+      v15 = imageCopy;
       v9 = &v10;
       goto LABEL_6;
     }
   }
 
-  (*(v4 + 2))(v4, selectedImage);
+  (*(imageCopy + 2))(imageCopy, selectedImage);
 }
 
-- (void)getDeviceSpecificImageForColor:(id)a3 withCompletion:(id)a4
+- (void)getDeviceSpecificImageForColor:(id)color withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HNDRockerButton *)self overrideImage];
-  if (!v8)
+  colorCopy = color;
+  completionCopy = completion;
+  overrideImage = [(HNDRockerButton *)self overrideImage];
+  if (!overrideImage)
   {
     v9 = self->_imageName;
     if ([(NSString *)v9 length])
@@ -598,8 +598,8 @@ LABEL_6:
       v14[4] = self;
       v15 = v9;
       v18 = v11;
-      v16 = v6;
-      v17 = v7;
+      v16 = colorCopy;
+      v17 = completionCopy;
       dispatch_async(v12, v14);
 
       v13 = v15;
@@ -607,7 +607,7 @@ LABEL_6:
 
     else
     {
-      if (!v7)
+      if (!completionCopy)
       {
 LABEL_8:
 
@@ -618,7 +618,7 @@ LABEL_8:
       v20 = 3221225472;
       v21 = sub_100063E64;
       v22 = &unk_1001D3F90;
-      v23 = v7;
+      v23 = completionCopy;
       AXPerformBlockAsynchronouslyOnMainThread();
       v13 = v23;
     }
@@ -626,20 +626,20 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  (*(v7 + 2))(v7, v8);
+  (*(completionCopy + 2))(completionCopy, overrideImage);
 LABEL_9:
 }
 
-- (id)_deviceSpecificImageForName:(id)a3 screenHeight:(double)a4
+- (id)_deviceSpecificImageForName:(id)name screenHeight:(double)height
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = AXUIAssistiveTouchImageForName();
   if (AXDeviceIsPhoneIdiom())
   {
     HasHomeButton = AXDeviceHasHomeButton();
-    if (a4 > 480.0 && HasHomeButton != 0)
+    if (height > 480.0 && HasHomeButton != 0)
     {
-      v9 = [v5 stringByAppendingString:@"-tall"];
+      v9 = [nameCopy stringByAppendingString:@"-tall"];
       v10 = [UIImage _deviceSpecificImageNamed:v9];
 
       v6 = v10;
@@ -648,7 +648,7 @@ LABEL_9:
 
   if (!v6)
   {
-    v11 = [UIImage _deviceSpecificImageNamed:v5];
+    v11 = [UIImage _deviceSpecificImageNamed:nameCopy];
     v12 = [v11 imageByPreparingThumbnailOfSize:{60.0, 60.0}];
     v13 = v12;
     if (v12)
@@ -730,57 +730,57 @@ LABEL_9:
   [(UILabel *)label setTextColor:?];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  if (self->_highlighted != a3)
+  if (self->_highlighted != highlighted)
   {
-    self->_highlighted = a3;
+    self->_highlighted = highlighted;
     [(HNDRockerButton *)self updateTextColor];
 
     [(HNDRockerButton *)self _updateImageView];
   }
 }
 
-- (void)setSelected:(BOOL)a3
+- (void)setSelected:(BOOL)selected
 {
-  if (self->_selected != a3)
+  if (self->_selected != selected)
   {
-    self->_selected = a3;
+    self->_selected = selected;
     [(HNDRockerButton *)self updateTextColor];
 
     [(HNDRockerButton *)self _updateImageView];
   }
 }
 
-- (void)setDisabled:(BOOL)a3
+- (void)setDisabled:(BOOL)disabled
 {
-  if (self->_disabled != a3)
+  if (self->_disabled != disabled)
   {
-    self->_disabled = a3;
+    self->_disabled = disabled;
     [(HNDRockerButton *)self updateTextColor];
 
     [(HNDRockerButton *)self _updateImageView];
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
-  if (self->_title != v5)
+  titleCopy = title;
+  if (self->_title != titleCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_title, a3);
+    v6 = titleCopy;
+    objc_storeStrong(&self->_title, title);
     [(HNDRockerButton *)self _updateLabelText];
-    v5 = v6;
+    titleCopy = v6;
   }
 }
 
 - (void)_updateLabelText
 {
-  v3 = [(HNDRockerButton *)self title];
-  if (v3)
+  title = [(HNDRockerButton *)self title];
+  if (title)
   {
-    v4 = v3;
+    v4 = title;
     v5 = objc_alloc_init(NSMutableParagraphStyle);
     LODWORD(v6) = 981668463;
     [v5 setHyphenationFactor:v6];
@@ -840,16 +840,16 @@ LABEL_9:
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(UILabel *)self->_label text];
-  if ([v3 length])
+  text = [(UILabel *)self->_label text];
+  if ([text length])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(HNDRockerButton *)self accessibilityLabel];
-    v4 = v5 != 0;
+    accessibilityLabel = [(HNDRockerButton *)self accessibilityLabel];
+    v4 = accessibilityLabel != 0;
   }
 
   return v4;
@@ -917,10 +917,10 @@ LABEL_7:
 - (id)description
 {
   v3 = objc_opt_class();
-  v4 = [(UILabel *)self->_label text];
+  text = [(UILabel *)self->_label text];
   [(HNDRockerButton *)self frame];
   v5 = NSStringFromCGRect(v9);
-  v6 = [NSString stringWithFormat:@"[%@ %p] - Label: %@ Frame: %@", v3, self, v4, v5];
+  v6 = [NSString stringWithFormat:@"[%@ %p] - Label: %@ Frame: %@", v3, self, text, v5];
 
   return v6;
 }

@@ -1,34 +1,34 @@
 @interface RTFixedSizeQueue
-- (RTFixedSizeQueue)initWithCapacity:(unint64_t)a3;
-- (RTFixedSizeQueue)initWithCapacity:(unint64_t)a3 objects:(id)a4;
-- (RTFixedSizeQueue)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RTFixedSizeQueue)initWithCapacity:(unint64_t)capacity;
+- (RTFixedSizeQueue)initWithCapacity:(unint64_t)capacity objects:(id)objects;
+- (RTFixedSizeQueue)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dequeueObject;
-- (id)enqueueObject:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)enqueueObject:(id)object;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTFixedSizeQueue
 
-- (RTFixedSizeQueue)initWithCapacity:(unint64_t)a3
+- (RTFixedSizeQueue)initWithCapacity:(unint64_t)capacity
 {
-  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a3];
-  v6 = [(RTFixedSizeQueue *)self initWithCapacity:a3 objects:v5];
+  v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:capacity];
+  v6 = [(RTFixedSizeQueue *)self initWithCapacity:capacity objects:v5];
 
   return v6;
 }
 
-- (RTFixedSizeQueue)initWithCapacity:(unint64_t)a3 objects:(id)a4
+- (RTFixedSizeQueue)initWithCapacity:(unint64_t)capacity objects:(id)objects
 {
-  v6 = a4;
+  objectsCopy = objects;
   v12.receiver = self;
   v12.super_class = RTFixedSizeQueue;
   v7 = [(RTFixedSizeQueue *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_capacity = a3;
-    v9 = [v6 mutableCopy];
+    v7->_capacity = capacity;
+    v9 = [objectsCopy mutableCopy];
     objects = v8->_objects;
     v8->_objects = v9;
   }
@@ -36,10 +36,10 @@
   return v8;
 }
 
-- (id)enqueueObject:(id)a3
+- (id)enqueueObject:(id)object
 {
-  v4 = a3;
-  if (v4)
+  objectCopy = object;
+  if (objectCopy)
   {
     if ([(NSMutableArray *)self->_objects count]>= self->_capacity)
     {
@@ -52,7 +52,7 @@
       v5 = 0;
     }
 
-    [(NSMutableArray *)self->_objects addObject:v4];
+    [(NSMutableArray *)self->_objects addObject:objectCopy];
   }
 
   else
@@ -79,21 +79,21 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [RTFixedSizeQueue alloc];
-  v5 = [(RTFixedSizeQueue *)self capacity];
-  v6 = [(RTFixedSizeQueue *)self objects];
-  v7 = [(RTFixedSizeQueue *)v4 initWithCapacity:v5 objects:v6];
+  capacity = [(RTFixedSizeQueue *)self capacity];
+  objects = [(RTFixedSizeQueue *)self objects];
+  v7 = [(RTFixedSizeQueue *)v4 initWithCapacity:capacity objects:objects];
 
   return v7;
 }
 
-- (RTFixedSizeQueue)initWithCoder:(id)a3
+- (RTFixedSizeQueue)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"RTFixedSizeQueueCapacityKey"];
-  v6 = [v4 decodeObjectForKey:@"RTFixedSizeQueueObjectsKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"RTFixedSizeQueueCapacityKey"];
+  v6 = [coderCopy decodeObjectForKey:@"RTFixedSizeQueueObjectsKey"];
 
   v7 = [v6 mutableCopy];
   v8 = [(RTFixedSizeQueue *)self initWithCapacity:v5 objects:v7];
@@ -101,12 +101,12 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   capacity = self->_capacity;
-  v5 = a3;
-  [v5 encodeInteger:capacity forKey:@"RTFixedSizeQueueCapacityKey"];
-  [v5 encodeObject:self->_objects forKey:@"RTFixedSizeQueueObjectsKey"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:capacity forKey:@"RTFixedSizeQueueCapacityKey"];
+  [coderCopy encodeObject:self->_objects forKey:@"RTFixedSizeQueueObjectsKey"];
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface DaemonCoreDataStoreServerHandlingPolicy
-- (BOOL)shouldAcceptConnectionsFromClientWithContext:(id)a3;
-- (BOOL)shouldAcceptMetadataChangesFromClientWithContext:(id)a3;
+- (BOOL)shouldAcceptConnectionsFromClientWithContext:(id)context;
+- (BOOL)shouldAcceptMetadataChangesFromClientWithContext:(id)context;
 - (_TtC13FinanceDaemon39DaemonCoreDataStoreServerHandlingPolicy)init;
-- (id)allowableClassesForClientWithContext:(id)a3;
-- (id)restrictingReadPredicateForEntity:(id)a3 fromClientWithContext:(id)a4;
-- (id)restrictingWritePredicateForEntity:(id)a3 fromClientWithContext:(id)a4;
+- (id)allowableClassesForClientWithContext:(id)context;
+- (id)restrictingReadPredicateForEntity:(id)entity fromClientWithContext:(id)context;
+- (id)restrictingWritePredicateForEntity:(id)entity fromClientWithContext:(id)context;
 @end
 
 @implementation DaemonCoreDataStoreServerHandlingPolicy
 
-- (BOOL)shouldAcceptConnectionsFromClientWithContext:(id)a3
+- (BOOL)shouldAcceptConnectionsFromClientWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  LOBYTE(self) = sub_226C88FC8(v4);
+  contextCopy = context;
+  selfCopy = self;
+  LOBYTE(self) = sub_226C88FC8(contextCopy);
 
   return self & 1;
 }
 
-- (id)allowableClassesForClientWithContext:(id)a3
+- (id)allowableClassesForClientWithContext:(id)context
 {
   if (sub_226C8AB00())
   {
@@ -33,34 +33,34 @@
   return v3;
 }
 
-- (id)restrictingWritePredicateForEntity:(id)a3 fromClientWithContext:(id)a4
+- (id)restrictingWritePredicateForEntity:(id)entity fromClientWithContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_226C8ACA0(a4);
+  entityCopy = entity;
+  contextCopy = context;
+  selfCopy = self;
+  v9 = sub_226C8ACA0(context);
 
   return v9;
 }
 
-- (id)restrictingReadPredicateForEntity:(id)a3 fromClientWithContext:(id)a4
+- (id)restrictingReadPredicateForEntity:(id)entity fromClientWithContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_226C89634(a3, a4);
+  entityCopy = entity;
+  contextCopy = context;
+  selfCopy = self;
+  v10 = sub_226C89634(entity, context);
 
   return v10;
 }
 
-- (BOOL)shouldAcceptMetadataChangesFromClientWithContext:(id)a3
+- (BOOL)shouldAcceptMetadataChangesFromClientWithContext:(id)context
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = self;
-  LOBYTE(v3) = sub_226C89E80(v3);
+  contextCopy = context;
+  contextCopy2 = context;
+  selfCopy = self;
+  LOBYTE(contextCopy) = sub_226C89E80(contextCopy);
 
-  return v3 & 1;
+  return contextCopy & 1;
 }
 
 - (_TtC13FinanceDaemon39DaemonCoreDataStoreServerHandlingPolicy)init

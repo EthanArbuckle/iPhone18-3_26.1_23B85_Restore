@@ -1,5 +1,5 @@
 @interface _UIBackdropViewSettingsColored
-- (void)computeOutputSettingsUsingModel:(id)a3;
+- (void)computeOutputSettingsUsingModel:(id)model;
 - (void)setDefaultValues;
 @end
 
@@ -10,8 +10,8 @@
   v10.receiver = self;
   v10.super_class = _UIBackdropViewSettingsColored;
   [(_UIBackdropViewSettings *)&v10 setDefaultValues];
-  v3 = [(_UIBackdropViewSettings *)self graphicsQuality];
-  if (v3 == 10)
+  graphicsQuality = [(_UIBackdropViewSettings *)self graphicsQuality];
+  if (graphicsQuality == 10)
   {
     [(_UIBackdropViewSettings *)self setRequiresColorStatistics:0];
     [(_UIBackdropViewSettings *)self setBackdropVisible:0];
@@ -40,7 +40,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v3 == 100)
+  if (graphicsQuality == 100)
   {
     [(_UIBackdropViewSettings *)self setRequiresColorStatistics:0];
     [(_UIBackdropViewSettings *)self setBackdropVisible:1];
@@ -62,40 +62,40 @@ LABEL_7:
   [(_UIBackdropViewSettings *)self setLegibleColor:v9];
 }
 
-- (void)computeOutputSettingsUsingModel:(id)a3
+- (void)computeOutputSettingsUsingModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v30.receiver = self;
   v30.super_class = _UIBackdropViewSettingsColored;
-  [(_UIBackdropViewSettings *)&v30 computeOutputSettingsUsingModel:v4];
+  [(_UIBackdropViewSettings *)&v30 computeOutputSettingsUsingModel:modelCopy];
   if ([(_UIBackdropViewSettings *)self isEnabled])
   {
     if (![(_UIBackdropViewSettings *)self isSelected]|| [(_UIBackdropViewSettings *)self isHighlighted])
     {
-      v5 = [(_UIBackdropViewSettings *)self isHighlighted];
-      v6 = [v4 colorTint];
-      [(_UIBackdropViewSettings *)self setColorTint:v6];
+      isHighlighted = [(_UIBackdropViewSettings *)self isHighlighted];
+      colorTint = [modelCopy colorTint];
+      [(_UIBackdropViewSettings *)self setColorTint:colorTint];
 
-      if (v5)
+      if (isHighlighted)
       {
-        [v4 colorTintAlpha];
+        [modelCopy colorTintAlpha];
         v8 = v7 * 0.6;
 LABEL_28:
         [(_UIBackdropViewSettings *)self setColorTintAlpha:v8];
         goto LABEL_31;
       }
 
-      v10 = [v4 colorSettings];
-      [v10 averageBrightness];
+      colorSettings = [modelCopy colorSettings];
+      [colorSettings averageBrightness];
       v12 = v11;
 
-      v13 = [v4 colorSettings];
-      [v13 averageSaturation];
+      colorSettings2 = [modelCopy colorSettings];
+      [colorSettings2 averageSaturation];
       v15 = v14;
 
       if (v12 < 0.5)
       {
-        [v4 grayscaleTintAlpha];
+        [modelCopy grayscaleTintAlpha];
         [(_UIBackdropViewSettings *)self setGrayscaleTintAlpha:fmin((0.5 - v12) * 1.25 + v16, 0.96)];
       }
 
@@ -105,21 +105,21 @@ LABEL_28:
         [(_UIBackdropViewSettings *)self setGrayscaleTintAlpha:fmin((v15 + -0.7) * 1.75 + v17, 0.96)];
       }
 
-      v18 = [v4 colorTint];
+      colorTint2 = [modelCopy colorTint];
       v19 = _UIBackdropViewSettingsColorAcceptGreen();
 
-      if (v18 == v19)
+      if (colorTint2 == v19)
       {
         v28 = 0.0;
         v29 = 0;
-        v20 = [v4 colorTint];
-        [v20 getRed:&v29 green:&v28 blue:&v27 alpha:&v26];
+        colorTint3 = [modelCopy colorTint];
+        [colorTint3 getRed:&v29 green:&v28 blue:&v27 alpha:&v26];
 
         if (v28 > 0.95)
         {
           if (v12 > 0.7)
           {
-            [v4 colorTintAlpha];
+            [modelCopy colorTintAlpha];
             [(_UIBackdropViewSettings *)self setColorTintAlpha:fmin((v12 + -0.7) * 0.9 + v21, 0.96)];
             [(_UIBackdropViewSettings *)self setGrayscaleTintLevel:0.0];
             [(_UIBackdropViewSettings *)self setGrayscaleTintAlpha:fmin(v12 + -0.7 + v12 + -0.7, 0.96)];
@@ -155,14 +155,14 @@ LABEL_28:
     }
 
     [(_UIBackdropViewSettings *)self setColorTint:qword_1ED49C808];
-    v25 = [(_UIBackdropViewSettings *)self graphicsQuality];
-    if (v25 == 10)
+    graphicsQuality = [(_UIBackdropViewSettings *)self graphicsQuality];
+    if (graphicsQuality == 10)
     {
       v8 = 0.96;
       goto LABEL_28;
     }
 
-    if (v25 != 100)
+    if (graphicsQuality != 100)
     {
       goto LABEL_31;
     }
@@ -178,13 +178,13 @@ LABEL_27:
   }
 
   [(_UIBackdropViewSettings *)self setColorTint:qword_1ED49C7F8];
-  v9 = [(_UIBackdropViewSettings *)self graphicsQuality];
-  if (v9 == 10)
+  graphicsQuality2 = [(_UIBackdropViewSettings *)self graphicsQuality];
+  if (graphicsQuality2 == 10)
   {
     goto LABEL_27;
   }
 
-  if (v9 == 100)
+  if (graphicsQuality2 == 100)
   {
     v8 = 0.2;
     goto LABEL_28;

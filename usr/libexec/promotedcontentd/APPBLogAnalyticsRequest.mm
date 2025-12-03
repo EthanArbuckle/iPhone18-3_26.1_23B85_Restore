@@ -1,14 +1,14 @@
 @interface APPBLogAnalyticsRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addEvents:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addEvents:(id)events;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBLogAnalyticsRequest
@@ -25,22 +25,22 @@
   return v3;
 }
 
-- (void)addEvents:(id)a3
+- (void)addEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   events = self->_events;
-  v8 = v4;
+  v8 = eventsCopy;
   if (!events)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_events;
     self->_events = v6;
 
-    v4 = v8;
+    eventsCopy = v8;
     events = self->_events;
   }
 
-  [(NSMutableArray *)events addObject:v4];
+  [(NSMutableArray *)events addObject:eventsCopy];
 }
 
 - (id)description
@@ -48,8 +48,8 @@
   v7.receiver = self;
   v7.super_class = APPBLogAnalyticsRequest;
   v3 = [(APPBLogAnalyticsRequest *)&v7 description];
-  v4 = [(APPBLogAnalyticsRequest *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBLogAnalyticsRequest *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -104,8 +104,8 @@
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -120,9 +120,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_iAdID)
   {
     PBDataWriterWriteDataField();
@@ -175,61 +175,61 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_iAdID)
   {
-    [v8 setIAdID:?];
+    [toCopy setIAdID:?];
   }
 
   if (self->_bundleID)
   {
-    [v8 setBundleID:?];
+    [toCopy setBundleID:?];
   }
 
   if (self->_contentiAdID)
   {
-    [v8 setContentiAdID:?];
+    [toCopy setContentiAdID:?];
   }
 
   if (self->_dPID)
   {
-    [v8 setDPID:?];
+    [toCopy setDPID:?];
   }
 
   if ([(APPBLogAnalyticsRequest *)self eventsCount])
   {
-    [v8 clearEvents];
-    v4 = [(APPBLogAnalyticsRequest *)self eventsCount];
-    if (v4)
+    [toCopy clearEvents];
+    eventsCount = [(APPBLogAnalyticsRequest *)self eventsCount];
+    if (eventsCount)
     {
-      v5 = v4;
+      v5 = eventsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(APPBLogAnalyticsRequest *)self eventsAtIndex:i];
-        [v8 addEvents:v7];
+        [toCopy addEvents:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_iAdID copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_iAdID copyWithZone:zone];
   v7 = v5[5];
   v5[5] = v6;
 
-  v8 = [(NSString *)self->_bundleID copyWithZone:a3];
+  v8 = [(NSString *)self->_bundleID copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(NSData *)self->_contentiAdID copyWithZone:a3];
+  v10 = [(NSData *)self->_contentiAdID copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
-  v12 = [(NSData *)self->_dPID copyWithZone:a3];
+  v12 = [(NSData *)self->_dPID copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
@@ -253,7 +253,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v21 + 1) + 8 * v18) copyWithZone:{a3, v21}];
+        v19 = [*(*(&v21 + 1) + 8 * v18) copyWithZone:{zone, v21}];
         [v5 addEvents:v19];
 
         v18 = v18 + 1;
@@ -269,13 +269,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((iAdID = self->_iAdID, !(iAdID | v4[5])) || -[NSData isEqual:](iAdID, "isEqual:")) && ((bundleID = self->_bundleID, !(bundleID | v4[1])) || -[NSString isEqual:](bundleID, "isEqual:")) && ((contentiAdID = self->_contentiAdID, !(contentiAdID | v4[2])) || -[NSData isEqual:](contentiAdID, "isEqual:")) && ((dPID = self->_dPID, !(dPID | v4[3])) || -[NSData isEqual:](dPID, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((iAdID = self->_iAdID, !(iAdID | equalCopy[5])) || -[NSData isEqual:](iAdID, "isEqual:")) && ((bundleID = self->_bundleID, !(bundleID | equalCopy[1])) || -[NSString isEqual:](bundleID, "isEqual:")) && ((contentiAdID = self->_contentiAdID, !(contentiAdID | equalCopy[2])) || -[NSData isEqual:](contentiAdID, "isEqual:")) && ((dPID = self->_dPID, !(dPID | equalCopy[3])) || -[NSData isEqual:](dPID, "isEqual:")))
   {
     events = self->_events;
-    if (events | v4[4])
+    if (events | equalCopy[4])
     {
       v10 = [(NSMutableArray *)events isEqual:?];
     }
@@ -303,25 +303,25 @@
   return v6 ^ [(NSMutableArray *)self->_events hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 5))
+  fromCopy = from;
+  if (*(fromCopy + 5))
   {
     [(APPBLogAnalyticsRequest *)self setIAdID:?];
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(APPBLogAnalyticsRequest *)self setBundleID:?];
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(APPBLogAnalyticsRequest *)self setContentiAdID:?];
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(APPBLogAnalyticsRequest *)self setDPID:?];
   }
@@ -330,7 +330,7 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v5 = *(v4 + 4);
+  v5 = *(fromCopy + 4);
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {

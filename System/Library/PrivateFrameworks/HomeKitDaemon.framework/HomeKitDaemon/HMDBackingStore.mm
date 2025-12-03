@@ -3,42 +3,42 @@
 + (NSSet)deeplyProblematicObjectTypes;
 + (NSSet)internalAllowedTypes;
 + (id)cdlsActiveBackingStores;
-+ (id)cdlsBackingStoreForHomeManagerWithError:(id *)a3;
-+ (id)cdlsBackingStoreWithHandle:(id)a3 error:(id *)a4;
-+ (id)cdlsFetchManagedObjectWithUUID:(id)a3 ofManagedObjectType:(Class)a4 error:(id *)a5;
-+ (id)cdlsFetchManagedObjectWithUUID:(id)a3 ofModelType:(Class)a4 error:(id *)a5;
-+ (id)cdlsFetchManagedObjectsWithUUIDStrings:(id)a3 ofManagedObjectType:(Class)a4;
-+ (id)cdlsFetchObjectWithUUID:(id)a3 ofModelType:(Class)a4 error:(id *)a5;
-+ (id)cdlsModelIDStringsForManagedObjects:(id)a3;
++ (id)cdlsBackingStoreForHomeManagerWithError:(id *)error;
++ (id)cdlsBackingStoreWithHandle:(id)handle error:(id *)error;
++ (id)cdlsFetchManagedObjectWithUUID:(id)d ofManagedObjectType:(Class)type error:(id *)error;
++ (id)cdlsFetchManagedObjectWithUUID:(id)d ofModelType:(Class)type error:(id *)error;
++ (id)cdlsFetchManagedObjectsWithUUIDStrings:(id)strings ofManagedObjectType:(Class)type;
++ (id)cdlsFetchObjectWithUUID:(id)d ofModelType:(Class)type error:(id *)error;
++ (id)cdlsModelIDStringsForManagedObjects:(id)objects;
 + (id)logCategory;
-+ (void)saveToPersistentStoreWithReason:(id)a3 homeManager:(id)a4 shouldIncrementGenerationCounter:(BOOL)a5 backingStore:(id)a6 completionHandler:(id)a7;
-- (HMDBackingStore)initWithUUID:(id)a3;
-- (HMDBackingStore)initWithUUID:(id)a3 home:(id)a4;
-- (HMDBackingStore)initWithUUID:(id)a3 homeManager:(id)a4;
-- (HMDBackingStore)initWithUUID:(id)a3 homeManager:(id)a4 home:(id)a5 dataSource:(id)a6;
++ (void)saveToPersistentStoreWithReason:(id)reason homeManager:(id)manager shouldIncrementGenerationCounter:(BOOL)counter backingStore:(id)store completionHandler:(id)handler;
+- (HMDBackingStore)initWithUUID:(id)d;
+- (HMDBackingStore)initWithUUID:(id)d home:(id)home;
+- (HMDBackingStore)initWithUUID:(id)d homeManager:(id)manager;
+- (HMDBackingStore)initWithUUID:(id)d homeManager:(id)manager home:(id)home dataSource:(id)source;
 - (HMDBackingStoreObjectProtocol)delegate;
 - (HMDCoreData)coreData;
 - (HMDHome)home;
 - (HMDHomeManager)homeManager;
 - (NSString)activeControllerKeyUsername;
 - (id)backingStoreOperationQueue;
-- (id)cdlsFetchObjectWithUUID:(id)a3 ofModelType:(Class)a4 error:(id *)a5;
-- (id)createBackingStoreLogAddTransactionOperationWithTransaction:(id)a3;
+- (id)cdlsFetchObjectWithUUID:(id)d ofModelType:(Class)type error:(id *)error;
+- (id)createBackingStoreLogAddTransactionOperationWithTransaction:(id)transaction;
 - (id)createBackingStoreOperation;
-- (id)createHomeObjectLookupWithHome:(id)a3;
+- (id)createHomeObjectLookupWithHome:(id)home;
 - (id)localBackingStore;
 - (id)logIdentifier;
-- (id)transaction:(id)a3 options:(id)a4;
-- (void)_cdlsReplayAllModelsStartingAt:(id)a3 fromContext:(id)a4 isInitialGraphLoad:(BOOL)a5;
-- (void)cdlsCommit:(id)a3 run:(BOOL)a4 save:(BOOL)a5 coreDataBlock:(id)a6 completionHandler:(id)a7;
-- (void)cdlsReplayAllModelsStartingAt:(id)a3 isInitialGraphLoad:(BOOL)a4;
+- (id)transaction:(id)transaction options:(id)options;
+- (void)_cdlsReplayAllModelsStartingAt:(id)at fromContext:(id)context isInitialGraphLoad:(BOOL)load;
+- (void)cdlsCommit:(id)commit run:(BOOL)run save:(BOOL)save coreDataBlock:(id)block completionHandler:(id)handler;
+- (void)cdlsReplayAllModelsStartingAt:(id)at isInitialGraphLoad:(BOOL)load;
 - (void)dmKickClients;
-- (void)handleCoreDataDidSaveNotification:(id)a3;
-- (void)handleCoreDataDidSaveNotification:(id)a3 sourceContext:(id)a4;
-- (void)handleCoreDataWillSaveNotification:(id)a3;
-- (void)setContext:(id)a3;
-- (void)shouldHandleNotificationFromContext:(void *)a1;
-- (void)submitBlock:(id)a3;
+- (void)handleCoreDataDidSaveNotification:(id)notification;
+- (void)handleCoreDataDidSaveNotification:(id)notification sourceContext:(id)context;
+- (void)handleCoreDataWillSaveNotification:(id)notification;
+- (void)setContext:(id)context;
+- (void)shouldHandleNotificationFromContext:(void *)context;
+- (void)submitBlock:(id)block;
 @end
 
 @implementation HMDBackingStore
@@ -46,9 +46,9 @@
 - (HMDCoreData)coreData
 {
   v2 = +[HMDMainDriver driver];
-  v3 = [v2 coreData];
+  coreData = [v2 coreData];
 
-  return v3;
+  return coreData;
 }
 
 + (id)logCategory
@@ -63,30 +63,30 @@
   return v3;
 }
 
-- (void)cdlsCommit:(id)a3 run:(BOOL)a4 save:(BOOL)a5 coreDataBlock:(id)a6 completionHandler:(id)a7
+- (void)cdlsCommit:(id)commit run:(BOOL)run save:(BOOL)save coreDataBlock:(id)block completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = a7;
-  v13 = [(HMDBackingStore *)self home];
-  v14 = [(HMDBackingStore *)self context];
-  v15 = [v14 managedObjectContext];
+  commitCopy = commit;
+  blockCopy = block;
+  handlerCopy = handler;
+  home = [(HMDBackingStore *)self home];
+  context = [(HMDBackingStore *)self context];
+  managedObjectContext = [context managedObjectContext];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __81__HMDBackingStore_CoreData__cdlsCommit_run_save_coreDataBlock_completionHandler___block_invoke;
   v21[3] = &unk_278676728;
   v21[4] = self;
-  v22 = v10;
-  v23 = v13;
-  v24 = v15;
-  v25 = v11;
-  v26 = v12;
-  v16 = v12;
-  v17 = v11;
-  v18 = v15;
-  v19 = v13;
-  v20 = v10;
-  [v14 performBlock:v21];
+  v22 = commitCopy;
+  v23 = home;
+  v24 = managedObjectContext;
+  v25 = blockCopy;
+  v26 = handlerCopy;
+  v16 = handlerCopy;
+  v17 = blockCopy;
+  v18 = managedObjectContext;
+  v19 = home;
+  v20 = commitCopy;
+  [context performBlock:v21];
 }
 
 void __81__HMDBackingStore_CoreData__cdlsCommit_run_save_coreDataBlock_completionHandler___block_invoke(uint64_t a1)
@@ -547,16 +547,16 @@ LABEL_10:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cdlsReplayAllModelsStartingAt:(id)a3 fromContext:(id)a4 isInitialGraphLoad:(BOOL)a5
+- (void)_cdlsReplayAllModelsStartingAt:(id)at fromContext:(id)context isInitialGraphLoad:(BOOL)load
 {
   v62 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  atCopy = at;
+  contextCopy = context;
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   v11 = v10;
-  v12 = [v8 uuid];
+  uuid = [atCopy uuid];
   v55 = 0;
-  v13 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:v12 ofModelType:objc_opt_class() error:&v55];
+  v13 = [HMDBackingStore cdlsFetchManagedObjectWithUUID:uuid ofModelType:objc_opt_class() error:&v55];
   v14 = COERCE_DOUBLE(v55);
 
   if (v13)
@@ -567,7 +567,7 @@ LABEL_10:
     v48 = COERCE_DOUBLE(*&v54);
 
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     v20 = v19;
     if (v16)
@@ -587,7 +587,7 @@ LABEL_10:
 
       objc_autoreleasePoolPop(v17);
       v24 = [MEMORY[0x277CBEB58] set];
-      if (a5)
+      if (load)
       {
         +[HMDBackingStoreTransactionOptions defaultCloudOptionsForInitialGraphLoad];
       }
@@ -604,22 +604,22 @@ LABEL_10:
         v33 = v16;
         do
         {
-          v34 = [MEMORY[0x277CBEB38] dictionary];
-          v35 = [MEMORY[0x277CBEB18] array];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
+          array = [MEMORY[0x277CBEB18] array];
           v49[0] = MEMORY[0x277D85DD0];
           v49[1] = 3221225472;
           v49[2] = __91__HMDBackingStore_CoreData___cdlsReplayAllModelsStartingAt_fromContext_isInitialGraphLoad___block_invoke;
           v49[3] = &unk_278673688;
-          v49[4] = v18;
+          v49[4] = selfCopy;
           v50 = v24;
-          v51 = v34;
-          v52 = v9;
-          v36 = v35;
+          v51 = dictionary;
+          v52 = contextCopy;
+          v36 = array;
           v53 = v36;
-          v37 = v34;
+          v37 = dictionary;
           [v33 hmf_enumerateWithAutoreleasePoolUsingBlock:v49];
           v38 = __dependencySort(v37);
-          __lookup(v18, v38, v31);
+          __lookup(selfCopy, v38, v31);
           v32 += [v38 count];
           v16 = v36;
 
@@ -630,7 +630,7 @@ LABEL_10:
       }
 
       v39 = objc_autoreleasePoolPush();
-      v40 = v18;
+      v40 = selfCopy;
       v41 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
       {
@@ -677,7 +677,7 @@ LABEL_10:
   else
   {
     v25 = objc_autoreleasePoolPush();
-    v26 = self;
+    selfCopy2 = self;
     v27 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
     {
@@ -685,7 +685,7 @@ LABEL_10:
       *buf = 138543874;
       v57 = v28;
       v58 = 2112;
-      v59 = v8;
+      v59 = atCopy;
       v60 = 2112;
       v61 = v14;
       _os_log_impl(&dword_229538000, v27, OS_LOG_TYPE_ERROR, "%{public}@Unable to find root model to start replay at %@: %@", buf, 0x20u);
@@ -769,20 +769,20 @@ void __91__HMDBackingStore_CoreData___cdlsReplayAllModelsStartingAt_fromContext_
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cdlsReplayAllModelsStartingAt:(id)a3 isInitialGraphLoad:(BOOL)a4
+- (void)cdlsReplayAllModelsStartingAt:(id)at isInitialGraphLoad:(BOOL)load
 {
-  v6 = a3;
-  v7 = [(HMDBackingStore *)self context];
+  atCopy = at;
+  context = [(HMDBackingStore *)self context];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __78__HMDBackingStore_CoreData__cdlsReplayAllModelsStartingAt_isInitialGraphLoad___block_invoke;
   v10[3] = &unk_278685AA8;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v13 = a4;
-  v8 = v7;
-  v9 = v6;
+  v11 = atCopy;
+  v12 = context;
+  loadCopy = load;
+  v8 = context;
+  v9 = atCopy;
   [v8 performBlockAndWaitWithPinnedQueryGeneration:v10];
 }
 
@@ -796,17 +796,17 @@ void __78__HMDBackingStore_CoreData__cdlsReplayAllModelsStartingAt_isInitialGrap
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (id)cdlsFetchObjectWithUUID:(id)a3 ofModelType:(Class)a4 error:(id *)a5
+- (id)cdlsFetchObjectWithUUID:(id)d ofModelType:(Class)type error:(id *)error
 {
-  v8 = a3;
-  if ((HMDModelClassIsCDRepresentable(a4) & 1) == 0)
+  dCopy = d;
+  if ((HMDModelClassIsCDRepresentable(type) & 1) == 0)
   {
     v13 = _HMFPreconditionFailure();
     _Block_object_dispose(&v19, 8);
     _Unwind_Resume(v13);
   }
 
-  if (v8)
+  if (dCopy)
   {
     v19 = 0;
     v20 = &v19;
@@ -814,17 +814,17 @@ void __78__HMDBackingStore_CoreData__cdlsReplayAllModelsStartingAt_isInitialGrap
     v22 = __Block_byref_object_copy__49687;
     v23 = __Block_byref_object_dispose__49688;
     v24 = 0;
-    v9 = [(HMDBackingStore *)self context];
-    v10 = [v9 managedObjectContext];
+    context = [(HMDBackingStore *)self context];
+    managedObjectContext = [context managedObjectContext];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __71__HMDBackingStore_CoreData__cdlsFetchObjectWithUUID_ofModelType_error___block_invoke;
     v14[3] = &unk_278673660;
     v16 = &v19;
-    v15 = v8;
-    v17 = a4;
-    v18 = a5;
-    [v10 performBlockAndWait:v14];
+    v15 = dCopy;
+    typeCopy = type;
+    errorCopy = error;
+    [managedObjectContext performBlockAndWait:v14];
 
     v11 = v20[5];
     _Block_object_dispose(&v19, 8);
@@ -849,11 +849,11 @@ void __71__HMDBackingStore_CoreData__cdlsFetchObjectWithUUID_ofModelType_error__
 - (void)dmKickClients
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDBackingStore *)self home];
-  v4 = [v3 homeManager];
-  if (v4)
+  home = [(HMDBackingStore *)self home];
+  homeManager = [home homeManager];
+  if (homeManager)
   {
-    v16 = v4;
+    v16 = homeManager;
 
     v5 = v16;
 LABEL_4:
@@ -864,30 +864,30 @@ LABEL_4:
     return;
   }
 
-  v17 = [(HMDBackingStore *)self homeManager];
+  homeManager2 = [(HMDBackingStore *)self homeManager];
 
-  v5 = v17;
-  if (v17)
+  v5 = homeManager2;
+  if (homeManager2)
   {
     goto LABEL_4;
   }
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [(HMDBackingStore *)v8 context];
-    v12 = [v11 name];
-    v13 = [(HMDBackingStore *)v8 context];
-    v14 = [v13 transactionAuthor];
+    context = [(HMDBackingStore *)selfCopy context];
+    name = [context name];
+    context2 = [(HMDBackingStore *)selfCopy context];
+    transactionAuthor = [context2 transactionAuthor];
     *buf = 138543874;
     v20 = v10;
     v21 = 2112;
-    v22 = v12;
+    v22 = name;
     v23 = 2112;
-    v24 = v14;
+    v24 = transactionAuthor;
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_ERROR, "%{public}@Warning: HMDBackingStore with context %@.%@ does not have a homeManager", buf, 0x20u);
   }
 
@@ -895,13 +895,13 @@ LABEL_4:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCoreDataDidSaveNotification:(id)a3 sourceContext:(id)a4
+- (void)handleCoreDataDidSaveNotification:(id)notification sourceContext:(id)context
 {
   v120 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 userInfo];
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x277CBE310]];
+  notificationCopy = notification;
+  contextCopy = context;
+  userInfo = [notificationCopy userInfo];
+  v8 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBE310]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -915,7 +915,7 @@ LABEL_4:
 
   v84 = v9;
 
-  v10 = [v7 objectForKeyedSubscript:*MEMORY[0x277CBE188]];
+  v10 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBE188]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -929,7 +929,7 @@ LABEL_4:
 
   v12 = v11;
 
-  v13 = [v7 objectForKeyedSubscript:*MEMORY[0x277CBE150]];
+  v13 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CBE150]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -943,39 +943,39 @@ LABEL_4:
 
   v15 = v14;
 
-  v16 = [v6 userInfo];
-  [v16 objectForKeyedSubscript:@"HMD.deletes"];
-  v86 = v85 = v16;
-  [v16 removeObjectForKey:@"HMD.deletes"];
+  userInfo2 = [contextCopy userInfo];
+  [userInfo2 objectForKeyedSubscript:@"HMD.deletes"];
+  v86 = v85 = userInfo2;
+  [userInfo2 removeObjectForKey:@"HMD.deletes"];
   if ([v12 count] || objc_msgSend(v84, "count") || objc_msgSend(v15, "count") || objc_msgSend(v86, "count"))
   {
-    v82 = v7;
+    v82 = userInfo;
     v83 = v12;
     v80 = v15;
-    [v6 name];
-    v18 = v17 = v6;
-    v19 = [v6 transactionAuthor];
-    v20 = [HMDCoreDataContextTransactionAuthor contextAuthorWithString:v19];
+    [contextCopy name];
+    v18 = v17 = contextCopy;
+    transactionAuthor = [contextCopy transactionAuthor];
+    v20 = [HMDCoreDataContextTransactionAuthor contextAuthorWithString:transactionAuthor];
 
-    v21 = [v20 type];
+    type = [v20 type];
     v22 = [HMDCoreDataWorkingStoreTransactionLogEvent alloc];
-    v23 = [v20 string];
-    v24 = [(HMDCoreDataWorkingStoreTransactionLogEvent *)v22 initWithTransactionAuthor:v23];
+    string = [v20 string];
+    v24 = [(HMDCoreDataWorkingStoreTransactionLogEvent *)v22 initWithTransactionAuthor:string];
 
-    v25 = [(HMDBackingStore *)self homeManager];
-    v26 = [v25 metricsManager];
-    v27 = [v26 logEventSubmitter];
+    homeManager = [(HMDBackingStore *)self homeManager];
+    metricsManager = [homeManager metricsManager];
+    logEventSubmitter = [metricsManager logEventSubmitter];
     v79 = v24;
-    [v27 submitLogEvent:v24];
+    [logEventSubmitter submitLogEvent:v24];
 
-    v28 = self;
-    v29 = [(HMDBackingStore *)self context];
-    v30 = [v29 managedObjectContext];
+    selfCopy = self;
+    context = [(HMDBackingStore *)self context];
+    managedObjectContext = [context managedObjectContext];
 
     v81 = v17;
-    if (![v17 isEqual:v30])
+    if (![v17 isEqual:managedObjectContext])
     {
-      v56 = [(HMDBackingStore *)self context];
+      context2 = [(HMDBackingStore *)self context];
       v92[0] = MEMORY[0x277D85DD0];
       v92[1] = 3221225472;
       v92[2] = __77__HMDBackingStore_CoreData__handleCoreDataDidSaveNotification_sourceContext___block_invoke;
@@ -983,8 +983,8 @@ LABEL_4:
       v92[4] = self;
       v93 = v18;
       v94 = v20;
-      v95 = v30;
-      v96 = v5;
+      v95 = managedObjectContext;
+      v96 = notificationCopy;
       v57 = v84;
       v97 = v84;
       v12 = v83;
@@ -992,18 +992,18 @@ LABEL_4:
       v15 = v80;
       v99 = v80;
       v100 = v86;
-      v101 = v21;
-      [v56 performBlock:v92];
+      v101 = type;
+      [context2 performBlock:v92];
 
-      v7 = v82;
+      userInfo = v82;
 LABEL_45:
 
       v67 = v85;
-      v6 = v81;
+      contextCopy = v81;
       goto LABEL_46;
     }
 
-    v78 = v30;
+    v78 = managedObjectContext;
     v31 = [v85 objectForKeyedSubscript:@"HMD.v4txn"];
     v12 = v83;
     if (v31)
@@ -1011,25 +1011,25 @@ LABEL_45:
       [v85 removeObjectForKey:@"HMD.v4txn"];
     }
 
-    v32 = [v31 objects];
+    objects = [v31 objects];
     v33 = v86;
-    v7 = v82;
+    userInfo = v82;
     if (self)
     {
-      if ([v32 count] || objc_msgSend(v33, "count"))
+      if ([objects count] || objc_msgSend(v33, "count"))
       {
         if ([v33 count])
         {
-          if ([v32 count])
+          if ([objects count])
           {
             v76 = v31;
-            v77 = v5;
+            v77 = notificationCopy;
             v34 = v33;
-            v89 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v33, "count") + objc_msgSend(v32, "count")}];
-            [v89 addObjectsFromArray:v32];
+            v89 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v33, "count") + objc_msgSend(objects, "count")}];
+            [v89 addObjectsFromArray:objects];
             v35 = MEMORY[0x277CBEB98];
-            v75 = v32;
-            v36 = [v32 na_map:&__block_literal_global_11_49731];
+            v75 = objects;
+            v36 = [objects na_map:&__block_literal_global_11_49731];
             v37 = [v35 setWithArray:v36];
 
             v38 = v37;
@@ -1039,7 +1039,7 @@ LABEL_45:
             v103 = 0u;
             v74 = v34;
             v39 = v34;
-            v40 = self;
+            selfCopy3 = self;
             v91 = [v39 countByEnumeratingWithState:&v102 objects:v112 count:16];
             if (v91)
             {
@@ -1057,31 +1057,31 @@ LABEL_45:
                   }
 
                   v44 = *(*(&v102 + 1) + 8 * i);
-                  v45 = [v44 change];
-                  v46 = [v45 uuid];
-                  v47 = [v38 containsObject:v46];
+                  change = [v44 change];
+                  uuid = [change uuid];
+                  v47 = [v38 containsObject:uuid];
 
                   if (v47)
                   {
                     v48 = objc_autoreleasePoolPush();
-                    v49 = v40;
+                    v49 = selfCopy3;
                     v50 = HMFGetOSLogHandle();
                     if (os_log_type_enabled(v50, OS_LOG_TYPE_DEBUG))
                     {
                       HMFGetLogIdentifier();
                       v52 = v51 = v38;
-                      v53 = [v45 uuid];
+                      uuid2 = [change uuid];
                       *buf = 138543874;
                       v107 = v52;
                       v108 = 2112;
-                      v109 = v45;
+                      v109 = change;
                       v110 = 2112;
-                      v111 = v53;
+                      v111 = uuid2;
                       _os_log_impl(&dword_229538000, v50, OS_LOG_TYPE_DEBUG, "%{public}@Skipping merging transaction item for change %@/%@ as one already exists", buf, 0x20u);
 
                       v38 = v51;
                       v39 = v87;
-                      v40 = self;
+                      selfCopy3 = self;
                     }
 
                     objc_autoreleasePoolPop(v48);
@@ -1104,14 +1104,14 @@ LABEL_45:
 
             v54 = [v89 copy];
             v55 = v38;
-            v28 = v54;
+            selfCopy = v54;
 
             v31 = v76;
-            v5 = v77;
-            v7 = v82;
+            notificationCopy = v77;
+            userInfo = v82;
             v12 = v83;
             v33 = v74;
-            v32 = v75;
+            objects = v75;
             goto LABEL_40;
           }
 
@@ -1120,22 +1120,22 @@ LABEL_45:
 
         else
         {
-          v58 = v32;
+          v58 = objects;
         }
 
-        v28 = v58;
+        selfCopy = v58;
       }
 
       else
       {
-        v28 = 0;
+        selfCopy = 0;
       }
     }
 
 LABEL_40:
 
     v59 = objc_autoreleasePoolPush();
-    v60 = self;
+    selfCopy4 = self;
     v61 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v61, OS_LOG_TYPE_INFO))
     {
@@ -1162,18 +1162,18 @@ LABEL_40:
     }
 
     objc_autoreleasePoolPop(v59);
-    v65 = [v31 options];
-    v66 = v60;
+    options = [v31 options];
+    v66 = selfCopy4;
     v57 = v84;
-    __broadcastChanges(v66, v84, v12, v80, v28, v65);
+    __broadcastChanges(v66, v84, v12, v80, selfCopy, options);
 
     v15 = v80;
-    v30 = v78;
+    managedObjectContext = v78;
     goto LABEL_45;
   }
 
   v69 = objc_autoreleasePoolPush();
-  v70 = self;
+  selfCopy5 = self;
   v71 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v71, OS_LOG_TYPE_DEBUG))
   {
@@ -1252,14 +1252,14 @@ id __62__HMDBackingStore_CoreData____mergeLegacyChanges_intoDeletes___block_invo
   return v6;
 }
 
-- (void)handleCoreDataDidSaveNotification:(id)a3
+- (void)handleCoreDataDidSaveNotification:(id)notification
 {
-  v8 = a3;
-  v4 = [v8 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = object;
   }
 
   else
@@ -1272,43 +1272,43 @@ id __62__HMDBackingStore_CoreData____mergeLegacyChanges_intoDeletes___block_invo
   if ([(HMDBackingStore *)self shouldHandleNotificationFromContext:v6])
   {
     v7 = objc_autoreleasePoolPush();
-    [(HMDBackingStore *)self handleCoreDataDidSaveNotification:v8 sourceContext:v6];
+    [(HMDBackingStore *)self handleCoreDataDidSaveNotification:notificationCopy sourceContext:v6];
     objc_autoreleasePoolPop(v7);
   }
 }
 
-- (void)shouldHandleNotificationFromContext:(void *)a1
+- (void)shouldHandleNotificationFromContext:(void *)context
 {
   v3 = a2;
-  if (a1)
+  if (context)
   {
-    v4 = [a1 coreData];
-    v5 = [v4 isRelatedContext:v3];
+    coreData = [context coreData];
+    v5 = [coreData isRelatedContext:v3];
 
     if (v5 && [v3 hmd_transactionAuthor] != 7)
     {
-      v6 = [v3 name];
-      v7 = [a1 contextName];
-      a1 = [v6 isEqualToString:v7];
+      name = [v3 name];
+      contextName = [context contextName];
+      context = [name isEqualToString:contextName];
     }
 
     else
     {
-      a1 = 0;
+      context = 0;
     }
   }
 
-  return a1;
+  return context;
 }
 
-- (void)handleCoreDataWillSaveNotification:(id)a3
+- (void)handleCoreDataWillSaveNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
+  notificationCopy = notification;
+  object = [notificationCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = object;
   }
 
   else
@@ -1320,34 +1320,34 @@ id __62__HMDBackingStore_CoreData____mergeLegacyChanges_intoDeletes___block_invo
 
   if ([(HMDBackingStore *)self shouldHandleNotificationFromContext:v7])
   {
-    v8 = [v7 userInfo];
-    v9 = [v7 deletedObjects];
-    if ([v9 count])
+    userInfo = [v7 userInfo];
+    deletedObjects = [v7 deletedObjects];
+    if ([deletedObjects count])
     {
-      v10 = self;
+      selfCopy = self;
       v11 = MEMORY[0x277CBEB18];
-      v12 = v9;
+      v12 = deletedObjects;
       v13 = [[v11 alloc] initWithCapacity:{objc_msgSend(v12, "count")}];
       location[0] = MEMORY[0x277D85DD0];
       location[1] = 3221225472;
       location[2] = ____createLegacyDeletes_block_invoke;
       location[3] = &unk_278678F60;
-      v22 = v10;
+      v22 = selfCopy;
       v23 = v13;
-      v14 = v10;
+      v14 = selfCopy;
       v15 = v13;
       [v12 hmf_enumerateWithAutoreleasePoolUsingBlock:location];
 
       v16 = [v15 copy];
-      [v8 setObject:v16 forKeyedSubscript:@"HMD.deletes"];
+      [userInfo setObject:v16 forKeyedSubscript:@"HMD.deletes"];
       objc_initWeak(location, v7);
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __64__HMDBackingStore_CoreData__handleCoreDataWillSaveNotification___block_invoke;
       v18[3] = &unk_278686B48;
       objc_copyWeak(&v20, location);
-      v17 = v16;
-      v19 = v17;
+      userInfo2 = v16;
+      v19 = userInfo2;
       [v7 performWithOptions:1 andBlock:v18];
 
       objc_destroyWeak(&v20);
@@ -1356,8 +1356,8 @@ id __62__HMDBackingStore_CoreData____mergeLegacyChanges_intoDeletes___block_invo
 
     else
     {
-      v17 = [v7 userInfo];
-      [v17 removeObjectForKey:@"HMD.deletes"];
+      userInfo2 = [v7 userInfo];
+      [userInfo2 removeObjectForKey:@"HMD.deletes"];
     }
   }
 }
@@ -1375,19 +1375,19 @@ void __64__HMDBackingStore_CoreData__handleCoreDataWillSaveNotification___block_
   }
 }
 
-+ (id)cdlsFetchManagedObjectsWithUUIDStrings:(id)a3 ofManagedObjectType:(Class)a4
++ (id)cdlsFetchManagedObjectsWithUUIDStrings:(id)strings ofManagedObjectType:(Class)type
 {
   v47 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 count])
+  stringsCopy = strings;
+  if ([stringsCopy count])
   {
-    aClass = a4;
-    v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v5, "count")}];
+    aClass = type;
+    v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(stringsCopy, "count")}];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
     v38 = 0u;
-    obj = v5;
+    obj = stringsCopy;
     v7 = [obj countByEnumeratingWithState:&v35 objects:v46 count:16];
     v31 = v6;
     if (v7)
@@ -1413,7 +1413,7 @@ void __64__HMDBackingStore_CoreData__handleCoreDataWillSaveNotification___block_
           else
           {
             v13 = objc_autoreleasePoolPush();
-            v14 = a1;
+            selfCopy = self;
             v15 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
             {
@@ -1439,16 +1439,16 @@ void __64__HMDBackingStore_CoreData__handleCoreDataWillSaveNotification___block_
 
     if ([v6 count])
     {
-      v17 = [(objc_class *)aClass fetchRequest];
+      fetchRequest = [(objc_class *)aClass fetchRequest];
       v18 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"modelID", v6];
-      [v17 setPredicate:v18];
+      [fetchRequest setPredicate:v18];
 
       v45 = @"modelID";
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:&v45 count:1];
-      [v17 setPropertiesToFetch:v19];
+      [fetchRequest setPropertiesToFetch:v19];
 
       v34 = 0;
-      v20 = [v17 execute:&v34];
+      v20 = [fetchRequest execute:&v34];
       v21 = v34;
       if (v20)
       {
@@ -1458,7 +1458,7 @@ void __64__HMDBackingStore_CoreData__handleCoreDataWillSaveNotification___block_
       else
       {
         v23 = objc_autoreleasePoolPush();
-        v24 = a1;
+        selfCopy2 = self;
         v25 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
@@ -1495,11 +1495,11 @@ void __64__HMDBackingStore_CoreData__handleCoreDataWillSaveNotification___block_
   return v22;
 }
 
-+ (id)cdlsModelIDStringsForManagedObjects:(id)a3
++ (id)cdlsModelIDStringsForManagedObjects:(id)objects
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 count];
+  objectsCopy = objects;
+  v4 = [objectsCopy count];
   if (v4)
   {
     v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v4];
@@ -1507,7 +1507,7 @@ void __64__HMDBackingStore_CoreData__handleCoreDataWillSaveNotification___block_
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = v3;
+    v6 = objectsCopy;
     v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v7)
     {
@@ -1522,9 +1522,9 @@ void __64__HMDBackingStore_CoreData__handleCoreDataWillSaveNotification___block_
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v16 + 1) + 8 * i) modelID];
-          v12 = [v11 UUIDString];
-          [v5 addObject:v12];
+          modelID = [*(*(&v16 + 1) + 8 * i) modelID];
+          uUIDString = [modelID UUIDString];
+          [v5 addObject:uUIDString];
         }
 
         v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -1546,15 +1546,15 @@ void __64__HMDBackingStore_CoreData__handleCoreDataWillSaveNotification___block_
   return v13;
 }
 
-+ (id)cdlsFetchObjectWithUUID:(id)a3 ofModelType:(Class)a4 error:(id *)a5
++ (id)cdlsFetchObjectWithUUID:(id)d ofModelType:(Class)type error:(id *)error
 {
-  v8 = a3;
-  if (HMDModelClassIsCDRepresentable(a4))
+  dCopy = d;
+  if (HMDModelClassIsCDRepresentable(type))
   {
-    v9 = [a1 cdlsFetchManagedObjectWithUUID:v8 ofManagedObjectType:-[objc_class cd_entityClass](a4 error:{"cd_entityClass"), a5}];
+    v9 = [self cdlsFetchManagedObjectWithUUID:dCopy ofManagedObjectType:-[objc_class cd_entityClass](type error:{"cd_entityClass"), error}];
     if (v9)
     {
-      v10 = [[a4 alloc] initWithManagedObject:v9 changeType:0 detached:0 error:a5];
+      v10 = [[type alloc] initWithManagedObject:v9 changeType:0 detached:0 error:error];
     }
 
     else
@@ -1572,35 +1572,35 @@ void __64__HMDBackingStore_CoreData__handleCoreDataWillSaveNotification___block_
   }
 }
 
-+ (id)cdlsFetchManagedObjectWithUUID:(id)a3 ofManagedObjectType:(Class)a4 error:(id *)a5
++ (id)cdlsFetchManagedObjectWithUUID:(id)d ofManagedObjectType:(Class)type error:(id *)error
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  if (([(objc_class *)a4 isSubclassOfClass:objc_opt_class()]& 1) == 0)
+  dCopy = d;
+  if (([(objc_class *)type isSubclassOfClass:objc_opt_class()]& 1) == 0)
   {
     _HMFPreconditionFailure();
     goto LABEL_14;
   }
 
-  v9 = [(objc_class *)a4 fetchRequest];
+  fetchRequest = [(objc_class *)type fetchRequest];
   v10 = +[HMDBackingStoreModelObject fetchByModelID];
   v34 = @"MODELID";
-  v35[0] = v8;
+  v35[0] = dCopy;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:&v34 count:1];
   v12 = [v10 predicateWithSubstitutionVariables:v11];
-  [v9 setPredicate:v12];
+  [fetchRequest setPredicate:v12];
 
-  v13 = [v9 execute:a5];
+  v13 = [fetchRequest execute:error];
   v14 = v13;
   if (v13)
   {
     if ([v13 count] < 2)
     {
-      v15 = [v14 firstObject];
-      v16 = v15;
-      if (v15)
+      firstObject = [v14 firstObject];
+      v16 = firstObject;
+      if (firstObject)
       {
-        v17 = v15;
+        v17 = firstObject;
       }
 
       goto LABEL_10;
@@ -1611,19 +1611,19 @@ LABEL_14:
   }
 
   v18 = objc_autoreleasePoolPush();
-  v19 = a1;
+  selfCopy = self;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
     v21 = HMFGetLogIdentifier();
-    v22 = NSStringFromClass(a4);
-    v23 = *a5;
+    v22 = NSStringFromClass(type);
+    v23 = *error;
     v26 = 138544130;
     v27 = v21;
     v28 = 2112;
     v29 = v22;
     v30 = 2112;
-    v31 = v8;
+    v31 = dCopy;
     v32 = 2112;
     v33 = v23;
     _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_ERROR, "%{public}@Fetch of model %@.%@ failed: %@", &v26, 0x2Au);
@@ -1638,12 +1638,12 @@ LABEL_10:
   return v16;
 }
 
-+ (id)cdlsFetchManagedObjectWithUUID:(id)a3 ofModelType:(Class)a4 error:(id *)a5
++ (id)cdlsFetchManagedObjectWithUUID:(id)d ofModelType:(Class)type error:(id *)error
 {
-  v8 = a3;
-  if (HMDModelClassIsCDRepresentable(a4))
+  dCopy = d;
+  if (HMDModelClassIsCDRepresentable(type))
   {
-    v9 = [a1 cdlsFetchManagedObjectWithUUID:v8 ofManagedObjectType:-[objc_class cd_entityClass](a4 error:{"cd_entityClass"), a5}];
+    v9 = [self cdlsFetchManagedObjectWithUUID:dCopy ofManagedObjectType:-[objc_class cd_entityClass](type error:{"cd_entityClass"), error}];
 
     return v9;
   }
@@ -1655,7 +1655,7 @@ LABEL_10:
   }
 }
 
-+ (id)cdlsBackingStoreForHomeManagerWithError:(id *)a3
++ (id)cdlsBackingStoreForHomeManagerWithError:(id *)error
 {
   v3 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"030440CB-974B-44F3-8786-7191F302252E"];
   v4 = __backingStoreWithUUID(v3, 0);
@@ -1663,13 +1663,13 @@ LABEL_10:
   return v4;
 }
 
-+ (id)cdlsBackingStoreWithHandle:(id)a3 error:(id *)a4
++ (id)cdlsBackingStoreWithHandle:(id)handle error:(id *)error
 {
-  v4 = a3;
-  v5 = [v4 backingStoreUUID];
-  v6 = [v4 homeUUID];
+  handleCopy = handle;
+  backingStoreUUID = [handleCopy backingStoreUUID];
+  homeUUID = [handleCopy homeUUID];
 
-  v7 = __backingStoreWithUUID(v5, v6);
+  v7 = __backingStoreWithUUID(backingStoreUUID, homeUUID);
 
   return v7;
 }
@@ -1716,17 +1716,17 @@ void __52__HMDBackingStore_CoreData__cdlsActiveBackingStores__block_invoke()
 
 - (NSString)activeControllerKeyUsername
 {
-  v2 = [MEMORY[0x277CFEC78] systemStore];
-  v3 = [v2 activeControllerPairingIdentifier];
-  v4 = [v3 copy];
+  systemStore = [MEMORY[0x277CFEC78] systemStore];
+  activeControllerPairingIdentifier = [systemStore activeControllerPairingIdentifier];
+  v4 = [activeControllerPairingIdentifier copy];
 
   return v4;
 }
 
-- (id)createHomeObjectLookupWithHome:(id)a3
+- (id)createHomeObjectLookupWithHome:(id)home
 {
-  v3 = a3;
-  v4 = [[HMDHomeObjectLookup alloc] initWithHome:v3];
+  homeCopy = home;
+  v4 = [[HMDHomeObjectLookup alloc] initWithHome:homeCopy];
 
   return v4;
 }
@@ -1734,17 +1734,17 @@ void __52__HMDBackingStore_CoreData__cdlsActiveBackingStores__block_invoke()
 - (id)backingStoreOperationQueue
 {
   v2 = +[HMDBackingStoreSingleton sharedInstance];
-  v3 = [v2 queue];
+  queue = [v2 queue];
 
-  return v3;
+  return queue;
 }
 
 - (id)localBackingStore
 {
   v2 = +[HMDBackingStoreSingleton sharedInstance];
-  v3 = [v2 local];
+  local = [v2 local];
 
-  return v3;
+  return local;
 }
 
 - (id)createBackingStoreOperation
@@ -1754,39 +1754,39 @@ void __52__HMDBackingStore_CoreData__cdlsActiveBackingStores__block_invoke()
   return v2;
 }
 
-- (id)createBackingStoreLogAddTransactionOperationWithTransaction:(id)a3
+- (id)createBackingStoreLogAddTransactionOperationWithTransaction:(id)transaction
 {
-  v3 = a3;
-  v4 = [[HMDBackingStoreLogAddTransactionOperation alloc] initWithTransaction:v3];
+  transactionCopy = transaction;
+  v4 = [[HMDBackingStoreLogAddTransactionOperation alloc] initWithTransaction:transactionCopy];
 
   return v4;
 }
 
-- (void)submitBlock:(id)a3
+- (void)submitBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HMDBackingStore *)self home];
-  v6 = [v5 workQueue];
-  if (v6)
+  blockCopy = block;
+  home = [(HMDBackingStore *)self home];
+  workQueue = [home workQueue];
+  if (workQueue)
   {
-    v7 = v6;
+    workQueue2 = workQueue;
 
 LABEL_4:
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __31__HMDBackingStore_submitBlock___block_invoke;
     block[3] = &unk_278688B80;
-    v12 = v4;
-    v9 = v4;
-    dispatch_async(v7, block);
+    v12 = blockCopy;
+    v9 = blockCopy;
+    dispatch_async(workQueue2, block);
 
     return;
   }
 
-  v8 = [(HMDBackingStore *)self homeManager];
-  v7 = [v8 workQueue];
+  homeManager = [(HMDBackingStore *)self homeManager];
+  workQueue2 = [homeManager workQueue];
 
-  if (v7)
+  if (workQueue2)
   {
     goto LABEL_4;
   }
@@ -1797,10 +1797,10 @@ LABEL_4:
 
 - (id)logIdentifier
 {
-  v2 = [(HMDBackingStore *)self uuid];
-  v3 = [v2 UUIDString];
+  uuid = [(HMDBackingStore *)self uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 uint64_t __81__HMDBackingStore_commit_run_save_archiveInline_coreDataBlock_completionHandler___block_invoke_2(uint64_t a1, void *a2)
@@ -1821,103 +1821,103 @@ void __81__HMDBackingStore_commit_run_save_archiveInline_coreDataBlock_completio
   commit_run_save_archiveInline_coreDataBlock_completionHandler___hmf_once_v5 = v0;
 }
 
-- (id)transaction:(id)a3 options:(id)a4
+- (id)transaction:(id)transaction options:(id)options
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[HMDBackingStoreTransactionBlock alloc] initWithBackingStore:self options:v6 label:v7];
+  optionsCopy = options;
+  transactionCopy = transaction;
+  v8 = [[HMDBackingStoreTransactionBlock alloc] initWithBackingStore:self options:optionsCopy label:transactionCopy];
 
   return v8;
 }
 
-- (void)setContext:(id)a3
+- (void)setContext:(id)context
 {
-  v4 = a3;
-  v5 = [(HMCContext *)v4 name];
+  contextCopy = context;
+  name = [(HMCContext *)contextCopy name];
   contextName = self->_contextName;
-  self->_contextName = v5;
+  self->_contextName = name;
 
-  v7 = [(HMCContext *)v4 transactionAuthor];
+  transactionAuthor = [(HMCContext *)contextCopy transactionAuthor];
   contextTransactionAuthor = self->_contextTransactionAuthor;
-  self->_contextTransactionAuthor = v7;
+  self->_contextTransactionAuthor = transactionAuthor;
 
   context = self->_context;
-  self->_context = v4;
+  self->_context = contextCopy;
 }
 
-- (HMDBackingStore)initWithUUID:(id)a3
+- (HMDBackingStore)initWithUUID:(id)d
 {
   if (self)
   {
-    return [(HMDBackingStore *)self initWithUUID:a3 homeManager:0 home:0 dataSource:self];
+    return [(HMDBackingStore *)self initWithUUID:d homeManager:0 home:0 dataSource:self];
   }
 
   return self;
 }
 
-- (HMDBackingStore)initWithUUID:(id)a3 home:(id)a4
+- (HMDBackingStore)initWithUUID:(id)d home:(id)home
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 homeManager];
+  dCopy = d;
+  homeCopy = home;
+  homeManager = [homeCopy homeManager];
   if (self)
   {
-    self = [(HMDBackingStore *)self initWithUUID:v6 homeManager:v8 home:v7 dataSource:self];
+    self = [(HMDBackingStore *)self initWithUUID:dCopy homeManager:homeManager home:homeCopy dataSource:self];
   }
 
   return self;
 }
 
-- (HMDBackingStore)initWithUUID:(id)a3 homeManager:(id)a4
+- (HMDBackingStore)initWithUUID:(id)d homeManager:(id)manager
 {
   if (self)
   {
-    return [(HMDBackingStore *)self initWithUUID:a3 homeManager:a4 home:0 dataSource:self];
+    return [(HMDBackingStore *)self initWithUUID:d homeManager:manager home:0 dataSource:self];
   }
 
   return self;
 }
 
-- (HMDBackingStore)initWithUUID:(id)a3 homeManager:(id)a4 home:(id)a5 dataSource:(id)a6
+- (HMDBackingStore)initWithUUID:(id)d homeManager:(id)manager home:(id)home dataSource:(id)source
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  dCopy = d;
+  managerCopy = manager;
+  homeCopy = home;
+  sourceCopy = source;
   v26.receiver = self;
   v26.super_class = HMDBackingStore;
   v15 = [(HMDBackingStore *)&v26 init];
   if (v15)
   {
-    v16 = [v14 localBackingStore];
+    localBackingStore = [sourceCopy localBackingStore];
     local = v15->_local;
-    v15->_local = v16;
+    v15->_local = localBackingStore;
 
-    objc_storeStrong(&v15->_uuid, a3);
+    objc_storeStrong(&v15->_uuid, d);
     v18 = objc_alloc(MEMORY[0x277CBC5D0]);
-    v19 = [v11 UUIDString];
-    v20 = [v18 initWithRecordName:v19];
+    uUIDString = [dCopy UUIDString];
+    v20 = [v18 initWithRecordName:uUIDString];
     root = v15->_root;
     v15->_root = v20;
 
-    objc_storeWeak(&v15->_home, v13);
-    objc_storeWeak(&v15->_homeManager, v12);
-    objc_storeWeak(&v15->_dataSource, v14);
-    if (v13)
+    objc_storeWeak(&v15->_home, homeCopy);
+    objc_storeWeak(&v15->_homeManager, managerCopy);
+    objc_storeWeak(&v15->_dataSource, sourceCopy);
+    if (homeCopy)
     {
-      v22 = [v14 createHomeObjectLookupWithHome:v13];
+      v22 = [sourceCopy createHomeObjectLookupWithHome:homeCopy];
     }
 
     else
     {
-      if (!v12)
+      if (!managerCopy)
       {
 LABEL_7:
         v24 = v15;
         goto LABEL_8;
       }
 
-      v22 = [[HMDHomeManagerObjectLookup alloc] initWithHomeManager:v12];
+      v22 = [[HMDHomeManagerObjectLookup alloc] initWithHomeManager:managerCopy];
     }
 
     lookup = v15->_lookup;
@@ -1931,26 +1931,26 @@ LABEL_8:
   return v15;
 }
 
-+ (void)saveToPersistentStoreWithReason:(id)a3 homeManager:(id)a4 shouldIncrementGenerationCounter:(BOOL)a5 backingStore:(id)a6 completionHandler:(id)a7
++ (void)saveToPersistentStoreWithReason:(id)reason homeManager:(id)manager shouldIncrementGenerationCounter:(BOOL)counter backingStore:(id)store completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  reasonCopy = reason;
+  managerCopy = manager;
+  storeCopy = store;
+  handlerCopy = handler;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __127__HMDBackingStore_saveToPersistentStoreWithReason_homeManager_shouldIncrementGenerationCounter_backingStore_completionHandler___block_invoke;
   v20[3] = &unk_278684288;
-  v24 = v15;
-  v25 = a1;
-  v21 = v12;
-  v22 = v13;
-  v26 = a5;
-  v23 = v14;
-  v16 = v15;
-  v17 = v14;
-  v18 = v13;
-  v19 = v12;
+  v24 = handlerCopy;
+  selfCopy = self;
+  v21 = reasonCopy;
+  v22 = managerCopy;
+  counterCopy = counter;
+  v23 = storeCopy;
+  v16 = handlerCopy;
+  v17 = storeCopy;
+  v18 = managerCopy;
+  v19 = reasonCopy;
   [v17 submitBlock:v20];
 }
 

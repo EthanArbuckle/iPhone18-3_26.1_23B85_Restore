@@ -1,62 +1,62 @@
 @interface SDUnitLogGlob
-+ (id)logRuleWithGlob:(id)a3;
-+ (id)logRuleWithGlob:(id)a3 withDate:(id)a4 withFilter:(id)a5 newestFileCount:(unint64_t)a6 atInternalDirectory:(id)a7 withRuntimeChecks:(unint64_t)a8;
++ (id)logRuleWithGlob:(id)glob;
++ (id)logRuleWithGlob:(id)glob withDate:(id)date withFilter:(id)filter newestFileCount:(unint64_t)count atInternalDirectory:(id)directory withRuntimeChecks:(unint64_t)checks;
 - (id)description;
 - (id)getNextMatch;
-- (void)addGlobContents:(id)a3 toURLArray:(id)a4;
-- (void)expandHomeDirectoriesForGlob:(id)a3 andAddToURLArray:(id)a4;
+- (void)addGlobContents:(id)contents toURLArray:(id)array;
+- (void)expandHomeDirectoriesForGlob:(id)glob andAddToURLArray:(id)array;
 - (void)resolvePaths;
 @end
 
 @implementation SDUnitLogGlob
 
-+ (id)logRuleWithGlob:(id)a3
++ (id)logRuleWithGlob:(id)glob
 {
-  v3 = a3;
+  globCopy = glob;
   v4 = [(SDUnitLogRule *)[SDUnitLogGlob alloc] initWithDate:0 withFilter:0 newestFileCount:0 atInternalDirectory:0 withRuntimeChecks:0];
   v5 = v4;
   if (v4)
   {
-    [(SDUnitLogGlob *)v4 setGlob:v3];
+    [(SDUnitLogGlob *)v4 setGlob:globCopy];
   }
 
   return v5;
 }
 
-+ (id)logRuleWithGlob:(id)a3 withDate:(id)a4 withFilter:(id)a5 newestFileCount:(unint64_t)a6 atInternalDirectory:(id)a7 withRuntimeChecks:(unint64_t)a8
++ (id)logRuleWithGlob:(id)glob withDate:(id)date withFilter:(id)filter newestFileCount:(unint64_t)count atInternalDirectory:(id)directory withRuntimeChecks:(unint64_t)checks
 {
-  v13 = a3;
-  v14 = a7;
-  v15 = a5;
-  v16 = a4;
-  v17 = [(SDUnitLogRule *)[SDUnitLogGlob alloc] initWithDate:v16 withFilter:v15 newestFileCount:a6 atInternalDirectory:v14 withRuntimeChecks:a8];
+  globCopy = glob;
+  directoryCopy = directory;
+  filterCopy = filter;
+  dateCopy = date;
+  v17 = [(SDUnitLogRule *)[SDUnitLogGlob alloc] initWithDate:dateCopy withFilter:filterCopy newestFileCount:count atInternalDirectory:directoryCopy withRuntimeChecks:checks];
 
   if (v17)
   {
-    [(SDUnitLogGlob *)v17 setGlob:v13];
+    [(SDUnitLogGlob *)v17 setGlob:globCopy];
   }
 
   return v17;
 }
 
-- (void)addGlobContents:(id)a3 toURLArray:(id)a4
+- (void)addGlobContents:(id)contents toURLArray:(id)array
 {
-  v5 = a3;
-  v6 = a4;
+  contentsCopy = contents;
+  arrayCopy = array;
   memset(&v13, 0, sizeof(v13));
   v13.gl_matchc = 1000;
   v7 = sub_1000278E8();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
-    v15 = [v5 fileSystemRepresentation];
+    fileSystemRepresentation = [contentsCopy fileSystemRepresentation];
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Querying glob %s", buf, 0xCu);
   }
 
   v8 = +[SDResourceManager sharedResourceManager];
-  [v8 logWithSubsystem:"com.apple.sysdiagnose" category:"containers" msg:{@"Querying glob %s", objc_msgSend(v5, "fileSystemRepresentation")}];
+  [v8 logWithSubsystem:"com.apple.sysdiagnose" category:"containers" msg:{@"Querying glob %s", objc_msgSend(contentsCopy, "fileSystemRepresentation")}];
 
-  glob_b([v5 fileSystemRepresentation], 4264, &stru_1000A1120, &v13);
+  glob_b([contentsCopy fileSystemRepresentation], 4264, &stru_1000A1120, &v13);
   if (v13.gl_pathc)
   {
     v9 = 0;
@@ -69,7 +69,7 @@
         v12 = [NSURL fileURLWithFileSystemRepresentation:v11 isDirectory:0 relativeToURL:0];
         if (v12)
         {
-          [v6 addObject:v12];
+          [arrayCopy addObject:v12];
         }
       }
 
@@ -83,20 +83,20 @@
   globfree(&v13);
 }
 
-- (void)expandHomeDirectoriesForGlob:(id)a3 andAddToURLArray:(id)a4
+- (void)expandHomeDirectoriesForGlob:(id)glob andAddToURLArray:(id)array
 {
-  v6 = a3;
-  v7 = a4;
+  globCopy = glob;
+  arrayCopy = array;
   if (![(SDUnitLogRule *)self resolveHomeDirs])
   {
     goto LABEL_13;
   }
 
   v8 = [&off_1000B4C48 objectAtIndexedSubscript:0];
-  if (![v6 hasPrefix:v8])
+  if (![globCopy hasPrefix:v8])
   {
     v9 = [&off_1000B4C48 objectAtIndexedSubscript:1];
-    v10 = [v6 hasPrefix:v9];
+    v10 = [globCopy hasPrefix:v9];
 
     if (v10)
     {
@@ -104,26 +104,26 @@
     }
 
 LABEL_13:
-    v21 = [(SDUnitLogGlob *)self glob];
-    v22 = [(SDUnitLogRule *)self resolvePathToMobileContainer:v21];
+    glob = [(SDUnitLogGlob *)self glob];
+    v22 = [(SDUnitLogRule *)self resolvePathToMobileContainer:glob];
 
-    [(SDUnitLogGlob *)self addGlobContents:v22 toURLArray:v7];
+    [(SDUnitLogGlob *)self addGlobContents:v22 toURLArray:arrayCopy];
     goto LABEL_14;
   }
 
 LABEL_5:
   v11 = [&off_1000B4C48 objectAtIndexedSubscript:0];
-  v12 = [&off_1000B4C48 objectAtIndexedSubscript:{objc_msgSend(v6, "hasPrefix:", v11) ^ 1}];
+  v12 = [&off_1000B4C48 objectAtIndexedSubscript:{objc_msgSend(globCopy, "hasPrefix:", v11) ^ 1}];
 
   [(SDUnitLogRule *)self setHeadDir:@"."];
   v23 = v12;
-  v13 = [v6 stringByReplacingOccurrencesOfString:v12 withString:&stru_1000A67D8];
+  v13 = [globCopy stringByReplacingOccurrencesOfString:v12 withString:&stru_1000A67D8];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v14 = [(SDUnitLogRule *)self _localUserHomeDirectories];
-  v15 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  _localUserHomeDirectories = [(SDUnitLogRule *)self _localUserHomeDirectories];
+  v15 = [_localUserHomeDirectories countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v15)
   {
     v16 = v15;
@@ -135,18 +135,18 @@ LABEL_5:
       {
         if (*v25 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(_localUserHomeDirectories);
         }
 
-        v19 = [*(*(&v24 + 1) + 8 * v18) path];
-        v20 = [v19 stringByAppendingString:v13];
-        [(SDUnitLogGlob *)self addGlobContents:v20 toURLArray:v7];
+        path = [*(*(&v24 + 1) + 8 * v18) path];
+        v20 = [path stringByAppendingString:v13];
+        [(SDUnitLogGlob *)self addGlobContents:v20 toURLArray:arrayCopy];
 
         v18 = v18 + 1;
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v16 = [_localUserHomeDirectories countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v16);
@@ -157,16 +157,16 @@ LABEL_14:
 
 - (id)getNextMatch
 {
-  v3 = [(SDUnitLogRule *)self matchEnumerator];
+  matchEnumerator = [(SDUnitLogRule *)self matchEnumerator];
 
-  if (!v3)
+  if (!matchEnumerator)
   {
     v4 = +[NSMutableArray array];
     [(SDUnitLogRule *)self setMatchEnumerator:v4];
 
     v5 = +[NSMutableArray array];
-    v6 = [(SDUnitLogGlob *)self glob];
-    [(SDUnitLogGlob *)self expandHomeDirectoriesForGlob:v6 andAddToURLArray:v5];
+    glob = [(SDUnitLogGlob *)self glob];
+    [(SDUnitLogGlob *)self expandHomeDirectoriesForGlob:glob andAddToURLArray:v5];
 
     v19 = 0u;
     v20 = 0u;
@@ -192,8 +192,8 @@ LABEL_14:
 
           v10 = [BFSDirectoryEnumerator BFSEnumeratorWithPath:*(*(&v17 + 1) + 8 * v12) withDepth:1, v17];
 
-          v14 = [(SDUnitLogRule *)self matchEnumerator];
-          [v14 addObject:v10];
+          matchEnumerator2 = [(SDUnitLogRule *)self matchEnumerator];
+          [matchEnumerator2 addObject:v10];
 
           v12 = v12 + 1;
           v13 = v10;
@@ -207,23 +207,23 @@ LABEL_14:
     }
   }
 
-  v15 = [(SDUnitLogRule *)self advanceMatchEnumerator];
+  advanceMatchEnumerator = [(SDUnitLogRule *)self advanceMatchEnumerator];
 
-  return v15;
+  return advanceMatchEnumerator;
 }
 
 - (id)description
 {
-  v2 = [(SDUnitLogGlob *)self glob];
-  v3 = [NSString stringWithFormat:@"SDUnitLogGlob with glob '%@'", v2];
+  glob = [(SDUnitLogGlob *)self glob];
+  v3 = [NSString stringWithFormat:@"SDUnitLogGlob with glob '%@'", glob];
 
   return v3;
 }
 
 - (void)resolvePaths
 {
-  v4 = [(SDUnitLogGlob *)self glob];
-  v3 = [(SDUnitLogRule *)self resolveCrashReporterPath:v4];
+  glob = [(SDUnitLogGlob *)self glob];
+  v3 = [(SDUnitLogRule *)self resolveCrashReporterPath:glob];
   [(SDUnitLogGlob *)self setGlob:v3];
 }
 

@@ -1,13 +1,13 @@
 @interface HMDCameraSnapshotLocal
 + (id)logCategory;
 - (HMDAccessory)accessory;
-- (HMDCameraSnapshotLocal)initWithSessionID:(id)a3 workQueue:(id)a4 accessory:(id)a5 delegate:(id)a6 snapshotRequestHandler:(id)a7;
+- (HMDCameraSnapshotLocal)initWithSessionID:(id)d workQueue:(id)queue accessory:(id)accessory delegate:(id)delegate snapshotRequestHandler:(id)handler;
 - (HMDCameraSnapshotLocalDelegate)delegate;
 - (id)logIdentifier;
-- (void)_getSnapshot:(unint64_t)a3;
-- (void)_handleSnapshotFile:(id)a3 error:(id)a4;
+- (void)_getSnapshot:(unint64_t)snapshot;
+- (void)_handleSnapshotFile:(id)file error:(id)error;
 - (void)dealloc;
-- (void)getSnapshot:(unint64_t)a3;
+- (void)getSnapshot:(unint64_t)snapshot;
 @end
 
 @implementation HMDCameraSnapshotLocal
@@ -26,16 +26,16 @@
   return WeakRetained;
 }
 
-- (void)_handleSnapshotFile:(id)a3 error:(id)a4
+- (void)_handleSnapshotFile:(id)file error:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCameraSnapshotLocal *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  fileCopy = file;
+  errorCopy = error;
+  workQueue = [(HMDCameraSnapshotLocal *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -43,50 +43,50 @@
     v16 = 138543874;
     v17 = v12;
     v18 = 2112;
-    v19 = v6;
+    v19 = fileCopy;
     v20 = 2112;
-    v21 = v7;
+    v21 = errorCopy;
     _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_INFO, "%{public}@Calling delegate that image %@ has been saved with error %@", &v16, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
-  v13 = [(HMDCameraSnapshotLocal *)v10 delegate];
+  delegate = [(HMDCameraSnapshotLocal *)selfCopy delegate];
   if (objc_opt_respondsToSelector())
   {
-    v14 = [(HMDCameraSnapshotLocal *)v10 sessionID];
-    [v13 snapshotLocal:v10 didSaveSnapshotFile:v6 error:v7 sessionID:v14];
+    sessionID = [(HMDCameraSnapshotLocal *)selfCopy sessionID];
+    [delegate snapshotLocal:selfCopy didSaveSnapshotFile:fileCopy error:errorCopy sessionID:sessionID];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_getSnapshot:(unint64_t)a3
+- (void)_getSnapshot:(unint64_t)snapshot
 {
-  v5 = [(HMDCameraSnapshotLocal *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(HMDCameraSnapshotLocal *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDCameraSnapshotLocal *)self snapshotRequestHandler];
-  v7 = [(HMDCameraSnapshotLocal *)self sessionID];
+  snapshotRequestHandler = [(HMDCameraSnapshotLocal *)self snapshotRequestHandler];
+  sessionID = [(HMDCameraSnapshotLocal *)self sessionID];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __39__HMDCameraSnapshotLocal__getSnapshot___block_invoke;
   v8[3] = &unk_279723A50;
   v8[4] = self;
-  [v6 requestSnapshot:v7 streamingTierType:a3 completionHandler:v8];
+  [snapshotRequestHandler requestSnapshot:sessionID streamingTierType:snapshot completionHandler:v8];
 }
 
-- (void)getSnapshot:(unint64_t)a3
+- (void)getSnapshot:(unint64_t)snapshot
 {
-  v5 = [(HMDCameraSnapshotLocal *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(HMDCameraSnapshotLocal *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  [(HMDCameraSnapshotLocal *)self _getSnapshot:a3];
+  [(HMDCameraSnapshotLocal *)self _getSnapshot:snapshot];
 }
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCameraSnapshotLocal *)self sessionID];
-  v3 = [v2 description];
+  sessionID = [(HMDCameraSnapshotLocal *)self sessionID];
+  v3 = [sessionID description];
 
   return v3;
 }
@@ -95,7 +95,7 @@
 {
   v11 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -106,30 +106,30 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v8.receiver = v4;
+  v8.receiver = selfCopy;
   v8.super_class = HMDCameraSnapshotLocal;
   [(HMDCameraSnapshotLocal *)&v8 dealloc];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCameraSnapshotLocal)initWithSessionID:(id)a3 workQueue:(id)a4 accessory:(id)a5 delegate:(id)a6 snapshotRequestHandler:(id)a7
+- (HMDCameraSnapshotLocal)initWithSessionID:(id)d workQueue:(id)queue accessory:(id)accessory delegate:(id)delegate snapshotRequestHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  dCopy = d;
+  queueCopy = queue;
+  accessoryCopy = accessory;
+  delegateCopy = delegate;
+  handlerCopy = handler;
   v21.receiver = self;
   v21.super_class = HMDCameraSnapshotLocal;
   v18 = [(HMDCameraSnapshotLocal *)&v21 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_sessionID, a3);
-    objc_storeWeak(&v19->_accessory, v15);
-    objc_storeStrong(&v19->_workQueue, a4);
-    objc_storeWeak(&v19->_delegate, v16);
-    objc_storeStrong(&v19->_snapshotRequestHandler, a7);
+    objc_storeStrong(&v18->_sessionID, d);
+    objc_storeWeak(&v19->_accessory, accessoryCopy);
+    objc_storeStrong(&v19->_workQueue, queue);
+    objc_storeWeak(&v19->_delegate, delegateCopy);
+    objc_storeStrong(&v19->_snapshotRequestHandler, handler);
   }
 
   return v19;

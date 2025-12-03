@@ -1,20 +1,20 @@
 @interface SFLinkBanner
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (SFLinkBanner)init;
 - (id)_messageLabelFont;
 - (id)_titleLabelFont;
 - (void)_dismiss;
 - (void)_open;
-- (void)_setShowsDismissButton:(BOOL)a3;
+- (void)_setShowsDismissButton:(BOOL)button;
 - (void)contentSizeCategoryDidChange;
 - (void)invalidateBannerLayout;
 - (void)layoutSubviews;
-- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)a3;
-- (void)setDismissButtonHandler:(id)a3;
-- (void)setLayoutMargins:(UIEdgeInsets)a3;
-- (void)setMessageLabelText:(id)a3;
-- (void)setOpenButtonTitle:(id)a3;
-- (void)setShouldHideIcon:(BOOL)a3;
+- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)margins;
+- (void)setDismissButtonHandler:(id)handler;
+- (void)setLayoutMargins:(UIEdgeInsets)margins;
+- (void)setMessageLabelText:(id)text;
+- (void)setOpenButtonTitle:(id)title;
+- (void)setShouldHideIcon:(BOOL)icon;
 - (void)themeDidChange;
 @end
 
@@ -45,28 +45,28 @@
     [(UIImageView *)v4->_icon setAccessibilityIgnoresInvertColors:1];
     [(UIImageView *)v4->_icon setContentMode:1];
     [(SFLinkBanner *)v4 addSubview:v4->_icon];
-    v7 = [(SFLinkBanner *)v4 layoutMarginsGuide];
-    v74 = [v7 leadingAnchor];
+    layoutMarginsGuide = [(SFLinkBanner *)v4 layoutMarginsGuide];
+    leadingAnchor = [layoutMarginsGuide leadingAnchor];
 
-    v8 = [(UIImageView *)v4->_icon leadingAnchor];
-    v9 = [v8 constraintEqualToAnchor:v74];
+    leadingAnchor2 = [(UIImageView *)v4->_icon leadingAnchor];
+    v9 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor];
     v73 = v3;
     iconLeadingConstraintToSuperview = v4->_iconLeadingConstraintToSuperview;
     v4->_iconLeadingConstraintToSuperview = v9;
 
     v69 = MEMORY[0x1E696ACD8];
-    v70 = [(UIImageView *)v4->_icon heightAnchor];
+    heightAnchor = [(UIImageView *)v4->_icon heightAnchor];
     [objc_opt_class() iconHeight];
-    v11 = [v70 constraintEqualToConstant:?];
+    v11 = [heightAnchor constraintEqualToConstant:?];
     v80[0] = v11;
-    v12 = [(UIImageView *)v4->_icon widthAnchor];
-    v13 = [(UIImageView *)v4->_icon heightAnchor];
-    v14 = [v12 constraintEqualToAnchor:v13];
+    widthAnchor = [(UIImageView *)v4->_icon widthAnchor];
+    heightAnchor2 = [(UIImageView *)v4->_icon heightAnchor];
+    v14 = [widthAnchor constraintEqualToAnchor:heightAnchor2];
     v80[1] = v14;
     v80[2] = v4->_iconLeadingConstraintToSuperview;
-    v15 = [(UIImageView *)v4->_icon centerYAnchor];
-    v16 = [(SFLinkBanner *)v4 centerYAnchor];
-    v17 = [v15 constraintEqualToAnchor:v16];
+    centerYAnchor = [(UIImageView *)v4->_icon centerYAnchor];
+    centerYAnchor2 = [(SFLinkBanner *)v4 centerYAnchor];
+    v17 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v80[3] = v17;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v80 count:4];
     [v69 activateConstraints:v18];
@@ -77,26 +77,26 @@
 
     [(UILabel *)v4->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v4->_titleLabel setNumberOfLines:3];
-    v21 = [(SFLinkBanner *)v4 _titleLabelFont];
-    [(UILabel *)v4->_titleLabel setFont:v21];
+    _titleLabelFont = [(SFLinkBanner *)v4 _titleLabelFont];
+    [(UILabel *)v4->_titleLabel setFont:_titleLabelFont];
 
     [(SFLinkBanner *)v4 addSubview:v4->_titleLabel];
-    v22 = [(UILabel *)v4->_titleLabel leadingAnchor];
-    v23 = [(UIImageView *)v4->_icon trailingAnchor];
-    v24 = [v22 constraintEqualToAnchor:v23 constant:8.0];
+    leadingAnchor3 = [(UILabel *)v4->_titleLabel leadingAnchor];
+    trailingAnchor = [(UIImageView *)v4->_icon trailingAnchor];
+    v24 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:8.0];
     titleLeadingConstraint = v4->_titleLeadingConstraint;
     v4->_titleLeadingConstraint = v24;
 
-    v26 = [(UILabel *)v4->_titleLabel leadingAnchor];
-    v27 = [v26 constraintEqualToAnchor:v74];
+    leadingAnchor4 = [(UILabel *)v4->_titleLabel leadingAnchor];
+    v27 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor];
 
     v28 = v27;
     v71 = v27;
     LODWORD(v29) = 1144733696;
     [v27 setPriority:v29];
-    v30 = [(UILabel *)v4->_titleLabel topAnchor];
-    v31 = [(SFLinkBanner *)v4 topAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31 constant:9.0];
+    topAnchor = [(UILabel *)v4->_titleLabel topAnchor];
+    topAnchor2 = [(SFLinkBanner *)v4 topAnchor];
+    v32 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:9.0];
     titleTopConstraint = v4->_titleTopConstraint;
     v4->_titleTopConstraint = v32;
 
@@ -115,27 +115,27 @@
 
     [(UILabel *)v4->_messageLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v4->_messageLabel setNumberOfLines:3];
-    v39 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v4->_messageLabel setTextColor:v39];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v4->_messageLabel setTextColor:secondaryLabelColor];
 
     [(SFLinkBanner *)v4 addSubview:v4->_messageLabel];
-    v40 = [(UILabel *)v4->_messageLabel topAnchor];
-    v41 = [(UILabel *)v4->_titleLabel lastBaselineAnchor];
-    v42 = [v40 constraintEqualToAnchor:v41 constant:2.0];
+    topAnchor3 = [(UILabel *)v4->_messageLabel topAnchor];
+    lastBaselineAnchor = [(UILabel *)v4->_titleLabel lastBaselineAnchor];
+    v42 = [topAnchor3 constraintEqualToAnchor:lastBaselineAnchor constant:2.0];
     messageTopConstraint = v4->_messageTopConstraint;
     v4->_messageTopConstraint = v42;
 
-    v44 = [(SFLinkBanner *)v4 bottomAnchor];
-    v45 = [(UILabel *)v4->_messageLabel bottomAnchor];
-    v46 = [v44 constraintEqualToAnchor:v45 constant:9.0];
+    bottomAnchor = [(SFLinkBanner *)v4 bottomAnchor];
+    bottomAnchor2 = [(UILabel *)v4->_messageLabel bottomAnchor];
+    v46 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:9.0];
     messageBottomConstraint = v4->_messageBottomConstraint;
     v4->_messageBottomConstraint = v46;
 
     v48 = MEMORY[0x1E696ACD8];
     v78[0] = v4->_messageTopConstraint;
-    v49 = [(UILabel *)v4->_messageLabel leadingAnchor];
-    v50 = [(UILabel *)v4->_titleLabel leadingAnchor];
-    v51 = [v49 constraintEqualToAnchor:v50];
+    leadingAnchor5 = [(UILabel *)v4->_messageLabel leadingAnchor];
+    leadingAnchor6 = [(UILabel *)v4->_titleLabel leadingAnchor];
+    v51 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
     v78[1] = v51;
     v78[2] = v4->_messageBottomConstraint;
     v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:v78 count:3];
@@ -148,16 +148,16 @@
     v4->_openButton = v54;
 
     [(_SFDimmingButton *)v4->_openButton setTapTargetSideMargin:&unk_1EFF73F40];
-    v56 = [(SFLinkBanner *)v4 preferredButtonTintColor];
-    [(_SFDimmingButton *)v4->_openButton setTintColor:v56];
+    preferredButtonTintColor = [(SFLinkBanner *)v4 preferredButtonTintColor];
+    [(_SFDimmingButton *)v4->_openButton setTintColor:preferredButtonTintColor];
 
-    v57 = [(SFLinkBanner *)v4 preferredButtonBackgroundColor];
-    [(_SFDimmingButton *)v4->_openButton setDimmableBackgroundColor:v57];
+    preferredButtonBackgroundColor = [(SFLinkBanner *)v4 preferredButtonBackgroundColor];
+    [(_SFDimmingButton *)v4->_openButton setDimmableBackgroundColor:preferredButtonBackgroundColor];
 
     [(_SFDimmingButton *)v4->_openButton setContentEdgeInsets:5.0, 13.0, 5.0, 13.0];
     v58 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD80] variant:1024 maximumContentSizeCategory:*MEMORY[0x1E69DDC38]];
-    v59 = [(_SFDimmingButton *)v4->_openButton titleLabel];
-    [v59 setFont:v58];
+    titleLabel = [(_SFDimmingButton *)v4->_openButton titleLabel];
+    [titleLabel setFont:v58];
 
     [(_SFDimmingButton *)v4->_openButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(_SFDimmingButton *)v4->_openButton _setCornerRadius:13.5];
@@ -232,8 +232,8 @@ void __20__SFLinkBanner_init__block_invoke(uint64_t a1)
 - (id)_titleLabelFont
 {
   v2 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD28] maximumContentSizeCategory:*MEMORY[0x1E69DDC38]];
-  v3 = [v2 fontDescriptor];
-  v4 = [v3 fontDescriptorWithSymbolicTraits:32770];
+  fontDescriptor = [v2 fontDescriptor];
+  v4 = [fontDescriptor fontDescriptorWithSymbolicTraits:32770];
 
   v5 = [MEMORY[0x1E69DB878] fontWithDescriptor:v4 size:0.0];
 
@@ -243,51 +243,51 @@ void __20__SFLinkBanner_init__block_invoke(uint64_t a1)
 - (id)_messageLabelFont
 {
   v2 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD10] variant:0 maximumContentSizeCategory:*MEMORY[0x1E69DDC38]];
-  v3 = [v2 fontDescriptor];
-  v4 = [v3 fontDescriptorWithSymbolicTraits:0x8000];
+  fontDescriptor = [v2 fontDescriptor];
+  v4 = [fontDescriptor fontDescriptorWithSymbolicTraits:0x8000];
 
   v5 = [MEMORY[0x1E69DB878] fontWithDescriptor:v4 size:0.0];
 
   return v5;
 }
 
-- (void)setMessageLabelText:(id)a3
+- (void)setMessageLabelText:(id)text
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E69DB7C8];
-  v5 = a3;
-  v6 = [v4 defaultParagraphStyle];
-  v7 = [v6 mutableCopy];
+  textCopy = text;
+  defaultParagraphStyle = [v4 defaultParagraphStyle];
+  v7 = [defaultParagraphStyle mutableCopy];
 
   [v7 setLineSpacing:1.5];
   [v7 setLineBreakMode:4];
   v8 = objc_alloc(MEMORY[0x1E696AAB0]);
   v12[0] = *MEMORY[0x1E69DB648];
-  v9 = [(SFLinkBanner *)self _messageLabelFont];
+  _messageLabelFont = [(SFLinkBanner *)self _messageLabelFont];
   v12[1] = *MEMORY[0x1E69DB688];
-  v13[0] = v9;
+  v13[0] = _messageLabelFont;
   v13[1] = v7;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
-  v11 = [v8 initWithString:v5 attributes:v10];
+  v11 = [v8 initWithString:textCopy attributes:v10];
 
   [(UILabel *)self->_messageLabel setAttributedText:v11];
 }
 
-- (void)setOpenButtonTitle:(id)a3
+- (void)setOpenButtonTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   openButtonTitle = self->_openButtonTitle;
   self->_openButtonTitle = v4;
 
-  v6 = [(SFLinkBanner *)self openButton];
-  [v6 setTitle:self->_openButtonTitle forState:0];
+  openButton = [(SFLinkBanner *)self openButton];
+  [openButton setTitle:self->_openButtonTitle forState:0];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   LODWORD(v3) = 1148846080;
   LODWORD(v4) = 1112014848;
-  [(SFLinkBanner *)self systemLayoutSizeFittingSize:a3.width withHorizontalFittingPriority:a3.height verticalFittingPriority:v3, v4];
+  [(SFLinkBanner *)self systemLayoutSizeFittingSize:fits.width withHorizontalFittingPriority:fits.height verticalFittingPriority:v3, v4];
   result.height = v6;
   result.width = v5;
   return result;
@@ -302,38 +302,38 @@ void __20__SFLinkBanner_init__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setLayoutMargins:(UIEdgeInsets)a3
+- (void)setLayoutMargins:(UIEdgeInsets)margins
 {
-  if (a3.left == 0.0)
+  if (margins.left == 0.0)
   {
-    a3.left = 20.0;
+    margins.left = 20.0;
   }
 
-  if (a3.right == 0.0)
+  if (margins.right == 0.0)
   {
-    a3.right = 20.0;
+    margins.right = 20.0;
   }
 
   v3.receiver = self;
   v3.super_class = SFLinkBanner;
-  [(SFLinkBanner *)&v3 setLayoutMargins:a3.top, a3.left, a3.bottom, a3.right];
+  [(SFLinkBanner *)&v3 setLayoutMargins:margins.top, margins.left, margins.bottom, margins.right];
 }
 
-- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)a3
+- (void)setDirectionalLayoutMargins:(NSDirectionalEdgeInsets)margins
 {
-  if (a3.leading == 0.0)
+  if (margins.leading == 0.0)
   {
-    a3.leading = 20.0;
+    margins.leading = 20.0;
   }
 
-  if (a3.trailing == 0.0)
+  if (margins.trailing == 0.0)
   {
-    a3.trailing = 20.0;
+    margins.trailing = 20.0;
   }
 
   v3.receiver = self;
   v3.super_class = SFLinkBanner;
-  [(SFLinkBanner *)&v3 setDirectionalLayoutMargins:a3.top, a3.leading, a3.bottom, a3.trailing];
+  [(SFLinkBanner *)&v3 setDirectionalLayoutMargins:margins.top, margins.leading, margins.bottom, margins.trailing];
 }
 
 - (void)layoutSubviews
@@ -346,16 +346,16 @@ void __20__SFLinkBanner_init__block_invoke(uint64_t a1)
   [(UILabel *)self->_titleLabel bounds];
   Height = CGRectGetHeight(v16);
   v4 = llroundf(Height);
-  v5 = [(UILabel *)self->_titleLabel font];
-  [v5 lineHeight];
+  font = [(UILabel *)self->_titleLabel font];
+  [font lineHeight];
   *&v6 = v6;
   if (v4 <= llroundf(*&v6))
   {
     [(UILabel *)self->_messageLabel bounds];
     v7 = CGRectGetHeight(v17);
     v8 = llroundf(v7);
-    v9 = [(UILabel *)self->_messageLabel font];
-    [v9 lineHeight];
+    font2 = [(UILabel *)self->_messageLabel font];
+    [font2 lineHeight];
     *&v10 = v10;
     v11 = llroundf(*&v10);
 
@@ -381,16 +381,16 @@ LABEL_6:
 
 - (void)contentSizeCategoryDidChange
 {
-  v3 = [(SFLinkBanner *)self _titleLabelFont];
-  [(UILabel *)self->_titleLabel setFont:v3];
+  _titleLabelFont = [(SFLinkBanner *)self _titleLabelFont];
+  [(UILabel *)self->_titleLabel setFont:_titleLabelFont];
 
   v4 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD80] variant:1024 maximumContentSizeCategory:*MEMORY[0x1E69DDC38]];
-  v5 = [(_SFDimmingButton *)self->_openButton titleLabel];
-  [v5 setFont:v4];
+  titleLabel = [(_SFDimmingButton *)self->_openButton titleLabel];
+  [titleLabel setFont:v4];
 
-  v7 = [(UILabel *)self->_messageLabel attributedText];
-  v6 = [v7 string];
-  [(SFLinkBanner *)self setMessageLabelText:v6];
+  attributedText = [(UILabel *)self->_messageLabel attributedText];
+  string = [attributedText string];
+  [(SFLinkBanner *)self setMessageLabelText:string];
 }
 
 - (void)invalidateBannerLayout
@@ -403,61 +403,61 @@ LABEL_6:
 
 - (void)themeDidChange
 {
-  v7 = [(SFPinnableBanner *)self theme];
-  [(SFThemeColorEffectView *)self->_backdrop setTheme:v7];
-  v3 = [v7 overrideTintColor];
-  if (v3)
+  theme = [(SFPinnableBanner *)self theme];
+  [(SFThemeColorEffectView *)self->_backdrop setTheme:theme];
+  overrideTintColor = [theme overrideTintColor];
+  if (overrideTintColor)
   {
     p_openButton = &self->_openButton;
-    [(_SFDimmingButton *)self->_openButton setDimmableBackgroundColor:v3];
-    [v7 themeColor];
+    [(_SFDimmingButton *)self->_openButton setDimmableBackgroundColor:overrideTintColor];
+    [theme themeColor];
   }
 
   else
   {
-    v5 = [(SFLinkBanner *)self preferredButtonBackgroundColor];
+    preferredButtonBackgroundColor = [(SFLinkBanner *)self preferredButtonBackgroundColor];
     p_openButton = &self->_openButton;
-    [(_SFDimmingButton *)self->_openButton setDimmableBackgroundColor:v5];
+    [(_SFDimmingButton *)self->_openButton setDimmableBackgroundColor:preferredButtonBackgroundColor];
 
     [(SFLinkBanner *)self preferredButtonTintColor];
   }
   v6 = ;
   [(_SFDimmingButton *)*p_openButton setTintColor:v6];
 
-  [(_SFDimmingButton *)*p_openButton setTintAdjustmentMode:v3 != 0];
+  [(_SFDimmingButton *)*p_openButton setTintAdjustmentMode:overrideTintColor != 0];
 }
 
-- (void)setShouldHideIcon:(BOOL)a3
+- (void)setShouldHideIcon:(BOOL)icon
 {
-  if (self->_shouldHideIcon != a3)
+  if (self->_shouldHideIcon != icon)
   {
-    v4 = a3;
-    self->_shouldHideIcon = a3;
+    iconCopy = icon;
+    self->_shouldHideIcon = icon;
     [(UIImageView *)self->_icon setHidden:?];
     titleLeadingConstraint = self->_titleLeadingConstraint;
 
-    [(NSLayoutConstraint *)titleLeadingConstraint setActive:!v4];
+    [(NSLayoutConstraint *)titleLeadingConstraint setActive:!iconCopy];
   }
 }
 
-- (void)setDismissButtonHandler:(id)a3
+- (void)setDismissButtonHandler:(id)handler
 {
-  v4 = a3 != 0;
-  v5 = a3;
+  v4 = handler != 0;
+  handlerCopy = handler;
   [(SFLinkBanner *)self _setShowsDismissButton:v4];
-  v6 = _Block_copy(v5);
+  v6 = _Block_copy(handlerCopy);
 
   dismissButtonHandler = self->_dismissButtonHandler;
   self->_dismissButtonHandler = v6;
 }
 
-- (void)_setShowsDismissButton:(BOOL)a3
+- (void)_setShowsDismissButton:(BOOL)button
 {
   v60[4] = *MEMORY[0x1E69E9840];
   dismissButton = self->_dismissButton;
-  if ((((dismissButton == 0) ^ a3) & 1) == 0)
+  if ((((dismissButton == 0) ^ button) & 1) == 0)
   {
-    if (a3)
+    if (button)
     {
       if ([MEMORY[0x1E69C8880] isSolariumEnabled])
       {
@@ -477,22 +477,22 @@ LABEL_6:
         [(UIButton *)self->_dismissButton sizeToFit];
         [(SFLinkBanner *)self addSubview:self->_dismissButton];
         v41 = MEMORY[0x1E696ACD8];
-        v51 = [(UIButton *)self->_dismissButton heightAnchor];
-        v49 = [(UIButton *)self->_dismissButton widthAnchor];
-        v47 = [v51 constraintEqualToAnchor:v49];
+        heightAnchor = [(UIButton *)self->_dismissButton heightAnchor];
+        widthAnchor = [(UIButton *)self->_dismissButton widthAnchor];
+        v47 = [heightAnchor constraintEqualToAnchor:widthAnchor];
         v60[0] = v47;
-        v45 = [(UIButton *)self->_dismissButton centerYAnchor];
-        v43 = [(SFLinkBanner *)self centerYAnchor];
-        v10 = [v45 constraintEqualToAnchor:v43];
+        centerYAnchor = [(UIButton *)self->_dismissButton centerYAnchor];
+        centerYAnchor2 = [(SFLinkBanner *)self centerYAnchor];
+        v10 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
         v60[1] = v10;
-        v11 = [(UIButton *)self->_dismissButton trailingAnchor];
-        v12 = [(SFLinkBanner *)self layoutMarginsGuide];
-        v13 = [v12 trailingAnchor];
-        v14 = [v11 constraintEqualToAnchor:v13];
+        trailingAnchor = [(UIButton *)self->_dismissButton trailingAnchor];
+        layoutMarginsGuide = [(SFLinkBanner *)self layoutMarginsGuide];
+        trailingAnchor2 = [layoutMarginsGuide trailingAnchor];
+        v14 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v60[2] = v14;
-        v15 = [(_SFDimmingButton *)self->_openButton trailingAnchor];
-        v16 = [(UIButton *)self->_dismissButton leadingAnchor];
-        v17 = [v15 constraintEqualToAnchor:v16 constant:-12.0];
+        trailingAnchor3 = [(_SFDimmingButton *)self->_openButton trailingAnchor];
+        leadingAnchor = [(UIButton *)self->_dismissButton leadingAnchor];
+        v17 = [trailingAnchor3 constraintEqualToAnchor:leadingAnchor constant:-12.0];
         v60[3] = v17;
         v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v60 count:4];
         [v41 activateConstraints:v18];
@@ -514,30 +514,30 @@ LABEL_6:
         v25 = self->_dismissButton;
         self->_dismissButton = v24;
 
-        v26 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-        [(UIButton *)self->_dismissButton setTintColor:v26];
+        tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+        [(UIButton *)self->_dismissButton setTintColor:tertiaryLabelColor];
 
         [(UIButton *)self->_dismissButton setTranslatesAutoresizingMaskIntoConstraints:0];
         [(SFLinkBanner *)self addSubview:self->_dismissButton];
         v38 = MEMORY[0x1E696ACD8];
-        v48 = [(UIButton *)self->_dismissButton widthAnchor];
-        v46 = [v48 constraintEqualToConstant:28.0];
+        widthAnchor2 = [(UIButton *)self->_dismissButton widthAnchor];
+        v46 = [widthAnchor2 constraintEqualToConstant:28.0];
         v58[0] = v46;
-        v44 = [(UIButton *)self->_dismissButton heightAnchor];
-        v42 = [v44 constraintEqualToConstant:28.0];
+        heightAnchor2 = [(UIButton *)self->_dismissButton heightAnchor];
+        v42 = [heightAnchor2 constraintEqualToConstant:28.0];
         v58[1] = v42;
-        v39 = [(UIButton *)self->_dismissButton leadingAnchor];
-        v40 = [(SFLinkBanner *)self layoutMarginsGuide];
-        v27 = [v40 leadingAnchor];
-        v28 = [v39 constraintEqualToAnchor:v27];
+        leadingAnchor2 = [(UIButton *)self->_dismissButton leadingAnchor];
+        layoutMarginsGuide2 = [(SFLinkBanner *)self layoutMarginsGuide];
+        leadingAnchor3 = [layoutMarginsGuide2 leadingAnchor];
+        v28 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3];
         v58[2] = v28;
-        v29 = [(UIImageView *)self->_icon leadingAnchor];
-        v30 = [(UIButton *)self->_dismissButton trailingAnchor];
-        v31 = [v29 constraintEqualToSystemSpacingAfterAnchor:v30 multiplier:1.0];
+        leadingAnchor4 = [(UIImageView *)self->_icon leadingAnchor];
+        trailingAnchor4 = [(UIButton *)self->_dismissButton trailingAnchor];
+        v31 = [leadingAnchor4 constraintEqualToSystemSpacingAfterAnchor:trailingAnchor4 multiplier:1.0];
         v58[3] = v31;
-        v32 = [(UIButton *)self->_dismissButton centerYAnchor];
-        v33 = [(SFLinkBanner *)self centerYAnchor];
-        v34 = [v32 constraintEqualToAnchor:v33];
+        centerYAnchor3 = [(UIButton *)self->_dismissButton centerYAnchor];
+        centerYAnchor4 = [(SFLinkBanner *)self centerYAnchor];
+        v34 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
         v58[4] = v34;
         v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v58 count:5];
         [v38 activateConstraints:v35];

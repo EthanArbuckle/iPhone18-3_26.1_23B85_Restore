@@ -2,16 +2,16 @@
 + (id)sharedInstance;
 - (BOOL)allowsRemoteNotifications;
 - (PKUserNotificationsRemoteNotificationServiceConnection)init;
-- (PKUserNotificationsRemoteNotificationServiceConnection)initWithBundleIdentifier:(id)a3;
+- (PKUserNotificationsRemoteNotificationServiceConnection)initWithBundleIdentifier:(id)identifier;
 - (id)_queue_ensureConnection;
 - (void)_invalidate;
 - (void)_queue_invalidatedConnection;
-- (void)_queue_remoteUserNotificationPayloadReceived:(id)a3 completionHandler:(id)a4;
-- (void)_queue_remoteUserNotificationsRegistrationSucceededWithDeviceToken:(id)a3;
-- (void)didReceiveDeviceToken:(id)a3 forBundleIdentifier:(id)a4;
-- (void)registerPushRegistry:(id)a3 completionHandler:(id)a4;
-- (void)remoteUserNotificationPayloadReceived:(id)a3 completionHandler:(id)a4;
-- (void)unregisterPushRegistry:(id)a3;
+- (void)_queue_remoteUserNotificationPayloadReceived:(id)received completionHandler:(id)handler;
+- (void)_queue_remoteUserNotificationsRegistrationSucceededWithDeviceToken:(id)token;
+- (void)didReceiveDeviceToken:(id)token forBundleIdentifier:(id)identifier;
+- (void)registerPushRegistry:(id)registry completionHandler:(id)handler;
+- (void)remoteUserNotificationPayloadReceived:(id)received completionHandler:(id)handler;
+- (void)unregisterPushRegistry:(id)registry;
 @end
 
 @implementation PKUserNotificationsRemoteNotificationServiceConnection
@@ -93,16 +93,16 @@ void __72__PKUserNotificationsRemoteNotificationServiceConnection_sharedInstance
 
 - (PKUserNotificationsRemoteNotificationServiceConnection)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PKUserNotificationsRemoteNotificationServiceConnection.m" lineNumber:36 description:@"use +sharedInstance"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PKUserNotificationsRemoteNotificationServiceConnection.m" lineNumber:36 description:@"use +sharedInstance"];
 
   return 0;
 }
 
-- (PKUserNotificationsRemoteNotificationServiceConnection)initWithBundleIdentifier:(id)a3
+- (PKUserNotificationsRemoteNotificationServiceConnection)initWithBundleIdentifier:(id)identifier
 {
-  v5 = a3;
-  if (!v5)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     [(PKUserNotificationsRemoteNotificationServiceConnection *)a2 initWithBundleIdentifier:?];
   }
@@ -126,7 +126,7 @@ void __72__PKUserNotificationsRemoteNotificationServiceConnection_sharedInstance
     callOutQueue = v6->_callOutQueue;
     v6->_callOutQueue = v13;
 
-    v15 = [v5 copy];
+    v15 = [identifierCopy copy];
     bundleIdentifier = v6->_bundleIdentifier;
     v6->_bundleIdentifier = v15;
 
@@ -142,11 +142,11 @@ void __72__PKUserNotificationsRemoteNotificationServiceConnection_sharedInstance
   return v6;
 }
 
-- (void)registerPushRegistry:(id)a3 completionHandler:(id)a4
+- (void)registerPushRegistry:(id)registry completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  registryCopy = registry;
+  handlerCopy = handler;
+  if (!registryCopy)
   {
     [PKUserNotificationsRemoteNotificationServiceConnection registerPushRegistry:a2 completionHandler:self];
   }
@@ -157,10 +157,10 @@ void __72__PKUserNotificationsRemoteNotificationServiceConnection_sharedInstance
   block[2] = __97__PKUserNotificationsRemoteNotificationServiceConnection_registerPushRegistry_completionHandler___block_invoke;
   block[3] = &unk_278B54D98;
   block[4] = self;
-  v13 = v7;
-  v14 = v8;
-  v10 = v8;
-  v11 = v7;
+  v13 = registryCopy;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = registryCopy;
   dispatch_sync(queue, block);
 }
 
@@ -242,10 +242,10 @@ uint64_t __97__PKUserNotificationsRemoteNotificationServiceConnection_registerPu
   return result;
 }
 
-- (void)unregisterPushRegistry:(id)a3
+- (void)unregisterPushRegistry:(id)registry
 {
-  v5 = a3;
-  if (!v5)
+  registryCopy = registry;
+  if (!registryCopy)
   {
     [(PKUserNotificationsRemoteNotificationServiceConnection *)a2 unregisterPushRegistry:?];
   }
@@ -256,8 +256,8 @@ uint64_t __97__PKUserNotificationsRemoteNotificationServiceConnection_registerPu
   v8[2] = __81__PKUserNotificationsRemoteNotificationServiceConnection_unregisterPushRegistry___block_invoke;
   v8[3] = &unk_278B54DC0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = registryCopy;
+  v7 = registryCopy;
   dispatch_async(queue, v8);
 }
 
@@ -304,34 +304,34 @@ void __83__PKUserNotificationsRemoteNotificationServiceConnection_allowsRemoteNo
   [v3 getAllowsRemoteNotificationsForBundleIdentifier:v4 withCompletionHandler:v5];
 }
 
-- (void)remoteUserNotificationPayloadReceived:(id)a3 completionHandler:(id)a4
+- (void)remoteUserNotificationPayloadReceived:(id)received completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  receivedCopy = received;
+  handlerCopy = handler;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __114__PKUserNotificationsRemoteNotificationServiceConnection_remoteUserNotificationPayloadReceived_completionHandler___block_invoke;
   block[3] = &unk_278B54D98;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = receivedCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = receivedCopy;
   dispatch_async(queue, block);
 }
 
-- (void)didReceiveDeviceToken:(id)a3 forBundleIdentifier:(id)a4
+- (void)didReceiveDeviceToken:(id)token forBundleIdentifier:(id)identifier
 {
-  v5 = a3;
+  tokenCopy = token;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __100__PKUserNotificationsRemoteNotificationServiceConnection_didReceiveDeviceToken_forBundleIdentifier___block_invoke;
   v8[3] = &unk_278B54DC0;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = tokenCopy;
+  v7 = tokenCopy;
   dispatch_async(queue, v8);
 }
 
@@ -394,10 +394,10 @@ void __81__PKUserNotificationsRemoteNotificationServiceConnection__queue_ensureC
   [(PKUserNotificationsRemoteNotificationServiceConnection *)self _invalidate];
 }
 
-- (void)_queue_remoteUserNotificationsRegistrationSucceededWithDeviceToken:(id)a3
+- (void)_queue_remoteUserNotificationsRegistrationSucceededWithDeviceToken:(id)token
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tokenCopy = token;
   dispatch_assert_queue_V2(self->_queue);
   v13 = 0u;
   v14 = 0u;
@@ -419,7 +419,7 @@ void __81__PKUserNotificationsRemoteNotificationServiceConnection__queue_ensureC
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v11 + 1) + 8 * v9++) remoteUserNotificationRegistrationSucceededWithDeviceToken:{v4, v11}];
+        [*(*(&v11 + 1) + 8 * v9++) remoteUserNotificationRegistrationSucceededWithDeviceToken:{tokenCopy, v11}];
       }
 
       while (v7 != v9);
@@ -432,11 +432,11 @@ void __81__PKUserNotificationsRemoteNotificationServiceConnection__queue_ensureC
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queue_remoteUserNotificationPayloadReceived:(id)a3 completionHandler:(id)a4
+- (void)_queue_remoteUserNotificationPayloadReceived:(id)received completionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v17 = a4;
+  receivedCopy = received;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
   v7 = dispatch_group_create();
   v22 = 0u;
@@ -466,7 +466,7 @@ void __81__PKUserNotificationsRemoteNotificationServiceConnection__queue_ensureC
         v20[2] = __121__PKUserNotificationsRemoteNotificationServiceConnection__queue_remoteUserNotificationPayloadReceived_completionHandler___block_invoke;
         v20[3] = &unk_278B54CD0;
         v21 = v7;
-        [v13 remoteUserNotificationPayloadReceived:v6 completionHandler:v20];
+        [v13 remoteUserNotificationPayloadReceived:receivedCopy completionHandler:v20];
 
         ++v12;
       }
@@ -483,8 +483,8 @@ void __81__PKUserNotificationsRemoteNotificationServiceConnection__queue_ensureC
   block[1] = 3221225472;
   block[2] = __121__PKUserNotificationsRemoteNotificationServiceConnection__queue_remoteUserNotificationPayloadReceived_completionHandler___block_invoke_2;
   block[3] = &unk_278B54EA8;
-  v19 = v17;
-  v15 = v17;
+  v19 = handlerCopy;
+  v15 = handlerCopy;
   dispatch_group_notify(v7, v14, block);
 
   v16 = *MEMORY[0x277D85DE8];

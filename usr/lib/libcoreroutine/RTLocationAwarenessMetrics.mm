@@ -1,21 +1,21 @@
 @interface RTLocationAwarenessMetrics
 - (RTLocationAwarenessMetrics)init;
-- (RTLocationAwarenessMetrics)initWithStartTimestamp:(id)a3 heartbeatStats:(id)a4 timeHistograms:(id)a5 intervalHistogram:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RTLocationAwarenessMetrics)initWithStartTimestamp:(id)timestamp heartbeatStats:(id)stats timeHistograms:(id)histograms intervalHistogram:(id)histogram;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation RTLocationAwarenessMetrics
 
-- (RTLocationAwarenessMetrics)initWithStartTimestamp:(id)a3 heartbeatStats:(id)a4 timeHistograms:(id)a5 intervalHistogram:(id)a6
+- (RTLocationAwarenessMetrics)initWithStartTimestamp:(id)timestamp heartbeatStats:(id)stats timeHistograms:(id)histograms intervalHistogram:(id)histogram
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v10)
+  timestampCopy = timestamp;
+  statsCopy = stats;
+  histogramsCopy = histograms;
+  histogramCopy = histogram;
+  if (timestampCopy)
   {
-    if (v11)
+    if (statsCopy)
     {
       goto LABEL_3;
     }
@@ -33,10 +33,10 @@
       _os_log_error_impl(&dword_2304B3000, v14, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: startTimestamp (in %s:%d)", buf, 0x12u);
     }
 
-    if (v11)
+    if (statsCopy)
     {
 LABEL_3:
-      if (v12)
+      if (histogramsCopy)
       {
         goto LABEL_4;
       }
@@ -55,10 +55,10 @@ LABEL_3:
     _os_log_error_impl(&dword_2304B3000, v15, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: heartbeatStats (in %s:%d)", buf, 0x12u);
   }
 
-  if (v12)
+  if (histogramsCopy)
   {
 LABEL_4:
-    if (v13)
+    if (histogramCopy)
     {
       goto LABEL_18;
     }
@@ -77,7 +77,7 @@ LABEL_12:
     _os_log_error_impl(&dword_2304B3000, v16, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: timeHistograms (in %s:%d)", buf, 0x12u);
   }
 
-  if (!v13)
+  if (!histogramCopy)
   {
 LABEL_15:
     v17 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -96,21 +96,21 @@ LABEL_18:
   v29.super_class = RTLocationAwarenessMetrics;
   v18 = [(RTLocationAwarenessMetrics *)&v29 init];
   v19 = v18;
-  if (v13 && v12 && v11 && v10 && v18)
+  if (histogramCopy && histogramsCopy && statsCopy && timestampCopy && v18)
   {
-    v20 = [v10 copy];
+    v20 = [timestampCopy copy];
     startTimestamp = v19->_startTimestamp;
     v19->_startTimestamp = v20;
 
-    v22 = [v11 copy];
+    v22 = [statsCopy copy];
     heartbeatStats = v19->_heartbeatStats;
     v19->_heartbeatStats = v22;
 
-    v24 = [v12 copy];
+    v24 = [histogramsCopy copy];
     timeHistograms = v19->_timeHistograms;
     v19->_timeHistograms = v24;
 
-    v26 = [v13 copy];
+    v26 = [histogramCopy copy];
     intervalHistogram = v19->_intervalHistogram;
     v19->_intervalHistogram = v26;
   }
@@ -120,23 +120,23 @@ LABEL_18:
 
 - (RTLocationAwarenessMetrics)init
 {
-  v3 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v4 = [RTMetricManager metricForType:16];
   v5 = [RTMetricManager metricForType:15];
   v6 = [RTMetricManager metricForType:14];
-  v7 = [(RTLocationAwarenessMetrics *)self initWithStartTimestamp:v3 heartbeatStats:v4 timeHistograms:v5 intervalHistogram:v6];
+  v7 = [(RTLocationAwarenessMetrics *)self initWithStartTimestamp:date heartbeatStats:v4 timeHistograms:v5 intervalHistogram:v6];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(RTLocationAwarenessMetrics *)self startTimestamp];
-  v6 = [(RTLocationAwarenessMetrics *)self heartbeatStats];
-  v7 = [(RTLocationAwarenessMetrics *)self timeHistograms];
-  v8 = [(RTLocationAwarenessMetrics *)self intervalHistogram];
-  v9 = [v4 initWithStartTimestamp:v5 heartbeatStats:v6 timeHistograms:v7 intervalHistogram:v8];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  startTimestamp = [(RTLocationAwarenessMetrics *)self startTimestamp];
+  heartbeatStats = [(RTLocationAwarenessMetrics *)self heartbeatStats];
+  timeHistograms = [(RTLocationAwarenessMetrics *)self timeHistograms];
+  intervalHistogram = [(RTLocationAwarenessMetrics *)self intervalHistogram];
+  v9 = [v4 initWithStartTimestamp:startTimestamp heartbeatStats:heartbeatStats timeHistograms:timeHistograms intervalHistogram:intervalHistogram];
 
   return v9;
 }

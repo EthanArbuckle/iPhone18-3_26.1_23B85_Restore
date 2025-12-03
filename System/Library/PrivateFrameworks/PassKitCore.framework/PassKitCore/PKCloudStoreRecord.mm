@@ -1,30 +1,30 @@
 @interface PKCloudStoreRecord
 - (NSArray)records;
-- (PKCloudStoreRecord)initWithRecords:(id)a3;
+- (PKCloudStoreRecord)initWithRecords:(id)records;
 - (id)description;
-- (void)addRecord:(id)a3;
+- (void)addRecord:(id)record;
 @end
 
 @implementation PKCloudStoreRecord
 
-- (PKCloudStoreRecord)initWithRecords:(id)a3
+- (PKCloudStoreRecord)initWithRecords:(id)records
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  recordsCopy = records;
   v18.receiver = self;
   v18.super_class = PKCloudStoreRecord;
   v5 = [(PKCloudStoreRecord *)&v18 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     records = v5->_records;
-    v5->_records = v6;
+    v5->_records = dictionary;
 
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v8 = v4;
+    v8 = recordsCopy;
     v9 = [v8 countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v9)
     {
@@ -92,16 +92,16 @@
   return v10;
 }
 
-- (void)addRecord:(id)a3
+- (void)addRecord:(id)record
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 recordType];
-  v6 = [(NSMutableDictionary *)self->_records objectForKey:v5];
+  recordCopy = record;
+  recordType = [recordCopy recordType];
+  v6 = [(NSMutableDictionary *)self->_records objectForKey:recordType];
   if (!v6)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [(NSMutableDictionary *)self->_records setObject:v6 forKey:v5];
+    [(NSMutableDictionary *)self->_records setObject:v6 forKey:recordType];
   }
 
   v20 = 0u;
@@ -124,12 +124,12 @@
         }
 
         v12 = *(*(&v18 + 1) + 8 * i);
-        v13 = [v12 recordID];
-        v14 = [v4 recordID];
-        v15 = v14;
-        if (v13)
+        recordID = [v12 recordID];
+        recordID2 = [recordCopy recordID];
+        v15 = recordID2;
+        if (recordID)
         {
-          v16 = v14 == 0;
+          v16 = recordID2 == 0;
         }
 
         else
@@ -140,7 +140,7 @@
         if (v16)
         {
 
-          if (v13 == v15)
+          if (recordID == v15)
           {
             goto LABEL_19;
           }
@@ -148,7 +148,7 @@
 
         else
         {
-          v17 = [v13 isEqual:v14];
+          v17 = [recordID isEqual:recordID2];
 
           if (v17)
           {
@@ -171,7 +171,7 @@ LABEL_19:
 
 LABEL_20:
 
-  [v7 addObject:v4];
+  [v7 addObject:recordCopy];
 }
 
 - (id)description

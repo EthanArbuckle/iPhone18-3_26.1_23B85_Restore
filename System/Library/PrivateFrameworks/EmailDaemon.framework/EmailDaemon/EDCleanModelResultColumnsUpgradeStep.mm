@@ -1,6 +1,6 @@
 @interface EDCleanModelResultColumnsUpgradeStep
 + (id)log;
-+ (int)runWithConnection:(id)a3;
++ (int)runWithConnection:(id)connection;
 @end
 
 @implementation EDCleanModelResultColumnsUpgradeStep
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __43__EDCleanModelResultColumnsUpgradeStep_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_23 != -1)
   {
     dispatch_once(&log_onceToken_23, block);
@@ -30,10 +30,10 @@ void __43__EDCleanModelResultColumnsUpgradeStep_log__block_invoke(uint64_t a1)
   log_log_23 = v1;
 }
 
-+ (int)runWithConnection:(id)a3
++ (int)runWithConnection:(id)connection
 {
-  v3 = a3;
-  v4 = sqlite3_exec([v3 sqlDB], "UPDATE message_global_data SET category_model_version = null, model_category = null, model_subcategory = null, model_analytics = null, model_high_impact = 0;", 0, 0, 0);
+  connectionCopy = connection;
+  v4 = sqlite3_exec([connectionCopy sqlDB], "UPDATE message_global_data SET category_model_version = null, model_category = null, model_subcategory = null, model_analytics = null, model_high_impact = 0;", 0, 0, 0);
 
   return v4;
 }

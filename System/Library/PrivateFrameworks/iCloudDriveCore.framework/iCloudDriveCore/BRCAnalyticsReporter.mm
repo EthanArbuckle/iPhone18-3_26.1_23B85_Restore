@@ -1,49 +1,49 @@
 @interface BRCAnalyticsReporter
 + (BOOL)isTelemetryReportingEnabled;
-+ (id)_aggregatedTelemetryDescription:(id)a3;
-+ (void)_enumerateAggregatedTelemetryForSession:(id)a3 withBlock:(id)a4;
-+ (void)cancelSyncConsistencyReportWithMountPath:(id)a3 queue:(id)a4;
-- (BOOL)_resumePausedTreeConsistencyCheckOperationWithSystemTask:(id)a3;
++ (id)_aggregatedTelemetryDescription:(id)description;
++ (void)_enumerateAggregatedTelemetryForSession:(id)session withBlock:(id)block;
++ (void)cancelSyncConsistencyReportWithMountPath:(id)path queue:(id)queue;
+- (BOOL)_resumePausedTreeConsistencyCheckOperationWithSystemTask:(id)task;
 - (BOOL)_shouldDeferForExistingSnapshot;
-- (BRCAnalyticsReporter)initWithSession:(id)a3;
-- (void)_checkSyncConsistencyWithSystemTask:(id)a3;
-- (void)_cleanupTimedOutEventMetrics:(id)a3;
-- (void)_forgetEventMetrics:(id)a3;
-- (void)_gatherAppTelemetryEventsWithSystemTask:(id)a3;
+- (BRCAnalyticsReporter)initWithSession:(id)session;
+- (void)_checkSyncConsistencyWithSystemTask:(id)task;
+- (void)_cleanupTimedOutEventMetrics:(id)metrics;
+- (void)_forgetEventMetrics:(id)metrics;
+- (void)_gatherAppTelemetryEventsWithSystemTask:(id)task;
 - (void)_reportSyncUpBackoffInfo;
-- (void)_setupSyncConsistencyCancellationTimerWithSession:(id)a3;
-- (void)_setupSyncConsistencyDeferralTimerWithSystemTask:(id)a3;
-- (void)_waitForApplySchedulerToBeIdleWithCompletion:(id)a3;
-- (void)_withEventMetricsOfKind:(id)a3 accessor:(id)a4;
-- (void)aggregateReportForAppTelemetryIdentifier:(int)a3 itemID:(id)a4 zoneMangledID:(id)a5 enhancedDrivePrivacyEnabled:(id)a6 error:(id)a7;
-- (void)createFSEventToSyncUpEventForFileID:(unint64_t)a3 genID:(unsigned int)a4;
-- (void)createUserDownloadEventForOperationID:(id)a3 isRecursive:(BOOL)a4 isForBackup:(BOOL)a5;
+- (void)_setupSyncConsistencyCancellationTimerWithSession:(id)session;
+- (void)_setupSyncConsistencyDeferralTimerWithSystemTask:(id)task;
+- (void)_waitForApplySchedulerToBeIdleWithCompletion:(id)completion;
+- (void)_withEventMetricsOfKind:(id)kind accessor:(id)accessor;
+- (void)aggregateReportForAppTelemetryIdentifier:(int)identifier itemID:(id)d zoneMangledID:(id)iD enhancedDrivePrivacyEnabled:(id)enabled error:(id)error;
+- (void)createFSEventToSyncUpEventForFileID:(unint64_t)d genID:(unsigned int)iD;
+- (void)createUserDownloadEventForOperationID:(id)d isRecursive:(BOOL)recursive isForBackup:(BOOL)backup;
 - (void)deleteMissingErrorThrottles;
-- (void)didApplyItemInsideSharedItemID:(id)a3;
-- (void)dumpDatabaseInfoToContext:(id)a3;
-- (void)dumpToContext:(id)a3;
-- (void)forgetEventMetric:(id)a3;
-- (void)lookupFSEventToSyncUpEventByFileID:(unint64_t)a3 genID:(unsigned int)a4 accessor:(id)a5;
-- (void)lookupFSEventToSyncUpEventByItemID:(id)a3 accessor:(id)a4;
-- (void)lookupUserDownloadEventByFileObjectID:(id)a3 accessor:(id)a4;
-- (void)lookupUserDownloadEventByOperationID:(id)a3 accessor:(id)a4;
-- (void)postReportForDefaultSubCategoryWithCategory:(unint64_t)a3 telemetryTimeEvent:(id)a4;
+- (void)didApplyItemInsideSharedItemID:(id)d;
+- (void)dumpDatabaseInfoToContext:(id)context;
+- (void)dumpToContext:(id)context;
+- (void)forgetEventMetric:(id)metric;
+- (void)lookupFSEventToSyncUpEventByFileID:(unint64_t)d genID:(unsigned int)iD accessor:(id)accessor;
+- (void)lookupFSEventToSyncUpEventByItemID:(id)d accessor:(id)accessor;
+- (void)lookupUserDownloadEventByFileObjectID:(id)d accessor:(id)accessor;
+- (void)lookupUserDownloadEventByOperationID:(id)d accessor:(id)accessor;
+- (void)postReportForDefaultSubCategoryWithCategory:(unint64_t)category telemetryTimeEvent:(id)event;
 - (void)registerBackgroundXPCActivities;
-- (void)submitEventMetric:(id)a3;
+- (void)submitEventMetric:(id)metric;
 @end
 
 @implementation BRCAnalyticsReporter
 
-- (BRCAnalyticsReporter)initWithSession:(id)a3
+- (BRCAnalyticsReporter)initWithSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   v27.receiver = self;
   v27.super_class = BRCAnalyticsReporter;
   v6 = [(BRCAnalyticsReporter *)&v27 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_session, a3);
+    objc_storeStrong(&v6->_session, session);
     v8 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_UNSPECIFIED, 0);
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(v8, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_create("analytics-reporter", v9);
@@ -66,7 +66,7 @@
     syncHealthReport = v7->_syncHealthReport;
     v7->_syncHealthReport = v18;
 
-    v20 = [[BRCCKMetricEndpoint alloc] initWithSession:v5];
+    v20 = [[BRCCKMetricEndpoint alloc] initWithSession:sessionCopy];
     metricEndpoint = v7->_metricEndpoint;
     v7->_metricEndpoint = &v20->super;
 
@@ -614,9 +614,9 @@ void __55__BRCAnalyticsReporter_registerBackgroundXPCActivities__block_invoke_37
   BRCEventKindUserDownload_block_invoke_3___personalPersona = v0;
 }
 
-- (void)_waitForApplySchedulerToBeIdleWithCompletion:(id)a3
+- (void)_waitForApplySchedulerToBeIdleWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = self->_session;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -624,12 +624,12 @@ void __55__BRCAnalyticsReporter_registerBackgroundXPCActivities__block_invoke_37
   v16[3] = &unk_278500020;
   v6 = v5;
   v17 = v6;
-  v7 = v4;
+  v7 = completionCopy;
   v18 = v7;
   v8 = MEMORY[0x22AA4A310](v16);
-  v9 = [(BRCAccountSession *)v6 applyScheduler];
-  v10 = [v9 hasActiveWorkGroup];
-  v11 = dispatch_group_wait(v10, 0);
+  applyScheduler = [(BRCAccountSession *)v6 applyScheduler];
+  hasActiveWorkGroup = [applyScheduler hasActiveWorkGroup];
+  v11 = dispatch_group_wait(hasActiveWorkGroup, 0);
 
   if (v11)
   {
@@ -677,31 +677,31 @@ uint64_t __69__BRCAnalyticsReporter__waitForApplySchedulerToBeIdleWithCompletion
   return v8();
 }
 
-- (void)_gatherAppTelemetryEventsWithSystemTask:(id)a3
+- (void)_gatherAppTelemetryEventsWithSystemTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v5 = self->_session;
-  v6 = [(BRCAccountSession *)v5 clientTruthWorkloop];
-  if (!v6)
+  clientTruthWorkloop = [(BRCAccountSession *)v5 clientTruthWorkloop];
+  if (!clientTruthWorkloop)
   {
     goto LABEL_5;
   }
 
-  v7 = v6;
-  v8 = [(BRCAccountSession *)v5 applyScheduler];
-  v9 = [v8 hasActiveWorkGroup];
+  v7 = clientTruthWorkloop;
+  applyScheduler = [(BRCAccountSession *)v5 applyScheduler];
+  hasActiveWorkGroup = [applyScheduler hasActiveWorkGroup];
 
-  if (v9)
+  if (hasActiveWorkGroup)
   {
-    if (([v4 isTaskExpired] & 1) == 0)
+    if (([taskCopy isTaskExpired] & 1) == 0)
     {
       v11[0] = MEMORY[0x277D85DD0];
       v11[1] = 3221225472;
       v11[2] = __64__BRCAnalyticsReporter__gatherAppTelemetryEventsWithSystemTask___block_invoke;
       v11[3] = &unk_278500098;
       v12 = v5;
-      v13 = self;
-      v14 = v4;
+      selfCopy = self;
+      v14 = taskCopy;
       [(BRCAnalyticsReporter *)self _waitForApplySchedulerToBeIdleWithCompletion:v11];
     }
   }
@@ -710,7 +710,7 @@ uint64_t __69__BRCAnalyticsReporter__waitForApplySchedulerToBeIdleWithCompletion
   {
 LABEL_5:
     v10 = +[BRCBGSystemTaskManager sharedManager];
-    [v10 completeTask:v4];
+    [v10 completeTask:taskCopy];
   }
 }
 
@@ -853,9 +853,9 @@ void __64__BRCAnalyticsReporter__gatherAppTelemetryEventsWithSystemTask___block_
   }
 }
 
-- (void)_setupSyncConsistencyDeferralTimerWithSystemTask:(id)a3
+- (void)_setupSyncConsistencyDeferralTimerWithSystemTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   if (self->_syncConsistencyDeferralTimer)
   {
     v5 = brc_bread_crumbs();
@@ -882,7 +882,7 @@ void __64__BRCAnalyticsReporter__gatherAppTelemetryEventsWithSystemTask___block_
     handler[1] = 3221225472;
     handler[2] = __73__BRCAnalyticsReporter__setupSyncConsistencyDeferralTimerWithSystemTask___block_invoke;
     handler[3] = &unk_2784FF478;
-    v22 = v4;
+    v22 = taskCopy;
     v12 = v9;
     v23 = v12;
     dispatch_source_set_event_handler(v12, handler);
@@ -951,18 +951,18 @@ void __73__BRCAnalyticsReporter__setupSyncConsistencyDeferralTimerWithSystemTask
   }
 }
 
-+ (void)cancelSyncConsistencyReportWithMountPath:(id)a3 queue:(id)a4
++ (void)cancelSyncConsistencyReportWithMountPath:(id)path queue:(id)queue
 {
-  v5 = a3;
-  v6 = a4;
+  pathCopy = path;
+  queueCopy = queue;
   v7 = BRDiskCheckerServiceConnection();
-  v8 = [v7 remoteObjectProxy];
-  [v8 cancelTreeConsistencyCheck];
+  remoteObjectProxy = [v7 remoteObjectProxy];
+  [remoteObjectProxy cancelTreeConsistencyCheck];
 
   v9 = [BRCUserDefaults defaultsForMangledID:0];
-  v10 = [v9 syncConsistencyCheckerSnapshotting];
+  syncConsistencyCheckerSnapshotting = [v9 syncConsistencyCheckerSnapshotting];
 
-  if (v10)
+  if (syncConsistencyCheckerSnapshotting)
   {
     v11 = brc_interval_to_nsec();
     v12 = dispatch_time(0, v11);
@@ -970,14 +970,14 @@ void __73__BRCAnalyticsReporter__setupSyncConsistencyDeferralTimerWithSystemTask
     block[1] = 3221225472;
     block[2] = __71__BRCAnalyticsReporter_cancelSyncConsistencyReportWithMountPath_queue___block_invoke;
     block[3] = &unk_2784FF450;
-    v14 = v5;
-    dispatch_after(v12, v6, block);
+    v14 = pathCopy;
+    dispatch_after(v12, queueCopy, block);
   }
 }
 
-- (void)_setupSyncConsistencyCancellationTimerWithSession:(id)a3
+- (void)_setupSyncConsistencyCancellationTimerWithSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   if (self->_syncConsistencyCancellationTimer)
   {
     v5 = brc_bread_crumbs();
@@ -993,8 +993,8 @@ void __73__BRCAnalyticsReporter__setupSyncConsistencyDeferralTimerWithSystemTask
     v5 = [BRCUserDefaults defaultsForMangledID:0];
     [v5 syncConsistencyTimeout];
     v7 = brc_interval_to_nsec();
-    v8 = [v4 volume];
-    v9 = [v8 mountPath];
+    volume = [sessionCopy volume];
+    mountPath = [volume mountPath];
 
     objc_initWeak(&location, self);
     v10 = dispatch_time(0, v7);
@@ -1005,9 +1005,9 @@ void __73__BRCAnalyticsReporter__setupSyncConsistencyDeferralTimerWithSystemTask
     handler[1] = 3221225472;
     handler[2] = __74__BRCAnalyticsReporter__setupSyncConsistencyCancellationTimerWithSession___block_invoke;
     handler[3] = &unk_2784FF4A0;
-    v6 = v9;
+    v6 = mountPath;
     v23 = v6;
-    v24 = v4;
+    v24 = sessionCopy;
     v13 = v11;
     v25 = v13;
     dispatch_source_set_event_handler(v13, handler);
@@ -1071,9 +1071,9 @@ void __74__BRCAnalyticsReporter__setupSyncConsistencyCancellationTimerWithSessio
   }
 }
 
-- (BOOL)_resumePausedTreeConsistencyCheckOperationWithSystemTask:(id)a3
+- (BOOL)_resumePausedTreeConsistencyCheckOperationWithSystemTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v5 = BRDiskCheckerServiceConnection();
   v13 = 0;
   v14 = &v13;
@@ -1094,7 +1094,7 @@ void __74__BRCAnalyticsReporter__setupSyncConsistencyCancellationTimerWithSessio
   v11[4] = &v13;
   [v6 resumeTreeConsistencyCheckWithReply:v11];
 
-  [(BRCAnalyticsReporter *)self _setupSyncConsistencyDeferralTimerWithSystemTask:v4];
+  [(BRCAnalyticsReporter *)self _setupSyncConsistencyDeferralTimerWithSystemTask:taskCopy];
   v7 = v14[5];
   if (v7)
   {
@@ -1138,10 +1138,10 @@ void __81__BRCAnalyticsReporter__resumePausedTreeConsistencyCheckOperationWithSy
 
 - (BOOL)_shouldDeferForExistingSnapshot
 {
-  v2 = [(BRCAccountSession *)self->_session volume];
-  v3 = [v2 mountPath];
+  volume = [(BRCAccountSession *)self->_session volume];
+  mountPath = [volume mountPath];
 
-  v4 = open([v3 UTF8String], 0);
+  v4 = open([mountPath UTF8String], 0);
   if ((v4 & 0x80000000) != 0)
   {
     v6 = 0;
@@ -1157,10 +1157,10 @@ void __81__BRCAnalyticsReporter__resumePausedTreeConsistencyCheckOperationWithSy
   return v6;
 }
 
-- (void)_checkSyncConsistencyWithSystemTask:(id)a3
+- (void)_checkSyncConsistencyWithSystemTask:(id)task
 {
-  v4 = a3;
-  if (![(BRCAnalyticsReporter *)self _resumePausedTreeConsistencyCheckOperationWithSystemTask:v4])
+  taskCopy = task;
+  if (![(BRCAnalyticsReporter *)self _resumePausedTreeConsistencyCheckOperationWithSystemTask:taskCopy])
   {
     v5 = self->_session;
     v7[0] = MEMORY[0x277D85DD0];
@@ -1168,7 +1168,7 @@ void __81__BRCAnalyticsReporter__resumePausedTreeConsistencyCheckOperationWithSy
     v7[2] = __60__BRCAnalyticsReporter__checkSyncConsistencyWithSystemTask___block_invoke;
     v7[3] = &unk_278500098;
     v7[4] = self;
-    v8 = v4;
+    v8 = taskCopy;
     v9 = v5;
     v6 = v5;
     [(BRCAnalyticsReporter *)self _waitForApplySchedulerToBeIdleWithCompletion:v7];
@@ -1340,8 +1340,8 @@ void __60__BRCAnalyticsReporter__checkSyncConsistencyWithSystemTask___block_invo
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v2 = [(BRCAccountSession *)self->_session clientZones];
-  v3 = [v2 countByEnumeratingWithState:&v26 objects:v36 count:16];
+  clientZones = [(BRCAccountSession *)self->_session clientZones];
+  v3 = [clientZones countByEnumeratingWithState:&v26 objects:v36 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1354,14 +1354,14 @@ void __60__BRCAnalyticsReporter__checkSyncConsistencyWithSystemTask___block_invo
       {
         if (*v27 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(clientZones);
         }
 
         v8 = *(*(&v26 + 1) + 8 * i);
-        v9 = [v8 mangledID];
+        mangledID = [v8 mangledID];
         if (([v8 isSyncBlocked] & 1) == 0)
         {
-          v10 = [BRCUserDefaults defaultsForMangledID:v9];
+          v10 = [BRCUserDefaults defaultsForMangledID:mangledID];
           [v8 syncUpBackoffRatio];
           v12 = v11;
           [v8 syncUpBackoffDelay];
@@ -1408,7 +1408,7 @@ void __60__BRCAnalyticsReporter__checkSyncConsistencyWithSystemTask___block_invo
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v26 objects:v36 count:16];
+      v4 = [clientZones countByEnumeratingWithState:&v26 objects:v36 count:16];
     }
 
     while (v4);
@@ -1428,20 +1428,20 @@ void __60__BRCAnalyticsReporter__checkSyncConsistencyWithSystemTask___block_invo
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitEventMetric:(id)a3
+- (void)submitEventMetric:(id)metric
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  metricCopy = metric;
+  if (metricCopy)
   {
-    [(BRCMetricEndpoint *)self->_metricEndpoint submitEventMetric:v4];
-    v5 = [v4 associatedAppTelemetryEvent];
-    if (v5)
+    [(BRCMetricEndpoint *)self->_metricEndpoint submitEventMetric:metricCopy];
+    associatedAppTelemetryEvent = [metricCopy associatedAppTelemetryEvent];
+    if (associatedAppTelemetryEvent)
     {
-      [(BRCAnalyticsReporter *)self postReportForDefaultSubCategoryWithCategory:8 telemetryTimeEvent:v5];
+      [(BRCAnalyticsReporter *)self postReportForDefaultSubCategoryWithCategory:8 telemetryTimeEvent:associatedAppTelemetryEvent];
     }
 
-    v8[0] = v4;
+    v8[0] = metricCopy;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
     [(BRCAnalyticsReporter *)self _forgetEventMetrics:v6];
   }
@@ -1449,35 +1449,35 @@ void __60__BRCAnalyticsReporter__checkSyncConsistencyWithSystemTask___block_invo
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)forgetEventMetric:(id)a3
+- (void)forgetEventMetric:(id)metric
 {
   v9 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (metric)
   {
-    v8 = a3;
+    metricCopy = metric;
     v4 = MEMORY[0x277CBEA60];
-    v5 = a3;
-    v6 = [v4 arrayWithObjects:&v8 count:1];
+    metricCopy2 = metric;
+    v6 = [v4 arrayWithObjects:&metricCopy count:1];
 
-    [(BRCAnalyticsReporter *)self _forgetEventMetrics:v6, v8, v9];
+    [(BRCAnalyticsReporter *)self _forgetEventMetrics:v6, metricCopy, v9];
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_forgetEventMetrics:(id)a3
+- (void)_forgetEventMetrics:(id)metrics
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metricsCopy = metrics;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [v4 firstObject];
-  v6 = [v5 eventName];
+  firstObject = [metricsCopy firstObject];
+  eventName = [firstObject eventName];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = v4;
+  v7 = metricsCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v8)
   {
@@ -1493,8 +1493,8 @@ void __60__BRCAnalyticsReporter__checkSyncConsistencyWithSystemTask___block_invo
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v16 + 1) + 8 * v11) eventName];
-        v13 = [v12 isEqualToString:v6];
+        eventName2 = [*(*(&v16 + 1) + 8 * v11) eventName];
+        v13 = [eventName2 isEqualToString:eventName];
 
         if ((v13 & 1) == 0)
         {
@@ -1511,18 +1511,18 @@ void __60__BRCAnalyticsReporter__checkSyncConsistencyWithSystemTask___block_invo
     while (v9);
   }
 
-  v14 = [(NSMutableDictionary *)self->_eventsByKind objectForKeyedSubscript:v6];
+  v14 = [(NSMutableDictionary *)self->_eventsByKind objectForKeyedSubscript:eventName];
   [v14 removeObjectsInArray:v7];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_cleanupTimedOutEventMetrics:(id)a3
+- (void)_cleanupTimedOutEventMetrics:(id)metrics
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metricsCopy = metrics;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v6 = [BRCUserDefaults defaultsForMangledID:0];
   [v6 eventMetricTimeout];
   v8 = v7;
@@ -1532,7 +1532,7 @@ void __60__BRCAnalyticsReporter__checkSyncConsistencyWithSystemTask___block_invo
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = v4;
+  v10 = metricsCopy;
   v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
@@ -1548,8 +1548,8 @@ void __60__BRCAnalyticsReporter__checkSyncConsistencyWithSystemTask___block_invo
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [v15 startTime];
-        [v5 timeIntervalSinceDate:v16];
+        startTime = [v15 startTime];
+        [date timeIntervalSinceDate:startTime];
         v18 = v17;
 
         if (v18 > v8)
@@ -1567,20 +1567,20 @@ void __60__BRCAnalyticsReporter__checkSyncConsistencyWithSystemTask___block_invo
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_withEventMetricsOfKind:(id)a3 accessor:(id)a4
+- (void)_withEventMetricsOfKind:(id)kind accessor:(id)accessor
 {
-  v6 = a3;
-  v7 = a4;
+  kindCopy = kind;
+  accessorCopy = accessor;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __57__BRCAnalyticsReporter__withEventMetricsOfKind_accessor___block_invoke;
   block[3] = &unk_2784FF5B8;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = kindCopy;
+  v13 = accessorCopy;
+  v9 = accessorCopy;
+  v10 = kindCopy;
   dispatch_sync(queue, block);
 }
 
@@ -1603,18 +1603,18 @@ void __57__BRCAnalyticsReporter__withEventMetricsOfKind_accessor___block_invoke(
   (*(*(a1 + 48) + 16))();
 }
 
-+ (id)_aggregatedTelemetryDescription:(id)a3
++ (id)_aggregatedTelemetryDescription:(id)description
 {
   v3 = MEMORY[0x277CCAB68];
-  v4 = a3;
-  v5 = [v4 telemetrySchema];
-  if (v5 > 299)
+  descriptionCopy = description;
+  telemetrySchema = [descriptionCopy telemetrySchema];
+  if (telemetrySchema > 299)
   {
-    if (v5 <= 402)
+    if (telemetrySchema <= 402)
     {
-      if (v5 > 400)
+      if (telemetrySchema > 400)
       {
-        if (v5 == 401)
+        if (telemetrySchema == 401)
         {
           v6 = @"FPFS_MIGRATION_FINISHED";
         }
@@ -1625,12 +1625,12 @@ void __57__BRCAnalyticsReporter__withEventMetricsOfKind_accessor___block_invoke(
         }
       }
 
-      else if (v5 == 300)
+      else if (telemetrySchema == 300)
       {
         v6 = @"INITIAL_SCAN_REJECTED_MISMATCH_TYPE";
       }
 
-      else if (v5 == 400)
+      else if (telemetrySchema == 400)
       {
         v6 = @"FPFS_MIGRATION_STARTED";
       }
@@ -1638,13 +1638,13 @@ void __57__BRCAnalyticsReporter__withEventMetricsOfKind_accessor___block_invoke(
       else
       {
 LABEL_40:
-        v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", v5];
+        v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"(unknown: %i)", telemetrySchema];
       }
     }
 
     else
     {
-      switch(v5)
+      switch(telemetrySchema)
       {
         case 500:
           v6 = @"ITEM_BOUNCE_APPLY_NEW_WITH_EXISTING";
@@ -1707,14 +1707,14 @@ LABEL_40:
           v6 = @"ITEM_BOUNCE_APPLY_EXISTING_WITH_NEW_UNTITLED_FILE_NAME";
           break;
         default:
-          if (v5 == 403)
+          if (telemetrySchema == 403)
           {
             v6 = @"FPFS_MIGRATION_NON_MIGRATED_ITEM_REPORT";
           }
 
           else
           {
-            if (v5 != 404)
+            if (telemetrySchema != 404)
             {
               goto LABEL_40;
             }
@@ -1730,7 +1730,7 @@ LABEL_40:
   else
   {
     v6 = @"UNKNOWN";
-    switch(v5)
+    switch(telemetrySchema)
     {
       case 0:
         break;
@@ -1958,7 +1958,7 @@ LABEL_40:
         v6 = @"FILE_READ_ERROR";
         break;
       default:
-        switch(v5)
+        switch(telemetrySchema)
         {
           case 200:
             v6 = @"CA_TOTAL_ERROR_COUNT";
@@ -2010,48 +2010,48 @@ LABEL_40:
     }
   }
 
-  v7 = [v3 stringWithFormat:@"|id = %@|count = %lld|", v6, objc_msgSend(v4, "magnitudeLong")];
+  v7 = [v3 stringWithFormat:@"|id = %@|count = %lld|", v6, objc_msgSend(descriptionCopy, "magnitudeLong")];
 
-  v8 = [v4 investigation];
+  investigation = [descriptionCopy investigation];
 
-  if ([v8 hasZoneName])
+  if ([investigation hasZoneName])
   {
     v9 = objc_alloc(MEMORY[0x277CCACA8]);
-    v10 = [v8 zoneName];
-    v11 = [v9 initWithData:v10 encoding:4];
+    zoneName = [investigation zoneName];
+    v11 = [v9 initWithData:zoneName encoding:4];
     [v7 appendFormat:@"zoneID = %@|", v11];
   }
 
-  if ([v8 hasItemID])
+  if ([investigation hasItemID])
   {
-    v12 = [v8 itemID];
-    [v7 appendFormat:@"itemID = %@|", v12];
+    itemID = [investigation itemID];
+    [v7 appendFormat:@"itemID = %@|", itemID];
   }
 
-  if ([v8 hasErrorDomain])
+  if ([investigation hasErrorDomain])
   {
-    v13 = [v8 errorDomain];
-    v14 = [v8 errorCode];
-    v15 = [v8 errorDescription];
-    v16 = [v8 underlyingErrorDomain];
-    [v7 appendFormat:@"errorDomain = %@|errorCode = %lld|errorDescription = %@|underlyingErrorDomain = %@|underlyingErrorCode = %lld|", v13, v14, v15, v16, objc_msgSend(v8, "underlyingErrorCode")];
+    errorDomain = [investigation errorDomain];
+    errorCode = [investigation errorCode];
+    errorDescription = [investigation errorDescription];
+    underlyingErrorDomain = [investigation underlyingErrorDomain];
+    [v7 appendFormat:@"errorDomain = %@|errorCode = %lld|errorDescription = %@|underlyingErrorDomain = %@|underlyingErrorCode = %lld|", errorDomain, errorCode, errorDescription, underlyingErrorDomain, objc_msgSend(investigation, "underlyingErrorCode")];
   }
 
-  if ([v8 hasLastOSUpdate])
+  if ([investigation hasLastOSUpdate])
   {
-    [v7 appendFormat:@"lastOSUpdate = %lld|", objc_msgSend(v8, "lastOSUpdate")];
+    [v7 appendFormat:@"lastOSUpdate = %lld|", objc_msgSend(investigation, "lastOSUpdate")];
   }
 
-  if ([v8 hasDbAge])
+  if ([investigation hasDbAge])
   {
-    [v7 appendFormat:@"dbAge = %lld|", objc_msgSend(v8, "dbAge")];
+    [v7 appendFormat:@"dbAge = %lld|", objc_msgSend(investigation, "dbAge")];
   }
 
-  if ([v8 hasIsConsolidated])
+  if ([investigation hasIsConsolidated])
   {
-    v17 = [v8 isConsolidated];
+    isConsolidated = [investigation isConsolidated];
     v18 = "NO";
-    if (v17)
+    if (isConsolidated)
     {
       v18 = "YES";
     }
@@ -2062,18 +2062,18 @@ LABEL_40:
   return v7;
 }
 
-- (void)dumpDatabaseInfoToContext:(id)a3
+- (void)dumpDatabaseInfoToContext:(id)context
 {
-  v4 = a3;
-  [v4 writeLineWithFormat:@"Pending Aggregated Telemetry"];
-  [v4 writeLineWithFormat:@"-----------------------------------------------------"];
+  contextCopy = context;
+  [contextCopy writeLineWithFormat:@"Pending Aggregated Telemetry"];
+  [contextCopy writeLineWithFormat:@"-----------------------------------------------------"];
   session = self->_session;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__BRCAnalyticsReporter_dumpDatabaseInfoToContext___block_invoke;
   v7[3] = &unk_278500110;
-  v8 = v4;
-  v6 = v4;
+  v8 = contextCopy;
+  v6 = contextCopy;
   [BRCAnalyticsReporter _enumerateAggregatedTelemetryForSession:session withBlock:v7];
   [v6 writeEmptyLine];
 }
@@ -2085,15 +2085,15 @@ void __50__BRCAnalyticsReporter_dumpDatabaseInfoToContext___block_invoke(uint64_
   [v2 writeLineWithFormat:@"%@", v3];
 }
 
-- (void)dumpToContext:(id)a3
+- (void)dumpToContext:(id)context
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v30[0] = BRCEventKindFSEventToSyncUp;
   v30[1] = BRCEventKindUserDownload;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:2];
-  [v4 writeLineWithFormat:@"analytics metrics"];
-  [v4 writeLineWithFormat:@"-----------------------------------------------------"];
+  [contextCopy writeLineWithFormat:@"analytics metrics"];
+  [contextCopy writeLineWithFormat:@"-----------------------------------------------------"];
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
@@ -2120,7 +2120,7 @@ void __50__BRCAnalyticsReporter_dumpDatabaseInfoToContext___block_invoke(uint64_
         v22[1] = 3221225472;
         v22[2] = __38__BRCAnalyticsReporter_dumpToContext___block_invoke;
         v22[3] = &unk_278500138;
-        v23 = v4;
+        v23 = contextCopy;
         v24 = v10;
         [(BRCAnalyticsReporter *)self _withEventMetricsOfKind:v10 accessor:v22];
 
@@ -2135,13 +2135,13 @@ void __50__BRCAnalyticsReporter_dumpDatabaseInfoToContext___block_invoke(uint64_
     while (v7);
   }
 
-  [v4 writeLineWithFormat:@"SyncHealthReport:"];
+  [contextCopy writeLineWithFormat:@"SyncHealthReport:"];
   syncHealthReport = self->_syncHealthReport;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __38__BRCAnalyticsReporter_dumpToContext___block_invoke_2;
   v20[3] = &unk_278500160;
-  v13 = v4;
+  v13 = contextCopy;
   v21 = v13;
   [(BRCSyncHealthReport *)syncHealthReport syncErrors:v20];
   [v13 writeLineWithFormat:&stru_2837504F0];
@@ -2159,14 +2159,14 @@ void __50__BRCAnalyticsReporter_dumpDatabaseInfoToContext___block_invoke(uint64_
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createFSEventToSyncUpEventForFileID:(unint64_t)a3 genID:(unsigned int)a4
+- (void)createFSEventToSyncUpEventForFileID:(unint64_t)d genID:(unsigned int)iD
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __66__BRCAnalyticsReporter_createFSEventToSyncUpEventForFileID_genID___block_invoke;
   v4[3] = &__block_descriptor_44_e24_v16__0__NSMutableArray_8l;
-  v4[4] = a3;
-  v5 = a4;
+  v4[4] = d;
+  iDCopy = iD;
   [(BRCAnalyticsReporter *)self _withEventMetricsOfKind:BRCEventKindFSEventToSyncUp accessor:v4];
 }
 
@@ -2223,18 +2223,18 @@ LABEL_8:
   }
 }
 
-- (void)lookupFSEventToSyncUpEventByFileID:(unint64_t)a3 genID:(unsigned int)a4 accessor:(id)a5
+- (void)lookupFSEventToSyncUpEventByFileID:(unint64_t)d genID:(unsigned int)iD accessor:(id)accessor
 {
-  v8 = a5;
+  accessorCopy = accessor;
   v9 = BRCEventKindFSEventToSyncUp;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __74__BRCAnalyticsReporter_lookupFSEventToSyncUpEventByFileID_genID_accessor___block_invoke;
   v11[3] = &unk_2785001A8;
-  v14 = a4;
-  v12 = v8;
-  v13 = a3;
-  v10 = v8;
+  iDCopy = iD;
+  v12 = accessorCopy;
+  dCopy = d;
+  v10 = accessorCopy;
   [(BRCAnalyticsReporter *)self _withEventMetricsOfKind:v9 accessor:v11];
 }
 
@@ -2288,19 +2288,19 @@ LABEL_12:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)lookupFSEventToSyncUpEventByItemID:(id)a3 accessor:(id)a4
+- (void)lookupFSEventToSyncUpEventByItemID:(id)d accessor:(id)accessor
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  accessorCopy = accessor;
   v8 = BRCEventKindFSEventToSyncUp;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __68__BRCAnalyticsReporter_lookupFSEventToSyncUpEventByItemID_accessor___block_invoke;
   v11[3] = &unk_2785001D0;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = accessorCopy;
+  v9 = accessorCopy;
+  v10 = dCopy;
   [(BRCAnalyticsReporter *)self _withEventMetricsOfKind:v8 accessor:v11];
 }
 
@@ -2352,18 +2352,18 @@ LABEL_11:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createUserDownloadEventForOperationID:(id)a3 isRecursive:(BOOL)a4 isForBackup:(BOOL)a5
+- (void)createUserDownloadEventForOperationID:(id)d isRecursive:(BOOL)recursive isForBackup:(BOOL)backup
 {
-  v8 = a3;
+  dCopy = d;
   v9 = BRCEventKindUserDownload;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __86__BRCAnalyticsReporter_createUserDownloadEventForOperationID_isRecursive_isForBackup___block_invoke;
   v11[3] = &unk_2785001F8;
-  v12 = v8;
-  v13 = a4;
-  v14 = a5;
-  v10 = v8;
+  v12 = dCopy;
+  recursiveCopy = recursive;
+  backupCopy = backup;
+  v10 = dCopy;
   [(BRCAnalyticsReporter *)self _withEventMetricsOfKind:v9 accessor:v11];
 }
 
@@ -2390,19 +2390,19 @@ void __86__BRCAnalyticsReporter_createUserDownloadEventForOperationID_isRecursiv
   }
 }
 
-- (void)lookupUserDownloadEventByOperationID:(id)a3 accessor:(id)a4
+- (void)lookupUserDownloadEventByOperationID:(id)d accessor:(id)accessor
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  accessorCopy = accessor;
   v8 = BRCEventKindUserDownload;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __70__BRCAnalyticsReporter_lookupUserDownloadEventByOperationID_accessor___block_invoke;
   v11[3] = &unk_2785001D0;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = accessorCopy;
+  v9 = accessorCopy;
+  v10 = dCopy;
   [(BRCAnalyticsReporter *)self _withEventMetricsOfKind:v8 accessor:v11];
 }
 
@@ -2453,19 +2453,19 @@ LABEL_11:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)lookupUserDownloadEventByFileObjectID:(id)a3 accessor:(id)a4
+- (void)lookupUserDownloadEventByFileObjectID:(id)d accessor:(id)accessor
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  accessorCopy = accessor;
   v8 = BRCEventKindUserDownload;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __71__BRCAnalyticsReporter_lookupUserDownloadEventByFileObjectID_accessor___block_invoke;
   v11[3] = &unk_2785001D0;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dCopy;
+  v13 = accessorCopy;
+  v9 = accessorCopy;
+  v10 = dCopy;
   [(BRCAnalyticsReporter *)self _withEventMetricsOfKind:v8 accessor:v11];
 }
 
@@ -2516,20 +2516,20 @@ LABEL_11:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)postReportForDefaultSubCategoryWithCategory:(unint64_t)a3 telemetryTimeEvent:(id)a4
+- (void)postReportForDefaultSubCategoryWithCategory:(unint64_t)category telemetryTimeEvent:(id)event
 {
-  v6 = [(BRCAppTelemetryConverter *)self->_appTelemetryConvertor dictionaryRepresentationFromEvent:a4];
-  [(BRCRTCReporter *)self->_rtcReporter postReportWithCategory:a3 type:1 payload:v6 error:0];
+  v6 = [(BRCAppTelemetryConverter *)self->_appTelemetryConvertor dictionaryRepresentationFromEvent:event];
+  [(BRCRTCReporter *)self->_rtcReporter postReportWithCategory:category type:1 payload:v6 error:0];
 }
 
-+ (void)_enumerateAggregatedTelemetryForSession:(id)a3 withBlock:(id)a4
++ (void)_enumerateAggregatedTelemetryForSession:(id)session withBlock:(id)block
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v28 = a4;
-  v24 = v5;
-  v6 = [v5 clientDB];
-  v7 = [v6 fetch:{@"SELECT app_telemetry_identifier, zone_mangled_id, item_id, enhanced_drive_privacy_enabled, error_domain, error_code, error_description, underlying_error_domain, underlying_error_code, count FROM aggregated_daily_telemetry"}];
+  sessionCopy = session;
+  blockCopy = block;
+  v24 = sessionCopy;
+  clientDB = [sessionCopy clientDB];
+  v7 = [clientDB fetch:{@"SELECT app_telemetry_identifier, zone_mangled_id, item_id, enhanced_drive_privacy_enabled, error_domain, error_code, error_description, underlying_error_domain, underlying_error_code, count FROM aggregated_daily_telemetry"}];
 
   if ([v7 next])
   {
@@ -2610,7 +2610,7 @@ LABEL_11:
       }
 
       v22 = +[AppTelemetryTimeSeriesEvent newAggregatedEventWithIdentifier:recordID:zoneMangledID:enhancedDrivePrivacyEnabled:error:count:](AppTelemetryTimeSeriesEvent, "newAggregatedEventWithIdentifier:recordID:zoneMangledID:enhancedDrivePrivacyEnabled:error:count:", v9, v11, v33, v32, v20, [v7 longLongAtIndex:9]);
-      v28[2](v28, v22);
+      blockCopy[2](blockCopy, v22);
 
       objc_autoreleasePoolPop(v21);
     }
@@ -2621,28 +2621,28 @@ LABEL_11:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)aggregateReportForAppTelemetryIdentifier:(int)a3 itemID:(id)a4 zoneMangledID:(id)a5 enhancedDrivePrivacyEnabled:(id)a6 error:(id)a7
+- (void)aggregateReportForAppTelemetryIdentifier:(int)identifier itemID:(id)d zoneMangledID:(id)iD enhancedDrivePrivacyEnabled:(id)enabled error:(id)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(BRCAccountSession *)self->_session clientTruthWorkloop];
+  dCopy = d;
+  iDCopy = iD;
+  enabledCopy = enabled;
+  errorCopy = error;
+  clientTruthWorkloop = [(BRCAccountSession *)self->_session clientTruthWorkloop];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __120__BRCAnalyticsReporter_aggregateReportForAppTelemetryIdentifier_itemID_zoneMangledID_enhancedDrivePrivacyEnabled_error___block_invoke;
   v21[3] = &unk_278500248;
   v21[4] = self;
-  v22 = v14;
-  v26 = a3;
-  v23 = v15;
-  v24 = v13;
-  v25 = v12;
-  v17 = v12;
-  v18 = v13;
-  v19 = v15;
-  v20 = v14;
-  dispatch_async(v16, v21);
+  v22 = enabledCopy;
+  identifierCopy = identifier;
+  v23 = errorCopy;
+  v24 = iDCopy;
+  v25 = dCopy;
+  v17 = dCopy;
+  v18 = iDCopy;
+  v19 = errorCopy;
+  v20 = enabledCopy;
+  dispatch_async(clientTruthWorkloop, v21);
 }
 
 void __120__BRCAnalyticsReporter_aggregateReportForAppTelemetryIdentifier_itemID_zoneMangledID_enhancedDrivePrivacyEnabled_error___block_invoke(uint64_t a1)
@@ -2764,19 +2764,19 @@ uint64_t __120__BRCAnalyticsReporter_aggregateReportForAppTelemetryIdentifier_it
 
 - (void)deleteMissingErrorThrottles
 {
-  v2 = [(BRCAccountSession *)self->_session clientDB];
-  [v2 executeWithSlowStatementRadar:@"full scan on TELEMETRY_FAILURE_COUNTS_TABLE" sql:@"DELETE FROM telemetry_failure_counts AS tf WHERE NOT EXISTS (SELECT 1 FROM server_items AS si WHERE si.item_id = tf.item_id AND si.zone_rowid = tf.zone_rowid) AND NOT item_id_is_root(tf.item_id)"];
+  clientDB = [(BRCAccountSession *)self->_session clientDB];
+  [clientDB executeWithSlowStatementRadar:@"full scan on TELEMETRY_FAILURE_COUNTS_TABLE" sql:@"DELETE FROM telemetry_failure_counts AS tf WHERE NOT EXISTS (SELECT 1 FROM server_items AS si WHERE si.item_id = tf.item_id AND si.zone_rowid = tf.zone_rowid) AND NOT item_id_is_root(tf.item_id)"];
 }
 
-- (void)didApplyItemInsideSharedItemID:(id)a3
+- (void)didApplyItemInsideSharedItemID:(id)d
 {
   session = self->_session;
-  v5 = a3;
-  v6 = [(BRCAccountSession *)session clientDB];
-  [v6 assertOnQueue];
+  dCopy = d;
+  clientDB = [(BRCAccountSession *)session clientDB];
+  [clientDB assertOnQueue];
 
-  LODWORD(v6) = [v5 isEqualToItemGlobalID:self->_currentTelemetryItemGlobalID];
-  if (v6)
+  LODWORD(clientDB) = [dCopy isEqualToItemGlobalID:self->_currentTelemetryItemGlobalID];
+  if (clientDB)
   {
     currentTelemetryItemGlobalID = self->_currentTelemetryItemGlobalID;
     self->_currentTelemetryItemGlobalID = 0;
@@ -2786,9 +2786,9 @@ uint64_t __120__BRCAnalyticsReporter_aggregateReportForAppTelemetryIdentifier_it
 + (BOOL)isTelemetryReportingEnabled
 {
   v2 = [BRCUserDefaults defaultsForMangledID:0];
-  v3 = [v2 shouldReportTelemetryEvents];
+  shouldReportTelemetryEvents = [v2 shouldReportTelemetryEvents];
 
-  if (!v3)
+  if (!shouldReportTelemetryEvents)
   {
     return 0;
   }

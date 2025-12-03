@@ -1,9 +1,9 @@
 @interface BSDateTimeCache
 + (id)sharedInstance;
-- (BOOL)isWithinPrevWeek:(double)a3 includeToday:(BOOL)a4;
+- (BOOL)isWithinPrevWeek:(double)week includeToday:(BOOL)today;
 - (BSDateTimeCache)init;
 - (id)description;
-- (void)_resetAndConfigureAndPostNotification:(uint64_t)a1;
+- (void)_resetAndConfigureAndPostNotification:(uint64_t)notification;
 - (void)_resetAndConfigureIfNecessary;
 - (void)dealloc;
 @end
@@ -19,8 +19,8 @@
   if (v2)
   {
     [(BSDateTimeCache *)v2 _resetAndConfigureAndPostNotification:?];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel__resetAndConfigure name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel__resetAndConfigure name:*MEMORY[0x1E695D8F0] object:0];
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v3, _BSHandleSignificantTimeChange, @"SignificantTimeChangeNotification", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
   }
@@ -28,45 +28,45 @@
   return v3;
 }
 
-- (void)_resetAndConfigureAndPostNotification:(uint64_t)a1
+- (void)_resetAndConfigureAndPostNotification:(uint64_t)notification
 {
   v22 = *MEMORY[0x1E69E9840];
-  if (a1 && (*(a1 + 80) & 1) == 0)
+  if (notification && (*(notification + 80) & 1) == 0)
   {
-    *(a1 + 80) = 1;
+    *(notification + 80) = 1;
     v4 = CFCalendarCopyCurrent();
     Current = CFAbsoluteTimeGetCurrent();
     v6 = Current;
     if (v4)
     {
-      *(a1 + 16) = 0;
-      CFCalendarGetTimeRangeOfUnit(v4, 0x10uLL, Current, (a1 + 16), 0);
-      *(a1 + 8) = *(a1 + 16);
-      CFCalendarAddComponents(v4, (a1 + 8), 0, "d", 0xFFFFFFFFLL);
-      *(a1 + 24) = *(a1 + 16);
-      CFCalendarAddComponents(v4, (a1 + 24), 0, "d", 1);
-      *(a1 + 32) = *(a1 + 16);
-      CFCalendarAddComponents(v4, (a1 + 32), 0, "d", 2);
-      *(a1 + 48) = *(a1 + 16);
-      CFCalendarAddComponents(v4, (a1 + 48), 0, "d", 4294967289);
-      *(a1 + 40) = *(a1 + 16);
-      CFCalendarAddComponents(v4, (a1 + 40), 0, "d", 4294967290);
-      *(a1 + 56) = *(a1 + 16);
-      CFCalendarAddComponents(v4, (a1 + 56), 0, "d", 7);
+      *(notification + 16) = 0;
+      CFCalendarGetTimeRangeOfUnit(v4, 0x10uLL, Current, (notification + 16), 0);
+      *(notification + 8) = *(notification + 16);
+      CFCalendarAddComponents(v4, (notification + 8), 0, "d", 0xFFFFFFFFLL);
+      *(notification + 24) = *(notification + 16);
+      CFCalendarAddComponents(v4, (notification + 24), 0, "d", 1);
+      *(notification + 32) = *(notification + 16);
+      CFCalendarAddComponents(v4, (notification + 32), 0, "d", 2);
+      *(notification + 48) = *(notification + 16);
+      CFCalendarAddComponents(v4, (notification + 48), 0, "d", 4294967289);
+      *(notification + 40) = *(notification + 16);
+      CFCalendarAddComponents(v4, (notification + 40), 0, "d", 4294967290);
+      *(notification + 56) = *(notification + 16);
+      CFCalendarAddComponents(v4, (notification + 56), 0, "d", 7);
       if (a2)
       {
-        v7 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v7 postNotificationName:@"BSDateTimeCacheChangedNotification" object:a1];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter postNotificationName:@"BSDateTimeCacheChangedNotification" object:notification];
       }
 
       CFRelease(v4);
-      *(a1 + 72) = v6;
+      *(notification + 72) = v6;
       v8 = BSLogCommon();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
         v9 = objc_opt_class();
-        v10 = *(a1 + 16);
-        v11 = *(a1 + 24);
+        v10 = *(notification + 16);
+        v11 = *(notification + 24);
         *buf = 138544130;
         v15 = v9;
         v16 = 2048;
@@ -94,8 +94,8 @@
       }
     }
 
-    *(a1 + 64) = v6;
-    *(a1 + 80) = 0;
+    *(notification + 64) = v6;
+    *(notification + 80) = 0;
   }
 }
 
@@ -103,8 +103,8 @@
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveObserver(DarwinNotifyCenter, self, @"SignificantTimeChangeNotification", 0);
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v5.receiver = self;
   v5.super_class = BSDateTimeCache;
@@ -132,34 +132,34 @@ void __33__BSDateTimeCache_sharedInstance__block_invoke()
 
 - (void)_resetAndConfigureIfNecessary
 {
-  if (a1)
+  if (self)
   {
     Current = CFAbsoluteTimeGetCurrent();
-    if (a1[2] > Current || a1[3] <= Current)
+    if (self[2] > Current || self[3] <= Current)
     {
 
-      [a1 _resetAndConfigure];
+      [self _resetAndConfigure];
     }
   }
 }
 
-- (BOOL)isWithinPrevWeek:(double)a3 includeToday:(BOOL)a4
+- (BOOL)isWithinPrevWeek:(double)week includeToday:(BOOL)today
 {
-  v4 = a4;
+  todayCopy = today;
   [(BSDateTimeCache *)self _resetAndConfigureIfNecessary];
-  if (v4)
+  if (todayCopy)
   {
-    if (self->_tomorrow > a3)
+    if (self->_tomorrow > week)
     {
       v7 = 40;
-      return *(&self->super.isa + v7) <= a3;
+      return *(&self->super.isa + v7) <= week;
     }
   }
 
-  else if (self->_today > a3)
+  else if (self->_today > week)
   {
     v7 = 48;
-    return *(&self->super.isa + v7) <= a3;
+    return *(&self->super.isa + v7) <= week;
   }
 
   return 0;

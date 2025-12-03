@@ -1,7 +1,7 @@
 @interface AKInheritanceRequestProvider
-- (AKInheritanceRequestProvider)initWithContext:(id)a3 urlBagKey:(id)a4;
-- (BOOL)signRequest:(id)a3 error:(id *)a4;
-- (BOOL)validateResponseData:(id)a3 error:(id *)a4;
+- (AKInheritanceRequestProvider)initWithContext:(id)context urlBagKey:(id)key;
+- (BOOL)signRequest:(id)request error:(id *)error;
+- (BOOL)validateResponseData:(id)data error:(id *)error;
 - (id)_bodyForBeneficiaryAliasEndpoint;
 - (id)_bodyForBeneficiaryEndpoint;
 - (id)authKitBody;
@@ -9,130 +9,130 @@
 
 @implementation AKInheritanceRequestProvider
 
-- (AKInheritanceRequestProvider)initWithContext:(id)a3 urlBagKey:(id)a4
+- (AKInheritanceRequestProvider)initWithContext:(id)context urlBagKey:(id)key
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v4 = v12;
-  v12 = 0;
+  objc_storeStrong(&v10, key);
+  v4 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v4;
   v9.super_class = AKInheritanceRequestProvider;
   v8 = [(AKURLRequestProviderImpl *)&v9 initWithContext:location[0] urlBagKey:v10 shouldCacheResource:0];
-  v12 = v8;
-  objc_storeStrong(&v12, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    [(AKInheritanceRequestProvider *)v12 setInheritanceContext:location[0]];
+    [(AKInheritanceRequestProvider *)selfCopy setInheritanceContext:location[0]];
   }
 
-  v6 = _objc_retain(v12);
+  v6 = _objc_retain(selfCopy);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
 - (id)authKitBody
 {
-  v5 = [(AKURLRequestProviderImpl *)self urlBagKey];
+  urlBagKey = [(AKURLRequestProviderImpl *)self urlBagKey];
   v9 = 0;
   v7 = 0;
   v6 = 1;
-  if (![(NSString *)v5 isEqualToString:AKURLBagKeyInheritanceSetupBeneficiaryKey])
+  if (![(NSString *)urlBagKey isEqualToString:AKURLBagKeyInheritanceSetupBeneficiaryKey])
   {
-    v10 = [(AKURLRequestProviderImpl *)self urlBagKey];
+    urlBagKey2 = [(AKURLRequestProviderImpl *)self urlBagKey];
     v9 = 1;
     v6 = 1;
-    if (![(NSString *)v10 isEqualToString:AKURLBagKeyInheritanceUpdateBeneficiaryKey])
+    if (![(NSString *)urlBagKey2 isEqualToString:AKURLBagKeyInheritanceUpdateBeneficiaryKey])
     {
-      v8 = [(AKURLRequestProviderImpl *)self urlBagKey];
+      urlBagKey3 = [(AKURLRequestProviderImpl *)self urlBagKey];
       v7 = 1;
-      v6 = [(NSString *)v8 isEqualToString:AKURLBagKeyInheritanceRemoveBeneficiaryKey];
+      v6 = [(NSString *)urlBagKey3 isEqualToString:AKURLBagKeyInheritanceRemoveBeneficiaryKey];
     }
   }
 
   if (v7)
   {
-    _objc_release(v8);
+    _objc_release(urlBagKey3);
   }
 
   if (v9)
   {
-    _objc_release(v10);
+    _objc_release(urlBagKey2);
   }
 
-  _objc_release(v5);
+  _objc_release(urlBagKey);
   if (v6)
   {
-    v12 = [(AKInheritanceRequestProvider *)self _bodyForBeneficiaryEndpoint];
+    _bodyForBeneficiaryEndpoint = [(AKInheritanceRequestProvider *)self _bodyForBeneficiaryEndpoint];
   }
 
   else
   {
-    v3 = [(AKURLRequestProviderImpl *)self urlBagKey];
-    v4 = [(NSString *)v3 isEqualToString:AKURLBagKeyInheritanceSetupBeneficiaryAliasKey];
-    _objc_release(v3);
+    urlBagKey4 = [(AKURLRequestProviderImpl *)self urlBagKey];
+    v4 = [(NSString *)urlBagKey4 isEqualToString:AKURLBagKeyInheritanceSetupBeneficiaryAliasKey];
+    _objc_release(urlBagKey4);
     if (v4)
     {
-      v12 = [(AKInheritanceRequestProvider *)self _bodyForBeneficiaryAliasEndpoint];
+      _bodyForBeneficiaryEndpoint = [(AKInheritanceRequestProvider *)self _bodyForBeneficiaryAliasEndpoint];
     }
 
     else
     {
-      v12 = 0;
+      _bodyForBeneficiaryEndpoint = 0;
     }
   }
 
-  return v12;
+  return _bodyForBeneficiaryEndpoint;
 }
 
-- (BOOL)signRequest:(id)a3 error:(id *)a4
+- (BOOL)signRequest:(id)request error:(id *)error
 {
-  v28 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v26 = a4;
+  objc_storeStrong(location, request);
+  errorCopy = error;
   v11 = [AKDServerUIController alloc];
-  v12 = [(AKURLRequestProviderImpl *)v28 client];
+  client = [(AKURLRequestProviderImpl *)selfCopy client];
   v25 = [(AKDServerUIController *)v11 initWithClient:?];
-  _objc_release(v12);
+  _objc_release(client);
   v13 = [AKAppleIDAuthenticationContext alloc];
-  v14 = [(AKInheritanceRequestProvider *)v28 inheritanceContext];
+  inheritanceContext = [(AKInheritanceRequestProvider *)selfCopy inheritanceContext];
   v24 = [v13 initWithAuthenticatedServerRequestContext:?];
-  _objc_release(v14);
-  [v24 set_shouldSendIdentityTokenForRemoteUI:{-[AKInheritanceRequestProvider signWithIdentityToken](v28, "signWithIdentityToken")}];
+  _objc_release(inheritanceContext);
+  [v24 set_shouldSendIdentityTokenForRemoteUI:{-[AKInheritanceRequestProvider signWithIdentityToken](selfCopy, "signWithIdentityToken")}];
   [v24 set_shouldSendGrandSlamTokensForRemoteUI:1];
   v23 = [v25 resourceLoadDelegateWithContext:v24];
-  v15 = [(AKURLRequestProviderImpl *)v28 urlBagKey];
+  urlBagKey = [(AKURLRequestProviderImpl *)selfCopy urlBagKey];
   [v23 setInitialURLRequestKey:?];
-  _objc_release(v15);
-  v16 = [(AKURLRequestProviderImpl *)v28 urlBagKey];
+  _objc_release(urlBagKey);
+  urlBagKey2 = [(AKURLRequestProviderImpl *)selfCopy urlBagKey];
   [v23 setBagUrlKey:?];
-  _objc_release(v16);
-  v17 = [(AKURLRequestProviderImpl *)v28 dataCenterIdentifier];
+  _objc_release(urlBagKey2);
+  dataCenterIdentifier = [(AKURLRequestProviderImpl *)selfCopy dataCenterIdentifier];
   [v23 setDataCenterIdentifier:?];
-  _objc_release(v17);
-  v19 = [(AKInheritanceRequestProvider *)v28 inheritanceContext];
-  v18 = [(AKInheritanceContext *)v19 beneficiarySetupToken];
+  _objc_release(dataCenterIdentifier);
+  inheritanceContext2 = [(AKInheritanceRequestProvider *)selfCopy inheritanceContext];
+  beneficiarySetupToken = [(AKInheritanceContext *)inheritanceContext2 beneficiarySetupToken];
   [v23 setServiceToken:?];
-  _objc_release(v18);
-  _objc_release(v19);
-  v20 = [(AKURLRequestProviderImpl *)v28 urlBagKey];
-  v21 = [(NSString *)v20 isEqualToString:AKURLBagKeyInheritanceSetupBeneficiaryAliasKey];
-  _objc_release(v20);
+  _objc_release(beneficiarySetupToken);
+  _objc_release(inheritanceContext2);
+  urlBagKey3 = [(AKURLRequestProviderImpl *)selfCopy urlBagKey];
+  v21 = [(NSString *)urlBagKey3 isEqualToString:AKURLBagKeyInheritanceSetupBeneficiaryAliasKey];
+  _objc_release(urlBagKey3);
   if (v21)
   {
     [v23 setServiceToken:0];
   }
 
-  v9 = [v23 heartbeatToken];
-  _objc_release(v9);
-  if (v9)
+  heartbeatToken = [v23 heartbeatToken];
+  _objc_release(heartbeatToken);
+  if (heartbeatToken)
   {
     [v23 signRequestWithCommonHeaders:location[0]];
     v29 = 1;
@@ -143,20 +143,20 @@
     v22 = _AKLogSystem();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(AKInheritanceRequestProvider *)v28 inheritanceContext];
-      v7 = [(AKInheritanceContext *)v8 altDSID];
-      sub_1000194D4(v30, v7);
+      inheritanceContext3 = [(AKInheritanceRequestProvider *)selfCopy inheritanceContext];
+      altDSID = [(AKInheritanceContext *)inheritanceContext3 altDSID];
+      sub_1000194D4(v30, altDSID);
       _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Could not find heartbeat token for account %@", v30, 0xCu);
-      _objc_release(v7);
-      _objc_release(v8);
+      _objc_release(altDSID);
+      _objc_release(inheritanceContext3);
     }
 
     objc_storeStrong(&v22, 0);
-    if (v26)
+    if (errorCopy)
     {
       v6 = [NSError ak_errorWithCode:-7042];
       v4 = v6;
-      *v26 = v6;
+      *errorCopy = v6;
     }
 
     v29 = 0;
@@ -171,59 +171,59 @@
 
 - (id)_bodyForBeneficiaryEndpoint
 {
-  v23 = self;
+  selfCopy = self;
   v22[1] = a2;
   v22[0] = +[NSMutableDictionary dictionary];
-  v19 = [(AKInheritanceRequestProvider *)v23 inheritanceContext];
-  v20 = [(AKInheritanceContext *)v19 beneficiaryIdentifier];
-  _objc_release(v20);
-  _objc_release(v19);
-  if (v20)
+  inheritanceContext = [(AKInheritanceRequestProvider *)selfCopy inheritanceContext];
+  beneficiaryIdentifier = [(AKInheritanceContext *)inheritanceContext beneficiaryIdentifier];
+  _objc_release(beneficiaryIdentifier);
+  _objc_release(inheritanceContext);
+  if (beneficiaryIdentifier)
   {
-    v18 = [(AKInheritanceRequestProvider *)v23 inheritanceContext];
-    v17 = [(AKInheritanceContext *)v18 beneficiaryIdentifier];
+    inheritanceContext2 = [(AKInheritanceRequestProvider *)selfCopy inheritanceContext];
+    beneficiaryIdentifier2 = [(AKInheritanceContext *)inheritanceContext2 beneficiaryIdentifier];
     [v22[0] setObject:? forKeyedSubscript:?];
-    _objc_release(v17);
-    _objc_release(v18);
+    _objc_release(beneficiaryIdentifier2);
+    _objc_release(inheritanceContext2);
   }
 
-  v15 = [(AKInheritanceRequestProvider *)v23 inheritanceContext];
-  v16 = [(AKInheritanceContext *)v15 accessKey];
-  _objc_release(v16);
-  _objc_release(v15);
-  if (v16)
+  inheritanceContext3 = [(AKInheritanceRequestProvider *)selfCopy inheritanceContext];
+  accessKey = [(AKInheritanceContext *)inheritanceContext3 accessKey];
+  _objc_release(accessKey);
+  _objc_release(inheritanceContext3);
+  if (accessKey)
   {
-    v11 = [(AKInheritanceRequestProvider *)v23 inheritanceContext];
-    v10 = [(AKInheritanceContext *)v11 accessKey];
-    v9 = [v10 claimTokenString];
+    inheritanceContext4 = [(AKInheritanceRequestProvider *)selfCopy inheritanceContext];
+    accessKey2 = [(AKInheritanceContext *)inheritanceContext4 accessKey];
+    claimTokenString = [accessKey2 claimTokenString];
     [v22[0] setObject:? forKeyedSubscript:?];
-    _objc_release(v9);
-    _objc_release(v10);
-    _objc_release(v11);
-    v14 = [(AKInheritanceRequestProvider *)v23 inheritanceContext];
-    v13 = [(AKInheritanceContext *)v14 accessKey];
-    v12 = [v13 wrappedKeyData];
-    v21 = [v12 base64EncodedStringWithOptions:0];
-    _objc_release(v12);
-    _objc_release(v13);
-    _objc_release(v14);
+    _objc_release(claimTokenString);
+    _objc_release(accessKey2);
+    _objc_release(inheritanceContext4);
+    inheritanceContext5 = [(AKInheritanceRequestProvider *)selfCopy inheritanceContext];
+    accessKey3 = [(AKInheritanceContext *)inheritanceContext5 accessKey];
+    wrappedKeyData = [accessKey3 wrappedKeyData];
+    v21 = [wrappedKeyData base64EncodedStringWithOptions:0];
+    _objc_release(wrappedKeyData);
+    _objc_release(accessKey3);
+    _objc_release(inheritanceContext5);
     [v22[0] setObject:v21 forKeyedSubscript:@"beneficiaryWrappedKey"];
     objc_storeStrong(&v21, 0);
   }
 
-  v7 = [(AKInheritanceRequestProvider *)v23 inheritanceContext];
-  v8 = [(AKInheritanceContext *)v7 manifest];
-  _objc_release(v8);
-  _objc_release(v7);
-  if (v8)
+  inheritanceContext6 = [(AKInheritanceRequestProvider *)selfCopy inheritanceContext];
+  manifest = [(AKInheritanceContext *)inheritanceContext6 manifest];
+  _objc_release(manifest);
+  _objc_release(inheritanceContext6);
+  if (manifest)
   {
-    v6 = [(AKInheritanceRequestProvider *)v23 inheritanceContext];
-    v5 = [(AKInheritanceContext *)v6 manifest];
-    v4 = [v5 parsableRepresentation];
+    inheritanceContext7 = [(AKInheritanceRequestProvider *)selfCopy inheritanceContext];
+    manifest2 = [(AKInheritanceContext *)inheritanceContext7 manifest];
+    parsableRepresentation = [manifest2 parsableRepresentation];
     [v22[0] setObject:? forKeyedSubscript:?];
-    _objc_release(v4);
-    _objc_release(v5);
-    _objc_release(v6);
+    _objc_release(parsableRepresentation);
+    _objc_release(manifest2);
+    _objc_release(inheritanceContext7);
   }
 
   v3 = _objc_retain(v22[0]);
@@ -234,52 +234,52 @@
 
 - (id)_bodyForBeneficiaryAliasEndpoint
 {
-  v18 = self;
+  selfCopy = self;
   v17[1] = a2;
   v17[0] = +[NSMutableDictionary dictionary];
-  v13 = [(AKInheritanceRequestProvider *)v18 inheritanceContext];
+  inheritanceContext = [(AKInheritanceRequestProvider *)selfCopy inheritanceContext];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  _objc_release(v13);
+  _objc_release(inheritanceContext);
   if (isKindOfClass)
   {
-    location = [(AKInheritanceRequestProvider *)v18 inheritanceContext];
-    v12 = [location accessKeyString];
-    _objc_release(v12);
-    if (v12)
+    location = [(AKInheritanceRequestProvider *)selfCopy inheritanceContext];
+    accessKeyString = [location accessKeyString];
+    _objc_release(accessKeyString);
+    if (accessKeyString)
     {
-      v11 = [location accessKeyString];
-      v10 = [v11 uppercaseString];
+      accessKeyString2 = [location accessKeyString];
+      uppercaseString = [accessKeyString2 uppercaseString];
       [v17[0] setObject:? forKeyedSubscript:?];
-      _objc_release(v10);
-      _objc_release(v11);
+      _objc_release(uppercaseString);
+      _objc_release(accessKeyString2);
     }
 
-    v9 = [location beneficiaryPassword];
-    _objc_release(v9);
-    if (v9)
+    beneficiaryPassword = [location beneficiaryPassword];
+    _objc_release(beneficiaryPassword);
+    if (beneficiaryPassword)
     {
-      v8 = [location beneficiaryPassword];
+      beneficiaryPassword2 = [location beneficiaryPassword];
       [v17[0] setObject:? forKeyedSubscript:?];
-      _objc_release(v8);
+      _objc_release(beneficiaryPassword2);
     }
 
-    v7 = [location beneficiaryFirstName];
-    _objc_release(v7);
-    if (v7)
+    beneficiaryFirstName = [location beneficiaryFirstName];
+    _objc_release(beneficiaryFirstName);
+    if (beneficiaryFirstName)
     {
-      v6 = [location beneficiaryFirstName];
+      beneficiaryFirstName2 = [location beneficiaryFirstName];
       [v17[0] setObject:? forKeyedSubscript:?];
-      _objc_release(v6);
+      _objc_release(beneficiaryFirstName2);
     }
 
-    v5 = [location beneficiaryLastName];
-    _objc_release(v5);
-    if (v5)
+    beneficiaryLastName = [location beneficiaryLastName];
+    _objc_release(beneficiaryLastName);
+    if (beneficiaryLastName)
     {
-      v4 = [location beneficiaryLastName];
+      beneficiaryLastName2 = [location beneficiaryLastName];
       [v17[0] setObject:? forKeyedSubscript:?];
-      _objc_release(v4);
+      _objc_release(beneficiaryLastName2);
     }
 
     v19 = _objc_retain(v17[0]);
@@ -299,16 +299,16 @@
   return v2;
 }
 
-- (BOOL)validateResponseData:(id)a3 error:(id *)a4
+- (BOOL)validateResponseData:(id)data error:(id *)error
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v17 = a4;
-  v15.receiver = v19;
+  objc_storeStrong(location, data);
+  errorCopy = error;
+  v15.receiver = selfCopy;
   v15.super_class = AKInheritanceRequestProvider;
-  v16 = [(AKURLRequestProviderImpl *)&v15 validateResponseData:location[0] error:a4];
+  v16 = [(AKURLRequestProviderImpl *)&v15 validateResponseData:location[0] error:error];
   if ((v16 & 1) == 1)
   {
     v14 = [AAFSerialization dictionaryFromObject:location[0] ofType:@"application/json"];
@@ -335,7 +335,7 @@
         _objc_release(v7);
         v8 = [NSError ak_errorWithCode:-7010 userInfo:v10];
         v4 = v8;
-        *v17 = v8;
+        *errorCopy = v8;
         v16 = 0;
         objc_storeStrong(&v10, 0);
       }

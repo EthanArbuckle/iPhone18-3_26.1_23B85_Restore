@@ -5,9 +5,9 @@
 - (tvec3<float>)spineDirectionBias;
 - (void)debug_dumpGeometryBounds;
 - (void)generateArrays;
-- (void)setCrossSection:(const void *)a3;
-- (void)setScale:(const void *)a3;
-- (void)setSpine:(const void *)a3;
+- (void)setCrossSection:(const void *)section;
+- (void)setScale:(const void *)scale;
+- (void)setSpine:(const void *)spine;
 @end
 
 @implementation TSCH3DExtrusionGeometry
@@ -34,30 +34,30 @@
   return result;
 }
 
-- (void)setCrossSection:(const void *)a3
+- (void)setCrossSection:(const void *)section
 {
   p_crossSection = &self->_crossSection;
-  if (p_crossSection != a3)
+  if (p_crossSection != section)
   {
-    sub_2761ED484(p_crossSection, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 3);
+    sub_2761ED484(p_crossSection, *section, *(section + 1), (*(section + 1) - *section) >> 3);
   }
 }
 
-- (void)setSpine:(const void *)a3
+- (void)setSpine:(const void *)spine
 {
   p_spine = &self->_spine;
-  if (p_spine != a3)
+  if (p_spine != spine)
   {
-    sub_2761ED280(p_spine, *a3, *(a3 + 1), 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 2));
+    sub_2761ED280(p_spine, *spine, *(spine + 1), 0xAAAAAAAAAAAAAAABLL * ((*(spine + 1) - *spine) >> 2));
   }
 }
 
-- (void)setScale:(const void *)a3
+- (void)setScale:(const void *)scale
 {
   p_scale = &self->_scale;
-  if (p_scale != a3)
+  if (p_scale != scale)
   {
-    sub_2761ED484(p_scale, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 3);
+    sub_2761ED484(p_scale, *scale, *(scale + 1), (*(scale + 1) - *scale) >> 3);
   }
 }
 
@@ -194,7 +194,7 @@
   sub_2761F27A8(v257, v10 * v8);
   v36 = v257[0];
   v214 = v7;
-  v225 = self;
+  selfCopy = self;
   v231 = v10;
   v220 = 0xAAAAAAAAAAAAAAABLL * (v7 >> 2);
   v238 = v257[0];
@@ -399,7 +399,7 @@
   }
 
   v86 = 3 * v10 - 9;
-  if (v225->_beginCap)
+  if (selfCopy->_beginCap)
   {
     v87 = 3 * v10 - 9;
   }
@@ -409,28 +409,28 @@
     v87 = 0;
   }
 
-  if (!v225->_endCap)
+  if (!selfCopy->_endCap)
   {
     v86 = 0;
   }
 
   v88 = v87 + 6 * v243 * v216 + v86;
-  objc_msgSend_allocateArrays_(v225, v32, v33, v34, v35, v88);
+  objc_msgSend_allocateArrays_(selfCopy, v32, v33, v34, v35, v88);
   v202 = v243 * v216;
-  v233 = objc_msgSend_vertexArrayPointer(v225, v89, v90, v91, v92);
-  v97 = objc_msgSend_normalArrayPointer(v225, v93, v94, v95, v96);
+  v233 = objc_msgSend_vertexArrayPointer(selfCopy, v89, v90, v91, v92);
+  v97 = objc_msgSend_normalArrayPointer(selfCopy, v93, v94, v95, v96);
   v258 = 0;
   v102 = &OBJC_IVAR___TSCH3DLabelResource__labelRenderOffset;
   v236 = v97;
-  if (!v225->_beginCap)
+  if (!selfCopy->_beginCap)
   {
-    v225->_beginCapCount = 0;
-    v225->_beginCapOffset = 0;
+    selfCopy->_beginCapCount = 0;
+    selfCopy->_beginCapOffset = 0;
     LODWORD(v205) = 152;
     goto LABEL_128;
   }
 
-  v225->_beginCapOffset = 0;
+  selfCopy->_beginCapOffset = 0;
   v99 = *v226;
   LODWORD(v100) = *(v226 + 8);
   v103 = (v226 + 20);
@@ -472,7 +472,7 @@ LABEL_119:
   if (v10 < 4)
   {
     v114 = 0;
-    v113 = v225;
+    v113 = selfCopy;
   }
 
   else
@@ -486,8 +486,8 @@ LABEL_119:
     }
 
     while (!v20);
-    v113 = v225;
-    v114 = v258 - v225->_beginCapOffset;
+    v113 = selfCopy;
+    v114 = v258 - selfCopy->_beginCapOffset;
     v102 = &OBJC_IVAR___TSCH3DLabelResource__labelRenderOffset;
   }
 
@@ -534,11 +534,11 @@ LABEL_128:
     while (v117 != v223);
   }
 
-  v121 = v225;
-  if (!v225->_endCap)
+  v121 = selfCopy;
+  if (!selfCopy->_endCap)
   {
-    v225->_endCapCount = 0;
-    v225->_endCapOffset = 0;
+    selfCopy->_endCapCount = 0;
+    selfCopy->_endCapOffset = 0;
     v133 = v258;
     v124 = v216;
     v126 = v236;
@@ -546,7 +546,7 @@ LABEL_128:
   }
 
   endCapOffset = v258;
-  v225->_endCapOffset = v258;
+  selfCopy->_endCapOffset = v258;
   v99 = *v212;
   *&v100 = v212[2];
   v123 = (v226 + 12 * v220 - 24);
@@ -602,8 +602,8 @@ LABEL_145:
     }
 
     v133 = v258;
-    v121 = v225;
-    endCapOffset = v225->_endCapOffset;
+    v121 = selfCopy;
+    endCapOffset = selfCopy->_endCapOffset;
   }
 
   v121->_endCapCount = v133 - endCapOffset;
@@ -618,13 +618,13 @@ LABEL_151:
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v146, v147, v148, v149);
   }
 
-  crossSectionCreaseAngle = v225->_crossSectionCreaseAngle;
-  spineCreaseAngle = v225->_spineCreaseAngle;
+  crossSectionCreaseAngle = selfCopy->_crossSectionCreaseAngle;
+  spineCreaseAngle = selfCopy->_spineCreaseAngle;
   if (crossSectionCreaseAngle > 0.0 || spineCreaseAngle > 0.0)
   {
     v152 = cosf(fmaxf(fminf(spineCreaseAngle, 3.1416), 0.0));
     v153 = cosf(fmaxf(fminf(crossSectionCreaseAngle, 3.1416), 0.0));
-    v154 = *(&v225->super.super.isa + v205);
+    v154 = *(&selfCopy->super.super.isa + v205);
     sub_2761F27A8(__src, 6 * v243 * v216);
     v157 = (v126 + 12 * v154);
     if (v214 >= 13)
@@ -771,15 +771,15 @@ LABEL_151:
             }
 
             v197 = v229 + 12 * v159;
-            sub_2761F1FF4(v246[0].f32, v171, v176, v177, &v225->_normalBias.var0.var0, &v244, v152, v153);
+            sub_2761F1FF4(v246[0].f32, v171, v176, v177, &selfCopy->_normalBias.var0.var0, &v244, v152, v153);
             v227 = v244;
             *v197 = v244;
             v230 = v245;
             *(v197 + 8) = v245;
-            sub_2761F1FF4(v246[0].f32, v170, v176, v234, &v225->_normalBias.var0.var0, &v244, v152, v153);
+            sub_2761F1FF4(v246[0].f32, v170, v176, v234, &selfCopy->_normalBias.var0.var0, &v244, v152, v153);
             *(v197 + 12) = v244;
             *(v197 + 20) = v245;
-            sub_2761F1FF4(v246[0].f32, v170, v242, v237, &v225->_normalBias.var0.var0, &v244, v152, v153);
+            sub_2761F1FF4(v246[0].f32, v170, v242, v237, &selfCopy->_normalBias.var0.var0, &v244, v152, v153);
             *&v198 = v244;
             LODWORD(v199) = vdup_lane_s32(v227, 1).u32[0];
             DWORD1(v199) = v230;
@@ -788,7 +788,7 @@ LABEL_151:
             *(v197 + 24) = v198;
             *(v197 + 40) = v199;
             *(v197 + 56) = DWORD2(v198);
-            sub_2761F1FF4(v246[0].f32, v171, v242, v239, &v225->_normalBias.var0.var0, &v244, v152, v153);
+            sub_2761F1FF4(v246[0].f32, v171, v242, v239, &selfCopy->_normalBias.var0.var0, &v244, v152, v153);
             *(v197 + 60) = v244;
             *(v197 + 68) = v245;
             v159 += 6;

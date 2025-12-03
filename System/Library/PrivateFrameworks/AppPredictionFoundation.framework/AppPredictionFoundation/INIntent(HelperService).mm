@@ -23,7 +23,7 @@
   if (shouldDenyConnectionForCurrentProcess())
   {
 
-    return [a1 _indexingHash];
+    return [self _indexingHash];
   }
 
   else
@@ -37,16 +37,16 @@
     v8[1] = 3221225472;
     v8[2] = __43__INIntent_HelperService__atx_indexingHash__block_invoke;
     v8[3] = &unk_27858FDB8;
-    v8[4] = a1;
+    v8[4] = self;
     v8[5] = &v9;
     v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v8];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __43__INIntent_HelperService__atx_indexingHash__block_invoke_12;
     v7[3] = &unk_27858FE08;
-    v7[4] = a1;
+    v7[4] = self;
     v7[5] = &v9;
-    [v4 indexingHashForIntent:a1 withReply:v7];
+    [v4 indexingHashForIntent:self withReply:v7];
 
     [v3 invalidate];
     v5 = __atxlog_handle_intents_helper();
@@ -66,7 +66,7 @@
 {
   if (shouldDenyConnectionForCurrentProcess())
   {
-    v2 = [a1 _subtitle];
+    _subtitle = [self _subtitle];
   }
 
   else
@@ -82,16 +82,16 @@
     v8[1] = 3221225472;
     v8[2] = __64__INIntent_HelperService__atx_subtitleWithEfficientLocalization__block_invoke;
     v8[3] = &unk_27858FDB8;
-    v8[4] = a1;
+    v8[4] = self;
     v8[5] = &v9;
     v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v8];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __64__INIntent_HelperService__atx_subtitleWithEfficientLocalization__block_invoke_11;
     v7[3] = &unk_27858FDE0;
-    v7[4] = a1;
+    v7[4] = self;
     v7[5] = &v9;
-    [v4 subtitleForIntent:a1 withReply:v7];
+    [v4 subtitleForIntent:self withReply:v7];
 
     [v3 invalidate];
     v5 = __atxlog_handle_intents_helper();
@@ -100,17 +100,17 @@
       [(INIntent(HelperService) *)v10 atx_subtitleWithEfficientLocalization];
     }
 
-    v2 = *(v10[0] + 40);
+    _subtitle = *(v10[0] + 40);
     _Block_object_dispose(&v9, 8);
   }
 
-  return v2;
+  return _subtitle;
 }
 
 - (uint64_t)atx_titleLengthWithoutLocalizing
 {
-  v1 = [a1 atx_titleWithoutLocalizing];
-  v2 = [v1 length];
+  atx_titleWithoutLocalizing = [self atx_titleWithoutLocalizing];
+  v2 = [atx_titleWithoutLocalizing length];
 
   return v2;
 }
@@ -119,7 +119,7 @@
 {
   if (shouldDenyConnectionForCurrentProcess())
   {
-    v2 = [a1 _titleWithLocalizer:0 fromBundleURL:0];
+    v2 = [self _titleWithLocalizer:0 fromBundleURL:0];
     v3 = v2;
     v4 = &stru_28397E650;
     if (v2)
@@ -143,16 +143,16 @@
     v10[1] = 3221225472;
     v10[2] = __53__INIntent_HelperService__atx_titleWithoutLocalizing__block_invoke;
     v10[3] = &unk_27858FDB8;
-    v10[4] = a1;
+    v10[4] = self;
     v10[5] = &v11;
     v6 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v10];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __53__INIntent_HelperService__atx_titleWithoutLocalizing__block_invoke_8;
     v9[3] = &unk_27858FDE0;
-    v9[4] = a1;
+    v9[4] = self;
     v9[5] = &v11;
-    [v6 titleForIntentNoLocalization:a1 withReply:v9];
+    [v6 titleForIntentNoLocalization:self withReply:v9];
 
     [v3 invalidate];
     v7 = __atxlog_handle_intents_helper();
@@ -172,7 +172,7 @@
 {
   if (shouldDenyConnectionForCurrentProcess())
   {
-    v2 = [a1 _title];
+    _title = [self _title];
   }
 
   else
@@ -188,16 +188,16 @@
     v8[1] = 3221225472;
     v8[2] = __61__INIntent_HelperService__atx_titleWithEfficientLocalization__block_invoke;
     v8[3] = &unk_27858FDB8;
-    v8[4] = a1;
+    v8[4] = self;
     v8[5] = &v9;
     v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v8];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __61__INIntent_HelperService__atx_titleWithEfficientLocalization__block_invoke_10;
     v7[3] = &unk_27858FDE0;
-    v7[4] = a1;
+    v7[4] = self;
     v7[5] = &v9;
-    [v4 titleForIntent:a1 withReply:v7];
+    [v4 titleForIntent:self withReply:v7];
 
     [v3 invalidate];
     v5 = __atxlog_handle_intents_helper();
@@ -206,24 +206,24 @@
       [(INIntent(HelperService) *)v10 atx_titleWithEfficientLocalization];
     }
 
-    v2 = *(v10[0] + 40);
+    _title = *(v10[0] + 40);
     _Block_object_dispose(&v9, 8);
   }
 
-  return v2;
+  return _title;
 }
 
 - (uint64_t)atx_isEligibleForWidgets
 {
   if (shouldDenyConnectionForCurrentProcess())
   {
-    v2 = [a1 _codableDescription];
-    v3 = [v2 isEligibleForWidgets];
+    _codableDescription = [self _codableDescription];
+    isEligibleForWidgets = [_codableDescription isEligibleForWidgets];
   }
 
   else
   {
-    v2 = prepareXPCConnection();
+    _codableDescription = prepareXPCConnection();
     v9 = 0;
     v10[0] = &v9;
     v10[1] = 0x2020000000;
@@ -232,29 +232,29 @@
     v8[1] = 3221225472;
     v8[2] = __51__INIntent_HelperService__atx_isEligibleForWidgets__block_invoke;
     v8[3] = &unk_27858FDB8;
-    v8[4] = a1;
+    v8[4] = self;
     v8[5] = &v9;
-    v4 = [v2 synchronousRemoteObjectProxyWithErrorHandler:v8];
+    v4 = [_codableDescription synchronousRemoteObjectProxyWithErrorHandler:v8];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __51__INIntent_HelperService__atx_isEligibleForWidgets__block_invoke_14;
     v7[3] = &unk_27858FE30;
-    v7[4] = a1;
+    v7[4] = self;
     v7[5] = &v9;
-    [v4 eligibleForWidgetsForIntent:a1 withReply:v7];
+    [v4 eligibleForWidgetsForIntent:self withReply:v7];
 
-    [v2 invalidate];
+    [_codableDescription invalidate];
     v5 = __atxlog_handle_intents_helper();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       [(INIntent(HelperService) *)v10 atx_isEligibleForWidgets];
     }
 
-    v3 = *(v10[0] + 24);
+    isEligibleForWidgets = *(v10[0] + 24);
     _Block_object_dispose(&v9, 8);
   }
 
-  return v3;
+  return isEligibleForWidgets;
 }
 
 - (uint64_t)atx_supportsBackgroundExecution
@@ -262,7 +262,7 @@
   if (shouldDenyConnectionForCurrentProcess())
   {
 
-    return [a1 _supportsBackgroundExecution];
+    return [self _supportsBackgroundExecution];
   }
 
   else
@@ -276,16 +276,16 @@
     v8[1] = 3221225472;
     v8[2] = __58__INIntent_HelperService__atx_supportsBackgroundExecution__block_invoke;
     v8[3] = &unk_27858FDB8;
-    v8[4] = a1;
+    v8[4] = self;
     v8[5] = &v9;
     v4 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v8];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __58__INIntent_HelperService__atx_supportsBackgroundExecution__block_invoke_16;
     v7[3] = &unk_27858FE30;
-    v7[4] = a1;
+    v7[4] = self;
     v7[5] = &v9;
-    [v4 supportsBackgroundExecutionForIntent:a1 withReply:v7];
+    [v4 supportsBackgroundExecutionForIntent:self withReply:v7];
 
     [v3 invalidate];
     v5 = __atxlog_handle_intents_helper();
@@ -394,7 +394,7 @@
 
 - (void)atx_titleWithoutLocalizing
 {
-  OUTLINED_FUNCTION_2_0(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_2_0(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_4_0();
   OUTLINED_FUNCTION_3_0(&dword_226368000, v1, v2, "atx_titleWithoutLocalizing returning: %@", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x277D85DE8];
@@ -402,7 +402,7 @@
 
 - (void)atx_titleWithEfficientLocalization
 {
-  OUTLINED_FUNCTION_2_0(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_2_0(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_4_0();
   OUTLINED_FUNCTION_3_0(&dword_226368000, v1, v2, "atx_titleWithEfficientLocalization returning: %@", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x277D85DE8];
@@ -410,7 +410,7 @@
 
 - (void)atx_subtitleWithEfficientLocalization
 {
-  OUTLINED_FUNCTION_2_0(a1, *MEMORY[0x277D85DE8]);
+  OUTLINED_FUNCTION_2_0(self, *MEMORY[0x277D85DE8]);
   OUTLINED_FUNCTION_4_0();
   OUTLINED_FUNCTION_3_0(&dword_226368000, v1, v2, "atx_subtitleWithEfficientLocalization returning: %@", v3, v4, v5, v6, v8);
   v7 = *MEMORY[0x277D85DE8];
@@ -419,7 +419,7 @@
 - (void)atx_indexingHash
 {
   v10 = *MEMORY[0x277D85DE8];
-  v1 = *(*a1 + 24);
+  v1 = *(*self + 24);
   OUTLINED_FUNCTION_4_0();
   OUTLINED_FUNCTION_3_0(&dword_226368000, v2, v3, "atx_indexingHash returning: %lld", v4, v5, v6, v7, v9);
   v8 = *MEMORY[0x277D85DE8];
@@ -428,7 +428,7 @@
 - (void)atx_isEligibleForWidgets
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = *(*a1 + 24);
+  v2 = *(*self + 24);
   v4[0] = 67109120;
   v4[1] = v2;
   _os_log_debug_impl(&dword_226368000, a2, OS_LOG_TYPE_DEBUG, "atx_isEligibleForWidgets returning: %u", v4, 8u);
@@ -438,7 +438,7 @@
 - (void)atx_supportsBackgroundExecution
 {
   v5 = *MEMORY[0x277D85DE8];
-  v2 = *(*a1 + 24);
+  v2 = *(*self + 24);
   v4[0] = 67109120;
   v4[1] = v2;
   _os_log_debug_impl(&dword_226368000, a2, OS_LOG_TYPE_DEBUG, "atx_supportsBackgroundExecution returning: %u", v4, 8u);

@@ -1,39 +1,39 @@
 @interface CSScrollModifier
-- (CGPoint)scrollView:(id)a3 adjustedOffsetForOffset:(CGPoint)a4 translation:(CGPoint)a5 startPoint:(CGPoint)a6 locationInView:(CGPoint)a7 horizontalVelocity:(double *)a8 verticalVelocity:(double *)a9;
-- (CSScrollModifier)initWithView:(id)a3;
-- (double)_horizontalProgressSubtractionFromVertical:(CGPoint)a3;
-- (void)_loadFromSettings:(id)a3;
+- (CGPoint)scrollView:(id)view adjustedOffsetForOffset:(CGPoint)offset translation:(CGPoint)translation startPoint:(CGPoint)point locationInView:(CGPoint)inView horizontalVelocity:(double *)velocity verticalVelocity:(double *)verticalVelocity;
+- (CSScrollModifier)initWithView:(id)view;
+- (double)_horizontalProgressSubtractionFromVertical:(CGPoint)vertical;
+- (void)_loadFromSettings:(id)settings;
 - (void)_updateScrollParameters;
 - (void)dealloc;
 - (void)reset;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setAccumulatedDragThresholdPercentage:(double)a3;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setAccumulatedDragThresholdPercentage:(double)percentage;
 @end
 
 @implementation CSScrollModifier
 
-- (CSScrollModifier)initWithView:(id)a3
+- (CSScrollModifier)initWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v11.receiver = self;
   v11.super_class = CSScrollModifier;
   v5 = [(CSScrollModifier *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    if (!v4)
+    if (!viewCopy)
     {
       v9 = 0;
       goto LABEL_6;
     }
 
-    objc_storeWeak(&v5->_targetView, v4);
+    objc_storeWeak(&v5->_targetView, viewCopy);
     v7 = +[CSLockScreenDomain rootSettings];
-    v8 = [v7 dashBoardScrollModifierSettings];
+    dashBoardScrollModifierSettings = [v7 dashBoardScrollModifierSettings];
 
-    [v8 addKeyObserver:v6];
-    [(CSScrollModifier *)v6 _loadFromSettings:v8];
+    [dashBoardScrollModifierSettings addKeyObserver:v6];
+    [(CSScrollModifier *)v6 _loadFromSettings:dashBoardScrollModifierSettings];
   }
 
   v9 = v6;
@@ -45,8 +45,8 @@ LABEL_6:
 - (void)dealloc
 {
   v3 = +[CSLockScreenDomain rootSettings];
-  v4 = [v3 dashBoardScrollModifierSettings];
-  [v4 removeKeyObserver:self];
+  dashBoardScrollModifierSettings = [v3 dashBoardScrollModifierSettings];
+  [dashBoardScrollModifierSettings removeKeyObserver:self];
 
   v5.receiver = self;
   v5.super_class = CSScrollModifier;
@@ -66,15 +66,15 @@ LABEL_6:
   self->_accumulatedDrag = 0.0;
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
+  draggingCopy = dragging;
   if (!self->_hasDraggedSinceReset)
   {
-    v15 = v4;
-    v5 = [v4 panGestureRecognizer];
+    v15 = draggingCopy;
+    panGestureRecognizer = [draggingCopy panGestureRecognizer];
     WeakRetained = objc_loadWeakRetained(&self->_targetView);
-    [v5 locationInView:WeakRetained];
+    [panGestureRecognizer locationInView:WeakRetained];
     self->_firstLocation.x = v7;
     self->_firstLocation.y = v8;
 
@@ -96,25 +96,25 @@ LABEL_6:
 
     self->_initialScrollViewOffsetX = v14;
     self->_hasDraggedSinceReset = 1;
-    v4 = v15;
+    draggingCopy = v15;
   }
 }
 
-- (CGPoint)scrollView:(id)a3 adjustedOffsetForOffset:(CGPoint)a4 translation:(CGPoint)a5 startPoint:(CGPoint)a6 locationInView:(CGPoint)a7 horizontalVelocity:(double *)a8 verticalVelocity:(double *)a9
+- (CGPoint)scrollView:(id)view adjustedOffsetForOffset:(CGPoint)offset translation:(CGPoint)translation startPoint:(CGPoint)point locationInView:(CGPoint)inView horizontalVelocity:(double *)velocity verticalVelocity:(double *)verticalVelocity
 {
-  y = a4.y;
-  x = a4.x;
-  v13 = a3;
-  if (!v13)
+  y = offset.y;
+  x = offset.x;
+  viewCopy = view;
+  if (!viewCopy)
   {
     [CSScrollModifier scrollView:a2 adjustedOffsetForOffset:self translation:? startPoint:? locationInView:? horizontalVelocity:? verticalVelocity:?];
   }
 
   if (!self->_cancelled)
   {
-    v14 = [v13 panGestureRecognizer];
+    panGestureRecognizer = [viewCopy panGestureRecognizer];
     WeakRetained = objc_loadWeakRetained(&self->_targetView);
-    [v14 locationInView:WeakRetained];
+    [panGestureRecognizer locationInView:WeakRetained];
     v17 = v16;
     v19 = v18;
 
@@ -127,7 +127,7 @@ LABEL_6:
       if (v22 > maxAccumulatedDragThreshold)
       {
         self->_cancelled = 1;
-        [v13 _forcePanGestureToEndImmediately];
+        [viewCopy _forcePanGestureToEndImmediately];
       }
     }
 
@@ -142,10 +142,10 @@ LABEL_6:
   return result;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a4.x;
-  v7 = a3;
+  x = velocity.x;
+  draggingCopy = dragging;
   if (self->_cancelled)
   {
     self->_recognized = 0;
@@ -153,11 +153,11 @@ LABEL_6:
 
   else
   {
-    v24 = v7;
+    v24 = draggingCopy;
     [(CSScrollModifier *)self _updateScrollParameters];
-    v8 = [(CSScrollModifier *)self scrollFromRightToLeft];
+    scrollFromRightToLeft = [(CSScrollModifier *)self scrollFromRightToLeft];
     v9 = MEMORY[0x277D76620];
-    v10 = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
+    userInterfaceLayoutDirection = [*MEMORY[0x277D76620] userInterfaceLayoutDirection];
     if ([*v9 userInterfaceLayoutDirection] == 1)
     {
       [v24 contentSize];
@@ -174,12 +174,12 @@ LABEL_6:
     }
 
     v17 = v16 - self->_initialScrollViewOffsetX;
-    if (v10 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v17 = -v17;
     }
 
-    if (v8)
+    if (scrollFromRightToLeft)
     {
       v18 = v17 + self->_inertialMultiplier * x;
     }
@@ -202,14 +202,14 @@ LABEL_6:
     }
 
     self->_recognized = v23;
-    v7 = v24;
+    draggingCopy = v24;
   }
 }
 
-- (double)_horizontalProgressSubtractionFromVertical:(CGPoint)a3
+- (double)_horizontalProgressSubtractionFromVertical:(CGPoint)vertical
 {
-  v4 = a3.y - self->_lastLocation.y;
-  v5 = a3.x - self->_lastLocation.x;
+  v4 = vertical.y - self->_lastLocation.y;
+  v5 = vertical.x - self->_lastLocation.x;
   v6 = v4 * v4 + v5 * v5;
   v7 = sqrtf(v6);
   v8 = atan2(v4, v5);
@@ -227,10 +227,10 @@ LABEL_6:
 {
   if (!__sb__runningInSpringBoard())
   {
-    v5 = [MEMORY[0x277D75418] currentDevice];
-    v6 = [v5 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v6 != 1)
+    if (userInterfaceIdiom != 1)
     {
       goto LABEL_3;
     }
@@ -271,41 +271,41 @@ LABEL_9:
   *(&self->super.isa + v8) = inertialMultiplierSigmoidRange;
 }
 
-- (void)setAccumulatedDragThresholdPercentage:(double)a3
+- (void)setAccumulatedDragThresholdPercentage:(double)percentage
 {
-  self->_accumulatedDragThresholdPercentage = a3;
+  self->_accumulatedDragThresholdPercentage = percentage;
   WeakRetained = objc_loadWeakRetained(&self->_targetView);
   [WeakRetained bounds];
   self->_maxAccumulatedDragThreshold = CGRectGetWidth(v6) * (self->_accumulatedDragThresholdPercentage / 100.0);
 }
 
-- (void)_loadFromSettings:(id)a3
+- (void)_loadFromSettings:(id)settings
 {
-  v4 = a3;
-  [v4 maxScrollDistance];
+  settingsCopy = settings;
+  [settingsCopy maxScrollDistance];
   [(CSScrollModifier *)self setMaxScrollDistance:?];
-  -[CSScrollModifier setCancelScrollingIfTooMuchDrag:](self, "setCancelScrollingIfTooMuchDrag:", [v4 cancelScrollingIfTooMuchDrag]);
-  [v4 accumulatedDragThresholdPercentage];
+  -[CSScrollModifier setCancelScrollingIfTooMuchDrag:](self, "setCancelScrollingIfTooMuchDrag:", [settingsCopy cancelScrollingIfTooMuchDrag]);
+  [settingsCopy accumulatedDragThresholdPercentage];
   [(CSScrollModifier *)self setAccumulatedDragThresholdPercentage:?];
-  [v4 maxDragFromVerticalPerFrame];
+  [settingsCopy maxDragFromVerticalPerFrame];
   [(CSScrollModifier *)self setMaxDragFromVerticalPerFrame:?];
-  [v4 powerOfVerticalDirectionSine2];
+  [settingsCopy powerOfVerticalDirectionSine2];
   [(CSScrollModifier *)self setPowerOfVerticalDirectionSine2:?];
-  [v4 inertialMultiplierSigmoidBase];
+  [settingsCopy inertialMultiplierSigmoidBase];
   [(CSScrollModifier *)self setInertialMultiplierSigmoidBase:?];
-  [v4 inertialMultiplierSigmoidRange];
+  [settingsCopy inertialMultiplierSigmoidRange];
   [(CSScrollModifier *)self setInertialMultiplierSigmoidRange:?];
-  [v4 inertialMultiplierSigmoidPivot];
+  [settingsCopy inertialMultiplierSigmoidPivot];
   [(CSScrollModifier *)self setInertialMultiplierSigmoidPivot:?];
-  [v4 inertialMultiplierSigmoidAlpha];
+  [settingsCopy inertialMultiplierSigmoidAlpha];
   [(CSScrollModifier *)self setInertialMultiplierSigmoidAlpha:?];
-  [v4 minPercentageSigmoidBase];
+  [settingsCopy minPercentageSigmoidBase];
   [(CSScrollModifier *)self setMinPercentageSigmoidBase:?];
-  [v4 minPercentageSigmoidRange];
+  [settingsCopy minPercentageSigmoidRange];
   [(CSScrollModifier *)self setMinPercentageSigmoidRange:?];
-  [v4 minPercentageSigmoidPivot];
+  [settingsCopy minPercentageSigmoidPivot];
   [(CSScrollModifier *)self setMinPercentageSigmoidPivot:?];
-  [v4 minPercentageSigmoidAlpha];
+  [settingsCopy minPercentageSigmoidAlpha];
   v6 = v5;
 
   [(CSScrollModifier *)self setMinPercentageSigmoidAlpha:v6];

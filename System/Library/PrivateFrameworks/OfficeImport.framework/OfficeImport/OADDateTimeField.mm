@@ -1,6 +1,6 @@
 @interface OADDateTimeField
 - (BOOL)isEmpty;
-- (BOOL)isSimilarToTextRun:(id)a3;
+- (BOOL)isSimilarToTextRun:(id)run;
 - (OADDateTimeField)init;
 @end
 
@@ -26,21 +26,21 @@
     return 0;
   }
 
-  v4 = [(OADTextField *)self text];
-  v3 = [v4 length] == 0;
+  text = [(OADTextField *)self text];
+  v3 = [text length] == 0;
 
   return v3;
 }
 
-- (BOOL)isSimilarToTextRun:(id)a3
+- (BOOL)isSimilarToTextRun:(id)run
 {
-  v4 = a3;
+  runCopy = run;
   v8.receiver = self;
   v8.super_class = OADDateTimeField;
-  if ([(OADTextRun *)&v8 isSimilarToTextRun:v4])
+  if ([(OADTextRun *)&v8 isSimilarToTextRun:runCopy])
   {
-    v5 = [(OADDateTimeField *)self format];
-    v6 = v5 == [v4 format];
+    format = [(OADDateTimeField *)self format];
+    v6 = format == [runCopy format];
   }
 
   else

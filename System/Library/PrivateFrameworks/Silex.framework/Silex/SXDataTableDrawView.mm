@@ -1,35 +1,35 @@
 @interface SXDataTableDrawView
-- (SXDataTableDrawView)initWithFrame:(CGRect)a3;
+- (SXDataTableDrawView)initWithFrame:(CGRect)frame;
 - (uint64_t)drawBlocks;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation SXDataTableDrawView
 
-- (SXDataTableDrawView)initWithFrame:(CGRect)a3
+- (SXDataTableDrawView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SXDataTableDrawView;
-  v3 = [(SXDataTableDrawView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SXDataTableDrawView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     drawBlocks = v3->_drawBlocks;
-    v3->_drawBlocks = v4;
+    v3->_drawBlocks = array;
 
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    [(SXDataTableDrawView *)v3 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(SXDataTableDrawView *)v3 setBackgroundColor:clearColor];
   }
 
   return v3;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v24 = *MEMORY[0x1E69E9840];
   v22.receiver = self;
   v22.super_class = SXDataTableDrawView;

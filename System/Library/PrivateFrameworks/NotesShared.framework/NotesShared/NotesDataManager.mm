@@ -10,13 +10,13 @@
   if (*(&self->super.isa + OBJC_IVAR____TtC11NotesShared16NotesDataManager_didStartSharedContext) == 1)
   {
     v3 = objc_opt_self();
-    v4 = self;
+    selfCopy = self;
     [v3 clearSharedContext];
   }
 
   else
   {
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6.receiver = self;

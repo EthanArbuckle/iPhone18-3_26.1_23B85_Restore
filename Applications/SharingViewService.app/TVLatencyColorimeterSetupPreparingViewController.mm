@@ -1,7 +1,7 @@
 @interface TVLatencyColorimeterSetupPreparingViewController
 - (void)_handleDismissButton;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TVLatencyColorimeterSetupPreparingViewController
@@ -13,13 +13,13 @@
     LogPrintF();
   }
 
-  v3 = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
-  [v3 dismiss:5];
+  mainController = [(TVLatencyColorimeterSetupBaseViewController *)self mainController];
+  [mainController dismiss:5];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BEA68 <= 30 && (dword_1001BEA68 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -27,7 +27,7 @@
 
   v5.receiver = self;
   v5.super_class = TVLatencyColorimeterSetupPreparingViewController;
-  [(TVLatencyColorimeterSetupPreparingViewController *)&v5 viewWillAppear:v3];
+  [(TVLatencyColorimeterSetupPreparingViewController *)&v5 viewWillAppear:appearCopy];
 }
 
 - (void)viewDidLoad
@@ -61,44 +61,44 @@
 
   [v12 setContentMode:1];
   [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v13 = [(TVLatencyColorimeterSetupPreparingViewController *)self contentView];
-  [v13 addSubview:v12];
+  contentView = [(TVLatencyColorimeterSetupPreparingViewController *)self contentView];
+  [contentView addSubview:v12];
 
   v39 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:101];
   [v39 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v14 = [(TVLatencyColorimeterSetupPreparingViewController *)self contentView];
-  [v14 addSubview:v39];
+  contentView2 = [(TVLatencyColorimeterSetupPreparingViewController *)self contentView];
+  [contentView2 addSubview:v39];
 
   [v39 startAnimating];
-  v15 = [(TVLatencyColorimeterSetupPreparingViewController *)self contentView];
-  v38 = [v15 mainContentGuide];
+  contentView3 = [(TVLatencyColorimeterSetupPreparingViewController *)self contentView];
+  mainContentGuide = [contentView3 mainContentGuide];
 
-  v36 = [v12 topAnchor];
-  v35 = [v38 topAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  topAnchor = [v12 topAnchor];
+  topAnchor2 = [mainContentGuide topAnchor];
+  v34 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v44[0] = v34;
-  v33 = [v12 bottomAnchor];
-  v32 = [v38 bottomAnchor];
-  v31 = [v33 constraintLessThanOrEqualToAnchor:v32];
+  bottomAnchor = [v12 bottomAnchor];
+  bottomAnchor2 = [mainContentGuide bottomAnchor];
+  v31 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v44[1] = v31;
-  v30 = [v12 leadingAnchor];
-  v29 = [v38 leadingAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29];
+  leadingAnchor = [v12 leadingAnchor];
+  leadingAnchor2 = [mainContentGuide leadingAnchor];
+  v28 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v44[2] = v28;
-  v27 = [v12 trailingAnchor];
-  v26 = [v38 trailingAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  trailingAnchor = [v12 trailingAnchor];
+  trailingAnchor2 = [mainContentGuide trailingAnchor];
+  v25 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v44[3] = v25;
-  v16 = [v12 heightAnchor];
-  v17 = [v16 constraintEqualToConstant:150.0];
+  heightAnchor = [v12 heightAnchor];
+  v17 = [heightAnchor constraintEqualToConstant:150.0];
   v44[4] = v17;
-  v18 = [v39 centerXAnchor];
-  v19 = [v12 centerXAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  centerXAnchor = [v39 centerXAnchor];
+  centerXAnchor2 = [v12 centerXAnchor];
+  v20 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v44[5] = v20;
-  v21 = [v39 centerYAnchor];
-  v22 = [v12 centerYAnchor];
-  v23 = [v21 constraintEqualToAnchor:v22 constant:-6.0];
+  centerYAnchor = [v39 centerYAnchor];
+  centerYAnchor2 = [v12 centerYAnchor];
+  v23 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2 constant:-6.0];
   v44[6] = v23;
   v24 = [NSArray arrayWithObjects:v44 count:7];
   [NSLayoutConstraint activateConstraints:v24];

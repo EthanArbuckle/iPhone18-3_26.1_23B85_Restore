@@ -1,25 +1,25 @@
 @interface PUCinematicSubjectIndicator
-- (PUCinematicSubjectIndicator)initWithFrame:(CGRect)a3;
+- (PUCinematicSubjectIndicator)initWithFrame:(CGRect)frame;
 - (void)_startPulseAnimation;
 - (void)layoutSubviews;
-- (void)setFrame:(CGRect)a3;
-- (void)setIsPulsing:(BOOL)a3;
-- (void)setShape:(int64_t)a3 animated:(BOOL)a4;
+- (void)setFrame:(CGRect)frame;
+- (void)setIsPulsing:(BOOL)pulsing;
+- (void)setShape:(int64_t)shape animated:(BOOL)animated;
 @end
 
 @implementation PUCinematicSubjectIndicator
 
 - (void)_startPulseAnimation
 {
-  v3 = [(PUCinematicSubjectIndicator *)self superview];
+  superview = [(PUCinematicSubjectIndicator *)self superview];
 
-  if (v3)
+  if (superview)
   {
-    v8 = [(PUCinematicSubjectIndicator *)self layer];
-    v4 = [v8 animationForKey:@"pulse"];
+    layer = [(PUCinematicSubjectIndicator *)self layer];
+    v4 = [layer animationForKey:@"pulse"];
     if (!v4)
     {
-      [v8 removeAllAnimations];
+      [layer removeAllAnimations];
       v5 = [MEMORY[0x1E6979318] animationWithKeyPath:@"transform.scale"];
       [v5 setDuration:0.75];
       v6 = [MEMORY[0x1E69793D0] functionWithName:*MEMORY[0x1E6979EB8]];
@@ -29,17 +29,17 @@
       LODWORD(v7) = 2139095040;
       [v5 setRepeatCount:v7];
       [v5 setAutoreverses:1];
-      [v8 addAnimation:v5 forKey:@"pulse"];
+      [layer addAnimation:v5 forKey:@"pulse"];
     }
   }
 }
 
-- (void)setIsPulsing:(BOOL)a3
+- (void)setIsPulsing:(BOOL)pulsing
 {
-  if (self->_isPulsing != a3)
+  if (self->_isPulsing != pulsing)
   {
-    self->_isPulsing = a3;
-    if (a3)
+    self->_isPulsing = pulsing;
+    if (pulsing)
     {
 
       [(PUCinematicSubjectIndicator *)self _startPulseAnimation];
@@ -47,24 +47,24 @@
 
     else
     {
-      v4 = [(PUCinematicSubjectIndicator *)self layer];
-      [v4 removeAllAnimations];
+      layer = [(PUCinematicSubjectIndicator *)self layer];
+      [layer removeAllAnimations];
     }
   }
 }
 
-- (void)setShape:(int64_t)a3 animated:(BOOL)a4
+- (void)setShape:(int64_t)shape animated:(BOOL)animated
 {
-  v4 = a4;
-  self->_shape = a3;
-  v7 = a3 == 3;
-  [(CEKSubjectIndicatorView *)self->_fixedFocusView setHidden:a3 != 3 animated:?];
+  animatedCopy = animated;
+  self->_shape = shape;
+  v7 = shape == 3;
+  [(CEKSubjectIndicatorView *)self->_fixedFocusView setHidden:shape != 3 animated:?];
   [(CEKCinematicSubjectIndicatorView *)self->_subjectView setHidden:v7];
-  if (a3 <= 2)
+  if (shape <= 2)
   {
     subjectView = self->_subjectView;
 
-    [(CEKCinematicSubjectIndicatorView *)subjectView setShape:a3 animated:v4];
+    [(CEKCinematicSubjectIndicatorView *)subjectView setShape:shape animated:animatedCopy];
   }
 }
 
@@ -126,19 +126,19 @@
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = PUCinematicSubjectIndicator;
-  [(PUCinematicSubjectIndicator *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(PUCinematicSubjectIndicator *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(PUCinematicSubjectIndicator *)self setNeedsLayout];
 }
 
-- (PUCinematicSubjectIndicator)initWithFrame:(CGRect)a3
+- (PUCinematicSubjectIndicator)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = PUCinematicSubjectIndicator;
-  v3 = [(PUCinematicSubjectIndicator *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PUCinematicSubjectIndicator *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E6993898]);

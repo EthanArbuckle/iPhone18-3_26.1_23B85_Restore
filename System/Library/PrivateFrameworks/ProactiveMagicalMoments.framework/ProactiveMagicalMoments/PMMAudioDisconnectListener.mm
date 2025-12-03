@@ -1,22 +1,22 @@
 @interface PMMAudioDisconnectListener
-- (PMMAudioDisconnectListener)initWithHandler:(id)a3;
+- (PMMAudioDisconnectListener)initWithHandler:(id)handler;
 - (void)_setupAudioDisconnectListener;
 - (void)_setupBluetoothDisconnectListener;
 @end
 
 @implementation PMMAudioDisconnectListener
 
-- (PMMAudioDisconnectListener)initWithHandler:(id)a3
+- (PMMAudioDisconnectListener)initWithHandler:(id)handler
 {
-  v5 = a3;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v11.receiver = self;
     v11.super_class = PMMAudioDisconnectListener;
     v6 = [(PMMAudioDisconnectListener *)&v11 init];
     if (v6)
     {
-      v7 = [v5 copy];
+      v7 = [handlerCopy copy];
       disconnectHandler = v6->_disconnectHandler;
       v6->_disconnectHandler = v7;
 
@@ -25,16 +25,16 @@
     }
 
     self = v6;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
     [(PMMAudioDisconnectListener *)a2 initWithHandler:?];
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)_setupAudioDisconnectListener

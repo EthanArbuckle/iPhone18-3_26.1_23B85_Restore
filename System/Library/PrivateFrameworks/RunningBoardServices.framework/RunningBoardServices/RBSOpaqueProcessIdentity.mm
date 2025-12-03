@@ -1,24 +1,24 @@
 @interface RBSOpaqueProcessIdentity
-- (RBSOpaqueProcessIdentity)initWithDecodeFromJob:(id)a3 uuid:(id)a4;
-- (RBSOpaqueProcessIdentity)initWithRBSXPCCoder:(id)a3;
-- (id)_initOpaqueWithPid:(int)a3 auid:(unsigned int)a4 description:(id)a5;
+- (RBSOpaqueProcessIdentity)initWithDecodeFromJob:(id)job uuid:(id)uuid;
+- (RBSOpaqueProcessIdentity)initWithRBSXPCCoder:(id)coder;
+- (id)_initOpaqueWithPid:(int)pid auid:(unsigned int)auid description:(id)description;
 - (id)encodeForJob;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSOpaqueProcessIdentity
 
-- (id)_initOpaqueWithPid:(int)a3 auid:(unsigned int)a4 description:(id)a5
+- (id)_initOpaqueWithPid:(int)pid auid:(unsigned int)auid description:(id)description
 {
-  v7 = a5;
+  descriptionCopy = description;
   v14.receiver = self;
   v14.super_class = RBSOpaqueProcessIdentity;
-  v8 = [(RBSProcessIdentity *)&v14 _init];
-  v9 = v8;
-  if (v8)
+  _init = [(RBSProcessIdentity *)&v14 _init];
+  v9 = _init;
+  if (_init)
   {
-    v8[2] = a3;
-    v10 = [v7 copy];
+    _init[2] = pid;
+    v10 = [descriptionCopy copy];
     v11 = *(v9 + 2);
     *(v9 + 2) = v10;
 
@@ -29,19 +29,19 @@
   return v9;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   pid = self->super._pid;
-  v5 = a3;
-  [v5 encodeInt64:pid forKey:@"_pid"];
-  [v5 encodeObject:self->super._description forKey:@"_description"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:pid forKey:@"_pid"];
+  [coderCopy encodeObject:self->super._description forKey:@"_description"];
 }
 
-- (RBSOpaqueProcessIdentity)initWithRBSXPCCoder:(id)a3
+- (RBSOpaqueProcessIdentity)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"_pid"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_description"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt64ForKey:@"_pid"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_description"];
 
   v7 = [(RBSOpaqueProcessIdentity *)self _initOpaqueWithPid:v5 auid:0 description:v6];
   return v7;
@@ -52,30 +52,30 @@
   empty = xpc_dictionary_create_empty();
   xpc_dictionary_set_int64(empty, "TYPE", 7);
   xpc_dictionary_set_int64(empty, "p", self->super._pid);
-  v4 = [(NSString *)self->super._description UTF8String];
-  if (v4)
+  uTF8String = [(NSString *)self->super._description UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(empty, "d", v4);
+    xpc_dictionary_set_string(empty, "d", uTF8String);
   }
 
   return empty;
 }
 
-- (RBSOpaqueProcessIdentity)initWithDecodeFromJob:(id)a3 uuid:(id)a4
+- (RBSOpaqueProcessIdentity)initWithDecodeFromJob:(id)job uuid:(id)uuid
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  jobCopy = job;
+  uuidCopy = uuid;
+  if (uuidCopy)
   {
     v8 = rbs_general_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_FAULT))
     {
-      [RBSOpaqueProcessIdentity initWithDecodeFromJob:v7 uuid:v8];
+      [RBSOpaqueProcessIdentity initWithDecodeFromJob:uuidCopy uuid:v8];
     }
   }
 
-  int64 = xpc_dictionary_get_int64(v6, "p");
-  string = xpc_dictionary_get_string(v6, "d");
+  int64 = xpc_dictionary_get_int64(jobCopy, "p");
+  string = xpc_dictionary_get_string(jobCopy, "d");
   if (string)
   {
     v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:string];

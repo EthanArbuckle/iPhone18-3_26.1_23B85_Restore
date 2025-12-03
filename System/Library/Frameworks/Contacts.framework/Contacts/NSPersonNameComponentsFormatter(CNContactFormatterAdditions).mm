@@ -61,36 +61,36 @@ LABEL_13:
 {
   v4 = [MEMORY[0x1E696ADF8] _nameOrderWithOverridesForComponents:a3 options:0];
 
-  return [a1 contactsNameOrderFromFoundationNameOrder:v4];
+  return [self contactsNameOrderFromFoundationNameOrder:v4];
 }
 
 + (uint64_t)contactsNameOrderFromContact:()CNContactFormatterAdditions
 {
   v4 = a3;
-  v5 = [v4 givenName];
-  if (v5)
+  givenName = [v4 givenName];
+  if (givenName)
   {
 
 LABEL_4:
-    v6 = objc_alloc_init(MEMORY[0x1E696ADF0]);
-    v7 = [v4 givenName];
-    [v6 setGivenName:v7];
+    familyName2 = objc_alloc_init(MEMORY[0x1E696ADF0]);
+    givenName2 = [v4 givenName];
+    [familyName2 setGivenName:givenName2];
 
-    v8 = [v4 familyName];
-    [v6 setFamilyName:v8];
+    familyName = [v4 familyName];
+    [familyName2 setFamilyName:familyName];
 
     goto LABEL_5;
   }
 
-  v6 = [v4 familyName];
+  familyName2 = [v4 familyName];
 
-  if (v6)
+  if (familyName2)
   {
     goto LABEL_4;
   }
 
 LABEL_5:
-  v9 = [a1 contactsNameOrderFromPersonNameComponents:v6];
+  v9 = [self contactsNameOrderFromPersonNameComponents:familyName2];
 
   return v9;
 }
@@ -98,7 +98,7 @@ LABEL_5:
 + (id)localizedStringFromContact:()CNContactFormatterAdditions contactStyle:options:
 {
   v6 = a3;
-  v7 = [a1 formatterWithCNContactStyle:a4];
+  v7 = [self formatterWithCNContactStyle:a4];
   v8 = [v7 stringFromContact:v6];
 
   return v8;
@@ -107,7 +107,7 @@ LABEL_5:
 - (id)stringFromContact:()CNContactFormatterAdditions
 {
   v2 = [MEMORY[0x1E696ADF0] componentsForContact:?];
-  v3 = [a1 stringFromPersonNameComponents:v2];
+  v3 = [self stringFromPersonNameComponents:v2];
 
   return v3;
 }

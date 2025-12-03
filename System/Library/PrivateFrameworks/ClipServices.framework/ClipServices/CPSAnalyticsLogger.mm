@@ -1,16 +1,16 @@
 @interface CPSAnalyticsLogger
 + (id)sharedLogger;
-- (CPSAnalyticsLogger)initWithQueue:(id)a3;
-- (void)_sendEventLazyWithName:(id)a3 clipBundleIdentifier:(id)a4 payload:(id)a5;
-- (void)didManuallyDeleteClip:(id)a3 withEvent:(int64_t)a4;
-- (void)didPresentInvocationCardForClip:(id)a3 adamID:(id)a4 sourceBundleIdentifier:(id)a5 referrerBundleIdentifier:(id)a6 event:(id)a7 url:(id)a8 didShowCardInline:(BOOL)a9;
-- (void)didUseClip:(id)a3 atLatitude:(double)a4 longitude:(double)a5;
-- (void)recordClientClipRequestWithBundleID:(id)a3 launchReason:(id)a4;
-- (void)recordClientMetadataRequestWithBundleID:(id)a3 launchReason:(id)a4;
-- (void)recordDidInstallWithBundleID:(id)a3 succeeded:(BOOL)a4;
-- (void)recordDidShowErrorWithBundleID:(id)a3 place:(id)a4 errorCode:(int64_t)a5;
-- (void)recordDidShowLocationConsentWithBundleID:(id)a3 response:(unint64_t)a4;
-- (void)recordReportProblemStepCompletedWithBundleID:(id)a3 problemLabel:(id)a4 event:(int64_t)a5;
+- (CPSAnalyticsLogger)initWithQueue:(id)queue;
+- (void)_sendEventLazyWithName:(id)name clipBundleIdentifier:(id)identifier payload:(id)payload;
+- (void)didManuallyDeleteClip:(id)clip withEvent:(int64_t)event;
+- (void)didPresentInvocationCardForClip:(id)clip adamID:(id)d sourceBundleIdentifier:(id)identifier referrerBundleIdentifier:(id)bundleIdentifier event:(id)event url:(id)url didShowCardInline:(BOOL)inline;
+- (void)didUseClip:(id)clip atLatitude:(double)latitude longitude:(double)longitude;
+- (void)recordClientClipRequestWithBundleID:(id)d launchReason:(id)reason;
+- (void)recordClientMetadataRequestWithBundleID:(id)d launchReason:(id)reason;
+- (void)recordDidInstallWithBundleID:(id)d succeeded:(BOOL)succeeded;
+- (void)recordDidShowErrorWithBundleID:(id)d place:(id)place errorCode:(int64_t)code;
+- (void)recordDidShowLocationConsentWithBundleID:(id)d response:(unint64_t)response;
+- (void)recordReportProblemStepCompletedWithBundleID:(id)d problemLabel:(id)label event:(int64_t)event;
 @end
 
 @implementation CPSAnalyticsLogger
@@ -37,47 +37,47 @@ void __34__CPSAnalyticsLogger_sharedLogger__block_invoke()
   sharedLogger_shared = v1;
 }
 
-- (CPSAnalyticsLogger)initWithQueue:(id)a3
+- (CPSAnalyticsLogger)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = CPSAnalyticsLogger;
   v6 = [(CPSAnalyticsLogger *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_analyticsSynchronizationQueue, a3);
+    objc_storeStrong(&v6->_analyticsSynchronizationQueue, queue);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (void)didPresentInvocationCardForClip:(id)a3 adamID:(id)a4 sourceBundleIdentifier:(id)a5 referrerBundleIdentifier:(id)a6 event:(id)a7 url:(id)a8 didShowCardInline:(BOOL)a9
+- (void)didPresentInvocationCardForClip:(id)clip adamID:(id)d sourceBundleIdentifier:(id)identifier referrerBundleIdentifier:(id)bundleIdentifier event:(id)event url:(id)url didShowCardInline:(BOOL)inline
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  clipCopy = clip;
+  dCopy = d;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  eventCopy = event;
+  urlCopy = url;
   v21 = +[CPSUtilities deviceIsLocked];
-  v22 = [v20 cps_fallbackBundleIdentifier];
-  [(CPSAnalyticsLogger *)self recordDidActivateCardWithBundleID:v15 launchReason:v19 deviceLocked:v21 didShowCardInline:a9 isOutOfBoxURL:v22 != 0];
+  cps_fallbackBundleIdentifier = [urlCopy cps_fallbackBundleIdentifier];
+  [(CPSAnalyticsLogger *)self recordDidActivateCardWithBundleID:clipCopy launchReason:eventCopy deviceLocked:v21 didShowCardInline:inline isOutOfBoxURL:cps_fallbackBundleIdentifier != 0];
 
-  if ([v15 length] && objc_msgSend(v16, "intValue") && objc_msgSend(v19, "length") && (objc_msgSend(v20, "absoluteString"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "length"), v23, v24))
+  if ([clipCopy length] && objc_msgSend(dCopy, "intValue") && objc_msgSend(eventCopy, "length") && (objc_msgSend(urlCopy, "absoluteString"), v23 = objc_claimAutoreleasedReturnValue(), v24 = objc_msgSend(v23, "length"), v23, v24))
   {
     analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __137__CPSAnalyticsLogger_didPresentInvocationCardForClip_adamID_sourceBundleIdentifier_referrerBundleIdentifier_event_url_didShowCardInline___block_invoke;
     v27[3] = &unk_278DCF398;
-    v28 = v15;
-    v29 = v16;
-    v30 = v18;
-    v31 = v17;
-    v32 = v19;
-    v33 = v20;
+    v28 = clipCopy;
+    v29 = dCopy;
+    v30 = bundleIdentifierCopy;
+    v31 = identifierCopy;
+    v32 = eventCopy;
+    v33 = urlCopy;
     dispatch_async(analyticsSynchronizationQueue, v27);
   }
 
@@ -135,7 +135,7 @@ void __137__CPSAnalyticsLogger_didPresentInvocationCardForClip_adamID_sourceBund
   }
 }
 
-- (void)recordDidInstallWithBundleID:(id)a3 succeeded:(BOOL)a4
+- (void)recordDidInstallWithBundleID:(id)d succeeded:(BOOL)succeeded
 {
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -143,7 +143,7 @@ void __137__CPSAnalyticsLogger_didPresentInvocationCardForClip_adamID_sourceBund
   v5[2] = __61__CPSAnalyticsLogger_recordDidInstallWithBundleID_succeeded___block_invoke;
   v5[3] = &unk_278DCF3C0;
   v5[4] = self;
-  v6 = a4;
+  succeededCopy = succeeded;
   dispatch_async(analyticsSynchronizationQueue, v5);
 }
 
@@ -178,33 +178,33 @@ BOOL __61__CPSAnalyticsLogger_recordDidInstallWithBundleID_succeeded___block_inv
   return v3;
 }
 
-- (void)didUseClip:(id)a3 atLatitude:(double)a4 longitude:(double)a5
+- (void)didUseClip:(id)clip atLatitude:(double)latitude longitude:(double)longitude
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v14[0] = @"latitude";
   v8 = MEMORY[0x277CCABB0];
-  v9 = a3;
-  v10 = [v8 numberWithDouble:a4];
+  clipCopy = clip;
+  v10 = [v8 numberWithDouble:latitude];
   v14[1] = @"longitude";
   v15[0] = v10;
-  v11 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v11 = [MEMORY[0x277CCABB0] numberWithDouble:longitude];
   v15[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
-  [(CPSAnalyticsLogger *)self _sendEventLazyWithName:@"com.apple.ClipServices.DidUseClipAtLocation" clipBundleIdentifier:v9 payload:v12];
+  [(CPSAnalyticsLogger *)self _sendEventLazyWithName:@"com.apple.ClipServices.DidUseClipAtLocation" clipBundleIdentifier:clipCopy payload:v12];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didManuallyDeleteClip:(id)a3 withEvent:(int64_t)a4
+- (void)didManuallyDeleteClip:(id)clip withEvent:(int64_t)event
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v5 = @"delete specific clip";
-  if (a4 != 1)
+  if (event != 1)
   {
     v5 = @"unspecified";
   }
 
-  if (a4 == 2)
+  if (event == 2)
   {
     v5 = @"clear all clips";
   }
@@ -219,126 +219,126 @@ BOOL __61__CPSAnalyticsLogger_recordDidInstallWithBundleID_succeeded___block_inv
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordClientClipRequestWithBundleID:(id)a3 launchReason:(id)a4
+- (void)recordClientClipRequestWithBundleID:(id)d launchReason:(id)reason
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v11 = @"launchReason";
-  v12[0] = a4;
+  v12[0] = reason;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a4;
-  v8 = a3;
+  reasonCopy = reason;
+  dCopy = d;
   v9 = [v6 dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-  [(CPSAnalyticsLogger *)self _sendEventLazyWithName:@"com.apple.ClipServices.ClientDidRequestClip" clipBundleIdentifier:v8 payload:v9];
+  [(CPSAnalyticsLogger *)self _sendEventLazyWithName:@"com.apple.ClipServices.ClientDidRequestClip" clipBundleIdentifier:dCopy payload:v9];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordClientMetadataRequestWithBundleID:(id)a3 launchReason:(id)a4
+- (void)recordClientMetadataRequestWithBundleID:(id)d launchReason:(id)reason
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v11 = @"launchReason";
-  v12[0] = a4;
+  v12[0] = reason;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a4;
-  v8 = a3;
+  reasonCopy = reason;
+  dCopy = d;
   v9 = [v6 dictionaryWithObjects:v12 forKeys:&v11 count:1];
 
-  [(CPSAnalyticsLogger *)self _sendEventLazyWithName:@"com.apple.ClipServices.ClientDidRequestMetadata" clipBundleIdentifier:v8 payload:v9];
+  [(CPSAnalyticsLogger *)self _sendEventLazyWithName:@"com.apple.ClipServices.ClientDidRequestMetadata" clipBundleIdentifier:dCopy payload:v9];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordDidShowErrorWithBundleID:(id)a3 place:(id)a4 errorCode:(int64_t)a5
+- (void)recordDidShowErrorWithBundleID:(id)d place:(id)place errorCode:(int64_t)code
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v14[0] = @"place";
   v14[1] = @"errorCode";
-  v15[0] = a4;
+  v15[0] = place;
   v8 = MEMORY[0x277CCABB0];
-  v9 = a4;
-  v10 = a3;
-  v11 = [v8 numberWithInteger:a5];
+  placeCopy = place;
+  dCopy = d;
+  v11 = [v8 numberWithInteger:code];
   v15[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
 
-  [(CPSAnalyticsLogger *)self _sendEventLazyWithName:@"com.apple.ClipServices.DidShowError" clipBundleIdentifier:v10 payload:v12];
+  [(CPSAnalyticsLogger *)self _sendEventLazyWithName:@"com.apple.ClipServices.DidShowError" clipBundleIdentifier:dCopy payload:v12];
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordDidShowLocationConsentWithBundleID:(id)a3 response:(unint64_t)a4
+- (void)recordDidShowLocationConsentWithBundleID:(id)d response:(unint64_t)response
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v10 = @"locationConfirmationResponse";
-  if (a4 - 1 > 2)
+  if (response - 1 > 2)
   {
     v5 = @"unknown";
   }
 
   else
   {
-    v5 = off_278DCF420[a4 - 1];
+    v5 = off_278DCF420[response - 1];
   }
 
   v11[0] = v5;
   v6 = MEMORY[0x277CBEAC0];
-  v7 = a3;
+  dCopy = d;
   v8 = [v6 dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  [(CPSAnalyticsLogger *)self _sendEventLazyWithName:@"com.apple.ClipServices.DidShowLocationConsent" clipBundleIdentifier:v7 payload:v8];
+  [(CPSAnalyticsLogger *)self _sendEventLazyWithName:@"com.apple.ClipServices.DidShowLocationConsent" clipBundleIdentifier:dCopy payload:v8];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)recordReportProblemStepCompletedWithBundleID:(id)a3 problemLabel:(id)a4 event:(int64_t)a5
+- (void)recordReportProblemStepCompletedWithBundleID:(id)d problemLabel:(id)label event:(int64_t)event
 {
   v15[2] = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (label)
   {
-    v7 = a4;
+    labelCopy = label;
   }
 
   else
   {
-    v7 = @"null";
+    labelCopy = @"null";
   }
 
   v14[0] = @"problemLabel";
   v14[1] = @"event";
-  v15[0] = v7;
-  if (a5 > 5)
+  v15[0] = labelCopy;
+  if (event > 5)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = off_278DCF438[a5];
+    v8 = off_278DCF438[event];
   }
 
   v15[1] = v8;
   v9 = MEMORY[0x277CBEAC0];
-  v10 = a4;
-  v11 = a3;
+  labelCopy2 = label;
+  dCopy = d;
   v12 = [v9 dictionaryWithObjects:v15 forKeys:v14 count:2];
 
-  [(CPSAnalyticsLogger *)self _sendEventLazyWithName:@"com.apple.ClipServices.ReportProblemStepCompleted" clipBundleIdentifier:v11 payload:v12];
+  [(CPSAnalyticsLogger *)self _sendEventLazyWithName:@"com.apple.ClipServices.ReportProblemStepCompleted" clipBundleIdentifier:dCopy payload:v12];
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_sendEventLazyWithName:(id)a3 clipBundleIdentifier:(id)a4 payload:(id)a5
+- (void)_sendEventLazyWithName:(id)name clipBundleIdentifier:(id)identifier payload:(id)payload
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  identifierCopy = identifier;
+  payloadCopy = payload;
   analyticsSynchronizationQueue = self->_analyticsSynchronizationQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__CPSAnalyticsLogger__sendEventLazyWithName_clipBundleIdentifier_payload___block_invoke;
   block[3] = &unk_278DCE110;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = nameCopy;
+  v17 = identifierCopy;
+  v18 = payloadCopy;
+  v12 = payloadCopy;
+  v13 = identifierCopy;
+  v14 = nameCopy;
   dispatch_async(analyticsSynchronizationQueue, block);
 }
 

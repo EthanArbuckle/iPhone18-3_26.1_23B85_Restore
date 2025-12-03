@@ -1,14 +1,14 @@
 @interface PXMoveToCollectionListAction
-+ (BOOL)canPerformOnCollection:(id)a3;
-- (PXMoveToCollectionListAction)initWithCollections:(id)a3 targetCollectionList:(id)a4;
-- (int64_t)adjustedTargetIndexForFetchResult:(id)a3 movedAssets:(id)a4 targetAsset:(id)a5;
-- (void)performAction:(id)a3;
-- (void)performUndo:(id)a3;
++ (BOOL)canPerformOnCollection:(id)collection;
+- (PXMoveToCollectionListAction)initWithCollections:(id)collections targetCollectionList:(id)list;
+- (int64_t)adjustedTargetIndexForFetchResult:(id)result movedAssets:(id)assets targetAsset:(id)asset;
+- (void)performAction:(id)action;
+- (void)performUndo:(id)undo;
 @end
 
 @implementation PXMoveToCollectionListAction
 
-- (void)performUndo:(id)a3
+- (void)performUndo:(id)undo
 {
   v5 = self->_sourceCollectionList;
   v6 = self->_beforeFetchResult;
@@ -20,7 +20,7 @@
   v11 = v5;
   v7 = v5;
   v8 = v6;
-  [(PXPhotosAction *)self performChanges:v9 completionHandler:a3];
+  [(PXPhotosAction *)self performChanges:v9 completionHandler:undo];
 }
 
 void __44__PXMoveToCollectionListAction_performUndo___block_invoke(uint64_t a1)
@@ -30,14 +30,14 @@ void __44__PXMoveToCollectionListAction_performUndo___block_invoke(uint64_t a1)
   [v2 insertChildCollections:*(a1 + 32) atIndexes:v3];
 }
 
-- (void)performAction:(id)a3
+- (void)performAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   v5 = self->_sourceCollectionList;
   v6 = self->_targetCollectionList;
   v7 = self->_movedCollections;
-  v8 = [(PXPhotosAction *)self standardFetchOptions];
-  v9 = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:v5 options:v8];
+  standardFetchOptions = [(PXPhotosAction *)self standardFetchOptions];
+  v9 = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:v5 options:standardFetchOptions];
   beforeFetchResult = self->_beforeFetchResult;
   self->_beforeFetchResult = v9;
 
@@ -53,10 +53,10 @@ void __44__PXMoveToCollectionListAction_performUndo___block_invoke(uint64_t a1)
   v16[3] = &unk_1E774AD10;
   v16[4] = self;
   v17 = v5;
-  v18 = v8;
-  v19 = v4;
-  v11 = v4;
-  v12 = v8;
+  v18 = standardFetchOptions;
+  v19 = actionCopy;
+  v11 = actionCopy;
+  v12 = standardFetchOptions;
   v13 = v5;
   v14 = v7;
   v15 = v6;
@@ -92,55 +92,55 @@ void __46__PXMoveToCollectionListAction_performAction___block_invoke_2(void *a1,
   (*(a1[7] + 16))();
 }
 
-- (int64_t)adjustedTargetIndexForFetchResult:(id)a3 movedAssets:(id)a4 targetAsset:(id)a5
+- (int64_t)adjustedTargetIndexForFetchResult:(id)result movedAssets:(id)assets targetAsset:(id)asset
 {
-  v7 = a4;
-  v8 = a3;
-  v9 = v8;
-  if (a5)
+  assetsCopy = assets;
+  resultCopy = result;
+  v9 = resultCopy;
+  if (asset)
   {
-    v10 = [v8 indexOfObject:a5];
+    v10 = [resultCopy indexOfObject:asset];
   }
 
   else
   {
-    v10 = [v8 count];
+    v10 = [resultCopy count];
   }
 
-  v11 = [PXDragAndDropUtilities adjustedTargetIndexForCollection:v9 movedObjects:v7 targetIndex:v10];
+  v11 = [PXDragAndDropUtilities adjustedTargetIndexForCollection:v9 movedObjects:assetsCopy targetIndex:v10];
 
   return v11;
 }
 
-- (PXMoveToCollectionListAction)initWithCollections:(id)a3 targetCollectionList:(id)a4
+- (PXMoveToCollectionListAction)initWithCollections:(id)collections targetCollectionList:(id)list
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v8 photoLibrary];
+  collectionsCopy = collections;
+  listCopy = list;
+  photoLibrary = [listCopy photoLibrary];
   v15.receiver = self;
   v15.super_class = PXMoveToCollectionListAction;
-  v10 = [(PXPhotosAction *)&v15 initWithPhotoLibrary:v9];
+  v10 = [(PXPhotosAction *)&v15 initWithPhotoLibrary:photoLibrary];
 
   if (v10)
   {
-    objc_storeStrong(&v10->_movedCollections, a3);
-    v11 = [v7 firstObject];
-    v12 = [v11 px_fetchContainer];
+    objc_storeStrong(&v10->_movedCollections, collections);
+    firstObject = [collectionsCopy firstObject];
+    px_fetchContainer = [firstObject px_fetchContainer];
     sourceCollectionList = v10->_sourceCollectionList;
-    v10->_sourceCollectionList = v12;
+    v10->_sourceCollectionList = px_fetchContainer;
 
-    objc_storeStrong(&v10->_targetCollectionList, a4);
+    objc_storeStrong(&v10->_targetCollectionList, list);
   }
 
   return v10;
 }
 
-+ (BOOL)canPerformOnCollection:(id)a3
++ (BOOL)canPerformOnCollection:(id)collection
 {
-  v3 = a3;
-  if ([v3 canContainCollections])
+  collectionCopy = collection;
+  if ([collectionCopy canContainCollections])
   {
-    v4 = [v3 canPerformEditOperation:5];
+    v4 = [collectionCopy canPerformEditOperation:5];
   }
 
   else

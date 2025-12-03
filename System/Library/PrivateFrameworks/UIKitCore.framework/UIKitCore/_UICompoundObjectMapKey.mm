@@ -1,21 +1,21 @@
 @interface _UICompoundObjectMapKey
-+ (id)keyWithObject:(id)a3 andProperty:(id)a4;
++ (id)keyWithObject:(id)object andProperty:(id)property;
 - (id)description;
 @end
 
 @implementation _UICompoundObjectMapKey
 
-+ (id)keyWithObject:(id)a3 andProperty:(id)a4
++ (id)keyWithObject:(id)object andProperty:(id)property
 {
-  v5 = a3;
-  v6 = a4;
+  objectCopy = object;
+  propertyCopy = property;
   v7 = objc_opt_new();
   v8 = v7[1];
-  v7[1] = v5;
-  v9 = v5;
+  v7[1] = objectCopy;
+  v9 = objectCopy;
 
   v10 = v7[2];
-  v7[2] = v6;
+  v7[2] = propertyCopy;
 
   return v7;
 }

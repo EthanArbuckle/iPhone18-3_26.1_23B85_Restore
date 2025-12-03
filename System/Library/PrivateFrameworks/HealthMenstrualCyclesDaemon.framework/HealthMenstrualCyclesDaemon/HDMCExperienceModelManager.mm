@@ -9,16 +9,16 @@
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC27HealthMenstrualCyclesDaemon26HDMCExperienceModelManager_notificationProvider);
-  v3 = self;
+  selfCopy = self;
   [v2 removeObserver_];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for HDMCExperienceModelManager();
   [(HDMCExperienceModelManager *)&v4 dealloc];
 }
 
 - (void)didReceiveExperienceModelUpdateNotification
 {
-  v2 = self;
+  selfCopy = self;
   sub_22944863C();
 }
 

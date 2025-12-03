@@ -1,59 +1,59 @@
 @interface PXPhotosViewOptionsToolbarController
-- (CGSize)secondaryToolbarControllerToolbarSize:(id)a3;
-- (PXPhotosViewOptionsToolbarController)initWithModel:(id)a3 containerView:(id)a4;
-- (UIEdgeInsets)secondaryToolbarControllerScrollableContentPadding:(id)a3;
-- (UIEdgeInsets)secondaryToolbarControllerToolbarContentInsets:(id)a3;
+- (CGSize)secondaryToolbarControllerToolbarSize:(id)size;
+- (PXPhotosViewOptionsToolbarController)initWithModel:(id)model containerView:(id)view;
+- (UIEdgeInsets)secondaryToolbarControllerScrollableContentPadding:(id)padding;
+- (UIEdgeInsets)secondaryToolbarControllerToolbarContentInsets:(id)insets;
 - (void)_updateAccessoryViews;
 - (void)_updateLensControl;
 - (void)backdropGroupNameDidChange;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)photosLensControl:(id)a3 didSelectItem:(id)a4;
-- (void)photosLensControl:(id)a3 didTapOnAlreadySelectedItem:(id)a4;
-- (void)scrollViewControllerDidEndScrolling:(id)a3;
-- (void)scrollViewControllerDidScroll:(id)a3;
-- (void)scrollViewControllerWillBeginScrolling:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)photosLensControl:(id)control didSelectItem:(id)item;
+- (void)photosLensControl:(id)control didTapOnAlreadySelectedItem:(id)item;
+- (void)scrollViewControllerDidEndScrolling:(id)scrolling;
+- (void)scrollViewControllerDidScroll:(id)scroll;
+- (void)scrollViewControllerWillBeginScrolling:(id)scrolling;
 @end
 
 @implementation PXPhotosViewOptionsToolbarController
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = a3;
-  if (PXPhotosViewOptionsModelObserverContext == a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXPhotosViewOptionsModelObserverContext == context)
   {
-    v18 = v8;
-    if ((v6 & 8) != 0)
+    v18 = observableCopy;
+    if ((changeCopy & 8) != 0)
     {
-      v9 = [(PXPhotosViewOptionsToolbarController *)self model];
-      v10 = [v9 lensControlItems];
-      v11 = [(PXPhotosViewOptionsToolbarController *)self photosLensControl];
-      [v11 setItems:v10];
+      model = [(PXPhotosViewOptionsToolbarController *)self model];
+      lensControlItems = [model lensControlItems];
+      photosLensControl = [(PXPhotosViewOptionsToolbarController *)self photosLensControl];
+      [photosLensControl setItems:lensControlItems];
 
-      v12 = [(PXPhotosViewOptionsToolbarController *)self model];
-      v13 = [v12 lensControlItems];
-      v14 = [(PXPhotosViewOptionsToolbarController *)self photosLensControl];
-      [v14 setEnabledItems:v13];
+      model2 = [(PXPhotosViewOptionsToolbarController *)self model];
+      lensControlItems2 = [model2 lensControlItems];
+      photosLensControl2 = [(PXPhotosViewOptionsToolbarController *)self photosLensControl];
+      [photosLensControl2 setEnabledItems:lensControlItems2];
 
-      v8 = v18;
+      observableCopy = v18;
     }
 
-    if ((v6 & 4) != 0)
+    if ((changeCopy & 4) != 0)
     {
-      v15 = [(PXPhotosViewOptionsToolbarController *)self model];
-      v16 = [v15 selectedLensControlItem];
-      v17 = [(PXPhotosViewOptionsToolbarController *)self photosLensControl];
-      [v17 setSelectedItem:v16];
+      model3 = [(PXPhotosViewOptionsToolbarController *)self model];
+      selectedLensControlItem = [model3 selectedLensControlItem];
+      photosLensControl3 = [(PXPhotosViewOptionsToolbarController *)self photosLensControl];
+      [photosLensControl3 setSelectedItem:selectedLensControlItem];
 
-      v8 = v18;
+      observableCopy = v18;
     }
   }
 }
 
-- (CGSize)secondaryToolbarControllerToolbarSize:(id)a3
+- (CGSize)secondaryToolbarControllerToolbarSize:(id)size
 {
-  v3 = [(PXSecondaryToolbarController *)self contentView];
-  [v3 sizeThatFits:{320.0, 200.0}];
+  contentView = [(PXSecondaryToolbarController *)self contentView];
+  [contentView sizeThatFits:{320.0, 200.0}];
   v5 = v4;
   v7 = v6;
 
@@ -64,7 +64,7 @@
   return result;
 }
 
-- (UIEdgeInsets)secondaryToolbarControllerScrollableContentPadding:(id)a3
+- (UIEdgeInsets)secondaryToolbarControllerScrollableContentPadding:(id)padding
 {
   v3 = *off_1E7721FA8;
   v4 = *(off_1E7721FA8 + 1);
@@ -77,7 +77,7 @@
   return result;
 }
 
-- (UIEdgeInsets)secondaryToolbarControllerToolbarContentInsets:(id)a3
+- (UIEdgeInsets)secondaryToolbarControllerToolbarContentInsets:(id)insets
 {
   v3 = *off_1E7721FA8;
   v4 = *(off_1E7721FA8 + 1);
@@ -90,23 +90,23 @@
   return result;
 }
 
-- (void)scrollViewControllerDidEndScrolling:(id)a3
+- (void)scrollViewControllerDidEndScrolling:(id)scrolling
 {
   userScrollVelocityFilter = self->_userScrollVelocityFilter;
   self->_userScrollVelocityFilter = 0;
 }
 
-- (void)scrollViewControllerDidScroll:(id)a3
+- (void)scrollViewControllerDidScroll:(id)scroll
 {
-  v4 = a3;
-  self->_isScrolledAtBottom = [v4 isScrolledAtEdge:3 tolerance:100.0];
+  scrollCopy = scroll;
+  self->_isScrolledAtBottom = [scrollCopy isScrolledAtEdge:3 tolerance:100.0];
   userScrollVelocityFilter = self->_userScrollVelocityFilter;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __70__PXPhotosViewOptionsToolbarController_scrollViewControllerDidScroll___block_invoke;
   v7[3] = &unk_1E7733D80;
-  v8 = v4;
-  v6 = v4;
+  v8 = scrollCopy;
+  v6 = scrollCopy;
   [(PXVelocityNumberFilter *)userScrollVelocityFilter performChanges:v7];
   [(PXPhotosViewOptionsToolbarController *)self _updateAccessoryViews];
 }
@@ -119,41 +119,41 @@ void __70__PXPhotosViewOptionsToolbarController_scrollViewControllerDidScroll___
   [v3 setInput:CGRectGetMidY(v5)];
 }
 
-- (void)scrollViewControllerWillBeginScrolling:(id)a3
+- (void)scrollViewControllerWillBeginScrolling:(id)scrolling
 {
-  v4 = [off_1E7721958 gestureVelocityFilter];
+  gestureVelocityFilter = [off_1E7721958 gestureVelocityFilter];
   userScrollVelocityFilter = self->_userScrollVelocityFilter;
-  self->_userScrollVelocityFilter = v4;
+  self->_userScrollVelocityFilter = gestureVelocityFilter;
 }
 
-- (void)photosLensControl:(id)a3 didTapOnAlreadySelectedItem:(id)a4
+- (void)photosLensControl:(id)control didTapOnAlreadySelectedItem:(id)item
 {
-  v5 = [(PXSecondaryToolbarController *)self actionHandler:a3];
+  v5 = [(PXSecondaryToolbarController *)self actionHandler:control];
   [v5 secondaryToolbarController:self scrollToBottomAnimated:1];
 }
 
-- (void)photosLensControl:(id)a3 didSelectItem:(id)a4
+- (void)photosLensControl:(id)control didSelectItem:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   v6 = +[PXLemonadeSettings sharedInstance];
-  v7 = [v6 yearsAndMonthsMode];
+  yearsAndMonthsMode = [v6 yearsAndMonthsMode];
 
-  if (v7)
+  if (yearsAndMonthsMode)
   {
-    v8 = [(PXPhotosViewOptionsToolbarController *)self model];
+    model = [(PXPhotosViewOptionsToolbarController *)self model];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __72__PXPhotosViewOptionsToolbarController_photosLensControl_didSelectItem___block_invoke;
     v16[3] = &unk_1E7749528;
-    v17 = v5;
-    [v8 performChanges:v16];
+    v17 = itemCopy;
+    [model performChanges:v16];
   }
 
   else
   {
-    v9 = [v5 identifier];
-    v10 = v9;
-    if (v9 == @"years" || (v11 = -[__CFString isEqual:](v9, "isEqual:", @"years"), v10, (v11 & 1) != 0) || ([v5 identifier], v12 = objc_claimAutoreleasedReturnValue(), v12 == @"months"))
+    identifier = [itemCopy identifier];
+    v10 = identifier;
+    if (identifier == @"years" || (v11 = -[__CFString isEqual:](identifier, "isEqual:", @"years"), v10, (v11 & 1) != 0) || ([itemCopy identifier], v12 = objc_claimAutoreleasedReturnValue(), v12 == @"months"))
     {
     }
 
@@ -194,8 +194,8 @@ LABEL_10:
   if (v7 > v8 || self->_isScrolledAtBottom)
   {
     v9 = v5 < 0.0 && !self->_isScrolledAtBottom && [(PXPhotosViewOptionsToolbarController *)self shouldHideAccessoryViewsOnScroll];
-    v10 = [(PXSecondaryToolbarController *)self leadingAccessoryView];
-    [v10 alpha];
+    leadingAccessoryView = [(PXSecondaryToolbarController *)self leadingAccessoryView];
+    [leadingAccessoryView alpha];
     v12 = v11;
 
     if (((v9 ^ (v12 >= 0.001)) & 1) == 0)
@@ -210,16 +210,16 @@ LABEL_10:
         v13 = 1.0;
       }
 
-      v14 = [(PXSecondaryToolbarController *)self leadingAccessoryView];
-      v15 = [(PXSecondaryToolbarController *)self trailingAccessoryView];
+      leadingAccessoryView2 = [(PXSecondaryToolbarController *)self leadingAccessoryView];
+      trailingAccessoryView = [(PXSecondaryToolbarController *)self trailingAccessoryView];
       v16 = MEMORY[0x1E69DD250];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __61__PXPhotosViewOptionsToolbarController__updateAccessoryViews__block_invoke;
       v23[3] = &unk_1E7749FF8;
-      v24 = v14;
+      v24 = leadingAccessoryView2;
       v26 = v13;
-      v25 = v15;
+      v25 = trailingAccessoryView;
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __61__PXPhotosViewOptionsToolbarController__updateAccessoryViews__block_invoke_2;
@@ -254,19 +254,19 @@ uint64_t __61__PXPhotosViewOptionsToolbarController__updateAccessoryViews__block
 
 - (void)_updateLensControl
 {
-  v8 = [(PXPhotosViewOptionsToolbarController *)self model];
-  v3 = [(PXPhotosViewOptionsToolbarController *)self photosLensControl];
-  v4 = [(PXSecondaryToolbarController *)self backdropGroupName];
-  [v3 setBackdropGroupName:v4];
+  model = [(PXPhotosViewOptionsToolbarController *)self model];
+  photosLensControl = [(PXPhotosViewOptionsToolbarController *)self photosLensControl];
+  backdropGroupName = [(PXSecondaryToolbarController *)self backdropGroupName];
+  [photosLensControl setBackdropGroupName:backdropGroupName];
 
-  v5 = [v8 lensControlItems];
-  [v3 setItems:v5];
+  lensControlItems = [model lensControlItems];
+  [photosLensControl setItems:lensControlItems];
 
-  v6 = [v8 lensControlItems];
-  [v3 setEnabledItems:v6];
+  lensControlItems2 = [model lensControlItems];
+  [photosLensControl setEnabledItems:lensControlItems2];
 
-  v7 = [v8 selectedLensControlItem];
-  [v3 setSelectedItem:v7];
+  selectedLensControlItem = [model selectedLensControlItem];
+  [photosLensControl setSelectedItem:selectedLensControlItem];
 }
 
 - (void)backdropGroupNameDidChange
@@ -277,14 +277,14 @@ uint64_t __61__PXPhotosViewOptionsToolbarController__updateAccessoryViews__block
   [(PXPhotosViewOptionsToolbarController *)self _updateLensControl];
 }
 
-- (PXPhotosViewOptionsToolbarController)initWithModel:(id)a3 containerView:(id)a4
+- (PXPhotosViewOptionsToolbarController)initWithModel:(id)model containerView:(id)view
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  modelCopy = model;
+  viewCopy = view;
+  v10 = viewCopy;
+  if (modelCopy)
   {
-    if (v9)
+    if (viewCopy)
     {
       goto LABEL_3;
     }
@@ -292,8 +292,8 @@ uint64_t __61__PXPhotosViewOptionsToolbarController__updateAccessoryViews__block
 
   else
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"PXPhotosViewOptionsToolbarController.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"model"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosViewOptionsToolbarController.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"model"}];
 
     if (v10)
     {
@@ -301,8 +301,8 @@ uint64_t __61__PXPhotosViewOptionsToolbarController__updateAccessoryViews__block
     }
   }
 
-  v18 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v18 handleFailureInMethod:a2 object:self file:@"PXPhotosViewOptionsToolbarController.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"containerView"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXPhotosViewOptionsToolbarController.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"containerView"}];
 
 LABEL_3:
   v19.receiver = self;
@@ -311,14 +311,14 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_model, a3);
+    objc_storeStrong(&v11->_model, model);
     [(PXPhotosViewOptionsModel *)v12->_model registerChangeObserver:v12 context:&PXPhotosViewOptionsModelObserverContext];
     v13 = objc_alloc_init(off_1E7721820);
     photosLensControl = v12->_photosLensControl;
     v12->_photosLensControl = v13;
 
-    v15 = [MEMORY[0x1E69DC888] secondarySystemFillColor];
-    [(PXPhotosLensControl *)v12->_photosLensControl setContentBackgroundColor:v15];
+    secondarySystemFillColor = [MEMORY[0x1E69DC888] secondarySystemFillColor];
+    [(PXPhotosLensControl *)v12->_photosLensControl setContentBackgroundColor:secondarySystemFillColor];
 
     [(PXPhotosLensControl *)v12->_photosLensControl setDelegate:v12];
     v12->_shouldHideAccessoryViewsOnScroll = 1;

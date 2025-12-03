@@ -1,15 +1,15 @@
 @interface BRCDocumentItem
-+ (BOOL)isDocumentAutomaticallyEvictableWithExtension:(id)a3;
-+ (BOOL)isDocumentAutomaticallyEvictableWithName:(id)a3;
-+ (BOOL)shouldDocumentBeGreedyWithName:(id)a3;
-- (BOOL)_insertInDB:(id)a3 dbRowID:(unint64_t)a4;
++ (BOOL)isDocumentAutomaticallyEvictableWithExtension:(id)extension;
++ (BOOL)isDocumentAutomaticallyEvictableWithName:(id)name;
++ (BOOL)shouldDocumentBeGreedyWithName:(id)name;
+- (BOOL)_insertInDB:(id)b dbRowID:(unint64_t)d;
 - (BOOL)_isInFlightSyncContent;
 - (BOOL)_isInterestingUpdateForNotifs;
-- (BOOL)_needsSyncBubbleRecomputeForError:(id)a3 origError:(id)a4;
-- (BOOL)_nukePackageItemsFromDB:(id)a3;
-- (BOOL)_updateInDB:(id)a3 diffs:(unint64_t)a4;
-- (BOOL)_updatePackageItemsIfNecessaryWithImportObject:(id)a3 error:(id *)a4;
-- (BOOL)contentRecordNeedsForceAllFieldsWhenDeadInServerTruth:(BOOL)a3;
+- (BOOL)_needsSyncBubbleRecomputeForError:(id)error origError:(id)origError;
+- (BOOL)_nukePackageItemsFromDB:(id)b;
+- (BOOL)_updateInDB:(id)b diffs:(unint64_t)diffs;
+- (BOOL)_updatePackageItemsIfNecessaryWithImportObject:(id)object error:(id *)error;
+- (BOOL)contentRecordNeedsForceAllFieldsWhenDeadInServerTruth:(BOOL)truth;
 - (BOOL)hasShareIDAndIsOwnedByMe;
 - (BOOL)hasValidCKInfo;
 - (BOOL)isAutomaticallyEvictable;
@@ -19,54 +19,54 @@
 - (BOOL)isEvictable;
 - (BOOL)isPackage;
 - (BOOL)isVisibleIniCloudDrive;
-- (BOOL)markLatestSyncRequestAcknowledgedInZone:(id)a3;
+- (BOOL)markLatestSyncRequestAcknowledgedInZone:(id)zone;
 - (BOOL)shouldBeGreedy;
 - (BOOL)shouldHaveThumbnail;
 - (BOOL)shouldTransferThumbnail;
-- (BOOL)startDownloadInTask:(id)a3 options:(unint64_t)a4 etagIfLoser:(id)a5 stageFileName:(id)a6 error:(id *)a7;
+- (BOOL)startDownloadInTask:(id)task options:(unint64_t)options etagIfLoser:(id)loser stageFileName:(id)name error:(id *)error;
 - (BOOL)supportsServerSideAssetCopies;
-- (BOOL)updateFromServerItem:(id)a3;
-- (BOOL)validateLoggingToFile:(__sFILE *)a3;
+- (BOOL)updateFromServerItem:(id)item;
+- (BOOL)validateLoggingToFile:(__sFILE *)file;
 - (NSDictionary)conflictLoserState;
 - (NSError)uploadError;
-- (id)_initFromPQLResultSet:(id)a3 session:(id)a4 db:(id)a5 error:(id *)a6;
-- (id)_initWithImportObject:(id)a3 error:(id *)a4;
-- (id)_initWithLocalItem:(id)a3;
-- (id)_initWithServerItem:(id)a3 dbRowID:(unint64_t)a4;
+- (id)_initFromPQLResultSet:(id)set session:(id)session db:(id)db error:(id *)error;
+- (id)_initWithImportObject:(id)object error:(id *)error;
+- (id)_initWithLocalItem:(id)item;
+- (id)_initWithServerItem:(id)item dbRowID:(unint64_t)d;
 - (id)aliasItemID;
-- (id)baseRecordClearAllFields:(BOOL)a3;
+- (id)baseRecordClearAllFields:(BOOL)fields;
 - (id)collaborationIdentifierIfComputable;
-- (id)descriptionWithContext:(id)a3;
+- (id)descriptionWithContext:(id)context;
 - (id)documentRecordID;
 - (id)syncContextUsedForTransfers;
-- (unint64_t)diffAgainstLocalItem:(id)a3;
-- (unint64_t)diffAgainstServerItem:(id)a3;
-- (void)_crossZoneMoveToParent:(id)a3;
+- (unint64_t)diffAgainstLocalItem:(id)item;
+- (unint64_t)diffAgainstServerItem:(id)item;
+- (void)_crossZoneMoveToParent:(id)parent;
 - (void)_insertTombstoneForPreviousZoneGlobalID;
 - (void)_markAsDeadTombstoneWithPreviousGlobalID;
-- (void)_reIngestFromFileProviderWithIsFirstAttempt:(BOOL)a3;
-- (void)_updateRecursivePropertiesInDB:(id)a3 dbRowID:(unint64_t)a4 diffs:(unint64_t)a5;
-- (void)_updateUploadJobIfNeededWithDiffs:(unint64_t)a3;
-- (void)addResolvedConflictLoserEtag:(id)a3;
-- (void)appDidResolveConflictLoserWithEtag:(id)a3;
+- (void)_reIngestFromFileProviderWithIsFirstAttempt:(BOOL)attempt;
+- (void)_updateRecursivePropertiesInDB:(id)b dbRowID:(unint64_t)d diffs:(unint64_t)diffs;
+- (void)_updateUploadJobIfNeededWithDiffs:(unint64_t)diffs;
+- (void)addResolvedConflictLoserEtag:(id)etag;
+- (void)appDidResolveConflictLoserWithEtag:(id)etag;
 - (void)handleUnknownItemError;
 - (void)isPackage;
-- (void)learnContentVersionFromVersionIdentifier:(id)a3;
-- (void)markCrossZoneMovedForServerAssetCopyWithParentItem:(id)a3;
+- (void)learnContentVersionFromVersionIdentifier:(id)identifier;
+- (void)markCrossZoneMovedForServerAssetCopyWithParentItem:(id)item;
 - (void)markDead;
 - (void)markDoneMigratingToFPFS;
 - (void)markForceNeedsSyncUp;
 - (void)markForceUpload;
 - (void)markItemForgottenByServer;
-- (void)markLatestSyncRequestRejectedInZone:(id)a3;
+- (void)markLatestSyncRequestRejectedInZone:(id)zone;
 - (void)markNeedsReading;
 - (void)markNeedsUploadOrSyncingUp;
-- (void)markOverQuotaWithError:(id)a3;
-- (void)markUploadedWithRecord:(id)a3;
-- (void)recoverDamagedDocumentIfNecessaryWithError:(id)a3;
-- (void)updateContentsCKInfoAndDeviceIDFromServerItem:(id)a3;
-- (void)updateVersionMetadataFromServerItem:(id)a3 preventVersionDiffs:(BOOL)a4;
-- (void)updateWithContentModificationDate:(id)a3;
+- (void)markOverQuotaWithError:(id)error;
+- (void)markUploadedWithRecord:(id)record;
+- (void)recoverDamagedDocumentIfNecessaryWithError:(id)error;
+- (void)updateContentsCKInfoAndDeviceIDFromServerItem:(id)item;
+- (void)updateVersionMetadataFromServerItem:(id)item preventVersionDiffs:(BOOL)diffs;
+- (void)updateWithContentModificationDate:(id)date;
 @end
 
 @implementation BRCDocumentItem
@@ -75,8 +75,8 @@
 {
   if (![(BRCLocalItem *)self isFinderBookmark])
   {
-    v3 = [(BRCStatInfo *)self->super._st type];
-    if (v3 > 8 || ((1 << v3) & 0x106) == 0)
+    type = [(BRCStatInfo *)self->super._st type];
+    if (type > 8 || ((1 << type) & 0x106) == 0)
     {
       v5 = brc_bread_crumbs();
       v6 = brc_default_log();
@@ -92,18 +92,18 @@
 
 - (BOOL)isCrossZoneMoveTombstone
 {
-  v3 = [(BRCLocalItem *)self->super._orig asDocument];
-  if (!-[BRCLocalItem isDead](self, "isDead") || -[BRCDocumentItem isDocumentBeingCopiedToNewZone](self, "isDocumentBeingCopiedToNewZone") || ([v3 isDead] & 1) != 0 || !objc_msgSend(v3, "isDocumentBeingCopiedToNewZone"))
+  asDocument = [(BRCLocalItem *)self->super._orig asDocument];
+  if (!-[BRCLocalItem isDead](self, "isDead") || -[BRCDocumentItem isDocumentBeingCopiedToNewZone](self, "isDocumentBeingCopiedToNewZone") || ([asDocument isDead] & 1) != 0 || !objc_msgSend(asDocument, "isDocumentBeingCopiedToNewZone"))
   {
     v7 = 0;
   }
 
   else
   {
-    v4 = [(BRCLocalItem *)self itemGlobalID];
-    v5 = [v3 currentVersion];
-    v6 = [v5 previousItemGlobalID];
-    v7 = [v4 isEqualToItemGlobalID:v6];
+    itemGlobalID = [(BRCLocalItem *)self itemGlobalID];
+    currentVersion = [asDocument currentVersion];
+    previousItemGlobalID = [currentVersion previousItemGlobalID];
+    v7 = [itemGlobalID isEqualToItemGlobalID:previousItemGlobalID];
   }
 
   return v7;
@@ -137,13 +137,13 @@
 
     else
     {
-      v4 = [(BRCClientZone *)self->super._clientZone asPrivateClientZone];
-      v5 = [v4 defaultAppLibrary];
+      asPrivateClientZone = [(BRCClientZone *)self->super._clientZone asPrivateClientZone];
+      defaultAppLibrary = [asPrivateClientZone defaultAppLibrary];
 
-      v6 = [v5 containerMetadata];
-      if ([v6 isDocumentScopePublic])
+      containerMetadata = [defaultAppLibrary containerMetadata];
+      if ([containerMetadata isDocumentScopePublic])
       {
-        v3 = [v6 isCloudSyncTCCDisabled] ^ 1;
+        v3 = [containerMetadata isCloudSyncTCCDisabled] ^ 1;
       }
 
       else
@@ -163,50 +163,50 @@
 
 - (BOOL)isDocumentBeingCopiedToNewZone
 {
-  v2 = [(BRCLocalVersion *)self->_currentVersion previousItemGlobalID];
-  v3 = v2 != 0;
+  previousItemGlobalID = [(BRCLocalVersion *)self->_currentVersion previousItemGlobalID];
+  v3 = previousItemGlobalID != 0;
 
   return v3;
 }
 
 - (NSError)uploadError
 {
-  v3 = [(BRCLocalItem *)self syncUpError];
-  v4 = v3;
-  if (v3)
+  syncUpError = [(BRCLocalItem *)self syncUpError];
+  v4 = syncUpError;
+  if (syncUpError)
   {
-    v5 = v3;
+    uploadError = syncUpError;
   }
 
   else
   {
-    v6 = [(BRCDocumentItem *)self currentVersion];
-    v5 = [v6 uploadError];
+    currentVersion = [(BRCDocumentItem *)self currentVersion];
+    uploadError = [currentVersion uploadError];
   }
 
-  return v5;
+  return uploadError;
 }
 
 - (BOOL)isEvictable
 {
-  v3 = [(BRCLocalItem *)self appLibrary];
-  v4 = [v3 mangledID];
-  v5 = [BRCUserDefaults defaultsForMangledID:v4];
+  appLibrary = [(BRCLocalItem *)self appLibrary];
+  mangledID = [appLibrary mangledID];
+  v5 = [BRCUserDefaults defaultsForMangledID:mangledID];
 
-  v6 = [(BRCLocalStatInfo *)self->super._st logicalName];
-  v7 = [v6 br_pathExtension];
-  v8 = [v7 lowercaseString];
-  v9 = v8;
+  logicalName = [(BRCLocalStatInfo *)self->super._st logicalName];
+  br_pathExtension = [logicalName br_pathExtension];
+  lowercaseString = [br_pathExtension lowercaseString];
+  v9 = lowercaseString;
   v10 = &stru_2837504F0;
-  if (v8)
+  if (lowercaseString)
   {
-    v10 = v8;
+    v10 = lowercaseString;
   }
 
   v11 = v10;
 
-  v12 = [v5 nonEvictableExtensions];
-  v13 = [v12 containsObject:v11];
+  nonEvictableExtensions = [v5 nonEvictableExtensions];
+  v13 = [nonEvictableExtensions containsObject:v11];
 
   v14 = (v13 & 1) == 0 && [(BRCLocalItem *)self isIdleOrRejected];
   return v14;
@@ -214,9 +214,9 @@
 
 - (BOOL)shouldBeGreedy
 {
-  v3 = [(BRCLocalItem *)self appLibrary];
-  v4 = [v3 mangledID];
-  v5 = [BRCUserDefaults defaultsForMangledID:v4];
+  appLibrary = [(BRCLocalItem *)self appLibrary];
+  mangledID = [appLibrary mangledID];
+  v5 = [BRCUserDefaults defaultsForMangledID:mangledID];
   [v5 maximumDocumentAgeToBeGreedy];
   v7 = v6;
 
@@ -224,18 +224,18 @@
   [v8 timeIntervalSince1970];
   v10 = v9;
 
-  v11 = [(BRCDocumentItem *)self currentVersion];
-  v12 = [v11 mtime];
+  currentVersion = [(BRCDocumentItem *)self currentVersion];
+  mtime = [currentVersion mtime];
 
-  if (v12 < v10 || (-[BRCLocalItem appLibrary](self, "appLibrary"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 isDocumentScopePublic], v13, !v14) || -[BRCLocalItem isInTrashScope](self, "isInTrashScope") || -[BRCLocalItem isInDataScope](self, "isInDataScope"))
+  if (mtime < v10 || (-[BRCLocalItem appLibrary](self, "appLibrary"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 isDocumentScopePublic], v13, !v14) || -[BRCLocalItem isInTrashScope](self, "isInTrashScope") || -[BRCLocalItem isInDataScope](self, "isInDataScope"))
   {
     LOBYTE(v15) = 0;
   }
 
   else
   {
-    v17 = [(BRCLocalItem *)self appLibrary];
-    v15 = [v17 shouldEvictUploadedItems] ^ 1;
+    appLibrary2 = [(BRCLocalItem *)self appLibrary];
+    v15 = [appLibrary2 shouldEvictUploadedItems] ^ 1;
   }
 
   return v15;
@@ -245,35 +245,35 @@
 {
   if ([(BRCLocalItem *)self isSharedToMeTopLevelItem])
   {
-    v3 = [(BRCLocalItem *)self asSharedToMeTopLevelItem];
-    v4 = [v3 sharedAliasItemID];
+    asSharedToMeTopLevelItem = [(BRCLocalItem *)self asSharedToMeTopLevelItem];
+    sharedAliasItemID = [asSharedToMeTopLevelItem sharedAliasItemID];
   }
 
   else
   {
-    v3 = [(BRCLocalItem *)self appLibrary];
-    if ([v3 wasMovedToCloudDocs])
+    asSharedToMeTopLevelItem = [(BRCLocalItem *)self appLibrary];
+    if ([asSharedToMeTopLevelItem wasMovedToCloudDocs])
     {
-      v4 = 0;
+      sharedAliasItemID = 0;
     }
 
     else
     {
       v5 = [BRCItemID alloc];
-      v6 = [(BRCItemID *)self->super._itemID itemIDString];
-      v4 = [(BRCItemID *)v5 initWithAliasUUID:v6];
+      itemIDString = [(BRCItemID *)self->super._itemID itemIDString];
+      sharedAliasItemID = [(BRCItemID *)v5 initWithAliasUUID:itemIDString];
     }
   }
 
-  return v4;
+  return sharedAliasItemID;
 }
 
 - (BOOL)isPackage
 {
   if (![(BRCLocalItem *)self isFinderBookmark])
   {
-    v3 = [(BRCStatInfo *)self->super._st type];
-    if (v3 > 8 || ((1 << v3) & 0x106) == 0)
+    type = [(BRCStatInfo *)self->super._st type];
+    if (type > 8 || ((1 << type) & 0x106) == 0)
     {
       v5 = brc_bread_crumbs();
       v6 = brc_default_log();
@@ -292,12 +292,12 @@
   if ([(BRCDocumentItem *)self isShareableItem])
   {
     v3 = objc_alloc(MEMORY[0x277CBC5D0]);
-    v4 = [(BRCDocumentItem *)self asShareableItem];
-    v5 = [v3 initShareIDWithShareableItem:v4];
+    asShareableItem = [(BRCDocumentItem *)self asShareableItem];
+    v5 = [v3 initShareIDWithShareableItem:asShareableItem];
 
-    v6 = [(BRCLocalItem *)self session];
-    v7 = [v6 cachedCurrentUserRecordNameIfExists];
-    v8 = [v5 brc_collaborationIdentifierWithCachedCurrentUserRecordName:v7];
+    session = [(BRCLocalItem *)self session];
+    cachedCurrentUserRecordNameIfExists = [session cachedCurrentUserRecordNameIfExists];
+    v8 = [v5 brc_collaborationIdentifierWithCachedCurrentUserRecordName:cachedCurrentUserRecordNameIfExists];
   }
 
   else
@@ -308,16 +308,16 @@
   return v8;
 }
 
-+ (BOOL)isDocumentAutomaticallyEvictableWithExtension:(id)a3
++ (BOOL)isDocumentAutomaticallyEvictableWithExtension:(id)extension
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  extensionCopy = extension;
   v4 = [BRCUserDefaults defaultsForMangledID:0];
-  v5 = [v4 nonEvictableExtensions];
-  if (![v5 containsObject:v3])
+  nonEvictableExtensions = [v4 nonEvictableExtensions];
+  if (![nonEvictableExtensions containsObject:extensionCopy])
   {
-    v6 = [v4 nonAutoEvictableExtensions];
-    v7 = [v6 containsObject:v3];
+    nonAutoEvictableExtensions = [v4 nonAutoEvictableExtensions];
+    v7 = [nonAutoEvictableExtensions containsObject:extensionCopy];
 
     if (v7)
     {
@@ -325,7 +325,7 @@
     }
 
     v9 = +[BRCUTITypeCache defaultCache];
-    v10 = [v9 UTIForExtension:v3];
+    v10 = [v9 UTIForExtension:extensionCopy];
 
     if (!v10)
     {
@@ -339,8 +339,8 @@ LABEL_27:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v11 = [v4 autoEvictableUTIs];
-    v12 = [v11 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    autoEvictableUTIs = [v4 autoEvictableUTIs];
+    v12 = [autoEvictableUTIs countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v12)
     {
       v13 = v12;
@@ -351,7 +351,7 @@ LABEL_8:
       {
         if (*v27 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(autoEvictableUTIs);
         }
 
         if (UTTypeConformsTo(v10, *(*(&v26 + 1) + 8 * v15)))
@@ -361,7 +361,7 @@ LABEL_8:
 
         if (v13 == ++v15)
         {
-          v13 = [v11 countByEnumeratingWithState:&v26 objects:v31 count:16];
+          v13 = [autoEvictableUTIs countByEnumeratingWithState:&v26 objects:v31 count:16];
           if (v13)
           {
             goto LABEL_8;
@@ -380,8 +380,8 @@ LABEL_14:
       v25 = 0u;
       v22 = 0u;
       v23 = 0u;
-      v11 = [v4 nonAutoEvictableUTIs];
-      v16 = [v11 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      autoEvictableUTIs = [v4 nonAutoEvictableUTIs];
+      v16 = [autoEvictableUTIs countByEnumeratingWithState:&v22 objects:v30 count:16];
       if (v16)
       {
         v17 = v16;
@@ -392,7 +392,7 @@ LABEL_14:
           {
             if (*v23 != v18)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(autoEvictableUTIs);
             }
 
             if (UTTypeConformsTo(v10, *(*(&v22 + 1) + 8 * i)))
@@ -402,7 +402,7 @@ LABEL_14:
             }
           }
 
-          v17 = [v11 countByEnumeratingWithState:&v22 objects:v30 count:16];
+          v17 = [autoEvictableUTIs countByEnumeratingWithState:&v22 objects:v30 count:16];
           v8 = 1;
           if (v17)
           {
@@ -428,13 +428,13 @@ LABEL_28:
   return v8;
 }
 
-+ (BOOL)isDocumentAutomaticallyEvictableWithName:(id)a3
++ (BOOL)isDocumentAutomaticallyEvictableWithName:(id)name
 {
-  v4 = [a3 br_pathExtension];
-  v5 = [v4 lowercaseString];
+  br_pathExtension = [name br_pathExtension];
+  lowercaseString = [br_pathExtension lowercaseString];
 
-  LOBYTE(a1) = [a1 isDocumentAutomaticallyEvictableWithExtension:v5];
-  return a1;
+  LOBYTE(self) = [self isDocumentAutomaticallyEvictableWithExtension:lowercaseString];
+  return self;
 }
 
 - (BOOL)isAutomaticallyEvictable
@@ -450,51 +450,51 @@ LABEL_28:
   }
 
   v3 = objc_opt_class();
-  v4 = [(BRCLocalStatInfo *)self->super._st logicalName];
-  LODWORD(v3) = [v3 isDocumentAutomaticallyEvictableWithName:v4];
+  logicalName = [(BRCLocalStatInfo *)self->super._st logicalName];
+  LODWORD(v3) = [v3 isDocumentAutomaticallyEvictableWithName:logicalName];
 
   if (!v3)
   {
     return 0;
   }
 
-  v5 = [(BRCLocalItem *)self appLibrary];
-  v6 = [v5 mangledID];
-  v7 = [BRCUserDefaults defaultsForMangledID:v6];
+  appLibrary = [(BRCLocalItem *)self appLibrary];
+  mangledID = [appLibrary mangledID];
+  v7 = [BRCUserDefaults defaultsForMangledID:mangledID];
 
-  v8 = [v7 minAutomaticallyEvictableFilesize];
-  v9 = [(BRCVersion *)self->_currentVersion size]>= v8;
+  minAutomaticallyEvictableFilesize = [v7 minAutomaticallyEvictableFilesize];
+  v9 = [(BRCVersion *)self->_currentVersion size]>= minAutomaticallyEvictableFilesize;
 
   return v9;
 }
 
 - (BOOL)hasShareIDAndIsOwnedByMe
 {
-  v3 = [(BRCLocalItem *)self isOwnedByMe];
-  if (v3)
+  isOwnedByMe = [(BRCLocalItem *)self isOwnedByMe];
+  if (isOwnedByMe)
   {
     return (LOBYTE(self->super._sharingOptions) >> 2) & 1;
   }
 
-  return v3;
+  return isOwnedByMe;
 }
 
-+ (BOOL)shouldDocumentBeGreedyWithName:(id)a3
++ (BOOL)shouldDocumentBeGreedyWithName:(id)name
 {
-  v3 = [a3 br_pathExtension];
-  v4 = [v3 lowercaseString];
+  br_pathExtension = [name br_pathExtension];
+  lowercaseString = [br_pathExtension lowercaseString];
 
   v5 = [BRCUserDefaults defaultsForMangledID:0];
-  v6 = [v5 nonEvictableExtensions];
-  if ([v6 containsObject:v4])
+  nonEvictableExtensions = [v5 nonEvictableExtensions];
+  if ([nonEvictableExtensions containsObject:lowercaseString])
   {
     v7 = 1;
   }
 
   else
   {
-    v8 = [v5 shouldBeGreedyExtensions];
-    v7 = [v8 containsObject:v4];
+    shouldBeGreedyExtensions = [v5 shouldBeGreedyExtensions];
+    v7 = [shouldBeGreedyExtensions containsObject:lowercaseString];
   }
 
   return v7;
@@ -503,25 +503,25 @@ LABEL_28:
 - (BOOL)shouldHaveThumbnail
 {
   v3 = [(BRCLocalItem *)self st];
-  v4 = [v3 logicalName];
-  v5 = [v4 br_pathExtension];
-  v6 = [v5 lowercaseString];
-  v7 = v6;
+  logicalName = [v3 logicalName];
+  br_pathExtension = [logicalName br_pathExtension];
+  lowercaseString = [br_pathExtension lowercaseString];
+  v7 = lowercaseString;
   v8 = &stru_2837504F0;
-  if (v6)
+  if (lowercaseString)
   {
-    v8 = v6;
+    v8 = lowercaseString;
   }
 
   v9 = v8;
 
-  v10 = [(BRCLocalItem *)self appLibrary];
-  v11 = [v10 mangledID];
-  v12 = [BRCUserDefaults defaultsForMangledID:v11];
-  v13 = [v12 blacklistedThumbnailExtensions];
+  appLibrary = [(BRCLocalItem *)self appLibrary];
+  mangledID = [appLibrary mangledID];
+  v12 = [BRCUserDefaults defaultsForMangledID:mangledID];
+  blacklistedThumbnailExtensions = [v12 blacklistedThumbnailExtensions];
 
-  LOBYTE(v10) = [v13 containsObject:v9];
-  v14 = (v10 & 1) == 0 && [(BRCLocalItem *)self isInDocumentScope];
+  LOBYTE(appLibrary) = [blacklistedThumbnailExtensions containsObject:v9];
+  v14 = (appLibrary & 1) == 0 && [(BRCLocalItem *)self isInDocumentScope];
 
   return v14;
 }
@@ -535,8 +535,8 @@ LABEL_28:
 
   else
   {
-    v3 = [(BRCDocumentItem *)self currentVersion];
-    v4 = [v3 isSmallAndMostRecentClientsGenerateThumbnails] ^ 1;
+    currentVersion = [(BRCDocumentItem *)self currentVersion];
+    v4 = [currentVersion isSmallAndMostRecentClientsGenerateThumbnails] ^ 1;
   }
 
   return v4;
@@ -544,18 +544,18 @@ LABEL_28:
 
 - (BOOL)_isInterestingUpdateForNotifs
 {
-  v3 = [(BRCLocalItem *)self orig];
-  v4 = [v3 currentVersion];
-  v5 = [v4 uploadError];
-  if (v5)
+  orig = [(BRCLocalItem *)self orig];
+  currentVersion = [orig currentVersion];
+  uploadError = [currentVersion uploadError];
+  if (uploadError)
   {
   }
 
   else
   {
-    v16 = [(BRCLocalVersion *)self->_currentVersion uploadError];
+    uploadError2 = [(BRCLocalVersion *)self->_currentVersion uploadError];
 
-    if (v16)
+    if (uploadError2)
     {
 LABEL_8:
       v15 = 1;
@@ -563,30 +563,30 @@ LABEL_8:
     }
   }
 
-  v6 = [v3 queryItemStatus];
-  if (v6 != [(BRCDocumentItem *)self queryItemStatus])
+  queryItemStatus = [orig queryItemStatus];
+  if (queryItemStatus != [(BRCDocumentItem *)self queryItemStatus])
   {
     goto LABEL_8;
   }
 
-  v7 = [v3 downloadStatus];
-  if (v7 != [(BRCDocumentItem *)self downloadStatus])
+  downloadStatus = [orig downloadStatus];
+  if (downloadStatus != [(BRCDocumentItem *)self downloadStatus])
   {
     goto LABEL_8;
   }
 
-  v8 = [v3 uploadStatus];
-  if (v8 != [(BRCLocalItem *)self uploadStatus])
+  uploadStatus = [orig uploadStatus];
+  if (uploadStatus != [(BRCLocalItem *)self uploadStatus])
   {
     goto LABEL_8;
   }
 
-  v9 = [(BRCDocumentItem *)self currentVersion];
-  v10 = [v9 conflictLoserEtags];
-  v11 = [v10 count] == 0;
-  v12 = [v3 currentVersion];
-  v13 = [v12 conflictLoserEtags];
-  v14 = [v13 count];
+  currentVersion2 = [(BRCDocumentItem *)self currentVersion];
+  conflictLoserEtags = [currentVersion2 conflictLoserEtags];
+  v11 = [conflictLoserEtags count] == 0;
+  currentVersion3 = [orig currentVersion];
+  conflictLoserEtags2 = [currentVersion3 conflictLoserEtags];
+  v14 = [conflictLoserEtags2 count];
 
   v15 = v11 ^ (v14 == 0);
 LABEL_9:
@@ -594,12 +594,12 @@ LABEL_9:
   return v15;
 }
 
-- (id)descriptionWithContext:(id)a3
+- (id)descriptionWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = BRCDocumentItem;
-  v5 = [(BRCLocalItem *)&v12 descriptionWithContext:v4];
+  v5 = [(BRCLocalItem *)&v12 descriptionWithContext:contextCopy];
   v6 = v5;
   if (self->_fileIDForUpload)
   {
@@ -609,40 +609,40 @@ LABEL_9:
   currentVersion = self->_currentVersion;
   if (currentVersion)
   {
-    v8 = [(BRCLocalVersion *)currentVersion descriptionWithContext:v4];
+    v8 = [(BRCLocalVersion *)currentVersion descriptionWithContext:contextCopy];
     [v6 appendFormat:@" ct{%@}", v8];
   }
 
   if ([(NSMutableSet *)self->_resolvedConflictLoserEtags count])
   {
-    v9 = [(NSMutableSet *)self->_resolvedConflictLoserEtags allObjects];
-    v10 = [v9 componentsJoinedByString:{@", "}];
+    allObjects = [(NSMutableSet *)self->_resolvedConflictLoserEtags allObjects];
+    v10 = [allObjects componentsJoinedByString:{@", "}];
     [v6 appendFormat:@" resolved-losers:{%@}", v10];
   }
 
   return v6;
 }
 
-- (id)_initWithServerItem:(id)a3 dbRowID:(unint64_t)a4
+- (id)_initWithServerItem:(id)item dbRowID:(unint64_t)d
 {
-  v6 = a3;
+  itemCopy = item;
   v18.receiver = self;
   v18.super_class = BRCDocumentItem;
-  v7 = [(BRCLocalItem *)&v18 _initWithServerItem:v6 dbRowID:a4];
+  v7 = [(BRCLocalItem *)&v18 _initWithServerItem:itemCopy dbRowID:d];
   if (v7)
   {
-    v8 = [v6 latestVersion];
+    latestVersion = [itemCopy latestVersion];
 
-    if (v8)
+    if (latestVersion)
     {
-      if (([v6 isDocument] & 1) == 0)
+      if (([itemCopy isDocument] & 1) == 0)
       {
         [BRCDocumentItem _initWithServerItem:dbRowID:];
       }
 
       v9 = [BRCLocalVersion alloc];
-      v10 = [v6 latestVersion];
-      v11 = [(BRCLocalVersion *)v9 initWithVersion:v10];
+      latestVersion2 = [itemCopy latestVersion];
+      v11 = [(BRCLocalVersion *)v9 initWithVersion:latestVersion2];
       v12 = *(v7 + 26);
       *(v7 + 26) = v11;
 
@@ -666,28 +666,28 @@ LABEL_9:
   return v7;
 }
 
-- (id)_initWithLocalItem:(id)a3
+- (id)_initWithLocalItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v16.receiver = self;
   v16.super_class = BRCDocumentItem;
-  v5 = [(BRCLocalItem *)&v16 _initWithLocalItem:v4];
+  v5 = [(BRCLocalItem *)&v16 _initWithLocalItem:itemCopy];
   if (v5)
   {
-    v6 = [v4 asDocument];
-    v7 = [v6[26] copy];
+    asDocument = [itemCopy asDocument];
+    v7 = [asDocument[26] copy];
     v8 = v5[26];
     v5[26] = v7;
 
-    v9 = [v6[28] copy];
+    v9 = [asDocument[28] copy];
     v10 = v5[28];
     v5[28] = v9;
 
-    v11 = [v6[29] copy];
+    v11 = [asDocument[29] copy];
     v12 = v5[29];
     v5[29] = v11;
 
-    v13 = [v6[27] mutableCopy];
+    v13 = [asDocument[27] mutableCopy];
     v14 = v5[27];
     v5[27] = v13;
   }
@@ -697,18 +697,18 @@ LABEL_9:
 
 - (BOOL)hasValidCKInfo
 {
-  v3 = [(BRCLocalItem *)self isTopLevelSharedItem];
-  v4 = [(BRCVersion *)self->_currentVersion ckInfo];
-  v5 = v4;
-  if (v3)
+  isTopLevelSharedItem = [(BRCLocalItem *)self isTopLevelSharedItem];
+  ckInfo = [(BRCVersion *)self->_currentVersion ckInfo];
+  v5 = ckInfo;
+  if (isTopLevelSharedItem)
   {
-    v6 = v4 != 0;
+    v6 = ckInfo != 0;
   }
 
-  else if (v4)
+  else if (ckInfo)
   {
-    v7 = [(BRCStatInfo *)self->super._st ckInfo];
-    v6 = v7 != 0;
+    ckInfo2 = [(BRCStatInfo *)self->super._st ckInfo];
+    v6 = ckInfo2 != 0;
   }
 
   else
@@ -719,27 +719,27 @@ LABEL_9:
   return v6;
 }
 
-- (unint64_t)diffAgainstServerItem:(id)a3
+- (unint64_t)diffAgainstServerItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v17.receiver = self;
   v17.super_class = BRCDocumentItem;
-  v5 = [(BRCLocalItem *)&v17 diffAgainstServerItem:v4];
-  if (v4 && ([v4 isDocument] & 1) == 0)
+  v5 = [(BRCLocalItem *)&v17 diffAgainstServerItem:itemCopy];
+  if (itemCopy && ([itemCopy isDocument] & 1) == 0)
   {
     [BRCDocumentItem diffAgainstServerItem:];
   }
 
-  if ([v4 isDocument])
+  if ([itemCopy isDocument])
   {
     if (self->_currentVersion)
     {
-      v6 = [v4 latestVersion];
+      latestVersion = [itemCopy latestVersion];
 
-      if (v6)
+      if (latestVersion)
       {
-        v7 = [v4 latestVersion];
-        v5 |= [(BRCVersion *)self->_currentVersion diffAgainst:v7];
+        latestVersion2 = [itemCopy latestVersion];
+        v5 |= [(BRCVersion *)self->_currentVersion diffAgainst:latestVersion2];
         if ([(BRCClientZone *)self->super._clientZone isSharedZone])
         {
           v5 &= ~0x1000000uLL;
@@ -747,13 +747,13 @@ LABEL_9:
 
         if ((v5 & 0x2000000) != 0)
         {
-          v8 = [(BRCVersion *)self->_currentVersion editedSinceShared];
-          if ([v8 BOOLValue])
+          editedSinceShared = [(BRCVersion *)self->_currentVersion editedSinceShared];
+          if ([editedSinceShared BOOLValue])
           {
-            v9 = [v7 editedSinceShared];
-            v10 = [v9 BOOLValue];
+            editedSinceShared2 = [latestVersion2 editedSinceShared];
+            bOOLValue = [editedSinceShared2 BOOLValue];
 
-            if ((v10 & 1) == 0)
+            if ((bOOLValue & 1) == 0)
             {
               v5 &= ~0x2000000uLL;
             }
@@ -771,9 +771,9 @@ LABEL_9:
 
 LABEL_19:
         resolvedConflictLoserEtags = self->_resolvedConflictLoserEtags;
-        v14 = [v4 latestVersion];
-        v15 = [v14 conflictLoserEtags];
-        LOBYTE(resolvedConflictLoserEtags) = [(NSMutableSet *)resolvedConflictLoserEtags intersectsSet:v15];
+        latestVersion3 = [itemCopy latestVersion];
+        conflictLoserEtags = [latestVersion3 conflictLoserEtags];
+        LOBYTE(resolvedConflictLoserEtags) = [(NSMutableSet *)resolvedConflictLoserEtags intersectsSet:conflictLoserEtags];
 
         if (resolvedConflictLoserEtags)
         {
@@ -791,9 +791,9 @@ LABEL_19:
       currentVersion = 0;
     }
 
-    v12 = [v4 latestVersion];
+    latestVersion4 = [itemCopy latestVersion];
 
-    if (currentVersion != v12)
+    if (currentVersion != latestVersion4)
     {
       v5 |= 0x3FF0000uLL;
     }
@@ -809,27 +809,27 @@ LABEL_21:
   return v5;
 }
 
-- (unint64_t)diffAgainstLocalItem:(id)a3
+- (unint64_t)diffAgainstLocalItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v30.receiver = self;
   v30.super_class = BRCDocumentItem;
-  v5 = [(BRCLocalItem *)&v30 diffAgainstLocalItem:v4];
-  if (v4 && ([v4 isDocument] & 1) == 0)
+  v5 = [(BRCLocalItem *)&v30 diffAgainstLocalItem:itemCopy];
+  if (itemCopy && ([itemCopy isDocument] & 1) == 0)
   {
     [BRCDocumentItem diffAgainstLocalItem:];
   }
 
-  if ([v4 isDocument])
+  if ([itemCopy isDocument])
   {
-    v6 = [v4 asDocument];
-    v7 = v6;
+    asDocument = [itemCopy asDocument];
+    v7 = asDocument;
     if (self->_currentVersion)
     {
-      v8 = [v6 currentVersion];
+      currentVersion = [asDocument currentVersion];
 
       currentVersion = self->_currentVersion;
-      if (v8)
+      if (currentVersion)
       {
         v10 = [(BRCLocalVersion *)currentVersion diffAgainstLocalVersion:v7[26]]| v5;
         if ((v10 & 0x400000000) != 0)
@@ -839,9 +839,9 @@ LABEL_21:
 
 LABEL_14:
         fileIDForUpload = self->_fileIDForUpload;
-        v12 = [v7 fileIDForUpload];
+        fileIDForUpload = [v7 fileIDForUpload];
         v13 = fileIDForUpload;
-        v14 = v12;
+        v14 = fileIDForUpload;
         v15 = v14;
         if (v13 == v14)
         {
@@ -891,9 +891,9 @@ LABEL_39:
         else
         {
           generationIDForUpload = self->_generationIDForUpload;
-          v18 = [v7 generationIDForUpload];
+          generationIDForUpload = [v7 generationIDForUpload];
           v19 = generationIDForUpload;
-          v20 = v18;
+          v20 = generationIDForUpload;
           v21 = v20;
           if (v19 == v20)
           {
@@ -922,9 +922,9 @@ LABEL_39:
         }
 
         resolvedConflictLoserEtags = self->_resolvedConflictLoserEtags;
-        v24 = [v7 resolvedConflictLoserEtags];
+        resolvedConflictLoserEtags = [v7 resolvedConflictLoserEtags];
         v25 = resolvedConflictLoserEtags;
-        v26 = v24;
+        v26 = resolvedConflictLoserEtags;
         v27 = v26;
         if (v25 == v26)
         {
@@ -978,7 +978,7 @@ LABEL_45:
   return v5;
 }
 
-- (BOOL)validateLoggingToFile:(__sFILE *)a3
+- (BOOL)validateLoggingToFile:(__sFILE *)file
 {
   v8.receiver = self;
   v8.super_class = BRCDocumentItem;
@@ -988,13 +988,13 @@ LABEL_45:
   {
     if (v5)
     {
-      LOBYTE(v5) = [(BRCVersion *)currentVersion check:self->super._itemID logToFile:a3];
+      LOBYTE(v5) = [(BRCVersion *)currentVersion check:self->super._itemID logToFile:file];
     }
   }
 
   else if (![(BRCLocalItem *)self isDead])
   {
-    fprintf(a3, "item %s is a live document without a version\n", [(BRCItemID *)self->super._itemID UTF8String]);
+    fprintf(file, "item %s is a live document without a version\n", [(BRCItemID *)self->super._itemID UTF8String]);
     LOBYTE(v5) = 0;
   }
 
@@ -1004,46 +1004,46 @@ LABEL_45:
 - (id)syncContextUsedForTransfers
 {
   serverZone = self->super._serverZone;
-  v3 = [(BRCLocalItem *)self appLibrary];
-  v4 = [BRCSyncContext transferContextForServerZone:serverZone appLibrary:v3];
+  appLibrary = [(BRCLocalItem *)self appLibrary];
+  v4 = [BRCSyncContext transferContextForServerZone:serverZone appLibrary:appLibrary];
 
   return v4;
 }
 
-- (void)updateContentsCKInfoAndDeviceIDFromServerItem:(id)a3
+- (void)updateContentsCKInfoAndDeviceIDFromServerItem:(id)item
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 latestVersion];
-  v6 = [v5 ckInfo];
+  itemCopy = item;
+  latestVersion = [itemCopy latestVersion];
+  ckInfo = [latestVersion ckInfo];
 
   v7 = brc_bread_crumbs();
   v8 = brc_default_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [v6 etag];
+    etag = [ckInfo etag];
     v15 = 138412802;
-    v16 = v14;
+    v16 = etag;
     v17 = 2112;
-    v18 = v4;
+    v18 = itemCopy;
     v19 = 2112;
     v20 = v7;
     _os_log_debug_impl(&dword_223E7A000, v8, OS_LOG_TYPE_DEBUG, "[DEBUG] updating ct-etag:%@ from server item: %@%@", &v15, 0x20u);
   }
 
-  if (!v4)
+  if (!itemCopy)
   {
     [BRCDocumentItem updateContentsCKInfoAndDeviceIDFromServerItem:];
   }
 
-  if (([v4 isDocument] & 1) == 0)
+  if (([itemCopy isDocument] & 1) == 0)
   {
     [BRCDocumentItem updateContentsCKInfoAndDeviceIDFromServerItem:];
   }
 
   if ([(BRCDocumentItem *)self isDocument])
   {
-    if (v6)
+    if (ckInfo)
     {
       goto LABEL_9;
     }
@@ -1052,7 +1052,7 @@ LABEL_45:
   else
   {
     [BRCDocumentItem updateContentsCKInfoAndDeviceIDFromServerItem:];
-    if (v6)
+    if (ckInfo)
     {
       goto LABEL_9;
     }
@@ -1062,65 +1062,65 @@ LABEL_45:
 LABEL_9:
   if ([(BRCDocumentItem *)self isDocumentBeingCopiedToNewZone])
   {
-    v9 = [(BRCVersion *)self->_currentVersion ckInfo];
-    v10 = [v9 etagBeforeCrossZoneMove];
-    [v6 setEtagBeforeCrossZoneMove:v10];
+    ckInfo2 = [(BRCVersion *)self->_currentVersion ckInfo];
+    etagBeforeCrossZoneMove = [ckInfo2 etagBeforeCrossZoneMove];
+    [ckInfo setEtagBeforeCrossZoneMove:etagBeforeCrossZoneMove];
   }
 
-  [(BRCVersion *)self->_currentVersion setCkInfo:v6];
-  v11 = [v4 latestVersion];
-  v12 = [v11 lastEditorDeviceOrUserRowID];
-  [(BRCVersion *)self->_currentVersion setLastEditorDeviceOrUserRowID:v12];
+  [(BRCVersion *)self->_currentVersion setCkInfo:ckInfo];
+  latestVersion2 = [itemCopy latestVersion];
+  lastEditorDeviceOrUserRowID = [latestVersion2 lastEditorDeviceOrUserRowID];
+  [(BRCVersion *)self->_currentVersion setLastEditorDeviceOrUserRowID:lastEditorDeviceOrUserRowID];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateVersionMetadataFromServerItem:(id)a3 preventVersionDiffs:(BOOL)a4
+- (void)updateVersionMetadataFromServerItem:(id)item preventVersionDiffs:(BOOL)diffs
 {
-  v4 = a4;
+  diffsCopy = diffs;
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (([v6 isDocument] & 1) == 0)
+  itemCopy = item;
+  if (([itemCopy isDocument] & 1) == 0)
   {
     [BRCDocumentItem updateVersionMetadataFromServerItem:preventVersionDiffs:];
   }
 
-  v7 = [v6 latestVersion];
+  latestVersion = [itemCopy latestVersion];
 
-  if (!v7)
+  if (!latestVersion)
   {
     [BRCDocumentItem updateVersionMetadataFromServerItem:preventVersionDiffs:];
   }
 
-  v8 = [v6 latestVersion];
-  v9 = [v8 diffAgainst:self->_currentVersion];
+  latestVersion2 = [itemCopy latestVersion];
+  v9 = [latestVersion2 diffAgainst:self->_currentVersion];
 
   if ((v9 & 0x100000) != 0)
   {
-    v13 = brc_bread_crumbs();
+    uploadError = brc_bread_crumbs();
     isa = brc_default_log();
     if (os_log_type_enabled(isa, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [v6 latestVersion];
+      latestVersion3 = [itemCopy latestVersion];
       currentVersion = self->_currentVersion;
       v30 = 134218754;
       v31 = v9;
       v32 = 2112;
-      v33 = v15;
+      v33 = latestVersion3;
       v34 = 2112;
       v35 = currentVersion;
       v36 = 2112;
-      v37 = v13;
+      v37 = uploadError;
       _os_log_impl(&dword_223E7A000, isa, OS_LOG_TYPE_DEFAULT, "[WARNING] We think this is a meta only update but it isn't (%llu)!\n latest-version: %@\n current-verions: %@%@", &v30, 0x2Au);
     }
 
     goto LABEL_25;
   }
 
-  v10 = [(BRCVersion *)self->_currentVersion editedSinceShared];
-  v11 = [v10 BOOLValue];
+  editedSinceShared = [(BRCVersion *)self->_currentVersion editedSinceShared];
+  bOOLValue = [editedSinceShared BOOLValue];
 
-  if (v11)
+  if (bOOLValue)
   {
     v12 = 1;
     goto LABEL_19;
@@ -1128,22 +1128,22 @@ LABEL_9:
 
   if ([(BRCLocalItem *)self isSharedToMe]|| [(BRCLocalItem *)self isSharedByMe])
   {
-    v17 = [(BRCVersion *)self->_currentVersion ckInfo];
-    v18 = [v17 etag];
-    v12 = v18 != 0;
-    if (!v18)
+    ckInfo = [(BRCVersion *)self->_currentVersion ckInfo];
+    etag = [ckInfo etag];
+    v12 = etag != 0;
+    if (!etag)
     {
 LABEL_17:
 
       goto LABEL_19;
     }
 
-    v19 = v18;
-    v20 = [(BRCDocumentItem *)self diffAgainstServerItem:v6]& 0x1A0000;
+    v19 = etag;
+    v20 = [(BRCDocumentItem *)self diffAgainstServerItem:itemCopy]& 0x1A0000;
 
     if (v20)
     {
-      v17 = brc_bread_crumbs();
+      ckInfo = brc_bread_crumbs();
       v21 = brc_default_log();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
@@ -1156,10 +1156,10 @@ LABEL_17:
 
   v12 = 0;
 LABEL_19:
-  v13 = [(BRCLocalVersion *)self->_currentVersion uploadError];
+  uploadError = [(BRCLocalVersion *)self->_currentVersion uploadError];
   v22 = [BRCLocalVersion alloc];
-  v23 = [v6 latestVersion];
-  v24 = [(BRCLocalVersion *)v22 initWithServerVersion:v23];
+  latestVersion4 = [itemCopy latestVersion];
+  v24 = [(BRCLocalVersion *)v22 initWithServerVersion:latestVersion4];
   v25 = self->_currentVersion;
   self->_currentVersion = v24;
 
@@ -1168,12 +1168,12 @@ LABEL_19:
     [(BRCVersion *)self->_currentVersion setEditedSinceShared:MEMORY[0x277CBEC38]];
   }
 
-  if ([v13 br_isCloudDocsErrorCode:43])
+  if ([uploadError br_isCloudDocsErrorCode:43])
   {
-    [(BRCLocalVersion *)self->_currentVersion setUploadError:v13];
+    [(BRCLocalVersion *)self->_currentVersion setUploadError:uploadError];
   }
 
-  if (v4)
+  if (diffsCopy)
   {
     v26 = self->_currentVersion;
     orig = self->super._orig;
@@ -1194,16 +1194,16 @@ LABEL_25:
   [(BRCVersion *)self->_currentVersion setCkInfo:0];
 }
 
-- (void)appDidResolveConflictLoserWithEtag:(id)a3
+- (void)appDidResolveConflictLoserWithEtag:(id)etag
 {
-  v4 = a3;
-  v5 = [(BRCPQLConnection *)self->super._db isBatchSuspended];
+  etagCopy = etag;
+  isBatchSuspended = [(BRCPQLConnection *)self->super._db isBatchSuspended];
   db = self->super._db;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __54__BRCDocumentItem_appDidResolveConflictLoserWithEtag___block_invoke;
   v9[3] = &unk_278500FA8;
-  if (v5)
+  if (isBatchSuspended)
   {
     v7 = 4;
   }
@@ -1214,8 +1214,8 @@ LABEL_25:
   }
 
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = etagCopy;
+  v8 = etagCopy;
   [(BRCPQLConnection *)db performWithFlags:v7 action:v9];
 }
 
@@ -1264,19 +1264,19 @@ uint64_t __54__BRCDocumentItem_appDidResolveConflictLoserWithEtag___block_invoke
   }
 
   v3 = [[BRCLocalVersion alloc] initForPackage:[(BRCVersion *)self->_currentVersion isPackage]];
-  v4 = [(BRCVersion *)self->_currentVersion originalPOSIXName];
-  [(BRCVersion *)v3 setOriginalPOSIXName:v4];
+  originalPOSIXName = [(BRCVersion *)self->_currentVersion originalPOSIXName];
+  [(BRCVersion *)v3 setOriginalPOSIXName:originalPOSIXName];
 
-  v5 = [(BRCVersion *)self->_currentVersion ckInfo];
-  [(BRCVersion *)v3 setCkInfo:v5];
+  ckInfo = [(BRCVersion *)self->_currentVersion ckInfo];
+  [(BRCVersion *)v3 setCkInfo:ckInfo];
 
   currentVersion = self->_currentVersion;
   self->_currentVersion = v3;
   v7 = v3;
 
-  v8 = [(BRCAccountSession *)self->super._session fsDownloader];
+  fsDownloader = [(BRCAccountSession *)self->super._session fsDownloader];
 
-  [v8 cancelAndCleanupItemDownloads:self];
+  [fsDownloader cancelAndCleanupItemDownloads:self];
 }
 
 - (void)markNeedsReading
@@ -1290,9 +1290,9 @@ uint64_t __54__BRCDocumentItem_appDidResolveConflictLoserWithEtag___block_invoke
   [(BRCDocumentItem *)self markNeedsUploadOrSyncingUp];
 }
 
-- (void)markLatestSyncRequestRejectedInZone:(id)a3
+- (void)markLatestSyncRequestRejectedInZone:(id)zone
 {
-  v4 = a3;
+  zoneCopy = zone;
   localDiffs = self->super._localDiffs;
   if (([(BRCLocalItem *)self metadataSyncUpMask:0]& localDiffs) == 0)
   {
@@ -1301,7 +1301,7 @@ uint64_t __54__BRCDocumentItem_appDidResolveConflictLoserWithEtag___block_invoke
 
   v10.receiver = self;
   v10.super_class = BRCDocumentItem;
-  [(BRCLocalItem *)&v10 markLatestSyncRequestRejectedInZone:v4];
+  [(BRCLocalItem *)&v10 markLatestSyncRequestRejectedInZone:zoneCopy];
   if (self->super._syncUpState != 1)
   {
     [(BRCDocumentItem *)self markForceUpload];
@@ -1309,8 +1309,8 @@ uint64_t __54__BRCDocumentItem_appDidResolveConflictLoserWithEtag___block_invoke
 
   if ([(BRCDocumentItem *)self isDocumentBeingCopiedToNewZone])
   {
-    v6 = [(BRCClientZone *)self->super._clientZone dbRowID];
-    v7 = [v4 br_isEqualToNumber:v6];
+    dbRowID = [(BRCClientZone *)self->super._clientZone dbRowID];
+    v7 = [zoneCopy br_isEqualToNumber:dbRowID];
 
     if (v7)
     {
@@ -1326,12 +1326,12 @@ uint64_t __54__BRCDocumentItem_appDidResolveConflictLoserWithEtag___block_invoke
   }
 }
 
-- (BOOL)markLatestSyncRequestAcknowledgedInZone:(id)a3
+- (BOOL)markLatestSyncRequestAcknowledgedInZone:(id)zone
 {
-  v4 = a3;
+  zoneCopy = zone;
   v12.receiver = self;
   v12.super_class = BRCDocumentItem;
-  v5 = [(BRCLocalItem *)&v12 markLatestSyncRequestAcknowledgedInZone:v4];
+  v5 = [(BRCLocalItem *)&v12 markLatestSyncRequestAcknowledgedInZone:zoneCopy];
   if (v5)
   {
     if (([(BRCLocalItem *)self localDiffs]& 0x800000) == 0)
@@ -1347,8 +1347,8 @@ uint64_t __54__BRCDocumentItem_appDidResolveConflictLoserWithEtag___block_invoke
 
     if ([(BRCDocumentItem *)self isDocumentBeingCopiedToNewZone])
     {
-      v7 = [(BRCClientZone *)self->super._clientZone dbRowID];
-      v8 = [v4 br_isEqualToNumber:v7];
+      dbRowID = [(BRCClientZone *)self->super._clientZone dbRowID];
+      v8 = [zoneCopy br_isEqualToNumber:dbRowID];
 
       if (v8)
       {
@@ -1385,11 +1385,11 @@ uint64_t __54__BRCDocumentItem_appDidResolveConflictLoserWithEtag___block_invoke
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v6 = v8[0];
-    v7 = [(BRCLocalItem *)self itemID];
+    itemID = [(BRCLocalItem *)self itemID];
     *buf = 134218498;
     v10 = v6;
     v11 = 2112;
-    v12 = v7;
+    v12 = itemID;
     v13 = 2112;
     v14 = v3;
     _os_log_debug_impl(&dword_223E7A000, v4, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx marking force upload: %@%@", buf, 0x20u);
@@ -1420,11 +1420,11 @@ uint64_t __54__BRCDocumentItem_appDidResolveConflictLoserWithEtag___block_invoke
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v6 = v9[0];
-    v7 = [(BRCLocalItem *)self itemID];
+    itemID = [(BRCLocalItem *)self itemID];
     *buf = 134218498;
     v11 = v6;
     v12 = 2112;
-    v13 = v7;
+    v13 = itemID;
     v14 = 2112;
     v15 = v3;
     _os_log_debug_impl(&dword_223E7A000, v4, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx marking force needs-syncup: %@%@", buf, 0x20u);
@@ -1438,10 +1438,10 @@ uint64_t __54__BRCDocumentItem_appDidResolveConflictLoserWithEtag___block_invoke
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markUploadedWithRecord:(id)a3
+- (void)markUploadedWithRecord:(id)record
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   memset(v47, 0, sizeof(v47));
   __brc_create_section(0, "[BRCDocumentItem markUploadedWithRecord:]", 944, 0, v47);
   v5 = brc_bread_crumbs();
@@ -1449,11 +1449,11 @@ uint64_t __54__BRCDocumentItem_appDidResolveConflictLoserWithEtag___block_invoke
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     v30 = v47[0];
-    v31 = [(BRCLocalItem *)self itemID];
+    itemID = [(BRCLocalItem *)self itemID];
     *buf = 134218498;
-    v49 = v30;
+    selfCopy = v30;
     v50 = 2112;
-    v51 = v31;
+    v51 = itemID;
     v52 = 2112;
     v53 = v5;
     _os_log_debug_impl(&dword_223E7A000, v6, OS_LOG_TYPE_DEBUG, "[DEBUG] ┏%llx marking uploaded %@%@", buf, 0x20u);
@@ -1461,7 +1461,7 @@ uint64_t __54__BRCDocumentItem_appDidResolveConflictLoserWithEtag___block_invoke
 
   if (self->super._syncUpState == 3)
   {
-    if (!v4)
+    if (!recordCopy)
     {
       v34 = brc_bread_crumbs();
       v35 = brc_default_log();
@@ -1471,28 +1471,28 @@ uint64_t __54__BRCDocumentItem_appDidResolveConflictLoserWithEtag___block_invoke
       }
     }
 
-    v7 = [(BRCLocalItem *)self isFinderBookmark];
+    isFinderBookmark = [(BRCLocalItem *)self isFinderBookmark];
     v8 = kBRRecordKeyFinderBookmarkContent;
-    if (!v7)
+    if (!isFinderBookmark)
     {
       v8 = kBRRecordKeyFileContent;
     }
 
-    v9 = [v4 objectForKeyedSubscript:*v8];
-    v10 = [v4 objectForKeyedSubscript:@"pkgSignature"];
-    v11 = [v4 objectForKeyedSubscript:@"thumb1024"];
+    v9 = [recordCopy objectForKeyedSubscript:*v8];
+    v10 = [recordCopy objectForKeyedSubscript:@"pkgSignature"];
+    v11 = [recordCopy objectForKeyedSubscript:@"thumb1024"];
     if (v9)
     {
-      v12 = [v9 signature];
+      signature = [v9 signature];
     }
 
     else
     {
-      v12 = v10;
+      signature = v10;
     }
 
-    v13 = v12;
-    v46 = [v11 signature];
+    v13 = signature;
+    signature2 = [v11 signature];
     if (v9)
     {
       if (self->_currentVersion)
@@ -1515,7 +1515,7 @@ uint64_t __54__BRCDocumentItem_appDidResolveConflictLoserWithEtag___block_invoke
           v32 = [v9 size];
           v33 = [(BRCVersion *)self->_currentVersion size];
           *buf = 134218498;
-          v49 = v32;
+          selfCopy = v32;
           v50 = 2048;
           v51 = v33;
           v52 = 2112;
@@ -1530,8 +1530,8 @@ uint64_t __54__BRCDocumentItem_appDidResolveConflictLoserWithEtag___block_invoke
         v27 = brc_default_log();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_FAULT))
         {
-          v28 = [(BRCLocalItem *)self itemID];
-          [(BRCDocumentItem *)v28 markUploadedWithRecord:v26, buf, v27];
+          itemID2 = [(BRCLocalItem *)self itemID];
+          [(BRCDocumentItem *)itemID2 markUploadedWithRecord:v26, buf, v27];
         }
       }
 
@@ -1547,7 +1547,7 @@ LABEL_14:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v49 = self;
+      selfCopy = self;
       v50 = 2112;
       v51 = v13;
       v52 = 2112;
@@ -1588,25 +1588,25 @@ LABEL_14:
       currentVersion = self->_currentVersion;
     }
 
-    v18 = [(BRCVersion *)currentVersion contentSignature];
-    if (([v18 brc_signatureIsPendingPlaceHolder] & 1) == 0)
+    contentSignature = [(BRCVersion *)currentVersion contentSignature];
+    if (([contentSignature brc_signatureIsPendingPlaceHolder] & 1) == 0)
     {
-      v19 = [(BRCDocumentItem *)self isDocumentBeingCopiedToNewZone];
+      isDocumentBeingCopiedToNewZone = [(BRCDocumentItem *)self isDocumentBeingCopiedToNewZone];
 
-      if (v19)
+      if (isDocumentBeingCopiedToNewZone)
       {
 LABEL_22:
-        v20 = [(BRCVersion *)self->_currentVersion thumbnailSignature];
-        if (([v20 brc_signatureIsPendingPlaceHolder] & 1) == 0)
+        thumbnailSignature = [(BRCVersion *)self->_currentVersion thumbnailSignature];
+        if (([thumbnailSignature brc_signatureIsPendingPlaceHolder] & 1) == 0)
         {
-          v21 = [(BRCDocumentItem *)self isDocumentBeingCopiedToNewZone];
+          isDocumentBeingCopiedToNewZone2 = [(BRCDocumentItem *)self isDocumentBeingCopiedToNewZone];
 
-          if (v21)
+          if (isDocumentBeingCopiedToNewZone2)
           {
             goto LABEL_25;
           }
 
-          v20 = brc_bread_crumbs();
+          thumbnailSignature = brc_bread_crumbs();
           v45 = brc_default_log();
           if (os_log_type_enabled(v45, OS_LOG_TYPE_FAULT))
           {
@@ -1615,8 +1615,8 @@ LABEL_22:
         }
 
 LABEL_25:
-        v22 = [(BRCLocalVersion *)self->_currentVersion uploadedAssets];
-        v23 = v22 == 0;
+        uploadedAssets = [(BRCLocalVersion *)self->_currentVersion uploadedAssets];
+        v23 = uploadedAssets == 0;
 
         if (!v23)
         {
@@ -1630,8 +1630,8 @@ LABEL_25:
 
         [(BRCLocalVersion *)self->_currentVersion setUploadError:0];
         [(BRCVersion *)self->_currentVersion setContentSignature:v13];
-        [(BRCLocalVersion *)self->_currentVersion setUploadedAssets:v4];
-        [(BRCVersion *)self->_currentVersion setThumbnailSignature:v46];
+        [(BRCLocalVersion *)self->_currentVersion setUploadedAssets:recordCopy];
+        [(BRCVersion *)self->_currentVersion setThumbnailSignature:signature2];
         -[BRCVersion setThumbnailSize:](self->_currentVersion, "setThumbnailSize:", [v11 size]);
         [(BRCLocalItem *)self _markNeedsSyncingUp];
         if (![(BRCLocalItem *)self needsSyncUp])
@@ -1649,7 +1649,7 @@ LABEL_25:
         goto LABEL_36;
       }
 
-      v18 = brc_bread_crumbs();
+      contentSignature = brc_bread_crumbs();
       v44 = brc_default_log();
       if (os_log_type_enabled(v44, OS_LOG_TYPE_FAULT))
       {
@@ -1681,25 +1681,25 @@ LABEL_37:
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markOverQuotaWithError:(id)a3
+- (void)markOverQuotaWithError:(id)error
 {
   currentVersion = self->_currentVersion;
-  v5 = a3;
+  errorCopy = error;
   [(BRCLocalVersion *)currentVersion _clearSignatures:3 isPackage:[(BRCVersion *)currentVersion isPackage]];
   self->super._syncUpState = 3;
-  [(BRCLocalVersion *)self->_currentVersion setUploadError:v5];
+  [(BRCLocalVersion *)self->_currentVersion setUploadError:errorCopy];
 }
 
 - (void)_markAsDeadTombstoneWithPreviousGlobalID
 {
-  v3 = [(BRCLocalVersion *)self->_currentVersion previousItemGlobalID];
+  previousItemGlobalID = [(BRCLocalVersion *)self->_currentVersion previousItemGlobalID];
   [(BRCLocalVersion *)self->_currentVersion setPreviousItemGlobalID:0];
-  v4 = [(BRCVersion *)self->_currentVersion ckInfo];
-  [v4 revertEtagsForOldZoneTombstone];
+  ckInfo = [(BRCVersion *)self->_currentVersion ckInfo];
+  [ckInfo revertEtagsForOldZoneTombstone];
 
   v5.receiver = self;
   v5.super_class = BRCDocumentItem;
-  [(BRCLocalItem *)&v5 _markAsDeadTombstoneWithPreviousGlobalID:v3];
+  [(BRCLocalItem *)&v5 _markAsDeadTombstoneWithPreviousGlobalID:previousItemGlobalID];
 }
 
 - (void)_insertTombstoneForPreviousZoneGlobalID
@@ -1720,11 +1720,11 @@ LABEL_37:
 
 - (BOOL)_isInFlightSyncContent
 {
-  v2 = self;
-  v3 = [(BRCClientZone *)self->super._clientZone dbRowID];
-  LOBYTE(v2) = ([(BRCLocalItem *)v2 inFlightSyncUpDiffsInZoneRowID:v3]& 0x180000) != 0;
+  selfCopy = self;
+  dbRowID = [(BRCClientZone *)self->super._clientZone dbRowID];
+  LOBYTE(selfCopy) = ([(BRCLocalItem *)selfCopy inFlightSyncUpDiffsInZoneRowID:dbRowID]& 0x180000) != 0;
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)supportsServerSideAssetCopies
@@ -1732,19 +1732,19 @@ LABEL_37:
   v30 = *MEMORY[0x277D85DE8];
   if ((self->super._localDiffs & 0x180000) == 0)
   {
-    v3 = [(BRCVersion *)self->_currentVersion contentSignature];
-    if ([v3 brc_signatureIsValid])
+    contentSignature = [(BRCVersion *)self->_currentVersion contentSignature];
+    if ([contentSignature brc_signatureIsValid])
     {
-      v4 = [(BRCDocumentItem *)self _isInFlightSyncContent];
+      _isInFlightSyncContent = [(BRCDocumentItem *)self _isInFlightSyncContent];
 
-      if (!v4)
+      if (!_isInFlightSyncContent)
       {
-        v5 = [(BRCClientZone *)self->super._clientZone mangledID];
-        v6 = [BRCUserDefaults defaultsForMangledID:v5];
+        mangledID = [(BRCClientZone *)self->super._clientZone mangledID];
+        v6 = [BRCUserDefaults defaultsForMangledID:mangledID];
 
-        LOBYTE(v5) = [v6 supportsServerSideAssetCopies];
+        LOBYTE(mangledID) = [v6 supportsServerSideAssetCopies];
         v7 = *MEMORY[0x277D85DE8];
-        return v5;
+        return mangledID;
       }
     }
 
@@ -1754,19 +1754,19 @@ LABEL_37:
   }
 
   localDiffs = self->super._localDiffs;
-  v10 = [(BRCVersion *)self->_currentVersion contentSignature];
+  contentSignature2 = [(BRCVersion *)self->_currentVersion contentSignature];
 
-  v11 = [(BRCVersion *)self->_currentVersion contentSignature];
-  v12 = [v11 brc_signatureIsValid];
+  contentSignature3 = [(BRCVersion *)self->_currentVersion contentSignature];
+  brc_signatureIsValid = [contentSignature3 brc_signatureIsValid];
 
   v13 = brc_bread_crumbs();
   v14 = brc_default_log();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
-    v16 = v10 != 0;
+    v16 = contentSignature2 != 0;
     v17 = [MEMORY[0x277CCABB0] numberWithBool:(localDiffs & 0x180000) != 0];
     v18 = [MEMORY[0x277CCABB0] numberWithBool:v16];
-    v19 = [MEMORY[0x277CCABB0] numberWithBool:v12];
+    v19 = [MEMORY[0x277CCABB0] numberWithBool:brc_signatureIsValid];
     v20 = 138413314;
     v21 = v17;
     v22 = 2112;
@@ -1774,7 +1774,7 @@ LABEL_37:
     v24 = 2112;
     v25 = v19;
     v26 = 2112;
-    v27 = self;
+    selfCopy = self;
     v28 = 2112;
     v29 = v13;
     _os_log_debug_impl(&dword_223E7A000, v14, OS_LOG_TYPE_DEBUG, "[DEBUG] skip supportsServerSideAssetCopies: has local diffs [%@], content signature [%@] valid [%@] --> NO\n item: %@%@", &v20, 0x34u);
@@ -1784,11 +1784,11 @@ LABEL_37:
   return 0;
 }
 
-- (void)markCrossZoneMovedForServerAssetCopyWithParentItem:(id)a3
+- (void)markCrossZoneMovedForServerAssetCopyWithParentItem:(id)item
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  itemCopy = item;
+  if (!itemCopy)
   {
     [BRCDocumentItem markCrossZoneMovedForServerAssetCopyWithParentItem:];
   }
@@ -1798,42 +1798,42 @@ LABEL_37:
     [BRCDocumentItem markCrossZoneMovedForServerAssetCopyWithParentItem:];
   }
 
-  v5 = [(BRCLocalItem *)self itemGlobalID];
-  v6 = [v4 itemGlobalID];
+  itemGlobalID = [(BRCLocalItem *)self itemGlobalID];
+  itemGlobalID2 = [itemCopy itemGlobalID];
   session = self->super._session;
-  v8 = [v6 zoneRowID];
-  v9 = [(BRCAccountSession *)session serverZoneByRowID:v8];
-  v10 = [v9 clientZone];
+  zoneRowID = [itemGlobalID2 zoneRowID];
+  v9 = [(BRCAccountSession *)session serverZoneByRowID:zoneRowID];
+  clientZone = [v9 clientZone];
 
-  v11 = [(BRCLocalVersion *)self->_currentVersion previousItemGlobalID];
-  v12 = [v6 itemID];
-  [(BRCStatInfo *)self->super._st setParentID:v12];
+  previousItemGlobalID = [(BRCLocalVersion *)self->_currentVersion previousItemGlobalID];
+  itemID = [itemGlobalID2 itemID];
+  [(BRCStatInfo *)self->super._st setParentID:itemID];
 
-  v13 = [v6 zoneRowID];
+  zoneRowID2 = [itemGlobalID2 zoneRowID];
   parentZoneRowID = self->super._parentZoneRowID;
-  self->super._parentZoneRowID = v13;
+  self->super._parentZoneRowID = zoneRowID2;
 
-  objc_storeStrong(&self->super._clientZone, v10);
-  self->super._serverZone = [v10 serverZone];
+  objc_storeStrong(&self->super._clientZone, clientZone);
+  self->super._serverZone = [clientZone serverZone];
   self->super._orig->_syncUpState = 0;
-  v47 = v5;
-  if (v11)
+  v47 = itemGlobalID;
+  if (previousItemGlobalID)
   {
-    v15 = [v11 zoneRowID];
-    v16 = [v10 dbRowID];
-    v17 = [v15 br_isEqualToNumber:v16];
+    zoneRowID3 = [previousItemGlobalID zoneRowID];
+    dbRowID = [clientZone dbRowID];
+    v17 = [zoneRowID3 br_isEqualToNumber:dbRowID];
 
     if (v17)
     {
-      v18 = [v11 itemID];
-      v19 = [v10 serverItemByItemID:v18];
+      itemID2 = [previousItemGlobalID itemID];
+      v19 = [clientZone serverItemByItemID:itemID2];
 
       v20 = brc_bread_crumbs();
       v21 = brc_default_log();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        v49 = self;
+        selfCopy3 = self;
         v50 = 2112;
         v51 = v19;
         v52 = 2112;
@@ -1842,34 +1842,34 @@ LABEL_37:
       }
 
       [(BRCLocalVersion *)self->_currentVersion setPreviousItemGlobalID:0];
-      v22 = [(BRCLocalItem *)self inFlightSyncUpDiffs];
-      if (v22)
+      inFlightSyncUpDiffs = [(BRCLocalItem *)self inFlightSyncUpDiffs];
+      if (inFlightSyncUpDiffs)
       {
-        v46 = v4;
+        v46 = itemCopy;
         v23 = brc_bread_crumbs();
         v24 = brc_default_log();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v49 = v23;
+          selfCopy3 = v23;
           _os_log_impl(&dword_223E7A000, v24, OS_LOG_TYPE_DEFAULT, "[WARNING] Item has in-flight diffs in the current zone. We need to be sure to insert a tombstone%@", buf, 0xCu);
         }
 
         v25 = [(BRCDocumentItem *)self copy];
-        v26 = [v25 currentVersion];
-        v27 = [v26 ckInfo];
-        [v27 clearCrossZoneMoveEtag];
+        currentVersion = [v25 currentVersion];
+        ckInfo = [currentVersion ckInfo];
+        [ckInfo clearCrossZoneMoveEtag];
 
         v28 = [v25 st];
-        v29 = [v28 ckInfo];
-        [v29 clearCrossZoneMoveEtag];
+        ckInfo2 = [v28 ckInfo];
+        [ckInfo2 clearCrossZoneMoveEtag];
 
-        v30 = [(BRCLocalItem *)self->super._orig itemGlobalID];
-        [v25 _restorePreviousGlobalID:v30];
+        itemGlobalID3 = [(BRCLocalItem *)self->super._orig itemGlobalID];
+        [v25 _restorePreviousGlobalID:itemGlobalID3];
 
         [v25 markDead];
         [v25 markNeedsUploadOrSyncingUp];
-        v4 = v46;
+        itemCopy = v46;
       }
 
       else
@@ -1877,18 +1877,18 @@ LABEL_37:
         v25 = 0;
       }
 
-      v41 = [(BRCStatInfo *)self->super._st ckInfo];
-      [v41 revertEtagsForOldZoneTombstone];
+      ckInfo3 = [(BRCStatInfo *)self->super._st ckInfo];
+      [ckInfo3 revertEtagsForOldZoneTombstone];
 
-      v42 = [(BRCVersion *)self->_currentVersion ckInfo];
-      [v42 revertEtagsForOldZoneTombstone];
+      ckInfo4 = [(BRCVersion *)self->_currentVersion ckInfo];
+      [ckInfo4 revertEtagsForOldZoneTombstone];
 
-      v43 = [v11 itemID];
-      [(BRCLocalItem *)self learnItemID:v43 serverItem:v19];
+      itemID3 = [previousItemGlobalID itemID];
+      [(BRCLocalItem *)self learnItemID:itemID3 serverItem:v19];
 
       [(BRCDocumentItem *)self markNeedsUploadOrSyncingUp];
       v39 = v25;
-      if (!v22)
+      if (!inFlightSyncUpDiffs)
       {
         goto LABEL_23;
       }
@@ -1900,14 +1900,14 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v34 = brc_bread_crumbs();
+    ckInfo6 = brc_bread_crumbs();
     v35 = brc_default_log();
     if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v49 = self;
+      selfCopy3 = self;
       v50 = 2112;
-      v51 = v34;
+      v51 = ckInfo6;
       _os_log_impl(&dword_223E7A000, v35, OS_LOG_TYPE_DEFAULT, "[WARNING] Item already has a previous zone so ignore the existing zone for %@%@", buf, 0x16u);
     }
   }
@@ -1919,26 +1919,26 @@ LABEL_22:
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v49 = self;
+      selfCopy3 = self;
       v50 = 2112;
-      v51 = v10;
+      v51 = clientZone;
       v52 = 2112;
       v53 = v31;
       _os_log_impl(&dword_223E7A000, v32, OS_LOG_TYPE_DEFAULT, "[WARNING] Item %@ moved into new zone which supports server side asset copies %@%@", buf, 0x20u);
     }
 
-    [(BRCLocalVersion *)self->_currentVersion setPreviousItemGlobalID:v5];
-    v33 = [(BRCStatInfo *)self->super._st ckInfo];
-    [v33 markCrossZoneMoved];
+    [(BRCLocalVersion *)self->_currentVersion setPreviousItemGlobalID:itemGlobalID];
+    ckInfo5 = [(BRCStatInfo *)self->super._st ckInfo];
+    [ckInfo5 markCrossZoneMoved];
 
-    v34 = [(BRCVersion *)self->_currentVersion ckInfo];
-    [v34 markCrossZoneMoved];
+    ckInfo6 = [(BRCVersion *)self->_currentVersion ckInfo];
+    [ckInfo6 markCrossZoneMoved];
   }
 
   v36 = objc_opt_new();
   [(BRCLocalItem *)self learnItemID:v36 serverItem:0];
 
-  self->super._sharingOptions = [v4 sharingOptions] & 0x78;
+  self->super._sharingOptions = [itemCopy sharingOptions] & 0x78;
   v37 = brc_bread_crumbs();
   v38 = brc_default_log();
   if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
@@ -1946,9 +1946,9 @@ LABEL_22:
     sharingOptions = self->super._sharingOptions;
     v45 = BRCPrettyPrintBitmap();
     *buf = 138412802;
-    v49 = v45;
+    selfCopy3 = v45;
     v50 = 2112;
-    v51 = v4;
+    v51 = itemCopy;
     v52 = 2112;
     v53 = v37;
     _os_log_debug_impl(&dword_223E7A000, v38, OS_LOG_TYPE_DEBUG, "[DEBUG] learning sharing options %@ from parent %@%@", buf, 0x20u);
@@ -1957,7 +1957,7 @@ LABEL_22:
   [(BRCDocumentItem *)self markNeedsUploadOrSyncingUp];
   v25 = 0;
   v39 = 0;
-  if (!v11)
+  if (!previousItemGlobalID)
   {
     goto LABEL_22;
   }
@@ -1967,23 +1967,23 @@ LABEL_23:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_crossZoneMoveToParent:(id)a3
+- (void)_crossZoneMoveToParent:(id)parent
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(BRCLocalItem *)self clientZone];
-  v6 = [v5 enhancedDrivePrivacyEnabled];
-  v7 = [v4 clientZone];
-  v8 = v6 ^ [v7 enhancedDrivePrivacyEnabled];
+  parentCopy = parent;
+  clientZone = [(BRCLocalItem *)self clientZone];
+  enhancedDrivePrivacyEnabled = [clientZone enhancedDrivePrivacyEnabled];
+  clientZone2 = [parentCopy clientZone];
+  v8 = enhancedDrivePrivacyEnabled ^ [clientZone2 enhancedDrivePrivacyEnabled];
 
   if (![(BRCDocumentItem *)self supportsServerSideAssetCopies]|| (v8 & 1) != 0)
   {
     if ((self->super._localDiffs & 0x180000) == 0 && ![(BRCDocumentItem *)self _isInFlightSyncContent])
     {
-      v9 = [(BRCVersion *)self->_currentVersion contentSignature];
-      v10 = [v9 brc_signatureIsValid];
+      contentSignature = [(BRCVersion *)self->_currentVersion contentSignature];
+      brc_signatureIsValid = [contentSignature brc_signatureIsValid];
 
-      if (!(v8 & 1 | ((v10 & 1) == 0)))
+      if (!(v8 & 1 | ((brc_signatureIsValid & 1) == 0)))
       {
         v11 = brc_bread_crumbs();
         v12 = brc_default_log();
@@ -2001,36 +2001,36 @@ LABEL_23:
       [BRCDocumentItem _crossZoneMoveToParent:];
     }
 
-    v15 = [(BRCAccountSession *)self->super._session globalProgress];
-    [v15 didDeleteDocument:self];
+    globalProgress = [(BRCAccountSession *)self->super._session globalProgress];
+    [globalProgress didDeleteDocument:self];
 
     v16 = [(BRCDocumentItem *)self copy];
     [v16 markDead];
-    v17 = [v16 itemGlobalID];
-    [v16 _restorePreviousGlobalID:v17];
+    itemGlobalID = [v16 itemGlobalID];
+    [v16 _restorePreviousGlobalID:itemGlobalID];
 
     [v16 markNeedsUploadOrSyncingUp];
-    v18 = [v4 itemGlobalID];
+    itemGlobalID2 = [parentCopy itemGlobalID];
     session = self->super._session;
-    v20 = [v18 zoneRowID];
-    v21 = [(BRCAccountSession *)session serverZoneByRowID:v20];
-    v22 = [v21 clientZone];
+    zoneRowID = [itemGlobalID2 zoneRowID];
+    v21 = [(BRCAccountSession *)session serverZoneByRowID:zoneRowID];
+    clientZone3 = [v21 clientZone];
 
-    v23 = [v18 itemID];
-    [(BRCStatInfo *)self->super._st setParentID:v23];
+    itemID = [itemGlobalID2 itemID];
+    [(BRCStatInfo *)self->super._st setParentID:itemID];
 
-    v24 = [v18 zoneRowID];
+    zoneRowID2 = [itemGlobalID2 zoneRowID];
     parentZoneRowID = self->super._parentZoneRowID;
-    self->super._parentZoneRowID = v24;
+    self->super._parentZoneRowID = zoneRowID2;
 
-    objc_storeStrong(&self->super._clientZone, v22);
-    self->super._serverZone = [v22 serverZone];
+    objc_storeStrong(&self->super._clientZone, clientZone3);
+    self->super._serverZone = [clientZone3 serverZone];
     self->super._orig->_syncUpState = 0;
     v26 = objc_opt_new();
     [(BRCLocalItem *)self learnItemID:v26 serverItem:0];
 
     [(BRCDocumentItem *)self markItemForgottenByServer];
-    self->super._sharingOptions = [v4 sharingOptions] & 0x78;
+    self->super._sharingOptions = [parentCopy sharingOptions] & 0x78;
     v27 = brc_bread_crumbs();
     v28 = brc_default_log();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -2040,7 +2040,7 @@ LABEL_23:
       *buf = 138412802;
       v37 = v33;
       v38 = 2112;
-      v39 = v4;
+      v39 = parentCopy;
       v40 = 2112;
       v41 = v27;
       _os_log_debug_impl(&dword_223E7A000, v28, OS_LOG_TYPE_DEBUG, "[DEBUG] learning sharing options %@ from parent %@%@", buf, 0x20u);
@@ -2060,7 +2060,7 @@ LABEL_23:
 
   else
   {
-    [(BRCDocumentItem *)self markCrossZoneMovedForServerAssetCopyWithParentItem:v4];
+    [(BRCDocumentItem *)self markCrossZoneMovedForServerAssetCopyWithParentItem:parentCopy];
   }
 
   v31 = *MEMORY[0x277D85DE8];
@@ -2079,58 +2079,58 @@ uint64_t __42__BRCDocumentItem__crossZoneMoveToParent___block_invoke(uint64_t a1
   return result;
 }
 
-- (BOOL)contentRecordNeedsForceAllFieldsWhenDeadInServerTruth:(BOOL)a3
+- (BOOL)contentRecordNeedsForceAllFieldsWhenDeadInServerTruth:(BOOL)truth
 {
-  if (a3 || (self->super._localDiffs & 0x900000) != 0)
+  if (truth || (self->super._localDiffs & 0x900000) != 0)
   {
     return 1;
   }
 
-  v5 = [(BRCVersion *)self->_currentVersion ckInfo];
-  v6 = [v5 etag];
-  v3 = v6 == 0;
+  ckInfo = [(BRCVersion *)self->_currentVersion ckInfo];
+  etag = [ckInfo etag];
+  v3 = etag == 0;
 
   return v3;
 }
 
-- (void)addResolvedConflictLoserEtag:(id)a3
+- (void)addResolvedConflictLoserEtag:(id)etag
 {
   resolvedConflictLoserEtags = self->_resolvedConflictLoserEtags;
   if (resolvedConflictLoserEtags)
   {
-    v9 = a3;
-    [(NSMutableSet *)resolvedConflictLoserEtags addObject:v9];
-    v4 = v9;
+    etagCopy = etag;
+    [(NSMutableSet *)resolvedConflictLoserEtags addObject:etagCopy];
+    v4 = etagCopy;
   }
 
   else
   {
     v6 = MEMORY[0x277CBEB58];
-    v7 = a3;
-    v8 = [[v6 alloc] initWithObjects:{v7, 0}];
+    etagCopy2 = etag;
+    v8 = [[v6 alloc] initWithObjects:{etagCopy2, 0}];
 
     v4 = self->_resolvedConflictLoserEtags;
     self->_resolvedConflictLoserEtags = v8;
   }
 }
 
-- (void)learnContentVersionFromVersionIdentifier:(id)a3
+- (void)learnContentVersionFromVersionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(BRCDocumentItem *)self currentVersion];
-  [v5 _learnVersionFromStoredLocalVersionIdentifier:v4];
+  identifierCopy = identifier;
+  currentVersion = [(BRCDocumentItem *)self currentVersion];
+  [currentVersion _learnVersionFromStoredLocalVersionIdentifier:identifierCopy];
 
   self->super._localDiffs |= 0x400000000000000uLL;
 }
 
-- (void)_updateUploadJobIfNeededWithDiffs:(unint64_t)a3
+- (void)_updateUploadJobIfNeededWithDiffs:(unint64_t)diffs
 {
   if (self->super._syncUpState == 3)
   {
-    if ([(BRCLocalVersion *)self->_currentVersion shouldRecreateUploadJobGivenDiffs:a3]|| (clientZone = self->super._clientZone, [(BRCLocalItem *)self->super._orig clientZone], v6 = objc_claimAutoreleasedReturnValue(), LOBYTE(clientZone) = [(BRCClientZone *)clientZone isEqualToClientZone:v6], v6, (clientZone & 1) == 0))
+    if ([(BRCLocalVersion *)self->_currentVersion shouldRecreateUploadJobGivenDiffs:diffs]|| (clientZone = self->super._clientZone, [(BRCLocalItem *)self->super._orig clientZone], v6 = objc_claimAutoreleasedReturnValue(), LOBYTE(clientZone) = [(BRCClientZone *)clientZone isEqualToClientZone:v6], v6, (clientZone & 1) == 0))
     {
-      v7 = [(BRCAccountSession *)self->super._session fsUploader];
-      [v7 cancelAndCleanupItemUpload:self];
+      fsUploader = [(BRCAccountSession *)self->super._session fsUploader];
+      [fsUploader cancelAndCleanupItemUpload:self];
 
 LABEL_7:
       memset(v23, 0, sizeof(v23));
@@ -2152,9 +2152,9 @@ LABEL_7:
         }
       }
 
-      v10 = [(BRCLocalItem *)self serverZone];
-      v11 = [v10 dbRowID];
-      v12 = [(BRCLocalItem *)self inFlightSyncUpDiffsInZoneRowID:v11];
+      serverZone = [(BRCLocalItem *)self serverZone];
+      dbRowID = [serverZone dbRowID];
+      v12 = [(BRCLocalItem *)self inFlightSyncUpDiffsInZoneRowID:dbRowID];
 
       syncUpState = self->super._syncUpState;
       if (syncUpState == 3)
@@ -2189,17 +2189,17 @@ LABEL_7:
 
       else
       {
-        v15 = [(BRCAccountSession *)self->super._session fsUploader];
-        [v15 cancelAndCleanupItemUpload:self];
+        fsUploader2 = [(BRCAccountSession *)self->super._session fsUploader];
+        [fsUploader2 cancelAndCleanupItemUpload:self];
 
         if (!self->_fileIDForUpload || [(BRCLocalItem *)self isMigratingToFPFS])
         {
           goto LABEL_21;
         }
 
-        v16 = [(BRCAccountSession *)self->super._session stageRegistry];
-        v17 = [(BRCLocalItem *)self liveStageFilename];
-        [v16 unlinkLiveStageFilename:v17];
+        stageRegistry = [(BRCAccountSession *)self->super._session stageRegistry];
+        liveStageFilename = [(BRCLocalItem *)self liveStageFilename];
+        [stageRegistry unlinkLiveStageFilename:liveStageFilename];
 
         fileIDForUpload = self->_fileIDForUpload;
         self->_fileIDForUpload = 0;
@@ -2214,27 +2214,27 @@ LABEL_21:
     }
   }
 
-  if ((a3 & 0x20000000000000) != 0)
+  if ((diffs & 0x20000000000000) != 0)
   {
     goto LABEL_7;
   }
 }
 
-- (BOOL)_nukePackageItemsFromDB:(id)a3
+- (BOOL)_nukePackageItemsFromDB:(id)b
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 execute:{@"DELETE FROM client_pkg_upload_items WHERE item_rowid = %llu", self->super._dbRowID}];
-  if (v5 && [v4 changes] >= 1)
+  bCopy = b;
+  v5 = [bCopy execute:{@"DELETE FROM client_pkg_upload_items WHERE item_rowid = %llu", self->super._dbRowID}];
+  if (v5 && [bCopy changes] >= 1)
   {
     v6 = brc_bread_crumbs();
     v7 = brc_default_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      v10 = [v4 changes];
+      changes = [bCopy changes];
       dbRowID = self->super._dbRowID;
       *buf = 134218498;
-      v13 = v10;
+      v13 = changes;
       v14 = 2048;
       v15 = dbRowID;
       v16 = 2112;
@@ -2252,16 +2252,16 @@ LABEL_21:
   return v5;
 }
 
-- (void)_updateRecursivePropertiesInDB:(id)a3 dbRowID:(unint64_t)a4 diffs:(unint64_t)a5
+- (void)_updateRecursivePropertiesInDB:(id)b dbRowID:(unint64_t)d diffs:(unint64_t)diffs
 {
   v70 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  if (([v7 isBatchSuspended] & 1) == 0)
+  bCopy = b;
+  if (([bCopy isBatchSuspended] & 1) == 0)
   {
     [BRCDocumentItem _updateRecursivePropertiesInDB:dbRowID:diffs:];
   }
 
-  v8 = [(BRCLocalItem *)self->super._orig asDocument];
+  asDocument = [(BRCLocalItem *)self->super._orig asDocument];
   if ((self->super._sharingOptions & 4) != 0 || ([(BRCLocalItem *)self->super._orig sharingOptions]& 4) != 0)
   {
     v9 = 1073741826;
@@ -2272,12 +2272,12 @@ LABEL_21:
     v9 = 2;
   }
 
-  if (((v9 & 0xFFFFFFFFFFFFLL | 0x22000000000000) & a5) != 0 || (-[BRCLocalItem clientZone](self->super._orig, "clientZone"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isEqualToClientZone:self->super._clientZone], v10, (v11 & 1) == 0))
+  if (((v9 & 0xFFFFFFFFFFFFLL | 0x22000000000000) & diffs) != 0 || (-[BRCLocalItem clientZone](self->super._orig, "clientZone"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isEqualToClientZone:self->super._clientZone], v10, (v11 & 1) == 0))
   {
     if ([(BRCLocalItem *)self needsUpload])
     {
-      v12 = [(BRCDocumentItem *)self currentVersion];
-      v13 = [v12 size];
+      currentVersion = [(BRCDocumentItem *)self currentVersion];
+      v13 = [currentVersion size];
 
       v14 = 1;
     }
@@ -2288,12 +2288,12 @@ LABEL_21:
       v13 = 0;
     }
 
-    v15 = [(BRCLocalItem *)self needsSyncUp];
-    v16 = [(BRCLocalItem *)self->super._orig needsUpload];
-    if (v16 != [(BRCLocalItem *)self needsUpload]&& [(BRCLocalItem *)self->super._orig needsUpload]&& [(BRCLocalItem *)self needsSyncUp])
+    needsSyncUp = [(BRCLocalItem *)self needsSyncUp];
+    needsUpload = [(BRCLocalItem *)self->super._orig needsUpload];
+    if (needsUpload != [(BRCLocalItem *)self needsUpload]&& [(BRCLocalItem *)self->super._orig needsUpload]&& [(BRCLocalItem *)self needsSyncUp])
     {
-      v17 = [v8 currentVersion];
-      v18 = [v17 size];
+      currentVersion2 = [asDocument currentVersion];
+      v18 = [currentVersion2 size];
     }
 
     else
@@ -2301,27 +2301,27 @@ LABEL_21:
       v18 = 0;
     }
 
-    v19 = [(BRCLocalItem *)self->super._orig needsSyncUp];
-    if (v19 == [(BRCLocalItem *)self needsSyncUp])
+    needsSyncUp2 = [(BRCLocalItem *)self->super._orig needsSyncUp];
+    if (needsSyncUp2 == [(BRCLocalItem *)self needsSyncUp])
     {
-      v20 = 0;
+      needsSyncUp3 = 0;
     }
 
     else
     {
-      v20 = [(BRCLocalItem *)self->super._orig needsSyncUp];
+      needsSyncUp3 = [(BRCLocalItem *)self->super._orig needsSyncUp];
     }
 
-    v49 = v15;
-    v21 = [(BRCDocumentItem *)self uploadError];
-    v22 = [v21 brc_isCloudKitOutOfQuota];
+    v49 = needsSyncUp;
+    uploadError = [(BRCDocumentItem *)self uploadError];
+    brc_isCloudKitOutOfQuota = [uploadError brc_isCloudKitOutOfQuota];
 
-    v23 = v22;
+    v23 = brc_isCloudKitOutOfQuota;
     if ((self->super._sharingOptions & 4) != 0)
     {
-      v24 = [(BRCServerZone *)self->super._serverZone isSharedZone];
-      v46 = !v24;
-      v47 = v24;
+      isSharedZone = [(BRCServerZone *)self->super._serverZone isSharedZone];
+      v46 = !isSharedZone;
+      v47 = isSharedZone;
     }
 
     else
@@ -2330,8 +2330,8 @@ LABEL_21:
       v47 = 0;
     }
 
-    v50 = v8;
-    v43 = [(BRCLocalItem *)self isAlmostDead];
+    v50 = asDocument;
+    isAlmostDead = [(BRCLocalItem *)self isAlmostDead];
     if (v13)
     {
       v25 = 1;
@@ -2362,7 +2362,7 @@ LABEL_21:
       v64 = 2048;
       v65 = v49;
       v66 = 2048;
-      v67 = v20;
+      v67 = needsSyncUp3;
       v68 = 2112;
       v69 = v26;
       _os_log_debug_impl(&dword_223E7A000, v27, OS_LOG_TYPE_DEBUG, "[DEBUG] updating recursive properties starting from document %@:\n quota:    %lld\n upload:   {needs:(count:%lld size:%lld) done:(count:%lld size:%lld)}\n sync-up:  {needs:%lld done:%lld}\n%@", buf, 0x5Cu);
@@ -2373,15 +2373,15 @@ LABEL_21:
     v48 = v18;
     v28 = v13;
 
-    v29 = [(BRCStatInfo *)self->super._st type];
-    if (v29 == 8 || v29 == 2)
+    type = [(BRCStatInfo *)self->super._st type];
+    if (type == 8 || type == 2)
     {
       v31 = 1;
     }
 
     else
     {
-      v31 = v29;
+      v31 = type;
     }
 
     if (v31 == 7)
@@ -2394,12 +2394,12 @@ LABEL_21:
       v32 = v31;
     }
 
-    v33 = [(BRCStatInfo *)self->super._st parentID];
+    parentID = [(BRCStatInfo *)self->super._st parentID];
     v34 = self->super._itemID;
-    v35 = [(BRCClientZone *)self->super._clientZone dbRowID];
-    v36 = [(BRCLocalItem *)self parentClientZone];
-    v37 = [v36 dbRowID];
-    v38 = [v7 execute:{@"INSERT OR IGNORE INTO item_recursive_properties (item_rowid, item_parent_id, item_id, zone_rowid, item_type, item_parent_zone_rowid) VALUES  (%lld, %@, %@, %@, %d, %@)", a4, v33, v34, v35, v32, v37}];
+    dbRowID = [(BRCClientZone *)self->super._clientZone dbRowID];
+    parentClientZone = [(BRCLocalItem *)self parentClientZone];
+    dbRowID2 = [parentClientZone dbRowID];
+    v38 = [bCopy execute:{@"INSERT OR IGNORE INTO item_recursive_properties (item_rowid, item_parent_id, item_id, zone_rowid, item_type, item_parent_zone_rowid) VALUES  (%lld, %@, %@, %@, %d, %@)", d, parentID, v34, dbRowID, v32, dbRowID2}];
 
     if ((v38 & 1) == 0)
     {
@@ -2407,21 +2407,21 @@ LABEL_21:
       v40 = brc_default_log();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_FAULT))
       {
-        [BRCDocumentItem _updateRecursivePropertiesInDB:v7 dbRowID:? diffs:?];
+        [BRCDocumentItem _updateRecursivePropertiesInDB:bCopy dbRowID:? diffs:?];
       }
 
-      v8 = v50;
+      asDocument = v50;
       goto LABEL_44;
     }
 
-    v8 = v50;
-    if (([v7 execute:{@"UPDATE item_recursive_properties SET  dir_faults_count = %lld, uploaded_size = %lld, needs_upload_size = %lld, uploaded_count = %lld, needs_upload_count = %lld, synced_up_count = %lld, needs_sync_up_count = %lld, over_quota_count = %lld, shared_by_me_count = %lld, shared_to_me_count = %lld, needs_delete_doc_count = %lld  WHERE item_rowid = %llu ", 0, v48, v28, v45, v44, v20, v49, v23, v46, v47, v43, a4}] & 1) == 0)
+    asDocument = v50;
+    if (([bCopy execute:{@"UPDATE item_recursive_properties SET  dir_faults_count = %lld, uploaded_size = %lld, needs_upload_size = %lld, uploaded_count = %lld, needs_upload_count = %lld, synced_up_count = %lld, needs_sync_up_count = %lld, over_quota_count = %lld, shared_by_me_count = %lld, shared_to_me_count = %lld, needs_delete_doc_count = %lld  WHERE item_rowid = %llu ", 0, v48, v28, v45, v44, needsSyncUp3, v49, v23, v46, v47, isAlmostDead, d}] & 1) == 0)
     {
       v39 = brc_bread_crumbs();
       v40 = brc_default_log();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_FAULT))
       {
-        [BRCDocumentItem _updateRecursivePropertiesInDB:v7 dbRowID:? diffs:?];
+        [BRCDocumentItem _updateRecursivePropertiesInDB:bCopy dbRowID:? diffs:?];
       }
 
 LABEL_44:
@@ -2431,10 +2431,10 @@ LABEL_44:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_insertInDB:(id)a3 dbRowID:(unint64_t)a4
+- (BOOL)_insertInDB:(id)b dbRowID:(unint64_t)d
 {
-  v74 = a3;
-  v77 = [(BRCClientZone *)self->super._clientZone dbRowID];
+  bCopy = b;
+  dbRowID = [(BRCClientZone *)self->super._clientZone dbRowID];
   itemID = self->super._itemID;
   ownerKey = self->super._ownerKey;
   sharingOptions = self->super._sharingOptions;
@@ -2443,18 +2443,18 @@ LABEL_44:
   localDiffs = self->super._localDiffs;
   notifsRank = self->super._notifsRank;
   syncUpState = self->super._syncUpState;
-  v56 = [(BRCLocalItem *)self appLibrary];
-  v76 = [v56 dbRowID];
+  appLibrary = [(BRCLocalItem *)self appLibrary];
+  dbRowID2 = [appLibrary dbRowID];
   minimumSupportedOSRowID = self->super._minimumSupportedOSRowID;
   isUserVisible = self->super._isUserVisible;
-  v78 = [(BRCStatInfo *)self->super._st ckInfo];
-  v44 = [(BRCStatInfo *)self->super._st state];
-  v43 = [(BRCStatInfo *)self->super._st type];
-  v42 = [(BRCStatInfo *)self->super._st mode];
-  v41 = [(BRCStatInfo *)self->super._st birthtime];
-  v40 = [(BRCStatInfo *)self->super._st lastUsedTime];
-  v39 = [(BRCStatInfo *)self->super._st favoriteRank];
-  v75 = [(BRCStatInfo *)self->super._st parentID];
+  ckInfo = [(BRCStatInfo *)self->super._st ckInfo];
+  state = [(BRCStatInfo *)self->super._st state];
+  type = [(BRCStatInfo *)self->super._st type];
+  mode = [(BRCStatInfo *)self->super._st mode];
+  birthtime = [(BRCStatInfo *)self->super._st birthtime];
+  lastUsedTime = [(BRCStatInfo *)self->super._st lastUsedTime];
+  favoriteRank = [(BRCStatInfo *)self->super._st favoriteRank];
+  parentID = [(BRCStatInfo *)self->super._st parentID];
   st = self->super._st;
   logicalName = st->super._logicalName;
   if (!logicalName)
@@ -2463,69 +2463,69 @@ LABEL_44:
   }
 
   v38 = logicalName;
-  v37 = [(BRCStatInfo *)st isHiddenExt];
-  v67 = [(BRCStatInfo *)self->super._st finderTags];
-  v72 = [(BRCStatInfo *)self->super._st xattrSignature];
-  v73 = [(BRCStatInfo *)self->super._st trashPutBackPath];
-  v71 = [(BRCStatInfo *)self->super._st trashPutBackParentID];
-  v66 = [(BRCStatInfo *)self->super._st aliasTarget];
-  v70 = [(BRCStatInfo *)self->super._st creatorRowID];
-  v69 = [(BRCLocalStatInfo *)self->super._st processingStamp];
-  v68 = [(BRCLocalStatInfo *)self->super._st rawBouncedLogicalName];
-  v35 = [(BRCLocalStatInfo *)self->super._st itemScope];
-  v34 = [(BRCLocalStatInfo *)self->super._st localChangeCount];
-  v61 = [(BRCLocalStatInfo *)self->super._st oldVersionIdentifier];
-  v64 = [(BRCLocalStatInfo *)self->super._st fpCreationItemIdentifier];
-  v65 = [(BRCVersion *)self->_currentVersion originalPOSIXName];
-  v60 = [(BRCVersion *)self->_currentVersion ckInfo];
-  v29 = [(BRCVersion *)self->_currentVersion mtime];
+  isHiddenExt = [(BRCStatInfo *)st isHiddenExt];
+  finderTags = [(BRCStatInfo *)self->super._st finderTags];
+  xattrSignature = [(BRCStatInfo *)self->super._st xattrSignature];
+  trashPutBackPath = [(BRCStatInfo *)self->super._st trashPutBackPath];
+  trashPutBackParentID = [(BRCStatInfo *)self->super._st trashPutBackParentID];
+  aliasTarget = [(BRCStatInfo *)self->super._st aliasTarget];
+  creatorRowID = [(BRCStatInfo *)self->super._st creatorRowID];
+  processingStamp = [(BRCLocalStatInfo *)self->super._st processingStamp];
+  rawBouncedLogicalName = [(BRCLocalStatInfo *)self->super._st rawBouncedLogicalName];
+  itemScope = [(BRCLocalStatInfo *)self->super._st itemScope];
+  localChangeCount = [(BRCLocalStatInfo *)self->super._st localChangeCount];
+  oldVersionIdentifier = [(BRCLocalStatInfo *)self->super._st oldVersionIdentifier];
+  fpCreationItemIdentifier = [(BRCLocalStatInfo *)self->super._st fpCreationItemIdentifier];
+  originalPOSIXName = [(BRCVersion *)self->_currentVersion originalPOSIXName];
+  ckInfo2 = [(BRCVersion *)self->_currentVersion ckInfo];
+  mtime = [(BRCVersion *)self->_currentVersion mtime];
   v7 = [(BRCVersion *)self->_currentVersion size];
-  v27 = [(BRCVersion *)self->_currentVersion thumbnailSize];
-  v63 = [(BRCVersion *)self->_currentVersion thumbnailSignature];
-  v62 = [(BRCVersion *)self->_currentVersion contentSignature];
-  v59 = [(BRCVersion *)self->_currentVersion xattrSignature];
-  v32 = [(BRCVersion *)self->_currentVersion editedSinceShared];
-  v58 = [(BRCVersion *)self->_currentVersion lastEditorDeviceOrUserRowID];
-  v30 = [(BRCVersion *)self->_currentVersion conflictLoserEtags];
-  v26 = [(BRCVersion *)self->_currentVersion quarantineInfo];
-  v28 = [(BRCLocalVersion *)self->_currentVersion uploadedAssets];
-  v36 = [(BRCLocalVersion *)self->_currentVersion uploadError];
-  v8 = [v36 brc_strippedError];
-  v33 = [(BRCLocalVersion *)self->_currentVersion previousItemGlobalID];
-  v9 = [v33 itemID];
-  v31 = [(BRCLocalVersion *)self->_currentVersion previousItemGlobalID];
-  v10 = [v31 zoneRowID];
-  v11 = [(BRCLocalVersion *)self->_currentVersion localChangeCount];
-  v25 = [(BRCLocalVersion *)self->_currentVersion oldVersionIdentifier];
-  v12 = [(BRCDocumentItem *)self conflictLoserState];
-  v13 = [(BRCDocumentItem *)self fileIDForUpload];
+  thumbnailSize = [(BRCVersion *)self->_currentVersion thumbnailSize];
+  thumbnailSignature = [(BRCVersion *)self->_currentVersion thumbnailSignature];
+  contentSignature = [(BRCVersion *)self->_currentVersion contentSignature];
+  xattrSignature2 = [(BRCVersion *)self->_currentVersion xattrSignature];
+  editedSinceShared = [(BRCVersion *)self->_currentVersion editedSinceShared];
+  lastEditorDeviceOrUserRowID = [(BRCVersion *)self->_currentVersion lastEditorDeviceOrUserRowID];
+  conflictLoserEtags = [(BRCVersion *)self->_currentVersion conflictLoserEtags];
+  quarantineInfo = [(BRCVersion *)self->_currentVersion quarantineInfo];
+  uploadedAssets = [(BRCLocalVersion *)self->_currentVersion uploadedAssets];
+  uploadError = [(BRCLocalVersion *)self->_currentVersion uploadError];
+  brc_strippedError = [uploadError brc_strippedError];
+  previousItemGlobalID = [(BRCLocalVersion *)self->_currentVersion previousItemGlobalID];
+  itemID = [previousItemGlobalID itemID];
+  previousItemGlobalID2 = [(BRCLocalVersion *)self->_currentVersion previousItemGlobalID];
+  zoneRowID = [previousItemGlobalID2 zoneRowID];
+  localChangeCount2 = [(BRCLocalVersion *)self->_currentVersion localChangeCount];
+  oldVersionIdentifier2 = [(BRCLocalVersion *)self->_currentVersion oldVersionIdentifier];
+  conflictLoserState = [(BRCDocumentItem *)self conflictLoserState];
+  fileIDForUpload = [(BRCDocumentItem *)self fileIDForUpload];
   [(BRCDocumentItem *)self generationIDForUpload];
   v14 = v24 = v7;
-  v55 = [v74 execute:{@"INSERT INTO client_items(rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation) VALUES(%lld, %@, %@, %@, %ld, %@, %@, %d, %lld, %lld, %@, %@, %d, %@, %d, %d, %d, %lld, %lld, %lld, %@, %@, %d, %@, %@, %@, %@, %@, %@, %@, %@, %d, %llu, %@, %@, %@, %@, %lld, %lld, %lld, %@, %@, %@, %@, %@, %@, %@, %@, %@, %@, %@, %llu, %@, %@, %@, %@)", a4, v77, itemID, ownerKey, sharingOptions, sideCarCKInfo, parentZoneRowID, syncUpState, localDiffs, notifsRank, v76, minimumSupportedOSRowID, isUserVisible, v78, v44, v43, v42, v41, v40, v39, v75, v38, v37, v67, v72, v73, v71, v66, v70, v69, v68, v35, v34, v61, v64, v65, v60, v29, v24, v27, v63, v62, v59, v32, v58, v30, v26, v28, v8, v9, v10, v11, v25, v12, v13, v14}];
+  v55 = [bCopy execute:{@"INSERT INTO client_items(rowid, zone_rowid, item_id, item_creator_id, item_sharing_options, item_side_car_ckinfo, item_parent_zone_rowid, item_localsyncupstate, item_local_diffs, item_notifs_rank, app_library_rowid, item_min_supported_os_rowid, item_user_visible, item_stat_ckinfo, item_state, item_type, item_mode, item_birthtime, item_lastusedtime, item_favoriterank, item_parent_id, item_filename, item_hidden_ext, item_finder_tags, item_xattr_signature, item_trash_put_back_path, item_trash_put_back_parent_id, item_alias_target, item_creator, item_processing_stamp, item_bouncedname, item_scope, item_local_change_count, item_old_version_identifier, fp_creation_item_identifier, version_name, version_ckinfo, version_mtime, version_size, version_thumb_size, version_thumb_signature, version_content_signature, version_xattr_signature, version_edited_since_shared, version_device, version_conflict_loser_etags, version_quarantine_info, version_uploaded_assets, version_upload_error, version_old_zone_item_id, version_old_zone_rowid, version_local_change_count, version_old_version_identifier, item_live_conflict_loser_etags, item_file_id, item_generation) VALUES(%lld, %@, %@, %@, %ld, %@, %@, %d, %lld, %lld, %@, %@, %d, %@, %d, %d, %d, %lld, %lld, %lld, %@, %@, %d, %@, %@, %@, %@, %@, %@, %@, %@, %d, %llu, %@, %@, %@, %@, %lld, %lld, %lld, %@, %@, %@, %@, %@, %@, %@, %@, %@, %@, %@, %llu, %@, %@, %@, %@)", d, dbRowID, itemID, ownerKey, sharingOptions, sideCarCKInfo, parentZoneRowID, syncUpState, localDiffs, notifsRank, dbRowID2, minimumSupportedOSRowID, isUserVisible, ckInfo, state, type, mode, birthtime, lastUsedTime, favoriteRank, parentID, v38, isHiddenExt, finderTags, xattrSignature, trashPutBackPath, trashPutBackParentID, aliasTarget, creatorRowID, processingStamp, rawBouncedLogicalName, itemScope, localChangeCount, oldVersionIdentifier, fpCreationItemIdentifier, originalPOSIXName, ckInfo2, mtime, v24, thumbnailSize, thumbnailSignature, contentSignature, xattrSignature2, editedSinceShared, lastEditorDeviceOrUserRowID, conflictLoserEtags, quarantineInfo, uploadedAssets, brc_strippedError, itemID, zoneRowID, localChangeCount2, oldVersionIdentifier2, conflictLoserState, fileIDForUpload, v14}];
 
   if (v55)
   {
     v79.receiver = self;
     v79.super_class = BRCDocumentItem;
-    v15 = v74;
-    if ([(BRCLocalItem *)&v79 _insertInDB:v74 dbRowID:a4])
+    v15 = bCopy;
+    if ([(BRCLocalItem *)&v79 _insertInDB:bCopy dbRowID:d])
     {
       [(BRCDocumentItem *)self _updateUploadJobIfNeededWithDiffs:0xFF003FF3FF7FFFLL];
-      v16 = [(BRCDocumentItem *)self currentVersion];
-      v17 = [v16 uploadError];
+      currentVersion = [(BRCDocumentItem *)self currentVersion];
+      uploadError2 = [currentVersion uploadError];
 
-      if (v17)
+      if (uploadError2)
       {
         v18 = [(BRCLocalItem *)self db];
-        v19 = [(BRCDocumentItem *)self currentVersion];
-        v20 = [v19 uploadError];
-        [v18 execute:{@"UPDATE client_items SET version_upload_error = %@ WHERE rowid = %lld", v20, -[BRCLocalItem dbRowID](self, "dbRowID")}];
+        currentVersion2 = [(BRCDocumentItem *)self currentVersion];
+        uploadError3 = [currentVersion2 uploadError];
+        [v18 execute:{@"UPDATE client_items SET version_upload_error = %@ WHERE rowid = %lld", uploadError3, -[BRCLocalItem dbRowID](self, "dbRowID")}];
       }
 
-      v21 = [(BRCAccountSession *)self->super._session globalProgress];
-      [v21 didUpdateDocument:self];
+      globalProgress = [(BRCAccountSession *)self->super._session globalProgress];
+      [globalProgress didUpdateDocument:self];
 
-      [(BRCDocumentItem *)self _updateRecursivePropertiesInDB:v74 dbRowID:a4 diffs:0xFF003FF3FF7FFFLL];
+      [(BRCDocumentItem *)self _updateRecursivePropertiesInDB:bCopy dbRowID:d diffs:0xFF003FF3FF7FFFLL];
       v22 = 1;
     }
 
@@ -2538,27 +2538,27 @@ LABEL_44:
   else
   {
     v22 = 0;
-    v15 = v74;
+    v15 = bCopy;
   }
 
   return v22;
 }
 
-- (BOOL)_updateInDB:(id)a3 diffs:(unint64_t)a4
+- (BOOL)_updateInDB:(id)b diffs:(unint64_t)diffs
 {
   v126 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if ((a4 & 0x100000000) != 0 && [(BRCLocalItem *)self isDead])
+  bCopy = b;
+  if ((diffs & 0x100000000) != 0 && [(BRCLocalItem *)self isDead])
   {
-    [(BRCDocumentItem *)self _nukePackageItemsFromDB:v6];
+    [(BRCDocumentItem *)self _nukePackageItemsFromDB:bCopy];
   }
 
-  v116 = v6;
+  v116 = bCopy;
   if ([(BRCDocumentItem *)self isDocumentBeingCopiedToNewZone]|| [(BRCLocalItem *)self->super._orig isDocumentBeingCopiedToNewZone])
   {
     clientZone = self->super._clientZone;
-    v8 = [(BRCLocalItem *)self->super._orig clientZone];
-    LOBYTE(clientZone) = [(BRCClientZone *)clientZone isEqualToClientZone:v8];
+    clientZone = [(BRCLocalItem *)self->super._orig clientZone];
+    LOBYTE(clientZone) = [(BRCClientZone *)clientZone isEqualToClientZone:clientZone];
 
     if ((clientZone & 1) == 0)
     {
@@ -2571,33 +2571,33 @@ LABEL_44:
 
       v11 = [BRCItemDBRowIDAndZoneJobIdentifier alloc];
       dbRowID = self->super._dbRowID;
-      v13 = [(BRCLocalItem *)self->super._orig clientZone];
-      v14 = [v13 dbRowID];
-      v15 = [(BRCItemDBRowIDAndZoneJobIdentifier *)v11 initWithItemDBRowID:dbRowID zoneRowID:v14];
+      clientZone2 = [(BRCLocalItem *)self->super._orig clientZone];
+      dbRowID = [clientZone2 dbRowID];
+      v15 = [(BRCItemDBRowIDAndZoneJobIdentifier *)v11 initWithItemDBRowID:dbRowID zoneRowID:dbRowID];
 
-      v16 = [(BRCAccountSession *)self->super._session fsDownloader];
-      [v16 deleteJobsMatching:v15];
+      fsDownloader = [(BRCAccountSession *)self->super._session fsDownloader];
+      [fsDownloader deleteJobsMatching:v15];
 
-      v17 = [(BRCAccountSession *)self->super._session fsUploader];
-      [v17 deleteJobsMatching:v15];
+      fsUploader = [(BRCAccountSession *)self->super._session fsUploader];
+      [fsUploader deleteJobsMatching:v15];
     }
   }
 
-  [(BRCDocumentItem *)self _updateUploadJobIfNeededWithDiffs:a4];
-  v61 = a4;
-  if ((a4 & 0x2010000) != 0)
+  [(BRCDocumentItem *)self _updateUploadJobIfNeededWithDiffs:diffs];
+  diffsCopy = diffs;
+  if ((diffs & 0x2010000) != 0)
   {
-    v18 = [(BRCVersion *)self->_currentVersion conflictLoserEtags];
-    v19 = [v18 count];
+    conflictLoserEtags = [(BRCVersion *)self->_currentVersion conflictLoserEtags];
+    v19 = [conflictLoserEtags count];
 
     if (v19)
     {
-      v20 = [(BRCAccountSession *)self->super._session fsDownloader];
-      [v20 rescheduleJobsPendingWinnerForItem:self];
+      fsDownloader2 = [(BRCAccountSession *)self->super._session fsDownloader];
+      [fsDownloader2 rescheduleJobsPendingWinnerForItem:self];
     }
   }
 
-  v115 = [(BRCClientZone *)self->super._clientZone dbRowID];
+  dbRowID2 = [(BRCClientZone *)self->super._clientZone dbRowID];
   itemID = self->super._itemID;
   ownerKey = self->super._ownerKey;
   sharingOptions = self->super._sharingOptions;
@@ -2606,18 +2606,18 @@ LABEL_44:
   localDiffs = self->super._localDiffs;
   notifsRank = self->super._notifsRank;
   syncUpState = self->super._syncUpState;
-  v96 = [(BRCLocalItem *)self appLibrary];
-  v114 = [v96 dbRowID];
+  appLibrary = [(BRCLocalItem *)self appLibrary];
+  dbRowID3 = [appLibrary dbRowID];
   minimumSupportedOSRowID = self->super._minimumSupportedOSRowID;
   isUserVisible = self->super._isUserVisible;
-  v112 = [(BRCStatInfo *)self->super._st ckInfo];
-  v84 = [(BRCStatInfo *)self->super._st state];
-  v81 = [(BRCStatInfo *)self->super._st type];
-  v83 = [(BRCStatInfo *)self->super._st mode];
-  v82 = [(BRCStatInfo *)self->super._st birthtime];
-  v80 = [(BRCStatInfo *)self->super._st lastUsedTime];
-  v79 = [(BRCStatInfo *)self->super._st favoriteRank];
-  v108 = [(BRCStatInfo *)self->super._st parentID];
+  ckInfo = [(BRCStatInfo *)self->super._st ckInfo];
+  state = [(BRCStatInfo *)self->super._st state];
+  type = [(BRCStatInfo *)self->super._st type];
+  mode = [(BRCStatInfo *)self->super._st mode];
+  birthtime = [(BRCStatInfo *)self->super._st birthtime];
+  lastUsedTime = [(BRCStatInfo *)self->super._st lastUsedTime];
+  favoriteRank = [(BRCStatInfo *)self->super._st favoriteRank];
+  parentID = [(BRCStatInfo *)self->super._st parentID];
   st = self->super._st;
   logicalName = st->super._logicalName;
   if (!logicalName)
@@ -2626,60 +2626,60 @@ LABEL_44:
   }
 
   v78 = logicalName;
-  v77 = [(BRCStatInfo *)st isHiddenExt];
-  v110 = [(BRCStatInfo *)self->super._st finderTags];
-  v113 = [(BRCStatInfo *)self->super._st xattrSignature];
-  v111 = [(BRCStatInfo *)self->super._st trashPutBackPath];
-  v109 = [(BRCStatInfo *)self->super._st trashPutBackParentID];
-  v106 = [(BRCStatInfo *)self->super._st aliasTarget];
-  v107 = [(BRCStatInfo *)self->super._st creatorRowID];
-  v105 = [(BRCLocalStatInfo *)self->super._st processingStamp];
-  v102 = [(BRCLocalStatInfo *)self->super._st rawBouncedLogicalName];
-  v75 = [(BRCLocalStatInfo *)self->super._st itemScope];
-  v74 = [(BRCLocalStatInfo *)self->super._st localChangeCount];
-  v104 = [(BRCLocalStatInfo *)self->super._st oldVersionIdentifier];
-  v103 = [(BRCLocalStatInfo *)self->super._st fpCreationItemIdentifier];
-  v101 = [(BRCVersion *)self->_currentVersion originalPOSIXName];
-  v100 = [(BRCVersion *)self->_currentVersion ckInfo];
-  v68 = [(BRCVersion *)self->_currentVersion mtime];
+  isHiddenExt = [(BRCStatInfo *)st isHiddenExt];
+  finderTags = [(BRCStatInfo *)self->super._st finderTags];
+  xattrSignature = [(BRCStatInfo *)self->super._st xattrSignature];
+  trashPutBackPath = [(BRCStatInfo *)self->super._st trashPutBackPath];
+  trashPutBackParentID = [(BRCStatInfo *)self->super._st trashPutBackParentID];
+  aliasTarget = [(BRCStatInfo *)self->super._st aliasTarget];
+  creatorRowID = [(BRCStatInfo *)self->super._st creatorRowID];
+  processingStamp = [(BRCLocalStatInfo *)self->super._st processingStamp];
+  rawBouncedLogicalName = [(BRCLocalStatInfo *)self->super._st rawBouncedLogicalName];
+  itemScope = [(BRCLocalStatInfo *)self->super._st itemScope];
+  localChangeCount = [(BRCLocalStatInfo *)self->super._st localChangeCount];
+  oldVersionIdentifier = [(BRCLocalStatInfo *)self->super._st oldVersionIdentifier];
+  fpCreationItemIdentifier = [(BRCLocalStatInfo *)self->super._st fpCreationItemIdentifier];
+  originalPOSIXName = [(BRCVersion *)self->_currentVersion originalPOSIXName];
+  ckInfo2 = [(BRCVersion *)self->_currentVersion ckInfo];
+  mtime = [(BRCVersion *)self->_currentVersion mtime];
   v23 = [(BRCVersion *)self->_currentVersion size];
-  v66 = [(BRCVersion *)self->_currentVersion thumbnailSize];
-  v98 = [(BRCVersion *)self->_currentVersion thumbnailSignature];
-  v99 = [(BRCVersion *)self->_currentVersion contentSignature];
-  v72 = [(BRCVersion *)self->_currentVersion xattrSignature];
-  v71 = [(BRCVersion *)self->_currentVersion editedSinceShared];
-  v97 = [(BRCVersion *)self->_currentVersion lastEditorDeviceOrUserRowID];
-  v64 = [(BRCVersion *)self->_currentVersion conflictLoserEtags];
-  v69 = [(BRCVersion *)self->_currentVersion quarantineInfo];
-  v67 = [(BRCLocalVersion *)self->_currentVersion uploadedAssets];
-  v76 = [(BRCLocalVersion *)self->_currentVersion uploadError];
-  v63 = [v76 brc_strippedError];
-  v73 = [(BRCLocalVersion *)self->_currentVersion previousItemGlobalID];
-  v65 = [v73 itemID];
-  v70 = [(BRCLocalVersion *)self->_currentVersion previousItemGlobalID];
-  v24 = [v70 zoneRowID];
-  v25 = [(BRCLocalVersion *)self->_currentVersion localChangeCount];
-  v62 = [(BRCLocalVersion *)self->_currentVersion oldVersionIdentifier];
-  v26 = [(BRCDocumentItem *)self conflictLoserState];
-  v27 = [(BRCDocumentItem *)self fileIDForUpload];
-  v28 = [(BRCDocumentItem *)self generationIDForUpload];
-  v95 = [v116 execute:{@"UPDATE client_items SET  zone_rowid = %@, item_id = %@, item_creator_id = %@, item_sharing_options = %ld, item_side_car_ckinfo = %@, item_parent_zone_rowid = %@, item_localsyncupstate = %d, item_local_diffs = %llu, item_notifs_rank = %lld, app_library_rowid = %@, item_min_supported_os_rowid = %@, item_user_visible = %d, item_stat_ckinfo = %@, item_state = %d, item_type = %d, item_mode = %d, item_birthtime = %lld, item_lastusedtime = %lld, item_favoriterank = %lld, item_parent_id = %@, item_filename = %@, item_hidden_ext = %d, item_finder_tags = %@, item_xattr_signature = %@, item_trash_put_back_path = %@, item_trash_put_back_parent_id = %@, item_alias_target = %@, item_creator = %@, item_processing_stamp = %@, item_bouncedname = %@, item_scope = %d, item_local_change_count = %llu, item_old_version_identifier = %@, fp_creation_item_identifier = %@, version_name = %@, version_ckinfo = %@, version_mtime = %lld, version_size = %lld, version_thumb_size = %lld, version_thumb_signature = %@, version_content_signature = %@, version_xattr_signature = %@, version_edited_since_shared = %@, version_device = %@, version_conflict_loser_etags = %@, version_quarantine_info = %@, version_uploaded_assets = %@, version_upload_error = %@, version_old_zone_item_id = %@, version_old_zone_rowid = %@, version_local_change_count = %llu, version_old_version_identifier = %@, item_live_conflict_loser_etags = %@, item_file_id = %@, item_generation = %@  WHERE rowid = %llu", v115, itemID, ownerKey, sharingOptions, sideCarCKInfo, parentZoneRowID, syncUpState, localDiffs, notifsRank, v114, minimumSupportedOSRowID, isUserVisible, v112, v84, v81, v83, v82, v80, v79, v108, v78, v77, v110, v113, v111, v109, v106, v107, v105, v102, v75, v74, v104, v103, v101, v100, v68, v23, v66, v98, v99, v72, v71, v97, v64, v69, v67, v63, v65, v24, v25, v62, v26, v27, v28, self->super._dbRowID}];
+  thumbnailSize = [(BRCVersion *)self->_currentVersion thumbnailSize];
+  thumbnailSignature = [(BRCVersion *)self->_currentVersion thumbnailSignature];
+  contentSignature = [(BRCVersion *)self->_currentVersion contentSignature];
+  xattrSignature2 = [(BRCVersion *)self->_currentVersion xattrSignature];
+  editedSinceShared = [(BRCVersion *)self->_currentVersion editedSinceShared];
+  lastEditorDeviceOrUserRowID = [(BRCVersion *)self->_currentVersion lastEditorDeviceOrUserRowID];
+  conflictLoserEtags2 = [(BRCVersion *)self->_currentVersion conflictLoserEtags];
+  quarantineInfo = [(BRCVersion *)self->_currentVersion quarantineInfo];
+  uploadedAssets = [(BRCLocalVersion *)self->_currentVersion uploadedAssets];
+  uploadError = [(BRCLocalVersion *)self->_currentVersion uploadError];
+  brc_strippedError = [uploadError brc_strippedError];
+  previousItemGlobalID = [(BRCLocalVersion *)self->_currentVersion previousItemGlobalID];
+  itemID = [previousItemGlobalID itemID];
+  previousItemGlobalID2 = [(BRCLocalVersion *)self->_currentVersion previousItemGlobalID];
+  zoneRowID = [previousItemGlobalID2 zoneRowID];
+  localChangeCount2 = [(BRCLocalVersion *)self->_currentVersion localChangeCount];
+  oldVersionIdentifier2 = [(BRCLocalVersion *)self->_currentVersion oldVersionIdentifier];
+  conflictLoserState = [(BRCDocumentItem *)self conflictLoserState];
+  fileIDForUpload = [(BRCDocumentItem *)self fileIDForUpload];
+  generationIDForUpload = [(BRCDocumentItem *)self generationIDForUpload];
+  v95 = [v116 execute:{@"UPDATE client_items SET  zone_rowid = %@, item_id = %@, item_creator_id = %@, item_sharing_options = %ld, item_side_car_ckinfo = %@, item_parent_zone_rowid = %@, item_localsyncupstate = %d, item_local_diffs = %llu, item_notifs_rank = %lld, app_library_rowid = %@, item_min_supported_os_rowid = %@, item_user_visible = %d, item_stat_ckinfo = %@, item_state = %d, item_type = %d, item_mode = %d, item_birthtime = %lld, item_lastusedtime = %lld, item_favoriterank = %lld, item_parent_id = %@, item_filename = %@, item_hidden_ext = %d, item_finder_tags = %@, item_xattr_signature = %@, item_trash_put_back_path = %@, item_trash_put_back_parent_id = %@, item_alias_target = %@, item_creator = %@, item_processing_stamp = %@, item_bouncedname = %@, item_scope = %d, item_local_change_count = %llu, item_old_version_identifier = %@, fp_creation_item_identifier = %@, version_name = %@, version_ckinfo = %@, version_mtime = %lld, version_size = %lld, version_thumb_size = %lld, version_thumb_signature = %@, version_content_signature = %@, version_xattr_signature = %@, version_edited_since_shared = %@, version_device = %@, version_conflict_loser_etags = %@, version_quarantine_info = %@, version_uploaded_assets = %@, version_upload_error = %@, version_old_zone_item_id = %@, version_old_zone_rowid = %@, version_local_change_count = %llu, version_old_version_identifier = %@, item_live_conflict_loser_etags = %@, item_file_id = %@, item_generation = %@  WHERE rowid = %llu", dbRowID2, itemID, ownerKey, sharingOptions, sideCarCKInfo, parentZoneRowID, syncUpState, localDiffs, notifsRank, dbRowID3, minimumSupportedOSRowID, isUserVisible, ckInfo, state, type, mode, birthtime, lastUsedTime, favoriteRank, parentID, v78, isHiddenExt, finderTags, xattrSignature, trashPutBackPath, trashPutBackParentID, aliasTarget, creatorRowID, processingStamp, rawBouncedLogicalName, itemScope, localChangeCount, oldVersionIdentifier, fpCreationItemIdentifier, originalPOSIXName, ckInfo2, mtime, v23, thumbnailSize, thumbnailSignature, contentSignature, xattrSignature2, editedSinceShared, lastEditorDeviceOrUserRowID, conflictLoserEtags2, quarantineInfo, uploadedAssets, brc_strippedError, itemID, zoneRowID, localChangeCount2, oldVersionIdentifier2, conflictLoserState, fileIDForUpload, generationIDForUpload, self->super._dbRowID}];
 
   if (v95)
   {
-    v29 = v61;
-    [(BRCDocumentItem *)self _updateRecursivePropertiesInDB:v116 dbRowID:self->super._dbRowID diffs:v61];
-    if ((v61 & 0x100000) != 0)
+    v29 = diffsCopy;
+    [(BRCDocumentItem *)self _updateRecursivePropertiesInDB:v116 dbRowID:self->super._dbRowID diffs:diffsCopy];
+    if ((diffsCopy & 0x100000) != 0)
     {
-      v30 = [(BRCAccountSession *)self->super._session fsDownloader];
-      [v30 cancelOngoingDownloadsDueToMoreRecentServerVersionForItem:self];
+      fsDownloader3 = [(BRCAccountSession *)self->super._session fsDownloader];
+      [fsDownloader3 cancelOngoingDownloadsDueToMoreRecentServerVersionForItem:self];
     }
 
-    if ((v61 & 0x80000000) != 0)
+    if ((diffsCopy & 0x80000000) != 0)
     {
-      v31 = [(BRCAccountSession *)self->super._session applyScheduler];
-      v32 = [(BRCLocalItem *)self unsaltedBookmarkData];
-      v33 = [v116 fetch:{@"SELECT zone_rowid, item_rank FROM server_items WHERE item_alias_target = %@ AND item_type = 3", v32}];
+      applyScheduler = [(BRCAccountSession *)self->super._session applyScheduler];
+      unsaltedBookmarkData = [(BRCLocalItem *)self unsaltedBookmarkData];
+      v33 = [v116 fetch:{@"SELECT zone_rowid, item_rank FROM server_items WHERE item_alias_target = %@ AND item_type = 3", unsaltedBookmarkData}];
 
       if ([v33 next])
       {
@@ -2692,53 +2692,53 @@ LABEL_44:
           v38 = brc_default_log();
           if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
           {
-            v39 = [v35 zoneName];
+            zoneName = [v35 zoneName];
             *buf = 134218498;
             v121 = v36;
             v122 = 2112;
-            v123 = v39;
+            v123 = zoneName;
             v124 = 2112;
             v125 = v37;
             _os_log_debug_impl(&dword_223E7A000, v38, OS_LOG_TYPE_DEBUG, "[DEBUG] Apply Changes[%lld]: Rescheduling reverse-alias in %@%@", buf, 0x20u);
           }
 
-          [v31 setState:1 andApplyKind:1 forRank:v36 zoneRowID:v34];
+          [applyScheduler setState:1 andApplyKind:1 forRank:v36 zoneRowID:v34];
         }
 
         while (([v33 next] & 1) != 0);
       }
 
-      v29 = v61;
+      v29 = diffsCopy;
     }
 
-    v42 = [(BRCLocalItem *)self session];
-    v43 = [v42 globalProgress];
-    [v43 didUpdateDocument:self];
+    session = [(BRCLocalItem *)self session];
+    globalProgress = [session globalProgress];
+    [globalProgress didUpdateDocument:self];
 
-    v44 = [(BRCLocalItem *)self syncUpState];
-    if ((v29 & 0x60) != 0 && (v44 & 3) != 0)
+    syncUpState = [(BRCLocalItem *)self syncUpState];
+    if ((v29 & 0x60) != 0 && (syncUpState & 3) != 0)
     {
-      v45 = [(BRCLocalItem *)self parentClientZone];
-      v46 = [(BRCLocalItem *)self orig];
-      v47 = [v46 clientZone];
-      v48 = [v45 isEqualToClientZone:v47];
+      parentClientZone = [(BRCLocalItem *)self parentClientZone];
+      orig = [(BRCLocalItem *)self orig];
+      clientZone3 = [orig clientZone];
+      v48 = [parentClientZone isEqualToClientZone:clientZone3];
 
       if (v48)
       {
-        v49 = [MEMORY[0x277CCAB98] defaultCenter];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
         v118 = @"throttleID";
         v50 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{-[BRCLocalItem dbRowID](self, "dbRowID")}];
         v119 = v50;
         v51 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v119 forKeys:&v118 count:1];
-        [v49 postNotificationName:@"BRCDocumentReparentNotification" object:0 userInfo:v51];
+        [defaultCenter postNotificationName:@"BRCDocumentReparentNotification" object:0 userInfo:v51];
       }
     }
 
-    v52 = [(BRCLocalVersion *)self->_currentVersion uploadError];
-    v53 = [(BRCLocalItem *)self->super._orig asDocument];
-    v54 = [v53 currentVersion];
-    v55 = [v54 uploadError];
-    v56 = [(BRCDocumentItem *)self _needsSyncBubbleRecomputeForError:v52 origError:v55];
+    uploadError2 = [(BRCLocalVersion *)self->_currentVersion uploadError];
+    asDocument = [(BRCLocalItem *)self->super._orig asDocument];
+    currentVersion = [asDocument currentVersion];
+    uploadError3 = [currentVersion uploadError];
+    v56 = [(BRCDocumentItem *)self _needsSyncBubbleRecomputeForError:uploadError2 origError:uploadError3];
 
     if (v56)
     {
@@ -2749,8 +2749,8 @@ LABEL_44:
     v41 = v116;
     if (orig && ![(BRCLocalItem *)orig isOnDisk]&& [(BRCLocalItem *)self isOnDisk])
     {
-      v58 = [(BRCAccountSession *)self->super._session applyScheduler];
-      [v58 rescheduleMissingTargetAliasesWithTarget:self];
+      applyScheduler2 = [(BRCAccountSession *)self->super._session applyScheduler];
+      [applyScheduler2 rescheduleMissingTargetAliasesWithTarget:self];
     }
 
     v117.receiver = self;
@@ -2768,14 +2768,14 @@ LABEL_44:
   return v40;
 }
 
-- (BOOL)_needsSyncBubbleRecomputeForError:(id)a3 origError:(id)a4
+- (BOOL)_needsSyncBubbleRecomputeForError:(id)error origError:(id)origError
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5 || ([v5 brc_isEverRetriable] & 1) != 0 || v6 && (objc_msgSend(v6, "brc_isEverRetriable") & 1) == 0)
+  errorCopy = error;
+  origErrorCopy = origError;
+  if (!errorCopy || ([errorCopy brc_isEverRetriable] & 1) != 0 || origErrorCopy && (objc_msgSend(origErrorCopy, "brc_isEverRetriable") & 1) == 0)
   {
     v8 = +[BRCAccountsManager sharedManager];
-    [v8 retrySyncBubbleLaterIfNeededWithError:v5];
+    [v8 retrySyncBubbleLaterIfNeededWithError:errorCopy];
 
     v7 = 0;
   }
@@ -2788,13 +2788,13 @@ LABEL_44:
   return v7;
 }
 
-- (BOOL)startDownloadInTask:(id)a3 options:(unint64_t)a4 etagIfLoser:(id)a5 stageFileName:(id)a6 error:(id *)a7
+- (BOOL)startDownloadInTask:(id)task options:(unint64_t)options etagIfLoser:(id)loser stageFileName:(id)name error:(id *)error
 {
-  v12 = a5;
-  v13 = a6;
+  loserCopy = loser;
+  nameCopy = name;
   v22.receiver = self;
   v22.super_class = BRCDocumentItem;
-  if ([(BRCLocalItem *)&v22 startDownloadInTask:a3 options:a4 etagIfLoser:v12 stageFileName:v13 error:a7])
+  if ([(BRCLocalItem *)&v22 startDownloadInTask:task options:options etagIfLoser:loserCopy stageFileName:nameCopy error:error])
   {
     db = self->super._db;
     v17[0] = MEMORY[0x277D85DD0];
@@ -2802,10 +2802,10 @@ LABEL_44:
     v17[2] = __79__BRCDocumentItem_startDownloadInTask_options_etagIfLoser_stageFileName_error___block_invoke;
     v17[3] = &unk_278502668;
     v17[4] = self;
-    v20 = a4;
-    v18 = v12;
-    v19 = v13;
-    v21 = a7;
+    optionsCopy = options;
+    v18 = loserCopy;
+    v19 = nameCopy;
+    errorCopy = error;
     v15 = [(BRCPQLConnection *)db groupInTransaction:v17];
   }
 
@@ -2828,18 +2828,18 @@ uint64_t __79__BRCDocumentItem_startDownloadInTask_options_etagIfLoser_stageFile
 - (id)documentRecordID
 {
   itemID = self->super._itemID;
-  v3 = [(BRCServerZone *)self->super._serverZone zoneID];
-  v4 = [(BRCItemID *)itemID contentsRecordIDInZoneID:v3];
+  zoneID = [(BRCServerZone *)self->super._serverZone zoneID];
+  v4 = [(BRCItemID *)itemID contentsRecordIDInZoneID:zoneID];
 
   return v4;
 }
 
-- (id)baseRecordClearAllFields:(BOOL)a3
+- (id)baseRecordClearAllFields:(BOOL)fields
 {
-  v3 = a3;
-  v5 = [(BRCLocalItem *)self isFinderBookmark];
+  fieldsCopy = fields;
+  isFinderBookmark = [(BRCLocalItem *)self isFinderBookmark];
   v6 = @"content";
-  if (v5)
+  if (isFinderBookmark)
   {
     v6 = @"structure";
   }
@@ -2847,10 +2847,10 @@ uint64_t __79__BRCDocumentItem_startDownloadInTask_options_etagIfLoser_stageFile
   v7 = MEMORY[0x277CBC5A0];
   v8 = v6;
   v9 = [v7 alloc];
-  v10 = [(BRCDocumentItem *)self documentRecordID];
-  v11 = [v9 initWithRecordType:v8 recordID:v10];
+  documentRecordID = [(BRCDocumentItem *)self documentRecordID];
+  v11 = [v9 initWithRecordType:v8 recordID:documentRecordID];
 
-  if (v3)
+  if (fieldsCopy)
   {
     [v11 setObject:0 forKeyedSubscript:@"fileContent"];
     [v11 setObject:0 forKeyedSubscript:@"bookmarkContent"];
@@ -2866,15 +2866,15 @@ uint64_t __79__BRCDocumentItem_startDownloadInTask_options_etagIfLoser_stageFile
   return v11;
 }
 
-- (id)_initFromPQLResultSet:(id)a3 session:(id)a4 db:(id)a5 error:(id *)a6
+- (id)_initFromPQLResultSet:(id)set session:(id)session db:(id)db error:(id *)error
 {
-  v10 = a3;
+  setCopy = set;
   v25.receiver = self;
   v25.super_class = BRCDocumentItem;
-  v11 = [(BRCLocalItem *)&v25 _initFromPQLResultSet:v10 session:a4 db:a5 error:a6];
+  v11 = [(BRCLocalItem *)&v25 _initFromPQLResultSet:setCopy session:session db:db error:error];
   if (v11)
   {
-    v12 = [[BRCLocalVersion alloc] initFromResultSet:v10 pos:35];
+    v12 = [[BRCLocalVersion alloc] initFromResultSet:setCopy pos:35];
     v13 = *(v11 + 26);
     *(v11 + 26) = v12;
 
@@ -2889,7 +2889,7 @@ uint64_t __79__BRCDocumentItem_startDownloadInTask_options_etagIfLoser_stageFile
     }
 
     v14 = _allowedClassesForEtags_allowedClasses;
-    v15 = [v10 unarchivedObjectOfClasses:v14 atIndex:53];
+    v15 = [setCopy unarchivedObjectOfClasses:v14 atIndex:53];
 
     if (!v15 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
@@ -2912,11 +2912,11 @@ uint64_t __79__BRCDocumentItem_startDownloadInTask_options_etagIfLoser_stageFile
       v15 = 0;
     }
 
-    v19 = [v10 numberAtIndex:54];
+    v19 = [setCopy numberAtIndex:54];
     v20 = *(v11 + 28);
     *(v11 + 28) = v19;
 
-    v21 = [v10 objectOfClass:objc_opt_class() atIndex:55];
+    v21 = [setCopy objectOfClass:objc_opt_class() atIndex:55];
     v22 = *(v11 + 29);
     *(v11 + 29) = v21;
   }
@@ -2924,27 +2924,27 @@ uint64_t __79__BRCDocumentItem_startDownloadInTask_options_etagIfLoser_stageFile
   return v11;
 }
 
-- (id)_initWithImportObject:(id)a3 error:(id *)a4
+- (id)_initWithImportObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v15.receiver = self;
   v15.super_class = BRCDocumentItem;
-  v7 = [(BRCLocalItem *)&v15 _initWithImportObject:v6 error:a4];
+  v7 = [(BRCLocalItem *)&v15 _initWithImportObject:objectCopy error:error];
   if (v7)
   {
-    v8 = [[BRCLocalVersion alloc] initWithImportObject:v6];
+    v8 = [[BRCLocalVersion alloc] initWithImportObject:objectCopy];
     v9 = v7[26];
     v7[26] = v8;
 
-    if ([v7 _updatePackageItemsIfNecessaryWithImportObject:v6 error:a4])
+    if ([v7 _updatePackageItemsIfNecessaryWithImportObject:objectCopy error:error])
     {
-      v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v6, "fileID")}];
+      v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(objectCopy, "fileID")}];
       v11 = v7[28];
       v7[28] = v10;
 
-      v12 = [v6 generationID];
+      generationID = [objectCopy generationID];
       v13 = v7[29];
-      v7[29] = v12;
+      v7[29] = generationID;
     }
 
     else
@@ -2957,22 +2957,22 @@ uint64_t __79__BRCDocumentItem_startDownloadInTask_options_etagIfLoser_stageFile
   return v7;
 }
 
-- (void)updateWithContentModificationDate:(id)a3
+- (void)updateWithContentModificationDate:(id)date
 {
-  [a3 timeIntervalSince1970];
+  [date timeIntervalSince1970];
   currentVersion = self->_currentVersion;
 
   [(BRCVersion *)currentVersion setMtime:v4];
 }
 
-- (BOOL)_updatePackageItemsIfNecessaryWithImportObject:(id)a3 error:(id *)a4
+- (BOOL)_updatePackageItemsIfNecessaryWithImportObject:(id)object error:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  objectCopy = object;
   if (![(BRCLocalItem *)self needsInsert]&& ![(BRCLocalItem *)self isIdleOrRejected]&& ![(BRCPQLConnection *)self->super._db execute:@"DELETE FROM client_pkg_upload_items WHERE item_rowid = %llu", self->super._dbRowID])
   {
-    v16 = [(BRCPQLConnection *)self->super._db lastError];
-    if (v16)
+    lastError = [(BRCPQLConnection *)self->super._db lastError];
+    if (lastError)
     {
       v17 = brc_bread_crumbs();
       v18 = brc_default_log();
@@ -2982,30 +2982,30 @@ uint64_t __79__BRCDocumentItem_startDownloadInTask_options_etagIfLoser_stageFile
         *v42 = 136315906;
         *&v42[4] = "[BRCDocumentItem(BRCFPFSAdditions) _updatePackageItemsIfNecessaryWithImportObject:error:]";
         *&v42[12] = 2080;
-        if (!a4)
+        if (!error)
         {
           v23 = "(ignored by caller)";
         }
 
         *&v42[14] = v23;
         *&v42[22] = 2112;
-        v43 = v16;
+        v43 = lastError;
         LOWORD(v44) = 2112;
         *(&v44 + 2) = v17;
         _os_log_error_impl(&dword_223E7A000, v18, 0x90u, "[ERROR] %s: %s error: %@%@", v42, 0x2Au);
       }
     }
 
-    if (a4)
+    if (error)
     {
-      v19 = v16;
-      *a4 = v16;
+      v19 = lastError;
+      *error = lastError;
     }
 
     goto LABEL_22;
   }
 
-  if ([v6 isPackageRoot])
+  if ([objectCopy isPackageRoot])
   {
     *v42 = 0;
     *&v42[8] = v42;
@@ -3017,17 +3017,17 @@ uint64_t __79__BRCDocumentItem_startDownloadInTask_options_etagIfLoser_stageFile
     v31 = &v30;
     v32 = 0x2020000000;
     v33 = 0;
-    v7 = [v6 fileURL];
+    fileURL = [objectCopy fileURL];
     v29 = 0;
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __90__BRCDocumentItem_BRCFPFSAdditions___updatePackageItemsIfNecessaryWithImportObject_error___block_invoke;
     v24[3] = &unk_278505A48;
-    v25 = v6;
-    v26 = self;
+    v25 = objectCopy;
+    selfCopy = self;
     v27 = v42;
     v28 = &v30;
-    [BRCFSPackageEnumerator enumerateItemsInPackageAtURL:v7 error:&v29 usingBlock:v24];
+    [BRCFSPackageEnumerator enumerateItemsInPackageAtURL:fileURL error:&v29 usingBlock:v24];
     v8 = v29;
 
     v9 = *(*&v42[8] + 40);
@@ -3039,8 +3039,8 @@ uint64_t __79__BRCDocumentItem_startDownloadInTask_options_etagIfLoser_stageFile
         v9 = v8;
       }
 
-      v11 = v9;
-      if (v11)
+      currentVersion = v9;
+      if (currentVersion)
       {
         v12 = brc_bread_crumbs();
         v13 = brc_default_log();
@@ -3050,31 +3050,31 @@ uint64_t __79__BRCDocumentItem_startDownloadInTask_options_etagIfLoser_stageFile
           *buf = 136315906;
           v35 = "[BRCDocumentItem(BRCFPFSAdditions) _updatePackageItemsIfNecessaryWithImportObject:error:]";
           v36 = 2080;
-          if (!a4)
+          if (!error)
           {
             v22 = "(ignored by caller)";
           }
 
           v37 = v22;
           v38 = 2112;
-          v39 = v11;
+          v39 = currentVersion;
           v40 = 2112;
           v41 = v12;
           _os_log_error_impl(&dword_223E7A000, v13, 0x90u, "[ERROR] %s: %s error: %@%@", buf, 0x2Au);
         }
       }
 
-      if (a4)
+      if (error)
       {
-        v14 = v11;
-        *a4 = v11;
+        v14 = currentVersion;
+        *error = currentVersion;
       }
     }
 
     else
     {
-      v11 = [(BRCDocumentItem *)self currentVersion];
-      [v11 updateWithPackageSize:v31[3]];
+      currentVersion = [(BRCDocumentItem *)self currentVersion];
+      [currentVersion updateWithPackageSize:v31[3]];
     }
 
     _Block_object_dispose(&v30, 8);
@@ -3188,28 +3188,28 @@ LABEL_14:
   }
 }
 
-- (void)_reIngestFromFileProviderWithIsFirstAttempt:(BOOL)a3
+- (void)_reIngestFromFileProviderWithIsFirstAttempt:(BOOL)attempt
 {
   self->super._syncUpState = 7;
-  v5 = [(BRCLocalItem *)self fileObjectID];
-  v6 = [(BRCLocalItem *)self session];
+  fileObjectID = [(BRCLocalItem *)self fileObjectID];
+  session = [(BRCLocalItem *)self session];
   fileIDForUpload = self->_fileIDForUpload;
   self->_fileIDForUpload = 0;
 
   generationIDForUpload = self->_generationIDForUpload;
   self->_generationIDForUpload = 0;
 
-  v9 = [v5 asString];
+  asString = [fileObjectID asString];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __81__BRCDocumentItem_BRCFPFSAdditions___reIngestFromFileProviderWithIsFirstAttempt___block_invoke;
   v12[3] = &unk_278505A98;
-  v13 = v5;
-  v14 = v6;
-  v15 = a3;
-  v10 = v6;
-  v11 = v5;
-  [BRCImportUtil requestModificationOfItemIdentifier:v9 completionHandler:v12];
+  v13 = fileObjectID;
+  v14 = session;
+  attemptCopy = attempt;
+  v10 = session;
+  v11 = fileObjectID;
+  [BRCImportUtil requestModificationOfItemIdentifier:asString completionHandler:v12];
 }
 
 void __81__BRCDocumentItem_BRCFPFSAdditions___reIngestFromFileProviderWithIsFirstAttempt___block_invoke(uint64_t a1, void *a2)
@@ -3328,20 +3328,20 @@ void __81__BRCDocumentItem_BRCFPFSAdditions___reIngestFromFileProviderWithIsFirs
   [BRCImportUtil forceIngestionForItemID:v2 completionHandler:v3];
 }
 
-- (BOOL)updateFromServerItem:(id)a3
+- (BOOL)updateFromServerItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v32.receiver = self;
   v32.super_class = BRCDocumentItem;
-  v5 = [(BRCLocalItem *)&v32 updateFromServerItem:v4];
-  if (v5 && ([v4 isBRAlias] & 1) == 0)
+  v5 = [(BRCLocalItem *)&v32 updateFromServerItem:itemCopy];
+  if (v5 && ([itemCopy isBRAlias] & 1) == 0)
   {
-    if (!v4)
+    if (!itemCopy)
     {
       [BRCDocumentItem(BRCFPFSAdditions) updateFromServerItem:];
     }
 
-    if (([v4 isDocument] & 1) == 0)
+    if (([itemCopy isDocument] & 1) == 0)
     {
       [BRCDocumentItem(BRCFPFSAdditions) updateFromServerItem:];
     }
@@ -3356,14 +3356,14 @@ void __81__BRCDocumentItem_BRCFPFSAdditions___reIngestFromFileProviderWithIsFirs
       [BRCDocumentItem(BRCFPFSAdditions) updateFromServerItem:];
     }
 
-    v6 = [(BRCVersion *)self->_currentVersion ckInfo];
-    v7 = [v6 etag];
+    ckInfo = [(BRCVersion *)self->_currentVersion ckInfo];
+    etag = [ckInfo etag];
 
-    v8 = [v4 latestVersion];
-    v9 = [v8 ckInfo];
-    v10 = [v9 etag];
+    latestVersion = [itemCopy latestVersion];
+    ckInfo2 = [latestVersion ckInfo];
+    etag2 = [ckInfo2 etag];
 
-    if (!v10)
+    if (!etag2)
     {
       v14 = brc_bread_crumbs();
       v15 = brc_default_log();
@@ -3377,16 +3377,16 @@ void __81__BRCDocumentItem_BRCFPFSAdditions___reIngestFromFileProviderWithIsFirs
       goto LABEL_34;
     }
 
-    v11 = [(BRCVersion *)self->_currentVersion editedSinceShared];
-    v12 = [v11 BOOLValue];
+    editedSinceShared = [(BRCVersion *)self->_currentVersion editedSinceShared];
+    bOOLValue = [editedSinceShared BOOLValue];
 
-    if (v12)
+    if (bOOLValue)
     {
       v13 = 1;
 LABEL_23:
-      v17 = [v4 latestVersion];
+      latestVersion2 = [itemCopy latestVersion];
 
-      if (!v17)
+      if (!latestVersion2)
       {
 LABEL_35:
 
@@ -3394,18 +3394,18 @@ LABEL_35:
       }
 
       currentVersion = [(BRCVersion *)self->_currentVersion quarantineInfo];
-      v18 = [(BRCLocalVersion *)self->_currentVersion uploadError];
-      v29 = [(BRCLocalVersion *)self->_currentVersion oldVersionIdentifier];
-      v31 = v7;
+      uploadError = [(BRCLocalVersion *)self->_currentVersion uploadError];
+      oldVersionIdentifier = [(BRCLocalVersion *)self->_currentVersion oldVersionIdentifier];
+      v31 = etag;
       v19 = [BRCLocalVersion alloc];
-      v20 = [v4 latestVersion];
-      v21 = [(BRCLocalVersion *)v19 initWithServerVersion:v20];
+      latestVersion3 = [itemCopy latestVersion];
+      v21 = [(BRCLocalVersion *)v19 initWithServerVersion:latestVersion3];
       v22 = self->_currentVersion;
       self->_currentVersion = v21;
 
-      if ([v31 isEqual:v10])
+      if ([v31 isEqual:etag2])
       {
-        [(BRCLocalVersion *)self->_currentVersion setOldVersionIdentifier:v29];
+        [(BRCLocalVersion *)self->_currentVersion setOldVersionIdentifier:oldVersionIdentifier];
       }
 
       if (v13)
@@ -3413,24 +3413,24 @@ LABEL_35:
         [(BRCVersion *)self->_currentVersion setEditedSinceShared:MEMORY[0x277CBEC38]];
       }
 
-      if ([v18 br_isCloudDocsErrorCode:{43, v29}])
+      if ([uploadError br_isCloudDocsErrorCode:{43, oldVersionIdentifier}])
       {
-        [(BRCLocalVersion *)self->_currentVersion setUploadError:v18];
+        [(BRCLocalVersion *)self->_currentVersion setUploadError:uploadError];
       }
 
       v23 = [(BRCLocalItem *)self->super._orig st];
-      v24 = [v23 filename];
-      v25 = [v24 br_pathExtension];
+      filename = [v23 filename];
+      br_pathExtension = [filename br_pathExtension];
 
-      v26 = [(BRCLocalStatInfo *)self->super._st filename];
-      v27 = [v26 br_pathExtension];
+      filename2 = [(BRCLocalStatInfo *)self->super._st filename];
+      br_pathExtension2 = [filename2 br_pathExtension];
 
-      if (!(v25 | v27) || [v25 isEqualToString:v27])
+      if (!(br_pathExtension | br_pathExtension2) || [br_pathExtension isEqualToString:br_pathExtension2])
       {
         [(BRCVersion *)self->_currentVersion setQuarantineInfo:currentVersion];
       }
 
-      v7 = v31;
+      etag = v31;
 LABEL_34:
 
       goto LABEL_35;
@@ -3438,7 +3438,7 @@ LABEL_34:
 
     if ([(BRCLocalItem *)self isSharedToMe])
     {
-      if (!v7)
+      if (!etag)
       {
         v13 = 0;
         goto LABEL_23;
@@ -3448,13 +3448,13 @@ LABEL_34:
     else
     {
       v13 = 0;
-      if (![(BRCLocalItem *)self isSharedByMe]|| !v7)
+      if (![(BRCLocalItem *)self isSharedByMe]|| !etag)
       {
         goto LABEL_23;
       }
     }
 
-    v13 = ([(BRCDocumentItem *)self diffAgainstServerItem:v4]& 0x1A0000) != 0;
+    v13 = ([(BRCDocumentItem *)self diffAgainstServerItem:itemCopy]& 0x1A0000) != 0;
     goto LABEL_23;
   }
 
@@ -3463,35 +3463,35 @@ LABEL_36:
   return v5;
 }
 
-- (void)recoverDamagedDocumentIfNecessaryWithError:(id)a3
+- (void)recoverDamagedDocumentIfNecessaryWithError:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = [BRCUserDefaults defaultsForMangledID:0];
-  v6 = [v5 recoverDamagedDocumentOnDisk];
+  recoverDamagedDocumentOnDisk = [v5 recoverDamagedDocumentOnDisk];
 
-  if (v6 && [v4 br_isCloudDocsErrorCode:151])
+  if (recoverDamagedDocumentOnDisk && [errorCopy br_isCloudDocsErrorCode:151])
   {
     v7 = brc_bread_crumbs();
     v8 = brc_default_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v16 = 138412802;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
-      v19 = v4;
+      v19 = errorCopy;
       v20 = 2112;
       v21 = v7;
       _os_log_impl(&dword_223E7A000, v8, OS_LOG_TYPE_INFO, "[INFO] Recovering damaged document %@ with error %@%@", &v16, 0x20u);
     }
 
-    v9 = [(BRCLocalItem *)self clientZone];
-    v10 = [(BRCLocalItem *)self itemID];
-    v11 = [v9 itemByItemID:v10];
+    clientZone = [(BRCLocalItem *)self clientZone];
+    itemID = [(BRCLocalItem *)self itemID];
+    v11 = [clientZone itemByItemID:itemID];
 
-    v12 = [(BRCLocalItem *)self clientZone];
-    v13 = [(BRCLocalItem *)self itemID];
-    v14 = [v12 serverItemByItemID:v13];
+    clientZone2 = [(BRCLocalItem *)self clientZone];
+    itemID2 = [(BRCLocalItem *)self itemID];
+    v14 = [clientZone2 serverItemByItemID:itemID2];
 
     [v11 markNeedsDeleteForRescheduleOfItem:v14];
     [v11 saveToDB];

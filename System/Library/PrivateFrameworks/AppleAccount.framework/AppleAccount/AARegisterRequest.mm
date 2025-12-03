@@ -1,24 +1,24 @@
 @interface AARegisterRequest
-- (AARegisterRequest)initWithURLString:(id)a3 username:(id)a4 password:(id)a5;
+- (AARegisterRequest)initWithURLString:(id)string username:(id)username password:(id)password;
 - (id)urlRequest;
 - (id)urlString;
-- (void)addCookieHeaders:(id)a3;
+- (void)addCookieHeaders:(id)headers;
 @end
 
 @implementation AARegisterRequest
 
-- (AARegisterRequest)initWithURLString:(id)a3 username:(id)a4 password:(id)a5
+- (AARegisterRequest)initWithURLString:(id)string username:(id)username password:(id)password
 {
-  v8 = a4;
-  v9 = a5;
+  usernameCopy = username;
+  passwordCopy = password;
   v13.receiver = self;
   v13.super_class = AARegisterRequest;
-  v10 = [(AARequest *)&v13 initWithURLString:a3];
+  v10 = [(AARequest *)&v13 initWithURLString:string];
   v11 = v10;
   if (v10)
   {
-    [(AAAuthenticateRequest *)v10 setUsername:v8];
-    [(AAAuthenticateRequest *)v11 setPassword:v9];
+    [(AAAuthenticateRequest *)v10 setUsername:usernameCopy];
+    [(AAAuthenticateRequest *)v11 setPassword:passwordCopy];
   }
 
   return v11;
@@ -27,27 +27,27 @@
 - (id)urlString
 {
   v2 = +[AAURLConfiguration urlConfiguration];
-  v3 = [v2 signInURL];
+  signInURL = [v2 signInURL];
 
-  return v3;
+  return signInURL;
 }
 
-- (void)addCookieHeaders:(id)a3
+- (void)addCookieHeaders:(id)headers
 {
-  v4 = a3;
+  headersCopy = headers;
   additionalCookieHeaders = self->_additionalCookieHeaders;
-  v8 = v4;
+  v8 = headersCopy;
   if (!additionalCookieHeaders)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
     v7 = self->_additionalCookieHeaders;
     self->_additionalCookieHeaders = v6;
 
-    v4 = v8;
+    headersCopy = v8;
     additionalCookieHeaders = self->_additionalCookieHeaders;
   }
 
-  [(NSMutableDictionary *)additionalCookieHeaders addEntriesFromDictionary:v4];
+  [(NSMutableDictionary *)additionalCookieHeaders addEntriesFromDictionary:headersCopy];
 }
 
 - (id)urlRequest
@@ -55,11 +55,11 @@
   v34 = *MEMORY[0x1E69E9840];
   v30.receiver = self;
   v30.super_class = AARegisterRequest;
-  v3 = [(AAAuthenticateRequest *)&v30 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AAAuthenticateRequest *)&v30 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
-  v5 = [(AARequest *)self bodyDictionary];
-  v6 = [v4 aa_setXMLBodyWithParameters:v5];
+  bodyDictionary = [(AARequest *)self bodyDictionary];
+  v6 = [v4 aa_setXMLBodyWithParameters:bodyDictionary];
 
   v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:objc_msgSend(v6 length:"bytes") encoding:{objc_msgSend(v6, "length"), 4}];
   v8 = _AALogSystem();
@@ -118,8 +118,8 @@
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     v21 = objc_opt_class();
-    v22 = [v4 allHTTPHeaderFields];
-    v23 = [v21 redactedHeadersFromHTTPHeaders:v22];
+    allHTTPHeaderFields = [v4 allHTTPHeaderFields];
+    v23 = [v21 redactedHeadersFromHTTPHeaders:allHTTPHeaderFields];
     *buf = 138412290;
     v33 = v23;
     _os_log_impl(&dword_1B6F6A000, v20, OS_LOG_TYPE_DEFAULT, "HTTP Headers: %@", buf, 0xCu);

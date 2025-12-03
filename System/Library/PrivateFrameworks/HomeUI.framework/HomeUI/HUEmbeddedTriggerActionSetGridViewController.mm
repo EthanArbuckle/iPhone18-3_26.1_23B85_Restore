@@ -1,10 +1,10 @@
 @interface HUEmbeddedTriggerActionSetGridViewController
-- (HUEmbeddedTriggerActionSetGridViewController)initWithTriggerBuilder:(id)a3;
+- (HUEmbeddedTriggerActionSetGridViewController)initWithTriggerBuilder:(id)builder;
 - (HUEmbeddedTriggerActionSetGridViewControllerDelegate)delegate;
 - (id)triggerBuilder;
 - (void)reloadActions;
-- (void)sceneEditor:(id)a3 removeActionSetBuilderFromTrigger:(id)a4;
-- (void)setTriggerBuilder:(id)a3;
+- (void)sceneEditor:(id)editor removeActionSetBuilderFromTrigger:(id)trigger;
+- (void)setTriggerBuilder:(id)builder;
 @end
 
 @implementation HUEmbeddedTriggerActionSetGridViewController
@@ -16,13 +16,13 @@
   return *(self + v3);
 }
 
-- (void)setTriggerBuilder:(id)a3
+- (void)setTriggerBuilder:(id)builder
 {
   v5 = OBJC_IVAR___HUEmbeddedTriggerActionSetGridViewController_triggerBuilder;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = builder;
+  builderCopy = builder;
 }
 
 - (HUEmbeddedTriggerActionSetGridViewControllerDelegate)delegate
@@ -33,26 +33,26 @@
   return Strong;
 }
 
-- (HUEmbeddedTriggerActionSetGridViewController)initWithTriggerBuilder:(id)a3
+- (HUEmbeddedTriggerActionSetGridViewController)initWithTriggerBuilder:(id)builder
 {
   swift_unknownObjectWeakInit();
-  *(self + OBJC_IVAR___HUEmbeddedTriggerActionSetGridViewController_triggerBuilder) = a3;
-  v5 = a3;
-  v6 = [v5 triggerActionSets];
-  v7 = [v5 home];
-  v8 = v6;
-  v9 = sub_20CF02678(v8, v7, self);
+  *(self + OBJC_IVAR___HUEmbeddedTriggerActionSetGridViewController_triggerBuilder) = builder;
+  builderCopy = builder;
+  triggerActionSets = [builderCopy triggerActionSets];
+  home = [builderCopy home];
+  v8 = triggerActionSets;
+  v9 = sub_20CF02678(v8, home, self);
 
   return v9;
 }
 
 - (void)reloadActions
 {
-  v3 = self;
-  v2 = [(HUItemCollectionViewController *)v3 itemManager];
+  selfCopy = self;
+  itemManager = [(HUItemCollectionViewController *)selfCopy itemManager];
 }
 
-- (void)sceneEditor:(id)a3 removeActionSetBuilderFromTrigger:(id)a4
+- (void)sceneEditor:(id)editor removeActionSetBuilderFromTrigger:(id)trigger
 {
   swift_beginAccess();
   Strong = swift_unknownObjectWeakLoadStrong();

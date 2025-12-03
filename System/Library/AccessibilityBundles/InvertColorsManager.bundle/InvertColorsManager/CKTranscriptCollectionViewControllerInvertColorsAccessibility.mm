@@ -1,53 +1,53 @@
 @interface CKTranscriptCollectionViewControllerInvertColorsAccessibility
-- (void)_axRefreshInvertColorsForCell:(id)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndScrollingAnimation:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
+- (void)_axRefreshInvertColorsForCell:(id)cell;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndScrollingAnimation:(id)animation;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
 @end
 
 @implementation CKTranscriptCollectionViewControllerInvertColorsAccessibility
 
-- (void)_axRefreshInvertColorsForCell:(id)a3
+- (void)_axRefreshInvertColorsForCell:(id)cell
 {
-  v5 = a3;
+  cellCopy = cell;
   AXSafeClassFromString();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [v5 safeValueForKey:@"balloonView"];
+    v3 = [cellCopy safeValueForKey:@"balloonView"];
     v4 = [v3 safeValueForKey:@"_accessibilityLoadInvertColors"];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   v4.receiver = self;
   v4.super_class = CKTranscriptCollectionViewControllerInvertColorsAccessibility;
-  [(CKTranscriptCollectionViewControllerInvertColorsAccessibility *)&v4 scrollViewDidScroll:a3];
+  [(CKTranscriptCollectionViewControllerInvertColorsAccessibility *)&v4 scrollViewDidScroll:scroll];
   [(CKTranscriptCollectionViewControllerInvertColorsAccessibility *)self _axRefreshInvertColors];
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
   v6.receiver = self;
   v6.super_class = CKTranscriptCollectionViewControllerInvertColorsAccessibility;
-  [(CKTranscriptCollectionViewControllerInvertColorsAccessibility *)&v6 scrollViewWillEndDragging:a3 withVelocity:a5 targetContentOffset:a4.x, a4.y];
+  [(CKTranscriptCollectionViewControllerInvertColorsAccessibility *)&v6 scrollViewWillEndDragging:dragging withVelocity:offset targetContentOffset:velocity.x, velocity.y];
   [(CKTranscriptCollectionViewControllerInvertColorsAccessibility *)self _axRefreshInvertColors];
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(id)a3
+- (void)scrollViewDidEndScrollingAnimation:(id)animation
 {
   v4.receiver = self;
   v4.super_class = CKTranscriptCollectionViewControllerInvertColorsAccessibility;
-  [(CKTranscriptCollectionViewControllerInvertColorsAccessibility *)&v4 scrollViewDidEndScrollingAnimation:a3];
+  [(CKTranscriptCollectionViewControllerInvertColorsAccessibility *)&v4 scrollViewDidEndScrollingAnimation:animation];
   [(CKTranscriptCollectionViewControllerInvertColorsAccessibility *)self _axRefreshInvertColors];
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   v4.receiver = self;
   v4.super_class = CKTranscriptCollectionViewControllerInvertColorsAccessibility;
-  [(CKTranscriptCollectionViewControllerInvertColorsAccessibility *)&v4 scrollViewDidEndDecelerating:a3];
+  [(CKTranscriptCollectionViewControllerInvertColorsAccessibility *)&v4 scrollViewDidEndDecelerating:decelerating];
   [(CKTranscriptCollectionViewControllerInvertColorsAccessibility *)self _axRefreshInvertColors];
 }
 

@@ -1,60 +1,60 @@
 @interface SBFullScreenToHomePIPSwitcherModifier
-- (BOOL)_isIndexSelectedAppLayout:(unint64_t)a3;
-- (BOOL)_shouldApplyMorphToPIPToIndex:(unint64_t)a3;
-- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)a3;
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3;
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4;
-- (CGPoint)anchorPointForIndex:(unint64_t)a3;
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3;
-- (CGRect)_insetFrameForDiffuseShadowRadius:(CGRect)a3;
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4;
-- (CGRect)clippingFrameForIndex:(unint64_t)a3 withBounds:(CGRect)a4;
-- (CGRect)clippingFrameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5 withBounds:(CGRect)a6;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBFullScreenToHomePIPSwitcherModifier)initWithTransitionID:(id)a3 appLayout:(id)a4 layoutRole:(int64_t)a5;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)rotationAngleForIndex:(unint64_t)a3;
-- (double)scaleForIndex:(unint64_t)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleHideMorphToPIPAppLayoutEvent:(id)a3;
+- (BOOL)_isIndexSelectedAppLayout:(unint64_t)layout;
+- (BOOL)_shouldApplyMorphToPIPToIndex:(unint64_t)index;
+- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)space;
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space;
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout;
+- (CGPoint)anchorPointForIndex:(unint64_t)index;
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index;
+- (CGRect)_insetFrameForDiffuseShadowRadius:(CGRect)radius;
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout;
+- (CGRect)clippingFrameForIndex:(unint64_t)index withBounds:(CGRect)bounds;
+- (CGRect)clippingFrameForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index withBounds:(CGRect)bounds;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBFullScreenToHomePIPSwitcherModifier)initWithTransitionID:(id)d appLayout:(id)layout layoutRole:(int64_t)role;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)rotationAngleForIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleHideMorphToPIPAppLayoutEvent:(id)event;
 - (id)topMostLayoutElements;
 - (id)transitionWillBegin;
 - (id)transitionWillUpdate;
 - (id)visibleAppLayouts;
-- (void)didMoveToParentModifier:(id)a3;
+- (void)didMoveToParentModifier:(id)modifier;
 @end
 
 @implementation SBFullScreenToHomePIPSwitcherModifier
 
-- (SBFullScreenToHomePIPSwitcherModifier)initWithTransitionID:(id)a3 appLayout:(id)a4 layoutRole:(int64_t)a5
+- (SBFullScreenToHomePIPSwitcherModifier)initWithTransitionID:(id)d appLayout:(id)layout layoutRole:(int64_t)role
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  dCopy = d;
+  layoutCopy = layout;
+  if (!layoutCopy)
   {
     [SBFullScreenToHomePIPSwitcherModifier initWithTransitionID:a2 appLayout:self layoutRole:?];
   }
 
   v14.receiver = self;
   v14.super_class = SBFullScreenToHomePIPSwitcherModifier;
-  v11 = [(SBTransitionSwitcherModifier *)&v14 initWithTransitionID:v9];
+  v11 = [(SBTransitionSwitcherModifier *)&v14 initWithTransitionID:dCopy];
   v12 = v11;
   if (v11)
   {
-    v11->_layoutRole = a5;
-    objc_storeStrong(&v11->_appLayout, a4);
+    v11->_layoutRole = role;
+    objc_storeStrong(&v11->_appLayout, layout);
   }
 
   return v12;
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v7.receiver = self;
   v7.super_class = SBFullScreenToHomePIPSwitcherModifier;
   [(SBChainableModifier *)&v7 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
     if (![(SBChainableModifier *)self containsChildModifier:self->_coplanarModifier])
     {
@@ -72,12 +72,12 @@
 {
   v25.receiver = self;
   v25.super_class = SBFullScreenToHomePIPSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v25 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v25 transitionWillBegin];
   v4 = objc_alloc_init(SBSwitcherModifierEventResponse);
   v5 = [[SBUpdateContinuousExposeStripsPresentationResponse alloc] initWithPresentationOptions:0 dismissalOptions:1];
   v6 = objc_alloc_init(SBSetupPIPMorphingSwitcherEventResponse);
-  v7 = [(SBFullScreenToHomePIPSwitcherModifier *)self windowManagementContext];
-  if ([v7 isFlexibleWindowingEnabled])
+  windowManagementContext = [(SBFullScreenToHomePIPSwitcherModifier *)self windowManagementContext];
+  if ([windowManagementContext isFlexibleWindowingEnabled])
   {
     v8 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:self->_appLayout];
     [v8 boundingBox];
@@ -97,14 +97,14 @@
   }
 
   [(SBSetupPIPMorphingSwitcherEventResponse *)v6 setAppLayoutBoundingBox:v10, v12, v14, v16];
-  v21 = SBAppendSwitcherModifierResponse(v5, v3);
+  v21 = SBAppendSwitcherModifierResponse(v5, transitionWillBegin);
   [(SBChainableModifierEventResponse *)v4 addChildResponse:v21];
 
   v22 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:2 updateMode:2];
   [(SBChainableModifierEventResponse *)v4 addChildResponse:v22];
 
   [(SBChainableModifierEventResponse *)v4 addChildResponse:v6];
-  v23 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v3 toResponse:v4];
+  v23 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:transitionWillBegin toResponse:v4];
 
   return v23;
 }
@@ -113,36 +113,36 @@
 {
   v7.receiver = self;
   v7.super_class = SBFullScreenToHomePIPSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v7 transitionWillUpdate];
+  transitionWillUpdate = [(SBTransitionSwitcherModifier *)&v7 transitionWillUpdate];
   coplanarModifier = self->_coplanarModifier;
-  v5 = [(SBFullScreenToHomePIPSwitcherModifier *)self peekingAppLayout];
-  [(SBCoplanarSwitcherModifier *)coplanarModifier setIgnoredAppLayout:v5];
+  peekingAppLayout = [(SBFullScreenToHomePIPSwitcherModifier *)self peekingAppLayout];
+  [(SBCoplanarSwitcherModifier *)coplanarModifier setIgnoredAppLayout:peekingAppLayout];
 
-  return v3;
+  return transitionWillUpdate;
 }
 
-- (id)handleHideMorphToPIPAppLayoutEvent:(id)a3
+- (id)handleHideMorphToPIPAppLayoutEvent:(id)event
 {
   self->_shouldHide = 1;
-  v4 = a3;
+  eventCopy = event;
   v5 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:8 updateMode:2];
   v9.receiver = self;
   v9.super_class = SBFullScreenToHomePIPSwitcherModifier;
-  v6 = [(SBSwitcherModifier *)&v9 handleHideMorphToPIPAppLayoutEvent:v4];
+  v6 = [(SBSwitcherModifier *)&v9 handleHideMorphToPIPAppLayoutEvent:eventCopy];
 
   v7 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v5 toResponse:v6];
 
   return v7;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   v43 = *MEMORY[0x277D85DE8];
   if ([(SBFullScreenToHomePIPSwitcherModifier *)self _shouldApplyMorphToPIPToIndex:?])
   {
     v36.receiver = self;
     v36.super_class = SBFullScreenToHomePIPSwitcherModifier;
-    [(SBFullScreenToHomePIPSwitcherModifier *)&v36 frameForIndex:a3];
+    [(SBFullScreenToHomePIPSwitcherModifier *)&v36 frameForIndex:index];
     SBRectWithSize();
     v6 = v5;
     v8 = v7;
@@ -189,7 +189,7 @@
   {
     v35.receiver = self;
     v35.super_class = SBFullScreenToHomePIPSwitcherModifier;
-    [(SBFullScreenToHomePIPSwitcherModifier *)&v35 frameForIndex:a3];
+    [(SBFullScreenToHomePIPSwitcherModifier *)&v35 frameForIndex:index];
     v20 = v26;
     v22 = v27;
   }
@@ -203,7 +203,7 @@
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
   if ([(SBFullScreenToHomePIPSwitcherModifier *)self _shouldApplyMorphToPIPToIndex:?])
   {
@@ -215,28 +215,28 @@
   {
     v6.receiver = self;
     v6.super_class = SBFullScreenToHomePIPSwitcherModifier;
-    [(SBFullScreenToHomePIPSwitcherModifier *)&v6 scaleForIndex:a3];
+    [(SBFullScreenToHomePIPSwitcherModifier *)&v6 scaleForIndex:index];
   }
 
   return result;
 }
 
-- (CGRect)clippingFrameForIndex:(unint64_t)a3 withBounds:(CGRect)a4
+- (CGRect)clippingFrameForIndex:(unint64_t)index withBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   if ([(SBFullScreenToHomePIPSwitcherModifier *)self _isIndexSelectedAppLayout:?]&& ![(SBTransitionSwitcherModifier *)self isPreparingLayout])
   {
     [(SBFullScreenToHomePIPSwitcherModifier *)self morphToPIPClippingFrame];
   }
 
-  else if ([(SBFullScreenToHomePIPSwitcherModifier *)self _isIndexSelectedAppLayout:a3])
+  else if ([(SBFullScreenToHomePIPSwitcherModifier *)self _isIndexSelectedAppLayout:index])
   {
     v15.receiver = self;
     v15.super_class = SBFullScreenToHomePIPSwitcherModifier;
-    [(SBFullScreenToHomePIPSwitcherModifier *)&v15 clippingFrameForIndex:a3 withBounds:x, y, width, height];
+    [(SBFullScreenToHomePIPSwitcherModifier *)&v15 clippingFrameForIndex:index withBounds:x, y, width, height];
     SBRectWithSize();
     if (self->_shouldClippingTakeShadowIntoAccount)
     {
@@ -248,7 +248,7 @@
   {
     v14.receiver = self;
     v14.super_class = SBFullScreenToHomePIPSwitcherModifier;
-    [(SBFullScreenToHomePIPSwitcherModifier *)&v14 clippingFrameForIndex:a3 withBounds:x, y, width, height];
+    [(SBFullScreenToHomePIPSwitcherModifier *)&v14 clippingFrameForIndex:index withBounds:x, y, width, height];
   }
 
   result.size.height = v13;
@@ -258,21 +258,21 @@
   return result;
 }
 
-- (CGRect)clippingFrameForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5 withBounds:(CGRect)a6
+- (CGRect)clippingFrameForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index withBounds:(CGRect)bounds
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = a4;
-  if ([(SBFullScreenToHomePIPSwitcherModifier *)self _isIndexSelectedAppLayout:a5]&& ![(SBTransitionSwitcherModifier *)self isPreparingLayout])
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  layoutCopy = layout;
+  if ([(SBFullScreenToHomePIPSwitcherModifier *)self _isIndexSelectedAppLayout:index]&& ![(SBTransitionSwitcherModifier *)self isPreparingLayout])
   {
     [(SBFullScreenToHomePIPSwitcherModifier *)self morphToPIPClippingFrame];
     v27 = v26;
     v29 = v28;
     v31 = v30;
     v33 = v32;
-    [(SBFullScreenToHomePIPSwitcherModifier *)self frameForLayoutRole:a3 inAppLayout:v13 withBounds:x, y, width, height];
+    [(SBFullScreenToHomePIPSwitcherModifier *)self frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
     v35 = -v34;
     v37 = -v36;
     v43.origin.x = v27;
@@ -283,15 +283,15 @@
     goto LABEL_8;
   }
 
-  if (![(SBFullScreenToHomePIPSwitcherModifier *)self _isIndexSelectedAppLayout:a5])
+  if (![(SBFullScreenToHomePIPSwitcherModifier *)self _isIndexSelectedAppLayout:index])
   {
     v42.receiver = self;
     v42.super_class = SBFullScreenToHomePIPSwitcherModifier;
-    [(SBFullScreenToHomePIPSwitcherModifier *)&v42 clippingFrameForLayoutRole:a3 inAppLayout:v13 atIndex:a5 withBounds:x, y, width, height];
+    [(SBFullScreenToHomePIPSwitcherModifier *)&v42 clippingFrameForLayoutRole:role inAppLayout:layoutCopy atIndex:index withBounds:x, y, width, height];
     goto LABEL_8;
   }
 
-  [(SBFullScreenToHomePIPSwitcherModifier *)self frameForLayoutRole:a3 inAppLayout:v13 withBounds:x, y, width, height];
+  [(SBFullScreenToHomePIPSwitcherModifier *)self frameForLayoutRole:role inAppLayout:layoutCopy withBounds:x, y, width, height];
   SBRectWithSize();
   v18 = v14;
   v19 = v15;
@@ -318,11 +318,11 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)_insetFrameForDiffuseShadowRadius:(CGRect)a3
+- (CGRect)_insetFrameForDiffuseShadowRadius:(CGRect)radius
 {
-  v3 = [(SBFullScreenToHomePIPSwitcherModifier *)self switcherSettings:a3.origin.x];
-  v4 = [v3 windowingSettings];
-  [v4 diffuseShadowRadius];
+  v3 = [(SBFullScreenToHomePIPSwitcherModifier *)self switcherSettings:radius.origin.x];
+  windowingSettings = [v3 windowingSettings];
+  [windowingSettings diffuseShadowRadius];
   v6 = v5;
 
   SBRectWithSize();
@@ -334,13 +334,13 @@ LABEL_8:
 {
   v6.receiver = self;
   v6.super_class = SBFullScreenToHomePIPSwitcherModifier;
-  v3 = [(SBFullScreenToHomePIPSwitcherModifier *)&v6 visibleAppLayouts];
-  v4 = [v3 setByAddingObject:self->_appLayout];
+  visibleAppLayouts = [(SBFullScreenToHomePIPSwitcherModifier *)&v6 visibleAppLayouts];
+  v4 = [visibleAppLayouts setByAddingObject:self->_appLayout];
 
   return v4;
 }
 
-- (double)rotationAngleForIndex:(unint64_t)a3
+- (double)rotationAngleForIndex:(unint64_t)index
 {
   v5 = 0.0;
   v6 = 0.0;
@@ -390,7 +390,7 @@ LABEL_8:
     }
   }
 
-  v7 = [(SBFullScreenToHomePIPSwitcherModifier *)self _shouldApplyMorphToPIPToIndex:a3];
+  v7 = [(SBFullScreenToHomePIPSwitcherModifier *)self _shouldApplyMorphToPIPToIndex:index];
   result = v5 - v6;
   if (!v7)
   {
@@ -400,33 +400,33 @@ LABEL_8:
   return result;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v13.receiver = self;
   v13.super_class = SBFullScreenToHomePIPSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v13 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v13 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBFullScreenToHomePIPSwitcherModifier *)self switcherSettings];
-  v7 = [v6 animationSettings];
-  v8 = [v7 iconZoomDownSettings];
-  [v5 setLayoutSettings:v8];
+  switcherSettings = [(SBFullScreenToHomePIPSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  iconZoomDownSettings = [animationSettings iconZoomDownSettings];
+  [v5 setLayoutSettings:iconZoomDownSettings];
 
   v9 = +[SBPIPSettingsDomain rootSettings];
-  v10 = [v9 fluidTransitionsSettings];
-  v11 = [v10 sourceClippingFluidBehavior];
-  [v5 setClippingSettings:v11];
+  fluidTransitionsSettings = [v9 fluidTransitionsSettings];
+  sourceClippingFluidBehavior = [fluidTransitionsSettings sourceClippingFluidBehavior];
+  [v5 setClippingSettings:sourceClippingFluidBehavior];
 
   return v5;
 }
 
-- (CGPoint)anchorPointForIndex:(unint64_t)a3
+- (CGPoint)anchorPointForIndex:(unint64_t)index
 {
-  if (!self->_shouldForceDefaultAnchorPointForTransition || (v7 = [(SBFullScreenToHomePIPSwitcherModifier *)self _isIndexSelectedAppLayout:a3], v3 = 0.5, v4 = 0.5, !v7))
+  if (!self->_shouldForceDefaultAnchorPointForTransition || (v7 = [(SBFullScreenToHomePIPSwitcherModifier *)self _isIndexSelectedAppLayout:index], v3 = 0.5, v4 = 0.5, !v7))
   {
     v8.receiver = self;
     v8.super_class = SBFullScreenToHomePIPSwitcherModifier;
-    [(SBFullScreenToHomePIPSwitcherModifier *)&v8 anchorPointForIndex:a3, v3, v4];
+    [(SBFullScreenToHomePIPSwitcherModifier *)&v8 anchorPointForIndex:index, v3, v4];
   }
 
   result.y = v4;
@@ -434,34 +434,34 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldPinLayoutRolesToSpace:(unint64_t)space
 {
-  if (self->_shouldForceDefaultAnchorPointForTransition && [(SBFullScreenToHomePIPSwitcherModifier *)self _isIndexSelectedAppLayout:a3])
+  if (self->_shouldForceDefaultAnchorPointForTransition && [(SBFullScreenToHomePIPSwitcherModifier *)self _isIndexSelectedAppLayout:space])
   {
     return 1;
   }
 
   v6.receiver = self;
   v6.super_class = SBFullScreenToHomePIPSwitcherModifier;
-  return [(SBFullScreenToHomePIPSwitcherModifier *)&v6 shouldPinLayoutRolesToSpace:a3];
+  return [(SBFullScreenToHomePIPSwitcherModifier *)&v6 shouldPinLayoutRolesToSpace:space];
 }
 
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space
 {
-  if (self->_shouldForceDefaultAnchorPointForTransition && [(SBFullScreenToHomePIPSwitcherModifier *)self _isIndexSelectedAppLayout:a3])
+  if (self->_shouldForceDefaultAnchorPointForTransition && [(SBFullScreenToHomePIPSwitcherModifier *)self _isIndexSelectedAppLayout:space])
   {
     return 1;
   }
 
   v6.receiver = self;
   v6.super_class = SBFullScreenToHomePIPSwitcherModifier;
-  return [(SBFullScreenToHomePIPSwitcherModifier *)&v6 shouldUseAnchorPointToPinLayoutRolesToSpace:a3];
+  return [(SBFullScreenToHomePIPSwitcherModifier *)&v6 shouldUseAnchorPointToPinLayoutRolesToSpace:space];
 }
 
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index
 {
-  v5 = [(SBFullScreenToHomePIPSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBFullScreenToHomePIPSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (self->_shouldForceDefaultAnchorPointForTransition && [v6 isEqual:self->_appLayout])
   {
@@ -473,7 +473,7 @@ LABEL_8:
   {
     v13.receiver = self;
     v13.super_class = SBFullScreenToHomePIPSwitcherModifier;
-    [(SBFullScreenToHomePIPSwitcherModifier *)&v13 perspectiveAngleForIndex:a3];
+    [(SBFullScreenToHomePIPSwitcherModifier *)&v13 perspectiveAngleForIndex:index];
     v7 = v9;
     v8 = v10;
   }
@@ -485,18 +485,18 @@ LABEL_8:
   return result;
 }
 
-- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)a3 forAppLayout:(id)a4
+- (CGRect)adjustedSpaceAccessoryViewFrame:(CGRect)frame forAppLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = v9;
-  if (self->_shouldForceDefaultAnchorPointForTransition && [v9 isEqual:self->_appLayout])
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  layoutCopy = layout;
+  v10 = layoutCopy;
+  if (self->_shouldForceDefaultAnchorPointForTransition && [layoutCopy isEqual:self->_appLayout])
   {
-    v11 = [(SBFullScreenToHomePIPSwitcherModifier *)self appLayouts];
-    -[SBFullScreenToHomePIPSwitcherModifier frameForIndex:](self, "frameForIndex:", [v11 indexOfObject:self->_appLayout]);
+    appLayouts = [(SBFullScreenToHomePIPSwitcherModifier *)self appLayouts];
+    -[SBFullScreenToHomePIPSwitcherModifier frameForIndex:](self, "frameForIndex:", [appLayouts indexOfObject:self->_appLayout]);
     v13 = v12;
     v15 = v14;
     v17 = v16;
@@ -525,13 +525,13 @@ LABEL_8:
   return result;
 }
 
-- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)a3 forAppLayout:(id)a4
+- (CGPoint)adjustedSpaceAccessoryViewAnchorPoint:(CGPoint)point forAppLayout:(id)layout
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v8 = v7;
-  if (!self->_shouldForceDefaultAnchorPointForTransition || (v9 = 0.5, v10 = 0.5, ([v7 isEqual:self->_appLayout] & 1) == 0))
+  y = point.y;
+  x = point.x;
+  layoutCopy = layout;
+  v8 = layoutCopy;
+  if (!self->_shouldForceDefaultAnchorPointForTransition || (v9 = 0.5, v10 = 0.5, ([layoutCopy isEqual:self->_appLayout] & 1) == 0))
   {
     v15.receiver = self;
     v15.super_class = SBFullScreenToHomePIPSwitcherModifier;
@@ -547,7 +547,7 @@ LABEL_8:
   return result;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
   [(SBFullScreenToHomePIPSwitcherModifier *)self displayCornerRadius];
   SBRectCornerRadiiForRadius();
@@ -555,7 +555,7 @@ LABEL_8:
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  if ([(SBFullScreenToHomePIPSwitcherModifier *)self _shouldApplyMorphToPIPToIndex:a3])
+  if ([(SBFullScreenToHomePIPSwitcherModifier *)self _shouldApplyMorphToPIPToIndex:index])
   {
     [(SBFullScreenToHomePIPSwitcherModifier *)self morphToPIPClippingCornerRadius];
 
@@ -577,15 +577,15 @@ LABEL_8:
   return result;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
-  v9 = [(SBFullScreenToHomePIPSwitcherModifier *)self peekingAppLayout];
-  v10 = [v9 isOrContainsAppLayout:v8];
+  layoutCopy = layout;
+  peekingAppLayout = [(SBFullScreenToHomePIPSwitcherModifier *)self peekingAppLayout];
+  v10 = [peekingAppLayout isOrContainsAppLayout:layoutCopy];
 
   if (v10)
   {
-    [(SBFullScreenToHomePIPSwitcherModifier *)&v15 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5, v14.receiver, v14.super_class, self, SBFullScreenToHomePIPSwitcherModifier];
+    [(SBFullScreenToHomePIPSwitcherModifier *)&v15 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index, v14.receiver, v14.super_class, self, SBFullScreenToHomePIPSwitcherModifier];
   }
 
   else
@@ -596,14 +596,14 @@ LABEL_8:
       goto LABEL_5;
     }
 
-    if ([(SBFullScreenToHomePIPSwitcherModifier *)self _shouldApplyMorphToPIPToIndex:a5])
+    if ([(SBFullScreenToHomePIPSwitcherModifier *)self _shouldApplyMorphToPIPToIndex:index])
     {
       [(SBFullScreenToHomePIPSwitcherModifier *)self morphToPIPSourceAlpha];
     }
 
     else
     {
-      [(SBFullScreenToHomePIPSwitcherModifier *)&v14 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5, self, SBFullScreenToHomePIPSwitcherModifier, v15.receiver, v15.super_class];
+      [(SBFullScreenToHomePIPSwitcherModifier *)&v14 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index, self, SBFullScreenToHomePIPSwitcherModifier, v15.receiver, v15.super_class];
     }
   }
 
@@ -618,11 +618,11 @@ LABEL_5:
   v9[1] = *MEMORY[0x277D85DE8];
   v8.receiver = self;
   v8.super_class = SBFullScreenToHomePIPSwitcherModifier;
-  v3 = [(SBFullScreenToHomePIPSwitcherModifier *)&v8 topMostLayoutElements];
-  v4 = v3;
-  if (v3)
+  topMostLayoutElements = [(SBFullScreenToHomePIPSwitcherModifier *)&v8 topMostLayoutElements];
+  v4 = topMostLayoutElements;
+  if (topMostLayoutElements)
   {
-    v5 = [v3 mutableCopy];
+    v5 = [topMostLayoutElements mutableCopy];
     v6 = [v5 indexOfObject:self->_appLayout];
     if (v6 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -644,26 +644,26 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)_shouldApplyMorphToPIPToIndex:(unint64_t)a3
+- (BOOL)_shouldApplyMorphToPIPToIndex:(unint64_t)index
 {
-  v5 = [(SBTransitionSwitcherModifier *)self isUpdatingLayout];
-  if (v5)
+  isUpdatingLayout = [(SBTransitionSwitcherModifier *)self isUpdatingLayout];
+  if (isUpdatingLayout)
   {
 
-    LOBYTE(v5) = [(SBFullScreenToHomePIPSwitcherModifier *)self _isIndexSelectedAppLayout:a3];
+    LOBYTE(isUpdatingLayout) = [(SBFullScreenToHomePIPSwitcherModifier *)self _isIndexSelectedAppLayout:index];
   }
 
-  return v5;
+  return isUpdatingLayout;
 }
 
-- (BOOL)_isIndexSelectedAppLayout:(unint64_t)a3
+- (BOOL)_isIndexSelectedAppLayout:(unint64_t)layout
 {
-  v4 = self;
-  v5 = [(SBFullScreenToHomePIPSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  selfCopy = self;
+  appLayouts = [(SBFullScreenToHomePIPSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:layout];
 
-  LOBYTE(v4) = [v6 isEqual:v4->_appLayout];
-  return v4;
+  LOBYTE(selfCopy) = [v6 isEqual:selfCopy->_appLayout];
+  return selfCopy;
 }
 
 - (void)initWithTransitionID:(uint64_t)a1 appLayout:(uint64_t)a2 layoutRole:.cold.1(uint64_t a1, uint64_t a2)

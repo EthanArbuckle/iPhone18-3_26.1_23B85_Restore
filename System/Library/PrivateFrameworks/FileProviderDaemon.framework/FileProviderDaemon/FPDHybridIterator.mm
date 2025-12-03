@@ -1,36 +1,36 @@
 @interface FPDHybridIterator
-- (FPDHybridIterator)initWithItem:(id)a3 domain:(id)a4 enforceFPItem:(BOOL)a5;
+- (FPDHybridIterator)initWithItem:(id)item domain:(id)domain enforceFPItem:(BOOL)pItem;
 - (id)error;
-- (id)nextWithError:(id *)a3;
+- (id)nextWithError:(id *)error;
 - (unint64_t)numFoldersPopped;
 - (void)dealloc;
 @end
 
 @implementation FPDHybridIterator
 
-- (FPDHybridIterator)initWithItem:(id)a3 domain:(id)a4 enforceFPItem:(BOOL)a5
+- (FPDHybridIterator)initWithItem:(id)item domain:(id)domain enforceFPItem:(BOOL)pItem
 {
-  v9 = a3;
-  v10 = a4;
+  itemCopy = item;
+  domainCopy = domain;
   v24.receiver = self;
   v24.super_class = FPDHybridIterator;
   v11 = [(FPDHybridIterator *)&v24 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_domain, a4);
-    objc_storeStrong(&v12->_rootItem, a3);
-    v13 = [(FPItem *)v12->_rootItem fileURL];
+    objc_storeStrong(&v11->_domain, domain);
+    objc_storeStrong(&v12->_rootItem, item);
+    fileURL = [(FPItem *)v12->_rootItem fileURL];
     rootURL = v12->_rootURL;
-    v12->_rootURL = v13;
+    v12->_rootURL = fileURL;
 
     v12->_insideADatalessFolder = 0;
-    v12->_enforceFPItem = a5;
+    v12->_enforceFPItem = pItem;
     if (([(FPItem *)v12->_rootItem isPackage]& 1) != 0 || [(FPItem *)v12->_rootItem isFolder]&& (![(FPItem *)v12->_rootItem isDownloaded]|| ![(FPDDomain *)v12->_domain supportsPickingFolders]))
     {
       v15 = [MEMORY[0x1E69672A8] locatorForItem:v12->_rootItem];
-      v16 = [(FPDDomain *)v12->_domain provider];
-      v17 = [FPDIterator iteratorForLocator:v15 provider:v16];
+      provider = [(FPDDomain *)v12->_domain provider];
+      v17 = [FPDIterator iteratorForLocator:v15 provider:provider];
       datalessFolderIterator = v12->_datalessFolderIterator;
       v12->_datalessFolderIterator = v17;
 
@@ -41,8 +41,8 @@
     else
     {
       v19 = [FPDDiskIterator alloc];
-      v20 = [(FPItem *)v12->_rootItem fileURL];
-      v21 = [(FPDDiskIterator *)v19 initWithURL:v20 isDirectory:1];
+      fileURL2 = [(FPItem *)v12->_rootItem fileURL];
+      v21 = [(FPDDiskIterator *)v19 initWithURL:fileURL2 isDirectory:1];
       diskIterator = v12->_diskIterator;
       v12->_diskIterator = v21;
     }
@@ -51,7 +51,7 @@
   return v12;
 }
 
-- (id)nextWithError:(id *)a3
+- (id)nextWithError:(id *)error
 {
   v62 = *MEMORY[0x1E69E9840];
   v55 = 0;
@@ -62,17 +62,17 @@
   v57 = 0;
   if (self->_insideADatalessFolder)
   {
-    v5 = [(FPDIterator *)self->_datalessFolderIterator error];
+    error = [(FPDIterator *)self->_datalessFolderIterator error];
 
-    if (v5)
+    if (error)
     {
-      if (a3)
+      if (error)
       {
-        v6 = [(FPDIterator *)self->_datalessFolderIterator error];
+        error2 = [(FPDIterator *)self->_datalessFolderIterator error];
 LABEL_9:
         v9 = 0;
         v10 = 0;
-        *a3 = v6;
+        *error = error2;
         goto LABEL_55;
       }
 
@@ -108,11 +108,11 @@ LABEL_18:
       v26 = fp_current_or_default_log();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
       {
-        v27 = [v9 fp_prettyDescription];
-        [(FPDHybridIterator *)v27 nextWithError:buf, v26];
+        fp_prettyDescription = [v9 fp_prettyDescription];
+        [(FPDHybridIterator *)fp_prettyDescription nextWithError:buf, v26];
       }
 
-      if (!a3)
+      if (!error)
       {
         goto LABEL_13;
       }
@@ -120,7 +120,7 @@ LABEL_18:
       v28 = v9;
 LABEL_37:
       v10 = 0;
-      *a3 = v9;
+      *error = v9;
       goto LABEL_55;
     }
 
@@ -143,13 +143,13 @@ LABEL_37:
     goto LABEL_11;
   }
 
-  v8 = [(FPDDiskIterator *)diskIterator error];
+  error3 = [(FPDDiskIterator *)diskIterator error];
 
-  if (v8)
+  if (error3)
   {
-    if (a3)
+    if (error)
     {
-      v6 = [(FPDDiskIterator *)self->_diskIterator error];
+      error2 = [(FPDDiskIterator *)self->_diskIterator error];
       goto LABEL_9;
     }
 
@@ -168,7 +168,7 @@ LABEL_37:
   {
     if (![(FPDDiskIterator *)self->_diskIterator done])
     {
-      if (!a3)
+      if (!error)
       {
         goto LABEL_13;
       }
@@ -184,10 +184,10 @@ LABEL_11:
   }
 
   v52 = 0;
-  v19 = [v18 asURL];
-  v20 = [v19 path];
-  v21 = v20;
-  [v20 fileSystemRepresentation];
+  asURL = [v18 asURL];
+  path = [asURL path];
+  v21 = path;
+  [path fileSystemRepresentation];
   is_dataless_fault_at = fpfs_is_dataless_fault_at();
 
   if (is_dataless_fault_at < 0)
@@ -195,10 +195,10 @@ LABEL_11:
     v30 = fp_current_or_default_log();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      v43 = [*(v56[0] + 40) asURL];
+      asURL2 = [*(v56[0] + 40) asURL];
       v44 = [MEMORY[0x1E696ABC0] fp_errorWithPOSIXCode:*__error()];
       *buf = 138412546;
-      v59 = v43;
+      v59 = asURL2;
       v60 = 2112;
       v61 = v44;
       _os_log_error_impl(&dword_1CEFC7000, v30, OS_LOG_TYPE_ERROR, "[ERROR] FPDHybridIterator: encountered error during fpfs_is_dataless_fault_at for url: %@, %@", buf, 0x16u);
@@ -226,18 +226,18 @@ LABEL_11:
 
   v32 = dispatch_group_create();
   dispatch_group_enter(v32);
-  v33 = [(FPDDomain *)self->_domain defaultBackend];
-  v34 = [*(v56[0] + 40) asURL];
+  defaultBackend = [(FPDDomain *)self->_domain defaultBackend];
+  asURL3 = [*(v56[0] + 40) asURL];
   v35 = +[FPDRequest requestForSelf];
   v45 = MEMORY[0x1E69E9820];
   v46 = 3221225472;
   v47 = __35__FPDHybridIterator_nextWithError___block_invoke;
   v48 = &unk_1E83BE090;
   v51 = &v55;
-  v49 = self;
+  selfCopy = self;
   v36 = v32;
   v50 = v36;
-  [v33 itemForURL:v34 options:0 request:v35 completionHandler:&v45];
+  [defaultBackend itemForURL:asURL3 options:0 request:v35 completionHandler:&v45];
 
   dispatch_group_wait(v36, 0xFFFFFFFFFFFFFFFFLL);
   if (self->_insideADatalessFolder)
@@ -249,14 +249,14 @@ LABEL_11:
     }
 
     [(FPDDiskIterator *)self->_diskIterator skipDescendants:v45];
-    v38 = [(FPDIterator *)self->_datalessFolderIterator error];
+    error4 = [(FPDIterator *)self->_datalessFolderIterator error];
 
-    if (v38)
+    if (error4)
     {
-      if (a3)
+      if (error)
       {
         [(FPDIterator *)self->_datalessFolderIterator error];
-        *a3 = v10 = 0;
+        *error = v10 = 0;
       }
 
       else
@@ -267,7 +267,7 @@ LABEL_11:
       goto LABEL_54;
     }
 
-    v40 = [(FPDIterator *)self->_datalessFolderIterator nextWithError:a3];
+    v40 = [(FPDIterator *)self->_datalessFolderIterator nextWithError:error];
   }
 
   else
@@ -338,7 +338,7 @@ void __35__FPDHybridIterator_nextWithError___block_invoke(uint64_t a1, void *a2,
     {
       diskIterator = self->_diskIterator;
 LABEL_6:
-      v4 = [(FPDDiskIterator *)diskIterator error];
+      error = [(FPDDiskIterator *)diskIterator error];
       goto LABEL_7;
     }
 
@@ -352,10 +352,10 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  v4 = 0;
+  error = 0;
 LABEL_7:
 
-  return v4;
+  return error;
 }
 
 - (unint64_t)numFoldersPopped
@@ -363,21 +363,21 @@ LABEL_7:
   diskIterator = self->_diskIterator;
   if (diskIterator)
   {
-    v4 = [(FPDDiskIterator *)diskIterator numFoldersPopped];
+    numFoldersPopped = [(FPDDiskIterator *)diskIterator numFoldersPopped];
   }
 
   else
   {
-    v4 = 0;
+    numFoldersPopped = 0;
   }
 
   datalessFolderIterator = self->_datalessFolderIterator;
   if (datalessFolderIterator)
   {
-    v4 += [(FPDIterator *)datalessFolderIterator numFoldersPopped];
+    numFoldersPopped += [(FPDIterator *)datalessFolderIterator numFoldersPopped];
   }
 
-  return self->_totalDatalessFoldersPopped + v4;
+  return self->_totalDatalessFoldersPopped + numFoldersPopped;
 }
 
 - (void)dealloc

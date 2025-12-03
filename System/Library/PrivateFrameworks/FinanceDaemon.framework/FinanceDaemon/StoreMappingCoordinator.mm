@@ -1,14 +1,14 @@
 @interface StoreMappingCoordinator
-- (void)startSync:(id)a3;
+- (void)startSync:(id)sync;
 @end
 
 @implementation StoreMappingCoordinator
 
-- (void)startSync:(id)a3
+- (void)startSync:(id)sync
 {
-  v3 = a3;
+  syncCopy = sync;
 
-  sub_226B5E300(v3);
+  sub_226B5E300(syncCopy);
 }
 
 @end

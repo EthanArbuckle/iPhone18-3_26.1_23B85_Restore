@@ -1,10 +1,10 @@
 @interface FAFamilyCircleRequest
 - (FAFamilyCircleRequest)init;
-- (FAFamilyCircleRequest)initWithConnectionProvider:(id)a3;
+- (FAFamilyCircleRequest)initWithConnectionProvider:(id)provider;
 - (id)requestOptions;
 - (id)serviceConnection;
-- (id)serviceRemoteObjectWithErrorHandler:(id)a3;
-- (id)synchronousRemoteObjectWithErrorHandler:(id)a3;
+- (id)serviceRemoteObjectWithErrorHandler:(id)handler;
+- (id)synchronousRemoteObjectWithErrorHandler:(id)handler;
 @end
 
 @implementation FAFamilyCircleRequest
@@ -19,60 +19,60 @@
 
 - (id)serviceConnection
 {
-  v2 = [(FAFamilyCircleRequest *)self connectionProvider];
-  v3 = [v2 serviceConnection];
+  connectionProvider = [(FAFamilyCircleRequest *)self connectionProvider];
+  serviceConnection = [connectionProvider serviceConnection];
 
-  return v3;
+  return serviceConnection;
 }
 
 - (id)requestOptions
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(FAFamilyCircleRequest *)self usernameOrDSID];
-  [v3 setObject:v4 forKeyedSubscript:@"Username"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  usernameOrDSID = [(FAFamilyCircleRequest *)self usernameOrDSID];
+  [dictionary setObject:usernameOrDSID forKeyedSubscript:@"Username"];
 
-  v5 = [(FAFamilyCircleRequest *)self passwordOrToken];
-  [v3 setObject:v5 forKeyedSubscript:@"Password"];
+  passwordOrToken = [(FAFamilyCircleRequest *)self passwordOrToken];
+  [dictionary setObject:passwordOrToken forKeyedSubscript:@"Password"];
 
-  v6 = [MEMORY[0x1E696AE30] processInfo];
-  v7 = [v6 processName];
-  [v3 setObject:v7 forKeyedSubscript:@"ClientProcess"];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  processName = [processInfo processName];
+  [dictionary setObject:processName forKeyedSubscript:@"ClientProcess"];
 
-  v8 = [v3 copy];
+  v8 = [dictionary copy];
 
   return v8;
 }
 
-- (FAFamilyCircleRequest)initWithConnectionProvider:(id)a3
+- (FAFamilyCircleRequest)initWithConnectionProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = FAFamilyCircleRequest;
   v6 = [(FAFamilyCircleRequest *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connectionProvider, a3);
+    objc_storeStrong(&v6->_connectionProvider, provider);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)serviceRemoteObjectWithErrorHandler:(id)a3
+- (id)serviceRemoteObjectWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(FAFamilyCircleRequest *)self serviceConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  serviceConnection = [(FAFamilyCircleRequest *)self serviceConnection];
+  v6 = [serviceConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (id)synchronousRemoteObjectWithErrorHandler:(id)a3
+- (id)synchronousRemoteObjectWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(FAFamilyCircleRequest *)self serviceConnection];
-  v6 = [v5 synchronousRemoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  serviceConnection = [(FAFamilyCircleRequest *)self serviceConnection];
+  v6 = [serviceConnection synchronousRemoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }

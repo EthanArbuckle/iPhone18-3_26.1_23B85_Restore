@@ -9,13 +9,13 @@
   v3 = [NSMutableDictionary alloc];
   v17.receiver = self;
   v17.super_class = AirPodsAudioSystemResult;
-  v4 = [(AudioSystemResult *)&v17 dictionaryValue];
-  v5 = [v3 initWithDictionary:v4];
+  dictionaryValue = [(AudioSystemResult *)&v17 dictionaryValue];
+  v5 = [v3 initWithDictionary:dictionaryValue];
 
-  v6 = [(AirPodsAudioSystemResult *)self energyValues];
-  if (v6)
+  energyValues = [(AirPodsAudioSystemResult *)self energyValues];
+  if (energyValues)
   {
-    [v5 setObject:v6 forKeyedSubscript:@"energyValues"];
+    [v5 setObject:energyValues forKeyedSubscript:@"energyValues"];
   }
 
   else
@@ -24,10 +24,10 @@
     [v5 setObject:v7 forKeyedSubscript:@"energyValues"];
   }
 
-  v8 = [(AirPodsAudioSystemResult *)self xCorrPNR];
-  if (v8)
+  xCorrPNR = [(AirPodsAudioSystemResult *)self xCorrPNR];
+  if (xCorrPNR)
   {
-    [v5 setObject:v8 forKeyedSubscript:@"xCoorPNR"];
+    [v5 setObject:xCorrPNR forKeyedSubscript:@"xCoorPNR"];
   }
 
   else
@@ -36,10 +36,10 @@
     [v5 setObject:v9 forKeyedSubscript:@"xCoorPNR"];
   }
 
-  v10 = [(AirPodsAudioSystemResult *)self xCorrPeak];
-  if (v10)
+  xCorrPeak = [(AirPodsAudioSystemResult *)self xCorrPeak];
+  if (xCorrPeak)
   {
-    [v5 setObject:v10 forKeyedSubscript:@"xCoorPeak"];
+    [v5 setObject:xCorrPeak forKeyedSubscript:@"xCoorPeak"];
   }
 
   else
@@ -48,10 +48,10 @@
     [v5 setObject:v11 forKeyedSubscript:@"xCoorPeak"];
   }
 
-  v12 = [(AirPodsAudioSystemResult *)self xCorrCenter];
-  if (v12)
+  xCorrCenter = [(AirPodsAudioSystemResult *)self xCorrCenter];
+  if (xCorrCenter)
   {
-    [v5 setObject:v12 forKeyedSubscript:@"xCoorCenter"];
+    [v5 setObject:xCorrCenter forKeyedSubscript:@"xCoorCenter"];
   }
 
   else

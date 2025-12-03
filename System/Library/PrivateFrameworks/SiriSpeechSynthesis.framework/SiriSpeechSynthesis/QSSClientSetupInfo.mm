@@ -1,8 +1,8 @@
 @interface QSSClientSetupInfo
 - (BOOL)endpoint_extra_delay;
 - (NSString)speech_id;
-- (Offset<siri::speech::schema_fb::ClientSetupInfo>)addObjectToBuffer:(void *)a3;
-- (QSSClientSetupInfo)initWithFlatbuffData:(id)a3 root:(const ClientSetupInfo *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::ClientSetupInfo>)addObjectToBuffer:(void *)buffer;
+- (QSSClientSetupInfo)initWithFlatbuffData:(id)data root:(const ClientSetupInfo *)root verify:(BOOL)verify;
 - (float)endpoint_threshold;
 - (id)flatbuffData;
 @end
@@ -38,31 +38,31 @@ flatbuffers::DetachedBuffer *__34__QSSClientSetupInfo_flatbuffData__block_invoke
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::ClientSetupInfo>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::ClientSetupInfo>)addObjectToBuffer:(void *)buffer
 {
   [(QSSClientSetupInfo *)self endpoint_threshold];
   v6 = v5;
-  v7 = [(QSSClientSetupInfo *)self endpoint_extra_delay];
-  v8 = [(QSSClientSetupInfo *)self speech_id];
-  v9 = v8;
-  if (!v8)
+  endpoint_extra_delay = [(QSSClientSetupInfo *)self endpoint_extra_delay];
+  speech_id = [(QSSClientSetupInfo *)self speech_id];
+  v9 = speech_id;
+  if (!speech_id)
   {
-    v8 = &stru_2879AE8E0;
+    speech_id = &stru_2879AE8E0;
   }
 
-  v10 = [(__CFString *)v8 UTF8String];
-  v11 = strlen(v10);
-  LODWORD(v10) = flatbuffers::FlatBufferBuilder::CreateString(a3, v10, v11);
+  uTF8String = [(__CFString *)speech_id UTF8String];
+  v11 = strlen(uTF8String);
+  LODWORD(uTF8String) = flatbuffers::FlatBufferBuilder::CreateString(buffer, uTF8String, v11);
 
-  flatbuffers::FlatBufferBuilder::NotNested(a3);
-  *(a3 + 70) = 1;
-  v12 = *(a3 + 10);
-  v13 = *(a3 + 8) - *(a3 + 12);
-  flatbuffers::FlatBufferBuilder::AddElement<float>(a3, 4, v6);
-  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(a3, 6, v7);
-  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(a3, 8, v10);
+  flatbuffers::FlatBufferBuilder::NotNested(buffer);
+  *(buffer + 70) = 1;
+  v12 = *(buffer + 10);
+  v13 = *(buffer + 8) - *(buffer + 12);
+  flatbuffers::FlatBufferBuilder::AddElement<float>(buffer, 4, v6);
+  flatbuffers::FlatBufferBuilder::AddElement<unsigned char>(buffer, 6, endpoint_extra_delay);
+  flatbuffers::FlatBufferBuilder::AddOffset<flatbuffers::Vector<unsigned char>>(buffer, 8, uTF8String);
 
-  return flatbuffers::FlatBufferBuilder::EndTable(a3, v13 + v12);
+  return flatbuffers::FlatBufferBuilder::EndTable(buffer, v13 + v12);
 }
 
 - (NSString)speech_id
@@ -112,42 +112,42 @@ flatbuffers::DetachedBuffer *__34__QSSClientSetupInfo_flatbuffData__block_invoke
   return result;
 }
 
-- (QSSClientSetupInfo)initWithFlatbuffData:(id)a3 root:(const ClientSetupInfo *)a4 verify:(BOOL)a5
+- (QSSClientSetupInfo)initWithFlatbuffData:(id)data root:(const ClientSetupInfo *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSClientSetupInfo;
   v10 = [(QSSClientSetupInfo *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -169,9 +169,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

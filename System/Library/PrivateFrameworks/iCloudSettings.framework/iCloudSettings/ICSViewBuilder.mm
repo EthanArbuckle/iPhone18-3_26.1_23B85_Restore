@@ -1,44 +1,44 @@
 @interface ICSViewBuilder
-+ (id)buildBackupViewControllerWithAccount:(id)a3;
-+ (id)buildViewControllerWithAccountManager:(id)a3 dataclass:(id)a4;
++ (id)buildBackupViewControllerWithAccount:(id)account;
++ (id)buildViewControllerWithAccountManager:(id)manager dataclass:(id)dataclass;
 @end
 
 @implementation ICSViewBuilder
 
-+ (id)buildBackupViewControllerWithAccount:(id)a3
++ (id)buildBackupViewControllerWithAccount:(id)account
 {
-  v3 = a3;
-  v4 = [[ICSBackupViewController alloc] initWithAccount:v3];
+  accountCopy = account;
+  v4 = [[ICSBackupViewController alloc] initWithAccount:accountCopy];
 
   return v4;
 }
 
-+ (id)buildViewControllerWithAccountManager:(id)a3 dataclass:(id)a4
++ (id)buildViewControllerWithAccountManager:(id)manager dataclass:(id)dataclass
 {
-  v5 = a4;
-  if (*MEMORY[0x277CB89C0] == v5)
+  dataclassCopy = dataclass;
+  if (*MEMORY[0x277CB89C0] == dataclassCopy)
   {
-    v11 = a3;
-    v12 = [[ICSKeychainSyncViewController alloc] initWithAccountManager:v11];
+    managerCopy = manager;
+    v12 = [[ICSKeychainSyncViewController alloc] initWithAccountManager:managerCopy];
   }
 
   else
   {
     v6 = MEMORY[0x277D3FAD8];
-    v7 = a3;
-    v8 = [v7 accounts];
+    managerCopy2 = manager;
+    accounts = [managerCopy2 accounts];
     v9 = *MEMORY[0x277CED1A0];
-    v10 = [v8 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
-    v11 = [v6 acui_linkListCellSpecifierForDataclass:v5 account:v10 target:0 set:0 get:0 detail:0];
+    v10 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+    managerCopy = [v6 acui_linkListCellSpecifierForDataclass:dataclassCopy account:v10 target:0 set:0 get:0 detail:0];
 
-    [v11 setObject:v7 forKeyedSubscript:@"icloudAccountManager"];
-    [v11 setObject:v5 forKeyedSubscript:*MEMORY[0x277D3FFB8]];
+    [managerCopy setObject:managerCopy2 forKeyedSubscript:@"icloudAccountManager"];
+    [managerCopy setObject:dataclassCopy forKeyedSubscript:*MEMORY[0x277D3FFB8]];
     v12 = objc_alloc_init(ICSDataclassDetailViewController);
-    [(ICSKeychainSyncViewController *)v12 setSpecifier:v11];
-    [(ICSKeychainSyncViewController *)v12 setAccountManager:v7];
-    v13 = [v7 accounts];
+    [(ICSKeychainSyncViewController *)v12 setSpecifier:managerCopy];
+    [(ICSKeychainSyncViewController *)v12 setAccountManager:managerCopy2];
+    accounts2 = [managerCopy2 accounts];
 
-    v14 = [v13 objectForKeyedSubscript:v9];
+    v14 = [accounts2 objectForKeyedSubscript:v9];
     [(ICSKeychainSyncViewController *)v12 setAccount:v14];
   }
 

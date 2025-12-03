@@ -4,13 +4,13 @@
 - (id)cachedMDMProfileIdentifier;
 - (int64_t)profileCount;
 - (void)_fetchProfiles;
-- (void)_handleFetchProfilesError:(id)a3;
-- (void)_unarchiveProfilePayloadsSummaryFromData:(id)a3 forProfileIdentifier:(id)a4;
-- (void)_unarchiveRMConfigurationViewModelsFromData:(id)a3 forProfileIdentifier:(id)a4;
-- (void)_watchChanged:(id)a3;
-- (void)fetchProfileIdentifier:(id)a3 completion:(id)a4;
-- (void)installProfileData:(id)a3 completion:(id)a4;
-- (void)removeProfileIdentifier:(id)a3 completion:(id)a4;
+- (void)_handleFetchProfilesError:(id)error;
+- (void)_unarchiveProfilePayloadsSummaryFromData:(id)data forProfileIdentifier:(id)identifier;
+- (void)_unarchiveRMConfigurationViewModelsFromData:(id)data forProfileIdentifier:(id)identifier;
+- (void)_watchChanged:(id)changed;
+- (void)fetchProfileIdentifier:(id)identifier completion:(id)completion;
+- (void)installProfileData:(id)data completion:(id)completion;
+- (void)removeProfileIdentifier:(id)identifier completion:(id)completion;
 @end
 
 @implementation MCUIWatchManager
@@ -78,11 +78,11 @@ void __26__MCUIWatchManager_shared__block_invoke()
     configProfilesInfo = v2->_configProfilesInfo;
     v2->_configProfilesInfo = v14;
 
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v2 selector:sel__watchChanged_ name:*MEMORY[0x277D2BC78] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__watchChanged_ name:*MEMORY[0x277D2BC78] object:0];
 
-    v17 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v17 addObserver:v2 selector:sel__watchChanged_ name:*MEMORY[0x277D2BC48] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__watchChanged_ name:*MEMORY[0x277D2BC48] object:0];
 
     v25[0] = objc_opt_class();
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:1];
@@ -124,10 +124,10 @@ void __24__MCUIWatchManager_init__block_invoke(uint64_t a1)
   [v11 setSectionIndexBackgroundColor:v10];
 }
 
-- (void)_watchChanged:(id)a3
+- (void)_watchChanged:(id)changed
 {
-  v4 = [a3 name];
-  NSLog(&cfstr_McuiWatchManag_0.isa, v4);
+  name = [changed name];
+  NSLog(&cfstr_McuiWatchManag_0.isa, name);
 
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
@@ -169,28 +169,28 @@ void __34__MCUIWatchManager__watchChanged___block_invoke(uint64_t a1)
 
 - (int64_t)profileCount
 {
-  v3 = [(MCUIWatchManager *)self mdmProfilesInfo];
-  v4 = [v3 count];
-  v5 = [(MCUIWatchManager *)self configProfilesInfo];
-  v6 = [v5 count];
+  mdmProfilesInfo = [(MCUIWatchManager *)self mdmProfilesInfo];
+  v4 = [mdmProfilesInfo count];
+  configProfilesInfo = [(MCUIWatchManager *)self configProfilesInfo];
+  v6 = [configProfilesInfo count];
 
   return v6 + v4;
 }
 
-- (void)installProfileData:(id)a3 completion:(id)a4
+- (void)installProfileData:(id)data completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(MCUIWatchManager *)self nssManager];
+  nssManager = [(MCUIWatchManager *)self nssManager];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __50__MCUIWatchManager_installProfileData_completion___block_invoke;
   v10[3] = &unk_279862308;
   objc_copyWeak(&v12, &location);
-  v9 = v7;
+  v9 = completionCopy;
   v11 = v9;
-  [v8 installProfile:v6 completionHandler:v10];
+  [nssManager installProfile:dataCopy completionHandler:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -213,22 +213,22 @@ void __50__MCUIWatchManager_installProfileData_completion___block_invoke(uint64_
   }
 }
 
-- (void)removeProfileIdentifier:(id)a3 completion:(id)a4
+- (void)removeProfileIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(MCUIWatchManager *)self nssManager];
+  nssManager = [(MCUIWatchManager *)self nssManager];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __55__MCUIWatchManager_removeProfileIdentifier_completion___block_invoke;
   v11[3] = &unk_279862330;
-  v9 = v6;
+  v9 = identifierCopy;
   v12 = v9;
   objc_copyWeak(&v14, &location);
-  v10 = v7;
+  v10 = completionCopy;
   v13 = v10;
-  [v8 removeProfileWithIdentifier:v9 completionHandler:v11];
+  [nssManager removeProfileWithIdentifier:v9 completionHandler:v11];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -261,13 +261,13 @@ void __55__MCUIWatchManager_removeProfileIdentifier_completion___block_invoke(ui
   block[3] = &unk_279861990;
   objc_copyWeak(&v7, &location);
   dispatch_async(MEMORY[0x277D85CD0], block);
-  v3 = [(MCUIWatchManager *)self nssManager];
+  nssManager = [(MCUIWatchManager *)self nssManager];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __34__MCUIWatchManager__fetchProfiles__block_invoke_2;
   v4[3] = &unk_279862358;
   objc_copyWeak(&v5, &location);
-  [v3 getProfilesInfo:v4];
+  [nssManager getProfilesInfo:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&v7);
@@ -379,37 +379,37 @@ void __34__MCUIWatchManager__fetchProfiles__block_invoke_3(uint64_t a1)
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleFetchProfilesError:(id)a3
+- (void)_handleFetchProfilesError:(id)error
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  NSLog(&cfstr_McuiWatchManag_3.isa, v4);
+  errorCopy = error;
+  NSLog(&cfstr_McuiWatchManag_3.isa, errorCopy);
   [(MCUIWatchManager *)self setFetchStatus:1];
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v8 = @"kMCUINotificationErrorKey";
-  v9[0] = v4;
+  v9[0] = errorCopy;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
 
-  [v5 postNotificationName:@"kMCUIWatchFetchFailedNotification" object:0 userInfo:v6];
+  [defaultCenter postNotificationName:@"kMCUIWatchFetchFailedNotification" object:0 userInfo:v6];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)fetchProfileIdentifier:(id)a3 completion:(id)a4
+- (void)fetchProfileIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v8 = [(MCUIWatchManager *)self nssManager];
+  nssManager = [(MCUIWatchManager *)self nssManager];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __54__MCUIWatchManager_fetchProfileIdentifier_completion___block_invoke;
   v11[3] = &unk_2798623A8;
   objc_copyWeak(&v14, &location);
-  v9 = v6;
+  v9 = identifierCopy;
   v12 = v9;
-  v10 = v7;
+  v10 = completionCopy;
   v13 = v10;
-  [v8 getFullProfileInfoWithIdentifier:v9 includeManagedPayloads:1 completionHandler:v11];
+  [nssManager getFullProfileInfoWithIdentifier:v9 includeManagedPayloads:1 completionHandler:v11];
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -488,62 +488,62 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_unarchiveProfilePayloadsSummaryFromData:(id)a3 forProfileIdentifier:(id)a4
+- (void)_unarchiveProfilePayloadsSummaryFromData:(id)data forProfileIdentifier:(id)identifier
 {
-  v6 = a4;
-  if (a3)
+  identifierCopy = identifier;
+  if (data)
   {
     v7 = MEMORY[0x277CCAAC8];
-    v8 = a3;
+    dataCopy = data;
     v13 = 0;
-    v9 = [v7 unarchivedObjectOfClass:objc_opt_class() fromData:v8 error:&v13];
+    v9 = [v7 unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v13];
 
     v10 = v13;
     v11 = v10;
     if (v10)
     {
-      NSLog(&cfstr_McuiWatchManag_6.isa, v6, v10);
+      NSLog(&cfstr_McuiWatchManag_6.isa, identifierCopy, v10);
     }
 
     if (v9)
     {
-      v12 = [(MCUIWatchManager *)self cachedProfileSummaries];
-      [v12 setObject:v9 forKeyedSubscript:v6];
+      cachedProfileSummaries = [(MCUIWatchManager *)self cachedProfileSummaries];
+      [cachedProfileSummaries setObject:v9 forKeyedSubscript:identifierCopy];
     }
   }
 }
 
-- (void)_unarchiveRMConfigurationViewModelsFromData:(id)a3 forProfileIdentifier:(id)a4
+- (void)_unarchiveRMConfigurationViewModelsFromData:(id)data forProfileIdentifier:(id)identifier
 {
-  v6 = a4;
-  if (a3)
+  identifierCopy = identifier;
+  if (data)
   {
     v7 = MEMORY[0x277CCAAC8];
-    v8 = a3;
+    dataCopy = data;
     v13 = 0;
-    v9 = [v7 unarchivedObjectOfClass:objc_opt_class() fromData:v8 error:&v13];
+    v9 = [v7 unarchivedObjectOfClass:objc_opt_class() fromData:dataCopy error:&v13];
 
     v10 = v13;
     v11 = v10;
     if (v10)
     {
-      NSLog(&cfstr_McuiWatchManag_7.isa, v6, v10);
+      NSLog(&cfstr_McuiWatchManag_7.isa, identifierCopy, v10);
     }
 
     if (v9)
     {
-      v12 = [(MCUIWatchManager *)self cachedRMConfigurationViewModels];
-      [v12 setObject:v9 forKeyedSubscript:v6];
+      cachedRMConfigurationViewModels = [(MCUIWatchManager *)self cachedRMConfigurationViewModels];
+      [cachedRMConfigurationViewModels setObject:v9 forKeyedSubscript:identifierCopy];
     }
   }
 }
 
 - (id)cachedMDMProfileIdentifier
 {
-  v2 = [(NSArray *)self->_mdmProfilesInfo firstObject];
-  v3 = [v2 identifier];
+  firstObject = [(NSArray *)self->_mdmProfilesInfo firstObject];
+  identifier = [firstObject identifier];
 
-  return v3;
+  return identifier;
 }
 
 @end

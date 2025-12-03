@@ -1,31 +1,31 @@
 @interface RMAudioListenerPoseManager
-- (RMAudioListenerPoseManager)initWithQueue:(id)a3;
-- (id)audioListenerPoseConfigurationWithForceSessionRestart:(void *)a1;
+- (RMAudioListenerPoseManager)initWithQueue:(id)queue;
+- (id)audioListenerPoseConfigurationWithForceSessionRestart:(void *)restart;
 - (uint64_t)connectionClient;
 - (uint64_t)isReceivingRelatveData;
 - (uint64_t)poseCallbackInternal;
 - (uint64_t)queue;
 - (uint64_t)setIsReceivingRelatveData:(uint64_t)result;
 - (void)invalidate;
-- (void)setConnectionClient:(uint64_t)a1;
-- (void)setPoseCallbackInternal:(void *)a1;
-- (void)setQueue:(uint64_t)a1;
+- (void)setConnectionClient:(uint64_t)client;
+- (void)setPoseCallbackInternal:(void *)internal;
+- (void)setQueue:(uint64_t)queue;
 - (void)stopReceivingAudioListenerPoseUpdates;
 @end
 
 @implementation RMAudioListenerPoseManager
 
-- (RMAudioListenerPoseManager)initWithQueue:(id)a3
+- (RMAudioListenerPoseManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = RMAudioListenerPoseManager;
   v6 = [(RMAudioListenerPoseManager *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
-    v8 = [[RMConnectionClient alloc] initWithQueue:v5 serviceName:@"com.apple.relatived.tempest" messageHandler:&__block_literal_global_1];
+    objc_storeStrong(&v6->_queue, queue);
+    v8 = [[RMConnectionClient alloc] initWithQueue:queueCopy serviceName:@"com.apple.relatived.tempest" messageHandler:&__block_literal_global_1];
     connectionClient = v7->_connectionClient;
     v7->_connectionClient = v8;
   }
@@ -97,19 +97,19 @@ void __105__RMAudioListenerPoseManager_startReceivingAudioListenerPoseUpdatesWit
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setQueue:(uint64_t)a1
+- (void)setQueue:(uint64_t)queue
 {
-  if (a1)
+  if (queue)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((queue + 24), a2);
   }
 }
 
-- (void)setConnectionClient:(uint64_t)a1
+- (void)setConnectionClient:(uint64_t)client
 {
-  if (a1)
+  if (client)
   {
-    objc_storeStrong((a1 + 40), a2);
+    objc_storeStrong((client + 40), a2);
   }
 }
 
@@ -153,9 +153,9 @@ void __105__RMAudioListenerPoseManager_startReceivingAudioListenerPoseUpdatesWit
 
 - (uint64_t)isReceivingRelatveData
 {
-  if (a1)
+  if (self)
   {
-    v1 = *(a1 + 8);
+    v1 = *(self + 8);
   }
 
   else
@@ -176,27 +176,27 @@ void __105__RMAudioListenerPoseManager_startReceivingAudioListenerPoseUpdatesWit
   return result;
 }
 
-- (void)setPoseCallbackInternal:(void *)a1
+- (void)setPoseCallbackInternal:(void *)internal
 {
-  if (a1)
+  if (internal)
   {
-    objc_setProperty_nonatomic_copy(a1, newValue, newValue, 32);
+    objc_setProperty_nonatomic_copy(internal, newValue, newValue, 32);
   }
 }
 
-- (id)audioListenerPoseConfigurationWithForceSessionRestart:(void *)a1
+- (id)audioListenerPoseConfigurationWithForceSessionRestart:(void *)restart
 {
-  if (a1)
+  if (restart)
   {
     v4 = objc_opt_new();
     [v4 setObject:@"ABC0BF2F-620E-4ADF-8291-7624B6B0889A" forKeyedSubscript:@"Identifier"];
     [v4 setObject:&unk_287437710 forKeyedSubscript:@"Interval"];
-    v5 = [a1 tempestOptions];
+    tempestOptions = [restart tempestOptions];
 
-    if (v5)
+    if (tempestOptions)
     {
-      v6 = [a1 tempestOptions];
-      [v4 setObject:v6 forKeyedSubscript:@"TempestOptions"];
+      tempestOptions2 = [restart tempestOptions];
+      [v4 setObject:tempestOptions2 forKeyedSubscript:@"TempestOptions"];
     }
 
     v7 = [MEMORY[0x277CCABB0] numberWithBool:a2];

@@ -1,20 +1,20 @@
 @interface SKGPersonComponents
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPersonComponents:(id)a3;
-- (SKGPersonComponents)initWithEmailAddresses:(id)a3 phoneNumbers:(id)a4;
-- (SKGPersonComponents)initWithName:(id)a3 nameComponents:(id)a4 displayName:(id)a5 emailAddresses:(id)a6 phoneNumbers:(id)a7;
-- (void)addName:(id)a3 nameComponents:(id)a4 displayName:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPersonComponents:(id)components;
+- (SKGPersonComponents)initWithEmailAddresses:(id)addresses phoneNumbers:(id)numbers;
+- (SKGPersonComponents)initWithName:(id)name nameComponents:(id)components displayName:(id)displayName emailAddresses:(id)addresses phoneNumbers:(id)numbers;
+- (void)addName:(id)name nameComponents:(id)components displayName:(id)displayName;
 @end
 
 @implementation SKGPersonComponents
 
-- (SKGPersonComponents)initWithName:(id)a3 nameComponents:(id)a4 displayName:(id)a5 emailAddresses:(id)a6 phoneNumbers:(id)a7
+- (SKGPersonComponents)initWithName:(id)name nameComponents:(id)components displayName:(id)displayName emailAddresses:(id)addresses phoneNumbers:(id)numbers
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  nameCopy = name;
+  componentsCopy = components;
+  displayNameCopy = displayName;
+  addressesCopy = addresses;
+  numbersCopy = numbers;
   v33.receiver = self;
   v33.super_class = SKGPersonComponents;
   v17 = [(SKGPersonComponents *)&v33 init];
@@ -32,26 +32,26 @@
     displayNames = v17->_displayNames;
     v17->_displayNames = v22;
 
-    if (v12 && v13)
+    if (nameCopy && componentsCopy)
     {
-      [(NSMutableSet *)v17->_nameComponents addObject:v13];
-      [(NSMutableSet *)v17->_names addObject:v12];
-      if (v14)
+      [(NSMutableSet *)v17->_nameComponents addObject:componentsCopy];
+      [(NSMutableSet *)v17->_names addObject:nameCopy];
+      if (displayNameCopy)
       {
-        v24 = v14;
+        v24 = displayNameCopy;
       }
 
       else
       {
-        v24 = v12;
+        v24 = nameCopy;
       }
 
       [(NSMutableSet *)v17->_displayNames addObject:v24];
     }
 
-    if (v15)
+    if (addressesCopy)
     {
-      [MEMORY[0x277CBEB58] setWithArray:v15];
+      [MEMORY[0x277CBEB58] setWithArray:addressesCopy];
     }
 
     else
@@ -62,9 +62,9 @@
     emailAddresses = v17->_emailAddresses;
     v17->_emailAddresses = v25;
 
-    if (v16)
+    if (numbersCopy)
     {
-      [MEMORY[0x277CBEB58] setWithArray:v16];
+      [MEMORY[0x277CBEB58] setWithArray:numbersCopy];
     }
 
     else
@@ -88,10 +88,10 @@
   return v17;
 }
 
-- (SKGPersonComponents)initWithEmailAddresses:(id)a3 phoneNumbers:(id)a4
+- (SKGPersonComponents)initWithEmailAddresses:(id)addresses phoneNumbers:(id)numbers
 {
-  v6 = a3;
-  v7 = a4;
+  addressesCopy = addresses;
+  numbersCopy = numbers;
   v23.receiver = self;
   v23.super_class = SKGPersonComponents;
   v8 = [(SKGPersonComponents *)&v23 init];
@@ -109,9 +109,9 @@
     displayNames = v8->_displayNames;
     v8->_displayNames = v13;
 
-    if (v6)
+    if (addressesCopy)
     {
-      [MEMORY[0x277CBEB58] setWithArray:v6];
+      [MEMORY[0x277CBEB58] setWithArray:addressesCopy];
     }
 
     else
@@ -122,9 +122,9 @@
     emailAddresses = v8->_emailAddresses;
     v8->_emailAddresses = v15;
 
-    if (v7)
+    if (numbersCopy)
     {
-      [MEMORY[0x277CBEB58] setWithArray:v7];
+      [MEMORY[0x277CBEB58] setWithArray:numbersCopy];
     }
 
     else
@@ -148,30 +148,30 @@
   return v8;
 }
 
-- (void)addName:(id)a3 nameComponents:(id)a4 displayName:(id)a5
+- (void)addName:(id)name nameComponents:(id)components displayName:(id)displayName
 {
-  if (a3 && a4)
+  if (name && components)
   {
     names = self->_names;
     v9 = MEMORY[0x277CCACA8];
-    v10 = a5;
-    v11 = a4;
-    v18 = a3;
-    v12 = [v9 stringWithString:v18];
+    displayNameCopy = displayName;
+    componentsCopy = components;
+    nameCopy = name;
+    v12 = [v9 stringWithString:nameCopy];
     [(NSMutableSet *)names addObject:v12];
 
     nameComponents = self->_nameComponents;
-    v14 = [v11 copy];
+    v14 = [componentsCopy copy];
 
     [(NSMutableSet *)nameComponents addObject:v14];
-    if (v10)
+    if (displayNameCopy)
     {
-      v15 = v10;
+      v15 = displayNameCopy;
     }
 
     else
     {
-      v15 = v18;
+      v15 = nameCopy;
     }
 
     displayNames = self->_displayNames;
@@ -180,65 +180,65 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SKGPersonComponents *)self isEqualToPersonComponents:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(SKGPersonComponents *)self isEqualToPersonComponents:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToPersonComponents:(id)a3
+- (BOOL)isEqualToPersonComponents:(id)components
 {
-  v4 = a3;
-  v5 = [(SKGPersonComponents *)self names];
-  v6 = [v4 names];
-  v7 = [v5 isEqualToArray:v6];
+  componentsCopy = components;
+  names = [(SKGPersonComponents *)self names];
+  names2 = [componentsCopy names];
+  v7 = [names isEqualToArray:names2];
 
   if (!v7)
   {
     goto LABEL_28;
   }
 
-  v8 = [(SKGPersonComponents *)self nameComponents];
-  v9 = [v4 nameComponents];
-  v10 = [v8 isEqualToArray:v9];
+  nameComponents = [(SKGPersonComponents *)self nameComponents];
+  nameComponents2 = [componentsCopy nameComponents];
+  v10 = [nameComponents isEqualToArray:nameComponents2];
 
   if (!v10)
   {
     goto LABEL_28;
   }
 
-  v11 = [(SKGPersonComponents *)self phoneNumbers];
-  v12 = [v4 phoneNumbers];
-  v13 = [v11 isEqualToArray:v12];
+  phoneNumbers = [(SKGPersonComponents *)self phoneNumbers];
+  phoneNumbers2 = [componentsCopy phoneNumbers];
+  v13 = [phoneNumbers isEqualToArray:phoneNumbers2];
 
   if (!v13)
   {
     goto LABEL_28;
   }
 
-  v14 = [(SKGPersonComponents *)self emailAddresses];
-  v15 = [v4 emailAddresses];
-  v16 = [v14 isEqualToArray:v15];
+  emailAddresses = [(SKGPersonComponents *)self emailAddresses];
+  emailAddresses2 = [componentsCopy emailAddresses];
+  v16 = [emailAddresses isEqualToArray:emailAddresses2];
 
   if (!v16)
   {
     goto LABEL_28;
   }
 
-  v17 = [(SKGPersonComponents *)self entityIdentifier];
-  if (!v17 || ([v4 entityIdentifier], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
+  entityIdentifier = [(SKGPersonComponents *)self entityIdentifier];
+  if (!entityIdentifier || ([componentsCopy entityIdentifier], (emailAddresses2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v18 = [(SKGPersonComponents *)self entityIdentifier];
-    if (v18 || ([v4 entityIdentifier], (v22 = objc_claimAutoreleasedReturnValue()) == 0))
+    entityIdentifier2 = [(SKGPersonComponents *)self entityIdentifier];
+    if (entityIdentifier2 || ([componentsCopy entityIdentifier], (v22 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v19 = [(SKGPersonComponents *)self entityIdentifier];
-      v20 = [v4 entityIdentifier];
-      v21 = [v19 isEqualToString:v20] ^ 1;
+      entityIdentifier3 = [(SKGPersonComponents *)self entityIdentifier];
+      entityIdentifier4 = [componentsCopy entityIdentifier];
+      v21 = [entityIdentifier3 isEqualToString:entityIdentifier4] ^ 1;
 
-      if (v18)
+      if (entityIdentifier2)
       {
         goto LABEL_13;
       }
@@ -252,7 +252,7 @@
     }
 
 LABEL_13:
-    if (v17)
+    if (entityIdentifier)
     {
     }
 
@@ -261,24 +261,24 @@ LABEL_13:
       goto LABEL_28;
     }
 
-    v17 = [(SKGPersonComponents *)self contactIdentifier];
-    if (v17)
+    entityIdentifier = [(SKGPersonComponents *)self contactIdentifier];
+    if (entityIdentifier)
     {
-      v15 = [v4 contactIdentifier];
-      if (!v15)
+      emailAddresses2 = [componentsCopy contactIdentifier];
+      if (!emailAddresses2)
       {
         goto LABEL_18;
       }
     }
 
-    v23 = [(SKGPersonComponents *)self contactIdentifier];
-    if (v23 || ([v4 contactIdentifier], (v27 = objc_claimAutoreleasedReturnValue()) == 0))
+    contactIdentifier = [(SKGPersonComponents *)self contactIdentifier];
+    if (contactIdentifier || ([componentsCopy contactIdentifier], (v27 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v24 = [(SKGPersonComponents *)self contactIdentifier];
-      v25 = [v4 contactIdentifier];
-      v26 = [v24 isEqualToString:v25] ^ 1;
+      contactIdentifier2 = [(SKGPersonComponents *)self contactIdentifier];
+      contactIdentifier3 = [componentsCopy contactIdentifier];
+      v26 = [contactIdentifier2 isEqualToString:contactIdentifier3] ^ 1;
 
-      if (v23)
+      if (contactIdentifier)
       {
         goto LABEL_25;
       }
@@ -292,7 +292,7 @@ LABEL_13:
     }
 
 LABEL_25:
-    if (v17)
+    if (entityIdentifier)
     {
     }
 
@@ -301,25 +301,25 @@ LABEL_25:
       goto LABEL_28;
     }
 
-    v30 = [(SKGPersonComponents *)self photosPersonIdentifier];
-    if (v30)
+    photosPersonIdentifier = [(SKGPersonComponents *)self photosPersonIdentifier];
+    if (photosPersonIdentifier)
     {
-      v15 = [v4 photosPersonIdentifier];
-      if (!v15)
+      emailAddresses2 = [componentsCopy photosPersonIdentifier];
+      if (!emailAddresses2)
       {
         LOBYTE(v31) = 1;
         goto LABEL_40;
       }
     }
 
-    v32 = [(SKGPersonComponents *)self photosPersonIdentifier];
-    if (v32 || ([v4 photosPersonIdentifier], (v35 = objc_claimAutoreleasedReturnValue()) == 0))
+    photosPersonIdentifier2 = [(SKGPersonComponents *)self photosPersonIdentifier];
+    if (photosPersonIdentifier2 || ([componentsCopy photosPersonIdentifier], (v35 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v33 = [(SKGPersonComponents *)self photosPersonIdentifier];
-      v34 = [v4 photosPersonIdentifier];
-      v31 = [v33 isEqualToString:v34] ^ 1;
+      photosPersonIdentifier3 = [(SKGPersonComponents *)self photosPersonIdentifier];
+      photosPersonIdentifier4 = [componentsCopy photosPersonIdentifier];
+      v31 = [photosPersonIdentifier3 isEqualToString:photosPersonIdentifier4] ^ 1;
 
-      if (v32)
+      if (photosPersonIdentifier2)
       {
         goto LABEL_39;
       }
@@ -333,7 +333,7 @@ LABEL_25:
     }
 
 LABEL_39:
-    if (!v30)
+    if (!photosPersonIdentifier)
     {
 LABEL_41:
 

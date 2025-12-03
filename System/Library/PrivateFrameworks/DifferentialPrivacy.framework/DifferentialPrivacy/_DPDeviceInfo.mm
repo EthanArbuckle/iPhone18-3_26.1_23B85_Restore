@@ -2,7 +2,7 @@
 + (BOOL)isDataCollectionEnabled;
 + (BOOL)isDisabledByTaskingForCrashCopier;
 + (BOOL)isDisabledByTaskingForDedisco;
-+ (BOOL)isDisabledByTaskingForTransport:(unint64_t)a3;
++ (BOOL)isDisabledByTaskingForTransport:(unint64_t)transport;
 + (BOOL)isInternalBuild;
 + (BOOL)isRunningUnitTests;
 + (id)osVersion;
@@ -70,16 +70,16 @@
   return isDataCollectionEnabled_dataCollectionEnabled;
 }
 
-+ (BOOL)isDisabledByTaskingForTransport:(unint64_t)a3
++ (BOOL)isDisabledByTaskingForTransport:(unint64_t)transport
 {
-  if (a3 == 4)
+  if (transport == 4)
   {
-    return [a1 isDisabledByTaskingForDedisco];
+    return [self isDisabledByTaskingForDedisco];
   }
 
-  if (a3 == 1)
+  if (transport == 1)
   {
-    return [a1 isDisabledByTaskingForCrashCopier];
+    return [self isDisabledByTaskingForCrashCopier];
   }
 
   return 0;
@@ -94,20 +94,20 @@
 
   v3 = objc_autoreleasePoolPush();
   v4 = OSAGetDATaskingValue();
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
   objc_autoreleasePoolPop(v3);
-  return v5;
+  return bOOLValue;
 }
 
 + (BOOL)isDisabledByTaskingForDedisco
 {
   v2 = objc_autoreleasePoolPush();
   v3 = OSAGetDATaskingValue();
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
   objc_autoreleasePoolPop(v2);
-  return v4;
+  return bOOLValue;
 }
 
 + (BOOL)isRunningUnitTests

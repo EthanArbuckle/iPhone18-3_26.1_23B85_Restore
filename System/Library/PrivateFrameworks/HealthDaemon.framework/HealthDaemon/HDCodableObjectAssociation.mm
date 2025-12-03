@@ -1,27 +1,27 @@
 @interface HDCodableObjectAssociation
-- (BOOL)isEqual:(id)a3;
-- (HDCodableObjectAssociation)initWithAssociationUUID:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (HDCodableObjectAssociation)initWithAssociationUUID:(id)d;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HDCodableObjectAssociation
 
-- (HDCodableObjectAssociation)initWithAssociationUUID:(id)a3
+- (HDCodableObjectAssociation)initWithAssociationUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8.receiver = self;
   v8.super_class = HDCodableObjectAssociation;
   v5 = [(HDCodableObjectAssociation *)&v8 init];
   if (v5)
   {
-    v6 = [v4 hk_dataForUUIDBytes];
-    [(HDCodableObjectAssociation *)v5 setAssociationUuid:v6];
+    hk_dataForUUIDBytes = [dCopy hk_dataForUUIDBytes];
+    [(HDCodableObjectAssociation *)v5 setAssociationUuid:hk_dataForUUIDBytes];
   }
 
   return v5;
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = HDCodableObjectAssociation;
   v4 = [(HDCodableObjectAssociation *)&v8 description];
-  v5 = [(HDCodableObjectAssociation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HDCodableObjectAssociation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   associationUuid = self->_associationUuid;
   if (associationUuid)
   {
-    [v3 setObject:associationUuid forKey:@"associationUuid"];
+    [dictionary setObject:associationUuid forKey:@"associationUuid"];
   }
 
   objectUuids = self->_objectUuids;
@@ -58,84 +58,84 @@
   syncIdentity = self->_syncIdentity;
   if (syncIdentity)
   {
-    v8 = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"syncIdentity"];
+    dictionaryRepresentation = [(HDCodableSyncIdentity *)syncIdentity dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"syncIdentity"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_associationUuid)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_objectUuids)
   {
     PBDataWriterWriteDataField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_syncIdentity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_associationUuid)
   {
-    [v4 setAssociationUuid:?];
-    v4 = v5;
+    [toCopy setAssociationUuid:?];
+    toCopy = v5;
   }
 
   if (self->_objectUuids)
   {
     [v5 setObjectUuids:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_syncIdentity)
   {
     [v5 setSyncIdentity:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_associationUuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_associationUuid copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSData *)self->_objectUuids copyWithZone:a3];
+  v8 = [(NSData *)self->_objectUuids copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:a3];
+  v10 = [(HDCodableSyncIdentity *)self->_syncIdentity copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((associationUuid = self->_associationUuid, !(associationUuid | v4[1])) || -[NSData isEqual:](associationUuid, "isEqual:")) && ((objectUuids = self->_objectUuids, !(objectUuids | v4[2])) || -[NSData isEqual:](objectUuids, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((associationUuid = self->_associationUuid, !(associationUuid | equalCopy[1])) || -[NSData isEqual:](associationUuid, "isEqual:")) && ((objectUuids = self->_objectUuids, !(objectUuids | equalCopy[2])) || -[NSData isEqual:](objectUuids, "isEqual:")))
   {
     syncIdentity = self->_syncIdentity;
-    if (syncIdentity | v4[3])
+    if (syncIdentity | equalCopy[3])
     {
       v8 = [(HDCodableSyncIdentity *)syncIdentity isEqual:?];
     }
@@ -161,24 +161,24 @@
   return v4 ^ [(HDCodableSyncIdentity *)self->_syncIdentity hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4[1])
+  fromCopy = from;
+  v7 = fromCopy;
+  if (fromCopy[1])
   {
     [(HDCodableObjectAssociation *)self setAssociationUuid:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(HDCodableObjectAssociation *)self setObjectUuids:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
   syncIdentity = self->_syncIdentity;
-  v6 = v4[3];
+  v6 = fromCopy[3];
   if (syncIdentity)
   {
     if (!v6)
@@ -199,10 +199,10 @@
     syncIdentity = [(HDCodableObjectAssociation *)self setSyncIdentity:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_11:
 
-  MEMORY[0x2821F96F8](syncIdentity, v4);
+  MEMORY[0x2821F96F8](syncIdentity, fromCopy);
 }
 
 @end

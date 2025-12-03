@@ -30,8 +30,8 @@
   {
     [(MRBaseComponentHandler *)v2 setComponentName:@"Battery"];
     [(MRBaseComponentHandler *)v3 setComponentFollowupClientID:@"com.apple.mobilerepair.BatteryRepair"];
-    v4 = [MEMORY[0x277CBEBD0] groupStandardUserDefaults];
-    -[MRBaseComponentHandler setIsSUCaseForComponent:](v3, "setIsSUCaseForComponent:", [v4 BOOLForKey:@"SUcaseForBattery"]);
+    groupStandardUserDefaults = [MEMORY[0x277CBEBD0] groupStandardUserDefaults];
+    -[MRBaseComponentHandler setIsSUCaseForComponent:](v3, "setIsSUCaseForComponent:", [groupStandardUserDefaults BOOLForKey:@"SUcaseForBattery"]);
 
     [(MRBaseComponentHandler *)v3 setSupportsRepair:1];
     [(MRBaseComponentHandler *)v3 setPopUpNotificationMessage:@"UNABLE_TO_VERIFY_BATTERY_NOTIF_TEXT"];
@@ -43,8 +43,8 @@
 
     [(MRBaseComponentHandler *)v3 setFinishRepairTitle:@"FINISH_BATTERY_REPAIR_TITLE"];
     [(MRBaseComponentHandler *)v3 setFinishRepairMessage:@"FINISH_BATTERY_REPAIR_DESC"];
-    v6 = [(MRBaseComponentHandler *)v3 componentFollowupClientID];
-    v7 = [v6 stringByAppendingString:@"FINISH_REPAIR"];
+    componentFollowupClientID = [(MRBaseComponentHandler *)v3 componentFollowupClientID];
+    v7 = [componentFollowupClientID stringByAppendingString:@"FINISH_REPAIR"];
     [(MRBaseComponentHandler *)v3 setFinishRepairKey:v7];
 
     [(MRBaseComponentHandler *)v3 setDisplayNotification:0];
@@ -66,18 +66,18 @@
     [(MRBaseComponentHandler *)v3 setComponentFirstUIDisplayedTimeKey:@"firstUIDisplayedTimeForBattery"];
     [(MRBaseComponentHandler *)v3 setLastKnownComponentIdentifierKey:@"lastKnownIDForBattery"];
     v11 = MEMORY[0x277D00FD0];
-    v12 = [(MRBaseComponentHandler *)v3 componentName];
-    v13 = [v11 copySealingManifestDataInstanceForComponent:v12];
+    componentName = [(MRBaseComponentHandler *)v3 componentName];
+    v13 = [v11 copySealingManifestDataInstanceForComponent:componentName];
     [(MRBaseComponentHandler *)v3 setLastKnownComponentIdentifierValue:v13];
 
     v14 = objc_opt_new();
     [(MRBaseComponentHandler *)v3 setComponentAuthHandler:v14];
 
-    v15 = [MEMORY[0x277CBEBD0] groupStandardUserDefaults];
-    v16 = [v15 BOOLForKey:@"overrideDisableUIForBattery"];
+    groupStandardUserDefaults2 = [MEMORY[0x277CBEBD0] groupStandardUserDefaults];
+    v16 = [groupStandardUserDefaults2 BOOLForKey:@"overrideDisableUIForBattery"];
 
-    v17 = [(MRBaseComponentHandler *)v3 componentFollowupClientID];
-    v18 = [@"/var/mobile/Library/Preferences/" stringByAppendingString:v17];
+    componentFollowupClientID2 = [(MRBaseComponentHandler *)v3 componentFollowupClientID];
+    v18 = [@"/var/mobile/Library/Preferences/" stringByAppendingString:componentFollowupClientID2];
     v19 = [v18 stringByAppendingString:@".plist"];
     [(MRBaseComponentHandler *)v3 setStateFilePath:v19];
 
@@ -109,7 +109,7 @@
   if ([MEMORY[0x277D00FC0] supportRepair:1024])
   {
     v3 = objc_opt_new();
-    [a1 handleComponentSUCase:@"hasDisplayedFollowupForBattery" lastAUthCheckBuildVersion:@"LastBatteryAuthCompleteBuildVersion" followUpItemID:@"com.apple.mobilerepair.BatteryRepair" queryString:@"Battery" suCasekey:@"SUcaseForBattery" startBuildVersion:@"17A800" componentAuth:v3];
+    [self handleComponentSUCase:@"hasDisplayedFollowupForBattery" lastAUthCheckBuildVersion:@"LastBatteryAuthCompleteBuildVersion" followUpItemID:@"com.apple.mobilerepair.BatteryRepair" queryString:@"Battery" suCasekey:@"SUcaseForBattery" startBuildVersion:@"17A800" componentAuth:v3];
   }
 }
 
@@ -119,7 +119,7 @@
   block[1] = 3221225472;
   block[2] = __44__MRBatteryComponentHandler_sharedSingleton__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedSingleton_once_1 != -1)
   {
     dispatch_once(&sharedSingleton_once_1, block);

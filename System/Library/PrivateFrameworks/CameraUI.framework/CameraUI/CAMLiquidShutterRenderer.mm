@@ -2,29 +2,29 @@
 - ($01BB1521EC52D44A8E7628F5261DCEC8)shadowColor;
 - ($7A910D035BC0C83CFFF052A09CDD67E6)centerShape;
 - ($7A910D035BC0C83CFFF052A09CDD67E6)dragHandleShape;
-- ($E2C29196C7A5C696474C6955C5A9CE06)_fragmentForShape:(id *)a3 scale:(double)a4;
-- (CAMLiquidShutterRenderer)initWithDevice:(id)a3 commandQueue:(id)a4 pixelFormat:(unint64_t)a5;
+- ($E2C29196C7A5C696474C6955C5A9CE06)_fragmentForShape:(id *)shape scale:(double)scale;
+- (CAMLiquidShutterRenderer)initWithDevice:(id)device commandQueue:(id)queue pixelFormat:(unint64_t)format;
 - (CAMetalLayer)metalLayer;
-- (float)_orthographicMatrixWithLeft:(float)a1 right:(float)a2 bottom:top:near:far:;
+- (float)_orthographicMatrixWithLeft:(float)left right:(float)right bottom:top:near:far:;
 - (void)_applicationWillEnterForeground;
 - (void)dealloc;
 - (void)markNeedsRender;
 - (void)renderIfNecessary;
-- (void)setBlurRadius:(double)a3;
-- (void)setCenterShape:(id *)a3;
-- (void)setDragHandleShape:(id *)a3;
-- (void)setShadowColor:(id)a3;
-- (void)setShadowSize:(double)a3;
-- (void)setShowDragHandle:(BOOL)a3;
+- (void)setBlurRadius:(double)radius;
+- (void)setCenterShape:(id *)shape;
+- (void)setDragHandleShape:(id *)shape;
+- (void)setShadowColor:(id)color;
+- (void)setShadowSize:(double)size;
+- (void)setShowDragHandle:(BOOL)handle;
 @end
 
 @implementation CAMLiquidShutterRenderer
 
-- (CAMLiquidShutterRenderer)initWithDevice:(id)a3 commandQueue:(id)a4 pixelFormat:(unint64_t)a5
+- (CAMLiquidShutterRenderer)initWithDevice:(id)device commandQueue:(id)queue pixelFormat:(unint64_t)format
 {
   v80[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
+  deviceCopy = device;
+  queueCopy = queue;
   v79.receiver = self;
   v79.super_class = CAMLiquidShutterRenderer;
   v11 = [(CAMLiquidShutterRenderer *)&v79 init];
@@ -36,7 +36,7 @@
     [v13 setUrl:v14];
 
     v78 = 0;
-    v15 = [v9 newBinaryArchiveWithDescriptor:v13 error:&v78];
+    v15 = [deviceCopy newBinaryArchiveWithDescriptor:v13 error:&v78];
     v71 = v78;
     v73 = v15;
     if (!v15)
@@ -51,7 +51,7 @@
 
     v76 = 0;
     v72 = v12;
-    v17 = [v9 newDefaultLibraryWithBundle:v12 error:&v76];
+    v17 = [deviceCopy newDefaultLibraryWithBundle:v12 error:&v76];
     v18 = v76;
     v19 = v18;
     if (!v17)
@@ -67,38 +67,38 @@
     }
 
     v69 = v18;
-    v70 = v10;
+    v70 = queueCopy;
     v20 = objc_alloc_init(MEMORY[0x1E6974148]);
-    v21 = [v20 colorAttachments];
-    v22 = [v21 objectAtIndexedSubscript:0];
-    [v22 setPixelFormat:a5];
+    colorAttachments = [v20 colorAttachments];
+    v22 = [colorAttachments objectAtIndexedSubscript:0];
+    [v22 setPixelFormat:format];
 
-    v23 = [v20 colorAttachments];
-    v24 = [v23 objectAtIndexedSubscript:0];
+    colorAttachments2 = [v20 colorAttachments];
+    v24 = [colorAttachments2 objectAtIndexedSubscript:0];
     [v24 setBlendingEnabled:1];
 
-    v25 = [v20 colorAttachments];
-    v26 = [v25 objectAtIndexedSubscript:0];
+    colorAttachments3 = [v20 colorAttachments];
+    v26 = [colorAttachments3 objectAtIndexedSubscript:0];
     [v26 setRgbBlendOperation:0];
 
-    v27 = [v20 colorAttachments];
-    v28 = [v27 objectAtIndexedSubscript:0];
+    colorAttachments4 = [v20 colorAttachments];
+    v28 = [colorAttachments4 objectAtIndexedSubscript:0];
     [v28 setAlphaBlendOperation:0];
 
-    v29 = [v20 colorAttachments];
-    v30 = [v29 objectAtIndexedSubscript:0];
+    colorAttachments5 = [v20 colorAttachments];
+    v30 = [colorAttachments5 objectAtIndexedSubscript:0];
     [v30 setSourceRGBBlendFactor:4];
 
-    v31 = [v20 colorAttachments];
-    v32 = [v31 objectAtIndexedSubscript:0];
+    colorAttachments6 = [v20 colorAttachments];
+    v32 = [colorAttachments6 objectAtIndexedSubscript:0];
     [v32 setSourceAlphaBlendFactor:4];
 
-    v33 = [v20 colorAttachments];
-    v34 = [v33 objectAtIndexedSubscript:0];
+    colorAttachments7 = [v20 colorAttachments];
+    v34 = [colorAttachments7 objectAtIndexedSubscript:0];
     [v34 setDestinationRGBBlendFactor:5];
 
-    v35 = [v20 colorAttachments];
-    v36 = [v35 objectAtIndexedSubscript:0];
+    colorAttachments8 = [v20 colorAttachments];
+    v36 = [colorAttachments8 objectAtIndexedSubscript:0];
     [v36 setDestinationAlphaBlendFactor:5];
 
     v37 = [v17 newFunctionWithName:@"ShutterLiquidVertex"];
@@ -112,7 +112,7 @@
     [v20 setBinaryArchives:v39];
 
     v75 = 0;
-    v40 = [v9 newRenderPipelineStateWithDescriptor:v20 options:4 reflection:0 error:&v75];
+    v40 = [deviceCopy newRenderPipelineStateWithDescriptor:v20 options:4 reflection:0 error:&v75];
     v41 = v75;
     v42 = v41;
     if (v40)
@@ -130,7 +130,7 @@
 
       [v20 setBinaryArchives:MEMORY[0x1E695E0F0]];
       v74 = v42;
-      v40 = [v9 newRenderPipelineStateWithDescriptor:v20 error:&v74];
+      v40 = [deviceCopy newRenderPipelineStateWithDescriptor:v20 error:&v74];
       v43 = v74;
 
       if (!v40)
@@ -146,8 +146,8 @@
       }
     }
 
-    objc_storeStrong(&v11->__device, a3);
-    objc_storeStrong(&v11->__commandQueue, a4);
+    objc_storeStrong(&v11->__device, device);
+    objc_storeStrong(&v11->__commandQueue, queue);
     renderPipelineState = v11->__renderPipelineState;
     v11->__renderPipelineState = v40;
     v59 = v40;
@@ -158,17 +158,17 @@
     v11->_shadowColor.g = 0.0;
     v11->_shadowColor.b = 0.0;
     v11->_shadowColor.a = 0.2;
-    v60 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v60 addObserver:v11 selector:sel__applicationWillEnterForeground name:*MEMORY[0x1E69DDBC0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v11 selector:sel__applicationWillEnterForeground name:*MEMORY[0x1E69DDBC0] object:0];
 
-    v61 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v61 addObserver:v11 selector:sel__applicationDidEnterBackground name:*MEMORY[0x1E69DDAC8] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v11 selector:sel__applicationDidEnterBackground name:*MEMORY[0x1E69DDAC8] object:0];
 
     v44 = v11;
 LABEL_17:
     v19 = v69;
 
-    v10 = v70;
+    queueCopy = v70;
 LABEL_18:
 
     goto LABEL_19;
@@ -182,23 +182,23 @@ LABEL_19:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CAMLiquidShutterRenderer;
   [(CAMLiquidShutterRenderer *)&v4 dealloc];
 }
 
-- (void)setCenterShape:(id *)a3
+- (void)setCenterShape:(id *)shape
 {
-  if ((vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqq_f64(self->_centerShape.position, a3->var0), vceqq_f64(*&self->_centerShape.size, *&a3->var1))))) & 1) != 0 || self->_centerShape.power != a3->var4 || (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_centerShape.color.r, *&a3->var3.var0), vceqq_f64(*&self->_centerShape.color.b, *&a3->var3.var2)))) & 1) == 0)
+  if ((vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqq_f64(self->_centerShape.position, shape->var0), vceqq_f64(*&self->_centerShape.size, *&shape->var1))))) & 1) != 0 || self->_centerShape.power != shape->var4 || (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_centerShape.color.r, *&shape->var3.var0), vceqq_f64(*&self->_centerShape.color.b, *&shape->var3.var2)))) & 1) == 0)
   {
-    self->_centerShape.position = a3->var0;
-    v3 = *&a3->var1;
-    v4 = *&a3->var3.var0;
-    v5 = *&a3->var3.var2;
-    self->_centerShape.power = a3->var4;
+    self->_centerShape.position = shape->var0;
+    v3 = *&shape->var1;
+    v4 = *&shape->var3.var0;
+    v5 = *&shape->var3.var2;
+    self->_centerShape.power = shape->var4;
     *&self->_centerShape.color.r = v4;
     *&self->_centerShape.color.b = v5;
     *&self->_centerShape.size = v3;
@@ -206,15 +206,15 @@ LABEL_19:
   }
 }
 
-- (void)setDragHandleShape:(id *)a3
+- (void)setDragHandleShape:(id *)shape
 {
-  if ((vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqq_f64(self->_dragHandleShape.position, a3->var0), vceqq_f64(*&self->_dragHandleShape.size, *&a3->var1))))) & 1) != 0 || self->_dragHandleShape.power != a3->var4 || (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_dragHandleShape.color.r, *&a3->var3.var0), vceqq_f64(*&self->_dragHandleShape.color.b, *&a3->var3.var2)))) & 1) == 0)
+  if ((vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqq_f64(self->_dragHandleShape.position, shape->var0), vceqq_f64(*&self->_dragHandleShape.size, *&shape->var1))))) & 1) != 0 || self->_dragHandleShape.power != shape->var4 || (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_dragHandleShape.color.r, *&shape->var3.var0), vceqq_f64(*&self->_dragHandleShape.color.b, *&shape->var3.var2)))) & 1) == 0)
   {
-    self->_dragHandleShape.position = a3->var0;
-    v3 = *&a3->var1;
-    v4 = *&a3->var3.var0;
-    v5 = *&a3->var3.var2;
-    self->_dragHandleShape.power = a3->var4;
+    self->_dragHandleShape.position = shape->var0;
+    v3 = *&shape->var1;
+    v4 = *&shape->var3.var0;
+    v5 = *&shape->var3.var2;
+    self->_dragHandleShape.power = shape->var4;
     *&self->_dragHandleShape.color.r = v4;
     *&self->_dragHandleShape.color.b = v5;
     *&self->_dragHandleShape.size = v3;
@@ -222,43 +222,43 @@ LABEL_19:
   }
 }
 
-- (void)setShowDragHandle:(BOOL)a3
+- (void)setShowDragHandle:(BOOL)handle
 {
-  if ([(CAMLiquidShutterRenderer *)self showDragHandle]!= a3)
+  if ([(CAMLiquidShutterRenderer *)self showDragHandle]!= handle)
   {
-    self->_showDragHandle = a3;
+    self->_showDragHandle = handle;
 
     [(CAMLiquidShutterRenderer *)self markNeedsRender];
   }
 }
 
-- (void)setBlurRadius:(double)a3
+- (void)setBlurRadius:(double)radius
 {
-  if (self->_blurRadius != a3)
+  if (self->_blurRadius != radius)
   {
-    self->_blurRadius = a3;
+    self->_blurRadius = radius;
     [(CAMLiquidShutterRenderer *)self markNeedsRender];
   }
 }
 
-- (void)setShadowSize:(double)a3
+- (void)setShadowSize:(double)size
 {
-  if (self->_shadowSize != a3)
+  if (self->_shadowSize != size)
   {
-    self->_shadowSize = a3;
+    self->_shadowSize = size;
     [(CAMLiquidShutterRenderer *)self markNeedsRender];
   }
 }
 
-- (void)setShadowColor:(id)a3
+- (void)setShadowColor:(id)color
 {
-  v3.f64[0] = a3.var0;
-  v3.f64[1] = a3.var1;
-  v4.f64[0] = a3.var2;
-  v4.f64[1] = a3.var3;
+  v3.f64[0] = color.var0;
+  v3.f64[1] = color.var1;
+  v4.f64[0] = color.var2;
+  v4.f64[1] = color.var3;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_shadowColor.r, v3), vceqq_f64(*&self->_shadowColor.b, v4)))) & 1) == 0)
   {
-    self->_shadowColor = a3;
+    self->_shadowColor = color;
     [(CAMLiquidShutterRenderer *)self markNeedsRender];
   }
 }
@@ -280,23 +280,23 @@ LABEL_19:
 - (void)renderIfNecessary
 {
   v74 = *MEMORY[0x1E69E9840];
-  v3 = [(CAMLiquidShutterRenderer *)self _neededRenderID];
-  v4 = [(CAMLiquidShutterRenderer *)self _lastRenderedID];
-  v5 = [(CAMLiquidShutterRenderer *)self metalLayer];
-  if (v5 && v3 > v4)
+  _neededRenderID = [(CAMLiquidShutterRenderer *)self _neededRenderID];
+  _lastRenderedID = [(CAMLiquidShutterRenderer *)self _lastRenderedID];
+  metalLayer = [(CAMLiquidShutterRenderer *)self metalLayer];
+  if (metalLayer && _neededRenderID > _lastRenderedID)
   {
-    v52 = v5;
-    v6 = [(CAMLiquidShutterRenderer *)self _backgrounded];
+    v52 = metalLayer;
+    _backgrounded = [(CAMLiquidShutterRenderer *)self _backgrounded];
 
-    if (!v6)
+    if (!_backgrounded)
     {
-      v7 = [(CAMLiquidShutterRenderer *)self metalLayer];
-      [v7 drawableSize];
+      metalLayer2 = [(CAMLiquidShutterRenderer *)self metalLayer];
+      [metalLayer2 drawableSize];
       v9 = v8;
       v11 = v10;
 
-      v12 = [(CAMLiquidShutterRenderer *)self metalLayer];
-      [v12 contentsScale];
+      metalLayer3 = [(CAMLiquidShutterRenderer *)self metalLayer];
+      [metalLayer3 contentsScale];
       v14 = v13;
 
       v68 = 0u;
@@ -334,7 +334,7 @@ LABEL_19:
       v57[3] = v64;
       v57[4] = v65;
       v57[5] = v66;
-      v58 = [(CAMLiquidShutterRenderer *)self showDragHandle];
+      showDragHandle = [(CAMLiquidShutterRenderer *)self showDragHandle];
       v59 = 1056964608;
       [(CAMLiquidShutterRenderer *)self shadowSize];
       *&v24 = v24;
@@ -351,33 +351,33 @@ LABEL_19:
       v30.f64[0] = v53;
       v30.f64[1] = v51;
       v62 = vcvt_hight_f32_f64(vcvt_f32_f64(v30), v28);
-      v31 = [(CAMLiquidShutterRenderer *)self metalLayer];
-      v32 = [v31 nextDrawable];
+      metalLayer4 = [(CAMLiquidShutterRenderer *)self metalLayer];
+      nextDrawable = [metalLayer4 nextDrawable];
 
       v33 = objc_alloc_init(MEMORY[0x1E6974128]);
-      v34 = [v33 colorAttachments];
-      v35 = [v34 objectAtIndexedSubscript:0];
+      colorAttachments = [v33 colorAttachments];
+      v35 = [colorAttachments objectAtIndexedSubscript:0];
       [v35 setClearColor:{0.0, 0.0, 0.0, 0.0}];
 
-      v36 = [v33 colorAttachments];
-      v37 = [v36 objectAtIndexedSubscript:0];
+      colorAttachments2 = [v33 colorAttachments];
+      v37 = [colorAttachments2 objectAtIndexedSubscript:0];
       [v37 setLoadAction:2];
 
-      v38 = [v33 colorAttachments];
-      v39 = [v38 objectAtIndexedSubscript:0];
+      colorAttachments3 = [v33 colorAttachments];
+      v39 = [colorAttachments3 objectAtIndexedSubscript:0];
       [v39 setStoreAction:1];
 
-      v40 = [v32 texture];
-      v41 = [v33 colorAttachments];
-      v42 = [v41 objectAtIndexedSubscript:0];
-      [v42 setTexture:v40];
+      texture = [nextDrawable texture];
+      colorAttachments4 = [v33 colorAttachments];
+      v42 = [colorAttachments4 objectAtIndexedSubscript:0];
+      [v42 setTexture:texture];
 
-      v43 = [(CAMLiquidShutterRenderer *)self _commandQueue];
-      v44 = [v43 commandBuffer];
+      _commandQueue = [(CAMLiquidShutterRenderer *)self _commandQueue];
+      commandBuffer = [_commandQueue commandBuffer];
 
-      v45 = [v44 renderCommandEncoderWithDescriptor:v33];
-      v46 = [(CAMLiquidShutterRenderer *)self _renderPipelineState];
-      [v45 setRenderPipelineState:v46];
+      v45 = [commandBuffer renderCommandEncoderWithDescriptor:v33];
+      _renderPipelineState = [(CAMLiquidShutterRenderer *)self _renderPipelineState];
+      [v45 setRenderPipelineState:_renderPipelineState];
 
       [v45 setVertexBytes:v63 length:128 atIndex:0];
       [v45 setVertexBytes:&v70 length:32 atIndex:1];
@@ -388,10 +388,10 @@ LABEL_19:
       v55[1] = 3221225472;
       v55[2] = __45__CAMLiquidShutterRenderer_renderIfNecessary__block_invoke;
       v55[3] = &unk_1E76FDFC8;
-      v56 = v32;
-      v47 = v32;
-      [v44 addScheduledHandler:v55];
-      v48 = [(CAMLiquidShutterRenderer *)self _neededRenderID];
+      v56 = nextDrawable;
+      v47 = nextDrawable;
+      [commandBuffer addScheduledHandler:v55];
+      _neededRenderID2 = [(CAMLiquidShutterRenderer *)self _neededRenderID];
       Current = CFAbsoluteTimeGetCurrent();
       v54[0] = MEMORY[0x1E69E9820];
       v54[1] = 3221225472;
@@ -399,9 +399,9 @@ LABEL_19:
       v54[3] = &unk_1E76FDFF0;
       *&v54[5] = Current;
       v54[4] = self;
-      v54[6] = v48;
-      [v44 addCompletedHandler:v54];
-      [v44 commit];
+      v54[6] = _neededRenderID2;
+      [commandBuffer addCompletedHandler:v54];
+      [commandBuffer commit];
     }
   }
 
@@ -505,22 +505,22 @@ unint64_t __45__CAMLiquidShutterRenderer_renderIfNecessary__block_invoke_37(uint
   return result;
 }
 
-- ($E2C29196C7A5C696474C6955C5A9CE06)_fragmentForShape:(id *)a3 scale:(double)a4
+- ($E2C29196C7A5C696474C6955C5A9CE06)_fragmentForShape:(id *)shape scale:(double)scale
 {
   v5 = v4;
-  v6 = vcvt_hight_f32_f64(vcvt_f32_f64(*&a3->var3.var0), *&a3->var3.var2);
-  v7 = vcvt_f32_f64(vmulq_n_f64(a3->var0, a4));
+  v6 = vcvt_hight_f32_f64(vcvt_f32_f64(*&shape->var3.var0), *&shape->var3.var2);
+  v7 = vcvt_f32_f64(vmulq_n_f64(shape->var0, scale));
   *v4 = 0u;
   *v4 = v7;
-  v8 = a3->var1 * a4;
+  v8 = shape->var1 * scale;
   *(v4 + 8) = v8;
   *(v4 + 16) = v6;
   *(v4 + 32) = 0u;
-  var4 = a3->var4;
+  var4 = shape->var4;
   *(v4 + 32) = var4;
   [(CAMLiquidShutterRenderer *)self blurRadius];
-  v11 = *&a4;
-  v13 = v12 * a4;
+  v11 = *&scale;
+  v13 = v12 * scale;
   *(v5 + 36) = v13;
   result.var2 = v10;
   result.var1 = v11;
@@ -528,11 +528,11 @@ unint64_t __45__CAMLiquidShutterRenderer_renderIfNecessary__block_invoke_37(uint
   return result;
 }
 
-- (float)_orthographicMatrixWithLeft:(float)a1 right:(float)a2 bottom:top:near:far:
+- (float)_orthographicMatrixWithLeft:(float)left right:(float)right bottom:top:near:far:
 {
   __asm { FMOV            V3.4S, #1.0 }
 
-  return 2.0 / (a2 - a1);
+  return 2.0 / (right - left);
 }
 
 - ($7A910D035BC0C83CFFF052A09CDD67E6)centerShape

@@ -5,31 +5,31 @@
 - (id)_remoteObjectProxy;
 - (void)_clearConnection;
 - (void)_connectToDaemonIfNeeded;
-- (void)addObserver:(id)a3;
-- (void)addSufficientVisitsNotification:(id)a3 message:(id)a4;
+- (void)addObserver:(id)observer;
+- (void)addSufficientVisitsNotification:(id)notification message:(id)message;
 - (void)clearAirportArrivalBulletin;
-- (void)clearBulletinWithRecordID:(id)a3;
+- (void)clearBulletinWithRecordID:(id)d;
 - (void)clearCurrentAnnouncement;
 - (void)clearLowFuelAlertBulletin;
 - (void)clearMapsSuggestionsBulletin;
 - (void)clearParkedCarBulletin;
 - (void)clearPredictedRouteTrafficIncidentBulletin;
-- (void)clearTrafficIncidentBulletinWithAlertID:(id)a3;
+- (void)clearTrafficIncidentBulletinWithAlertID:(id)d;
 - (void)clearVenueBulletin;
 - (void)closeConnection;
-- (void)fetchCurrentAnnouncement:(id)a3;
-- (void)fetchDevicePushToken:(id)a3;
-- (void)handleMapsApplicationRemoval:(id)a3;
-- (void)pushDaemonProxyReceivedNotificationData:(id)a3 forType:(id)a4 recordIdentifier:(id)a5;
-- (void)removeObserver:(id)a3;
+- (void)fetchCurrentAnnouncement:(id)announcement;
+- (void)fetchDevicePushToken:(id)token;
+- (void)handleMapsApplicationRemoval:(id)removal;
+- (void)pushDaemonProxyReceivedNotificationData:(id)data forType:(id)type recordIdentifier:(id)identifier;
+- (void)removeObserver:(id)observer;
 - (void)resetAnnouncements;
-- (void)showAirportArrivalBulletinWithTitle:(id)a3 message:(id)a4 mapRegion:(id)a5 regionName:(id)a6;
-- (void)showLowFuelAlertBulletinForLowFuelDetails:(id)a3;
-- (void)showMapsSuggestionsBulletinWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5;
-- (void)showParkedCarBulletinForEvent:(id)a3;
-- (void)showParkedCarReplacementBulletinForEvent:(id)a3 replacingEvent:(id)a4;
-- (void)showPredictedRouteTrafficIncidentBulletinForCommuteDetails:(id)a3;
-- (void)showVenueBulletinWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5;
+- (void)showAirportArrivalBulletinWithTitle:(id)title message:(id)message mapRegion:(id)region regionName:(id)name;
+- (void)showLowFuelAlertBulletinForLowFuelDetails:(id)details;
+- (void)showMapsSuggestionsBulletinWithTitle:(id)title message:(id)message actionURL:(id)l;
+- (void)showParkedCarBulletinForEvent:(id)event;
+- (void)showParkedCarReplacementBulletinForEvent:(id)event replacingEvent:(id)replacingEvent;
+- (void)showPredictedRouteTrafficIncidentBulletinForCommuteDetails:(id)details;
+- (void)showVenueBulletinWithTitle:(id)title message:(id)message actionURL:(id)l;
 - (void)simulateProblemResolution;
 - (void)simulateRAPStatusChangeNotification;
 - (void)simulateUGCPhotoAttributionClearedNotification;
@@ -45,9 +45,9 @@
   v2 = [(MSPMapsPushDaemonRemoteProxy *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     v5 = v2;
   }
@@ -76,66 +76,66 @@ uint64_t __46__MSPMapsPushDaemonRemoteProxy_sharedInstance__block_invoke()
 
 - (id)_remoteObjectProxy
 {
-  v2 = [(MSPMapsPushDaemonRemoteProxy *)self _connection];
-  v3 = [v2 remoteObjectProxy];
+  _connection = [(MSPMapsPushDaemonRemoteProxy *)self _connection];
+  remoteObjectProxy = [_connection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
 - (id)_connection
 {
   [(MSPMapsPushDaemonRemoteProxy *)self _connectToDaemonIfNeeded];
-  v3 = self;
-  objc_sync_enter(v3);
-  v4 = v3->_connection;
-  objc_sync_exit(v3);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v4 = selfCopy->_connection;
+  objc_sync_exit(selfCopy);
 
   return v4;
 }
 
 - (void)_connectToDaemonIfNeeded
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_connection)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_connection)
   {
-    objc_initWeak(&location, v2);
+    objc_initWeak(&location, selfCopy);
     v3 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.Maps.mapspushd" options:0];
-    connection = v2->_connection;
-    v2->_connection = v3;
+    connection = selfCopy->_connection;
+    selfCopy->_connection = v3;
 
     v5 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_286969548];
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
     [v5 setClasses:v8 forSelector:sel_fetchCurrentAnnouncement_ argumentIndex:0 ofReply:1];
-    [(NSXPCConnection *)v2->_connection setRemoteObjectInterface:v5];
+    [(NSXPCConnection *)selfCopy->_connection setRemoteObjectInterface:v5];
     v9 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_286968FA0];
-    [(NSXPCConnection *)v2->_connection setExportedInterface:v9];
+    [(NSXPCConnection *)selfCopy->_connection setExportedInterface:v9];
 
-    v10 = [[MSPMapsPushDaemonRemoteXPCProxy alloc] initWithObserver:v2];
-    [(NSXPCConnection *)v2->_connection setExportedObject:v10];
+    v10 = [[MSPMapsPushDaemonRemoteXPCProxy alloc] initWithObserver:selfCopy];
+    [(NSXPCConnection *)selfCopy->_connection setExportedObject:v10];
 
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __56__MSPMapsPushDaemonRemoteProxy__connectToDaemonIfNeeded__block_invoke;
     v13[3] = &unk_279866390;
     objc_copyWeak(&v14, &location);
-    [(NSXPCConnection *)v2->_connection setInterruptionHandler:v13];
+    [(NSXPCConnection *)selfCopy->_connection setInterruptionHandler:v13];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __56__MSPMapsPushDaemonRemoteProxy__connectToDaemonIfNeeded__block_invoke_2;
     v11[3] = &unk_279866390;
     objc_copyWeak(&v12, &location);
-    [(NSXPCConnection *)v2->_connection setInvalidationHandler:v11];
-    [(NSXPCConnection *)v2->_connection resume];
+    [(NSXPCConnection *)selfCopy->_connection setInvalidationHandler:v11];
+    [(NSXPCConnection *)selfCopy->_connection resume];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&v14);
 
     objc_destroyWeak(&location);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)closeConnection
@@ -149,22 +149,22 @@ uint64_t __46__MSPMapsPushDaemonRemoteProxy_sharedInstance__block_invoke()
   objc_sync_exit(obj);
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_observers addObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_observers addObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSHashTable *)v4->_observers removeObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSHashTable *)selfCopy->_observers removeObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
 void __56__MSPMapsPushDaemonRemoteProxy__connectToDaemonIfNeeded__block_invoke(uint64_t a1)
@@ -194,8 +194,8 @@ void __56__MSPMapsPushDaemonRemoteProxy__connectToDaemonIfNeeded__block_invoke_2
 {
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v3 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v3 simulateProblemResolution];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy simulateProblemResolution];
   }
 }
 
@@ -203,8 +203,8 @@ void __56__MSPMapsPushDaemonRemoteProxy__connectToDaemonIfNeeded__block_invoke_2
 {
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v3 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v3 simulateUGCPhotoSubmissionResolution];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy simulateUGCPhotoSubmissionResolution];
   }
 }
 
@@ -212,8 +212,8 @@ void __56__MSPMapsPushDaemonRemoteProxy__connectToDaemonIfNeeded__block_invoke_2
 {
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v3 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v3 simulateUGCPhotoAttributionClearedNotification];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy simulateUGCPhotoAttributionClearedNotification];
   }
 }
 
@@ -221,43 +221,43 @@ void __56__MSPMapsPushDaemonRemoteProxy__connectToDaemonIfNeeded__block_invoke_2
 {
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v3 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v3 simulateRAPStatusChangeNotification];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy simulateRAPStatusChangeNotification];
   }
 }
 
-- (void)fetchDevicePushToken:(id)a3
+- (void)fetchDevicePushToken:(id)token
 {
-  v5 = a3;
+  tokenCopy = token;
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v4 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v4 fetchDevicePushToken:v5];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy fetchDevicePushToken:tokenCopy];
   }
 
   else
   {
-    v5[2](v5, 0);
+    tokenCopy[2](tokenCopy, 0);
   }
 }
 
-- (void)fetchCurrentAnnouncement:(id)a3
+- (void)fetchCurrentAnnouncement:(id)announcement
 {
-  v4 = a3;
+  announcementCopy = announcement;
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v5 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __57__MSPMapsPushDaemonRemoteProxy_fetchCurrentAnnouncement___block_invoke;
     v6[3] = &unk_279867500;
-    v7 = v4;
-    [v5 fetchCurrentAnnouncement:v6];
+    v7 = announcementCopy;
+    [_remoteObjectProxy fetchCurrentAnnouncement:v6];
   }
 
   else
   {
-    (*(v4 + 2))(v4, 0);
+    (*(announcementCopy + 2))(announcementCopy, 0);
   }
 }
 
@@ -290,8 +290,8 @@ uint64_t __57__MSPMapsPushDaemonRemoteProxy_fetchCurrentAnnouncement___block_inv
 {
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v3 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v3 clearCurrentAnnouncement];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy clearCurrentAnnouncement];
   }
 }
 
@@ -299,30 +299,30 @@ uint64_t __57__MSPMapsPushDaemonRemoteProxy_fetchCurrentAnnouncement___block_inv
 {
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v3 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v3 resetAnnouncements];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy resetAnnouncements];
   }
 }
 
-- (void)clearBulletinWithRecordID:(id)a3
+- (void)clearBulletinWithRecordID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v4 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v4 clearBulletinWithRecordID:v5];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy clearBulletinWithRecordID:dCopy];
   }
 }
 
-- (void)showMapsSuggestionsBulletinWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5
+- (void)showMapsSuggestionsBulletinWithTitle:(id)title message:(id)message actionURL:(id)l
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  titleCopy = title;
+  messageCopy = message;
+  lCopy = l;
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v10 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v10 showMapsSuggestionsBulletinWithTitle:v11 message:v8 actionURL:v9];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy showMapsSuggestionsBulletinWithTitle:titleCopy message:messageCopy actionURL:lCopy];
   }
 }
 
@@ -330,32 +330,32 @@ uint64_t __57__MSPMapsPushDaemonRemoteProxy_fetchCurrentAnnouncement___block_inv
 {
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v3 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v3 clearMapsSuggestionsBulletin];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy clearMapsSuggestionsBulletin];
   }
 }
 
-- (void)addSufficientVisitsNotification:(id)a3 message:(id)a4
+- (void)addSufficientVisitsNotification:(id)notification message:(id)message
 {
-  v8 = a3;
-  v6 = a4;
+  notificationCopy = notification;
+  messageCopy = message;
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v7 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v7 addSufficientVisitsNotification:v8 message:v6];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy addSufficientVisitsNotification:notificationCopy message:messageCopy];
   }
 }
 
-- (void)showAirportArrivalBulletinWithTitle:(id)a3 message:(id)a4 mapRegion:(id)a5 regionName:(id)a6
+- (void)showAirportArrivalBulletinWithTitle:(id)title message:(id)message mapRegion:(id)region regionName:(id)name
 {
-  v14 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  titleCopy = title;
+  messageCopy = message;
+  regionCopy = region;
+  nameCopy = name;
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v13 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v13 showAirportArrivalBulletinWithTitle:v14 message:v10 mapRegion:v11 regionName:v12];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy showAirportArrivalBulletinWithTitle:titleCopy message:messageCopy mapRegion:regionCopy regionName:nameCopy];
   }
 }
 
@@ -363,20 +363,20 @@ uint64_t __57__MSPMapsPushDaemonRemoteProxy_fetchCurrentAnnouncement___block_inv
 {
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v3 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v3 clearMapsSuggestionsBulletin];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy clearMapsSuggestionsBulletin];
   }
 }
 
-- (void)showVenueBulletinWithTitle:(id)a3 message:(id)a4 actionURL:(id)a5
+- (void)showVenueBulletinWithTitle:(id)title message:(id)message actionURL:(id)l
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  titleCopy = title;
+  messageCopy = message;
+  lCopy = l;
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v10 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v10 showMapsSuggestionsBulletinWithTitle:v11 message:v8 actionURL:v9];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy showMapsSuggestionsBulletinWithTitle:titleCopy message:messageCopy actionURL:lCopy];
   }
 }
 
@@ -384,28 +384,28 @@ uint64_t __57__MSPMapsPushDaemonRemoteProxy_fetchCurrentAnnouncement___block_inv
 {
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v3 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v3 clearMapsSuggestionsBulletin];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy clearMapsSuggestionsBulletin];
   }
 }
 
-- (void)clearTrafficIncidentBulletinWithAlertID:(id)a3
+- (void)clearTrafficIncidentBulletinWithAlertID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v4 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v4 clearTrafficIncidentBulletinWithAlertID:v5];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy clearTrafficIncidentBulletinWithAlertID:dCopy];
   }
 }
 
-- (void)showPredictedRouteTrafficIncidentBulletinForCommuteDetails:(id)a3
+- (void)showPredictedRouteTrafficIncidentBulletinForCommuteDetails:(id)details
 {
-  v5 = a3;
+  detailsCopy = details;
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v4 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v4 showPredictedRouteTrafficIncidentBulletinForCommuteDetails:v5];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy showPredictedRouteTrafficIncidentBulletinForCommuteDetails:detailsCopy];
   }
 }
 
@@ -413,18 +413,18 @@ uint64_t __57__MSPMapsPushDaemonRemoteProxy_fetchCurrentAnnouncement___block_inv
 {
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v3 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v3 clearPredictedRouteTrafficIncidentBulletin];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy clearPredictedRouteTrafficIncidentBulletin];
   }
 }
 
-- (void)showLowFuelAlertBulletinForLowFuelDetails:(id)a3
+- (void)showLowFuelAlertBulletinForLowFuelDetails:(id)details
 {
-  v5 = a3;
+  detailsCopy = details;
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v4 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v4 showLowFuelAlertBulletinForLowFuelDetails:v5];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy showLowFuelAlertBulletinForLowFuelDetails:detailsCopy];
   }
 }
 
@@ -432,29 +432,29 @@ uint64_t __57__MSPMapsPushDaemonRemoteProxy_fetchCurrentAnnouncement___block_inv
 {
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v3 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v3 clearLowFuelAlertBulletin];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy clearLowFuelAlertBulletin];
   }
 }
 
-- (void)showParkedCarBulletinForEvent:(id)a3
+- (void)showParkedCarBulletinForEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v4 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v4 showParkedCarBulletinForEvent:v5];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy showParkedCarBulletinForEvent:eventCopy];
   }
 }
 
-- (void)showParkedCarReplacementBulletinForEvent:(id)a3 replacingEvent:(id)a4
+- (void)showParkedCarReplacementBulletinForEvent:(id)event replacingEvent:(id)replacingEvent
 {
-  v8 = a3;
-  v6 = a4;
+  eventCopy = event;
+  replacingEventCopy = replacingEvent;
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v7 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v7 showParkedCarReplacementBulletinForEvent:v8 replacingEvent:v6];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy showParkedCarReplacementBulletinForEvent:eventCopy replacingEvent:replacingEventCopy];
   }
 }
 
@@ -462,47 +462,47 @@ uint64_t __57__MSPMapsPushDaemonRemoteProxy_fetchCurrentAnnouncement___block_inv
 {
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v3 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v3 clearParkedCarBulletin];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy clearParkedCarBulletin];
   }
 }
 
-- (void)handleMapsApplicationRemoval:(id)a3
+- (void)handleMapsApplicationRemoval:(id)removal
 {
-  v5 = a3;
+  removalCopy = removal;
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v4 = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
-    [v4 handleMapsApplicationRemoval:v5];
+    _remoteObjectProxy = [(MSPMapsPushDaemonRemoteProxy *)self _remoteObjectProxy];
+    [_remoteObjectProxy handleMapsApplicationRemoval:removalCopy];
   }
 
   else
   {
-    v5[2](v5, 0);
+    removalCopy[2](removalCopy, 0);
   }
 }
 
-- (void)pushDaemonProxyReceivedNotificationData:(id)a3 forType:(id)a4 recordIdentifier:(id)a5
+- (void)pushDaemonProxyReceivedNotificationData:(id)data forType:(id)type recordIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dataCopy = data;
+  typeCopy = type;
+  identifierCopy = identifier;
   if (+[MSPMapsInstallState isMapsAppInstalled])
   {
-    v11 = self;
-    objc_sync_enter(v11);
-    v12 = [(NSHashTable *)v11->_observers allObjects];
-    objc_sync_exit(v11);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    allObjects = [(NSHashTable *)selfCopy->_observers allObjects];
+    objc_sync_exit(selfCopy);
 
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __97__MSPMapsPushDaemonRemoteProxy_pushDaemonProxyReceivedNotificationData_forType_recordIdentifier___block_invoke;
     v14[3] = &unk_279865F98;
-    v15 = v12;
-    v16 = v8;
-    v17 = v9;
-    v18 = v10;
-    v13 = v12;
+    v15 = allObjects;
+    v16 = dataCopy;
+    v17 = typeCopy;
+    v18 = identifierCopy;
+    v13 = allObjects;
     dispatch_async(MEMORY[0x277D85CD0], v14);
   }
 }

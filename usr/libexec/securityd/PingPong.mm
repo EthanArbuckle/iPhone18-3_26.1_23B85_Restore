@@ -1,6 +1,6 @@
 @interface PingPong
 - (_TtC9securityd8PingPong)init;
-- (_TtC9securityd8PingPong)initWithPing:(id)a3 pong:(id)a4;
+- (_TtC9securityd8PingPong)initWithPing:(id)ping pong:(id)pong;
 - (void)printPingPong;
 @end
 
@@ -19,7 +19,7 @@
   return [(PingPong *)&v5 init];
 }
 
-- (_TtC9securityd8PingPong)initWithPing:(id)a3 pong:(id)a4
+- (_TtC9securityd8PingPong)initWithPing:(id)ping pong:(id)pong
 {
   v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = v6;
@@ -37,7 +37,7 @@
 
 - (void)printPingPong
 {
-  v2 = self;
+  selfCopy = self;
   sub_10002D04C();
 }
 

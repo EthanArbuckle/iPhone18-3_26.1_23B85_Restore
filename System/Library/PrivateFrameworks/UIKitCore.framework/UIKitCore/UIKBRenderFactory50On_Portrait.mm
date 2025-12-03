@@ -1,9 +1,9 @@
 @interface UIKBRenderFactory50On_Portrait
 - (UIEdgeInsets)symbolFrameInsets;
 - (double)keyCornerRadius;
-- (id)_traitsForKey:(id)a3 onKeyplane:(id)a4;
-- (unint64_t)roundCornersForKey:(id)a3 onKeyplane:(id)a4;
-- (void)_customizeTraits:(id)a3 forPopupForKey:(id)a4 withRenderingContext:(id)a5 keycapsFontName:(id)a6 fallbackFontName:(id)a7;
+- (id)_traitsForKey:(id)key onKeyplane:(id)keyplane;
+- (unint64_t)roundCornersForKey:(id)key onKeyplane:(id)keyplane;
+- (void)_customizeTraits:(id)traits forPopupForKey:(id)key withRenderingContext:(id)context keycapsFontName:(id)name fallbackFontName:(id)fontName;
 - (void)setupLayoutSegments;
 @end
 
@@ -11,8 +11,8 @@
 
 - (double)keyCornerRadius
 {
-  v2 = [(UIKBRenderFactory *)self renderConfig];
-  if ([v2 colorAdaptiveBackground])
+  renderConfig = [(UIKBRenderFactory *)self renderConfig];
+  if ([renderConfig colorAdaptiveBackground])
   {
     v3 = 10.0;
   }
@@ -38,9 +38,9 @@
   return result;
 }
 
-- (unint64_t)roundCornersForKey:(id)a3 onKeyplane:(id)a4
+- (unint64_t)roundCornersForKey:(id)key onKeyplane:(id)keyplane
 {
-  v4 = ~[(UIKBRenderFactory50On_Portrait *)self edgesWithInsetsForKey:a3 onKeyplane:a4];
+  v4 = ~[(UIKBRenderFactory50On_Portrait *)self edgesWithInsetsForKey:key onKeyplane:keyplane];
   v5 = (v4 & 3) == 0;
   v6 = 2;
   if ((v4 & 3) == 0)
@@ -69,108 +69,108 @@
   }
 }
 
-- (void)_customizeTraits:(id)a3 forPopupForKey:(id)a4 withRenderingContext:(id)a5 keycapsFontName:(id)a6 fallbackFontName:(id)a7
+- (void)_customizeTraits:(id)traits forPopupForKey:(id)key withRenderingContext:(id)context keycapsFontName:(id)name fallbackFontName:(id)fontName
 {
-  v27 = a3;
-  v12 = a4;
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  [v27 removeAllRenderEffects];
-  v16 = [UIKBTextStyle styleWithFontName:v14 withFallbackFontName:v13 withFontSize:22.0];
+  traitsCopy = traits;
+  keyCopy = key;
+  fontNameCopy = fontName;
+  nameCopy = name;
+  contextCopy = context;
+  [traitsCopy removeAllRenderEffects];
+  v16 = [UIKBTextStyle styleWithFontName:nameCopy withFallbackFontName:fontNameCopy withFontSize:22.0];
 
-  [v27 setSymbolStyle:v16];
-  v17 = [v15 renderConfig];
+  [traitsCopy setSymbolStyle:v16];
+  renderConfig = [contextCopy renderConfig];
 
-  v18 = [v17 lightKeyboard];
-  if (v18)
+  lightKeyboard = [renderConfig lightKeyboard];
+  if (lightKeyboard)
   {
-    v19 = [(UIKBRenderFactory *)self blackKeycapColor];
+    blackKeycapColor = [(UIKBRenderFactory *)self blackKeycapColor];
   }
 
   else
   {
-    v19 = @"UIKBColorWhite";
+    blackKeycapColor = @"UIKBColorWhite";
   }
 
-  v20 = [v27 symbolStyle];
-  [v20 setTextColor:v19];
+  symbolStyle = [traitsCopy symbolStyle];
+  [symbolStyle setTextColor:blackKeycapColor];
 
-  if (v18)
+  if (lightKeyboard)
   {
   }
 
-  v21 = [(UIKBRenderFactory *)self defaultKeyBackgroundColorName];
-  v22 = [UIKBGradient gradientWithFlatColor:v21];
-  [v27 setBackgroundGradient:v22];
+  defaultKeyBackgroundColorName = [(UIKBRenderFactory *)self defaultKeyBackgroundColorName];
+  v22 = [UIKBGradient gradientWithFlatColor:defaultKeyBackgroundColorName];
+  [traitsCopy setBackgroundGradient:v22];
 
-  if ([v12 displayType] == 13 || objc_msgSend(v12, "displayType") == 4 || objc_msgSend(v12, "displayType") == 5)
+  if ([keyCopy displayType] == 13 || objc_msgSend(keyCopy, "displayType") == 4 || objc_msgSend(keyCopy, "displayType") == 5)
   {
-    v23 = [v27 symbolStyle];
-    [v23 setUsesSymbolImage:1];
+    symbolStyle2 = [traitsCopy symbolStyle];
+    [symbolStyle2 setUsesSymbolImage:1];
 
     [(UIKBRenderFactory10Key *)self symbolImageControlKeyFontSize];
     v25 = v24;
-    v26 = [v27 symbolStyle];
-    [v26 setFontSizeForSymbolImage:v25];
+    symbolStyle3 = [traitsCopy symbolStyle];
+    [symbolStyle3 setFontSizeForSymbolImage:v25];
   }
 
-  [(UIKBRenderFactory10Key *)self modifyTraitsForDetachedInputSwitcher:v27 withKey:v12];
+  [(UIKBRenderFactory10Key *)self modifyTraitsForDetachedInputSwitcher:traitsCopy withKey:keyCopy];
 }
 
-- (id)_traitsForKey:(id)a3 onKeyplane:(id)a4
+- (id)_traitsForKey:(id)key onKeyplane:(id)keyplane
 {
-  v6 = a3;
+  keyCopy = key;
   v50.receiver = self;
   v50.super_class = UIKBRenderFactory50On_Portrait;
-  v7 = [(UIKBRenderFactory10Key_Round *)&v50 _traitsForKey:v6 onKeyplane:a4];
-  if ([v6 state] <= 3)
+  v7 = [(UIKBRenderFactory10Key_Round *)&v50 _traitsForKey:keyCopy onKeyplane:keyplane];
+  if ([keyCopy state] <= 3)
   {
-    v8 = [v7 geometry];
-    [v8 frame];
+    geometry = [v7 geometry];
+    [geometry frame];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [v7 geometry];
-    [v17 setDisplayFrame:{v10, v12, v14, v16}];
+    geometry2 = [v7 geometry];
+    [geometry2 setDisplayFrame:{v10, v12, v14, v16}];
   }
 
-  v18 = [v6 displayType];
-  v19 = [v6 name];
-  v20 = [v19 isEqualToString:@"Facemark"];
+  displayType = [keyCopy displayType];
+  name = [keyCopy name];
+  v20 = [name isEqualToString:@"Facemark"];
 
   if (v20)
   {
-    v21 = [(UIKBRenderFactory50On_Portrait *)self lightKeycapsFontName];
-    v22 = [v7 symbolStyle];
-    [v22 setFontName:v21];
+    lightKeycapsFontName = [(UIKBRenderFactory50On_Portrait *)self lightKeycapsFontName];
+    symbolStyle = [v7 symbolStyle];
+    [symbolStyle setFontName:lightKeycapsFontName];
 
-    v23 = [(UIKBRenderFactory10Key *)self lightKeycapsFontFallbackName];
-    v24 = [v7 symbolStyle];
-    [v24 setKeycapsFallback:v23];
+    lightKeycapsFontFallbackName = [(UIKBRenderFactory10Key *)self lightKeycapsFontFallbackName];
+    symbolStyle2 = [v7 symbolStyle];
+    [symbolStyle2 setKeycapsFallback:lightKeycapsFontFallbackName];
 
-    v25 = [v7 symbolStyle];
-    v26 = v25;
+    symbolStyle3 = [v7 symbolStyle];
+    symbolStyle5 = symbolStyle3;
     v27 = 20.0;
 LABEL_24:
-    [v25 setFontSize:v27];
+    [symbolStyle3 setFontSize:v27];
     goto LABEL_25;
   }
 
-  v28 = [v6 displayString];
-  if ([v28 length] == 1)
+  displayString = [keyCopy displayString];
+  if ([displayString length] == 1)
   {
-    v29 = [v6 displayString];
-    v30 = [@"年月日時分" rangeOfString:v29];
+    displayString2 = [keyCopy displayString];
+    v30 = [@"年月日時分" rangeOfString:displayString2];
 
     if (v30 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v31 = [v7 symbolStyle];
-      [v31 setFontName:@"HiraKakuProN-W3"];
+      symbolStyle4 = [v7 symbolStyle];
+      [symbolStyle4 setFontName:@"HiraKakuProN-W3"];
 
-      v26 = [v7 symbolStyle];
-      [v26 setKeycapsFallback:@"HiraKakuProN-W3"];
+      symbolStyle5 = [v7 symbolStyle];
+      [symbolStyle5 setKeycapsFallback:@"HiraKakuProN-W3"];
 LABEL_25:
 
       goto LABEL_26;
@@ -181,26 +181,26 @@ LABEL_25:
   {
   }
 
-  if (v18 > 13)
+  if (displayType > 13)
   {
-    if (v18 > 22)
+    if (displayType > 22)
     {
-      if (v18 == 23)
+      if (displayType == 23)
       {
-        v40 = [(UIKBRenderFactory *)self renderConfig];
-        v41 = [v40 lightKeyboard];
+        renderConfig = [(UIKBRenderFactory *)self renderConfig];
+        lightKeyboard = [renderConfig lightKeyboard];
 
-        if (v41)
+        if (lightKeyboard)
         {
-          v42 = [(UIKBRenderFactory *)self blackKeycapColor];
-          v43 = [UIKBTextStyle styleWithTextColor:v42];
+          blackKeycapColor = [(UIKBRenderFactory *)self blackKeycapColor];
+          v43 = [UIKBTextStyle styleWithTextColor:blackKeycapColor];
           [v7 setSymbolStyle:v43];
         }
 
         goto LABEL_34;
       }
 
-      if (v18 == 25)
+      if (displayType == 25)
       {
         [(UIKBRenderFactory50On_Portrait *)self spaceKeyFontSize];
         goto LABEL_23;
@@ -209,19 +209,19 @@ LABEL_25:
       goto LABEL_32;
     }
 
-    if (v18 != 14)
+    if (displayType != 14)
     {
-      if (v18 == 21)
+      if (displayType == 21)
       {
         [(UIKBRenderFactory50On_Portrait *)self returnKeyFontSize];
         v34 = v33;
-        v35 = [v7 symbolStyle];
-        [v35 setFontSize:v34];
+        symbolStyle6 = [v7 symbolStyle];
+        [symbolStyle6 setFontSize:v34];
 
-        v36 = [v7 symbolStyle];
-        v37 = [v36 usesSymbolImage];
+        symbolStyle7 = [v7 symbolStyle];
+        usesSymbolImage = [symbolStyle7 usesSymbolImage];
 
-        if (!v37)
+        if (!usesSymbolImage)
         {
           goto LABEL_26;
         }
@@ -238,42 +238,42 @@ LABEL_19:
     goto LABEL_23;
   }
 
-  if ((v18 - 10) < 2)
+  if ((displayType - 10) < 2)
   {
     goto LABEL_19;
   }
 
-  if (v18 == 2)
+  if (displayType == 2)
   {
     [(UIKBRenderFactory50On_Portrait *)self keyplaneSwitchKeyFontSize];
     v45 = v44;
-    v46 = [v7 symbolStyle];
-    [v46 setFontSize:v45];
+    symbolStyle8 = [v7 symbolStyle];
+    [symbolStyle8 setFontSize:v45];
 
 LABEL_34:
-    v47 = [v7 symbolStyle];
-    [v47 setUsesSymbolImage:1];
+    symbolStyle9 = [v7 symbolStyle];
+    [symbolStyle9 setUsesSymbolImage:1];
 
     [(UIKBRenderFactory10Key *)self symbolImageControlKeyFontSize];
     v49 = v48;
-    v26 = [v7 symbolStyle];
-    [v26 setFontSizeForSymbolImage:v49];
+    symbolStyle5 = [v7 symbolStyle];
+    [symbolStyle5 setFontSizeForSymbolImage:v49];
     goto LABEL_25;
   }
 
-  if (v18 == 3)
+  if (displayType == 3)
   {
     [(UIKBRenderFactory50On_Portrait *)self deleteKeyFontSize];
 LABEL_23:
     v38 = v32;
-    v25 = [v7 symbolStyle];
-    v26 = v25;
+    symbolStyle3 = [v7 symbolStyle];
+    symbolStyle5 = symbolStyle3;
     v27 = v38;
     goto LABEL_24;
   }
 
 LABEL_32:
-  if ([v6 interactionType] == 12 || objc_msgSend(v6, "interactionType") == 17)
+  if ([keyCopy interactionType] == 12 || objc_msgSend(keyCopy, "interactionType") == 17)
   {
     goto LABEL_34;
   }

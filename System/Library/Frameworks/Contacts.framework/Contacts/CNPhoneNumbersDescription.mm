@@ -1,13 +1,13 @@
 @interface CNPhoneNumbersDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (id)CNLabeledValueValueFromABMultiValueValue:(void *)a3;
-- (id)CNLabeledValueValueFromABMultiValueValueBytes:(char *)a3 length:(unint64_t)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (id)CNLabeledValueValueFromABMultiValueValue:(void *)value;
+- (id)CNLabeledValueValueFromABMultiValueValueBytes:(char *)bytes length:(unint64_t)length;
 - (id)equivalentLabelSets;
 - (id)standardLabels;
-- (id)stringForIndexingForContact:(id)a3;
-- (void)ABMultiValueValueFromCNLabeledValueValue:(id)a3;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (id)stringForIndexingForContact:(id)contact;
+- (void)ABMultiValueValueFromCNLabeledValueValue:(id)value;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNPhoneNumbersDescription
@@ -34,15 +34,15 @@ void __48__CNPhoneNumbersDescription_equivalentLabelSets__block_invoke()
   equivalentLabelSets_cn_once_object_2 = v2;
 }
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 phoneNumbers];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  phoneNumbers = [contactCopy phoneNumbers];
+  if (!phoneNumbers)
   {
-    v4 = [v7 phoneNumbers];
-    if (!v4)
+    phoneNumbers2 = [otherCopy phoneNumbers];
+    if (!phoneNumbers2)
     {
       v11 = 1;
 LABEL_6:
@@ -51,11 +51,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 phoneNumbers];
-  v10 = [v7 phoneNumbers];
-  v11 = [v9 isEqual:v10];
+  phoneNumbers3 = [contactCopy phoneNumbers];
+  phoneNumbers4 = [otherCopy phoneNumbers];
+  v11 = [phoneNumbers3 isEqual:phoneNumbers4];
 
-  if (!v8)
+  if (!phoneNumbers)
   {
     goto LABEL_6;
   }
@@ -65,11 +65,11 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  coderCopy = coder;
+  contactCopy = contact;
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = objc_opt_class();
@@ -78,10 +78,10 @@ LABEL_7:
   {
   }
 
-  v9 = [v5 decodeObjectOfClasses:v7 forKey:{@"_phoneNumbers", v12, v13}];
+  v9 = [coderCopy decodeObjectOfClasses:v7 forKey:{@"_phoneNumbers", v12, v13}];
   v10 = [v9 copy];
-  v11 = v6[48];
-  v6[48] = v10;
+  v11 = contactCopy[48];
+  contactCopy[48] = v10;
 }
 
 - (id)standardLabels
@@ -105,23 +105,23 @@ uint64_t __43__CNPhoneNumbersDescription_standardLabels__block_invoke()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (id)stringForIndexingForContact:(id)a3
+- (id)stringForIndexingForContact:(id)contact
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 phoneNumbers];
-  v5 = [v4 count];
+  contactCopy = contact;
+  phoneNumbers = [contactCopy phoneNumbers];
+  v5 = [phoneNumbers count];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v18 = v3;
-    v7 = [v3 phoneNumbers];
-    v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v18 = contactCopy;
+    phoneNumbers2 = [contactCopy phoneNumbers];
+    v8 = [phoneNumbers2 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
       v9 = v8;
@@ -132,77 +132,77 @@ uint64_t __43__CNPhoneNumbersDescription_standardLabels__block_invoke()
         {
           if (*v20 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(phoneNumbers2);
           }
 
-          v12 = [*(*(&v19 + 1) + 8 * i) value];
-          v13 = [v12 digits];
-          v14 = [v12 countryCode];
+          value = [*(*(&v19 + 1) + 8 * i) value];
+          digits = [value digits];
+          countryCode = [value countryCode];
           v15 = _PNCopyIndexStringsForAddressBookSearch();
 
           if (v15)
           {
             v16 = [v15 componentsJoinedByString:@" "];
-            [v6 appendString:v16];
+            [string appendString:v16];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v9 = [phoneNumbers2 countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v9);
     }
 
-    v3 = v18;
+    contactCopy = v18;
   }
 
   else
   {
-    v6 = 0;
+    string = 0;
   }
 
-  return v6;
+  return string;
 }
 
-- (id)CNLabeledValueValueFromABMultiValueValueBytes:(char *)a3 length:(unint64_t)a4
+- (id)CNLabeledValueValueFromABMultiValueValueBytes:(char *)bytes length:(unint64_t)length
 {
-  v4 = a3;
-  if (a3)
+  bytesCopy = bytes;
+  if (bytes)
   {
-    v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:a3 length:a4 encoding:4];
+    v5 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithBytes:bytes length:length encoding:4];
     if (v5)
     {
       v6 = v5;
-      v4 = [CNPhoneNumber phoneNumberWithCopiedStringValue:v5];
+      bytesCopy = [CNPhoneNumber phoneNumberWithCopiedStringValue:v5];
     }
 
     else
     {
-      v4 = 0;
+      bytesCopy = 0;
     }
   }
 
-  return v4;
+  return bytesCopy;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A548];
+    *d = *MEMORY[0x1E698A548];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
-- (id)CNLabeledValueValueFromABMultiValueValue:(void *)a3
+- (id)CNLabeledValueValueFromABMultiValueValue:(void *)value
 {
-  if (a3)
+  if (value)
   {
-    v5 = CFGetTypeID(a3);
+    v5 = CFGetTypeID(value);
     if (v5 == CFStringGetTypeID())
     {
-      v6 = [CNPhoneNumber phoneNumberWithCopiedStringValue:a3];
+      v6 = [CNPhoneNumber phoneNumberWithCopiedStringValue:value];
     }
 
     else
@@ -219,21 +219,21 @@ uint64_t __43__CNPhoneNumbersDescription_standardLabels__block_invoke()
   return v6;
 }
 
-- (void)ABMultiValueValueFromCNLabeledValueValue:(id)a3
+- (void)ABMultiValueValueFromCNLabeledValueValue:(id)value
 {
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 stringValue];
+    stringValue = [valueCopy stringValue];
   }
 
   else
   {
-    v4 = 0;
+    stringValue = 0;
   }
 
-  return v4;
+  return stringValue;
 }
 
 @end

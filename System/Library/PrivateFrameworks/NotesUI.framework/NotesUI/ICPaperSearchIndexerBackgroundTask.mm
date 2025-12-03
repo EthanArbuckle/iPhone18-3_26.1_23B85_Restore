@@ -1,9 +1,9 @@
 @interface ICPaperSearchIndexerBackgroundTask
 + (id)makeTaskRequest;
-- (ICPaperSearchIndexerBackgroundTask)initWithNoteContext:(id)a3;
-- (void)didRegister:(BOOL)a3;
+- (ICPaperSearchIndexerBackgroundTask)initWithNoteContext:(id)context;
+- (void)didRegister:(BOOL)register;
 - (void)handleTaskExpiration;
-- (void)runTaskWithCompletion:(id)a3;
+- (void)runTaskWithCompletion:(id)completion;
 @end
 
 @implementation ICPaperSearchIndexerBackgroundTask
@@ -16,25 +16,25 @@
   return v2;
 }
 
-- (ICPaperSearchIndexerBackgroundTask)initWithNoteContext:(id)a3
+- (ICPaperSearchIndexerBackgroundTask)initWithNoteContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = ICPaperSearchIndexerBackgroundTask;
   v6 = [(ICPaperSearchIndexerBackgroundTask *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_noteContext, a3);
+    objc_storeStrong(&v6->_noteContext, context);
   }
 
   return v7;
 }
 
-- (void)didRegister:(BOOL)a3
+- (void)didRegister:(BOOL)register
 {
-  v4 = [(ICPaperSearchIndexerBackgroundTask *)self noteContext];
-  v5 = [v4 workerManagedObjectContext];
+  noteContext = [(ICPaperSearchIndexerBackgroundTask *)self noteContext];
+  workerManagedObjectContext = [noteContext workerManagedObjectContext];
 
   v6 = +[ICPaperSearchIndexer shared];
   v7[0] = MEMORY[0x1E69E9820];
@@ -42,7 +42,7 @@
   v7[2] = __50__ICPaperSearchIndexerBackgroundTask_didRegister___block_invoke;
   v7[3] = &unk_1E846BC40;
   v7[4] = self;
-  [v6 needsToUpdateIndexWithManagedObjectContext:v5 completionHandler:v7];
+  [v6 needsToUpdateIndexWithManagedObjectContext:workerManagedObjectContext completionHandler:v7];
 }
 
 void __50__ICPaperSearchIndexerBackgroundTask_didRegister___block_invoke(uint64_t a1, int a2)
@@ -66,21 +66,21 @@ void __50__ICPaperSearchIndexerBackgroundTask_didRegister___block_invoke(uint64_
   }
 }
 
-- (void)runTaskWithCompletion:(id)a3
+- (void)runTaskWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [MEMORY[0x1E69B7AC0] postBasicEvent:25];
-  v5 = [(ICPaperSearchIndexerBackgroundTask *)self noteContext];
-  v6 = [v5 workerManagedObjectContext];
+  noteContext = [(ICPaperSearchIndexerBackgroundTask *)self noteContext];
+  workerManagedObjectContext = [noteContext workerManagedObjectContext];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __60__ICPaperSearchIndexerBackgroundTask_runTaskWithCompletion___block_invoke;
   v9[3] = &unk_1E8468CF8;
-  v10 = v6;
-  v11 = v4;
-  v7 = v4;
-  v8 = v6;
+  v10 = workerManagedObjectContext;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  v8 = workerManagedObjectContext;
   [v8 performBlock:v9];
 }
 
@@ -145,8 +145,8 @@ uint64_t __60__ICPaperSearchIndexerBackgroundTask_runTaskWithCompletion___block_
   v3 = +[ICPaperSearchIndexer shared];
   [v3 cancelEverythingWithCompletion:&__block_literal_global_49];
 
-  v4 = [MEMORY[0x1E69B76D8] sharedScheduler];
-  [v4 scheduleTask:objc_opt_class() completion:0];
+  mEMORY[0x1E69B76D8] = [MEMORY[0x1E69B76D8] sharedScheduler];
+  [mEMORY[0x1E69B76D8] scheduleTask:objc_opt_class() completion:0];
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface _MapsIPCInterface
 - (BOOL)_isMapsActive;
 - (BOOL)_isMapsRunning;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NSXPCConnection)connection;
-- (_MapsIPCInterface)initWithListenerEndpointIdentifier:(id)a3;
+- (_MapsIPCInterface)initWithListenerEndpointIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)initializeBrokerConnectionIfNeeded;
-- (void)performWithMapsRunning:(id)a3;
+- (void)performWithMapsRunning:(id)running;
 @end
 
 @implementation _MapsIPCInterface
@@ -69,9 +69,9 @@
       _os_log_impl(&dword_0, v10, OS_LOG_TYPE_INFO, "MapsIPCInterface Initializing broker connection.", v13, 2u);
     }
 
-    v11 = [(NSXPCConnection *)self->_brokerConnection remoteObjectProxy];
-    v12 = [(NSXPCListener *)self->_xpcListener endpoint];
-    [v11 listenerEndpointDidChange:v12 forIdentifier:self->_endpointIdentifier];
+    remoteObjectProxy = [(NSXPCConnection *)self->_brokerConnection remoteObjectProxy];
+    endpoint = [(NSXPCListener *)self->_xpcListener endpoint];
+    [remoteObjectProxy listenerEndpointDidChange:endpoint forIdentifier:self->_endpointIdentifier];
 
     objc_destroyWeak(&v15);
     objc_destroyWeak(&v17);
@@ -136,29 +136,29 @@
   return v8;
 }
 
-- (_MapsIPCInterface)initWithListenerEndpointIdentifier:(id)a3
+- (_MapsIPCInterface)initWithListenerEndpointIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = _MapsIPCInterface;
   v5 = [(_MapsIPCInterface *)&v19 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     endpointIdentifier = v5->_endpointIdentifier;
     v5->_endpointIdentifier = v6;
 
     v8 = [NSString stringWithFormat:@"com.apple.Maps.IPCInterface.%@", objc_opt_class()];
-    v9 = [v8 UTF8String];
+    uTF8String = [v8 UTF8String];
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v11 = dispatch_queue_create(v9, v10);
+    v11 = dispatch_queue_create(uTF8String, v10);
     messagingQueue = v5->_messagingQueue;
     v5->_messagingQueue = v11;
 
     v13 = [v8 stringByAppendingString:@".connection"];
-    v14 = [v13 UTF8String];
+    uTF8String2 = [v13 UTF8String];
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v16 = dispatch_queue_create(v14, v15);
+    v16 = dispatch_queue_create(uTF8String2, v15);
     connectionQueue = v5->_connectionQueue;
     v5->_connectionQueue = v16;
 
@@ -178,8 +178,8 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_INFO, "MapsIPCInterface Tear down broker connection.", buf, 2u);
   }
 
-  v4 = [(NSXPCConnection *)self->_brokerConnection remoteObjectProxy];
-  [v4 listenerEndpointDidChange:0 forIdentifier:self->_endpointIdentifier];
+  remoteObjectProxy = [(NSXPCConnection *)self->_brokerConnection remoteObjectProxy];
+  [remoteObjectProxy listenerEndpointDidChange:0 forIdentifier:self->_endpointIdentifier];
 
   [(NSXPCConnection *)self->_brokerConnection invalidate];
   [(NSXPCConnection *)self->_connection invalidate];
@@ -196,9 +196,9 @@
   return (v3 & 1) == 0 && v3 != 0;
 }
 
-- (void)performWithMapsRunning:(id)a3
+- (void)performWithMapsRunning:(id)running
 {
-  v3 = a3;
+  runningCopy = running;
   v4 = +[FBSOpenApplicationService serviceWithDefaultShellEndpoint];
   if (qword_5A7C0 != -1)
   {
@@ -217,49 +217,49 @@
   v8[1] = 3221225472;
   v8[2] = sub_143E4;
   v8[3] = &unk_4AA00;
-  v9 = v3;
-  v7 = v3;
+  v9 = runningCopy;
+  v7 = runningCopy;
   [v4 openApplication:@"com.apple.Maps" withOptions:v5 completion:v8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = _maps_backgroundStateLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v23 = "[_MapsIPCInterface listener:shouldAcceptNewConnection:]";
     v24 = 2112;
-    v25 = v6;
+    v25 = listenerCopy;
     v26 = 2112;
-    v27 = v7;
+    v27 = connectionCopy;
     _os_log_impl(&dword_0, v8, OS_LOG_TYPE_INFO, "MapsIPCInterface %s %@ %@", buf, 0x20u);
   }
 
   xpcListener = self->_xpcListener;
-  if (xpcListener == v6)
+  if (xpcListener == listenerCopy)
   {
-    [(_MapsIPCInterface *)self _configureIncomingConnection:v7];
+    [(_MapsIPCInterface *)self _configureIncomingConnection:connectionCopy];
     objc_initWeak(buf, self);
-    objc_initWeak(&location, v7);
+    objc_initWeak(&location, connectionCopy);
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_148BC;
     v18[3] = &unk_4AA78;
     objc_copyWeak(&v19, buf);
     objc_copyWeak(&v20, &location);
-    [v7 setInvalidationHandler:v18];
-    [v7 setInterruptionHandler:&stru_4AA98];
+    [connectionCopy setInvalidationHandler:v18];
+    [connectionCopy setInterruptionHandler:&stru_4AA98];
     connectionQueue = self->_connectionQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_14B80;
     block[3] = &unk_4AA50;
-    v11 = v7;
+    v11 = connectionCopy;
     v16 = v11;
-    v17 = self;
+    selfCopy = self;
     dispatch_sync(connectionQueue, block);
     [v11 resume];
     v12 = self->_connectionQueue;
@@ -276,7 +276,7 @@
     objc_destroyWeak(buf);
   }
 
-  return xpcListener == v6;
+  return xpcListener == listenerCopy;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface CACPreferences
 + (id)_builtinCommandsCatalogURL;
-+ (id)_suffixedURLsForURL:(id)a3;
++ (id)_suffixedURLsForURL:(id)l;
 + (id)sharedPreferences;
 - (BOOL)additionalLoggingForCommands;
 - (BOOL)allowLetterKeysAsTapCommands;
@@ -13,10 +13,10 @@
 - (BOOL)gridOverlayMaxDensityEnabled;
 - (BOOL)gridOverlayPressOnFirstLevelEnabled;
 - (BOOL)gridOverlayShowsNumbersInTopLeft;
-- (BOOL)hidePreferencesForCommandSetIdentifier:(id)a3;
-- (BOOL)isCommandIdentifier:(id)a3 availableForLocaleIdentifier:(id)a4;
-- (BOOL)isConfirmationRequiredForCommandIdentifier:(id)a3;
-- (BOOL)isEnabledForCommandIdentifier:(id)a3;
+- (BOOL)hidePreferencesForCommandSetIdentifier:(id)identifier;
+- (BOOL)isCommandIdentifier:(id)identifier availableForLocaleIdentifier:(id)localeIdentifier;
+- (BOOL)isConfirmationRequiredForCommandIdentifier:(id)identifier;
+- (BOOL)isEnabledForCommandIdentifier:(id)identifier;
 - (BOOL)overlayFadingEnabled;
 - (BOOL)phoneticVocabularyShowDebugUI;
 - (BOOL)phoneticVocabularyShowUserFacingIPA;
@@ -35,20 +35,20 @@
 - (double)overlayFadeDelay;
 - (float)overlayFadeOpacity;
 - (id)_allPropertyIdentifiers;
-- (id)_commandIdentifiersForCommandSetIdentifier:(id)a3 localeIdentifier:(id)a4 enabledOnly:(BOOL)a5;
-- (id)_mutablePropertiesForIdentifier:(id)a3 create:(BOOL)a4;
-- (id)_propertiesForIdentifier:(id)a3;
+- (id)_commandIdentifiersForCommandSetIdentifier:(id)identifier localeIdentifier:(id)localeIdentifier enabledOnly:(BOOL)only;
+- (id)_mutablePropertiesForIdentifier:(id)identifier create:(BOOL)create;
+- (id)_propertiesForIdentifier:(id)identifier;
 - (id)allCustomCommandProperties;
 - (id)attentionAwareAction;
-- (id)builtInCommandsStringsTableForLocaleIdentifier:(id)a3;
+- (id)builtInCommandsStringsTableForLocaleIdentifier:(id)identifier;
 - (id)builtInCommandsTable;
 - (id)commandCounts;
-- (id)displayNameForCommandSetIdentifier:(id)a3;
+- (id)displayNameForCommandSetIdentifier:(id)identifier;
 - (id)divertedCommandsLogPath;
-- (id)enabledCommandIdentifiersForCommandSetIdentifier:(id)a3;
+- (id)enabledCommandIdentifiersForCommandSetIdentifier:(id)identifier;
 - (id)externalContextOverrideFilePath;
-- (id)propertiesForCommandIdentifier:(id)a3;
-- (id)propertiesForCommandIdentifier:(id)a3 localeIdentifier:(id)a4;
+- (id)propertiesForCommandIdentifier:(id)identifier;
+- (id)propertiesForCommandIdentifier:(id)identifier localeIdentifier:(id)localeIdentifier;
 - (id)rawCustomCommandsPreferencesDictionary;
 - (id)recentCommandEntries;
 - (id)setOfApplicationIdentifiersUsedByCustomCommands;
@@ -65,54 +65,54 @@
 - (int64_t)messageTracesSinceLastReport;
 - (int64_t)userHintsFeatures;
 - (void)_flushBuiltInCommandsStringsTable;
-- (void)_propertyTransactionPostNotification:(id)a3 identifier:(id)a4;
+- (void)_propertyTransactionPostNotification:(id)notification identifier:(id)identifier;
 - (void)_propertyTransactionSynchronize;
-- (void)_setProperties:(id)a3 forIdentifier:(id)a4 client:(BOOL)a5;
+- (void)_setProperties:(id)properties forIdentifier:(id)identifier client:(BOOL)client;
 - (void)_writeDefaultCommandSettingsIfNecessary;
-- (void)addOrUpdateCommandPropertiesFromImportedTable:(id)a3;
+- (void)addOrUpdateCommandPropertiesFromImportedTable:(id)table;
 - (void)beginPropertyTransaction;
 - (void)dealloc;
 - (void)deleteAllCustomCommandEntries;
 - (void)endPropertyTransaction;
 - (void)removeUserCommandHistory;
-- (void)setAdditionalLoggingForCommands:(BOOL)a3;
-- (void)setAllowLetterKeysAsTapCommands:(BOOL)a3;
-- (void)setAlwaysShowOverlayType:(id)a3;
-- (void)setAttentionAwareAction:(id)a3;
-- (void)setCommandAndControlEnabled:(BOOL)a3;
-- (void)setCommandCounts:(id)a3;
-- (void)setCorrectionCount:(int64_t)a3;
-- (void)setDidShowOnboarding:(BOOL)a3;
-- (void)setDonationTipKitSeen:(BOOL)a3;
-- (void)setGridOverlayCustomColumnsCount:(int64_t)a3;
-- (void)setGridOverlayCustomColumnsEnabled:(BOOL)a3;
-- (void)setGridOverlayCustomRowsCount:(int64_t)a3;
-- (void)setGridOverlayCustomRowsEnabled:(BOOL)a3;
-- (void)setGridOverlayMaxDensityEnabled:(BOOL)a3;
-- (void)setGridOverlayMaxLevel:(int64_t)a3;
-- (void)setGridOverlayPressOnFirstLevelEnabled:(BOOL)a3;
-- (void)setGridOverlayShowsNumbersInTopLeft:(BOOL)a3;
-- (void)setLastCommandDate:(double)a3;
-- (void)setLocaleIdentifier:(id)a3;
-- (void)setMessageTracesSinceLastReport:(int64_t)a3;
-- (void)setOverlayFadeDelay:(double)a3;
-- (void)setOverlayFadeOpacity:(float)a3;
-- (void)setOverlayFadingEnabled:(BOOL)a3;
-- (void)setPhoneticVocabularyShowDebugUI:(BOOL)a3;
-- (void)setPhoneticVocabularyShowUserFacingIPA:(BOOL)a3;
-- (void)setPhoneticVocabularyShowUserFacingIPAToggle:(BOOL)a3;
-- (void)setPhoneticVocabularySkipPickingPronunciation:(BOOL)a3;
-- (void)setPlaySoundUponRecognition:(BOOL)a3;
-- (void)setProperties:(id)a3 forCommandIdentifier:(id)a4 client:(BOOL)a5;
-- (void)setRecentCommandEntries:(id)a3;
-- (void)setShowTextResponseUponRecognition:(BOOL)a3;
-- (void)setSleepOnAttentionLost:(BOOL)a3;
-- (void)setTargetApplicationCounts:(id)a3;
-- (void)setTargetApplicationProperties:(id)a3;
-- (void)setTextDisambiguationStrategy:(id)a3;
-- (void)setUserHintsFeatures:(int64_t)a3;
-- (void)setUserHintsHistory:(id)a3;
-- (void)setWakeOnAttentionGained:(BOOL)a3;
+- (void)setAdditionalLoggingForCommands:(BOOL)commands;
+- (void)setAllowLetterKeysAsTapCommands:(BOOL)commands;
+- (void)setAlwaysShowOverlayType:(id)type;
+- (void)setAttentionAwareAction:(id)action;
+- (void)setCommandAndControlEnabled:(BOOL)enabled;
+- (void)setCommandCounts:(id)counts;
+- (void)setCorrectionCount:(int64_t)count;
+- (void)setDidShowOnboarding:(BOOL)onboarding;
+- (void)setDonationTipKitSeen:(BOOL)seen;
+- (void)setGridOverlayCustomColumnsCount:(int64_t)count;
+- (void)setGridOverlayCustomColumnsEnabled:(BOOL)enabled;
+- (void)setGridOverlayCustomRowsCount:(int64_t)count;
+- (void)setGridOverlayCustomRowsEnabled:(BOOL)enabled;
+- (void)setGridOverlayMaxDensityEnabled:(BOOL)enabled;
+- (void)setGridOverlayMaxLevel:(int64_t)level;
+- (void)setGridOverlayPressOnFirstLevelEnabled:(BOOL)enabled;
+- (void)setGridOverlayShowsNumbersInTopLeft:(BOOL)left;
+- (void)setLastCommandDate:(double)date;
+- (void)setLocaleIdentifier:(id)identifier;
+- (void)setMessageTracesSinceLastReport:(int64_t)report;
+- (void)setOverlayFadeDelay:(double)delay;
+- (void)setOverlayFadeOpacity:(float)opacity;
+- (void)setOverlayFadingEnabled:(BOOL)enabled;
+- (void)setPhoneticVocabularyShowDebugUI:(BOOL)i;
+- (void)setPhoneticVocabularyShowUserFacingIPA:(BOOL)a;
+- (void)setPhoneticVocabularyShowUserFacingIPAToggle:(BOOL)toggle;
+- (void)setPhoneticVocabularySkipPickingPronunciation:(BOOL)pronunciation;
+- (void)setPlaySoundUponRecognition:(BOOL)recognition;
+- (void)setProperties:(id)properties forCommandIdentifier:(id)identifier client:(BOOL)client;
+- (void)setRecentCommandEntries:(id)entries;
+- (void)setShowTextResponseUponRecognition:(BOOL)recognition;
+- (void)setSleepOnAttentionLost:(BOOL)lost;
+- (void)setTargetApplicationCounts:(id)counts;
+- (void)setTargetApplicationProperties:(id)properties;
+- (void)setTextDisambiguationStrategy:(id)strategy;
+- (void)setUserHintsFeatures:(int64_t)features;
+- (void)setUserHintsHistory:(id)history;
+- (void)setWakeOnAttentionGained:(BOOL)gained;
 @end
 
 @implementation CACPreferences
@@ -162,10 +162,10 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
   [(CACPreferences *)&v4 dealloc];
 }
 
-- (void)setAdditionalLoggingForCommands:(BOOL)a3
+- (void)setAdditionalLoggingForCommands:(BOOL)commands
 {
   v3 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!commands)
   {
     v3 = MEMORY[0x277CBED10];
   }
@@ -212,9 +212,9 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
   return v4;
 }
 
-- (void)setAttentionAwareAction:(id)a3
+- (void)setAttentionAwareAction:(id)action
 {
-  CFPreferencesSetAppValue(@"CACAttentionAwareAction", a3, @"com.apple.speech.SpeechRecognitionCommandAndControl");
+  CFPreferencesSetAppValue(@"CACAttentionAwareAction", action, @"com.apple.speech.SpeechRecognitionCommandAndControl");
   CFPreferencesAppSynchronize(@"com.apple.speech.SpeechRecognitionCommandAndControl");
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
@@ -223,15 +223,15 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
 
 - (BOOL)sleepOnAttentionLost
 {
-  v2 = [(CACPreferences *)self attentionAwareAction];
-  v3 = [v2 isEqualToString:@"SleepAndWake"];
+  attentionAwareAction = [(CACPreferences *)self attentionAwareAction];
+  v3 = [attentionAwareAction isEqualToString:@"SleepAndWake"];
 
   return v3;
 }
 
-- (void)setSleepOnAttentionLost:(BOOL)a3
+- (void)setSleepOnAttentionLost:(BOOL)lost
 {
-  if (a3)
+  if (lost)
   {
     v3 = @"SleepAndWake";
   }
@@ -246,15 +246,15 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
 
 - (BOOL)wakeOnAttentionGained
 {
-  v2 = [(CACPreferences *)self attentionAwareAction];
-  v3 = [v2 isEqualToString:@"SleepAndWake"];
+  attentionAwareAction = [(CACPreferences *)self attentionAwareAction];
+  v3 = [attentionAwareAction isEqualToString:@"SleepAndWake"];
 
   return v3;
 }
 
-- (void)setWakeOnAttentionGained:(BOOL)a3
+- (void)setWakeOnAttentionGained:(BOOL)gained
 {
-  if (a3)
+  if (gained)
   {
     v3 = @"SleepAndWake";
   }
@@ -285,10 +285,10 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
   return !v3;
 }
 
-- (void)setDidShowOnboarding:(BOOL)a3
+- (void)setDidShowOnboarding:(BOOL)onboarding
 {
   v3 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!onboarding)
   {
     v3 = MEMORY[0x277CBED10];
   }
@@ -316,10 +316,10 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
   return !v3;
 }
 
-- (void)setDonationTipKitSeen:(BOOL)a3
+- (void)setDonationTipKitSeen:(BOOL)seen
 {
   v3 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!seen)
   {
     v3 = MEMORY[0x277CBED10];
   }
@@ -349,9 +349,9 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
   return v4;
 }
 
-- (void)setTextDisambiguationStrategy:(id)a3
+- (void)setTextDisambiguationStrategy:(id)strategy
 {
-  CFPreferencesSetAppValue(@"CACTextDisambiguationStrategy", a3, @"com.apple.speech.SpeechRecognitionCommandAndControl");
+  CFPreferencesSetAppValue(@"CACTextDisambiguationStrategy", strategy, @"com.apple.speech.SpeechRecognitionCommandAndControl");
 
   CFPreferencesAppSynchronize(@"com.apple.speech.SpeechRecognitionCommandAndControl");
 }
@@ -366,7 +366,7 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
 
 - (id)userHintsHistory
 {
-  v2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   CFPreferencesAppSynchronize(@"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
   v3 = CFPreferencesCopyAppValue(@"CACUserHintsHistory", @"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
   if (v3)
@@ -375,22 +375,22 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
     v5 = CFGetTypeID(v3);
     if (v5 == CFDictionaryGetTypeID())
     {
-      [v2 addEntriesFromDictionary:v4];
+      [dictionary addEntriesFromDictionary:v4];
     }
 
     CFRelease(v4);
   }
 
-  return v2;
+  return dictionary;
 }
 
-- (void)setUserHintsHistory:(id)a3
+- (void)setUserHintsHistory:(id)history
 {
-  if (a3)
+  if (history)
   {
-    v3 = a3;
+    historyCopy = history;
     _CFPreferencesSetFileProtectionClass();
-    CFPreferencesSetAppValue(@"CACUserHintsHistory", v3, @"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
+    CFPreferencesSetAppValue(@"CACUserHintsHistory", historyCopy, @"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
 
     CFPreferencesAppSynchronize(@"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
   }
@@ -414,10 +414,10 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
   return !v3;
 }
 
-- (void)setOverlayFadingEnabled:(BOOL)a3
+- (void)setOverlayFadingEnabled:(BOOL)enabled
 {
   v3 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!enabled)
   {
     v3 = MEMORY[0x277CBED10];
   }
@@ -451,9 +451,9 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
   return v5;
 }
 
-- (void)setOverlayFadeDelay:(double)a3
+- (void)setOverlayFadeDelay:(double)delay
 {
-  CFPreferencesSetAppValue(@"CACOverlayFadeDelay", [MEMORY[0x277CCABB0] numberWithDouble:a3], @"com.apple.speech.SpeechRecognitionCommandAndControl");
+  CFPreferencesSetAppValue(@"CACOverlayFadeDelay", [MEMORY[0x277CCABB0] numberWithDouble:delay], @"com.apple.speech.SpeechRecognitionCommandAndControl");
   CFPreferencesAppSynchronize(@"com.apple.speech.SpeechRecognitionCommandAndControl");
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
@@ -482,7 +482,7 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
   return v5;
 }
 
-- (void)setOverlayFadeOpacity:(float)a3
+- (void)setOverlayFadeOpacity:(float)opacity
 {
   CFPreferencesSetAppValue(@"CACOverlayFadeOpacity", [MEMORY[0x277CCABB0] numberWithFloat:?], @"com.apple.speech.SpeechRecognitionCommandAndControl");
   CFPreferencesAppSynchronize(@"com.apple.speech.SpeechRecognitionCommandAndControl");
@@ -509,10 +509,10 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
   return !v3;
 }
 
-- (void)setGridOverlayCustomColumnsEnabled:(BOOL)a3
+- (void)setGridOverlayCustomColumnsEnabled:(BOOL)enabled
 {
   v3 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!enabled)
   {
     v3 = MEMORY[0x277CBED10];
   }
@@ -542,10 +542,10 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
   return !v3;
 }
 
-- (void)setGridOverlayCustomRowsEnabled:(BOOL)a3
+- (void)setGridOverlayCustomRowsEnabled:(BOOL)enabled
 {
   v3 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!enabled)
   {
     v3 = MEMORY[0x277CBED10];
   }
@@ -570,21 +570,21 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
   v4 = CFGetTypeID(v2);
   if (v4 == CFNumberGetTypeID())
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = 4;
+    integerValue = 4;
   }
 
   CFRelease(v3);
-  return v5;
+  return integerValue;
 }
 
-- (void)setGridOverlayCustomColumnsCount:(int64_t)a3
+- (void)setGridOverlayCustomColumnsCount:(int64_t)count
 {
-  CFPreferencesSetAppValue(@"CACGridOverlayDesiredColumns", [MEMORY[0x277CCABB0] numberWithInteger:a3], @"com.apple.speech.SpeechRecognitionCommandAndControl");
+  CFPreferencesSetAppValue(@"CACGridOverlayDesiredColumns", [MEMORY[0x277CCABB0] numberWithInteger:count], @"com.apple.speech.SpeechRecognitionCommandAndControl");
   CFPreferencesAppSynchronize(@"com.apple.speech.SpeechRecognitionCommandAndControl");
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
@@ -604,21 +604,21 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
   v4 = CFGetTypeID(v2);
   if (v4 == CFNumberGetTypeID())
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = 6;
+    integerValue = 6;
   }
 
   CFRelease(v3);
-  return v5;
+  return integerValue;
 }
 
-- (void)setGridOverlayCustomRowsCount:(int64_t)a3
+- (void)setGridOverlayCustomRowsCount:(int64_t)count
 {
-  CFPreferencesSetAppValue(@"CACGridOverlayDesiredRows", [MEMORY[0x277CCABB0] numberWithInteger:a3], @"com.apple.speech.SpeechRecognitionCommandAndControl");
+  CFPreferencesSetAppValue(@"CACGridOverlayDesiredRows", [MEMORY[0x277CCABB0] numberWithInteger:count], @"com.apple.speech.SpeechRecognitionCommandAndControl");
   CFPreferencesAppSynchronize(@"com.apple.speech.SpeechRecognitionCommandAndControl");
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
@@ -638,21 +638,21 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
   v4 = CFGetTypeID(v2);
   if (v4 == CFNumberGetTypeID())
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v5 = 3;
+    integerValue = 3;
   }
 
   CFRelease(v3);
-  return v5;
+  return integerValue;
 }
 
-- (void)setGridOverlayMaxLevel:(int64_t)a3
+- (void)setGridOverlayMaxLevel:(int64_t)level
 {
-  CFPreferencesSetAppValue(@"CACGridOverlayMaxLevel", [MEMORY[0x277CCABB0] numberWithInteger:a3], @"com.apple.speech.SpeechRecognitionCommandAndControl");
+  CFPreferencesSetAppValue(@"CACGridOverlayMaxLevel", [MEMORY[0x277CCABB0] numberWithInteger:level], @"com.apple.speech.SpeechRecognitionCommandAndControl");
   CFPreferencesAppSynchronize(@"com.apple.speech.SpeechRecognitionCommandAndControl");
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
 
@@ -677,10 +677,10 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
   return !v3;
 }
 
-- (void)setGridOverlayPressOnFirstLevelEnabled:(BOOL)a3
+- (void)setGridOverlayPressOnFirstLevelEnabled:(BOOL)enabled
 {
   v3 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!enabled)
   {
     v3 = MEMORY[0x277CBED10];
   }
@@ -710,10 +710,10 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
   return !v3;
 }
 
-- (void)setGridOverlayMaxDensityEnabled:(BOOL)a3
+- (void)setGridOverlayMaxDensityEnabled:(BOOL)enabled
 {
   v3 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!enabled)
   {
     v3 = MEMORY[0x277CBED10];
   }
@@ -743,10 +743,10 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
   return !v3;
 }
 
-- (void)setGridOverlayShowsNumbersInTopLeft:(BOOL)a3
+- (void)setGridOverlayShowsNumbersInTopLeft:(BOOL)left
 {
   v3 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!left)
   {
     v3 = MEMORY[0x277CBED10];
   }
@@ -765,10 +765,10 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
   return CFPreferencesGetAppBooleanValue(@"CACKeyboardLetterKeysAsCommands", @"com.apple.speech.SpeechRecognitionCommandAndControl", &keyExistsAndHasValidFormat) || keyExistsAndHasValidFormat == 0;
 }
 
-- (void)setAllowLetterKeysAsTapCommands:(BOOL)a3
+- (void)setAllowLetterKeysAsTapCommands:(BOOL)commands
 {
   v3 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!commands)
   {
     v3 = MEMORY[0x277CBED10];
   }
@@ -788,89 +788,89 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
   return v2;
 }
 
-- (void)setTargetApplicationProperties:(id)a3
+- (void)setTargetApplicationProperties:(id)properties
 {
-  CFPreferencesSetAppValue(@"CACTargetApplications", a3, @"com.apple.speech.SpeechRecognitionCommandAndControl");
+  CFPreferencesSetAppValue(@"CACTargetApplications", properties, @"com.apple.speech.SpeechRecognitionCommandAndControl");
 
   CFPreferencesAppSynchronize(@"com.apple.speech.SpeechRecognitionCommandAndControl");
 }
 
-- (BOOL)isEnabledForCommandIdentifier:(id)a3
+- (BOOL)isEnabledForCommandIdentifier:(id)identifier
 {
-  v3 = [(CACPreferences *)self _propertiesForIdentifier:a3];
+  v3 = [(CACPreferences *)self _propertiesForIdentifier:identifier];
   v4 = [v3 objectForKey:@"Enabled"];
 
   if (v4)
   {
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v4 BOOLValue];
+      bOOLValue = [v4 BOOLValue];
     }
 
     else
     {
-      v5 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)isConfirmationRequiredForCommandIdentifier:(id)a3
+- (BOOL)isConfirmationRequiredForCommandIdentifier:(id)identifier
 {
-  v3 = [(CACPreferences *)self _propertiesForIdentifier:a3];
+  v3 = [(CACPreferences *)self _propertiesForIdentifier:identifier];
   v4 = [v3 objectForKey:@"ConfirmationRequired"];
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (id)propertiesForCommandIdentifier:(id)a3
+- (id)propertiesForCommandIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CACPreferences *)self bestLocaleIdentifier];
-  v6 = [(CACPreferences *)self propertiesForCommandIdentifier:v4 localeIdentifier:v5];
+  identifierCopy = identifier;
+  bestLocaleIdentifier = [(CACPreferences *)self bestLocaleIdentifier];
+  v6 = [(CACPreferences *)self propertiesForCommandIdentifier:identifierCopy localeIdentifier:bestLocaleIdentifier];
 
   return v6;
 }
 
-- (id)propertiesForCommandIdentifier:(id)a3 localeIdentifier:(id)a4
+- (id)propertiesForCommandIdentifier:(id)identifier localeIdentifier:(id)localeIdentifier
 {
   v56 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CACPreferences *)self _propertiesForIdentifier:v6];
+  identifierCopy = identifier;
+  localeIdentifierCopy = localeIdentifier;
+  v8 = [(CACPreferences *)self _propertiesForIdentifier:identifierCopy];
   v9 = [v8 objectForKey:@"CustomType"];
 
   if (v9)
   {
-    v10 = [(CACPreferences *)self _mutablePropertiesForIdentifier:v6 create:0];
+    v10 = [(CACPreferences *)self _mutablePropertiesForIdentifier:identifierCopy create:0];
     v11 = [v10 objectForKey:@"CustomCommands"];
     if (v11)
     {
       v42 = v10;
-      v44 = v7;
+      v44 = localeIdentifierCopy;
       v12 = objc_opt_new();
       v45 = 0u;
       v46 = 0u;
       v47 = 0u;
       v48 = 0u;
-      v13 = [v11 allKeys];
-      v14 = [v13 countByEnumeratingWithState:&v45 objects:v54 count:16];
+      allKeys = [v11 allKeys];
+      v14 = [allKeys countByEnumeratingWithState:&v45 objects:v54 count:16];
       if (v14)
       {
         v15 = v14;
@@ -881,7 +881,7 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
           {
             if (*v46 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(allKeys);
             }
 
             v18 = *(*(&v45 + 1) + 8 * i);
@@ -890,7 +890,7 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
             [v12 setObject:v19 forKey:v20];
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v45 objects:v54 count:16];
+          v15 = [allKeys countByEnumeratingWithState:&v45 objects:v54 count:16];
         }
 
         while (v15);
@@ -908,17 +908,17 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
         goto LABEL_31;
       }
 
-      v40 = self;
-      v41 = v6;
+      selfCopy = self;
+      v41 = identifierCopy;
       v43 = v10;
-      v44 = v7;
-      v27 = [MEMORY[0x277CBEB38] dictionary];
+      v44 = localeIdentifierCopy;
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
       v49 = 0u;
       v50 = 0u;
       v51 = 0u;
       v52 = 0u;
-      v28 = [v12 allKeys];
-      v29 = [v28 countByEnumeratingWithState:&v49 objects:v55 count:16];
+      allKeys2 = [v12 allKeys];
+      v29 = [allKeys2 countByEnumeratingWithState:&v49 objects:v55 count:16];
       if (v29)
       {
         v30 = v29;
@@ -929,7 +929,7 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
           {
             if (*v50 != v31)
             {
-              objc_enumerationMutation(v28);
+              objc_enumerationMutation(allKeys2);
             }
 
             v33 = *(*(&v49 + 1) + 8 * j);
@@ -937,52 +937,52 @@ uint64_t __35__CACPreferences_sharedPreferences__block_invoke()
             if (v34)
             {
               v35 = [MEMORY[0x277CBEA60] arrayWithObject:v34];
-              [v27 setObject:v35 forKey:v33];
+              [dictionary setObject:v35 forKey:v33];
             }
           }
 
-          v30 = [v28 countByEnumeratingWithState:&v49 objects:v55 count:16];
+          v30 = [allKeys2 countByEnumeratingWithState:&v49 objects:v55 count:16];
         }
 
         while (v30);
       }
 
       v36 = MEMORY[0x277CBEB38];
-      v37 = [MEMORY[0x277CBEB68] null];
-      v38 = [v36 dictionaryWithObjectsAndKeys:{v37, @"CustomTextLocalized", 0}];
+      null = [MEMORY[0x277CBEB68] null];
+      v38 = [v36 dictionaryWithObjectsAndKeys:{null, @"CustomTextLocalized", 0}];
 
       v10 = v43;
-      if ([v27 count])
+      if ([dictionary count])
       {
-        [v38 setObject:v27 forKey:@"CustomCommands"];
-        [v43 setObject:v27 forKey:@"CustomCommands"];
+        [v38 setObject:dictionary forKey:@"CustomCommands"];
+        [v43 setObject:dictionary forKey:@"CustomCommands"];
       }
 
-      v6 = v41;
-      [(CACPreferences *)v40 setProperties:v38 forCommandIdentifier:v41];
+      identifierCopy = v41;
+      [(CACPreferences *)selfCopy setProperties:v38 forCommandIdentifier:v41];
       [v43 removeObjectForKey:@"CustomTextLocalized"];
     }
 
-    v7 = v44;
+    localeIdentifierCopy = v44;
   }
 
   else
   {
-    v21 = [MEMORY[0x277D655A0] sharedSpokenCommandUtilities];
-    v11 = [v21 commandStringsTableForLocaleIdentifier:v7];
+    mEMORY[0x277D655A0] = [MEMORY[0x277D655A0] sharedSpokenCommandUtilities];
+    v11 = [mEMORY[0x277D655A0] commandStringsTableForLocaleIdentifier:localeIdentifierCopy];
 
-    v22 = [MEMORY[0x277D65598] activeTargetTypes];
+    activeTargetTypes = [MEMORY[0x277D65598] activeTargetTypes];
     v53 = 0;
-    v12 = [v11 languageModelDictionaryForCommandIdentifier:v6 targetTypes:v22 parsingErrorString:&v53];
+    v12 = [v11 languageModelDictionaryForCommandIdentifier:identifierCopy targetTypes:activeTargetTypes parsingErrorString:&v53];
 
-    v23 = [(CACPreferences *)self builtInCommandsStringsTableForLocaleIdentifier:v7];
+    v23 = [(CACPreferences *)self builtInCommandsStringsTableForLocaleIdentifier:localeIdentifierCopy];
     v24 = [v11 spokenStringPermutationsOfLanguageModelDictionary:v12 stringsTable:v23 restrictPermutationsToShortestAndLongest:1];
     if ([v24 count])
     {
-      v10 = [(CACPreferences *)self _mutablePropertiesForIdentifier:v6 create:1];
+      v10 = [(CACPreferences *)self _mutablePropertiesForIdentifier:identifierCopy create:1];
       [v10 setObject:v24 forKey:@"BuiltInStrings"];
-      v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.search", v6];
-      v26 = [v23 objectForKey:v25];
+      identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.search", identifierCopy];
+      v26 = [v23 objectForKey:identifierCopy];
 
       if (v26)
       {
@@ -1001,20 +1001,20 @@ LABEL_31:
   return v10;
 }
 
-- (void)setProperties:(id)a3 forCommandIdentifier:(id)a4 client:(BOOL)a5
+- (void)setProperties:(id)properties forCommandIdentifier:(id)identifier client:(BOOL)client
 {
-  v19 = a5;
+  clientCopy = client;
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v17 = a4;
-  v18 = self;
+  propertiesCopy = properties;
+  identifierCopy = identifier;
+  selfCopy = self;
   v8 = [CACPreferences _mutablePropertiesForIdentifier:"_mutablePropertiesForIdentifier:create:" create:?];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [v7 allKeys];
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  allKeys = [propertiesCopy allKeys];
+  v10 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1025,14 +1025,14 @@ LABEL_31:
       {
         if (*v21 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allKeys);
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        v15 = [v7 objectForKey:v14];
-        v16 = [MEMORY[0x277CBEB68] null];
+        v15 = [propertiesCopy objectForKey:v14];
+        null = [MEMORY[0x277CBEB68] null];
 
-        if (v15 == v16)
+        if (v15 == null)
         {
           [v8 removeObjectForKey:v14];
         }
@@ -1043,13 +1043,13 @@ LABEL_31:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v11 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v11);
   }
 
-  [(CACPreferences *)v18 _setProperties:v8 forIdentifier:v17 client:v19];
+  [(CACPreferences *)selfCopy _setProperties:v8 forIdentifier:identifierCopy client:clientCopy];
 }
 
 - (id)uniqueCustomCommandIdentifier
@@ -1111,10 +1111,10 @@ LABEL_31:
   }
 }
 
-- (void)_propertyTransactionPostNotification:(id)a3 identifier:(id)a4
+- (void)_propertyTransactionPostNotification:(id)notification identifier:(id)identifier
 {
-  name = a3;
-  v6 = a4;
+  name = notification;
+  identifierCopy = identifier;
   v7 = [(NSMutableArray *)self->_propertyTransactions objectAtIndex:0];
   v8 = v7;
   if (v7)
@@ -1125,7 +1125,7 @@ LABEL_31:
   else
   {
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
-    CFNotificationCenterPostNotification(DarwinNotifyCenter, name, v6, 0, 1u);
+    CFNotificationCenterPostNotification(DarwinNotifyCenter, name, identifierCopy, 0, 1u);
   }
 }
 
@@ -1162,20 +1162,20 @@ void __40__CACPreferences_endPropertyTransaction__block_invoke(uint64_t a1, void
   return v2;
 }
 
-- (id)_propertiesForIdentifier:(id)a3
+- (id)_propertiesForIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   [(CACPreferences *)self _propertyTransactionSynchronize];
-  v5 = CFPreferencesCopyAppValue(v4, @"com.apple.speech.SpeechRecognitionCommandAndControl.CustomCommands");
+  v5 = CFPreferencesCopyAppValue(identifierCopy, @"com.apple.speech.SpeechRecognitionCommandAndControl.CustomCommands");
 
   return v5;
 }
 
-- (id)_mutablePropertiesForIdentifier:(id)a3 create:(BOOL)a4
+- (id)_mutablePropertiesForIdentifier:(id)identifier create:(BOOL)create
 {
-  v5 = [(CACPreferences *)self _propertiesForIdentifier:a3];
+  v5 = [(CACPreferences *)self _propertiesForIdentifier:identifier];
   v6 = v5;
-  if (a4 || v5)
+  if (create || v5)
   {
     v7 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v5];
     v8 = [v7 objectForKey:@"Enabled"];
@@ -1194,27 +1194,27 @@ void __40__CACPreferences_endPropertyTransaction__block_invoke(uint64_t a1, void
   return v7;
 }
 
-- (void)_setProperties:(id)a3 forIdentifier:(id)a4 client:(BOOL)a5
+- (void)_setProperties:(id)properties forIdentifier:(id)identifier client:(BOOL)client
 {
-  v5 = a5;
-  v19 = a3;
-  v8 = a4;
-  v9 = [v19 objectForKey:@"Enabled"];
+  clientCopy = client;
+  propertiesCopy = properties;
+  identifierCopy = identifier;
+  v9 = [propertiesCopy objectForKey:@"Enabled"];
   v10 = v9;
   if (v9 && [v9 BOOLValue])
   {
-    v11 = [v19 mutableCopy];
+    v11 = [propertiesCopy mutableCopy];
 
     [v11 removeObjectForKey:@"Enabled"];
-    v12 = v19;
+    v12 = propertiesCopy;
     v13 = v11;
   }
 
   else
   {
     v11 = 0;
-    v12 = v19;
-    v13 = v19;
+    v12 = propertiesCopy;
+    v13 = propertiesCopy;
   }
 
   v14 = [v12 objectForKey:@"CustomType"];
@@ -1223,13 +1223,13 @@ void __40__CACPreferences_endPropertyTransaction__block_invoke(uint64_t a1, void
   {
     if (!v11)
     {
-      v11 = [v19 mutableCopy];
+      v11 = [propertiesCopy mutableCopy];
 
       v13 = v11;
     }
 
-    v15 = [MEMORY[0x277CBEAA8] date];
-    [v11 setObject:v15 forKey:@"CustomModifyDate"];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v11 setObject:date forKey:@"CustomModifyDate"];
   }
 
   if ([v13 count])
@@ -1242,9 +1242,9 @@ void __40__CACPreferences_endPropertyTransaction__block_invoke(uint64_t a1, void
     v16 = 0;
   }
 
-  CFPreferencesSetAppValue(v8, v16, @"com.apple.speech.SpeechRecognitionCommandAndControl.CustomCommands");
+  CFPreferencesSetAppValue(identifierCopy, v16, @"com.apple.speech.SpeechRecognitionCommandAndControl.CustomCommands");
   [(CACPreferences *)self _propertyTransactionSynchronize];
-  if (v5)
+  if (clientCopy)
   {
     v17 = @"CACNotificationClientCommandsSettingsChanged";
   }
@@ -1254,9 +1254,9 @@ void __40__CACPreferences_endPropertyTransaction__block_invoke(uint64_t a1, void
     v17 = @"CACNotificationCommandsSettingsChanged";
   }
 
-  if (v5)
+  if (clientCopy)
   {
-    v18 = v8;
+    v18 = identifierCopy;
   }
 
   else
@@ -1275,8 +1275,8 @@ void __40__CACPreferences_endPropertyTransaction__block_invoke(uint64_t a1, void
   v4 = [v3 pathForResource:@"DefaultCommandSettings" ofType:@"plist"];
   v5 = [v2 initWithContentsOfFile:v4];
 
-  v6 = [v5 allKeys];
-  v7 = [v6 count];
+  allKeys = [v5 allKeys];
+  v7 = [allKeys count];
 
   if (v7)
   {
@@ -1286,8 +1286,8 @@ void __40__CACPreferences_endPropertyTransaction__block_invoke(uint64_t a1, void
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v9 = [v5 allKeys];
-    v10 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    allKeys2 = [v5 allKeys];
+    v10 = [allKeys2 countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v10)
     {
       v11 = v10;
@@ -1299,7 +1299,7 @@ void __40__CACPreferences_endPropertyTransaction__block_invoke(uint64_t a1, void
         {
           if (*v18 != v13)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allKeys2);
           }
 
           v15 = *(*(&v17 + 1) + 8 * i);
@@ -1312,7 +1312,7 @@ void __40__CACPreferences_endPropertyTransaction__block_invoke(uint64_t a1, void
           }
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v11 = [allKeys2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v11);
@@ -1337,21 +1337,21 @@ void __40__CACPreferences_endPropertyTransaction__block_invoke(uint64_t a1, void
   return v3;
 }
 
-+ (id)_suffixedURLsForURL:(id)a3
++ (id)_suffixedURLsForURL:(id)l
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  lCopy = l;
   v23 = objc_opt_new();
-  v4 = [v3 URLByDeletingLastPathComponent];
-  v24 = [v3 pathExtension];
-  v5 = [v3 URLByDeletingPathExtension];
+  uRLByDeletingLastPathComponent = [lCopy URLByDeletingLastPathComponent];
+  pathExtension = [lCopy pathExtension];
+  uRLByDeletingPathExtension = [lCopy URLByDeletingPathExtension];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v22 = v4;
-  v7 = [v6 contentsOfDirectoryAtURL:v4 includingPropertiesForKeys:0 options:0 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v22 = uRLByDeletingLastPathComponent;
+  v7 = [defaultManager contentsOfDirectoryAtURL:uRLByDeletingLastPathComponent includingPropertiesForKeys:0 options:0 error:0];
 
   v8 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v8)
@@ -1368,21 +1368,21 @@ void __40__CACPreferences_endPropertyTransaction__block_invoke(uint64_t a1, void
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
-        v13 = [v12 path];
-        v14 = [v3 path];
-        v15 = [v13 isEqualToString:v14];
+        path = [v12 path];
+        path2 = [lCopy path];
+        v15 = [path isEqualToString:path2];
 
         if ((v15 & 1) == 0)
         {
-          v16 = [v12 path];
-          v17 = [v5 path];
-          v18 = [v16 hasPrefix:v17];
+          path3 = [v12 path];
+          path4 = [uRLByDeletingPathExtension path];
+          v18 = [path3 hasPrefix:path4];
 
           if (v18)
           {
-            v19 = [v12 pathExtension];
-            v20 = v19;
-            if (!(v24 | v19) || (v24 == 0) == (v19 == 0) && [v24 isEqualToString:v19])
+            pathExtension2 = [v12 pathExtension];
+            v20 = pathExtension2;
+            if (!(pathExtension | pathExtension2) || (pathExtension == 0) == (pathExtension2 == 0) && [pathExtension isEqualToString:pathExtension2])
             {
               [v23 addObject:v12];
             }
@@ -1477,29 +1477,29 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
   *(v15 + 8) = v3;
 }
 
-- (id)builtInCommandsStringsTableForLocaleIdentifier:(id)a3
+- (id)builtInCommandsStringsTableForLocaleIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)v5->_builtInLocalizedCommandStringsByLocaleIdentifier objectForKey:v4];
-  objc_sync_exit(v5);
+  identifierCopy = identifier;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v6 = [(NSMutableDictionary *)selfCopy->_builtInLocalizedCommandStringsByLocaleIdentifier objectForKey:identifierCopy];
+  objc_sync_exit(selfCopy);
 
-  v20 = v6;
+  dictionary = v6;
   if (!v6)
   {
-    v19 = v4;
-    v20 = [MEMORY[0x277CBEB38] dictionary];
-    v7 = [MEMORY[0x277D655A0] sharedSpokenCommandUtilities];
-    v8 = [v7 commandStringsTableForLocaleIdentifier:v4];
+    v19 = identifierCopy;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    mEMORY[0x277D655A0] = [MEMORY[0x277D655A0] sharedSpokenCommandUtilities];
+    v8 = [mEMORY[0x277D655A0] commandStringsTableForLocaleIdentifier:identifierCopy];
 
     v23 = 0u;
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v9 = [AllValidCommandParameterIdentifiers() allObjects];
-    v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    allObjects = [AllValidCommandParameterIdentifiers() allObjects];
+    v10 = [allObjects countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v10)
     {
       v11 = *v22;
@@ -1509,38 +1509,38 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
         {
           if (*v22 != v11)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(allObjects);
           }
 
           v13 = *(*(&v21 + 1) + 8 * i);
-          v14 = [MEMORY[0x277D65598] activeTargetTypes];
-          v15 = [v8 descriptionStringForCommandIdentifier:v13 descriptionType:@"NAME" targetTypes:v14];
+          activeTargetTypes = [MEMORY[0x277D65598] activeTargetTypes];
+          v15 = [v8 descriptionStringForCommandIdentifier:v13 descriptionType:@"NAME" targetTypes:activeTargetTypes];
 
           if ([v15 length])
           {
-            [v20 setObject:v15 forKey:v13];
+            [dictionary setObject:v15 forKey:v13];
           }
         }
 
-        v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v10 = [allObjects countByEnumeratingWithState:&v21 objects:v25 count:16];
       }
 
       while (v10);
     }
 
-    if (v20)
+    if (dictionary)
     {
-      v16 = v5;
+      v16 = selfCopy;
       objc_sync_enter(v16);
-      [(NSMutableDictionary *)v5->_builtInLocalizedCommandStringsByLocaleIdentifier setObject:v20 forKey:v19];
-      v17 = v20;
+      [(NSMutableDictionary *)selfCopy->_builtInLocalizedCommandStringsByLocaleIdentifier setObject:dictionary forKey:v19];
+      v17 = dictionary;
       objc_sync_exit(v16);
     }
 
-    v4 = v19;
+    identifierCopy = v19;
   }
 
-  return v20;
+  return dictionary;
 }
 
 - (void)_flushBuiltInCommandsStringsTable
@@ -1551,55 +1551,55 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
   objc_sync_exit(obj);
 }
 
-- (id)displayNameForCommandSetIdentifier:(id)a3
+- (id)displayNameForCommandSetIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277CCA8D8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = [v3 bundleForClass:objc_opt_class()];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.DisplayName", v4];
+  identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.DisplayName", identifierCopy];
 
-  v7 = [v5 localizedStringForKey:v6 value:&stru_287BD8610 table:0];
+  v7 = [v5 localizedStringForKey:identifierCopy value:&stru_287BD8610 table:0];
 
   return v7;
 }
 
-- (BOOL)hidePreferencesForCommandSetIdentifier:(id)a3
+- (BOOL)hidePreferencesForCommandSetIdentifier:(id)identifier
 {
-  v3 = [MEMORY[0x277D655B0] collectionWithIdentifier:a3];
+  v3 = [MEMORY[0x277D655B0] collectionWithIdentifier:identifier];
   v4 = [v3 showInSettings] == 0;
 
   return v4;
 }
 
-- (id)enabledCommandIdentifiersForCommandSetIdentifier:(id)a3
+- (id)enabledCommandIdentifiersForCommandSetIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CACPreferences *)self bestLocaleIdentifier];
-  v6 = [(CACPreferences *)self _commandIdentifiersForCommandSetIdentifier:v4 localeIdentifier:v5 enabledOnly:1];
+  identifierCopy = identifier;
+  bestLocaleIdentifier = [(CACPreferences *)self bestLocaleIdentifier];
+  v6 = [(CACPreferences *)self _commandIdentifiersForCommandSetIdentifier:identifierCopy localeIdentifier:bestLocaleIdentifier enabledOnly:1];
 
   return v6;
 }
 
-- (id)_commandIdentifiersForCommandSetIdentifier:(id)a3 localeIdentifier:(id)a4 enabledOnly:(BOOL)a5
+- (id)_commandIdentifiersForCommandSetIdentifier:(id)identifier localeIdentifier:(id)localeIdentifier enabledOnly:(BOOL)only
 {
-  v5 = a5;
+  onlyCopy = only;
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v28 = [MEMORY[0x277CBEB18] array];
-  if ([v8 isEqualToString:@"Custom"])
+  identifierCopy = identifier;
+  localeIdentifierCopy = localeIdentifier;
+  array = [MEMORY[0x277CBEB18] array];
+  if ([identifierCopy isEqualToString:@"Custom"])
   {
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v10 = [(CACPreferences *)self _allPropertyIdentifiers];
-    v11 = [v10 countByEnumeratingWithState:&v33 objects:v38 count:16];
+    _allPropertyIdentifiers = [(CACPreferences *)self _allPropertyIdentifiers];
+    v11 = [_allPropertyIdentifiers countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v11)
     {
       v12 = v11;
-      v26 = v9;
-      v27 = v8;
+      v26 = localeIdentifierCopy;
+      v27 = identifierCopy;
       v13 = *v34;
       do
       {
@@ -1607,39 +1607,39 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
         {
           if (*v34 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(_allPropertyIdentifiers);
           }
 
           v15 = *(*(&v33 + 1) + 8 * i);
           v16 = [(CACPreferences *)self _propertiesForIdentifier:v15];
           v17 = [v16 objectForKey:@"CustomType"];
 
-          if (v17 && (!v5 || [(CACPreferences *)self isEnabledForCommandIdentifier:v15]))
+          if (v17 && (!onlyCopy || [(CACPreferences *)self isEnabledForCommandIdentifier:v15]))
           {
-            [v28 addObject:v15];
+            [array addObject:v15];
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v33 objects:v38 count:16];
+        v12 = [_allPropertyIdentifiers countByEnumeratingWithState:&v33 objects:v38 count:16];
       }
 
       while (v12);
-      v9 = v26;
-      v8 = v27;
+      localeIdentifierCopy = v26;
+      identifierCopy = v27;
     }
   }
 
   else
   {
-    v18 = [MEMORY[0x277D655B0] collectionWithIdentifier:v8];
-    v19 = [v18 commandIdentifiersForCurrentDevice];
+    v18 = [MEMORY[0x277D655B0] collectionWithIdentifier:identifierCopy];
+    commandIdentifiersForCurrentDevice = [v18 commandIdentifiersForCurrentDevice];
 
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v10 = v19;
-    v20 = [v10 countByEnumeratingWithState:&v29 objects:v37 count:16];
+    _allPropertyIdentifiers = commandIdentifiersForCurrentDevice;
+    v20 = [_allPropertyIdentifiers countByEnumeratingWithState:&v29 objects:v37 count:16];
     if (v20)
     {
       v21 = v20;
@@ -1650,36 +1650,36 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
         {
           if (*v30 != v22)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(_allPropertyIdentifiers);
           }
 
           v24 = *(*(&v29 + 1) + 8 * j);
-          if ([(CACPreferences *)self isCommandIdentifier:v24 availableForLocaleIdentifier:v9]&& (!v5 || [(CACPreferences *)self isEnabledForCommandIdentifier:v24]))
+          if ([(CACPreferences *)self isCommandIdentifier:v24 availableForLocaleIdentifier:localeIdentifierCopy]&& (!onlyCopy || [(CACPreferences *)self isEnabledForCommandIdentifier:v24]))
           {
-            [v28 addObject:v24];
+            [array addObject:v24];
           }
         }
 
-        v21 = [v10 countByEnumeratingWithState:&v29 objects:v37 count:16];
+        v21 = [_allPropertyIdentifiers countByEnumeratingWithState:&v29 objects:v37 count:16];
       }
 
       while (v21);
     }
   }
 
-  return v28;
+  return array;
 }
 
-- (BOOL)isCommandIdentifier:(id)a3 availableForLocaleIdentifier:(id)a4
+- (BOOL)isCommandIdentifier:(id)identifier availableForLocaleIdentifier:(id)localeIdentifier
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277D655A0] sharedSpokenCommandUtilities];
-  v8 = [v7 commandStringsTableForLocaleIdentifier:v6];
+  identifierCopy = identifier;
+  localeIdentifierCopy = localeIdentifier;
+  mEMORY[0x277D655A0] = [MEMORY[0x277D655A0] sharedSpokenCommandUtilities];
+  v8 = [mEMORY[0x277D655A0] commandStringsTableForLocaleIdentifier:localeIdentifierCopy];
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v8 isSupportedCommandIdentifier:v5 forLocaleIdentifier:v6];
+    v9 = [v8 isSupportedCommandIdentifier:identifierCopy forLocaleIdentifier:localeIdentifierCopy];
   }
 
   else
@@ -1698,8 +1698,8 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(CACPreferences *)self _allPropertyIdentifiers];
-  v4 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  _allPropertyIdentifiers = [(CACPreferences *)self _allPropertyIdentifiers];
+  v4 = [_allPropertyIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1710,7 +1710,7 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
       {
         if (*v15 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_allPropertyIdentifiers);
         }
 
         v8 = [(CACPreferences *)self _propertiesForIdentifier:*(*(&v14 + 1) + 8 * i)];
@@ -1727,7 +1727,7 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v5 = [_allPropertyIdentifiers countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v5);
@@ -1739,13 +1739,13 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
 - (id)allCustomCommandProperties
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v4 = [(CACPreferences *)self _allPropertyIdentifiers];
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  _allPropertyIdentifiers = [(CACPreferences *)self _allPropertyIdentifiers];
+  v5 = [_allPropertyIdentifiers countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1756,7 +1756,7 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_allPropertyIdentifiers);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -1765,29 +1765,29 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
 
         if (v11)
         {
-          [v3 setObject:v10 forKey:v9];
+          [dictionary setObject:v10 forKey:v9];
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [_allPropertyIdentifiers countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)addOrUpdateCommandPropertiesFromImportedTable:(id)a3
+- (void)addOrUpdateCommandPropertiesFromImportedTable:(id)table
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tableCopy = table;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  allKeys = [tableCopy allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1798,15 +1798,15 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
       {
         if (*v13 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v12 + 1) + 8 * i);
-        v11 = [v4 objectForKey:v10];
+        v11 = [tableCopy objectForKey:v10];
         CFPreferencesSetAppValue(v10, v11, @"com.apple.speech.SpeechRecognitionCommandAndControl.CustomCommands");
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v7);
@@ -1823,10 +1823,10 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(CACPreferences *)self allCustomCommandProperties];
-  v4 = [v3 allKeys];
+  allCustomCommandProperties = [(CACPreferences *)self allCustomCommandProperties];
+  allKeys = [allCustomCommandProperties allKeys];
 
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1838,14 +1838,14 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(allKeys);
         }
 
         CFPreferencesSetAppValue(*(*(&v9 + 1) + 8 * v8++), 0, @"com.apple.speech.SpeechRecognitionCommandAndControl.CustomCommands");
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
@@ -1873,10 +1873,10 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
   return !v3;
 }
 
-- (void)setPhoneticVocabularyShowDebugUI:(BOOL)a3
+- (void)setPhoneticVocabularyShowDebugUI:(BOOL)i
 {
   v3 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!i)
   {
     v3 = MEMORY[0x277CBED10];
   }
@@ -1893,10 +1893,10 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
   return CFPreferencesGetAppBooleanValue(@"CACPhoneticVocabularySkipPickingPronunciation", @"com.apple.speech.SpeechRecognitionCommandAndControl", &keyExistsAndHasValidFormat) || keyExistsAndHasValidFormat == 0;
 }
 
-- (void)setPhoneticVocabularySkipPickingPronunciation:(BOOL)a3
+- (void)setPhoneticVocabularySkipPickingPronunciation:(BOOL)pronunciation
 {
   v3 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!pronunciation)
   {
     v3 = MEMORY[0x277CBED10];
   }
@@ -1924,10 +1924,10 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
   return !v3;
 }
 
-- (void)setPhoneticVocabularyShowUserFacingIPAToggle:(BOOL)a3
+- (void)setPhoneticVocabularyShowUserFacingIPAToggle:(BOOL)toggle
 {
   v3 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!toggle)
   {
     v3 = MEMORY[0x277CBED10];
   }
@@ -1955,10 +1955,10 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
   return !v3;
 }
 
-- (void)setPhoneticVocabularyShowUserFacingIPA:(BOOL)a3
+- (void)setPhoneticVocabularyShowUserFacingIPA:(BOOL)a
 {
   v3 = MEMORY[0x277CBED28];
-  if (!a3)
+  if (!a)
   {
     v3 = MEMORY[0x277CBED10];
   }
@@ -1989,10 +1989,10 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)setLastCommandDate:(double)a3
+- (void)setLastCommandDate:(double)date
 {
   _CFPreferencesSetFileProtectionClass();
-  CFPreferencesSetAppValue(@"CACLastCommandDate", [MEMORY[0x277CCABB0] numberWithDouble:a3], @"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
+  CFPreferencesSetAppValue(@"CACLastCommandDate", [MEMORY[0x277CCABB0] numberWithDouble:date], @"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
 
   CFPreferencesAppSynchronize(@"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
 }
@@ -2009,22 +2009,22 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
   v3 = v2;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
   CFRelease(v3);
-  return v4;
+  return intValue;
 }
 
-- (void)setCorrectionCount:(int64_t)a3
+- (void)setCorrectionCount:(int64_t)count
 {
   _CFPreferencesSetFileProtectionClass();
-  CFPreferencesSetAppValue(@"CACCorrectionCount", [MEMORY[0x277CCABB0] numberWithInteger:a3], @"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
+  CFPreferencesSetAppValue(@"CACCorrectionCount", [MEMORY[0x277CCABB0] numberWithInteger:count], @"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
 
   CFPreferencesAppSynchronize(@"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
 }
@@ -2041,29 +2041,29 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
   v3 = v2;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 intValue];
+    intValue = [v3 intValue];
   }
 
   else
   {
-    v4 = 0;
+    intValue = 0;
   }
 
   CFRelease(v3);
-  return v4;
+  return intValue;
 }
 
-- (void)setMessageTracesSinceLastReport:(int64_t)a3
+- (void)setMessageTracesSinceLastReport:(int64_t)report
 {
   _CFPreferencesSetFileProtectionClass();
-  CFPreferencesSetAppValue(@"CACMessageTracesSinceLastReport", [MEMORY[0x277CCABB0] numberWithInteger:a3], @"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
+  CFPreferencesSetAppValue(@"CACMessageTracesSinceLastReport", [MEMORY[0x277CCABB0] numberWithInteger:report], @"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
 
   CFPreferencesAppSynchronize(@"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
 }
 
 - (id)commandCounts
 {
-  v2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   CFPreferencesAppSynchronize(@"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
   v3 = CFPreferencesCopyAppValue(@"CACCommandCounts", @"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
   if (v3)
@@ -2072,22 +2072,22 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
     v5 = CFGetTypeID(v3);
     if (v5 == CFDictionaryGetTypeID())
     {
-      [v2 addEntriesFromDictionary:v4];
+      [dictionary addEntriesFromDictionary:v4];
     }
 
     CFRelease(v4);
   }
 
-  return v2;
+  return dictionary;
 }
 
-- (void)setCommandCounts:(id)a3
+- (void)setCommandCounts:(id)counts
 {
-  if (a3)
+  if (counts)
   {
-    v3 = a3;
+    countsCopy = counts;
     _CFPreferencesSetFileProtectionClass();
-    CFPreferencesSetAppValue(@"CACCommandCounts", v3, @"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
+    CFPreferencesSetAppValue(@"CACCommandCounts", countsCopy, @"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
 
     CFPreferencesAppSynchronize(@"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
   }
@@ -2095,7 +2095,7 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
 
 - (id)targetApplicationCounts
 {
-  v2 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   CFPreferencesAppSynchronize(@"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
   v3 = CFPreferencesCopyAppValue(@"CACTargetApplicationCounts", @"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
   if (v3)
@@ -2104,22 +2104,22 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
     v5 = CFGetTypeID(v3);
     if (v5 == CFDictionaryGetTypeID())
     {
-      [v2 addEntriesFromDictionary:v4];
+      [dictionary addEntriesFromDictionary:v4];
     }
 
     CFRelease(v4);
   }
 
-  return v2;
+  return dictionary;
 }
 
-- (void)setTargetApplicationCounts:(id)a3
+- (void)setTargetApplicationCounts:(id)counts
 {
-  if (a3)
+  if (counts)
   {
-    v3 = a3;
+    countsCopy = counts;
     _CFPreferencesSetFileProtectionClass();
-    CFPreferencesSetAppValue(@"CACTargetApplicationCounts", v3, @"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
+    CFPreferencesSetAppValue(@"CACTargetApplicationCounts", countsCopy, @"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
 
     CFPreferencesAppSynchronize(@"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
   }
@@ -2127,7 +2127,7 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
 
 - (id)recentCommandEntries
 {
-  v2 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   CFPreferencesAppSynchronize(@"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
   v3 = CFPreferencesCopyAppValue(@"CACRecentCommands", @"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
   if (v3)
@@ -2136,22 +2136,22 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
     v5 = CFGetTypeID(v3);
     if (v5 == CFArrayGetTypeID())
     {
-      [v2 addObjectsFromArray:v4];
+      [array addObjectsFromArray:v4];
     }
 
     CFRelease(v4);
   }
 
-  return v2;
+  return array;
 }
 
-- (void)setRecentCommandEntries:(id)a3
+- (void)setRecentCommandEntries:(id)entries
 {
-  if (a3)
+  if (entries)
   {
-    v3 = a3;
+    entriesCopy = entries;
     _CFPreferencesSetFileProtectionClass();
-    CFPreferencesSetAppValue(@"CACRecentCommands", v3, @"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
+    CFPreferencesSetAppValue(@"CACRecentCommands", entriesCopy, @"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
 
     CFPreferencesAppSynchronize(@"com.apple.speech.SpeechRecognitionCommandAndControl.Log");
   }
@@ -2237,94 +2237,94 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
 
 - (BOOL)commandAndControlIsEnabled
 {
-  v2 = [MEMORY[0x277D79890] shared];
-  v3 = [v2 enabled];
+  mEMORY[0x277D79890] = [MEMORY[0x277D79890] shared];
+  enabled = [mEMORY[0x277D79890] enabled];
 
-  return v3;
+  return enabled;
 }
 
-- (void)setCommandAndControlEnabled:(BOOL)a3
+- (void)setCommandAndControlEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D79890] shared];
-  [v4 setEnabled:v3];
+  enabledCopy = enabled;
+  mEMORY[0x277D79890] = [MEMORY[0x277D79890] shared];
+  [mEMORY[0x277D79890] setEnabled:enabledCopy];
 }
 
 - (NSArray)userSelectableLocaleIdentifiers
 {
-  v2 = [MEMORY[0x277D79890] shared];
-  v3 = [v2 supportedLocales];
+  mEMORY[0x277D79890] = [MEMORY[0x277D79890] shared];
+  supportedLocales = [mEMORY[0x277D79890] supportedLocales];
 
-  return v3;
+  return supportedLocales;
 }
 
-- (void)setLocaleIdentifier:(id)a3
+- (void)setLocaleIdentifier:(id)identifier
 {
   v3 = MEMORY[0x277D79890];
-  v4 = a3;
-  v5 = [v3 shared];
-  [v5 setPreferredLocale:v4];
+  identifierCopy = identifier;
+  shared = [v3 shared];
+  [shared setPreferredLocale:identifierCopy];
 }
 
 - (NSString)bestLocaleIdentifier
 {
-  v2 = [MEMORY[0x277D79890] shared];
-  v3 = [v2 activeLocale];
-  v4 = [v3 localeIdentifier];
+  mEMORY[0x277D79890] = [MEMORY[0x277D79890] shared];
+  activeLocale = [mEMORY[0x277D79890] activeLocale];
+  localeIdentifier = [activeLocale localeIdentifier];
 
-  return v4;
+  return localeIdentifier;
 }
 
 - (NSString)alwaysShowOverlayType
 {
-  v2 = [MEMORY[0x277D79890] shared];
-  v3 = [v2 alwaysShowOverlayType];
+  mEMORY[0x277D79890] = [MEMORY[0x277D79890] shared];
+  alwaysShowOverlayType = [mEMORY[0x277D79890] alwaysShowOverlayType];
 
-  return v3;
+  return alwaysShowOverlayType;
 }
 
-- (void)setAlwaysShowOverlayType:(id)a3
+- (void)setAlwaysShowOverlayType:(id)type
 {
   v3 = MEMORY[0x277D79890];
-  v4 = a3;
-  v5 = [v3 shared];
-  [v5 setAlwaysShowOverlayType:v4];
+  typeCopy = type;
+  shared = [v3 shared];
+  [shared setAlwaysShowOverlayType:typeCopy];
 }
 
 - (BOOL)playSoundUponRecognition
 {
-  v2 = [MEMORY[0x277D79890] shared];
-  v3 = [v2 playSoundUponRecognition];
+  mEMORY[0x277D79890] = [MEMORY[0x277D79890] shared];
+  playSoundUponRecognition = [mEMORY[0x277D79890] playSoundUponRecognition];
 
-  return v3;
+  return playSoundUponRecognition;
 }
 
-- (void)setPlaySoundUponRecognition:(BOOL)a3
+- (void)setPlaySoundUponRecognition:(BOOL)recognition
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D79890] shared];
-  [v4 setPlaySoundUponRecognition:v3];
+  recognitionCopy = recognition;
+  mEMORY[0x277D79890] = [MEMORY[0x277D79890] shared];
+  [mEMORY[0x277D79890] setPlaySoundUponRecognition:recognitionCopy];
 }
 
 - (BOOL)showTextResponseUponRecognition
 {
-  v2 = [MEMORY[0x277D79890] shared];
-  v3 = [v2 showTextResponseUponRecognition];
+  mEMORY[0x277D79890] = [MEMORY[0x277D79890] shared];
+  showTextResponseUponRecognition = [mEMORY[0x277D79890] showTextResponseUponRecognition];
 
-  return v3;
+  return showTextResponseUponRecognition;
 }
 
-- (void)setShowTextResponseUponRecognition:(BOOL)a3
+- (void)setShowTextResponseUponRecognition:(BOOL)recognition
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277D79890] shared];
-  [v4 setShowTextResponseUponRecognition:v3];
+  recognitionCopy = recognition;
+  mEMORY[0x277D79890] = [MEMORY[0x277D79890] shared];
+  [mEMORY[0x277D79890] setShowTextResponseUponRecognition:recognitionCopy];
 }
 
 - (int64_t)userHintsFeatures
 {
-  v2 = [MEMORY[0x277D79890] shared];
-  if ([v2 showUserHints])
+  mEMORY[0x277D79890] = [MEMORY[0x277D79890] shared];
+  if ([mEMORY[0x277D79890] showUserHints])
   {
     v3 = 3;
   }
@@ -2337,11 +2337,11 @@ void __38__CACPreferences_builtInCommandsTable__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)setUserHintsFeatures:(int64_t)a3
+- (void)setUserHintsFeatures:(int64_t)features
 {
-  v3 = a3 == 3;
-  v4 = [MEMORY[0x277D79890] shared];
-  [v4 setShowUserHints:v3];
+  v3 = features == 3;
+  mEMORY[0x277D79890] = [MEMORY[0x277D79890] shared];
+  [mEMORY[0x277D79890] setShowUserHints:v3];
 }
 
 void __38__CACPreferences_builtInCommandsTable__block_invoke_cold_1(void *a1, NSObject *a2)

@@ -1,71 +1,71 @@
 @interface HMDCoreDataCloudTransform
-+ (BOOL)detectExcessiveHistoryPruningInContext:(id)a3;
-+ (BOOL)transactionIsCloudStoreReset:(id)a3 context:(id)a4;
-+ (Class)exportTransformableClassFromEntity:(id)a3;
-+ (Class)importTransformableClassFromEntity:(id)a3;
++ (BOOL)detectExcessiveHistoryPruningInContext:(id)context;
++ (BOOL)transactionIsCloudStoreReset:(id)reset context:(id)context;
++ (Class)exportTransformableClassFromEntity:(id)entity;
++ (Class)importTransformableClassFromEntity:(id)entity;
 + (HMDCoreDataCloudTransform)new;
 + (HMDCoreDataCloudTransform)sharedInstance;
-+ (id)exportTransformableEntityFromEntity:(id)a3;
-+ (id)localTransformableEntityFromEntity:(id)a3;
++ (id)exportTransformableEntityFromEntity:(id)entity;
++ (id)localTransformableEntityFromEntity:(id)entity;
 + (id)logCategory;
 + (void)wipeCoreDataStorageDueToPCSIdentityLossAndRelaunchHomeKitDaemon;
 - (BOOL)badCDPState;
-- (BOOL)cloudTransform:(id)a3 isPermittedForHomeWithModelID:(id)a4 isImport:(BOOL)a5;
-- (BOOL)runTransformWithError:(id *)a3;
+- (BOOL)cloudTransform:(id)transform isPermittedForHomeWithModelID:(id)d isImport:(BOOL)import;
+- (BOOL)runTransformWithError:(id *)error;
 - (HMDCoreDataCloudTransform)init;
-- (HMDCoreDataCloudTransform)initWithCoreData:(id)a3 fakeRecordsEnabled:(BOOL)a4 logEventSubmitter:(id)a5 userDefaults:(id)a6;
-- (HMDCoreDataCloudTransform)initWithCoreData:(id)a3 logEventSubmitter:(id)a4;
+- (HMDCoreDataCloudTransform)initWithCoreData:(id)data fakeRecordsEnabled:(BOOL)enabled logEventSubmitter:(id)submitter userDefaults:(id)defaults;
+- (HMDCoreDataCloudTransform)initWithCoreData:(id)data logEventSubmitter:(id)submitter;
 - (HMDCoreDataCloudTransformDelegate)delegate;
-- (MKFCloudSyncMetadata)_fetchOrCreateMetadataForManagedObjectContext:(MKFCloudSyncMetadata *)a1;
-- (_BYTE)_changeSetForHome:(uint64_t)a3 isImport:(void *)a4 clientIdentifier:(void *)a5 qualityOfService:(void *)a6 cache:;
-- (__CFString)_homeModelIDPropertyNameForObjectID:(void *)a1;
+- (MKFCloudSyncMetadata)_fetchOrCreateMetadataForManagedObjectContext:(MKFCloudSyncMetadata *)context;
+- (_BYTE)_changeSetForHome:(uint64_t)home isImport:(void *)import clientIdentifier:(void *)identifier qualityOfService:(void *)service cache:;
+- (__CFString)_homeModelIDPropertyNameForObjectID:(void *)d;
 - (id)_managedObjectContext;
 - (id)cloudImportInProgressStoreIdentifiers;
 - (id)fakeHomeChangeSetModelID;
 - (id)managedObjectContext;
 - (id)newCloudMirrorExportStatusMonitor;
 - (id)pendingChangedStoreIdentifiers;
-- (uint64_t)_processChangeSet:(int)a3 isImport:(void *)a4 context:;
-- (uint64_t)_processExportUpdateForObjectID:(void *)a3 updatedProperties:(void *)a4 additionalUpdates:(void *)a5 context:;
-- (uint64_t)_processImportUpdateForObjectID:(void *)a3 updatedProperties:(int)a4 transform:(void *)a5 additionalUpdates:(void *)a6 context:;
-- (uint64_t)_saveContextToWorkingStore:(uint64_t)a3 error:;
-- (uint64_t)_shouldProcessChange:(void *)a3 homeModelID:(int)a4 isImport:(void *)a5 context:;
-- (void)_delayContextDestruction:(uint64_t)a1;
-- (void)_enumerateCloudChangeListenersForEntity:(void *)a3 usingBlock:;
-- (void)_processHistoryForStore:(id)a3 context:(id)a4;
-- (void)_runTransformOnContext:(void *)a3 storeIdentifiers:(void *)a4 completeMergeHomeModelID:(void *)a5 completion:;
-- (void)_runTransformWhilePerformingBlockOnContext:(void *)a3 storeIdentifiers:(void *)a4 completeMergeHomeModelID:;
-- (void)_saveHomeManagerChangesToWorkingStoreWithContext:(void *)a1;
-- (void)_updateWriterPropertiesForCloudObjects:(void *)a1 timestamp:(void *)a2 version:(void *)a3;
-- (void)coreData:(id)a3 cloudKitExportFinishedForStoreWithIdentifier:(id)a4 duration:(double)a5 error:(id)a6;
-- (void)coreData:(id)a3 cloudKitExportStartedForStoreWithIdentifier:(id)a4;
-- (void)coreData:(id)a3 cloudKitImportFinishedForStoreWithIdentifier:(id)a4 duration:(double)a5 error:(id)a6;
-- (void)coreData:(id)a3 cloudKitImportStartedForStoreWithIdentifier:(id)a4;
-- (void)coreData:(id)a3 persistentStoreWithIdentifierDidChange:(id)a4;
-- (void)countResidentsInHomeWithUUID:(id)a3 completion:(id)a4;
-- (void)registerCloudChangeListener:(id)a3 forEntities:(id)a4;
-- (void)runCompleteMergeTransformForHomeWithModelID:(id)a3 completion:(id)a4;
-- (void)runTransformWithCompletion:(id)a3;
+- (uint64_t)_processChangeSet:(int)set isImport:(void *)import context:;
+- (uint64_t)_processExportUpdateForObjectID:(void *)d updatedProperties:(void *)properties additionalUpdates:(void *)updates context:;
+- (uint64_t)_processImportUpdateForObjectID:(void *)d updatedProperties:(int)properties transform:(void *)transform additionalUpdates:(void *)updates context:;
+- (uint64_t)_saveContextToWorkingStore:(uint64_t)store error:;
+- (uint64_t)_shouldProcessChange:(void *)change homeModelID:(int)d isImport:(void *)import context:;
+- (void)_delayContextDestruction:(uint64_t)destruction;
+- (void)_enumerateCloudChangeListenersForEntity:(void *)entity usingBlock:;
+- (void)_processHistoryForStore:(id)store context:(id)context;
+- (void)_runTransformOnContext:(void *)context storeIdentifiers:(void *)identifiers completeMergeHomeModelID:(void *)d completion:;
+- (void)_runTransformWhilePerformingBlockOnContext:(void *)context storeIdentifiers:(void *)identifiers completeMergeHomeModelID:;
+- (void)_saveHomeManagerChangesToWorkingStoreWithContext:(void *)context;
+- (void)_updateWriterPropertiesForCloudObjects:(void *)objects timestamp:(void *)timestamp version:(void *)version;
+- (void)coreData:(id)data cloudKitExportFinishedForStoreWithIdentifier:(id)identifier duration:(double)duration error:(id)error;
+- (void)coreData:(id)data cloudKitExportStartedForStoreWithIdentifier:(id)identifier;
+- (void)coreData:(id)data cloudKitImportFinishedForStoreWithIdentifier:(id)identifier duration:(double)duration error:(id)error;
+- (void)coreData:(id)data cloudKitImportStartedForStoreWithIdentifier:(id)identifier;
+- (void)coreData:(id)data persistentStoreWithIdentifierDidChange:(id)change;
+- (void)countResidentsInHomeWithUUID:(id)d completion:(id)completion;
+- (void)registerCloudChangeListener:(id)listener forEntities:(id)entities;
+- (void)runCompleteMergeTransformForHomeWithModelID:(id)d completion:(id)completion;
+- (void)runTransformWithCompletion:(id)completion;
 @end
 
 @implementation HMDCoreDataCloudTransform
 
-- (void)countResidentsInHomeWithUUID:(id)a3 completion:(id)a4
+- (void)countResidentsInHomeWithUUID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDCoreDataCloudTransform *)self managedObjectContext];
+  dCopy = d;
+  completionCopy = completion;
+  managedObjectContext = [(HMDCoreDataCloudTransform *)self managedObjectContext];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __75__HMDCoreDataCloudTransform_Home__countResidentsInHomeWithUUID_completion___block_invoke;
   v12[3] = &unk_278689AB8;
-  v13 = v6;
-  v14 = v8;
-  v15 = self;
-  v16 = v7;
-  v9 = v7;
-  v10 = v8;
-  v11 = v6;
+  v13 = dCopy;
+  v14 = managedObjectContext;
+  selfCopy = self;
+  v16 = completionCopy;
+  v9 = completionCopy;
+  v10 = managedObjectContext;
+  v11 = dCopy;
   [v10 performBlock:v12];
 }
 
@@ -118,14 +118,14 @@ void __75__HMDCoreDataCloudTransform_Home__countResidentsInHomeWithUUID_completi
   return WeakRetained;
 }
 
-- (void)_processHistoryForStore:(id)a3 context:(id)a4
+- (void)_processHistoryForStore:(id)store context:(id)context
 {
   v184[2] = *MEMORY[0x277D85DE8];
-  v155 = a3;
-  v156 = a4;
-  v5 = [v155 identifier];
-  v6 = [v156 hmd_cloudPrivateStoreIdentifier];
-  v7 = [v5 isEqualToString:v6];
+  storeCopy = store;
+  contextCopy = context;
+  identifier = [storeCopy identifier];
+  hmd_cloudPrivateStoreIdentifier = [contextCopy hmd_cloudPrivateStoreIdentifier];
+  v7 = [identifier isEqualToString:hmd_cloudPrivateStoreIdentifier];
 
   v147 = v7;
   if (v7)
@@ -137,9 +137,9 @@ void __75__HMDCoreDataCloudTransform_Home__countResidentsInHomeWithUUID_completi
 
   else
   {
-    v9 = [v155 identifier];
-    v10 = [v156 hmd_cloudSharedStoreIdentifier];
-    v11 = [v9 isEqualToString:v10];
+    identifier2 = [storeCopy identifier];
+    hmd_cloudSharedStoreIdentifier = [contextCopy hmd_cloudSharedStoreIdentifier];
+    v11 = [identifier2 isEqualToString:hmd_cloudSharedStoreIdentifier];
 
     if (v11)
     {
@@ -168,28 +168,28 @@ LABEL_7:
   }
 
   v13 = historyTokensByStoreIdentifier;
-  v14 = [v155 identifier];
-  v15 = [(NSMutableDictionary *)v13 objectForKeyedSubscript:v14];
+  identifier3 = [storeCopy identifier];
+  v15 = [(NSMutableDictionary *)v13 objectForKeyedSubscript:identifier3];
 
   v16 = [MEMORY[0x277CBE4B0] fetchHistoryAfterToken:v15];
   [v16 setFetchBatchSize:10];
-  v170 = v155;
+  v170 = storeCopy;
   v17 = [MEMORY[0x277CBEA60] arrayWithObjects:&v170 count:1];
   [v16 setAffectedStores:v17];
 
   v166 = 0;
-  v18 = [v156 executeRequest:v16 error:&v166];
+  v18 = [contextCopy executeRequest:v16 error:&v166];
   v148 = v166;
   if (v18)
   {
-    v19 = [v18 result];
+    result = [v18 result];
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
       v23 = HMFGetLogIdentifier();
-      v24 = [v19 count];
+      v24 = [result count];
       *buf = 138543874;
       *&buf[4] = v23;
       *&buf[12] = 2048;
@@ -200,11 +200,11 @@ LABEL_7:
     }
 
     objc_autoreleasePoolPop(v20);
-    v25 = [v19 lastObject];
-    v153 = [v25 token];
+    lastObject = [result lastObject];
+    token = [lastObject token];
 
-    v26 = v19;
-    v27 = v156;
+    v26 = result;
+    v27 = contextCopy;
     v28 = v27;
     if (self)
     {
@@ -218,7 +218,7 @@ LABEL_7:
       {
         *&buf[16] = __71__HMDCoreDataCloudTransform__changeSetsFromImportTransactions_context___block_invoke;
         v172 = &unk_2786829F8;
-        *&v173 = v21;
+        *&v173 = selfCopy;
         v33 = v29;
         *(&v173 + 1) = v33;
         v174 = v32;
@@ -228,7 +228,7 @@ LABEL_7:
       {
         *&buf[16] = __71__HMDCoreDataCloudTransform__changeSetsFromExportTransactions_context___block_invoke;
         v172 = &unk_2786829F8;
-        *&v173 = v21;
+        *&v173 = selfCopy;
         *(&v173 + 1) = v32;
         v33 = v29;
         v174 = v33;
@@ -237,19 +237,19 @@ LABEL_7:
       v34 = v32;
       [v31 hmf_enumerateWithAutoreleasePoolUsingBlock:buf];
 
-      v151 = [(HMDCoreDataCloudTransform *)v34 allValues];
+      allValues = [(HMDCoreDataCloudTransform *)v34 allValues];
     }
 
     else
     {
-      v151 = 0;
+      allValues = 0;
     }
   }
 
   else
   {
     v35 = objc_autoreleasePoolPush();
-    v36 = self;
+    selfCopy2 = self;
     v37 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
     {
@@ -266,8 +266,8 @@ LABEL_7:
     }
 
     objc_autoreleasePoolPop(v35);
-    v151 = 0;
-    v153 = 0;
+    allValues = 0;
+    token = 0;
   }
 
   objc_autoreleasePoolPop(context);
@@ -283,10 +283,10 @@ LABEL_7:
     v158[3] = &unk_278678F38;
     v158[4] = self;
     v161 = v152;
-    v39 = v156;
+    v39 = contextCopy;
     v159 = v39;
     v160 = &v162;
-    [v151 hmf_enumerateWithAutoreleasePoolUsingBlock:v158];
+    [allValues hmf_enumerateWithAutoreleasePoolUsingBlock:v158];
     if ([v39 hmd_homeManagerApplicationDataChanged])
     {
       [v39 setHmd_homeManagerApplicationDataChanged:0];
@@ -295,7 +295,7 @@ LABEL_7:
       if (self)
       {
         v42 = objc_autoreleasePoolPush();
-        v43 = self;
+        selfCopy3 = self;
         v44 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
         {
@@ -320,7 +320,7 @@ LABEL_7:
         if (!v49)
         {
           v59 = objc_autoreleasePoolPush();
-          v60 = v43;
+          v60 = selfCopy3;
           v61 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
           {
@@ -355,16 +355,16 @@ LABEL_7:
 
         if (v51)
         {
-          v52 = [v51 appDataDictionary];
-          v53 = [*(*&v180[8] + 40) homeManagerApplicationData];
-          v54 = isEqualDeepCompare(v52, v53);
+          appDataDictionary = [v51 appDataDictionary];
+          homeManagerApplicationData = [*(*&v180[8] + 40) homeManagerApplicationData];
+          v54 = isEqualDeepCompare(appDataDictionary, homeManagerApplicationData);
 
           if (!v54)
           {
-            v66 = [*(*&v180[8] + 40) homeManagerApplicationData];
-            v67 = [v66 copy];
+            homeManagerApplicationData2 = [*(*&v180[8] + 40) homeManagerApplicationData];
+            v67 = [homeManagerApplicationData2 copy];
 
-            v68 = [v41 hmd_homeManagerContext];
+            hmd_homeManagerContext = [v41 hmd_homeManagerContext];
 
             v69 = *(*&v180[8] + 40);
             v70 = [objc_opt_class() _homeManagerContextFromContext:v41];
@@ -377,9 +377,9 @@ LABEL_7:
             *&v173 = v71;
             v72 = v70;
             *(&v173 + 1) = v72;
-            v174 = v43;
+            v174 = selfCopy3;
             [v72 performBlockAndWait:buf];
-            if (!v68)
+            if (!hmd_homeManagerContext)
             {
               [v41 setHmd_homeManagerContext:0];
             }
@@ -389,7 +389,7 @@ LABEL_7:
           }
 
           v55 = objc_autoreleasePoolPush();
-          v56 = v43;
+          v56 = selfCopy3;
           v57 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v57, OS_LOG_TYPE_DEBUG))
           {
@@ -403,7 +403,7 @@ LABEL_7:
         else
         {
           v55 = objc_autoreleasePoolPush();
-          v64 = v43;
+          v64 = selfCopy3;
           v57 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v57, OS_LOG_TYPE_ERROR))
           {
@@ -437,19 +437,19 @@ LABEL_47:
           v75 = v74;
           if (v147)
           {
-            v76 = [v74 historyTokenForCloudStore];
-            v77 = (v76 | v153) == 0;
+            historyTokenForCloudStore = [v74 historyTokenForCloudStore];
+            v77 = (historyTokenForCloudStore | token) == 0;
 
             if (v77)
             {
-              v150 = v155;
+              v150 = storeCopy;
               v78 = v39;
               contexta = v78;
               if (self)
               {
                 [v78 hmd_assertIsExecuting];
                 v79 = objc_autoreleasePoolPush();
-                v80 = self;
+                selfCopy4 = self;
                 v81 = HMFGetOSLogHandle();
                 if (os_log_type_enabled(v81, OS_LOG_TYPE_DEBUG))
                 {
@@ -460,11 +460,11 @@ LABEL_47:
                 }
 
                 objc_autoreleasePoolPop(v79);
-                v83 = [MEMORY[0x277CBE488] fetchRequestForEvents];
+                fetchRequestForEvents = [MEMORY[0x277CBE488] fetchRequestForEvents];
                 v84 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(succeeded == YES) AND (type == %ld) AND (endDate != nil)", 1];
-                [v83 setPredicate:v84];
+                [fetchRequestForEvents setPredicate:v84];
 
-                v85 = [MEMORY[0x277CBE488] fetchEventsMatchingFetchRequest:v83];
+                v85 = [MEMORY[0x277CBE488] fetchEventsMatchingFetchRequest:fetchRequestForEvents];
                 [v85 setResultType:1];
                 *v180 = v150;
                 v86 = [MEMORY[0x277CBEA60] arrayWithObjects:v180 count:1];
@@ -476,11 +476,11 @@ LABEL_47:
                 if (v87)
                 {
                   v141 = v87;
-                  v88 = [v141 result];
-                  if ([v88 count] && (objc_msgSend(v88, "firstObject"), v89 = objc_claimAutoreleasedReturnValue(), v90 = objc_msgSend(v89, "unsignedIntegerValue"), v89, v90))
+                  result2 = [v141 result];
+                  if ([result2 count] && (objc_msgSend(result2, "firstObject"), v89 = objc_claimAutoreleasedReturnValue(), v90 = objc_msgSend(v89, "unsignedIntegerValue"), v89, v90))
                   {
                     v154 = objc_autoreleasePoolPush();
-                    v91 = v80;
+                    v91 = selfCopy4;
                     v92 = HMFGetOSLogHandle();
                     if (os_log_type_enabled(v92, OS_LOG_TYPE_INFO))
                     {
@@ -504,18 +504,18 @@ LABEL_47:
                     v95 = contexta;
                     v96 = v150;
                     [v95 hmd_assertIsExecuting];
-                    v97 = [v95 persistentStoreCoordinator];
+                    persistentStoreCoordinator = [v95 persistentStoreCoordinator];
 
                     *buf = v96;
                     v98 = [MEMORY[0x277CBEA60] arrayWithObjects:buf count:1];
 
-                    v153 = [v97 currentPersistentHistoryTokenFromStores:v98];
+                    token = [persistentStoreCoordinator currentPersistentHistoryTokenFromStores:v98];
                   }
 
                   else
                   {
                     v133 = objc_autoreleasePoolPush();
-                    v134 = v80;
+                    v134 = selfCopy4;
                     v135 = HMFGetOSLogHandle();
                     if (os_log_type_enabled(v135, OS_LOG_TYPE_INFO))
                     {
@@ -526,14 +526,14 @@ LABEL_47:
                     }
 
                     objc_autoreleasePoolPop(v133);
-                    v153 = 0;
+                    token = 0;
                   }
                 }
 
                 else
                 {
                   v137 = objc_autoreleasePoolPush();
-                  v138 = v80;
+                  v138 = selfCopy4;
                   v139 = HMFGetOSLogHandle();
                   if (os_log_type_enabled(v139, OS_LOG_TYPE_ERROR))
                   {
@@ -546,23 +546,23 @@ LABEL_47:
                   }
 
                   objc_autoreleasePoolPop(v137);
-                  v153 = 0;
+                  token = 0;
                 }
               }
 
               else
               {
-                v153 = 0;
+                token = 0;
               }
 
-              if (v153)
+              if (token)
               {
                 *(v163 + 24) = 1;
               }
 
               else
               {
-                v153 = 0;
+                token = 0;
               }
             }
           }
@@ -583,7 +583,7 @@ LABEL_47:
         if ((v99 & 1) == 0 && [(NSMutableSet *)self->_cloudImportInProgressStoreIdentifiers count])
         {
           v100 = objc_autoreleasePoolPush();
-          v101 = self;
+          selfCopy5 = self;
           v102 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v102, OS_LOG_TYPE_DEFAULT))
           {
@@ -594,9 +594,9 @@ LABEL_47:
           }
 
           objc_autoreleasePoolPop(v100);
-          v104 = v101->_pendingChangedStoreIdentifiers;
-          v105 = [v39 hmd_workingStoreIdentifier];
-          [(NSMutableSet *)v104 addObject:v105];
+          v104 = selfCopy5->_pendingChangedStoreIdentifiers;
+          hmd_workingStoreIdentifier = [v39 hmd_workingStoreIdentifier];
+          [(NSMutableSet *)v104 addObject:hmd_workingStoreIdentifier];
           goto LABEL_96;
         }
 
@@ -604,34 +604,34 @@ LABEL_47:
         {
           if (v147)
           {
-            v106 = [v75 historyTokenForCloudStore];
+            historyTokenForCloudStore2 = [v75 historyTokenForCloudStore];
             v107 = HMFEqualObjects();
 
             if ((v107 & 1) == 0)
             {
-              [v75 setHistoryTokenForCloudStore:v153];
+              [v75 setHistoryTokenForCloudStore:token];
               goto LABEL_78;
             }
           }
 
           if (v143)
           {
-            v108 = [v75 historyTokenForCloudSharedStore];
+            historyTokenForCloudSharedStore = [v75 historyTokenForCloudSharedStore];
             v109 = HMFEqualObjects();
 
             if ((v109 & 1) == 0)
             {
-              [v75 setHistoryTokenForCloudSharedStore:v153];
+              [v75 setHistoryTokenForCloudSharedStore:token];
               goto LABEL_78;
             }
           }
 
-          v110 = [v75 historyTokenForWorkingStore];
+          historyTokenForWorkingStore = [v75 historyTokenForWorkingStore];
           v111 = HMFEqualObjects();
 
           if ((v111 & 1) == 0)
           {
-            [v75 setHistoryTokenForWorkingStore:v153];
+            [v75 setHistoryTokenForWorkingStore:token];
 LABEL_78:
             v112 = v39;
             if (self)
@@ -645,7 +645,7 @@ LABEL_78:
               v114 = v113;
               [v112 setMergePolicy:*MEMORY[0x277CBE160]];
               v115 = objc_autoreleasePoolPush();
-              v116 = self;
+              selfCopy6 = self;
               v117 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v117, OS_LOG_TYPE_DEBUG))
               {
@@ -662,7 +662,7 @@ LABEL_78:
               v119 = [v112 hmd_saveWithTransactionAuthor:4 error:v180];
               v120 = *v180;
               v121 = objc_autoreleasePoolPush();
-              v122 = v116;
+              v122 = selfCopy6;
               v123 = HMFGetOSLogHandle();
               v124 = v123;
               if (v119)
@@ -695,7 +695,7 @@ LABEL_78:
           }
         }
 
-        if (!v153)
+        if (!token)
         {
 LABEL_97:
           os_unfair_lock_unlock(&self->_lock.lock);
@@ -705,7 +705,7 @@ LABEL_97:
         }
 
         v127 = objc_autoreleasePoolPush();
-        v128 = self;
+        selfCopy7 = self;
         v129 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v129, OS_LOG_TYPE_DEBUG))
         {
@@ -715,20 +715,20 @@ LABEL_97:
           *&buf[12] = 2114;
           *&buf[14] = v144;
           *&buf[22] = 2114;
-          v172 = v153;
+          v172 = token;
           _os_log_impl(&dword_229538000, v129, OS_LOG_TYPE_DEBUG, "%{public}@Advancing in-memory history token for %{public}@ store: %{public}@", buf, 0x20u);
         }
 
         objc_autoreleasePoolPop(v127);
-        v131 = self;
+        selfCopy8 = self;
         if (self)
         {
-          v131 = v128->_historyTokensByStoreIdentifier;
+          selfCopy8 = selfCopy7->_historyTokensByStoreIdentifier;
         }
 
-        v104 = v131;
-        v105 = [v155 identifier];
-        [(NSMutableSet *)v104 setObject:v153 forKeyedSubscript:v105];
+        v104 = selfCopy8;
+        hmd_workingStoreIdentifier = [storeCopy identifier];
+        [(NSMutableSet *)v104 setObject:token forKeyedSubscript:hmd_workingStoreIdentifier];
 LABEL_96:
 
         goto LABEL_97;
@@ -755,12 +755,12 @@ uint64_t __61__HMDCoreDataCloudTransform__processHistoryForStore_context___block
   return result;
 }
 
-- (MKFCloudSyncMetadata)_fetchOrCreateMetadataForManagedObjectContext:(MKFCloudSyncMetadata *)a1
+- (MKFCloudSyncMetadata)_fetchOrCreateMetadataForManagedObjectContext:(MKFCloudSyncMetadata *)context
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = v3;
-  if (!a1)
+  if (!context)
   {
     goto LABEL_12;
   }
@@ -779,7 +779,7 @@ uint64_t __61__HMDCoreDataCloudTransform__processHistoryForStore_context___block
     }
 
     v9 = objc_autoreleasePoolPush();
-    v10 = a1;
+    contextCopy = context;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
     {
@@ -799,7 +799,7 @@ LABEL_8:
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v16 = a1;
+    contextCopy2 = context;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -817,29 +817,29 @@ LABEL_8:
 
   objc_autoreleasePoolPop(v9);
 LABEL_10:
-  a1 = [v7 firstObject];
+  context = [v7 firstObject];
 
-  if (!a1)
+  if (!context)
   {
-    a1 = [[MKFCloudSyncMetadata alloc] initWithContext:v5];
+    context = [[MKFCloudSyncMetadata alloc] initWithContext:v5];
   }
 
 LABEL_12:
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return context;
 }
 
 - (id)pendingChangedStoreIdentifiers
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[7];
+    self = self[7];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 void __74__HMDCoreDataCloudTransform__updateHomeManagerApplicationDataWithContext___block_invoke(uint64_t a1, void *a2)
@@ -872,17 +872,17 @@ void __74__HMDCoreDataCloudTransform__updateHomeManagerApplicationDataWithContex
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)_saveHomeManagerChangesToWorkingStoreWithContext:(void *)a1
+- (void)_saveHomeManagerChangesToWorkingStoreWithContext:(void *)context
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (context)
   {
     v16 = 0;
-    v4 = [(HMDCoreDataCloudTransform *)a1 _saveContextToWorkingStore:v3 error:&v16];
+    v4 = [(HMDCoreDataCloudTransform *)context _saveContextToWorkingStore:v3 error:&v16];
     v5 = v16;
     v6 = objc_autoreleasePoolPush();
-    v7 = a1;
+    contextCopy = context;
     v8 = HMFGetOSLogHandle();
     v9 = v8;
     if (v4)
@@ -921,27 +921,27 @@ LABEL_7:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_saveContextToWorkingStore:(uint64_t)a3 error:
+- (uint64_t)_saveContextToWorkingStore:(uint64_t)store error:
 {
-  v4 = *(a1 + 32);
+  v4 = *(self + 32);
   v5 = a2;
   [v5 setMergePolicy:v4];
-  v6 = [v5 hmd_saveWithTransactionAuthor:4 error:a3];
+  v6 = [v5 hmd_saveWithTransactionAuthor:4 error:store];
 
   return v6;
 }
 
-- (uint64_t)_processChangeSet:(int)a3 isImport:(void *)a4 context:
+- (uint64_t)_processChangeSet:(int)set isImport:(void *)import context:
 {
   v252 = *MEMORY[0x277D85DE8];
   v7 = a2;
-  v194 = a4;
+  importCopy = import;
   v195 = v7;
-  if (a1)
+  if (self)
   {
     v8 = @"export";
-    v189 = a3;
-    if (a3)
+    setCopy = set;
+    if (set)
     {
       v8 = @"import";
     }
@@ -953,7 +953,7 @@ LABEL_7:
     }
 
     v9 = objc_autoreleasePoolPush();
-    v192 = a1;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
     if (v7)
@@ -1001,13 +1001,13 @@ LABEL_7:
       }
 
       objc_autoreleasePoolPop(v9);
-      [v194 setHmd_currentChangeSet:v195];
-      if (v189)
+      [importCopy setHmd_currentChangeSet:v195];
+      if (setCopy)
       {
         v20 = v195;
-        v21 = v194;
+        v21 = importCopy;
         v22 = objc_autoreleasePoolPush();
-        v23 = v192;
+        v23 = selfCopy;
         v24 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
         {
@@ -1024,7 +1024,7 @@ LABEL_7:
         v228 = &v227;
         v229 = 0x2020000000;
         v230 = 0;
-        v26 = [(HMDCoreDataCloudTransformChangeSet *)v20 inserts];
+        inserts = [(HMDCoreDataCloudTransformChangeSet *)v20 inserts];
         v221 = MEMORY[0x277D85DD0];
         v222 = 3221225472;
         v223 = __61__HMDCoreDataCloudTransform__processImportChangeSet_context___block_invoke;
@@ -1032,9 +1032,9 @@ LABEL_7:
         v27 = v21;
         v225 = v27;
         v226 = &v227;
-        [v26 hmf_enumerateWithAutoreleasePoolUsingBlock:&v221];
+        [inserts hmf_enumerateWithAutoreleasePoolUsingBlock:&v221];
 
-        v28 = [(HMDCoreDataCloudTransformChangeSet *)v20 updates];
+        updates = [(HMDCoreDataCloudTransformChangeSet *)v20 updates];
         *v248 = MEMORY[0x277D85DD0];
         *&v248[8] = 3221225472;
         *&v248[16] = __61__HMDCoreDataCloudTransform__processImportChangeSet_context___block_invoke_2;
@@ -1042,7 +1042,7 @@ LABEL_7:
         v29 = v27;
         v250 = v29;
         v251 = &v227;
-        [v28 enumerateKeysAndObjectsUsingBlock:v248];
+        [updates enumerateKeysAndObjectsUsingBlock:v248];
 
         [v29 processPendingChanges];
         if (*(v228 + 24) == 1)
@@ -1064,7 +1064,7 @@ LABEL_7:
           v33 = 0;
         }
 
-        v34 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
         v35 = v33 & 1;
         v217 = 0;
         v218 = &v217;
@@ -1082,7 +1082,7 @@ LABEL_7:
         *&v233[24] = &v217;
         *v233 = v23;
         LOBYTE(v234) = v35;
-        v36 = v34;
+        v36 = dictionary;
         *&v233[8] = v36;
         v187 = v29;
         *&v233[16] = v187;
@@ -1090,7 +1090,7 @@ LABEL_7:
 
         if (v218[3])
         {
-          v37 = [(HMDCoreDataCloudTransformChangeSet *)v20 inserts];
+          inserts2 = [(HMDCoreDataCloudTransformChangeSet *)v20 inserts];
           v208 = MEMORY[0x277D85DD0];
           v209 = 3221225472;
           v210 = __61__HMDCoreDataCloudTransform__processImportChangeSet_context___block_invoke_4;
@@ -1102,11 +1102,11 @@ LABEL_7:
           v213 = v36;
           v38 = v187;
           v214 = v38;
-          [v37 hmf_enumerateWithAutoreleasePoolUsingBlock:&v208];
+          [inserts2 hmf_enumerateWithAutoreleasePoolUsingBlock:&v208];
 
           if (v218[3])
           {
-            v39 = [(HMDCoreDataCloudTransformChangeSet *)v20 updates];
+            updates2 = [(HMDCoreDataCloudTransformChangeSet *)v20 updates];
             v239 = MEMORY[0x277D85DD0];
             v240 = 3221225472;
             v241 = __61__HMDCoreDataCloudTransform__processImportChangeSet_context___block_invoke_5;
@@ -1118,7 +1118,7 @@ LABEL_7:
             v244 = v36;
             v40 = v38;
             v245 = v40;
-            [v39 enumerateKeysAndObjectsUsingBlock:&v239];
+            [updates2 enumerateKeysAndObjectsUsingBlock:&v239];
 
             if (v218[3])
             {
@@ -1140,7 +1140,7 @@ LABEL_7:
 
                 objc_autoreleasePoolPop(v41);
                 v45 = v36;
-                v46 = [MEMORY[0x277CBEB38] dictionary];
+                dictionary2 = [MEMORY[0x277CBEB38] dictionary];
 
                 v199 = MEMORY[0x277D85DD0];
                 v200 = 3221225472;
@@ -1149,13 +1149,13 @@ LABEL_7:
                 v206 = &v217;
                 v203 = v42;
                 v207 = v35;
-                v36 = v46;
+                v36 = dictionary2;
                 v204 = v36;
                 v205 = v40;
                 [v45 enumerateKeysAndObjectsUsingBlock:&v199];
-                LOBYTE(v46) = v218[3] == 0;
+                LOBYTE(dictionary2) = v218[3] == 0;
 
-                if (v46)
+                if (dictionary2)
                 {
                   goto LABEL_30;
                 }
@@ -1189,11 +1189,11 @@ LABEL_30:
       else
       {
         v51 = v195;
-        v52 = v194;
+        v52 = importCopy;
         if (v195 && *(v51 + 32) == 1)
         {
           v53 = objc_autoreleasePoolPush();
-          v54 = v192;
+          v54 = selfCopy;
           v55 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
           {
@@ -1206,7 +1206,7 @@ LABEL_30:
           }
 
           objc_autoreleasePoolPop(v53);
-          v57 = [MEMORY[0x277CBEB38] dictionary];
+          dictionary3 = [MEMORY[0x277CBEB38] dictionary];
           v221 = 0;
           v222 = &v221;
           v223 = 0x2020000000;
@@ -1218,7 +1218,7 @@ LABEL_30:
           v232 = &unk_278679160;
           *&v233[24] = &v221;
           *v233 = v54;
-          v59 = v57;
+          v59 = dictionary3;
           *&v233[8] = v59;
           v60 = v52;
           *&v233[16] = v60;
@@ -1265,11 +1265,11 @@ LABEL_30:
                   {
                     v68 = v52;
                     v69 = HMFGetLogIdentifier();
-                    v70 = [v59 allKeys];
+                    allKeys = [v59 allKeys];
                     *v248 = 138543618;
                     *&v248[4] = v69;
                     *&v248[12] = 2114;
-                    *&v248[14] = v70;
+                    *&v248[14] = allKeys;
                     _os_log_impl(&dword_229538000, v67, OS_LOG_TYPE_INFO, "%{public}@Processing export additional updates: %{public}@", v248, 0x16u);
 
                     v52 = v68;
@@ -1277,7 +1277,7 @@ LABEL_30:
 
                   objc_autoreleasePoolPop(v65);
                   v71 = v59;
-                  v72 = [MEMORY[0x277CBEB38] dictionary];
+                  dictionary4 = [MEMORY[0x277CBEB38] dictionary];
 
                   v199 = MEMORY[0x277D85DD0];
                   v200 = 3221225472;
@@ -1285,7 +1285,7 @@ LABEL_30:
                   v202 = &unk_2786791D8;
                   v206 = &v221;
                   v203 = v66;
-                  v59 = v72;
+                  v59 = dictionary4;
                   v204 = v59;
                   v205 = v64;
                   [v71 enumerateKeysAndObjectsUsingBlock:&v199];
@@ -1327,11 +1327,11 @@ LABEL_47:
         }
       }
 
-      [v194 setHmd_currentChangeSet:0];
+      [importCopy setHmd_currentChangeSet:0];
       if (!v47)
       {
         v74 = objc_autoreleasePoolPush();
-        v75 = v192;
+        v75 = selfCopy;
         v76 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
         {
@@ -1346,11 +1346,11 @@ LABEL_47:
         }
 
         objc_autoreleasePoolPop(v74);
-        [v194 rollback];
+        [importCopy rollback];
       }
 
       v78 = objc_autoreleasePoolPush();
-      v79 = v192;
+      v79 = selfCopy;
       v80 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v80, OS_LOG_TYPE_INFO))
       {
@@ -1378,13 +1378,13 @@ LABEL_47:
       }
 
       objc_autoreleasePoolPop(v78);
-      if ([v194 hasChanges])
+      if ([importCopy hasChanges])
       {
         v84 = v195;
         if (v195 && (v85 = v195[6]) != 0)
         {
           v86 = HMDWorkingContextNameForHomeUUID(v85);
-          [v194 setName:v86];
+          [importCopy setName:v86];
 
           v193 = 0;
           v84 = v195;
@@ -1395,10 +1395,10 @@ LABEL_47:
           v193 = 1;
         }
 
-        if (v189)
+        if (setCopy)
         {
           v93 = v84;
-          v94 = v194;
+          v94 = importCopy;
           v208 = 0;
           v95 = [(HMDCoreDataCloudTransform *)v79 _saveContextToWorkingStore:v94 error:&v208];
           v96 = v208;
@@ -1458,8 +1458,8 @@ LABEL_47:
           }
 
           objc_autoreleasePoolPop(v97);
-          v135 = [v94 hmd_homeManagerContext];
-          if (v135)
+          hmd_homeManagerContext = [v94 hmd_homeManagerContext];
+          if (hmd_homeManagerContext)
           {
             [v94 setHmd_homeManagerContext:0];
             v196[0] = MEMORY[0x277D85DD0];
@@ -1468,7 +1468,7 @@ LABEL_47:
             v196[3] = &unk_278688BD0;
             v198 = v95;
             v196[4] = v98;
-            v197 = v135;
+            v197 = hmd_homeManagerContext;
             [v197 performBlockAndWait:v196];
           }
         }
@@ -1476,7 +1476,7 @@ LABEL_47:
         else
         {
           v104 = v84;
-          v105 = v194;
+          v105 = importCopy;
           v106 = objc_autoreleasePoolPush();
           v107 = v79;
           v108 = HMFGetOSLogHandle();
@@ -1509,11 +1509,11 @@ LABEL_47:
           }
 
           objc_autoreleasePoolPop(v106);
-          v113 = [v105 updatedObjects];
-          v114 = [v105 insertedObjects];
-          v115 = [v105 deletedObjects];
-          v116 = [v105 transactionAuthor];
-          v190 = [HMDCoreDataCloudStoreTransactionLogEvent eventForUpdates:v113 inserts:v114 deletes:v115 transactionAuthor:v116];
+          updatedObjects = [v105 updatedObjects];
+          insertedObjects = [v105 insertedObjects];
+          deletedObjects = [v105 deletedObjects];
+          transactionAuthor = [v105 transactionAuthor];
+          v190 = [HMDCoreDataCloudStoreTransactionLogEvent eventForUpdates:updatedObjects inserts:insertedObjects deletes:deletedObjects transactionAuthor:transactionAuthor];
 
           if (v190)
           {
@@ -1521,15 +1521,15 @@ LABEL_47:
           }
 
           v117 = v105;
-          v118 = [v117 insertedObjects];
-          v119 = [v117 updatedObjects];
+          insertedObjects2 = [v117 insertedObjects];
+          updatedObjects2 = [v117 updatedObjects];
 
-          if ([v118 count] || objc_msgSend(v119, "count"))
+          if ([insertedObjects2 count] || objc_msgSend(updatedObjects2, "count"))
           {
             v120 = [MEMORY[0x277CBEAA8] now];
             v121 = MKFCKModelCurrentWriterVersionString();
-            [HMDCoreDataCloudTransform _updateWriterPropertiesForCloudObjects:v118 timestamp:v120 version:v121];
-            [HMDCoreDataCloudTransform _updateWriterPropertiesForCloudObjects:v119 timestamp:v120 version:v121];
+            [HMDCoreDataCloudTransform _updateWriterPropertiesForCloudObjects:insertedObjects2 timestamp:v120 version:v121];
+            [HMDCoreDataCloudTransform _updateWriterPropertiesForCloudObjects:updatedObjects2 timestamp:v120 version:v121];
           }
 
           v122 = v104;
@@ -1547,14 +1547,14 @@ LABEL_47:
             v140 = [MEMORY[0x277CBEA60] arrayWithObjects:&v239 count:3];
 
             v141 = MEMORY[0x277CBEB58];
-            v142 = [v136 insertedObjects];
-            v143 = [v141 setWithSet:v142];
+            insertedObjects3 = [v136 insertedObjects];
+            v143 = [v141 setWithSet:insertedObjects3];
 
-            v144 = [v136 updatedObjects];
-            [v143 unionSet:v144];
+            updatedObjects3 = [v136 updatedObjects];
+            [v143 unionSet:updatedObjects3];
 
-            v145 = [v136 deletedObjects];
-            [v143 unionSet:v145];
+            deletedObjects2 = [v136 deletedObjects];
+            [v143 unionSet:deletedObjects2];
 
             v208 = 0;
             v209 = &v208;
@@ -1605,14 +1605,14 @@ LABEL_47:
               }
 
               objc_autoreleasePoolPop(v155);
-              v160 = [v156 coreData];
-              v161 = [v160 container];
+              coreData = [v156 coreData];
+              container = [coreData container];
 
-              v162 = [v156 coreData];
-              v163 = [v162 cloudPrivateStore];
-              *buf = v163;
+              coreData2 = [v156 coreData];
+              cloudPrivateStore = [coreData2 cloudPrivateStore];
+              *buf = cloudPrivateStore;
               v164 = [MEMORY[0x277CBEA60] arrayWithObjects:buf count:1];
-              [v161 applyActivityVoucher:v186 toStores:v164];
+              [container applyActivityVoucher:v186 toStores:v164];
             }
 
             else
@@ -1755,16 +1755,16 @@ LABEL_47:
           objc_opt_class();
           v181 = objc_opt_self();
           v182 = NSStringFromClass(v181);
-          [v194 setName:v182];
+          [importCopy setName:v182];
         }
 
-        v183 = [v194 hasChanges];
-        if (v183)
+        hasChanges = [importCopy hasChanges];
+        if (hasChanges)
         {
-          [v194 rollback];
+          [importCopy rollback];
         }
 
-        a1 = v183 ^ 1u;
+        self = hasChanges ^ 1u;
       }
 
       else
@@ -1798,7 +1798,7 @@ LABEL_47:
         }
 
         objc_autoreleasePoolPop(v87);
-        a1 = 0;
+        self = 0;
       }
     }
 
@@ -1830,12 +1830,12 @@ LABEL_47:
       }
 
       objc_autoreleasePoolPop(v9);
-      a1 = 1;
+      self = 1;
     }
   }
 
   v184 = *MEMORY[0x277D85DE8];
-  return a1;
+  return self;
 }
 
 void __64__HMDCoreDataCloudTransform__processChangeSet_isImport_context___block_invoke(uint64_t a1)
@@ -1927,19 +1927,19 @@ void __75__HMDCoreDataCloudTransform__fetchRequestForCriticalObjectExportInConte
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateWriterPropertiesForCloudObjects:(void *)a1 timestamp:(void *)a2 version:(void *)a3
+- (void)_updateWriterPropertiesForCloudObjects:(void *)objects timestamp:(void *)timestamp version:(void *)version
 {
-  v5 = a2;
-  v6 = a3;
+  timestampCopy = timestamp;
+  versionCopy = version;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __86__HMDCoreDataCloudTransform__updateWriterPropertiesForCloudObjects_timestamp_version___block_invoke;
   v9[3] = &unk_278678F60;
-  v7 = v5;
+  v7 = timestampCopy;
   v10 = v7;
-  v8 = v6;
+  v8 = versionCopy;
   v11 = v8;
-  [a1 hmf_enumerateWithAutoreleasePoolUsingBlock:v9];
+  [objects hmf_enumerateWithAutoreleasePoolUsingBlock:v9];
 }
 
 void __86__HMDCoreDataCloudTransform__updateWriterPropertiesForCloudObjects_timestamp_version___block_invoke(uint64_t a1, void *a2)
@@ -2302,36 +2302,36 @@ void __61__HMDCoreDataCloudTransform__processExportChangeSet_context___block_inv
   }
 }
 
-- (uint64_t)_processExportUpdateForObjectID:(void *)a3 updatedProperties:(void *)a4 additionalUpdates:(void *)a5 context:
+- (uint64_t)_processExportUpdateForObjectID:(void *)d updatedProperties:(void *)properties additionalUpdates:(void *)updates context:
 {
   v41 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (!a1)
+  dCopy = d;
+  propertiesCopy = properties;
+  updatesCopy = updates;
+  v13 = updatesCopy;
+  if (!self)
   {
     v31 = 0;
     goto LABEL_13;
   }
 
-  v14 = [v12 objectWithID:v9];
-  v15 = [v14 isDeleted];
+  v14 = [updatesCopy objectWithID:v9];
+  isDeleted = [v14 isDeleted];
 
-  if (v15)
+  if (isDeleted)
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = a1;
+    selfCopy2 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v19 = HMFGetLogIdentifier();
-      v20 = [v9 hmd_debugIdentifier];
+      hmd_debugIdentifier = [v9 hmd_debugIdentifier];
       *buf = 138543618;
       v36 = v19;
       v37 = 2112;
-      v38 = v20;
+      v38 = hmd_debugIdentifier;
       v21 = "%{public}@Skipping processing export update for already-deleted object: <%@>";
       v22 = v18;
       v23 = OS_LOG_TYPE_INFO;
@@ -2345,11 +2345,11 @@ LABEL_11:
   }
 
   v24 = objc_opt_class();
-  v25 = [v9 entity];
-  v26 = [v24 exportTransformableClassFromEntity:v25];
+  entity = [v9 entity];
+  v26 = [v24 exportTransformableClassFromEntity:entity];
 
   v16 = objc_autoreleasePoolPush();
-  v17 = a1;
+  selfCopy2 = self;
   v18 = HMFGetOSLogHandle();
   v27 = os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG);
   if (!v26)
@@ -2357,11 +2357,11 @@ LABEL_11:
     if (v27)
     {
       v19 = HMFGetLogIdentifier();
-      v20 = [v9 hmd_debugIdentifier];
+      hmd_debugIdentifier = [v9 hmd_debugIdentifier];
       *buf = 138543618;
       v36 = v19;
       v37 = 2112;
-      v38 = v20;
+      v38 = hmd_debugIdentifier;
       v21 = "%{public}@Ignoring export update: <%@>";
       v22 = v18;
       v23 = OS_LOG_TYPE_DEBUG;
@@ -2378,7 +2378,7 @@ LABEL_12:
   if (v27)
   {
     v28 = HMFGetLogIdentifier();
-    v29 = MKFPropertyNamesFromDescriptions(v10);
+    v29 = MKFPropertyNamesFromDescriptions(dCopy);
     [v9 hmd_debugIdentifier];
     v30 = v34 = v16;
     *buf = 138543874;
@@ -2393,7 +2393,7 @@ LABEL_12:
   }
 
   objc_autoreleasePoolPop(v16);
-  v31 = [v26 exportUpdateWithObjectID:v9 updatedProperties:v10 additionalUpdates:v11 context:v13];
+  v31 = [v26 exportUpdateWithObjectID:v9 updatedProperties:dCopy additionalUpdates:propertiesCopy context:v13];
 LABEL_13:
 
   v32 = *MEMORY[0x277D85DE8];
@@ -2755,31 +2755,31 @@ void __61__HMDCoreDataCloudTransform__processImportChangeSet_context___block_inv
   }
 }
 
-- (uint64_t)_processImportUpdateForObjectID:(void *)a3 updatedProperties:(int)a4 transform:(void *)a5 additionalUpdates:(void *)a6 context:
+- (uint64_t)_processImportUpdateForObjectID:(void *)d updatedProperties:(int)properties transform:(void *)transform additionalUpdates:(void *)updates context:
 {
   v57 = *MEMORY[0x277D85DE8];
   v11 = a2;
-  v12 = a3;
-  v46 = a5;
-  v13 = a6;
-  if (!a1)
+  dCopy = d;
+  transformCopy = transform;
+  updatesCopy = updates;
+  if (!self)
   {
     v24 = 0;
     goto LABEL_17;
   }
 
-  v14 = MKFPropertyNamesFromDescriptions(v12);
-  v15 = [v13 objectWithID:v11];
+  v14 = MKFPropertyNamesFromDescriptions(dCopy);
+  v15 = [updatesCopy objectWithID:v11];
   if ([v15 isDeleted])
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = a1;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v19 = HMFGetLogIdentifier();
       [v11 hmd_debugIdentifier];
-      v20 = v12;
+      v20 = dCopy;
       v22 = v21 = v14;
       *buf = 138543874;
       v52 = v19;
@@ -2790,7 +2790,7 @@ void __61__HMDCoreDataCloudTransform__processImportChangeSet_context___block_inv
       _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_INFO, "%{public}@Skipping processing import update [%public@] for already-deleted object: <%@>", buf, 0x20u);
 
       v14 = v21;
-      v12 = v20;
+      dCopy = v20;
     }
 
     v23 = v16;
@@ -2802,29 +2802,29 @@ void __61__HMDCoreDataCloudTransform__processImportChangeSet_context___block_inv
     if ((objc_opt_isKindOfClass() & 1) == 0 || (v25 = [v15 ensureCanonicalModel], v25 == 1))
     {
       v26 = objc_autoreleasePoolPush();
-      v27 = a1;
+      selfCopy2 = self;
       v28 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
       {
         HMFGetLogIdentifier();
-        v45 = v12;
+        v45 = dCopy;
         v30 = v29 = v14;
-        v31 = [v11 hmd_debugIdentifier];
+        hmd_debugIdentifier = [v11 hmd_debugIdentifier];
         *buf = 138543874;
         v52 = v30;
         v53 = 2048;
         v54 = v29;
         v55 = 2112;
-        v56 = v31;
+        v56 = hmd_debugIdentifier;
         _os_log_impl(&dword_229538000, v28, OS_LOG_TYPE_DEBUG, "%{public}@Processing import update [%public@]: <%@>", buf, 0x20u);
 
         v14 = v29;
-        v12 = v45;
+        dCopy = v45;
       }
 
       objc_autoreleasePoolPop(v26);
-      v32 = [v11 entity];
-      if (a4 && (v33 = [objc_opt_class() importTransformableClassFromEntity:v32]) != 0 && !objc_msgSend(v33, "importUpdateWithObjectID:updatedProperties:additionalUpdates:context:", v11, v12, v46, v13))
+      entity = [v11 entity];
+      if (properties && (v33 = [objc_opt_class() importTransformableClassFromEntity:entity]) != 0 && !objc_msgSend(v33, "importUpdateWithObjectID:updatedProperties:additionalUpdates:context:", v11, dCopy, transformCopy, updatesCopy))
       {
         v24 = 0;
       }
@@ -2835,10 +2835,10 @@ void __61__HMDCoreDataCloudTransform__processImportChangeSet_context___block_inv
         v47[1] = 3221225472;
         v47[2] = __115__HMDCoreDataCloudTransform__processImportUpdateForObjectID_updatedProperties_transform_additionalUpdates_context___block_invoke;
         v47[3] = &unk_278679138;
-        v48 = v13;
+        v48 = updatesCopy;
         v49 = v11;
-        v50 = v12;
-        [(HMDCoreDataCloudTransform *)v27 _enumerateCloudChangeListenersForEntity:v32 usingBlock:v47];
+        v50 = dCopy;
+        [(HMDCoreDataCloudTransform *)selfCopy2 _enumerateCloudChangeListenersForEntity:entity usingBlock:v47];
 
         v24 = 1;
       }
@@ -2848,7 +2848,7 @@ void __61__HMDCoreDataCloudTransform__processImportChangeSet_context___block_inv
 
     v36 = v25;
     v37 = objc_autoreleasePoolPush();
-    v38 = a1;
+    selfCopy3 = self;
     v39 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
     {
@@ -2865,13 +2865,13 @@ void __61__HMDCoreDataCloudTransform__processImportChangeSet_context___block_inv
       }
 
       v42 = v41;
-      v43 = [v11 hmd_debugIdentifier];
+      hmd_debugIdentifier2 = [v11 hmd_debugIdentifier];
       *buf = 138543874;
       v52 = v40;
       v53 = 2048;
       v54 = v42;
       v55 = 2112;
-      v56 = v43;
+      v56 = hmd_debugIdentifier2;
       _os_log_impl(&dword_229538000, v39, OS_LOG_TYPE_INFO, "%{public}@Skipping processing import update for non-canonical (%public@) model: <%@>", buf, 0x20u);
 
       v14 = v44;
@@ -2899,11 +2899,11 @@ void __115__HMDCoreDataCloudTransform__processImportUpdateForObjectID_updatedPro
   }
 }
 
-- (void)_enumerateCloudChangeListenersForEntity:(void *)a3 usingBlock:
+- (void)_enumerateCloudChangeListenersForEntity:(void *)entity usingBlock:
 {
   v5 = a2;
-  v6 = a3;
-  v7 = [*(a1 + 96) objectForKey:v5];
+  entityCopy = entity;
+  v7 = [*(self + 96) objectForKey:v5];
   v8 = v7;
   if (v7)
   {
@@ -2937,7 +2937,7 @@ void __115__HMDCoreDataCloudTransform__processImportUpdateForObjectID_updatedPro
         }
 
         v14 = v13;
-        v6[2](v6, v13, &v15);
+        entityCopy[2](entityCopy, v13, &v15);
 
         ++v12;
       }
@@ -2952,7 +2952,7 @@ LABEL_12:
       [v8 compact];
       if (![v8 count])
       {
-        [*(a1 + 96) removeObjectForKey:v5];
+        [*(self + 96) removeObjectForKey:v5];
       }
     }
   }
@@ -3641,13 +3641,13 @@ LABEL_92:
   v125 = *MEMORY[0x277D85DE8];
 }
 
-- (_BYTE)_changeSetForHome:(uint64_t)a3 isImport:(void *)a4 clientIdentifier:(void *)a5 qualityOfService:(void *)a6 cache:
+- (_BYTE)_changeSetForHome:(uint64_t)home isImport:(void *)import clientIdentifier:(void *)identifier qualityOfService:(void *)service cache:
 {
   v39 = *MEMORY[0x277D85DE8];
   v11 = a2;
-  v12 = a4;
-  v13 = a6;
-  if (!a1 || !v11 && (a3 & 1) != 0)
+  importCopy = import;
+  serviceCopy = service;
+  if (!self || !v11 && (home & 1) != 0)
   {
     v14 = 0;
     goto LABEL_23;
@@ -3660,24 +3660,24 @@ LABEL_92:
   }
 
   v16 = v15;
-  v14 = [v13 objectForKeyedSubscript:v16];
+  v14 = [serviceCopy objectForKeyedSubscript:v16];
   if (!v14)
   {
-    v14 = [[HMDCoreDataCloudTransformChangeSet alloc] initWithHomeModelID:v11 clientIdentifier:v12 qualityOfService:a5];
-    [v13 setObject:v14 forKeyedSubscript:v16];
+    v14 = [[HMDCoreDataCloudTransformChangeSet alloc] initWithHomeModelID:v11 clientIdentifier:importCopy qualityOfService:identifier];
+    [serviceCopy setObject:v14 forKeyedSubscript:v16];
     if (v11)
     {
-      v17 = [a1 delegate];
-      v18 = v17;
-      if (!v17)
+      selfCopy = [self delegate];
+      v18 = selfCopy;
+      if (!selfCopy)
       {
-        v17 = a1;
+        selfCopy = self;
       }
 
-      v19 = [v17 cloudTransform:a1 isPermittedForHomeWithModelID:v11 isImport:a3];
+      v19 = [selfCopy cloudTransform:self isPermittedForHomeWithModelID:v11 isImport:home];
 
       v20 = objc_autoreleasePoolPush();
-      v21 = a1;
+      selfCopy2 = self;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEBUG))
       {
@@ -3695,7 +3695,7 @@ LABEL_92:
         v25 = @"import";
         v31 = 2114;
         v33 = 2114;
-        if (!a3)
+        if (!home)
         {
           v25 = @"export";
         }
@@ -3768,81 +3768,81 @@ void __71__HMDCoreDataCloudTransform__changeSetsFromImportTransactions_context__
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (uint64_t)_shouldProcessChange:(void *)a3 homeModelID:(int)a4 isImport:(void *)a5 context:
+- (uint64_t)_shouldProcessChange:(void *)change homeModelID:(int)d isImport:(void *)import context:
 {
   v69 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = a5;
-  if (!a1)
+  changeCopy = change;
+  importCopy = import;
+  if (!self)
   {
     v16 = 0;
     goto LABEL_28;
   }
 
-  v12 = [v9 changedObjectID];
-  v13 = [v12 entity];
+  changedObjectID = [v9 changedObjectID];
+  entity = [changedObjectID entity];
 
-  if (!a4)
+  if (!d)
   {
 LABEL_6:
     v19 = +[MKFCKSharedHome entity];
-    if ([v13 isKindOfEntity:v19])
+    if ([entity isKindOfEntity:v19])
     {
-      v20 = [v9 transaction];
-      v21 = [v20 storeID];
-      v22 = [v11 hmd_cloudPrivateStoreIdentifier];
-      v53 = a1;
+      transaction = [v9 transaction];
+      storeID = [transaction storeID];
+      hmd_cloudPrivateStoreIdentifier = [importCopy hmd_cloudPrivateStoreIdentifier];
+      selfCopy = self;
       v23 = v9;
-      v24 = v13;
-      v25 = v10;
-      v26 = v11;
-      v27 = [v21 isEqualToString:v22];
+      v24 = entity;
+      v25 = changeCopy;
+      v26 = importCopy;
+      v27 = [storeID isEqualToString:hmd_cloudPrivateStoreIdentifier];
 
       v16 = v27 ^ 1u;
       if (v27)
       {
-        v11 = v26;
-        v10 = v25;
-        v13 = v24;
+        importCopy = v26;
+        changeCopy = v25;
+        entity = v24;
         v9 = v23;
         goto LABEL_27;
       }
 
-      v11 = v26;
-      v10 = v25;
-      v13 = v24;
+      importCopy = v26;
+      changeCopy = v25;
+      entity = v24;
       v9 = v23;
-      a1 = v53;
-      if (a4)
+      self = selfCopy;
+      if (d)
       {
         goto LABEL_27;
       }
 
 LABEL_12:
       v28 = v9;
-      v50 = v10;
-      v51 = v11;
+      v50 = changeCopy;
+      v51 = importCopy;
       v52 = v28;
-      v29 = [v28 changedObjectID];
-      v54 = [v29 entity];
+      changedObjectID2 = [v28 changedObjectID];
+      entity2 = [changedObjectID2 entity];
 
-      v30 = [v54 userInfo];
-      v31 = [v30 objectForKeyedSubscript:@"cloudSyncInclude"];
+      userInfo = [entity2 userInfo];
+      v31 = [userInfo objectForKeyedSubscript:@"cloudSyncInclude"];
       v32 = v31;
       if (v31 && ([v31 BOOLValue] & 1) == 0)
       {
         v49 = objc_autoreleasePoolPush();
-        v40 = a1;
+        selfCopy2 = self;
         v41 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
         {
           v47 = HMFGetLogIdentifier();
-          v42 = [v54 name];
+          name = [entity2 name];
           *v65 = 138544130;
           *&v65[4] = v47;
           *&v65[12] = 2112;
-          *&v65[14] = v42;
+          *&v65[14] = name;
           *&v65[22] = 2112;
           v66 = @"cloudSyncInclude";
           LOWORD(v67) = 2112;
@@ -3856,52 +3856,52 @@ LABEL_12:
 
       else
       {
-        v33 = [v30 objectForKeyedSubscript:@"cloudSyncEntity"];
+        v33 = [userInfo objectForKeyedSubscript:@"cloudSyncEntity"];
 
         if (v33 && [v52 changeType] == 1)
         {
-          v48 = v11;
+          v48 = importCopy;
           v55 = 0;
           v56 = &v55;
           v57 = 0x2020000000;
           v58 = 0;
-          v34 = [v52 updatedProperties];
+          updatedProperties = [v52 updatedProperties];
           *v65 = MEMORY[0x277D85DD0];
           *&v65[8] = 3221225472;
           *&v65[16] = __76__HMDCoreDataCloudTransform__shouldProcessExportChange_homeModelID_context___block_invoke;
           v66 = &unk_278678FF8;
-          *&v67 = a1;
-          v46 = v54;
+          *&v67 = self;
+          v46 = entity2;
           *(&v67 + 1) = v46;
           v68 = &v55;
-          [v34 hmf_enumerateWithAutoreleasePoolUsingBlock:v65];
+          [updatedProperties hmf_enumerateWithAutoreleasePoolUsingBlock:v65];
 
           v16 = *(v56 + 24);
           if ((v16 & 1) == 0)
           {
             context = objc_autoreleasePoolPush();
-            v35 = a1;
+            selfCopy3 = self;
             v36 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
             {
-              v37 = v35;
+              v37 = selfCopy3;
               v38 = HMFGetLogIdentifier();
-              v39 = [v46 name];
+              name2 = [v46 name];
               *buf = 138543874;
               v60 = v38;
               v61 = 2112;
-              v62 = v39;
+              v62 = name2;
               v63 = 2112;
               v64 = v52;
               _os_log_impl(&dword_229538000, v36, OS_LOG_TYPE_DEBUG, "%{public}@No relevant updates to %@, skipping change: %@", buf, 0x20u);
 
-              v35 = v37;
+              selfCopy3 = v37;
             }
 
             objc_autoreleasePoolPop(context);
           }
 
-          v11 = v48;
+          importCopy = v48;
           _Block_object_dispose(&v55, 8);
         }
 
@@ -3914,7 +3914,7 @@ LABEL_12:
       goto LABEL_27;
     }
 
-    if ((a4 & 1) == 0)
+    if ((d & 1) == 0)
     {
       goto LABEL_12;
     }
@@ -3924,12 +3924,12 @@ LABEL_11:
     goto LABEL_27;
   }
 
-  v14 = [HMDCoreDataCloudTransform fakeHomeChangeSetModelID];
-  v15 = [v10 isEqual:v14];
+  fakeHomeChangeSetModelID = [HMDCoreDataCloudTransform fakeHomeChangeSetModelID];
+  v15 = [changeCopy isEqual:fakeHomeChangeSetModelID];
 
   if ((v15 & 1) == 0)
   {
-    v17 = [a1[12] objectForKey:v13];
+    v17 = [self[12] objectForKey:entity];
     v18 = [v17 count];
 
     if (v18)
@@ -4074,17 +4074,17 @@ void __53__HMDCoreDataCloudTransform_fakeHomeChangeSetModelID__block_invoke()
   fakeHomeChangeSetModelID__hmf_once_v14 = v0;
 }
 
-- (__CFString)_homeModelIDPropertyNameForObjectID:(void *)a1
+- (__CFString)_homeModelIDPropertyNameForObjectID:(void *)d
 {
-  v1 = [a1 entity];
+  entity = [d entity];
   v2 = +[MKFCKHome entity];
-  v3 = [v1 isKindOfEntity:v2];
+  v3 = [entity isKindOfEntity:v2];
 
   v4 = @"modelID";
   if ((v3 & 1) == 0)
   {
     v5 = +[MKFCKSharedHome entity];
-    v6 = [v1 isKindOfEntity:v5];
+    v6 = [entity isKindOfEntity:v5];
 
     if (!v6)
     {
@@ -4276,13 +4276,13 @@ void __71__HMDCoreDataCloudTransform__changeSetsFromExportTransactions_context__
   }
 }
 
-- (BOOL)cloudTransform:(id)a3 isPermittedForHomeWithModelID:(id)a4 isImport:(BOOL)a5
+- (BOOL)cloudTransform:(id)transform isPermittedForHomeWithModelID:(id)d isImport:(BOOL)import
 {
   v21 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  transformCopy = transform;
+  dCopy = d;
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -4292,7 +4292,7 @@ void __71__HMDCoreDataCloudTransform__changeSetsFromExportTransactions_context__
     v17 = 2160;
     v18 = 1752392040;
     v19 = 2112;
-    v20 = v8;
+    v20 = dCopy;
     _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_DEBUG, "%{public}@No delegate assigned, presuming that transform is allowed for home %{mask.hash}@", &v15, 0x20u);
   }
 
@@ -4301,17 +4301,17 @@ void __71__HMDCoreDataCloudTransform__changeSetsFromExportTransactions_context__
   return 1;
 }
 
-- (void)coreData:(id)a3 cloudKitExportFinishedForStoreWithIdentifier:(id)a4 duration:(double)a5 error:(id)a6
+- (void)coreData:(id)data cloudKitExportFinishedForStoreWithIdentifier:(id)identifier duration:(double)duration error:(id)error
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dataCopy = data;
+  identifierCopy = identifier;
+  errorCopy = error;
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy = self;
   v15 = HMFGetOSLogHandle();
   v16 = v15;
-  if (v12)
+  if (errorCopy)
   {
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -4322,11 +4322,11 @@ void __71__HMDCoreDataCloudTransform__changeSetsFromExportTransactions_context__
     v26 = 138544130;
     v27 = v17;
     v28 = 2114;
-    v29 = v11;
+    v29 = identifierCopy;
     v30 = 2048;
-    v31 = a5;
+    durationCopy2 = duration;
     v32 = 2114;
-    v33 = v12;
+    v33 = errorCopy;
     v18 = "%{public}@CloudKit export for store %{public}@ failed after %f seconds: %{public}@";
     v19 = v16;
     v20 = OS_LOG_TYPE_ERROR;
@@ -4344,9 +4344,9 @@ void __71__HMDCoreDataCloudTransform__changeSetsFromExportTransactions_context__
     v26 = 138543874;
     v27 = v17;
     v28 = 2114;
-    v29 = v11;
+    v29 = identifierCopy;
     v30 = 2048;
-    v31 = a5;
+    durationCopy2 = duration;
     v18 = "%{public}@CloudKit export for store %{public}@ finished after %f seconds";
     v19 = v16;
     v20 = OS_LOG_TYPE_INFO;
@@ -4357,9 +4357,9 @@ void __71__HMDCoreDataCloudTransform__changeSetsFromExportTransactions_context__
 
 LABEL_7:
   objc_autoreleasePoolPop(v13);
-  if (v14)
+  if (selfCopy)
   {
-    logEventSubmitter = v14->_logEventSubmitter;
+    logEventSubmitter = selfCopy->_logEventSubmitter;
   }
 
   else
@@ -4369,18 +4369,18 @@ LABEL_7:
 
   v23 = logEventSubmitter;
   v24 = [[HMDCoreDataCloudKitOperationLogEvent alloc] initWithOperationType:2];
-  [(HMMLogEventSubmitting *)v23 submitLogEvent:v24 error:v12];
+  [(HMMLogEventSubmitting *)v23 submitLogEvent:v24 error:errorCopy];
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)coreData:(id)a3 cloudKitExportStartedForStoreWithIdentifier:(id)a4
+- (void)coreData:(id)data cloudKitExportStartedForStoreWithIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -4388,7 +4388,7 @@ LABEL_7:
     v13 = 138543618;
     v14 = v11;
     v15 = 2114;
-    v16 = v7;
+    v16 = identifierCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@CloudKit export started for store %{public}@", &v13, 0x16u);
   }
 
@@ -4396,36 +4396,36 @@ LABEL_7:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)coreData:(id)a3 cloudKitImportFinishedForStoreWithIdentifier:(id)a4 duration:(double)a5 error:(id)a6
+- (void)coreData:(id)data cloudKitImportFinishedForStoreWithIdentifier:(id)identifier duration:(double)duration error:(id)error
 {
   v43 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dataCopy = data;
+  identifierCopy = identifier;
+  errorCopy = error;
   v13 = self->_logger;
   v14 = v13;
   importSignpostID = self->_importSignpostID;
   if (importSignpostID - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
     v16 = HMFBooleanToString();
-    if (v12)
+    if (errorCopy)
     {
-      v17 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v12, "code")}];
-      [v12 domain];
+      null = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(errorCopy, "code")}];
+      [errorCopy domain];
     }
 
     else
     {
-      v17 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
       [MEMORY[0x277CBEB68] null];
     }
     v18 = ;
     v35 = 138413058;
-    v36 = v11;
+    v36 = identifierCopy;
     v37 = 2112;
     v38 = v16;
     v39 = 2112;
-    v40 = *&v17;
+    durationCopy2 = *&null;
     v41 = 2112;
     v42 = v18;
     _os_signpost_emit_with_name_impl(&dword_229538000, v14, OS_SIGNPOST_INTERVAL_END, importSignpostID, "CoreDataCloudTransformImport", "storeIdentifier=%{signpost.description:attribute}@ succeeded=%{signpost.description:attribute}@ errorCode=%{signpost.description:attribute}@ errorDomain=%{signpost.description:attribute}@ ", &v35, 0x2Au);
@@ -4433,10 +4433,10 @@ LABEL_7:
 
   self->_importSignpostID = 0;
   v19 = objc_autoreleasePoolPush();
-  v20 = self;
+  selfCopy = self;
   v21 = HMFGetOSLogHandle();
   v22 = v21;
-  if (v12)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
@@ -4444,11 +4444,11 @@ LABEL_7:
       v35 = 138544130;
       v36 = v23;
       v37 = 2114;
-      v38 = v11;
+      v38 = identifierCopy;
       v39 = 2048;
-      v40 = a5;
+      durationCopy2 = duration;
       v41 = 2114;
-      v42 = v12;
+      v42 = errorCopy;
       _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_ERROR, "%{public}@CloudKit import for store %{public}@ failed after %f seconds: %{public}@", &v35, 0x2Au);
     }
   }
@@ -4459,37 +4459,37 @@ LABEL_7:
     v35 = 138543874;
     v36 = v24;
     v37 = 2114;
-    v38 = v11;
+    v38 = identifierCopy;
     v39 = 2048;
-    v40 = a5;
+    durationCopy2 = duration;
     _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_INFO, "%{public}@CloudKit import for store %{public}@ finished after %f seconds", &v35, 0x20u);
   }
 
   objc_autoreleasePoolPop(v19);
-  v25 = v20->_logEventSubmitter;
+  v25 = selfCopy->_logEventSubmitter;
   v26 = [[HMDCoreDataCloudKitOperationLogEvent alloc] initWithOperationType:1];
-  [(HMMLogEventSubmitting *)v25 submitLogEvent:v26 error:v12];
+  [(HMMLogEventSubmitting *)v25 submitLogEvent:v26 error:errorCopy];
 
   os_unfair_lock_lock_with_options();
-  v27 = v20->_cloudImportInProgressStoreIdentifiers;
-  [(NSMutableSet *)v27 removeObject:v11];
+  v27 = selfCopy->_cloudImportInProgressStoreIdentifiers;
+  [(NSMutableSet *)v27 removeObject:identifierCopy];
 
-  if ([(NSMutableSet *)v20->_cloudImportInProgressStoreIdentifiers count]|| (v28 = v20->_pendingChangedStoreIdentifiers, v29 = [(NSMutableSet *)v28 count]== 0, v28, v29))
+  if ([(NSMutableSet *)selfCopy->_cloudImportInProgressStoreIdentifiers count]|| (v28 = selfCopy->_pendingChangedStoreIdentifiers, v29 = [(NSMutableSet *)v28 count]== 0, v28, v29))
   {
-    os_unfair_lock_unlock(&v20->_lock.lock);
+    os_unfair_lock_unlock(&selfCopy->_lock.lock);
   }
 
   else
   {
-    v30 = [(HMDCoreDataCloudTransform *)&v20->super.super.isa _managedObjectContext];
-    v31 = v20->_pendingChangedStoreIdentifiers;
+    _managedObjectContext = [(HMDCoreDataCloudTransform *)&selfCopy->super.super.isa _managedObjectContext];
+    v31 = selfCopy->_pendingChangedStoreIdentifiers;
     v32 = [(NSMutableSet *)v31 copy];
 
-    v33 = v20->_pendingChangedStoreIdentifiers;
+    v33 = selfCopy->_pendingChangedStoreIdentifiers;
     [(NSMutableSet *)v33 removeAllObjects];
 
-    os_unfair_lock_unlock(&v20->_lock.lock);
-    [(HMDCoreDataCloudTransform *)v20 _runTransformOnContext:v30 storeIdentifiers:v32 completeMergeHomeModelID:0 completion:0];
+    os_unfair_lock_unlock(&selfCopy->_lock.lock);
+    [(HMDCoreDataCloudTransform *)selfCopy _runTransformOnContext:_managedObjectContext storeIdentifiers:v32 completeMergeHomeModelID:0 completion:0];
   }
 
   v34 = *MEMORY[0x277D85DE8];
@@ -4497,35 +4497,35 @@ LABEL_7:
 
 - (id)cloudImportInProgressStoreIdentifiers
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[8];
+    self = self[8];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)_managedObjectContext
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained(a1 + 6);
+    WeakRetained = objc_loadWeakRetained(self + 6);
     if (!WeakRetained)
     {
-      v3 = [a1 coreData];
-      v4 = [v3 newManagedObjectContext];
+      coreData = [self coreData];
+      newManagedObjectContext = [coreData newManagedObjectContext];
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __50__HMDCoreDataCloudTransform__managedObjectContext__block_invoke;
       v7[3] = &unk_27868A010;
-      WeakRetained = v4;
+      WeakRetained = newManagedObjectContext;
       v8 = WeakRetained;
-      v9 = a1;
-      v10 = v3;
-      v5 = v3;
+      selfCopy = self;
+      v10 = coreData;
+      v5 = coreData;
       [WeakRetained performBlockAndWait:v7];
-      objc_storeWeak(a1 + 6, WeakRetained);
+      objc_storeWeak(self + 6, WeakRetained);
     }
   }
 
@@ -4537,14 +4537,14 @@ LABEL_7:
   return WeakRetained;
 }
 
-- (void)_runTransformOnContext:(void *)a3 storeIdentifiers:(void *)a4 completeMergeHomeModelID:(void *)a5 completion:
+- (void)_runTransformOnContext:(void *)context storeIdentifiers:(void *)identifiers completeMergeHomeModelID:(void *)d completion:
 {
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (a1)
+  contextCopy = context;
+  identifiersCopy = identifiers;
+  dCopy = d;
+  v13 = dCopy;
+  if (self)
   {
     v27[0] = 0;
     v27[1] = v27;
@@ -4552,13 +4552,13 @@ LABEL_7:
     v27[3] = __Block_byref_object_copy__121531;
     v27[4] = __Block_byref_object_dispose__121532;
     v28 = 0;
-    if (v12)
+    if (dCopy)
     {
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __105__HMDCoreDataCloudTransform__runTransformOnContext_storeIdentifiers_completeMergeHomeModelID_completion___block_invoke;
       block[3] = &unk_278678E98;
-      v25 = v12;
+      v25 = dCopy;
       v26 = v27;
       v14 = dispatch_block_create(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, block);
     }
@@ -4568,7 +4568,7 @@ LABEL_7:
       v14 = 0;
     }
 
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __105__HMDCoreDataCloudTransform__runTransformOnContext_storeIdentifiers_completeMergeHomeModelID_completion___block_invoke_125;
@@ -4578,8 +4578,8 @@ LABEL_7:
     v20 = v15;
     v21 = v27;
     v17 = v9;
-    v18 = v10;
-    v19 = v11;
+    v18 = contextCopy;
+    v19 = identifiersCopy;
     [v17 performBlock:v16];
 
     objc_destroyWeak(&v22);
@@ -4684,21 +4684,21 @@ void __105__HMDCoreDataCloudTransform__runTransformOnContext_storeIdentifiers_co
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_runTransformWhilePerformingBlockOnContext:(void *)a3 storeIdentifiers:(void *)a4 completeMergeHomeModelID:
+- (void)_runTransformWhilePerformingBlockOnContext:(void *)context storeIdentifiers:(void *)identifiers completeMergeHomeModelID:
 {
   v147[1] = *MEMORY[0x277D85DE8];
   v108 = a2;
-  v106 = a3;
-  v7 = a4;
-  if (!a1)
+  contextCopy = context;
+  identifiersCopy = identifiers;
+  if (!self)
   {
     goto LABEL_82;
   }
 
-  if (![a1 badCDPState])
+  if (![self badCDPState])
   {
     v103 = [objc_alloc(MEMORY[0x277D0F880]) initWithName:@"com.apple.homed.cloud-transform"];
-    if (v7)
+    if (identifiersCopy)
     {
       v105 = 0;
     }
@@ -4706,9 +4706,9 @@ void __105__HMDCoreDataCloudTransform__runTransformOnContext_storeIdentifiers_co
     else
     {
       v12 = MEMORY[0x277CBEB18];
-      if (v106)
+      if (contextCopy)
       {
-        v13 = [v106 count];
+        v13 = [contextCopy count];
       }
 
       else
@@ -4717,17 +4717,17 @@ void __105__HMDCoreDataCloudTransform__runTransformOnContext_storeIdentifiers_co
       }
 
       v14 = [v12 arrayWithCapacity:v13];
-      v15 = [v108 persistentStoreCoordinator];
-      v16 = [v15 persistentStores];
+      persistentStoreCoordinator = [v108 persistentStoreCoordinator];
+      persistentStores = [persistentStoreCoordinator persistentStores];
       v112[0] = MEMORY[0x277D85DD0];
       v112[1] = 3221225472;
       v112[2] = __114__HMDCoreDataCloudTransform__runTransformWhilePerformingBlockOnContext_storeIdentifiers_completeMergeHomeModelID___block_invoke;
       v112[3] = &unk_278678EE8;
-      v113 = v106;
+      v113 = contextCopy;
       v114 = v108;
       v105 = v14;
       v115 = v105;
-      [v16 hmf_enumerateWithAutoreleasePoolUsingBlock:v112];
+      [persistentStores hmf_enumerateWithAutoreleasePoolUsingBlock:v112];
 
       if (![v105 count])
       {
@@ -4738,7 +4738,7 @@ LABEL_81:
     }
 
     v17 = objc_autoreleasePoolPush();
-    v18 = a1;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
     {
@@ -4748,23 +4748,23 @@ LABEL_81:
       *&buf[12] = 2160;
       *&buf[14] = 1752392040;
       *&buf[22] = 2112;
-      v143 = v7;
+      v143 = identifiersCopy;
       LOWORD(v144) = 2114;
-      *(&v144 + 2) = v106;
+      *(&v144 + 2) = contextCopy;
       _os_log_impl(&dword_229538000, v19, OS_LOG_TYPE_DEBUG, "%{public}@Starting transform: completeMergeHomeModelID = %{mask.hash}@, storeIdentifiers = %{public}@", buf, 0x2Au);
     }
 
     objc_autoreleasePoolPop(v17);
     v107 = v108;
-    v21 = [MEMORY[0x277CBE4F8] currentQueryGenerationToken];
+    currentQueryGenerationToken = [MEMORY[0x277CBE4F8] currentQueryGenerationToken];
     v127 = 0;
-    v22 = [v107 setQueryGenerationFromToken:v21 error:&v127];
+    v22 = [v107 setQueryGenerationFromToken:currentQueryGenerationToken error:&v127];
     v23 = v127;
 
     if ((v22 & 1) == 0)
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = v18;
+      v25 = selfCopy;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
@@ -4779,39 +4779,39 @@ LABEL_81:
       objc_autoreleasePoolPop(v24);
     }
 
-    if (!v18[1].super.super._cd_rawData)
+    if (!selfCopy[1].super.super._cd_rawData)
     {
       v28 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:3];
-      v29 = [(HMDCoreDataCloudTransform *)v18 _fetchOrCreateMetadataForManagedObjectContext:v107];
-      v30 = [v29 historyTokenForCloudStore];
+      v29 = [(HMDCoreDataCloudTransform *)selfCopy _fetchOrCreateMetadataForManagedObjectContext:v107];
+      historyTokenForCloudStore = [v29 historyTokenForCloudStore];
 
-      if (v30)
+      if (historyTokenForCloudStore)
       {
-        v31 = [v29 historyTokenForCloudStore];
-        v32 = [v107 hmd_cloudPrivateStoreIdentifier];
-        [v28 setObject:v31 forKeyedSubscript:v32];
+        historyTokenForCloudStore2 = [v29 historyTokenForCloudStore];
+        hmd_cloudPrivateStoreIdentifier = [v107 hmd_cloudPrivateStoreIdentifier];
+        [v28 setObject:historyTokenForCloudStore2 forKeyedSubscript:hmd_cloudPrivateStoreIdentifier];
       }
 
-      v33 = [v29 historyTokenForCloudSharedStore];
+      historyTokenForCloudSharedStore = [v29 historyTokenForCloudSharedStore];
 
-      if (v33)
+      if (historyTokenForCloudSharedStore)
       {
-        v34 = [v29 historyTokenForCloudSharedStore];
-        v35 = [v107 hmd_cloudSharedStoreIdentifier];
-        [v28 setObject:v34 forKeyedSubscript:v35];
+        historyTokenForCloudSharedStore2 = [v29 historyTokenForCloudSharedStore];
+        hmd_cloudSharedStoreIdentifier = [v107 hmd_cloudSharedStoreIdentifier];
+        [v28 setObject:historyTokenForCloudSharedStore2 forKeyedSubscript:hmd_cloudSharedStoreIdentifier];
       }
 
-      v36 = [v29 historyTokenForWorkingStore];
+      historyTokenForWorkingStore = [v29 historyTokenForWorkingStore];
 
-      if (v36)
+      if (historyTokenForWorkingStore)
       {
-        v37 = [v29 historyTokenForWorkingStore];
-        v38 = [v107 hmd_workingStoreIdentifier];
-        [v28 setObject:v37 forKeyedSubscript:v38];
+        historyTokenForWorkingStore2 = [v29 historyTokenForWorkingStore];
+        hmd_workingStoreIdentifier = [v107 hmd_workingStoreIdentifier];
+        [v28 setObject:historyTokenForWorkingStore2 forKeyedSubscript:hmd_workingStoreIdentifier];
       }
 
       v39 = objc_autoreleasePoolPush();
-      v40 = v18;
+      v40 = selfCopy;
       v41 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v41, OS_LOG_TYPE_INFO))
       {
@@ -4828,20 +4828,20 @@ LABEL_81:
       v40[1].super.super._cd_rawData = v28;
     }
 
-    if (!v7)
+    if (!identifiersCopy)
     {
       v109[0] = MEMORY[0x277D85DD0];
       v109[1] = 3221225472;
       v109[2] = __114__HMDCoreDataCloudTransform__runTransformWhilePerformingBlockOnContext_storeIdentifiers_completeMergeHomeModelID___block_invoke_133;
       v109[3] = &unk_278678EE8;
-      v109[4] = v18;
+      v109[4] = selfCopy;
       v110 = v107;
       v111 = v105;
       [v111 hmf_enumerateWithAutoreleasePoolUsingBlock:v109];
 
 LABEL_76:
       v88 = objc_autoreleasePoolPush();
-      v89 = v18;
+      v89 = selfCopy;
       v90 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v90, OS_LOG_TYPE_DEBUG))
       {
@@ -4869,7 +4869,7 @@ LABEL_76:
     }
 
     v44 = objc_autoreleasePoolPush();
-    v45 = v18;
+    v45 = selfCopy;
     v46 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
     {
@@ -4879,20 +4879,20 @@ LABEL_76:
       *&buf[12] = 2160;
       *&buf[14] = 1752392040;
       *&buf[22] = 2112;
-      v143 = v7;
+      v143 = identifiersCopy;
       _os_log_impl(&dword_229538000, v46, OS_LOG_TYPE_INFO, "%{public}@Starting complete merge transform for home with modelID %{mask.hash}@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v44);
     v48 = v107;
-    v49 = v7;
+    v49 = identifiersCopy;
     [v48 hmd_assertIsExecuting];
     v50 = v49;
     v51 = v48;
     [v51 hmd_assertIsExecuting];
-    v52 = [v51 hmd_coreData];
-    v102 = v52;
-    if (!v52)
+    hmd_coreData = [v51 hmd_coreData];
+    v102 = hmd_coreData;
+    if (!hmd_coreData)
     {
       v62 = objc_autoreleasePoolPush();
       v63 = v45;
@@ -4909,7 +4909,7 @@ LABEL_76:
       goto LABEL_73;
     }
 
-    v101 = [v52 cloudPrivateStore];
+    cloudPrivateStore = [hmd_coreData cloudPrivateStore];
     v104 = +[MKFCKHome fetchRequest];
     v53 = [(MKFCKModel *)MKFCKHome predicateWithModelID:v50];
     [v104 setPredicate:v53];
@@ -4917,7 +4917,7 @@ LABEL_76:
     v54 = +[(MKFCKModel *)MKFCKHome];
     [v104 setPropertiesToFetch:v54];
 
-    v147[0] = v101;
+    v147[0] = cloudPrivateStore;
     v55 = [MEMORY[0x277CBEA60] arrayWithObjects:v147 count:1];
     [v104 setAffectedStores:v55];
 
@@ -4947,7 +4947,7 @@ LABEL_76:
       goto LABEL_72;
     }
 
-    v57 = [v100 firstObject];
+    firstObject = [v100 firstObject];
     v127 = 0;
     v128 = &v127;
     v129 = 0x3032000000;
@@ -4960,7 +4960,7 @@ LABEL_76:
     v124 = __Block_byref_object_copy__121531;
     v125 = __Block_byref_object_dispose__121532;
     v126 = 0;
-    if (v57)
+    if (firstObject)
     {
       v99 = v56;
       goto LABEL_35;
@@ -4968,7 +4968,7 @@ LABEL_76:
 
     v70 = +[MKFCKHome entity];
     v120 = v56;
-    v71 = [v101 hmd_tombstonesForEntity:v70 duration:v51 context:&v120 error:0.0];
+    v71 = [cloudPrivateStore hmd_tombstonesForEntity:v70 duration:v51 context:&v120 error:0.0];
     v99 = v120;
 
     if (!v71)
@@ -5010,7 +5010,7 @@ LABEL_76:
 
         _Block_object_dispose(&v116, 8);
 LABEL_35:
-        if ([v57 isFake])
+        if ([firstObject isFake])
         {
           v58 = objc_autoreleasePoolPush();
           v59 = v45;
@@ -5021,7 +5021,7 @@ LABEL_35:
             *v134 = 138543618;
             v135 = v61;
             v136 = 2112;
-            v137 = v57;
+            v137 = firstObject;
             _os_log_impl(&dword_229538000, v60, OS_LOG_TYPE_ERROR, "%{public}@Refusing to merge fake home: %@", v134, 0x16u);
           }
 
@@ -5059,23 +5059,23 @@ LABEL_73:
         if (v77)
         {
           v71 = [(HMDCoreDataCloudTransformChangeSet *)&v77->super.isa initWithHomeModelID:v50 clientIdentifier:0 qualityOfService:0xFFFFFFFFFFFFFFFFLL];
-          if (v57)
+          if (firstObject)
           {
 LABEL_53:
-            v78 = [v57 fetchLocalModelWithContext:v51];
+            v78 = [firstObject fetchLocalModelWithContext:v51];
             if (v78)
             {
-              v79 = [v57 objectID];
+              objectID = [firstObject objectID];
               v80 = [MEMORY[0x277CBEB98] set];
-              [(HMDCoreDataCloudTransformChangeSet *)v71 processUpdate:v79 updatedProperties:v80];
+              [(HMDCoreDataCloudTransformChangeSet *)v71 processUpdate:objectID updatedProperties:v80];
             }
 
             else
             {
-              v79 = [v57 objectID];
+              objectID = [firstObject objectID];
               if (v71)
               {
-                [*(v71 + 8) addObject:v79];
+                [*(v71 + 8) addObject:objectID];
               }
             }
 
@@ -5086,7 +5086,7 @@ LABEL_53:
         else
         {
           v71 = 0;
-          if (v57)
+          if (firstObject)
           {
             goto LABEL_53;
           }
@@ -5151,7 +5151,7 @@ LABEL_70:
   }
 
   v8 = objc_autoreleasePoolPush();
-  v9 = a1;
+  selfCopy2 = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -5167,10 +5167,10 @@ LABEL_82:
   v96 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_delayContextDestruction:(uint64_t)a1
+- (void)_delayContextDestruction:(uint64_t)destruction
 {
   v3 = a2;
-  if (a1)
+  if (destruction)
   {
     v4 = dispatch_get_global_queue(9, 0);
     v5 = dispatch_time(0, 2000000000);
@@ -5347,18 +5347,18 @@ void __50__HMDCoreDataCloudTransform__managedObjectContext__block_invoke(uint64_
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)coreData:(id)a3 cloudKitImportStartedForStoreWithIdentifier:(id)a4
+- (void)coreData:(id)data cloudKitImportStartedForStoreWithIdentifier:(id)identifier
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   os_unfair_lock_lock_with_options();
-  v8 = [(HMDCoreDataCloudTransform *)&self->super.super.isa cloudImportInProgressStoreIdentifiers];
-  [v8 addObject:v7];
+  cloudImportInProgressStoreIdentifiers = [(HMDCoreDataCloudTransform *)&self->super.super.isa cloudImportInProgressStoreIdentifiers];
+  [cloudImportInProgressStoreIdentifiers addObject:identifierCopy];
 
   os_unfair_lock_unlock(&self->_lock.lock);
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -5366,34 +5366,34 @@ void __50__HMDCoreDataCloudTransform__managedObjectContext__block_invoke(uint64_
     v15 = 138543618;
     v16 = v12;
     v17 = 2114;
-    v18 = v7;
+    v18 = identifierCopy;
     _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@CloudKit import started for store %{public}@", &v15, 0x16u);
   }
 
   objc_autoreleasePoolPop(v9);
-  logger = v10->_logger;
+  logger = selfCopy->_logger;
   if (os_signpost_enabled(logger))
   {
     v15 = 138412290;
-    v16 = v7;
+    v16 = identifierCopy;
     _os_signpost_emit_with_name_impl(&dword_229538000, logger, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "CoreDataCloudTransformImport", "storeIdentifier=%{signpost.description:attribute}@ ", &v15, 0xCu);
   }
 
-  v10->_importSignpostID = 0xEEEEB0B5B2B2EEEELL;
+  selfCopy->_importSignpostID = 0xEEEEB0B5B2B2EEEELL;
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)coreData:(id)a3 persistentStoreWithIdentifierDidChange:(id)a4
+- (void)coreData:(id)data persistentStoreWithIdentifierDidChange:(id)change
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  changeCopy = change;
   os_unfair_lock_lock_with_options();
   if (self && [(NSMutableSet *)self->_cloudImportInProgressStoreIdentifiers count])
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
@@ -5401,28 +5401,28 @@ void __50__HMDCoreDataCloudTransform__managedObjectContext__block_invoke(uint64_
       v18 = 138543618;
       v19 = v11;
       v20 = 2114;
-      v21 = v7;
+      v21 = changeCopy;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_DEBUG, "%{public}@Waiting for cloud import to finish before running transform on store %{public}@", &v18, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    v12 = v9->_pendingChangedStoreIdentifiers;
-    [(NSMutableSet *)v12 addObject:v7];
+    v12 = selfCopy->_pendingChangedStoreIdentifiers;
+    [(NSMutableSet *)v12 addObject:changeCopy];
 
     os_unfair_lock_unlock(&self->_lock.lock);
   }
 
   else
   {
-    v13 = [(HMDCoreDataCloudTransform *)&self->super.super.isa _managedObjectContext];
-    v14 = [(HMDCoreDataCloudTransform *)&self->super.super.isa pendingChangedStoreIdentifiers];
-    v15 = [v14 setByAddingObject:v7];
+    _managedObjectContext = [(HMDCoreDataCloudTransform *)&self->super.super.isa _managedObjectContext];
+    pendingChangedStoreIdentifiers = [(HMDCoreDataCloudTransform *)&self->super.super.isa pendingChangedStoreIdentifiers];
+    v15 = [pendingChangedStoreIdentifiers setByAddingObject:changeCopy];
 
-    v16 = [(HMDCoreDataCloudTransform *)&self->super.super.isa pendingChangedStoreIdentifiers];
-    [v16 removeAllObjects];
+    pendingChangedStoreIdentifiers2 = [(HMDCoreDataCloudTransform *)&self->super.super.isa pendingChangedStoreIdentifiers];
+    [pendingChangedStoreIdentifiers2 removeAllObjects];
 
     os_unfair_lock_unlock(&self->_lock.lock);
-    [(HMDCoreDataCloudTransform *)self _runTransformOnContext:v13 storeIdentifiers:v15 completeMergeHomeModelID:0 completion:0];
+    [(HMDCoreDataCloudTransform *)self _runTransformOnContext:_managedObjectContext storeIdentifiers:v15 completeMergeHomeModelID:0 completion:0];
   }
 
   v17 = *MEMORY[0x277D85DE8];
@@ -5430,8 +5430,8 @@ void __50__HMDCoreDataCloudTransform__managedObjectContext__block_invoke(uint64_
 
 - (BOOL)badCDPState
 {
-  v2 = [(HMDCoreDataCloudTransform *)self userDefaults];
-  v3 = [v2 BOOLForKey:@"badCDPState"];
+  userDefaults = [(HMDCoreDataCloudTransform *)self userDefaults];
+  v3 = [userDefaults BOOLForKey:@"badCDPState"];
 
   return v3;
 }
@@ -5439,17 +5439,17 @@ void __50__HMDCoreDataCloudTransform__managedObjectContext__block_invoke(uint64_
 - (id)newCloudMirrorExportStatusMonitor
 {
   v3 = [HMDCoreDataCloudMirroringExportStatusMonitor alloc];
-  v4 = [(HMDCoreDataCloudTransform *)self coreData];
-  v5 = [(HMDCoreDataCloudTransform *)self managedObjectContext];
-  v6 = [(HMDCoreDataCloudMirroringExportStatusMonitor *)v3 initWithCoreData:v4 managedObjectContext:v5];
+  coreData = [(HMDCoreDataCloudTransform *)self coreData];
+  managedObjectContext = [(HMDCoreDataCloudTransform *)self managedObjectContext];
+  v6 = [(HMDCoreDataCloudMirroringExportStatusMonitor *)v3 initWithCoreData:coreData managedObjectContext:managedObjectContext];
 
   return v6;
 }
 
-- (void)registerCloudChangeListener:(id)a3 forEntities:(id)a4
+- (void)registerCloudChangeListener:(id)listener forEntities:(id)entities
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  entitiesCopy = entities;
   v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
@@ -5457,21 +5457,21 @@ void __50__HMDCoreDataCloudTransform__managedObjectContext__block_invoke(uint64_
   v20[3] = &unk_278678E48;
   v9 = v8;
   v21 = v9;
-  [v7 hmf_enumerateWithAutoreleasePoolUsingBlock:v20];
-  v10 = [(HMDCoreDataCloudTransform *)self managedObjectContext];
+  [entitiesCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v20];
+  managedObjectContext = [(HMDCoreDataCloudTransform *)self managedObjectContext];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __69__HMDCoreDataCloudTransform_registerCloudChangeListener_forEntities___block_invoke_3;
   v15[3] = &unk_278689550;
   v15[4] = self;
-  v16 = v6;
-  v17 = v7;
+  v16 = listenerCopy;
+  v17 = entitiesCopy;
   v18 = v9;
-  v19 = v10;
-  v11 = v10;
+  v19 = managedObjectContext;
+  v11 = managedObjectContext;
   v12 = v9;
-  v13 = v7;
-  v14 = v6;
+  v13 = entitiesCopy;
+  v14 = listenerCopy;
   [v11 performBlock:v15];
 }
 
@@ -5584,13 +5584,13 @@ void __69__HMDCoreDataCloudTransform_registerCloudChangeListener_forEntities___b
   }
 }
 
-- (void)runCompleteMergeTransformForHomeWithModelID:(id)a3 completion:(id)a4
+- (void)runCompleteMergeTransformForHomeWithModelID:(id)d completion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -5601,18 +5601,18 @@ void __69__HMDCoreDataCloudTransform_registerCloudChangeListener_forEntities___b
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMDCoreDataCloudTransform *)v9 managedObjectContext];
-  [(HMDCoreDataCloudTransform *)v9 _runTransformOnContext:v12 storeIdentifiers:0 completeMergeHomeModelID:v6 completion:v7];
+  managedObjectContext = [(HMDCoreDataCloudTransform *)selfCopy managedObjectContext];
+  [(HMDCoreDataCloudTransform *)selfCopy _runTransformOnContext:managedObjectContext storeIdentifiers:0 completeMergeHomeModelID:dCopy completion:completionCopy];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)runTransformWithCompletion:(id)a3
+- (void)runTransformWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -5623,17 +5623,17 @@ void __69__HMDCoreDataCloudTransform_registerCloudChangeListener_forEntities___b
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDCoreDataCloudTransform *)v6 managedObjectContext];
-  [(HMDCoreDataCloudTransform *)v6 _runTransformOnContext:v9 storeIdentifiers:0 completeMergeHomeModelID:0 completion:v4];
+  managedObjectContext = [(HMDCoreDataCloudTransform *)selfCopy managedObjectContext];
+  [(HMDCoreDataCloudTransform *)selfCopy _runTransformOnContext:managedObjectContext storeIdentifiers:0 completeMergeHomeModelID:0 completion:completionCopy];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)runTransformWithError:(id *)a3
+- (BOOL)runTransformWithError:(id *)error
 {
   v14 = *MEMORY[0x277D85DE8];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -5644,13 +5644,13 @@ void __69__HMDCoreDataCloudTransform_registerCloudChangeListener_forEntities___b
   }
 
   objc_autoreleasePoolPop(v4);
-  v8 = [(HMDCoreDataCloudTransform *)v5 managedObjectContext];
+  managedObjectContext = [(HMDCoreDataCloudTransform *)selfCopy managedObjectContext];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __51__HMDCoreDataCloudTransform_runTransformWithError___block_invoke;
   v11[3] = &unk_27868A728;
-  v11[4] = v5;
-  [v8 performBlockAndWait:v11];
+  v11[4] = selfCopy;
+  [managedObjectContext performBlockAndWait:v11];
 
   v9 = *MEMORY[0x277D85DE8];
   return 1;
@@ -5670,17 +5670,17 @@ void __51__HMDCoreDataCloudTransform_runTransformWithError___block_invoke(uint64
 - (id)managedObjectContext
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(HMDCoreDataCloudTransform *)&self->super.super.isa _managedObjectContext];
+  _managedObjectContext = [(HMDCoreDataCloudTransform *)&self->super.super.isa _managedObjectContext];
   os_unfair_lock_unlock(&self->_lock.lock);
 
-  return v3;
+  return _managedObjectContext;
 }
 
-- (HMDCoreDataCloudTransform)initWithCoreData:(id)a3 fakeRecordsEnabled:(BOOL)a4 logEventSubmitter:(id)a5 userDefaults:(id)a6
+- (HMDCoreDataCloudTransform)initWithCoreData:(id)data fakeRecordsEnabled:(BOOL)enabled logEventSubmitter:(id)submitter userDefaults:(id)defaults
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  submitterCopy = submitter;
+  defaultsCopy = defaults;
   v26.receiver = self;
   v26.super_class = HMDCoreDataCloudTransform;
   v14 = [(HMDCoreDataCloudTransform *)&v26 init];
@@ -5691,7 +5691,7 @@ void __51__HMDCoreDataCloudTransform_runTransformWithError___block_invoke(uint64
     v14->_logger = v15;
 
     v14->_lock.lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v14->_coreData, a3);
+    objc_storeStrong(&v14->_coreData, data);
     v17 = [MEMORY[0x277CBEB58] set];
     pendingChangedStoreIdentifiers = v14->_pendingChangedStoreIdentifiers;
     v14->_pendingChangedStoreIdentifiers = v17;
@@ -5700,30 +5700,30 @@ void __51__HMDCoreDataCloudTransform_runTransformWithError___block_invoke(uint64
     cloudImportInProgressStoreIdentifiers = v14->_cloudImportInProgressStoreIdentifiers;
     v14->_cloudImportInProgressStoreIdentifiers = v19;
 
-    v21 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     cloudChangeListeners = v14->_cloudChangeListeners;
-    v14->_cloudChangeListeners = v21;
+    v14->_cloudChangeListeners = strongToStrongObjectsMapTable;
 
-    v14->_fakeRecordsEnabled = a4;
-    objc_storeStrong(&v14->_logEventSubmitter, a5);
+    v14->_fakeRecordsEnabled = enabled;
+    objc_storeStrong(&v14->_logEventSubmitter, submitter);
     v23 = objc_alloc_init(HMDCoreDataCloudTransformMergePolicy);
     mergePolicy = v14->_mergePolicy;
     v14->_mergePolicy = v23;
 
-    objc_storeStrong(&v14->_userDefaults, a6);
-    [v11 addNotificationListener:v14];
+    objc_storeStrong(&v14->_userDefaults, defaults);
+    [dataCopy addNotificationListener:v14];
   }
 
   return v14;
 }
 
-- (HMDCoreDataCloudTransform)initWithCoreData:(id)a3 logEventSubmitter:(id)a4
+- (HMDCoreDataCloudTransform)initWithCoreData:(id)data logEventSubmitter:(id)submitter
 {
   v6 = MEMORY[0x277CBEBD0];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 standardUserDefaults];
-  v10 = [(HMDCoreDataCloudTransform *)self initWithCoreData:v8 fakeRecordsEnabled:1 logEventSubmitter:v7 userDefaults:v9];
+  submitterCopy = submitter;
+  dataCopy = data;
+  standardUserDefaults = [v6 standardUserDefaults];
+  v10 = [(HMDCoreDataCloudTransform *)self initWithCoreData:dataCopy fakeRecordsEnabled:1 logEventSubmitter:submitterCopy userDefaults:standardUserDefaults];
 
   return v10;
 }
@@ -5741,31 +5741,31 @@ void __51__HMDCoreDataCloudTransform_runTransformWithError___block_invoke(uint64
   objc_exception_throw(v7);
 }
 
-+ (BOOL)transactionIsCloudStoreReset:(id)a3 context:(id)a4
++ (BOOL)transactionIsCloudStoreReset:(id)reset context:(id)context
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 author];
-  v9 = [v8 isEqualToString:@"NSCloudKitMirroringDelegate.reset"];
+  resetCopy = reset;
+  contextCopy = context;
+  author = [resetCopy author];
+  v9 = [author isEqualToString:@"NSCloudKitMirroringDelegate.reset"];
 
   if (v9)
   {
-    v10 = [v6 storeID];
-    v11 = [v7 hmd_coreData];
-    v12 = [v11 cloudSharedStore];
-    v13 = [v12 identifier];
-    v14 = [v10 isEqualToString:v13];
+    storeID = [resetCopy storeID];
+    hmd_coreData = [contextCopy hmd_coreData];
+    cloudSharedStore = [hmd_coreData cloudSharedStore];
+    identifier = [cloudSharedStore identifier];
+    v14 = [storeID isEqualToString:identifier];
 
     if (v14)
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = a1;
+      selfCopy = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         v18 = HMFGetLogIdentifier();
-        v19 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(v6, "transactionNumber")}];
+        v19 = [MEMORY[0x277CCABB0] numberWithLongLong:{objc_msgSend(resetCopy, "transactionNumber")}];
         v27 = 138543618;
         v28 = v18;
         v29 = 2112;
@@ -5778,11 +5778,11 @@ void __51__HMDCoreDataCloudTransform_runTransformWithError___block_invoke(uint64
 
     else
     {
-      v21 = [v6 changes];
-      v20 = [v21 na_any:&__block_literal_global_195];
+      changes = [resetCopy changes];
+      v20 = [changes na_any:&__block_literal_global_195];
 
       v15 = objc_autoreleasePoolPush();
-      v22 = a1;
+      selfCopy2 = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
@@ -5793,7 +5793,7 @@ void __51__HMDCoreDataCloudTransform_runTransformWithError___block_invoke(uint64
         v29 = 2112;
         v30 = v24;
         v31 = 2114;
-        v32 = v6;
+        v32 = resetCopy;
         _os_log_impl(&dword_229538000, v17, OS_LOG_TYPE_DEFAULT, "%{public}@Reset detected : %@, Transaction: %{public}@", &v27, 0x20u);
       }
     }
@@ -5829,9 +5829,9 @@ BOOL __66__HMDCoreDataCloudTransform_transactionIsCloudStoreReset_context___bloc
   return v6;
 }
 
-+ (BOOL)detectExcessiveHistoryPruningInContext:(id)a3
++ (BOOL)detectExcessiveHistoryPruningInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -5840,15 +5840,15 @@ BOOL __66__HMDCoreDataCloudTransform_transactionIsCloudStoreReset_context___bloc
   v7[1] = 3221225472;
   v7[2] = __68__HMDCoreDataCloudTransform_detectExcessiveHistoryPruningInContext___block_invoke;
   v7[3] = &unk_2786852B8;
-  v5 = v4;
+  v5 = contextCopy;
   v9 = &v11;
-  v10 = a1;
+  selfCopy = self;
   v8 = v5;
   [v5 performBlockAndWait:v7];
-  LOBYTE(a1) = *(v12 + 24);
+  LOBYTE(self) = *(v12 + 24);
 
   _Block_object_dispose(&v11, 8);
-  return a1;
+  return self;
 }
 
 void __68__HMDCoreDataCloudTransform_detectExcessiveHistoryPruningInContext___block_invoke(uint64_t a1)
@@ -6049,14 +6049,14 @@ LABEL_11:
 + (void)wipeCoreDataStorageDueToPCSIdentityLossAndRelaunchHomeKitDaemon
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CB8F48] defaultStore];
-  v4 = [v3 aa_primaryAppleAccount];
+  defaultStore = [MEMORY[0x277CB8F48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
 
   v5 = objc_autoreleasePoolPush();
-  v6 = a1;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (aa_primaryAppleAccount)
   {
     if (v8)
     {
@@ -6109,18 +6109,18 @@ void __40__HMDCoreDataCloudTransform_logCategory__block_invoke()
   logCategory__hmf_once_v16_121808 = v1;
 }
 
-+ (id)localTransformableEntityFromEntity:(id)a3
++ (id)localTransformableEntityFromEntity:(id)entity
 {
-  v4 = a3;
-  v5 = [v4 managedObjectModel];
+  entityCopy = entity;
+  managedObjectModel = [entityCopy managedObjectModel];
   if (localTransformableEntityFromEntity___hmf_once_t4 != -1)
   {
     dispatch_once(&localTransformableEntityFromEntity___hmf_once_t4, &__block_literal_global_91_121812);
   }
 
   v6 = localTransformableEntityFromEntity___hmf_once_v5;
-  v7 = [v4 name];
-  v8 = [v6 objectForKey:v7];
+  name = [entityCopy name];
+  v8 = [v6 objectForKey:name];
 
   if (v8)
   {
@@ -6135,16 +6135,16 @@ void __40__HMDCoreDataCloudTransform_logCategory__block_invoke()
     v27 = __Block_byref_object_copy__121531;
     v28 = __Block_byref_object_dispose__121532;
     v29 = 0;
-    v10 = [v5 entities];
+    entities = [managedObjectModel entities];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __64__HMDCoreDataCloudTransform_localTransformableEntityFromEntity___block_invoke_93;
     v20[3] = &unk_278678DF8;
-    v23 = a1;
-    v11 = v4;
+    selfCopy = self;
+    v11 = entityCopy;
     v21 = v11;
     v22 = &v24;
-    [v10 hmf_enumerateWithAutoreleasePoolUsingBlock:v20];
+    [entities hmf_enumerateWithAutoreleasePoolUsingBlock:v20];
 
     v12 = v25[5];
     v9 = *MEMORY[0x277CBEEE8];
@@ -6154,8 +6154,8 @@ void __40__HMDCoreDataCloudTransform_logCategory__block_invoke()
     }
 
     v8 = v12;
-    v13 = [v11 name];
-    [v6 setObject:v8 forKey:v13];
+    name2 = [v11 name];
+    [v6 setObject:v8 forKey:name2];
 
     _Block_object_dispose(&v24, 8);
   }
@@ -6181,8 +6181,8 @@ void __40__HMDCoreDataCloudTransform_logCategory__block_invoke()
 
     v16 = v15;
 
-    v17 = [v5 entitiesByName];
-    v18 = [v17 objectForKeyedSubscript:v16];
+    entitiesByName = [managedObjectModel entitiesByName];
+    v18 = [entitiesByName objectForKeyedSubscript:v16];
   }
 
   return v18;
@@ -6223,24 +6223,24 @@ void __64__HMDCoreDataCloudTransform_localTransformableEntityFromEntity___block_
   localTransformableEntityFromEntity___hmf_once_v5 = v0;
 }
 
-+ (Class)exportTransformableClassFromEntity:(id)a3
++ (Class)exportTransformableClassFromEntity:(id)entity
 {
-  v4 = a3;
-  v5 = [a1 exportTransformableEntityFromEntity:v4];
+  entityCopy = entity;
+  v5 = [self exportTransformableEntityFromEntity:entityCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 managedObjectClassName];
+    managedObjectClassName = [v5 managedObjectClassName];
 LABEL_4:
-    v9 = NSClassFromString(v7);
+    v9 = NSClassFromString(managedObjectClassName);
 
     goto LABEL_5;
   }
 
-  v8 = [v4 userInfo];
-  v7 = [v8 objectForKeyedSubscript:@"cloudSyncClass"];
+  userInfo = [entityCopy userInfo];
+  managedObjectClassName = [userInfo objectForKeyedSubscript:@"cloudSyncClass"];
 
-  if (v7)
+  if (managedObjectClassName)
   {
     goto LABEL_4;
   }
@@ -6251,16 +6251,16 @@ LABEL_5:
   return v9;
 }
 
-+ (id)exportTransformableEntityFromEntity:(id)a3
++ (id)exportTransformableEntityFromEntity:(id)entity
 {
-  v3 = a3;
-  v4 = [v3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:@"cloudSyncEntity"];
+  entityCopy = entity;
+  userInfo = [entityCopy userInfo];
+  v5 = [userInfo objectForKeyedSubscript:@"cloudSyncEntity"];
   if (v5)
   {
-    v6 = [v3 managedObjectModel];
-    v7 = [v6 entitiesByName];
-    v8 = [v7 objectForKeyedSubscript:v5];
+    managedObjectModel = [entityCopy managedObjectModel];
+    entitiesByName = [managedObjectModel entitiesByName];
+    v8 = [entitiesByName objectForKeyedSubscript:v5];
   }
 
   else
@@ -6271,10 +6271,10 @@ LABEL_5:
   return v8;
 }
 
-+ (Class)importTransformableClassFromEntity:(id)a3
++ (Class)importTransformableClassFromEntity:(id)entity
 {
-  v3 = [a3 managedObjectClassName];
-  v4 = NSClassFromString(v3);
+  managedObjectClassName = [entity managedObjectClassName];
+  v4 = NSClassFromString(managedObjectClassName);
   if (importTransformableClassFromEntity___hmf_once_t2 != -1)
   {
     dispatch_once(&importTransformableClassFromEntity___hmf_once_t2, &__block_literal_global_121816);
@@ -6303,7 +6303,7 @@ void __64__HMDCoreDataCloudTransform_importTransformableClassFromEntity___block_
   block[1] = 3221225472;
   block[2] = __43__HMDCoreDataCloudTransform_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__hmf_once_t0_121819 != -1)
   {
     dispatch_once(&sharedInstance__hmf_once_t0_121819, block);

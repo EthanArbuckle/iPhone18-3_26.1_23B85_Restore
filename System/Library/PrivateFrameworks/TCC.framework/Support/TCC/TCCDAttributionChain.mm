@@ -1,9 +1,9 @@
 @interface TCCDAttributionChain
-- (TCCDAttributionChain)initWithMessage:(id)a3 evaluateResponsibility:(BOOL)a4 processInfo:(id)a5;
+- (TCCDAttributionChain)initWithMessage:(id)message evaluateResponsibility:(BOOL)responsibility processInfo:(id)info;
 - (TCCDProcess)accessingProcess;
 - (TCCDProcess)responsibleProcess;
-- (id)attributedBundleUsingOutermostBundle:(BOOL)a3 computedStaticCodeRef:(const void *)a4 computedNonIdentifiableBundleURL:(id *)a5;
-- (id)createProcessFromAuditToken:(id *)a3 processInfo:(id)a4;
+- (id)attributedBundleUsingOutermostBundle:(BOOL)bundle computedStaticCodeRef:(const void *)ref computedNonIdentifiableBundleURL:(id *)l;
+- (id)createProcessFromAuditToken:(id *)token processInfo:(id)info;
 - (id)description;
 @end
 
@@ -14,15 +14,15 @@
   accessingProcess = self->_accessingProcess;
   if (accessingProcess)
   {
-    v3 = accessingProcess;
+    requestingProcess = accessingProcess;
   }
 
   else
   {
-    v3 = [(TCCDAttributionChain *)self requestingProcess];
+    requestingProcess = [(TCCDAttributionChain *)self requestingProcess];
   }
 
-  return v3;
+  return requestingProcess;
 }
 
 - (id)description
@@ -62,12 +62,12 @@
     }
   }
 
-  v9 = [(TCCDAttributionChain *)self requestingProcess];
+  requestingProcess = [(TCCDAttributionChain *)self requestingProcess];
 
-  if (v9)
+  if (requestingProcess)
   {
-    v10 = [(TCCDAttributionChain *)self requestingProcess];
-    v11 = [v10 description];
+    requestingProcess2 = [(TCCDAttributionChain *)self requestingProcess];
+    v11 = [requestingProcess2 description];
     [v4 appendFormat:@"requesting={%@}, ", v11];
   }
 
@@ -79,32 +79,32 @@
   responsibleProcess = self->_responsibleProcess;
   if (responsibleProcess)
   {
-    v3 = responsibleProcess;
+    accessingProcess = responsibleProcess;
   }
 
   else
   {
-    v3 = [(TCCDAttributionChain *)self accessingProcess];
+    accessingProcess = [(TCCDAttributionChain *)self accessingProcess];
   }
 
-  return v3;
+  return accessingProcess;
 }
 
-- (id)createProcessFromAuditToken:(id *)a3 processInfo:(id)a4
+- (id)createProcessFromAuditToken:(id *)token processInfo:(id)info
 {
   v5 = [TCCDProcess alloc];
-  v6 = *&a3->var0[4];
-  v9[0] = *a3->var0;
+  v6 = *&token->var0[4];
+  v9[0] = *token->var0;
   v9[1] = v6;
   v7 = [(TCCDProcess *)v5 initWithAuditToken:v9 responsibleIdentity:0];
 
   return v7;
 }
 
-- (TCCDAttributionChain)initWithMessage:(id)a3 evaluateResponsibility:(BOOL)a4 processInfo:(id)a5
+- (TCCDAttributionChain)initWithMessage:(id)message evaluateResponsibility:(BOOL)responsibility processInfo:(id)info
 {
-  v7 = a3;
-  v8 = a5;
+  messageCopy = message;
+  infoCopy = info;
   v38.receiver = self;
   v38.super_class = TCCDAttributionChain;
   v9 = [(TCCDAttributionChain *)&v38 init];
@@ -116,26 +116,26 @@
 
   *buf = 0u;
   v40 = 0u;
-  [(TCCDAttributionChain *)v9 getAuditToken:buf fromMessage:v7];
+  [(TCCDAttributionChain *)v9 getAuditToken:buf fromMessage:messageCopy];
   v36 = *buf;
   v37 = v40;
-  v11 = [(TCCDAttributionChain *)v10 createProcessFromAuditToken:&v36 processInfo:v8];
+  v11 = [(TCCDAttributionChain *)v10 createProcessFromAuditToken:&v36 processInfo:infoCopy];
   [(TCCDAttributionChain *)v10 setRequestingProcess:v11];
 
-  v12 = [(TCCDAttributionChain *)v10 requestingProcess];
+  requestingProcess = [(TCCDAttributionChain *)v10 requestingProcess];
 
-  if (!v12)
+  if (!requestingProcess)
   {
     goto LABEL_22;
   }
 
   [(TCCDAttributionChain *)v10 setAccessingProcessSpecified:0];
   length = 0;
-  data = xpc_dictionary_get_data(v7, "target_token", &length);
+  data = xpc_dictionary_get_data(messageCopy, "target_token", &length);
   if (data)
   {
     v14 = data;
-    if (!xpc_dictionary_get_BOOL(v7, "use_indirect_token"))
+    if (!xpc_dictionary_get_BOOL(messageCopy, "use_indirect_token"))
     {
       v15 = "target_token";
       goto LABEL_8;
@@ -143,7 +143,7 @@
   }
 
   v15 = "indirect_object_token";
-  v16 = xpc_dictionary_get_data(v7, "indirect_object_token", &length);
+  v16 = xpc_dictionary_get_data(messageCopy, "indirect_object_token", &length);
   if (v16)
   {
     v14 = v16;
@@ -153,10 +153,10 @@ LABEL_8:
     if (length != 32)
     {
       v20 = +[TCCDPlatform currentPlatform];
-      v21 = [v20 server];
-      v22 = [v21 logHandle];
+      server = [v20 server];
+      logHandle = [server logHandle];
 
-      if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
       {
         sub_10005C9F8(v15, v10);
       }
@@ -167,7 +167,7 @@ LABEL_8:
     v17 = v14[1];
     v36 = *v14;
     v37 = v17;
-    v18 = [(TCCDAttributionChain *)v10 createProcessFromAuditToken:&v36 processInfo:v8];
+    v18 = [(TCCDAttributionChain *)v10 createProcessFromAuditToken:&v36 processInfo:infoCopy];
     accessingProcess = v10->_accessingProcess;
     v10->_accessingProcess = v18;
 
@@ -178,10 +178,10 @@ LABEL_8:
     }
 
     v26 = +[TCCDPlatform currentPlatform];
-    v27 = [v26 server];
-    v28 = [v27 logHandle];
+    server2 = [v26 server];
+    logHandle2 = [server2 logHandle];
 
-    if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
     {
       sub_10005CA9C(v15, v10);
     }
@@ -191,11 +191,11 @@ LABEL_22:
     goto LABEL_28;
   }
 
-  v23 = xpc_dictionary_get_value(v7, "TCC_MSG_REQUEST_AUTHORIZATION_SUBJECT_CREDENTIAL_DICTIONARY_KEY");
+  v23 = xpc_dictionary_get_value(messageCopy, "TCC_MSG_REQUEST_AUTHORIZATION_SUBJECT_CREDENTIAL_DICTIONARY_KEY");
 
   if (v23)
   {
-    v24 = xpc_dictionary_get_value(v7, "TCC_MSG_REQUEST_AUTHORIZATION_SUBJECT_CREDENTIAL_DICTIONARY_KEY");
+    v24 = xpc_dictionary_get_value(messageCopy, "TCC_MSG_REQUEST_AUTHORIZATION_SUBJECT_CREDENTIAL_DICTIONARY_KEY");
     v25 = v24;
     if (!v24 || xpc_dictionary_get_uint64(v24, "TCCD_MSG_CREDENTIAL_AUTHENTICATOR_TYPE_KEY") != 1)
     {
@@ -219,38 +219,38 @@ LABEL_24:
 
 LABEL_25:
   v30 = +[TCCDPlatform currentPlatform];
-  v31 = [v30 server];
-  v32 = [v31 logHandle];
+  server3 = [v30 server];
+  logHandle3 = [server3 logHandle];
 
-  if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
+  if (os_log_type_enabled(logHandle3, OS_LOG_TYPE_INFO))
   {
     v33 = [(TCCDAttributionChain *)v10 description];
     *buf = 138543362;
     *&buf[4] = v33;
-    _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "AttributionChain: %{public}@", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, logHandle3, OS_LOG_TYPE_INFO, "AttributionChain: %{public}@", buf, 0xCu);
   }
 
 LABEL_28:
   return v10;
 }
 
-- (id)attributedBundleUsingOutermostBundle:(BOOL)a3 computedStaticCodeRef:(const void *)a4 computedNonIdentifiableBundleURL:(id *)a5
+- (id)attributedBundleUsingOutermostBundle:(BOOL)bundle computedStaticCodeRef:(const void *)ref computedNonIdentifiableBundleURL:(id *)l
 {
-  v6 = a3;
-  v7 = [(TCCDAttributionChain *)self responsibleProcess:a3];
-  v8 = [v7 responsiblePath];
-  v9 = [NSURL fileURLWithPath:v8];
+  bundleCopy = bundle;
+  v7 = [(TCCDAttributionChain *)self responsibleProcess:bundle];
+  responsiblePath = [v7 responsiblePath];
+  v9 = [NSURL fileURLWithPath:responsiblePath];
 
-  if (a5)
+  if (l)
   {
-    *a5 = 0;
+    *l = 0;
   }
 
   if (v9)
   {
     v10 = +[TCCDPlatform currentPlatform];
     v11 = v10;
-    if (v6)
+    if (bundleCopy)
     {
       [v10 appBundleURLContainingExecutableURL:v9];
     }
@@ -266,10 +266,10 @@ LABEL_28:
       v14 = [TCCDBundle bundleWithURL:v13];
       if (v14)
       {
-        v12 = v14;
-        v15 = [v14 bundleIdentifier];
+        logHandle2 = v14;
+        bundleIdentifier = [v14 bundleIdentifier];
 
-        if (v15)
+        if (bundleIdentifier)
         {
 LABEL_19:
 
@@ -277,44 +277,44 @@ LABEL_19:
         }
 
         v16 = +[TCCDPlatform currentPlatform];
-        v17 = [v16 server];
-        v18 = [v17 logHandle];
+        server = [v16 server];
+        logHandle = [server logHandle];
 
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
         {
           v23 = 138543362;
           v24 = v13;
-          _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "BUNDLE_ATTRIBUTION: attributed bundle %{public}@ has no identifier and is not valid.", &v23, 0xCu);
+          _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "BUNDLE_ATTRIBUTION: attributed bundle %{public}@ has no identifier and is not valid.", &v23, 0xCu);
         }
 
-        if (a5)
+        if (l)
         {
           v19 = v13;
-          *a5 = v13;
+          *l = v13;
         }
       }
 
       else
       {
         v20 = +[TCCDPlatform currentPlatform];
-        v21 = [v20 server];
-        v12 = [v21 logHandle];
+        server2 = [v20 server];
+        logHandle2 = [server2 logHandle];
 
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
         {
-          sub_10005CB40(v13, v12);
+          sub_10005CB40(v13, logHandle2);
         }
       }
     }
 
-    v12 = 0;
+    logHandle2 = 0;
     goto LABEL_19;
   }
 
-  v12 = 0;
+  logHandle2 = 0;
 LABEL_20:
 
-  return v12;
+  return logHandle2;
 }
 
 @end

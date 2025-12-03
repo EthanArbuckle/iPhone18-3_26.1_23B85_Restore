@@ -1,46 +1,46 @@
 @interface PTTestRecipeInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)uniqueIdentifier;
-- (PTTestRecipeInfo)initWithCoder:(id)a3;
-- (PTTestRecipeInfo)initWithTestRecipe:(id)a3 domainInfo:(id)a4;
+- (PTTestRecipeInfo)initWithCoder:(id)coder;
+- (PTTestRecipeInfo)initWithTestRecipe:(id)recipe domainInfo:(id)info;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PTTestRecipeInfo
 
-- (PTTestRecipeInfo)initWithTestRecipe:(id)a3 domainInfo:(id)a4
+- (PTTestRecipeInfo)initWithTestRecipe:(id)recipe domainInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  recipeCopy = recipe;
+  infoCopy = info;
   v26.receiver = self;
   v26.super_class = PTTestRecipeInfo;
   v8 = [(PTTestRecipeInfo *)&v26 init];
   if (v8)
   {
-    v9 = [v7 uniqueIdentifier];
+    uniqueIdentifier = [infoCopy uniqueIdentifier];
     domainIdentifier = v8->_domainIdentifier;
-    v8->_domainIdentifier = v9;
+    v8->_domainIdentifier = uniqueIdentifier;
 
-    v11 = [v6 title];
+    title = [recipeCopy title];
     title = v8->_title;
-    v8->_title = v11;
+    v8->_title = title;
 
     v13 = MEMORY[0x277CCACA8];
-    v14 = [v7 domainGroupName];
-    v15 = [v7 domainName];
-    v16 = [v13 stringWithFormat:@"%@ – %@: %@", v14, v15, v8->_title];
+    domainGroupName = [infoCopy domainGroupName];
+    domainName = [infoCopy domainName];
+    v16 = [v13 stringWithFormat:@"%@ – %@: %@", domainGroupName, domainName, v8->_title];
     recipeDescription = v8->_recipeDescription;
     v8->_recipeDescription = v16;
 
-    v18 = [MEMORY[0x277CCAB58] indexSet];
+    indexSet = [MEMORY[0x277CCAB58] indexSet];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __50__PTTestRecipeInfo_initWithTestRecipe_domainInfo___block_invoke;
     v23[3] = &unk_27835EEC8;
-    v24 = v6;
-    v25 = v18;
-    v19 = v18;
+    v24 = recipeCopy;
+    v25 = indexSet;
+    v19 = indexSet;
     PTPrototypingEnumerateHardwareEventsWithBlock(v23);
     v20 = [v19 copy];
     events = v8->_events;
@@ -68,8 +68,8 @@ uint64_t __50__PTTestRecipeInfo_initWithTestRecipe_domainInfo___block_invoke(uin
   uniqueIdentifier = self->_uniqueIdentifier;
   if (!uniqueIdentifier)
   {
-    v4 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v5 = [(NSString *)self->_title componentsSeparatedByCharactersInSet:v4];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v5 = [(NSString *)self->_title componentsSeparatedByCharactersInSet:whitespaceAndNewlineCharacterSet];
     v6 = [v5 componentsJoinedByString:&stru_282FA6D50];
 
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%@", self->_domainIdentifier, v6];
@@ -82,9 +82,9 @@ uint64_t __50__PTTestRecipeInfo_initWithTestRecipe_domainInfo___block_invoke(uin
   return uniqueIdentifier;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v3 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && BSEqualStrings() && BSEqualStrings() && BSEqualObjects())
   {
@@ -101,47 +101,47 @@ uint64_t __50__PTTestRecipeInfo_initWithTestRecipe_domainInfo___block_invoke(uin
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendString:self->_title];
-  v5 = [v3 appendString:self->_domainIdentifier];
-  v6 = [v3 appendObject:self->_events];
-  v7 = [v3 appendString:self->_recipeDescription];
-  v8 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendString:self->_title];
+  v5 = [builder appendString:self->_domainIdentifier];
+  v6 = [builder appendObject:self->_events];
+  v7 = [builder appendString:self->_recipeDescription];
+  v8 = [builder hash];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   domainIdentifier = self->_domainIdentifier;
-  v5 = a3;
-  [v5 encodeObject:domainIdentifier forKey:@"domainIdentifier"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeObject:self->_events forKey:@"events"];
-  [v5 encodeObject:self->_recipeDescription forKey:@"description"];
+  coderCopy = coder;
+  [coderCopy encodeObject:domainIdentifier forKey:@"domainIdentifier"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeObject:self->_events forKey:@"events"];
+  [coderCopy encodeObject:self->_recipeDescription forKey:@"description"];
 }
 
-- (PTTestRecipeInfo)initWithCoder:(id)a3
+- (PTTestRecipeInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PTTestRecipeInfo;
   v5 = [(PTTestRecipeInfo *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domainIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domainIdentifier"];
     domainIdentifier = v5->_domainIdentifier;
     v5->_domainIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"events"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"events"];
     events = v5->_events;
     v5->_events = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"description"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"description"];
     recipeDescription = v5->_recipeDescription;
     v5->_recipeDescription = v12;
   }

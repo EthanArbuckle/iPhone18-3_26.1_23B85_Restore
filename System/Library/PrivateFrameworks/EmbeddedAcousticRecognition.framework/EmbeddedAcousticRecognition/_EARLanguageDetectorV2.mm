@@ -1,11 +1,11 @@
 @interface _EARLanguageDetectorV2
 + (void)initialize;
-- (_EARLanguageDetectorV2)initWithConfigFile:(id)a3 useNNVad:(BOOL)a4;
+- (_EARLanguageDetectorV2)initWithConfigFile:(id)file useNNVad:(BOOL)vad;
 - (_EARLanguageDetectorV2Delegate)lidDelegate;
-- (id)earLIDScores:(void *)a3;
-- (id)languageDetectorV2Result:(id)a3;
-- (id)startRequestWithSamplingRate:(unint64_t)a3 context:(id)a4 delegate:(id)a5;
-- (id)startRequestWithSamplingRate:(unint64_t)a3 requestOptions:(id)a4 delegate:(id)a5;
+- (id)earLIDScores:(void *)scores;
+- (id)languageDetectorV2Result:(id)result;
+- (id)startRequestWithSamplingRate:(unint64_t)rate context:(id)context delegate:(id)delegate;
+- (id)startRequestWithSamplingRate:(unint64_t)rate requestOptions:(id)options delegate:(id)delegate;
 - (void)_startComputeTask;
 - (void)dealloc;
 @end
@@ -15,29 +15,29 @@
 + (void)initialize
 {
   v3 = objc_opt_class();
-  if (v3 == a1)
+  if (v3 == self)
   {
 
     EARLogger::initializeLogging(v3);
   }
 }
 
-- (_EARLanguageDetectorV2)initWithConfigFile:(id)a3 useNNVad:(BOOL)a4
+- (_EARLanguageDetectorV2)initWithConfigFile:(id)file useNNVad:(BOOL)vad
 {
-  v5 = a3;
+  fileCopy = file;
   v23.receiver = self;
   v23.super_class = _EARLanguageDetectorV2;
   v6 = [(_EARLanguageDetectorV2 *)&v23 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
-    v8 = [v7 fileExistsAtPath:v5];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v8 = [defaultManager fileExistsAtPath:fileCopy];
 
     if (v8)
     {
-      if (v5)
+      if (fileCopy)
       {
-        [v5 ear_toString];
+        [fileCopy ear_toString];
       }
 
       else
@@ -87,7 +87,7 @@
       v10 = EARLogger::QuasarOSLogger(v9);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        [_EARLanguageDetectorV2 initWithConfigFile:v5 useNNVad:v10];
+        [_EARLanguageDetectorV2 initWithConfigFile:fileCopy useNNVad:v10];
       }
     }
 
@@ -104,7 +104,7 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   ptr = self->_audioProcessor.__ptr_;
   if (ptr)
   {
@@ -118,17 +118,17 @@
     _os_log_impl(&dword_1B501D000, v4, OS_LOG_TYPE_INFO, "dealloc", buf, 2u);
   }
 
-  v5.receiver = v2;
+  v5.receiver = selfCopy;
   v5.super_class = _EARLanguageDetectorV2;
   [(_EARLanguageDetectorV2 *)&v5 dealloc];
 }
 
-- (id)startRequestWithSamplingRate:(unint64_t)a3 requestOptions:(id)a4 delegate:(id)a5
+- (id)startRequestWithSamplingRate:(unint64_t)rate requestOptions:(id)options delegate:(id)delegate
 {
-  v16 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = EARLogger::QuasarOSLogger(v8);
+  rateCopy = rate;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  v9 = EARLogger::QuasarOSLogger(delegateCopy);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     LOWORD(__p[0]) = 0;
@@ -141,42 +141,42 @@
     (*(**ptr + 32))();
   }
 
-  objc_storeWeak(&self->_lidDelegate, v8);
+  objc_storeWeak(&self->_lidDelegate, delegateCopy);
   v15 = -1;
   v14 = 0;
   v13 = 0;
   _ZNSt3__115allocate_sharedB8ne200100IKN5kaldi5TimerENS_9allocatorIS2_EEJELi0EEENS_10shared_ptrIT_EERKT0_DpOT1_();
 }
 
-- (id)startRequestWithSamplingRate:(unint64_t)a3 context:(id)a4 delegate:(id)a5
+- (id)startRequestWithSamplingRate:(unint64_t)rate context:(id)context delegate:(id)delegate
 {
-  v7 = a5;
+  delegateCopy = delegate;
   v8 = objc_alloc_init(_EARLanguageDetectorV2RequestOptions);
-  v9 = [(_EARLanguageDetectorV2 *)self startRequestWithSamplingRate:a3 requestOptions:v8 delegate:v7];
+  v9 = [(_EARLanguageDetectorV2 *)self startRequestWithSamplingRate:rate requestOptions:v8 delegate:delegateCopy];
 
   return v9;
 }
 
-- (id)earLIDScores:(void *)a3
+- (id)earLIDScores:(void *)scores
 {
-  *&v6 = kaldi::VectorBase<float>::ApplySoftMax(a3, v3);
-  v7 = [MEMORY[0x1E695DF90] dictionary];
+  *&v6 = kaldi::VectorBase<float>::ApplySoftMax(scores, v3);
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   for (i = 0; [(NSArray *)self->_supportedLocales count]> i; ++i)
   {
-    LODWORD(v9) = *(*a3 + 4 * i);
+    LODWORD(v9) = *(*scores + 4 * i);
     v10 = [MEMORY[0x1E696AD98] numberWithFloat:v9];
     v11 = [(NSArray *)self->_supportedLocales objectAtIndexedSubscript:i];
-    [v7 setObject:v10 forKeyedSubscript:v11];
+    [dictionary setObject:v10 forKeyedSubscript:v11];
   }
 
-  return v7;
+  return dictionary;
 }
 
-- (id)languageDetectorV2Result:(id)a3
+- (id)languageDetectorV2Result:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = objc_alloc_init(_EARLanguageDetectorV2Result);
-  [(_EARLanguageDetectorV2Result *)v5 setConfidences:v4];
+  [(_EARLanguageDetectorV2Result *)v5 setConfidences:resultCopy];
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -198,7 +198,7 @@
   v7[4] = &v15;
   v7[5] = v14;
   v7[6] = &v8;
-  [v4 enumerateKeysAndObjectsUsingBlock:v7];
+  [resultCopy enumerateKeysAndObjectsUsingBlock:v7];
   [(_EARLanguageDetectorV2Result *)v5 setDetectedLanguage:v16[3] > self->_englishThreshold];
   [(_EARLanguageDetectorV2Result *)v5 setDominantLocale:v9[5]];
   _Block_object_dispose(&v8, 8);

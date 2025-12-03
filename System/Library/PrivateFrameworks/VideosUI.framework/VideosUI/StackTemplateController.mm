@@ -1,68 +1,68 @@
 @interface StackTemplateController
-- (BOOL)shouldRubberbandElementWithCategory:(unint64_t)a3 in:(id)a4 at:(id)a5;
-- (BOOL)vuiScrollViewShouldScrollToTop:(id)a3;
+- (BOOL)shouldRubberbandElementWithCategory:(unint64_t)category in:(id)in at:(id)at;
+- (BOOL)vuiScrollViewShouldScrollToTop:(id)top;
 - (int64_t)preferredStatusBarStyle;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)vuiScrollViewDidEndScrollingAnimation:(id)a3;
-- (void)vuiScrollViewDidScroll:(id)a3;
-- (void)vuiScrollViewWillBeginDragging:(id)a3;
-- (void)vuiScrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)vui_didMoveToParentViewController:(id)a3;
-- (void)vui_viewDidAppear:(BOOL)a3;
-- (void)vui_viewDidDisappear:(BOOL)a3;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)vuiScrollViewDidEndScrollingAnimation:(id)animation;
+- (void)vuiScrollViewDidScroll:(id)scroll;
+- (void)vuiScrollViewWillBeginDragging:(id)dragging;
+- (void)vuiScrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)vui_didMoveToParentViewController:(id)controller;
+- (void)vui_viewDidAppear:(BOOL)appear;
+- (void)vui_viewDidDisappear:(BOOL)disappear;
 - (void)vui_viewDidLayoutSubviews;
 - (void)vui_viewDidLoad;
-- (void)vui_viewWillAppear:(BOOL)a3;
-- (void)vui_viewWillDisappear:(BOOL)a3;
-- (void)vui_willMoveToParentViewController:(id)a3;
-- (void)willEnterForeground:(id)a3;
+- (void)vui_viewWillAppear:(BOOL)appear;
+- (void)vui_viewWillDisappear:(BOOL)disappear;
+- (void)vui_willMoveToParentViewController:(id)controller;
+- (void)willEnterForeground:(id)foreground;
 @end
 
 @implementation StackTemplateController
 
 - (void)vui_viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E3ED1FBC();
 }
 
-- (void)vui_viewWillAppear:(BOOL)a3
+- (void)vui_viewWillAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_10_0();
   sub_1E3ED292C();
 }
 
-- (void)vui_viewWillDisappear:(BOOL)a3
+- (void)vui_viewWillDisappear:(BOOL)disappear
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   sub_1E3ED3BD4(v4);
 }
 
-- (void)vui_viewDidAppear:(BOOL)a3
+- (void)vui_viewDidAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   sub_1E3ED3C70(v4);
 }
 
-- (void)vui_viewDidDisappear:(BOOL)a3
+- (void)vui_viewDidDisappear:(BOOL)disappear
 {
-  v3 = self;
+  selfCopy = self;
   v4 = OUTLINED_FUNCTION_10_0();
   sub_1E3ED3F84(v4);
 }
 
 - (void)vui_viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E3ED41D0();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
   OUTLINED_FUNCTION_5_16();
   v6 = v5;
@@ -70,35 +70,35 @@
   v7 = v6;
   OUTLINED_FUNCTION_37_3();
   OUTLINED_FUNCTION_6_12();
-  sub_1E3ED5DAC(a4);
+  sub_1E3ED5DAC(coordinator);
   swift_unknownObjectRelease();
 }
 
-- (void)vui_willMoveToParentViewController:(id)a3
+- (void)vui_willMoveToParentViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
   sub_1E3ED5FD4();
 }
 
-- (void)vui_didMoveToParentViewController:(id)a3
+- (void)vui_didMoveToParentViewController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
   sub_1E3ED609C();
 }
 
 - (int64_t)preferredStatusBarStyle
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E3ED618C();
 
   return v3;
 }
 
-- (void)willEnterForeground:(id)a3
+- (void)willEnterForeground:(id)foreground
 {
   OUTLINED_FUNCTION_106();
   sub_1E41FDF34();
@@ -113,25 +113,25 @@
   v7(v6);
 }
 
-- (void)vuiScrollViewDidEndScrollingAnimation:(id)a3
+- (void)vuiScrollViewDidEndScrollingAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = self;
+  animationCopy = animation;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
   sub_1E3ED75CC();
 }
 
-- (BOOL)vuiScrollViewShouldScrollToTop:(id)a3
+- (BOOL)vuiScrollViewShouldScrollToTop:(id)top
 {
-  v5 = a3;
-  v6 = self;
+  topCopy = top;
+  selfCopy = self;
   OUTLINED_FUNCTION_38();
   LOBYTE(self) = sub_1E3ED7D10();
 
   return self & 1;
 }
 
-- (BOOL)shouldRubberbandElementWithCategory:(unint64_t)a3 in:(id)a4 at:(id)a5
+- (BOOL)shouldRubberbandElementWithCategory:(unint64_t)category in:(id)in at:(id)at
 {
   sub_1E41FE874();
   OUTLINED_FUNCTION_0_10();
@@ -139,8 +139,8 @@
   OUTLINED_FUNCTION_5();
   OUTLINED_FUNCTION_9_12();
   sub_1E41FE804();
-  v9 = a4;
-  v10 = self;
+  inCopy = in;
+  selfCopy = self;
   v11 = OUTLINED_FUNCTION_13_8();
   sub_1E3ED7DD4(v11, v12, v5);
   v14 = v13;
@@ -150,28 +150,28 @@
   return v14 & 1;
 }
 
-- (void)vuiScrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)vuiScrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
   OUTLINED_FUNCTION_5_16();
   v7 = v6;
   v9 = v8;
   v11 = v7;
   OUTLINED_FUNCTION_6_12();
-  sub_1E3ED7F8C(v10, &a5->x);
+  sub_1E3ED7F8C(v10, &offset->x);
 }
 
-- (void)vuiScrollViewWillBeginDragging:(id)a3
+- (void)vuiScrollViewWillBeginDragging:(id)dragging
 {
-  v4 = a3;
-  v5 = self;
+  draggingCopy = dragging;
+  selfCopy = self;
   OUTLINED_FUNCTION_51();
   sub_1E3ED8298();
 }
 
-- (void)vuiScrollViewDidScroll:(id)a3
+- (void)vuiScrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
-  v5 = self;
+  scrollCopy = scroll;
+  selfCopy = self;
   OUTLINED_FUNCTION_37_3();
   sub_1E3ED8390();
 }

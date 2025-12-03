@@ -1,24 +1,24 @@
 @interface _UITabMorphTransition
 - (_UITabMorphTransition)init;
-- (_UITabMorphTransition)initWithContainer:(id)a3 groupCompletion:(id)a4 contentAlongsideAnimation:(id)a5;
-- (void)morphToView:(id)a3;
+- (_UITabMorphTransition)initWithContainer:(id)container groupCompletion:(id)completion contentAlongsideAnimation:(id)animation;
+- (void)morphToView:(id)view;
 @end
 
 @implementation _UITabMorphTransition
 
-- (_UITabMorphTransition)initWithContainer:(id)a3 groupCompletion:(id)a4 contentAlongsideAnimation:(id)a5
+- (_UITabMorphTransition)initWithContainer:(id)container groupCompletion:(id)completion contentAlongsideAnimation:(id)animation
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(animation);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
-  return sub_18916C3C4(a3, a4, sub_188A4AA04, v8);
+  return sub_18916C3C4(container, completion, sub_188A4AA04, v8);
 }
 
-- (void)morphToView:(id)a3
+- (void)morphToView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_18916C538(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_18916C538(viewCopy);
 }
 
 - (_UITabMorphTransition)init

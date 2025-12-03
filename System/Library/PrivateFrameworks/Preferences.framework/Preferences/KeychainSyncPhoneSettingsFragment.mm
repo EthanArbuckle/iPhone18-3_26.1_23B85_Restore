@@ -1,30 +1,30 @@
 @interface KeychainSyncPhoneSettingsFragment
-- (KeychainSyncPhoneSettingsFragment)initWithListController:(id)a3;
+- (KeychainSyncPhoneSettingsFragment)initWithListController:(id)controller;
 - (KeychainSyncPhoneSettingsFragmentDelegate)delegate;
 - (NSArray)specifiers;
 - (id)unformattedPhoneNumber;
 - (void)dealloc;
 - (void)reloadSpecifiers;
 - (void)resignFirstResponder;
-- (void)setDialingCountryInfo:(id)a3 forSpecifier:(id)a4;
-- (void)setPhoneNumber:(id)a3 forSpecifier:(id)a4;
-- (void)textFieldChanged:(id)a3;
+- (void)setDialingCountryInfo:(id)info forSpecifier:(id)specifier;
+- (void)setPhoneNumber:(id)number forSpecifier:(id)specifier;
+- (void)textFieldChanged:(id)changed;
 @end
 
 @implementation KeychainSyncPhoneSettingsFragment
 
-- (KeychainSyncPhoneSettingsFragment)initWithListController:(id)a3
+- (KeychainSyncPhoneSettingsFragment)initWithListController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = KeychainSyncPhoneSettingsFragment;
   v5 = [(KeychainSyncPhoneSettingsFragment *)&v8 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v5 selector:sel_textFieldChanged_ name:*MEMORY[0x1E69DE5C0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v5 selector:sel_textFieldChanged_ name:*MEMORY[0x1E69DE5C0] object:0];
 
-    objc_storeWeak(&v5->_listController, v4);
+    objc_storeWeak(&v5->_listController, controllerCopy);
   }
 
   return v5;
@@ -32,8 +32,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = KeychainSyncPhoneSettingsFragment;
@@ -49,8 +49,8 @@
     goto LABEL_43;
   }
 
-  v70 = self;
-  v64 = [MEMORY[0x1E695DF58] currentLocale];
+  selfCopy = self;
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
   v76 = 0;
   v63 = PSSecureBackupAccountInfo(&v76, 0);
   v4 = v76;
@@ -110,8 +110,8 @@
 
         v12 = *v9;
         v13 = [v8 objectForKey:v12];
-        phoneNumber = v70->_phoneNumber;
-        v70->_phoneNumber = v13;
+        phoneNumber = selfCopy->_phoneNumber;
+        selfCopy->_phoneNumber = v13;
 
         v82 = 0;
         v83 = &v82;
@@ -195,8 +195,8 @@ LABEL_47:
   v68 = 0;
 LABEL_22:
   v24 = MEMORY[0x1E695DF58];
-  v25 = [v64 localeIdentifier];
-  v26 = [v24 componentsFromLocaleIdentifier:v25];
+  localeIdentifier = [currentLocale localeIdentifier];
+  v26 = [v24 componentsFromLocaleIdentifier:localeIdentifier];
   v65 = [v26 objectForKey:*MEMORY[0x1E695D978]];
 
   v27 = v68;
@@ -206,11 +206,11 @@ LABEL_22:
   }
 
   v66 = v27;
-  if ([(NSString *)v70->_phoneNumber length])
+  if ([(NSString *)selfCopy->_phoneNumber length])
   {
-    v28 = PSPNCreateFormattedStringWithCountry(v70->_phoneNumber, [v66 lowercaseString]);
-    v29 = v70->_phoneNumber;
-    v70->_phoneNumber = v28;
+    v28 = PSPNCreateFormattedStringWithCountry(selfCopy->_phoneNumber, [v66 lowercaseString]);
+    v29 = selfCopy->_phoneNumber;
+    selfCopy->_phoneNumber = v28;
   }
 
   else
@@ -229,8 +229,8 @@ LABEL_22:
 
   else
   {
-    v33 = [(KeychainSyncPhoneSettingsFragment *)v70 title];
-    v67 = [PSSpecifier groupSpecifierWithName:v33];
+    title = [(KeychainSyncPhoneSettingsFragment *)selfCopy title];
+    v67 = [PSSpecifier groupSpecifierWithName:title];
 
     v34 = PS_LocalizedStringForKeychainSync(@"PHONE_NUMBER_DESCRIPTION");
     [v67 setProperty:v34 forKey:@"footerText"];
@@ -238,20 +238,20 @@ LABEL_22:
     [(NSArray *)v69 addObject:v67];
   }
 
-  countryInfo = v70->_countryInfo;
-  v70->_countryInfo = 0;
+  countryInfo = selfCopy->_countryInfo;
+  selfCopy->_countryInfo = 0;
 
   v36 = PS_LocalizedStringForKeychainSync(@"COUNTRY");
-  v37 = [PSSpecifier preferenceSpecifierNamed:v36 target:v70 set:sel_setDialingCountryInfo_forSpecifier_ get:sel_dialingCountryInfoForSpecifier_ detail:objc_opt_class() cell:2 edit:0];
-  countrySpecifier = v70->_countrySpecifier;
-  v70->_countrySpecifier = v37;
+  v37 = [PSSpecifier preferenceSpecifierNamed:v36 target:selfCopy set:sel_setDialingCountryInfo_forSpecifier_ get:sel_dialingCountryInfoForSpecifier_ detail:objc_opt_class() cell:2 edit:0];
+  countrySpecifier = selfCopy->_countrySpecifier;
+  selfCopy->_countrySpecifier = v37;
 
-  [(PSSpecifier *)v70->_countrySpecifier setProperty:objc_opt_class() forKey:?];
-  if (!v70->_countryInfo)
+  [(PSSpecifier *)selfCopy->_countrySpecifier setProperty:objc_opt_class() forKey:?];
+  if (!selfCopy->_countryInfo)
   {
     v39 = [KeychainSyncCountryInfo countryInfoForCountryCode:v68 dialingPrefix:v62];
-    v40 = v70->_countryInfo;
-    v70->_countryInfo = v39;
+    v40 = selfCopy->_countryInfo;
+    selfCopy->_countryInfo = v39;
   }
 
   v41 = +[KeychainSyncCountryInfo allCountries];
@@ -275,23 +275,23 @@ LABEL_22:
         }
 
         v46 = *(*(&v72 + 1) + 8 * i);
-        v47 = [v46 localizedCountryName];
-        v48 = v47;
-        if (v47)
+        localizedCountryName = [v46 localizedCountryName];
+        v48 = localizedCountryName;
+        if (localizedCountryName)
         {
-          v49 = v47;
+          countryName = localizedCountryName;
         }
 
         else
         {
-          v49 = [v46 countryName];
+          countryName = [v46 countryName];
         }
 
-        v50 = v49;
+        v50 = countryName;
 
         v51 = MEMORY[0x1E696AEC0];
-        v52 = [v46 dialingPrefix];
-        v53 = [v51 stringWithFormat:@"\u202A+%@\u202C (%@)", v52, v50];
+        dialingPrefix = [v46 dialingPrefix];
+        v53 = [v51 stringWithFormat:@"\u202A+%@\u202C (%@)", dialingPrefix, v50];
 
         [v42 addObject:v53];
       }
@@ -302,31 +302,31 @@ LABEL_22:
     while (v43);
   }
 
-  [(PSSpecifier *)v70->_countrySpecifier setValues:obj titles:v42];
-  [(NSArray *)v69 addObject:v70->_countrySpecifier];
+  [(PSSpecifier *)selfCopy->_countrySpecifier setValues:obj titles:v42];
+  [(NSArray *)v69 addObject:selfCopy->_countrySpecifier];
   v54 = objc_alloc_init(PSPhoneNumberSpecifier);
-  p_phoneNumberSpecifier = &v70->_phoneNumberSpecifier;
-  phoneNumberSpecifier = v70->_phoneNumberSpecifier;
-  v70->_phoneNumberSpecifier = v54;
+  p_phoneNumberSpecifier = &selfCopy->_phoneNumberSpecifier;
+  phoneNumberSpecifier = selfCopy->_phoneNumberSpecifier;
+  selfCopy->_phoneNumberSpecifier = v54;
 
-  v57 = v70->_phoneNumberSpecifier;
+  v57 = selfCopy->_phoneNumberSpecifier;
   v58 = PS_LocalizedStringForKeychainSync(@"NUMBER");
   [(PSSpecifier *)v57 setName:v58];
 
-  objc_storeWeak(&v70->_phoneNumberSpecifier->super.super.target, v70);
+  objc_storeWeak(&selfCopy->_phoneNumberSpecifier->super.super.target, selfCopy);
   (*p_phoneNumberSpecifier)->super.super.setter = sel_setPhoneNumber_forSpecifier_;
   (*p_phoneNumberSpecifier)->super.super.getter = sel_phoneNumberForSpecifier_;
   (*p_phoneNumberSpecifier)->super.super.detailControllerClass = 0;
   (*p_phoneNumberSpecifier)->super.super.cellType = 8;
   (*p_phoneNumberSpecifier)->super.super.editPaneClass = 0;
-  [(PSPhoneNumberSpecifier *)v70->_phoneNumberSpecifier setCountryCode:v66];
-  [(PSSpecifier *)v70->_phoneNumberSpecifier setKeyboardType:5 autoCaps:0 autoCorrection:1];
-  [(PSPhoneNumberSpecifier *)v70->_phoneNumberSpecifier setProperty:objc_opt_class() forKey:@"cellClass"];
-  [(NSArray *)v69 addObject:v70->_phoneNumberSpecifier];
-  v59 = v70->_specifiers;
-  v70->_specifiers = v69;
+  [(PSPhoneNumberSpecifier *)selfCopy->_phoneNumberSpecifier setCountryCode:v66];
+  [(PSSpecifier *)selfCopy->_phoneNumberSpecifier setKeyboardType:5 autoCaps:0 autoCorrection:1];
+  [(PSPhoneNumberSpecifier *)selfCopy->_phoneNumberSpecifier setProperty:objc_opt_class() forKey:@"cellClass"];
+  [(NSArray *)v69 addObject:selfCopy->_phoneNumberSpecifier];
+  v59 = selfCopy->_specifiers;
+  selfCopy->_specifiers = v69;
 
-  specifiers = v70->_specifiers;
+  specifiers = selfCopy->_specifiers;
 LABEL_43:
 
   return specifiers;
@@ -340,55 +340,55 @@ LABEL_43:
 
 - (void)resignFirstResponder
 {
-  v2 = [(KeychainSyncPhoneSettingsFragment *)self phoneNumberCell];
-  [v2 resignFirstResponder];
+  phoneNumberCell = [(KeychainSyncPhoneSettingsFragment *)self phoneNumberCell];
+  [phoneNumberCell resignFirstResponder];
 }
 
-- (void)setDialingCountryInfo:(id)a3 forSpecifier:(id)a4
+- (void)setDialingCountryInfo:(id)info forSpecifier:(id)specifier
 {
-  v6 = a3;
-  if (self->_countryInfo != v6)
+  infoCopy = info;
+  if (self->_countryInfo != infoCopy)
   {
-    v18 = v6;
-    objc_storeStrong(&self->_countryInfo, a3);
+    v18 = infoCopy;
+    objc_storeStrong(&self->_countryInfo, info);
     phoneNumberSpecifier = self->_phoneNumberSpecifier;
-    v8 = [(KeychainSyncCountryInfo *)self->_countryInfo countryCode];
-    [(PSPhoneNumberSpecifier *)phoneNumberSpecifier setCountryCode:v8];
+    countryCode = [(KeychainSyncCountryInfo *)self->_countryInfo countryCode];
+    [(PSPhoneNumberSpecifier *)phoneNumberSpecifier setCountryCode:countryCode];
 
     countryInfo = self->_countryInfo;
     v10 = self->_phoneNumber;
-    v11 = [(KeychainSyncCountryInfo *)countryInfo countryCode];
-    v12 = PSPNCreateFormattedStringWithCountry(v10, [v11 lowercaseString]);
+    countryCode2 = [(KeychainSyncCountryInfo *)countryInfo countryCode];
+    v12 = PSPNCreateFormattedStringWithCountry(v10, [countryCode2 lowercaseString]);
     phoneNumber = self->_phoneNumber;
     self->_phoneNumber = v12;
 
     WeakRetained = objc_loadWeakRetained(&self->_listController);
     [WeakRetained reloadSpecifier:self->_phoneNumberSpecifier];
 
-    v15 = [(KeychainSyncPhoneSettingsFragment *)self delegate];
-    v16 = [(KeychainSyncPhoneSettingsFragment *)self unformattedPhoneNumber];
-    v17 = [(KeychainSyncPhoneSettingsFragment *)self countryInfo];
-    [v15 phoneSettingsFragment:self didChangePhoneNumber:v16 countryInfo:v17];
+    delegate = [(KeychainSyncPhoneSettingsFragment *)self delegate];
+    unformattedPhoneNumber = [(KeychainSyncPhoneSettingsFragment *)self unformattedPhoneNumber];
+    countryInfo = [(KeychainSyncPhoneSettingsFragment *)self countryInfo];
+    [delegate phoneSettingsFragment:self didChangePhoneNumber:unformattedPhoneNumber countryInfo:countryInfo];
 
-    v6 = v18;
+    infoCopy = v18;
   }
 }
 
-- (void)setPhoneNumber:(id)a3 forSpecifier:(id)a4
+- (void)setPhoneNumber:(id)number forSpecifier:(id)specifier
 {
-  if (self->_phoneNumber != a3)
+  if (self->_phoneNumber != number)
   {
     [(KeychainSyncPhoneSettingsFragment *)self setPhoneNumber:?];
-    v8 = [(KeychainSyncPhoneSettingsFragment *)self delegate];
-    v6 = [(KeychainSyncPhoneSettingsFragment *)self unformattedPhoneNumber];
-    v7 = [(KeychainSyncPhoneSettingsFragment *)self countryInfo];
-    [v8 phoneSettingsFragment:self didChangePhoneNumber:v6 countryInfo:v7];
+    delegate = [(KeychainSyncPhoneSettingsFragment *)self delegate];
+    unformattedPhoneNumber = [(KeychainSyncPhoneSettingsFragment *)self unformattedPhoneNumber];
+    countryInfo = [(KeychainSyncPhoneSettingsFragment *)self countryInfo];
+    [delegate phoneSettingsFragment:self didChangePhoneNumber:unformattedPhoneNumber countryInfo:countryInfo];
   }
 }
 
 - (id)unformattedPhoneNumber
 {
-  v2 = [(KeychainSyncPhoneSettingsFragment *)self phoneNumber];
+  phoneNumber = [(KeychainSyncPhoneSettingsFragment *)self phoneNumber];
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -410,24 +410,24 @@ LABEL_43:
     _Unwind_Resume(v7);
   }
 
-  v5 = v3(v2);
+  v5 = v3(phoneNumber);
 
   return v5;
 }
 
-- (void)textFieldChanged:(id)a3
+- (void)textFieldChanged:(id)changed
 {
   phoneNumberSpecifier = self->_phoneNumberSpecifier;
-  v5 = a3;
+  changedCopy = changed;
   v6 = [(PSSpecifier *)phoneNumberSpecifier propertyForKey:@"cellObject"];
-  v9 = [v6 editableTextField];
+  editableTextField = [v6 editableTextField];
 
-  v7 = [v5 object];
+  object = [changedCopy object];
 
-  if (v7 == v9)
+  if (object == editableTextField)
   {
-    v8 = [v9 text];
-    [(KeychainSyncPhoneSettingsFragment *)self setPhoneNumber:v8 forSpecifier:self->_phoneNumberSpecifier];
+    text = [editableTextField text];
+    [(KeychainSyncPhoneSettingsFragment *)self setPhoneNumber:text forSpecifier:self->_phoneNumberSpecifier];
   }
 }
 

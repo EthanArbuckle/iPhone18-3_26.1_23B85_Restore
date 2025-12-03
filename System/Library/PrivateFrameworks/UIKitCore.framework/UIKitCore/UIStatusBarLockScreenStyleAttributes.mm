@@ -1,19 +1,19 @@
 @interface UIStatusBarLockScreenStyleAttributes
-- (BOOL)shouldShowInternalItemType:(int)a3 withScreenCapabilities:(id)a4;
+- (BOOL)shouldShowInternalItemType:(int)type withScreenCapabilities:(id)capabilities;
 @end
 
 @implementation UIStatusBarLockScreenStyleAttributes
 
-- (BOOL)shouldShowInternalItemType:(int)a3 withScreenCapabilities:(id)a4
+- (BOOL)shouldShowInternalItemType:(int)type withScreenCapabilities:(id)capabilities
 {
-  if (a3 == 49)
+  if (type == 49)
   {
-    return [(UIStatusBarStyleAttributes *)self style:*&a3]== 1001;
+    return [(UIStatusBarStyleAttributes *)self style:*&type]== 1001;
   }
 
   v5.receiver = self;
   v5.super_class = UIStatusBarLockScreenStyleAttributes;
-  return [(UIStatusBarStyleAttributes *)&v5 shouldShowInternalItemType:*&a3 withScreenCapabilities:a4];
+  return [(UIStatusBarStyleAttributes *)&v5 shouldShowInternalItemType:*&type withScreenCapabilities:capabilities];
 }
 
 @end

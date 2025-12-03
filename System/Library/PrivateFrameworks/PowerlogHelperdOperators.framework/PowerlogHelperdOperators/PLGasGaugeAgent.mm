@@ -12,7 +12,7 @@
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLGasGaugeAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -27,7 +27,7 @@
       [(PLGasGaugeAgent *)v3 init:v4];
     }
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -35,10 +35,10 @@
     v13.receiver = self;
     v13.super_class = PLGasGaugeAgent;
     self = [(PLAgent *)&v13 init];
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (void)initOperatorDependancies
@@ -47,14 +47,14 @@
   ggComposition = self->_ggComposition;
   self->_ggComposition = v3;
 
-  v5 = [(PLIOKitOperatorComposition *)self->_ggComposition service];
+  service = [(PLIOKitOperatorComposition *)self->_ggComposition service];
   connect = 0;
-  if (!v5)
+  if (!service)
   {
     goto LABEL_5;
   }
 
-  if (!IOServiceOpen(v5, *MEMORY[0x277D85F48], 0, &connect))
+  if (!IOServiceOpen(service, *MEMORY[0x277D85F48], 0, &connect))
   {
     [(PLIOKitOperatorComposition *)self->_ggComposition setConn:connect];
   }
@@ -72,10 +72,10 @@ LABEL_5:
 
 - (void)dealloc
 {
-  v3 = [(PLIOKitOperatorComposition *)self->_ggComposition conn];
-  if (v3)
+  conn = [(PLIOKitOperatorComposition *)self->_ggComposition conn];
+  if (conn)
   {
-    IOServiceClose(v3);
+    IOServiceClose(conn);
   }
 
   v4.receiver = self;
@@ -106,9 +106,9 @@ LABEL_5:
   v14[0] = v2;
   v13[1] = *MEMORY[0x277D3F540];
   v9 = @"GasGaugePower";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_RealFormat];
-  v10 = v4;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_RealFormat = [mEMORY[0x277D3F198] commonTypeDict_RealFormat];
+  v10 = commonTypeDict_RealFormat;
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v10 forKeys:&v9 count:1];
   v14[1] = v5;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
@@ -123,9 +123,9 @@ LABEL_5:
   v23[1] = *MEMORY[0x277D85DE8];
   v3 = [(PLOperator *)PLGasGaugeAgent entryKeyForType:*MEMORY[0x277D3F5E8] andName:@"MetricMonitorInstantKeys"];
   v4 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v3];
-  v5 = [(PLIOKitOperatorComposition *)self->_ggComposition conn];
-  v6 = hdqRead16(v5, 0x14u);
-  v7 = hdqRead16(v5, 8u);
+  conn = [(PLIOKitOperatorComposition *)self->_ggComposition conn];
+  v6 = hdqRead16(conn, 0x14u);
+  v7 = hdqRead16(conn, 8u);
   v8 = v7;
   if (v6)
   {
@@ -144,8 +144,8 @@ LABEL_5:
 
   else
   {
-    v10 = [v6 intValue];
-    v11 = v10 / 1000.0 * ([v8 intValue] / 1000.0);
+    intValue = [v6 intValue];
+    v11 = intValue / 1000.0 * ([v8 intValue] / 1000.0);
     v12 = [MEMORY[0x277CCABB0] numberWithDouble:v11 * 1000.0];
   }
 

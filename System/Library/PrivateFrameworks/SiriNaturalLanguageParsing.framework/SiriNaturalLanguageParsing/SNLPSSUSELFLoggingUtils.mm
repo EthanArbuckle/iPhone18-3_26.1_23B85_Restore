@@ -1,15 +1,15 @@
 @interface SNLPSSUSELFLoggingUtils
-+ (id)buildMetadataFromRequestId:(id)a3;
-+ (id)buildMetadataWithNlId:(id)a3 andWithTrpId:(id)a4 andWithResultCandidateId:(id)a5;
++ (id)buildMetadataFromRequestId:(id)id;
++ (id)buildMetadataWithNlId:(id)id andWithTrpId:(id)trpId andWithResultCandidateId:(id)candidateId;
 + (id)generateRandomUUID;
-+ (void)emitEvent:(id)a3;
-+ (void)emitEventBackgroundUpdate:(id)a3 backgroundUpdateContextBuilder:(id)a4;
-+ (void)emitEventUserRequest:(id)a3 userRequestContextBuilder:(id)a4;
-+ (void)logBackgroundUpdateEnded:(id)a3 locale:(id)a4 appInfos:(id)a5;
-+ (void)logBackgroundUpdateFailed:(id)a3;
-+ (void)logUserRequestEnded:(id)a3 triggeredCacheEntryInfos:(id)a4;
-+ (void)logUserRequestFailed:(id)a3;
-+ (void)logUserRequestStarted:(id)a3;
++ (void)emitEvent:(id)event;
++ (void)emitEventBackgroundUpdate:(id)update backgroundUpdateContextBuilder:(id)builder;
++ (void)emitEventUserRequest:(id)request userRequestContextBuilder:(id)builder;
++ (void)logBackgroundUpdateEnded:(id)ended locale:(id)locale appInfos:(id)infos;
++ (void)logBackgroundUpdateFailed:(id)failed;
++ (void)logUserRequestEnded:(id)ended triggeredCacheEntryInfos:(id)infos;
++ (void)logUserRequestFailed:(id)failed;
++ (void)logUserRequestStarted:(id)started;
 @end
 
 @implementation SNLPSSUSELFLoggingUtils
@@ -18,8 +18,8 @@
 {
   v5 = 0;
   v6 = 0;
-  v2 = [MEMORY[0x277CCAD78] UUID];
-  [v2 getUUIDBytes:&v5];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  [uUID getUUIDBytes:&v5];
   v3 = objc_alloc_init(MEMORY[0x277D5DDD0]);
   [v3 setNamespaceA:0];
   [v3 setLowInt:v5];
@@ -28,15 +28,15 @@
   return v3;
 }
 
-+ (void)emitEventBackgroundUpdate:(id)a3 backgroundUpdateContextBuilder:(id)a4
++ (void)emitEventBackgroundUpdate:(id)update backgroundUpdateContextBuilder:(id)builder
 {
   v6 = MEMORY[0x277D59138];
-  v7 = a4;
-  v8 = a3;
+  builderCopy = builder;
+  updateCopy = update;
   v9 = objc_alloc_init(v6);
-  v10 = [a1 buildMetadataWithNlId:v8 andWithTrpId:0 andWithResultCandidateId:0];
+  v10 = [self buildMetadataWithNlId:updateCopy andWithTrpId:0 andWithResultCandidateId:0];
 
-  v7[2](v7, v9);
+  builderCopy[2](builderCopy, v9);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __84__SNLPSSUSELFLoggingUtils_emitEventBackgroundUpdate_backgroundUpdateContextBuilder___block_invoke;
@@ -45,7 +45,7 @@
   v15 = v9;
   v11 = v9;
   v12 = v10;
-  [a1 emitEvent:v13];
+  [self emitEvent:v13];
 }
 
 void __84__SNLPSSUSELFLoggingUtils_emitEventBackgroundUpdate_backgroundUpdateContextBuilder___block_invoke(uint64_t a1, void *a2)
@@ -56,15 +56,15 @@ void __84__SNLPSSUSELFLoggingUtils_emitEventBackgroundUpdate_backgroundUpdateCon
   [v4 setSsuBackgroundRequestContext:*(a1 + 40)];
 }
 
-+ (void)emitEventUserRequest:(id)a3 userRequestContextBuilder:(id)a4
++ (void)emitEventUserRequest:(id)request userRequestContextBuilder:(id)builder
 {
   v6 = MEMORY[0x277D59160];
-  v7 = a4;
-  v8 = a3;
+  builderCopy = builder;
+  requestCopy = request;
   v9 = objc_alloc_init(v6);
-  v10 = [a1 buildMetadataFromRequestId:v8];
+  v10 = [self buildMetadataFromRequestId:requestCopy];
 
-  v7[2](v7, v9);
+  builderCopy[2](builderCopy, v9);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __74__SNLPSSUSELFLoggingUtils_emitEventUserRequest_userRequestContextBuilder___block_invoke;
@@ -73,7 +73,7 @@ void __84__SNLPSSUSELFLoggingUtils_emitEventBackgroundUpdate_backgroundUpdateCon
   v15 = v9;
   v11 = v9;
   v12 = v10;
-  [a1 emitEvent:v13];
+  [self emitEvent:v13];
 }
 
 void __74__SNLPSSUSELFLoggingUtils_emitEventUserRequest_userRequestContextBuilder___block_invoke(uint64_t a1, void *a2)
@@ -84,40 +84,40 @@ void __74__SNLPSSUSELFLoggingUtils_emitEventUserRequest_userRequestContextBuilde
   [v4 setSsuUserRequestContext:*(a1 + 40)];
 }
 
-+ (void)emitEvent:(id)a3
++ (void)emitEvent:(id)event
 {
   v3 = MEMORY[0x277D590F0];
-  v4 = a3;
+  eventCopy = event;
   v6 = objc_alloc_init(v3);
-  v4[2](v4, v6);
+  eventCopy[2](eventCopy, v6);
 
-  v5 = [MEMORY[0x277D552C0] sharedStream];
-  [v5 emitMessage:v6];
+  mEMORY[0x277D552C0] = [MEMORY[0x277D552C0] sharedStream];
+  [mEMORY[0x277D552C0] emitMessage:v6];
 }
 
-+ (id)buildMetadataFromRequestId:(id)a3
++ (id)buildMetadataFromRequestId:(id)id
 {
-  v4 = [MEMORY[0x277D5DEF8] extractRequestLinkData:a3];
-  v5 = [v4 nlId];
-  v6 = [v4 trpId];
-  v7 = [v4 resultCandidateId];
-  v8 = [a1 buildMetadataWithNlId:v5 andWithTrpId:v6 andWithResultCandidateId:v7];
+  v4 = [MEMORY[0x277D5DEF8] extractRequestLinkData:id];
+  nlId = [v4 nlId];
+  trpId = [v4 trpId];
+  resultCandidateId = [v4 resultCandidateId];
+  v8 = [self buildMetadataWithNlId:nlId andWithTrpId:trpId andWithResultCandidateId:resultCandidateId];
 
   return v8;
 }
 
-+ (id)buildMetadataWithNlId:(id)a3 andWithTrpId:(id)a4 andWithResultCandidateId:(id)a5
++ (id)buildMetadataWithNlId:(id)id andWithTrpId:(id)trpId andWithResultCandidateId:(id)candidateId
 {
   v7 = 0;
-  v5 = [MEMORY[0x277D5DEF8] createNLXClientEventMetadataWithNlId:a3 andWithTrpId:a4 andWithResultCandidateId:a5 andWithRequester:&v7];
+  v5 = [MEMORY[0x277D5DEF8] createNLXClientEventMetadataWithNlId:id andWithTrpId:trpId andWithResultCandidateId:candidateId andWithRequester:&v7];
 
   return v5;
 }
 
-+ (void)logBackgroundUpdateFailed:(id)a3
++ (void)logBackgroundUpdateFailed:(id)failed
 {
   v4 = MEMORY[0x277D59148];
-  v5 = a3;
+  failedCopy = failed;
   v6 = objc_alloc_init(v4);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -125,16 +125,16 @@ void __74__SNLPSSUSELFLoggingUtils_emitEventUserRequest_userRequestContextBuilde
   v8[3] = &unk_2784B6EE0;
   v9 = v6;
   v7 = v6;
-  [a1 emitEventBackgroundUpdate:v5 backgroundUpdateContextBuilder:v8];
+  [self emitEventBackgroundUpdate:failedCopy backgroundUpdateContextBuilder:v8];
 }
 
-+ (void)logBackgroundUpdateEnded:(id)a3 locale:(id)a4 appInfos:(id)a5
++ (void)logBackgroundUpdateEnded:(id)ended locale:(id)locale appInfos:(id)infos
 {
   v7 = MEMORY[0x277D59140];
-  v8 = a5;
-  v9 = a3;
+  infosCopy = infos;
+  endedCopy = ended;
   v10 = objc_alloc_init(v7);
-  [v10 setAppInfos:v8];
+  [v10 setAppInfos:infosCopy];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -142,13 +142,13 @@ void __74__SNLPSSUSELFLoggingUtils_emitEventUserRequest_userRequestContextBuilde
   v12[3] = &unk_2784B6EE0;
   v13 = v10;
   v11 = v10;
-  [a1 emitEventBackgroundUpdate:v9 backgroundUpdateContextBuilder:v12];
+  [self emitEventBackgroundUpdate:endedCopy backgroundUpdateContextBuilder:v12];
 }
 
-+ (void)logUserRequestFailed:(id)a3
++ (void)logUserRequestFailed:(id)failed
 {
   v4 = MEMORY[0x277D59170];
-  v5 = a3;
+  failedCopy = failed;
   v6 = objc_alloc_init(v4);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -156,16 +156,16 @@ void __74__SNLPSSUSELFLoggingUtils_emitEventUserRequest_userRequestContextBuilde
   v8[3] = &unk_2784B6EB8;
   v9 = v6;
   v7 = v6;
-  [a1 emitEventUserRequest:v5 userRequestContextBuilder:v8];
+  [self emitEventUserRequest:failedCopy userRequestContextBuilder:v8];
 }
 
-+ (void)logUserRequestEnded:(id)a3 triggeredCacheEntryInfos:(id)a4
++ (void)logUserRequestEnded:(id)ended triggeredCacheEntryInfos:(id)infos
 {
   v6 = MEMORY[0x277D59168];
-  v7 = a4;
-  v8 = a3;
+  infosCopy = infos;
+  endedCopy = ended;
   v9 = objc_alloc_init(v6);
-  [v9 setTriggeredCacheEntryInfos:v7];
+  [v9 setTriggeredCacheEntryInfos:infosCopy];
 
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
@@ -173,13 +173,13 @@ void __74__SNLPSSUSELFLoggingUtils_emitEventUserRequest_userRequestContextBuilde
   v11[3] = &unk_2784B6EB8;
   v12 = v9;
   v10 = v9;
-  [a1 emitEventUserRequest:v8 userRequestContextBuilder:v11];
+  [self emitEventUserRequest:endedCopy userRequestContextBuilder:v11];
 }
 
-+ (void)logUserRequestStarted:(id)a3
++ (void)logUserRequestStarted:(id)started
 {
   v4 = MEMORY[0x277D59180];
-  v5 = a3;
+  startedCopy = started;
   v6 = objc_alloc_init(v4);
   [v6 setExists:1];
   v8[0] = MEMORY[0x277D85DD0];
@@ -188,7 +188,7 @@ void __74__SNLPSSUSELFLoggingUtils_emitEventUserRequest_userRequestContextBuilde
   v8[3] = &unk_2784B6EB8;
   v9 = v6;
   v7 = v6;
-  [a1 emitEventUserRequest:v5 userRequestContextBuilder:v8];
+  [self emitEventUserRequest:startedCopy userRequestContextBuilder:v8];
 }
 
 @end

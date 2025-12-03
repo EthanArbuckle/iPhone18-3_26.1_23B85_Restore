@@ -1,27 +1,27 @@
 @interface RTStoredVisitFetchOptions
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFetchOptions:(id)a3;
-- (RTStoredVisitFetchOptions)initWithAscending:(BOOL)a3 confidence:(id)a4 dateInterval:(id)a5 labelVisit:(BOOL)a6 limit:(id)a7 sources:(id)a8 redact:(BOOL)a9 filterPairedVisitEntries:(BOOL)a10;
-- (RTStoredVisitFetchOptions)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFetchOptions:(id)options;
+- (RTStoredVisitFetchOptions)initWithAscending:(BOOL)ascending confidence:(id)confidence dateInterval:(id)interval labelVisit:(BOOL)visit limit:(id)limit sources:(id)sources redact:(BOOL)redact filterPairedVisitEntries:(BOOL)self0;
+- (RTStoredVisitFetchOptions)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTStoredVisitFetchOptions
 
-- (RTStoredVisitFetchOptions)initWithAscending:(BOOL)a3 confidence:(id)a4 dateInterval:(id)a5 labelVisit:(BOOL)a6 limit:(id)a7 sources:(id)a8 redact:(BOOL)a9 filterPairedVisitEntries:(BOOL)a10
+- (RTStoredVisitFetchOptions)initWithAscending:(BOOL)ascending confidence:(id)confidence dateInterval:(id)interval labelVisit:(BOOL)visit limit:(id)limit sources:(id)sources redact:(BOOL)redact filterPairedVisitEntries:(BOOL)self0
 {
-  v17 = a4;
-  v18 = a5;
-  v19 = a7;
-  v20 = a8;
-  if (v17)
+  confidenceCopy = confidence;
+  intervalCopy = interval;
+  limitCopy = limit;
+  sourcesCopy = sources;
+  if (confidenceCopy)
   {
-    [v17 doubleValue];
+    [confidenceCopy doubleValue];
     if (v21 != 0.0)
     {
-      [v17 doubleValue];
+      [confidenceCopy doubleValue];
       if (v22 != 1.0)
       {
         v28 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -37,7 +37,7 @@
     }
   }
 
-  if (v19 && ![v19 unsignedIntegerValue])
+  if (limitCopy && ![limitCopy unsignedIntegerValue])
   {
     v28 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -49,11 +49,11 @@
 
 LABEL_18:
 
-    v27 = 0;
+    selfCopy = 0;
     goto LABEL_19;
   }
 
-  if (v20 && ![RTVisit validVisitSources:v20])
+  if (sourcesCopy && ![RTVisit validVisitSources:sourcesCopy])
   {
     v28 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -74,100 +74,100 @@ LABEL_17:
   v24 = v23;
   if (v23)
   {
-    v23->_ascending = a3;
-    objc_storeStrong(&v23->_confidence, a4);
-    objc_storeStrong(&v24->_dateInterval, a5);
-    v24->_labelVisit = a6;
-    objc_storeStrong(&v24->_limit, a7);
-    v25 = [v20 copy];
+    v23->_ascending = ascending;
+    objc_storeStrong(&v23->_confidence, confidence);
+    objc_storeStrong(&v24->_dateInterval, interval);
+    v24->_labelVisit = visit;
+    objc_storeStrong(&v24->_limit, limit);
+    v25 = [sourcesCopy copy];
     sources = v24->_sources;
     v24->_sources = v25;
 
-    v24->_redact = a9;
-    v24->_filterPairedVisitEntries = a10;
+    v24->_redact = redact;
+    v24->_filterPairedVisitEntries = entries;
   }
 
   self = v24;
-  v27 = self;
+  selfCopy = self;
 LABEL_19:
 
-  return v27;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   ascending = self->_ascending;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithBool:ascending];
-  [v6 encodeObject:v7 forKey:@"ascending"];
+  [coderCopy encodeObject:v7 forKey:@"ascending"];
 
-  [v6 encodeObject:self->_confidence forKey:@"confidence"];
-  [v6 encodeObject:self->_dateInterval forKey:@"dateInterval"];
+  [coderCopy encodeObject:self->_confidence forKey:@"confidence"];
+  [coderCopy encodeObject:self->_dateInterval forKey:@"dateInterval"];
   v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_labelVisit];
-  [v6 encodeObject:v8 forKey:@"labelVisit"];
+  [coderCopy encodeObject:v8 forKey:@"labelVisit"];
 
-  [v6 encodeObject:self->_limit forKey:@"limit"];
-  [v6 encodeObject:self->_sources forKey:@"sources"];
-  [v6 encodeBool:self->_redact forKey:@"redact"];
+  [coderCopy encodeObject:self->_limit forKey:@"limit"];
+  [coderCopy encodeObject:self->_sources forKey:@"sources"];
+  [coderCopy encodeBool:self->_redact forKey:@"redact"];
   v9 = [MEMORY[0x1E696AD98] numberWithBool:self->_filterPairedVisitEntries];
-  [v6 encodeObject:v9 forKey:@"filterPairedVisitEntries"];
+  [coderCopy encodeObject:v9 forKey:@"filterPairedVisitEntries"];
 }
 
-- (RTStoredVisitFetchOptions)initWithCoder:(id)a3
+- (RTStoredVisitFetchOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ascending"];
-  v6 = [v5 BOOLValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ascending"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"confidence"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"labelVisit"];
-  v10 = [v9 BOOLValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"confidence"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dateInterval"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"labelVisit"];
+  bOOLValue2 = [v9 BOOLValue];
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"limit"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"limit"];
   v12 = MEMORY[0x1E695DFD8];
   v13 = objc_opt_class();
   v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-  v15 = [v4 decodeObjectOfClasses:v14 forKey:@"sources"];
+  v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"sources"];
 
-  LOBYTE(v14) = [v4 decodeBoolForKey:@"redact"];
-  v16 = [v4 decodeBoolForKey:@"filterPairedVisitEntries"];
+  LOBYTE(v14) = [coderCopy decodeBoolForKey:@"redact"];
+  v16 = [coderCopy decodeBoolForKey:@"filterPairedVisitEntries"];
 
   BYTE1(v19) = v16;
   LOBYTE(v19) = v14;
-  v17 = [(RTStoredVisitFetchOptions *)self initWithAscending:v6 confidence:v7 dateInterval:v8 labelVisit:v10 limit:v11 sources:v15 redact:v19 filterPairedVisitEntries:?];
+  v17 = [(RTStoredVisitFetchOptions *)self initWithAscending:bOOLValue confidence:v7 dateInterval:v8 labelVisit:bOOLValue2 limit:v11 sources:v15 redact:v19 filterPairedVisitEntries:?];
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTStoredVisitFetchOptions *)self isEqualToFetchOptions:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(RTStoredVisitFetchOptions *)self isEqualToFetchOptions:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToFetchOptions:(id)a3
+- (BOOL)isEqualToFetchOptions:(id)options
 {
-  v7 = a3;
+  optionsCopy = options;
   ascending = self->_ascending;
-  v41 = [v7 ascending];
+  ascending = [optionsCopy ascending];
   confidence = self->_confidence;
   if (!confidence)
   {
-    v3 = [v7 confidence];
-    if (v3)
+    confidence = [optionsCopy confidence];
+    if (confidence)
     {
       if (self->_confidence)
       {
@@ -188,13 +188,13 @@ LABEL_11:
   }
 
 LABEL_2:
-  v9 = [v7 confidence];
-  if (v9)
+  confidence2 = [optionsCopy confidence];
+  if (confidence2)
   {
-    v4 = v9;
+    dateInterval = confidence2;
     v10 = self->_confidence;
-    v11 = [v7 confidence];
-    HIDWORD(v39) = [(NSNumber *)v10 isEqualToNumber:v11];
+    confidence3 = [optionsCopy confidence];
+    HIDWORD(v39) = [(NSNumber *)v10 isEqualToNumber:confidence3];
 
     if (!confidence)
     {
@@ -218,8 +218,8 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v4 = [v7 dateInterval];
-  if (!v4)
+  dateInterval = [optionsCopy dateInterval];
+  if (!dateInterval)
   {
     LODWORD(v39) = 1;
     goto LABEL_22;
@@ -228,13 +228,13 @@ LABEL_12:
   if (self->_dateInterval)
   {
 LABEL_13:
-    v13 = [v7 dateInterval];
-    if (v13)
+    dateInterval2 = [optionsCopy dateInterval];
+    if (dateInterval2)
     {
-      v14 = v13;
+      v14 = dateInterval2;
       v15 = self->_dateInterval;
-      v5 = [v7 dateInterval];
-      LODWORD(v39) = [(NSDateInterval *)v15 isEqualToDateInterval:v5];
+      dateInterval3 = [optionsCopy dateInterval];
+      LODWORD(v39) = [(NSDateInterval *)v15 isEqualToDateInterval:dateInterval3];
 
       if (dateInterval)
       {
@@ -261,15 +261,15 @@ LABEL_22:
 
 LABEL_23:
   labelVisit = self->_labelVisit;
-  v17 = [v7 labelVisit];
+  labelVisit = [optionsCopy labelVisit];
   limit = self->_limit;
   if (limit)
   {
     goto LABEL_24;
   }
 
-  v5 = [v7 limit];
-  if (!v5)
+  dateInterval3 = [optionsCopy limit];
+  if (!dateInterval3)
   {
     v23 = 1;
     goto LABEL_33;
@@ -284,13 +284,13 @@ LABEL_33:
   }
 
 LABEL_24:
-  v19 = [v7 limit];
-  if (v19)
+  limit = [optionsCopy limit];
+  if (limit)
   {
-    v20 = v19;
+    v20 = limit;
     v21 = self->_limit;
-    v22 = [v7 limit];
-    v23 = [(NSNumber *)v21 isEqualToNumber:v22];
+    limit2 = [optionsCopy limit];
+    v23 = [(NSNumber *)v21 isEqualToNumber:limit2];
 
     if (!limit)
     {
@@ -314,8 +314,8 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  v5 = [v7 sources];
-  if (!v5)
+  dateInterval3 = [optionsCopy sources];
+  if (!dateInterval3)
   {
     v29 = 1;
     goto LABEL_44;
@@ -324,13 +324,13 @@ LABEL_34:
   if (self->_sources)
   {
 LABEL_35:
-    v25 = [v7 sources];
-    if (v25)
+    sources = [optionsCopy sources];
+    if (sources)
     {
-      v26 = v25;
+      v26 = sources;
       v27 = self->_sources;
-      v28 = [v7 sources];
-      v29 = [(NSSet *)v27 isEqual:v28];
+      sources2 = [optionsCopy sources];
+      v29 = [(NSSet *)v27 isEqual:sources2];
 
       if (sources)
       {
@@ -358,19 +358,19 @@ LABEL_44:
 LABEL_45:
   v30 = labelVisit;
   redact = self->_redact;
-  v32 = [v7 redact];
+  redact = [optionsCopy redact];
   filterPairedVisitEntries = self->_filterPairedVisitEntries;
-  v34 = [v7 filterPairedVisitEntries];
+  filterPairedVisitEntries = [optionsCopy filterPairedVisitEntries];
   v35 = 0;
-  v36 = (ascending == v41) & HIDWORD(v40) & v40;
-  if (v30 != v17)
+  v36 = (ascending == ascending) & HIDWORD(v40) & v40;
+  if (v30 != labelVisit)
   {
     v36 = 0;
   }
 
   if ((v36 & v23) == 1 && v29)
   {
-    v35 = redact == v32 && (v34 & 1) == filterPairedVisitEntries;
+    v35 = redact == redact && (filterPairedVisitEntries & 1) == filterPairedVisitEntries;
   }
 
   return v35;
@@ -443,11 +443,11 @@ LABEL_45:
   }
 
   confidence = self->_confidence;
-  v6 = [(NSDateInterval *)self->_dateInterval startDate];
-  v7 = [v6 stringFromDate];
-  v8 = [(NSDateInterval *)self->_dateInterval endDate];
-  v9 = [v8 stringFromDate];
-  v10 = v9;
+  startDate = [(NSDateInterval *)self->_dateInterval startDate];
+  stringFromDate = [startDate stringFromDate];
+  endDate = [(NSDateInterval *)self->_dateInterval endDate];
+  stringFromDate2 = [endDate stringFromDate];
+  v10 = stringFromDate2;
   if (self->_labelVisit)
   {
     v11 = @"YES";
@@ -468,7 +468,7 @@ LABEL_45:
     v12 = @"NO";
   }
 
-  v13 = [v3 stringWithFormat:@"ascending, %@, confidence, %@, startDate, %@, endDate, %@, labelVisit, %@, limit, %@, redact, %d, filterPairedVisitEntries, %@", v4, confidence, v7, v9, v11, self->_limit, self->_redact, v12];
+  v13 = [v3 stringWithFormat:@"ascending, %@, confidence, %@, startDate, %@, endDate, %@, labelVisit, %@, limit, %@, redact, %d, filterPairedVisitEntries, %@", v4, confidence, stringFromDate, stringFromDate2, v11, self->_limit, self->_redact, v12];
 
   if ([(NSSet *)self->_sources count])
   {

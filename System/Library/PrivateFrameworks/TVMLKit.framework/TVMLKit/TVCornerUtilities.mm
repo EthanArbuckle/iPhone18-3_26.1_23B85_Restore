@@ -1,27 +1,27 @@
 @interface TVCornerUtilities
-+ (CGPath)createPathForRadii:(TVCornerRadii)a3 inRect:(CGRect)a4;
-+ (CGPath)createPathForRadii:(TVCornerRadii)a3 inRect:(CGRect)a4 isContinuous:(BOOL)a5;
-+ (TVCornerRadii)flipCGOriginRadii:(TVCornerRadii)a3;
-+ (TVCornerRadii)radiiFromRadius:(double)a3;
++ (CGPath)createPathForRadii:(TVCornerRadii)radii inRect:(CGRect)rect;
++ (CGPath)createPathForRadii:(TVCornerRadii)radii inRect:(CGRect)rect isContinuous:(BOOL)continuous;
++ (TVCornerRadii)flipCGOriginRadii:(TVCornerRadii)radii;
++ (TVCornerRadii)radiiFromRadius:(double)radius;
 @end
 
 @implementation TVCornerUtilities
 
-+ (TVCornerRadii)radiiFromRadius:(double)a3
++ (TVCornerRadii)radiiFromRadius:(double)radius
 {
-  result.bottomRight = a3;
-  result.bottomLeft = a3;
-  result.topRight = a3;
-  result.topLeft = a3;
+  result.bottomRight = radius;
+  result.bottomLeft = radius;
+  result.topRight = radius;
+  result.topLeft = radius;
   return result;
 }
 
-+ (TVCornerRadii)flipCGOriginRadii:(TVCornerRadii)a3
++ (TVCornerRadii)flipCGOriginRadii:(TVCornerRadii)radii
 {
-  topRight = a3.topRight;
-  topLeft = a3.topLeft;
-  bottomLeft = a3.bottomLeft;
-  bottomRight = a3.bottomRight;
+  topRight = radii.topRight;
+  topLeft = radii.topLeft;
+  bottomLeft = radii.bottomLeft;
+  bottomRight = radii.bottomRight;
   v7 = topLeft;
   v8 = topRight;
   result.bottomRight = v8;
@@ -31,33 +31,33 @@
   return result;
 }
 
-+ (CGPath)createPathForRadii:(TVCornerRadii)a3 inRect:(CGRect)a4
++ (CGPath)createPathForRadii:(TVCornerRadii)radii inRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  bottomRight = a3.bottomRight;
-  bottomLeft = a3.bottomLeft;
-  topRight = a3.topRight;
-  topLeft = a3.topLeft;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  bottomRight = radii.bottomRight;
+  bottomLeft = radii.bottomLeft;
+  topRight = radii.topRight;
+  topLeft = radii.topLeft;
   v12 = objc_opt_class();
 
   return [v12 createPathForRadii:0 inRect:topLeft isContinuous:{topRight, bottomLeft, bottomRight, x, y, width, height}];
 }
 
-+ (CGPath)createPathForRadii:(TVCornerRadii)a3 inRect:(CGRect)a4 isContinuous:(BOOL)a5
++ (CGPath)createPathForRadii:(TVCornerRadii)radii inRect:(CGRect)rect isContinuous:(BOOL)continuous
 {
-  v5 = a5;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  bottomRight = a3.bottomRight;
-  bottomLeft = a3.bottomLeft;
-  radius = a3.topRight;
-  topLeft = a3.topLeft;
-  MinX = CGRectGetMinX(a4);
+  continuousCopy = continuous;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  bottomRight = radii.bottomRight;
+  bottomLeft = radii.bottomLeft;
+  radius = radii.topRight;
+  topLeft = radii.topLeft;
+  MinX = CGRectGetMinX(rect);
   v24.origin.x = x;
   v24.origin.y = y;
   v24.size.width = width;
@@ -73,9 +73,9 @@
   v26.size.width = width;
   v26.size.height = height;
   MaxY = CGRectGetMaxY(v26);
-  if (v5)
+  if (continuousCopy)
   {
-    [a1 radiusFromCornerRadii:{topLeft, radius, bottomLeft, bottomRight}];
+    [self radiusFromCornerRadii:{topLeft, radius, bottomLeft, bottomRight}];
     v17 = [MEMORY[0x277D75208] bezierPathWithRoundedRect:MinX cornerRadius:{MinY, MaxX - MinX, MaxY - MinY, v16}];
     v18 = MEMORY[0x26D6AF2C0]([v17 CGPath]);
 

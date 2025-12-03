@@ -191,7 +191,7 @@
       v49 = [CIVector vectorWithX:v60 Y:v18 * v46 Z:1.0 / v18 W:v48];
       v50 = v48 / (v61 * (v34 + v40));
       v51 = [CIVector vectorWithX:v61 + v61 Y:v50 Z:v62 * (1.0 - v18)];
-      v52 = [(CIAccordionFoldTransition *)self _kernelWarpS];
+      _kernelWarpS = [(CIAccordionFoldTransition *)self _kernelWarpS];
       v68[0] = MEMORY[0x1E69E9820];
       v68[1] = 3221225472;
       v68[2] = __40__CIAccordionFoldTransition_outputImage__block_invoke;
@@ -200,8 +200,8 @@
       *&v68[5] = v50;
       v72[0] = v51;
       v72[1] = v49;
-      v53 = [v52 applyWithExtent:v68 roiCallback:v31 inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v72, 2), v44, 0.0, v45, v47}];
-      v54 = [(CIAccordionFoldTransition *)self _kernelWarpT];
+      v53 = [_kernelWarpS applyWithExtent:v68 roiCallback:v31 inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v72, 2), v44, 0.0, v45, v47}];
+      _kernelWarpT = [(CIAccordionFoldTransition *)self _kernelWarpT];
       v67[0] = MEMORY[0x1E69E9820];
       v67[1] = 3221225472;
       v67[2] = __40__CIAccordionFoldTransition_outputImage__block_invoke_2;
@@ -210,14 +210,14 @@
       *&v67[5] = v50;
       v71[0] = v51;
       v71[1] = v49;
-      v55 = [v54 applyWithExtent:v67 roiCallback:v32 inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v71, 2), v44, 0.0, v45, v47}];
-      v56 = [(CIAccordionFoldTransition *)self _kernelMix];
+      v55 = [_kernelWarpT applyWithExtent:v67 roiCallback:v32 inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v71, 2), v44, 0.0, v45, v47}];
+      _kernelMix = [(CIAccordionFoldTransition *)self _kernelMix];
       v70[0] = v53;
       v70[1] = v55;
       v70[2] = v51;
       v70[3] = [MEMORY[0x1E696AD98] numberWithDouble:v18];
       v70[4] = v49;
-      v57 = [v56 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v70, 5), v44, 0.0, v45, v47}];
+      v57 = [_kernelMix applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v70, 5), v44, 0.0, v45, v47}];
       CGAffineTransformMakeTranslation(&v69, v65 + v18 * (v63 - v65), v66 + v18 * (v64 - v66));
       return [v57 imageByApplyingTransform:&v69];
     }

@@ -1,13 +1,13 @@
 @interface AKBitmapFIFO
-- (AKBitmapFIFO)initWithFIFO:(id)a3;
+- (AKBitmapFIFO)initWithFIFO:(id)o;
 - (CGPath)newPathFromCurrentBitmap;
-- (CGPoint)_convertPointToScreenBacking:(CGPoint)a3;
+- (CGPoint)_convertPointToScreenBacking:(CGPoint)backing;
 - (CGRect)bitmapRectInView;
 - (CGRect)unionDirtyRect;
 - (CGSize)bitmapSize;
 - (void)_addPointToBitmap:(AKBitmapFIFO *)self;
 - (void)_addSinglePointToBitmap:(AKBitmapFIFO *)self;
-- (void)_addToDirtyRect:(CGRect)a3;
+- (void)_addToDirtyRect:(CGRect)rect;
 - (void)_applyDirtyRectToView;
 - (void)_clearAllBitmapData;
 - (void)_clearCachedPath;
@@ -17,18 +17,18 @@
 - (void)addPoint:(AKBitmapFIFO *)self;
 - (void)clear;
 - (void)flush;
-- (void)setIsInLiveDraw:(BOOL)a3;
-- (void)setView:(id)a3;
+- (void)setIsInLiveDraw:(BOOL)draw;
+- (void)setView:(id)view;
 - (void)teardown;
 @end
 
 @implementation AKBitmapFIFO
 
-- (AKBitmapFIFO)initWithFIFO:(id)a3
+- (AKBitmapFIFO)initWithFIFO:(id)o
 {
   v8.receiver = self;
   v8.super_class = AKBitmapFIFO;
-  v3 = [(CHPointFIFO *)&v8 initWithFIFO:a3];
+  v3 = [(CHPointFIFO *)&v8 initWithFIFO:o];
   v4 = v3;
   if (v3)
   {
@@ -80,39 +80,39 @@
   [(CHPointFIFO *)&v4 clear];
   [(AKBitmapFIFO *)self _clearCachedPath];
   [(AKBitmapFIFO *)self _clearAllBitmapData];
-  v3 = [(AKBitmapFIFO *)self view];
-  [v3 setNeedsDisplay];
+  view = [(AKBitmapFIFO *)self view];
+  [view setNeedsDisplay];
 
   [(AKBitmapFIFO *)self setLastPoint:0.0];
   [(AKBitmapFIFO *)self resetDirtyRect];
 }
 
-- (void)setIsInLiveDraw:(BOOL)a3
+- (void)setIsInLiveDraw:(BOOL)draw
 {
-  if (self->_isInLiveDraw != a3)
+  if (self->_isInLiveDraw != draw)
   {
-    self->_isInLiveDraw = a3;
+    self->_isInLiveDraw = draw;
     [(AKBitmapFIFO *)self setBitmapSizeHasBeenUpdatedOnceForLiveDraw:0];
   }
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  v5 = a3;
-  if (self->_view != v5)
+  viewCopy = view;
+  if (self->_view != viewCopy)
   {
-    v6 = v5;
+    v6 = viewCopy;
     [(AKBitmapFIFO *)self clear];
-    objc_storeStrong(&self->_view, a3);
+    objc_storeStrong(&self->_view, view);
     [(AKBitmapFIFO *)self _updateBitmapSizeFromViewIfNecessary];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
 - (CGRect)bitmapRectInView
 {
-  v3 = [(AKBitmapFIFO *)self view];
-  [v3 bounds];
+  view = [(AKBitmapFIFO *)self view];
+  [view bounds];
   x = v4;
   y = v6;
   width = v8;
@@ -165,11 +165,11 @@
     if (v4)
     {
       [(AKPotrace *)v4 setTurdsize:0];
-      v6 = [(AKPotrace *)v5 CGPath];
+      cGPath = [(AKPotrace *)v5 CGPath];
       memset(&v9, 0, sizeof(v9));
       [(AKBitmapFIFO *)self viewToBitmapTransform];
       CGAffineTransformInvert(&v9, &v8);
-      self->_cachedPath = MEMORY[0x245CAE590](v6, &v9);
+      self->_cachedPath = MEMORY[0x245CAE590](cGPath, &v9);
     }
 
     cachedPath = self->_cachedPath;
@@ -188,14 +188,14 @@
   }
 }
 
-- (CGPoint)_convertPointToScreenBacking:(CGPoint)a3
+- (CGPoint)_convertPointToScreenBacking:(CGPoint)backing
 {
-  y = a3.y;
-  x = a3.x;
-  v5 = [(AKBitmapFIFO *)self view];
-  v6 = [v5 window];
-  [v5 convertPoint:v6 toView:{x, y}];
-  [v6 convertPoint:0 toWindow:?];
+  y = backing.y;
+  x = backing.x;
+  view = [(AKBitmapFIFO *)self view];
+  window = [view window];
+  [view convertPoint:window toView:{x, y}];
+  [window convertPoint:0 toWindow:?];
   v8 = v7;
   v10 = v9;
 
@@ -515,8 +515,8 @@
 {
   v14 = v2;
   bitmapContext = self->_bitmapContext;
-  v5 = [MEMORY[0x277D75348] whiteColor];
-  CGContextSetFillColorWithColor(bitmapContext, [v5 CGColor]);
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  CGContextSetFillColorWithColor(bitmapContext, [whiteColor CGColor]);
 
   CGContextSaveGState(self->_bitmapContext);
   v6 = self->_bitmapContext;
@@ -538,12 +538,12 @@
   CGContextRestoreGState(self->_bitmapContext);
 }
 
-- (void)_addToDirtyRect:(CGRect)a3
+- (void)_addToDirtyRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   [(AKBitmapFIFO *)self unionDirtyRect];
   v11.origin.x = x;
   v11.origin.y = y;
@@ -559,9 +559,9 @@
   [(AKBitmapFIFO *)self unionDirtyRect];
   if (!CGRectIsNull(v5))
   {
-    v3 = [(AKBitmapFIFO *)self view];
+    view = [(AKBitmapFIFO *)self view];
     [(AKBitmapFIFO *)self unionDirtyRect];
-    [v3 setNeedsDisplayInRect:?];
+    [view setNeedsDisplayInRect:?];
   }
 }
 

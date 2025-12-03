@@ -1,13 +1,13 @@
 @interface NotificationController
 + (id)sharedController;
-- (id)xpcConnectionForClientWithMachServiceName:(id)a3;
-- (void)_allPendingNotificationsSortedByDate:(id)a3;
-- (void)allPendingNotificationsWithCompletion:(id)a3;
-- (void)pendingNotificationsForClient:(id)a3 withCompletion:(id)a4;
-- (void)provider:(id)a3 didActivateNotification:(id)a4;
-- (void)provider:(id)a3 didDismissNotification:(id)a4;
-- (void)removeAllNotificationsFromClient:(id)a3;
-- (void)removeNotificationWithIdentifier:(id)a3;
+- (id)xpcConnectionForClientWithMachServiceName:(id)name;
+- (void)_allPendingNotificationsSortedByDate:(id)date;
+- (void)allPendingNotificationsWithCompletion:(id)completion;
+- (void)pendingNotificationsForClient:(id)client withCompletion:(id)completion;
+- (void)provider:(id)provider didActivateNotification:(id)notification;
+- (void)provider:(id)provider didDismissNotification:(id)notification;
+- (void)removeAllNotificationsFromClient:(id)client;
+- (void)removeNotificationWithIdentifier:(id)identifier;
 - (void)start;
 @end
 
@@ -36,28 +36,28 @@
   [(FAUserNotificationProvider *)v5 setDelegate:self];
 }
 
-- (void)removeNotificationWithIdentifier:(id)a3
+- (void)removeNotificationWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _FALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = identifierCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing notification with identifier: %@", &v6, 0xCu);
   }
 
-  [(FAUserNotificationProvider *)self->_notificationProvider tearDownNotificationWithIdentifier:v4];
+  [(FAUserNotificationProvider *)self->_notificationProvider tearDownNotificationWithIdentifier:identifierCopy];
 }
 
-- (void)removeAllNotificationsFromClient:(id)a3
+- (void)removeAllNotificationsFromClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v5 = _FALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v8 = v4;
+    v8 = clientCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Removing all notifications for client: %@", buf, 0xCu);
   }
 
@@ -66,18 +66,18 @@
   v6[2] = sub_1000018D8;
   v6[3] = &unk_100008338;
   v6[4] = self;
-  [(NotificationController *)self pendingNotificationsForClient:v4 withCompletion:v6];
+  [(NotificationController *)self pendingNotificationsForClient:clientCopy withCompletion:v6];
 }
 
-- (void)pendingNotificationsForClient:(id)a3 withCompletion:(id)a4
+- (void)pendingNotificationsForClient:(id)client withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  clientCopy = client;
+  completionCopy = completion;
   v8 = _FALogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v16 = v6;
+    v16 = clientCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Fetch pending notifications for client: %@", buf, 0xCu);
   }
 
@@ -86,16 +86,16 @@
   v12[1] = 3221225472;
   v12[2] = sub_100001AE8;
   v12[3] = &unk_100008360;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
+  v13 = clientCopy;
+  v14 = completionCopy;
+  v10 = completionCopy;
+  v11 = clientCopy;
   [(FAUserNotificationProvider *)notificationProvider deliveredNotifications:v12];
 }
 
-- (void)allPendingNotificationsWithCompletion:(id)a3
+- (void)allPendingNotificationsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = _FALogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -103,79 +103,79 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Fetching all notifications", v6, 2u);
   }
 
-  [(NotificationController *)self _allPendingNotificationsSortedByDate:v4];
+  [(NotificationController *)self _allPendingNotificationsSortedByDate:completionCopy];
 }
 
-- (void)_allPendingNotificationsSortedByDate:(id)a3
+- (void)_allPendingNotificationsSortedByDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   notificationProvider = self->_notificationProvider;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100001D2C;
   v7[3] = &unk_1000082A0;
-  v8 = v4;
-  v6 = v4;
+  v8 = dateCopy;
+  v6 = dateCopy;
   [(FAUserNotificationProvider *)notificationProvider deliveredNotifications:v7];
 }
 
-- (void)provider:(id)a3 didActivateNotification:(id)a4
+- (void)provider:(id)provider didActivateNotification:(id)notification
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v7)
+  providerCopy = provider;
+  notificationCopy = notification;
+  v8 = notificationCopy;
+  if (!notificationCopy)
   {
-    v13 = _FALogSystem();
-    if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    identifier = _FALogSystem();
+    if (!os_log_type_enabled(identifier, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_11;
     }
 
-    v14 = [0 uuid];
+    uuid = [0 uuid];
     v19 = 138412290;
-    v20 = v14;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "NotificationController: Did not find pending notification to activate with UUID %@", &v19, 0xCu);
+    v20 = uuid;
+    _os_log_impl(&_mh_execute_header, identifier, OS_LOG_TYPE_DEFAULT, "NotificationController: Did not find pending notification to activate with UUID %@", &v19, 0xCu);
 LABEL_10:
 
     goto LABEL_11;
   }
 
-  v9 = [v7 activateActionURL];
+  activateActionURL = [notificationCopy activateActionURL];
 
-  if (v9)
+  if (activateActionURL)
   {
     v10 = +[LSApplicationWorkspace defaultWorkspace];
-    v11 = [v8 activateActionURL];
+    activateActionURL2 = [v8 activateActionURL];
     v21 = FBSOpenApplicationOptionKeyPromptUnlockDevice;
     v22 = &__kCFBooleanTrue;
     v12 = [NSDictionary dictionaryWithObjects:&v22 forKeys:&v21 count:1];
-    [v10 openSensitiveURL:v11 withOptions:v12];
+    [v10 openSensitiveURL:activateActionURL2 withOptions:v12];
 
-    v13 = [v8 identifier];
-    [(NotificationController *)self removeNotificationWithIdentifier:v13];
+    identifier = [v8 identifier];
+    [(NotificationController *)self removeNotificationWithIdentifier:identifier];
     goto LABEL_11;
   }
 
-  v15 = [v8 delegateMachServiceName];
+  delegateMachServiceName = [v8 delegateMachServiceName];
 
-  v13 = _FALogSystem();
-  v16 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
-  if (v15)
+  identifier = _FALogSystem();
+  v16 = os_log_type_enabled(identifier, OS_LOG_TYPE_DEFAULT);
+  if (delegateMachServiceName)
   {
     if (v16)
     {
-      v17 = [v8 delegateMachServiceName];
+      delegateMachServiceName2 = [v8 delegateMachServiceName];
       v19 = 138412290;
-      v20 = v17;
-      _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Attempting to wake up delegate at %@", &v19, 0xCu);
+      v20 = delegateMachServiceName2;
+      _os_log_impl(&_mh_execute_header, identifier, OS_LOG_TYPE_DEFAULT, "Attempting to wake up delegate at %@", &v19, 0xCu);
     }
 
-    v18 = [v8 delegateMachServiceName];
-    v13 = [(NotificationController *)self xpcConnectionForClientWithMachServiceName:v18];
+    delegateMachServiceName3 = [v8 delegateMachServiceName];
+    identifier = [(NotificationController *)self xpcConnectionForClientWithMachServiceName:delegateMachServiceName3];
 
-    v14 = [v13 remoteObjectProxyWithErrorHandler:&stru_1000083A0];
-    [v14 didActivateNotification:v8];
+    uuid = [identifier remoteObjectProxyWithErrorHandler:&stru_1000083A0];
+    [uuid didActivateNotification:v8];
     goto LABEL_10;
   }
 
@@ -183,45 +183,45 @@ LABEL_10:
   {
     v19 = 138412290;
     v20 = v8;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "NotificationController: No action was configured for activated notification %@", &v19, 0xCu);
+    _os_log_impl(&_mh_execute_header, identifier, OS_LOG_TYPE_DEFAULT, "NotificationController: No action was configured for activated notification %@", &v19, 0xCu);
   }
 
 LABEL_11:
 }
 
-- (void)provider:(id)a3 didDismissNotification:(id)a4
+- (void)provider:(id)provider didDismissNotification:(id)notification
 {
-  v5 = a4;
-  v6 = [v5 dismissActionlURL];
+  notificationCopy = notification;
+  dismissActionlURL = [notificationCopy dismissActionlURL];
 
-  if (v6)
+  if (dismissActionlURL)
   {
     v7 = +[LSApplicationWorkspace defaultWorkspace];
-    v8 = [v5 dismissActionlURL];
-    [v7 openURL:v8];
+    dismissActionlURL2 = [notificationCopy dismissActionlURL];
+    [v7 openURL:dismissActionlURL2];
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  v9 = [v5 delegateMachServiceName];
+  delegateMachServiceName = [notificationCopy delegateMachServiceName];
 
-  if (v9)
+  if (delegateMachServiceName)
   {
-    v10 = [v5 delegateMachServiceName];
-    v7 = [(NotificationController *)self xpcConnectionForClientWithMachServiceName:v10];
+    delegateMachServiceName2 = [notificationCopy delegateMachServiceName];
+    v7 = [(NotificationController *)self xpcConnectionForClientWithMachServiceName:delegateMachServiceName2];
 
-    v8 = [v7 remoteObjectProxyWithErrorHandler:&stru_1000083C0];
-    [v8 didDismissNotification:v5];
+    dismissActionlURL2 = [v7 remoteObjectProxyWithErrorHandler:&stru_1000083C0];
+    [dismissActionlURL2 didDismissNotification:notificationCopy];
     goto LABEL_7;
   }
 
   v7 = _FALogSystem();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [v5 uuid];
+    dismissActionlURL2 = [notificationCopy uuid];
     v11 = 138412290;
-    v12 = v8;
+    v12 = dismissActionlURL2;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "NotificationController: Did not find pending notification to dismiss with UUID %@", &v11, 0xCu);
     goto LABEL_7;
   }
@@ -229,10 +229,10 @@ LABEL_7:
 LABEL_8:
 }
 
-- (id)xpcConnectionForClientWithMachServiceName:(id)a3
+- (id)xpcConnectionForClientWithMachServiceName:(id)name
 {
-  v3 = a3;
-  v4 = [[NSXPCConnection alloc] initWithMachServiceName:v3 options:4096];
+  nameCopy = name;
+  v4 = [[NSXPCConnection alloc] initWithMachServiceName:nameCopy options:4096];
 
   v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___FAFamilyNotifierRemoteObjectProtocol];
   [v4 setRemoteObjectInterface:v5];

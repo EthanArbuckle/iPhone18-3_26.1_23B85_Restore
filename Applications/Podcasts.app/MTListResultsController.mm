@@ -1,10 +1,10 @@
 @interface MTListResultsController
 - (MTListResultsController)init;
-- (id)indexPathForObject:(id)a3;
-- (id)objectAtIndexPath:(id)a3;
-- (unint64_t)numberOfObjectsInSection:(unint64_t)a3;
-- (void)generator:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7;
-- (void)setObjects:(id)a3;
+- (id)indexPathForObject:(id)object;
+- (id)objectAtIndexPath:(id)path;
+- (unint64_t)numberOfObjectsInSection:(unint64_t)section;
+- (void)generator:(id)generator didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath;
+- (void)setObjects:(id)objects;
 @end
 
 @implementation MTListResultsController
@@ -23,62 +23,62 @@
   return v2;
 }
 
-- (void)setObjects:(id)a3
+- (void)setObjects:(id)objects
 {
-  v10 = a3;
-  if (([v10 isEqualToArray:self->_objects] & 1) == 0)
+  objectsCopy = objects;
+  if (([objectsCopy isEqualToArray:self->_objects] & 1) == 0)
   {
-    v4 = [(MTResultsController *)self delegate];
-    [v4 controllerWillChangeContent:self];
+    delegate = [(MTResultsController *)self delegate];
+    [delegate controllerWillChangeContent:self];
 
-    v5 = [(MTListResultsController *)self changeGenerator];
-    v6 = [(MTListResultsController *)self objects];
-    [v5 generateChangesForExistingObjects:v6 newObjects:v10 inSection:0];
+    changeGenerator = [(MTListResultsController *)self changeGenerator];
+    objects = [(MTListResultsController *)self objects];
+    [changeGenerator generateChangesForExistingObjects:objects newObjects:objectsCopy inSection:0];
 
-    v7 = [v10 copy];
+    v7 = [objectsCopy copy];
     objects = self->_objects;
     self->_objects = v7;
 
-    v9 = [(MTResultsController *)self delegate];
-    [v9 controllerDidChangeContent:self];
+    delegate2 = [(MTResultsController *)self delegate];
+    [delegate2 controllerDidChangeContent:self];
   }
 }
 
-- (id)objectAtIndexPath:(id)a3
+- (id)objectAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(MTListResultsController *)self objects];
-  v6 = [v4 row];
+  pathCopy = path;
+  objects = [(MTListResultsController *)self objects];
+  v6 = [pathCopy row];
 
-  v7 = [v5 objectAtIndex:v6];
+  v7 = [objects objectAtIndex:v6];
 
   return v7;
 }
 
-- (id)indexPathForObject:(id)a3
+- (id)indexPathForObject:(id)object
 {
-  v4 = a3;
-  v5 = [(MTListResultsController *)self objects];
-  v6 = [v5 indexOfObject:v4];
+  objectCopy = object;
+  objects = [(MTListResultsController *)self objects];
+  v6 = [objects indexOfObject:objectCopy];
 
   return [NSIndexPath indexPathForRow:v6 inSection:0];
 }
 
-- (unint64_t)numberOfObjectsInSection:(unint64_t)a3
+- (unint64_t)numberOfObjectsInSection:(unint64_t)section
 {
-  v3 = [(MTListResultsController *)self objects];
-  v4 = [v3 count];
+  objects = [(MTListResultsController *)self objects];
+  v4 = [objects count];
 
   return v4;
 }
 
-- (void)generator:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7
+- (void)generator:(id)generator didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath
 {
-  v11 = a7;
-  v12 = a5;
-  v13 = a4;
-  v14 = [(MTResultsController *)self delegate];
-  [v14 controller:self didChangeObject:v13 atIndexPath:v12 forChangeType:a6 newIndexPath:v11];
+  indexPathCopy = indexPath;
+  pathCopy = path;
+  objectCopy = object;
+  delegate = [(MTResultsController *)self delegate];
+  [delegate controller:self didChangeObject:objectCopy atIndexPath:pathCopy forChangeType:type newIndexPath:indexPathCopy];
 }
 
 @end

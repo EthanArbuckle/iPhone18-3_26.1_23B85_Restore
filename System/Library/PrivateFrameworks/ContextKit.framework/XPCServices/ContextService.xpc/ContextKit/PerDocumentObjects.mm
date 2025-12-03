@@ -1,6 +1,6 @@
 @interface PerDocumentObjects
 - (PerDocumentObjects)init;
-- (unint64_t)queryFingerprintWithPrimaryOut:(unint64_t *)a3;
+- (unint64_t)queryFingerprintWithPrimaryOut:(unint64_t *)out;
 - (void)seal;
 @end
 
@@ -38,7 +38,7 @@
   [(NSMutableArray *)secondary sortUsingComparator:&stru_100483A50];
 }
 
-- (unint64_t)queryFingerprintWithPrimaryOut:(unint64_t *)a3
+- (unint64_t)queryFingerprintWithPrimaryOut:(unint64_t *)out
 {
   v5 = [(NSMutableArray *)self->_phrases count]+ 1;
   v32 = 0u;
@@ -104,7 +104,7 @@
     while (v14);
   }
 
-  *a3 = v11;
+  *out = v11;
   v17 = [(NSMutableArray *)self->_secondary count]+ v11;
   v24 = 0u;
   v25 = 0u;

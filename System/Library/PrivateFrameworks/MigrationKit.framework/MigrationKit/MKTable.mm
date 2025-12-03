@@ -1,7 +1,7 @@
 @interface MKTable
 - (MKTable)init;
-- (void)addRow:(id)a3;
-- (void)writeToDisk:(id)a3;
+- (void)addRow:(id)row;
+- (void)writeToDisk:(id)disk;
 - (void)writeToLog;
 @end
 
@@ -24,34 +24,34 @@
   return v2;
 }
 
-- (void)addRow:(id)a3
+- (void)addRow:(id)row
 {
-  v14 = a3;
-  v4 = [(MKTable *)self columns];
-  v5 = [v4 count];
-  v6 = [v14 totalColumns];
+  rowCopy = row;
+  columns = [(MKTable *)self columns];
+  v5 = [columns count];
+  totalColumns = [rowCopy totalColumns];
 
-  if (v5 < v6)
+  if (v5 < totalColumns)
   {
     do
     {
-      v7 = [(MKTable *)self columns];
+      columns2 = [(MKTable *)self columns];
       v8 = objc_alloc_init(MKTableColumn);
-      [v7 addObject:v8];
+      [columns2 addObject:v8];
 
-      v9 = [(MKTable *)self columns];
-      v10 = [v9 count];
-      v11 = [v14 totalColumns];
+      columns3 = [(MKTable *)self columns];
+      v10 = [columns3 count];
+      totalColumns2 = [rowCopy totalColumns];
     }
 
-    while (v10 < v11);
+    while (v10 < totalColumns2);
   }
 
-  v12 = [(MKTable *)self columns];
-  [v14 adjustColumnsToFit:v12];
+  columns4 = [(MKTable *)self columns];
+  [rowCopy adjustColumnsToFit:columns4];
 
-  v13 = [(MKTable *)self rows];
-  [v13 addObject:v14];
+  rows = [(MKTable *)self rows];
+  [rows addObject:rowCopy];
 }
 
 - (void)writeToLog
@@ -61,8 +61,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(MKTable *)self rows];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+  rows = [(MKTable *)self rows];
+  v4 = [rows countByEnumeratingWithState:&v15 objects:v21 count:16];
   if (v4)
   {
     v6 = v4;
@@ -76,15 +76,15 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(rows);
         }
 
         v9 = *(*(&v15 + 1) + 8 * v8);
         v10 = +[MKLog log];
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
-          v11 = [(MKTable *)self columns];
-          v12 = [v9 asciiRepresentationUsingColumns:v11];
+          columns = [(MKTable *)self columns];
+          v12 = [v9 asciiRepresentationUsingColumns:columns];
           *buf = v14;
           v20 = v12;
           _os_log_impl(&dword_2592D2000, v10, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
@@ -94,7 +94,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v3 countByEnumeratingWithState:&v15 objects:v21 count:16];
+      v6 = [rows countByEnumeratingWithState:&v15 objects:v21 count:16];
     }
 
     while (v6);
@@ -103,17 +103,17 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)writeToDisk:(id)a3
+- (void)writeToDisk:(id)disk
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  diskCopy = disk;
   v5 = objc_alloc_init(MEMORY[0x277CCAB68]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = [(MKTable *)self rows];
-  v7 = [v6 countByEnumeratingWithState:&v19 objects:v27 count:16];
+  rows = [(MKTable *)self rows];
+  v7 = [rows countByEnumeratingWithState:&v19 objects:v27 count:16];
   if (v7)
   {
     v8 = v7;
@@ -125,28 +125,28 @@
       {
         if (*v20 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(rows);
         }
 
-        v11 = [*(*(&v19 + 1) + 8 * v10) csvRepresentation];
-        v12 = v11;
-        if (v11)
+        csvRepresentation = [*(*(&v19 + 1) + 8 * v10) csvRepresentation];
+        v12 = csvRepresentation;
+        if (csvRepresentation)
         {
-          [v5 appendFormat:@"%@\n", v11];
+          [v5 appendFormat:@"%@\n", csvRepresentation];
         }
 
         ++v10;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v19 objects:v27 count:16];
+      v8 = [rows countByEnumeratingWithState:&v19 objects:v27 count:16];
     }
 
     while (v8);
   }
 
   v18 = 0;
-  v13 = [v5 writeToFile:v4 atomically:0 encoding:4 error:&v18];
+  v13 = [v5 writeToFile:diskCopy atomically:0 encoding:4 error:&v18];
   v14 = v18;
   v15 = +[MKLog log];
   v16 = v15;
@@ -155,9 +155,9 @@
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v24 = self;
+      selfCopy = self;
       v25 = 2112;
-      v26 = v4;
+      v26 = diskCopy;
       _os_log_impl(&dword_2592D2000, v16, OS_LOG_TYPE_INFO, "%@: Wrote table to disk at %@", buf, 0x16u);
     }
   }

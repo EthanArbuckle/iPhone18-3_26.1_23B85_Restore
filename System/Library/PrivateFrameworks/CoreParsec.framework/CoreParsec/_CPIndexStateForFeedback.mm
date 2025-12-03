@@ -1,18 +1,18 @@
 @interface _CPIndexStateForFeedback
-- (BOOL)isEqual:(id)a3;
-- (_CPIndexStateForFeedback)initWithFacade:(id)a3;
-- (void)writeTo:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (_CPIndexStateForFeedback)initWithFacade:(id)facade;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPIndexStateForFeedback
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (percentMessagesIndexed = self->_percentMessagesIndexed, percentMessagesIndexed == objc_msgSend(v4, "percentMessagesIndexed")) && (percentAttachmentsIndexed = self->_percentAttachmentsIndexed, percentAttachmentsIndexed == objc_msgSend(v4, "percentAttachmentsIndexed")) && (searchIndex = self->_searchIndex, searchIndex == objc_msgSend(v4, "searchIndex")) && (totalMessageCount = self->_totalMessageCount, totalMessageCount == objc_msgSend(v4, "totalMessageCount")) && (indexedMessageCount = self->_indexedMessageCount, indexedMessageCount == objc_msgSend(v4, "indexedMessageCount")) && (embeddedMessageCount = self->_embeddedMessageCount, embeddedMessageCount == objc_msgSend(v4, "embeddedMessageCount")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (percentMessagesIndexed = self->_percentMessagesIndexed, percentMessagesIndexed == objc_msgSend(equalCopy, "percentMessagesIndexed")) && (percentAttachmentsIndexed = self->_percentAttachmentsIndexed, percentAttachmentsIndexed == objc_msgSend(equalCopy, "percentAttachmentsIndexed")) && (searchIndex = self->_searchIndex, searchIndex == objc_msgSend(equalCopy, "searchIndex")) && (totalMessageCount = self->_totalMessageCount, totalMessageCount == objc_msgSend(equalCopy, "totalMessageCount")) && (indexedMessageCount = self->_indexedMessageCount, indexedMessageCount == objc_msgSend(equalCopy, "indexedMessageCount")) && (embeddedMessageCount = self->_embeddedMessageCount, embeddedMessageCount == objc_msgSend(equalCopy, "embeddedMessageCount")))
   {
     embeddedMessagePercentage = self->_embeddedMessagePercentage;
-    v12 = embeddedMessagePercentage == [v4 embeddedMessagePercentage];
+    v12 = embeddedMessagePercentage == [equalCopy embeddedMessagePercentage];
   }
 
   else
@@ -23,9 +23,9 @@
   return v12;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  a3;
+  to;
   if ([(_CPIndexStateForFeedback *)self percentMessagesIndexed])
   {
     percentMessagesIndexed = self->_percentMessagesIndexed;
@@ -71,68 +71,68 @@
   MEMORY[0x1EEE66BE0]();
 }
 
-- (_CPIndexStateForFeedback)initWithFacade:(id)a3
+- (_CPIndexStateForFeedback)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v22.receiver = self;
   v22.super_class = _CPIndexStateForFeedback;
   v5 = [(_CPIndexStateForFeedback *)&v22 init];
   if (v5)
   {
-    v6 = [v4 percentMessagesIndexed];
+    percentMessagesIndexed = [facadeCopy percentMessagesIndexed];
 
-    if (v6)
+    if (percentMessagesIndexed)
     {
-      v7 = [v4 percentMessagesIndexed];
-      -[_CPIndexStateForFeedback setPercentMessagesIndexed:](v5, "setPercentMessagesIndexed:", [v7 intValue]);
+      percentMessagesIndexed2 = [facadeCopy percentMessagesIndexed];
+      -[_CPIndexStateForFeedback setPercentMessagesIndexed:](v5, "setPercentMessagesIndexed:", [percentMessagesIndexed2 intValue]);
     }
 
-    v8 = [v4 percentAttachmentsIndexed];
+    percentAttachmentsIndexed = [facadeCopy percentAttachmentsIndexed];
 
-    if (v8)
+    if (percentAttachmentsIndexed)
     {
-      v9 = [v4 percentAttachmentsIndexed];
-      -[_CPIndexStateForFeedback setPercentAttachmentsIndexed:](v5, "setPercentAttachmentsIndexed:", [v9 intValue]);
+      percentAttachmentsIndexed2 = [facadeCopy percentAttachmentsIndexed];
+      -[_CPIndexStateForFeedback setPercentAttachmentsIndexed:](v5, "setPercentAttachmentsIndexed:", [percentAttachmentsIndexed2 intValue]);
     }
 
-    v10 = [v4 searchIndex];
+    searchIndex = [facadeCopy searchIndex];
 
-    if (v10)
+    if (searchIndex)
     {
-      v11 = [v4 searchIndex];
-      -[_CPIndexStateForFeedback setSearchIndex:](v5, "setSearchIndex:", [v11 intValue]);
+      searchIndex2 = [facadeCopy searchIndex];
+      -[_CPIndexStateForFeedback setSearchIndex:](v5, "setSearchIndex:", [searchIndex2 intValue]);
     }
 
-    v12 = [v4 totalMessageCount];
+    totalMessageCount = [facadeCopy totalMessageCount];
 
-    if (v12)
+    if (totalMessageCount)
     {
-      v13 = [v4 totalMessageCount];
-      -[_CPIndexStateForFeedback setTotalMessageCount:](v5, "setTotalMessageCount:", [v13 intValue]);
+      totalMessageCount2 = [facadeCopy totalMessageCount];
+      -[_CPIndexStateForFeedback setTotalMessageCount:](v5, "setTotalMessageCount:", [totalMessageCount2 intValue]);
     }
 
-    v14 = [v4 indexedMessageCount];
+    indexedMessageCount = [facadeCopy indexedMessageCount];
 
-    if (v14)
+    if (indexedMessageCount)
     {
-      v15 = [v4 indexedMessageCount];
-      -[_CPIndexStateForFeedback setIndexedMessageCount:](v5, "setIndexedMessageCount:", [v15 intValue]);
+      indexedMessageCount2 = [facadeCopy indexedMessageCount];
+      -[_CPIndexStateForFeedback setIndexedMessageCount:](v5, "setIndexedMessageCount:", [indexedMessageCount2 intValue]);
     }
 
-    v16 = [v4 embeddedMessageCount];
+    embeddedMessageCount = [facadeCopy embeddedMessageCount];
 
-    if (v16)
+    if (embeddedMessageCount)
     {
-      v17 = [v4 embeddedMessageCount];
-      -[_CPIndexStateForFeedback setEmbeddedMessageCount:](v5, "setEmbeddedMessageCount:", [v17 intValue]);
+      embeddedMessageCount2 = [facadeCopy embeddedMessageCount];
+      -[_CPIndexStateForFeedback setEmbeddedMessageCount:](v5, "setEmbeddedMessageCount:", [embeddedMessageCount2 intValue]);
     }
 
-    v18 = [v4 embeddedMessagePercentage];
+    embeddedMessagePercentage = [facadeCopy embeddedMessagePercentage];
 
-    if (v18)
+    if (embeddedMessagePercentage)
     {
-      v19 = [v4 embeddedMessagePercentage];
-      -[_CPIndexStateForFeedback setEmbeddedMessagePercentage:](v5, "setEmbeddedMessagePercentage:", [v19 intValue]);
+      embeddedMessagePercentage2 = [facadeCopy embeddedMessagePercentage];
+      -[_CPIndexStateForFeedback setEmbeddedMessagePercentage:](v5, "setEmbeddedMessagePercentage:", [embeddedMessagePercentage2 intValue]);
     }
 
     v20 = v5;

@@ -1,13 +1,13 @@
 @interface NTKDCompanionDeviceLibraryService
 + (id)sharedService;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (id)_init;
-- (id)_jsonFromCollection:(id)a3 error:(id *)a4;
-- (void)_queue_appendCompletionHandler:(id)a3;
-- (void)_queue_fetchLibraryAsJSON:(id)a3;
-- (void)_queue_handleFaceJSON:(id)a3 error:(id)a4;
+- (id)_jsonFromCollection:(id)collection error:(id *)error;
+- (void)_queue_appendCompletionHandler:(id)handler;
+- (void)_queue_fetchLibraryAsJSON:(id)n;
+- (void)_queue_handleFaceJSON:(id)n error:(id)error;
 - (void)_queue_startFetchingLibrary;
-- (void)fetchLibraryAsJSON:(id)a3;
+- (void)fetchLibraryAsJSON:(id)n;
 - (void)start;
 @end
 
@@ -19,7 +19,7 @@
   block[1] = 3221225472;
   block[2] = sub_10002296C;
   block[3] = &unk_10005CB30;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100066C98 != -1)
   {
     dispatch_once(&qword_100066C98, block);
@@ -74,9 +74,9 @@
   }
 }
 
-- (void)fetchLibraryAsJSON:(id)a3
+- (void)fetchLibraryAsJSON:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   v5 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -84,7 +84,7 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Asked for JSON library", buf, 2u);
   }
 
-  if (v4)
+  if (nCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -92,14 +92,14 @@
     v7[2] = sub_100022CE4;
     v7[3] = &unk_10005CAC0;
     v7[4] = self;
-    v8 = v4;
+    v8 = nCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (id)_jsonFromCollection:(id)a3 error:(id *)a4
+- (id)_jsonFromCollection:(id)collection error:(id *)error
 {
-  v5 = a3;
+  collectionCopy = collection;
   v6 = +[NSMutableArray array];
   v18[0] = 0;
   v18[1] = v18;
@@ -110,10 +110,10 @@
   v14[2] = sub_100022E94;
   v14[3] = &unk_10005DBE8;
   v16 = v18;
-  v17 = [v5 selectedFaceIndex];
+  selectedFaceIndex = [collectionCopy selectedFaceIndex];
   v7 = v6;
   v15 = v7;
-  [v5 enumerateFacesUsingBlock:v14];
+  [collectionCopy enumerateFacesUsingBlock:v14];
   v13 = 0;
   v8 = [NSJSONSerialization dataWithJSONObject:v7 options:3 error:&v13];
   v9 = v13;
@@ -125,10 +125,10 @@
       sub_10003EA40(v9, v10);
     }
 
-    if (a4)
+    if (error)
     {
       v11 = v9;
-      *a4 = v9;
+      *error = v9;
     }
   }
 
@@ -137,10 +137,10 @@
   return v8;
 }
 
-- (void)_queue_handleFaceJSON:(id)a3 error:(id)a4
+- (void)_queue_handleFaceJSON:(id)n error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  nCopy = n;
+  errorCopy = error;
   dispatch_assert_queue_V2(self->_queue);
   v8 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -206,10 +206,10 @@
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = _NTKLoggingObjectForDomain();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -217,22 +217,22 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Getting XPC connection request for Device Library service…", buf, 2u);
   }
 
-  v9 = [v7 valueForEntitlement:@"com.apple.nanotimekit.devicelibrary"];
-  v10 = [v9 BOOLValue];
+  v9 = [connectionCopy valueForEntitlement:@"com.apple.nanotimekit.devicelibrary"];
+  bOOLValue = [v9 BOOLValue];
 
-  if (v10)
+  if (bOOLValue)
   {
     v11 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___NTKDeviceLibraryServer];
-    [v7 setExportedInterface:v11];
-    [v7 setExportedObject:self];
-    objc_initWeak(buf, v7);
+    [connectionCopy setExportedInterface:v11];
+    [connectionCopy setExportedObject:self];
+    objc_initWeak(buf, connectionCopy);
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_100023504;
     v13[3] = &unk_10005CA48;
     objc_copyWeak(&v14, buf);
-    [v7 setInvalidationHandler:v13];
-    [v7 resume];
+    [connectionCopy setInvalidationHandler:v13];
+    [connectionCopy resume];
     objc_destroyWeak(&v14);
     objc_destroyWeak(buf);
   }
@@ -243,43 +243,43 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v16 = v7;
+      v16 = connectionCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "XPC connection not entitled for device library %@…", buf, 0xCu);
     }
   }
 
-  return v10;
+  return bOOLValue;
 }
 
-- (void)_queue_fetchLibraryAsJSON:(id)a3
+- (void)_queue_fetchLibraryAsJSON:(id)n
 {
-  v5 = a3;
+  nCopy = n;
   dispatch_assert_queue_V2(self->_queue);
-  v4 = v5;
-  if (v5)
+  v4 = nCopy;
+  if (nCopy)
   {
-    [(NTKDCompanionDeviceLibraryService *)self _queue_appendCompletionHandler:v5];
-    v4 = v5;
+    [(NTKDCompanionDeviceLibraryService *)self _queue_appendCompletionHandler:nCopy];
+    v4 = nCopy;
     if (!self->_state)
     {
       [(NTKDCompanionDeviceLibraryService *)self _queue_startFetchingLibrary];
-      v4 = v5;
+      v4 = nCopy;
     }
   }
 }
 
-- (void)_queue_appendCompletionHandler:(id)a3
+- (void)_queue_appendCompletionHandler:(id)handler
 {
-  v7 = a3;
+  handlerCopy = handler;
   dispatch_assert_queue_V2(self->_queue);
-  v4 = v7;
-  if (v7)
+  v4 = handlerCopy;
+  if (handlerCopy)
   {
     completionHandlers = self->_completionHandlers;
-    v6 = objc_retainBlock(v7);
+    v6 = objc_retainBlock(handlerCopy);
     [(NSMutableArray *)completionHandlers addObject:v6];
 
-    v4 = v7;
+    v4 = handlerCopy;
   }
 }
 
@@ -290,10 +290,10 @@
   {
     self->_state = 1;
     v3 = +[CLKDevice currentDevice];
-    v4 = [v3 pdrDevice];
-    v5 = [v4 pairingID];
+    pdrDevice = [v3 pdrDevice];
+    pairingID = [pdrDevice pairingID];
     v6 = [NTKPersistentFaceCollection alloc];
-    v7 = [v6 initWithCollectionIdentifier:NTKCollectionIdentifierLibraryFaces deviceUUID:v5];
+    v7 = [v6 initWithCollectionIdentifier:NTKCollectionIdentifierLibraryFaces deviceUUID:pairingID];
     v8 = [[NTKDLoadOnceCollectionObserver alloc] initWithCollection:v7];
     collectionObserver = self->_collectionObserver;
     self->_collectionObserver = v8;

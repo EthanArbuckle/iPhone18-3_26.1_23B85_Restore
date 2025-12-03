@@ -1,22 +1,22 @@
 @interface NTKComplicationWidgetGroupMetrics
-+ (NTKComplicationWidgetGroupMetrics)metricsWithSafeAreaInsets:(UIEdgeInsets)a3 nestedContentMetrics:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (NTKComplicationWidgetGroupMetrics)initWithCoder:(id)a3;
++ (NTKComplicationWidgetGroupMetrics)metricsWithSafeAreaInsets:(UIEdgeInsets)insets nestedContentMetrics:(id)metrics;
+- (BOOL)isEqual:(id)equal;
+- (NTKComplicationWidgetGroupMetrics)initWithCoder:(id)coder;
 - (UIEdgeInsets)safeAreaInsets;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKComplicationWidgetGroupMetrics
 
-+ (NTKComplicationWidgetGroupMetrics)metricsWithSafeAreaInsets:(UIEdgeInsets)a3 nestedContentMetrics:(id)a4
++ (NTKComplicationWidgetGroupMetrics)metricsWithSafeAreaInsets:(UIEdgeInsets)insets nestedContentMetrics:(id)metrics
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v10 = a4;
-  v11 = objc_alloc_init(a1);
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  metricsCopy = metrics;
+  v11 = objc_alloc_init(self);
   v12 = v11;
   if (v11)
   {
@@ -24,22 +24,22 @@
     *(v11 + 3) = left;
     *(v11 + 4) = bottom;
     *(v11 + 5) = right;
-    objc_storeStrong(v11 + 1, a4);
+    objc_storeStrong(v11 + 1, metrics);
   }
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __45__NTKComplicationWidgetGroupMetrics_isEqual___block_invoke;
   v14[3] = &unk_27877EB18;
   v14[4] = self;
-  v6 = v4;
+  v6 = equalCopy;
   v15 = v6;
   v7 = [v5 appendEqualsBlocks:{v14, 0}];
   nestedContentMetrics = self->_nestedContentMetrics;
@@ -57,41 +57,41 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendCGFloat:self->_safeAreaInsets.top];
-  v5 = [v3 appendCGFloat:self->_safeAreaInsets.left];
-  v6 = [v3 appendCGFloat:self->_safeAreaInsets.right];
-  v7 = [v3 appendCGFloat:self->_safeAreaInsets.bottom];
-  v8 = [v3 appendObject:self->_nestedContentMetrics];
-  v9 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendCGFloat:self->_safeAreaInsets.top];
+  v5 = [builder appendCGFloat:self->_safeAreaInsets.left];
+  v6 = [builder appendCGFloat:self->_safeAreaInsets.right];
+  v7 = [builder appendCGFloat:self->_safeAreaInsets.bottom];
+  v8 = [builder appendObject:self->_nestedContentMetrics];
+  v9 = [builder hash];
 
   return v9;
 }
 
-- (NTKComplicationWidgetGroupMetrics)initWithCoder:(id)a3
+- (NTKComplicationWidgetGroupMetrics)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeUIEdgeInsetsForKey:@"safeAreaInsets"];
+  coderCopy = coder;
+  [coderCopy decodeUIEdgeInsetsForKey:@"safeAreaInsets"];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nestedContentMetrics"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nestedContentMetrics"];
 
   v14 = [NTKComplicationWidgetGroupMetrics metricsWithSafeAreaInsets:v13 nestedContentMetrics:v6, v8, v10, v12];
 
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   top = self->_safeAreaInsets.top;
   left = self->_safeAreaInsets.left;
   bottom = self->_safeAreaInsets.bottom;
   right = self->_safeAreaInsets.right;
-  v8 = a3;
-  [v8 encodeUIEdgeInsets:@"safeAreaInsets" forKey:{top, left, bottom, right}];
-  [v8 encodeObject:self->_nestedContentMetrics forKey:@"nestedContentMetrics"];
+  coderCopy = coder;
+  [coderCopy encodeUIEdgeInsets:@"safeAreaInsets" forKey:{top, left, bottom, right}];
+  [coderCopy encodeObject:self->_nestedContentMetrics forKey:@"nestedContentMetrics"];
 }
 
 - (UIEdgeInsets)safeAreaInsets

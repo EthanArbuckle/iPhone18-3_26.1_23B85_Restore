@@ -1,14 +1,14 @@
 @interface CloudSyncSuggestion
-- (CloudSyncSuggestion)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (CloudSyncSuggestion)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation CloudSyncSuggestion
 
-- (CloudSyncSuggestion)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (CloudSyncSuggestion)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for CloudSyncSuggestion();
-  return [(CloudSyncSuggestion *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(CloudSyncSuggestion *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

@@ -1,26 +1,26 @@
 @interface ARPlaneGeometry
-- (ARPlaneGeometry)initWithBoundaryVertices:(ARPlaneGeometry *)self center:(SEL)a2 extent:(const void *)a3;
-- (ARPlaneGeometry)initWithCoder:(id)a3;
-- (__n128)initWithVertices:(float32x4_t)a3 triangleIndices:(uint64_t)a4 boundaryVertexCount:(__n128 *)a5 center:(__n128 *)a6 extent:(unint64_t)a7;
+- (ARPlaneGeometry)initWithBoundaryVertices:(ARPlaneGeometry *)self center:(SEL)center extent:(const void *)extent;
+- (ARPlaneGeometry)initWithCoder:(id)coder;
+- (__n128)initWithVertices:(float32x4_t)vertices triangleIndices:(uint64_t)indices boundaryVertexCount:(__n128 *)count center:(__n128 *)center extent:(unint64_t)extent;
 - (id).cxx_construct;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARPlaneGeometry
 
-- (__n128)initWithVertices:(float32x4_t)a3 triangleIndices:(uint64_t)a4 boundaryVertexCount:(__n128 *)a5 center:(__n128 *)a6 extent:(unint64_t)a7
+- (__n128)initWithVertices:(float32x4_t)vertices triangleIndices:(uint64_t)indices boundaryVertexCount:(__n128 *)count center:(__n128 *)center extent:(unint64_t)extent
 {
-  v23.receiver = a1;
+  v23.receiver = self;
   v23.super_class = ARPlaneGeometry;
   v10 = [(ARPlaneGeometry *)&v23 init];
   v11 = v10;
   if (v10)
   {
-    std::vector<ARPatch>::__move_assign(v10->_anon_8, a5);
-    std::vector<ARPatch>::__move_assign(&v11[3].n128_i64[1], a6);
-    v11[5].n128_u64[0] = a7;
+    std::vector<ARPatch>::__move_assign(v10->_anon_8, count);
+    std::vector<ARPatch>::__move_assign(&v11[3].n128_i64[1], center);
+    v11[5].n128_u64[0] = extent;
     v11[6] = a2;
-    v11[7] = a3;
+    v11[7] = vertices;
     _ZNSt3__16vectorIDv2_fNS_9allocatorIS1_EEEC2B8ne200100Em(&v21, (v11[1].n128_u64[0] - v11->n128_u64[1]) >> 4);
     v12 = v11->n128_u64[1];
     if (v11[1].n128_u64[0] != v12)
@@ -28,10 +28,10 @@
       v13 = 0;
       v14.i64[0] = 0xBF000000BF000000;
       v14.i64[1] = 0xBF000000BF000000;
-      v15 = vaddq_f32(a2, vmulq_f32(a3, v14));
+      v15 = vaddq_f32(a2, vmulq_f32(vertices, v14));
       do
       {
-        v16 = vdivq_f32(vsubq_f32(*(v12 + 16 * v13), v15), a3);
+        v16 = vdivq_f32(vsubq_f32(*(v12 + 16 * v13), v15), vertices);
         *(v21.n128_u64[0] + 8 * v13++) = vzip1_s32(*v16.i8, *&vextq_s8(v16, v16, 8uLL));
         v12 = v11->n128_u64[1];
       }
@@ -56,22 +56,22 @@
   return v11;
 }
 
-- (ARPlaneGeometry)initWithBoundaryVertices:(ARPlaneGeometry *)self center:(SEL)a2 extent:(const void *)a3
+- (ARPlaneGeometry)initWithBoundaryVertices:(ARPlaneGeometry *)self center:(SEL)center extent:(const void *)extent
 {
   v58 = v3;
   v59 = v4;
   v89 = *MEMORY[0x1E69E9840];
   v77 = 0uLL;
   v78 = 0;
-  _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPS1_S6_EEvT_T0_m(&v77, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 4);
-  v7 = *(a3 + 1) - *a3;
+  _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPS1_S6_EEvT_T0_m(&v77, *extent, *(extent + 1), (*(extent + 1) - *extent) >> 4);
+  v7 = *(extent + 1) - *extent;
   v8 = v7 >> 4;
   v75[0] = 0;
   v75[1] = 0;
   v76 = 0;
   if ((v7 >> 4) < 3)
   {
-    v9 = 0;
+    selfCopy2 = 0;
     goto LABEL_67;
   }
 
@@ -89,7 +89,7 @@
 
     else
     {
-      v57 = self;
+      selfCopy = self;
       v12 = 0;
       v13 = 16 * (v8 - 1);
       v14 = v13 ^ 0xFFFFFFFFFFFFFFF0;
@@ -202,18 +202,18 @@
       while (v15 > 0);
       if (v8 <= 2)
       {
-        self = v57;
+        self = selfCopy;
         if (__p)
         {
           v73 = __p;
           operator delete(__p);
         }
 
-        v9 = 0;
+        selfCopy2 = 0;
         goto LABEL_65;
       }
 
-      self = v57;
+      self = selfCopy;
       if (v8 == 3)
       {
         *buf = 65538;
@@ -291,7 +291,7 @@ LABEL_58:
     v37 = v71;
     if (!v71)
     {
-      v38 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:*a3 length:*(a3 + 1) - *a3 freeWhenDone:0];
+      v38 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:*extent length:*(extent + 1) - *extent freeWhenDone:0];
       if (ARShouldUseLogTypeError(void)::onceToken != -1)
       {
         [ARPlaneGeometry initWithBoundaryVertices:center:extent:];
@@ -404,7 +404,7 @@ LABEL_60:
     operator delete(v62[0]);
   }
 
-  v9 = self;
+  selfCopy2 = self;
 LABEL_65:
   if (v75[0])
   {
@@ -419,46 +419,46 @@ LABEL_67:
     operator delete(v77);
   }
 
-  return v9;
+  return selfCopy2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:*self->_anon_8 length:*&self->_anon_8[8] - *self->_anon_8 freeWhenDone:0];
-  [v6 encodeObject:v4 forKey:@"vertexData"];
+  [coderCopy encodeObject:v4 forKey:@"vertexData"];
 
   v5 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:self->_triangleIndices.__begin_ length:self->_triangleIndices.__end_ - self->_triangleIndices.__begin_ freeWhenDone:0];
-  [v6 encodeObject:v5 forKey:@"triangleData"];
+  [coderCopy encodeObject:v5 forKey:@"triangleData"];
 
-  [v6 encodeInteger:self->_boundaryVertexCount forKey:@"boundaryVertexCount"];
-  [v6 ar_encodeVector3:@"center" forKey:*self->_center];
-  [v6 ar_encodeVector3:@"extent" forKey:*self->_extent];
+  [coderCopy encodeInteger:self->_boundaryVertexCount forKey:@"boundaryVertexCount"];
+  [coderCopy ar_encodeVector3:@"center" forKey:*self->_center];
+  [coderCopy ar_encodeVector3:@"extent" forKey:*self->_extent];
 }
 
-- (ARPlaneGeometry)initWithCoder:(id)a3
+- (ARPlaneGeometry)initWithCoder:(id)coder
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vertexData"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"triangleData"];
-  v7 = [v4 decodeIntegerForKey:@"boundaryVertexCount"];
-  [v4 ar_decodeVector3ForKey:@"center"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vertexData"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"triangleData"];
+  v7 = [coderCopy decodeIntegerForKey:@"boundaryVertexCount"];
+  [coderCopy ar_decodeVector3ForKey:@"center"];
   v22 = v8;
-  [v4 ar_decodeVector3ForKey:@"extent"];
+  [coderCopy ar_decodeVector3ForKey:@"extent"];
   if (v5 && v6 && v7)
   {
     v21 = v9;
-    v10 = [v5 bytes];
-    v11 = [v6 bytes];
+    bytes = [v5 bytes];
+    bytes2 = [v6 bytes];
     v12 = [v5 length];
     memset(buf, 0, sizeof(buf));
-    _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(buf, v10, v10 + (v12 & 0xFFFFFFFFFFFFFFF0), v12 >> 4);
+    _ZNSt3__16vectorIDv3_fNS_9allocatorIS1_EEE16__init_with_sizeB8ne200100IPKS1_S7_EEvT_T0_m(buf, bytes, bytes + (v12 & 0xFFFFFFFFFFFFFFF0), v12 >> 4);
     v13 = [v6 length];
     v27[0] = 0;
     v27[1] = 0;
     v28 = 0;
-    std::vector<short>::__init_with_size[abi:ne200100]<short const*,short const*>(v27, v11, v11 + (v13 & 0xFFFFFFFFFFFFFFFELL), v13 >> 1);
+    std::vector<short>::__init_with_size[abi:ne200100]<short const*,short const*>(v27, bytes2, bytes2 + (v13 & 0xFFFFFFFFFFFFFFFELL), v13 >> 1);
     *v25 = *buf;
     v26 = *&buf[16];
     memset(buf, 0, sizeof(buf));
@@ -492,7 +492,7 @@ LABEL_67:
       operator delete(*buf);
     }
 
-    v14 = self;
+    selfCopy = self;
   }
 
   else
@@ -516,14 +516,14 @@ LABEL_67:
       *&buf[22] = 2114;
       v30 = v19;
       v31 = 2048;
-      v32 = v4;
+      v32 = coderCopy;
       _os_log_impl(&dword_1C241C000, v15, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: %{public}@(%p): Error decoding plane geometry", buf, 0x2Au);
     }
 
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (id).cxx_construct

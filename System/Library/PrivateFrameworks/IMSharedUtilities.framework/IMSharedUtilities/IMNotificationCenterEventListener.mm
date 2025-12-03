@@ -1,12 +1,12 @@
 @interface IMNotificationCenterEventListener
-+ (id)eventListenerForNotificationName:(id)a3;
-+ (id)eventListenerForNotificationName:(id)a3 object:(id)a4;
++ (id)eventListenerForNotificationName:(id)name;
++ (id)eventListenerForNotificationName:(id)name object:(id)object;
 - (BOOL)isListening;
 - (BOOL)isRegisteredForNotification;
 - (id)notificationObject;
-- (void)_notification:(id)a3;
+- (void)_notification:(id)_notification;
 - (void)dealloc;
-- (void)registerForNotificationName:(id)a3 object:(id)a4;
+- (void)registerForNotificationName:(id)name object:(id)object;
 - (void)willStartListening;
 - (void)willStopListening;
 @end
@@ -15,58 +15,58 @@
 
 - (BOOL)isRegisteredForNotification
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_registeredNotificationName != 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_registeredNotificationName != 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)_notification:(id)a3
+- (void)_notification:(id)_notification
 {
-  v4 = [a3 userInfo];
-  [(IMEventListener *)self _didReceiveEvent:1 userInfo:v4 error:0];
+  userInfo = [_notification userInfo];
+  [(IMEventListener *)self _didReceiveEvent:1 userInfo:userInfo error:0];
 }
 
-- (void)registerForNotificationName:(id)a3 object:(id)a4
+- (void)registerForNotificationName:(id)name object:(id)object
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  [(IMEventListener *)v7 _reset];
-  v8 = [v10 copy];
-  notificationName = v7->_notificationName;
-  v7->_notificationName = v8;
+  nameCopy = name;
+  objectCopy = object;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(IMEventListener *)selfCopy _reset];
+  v8 = [nameCopy copy];
+  notificationName = selfCopy->_notificationName;
+  selfCopy->_notificationName = v8;
 
-  objc_storeWeak(&v7->_notificationObject, v6);
-  objc_sync_exit(v7);
+  objc_storeWeak(&selfCopy->_notificationObject, objectCopy);
+  objc_sync_exit(selfCopy);
 }
 
-+ (id)eventListenerForNotificationName:(id)a3
++ (id)eventListenerForNotificationName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 registerForNotificationName:v3];
+  [v4 registerForNotificationName:nameCopy];
 
   return v4;
 }
 
-+ (id)eventListenerForNotificationName:(id)a3 object:(id)a4
++ (id)eventListenerForNotificationName:(id)name object:(id)object
 {
-  v5 = a4;
-  v6 = a3;
+  objectCopy = object;
+  nameCopy = name;
   v7 = objc_alloc_init(objc_opt_class());
-  [v7 registerForNotificationName:v6 object:v5];
+  [v7 registerForNotificationName:nameCopy object:objectCopy];
 
   return v7;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = IMNotificationCenterEventListener;
@@ -75,10 +75,10 @@
 
 - (BOOL)isListening
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_registeredNotificationName != 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_registeredNotificationName != 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -87,10 +87,10 @@
 {
   if (!self->_registeredNotificationName)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     notificationName = self->_notificationName;
     WeakRetained = objc_loadWeakRetained(&self->_notificationObject);
-    [v3 addObserver:self selector:sel__notification_ name:notificationName object:WeakRetained];
+    [defaultCenter addObserver:self selector:sel__notification_ name:notificationName object:WeakRetained];
 
     v6 = self->_notificationName;
 
@@ -102,8 +102,8 @@
 {
   if (self->_registeredNotificationName)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 removeObserver:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self];
 
     registeredNotificationName = self->_registeredNotificationName;
     self->_registeredNotificationName = 0;

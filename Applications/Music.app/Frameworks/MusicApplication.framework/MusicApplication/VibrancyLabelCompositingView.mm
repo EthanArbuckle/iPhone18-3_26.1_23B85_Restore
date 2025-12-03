@@ -1,10 +1,10 @@
 @interface VibrancyLabelCompositingView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)text;
-- (_TtC16MusicApplication28VibrancyLabelCompositingView)initWithFrame:(CGRect)a3;
+- (_TtC16MusicApplication28VibrancyLabelCompositingView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setText:(id)a3;
+- (void)setText:(id)text;
 @end
 
 @implementation VibrancyLabelCompositingView
@@ -25,9 +25,9 @@
   return v2;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  if (a3)
+  if (text)
   {
     v4 = sub_AB92A0();
   }
@@ -43,7 +43,7 @@
   v8 = *(self + OBJC_IVAR____TtC16MusicApplication28VibrancyLabelCompositingView_text + 8);
   *v6 = v4;
   v6[1] = v5;
-  v9 = self;
+  selfCopy = self;
   sub_38FB24(v7, v8);
 }
 
@@ -62,16 +62,16 @@
   [*&v2[OBJC_IVAR____TtC16MusicApplication28VibrancyLabelCompositingView_overlayLabel] setFrame:{v4, v6, v8, v10}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v5 = *(self + OBJC_IVAR____TtC16MusicApplication28VibrancyLabelCompositingView_mainLabel);
-  v6 = self;
+  selfCopy = self;
   [v5 sizeThatFits:{width, height}];
   v9 = v8;
   v10 = v7;
-  if (*(v6 + OBJC_IVAR____TtC16MusicApplication28VibrancyLabelCompositingView_hasExcessiveHeightCharacters))
+  if (*(selfCopy + OBJC_IVAR____TtC16MusicApplication28VibrancyLabelCompositingView_hasExcessiveHeightCharacters))
   {
     v11 = v7 / 3.0;
   }
@@ -81,7 +81,7 @@
     v11 = 0.0;
   }
 
-  *(v6 + OBJC_IVAR____TtC16MusicApplication28VibrancyLabelCompositingView_paddingForExcessiveHeightCharacters) = v11;
+  *(selfCopy + OBJC_IVAR____TtC16MusicApplication28VibrancyLabelCompositingView_paddingForExcessiveHeightCharacters) = v11;
 
   v12 = v10 + v11;
   v13 = v9;
@@ -98,7 +98,7 @@
   return result;
 }
 
-- (_TtC16MusicApplication28VibrancyLabelCompositingView)initWithFrame:(CGRect)a3
+- (_TtC16MusicApplication28VibrancyLabelCompositingView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

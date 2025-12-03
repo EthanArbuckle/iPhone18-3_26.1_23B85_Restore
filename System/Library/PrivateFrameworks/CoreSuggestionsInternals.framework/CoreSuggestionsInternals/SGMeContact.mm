@@ -1,17 +1,17 @@
 @interface SGMeContact
 + (id)keysToFetch;
-- (BOOL)isSameAsOrUnifiedWithContact:(id)a3;
-- (SGMeContact)initWithContact:(id)a3;
+- (BOOL)isSameAsOrUnifiedWithContact:(id)contact;
+- (SGMeContact)initWithContact:(id)contact;
 @end
 
 @implementation SGMeContact
 
-- (BOOL)isSameAsOrUnifiedWithContact:(id)a3
+- (BOOL)isSameAsOrUnifiedWithContact:(id)contact
 {
-  v4 = a3;
-  v5 = [(CNContact *)self->_meContact identifier];
-  v6 = [v4 identifier];
-  if ([v5 isEqualToString:v6])
+  contactCopy = contact;
+  identifier = [(CNContact *)self->_meContact identifier];
+  identifier2 = [contactCopy identifier];
+  if ([identifier isEqualToString:identifier2])
   {
     v7 = 1;
   }
@@ -19,46 +19,46 @@
   else
   {
     meContact = self->_meContact;
-    v9 = [v4 identifier];
-    v7 = [(CNContact *)meContact isUnifiedWithContactWithIdentifier:v9];
+    identifier3 = [contactCopy identifier];
+    v7 = [(CNContact *)meContact isUnifiedWithContactWithIdentifier:identifier3];
   }
 
   return v7;
 }
 
-- (SGMeContact)initWithContact:(id)a3
+- (SGMeContact)initWithContact:(id)contact
 {
   v96 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contactCopy = contact;
   v90.receiver = self;
   v90.super_class = SGMeContact;
   v6 = [(SGMeContact *)&v90 init];
   if (v6)
   {
-    v7 = [v5 givenName];
+    givenName = [contactCopy givenName];
     givenName = v6->_givenName;
-    v6->_givenName = v7;
+    v6->_givenName = givenName;
 
-    v9 = [v5 familyName];
+    familyName = [contactCopy familyName];
     familyName = v6->_familyName;
-    v6->_familyName = v9;
+    v6->_familyName = familyName;
 
-    v11 = [MEMORY[0x277CBDA78] stringFromContact:v5 style:0];
+    v11 = [MEMORY[0x277CBDA78] stringFromContact:contactCopy style:0];
     v12 = v11;
-    v65 = a3;
+    contactCopy2 = contact;
     v66 = v6;
     if (v11)
     {
-      v13 = v11;
+      givenName2 = v11;
     }
 
     else
     {
-      v13 = [v5 givenName];
+      givenName2 = [contactCopy givenName];
     }
 
     formattedName = v6->_formattedName;
-    v6->_formattedName = v13;
+    v6->_formattedName = givenName2;
 
     v15 = objc_opt_new();
     v69 = objc_opt_new();
@@ -68,8 +68,8 @@
     v87 = 0u;
     v88 = 0u;
     v89 = 0u;
-    v18 = [v5 emailAddresses];
-    v19 = [v18 countByEnumeratingWithState:&v86 objects:v95 count:16];
+    emailAddresses = [contactCopy emailAddresses];
+    v19 = [emailAddresses countByEnumeratingWithState:&v86 objects:v95 count:16];
     if (v19)
     {
       v20 = v19;
@@ -80,15 +80,15 @@
         {
           if (*v87 != v21)
           {
-            objc_enumerationMutation(v18);
+            objc_enumerationMutation(emailAddresses);
           }
 
-          v23 = [*(*(&v86 + 1) + 8 * i) value];
+          value = [*(*(&v86 + 1) + 8 * i) value];
           v24 = SGNormalizeEmailAddress();
           [(NSSet *)v15 addObject:v24];
         }
 
-        v20 = [v18 countByEnumeratingWithState:&v86 objects:v95 count:16];
+        v20 = [emailAddresses countByEnumeratingWithState:&v86 objects:v95 count:16];
       }
 
       while (v20);
@@ -100,8 +100,8 @@
     v85 = 0u;
     v82 = 0u;
     v83 = 0u;
-    v25 = [v5 phoneNumbers];
-    v26 = [v25 countByEnumeratingWithState:&v82 objects:v94 count:16];
+    phoneNumbers = [contactCopy phoneNumbers];
+    v26 = [phoneNumbers countByEnumeratingWithState:&v82 objects:v94 count:16];
     if (v26)
     {
       v27 = v26;
@@ -112,16 +112,16 @@
         {
           if (*v83 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(phoneNumbers);
           }
 
-          v30 = [*(*(&v82 + 1) + 8 * j) value];
-          v31 = [v30 stringValue];
+          value2 = [*(*(&v82 + 1) + 8 * j) value];
+          stringValue = [value2 stringValue];
           v32 = SGNormalizePhoneNumber();
           [(NSSet *)v69 addObject:v32];
         }
 
-        v27 = [v25 countByEnumeratingWithState:&v82 objects:v94 count:16];
+        v27 = [phoneNumbers countByEnumeratingWithState:&v82 objects:v94 count:16];
       }
 
       while (v27);
@@ -131,8 +131,8 @@
     v81 = 0u;
     v78 = 0u;
     v79 = 0u;
-    v33 = [v5 postalAddresses];
-    v34 = [v33 countByEnumeratingWithState:&v78 objects:v93 count:16];
+    postalAddresses = [contactCopy postalAddresses];
+    v34 = [postalAddresses countByEnumeratingWithState:&v78 objects:v93 count:16];
     if (v34)
     {
       v35 = v34;
@@ -143,15 +143,15 @@
         {
           if (*v79 != v36)
           {
-            objc_enumerationMutation(v33);
+            objc_enumerationMutation(postalAddresses);
           }
 
-          v38 = [*(*(&v78 + 1) + 8 * k) value];
-          v39 = SGNormalizeCNAddress(v38);
+          value3 = [*(*(&v78 + 1) + 8 * k) value];
+          v39 = SGNormalizeCNAddress(value3);
           [(NSSet *)v16 addObject:v39];
         }
 
-        v35 = [v33 countByEnumeratingWithState:&v78 objects:v93 count:16];
+        v35 = [postalAddresses countByEnumeratingWithState:&v78 objects:v93 count:16];
       }
 
       while (v35);
@@ -163,8 +163,8 @@
     v77 = 0u;
     v74 = 0u;
     v75 = 0u;
-    v67 = v5;
-    obj = [v5 socialProfiles];
+    v67 = contactCopy;
+    obj = [contactCopy socialProfiles];
     v40 = [obj countByEnumeratingWithState:&v74 objects:v92 count:16];
     if (v40)
     {
@@ -181,15 +181,15 @@
 
           v44 = *(*(&v74 + 1) + 8 * m);
           v45 = [SGSocialProfileDetails alloc];
-          v46 = [v44 value];
-          v47 = [(SGSocialProfileDetails *)v45 initWithCNSocialProfile:v46];
+          value4 = [v44 value];
+          v47 = [(SGSocialProfileDetails *)v45 initWithCNSocialProfile:value4];
 
           v72 = 0u;
           v73 = 0u;
           v70 = 0u;
           v71 = 0u;
-          v48 = [(SGSocialProfileDetails *)v47 uniqueIdentifiers];
-          v49 = [v48 countByEnumeratingWithState:&v70 objects:v91 count:16];
+          uniqueIdentifiers = [(SGSocialProfileDetails *)v47 uniqueIdentifiers];
+          v49 = [uniqueIdentifiers countByEnumeratingWithState:&v70 objects:v91 count:16];
           if (v49)
           {
             v50 = v49;
@@ -200,13 +200,13 @@
               {
                 if (*v71 != v51)
                 {
-                  objc_enumerationMutation(v48);
+                  objc_enumerationMutation(uniqueIdentifiers);
                 }
 
                 [(NSSet *)v17 addObject:*(*(&v70 + 1) + 8 * n)];
               }
 
-              v50 = [v48 countByEnumeratingWithState:&v70 objects:v91 count:16];
+              v50 = [uniqueIdentifiers countByEnumeratingWithState:&v70 objects:v91 count:16];
             }
 
             while (v50);
@@ -236,8 +236,8 @@
     v66->_socialProfileIdentifiers = v17;
     v60 = v17;
 
-    objc_storeStrong(&v66->_meContact, v65);
-    v5 = v67;
+    objc_storeStrong(&v66->_meContact, contactCopy2);
+    contactCopy = v67;
   }
 
   v61 = *MEMORY[0x277D85DE8];

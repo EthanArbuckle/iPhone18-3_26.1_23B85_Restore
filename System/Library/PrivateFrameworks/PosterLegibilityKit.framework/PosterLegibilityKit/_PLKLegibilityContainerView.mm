@@ -1,13 +1,13 @@
 @interface _PLKLegibilityContainerView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 @end
 
 @implementation _PLKLegibilityContainerView
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"filters.colorMatrix.inputColorMatrix"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"filters.colorMatrix.inputColorMatrix"])
   {
     v5 = 1;
   }
@@ -16,7 +16,7 @@
   {
     v7.receiver = self;
     v7.super_class = _PLKLegibilityContainerView;
-    v5 = [(_PLKLegibilityContainerView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(_PLKLegibilityContainerView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;

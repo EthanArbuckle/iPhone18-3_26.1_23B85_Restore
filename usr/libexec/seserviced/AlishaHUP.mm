@@ -1,30 +1,30 @@
 @interface AlishaHUP
-- (void)pairingSession:(id)a3 completedWithResult:(unint64_t)a4;
-- (void)pairingSession:(id)a3 requestedPairingWithDeviceAddress:(id)a4 forIntent:(unint64_t)a5 c192:(id)a6 r192:(id)a7 c256:(id)a8 r256:(id)a9;
+- (void)pairingSession:(id)session completedWithResult:(unint64_t)result;
+- (void)pairingSession:(id)session requestedPairingWithDeviceAddress:(id)address forIntent:(unint64_t)intent c192:(id)c192 r192:(id)r192 c256:(id)c256 r256:(id)r256;
 @end
 
 @implementation AlishaHUP
 
-- (void)pairingSession:(id)a3 requestedPairingWithDeviceAddress:(id)a4 forIntent:(unint64_t)a5 c192:(id)a6 r192:(id)a7 c256:(id)a8 r256:(id)a9
+- (void)pairingSession:(id)session requestedPairingWithDeviceAddress:(id)address forIntent:(unint64_t)intent c192:(id)c192 r192:(id)r192 c256:(id)c256 r256:(id)r256
 {
-  v39 = a3;
-  v14 = a4;
-  v38 = self;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  sessionCopy = session;
+  addressCopy = address;
+  selfCopy = self;
+  c192Copy = c192;
+  r192Copy = r192;
+  c256Copy = c256;
+  r256Copy = r256;
   v19 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v35 = v20;
   v36 = v19;
 
-  if (v15)
+  if (c192Copy)
   {
     v21 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     v33 = v22;
     v34 = v21;
 
-    if (v16)
+    if (r192Copy)
     {
       goto LABEL_3;
     }
@@ -34,14 +34,14 @@
   {
     v33 = 0xF000000000000000;
     v34 = 0;
-    if (v16)
+    if (r192Copy)
     {
 LABEL_3:
       v23 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
       v31 = v24;
       v32 = v23;
 
-      if (v17)
+      if (c256Copy)
       {
         goto LABEL_4;
       }
@@ -49,7 +49,7 @@ LABEL_3:
 LABEL_8:
       v25 = 0;
       v27 = 0xF000000000000000;
-      if (v18)
+      if (r256Copy)
       {
         goto LABEL_5;
       }
@@ -60,7 +60,7 @@ LABEL_8:
 
   v31 = 0xF000000000000000;
   v32 = 0;
-  if (!v17)
+  if (!c256Copy)
   {
     goto LABEL_8;
   }
@@ -69,7 +69,7 @@ LABEL_4:
   v25 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v27 = v26;
 
-  if (v18)
+  if (r256Copy)
   {
 LABEL_5:
     v28 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
@@ -82,7 +82,7 @@ LABEL_9:
   v28 = 0;
   v30 = 0xF000000000000000;
 LABEL_10:
-  sub_1001532E4(v39, v36, v35, a5, v34, v33, v32, v31, v25, v27, v28, v30);
+  sub_1001532E4(sessionCopy, v36, v35, intent, v34, v33, v32, v31, v25, v27, v28, v30);
   sub_10006A2D0(v28, v30);
   sub_10006A2D0(v25, v27);
   sub_10006A2D0(v32, v31);
@@ -90,11 +90,11 @@ LABEL_10:
   sub_10006A178(v36, v35);
 }
 
-- (void)pairingSession:(id)a3 completedWithResult:(unint64_t)a4
+- (void)pairingSession:(id)session completedWithResult:(unint64_t)result
 {
-  v6 = a3;
-  v7 = self;
-  sub_100155114(v6, a4);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_100155114(sessionCopy, result);
 }
 
 @end

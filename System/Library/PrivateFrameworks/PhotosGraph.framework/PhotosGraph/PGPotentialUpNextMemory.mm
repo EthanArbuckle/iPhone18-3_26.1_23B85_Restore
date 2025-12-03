@@ -1,7 +1,7 @@
 @interface PGPotentialUpNextMemory
 - (BOOL)isBlockedByUserFeedback;
 - (NSString)keyAssetLocalIdentifier;
-- (PGPotentialUpNextMemory)initWithMemory:(id)a3 photoLibrary:(id)a4 userFeedbackCalculator:(id)a5;
+- (PGPotentialUpNextMemory)initWithMemory:(id)memory photoLibrary:(id)library userFeedbackCalculator:(id)calculator;
 - (PHAsset)keyAsset;
 @end
 
@@ -10,12 +10,12 @@
 - (BOOL)isBlockedByUserFeedback
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = [(PGPotentialUpNextMemory *)self keyAsset];
-  if (v3)
+  keyAsset = [(PGPotentialUpNextMemory *)self keyAsset];
+  if (keyAsset)
   {
-    v4 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-    [v4 setIncludedDetectionTypes:&unk_284485988];
-    v5 = [MEMORY[0x277CD9938] fetchPersonsInAsset:v3 options:v4];
+    librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+    [librarySpecificFetchOptions setIncludedDetectionTypes:&unk_284485988];
+    v5 = [MEMORY[0x277CD9938] fetchPersonsInAsset:keyAsset options:librarySpecificFetchOptions];
     if ([v5 count])
     {
       v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v5, "count")}];
@@ -38,8 +38,8 @@
               objc_enumerationMutation(v7);
             }
 
-            v12 = [*(*(&v21 + 1) + 8 * i) uuid];
-            [v6 addObject:v12];
+            uuid = [*(*(&v21 + 1) + 8 * i) uuid];
+            [v6 addObject:uuid];
           }
 
           v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -49,9 +49,9 @@
       }
 
       userFeedbackCalculator = self->_userFeedbackCalculator;
-      v14 = [v3 uuid];
-      v15 = [(PHMemory *)self->_memory blockableFeatures];
-      [(PHUserFeedbackCalculator *)userFeedbackCalculator scoreForKeyAssetUUID:v14 personsUUIDsInKeyAsset:v6 memoryFeatures:v15];
+      uuid2 = [keyAsset uuid];
+      blockableFeatures = [(PHMemory *)self->_memory blockableFeatures];
+      [(PHUserFeedbackCalculator *)userFeedbackCalculator scoreForKeyAssetUUID:uuid2 personsUUIDsInKeyAsset:v6 memoryFeatures:blockableFeatures];
       v17 = v16;
 
       v18 = [MEMORY[0x277CD99F8] score:v17 meetsScoreThreshold:*MEMORY[0x277CD9CB8]] ^ 1;
@@ -74,10 +74,10 @@
 
 - (NSString)keyAssetLocalIdentifier
 {
-  v2 = [(PGPotentialUpNextMemory *)self keyAsset];
-  v3 = [v2 localIdentifier];
+  keyAsset = [(PGPotentialUpNextMemory *)self keyAsset];
+  localIdentifier = [keyAsset localIdentifier];
 
-  return v3;
+  return localIdentifier;
 }
 
 - (PHAsset)keyAsset
@@ -94,11 +94,11 @@
     {
       v4 = MEMORY[0x277CD97A8];
       memory = self->_memory;
-      v6 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
-      v7 = [v4 fetchKeyCuratedAssetInAssetCollection:memory referenceAsset:0 options:v6];
-      v8 = [v7 firstObject];
+      librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+      v7 = [v4 fetchKeyCuratedAssetInAssetCollection:memory referenceAsset:0 options:librarySpecificFetchOptions];
+      firstObject = [v7 firstObject];
       v9 = self->_keyAsset;
-      self->_keyAsset = v8;
+      self->_keyAsset = firstObject;
 
       keyAsset = self->_keyAsset;
       if (!keyAsset)
@@ -111,20 +111,20 @@
   return keyAsset;
 }
 
-- (PGPotentialUpNextMemory)initWithMemory:(id)a3 photoLibrary:(id)a4 userFeedbackCalculator:(id)a5
+- (PGPotentialUpNextMemory)initWithMemory:(id)memory photoLibrary:(id)library userFeedbackCalculator:(id)calculator
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  memoryCopy = memory;
+  libraryCopy = library;
+  calculatorCopy = calculator;
   v15.receiver = self;
   v15.super_class = PGPotentialUpNextMemory;
   v12 = [(PGPotentialUpNextMemory *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_memory, a3);
-    objc_storeStrong(&v13->_photoLibrary, a4);
-    objc_storeStrong(&v13->_userFeedbackCalculator, a5);
+    objc_storeStrong(&v12->_memory, memory);
+    objc_storeStrong(&v13->_photoLibrary, library);
+    objc_storeStrong(&v13->_userFeedbackCalculator, calculator);
   }
 
   return v13;

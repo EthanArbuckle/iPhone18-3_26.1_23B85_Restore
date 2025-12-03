@@ -1,54 +1,54 @@
 @interface UnifiedTabBar
-- (BOOL)canCloseItem:(id)a3;
-- (BOOL)shouldPinItemsDroppedAtPoint:(CGPoint)a3;
-- (BOOL)shouldSpringLoadItem:(id)a3;
-- (BOOL)shouldUseAddressFieldContextMenuForItem:(id)a3;
+- (BOOL)canCloseItem:(id)item;
+- (BOOL)shouldPinItemsDroppedAtPoint:(CGPoint)point;
+- (BOOL)shouldSpringLoadItem:(id)item;
+- (BOOL)shouldUseAddressFieldContextMenuForItem:(id)item;
 - (NSArray)items;
 - (UnifiedTabBarDelegate)delegate;
 - (_SFNavigationIntentHandling)navigationIntentHandler;
-- (id)itemAtPoint:(CGPoint)a3;
-- (id)targetedDragPreviewForLiftingItem:(id)a3;
-- (id)targetedPreviewForDismissingMenuForItem:(id)a3;
+- (id)itemAtPoint:(CGPoint)point;
+- (id)targetedDragPreviewForLiftingItem:(id)item;
+- (id)targetedPreviewForDismissingMenuForItem:(id)item;
 - (int64_t)itemDragContentType;
-- (unint64_t)contextMenuOptionsForItem:(id)a3;
-- (void)activateItem:(id)a3;
-- (void)closeItem:(id)a3;
-- (void)didEndShowingContextMenuForItem:(id)a3;
-- (void)didSelectItem:(id)a3;
-- (void)performDropWithNavigationIntent:(id)a3;
-- (void)willBeginShowingContextMenuForItem:(id)a3;
+- (unint64_t)contextMenuOptionsForItem:(id)item;
+- (void)activateItem:(id)item;
+- (void)closeItem:(id)item;
+- (void)didEndShowingContextMenuForItem:(id)item;
+- (void)didSelectItem:(id)item;
+- (void)performDropWithNavigationIntent:(id)intent;
+- (void)willBeginShowingContextMenuForItem:(id)item;
 @end
 
 @implementation UnifiedTabBar
 
-- (void)didSelectItem:(id)a3
+- (void)didSelectItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained tabCollectionView:self didSelectItem:v4];
+  [WeakRetained tabCollectionView:self didSelectItem:itemCopy];
 }
 
-- (BOOL)canCloseItem:(id)a3
+- (BOOL)canCloseItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  LOBYTE(self) = [WeakRetained tabCollectionView:self canCloseItem:v4];
+  LOBYTE(self) = [WeakRetained tabCollectionView:self canCloseItem:itemCopy];
 
   return self;
 }
 
-- (void)closeItem:(id)a3
+- (void)closeItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained tabCollectionView:self closeItem:v4];
+  [WeakRetained tabCollectionView:self closeItem:itemCopy];
 }
 
 - (NSArray)items
 {
-  v2 = [(SFUnifiedTabBar *)self itemArrangement];
-  v3 = [v2 items];
-  v4 = [v3 safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_73];
+  itemArrangement = [(SFUnifiedTabBar *)self itemArrangement];
+  items = [itemArrangement items];
+  v4 = [items safari_mapAndFilterObjectsUsingBlock:&__block_literal_global_73];
 
   return v4;
 }
@@ -85,21 +85,21 @@ void *__22__UnifiedTabBar_items__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)activateItem:(id)a3
+- (void)activateItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained tabCollectionView:self didSelectItem:v4];
+  [WeakRetained tabCollectionView:self didSelectItem:itemCopy];
 }
 
-- (id)itemAtPoint:(CGPoint)a3
+- (id)itemAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(SFUnifiedTabBar *)self itemArrangement];
-  v7 = [v6 activeItemIsExpanded];
+  y = point.y;
+  x = point.x;
+  itemArrangement = [(SFUnifiedTabBar *)self itemArrangement];
+  activeItemIsExpanded = [itemArrangement activeItemIsExpanded];
 
-  if (v7)
+  if (activeItemIsExpanded)
   {
     v8 = 0;
   }
@@ -119,77 +119,77 @@ void *__22__UnifiedTabBar_items__block_invoke(uint64_t a1, void *a2)
   return v8;
 }
 
-- (id)targetedDragPreviewForLiftingItem:(id)a3
+- (id)targetedDragPreviewForLiftingItem:(id)item
 {
-  v4 = [(SFUnifiedTabBar *)self viewForBarItem:a3];
-  v5 = [v4 window];
+  v4 = [(SFUnifiedTabBar *)self viewForBarItem:item];
+  window = [v4 window];
 
-  if (v5)
+  if (window)
   {
     v6 = objc_alloc(MEMORY[0x277D75488]);
-    v7 = [v4 superview];
-    v8 = v7;
-    if (!v7)
+    superview = [v4 superview];
+    itemContainerView = superview;
+    if (!superview)
     {
-      v8 = [(SFUnifiedTabBar *)self itemContainerView];
+      itemContainerView = [(SFUnifiedTabBar *)self itemContainerView];
     }
 
     [v4 center];
-    v9 = [v6 initWithContainer:v8 center:?];
-    if (!v7)
+    v9 = [v6 initWithContainer:itemContainerView center:?];
+    if (!superview)
     {
     }
 
     v10 = objc_alloc(MEMORY[0x277D75B88]);
-    v11 = [v4 previewParameters];
-    v5 = [v10 initWithView:v4 parameters:v11 target:v9];
+    previewParameters = [v4 previewParameters];
+    window = [v10 initWithView:v4 parameters:previewParameters target:v9];
   }
 
-  return v5;
+  return window;
 }
 
-- (id)targetedPreviewForDismissingMenuForItem:(id)a3
+- (id)targetedPreviewForDismissingMenuForItem:(id)item
 {
-  v4 = [(SFUnifiedTabBar *)self viewForBarItem:a3];
-  v5 = [v4 window];
+  v4 = [(SFUnifiedTabBar *)self viewForBarItem:item];
+  window = [v4 window];
 
-  if (v5)
+  if (window)
   {
     v6 = objc_alloc(MEMORY[0x277D75488]);
-    v7 = [v4 superview];
-    v8 = v7;
-    if (!v7)
+    superview = [v4 superview];
+    itemContainerView = superview;
+    if (!superview)
     {
-      v8 = [(SFUnifiedTabBar *)self itemContainerView];
+      itemContainerView = [(SFUnifiedTabBar *)self itemContainerView];
     }
 
     [v4 center];
-    v9 = [v6 initWithContainer:v8 center:?];
-    if (!v7)
+    v9 = [v6 initWithContainer:itemContainerView center:?];
+    if (!superview)
     {
     }
 
     v10 = objc_alloc(MEMORY[0x277D75B88]);
-    v11 = [v4 previewParameters];
-    v5 = [v10 initWithView:v4 parameters:v11 target:v9];
+    previewParameters = [v4 previewParameters];
+    window = [v10 initWithView:v4 parameters:previewParameters target:v9];
   }
 
-  return v5;
+  return window;
 }
 
-- (BOOL)shouldUseAddressFieldContextMenuForItem:(id)a3
+- (BOOL)shouldUseAddressFieldContextMenuForItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SFUnifiedTabBar *)self itemArrangement];
-  v6 = [v5 activeItem];
+  itemCopy = item;
+  itemArrangement = [(SFUnifiedTabBar *)self itemArrangement];
+  activeItem = [itemArrangement activeItem];
 
-  v7 = v6 == v4 && [(SFUnifiedTabBar *)self role]!= 2;
+  v7 = activeItem == itemCopy && [(SFUnifiedTabBar *)self role]!= 2;
   return v7;
 }
 
-- (unint64_t)contextMenuOptionsForItem:(id)a3
+- (unint64_t)contextMenuOptionsForItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   if ([(UnifiedTabBar *)self hidesInactiveTabs])
   {
     v5 = 0;
@@ -200,18 +200,18 @@ void *__22__UnifiedTabBar_items__block_invoke(uint64_t a1, void *a2)
     v5 = 53298;
   }
 
-  v6 = [(SFUnifiedTabBar *)self itemArrangement];
-  v7 = [v6 activeItem];
+  itemArrangement = [(SFUnifiedTabBar *)self itemArrangement];
+  activeItem = [itemArrangement activeItem];
 
-  if (v7 == v4)
+  if (activeItem == itemCopy)
   {
-    v8 = [(SFUnifiedTabBar *)self role];
+    role = [(SFUnifiedTabBar *)self role];
 
-    if (v8 != 2)
+    if (role != 2)
     {
-      v9 = [(SFUnifiedTabBar *)self searchFieldShowsPersistentStopReloadButton];
+      searchFieldShowsPersistentStopReloadButton = [(SFUnifiedTabBar *)self searchFieldShowsPersistentStopReloadButton];
       v10 = 8325;
-      if (v9)
+      if (searchFieldShowsPersistentStopReloadButton)
       {
         v10 = 8197;
       }
@@ -227,34 +227,34 @@ void *__22__UnifiedTabBar_items__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-- (void)willBeginShowingContextMenuForItem:(id)a3
+- (void)willBeginShowingContextMenuForItem:(id)item
 {
-  v3 = [(SFUnifiedTabBar *)self itemContainerView];
-  [v3 setUserInteractionEnabled:0];
+  itemContainerView = [(SFUnifiedTabBar *)self itemContainerView];
+  [itemContainerView setUserInteractionEnabled:0];
 }
 
-- (void)didEndShowingContextMenuForItem:(id)a3
+- (void)didEndShowingContextMenuForItem:(id)item
 {
-  v5 = a3;
-  v4 = [(SFUnifiedTabBar *)self itemContainerView];
-  [v4 setUserInteractionEnabled:1];
+  itemCopy = item;
+  itemContainerView = [(SFUnifiedTabBar *)self itemContainerView];
+  [itemContainerView setUserInteractionEnabled:1];
 
-  [(UnifiedTabBar *)self cleanUpDragPreviewForItem:v5];
+  [(UnifiedTabBar *)self cleanUpDragPreviewForItem:itemCopy];
 }
 
-- (BOOL)shouldSpringLoadItem:(id)a3
+- (BOOL)shouldSpringLoadItem:(id)item
 {
-  v4 = a3;
-  v5 = [(SFUnifiedTabBar *)self itemArrangement];
-  v6 = [v5 activeItem];
+  itemCopy = item;
+  itemArrangement = [(SFUnifiedTabBar *)self itemArrangement];
+  activeItem = [itemArrangement activeItem];
 
-  return v6 != v4;
+  return activeItem != itemCopy;
 }
 
-- (BOOL)shouldPinItemsDroppedAtPoint:(CGPoint)a3
+- (BOOL)shouldPinItemsDroppedAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(SFUnifiedTabBar *)self pinnedItemDropArea];
   v9 = x;
   v10 = y;
@@ -262,15 +262,15 @@ void *__22__UnifiedTabBar_items__block_invoke(uint64_t a1, void *a2)
   return CGRectContainsPoint(*&v5, *&v9);
 }
 
-- (void)performDropWithNavigationIntent:(id)a3
+- (void)performDropWithNavigationIntent:(id)intent
 {
-  v7 = a3;
+  intentCopy = intent;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(SFUnifiedTabBar *)self itemArrangement];
-    v6 = [v5 activeItem];
-    [WeakRetained tabCollectionView:self item:v6 didProduceNavigationIntent:v7];
+    itemArrangement = [(SFUnifiedTabBar *)self itemArrangement];
+    activeItem = [itemArrangement activeItem];
+    [WeakRetained tabCollectionView:self item:activeItem didProduceNavigationIntent:intentCopy];
   }
 }
 

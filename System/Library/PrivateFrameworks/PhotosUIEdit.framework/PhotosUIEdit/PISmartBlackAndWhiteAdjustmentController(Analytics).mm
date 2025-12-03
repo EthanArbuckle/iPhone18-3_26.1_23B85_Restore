@@ -9,21 +9,21 @@
   v62 = *MEMORY[0x277D85DE8];
   v2 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v54 = +[PEAnalyticsUtility adjustmentValueBucketizerFormatter];
-  v3 = [a1 adjustment];
-  if (v3)
+  adjustment = [self adjustment];
+  if (adjustment)
   {
-    v4 = v3;
-    v5 = [a1 enabled];
+    v4 = adjustment;
+    enabled = [self enabled];
 
-    if (v5)
+    if (enabled)
     {
-      v6 = [a1 visualInputKeys];
-      v7 = [a1 analyticsKeysBlocklist];
+      visualInputKeys = [self visualInputKeys];
+      analyticsKeysBlocklist = [self analyticsKeysBlocklist];
       v57 = 0u;
       v58 = 0u;
       v59 = 0u;
       v60 = 0u;
-      obj = v6;
+      obj = visualInputKeys;
       v8 = [obj countByEnumeratingWithState:&v57 objects:v61 count:16];
       if (!v8)
       {
@@ -45,15 +45,15 @@
           }
 
           v13 = *(*(&v57 + 1) + 8 * v12);
-          if (([v7 containsObject:v13] & 1) == 0)
+          if (([analyticsKeysBlocklist containsObject:v13] & 1) == 0)
           {
             v14 = v11;
-            v15 = [*(v11 + 2432) autoKey];
-            if ([v13 isEqualToString:v15])
+            autoKey = [*(v11 + 2432) autoKey];
+            if ([v13 isEqualToString:autoKey])
             {
-              v16 = [a1 isAuto];
+              isAuto = [self isAuto];
 
-              if (v16)
+              if (isAuto)
               {
                 [v2 setObject:@"1" forKeyedSubscript:@"sbw_auto"];
                 v11 = v14;
@@ -66,13 +66,13 @@
             }
 
             v17 = v10;
-            v18 = [*(v14 + 2432) hueKey];
-            v19 = [v13 isEqualToString:v18];
+            hueKey = [*(v14 + 2432) hueKey];
+            v19 = [v13 isEqualToString:hueKey];
 
             if (v19)
             {
               v20 = MEMORY[0x277CCABB0];
-              [a1 hue];
+              [self hue];
               v21 = [v20 numberWithDouble:?];
               v22 = [v54 stringFromNumber:v21];
               [v2 setObject:v22 forKeyedSubscript:@"sbw_mega"];
@@ -83,17 +83,17 @@ LABEL_36:
               goto LABEL_37;
             }
 
-            v23 = [*(v14 + 2432) grainKey];
+            grainKey = [*(v14 + 2432) grainKey];
             v11 = v14;
-            if ([v13 isEqualToString:v23])
+            if ([v13 isEqualToString:grainKey])
             {
-              [a1 grain];
+              [self grain];
               v25 = v24;
 
               if (v25 != 0.0)
               {
                 v26 = MEMORY[0x277CCABB0];
-                [a1 grain];
+                [self grain];
                 v27 = [v26 numberWithDouble:?];
                 v28 = [v54 stringFromNumber:v27];
                 [v2 setObject:v28 forKeyedSubscript:@"sbw_grain"];
@@ -107,16 +107,16 @@ LABEL_36:
             {
             }
 
-            v29 = [*(v14 + 2432) neutralKey];
-            if ([v13 isEqualToString:v29])
+            neutralKey = [*(v14 + 2432) neutralKey];
+            if ([v13 isEqualToString:neutralKey])
             {
-              [a1 neutral];
+              [self neutral];
               v31 = v30;
 
               if (v31 != 0.0)
               {
                 v32 = MEMORY[0x277CCABB0];
-                [a1 neutral];
+                [self neutral];
                 v33 = [v32 numberWithDouble:?];
                 v34 = [v54 stringFromNumber:v33];
                 [v2 setObject:v34 forKeyedSubscript:@"sbw_neutral"];
@@ -130,16 +130,16 @@ LABEL_36:
             {
             }
 
-            v35 = [*(v14 + 2432) toneKey];
-            if ([v13 isEqualToString:v35])
+            toneKey = [*(v14 + 2432) toneKey];
+            if ([v13 isEqualToString:toneKey])
             {
-              [a1 tone];
+              [self tone];
               v37 = v36;
 
               if (v37 != 0.0)
               {
                 v38 = MEMORY[0x277CCABB0];
-                [a1 tone];
+                [self tone];
                 v39 = [v38 numberWithDouble:?];
                 v40 = [v54 stringFromNumber:v39];
                 v41 = v2;
@@ -153,16 +153,16 @@ LABEL_36:
             {
             }
 
-            v44 = [*(v14 + 2432) strengthKey];
-            if ([v13 isEqualToString:v44])
+            strengthKey = [*(v14 + 2432) strengthKey];
+            if ([v13 isEqualToString:strengthKey])
             {
-              [a1 strength];
+              [self strength];
               v46 = v45;
 
               if (v46 != 0.0)
               {
                 v47 = MEMORY[0x277CCABB0];
-                [a1 strength];
+                [self strength];
                 v39 = [v47 numberWithDouble:?];
                 v40 = [v54 stringFromNumber:v39];
                 v41 = v2;
@@ -181,7 +181,7 @@ LABEL_34:
             {
             }
 
-            v39 = [a1 valueForKey:v13];
+            v39 = [self valueForKey:v13];
             [v39 doubleValue];
             if (v48 != 0.0)
             {

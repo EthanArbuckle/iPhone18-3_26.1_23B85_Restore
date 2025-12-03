@@ -1,224 +1,224 @@
 @interface MTLToolsBinaryArchive
-- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4;
-- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)addFunctionWithDescriptor:(id)a3 library:(id)a4 error:(id *)a5;
-- (BOOL)addLibraryWithDescriptor:(id)a3 error:(id *)a4;
-- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4;
-- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4;
-- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4;
-- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)enumerateArchivesFromBackingFile:(id)a3;
-- (BOOL)enumerateArchivesFromPipelineCollection:(id)a3;
-- (BOOL)recompileToArchiveWithURL:(id)a3 error:(id *)a4;
-- (BOOL)serializeToURL:(id)a3 error:(id *)a4;
-- (BOOL)serializeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BOOL)storeComputePipelineDescriptor:(id)a3;
-- (BOOL)storeMeshRenderPipelineDescriptor:(id)a3;
-- (BOOL)storeRenderPipelineDescriptor:(id)a3;
-- (BOOL)storeTileRenderPipelineDescriptor:(id)a3;
+- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error;
+- (BOOL)addFunctionWithDescriptor:(id)descriptor library:(id)library error:(id *)error;
+- (BOOL)addLibraryWithDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error;
+- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error;
+- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error;
+- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error;
+- (BOOL)enumerateArchivesFromBackingFile:(id)file;
+- (BOOL)enumerateArchivesFromPipelineCollection:(id)collection;
+- (BOOL)recompileToArchiveWithURL:(id)l error:(id *)error;
+- (BOOL)serializeToURL:(id)l error:(id *)error;
+- (BOOL)serializeToURL:(id)l options:(unint64_t)options error:(id *)error;
+- (BOOL)storeComputePipelineDescriptor:(id)descriptor;
+- (BOOL)storeMeshRenderPipelineDescriptor:(id)descriptor;
+- (BOOL)storeRenderPipelineDescriptor:(id)descriptor;
+- (BOOL)storeTileRenderPipelineDescriptor:(id)descriptor;
 - (MTLPipelineCollection)pipelineCollection;
 - (NSArray)keys;
 - (NSString)label;
 - (id)archiveFunctionIds;
-- (id)formattedDescription:(unint64_t)a3;
+- (id)formattedDescription:(unint64_t)description;
 - (unint64_t)options;
-- (void)setLabel:(id)a3;
+- (void)setLabel:(id)label;
 @end
 
 @implementation MTLToolsBinaryArchive
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setLabel:a3];
+  [baseObject setLabel:label];
 }
 
 - (unint64_t)options
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 options];
+  return [baseObject options];
 }
 
-- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4
+- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLComputePipelineDescriptor:a3];
-  v7 = [(MTLToolsObject *)self baseObject];
+  v6 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLComputePipelineDescriptor:descriptor];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v7 addComputePipelineFunctionsWithDescriptor:v6 error:a4];
+  return [baseObject addComputePipelineFunctionsWithDescriptor:v6 error:error];
 }
 
-- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)addComputePipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error
 {
-  v8 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLComputePipelineDescriptor:a3];
-  v9 = [(MTLToolsObject *)self baseObject];
+  v8 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLComputePipelineDescriptor:descriptor];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v9 addComputePipelineFunctionsWithDescriptor:v8 options:a4 error:a5];
+  return [baseObject addComputePipelineFunctionsWithDescriptor:v8 options:options error:error];
 }
 
-- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4
+- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLRenderPipelineDescriptor:a3];
-  v7 = [(MTLToolsObject *)self baseObject];
+  v6 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLRenderPipelineDescriptor:descriptor];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v7 addRenderPipelineFunctionsWithDescriptor:v6 error:a4];
+  return [baseObject addRenderPipelineFunctionsWithDescriptor:v6 error:error];
 }
 
-- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)addRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error
 {
-  v8 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLRenderPipelineDescriptor:a3];
-  v9 = [(MTLToolsObject *)self baseObject];
+  v8 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLRenderPipelineDescriptor:descriptor];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v9 addRenderPipelineFunctionsWithDescriptor:v8 options:a4 error:a5];
+  return [baseObject addRenderPipelineFunctionsWithDescriptor:v8 options:options error:error];
 }
 
-- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4
+- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLTileRenderPipelineDescriptor:a3];
-  v7 = [(MTLToolsObject *)self baseObject];
+  v6 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLTileRenderPipelineDescriptor:descriptor];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v7 addTileRenderPipelineFunctionsWithDescriptor:v6 error:a4];
+  return [baseObject addTileRenderPipelineFunctionsWithDescriptor:v6 error:error];
 }
 
-- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)addTileRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error
 {
-  v8 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLTileRenderPipelineDescriptor:a3];
-  v9 = [(MTLToolsObject *)self baseObject];
+  v8 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLTileRenderPipelineDescriptor:descriptor];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v9 addTileRenderPipelineFunctionsWithDescriptor:v8 options:a4 error:a5];
+  return [baseObject addTileRenderPipelineFunctionsWithDescriptor:v8 options:options error:error];
 }
 
-- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)a3 error:(id *)a4
+- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLMeshRenderPipelineDescriptor:a3];
-  v7 = [(MTLToolsObject *)self baseObject];
+  v6 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLMeshRenderPipelineDescriptor:descriptor];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v7 addMeshRenderPipelineFunctionsWithDescriptor:v6 error:a4];
+  return [baseObject addMeshRenderPipelineFunctionsWithDescriptor:v6 error:error];
 }
 
-- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)addMeshRenderPipelineFunctionsWithDescriptor:(id)descriptor options:(unint64_t)options error:(id *)error
 {
-  v8 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLMeshRenderPipelineDescriptor:a3];
-  v9 = [(MTLToolsObject *)self baseObject];
+  v8 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLMeshRenderPipelineDescriptor:descriptor];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v9 addMeshRenderPipelineFunctionsWithDescriptor:v8 options:a4 error:a5];
+  return [baseObject addMeshRenderPipelineFunctionsWithDescriptor:v8 options:options error:error];
 }
 
-- (BOOL)addLibraryWithDescriptor:(id)a3 error:(id *)a4
+- (BOOL)addLibraryWithDescriptor:(id)descriptor error:(id *)error
 {
-  v6 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLStitchedLibraryDescriptor:a3];
-  LOBYTE(a4) = [-[MTLToolsObject baseObject](self "baseObject")];
+  v6 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLStitchedLibraryDescriptor:descriptor];
+  LOBYTE(error) = [-[MTLToolsObject baseObject](self "baseObject")];
 
-  return a4;
+  return error;
 }
 
-- (BOOL)serializeToURL:(id)a3 error:(id *)a4
+- (BOOL)serializeToURL:(id)l error:(id *)error
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 serializeToURL:a3 error:a4];
+  return [baseObject serializeToURL:l error:error];
 }
 
-- (BOOL)serializeToURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BOOL)serializeToURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v8 serializeToURL:a3 options:a4 error:a5];
+  return [baseObject serializeToURL:l options:options error:error];
 }
 
 - (NSArray)keys
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 keys];
+  return [baseObject keys];
 }
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 formattedDescription:a3];
+  return [baseObject formattedDescription:description];
 }
 
 - (MTLPipelineCollection)pipelineCollection
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 pipelineCollection];
+  return [baseObject pipelineCollection];
 }
 
-- (BOOL)enumerateArchivesFromBackingFile:(id)a3
+- (BOOL)enumerateArchivesFromBackingFile:(id)file
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 enumerateArchivesFromBackingFile:a3];
+  return [baseObject enumerateArchivesFromBackingFile:file];
 }
 
-- (BOOL)enumerateArchivesFromPipelineCollection:(id)a3
+- (BOOL)enumerateArchivesFromPipelineCollection:(id)collection
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 enumerateArchivesFromPipelineCollection:a3];
+  return [baseObject enumerateArchivesFromPipelineCollection:collection];
 }
 
-- (BOOL)storeComputePipelineDescriptor:(id)a3
+- (BOOL)storeComputePipelineDescriptor:(id)descriptor
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 storeComputePipelineDescriptor:a3];
+  return [baseObject storeComputePipelineDescriptor:descriptor];
 }
 
-- (BOOL)storeRenderPipelineDescriptor:(id)a3
+- (BOOL)storeRenderPipelineDescriptor:(id)descriptor
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 storeRenderPipelineDescriptor:a3];
+  return [baseObject storeRenderPipelineDescriptor:descriptor];
 }
 
-- (BOOL)storeTileRenderPipelineDescriptor:(id)a3
+- (BOOL)storeTileRenderPipelineDescriptor:(id)descriptor
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 storeTileRenderPipelineDescriptor:a3];
+  return [baseObject storeTileRenderPipelineDescriptor:descriptor];
 }
 
-- (BOOL)storeMeshRenderPipelineDescriptor:(id)a3
+- (BOOL)storeMeshRenderPipelineDescriptor:(id)descriptor
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 storeMeshRenderPipelineDescriptor:a3];
+  return [baseObject storeMeshRenderPipelineDescriptor:descriptor];
 }
 
 - (id)archiveFunctionIds
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 archiveFunctionIds];
+  return [baseObject archiveFunctionIds];
 }
 
-- (BOOL)recompileToArchiveWithURL:(id)a3 error:(id *)a4
+- (BOOL)recompileToArchiveWithURL:(id)l error:(id *)error
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v6 recompileToArchiveWithURL:a3 error:a4];
+  return [baseObject recompileToArchiveWithURL:l error:error];
 }
 
-- (BOOL)addFunctionWithDescriptor:(id)a3 library:(id)a4 error:(id *)a5
+- (BOOL)addFunctionWithDescriptor:(id)descriptor library:(id)library error:(id *)error
 {
-  v8 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLFunctionDescriptor:a3];
-  LOBYTE(a5) = [-[MTLToolsObject baseObject](self "baseObject")];
+  v8 = [(MTLDevice *)[(MTLToolsBinaryArchive *)self device] unwrapMTLFunctionDescriptor:descriptor];
+  LOBYTE(error) = [-[MTLToolsObject baseObject](self "baseObject")];
 
-  return a5;
+  return error;
 }
 
 @end

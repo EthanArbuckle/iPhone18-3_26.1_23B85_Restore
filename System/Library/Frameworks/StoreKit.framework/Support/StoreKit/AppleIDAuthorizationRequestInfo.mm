@@ -1,15 +1,15 @@
 @interface AppleIDAuthorizationRequestInfo
-- (AppleIDAuthorizationRequestInfo)initWithClientID:(id)a3 teamID:(id)a4 serviceID:(id)a5;
+- (AppleIDAuthorizationRequestInfo)initWithClientID:(id)d teamID:(id)iD serviceID:(id)serviceID;
 @end
 
 @implementation AppleIDAuthorizationRequestInfo
 
-- (AppleIDAuthorizationRequestInfo)initWithClientID:(id)a3 teamID:(id)a4 serviceID:(id)a5
+- (AppleIDAuthorizationRequestInfo)initWithClientID:(id)d teamID:(id)iD serviceID:(id)serviceID
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  dCopy = d;
+  iDCopy = iD;
+  serviceIDCopy = serviceID;
+  if (!dCopy)
   {
     if (qword_1003D3958 != -1)
     {
@@ -25,7 +25,7 @@
     goto LABEL_14;
   }
 
-  if (!v10)
+  if (!iDCopy)
   {
     if (qword_1003D3958 != -1)
     {
@@ -39,7 +39,7 @@
     }
 
 LABEL_14:
-    v14 = 0;
+    selfCopy = 0;
     goto LABEL_15;
   }
 
@@ -49,16 +49,16 @@ LABEL_14:
   p_isa = &v12->super.isa;
   if (v12)
   {
-    objc_storeStrong(&v12->_clientID, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
+    objc_storeStrong(&v12->_clientID, d);
+    objc_storeStrong(p_isa + 2, iD);
+    objc_storeStrong(p_isa + 3, serviceID);
   }
 
   self = p_isa;
-  v14 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v14;
+  return selfCopy;
 }
 
 @end

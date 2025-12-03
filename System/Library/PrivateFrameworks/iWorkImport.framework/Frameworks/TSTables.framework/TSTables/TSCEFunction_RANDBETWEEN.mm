@@ -1,25 +1,25 @@
 @interface TSCEFunction_RANDBETWEEN
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5;
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments;
 @end
 
 @implementation TSCEFunction_RANDBETWEEN
 
-+ (id)evaluateForArgsWithContext:(id)a3 functionSpec:(id)a4 arguments:(const void *)a5
++ (id)evaluateForArgsWithContext:(id)context functionSpec:(id)spec arguments:(const void *)arguments
 {
-  v8 = **a5;
-  v9 = *(*a5 + 8);
+  v8 = **arguments;
+  v9 = *(*arguments + 8);
   v100 = 0;
-  v11 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v10, a3, a4, 0, &v100);
+  v11 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v8, v10, context, spec, 0, &v100);
   v12 = v100;
   if (v12)
   {
     v16 = v12;
-    v17 = objc_msgSend_raiseErrorOrConvert_(a3, v13, v12, v14, v15);
+    v17 = objc_msgSend_raiseErrorOrConvert_(context, v13, v12, v14, v15);
     goto LABEL_22;
   }
 
   v99 = 0;
-  v18 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v9, v13, a3, a4, 1, &v99);
+  v18 = objc_msgSend_asNumber_functionSpec_argumentIndex_outError_(v9, v13, context, spec, 1, &v99);
   v16 = v99;
   if (!v16)
   {
@@ -33,7 +33,7 @@
           if (v31 != objc_msgSend_unit(v18, v32, v33, v34, v35))
           {
             v41 = objc_msgSend_mismatchedMaxUnitsError(TSCEError, v26, v36, v28, v29);
-            v17 = objc_msgSend_raiseErrorOrConvert_(a3, v92, v41, v93, v94);
+            v17 = objc_msgSend_raiseErrorOrConvert_(context, v92, v41, v93, v94);
             goto LABEL_13;
           }
         }
@@ -45,7 +45,7 @@
 
         v59 = objc_msgSend_floor(v18, v55, v56, v57, v58);
 
-        v64 = objc_msgSend_randGenerator(a3, v60, v61, v62, v63);
+        v64 = objc_msgSend_randGenerator(context, v60, v61, v62, v63);
         objc_msgSend_doubleRepresentation(v54, v65, v66, v67, v68);
         v70 = v69;
         objc_msgSend_doubleRepresentation(v59, v71, v72, v73, v74);
@@ -56,7 +56,7 @@
 
         if (v8)
         {
-          objc_msgSend_formatWithContext_(v8, v84, a3, v86, v87);
+          objc_msgSend_formatWithContext_(v8, v84, context, v86, v87);
         }
 
         else
@@ -66,7 +66,7 @@
 
         if (v9)
         {
-          objc_msgSend_formatWithContext_(v9, v84, a3, v86, v87);
+          objc_msgSend_formatWithContext_(v9, v84, context, v86, v87);
         }
 
         else
@@ -82,16 +82,16 @@
         goto LABEL_21;
       }
 
-      v41 = objc_msgSend_functionName(a4, v37, v38, v39, v40);
+      v41 = objc_msgSend_functionName(spec, v37, v38, v39, v40);
       v43 = objc_msgSend_invalidArgumentRelationshipErrorForFunctionName_argIndex1_argIndex2_argsAscending_equalityPermitted_(TSCEError, v42, v41, 1, 2, 1, 1);
-      v47 = objc_msgSend_raiseErrorOrConvert_(a3, v44, v43, v45, v46);
+      v47 = objc_msgSend_raiseErrorOrConvert_(context, v44, v43, v45, v46);
     }
 
     else
     {
-      v41 = objc_msgSend_functionName(a4, v22, v23, v24, v25);
+      v41 = objc_msgSend_functionName(spec, v22, v23, v24, v25);
       v43 = objc_msgSend_mismatchedUnitsErrorForFunctionName_(TSCEError, v48, v41, v49, v50);
-      v47 = objc_msgSend_raiseErrorOrConvert_(a3, v51, v43, v52, v53);
+      v47 = objc_msgSend_raiseErrorOrConvert_(context, v51, v43, v52, v53);
     }
 
     v17 = v47;
@@ -100,7 +100,7 @@ LABEL_13:
     goto LABEL_21;
   }
 
-  v17 = objc_msgSend_raiseErrorOrConvert_(a3, v19, v16, v20, v21);
+  v17 = objc_msgSend_raiseErrorOrConvert_(context, v19, v16, v20, v21);
 LABEL_21:
 
 LABEL_22:

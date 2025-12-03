@@ -1,32 +1,32 @@
 @interface CATCollectionController
 - (CATCollectionController)init;
-- (CATCollectionController)initWithObjects:(id)a3;
+- (CATCollectionController)initWithObjects:(id)objects;
 - (CATCollectionControllerDelegate)delegate;
 - (NSArray)selectedObjects;
 - (NSSet)content;
-- (unint64_t)newIndexForObject:(id)a3 inArrangedObjects:(id)a4;
-- (void)addObject:(id)a3;
-- (void)addObserversToObject:(id)a3 forKeyPaths:(id)a4;
-- (void)arrangeObject:(id)a3;
-- (void)bindContentToObject:(id)a3 withKeyPath:(id)a4 usingTransformer:(id)a5;
-- (void)changeContent:(id)a3;
-- (void)changeObject:(id)a3 atIndex:(unint64_t)a4 forChangeType:(unint64_t)a5 newIndex:(unint64_t)a6;
+- (unint64_t)newIndexForObject:(id)object inArrangedObjects:(id)objects;
+- (void)addObject:(id)object;
+- (void)addObserversToObject:(id)object forKeyPaths:(id)paths;
+- (void)arrangeObject:(id)object;
+- (void)bindContentToObject:(id)object withKeyPath:(id)path usingTransformer:(id)transformer;
+- (void)changeContent:(id)content;
+- (void)changeObject:(id)object atIndex:(unint64_t)index forChangeType:(unint64_t)type newIndex:(unint64_t)newIndex;
 - (void)dealloc;
-- (void)notifyArrangedObjectsDidChangeWithPreviousArrangedObjects:(id)a3;
+- (void)notifyArrangedObjectsDidChangeWithPreviousArrangedObjects:(id)objects;
 - (void)notifyArrangedObjectsWillChange;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)rearrangeTimerDidFire:(id)a3;
-- (void)removeObject:(id)a3;
-- (void)removeObserversFromObject:(id)a3 forKeyPaths:(id)a4;
-- (void)resolveArrangedObjectsAtIndexes:(id)a3 reply:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)rearrangeTimerDidFire:(id)fire;
+- (void)removeObject:(id)object;
+- (void)removeObserversFromObject:(id)object forKeyPaths:(id)paths;
+- (void)resolveArrangedObjectsAtIndexes:(id)indexes reply:(id)reply;
 - (void)scheduleRearrangeTimerIfNeed;
-- (void)setAutomaticallyRearrangesObjects:(BOOL)a3;
-- (void)setFilterPredicate:(id)a3;
-- (void)setSelectionIndexes:(id)a3;
-- (void)setSortDescriptors:(id)a3;
+- (void)setAutomaticallyRearrangesObjects:(BOOL)objects;
+- (void)setFilterPredicate:(id)predicate;
+- (void)setSelectionIndexes:(id)indexes;
+- (void)setSortDescriptors:(id)descriptors;
 - (void)unbindContent;
-- (void)updateKeysAffectingArrangementForceUpdate:(BOOL)a3 includeAllContent:(BOOL)a4;
-- (void)updateObject:(id)a3;
+- (void)updateKeysAffectingArrangementForceUpdate:(BOOL)update includeAllContent:(BOOL)content;
+- (void)updateObject:(id)object;
 @end
 
 @implementation CATCollectionController
@@ -38,21 +38,21 @@
   return WeakRetained;
 }
 
-- (void)setAutomaticallyRearrangesObjects:(BOOL)a3
+- (void)setAutomaticallyRearrangesObjects:(BOOL)objects
 {
-  if (self->_automaticallyRearrangesObjects != a3)
+  if (self->_automaticallyRearrangesObjects != objects)
   {
-    self->_automaticallyRearrangesObjects = a3;
+    self->_automaticallyRearrangesObjects = objects;
     [(CATCollectionController *)self updateKeysAffectingArrangementForceUpdate:0 includeAllContent:0];
   }
 }
 
-- (void)setSortDescriptors:(id)a3
+- (void)setSortDescriptors:(id)descriptors
 {
-  v6 = a3;
-  if (([v6 isEqualToArray:self->_sortDescriptors] & 1) == 0)
+  descriptorsCopy = descriptors;
+  if (([descriptorsCopy isEqualToArray:self->_sortDescriptors] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [descriptorsCopy copy];
     sortDescriptors = self->_sortDescriptors;
     self->_sortDescriptors = v4;
 
@@ -60,12 +60,12 @@
   }
 }
 
-- (void)setFilterPredicate:(id)a3
+- (void)setFilterPredicate:(id)predicate
 {
-  v6 = a3;
-  if (([v6 isEqual:self->_filterPredicate] & 1) == 0)
+  predicateCopy = predicate;
+  if (([predicateCopy isEqual:self->_filterPredicate] & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [predicateCopy copy];
     filterPredicate = self->_filterPredicate;
     self->_filterPredicate = v4;
 
@@ -73,36 +73,36 @@
   }
 }
 
-- (void)setSelectionIndexes:(id)a3
+- (void)setSelectionIndexes:(id)indexes
 {
-  v9 = a3;
+  indexesCopy = indexes;
   if (![(NSIndexSet *)self->_selectionIndexes isEqualToIndexSet:?])
   {
-    v4 = [v9 copy];
+    v4 = [indexesCopy copy];
     selectionIndexes = self->_selectionIndexes;
     self->_selectionIndexes = v4;
 
-    v6 = [(CATCollectionController *)self delegate];
+    delegate = [(CATCollectionController *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(CATCollectionController *)self delegate];
-      [v8 controllerDidChangeSelectionIndexes:self];
+      delegate2 = [(CATCollectionController *)self delegate];
+      [delegate2 controllerDidChangeSelectionIndexes:self];
     }
   }
 }
 
 - (NSArray)selectedObjects
 {
-  v3 = [(CATCollectionController *)self selectionIndexes];
-  v4 = [v3 count];
+  selectionIndexes = [(CATCollectionController *)self selectionIndexes];
+  v4 = [selectionIndexes count];
 
   if (v4)
   {
-    v5 = [(CATCollectionController *)self arrangedObjects];
-    v6 = [(CATCollectionController *)self selectionIndexes];
-    v7 = [v5 objectsAtIndexes:v6];
+    arrangedObjects = [(CATCollectionController *)self arrangedObjects];
+    selectionIndexes2 = [(CATCollectionController *)self selectionIndexes];
+    v7 = [arrangedObjects objectsAtIndexes:selectionIndexes2];
   }
 
   else
@@ -127,9 +127,9 @@
   v2 = [(CATCollectionController *)&v14 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     arrangedObjects = v2->_arrangedObjects;
-    v2->_arrangedObjects = v3;
+    v2->_arrangedObjects = array;
 
     v5 = objc_opt_new();
     mContent = v2->mContent;
@@ -151,20 +151,20 @@
   return v2;
 }
 
-- (CATCollectionController)initWithObjects:(id)a3
+- (CATCollectionController)initWithObjects:(id)objects
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  objectsCopy = objects;
   v6 = [(CATCollectionController *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->mOriginalObjects, a3);
+    objc_storeStrong(&v6->mOriginalObjects, objects);
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = v5;
+    v8 = objectsCopy;
     v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
@@ -207,21 +207,21 @@
   [(CATCollectionController *)&v3 dealloc];
 }
 
-- (void)resolveArrangedObjectsAtIndexes:(id)a3 reply:(id)a4
+- (void)resolveArrangedObjectsAtIndexes:(id)indexes reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  indexesCopy = indexes;
+  replyCopy = reply;
+  v8 = replyCopy;
+  if (replyCopy)
   {
     v9 = MEMORY[0x277CBEB88];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __65__CATCollectionController_resolveArrangedObjectsAtIndexes_reply___block_invoke;
     v10[3] = &unk_278DA7230;
-    v12 = v7;
+    v12 = replyCopy;
     v10[4] = self;
-    v11 = v6;
+    v11 = indexesCopy;
     [v9 cat_performBlockOnMainRunLoop:v10];
   }
 }
@@ -233,16 +233,16 @@ void __65__CATCollectionController_resolveArrangedObjectsAtIndexes_reply___block
   (*(v1 + 16))(v1, v2, 0);
 }
 
-- (void)bindContentToObject:(id)a3 withKeyPath:(id)a4 usingTransformer:(id)a5
+- (void)bindContentToObject:(id)object withKeyPath:(id)path usingTransformer:(id)transformer
 {
-  v13 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v13)
+  objectCopy = object;
+  pathCopy = path;
+  transformerCopy = transformer;
+  if (objectCopy)
   {
     if (self->mTarget)
     {
-      [(CATCollectionController *)a2 bindContentToObject:v13 withKeyPath:v9 usingTransformer:?];
+      [(CATCollectionController *)a2 bindContentToObject:objectCopy withKeyPath:pathCopy usingTransformer:?];
     }
 
     if ([(NSMutableSet *)self->mContent count])
@@ -250,12 +250,12 @@ void __65__CATCollectionController_resolveArrangedObjectsAtIndexes_reply___block
       [CATCollectionController bindContentToObject:a2 withKeyPath:self usingTransformer:?];
     }
 
-    self->mTarget = v13;
-    v11 = [v9 copy];
+    self->mTarget = objectCopy;
+    v11 = [pathCopy copy];
     mKeyPath = self->mKeyPath;
     self->mKeyPath = v11;
 
-    objc_storeStrong(&self->mTransformer, a5);
+    objc_storeStrong(&self->mTransformer, transformer);
     [self->mTarget addObserver:self forKeyPath:self->mKeyPath options:7 context:"_CATCollectionControllerContentObservationContext"];
   }
 }
@@ -312,31 +312,31 @@ void __65__CATCollectionController_resolveArrangedObjectsAtIndexes_reply___block
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (a6 == "_CATCollectionControllerContentObservationContext")
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  v13 = changeCopy;
+  if (context == "_CATCollectionControllerContentObservationContext")
   {
-    v14 = [v12 cat_calculateAddedObjects];
-    v15 = [v13 cat_calculateRemovedObjects];
+    cat_calculateAddedObjects = [changeCopy cat_calculateAddedObjects];
+    cat_calculateRemovedObjects = [v13 cat_calculateRemovedObjects];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __74__CATCollectionController_observeValueForKeyPath_ofObject_change_context___block_invoke;
     v19[3] = &unk_278DA7280;
-    v20 = v15;
-    v21 = self;
-    v22 = v14;
-    v16 = v14;
-    v17 = v15;
+    v20 = cat_calculateRemovedObjects;
+    selfCopy = self;
+    v22 = cat_calculateAddedObjects;
+    v16 = cat_calculateAddedObjects;
+    v17 = cat_calculateRemovedObjects;
     [(CATCollectionController *)self changeContent:v19];
   }
 
-  else if (a6 == "_CATCollectionControllerArrangementKeyObservationContext")
+  else if (context == "_CATCollectionControllerArrangementKeyObservationContext")
   {
-    [(NSMutableSet *)self->mObjectsToRearrange addObject:v11];
+    [(NSMutableSet *)self->mObjectsToRearrange addObject:objectCopy];
     [(CATCollectionController *)self scheduleRearrangeTimerIfNeed];
   }
 
@@ -344,7 +344,7 @@ void __65__CATCollectionController_resolveArrangedObjectsAtIndexes_reply___block
   {
     v18.receiver = self;
     v18.super_class = CATCollectionController;
-    [(CATCollectionController *)&v18 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(CATCollectionController *)&v18 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
@@ -410,16 +410,16 @@ uint64_t __74__CATCollectionController_observeValueForKeyPath_ofObject_change_co
   return MEMORY[0x2821F96F8](v4, v3);
 }
 
-- (void)addObserversToObject:(id)a3 forKeyPaths:(id)a4
+- (void)addObserversToObject:(id)object forKeyPaths:(id)paths
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  pathsCopy = paths;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [pathsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -431,14 +431,14 @@ uint64_t __74__CATCollectionController_observeValueForKeyPath_ofObject_change_co
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(pathsCopy);
         }
 
-        [v6 addObserver:self forKeyPath:*(*(&v13 + 1) + 8 * v11++) options:3 context:"_CATCollectionControllerArrangementKeyObservationContext"];
+        [objectCopy addObserver:self forKeyPath:*(*(&v13 + 1) + 8 * v11++) options:3 context:"_CATCollectionControllerArrangementKeyObservationContext"];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [pathsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -447,16 +447,16 @@ uint64_t __74__CATCollectionController_observeValueForKeyPath_ofObject_change_co
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeObserversFromObject:(id)a3 forKeyPaths:(id)a4
+- (void)removeObserversFromObject:(id)object forKeyPaths:(id)paths
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  pathsCopy = paths;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v8 = [pathsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v8)
   {
     v9 = v8;
@@ -468,14 +468,14 @@ uint64_t __74__CATCollectionController_observeValueForKeyPath_ofObject_change_co
       {
         if (*v14 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(pathsCopy);
         }
 
-        [v6 removeObserver:self forKeyPath:*(*(&v13 + 1) + 8 * v11++)];
+        [objectCopy removeObserver:self forKeyPath:*(*(&v13 + 1) + 8 * v11++)];
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v9 = [pathsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v9);
@@ -484,52 +484,52 @@ uint64_t __74__CATCollectionController_observeValueForKeyPath_ofObject_change_co
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   if (([(NSMutableSet *)self->mContent containsObject:?]& 1) == 0)
   {
-    [(NSMutableSet *)self->mContent addObject:v4];
-    [(CATCollectionController *)self addObserversToObject:v4 forKeyPaths:self->mKeysAffectingArrangement];
-    [(CATCollectionController *)self arrangeObject:v4];
+    [(NSMutableSet *)self->mContent addObject:objectCopy];
+    [(CATCollectionController *)self addObserversToObject:objectCopy forKeyPaths:self->mKeysAffectingArrangement];
+    [(CATCollectionController *)self arrangeObject:objectCopy];
   }
 }
 
-- (void)removeObject:(id)a3
+- (void)removeObject:(id)object
 {
-  v5 = a3;
-  [(NSMutableSet *)self->mObjectsToRearrange removeObject:v5];
-  if ([(NSMutableSet *)self->mContent containsObject:v5])
+  objectCopy = object;
+  [(NSMutableSet *)self->mObjectsToRearrange removeObject:objectCopy];
+  if ([(NSMutableSet *)self->mContent containsObject:objectCopy])
   {
-    [(CATCollectionController *)self removeObserversFromObject:v5 forKeyPaths:self->mKeysAffectingArrangement];
-    v4 = [(NSMutableArray *)self->mPendingArrangedObjects indexOfObject:v5];
-    [(NSMutableSet *)self->mContent removeObject:v5];
+    [(CATCollectionController *)self removeObserversFromObject:objectCopy forKeyPaths:self->mKeysAffectingArrangement];
+    v4 = [(NSMutableArray *)self->mPendingArrangedObjects indexOfObject:objectCopy];
+    [(NSMutableSet *)self->mContent removeObject:objectCopy];
     if (v4 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      [(CATCollectionController *)self changeObject:v5 atIndex:v4 forChangeType:2 newIndex:0x7FFFFFFFFFFFFFFFLL];
+      [(CATCollectionController *)self changeObject:objectCopy atIndex:v4 forChangeType:2 newIndex:0x7FFFFFFFFFFFFFFFLL];
     }
   }
 }
 
-- (void)updateObject:(id)a3
+- (void)updateObject:(id)object
 {
-  v5 = a3;
-  [(CATCollectionController *)self arrangeObject:v5];
-  v4 = [(NSMutableArray *)self->mPendingArrangedObjects indexOfObject:v5];
+  objectCopy = object;
+  [(CATCollectionController *)self arrangeObject:objectCopy];
+  v4 = [(NSMutableArray *)self->mPendingArrangedObjects indexOfObject:objectCopy];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(CATCollectionController *)self changeObject:v5 atIndex:v4 forChangeType:4 newIndex:v4];
+    [(CATCollectionController *)self changeObject:objectCopy atIndex:v4 forChangeType:4 newIndex:v4];
   }
 }
 
-- (void)arrangeObject:(id)a3
+- (void)arrangeObject:(id)object
 {
-  v14 = a3;
-  v4 = [(CATCollectionController *)self filterPredicate];
-  if (v4)
+  objectCopy = object;
+  filterPredicate = [(CATCollectionController *)self filterPredicate];
+  if (filterPredicate)
   {
-    v5 = [(CATCollectionController *)self filterPredicate];
-    v6 = [v5 evaluateWithObject:v14];
+    filterPredicate2 = [(CATCollectionController *)self filterPredicate];
+    v6 = [filterPredicate2 evaluateWithObject:objectCopy];
   }
 
   else
@@ -537,7 +537,7 @@ uint64_t __74__CATCollectionController_observeValueForKeyPath_ofObject_change_co
     v6 = 1;
   }
 
-  v7 = [(NSMutableArray *)self->mPendingArrangedObjects indexOfObject:v14];
+  v7 = [(NSMutableArray *)self->mPendingArrangedObjects indexOfObject:objectCopy];
   v8 = v7;
   if (v6)
   {
@@ -551,7 +551,7 @@ uint64_t __74__CATCollectionController_observeValueForKeyPath_ofObject_change_co
       v9 = v11;
     }
 
-    v12 = [(CATCollectionController *)self newIndexForObject:v14 inArrangedObjects:v9];
+    v12 = [(CATCollectionController *)self newIndexForObject:objectCopy inArrangedObjects:v9];
     if (v8 != v12)
     {
       if (v8 == 0x7FFFFFFFFFFFFFFFLL)
@@ -564,22 +564,22 @@ uint64_t __74__CATCollectionController_observeValueForKeyPath_ofObject_change_co
         v13 = 3;
       }
 
-      [(CATCollectionController *)self changeObject:v14 atIndex:v8 forChangeType:v13 newIndex:v12];
+      [(CATCollectionController *)self changeObject:objectCopy atIndex:v8 forChangeType:v13 newIndex:v12];
     }
   }
 
   else if (v7 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(CATCollectionController *)self changeObject:v14 atIndex:v7 forChangeType:2 newIndex:0x7FFFFFFFFFFFFFFFLL];
+    [(CATCollectionController *)self changeObject:objectCopy atIndex:v7 forChangeType:2 newIndex:0x7FFFFFFFFFFFFFFFLL];
   }
 }
 
-- (unint64_t)newIndexForObject:(id)a3 inArrangedObjects:(id)a4
+- (unint64_t)newIndexForObject:(id)object inArrangedObjects:(id)objects
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CATCollectionController *)self sortDescriptors];
-  v9 = [v8 count];
+  objectsCopy = objects;
+  objectCopy = object;
+  sortDescriptors = [(CATCollectionController *)self sortDescriptors];
+  v9 = [sortDescriptors count];
 
   if (v9)
   {
@@ -618,7 +618,7 @@ LABEL_2:
     }
   }
 
-  v14 = [v6 count];
+  v14 = [objectsCopy count];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __63__CATCollectionController_newIndexForObject_inArrangedObjects___block_invoke;
@@ -626,7 +626,7 @@ LABEL_2:
   v18[4] = self;
   v19 = v10;
   v15 = v10;
-  v16 = [v6 indexOfObject:v7 inSortedRange:0 options:v14 usingComparator:{1024, v18}];
+  v16 = [objectsCopy indexOfObject:objectCopy inSortedRange:0 options:v14 usingComparator:{1024, v18}];
 
   return v16;
 }
@@ -724,7 +724,7 @@ LABEL_12:
   return v15;
 }
 
-- (void)rearrangeTimerDidFire:(id)a3
+- (void)rearrangeTimerDidFire:(id)fire
 {
   [(NSTimer *)self->mRearrangeTimer invalidate];
   mRearrangeTimer = self->mRearrangeTimer;
@@ -789,28 +789,28 @@ void __49__CATCollectionController_rearrangeTimerDidFire___block_invoke(uint64_t
   }
 }
 
-- (void)updateKeysAffectingArrangementForceUpdate:(BOOL)a3 includeAllContent:(BOOL)a4
+- (void)updateKeysAffectingArrangementForceUpdate:(BOOL)update includeAllContent:(BOOL)content
 {
-  v4 = a4;
-  v5 = a3;
+  contentCopy = content;
+  updateCopy = update;
   v7 = [MEMORY[0x277CBEB58] set];
   if ([(CATCollectionController *)self automaticallyRearrangesObjects])
   {
-    v8 = [(CATCollectionController *)self sortDescriptors];
-    v9 = [v8 valueForKeyPath:@"key"];
+    sortDescriptors = [(CATCollectionController *)self sortDescriptors];
+    v9 = [sortDescriptors valueForKeyPath:@"key"];
     [v7 addObjectsFromArray:v9];
   }
 
-  v10 = [MEMORY[0x277CBEB68] null];
-  [v7 removeObject:v10];
+  null = [MEMORY[0x277CBEB68] null];
+  [v7 removeObject:null];
 
   [v7 removeObject:&stru_2855FDC88];
-  if (v4)
+  if (contentCopy)
   {
     v11 = [MEMORY[0x277CBEB58] setWithSet:self->mContent];
   }
 
-  else if (v5)
+  else if (updateCopy)
   {
     v11 = [MEMORY[0x277CBEB58] setWithArray:self->_arrangedObjects];
   }
@@ -913,26 +913,26 @@ void __87__CATCollectionController_updateKeysAffectingArrangementForceUpdate_inc
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)changeContent:(id)a3
+- (void)changeContent:(id)content
 {
-  v5 = a3;
-  v23 = v5;
-  if (!v5)
+  contentCopy = content;
+  v23 = contentCopy;
+  if (!contentCopy)
   {
     [(CATCollectionController *)a2 changeContent:?];
-    v5 = 0;
+    contentCopy = 0;
   }
 
   if (self->mChangingSelection)
   {
-    v5[2]();
+    contentCopy[2]();
   }
 
   else
   {
     v6 = objc_alloc(MEMORY[0x277CCAB58]);
-    v7 = [(CATCollectionController *)self selectionIndexes];
-    v8 = [v6 initWithIndexSet:v7];
+    selectionIndexes = [(CATCollectionController *)self selectionIndexes];
+    v8 = [v6 initWithIndexSet:selectionIndexes];
     mChangingSelection = self->mChangingSelection;
     self->mChangingSelection = v8;
 
@@ -948,8 +948,8 @@ void __87__CATCollectionController_updateKeysAffectingArrangementForceUpdate_inc
     v13 = [(NSMutableArray *)self->mPendingArrangedObjects copy];
     [(CATCollectionController *)self setArrangedObjects:v13];
 
-    v14 = [(CATCollectionController *)self selectionIndexes];
-    v15 = [v14 isEqualToIndexSet:self->mChangingSelection];
+    selectionIndexes2 = [(CATCollectionController *)self selectionIndexes];
+    v15 = [selectionIndexes2 isEqualToIndexSet:self->mChangingSelection];
 
     if (v15)
     {
@@ -971,13 +971,13 @@ void __87__CATCollectionController_updateKeysAffectingArrangementForceUpdate_inc
       self->mChangingSelection = 0;
 
       [(CATCollectionController *)self notifyArrangedObjectsDidChangeWithPreviousArrangedObjects:v12];
-      v20 = [(CATCollectionController *)self delegate];
+      delegate = [(CATCollectionController *)self delegate];
       v21 = objc_opt_respondsToSelector();
 
       if (v21)
       {
-        v22 = [(CATCollectionController *)self delegate];
-        [v22 controllerDidChangeSelectionIndexes:self];
+        delegate2 = [(CATCollectionController *)self delegate];
+        [delegate2 controllerDidChangeSelectionIndexes:self];
       }
     }
   }
@@ -990,13 +990,13 @@ void __87__CATCollectionController_updateKeysAffectingArrangementForceUpdate_inc
   {
     if (([(NSMutableArray *)self->mPendingInsertedObjects count]|| [(NSMutableArray *)self->mPendingDeletedObjects count]) && !self->mDelegateKnowsContentIsChanging)
     {
-      v3 = [(CATCollectionController *)self delegate];
+      delegate = [(CATCollectionController *)self delegate];
       v4 = objc_opt_respondsToSelector();
 
       if (v4)
       {
-        v5 = [(CATCollectionController *)self delegate];
-        [v5 controllerWillChangeContent:self];
+        delegate2 = [(CATCollectionController *)self delegate];
+        [delegate2 controllerWillChangeContent:self];
       }
 
       self->mDelegateKnowsContentIsChanging = 1;
@@ -1004,7 +1004,7 @@ void __87__CATCollectionController_updateKeysAffectingArrangementForceUpdate_inc
 
     if (self->mChangingSelection)
     {
-      v6 = [(CATCollectionController *)self delegate];
+      delegate3 = [(CATCollectionController *)self delegate];
       v7 = objc_opt_respondsToSelector();
 
       if (v7)
@@ -1034,9 +1034,9 @@ void __87__CATCollectionController_updateKeysAffectingArrangementForceUpdate_inc
               if (v14)
               {
                 v16 = [(NSMutableArray *)self->mPendingArrangedObjects indexOfObject:v13];
-                v17 = [(CATCollectionController *)self delegate];
-                v18 = v17;
-                v19 = self;
+                delegate4 = [(CATCollectionController *)self delegate];
+                v18 = delegate4;
+                selfCopy2 = self;
                 v20 = v13;
                 v21 = v15;
                 v22 = 3;
@@ -1045,16 +1045,16 @@ void __87__CATCollectionController_updateKeysAffectingArrangementForceUpdate_inc
 
               else
               {
-                v17 = [(CATCollectionController *)self delegate];
-                v18 = v17;
-                v19 = self;
+                delegate4 = [(CATCollectionController *)self delegate];
+                v18 = delegate4;
+                selfCopy2 = self;
                 v20 = v13;
                 v21 = v15;
                 v22 = 2;
                 v23 = 0x7FFFFFFFFFFFFFFFLL;
               }
 
-              [v17 controller:v19 willChangeObject:v20 atIndex:v21 forChangeType:v22 newIndex:v23];
+              [delegate4 controller:selfCopy2 willChangeObject:v20 atIndex:v21 forChangeType:v22 newIndex:v23];
             }
 
             v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v37 objects:v42 count:16];
@@ -1086,8 +1086,8 @@ void __87__CATCollectionController_updateKeysAffectingArrangementForceUpdate_inc
               if (([(NSMutableArray *)self->mPendingDeletedObjects containsObject:v29, v33]& 1) == 0)
               {
                 v30 = [(NSMutableArray *)self->mPendingArrangedObjects indexOfObject:v29];
-                v31 = [(CATCollectionController *)self delegate];
-                [v31 controller:self willChangeObject:v29 atIndex:0x7FFFFFFFFFFFFFFFLL forChangeType:1 newIndex:v30];
+                delegate5 = [(CATCollectionController *)self delegate];
+                [delegate5 controller:self willChangeObject:v29 atIndex:0x7FFFFFFFFFFFFFFFLL forChangeType:1 newIndex:v30];
               }
             }
 
@@ -1103,24 +1103,24 @@ void __87__CATCollectionController_updateKeysAffectingArrangementForceUpdate_inc
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyArrangedObjectsDidChangeWithPreviousArrangedObjects:(id)a3
+- (void)notifyArrangedObjectsDidChangeWithPreviousArrangedObjects:(id)objects
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectsCopy = objects;
   if (self->mDelegateKnowsContentIsChanging)
   {
-    v5 = [(CATCollectionController *)self delegate];
+    delegate = [(CATCollectionController *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(CATCollectionController *)self delegate];
-      [v7 controllerDidChangeContent:self];
+      delegate2 = [(CATCollectionController *)self delegate];
+      [delegate2 controllerDidChangeContent:self];
     }
   }
 
   self->mDelegateKnowsContentIsChanging = 0;
-  v8 = [(CATCollectionController *)self delegate];
+  delegate3 = [(CATCollectionController *)self delegate];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
@@ -1146,13 +1146,13 @@ void __87__CATCollectionController_updateKeysAffectingArrangementForceUpdate_inc
 
           v15 = *(*(&v39 + 1) + 8 * i);
           v16 = [(NSMutableArray *)self->mPendingInsertedObjects containsObject:v15];
-          v17 = [v4 indexOfObject:v15];
+          v17 = [objectsCopy indexOfObject:v15];
           if (v16)
           {
             v18 = [(NSMutableArray *)self->mPendingArrangedObjects indexOfObject:v15];
-            v19 = [(CATCollectionController *)self delegate];
-            v20 = v19;
-            v21 = self;
+            delegate4 = [(CATCollectionController *)self delegate];
+            v20 = delegate4;
+            selfCopy2 = self;
             v22 = v15;
             v23 = v17;
             v24 = 3;
@@ -1161,16 +1161,16 @@ void __87__CATCollectionController_updateKeysAffectingArrangementForceUpdate_inc
 
           else
           {
-            v19 = [(CATCollectionController *)self delegate];
-            v20 = v19;
-            v21 = self;
+            delegate4 = [(CATCollectionController *)self delegate];
+            v20 = delegate4;
+            selfCopy2 = self;
             v22 = v15;
             v23 = v17;
             v24 = 2;
             v25 = 0x7FFFFFFFFFFFFFFFLL;
           }
 
-          [v19 controller:v21 didChangeObject:v22 atIndex:v23 forChangeType:v24 newIndex:v25];
+          [delegate4 controller:selfCopy2 didChangeObject:v22 atIndex:v23 forChangeType:v24 newIndex:v25];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v39 objects:v44 count:16];
@@ -1202,8 +1202,8 @@ void __87__CATCollectionController_updateKeysAffectingArrangementForceUpdate_inc
           if (([(NSMutableArray *)self->mPendingDeletedObjects containsObject:v31, v35]& 1) == 0)
           {
             v32 = [(NSMutableArray *)self->mPendingArrangedObjects indexOfObject:v31];
-            v33 = [(CATCollectionController *)self delegate];
-            [v33 controller:self didChangeObject:v31 atIndex:0x7FFFFFFFFFFFFFFFLL forChangeType:1 newIndex:v32];
+            delegate5 = [(CATCollectionController *)self delegate];
+            [delegate5 controller:self didChangeObject:v31 atIndex:0x7FFFFFFFFFFFFFFFLL forChangeType:1 newIndex:v32];
           }
         }
 
@@ -1217,45 +1217,45 @@ void __87__CATCollectionController_updateKeysAffectingArrangementForceUpdate_inc
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (void)changeObject:(id)a3 atIndex:(unint64_t)a4 forChangeType:(unint64_t)a5 newIndex:(unint64_t)a6
+- (void)changeObject:(id)object atIndex:(unint64_t)index forChangeType:(unint64_t)type newIndex:(unint64_t)newIndex
 {
-  v10 = a3;
-  v11 = v10;
-  if (a5 == 3)
+  objectCopy = object;
+  v11 = objectCopy;
+  if (type == 3)
   {
-    v13 = v10;
-    [(NSMutableIndexSet *)self->mChangingSelection cat_moveIndex:a4 toIndex:a6];
-    [(NSMutableArray *)self->mPendingArrangedObjects removeObjectAtIndex:a4];
-    [(NSMutableArray *)self->mPendingArrangedObjects insertObject:v13 atIndex:a6];
+    v13 = objectCopy;
+    [(NSMutableIndexSet *)self->mChangingSelection cat_moveIndex:index toIndex:newIndex];
+    [(NSMutableArray *)self->mPendingArrangedObjects removeObjectAtIndex:index];
+    [(NSMutableArray *)self->mPendingArrangedObjects insertObject:v13 atIndex:newIndex];
     [(NSMutableArray *)self->mPendingInsertedObjects addObject:v13];
     goto LABEL_7;
   }
 
-  if (a5 == 2)
+  if (type == 2)
   {
-    v13 = v10;
-    [(NSMutableIndexSet *)self->mChangingSelection cat_shiftAndRemoveIndex:a4];
-    [(NSMutableArray *)self->mPendingArrangedObjects removeObjectAtIndex:a4];
+    v13 = objectCopy;
+    [(NSMutableIndexSet *)self->mChangingSelection cat_shiftAndRemoveIndex:index];
+    [(NSMutableArray *)self->mPendingArrangedObjects removeObjectAtIndex:index];
 LABEL_7:
     v12 = 24;
     goto LABEL_8;
   }
 
-  if (a5 != 1)
+  if (type != 1)
   {
     goto LABEL_9;
   }
 
-  v13 = v10;
-  [(NSMutableIndexSet *)self->mChangingSelection shiftIndexesStartingAtIndex:a6 by:1];
-  [(NSMutableArray *)self->mPendingArrangedObjects insertObject:v13 atIndex:a6];
+  v13 = objectCopy;
+  [(NSMutableIndexSet *)self->mChangingSelection shiftIndexesStartingAtIndex:newIndex by:1];
+  [(NSMutableArray *)self->mPendingArrangedObjects insertObject:v13 atIndex:newIndex];
   v12 = 16;
 LABEL_8:
-  v10 = [*(&self->super.isa + v12) addObject:v13];
+  objectCopy = [*(&self->super.isa + v12) addObject:v13];
   v11 = v13;
 LABEL_9:
 
-  MEMORY[0x2821F96F8](v10, v11);
+  MEMORY[0x2821F96F8](objectCopy, v11);
 }
 
 - (void)bindContentToObject:(uint64_t)a3 withKeyPath:(uint64_t)a4 usingTransformer:.cold.1(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4)

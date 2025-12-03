@@ -1,28 +1,28 @@
 @interface CMColorProperty
-+ (CGColor)copyCGColorFromOADColor:(id)a3 state:(id)a4;
-+ (CGColor)copyCGColorFromOADFill:(id)a3 state:(id)a4;
-+ (float)resolveColorValueWithPercentage:(float)a3 foregroundComponent:(float)a4 backgroundComponent:(float)a5;
-+ (float)transformedAlphaFromOADColor:(id)a3;
-+ (id)cssStringFromOADColor:(id)a3;
-+ (id)cssStringFromOADGradientFill:(id)a3 state:(id)a4;
-+ (id)cssStringFromRed:(float)a3 green:(float)a4 blue:(float)a5;
-+ (id)cssStringFromTSUColor:(id)a3;
-+ (id)nsColorFromOADColor:(id)a3 state:(id)a4;
-+ (id)nsColorFromOADFill:(id)a3 state:(id)a4;
-+ (id)nsColorFromShading:(id)a3;
-+ (id)resolveStyleColorWithPercentage:(float)a3 foregroundColor:(id)a4 backgroundColor:(id)a5;
-+ (id)resolveStyleColorWithPercentage:(float)a3 shading:(id)a4;
-- (BOOL)isEqualTo:(id)a3;
-- (CMColorProperty)initWithColor:(id)a3;
-- (id)cssStringForName:(id)a3;
++ (CGColor)copyCGColorFromOADColor:(id)color state:(id)state;
++ (CGColor)copyCGColorFromOADFill:(id)fill state:(id)state;
++ (float)resolveColorValueWithPercentage:(float)percentage foregroundComponent:(float)component backgroundComponent:(float)backgroundComponent;
++ (float)transformedAlphaFromOADColor:(id)color;
++ (id)cssStringFromOADColor:(id)color;
++ (id)cssStringFromOADGradientFill:(id)fill state:(id)state;
++ (id)cssStringFromRed:(float)red green:(float)green blue:(float)blue;
++ (id)cssStringFromTSUColor:(id)color;
++ (id)nsColorFromOADColor:(id)color state:(id)state;
++ (id)nsColorFromOADFill:(id)fill state:(id)state;
++ (id)nsColorFromShading:(id)shading;
++ (id)resolveStyleColorWithPercentage:(float)percentage foregroundColor:(id)color backgroundColor:(id)backgroundColor;
++ (id)resolveStyleColorWithPercentage:(float)percentage shading:(id)shading;
+- (BOOL)isEqualTo:(id)to;
+- (CMColorProperty)initWithColor:(id)color;
+- (id)cssStringForName:(id)name;
 @end
 
 @implementation CMColorProperty
 
-+ (CGColor)copyCGColorFromOADColor:(id)a3 state:(id)a4
++ (CGColor)copyCGColorFromOADColor:(id)color state:(id)state
 {
   components[4] = *MEMORY[0x277D85DE8];
-  v4 = [a1 nsColorFromOADColor:a3 state:a4];
+  v4 = [self nsColorFromOADColor:color state:state];
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   [v4 redComponent];
   components[0] = v6;
@@ -38,10 +38,10 @@
   return v10;
 }
 
-+ (CGColor)copyCGColorFromOADFill:(id)a3 state:(id)a4
++ (CGColor)copyCGColorFromOADFill:(id)fill state:(id)state
 {
   components[4] = *MEMORY[0x277D85DE8];
-  v4 = [a1 nsColorFromOADFill:a3 state:a4];
+  v4 = [self nsColorFromOADFill:fill state:state];
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   [v4 redComponent];
   components[0] = v6;
@@ -57,30 +57,30 @@
   return v10;
 }
 
-+ (id)cssStringFromOADGradientFill:(id)a3 state:(id)a4
++ (id)cssStringFromOADGradientFill:(id)fill state:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 stops];
-  if ([v7 count] != 2)
+  fillCopy = fill;
+  stateCopy = state;
+  stops = [fillCopy stops];
+  if ([stops count] != 2)
   {
     v19 = 0;
     goto LABEL_32;
   }
 
-  v8 = [v7 objectAtIndexedSubscript:0];
-  v9 = [v8 color];
+  v8 = [stops objectAtIndexedSubscript:0];
+  color = [v8 color];
 
-  v10 = [CMColorProperty nsColorFromOADColor:v9 state:v6];
-  v11 = [v7 objectAtIndexedSubscript:1];
-  v12 = [v11 color];
+  v10 = [CMColorProperty nsColorFromOADColor:color state:stateCopy];
+  v11 = [stops objectAtIndexedSubscript:1];
+  color2 = [v11 color];
 
-  v13 = [CMColorProperty nsColorFromOADColor:v12 state:v6];
-  v14 = [v5 shade];
+  v13 = [CMColorProperty nsColorFromOADColor:color2 state:stateCopy];
+  shade = [fillCopy shade];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v14 angle];
+    [shade angle];
     v16 = v15 * 3.14159265 / 180.0;
     v17 = v16;
     v18 = @"left top, right top";
@@ -114,11 +114,11 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v20 = [v14 fillToRect];
-    v21 = v20;
-    if (v20)
+    fillToRect = [shade fillToRect];
+    v21 = fillToRect;
+    if (fillToRect)
     {
-      [v20 left];
+      [fillToRect left];
       if (v22 == 1.0)
       {
         [v21 top];
@@ -199,13 +199,13 @@ LABEL_33:
   return v43;
 }
 
-+ (id)nsColorFromOADFill:(id)a3 state:(id)a4
++ (id)nsColorFromOADFill:(id)fill state:(id)state
 {
   v54 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v43 = a4;
-  v38 = v5;
-  if (!v5)
+  fillCopy = fill;
+  stateCopy = state;
+  v38 = fillCopy;
+  if (!fillCopy)
   {
     goto LABEL_3;
   }
@@ -219,8 +219,8 @@ LABEL_33:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v5 color];
-    v6 = [CMColorProperty nsColorFromOADColor:v8 state:v43];
+    color = [fillCopy color];
+    v6 = [CMColorProperty nsColorFromOADColor:color state:stateCopy];
   }
 
   else
@@ -233,16 +233,16 @@ LABEL_3:
       goto LABEL_4;
     }
 
-    v37 = [v5 stops];
-    v9 = [v37 count];
+    stops = [fillCopy stops];
+    v9 = [stops count];
     v10 = v9;
     if (v9)
     {
       if (v9 == 1)
       {
-        v11 = [v37 objectAtIndexedSubscript:0];
-        v12 = [v11 color];
-        v6 = [CMColorProperty nsColorFromOADColor:v12 state:v43];
+        v11 = [stops objectAtIndexedSubscript:0];
+        color2 = [v11 color];
+        v6 = [CMColorProperty nsColorFromOADColor:color2 state:stateCopy];
       }
 
       else
@@ -251,7 +251,7 @@ LABEL_3:
         v51 = 0u;
         v48 = 0u;
         v49 = 0u;
-        obj = v37;
+        obj = stops;
         v13 = [obj countByEnumeratingWithState:&v48 objects:v53 count:16];
         if (v13)
         {
@@ -272,23 +272,23 @@ LABEL_3:
                 objc_enumerationMutation(obj);
               }
 
-              v20 = [*(*(&v48 + 1) + 8 * i) color];
-              v21 = [CMColorProperty nsColorFromOADColor:v20 state:v43];
+              color3 = [*(*(&v48 + 1) + 8 * i) color];
+              v21 = [CMColorProperty nsColorFromOADColor:color3 state:stateCopy];
               [v21 redComponent];
               v23 = v22;
               [v21 greenComponent];
               v25 = v24;
               [v21 blueComponent];
               v27 = v26;
-              v28 = [v20 transforms];
-              v29 = v28;
-              if (v28)
+              transforms = [color3 transforms];
+              v29 = transforms;
+              if (transforms)
               {
                 v46 = 0u;
                 v47 = 0u;
                 v44 = 0u;
                 v45 = 0u;
-                v30 = v28;
+                v30 = transforms;
                 v31 = [v30 countByEnumeratingWithState:&v44 objects:v52 count:16];
                 if (v31)
                 {
@@ -371,29 +371,29 @@ LABEL_4:
   return v6;
 }
 
-+ (id)nsColorFromOADColor:(id)a3 state:(id)a4
++ (id)nsColorFromOADColor:(id)color state:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 colorMap];
-  v8 = [v6 colorScheme];
-  v9 = [v6 resources];
-  v10 = [v9 colors];
+  colorCopy = color;
+  stateCopy = state;
+  colorMap = [stateCopy colorMap];
+  colorScheme = [stateCopy colorScheme];
+  resources = [stateCopy resources];
+  colors = [resources colors];
 
-  v11 = [OADColor tsuColorWithColor:v5 colorMap:v7 colorScheme:v8 colorPalette:v10];
+  v11 = [OADColor tsuColorWithColor:colorCopy colorMap:colorMap colorScheme:colorScheme colorPalette:colors];
 
   return v11;
 }
 
-+ (id)nsColorFromShading:(id)a3
++ (id)nsColorFromShading:(id)shading
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  shadingCopy = shading;
+  v6 = shadingCopy;
+  if (shadingCopy)
   {
-    v7 = [v5 style];
+    style = [shadingCopy style];
     v8 = 0.0;
-    switch(v7)
+    switch(style)
     {
       case 0:
         goto LABEL_47;
@@ -542,17 +542,17 @@ LABEL_4:
       case 62:
         LODWORD(v8) = 1064849900;
 LABEL_47:
-        v10 = [a1 resolveStyleColorWithPercentage:v6 shading:v8];
+        v10 = [self resolveStyleColorWithPercentage:v6 shading:v8];
         goto LABEL_48;
       default:
-        if (v7 == 0xFFFF)
+        if (style == 0xFFFF)
         {
           break;
         }
 
 LABEL_8:
-        v9 = [MEMORY[0x277CCA890] currentHandler];
-        [v9 handleFailureInMethod:a2 object:a1 file:@"CMColorProperty.mm" lineNumber:306 description:@"Bad shading style encountered."];
+        currentHandler = [MEMORY[0x277CCA890] currentHandler];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"CMColorProperty.mm" lineNumber:306 description:@"Bad shading style encountered."];
 
         break;
     }
@@ -564,11 +564,11 @@ LABEL_48:
   return v10;
 }
 
-+ (id)cssStringFromRed:(float)a3 green:(float)a4 blue:(float)a5
++ (id)cssStringFromRed:(float)red green:(float)green blue:(float)blue
 {
   v6 = vdup_n_s32(0x437F0000u);
-  v7 = vmul_f32(*&a4, v6);
-  v8 = a5 * 255.0;
+  v7 = vmul_f32(*&green, v6);
+  v8 = blue * 255.0;
   if (v8 > 255.0)
   {
     v8 = 255.0;
@@ -601,14 +601,14 @@ LABEL_48:
   return v16;
 }
 
-+ (id)cssStringFromTSUColor:(id)a3
++ (id)cssStringFromTSUColor:(id)color
 {
-  v3 = a3;
-  [v3 redComponent];
+  colorCopy = color;
+  [colorCopy redComponent];
   v5 = v4;
-  [v3 greenComponent];
+  [colorCopy greenComponent];
   v7 = v6;
-  [v3 blueComponent];
+  [colorCopy blueComponent];
   v8 = v5;
   *&v9 = v7;
   *&v11 = v10;
@@ -618,13 +618,13 @@ LABEL_48:
   return v12;
 }
 
-+ (id)cssStringFromOADColor:(id)a3
++ (id)cssStringFromOADColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = colorCopy;
     [v4 red];
     v6 = v5;
     [v4 green];
@@ -644,14 +644,14 @@ LABEL_48:
   return v13;
 }
 
-+ (float)transformedAlphaFromOADColor:(id)a3
++ (float)transformedAlphaFromOADColor:(id)color
 {
-  v3 = [a3 transforms];
-  v4 = v3;
+  transforms = [color transforms];
+  v4 = transforms;
   v5 = 1.0;
-  if (v3)
+  if (transforms)
   {
-    v6 = [v3 count];
+    v6 = [transforms count];
     if (v6)
     {
       v7 = 0;
@@ -679,67 +679,67 @@ LABEL_8:
   return v5;
 }
 
-- (CMColorProperty)initWithColor:(id)a3
+- (CMColorProperty)initWithColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   v10.receiver = self;
   v10.super_class = CMColorProperty;
   v6 = [(CMColorProperty *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->wdValue, a3);
+    objc_storeStrong(&v6->wdValue, color);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (BOOL)isEqualTo:(id)a3
+- (BOOL)isEqualTo:(id)to
 {
   wdValue = self->wdValue;
-  v4 = [a3 value];
-  LOBYTE(wdValue) = [(OITSUColor *)wdValue isEqual:v4];
+  value = [to value];
+  LOBYTE(wdValue) = [(OITSUColor *)wdValue isEqual:value];
 
   return wdValue;
 }
 
-- (id)cssStringForName:(id)a3
+- (id)cssStringForName:(id)name
 {
-  v4 = a3;
-  v5 = [(CMColorProperty *)self cssString];
-  v6 = [v4 stringByAppendingString:v5];
+  nameCopy = name;
+  cssString = [(CMColorProperty *)self cssString];
+  v6 = [nameCopy stringByAppendingString:cssString];
 
   return v6;
 }
 
-+ (id)resolveStyleColorWithPercentage:(float)a3 shading:(id)a4
++ (id)resolveStyleColorWithPercentage:(float)percentage shading:(id)shading
 {
-  v6 = a4;
-  v7 = [v6 foreground];
-  v8 = [v6 background];
-  *&v9 = a3;
-  v10 = [a1 resolveStyleColorWithPercentage:v7 foregroundColor:v8 backgroundColor:v9];
+  shadingCopy = shading;
+  foreground = [shadingCopy foreground];
+  background = [shadingCopy background];
+  *&v9 = percentage;
+  v10 = [self resolveStyleColorWithPercentage:foreground foregroundColor:background backgroundColor:v9];
 
   return v10;
 }
 
-+ (id)resolveStyleColorWithPercentage:(float)a3 foregroundColor:(id)a4 backgroundColor:(id)a5
++ (id)resolveStyleColorWithPercentage:(float)percentage foregroundColor:(id)color backgroundColor:(id)backgroundColor
 {
-  v9 = a4;
-  v10 = a5;
-  if (a3 >= 0.0 && a3 <= 1.0)
+  colorCopy = color;
+  backgroundColorCopy = backgroundColor;
+  if (percentage >= 0.0 && percentage <= 1.0)
   {
-    if (v9)
+    if (colorCopy)
     {
       goto LABEL_6;
     }
 
 LABEL_16:
-    v38 = [MEMORY[0x277CCA890] currentHandler];
-    [v38 handleFailureInMethod:a2 object:a1 file:@"CMColorProperty.mm" lineNumber:430 description:@"Foreground color is not set."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CMColorProperty.mm" lineNumber:430 description:@"Foreground color is not set."];
 
-    if (v10)
+    if (backgroundColorCopy)
     {
       goto LABEL_7;
     }
@@ -747,26 +747,26 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  v37 = [MEMORY[0x277CCA890] currentHandler];
-  [v37 handleFailureInMethod:a2 object:a1 file:@"CMColorProperty.mm" lineNumber:429 description:@"Percentage out of range."];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"CMColorProperty.mm" lineNumber:429 description:@"Percentage out of range."];
 
-  if (!v9)
+  if (!colorCopy)
   {
     goto LABEL_16;
   }
 
 LABEL_6:
-  if (v10)
+  if (backgroundColorCopy)
   {
     goto LABEL_7;
   }
 
 LABEL_17:
-  v39 = [MEMORY[0x277CCA890] currentHandler];
-  [v39 handleFailureInMethod:a2 object:a1 file:@"CMColorProperty.mm" lineNumber:431 description:@"Background color is not set."];
+  currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"CMColorProperty.mm" lineNumber:431 description:@"Background color is not set."];
 
 LABEL_7:
-  [v10 alphaComponent];
+  [backgroundColorCopy alphaComponent];
   if (v12 == 0.0)
   {
     v13 = [OITSUColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0];
@@ -776,66 +776,66 @@ LABEL_7:
 
   else
   {
-    v14 = v10;
+    v14 = backgroundColorCopy;
   }
 
-  [v9 alphaComponent];
+  [colorCopy alphaComponent];
   if (v15 == 0.0)
   {
     v16 = [OITSUColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:1.0];
 
-    v9 = v16;
+    colorCopy = v16;
   }
 
-  [v9 redComponent];
+  [colorCopy redComponent];
   v18 = v17;
   [v14 redComponent];
   *&v19 = v18;
   *&v21 = v20;
-  *&v20 = a3;
-  [a1 resolveColorValueWithPercentage:v20 foregroundComponent:v19 backgroundComponent:v21];
+  *&v20 = percentage;
+  [self resolveColorValueWithPercentage:v20 foregroundComponent:v19 backgroundComponent:v21];
   LODWORD(v18) = v22;
-  [v9 greenComponent];
+  [colorCopy greenComponent];
   v24 = v23;
   [v14 greenComponent];
   *&v25 = v24;
   *&v27 = v26;
-  *&v26 = a3;
-  [a1 resolveColorValueWithPercentage:v26 foregroundComponent:v25 backgroundComponent:v27];
+  *&v26 = percentage;
+  [self resolveColorValueWithPercentage:v26 foregroundComponent:v25 backgroundComponent:v27];
   LODWORD(v24) = v28;
-  [v9 blueComponent];
+  [colorCopy blueComponent];
   v30 = v29;
   [v14 blueComponent];
   *&v31 = v30;
   *&v33 = v32;
-  *&v32 = a3;
-  [a1 resolveColorValueWithPercentage:v32 foregroundComponent:v31 backgroundComponent:v33];
+  *&v32 = percentage;
+  [self resolveColorValueWithPercentage:v32 foregroundComponent:v31 backgroundComponent:v33];
   v35 = [OITSUColor colorWithRed:*&v18 green:*&v24 blue:v34 alpha:1.0];
 
   return v35;
 }
 
-+ (float)resolveColorValueWithPercentage:(float)a3 foregroundComponent:(float)a4 backgroundComponent:(float)a5
++ (float)resolveColorValueWithPercentage:(float)percentage foregroundComponent:(float)component backgroundComponent:(float)backgroundComponent
 {
-  if (a3 < 0.0 || a3 > 1.0)
+  if (percentage < 0.0 || percentage > 1.0)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:a1 file:@"CMColorProperty.mm" lineNumber:462 description:@"Percentage out of range."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"CMColorProperty.mm" lineNumber:462 description:@"Percentage out of range."];
   }
 
-  if (a4 < 0.0 || a4 > 1.0)
+  if (component < 0.0 || component > 1.0)
   {
-    v14 = [MEMORY[0x277CCA890] currentHandler];
-    [v14 handleFailureInMethod:a2 object:a1 file:@"CMColorProperty.mm" lineNumber:464 description:@"Foreground component out of range."];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"CMColorProperty.mm" lineNumber:464 description:@"Foreground component out of range."];
   }
 
-  if (a5 < 0.0 || a5 > 1.0)
+  if (backgroundComponent < 0.0 || backgroundComponent > 1.0)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"CMColorProperty.mm" lineNumber:466 description:@"Background component out of range."];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"CMColorProperty.mm" lineNumber:466 description:@"Background component out of range."];
   }
 
-  return (a3 * a4) + ((1.0 - a3) * a5);
+  return (percentage * component) + ((1.0 - percentage) * backgroundComponent);
 }
 
 @end

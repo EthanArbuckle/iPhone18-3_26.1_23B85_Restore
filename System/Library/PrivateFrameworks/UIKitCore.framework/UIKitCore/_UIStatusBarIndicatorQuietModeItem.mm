@@ -1,10 +1,10 @@
 @interface _UIStatusBarIndicatorQuietModeItem
-- (BOOL)shouldUpdateIndicatorForIdentifier:(id)a3;
+- (BOOL)shouldUpdateIndicatorForIdentifier:(id)identifier;
 - (_UIStatusBarImageView)emphasizedImageView;
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4;
-- (id)imageViewForIdentifier:(id)a3;
-- (id)systemImageNameForUpdate:(id)a3;
-- (id)viewForIdentifier:(id)a3;
+- (id)applyUpdate:(id)update toDisplayItem:(id)item;
+- (id)imageViewForIdentifier:(id)identifier;
+- (id)systemImageNameForUpdate:(id)update;
+- (id)viewForIdentifier:(id)identifier;
 - (void)_create_emphasizedImageView;
 @end
 
@@ -34,55 +34,55 @@
   [(_UIStatusBarImageView *)v6 setFontStyle:1];
 }
 
-- (id)viewForIdentifier:(id)a3
+- (id)viewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() emphasizedQuietModeIdentifier];
+  identifierCopy = identifier;
+  emphasizedQuietModeIdentifier = [objc_opt_class() emphasizedQuietModeIdentifier];
 
-  if (v5 == v4)
+  if (emphasizedQuietModeIdentifier == identifierCopy)
   {
-    v6 = [(_UIStatusBarIndicatorQuietModeItem *)self emphasizedImageView];
+    emphasizedImageView = [(_UIStatusBarIndicatorQuietModeItem *)self emphasizedImageView];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = _UIStatusBarIndicatorQuietModeItem;
-    v6 = [(_UIStatusBarIndicatorItem *)&v9 viewForIdentifier:v4];
+    emphasizedImageView = [(_UIStatusBarIndicatorItem *)&v9 viewForIdentifier:identifierCopy];
   }
 
-  v7 = v6;
+  v7 = emphasizedImageView;
 
   return v7;
 }
 
-- (id)imageViewForIdentifier:(id)a3
+- (id)imageViewForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() emphasizedQuietModeIdentifier];
+  identifierCopy = identifier;
+  emphasizedQuietModeIdentifier = [objc_opt_class() emphasizedQuietModeIdentifier];
 
-  if (v5 == v4)
+  if (emphasizedQuietModeIdentifier == identifierCopy)
   {
-    v6 = [(_UIStatusBarIndicatorQuietModeItem *)self emphasizedImageView];
+    emphasizedImageView = [(_UIStatusBarIndicatorQuietModeItem *)self emphasizedImageView];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = _UIStatusBarIndicatorQuietModeItem;
-    v6 = [(_UIStatusBarIndicatorItem *)&v9 imageViewForIdentifier:v4];
+    emphasizedImageView = [(_UIStatusBarIndicatorItem *)&v9 imageViewForIdentifier:identifierCopy];
   }
 
-  v7 = v6;
+  v7 = emphasizedImageView;
 
   return v7;
 }
 
-- (BOOL)shouldUpdateIndicatorForIdentifier:(id)a3
+- (BOOL)shouldUpdateIndicatorForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [objc_opt_class() emphasizedQuietModeIdentifier];
-  if (v5 == v4)
+  identifierCopy = identifier;
+  emphasizedQuietModeIdentifier = [objc_opt_class() emphasizedQuietModeIdentifier];
+  if (emphasizedQuietModeIdentifier == identifierCopy)
   {
     v6 = 1;
   }
@@ -91,21 +91,21 @@
   {
     v8.receiver = self;
     v8.super_class = _UIStatusBarIndicatorQuietModeItem;
-    v6 = [(_UIStatusBarIndicatorItem *)&v8 shouldUpdateIndicatorForIdentifier:v4];
+    v6 = [(_UIStatusBarIndicatorItem *)&v8 shouldUpdateIndicatorForIdentifier:identifierCopy];
   }
 
   return v6;
 }
 
-- (id)systemImageNameForUpdate:(id)a3
+- (id)systemImageNameForUpdate:(id)update
 {
-  v3 = [a3 data];
-  v4 = [v3 quietModeEntry];
-  v5 = [v4 imageName];
-  v6 = v5;
-  if (v5)
+  data = [update data];
+  quietModeEntry = [data quietModeEntry];
+  imageName = [quietModeEntry imageName];
+  v6 = imageName;
+  if (imageName)
   {
-    v7 = v5;
+    v7 = imageName;
   }
 
   else
@@ -118,34 +118,34 @@
   return v7;
 }
 
-- (id)applyUpdate:(id)a3 toDisplayItem:(id)a4
+- (id)applyUpdate:(id)update toDisplayItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  itemCopy = item;
   v19.receiver = self;
   v19.super_class = _UIStatusBarIndicatorQuietModeItem;
-  v8 = [(_UIStatusBarIndicatorItem *)&v19 applyUpdate:v6 toDisplayItem:v7];
-  if ([v6 dataChanged])
+  v8 = [(_UIStatusBarIndicatorItem *)&v19 applyUpdate:updateCopy toDisplayItem:itemCopy];
+  if ([updateCopy dataChanged])
   {
-    v9 = [v6 data];
-    v10 = [v9 quietModeEntry];
-    v11 = [v10 BOOLValue];
+    data = [updateCopy data];
+    quietModeEntry = [data quietModeEntry];
+    bOOLValue = [quietModeEntry BOOLValue];
 
     v12 = 0.3;
-    if (v11)
+    if (bOOLValue)
     {
       v12 = 1.0;
     }
 
-    [v7 setViewAlpha:v12];
-    v13 = [v7 identifier];
-    v14 = [(_UIStatusBarIndicatorQuietModeItem *)self imageViewForIdentifier:v13];
-    [v14 setUseDisabledAppearanceForAccessibilityHUD:v11 ^ 1u];
+    [itemCopy setViewAlpha:v12];
+    identifier = [itemCopy identifier];
+    v14 = [(_UIStatusBarIndicatorQuietModeItem *)self imageViewForIdentifier:identifier];
+    [v14 setUseDisabledAppearanceForAccessibilityHUD:bOOLValue ^ 1u];
 
-    v15 = [v6 data];
-    v16 = [v15 quietModeEntry];
-    v17 = [v16 focusName];
-    [(_UIStatusBarIndicatorQuietModeItem *)self setFocusName:v17];
+    data2 = [updateCopy data];
+    quietModeEntry2 = [data2 quietModeEntry];
+    focusName = [quietModeEntry2 focusName];
+    [(_UIStatusBarIndicatorQuietModeItem *)self setFocusName:focusName];
   }
 
   return v8;

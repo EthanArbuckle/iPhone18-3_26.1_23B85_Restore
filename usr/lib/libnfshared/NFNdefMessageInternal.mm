@@ -1,10 +1,10 @@
 @interface NFNdefMessageInternal
-+ (id)dataFromNDEFMessage:(id)a3;
-+ (id)decodeFromNDEFMessage:(id)a3;
++ (id)dataFromNDEFMessage:(id)message;
++ (id)decodeFromNDEFMessage:(id)message;
 - (NFNdefMessageInternal)init;
-- (NFNdefMessageInternal)initWithCoder:(id)a3;
-- (NFNdefMessageInternal)initWithData:(id)a3;
-- (NFNdefMessageInternal)initWithNDEFMessage:(id)a3;
+- (NFNdefMessageInternal)initWithCoder:(id)coder;
+- (NFNdefMessageInternal)initWithData:(id)data;
+- (NFNdefMessageInternal)initWithNDEFMessage:(id)message;
 - (NSString)description;
 @end
 
@@ -25,20 +25,20 @@
   return v2;
 }
 
-- (NFNdefMessageInternal)initWithData:(id)a3
+- (NFNdefMessageInternal)initWithData:(id)data
 {
-  v5 = a3;
-  v6 = a3;
-  v9 = objc_msgSend_bytes(v6, v7, v8);
-  v12 = objc_msgSend_length(v6, v10, v11);
+  dataCopy = data;
+  dataCopy2 = data;
+  v9 = objc_msgSend_bytes(dataCopy2, v7, v8);
+  v12 = objc_msgSend_length(dataCopy2, v10, v11);
 
   return objc_msgSend_initWithBytes_length_(self, v13, v9, v12);
 }
 
-- (NFNdefMessageInternal)initWithNDEFMessage:(id)a3
+- (NFNdefMessageInternal)initWithNDEFMessage:(id)message
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v30.receiver = self;
   v30.super_class = NFNdefMessageInternal;
   v5 = [(NFNdefMessageInternal *)&v30 init];
@@ -52,7 +52,7 @@
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v10 = objc_msgSend_records(v4, v8, v9, 0);
+    v10 = objc_msgSend_records(messageCopy, v8, v9, 0);
     v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v26, v31, 16);
     if (v12)
     {
@@ -103,11 +103,11 @@ LABEL_13:
   return v23;
 }
 
-+ (id)dataFromNDEFMessage:(id)a3
++ (id)dataFromNDEFMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = objc_opt_new();
-  v7 = objc_msgSend_records(v3, v5, v6);
+  v7 = objc_msgSend_records(messageCopy, v5, v6);
   v10 = objc_msgSend_count(v7, v8, v9);
 
   if (v10)
@@ -115,11 +115,11 @@ LABEL_13:
     v13 = 0;
     do
     {
-      v14 = objc_msgSend_records(v3, v11, v12);
+      v14 = objc_msgSend_records(messageCopy, v11, v12);
       v16 = objc_msgSend_objectAtIndex_(v14, v15, v13);
 
       objc_msgSend_setMessageBegin_(v16, v17, v13 == 0);
-      v20 = objc_msgSend_records(v3, v18, v19);
+      v20 = objc_msgSend_records(messageCopy, v18, v19);
       v23 = v13 == objc_msgSend_count(v20, v21, v22) - 1;
       objc_msgSend_setMessageEnd_(v16, v24, v23);
 
@@ -127,7 +127,7 @@ LABEL_13:
       objc_msgSend_appendData_(v4, v28, v27);
 
       ++v13;
-      v31 = objc_msgSend_records(v3, v29, v30);
+      v31 = objc_msgSend_records(messageCopy, v29, v30);
       v34 = objc_msgSend_count(v31, v32, v33);
     }
 
@@ -137,11 +137,11 @@ LABEL_13:
   return v4;
 }
 
-+ (id)decodeFromNDEFMessage:(id)a3
++ (id)decodeFromNDEFMessage:(id)message
 {
-  v3 = a3;
+  messageCopy = message;
   v4 = objc_opt_new();
-  v7 = objc_msgSend_records(v3, v5, v6);
+  v7 = objc_msgSend_records(messageCopy, v5, v6);
   v10 = objc_msgSend_count(v7, v8, v9);
 
   if (v10)
@@ -150,7 +150,7 @@ LABEL_13:
     v14 = 0;
     do
     {
-      v15 = objc_msgSend_records(v3, v11, v12);
+      v15 = objc_msgSend_records(messageCopy, v11, v12);
       v17 = objc_msgSend_objectAtIndex_(v15, v16, v13);
 
       if (objc_msgSend_chunked(v17, v18, v19))
@@ -176,7 +176,7 @@ LABEL_13:
         while (1)
         {
           v50 = v49;
-          v51 = objc_msgSend_records(v3, v47, v48);
+          v51 = objc_msgSend_records(messageCopy, v47, v48);
           v54 = objc_msgSend_count(v51, v52, v53);
 
           if (v54 <= v50)
@@ -184,7 +184,7 @@ LABEL_13:
             break;
           }
 
-          v56 = objc_msgSend_records(v3, v47, v55);
+          v56 = objc_msgSend_records(messageCopy, v47, v55);
           v58 = objc_msgSend_objectAtIndex_(v56, v57, v50);
 
           v61 = objc_msgSend_payload(v58, v59, v60);
@@ -223,7 +223,7 @@ LABEL_12:
       }
 
       v13 = ++v14;
-      v77 = objc_msgSend_records(v3, v75, v76);
+      v77 = objc_msgSend_records(messageCopy, v75, v76);
       v80 = objc_msgSend_count(v77, v78, v79);
     }
 
@@ -244,16 +244,16 @@ LABEL_12:
   return v6;
 }
 
-- (NFNdefMessageInternal)initWithCoder:(id)a3
+- (NFNdefMessageInternal)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = NFNdefMessageInternal;
   v5 = [(NFNdefMessageInternal *)&v14 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v8 = objc_msgSend_coder_decodeArrayOfClass_forKey_(NFNSCheckedDecoder, v7, v4, v6, @"records");
+    v8 = objc_msgSend_coder_decodeArrayOfClass_forKey_(NFNSCheckedDecoder, v7, coderCopy, v6, @"records");
     v9 = objc_alloc(MEMORY[0x277CBEB18]);
     v11 = objc_msgSend_initWithArray_(v9, v10, v8);
     records = v5->_records;

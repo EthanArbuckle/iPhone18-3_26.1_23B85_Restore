@@ -1,18 +1,18 @@
 @interface HMDAccessoryReachabilityChangedLogEventManager
 + (id)logCategory;
-- (HMDAccessoryReachabilityChangedLogEventManager)initWithHome:(id)a3;
+- (HMDAccessoryReachabilityChangedLogEventManager)initWithHome:(id)home;
 - (HMDHome)home;
 - (id)logIdentifier;
 - (void)_disable;
 - (void)_enable;
 - (void)_reset;
 - (void)_submit;
-- (void)_submitDailyUpdateForAccessory:(id)a3 withTransportReport:(id)a4;
-- (void)_submitForAccessory:(id)a3;
+- (void)_submitDailyUpdateForAccessory:(id)accessory withTransportReport:(id)report;
+- (void)_submitForAccessory:(id)accessory;
 - (void)configure;
-- (void)handlePrimaryResidentUpdatedNotification:(id)a3;
+- (void)handlePrimaryResidentUpdatedNotification:(id)notification;
 - (void)runDailyTask;
-- (void)submitForAccessory:(id)a3 withTransportReport:(id)a4 reachable:(BOOL)a5;
+- (void)submitForAccessory:(id)accessory withTransportReport:(id)report reachable:(BOOL)reachable;
 @end
 
 @implementation HMDAccessoryReachabilityChangedLogEventManager
@@ -26,22 +26,22 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDAccessoryReachabilityChangedLogEventManager *)self home];
-  v3 = [v2 uuid];
-  v4 = [v3 UUIDString];
+  home = [(HMDAccessoryReachabilityChangedLogEventManager *)self home];
+  uuid = [home uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
 - (void)runDailyTask
 {
-  v3 = [(HMDAccessoryReachabilityChangedLogEventManager *)self workQueue];
+  workQueue = [(HMDAccessoryReachabilityChangedLogEventManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__HMDAccessoryReachabilityChangedLogEventManager_runDailyTask__block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __62__HMDAccessoryReachabilityChangedLogEventManager_runDailyTask__block_invoke(uint64_t a1)
@@ -64,15 +64,15 @@ uint64_t __62__HMDAccessoryReachabilityChangedLogEventManager_runDailyTask__bloc
   return result;
 }
 
-- (void)handlePrimaryResidentUpdatedNotification:(id)a3
+- (void)handlePrimaryResidentUpdatedNotification:(id)notification
 {
-  v4 = [(HMDAccessoryReachabilityChangedLogEventManager *)self workQueue];
+  workQueue = [(HMDAccessoryReachabilityChangedLogEventManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __91__HMDAccessoryReachabilityChangedLogEventManager_handlePrimaryResidentUpdatedNotification___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __91__HMDAccessoryReachabilityChangedLogEventManager_handlePrimaryResidentUpdatedNotification___block_invoke(uint64_t a1)
@@ -141,28 +141,28 @@ uint64_t __91__HMDAccessoryReachabilityChangedLogEventManager_handlePrimaryResid
   {
     v7[9] = v2;
     v7[10] = v3;
-    v5 = [(HMDAccessoryReachabilityChangedLogEventManager *)self home];
-    v6 = [v5 accessories];
+    home = [(HMDAccessoryReachabilityChangedLogEventManager *)self home];
+    accessories = [home accessories];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __57__HMDAccessoryReachabilityChangedLogEventManager__submit__block_invoke;
     v7[3] = &unk_27867B478;
     v7[4] = self;
-    [v6 hmf_enumerateWithAutoreleasePoolUsingBlock:v7];
+    [accessories hmf_enumerateWithAutoreleasePoolUsingBlock:v7];
   }
 }
 
 - (void)_reset
 {
   v3 = [MEMORY[0x277CBEAA8] now];
-  v4 = [(HMDAccessoryReachabilityChangedLogEventManager *)self home];
+  home = [(HMDAccessoryReachabilityChangedLogEventManager *)self home];
   v5 = objc_alloc(MEMORY[0x277CBEB38]);
-  v6 = [v4 accessories];
-  v7 = [v5 initWithCapacity:{objc_msgSend(v6, "count")}];
+  accessories = [home accessories];
+  v7 = [v5 initWithCapacity:{objc_msgSend(accessories, "count")}];
   transportReachabilityChangeDatesByUUID = self->_transportReachabilityChangeDatesByUUID;
   self->_transportReachabilityChangeDatesByUUID = v7;
 
-  v9 = [v4 accessories];
+  accessories2 = [home accessories];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __56__HMDAccessoryReachabilityChangedLogEventManager__reset__block_invoke;
@@ -170,7 +170,7 @@ uint64_t __91__HMDAccessoryReachabilityChangedLogEventManager_handlePrimaryResid
   v11[4] = self;
   v12 = v3;
   v10 = v3;
-  [v9 hmf_enumerateWithAutoreleasePoolUsingBlock:v11];
+  [accessories2 hmf_enumerateWithAutoreleasePoolUsingBlock:v11];
 }
 
 void __56__HMDAccessoryReachabilityChangedLogEventManager__reset__block_invoke(uint64_t a1, void *a2)
@@ -207,65 +207,65 @@ void __56__HMDAccessoryReachabilityChangedLogEventManager__reset__block_invoke_2
   [v6 setObject:v2 forKeyedSubscript:v7];
 }
 
-- (void)_submitForAccessory:(id)a3
+- (void)_submitForAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = [v4 transportReports];
+  accessoryCopy = accessory;
+  transportReports = [accessoryCopy transportReports];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__HMDAccessoryReachabilityChangedLogEventManager__submitForAccessory___block_invoke;
   v7[3] = &unk_278672DD0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 hmf_enumerateWithAutoreleasePoolUsingBlock:v7];
+  v8 = accessoryCopy;
+  v6 = accessoryCopy;
+  [transportReports hmf_enumerateWithAutoreleasePoolUsingBlock:v7];
 }
 
-- (void)_submitDailyUpdateForAccessory:(id)a3 withTransportReport:(id)a4
+- (void)_submitDailyUpdateForAccessory:(id)accessory withTransportReport:(id)report
 {
-  v6 = a4;
-  v7 = a3;
-  -[HMDAccessoryReachabilityChangedLogEventManager _submitForAccessory:withTransportReport:reachable:changed:](self, "_submitForAccessory:withTransportReport:reachable:changed:", v7, v6, [v7 isReachable], 0);
+  reportCopy = report;
+  accessoryCopy = accessory;
+  -[HMDAccessoryReachabilityChangedLogEventManager _submitForAccessory:withTransportReport:reachable:changed:](self, "_submitForAccessory:withTransportReport:reachable:changed:", accessoryCopy, reportCopy, [accessoryCopy isReachable], 0);
 }
 
-- (void)submitForAccessory:(id)a3 withTransportReport:(id)a4 reachable:(BOOL)a5
+- (void)submitForAccessory:(id)accessory withTransportReport:(id)report reachable:(BOOL)reachable
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HMDAccessoryReachabilityChangedLogEventManager *)self workQueue];
+  accessoryCopy = accessory;
+  reportCopy = report;
+  workQueue = [(HMDAccessoryReachabilityChangedLogEventManager *)self workQueue];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __99__HMDAccessoryReachabilityChangedLogEventManager_submitForAccessory_withTransportReport_reachable___block_invoke;
   v13[3] = &unk_278685AA8;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a5;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = accessoryCopy;
+  v15 = reportCopy;
+  reachableCopy = reachable;
+  v11 = reportCopy;
+  v12 = accessoryCopy;
+  dispatch_async(workQueue, v13);
 }
 
 - (void)configure
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel_handlePrimaryResidentUpdatedNotification_ name:@"HMDResidentDeviceConfirmedStateChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handlePrimaryResidentUpdatedNotification_ name:@"HMDResidentDeviceConfirmedStateChangedNotification" object:0];
 
-  v5 = [(HMDAccessoryReachabilityChangedLogEventManager *)self home];
-  v4 = [v5 dailyScheduler];
-  [v4 registerDailyTaskRunner:self];
+  home = [(HMDAccessoryReachabilityChangedLogEventManager *)self home];
+  dailyScheduler = [home dailyScheduler];
+  [dailyScheduler registerDailyTaskRunner:self];
 }
 
-- (HMDAccessoryReachabilityChangedLogEventManager)initWithHome:(id)a3
+- (HMDAccessoryReachabilityChangedLogEventManager)initWithHome:(id)home
 {
-  v4 = a3;
+  homeCopy = home;
   v13.receiver = self;
   v13.super_class = HMDAccessoryReachabilityChangedLogEventManager;
   v5 = [(HMDAccessoryReachabilityChangedLogEventManager *)&v13 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_home, v4);
+    objc_storeWeak(&v5->_home, homeCopy);
     v6->_enabled = 0;
     v7 = objc_opt_new();
     transportReachabilityChangeDatesByUUID = v6->_transportReachabilityChangeDatesByUUID;

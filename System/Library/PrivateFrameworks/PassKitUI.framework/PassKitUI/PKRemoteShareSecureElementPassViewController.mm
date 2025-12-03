@@ -1,12 +1,12 @@
 @interface PKRemoteShareSecureElementPassViewController
-- (void)_setRootViewController:(id)a3;
-- (void)didCreateShareURL:(id)a3 activationCode:(id)a4 error:(id)a5;
-- (void)didFinishShareWithDidUserShare:(BOOL)a3 error:(id)a4;
+- (void)_setRootViewController:(id)controller;
+- (void)didCreateShareURL:(id)l activationCode:(id)code error:(id)error;
+- (void)didFinishShareWithDidUserShare:(BOOL)share error:(id)error;
 - (void)loadView;
-- (void)setDisplayPropertiesWithScreenSize:(CGSize)a3 scale:(double)a4;
-- (void)setPass:(id)a3 environment:(unint64_t)a4 isFromPeopleScreen:(BOOL)a5 completion:(id)a6;
+- (void)setDisplayPropertiesWithScreenSize:(CGSize)size scale:(double)scale;
+- (void)setPass:(id)pass environment:(unint64_t)environment isFromPeopleScreen:(BOOL)screen completion:(id)completion;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 @end
 
 @implementation PKRemoteShareSecureElementPassViewController
@@ -23,22 +23,22 @@
   v5.receiver = self;
   v5.super_class = PKRemoteShareSecureElementPassViewController;
   [(PKRemoteShareSecureElementPassViewController *)&v5 loadView];
-  v3 = [(PKRemoteShareSecureElementPassViewController *)self view];
-  v4 = [MEMORY[0x1E69DC888] clearColor];
-  [v3 setBackgroundColor:v4];
+  view = [(PKRemoteShareSecureElementPassViewController *)self view];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [view setBackgroundColor:clearColor];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = PKRemoteShareSecureElementPassViewController;
-  [(PKRemoteShareSecureElementPassViewController *)&v4 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
+  [(PKRemoteShareSecureElementPassViewController *)&v4 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
 }
 
-- (void)setDisplayPropertiesWithScreenSize:(CGSize)a3 scale:(double)a4
+- (void)setDisplayPropertiesWithScreenSize:(CGSize)size scale:(double)scale
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v13 = *MEMORY[0x1E69E9840];
   v7 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -49,49 +49,49 @@
     v9 = 138543618;
     v10 = v8;
     v11 = 2048;
-    v12 = a4;
+    scaleCopy = scale;
     _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "Setting display properties with screenSize=%{public}@ scale=%.f", &v9, 0x16u);
   }
 
   PKSetDisplayProperties();
 }
 
-- (void)setPass:(id)a3 environment:(unint64_t)a4 isFromPeopleScreen:(BOOL)a5 completion:(id)a6
+- (void)setPass:(id)pass environment:(unint64_t)environment isFromPeopleScreen:(BOOL)screen completion:(id)completion
 {
-  v10 = a3;
-  v11 = a6;
+  passCopy = pass;
+  completionCopy = completion;
   v12 = objc_alloc(MEMORY[0x1E69B8840]);
-  v13 = [(PKRemoteShareSecureElementPassViewController *)self _hostProcessIdentifier];
+  _hostProcessIdentifier = [(PKRemoteShareSecureElementPassViewController *)self _hostProcessIdentifier];
   [(PKRemoteShareSecureElementPassViewController *)self _hostAuditToken];
-  v14 = [v12 initWithProcessIdentifier:v13 auditToken:location];
+  v14 = [v12 initWithProcessIdentifier:_hostProcessIdentifier auditToken:location];
   if ([v14 shareableCredentialProvisioning] & 1) != 0 || (objc_msgSend(v14, "carKeyCredentialProvisioning") & 1) != 0 || (objc_msgSend(v14, "passesAllAccess"))
   {
-    v15 = [v10 uniqueID];
-    v16 = [MEMORY[0x1E69B8A58] sharedInstance];
-    v17 = [v16 passWithUniqueID:v15];
-    v18 = [v17 secureElementPass];
+    uniqueID = [passCopy uniqueID];
+    mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+    v17 = [mEMORY[0x1E69B8A58] passWithUniqueID:uniqueID];
+    secureElementPass = [v17 secureElementPass];
 
-    if (v18)
+    if (secureElementPass)
     {
-      if ([v14 entitledToPerformPassAction:2 pass:v18])
+      if ([v14 entitledToPerformPassAction:2 pass:secureElementPass])
       {
         objc_initWeak(location, self);
         v19 = objc_alloc(MEMORY[0x1E69B9268]);
-        v20 = [MEMORY[0x1E69B8EF8] sharedService];
+        mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
         v21 = MEMORY[0x1E69E96A0];
         v22 = MEMORY[0x1E69E96A0];
-        v23 = [v19 initWithPass:v18 webService:v20 paymentServiceProvider:0 queue:v21];
+        v23 = [v19 initWithPass:secureElementPass webService:mEMORY[0x1E69B8EF8] paymentServiceProvider:0 queue:v21];
 
         v28[0] = MEMORY[0x1E69E9820];
         v28[1] = 3221225472;
         v28[2] = __98__PKRemoteShareSecureElementPassViewController_setPass_environment_isFromPeopleScreen_completion___block_invoke;
         v28[3] = &unk_1E8022F78;
         objc_copyWeak(v31, location);
-        v30 = v11;
+        v30 = completionCopy;
         v24 = v23;
         v29 = v24;
-        v31[1] = a4;
-        v32 = a5;
+        v31[1] = environment;
+        screenCopy = screen;
         [v24 updateSharesWithCompletion:v28];
 
         objc_destroyWeak(v31);
@@ -122,7 +122,7 @@ LABEL_11:
       }
     }
 
-    (*(v11 + 2))(v11, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
     goto LABEL_13;
   }
 
@@ -133,7 +133,7 @@ LABEL_11:
     _os_log_impl(&dword_1BD026000, v27, OS_LOG_TYPE_DEFAULT, "Process not entitled for shareable pass provisioning", location, 2u);
   }
 
-  (*(v11 + 2))(v11, 0);
+  (*(completionCopy + 2))(completionCopy, 0);
 LABEL_14:
 }
 
@@ -171,33 +171,33 @@ LABEL_7:
 LABEL_8:
 }
 
-- (void)_setRootViewController:(id)a3
+- (void)_setRootViewController:(id)controller
 {
-  v4 = a3;
-  [(PKRemoteShareSecureElementPassViewController *)self addChildViewController:v4];
-  v6 = [v4 view];
-  v5 = [(PKRemoteShareSecureElementPassViewController *)self view];
-  [v5 addSubview:v6];
-  [v5 setNeedsLayout];
-  [v5 layoutIfNeeded];
-  [v4 didMoveToParentViewController:self];
+  controllerCopy = controller;
+  [(PKRemoteShareSecureElementPassViewController *)self addChildViewController:controllerCopy];
+  view = [controllerCopy view];
+  view2 = [(PKRemoteShareSecureElementPassViewController *)self view];
+  [view2 addSubview:view];
+  [view2 setNeedsLayout];
+  [view2 layoutIfNeeded];
+  [controllerCopy didMoveToParentViewController:self];
 }
 
-- (void)didFinishShareWithDidUserShare:(BOOL)a3 error:(id)a4
+- (void)didFinishShareWithDidUserShare:(BOOL)share error:(id)error
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(PKRemoteShareSecureElementPassViewController *)self _remoteViewControllerProxy];
-  [v7 didFinishShareWithDidUserShare:v4 error:v6];
+  shareCopy = share;
+  errorCopy = error;
+  _remoteViewControllerProxy = [(PKRemoteShareSecureElementPassViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy didFinishShareWithDidUserShare:shareCopy error:errorCopy];
 }
 
-- (void)didCreateShareURL:(id)a3 activationCode:(id)a4 error:(id)a5
+- (void)didCreateShareURL:(id)l activationCode:(id)code error:(id)error
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PKRemoteShareSecureElementPassViewController *)self _remoteViewControllerProxy];
-  [v11 didCreateShareURL:v10 activationCode:v9 error:v8];
+  errorCopy = error;
+  codeCopy = code;
+  lCopy = l;
+  _remoteViewControllerProxy = [(PKRemoteShareSecureElementPassViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy didCreateShareURL:lCopy activationCode:codeCopy error:errorCopy];
 }
 
 @end

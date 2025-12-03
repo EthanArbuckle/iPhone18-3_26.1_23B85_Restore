@@ -1,18 +1,18 @@
 @interface SNClassificationResult
 + (SNClassificationResult)new;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CMTimeRange)timeRange;
 - (NSArray)classifications;
 - (SNClassification)classificationForIdentifier:(NSString *)identifier;
 - (SNClassificationResult)init;
-- (SNClassificationResult)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5;
-- (SNClassificationResult)initWithClassificationDictionary:(id)a3;
-- (SNClassificationResult)initWithCoder:(id)a3;
-- (SNClassificationResult)initWithImpl:(id)a3;
-- (id)_initPrivate:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setTimeRange:(id *)a3;
+- (SNClassificationResult)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp;
+- (SNClassificationResult)initWithClassificationDictionary:(id)dictionary;
+- (SNClassificationResult)initWithCoder:(id)coder;
+- (SNClassificationResult)initWithImpl:(id)impl;
+- (id)_initPrivate:(id)private;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)setTimeRange:(id *)range;
 @end
 
 @implementation SNClassificationResult
@@ -20,13 +20,13 @@
 - (NSArray)classifications
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(_SNClassificationResult *)self->_impl classifications];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  classifications = [(_SNClassificationResult *)self->_impl classifications];
+  v5 = [classifications countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -37,20 +37,20 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(classifications);
         }
 
         v9 = [[SNClassification alloc] initWithImpl:*(*(&v11 + 1) + 8 * i)];
-        [v3 addObject:v9];
+        [array addObject:v9];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [classifications countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (CMTimeRange)timeRange
@@ -95,24 +95,24 @@
   return v4;
 }
 
-- (void)setTimeRange:(id *)a3
+- (void)setTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var3;
-  v4[0] = *&a3->var0.var0;
+  v3 = *&range->var0.var3;
+  v4[0] = *&range->var0.var0;
   v4[1] = v3;
-  v4[2] = *&a3->var1.var1;
+  v4[2] = *&range->var1.var1;
   [(_SNClassificationResult *)self->_impl setTimeRange:v4];
 }
 
-- (SNClassificationResult)initWithClassificationDictionary:(id)a3
+- (SNClassificationResult)initWithClassificationDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = SNClassificationResult;
   v5 = [(SNClassificationResult *)&v9 init];
   if (v5)
   {
-    v6 = [[_SNClassificationResult alloc] initWithClassificationDictionary:v4];
+    v6 = [[_SNClassificationResult alloc] initWithClassificationDictionary:dictionaryCopy];
     impl = v5->_impl;
     v5->_impl = v6;
 
@@ -126,30 +126,30 @@
   return v5;
 }
 
-- (SNClassificationResult)initWithImpl:(id)a3
+- (SNClassificationResult)initWithImpl:(id)impl
 {
-  v5 = a3;
+  implCopy = impl;
   v9.receiver = self;
   v9.super_class = SNClassificationResult;
   v6 = [(SNClassificationResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_impl, a3);
+    objc_storeStrong(&v6->_impl, impl);
   }
 
   return v7;
 }
 
-- (id)_initPrivate:(id)a3
+- (id)_initPrivate:(id)private
 {
-  v4 = a3;
+  privateCopy = private;
   v9.receiver = self;
   v9.super_class = SNClassificationResult;
   v5 = [(SNClassificationResult *)&v9 init];
   if (v5)
   {
-    v6 = [[_SNClassificationResult alloc] _initPrivate:v4];
+    v6 = [[_SNClassificationResult alloc] _initPrivate:privateCopy];
     impl = v5->_impl;
     v5->_impl = v6;
 
@@ -163,25 +163,25 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(_SNClassificationResult *)self->_impl copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  v6 = [(_SNClassificationResult *)self->_impl copyWithZone:zone];
   v7 = [v5 initWithImpl:v6];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (v4 == self)
+  if (equalCopy == self)
   {
     v6 = 1;
     goto LABEL_7;
@@ -204,14 +204,14 @@ LABEL_7:
   return v6;
 }
 
-- (SNClassificationResult)initWithCoder:(id)a3
+- (SNClassificationResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = SNClassificationResult;
   v5 = [(SNClassificationResult *)&v10 init];
   v6 = v5;
-  if (!v4 || v5 && (v7 = [[_SNClassificationResult alloc] initWithCoder:v4], impl = v6->_impl, v6->_impl = v7, impl, !v6->_impl))
+  if (!coderCopy || v5 && (v7 = [[_SNClassificationResult alloc] initWithCoder:coderCopy], impl = v6->_impl, v6->_impl = v7, impl, !v6->_impl))
   {
 
     v6 = 0;
@@ -220,24 +220,24 @@ LABEL_7:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (a3)
+  if (coder)
   {
     MEMORY[0x1EEE66B58](self->_impl, sel_encodeWithCoder_);
   }
 }
 
-- (SNClassificationResult)initWithBinarySampleRepresentation:(id)a3 metadata:(id)a4 timestamp:(double)a5
+- (SNClassificationResult)initWithBinarySampleRepresentation:(id)representation metadata:(id)metadata timestamp:(double)timestamp
 {
-  v8 = a3;
-  v9 = a4;
+  representationCopy = representation;
+  metadataCopy = metadata;
   v14.receiver = self;
   v14.super_class = SNClassificationResult;
   v10 = [(SNClassificationResult *)&v14 init];
   if (v10)
   {
-    v11 = [[_SNClassificationResult alloc] initWithBinarySampleRepresentation:v8 metadata:v9 timestamp:a5];
+    v11 = [[_SNClassificationResult alloc] initWithBinarySampleRepresentation:representationCopy metadata:metadataCopy timestamp:timestamp];
     impl = v10->_impl;
     v10->_impl = v11;
 

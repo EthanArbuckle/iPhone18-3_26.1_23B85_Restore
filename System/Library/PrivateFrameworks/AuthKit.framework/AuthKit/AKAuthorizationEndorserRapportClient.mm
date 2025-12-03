@@ -1,32 +1,32 @@
 @interface AKAuthorizationEndorserRapportClient
-- (AKAuthorizationEndorserRapportClient)initWithDeviceID:(id)a3;
+- (AKAuthorizationEndorserRapportClient)initWithDeviceID:(id)d;
 - (AKAuthorizationEndorserRapportClientDelegate)delegate;
 - (void)_deactivate;
-- (void)_handleStartAuthorizationWithResponse:(id)a3;
-- (void)_sendAuthorizationDidFinishRequestWithAuthorization:(id)a3;
-- (void)_sendAuthorizationDidFinishRequestWithError:(id)a3;
+- (void)_handleStartAuthorizationWithResponse:(id)response;
+- (void)_sendAuthorizationDidFinishRequestWithAuthorization:(id)authorization;
+- (void)_sendAuthorizationDidFinishRequestWithError:(id)error;
 - (void)_sendDidStartServerAuthorizationEvent;
 - (void)_sendStartAuthorizationRequest;
-- (void)authorizationDaemonServiceWillProcessUserResponse:(id)a3;
+- (void)authorizationDaemonServiceWillProcessUserResponse:(id)response;
 - (void)startAuthorization;
-- (void)startAuthorizationWithCompanionLinkClient:(id)a3;
+- (void)startAuthorizationWithCompanionLinkClient:(id)client;
 @end
 
 @implementation AKAuthorizationEndorserRapportClient
 
-- (AKAuthorizationEndorserRapportClient)initWithDeviceID:(id)a3
+- (AKAuthorizationEndorserRapportClient)initWithDeviceID:(id)d
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v10;
-  v10 = 0;
+  objc_storeStrong(location, d);
+  v3 = selfCopy;
+  selfCopy = 0;
   v8.receiver = v3;
   v8.super_class = AKAuthorizationEndorserRapportClient;
-  v10 = [(AKAuthorizationEndorserRapportClient *)&v8 init];
-  objc_storeStrong(&v10, v10);
-  if (v10)
+  selfCopy = [(AKAuthorizationEndorserRapportClient *)&v8 init];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     if (sub_100102A40(0))
     {
@@ -40,13 +40,13 @@
 
     v7 = v4;
     [v4 setIdentifier:location[0]];
-    objc_storeStrong(&v10->_endorseeDevice, v7);
+    objc_storeStrong(&selfCopy->_endorseeDevice, v7);
     objc_storeStrong(&v7, 0);
   }
 
-  v6 = _objc_retain(v10);
+  v6 = _objc_retain(selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v10, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
@@ -67,13 +67,13 @@
   _objc_release(v3);
 }
 
-- (void)startAuthorizationWithCompanionLinkClient:(id)a3
+- (void)startAuthorizationWithCompanionLinkClient:(id)client
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v23->_endorseeClient)
+  objc_storeStrong(location, client);
+  if (selfCopy->_endorseeClient)
   {
     v21 = _AKLogSiwa();
     v20 = OS_LOG_TYPE_DEFAULT;
@@ -102,9 +102,9 @@
     }
 
     objc_storeStrong(&v17, 0);
-    [location[0] setDestinationDevice:v23->_endorseeDevice];
-    objc_storeStrong(&v23->_endorseeClient, location[0]);
-    objc_initWeak(&v14, v23);
+    [location[0] setDestinationDevice:selfCopy->_endorseeDevice];
+    objc_storeStrong(&selfCopy->_endorseeClient, location[0]);
+    objc_initWeak(&v14, selfCopy);
     v3 = location[0];
     v8 = _NSConcreteStackBlock;
     v9 = -1073741824;
@@ -121,46 +121,46 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)authorizationDaemonServiceWillProcessUserResponse:(id)a3
+- (void)authorizationDaemonServiceWillProcessUserResponse:(id)response
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(AKAuthorizationEndorserRapportClient *)v4 _sendDidStartServerAuthorizationEvent];
+  objc_storeStrong(location, response);
+  [(AKAuthorizationEndorserRapportClient *)selfCopy _sendDidStartServerAuthorizationEvent];
   objc_storeStrong(location, 0);
 }
 
 - (void)_deactivate
 {
-  v3 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    [location[0] authorizationEndorserRapportClientDidFinish:v3];
+    [location[0] authorizationEndorserRapportClientDidFinish:selfCopy];
   }
 
-  [(RPCompanionLinkClient *)v3->_endorseeClient invalidate];
-  objc_storeStrong(&v3->_endorseeClient, 0);
+  [(RPCompanionLinkClient *)selfCopy->_endorseeClient invalidate];
+  objc_storeStrong(&selfCopy->_endorseeClient, 0);
   objc_storeStrong(location, 0);
 }
 
 - (void)_sendStartAuthorizationRequest
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSiwa();
   v13 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEFAULT))
   {
-    sub_100074370(v16, v15->_endorseeDevice, v15->_endorseeDevice);
+    sub_100074370(v16, selfCopy->_endorseeDevice, selfCopy->_endorseeDevice);
     _os_log_impl(&_mh_execute_header, location[0], v13, "Sending StartAuthorizationRequest. {device=%@, device_ptr=%p}", v16, 0x16u);
   }
 
   objc_storeStrong(location, 0);
-  objc_initWeak(&from, v15);
-  endorseeClient = v15->_endorseeClient;
+  objc_initWeak(&from, selfCopy);
+  endorseeClient = selfCopy->_endorseeClient;
   v10 = 0;
   if (sub_100102A40(0))
   {
@@ -190,12 +190,12 @@
   objc_destroyWeak(&from);
 }
 
-- (void)_handleStartAuthorizationWithResponse:(id)a3
+- (void)_handleStartAuthorizationWithResponse:(id)response
 {
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, response);
   v30 = _AKLogSiwa();
   v29 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -237,12 +237,12 @@
     v7 = [AKOwnerProxyClient alloc];
     v17 = [(AKOwnerProxyClient *)v7 initWithCredentialRequest:v26];
     v6 = [[AKAuthorizationDaemonService alloc] initWithClient:v17];
-    authorizationService = v32->_authorizationService;
-    v32->_authorizationService = v6;
+    authorizationService = selfCopy->_authorizationService;
+    selfCopy->_authorizationService = v6;
     _objc_release(authorizationService);
-    [(AKAuthorizationDaemonService *)v32->_authorizationService setDelegate:v32];
-    objc_initWeak(&from, v32);
-    v4 = v32->_authorizationService;
+    [(AKAuthorizationDaemonService *)selfCopy->_authorizationService setDelegate:selfCopy];
+    objc_initWeak(&from, selfCopy);
+    v4 = selfCopy->_authorizationService;
     v5 = v26;
     v10 = _NSConcreteStackBlock;
     v11 = -1073741824;
@@ -268,7 +268,7 @@
     }
 
     objc_storeStrong(&v24, 0);
-    [(AKAuthorizationEndorserRapportClient *)v32 _sendAuthorizationDidFinishRequestWithError:v27];
+    [(AKAuthorizationEndorserRapportClient *)selfCopy _sendAuthorizationDidFinishRequestWithError:v27];
     v22 = 1;
   }
 
@@ -278,17 +278,17 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_sendAuthorizationDidFinishRequestWithAuthorization:(id)a3
+- (void)_sendAuthorizationDidFinishRequestWithAuthorization:(id)authorization
 {
-  v25 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, authorization);
   v23 = _AKLogSiwa();
   v22 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100075B68(v29, location[0], v25->_endorseeDevice, v25->_endorseeDevice);
+    sub_100075B68(v29, location[0], selfCopy->_endorseeDevice, selfCopy->_endorseeDevice);
     _os_log_impl(&_mh_execute_header, v23, v22, "Sending AuthorizationDidFinish. {authorization=%@, device=%@, device_ptr=%p}", v29, 0x20u);
   }
 
@@ -300,8 +300,8 @@
   v20 = v6;
   if (v6)
   {
-    objc_initWeak(&from, v25);
-    endorseeClient = v25->_endorseeClient;
+    objc_initWeak(&from, selfCopy);
+    endorseeClient = selfCopy->_endorseeClient;
     v26 = @"Authorization";
     v27 = v20;
     v4 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
@@ -347,7 +347,7 @@
     }
 
     objc_storeStrong(&v18, 0);
-    [(AKAuthorizationEndorserRapportClient *)v25 _sendAuthorizationDidFinishRequestWithError:v21];
+    [(AKAuthorizationEndorserRapportClient *)selfCopy _sendAuthorizationDidFinishRequestWithError:v21];
     v16 = 1;
   }
 
@@ -356,22 +356,22 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)_sendAuthorizationDidFinishRequestWithError:(id)a3
+- (void)_sendAuthorizationDidFinishRequestWithError:(id)error
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, error);
   v32 = _AKLogSiwa();
   v31 = OS_LOG_TYPE_ERROR;
   if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
   {
-    v9 = [location[0] domain];
-    v30 = _objc_retain(v9);
-    v10 = [location[0] code];
-    sub_1000C53D8(v39, v30, v10, location[0]);
+    domain = [location[0] domain];
+    v30 = _objc_retain(domain);
+    code = [location[0] code];
+    sub_1000C53D8(v39, v30, code, location[0]);
     _os_log_error_impl(&_mh_execute_header, v32, v31, "Rapport endorser authorization failed. {errorDomain=%{public}@, errorCode=%ld, error=%@}", v39, 0x20u);
-    _objc_release(v9);
+    _objc_release(domain);
     objc_storeStrong(&v30, 0);
   }
 
@@ -428,13 +428,13 @@
   v20 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
-    sub_100075B68(v35, location[0], v34->_endorseeDevice, v34->_endorseeDevice);
+    sub_100075B68(v35, location[0], selfCopy->_endorseeDevice, selfCopy->_endorseeDevice);
     _os_log_impl(&_mh_execute_header, v21, v20, "Sending AuthorizationDidFinish. {error=%@, device=%@, device_ptr=%p}", v35, 0x20u);
   }
 
   objc_storeStrong(&v21, 0);
-  objc_initWeak(&from, v34);
-  endorseeClient = v34->_endorseeClient;
+  objc_initWeak(&from, selfCopy);
+  endorseeClient = selfCopy->_endorseeClient;
   v7 = v24;
   v17 = 0;
   if (sub_100102A40(0))
@@ -471,19 +471,19 @@
 
 - (void)_sendDidStartServerAuthorizationEvent
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = _AKLogSiwa();
   v13 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(location[0], OS_LOG_TYPE_DEFAULT))
   {
-    sub_100074370(v16, v15->_endorseeDevice, v15->_endorseeDevice);
+    sub_100074370(v16, selfCopy->_endorseeDevice, selfCopy->_endorseeDevice);
     _os_log_impl(&_mh_execute_header, location[0], v13, "Sending DidStartServerAuthorization event. {device=%@, device_ptr=%p}", v16, 0x16u);
   }
 
   objc_storeStrong(location, 0);
-  objc_initWeak(&from, v15);
-  endorseeClient = v15->_endorseeClient;
+  objc_initWeak(&from, selfCopy);
+  endorseeClient = selfCopy->_endorseeClient;
   v10 = 0;
   if (sub_100102A40(0))
   {

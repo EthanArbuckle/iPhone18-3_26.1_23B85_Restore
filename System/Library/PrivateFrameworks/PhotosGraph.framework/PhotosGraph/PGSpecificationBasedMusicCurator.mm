@@ -1,18 +1,18 @@
 @interface PGSpecificationBasedMusicCurator
 - (PGSpecificationBasedMusicCurator)init;
-- (PGSpecificationBasedMusicCurator)initWithOptions:(id)a3;
-- (id)musicCurationAndReturnError:(id *)a3;
+- (PGSpecificationBasedMusicCurator)initWithOptions:(id)options;
+- (id)musicCurationAndReturnError:(id *)error;
 @end
 
 @implementation PGSpecificationBasedMusicCurator
 
-- (PGSpecificationBasedMusicCurator)initWithOptions:(id)a3
+- (PGSpecificationBasedMusicCurator)initWithOptions:(id)options
 {
   ObjectType = swift_getObjectType();
   *(&self->super.isa + OBJC_IVAR___PGSpecificationBasedMusicCurator_maxAppleMusicSongs) = 9;
   static MusicKitClient.FetchOptions.all(musicKitSource:)(0xD00000000000001ELL, 0x800000022F779560, self + OBJC_IVAR___PGSpecificationBasedMusicCurator_fetchOptions);
-  v6 = a3;
-  sub_22F3EAA78(v6, &v12);
+  optionsCopy = options;
+  sub_22F3EAA78(optionsCopy, &v12);
   v7 = (self + OBJC_IVAR___PGSpecificationBasedMusicCurator_curationSpecification);
   v8 = v13[0];
   *v7 = v12;
@@ -25,9 +25,9 @@
   return v9;
 }
 
-- (id)musicCurationAndReturnError:(id *)a3
+- (id)musicCurationAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_22F1D05E4();
 
   return v4;

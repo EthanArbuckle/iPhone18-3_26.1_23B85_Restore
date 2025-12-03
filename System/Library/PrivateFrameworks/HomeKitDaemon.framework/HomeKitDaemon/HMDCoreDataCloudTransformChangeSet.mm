@@ -1,65 +1,65 @@
 @interface HMDCoreDataCloudTransformChangeSet
 - (id)description;
-- (id)initWithHomeModelID:(void *)a3 clientIdentifier:(void *)a4 qualityOfService:;
+- (id)initWithHomeModelID:(void *)d clientIdentifier:(void *)identifier qualityOfService:;
 - (id)inserts;
 - (id)updates;
-- (void)processChange:(id *)a1;
-- (void)processDelete:(void *)a3 tombstone:;
-- (void)processUpdate:(void *)a3 updatedProperties:;
+- (void)processChange:(id *)change;
+- (void)processDelete:(void *)delete tombstone:;
+- (void)processUpdate:(void *)update updatedProperties:;
 @end
 
 @implementation HMDCoreDataCloudTransformChangeSet
 
 - (id)inserts
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[1];
+    self = self[1];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (id)updates
 {
-  if (a1)
+  if (self)
   {
-    a1 = a1[2];
+    self = self[2];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
-- (void)processChange:(id *)a1
+- (void)processChange:(id *)change
 {
   v3 = a2;
-  if (a1)
+  if (change)
   {
     v7 = v3;
-    v4 = [v3 changedObjectID];
-    v5 = [v7 changeType];
-    if (v5 == 2)
+    changedObjectID = [v3 changedObjectID];
+    changeType = [v7 changeType];
+    if (changeType == 2)
     {
-      v6 = [v7 tombstone];
-      [(HMDCoreDataCloudTransformChangeSet *)a1 processDelete:v4 tombstone:v6];
+      tombstone = [v7 tombstone];
+      [(HMDCoreDataCloudTransformChangeSet *)change processDelete:changedObjectID tombstone:tombstone];
     }
 
     else
     {
-      if (v5 != 1)
+      if (changeType != 1)
       {
-        if (!v5)
+        if (!changeType)
         {
-          [a1[1] addObject:v4];
+          [change[1] addObject:changedObjectID];
         }
 
         goto LABEL_9;
       }
 
-      v6 = [v7 updatedProperties];
-      [(HMDCoreDataCloudTransformChangeSet *)a1 processUpdate:v4 updatedProperties:v6];
+      tombstone = [v7 updatedProperties];
+      [(HMDCoreDataCloudTransformChangeSet *)change processUpdate:changedObjectID updatedProperties:tombstone];
     }
 
 LABEL_9:
@@ -67,41 +67,41 @@ LABEL_9:
   }
 }
 
-- (void)processUpdate:(void *)a3 updatedProperties:
+- (void)processUpdate:(void *)update updatedProperties:
 {
   v9 = a2;
-  v5 = a3;
-  if (a1 && ([*(a1 + 8) containsObject:v9] & 1) == 0)
+  updateCopy = update;
+  if (self && ([*(self + 8) containsObject:v9] & 1) == 0)
   {
-    v6 = [*(a1 + 16) objectForKeyedSubscript:v9];
+    v6 = [*(self + 16) objectForKeyedSubscript:v9];
     v7 = v6;
     if (v6)
     {
-      [v6 unionSet:v5];
+      [v6 unionSet:updateCopy];
     }
 
     else
     {
-      v8 = [MEMORY[0x277CBEB58] setWithSet:v5];
-      [*(a1 + 16) setObject:v8 forKeyedSubscript:v9];
+      v8 = [MEMORY[0x277CBEB58] setWithSet:updateCopy];
+      [*(self + 16) setObject:v8 forKeyedSubscript:v9];
     }
   }
 }
 
-- (void)processDelete:(void *)a3 tombstone:
+- (void)processDelete:(void *)delete tombstone:
 {
   v10 = a2;
-  v5 = a3;
-  if (a1)
+  deleteCopy = delete;
+  if (self)
   {
-    if ([a1[1] containsObject:v10])
+    if ([self[1] containsObject:v10])
     {
-      [a1[1] removeObject:v10];
+      [self[1] removeObject:v10];
     }
 
     else
     {
-      v6 = [v5 objectForKeyedSubscript:@"modelID"];
+      v6 = [deleteCopy objectForKeyedSubscript:@"modelID"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -117,13 +117,13 @@ LABEL_9:
 
       if (v8)
       {
-        [a1[5] addObject:v8];
+        [self[5] addObject:v8];
       }
 
-      [a1[2] setObject:0 forKeyedSubscript:v10];
-      if (v5)
+      [self[2] setObject:0 forKeyedSubscript:v10];
+      if (deleteCopy)
       {
-        v9 = v5;
+        v9 = deleteCopy;
       }
 
       else
@@ -131,45 +131,45 @@ LABEL_9:
         v9 = MEMORY[0x277CBEC10];
       }
 
-      [a1[3] setObject:v9 forKeyedSubscript:v10];
+      [self[3] setObject:v9 forKeyedSubscript:v10];
     }
   }
 }
 
-- (id)initWithHomeModelID:(void *)a3 clientIdentifier:(void *)a4 qualityOfService:
+- (id)initWithHomeModelID:(void *)d clientIdentifier:(void *)identifier qualityOfService:
 {
   v8 = a2;
-  v9 = a3;
-  if (a1)
+  dCopy = d;
+  if (self)
   {
-    v20.receiver = a1;
+    v20.receiver = self;
     v20.super_class = HMDCoreDataCloudTransformChangeSet;
     v10 = objc_msgSendSuper2(&v20, sel_init);
-    a1 = v10;
+    self = v10;
     if (v10)
     {
       objc_storeStrong(v10 + 6, a2);
-      objc_storeStrong(a1 + 8, a3);
-      a1[7] = a4;
+      objc_storeStrong(self + 8, d);
+      self[7] = identifier;
       v11 = [MEMORY[0x277CBEB58] set];
-      v12 = a1[1];
-      a1[1] = v11;
+      v12 = self[1];
+      self[1] = v11;
 
-      v13 = [MEMORY[0x277CBEB38] dictionary];
-      v14 = a1[2];
-      a1[2] = v13;
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
+      v14 = self[2];
+      self[2] = dictionary;
 
-      v15 = [MEMORY[0x277CBEB38] dictionary];
-      v16 = a1[3];
-      a1[3] = v15;
+      dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+      v16 = self[3];
+      self[3] = dictionary2;
 
       v17 = [MEMORY[0x277CBEB58] set];
-      v18 = a1[5];
-      a1[5] = v17;
+      v18 = self[5];
+      self[5] = v17;
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (id)description

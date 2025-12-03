@@ -1,44 +1,44 @@
 @interface IDSGroupSessionKeyValueDeliveryHandlerProxy
 - (IDSGroupSessionKeyValueDeliveryHandler)handler;
-- (IDSGroupSessionKeyValueDeliveryHandlerProxy)initWithHandler:(id)a3;
-- (void)handleGroupSessionKeyValues:(id)a3;
+- (IDSGroupSessionKeyValueDeliveryHandlerProxy)initWithHandler:(id)handler;
+- (void)handleGroupSessionKeyValues:(id)values;
 @end
 
 @implementation IDSGroupSessionKeyValueDeliveryHandlerProxy
 
-- (IDSGroupSessionKeyValueDeliveryHandlerProxy)initWithHandler:(id)a3
+- (IDSGroupSessionKeyValueDeliveryHandlerProxy)initWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v10.receiver = self;
   v10.super_class = IDSGroupSessionKeyValueDeliveryHandlerProxy;
   v5 = [(IDSGroupSessionKeyValueDeliveryHandlerProxy *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_handler, v4);
-    v7 = [MEMORY[0x1E696AFB0] UUID];
+    objc_storeWeak(&v5->_handler, handlerCopy);
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     handlerUUID = v6->_handlerUUID;
-    v6->_handlerUUID = v7;
+    v6->_handlerUUID = uUID;
   }
 
   return v6;
 }
 
-- (void)handleGroupSessionKeyValues:(id)a3
+- (void)handleGroupSessionKeyValues:(id)values
 {
   v52 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  valuesCopy = values;
   v4 = 0x1E695D000uLL;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v6 = [MEMORY[0x1E69A5270] GroupSessionKeyValueDelivery];
-  v7 = v6;
+  groupSessionKeyValueDelivery = [MEMORY[0x1E69A5270] GroupSessionKeyValueDelivery];
+  v7 = groupSessionKeyValueDelivery;
   if (isKindOfClass)
   {
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(groupSessionKeyValueDelivery, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v45 = v3;
+      v45 = valuesCopy;
       _os_log_impl(&dword_1959FF000, v7, OS_LOG_TYPE_DEFAULT, "handleGroupSessionKeyValues: received dictionary %@", buf, 0xCu);
     }
 
@@ -46,12 +46,12 @@
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v7 = v3;
+    v7 = valuesCopy;
     v8 = [v7 countByEnumeratingWithState:&v40 objects:v51 count:16];
     if (v8)
     {
       v9 = v8;
-      v29 = v3;
+      v29 = valuesCopy;
       v10 = *v41;
       v30 = *v41;
       v31 = v7;
@@ -72,12 +72,12 @@
           objc_opt_class();
           v34 = v13;
           LOBYTE(v13) = objc_opt_isKindOfClass();
-          v15 = [MEMORY[0x1E69A5270] GroupSessionKeyValueDelivery];
-          v16 = v15;
+          groupSessionKeyValueDelivery2 = [MEMORY[0x1E69A5270] GroupSessionKeyValueDelivery];
+          v16 = groupSessionKeyValueDelivery2;
           if (v13)
           {
             v33 = v11;
-            if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(groupSessionKeyValueDelivery2, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
               v45 = v12;
@@ -106,11 +106,11 @@
                   v21 = *(*(&v36 + 1) + 8 * i);
                   objc_opt_class();
                   v22 = objc_opt_isKindOfClass();
-                  v23 = [MEMORY[0x1E69A5270] GroupSessionKeyValueDelivery];
-                  v24 = v23;
+                  groupSessionKeyValueDelivery3 = [MEMORY[0x1E69A5270] GroupSessionKeyValueDelivery];
+                  v24 = groupSessionKeyValueDelivery3;
                   if (v22)
                   {
-                    if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
+                    if (os_log_type_enabled(groupSessionKeyValueDelivery3, OS_LOG_TYPE_DEFAULT))
                     {
                       *buf = 138412546;
                       v45 = v12;
@@ -122,11 +122,11 @@
                     v24 = [v16 objectForKeyedSubscript:v21];
                     objc_opt_class();
                     v25 = objc_opt_isKindOfClass();
-                    v26 = [MEMORY[0x1E69A5270] GroupSessionKeyValueDelivery];
-                    WeakRetained = v26;
+                    groupSessionKeyValueDelivery4 = [MEMORY[0x1E69A5270] GroupSessionKeyValueDelivery];
+                    WeakRetained = groupSessionKeyValueDelivery4;
                     if (v25)
                     {
-                      if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
+                      if (os_log_type_enabled(groupSessionKeyValueDelivery4, OS_LOG_TYPE_DEFAULT))
                       {
                         *buf = 138412802;
                         v45 = v12;
@@ -141,7 +141,7 @@
                       -[NSObject handleGroupSessionValue:forKey:participant:](WeakRetained, "handleGroupSessionValue:forKey:participant:", v24, [v12 intValue], objc_msgSend(v21, "unsignedLongLongValue"));
                     }
 
-                    else if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
+                    else if (os_log_type_enabled(groupSessionKeyValueDelivery4, OS_LOG_TYPE_ERROR))
                     {
                       *buf = 138412802;
                       v45 = v12;
@@ -153,7 +153,7 @@
                     }
                   }
 
-                  else if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
+                  else if (os_log_type_enabled(groupSessionKeyValueDelivery3, OS_LOG_TYPE_ERROR))
                   {
                     *buf = 138412546;
                     v45 = v12;
@@ -176,7 +176,7 @@
             v11 = v33;
           }
 
-          else if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+          else if (os_log_type_enabled(groupSessionKeyValueDelivery2, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
             v45 = v12;
@@ -193,13 +193,13 @@
       }
 
       while (v9);
-      v3 = v29;
+      valuesCopy = v29;
     }
   }
 
-  else if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  else if (os_log_type_enabled(groupSessionKeyValueDelivery, OS_LOG_TYPE_ERROR))
   {
-    sub_195B3D380(v3, v7);
+    sub_195B3D380(valuesCopy, v7);
   }
 
   v28 = *MEMORY[0x1E69E9840];

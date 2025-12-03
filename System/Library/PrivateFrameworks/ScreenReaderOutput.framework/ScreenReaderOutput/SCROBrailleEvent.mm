@@ -1,25 +1,25 @@
 @interface SCROBrailleEvent
-- (SCROBrailleEvent)initWithType:(int)a3 data:(id)a4 data2:(id)a5 data3:(id)a6;
+- (SCROBrailleEvent)initWithType:(int)type data:(id)data data2:(id)data2 data3:(id)data3;
 - (id)description;
 @end
 
 @implementation SCROBrailleEvent
 
-- (SCROBrailleEvent)initWithType:(int)a3 data:(id)a4 data2:(id)a5 data3:(id)a6
+- (SCROBrailleEvent)initWithType:(int)type data:(id)data data2:(id)data2 data3:(id)data3
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  data2Copy = data2;
+  data3Copy = data3;
   v17.receiver = self;
   v17.super_class = SCROBrailleEvent;
   v14 = [(SCROBrailleEvent *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_type = a3;
-    objc_storeStrong(&v14->_data, a4);
-    objc_storeStrong(&v15->_data2, a5);
-    objc_storeStrong(&v15->_data3, a6);
+    v14->_type = type;
+    objc_storeStrong(&v14->_data, data);
+    objc_storeStrong(&v15->_data2, data2);
+    objc_storeStrong(&v15->_data3, data3);
     v15->_shouldDisplay = 1;
   }
 

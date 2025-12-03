@@ -2,11 +2,11 @@
 + (void)initialize;
 - (CKDetailsNavigationController)detailsNavigationController;
 - (NSExtension)weakExtension;
-- (UIEdgeInsets)initialSafeAreaInsetsForChatController:(id)a3;
-- (UIEdgeInsets)initialSystemMinimumLayoutMarginsForChatController:(id)a3;
-- (void)chatControllerDidChangeBackground:(id)a3;
-- (void)doneButtonPressedForChatController:(id)a3;
-- (void)presentConversationWithMessageGUID:(id)a3 attachmentGUID:(id)a4;
+- (UIEdgeInsets)initialSafeAreaInsetsForChatController:(id)controller;
+- (UIEdgeInsets)initialSystemMinimumLayoutMarginsForChatController:(id)controller;
+- (void)chatControllerDidChangeBackground:(id)background;
+- (void)doneButtonPressedForChatController:(id)controller;
+- (void)presentConversationWithMessageGUID:(id)d attachmentGUID:(id)iD;
 - (void)viewDidLoad;
 @end
 
@@ -33,17 +33,17 @@
   v12.receiver = self;
   v12.super_class = CKTranscriptExtensionViewController;
   [(CKTranscriptExtensionViewController *)&v12 viewDidLoad];
-  v3 = [(CKTranscriptExtensionViewController *)self extensionContext];
-  v4 = [v3 inputItems];
-  v5 = [v4 firstObject];
+  extensionContext = [(CKTranscriptExtensionViewController *)self extensionContext];
+  inputItems = [extensionContext inputItems];
+  firstObject = [inputItems firstObject];
 
-  if (v5)
+  if (firstObject)
   {
-    v6 = [v5 userInfo];
-    v7 = [v6 valueForKey:@"messageGUID"];
+    userInfo = [firstObject userInfo];
+    v7 = [userInfo valueForKey:@"messageGUID"];
 
-    v8 = [v5 userInfo];
-    v9 = [v8 valueForKey:@"attachmentGUID"];
+    userInfo2 = [firstObject userInfo];
+    v9 = [userInfo2 valueForKey:@"attachmentGUID"];
 
     if (![v7 length])
     {
@@ -64,11 +64,11 @@
   }
 }
 
-- (void)presentConversationWithMessageGUID:(id)a3 attachmentGUID:(id)a4
+- (void)presentConversationWithMessageGUID:(id)d attachmentGUID:(id)iD
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [CKSocialLayerChatController chatIdentifierForMessageWithGUID:v6];
+  dCopy = d;
+  iDCopy = iD;
+  v8 = [CKSocialLayerChatController chatIdentifierForMessageWithGUID:dCopy];
   v9 = +[IMChatRegistry sharedRegistry];
   v10 = [v9 existingChatWithChatIdentifier:v8];
 
@@ -80,7 +80,7 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v15 = 138412290;
-        v16 = v6;
+        v16 = dCopy;
         _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "The messageGUID %@ doesn't correspond to a chat. Nothing to present.", &v15, 0xCu);
       }
     }
@@ -91,15 +91,15 @@
   v11 = [[CKConversation alloc] initWithChat:v10];
   [v11 setLoadedMessageCount:50];
   v12 = [[CKSocialLayerChatController alloc] initWithConversation:v11];
-  [v12 setMessageGUID:v6];
-  [v12 setAttachmentGUID:v7];
+  [v12 setMessageGUID:dCopy];
+  [v12 setAttachmentGUID:iDCopy];
   [v12 setDelegate:self];
   v17 = v12;
   v13 = [NSArray arrayWithObjects:&v17 count:1];
   [(CKTranscriptExtensionViewController *)self setViewControllers:v13];
 }
 
-- (UIEdgeInsets)initialSystemMinimumLayoutMarginsForChatController:(id)a3
+- (UIEdgeInsets)initialSystemMinimumLayoutMarginsForChatController:(id)controller
 {
   top = UIEdgeInsetsZero.top;
   left = UIEdgeInsetsZero.left;
@@ -112,7 +112,7 @@
   return result;
 }
 
-- (UIEdgeInsets)initialSafeAreaInsetsForChatController:(id)a3
+- (UIEdgeInsets)initialSafeAreaInsetsForChatController:(id)controller
 {
   top = UIEdgeInsetsZero.top;
   left = UIEdgeInsetsZero.left;
@@ -125,67 +125,67 @@
   return result;
 }
 
-- (void)chatControllerDidChangeBackground:(id)a3
+- (void)chatControllerDidChangeBackground:(id)background
 {
-  v4 = a3;
-  v5 = [v4 transcriptBackground];
-  v6 = [(CKTranscriptExtensionViewController *)self viewIfLoaded];
-  v7 = [v6 window];
+  backgroundCopy = background;
+  transcriptBackground = [backgroundCopy transcriptBackground];
+  viewIfLoaded = [(CKTranscriptExtensionViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  v8 = [v7 windowScene];
+  windowScene = [window windowScene];
   v9 = IMLogHandleForCategory();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v17 = 138412290;
-    v18 = v4;
+    v18 = backgroundCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Did change background on chat controller: %@", &v17, 0xCu);
   }
 
-  if (v5)
+  if (transcriptBackground)
   {
     v10 = 0.0;
     if (objc_opt_respondsToSelector())
     {
-      [v5 luminance];
+      [transcriptBackground luminance];
       v10 = v11;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v5 contentDerivedUserInterfaceStyle];
+      contentDerivedUserInterfaceStyle = [transcriptBackground contentDerivedUserInterfaceStyle];
     }
 
     else
     {
-      v12 = 1;
+      contentDerivedUserInterfaceStyle = 1;
     }
 
-    v15 = [v8 traitOverrides];
-    [v15 setNSIntegerValue:objc_msgSend(&__kCFBooleanTrue forTrait:{"integerValue"), objc_opt_class()}];
+    traitOverrides = [windowScene traitOverrides];
+    [traitOverrides setNSIntegerValue:objc_msgSend(&__kCFBooleanTrue forTrait:{"integerValue"), objc_opt_class()}];
 
-    v16 = [v8 traitOverrides];
-    [v16 setCGFloatValue:objc_opt_class() forTrait:v10];
+    traitOverrides2 = [windowScene traitOverrides];
+    [traitOverrides2 setCGFloatValue:objc_opt_class() forTrait:v10];
 
-    [v7 setOverrideUserInterfaceStyle:v12];
+    [window setOverrideUserInterfaceStyle:contentDerivedUserInterfaceStyle];
   }
 
   else
   {
-    v13 = [v8 traitOverrides];
-    [v13 removeTrait:objc_opt_class()];
+    traitOverrides3 = [windowScene traitOverrides];
+    [traitOverrides3 removeTrait:objc_opt_class()];
 
-    v14 = [v8 traitOverrides];
-    [v14 removeTrait:objc_opt_class()];
+    traitOverrides4 = [windowScene traitOverrides];
+    [traitOverrides4 removeTrait:objc_opt_class()];
   }
 }
 
-- (void)doneButtonPressedForChatController:(id)a3
+- (void)doneButtonPressedForChatController:(id)controller
 {
-  v3 = [(CKTranscriptExtensionViewController *)self extensionContext];
-  v4 = [v3 _auxiliaryConnection];
-  v5 = [v4 remoteObjectProxy];
+  extensionContext = [(CKTranscriptExtensionViewController *)self extensionContext];
+  _auxiliaryConnection = [extensionContext _auxiliaryConnection];
+  remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
 
-  [v5 requestDismissal];
+  [remoteObjectProxy requestDismissal];
 }
 
 - (NSExtension)weakExtension

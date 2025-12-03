@@ -1,15 +1,15 @@
 @interface _INPBStopShareETAIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBStopShareETAIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBStopShareETAIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsMediums:(id)a3;
-- (void)addMedium:(int)a3;
-- (void)addRecipient:(id)a3;
+- (int)StringAsMediums:(id)mediums;
+- (void)addMedium:(int)medium;
+- (void)addRecipient:(id)recipient;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setRecipients:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setRecipients:(id)recipients;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBStopShareETAIntentResponse
@@ -17,7 +17,7 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_mediums.count)
   {
     v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{-[_INPBStopShareETAIntentResponse mediumsCount](self, "mediumsCount")}];
@@ -45,12 +45,12 @@
       while (v5 < [(_INPBStopShareETAIntentResponse *)self mediumsCount]);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"medium"];
+    [dictionary setObject:v4 forKeyedSubscript:@"medium"];
   }
 
   if ([(NSArray *)self->_recipients count])
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -70,8 +70,8 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          [v8 addObject:v14];
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v11 = [(NSArray *)v9 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -80,26 +80,26 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"recipient"];
+    [dictionary setObject:array forKeyedSubscript:@"recipient"];
   }
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && PBRepeatedInt32IsEqual())
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && PBRepeatedInt32IsEqual())
   {
-    v5 = [(_INPBStopShareETAIntentResponse *)self recipients];
-    v6 = [v4 recipients];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    recipients = [(_INPBStopShareETAIntentResponse *)self recipients];
+    recipients2 = [equalCopy recipients];
+    v7 = recipients2;
+    if ((recipients != 0) != (recipients2 == 0))
     {
-      v8 = [(_INPBStopShareETAIntentResponse *)self recipients];
-      if (!v8)
+      recipients3 = [(_INPBStopShareETAIntentResponse *)self recipients];
+      if (!recipients3)
       {
 
 LABEL_11:
@@ -107,10 +107,10 @@ LABEL_11:
         goto LABEL_9;
       }
 
-      v9 = v8;
-      v10 = [(_INPBStopShareETAIntentResponse *)self recipients];
-      v11 = [v4 recipients];
-      v12 = [v10 isEqual:v11];
+      v9 = recipients3;
+      recipients4 = [(_INPBStopShareETAIntentResponse *)self recipients];
+      recipients5 = [equalCopy recipients];
+      v12 = [recipients4 isEqual:recipients5];
 
       if (v12)
       {
@@ -129,38 +129,38 @@ LABEL_9:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBStopShareETAIntentResponse allocWithZone:](_INPBStopShareETAIntentResponse init];
   PBRepeatedInt32Copy();
-  v6 = [(NSArray *)self->_recipients copyWithZone:a3];
+  v6 = [(NSArray *)self->_recipients copyWithZone:zone];
   [(_INPBStopShareETAIntentResponse *)v5 setRecipients:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBStopShareETAIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBStopShareETAIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBStopShareETAIntentResponse)initWithCoder:(id)a3
+- (_INPBStopShareETAIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBStopShareETAIntentResponse *)self initWithData:v6];
+    self = [(_INPBStopShareETAIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -171,10 +171,10 @@ LABEL_9:
   [(_INPBStopShareETAIntentResponse *)&v3 dealloc];
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_mediums.count)
   {
     v5 = 0;
@@ -220,52 +220,52 @@ LABEL_9:
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addRecipient:(id)a3
+- (void)addRecipient:(id)recipient
 {
-  v4 = a3;
+  recipientCopy = recipient;
   recipients = self->_recipients;
-  v8 = v4;
+  v8 = recipientCopy;
   if (!recipients)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_recipients;
-    self->_recipients = v6;
+    self->_recipients = array;
 
-    v4 = v8;
+    recipientCopy = v8;
     recipients = self->_recipients;
   }
 
-  [(NSArray *)recipients addObject:v4];
+  [(NSArray *)recipients addObject:recipientCopy];
 }
 
-- (void)setRecipients:(id)a3
+- (void)setRecipients:(id)recipients
 {
-  v4 = [a3 mutableCopy];
+  v4 = [recipients mutableCopy];
   recipients = self->_recipients;
   self->_recipients = v4;
 
   MEMORY[0x1EEE66BB8](v4, recipients);
 }
 
-- (int)StringAsMediums:(id)a3
+- (int)StringAsMediums:(id)mediums
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NONE"])
+  mediumsCopy = mediums;
+  if ([mediumsCopy isEqualToString:@"NONE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"IDS"])
+  else if ([mediumsCopy isEqualToString:@"IDS"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"IMESSAGE"])
+  else if ([mediumsCopy isEqualToString:@"IMESSAGE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"SMS"])
+  else if ([mediumsCopy isEqualToString:@"SMS"])
   {
     v4 = 3;
   }
@@ -278,9 +278,9 @@ LABEL_9:
   return v4;
 }
 
-- (void)addMedium:(int)a3
+- (void)addMedium:(int)medium
 {
-  if (a3 != 0x7FFFFFFF)
+  if (medium != 0x7FFFFFFF)
   {
     PBRepeatedInt32Add();
   }

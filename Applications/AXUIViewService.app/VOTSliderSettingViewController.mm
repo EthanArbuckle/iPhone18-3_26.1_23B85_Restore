@@ -1,8 +1,8 @@
 @interface VOTSliderSettingViewController
-- (id)specifierValue:(id)a3;
+- (id)specifierValue:(id)value;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)setSpecifierValue:(id)a3 specifier:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)setSpecifierValue:(id)value specifier:(id)specifier;
 @end
 
 @implementation VOTSliderSettingViewController
@@ -20,8 +20,8 @@
     v9 = [PSSpecifier groupSpecifierWithName:v8];
 
     [v6 addObject:v9];
-    v10 = self;
-    v11 = [PSSpecifier preferenceSpecifierNamed:0 target:v10 set:"setSpecifierValue:specifier:" get:"specifierValue:" detail:0 cell:5 edit:0];
+    selfCopy = self;
+    v11 = [PSSpecifier preferenceSpecifierNamed:0 target:selfCopy set:"setSpecifierValue:specifier:" get:"specifierValue:" detail:0 cell:5 edit:0];
 
     [v11 setProperty:v5 forKey:@"VOSSettingsItem"];
     [v11 setProperty:objc_opt_class() forKey:PSCellClassKey];
@@ -43,24 +43,24 @@
   return v4;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v14.receiver = self;
   v14.super_class = VOTSliderSettingViewController;
-  v8 = [(VOTSliderSettingViewController *)&v14 tableView:v6 cellForRowAtIndexPath:v7];
+  v8 = [(VOTSliderSettingViewController *)&v14 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [v8 control];
-    objc_initWeak(&location, v9);
+    control = [v8 control];
+    objc_initWeak(&location, control);
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10000D2E0;
     v11[3] = &unk_100028C38;
     objc_copyWeak(&v12, &location);
-    [v9 setAccessibilityValueBlock:v11];
+    [control setAccessibilityValueBlock:v11];
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
   }
@@ -68,9 +68,9 @@
   return v8;
 }
 
-- (id)specifierValue:(id)a3
+- (id)specifierValue:(id)value
 {
-  v3 = [a3 propertyForKey:@"VOSSettingsItem"];
+  v3 = [value propertyForKey:@"VOSSettingsItem"];
   v4 = +[VOSSettingsHelper sharedInstance];
   v5 = [v4 valueForSettingsItem:v3];
 
@@ -80,12 +80,12 @@
   return v7;
 }
 
-- (void)setSpecifierValue:(id)a3 specifier:(id)a4
+- (void)setSpecifierValue:(id)value specifier:(id)specifier
 {
-  v5 = a3;
-  v7 = [a4 propertyForKey:@"VOSSettingsItem"];
+  valueCopy = value;
+  v7 = [specifier propertyForKey:@"VOSSettingsItem"];
   v6 = +[VOSSettingsHelper sharedInstance];
-  [v6 setValue:v5 forSettingsItem:v7];
+  [v6 setValue:valueCopy forSettingsItem:v7];
 }
 
 @end

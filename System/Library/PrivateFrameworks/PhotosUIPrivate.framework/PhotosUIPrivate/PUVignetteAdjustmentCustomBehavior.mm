@@ -1,14 +1,14 @@
 @interface PUVignetteAdjustmentCustomBehavior
-- (void)dataSource:(id)a3 adjustmentInfo:(id)a4 populateNewAdjustmentController:(id)a5;
+- (void)dataSource:(id)source adjustmentInfo:(id)info populateNewAdjustmentController:(id)controller;
 @end
 
 @implementation PUVignetteAdjustmentCustomBehavior
 
-- (void)dataSource:(id)a3 adjustmentInfo:(id)a4 populateNewAdjustmentController:(id)a5
+- (void)dataSource:(id)source adjustmentInfo:(id)info populateNewAdjustmentController:(id)controller
 {
-  v5 = a5;
-  [v5 setIntensity:0.4];
-  [v5 setRadius:0.4];
+  controllerCopy = controller;
+  [controllerCopy setIntensity:0.4];
+  [controllerCopy setRadius:0.4];
 }
 
 @end

@@ -1,49 +1,49 @@
 @interface CarHeadingIndicatorView
 - (BOOL)_canStartLocationUpdates;
 - (CGSize)intrinsicContentSize;
-- (CarHeadingIndicatorView)initWithCarSceneType:(int64_t)a3;
+- (CarHeadingIndicatorView)initWithCarSceneType:(int64_t)type;
 - (void)_applyDynamicScaling;
-- (void)_setActive:(BOOL)a3;
+- (void)_setActive:(BOOL)active;
 - (void)_setupConstraints;
 - (void)_startLocationUpdates;
 - (void)_stopLocationUpdates;
 - (void)_updateContents;
-- (void)_updateDisplayedHeadingWithHeading:(double)a3;
+- (void)_updateDisplayedHeadingWithHeading:(double)heading;
 - (void)_updateStyling;
 - (void)dealloc;
 - (void)didMoveToWindow;
-- (void)locationManager:(id)a3 didUpdateVehicleHeading:(double)a4 timestamp:(id)a5;
-- (void)locationManagerUpdatedLocation:(id)a3;
-- (void)setActive:(BOOL)a3;
-- (void)setCompassPoint:(int)a3;
+- (void)locationManager:(id)manager didUpdateVehicleHeading:(double)heading timestamp:(id)timestamp;
+- (void)locationManagerUpdatedLocation:(id)location;
+- (void)setActive:(BOOL)active;
+- (void)setCompassPoint:(int)point;
 @end
 
 @implementation CarHeadingIndicatorView
 
-- (void)locationManager:(id)a3 didUpdateVehicleHeading:(double)a4 timestamp:(id)a5
+- (void)locationManager:(id)manager didUpdateVehicleHeading:(double)heading timestamp:(id)timestamp
 {
-  [a3 vehicleHeadingOrCourse];
+  [manager vehicleHeadingOrCourse];
 
   [(CarHeadingIndicatorView *)self _updateDisplayedHeadingWithHeading:?];
 }
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
-  [a3 vehicleHeadingOrCourse];
+  [location vehicleHeadingOrCourse];
 
   [(CarHeadingIndicatorView *)self _updateDisplayedHeadingWithHeading:?];
 }
 
-- (void)setCompassPoint:(int)a3
+- (void)setCompassPoint:(int)point
 {
-  if (self->_compassPoint != a3)
+  if (self->_compassPoint != point)
   {
-    self->_compassPoint = a3;
+    self->_compassPoint = point;
     [(CarHeadingIndicatorView *)self _updateContents];
   }
 }
 
-- (void)_updateDisplayedHeadingWithHeading:(double)a3
+- (void)_updateDisplayedHeadingWithHeading:(double)heading
 {
   v4 = MKCompassPointFromLocationDirection();
 
@@ -78,18 +78,18 @@
 
 - (BOOL)_canStartLocationUpdates
 {
-  v3 = [(CarHeadingIndicatorView *)self window];
-  if (v3)
+  window = [(CarHeadingIndicatorView *)self window];
+  if (window)
   {
-    v4 = 1;
+    isActive = 1;
   }
 
   else
   {
-    v4 = [(CarHeadingIndicatorView *)self isActive];
+    isActive = [(CarHeadingIndicatorView *)self isActive];
   }
 
-  return v4;
+  return isActive;
 }
 
 - (void)_stopLocationUpdates
@@ -134,13 +134,13 @@
 
 - (void)_updateContents
 {
-  v3 = [(CarHeadingIndicatorView *)self contentsHidden];
+  contentsHidden = [(CarHeadingIndicatorView *)self contentsHidden];
   compassPoint = self->_compassPoint;
   v5 = MKLocalizedAbbreviationForCompassPoint();
   [(UILabel *)self->_headingLabel setText:v5];
 
   [(CarHeadingIndicatorView *)self setContentsHidden:compassPoint == 0];
-  if (v3 != [(CarHeadingIndicatorView *)self contentsHidden])
+  if (contentsHidden != [(CarHeadingIndicatorView *)self contentsHidden])
   {
     v6 = +[NSNotificationCenter defaultCenter];
     [v6 postNotificationName:@"CarHeadingIndicatorViewDidChangeVisibility" object:self];
@@ -179,7 +179,7 @@
 
 - (void)_setupConstraints
 {
-  v3 = [(CarHeadingIndicatorView *)self widthAnchor];
+  widthAnchor = [(CarHeadingIndicatorView *)self widthAnchor];
   if (self->_sceneType == 6)
   {
     [(CarHeadingIndicatorView *)self _car_dynamicPointScaleValue];
@@ -191,42 +191,42 @@
     v5 = 34.0;
   }
 
-  v6 = [v3 constraintEqualToConstant:v5];
+  v6 = [widthAnchor constraintEqualToConstant:v5];
   widthConstraint = self->_widthConstraint;
   self->_widthConstraint = v6;
 
-  v8 = [(CarFocusableBlurControl *)self contentView];
-  v25 = [(UILabel *)self->_headingLabel widthAnchor];
-  v24 = [v8 widthAnchor];
-  v23 = [v25 constraintLessThanOrEqualToAnchor:v24];
+  contentView = [(CarFocusableBlurControl *)self contentView];
+  widthAnchor2 = [(UILabel *)self->_headingLabel widthAnchor];
+  widthAnchor3 = [contentView widthAnchor];
+  v23 = [widthAnchor2 constraintLessThanOrEqualToAnchor:widthAnchor3];
   v26[0] = v23;
-  v22 = [(UILabel *)self->_headingLabel heightAnchor];
-  v21 = [v8 heightAnchor];
-  v20 = [v22 constraintLessThanOrEqualToAnchor:v21];
+  heightAnchor = [(UILabel *)self->_headingLabel heightAnchor];
+  heightAnchor2 = [contentView heightAnchor];
+  v20 = [heightAnchor constraintLessThanOrEqualToAnchor:heightAnchor2];
   v26[1] = v20;
-  v19 = [(UILabel *)self->_headingLabel centerXAnchor];
-  v9 = [v8 centerXAnchor];
-  v10 = [v19 constraintEqualToAnchor:v9];
+  centerXAnchor = [(UILabel *)self->_headingLabel centerXAnchor];
+  centerXAnchor2 = [contentView centerXAnchor];
+  v10 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v26[2] = v10;
-  v11 = [(UILabel *)self->_headingLabel centerYAnchor];
-  v12 = [v8 centerYAnchor];
-  v13 = [v11 constraintEqualToAnchor:v12];
+  centerYAnchor = [(UILabel *)self->_headingLabel centerYAnchor];
+  centerYAnchor2 = [contentView centerYAnchor];
+  v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v14 = self->_widthConstraint;
   v26[3] = v13;
   v26[4] = v14;
-  v15 = [(CarHeadingIndicatorView *)self heightAnchor];
-  v16 = [(CarHeadingIndicatorView *)self widthAnchor];
-  v17 = [v15 constraintEqualToAnchor:v16];
+  heightAnchor3 = [(CarHeadingIndicatorView *)self heightAnchor];
+  widthAnchor4 = [(CarHeadingIndicatorView *)self widthAnchor];
+  v17 = [heightAnchor3 constraintEqualToAnchor:widthAnchor4];
   v26[5] = v17;
   v18 = [NSArray arrayWithObjects:v26 count:6];
 
   [NSLayoutConstraint activateConstraints:v18];
 }
 
-- (void)_setActive:(BOOL)a3
+- (void)_setActive:(BOOL)active
 {
-  self->_active = a3;
-  if (a3 || ([(CarHeadingIndicatorView *)self window], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
+  self->_active = active;
+  if (active || ([(CarHeadingIndicatorView *)self window], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
 
     [(CarHeadingIndicatorView *)self _startLocationUpdates];
@@ -239,9 +239,9 @@
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
     [(CarHeadingIndicatorView *)self _setActive:?];
   }
@@ -252,9 +252,9 @@
   v4.receiver = self;
   v4.super_class = CarHeadingIndicatorView;
   [(CarFocusableBlurControl *)&v4 didMoveToWindow];
-  v3 = [(CarHeadingIndicatorView *)self window];
+  window = [(CarHeadingIndicatorView *)self window];
 
-  if (v3)
+  if (window)
   {
     [(CarHeadingIndicatorView *)self _updateStyling];
     [(CarHeadingIndicatorView *)self _applyDynamicScaling];
@@ -271,7 +271,7 @@
   [(CarHeadingIndicatorView *)&v3 dealloc];
 }
 
-- (CarHeadingIndicatorView)initWithCarSceneType:(int64_t)a3
+- (CarHeadingIndicatorView)initWithCarSceneType:(int64_t)type
 {
   v17.receiver = self;
   v17.super_class = CarHeadingIndicatorView;
@@ -279,7 +279,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_sceneType = a3;
+    v4->_sceneType = type;
     [(CarHeadingIndicatorView *)v4 setAccessibilityIdentifier:@"CarHeadingIndicatorView"];
     UIRoundToViewScale();
     [(CarFocusableBlurControl *)v5 setRoundedCornerRadius:?];
@@ -307,8 +307,8 @@
     v14 = +[UIColor _carSystemPrimaryColor];
     [(UILabel *)v5->_headingLabel setTextColor:v14];
 
-    v15 = [(CarFocusableBlurControl *)v5 contentView];
-    [v15 addSubview:v5->_headingLabel];
+    contentView = [(CarFocusableBlurControl *)v5 contentView];
+    [contentView addSubview:v5->_headingLabel];
 
     [(CarHeadingIndicatorView *)v5 _setupConstraints];
     [(CarHeadingIndicatorView *)v5 _updateStyling];

@@ -1,27 +1,27 @@
 @interface AXUIFloatingViewPresenter
-- (AXUIFloatingViewPresenter)initWithContainingView:(id)a3 alignedToEdge:(unint64_t)a4 withinSafeArea:(BOOL)a5;
+- (AXUIFloatingViewPresenter)initWithContainingView:(id)view alignedToEdge:(unint64_t)edge withinSafeArea:(BOOL)area;
 - (AXUIFloatingViewPresenterDelegate)delegate;
 - (void)_hideFloatingView;
 - (void)_updateEdgeConstraints;
 - (void)dismissFloatingView;
-- (void)presentFloatingView:(id)a3 withDuration:(double)a4;
-- (void)setAlignedEdge:(unint64_t)a3;
+- (void)presentFloatingView:(id)view withDuration:(double)duration;
+- (void)setAlignedEdge:(unint64_t)edge;
 @end
 
 @implementation AXUIFloatingViewPresenter
 
-- (AXUIFloatingViewPresenter)initWithContainingView:(id)a3 alignedToEdge:(unint64_t)a4 withinSafeArea:(BOOL)a5
+- (AXUIFloatingViewPresenter)initWithContainingView:(id)view alignedToEdge:(unint64_t)edge withinSafeArea:(BOOL)area
 {
-  v9 = a3;
+  viewCopy = view;
   v13.receiver = self;
   v13.super_class = AXUIFloatingViewPresenter;
   v10 = [(AXUIFloatingViewPresenter *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_containingView, a3);
-    v11->_alignedEdge = a4;
-    v11->_withinSafeArea = a5;
+    objc_storeStrong(&v10->_containingView, view);
+    v11->_alignedEdge = edge;
+    v11->_withinSafeArea = area;
   }
 
   return v11;
@@ -29,20 +29,20 @@
 
 - (void)_hideFloatingView
 {
-  v3 = [(AXUIFloatingViewPresenter *)self floatingView];
+  floatingView = [(AXUIFloatingViewPresenter *)self floatingView];
   [(AXUIFloatingViewPresenter *)self setFloatingView:0];
   [(AXUIFloatingViewPresenter *)self setEdgeConstraints:0];
-  if (v3)
+  if (floatingView)
   {
-    v4 = [(AXUIFloatingViewPresenter *)self delegate];
-    [v4 willDismissFloatingViewForPresenter:self];
+    delegate = [(AXUIFloatingViewPresenter *)self delegate];
+    [delegate willDismissFloatingViewForPresenter:self];
 
     v5 = MEMORY[0x1E69DD250];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __46__AXUIFloatingViewPresenter__hideFloatingView__block_invoke;
     v8[3] = &unk_1E812DCA8;
-    v9 = v3;
+    v9 = floatingView;
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __46__AXUIFloatingViewPresenter__hideFloatingView__block_invoke_2;
@@ -52,59 +52,59 @@
   }
 }
 
-- (void)presentFloatingView:(id)a3 withDuration:(double)a4
+- (void)presentFloatingView:(id)view withDuration:(double)duration
 {
   v36[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  viewCopy = view;
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__hideFloatingView object:0];
-  v7 = [(AXUIFloatingViewPresenter *)self floatingView];
-  if (v7 && (v8 = v7, [(AXUIFloatingViewPresenter *)self floatingView], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9 == v6))
+  floatingView = [(AXUIFloatingViewPresenter *)self floatingView];
+  if (floatingView && (v8 = floatingView, [(AXUIFloatingViewPresenter *)self floatingView], v9 = objc_claimAutoreleasedReturnValue(), v9, v8, v9 == viewCopy))
   {
-    if (a4 > 0.0)
+    if (duration > 0.0)
     {
-      [(AXUIFloatingViewPresenter *)self performSelector:sel__hideFloatingView withObject:0 afterDelay:a4];
+      [(AXUIFloatingViewPresenter *)self performSelector:sel__hideFloatingView withObject:0 afterDelay:duration];
     }
   }
 
   else
   {
     [(AXUIFloatingViewPresenter *)self _hideFloatingView];
-    [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-    v10 = [(AXUIFloatingViewPresenter *)self containingView];
-    [v10 addSubview:v6];
+    [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+    containingView = [(AXUIFloatingViewPresenter *)self containingView];
+    [containingView addSubview:viewCopy];
 
-    [(AXUIFloatingViewPresenter *)self setFloatingView:v6];
+    [(AXUIFloatingViewPresenter *)self setFloatingView:viewCopy];
     v24 = MEMORY[0x1E696ACD8];
-    v33 = [(AXUIFloatingViewPresenter *)self floatingView];
-    v31 = [v33 leadingAnchor];
-    v32 = [(AXUIFloatingViewPresenter *)self containingView];
-    v30 = [v32 leadingAnchor];
-    v29 = [v31 constraintGreaterThanOrEqualToAnchor:v30];
+    floatingView2 = [(AXUIFloatingViewPresenter *)self floatingView];
+    leadingAnchor = [floatingView2 leadingAnchor];
+    containingView2 = [(AXUIFloatingViewPresenter *)self containingView];
+    leadingAnchor2 = [containingView2 leadingAnchor];
+    v29 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
     v36[0] = v29;
-    v28 = [(AXUIFloatingViewPresenter *)self floatingView];
-    v26 = [v28 trailingAnchor];
-    v27 = [(AXUIFloatingViewPresenter *)self containingView];
-    v25 = [v27 trailingAnchor];
-    v23 = [v26 constraintLessThanOrEqualToAnchor:v25];
+    floatingView3 = [(AXUIFloatingViewPresenter *)self floatingView];
+    trailingAnchor = [floatingView3 trailingAnchor];
+    containingView3 = [(AXUIFloatingViewPresenter *)self containingView];
+    trailingAnchor2 = [containingView3 trailingAnchor];
+    v23 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
     v36[1] = v23;
-    v22 = [(AXUIFloatingViewPresenter *)self floatingView];
-    v20 = [v22 topAnchor];
-    v21 = [(AXUIFloatingViewPresenter *)self containingView];
-    v11 = [v21 topAnchor];
-    v12 = [v20 constraintGreaterThanOrEqualToAnchor:v11];
+    floatingView4 = [(AXUIFloatingViewPresenter *)self floatingView];
+    topAnchor = [floatingView4 topAnchor];
+    containingView4 = [(AXUIFloatingViewPresenter *)self containingView];
+    topAnchor2 = [containingView4 topAnchor];
+    v12 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
     v36[2] = v12;
-    v13 = [(AXUIFloatingViewPresenter *)self floatingView];
-    v14 = [v13 bottomAnchor];
-    v15 = [(AXUIFloatingViewPresenter *)self containingView];
-    v16 = [v15 bottomAnchor];
-    v17 = [v14 constraintLessThanOrEqualToAnchor:v16];
+    floatingView5 = [(AXUIFloatingViewPresenter *)self floatingView];
+    bottomAnchor = [floatingView5 bottomAnchor];
+    containingView5 = [(AXUIFloatingViewPresenter *)self containingView];
+    bottomAnchor2 = [containingView5 bottomAnchor];
+    v17 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
     v36[3] = v17;
     v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:4];
     [v24 activateConstraints:v18];
 
     [(AXUIFloatingViewPresenter *)self _updateEdgeConstraints];
-    v19 = [(AXUIFloatingViewPresenter *)self floatingView];
-    [v19 setAlpha:0.0];
+    floatingView6 = [(AXUIFloatingViewPresenter *)self floatingView];
+    [floatingView6 setAlpha:0.0];
 
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
@@ -115,7 +115,7 @@
     v34[1] = 3221225472;
     v34[2] = __62__AXUIFloatingViewPresenter_presentFloatingView_withDuration___block_invoke_2;
     v34[3] = &unk_1E812E4F8;
-    *&v34[5] = a4;
+    *&v34[5] = duration;
     v34[4] = self;
     [MEMORY[0x1E69DD250] animateWithDuration:v35 animations:v34 completion:0.3];
   }
@@ -144,11 +144,11 @@ uint64_t __62__AXUIFloatingViewPresenter_presentFloatingView_withDuration___bloc
   [(AXUIFloatingViewPresenter *)self _hideFloatingView];
 }
 
-- (void)setAlignedEdge:(unint64_t)a3
+- (void)setAlignedEdge:(unint64_t)edge
 {
-  if (self->_alignedEdge != a3)
+  if (self->_alignedEdge != edge)
   {
-    self->_alignedEdge = a3;
+    self->_alignedEdge = edge;
     [(AXUIFloatingViewPresenter *)self _updateEdgeConstraints];
   }
 }
@@ -156,58 +156,58 @@ uint64_t __62__AXUIFloatingViewPresenter_presentFloatingView_withDuration___bloc
 - (void)_updateEdgeConstraints
 {
   v29[2] = *MEMORY[0x1E69E9840];
-  v3 = [(AXUIFloatingViewPresenter *)self floatingView];
+  floatingView = [(AXUIFloatingViewPresenter *)self floatingView];
 
-  if (v3)
+  if (floatingView)
   {
-    v4 = [(AXUIFloatingViewPresenter *)self edgeConstraints];
+    edgeConstraints = [(AXUIFloatingViewPresenter *)self edgeConstraints];
 
-    if (v4)
+    if (edgeConstraints)
     {
       v5 = MEMORY[0x1E696ACD8];
-      v6 = [(AXUIFloatingViewPresenter *)self edgeConstraints];
-      [v5 deactivateConstraints:v6];
+      edgeConstraints2 = [(AXUIFloatingViewPresenter *)self edgeConstraints];
+      [v5 deactivateConstraints:edgeConstraints2];
     }
 
-    v7 = [(AXUIFloatingViewPresenter *)self withinSafeArea];
-    v8 = [(AXUIFloatingViewPresenter *)self containingView];
-    v9 = v8;
-    if (v7)
+    withinSafeArea = [(AXUIFloatingViewPresenter *)self withinSafeArea];
+    containingView = [(AXUIFloatingViewPresenter *)self containingView];
+    v9 = containingView;
+    if (withinSafeArea)
     {
-      v10 = [v8 safeAreaLayoutGuide];
+      safeAreaLayoutGuide = [containingView safeAreaLayoutGuide];
 
-      v9 = v10;
+      v9 = safeAreaLayoutGuide;
     }
 
-    v11 = [(AXUIFloatingViewPresenter *)self alignedEdge];
-    v12 = [(AXUIFloatingViewPresenter *)self floatingView];
-    if (v11 > 3)
+    alignedEdge = [(AXUIFloatingViewPresenter *)self alignedEdge];
+    floatingView2 = [(AXUIFloatingViewPresenter *)self floatingView];
+    if (alignedEdge > 3)
     {
-      if (v11 == 4)
+      if (alignedEdge == 4)
       {
-        v13 = [v12 bottomAnchor];
-        v14 = [v9 bottomAnchor];
-        v15 = [v13 constraintEqualToAnchor:v14];
+        bottomAnchor = [floatingView2 bottomAnchor];
+        bottomAnchor2 = [v9 bottomAnchor];
+        v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v28[0] = v15;
-        v16 = [(AXUIFloatingViewPresenter *)self floatingView];
-        v17 = [v16 centerXAnchor];
-        v18 = [v9 centerXAnchor];
-        v19 = [v17 constraintEqualToAnchor:v18];
+        floatingView3 = [(AXUIFloatingViewPresenter *)self floatingView];
+        centerXAnchor = [floatingView3 centerXAnchor];
+        centerXAnchor2 = [v9 centerXAnchor];
+        v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         v28[1] = v19;
         v20 = v28;
         goto LABEL_16;
       }
 
-      if (v11 == 8)
+      if (alignedEdge == 8)
       {
-        v13 = [v12 trailingAnchor];
-        v14 = [v9 trailingAnchor];
-        v15 = [v13 constraintEqualToAnchor:v14];
+        bottomAnchor = [floatingView2 trailingAnchor];
+        bottomAnchor2 = [v9 trailingAnchor];
+        v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v26[0] = v15;
-        v16 = [(AXUIFloatingViewPresenter *)self floatingView];
-        v17 = [v16 centerYAnchor];
-        v18 = [v9 centerYAnchor];
-        v19 = [v17 constraintEqualToAnchor:v18];
+        floatingView3 = [(AXUIFloatingViewPresenter *)self floatingView];
+        centerXAnchor = [floatingView3 centerYAnchor];
+        centerXAnchor2 = [v9 centerYAnchor];
+        v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         v26[1] = v19;
         v20 = v26;
         goto LABEL_16;
@@ -216,31 +216,31 @@ uint64_t __62__AXUIFloatingViewPresenter_presentFloatingView_withDuration___bloc
 
     else
     {
-      if (v11 == 1)
+      if (alignedEdge == 1)
       {
-        v13 = [v12 topAnchor];
-        v14 = [v9 topAnchor];
-        v15 = [v13 constraintEqualToAnchor:v14];
+        bottomAnchor = [floatingView2 topAnchor];
+        bottomAnchor2 = [v9 topAnchor];
+        v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v29[0] = v15;
-        v16 = [(AXUIFloatingViewPresenter *)self floatingView];
-        v17 = [v16 centerXAnchor];
-        v18 = [v9 centerXAnchor];
-        v19 = [v17 constraintEqualToAnchor:v18];
+        floatingView3 = [(AXUIFloatingViewPresenter *)self floatingView];
+        centerXAnchor = [floatingView3 centerXAnchor];
+        centerXAnchor2 = [v9 centerXAnchor];
+        v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         v29[1] = v19;
         v20 = v29;
         goto LABEL_16;
       }
 
-      if (v11 == 2)
+      if (alignedEdge == 2)
       {
-        v13 = [v12 leadingAnchor];
-        v14 = [v9 leadingAnchor];
-        v15 = [v13 constraintEqualToAnchor:v14];
+        bottomAnchor = [floatingView2 leadingAnchor];
+        bottomAnchor2 = [v9 leadingAnchor];
+        v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         v27[0] = v15;
-        v16 = [(AXUIFloatingViewPresenter *)self floatingView];
-        v17 = [v16 centerYAnchor];
-        v18 = [v9 centerYAnchor];
-        v19 = [v17 constraintEqualToAnchor:v18];
+        floatingView3 = [(AXUIFloatingViewPresenter *)self floatingView];
+        centerXAnchor = [floatingView3 centerYAnchor];
+        centerXAnchor2 = [v9 centerYAnchor];
+        v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
         v27[1] = v19;
         v20 = v27;
 LABEL_16:
@@ -248,21 +248,21 @@ LABEL_16:
         [(AXUIFloatingViewPresenter *)self setEdgeConstraints:v21];
 
         v22 = MEMORY[0x1E696ACD8];
-        v23 = [(AXUIFloatingViewPresenter *)self edgeConstraints];
-        [v22 activateConstraints:v23];
+        edgeConstraints3 = [(AXUIFloatingViewPresenter *)self edgeConstraints];
+        [v22 activateConstraints:edgeConstraints3];
 
         return;
       }
     }
 
-    v13 = [v12 centerXAnchor];
-    v14 = [v9 centerXAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    bottomAnchor = [floatingView2 centerXAnchor];
+    bottomAnchor2 = [v9 centerXAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v25[0] = v15;
-    v16 = [(AXUIFloatingViewPresenter *)self floatingView];
-    v17 = [v16 centerYAnchor];
-    v18 = [v9 centerYAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    floatingView3 = [(AXUIFloatingViewPresenter *)self floatingView];
+    centerXAnchor = [floatingView3 centerYAnchor];
+    centerXAnchor2 = [v9 centerYAnchor];
+    v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v25[1] = v19;
     v20 = v25;
     goto LABEL_16;

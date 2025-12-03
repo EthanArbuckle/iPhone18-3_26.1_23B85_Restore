@@ -1,29 +1,29 @@
 @interface LNStructuredDataRepresentableTypeSystemProtocolMetadata
-- (BOOL)isEqual:(id)a3;
-- (LNStructuredDataRepresentableTypeSystemProtocolMetadata)initWithCoder:(id)a3;
-- (LNStructuredDataRepresentableTypeSystemProtocolMetadata)initWithStructuredRepresentations:(int64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNStructuredDataRepresentableTypeSystemProtocolMetadata)initWithCoder:(id)coder;
+- (LNStructuredDataRepresentableTypeSystemProtocolMetadata)initWithStructuredRepresentations:(int64_t)representations;
 - (NSString)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNStructuredDataRepresentableTypeSystemProtocolMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [(LNStructuredDataRepresentableTypeSystemProtocolMetadata *)self structuredDataRepresentations];
-      v8 = v7 == [(LNStructuredDataRepresentableTypeSystemProtocolMetadata *)v6 structuredDataRepresentations];
+      structuredDataRepresentations = [(LNStructuredDataRepresentableTypeSystemProtocolMetadata *)self structuredDataRepresentations];
+      v8 = structuredDataRepresentations == [(LNStructuredDataRepresentableTypeSystemProtocolMetadata *)v6 structuredDataRepresentations];
     }
 
     else
@@ -45,20 +45,20 @@
   return v6;
 }
 
-- (LNStructuredDataRepresentableTypeSystemProtocolMetadata)initWithCoder:(id)a3
+- (LNStructuredDataRepresentableTypeSystemProtocolMetadata)initWithCoder:(id)coder
 {
-  v4 = [a3 decodeIntegerForKey:@"structuredDataRepresentations"];
+  v4 = [coder decodeIntegerForKey:@"structuredDataRepresentations"];
 
   return [(LNStructuredDataRepresentableTypeSystemProtocolMetadata *)self initWithStructuredRepresentations:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[LNStructuredDataRepresentableTypeSystemProtocolMetadata structuredDataRepresentations](self forKey:{"structuredDataRepresentations"), @"structuredDataRepresentations"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[LNStructuredDataRepresentableTypeSystemProtocolMetadata structuredDataRepresentations](self forKey:{"structuredDataRepresentations"), @"structuredDataRepresentations"}];
 }
 
-- (LNStructuredDataRepresentableTypeSystemProtocolMetadata)initWithStructuredRepresentations:(int64_t)a3
+- (LNStructuredDataRepresentableTypeSystemProtocolMetadata)initWithStructuredRepresentations:(int64_t)representations
 {
   v8.receiver = self;
   v8.super_class = LNStructuredDataRepresentableTypeSystemProtocolMetadata;
@@ -66,7 +66,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_structuredDataRepresentations = a3;
+    v4->_structuredDataRepresentations = representations;
     v6 = v4;
   }
 

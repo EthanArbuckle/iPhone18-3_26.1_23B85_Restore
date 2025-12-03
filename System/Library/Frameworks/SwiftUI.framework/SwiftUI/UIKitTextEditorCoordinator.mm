@@ -1,50 +1,50 @@
 @interface UIKitTextEditorCoordinator
-- (BOOL)textView:(id)a3 shouldChangeTextInRanges:(id)a4 replacementText:(id)a5;
+- (BOOL)textView:(id)view shouldChangeTextInRanges:(id)ranges replacementText:(id)text;
 - (_TtC7SwiftUIP33_A90AD0DD13E6C72FFE734B65FAFF6EFF26UIKitTextEditorCoordinator)init;
-- (id)textView:(id)a3 editMenuForTextInRanges:(id)a4 suggestedActions:(id)a5;
-- (void)textViewDidChange:(id)a3;
-- (void)textViewDidChangeSelection:(id)a3;
+- (id)textView:(id)view editMenuForTextInRanges:(id)ranges suggestedActions:(id)actions;
+- (void)textViewDidChange:(id)change;
+- (void)textViewDidChangeSelection:(id)selection;
 @end
 
 @implementation UIKitTextEditorCoordinator
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  UIKitTextEditorCoordinator.textViewDidChange(_:)(v4);
+  changeCopy = change;
+  selfCopy = self;
+  UIKitTextEditorCoordinator.textViewDidChange(_:)(changeCopy);
 }
 
-- (BOOL)textView:(id)a3 shouldChangeTextInRanges:(id)a4 replacementText:(id)a5
+- (BOOL)textView:(id)view shouldChangeTextInRanges:(id)ranges replacementText:(id)text
 {
   type metadata accessor for NSObject(0, &lazy cache variable for type metadata for NSValue);
   v7 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  v11 = a3;
-  v12 = self;
-  LOBYTE(v8) = UIKitTextEditorCoordinator.textView(_:shouldChangeTextInRanges:replacementText:)(v11, v7, v8, v10);
+  viewCopy = view;
+  selfCopy = self;
+  LOBYTE(v8) = UIKitTextEditorCoordinator.textView(_:shouldChangeTextInRanges:replacementText:)(viewCopy, v7, v8, v10);
 
   return v8 & 1;
 }
 
-- (id)textView:(id)a3 editMenuForTextInRanges:(id)a4 suggestedActions:(id)a5
+- (id)textView:(id)view editMenuForTextInRanges:(id)ranges suggestedActions:(id)actions
 {
   type metadata accessor for NSObject(0, &lazy cache variable for type metadata for UIMenuElement);
   v7 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = a3;
-  v9 = self;
-  specialized UIKitTextEditorCoordinator.textView(_:editMenuForTextInRanges:suggestedActions:)(v8, v7);
+  viewCopy = view;
+  selfCopy = self;
+  specialized UIKitTextEditorCoordinator.textView(_:editMenuForTextInRanges:suggestedActions:)(viewCopy, v7);
   v11 = v10;
 
   return v11;
 }
 
-- (void)textViewDidChangeSelection:(id)a3
+- (void)textViewDidChangeSelection:(id)selection
 {
-  v4 = a3;
-  v5 = self;
-  UIKitTextEditorCoordinator.textViewDidChangeSelection(_:)(v4);
+  selectionCopy = selection;
+  selfCopy = self;
+  UIKitTextEditorCoordinator.textViewDidChangeSelection(_:)(selectionCopy);
 }
 
 - (_TtC7SwiftUIP33_A90AD0DD13E6C72FFE734B65FAFF6EFF26UIKitTextEditorCoordinator)init

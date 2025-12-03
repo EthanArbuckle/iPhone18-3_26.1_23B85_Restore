@@ -2,8 +2,8 @@
 + (id)_extensionAuxiliaryHostProtocol;
 + (id)_extensionAuxiliaryVendorProtocol;
 - (id)serviceContext;
-- (void)dismissOverlayWithReply:(id)a3;
-- (void)presentOverlayWithConfiguration:(id)a3 delegate:(id)a4 reply:(id)a5;
+- (void)dismissOverlayWithReply:(id)reply;
+- (void)presentOverlayWithConfiguration:(id)configuration delegate:(id)delegate reply:(id)reply;
 @end
 
 @implementation ASOHostContext
@@ -34,26 +34,26 @@
 
 - (id)serviceContext
 {
-  v2 = [(ASOHostContext *)self _auxiliaryConnection];
-  v3 = [v2 remoteObjectProxy];
+  _auxiliaryConnection = [(ASOHostContext *)self _auxiliaryConnection];
+  remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
 
-  return v3;
+  return remoteObjectProxy;
 }
 
-- (void)presentOverlayWithConfiguration:(id)a3 delegate:(id)a4 reply:(id)a5
+- (void)presentOverlayWithConfiguration:(id)configuration delegate:(id)delegate reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(ASOHostContext *)self serviceContext];
-  [v11 presentOverlayWithConfiguration:v10 delegate:v9 reply:v8];
+  replyCopy = reply;
+  delegateCopy = delegate;
+  configurationCopy = configuration;
+  serviceContext = [(ASOHostContext *)self serviceContext];
+  [serviceContext presentOverlayWithConfiguration:configurationCopy delegate:delegateCopy reply:replyCopy];
 }
 
-- (void)dismissOverlayWithReply:(id)a3
+- (void)dismissOverlayWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(ASOHostContext *)self serviceContext];
-  [v5 dismissOverlayWithReply:v4];
+  replyCopy = reply;
+  serviceContext = [(ASOHostContext *)self serviceContext];
+  [serviceContext dismissOverlayWithReply:replyCopy];
 }
 
 @end

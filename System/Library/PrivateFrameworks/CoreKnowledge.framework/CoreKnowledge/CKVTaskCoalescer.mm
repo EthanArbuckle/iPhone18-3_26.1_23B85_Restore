@@ -1,23 +1,23 @@
 @interface CKVTaskCoalescer
-- (BOOL)_didIncomingTask:(id)a3 arriveInCoalescingWindowWithLastTask:(id)a4;
+- (BOOL)_didIncomingTask:(id)task arriveInCoalescingWindowWithLastTask:(id)lastTask;
 - (CKVTaskCoalescer)init;
-- (CKVTaskCoalescer)initWithManagerName:(id)a3 coalescenceInterval:(double)a4 coalescenceDelay:(double)a5 dispatchQoS:(unsigned int)a6 settings:(id)a7;
+- (CKVTaskCoalescer)initWithManagerName:(id)name coalescenceInterval:(double)interval coalescenceDelay:(double)delay dispatchQoS:(unsigned int)s settings:(id)settings;
 - (void)_beginTransaction;
 - (void)_endTransaction;
-- (void)submitTaskWithId:(unsigned __int16)a3 taskBlock:(id)a4 completion:(id)a5;
+- (void)submitTaskWithId:(unsigned __int16)id taskBlock:(id)block completion:(id)completion;
 @end
 
 @implementation CKVTaskCoalescer
 
-- (BOOL)_didIncomingTask:(id)a3 arriveInCoalescingWindowWithLastTask:(id)a4
+- (BOOL)_didIncomingTask:(id)task arriveInCoalescingWindowWithLastTask:(id)lastTask
 {
-  v6 = a4;
-  v7 = [a3 date];
-  [v7 timeIntervalSince1970];
+  lastTaskCopy = lastTask;
+  date = [task date];
+  [date timeIntervalSince1970];
   v9 = v8;
-  v10 = [v6 date];
+  date2 = [lastTaskCopy date];
 
-  [v10 timeIntervalSince1970];
+  [date2 timeIntervalSince1970];
   v12 = v9 - v11;
 
   return v12 < self->_coalescenceInterval;
@@ -26,17 +26,17 @@
 - (void)_endTransaction
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_transactionCounter - 1;
-  v2->_transactionCounter = v3;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_transactionCounter - 1;
+  selfCopy->_transactionCounter = v3;
   if (!v3)
   {
     v4 = CKLogContextVocabulary;
     if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_DEBUG))
     {
-      managerName = v2->_managerName;
-      transaction = v2->_transaction;
+      managerName = selfCopy->_managerName;
+      transaction = selfCopy->_transaction;
       v8 = 136315650;
       v9 = "[CKVTaskCoalescer _endTransaction]";
       v10 = 2112;
@@ -46,31 +46,31 @@
       _os_log_debug_impl(&dword_1C8683000, v4, OS_LOG_TYPE_DEBUG, "%s (%@) Releasing OS transaction: %@", &v8, 0x20u);
     }
 
-    v5 = v2->_transaction;
-    v2->_transaction = 0;
+    v5 = selfCopy->_transaction;
+    selfCopy->_transaction = 0;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_beginTransaction
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  transactionCounter = v2->_transactionCounter;
-  v2->_transactionCounter = transactionCounter + 1;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  transactionCounter = selfCopy->_transactionCounter;
+  selfCopy->_transactionCounter = transactionCounter + 1;
   if (!transactionCounter)
   {
     v4 = os_transaction_create();
-    transaction = v2->_transaction;
-    v2->_transaction = v4;
+    transaction = selfCopy->_transaction;
+    selfCopy->_transaction = v4;
 
     v6 = CKLogContextVocabulary;
     if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_DEBUG))
     {
-      managerName = v2->_managerName;
-      v8 = v2->_transaction;
+      managerName = selfCopy->_managerName;
+      v8 = selfCopy->_transaction;
       v9 = 136315650;
       v10 = "[CKVTaskCoalescer _beginTransaction]";
       v11 = 2112;
@@ -81,17 +81,17 @@
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)submitTaskWithId:(unsigned __int16)a3 taskBlock:(id)a4 completion:(id)a5
+- (void)submitTaskWithId:(unsigned __int16)id taskBlock:(id)block completion:(id)completion
 {
-  v6 = a3;
+  idCopy = id;
   v40 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  blockCopy = block;
+  completionCopy = completion;
   [(CKVTaskCoalescer *)self _beginTransaction];
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v6];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:idCopy];
   v11 = MEMORY[0x1E696AD98];
   atomic_fetch_add(&self->_eventIdCounter, 1u);
   v12 = [v11 numberWithUnsignedInteger:?];
@@ -116,8 +116,8 @@
   aBlock[2] = __58__CKVTaskCoalescer_submitTaskWithId_taskBlock_completion___block_invoke;
   aBlock[3] = &unk_1E831E850;
   aBlock[4] = self;
-  v31 = v9;
-  v15 = v9;
+  v31 = completionCopy;
+  v15 = completionCopy;
   v16 = _Block_copy(aBlock);
   taskRegistryQueue = self->_taskRegistryQueue;
   v24[0] = MEMORY[0x1E69E9820];
@@ -129,8 +129,8 @@
   v26 = v12;
   v27 = v14;
   v28 = v16;
-  v29 = v8;
-  v18 = v8;
+  v29 = blockCopy;
+  v18 = blockCopy;
   v19 = v14;
   v20 = v16;
   v21 = v12;
@@ -267,11 +267,11 @@ void __58__CKVTaskCoalescer_submitTaskWithId_taskBlock_completion___block_invoke
   }
 }
 
-- (CKVTaskCoalescer)initWithManagerName:(id)a3 coalescenceInterval:(double)a4 coalescenceDelay:(double)a5 dispatchQoS:(unsigned int)a6 settings:(id)a7
+- (CKVTaskCoalescer)initWithManagerName:(id)name coalescenceInterval:(double)interval coalescenceDelay:(double)delay dispatchQoS:(unsigned int)s settings:(id)settings
 {
   v45 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a7;
+  nameCopy = name;
+  settingsCopy = settings;
   v40.receiver = self;
   v40.super_class = CKVTaskCoalescer;
   v14 = [(CKVTaskCoalescer *)&v40 init];
@@ -280,7 +280,7 @@ void __58__CKVTaskCoalescer_submitTaskWithId_taskBlock_completion___block_invoke
     goto LABEL_7;
   }
 
-  v15 = [v12 copy];
+  v15 = [nameCopy copy];
   managerName = v14->_managerName;
   v14->_managerName = v15;
 
@@ -314,8 +314,8 @@ LABEL_10:
   v14->_transaction = 0;
 
   v14->_transactionCounter = 0;
-  v14->_coalescenceInterval = a4;
-  if (a4 <= 0.0)
+  v14->_coalescenceInterval = interval;
+  if (interval <= 0.0)
   {
     v32 = CKLogContextVocabulary;
     if (!os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_ERROR))
@@ -325,7 +325,7 @@ LABEL_10:
 
     v33 = MEMORY[0x1E696AD98];
     v34 = v32;
-    v35 = [v33 numberWithDouble:a4];
+    v35 = [v33 numberWithDouble:interval];
     *buf = 136315394;
     v42 = "[CKVTaskCoalescer initWithManagerName:coalescenceInterval:coalescenceDelay:dispatchQoS:settings:]";
     v43 = 2112;
@@ -337,8 +337,8 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  v14->_coalescenceDelay = a5;
-  if (a5 <= 0.0)
+  v14->_coalescenceDelay = delay;
+  if (delay <= 0.0)
   {
     v37 = CKLogContextVocabulary;
     if (!os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_ERROR))
@@ -348,7 +348,7 @@ LABEL_15:
 
     v38 = MEMORY[0x1E696AD98];
     v34 = v37;
-    v35 = [v38 numberWithDouble:a5];
+    v35 = [v38 numberWithDouble:delay];
     *buf = 136315394;
     v42 = "[CKVTaskCoalescer initWithManagerName:coalescenceInterval:coalescenceDelay:dispatchQoS:settings:]";
     v43 = 2112;
@@ -357,7 +357,7 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  objc_storeStrong(&v14->_settings, a7);
+  objc_storeStrong(&v14->_settings, settings);
   if (!v14->_settings)
   {
     v29 = CKLogContextVocabulary;
@@ -375,13 +375,13 @@ LABEL_15:
   }
 
   v20 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v21 = dispatch_queue_attr_make_with_qos_class(v20, a6, 0);
+  v21 = dispatch_queue_attr_make_with_qos_class(v20, s, 0);
   v22 = dispatch_queue_create("taskRegistryQueue", v21);
   taskRegistryQueue = v14->_taskRegistryQueue;
   v14->_taskRegistryQueue = v22;
 
   v24 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v25 = dispatch_queue_attr_make_with_qos_class(v24, a6, 0);
+  v25 = dispatch_queue_attr_make_with_qos_class(v24, s, 0);
   v26 = dispatch_queue_create("taskExecutionQueue", v25);
   taskExecutionQueue = v14->_taskExecutionQueue;
   v14->_taskExecutionQueue = v26;

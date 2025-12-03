@@ -1,17 +1,17 @@
 @interface _INUIExtensionContext
-- (CGSize)_bestAllowedSizeForAllowedSizesDictionary:(id)a3;
+- (CGSize)_bestAllowedSizeForAllowedSizesDictionary:(id)dictionary;
 - (CGSize)hostedViewMaximumAllowedSize;
 - (CGSize)hostedViewMinimumAllowedSize;
-- (_INUIExtensionContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5;
+- (_INUIExtensionContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d;
 - (_INUIRemoteViewControllerServing)viewController;
 - (id)_errorHandlingHostProxy;
 - (id)interfaceParametersDescription;
-- (void)_requestHandlingOfIntent:(id)a3;
+- (void)_requestHandlingOfIntent:(id)intent;
 - (void)_willBeginEditing;
-- (void)configureForParameters:(id)a3 ofInteraction:(id)a4 interactiveBehavior:(unint64_t)a5 context:(unint64_t)a6 completion:(id)a7;
-- (void)desiresInteractivity:(id)a3;
-- (void)queryRepresentedPropertiesWithCompletion:(id)a3;
-- (void)setExtensionContextState:(id)a3 completion:(id)a4;
+- (void)configureForParameters:(id)parameters ofInteraction:(id)interaction interactiveBehavior:(unint64_t)behavior context:(unint64_t)context completion:(id)completion;
+- (void)desiresInteractivity:(id)interactivity;
+- (void)queryRepresentedPropertiesWithCompletion:(id)completion;
+- (void)setExtensionContextState:(id)state completion:(id)completion;
 - (void)viewWasCancelled;
 @end
 
@@ -34,98 +34,98 @@
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)queryRepresentedPropertiesWithCompletion:(id)a3
+- (void)queryRepresentedPropertiesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __66___INUIExtensionContext_queryRepresentedPropertiesWithCompletion___block_invoke;
   v6[3] = &unk_27872BD68;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)desiresInteractivity:(id)a3
+- (void)desiresInteractivity:(id)interactivity
 {
-  v4 = a3;
+  interactivityCopy = interactivity;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __46___INUIExtensionContext_desiresInteractivity___block_invoke;
   v6[3] = &unk_27872BD68;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = interactivityCopy;
+  v5 = interactivityCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
-- (void)configureForParameters:(id)a3 ofInteraction:(id)a4 interactiveBehavior:(unint64_t)a5 context:(unint64_t)a6 completion:(id)a7
+- (void)configureForParameters:(id)parameters ofInteraction:(id)interaction interactiveBehavior:(unint64_t)behavior context:(unint64_t)context completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
+  parametersCopy = parameters;
+  interactionCopy = interaction;
+  completionCopy = completion;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __101___INUIExtensionContext_configureForParameters_ofInteraction_interactiveBehavior_context_completion___block_invoke;
   v18[3] = &unk_27872BA00;
   v18[4] = self;
-  v19 = v12;
-  v22 = a5;
-  v23 = a6;
-  v20 = v13;
-  v21 = v14;
-  v15 = v14;
-  v16 = v13;
-  v17 = v12;
+  v19 = parametersCopy;
+  behaviorCopy = behavior;
+  contextCopy = context;
+  v20 = interactionCopy;
+  v21 = completionCopy;
+  v15 = completionCopy;
+  v16 = interactionCopy;
+  v17 = parametersCopy;
   dispatch_async(MEMORY[0x277D85CD0], v18);
 }
 
 - (void)_willBeginEditing
 {
-  v2 = [(_INUIExtensionContext *)self _errorHandlingHostProxy];
-  [v2 willBeginEditing];
+  _errorHandlingHostProxy = [(_INUIExtensionContext *)self _errorHandlingHostProxy];
+  [_errorHandlingHostProxy willBeginEditing];
 }
 
-- (void)_requestHandlingOfIntent:(id)a3
+- (void)_requestHandlingOfIntent:(id)intent
 {
-  v5 = a3;
+  intentCopy = intent;
   if (INThisProcessHasEntitlement())
   {
-    v4 = [(_INUIExtensionContext *)self _errorHandlingHostProxy];
-    [v4 requestHandlingOfIntent:v5];
+    _errorHandlingHostProxy = [(_INUIExtensionContext *)self _errorHandlingHostProxy];
+    [_errorHandlingHostProxy requestHandlingOfIntent:intentCopy];
   }
 }
 
 - (id)interfaceParametersDescription
 {
   v30 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
-  v4 = [(_INUIExtensionContextState *)self->_currentExtensionContextState interfaceSections];
-  v5 = [v4 count];
+  string = [MEMORY[0x277CCAB68] string];
+  interfaceSections = [(_INUIExtensionContextState *)self->_currentExtensionContextState interfaceSections];
+  v5 = [interfaceSections count];
 
   if (v5)
   {
     v6 = 0;
-    v24 = self;
+    selfCopy = self;
     do
     {
-      v7 = [(_INUIExtensionContextState *)self->_currentExtensionContextState interfaceSections];
-      v8 = [v7 objectAtIndex:v6];
+      interfaceSections2 = [(_INUIExtensionContextState *)self->_currentExtensionContextState interfaceSections];
+      v8 = [interfaceSections2 objectAtIndex:v6];
 
       if (v6)
       {
-        [v3 appendString:@"\n\n"];
+        [string appendString:@"\n\n"];
       }
 
-      [v3 appendFormat:@"Section %zd:\n", ++v6];
-      [v3 appendString:@"\tParameters:\n"];
+      [string appendFormat:@"Section %zd:\n", ++v6];
+      [string appendString:@"\tParameters:\n"];
       v27 = 0u;
       v28 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v9 = [v8 parameters];
-      v10 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      parameters = [v8 parameters];
+      v10 = [parameters countByEnumeratingWithState:&v25 objects:v29 count:16];
       if (v10)
       {
         v11 = v10;
@@ -136,48 +136,48 @@
           {
             if (*v26 != v12)
             {
-              objc_enumerationMutation(v9);
+              objc_enumerationMutation(parameters);
             }
 
             v14 = *(*(&v25 + 1) + 8 * i);
             v15 = NSStringFromClass([v14 parameterClass]);
-            v16 = [v14 parameterKeyPath];
-            [v3 appendFormat:@"\t\t%@ - %@\n", v15, v16];
+            parameterKeyPath = [v14 parameterKeyPath];
+            [string appendFormat:@"\t\t%@ - %@\n", v15, parameterKeyPath];
           }
 
-          v11 = [v9 countByEnumeratingWithState:&v25 objects:v29 count:16];
+          v11 = [parameters countByEnumeratingWithState:&v25 objects:v29 count:16];
         }
 
         while (v11);
       }
 
-      v17 = [v8 interactiveBehavior];
+      interactiveBehavior = [v8 interactiveBehavior];
       v18 = @"None";
-      if ((v17 - 1) <= 2)
+      if ((interactiveBehavior - 1) <= 2)
       {
-        v18 = off_27872BA20[v17 - 1];
+        v18 = off_27872BA20[interactiveBehavior - 1];
       }
 
-      [v3 appendFormat:@"\tInteractive Behavior: %@", v18];
+      [string appendFormat:@"\tInteractive Behavior: %@", v18];
 
-      self = v24;
-      v19 = [(_INUIExtensionContextState *)v24->_currentExtensionContextState interfaceSections];
-      v20 = [v19 count];
+      self = selfCopy;
+      interfaceSections3 = [(_INUIExtensionContextState *)selfCopy->_currentExtensionContextState interfaceSections];
+      v20 = [interfaceSections3 count];
     }
 
     while (v6 < v20);
   }
 
-  v21 = [v3 copy];
+  v21 = [string copy];
 
   v22 = *MEMORY[0x277D85DE8];
 
   return v21;
 }
 
-- (CGSize)_bestAllowedSizeForAllowedSizesDictionary:(id)a3
+- (CGSize)_bestAllowedSizeForAllowedSizesDictionary:(id)dictionary
 {
-  v3 = _INUIUtilitiesBestFittingSizeForSizeBySystemVersionDictionary(a3);
+  v3 = _INUIUtilitiesBestFittingSizeForSizeBySystemVersionDictionary(dictionary);
   result.height = v4;
   result.width = v3;
   return result;
@@ -185,8 +185,8 @@
 
 - (CGSize)hostedViewMaximumAllowedSize
 {
-  v3 = [(_INUIExtensionContextState *)self->_currentExtensionContextState hostedViewMaximumAllowedSizes];
-  [(_INUIExtensionContext *)self _bestAllowedSizeForAllowedSizesDictionary:v3];
+  hostedViewMaximumAllowedSizes = [(_INUIExtensionContextState *)self->_currentExtensionContextState hostedViewMaximumAllowedSizes];
+  [(_INUIExtensionContext *)self _bestAllowedSizeForAllowedSizesDictionary:hostedViewMaximumAllowedSizes];
   v5 = v4;
   v7 = v6;
 
@@ -199,8 +199,8 @@
 
 - (CGSize)hostedViewMinimumAllowedSize
 {
-  v3 = [(_INUIExtensionContextState *)self->_currentExtensionContextState hostedViewMinimumAllowedSizes];
-  [(_INUIExtensionContext *)self _bestAllowedSizeForAllowedSizesDictionary:v3];
+  hostedViewMinimumAllowedSizes = [(_INUIExtensionContextState *)self->_currentExtensionContextState hostedViewMinimumAllowedSizes];
+  [(_INUIExtensionContext *)self _bestAllowedSizeForAllowedSizesDictionary:hostedViewMinimumAllowedSizes];
   v5 = v4;
   v7 = v6;
 
@@ -211,42 +211,42 @@
   return result;
 }
 
-- (void)setExtensionContextState:(id)a3 completion:(id)a4
+- (void)setExtensionContextState:(id)state completion:(id)completion
 {
-  v6 = a3;
-  v9 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   currentExtensionContextState = self->_currentExtensionContextState;
-  self->_currentExtensionContextState = v6;
+  self->_currentExtensionContextState = stateCopy;
 
-  v8 = v9;
-  if (v9)
+  v8 = completionCopy;
+  if (completionCopy)
   {
-    (*(v9 + 2))(v9);
-    v8 = v9;
+    (*(completionCopy + 2))(completionCopy);
+    v8 = completionCopy;
   }
 }
 
 - (id)_errorHandlingHostProxy
 {
-  v2 = [(_INUIExtensionContext *)self _auxiliaryConnection];
-  v3 = [v2 remoteObjectProxyWithErrorHandler:&__block_literal_global_439];
+  _auxiliaryConnection = [(_INUIExtensionContext *)self _auxiliaryConnection];
+  v3 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:&__block_literal_global_439];
 
   return v3;
 }
 
-- (_INUIExtensionContext)initWithInputItems:(id)a3 listenerEndpoint:(id)a4 contextUUID:(id)a5
+- (_INUIExtensionContext)initWithInputItems:(id)items listenerEndpoint:(id)endpoint contextUUID:(id)d
 {
   v10.receiver = self;
   v10.super_class = _INUIExtensionContext;
-  v5 = [(_INUIExtensionContext *)&v10 initWithInputItems:a3 listenerEndpoint:a4 contextUUID:a5];
+  v5 = [(_INUIExtensionContext *)&v10 initWithInputItems:items listenerEndpoint:endpoint contextUUID:d];
   v6 = v5;
   if (v5)
   {
     currentExtensionContextState = v5->_currentExtensionContextState;
     v5->_currentExtensionContextState = 0;
 
-    v8 = [MEMORY[0x277CD3F08] sharedPreferences];
-    [v8 _updateWithExtensionContext:v6];
+    mEMORY[0x277CD3F08] = [MEMORY[0x277CD3F08] sharedPreferences];
+    [mEMORY[0x277CD3F08] _updateWithExtensionContext:v6];
   }
 
   return v6;

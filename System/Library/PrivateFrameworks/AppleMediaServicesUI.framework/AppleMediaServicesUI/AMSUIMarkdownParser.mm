@@ -1,36 +1,36 @@
 @interface AMSUIMarkdownParser
 + (void)initialize;
 - (AMSUIMarkdownParser)init;
-- (AMSUIMarkdownParser)initWithString:(id)a3;
+- (AMSUIMarkdownParser)initWithString:(id)string;
 - (AMSUIMarkdownParserDelegate)delegate;
 - (void)parse;
-- (void)reportErrorWithCode:(unint64_t)a3 userInfo:(id)a4;
-- (void)reportParseError:(_xmlError *)a3;
+- (void)reportErrorWithCode:(unint64_t)code userInfo:(id)info;
+- (void)reportParseError:(_xmlError *)error;
 @end
 
 @implementation AMSUIMarkdownParser
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     xmlInitParser();
   }
 
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___AMSUIMarkdownParser;
   objc_msgSendSuper2(&v3, sel_initialize);
 }
 
-- (AMSUIMarkdownParser)initWithString:(id)a3
+- (AMSUIMarkdownParser)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = AMSUIMarkdownParser;
   v5 = [(AMSUIMarkdownParser *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [stringCopy copy];
     string = v5->_string;
     v5->_string = v6;
   }
@@ -45,60 +45,60 @@
   return 0;
 }
 
-- (void)reportErrorWithCode:(unint64_t)a3 userInfo:(id)a4
+- (void)reportErrorWithCode:(unint64_t)code userInfo:(id)info
 {
-  v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"AppleMediaServicesUI.MarkdownParser.errorDomain" code:a3 userInfo:a4];
-  v5 = [(AMSUIMarkdownParser *)self delegate];
-  [v5 parser:self parseErrorOccurred:v6];
+  v6 = [MEMORY[0x1E696ABC0] errorWithDomain:@"AppleMediaServicesUI.MarkdownParser.errorDomain" code:code userInfo:info];
+  delegate = [(AMSUIMarkdownParser *)self delegate];
+  [delegate parser:self parseErrorOccurred:v6];
 }
 
-- (void)reportParseError:(_xmlError *)a3
+- (void)reportParseError:(_xmlError *)error
 {
-  if (a3->level == XML_ERR_FATAL)
+  if (error->level == XML_ERR_FATAL)
   {
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v6 = [MEMORY[0x1E696AD98] numberWithInt:a3->line];
+    v6 = [MEMORY[0x1E696AD98] numberWithInt:error->line];
     [v9 setObject:v6 forKeyedSubscript:@"AppleMediaServicesUI.MarkdownParser.errorLineNumber"];
 
-    v7 = [MEMORY[0x1E696AD98] numberWithInt:a3->int2];
+    v7 = [MEMORY[0x1E696AD98] numberWithInt:error->int2];
     [v9 setObject:v7 forKeyedSubscript:@"AppleMediaServicesUI.MarkdownParser.errorColumn"];
 
-    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:a3->message];
+    v8 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithUTF8String:error->message];
     if (v8)
     {
       [v9 setObject:v8 forKeyedSubscript:*MEMORY[0x1E696A578]];
     }
 
-    [(AMSUIMarkdownParser *)self reportErrorWithCode:a3->code userInfo:v9];
+    [(AMSUIMarkdownParser *)self reportErrorWithCode:error->code userInfo:v9];
   }
 }
 
 - (void)parse
 {
-  v3 = [(AMSUIMarkdownParser *)self delegate];
+  delegate = [(AMSUIMarkdownParser *)self delegate];
 
-  if (!v3)
+  if (!delegate)
   {
     return;
   }
 
-  v4 = [(AMSUIMarkdownParser *)self string];
-  v5 = [v4 UTF8String];
+  string = [(AMSUIMarkdownParser *)self string];
+  uTF8String = [string UTF8String];
 
-  if (!v5 || (-[AMSUIMarkdownParser string](self, "string"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 lengthOfBytesUsingEncoding:4], v6, v7 >> 31))
+  if (!uTF8String || (-[AMSUIMarkdownParser string](self, "string"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 lengthOfBytesUsingEncoding:4], v6, v7 >> 31))
   {
-    v8 = self;
+    selfCopy2 = self;
     v9 = -101;
 LABEL_5:
 
-    [(AMSUIMarkdownParser *)v8 reportErrorWithCode:v9 userInfo:0];
+    [(AMSUIMarkdownParser *)selfCopy2 reportErrorWithCode:v9 userInfo:0];
     return;
   }
 
-  MemoryParserCtxt = htmlCreateMemoryParserCtxt(v5, v7);
+  MemoryParserCtxt = htmlCreateMemoryParserCtxt(uTF8String, v7);
   if (!MemoryParserCtxt)
   {
-    v8 = self;
+    selfCopy2 = self;
     v9 = -100;
     goto LABEL_5;
   }

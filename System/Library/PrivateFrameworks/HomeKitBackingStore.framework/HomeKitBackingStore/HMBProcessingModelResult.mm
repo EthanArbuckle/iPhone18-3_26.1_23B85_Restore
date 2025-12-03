@@ -1,6 +1,6 @@
 @interface HMBProcessingModelResult
 + (id)alloc;
-- (HMBProcessingModelResult)initWithModel:(id)a3 options:(id)a4 mirrorOutputFuture:(id)a5;
+- (HMBProcessingModelResult)initWithModel:(id)model options:(id)options mirrorOutputFuture:(id)future;
 - (id)attributeDescriptions;
 @end
 
@@ -10,15 +10,15 @@
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMBProcessingModelResult *)self model];
-  v5 = [v3 initWithName:@"Model" value:v4];
+  model = [(HMBProcessingModelResult *)self model];
+  v5 = [v3 initWithName:@"Model" value:model];
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMBProcessingModelResult *)self options];
-  v8 = [v6 initWithName:@"Options" value:v7];
+  options = [(HMBProcessingModelResult *)self options];
+  v8 = [v6 initWithName:@"Options" value:options];
   v16[1] = v8;
   v9 = objc_alloc(MEMORY[0x277D0F778]);
-  v10 = [(HMBProcessingModelResult *)self mirrorOutputFuture];
-  if (v10)
+  mirrorOutputFuture = [(HMBProcessingModelResult *)self mirrorOutputFuture];
+  if (mirrorOutputFuture)
   {
     v11 = @"<not nil>";
   }
@@ -37,34 +37,34 @@
   return v13;
 }
 
-- (HMBProcessingModelResult)initWithModel:(id)a3 options:(id)a4 mirrorOutputFuture:(id)a5
+- (HMBProcessingModelResult)initWithModel:(id)model options:(id)options mirrorOutputFuture:(id)future
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  modelCopy = model;
+  optionsCopy = options;
+  futureCopy = future;
+  if (!modelCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  if (!v10)
+  if (!optionsCopy)
   {
 LABEL_7:
     v16 = _HMFPreconditionFailure();
     return +[(HMBProcessingModelResult *)v16];
   }
 
-  v12 = v11;
+  v12 = futureCopy;
   v18.receiver = self;
   v18.super_class = HMBProcessingModelResult;
   v13 = [(HMBProcessingModelResult *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_model, a3);
-    objc_storeStrong(&v14->_options, a4);
-    objc_storeStrong(&v14->_mirrorOutputFuture, a5);
+    objc_storeStrong(&v13->_model, model);
+    objc_storeStrong(&v14->_options, options);
+    objc_storeStrong(&v14->_mirrorOutputFuture, future);
   }
 
   return v14;
@@ -84,7 +84,7 @@ LABEL_7:
     objc_exception_throw(v8);
   }
 
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___HMBProcessingModelResult;
   return objc_msgSendSuper2(&v10, sel_alloc);
 }

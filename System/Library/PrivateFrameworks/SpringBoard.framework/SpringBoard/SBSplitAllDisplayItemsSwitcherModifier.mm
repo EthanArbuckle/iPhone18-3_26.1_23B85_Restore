@@ -1,13 +1,13 @@
 @interface SBSplitAllDisplayItemsSwitcherModifier
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3;
-- (id)handleEvent:(id)a3;
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts;
+- (id)handleEvent:(id)event;
 @end
 
 @implementation SBSplitAllDisplayItemsSwitcherModifier
 
-- (id)handleEvent:(id)a3
+- (id)handleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   if (self->_hasInvalidatedAppLayoutsForInsertion || [(SBChainableModifier *)self state]== 1)
   {
     v5 = 0;
@@ -22,7 +22,7 @@
 
   v12.receiver = self;
   v12.super_class = SBSplitAllDisplayItemsSwitcherModifier;
-  v7 = [(SBChainableModifier *)&v12 handleEvent:v4];
+  v7 = [(SBChainableModifier *)&v12 handleEvent:eventCopy];
   v8 = SBAppendSwitcherModifierResponse(v7, v5);
 
   if (!self->_hasInvalidatedAppLayoutsForRemoval && [(SBChainableModifier *)self state]== 1)
@@ -37,17 +37,17 @@
   return v8;
 }
 
-- (id)adjustedAppLayoutsForAppLayouts:(id)a3
+- (id)adjustedAppLayoutsForAppLayouts:(id)layouts
 {
-  v16 = self;
+  selfCopy = self;
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  layoutsCopy = layouts;
   v4 = objc_opt_new();
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v3;
+  obj = layoutsCopy;
   v19 = [obj countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v19)
   {
@@ -68,8 +68,8 @@
         v24 = 0u;
         v25 = 0u;
         v26 = 0u;
-        v7 = [v6 allItems];
-        v8 = [v7 countByEnumeratingWithState:&v23 objects:v31 count:16];
+        allItems = [v6 allItems];
+        v8 = [allItems countByEnumeratingWithState:&v23 objects:v31 count:16];
         if (v8)
         {
           v9 = v8;
@@ -80,7 +80,7 @@
             {
               if (*v24 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(allItems);
               }
 
               v12 = *(*(&v23 + 1) + 8 * i);
@@ -93,7 +93,7 @@
               [v4 addObject:v13];
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v23 objects:v31 count:16];
+            v9 = [allItems countByEnumeratingWithState:&v23 objects:v31 count:16];
           }
 
           while (v9);
@@ -109,7 +109,7 @@
     while (v19);
   }
 
-  v21.receiver = v16;
+  v21.receiver = selfCopy;
   v21.super_class = SBSplitAllDisplayItemsSwitcherModifier;
   v14 = [(SBSplitAllDisplayItemsSwitcherModifier *)&v21 adjustedAppLayoutsForAppLayouts:v4];
 

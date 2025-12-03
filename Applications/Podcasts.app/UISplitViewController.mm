@@ -7,16 +7,16 @@
 
 - (UIViewController)mt_masterViewController
 {
-  v2 = [(UISplitViewController *)self viewControllers];
-  v3 = [v2 firstObject];
+  viewControllers = [(UISplitViewController *)self viewControllers];
+  firstObject = [viewControllers firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (UIViewController)mt_detailViewController
 {
-  v3 = [(UISplitViewController *)self viewControllers];
-  v4 = [v3 count];
+  viewControllers = [(UISplitViewController *)self viewControllers];
+  v4 = [viewControllers count];
 
   if (v4 < 2)
   {
@@ -25,8 +25,8 @@
 
   else
   {
-    v5 = [(UISplitViewController *)self viewControllers];
-    v6 = [v5 objectAtIndexedSubscript:1];
+    viewControllers2 = [(UISplitViewController *)self viewControllers];
+    v6 = [viewControllers2 objectAtIndexedSubscript:1];
   }
 
   return v6;

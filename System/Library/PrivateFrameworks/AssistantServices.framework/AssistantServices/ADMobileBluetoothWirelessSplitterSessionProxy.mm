@@ -1,39 +1,39 @@
 @interface ADMobileBluetoothWirelessSplitterSessionProxy
-- (ADMobileBluetoothWirelessSplitterSessionProxy)initWithDataSource:(id)a3 queue:(id)a4;
-- (void)_accessBTLocalDeviceUsingBlock:(id)a3;
-- (void)_enumerateObserversUsingBlock:(id)a3;
-- (void)_fetchWirelessSplitterSessionInfoWithCompletion:(id)a3;
-- (void)_getWirelessSplitterSessionInfo:(id)a3;
+- (ADMobileBluetoothWirelessSplitterSessionProxy)initWithDataSource:(id)source queue:(id)queue;
+- (void)_accessBTLocalDeviceUsingBlock:(id)block;
+- (void)_enumerateObserversUsingBlock:(id)block;
+- (void)_fetchWirelessSplitterSessionInfoWithCompletion:(id)completion;
+- (void)_getWirelessSplitterSessionInfo:(id)info;
 - (void)_invalidate;
-- (void)_reload:(BOOL)a3;
-- (void)_updateWirelessSplitterSessionInfo:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)bluetoothWirelessSplitterSessionStateObserver:(id)a3 didChangeStateFrom:(int64_t)a4 to:(int64_t)a5;
+- (void)_reload:(BOOL)_reload;
+- (void)_updateWirelessSplitterSessionInfo:(id)info;
+- (void)addObserver:(id)observer;
+- (void)bluetoothWirelessSplitterSessionStateObserver:(id)observer didChangeStateFrom:(int64_t)from to:(int64_t)to;
 - (void)dealloc;
-- (void)getSessionInfo:(id)a3;
+- (void)getSessionInfo:(id)info;
 - (void)invalidate;
 - (void)reload;
-- (void)removeObserver:(id)a3;
-- (void)updateWirelessSplitterSessionInfo:(id)a3;
+- (void)removeObserver:(id)observer;
+- (void)updateWirelessSplitterSessionInfo:(id)info;
 @end
 
 @implementation ADMobileBluetoothWirelessSplitterSessionProxy
 
-- (void)_enumerateObserversUsingBlock:(id)a3
+- (void)_enumerateObserversUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     observers = self->_observers;
     if (observers)
     {
-      v6 = [(NSHashTable *)observers setRepresentation];
+      setRepresentation = [(NSHashTable *)observers setRepresentation];
       v7[0] = _NSConcreteStackBlock;
       v7[1] = 3221225472;
       v7[2] = sub_1001019E4;
       v7[3] = &unk_100511998;
-      v8 = v4;
-      [v6 enumerateObjectsUsingBlock:v7];
+      v8 = blockCopy;
+      [setRepresentation enumerateObjectsUsingBlock:v7];
     }
   }
 }
@@ -66,10 +66,10 @@
   self->_observers = 0;
 }
 
-- (void)_accessBTLocalDeviceUsingBlock:(id)a3
+- (void)_accessBTLocalDeviceUsingBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     v5 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -77,7 +77,7 @@
       *buf = 136315394;
       v11 = "[ADMobileBluetoothWirelessSplitterSessionProxy _accessBTLocalDeviceUsingBlock:]";
       v12 = 2112;
-      v13 = self;
+      selfCopy3 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s Getting BTLocalDevice for %@...", buf, 0x16u);
     }
 
@@ -89,7 +89,7 @@
       v8[2] = sub_100101DB4;
       v8[3] = &unk_100511920;
       v8[4] = self;
-      v9 = v4;
+      v9 = blockCopy;
       [WeakRetained getBTLocalDeviceWithCompletion:v8];
     }
 
@@ -101,7 +101,7 @@
         *buf = 136315394;
         v11 = "[ADMobileBluetoothWirelessSplitterSessionProxy _accessBTLocalDeviceUsingBlock:]";
         v12 = 2112;
-        v13 = self;
+        selfCopy3 = self;
         _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%s Data source of %@ is nil.", buf, 0x16u);
         v7 = AFSiriLogContextDaemon;
       }
@@ -111,19 +111,19 @@
         *buf = 136315394;
         v11 = "[ADMobileBluetoothWirelessSplitterSessionProxy _accessBTLocalDeviceUsingBlock:]";
         v12 = 2112;
-        v13 = self;
+        selfCopy3 = self;
         _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%s Failed getting BTLocalDevice for %@.", buf, 0x16u);
       }
 
-      (*(v4 + 2))(v4, 0);
+      (*(blockCopy + 2))(blockCopy, 0);
     }
   }
 }
 
-- (void)_fetchWirelessSplitterSessionInfoWithCompletion:(id)a3
+- (void)_fetchWirelessSplitterSessionInfoWithCompletion:(id)completion
 {
-  v4 = a3;
-  if (v4)
+  completionCopy = completion;
+  if (completionCopy)
   {
     v5 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -131,7 +131,7 @@
       *buf = 136315394;
       v9 = "[ADMobileBluetoothWirelessSplitterSessionProxy _fetchWirelessSplitterSessionInfoWithCompletion:]";
       v10 = 2112;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s Fetching Wireless Splitter session info for %@...", buf, 0x16u);
     }
 
@@ -140,29 +140,29 @@
     v6[2] = sub_10010203C;
     v6[3] = &unk_100511920;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     [(ADMobileBluetoothWirelessSplitterSessionProxy *)self _accessBTLocalDeviceUsingBlock:v6];
   }
 }
 
-- (void)_updateWirelessSplitterSessionInfo:(id)a3
+- (void)_updateWirelessSplitterSessionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     *buf = 136315394;
     v18 = "[ADMobileBluetoothWirelessSplitterSessionProxy _updateWirelessSplitterSessionInfo:]";
     v19 = 2112;
-    v20 = v4;
+    v20 = infoCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s wirelessSplitterSessionInfo = %@", buf, 0x16u);
   }
 
   wirelessSplitterSessionInfo = self->_wirelessSplitterSessionInfo;
-  if (wirelessSplitterSessionInfo != v4 && ([(AFBluetoothWirelessSplitterSessionInfo *)wirelessSplitterSessionInfo isEqual:v4]& 1) == 0)
+  if (wirelessSplitterSessionInfo != infoCopy && ([(AFBluetoothWirelessSplitterSessionInfo *)wirelessSplitterSessionInfo isEqual:infoCopy]& 1) == 0)
   {
     v7 = self->_wirelessSplitterSessionInfo;
-    v8 = [(AFBluetoothWirelessSplitterSessionInfo *)v4 copy];
+    v8 = [(AFBluetoothWirelessSplitterSessionInfo *)infoCopy copy];
     v9 = self->_wirelessSplitterSessionInfo;
     self->_wirelessSplitterSessionInfo = v8;
 
@@ -192,15 +192,15 @@
   }
 }
 
-- (void)_getWirelessSplitterSessionInfo:(id)a3
+- (void)_getWirelessSplitterSessionInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy)
   {
     if (self->_wirelessSplitterSessionInfo)
     {
-      v4[2](v4);
+      infoCopy[2](infoCopy);
     }
 
     else
@@ -210,17 +210,17 @@
       v6[2] = sub_10010277C;
       v6[3] = &unk_1005118D0;
       v6[4] = self;
-      v7 = v4;
+      v7 = infoCopy;
       [(ADMobileBluetoothWirelessSplitterSessionProxy *)self _fetchWirelessSplitterSessionInfoWithCompletion:v6];
     }
   }
 }
 
-- (void)_reload:(BOOL)a3
+- (void)_reload:(BOOL)_reload
 {
   if (self->_wirelessSplitterSessionInfo)
   {
-    v3 = !a3;
+    v3 = !_reload;
   }
 
   else
@@ -236,7 +236,7 @@
       *buf = 136315394;
       v8 = "[ADMobileBluetoothWirelessSplitterSessionProxy _reload:]";
       v9 = 2112;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s Reloading Wireless Splitter session info for %@...", buf, 0x16u);
     }
 
@@ -260,11 +260,11 @@
   dispatch_async(queue, block);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -272,16 +272,16 @@
     v7[2] = sub_100102B08;
     v7[3] = &unk_10051E010;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  observerCopy = observer;
+  v5 = observerCopy;
+  if (observerCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -289,16 +289,16 @@
     v7[2] = sub_100102BBC;
     v7[3] = &unk_10051E010;
     v7[4] = self;
-    v8 = v4;
+    v8 = observerCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)getSessionInfo:(id)a3
+- (void)getSessionInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy)
   {
     queue = self->_queue;
     v7[0] = _NSConcreteStackBlock;
@@ -306,14 +306,14 @@
     v7[2] = sub_100102CCC;
     v7[3] = &unk_10051E038;
     v7[4] = self;
-    v8 = v4;
+    v8 = infoCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)bluetoothWirelessSplitterSessionStateObserver:(id)a3 didChangeStateFrom:(int64_t)a4 to:(int64_t)a5
+- (void)bluetoothWirelessSplitterSessionStateObserver:(id)observer didChangeStateFrom:(int64_t)from to:(int64_t)to
 {
-  v6 = a3;
+  observerCopy = observer;
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -323,7 +323,7 @@
     *buf = 136315906;
     v17 = "[ADMobileBluetoothWirelessSplitterSessionProxy bluetoothWirelessSplitterSessionStateObserver:didChangeStateFrom:to:]";
     v18 = 2112;
-    v19 = v6;
+    v19 = observerCopy;
     v20 = 2112;
     v21 = v9;
     v22 = 2112;
@@ -336,9 +336,9 @@
   v13[1] = 3221225472;
   v13[2] = sub_100102E60;
   v13[3] = &unk_10051E010;
-  v14 = v6;
-  v15 = self;
-  v12 = v6;
+  v14 = observerCopy;
+  selfCopy = self;
+  v12 = observerCopy;
   dispatch_async(queue, v13);
 }
 
@@ -353,24 +353,24 @@
   dispatch_async(queue, block);
 }
 
-- (void)updateWirelessSplitterSessionInfo:(id)a3
+- (void)updateWirelessSplitterSessionInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100102F94;
   v7[3] = &unk_10051E010;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = infoCopy;
+  v6 = infoCopy;
   dispatch_async(queue, v7);
 }
 
-- (ADMobileBluetoothWirelessSplitterSessionProxy)initWithDataSource:(id)a3 queue:(id)a4
+- (ADMobileBluetoothWirelessSplitterSessionProxy)initWithDataSource:(id)source queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = ADMobileBluetoothWirelessSplitterSessionProxy;
   v8 = [(ADMobileBluetoothWirelessSplitterSessionProxy *)&v16 init];
@@ -386,8 +386,8 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
     }
 
-    objc_storeWeak(&v8->_dataSource, v6);
-    objc_storeStrong(&v8->_queue, a4);
+    objc_storeWeak(&v8->_dataSource, sourceCopy);
+    objc_storeStrong(&v8->_queue, queue);
     v10 = [[AFBluetoothWirelessSplitterSessionStateObserver alloc] initWithQueue:v8->_queue delegate:v8];
     observer = v8->_observer;
     v8->_observer = v10;
@@ -412,7 +412,7 @@
     *buf = 136315394;
     v6 = "[ADMobileBluetoothWirelessSplitterSessionProxy dealloc]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "%s %@", buf, 0x16u);
   }
 

@@ -1,18 +1,18 @@
 @interface MKPlaceCardMenuBuildingOptions
-- (MKPlaceCardMenuBuildingOptions)initWithRequestedActionTypes:(id)a3;
+- (MKPlaceCardMenuBuildingOptions)initWithRequestedActionTypes:(id)types;
 @end
 
 @implementation MKPlaceCardMenuBuildingOptions
 
-- (MKPlaceCardMenuBuildingOptions)initWithRequestedActionTypes:(id)a3
+- (MKPlaceCardMenuBuildingOptions)initWithRequestedActionTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v9.receiver = self;
   v9.super_class = MKPlaceCardMenuBuildingOptions;
   v5 = [(MKPlaceCardMenuBuildingOptions *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [typesCopy copy];
     requestedActionTypes = v5->_requestedActionTypes;
     v5->_requestedActionTypes = v6;
 

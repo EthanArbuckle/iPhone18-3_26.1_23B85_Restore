@@ -1,14 +1,14 @@
 @interface AWDCountersPowerS
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (unsigned)hostWakeupsCountHistogramAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)hostWakeupsCountHistogramAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCountersPowerS
@@ -21,18 +21,18 @@
   [(AWDCountersPowerS *)&v3 dealloc];
 }
 
-- (unsigned)hostWakeupsCountHistogramAtIndex:(unint64_t)a3
+- (unsigned)hostWakeupsCountHistogramAtIndex:(unint64_t)index
 {
   p_hostWakeupsCountHistograms = &self->_hostWakeupsCountHistograms;
   count = self->_hostWakeupsCountHistograms.count;
-  if (count <= a3)
+  if (count <= index)
   {
-    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v6 = [NSString stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v7 = [NSException exceptionWithName:NSRangeException reason:v6 userInfo:0];
     [v7 raise];
   }
 
-  return p_hostWakeupsCountHistograms->list[a3];
+  return p_hostWakeupsCountHistograms->list[index];
 }
 
 - (id)description
@@ -40,8 +40,8 @@
   v7.receiver = self;
   v7.super_class = AWDCountersPowerS;
   v3 = [(AWDCountersPowerS *)&v7 description];
-  v4 = [(AWDCountersPowerS *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(AWDCountersPowerS *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -61,15 +61,15 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v9 = v4;
+  toCopy = to;
+  v9 = toCopy;
   if (*&self->_has)
   {
     hostWakeupsCount = self->_hostWakeupsCount;
     PBDataWriterWriteUint32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
   p_hostWakeupsCountHistograms = &self->_hostWakeupsCountHistograms;
@@ -80,7 +80,7 @@
     {
       v8 = p_hostWakeupsCountHistograms->list[v7];
       PBDataWriterWriteUint32Field();
-      v4 = v9;
+      toCopy = v9;
       ++v7;
     }
 
@@ -88,23 +88,23 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[8] = self->_hostWakeupsCount;
-    *(v4 + 36) |= 1u;
+    toCopy[8] = self->_hostWakeupsCount;
+    *(toCopy + 36) |= 1u;
   }
 
-  v8 = v4;
+  v8 = toCopy;
   if ([(AWDCountersPowerS *)self hostWakeupsCountHistogramsCount])
   {
     [v8 clearHostWakeupsCountHistograms];
-    v5 = [(AWDCountersPowerS *)self hostWakeupsCountHistogramsCount];
-    if (v5)
+    hostWakeupsCountHistogramsCount = [(AWDCountersPowerS *)self hostWakeupsCountHistogramsCount];
+    if (hostWakeupsCountHistogramsCount)
     {
-      v6 = v5;
+      v6 = hostWakeupsCountHistogramsCount;
       for (i = 0; i != v6; ++i)
       {
         [v8 addHostWakeupsCountHistogram:{-[AWDCountersPowerS hostWakeupsCountHistogramAtIndex:](self, "hostWakeupsCountHistogramAtIndex:", i)}];
@@ -113,9 +113,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = v4;
   if (*&self->_has)
   {
@@ -127,18 +127,18 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
-  v5 = *(v4 + 36);
+  v5 = *(equalCopy + 36);
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_hostWakeupsCount != *(v4 + 8))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_hostWakeupsCount != *(equalCopy + 8))
     {
       goto LABEL_8;
     }
@@ -149,7 +149,7 @@ LABEL_7:
     return IsEqual;
   }
 
-  if ((*(v4 + 36) & 1) == 0)
+  if ((*(equalCopy + 36) & 1) == 0)
   {
     goto LABEL_7;
   }
@@ -174,20 +174,20 @@ LABEL_8:
   return PBRepeatedUInt32Hash() ^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[9])
+  fromCopy = from;
+  if (fromCopy[9])
   {
-    self->_hostWakeupsCount = v4[8];
+    self->_hostWakeupsCount = fromCopy[8];
     *&self->_has |= 1u;
   }
 
-  v8 = v4;
-  v5 = [v4 hostWakeupsCountHistogramsCount];
-  if (v5)
+  v8 = fromCopy;
+  hostWakeupsCountHistogramsCount = [fromCopy hostWakeupsCountHistogramsCount];
+  if (hostWakeupsCountHistogramsCount)
   {
-    v6 = v5;
+    v6 = hostWakeupsCountHistogramsCount;
     for (i = 0; i != v6; ++i)
     {
       -[AWDCountersPowerS addHostWakeupsCountHistogram:](self, "addHostWakeupsCountHistogram:", [v8 hostWakeupsCountHistogramAtIndex:i]);

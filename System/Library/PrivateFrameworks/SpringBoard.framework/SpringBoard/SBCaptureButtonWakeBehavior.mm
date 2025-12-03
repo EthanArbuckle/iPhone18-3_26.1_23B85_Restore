@@ -1,20 +1,20 @@
 @interface SBCaptureButtonWakeBehavior
-- (BOOL)_shouldWake:(id)a3;
-- (BOOL)_withinDirectLaunchGracePeriod:(id)a3;
-- (unint64_t)cameraLaunchIntentInContext:(id)a3;
-- (unint64_t)prewarmIntentInContext:(id)a3;
-- (unint64_t)wakeIntentInContext:(id)a3;
+- (BOOL)_shouldWake:(id)wake;
+- (BOOL)_withinDirectLaunchGracePeriod:(id)period;
+- (unint64_t)cameraLaunchIntentInContext:(id)context;
+- (unint64_t)prewarmIntentInContext:(id)context;
+- (unint64_t)wakeIntentInContext:(id)context;
 @end
 
 @implementation SBCaptureButtonWakeBehavior
 
-- (unint64_t)prewarmIntentInContext:(id)a3
+- (unint64_t)prewarmIntentInContext:(id)context
 {
-  v3 = a3;
-  if ([v3 event] == 1 && objc_msgSend(v3, "gesture") == 1 && (objc_msgSend(v3, "isScreenOn") & 1) == 0)
+  contextCopy = context;
+  if ([contextCopy event] == 1 && objc_msgSend(contextCopy, "gesture") == 1 && (objc_msgSend(contextCopy, "isScreenOn") & 1) == 0)
   {
-    v6 = [v3 policy];
-    v4 = [v6 isVisionIntelligenceEnabled] ^ 1;
+    policy = [contextCopy policy];
+    v4 = [policy isVisionIntelligenceEnabled] ^ 1;
   }
 
   else
@@ -25,19 +25,19 @@
   return v4;
 }
 
-- (unint64_t)cameraLaunchIntentInContext:(id)a3
+- (unint64_t)cameraLaunchIntentInContext:(id)context
 {
-  v4 = a3;
-  if ([v4 event] == 2 && ((v5 = objc_msgSend(v4, "gesture"), v5 == 4) || v5 == 1))
+  contextCopy = context;
+  if ([contextCopy event] == 2 && ((v5 = objc_msgSend(contextCopy, "gesture"), v5 == 4) || v5 == 1))
   {
-    if ([(SBCaptureButtonWakeBehavior *)self _withinDirectLaunchGracePeriod:v4])
+    if ([(SBCaptureButtonWakeBehavior *)self _withinDirectLaunchGracePeriod:contextCopy])
     {
       v6 = 2;
     }
 
     else
     {
-      v6 = [(SBCaptureButtonWakeBehavior *)self _shouldWake:v4];
+      v6 = [(SBCaptureButtonWakeBehavior *)self _shouldWake:contextCopy];
     }
   }
 
@@ -49,15 +49,15 @@
   return v6;
 }
 
-- (unint64_t)wakeIntentInContext:(id)a3
+- (unint64_t)wakeIntentInContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 policy];
-  v6 = [v5 wakeEnabled];
+  contextCopy = context;
+  policy = [contextCopy policy];
+  wakeEnabled = [policy wakeEnabled];
 
-  if (v6 && [v4 event] == 2)
+  if (wakeEnabled && [contextCopy event] == 2)
   {
-    v7 = [(SBCaptureButtonWakeBehavior *)self _shouldWake:v4];
+    v7 = [(SBCaptureButtonWakeBehavior *)self _shouldWake:contextCopy];
   }
 
   else
@@ -68,15 +68,15 @@
   return v7;
 }
 
-- (BOOL)_shouldWake:(id)a3
+- (BOOL)_shouldWake:(id)wake
 {
-  v4 = a3;
-  v5 = [v4 policy];
-  v6 = [v5 wakeEnabled];
+  wakeCopy = wake;
+  policy = [wakeCopy policy];
+  wakeEnabled = [policy wakeEnabled];
 
-  if (v6 && ([v4 policy], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "wakingBacklightStates"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", objc_msgSend(v4, "backlightState")), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "containsObject:", v9), v9, v8, v7, v10) && (objc_msgSend(v4, "gesture") == 1 || objc_msgSend(v4, "gesture") == 4) && !-[SBCaptureButtonWakeBehavior _withinDirectLaunchGracePeriod:](self, "_withinDirectLaunchGracePeriod:", v4))
+  if (wakeEnabled && ([wakeCopy policy], v7 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "wakingBacklightStates"), v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(MEMORY[0x277CCABB0], "numberWithInteger:", objc_msgSend(wakeCopy, "backlightState")), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v8, "containsObject:", v9), v9, v8, v7, v10) && (objc_msgSend(wakeCopy, "gesture") == 1 || objc_msgSend(wakeCopy, "gesture") == 4) && !-[SBCaptureButtonWakeBehavior _withinDirectLaunchGracePeriod:](self, "_withinDirectLaunchGracePeriod:", wakeCopy))
   {
-    v11 = [v4 isVoiceOverScreenCurtainActive] ^ 1;
+    v11 = [wakeCopy isVoiceOverScreenCurtainActive] ^ 1;
   }
 
   else
@@ -87,23 +87,23 @@
   return v11;
 }
 
-- (BOOL)_withinDirectLaunchGracePeriod:(id)a3
+- (BOOL)_withinDirectLaunchGracePeriod:(id)period
 {
-  v3 = a3;
-  v4 = [v3 policy];
-  v5 = [v4 directLaunchAfterUnsuppressEnabled];
+  periodCopy = period;
+  policy = [periodCopy policy];
+  directLaunchAfterUnsuppressEnabled = [policy directLaunchAfterUnsuppressEnabled];
 
-  if (v5)
+  if (directLaunchAfterUnsuppressEnabled)
   {
-    v6 = [v3 isWithinDirectLaunchGracePeriod];
+    isWithinDirectLaunchGracePeriod = [periodCopy isWithinDirectLaunchGracePeriod];
   }
 
   else
   {
-    v6 = 0;
+    isWithinDirectLaunchGracePeriod = 0;
   }
 
-  return v6;
+  return isWithinDirectLaunchGracePeriod;
 }
 
 @end

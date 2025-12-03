@@ -1,6 +1,6 @@
 @interface CMAudioAccessoryManager
-+ (BOOL)_selectActiveAudioRouteForDeviceMotionWithBTAddress:(id)a3 modelID:(id)a4;
-+ (BOOL)_selectDeviceWithBTAddress:(id)a3;
++ (BOOL)_selectActiveAudioRouteForDeviceMotionWithBTAddress:(id)address modelID:(id)d;
++ (BOOL)_selectDeviceWithBTAddress:(id)address;
 - (BOOL)_isAudioAccessoryAccelerometerAvailable;
 - (BOOL)_isAudioAccessoryActivityAvailable;
 - (BOOL)_isAudioAccessoryDeviceMotionAvailable;
@@ -15,44 +15,44 @@
 - (id)_audioAccessoryGyroData;
 - (id)_audioAccessoryMagnetometerData;
 - (id)initPrivate;
-- (void)_setAudioAccessoryAccelerometerUpdateInterval:(double)a3;
-- (void)_setAudioAccessoryAccelerometerUpdateIntervalPrivate:(double)a3;
-- (void)_setAudioAccessoryActivityUpdateInterval:(double)a3;
-- (void)_setAudioAccessoryActivityUpdateIntervalPrivate:(double)a3;
-- (void)_setAudioAccessoryDeviceMotionUpdateInterval:(double)a3;
-- (void)_setAudioAccessoryDeviceMotionUpdateIntervalPrivate:(double)a3;
-- (void)_setAudioAccessoryGyroUpdateInterval:(double)a3;
-- (void)_setAudioAccessoryGyroUpdateIntervalPrivate:(double)a3;
-- (void)_setAudioAccessoryHeartRateUpdateInterval:(double)a3;
-- (void)_setAudioAccessoryHeartRateUpdateIntervalPrivate:(double)a3;
-- (void)_setAudioAccessoryInertialOdometryUpdateInterval:(double)a3;
-- (void)_setAudioAccessoryInertialOdometryUpdateIntervalPrivate:(double)a3;
-- (void)_setAudioAccessoryMagnetometerUpdateInterval:(double)a3;
-- (void)_setAudioAccessoryMagnetometerUpdateIntervalPrivate:(double)a3;
-- (void)_setAudioAccessorySitStandUpdateInterval:(double)a3;
-- (void)_setAudioAccessorySitStandUpdateIntervalPrivate:(double)a3;
-- (void)_startAudioAccessoryAccelerometerUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4;
-- (void)_startAudioAccessoryAccelerometerUpdatesToQueue:(id)a3 withHandler:(id)a4;
-- (void)_startAudioAccessoryActivityStatusUpdatesPrivate:(id)a3 withHandler:(id)a4;
-- (void)_startAudioAccessoryActivityStatusUpdatesToQueue:(id)a3 withHandler:(id)a4;
-- (void)_startAudioAccessoryActivityUpdatesPrivate:(id)a3 withHandler:(id)a4;
-- (void)_startAudioAccessoryActivityUpdatesToQueue:(id)a3 withHandler:(id)a4;
-- (void)_startAudioAccessoryDeviceMotionStatusUpdatesPrivate:(id)a3 withHandler:(id)a4;
-- (void)_startAudioAccessoryDeviceMotionStatusUpdatesToQueue:(id)a3 withHandler:(id)a4;
-- (void)_startAudioAccessoryDeviceMotionUpdatesPrivate:(id)a3 lowLatencyMode:(BOOL)a4 withHandler:(id)a5;
-- (void)_startAudioAccessoryDeviceMotionUpdatesToQueue:(id)a3 lowLatencyMode:(BOOL)a4 withHandler:(id)a5;
-- (void)_startAudioAccessoryGyroUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4;
-- (void)_startAudioAccessoryGyroUpdatesToQueue:(id)a3 withHandler:(id)a4;
-- (void)_startAudioAccessoryHeartRateUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4;
-- (void)_startAudioAccessoryHeartRateUpdatesToQueue:(id)a3 withHandler:(id)a4;
-- (void)_startAudioAccessoryInertialOdometryUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4;
-- (void)_startAudioAccessoryInertialOdometryUpdatesToQueue:(id)a3 withHandler:(id)a4;
-- (void)_startAudioAccessoryMagnetometerUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4;
-- (void)_startAudioAccessoryMagnetometerUpdatesToQueue:(id)a3 withHandler:(id)a4;
-- (void)_startAudioAccessoryPPGUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4;
-- (void)_startAudioAccessoryPPGUpdatesToQueue:(id)a3 withHandler:(id)a4;
-- (void)_startAudioAccessorySitStandUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4;
-- (void)_startAudioAccessorySitStandUpdatesToQueue:(id)a3 withHandler:(id)a4;
+- (void)_setAudioAccessoryAccelerometerUpdateInterval:(double)interval;
+- (void)_setAudioAccessoryAccelerometerUpdateIntervalPrivate:(double)private;
+- (void)_setAudioAccessoryActivityUpdateInterval:(double)interval;
+- (void)_setAudioAccessoryActivityUpdateIntervalPrivate:(double)private;
+- (void)_setAudioAccessoryDeviceMotionUpdateInterval:(double)interval;
+- (void)_setAudioAccessoryDeviceMotionUpdateIntervalPrivate:(double)private;
+- (void)_setAudioAccessoryGyroUpdateInterval:(double)interval;
+- (void)_setAudioAccessoryGyroUpdateIntervalPrivate:(double)private;
+- (void)_setAudioAccessoryHeartRateUpdateInterval:(double)interval;
+- (void)_setAudioAccessoryHeartRateUpdateIntervalPrivate:(double)private;
+- (void)_setAudioAccessoryInertialOdometryUpdateInterval:(double)interval;
+- (void)_setAudioAccessoryInertialOdometryUpdateIntervalPrivate:(double)private;
+- (void)_setAudioAccessoryMagnetometerUpdateInterval:(double)interval;
+- (void)_setAudioAccessoryMagnetometerUpdateIntervalPrivate:(double)private;
+- (void)_setAudioAccessorySitStandUpdateInterval:(double)interval;
+- (void)_setAudioAccessorySitStandUpdateIntervalPrivate:(double)private;
+- (void)_startAudioAccessoryAccelerometerUpdatesPrivateToQueue:(id)queue withHandler:(id)handler;
+- (void)_startAudioAccessoryAccelerometerUpdatesToQueue:(id)queue withHandler:(id)handler;
+- (void)_startAudioAccessoryActivityStatusUpdatesPrivate:(id)private withHandler:(id)handler;
+- (void)_startAudioAccessoryActivityStatusUpdatesToQueue:(id)queue withHandler:(id)handler;
+- (void)_startAudioAccessoryActivityUpdatesPrivate:(id)private withHandler:(id)handler;
+- (void)_startAudioAccessoryActivityUpdatesToQueue:(id)queue withHandler:(id)handler;
+- (void)_startAudioAccessoryDeviceMotionStatusUpdatesPrivate:(id)private withHandler:(id)handler;
+- (void)_startAudioAccessoryDeviceMotionStatusUpdatesToQueue:(id)queue withHandler:(id)handler;
+- (void)_startAudioAccessoryDeviceMotionUpdatesPrivate:(id)private lowLatencyMode:(BOOL)mode withHandler:(id)handler;
+- (void)_startAudioAccessoryDeviceMotionUpdatesToQueue:(id)queue lowLatencyMode:(BOOL)mode withHandler:(id)handler;
+- (void)_startAudioAccessoryGyroUpdatesPrivateToQueue:(id)queue withHandler:(id)handler;
+- (void)_startAudioAccessoryGyroUpdatesToQueue:(id)queue withHandler:(id)handler;
+- (void)_startAudioAccessoryHeartRateUpdatesPrivateToQueue:(id)queue withHandler:(id)handler;
+- (void)_startAudioAccessoryHeartRateUpdatesToQueue:(id)queue withHandler:(id)handler;
+- (void)_startAudioAccessoryInertialOdometryUpdatesPrivateToQueue:(id)queue withHandler:(id)handler;
+- (void)_startAudioAccessoryInertialOdometryUpdatesToQueue:(id)queue withHandler:(id)handler;
+- (void)_startAudioAccessoryMagnetometerUpdatesPrivateToQueue:(id)queue withHandler:(id)handler;
+- (void)_startAudioAccessoryMagnetometerUpdatesToQueue:(id)queue withHandler:(id)handler;
+- (void)_startAudioAccessoryPPGUpdatesPrivateToQueue:(id)queue withHandler:(id)handler;
+- (void)_startAudioAccessoryPPGUpdatesToQueue:(id)queue withHandler:(id)handler;
+- (void)_startAudioAccessorySitStandUpdatesPrivateToQueue:(id)queue withHandler:(id)handler;
+- (void)_startAudioAccessorySitStandUpdatesToQueue:(id)queue withHandler:(id)handler;
 - (void)_stopAudioAccessoryAccelerometerUpdates;
 - (void)_stopAudioAccessoryAccelerometerUpdatesPrivate;
 - (void)_stopAudioAccessoryActivityStatusUpdates;
@@ -76,18 +76,18 @@
 - (void)_stopAudioAccessorySitStandUpdates;
 - (void)_stopAudioAccessorySitStandUpdatesPrivate;
 - (void)dealloc;
-- (void)onAudioAccessoryAccelerometer:(const Sample *)a3;
-- (void)onAudioAccessoryActivity:(const ActivityReport *)a3;
-- (void)onAudioAccessoryActivityStatus:(const int *)a3;
-- (void)onAudioAccessoryDeviceMotion:(const void *)a3;
-- (void)onAudioAccessoryDeviceMotionConfig:(const Config *)a3;
-- (void)onAudioAccessoryDeviceMotionStatus:(const int *)a3;
-- (void)onAudioAccessoryGyro:(const Sample *)a3;
-- (void)onAudioAccessoryHeartRate:(const Sample *)a3;
-- (void)onAudioAccessoryInertialOdometry:(const InertialOdometryReport *)a3;
-- (void)onAudioAccessoryMagnetometer:(const Sample *)a3;
-- (void)onAudioAccessoryPPG:(const Sample *)a3;
-- (void)onAudioAccessorySitStand:(const SitStandReport *)a3;
+- (void)onAudioAccessoryAccelerometer:(const Sample *)accelerometer;
+- (void)onAudioAccessoryActivity:(const ActivityReport *)activity;
+- (void)onAudioAccessoryActivityStatus:(const int *)status;
+- (void)onAudioAccessoryDeviceMotion:(const void *)motion;
+- (void)onAudioAccessoryDeviceMotionConfig:(const Config *)config;
+- (void)onAudioAccessoryDeviceMotionStatus:(const int *)status;
+- (void)onAudioAccessoryGyro:(const Sample *)gyro;
+- (void)onAudioAccessoryHeartRate:(const Sample *)rate;
+- (void)onAudioAccessoryInertialOdometry:(const InertialOdometryReport *)odometry;
+- (void)onAudioAccessoryMagnetometer:(const Sample *)magnetometer;
+- (void)onAudioAccessoryPPG:(const Sample *)g;
+- (void)onAudioAccessorySitStand:(const SitStandReport *)stand;
 @end
 
 @implementation CMAudioAccessoryManager
@@ -148,21 +148,21 @@
   _Block_object_dispose(v6, 8);
 }
 
-+ (BOOL)_selectActiveAudioRouteForDeviceMotionWithBTAddress:(id)a3 modelID:(id)a4
++ (BOOL)_selectActiveAudioRouteForDeviceMotionWithBTAddress:(id)address modelID:(id)d
 {
   v5 = sub_19B7851B0();
 
-  return sub_19B785538(v5, a3);
+  return sub_19B785538(v5, address);
 }
 
-+ (BOOL)_selectDeviceWithBTAddress:(id)a3
++ (BOOL)_selectDeviceWithBTAddress:(id)address
 {
   v4 = sub_19B7851B0();
 
-  return sub_19B785538(v4, a3);
+  return sub_19B785538(v4, address);
 }
 
-- (void)_setAudioAccessoryAccelerometerUpdateInterval:(double)a3
+- (void)_setAudioAccessoryAccelerometerUpdateInterval:(double)interval
 {
   v5 = sub_19B420D84();
   v6[0] = MEMORY[0x1E69E9820];
@@ -170,7 +170,7 @@
   v6[2] = sub_19B6A2990;
   v6[3] = &unk_1E7533490;
   v6[4] = self;
-  *&v6[5] = a3;
+  *&v6[5] = interval;
   sub_19B420C9C(v5, v6);
 }
 
@@ -209,7 +209,7 @@
   return v13;
 }
 
-- (void)_startAudioAccessoryAccelerometerUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)_startAudioAccessoryAccelerometerUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v7 = sub_19B420D84();
   v8[0] = MEMORY[0x1E69E9820];
@@ -217,8 +217,8 @@
   v8[2] = sub_19B6A2B64;
   v8[3] = &unk_1E7532C08;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
+  v8[5] = queue;
+  v8[6] = handler;
   sub_19B421668(v7, v8);
 }
 
@@ -233,15 +233,15 @@
   sub_19B420C9C(v3, v4);
 }
 
-- (void)_setAudioAccessoryAccelerometerUpdateIntervalPrivate:(double)a3
+- (void)_setAudioAccessoryAccelerometerUpdateIntervalPrivate:(double)private
 {
   internal = self->_internal;
-  if (a3 < 0.005)
+  if (private < 0.005)
   {
-    a3 = 0.005;
+    private = 0.005;
   }
 
-  *(internal + 3) = a3;
+  *(internal + 3) = private;
   if (*(internal + 2))
   {
     v4 = sub_19B7170A0();
@@ -251,23 +251,23 @@
   }
 }
 
-- (void)_startAudioAccessoryAccelerometerUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4
+- (void)_startAudioAccessoryAccelerometerUpdatesPrivateToQueue:(id)queue withHandler:(id)handler
 {
   internal = self->_internal;
-  if (objc_msgSend__isAudioAccessoryAccelerometerAvailable(self, a2, a3) && internal[3] > 0.0)
+  if (objc_msgSend__isAudioAccessoryAccelerometerAvailable(self, a2, queue) && internal[3] > 0.0)
   {
     v7 = *(internal + 5);
-    if (v7 != a3)
+    if (v7 != queue)
     {
 
-      *(internal + 5) = a3;
+      *(internal + 5) = queue;
     }
 
     v8 = *(internal + 4);
-    if (v8 != a4)
+    if (v8 != handler)
     {
 
-      *(internal + 4) = objc_msgSend_copy(a4, v9, v10);
+      *(internal + 4) = objc_msgSend_copy(handler, v9, v10);
     }
 
     if (!*(internal + 2))
@@ -311,7 +311,7 @@
   }
 }
 
-- (void)_setAudioAccessoryGyroUpdateInterval:(double)a3
+- (void)_setAudioAccessoryGyroUpdateInterval:(double)interval
 {
   v5 = sub_19B420D84();
   v6[0] = MEMORY[0x1E69E9820];
@@ -319,7 +319,7 @@
   v6[2] = sub_19B6A2ECC;
   v6[3] = &unk_1E7533490;
   v6[4] = self;
-  *&v6[5] = a3;
+  *&v6[5] = interval;
   sub_19B420C9C(v5, v6);
 }
 
@@ -358,7 +358,7 @@
   return v13;
 }
 
-- (void)_startAudioAccessoryGyroUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)_startAudioAccessoryGyroUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v7 = sub_19B420D84();
   v8[0] = MEMORY[0x1E69E9820];
@@ -366,8 +366,8 @@
   v8[2] = sub_19B6A30A0;
   v8[3] = &unk_1E7532C08;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
+  v8[5] = queue;
+  v8[6] = handler;
   sub_19B421668(v7, v8);
 }
 
@@ -382,15 +382,15 @@
   sub_19B420C9C(v3, v4);
 }
 
-- (void)_setAudioAccessoryGyroUpdateIntervalPrivate:(double)a3
+- (void)_setAudioAccessoryGyroUpdateIntervalPrivate:(double)private
 {
   internal = self->_internal;
-  if (a3 < 0.005)
+  if (private < 0.005)
   {
-    a3 = 0.005;
+    private = 0.005;
   }
 
-  *(internal + 12) = a3;
+  *(internal + 12) = private;
   if (*(internal + 11))
   {
     v4 = sub_19B793B00();
@@ -400,23 +400,23 @@
   }
 }
 
-- (void)_startAudioAccessoryGyroUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4
+- (void)_startAudioAccessoryGyroUpdatesPrivateToQueue:(id)queue withHandler:(id)handler
 {
   internal = self->_internal;
-  if (objc_msgSend__isAudioAccessoryGyroAvailable(self, a2, a3) && internal[12] > 0.0)
+  if (objc_msgSend__isAudioAccessoryGyroAvailable(self, a2, queue) && internal[12] > 0.0)
   {
     v7 = *(internal + 14);
-    if (v7 != a3)
+    if (v7 != queue)
     {
 
-      *(internal + 14) = a3;
+      *(internal + 14) = queue;
     }
 
     v8 = *(internal + 13);
-    if (v8 != a4)
+    if (v8 != handler)
     {
 
-      *(internal + 13) = objc_msgSend_copy(a4, v9, v10);
+      *(internal + 13) = objc_msgSend_copy(handler, v9, v10);
     }
 
     if (!*(internal + 11))
@@ -460,7 +460,7 @@
   }
 }
 
-- (void)_setAudioAccessoryMagnetometerUpdateInterval:(double)a3
+- (void)_setAudioAccessoryMagnetometerUpdateInterval:(double)interval
 {
   v5 = sub_19B420D84();
   v6[0] = MEMORY[0x1E69E9820];
@@ -468,7 +468,7 @@
   v6[2] = sub_19B6A3408;
   v6[3] = &unk_1E7533490;
   v6[4] = self;
-  *&v6[5] = a3;
+  *&v6[5] = interval;
   sub_19B420C9C(v5, v6);
 }
 
@@ -507,7 +507,7 @@
   return v13;
 }
 
-- (void)_startAudioAccessoryMagnetometerUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)_startAudioAccessoryMagnetometerUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v7 = sub_19B420D84();
   v8[0] = MEMORY[0x1E69E9820];
@@ -515,8 +515,8 @@
   v8[2] = sub_19B6A35DC;
   v8[3] = &unk_1E7532C08;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
+  v8[5] = queue;
+  v8[6] = handler;
   sub_19B421668(v7, v8);
 }
 
@@ -531,15 +531,15 @@
   sub_19B420C9C(v3, v4);
 }
 
-- (void)_setAudioAccessoryMagnetometerUpdateIntervalPrivate:(double)a3
+- (void)_setAudioAccessoryMagnetometerUpdateIntervalPrivate:(double)private
 {
   internal = self->_internal;
-  if (a3 < 0.005)
+  if (private < 0.005)
   {
-    a3 = 0.005;
+    private = 0.005;
   }
 
-  *(internal + 21) = a3;
+  *(internal + 21) = private;
   if (*(internal + 20))
   {
     if (qword_1EAFE3AE8 != -1)
@@ -554,23 +554,23 @@
   }
 }
 
-- (void)_startAudioAccessoryMagnetometerUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4
+- (void)_startAudioAccessoryMagnetometerUpdatesPrivateToQueue:(id)queue withHandler:(id)handler
 {
   internal = self->_internal;
-  if (objc_msgSend__isAudioAccessoryMagnetometerAvailable(self, a2, a3) && internal[21] > 0.0)
+  if (objc_msgSend__isAudioAccessoryMagnetometerAvailable(self, a2, queue) && internal[21] > 0.0)
   {
     v7 = *(internal + 23);
-    if (v7 != a3)
+    if (v7 != queue)
     {
 
-      *(internal + 23) = a3;
+      *(internal + 23) = queue;
     }
 
     v8 = *(internal + 22);
-    if (v8 != a4)
+    if (v8 != handler)
     {
 
-      *(internal + 22) = objc_msgSend_copy(a4, v9, v10);
+      *(internal + 22) = objc_msgSend_copy(handler, v9, v10);
     }
 
     if (!*(internal + 20))
@@ -630,7 +630,7 @@
   return *(self->_internal + 675);
 }
 
-- (void)_setAudioAccessoryDeviceMotionUpdateInterval:(double)a3
+- (void)_setAudioAccessoryDeviceMotionUpdateInterval:(double)interval
 {
   v5 = sub_19B420D84();
   v6[0] = MEMORY[0x1E69E9820];
@@ -638,11 +638,11 @@
   v6[2] = sub_19B6A3A54;
   v6[3] = &unk_1E7533490;
   v6[4] = self;
-  *&v6[5] = a3;
+  *&v6[5] = interval;
   sub_19B420C9C(v5, v6);
 }
 
-- (void)_startAudioAccessoryDeviceMotionUpdatesToQueue:(id)a3 lowLatencyMode:(BOOL)a4 withHandler:(id)a5
+- (void)_startAudioAccessoryDeviceMotionUpdatesToQueue:(id)queue lowLatencyMode:(BOOL)mode withHandler:(id)handler
 {
   v9 = sub_19B420D84();
   v10[0] = MEMORY[0x1E69E9820];
@@ -650,9 +650,9 @@
   v10[2] = sub_19B6A3B08;
   v10[3] = &unk_1E75340D8;
   v10[4] = self;
-  v10[5] = a3;
-  v11 = a4;
-  v10[6] = a5;
+  v10[5] = queue;
+  modeCopy = mode;
+  v10[6] = handler;
   sub_19B421668(v9, v10);
 }
 
@@ -667,7 +667,7 @@
   sub_19B420C9C(v3, v4);
 }
 
-- (void)_startAudioAccessoryDeviceMotionStatusUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)_startAudioAccessoryDeviceMotionStatusUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v7 = sub_19B420D84();
   v8[0] = MEMORY[0x1E69E9820];
@@ -675,8 +675,8 @@
   v8[2] = sub_19B6A3C30;
   v8[3] = &unk_1E7532C08;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
+  v8[5] = queue;
+  v8[6] = handler;
   sub_19B421668(v7, v8);
 }
 
@@ -691,15 +691,15 @@
   sub_19B420C9C(v3, v4);
 }
 
-- (void)_setAudioAccessoryDeviceMotionUpdateIntervalPrivate:(double)a3
+- (void)_setAudioAccessoryDeviceMotionUpdateIntervalPrivate:(double)private
 {
   internal = self->_internal;
-  if (a3 < 0.005)
+  if (private < 0.005)
   {
-    a3 = 0.005;
+    private = 0.005;
   }
 
-  *(internal + 31) = a3;
+  *(internal + 31) = private;
   if (*(internal + 29))
   {
     v4 = sub_19B6D6344();
@@ -709,23 +709,23 @@
   }
 }
 
-- (void)_startAudioAccessoryDeviceMotionUpdatesPrivate:(id)a3 lowLatencyMode:(BOOL)a4 withHandler:(id)a5
+- (void)_startAudioAccessoryDeviceMotionUpdatesPrivate:(id)private lowLatencyMode:(BOOL)mode withHandler:(id)handler
 {
   internal = self->_internal;
-  if (objc_msgSend__isAudioAccessoryDeviceMotionAvailable(self, a2, a3) && internal[31] > 0.0)
+  if (objc_msgSend__isAudioAccessoryDeviceMotionAvailable(self, a2, private) && internal[31] > 0.0)
   {
     v9 = *(internal + 33);
-    if (v9 != a3)
+    if (v9 != private)
     {
 
-      *(internal + 33) = a3;
+      *(internal + 33) = private;
     }
 
     v10 = *(internal + 32);
-    if (v10 != a5)
+    if (v10 != handler)
     {
 
-      *(internal + 32) = objc_msgSend_copy(a5, v11, v12);
+      *(internal + 32) = objc_msgSend_copy(handler, v11, v12);
     }
 
     if (!*(internal + 30))
@@ -735,7 +735,7 @@
 
     if (!*(internal + 29))
     {
-      *(sub_19B6D6344() + 28) = a4;
+      *(sub_19B6D6344() + 28) = mode;
       operator new();
     }
   }
@@ -788,23 +788,23 @@
   }
 }
 
-- (void)_startAudioAccessoryDeviceMotionStatusUpdatesPrivate:(id)a3 withHandler:(id)a4
+- (void)_startAudioAccessoryDeviceMotionStatusUpdatesPrivate:(id)private withHandler:(id)handler
 {
   internal = self->_internal;
-  if (objc_msgSend__isAudioAccessoryDeviceMotionAvailable(self, a2, a3))
+  if (objc_msgSend__isAudioAccessoryDeviceMotionAvailable(self, a2, private))
   {
     v8 = internal[38];
-    if (v8 != a3)
+    if (v8 != private)
     {
 
-      internal[38] = a3;
+      internal[38] = private;
     }
 
     v9 = internal[37];
-    if (v9 != a4)
+    if (v9 != handler)
     {
 
-      internal[37] = objc_msgSend_copy(a4, v10, v11);
+      internal[37] = objc_msgSend_copy(handler, v10, v11);
     }
 
     if (!internal[36])
@@ -863,7 +863,7 @@
   return *(self->_internal + 676);
 }
 
-- (void)_setAudioAccessoryActivityUpdateInterval:(double)a3
+- (void)_setAudioAccessoryActivityUpdateInterval:(double)interval
 {
   v5 = sub_19B420D84();
   v6[0] = MEMORY[0x1E69E9820];
@@ -871,11 +871,11 @@
   v6[2] = sub_19B6A42DC;
   v6[3] = &unk_1E7533490;
   v6[4] = self;
-  *&v6[5] = a3;
+  *&v6[5] = interval;
   sub_19B420C9C(v5, v6);
 }
 
-- (void)_startAudioAccessoryActivityUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)_startAudioAccessoryActivityUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v7 = sub_19B420D84();
   v8[0] = MEMORY[0x1E69E9820];
@@ -883,8 +883,8 @@
   v8[2] = sub_19B6A4388;
   v8[3] = &unk_1E7532C08;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
+  v8[5] = queue;
+  v8[6] = handler;
   sub_19B420C9C(v7, v8);
 }
 
@@ -899,7 +899,7 @@
   sub_19B420C9C(v3, v4);
 }
 
-- (void)_startAudioAccessoryActivityStatusUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)_startAudioAccessoryActivityStatusUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v7 = sub_19B420D84();
   v8[0] = MEMORY[0x1E69E9820];
@@ -907,8 +907,8 @@
   v8[2] = sub_19B6A44AC;
   v8[3] = &unk_1E7532C08;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
+  v8[5] = queue;
+  v8[6] = handler;
   sub_19B421668(v7, v8);
 }
 
@@ -923,15 +923,15 @@
   sub_19B420C9C(v3, v4);
 }
 
-- (void)_setAudioAccessoryActivityUpdateIntervalPrivate:(double)a3
+- (void)_setAudioAccessoryActivityUpdateIntervalPrivate:(double)private
 {
   internal = self->_internal;
-  if (a3 < 0.005)
+  if (private < 0.005)
   {
-    a3 = 0.005;
+    private = 0.005;
   }
 
-  *(internal + 40) = a3;
+  *(internal + 40) = private;
   if (*(internal + 39))
   {
     if (qword_1EAFE3AC8 != -1)
@@ -946,23 +946,23 @@
   }
 }
 
-- (void)_startAudioAccessoryActivityUpdatesPrivate:(id)a3 withHandler:(id)a4
+- (void)_startAudioAccessoryActivityUpdatesPrivate:(id)private withHandler:(id)handler
 {
   internal = self->_internal;
-  if (objc_msgSend__isAudioAccessoryActivityAvailable(self, a2, a3) && internal[40] > 0.0)
+  if (objc_msgSend__isAudioAccessoryActivityAvailable(self, a2, private) && internal[40] > 0.0)
   {
     v7 = *(internal + 42);
-    if (v7 != a3)
+    if (v7 != private)
     {
 
-      *(internal + 42) = a3;
+      *(internal + 42) = private;
     }
 
     v8 = *(internal + 41);
-    if (v8 != a4)
+    if (v8 != handler)
     {
 
-      *(internal + 41) = objc_msgSend_copy(a4, v9, v10);
+      *(internal + 41) = objc_msgSend_copy(handler, v9, v10);
     }
 
     if (!*(internal + 39))
@@ -1009,23 +1009,23 @@
   }
 }
 
-- (void)_startAudioAccessoryActivityStatusUpdatesPrivate:(id)a3 withHandler:(id)a4
+- (void)_startAudioAccessoryActivityStatusUpdatesPrivate:(id)private withHandler:(id)handler
 {
   internal = self->_internal;
-  if (objc_msgSend__isAudioAccessoryActivityAvailable(self, a2, a3))
+  if (objc_msgSend__isAudioAccessoryActivityAvailable(self, a2, private))
   {
     v8 = internal[45];
-    if (v8 != a3)
+    if (v8 != private)
     {
 
-      internal[45] = a3;
+      internal[45] = private;
     }
 
     v9 = internal[44];
-    if (v9 != a4)
+    if (v9 != handler)
     {
 
-      internal[44] = objc_msgSend_copy(a4, v10, v11);
+      internal[44] = objc_msgSend_copy(handler, v10, v11);
     }
 
     if (!internal[43])
@@ -1079,7 +1079,7 @@
   }
 }
 
-- (void)_setAudioAccessorySitStandUpdateInterval:(double)a3
+- (void)_setAudioAccessorySitStandUpdateInterval:(double)interval
 {
   v5 = sub_19B420D84();
   v6[0] = MEMORY[0x1E69E9820];
@@ -1087,7 +1087,7 @@
   v6[2] = sub_19B6A4B34;
   v6[3] = &unk_1E7533490;
   v6[4] = self;
-  *&v6[5] = a3;
+  *&v6[5] = interval;
   sub_19B420C9C(v5, v6);
 }
 
@@ -1103,7 +1103,7 @@
   return *(self->_internal + 677);
 }
 
-- (void)_startAudioAccessorySitStandUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)_startAudioAccessorySitStandUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v7 = sub_19B420D84();
   v8[0] = MEMORY[0x1E69E9820];
@@ -1111,8 +1111,8 @@
   v8[2] = sub_19B6A4C6C;
   v8[3] = &unk_1E7532C08;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
+  v8[5] = queue;
+  v8[6] = handler;
   sub_19B421668(v7, v8);
 }
 
@@ -1127,15 +1127,15 @@
   sub_19B420C9C(v3, v4);
 }
 
-- (void)_setAudioAccessorySitStandUpdateIntervalPrivate:(double)a3
+- (void)_setAudioAccessorySitStandUpdateIntervalPrivate:(double)private
 {
   internal = self->_internal;
-  if (a3 < 1.0)
+  if (private < 1.0)
   {
-    a3 = 1.0;
+    private = 1.0;
   }
 
-  *(internal + 47) = a3;
+  *(internal + 47) = private;
   if (*(internal + 46))
   {
     if (qword_1EAFE3AC8 != -1)
@@ -1150,23 +1150,23 @@
   }
 }
 
-- (void)_startAudioAccessorySitStandUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4
+- (void)_startAudioAccessorySitStandUpdatesPrivateToQueue:(id)queue withHandler:(id)handler
 {
   internal = self->_internal;
-  if (objc_msgSend__isAudioAccessorySitStandAvailable(self, a2, a3) && internal[47] > 0.0)
+  if (objc_msgSend__isAudioAccessorySitStandAvailable(self, a2, queue) && internal[47] > 0.0)
   {
     v7 = *(internal + 49);
-    if (v7 != a3)
+    if (v7 != queue)
     {
 
-      *(internal + 49) = a3;
+      *(internal + 49) = queue;
     }
 
     v8 = *(internal + 48);
-    if (v8 != a4)
+    if (v8 != handler)
     {
 
-      *(internal + 48) = objc_msgSend_copy(a4, v9, v10);
+      *(internal + 48) = objc_msgSend_copy(handler, v9, v10);
     }
 
     if (!*(internal + 46))
@@ -1213,7 +1213,7 @@
   }
 }
 
-- (void)_setAudioAccessoryHeartRateUpdateInterval:(double)a3
+- (void)_setAudioAccessoryHeartRateUpdateInterval:(double)interval
 {
   v5 = sub_19B420D84();
   v6[0] = MEMORY[0x1E69E9820];
@@ -1221,7 +1221,7 @@
   v6[2] = sub_19B6A507C;
   v6[3] = &unk_1E7533490;
   v6[4] = self;
-  *&v6[5] = a3;
+  *&v6[5] = interval;
   sub_19B420C9C(v5, v6);
 }
 
@@ -1237,7 +1237,7 @@
   return *(self->_internal + 678);
 }
 
-- (void)_startAudioAccessoryHeartRateUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)_startAudioAccessoryHeartRateUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v7 = sub_19B420D84();
   v8[0] = MEMORY[0x1E69E9820];
@@ -1245,8 +1245,8 @@
   v8[2] = sub_19B6A51B4;
   v8[3] = &unk_1E7532C08;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
+  v8[5] = queue;
+  v8[6] = handler;
   sub_19B421668(v7, v8);
 }
 
@@ -1261,15 +1261,15 @@
   sub_19B420C9C(v3, v4);
 }
 
-- (void)_setAudioAccessoryHeartRateUpdateIntervalPrivate:(double)a3
+- (void)_setAudioAccessoryHeartRateUpdateIntervalPrivate:(double)private
 {
   internal = self->_internal;
-  if (a3 < 0.005)
+  if (private < 0.005)
   {
-    a3 = 0.005;
+    private = 0.005;
   }
 
-  *(internal + 51) = a3;
+  *(internal + 51) = private;
   if (*(internal + 50))
   {
     if (qword_1EAFE3B08 != -1)
@@ -1284,23 +1284,23 @@
   }
 }
 
-- (void)_startAudioAccessoryHeartRateUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4
+- (void)_startAudioAccessoryHeartRateUpdatesPrivateToQueue:(id)queue withHandler:(id)handler
 {
   internal = self->_internal;
-  if (objc_msgSend__isAudioAccessoryHeartRateAvailable(self, a2, a3) && internal[51] > 0.0)
+  if (objc_msgSend__isAudioAccessoryHeartRateAvailable(self, a2, queue) && internal[51] > 0.0)
   {
     v7 = *(internal + 53);
-    if (v7 != a3)
+    if (v7 != queue)
     {
 
-      *(internal + 53) = a3;
+      *(internal + 53) = queue;
     }
 
     v8 = *(internal + 52);
-    if (v8 != a4)
+    if (v8 != handler)
     {
 
-      *(internal + 52) = objc_msgSend_copy(a4, v9, v10);
+      *(internal + 52) = objc_msgSend_copy(handler, v9, v10);
     }
 
     if (!*(internal + 50))
@@ -1348,7 +1348,7 @@
   }
 }
 
-- (void)_setAudioAccessoryInertialOdometryUpdateInterval:(double)a3
+- (void)_setAudioAccessoryInertialOdometryUpdateInterval:(double)interval
 {
   v5 = sub_19B420D84();
   v6[0] = MEMORY[0x1E69E9820];
@@ -1356,7 +1356,7 @@
   v6[2] = sub_19B6A559C;
   v6[3] = &unk_1E7533490;
   v6[4] = self;
-  *&v6[5] = a3;
+  *&v6[5] = interval;
   sub_19B420C9C(v5, v6);
 }
 
@@ -1372,7 +1372,7 @@
   return *(self->_internal + 679);
 }
 
-- (void)_startAudioAccessoryInertialOdometryUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)_startAudioAccessoryInertialOdometryUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v7 = sub_19B420D84();
   v8[0] = MEMORY[0x1E69E9820];
@@ -1380,8 +1380,8 @@
   v8[2] = sub_19B6A56D4;
   v8[3] = &unk_1E7532C08;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
+  v8[5] = queue;
+  v8[6] = handler;
   sub_19B421668(v7, v8);
 }
 
@@ -1396,15 +1396,15 @@
   sub_19B420C9C(v3, v4);
 }
 
-- (void)_setAudioAccessoryInertialOdometryUpdateIntervalPrivate:(double)a3
+- (void)_setAudioAccessoryInertialOdometryUpdateIntervalPrivate:(double)private
 {
   internal = self->_internal;
-  if (a3 < 1.0)
+  if (private < 1.0)
   {
-    a3 = 1.0;
+    private = 1.0;
   }
 
-  *(internal + 59) = a3;
+  *(internal + 59) = private;
   if (*(internal + 58))
   {
     if (qword_1EAFE3B18 != -1)
@@ -1419,23 +1419,23 @@
   }
 }
 
-- (void)_startAudioAccessoryInertialOdometryUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4
+- (void)_startAudioAccessoryInertialOdometryUpdatesPrivateToQueue:(id)queue withHandler:(id)handler
 {
   internal = self->_internal;
-  if (objc_msgSend__isAudioAccessoryInertialOdometryAvailable(self, a2, a3) && internal[59] > 0.0)
+  if (objc_msgSend__isAudioAccessoryInertialOdometryAvailable(self, a2, queue) && internal[59] > 0.0)
   {
     v7 = *(internal + 61);
-    if (v7 != a3)
+    if (v7 != queue)
     {
 
-      *(internal + 61) = a3;
+      *(internal + 61) = queue;
     }
 
     v8 = *(internal + 60);
-    if (v8 != a4)
+    if (v8 != handler)
     {
 
-      *(internal + 60) = objc_msgSend_copy(a4, v9, v10);
+      *(internal + 60) = objc_msgSend_copy(handler, v9, v10);
     }
 
     if (!*(internal + 58))
@@ -1495,7 +1495,7 @@
   return *(self->_internal + 680);
 }
 
-- (void)_startAudioAccessoryPPGUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)_startAudioAccessoryPPGUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v7 = sub_19B420D84();
   v8[0] = MEMORY[0x1E69E9820];
@@ -1503,8 +1503,8 @@
   v8[2] = sub_19B6A5B48;
   v8[3] = &unk_1E7532C08;
   v8[4] = self;
-  v8[5] = a3;
-  v8[6] = a4;
+  v8[5] = queue;
+  v8[6] = handler;
   sub_19B421668(v7, v8);
 }
 
@@ -1519,23 +1519,23 @@
   sub_19B420C9C(v3, v4);
 }
 
-- (void)_startAudioAccessoryPPGUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4
+- (void)_startAudioAccessoryPPGUpdatesPrivateToQueue:(id)queue withHandler:(id)handler
 {
   internal = self->_internal;
-  if (objc_msgSend__isAudioAccessoryPPGAvailable(self, a2, a3))
+  if (objc_msgSend__isAudioAccessoryPPGAvailable(self, a2, queue))
   {
     v7 = internal[78];
-    if (v7 != a3)
+    if (v7 != queue)
     {
 
-      internal[78] = a3;
+      internal[78] = queue;
     }
 
     v8 = internal[77];
-    if (v8 != a4)
+    if (v8 != handler)
     {
 
-      internal[77] = objc_msgSend_copy(a4, v9, v10);
+      internal[77] = objc_msgSend_copy(handler, v9, v10);
     }
 
     if (!internal[76])
@@ -1583,14 +1583,14 @@
   }
 }
 
-- (void)onAudioAccessoryAccelerometer:(const Sample *)a3
+- (void)onAudioAccessoryAccelerometer:(const Sample *)accelerometer
 {
   v33 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
   os_unfair_lock_lock(internal + 2);
-  v5 = *&a3->timestamp;
-  v6 = *&a3->acceleration.z;
-  *&internal[20]._os_unfair_lock_opaque = *&a3[1].acceleration.x;
+  v5 = *&accelerometer->timestamp;
+  v6 = *&accelerometer->acceleration.z;
+  *&internal[20]._os_unfair_lock_opaque = *&accelerometer[1].acceleration.x;
   *&internal[12]._os_unfair_lock_opaque = v5;
   *&internal[16]._os_unfair_lock_opaque = v6;
   os_unfair_lock_unlock(internal + 2);
@@ -1598,10 +1598,10 @@
   {
     v7 = objc_autoreleasePoolPush();
     v8 = [CMAccelerometerData alloc];
-    *&v9 = a3->acceleration.x;
-    *&v10 = a3->acceleration.y;
-    *&v11 = a3->acceleration.z;
-    v14 = objc_msgSend_initWithAcceleration_andTimestamp_(v8, v12, v13, v9, v10, v11, a3->timestamp);
+    *&v9 = accelerometer->acceleration.x;
+    *&v10 = accelerometer->acceleration.y;
+    *&v11 = accelerometer->acceleration.z;
+    v14 = objc_msgSend_initWithAcceleration_andTimestamp_(v8, v12, v13, v9, v10, v11, accelerometer->timestamp);
     v15 = *&internal[8]._os_unfair_lock_opaque;
     if (qword_1ED71C800 != -1)
     {
@@ -1656,14 +1656,14 @@
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onAudioAccessoryGyro:(const Sample *)a3
+- (void)onAudioAccessoryGyro:(const Sample *)gyro
 {
   v33 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
   os_unfair_lock_lock(internal + 2);
-  v5 = *&a3->timestamp;
-  v6 = *&a3->acceleration.z;
-  *(internal + 19) = *&a3[1].acceleration.x;
+  v5 = *&gyro->timestamp;
+  v6 = *&gyro->acceleration.z;
+  *(internal + 19) = *&gyro[1].acceleration.x;
   *(internal + 136) = v6;
   *(internal + 120) = v5;
   os_unfair_lock_unlock(internal + 2);
@@ -1671,10 +1671,10 @@
   {
     v7 = objc_autoreleasePoolPush();
     v8 = [CMGyroData alloc];
-    *&v9 = a3->acceleration.x;
-    *&v10 = a3->acceleration.y;
-    *&v11 = a3->acceleration.z;
-    v14 = objc_msgSend_initWithRotationRate_andTimestamp_(v8, v12, v13, v9, v10, v11, a3->timestamp);
+    *&v9 = gyro->acceleration.x;
+    *&v10 = gyro->acceleration.y;
+    *&v11 = gyro->acceleration.z;
+    v14 = objc_msgSend_initWithRotationRate_andTimestamp_(v8, v12, v13, v9, v10, v11, gyro->timestamp);
     v15 = *(internal + 13);
     if (qword_1ED71C800 != -1)
     {
@@ -1729,14 +1729,14 @@
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onAudioAccessoryMagnetometer:(const Sample *)a3
+- (void)onAudioAccessoryMagnetometer:(const Sample *)magnetometer
 {
   v33 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
   os_unfair_lock_lock(internal + 2);
-  v5 = *&a3->timestamp;
-  v6 = *&a3->acceleration.z;
-  *&internal[56]._os_unfair_lock_opaque = *&a3[1].acceleration.x;
+  v5 = *&magnetometer->timestamp;
+  v6 = *&magnetometer->acceleration.z;
+  *&internal[56]._os_unfair_lock_opaque = *&magnetometer[1].acceleration.x;
   *&internal[48]._os_unfair_lock_opaque = v5;
   *&internal[52]._os_unfair_lock_opaque = v6;
   os_unfair_lock_unlock(internal + 2);
@@ -1744,10 +1744,10 @@
   {
     v7 = objc_autoreleasePoolPush();
     v8 = [CMMagnetometerData alloc];
-    *&v9 = a3->acceleration.x;
-    *&v10 = a3->acceleration.y;
-    *&v11 = a3->acceleration.z;
-    v14 = objc_msgSend_initWithMagneticField_andTimestamp_(v8, v12, v13, v9, v10, v11, a3->timestamp);
+    *&v9 = magnetometer->acceleration.x;
+    *&v10 = magnetometer->acceleration.y;
+    *&v11 = magnetometer->acceleration.z;
+    v14 = objc_msgSend_initWithMagneticField_andTimestamp_(v8, v12, v13, v9, v10, v11, magnetometer->timestamp);
     v15 = *&internal[44]._os_unfair_lock_opaque;
     if (qword_1ED71C800 != -1)
     {
@@ -1802,25 +1802,25 @@
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onAudioAccessoryDeviceMotion:(const void *)a3
+- (void)onAudioAccessoryDeviceMotion:(const void *)motion
 {
   v81 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
-  v4 = *(a3 + 9);
-  v64 = *(a3 + 8);
+  v4 = *(motion + 9);
+  v64 = *(motion + 8);
   v65 = v4;
-  v66 = *(a3 + 20);
-  v5 = *(a3 + 5);
-  v60 = *(a3 + 4);
+  v66 = *(motion + 20);
+  v5 = *(motion + 5);
+  v60 = *(motion + 4);
   v61 = v5;
-  v6 = *(a3 + 7);
-  v62 = *(a3 + 6);
+  v6 = *(motion + 7);
+  v62 = *(motion + 6);
   v63 = v6;
-  v7 = *(a3 + 1);
-  v56 = *a3;
+  v7 = *(motion + 1);
+  v56 = *motion;
   v57 = v7;
-  v8 = *(a3 + 3);
-  v58 = *(a3 + 2);
+  v8 = *(motion + 3);
+  v58 = *(motion + 2);
   v59 = v8;
   if (*(internal + 33))
   {
@@ -1849,7 +1849,7 @@
           v19 = self->_resampleAccessoryDeviceMotion.__ptr_;
           if (*(v19 + 5))
           {
-            v46 = self;
+            selfCopy = self;
             v20 = 0;
             do
             {
@@ -1930,7 +1930,7 @@
             }
 
             while (v20 < *(v19 + 5));
-            v40 = v46->_resampleAccessoryDeviceMotion.__ptr_;
+            v40 = selfCopy->_resampleAccessoryDeviceMotion.__ptr_;
             v41 = *(v40 + 5);
             if (v41 >= 2)
             {
@@ -1965,16 +1965,16 @@
   v45 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onAudioAccessoryDeviceMotionConfig:(const Config *)a3
+- (void)onAudioAccessoryDeviceMotionConfig:(const Config *)config
 {
   internal = self->_internal;
-  internal[68] = sub_19B66BFF4(&a3->var5, v3);
+  internal[68] = sub_19B66BFF4(&config->var5, v3);
   *(internal + 69) = v5;
   *(internal + 70) = v6;
   *(internal + 71) = v7;
 }
 
-- (void)onAudioAccessoryDeviceMotionStatus:(const int *)a3
+- (void)onAudioAccessoryDeviceMotionStatus:(const int *)status
 {
   internal = self->_internal;
   v4 = internal[38];
@@ -1983,7 +1983,7 @@
     v5 = internal[37];
     if (v5)
     {
-      v6 = *a3;
+      v6 = *status;
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = sub_19B6A6E0C;
@@ -1995,7 +1995,7 @@
   }
 }
 
-- (void)onAudioAccessoryActivity:(const ActivityReport *)a3
+- (void)onAudioAccessoryActivity:(const ActivityReport *)activity
 {
   v36 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
@@ -2005,7 +2005,7 @@
     if (v4)
     {
       v6 = objc_autoreleasePoolPush();
-      var0 = a3->var0;
+      var0 = activity->var0;
       if (qword_1ED71C7B8 != -1)
       {
         dispatch_once(&qword_1ED71C7B8, &unk_1F0E3AC30);
@@ -2039,7 +2039,7 @@
       }
 
       v12 = objc_msgSend_motionActivityForHeadphoneActivity_(CMHeadphoneActivityUtils, v10, var0);
-      v13 = *(&a3->var2 + 3);
+      v13 = *(&activity->var2 + 3);
       v14 = [CMMotionActivity alloc];
       *buf = v12;
       v24 = 0x100000001;
@@ -2071,7 +2071,7 @@
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onAudioAccessoryActivityStatus:(const int *)a3
+- (void)onAudioAccessoryActivityStatus:(const int *)status
 {
   internal = self->_internal;
   v4 = internal[45];
@@ -2080,7 +2080,7 @@
     v5 = internal[44];
     if (v5)
     {
-      v6 = *a3;
+      v6 = *status;
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = sub_19B6A7184;
@@ -2092,7 +2092,7 @@
   }
 }
 
-- (void)onAudioAccessorySitStand:(const SitStandReport *)a3
+- (void)onAudioAccessorySitStand:(const SitStandReport *)stand
 {
   internal = self->_internal;
   if (internal[49])
@@ -2100,8 +2100,8 @@
     if (internal[48])
     {
       v5 = objc_autoreleasePoolPush();
-      var0 = a3->var0;
-      var1 = a3->var1;
+      var0 = stand->var0;
+      var1 = stand->var1;
       v9 = internal[48];
       v8 = internal[49];
       v11[0] = MEMORY[0x1E69E9820];
@@ -2117,12 +2117,12 @@
   }
 }
 
-- (void)onAudioAccessoryHeartRate:(const Sample *)a3
+- (void)onAudioAccessoryHeartRate:(const Sample *)rate
 {
   internal = self->_internal;
   os_unfair_lock_lock(internal + 2);
-  v5 = *&a3->acceleration.z;
-  *&internal[108]._os_unfair_lock_opaque = *&a3->timestamp;
+  v5 = *&rate->acceleration.z;
+  *&internal[108]._os_unfair_lock_opaque = *&rate->timestamp;
   *&internal[112]._os_unfair_lock_opaque = v5;
   os_unfair_lock_unlock(internal + 2);
   if (*&internal[106]._os_unfair_lock_opaque)
@@ -2130,8 +2130,8 @@
     if (*&internal[104]._os_unfair_lock_opaque)
     {
       v6 = objc_autoreleasePoolPush();
-      x = a3->acceleration.x;
-      y = a3->acceleration.y;
+      x = rate->acceleration.x;
+      y = rate->acceleration.y;
       v10 = *&internal[104]._os_unfair_lock_opaque;
       v9 = *&internal[106]._os_unfair_lock_opaque;
       v12[0] = MEMORY[0x1E69E9820];
@@ -2147,7 +2147,7 @@
   }
 }
 
-- (void)onAudioAccessoryInertialOdometry:(const InertialOdometryReport *)a3
+- (void)onAudioAccessoryInertialOdometry:(const InertialOdometryReport *)odometry
 {
   v79[1] = *MEMORY[0x1E69E9840];
   internal = self->_internal;
@@ -2155,15 +2155,15 @@
   {
 LABEL_45:
     os_unfair_lock_lock(internal + 2);
-    v63 = *&a3->timestamp;
-    v64 = *&a3->timestampPositionRollOver;
-    *(internal + 32) = *&a3->position[2];
+    v63 = *&odometry->timestamp;
+    v64 = *&odometry->timestampPositionRollOver;
+    *(internal + 32) = *&odometry->position[2];
     *(internal + 33) = v64;
     *(internal + 31) = v63;
-    v65 = *a3->timestampDeltaPositionUnavailable;
-    v66 = *&a3->timestampDeltaPositionUnavailable[2];
-    v67 = *a3->attitude;
-    *(internal + 589) = *(&a3->attitude[3] + 1);
+    v65 = *odometry->timestampDeltaPositionUnavailable;
+    v66 = *&odometry->timestampDeltaPositionUnavailable[2];
+    v67 = *odometry->attitude;
+    *(internal + 589) = *(&odometry->attitude[3] + 1);
     *(internal + 35) = v66;
     *(internal + 36) = v67;
     *(internal + 34) = v65;
@@ -2172,7 +2172,7 @@ LABEL_45:
   }
 
   v5 = objc_autoreleasePoolPush();
-  v9 = *(&a3->displacingState + 1);
+  v9 = *(&odometry->displacingState + 1);
   if (v9 == 0.0)
   {
     __assert_rtn("[CMAudioAccessoryManager onAudioAccessoryInertialOdometry:]", "CMAudioAccessoryManager.mm", 2034, "timestampSecs != 0.");
@@ -2182,13 +2182,13 @@ LABEL_45:
   v11 = *(internal + 60);
   v12 = (internal + 496);
   v13 = *(internal + 62);
-  if (v13 >= a3->timestampUninitialized)
+  if (v13 >= odometry->timestampUninitialized)
   {
-    if (v13 >= a3->timestampPositionRollOver)
+    if (v13 >= odometry->timestampPositionRollOver)
     {
-      if (a3->timestampDeltaPositionUnavailable[0] <= v13)
+      if (odometry->timestampDeltaPositionUnavailable[0] <= v13)
       {
-        *&v8 = a3->position[0] - *(internal + 126);
+        *&v8 = odometry->position[0] - *(internal + 126);
         v71 = objc_msgSend_numberWithFloat_(MEMORY[0x1E696AD98], v6, v7, v8);
         v13 = *(internal + 62);
       }
@@ -2198,9 +2198,9 @@ LABEL_45:
         v71 = 0;
       }
 
-      if (a3->timestampDeltaPositionUnavailable[1] <= v13)
+      if (odometry->timestampDeltaPositionUnavailable[1] <= v13)
       {
-        *&v8 = a3->position[1] - *(internal + 127);
+        *&v8 = odometry->position[1] - *(internal + 127);
         v70 = objc_msgSend_numberWithFloat_(MEMORY[0x1E696AD98], v6, v7, v8);
         v13 = *(internal + 62);
       }
@@ -2210,9 +2210,9 @@ LABEL_45:
         v70 = 0;
       }
 
-      if (a3->timestampDeltaPositionUnavailable[2] <= v13)
+      if (odometry->timestampDeltaPositionUnavailable[2] <= v13)
       {
-        *&v8 = a3->position[2] - *(internal + 128);
+        *&v8 = odometry->position[2] - *(internal + 128);
         v69 = objc_msgSend_numberWithFloat_(MEMORY[0x1E696AD98], v6, v7, v8);
       }
 
@@ -2261,13 +2261,13 @@ LABEL_45:
 
     v72 = v11;
     context = v10;
-    if (*v12 >= a3->timestampVelocityRollOver)
+    if (*v12 >= odometry->timestampVelocityRollOver)
     {
-      *&v8 = a3->deltaVelocityCumSum[0] - *(internal + 129);
+      *&v8 = odometry->deltaVelocityCumSum[0] - *(internal + 129);
       v34 = objc_msgSend_numberWithFloat_(MEMORY[0x1E696AD98], v6, v7, v8);
-      *&v35 = a3->deltaVelocityCumSum[1] - *(internal + 130);
+      *&v35 = odometry->deltaVelocityCumSum[1] - *(internal + 130);
       v33 = objc_msgSend_numberWithFloat_(MEMORY[0x1E696AD98], v36, v37, v35);
-      *&v38 = a3->deltaVelocityCumSum[2] - *(internal + 131);
+      *&v38 = odometry->deltaVelocityCumSum[2] - *(internal + 131);
       v32 = objc_msgSend_numberWithFloat_(MEMORY[0x1E696AD98], v39, v40, v38);
     }
 
@@ -2309,15 +2309,15 @@ LABEL_45:
     }
 
     v41 = [CMOdometry alloc];
-    *&v42 = a3->attitude[0];
+    *&v42 = odometry->attitude[0];
     v45 = objc_msgSend_numberWithFloat_(MEMORY[0x1E696AD98], v43, v44, v42);
-    *&v46 = a3->attitude[1];
+    *&v46 = odometry->attitude[1];
     v49 = objc_msgSend_numberWithFloat_(MEMORY[0x1E696AD98], v47, v48, v46);
-    *&v50 = a3->attitude[2];
+    *&v50 = odometry->attitude[2];
     v53 = objc_msgSend_numberWithFloat_(MEMORY[0x1E696AD98], v51, v52, v50);
-    *&v54 = a3->attitude[3];
+    *&v54 = odometry->attitude[3];
     v57 = objc_msgSend_numberWithFloat_(MEMORY[0x1E696AD98], v55, v56, v54);
-    *&v58 = a3->rotationArbitraryToMagneticNorth;
+    *&v58 = odometry->rotationArbitraryToMagneticNorth;
     v60 = objc_msgSend_initWithDeltaPositionX_deltaPositionY_deltaPositionZ_deltaVelocityX_deltaVelocityY_deltaVelocityZ_quaternionX_quaternionY_quaternionZ_quaternionW_rotationArbitraryToTrueNorth_staticFlag_timestamp_(v41, v59, v71, v70, v69, v34, v33, v32, v58, v9, v45, v49, v53, v57, 0);
     v61 = *(internal + 61);
     v74[0] = MEMORY[0x1E69E9820];
@@ -2347,15 +2347,15 @@ LABEL_45:
   objc_msgSend_addOperationWithBlock_(v19, v20, v76);
 
   os_unfair_lock_lock(internal + 2);
-  v21 = *&a3->timestamp;
-  v22 = *&a3->timestampPositionRollOver;
-  *(internal + 32) = *&a3->position[2];
+  v21 = *&odometry->timestamp;
+  v22 = *&odometry->timestampPositionRollOver;
+  *(internal + 32) = *&odometry->position[2];
   *(internal + 33) = v22;
   *v12 = v21;
-  v23 = *a3->timestampDeltaPositionUnavailable;
-  v24 = *&a3->timestampDeltaPositionUnavailable[2];
-  v25 = *a3->attitude;
-  *(internal + 589) = *(&a3->attitude[3] + 1);
+  v23 = *odometry->timestampDeltaPositionUnavailable;
+  v24 = *&odometry->timestampDeltaPositionUnavailable[2];
+  v25 = *odometry->attitude;
+  *(internal + 589) = *(&odometry->attitude[3] + 1);
   *(internal + 35) = v24;
   *(internal + 36) = v25;
   *(internal + 34) = v23;
@@ -2365,13 +2365,13 @@ LABEL_46:
   v68 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onAudioAccessoryPPG:(const Sample *)a3
+- (void)onAudioAccessoryPPG:(const Sample *)g
 {
   internal = self->_internal;
   os_unfair_lock_lock(internal + 2);
-  v5 = *&a3->timestamp;
-  v6 = *&a3->acceleration.z;
-  *(internal + 83) = *&a3[1].acceleration.x;
+  v5 = *&g->timestamp;
+  v6 = *&g->acceleration.z;
+  *(internal + 83) = *&g[1].acceleration.x;
   *(internal + 632) = v5;
   *(internal + 648) = v6;
   os_unfair_lock_unlock(internal + 2);
@@ -2381,8 +2381,8 @@ LABEL_46:
     {
       v7 = objc_autoreleasePoolPush();
       v8 = *(internal + 77);
-      z_low = LOBYTE(a3->acceleration.z);
-      v10 = *&a3->acceleration.x;
+      z_low = LOBYTE(g->acceleration.z);
+      v10 = *&g->acceleration.x;
       v11 = *(internal + 78);
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;

@@ -1,18 +1,18 @@
 @interface _DPPrioSeedablePRNG
 + (id)generateSeed;
-+ (id)randomDataFromSeed:(id)a3 length:(unint64_t)a4;
++ (id)randomDataFromSeed:(id)seed length:(unint64_t)length;
 @end
 
 @implementation _DPPrioSeedablePRNG
 
-+ (id)randomDataFromSeed:(id)a3 length:(unint64_t)a4
++ (id)randomDataFromSeed:(id)seed length:(unint64_t)length
 {
-  v6 = a3;
-  v7 = [v6 length];
-  if (v7 == [a1 seedLength])
+  seedCopy = seed;
+  v7 = [seedCopy length];
+  if (v7 == [self seedLength])
   {
-    v8 = [v6 subdataWithRange:{0, 16}];
-    v9 = [v6 subdataWithRange:{16, 16}];
+    v8 = [seedCopy subdataWithRange:{0, 16}];
+    v9 = [seedCopy subdataWithRange:{16, 16}];
     cryptorRef = 0;
     v10 = CCCryptorCreateWithMode(0, 4u, 0, 0, [v9 bytes], -[NSObject bytes](v8, "bytes"), 0x10uLL, 0, 0, 0, 2u, &cryptorRef);
     if (v10)
@@ -31,9 +31,9 @@
     {
       v26 = v9;
       v27 = v8;
-      v25 = [MEMORY[0x277CBEB28] dataWithLength:4 * a4];
-      v14 = [v25 mutableBytes];
-      v15 = (a4 >> 2) & 0xFFFFFFFFFFFFFFFLL;
+      v25 = [MEMORY[0x277CBEB28] dataWithLength:4 * length];
+      mutableBytes = [v25 mutableBytes];
+      v15 = (length >> 2) & 0xFFFFFFFFFFFFFFFLL;
       if (v15 >= 0xFFF)
       {
         v15 = 4095;
@@ -41,7 +41,7 @@
 
       v16 = 16 * v15 + 16;
       v17 = [MEMORY[0x277CBEB28] dataWithLength:v16];
-      if (a4)
+      if (length)
       {
         v18 = 0;
         while (1)
@@ -53,7 +53,7 @@
             break;
           }
 
-          if (v18 < a4)
+          if (v18 < length)
           {
             v20 = 0;
             do
@@ -61,16 +61,16 @@
               v21 = *([v17 bytes] + v20);
               if (v21 <= 0xFFF00000)
               {
-                *(v14 + 4 * v18++) = v21;
+                *(mutableBytes + 4 * v18++) = v21;
               }
 
               v20 += 4;
             }
 
-            while (v20 < v16 && v18 < a4);
+            while (v20 < v16 && v18 < length);
           }
 
-          if (v18 >= a4)
+          if (v18 >= length)
           {
             goto LABEL_21;
           }

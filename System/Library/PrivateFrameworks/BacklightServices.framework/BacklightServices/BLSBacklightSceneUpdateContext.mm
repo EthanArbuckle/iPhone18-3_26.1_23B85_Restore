@@ -1,30 +1,30 @@
 @interface BLSBacklightSceneUpdateContext
-- (BLSBacklightSceneUpdateContext)initWithVisualState:(id)a3 previousVisualState:(id)a4 frameSpecifier:(id)a5 animated:(BOOL)a6 triggerEvent:(id)a7 touchTargetable:(BOOL)a8;
-- (BOOL)isEqual:(id)a3;
+- (BLSBacklightSceneUpdateContext)initWithVisualState:(id)state previousVisualState:(id)visualState frameSpecifier:(id)specifier animated:(BOOL)animated triggerEvent:(id)event touchTargetable:(BOOL)targetable;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation BLSBacklightSceneUpdateContext
 
-- (BLSBacklightSceneUpdateContext)initWithVisualState:(id)a3 previousVisualState:(id)a4 frameSpecifier:(id)a5 animated:(BOOL)a6 triggerEvent:(id)a7 touchTargetable:(BOOL)a8
+- (BLSBacklightSceneUpdateContext)initWithVisualState:(id)state previousVisualState:(id)visualState frameSpecifier:(id)specifier animated:(BOOL)animated triggerEvent:(id)event touchTargetable:(BOOL)targetable
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
+  stateCopy = state;
+  visualStateCopy = visualState;
+  specifierCopy = specifier;
+  eventCopy = event;
   v22.receiver = self;
   v22.super_class = BLSBacklightSceneUpdateContext;
   v18 = [(BLSBacklightSceneUpdateContext *)&v22 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_visualState, a3);
-    objc_storeStrong(&v19->_previousVisualState, a4);
-    objc_storeStrong(&v19->_frameSpecifier, a5);
-    v19->_animated = a6;
-    objc_storeStrong(&v19->_triggerEvent, a7);
-    v19->_touchTargetable = a8;
+    objc_storeStrong(&v18->_visualState, state);
+    objc_storeStrong(&v19->_previousVisualState, visualState);
+    objc_storeStrong(&v19->_frameSpecifier, specifier);
+    v19->_animated = animated;
+    objc_storeStrong(&v19->_triggerEvent, event);
+    v19->_touchTargetable = targetable;
   }
 
   return v19;
@@ -39,34 +39,34 @@
   v7 = [v3 appendBool:self->_animated withName:@"animated"];
   v8 = [v3 appendBool:self->_touchTargetable withName:@"touchTarget"];
   v9 = [v3 appendObject:self->_triggerEvent withName:@"trigger" skipIfNil:1];
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_visualState];
-  v5 = [v3 appendObject:self->_previousVisualState];
-  v6 = [v3 appendObject:self->_frameSpecifier];
-  v7 = [v3 appendBool:self->_animated];
-  v8 = [v3 appendBool:self->_touchTargetable];
-  v9 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_visualState];
+  v5 = [builder appendObject:self->_previousVisualState];
+  v6 = [builder appendObject:self->_frameSpecifier];
+  v7 = [builder appendBool:self->_animated];
+  v8 = [builder appendBool:self->_touchTargetable];
+  v9 = [builder hash];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   visualState = self->_visualState;
   v30[0] = MEMORY[0x277D85DD0];
   v30[1] = 3221225472;
   v30[2] = __42__BLSBacklightSceneUpdateContext_isEqual___block_invoke;
   v30[3] = &unk_278428B00;
-  v7 = v4;
+  v7 = equalCopy;
   v31 = v7;
   v8 = [v5 appendObject:visualState counterpart:v30];
   previousVisualState = self->_previousVisualState;

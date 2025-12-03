@@ -1,6 +1,6 @@
 @interface SFAirDropInvocations.ItemDestinationAlert
 - (_TtCO7Sharing20SFAirDropInvocations20ItemDestinationAlert)init;
-- (_TtCO7Sharing20SFAirDropInvocations20ItemDestinationAlert)initWithCoder:(id)a3;
+- (_TtCO7Sharing20SFAirDropInvocations20ItemDestinationAlert)initWithCoder:(id)coder;
 @end
 
 @implementation SFAirDropInvocations.ItemDestinationAlert
@@ -12,10 +12,10 @@
   return [(SFXPCInvocation *)&v3 init];
 }
 
-- (_TtCO7Sharing20SFAirDropInvocations20ItemDestinationAlert)initWithCoder:(id)a3
+- (_TtCO7Sharing20SFAirDropInvocations20ItemDestinationAlert)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v4 = sub_1A98548EC(v3);
+  coderCopy = coder;
+  v4 = sub_1A98548EC(coderCopy);
 
   return v4;
 }

@@ -2,20 +2,20 @@
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
 + (id)createBagForSubProfile;
-+ (id)offersSetFromArray:(id)a3;
-- (AMSDeviceOffer)initWithDictionary:(id)a3;
-- (AMSDeviceOffer)initWithOfferIdentifier:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)offersSetFromArray:(id)array;
+- (AMSDeviceOffer)initWithDictionary:(id)dictionary;
+- (AMSDeviceOffer)initWithOfferIdentifier:(id)identifier;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 - (unint64_t)offerType;
 @end
 
 @implementation AMSDeviceOffer
 
-+ (id)offersSetFromArray:(id)a3
++ (id)offersSetFromArray:(id)array
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = [a3 ams_mapWithTransformIgnoresNil:&__block_literal_global_40];
+  v4 = [array ams_mapWithTransformIgnoresNil:&__block_literal_global_40];
   v5 = [v3 setWithArray:v4];
 
   return v5;
@@ -29,9 +29,9 @@ AMSDeviceOffer *__37__AMSDeviceOffer_offersSetFromArray___block_invoke(uint64_t 
   return v3;
 }
 
-- (AMSDeviceOffer)initWithOfferIdentifier:(id)a3
+- (AMSDeviceOffer)initWithOfferIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = AMSDeviceOffer;
   v5 = [(AMSDeviceOffer *)&v11 init];
@@ -41,7 +41,7 @@ AMSDeviceOffer *__37__AMSDeviceOffer_offersSetFromArray___block_invoke(uint64_t 
     adamId = v5->_adamId;
     v5->_adamId = &unk_1F0779430;
 
-    v8 = [v4 copy];
+    v8 = [identifierCopy copy];
     offerIdentifier = v6->_offerIdentifier;
     v6->_offerIdentifier = v8;
   }
@@ -49,11 +49,11 @@ AMSDeviceOffer *__37__AMSDeviceOffer_offersSetFromArray___block_invoke(uint64_t 
   return v6;
 }
 
-- (AMSDeviceOffer)initWithDictionary:(id)a3
+- (AMSDeviceOffer)initWithDictionary:(id)dictionary
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"offerIdentifier"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"offerIdentifier"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -66,11 +66,11 @@ AMSDeviceOffer *__37__AMSDeviceOffer_offersSetFromArray___block_invoke(uint64_t 
       {
 LABEL_48:
         self = v7;
-        v10 = self;
+        selfCopy = self;
         goto LABEL_49;
       }
 
-      v8 = [v4 objectForKeyedSubscript:@"adamId"];
+      v8 = [dictionaryCopy objectForKeyedSubscript:@"adamId"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -92,19 +92,19 @@ LABEL_48:
         v11 = +[AMSLogConfig sharedConfig];
       }
 
-      v12 = [v11 OSLogObject];
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+      oSLogObject = [v11 OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_DEFAULT))
       {
         *v33 = 138543362;
         *&v33[4] = objc_opt_class();
         v13 = *&v33[4];
-        _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_DEFAULT, "%{public}@: No adamId found in initializer dictionary, setting to 0", v33, 0xCu);
+        _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_DEFAULT, "%{public}@: No adamId found in initializer dictionary, setting to 0", v33, 0xCu);
       }
 
       v9 = &unk_1F0779430;
 LABEL_15:
       objc_storeStrong(&v7->_adamId, v9);
-      v14 = [v4 objectForKeyedSubscript:@"description"];
+      v14 = [dictionaryCopy objectForKeyedSubscript:@"description"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -119,7 +119,7 @@ LABEL_15:
       description = v7->_description;
       v7->_description = v15;
 
-      v17 = [v4 objectForKeyedSubscript:@"isDowngrading"];
+      v17 = [dictionaryCopy objectForKeyedSubscript:@"isDowngrading"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -132,7 +132,7 @@ LABEL_15:
       }
 
       v7->_downgrading = [v18 BOOLValue];
-      v19 = [v4 objectForKeyedSubscript:@"dsid"];
+      v19 = [dictionaryCopy objectForKeyedSubscript:@"dsid"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -147,7 +147,7 @@ LABEL_15:
       dsid = v7->_dsid;
       v7->_dsid = v20;
 
-      v22 = [v4 objectForKeyedSubscript:@"isSubscribed"];
+      v22 = [dictionaryCopy objectForKeyedSubscript:@"isSubscribed"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -160,7 +160,7 @@ LABEL_15:
       }
 
       v7->_subscribed = [v23 BOOLValue];
-      v24 = [v4 objectForKeyedSubscript:@"serialNumber"];
+      v24 = [dictionaryCopy objectForKeyedSubscript:@"serialNumber"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -175,7 +175,7 @@ LABEL_15:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0 || ([MEMORY[0x1E695DFD8] setWithArray:v25], (v26 = objc_claimAutoreleasedReturnValue()) == 0))
       {
-        v27 = [v4 objectForKeyedSubscript:{@"serialNumber", *v33}];
+        v27 = [dictionaryCopy objectForKeyedSubscript:{@"serialNumber", *v33}];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -205,7 +205,7 @@ LABEL_45:
           }
         }
 
-        v31 = [v4 objectForKeyedSubscript:@"serialNumbers"];
+        v31 = [dictionaryCopy objectForKeyedSubscript:@"serialNumbers"];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -238,19 +238,19 @@ LABEL_45:
     v6 = 0;
   }
 
-  v10 = 0;
+  selfCopy = 0;
 LABEL_49:
 
-  return v10;
+  return selfCopy;
 }
 
 - (unint64_t)offerType
 {
-  v2 = [(AMSDeviceOffer *)self offerIdentifier];
-  v3 = [v2 lowercaseString];
+  offerIdentifier = [(AMSDeviceOffer *)self offerIdentifier];
+  lowercaseString = [offerIdentifier lowercaseString];
 
-  v4 = [AMSDeviceOfferIdentifierAppleMusic lowercaseString];
-  v5 = [v3 isEqualToString:v4];
+  lowercaseString2 = [AMSDeviceOfferIdentifierAppleMusic lowercaseString];
+  v5 = [lowercaseString isEqualToString:lowercaseString2];
 
   if (v5)
   {
@@ -260,7 +260,7 @@ LABEL_49:
   else
   {
     v7 = unk_1F07D08C8(AMSDeviceOfferIdentifieriCloud, "lowercaseString");
-    v8 = [v3 isEqualToString:v7];
+    v8 = [lowercaseString isEqualToString:v7];
 
     if (v8)
     {
@@ -269,8 +269,8 @@ LABEL_49:
 
     else
     {
-      v9 = [AMSDeviceOfferIdentifierAppleCare lowercaseString];
-      v10 = [v3 isEqualToString:v9];
+      lowercaseString3 = [AMSDeviceOfferIdentifierAppleCare lowercaseString];
+      v10 = [lowercaseString isEqualToString:lowercaseString3];
 
       if (v10)
       {
@@ -279,8 +279,8 @@ LABEL_49:
 
       else
       {
-        v11 = [AMSDeviceOfferIdentifierTV lowercaseString];
-        v12 = [v3 isEqualToString:v11];
+        lowercaseString4 = [AMSDeviceOfferIdentifierTV lowercaseString];
+        v12 = [lowercaseString isEqualToString:lowercaseString4];
 
         if (v12)
         {
@@ -300,24 +300,24 @@ LABEL_49:
 
 - (unint64_t)hash
 {
-  v3 = [(AMSDeviceOffer *)self adamId];
-  v4 = [v3 hash];
+  adamId = [(AMSDeviceOffer *)self adamId];
+  v4 = [adamId hash];
   v5 = [(AMSDeviceOffer *)self description];
   v6 = [v5 hash] ^ v4;
   v7 = v6 ^ [(AMSDeviceOffer *)self isDowngrading];
-  v8 = [(AMSDeviceOffer *)self isSubscribed];
-  v9 = [(AMSDeviceOffer *)self offerIdentifier];
-  v10 = v7 ^ v8 ^ [v9 hash];
-  v11 = [(AMSDeviceOffer *)self serialNumbers];
-  v12 = [v11 hash];
+  isSubscribed = [(AMSDeviceOffer *)self isSubscribed];
+  offerIdentifier = [(AMSDeviceOffer *)self offerIdentifier];
+  v10 = v7 ^ isSubscribed ^ [offerIdentifier hash];
+  serialNumbers = [(AMSDeviceOffer *)self serialNumbers];
+  v12 = [serialNumbers hash];
 
   return v10 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
     goto LABEL_5;
@@ -326,14 +326,14 @@ LABEL_49:
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
   {
-    v9 = [(AMSDeviceOffer *)self adamId];
-    if (v9 || ([(AMSDeviceOffer *)v5 adamId], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    adamId = [(AMSDeviceOffer *)self adamId];
+    if (adamId || ([(AMSDeviceOffer *)equalCopy adamId], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v10 = [(AMSDeviceOffer *)self adamId];
-      v11 = [(AMSDeviceOffer *)v5 adamId];
-      v12 = [v10 isEqual:v11];
+      adamId2 = [(AMSDeviceOffer *)self adamId];
+      adamId3 = [(AMSDeviceOffer *)equalCopy adamId];
+      v12 = [adamId2 isEqual:adamId3];
 
-      if (v9)
+      if (adamId)
       {
 
         if (!v12)
@@ -353,10 +353,10 @@ LABEL_49:
     }
 
     v13 = [(AMSDeviceOffer *)self description];
-    if (v13 || ([(AMSDeviceOffer *)v5 description], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    if (v13 || ([(AMSDeviceOffer *)equalCopy description], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v14 = [(AMSDeviceOffer *)self description];
-      v15 = [(AMSDeviceOffer *)v5 description];
+      v15 = [(AMSDeviceOffer *)equalCopy description];
       v16 = [v14 isEqual:v15];
 
       if (v13)
@@ -378,26 +378,26 @@ LABEL_49:
       }
     }
 
-    v17 = [(AMSDeviceOffer *)self isDowngrading];
-    if (v17 != [(AMSDeviceOffer *)v5 isDowngrading])
+    isDowngrading = [(AMSDeviceOffer *)self isDowngrading];
+    if (isDowngrading != [(AMSDeviceOffer *)equalCopy isDowngrading])
     {
       goto LABEL_3;
     }
 
-    v18 = [(AMSDeviceOffer *)self isSubscribed];
-    if (v18 != [(AMSDeviceOffer *)v5 isSubscribed])
+    isSubscribed = [(AMSDeviceOffer *)self isSubscribed];
+    if (isSubscribed != [(AMSDeviceOffer *)equalCopy isSubscribed])
     {
       goto LABEL_3;
     }
 
-    v19 = [(AMSDeviceOffer *)self offerIdentifier];
-    if (v19 || ([(AMSDeviceOffer *)v5 offerIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    offerIdentifier = [(AMSDeviceOffer *)self offerIdentifier];
+    if (offerIdentifier || ([(AMSDeviceOffer *)equalCopy offerIdentifier], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v20 = [(AMSDeviceOffer *)self offerIdentifier];
-      v21 = [(AMSDeviceOffer *)v5 offerIdentifier];
-      v22 = [v20 isEqual:v21];
+      offerIdentifier2 = [(AMSDeviceOffer *)self offerIdentifier];
+      offerIdentifier3 = [(AMSDeviceOffer *)equalCopy offerIdentifier];
+      v22 = [offerIdentifier2 isEqual:offerIdentifier3];
 
-      if (v19)
+      if (offerIdentifier)
       {
 
         if (!v22)
@@ -416,14 +416,14 @@ LABEL_49:
       }
     }
 
-    v23 = [(AMSDeviceOffer *)self serialNumbers];
-    if (v23 || ([(AMSDeviceOffer *)v5 serialNumbers], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+    serialNumbers = [(AMSDeviceOffer *)self serialNumbers];
+    if (serialNumbers || ([(AMSDeviceOffer *)equalCopy serialNumbers], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v24 = [(AMSDeviceOffer *)self serialNumbers];
-      v25 = [(AMSDeviceOffer *)v5 serialNumbers];
-      v7 = [v24 isEqual:v25];
+      serialNumbers2 = [(AMSDeviceOffer *)self serialNumbers];
+      serialNumbers3 = [(AMSDeviceOffer *)equalCopy serialNumbers];
+      v7 = [serialNumbers2 isEqual:serialNumbers3];
 
-      if (v23)
+      if (serialNumbers)
       {
 LABEL_32:
 
@@ -484,9 +484,9 @@ void __38__AMSDeviceOffer_bagSubProfileVersion__block_invoke()
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }

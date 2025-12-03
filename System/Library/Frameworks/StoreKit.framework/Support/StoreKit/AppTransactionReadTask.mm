@@ -1,26 +1,26 @@
 @interface AppTransactionReadTask
-- (AppTransactionReadTask)initWithClient:(id)a3 ignoreCache:(BOOL)a4 dbStore:(id)a5 syncQueue:(id)a6;
-- (void)_appTransactionSyncWithRevision:(int64_t)a3 forceAuth:(BOOL)a4;
+- (AppTransactionReadTask)initWithClient:(id)client ignoreCache:(BOOL)cache dbStore:(id)store syncQueue:(id)queue;
+- (void)_appTransactionSyncWithRevision:(int64_t)revision forceAuth:(BOOL)auth;
 - (void)main;
 @end
 
 @implementation AppTransactionReadTask
 
-- (AppTransactionReadTask)initWithClient:(id)a3 ignoreCache:(BOOL)a4 dbStore:(id)a5 syncQueue:(id)a6
+- (AppTransactionReadTask)initWithClient:(id)client ignoreCache:(BOOL)cache dbStore:(id)store syncQueue:(id)queue
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  clientCopy = client;
+  storeCopy = store;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = AppTransactionReadTask;
   v14 = [(Task *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong((v14 + 50), a3);
-    v15[42] = a4;
-    objc_storeStrong((v15 + 66), a5);
-    objc_storeStrong((v15 + 74), a6);
+    objc_storeStrong((v14 + 50), client);
+    v15[42] = cache;
+    objc_storeStrong((v15 + 66), store);
+    objc_storeStrong((v15 + 74), queue);
   }
 
   return v15;
@@ -37,18 +37,18 @@
   if (os_log_type_enabled(qword_1003D3C60, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(AppTransactionReadTask *)self logKey];
-    v6 = [(AppTransactionReadTask *)self client];
-    v7 = [v6 requestBundleID];
+    logKey = [(AppTransactionReadTask *)self logKey];
+    client = [(AppTransactionReadTask *)self client];
+    requestBundleID = [client requestBundleID];
     *buf = 138543618;
-    v14 = v5;
+    v14 = logKey;
     v15 = 2114;
-    v16 = v7;
+    v16 = requestBundleID;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] Getting app transaction for %{public}@", buf, 0x16u);
   }
 
-  v8 = [(AppTransactionReadTask *)self client];
-  v9 = [v8 bag];
+  client2 = [(AppTransactionReadTask *)self client];
+  v9 = [client2 bag];
   v10 = +[_TtC9storekitd6BagKey appTransactionRevision];
   v11 = [v9 integerForKey:v10];
   v12[0] = _NSConcreteStackBlock;
@@ -59,28 +59,28 @@
   [v11 valueWithCompletion:v12];
 }
 
-- (void)_appTransactionSyncWithRevision:(int64_t)a3 forceAuth:(BOOL)a4
+- (void)_appTransactionSyncWithRevision:(int64_t)revision forceAuth:(BOOL)auth
 {
-  v4 = a4;
+  authCopy = auth;
   v7 = [FetchReceiptTask alloc];
-  v8 = [(AppTransactionReadTask *)self client];
-  v9 = [(FetchReceiptTask *)v7 initWithClient:v8];
+  client = [(AppTransactionReadTask *)self client];
+  v9 = [(FetchReceiptTask *)v7 initWithClient:client];
 
-  v10 = [(AppTransactionReadTask *)self dialogContext];
-  [(FetchReceiptTask *)v9 setDialogContext:v10];
+  dialogContext = [(AppTransactionReadTask *)self dialogContext];
+  [(FetchReceiptTask *)v9 setDialogContext:dialogContext];
 
   [(FetchReceiptTask *)v9 setApiVersion:2];
-  [(FetchReceiptTask *)v9 setForceAuth:v4];
+  [(FetchReceiptTask *)v9 setForceAuth:authCopy];
   objc_initWeak(&location, v9);
   v19 = _NSConcreteStackBlock;
   v20 = 3221225472;
   v21 = sub_1000191FC;
   v22 = &unk_1003803D8;
   objc_copyWeak(v24, &location);
-  v23 = self;
-  v24[1] = a3;
+  selfCopy = self;
+  v24[1] = revision;
   [(FetchReceiptTask *)v9 setCompletionBlock:&v19];
-  if (v4)
+  if (authCopy)
   {
     if (qword_1003D3C80 != -1)
     {
@@ -91,12 +91,12 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = [(AppTransactionReadTask *)self logKey:v19];
-      v13 = [(AppTransactionReadTask *)self client];
-      v14 = [v13 requestBundleID];
+      client2 = [(AppTransactionReadTask *)self client];
+      requestBundleID = [client2 requestBundleID];
       *buf = 138543618;
       v27 = v12;
       v28 = 2114;
-      v29 = v14;
+      v29 = requestBundleID;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Ignoring cache and requesting app transaction for %{public}@", buf, 0x16u);
     }
   }
@@ -112,18 +112,18 @@
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v15 = [(AppTransactionReadTask *)self logKey:v19];
-      v16 = [(AppTransactionReadTask *)self client];
-      v17 = [v16 requestBundleID];
+      client3 = [(AppTransactionReadTask *)self client];
+      requestBundleID2 = [client3 requestBundleID];
       *buf = 138543618;
       v27 = v15;
       v28 = 2114;
-      v29 = v17;
+      v29 = requestBundleID2;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[%{public}@] Requesting app transaction for %{public}@", buf, 0x16u);
     }
   }
 
-  v18 = [(AppTransactionReadTask *)self syncQueue];
-  [v18 addOperation:v9];
+  syncQueue = [(AppTransactionReadTask *)self syncQueue];
+  [syncQueue addOperation:v9];
 
   objc_destroyWeak(v24);
   objc_destroyWeak(&location);

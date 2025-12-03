@@ -1,18 +1,18 @@
 @interface AMUIPasscodeButton
-- (AMUIPasscodeButton)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (AMUIPasscodeButton)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation AMUIPasscodeButton
 
-- (AMUIPasscodeButton)initWithFrame:(CGRect)a3
+- (AMUIPasscodeButton)initWithFrame:(CGRect)frame
 {
   v44[1] = *MEMORY[0x277D85DE8];
   v42.receiver = self;
   v42.super_class = AMUIPasscodeButton;
-  v3 = [(AMUIPasscodeButton *)&v42 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AMUIPasscodeButton *)&v42 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D75D18]);
@@ -23,12 +23,12 @@
 
     [(UIView *)v3->_pillView setAlpha:0.1];
     v7 = v3->_pillView;
-    v8 = [MEMORY[0x277D75348] whiteColor];
-    [(UIView *)v7 setBackgroundColor:v8];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UIView *)v7 setBackgroundColor:whiteColor];
 
-    v9 = [(UIView *)v3->_pillView layer];
+    layer = [(UIView *)v3->_pillView layer];
     v10 = *MEMORY[0x277CDA138];
-    [v9 setCornerCurve:*MEMORY[0x277CDA138]];
+    [layer setCornerCurve:*MEMORY[0x277CDA138]];
 
     [(AMUIPasscodeButton *)v3 addSubview:v3->_pillView];
     v11 = objc_alloc_init(MEMORY[0x277D75D18]);
@@ -48,8 +48,8 @@
     [(CABackdropLayer *)v16 setFilters:v17];
 
     [(CABackdropLayer *)v3->_backdropLayer setCornerCurve:v10];
-    v18 = [(UIView *)v3->_backdropView layer];
-    [v18 addSublayer:v3->_backdropLayer];
+    layer2 = [(UIView *)v3->_backdropView layer];
+    [layer2 addSublayer:v3->_backdropLayer];
 
     [(AMUIPasscodeButton *)v3 addSubview:v3->_backdropView];
     v19 = objc_alloc(MEMORY[0x277D756B8]);
@@ -61,9 +61,9 @@
     v23 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.48];
     [(UILabel *)v22 setTextColor:v23];
 
-    v24 = [(UILabel *)v3->_titleLabel layer];
+    layer3 = [(UILabel *)v3->_titleLabel layer];
     v25 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA5E8]];
-    [v24 setCompositingFilter:v25];
+    [layer3 setCompositingFilter:v25];
 
     [(UILabel *)v3->_titleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(AMUIPasscodeButton *)v3 addSubview:v3->_titleLabel];
@@ -78,13 +78,13 @@
     [v29 activateConstraints:v31];
 
     v32 = MEMORY[0x277CCAAD0];
-    v33 = [(UILabel *)v3->_titleLabel centerXAnchor];
-    v34 = [(AMUIPasscodeButton *)v3 centerXAnchor];
-    v35 = [v33 constraintEqualToAnchor:v34];
+    centerXAnchor = [(UILabel *)v3->_titleLabel centerXAnchor];
+    centerXAnchor2 = [(AMUIPasscodeButton *)v3 centerXAnchor];
+    v35 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
     v43[0] = v35;
-    v36 = [(UILabel *)v3->_titleLabel centerYAnchor];
-    v37 = [(AMUIPasscodeButton *)v3 centerYAnchor];
-    v38 = [v36 constraintEqualToAnchor:v37];
+    centerYAnchor = [(UILabel *)v3->_titleLabel centerYAnchor];
+    centerYAnchor2 = [(AMUIPasscodeButton *)v3 centerYAnchor];
+    v38 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v43[1] = v38;
     v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v43 count:2];
     [v32 activateConstraints:v39];
@@ -94,15 +94,15 @@
   return v3;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v12.receiver = self;
   v12.super_class = AMUIPasscodeButton;
   [(AMUIPasscodeButton *)&v12 setHighlighted:?];
   objc_initWeak(&location, self->_pillView);
   v5 = objc_alloc(MEMORY[0x277D75D40]);
-  if (v3)
+  if (highlightedCopy)
   {
     v6 = 0.0;
   }
@@ -117,7 +117,7 @@
   v8[2] = __37__AMUIPasscodeButton_setHighlighted___block_invoke;
   v8[3] = &unk_278C75ED0;
   objc_copyWeak(&v9, &location);
-  v10 = v3;
+  v10 = highlightedCopy;
   v7 = [v5 initWithDuration:v8 controlPoint1:v6 controlPoint2:0.0 animations:{0.0, 0.0, 1.0}];
   [v7 startAnimation];
 
@@ -138,24 +138,24 @@ void __37__AMUIPasscodeButton_setHighlighted___block_invoke(uint64_t a1)
   [WeakRetained setAlpha:v3];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   [(AMUIPasscodeButton *)self bounds];
   v10.x = x;
   v10.y = y;
   if (CGRectContainsPoint(v11, v10))
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (void)layoutSubviews
@@ -166,8 +166,8 @@ void __37__AMUIPasscodeButton_setHighlighted___block_invoke(uint64_t a1)
   [(AMUIPasscodeButton *)self bounds];
   v4 = v3 * 0.5;
   [(UIView *)self->_pillView setFrame:?];
-  v5 = [(UIView *)self->_pillView layer];
-  [v5 setCornerRadius:v4];
+  layer = [(UIView *)self->_pillView layer];
+  [layer setCornerRadius:v4];
 
   backdropLayer = self->_backdropLayer;
   [(UIView *)self->_pillView frame];

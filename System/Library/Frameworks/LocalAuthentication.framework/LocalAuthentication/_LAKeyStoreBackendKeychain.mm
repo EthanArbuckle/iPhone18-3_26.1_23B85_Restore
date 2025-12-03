@@ -1,46 +1,46 @@
 @interface _LAKeyStoreBackendKeychain
-- (BOOL)createGenericPasswordWithQuery:(id)a3 error:(id *)a4;
-- (BOOL)createKeyWithQuery:(id)a3 error:(id *)a4;
-- (BOOL)removeItemsWithQuery:(id)a3 error:(id *)a4;
-- (id)fetchItemWithQuery:(id)a3 error:(id *)a4;
-- (id)fetchItemsWithQuery:(id)a3 error:(id *)a4;
+- (BOOL)createGenericPasswordWithQuery:(id)query error:(id *)error;
+- (BOOL)createKeyWithQuery:(id)query error:(id *)error;
+- (BOOL)removeItemsWithQuery:(id)query error:(id *)error;
+- (id)fetchItemWithQuery:(id)query error:(id *)error;
+- (id)fetchItemsWithQuery:(id)query error:(id *)error;
 @end
 
 @implementation _LAKeyStoreBackendKeychain
 
-- (BOOL)createKeyWithQuery:(id)a3 error:(id *)a4
+- (BOOL)createKeyWithQuery:(id)query error:(id *)error
 {
   error = 0;
-  v5 = SecKeyCreateRandomKey(a3, &error);
+  v5 = SecKeyCreateRandomKey(query, &error);
   if (v5)
   {
     CFRelease(v5);
   }
 
-  v6 = error;
-  if (a4 && error)
+  errorCopy2 = error;
+  if (error && error)
   {
-    *a4 = error;
-    v6 = error;
+    *error = error;
+    errorCopy2 = error;
   }
 
-  v7 = v6 == 0;
+  v7 = errorCopy2 == 0;
 
   return v7;
 }
 
-- (BOOL)createGenericPasswordWithQuery:(id)a3 error:(id *)a4
+- (BOOL)createGenericPasswordWithQuery:(id)query error:(id *)error
 {
-  v5 = SecItemAdd(a3, 0);
+  v5 = SecItemAdd(query, 0);
   if (v5)
   {
     v6 = [LAAuthorizationError genericErrorWithStatus:v5];
 
-    if (a4)
+    if (error)
     {
       if (v6)
       {
-        *a4 = [LAAuthorizationError genericErrorWithStatus:v5];
+        *error = [LAAuthorizationError genericErrorWithStatus:v5];
       }
     }
   }
@@ -48,10 +48,10 @@
   return v5 == 0;
 }
 
-- (id)fetchItemWithQuery:(id)a3 error:(id *)a4
+- (id)fetchItemWithQuery:(id)query error:(id *)error
 {
   result = 0;
-  v5 = SecItemCopyMatching(a3, &result);
+  v5 = SecItemCopyMatching(query, &result);
   v6 = result;
   if (v5)
   {
@@ -63,9 +63,9 @@
     v7 = [LAAuthorizationError genericErrorWithStatus:v5];
 
     v6 = MEMORY[0x1E695E0F8];
-    if (a4 && v7)
+    if (error && v7)
     {
-      *a4 = [LAAuthorizationError genericErrorWithStatus:v5];
+      *error = [LAAuthorizationError genericErrorWithStatus:v5];
       v6 = MEMORY[0x1E695E0F8];
     }
   }
@@ -73,10 +73,10 @@
   return v6;
 }
 
-- (id)fetchItemsWithQuery:(id)a3 error:(id *)a4
+- (id)fetchItemsWithQuery:(id)query error:(id *)error
 {
   result = 0;
-  v5 = SecItemCopyMatching(a3, &result);
+  v5 = SecItemCopyMatching(query, &result);
   v6 = result;
   if (v5)
   {
@@ -88,9 +88,9 @@
     v7 = [LAAuthorizationError genericErrorWithStatus:v5];
 
     v6 = MEMORY[0x1E695E0F0];
-    if (a4 && v7)
+    if (error && v7)
     {
-      *a4 = [LAAuthorizationError genericErrorWithStatus:v5];
+      *error = [LAAuthorizationError genericErrorWithStatus:v5];
       v6 = MEMORY[0x1E695E0F0];
     }
   }
@@ -98,9 +98,9 @@
   return v6;
 }
 
-- (BOOL)removeItemsWithQuery:(id)a3 error:(id *)a4
+- (BOOL)removeItemsWithQuery:(id)query error:(id *)error
 {
-  v5 = SecItemDelete(a3);
+  v5 = SecItemDelete(query);
   v6 = v5;
   if (v5 != -25300)
   {
@@ -108,11 +108,11 @@
     {
       v7 = [LAAuthorizationError genericErrorWithStatus:v5];
 
-      if (a4)
+      if (error)
       {
         if (v7)
         {
-          *a4 = [LAAuthorizationError genericErrorWithStatus:v6];
+          *error = [LAAuthorizationError genericErrorWithStatus:v6];
         }
       }
     }

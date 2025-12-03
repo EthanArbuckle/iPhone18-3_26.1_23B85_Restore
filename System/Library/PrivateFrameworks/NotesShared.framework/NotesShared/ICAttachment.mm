@@ -1,52 +1,52 @@
 @interface ICAttachment
-+ (BOOL)isPathExtensionSupportedForPasswordProtectedNotes:(id)a3;
-+ (BOOL)isTypeUTISupportedForPasswordProtectedNotes:(id)a3;
-+ (BOOL)isTypeUTISupportedForWatch:(id)a3;
-+ (BOOL)typeUTIIsDrawing:(id)a3;
-+ (BOOL)typeUTIIsImage:(id)a3;
-+ (BOOL)typeUTIIsInlineDrawing:(id)a3;
-+ (BOOL)typeUTIIsPlayableAudio:(id)a3;
-+ (BOOL)typeUTIIsPlayableMovie:(id)a3;
++ (BOOL)isPathExtensionSupportedForPasswordProtectedNotes:(id)notes;
++ (BOOL)isTypeUTISupportedForPasswordProtectedNotes:(id)notes;
++ (BOOL)isTypeUTISupportedForWatch:(id)watch;
++ (BOOL)typeUTIIsDrawing:(id)drawing;
++ (BOOL)typeUTIIsImage:(id)image;
++ (BOOL)typeUTIIsInlineDrawing:(id)drawing;
++ (BOOL)typeUTIIsPlayableAudio:(id)audio;
++ (BOOL)typeUTIIsPlayableMovie:(id)movie;
 + (NSPredicate)predicateForAllPaperKitBackedAttachments;
 + (NSPredicate)predicateForOutdatedOrMissingHandwritingSummary;
-+ (id)attachmentIdentifiersForAccount:(id)a3;
++ (id)attachmentIdentifiersForAccount:(id)account;
 + (id)attachmentSectionSortOrder;
 + (id)attachmentTypeUTIsToHideFromAttachmentBrowser;
-+ (id)defaultTitleForAttachmentType:(signed __int16)a3;
-+ (id)existingCloudObjectForRecordID:(id)a3 accountID:(id)a4 context:(id)a5;
-+ (id)fallbackImageContainerURLForIdentifier:(id)a3 account:(id)a4;
-+ (id)fallbackImageEncryptedFallbackURLForIdentifier:(id)a3 account:(id)a4;
-+ (id)fallbackImageFallbackURLForIdentifier:(id)a3 account:(id)a4;
-+ (id)fallbackPDFContainerURLForIdentifier:(id)a3 account:(id)a4;
-+ (id)fallbackPDFEncryptedFallbackURLForIdentifier:(id)a3 account:(id)a4;
-+ (id)fallbackPDFFallbackURLForIdentifier:(id)a3 account:(id)a4;
-+ (id)filenameExtensionForUTI:(id)a3;
-+ (id)filenameFromUTI:(id)a3;
++ (id)defaultTitleForAttachmentType:(signed __int16)type;
++ (id)existingCloudObjectForRecordID:(id)d accountID:(id)iD context:(id)context;
++ (id)fallbackImageContainerURLForIdentifier:(id)identifier account:(id)account;
++ (id)fallbackImageEncryptedFallbackURLForIdentifier:(id)identifier account:(id)account;
++ (id)fallbackImageFallbackURLForIdentifier:(id)identifier account:(id)account;
++ (id)fallbackPDFContainerURLForIdentifier:(id)identifier account:(id)account;
++ (id)fallbackPDFEncryptedFallbackURLForIdentifier:(id)identifier account:(id)account;
++ (id)fallbackPDFFallbackURLForIdentifier:(id)identifier account:(id)account;
++ (id)filenameExtensionForUTI:(id)i;
++ (id)filenameFromUTI:(id)i;
 + (id)isBeingEditedLocallyOnDeviceSet;
 + (id)keyPathsForValuesAffectingIsSharedViaICloud;
-+ (id)mentionNotificationSnippetForAttachmentType:(signed __int16)a3;
++ (id)mentionNotificationSnippetForAttachmentType:(signed __int16)type;
 + (id)mergeableWallClockValueKeyPaths;
-+ (id)mimeTypeFromUTI:(id)a3;
-+ (id)newCloudObjectForRecord:(id)a3 accountID:(id)a4 context:(id)a5;
++ (id)mimeTypeFromUTI:(id)i;
++ (id)newCloudObjectForRecord:(id)record accountID:(id)d context:(id)context;
 + (id)newFetchRequestForAttachments;
-+ (id)noteFromAttachmentRecord:(id)a3 accountID:(id)a4 context:(id)a5;
-+ (id)noteFromAttachmentUserSpecificRecord:(id)a3 accountID:(id)a4 context:(id)a5;
-+ (id)predicateForAttachmentBrowserWithContext:(id)a3;
++ (id)noteFromAttachmentRecord:(id)record accountID:(id)d context:(id)context;
++ (id)noteFromAttachmentUserSpecificRecord:(id)record accountID:(id)d context:(id)context;
++ (id)predicateForAttachmentBrowserWithContext:(id)context;
 + (id)predicateForInlineDrawing;
-+ (id)predicateForPasswordProtected:(BOOL)a3;
-+ (id)predicateForSearchableAttachmentsInContext:(id)a3;
-+ (id)predicateForVisibleAttachmentsWithTypeUTI:(id)a3 inContext:(id)a4;
-+ (id)temporaryPaperBundleURLForIdentifier:(id)a3 account:(id)a4;
-+ (signed)sectionFromTypeUTI:(id)a3 url:(id)a4;
-+ (unint64_t)countOfAttachmentsMatchingPredicate:(id)a3 context:(id)a4;
-+ (void)addPreviewImages:(id)a3 toRecord:(id)a4;
-+ (void)deleteAttachment:(id)a3;
-+ (void)enumerateAttachmentsInContext:(id)a3 batchSize:(unint64_t)a4 visibleOnly:(BOOL)a5 saveAfterBatch:(BOOL)a6 usingBlock:(id)a7;
++ (id)predicateForPasswordProtected:(BOOL)protected;
++ (id)predicateForSearchableAttachmentsInContext:(id)context;
++ (id)predicateForVisibleAttachmentsWithTypeUTI:(id)i inContext:(id)context;
++ (id)temporaryPaperBundleURLForIdentifier:(id)identifier account:(id)account;
++ (signed)sectionFromTypeUTI:(id)i url:(id)url;
++ (unint64_t)countOfAttachmentsMatchingPredicate:(id)predicate context:(id)context;
++ (void)addPreviewImages:(id)images toRecord:(id)record;
++ (void)deleteAttachment:(id)attachment;
++ (void)enumerateAttachmentsInContext:(id)context batchSize:(unint64_t)size visibleOnly:(BOOL)only saveAfterBatch:(BOOL)batch usingBlock:(id)block;
 + (void)initialize;
-+ (void)purgeAttachment:(id)a3;
-+ (void)purgeAttachmentFilesForIdentifiers:(id)a3 account:(id)a4;
-+ (void)purgeHandwritingSummariesInContext:(id)a3;
-+ (void)undeleteAttachment:(id)a3;
++ (void)purgeAttachment:(id)attachment;
++ (void)purgeAttachmentFilesForIdentifiers:(id)identifiers account:(id)account;
++ (void)purgeHandwritingSummariesInContext:(id)context;
++ (void)undeleteAttachment:(id)attachment;
 - (BOOL)checkPreviewImagesIntegrity;
 - (BOOL)hasAllMandatoryFields;
 - (BOOL)hasAnyPNGPreviewImageFiles;
@@ -58,7 +58,7 @@
 - (BOOL)hasMetadata;
 - (BOOL)hasOrientation;
 - (BOOL)hasSynapseLink;
-- (BOOL)hasUnfetchedAssetForRecordKey:(id)a3;
+- (BOOL)hasUnfetchedAssetForRecordKey:(id)key;
 - (BOOL)hasUnfetchedLinkPresentationMetadata;
 - (BOOL)hasVisibleInlineAttachments;
 - (BOOL)hasVisualFallbackMedia;
@@ -66,7 +66,7 @@
 - (BOOL)isBeingEditedLocallyOnDevice;
 - (BOOL)isChildOfDocumentGallery;
 - (BOOL)isDeletedOrInTrash;
-- (BOOL)isEncryptableKeyBinaryData:(id)a3;
+- (BOOL)isEncryptableKeyBinaryData:(id)data;
 - (BOOL)isFolder;
 - (BOOL)isHiddenFromIndexing;
 - (BOOL)isHiddenFromSearch;
@@ -82,25 +82,25 @@
 - (BOOL)isVisibleTable;
 - (BOOL)isiTunes;
 - (BOOL)locationNeedsUpdate;
-- (BOOL)mergeCloudKitRecord:(id)a3 accountID:(id)a4 approach:(int64_t)a5 mergeableFieldState:(id)a6;
-- (BOOL)mergeCloudKitRecord:(id)a3 accountID:(id)a4 approach:(int64_t)a5 mergeableFieldState:(id)a6 newAttachment:(BOOL)a7;
-- (BOOL)mergeDataFromUserSpecificRecord:(id)a3 accountID:(id)a4;
+- (BOOL)mergeCloudKitRecord:(id)record accountID:(id)d approach:(int64_t)approach mergeableFieldState:(id)state;
+- (BOOL)mergeCloudKitRecord:(id)record accountID:(id)d approach:(int64_t)approach mergeableFieldState:(id)state newAttachment:(BOOL)attachment;
+- (BOOL)mergeDataFromUserSpecificRecord:(id)record accountID:(id)d;
 - (BOOL)needsToBePushedToCloud;
 - (BOOL)needsToBeRequested;
 - (BOOL)preferLocalPreviewImages;
 - (BOOL)previewsSupportMultipleAppearances;
-- (BOOL)processFallbackAsset:(id)a3 fallbackAssetType:(int64_t)a4;
-- (BOOL)saveToArchive:(void *)a3 dataPersister:(id)a4 stripImageMarkupMetadata:(BOOL)a5 error:(id *)a6;
+- (BOOL)processFallbackAsset:(id)asset fallbackAssetType:(int64_t)type;
+- (BOOL)saveToArchive:(void *)archive dataPersister:(id)persister stripImageMarkupMetadata:(BOOL)metadata error:(id *)error;
 - (BOOL)shouldAlwaysDownloadAssets;
 - (BOOL)shouldEmbedMarkupDataInMedia;
 - (BOOL)shouldShowInContentInfoText;
 - (BOOL)supportsQuickLook;
 - (BOOL)supportsRenaming;
-- (BOOL)updateHandwritingSummary:(id)a3;
+- (BOOL)updateHandwritingSummary:(id)summary;
 - (BOOL)wantsUserSpecificRecord;
 - (BOOL)willShowFallbackImage;
-- (BOOL)writeFallbackImageData:(id)a3;
-- (BOOL)writeFallbackPDFData:(id)a3;
+- (BOOL)writeFallbackImageData:(id)data;
+- (BOOL)writeFallbackPDFData:(id)data;
 - (CGRect)bounds;
 - (CGSize)intrinsicContentSize;
 - (CSSearchableItemAttributeSet)searchableItemAttributeSet;
@@ -120,22 +120,22 @@
 - (double)sizeHeight;
 - (double)sizeWidth;
 - (id)_accessibilityDescriptionForGenericType;
-- (id)addInlineAttachmentWithIdentifier:(id)a3;
-- (id)addLocationWithLatitude:(double)a3 longitude:(double)a4;
-- (id)addMediaWithData:(id)a3 filename:(id)a4 updateFileBasedAttributes:(BOOL)a5;
-- (id)addMediaWithFileWrapper:(id)a3;
-- (id)addMediaWithURL:(id)a3 filename:(id)a4 updateFileBasedAttributes:(BOOL)a5;
-- (id)addMediaWithURL:(id)a3 updateFileBasedAttributes:(BOOL)a4;
+- (id)addInlineAttachmentWithIdentifier:(id)identifier;
+- (id)addLocationWithLatitude:(double)latitude longitude:(double)longitude;
+- (id)addMediaWithData:(id)data filename:(id)filename updateFileBasedAttributes:(BOOL)attributes;
+- (id)addMediaWithFileWrapper:(id)wrapper;
+- (id)addMediaWithURL:(id)l filename:(id)filename updateFileBasedAttributes:(BOOL)attributes;
+- (id)addMediaWithURL:(id)l updateFileBasedAttributes:(BOOL)attributes;
 - (id)attachmentModel;
-- (id)attachmentPreviewImageCreatingIfNecessaryWithWidth:(double)a3 height:(double)a4 scale:(double)a5 appearanceType:(unint64_t)a6 scaleWhenDrawing:(BOOL)a7 metadata:(id)a8;
-- (id)attachmentPreviewImageWithMinSize:(CGSize)a3 scale:(double)a4 appearanceType:(unint64_t)a5 matchScale:(BOOL)a6 matchAppearance:(BOOL)a7;
-- (id)attachmentPreviewImageWithMinSize:(CGSize)a3 scale:(double)a4 appearanceType:(unint64_t)a5 requireAppearance:(BOOL)a6;
+- (id)attachmentPreviewImageCreatingIfNecessaryWithWidth:(double)width height:(double)height scale:(double)scale appearanceType:(unint64_t)type scaleWhenDrawing:(BOOL)drawing metadata:(id)metadata;
+- (id)attachmentPreviewImageWithMinSize:(CGSize)size scale:(double)scale appearanceType:(unint64_t)type matchScale:(BOOL)matchScale matchAppearance:(BOOL)appearance;
+- (id)attachmentPreviewImageWithMinSize:(CGSize)size scale:(double)scale appearanceType:(unint64_t)type requireAppearance:(BOOL)appearance;
 - (id)audioModel;
 - (id)childCloudObjects;
 - (id)childCloudObjectsForMinimumSupportedVersionPropagation;
-- (id)dataForTypeIdentifier:(id)a3;
+- (id)dataForTypeIdentifier:(id)identifier;
 - (id)defaultTitle;
-- (id)descendantsNeedingOnDemandAssetFetchWithContext:(id)a3 shouldFetchObject:(id)a4;
+- (id)descendantsNeedingOnDemandAssetFetchWithContext:(id)context shouldFetchObject:(id)object;
 - (id)drawingModel;
 - (id)fallbackImageData;
 - (id)fallbackImageEncryptedURL;
@@ -144,21 +144,21 @@
 - (id)fallbackPDFEncryptedURL;
 - (id)fallbackPDFURL;
 - (id)fileSizeString;
-- (id)fileURLForTypeIdentifier:(id)a3;
+- (id)fileURLForTypeIdentifier:(id)identifier;
 - (id)galleryModel;
 - (id)ic_loggingValues;
 - (id)inlineDrawingModel;
 - (id)inlineFormFillingDismissalCountForAllDevices;
-- (id)makeCloudKitRecordForApproach:(int64_t)a3 mergeableFieldState:(id)a4;
-- (id)makeUserSpecificCloudKitRecordForApproach:(int64_t)a3;
-- (id)mergeDecryptedValue:(id)a3 withOldValue:(id)a4 forKey:(id)a5;
+- (id)makeCloudKitRecordForApproach:(int64_t)approach mergeableFieldState:(id)state;
+- (id)makeUserSpecificCloudKitRecordForApproach:(int64_t)approach;
+- (id)mergeDecryptedValue:(id)value withOldValue:(id)oldValue forKey:(id)key;
 - (id)objectsToBeDeletedBeforeThisObject;
 - (id)paperBundleAssetsSubdirectoryURL;
 - (id)paperBundleDatabaseSubdirectoryURL;
 - (id)paperBundleModel;
 - (id)paperBundleURL;
 - (id)paperCoherenceContextURL;
-- (id)parentAttachmentFromRecord:(id)a3 accountID:(id)a4 context:(id)a5;
+- (id)parentAttachmentFromRecord:(id)record accountID:(id)d context:(id)context;
 - (id)parentEncryptableObject;
 - (id)previewItemTitle;
 - (id)previewItemURL;
@@ -170,86 +170,86 @@
 - (id)temporaryPaperBundleURL;
 - (id)unsupportedAttachmentSubtitle;
 - (id)unsupportedAttachmentTitle;
-- (id)updateAttachmentPreviewImageWithImageData:(id)a3 size:(CGSize)a4 scale:(double)a5 appearanceType:(unint64_t)a6 scaleWhenDrawing:(BOOL)a7 metadata:(id)a8 sendNotification:(BOOL)a9;
-- (id)updateAttachmentPreviewImageWithImageSrc:(CGImageSource *)a3 maxDimension:(double)a4 scale:(double)a5 appearanceType:(unint64_t)a6 scaleWhenDrawing:(BOOL)a7 metadata:(id)a8 sendNotification:(BOOL)a9;
-- (int64_t)intrinsicNotesVersionForScenario:(unint64_t)a3;
+- (id)updateAttachmentPreviewImageWithImageData:(id)data size:(CGSize)size scale:(double)scale appearanceType:(unint64_t)type scaleWhenDrawing:(BOOL)drawing metadata:(id)metadata sendNotification:(BOOL)notification;
+- (id)updateAttachmentPreviewImageWithImageSrc:(CGImageSource *)src maxDimension:(double)dimension scale:(double)scale appearanceType:(unint64_t)type scaleWhenDrawing:(BOOL)drawing metadata:(id)metadata sendNotification:(BOOL)notification;
+- (int64_t)intrinsicNotesVersionForScenario:(unint64_t)scenario;
 - (signed)attachmentType;
 - (signed)attachmentTypeFromTypeUTI;
 - (signed)attachmentTypeFromURL;
 - (signed)attachmentTypeIgnoringSupport;
 - (signed)preferredViewSize;
-- (unint64_t)approximateArchiveSizeIncludingPreviews:(BOOL)a3;
+- (unint64_t)approximateArchiveSizeIncludingPreviews:(BOOL)previews;
 - (unint64_t)inlineFormFillingBannerDismissalCountForDevice;
-- (unint64_t)inlineFormFillingBannerDismissalCountForDeviceIdentifier:(id)a3;
-- (void)accountWillChangeToAccount:(id)a3;
+- (unint64_t)inlineFormFillingBannerDismissalCountForDeviceIdentifier:(id)identifier;
+- (void)accountWillChangeToAccount:(id)account;
 - (void)addLocationIfNeeded;
-- (void)addPaperBundleToRecordIfAppropriate:(id)a3;
-- (void)associateAppEntityWithSearchableItemAttributeSet:(id)a3;
+- (void)addPaperBundleToRecordIfAppropriate:(id)appropriate;
+- (void)associateAppEntityWithSearchableItemAttributeSet:(id)set;
 - (void)attachmentDidChange;
 - (void)awakeFromFetch;
 - (void)clearDecryptedData;
 - (void)dealloc;
 - (void)deleteAttachmentPreviewImages;
-- (void)deserializeAndMergeValues:(id)a3;
-- (void)didRefresh:(BOOL)a3;
+- (void)deserializeAndMergeValues:(id)values;
+- (void)didRefresh:(BOOL)refresh;
 - (void)didTurnIntoFault;
-- (void)fixBrokenReferencesWithError:(id)a3;
+- (void)fixBrokenReferencesWithError:(id)error;
 - (void)fixMarkedForDeletionForScannedDocuments;
-- (void)inlineFormFillingBannerWasDismissedByDeviceIdentifier:(id)a3;
+- (void)inlineFormFillingBannerWasDismissedByDeviceIdentifier:(id)identifier;
 - (void)inlineFormFillingBannerWasDismissedByUser;
 - (void)invalidateAttachmentPreviewImages;
-- (void)loadFromArchive:(const void *)a3 dataPersister:(id)a4 withIdentifierMap:(id)a5;
-- (void)loadLinkPreviewForSynapseItem:(id)a3;
-- (void)loadPreviewArchive:(const void *)a3 previewDataIdentifier:(id)a4 dataPersister:(id)a5;
+- (void)loadFromArchive:(const void *)archive dataPersister:(id)persister withIdentifierMap:(id)map;
+- (void)loadLinkPreviewForSynapseItem:(id)item;
+- (void)loadPreviewArchive:(const void *)archive previewDataIdentifier:(id)identifier dataPersister:(id)persister;
 - (void)markForDeletion;
-- (void)mergeFallbackImageAndPDFFromRecord:(id)a3;
-- (void)mergePaperBundleFromRecord:(id)a3;
+- (void)mergeFallbackImageAndPDFFromRecord:(id)record;
+- (void)mergePaperBundleFromRecord:(id)record;
 - (void)metadata;
 - (void)metadataData;
 - (void)noteWillMoveToRecentlyDeletedFolder;
-- (void)objectWasFetchedFromCloudWithRecord:(id)a3 accountID:(id)a4 force:(BOOL)a5;
+- (void)objectWasFetchedFromCloudWithRecord:(id)record accountID:(id)d force:(BOOL)force;
 - (void)persistPendingChanges;
 - (void)prepareForDeletion;
 - (void)purgeAttachmentPreviewImages;
-- (void)recursivelyAddSubAttachments:(id)a3;
-- (void)regenerateTitleWithInferredTitle:(id)a3;
+- (void)recursivelyAddSubAttachments:(id)attachments;
+- (void)regenerateTitleWithInferredTitle:(id)title;
 - (void)removeTemporaryPaperBundle;
 - (void)resetPreferredViewSizeIfNecessary;
 - (void)saveMergeableDataIfNeeded;
-- (void)savePreview:(id)a3 toArchive:(void *)a4 previewDataIdentifier:(id)a5 dataPersister:(id)a6;
-- (void)setBounds:(CGRect)a3;
-- (void)setHandwritingSummary:(id)a3;
-- (void)setImageClassificationSummary:(id)a3;
-- (void)setImageFilterType:(signed __int16)a3;
-- (void)setIsBeingEditedLocallyOnDevice:(BOOL)a3;
-- (void)setMarkedForDeletion:(BOOL)a3;
-- (void)setMarkupModelData:(id)a3;
-- (void)setMergeableData:(id)a3;
-- (void)setMergeablePreferredViewSize:(id)a3;
-- (void)setMetadata:(id)a3;
-- (void)setMetadataData:(id)a3;
-- (void)setNote:(id)a3;
-- (void)setOcrSummary:(id)a3;
-- (void)setOrientation:(signed __int16)a3;
-- (void)setParentAttachment:(id)a3;
-- (void)setPreferredViewSize:(signed __int16)a3;
-- (void)setRemoteFileURL:(id)a3;
-- (void)setTypeUTI:(id)a3 resetToIntrinsicNotesVersion:(BOOL)a4;
-- (void)setUrlString:(id)a3;
+- (void)savePreview:(id)preview toArchive:(void *)archive previewDataIdentifier:(id)identifier dataPersister:(id)persister;
+- (void)setBounds:(CGRect)bounds;
+- (void)setHandwritingSummary:(id)summary;
+- (void)setImageClassificationSummary:(id)summary;
+- (void)setImageFilterType:(signed __int16)type;
+- (void)setIsBeingEditedLocallyOnDevice:(BOOL)device;
+- (void)setMarkedForDeletion:(BOOL)deletion;
+- (void)setMarkupModelData:(id)data;
+- (void)setMergeableData:(id)data;
+- (void)setMergeablePreferredViewSize:(id)size;
+- (void)setMetadata:(id)metadata;
+- (void)setMetadataData:(id)data;
+- (void)setNote:(id)note;
+- (void)setOcrSummary:(id)summary;
+- (void)setOrientation:(signed __int16)orientation;
+- (void)setParentAttachment:(id)attachment;
+- (void)setPreferredViewSize:(signed __int16)size;
+- (void)setRemoteFileURL:(id)l;
+- (void)setTypeUTI:(id)i resetToIntrinsicNotesVersion:(BOOL)version;
+- (void)setUrlString:(id)string;
 - (void)undeleteAttachmentPreviewImages;
 - (void)unmarkForDeletion;
 - (void)updateAfterMediaChange;
-- (void)updateAttachmentMetadataWithBlock:(id)a3;
-- (void)updateAttachmentSectionWithTypeUTI:(id)a3;
+- (void)updateAttachmentMetadataWithBlock:(id)block;
+- (void)updateAttachmentSectionWithTypeUTI:(id)i;
 - (void)updateCombinedSummary;
-- (void)updateMarkedForDeletionStateAttachmentIsInUse:(BOOL)a3;
+- (void)updateMarkedForDeletionStateAttachmentIsInUse:(BOOL)use;
 - (void)updateParentReferenceIfNecessary;
-- (void)updatePlaceInLocationIfNeededHandler:(id)a3;
-- (void)updatePreviewsFromRecord:(id)a3;
-- (void)willRefresh:(BOOL)a3;
+- (void)updatePlaceInLocationIfNeededHandler:(id)handler;
+- (void)updatePreviewsFromRecord:(id)record;
+- (void)willRefresh:(BOOL)refresh;
 - (void)willSave;
 - (void)willTurnIntoFault;
-- (void)willUpdateDeviceReplicaIDsToNotesVersion:(int64_t)a3;
+- (void)willUpdateDeviceReplicaIDsToNotesVersion:(int64_t)version;
 @end
 
 @implementation ICAttachment
@@ -376,17 +376,17 @@ LABEL_9:
       return attachmentType;
     }
 
-    v5 = [(ICAttachment *)self typeUTI];
+    typeUTI = [(ICAttachment *)self typeUTI];
 
-    if (!v5)
+    if (!typeUTI)
     {
       return self->_attachmentType;
     }
 
-    v6 = [(ICAttachment *)self attachmentTypeIgnoringSupport];
-    if (v6)
+    attachmentTypeIgnoringSupport = [(ICAttachment *)self attachmentTypeIgnoringSupport];
+    if (attachmentTypeIgnoringSupport)
     {
-      attachmentType = v6;
+      attachmentType = attachmentTypeIgnoringSupport;
     }
 
     else
@@ -403,12 +403,12 @@ LABEL_9:
 {
   v8.receiver = self;
   v8.super_class = ICAttachment;
-  v3 = [(ICCloudSyncingObject *)&v8 isUnsupported];
-  v4 = [(ICAttachment *)self typeUTI];
-  if (v4)
+  isUnsupported = [(ICCloudSyncingObject *)&v8 isUnsupported];
+  typeUTI = [(ICAttachment *)self typeUTI];
+  if (typeUTI)
   {
-    v5 = [(ICAttachment *)self typeUTI];
-    v6 = ![ICAttachment isTypeUTISupportedForPasswordProtectedNotes:v5];
+    typeUTI2 = [(ICAttachment *)self typeUTI];
+    v6 = ![ICAttachment isTypeUTISupportedForPasswordProtectedNotes:typeUTI2];
   }
 
   else
@@ -416,52 +416,52 @@ LABEL_9:
     LOBYTE(v6) = 0;
   }
 
-  return (v3 | [(ICAttachment *)self isPasswordProtected]& v6) & 1;
+  return (isUnsupported | [(ICAttachment *)self isPasswordProtected]& v6) & 1;
 }
 
 - (signed)attachmentTypeIgnoringSupport
 {
-  v3 = [(ICAttachment *)self attachmentTypeFromTypeUTI];
-  if (!v3)
+  attachmentTypeFromTypeUTI = [(ICAttachment *)self attachmentTypeFromTypeUTI];
+  if (!attachmentTypeFromTypeUTI)
   {
-    v3 = [(ICAttachment *)self isURL];
-    if (v3)
+    attachmentTypeFromTypeUTI = [(ICAttachment *)self isURL];
+    if (attachmentTypeFromTypeUTI)
     {
 
-      LOWORD(v3) = [(ICAttachment *)self attachmentTypeFromURL];
+      LOWORD(attachmentTypeFromTypeUTI) = [(ICAttachment *)self attachmentTypeFromURL];
     }
   }
 
-  return v3;
+  return attachmentTypeFromTypeUTI;
 }
 
 - (signed)attachmentTypeFromTypeUTI
 {
-  v3 = [(ICAttachment *)self typeUTI];
+  typeUTI = [(ICAttachment *)self typeUTI];
 
-  if (!v3)
+  if (!typeUTI)
   {
     return 0;
   }
 
-  v4 = [(ICAttachment *)self typeUTI];
-  v5 = [ICAttachment typeUTIIsImage:v4];
+  typeUTI2 = [(ICAttachment *)self typeUTI];
+  v5 = [ICAttachment typeUTIIsImage:typeUTI2];
 
   if (v5)
   {
     return 3;
   }
 
-  v7 = [(ICAttachment *)self typeUTI];
-  v8 = [ICAttachment typeUTIIsPlayableAudio:v7];
+  typeUTI3 = [(ICAttachment *)self typeUTI];
+  v8 = [ICAttachment typeUTIIsPlayableAudio:typeUTI3];
 
   if (v8)
   {
     return 4;
   }
 
-  v9 = [(ICAttachment *)self typeUTI];
-  v10 = [ICAttachment typeUTIIsPlayableMovie:v9];
+  typeUTI4 = [(ICAttachment *)self typeUTI];
+  v10 = [ICAttachment typeUTIIsPlayableMovie:typeUTI4];
 
   if (v10)
   {
@@ -469,8 +469,8 @@ LABEL_9:
   }
 
   v11 = MEMORY[0x277CE1CB8];
-  v12 = [(ICAttachment *)self typeUTI];
-  v13 = [v11 typeWithIdentifier:v12];
+  typeUTI5 = [(ICAttachment *)self typeUTI];
+  v13 = [v11 typeWithIdentifier:typeUTI5];
   v14 = [v13 conformsToType:*MEMORY[0x277CE1E08]];
 
   if (v14)
@@ -478,63 +478,63 @@ LABEL_9:
     return 6;
   }
 
-  v15 = [(ICAttachment *)self typeUTI];
-  v16 = [ICAttachment typeUTIIsInlineDrawing:v15];
+  typeUTI6 = [(ICAttachment *)self typeUTI];
+  v16 = [ICAttachment typeUTIIsInlineDrawing:typeUTI6];
 
   if (v16)
   {
     return 10;
   }
 
-  v17 = [(ICAttachment *)self typeUTI];
-  v18 = [ICAttachment typeUTIIsDrawing:v17];
+  typeUTI7 = [(ICAttachment *)self typeUTI];
+  v18 = [ICAttachment typeUTIIsDrawing:typeUTI7];
 
   if (v18)
   {
     return 9;
   }
 
-  v19 = [(ICAttachment *)self typeUTI];
-  v20 = [v19 isEqualToString:@"com.apple.notes.gallery"];
+  typeUTI8 = [(ICAttachment *)self typeUTI];
+  v20 = [typeUTI8 isEqualToString:@"com.apple.notes.gallery"];
 
   if (v20)
   {
     return 11;
   }
 
-  v21 = [(ICAttachment *)self typeUTI];
-  v22 = [v21 isEqualToString:@"com.apple.notes.table"];
+  typeUTI9 = [(ICAttachment *)self typeUTI];
+  v22 = [typeUTI9 isEqualToString:@"com.apple.notes.table"];
 
   if (v22)
   {
     return 12;
   }
 
-  v23 = [(ICAttachment *)self typeUTI];
-  v24 = [v23 isEqualToString:@"com.apple.paper"];
+  typeUTI10 = [(ICAttachment *)self typeUTI];
+  v24 = [typeUTI10 isEqualToString:@"com.apple.paper"];
 
   if (v24)
   {
     return 13;
   }
 
-  v25 = [(ICAttachment *)self typeUTI];
-  if ([v25 isEqualToString:@"com.apple.paper.doc"])
+  typeUTI11 = [(ICAttachment *)self typeUTI];
+  if ([typeUTI11 isEqualToString:@"com.apple.paper.doc"])
   {
 
     return 14;
   }
 
-  v26 = [(ICAttachment *)self typeUTI];
-  v27 = [v26 isEqualToString:@"com.apple.paper.doc.pdf"];
+  typeUTI12 = [(ICAttachment *)self typeUTI];
+  v27 = [typeUTI12 isEqualToString:@"com.apple.paper.doc.pdf"];
 
   if (v27)
   {
     return 14;
   }
 
-  v28 = [(ICAttachment *)self typeUTI];
-  v29 = [v28 isEqualToString:@"com.apple.paper.doc.scan"];
+  typeUTI13 = [(ICAttachment *)self typeUTI];
+  v29 = [typeUTI13 isEqualToString:@"com.apple.paper.doc.scan"];
 
   if (v29)
   {
@@ -549,14 +549,14 @@ LABEL_9:
 
 - (signed)preferredViewSize
 {
-  v3 = [(ICAttachment *)self mergeablePreferredViewSize];
-  v4 = [v3 length];
+  mergeablePreferredViewSize = [(ICAttachment *)self mergeablePreferredViewSize];
+  v4 = [mergeablePreferredViewSize length];
 
   if (v4)
   {
     v5 = [ICTTMergeableWallClockValue alloc];
-    v6 = [(ICAttachment *)self mergeablePreferredViewSize];
-    v7 = [(ICTTMergeableWallClockValue *)v5 initWithData:v6];
+    mergeablePreferredViewSize2 = [(ICAttachment *)self mergeablePreferredViewSize];
+    v7 = [(ICTTMergeableWallClockValue *)v5 initWithData:mergeablePreferredViewSize2];
   }
 
   else
@@ -564,21 +564,21 @@ LABEL_9:
     v7 = 0;
   }
 
-  v8 = [(ICTTMergeableWallClockValue *)v7 value];
+  value = [(ICTTMergeableWallClockValue *)v7 value];
 
-  if (v8)
+  if (value)
   {
-    v9 = [(ICTTMergeableWallClockValue *)v7 value];
-    v10 = [v9 shortValue];
+    value2 = [(ICTTMergeableWallClockValue *)v7 value];
+    shortValue = [value2 shortValue];
   }
 
   else
   {
-    v9 = [(ICAttachment *)self note];
-    v10 = [v9 attachmentViewType];
+    value2 = [(ICAttachment *)self note];
+    shortValue = [value2 attachmentViewType];
   }
 
-  v11 = v10;
+  v11 = shortValue;
 
   return v11;
 }
@@ -593,13 +593,13 @@ LABEL_9:
   [(ICAttachment *)self didAccessValueForKey:@"sizeWidth"];
   if (v5 == 0.0)
   {
-    v6 = [(ICAttachment *)self attachmentModel];
-    v7 = [v6 shouldUsePlaceholderBoundsIfNecessary];
+    attachmentModel = [(ICAttachment *)self attachmentModel];
+    shouldUsePlaceholderBoundsIfNecessary = [attachmentModel shouldUsePlaceholderBoundsIfNecessary];
 
-    if (v7)
+    if (shouldUsePlaceholderBoundsIfNecessary)
     {
-      v8 = [(ICAttachment *)self attachmentModel];
-      [v8 placeholderWidth];
+      attachmentModel2 = [(ICAttachment *)self attachmentModel];
+      [attachmentModel2 placeholderWidth];
       v5 = v9;
     }
   }
@@ -617,13 +617,13 @@ LABEL_9:
   [(ICAttachment *)self didAccessValueForKey:@"sizeHeight"];
   if (v5 == 0.0)
   {
-    v6 = [(ICAttachment *)self attachmentModel];
-    v7 = [v6 shouldUsePlaceholderBoundsIfNecessary];
+    attachmentModel = [(ICAttachment *)self attachmentModel];
+    shouldUsePlaceholderBoundsIfNecessary = [attachmentModel shouldUsePlaceholderBoundsIfNecessary];
 
-    if (v7)
+    if (shouldUsePlaceholderBoundsIfNecessary)
     {
-      v8 = [(ICAttachment *)self attachmentModel];
-      [v8 placeholderHeight];
+      attachmentModel2 = [(ICAttachment *)self attachmentModel];
+      [attachmentModel2 placeholderHeight];
       v5 = v9;
     }
   }
@@ -633,8 +633,8 @@ LABEL_9:
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(ICAttachment *)self attachmentModel];
-  [v2 intrinsicContentSize];
+  attachmentModel = [(ICAttachment *)self attachmentModel];
+  [attachmentModel intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -647,13 +647,13 @@ LABEL_9:
 
 - (id)attachmentModel
 {
-  v3 = [(ICAttachment *)self managedObjectContext];
+  managedObjectContext = [(ICAttachment *)self managedObjectContext];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __31__ICAttachment_attachmentModel__block_invoke;
   v5[3] = &unk_278194B00;
   v5[4] = self;
-  [v3 performBlockAndWait:v5];
+  [managedObjectContext performBlockAndWait:v5];
 
   return self->_attachmentModel;
 }
@@ -722,12 +722,12 @@ void __31__ICAttachment_attachmentModel__block_invoke(uint64_t a1)
 - (id)childCloudObjects
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ICAttachment *)self media];
+  media = [(ICAttachment *)self media];
 
-  if (v3)
+  if (media)
   {
-    v4 = [(ICAttachment *)self media];
-    v7[0] = v4;
+    media2 = [(ICAttachment *)self media];
+    v7[0] = media2;
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v7 count:1];
   }
 
@@ -739,28 +739,28 @@ void __31__ICAttachment_attachmentModel__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)loadFromArchive:(const void *)a3 dataPersister:(id)a4 withIdentifierMap:(id)a5
+- (void)loadFromArchive:(const void *)archive dataPersister:(id)persister withIdentifierMap:(id)map
 {
   v197 = *MEMORY[0x277D85DE8];
-  v188 = a4;
-  v187 = a5;
-  v189 = a3;
-  if (*(a3 + 32))
+  persisterCopy = persister;
+  mapCopy = map;
+  archiveCopy = archive;
+  if (*(archive + 32))
   {
     v8 = objc_alloc(MEMORY[0x277CCACA8]);
-    v9 = *(a3 + 5);
+    v9 = *(archive + 5);
     v10 = *(v9 + 23);
     if (v10 < 0)
     {
       v9 = *v9;
-      v10 = *(*(a3 + 5) + 8);
+      v10 = *(*(archive + 5) + 8);
     }
 
     v11 = [v8 initWithBytes:v9 length:v10 encoding:4];
-    if (v187)
+    if (mapCopy)
     {
-      v12 = [(ICAttachment *)self identifier];
-      [v187 setObject:v12 forKeyedSubscript:v11];
+      identifier = [(ICAttachment *)self identifier];
+      [mapCopy setObject:identifier forKeyedSubscript:v11];
     }
 
     v186 = v11;
@@ -771,9 +771,9 @@ void __31__ICAttachment_attachmentModel__block_invoke(uint64_t a1)
     v186 = &stru_2827172C0;
   }
 
-  if ((*(a3 + 8) & 0x1000000) != 0)
+  if ((*(archive + 8) & 0x1000000) != 0)
   {
-    v13 = *(a3 + 29);
+    v13 = *(archive + 29);
   }
 
   else
@@ -782,15 +782,15 @@ void __31__ICAttachment_attachmentModel__block_invoke(uint64_t a1)
   }
 
   v14 = [(ICCloudSyncingObject *)self requireMinimumSupportedVersionAndPropagateToChildObjects:v13];
-  if ((*(a3 + 32) & 2) != 0)
+  if ((*(archive + 32) & 2) != 0)
   {
     v17 = objc_alloc(MEMORY[0x277CBEA90]);
-    v18 = *(a3 + 6);
+    v18 = *(archive + 6);
     v19 = *(v18 + 23);
     if (v19 < 0)
     {
       v18 = *v18;
-      v19 = *(*(a3 + 6) + 8);
+      v19 = *(*(archive + 6) + 8);
     }
 
     v15 = [v17 initWithBytes:v18 length:v19];
@@ -799,205 +799,205 @@ void __31__ICAttachment_attachmentModel__block_invoke(uint64_t a1)
 
   else
   {
-    if (!v188)
+    if (!persisterCopy)
     {
       goto LABEL_18;
     }
 
     v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v186, @"mergeableData"];
-    v16 = [v188 loadDataForIdentifier:v15];
+    v16 = [persisterCopy loadDataForIdentifier:v15];
     [(ICAttachment *)self setMergeableData:v16];
   }
 
 LABEL_18:
-  v20 = *(a3 + 8);
+  v20 = *(archive + 8);
   if ((v20 & 4) != 0)
   {
-    v14 = [(ICAttachment *)self setSizeHeight:*(a3 + 14)];
-    v20 = *(a3 + 8);
+    v14 = [(ICAttachment *)self setSizeHeight:*(archive + 14)];
+    v20 = *(archive + 8);
   }
 
   if ((v20 & 8) != 0)
   {
-    v14 = [(ICAttachment *)self setSizeWidth:*(a3 + 15)];
-    v20 = *(a3 + 8);
+    v14 = [(ICAttachment *)self setSizeWidth:*(archive + 15)];
+    v20 = *(archive + 8);
   }
 
   if ((v20 & 0x800) != 0)
   {
-    v14 = [(ICAttachment *)self setOriginX:*(a3 + 34)];
-    v20 = *(a3 + 8);
+    v14 = [(ICAttachment *)self setOriginX:*(archive + 34)];
+    v20 = *(archive + 8);
   }
 
   if ((v20 & 0x1000) != 0)
   {
-    v14 = [(ICAttachment *)self setOriginY:*(a3 + 35)];
-    v20 = *(a3 + 8);
+    v14 = [(ICAttachment *)self setOriginY:*(archive + 35)];
+    v20 = *(archive + 8);
   }
 
   if ((v20 & 0x2000) != 0)
   {
-    v14 = [(ICAttachment *)self setOrientation:*(a3 + 80)];
-    v20 = *(a3 + 8);
+    v14 = [(ICAttachment *)self setOrientation:*(archive + 80)];
+    v20 = *(archive + 8);
   }
 
   if ((v20 & 0x10) != 0)
   {
     v21 = objc_alloc(MEMORY[0x277CCACA8]);
-    v22 = *(a3 + 8);
+    v22 = *(archive + 8);
     v23 = *(v22 + 23);
     if (v23 < 0)
     {
       v22 = *v22;
-      v23 = *(*(a3 + 8) + 8);
+      v23 = *(*(archive + 8) + 8);
     }
 
     v24 = [v21 initWithBytes:v22 length:v23 encoding:4];
     [(ICAttachment *)self setSummary:v24];
 
-    v20 = *(a3 + 8);
+    v20 = *(archive + 8);
   }
 
   if ((v20 & 0x20) != 0)
   {
     v25 = objc_alloc(MEMORY[0x277CCACA8]);
-    v26 = *(a3 + 9);
+    v26 = *(archive + 9);
     v27 = *(v26 + 23);
     if (v27 < 0)
     {
       v26 = *v26;
-      v27 = *(*(a3 + 9) + 8);
+      v27 = *(*(archive + 9) + 8);
     }
 
     v28 = [v25 initWithBytes:v26 length:v27 encoding:4];
     [(ICAttachment *)self setTitle:v28];
   }
 
-  if ((*(a3 + 36) & 4) != 0)
+  if ((*(archive + 36) & 4) != 0)
   {
     v29 = objc_alloc(MEMORY[0x277CCACA8]);
-    v30 = *(a3 + 39);
+    v30 = *(archive + 39);
     v31 = *(v30 + 23);
     if (v31 < 0)
     {
       v30 = *v30;
-      v31 = *(*(a3 + 39) + 8);
+      v31 = *(*(archive + 39) + 8);
     }
 
     v32 = [v29 initWithBytes:v30 length:v31 encoding:4];
     [(ICAttachment *)self setUserTitle:v32];
   }
 
-  v33 = *(a3 + 8);
+  v33 = *(archive + 8);
   if ((v33 & 0x40) != 0)
   {
     v34 = objc_alloc(MEMORY[0x277CCACA8]);
-    v35 = *(a3 + 10);
+    v35 = *(archive + 10);
     v36 = *(v35 + 23);
     if (v36 < 0)
     {
       v35 = *v35;
-      v36 = *(*(a3 + 10) + 8);
+      v36 = *(*(archive + 10) + 8);
     }
 
     v37 = [v34 initWithBytes:v35 length:v36 encoding:4];
     [(ICAttachment *)self setTypeUTI:v37 resetToIntrinsicNotesVersion:0];
 
-    v33 = *(a3 + 8);
+    v33 = *(archive + 8);
   }
 
   if ((v33 & 0x80) != 0)
   {
     v38 = objc_alloc(MEMORY[0x277CCACA8]);
-    v39 = *(a3 + 11);
+    v39 = *(archive + 11);
     v40 = *(v39 + 23);
     if (v40 < 0)
     {
       v39 = *v39;
-      v40 = *(*(a3 + 11) + 8);
+      v40 = *(*(archive + 11) + 8);
     }
 
     v41 = [v38 initWithBytes:v39 length:v40 encoding:4];
     [(ICAttachment *)self setUrlString:v41];
 
-    v33 = *(a3 + 8);
+    v33 = *(archive + 8);
   }
 
   if ((v33 & 0x4000) != 0)
   {
-    v42 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:*(a3 + 18)];
+    v42 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:*(archive + 18)];
     [(ICAttachment *)self setPreviewUpdateDate:v42];
 
-    v33 = *(a3 + 8);
+    v33 = *(archive + 8);
   }
 
   if ((v33 & 0x8000) != 0)
   {
-    v43 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:*(a3 + 19)];
+    v43 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:*(archive + 19)];
     [(ICAttachment *)self setCreationDate:v43];
 
-    v33 = *(a3 + 8);
+    v33 = *(archive + 8);
   }
 
   if ((v33 & 0x10000) != 0)
   {
-    v44 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:*(a3 + 21)];
+    v44 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:*(archive + 21)];
     [(ICAttachment *)self setModificationDate:v44];
 
-    v33 = *(a3 + 8);
+    v33 = *(archive + 8);
   }
 
   if ((v33 & 0x20000) != 0)
   {
     v45 = objc_alloc(MEMORY[0x277CCACA8]);
-    v46 = *(a3 + 22);
+    v46 = *(archive + 22);
     v47 = *(v46 + 23);
     if (v47 < 0)
     {
       v46 = *v46;
-      v47 = *(*(a3 + 22) + 8);
+      v47 = *(*(archive + 22) + 8);
     }
 
     v48 = [v45 initWithBytes:v46 length:v47 encoding:4];
     v49 = [MEMORY[0x277CBEBC0] URLWithString:v48];
     [(ICAttachment *)self setRemoteFileURL:v49];
 
-    v33 = *(a3 + 8);
+    v33 = *(archive + 8);
   }
 
   if ((v33 & 0x40000) != 0)
   {
-    v14 = [(ICAttachment *)self setCheckedForLocation:*(a3 + 164)];
-    v33 = *(a3 + 8);
+    v14 = [(ICAttachment *)self setCheckedForLocation:*(archive + 164)];
+    v33 = *(archive + 8);
   }
 
   if ((v33 & 0x80000) != 0)
   {
-    v14 = [(ICAttachment *)self setFileSize:*(a3 + 23)];
-    v33 = *(a3 + 8);
+    v14 = [(ICAttachment *)self setFileSize:*(archive + 23)];
+    v33 = *(archive + 8);
   }
 
   if ((v33 & 0x100000) != 0)
   {
-    v14 = [(ICAttachment *)self setDuration:*(a3 + 24)];
-    v33 = *(a3 + 8);
+    v14 = [(ICAttachment *)self setDuration:*(archive + 24)];
+    v33 = *(archive + 8);
   }
 
   if ((v33 & 0x200000) != 0)
   {
-    v14 = [(ICAttachment *)self setImageFilterType:*(a3 + 196)];
-    v33 = *(a3 + 8);
+    v14 = [(ICAttachment *)self setImageFilterType:*(archive + 196)];
+    v33 = *(archive + 8);
   }
 
   if ((v33 & 0x400000) != 0)
   {
     v52 = objc_alloc(MEMORY[0x277CBEA90]);
-    v53 = *(a3 + 25);
+    v53 = *(archive + 25);
     v54 = *(v53 + 23);
     if (v54 < 0)
     {
       v53 = *v53;
-      v54 = *(*(a3 + 25) + 8);
+      v54 = *(*(archive + 25) + 8);
     }
 
     v50 = [v52 initWithBytes:v53 length:v54];
@@ -1005,32 +1005,32 @@ LABEL_18:
     goto LABEL_72;
   }
 
-  if (v188)
+  if (persisterCopy)
   {
     v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v186, @"markupModelData"];
-    v51 = [v188 loadDataForIdentifier:v50];
+    v51 = [persisterCopy loadDataForIdentifier:v50];
     [(ICAttachment *)self setMarkupModelData:v51];
 
 LABEL_72:
-    v33 = *(a3 + 8);
+    v33 = *(archive + 8);
   }
 
-  if (v33 >> 25 == 127 && (*(a3 + 36) & 1) != 0)
+  if (v33 >> 25 == 127 && (*(archive + 36) & 1) != 0)
   {
-    [(ICAttachment *)self setCroppingQuadBottomLeftX:*(a3 + 30)];
-    [(ICAttachment *)self setCroppingQuadBottomLeftY:*(a3 + 31)];
-    [(ICAttachment *)self setCroppingQuadBottomRightX:*(a3 + 32)];
-    [(ICAttachment *)self setCroppingQuadBottomRightY:*(a3 + 33)];
-    [(ICAttachment *)self setCroppingQuadTopLeftX:*(a3 + 34)];
-    [(ICAttachment *)self setCroppingQuadTopLeftY:*(a3 + 35)];
-    [(ICAttachment *)self setCroppingQuadTopRightX:*(a3 + 36)];
-    v14 = [(ICAttachment *)self setCroppingQuadTopRightY:*(a3 + 37)];
-    v33 = *(a3 + 8);
+    [(ICAttachment *)self setCroppingQuadBottomLeftX:*(archive + 30)];
+    [(ICAttachment *)self setCroppingQuadBottomLeftY:*(archive + 31)];
+    [(ICAttachment *)self setCroppingQuadBottomRightX:*(archive + 32)];
+    [(ICAttachment *)self setCroppingQuadBottomRightY:*(archive + 33)];
+    [(ICAttachment *)self setCroppingQuadTopLeftX:*(archive + 34)];
+    [(ICAttachment *)self setCroppingQuadTopLeftY:*(archive + 35)];
+    [(ICAttachment *)self setCroppingQuadTopRightX:*(archive + 36)];
+    v14 = [(ICAttachment *)self setCroppingQuadTopRightY:*(archive + 37)];
+    v33 = *(archive + 8);
   }
 
   if ((v33 & 0x100) != 0)
   {
-    v55 = *(a3 + 12);
+    v55 = *(archive + 12);
     if (v55)
     {
       v56 = *(v55 + 40);
@@ -1039,7 +1039,7 @@ LABEL_72:
     else
     {
       v57 = topotext::Attachment::default_instance(v14);
-      v55 = *(a3 + 12);
+      v55 = *(archive + 12);
       v56 = *(*(v57 + 12) + 40);
       if (!v55)
       {
@@ -1048,13 +1048,13 @@ LABEL_72:
     }
 
     v14 = [(ICAttachment *)self addLocationWithLatitude:v56 longitude:*(v55 + 48)];
-    v58 = *(a3 + 12);
+    v58 = *(archive + 12);
     v59 = v58;
     if (!v58)
     {
       v14 = topotext::Attachment::default_instance(v14);
       v59 = *(v14 + 12);
-      v58 = *(a3 + 12);
+      v58 = *(archive + 12);
     }
 
     if ((*(v59 + 32) & 8) != 0)
@@ -1065,10 +1065,10 @@ LABEL_72:
       }
 
       v60 = *(v58 + 64);
-      v61 = [(ICAttachment *)self location];
-      [v61 setPlaceUpdated:v60];
+      location = [(ICAttachment *)self location];
+      [location setPlaceUpdated:v60];
 
-      v58 = *(a3 + 12);
+      v58 = *(archive + 12);
     }
 
     if (!v58)
@@ -1081,7 +1081,7 @@ LABEL_72:
     {
       v62 = objc_alloc(MEMORY[0x277CBEA90]);
       v63 = v62;
-      v64 = *(a3 + 12);
+      v64 = *(archive + 12);
       if (!v64)
       {
         v62 = topotext::Attachment::default_instance(v62);
@@ -1094,7 +1094,7 @@ LABEL_72:
         v65 = *v65;
       }
 
-      v66 = *(a3 + 12);
+      v66 = *(archive + 12);
       if (!v66)
       {
         v66 = *(topotext::Attachment::default_instance(v62) + 96);
@@ -1123,14 +1123,14 @@ LABEL_72:
       objc_opt_class();
       v73 = [v70 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCA308]];
       v74 = ICCheckedDynamicCast();
-      v75 = [(ICAttachment *)self location];
-      [v75 setPlacemark:v74];
+      location2 = [(ICAttachment *)self location];
+      [location2 setPlacemark:v74];
     }
   }
 
-  if ((*(a3 + 33) & 2) != 0)
+  if ((*(archive + 33) & 2) != 0)
   {
-    v76 = *(a3 + 13);
+    v76 = *(archive + 13);
     if (!v76)
     {
       v76 = *(topotext::Attachment::default_instance(v14) + 104);
@@ -1140,7 +1140,7 @@ LABEL_72:
     {
       v88 = objc_alloc(MEMORY[0x277CCACA8]);
       v89 = v88;
-      v90 = *(a3 + 13);
+      v90 = *(archive + 13);
       if (!v90)
       {
         v88 = topotext::Attachment::default_instance(v88);
@@ -1153,7 +1153,7 @@ LABEL_72:
         v91 = *v91;
       }
 
-      v92 = *(a3 + 13);
+      v92 = *(archive + 13);
       if (!v92)
       {
         v92 = *(topotext::Attachment::default_instance(v88) + 104);
@@ -1173,7 +1173,7 @@ LABEL_72:
     {
       v77 = objc_alloc(MEMORY[0x277CCACA8]);
       v78 = v77;
-      v79 = *(a3 + 13);
+      v79 = *(archive + 13);
       if (!v79)
       {
         v77 = topotext::Attachment::default_instance(v77);
@@ -1186,7 +1186,7 @@ LABEL_72:
         v80 = *v80;
       }
 
-      v81 = *(a3 + 13);
+      v81 = *(archive + 13);
       if (!v81)
       {
         v81 = *(topotext::Attachment::default_instance(v77) + 104);
@@ -1201,7 +1201,7 @@ LABEL_72:
 
       v84 = [v78 initWithBytes:v80 length:v83 encoding:4];
       v85 = v84;
-      v86 = *(a3 + 13);
+      v86 = *(archive + 13);
       if (!v86)
       {
         v86 = *(topotext::Attachment::default_instance(v84) + 104);
@@ -1211,7 +1211,7 @@ LABEL_72:
       {
         v95 = objc_alloc(MEMORY[0x277CCACA8]);
         v96 = v95;
-        v97 = *(a3 + 13);
+        v97 = *(archive + 13);
         if (!v97)
         {
           v95 = topotext::Attachment::default_instance(v95);
@@ -1224,7 +1224,7 @@ LABEL_72:
           v98 = *v98;
         }
 
-        v99 = *(a3 + 13);
+        v99 = *(archive + 13);
         if (!v99)
         {
           v99 = *(topotext::Attachment::default_instance(v95) + 104);
@@ -1247,9 +1247,9 @@ LABEL_72:
       }
     }
 
-    v103 = [(topotext::Attachment *)v87 ic_sanitizedFilenameString];
+    ic_sanitizedFilenameString = [(topotext::Attachment *)v87 ic_sanitizedFilenameString];
 
-    v105 = *(a3 + 13);
+    v105 = *(archive + 13);
     if (!v105)
     {
       v105 = *(topotext::Attachment::default_instance(v104) + 104);
@@ -1259,7 +1259,7 @@ LABEL_72:
     {
       v108 = objc_alloc(MEMORY[0x277CBEA90]);
       v109 = v108;
-      v110 = *(a3 + 13);
+      v110 = *(archive + 13);
       if (!v110)
       {
         v108 = topotext::Attachment::default_instance(v108);
@@ -1272,7 +1272,7 @@ LABEL_72:
         v111 = *v111;
       }
 
-      v112 = *(a3 + 13);
+      v112 = *(archive + 13);
       if (!v112)
       {
         v112 = *(topotext::Attachment::default_instance(v108) + 104);
@@ -1294,14 +1294,14 @@ LABEL_72:
 
     else
     {
-      if (!v188)
+      if (!persisterCopy)
       {
         v107 = 0;
         goto LABEL_163;
       }
 
       v106 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v186, @"media"];
-      v107 = [v188 loadDataForIdentifier:v106];
+      v107 = [persisterCopy loadDataForIdentifier:v106];
 
       if (!v107)
       {
@@ -1309,11 +1309,11 @@ LABEL_72:
       }
     }
 
-    if (v103)
+    if (ic_sanitizedFilenameString)
     {
-      v115 = [(ICAttachment *)self addMediaWithData:v107 filename:v103 updateFileBasedAttributes:0];
+      v115 = [(ICAttachment *)self addMediaWithData:v107 filename:ic_sanitizedFilenameString updateFileBasedAttributes:0];
       v116 = v115;
-      isa = *(a3 + 13);
+      isa = *(archive + 13);
       if (!isa)
       {
         v115 = topotext::Attachment::default_instance(v115);
@@ -1322,7 +1322,7 @@ LABEL_72:
 
       if ((*(isa + 32) & 0x10) != 0)
       {
-        v119 = *(a3 + 13);
+        v119 = *(archive + 13);
         if (!v119)
         {
           v119 = *(topotext::Attachment::default_instance(v115) + 104);
@@ -1344,29 +1344,29 @@ LABEL_163:
     v116 = os_log_create("com.apple.notes", "Archiving");
     if (os_log_type_enabled(v116, OS_LOG_TYPE_ERROR))
     {
-      v182 = [(ICCloudSyncingObject *)self ic_loggingIdentifier];
+      ic_loggingIdentifier = [(ICCloudSyncingObject *)self ic_loggingIdentifier];
       v183 = [v107 length];
       *buf = 138412802;
-      v192 = v182;
+      v192 = ic_loggingIdentifier;
       v193 = 2048;
       v194 = v183;
       v195 = 2112;
-      v196 = v103;
+      v196 = ic_sanitizedFilenameString;
       _os_log_error_impl(&dword_214D51000, v116, OS_LOG_TYPE_ERROR, "Failed to unarchive media for attachment (%@) because either the data (%lu bytes) or filename (%@) were missing", buf, 0x20u);
     }
 
 LABEL_166:
   }
 
-  if (v188)
+  if (persisterCopy)
   {
-    v120 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_fallbackImage", v186];
-    v184 = [v188 loadDataForIdentifier:v120];
+    v186 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_fallbackImage", v186];
+    v184 = [persisterCopy loadDataForIdentifier:v186];
   }
 
   else
   {
-    v121 = *(a3 + 9);
+    v121 = *(archive + 9);
     if ((v121 & 8) == 0)
     {
       v184 = 0;
@@ -1379,12 +1379,12 @@ LABEL_166:
     }
 
     v122 = objc_alloc(MEMORY[0x277CBEA90]);
-    v123 = *(a3 + 40);
+    v123 = *(archive + 40);
     v124 = *(v123 + 23);
     if (v124 < 0)
     {
       v123 = *v123;
-      v124 = *(*(a3 + 40) + 8);
+      v124 = *(*(archive + 40) + 8);
     }
 
     v184 = [v122 initWithBytes:v123 length:v124];
@@ -1395,27 +1395,27 @@ LABEL_166:
     [(ICAttachment *)self writeFallbackImageData:v184];
   }
 
-  if (v188)
+  if (persisterCopy)
   {
-    v125 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_fallbackPDF", v186];
-    v185 = [v188 loadDataForIdentifier:v125];
+    v1862 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_fallbackPDF", v186];
+    v185 = [persisterCopy loadDataForIdentifier:v1862];
 
     goto LABEL_183;
   }
 
-  if ((*(a3 + 9) & 0x100) == 0)
+  if ((*(archive + 9) & 0x100) == 0)
   {
     goto LABEL_185;
   }
 
 LABEL_180:
   v126 = objc_alloc(MEMORY[0x277CBEA90]);
-  v127 = *(a3 + 47);
+  v127 = *(archive + 47);
   v128 = *(v127 + 23);
   if (v128 < 0)
   {
     v127 = *v127;
-    v128 = *(*(a3 + 47) + 8);
+    v128 = *(*(archive + 47) + 8);
   }
 
   v185 = [v126 initWithBytes:v127 length:v128];
@@ -1429,109 +1429,109 @@ LABEL_183:
 LABEL_185:
   v185 = 0;
 LABEL_186:
-  v129 = *(a3 + 9);
+  v129 = *(archive + 9);
   if ((v129 & 2) != 0)
   {
     v130 = objc_alloc(MEMORY[0x277CBEA90]);
-    v131 = *(a3 + 38);
+    v131 = *(archive + 38);
     v132 = *(v131 + 23);
     if (v132 < 0)
     {
       v131 = *v131;
-      v132 = *(*(a3 + 38) + 8);
+      v132 = *(*(archive + 38) + 8);
     }
 
     v133 = [v130 initWithBytes:v131 length:v132];
     [(ICAttachment *)self setMetadataData:v133];
 
-    v129 = *(a3 + 9);
+    v129 = *(archive + 9);
   }
 
   if ((v129 & 0x10) != 0)
   {
     v134 = objc_alloc(MEMORY[0x277CBEA90]);
-    v135 = *(a3 + 41);
+    v135 = *(archive + 41);
     v136 = *(v135 + 23);
     if (v136 < 0)
     {
       v135 = *v135;
-      v136 = *(*(a3 + 41) + 8);
+      v136 = *(*(archive + 41) + 8);
     }
 
     v137 = [v134 initWithBytes:v135 length:v136];
     [(ICAttachment *)self setLinkPresentationArchivedMetadata:v137];
   }
 
-  v138 = *(a3 + 30);
+  v138 = *(archive + 30);
   if (v138)
   {
     for (i = 0; i != v138; ++i)
     {
       v140 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_previewImage_%lu", v186, i];
-      [(ICAttachment *)self loadPreviewArchive:google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<topotext::PreviewImage>::TypeHandler>((v189 + 28) previewDataIdentifier:i) dataPersister:v140, v188];
+      [(ICAttachment *)self loadPreviewArchive:google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<topotext::PreviewImage>::TypeHandler>((archiveCopy + 28) previewDataIdentifier:i) dataPersister:v140, persisterCopy];
     }
   }
 
-  v141 = v189[54];
+  v141 = archiveCopy[54];
   if (v141)
   {
     for (j = 0; j != v141; ++j)
     {
       v143 = objc_autoreleasePoolPush();
-      v144 = [(ICAttachment *)self note];
-      v145 = [MEMORY[0x277CCAD78] UUID];
-      v146 = [v145 UUIDString];
-      v147 = [v144 addAttachmentWithIdentifier:v146];
+      note = [(ICAttachment *)self note];
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      v147 = [note addAttachmentWithIdentifier:uUIDString];
 
       [v147 setParentAttachment:self];
       [(ICAttachment *)self addSubAttachmentsObject:v147];
-      [v147 loadFromArchive:google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<topotext::Attachment>::TypeHandler>((v189 + 52) dataPersister:j) withIdentifierMap:{v188, v187}];
+      [v147 loadFromArchive:google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<topotext::Attachment>::TypeHandler>((archiveCopy + 52) dataPersister:j) withIdentifierMap:{persisterCopy, mapCopy}];
       [v147 updateChangeCountWithReason:@"Loaded subattachment from archive"];
-      v148 = [v147 media];
-      [v148 updateChangeCountWithReason:@"Loaded subattachment from archive"];
+      media = [v147 media];
+      [media updateChangeCountWithReason:@"Loaded subattachment from archive"];
 
       objc_autoreleasePoolPop(v143);
     }
   }
 
-  v149 = [(ICAttachment *)self attachmentModel];
-  [v149 updateAfterLoadWithSubAttachmentIdentifierMap:v187];
+  attachmentModel = [(ICAttachment *)self attachmentModel];
+  [attachmentModel updateAfterLoadWithSubAttachmentIdentifierMap:mapCopy];
 
-  v150 = [(ICAttachment *)self attachmentModel];
-  [v150 updateFileBasedAttributes];
+  attachmentModel2 = [(ICAttachment *)self attachmentModel];
+  [attachmentModel2 updateFileBasedAttributes];
 
-  v151 = v189[86];
+  v151 = archiveCopy[86];
   if (v151)
   {
     for (k = 0; k != v151; ++k)
     {
-      v153 = [(ICAttachment *)self note];
-      v154 = [MEMORY[0x277CCAD78] UUID];
-      v155 = [v154 UUIDString];
-      v156 = [v153 addInlineAttachmentWithIdentifier:v155];
+      note2 = [(ICAttachment *)self note];
+      uUID2 = [MEMORY[0x277CCAD78] UUID];
+      uUIDString2 = [uUID2 UUIDString];
+      v156 = [note2 addInlineAttachmentWithIdentifier:uUIDString2];
 
       [v156 setParentAttachment:self];
       [(ICAttachment *)self addInlineAttachmentsObject:v156];
-      [v156 loadFromArchive:google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<topotext::Attachment>::TypeHandler>((v189 + 84) dataPersister:k) withIdentifierMap:{v188, v187}];
+      [v156 loadFromArchive:google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<topotext::Attachment>::TypeHandler>((archiveCopy + 84) dataPersister:k) withIdentifierMap:{persisterCopy, mapCopy}];
       [v156 updateChangeCountWithReason:@"Loaded inline attachment from archive"];
     }
   }
 
   objc_opt_class();
-  v157 = [(ICAttachment *)self attachmentModel];
+  attachmentModel3 = [(ICAttachment *)self attachmentModel];
   v158 = ICDynamicCast();
 
   if (v158)
   {
-    if ((v189[9] & 0x40) == 0)
+    if ((archiveCopy[9] & 0x40) == 0)
     {
-      if (!v188)
+      if (!persisterCopy)
       {
         goto LABEL_214;
       }
 
       v159 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v186, @"systemPaperBundle"];
-      v160 = [v188 loadDataForIdentifier:v159];
+      v160 = [persisterCopy loadDataForIdentifier:v159];
 
       if (!v160)
       {
@@ -1542,12 +1542,12 @@ LABEL_186:
     }
 
     v161 = objc_alloc(MEMORY[0x277CBEA90]);
-    v162 = *(v189 + 45);
+    v162 = *(archiveCopy + 45);
     v163 = *(v162 + 23);
     if (v163 < 0)
     {
       v162 = *v162;
-      v163 = *(*(v189 + 45) + 8);
+      v163 = *(*(archiveCopy + 45) + 8);
     }
 
     v160 = [v161 initWithBytes:v162 length:v163];
@@ -1555,52 +1555,52 @@ LABEL_186:
     {
 LABEL_211:
       v164 = NSTemporaryDirectory();
-      v165 = [MEMORY[0x277CCAD78] UUID];
-      v166 = [v165 UUIDString];
-      v167 = [v164 stringByAppendingPathComponent:v166];
+      uUID3 = [MEMORY[0x277CCAD78] UUID];
+      uUIDString3 = [uUID3 UUIDString];
+      v167 = [v164 stringByAppendingPathComponent:uUIDString3];
 
       v168 = [MEMORY[0x277CBEBC0] fileURLWithPath:v167];
       v169 = [v168 URLByAppendingPathExtension:@"zip"];
-      v170 = [v169 path];
-      LODWORD(v166) = [v160 writeToFile:v170 atomically:1];
+      path = [v169 path];
+      LODWORD(uUIDString3) = [v160 writeToFile:path atomically:1];
 
-      if (v166)
+      if (uUIDString3)
       {
         [v158 restorePaperBundleFromArchiveURL:v169 error:0];
-        v171 = [MEMORY[0x277CCAA00] defaultManager];
-        [v171 removeItemAtURL:v169 error:0];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        [defaultManager removeItemAtURL:v169 error:0];
       }
     }
   }
 
 LABEL_214:
-  v172 = v189[9];
+  v172 = archiveCopy[9];
   if ((v172 & 0x80) != 0)
   {
     v173 = objc_alloc(MEMORY[0x277CBEA90]);
-    v174 = *(v189 + 46);
+    v174 = *(archiveCopy + 46);
     v175 = *(v174 + 23);
     if (v175 < 0)
     {
       v174 = *v174;
-      v175 = *(*(v189 + 46) + 8);
+      v175 = *(*(archiveCopy + 46) + 8);
     }
 
     v176 = [v173 initWithBytes:v174 length:v175];
     [(ICAttachment *)self setSynapseData:v176];
 
-    v172 = v189[9];
+    v172 = archiveCopy[9];
   }
 
   if ((v172 & 0x200) != 0)
   {
     v177 = objc_alloc(MEMORY[0x277CBEA90]);
-    v178 = *(v189 + 48);
+    v178 = *(archiveCopy + 48);
     v179 = *(v178 + 23);
     if (v179 < 0)
     {
       v178 = *v178;
-      v179 = *(*(v189 + 48) + 8);
+      v179 = *(*(archiveCopy + 48) + 8);
     }
 
     v180 = [v177 initWithBytes:v178 length:v179];
@@ -1609,19 +1609,19 @@ LABEL_214:
     [(ICCloudSyncingObject *)self updateUserSpecificChangeCountWithReason:@"Set preferred view size"];
   }
 
-  v181 = [(ICAttachment *)self attachmentModel];
-  [v181 updateAfterLoadWithInlineAttachmentIdentifierMap:v187];
+  attachmentModel4 = [(ICAttachment *)self attachmentModel];
+  [attachmentModel4 updateAfterLoadWithInlineAttachmentIdentifierMap:mapCopy];
 }
 
-- (void)loadPreviewArchive:(const void *)a3 previewDataIdentifier:(id)a4 dataPersister:(id)a5
+- (void)loadPreviewArchive:(const void *)archive previewDataIdentifier:(id)identifier dataPersister:(id)persister
 {
-  v39 = a4;
-  v8 = a5;
-  v9 = v8;
-  v10 = *(a3 + 8);
+  identifierCopy = identifier;
+  persisterCopy = persister;
+  v9 = persisterCopy;
+  v10 = *(archive + 8);
   if (v10)
   {
-    v11 = *(a3 + 12);
+    v11 = *(archive + 12);
   }
 
   else
@@ -1629,20 +1629,20 @@ LABEL_214:
     v11 = 1.0;
   }
 
-  v12 = (*(a3 + 8) & 2) == 0;
-  v13 = *(a3 + 52);
-  v38 = *(a3 + 17);
+  v12 = (*(archive + 8) & 2) == 0;
+  v13 = *(archive + 52);
+  v38 = *(archive + 17);
   v14 = *MEMORY[0x277CBF3A8];
   v15 = *(MEMORY[0x277CBF3A8] + 8);
   if ((v10 & 4) != 0)
   {
     v17 = objc_alloc(MEMORY[0x277CBEA90]);
-    v18 = *(a3 + 5);
+    v18 = *(archive + 5);
     v19 = *(v18 + 23);
     if (v19 < 0)
     {
       v18 = *v18;
-      v19 = *(*(a3 + 5) + 8);
+      v19 = *(*(archive + 5) + 8);
     }
 
     v16 = [v17 initWithBytes:v18 length:v19];
@@ -1650,13 +1650,13 @@ LABEL_214:
 
   else
   {
-    if (!v8)
+    if (!persisterCopy)
     {
       v20 = 0;
       goto LABEL_16;
     }
 
-    v16 = [v8 loadDataForIdentifier:v39];
+    v16 = [persisterCopy loadDataForIdentifier:identifierCopy];
   }
 
   v20 = v16;
@@ -1691,15 +1691,15 @@ LABEL_16:
   }
 
 LABEL_17:
-  if ((*(a3 + 32) & 8) != 0)
+  if ((*(archive + 32) & 8) != 0)
   {
     v30 = objc_alloc(MEMORY[0x277CBEA90]);
-    v31 = *(a3 + 7);
+    v31 = *(archive + 7);
     v32 = *(v31 + 23);
     if (v32 < 0)
     {
       v31 = *v31;
-      v32 = *(*(a3 + 7) + 8);
+      v32 = *(*(archive + 7) + 8);
     }
 
     v29 = [v30 initWithBytes:v31 length:v32];
@@ -1727,14 +1727,14 @@ LABEL_29:
     goto LABEL_31;
   }
 
-  v35 = *(a3 + 8);
+  v35 = *(archive + 8);
   if ((v35 & 0x10) != 0)
   {
-    [v33 setVersion:*(a3 + 32)];
-    v35 = *(a3 + 8);
+    [v33 setVersion:*(archive + 32)];
+    v35 = *(archive + 8);
   }
 
-  if ((v35 & 0x20) != 0 && *(a3 + 53) == 1)
+  if ((v35 & 0x20) != 0 && *(archive + 53) == 1)
   {
     v36 = v34;
     [v34 setVersionOutOfDate:1];
@@ -1746,9 +1746,9 @@ LABEL_29:
   }
 
 LABEL_31:
-  if ((*(a3 + 8) & 0x40) != 0)
+  if ((*(archive + 8) & 0x40) != 0)
   {
-    v37 = *(a3 + 9);
+    v37 = *(archive + 9);
   }
 
   else
@@ -1759,26 +1759,26 @@ LABEL_31:
   [v36 requireMinimumSupportedVersionAndPropagateToChildObjects:v37];
 }
 
-- (BOOL)saveToArchive:(void *)a3 dataPersister:(id)a4 stripImageMarkupMetadata:(BOOL)a5 error:(id *)a6
+- (BOOL)saveToArchive:(void *)archive dataPersister:(id)persister stripImageMarkupMetadata:(BOOL)metadata error:(id *)error
 {
-  v300 = a5;
+  metadataCopy = metadata;
   v330 = *MEMORY[0x277D85DE8];
-  v305 = a4;
-  v303 = self;
-  v8 = [(ICAttachment *)self identifier];
+  persisterCopy = persister;
+  selfCopy = self;
+  identifier = [(ICAttachment *)self identifier];
 
-  if (v8)
+  if (identifier)
   {
-    v9 = [(ICAttachment *)v303 identifier];
-    v10 = [v9 UTF8String];
-    *(a3 + 8) |= 1u;
+    identifier2 = [(ICAttachment *)selfCopy identifier];
+    uTF8String = [identifier2 UTF8String];
+    *(archive + 8) |= 1u;
     if (!google::protobuf::internal::empty_string_)
     {
       __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
     }
 
-    v11 = v10;
-    v12 = *(a3 + 5);
+    v11 = uTF8String;
+    v12 = *(archive + 5);
     if (v12 == google::protobuf::internal::empty_string_)
     {
       operator new();
@@ -1787,101 +1787,101 @@ LABEL_31:
     std::string::__assign_external(v12, v11);
   }
 
-  v13 = [(ICAttachment *)v303 intrinsicNotesVersionForScenario:1];
+  v13 = [(ICAttachment *)selfCopy intrinsicNotesVersionForScenario:1];
   if (v13)
   {
-    *(a3 + 8) |= 0x1000000u;
-    *(a3 + 29) = v13;
+    *(archive + 8) |= 0x1000000u;
+    *(archive + 29) = v13;
   }
 
-  v14 = [(ICAttachment *)v303 attachmentModel];
+  attachmentModel = [(ICAttachment *)selfCopy attachmentModel];
   v320 = 0;
-  v299 = [v14 mergeableDataForCopying:&v320];
+  v299 = [attachmentModel mergeableDataForCopying:&v320];
   v298 = v320;
 
   if (v299)
   {
-    if (!v305 || (-[ICAttachment identifier](v303, "identifier"), v15 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v15, @"mergeableData"], v16 = objc_claimAutoreleasedReturnValue(), v15, LOBYTE(v15) = objc_msgSend(v305, "saveData:identifier:", v299, v16), v16, (v15 & 1) == 0))
+    if (!persisterCopy || (-[ICAttachment identifier](selfCopy, "identifier"), v15 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v15, @"mergeableData"], v16 = objc_claimAutoreleasedReturnValue(), v15, LOBYTE(v15) = objc_msgSend(persisterCopy, "saveData:identifier:", v299, v16), v16, (v15 & 1) == 0))
     {
       v17 = v299;
-      v18 = [v299 bytes];
+      bytes = [v299 bytes];
       v19 = [v299 length];
-      *(a3 + 8) |= 2u;
+      *(archive + 8) |= 2u;
       if (!google::protobuf::internal::empty_string_)
       {
         __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
       }
 
       v20 = v19;
-      v21 = *(a3 + 6);
+      v21 = *(archive + 6);
       if (v21 == google::protobuf::internal::empty_string_)
       {
         operator new();
       }
 
-      std::string::__assign_external(v21, v18, v20);
+      std::string::__assign_external(v21, bytes, v20);
     }
   }
 
-  [(ICAttachment *)v303 sizeHeight];
+  [(ICAttachment *)selfCopy sizeHeight];
   if (v22 != 0.0)
   {
-    [(ICAttachment *)v303 sizeHeight];
+    [(ICAttachment *)selfCopy sizeHeight];
     *&v23 = v23;
-    *(a3 + 8) |= 4u;
-    *(a3 + 14) = LODWORD(v23);
+    *(archive + 8) |= 4u;
+    *(archive + 14) = LODWORD(v23);
   }
 
-  [(ICAttachment *)v303 sizeWidth];
+  [(ICAttachment *)selfCopy sizeWidth];
   if (v24 != 0.0)
   {
-    [(ICAttachment *)v303 sizeWidth];
+    [(ICAttachment *)selfCopy sizeWidth];
     *&v25 = v25;
-    *(a3 + 8) |= 8u;
-    *(a3 + 15) = LODWORD(v25);
+    *(archive + 8) |= 8u;
+    *(archive + 15) = LODWORD(v25);
   }
 
-  [(ICAttachment *)v303 originX];
+  [(ICAttachment *)selfCopy originX];
   if (v26 != 0.0)
   {
-    [(ICAttachment *)v303 originX];
+    [(ICAttachment *)selfCopy originX];
     *&v27 = v27;
-    *(a3 + 8) |= 0x800u;
-    *(a3 + 34) = LODWORD(v27);
+    *(archive + 8) |= 0x800u;
+    *(archive + 34) = LODWORD(v27);
   }
 
-  [(ICAttachment *)v303 originY];
+  [(ICAttachment *)selfCopy originY];
   if (v28 != 0.0)
   {
-    [(ICAttachment *)v303 originY];
+    [(ICAttachment *)selfCopy originY];
     *&v29 = v29;
-    *(a3 + 8) |= 0x1000u;
-    *(a3 + 35) = LODWORD(v29);
+    *(archive + 8) |= 0x1000u;
+    *(archive + 35) = LODWORD(v29);
   }
 
-  if ([(ICAttachment *)v303 orientation])
+  if ([(ICAttachment *)selfCopy orientation])
   {
-    v30 = [(ICAttachment *)v303 orientation];
-    *(a3 + 8) |= 0x2000u;
-    *(a3 + 40) = v30;
+    orientation = [(ICAttachment *)selfCopy orientation];
+    *(archive + 8) |= 0x2000u;
+    *(archive + 40) = orientation;
   }
 
-  v31 = [(ICAttachment *)v303 summary];
-  v32 = v31 == 0;
+  summary = [(ICAttachment *)selfCopy summary];
+  v32 = summary == 0;
 
   if (!v32)
   {
-    v33 = [(ICAttachment *)v303 summary];
-    v34 = v33;
-    v35 = [v33 UTF8String];
-    *(a3 + 8) |= 0x10u;
+    summary2 = [(ICAttachment *)selfCopy summary];
+    v34 = summary2;
+    uTF8String2 = [summary2 UTF8String];
+    *(archive + 8) |= 0x10u;
     if (!google::protobuf::internal::empty_string_)
     {
       __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
     }
 
-    v36 = v35;
-    v37 = *(a3 + 8);
+    v36 = uTF8String2;
+    v37 = *(archive + 8);
     if (v37 == google::protobuf::internal::empty_string_)
     {
       operator new();
@@ -1890,22 +1890,22 @@ LABEL_31:
     std::string::__assign_external(v37, v36);
   }
 
-  v38 = [(ICAttachment *)v303 title];
-  v39 = v38 == 0;
+  title = [(ICAttachment *)selfCopy title];
+  v39 = title == 0;
 
   if (!v39)
   {
-    v40 = [(ICAttachment *)v303 title];
-    v41 = v40;
-    v42 = [v40 UTF8String];
-    *(a3 + 8) |= 0x20u;
+    title2 = [(ICAttachment *)selfCopy title];
+    v41 = title2;
+    uTF8String3 = [title2 UTF8String];
+    *(archive + 8) |= 0x20u;
     if (!google::protobuf::internal::empty_string_)
     {
       __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
     }
 
-    v43 = v42;
-    v44 = *(a3 + 9);
+    v43 = uTF8String3;
+    v44 = *(archive + 9);
     if (v44 == google::protobuf::internal::empty_string_)
     {
       operator new();
@@ -1914,22 +1914,22 @@ LABEL_31:
     std::string::__assign_external(v44, v43);
   }
 
-  v45 = [(ICAttachment *)v303 userTitle];
-  v46 = v45 == 0;
+  userTitle = [(ICAttachment *)selfCopy userTitle];
+  v46 = userTitle == 0;
 
   if (!v46)
   {
-    v47 = [(ICAttachment *)v303 userTitle];
-    v48 = v47;
-    v49 = [v47 UTF8String];
-    *(a3 + 9) |= 4u;
+    userTitle2 = [(ICAttachment *)selfCopy userTitle];
+    v48 = userTitle2;
+    uTF8String4 = [userTitle2 UTF8String];
+    *(archive + 9) |= 4u;
     if (!google::protobuf::internal::empty_string_)
     {
       __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
     }
 
-    v50 = v49;
-    v51 = *(a3 + 39);
+    v50 = uTF8String4;
+    v51 = *(archive + 39);
     if (v51 == google::protobuf::internal::empty_string_)
     {
       operator new();
@@ -1938,22 +1938,22 @@ LABEL_31:
     std::string::__assign_external(v51, v50);
   }
 
-  v52 = [(ICAttachment *)v303 typeUTI];
-  v53 = v52 == 0;
+  typeUTI = [(ICAttachment *)selfCopy typeUTI];
+  v53 = typeUTI == 0;
 
   if (!v53)
   {
-    v54 = [(ICAttachment *)v303 typeUTI];
-    v55 = v54;
-    v56 = [v54 UTF8String];
-    *(a3 + 8) |= 0x40u;
+    typeUTI2 = [(ICAttachment *)selfCopy typeUTI];
+    v55 = typeUTI2;
+    uTF8String5 = [typeUTI2 UTF8String];
+    *(archive + 8) |= 0x40u;
     if (!google::protobuf::internal::empty_string_)
     {
       __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
     }
 
-    v57 = v56;
-    v58 = *(a3 + 10);
+    v57 = uTF8String5;
+    v58 = *(archive + 10);
     if (v58 == google::protobuf::internal::empty_string_)
     {
       operator new();
@@ -1962,22 +1962,22 @@ LABEL_31:
     std::string::__assign_external(v58, v57);
   }
 
-  v59 = [(ICAttachment *)v303 urlString];
-  v60 = v59 == 0;
+  urlString = [(ICAttachment *)selfCopy urlString];
+  v60 = urlString == 0;
 
   if (!v60)
   {
-    v61 = [(ICAttachment *)v303 urlString];
-    v62 = v61;
-    v63 = [v61 UTF8String];
-    *(a3 + 8) |= 0x80u;
+    urlString2 = [(ICAttachment *)selfCopy urlString];
+    v62 = urlString2;
+    uTF8String6 = [urlString2 UTF8String];
+    *(archive + 8) |= 0x80u;
     if (!google::protobuf::internal::empty_string_)
     {
       __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
     }
 
-    v64 = v63;
-    v65 = *(a3 + 11);
+    v64 = uTF8String6;
+    v65 = *(archive + 11);
     if (v65 == google::protobuf::internal::empty_string_)
     {
       operator new();
@@ -1986,56 +1986,56 @@ LABEL_31:
     std::string::__assign_external(v65, v64);
   }
 
-  v66 = [(ICAttachment *)v303 previewUpdateDate];
-  v67 = v66 == 0;
+  previewUpdateDate = [(ICAttachment *)selfCopy previewUpdateDate];
+  v67 = previewUpdateDate == 0;
 
   if (!v67)
   {
-    v68 = [(ICAttachment *)v303 previewUpdateDate];
-    [v68 timeIntervalSinceReferenceDate];
-    *(a3 + 8) |= 0x4000u;
-    *(a3 + 18) = v69;
+    previewUpdateDate2 = [(ICAttachment *)selfCopy previewUpdateDate];
+    [previewUpdateDate2 timeIntervalSinceReferenceDate];
+    *(archive + 8) |= 0x4000u;
+    *(archive + 18) = v69;
   }
 
-  v70 = [(ICCloudSyncingObject *)v303 creationDate];
-  v71 = v70 == 0;
+  creationDate = [(ICCloudSyncingObject *)selfCopy creationDate];
+  v71 = creationDate == 0;
 
   if (!v71)
   {
-    v72 = [(ICCloudSyncingObject *)v303 creationDate];
-    [v72 timeIntervalSinceReferenceDate];
-    *(a3 + 8) |= 0x8000u;
-    *(a3 + 19) = v73;
+    creationDate2 = [(ICCloudSyncingObject *)selfCopy creationDate];
+    [creationDate2 timeIntervalSinceReferenceDate];
+    *(archive + 8) |= 0x8000u;
+    *(archive + 19) = v73;
   }
 
-  v74 = [(ICCloudSyncingObject *)v303 modificationDate];
-  v75 = v74 == 0;
+  modificationDate = [(ICCloudSyncingObject *)selfCopy modificationDate];
+  v75 = modificationDate == 0;
 
   if (!v75)
   {
-    v76 = [(ICCloudSyncingObject *)v303 modificationDate];
-    [v76 timeIntervalSinceReferenceDate];
-    *(a3 + 8) |= 0x10000u;
-    *(a3 + 21) = v77;
+    modificationDate2 = [(ICCloudSyncingObject *)selfCopy modificationDate];
+    [modificationDate2 timeIntervalSinceReferenceDate];
+    *(archive + 8) |= 0x10000u;
+    *(archive + 21) = v77;
   }
 
-  v78 = [(ICAttachment *)v303 remoteFileURL];
-  v79 = v78 == 0;
+  remoteFileURL = [(ICAttachment *)selfCopy remoteFileURL];
+  v79 = remoteFileURL == 0;
 
   if (!v79)
   {
-    v80 = [(ICAttachment *)v303 remoteFileURL];
-    v81 = [v80 absoluteString];
-    v82 = v81;
-    v83 = [v81 UTF8String];
-    *(a3 + 8) |= 0x20000u;
+    remoteFileURL2 = [(ICAttachment *)selfCopy remoteFileURL];
+    absoluteString = [remoteFileURL2 absoluteString];
+    v82 = absoluteString;
+    uTF8String7 = [absoluteString UTF8String];
+    *(archive + 8) |= 0x20000u;
     if (!google::protobuf::internal::empty_string_)
     {
       __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
     }
 
-    v84 = v83;
-    v85 = *(a3 + 22);
+    v84 = uTF8String7;
+    v85 = *(archive + 22);
     if (v85 == google::protobuf::internal::empty_string_)
     {
       operator new();
@@ -2044,132 +2044,132 @@ LABEL_31:
     std::string::__assign_external(v85, v84);
   }
 
-  if ([(ICAttachment *)v303 checkedForLocation])
+  if ([(ICAttachment *)selfCopy checkedForLocation])
   {
-    v86 = [(ICAttachment *)v303 checkedForLocation];
-    *(a3 + 8) |= 0x40000u;
-    *(a3 + 164) = v86;
+    checkedForLocation = [(ICAttachment *)selfCopy checkedForLocation];
+    *(archive + 8) |= 0x40000u;
+    *(archive + 164) = checkedForLocation;
   }
 
-  if ([(ICAttachment *)v303 fileSize])
+  if ([(ICAttachment *)selfCopy fileSize])
   {
-    v87 = [(ICAttachment *)v303 fileSize];
-    *(a3 + 8) |= 0x80000u;
-    *(a3 + 23) = v87;
+    fileSize = [(ICAttachment *)selfCopy fileSize];
+    *(archive + 8) |= 0x80000u;
+    *(archive + 23) = fileSize;
   }
 
-  [(ICAttachment *)v303 duration];
+  [(ICAttachment *)selfCopy duration];
   if (v88 != 0.0)
   {
-    [(ICAttachment *)v303 duration];
-    *(a3 + 8) |= 0x100000u;
-    *(a3 + 24) = v89;
+    [(ICAttachment *)selfCopy duration];
+    *(archive + 8) |= 0x100000u;
+    *(archive + 24) = v89;
   }
 
-  if ([(ICAttachment *)v303 imageFilterType])
+  if ([(ICAttachment *)selfCopy imageFilterType])
   {
-    v90 = [(ICAttachment *)v303 imageFilterType];
-    *(a3 + 8) |= 0x200000u;
-    *(a3 + 98) = v90;
+    imageFilterType = [(ICAttachment *)selfCopy imageFilterType];
+    *(archive + 8) |= 0x200000u;
+    *(archive + 98) = imageFilterType;
   }
 
-  v91 = [(ICAttachment *)v303 markupModelData];
-  v92 = [v91 length] == 0;
+  markupModelData = [(ICAttachment *)selfCopy markupModelData];
+  v92 = [markupModelData length] == 0;
 
   if (!v92)
   {
-    if (!v305 || (-[ICAttachment identifier](v303, "identifier"), v93 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v93, @"markupModelData"], v94 = objc_claimAutoreleasedReturnValue(), v93, -[ICAttachment markupModelData](v303, "markupModelData"), v95 = objc_claimAutoreleasedReturnValue(), v96 = objc_msgSend(v305, "saveData:identifier:", v95, v94), v95, v94, (v96 & 1) == 0))
+    if (!persisterCopy || (-[ICAttachment identifier](selfCopy, "identifier"), v93 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v93, @"markupModelData"], v94 = objc_claimAutoreleasedReturnValue(), v93, -[ICAttachment markupModelData](selfCopy, "markupModelData"), v95 = objc_claimAutoreleasedReturnValue(), v96 = objc_msgSend(persisterCopy, "saveData:identifier:", v95, v94), v95, v94, (v96 & 1) == 0))
     {
-      v97 = [(ICAttachment *)v303 markupModelData];
-      v98 = v97;
-      v99 = [v97 bytes];
-      v100 = [(ICAttachment *)v303 markupModelData];
-      v101 = [v100 length];
-      *(a3 + 8) |= 0x400000u;
+      markupModelData2 = [(ICAttachment *)selfCopy markupModelData];
+      v98 = markupModelData2;
+      bytes2 = [markupModelData2 bytes];
+      markupModelData3 = [(ICAttachment *)selfCopy markupModelData];
+      v101 = [markupModelData3 length];
+      *(archive + 8) |= 0x400000u;
       if (!google::protobuf::internal::empty_string_)
       {
         __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
       }
 
       v102 = v101;
-      v103 = *(a3 + 25);
+      v103 = *(archive + 25);
       if (v103 == google::protobuf::internal::empty_string_)
       {
         operator new();
       }
 
-      std::string::__assign_external(v103, v99, v102);
+      std::string::__assign_external(v103, bytes2, v102);
     }
   }
 
-  if ([(ICAttachment *)v303 hasCroppingQuad])
+  if ([(ICAttachment *)selfCopy hasCroppingQuad])
   {
-    [(ICAttachment *)v303 croppingQuadBottomLeftX];
-    *(a3 + 8) |= 0x2000000u;
-    *(a3 + 30) = v104;
-    [(ICAttachment *)v303 croppingQuadBottomLeftY];
-    *(a3 + 8) |= 0x4000000u;
-    *(a3 + 31) = v105;
-    [(ICAttachment *)v303 croppingQuadBottomRightX];
-    *(a3 + 8) |= 0x8000000u;
-    *(a3 + 32) = v106;
-    [(ICAttachment *)v303 croppingQuadBottomRightY];
-    *(a3 + 8) |= 0x10000000u;
-    *(a3 + 33) = v107;
-    [(ICAttachment *)v303 croppingQuadTopLeftX];
-    *(a3 + 8) |= 0x20000000u;
-    *(a3 + 34) = v108;
-    [(ICAttachment *)v303 croppingQuadTopLeftY];
-    *(a3 + 8) |= 0x40000000u;
-    *(a3 + 35) = v109;
-    [(ICAttachment *)v303 croppingQuadTopRightX];
-    *(a3 + 8) |= 0x80000000;
-    *(a3 + 36) = v110;
-    [(ICAttachment *)v303 croppingQuadTopRightY];
-    *(a3 + 9) |= 1u;
-    *(a3 + 37) = v111;
+    [(ICAttachment *)selfCopy croppingQuadBottomLeftX];
+    *(archive + 8) |= 0x2000000u;
+    *(archive + 30) = v104;
+    [(ICAttachment *)selfCopy croppingQuadBottomLeftY];
+    *(archive + 8) |= 0x4000000u;
+    *(archive + 31) = v105;
+    [(ICAttachment *)selfCopy croppingQuadBottomRightX];
+    *(archive + 8) |= 0x8000000u;
+    *(archive + 32) = v106;
+    [(ICAttachment *)selfCopy croppingQuadBottomRightY];
+    *(archive + 8) |= 0x10000000u;
+    *(archive + 33) = v107;
+    [(ICAttachment *)selfCopy croppingQuadTopLeftX];
+    *(archive + 8) |= 0x20000000u;
+    *(archive + 34) = v108;
+    [(ICAttachment *)selfCopy croppingQuadTopLeftY];
+    *(archive + 8) |= 0x40000000u;
+    *(archive + 35) = v109;
+    [(ICAttachment *)selfCopy croppingQuadTopRightX];
+    *(archive + 8) |= 0x80000000;
+    *(archive + 36) = v110;
+    [(ICAttachment *)selfCopy croppingQuadTopRightY];
+    *(archive + 9) |= 1u;
+    *(archive + 37) = v111;
   }
 
-  v112 = [(ICAttachment *)v303 location];
-  v113 = v112 == 0;
+  location = [(ICAttachment *)selfCopy location];
+  v113 = location == 0;
 
   if (!v113)
   {
-    *(a3 + 8) |= 0x100u;
-    v114 = *(a3 + 12);
+    *(archive + 8) |= 0x100u;
+    v114 = *(archive + 12);
     if (!v114)
     {
       operator new();
     }
 
-    v115 = [(ICAttachment *)v303 location];
-    [v115 latitude];
+    location2 = [(ICAttachment *)selfCopy location];
+    [location2 latitude];
     *(v114 + 32) |= 1u;
     *(v114 + 40) = v116;
 
-    v117 = [(ICAttachment *)v303 location];
-    [v117 longitude];
+    location3 = [(ICAttachment *)selfCopy location];
+    [location3 longitude];
     *(v114 + 32) |= 2u;
     *(v114 + 48) = v118;
 
-    v119 = [(ICAttachment *)v303 location];
-    v120 = [v119 placeUpdated];
+    location4 = [(ICAttachment *)selfCopy location];
+    placeUpdated = [location4 placeUpdated];
     *(v114 + 32) |= 8u;
-    *(v114 + 64) = v120;
+    *(v114 + 64) = placeUpdated;
 
-    v121 = [(ICAttachment *)v303 location];
-    v122 = [v121 placemark];
-    v123 = v122 == 0;
+    location5 = [(ICAttachment *)selfCopy location];
+    placemark = [location5 placemark];
+    v123 = placemark == 0;
 
     if (!v123)
     {
       v124 = MEMORY[0x277CCAAB0];
-      v125 = [(ICAttachment *)v303 location];
-      v126 = [v125 placemark];
-      v127 = [v124 archivedDataWithRootObject:v126 requiringSecureCoding:1 error:0];
+      location6 = [(ICAttachment *)selfCopy location];
+      placemark2 = [location6 placemark];
+      v127 = [v124 archivedDataWithRootObject:placemark2 requiringSecureCoding:1 error:0];
 
       v128 = v127;
-      v129 = [v127 bytes];
+      bytes3 = [v127 bytes];
       v130 = [v127 length];
       *(v114 + 32) |= 4u;
       if (!google::protobuf::internal::empty_string_)
@@ -2184,85 +2184,85 @@ LABEL_31:
         operator new();
       }
 
-      std::string::__assign_external(v132, v129, v131);
+      std::string::__assign_external(v132, bytes3, v131);
     }
   }
 
-  if ([(ICAttachment *)v303 hasFallbackImage])
+  if ([(ICAttachment *)selfCopy hasFallbackImage])
   {
-    v133 = [(ICAttachment *)v303 fallbackImageData];
-    if (!v305 || (-[ICAttachment identifier](v303, "identifier"), v134 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CCACA8] stringWithFormat:@"%@_fallbackImage", v134], v135 = objc_claimAutoreleasedReturnValue(), v134, LOBYTE(v134) = objc_msgSend(v305, "saveData:identifier:", v133, v135), v135, (v134 & 1) == 0))
+    fallbackImageData = [(ICAttachment *)selfCopy fallbackImageData];
+    if (!persisterCopy || (-[ICAttachment identifier](selfCopy, "identifier"), v134 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CCACA8] stringWithFormat:@"%@_fallbackImage", v134], v135 = objc_claimAutoreleasedReturnValue(), v134, LOBYTE(v134) = objc_msgSend(persisterCopy, "saveData:identifier:", fallbackImageData, v135), v135, (v134 & 1) == 0))
     {
-      v136 = v133;
-      v137 = [v133 bytes];
-      v138 = [v133 length];
-      *(a3 + 9) |= 8u;
+      v136 = fallbackImageData;
+      bytes4 = [fallbackImageData bytes];
+      v138 = [fallbackImageData length];
+      *(archive + 9) |= 8u;
       if (!google::protobuf::internal::empty_string_)
       {
         __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
       }
 
       v139 = v138;
-      v140 = *(a3 + 40);
+      v140 = *(archive + 40);
       if (v140 == google::protobuf::internal::empty_string_)
       {
         operator new();
       }
 
-      std::string::__assign_external(v140, v137, v139);
+      std::string::__assign_external(v140, bytes4, v139);
     }
   }
 
-  if ([(ICAttachment *)v303 hasFallbackPDF])
+  if ([(ICAttachment *)selfCopy hasFallbackPDF])
   {
-    v141 = [(ICAttachment *)v303 fallbackPDFData];
-    if (!v305 || (-[ICAttachment identifier](v303, "identifier"), v142 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CCACA8] stringWithFormat:@"%@_fallbackPDF", v142], v143 = objc_claimAutoreleasedReturnValue(), v142, LOBYTE(v142) = objc_msgSend(v305, "saveData:identifier:", v141, v143), v143, (v142 & 1) == 0))
+    fallbackPDFData = [(ICAttachment *)selfCopy fallbackPDFData];
+    if (!persisterCopy || (-[ICAttachment identifier](selfCopy, "identifier"), v142 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CCACA8] stringWithFormat:@"%@_fallbackPDF", v142], v143 = objc_claimAutoreleasedReturnValue(), v142, LOBYTE(v142) = objc_msgSend(persisterCopy, "saveData:identifier:", fallbackPDFData, v143), v143, (v142 & 1) == 0))
     {
-      v144 = v141;
-      v145 = [v141 bytes];
-      v146 = [v141 length];
-      *(a3 + 9) |= 0x100u;
+      v144 = fallbackPDFData;
+      bytes5 = [fallbackPDFData bytes];
+      v146 = [fallbackPDFData length];
+      *(archive + 9) |= 0x100u;
       if (!google::protobuf::internal::empty_string_)
       {
         __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
       }
 
       v147 = v146;
-      v148 = *(a3 + 47);
+      v148 = *(archive + 47);
       if (v148 == google::protobuf::internal::empty_string_)
       {
         operator new();
       }
 
-      std::string::__assign_external(v148, v145, v147);
+      std::string::__assign_external(v148, bytes5, v147);
     }
   }
 
-  v149 = [(ICAttachment *)v303 media];
-  if (!v149 || (-[ICAttachment media](v303, "media"), v150 = objc_claimAutoreleasedReturnValue(), [v150 identifier], v151 = objc_claimAutoreleasedReturnValue(), v152 = v151 == 0, v151, v150, v149, v152))
+  media = [(ICAttachment *)selfCopy media];
+  if (!media || (-[ICAttachment media](selfCopy, "media"), v150 = objc_claimAutoreleasedReturnValue(), [v150 identifier], v151 = objc_claimAutoreleasedReturnValue(), v152 = v151 == 0, v151, v150, media, v152))
   {
     v301 = 1;
     goto LABEL_143;
   }
 
-  *(a3 + 8) |= 0x200u;
-  v153 = *(a3 + 13);
+  *(archive + 8) |= 0x200u;
+  v153 = *(archive + 13);
   if (!v153)
   {
     operator new();
   }
 
-  v154 = [(ICAttachment *)v303 media];
-  v155 = [v154 identifier];
-  v156 = v155;
-  v157 = [v155 UTF8String];
+  media2 = [(ICAttachment *)selfCopy media];
+  identifier3 = [media2 identifier];
+  v156 = identifier3;
+  uTF8String8 = [identifier3 UTF8String];
   *(v153 + 32) |= 1u;
   if (!google::protobuf::internal::empty_string_)
   {
     __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
   }
 
-  v158 = v157;
+  v158 = uTF8String8;
   v159 = *(v153 + 40);
   if (v159 == google::protobuf::internal::empty_string_)
   {
@@ -2271,8 +2271,8 @@ LABEL_31:
 
   std::string::__assign_external(v159, v158);
 
-  v160 = [(ICAttachment *)v303 media];
-  v161 = [v160 intrinsicNotesVersionForScenario:1];
+  media3 = [(ICAttachment *)selfCopy media];
+  v161 = [media3 intrinsicNotesVersionForScenario:1];
 
   if (v161)
   {
@@ -2280,23 +2280,23 @@ LABEL_31:
     *(v153 + 72) = v161;
   }
 
-  v162 = [(ICAttachment *)v303 media];
-  v163 = [v162 filename];
-  v164 = v163 == 0;
+  media4 = [(ICAttachment *)selfCopy media];
+  filename = [media4 filename];
+  v164 = filename == 0;
 
   if (v164)
   {
-    v182 = [(ICAttachment *)v303 media];
-    v183 = [v182 identifier];
-    v184 = v183;
-    v185 = [v183 UTF8String];
+    media5 = [(ICAttachment *)selfCopy media];
+    identifier4 = [media5 identifier];
+    v184 = identifier4;
+    uTF8String9 = [identifier4 UTF8String];
     *(v153 + 32) |= 8u;
     if (!google::protobuf::internal::empty_string_)
     {
       __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
     }
 
-    v186 = v185;
+    v186 = uTF8String9;
     v187 = *(v153 + 64);
     if (v187 == google::protobuf::internal::empty_string_)
     {
@@ -2305,29 +2305,29 @@ LABEL_31:
 
     std::string::__assign_external(v187, v186);
 
-    v176 = os_log_create("com.apple.notes", "Archiving");
-    if (os_log_type_enabled(v176, OS_LOG_TYPE_ERROR))
+    filename4 = os_log_create("com.apple.notes", "Archiving");
+    if (os_log_type_enabled(filename4, OS_LOG_TYPE_ERROR))
     {
-      v188 = [(ICAttachment *)v303 media];
-      v189 = [v188 ic_loggingIdentifier];
-      [ICAttachment(ICAttachmentPersistenceAdditions) saveToArchive:v189 dataPersister:v329 stripImageMarkupMetadata:v176 error:v188];
+      media6 = [(ICAttachment *)selfCopy media];
+      ic_loggingIdentifier = [media6 ic_loggingIdentifier];
+      [ICAttachment(ICAttachmentPersistenceAdditions) saveToArchive:ic_loggingIdentifier dataPersister:v329 stripImageMarkupMetadata:filename4 error:media6];
     }
 
-    v175 = v176;
+    media9 = filename4;
     goto LABEL_127;
   }
 
-  v165 = [(ICAttachment *)v303 media];
-  v166 = [v165 filename];
-  v167 = v166;
-  v168 = [v166 UTF8String];
+  media7 = [(ICAttachment *)selfCopy media];
+  filename2 = [media7 filename];
+  v167 = filename2;
+  uTF8String10 = [filename2 UTF8String];
   *(v153 + 32) |= 8u;
   if (!google::protobuf::internal::empty_string_)
   {
     __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
   }
 
-  v169 = v168;
+  v169 = uTF8String10;
   v170 = *(v153 + 64);
   if (v170 == google::protobuf::internal::empty_string_)
   {
@@ -2336,25 +2336,25 @@ LABEL_31:
 
   std::string::__assign_external(v170, v169);
 
-  v171 = [(ICAttachment *)v303 media];
-  v172 = [v171 filename];
-  v173 = [v172 pathExtension];
-  v174 = v173 == 0;
+  media8 = [(ICAttachment *)selfCopy media];
+  filename3 = [media8 filename];
+  pathExtension = [filename3 pathExtension];
+  v174 = pathExtension == 0;
 
   if (!v174)
   {
-    v175 = [(ICAttachment *)v303 media];
-    v176 = [v175 filename];
-    v177 = [v176 pathExtension];
-    v178 = v177;
-    v179 = [v177 UTF8String];
+    media9 = [(ICAttachment *)selfCopy media];
+    filename4 = [media9 filename];
+    pathExtension2 = [filename4 pathExtension];
+    v178 = pathExtension2;
+    uTF8String11 = [pathExtension2 UTF8String];
     *(v153 + 32) |= 2u;
     if (!google::protobuf::internal::empty_string_)
     {
       __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
     }
 
-    v180 = v179;
+    v180 = uTF8String11;
     v181 = *(v153 + 48);
     if (v181 == google::protobuf::internal::empty_string_)
     {
@@ -2366,28 +2366,28 @@ LABEL_31:
 LABEL_127:
   }
 
-  v190 = [(ICAttachment *)v303 media];
-  v191 = [v190 dataWithoutImageMarkupMetadata:v300];
+  media10 = [(ICAttachment *)selfCopy media];
+  v191 = [media10 dataWithoutImageMarkupMetadata:metadataCopy];
 
   if (!v191)
   {
     v199 = os_log_create("com.apple.notes", "Archiving");
     if (os_log_type_enabled(v199, OS_LOG_TYPE_ERROR))
     {
-      v200 = [(ICAttachment *)v303 media];
-      v201 = [v200 ic_loggingIdentifier];
-      [ICAttachment(ICAttachmentPersistenceAdditions) saveToArchive:v201 dataPersister:v324 stripImageMarkupMetadata:v199 error:v200];
+      media11 = [(ICAttachment *)selfCopy media];
+      ic_loggingIdentifier2 = [media11 ic_loggingIdentifier];
+      [ICAttachment(ICAttachmentPersistenceAdditions) saveToArchive:ic_loggingIdentifier2 dataPersister:v324 stripImageMarkupMetadata:v199 error:media11];
     }
 
     goto LABEL_141;
   }
 
-  if (!v305 || (-[ICAttachment identifier](v303, "identifier"), v192 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v192, @"media"], v193 = objc_claimAutoreleasedReturnValue(), v192, LOBYTE(v192) = objc_msgSend(v305, "saveData:identifier:", v191, v193), v193, (v192 & 1) == 0))
+  if (!persisterCopy || (-[ICAttachment identifier](selfCopy, "identifier"), v192 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v192, @"media"], v193 = objc_claimAutoreleasedReturnValue(), v192, LOBYTE(v192) = objc_msgSend(persisterCopy, "saveData:identifier:", v191, v193), v193, (v192 & 1) == 0))
   {
     if (!([v191 length] >> 28))
     {
       v194 = v191;
-      v195 = [v191 bytes];
+      bytes6 = [v191 bytes];
       v196 = [v191 length];
       *(v153 + 32) |= 4u;
       if (!google::protobuf::internal::empty_string_)
@@ -2402,18 +2402,18 @@ LABEL_127:
         operator new();
       }
 
-      std::string::__assign_external(v198, v195, v197);
+      std::string::__assign_external(v198, bytes6, v197);
       goto LABEL_136;
     }
 
     v199 = os_log_create("com.apple.notes", "Archiving");
     if (os_log_type_enabled(v199, OS_LOG_TYPE_ERROR))
     {
-      v295 = [(ICAttachment *)v303 media];
-      v296 = [v295 ic_loggingIdentifier];
+      media12 = [(ICAttachment *)selfCopy media];
+      ic_loggingIdentifier3 = [media12 ic_loggingIdentifier];
       v297 = [v191 length];
       *buf = 138412546;
-      v326 = v296;
+      v326 = ic_loggingIdentifier3;
       v327 = 2048;
       v328 = v297;
       _os_log_error_impl(&dword_214D51000, v199, OS_LOG_TYPE_ERROR, "Media (%@) is too large (%lu) to persist to protobuf", buf, 0x16u);
@@ -2430,63 +2430,63 @@ LABEL_136:
 LABEL_142:
 
 LABEL_143:
-  v202 = [(ICAttachment *)v303 metadataData];
-  v203 = v202 == 0;
+  metadataData = [(ICAttachment *)selfCopy metadataData];
+  v203 = metadataData == 0;
 
   if (!v203)
   {
-    v204 = [(ICAttachment *)v303 metadataData];
-    v205 = v204;
-    v206 = [v204 bytes];
-    v207 = [(ICAttachment *)v303 metadataData];
-    v208 = [v207 length];
-    *(a3 + 9) |= 2u;
+    metadataData2 = [(ICAttachment *)selfCopy metadataData];
+    v205 = metadataData2;
+    bytes7 = [metadataData2 bytes];
+    metadataData3 = [(ICAttachment *)selfCopy metadataData];
+    v208 = [metadataData3 length];
+    *(archive + 9) |= 2u;
     if (!google::protobuf::internal::empty_string_)
     {
       __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
     }
 
     v209 = v208;
-    v210 = *(a3 + 38);
+    v210 = *(archive + 38);
     if (v210 == google::protobuf::internal::empty_string_)
     {
       operator new();
     }
 
-    std::string::__assign_external(v210, v206, v209);
+    std::string::__assign_external(v210, bytes7, v209);
   }
 
-  v211 = [(ICAttachment *)v303 linkPresentationArchivedMetadata];
-  v212 = v211 == 0;
+  linkPresentationArchivedMetadata = [(ICAttachment *)selfCopy linkPresentationArchivedMetadata];
+  v212 = linkPresentationArchivedMetadata == 0;
 
   if (!v212)
   {
-    v213 = [(ICAttachment *)v303 linkPresentationArchivedMetadata];
-    v214 = v213;
-    v215 = [v213 bytes];
-    v216 = [(ICAttachment *)v303 linkPresentationArchivedMetadata];
-    v217 = [v216 length];
-    *(a3 + 9) |= 0x10u;
+    linkPresentationArchivedMetadata2 = [(ICAttachment *)selfCopy linkPresentationArchivedMetadata];
+    v214 = linkPresentationArchivedMetadata2;
+    bytes8 = [linkPresentationArchivedMetadata2 bytes];
+    linkPresentationArchivedMetadata3 = [(ICAttachment *)selfCopy linkPresentationArchivedMetadata];
+    v217 = [linkPresentationArchivedMetadata3 length];
+    *(archive + 9) |= 0x10u;
     if (!google::protobuf::internal::empty_string_)
     {
       __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
     }
 
     v218 = v217;
-    v219 = *(a3 + 41);
+    v219 = *(archive + 41);
     if (v219 == google::protobuf::internal::empty_string_)
     {
       operator new();
     }
 
-    std::string::__assign_external(v219, v215, v218);
+    std::string::__assign_external(v219, bytes8, v218);
   }
 
   v318 = 0u;
   v319 = 0u;
   v316 = 0u;
   v317 = 0u;
-  obj = [(ICAttachment *)v303 previewImages];
+  obj = [(ICAttachment *)selfCopy previewImages];
   v220 = [obj countByEnumeratingWithState:&v316 objects:v323 count:16];
   if (v220)
   {
@@ -2502,25 +2502,25 @@ LABEL_143:
         }
 
         v224 = *(*(&v316 + 1) + 8 * i);
-        v225 = *(a3 + 31);
-        v226 = *(a3 + 30);
+        v225 = *(archive + 31);
+        v226 = *(archive + 30);
         if (v226 >= v225)
         {
-          if (v225 == *(a3 + 32))
+          if (v225 == *(archive + 32))
           {
-            google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a3 + 112, v225 + 1);
+            google::protobuf::internal::RepeatedPtrFieldBase::Reserve(archive + 112, v225 + 1);
           }
 
           google::protobuf::internal::GenericTypeHandler<topotext::PreviewImage>::New();
         }
 
-        v227 = *(a3 + 14);
-        *(a3 + 30) = v226 + 1;
+        v227 = *(archive + 14);
+        *(archive + 30) = v226 + 1;
         v228 = *(v227 + 8 * v226);
-        v229 = [(ICAttachment *)v303 identifier];
-        v230 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_previewImage_%lu", v229, v221];
+        identifier5 = [(ICAttachment *)selfCopy identifier];
+        v221 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@_previewImage_%lu", identifier5, v221];
 
-        [(ICAttachment *)v303 savePreview:v224 toArchive:v228 previewDataIdentifier:v230 dataPersister:v305];
+        [(ICAttachment *)selfCopy savePreview:v224 toArchive:v228 previewDataIdentifier:v221 dataPersister:persisterCopy];
         ++v221;
       }
 
@@ -2534,8 +2534,8 @@ LABEL_143:
   v313 = 0u;
   v314 = 0u;
   v312 = 0u;
-  v231 = [(ICAttachment *)v303 subAttachments];
-  v232 = [v231 countByEnumeratingWithState:&v312 objects:v322 count:16];
+  subAttachments = [(ICAttachment *)selfCopy subAttachments];
+  v232 = [subAttachments countByEnumeratingWithState:&v312 objects:v322 count:16];
   if (v232)
   {
     v233 = *v313;
@@ -2545,54 +2545,54 @@ LABEL_143:
       {
         if (*v313 != v233)
         {
-          objc_enumerationMutation(v231);
+          objc_enumerationMutation(subAttachments);
         }
 
         v235 = *(*(&v312 + 1) + 8 * j);
         if (([v235 markedForDeletion] & 1) == 0)
         {
           v236 = objc_autoreleasePoolPush();
-          v237 = *(a3 + 55);
-          v238 = *(a3 + 54);
+          v237 = *(archive + 55);
+          v238 = *(archive + 54);
           if (v238 >= v237)
           {
-            if (v237 == *(a3 + 56))
+            if (v237 == *(archive + 56))
             {
-              google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a3 + 208, v237 + 1);
+              google::protobuf::internal::RepeatedPtrFieldBase::Reserve(archive + 208, v237 + 1);
             }
 
             google::protobuf::internal::GenericTypeHandler<topotext::Attachment>::New();
           }
 
-          v239 = *(a3 + 26);
-          *(a3 + 54) = v238 + 1;
+          v239 = *(archive + 26);
+          *(archive + 54) = v238 + 1;
           v240 = *(v239 + 8 * v238);
           v311 = 0;
-          v241 = [v235 saveToArchive:v240 dataPersister:v305 stripImageMarkupMetadata:v300 error:&v311];
+          v241 = [v235 saveToArchive:v240 dataPersister:persisterCopy stripImageMarkupMetadata:metadataCopy error:&v311];
           v242 = v311;
           objc_autoreleasePoolPop(v236);
           v301 = v241;
-          if (a6 && v242)
+          if (error && v242)
           {
             v243 = v242;
-            *a6 = v242;
+            *error = v242;
           }
         }
       }
 
-      v232 = [v231 countByEnumeratingWithState:&v312 objects:v322 count:16];
+      v232 = [subAttachments countByEnumeratingWithState:&v312 objects:v322 count:16];
     }
 
     while (v232);
   }
 
   v244 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v245 = [(ICAttachment *)v303 visibleInlineAttachments];
-  v246 = [v245 allObjects];
-  [v244 ic_addObjectsFromNonNilArray:v246];
+  visibleInlineAttachments = [(ICAttachment *)selfCopy visibleInlineAttachments];
+  allObjects = [visibleInlineAttachments allObjects];
+  [v244 ic_addObjectsFromNonNilArray:allObjects];
 
-  v247 = [v298 allObjects];
-  [v244 ic_addObjectsFromNonNilArray:v247];
+  allObjects2 = [v298 allObjects];
+  [v244 ic_addObjectsFromNonNilArray:allObjects2];
 
   v309 = 0u;
   v310 = 0u;
@@ -2613,28 +2613,28 @@ LABEL_143:
         }
 
         v252 = *(*(&v307 + 1) + 8 * k);
-        v253 = *(a3 + 86);
-        v254 = *(a3 + 87);
+        v253 = *(archive + 86);
+        v254 = *(archive + 87);
         if (v253 >= v254)
         {
-          if (v254 == *(a3 + 88))
+          if (v254 == *(archive + 88))
           {
-            google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a3 + 336, v254 + 1);
+            google::protobuf::internal::RepeatedPtrFieldBase::Reserve(archive + 336, v254 + 1);
           }
 
           google::protobuf::internal::GenericTypeHandler<topotext::Attachment>::New();
         }
 
-        v255 = *(a3 + 42);
-        *(a3 + 86) = v253 + 1;
+        v255 = *(archive + 42);
+        *(archive + 86) = v253 + 1;
         v256 = *(v255 + 8 * v253);
         v306 = 0;
-        [v252 saveToArchive:v256 dataPersister:v305 error:&v306];
+        [v252 saveToArchive:v256 dataPersister:persisterCopy error:&v306];
         v257 = v306;
-        if (a6 && v257)
+        if (error && v257)
         {
           v257 = v257;
-          *a6 = v257;
+          *error = v257;
         }
       }
 
@@ -2645,12 +2645,12 @@ LABEL_143:
   }
 
   objc_opt_class();
-  v258 = [(ICAttachment *)v303 attachmentModel];
+  attachmentModel2 = [(ICAttachment *)selfCopy attachmentModel];
   v259 = ICDynamicCast();
 
   if (v259)
   {
-    v260 = [v259 archivePaperBundleToDiskWithError:a6];
+    v260 = [v259 archivePaperBundleToDiskWithError:error];
     v261 = v260;
     if (!v260)
     {
@@ -2658,35 +2658,35 @@ LABEL_143:
     }
 
     v262 = MEMORY[0x277CBEA90];
-    v263 = [v260 path];
-    v264 = [v262 dataWithContentsOfFile:v263];
+    path = [v260 path];
+    v264 = [v262 dataWithContentsOfFile:path];
 
     if (v264)
     {
-      if (!v305 || (-[ICAttachment identifier](v303, "identifier"), v265 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v265, @"systemPaperBundle"], v266 = objc_claimAutoreleasedReturnValue(), v265, LOBYTE(v265) = objc_msgSend(v305, "saveData:identifier:", v264, v266), v266, (v265 & 1) == 0))
+      if (!persisterCopy || (-[ICAttachment identifier](selfCopy, "identifier"), v265 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CCACA8] stringWithFormat:@"%@_%@", v265, @"systemPaperBundle"], v266 = objc_claimAutoreleasedReturnValue(), v265, LOBYTE(v265) = objc_msgSend(persisterCopy, "saveData:identifier:", v264, v266), v266, (v265 & 1) == 0))
       {
         v267 = v264;
-        v268 = [v264 bytes];
+        bytes9 = [v264 bytes];
         v269 = [v264 length];
-        *(a3 + 9) |= 0x40u;
+        *(archive + 9) |= 0x40u;
         if (!google::protobuf::internal::empty_string_)
         {
           __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
         }
 
         v270 = v269;
-        v271 = *(a3 + 45);
+        v271 = *(archive + 45);
         if (v271 == google::protobuf::internal::empty_string_)
         {
           operator new();
         }
 
-        std::string::__assign_external(v271, v268, v270);
+        std::string::__assign_external(v271, bytes9, v270);
       }
     }
 
-    v272 = [MEMORY[0x277CCAA00] defaultManager];
-    [v272 removeItemAtURL:v261 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    [defaultManager removeItemAtURL:v261 error:0];
 
     if (!v264)
     {
@@ -2694,9 +2694,9 @@ LABEL_207:
       v273 = os_log_create("com.apple.notes", "Archiving");
       if (os_log_type_enabled(v273, OS_LOG_TYPE_ERROR))
       {
-        v274 = [(ICCloudSyncingObject *)v303 ic_loggingIdentifier];
-        v275 = [v259 paperBundleURL];
-        [ICAttachment(ICAttachmentPersistenceAdditions) saveToArchive:v274 dataPersister:v275 stripImageMarkupMetadata:buf error:v273];
+        ic_loggingIdentifier4 = [(ICCloudSyncingObject *)selfCopy ic_loggingIdentifier];
+        paperBundleURL = [v259 paperBundleURL];
+        [ICAttachment(ICAttachmentPersistenceAdditions) saveToArchive:ic_loggingIdentifier4 dataPersister:paperBundleURL stripImageMarkupMetadata:buf error:v273];
       }
 
       [MEMORY[0x277D36198] handleFailedAssertWithCondition:"__objc_no" functionName:"-[ICAttachment(ICAttachmentPersistenceAdditions) saveToArchive:dataPersister:stripImageMarkupMetadata:error:]" simulateCrash:1 showAlert:1 format:@"Failed to archive PaperKit bundle"];
@@ -2704,216 +2704,216 @@ LABEL_207:
     }
   }
 
-  v276 = [(ICAttachment *)v303 synapseData];
-  v277 = v276 == 0;
+  synapseData = [(ICAttachment *)selfCopy synapseData];
+  v277 = synapseData == 0;
 
   if (!v277)
   {
-    v278 = [(ICAttachment *)v303 synapseData];
-    v279 = v278;
-    v280 = [v278 bytes];
-    v281 = [(ICAttachment *)v303 synapseData];
-    v282 = [v281 length];
-    *(a3 + 9) |= 0x80u;
+    synapseData2 = [(ICAttachment *)selfCopy synapseData];
+    v279 = synapseData2;
+    bytes10 = [synapseData2 bytes];
+    synapseData3 = [(ICAttachment *)selfCopy synapseData];
+    v282 = [synapseData3 length];
+    *(archive + 9) |= 0x80u;
     if (!google::protobuf::internal::empty_string_)
     {
       __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
     }
 
     v283 = v282;
-    v284 = *(a3 + 46);
+    v284 = *(archive + 46);
     if (v284 == google::protobuf::internal::empty_string_)
     {
       operator new();
     }
 
-    std::string::__assign_external(v284, v280, v283);
+    std::string::__assign_external(v284, bytes10, v283);
   }
 
-  v285 = [(ICAttachment *)v303 mergeablePreferredViewSize];
-  v286 = v285 == 0;
+  mergeablePreferredViewSize = [(ICAttachment *)selfCopy mergeablePreferredViewSize];
+  v286 = mergeablePreferredViewSize == 0;
 
   if (!v286)
   {
-    v287 = [(ICAttachment *)v303 mergeablePreferredViewSize];
-    v288 = v287;
-    v289 = [v287 bytes];
-    v290 = [(ICAttachment *)v303 mergeablePreferredViewSize];
-    v291 = [v290 length];
-    *(a3 + 9) |= 0x200u;
+    mergeablePreferredViewSize2 = [(ICAttachment *)selfCopy mergeablePreferredViewSize];
+    v288 = mergeablePreferredViewSize2;
+    bytes11 = [mergeablePreferredViewSize2 bytes];
+    mergeablePreferredViewSize3 = [(ICAttachment *)selfCopy mergeablePreferredViewSize];
+    v291 = [mergeablePreferredViewSize3 length];
+    *(archive + 9) |= 0x200u;
     if (!google::protobuf::internal::empty_string_)
     {
       __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
     }
 
     v292 = v291;
-    v293 = *(a3 + 48);
+    v293 = *(archive + 48);
     if (v293 == google::protobuf::internal::empty_string_)
     {
       operator new();
     }
 
-    std::string::__assign_external(v293, v289, v292);
+    std::string::__assign_external(v293, bytes11, v292);
   }
 
   return v301 & 1;
 }
 
-- (void)savePreview:(id)a3 toArchive:(void *)a4 previewDataIdentifier:(id)a5 dataPersister:(id)a6
+- (void)savePreview:(id)preview toArchive:(void *)archive previewDataIdentifier:(id)identifier dataPersister:(id)persister
 {
-  v30 = a3;
-  v9 = a5;
-  v10 = a6;
-  [v30 scale];
+  previewCopy = preview;
+  identifierCopy = identifier;
+  persisterCopy = persister;
+  [previewCopy scale];
   *&v11 = v11;
-  *(a4 + 8) |= 1u;
-  *(a4 + 12) = LODWORD(v11);
-  v12 = [v30 scaleWhenDrawing];
-  *(a4 + 8) |= 2u;
-  *(a4 + 52) = v12;
-  v13 = [v30 appearanceType];
-  *(a4 + 8) |= 0x80u;
-  *(a4 + 17) = v13;
-  if (![v30 isPasswordProtected])
+  *(archive + 8) |= 1u;
+  *(archive + 12) = LODWORD(v11);
+  scaleWhenDrawing = [previewCopy scaleWhenDrawing];
+  *(archive + 8) |= 2u;
+  *(archive + 52) = scaleWhenDrawing;
+  appearanceType = [previewCopy appearanceType];
+  *(archive + 8) |= 0x80u;
+  *(archive + 17) = appearanceType;
+  if (![previewCopy isPasswordProtected])
   {
     v15 = MEMORY[0x277CBEA90];
-    v16 = [v30 previewImageURL];
-    v14 = [v15 dataWithContentsOfURL:v16];
+    previewImageURL = [previewCopy previewImageURL];
+    decryptedImageData = [v15 dataWithContentsOfURL:previewImageURL];
 
-    if (!v14)
+    if (!decryptedImageData)
     {
       goto LABEL_13;
     }
 
 LABEL_6:
-    if (!v10 || ([v10 saveData:v14 identifier:v9] & 1) == 0)
+    if (!persisterCopy || ([persisterCopy saveData:decryptedImageData identifier:identifierCopy] & 1) == 0)
     {
-      v17 = [v14 bytes];
-      v18 = [v14 length];
-      *(a4 + 8) |= 4u;
+      bytes = [decryptedImageData bytes];
+      v18 = [decryptedImageData length];
+      *(archive + 8) |= 4u;
       if (!google::protobuf::internal::empty_string_)
       {
         __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
       }
 
       v19 = v18;
-      v20 = *(a4 + 5);
+      v20 = *(archive + 5);
       if (v20 == google::protobuf::internal::empty_string_)
       {
         operator new();
       }
 
-      std::string::__assign_external(v20, v17, v19);
+      std::string::__assign_external(v20, bytes, v19);
     }
 
     goto LABEL_13;
   }
 
-  if (![v30 isAuthenticated])
+  if (![previewCopy isAuthenticated])
   {
-    v14 = 0;
+    decryptedImageData = 0;
     goto LABEL_13;
   }
 
-  v14 = [v30 decryptedImageData];
-  if (v14)
+  decryptedImageData = [previewCopy decryptedImageData];
+  if (decryptedImageData)
   {
     goto LABEL_6;
   }
 
 LABEL_13:
-  v21 = [v30 metadata];
+  metadata = [previewCopy metadata];
 
-  if (v21)
+  if (metadata)
   {
-    v22 = [v30 metadata];
-    v23 = [v22 bytes];
-    v24 = [v30 metadata];
-    v25 = [v24 length];
-    *(a4 + 8) |= 8u;
+    metadata2 = [previewCopy metadata];
+    bytes2 = [metadata2 bytes];
+    metadata3 = [previewCopy metadata];
+    v25 = [metadata3 length];
+    *(archive + 8) |= 8u;
     if (!google::protobuf::internal::empty_string_)
     {
       __assert_rtn("GetEmptyStringAlreadyInited", "generated_message_util.h", 80, "empty_string_ != NULL");
     }
 
     v26 = v25;
-    v27 = *(a4 + 7);
+    v27 = *(archive + 7);
     if (v27 == google::protobuf::internal::empty_string_)
     {
       operator new();
     }
 
-    std::string::__assign_external(v27, v23, v26);
+    std::string::__assign_external(v27, bytes2, v26);
   }
 
-  if ([v30 version])
+  if ([previewCopy version])
   {
-    v28 = [v30 version];
-    *(a4 + 8) |= 0x10u;
-    *(a4 + 16) = v28;
+    version = [previewCopy version];
+    *(archive + 8) |= 0x10u;
+    *(archive + 16) = version;
   }
 
-  if ([v30 versionOutOfDate])
+  if ([previewCopy versionOutOfDate])
   {
-    *(a4 + 8) |= 0x20u;
-    *(a4 + 53) = 1;
+    *(archive + 8) |= 0x20u;
+    *(archive + 53) = 1;
   }
 
-  v29 = [v30 intrinsicNotesVersionForScenario:1];
+  v29 = [previewCopy intrinsicNotesVersionForScenario:1];
   if (v29)
   {
-    *(a4 + 8) |= 0x40u;
-    *(a4 + 9) = v29;
+    *(archive + 8) |= 0x40u;
+    *(archive + 9) = v29;
   }
 }
 
-- (unint64_t)approximateArchiveSizeIncludingPreviews:(BOOL)a3
+- (unint64_t)approximateArchiveSizeIncludingPreviews:(BOOL)previews
 {
-  v3 = a3;
+  previewsCopy = previews;
   v48 = *MEMORY[0x277D85DE8];
-  v4 = [(ICAttachment *)self mergeableData];
+  mergeableData = [(ICAttachment *)self mergeableData];
 
-  if (v4)
+  if (mergeableData)
   {
-    v5 = [(ICAttachment *)self mergeableData];
-    v4 = [v5 length];
+    mergeableData2 = [(ICAttachment *)self mergeableData];
+    mergeableData = [mergeableData2 length];
   }
 
-  v6 = [(ICAttachment *)self media];
-  if (v6 && (-[ICAttachment media](self, "media"), v7 = objc_claimAutoreleasedReturnValue(), [v7 identifier], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v6, v8))
+  media = [(ICAttachment *)self media];
+  if (media && (-[ICAttachment media](self, "media"), v7 = objc_claimAutoreleasedReturnValue(), [v7 identifier], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, media, v8))
   {
-    v9 = self;
+    selfCopy5 = self;
     if (![(ICAttachment *)self fileSize])
     {
-      v10 = [(ICAttachment *)self attachmentModel];
-      [v10 updateFileBasedAttributes];
+      attachmentModel = [(ICAttachment *)self attachmentModel];
+      [attachmentModel updateFileBasedAttributes];
 
-      v9 = self;
+      selfCopy5 = self;
     }
 
-    if ([(ICAttachment *)v9 fileSize])
+    if ([(ICAttachment *)selfCopy5 fileSize])
     {
-      v4 += [(ICAttachment *)v9 fileSize];
+      mergeableData += [(ICAttachment *)selfCopy5 fileSize];
     }
 
-    else if ([(ICAttachment *)v9 attachmentType]== 3)
+    else if ([(ICAttachment *)selfCopy5 attachmentType]== 3)
     {
-      [(ICAttachment *)v9 sizeWidth];
+      [(ICAttachment *)selfCopy5 sizeWidth];
       v32 = v31;
-      [(ICAttachment *)v9 sizeHeight];
-      v4 = (v4 + v32 * v33 * 4.0);
+      [(ICAttachment *)selfCopy5 sizeHeight];
+      mergeableData = (mergeableData + v32 * v33 * 4.0);
     }
   }
 
   else
   {
-    v9 = self;
+    selfCopy5 = self;
   }
 
-  if (v3)
+  if (previewsCopy)
   {
-    v11 = [(ICAttachment *)v9 previewImages];
-    v12 = [v11 count];
+    previewImages = [(ICAttachment *)selfCopy5 previewImages];
+    v12 = [previewImages count];
 
     if (v12)
     {
@@ -2955,7 +2955,7 @@ LABEL_13:
             v22 = v21;
             if (v19)
             {
-              v4 += [v20 unsignedIntegerValue];
+              mergeableData += [v20 unsignedIntegerValue];
             }
 
             else
@@ -2970,16 +2970,16 @@ LABEL_13:
         while (v13);
       }
 
-      v9 = self;
+      selfCopy5 = self;
     }
 
     else
     {
-      v9 = self;
+      selfCopy5 = self;
       if ([(ICAttachment *)self attachmentType]== 9)
       {
         +[ICDrawing defaultPixelSize];
-        v4 = (v4 + v23 * v24);
+        mergeableData = (mergeableData + v23 * v24);
       }
     }
   }
@@ -2988,8 +2988,8 @@ LABEL_13:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v25 = [(ICAttachment *)v9 subAttachments];
-  v26 = [v25 countByEnumeratingWithState:&v36 objects:v46 count:16];
+  subAttachments = [(ICAttachment *)selfCopy5 subAttachments];
+  v26 = [subAttachments countByEnumeratingWithState:&v36 objects:v46 count:16];
   if (v26)
   {
     v27 = *v37;
@@ -2999,35 +2999,35 @@ LABEL_13:
       {
         if (*v37 != v27)
         {
-          objc_enumerationMutation(v25);
+          objc_enumerationMutation(subAttachments);
         }
 
         v29 = *(*(&v36 + 1) + 8 * j);
         if ([v29 isVisible])
         {
-          v4 += [v29 approximateArchiveSizeIncludingPreviews:v3];
+          mergeableData += [v29 approximateArchiveSizeIncludingPreviews:previewsCopy];
         }
       }
 
-      v26 = [v25 countByEnumeratingWithState:&v36 objects:v46 count:16];
+      v26 = [subAttachments countByEnumeratingWithState:&v36 objects:v46 count:16];
     }
 
     while (v26);
   }
 
-  return v4;
+  return mergeableData;
 }
 
 - (id)synapseBasedMetadata
 {
-  v3 = [(ICAttachment *)self synapseData];
+  synapseData = [(ICAttachment *)self synapseData];
 
-  if (v3)
+  if (synapseData)
   {
     v4 = objc_alloc(MEMORY[0x277D6B790]);
-    v5 = [(ICAttachment *)self synapseData];
+    synapseData2 = [(ICAttachment *)self synapseData];
     v13 = 0;
-    v6 = [v4 initWithData:v5 error:&v13];
+    v6 = [v4 initWithData:synapseData2 error:&v13];
     v7 = v13;
 
     if (v7)
@@ -3064,14 +3064,14 @@ LABEL_13:
   v10 = __Block_byref_object_copy__21;
   v11 = __Block_byref_object_dispose__21;
   v12 = 0;
-  v3 = [(ICAttachment *)self managedObjectContext];
+  managedObjectContext = [(ICAttachment *)self managedObjectContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__ICAttachment_SearchLinkPresentation__quotedText__block_invoke;
   v6[3] = &unk_278194DE8;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performBlockAndWait:v6];
+  [managedObjectContext performBlockAndWait:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -3099,32 +3099,32 @@ void __50__ICAttachment_SearchLinkPresentation__quotedText__block_invoke(uint64_
   }
 }
 
-- (BOOL)mergeCloudKitRecord:(id)a3 accountID:(id)a4 approach:(int64_t)a5 mergeableFieldState:(id)a6
+- (BOOL)mergeCloudKitRecord:(id)record accountID:(id)d approach:(int64_t)approach mergeableFieldState:(id)state
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  LOBYTE(a5) = [(ICAttachment *)self mergeCloudKitRecord:v12 accountID:v11 approach:a5 mergeableFieldState:v10 newAttachment:[(ICAttachment *)self needsInitialFetchFromCloud]];
+  stateCopy = state;
+  dCopy = d;
+  recordCopy = record;
+  LOBYTE(approach) = [(ICAttachment *)self mergeCloudKitRecord:recordCopy accountID:dCopy approach:approach mergeableFieldState:stateCopy newAttachment:[(ICAttachment *)self needsInitialFetchFromCloud]];
 
-  return a5;
+  return approach;
 }
 
-- (BOOL)mergeCloudKitRecord:(id)a3 accountID:(id)a4 approach:(int64_t)a5 mergeableFieldState:(id)a6 newAttachment:(BOOL)a7
+- (BOOL)mergeCloudKitRecord:(id)record accountID:(id)d approach:(int64_t)approach mergeableFieldState:(id)state newAttachment:(BOOL)attachment
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
+  recordCopy = record;
+  dCopy = d;
+  stateCopy = state;
   v171.receiver = self;
   v171.super_class = ICAttachment;
-  v15 = [(ICCloudSyncingObject *)&v171 mergeCloudKitRecord:v12 accountID:v13 approach:a5 mergeableFieldState:v14];
+  v15 = [(ICCloudSyncingObject *)&v171 mergeCloudKitRecord:recordCopy accountID:dCopy approach:approach mergeableFieldState:stateCopy];
   if (v15)
   {
-    v16 = [(ICAttachment *)self managedObjectContext];
-    v17 = [v12 recordID];
-    v18 = [v17 recordName];
-    [(ICAttachment *)self setIdentifier:v18];
+    managedObjectContext = [(ICAttachment *)self managedObjectContext];
+    recordID = [recordCopy recordID];
+    recordName = [recordID recordName];
+    [(ICAttachment *)self setIdentifier:recordName];
 
-    v19 = [v12 objectForKeyedSubscript:@"UTI"];
+    v19 = [recordCopy objectForKeyedSubscript:@"UTI"];
     if (v19)
     {
       v20 = v19;
@@ -3132,8 +3132,8 @@ void __50__ICAttachment_SearchLinkPresentation__quotedText__block_invoke(uint64_
 
     else
     {
-      v22 = [v12 encryptedValues];
-      v23 = [v22 objectForKeyedSubscript:@"UTIEncrypted"];
+      encryptedValues = [recordCopy encryptedValues];
+      v23 = [encryptedValues objectForKeyedSubscript:@"UTIEncrypted"];
 
       if (!v23 || ([v23 ic_stringValue], v20 = objc_claimAutoreleasedReturnValue(), v23, !v20))
       {
@@ -3142,8 +3142,8 @@ void __50__ICAttachment_SearchLinkPresentation__quotedText__block_invoke(uint64_
       }
     }
 
-    v21 = [(ICAttachment *)self typeUTI];
-    if ([v20 isEqual:v21])
+    typeUTI = [(ICAttachment *)self typeUTI];
+    if ([v20 isEqual:typeUTI])
     {
       v168 = 0;
     }
@@ -3155,91 +3155,91 @@ void __50__ICAttachment_SearchLinkPresentation__quotedText__block_invoke(uint64_
 
     [(ICAttachment *)self setTypeUTI:v20 resetToIntrinsicNotesVersion:0];
 LABEL_11:
-    v24 = [objc_opt_class() noteFromAttachmentRecord:v12 accountID:v13 context:v16];
+    v24 = [objc_opt_class() noteFromAttachmentRecord:recordCopy accountID:dCopy context:managedObjectContext];
     if (v24)
     {
       [(ICAttachment *)self setNote:v24];
-      v25 = [(ICAttachment *)self note];
-      [v25 addAttachmentsObject:self];
+      note = [(ICAttachment *)self note];
+      [note addAttachmentsObject:self];
     }
 
-    v26 = [(ICAttachment *)self parentAttachmentFromRecord:v12 accountID:v13 context:v16];
+    v26 = [(ICAttachment *)self parentAttachmentFromRecord:recordCopy accountID:dCopy context:managedObjectContext];
     if (v26)
     {
       [(ICAttachment *)self setParentAttachment:v26];
     }
 
     v169 = v26;
-    v27 = [(ICAttachment *)self attachmentModel];
-    [v27 mergeMergeableDataFromCloudKitRecord:v12 approach:a5 mergeableFieldState:v14];
+    attachmentModel = [(ICAttachment *)self attachmentModel];
+    [attachmentModel mergeMergeableDataFromCloudKitRecord:recordCopy approach:approach mergeableFieldState:stateCopy];
 
-    if (a5)
+    if (approach)
     {
       goto LABEL_113;
     }
 
-    if (a7 || [(ICAttachment *)self attachmentType]!= 9)
+    if (attachment || [(ICAttachment *)self attachmentType]!= 9)
     {
-      v28 = [v12 objectForKeyedSubscript:@"OriginX"];
+      v28 = [recordCopy objectForKeyedSubscript:@"OriginX"];
 
       if (v28)
       {
-        v29 = [v12 objectForKeyedSubscript:@"OriginX"];
+        v29 = [recordCopy objectForKeyedSubscript:@"OriginX"];
         [v29 doubleValue];
         [(ICAttachment *)self setOriginX:?];
       }
 
-      v30 = [v12 objectForKeyedSubscript:@"OriginY"];
+      v30 = [recordCopy objectForKeyedSubscript:@"OriginY"];
 
       if (v30)
       {
-        v31 = [v12 objectForKeyedSubscript:@"OriginY"];
+        v31 = [recordCopy objectForKeyedSubscript:@"OriginY"];
         [v31 doubleValue];
         [(ICAttachment *)self setOriginY:?];
       }
 
-      v32 = [v12 objectForKeyedSubscript:@"Width"];
+      v32 = [recordCopy objectForKeyedSubscript:@"Width"];
 
       if (v32)
       {
-        v33 = [v12 objectForKeyedSubscript:@"Width"];
+        v33 = [recordCopy objectForKeyedSubscript:@"Width"];
         [v33 doubleValue];
         [(ICAttachment *)self setSizeWidth:?];
       }
 
-      v34 = [v12 objectForKeyedSubscript:@"Height"];
+      v34 = [recordCopy objectForKeyedSubscript:@"Height"];
 
       if (v34)
       {
-        v35 = [v12 objectForKeyedSubscript:@"Height"];
+        v35 = [recordCopy objectForKeyedSubscript:@"Height"];
         [v35 doubleValue];
         [(ICAttachment *)self setSizeHeight:?];
       }
 
-      v36 = [v12 objectForKeyedSubscript:@"Orientation"];
+      v36 = [recordCopy objectForKeyedSubscript:@"Orientation"];
 
       if (v36)
       {
-        v37 = [v12 objectForKeyedSubscript:@"Orientation"];
+        v37 = [recordCopy objectForKeyedSubscript:@"Orientation"];
         -[ICAttachment setOrientation:](self, "setOrientation:", [v37 integerValue]);
       }
     }
 
-    v38 = [v12 encryptedValues];
-    v39 = [v38 objectForKeyedSubscript:@"URLStringEncrypted"];
+    encryptedValues2 = [recordCopy encryptedValues];
+    v39 = [encryptedValues2 objectForKeyedSubscript:@"URLStringEncrypted"];
 
     v160 = v39;
     v161 = v24;
     if (v39)
     {
-      v40 = [v39 ic_stringValue];
-      v41 = [v40 ic_substringToIndex:2047];
+      ic_stringValue = [v39 ic_stringValue];
+      v41 = [ic_stringValue ic_substringToIndex:2047];
       [(ICAttachment *)self setUrlString:v41];
     }
 
     else
     {
-      v42 = [v12 objectForKeyedSubscript:@"URLString"];
+      v42 = [recordCopy objectForKeyedSubscript:@"URLString"];
 
       if (!v42)
       {
@@ -3247,248 +3247,248 @@ LABEL_11:
       }
 
       objc_opt_class();
-      v40 = [v12 objectForKeyedSubscript:@"URLString"];
+      ic_stringValue = [recordCopy objectForKeyedSubscript:@"URLString"];
       v41 = ICDynamicCast();
       v43 = [v41 ic_substringToIndex:2047];
       [(ICAttachment *)self setUrlString:v43];
     }
 
 LABEL_33:
-    v44 = [v12 encryptedValues];
-    v45 = [v44 objectForKeyedSubscript:@"TitleEncrypted"];
+    encryptedValues3 = [recordCopy encryptedValues];
+    v45 = [encryptedValues3 objectForKeyedSubscript:@"TitleEncrypted"];
 
     if (v45)
     {
-      v46 = [v45 ic_stringValue];
+      ic_stringValue2 = [v45 ic_stringValue];
     }
 
     else
     {
-      v47 = [v12 objectForKeyedSubscript:@"Title"];
+      v47 = [recordCopy objectForKeyedSubscript:@"Title"];
 
       if (!v47)
       {
         goto LABEL_38;
       }
 
-      v46 = [v12 objectForKeyedSubscript:@"Title"];
+      ic_stringValue2 = [recordCopy objectForKeyedSubscript:@"Title"];
     }
 
-    v48 = v46;
-    [(ICAttachment *)self setTitle:v46];
+    v48 = ic_stringValue2;
+    [(ICAttachment *)self setTitle:ic_stringValue2];
 
 LABEL_38:
     v159 = v45;
-    v49 = [v12 encryptedValues];
-    v50 = [v49 objectForKeyedSubscript:@"UserTitle"];
+    encryptedValues4 = [recordCopy encryptedValues];
+    v50 = [encryptedValues4 objectForKeyedSubscript:@"UserTitle"];
 
     v158 = v50;
-    v51 = [v50 ic_stringValue];
-    [(ICAttachment *)self setUserTitle:v51];
+    ic_stringValue3 = [v50 ic_stringValue];
+    [(ICAttachment *)self setUserTitle:ic_stringValue3];
 
-    v52 = [v12 objectForKeyedSubscript:@"ImageFilterType"];
+    v52 = [recordCopy objectForKeyedSubscript:@"ImageFilterType"];
 
     if (v52)
     {
-      v53 = [v12 objectForKeyedSubscript:@"ImageFilterType"];
+      v53 = [recordCopy objectForKeyedSubscript:@"ImageFilterType"];
       -[ICAttachment setImageFilterType:](self, "setImageFilterType:", [v53 integerValue]);
     }
 
-    v54 = [v12 ic_encryptedInlineableDataAssetForKeyPrefix:@"HandwritingSummary"];
-    v55 = [v12 objectForKeyedSubscript:@"HandwritingSummaryVersion"];
-    v56 = [v55 intValue];
+    v54 = [recordCopy ic_encryptedInlineableDataAssetForKeyPrefix:@"HandwritingSummary"];
+    v55 = [recordCopy objectForKeyedSubscript:@"HandwritingSummaryVersion"];
+    intValue = [v55 intValue];
 
     v167 = v54;
     if (v54)
     {
-      v57 = [(ICAttachment *)self handwritingSummary];
-      if (!v57 || (v58 = v57, v59 = [(ICAttachment *)self handwritingSummaryVersion], v58, v59 <= v56))
+      handwritingSummary = [(ICAttachment *)self handwritingSummary];
+      if (!handwritingSummary || (v58 = handwritingSummary, v59 = [(ICAttachment *)self handwritingSummaryVersion], v58, v59 <= intValue))
       {
-        v60 = [v167 ic_stringValue];
-        [(ICAttachment *)self setHandwritingSummary:v60];
+        ic_stringValue4 = [v167 ic_stringValue];
+        [(ICAttachment *)self setHandwritingSummary:ic_stringValue4];
 
-        [(ICAttachment *)self setHandwritingSummaryVersion:v56];
+        [(ICAttachment *)self setHandwritingSummaryVersion:intValue];
       }
     }
 
-    v61 = [v12 ic_encryptedInlineableDataAssetForKeyPrefix:@"ImageClassificationSummary"];
-    v62 = [v12 objectForKeyedSubscript:@"ImageClassificationSummaryVersion"];
-    v63 = [v62 intValue];
+    v61 = [recordCopy ic_encryptedInlineableDataAssetForKeyPrefix:@"ImageClassificationSummary"];
+    v62 = [recordCopy objectForKeyedSubscript:@"ImageClassificationSummaryVersion"];
+    intValue2 = [v62 intValue];
 
     v166 = v61;
     if (v61)
     {
-      v64 = [(ICAttachment *)self imageClassificationSummary];
-      if (!v64 || (v65 = v64, v66 = [(ICAttachment *)self imageClassificationSummaryVersion], v65, v66 <= v63))
+      imageClassificationSummary = [(ICAttachment *)self imageClassificationSummary];
+      if (!imageClassificationSummary || (v65 = imageClassificationSummary, v66 = [(ICAttachment *)self imageClassificationSummaryVersion], v65, v66 <= intValue2))
       {
-        v67 = [v166 ic_stringValue];
-        [(ICAttachment *)self setImageClassificationSummary:v67];
+        ic_stringValue5 = [v166 ic_stringValue];
+        [(ICAttachment *)self setImageClassificationSummary:ic_stringValue5];
 
-        [(ICAttachment *)self setImageClassificationSummaryVersion:v63];
+        [(ICAttachment *)self setImageClassificationSummaryVersion:intValue2];
       }
     }
 
-    v68 = [v12 ic_encryptedInlineableDataAssetForKeyPrefix:@"OcrSummary"];
-    v69 = [v12 objectForKeyedSubscript:@"OcrSummaryVersion"];
-    v70 = [v69 intValue];
+    v68 = [recordCopy ic_encryptedInlineableDataAssetForKeyPrefix:@"OcrSummary"];
+    v69 = [recordCopy objectForKeyedSubscript:@"OcrSummaryVersion"];
+    intValue3 = [v69 intValue];
 
     v165 = v68;
     if (v68)
     {
-      v71 = [(ICAttachment *)self ocrSummary];
-      if (!v71 || (v72 = v71, v73 = [(ICAttachment *)self ocrSummaryVersion], v72, v73 <= v70))
+      ocrSummary = [(ICAttachment *)self ocrSummary];
+      if (!ocrSummary || (v72 = ocrSummary, v73 = [(ICAttachment *)self ocrSummaryVersion], v72, v73 <= intValue3))
       {
-        v74 = [v165 ic_stringValue];
-        [(ICAttachment *)self setOcrSummary:v74];
+        ic_stringValue6 = [v165 ic_stringValue];
+        [(ICAttachment *)self setOcrSummary:ic_stringValue6];
 
-        v75 = [v12 objectForKeyedSubscript:@"OcrSummaryVersion"];
+        v75 = [recordCopy objectForKeyedSubscript:@"OcrSummaryVersion"];
         -[ICAttachment setOcrSummaryVersion:](self, "setOcrSummaryVersion:", [v75 intValue]);
       }
     }
 
-    v76 = [(ICAttachment *)self handwritingSummary];
-    if (v76 || ([(ICAttachment *)self imageClassificationSummary], (v76 = objc_claimAutoreleasedReturnValue()) != 0))
+    handwritingSummary2 = [(ICAttachment *)self handwritingSummary];
+    if (handwritingSummary2 || ([(ICAttachment *)self imageClassificationSummary], (handwritingSummary2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v77 = v76;
+      v77 = handwritingSummary2;
     }
 
     else
     {
-      v150 = [(ICAttachment *)self ocrSummary];
+      ocrSummary2 = [(ICAttachment *)self ocrSummary];
 
-      if (v150)
+      if (ocrSummary2)
       {
 LABEL_56:
-        v78 = [v12 encryptedValues];
-        v79 = [v78 objectForKeyedSubscript:@"MarkupModelData"];
+        encryptedValues5 = [recordCopy encryptedValues];
+        v79 = [encryptedValues5 objectForKeyedSubscript:@"MarkupModelData"];
 
         v157 = v79;
         [(ICAttachment *)self setMarkupModelData:v79];
-        v80 = [v12 objectForKeyedSubscript:@"FileSize"];
+        v80 = [recordCopy objectForKeyedSubscript:@"FileSize"];
 
         if (v80)
         {
-          v81 = [v12 objectForKeyedSubscript:@"FileSize"];
+          v81 = [recordCopy objectForKeyedSubscript:@"FileSize"];
           -[ICAttachment setFileSize:](self, "setFileSize:", [v81 integerValue]);
         }
 
-        v82 = [v12 objectForKeyedSubscript:@"HasMarkupData"];
+        v82 = [recordCopy objectForKeyedSubscript:@"HasMarkupData"];
 
         if (v82)
         {
-          v83 = [v12 objectForKeyedSubscript:@"HasMarkupData"];
+          v83 = [recordCopy objectForKeyedSubscript:@"HasMarkupData"];
           -[ICAttachment setHasMarkupData:](self, "setHasMarkupData:", [v83 BOOLValue]);
         }
 
-        v84 = [v12 objectForKeyedSubscript:@"Duration"];
+        v84 = [recordCopy objectForKeyedSubscript:@"Duration"];
 
         if (v84)
         {
-          v85 = [v12 objectForKeyedSubscript:@"Duration"];
+          v85 = [recordCopy objectForKeyedSubscript:@"Duration"];
           [v85 doubleValue];
           [(ICAttachment *)self setDuration:?];
         }
 
-        v86 = [v12 objectForKeyedSubscript:@"CreationDate"];
+        v86 = [recordCopy objectForKeyedSubscript:@"CreationDate"];
 
         if (v86)
         {
-          v87 = [v12 objectForKeyedSubscript:@"CreationDate"];
+          v87 = [recordCopy objectForKeyedSubscript:@"CreationDate"];
           [(ICAttachment *)self setCreationDate:v87];
         }
 
-        v88 = [v12 objectForKeyedSubscript:@"LastModificationDate"];
+        v88 = [recordCopy objectForKeyedSubscript:@"LastModificationDate"];
 
-        v162 = v16;
+        v162 = managedObjectContext;
         if (v88)
         {
-          v89 = [v12 objectForKeyedSubscript:@"LastModificationDate"];
-          v90 = [(ICCloudSyncingObject *)self modificationDate];
-          v91 = [v89 laterDate:v90];
+          v89 = [recordCopy objectForKeyedSubscript:@"LastModificationDate"];
+          modificationDate = [(ICCloudSyncingObject *)self modificationDate];
+          v91 = [v89 laterDate:modificationDate];
           [(ICAttachment *)self setModificationDate:v91];
 
-          v92 = [(ICCloudSyncingObject *)self creationDate];
-          if (!v92 || (v93 = v92, -[ICCloudSyncingObject creationDate](self, "creationDate"), v94 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CBEAA8] distantPast], v95 = objc_claimAutoreleasedReturnValue(), v96 = objc_msgSend(v94, "isEqual:", v95), v95, v94, v93, v96))
+          creationDate = [(ICCloudSyncingObject *)self creationDate];
+          if (!creationDate || (v93 = creationDate, -[ICCloudSyncingObject creationDate](self, "creationDate"), v94 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x277CBEAA8] distantPast], v95 = objc_claimAutoreleasedReturnValue(), v96 = objc_msgSend(v94, "isEqual:", v95), v95, v94, v93, v96))
           {
-            v97 = [(ICCloudSyncingObject *)self modificationDate];
-            [(ICAttachment *)self setCreationDate:v97];
+            modificationDate2 = [(ICCloudSyncingObject *)self modificationDate];
+            [(ICAttachment *)self setCreationDate:modificationDate2];
           }
         }
 
-        v98 = [v12 objectForKeyedSubscript:@"CroppingQuadBottomLeftX"];
+        v98 = [recordCopy objectForKeyedSubscript:@"CroppingQuadBottomLeftX"];
 
         if (v98)
         {
-          v99 = [v12 objectForKeyedSubscript:@"CroppingQuadBottomLeftX"];
+          v99 = [recordCopy objectForKeyedSubscript:@"CroppingQuadBottomLeftX"];
           [v99 doubleValue];
           [(ICAttachment *)self setCroppingQuadBottomLeftX:?];
         }
 
-        v100 = [v12 objectForKeyedSubscript:@"CroppingQuadBottomLeftY"];
+        v100 = [recordCopy objectForKeyedSubscript:@"CroppingQuadBottomLeftY"];
 
         if (v100)
         {
-          v101 = [v12 objectForKeyedSubscript:@"CroppingQuadBottomLeftY"];
+          v101 = [recordCopy objectForKeyedSubscript:@"CroppingQuadBottomLeftY"];
           [v101 doubleValue];
           [(ICAttachment *)self setCroppingQuadBottomLeftY:?];
         }
 
-        v102 = [v12 objectForKeyedSubscript:@"CroppingQuadBottomRightX"];
+        v102 = [recordCopy objectForKeyedSubscript:@"CroppingQuadBottomRightX"];
 
         if (v102)
         {
-          v103 = [v12 objectForKeyedSubscript:@"CroppingQuadBottomRightX"];
+          v103 = [recordCopy objectForKeyedSubscript:@"CroppingQuadBottomRightX"];
           [v103 doubleValue];
           [(ICAttachment *)self setCroppingQuadBottomRightX:?];
         }
 
-        v104 = [v12 objectForKeyedSubscript:@"CroppingQuadBottomRightY"];
+        v104 = [recordCopy objectForKeyedSubscript:@"CroppingQuadBottomRightY"];
 
         if (v104)
         {
-          v105 = [v12 objectForKeyedSubscript:@"CroppingQuadBottomRightY"];
+          v105 = [recordCopy objectForKeyedSubscript:@"CroppingQuadBottomRightY"];
           [v105 doubleValue];
           [(ICAttachment *)self setCroppingQuadBottomRightY:?];
         }
 
-        v106 = [v12 objectForKeyedSubscript:@"CroppingQuadTopLeftX"];
+        v106 = [recordCopy objectForKeyedSubscript:@"CroppingQuadTopLeftX"];
 
         if (v106)
         {
-          v107 = [v12 objectForKeyedSubscript:@"CroppingQuadTopLeftX"];
+          v107 = [recordCopy objectForKeyedSubscript:@"CroppingQuadTopLeftX"];
           [v107 doubleValue];
           [(ICAttachment *)self setCroppingQuadTopLeftX:?];
         }
 
-        v108 = [v12 objectForKeyedSubscript:@"CroppingQuadTopLeftY"];
+        v108 = [recordCopy objectForKeyedSubscript:@"CroppingQuadTopLeftY"];
 
         if (v108)
         {
-          v109 = [v12 objectForKeyedSubscript:@"CroppingQuadTopLeftY"];
+          v109 = [recordCopy objectForKeyedSubscript:@"CroppingQuadTopLeftY"];
           [v109 doubleValue];
           [(ICAttachment *)self setCroppingQuadTopLeftY:?];
         }
 
-        v110 = [v12 objectForKeyedSubscript:@"CroppingQuadTopRightX"];
+        v110 = [recordCopy objectForKeyedSubscript:@"CroppingQuadTopRightX"];
 
         if (v110)
         {
-          v111 = [v12 objectForKeyedSubscript:@"CroppingQuadTopRightX"];
+          v111 = [recordCopy objectForKeyedSubscript:@"CroppingQuadTopRightX"];
           [v111 doubleValue];
           [(ICAttachment *)self setCroppingQuadTopRightX:?];
         }
 
-        v112 = [v12 objectForKeyedSubscript:@"CroppingQuadTopRightY"];
+        v112 = [recordCopy objectForKeyedSubscript:@"CroppingQuadTopRightY"];
 
         if (v112)
         {
-          v113 = [v12 objectForKeyedSubscript:@"CroppingQuadTopRightY"];
+          v113 = [recordCopy objectForKeyedSubscript:@"CroppingQuadTopRightY"];
           [v113 doubleValue];
           [(ICAttachment *)self setCroppingQuadTopRightY:?];
         }
 
-        v114 = [v12 encryptedValues];
-        v115 = [v114 objectForKeyedSubscript:@"MetadataData"];
+        encryptedValues6 = [recordCopy encryptedValues];
+        v115 = [encryptedValues6 objectForKeyedSubscript:@"MetadataData"];
 
         if (v115)
         {
@@ -3497,8 +3497,8 @@ LABEL_56:
 
         [(ICAttachment *)self setHasPaperForm:0];
         [(ICAttachment *)self setDidRunPaperFormDetection:0];
-        v116 = [v12 encryptedValues];
-        v117 = [v116 objectForKeyedSubscript:@"PlacemarkEncrypted"];
+        encryptedValues7 = [recordCopy encryptedValues];
+        v117 = [encryptedValues7 objectForKeyedSubscript:@"PlacemarkEncrypted"];
 
         v163 = v15;
         v155 = v117;
@@ -3510,73 +3510,73 @@ LABEL_56:
 
         else
         {
-          v132 = [v12 objectForKeyedSubscript:@"Placemark"];
+          v132 = [recordCopy objectForKeyedSubscript:@"Placemark"];
 
-          if (!v132 || ([v12 objectForKeyedSubscript:@"Placemark"], (v118 = objc_claimAutoreleasedReturnValue()) == 0))
+          if (!v132 || ([recordCopy objectForKeyedSubscript:@"Placemark"], (v118 = objc_claimAutoreleasedReturnValue()) == 0))
           {
             v153 = 0;
 LABEL_99:
-            v133 = [v12 ic_encryptedInlineableDataAssetForKeyPrefix:{@"LinkPresentationMetadata", v153}];
+            v133 = [recordCopy ic_encryptedInlineableDataAssetForKeyPrefix:{@"LinkPresentationMetadata", v153}];
             if (v133)
             {
               [(ICAttachment *)self setLinkPresentationArchivedMetadata:v133];
             }
 
-            v164 = v14;
-            v134 = [v12 ic_encryptedInlineableDataAssetForKeyPrefix:@"SynapseData"];
+            v164 = stateCopy;
+            v134 = [recordCopy ic_encryptedInlineableDataAssetForKeyPrefix:@"SynapseData"];
             if (v134)
             {
               [(ICAttachment *)self setSynapseData:v134];
             }
 
-            v135 = [v12 objectForKeyedSubscript:@"Media"];
+            v135 = [recordCopy objectForKeyedSubscript:@"Media"];
             v136 = v135;
             if (v135)
             {
-              v137 = [v135 recordID];
-              v138 = [v137 recordName];
+              recordID2 = [v135 recordID];
+              recordName2 = [recordID2 recordName];
 
-              v139 = [(ICAttachment *)self managedObjectContext];
-              v140 = [ICMedia mediaWithIdentifier:v138 context:v139];
+              managedObjectContext2 = [(ICAttachment *)self managedObjectContext];
+              v140 = [ICMedia mediaWithIdentifier:recordName2 context:managedObjectContext2];
 
               if (!v140)
               {
                 v140 = [ICMedia newMediaWithAttachment:self];
-                [v140 setIdentifier:v138];
+                [v140 setIdentifier:recordName2];
                 [v140 setNeedsInitialFetchFromCloud:1];
               }
 
               [(ICAttachment *)self setMedia:v140];
             }
 
-            [(ICAttachment *)self updatePreviewsFromRecord:v12];
-            [(ICAttachment *)self mergeFallbackImageAndPDFFromRecord:v12];
-            [(ICAttachment *)self mergePaperBundleFromRecord:v12];
-            v141 = [(ICAttachment *)self systemPaperModel];
-            [v141 fixupMetadataAndMinimumSupportedNotesVersion];
+            [(ICAttachment *)self updatePreviewsFromRecord:recordCopy];
+            [(ICAttachment *)self mergeFallbackImageAndPDFFromRecord:recordCopy];
+            [(ICAttachment *)self mergePaperBundleFromRecord:recordCopy];
+            systemPaperModel = [(ICAttachment *)self systemPaperModel];
+            [systemPaperModel fixupMetadataAndMinimumSupportedNotesVersion];
 
             if (v168 && ([(ICAttachment *)self markedForDeletion]& 1) == 0)
             {
-              v142 = [MEMORY[0x277CCAB98] defaultCenter];
-              [v142 postNotificationName:@"ICAttachmentDidCreateGalleryFromCloudNotification" object:self];
+              defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+              [defaultCenter postNotificationName:@"ICAttachmentDidCreateGalleryFromCloudNotification" object:self];
             }
 
             [(ICAttachment *)self fixMarkedForDeletionForScannedDocuments];
-            v143 = [(ICAttachment *)self markedForDeletion];
-            v144 = [(ICAttachment *)self media];
-            v145 = [v144 markedForDeletion];
+            markedForDeletion = [(ICAttachment *)self markedForDeletion];
+            media = [(ICAttachment *)self media];
+            markedForDeletion2 = [media markedForDeletion];
 
             LOBYTE(v15) = v163;
-            if (v143 != v145)
+            if (markedForDeletion != markedForDeletion2)
             {
-              v146 = [(ICAttachment *)self markedForDeletion];
-              v147 = [(ICAttachment *)self media];
-              [v147 setMarkedForDeletion:v146];
+              markedForDeletion3 = [(ICAttachment *)self markedForDeletion];
+              media2 = [(ICAttachment *)self media];
+              [media2 setMarkedForDeletion:markedForDeletion3];
             }
 
-            v14 = v164;
+            stateCopy = v164;
             v24 = v161;
-            v16 = v162;
+            managedObjectContext = v162;
 LABEL_113:
             v148 = [(ICAttachment *)self ic_postNotificationOnMainThreadAfterSaveWithName:@"ICAttachmentDidLoadNotification"];
 
@@ -3601,29 +3601,29 @@ LABEL_113:
         v122 = [v119 decodeObjectOfClass:objc_opt_class() forKey:*MEMORY[0x277CCA308]];
         v123 = ICCheckedDynamicCast();
 
-        v124 = [(ICAttachment *)self location];
+        location = [(ICAttachment *)self location];
 
-        if (!v124)
+        if (!location)
         {
-          v125 = [v123 location];
-          [v125 coordinate];
+          location2 = [v123 location];
+          [location2 coordinate];
           v127 = v126;
-          v128 = [v123 location];
-          [v128 coordinate];
+          location3 = [v123 location];
+          [location3 coordinate];
           v129 = [(ICAttachment *)self addLocationWithLatitude:v127 longitude:?];
         }
 
-        v130 = [(ICAttachment *)self location];
-        [v130 setPlacemark:v123];
+        location4 = [(ICAttachment *)self location];
+        [location4 setPlacemark:v123];
 
-        v131 = [(ICAttachment *)self location];
-        [v131 setPlaceUpdated:1];
+        location5 = [(ICAttachment *)self location];
+        [location5 setPlaceUpdated:1];
 
         goto LABEL_99;
       }
 
-      v151 = [v12 encryptedValues];
-      v77 = [v151 objectForKeyedSubscript:@"SummaryEncrypted"];
+      encryptedValues8 = [recordCopy encryptedValues];
+      v77 = [encryptedValues8 objectForKeyedSubscript:@"SummaryEncrypted"];
 
       if (v77)
       {
@@ -3632,7 +3632,7 @@ LABEL_113:
 
       else
       {
-        [v12 objectForKeyedSubscript:@"Summary"];
+        [recordCopy objectForKeyedSubscript:@"Summary"];
       }
       v152 = ;
       [(ICAttachment *)self setSummary:v152];
@@ -3646,55 +3646,55 @@ LABEL_114:
   return v15;
 }
 
-- (id)makeCloudKitRecordForApproach:(int64_t)a3 mergeableFieldState:(id)a4
+- (id)makeCloudKitRecordForApproach:(int64_t)approach mergeableFieldState:(id)state
 {
   v165 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  stateCopy = state;
   v162.receiver = self;
   v162.super_class = ICAttachment;
-  v7 = [(ICCloudSyncingObject *)&v162 makeCloudKitRecordForApproach:a3 mergeableFieldState:v6];
+  v7 = [(ICCloudSyncingObject *)&v162 makeCloudKitRecordForApproach:approach mergeableFieldState:stateCopy];
   if (([(ICAttachment *)self isPasswordProtected]& 1) == 0)
   {
-    v8 = [(ICAttachment *)self attachmentModel];
-    [v8 addMergeableDataToCloudKitRecord:v7 approach:a3 mergeableFieldState:v6];
+    attachmentModel = [(ICAttachment *)self attachmentModel];
+    [attachmentModel addMergeableDataToCloudKitRecord:v7 approach:approach mergeableFieldState:stateCopy];
   }
 
-  v9 = [(ICAttachment *)self typeUTI];
+  typeUTI = [(ICAttachment *)self typeUTI];
 
-  if (v9)
+  if (typeUTI)
   {
-    v10 = [(ICAttachment *)self typeUTI];
-    v11 = [v10 dataUsingEncoding:4];
-    v12 = [v7 encryptedValues];
-    [v12 setObject:v11 forKeyedSubscript:@"UTIEncrypted"];
+    typeUTI2 = [(ICAttachment *)self typeUTI];
+    v11 = [typeUTI2 dataUsingEncoding:4];
+    encryptedValues = [v7 encryptedValues];
+    [encryptedValues setObject:v11 forKeyedSubscript:@"UTIEncrypted"];
 
-    v13 = [(ICAttachment *)self typeUTI];
-    [v7 setObject:v13 forKeyedSubscript:@"UTI"];
+    typeUTI3 = [(ICAttachment *)self typeUTI];
+    [v7 setObject:typeUTI3 forKeyedSubscript:@"UTI"];
   }
 
   else
   {
-    v13 = os_log_create("com.apple.notes", "Cloud");
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    typeUTI3 = os_log_create("com.apple.notes", "Cloud");
+    if (os_log_type_enabled(typeUTI3, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [(ICCloudSyncingObject *)self loggingDescription];
+      loggingDescription = [(ICCloudSyncingObject *)self loggingDescription];
       *buf = 138412290;
-      v164 = v14;
-      _os_log_impl(&dword_214D51000, v13, OS_LOG_TYPE_DEFAULT, "Trying to create a record for an attachment that is of an unknown type: %@", buf, 0xCu);
+      v164 = loggingDescription;
+      _os_log_impl(&dword_214D51000, typeUTI3, OS_LOG_TYPE_DEFAULT, "Trying to create a record for an attachment that is of an unknown type: %@", buf, 0xCu);
     }
   }
 
-  v15 = [(ICAttachment *)self note];
-  v16 = [v15 recordID];
+  note = [(ICAttachment *)self note];
+  recordID = [note recordID];
 
-  v17 = [(ICAttachment *)self parentAttachment];
-  v18 = [v17 recordID];
+  parentAttachment = [(ICAttachment *)self parentAttachment];
+  recordID2 = [parentAttachment recordID];
 
   v19 = MEMORY[0x277CBC070];
-  if (v16)
+  if (recordID)
   {
     v20 = objc_alloc(MEMORY[0x277CBC620]);
-    if (v18)
+    if (recordID2)
     {
       v21 = 0;
     }
@@ -3704,17 +3704,17 @@ LABEL_114:
       v21 = *v19;
     }
 
-    v22 = [v20 initWithRecordID:v16 action:v21];
+    v22 = [v20 initWithRecordID:recordID action:v21];
     [v7 setObject:v22 forKeyedSubscript:@"Note"];
   }
 
-  if (v18)
+  if (recordID2)
   {
-    v23 = [objc_alloc(MEMORY[0x277CBC620]) initWithRecordID:v18 action:*v19];
+    v23 = [objc_alloc(MEMORY[0x277CBC620]) initWithRecordID:recordID2 action:*v19];
     [v7 setObject:v23 forKeyedSubscript:@"ParentAttachment"];
   }
 
-  if (!a3)
+  if (!approach)
   {
     v24 = 0x277CCA000uLL;
     v25 = [MEMORY[0x277CCABB0] numberWithShort:{-[ICAttachment imageFilterType](self, "imageFilterType")}];
@@ -3761,24 +3761,24 @@ LABEL_114:
 
     if (([(ICAttachment *)self isPasswordProtected]& 1) == 0)
     {
-      v39 = [(ICAttachment *)self urlString];
+      urlString = [(ICAttachment *)self urlString];
 
-      if (v39)
+      if (urlString)
       {
-        v40 = [(ICAttachment *)self urlString];
-        v41 = [v40 ic_substringToIndex:2047];
+        urlString2 = [(ICAttachment *)self urlString];
+        v41 = [urlString2 ic_substringToIndex:2047];
         v42 = [v41 dataUsingEncoding:4];
         [v7 encryptedValues];
-        v43 = v18;
-        v44 = v16;
-        v45 = v6;
+        v43 = recordID2;
+        v44 = recordID;
+        v45 = stateCopy;
         v47 = v46 = v19;
         [v47 setObject:v42 forKeyedSubscript:@"URLStringEncrypted"];
 
         v19 = v46;
-        v6 = v45;
-        v16 = v44;
-        v18 = v43;
+        stateCopy = v45;
+        recordID = v44;
+        recordID2 = v43;
 
         v24 = 0x277CCA000;
       }
@@ -3786,14 +3786,14 @@ LABEL_114:
 
     if (([(ICAttachment *)self isPasswordProtected]& 1) == 0)
     {
-      v48 = [(ICAttachment *)self title];
+      title = [(ICAttachment *)self title];
 
-      if (v48)
+      if (title)
       {
-        v49 = [(ICAttachment *)self title];
-        v50 = [v49 dataUsingEncoding:4];
-        v51 = [v7 encryptedValues];
-        [v51 setObject:v50 forKeyedSubscript:@"TitleEncrypted"];
+        title2 = [(ICAttachment *)self title];
+        v50 = [title2 dataUsingEncoding:4];
+        encryptedValues2 = [v7 encryptedValues];
+        [encryptedValues2 setObject:v50 forKeyedSubscript:@"TitleEncrypted"];
 
         v24 = 0x277CCA000uLL;
       }
@@ -3801,12 +3801,12 @@ LABEL_114:
 
     if (([(ICAttachment *)self isPasswordProtected]& 1) == 0)
     {
-      v52 = [(ICAttachment *)self handwritingSummary];
+      handwritingSummary = [(ICAttachment *)self handwritingSummary];
 
-      if (v52)
+      if (handwritingSummary)
       {
-        v53 = [(ICAttachment *)self handwritingSummary];
-        v54 = [v53 dataUsingEncoding:4];
+        handwritingSummary2 = [(ICAttachment *)self handwritingSummary];
+        v54 = [handwritingSummary2 dataUsingEncoding:4];
 
         [v7 ic_setEncryptedInlineableDataAsset:v54 forKeyPrefix:@"HandwritingSummary" approach:0 withObject:self];
       }
@@ -3817,12 +3817,12 @@ LABEL_114:
 
     if (([(ICAttachment *)self isPasswordProtected]& 1) == 0)
     {
-      v56 = [(ICAttachment *)self imageClassificationSummary];
+      imageClassificationSummary = [(ICAttachment *)self imageClassificationSummary];
 
-      if (v56)
+      if (imageClassificationSummary)
       {
-        v57 = [(ICAttachment *)self imageClassificationSummary];
-        v58 = [v57 dataUsingEncoding:4];
+        imageClassificationSummary2 = [(ICAttachment *)self imageClassificationSummary];
+        v58 = [imageClassificationSummary2 dataUsingEncoding:4];
 
         [v7 ic_setEncryptedInlineableDataAsset:v58 forKeyPrefix:@"ImageClassificationSummary" approach:0 withObject:self];
       }
@@ -3833,12 +3833,12 @@ LABEL_114:
 
     if (([(ICAttachment *)self isPasswordProtected]& 1) == 0)
     {
-      v60 = [(ICAttachment *)self ocrSummary];
+      ocrSummary = [(ICAttachment *)self ocrSummary];
 
-      if (v60)
+      if (ocrSummary)
       {
-        v61 = [(ICAttachment *)self ocrSummary];
-        v62 = [v61 dataUsingEncoding:4];
+        ocrSummary2 = [(ICAttachment *)self ocrSummary];
+        v62 = [ocrSummary2 dataUsingEncoding:4];
 
         [v7 ic_setEncryptedInlineableDataAsset:v62 forKeyPrefix:@"OcrSummary" approach:0 withObject:self];
       }
@@ -3849,16 +3849,16 @@ LABEL_114:
 
     if (([(ICAttachment *)self isPasswordProtected]& 1) == 0)
     {
-      v64 = [(ICAttachment *)self summary];
+      summary = [(ICAttachment *)self summary];
 
-      if (v64)
+      if (summary)
       {
-        v65 = [(ICAttachment *)self summary];
-        v66 = [v65 ic_substringToIndex:999];
+        summary2 = [(ICAttachment *)self summary];
+        v66 = [summary2 ic_substringToIndex:999];
 
         v67 = [v66 dataUsingEncoding:4];
-        v68 = [v7 encryptedValues];
-        [v68 setObject:v67 forKeyedSubscript:@"SummaryEncrypted"];
+        encryptedValues3 = [v7 encryptedValues];
+        [encryptedValues3 setObject:v67 forKeyedSubscript:@"SummaryEncrypted"];
 
         v24 = 0x277CCA000;
       }
@@ -3866,23 +3866,23 @@ LABEL_114:
 
     if (([(ICAttachment *)self isPasswordProtected]& 1) == 0)
     {
-      v69 = [(ICAttachment *)self userTitle];
-      v70 = [v69 dataUsingEncoding:4];
-      v71 = [v7 encryptedValues];
-      [v71 setObject:v70 forKeyedSubscript:@"UserTitle"];
+      userTitle = [(ICAttachment *)self userTitle];
+      v70 = [userTitle dataUsingEncoding:4];
+      encryptedValues4 = [v7 encryptedValues];
+      [encryptedValues4 setObject:v70 forKeyedSubscript:@"UserTitle"];
 
       v24 = 0x277CCA000uLL;
     }
 
     if (([(ICAttachment *)self isPasswordProtected]& 1) == 0)
     {
-      v72 = [(ICAttachment *)self markupModelData];
+      markupModelData = [(ICAttachment *)self markupModelData];
 
-      if (v72)
+      if (markupModelData)
       {
-        v73 = [(ICAttachment *)self markupModelData];
-        v74 = [v7 encryptedValues];
-        [v74 setObject:v73 forKeyedSubscript:@"MarkupModelData"];
+        markupModelData2 = [(ICAttachment *)self markupModelData];
+        encryptedValues5 = [v7 encryptedValues];
+        [encryptedValues5 setObject:markupModelData2 forKeyedSubscript:@"MarkupModelData"];
       }
 
       else
@@ -3914,15 +3914,15 @@ LABEL_114:
 
     if ([(ICAttachment *)self attachmentType]== 5 && ([(ICAttachment *)self isPasswordProtected]& 1) == 0)
     {
-      v80 = [(ICAttachment *)self managedObjectContext];
-      v81 = [ICAssetSignature shouldWriteAssetIfNeededToKey:@"PreviewImage" inRecord:v7 forObject:self context:v80];
+      managedObjectContext = [(ICAttachment *)self managedObjectContext];
+      v81 = [ICAssetSignature shouldWriteAssetIfNeededToKey:@"PreviewImage" inRecord:v7 forObject:self context:managedObjectContext];
 
       if (v81)
       {
-        v82 = [(ICAttachment *)self attachmentModel];
-        v83 = [v82 asset];
+        attachmentModel2 = [(ICAttachment *)self attachmentModel];
+        asset = [attachmentModel2 asset];
 
-        v84 = [v83 previewImageDataWithUTType:*MEMORY[0x277CE1DC0]];
+        v84 = [asset previewImageDataWithUTType:*MEMORY[0x277CE1DC0]];
         v85 = [objc_opt_class() assetForData:v84];
         [v7 setObject:v85 forKeyedSubscript:@"PreviewImage"];
 
@@ -3930,28 +3930,28 @@ LABEL_114:
       }
     }
 
-    v86 = [(ICAttachment *)self previewUpdateDate];
+    previewUpdateDate = [(ICAttachment *)self previewUpdateDate];
 
-    if (v86)
+    if (previewUpdateDate)
     {
-      v87 = [(ICAttachment *)self previewUpdateDate];
-      [v7 setObject:v87 forKeyedSubscript:@"PreviewUpdateDate"];
+      previewUpdateDate2 = [(ICAttachment *)self previewUpdateDate];
+      [v7 setObject:previewUpdateDate2 forKeyedSubscript:@"PreviewUpdateDate"];
     }
 
-    v88 = [(ICCloudSyncingObject *)self creationDate];
+    creationDate = [(ICCloudSyncingObject *)self creationDate];
 
-    if (v88)
+    if (creationDate)
     {
-      v89 = [(ICCloudSyncingObject *)self creationDate];
-      [v7 setObject:v89 forKeyedSubscript:@"CreationDate"];
+      creationDate2 = [(ICCloudSyncingObject *)self creationDate];
+      [v7 setObject:creationDate2 forKeyedSubscript:@"CreationDate"];
     }
 
-    v90 = [(ICCloudSyncingObject *)self modificationDate];
+    modificationDate = [(ICCloudSyncingObject *)self modificationDate];
 
-    if (v90)
+    if (modificationDate)
     {
-      v91 = [(ICCloudSyncingObject *)self modificationDate];
-      [v7 setObject:v91 forKeyedSubscript:@"LastModificationDate"];
+      modificationDate2 = [(ICCloudSyncingObject *)self modificationDate];
+      [v7 setObject:modificationDate2 forKeyedSubscript:@"LastModificationDate"];
     }
 
     v92 = *(v24 + 2992);
@@ -3996,29 +3996,29 @@ LABEL_114:
 
     if (([(ICAttachment *)self isPasswordProtected]& 1) == 0)
     {
-      v108 = [(ICAttachment *)self metadataData];
+      metadataData = [(ICAttachment *)self metadataData];
 
-      if (v108)
+      if (metadataData)
       {
-        v109 = [(ICAttachment *)self metadataData];
-        v110 = [v7 encryptedValues];
-        [v110 setObject:v109 forKeyedSubscript:@"MetadataData"];
+        metadataData2 = [(ICAttachment *)self metadataData];
+        encryptedValues6 = [v7 encryptedValues];
+        [encryptedValues6 setObject:metadataData2 forKeyedSubscript:@"MetadataData"];
       }
     }
 
-    v111 = [(ICAttachment *)self location];
-    v112 = [v111 placemark];
+    location = [(ICAttachment *)self location];
+    placemark = [location placemark];
 
-    if (v112)
+    if (placemark)
     {
-      v160 = v16;
-      v113 = v6;
+      v160 = recordID;
+      v113 = stateCopy;
       v114 = v19;
       v115 = MEMORY[0x277CCAAB0];
-      v116 = [(ICAttachment *)self location];
-      v117 = [v116 placemark];
+      location2 = [(ICAttachment *)self location];
+      placemark2 = [location2 placemark];
       v161 = 0;
-      v118 = [v115 archivedDataWithRootObject:v117 requiringSecureCoding:1 error:&v161];
+      v118 = [v115 archivedDataWithRootObject:placemark2 requiringSecureCoding:1 error:&v161];
       v119 = v161;
 
       if (v119)
@@ -4030,47 +4030,47 @@ LABEL_114:
         }
       }
 
-      v121 = [v7 encryptedValues];
-      [v121 setObject:v118 forKeyedSubscript:@"PlacemarkEncrypted"];
+      encryptedValues7 = [v7 encryptedValues];
+      [encryptedValues7 setObject:v118 forKeyedSubscript:@"PlacemarkEncrypted"];
 
-      v122 = [(ICAttachment *)self location];
-      v123 = [v122 formattedAddressWithoutAttachmentTitle];
+      location3 = [(ICAttachment *)self location];
+      formattedAddressWithoutAttachmentTitle = [location3 formattedAddressWithoutAttachmentTitle];
 
-      if (v123)
+      if (formattedAddressWithoutAttachmentTitle)
       {
-        v124 = [v123 dataUsingEncoding:4];
-        v125 = [v7 encryptedValues];
-        [v125 setObject:v124 forKeyedSubscript:@"SummaryEncrypted"];
+        v124 = [formattedAddressWithoutAttachmentTitle dataUsingEncoding:4];
+        encryptedValues8 = [v7 encryptedValues];
+        [encryptedValues8 setObject:v124 forKeyedSubscript:@"SummaryEncrypted"];
       }
 
       v19 = v114;
-      v6 = v113;
-      v16 = v160;
+      stateCopy = v113;
+      recordID = v160;
     }
 
-    v126 = [(ICAttachment *)self media];
-    v127 = [v126 recordID];
+    media = [(ICAttachment *)self media];
+    recordID3 = [media recordID];
 
-    if (v127)
+    if (recordID3)
     {
-      v128 = [(ICAttachment *)self media];
-      v129 = [v128 hasFile];
+      media2 = [(ICAttachment *)self media];
+      hasFile = [media2 hasFile];
 
-      if (v129)
+      if (hasFile)
       {
-        v130 = [objc_alloc(MEMORY[0x277CBC620]) initWithRecordID:v127 action:*v19];
+        v130 = [objc_alloc(MEMORY[0x277CBC620]) initWithRecordID:recordID3 action:*v19];
         [v7 setObject:v130 forKeyedSubscript:@"Media"];
       }
     }
 
-    v131 = [(ICAttachment *)self previewImages];
-    v132 = [v131 count];
+    previewImages = [(ICAttachment *)self previewImages];
+    v132 = [previewImages count];
 
     if (v132)
     {
       v133 = objc_opt_class();
-      v134 = [(ICAttachment *)self previewImages];
-      [v133 addPreviewImages:v134 toRecord:v7];
+      previewImages2 = [(ICAttachment *)self previewImages];
+      [v133 addPreviewImages:previewImages2 toRecord:v7];
     }
 
     if ([(ICAttachment *)self hasFallbackImage])
@@ -4088,18 +4088,18 @@ LABEL_114:
 
       if (v135)
       {
-        v136 = [(ICAttachment *)self managedObjectContext];
-        v137 = [ICAssetSignature shouldWriteAssetIfNeededToKey:@"FallbackImage" inRecord:v7 forObject:self context:v136];
+        managedObjectContext2 = [(ICAttachment *)self managedObjectContext];
+        v137 = [ICAssetSignature shouldWriteAssetIfNeededToKey:@"FallbackImage" inRecord:v7 forObject:self context:managedObjectContext2];
 
         if (v137)
         {
           v138 = [ICCloudSyncingObject assetForURL:v135];
           [v7 setObject:v138 forKeyedSubscript:@"FallbackImage"];
-          v139 = [(ICAttachment *)self fallbackImageCryptoTag];
-          [v7 setObject:v139 forKeyedSubscript:@"FallbackImageCryptoTag"];
+          fallbackImageCryptoTag = [(ICAttachment *)self fallbackImageCryptoTag];
+          [v7 setObject:fallbackImageCryptoTag forKeyedSubscript:@"FallbackImageCryptoTag"];
 
-          v140 = [(ICAttachment *)self fallbackImageCryptoInitializationVector];
-          [v7 setObject:v140 forKeyedSubscript:@"FallbackImageCryptoInitializationVector"];
+          fallbackImageCryptoInitializationVector = [(ICAttachment *)self fallbackImageCryptoInitializationVector];
+          [v7 setObject:fallbackImageCryptoInitializationVector forKeyedSubscript:@"FallbackImageCryptoInitializationVector"];
         }
       }
     }
@@ -4121,93 +4121,93 @@ LABEL_114:
       {
         v142 = [ICCloudSyncingObject assetForURL:v141];
         [v7 setObject:v142 forKeyedSubscript:@"FallbackPDF"];
-        v143 = [(ICAttachment *)self fallbackPDFCryptoTag];
-        [v7 setObject:v143 forKeyedSubscript:@"FallbackPDFCryptoTag"];
+        fallbackPDFCryptoTag = [(ICAttachment *)self fallbackPDFCryptoTag];
+        [v7 setObject:fallbackPDFCryptoTag forKeyedSubscript:@"FallbackPDFCryptoTag"];
 
-        v144 = [(ICAttachment *)self fallbackPDFCryptoInitializationVector];
-        [v7 setObject:v144 forKeyedSubscript:@"FallbackPDFCryptoInitializationVector"];
+        fallbackPDFCryptoInitializationVector = [(ICAttachment *)self fallbackPDFCryptoInitializationVector];
+        [v7 setObject:fallbackPDFCryptoInitializationVector forKeyedSubscript:@"FallbackPDFCryptoInitializationVector"];
       }
     }
 
-    v145 = [(ICAttachment *)self fallbackTitle];
-    if (v145)
+    fallbackTitle = [(ICAttachment *)self fallbackTitle];
+    if (fallbackTitle)
     {
-      v146 = v145;
+      localizedFallbackTitle = fallbackTitle;
     }
 
     else
     {
-      v147 = [(ICAttachment *)self attachmentModel];
-      v146 = [v147 localizedFallbackTitle];
+      attachmentModel3 = [(ICAttachment *)self attachmentModel];
+      localizedFallbackTitle = [attachmentModel3 localizedFallbackTitle];
 
-      if (!v146)
+      if (!localizedFallbackTitle)
       {
         goto LABEL_99;
       }
     }
 
-    [v7 setObject:v146 forKeyedSubscript:@"FallbackTitle"];
+    [v7 setObject:localizedFallbackTitle forKeyedSubscript:@"FallbackTitle"];
 
 LABEL_99:
-    v148 = [(ICAttachment *)self fallbackSubtitleIOS];
-    if (v148)
+    fallbackSubtitleIOS = [(ICAttachment *)self fallbackSubtitleIOS];
+    if (fallbackSubtitleIOS)
     {
-      v149 = v148;
+      localizedFallbackSubtitleIOS = fallbackSubtitleIOS;
     }
 
     else
     {
-      v150 = [(ICAttachment *)self attachmentModel];
-      v149 = [v150 localizedFallbackSubtitleIOS];
+      attachmentModel4 = [(ICAttachment *)self attachmentModel];
+      localizedFallbackSubtitleIOS = [attachmentModel4 localizedFallbackSubtitleIOS];
 
-      if (!v149)
+      if (!localizedFallbackSubtitleIOS)
       {
         goto LABEL_103;
       }
     }
 
-    [v7 setObject:v149 forKeyedSubscript:@"FallbackSubtitleIOS"];
+    [v7 setObject:localizedFallbackSubtitleIOS forKeyedSubscript:@"FallbackSubtitleIOS"];
 
 LABEL_103:
-    v151 = [(ICAttachment *)self fallbackSubtitleMac];
-    if (v151)
+    fallbackSubtitleMac = [(ICAttachment *)self fallbackSubtitleMac];
+    if (fallbackSubtitleMac)
     {
-      v152 = v151;
+      localizedFallbackSubtitleMac = fallbackSubtitleMac;
     }
 
     else
     {
-      v153 = [(ICAttachment *)self attachmentModel];
-      v152 = [v153 localizedFallbackSubtitleMac];
+      attachmentModel5 = [(ICAttachment *)self attachmentModel];
+      localizedFallbackSubtitleMac = [attachmentModel5 localizedFallbackSubtitleMac];
 
-      if (!v152)
+      if (!localizedFallbackSubtitleMac)
       {
         goto LABEL_107;
       }
     }
 
-    [v7 setObject:v152 forKeyedSubscript:@"FallbackSubtitleMac"];
+    [v7 setObject:localizedFallbackSubtitleMac forKeyedSubscript:@"FallbackSubtitleMac"];
 
 LABEL_107:
     if (([(ICAttachment *)self isPasswordProtected]& 1) == 0)
     {
-      v154 = [(ICAttachment *)self linkPresentationArchivedMetadata];
+      linkPresentationArchivedMetadata = [(ICAttachment *)self linkPresentationArchivedMetadata];
 
-      if (v154)
+      if (linkPresentationArchivedMetadata)
       {
-        v155 = [(ICAttachment *)self linkPresentationArchivedMetadata];
-        [v7 ic_setEncryptedInlineableDataAsset:v155 forKeyPrefix:@"LinkPresentationMetadata" approach:0 withObject:self];
+        linkPresentationArchivedMetadata2 = [(ICAttachment *)self linkPresentationArchivedMetadata];
+        [v7 ic_setEncryptedInlineableDataAsset:linkPresentationArchivedMetadata2 forKeyPrefix:@"LinkPresentationMetadata" approach:0 withObject:self];
       }
     }
 
     if (([(ICAttachment *)self isPasswordProtected]& 1) == 0)
     {
-      v156 = [(ICAttachment *)self synapseData];
+      synapseData = [(ICAttachment *)self synapseData];
 
-      if (v156)
+      if (synapseData)
       {
-        v157 = [(ICAttachment *)self synapseData];
-        [v7 ic_setEncryptedInlineableDataAsset:v157 forKeyPrefix:@"SynapseData" approach:0 withObject:self];
+        synapseData2 = [(ICAttachment *)self synapseData];
+        [v7 ic_setEncryptedInlineableDataAsset:synapseData2 forKeyPrefix:@"SynapseData" approach:0 withObject:self];
       }
     }
 
@@ -4222,51 +4222,51 @@ LABEL_107:
   return v7;
 }
 
-+ (id)existingCloudObjectForRecordID:(id)a3 accountID:(id)a4 context:(id)a5
++ (id)existingCloudObjectForRecordID:(id)d accountID:(id)iD context:(id)context
 {
-  v6 = a5;
-  v7 = [a3 recordName];
-  v8 = [(ICBaseAttachment *)ICAttachment attachmentWithIdentifier:v7 context:v6];
+  contextCopy = context;
+  recordName = [d recordName];
+  v8 = [(ICBaseAttachment *)ICAttachment attachmentWithIdentifier:recordName context:contextCopy];
 
   return v8;
 }
 
-- (id)parentAttachmentFromRecord:(id)a3 accountID:(id)a4 context:(id)a5
+- (id)parentAttachmentFromRecord:(id)record accountID:(id)d context:(id)context
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 objectForKeyedSubscript:@"ParentAttachment"];
+  recordCopy = record;
+  dCopy = d;
+  contextCopy = context;
+  v11 = [recordCopy objectForKeyedSubscript:@"ParentAttachment"];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 recordID];
-    v14 = [ICAttachment existingCloudObjectForRecordID:v13 accountID:v9 context:v10];
+    recordID = [v11 recordID];
+    v14 = [ICAttachment existingCloudObjectForRecordID:recordID accountID:dCopy context:contextCopy];
 
     if (!v14)
     {
       v15 = os_log_create("com.apple.notes", "Cloud");
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
       {
-        v20 = [(ICAttachment *)self className];
-        v24 = [v8 recordID];
-        v21 = [v24 recordName];
-        v23 = [v12 recordID];
-        v22 = [v23 recordName];
+        className = [(ICAttachment *)self className];
+        recordID2 = [recordCopy recordID];
+        recordName = [recordID2 recordName];
+        recordID3 = [v12 recordID];
+        recordName2 = [recordID3 recordName];
         *buf = 138412802;
-        v26 = v20;
+        v26 = className;
         v27 = 2112;
-        v28 = v21;
+        v28 = recordName;
         v29 = 2112;
-        v30 = v22;
+        v30 = recordName2;
         _os_log_debug_impl(&dword_214D51000, v15, OS_LOG_TYPE_DEBUG, "Found an %@ (%@) from the cloud for a parent attachment (%@) that we don't know about yet", buf, 0x20u);
       }
 
-      v16 = [v12 recordID];
-      v17 = [v16 recordName];
-      v18 = [(ICAttachment *)self note];
-      v14 = [(ICBaseAttachment *)ICAttachment newAttachmentWithIdentifier:v17 note:v18];
+      recordID4 = [v12 recordID];
+      recordName3 = [recordID4 recordName];
+      note = [(ICAttachment *)self note];
+      v14 = [(ICBaseAttachment *)ICAttachment newAttachmentWithIdentifier:recordName3 note:note];
 
       [v14 setNeedsInitialFetchFromCloud:1];
     }
@@ -4280,33 +4280,33 @@ LABEL_107:
   return v14;
 }
 
-+ (id)noteFromAttachmentUserSpecificRecord:(id)a3 accountID:(id)a4 context:(id)a5
++ (id)noteFromAttachmentUserSpecificRecord:(id)record accountID:(id)d context:(id)context
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 objectForKeyedSubscript:@"NoteUUID"];
+  recordCopy = record;
+  dCopy = d;
+  contextCopy = context;
+  v10 = [recordCopy objectForKeyedSubscript:@"NoteUUID"];
   if ([v10 length])
   {
-    v11 = [ICNote noteWithIdentifier:v10 context:v9];
+    v11 = [ICNote noteWithIdentifier:v10 context:contextCopy];
     if (!v11)
     {
       v12 = os_log_create("com.apple.notes", "Cloud");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
-        v16 = [v7 recordID];
-        v17 = [v16 recordName];
+        recordID = [recordCopy recordID];
+        recordName = [recordID recordName];
         v18 = 138412802;
-        v19 = v17;
+        v19 = recordName;
         v20 = 2112;
         v21 = v10;
         v22 = 2112;
-        v23 = v8;
+        v23 = dCopy;
         _os_log_debug_impl(&dword_214D51000, v12, OS_LOG_TYPE_DEBUG, "Found a user-specific attachment record (%@) for a note (%@) in account (%@) that we haven't seen yet", &v18, 0x20u);
       }
 
-      v13 = [ICAccount cloudKitAccountWithIdentifier:v8 context:v9];
+      v13 = [ICAccount cloudKitAccountWithIdentifier:dCopy context:contextCopy];
       v11 = [ICNote newNoteWithoutIdentifierInAccount:v13];
       [v11 setIdentifier:v10];
       [v11 setNeedsInitialFetchFromCloud:1];
@@ -4328,18 +4328,18 @@ LABEL_107:
   return v11;
 }
 
-+ (id)noteFromAttachmentRecord:(id)a3 accountID:(id)a4 context:(id)a5
++ (id)noteFromAttachmentRecord:(id)record accountID:(id)d context:(id)context
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 objectForKeyedSubscript:@"Note"];
+  recordCopy = record;
+  dCopy = d;
+  contextCopy = context;
+  v11 = [recordCopy objectForKeyedSubscript:@"Note"];
   v12 = v11;
   if (v11)
   {
-    v13 = [v11 recordID];
-    v14 = [ICNote existingCloudObjectForRecordID:v13 accountID:v9 context:v10];
+    recordID = [v11 recordID];
+    v14 = [ICNote existingCloudObjectForRecordID:recordID accountID:dCopy context:contextCopy];
 
     if (v14)
     {
@@ -4349,27 +4349,27 @@ LABEL_107:
     v15 = os_log_create("com.apple.notes", "Cloud");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
-      v23 = [a1 className];
-      v27 = [v8 recordID];
-      v24 = [v27 recordName];
-      v25 = [v12 recordID];
-      v26 = [v25 recordName];
+      className = [self className];
+      recordID2 = [recordCopy recordID];
+      recordName = [recordID2 recordName];
+      recordID3 = [v12 recordID];
+      recordName2 = [recordID3 recordName];
       *buf = 138413058;
-      v29 = v23;
+      v29 = className;
       v30 = 2112;
-      v31 = v24;
+      v31 = recordName;
       v32 = 2112;
-      v33 = v26;
+      v33 = recordName2;
       v34 = 2112;
-      v35 = v9;
+      v35 = dCopy;
       _os_log_debug_impl(&dword_214D51000, v15, OS_LOG_TYPE_DEBUG, "Found an %@ (%@) from the cloud for a note (%@) that we don't know about yet in account ID %@", buf, 0x2Au);
     }
 
-    v16 = [ICAccount cloudKitAccountWithIdentifier:v9 context:v10];
+    v16 = [ICAccount cloudKitAccountWithIdentifier:dCopy context:contextCopy];
     v14 = [ICNote newNoteWithoutIdentifierInAccount:v16];
-    v17 = [v12 recordID];
-    v18 = [v17 recordName];
-    [v14 setIdentifier:v18];
+    recordID4 = [v12 recordID];
+    recordName3 = [recordID4 recordName];
+    [v14 setIdentifier:recordName3];
 
     [v14 setNeedsInitialFetchFromCloud:1];
   }
@@ -4379,15 +4379,15 @@ LABEL_107:
     v16 = os_log_create("com.apple.notes", "Cloud");
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = [a1 className];
-      v20 = [v8 recordID];
-      v21 = [v20 recordName];
+      className2 = [self className];
+      recordID5 = [recordCopy recordID];
+      recordName4 = [recordID5 recordName];
       *buf = 138412802;
-      v29 = v19;
+      v29 = className2;
       v30 = 2112;
-      v31 = v21;
+      v31 = recordName4;
       v32 = 2112;
-      v33 = v9;
+      v33 = dCopy;
       _os_log_impl(&dword_214D51000, v16, OS_LOG_TYPE_DEFAULT, "Found an %@ (%@) in the cloud with no note in account ID %@", buf, 0x20u);
     }
 
@@ -4399,23 +4399,23 @@ LABEL_10:
   return v14;
 }
 
-+ (id)newCloudObjectForRecord:(id)a3 accountID:(id)a4 context:(id)a5
++ (id)newCloudObjectForRecord:(id)record accountID:(id)d context:(id)context
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [a1 noteFromAttachmentRecord:v9 accountID:v8 context:a5];
-  v11 = [v9 recordID];
-  v12 = [v11 recordName];
-  v13 = [v10 addAttachmentWithIdentifier:v12];
+  dCopy = d;
+  recordCopy = record;
+  v10 = [self noteFromAttachmentRecord:recordCopy accountID:dCopy context:context];
+  recordID = [recordCopy recordID];
+  recordName = [recordID recordName];
+  v13 = [v10 addAttachmentWithIdentifier:recordName];
 
-  v14 = [MEMORY[0x277CBEAA8] distantPast];
-  [v13 setModificationDate:v14];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  [v13 setModificationDate:distantPast];
 
-  v15 = [MEMORY[0x277CBEAA8] distantPast];
-  [v13 setCreationDate:v15];
+  distantPast2 = [MEMORY[0x277CBEAA8] distantPast];
+  [v13 setCreationDate:distantPast2];
 
-  [v13 mergeCloudKitRecord:v9 accountID:v8 approach:0 mergeableFieldState:0 newAttachment:1];
-  [v13 setServerRecord:v9];
+  [v13 mergeCloudKitRecord:recordCopy accountID:dCopy approach:0 mergeableFieldState:0 newAttachment:1];
+  [v13 setServerRecord:recordCopy];
 
   [v13 setInCloud:1];
   [v13 clearChangeCountWithReason:@"Created attachment"];
@@ -4427,86 +4427,86 @@ LABEL_10:
 
 - (BOOL)wantsUserSpecificRecord
 {
-  v2 = [(ICAttachment *)self mergeablePreferredViewSize];
-  v3 = v2 != 0;
+  mergeablePreferredViewSize = [(ICAttachment *)self mergeablePreferredViewSize];
+  v3 = mergeablePreferredViewSize != 0;
 
   return v3;
 }
 
-- (id)makeUserSpecificCloudKitRecordForApproach:(int64_t)a3
+- (id)makeUserSpecificCloudKitRecordForApproach:(int64_t)approach
 {
   v13.receiver = self;
   v13.super_class = ICAttachment;
-  v4 = [(ICCloudSyncingObject *)&v13 makeUserSpecificCloudKitRecordForApproach:a3];
-  v5 = [(ICAttachment *)self note];
-  v6 = [v5 recordID];
+  v4 = [(ICCloudSyncingObject *)&v13 makeUserSpecificCloudKitRecordForApproach:approach];
+  note = [(ICAttachment *)self note];
+  recordID = [note recordID];
 
-  if (v6)
+  if (recordID)
   {
-    v7 = [(ICAttachment *)self note];
-    v8 = [v7 recordID];
-    v9 = [v8 recordName];
-    [v4 setObject:v9 forKeyedSubscript:@"NoteUUID"];
+    note2 = [(ICAttachment *)self note];
+    recordID2 = [note2 recordID];
+    recordName = [recordID2 recordName];
+    [v4 setObject:recordName forKeyedSubscript:@"NoteUUID"];
   }
 
-  v10 = [(ICAttachment *)self mergeablePreferredViewSize];
-  if (v10)
+  mergeablePreferredViewSize = [(ICAttachment *)self mergeablePreferredViewSize];
+  if (mergeablePreferredViewSize)
   {
-    v11 = [v4 encryptedValues];
-    [v11 setObject:v10 forKeyedSubscript:@"MergeablePreferredViewSizeEncrypted"];
+    encryptedValues = [v4 encryptedValues];
+    [encryptedValues setObject:mergeablePreferredViewSize forKeyedSubscript:@"MergeablePreferredViewSizeEncrypted"];
   }
 
   return v4;
 }
 
-- (BOOL)mergeDataFromUserSpecificRecord:(id)a3 accountID:(id)a4
+- (BOOL)mergeDataFromUserSpecificRecord:(id)record accountID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  dCopy = d;
   v23.receiver = self;
   v23.super_class = ICAttachment;
-  v8 = [(ICCloudSyncingObject *)&v23 mergeDataFromUserSpecificRecord:v6 accountID:v7];
+  v8 = [(ICCloudSyncingObject *)&v23 mergeDataFromUserSpecificRecord:recordCopy accountID:dCopy];
   if (v8)
   {
-    v9 = [(ICAttachment *)self note];
-    if (v9)
+    note = [(ICAttachment *)self note];
+    if (note)
     {
     }
 
     else
     {
-      v16 = [v6 objectForKeyedSubscript:@"NoteUUID"];
+      v16 = [recordCopy objectForKeyedSubscript:@"NoteUUID"];
 
       if (v16)
       {
         v17 = objc_opt_class();
-        v18 = [(ICAttachment *)self managedObjectContext];
-        v19 = [v17 noteFromAttachmentUserSpecificRecord:v6 accountID:v7 context:v18];
+        managedObjectContext = [(ICAttachment *)self managedObjectContext];
+        v19 = [v17 noteFromAttachmentUserSpecificRecord:recordCopy accountID:dCopy context:managedObjectContext];
         [(ICAttachment *)self setNote:v19];
 
-        v20 = [(ICAttachment *)self note];
+        note2 = [(ICAttachment *)self note];
 
-        if (!v20)
+        if (!note2)
         {
           [MEMORY[0x277D36198] handleFailedAssertWithCondition:"self.note" functionName:"-[ICAttachment(CloudKit) mergeDataFromUserSpecificRecord:accountID:]" simulateCrash:1 showAlert:0 format:@"Expected a note (existing or placeholder) to be created from user-specific record"];
         }
       }
     }
 
-    v10 = [v6 encryptedValues];
-    v11 = [v10 objectForKeyedSubscript:@"MergeablePreferredViewSizeEncrypted"];
+    encryptedValues = [recordCopy encryptedValues];
+    v11 = [encryptedValues objectForKeyedSubscript:@"MergeablePreferredViewSizeEncrypted"];
 
     if (v11)
     {
-      v12 = [(ICAttachment *)self mergeablePreferredViewSize];
-      if (v12)
+      mergeablePreferredViewSize = [(ICAttachment *)self mergeablePreferredViewSize];
+      if (mergeablePreferredViewSize)
       {
         v13 = [[ICTTMergeableWallClockValue alloc] initWithData:v11];
-        v14 = [[ICTTMergeableWallClockValue alloc] initWithData:v12];
+        v14 = [[ICTTMergeableWallClockValue alloc] initWithData:mergeablePreferredViewSize];
         if ([(ICTTMergeableWallClockValue *)v14 merge:v13]== 2)
         {
-          v15 = [(ICTTMergeableWallClockValue *)v14 serialize];
-          [(ICAttachment *)self setMergeablePreferredViewSize:v15];
+          serialize = [(ICTTMergeableWallClockValue *)v14 serialize];
+          [(ICAttachment *)self setMergeablePreferredViewSize:serialize];
         }
       }
 
@@ -4524,23 +4524,23 @@ LABEL_10:
 
 - (BOOL)isInICloudAccount
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(ICAttachment *)self managedObjectContext];
+  managedObjectContext = [(ICAttachment *)self managedObjectContext];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __43__ICAttachment_CloudKit__isInICloudAccount__block_invoke;
   v5[3] = &unk_278194D68;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  [v3 performBlockAndWait:v5];
+  [managedObjectContext performBlockAndWait:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __43__ICAttachment_CloudKit__isInICloudAccount__block_invoke(uint64_t a1)
@@ -4561,86 +4561,86 @@ void __43__ICAttachment_CloudKit__isInICloudAccount__block_invoke(uint64_t a1)
 {
   if ([(ICAttachment *)self markedForDeletion])
   {
-    v3 = [(ICAttachment *)self parentAttachment];
-    if (v3)
+    parentAttachment = [(ICAttachment *)self parentAttachment];
+    if (parentAttachment)
     {
-      v7 = v3;
-      v4 = [(ICAttachment *)self parentAttachment];
-      if ([v4 needsInitialFetchFromCloud])
+      parentAttachment4 = parentAttachment;
+      parentAttachment2 = [(ICAttachment *)self parentAttachment];
+      if ([parentAttachment2 needsInitialFetchFromCloud])
       {
       }
 
       else
       {
-        v5 = [(ICAttachment *)self parentAttachment];
-        v6 = [v5 markedForDeletion];
+        parentAttachment3 = [(ICAttachment *)self parentAttachment];
+        markedForDeletion = [parentAttachment3 markedForDeletion];
 
-        if (v6)
+        if (markedForDeletion)
         {
           return;
         }
 
-        v7 = [(ICAttachment *)self parentAttachment];
-        [v7 updateMarkedForDeletionStateAttachmentIsInUse:1];
+        parentAttachment4 = [(ICAttachment *)self parentAttachment];
+        [parentAttachment4 updateMarkedForDeletionStateAttachmentIsInUse:1];
       }
     }
   }
 }
 
-- (void)fixBrokenReferencesWithError:(id)a3
+- (void)fixBrokenReferencesWithError:(id)error
 {
   v71 = *MEMORY[0x277D85DE8];
   v4 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(ICCloudSyncingObject *)self loggingDescription];
-    v6 = [(ICAttachment *)self media];
-    v7 = [v6 loggingDescription];
-    v8 = [(ICAttachment *)self note];
-    v9 = [v8 loggingDescription];
+    loggingDescription = [(ICCloudSyncingObject *)self loggingDescription];
+    media = [(ICAttachment *)self media];
+    loggingDescription2 = [media loggingDescription];
+    note = [(ICAttachment *)self note];
+    loggingDescription3 = [note loggingDescription];
     v65 = 138412802;
-    v66 = v5;
+    v66 = loggingDescription;
     v67 = 2112;
-    v68 = v7;
+    v68 = loggingDescription2;
     v69 = 2112;
-    v70 = v9;
+    v70 = loggingDescription3;
     _os_log_impl(&dword_214D51000, v4, OS_LOG_TYPE_DEFAULT, "Fixing broken references for attachment: %@\n\tMedia=%@\n\tNote=%@", &v65, 0x20u);
   }
 
-  v10 = [(ICAttachment *)self note];
-  v11 = [v10 needsInitialFetchFromCloud];
+  note2 = [(ICAttachment *)self note];
+  needsInitialFetchFromCloud = [note2 needsInitialFetchFromCloud];
 
-  if (v11)
+  if (needsInitialFetchFromCloud)
   {
     v12 = os_log_create("com.apple.notes", "Cloud");
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(ICAttachment *)self identifier];
-      v14 = [(ICAttachment *)self note];
-      v15 = [v14 identifier];
+      identifier = [(ICAttachment *)self identifier];
+      note3 = [(ICAttachment *)self note];
+      identifier2 = [note3 identifier];
       v65 = 138412546;
-      v66 = v13;
+      v66 = identifier;
       v67 = 2112;
-      v68 = v15;
+      v68 = identifier2;
       _os_log_impl(&dword_214D51000, v12, OS_LOG_TYPE_DEFAULT, "Tried to push an attachment (%@) for a note (%@) that we don't know about. Manually fetching note.", &v65, 0x16u);
     }
 
-    v16 = [(ICAttachment *)self note];
-    [v16 setNeedsToBeFetchedFromCloud:1];
+    note4 = [(ICAttachment *)self note];
+    [note4 setNeedsToBeFetchedFromCloud:1];
   }
 
   else
   {
-    v17 = [(ICAttachment *)self note];
-    v18 = [v17 noteData];
-    v19 = [v18 data];
-    if (v19)
+    note5 = [(ICAttachment *)self note];
+    noteData = [note5 noteData];
+    data = [noteData data];
+    if (data)
     {
-      v20 = v19;
-      v21 = [(ICAttachment *)self note];
-      v22 = [v21 creationDate];
+      v20 = data;
+      note6 = [(ICAttachment *)self note];
+      creationDate = [note6 creationDate];
 
-      if (v22)
+      if (creationDate)
       {
         goto LABEL_14;
       }
@@ -4653,13 +4653,13 @@ void __43__ICAttachment_CloudKit__isInICloudAccount__block_invoke(uint64_t a1)
     v23 = os_log_create("com.apple.notes", "Cloud");
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
-      v24 = [(ICAttachment *)self identifier];
-      v25 = [(ICAttachment *)self note];
-      v26 = [v25 identifier];
+      identifier3 = [(ICAttachment *)self identifier];
+      note7 = [(ICAttachment *)self note];
+      identifier4 = [note7 identifier];
       v65 = 138412546;
-      v66 = v24;
+      v66 = identifier3;
       v67 = 2112;
-      v68 = v26;
+      v68 = identifier4;
       _os_log_impl(&dword_214D51000, v23, OS_LOG_TYPE_DEFAULT, "Tried to push an attachment (%@) for a note (%@) that no longer exists. Deleting attachment.", &v65, 0x16u);
     }
 
@@ -4667,42 +4667,42 @@ void __43__ICAttachment_CloudKit__isInICloudAccount__block_invoke(uint64_t a1)
   }
 
 LABEL_14:
-  v27 = [(ICAttachment *)self note];
-  v28 = [v27 markedForDeletion];
+  note8 = [(ICAttachment *)self note];
+  markedForDeletion = [note8 markedForDeletion];
 
-  if (v28)
+  if (markedForDeletion)
   {
     v29 = os_log_create("com.apple.notes", "Cloud");
     if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
     {
-      v30 = [(ICCloudSyncingObject *)self shortLoggingDescription];
+      shortLoggingDescription = [(ICCloudSyncingObject *)self shortLoggingDescription];
       v65 = 138412290;
-      v66 = v30;
+      v66 = shortLoggingDescription;
       _os_log_impl(&dword_214D51000, v29, OS_LOG_TYPE_DEFAULT, "Marking %@ for deletion because its note is deleted too", &v65, 0xCu);
     }
 
     [(ICAttachment *)self markForDeletion];
-    v31 = [(ICAttachment *)self media];
-    [v31 markForDeletion];
+    media2 = [(ICAttachment *)self media];
+    [media2 markForDeletion];
   }
 
   if ([(ICCloudSyncingObject *)self isInCloud])
   {
-    v32 = [(ICAttachment *)self note];
-    v33 = [v32 isInCloud];
+    note9 = [(ICAttachment *)self note];
+    isInCloud = [note9 isInCloud];
 
-    if ((v33 & 1) == 0)
+    if ((isInCloud & 1) == 0)
     {
       v34 = os_log_create("com.apple.notes", "Cloud");
       if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
       {
-        v35 = [(ICCloudSyncingObject *)self shortLoggingDescription];
-        v36 = [(ICAttachment *)self note];
-        v37 = [v36 shortLoggingDescription];
+        shortLoggingDescription2 = [(ICCloudSyncingObject *)self shortLoggingDescription];
+        note10 = [(ICAttachment *)self note];
+        shortLoggingDescription3 = [note10 shortLoggingDescription];
         v65 = 138412546;
-        v66 = v35;
+        v66 = shortLoggingDescription2;
         v67 = 2112;
-        v68 = v37;
+        v68 = shortLoggingDescription3;
         _os_log_impl(&dword_214D51000, v34, OS_LOG_TYPE_DEFAULT, "We think %@ is in the cloud, but its parent %@ isn't. That's not possible, so let's try to fetch it.", &v65, 0x16u);
       }
 
@@ -4710,63 +4710,63 @@ LABEL_14:
     }
   }
 
-  v38 = [(ICAttachment *)self note];
-  v39 = [v38 isInCloud];
+  note11 = [(ICAttachment *)self note];
+  isInCloud2 = [note11 isInCloud];
 
-  if ((v39 & 1) == 0)
+  if ((isInCloud2 & 1) == 0)
   {
     v40 = os_log_create("com.apple.notes", "Cloud");
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
     {
-      v41 = [(ICAttachment *)self note];
-      v42 = [v41 identifier];
+      note12 = [(ICAttachment *)self note];
+      identifier5 = [note12 identifier];
       v65 = 138412290;
-      v66 = v42;
+      v66 = identifier5;
       _os_log_impl(&dword_214D51000, v40, OS_LOG_TYPE_DEFAULT, "Tried to push an attachment for note: (%@) which isn't yet in iCloud", &v65, 0xCu);
     }
   }
 
-  v43 = [(ICAttachment *)self note];
-  [v43 updateChangeCountWithReason:@"Fixed broken reference"];
+  note13 = [(ICAttachment *)self note];
+  [note13 updateChangeCountWithReason:@"Fixed broken reference"];
 
-  v44 = [(ICAttachment *)self media];
+  media3 = [(ICAttachment *)self media];
 
-  if (v44)
+  if (media3)
   {
-    v45 = [(ICAttachment *)self media];
-    if ([v45 needsInitialFetchFromCloud])
+    media4 = [(ICAttachment *)self media];
+    if ([media4 needsInitialFetchFromCloud])
     {
 LABEL_31:
 
       goto LABEL_32;
     }
 
-    v46 = [(ICAttachment *)self media];
-    if ([v46 needsToBeFetchedFromCloud])
+    media5 = [(ICAttachment *)self media];
+    if ([media5 needsToBeFetchedFromCloud])
     {
 
       goto LABEL_31;
     }
 
-    v57 = [(ICAttachment *)self media];
-    v58 = [v57 hasFile];
+    media6 = [(ICAttachment *)self media];
+    hasFile = [media6 hasFile];
 
-    if (v58)
+    if (hasFile)
     {
 LABEL_32:
-      v47 = [(ICAttachment *)self media];
-      v48 = [v47 filename];
-      if (![v48 length])
+      media7 = [(ICAttachment *)self media];
+      filename = [media7 filename];
+      if (![filename length])
       {
-        v49 = [(ICAttachment *)self media];
-        v50 = [v49 identifier];
-        v51 = [v50 length];
+        media8 = [(ICAttachment *)self media];
+        identifier6 = [media8 identifier];
+        v51 = [identifier6 length];
 
         if (!v51)
         {
 LABEL_38:
-          v56 = [(ICAttachment *)self media];
-          [v56 updateChangeCountWithReason:@"Fixed broken reference"];
+          media9 = [(ICAttachment *)self media];
+          [media9 updateChangeCountWithReason:@"Fixed broken reference"];
 
           return;
         }
@@ -4774,17 +4774,17 @@ LABEL_38:
         v52 = os_log_create("com.apple.notes", "Cloud");
         if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
         {
-          v53 = [(ICAttachment *)self media];
-          v54 = [v53 identifier];
+          media10 = [(ICAttachment *)self media];
+          identifier7 = [media10 identifier];
           v65 = 138412290;
-          v66 = v54;
+          v66 = identifier7;
           _os_log_impl(&dword_214D51000, v52, OS_LOG_TYPE_DEFAULT, "Empty filename for media, falling back on identifier (%@)", &v65, 0xCu);
         }
 
-        v47 = [(ICAttachment *)self media];
-        v48 = [v47 identifier];
-        v55 = [(ICAttachment *)self media];
-        [v55 setFilename:v48];
+        media7 = [(ICAttachment *)self media];
+        filename = [media7 identifier];
+        media11 = [(ICAttachment *)self media];
+        [media11 setFilename:filename];
       }
 
       goto LABEL_38;
@@ -4793,19 +4793,19 @@ LABEL_38:
     v59 = os_log_create("com.apple.notes", "Cloud");
     if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
     {
-      v60 = [(ICAttachment *)self media];
-      v61 = [v60 identifier];
-      v62 = [(ICAttachment *)self note];
-      v63 = [v62 identifier];
+      media12 = [(ICAttachment *)self media];
+      identifier8 = [media12 identifier];
+      note14 = [(ICAttachment *)self note];
+      identifier9 = [note14 identifier];
       v65 = 138412546;
-      v66 = v61;
+      v66 = identifier8;
       v67 = 2112;
-      v68 = v63;
+      v68 = identifier9;
       _os_log_impl(&dword_214D51000, v59, OS_LOG_TYPE_DEFAULT, "Invalid media (%@) for a note (%@). Deleting media.", &v65, 0x16u);
     }
 
-    v64 = [(ICAttachment *)self media];
-    [v64 markForDeletion];
+    media13 = [(ICAttachment *)self media];
+    [media13 markForDeletion];
 
     [(ICAttachment *)self setMedia:0];
   }
@@ -4815,22 +4815,22 @@ LABEL_38:
 {
   v10.receiver = self;
   v10.super_class = ICAttachment;
-  v3 = [(ICCloudSyncingObject *)&v10 hasAllMandatoryFields];
-  v4 = [(ICAttachment *)self typeUTI];
-  if (![v4 length])
+  hasAllMandatoryFields = [(ICCloudSyncingObject *)&v10 hasAllMandatoryFields];
+  typeUTI = [(ICAttachment *)self typeUTI];
+  if (![typeUTI length])
   {
-    v3 = 0;
+    hasAllMandatoryFields = 0;
   }
 
-  v5 = [(ICAttachment *)self note];
-  v6 = v3 & [v5 hasAllMandatoryFields];
+  note = [(ICAttachment *)self note];
+  v6 = hasAllMandatoryFields & [note hasAllMandatoryFields];
 
-  v7 = [(ICAttachment *)self media];
+  media = [(ICAttachment *)self media];
 
-  if (v7)
+  if (media)
   {
-    v8 = [(ICAttachment *)self media];
-    v6 &= [v8 hasAllMandatoryFields];
+    media2 = [(ICAttachment *)self media];
+    v6 &= [media2 hasAllMandatoryFields];
   }
 
   return v6;
@@ -4840,34 +4840,34 @@ LABEL_38:
 {
   v7.receiver = self;
   v7.super_class = ICAttachment;
-  v3 = [(ICCloudSyncingObject *)&v7 needsToBePushedToCloud];
-  v4 = self;
-  if (v4 && v3)
+  needsToBePushedToCloud = [(ICCloudSyncingObject *)&v7 needsToBePushedToCloud];
+  selfCopy = self;
+  if (selfCopy && needsToBePushedToCloud)
   {
     do
     {
-      v5 = v4;
-      v3 = [(ICAttachment *)v4 isBeingEditedLocallyOnDevice];
-      v4 = [(ICAttachment *)v4 parentAttachment];
+      v5 = selfCopy;
+      needsToBePushedToCloud = [(ICAttachment *)selfCopy isBeingEditedLocallyOnDevice];
+      selfCopy = [(ICAttachment *)selfCopy parentAttachment];
     }
 
-    while (v4 && !v3);
-    LOBYTE(v3) = v3 ^ 1;
+    while (selfCopy && !needsToBePushedToCloud);
+    LOBYTE(needsToBePushedToCloud) = needsToBePushedToCloud ^ 1;
   }
 
-  return v3;
+  return needsToBePushedToCloud;
 }
 
 - (id)objectsToBeDeletedBeforeThisObject
 {
   v9.receiver = self;
   v9.super_class = ICAttachment;
-  v3 = [(ICCloudSyncingObject *)&v9 objectsToBeDeletedBeforeThisObject];
-  v4 = [v3 mutableCopy];
+  objectsToBeDeletedBeforeThisObject = [(ICCloudSyncingObject *)&v9 objectsToBeDeletedBeforeThisObject];
+  v4 = [objectsToBeDeletedBeforeThisObject mutableCopy];
 
-  v5 = [(ICAttachment *)self subAttachments];
-  v6 = [v5 allObjects];
-  [v4 addObjectsFromArray:v6];
+  subAttachments = [(ICAttachment *)self subAttachments];
+  allObjects = [subAttachments allObjects];
+  [v4 addObjectsFromArray:allObjects];
 
   v7 = [v4 copy];
 
@@ -4879,18 +4879,18 @@ LABEL_38:
   v4.receiver = self;
   v4.super_class = ICAttachment;
   [(ICCloudSyncingObject *)&v4 updateParentReferenceIfNecessary];
-  v3 = [(ICAttachment *)self media];
-  [v3 updateParentReferenceIfNecessary];
+  media = [(ICAttachment *)self media];
+  [media updateParentReferenceIfNecessary];
 }
 
-- (void)objectWasFetchedFromCloudWithRecord:(id)a3 accountID:(id)a4 force:(BOOL)a5
+- (void)objectWasFetchedFromCloudWithRecord:(id)record accountID:(id)d force:(BOOL)force
 {
-  v5 = a5;
+  forceCopy = force;
   v11.receiver = self;
   v11.super_class = ICAttachment;
-  v8 = a3;
-  [(ICCloudSyncingObject *)&v11 objectWasFetchedFromCloudWithRecord:v8 accountID:a4 force:v5];
-  v9 = [v8 objectForKeyedSubscript:{@"PreviewImages", v11.receiver, v11.super_class}];
+  recordCopy = record;
+  [(ICCloudSyncingObject *)&v11 objectWasFetchedFromCloudWithRecord:recordCopy accountID:d force:forceCopy];
+  v9 = [recordCopy objectForKeyedSubscript:{@"PreviewImages", v11.receiver, v11.super_class}];
 
   if (v9 && [v9 count])
   {
@@ -4898,25 +4898,25 @@ LABEL_38:
   }
 }
 
-- (id)descendantsNeedingOnDemandAssetFetchWithContext:(id)a3 shouldFetchObject:(id)a4
+- (id)descendantsNeedingOnDemandAssetFetchWithContext:(id)context shouldFetchObject:(id)object
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  objectCopy = object;
   v8 = [MEMORY[0x277CBEB58] set];
-  if (v6 && v7 && (v7[2](v7, self, v6) & 1) != 0)
+  if (contextCopy && objectCopy && (objectCopy[2](objectCopy, self, contextCopy) & 1) != 0)
   {
-    v9 = [(ICAttachment *)self media];
-    v10 = [v9 updateFetchFlagsAndReturnRecordIDsNeedingFetchWithContext:v6 shouldFetchObject:v7];
-    v11 = [v10 allObjects];
-    [v8 ic_addObjectsFromNonNilArray:v11];
+    media = [(ICAttachment *)self media];
+    v10 = [media updateFetchFlagsAndReturnRecordIDsNeedingFetchWithContext:contextCopy shouldFetchObject:objectCopy];
+    allObjects = [v10 allObjects];
+    [v8 ic_addObjectsFromNonNilArray:allObjects];
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v12 = [(ICAttachment *)self subAttachments];
-    v13 = [v12 countByEnumeratingWithState:&v33 objects:v38 count:16];
+    subAttachments = [(ICAttachment *)self subAttachments];
+    v13 = [subAttachments countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v13)
     {
       v14 = v13;
@@ -4927,15 +4927,15 @@ LABEL_38:
         {
           if (*v34 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(subAttachments);
           }
 
-          v17 = [*(*(&v33 + 1) + 8 * i) updateFetchFlagsAndReturnRecordIDsNeedingFetchWithContext:v6 shouldFetchObject:v7];
-          v18 = [v17 allObjects];
-          [v8 ic_addObjectsFromNonNilArray:v18];
+          v17 = [*(*(&v33 + 1) + 8 * i) updateFetchFlagsAndReturnRecordIDsNeedingFetchWithContext:contextCopy shouldFetchObject:objectCopy];
+          allObjects2 = [v17 allObjects];
+          [v8 ic_addObjectsFromNonNilArray:allObjects2];
         }
 
-        v14 = [v12 countByEnumeratingWithState:&v33 objects:v38 count:16];
+        v14 = [subAttachments countByEnumeratingWithState:&v33 objects:v38 count:16];
       }
 
       while (v14);
@@ -4945,8 +4945,8 @@ LABEL_38:
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v19 = [(ICAttachment *)self inlineAttachments];
-    v20 = [v19 countByEnumeratingWithState:&v29 objects:v37 count:16];
+    inlineAttachments = [(ICAttachment *)self inlineAttachments];
+    v20 = [inlineAttachments countByEnumeratingWithState:&v29 objects:v37 count:16];
     if (v20)
     {
       v21 = v20;
@@ -4957,15 +4957,15 @@ LABEL_38:
         {
           if (*v30 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(inlineAttachments);
           }
 
-          v24 = [*(*(&v29 + 1) + 8 * j) updateFetchFlagsAndReturnRecordIDsNeedingFetchWithContext:v6 shouldFetchObject:v7];
-          v25 = [v24 allObjects];
-          [v8 ic_addObjectsFromNonNilArray:v25];
+          v24 = [*(*(&v29 + 1) + 8 * j) updateFetchFlagsAndReturnRecordIDsNeedingFetchWithContext:contextCopy shouldFetchObject:objectCopy];
+          allObjects3 = [v24 allObjects];
+          [v8 ic_addObjectsFromNonNilArray:allObjects3];
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v29 objects:v37 count:16];
+        v21 = [inlineAttachments countByEnumeratingWithState:&v29 objects:v37 count:16];
       }
 
       while (v21);
@@ -4986,42 +4986,42 @@ LABEL_38:
 
 - (BOOL)shouldAlwaysDownloadAssets
 {
-  v2 = self;
-  v3 = [(ICAttachment *)self managedObjectContext];
-  LOBYTE(v2) = [ICAssetSignature hasLocallyStoredAssetsInObject:v2 context:v3];
+  selfCopy = self;
+  managedObjectContext = [(ICAttachment *)self managedObjectContext];
+  LOBYTE(selfCopy) = [ICAssetSignature hasLocallyStoredAssetsInObject:selfCopy context:managedObjectContext];
 
-  return v2;
+  return selfCopy;
 }
 
-+ (void)addPreviewImages:(id)a3 toRecord:(id)a4
++ (void)addPreviewImages:(id)images toRecord:(id)record
 {
   v57 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v35 = a4;
-  v6 = [MEMORY[0x277CBEB18] array];
-  v42 = [MEMORY[0x277CBEB18] array];
-  v41 = [MEMORY[0x277CBEB18] array];
-  v40 = [MEMORY[0x277CBEB18] array];
-  v39 = [MEMORY[0x277CBEB18] array];
-  v38 = [MEMORY[0x277CBEB18] array];
+  imagesCopy = images;
+  recordCopy = record;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
+  array4 = [MEMORY[0x277CBEB18] array];
+  array5 = [MEMORY[0x277CBEB18] array];
+  array6 = [MEMORY[0x277CBEB18] array];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = v5;
+  obj = imagesCopy;
   v7 = [obj countByEnumeratingWithState:&v46 objects:v56 count:16];
   if (!v7)
   {
     v43 = 0;
-    v9 = 0;
+    array7 = 0;
     goto LABEL_44;
   }
 
   v8 = v7;
   v43 = 0;
-  v9 = 0;
+  array7 = 0;
   v10 = *v47;
-  v36 = v6;
+  v36 = array;
   v37 = *v47;
   do
   {
@@ -5036,99 +5036,99 @@ LABEL_38:
       v12 = *(*(&v46 + 1) + 8 * v11);
       if ([v12 isPasswordProtected])
       {
-        v13 = [v12 encryptedPreviewImageURL];
-        if (!v9)
+        encryptedPreviewImageURL = [v12 encryptedPreviewImageURL];
+        if (!array7)
         {
-          v9 = [MEMORY[0x277CBEB18] array];
-          v14 = [MEMORY[0x277CBEB18] array];
+          array7 = [MEMORY[0x277CBEB18] array];
+          array8 = [MEMORY[0x277CBEB18] array];
 
-          v43 = v14;
+          v43 = array8;
         }
       }
 
       else
       {
-        v13 = [v12 previewImageURL];
+        encryptedPreviewImageURL = [v12 previewImageURL];
       }
 
       if ([v12 shouldSyncToCloud])
       {
         v45 = 0;
-        v15 = [v13 checkResourceIsReachableAndReturnError:&v45];
+        v15 = [encryptedPreviewImageURL checkResourceIsReachableAndReturnError:&v45];
         v16 = v45;
         v17 = v16;
         if (v15)
         {
-          v18 = [ICCloudSyncingObject assetForURL:v13];
+          v18 = [ICCloudSyncingObject assetForURL:encryptedPreviewImageURL];
           if (v18)
           {
-            [v6 addObject:v18];
+            [array addObject:v18];
             v19 = MEMORY[0x277CCABB0];
             [v12 width];
             v20 = [v19 numberWithDouble:?];
-            [v42 addObject:v20];
+            [array2 addObject:v20];
 
             v21 = MEMORY[0x277CCABB0];
             [v12 height];
             v22 = [v21 numberWithDouble:?];
-            [v41 addObject:v22];
+            [array3 addObject:v22];
 
             v23 = MEMORY[0x277CCABB0];
             [v12 scale];
             v24 = [v23 numberWithDouble:?];
-            [v40 addObject:v24];
+            [array4 addObject:v24];
 
             v25 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v12, "scaleWhenDrawing")}];
-            [v39 addObject:v25];
+            [array5 addObject:v25];
 
             v26 = [MEMORY[0x277CCABB0] numberWithShort:{objc_msgSend(v12, "appearanceType")}];
-            [v38 addObject:v26];
+            [array6 addObject:v26];
 
             if ([v12 isPasswordProtected])
             {
-              v27 = [v12 cryptoTag];
+              cryptoTag = [v12 cryptoTag];
 
-              if (v27)
+              if (cryptoTag)
               {
-                v28 = [v12 cryptoTag];
-                [v9 addObject:v28];
+                cryptoTag2 = [v12 cryptoTag];
+                [array7 addObject:cryptoTag2];
                 v10 = v37;
               }
 
               else
               {
-                v28 = os_log_create("com.apple.notes", "Cloud");
+                cryptoTag2 = os_log_create("com.apple.notes", "Cloud");
                 v10 = v37;
-                if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+                if (os_log_type_enabled(cryptoTag2, OS_LOG_TYPE_DEFAULT))
                 {
-                  v31 = [v12 identifier];
+                  identifier = [v12 identifier];
                   *buf = 138412290;
-                  v51 = v31;
-                  _os_log_impl(&dword_214D51000, v28, OS_LOG_TYPE_DEFAULT, "No cryptoTag for preview image %@", buf, 0xCu);
+                  v51 = identifier;
+                  _os_log_impl(&dword_214D51000, cryptoTag2, OS_LOG_TYPE_DEFAULT, "No cryptoTag for preview image %@", buf, 0xCu);
                 }
               }
 
-              v32 = [v12 cryptoInitializationVector];
+              cryptoInitializationVector = [v12 cryptoInitializationVector];
 
-              if (v32)
+              if (cryptoInitializationVector)
               {
-                v29 = [v12 cryptoInitializationVector];
-                [v43 addObject:v29];
+                cryptoInitializationVector2 = [v12 cryptoInitializationVector];
+                [v43 addObject:cryptoInitializationVector2];
               }
 
               else
               {
-                v29 = os_log_create("com.apple.notes", "Cloud");
-                if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+                cryptoInitializationVector2 = os_log_create("com.apple.notes", "Cloud");
+                if (os_log_type_enabled(cryptoInitializationVector2, OS_LOG_TYPE_DEFAULT))
                 {
-                  v33 = [v12 identifier];
+                  identifier2 = [v12 identifier];
                   *buf = 138412290;
-                  v51 = v33;
-                  _os_log_impl(&dword_214D51000, v29, OS_LOG_TYPE_DEFAULT, "No cryptoInitializationVector for preview image %@", buf, 0xCu);
+                  v51 = identifier2;
+                  _os_log_impl(&dword_214D51000, cryptoInitializationVector2, OS_LOG_TYPE_DEFAULT, "No cryptoInitializationVector for preview image %@", buf, 0xCu);
                 }
               }
 
-              v6 = v36;
+              array = v36;
               goto LABEL_35;
             }
 
@@ -5137,10 +5137,10 @@ LABEL_38:
 
           else
           {
-            v29 = os_log_create("com.apple.notes", "Cloud");
-            if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+            cryptoInitializationVector2 = os_log_create("com.apple.notes", "Cloud");
+            if (os_log_type_enabled(cryptoInitializationVector2, OS_LOG_TYPE_ERROR))
             {
-              [(ICAttachment(CloudKit) *)v54 addPreviewImages:v12 toRecord:&v55, v29];
+              [(ICAttachment(CloudKit) *)v54 addPreviewImages:v12 toRecord:&v55, cryptoInitializationVector2];
             }
 
 LABEL_35:
@@ -5151,35 +5151,35 @@ LABEL_35:
 
         if (v16 && [v16 code] != 260)
         {
-          v29 = os_log_create("com.apple.notes", "Cloud");
-          if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
+          cryptoInitializationVector2 = os_log_create("com.apple.notes", "Cloud");
+          if (os_log_type_enabled(cryptoInitializationVector2, OS_LOG_TYPE_ERROR))
           {
-            v30 = [v12 identifier];
+            identifier3 = [v12 identifier];
             *buf = 138412546;
-            v51 = v30;
+            v51 = identifier3;
             v52 = 2112;
             v53 = v17;
-            _os_log_error_impl(&dword_214D51000, v29, OS_LOG_TYPE_ERROR, "Error checking if preview image (%@) exists: %@", buf, 0x16u);
+            _os_log_error_impl(&dword_214D51000, cryptoInitializationVector2, OS_LOG_TYPE_ERROR, "Error checking if preview image (%@) exists: %@", buf, 0x16u);
 LABEL_40:
           }
         }
 
         else
         {
-          v29 = os_log_create("com.apple.notes", "Cloud");
-          if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
+          cryptoInitializationVector2 = os_log_create("com.apple.notes", "Cloud");
+          if (os_log_type_enabled(cryptoInitializationVector2, OS_LOG_TYPE_DEBUG))
           {
-            v30 = [v12 identifier];
+            identifier3 = [v12 identifier];
             *buf = 138412546;
-            v51 = v30;
+            v51 = identifier3;
             v52 = 2112;
-            v53 = v13;
-            _os_log_debug_impl(&dword_214D51000, v29, OS_LOG_TYPE_DEBUG, "Pushing an attachment with a preview image (%@) but nothing at the URL: %@", buf, 0x16u);
+            v53 = encryptedPreviewImageURL;
+            _os_log_debug_impl(&dword_214D51000, cryptoInitializationVector2, OS_LOG_TYPE_DEBUG, "Pushing an attachment with a preview image (%@) but nothing at the URL: %@", buf, 0x16u);
             goto LABEL_40;
           }
         }
 
-        v18 = v29;
+        v18 = cryptoInitializationVector2;
         goto LABEL_35;
       }
 
@@ -5196,51 +5196,51 @@ LABEL_37:
   while (v34);
 LABEL_44:
 
-  [v35 setObject:v6 forKeyedSubscript:@"PreviewImages"];
-  [v35 setObject:v42 forKeyedSubscript:@"PreviewWidths"];
-  [v35 setObject:v41 forKeyedSubscript:@"PreviewHeights"];
-  [v35 setObject:v40 forKeyedSubscript:@"PreviewScales"];
-  [v35 setObject:v39 forKeyedSubscript:@"PreviewScaleWhenDrawings"];
-  [v35 setObject:v38 forKeyedSubscript:@"PreviewAppearances"];
-  if (v9)
+  [recordCopy setObject:array forKeyedSubscript:@"PreviewImages"];
+  [recordCopy setObject:array2 forKeyedSubscript:@"PreviewWidths"];
+  [recordCopy setObject:array3 forKeyedSubscript:@"PreviewHeights"];
+  [recordCopy setObject:array4 forKeyedSubscript:@"PreviewScales"];
+  [recordCopy setObject:array5 forKeyedSubscript:@"PreviewScaleWhenDrawings"];
+  [recordCopy setObject:array6 forKeyedSubscript:@"PreviewAppearances"];
+  if (array7)
   {
-    [v35 setObject:v9 forKeyedSubscript:@"PreviewCryptoTags"];
+    [recordCopy setObject:array7 forKeyedSubscript:@"PreviewCryptoTags"];
   }
 
   if (v43)
   {
-    [v35 setObject:v43 forKeyedSubscript:@"PreviewCryptoInitializationVectors"];
+    [recordCopy setObject:v43 forKeyedSubscript:@"PreviewCryptoInitializationVectors"];
   }
 }
 
-- (void)updatePreviewsFromRecord:(id)a3
+- (void)updatePreviewsFromRecord:(id)record
 {
   v101 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ICAttachment *)self previewImages];
-  v6 = [v5 mutableCopy];
+  recordCopy = record;
+  previewImages = [(ICAttachment *)self previewImages];
+  v6 = [previewImages mutableCopy];
 
   if (!-[ICAttachment preferLocalPreviewImages](self, "preferLocalPreviewImages") || ![v6 count])
   {
-    v7 = [v4 objectForKeyedSubscript:@"PreviewUpdateDate"];
+    v7 = [recordCopy objectForKeyedSubscript:@"PreviewUpdateDate"];
 
     if (v7)
     {
-      v8 = [v4 objectForKeyedSubscript:@"PreviewUpdateDate"];
-      v9 = [(ICAttachment *)self previewUpdateDate];
-      v10 = [v8 laterDate:v9];
+      v8 = [recordCopy objectForKeyedSubscript:@"PreviewUpdateDate"];
+      previewUpdateDate = [(ICAttachment *)self previewUpdateDate];
+      v10 = [v8 laterDate:previewUpdateDate];
       [(ICAttachment *)self setPreviewUpdateDate:v10];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"PreviewImages"];
-    v88 = [v4 objectForKeyedSubscript:@"PreviewWidths"];
-    v87 = [v4 objectForKeyedSubscript:@"PreviewHeights"];
-    v86 = [v4 objectForKeyedSubscript:@"PreviewScales"];
-    v85 = [v4 objectForKeyedSubscript:@"PreviewScaleWhenDrawings"];
-    v81 = [v4 objectForKeyedSubscript:@"PreviewCryptoTags"];
-    v80 = [v4 objectForKeyedSubscript:@"PreviewCryptoInitializationVectors"];
-    v76 = v4;
-    v12 = [v4 objectForKeyedSubscript:@"PreviewAppearances"];
+    v11 = [recordCopy objectForKeyedSubscript:@"PreviewImages"];
+    v88 = [recordCopy objectForKeyedSubscript:@"PreviewWidths"];
+    v87 = [recordCopy objectForKeyedSubscript:@"PreviewHeights"];
+    v86 = [recordCopy objectForKeyedSubscript:@"PreviewScales"];
+    v85 = [recordCopy objectForKeyedSubscript:@"PreviewScaleWhenDrawings"];
+    v81 = [recordCopy objectForKeyedSubscript:@"PreviewCryptoTags"];
+    v80 = [recordCopy objectForKeyedSubscript:@"PreviewCryptoInitializationVectors"];
+    v76 = recordCopy;
+    v12 = [recordCopy objectForKeyedSubscript:@"PreviewAppearances"];
     v83 = v11;
     v84 = v12;
     if ([v11 count])
@@ -5265,38 +5265,38 @@ LABEL_44:
         v24 = v23;
 
         v25 = [v85 objectAtIndexedSubscript:v14];
-        v26 = [v25 BOOLValue];
+        bOOLValue = [v25 BOOLValue];
 
         if (v12 && [v12 count] > v14)
         {
           v27 = [v12 objectAtIndexedSubscript:v14];
-          v28 = [v27 unsignedIntValue];
+          unsignedIntValue = [v27 unsignedIntValue];
         }
 
         else
         {
-          v28 = 0;
+          unsignedIntValue = 0;
         }
 
         v29 = [v11 objectAtIndexedSubscript:{v14, v75}];
-        v30 = [v29 fileURL];
-        if (!v30 || (v31 = v30, [v29 fileURL], v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(v32, "checkResourceIsReachableAndReturnError:", 0), v32, v11 = v83, v31, (v33 & 1) == 0))
+        fileURL = [v29 fileURL];
+        if (!fileURL || (v31 = fileURL, [v29 fileURL], v32 = objc_claimAutoreleasedReturnValue(), v33 = objc_msgSend(v32, "checkResourceIsReachableAndReturnError:", 0), v32, v11 = v83, v31, (v33 & 1) == 0))
         {
-          v42 = [(ICAttachment *)self identifier];
-          v34 = [ICAttachmentPreviewImage identifierForContentIdentifier:v42 scale:v28 width:v24 height:v18 appearanceType:v21];
+          identifier = [(ICAttachment *)self identifier];
+          v34 = [ICAttachmentPreviewImage identifierForContentIdentifier:identifier scale:unsignedIntValue width:v24 height:v18 appearanceType:v21];
 
-          v43 = [(ICAttachment *)self managedObjectContext];
-          v41 = [ICAttachmentPreviewImage attachmentPreviewImageWithIdentifier:v34 inContext:v43];
+          managedObjectContext = [(ICAttachment *)self managedObjectContext];
+          previewImageURL = [ICAttachmentPreviewImage attachmentPreviewImageWithIdentifier:v34 inContext:managedObjectContext];
 
-          if (v41)
+          if (previewImageURL)
           {
-            [v6 removeObject:v41];
+            [v6 removeObject:previewImageURL];
           }
 
           goto LABEL_24;
         }
 
-        v34 = [(ICAttachment *)self attachmentPreviewImageCreatingIfNecessaryWithWidth:v28 height:v26 scale:0 appearanceType:v18 scaleWhenDrawing:v21 metadata:v24];
+        v34 = [(ICAttachment *)self attachmentPreviewImageCreatingIfNecessaryWithWidth:unsignedIntValue height:bOOLValue scale:0 appearanceType:v18 scaleWhenDrawing:v21 metadata:v24];
         if (v34)
         {
           [v6 removeObject:v34];
@@ -5304,7 +5304,7 @@ LABEL_44:
 
         if (([(ICAttachment *)self isPasswordProtected]& 1) != 0)
         {
-          v35 = [v34 encryptedPreviewImageURL];
+          encryptedPreviewImageURL = [v34 encryptedPreviewImageURL];
           if ([v81 count] > v14)
           {
             v36 = [v81 objectAtIndexedSubscript:v14];
@@ -5318,16 +5318,16 @@ LABEL_44:
           }
 
           [v34 setCryptoIterationCount:{-[ICAttachment cryptoIterationCount](self, "cryptoIterationCount")}];
-          v38 = [(ICAttachment *)self cryptoSalt];
-          [v34 setCryptoSalt:v38];
+          cryptoSalt = [(ICAttachment *)self cryptoSalt];
+          [v34 setCryptoSalt:cryptoSalt];
 
-          v39 = [(ICAttachment *)self cryptoWrappedKey];
-          [v34 setCryptoWrappedKey:v39];
+          cryptoWrappedKey = [(ICAttachment *)self cryptoWrappedKey];
+          [v34 setCryptoWrappedKey:cryptoWrappedKey];
 
-          v40 = [(ICCloudSyncingObject *)self passwordHint];
-          [v34 setPasswordHint:v40];
+          passwordHint = [(ICCloudSyncingObject *)self passwordHint];
+          [v34 setPasswordHint:passwordHint];
 
-          v41 = v35;
+          previewImageURL = encryptedPreviewImageURL;
           if (!v34)
           {
             goto LABEL_24;
@@ -5336,16 +5336,16 @@ LABEL_44:
 
         else
         {
-          v41 = [v34 previewImageURL];
+          previewImageURL = [v34 previewImageURL];
           if (!v34)
           {
             goto LABEL_24;
           }
         }
 
-        if (v41)
+        if (previewImageURL)
         {
-          v82 = v41;
+          v82 = previewImageURL;
           v79 = v15;
           v97 = 0;
           v44 = [v34 makeSurePreviewImageDirectoryExists:&v97];
@@ -5361,9 +5361,9 @@ LABEL_44:
             }
           }
 
-          v47 = [MEMORY[0x277CCAA00] defaultManager];
+          defaultManager = [MEMORY[0x277CCAA00] defaultManager];
           v96 = 0;
-          v48 = [v47 removeItemAtURL:v82 error:&v96];
+          v48 = [defaultManager removeItemAtURL:v82 error:&v96];
           v49 = v96;
           v50 = v49;
           if (v48)
@@ -5373,16 +5373,16 @@ LABEL_36:
 
           else
           {
-            v51 = [v49 code];
+            code = [v49 code];
 
-            if (v51 != 4)
+            if (code != 4)
             {
-              v47 = os_log_create("com.apple.notes", "Cloud");
-              if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
+              defaultManager = os_log_create("com.apple.notes", "Cloud");
+              if (os_log_type_enabled(defaultManager, OS_LOG_TYPE_ERROR))
               {
                 *buf = v75;
                 v100 = v50;
-                _os_log_error_impl(&dword_214D51000, v47, OS_LOG_TYPE_ERROR, "Error removing old preview image URL: %@", buf, 0xCu);
+                _os_log_error_impl(&dword_214D51000, defaultManager, OS_LOG_TYPE_ERROR, "Error removing old preview image URL: %@", buf, 0xCu);
               }
 
               goto LABEL_36;
@@ -5390,24 +5390,24 @@ LABEL_36:
           }
 
           v78 = v50;
-          v52 = [MEMORY[0x277CCAA00] defaultManager];
-          v53 = [v29 fileURL];
+          defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+          fileURL2 = [v29 fileURL];
           v95 = 0;
-          v54 = [v52 moveItemAtURL:v53 toURL:v82 error:&v95];
+          v54 = [defaultManager2 moveItemAtURL:fileURL2 toURL:v82 error:&v95];
           v55 = v95;
 
           if (v54)
           {
             v6 = v77;
-            v41 = v82;
+            previewImageURL = v82;
           }
 
           else
           {
-            v56 = [MEMORY[0x277CCAA00] defaultManager];
-            v57 = [v29 fileURL];
+            defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+            fileURL3 = [v29 fileURL];
             v94 = v55;
-            v58 = [v56 linkItemAtURL:v57 toURL:v82 error:&v94];
+            v58 = [defaultManager3 linkItemAtURL:fileURL3 toURL:v82 error:&v94];
             v59 = v94;
 
             if (v58)
@@ -5427,10 +5427,10 @@ LABEL_36:
                 _os_log_impl(&dword_214D51000, v60, OS_LOG_TYPE_DEFAULT, "Failed to move or link an attachment preview asset. Falling back to copy: %@", buf, 0xCu);
               }
 
-              v61 = [MEMORY[0x277CCAA00] defaultManager];
-              v62 = [v29 fileURL];
+              defaultManager4 = [MEMORY[0x277CCAA00] defaultManager];
+              fileURL4 = [v29 fileURL];
               v93 = v59;
-              v63 = [v61 copyItemAtURL:v62 toURL:v82 error:&v93];
+              v63 = [defaultManager4 copyItemAtURL:fileURL4 toURL:v82 error:&v93];
               v55 = v93;
 
               v15 = v79;
@@ -5448,7 +5448,7 @@ LABEL_36:
               v6 = v77;
             }
 
-            v41 = v82;
+            previewImageURL = v82;
           }
 
           [v34 invalidateCache];
@@ -5490,8 +5490,8 @@ LABEL_24:
             }
 
             v71 = *(*(&v89 + 1) + 8 * i);
-            v72 = [(ICAttachment *)self managedObjectContext];
-            [v72 deleteObject:v71];
+            managedObjectContext2 = [(ICAttachment *)self managedObjectContext];
+            [managedObjectContext2 deleteObject:v71];
           }
 
           v68 = [v66 countByEnumeratingWithState:&v89 objects:v98 count:16];
@@ -5513,21 +5513,21 @@ LABEL_24:
       v74 = [(ICAttachment *)self ic_postNotificationOnMainThreadAfterSaveWithName:@"ICAttachmentPreviewImagesDidUpdateNotification"];
     }
 
-    v4 = v76;
+    recordCopy = v76;
   }
 }
 
-- (BOOL)processFallbackAsset:(id)a3 fallbackAssetType:(int64_t)a4
+- (BOOL)processFallbackAsset:(id)asset fallbackAssetType:(int64_t)type
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  assetCopy = asset;
   v7 = os_log_create("com.apple.notes", "Cloud");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(ICCloudSyncingObject *)self shortLoggingDescription];
-    v9 = NSStringFromFallbackAssetType(a4);
+    shortLoggingDescription = [(ICCloudSyncingObject *)self shortLoggingDescription];
+    v9 = NSStringFromFallbackAssetType(type);
     *buf = 138413058;
-    v39 = v8;
+    v39 = shortLoggingDescription;
     v40 = 2112;
     v42 = 2080;
     v41 = v9;
@@ -5537,17 +5537,17 @@ LABEL_24:
     _os_log_impl(&dword_214D51000, v7, OS_LOG_TYPE_DEFAULT, "Processing fallback asset… {attachment: %@, type: %@}%s:%d", buf, 0x26u);
   }
 
-  v10 = [v6 fileURL];
-  v11 = [v10 ic_isReachable];
+  fileURL = [assetCopy fileURL];
+  ic_isReachable = [fileURL ic_isReachable];
 
-  if (v11)
+  if (ic_isReachable)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
-      v18 = [(ICAttachment(Management) *)self fallbackPDFGenerationManager];
-      v13 = [v18 beginGeneration];
+      fallbackPDFGenerationManager = [(ICAttachment(Management) *)self fallbackPDFGenerationManager];
+      beginGeneration = [fallbackPDFGenerationManager beginGeneration];
 
-      v14 = [(ICAttachment(Management) *)self fallbackPDFGenerationManager];
+      fallbackPDFGenerationManager2 = [(ICAttachment(Management) *)self fallbackPDFGenerationManager];
       if (([(ICAttachment *)self isPasswordProtected]& 1) != 0)
       {
         [(ICAttachment *)self fallbackPDFEncryptedURL];
@@ -5561,17 +5561,17 @@ LABEL_24:
 
     else
     {
-      if (a4)
+      if (type)
       {
-        v14 = 0;
+        fallbackPDFGenerationManager2 = 0;
         v16 = 0;
         goto LABEL_23;
       }
 
-      v12 = [(ICAttachment(Management) *)self fallbackImageGenerationManager];
-      v13 = [v12 beginGeneration];
+      fallbackImageGenerationManager = [(ICAttachment(Management) *)self fallbackImageGenerationManager];
+      beginGeneration = [fallbackImageGenerationManager beginGeneration];
 
-      v14 = [(ICAttachment(Management) *)self fallbackImageGenerationManager];
+      fallbackPDFGenerationManager2 = [(ICAttachment(Management) *)self fallbackImageGenerationManager];
       if ([(ICAttachment *)self isPasswordProtected])
       {
         [(ICAttachment *)self fallbackImageEncryptedURL];
@@ -5584,12 +5584,12 @@ LABEL_24:
     }
     v15 = ;
     v16 = v15;
-    if (v13)
+    if (beginGeneration)
     {
-      v19 = [MEMORY[0x277CCAA00] defaultManager];
-      v20 = [v6 fileURL];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      fileURL2 = [assetCopy fileURL];
       v37 = 0;
-      v21 = [v19 moveItemAtURL:v20 toURL:v16 error:&v37];
+      v21 = [defaultManager moveItemAtURL:fileURL2 toURL:v16 error:&v37];
       v22 = v37;
 
       if (v21)
@@ -5601,7 +5601,7 @@ LABEL_30:
           [ICAttachment(CloudKit) processFallbackAsset:v32 fallbackAssetType:?];
         }
 
-        v17 = [v14 commitGeneration];
+        commitGeneration = [fallbackPDFGenerationManager2 commitGeneration];
         goto LABEL_33;
       }
 
@@ -5611,10 +5611,10 @@ LABEL_30:
         [ICAttachment(CloudKit) processFallbackAsset:fallbackAssetType:];
       }
 
-      v24 = [MEMORY[0x277CCAA00] defaultManager];
-      v25 = [v6 fileURL];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      fileURL3 = [assetCopy fileURL];
       v36 = v22;
-      v26 = [v24 linkItemAtURL:v25 toURL:v16 error:&v36];
+      v26 = [defaultManager2 linkItemAtURL:fileURL3 toURL:v16 error:&v36];
       v27 = v36;
 
       if (v26)
@@ -5629,10 +5629,10 @@ LABEL_30:
         [ICAttachment(CloudKit) processFallbackAsset:fallbackAssetType:];
       }
 
-      v29 = [MEMORY[0x277CCAA00] defaultManager];
-      v30 = [v6 fileURL];
+      defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
+      fileURL4 = [assetCopy fileURL];
       v35 = v27;
-      v31 = [v29 copyItemAtURL:v30 toURL:v16 error:&v35];
+      v31 = [defaultManager3 copyItemAtURL:fileURL4 toURL:v16 error:&v35];
       v22 = v35;
 
       if (v31)
@@ -5646,9 +5646,9 @@ LABEL_30:
         [ICAttachment(CloudKit) processFallbackAsset:fallbackAssetType:];
       }
 
-      [v14 rollbackGeneration];
+      [fallbackPDFGenerationManager2 rollbackGeneration];
 LABEL_26:
-      v17 = 0;
+      commitGeneration = 0;
 LABEL_33:
 
       goto LABEL_34;
@@ -5670,137 +5670,137 @@ LABEL_23:
     [ICAttachment(CloudKit) processFallbackAsset:? fallbackAssetType:?];
   }
 
-  v17 = 0;
-  v14 = v16;
+  commitGeneration = 0;
+  fallbackPDFGenerationManager2 = v16;
 LABEL_34:
 
-  return v17;
+  return commitGeneration;
 }
 
-- (void)mergeFallbackImageAndPDFFromRecord:(id)a3
+- (void)mergeFallbackImageAndPDFFromRecord:(id)record
 {
-  v13 = a3;
-  v4 = [v13 objectForKeyedSubscript:@"FallbackImage"];
+  recordCopy = record;
+  v4 = [recordCopy objectForKeyedSubscript:@"FallbackImage"];
   if (v4)
   {
     [(ICAttachment *)self processFallbackAsset:v4 fallbackAssetType:0];
   }
 
-  v5 = [v13 objectForKeyedSubscript:@"FallbackPDF"];
+  v5 = [recordCopy objectForKeyedSubscript:@"FallbackPDF"];
   if (v5)
   {
     [(ICAttachment *)self processFallbackAsset:v5 fallbackAssetType:1];
   }
 
-  v6 = [v13 objectForKeyedSubscript:@"FallbackImageCryptoTag"];
+  v6 = [recordCopy objectForKeyedSubscript:@"FallbackImageCryptoTag"];
   [(ICAttachment *)self setFallbackImageCryptoTag:v6];
 
-  v7 = [v13 objectForKeyedSubscript:@"FallbackImageCryptoInitializationVector"];
+  v7 = [recordCopy objectForKeyedSubscript:@"FallbackImageCryptoInitializationVector"];
   [(ICAttachment *)self setFallbackImageCryptoInitializationVector:v7];
 
-  v8 = [v13 objectForKeyedSubscript:@"FallbackPDFCryptoTag"];
+  v8 = [recordCopy objectForKeyedSubscript:@"FallbackPDFCryptoTag"];
   [(ICAttachment *)self setFallbackPDFCryptoTag:v8];
 
-  v9 = [v13 objectForKeyedSubscript:@"FallbackPDFCryptoInitializationVector"];
+  v9 = [recordCopy objectForKeyedSubscript:@"FallbackPDFCryptoInitializationVector"];
   [(ICAttachment *)self setFallbackPDFCryptoInitializationVector:v9];
 
-  v10 = [v13 objectForKeyedSubscript:@"FallbackTitle"];
+  v10 = [recordCopy objectForKeyedSubscript:@"FallbackTitle"];
   if (v10)
   {
     [(ICAttachment *)self setFallbackTitle:v10];
   }
 
-  v11 = [v13 objectForKeyedSubscript:@"FallbackSubtitleIOS"];
+  v11 = [recordCopy objectForKeyedSubscript:@"FallbackSubtitleIOS"];
   if (v11)
   {
     [(ICAttachment *)self setFallbackSubtitleIOS:v11];
   }
 
-  v12 = [v13 objectForKeyedSubscript:@"FallbackSubtitleMac"];
+  v12 = [recordCopy objectForKeyedSubscript:@"FallbackSubtitleMac"];
   if (v12)
   {
     [(ICAttachment *)self setFallbackSubtitleMac:v12];
   }
 }
 
-- (void)addPaperBundleToRecordIfAppropriate:(id)a3
+- (void)addPaperBundleToRecordIfAppropriate:(id)appropriate
 {
-  v16 = a3;
+  appropriateCopy = appropriate;
   objc_opt_class();
-  v4 = [(ICAttachment *)self attachmentModel];
+  attachmentModel = [(ICAttachment *)self attachmentModel];
   v5 = ICDynamicCast();
 
   if (v5)
   {
     v6 = [[_TtC11NotesShared21ICSystemPaperDocument alloc] initWithPaperAttachment:self];
     v7 = [(ICSystemPaperDocument *)v6 archiveBundleForSyncAndReturnError:0];
-    v8 = [(ICAttachment *)self managedObjectContext];
-    v9 = [ICAssetSignature shouldWriteAssetIfNeededToKey:@"PaperDatabase" inRecord:v16 forObject:self context:v8];
+    managedObjectContext = [(ICAttachment *)self managedObjectContext];
+    v9 = [ICAssetSignature shouldWriteAssetIfNeededToKey:@"PaperDatabase" inRecord:appropriateCopy forObject:self context:managedObjectContext];
 
     if (v9)
     {
-      v10 = [v7 databaseArchive];
-      v11 = [ICCloudSyncingObject assetForTemporaryURL:v10];
+      databaseArchive = [v7 databaseArchive];
+      v11 = [ICCloudSyncingObject assetForTemporaryURL:databaseArchive];
 
       if (v11)
       {
-        [v16 setObject:v11 forKeyedSubscript:@"PaperDatabase"];
+        [appropriateCopy setObject:v11 forKeyedSubscript:@"PaperDatabase"];
       }
     }
 
-    v12 = [(ICAttachment *)self managedObjectContext];
-    v13 = [ICAssetSignature shouldWriteAssetIfNeededToKey:@"PaperAssets" inRecord:v16 forObject:self context:v12];
+    managedObjectContext2 = [(ICAttachment *)self managedObjectContext];
+    v13 = [ICAssetSignature shouldWriteAssetIfNeededToKey:@"PaperAssets" inRecord:appropriateCopy forObject:self context:managedObjectContext2];
 
     if (v13)
     {
-      v14 = [v7 assetArchives];
-      v15 = [v14 ic_compactMap:&__block_literal_global_58];
+      assetArchives = [v7 assetArchives];
+      v15 = [assetArchives ic_compactMap:&__block_literal_global_58];
 
       if (v15)
       {
-        [v16 setObject:v15 forKeyedSubscript:@"PaperAssets"];
+        [appropriateCopy setObject:v15 forKeyedSubscript:@"PaperAssets"];
       }
     }
   }
 }
 
-- (void)mergePaperBundleFromRecord:(id)a3
+- (void)mergePaperBundleFromRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:@"PaperDatabase"];
+  v5 = [recordCopy objectForKeyedSubscript:@"PaperDatabase"];
   v6 = ICDynamicCast();
-  v7 = [v6 fileURL];
+  fileURL = [v6 fileURL];
 
   objc_opt_class();
-  v8 = [v4 objectForKeyedSubscript:@"PaperAssets"];
+  v8 = [recordCopy objectForKeyedSubscript:@"PaperAssets"];
 
   v9 = ICDynamicCast();
   v10 = [v9 ic_compactMap:&__block_literal_global_274];
 
   v11 = [[_TtC11NotesShared21ICSystemPaperDocument alloc] initWithPaperAttachment:self];
-  if (v7)
+  if (fileURL)
   {
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
-    v13 = [v7 path];
-    v14 = [v12 fileExistsAtPath:v13];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [fileURL path];
+    v14 = [defaultManager fileExistsAtPath:path];
 
     if (v14)
     {
-      v15 = [[ICSystemPaperSyncArchive alloc] initWithDatabaseArchive:v7 assetArchives:v10];
+      v15 = [[ICSystemPaperSyncArchive alloc] initWithDatabaseArchive:fileURL assetArchives:v10];
       v19 = 0;
       v16 = [(ICSystemPaperDocument *)v11 writeNewVersionFromSyncArchive:v15 error:&v19];
       v17 = v19;
       if (v16)
       {
-        v18 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v18 postNotificationName:@"ICAttachmentDidMergePaperKitBundleNotification" object:self];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter postNotificationName:@"ICAttachmentDidMergePaperKitBundleNotification" object:self];
       }
 
       else
       {
-        v18 = os_log_create("com.apple.notes", "SystemPaper");
-        if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
+        defaultCenter = os_log_create("com.apple.notes", "SystemPaper");
+        if (os_log_type_enabled(defaultCenter, OS_LOG_TYPE_ERROR))
         {
           [ICAttachment(CloudKit) mergePaperBundleFromRecord:];
         }
@@ -5820,23 +5820,23 @@ id __53__ICAttachment_CloudKit__mergePaperBundleFromRecord___block_invoke(uint64
   return v4;
 }
 
-- (BOOL)hasUnfetchedAssetForRecordKey:(id)a3
+- (BOOL)hasUnfetchedAssetForRecordKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(ICAttachment *)self managedObjectContext];
+  managedObjectContext = [(ICAttachment *)self managedObjectContext];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__ICAttachment_CloudKit__hasUnfetchedAssetForRecordKey___block_invoke;
   v8[3] = &unk_2781961E0;
-  v6 = v4;
+  v6 = keyCopy;
   v9 = v6;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
-  [v5 performBlockAndWait:v8];
+  [managedObjectContext performBlockAndWait:v8];
 
   LOBYTE(self) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
@@ -5858,8 +5858,8 @@ void __56__ICAttachment_CloudKit__hasUnfetchedAssetForRecordKey___block_invoke(v
 {
   if ([(ICAttachment *)self attachmentType]== 1)
   {
-    v3 = [(ICAttachment *)self note];
-    v4 = [v3 isPasswordProtected] ^ 1;
+    note = [(ICAttachment *)self note];
+    v4 = [note isPasswordProtected] ^ 1;
   }
 
   else
@@ -5877,9 +5877,9 @@ void __56__ICAttachment_CloudKit__hasUnfetchedAssetForRecordKey___block_invoke(v
 
 - (BOOL)hasUnfetchedLinkPresentationMetadata
 {
-  v3 = [(ICAttachment *)self linkPresentationArchivedMetadata];
+  linkPresentationArchivedMetadata = [(ICAttachment *)self linkPresentationArchivedMetadata];
 
-  if (v3)
+  if (linkPresentationArchivedMetadata)
   {
     return 0;
   }
@@ -5897,41 +5897,41 @@ void __56__ICAttachment_CloudKit__hasUnfetchedAssetForRecordKey___block_invoke(v
     return 1;
   }
 
-  v4 = [(ICAttachment *)self note];
-  if (!v4 || ([(ICAttachment *)self markedForDeletion]& 1) != 0 || ([(ICAttachment *)self needsInitialFetchFromCloud]& 1) != 0)
+  note = [(ICAttachment *)self note];
+  if (!note || ([(ICAttachment *)self markedForDeletion]& 1) != 0 || ([(ICAttachment *)self needsInitialFetchFromCloud]& 1) != 0)
   {
-    v3 = 1;
+    isUnsupported = 1;
   }
 
   else
   {
-    v6 = [(ICAttachment *)self note];
-    if (([v6 isHiddenFromSearch] & 1) != 0 || (-[ICAttachment isPasswordProtected](self, "isPasswordProtected") & 1) != 0 || -[ICAttachment isChildOfDocumentGallery](self, "isChildOfDocumentGallery") || -[ICAttachment attachmentType](self, "attachmentType") == 9 || -[ICAttachment attachmentType](self, "attachmentType") == 10 || -[ICAttachment attachmentType](self, "attachmentType") == 13)
+    note2 = [(ICAttachment *)self note];
+    if (([note2 isHiddenFromSearch] & 1) != 0 || (-[ICAttachment isPasswordProtected](self, "isPasswordProtected") & 1) != 0 || -[ICAttachment isChildOfDocumentGallery](self, "isChildOfDocumentGallery") || -[ICAttachment attachmentType](self, "attachmentType") == 9 || -[ICAttachment attachmentType](self, "attachmentType") == 10 || -[ICAttachment attachmentType](self, "attachmentType") == 13)
     {
-      v3 = 1;
+      isUnsupported = 1;
     }
 
     else if ([(ICAttachment *)self attachmentType]== 4)
     {
-      v7 = [(ICAttachment *)self parentAttachment];
-      if (v7)
+      parentAttachment = [(ICAttachment *)self parentAttachment];
+      if (parentAttachment)
       {
-        v3 = 1;
+        isUnsupported = 1;
       }
 
       else
       {
-        v3 = [(ICAttachment *)self isUnsupported];
+        isUnsupported = [(ICAttachment *)self isUnsupported];
       }
     }
 
     else
     {
-      v3 = [(ICAttachment *)self isUnsupported];
+      isUnsupported = [(ICAttachment *)self isUnsupported];
     }
   }
 
-  return v3;
+  return isUnsupported;
 }
 
 - (BOOL)isHiddenFromSearch
@@ -5953,16 +5953,16 @@ void __56__ICAttachment_CloudKit__hasUnfetchedAssetForRecordKey___block_invoke(v
 
   else
   {
-    v4 = [(ICAttachment *)self note];
-    if (!v4 || ([(ICAttachment *)self markedForDeletion]& 1) != 0 || ([(ICAttachment *)self needsInitialFetchFromCloud]& 1) != 0)
+    note = [(ICAttachment *)self note];
+    if (!note || ([(ICAttachment *)self markedForDeletion]& 1) != 0 || ([(ICAttachment *)self needsInitialFetchFromCloud]& 1) != 0)
     {
       LOBYTE(v3) = 0;
     }
 
     else
     {
-      v6 = [(ICAttachment *)self note];
-      if (([v6 isHiddenFromSearch] & 1) != 0 || !-[ICAttachment isTable](self, "isTable"))
+      note2 = [(ICAttachment *)self note];
+      if (([note2 isHiddenFromSearch] & 1) != 0 || !-[ICAttachment isTable](self, "isTable"))
       {
         LOBYTE(v3) = 0;
       }
@@ -5979,26 +5979,26 @@ void __56__ICAttachment_CloudKit__hasUnfetchedAssetForRecordKey___block_invoke(v
 
 - (NSString)searchIndexingIdentifier
 {
-  v2 = [(ICAttachment *)self objectID];
-  v3 = [v2 URIRepresentation];
-  v4 = [v3 absoluteString];
+  objectID = [(ICAttachment *)self objectID];
+  uRIRepresentation = [objectID URIRepresentation];
+  absoluteString = [uRIRepresentation absoluteString];
 
-  return v4;
+  return absoluteString;
 }
 
 - (NSString)searchDomainIdentifier
 {
-  v2 = [(ICAttachment *)self note];
-  v3 = [v2 account];
-  v4 = [v3 identifier];
+  note = [(ICAttachment *)self note];
+  account = [note account];
+  identifier = [account identifier];
 
-  return v4;
+  return identifier;
 }
 
 - (CSSearchableItemAttributeSet)userActivityContentAttributeSet
 {
-  v3 = [(ICAttachment *)self typeUTI];
-  v4 = [v3 copy];
+  typeUTI = [(ICAttachment *)self typeUTI];
+  v4 = [typeUTI copy];
 
   if (!v4 || ![(__CFString *)v4 length])
   {
@@ -6007,14 +6007,14 @@ void __56__ICAttachment_CloudKit__hasUnfetchedAssetForRecordKey___block_invoke(v
   }
 
   v5 = [objc_alloc(MEMORY[0x277CC34B8]) initWithItemContentType:v4];
-  v6 = [(ICCloudSyncingObject *)self modificationDate];
-  [v5 setContentModificationDate:v6];
+  modificationDate = [(ICCloudSyncingObject *)self modificationDate];
+  [v5 setContentModificationDate:modificationDate];
 
-  v7 = [(ICCloudSyncingObject *)self creationDate];
-  [v5 setContentCreationDate:v7];
+  creationDate = [(ICCloudSyncingObject *)self creationDate];
+  [v5 setContentCreationDate:creationDate];
 
-  v8 = [(ICCloudSyncingObject *)self creationDate];
-  [v5 setAddedDate:v8];
+  creationDate2 = [(ICCloudSyncingObject *)self creationDate];
+  [v5 setAddedDate:creationDate2];
 
   return v5;
 }
@@ -6022,165 +6022,165 @@ void __56__ICAttachment_CloudKit__hasUnfetchedAssetForRecordKey___block_invoke(v
 - (CSSearchableItemAttributeSet)searchableItemAttributeSet
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ICAttachment *)self userActivityContentAttributeSet];
-  v4 = [(ICAttachment *)self title];
-  if (![v4 length])
+  userActivityContentAttributeSet = [(ICAttachment *)self userActivityContentAttributeSet];
+  title = [(ICAttachment *)self title];
+  if (![title length])
   {
-    v5 = [(ICAttachment *)self media];
-    v6 = [v5 filename];
+    media = [(ICAttachment *)self media];
+    filename = [media filename];
 
-    v4 = v6;
+    title = filename;
   }
 
-  [v3 setDisplayName:v4];
-  v7 = [(ICAttachment *)self summary];
-  v8 = [v7 length];
+  [userActivityContentAttributeSet setDisplayName:title];
+  summary = [(ICAttachment *)self summary];
+  v8 = [summary length];
 
   if (v8)
   {
-    v9 = [(ICAttachment *)self summary];
-    [v3 setContentDescription:v9];
+    summary2 = [(ICAttachment *)self summary];
+    [userActivityContentAttributeSet setContentDescription:summary2];
   }
 
-  v10 = [(ICAttachment *)self searchableTextContentWithoutTitle];
-  v11 = v10;
-  if (v4)
+  searchableTextContentWithoutTitle = [(ICAttachment *)self searchableTextContentWithoutTitle];
+  v11 = searchableTextContentWithoutTitle;
+  if (title)
   {
-    v12 = [v4 stringByAppendingFormat:@" %@", v10];
+    v12 = [title stringByAppendingFormat:@" %@", searchableTextContentWithoutTitle];
 
     v11 = v12;
   }
 
-  [v3 setTextContent:v11];
-  [v3 setIc_searchResultType:1];
-  v13 = [(ICAttachment *)self typeUTI];
+  [userActivityContentAttributeSet setTextContent:v11];
+  [userActivityContentAttributeSet setIc_searchResultType:1];
+  typeUTI = [(ICAttachment *)self typeUTI];
 
-  if (v13)
+  if (typeUTI)
   {
     v14 = MEMORY[0x277CE1CB8];
-    v15 = [(ICAttachment *)self typeUTI];
-    v16 = [v14 typeWithIdentifier:v15];
-    v17 = [v16 supertypes];
-    v18 = [v17 ic_map:&__block_literal_global_61];
+    typeUTI2 = [(ICAttachment *)self typeUTI];
+    v16 = [v14 typeWithIdentifier:typeUTI2];
+    supertypes = [v16 supertypes];
+    v18 = [supertypes ic_map:&__block_literal_global_61];
 
-    v19 = [(ICAttachment *)self typeUTI];
-    v39[0] = v19;
+    typeUTI3 = [(ICAttachment *)self typeUTI];
+    v39[0] = typeUTI3;
     v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:1];
-    v21 = [v18 allObjects];
-    v22 = [v20 arrayByAddingObjectsFromArray:v21];
+    allObjects = [v18 allObjects];
+    v22 = [v20 arrayByAddingObjectsFromArray:allObjects];
 
     if ([(ICAttachment *)self attachmentType]== 14)
     {
-      v23 = [*MEMORY[0x277CE1E08] identifier];
-      v24 = [v22 arrayByAddingObject:v23];
+      identifier = [*MEMORY[0x277CE1E08] identifier];
+      v24 = [v22 arrayByAddingObject:identifier];
 
       v22 = v24;
     }
 
-    [v3 setAttachmentTypes:v22];
+    [userActivityContentAttributeSet setAttachmentTypes:v22];
   }
 
-  [v3 ic_populateValuesForSpecializedFields];
-  v25 = [(ICAttachment *)self attachmentModel];
-  v26 = [v25 providerFileTypes];
-  [v3 setProviderFileTypes:v26];
+  [userActivityContentAttributeSet ic_populateValuesForSpecializedFields];
+  attachmentModel = [(ICAttachment *)self attachmentModel];
+  providerFileTypes = [attachmentModel providerFileTypes];
+  [userActivityContentAttributeSet setProviderFileTypes:providerFileTypes];
 
-  v27 = [(ICAttachment *)self attachmentModel];
-  v28 = [v27 providerDataTypes];
-  [v3 setProviderDataTypes:v28];
+  attachmentModel2 = [(ICAttachment *)self attachmentModel];
+  providerDataTypes = [attachmentModel2 providerDataTypes];
+  [userActivityContentAttributeSet setProviderDataTypes:providerDataTypes];
 
-  [v3 setDataOwnerType:&unk_282747DA8];
+  [userActivityContentAttributeSet setDataOwnerType:&unk_282747DA8];
   if ([(ICCloudSyncingObject *)self isSharedViaICloud]&& ([(ICAttachment *)self attachmentType]== 7 || [(ICAttachment *)self attachmentType]== 8))
   {
-    [(ICCloudSyncingObject *)self addEmailAddressesAndPhoneNumbersToAttributeSet:v3];
+    [(ICCloudSyncingObject *)self addEmailAddressesAndPhoneNumbersToAttributeSet:userActivityContentAttributeSet];
   }
 
   v29 = [MEMORY[0x277CCABB0] numberWithBool:{-[ICCloudSyncingObject isSharedViaICloud](self, "isSharedViaICloud")}];
-  [v3 setShared:v29];
+  [userActivityContentAttributeSet setShared:v29];
 
   v30 = [MEMORY[0x277CCABB0] numberWithBool:{-[ICAttachment isDeletedOrInTrash](self, "isDeletedOrInTrash")}];
-  [v3 setTrashed:v30];
+  [userActivityContentAttributeSet setTrashed:v30];
 
-  v31 = [(ICAttachment *)self note];
-  v32 = [v31 objectID];
-  v33 = [v32 URIRepresentation];
-  v34 = [v33 absoluteString];
-  [v3 setIc_relatedModernNoteUniqueIdentifier:v34];
+  note = [(ICAttachment *)self note];
+  objectID = [note objectID];
+  uRIRepresentation = [objectID URIRepresentation];
+  absoluteString = [uRIRepresentation absoluteString];
+  [userActivityContentAttributeSet setIc_relatedModernNoteUniqueIdentifier:absoluteString];
 
   v35 = [MEMORY[0x277CCABB0] numberWithBool:{-[ICAttachment supportsPhotosProcessing](self, "supportsPhotosProcessing")}];
-  [v3 setEligibleForPhotosProcessing:v35];
+  [userActivityContentAttributeSet setEligibleForPhotosProcessing:v35];
 
-  v36 = [(ICAttachment *)self urlString];
+  urlString = [(ICAttachment *)self urlString];
 
-  if (v36)
+  if (urlString)
   {
-    v37 = [(ICAttachment *)self urlString];
-    [v3 ic_setURLString:v37];
+    urlString2 = [(ICAttachment *)self urlString];
+    [userActivityContentAttributeSet ic_setURLString:urlString2];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [(ICAttachment *)self associateAppEntityWithSearchableItemAttributeSet:v3];
+    [(ICAttachment *)self associateAppEntityWithSearchableItemAttributeSet:userActivityContentAttributeSet];
   }
 
-  return v3;
+  return userActivityContentAttributeSet;
 }
 
 - (id)searchableTextContent
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(ICAttachment *)self title];
-  if (v4)
+  array = [MEMORY[0x277CBEB18] array];
+  title = [(ICAttachment *)self title];
+  if (title)
   {
-    [v3 addObject:v4];
+    [array addObject:title];
   }
 
-  v5 = [(ICAttachment *)self searchableTextContentWithoutTitle];
-  [v3 addObject:v5];
+  searchableTextContentWithoutTitle = [(ICAttachment *)self searchableTextContentWithoutTitle];
+  [array addObject:searchableTextContentWithoutTitle];
 
-  v6 = [v3 componentsJoinedByString:@" "];
+  v6 = [array componentsJoinedByString:@" "];
 
   return v6;
 }
 
 - (id)searchableTextContentWithoutTitle
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(ICAttachment *)self urlString];
-  if (v4 && ![(ICAttachment *)self isMap])
+  array = [MEMORY[0x277CBEB18] array];
+  urlString = [(ICAttachment *)self urlString];
+  if (urlString && ![(ICAttachment *)self isMap])
   {
-    [v3 addObject:v4];
+    [array addObject:urlString];
   }
 
-  v5 = [(ICAttachment *)self summary];
-  if (v5)
+  summary = [(ICAttachment *)self summary];
+  if (summary)
   {
-    [v3 addObject:v5];
+    [array addObject:summary];
   }
 
-  v6 = [(ICAttachment *)self attachmentModel];
-  v7 = [v6 searchableTextContent];
+  attachmentModel = [(ICAttachment *)self attachmentModel];
+  searchableTextContent = [attachmentModel searchableTextContent];
 
-  if ([v7 length])
+  if ([searchableTextContent length])
   {
-    [v3 addObject:v7];
+    [array addObject:searchableTextContent];
   }
 
-  v8 = [v3 componentsJoinedByString:@" "];
+  v8 = [array componentsJoinedByString:@" "];
 
   return v8;
 }
 
-- (id)dataForTypeIdentifier:(id)a3
+- (id)dataForTypeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__52;
   v16 = __Block_byref_object_dispose__52;
   v17 = 0;
-  if ([v4 isEqualToString:@"com.apple.notes.noteitemprovider"])
+  if ([identifierCopy isEqualToString:@"com.apple.notes.noteitemprovider"])
   {
     v5 = os_log_create("com.apple.notes", "SearchIndexer");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -6191,15 +6191,15 @@ void __56__ICAttachment_CloudKit__hasUnfetchedAssetForRecordKey___block_invoke(v
 
   else
   {
-    v6 = [(ICAttachment *)self managedObjectContext];
+    managedObjectContext = [(ICAttachment *)self managedObjectContext];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __55__ICAttachment_SearchIndexable__dataForTypeIdentifier___block_invoke;
     v9[3] = &unk_278195740;
     v11 = &v12;
     v9[4] = self;
-    v10 = v4;
-    [v6 performBlockAndWait:v9];
+    v10 = identifierCopy;
+    [managedObjectContext performBlockAndWait:v9];
   }
 
   v7 = v13[5];
@@ -6217,16 +6217,16 @@ void __55__ICAttachment_SearchIndexable__dataForTypeIdentifier___block_invoke(ui
   *(v3 + 40) = v2;
 }
 
-- (id)fileURLForTypeIdentifier:(id)a3
+- (id)fileURLForTypeIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__52;
   v16 = __Block_byref_object_dispose__52;
   v17 = 0;
-  if ([v4 isEqualToString:@"com.apple.notes.noteitemprovider"])
+  if ([identifierCopy isEqualToString:@"com.apple.notes.noteitemprovider"])
   {
     v5 = os_log_create("com.apple.notes", "SearchIndexer");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -6237,15 +6237,15 @@ void __55__ICAttachment_SearchIndexable__dataForTypeIdentifier___block_invoke(ui
 
   else
   {
-    v6 = [(ICAttachment *)self managedObjectContext];
+    managedObjectContext = [(ICAttachment *)self managedObjectContext];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __58__ICAttachment_SearchIndexable__fileURLForTypeIdentifier___block_invoke;
     v9[3] = &unk_278195740;
     v11 = &v12;
     v9[4] = self;
-    v10 = v4;
-    [v6 performBlockAndWait:v9];
+    v10 = identifierCopy;
+    [managedObjectContext performBlockAndWait:v9];
   }
 
   v7 = v13[5];
@@ -6297,28 +6297,28 @@ uint64_t __42__ICAttachment_attachmentSectionSortOrder__block_invoke()
   v11.receiver = self;
   v11.super_class = ICAttachment;
   [(ICAttachment *)&v11 prepareForDeletion];
-  v3 = [(ICAttachment *)self identifier];
-  if (v3)
+  identifier = [(ICAttachment *)self identifier];
+  if (identifier)
   {
-    v4 = [(ICAttachment *)self note];
-    v5 = [v4 account];
-    if (!v5)
+    note = [(ICAttachment *)self note];
+    account = [note account];
+    if (!account)
     {
 LABEL_5:
 
       goto LABEL_6;
     }
 
-    v6 = v5;
-    v7 = [(ICAttachment *)self suppressesFileDeletion];
+    v6 = account;
+    suppressesFileDeletion = [(ICAttachment *)self suppressesFileDeletion];
 
-    if (!v7)
+    if (!suppressesFileDeletion)
     {
       v8 = objc_opt_class();
-      v4 = [MEMORY[0x277CBEB98] setWithObject:v3];
-      v9 = [(ICAttachment *)self note];
-      v10 = [v9 account];
-      [v8 purgeAttachmentFilesForIdentifiers:v4 account:v10];
+      note = [MEMORY[0x277CBEB98] setWithObject:identifier];
+      note2 = [(ICAttachment *)self note];
+      account2 = [note2 account];
+      [v8 purgeAttachmentFilesForIdentifiers:note account:account2];
 
       goto LABEL_5;
     }
@@ -6327,95 +6327,95 @@ LABEL_5:
 LABEL_6:
 }
 
-- (void)willRefresh:(BOOL)a3
+- (void)willRefresh:(BOOL)refresh
 {
-  v3 = a3;
+  refreshCopy = refresh;
   [(ICAttachmentModel *)self->_attachmentModel attachmentWillRefresh:?];
   v5.receiver = self;
   v5.super_class = ICAttachment;
-  [(ICAttachment *)&v5 willRefresh:v3];
+  [(ICAttachment *)&v5 willRefresh:refreshCopy];
 }
 
-- (void)didRefresh:(BOOL)a3
+- (void)didRefresh:(BOOL)refresh
 {
-  v3 = a3;
+  refreshCopy = refresh;
   v5.receiver = self;
   v5.super_class = ICAttachment;
   [(ICAttachment *)&v5 didRefresh:?];
-  [(ICAttachmentModel *)self->_attachmentModel attachmentDidRefresh:v3];
+  [(ICAttachmentModel *)self->_attachmentModel attachmentDidRefresh:refreshCopy];
 }
 
-- (int64_t)intrinsicNotesVersionForScenario:(unint64_t)a3
+- (int64_t)intrinsicNotesVersionForScenario:(unint64_t)scenario
 {
   if (![(ICAttachment *)self isUnsupported]&& ![(ICCloudSyncingObject *)self needsInitialFetchFromCloudCheckingParent])
   {
-    v5 = [(ICAttachment *)self typeUTI];
+    typeUTI = [(ICAttachment *)self typeUTI];
 
-    if (v5)
+    if (typeUTI)
     {
-      v6 = [(ICAttachment *)self typeUTI];
-      if (([v6 isEqualToString:@"com.apple.paper.doc"] & 1) == 0)
+      typeUTI2 = [(ICAttachment *)self typeUTI];
+      if (([typeUTI2 isEqualToString:@"com.apple.paper.doc"] & 1) == 0)
       {
-        v7 = [(ICAttachment *)self typeUTI];
-        if (![v7 isEqualToString:@"com.apple.paper.doc.pdf"])
+        typeUTI3 = [(ICAttachment *)self typeUTI];
+        if (![typeUTI3 isEqualToString:@"com.apple.paper.doc.pdf"])
         {
-          v14 = [(ICAttachment *)self typeUTI];
-          v15 = [v14 isEqualToString:@"com.apple.paper.doc.scan"];
+          typeUTI4 = [(ICAttachment *)self typeUTI];
+          v15 = [typeUTI4 isEqualToString:@"com.apple.paper.doc.scan"];
 
           if ((v15 & 1) == 0)
           {
-            v16 = [(ICAttachment *)self typeUTI];
-            v17 = [v16 isEqualToString:@"com.apple.paper"];
+            typeUTI5 = [(ICAttachment *)self typeUTI];
+            v17 = [typeUTI5 isEqualToString:@"com.apple.paper"];
 
             if (v17)
             {
-              v18 = [(ICAttachment *)self paperBundleModel];
-              v19 = [v18 paperHasNewInks2025];
+              paperBundleModel = [(ICAttachment *)self paperBundleModel];
+              paperHasNewInks2025 = [paperBundleModel paperHasNewInks2025];
 
-              if (v19)
+              if (paperHasNewInks2025)
               {
                 goto LABEL_9;
               }
 
-              v20 = [(ICAttachment *)self paperBundleModel];
-              v21 = [v20 paperHasMath];
+              paperBundleModel2 = [(ICAttachment *)self paperBundleModel];
+              paperHasMath = [paperBundleModel2 paperHasMath];
 
-              if ((v21 & 1) == 0)
+              if ((paperHasMath & 1) == 0)
               {
-                v22 = [(ICAttachment *)self systemPaperModel];
-                v23 = [v22 paperHasNewInksSpring2024];
+                systemPaperModel = [(ICAttachment *)self systemPaperModel];
+                paperHasNewInksSpring2024 = [systemPaperModel paperHasNewInksSpring2024];
 
-                if (v23)
+                if (paperHasNewInksSpring2024)
                 {
                   v10 = 14;
                 }
 
                 else
                 {
-                  v34 = [(ICAttachment *)self systemPaperModel];
-                  v35 = [v34 paperHasNewInks2023];
+                  systemPaperModel2 = [(ICAttachment *)self systemPaperModel];
+                  paperHasNewInks2023 = [systemPaperModel2 paperHasNewInks2023];
 
-                  if (v35)
+                  if (paperHasNewInks2023)
                   {
                     v10 = 13;
                   }
 
                   else
                   {
-                    v38 = [(ICAttachment *)self account];
-                    v39 = [v38 isDataSeparated];
+                    account = [(ICAttachment *)self account];
+                    isDataSeparated = [account isDataSeparated];
 
-                    if (v39 & 1) != 0 || (-[ICAttachment systemPaperModel](self, "systemPaperModel"), v40 = objc_claimAutoreleasedReturnValue(), v41 = [v40 paperHasNewInks2022], v40, (v41))
+                    if (isDataSeparated & 1) != 0 || (-[ICAttachment systemPaperModel](self, "systemPaperModel"), v40 = objc_claimAutoreleasedReturnValue(), v41 = [v40 paperHasNewInks2022], v40, (v41))
                     {
                       v10 = 10;
                     }
 
                     else
                     {
-                      v44 = [(ICAttachment *)self systemPaperModel];
-                      v45 = [v44 paperHasEnhancedCanvas];
+                      systemPaperModel3 = [(ICAttachment *)self systemPaperModel];
+                      paperHasEnhancedCanvas = [systemPaperModel3 paperHasEnhancedCanvas];
 
-                      if (v45)
+                      if (paperHasEnhancedCanvas)
                       {
                         v10 = 9;
                       }
@@ -6434,8 +6434,8 @@ LABEL_6:
 
             else
             {
-              v26 = [(ICAttachment *)self parentAttachment];
-              if (!v26 || (v27 = v26, [(ICAttachment *)self typeUTI], v28 = objc_claimAutoreleasedReturnValue(), v29 = [ICAttachment typeUTIIsPlayableAudio:v28], v28, v27, !v29))
+              parentAttachment = [(ICAttachment *)self parentAttachment];
+              if (!parentAttachment || (v27 = parentAttachment, [(ICAttachment *)self typeUTI], v28 = objc_claimAutoreleasedReturnValue(), v29 = [ICAttachment typeUTIIsPlayableAudio:v28], v28, v27, !v29))
               {
                 if ([(ICAttachment *)self hasVisibleInlineAttachments])
                 {
@@ -6444,8 +6444,8 @@ LABEL_6:
 
                 else
                 {
-                  v30 = [(ICAttachment *)self typeUTI];
-                  v31 = [v30 isEqualToString:@"com.apple.drawing.2"];
+                  typeUTI6 = [(ICAttachment *)self typeUTI];
+                  v31 = [typeUTI6 isEqualToString:@"com.apple.drawing.2"];
 
                   if (v31)
                   {
@@ -6454,8 +6454,8 @@ LABEL_6:
 
                   else
                   {
-                    v32 = [(ICAttachment *)self typeUTI];
-                    v33 = [v32 isEqualToString:@"com.apple.drawing"];
+                    typeUTI7 = [(ICAttachment *)self typeUTI];
+                    v33 = [typeUTI7 isEqualToString:@"com.apple.drawing"];
 
                     if (v33)
                     {
@@ -6464,8 +6464,8 @@ LABEL_6:
 
                     else
                     {
-                      v36 = [(ICAttachment *)self typeUTI];
-                      v37 = [v36 isEqualToString:@"com.apple.notes.table"];
+                      typeUTI8 = [(ICAttachment *)self typeUTI];
+                      v37 = [typeUTI8 isEqualToString:@"com.apple.notes.table"];
 
                       if (v37)
                       {
@@ -6474,8 +6474,8 @@ LABEL_6:
 
                       else
                       {
-                        v42 = [(ICAttachment *)self typeUTI];
-                        v43 = [v42 isEqualToString:@"com.apple.notes.gallery"];
+                        typeUTI9 = [(ICAttachment *)self typeUTI];
+                        v43 = [typeUTI9 isEqualToString:@"com.apple.notes.gallery"];
 
                         if (v43)
                         {
@@ -6499,25 +6499,25 @@ LABEL_6:
           }
 
 LABEL_8:
-          v8 = [(ICAttachment *)self paperBundleModel];
-          v9 = [v8 paperHasNewInks2025];
+          paperBundleModel3 = [(ICAttachment *)self paperBundleModel];
+          paperHasNewInks20252 = [paperBundleModel3 paperHasNewInks2025];
 
-          if (v9)
+          if (paperHasNewInks20252)
           {
 LABEL_9:
             v10 = 17;
             goto LABEL_24;
           }
 
-          v12 = [(ICAttachment *)self paperBundleModel];
-          v13 = [v12 paperHasMath];
+          paperBundleModel4 = [(ICAttachment *)self paperBundleModel];
+          paperHasMath2 = [paperBundleModel4 paperHasMath];
 
-          if ((v13 & 1) == 0)
+          if ((paperHasMath2 & 1) == 0)
           {
-            v24 = [(ICAttachment *)self paperBundleModel];
-            v25 = [v24 paperHasNewInksSpring2024];
+            paperBundleModel5 = [(ICAttachment *)self paperBundleModel];
+            paperHasNewInksSpring20242 = [paperBundleModel5 paperHasNewInksSpring2024];
 
-            if (v25)
+            if (paperHasNewInksSpring20242)
             {
               v10 = 14;
             }
@@ -6535,7 +6535,7 @@ LABEL_14:
 LABEL_24:
           v46.receiver = self;
           v46.super_class = ICAttachment;
-          result = [(ICCloudSyncingObject *)&v46 intrinsicNotesVersionForScenario:a3];
+          result = [(ICCloudSyncingObject *)&v46 intrinsicNotesVersionForScenario:scenario];
           if (v10 > result)
           {
             return v10;
@@ -6552,17 +6552,17 @@ LABEL_24:
   return [(ICAttachment *)self minimumSupportedNotesVersion];
 }
 
-- (void)willUpdateDeviceReplicaIDsToNotesVersion:(int64_t)a3
+- (void)willUpdateDeviceReplicaIDsToNotesVersion:(int64_t)version
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3 == 6)
+  if (version == 6)
   {
     v11 = 0u;
     v12 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v4 = [(ICCloudSyncingObject *)self deviceReplicaIDs];
-    v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+    deviceReplicaIDs = [(ICCloudSyncingObject *)self deviceReplicaIDs];
+    v5 = [deviceReplicaIDs countByEnumeratingWithState:&v9 objects:v13 count:16];
     if (v5)
     {
       v6 = v5;
@@ -6574,14 +6574,14 @@ LABEL_24:
         {
           if (*v10 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(deviceReplicaIDs);
           }
 
           [(ICAttachmentModel *)self->_attachmentModel removeTimestampsForReplicaID:*(*(&v9 + 1) + 8 * v8++)];
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v6 = [deviceReplicaIDs countByEnumeratingWithState:&v9 objects:v13 count:16];
       }
 
       while (v6);
@@ -6589,19 +6589,19 @@ LABEL_24:
   }
 }
 
-+ (id)attachmentIdentifiersForAccount:(id)a3
++ (id)attachmentIdentifiersForAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = [MEMORY[0x277CBEB98] set];
-  v5 = [v3 managedObjectContext];
+  managedObjectContext = [accountCopy managedObjectContext];
   v6 = [MEMORY[0x277CBE428] fetchRequestWithEntityName:@"ICAttachment"];
-  v7 = [MEMORY[0x277CCAC30] predicateWithFormat:@"note.account == %@", v3];
-  [v6 setPredicate:v7];
+  accountCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"note.account == %@", accountCopy];
+  [v6 setPredicate:accountCopy];
 
   [v6 setResultType:2];
   [v6 setPropertiesToFetch:&unk_2827480F0];
   v13 = 0;
-  v8 = [v5 executeFetchRequest:v6 error:&v13];
+  v8 = [managedObjectContext executeFetchRequest:v6 error:&v13];
   v9 = v13;
   if (v9)
   {
@@ -6631,23 +6631,23 @@ LABEL_8:
   return v4;
 }
 
-+ (void)purgeAttachmentFilesForIdentifiers:(id)a3 account:(id)a4
++ (void)purgeAttachmentFilesForIdentifiers:(id)identifiers account:(id)account
 {
   v51 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  identifiersCopy = identifiers;
+  accountCopy = account;
   v30 = objc_alloc_init(MEMORY[0x277CCA9E8]);
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v5;
+  obj = identifiersCopy;
   v34 = [obj countByEnumeratingWithState:&v43 objects:v50 count:16];
   if (v34)
   {
     v31 = *v44;
-    v32 = v6;
+    v32 = accountCopy;
     do
     {
       v8 = 0;
@@ -6661,7 +6661,7 @@ LABEL_8:
         v37 = v8;
         v9 = *(*(&v43 + 1) + 8 * v8);
         context = objc_autoreleasePoolPush();
-        v10 = [ICAttachmentPaperBundleModel paperBundleURLForAttachmentIdentifier:v9 inAccount:v6];
+        v10 = [ICAttachmentPaperBundleModel paperBundleURLForAttachmentIdentifier:v9 inAccount:accountCopy];
         if (v10)
         {
           v11 = [ICFileUtilities coordinateDeleteItemAt:v10 coordinator:v30];
@@ -6678,30 +6678,30 @@ LABEL_8:
         }
 
         v35 = v10;
-        v13 = [MEMORY[0x277CBEB18] array];
-        v14 = [a1 fallbackImageFallbackURLForIdentifier:v9 account:v6];
-        [v13 ic_addNonNilObject:v14];
+        array = [MEMORY[0x277CBEB18] array];
+        v14 = [self fallbackImageFallbackURLForIdentifier:v9 account:accountCopy];
+        [array ic_addNonNilObject:v14];
 
-        v15 = [a1 fallbackImageEncryptedFallbackURLForIdentifier:v9 account:v6];
-        [v13 ic_addNonNilObject:v15];
+        v15 = [self fallbackImageEncryptedFallbackURLForIdentifier:v9 account:accountCopy];
+        [array ic_addNonNilObject:v15];
 
-        v16 = [a1 fallbackImageContainerURLForIdentifier:v9 account:v6];
-        [v13 ic_addNonNilObject:v16];
+        v16 = [self fallbackImageContainerURLForIdentifier:v9 account:accountCopy];
+        [array ic_addNonNilObject:v16];
 
-        v17 = [a1 fallbackPDFFallbackURLForIdentifier:v9 account:v6];
-        [v13 ic_addNonNilObject:v17];
+        v17 = [self fallbackPDFFallbackURLForIdentifier:v9 account:accountCopy];
+        [array ic_addNonNilObject:v17];
 
-        v18 = [a1 fallbackPDFEncryptedFallbackURLForIdentifier:v9 account:v6];
-        [v13 ic_addNonNilObject:v18];
+        v18 = [self fallbackPDFEncryptedFallbackURLForIdentifier:v9 account:accountCopy];
+        [array ic_addNonNilObject:v18];
 
-        v19 = [a1 fallbackPDFContainerURLForIdentifier:v9 account:v6];
-        [v13 ic_addNonNilObject:v19];
+        v19 = [self fallbackPDFContainerURLForIdentifier:v9 account:accountCopy];
+        [array ic_addNonNilObject:v19];
 
         v41 = 0u;
         v42 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v20 = [v13 copy];
+        v20 = [array copy];
         v21 = [v20 countByEnumeratingWithState:&v39 objects:v47 count:16];
         if (v21)
         {
@@ -6719,7 +6719,7 @@ LABEL_8:
 
               v25 = *(*(&v39 + 1) + 8 * v24);
               v38 = 0;
-              [v7 removeItemAtURL:v25 error:&v38];
+              [defaultManager removeItemAtURL:v25 error:&v38];
               v26 = v38;
               v27 = v26;
               if (v26 && [v26 code] != 4)
@@ -6745,7 +6745,7 @@ LABEL_8:
 
         objc_autoreleasePoolPop(context);
         v8 = v37 + 1;
-        v6 = v32;
+        accountCopy = v32;
       }
 
       while (v37 + 1 != v34);
@@ -6764,8 +6764,8 @@ LABEL_8:
     goto LABEL_2;
   }
 
-  v5 = [(ICAttachment *)self urlString];
-  if (!v5)
+  urlString = [(ICAttachment *)self urlString];
+  if (!urlString)
   {
     URL = self->_URL;
 LABEL_2:
@@ -6773,8 +6773,8 @@ LABEL_2:
     goto LABEL_5;
   }
 
-  v6 = v5;
-  v3 = [MEMORY[0x277CBEBC0] URLWithString:v5];
+  v6 = urlString;
+  v3 = [MEMORY[0x277CBEBC0] URLWithString:urlString];
 
 LABEL_5:
 
@@ -6783,37 +6783,37 @@ LABEL_5:
 
 - (BOOL)hasDeepLink
 {
-  v3 = [(ICAttachment *)self synapseData];
-  if (v3)
+  synapseData = [(ICAttachment *)self synapseData];
+  if (synapseData)
   {
-    v4 = 1;
+    hasDeepLink = 1;
   }
 
   else
   {
-    v5 = [(ICAttachment *)self attachmentModel];
-    v4 = [v5 hasDeepLink];
+    attachmentModel = [(ICAttachment *)self attachmentModel];
+    hasDeepLink = [attachmentModel hasDeepLink];
   }
 
-  return v4;
+  return hasDeepLink;
 }
 
 - (BOOL)isReadOnly
 {
-  v3 = [(ICAttachment *)self note];
-  v4 = ([v3 isSharedReadOnly] & 1) != 0 || -[ICCloudSyncingObject isSharedReadOnly](self, "isSharedReadOnly");
+  note = [(ICAttachment *)self note];
+  v4 = ([note isSharedReadOnly] & 1) != 0 || -[ICCloudSyncingObject isSharedReadOnly](self, "isSharedReadOnly");
 
   return v4;
 }
 
 - (BOOL)isFolder
 {
-  v3 = [(ICAttachment *)self typeUTI];
-  if (v3)
+  typeUTI = [(ICAttachment *)self typeUTI];
+  if (typeUTI)
   {
     v4 = MEMORY[0x277CE1CB8];
-    v5 = [(ICAttachment *)self typeUTI];
-    v6 = [v4 typeWithIdentifier:v5];
+    typeUTI2 = [(ICAttachment *)self typeUTI];
+    v6 = [v4 typeWithIdentifier:typeUTI2];
     v7 = [v6 conformsToType:*MEMORY[0x277CE1D80]];
   }
 
@@ -6827,12 +6827,12 @@ LABEL_5:
 
 - (BOOL)isURL
 {
-  v3 = [(ICAttachment *)self typeUTI];
-  if (v3)
+  typeUTI = [(ICAttachment *)self typeUTI];
+  if (typeUTI)
   {
     v4 = MEMORY[0x277CE1CB8];
-    v5 = [(ICAttachment *)self typeUTI];
-    v6 = [v4 typeWithIdentifier:v5];
+    typeUTI2 = [(ICAttachment *)self typeUTI];
+    v6 = [v4 typeWithIdentifier:typeUTI2];
     v7 = [v6 conformsToType:*MEMORY[0x277CE1E90]];
   }
 
@@ -6846,93 +6846,93 @@ LABEL_5:
 
 - (BOOL)isMap
 {
-  v3 = [(ICAttachment *)self isURL];
-  if (v3)
+  isURL = [(ICAttachment *)self isURL];
+  if (isURL)
   {
     v4 = [(ICAttachment *)self URL];
-    v5 = [v4 ic_isMapURL];
+    ic_isMapURL = [v4 ic_isMapURL];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isURL) = ic_isMapURL;
   }
 
-  return v3;
+  return isURL;
 }
 
 - (BOOL)isiTunes
 {
-  v3 = [(ICAttachment *)self isURL];
-  if (v3)
+  isURL = [(ICAttachment *)self isURL];
+  if (isURL)
   {
     v4 = [(ICAttachment *)self URL];
-    v5 = [v4 ic_isiTunesURL];
+    ic_isiTunesURL = [v4 ic_isiTunesURL];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isURL) = ic_isiTunesURL;
   }
 
-  return v3;
+  return isURL;
 }
 
 - (BOOL)isAppStore
 {
-  v3 = [(ICAttachment *)self isURL];
-  if (v3)
+  isURL = [(ICAttachment *)self isURL];
+  if (isURL)
   {
     v4 = [(ICAttachment *)self URL];
-    v5 = [v4 ic_isAppStoreURL];
+    ic_isAppStoreURL = [v4 ic_isAppStoreURL];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isURL) = ic_isAppStoreURL;
   }
 
-  return v3;
+  return isURL;
 }
 
 - (BOOL)isPodcasts
 {
-  v3 = [(ICAttachment *)self isURL];
-  if (v3)
+  isURL = [(ICAttachment *)self isURL];
+  if (isURL)
   {
     v4 = [(ICAttachment *)self URL];
-    v5 = [v4 ic_isPodcastsURL];
+    ic_isPodcastsURL = [v4 ic_isPodcastsURL];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isURL) = ic_isPodcastsURL;
   }
 
-  return v3;
+  return isURL;
 }
 
 - (BOOL)isNews
 {
-  v3 = [(ICAttachment *)self isURL];
-  if (v3)
+  isURL = [(ICAttachment *)self isURL];
+  if (isURL)
   {
     v4 = [(ICAttachment *)self URL];
-    v5 = [v4 ic_isNewsURL];
+    ic_isNewsURL = [v4 ic_isNewsURL];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(isURL) = ic_isNewsURL;
   }
 
-  return v3;
+  return isURL;
 }
 
 - (BOOL)isChildOfDocumentGallery
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(ICAttachment *)self managedObjectContext];
+  managedObjectContext = [(ICAttachment *)self managedObjectContext];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __40__ICAttachment_isChildOfDocumentGallery__block_invoke;
   v5[3] = &unk_278194DE8;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  [v3 performBlockAndWait:v5];
+  [managedObjectContext performBlockAndWait:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __40__ICAttachment_isChildOfDocumentGallery__block_invoke(uint64_t a1)
@@ -6948,16 +6948,16 @@ void __40__ICAttachment_isChildOfDocumentGallery__block_invoke(uint64_t a1)
     return 0;
   }
 
-  v4 = [(ICAttachment *)self attachmentType];
+  attachmentType = [(ICAttachment *)self attachmentType];
   result = 0;
-  if (v4 <= 0xF)
+  if (attachmentType <= 0xF)
   {
-    if (((1 << v4) & 0xCA74) != 0)
+    if (((1 << attachmentType) & 0xCA74) != 0)
     {
       return 1;
     }
 
-    else if (v4 == 3)
+    else if (attachmentType == 3)
     {
       return ![(ICAttachment *)self isChildOfDocumentGallery];
     }
@@ -6968,54 +6968,54 @@ void __40__ICAttachment_isChildOfDocumentGallery__block_invoke(uint64_t a1)
 
 - (BOOL)previewsSupportMultipleAppearances
 {
-  v2 = [(ICAttachment *)self attachmentModel];
-  v3 = [v2 previewsSupportMultipleAppearances];
+  attachmentModel = [(ICAttachment *)self attachmentModel];
+  previewsSupportMultipleAppearances = [attachmentModel previewsSupportMultipleAppearances];
 
-  return v3;
+  return previewsSupportMultipleAppearances;
 }
 
 - (BOOL)preferLocalPreviewImages
 {
-  v2 = [(ICAttachment *)self attachmentModel];
-  v3 = [v2 preferLocalPreviewImages];
+  attachmentModel = [(ICAttachment *)self attachmentModel];
+  preferLocalPreviewImages = [attachmentModel preferLocalPreviewImages];
 
-  return v3;
+  return preferLocalPreviewImages;
 }
 
 - (id)defaultTitle
 {
-  v2 = [(ICAttachment *)self attachmentType];
+  attachmentType = [(ICAttachment *)self attachmentType];
   v3 = objc_opt_class();
 
-  return [v3 defaultTitleForAttachmentType:v2];
+  return [v3 defaultTitleForAttachmentType:attachmentType];
 }
 
-- (void)setNote:(id)a3
+- (void)setNote:(id)note
 {
-  v4 = a3;
-  v5 = [(ICAttachment *)self note];
-  v6 = [v5 isEqual:v4];
+  noteCopy = note;
+  note = [(ICAttachment *)self note];
+  v6 = [note isEqual:noteCopy];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(ICAttachment *)self note];
-    if (v7)
+    note2 = [(ICAttachment *)self note];
+    if (note2)
     {
-      v8 = v7;
-      v9 = [(ICAttachment *)self note];
-      v10 = [v9 account];
-      v11 = [v4 account];
+      v8 = note2;
+      note3 = [(ICAttachment *)self note];
+      account = [note3 account];
+      account2 = [noteCopy account];
 
-      if (v10 != v11)
+      if (account != account2)
       {
-        v12 = [v4 account];
-        [(ICAttachment *)self accountWillChangeToAccount:v12];
+        account3 = [noteCopy account];
+        [(ICAttachment *)self accountWillChangeToAccount:account3];
       }
     }
 
     [(ICAttachment *)self willChangeValueForKey:@"note"];
     [(ICAttachment *)self willChangeValueForKey:@"parentCloudObject"];
-    [(ICAttachment *)self setPrimitiveValue:v4 forKey:@"note"];
+    [(ICAttachment *)self setPrimitiveValue:noteCopy forKey:@"note"];
     [(ICAttachment *)self didChangeValueForKey:@"note"];
     [(ICAttachment *)self didChangeValueForKey:@"parentCloudObject"];
     v13 = os_log_create("com.apple.notes", "CoreData");
@@ -7038,10 +7038,10 @@ void __40__ICAttachment_isChildOfDocumentGallery__block_invoke(uint64_t a1)
   return v4 != 0;
 }
 
-- (void)setImageFilterType:(signed __int16)a3
+- (void)setImageFilterType:(signed __int16)type
 {
-  v3 = a3;
-  if ([(ICAttachment *)self imageFilterType]!= a3)
+  typeCopy = type;
+  if ([(ICAttachment *)self imageFilterType]!= type)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -7050,7 +7050,7 @@ void __40__ICAttachment_isChildOfDocumentGallery__block_invoke(uint64_t a1)
 
     [(ICAttachment *)self invalidateAttachmentPreviewImages];
     [(ICAttachment *)self willChangeValueForKey:@"imageFilterType"];
-    v5 = [MEMORY[0x277CCABB0] numberWithShort:v3];
+    v5 = [MEMORY[0x277CCABB0] numberWithShort:typeCopy];
     [(ICAttachment *)self setPrimitiveValue:v5 forKey:@"imageFilterType"];
 
     [(ICAttachment *)self didChangeValueForKey:@"imageFilterType"];
@@ -7067,10 +7067,10 @@ void __40__ICAttachment_isChildOfDocumentGallery__block_invoke(uint64_t a1)
   return v4 != 0;
 }
 
-- (void)setOrientation:(signed __int16)a3
+- (void)setOrientation:(signed __int16)orientation
 {
-  v3 = a3;
-  if ([(ICAttachment *)self orientation]!= a3)
+  orientationCopy = orientation;
+  if ([(ICAttachment *)self orientation]!= orientation)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -7079,7 +7079,7 @@ void __40__ICAttachment_isChildOfDocumentGallery__block_invoke(uint64_t a1)
 
     [(ICAttachment *)self invalidateAttachmentPreviewImages];
     [(ICAttachment *)self willChangeValueForKey:@"orientation"];
-    v5 = [MEMORY[0x277CCABB0] numberWithShort:v3];
+    v5 = [MEMORY[0x277CCABB0] numberWithShort:orientationCopy];
     [(ICAttachment *)self setPrimitiveValue:v5 forKey:@"orientation"];
 
     [(ICAttachment *)self didChangeValueForKey:@"orientation"];
@@ -7106,12 +7106,12 @@ void __40__ICAttachment_isChildOfDocumentGallery__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  [(ICAttachment *)self setOriginX:a3.origin.x];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  [(ICAttachment *)self setOriginX:bounds.origin.x];
   [(ICAttachment *)self setOriginY:y];
   [(ICAttachment *)self setSizeWidth:width];
 
@@ -7120,9 +7120,9 @@ void __40__ICAttachment_isChildOfDocumentGallery__block_invoke(uint64_t a1)
 
 - (id)fileSizeString
 {
-  v3 = [(ICAttachment *)self media];
-  v4 = [v3 mediaURL];
-  if (v4)
+  media = [(ICAttachment *)self media];
+  mediaURL = [media mediaURL];
+  if (mediaURL)
   {
     v5 = [MEMORY[0x277CCA8E8] stringFromByteCount:-[ICAttachment fileSize](self countStyle:{"fileSize"), 0}];
   }
@@ -7135,32 +7135,32 @@ void __40__ICAttachment_isChildOfDocumentGallery__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)setParentAttachment:(id)a3
+- (void)setParentAttachment:(id)attachment
 {
   v6.receiver = self;
   v6.super_class = ICAttachment;
-  [(ICBaseAttachment *)&v6 setParentAttachment:a3];
-  v4 = [(ICAttachment *)self typeUTI];
+  [(ICBaseAttachment *)&v6 setParentAttachment:attachment];
+  typeUTI = [(ICAttachment *)self typeUTI];
 
-  if (v4)
+  if (typeUTI)
   {
-    v5 = [(ICAttachment *)self typeUTI];
-    [(ICAttachment *)self updateAttachmentSectionWithTypeUTI:v5];
+    typeUTI2 = [(ICAttachment *)self typeUTI];
+    [(ICAttachment *)self updateAttachmentSectionWithTypeUTI:typeUTI2];
   }
 }
 
-- (void)updateAttachmentSectionWithTypeUTI:(id)a3
+- (void)updateAttachmentSectionWithTypeUTI:(id)i
 {
-  v12 = a3;
-  v4 = [(ICAttachment *)self parentAttachment];
-  v5 = [v4 typeUTI];
+  iCopy = i;
+  parentAttachment = [(ICAttachment *)self parentAttachment];
+  typeUTI = [parentAttachment typeUTI];
 
-  if (!v5 || ([v4 attachmentModel], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "sectionForSubAttachments"), v6, !v7))
+  if (!typeUTI || ([parentAttachment attachmentModel], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "sectionForSubAttachments"), v6, !v7))
   {
-    v8 = [v4 attachmentModel];
-    v9 = [v8 hidesSubAttachmentsInAttachmentBrowser];
+    attachmentModel = [parentAttachment attachmentModel];
+    hidesSubAttachmentsInAttachmentBrowser = [attachmentModel hidesSubAttachmentsInAttachmentBrowser];
 
-    if (v9)
+    if (hidesSubAttachmentsInAttachmentBrowser)
     {
       v7 = 0;
     }
@@ -7169,7 +7169,7 @@ void __40__ICAttachment_isChildOfDocumentGallery__block_invoke(uint64_t a1)
     {
       v10 = objc_opt_class();
       v11 = [(ICAttachment *)self URL];
-      v7 = [v10 sectionFromTypeUTI:v12 url:v11];
+      v7 = [v10 sectionFromTypeUTI:iCopy url:v11];
     }
   }
 
@@ -7179,19 +7179,19 @@ void __40__ICAttachment_isChildOfDocumentGallery__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setTypeUTI:(id)a3 resetToIntrinsicNotesVersion:(BOOL)a4
+- (void)setTypeUTI:(id)i resetToIntrinsicNotesVersion:(BOOL)version
 {
-  v4 = a4;
+  versionCopy = version;
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ICAttachment *)self typeUTI];
-  v8 = [v7 isEqualToString:v6];
+  iCopy = i;
+  typeUTI = [(ICAttachment *)self typeUTI];
+  v8 = [typeUTI isEqualToString:iCopy];
 
   if ((v8 & 1) == 0)
   {
     [(ICAttachment *)self willChangeValueForKey:@"typeUTI"];
-    [(ICAttachment *)self setPrimitiveValue:v6 forKey:@"typeUTI"];
-    [(ICAttachment *)self updateAttachmentSectionWithTypeUTI:v6];
+    [(ICAttachment *)self setPrimitiveValue:iCopy forKey:@"typeUTI"];
+    [(ICAttachment *)self updateAttachmentSectionWithTypeUTI:iCopy];
     [(ICAttachment *)self didChangeValueForKey:@"typeUTI"];
     if (self->_attachmentModel)
     {
@@ -7209,8 +7209,8 @@ void __40__ICAttachment_isChildOfDocumentGallery__block_invoke(uint64_t a1)
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v11 = [(ICAttachment *)self subAttachments];
-    v12 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    subAttachments = [(ICAttachment *)self subAttachments];
+    v12 = [subAttachments countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v12)
     {
       v13 = v12;
@@ -7221,51 +7221,51 @@ void __40__ICAttachment_isChildOfDocumentGallery__block_invoke(uint64_t a1)
         {
           if (*v19 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(subAttachments);
           }
 
           v16 = *(*(&v18 + 1) + 8 * i);
-          v17 = [v16 typeUTI];
-          [v16 updateAttachmentSectionWithTypeUTI:v17];
+          typeUTI2 = [v16 typeUTI];
+          [v16 updateAttachmentSectionWithTypeUTI:typeUTI2];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v18 objects:v22 count:16];
+        v13 = [subAttachments countByEnumeratingWithState:&v18 objects:v22 count:16];
       }
 
       while (v13);
     }
 
-    if (v4)
+    if (versionCopy)
     {
       [(ICCloudSyncingObject *)self resetToIntrinsicNotesVersionAndPropagateToChildObjects];
     }
   }
 }
 
-+ (signed)sectionFromTypeUTI:(id)a3 url:(id)a4
++ (signed)sectionFromTypeUTI:(id)i url:(id)url
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  iCopy = i;
+  urlCopy = url;
+  if (iCopy)
   {
-    if ([ICAttachment typeUTIIsImage:v5]|| [ICAttachment typeUTIIsPlayableMovie:v5])
+    if ([ICAttachment typeUTIIsImage:iCopy]|| [ICAttachment typeUTIIsPlayableMovie:iCopy])
     {
       v7 = 1;
     }
 
-    else if ([ICAttachment typeUTIIsPlayableAudio:v5])
+    else if ([ICAttachment typeUTIIsPlayableAudio:iCopy])
     {
       v7 = 5;
     }
 
     else
     {
-      v9 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v5];
+      v9 = [MEMORY[0x277CE1CB8] typeWithIdentifier:iCopy];
       v10 = [v9 conformsToType:*MEMORY[0x277CE1E90]];
 
       if (v10)
       {
-        if ([v6 ic_isMapURL])
+        if ([urlCopy ic_isMapURL])
         {
           v7 = 3;
         }
@@ -7276,14 +7276,14 @@ void __40__ICAttachment_isChildOfDocumentGallery__block_invoke(uint64_t a1)
         }
       }
 
-      else if ([ICAttachment typeUTIIsDrawing:v5]|| [ICAttachment typeUTIIsInlineDrawing:v5]|| [ICAttachment typeUTIIsSystemPaper:v5])
+      else if ([ICAttachment typeUTIIsDrawing:iCopy]|| [ICAttachment typeUTIIsInlineDrawing:iCopy]|| [ICAttachment typeUTIIsSystemPaper:iCopy])
       {
         v7 = 2;
       }
 
       else
       {
-        v11 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v5];
+        v11 = [MEMORY[0x277CE1CB8] typeWithIdentifier:iCopy];
         v12 = [MEMORY[0x277CE1CB8] exportedTypeWithIdentifier:@"com.apple.paper.doc.scan"];
         v13 = [v11 conformsToType:v12];
 
@@ -7308,15 +7308,15 @@ void __40__ICAttachment_isChildOfDocumentGallery__block_invoke(uint64_t a1)
   return v7;
 }
 
-- (void)setUrlString:(id)a3
+- (void)setUrlString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   [(ICAttachment *)self willChangeValueForKey:@"urlString"];
   [(ICAttachment *)self willChangeValueForKey:@"URL"];
   URL = self->_URL;
   self->_URL = 0;
 
-  [(ICCloudSyncingObject *)self setPrimitiveValue:v4 forEncryptableKey:@"urlString"];
+  [(ICCloudSyncingObject *)self setPrimitiveValue:stringCopy forEncryptableKey:@"urlString"];
   if ([(ICAttachment *)self isURL])
   {
     if ([(ICAttachment *)self isMap])
@@ -7354,104 +7354,104 @@ void __40__ICAttachment_isChildOfDocumentGallery__block_invoke(uint64_t a1)
   return [(ICCloudSyncingObject *)self primitiveValueForEncryptableKey:@"mergeableData"];
 }
 
-- (void)updateMarkedForDeletionStateAttachmentIsInUse:(BOOL)a3
+- (void)updateMarkedForDeletionStateAttachmentIsInUse:(BOOL)use
 {
-  v3 = a3;
-  v5 = [(ICAttachment *)self typeUTI];
+  useCopy = use;
+  typeUTI = [(ICAttachment *)self typeUTI];
 
-  if (v5)
+  if (typeUTI)
   {
-    v6 = [(ICAttachment *)self attachmentModel];
-    [v6 updateAttachmentMarkedForDeletionStateAttachmentIsInUse:v3];
+    attachmentModel = [(ICAttachment *)self attachmentModel];
+    [attachmentModel updateAttachmentMarkedForDeletionStateAttachmentIsInUse:useCopy];
   }
 }
 
 - (BOOL)needsToBeRequested
 {
-  v3 = [(ICAttachment *)self attachmentType];
-  LOBYTE(v4) = 1;
-  if (v3 > 0xD)
+  attachmentType = [(ICAttachment *)self attachmentType];
+  LOBYTE(typeUTI) = 1;
+  if (attachmentType > 0xD)
   {
     goto LABEL_14;
   }
 
-  if (((1 << v3) & 0x78) != 0)
+  if (((1 << attachmentType) & 0x78) != 0)
   {
-    v6 = [(ICAttachment *)self media];
-    if (!v6)
+    media = [(ICAttachment *)self media];
+    if (!media)
     {
 LABEL_9:
 
-      return v4;
+      return typeUTI;
     }
 
 LABEL_8:
-    v7 = [(ICAttachment *)self media];
-    LODWORD(v4) = [v7 isValid] ^ 1;
+    media2 = [(ICAttachment *)self media];
+    LODWORD(typeUTI) = [media2 isValid] ^ 1;
 
     goto LABEL_9;
   }
 
-  if (((1 << v3) & 0x2A00) == 0)
+  if (((1 << attachmentType) & 0x2A00) == 0)
   {
-    if (((1 << v3) & 0x180) != 0)
+    if (((1 << attachmentType) & 0x180) != 0)
     {
       if (![(ICAttachment *)self hasSynapseLink])
       {
-        v17 = [(ICAttachment *)self urlString];
-        LOBYTE(v4) = v17 == 0;
+        urlString = [(ICAttachment *)self urlString];
+        LOBYTE(typeUTI) = urlString == 0;
 
-        return v4;
+        return typeUTI;
       }
 
       goto LABEL_13;
     }
 
 LABEL_14:
-    if (!v3)
+    if (!attachmentType)
     {
-      return v4;
+      return typeUTI;
     }
 
-    v4 = [(ICAttachment *)self typeUTI];
+    typeUTI = [(ICAttachment *)self typeUTI];
 
-    if (!v4)
+    if (!typeUTI)
     {
-      return v4;
+      return typeUTI;
     }
 
     v8 = MEMORY[0x277CE1CB8];
-    v9 = [(ICAttachment *)self typeUTI];
-    v10 = [v8 typeWithIdentifier:v9];
+    typeUTI2 = [(ICAttachment *)self typeUTI];
+    v10 = [v8 typeWithIdentifier:typeUTI2];
     if (([v10 conformsToType:*MEMORY[0x277CE1D48]] & 1) == 0)
     {
       v11 = MEMORY[0x277CE1CB8];
-      v12 = [(ICAttachment *)self typeUTI];
-      v13 = [v11 typeWithIdentifier:v12];
+      typeUTI3 = [(ICAttachment *)self typeUTI];
+      v13 = [v11 typeWithIdentifier:typeUTI3];
       if (([v13 conformsToType:*MEMORY[0x277CE1D40]] & 1) == 0)
       {
         v14 = MEMORY[0x277CE1CB8];
-        v15 = [(ICAttachment *)self typeUTI];
-        v16 = [v14 typeWithIdentifier:v15];
+        typeUTI4 = [(ICAttachment *)self typeUTI];
+        v16 = [v14 typeWithIdentifier:typeUTI4];
         if (([v16 conformsToType:*MEMORY[0x277CE1D68]] & 1) == 0)
         {
           v18 = MEMORY[0x277CE1CB8];
-          v19 = [(ICAttachment *)self typeUTI];
-          v20 = [v18 typeWithIdentifier:v19];
+          typeUTI5 = [(ICAttachment *)self typeUTI];
+          v20 = [v18 typeWithIdentifier:typeUTI5];
           v21 = [v20 conformsToType:*MEMORY[0x277CE1D50]];
 
           if ((v21 & 1) == 0)
           {
 LABEL_13:
-            LOBYTE(v4) = 0;
-            return v4;
+            LOBYTE(typeUTI) = 0;
+            return typeUTI;
           }
 
 LABEL_22:
-          v6 = [(ICAttachment *)self media];
-          if (!v6)
+          media = [(ICAttachment *)self media];
+          if (!media)
           {
-            LOBYTE(v4) = 1;
+            LOBYTE(typeUTI) = 1;
             goto LABEL_9;
           }
 
@@ -7468,14 +7468,14 @@ LABEL_22:
 
 - (BOOL)isInNoteTitleOrSnippet
 {
-  v3 = [(ICAttachment *)self note];
-  if (v3)
+  note = [(ICAttachment *)self note];
+  if (note)
   {
-    v4 = [(ICBaseAttachment *)self rangeInNote];
+    rangeInNote = [(ICBaseAttachment *)self rangeInNote];
     v6 = v5;
-    v7 = [v3 rangeForTitle:0];
+    v7 = [note rangeForTitle:0];
     v9 = v8;
-    v13.location = v4;
+    v13.location = rangeInNote;
     v13.length = v6;
     v15.location = v7;
     v15.length = v9;
@@ -7486,9 +7486,9 @@ LABEL_22:
 
     else
     {
-      v16.location = [v3 rangeForSnippetWithTitleRange:{v7, v9}];
+      v16.location = [note rangeForSnippetWithTitleRange:{v7, v9}];
       v16.length = v11;
-      v14.location = v4;
+      v14.location = rangeInNote;
       v14.length = v6;
       v10 = NSIntersectionRange(v14, v16).length != 0;
     }
@@ -7525,34 +7525,34 @@ LABEL_22:
   [(ICCloudSyncingObject *)&v3 willSave];
 }
 
-- (void)accountWillChangeToAccount:(id)a3
+- (void)accountWillChangeToAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x3032000000;
   v15[3] = __Block_byref_object_copy__56;
   v15[4] = __Block_byref_object_dispose__56;
   v16 = 0;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [(ICAttachment *)self media];
-  [v6 accountWillChangeToAccount:v4];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  media = [(ICAttachment *)self media];
+  [media accountWillChangeToAccount:accountCopy];
 
-  v7 = [(ICAttachment *)self previewImages];
-  v8 = [v7 copy];
-  [v8 makeObjectsPerformSelector:sel_accountWillChangeToAccount_ withObject:v4];
+  previewImages = [(ICAttachment *)self previewImages];
+  v8 = [previewImages copy];
+  [v8 makeObjectsPerformSelector:sel_accountWillChangeToAccount_ withObject:accountCopy];
 
-  v9 = [(ICAttachment *)self identifier];
+  identifier = [(ICAttachment *)self identifier];
 
-  if (v4 && v9)
+  if (accountCopy && identifier)
   {
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __43__ICAttachment_accountWillChangeToAccount___block_invoke;
     v11[3] = &unk_278199D78;
     v11[4] = self;
-    v12 = v4;
-    v13 = v5;
+    v12 = accountCopy;
+    v13 = defaultManager;
     v14 = v15;
     v10 = _Block_copy(v11);
     v10[2](v10, 0);
@@ -7643,85 +7643,85 @@ void __43__ICAttachment_accountWillChangeToAccount___block_invoke(uint64_t a1, u
 LABEL_18:
 }
 
-+ (id)filenameExtensionForUTI:(id)a3
++ (id)filenameExtensionForUTI:(id)i
 {
-  if (a3)
+  if (i)
   {
     v3 = [MEMORY[0x277CE1CB8] typeWithIdentifier:?];
-    v4 = [v3 preferredFilenameExtension];
+    preferredFilenameExtension = [v3 preferredFilenameExtension];
   }
 
   else
   {
-    v4 = 0;
+    preferredFilenameExtension = 0;
   }
 
-  return v4;
+  return preferredFilenameExtension;
 }
 
-+ (id)filenameFromUTI:(id)a3
++ (id)filenameFromUTI:(id)i
 {
-  v4 = a3;
-  if ([ICAttachment typeUTIIsImage:v4])
+  iCopy = i;
+  if ([ICAttachment typeUTIIsImage:iCopy])
   {
-    v5 = a1;
+    selfCopy6 = self;
     v6 = 3;
 LABEL_14:
-    v9 = [v5 defaultTitleForAttachmentType:v6];
+    localizedDescription = [selfCopy6 defaultTitleForAttachmentType:v6];
     goto LABEL_15;
   }
 
-  if ([ICAttachment typeUTIIsPlayableAudio:v4])
+  if ([ICAttachment typeUTIIsPlayableAudio:iCopy])
   {
-    v5 = a1;
+    selfCopy6 = self;
     v6 = 4;
     goto LABEL_14;
   }
 
-  if ([ICAttachment typeUTIIsPlayableMovie:v4])
+  if ([ICAttachment typeUTIIsPlayableMovie:iCopy])
   {
-    v5 = a1;
+    selfCopy6 = self;
     v6 = 5;
     goto LABEL_14;
   }
 
-  if (v4)
+  if (iCopy)
   {
-    v7 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v4];
+    v7 = [MEMORY[0x277CE1CB8] typeWithIdentifier:iCopy];
     v8 = [v7 conformsToType:*MEMORY[0x277CE1E08]];
 
     if (v8)
     {
-      v5 = a1;
+      selfCopy6 = self;
       v6 = 6;
       goto LABEL_14;
     }
 
-    if ([ICAttachment typeUTIIsDrawing:v4])
+    if ([ICAttachment typeUTIIsDrawing:iCopy])
     {
 LABEL_13:
-      v5 = a1;
+      selfCopy6 = self;
       v6 = 9;
       goto LABEL_14;
     }
 
-    v15 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v4];
+    v15 = [MEMORY[0x277CE1CB8] typeWithIdentifier:iCopy];
     v16 = [v15 conformsToType:*MEMORY[0x277CE1E90]];
 
     if (v16)
     {
-      v5 = a1;
+      selfCopy6 = self;
       v6 = 8;
       goto LABEL_14;
     }
 
-    v17 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v4];
-    v9 = [v17 localizedDescription];
+    v17 = [MEMORY[0x277CE1CB8] typeWithIdentifier:iCopy];
+    localizedDescription = [v17 localizedDescription];
   }
 
   else
   {
-    v9 = 0;
+    localizedDescription = 0;
     if ([ICAttachment typeUTIIsDrawing:0])
     {
       goto LABEL_13;
@@ -7729,22 +7729,22 @@ LABEL_13:
   }
 
 LABEL_15:
-  if (![v9 length])
+  if (![localizedDescription length])
   {
-    v10 = [a1 defaultTitleForAttachmentType:2];
+    v10 = [self defaultTitleForAttachmentType:2];
 
-    v9 = v10;
+    localizedDescription = v10;
   }
 
-  v11 = [a1 filenameExtensionForUTI:v4];
+  v11 = [self filenameExtensionForUTI:iCopy];
   if (v11)
   {
-    v12 = [v9 stringByAppendingPathExtension:v11];
+    v12 = [localizedDescription stringByAppendingPathExtension:v11];
   }
 
   else
   {
-    v12 = v9;
+    v12 = localizedDescription;
   }
 
   v13 = v12;
@@ -7752,40 +7752,40 @@ LABEL_15:
   return v13;
 }
 
-+ (id)mimeTypeFromUTI:(id)a3
++ (id)mimeTypeFromUTI:(id)i
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.coreaudio-format"])
+  iCopy = i;
+  if ([iCopy isEqualToString:@"com.apple.coreaudio-format"])
   {
-    v4 = @"audio/x-caf";
+    preferredMIMEType = @"audio/x-caf";
   }
 
-  else if (v3)
+  else if (iCopy)
   {
-    v5 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v3];
-    v4 = [v5 preferredMIMEType];
+    v5 = [MEMORY[0x277CE1CB8] typeWithIdentifier:iCopy];
+    preferredMIMEType = [v5 preferredMIMEType];
   }
 
   else
   {
-    v4 = 0;
+    preferredMIMEType = 0;
   }
 
-  return v4;
+  return preferredMIMEType;
 }
 
-+ (BOOL)typeUTIIsPlayableMovie:(id)a3
++ (BOOL)typeUTIIsPlayableMovie:(id)movie
 {
-  v3 = a3;
-  if (v3)
+  movieCopy = movie;
+  if (movieCopy)
   {
-    v4 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v3];
+    v4 = [MEMORY[0x277CE1CB8] typeWithIdentifier:movieCopy];
     if ([v4 conformsToType:*MEMORY[0x277CE1E00]])
     {
-      v5 = [MEMORY[0x277CE6650] audiovisualTypes];
-      if ([v5 containsObject:v3])
+      audiovisualTypes = [MEMORY[0x277CE6650] audiovisualTypes];
+      if ([audiovisualTypes containsObject:movieCopy])
       {
-        v6 = [v3 isEqualToString:@"public.avi"] ^ 1;
+        v6 = [movieCopy isEqualToString:@"public.avi"] ^ 1;
       }
 
       else
@@ -7808,16 +7808,16 @@ LABEL_15:
   return v6;
 }
 
-+ (BOOL)typeUTIIsPlayableAudio:(id)a3
++ (BOOL)typeUTIIsPlayableAudio:(id)audio
 {
-  v3 = a3;
-  if (v3)
+  audioCopy = audio;
+  if (audioCopy)
   {
-    v4 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v3];
+    v4 = [MEMORY[0x277CE1CB8] typeWithIdentifier:audioCopy];
     if ([v4 conformsToType:*MEMORY[0x277CE1D00]])
     {
-      v5 = [MEMORY[0x277CE6650] audiovisualTypes];
-      v6 = [v5 containsObject:v3];
+      audiovisualTypes = [MEMORY[0x277CE6650] audiovisualTypes];
+      v6 = [audiovisualTypes containsObject:audioCopy];
     }
 
     else
@@ -7834,12 +7834,12 @@ LABEL_15:
   return v6;
 }
 
-+ (BOOL)typeUTIIsDrawing:(id)a3
++ (BOOL)typeUTIIsDrawing:(id)drawing
 {
-  v3 = a3;
-  if (v3)
+  drawingCopy = drawing;
+  if (drawingCopy)
   {
-    v4 = [ICUTType typeWithIdentifier:v3];
+    v4 = [ICUTType typeWithIdentifier:drawingCopy];
     v5 = [MEMORY[0x277CE1CB8] exportedTypeWithIdentifier:@"com.apple.notes.sketch"];
     if ([v4 conformsToType:v5])
     {
@@ -7848,7 +7848,7 @@ LABEL_15:
 
     else
     {
-      v6 = [v3 isEqualToString:ICAttachmentUTTypeDrawingLegacy];
+      v6 = [drawingCopy isEqualToString:ICAttachmentUTTypeDrawingLegacy];
     }
   }
 
@@ -7860,12 +7860,12 @@ LABEL_15:
   return v6;
 }
 
-+ (BOOL)typeUTIIsInlineDrawing:(id)a3
++ (BOOL)typeUTIIsInlineDrawing:(id)drawing
 {
-  v3 = a3;
-  if (v3)
+  drawingCopy = drawing;
+  if (drawingCopy)
   {
-    v4 = [ICUTType typeWithIdentifier:v3];
+    v4 = [ICUTType typeWithIdentifier:drawingCopy];
     v5 = [MEMORY[0x277CE1CB8] exportedTypeWithIdentifier:@"com.apple.drawing.2"];
     if ([v4 conformsToType:v5])
     {
@@ -7874,7 +7874,7 @@ LABEL_15:
 
     else
     {
-      v7 = [ICUTType typeWithIdentifier:v3];
+      v7 = [ICUTType typeWithIdentifier:drawingCopy];
       v8 = [MEMORY[0x277CE1CB8] exportedTypeWithIdentifier:@"com.apple.drawing"];
       v6 = [v7 conformsToType:v8];
     }
@@ -7888,15 +7888,15 @@ LABEL_15:
   return v6;
 }
 
-+ (BOOL)typeUTIIsImage:(id)a3
++ (BOOL)typeUTIIsImage:(id)image
 {
-  v3 = a3;
-  if (v3)
+  imageCopy = image;
+  if (imageCopy)
   {
-    v4 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v3];
-    if ([v4 conformsToType:*MEMORY[0x277CE1DB0]] && (objc_msgSend(v3, "isEqualToString:", @"com.apple.drawing.2") & 1) == 0)
+    v4 = [MEMORY[0x277CE1CB8] typeWithIdentifier:imageCopy];
+    if ([v4 conformsToType:*MEMORY[0x277CE1DB0]] && (objc_msgSend(imageCopy, "isEqualToString:", @"com.apple.drawing.2") & 1) == 0)
     {
-      v5 = [v3 isEqualToString:@"com.apple.drawing"] ^ 1;
+      v5 = [imageCopy isEqualToString:@"com.apple.drawing"] ^ 1;
     }
 
     else
@@ -7913,9 +7913,9 @@ LABEL_15:
   return v5;
 }
 
-+ (id)defaultTitleForAttachmentType:(signed __int16)a3
++ (id)defaultTitleForAttachmentType:(signed __int16)type
 {
-  switch(a3)
+  switch(type)
   {
     case 0:
     case 1:
@@ -7965,18 +7965,18 @@ LABEL_12:
   return v5;
 }
 
-+ (id)mentionNotificationSnippetForAttachmentType:(signed __int16)a3
++ (id)mentionNotificationSnippetForAttachmentType:(signed __int16)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = __ICLocalizedFrameworkString_impl(@"Mentioned you in an attachment", @"Mentioned you in an attachment", 0, 1);
-  if ((v3 - 9) < 2 || v3 == 13)
+  if ((typeCopy - 9) < 2 || typeCopy == 13)
   {
     v5 = @"Mentioned you in a drawing";
   }
 
   else
   {
-    if (v3 != 12)
+    if (typeCopy != 12)
     {
       goto LABEL_7;
     }
@@ -7999,43 +7999,43 @@ LABEL_7:
     return 1;
   }
 
-  v4 = [(ICAttachment *)self media];
-  if (v4)
+  media = [(ICAttachment *)self media];
+  if (media)
   {
-    v5 = [(ICAttachment *)self media];
-    v3 = [v5 needsInitialFetchFromCloud];
+    media2 = [(ICAttachment *)self media];
+    needsInitialFetchFromCloud = [media2 needsInitialFetchFromCloud];
   }
 
   else
   {
-    v3 = 0;
+    needsInitialFetchFromCloud = 0;
   }
 
-  return v3;
+  return needsInitialFetchFromCloud;
 }
 
 - (BOOL)hasVisibleInlineAttachments
 {
-  v2 = [(ICAttachment *)self inlineAttachments];
+  inlineAttachments = [(ICAttachment *)self inlineAttachments];
   v3 = +[(ICBaseAttachment *)ICInlineAttachment];
-  v4 = [v2 ic_containsObjectMatchingPredicate:v3];
+  v4 = [inlineAttachments ic_containsObjectMatchingPredicate:v3];
 
   return v4;
 }
 
 - (NSSet)visibleInlineAttachments
 {
-  v2 = [(ICAttachment *)self inlineAttachments];
+  inlineAttachments = [(ICAttachment *)self inlineAttachments];
   v3 = +[(ICBaseAttachment *)ICInlineAttachment];
-  v4 = [v2 filteredSetUsingPredicate:v3];
+  v4 = [inlineAttachments filteredSetUsingPredicate:v3];
 
   return v4;
 }
 
 - (id)unsupportedAttachmentTitle
 {
-  v3 = [(ICAttachment *)self fallbackTitle];
-  if (!v3)
+  fallbackTitle = [(ICAttachment *)self fallbackTitle];
+  if (!fallbackTitle)
   {
     if ([(ICAttachment *)self showsLoadingPlaceholder])
     {
@@ -8047,16 +8047,16 @@ LABEL_7:
       v4 = @"Unsupported Attachment";
     }
 
-    v3 = __ICLocalizedFrameworkString_impl(v4, v4, 0, 1);
+    fallbackTitle = __ICLocalizedFrameworkString_impl(v4, v4, 0, 1);
   }
 
-  return v3;
+  return fallbackTitle;
 }
 
 - (id)unsupportedAttachmentSubtitle
 {
-  v3 = [(ICAttachment *)self fallbackSubtitleIOS];
-  if (!v3)
+  fallbackSubtitleIOS = [(ICAttachment *)self fallbackSubtitleIOS];
+  if (!fallbackSubtitleIOS)
   {
     if (![(ICAttachment *)self showsLoadingPlaceholder])
     {
@@ -8068,16 +8068,16 @@ LABEL_7:
     {
       v4 = @"PDF Document";
 LABEL_6:
-      v3 = __ICLocalizedFrameworkString_impl(v4, v4, 0, 1);
+      fallbackSubtitleIOS = __ICLocalizedFrameworkString_impl(v4, v4, 0, 1);
       goto LABEL_8;
     }
 
-    v3 = &stru_2827172C0;
+    fallbackSubtitleIOS = &stru_2827172C0;
   }
 
 LABEL_8:
 
-  return v3;
+  return fallbackSubtitleIOS;
 }
 
 - (BOOL)shouldShowInContentInfoText
@@ -8087,35 +8087,35 @@ LABEL_8:
     return 0;
   }
 
-  v4 = [(ICAttachment *)self parentAttachment];
-  if (v4 || [(ICAttachment *)self isBeingEditedLocallyOnDevice])
+  parentAttachment = [(ICAttachment *)self parentAttachment];
+  if (parentAttachment || [(ICAttachment *)self isBeingEditedLocallyOnDevice])
   {
-    v3 = 0;
+    shouldShowInContentInfoText = 0;
   }
 
   else
   {
-    v6 = [(ICAttachment *)self attachmentModel];
-    v3 = [v6 shouldShowInContentInfoText];
+    attachmentModel = [(ICAttachment *)self attachmentModel];
+    shouldShowInContentInfoText = [attachmentModel shouldShowInContentInfoText];
   }
 
-  return v3;
+  return shouldShowInContentInfoText;
 }
 
 - (NSURL)fileURL
 {
-  v3 = [(ICAttachment *)self media];
-  v4 = [v3 isPasswordProtected];
-  v5 = [(ICAttachment *)self media];
-  v6 = v5;
-  if (v4)
+  media = [(ICAttachment *)self media];
+  isPasswordProtected = [media isPasswordProtected];
+  media2 = [(ICAttachment *)self media];
+  v6 = media2;
+  if (isPasswordProtected)
   {
-    [v5 encryptedMediaURL];
+    [media2 encryptedMediaURL];
   }
 
   else
   {
-    [v5 mediaURL];
+    [media2 mediaURL];
   }
   v7 = ;
 
@@ -8129,30 +8129,30 @@ LABEL_8:
     return 1;
   }
 
-  v4 = [(ICAttachment *)self note];
-  v5 = [v4 isDeletedOrInTrash];
+  note = [(ICAttachment *)self note];
+  isDeletedOrInTrash = [note isDeletedOrInTrash];
 
-  return v5;
+  return isDeletedOrInTrash;
 }
 
-- (void)setRemoteFileURL:(id)a3
+- (void)setRemoteFileURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   if (([(NSURL *)self->_remoteFileURL isEqual:?]& 1) == 0)
   {
     if ([(ICAttachment *)self isPasswordProtected])
     {
-      v4 = [v5 absoluteString];
-      [(ICCloudSyncingObject *)self setValue:v4 forEncryptableKey:@"remoteFileURL"];
+      absoluteString = [lCopy absoluteString];
+      [(ICCloudSyncingObject *)self setValue:absoluteString forEncryptableKey:@"remoteFileURL"];
 LABEL_6:
 
       goto LABEL_7;
     }
 
-    if (v5)
+    if (lCopy)
     {
-      v4 = [v5 absoluteString];
-      [(ICAttachment *)self setRemoteFileURLString:v4];
+      absoluteString = [lCopy absoluteString];
+      [(ICAttachment *)self setRemoteFileURLString:absoluteString];
       goto LABEL_6;
     }
 
@@ -8168,13 +8168,13 @@ LABEL_7:
   {
     if ([(ICAttachment *)self isPasswordProtected])
     {
-      v3 = [(ICCloudSyncingObject *)self valueForEncryptableKey:@"remoteFileURL"];
+      remoteFileURLString = [(ICCloudSyncingObject *)self valueForEncryptableKey:@"remoteFileURL"];
     }
 
     else
     {
-      v3 = [(ICAttachment *)self remoteFileURLString];
-      if (!v3)
+      remoteFileURLString = [(ICAttachment *)self remoteFileURLString];
+      if (!remoteFileURLString)
       {
 LABEL_6:
 
@@ -8182,7 +8182,7 @@ LABEL_6:
       }
     }
 
-    v4 = [MEMORY[0x277CBEBC0] URLWithString:v3];
+    v4 = [MEMORY[0x277CBEBC0] URLWithString:remoteFileURLString];
     remoteFileURL = self->_remoteFileURL;
     self->_remoteFileURL = v4;
 
@@ -8254,30 +8254,30 @@ LABEL_7:
   return v5;
 }
 
-- (void)setMetadata:(id)a3
+- (void)setMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = [(ICAttachment *)self metadata];
+  metadataCopy = metadata;
+  metadata = [(ICAttachment *)self metadata];
   v6 = *MEMORY[0x277CBEEE8];
-  if (*MEMORY[0x277CBEEE8] == v4)
+  if (*MEMORY[0x277CBEEE8] == metadataCopy)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = v4;
+    v7 = metadataCopy;
   }
 
   v8 = v7;
-  if (v6 == v5)
+  if (v6 == metadata)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = v5;
+    v9 = metadata;
   }
 
   v10 = v9;
@@ -8359,22 +8359,22 @@ LABEL_27:
   {
   }
 
-  v13 = v4;
+  v13 = metadataCopy;
 LABEL_29:
 }
 
-- (void)updateAttachmentMetadataWithBlock:(id)a3
+- (void)updateAttachmentMetadataWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(ICAttachment *)self managedObjectContext];
+  blockCopy = block;
+  managedObjectContext = [(ICAttachment *)self managedObjectContext];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__ICAttachment_updateAttachmentMetadataWithBlock___block_invoke;
   v7[3] = &unk_2781957B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 performBlockAndWait:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [managedObjectContext performBlockAndWait:v7];
 }
 
 void __50__ICAttachment_updateAttachmentMetadataWithBlock___block_invoke(uint64_t a1)
@@ -8456,30 +8456,30 @@ void __50__ICAttachment_updateAttachmentMetadataWithBlock___block_invoke(uint64_
   return v11;
 }
 
-- (void)setMetadataData:(id)a3
+- (void)setMetadataData:(id)data
 {
-  v4 = a3;
-  v5 = [(ICAttachment *)self metadataData];
+  dataCopy = data;
+  metadataData = [(ICAttachment *)self metadataData];
   v6 = *MEMORY[0x277CBEEE8];
-  if (*MEMORY[0x277CBEEE8] == v4)
+  if (*MEMORY[0x277CBEEE8] == dataCopy)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = v4;
+    v7 = dataCopy;
   }
 
   v8 = v7;
-  if (v6 == v5)
+  if (v6 == metadataData)
   {
     v9 = 0;
   }
 
   else
   {
-    v9 = v5;
+    v9 = metadataData;
   }
 
   v10 = v9;
@@ -8510,15 +8510,15 @@ void __50__ICAttachment_updateAttachmentMetadataWithBlock___block_invoke(uint64_
   if ((v13 & 1) == 0)
   {
 LABEL_15:
-    if (v4)
+    if (dataCopy)
     {
       objc_opt_class();
       v19 = 0;
-      v14 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v4 options:0 error:&v19];
+      v14 = [MEMORY[0x277CCAAA0] JSONObjectWithData:dataCopy options:0 error:&v19];
       v15 = v19;
-      v5 = ICCheckedDynamicCast();
+      metadataData = ICCheckedDynamicCast();
 
-      if (!v5 || v15)
+      if (!metadataData || v15)
       {
         v16 = os_log_create("com.apple.notes", "CoreData");
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -8532,23 +8532,23 @@ LABEL_15:
 
     else
     {
-      v5 = 0;
+      metadataData = 0;
     }
 
     if ([(ICAttachment *)self isPasswordProtected])
     {
       v15 = NSStringFromSelector(sel_metadata);
-      [(ICCloudSyncingObject *)self setValue:v5 forEncryptableKey:v15];
+      [(ICCloudSyncingObject *)self setValue:metadataData forEncryptableKey:v15];
     }
 
     else
     {
-      objc_storeStrong(&self->_metadata, v5);
+      objc_storeStrong(&self->_metadata, metadataData);
       v17 = NSStringFromSelector(sel_metadataData);
       [(ICAttachment *)self willChangeValueForKey:v17];
 
       v18 = NSStringFromSelector(sel_metadataData);
-      [(ICAttachment *)self setPrimitiveValue:v4 forKey:v18];
+      [(ICAttachment *)self setPrimitiveValue:dataCopy forKey:v18];
 
       v15 = NSStringFromSelector(sel_metadataData);
       [(ICAttachment *)self didChangeValueForKey:v15];
@@ -8562,9 +8562,9 @@ LABEL_26:
 
 - (BOOL)hasMetadata
 {
-  v3 = [(ICAttachment *)self isPasswordProtected];
+  isPasswordProtected = [(ICAttachment *)self isPasswordProtected];
   v4 = &selRef_metadata;
-  if (!v3)
+  if (!isPasswordProtected)
   {
     v4 = &selRef_metadataData;
   }
@@ -8577,30 +8577,30 @@ LABEL_26:
 
 - (void)updateCombinedSummary
 {
-  v3 = [(ICAttachment *)self handwritingSummary];
-  if (v3 || ([(ICAttachment *)self imageClassificationSummary], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  handwritingSummary = [(ICAttachment *)self handwritingSummary];
+  if (handwritingSummary || ([(ICAttachment *)self imageClassificationSummary], (handwritingSummary = objc_claimAutoreleasedReturnValue()) != 0))
   {
 
 LABEL_4:
-    v9 = [MEMORY[0x277CBEB18] array];
-    v4 = [(ICAttachment *)self handwritingSummary];
-    [v9 ic_addNonNilObject:v4];
+    array = [MEMORY[0x277CBEB18] array];
+    handwritingSummary2 = [(ICAttachment *)self handwritingSummary];
+    [array ic_addNonNilObject:handwritingSummary2];
 
-    v5 = [(ICAttachment *)self imageClassificationSummary];
-    [v9 ic_addNonNilObject:v5];
+    imageClassificationSummary = [(ICAttachment *)self imageClassificationSummary];
+    [array ic_addNonNilObject:imageClassificationSummary];
 
-    v6 = [(ICAttachment *)self ocrSummary];
-    [v9 ic_addNonNilObject:v6];
+    ocrSummary = [(ICAttachment *)self ocrSummary];
+    [array ic_addNonNilObject:ocrSummary];
 
-    v7 = [v9 componentsJoinedByString:@" "];
+    v7 = [array componentsJoinedByString:@" "];
     [(ICAttachment *)self setSummary:v7];
 
     return;
   }
 
-  v8 = [(ICAttachment *)self ocrSummary];
+  ocrSummary2 = [(ICAttachment *)self ocrSummary];
 
-  if (v8)
+  if (ocrSummary2)
   {
     goto LABEL_4;
   }
@@ -8608,31 +8608,31 @@ LABEL_4:
   [(ICAttachment *)self setSummary:0];
 }
 
-- (BOOL)updateHandwritingSummary:(id)a3
+- (BOOL)updateHandwritingSummary:(id)summary
 {
-  v4 = a3;
-  v5 = [(ICAttachment *)self handwritingSummary];
-  v6 = v5;
+  summaryCopy = summary;
+  handwritingSummary = [(ICAttachment *)self handwritingSummary];
+  v6 = handwritingSummary;
   v7 = *MEMORY[0x277CBEEE8];
-  if (*MEMORY[0x277CBEEE8] == v5)
+  if (*MEMORY[0x277CBEEE8] == handwritingSummary)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = v5;
+    v8 = handwritingSummary;
   }
 
   v9 = v8;
-  if (v7 == v4)
+  if (v7 == summaryCopy)
   {
     v10 = 0;
   }
 
   else
   {
-    v10 = v4;
+    v10 = summaryCopy;
   }
 
   v11 = v10;
@@ -8665,15 +8665,15 @@ LABEL_4:
     LOBYTE(v14) = 0;
   }
 
-  [(ICAttachment *)self setHandwritingSummary:v4];
+  [(ICAttachment *)self setHandwritingSummary:summaryCopy];
   return v14;
 }
 
-- (void)setHandwritingSummary:(id)a3
+- (void)setHandwritingSummary:(id)summary
 {
-  [(ICCloudSyncingObject *)self setValue:a3 forEncryptableKey:@"handwritingSummary"];
+  [(ICCloudSyncingObject *)self setValue:summary forEncryptableKey:@"handwritingSummary"];
   [(ICAttachment *)self updateCombinedSummary];
-  if (a3)
+  if (summary)
   {
     v5 = 9;
   }
@@ -8686,10 +8686,10 @@ LABEL_4:
   [(ICAttachment *)self setHandwritingSummaryVersion:v5];
 }
 
-+ (void)purgeHandwritingSummariesInContext:(id)a3
++ (void)purgeHandwritingSummariesInContext:(id)context
 {
   v15[3] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  contextCopy = context;
   v4 = MEMORY[0x277CCA920];
   v5 = +[(ICBaseAttachment *)ICAttachment];
   v15[0] = v5;
@@ -8705,8 +8705,8 @@ LABEL_4:
   v12[2] = __51__ICAttachment_purgeHandwritingSummariesInContext___block_invoke;
   v12[3] = &unk_278194AD8;
   v13 = v9;
-  v14 = v3;
-  v10 = v3;
+  v14 = contextCopy;
+  v10 = contextCopy;
   v11 = v9;
   [v10 performBlockAndWait:v12];
 }
@@ -8728,21 +8728,21 @@ void __51__ICAttachment_purgeHandwritingSummariesInContext___block_invoke_2(uint
   [v2 updateChangeCountWithReason:@"Purged handwriting summary"];
 }
 
-- (void)setImageClassificationSummary:(id)a3
+- (void)setImageClassificationSummary:(id)summary
 {
-  v4 = a3 != 0;
+  v4 = summary != 0;
   [ICCloudSyncingObject setValue:"setValue:forEncryptableKey:" forEncryptableKey:?];
   [(ICAttachment *)self updateCombinedSummary];
 
   [(ICAttachment *)self setImageClassificationSummaryVersion:(4 * v4)];
 }
 
-- (void)setOcrSummary:(id)a3
+- (void)setOcrSummary:(id)summary
 {
-  [(ICCloudSyncingObject *)self setValue:a3 forEncryptableKey:@"ocrSummary"];
+  [(ICCloudSyncingObject *)self setValue:summary forEncryptableKey:@"ocrSummary"];
   [(ICAttachment *)self updateCombinedSummary];
 
-  [(ICAttachment *)self setOcrSummaryVersion:a3 != 0];
+  [(ICAttachment *)self setOcrSummaryVersion:summary != 0];
 }
 
 + (id)isBeingEditedLocallyOnDeviceSet
@@ -8764,21 +8764,21 @@ void __47__ICAttachment_isBeingEditedLocallyOnDeviceSet__block_invoke()
   isBeingEditedLocallyOnDeviceSet_sIsBeingEditedLocallyOnDeviceSet = v0;
 }
 
-- (void)setIsBeingEditedLocallyOnDevice:(BOOL)a3
+- (void)setIsBeingEditedLocallyOnDevice:(BOOL)device
 {
-  v3 = a3;
-  v5 = [objc_opt_class() isBeingEditedLocallyOnDeviceSet];
-  v6 = [(ICAttachment *)self identifier];
-  obj = v5;
+  deviceCopy = device;
+  isBeingEditedLocallyOnDeviceSet = [objc_opt_class() isBeingEditedLocallyOnDeviceSet];
+  identifier = [(ICAttachment *)self identifier];
+  obj = isBeingEditedLocallyOnDeviceSet;
   objc_sync_enter(obj);
-  if (v3)
+  if (deviceCopy)
   {
-    [obj ic_addNonNilObject:v6];
+    [obj ic_addNonNilObject:identifier];
   }
 
   else
   {
-    [obj ic_removeNonNilObject:v6];
+    [obj ic_removeNonNilObject:identifier];
   }
 
   objc_sync_exit(obj);
@@ -8786,35 +8786,35 @@ void __47__ICAttachment_isBeingEditedLocallyOnDeviceSet__block_invoke()
 
 - (BOOL)isBeingEditedLocallyOnDevice
 {
-  v3 = [objc_opt_class() isBeingEditedLocallyOnDeviceSet];
-  v4 = [(ICAttachment *)self identifier];
-  v5 = v3;
+  isBeingEditedLocallyOnDeviceSet = [objc_opt_class() isBeingEditedLocallyOnDeviceSet];
+  identifier = [(ICAttachment *)self identifier];
+  v5 = isBeingEditedLocallyOnDeviceSet;
   objc_sync_enter(v5);
-  LOBYTE(v3) = [v5 containsObject:v4];
+  LOBYTE(isBeingEditedLocallyOnDeviceSet) = [v5 containsObject:identifier];
   objc_sync_exit(v5);
 
-  return v3;
+  return isBeingEditedLocallyOnDeviceSet;
 }
 
-- (void)setMarkupModelData:(id)a3
+- (void)setMarkupModelData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (objc_opt_respondsToSelector())
   {
     [(ICAttachment *)self setCachedImage:0];
   }
 
   [(ICAttachment *)self invalidateAttachmentPreviewImages];
-  [(ICCloudSyncingObject *)self setValue:v4 forEncryptableKey:@"markupModelData"];
+  [(ICCloudSyncingObject *)self setValue:dataCopy forEncryptableKey:@"markupModelData"];
 }
 
 - (BOOL)shouldEmbedMarkupDataInMedia
 {
-  v2 = [(ICAttachment *)self parentAttachment];
-  v3 = v2;
-  if (v2)
+  parentAttachment = [(ICAttachment *)self parentAttachment];
+  v3 = parentAttachment;
+  if (parentAttachment)
   {
-    v4 = [v2 attachmentType] != 11;
+    v4 = [parentAttachment attachmentType] != 11;
   }
 
   else
@@ -8825,35 +8825,35 @@ void __47__ICAttachment_isBeingEditedLocallyOnDeviceSet__block_invoke()
   return v4;
 }
 
-- (void)setMergeableData:(id)a3
+- (void)setMergeableData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   [(ICAttachment *)self setSettingMergeableData:1];
-  [(ICCloudSyncingObject *)self setValue:v4 forEncryptableKey:@"mergeableData"];
+  [(ICCloudSyncingObject *)self setValue:dataCopy forEncryptableKey:@"mergeableData"];
 
   [(ICAttachment *)self setSettingMergeableData:0];
 }
 
 - (BOOL)hasSynapseLink
 {
-  v2 = [(ICAttachment *)self synapseData];
-  v3 = v2 != 0;
+  synapseData = [(ICAttachment *)self synapseData];
+  v3 = synapseData != 0;
 
   return v3;
 }
 
-- (void)setMergeablePreferredViewSize:(id)a3
+- (void)setMergeablePreferredViewSize:(id)size
 {
-  v8 = a3;
-  v4 = [(ICAttachment *)self mergeablePreferredViewSize];
-  v5 = [v4 isEqualToData:v8];
+  sizeCopy = size;
+  mergeablePreferredViewSize = [(ICAttachment *)self mergeablePreferredViewSize];
+  v5 = [mergeablePreferredViewSize isEqualToData:sizeCopy];
 
   if ((v5 & 1) == 0)
   {
     performBlockOnMainThread();
     v6 = NSStringFromSelector(sel_mergeablePreferredViewSize);
     [(ICAttachment *)self willChangeValueForKey:v6];
-    [(ICAttachment *)self setPrimitiveValue:v8 forKey:v6];
+    [(ICAttachment *)self setPrimitiveValue:sizeCopy forKey:v6];
     [(ICAttachment *)self didChangeValueForKey:v6];
     v7 = [(ICAttachment *)self ic_postNotificationOnMainThreadAfterSaveWithName:@"ICAttachmentDidChangePreferredSizeNotification"];
   }
@@ -8872,7 +8872,7 @@ void __46__ICAttachment_setMergeablePreferredViewSize___block_invoke()
     +[ICAttachment mergeableWallClockValueKeyPaths];
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___ICAttachment;
   v3 = objc_msgSendSuper2(&v6, sel_mergeableWallClockValueKeyPaths);
   v4 = [v3 setByAddingObjectsFromSet:mergeableWallClockValueKeyPaths_ourSet];
@@ -8891,21 +8891,21 @@ void __47__ICAttachment_mergeableWallClockValueKeyPaths__block_invoke()
 
 - (void)inlineFormFillingBannerWasDismissedByUser
 {
-  v3 = [(ICCloudSyncingObject *)self currentReplicaID];
-  v4 = [v3 UUIDString];
+  currentReplicaID = [(ICCloudSyncingObject *)self currentReplicaID];
+  uUIDString = [currentReplicaID UUIDString];
 
-  [(ICAttachment *)self inlineFormFillingBannerWasDismissedByDeviceIdentifier:v4];
+  [(ICAttachment *)self inlineFormFillingBannerWasDismissedByDeviceIdentifier:uUIDString];
 }
 
-- (void)inlineFormFillingBannerWasDismissedByDeviceIdentifier:(id)a3
+- (void)inlineFormFillingBannerWasDismissedByDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __70__ICAttachment_inlineFormFillingBannerWasDismissedByDeviceIdentifier___block_invoke;
   v6[3] = &unk_278199DC0;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   [(ICAttachment *)self updateAttachmentMetadataWithBlock:v6];
 }
 
@@ -8941,46 +8941,46 @@ void __70__ICAttachment_inlineFormFillingBannerWasDismissedByDeviceIdentifier___
 
 - (unint64_t)inlineFormFillingBannerDismissalCountForDevice
 {
-  v3 = [(ICCloudSyncingObject *)self currentReplicaID];
-  v4 = [v3 UUIDString];
+  currentReplicaID = [(ICCloudSyncingObject *)self currentReplicaID];
+  uUIDString = [currentReplicaID UUIDString];
 
-  v5 = [(ICAttachment *)self inlineFormFillingBannerDismissalCountForDeviceIdentifier:v4];
+  v5 = [(ICAttachment *)self inlineFormFillingBannerDismissalCountForDeviceIdentifier:uUIDString];
   return v5;
 }
 
-- (unint64_t)inlineFormFillingBannerDismissalCountForDeviceIdentifier:(id)a3
+- (unint64_t)inlineFormFillingBannerDismissalCountForDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ICAttachment *)self inlineFormFillingDismissalCountForAllDevices];
-  v6 = v5;
-  if (v5)
+  identifierCopy = identifier;
+  inlineFormFillingDismissalCountForAllDevices = [(ICAttachment *)self inlineFormFillingDismissalCountForAllDevices];
+  v6 = inlineFormFillingDismissalCountForAllDevices;
+  if (inlineFormFillingDismissalCountForAllDevices)
   {
-    v7 = [v5 objectForKeyedSubscript:v4];
+    v7 = [inlineFormFillingDismissalCountForAllDevices objectForKeyedSubscript:identifierCopy];
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 unsignedIntValue];
+      unsignedIntValue = [v7 unsignedIntValue];
     }
 
     else
     {
-      v9 = 0;
+      unsignedIntValue = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v9;
+  return unsignedIntValue;
 }
 
 - (id)inlineFormFillingDismissalCountForAllDevices
 {
   objc_opt_class();
-  v3 = [(ICAttachment *)self metadata];
-  v4 = [v3 objectForKeyedSubscript:@"inline_form_dismissal_count_by_device"];
+  metadata = [(ICAttachment *)self metadata];
+  v4 = [metadata objectForKeyedSubscript:@"inline_form_dismissal_count_by_device"];
   v5 = ICDynamicCast();
 
   return v5;
@@ -8988,27 +8988,27 @@ void __70__ICAttachment_inlineFormFillingBannerWasDismissedByDeviceIdentifier___
 
 - (id)parentEncryptableObject
 {
-  v3 = [(ICAttachment *)self note];
-  v4 = v3;
-  if (v3)
+  note = [(ICAttachment *)self note];
+  v4 = note;
+  if (note)
   {
-    v5 = v3;
+    account = note;
   }
 
   else
   {
-    v5 = [(ICAttachment *)self account];
+    account = [(ICAttachment *)self account];
   }
 
-  v6 = v5;
+  v6 = account;
 
   return v6;
 }
 
-- (BOOL)isEncryptableKeyBinaryData:(id)a3
+- (BOOL)isEncryptableKeyBinaryData:(id)data
 {
   v16[4] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   if (!isEncryptableKeyBinaryData__keys)
   {
     v5 = MEMORY[0x277CBEB98];
@@ -9028,34 +9028,34 @@ void __70__ICAttachment_inlineFormFillingBannerWasDismissedByDeviceIdentifier___
 
   v15.receiver = self;
   v15.super_class = ICAttachment;
-  if ([(ICCloudSyncingObject *)&v15 isEncryptableKeyBinaryData:v4])
+  if ([(ICCloudSyncingObject *)&v15 isEncryptableKeyBinaryData:dataCopy])
   {
     v13 = 1;
   }
 
   else
   {
-    v13 = [isEncryptableKeyBinaryData__keys containsObject:v4];
+    v13 = [isEncryptableKeyBinaryData__keys containsObject:dataCopy];
   }
 
   return v13;
 }
 
-- (void)deserializeAndMergeValues:(id)a3
+- (void)deserializeAndMergeValues:(id)values
 {
   v9.receiver = self;
   v9.super_class = ICAttachment;
-  [(ICCloudSyncingObject *)&v9 deserializeAndMergeValues:a3];
-  v4 = [(ICAttachment *)self typeUTI];
-  if ([v4 isEqualToString:@"com.apple.notes.gallery"])
+  [(ICCloudSyncingObject *)&v9 deserializeAndMergeValues:values];
+  typeUTI = [(ICAttachment *)self typeUTI];
+  if ([typeUTI isEqualToString:@"com.apple.notes.gallery"])
   {
   }
 
   else
   {
-    v5 = [(ICAttachment *)self parentAttachment];
-    v6 = [v5 typeUTI];
-    v7 = [v6 isEqualToString:@"com.apple.notes.gallery"];
+    parentAttachment = [(ICAttachment *)self parentAttachment];
+    typeUTI2 = [parentAttachment typeUTI];
+    v7 = [typeUTI2 isEqualToString:@"com.apple.notes.gallery"];
 
     if ((v7 & 1) == 0)
     {
@@ -9064,17 +9064,17 @@ void __70__ICAttachment_inlineFormFillingBannerWasDismissedByDeviceIdentifier___
   }
 }
 
-- (id)mergeDecryptedValue:(id)a3 withOldValue:(id)a4 forKey:(id)a5
+- (id)mergeDecryptedValue:(id)value withOldValue:(id)oldValue forKey:(id)key
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (-[ICCloudSyncingObject needsToLoadDecryptedValues](self, "needsToLoadDecryptedValues") || (NSStringFromSelector(sel_mergeableData), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v10 isEqualToString:v11], v11, !v12))
+  valueCopy = value;
+  oldValueCopy = oldValue;
+  keyCopy = key;
+  if (-[ICCloudSyncingObject needsToLoadDecryptedValues](self, "needsToLoadDecryptedValues") || (NSStringFromSelector(sel_mergeableData), v11 = objc_claimAutoreleasedReturnValue(), v12 = [keyCopy isEqualToString:v11], v11, !v12))
   {
     v21.receiver = self;
     v21.super_class = ICAttachment;
-    v15 = [(ICCloudSyncingObject *)&v21 mergeDecryptedValue:v8 withOldValue:v9 forKey:v10];
+    mergeableData = [(ICCloudSyncingObject *)&v21 mergeDecryptedValue:valueCopy withOldValue:oldValueCopy forKey:keyCopy];
   }
 
   else
@@ -9082,9 +9082,9 @@ void __70__ICAttachment_inlineFormFillingBannerWasDismissedByDeviceIdentifier___
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = v8;
-      v14 = [(ICAttachment *)self attachmentModel];
-      [v14 mergeWithMergeableData:v13];
+      v13 = valueCopy;
+      attachmentModel = [(ICAttachment *)self attachmentModel];
+      [attachmentModel mergeWithMergeableData:v13];
     }
 
     else
@@ -9092,45 +9092,45 @@ void __70__ICAttachment_inlineFormFillingBannerWasDismissedByDeviceIdentifier___
       v16 = os_log_create("com.apple.notes", "Crypto");
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
-        v17 = [(ICAttachment *)self className];
-        v18 = [(ICAttachment *)self identifier];
+        className = [(ICAttachment *)self className];
+        identifier = [(ICAttachment *)self identifier];
         *buf = 138412802;
-        v23 = v10;
+        v23 = keyCopy;
         v24 = 2112;
-        v25 = v17;
+        v25 = className;
         v26 = 2112;
-        v27 = v18;
+        v27 = identifier;
         _os_log_impl(&dword_214D51000, v16, OS_LOG_TYPE_INFO, "Trying to merge %@ for %@ (%@), but the data isn't NSData", buf, 0x20u);
       }
     }
 
-    v15 = [(ICAttachment *)self mergeableData];
+    mergeableData = [(ICAttachment *)self mergeableData];
   }
 
-  v19 = v15;
+  v19 = mergeableData;
 
   return v19;
 }
 
 - (void)persistPendingChanges
 {
-  v3 = [(ICAttachment *)self note];
-  v4 = [v3 modificationDate];
+  note = [(ICAttachment *)self note];
+  modificationDate = [note modificationDate];
 
-  v5 = [(ICAttachment *)self attachmentModel];
-  [v5 persistPendingChanges];
+  attachmentModel = [(ICAttachment *)self attachmentModel];
+  [attachmentModel persistPendingChanges];
 
   [(ICAttachment *)self saveMergeableDataIfNeeded];
-  if (v4)
+  if (modificationDate)
   {
-    v6 = [(ICAttachment *)self note];
-    v7 = [v6 modificationDate];
-    v8 = [v7 isEqual:v4];
+    note2 = [(ICAttachment *)self note];
+    modificationDate2 = [note2 modificationDate];
+    v8 = [modificationDate2 isEqual:modificationDate];
 
     if ((v8 & 1) == 0)
     {
-      v9 = [(ICAttachment *)self note];
-      [v9 setModificationDate:v4];
+      note3 = [(ICAttachment *)self note];
+      [note3 setModificationDate:modificationDate];
     }
   }
 
@@ -9151,22 +9151,22 @@ void __70__ICAttachment_inlineFormFillingBannerWasDismissedByDeviceIdentifier___
   [(ICCloudSyncingObject *)&v3 clearDecryptedData];
 }
 
-+ (BOOL)isTypeUTISupportedForWatch:(id)a3
++ (BOOL)isTypeUTISupportedForWatch:(id)watch
 {
-  v3 = a3;
+  watchCopy = watch;
   if (isTypeUTISupportedForWatch__onceToken != -1)
   {
     +[ICAttachment isTypeUTISupportedForWatch:];
   }
 
-  if ([isTypeUTISupportedForWatch__supportedTypeStrings containsObject:v3])
+  if ([isTypeUTISupportedForWatch__supportedTypeStrings containsObject:watchCopy])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [ICUTType typeWithIdentifier:v3];
+    v5 = [ICUTType typeWithIdentifier:watchCopy];
     v6 = v5;
     if (v5)
     {
@@ -9213,22 +9213,22 @@ void __43__ICAttachment_isTypeUTISupportedForWatch___block_invoke()
   isTypeUTISupportedForWatch__supportedTypeStrings = v5;
 }
 
-+ (BOOL)isTypeUTISupportedForPasswordProtectedNotes:(id)a3
++ (BOOL)isTypeUTISupportedForPasswordProtectedNotes:(id)notes
 {
-  v3 = a3;
+  notesCopy = notes;
   if (isTypeUTISupportedForPasswordProtectedNotes__onceToken != -1)
   {
     +[ICAttachment isTypeUTISupportedForPasswordProtectedNotes:];
   }
 
-  if ([isTypeUTISupportedForPasswordProtectedNotes__supportedTypeStrings containsObject:v3])
+  if ([isTypeUTISupportedForPasswordProtectedNotes__supportedTypeStrings containsObject:notesCopy])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [ICUTType typeWithIdentifier:v3];
+    v5 = [ICUTType typeWithIdentifier:notesCopy];
     v6 = v5;
     if (v5)
     {
@@ -9295,40 +9295,40 @@ void __60__ICAttachment_isTypeUTISupportedForPasswordProtectedNotes___block_invo
   isTypeUTISupportedForPasswordProtectedNotes__supportedTypeStrings = v12;
 }
 
-+ (BOOL)isPathExtensionSupportedForPasswordProtectedNotes:(id)a3
++ (BOOL)isPathExtensionSupportedForPasswordProtectedNotes:(id)notes
 {
-  if (!a3)
+  if (!notes)
   {
     return 0;
   }
 
   v4 = [MEMORY[0x277CE1CB8] typeWithFilenameExtension:?];
-  v5 = [v4 identifier];
+  identifier = [v4 identifier];
 
-  LOBYTE(a1) = [a1 isTypeUTISupportedForPasswordProtectedNotes:v5];
-  return a1;
+  LOBYTE(self) = [self isTypeUTISupportedForPasswordProtectedNotes:identifier];
+  return self;
 }
 
 - (BOOL)hasCroppingQuad
 {
-  v2 = [(ICAttachment *)self attachmentModel];
-  v3 = [v2 shouldCropImage];
+  attachmentModel = [(ICAttachment *)self attachmentModel];
+  shouldCropImage = [attachmentModel shouldCropImage];
 
-  return v3;
+  return shouldCropImage;
 }
 
-- (void)setPreferredViewSize:(signed __int16)a3
+- (void)setPreferredViewSize:(signed __int16)size
 {
-  v3 = a3;
+  sizeCopy = size;
   v5 = [ICTTMergeableWallClockValue alloc];
-  v6 = [MEMORY[0x277CCABB0] numberWithShort:v3];
+  v6 = [MEMORY[0x277CCABB0] numberWithShort:sizeCopy];
   v10 = [(ICTTMergeableWallClockValue *)v5 initWithValue:v6 timestamp:0];
 
   v7 = NSStringFromSelector(sel_preferredViewSize);
   [(ICAttachment *)self willChangeValueForKey:v7];
 
-  v8 = [(ICTTMergeableWallClockValue *)v10 serialize];
-  [(ICAttachment *)self setMergeablePreferredViewSize:v8];
+  serialize = [(ICTTMergeableWallClockValue *)v10 serialize];
+  [(ICAttachment *)self setMergeablePreferredViewSize:serialize];
 
   v9 = NSStringFromSelector(sel_preferredViewSize);
   [(ICAttachment *)self didChangeValueForKey:v9];
@@ -9338,14 +9338,14 @@ void __60__ICAttachment_isTypeUTISupportedForPasswordProtectedNotes___block_invo
 
 - (void)resetPreferredViewSizeIfNecessary
 {
-  v3 = [(ICAttachment *)self mergeablePreferredViewSize];
-  v4 = [v3 length];
+  mergeablePreferredViewSize = [(ICAttachment *)self mergeablePreferredViewSize];
+  v4 = [mergeablePreferredViewSize length];
 
   if (v4)
   {
     v5 = [ICTTMergeableWallClockValue alloc];
-    v6 = [(ICAttachment *)self mergeablePreferredViewSize];
-    v14 = [(ICTTMergeableWallClockValue *)v5 initWithData:v6];
+    mergeablePreferredViewSize2 = [(ICAttachment *)self mergeablePreferredViewSize];
+    v14 = [(ICTTMergeableWallClockValue *)v5 initWithData:mergeablePreferredViewSize2];
 
     v7 = v14;
   }
@@ -9356,17 +9356,17 @@ void __60__ICAttachment_isTypeUTISupportedForPasswordProtectedNotes___block_invo
   }
 
   v15 = v7;
-  v8 = [(ICTTMergeableWallClockValue *)v7 value];
+  value = [(ICTTMergeableWallClockValue *)v7 value];
 
-  if (v8)
+  if (value)
   {
     v9 = [[ICTTMergeableWallClockValue alloc] initWithValue:0 timestamp:0];
 
     v10 = NSStringFromSelector(sel_preferredViewSize);
     [(ICAttachment *)self willChangeValueForKey:v10];
 
-    v11 = [(ICTTMergeableWallClockValue *)v9 serialize];
-    [(ICAttachment *)self setMergeablePreferredViewSize:v11];
+    serialize = [(ICTTMergeableWallClockValue *)v9 serialize];
+    [(ICAttachment *)self setMergeablePreferredViewSize:serialize];
 
     [(ICCloudSyncingObject *)self updateUserSpecificChangeCountWithReason:@"User reset preferredViewSize"];
     v12 = NSStringFromSelector(sel_preferredViewSize);
@@ -9383,7 +9383,7 @@ void __60__ICAttachment_isTypeUTISupportedForPasswordProtectedNotes___block_invo
 
 + (id)keyPathsForValuesAffectingIsSharedViaICloud
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___ICAttachment;
   v2 = objc_msgSendSuper2(&v5, sel_keyPathsForValuesAffectingIsSharedViaICloud);
   v3 = [v2 mutableCopy];
@@ -9399,32 +9399,32 @@ void __60__ICAttachment_isTypeUTISupportedForPasswordProtectedNotes___block_invo
 - (id)childCloudObjectsForMinimumSupportedVersionPropagation
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v4 = [(ICAttachment *)self subAttachments];
-  if (v4)
+  subAttachments = [(ICAttachment *)self subAttachments];
+  if (subAttachments)
   {
-    v5 = v4;
-    v6 = [(ICAttachment *)self media];
+    v5 = subAttachments;
+    media = [(ICAttachment *)self media];
 
-    if (v6)
+    if (media)
     {
-      v7 = [(ICAttachment *)self subAttachments];
-      v8 = [v7 allObjects];
-      [v3 addObjectsFromArray:v8];
+      subAttachments2 = [(ICAttachment *)self subAttachments];
+      allObjects = [subAttachments2 allObjects];
+      [v3 addObjectsFromArray:allObjects];
 
 LABEL_7:
-      v10 = [(ICAttachment *)self media];
-      [v3 addObject:v10];
+      media2 = [(ICAttachment *)self media];
+      [v3 addObject:media2];
       goto LABEL_8;
     }
   }
 
-  v9 = [(ICAttachment *)self subAttachments];
+  subAttachments3 = [(ICAttachment *)self subAttachments];
 
-  if (!v9)
+  if (!subAttachments3)
   {
-    v12 = [(ICAttachment *)self media];
+    media3 = [(ICAttachment *)self media];
 
-    if (!v12)
+    if (!media3)
     {
       goto LABEL_9;
     }
@@ -9432,19 +9432,19 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v10 = [(ICAttachment *)self subAttachments];
-  v11 = [v10 allObjects];
-  [v3 addObjectsFromArray:v11];
+  media2 = [(ICAttachment *)self subAttachments];
+  allObjects2 = [media2 allObjects];
+  [v3 addObjectsFromArray:allObjects2];
 
 LABEL_8:
 LABEL_9:
-  v13 = [(ICAttachment *)self inlineAttachments];
+  inlineAttachments = [(ICAttachment *)self inlineAttachments];
 
-  if (v13)
+  if (inlineAttachments)
   {
-    v14 = [(ICAttachment *)self inlineAttachments];
-    v15 = [v14 allObjects];
-    [v3 addObjectsFromArray:v15];
+    inlineAttachments2 = [(ICAttachment *)self inlineAttachments];
+    allObjects3 = [inlineAttachments2 allObjects];
+    [v3 addObjectsFromArray:allObjects3];
   }
 
   if ([v3 count])
@@ -9460,17 +9460,17 @@ LABEL_9:
   return v16;
 }
 
-- (void)setMarkedForDeletion:(BOOL)a3
+- (void)setMarkedForDeletion:(BOOL)deletion
 {
-  v3 = a3;
-  v5 = [(ICAttachment *)self markedForDeletion];
+  deletionCopy = deletion;
+  markedForDeletion = [(ICAttachment *)self markedForDeletion];
   v7.receiver = self;
   v7.super_class = ICAttachment;
-  [(ICCloudSyncingObject *)&v7 setMarkedForDeletion:v3];
-  if (!v5 && v3)
+  [(ICCloudSyncingObject *)&v7 setMarkedForDeletion:deletionCopy];
+  if (!markedForDeletion && deletionCopy)
   {
-    v6 = [(ICAttachment *)self paperBundleModel];
-    [v6 removeStrokesFromStyleInventory];
+    paperBundleModel = [(ICAttachment *)self paperBundleModel];
+    [paperBundleModel removeStrokesFromStyleInventory];
   }
 }
 
@@ -9478,17 +9478,17 @@ LABEL_9:
 {
   if (([(ICAttachment *)self markedForDeletion]& 1) == 0)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 postNotificationName:@"ICAttachmentWillBeDeletedNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"ICAttachmentWillBeDeletedNotification" object:self];
 
     v7.receiver = self;
     v7.super_class = ICAttachment;
     [(ICCloudSyncingObject *)&v7 markForDeletion];
-    v4 = [(ICAttachment *)self media];
-    [v4 markForDeletion];
+    media = [(ICAttachment *)self media];
+    [media markForDeletion];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 postNotificationName:@"ICAttachmentWasDeletedNotification" object:self];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 postNotificationName:@"ICAttachmentWasDeletedNotification" object:self];
 
     if (objc_opt_respondsToSelector())
     {
@@ -9497,8 +9497,8 @@ LABEL_9:
 
     [(ICAttachment *)self setHandwritingSummary:0];
     [(ICAttachment *)self setAdditionalIndexableText:0];
-    v6 = [(ICCloudSyncingObject *)self modificationDate];
-    [(ICAttachment *)self setModificationDate:v6];
+    modificationDate = [(ICCloudSyncingObject *)self modificationDate];
+    [(ICAttachment *)self setModificationDate:modificationDate];
   }
 }
 
@@ -9509,39 +9509,39 @@ LABEL_9:
     v6.receiver = self;
     v6.super_class = ICAttachment;
     [(ICCloudSyncingObject *)&v6 unmarkForDeletion];
-    v3 = [(ICAttachment *)self media];
-    [v3 unmarkForDeletion];
+    media = [(ICAttachment *)self media];
+    [media unmarkForDeletion];
 
-    v4 = [(ICCloudSyncingObject *)self modificationDate];
-    [(ICAttachment *)self setModificationDate:v4];
+    modificationDate = [(ICCloudSyncingObject *)self modificationDate];
+    [(ICAttachment *)self setModificationDate:modificationDate];
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 postNotificationName:@"ICAttachmentWasUndeletedNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"ICAttachmentWasUndeletedNotification" object:self];
   }
 }
 
 - (id)previewItemURL
 {
-  v2 = [(ICAttachment *)self attachmentModel];
-  v3 = [v2 previewItemURL];
+  attachmentModel = [(ICAttachment *)self attachmentModel];
+  previewItemURL = [attachmentModel previewItemURL];
 
-  return v3;
+  return previewItemURL;
 }
 
 - (id)previewItemTitle
 {
-  v2 = [(ICAttachment *)self attachmentModel];
-  v3 = [v2 previewItemTitle];
+  attachmentModel = [(ICAttachment *)self attachmentModel];
+  previewItemTitle = [attachmentModel previewItemTitle];
 
-  return v3;
+  return previewItemTitle;
 }
 
 - (BOOL)supportsQuickLook
 {
-  v2 = [(ICAttachment *)self attachmentModel];
-  v3 = [v2 supportsQuickLook];
+  attachmentModel = [(ICAttachment *)self attachmentModel];
+  supportsQuickLook = [attachmentModel supportsQuickLook];
 
-  return v3;
+  return supportsQuickLook;
 }
 
 - (void)attachmentDidChange
@@ -9560,22 +9560,22 @@ LABEL_9:
 
   else
   {
-    v4 = [(ICAttachment *)self location];
-    if (v4 || [(ICAttachment *)self checkedForLocation])
+    location = [(ICAttachment *)self location];
+    if (location || [(ICAttachment *)self checkedForLocation])
     {
-      v5 = [(ICAttachment *)self location];
-      if (v5)
+      location2 = [(ICAttachment *)self location];
+      if (location2)
       {
-        v6 = [(ICAttachment *)self location];
-        if ([v6 placeUpdated])
+        location3 = [(ICAttachment *)self location];
+        if ([location3 placeUpdated])
         {
           LOBYTE(v3) = 0;
         }
 
         else
         {
-          v7 = [(ICAttachment *)self location];
-          v3 = [v7 updatingPlace] ^ 1;
+          location4 = [(ICAttachment *)self location];
+          v3 = [location4 updatingPlace] ^ 1;
         }
       }
 
@@ -9598,10 +9598,10 @@ LABEL_9:
 {
   v12.receiver = self;
   v12.super_class = ICAttachment;
-  v3 = [(ICCloudSyncingObject *)&v12 ic_loggingValues];
-  v4 = [v3 mutableCopy];
+  ic_loggingValues = [(ICCloudSyncingObject *)&v12 ic_loggingValues];
+  v4 = [ic_loggingValues mutableCopy];
 
-  v5 = [(ICAttachment *)self managedObjectContext];
+  managedObjectContext = [(ICAttachment *)self managedObjectContext];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __32__ICAttachment_ic_loggingValues__block_invoke;
@@ -9609,7 +9609,7 @@ LABEL_9:
   v10[4] = self;
   v6 = v4;
   v11 = v6;
-  [v5 performBlockAndWait:v10];
+  [managedObjectContext performBlockAndWait:v10];
 
   v7 = v11;
   v8 = v6;
@@ -9720,13 +9720,13 @@ void __32__ICAttachment_ic_loggingValues__block_invoke(uint64_t a1)
 
 - (NSString)accessibilityDescriptionForType
 {
-  v3 = [(ICAttachment *)self attachmentType];
-  v4 = 0;
-  if (v3 > 6u)
+  attachmentType = [(ICAttachment *)self attachmentType];
+  _accessibilityDescriptionForGenericType = 0;
+  if (attachmentType > 6u)
   {
-    if (v3 <= 8u)
+    if (attachmentType <= 8u)
     {
-      if (v3 == 7)
+      if (attachmentType == 7)
       {
         v5 = @"map";
       }
@@ -9737,9 +9737,9 @@ void __32__ICAttachment_ic_loggingValues__block_invoke(uint64_t a1)
       }
     }
 
-    else if (v3 - 9 >= 2)
+    else if (attachmentType - 9 >= 2)
     {
-      if (v3 != 12)
+      if (attachmentType != 12)
       {
         goto LABEL_21;
       }
@@ -9753,15 +9753,15 @@ void __32__ICAttachment_ic_loggingValues__block_invoke(uint64_t a1)
     }
   }
 
-  else if (v3 <= 3u)
+  else if (attachmentType <= 3u)
   {
-    if (v3 == 2)
+    if (attachmentType == 2)
     {
-      v4 = [(ICAttachment *)self _accessibilityDescriptionForGenericType];
+      _accessibilityDescriptionForGenericType = [(ICAttachment *)self _accessibilityDescriptionForGenericType];
       goto LABEL_21;
     }
 
-    if (v3 != 3)
+    if (attachmentType != 3)
     {
       goto LABEL_21;
     }
@@ -9769,12 +9769,12 @@ void __32__ICAttachment_ic_loggingValues__block_invoke(uint64_t a1)
     v5 = @"image";
   }
 
-  else if (v3 == 4)
+  else if (attachmentType == 4)
   {
     v5 = @"audio";
   }
 
-  else if (v3 == 5)
+  else if (attachmentType == 5)
   {
     v5 = @"movie";
   }
@@ -9784,24 +9784,24 @@ void __32__ICAttachment_ic_loggingValues__block_invoke(uint64_t a1)
     v5 = @"PDF";
   }
 
-  v4 = __ICLocalizedFrameworkString_impl(v5, v5, 0, 1);
+  _accessibilityDescriptionForGenericType = __ICLocalizedFrameworkString_impl(v5, v5, 0, 1);
 LABEL_21:
 
-  return v4;
+  return _accessibilityDescriptionForGenericType;
 }
 
 - (id)_accessibilityDescriptionForGenericType
 {
   v2 = MEMORY[0x277CE1CB8];
-  v3 = [(ICAttachment *)self typeUTI];
-  v4 = [v2 typeWithIdentifier:v3];
-  v5 = [v4 localizedDescription];
+  typeUTI = [(ICAttachment *)self typeUTI];
+  v4 = [v2 typeWithIdentifier:typeUTI];
+  localizedDescription = [v4 localizedDescription];
 
-  if ([v5 length])
+  if ([localizedDescription length])
   {
     v6 = MEMORY[0x277CCACA8];
     v7 = __ICLocalizedFrameworkString_impl(@"file, %@", @"file, %@", 0, 1);
-    v8 = [v6 localizedStringWithFormat:v7, v5];
+    v8 = [v6 localizedStringWithFormat:v7, localizedDescription];
   }
 
   else
@@ -9812,67 +9812,67 @@ LABEL_21:
   return v8;
 }
 
-+ (void)deleteAttachment:(id)a3
++ (void)deleteAttachment:(id)attachment
 {
-  v4 = a3;
+  attachmentCopy = attachment;
   objc_opt_class();
   v5 = ICCheckedDynamicCast();
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 attachmentModel];
-    [v7 willMarkAttachmentForDeletion];
+    attachmentModel = [v5 attachmentModel];
+    [attachmentModel willMarkAttachmentForDeletion];
 
-    v8 = [v6 attachmentModel];
-    [v8 deleteChildAttachments];
+    attachmentModel2 = [v6 attachmentModel];
+    [attachmentModel2 deleteChildAttachments];
 
-    v9 = [v6 media];
-    [ICMedia deleteMedia:v9];
+    media = [v6 media];
+    [ICMedia deleteMedia:media];
 
     [v6 deleteAttachmentPreviewImages];
   }
 
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = &OBJC_METACLASS___ICAttachment;
-  objc_msgSendSuper2(&v10, sel_deleteAttachment_, v4);
+  objc_msgSendSuper2(&v10, sel_deleteAttachment_, attachmentCopy);
 }
 
-+ (void)undeleteAttachment:(id)a3
++ (void)undeleteAttachment:(id)attachment
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___ICAttachment;
-  v3 = a3;
-  objc_msgSendSuper2(&v7, sel_undeleteAttachment_, v3);
+  attachmentCopy = attachment;
+  objc_msgSendSuper2(&v7, sel_undeleteAttachment_, attachmentCopy);
   objc_opt_class();
   v4 = ICCheckedDynamicCast();
 
   if (v4)
   {
-    v5 = [v4 media];
-    [ICMedia undeleteMedia:v5];
+    media = [v4 media];
+    [ICMedia undeleteMedia:media];
 
     [v4 undeleteAttachmentPreviewImages];
-    v6 = [v4 attachmentModel];
-    [v6 undeleteChildAttachments];
+    attachmentModel = [v4 attachmentModel];
+    [attachmentModel undeleteChildAttachments];
   }
 }
 
-+ (void)purgeAttachment:(id)a3
++ (void)purgeAttachment:(id)attachment
 {
-  v3 = a3;
+  attachmentCopy = attachment;
   objc_opt_class();
   v7 = ICCheckedDynamicCast();
 
   if (v7)
   {
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 postNotificationName:@"ICAttachmentWillBeDeletedNotification" object:v7];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"ICAttachmentWillBeDeletedNotification" object:v7];
 
-    v5 = [v7 managedObjectContext];
-    [v5 deleteObject:v7];
+    managedObjectContext = [v7 managedObjectContext];
+    [managedObjectContext deleteObject:v7];
 
-    v6 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v6 postNotificationName:@"ICAttachmentWasDeletedNotification" object:v7];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 postNotificationName:@"ICAttachmentWasDeletedNotification" object:v7];
 
     if (objc_opt_respondsToSelector())
     {
@@ -9881,15 +9881,15 @@ LABEL_21:
   }
 }
 
-+ (void)enumerateAttachmentsInContext:(id)a3 batchSize:(unint64_t)a4 visibleOnly:(BOOL)a5 saveAfterBatch:(BOOL)a6 usingBlock:(id)a7
++ (void)enumerateAttachmentsInContext:(id)context batchSize:(unint64_t)size visibleOnly:(BOOL)only saveAfterBatch:(BOOL)batch usingBlock:(id)block
 {
-  v8 = a6;
-  v9 = a5;
-  v14 = a3;
-  v12 = a7;
-  if (v9)
+  batchCopy = batch;
+  onlyCopy = only;
+  contextCopy = context;
+  blockCopy = block;
+  if (onlyCopy)
   {
-    v13 = [a1 predicateForVisibleAttachmentsInContext:v14];
+    v13 = [self predicateForVisibleAttachmentsInContext:contextCopy];
   }
 
   else
@@ -9897,7 +9897,7 @@ LABEL_21:
     v13 = 0;
   }
 
-  [a1 ic_enumerateObjectsMatchingPredicate:v13 sortDescriptors:0 relationshipKeyPathsForPrefetching:0 context:v14 batchSize:a4 saveAfterBatch:v8 usingBlock:v12];
+  [self ic_enumerateObjectsMatchingPredicate:v13 sortDescriptors:0 relationshipKeyPathsForPrefetching:0 context:contextCopy batchSize:size saveAfterBatch:batchCopy usingBlock:blockCopy];
 }
 
 + (id)attachmentTypeUTIsToHideFromAttachmentBrowser
@@ -9913,17 +9913,17 @@ LABEL_21:
   return v2;
 }
 
-+ (id)predicateForAttachmentBrowserWithContext:(id)a3
++ (id)predicateForAttachmentBrowserWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__ICAttachment_Management__predicateForAttachmentBrowserWithContext___block_invoke;
   v10[3] = &unk_278196CD8;
-  v11 = v4;
-  v12 = a1;
+  v11 = contextCopy;
+  selfCopy = self;
   v5 = predicateForAttachmentBrowserWithContext__onceToken;
-  v6 = v4;
+  v6 = contextCopy;
   if (v5 != -1)
   {
     dispatch_once(&predicateForAttachmentBrowserWithContext__onceToken, v10);
@@ -9953,23 +9953,23 @@ void __69__ICAttachment_Management__predicateForAttachmentBrowserWithContext___b
   predicateForAttachmentBrowserWithContext__predicate = v8;
 }
 
-+ (id)predicateForSearchableAttachmentsInContext:(id)a3
++ (id)predicateForSearchableAttachmentsInContext:(id)context
 {
   v16[2] = *MEMORY[0x277D85DE8];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __71__ICAttachment_Management__predicateForSearchableAttachmentsInContext___block_invoke;
   v14 = &__block_descriptor_40_e5_v8__0l;
-  v15 = a1;
+  selfCopy = self;
   v4 = predicateForSearchableAttachmentsInContext__onceToken;
-  v5 = a3;
+  contextCopy = context;
   if (v4 != -1)
   {
     dispatch_once(&predicateForSearchableAttachmentsInContext__onceToken, &v11);
   }
 
   v6 = MEMORY[0x277CCA920];
-  v7 = [a1 predicateForUnsupportedAttachmentsInContext:{v5, v11, v12, v13, v14, v15, predicateForSearchableAttachmentsInContext__predicate}];
+  v7 = [self predicateForUnsupportedAttachmentsInContext:{contextCopy, v11, v12, v13, v14, selfCopy, predicateForSearchableAttachmentsInContext__predicate}];
 
   v16[1] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:2];
@@ -9992,13 +9992,13 @@ void __71__ICAttachment_Management__predicateForSearchableAttachmentsInContext__
   predicateForSearchableAttachmentsInContext__predicate = v5;
 }
 
-+ (id)predicateForVisibleAttachmentsWithTypeUTI:(id)a3 inContext:(id)a4
++ (id)predicateForVisibleAttachmentsWithTypeUTI:(id)i inContext:(id)context
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v6 = MEMORY[0x277CCAC30];
-  v7 = a4;
-  v8 = [v6 predicateWithFormat:@"typeUTI == %@", a3];
-  v9 = [a1 predicateForVisibleAttachmentsInContext:v7];
+  contextCopy = context;
+  v8 = [v6 predicateWithFormat:@"typeUTI == %@", i];
+  v9 = [self predicateForVisibleAttachmentsInContext:contextCopy];
 
   v10 = MEMORY[0x277CCA920];
   v14[0] = v8;
@@ -10009,10 +10009,10 @@ void __71__ICAttachment_Management__predicateForSearchableAttachmentsInContext__
   return v12;
 }
 
-+ (id)predicateForPasswordProtected:(BOOL)a3
++ (id)predicateForPasswordProtected:(BOOL)protected
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = [MEMORY[0x277CCABB0] numberWithBool:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithBool:protected];
   v5 = [v3 predicateWithFormat:@"isPasswordProtected == %@", v4];
 
   return v5;
@@ -10049,14 +10049,14 @@ void __53__ICAttachment_Management__predicateForInlineDrawing__block_invoke()
   return v2;
 }
 
-+ (unint64_t)countOfAttachmentsMatchingPredicate:(id)a3 context:(id)a4
++ (unint64_t)countOfAttachmentsMatchingPredicate:(id)predicate context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 newFetchRequestForAttachments];
-  [v8 setPredicate:v7];
+  contextCopy = context;
+  predicateCopy = predicate;
+  newFetchRequestForAttachments = [self newFetchRequestForAttachments];
+  [newFetchRequestForAttachments setPredicate:predicateCopy];
 
-  v9 = [v6 countForFetchRequest:v8 error:0];
+  v9 = [contextCopy countForFetchRequest:newFetchRequestForAttachments error:0];
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v9 = 0;
@@ -10065,16 +10065,16 @@ void __53__ICAttachment_Management__predicateForInlineDrawing__block_invoke()
   return v9;
 }
 
-- (void)recursivelyAddSubAttachments:(id)a3
+- (void)recursivelyAddSubAttachments:(id)attachments
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  attachmentsCopy = attachments;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(ICAttachment *)self subAttachments];
-  v6 = [v5 copy];
+  subAttachments = [(ICAttachment *)self subAttachments];
+  v6 = [subAttachments copy];
 
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
@@ -10091,8 +10091,8 @@ void __53__ICAttachment_Management__predicateForInlineDrawing__block_invoke()
         }
 
         v11 = *(*(&v12 + 1) + 8 * i);
-        [v4 addObject:v11];
-        [v11 recursivelyAddSubAttachments:v4];
+        [attachmentsCopy addObject:v11];
+        [v11 recursivelyAddSubAttachments:attachmentsCopy];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -10112,29 +10112,29 @@ void __53__ICAttachment_Management__predicateForInlineDrawing__block_invoke()
   return [(ICAttachment *)self hasFallbackPDF];
 }
 
-+ (id)fallbackImageContainerURLForIdentifier:(id)a3 account:(id)a4
++ (id)fallbackImageContainerURLForIdentifier:(id)identifier account:(id)account
 {
-  v5 = a3;
-  v6 = [a4 fallbackImageDirectoryURL];
-  v7 = [v6 URLByAppendingPathComponent:v5 isDirectory:1];
+  identifierCopy = identifier;
+  fallbackImageDirectoryURL = [account fallbackImageDirectoryURL];
+  v7 = [fallbackImageDirectoryURL URLByAppendingPathComponent:identifierCopy isDirectory:1];
 
   return v7;
 }
 
-+ (id)fallbackImageFallbackURLForIdentifier:(id)a3 account:(id)a4
++ (id)fallbackImageFallbackURLForIdentifier:(id)identifier account:(id)account
 {
-  v5 = a3;
-  v6 = [a4 fallbackImageDirectoryURL];
-  v7 = [v6 URLByAppendingPathComponent:v5 isDirectory:0];
+  identifierCopy = identifier;
+  fallbackImageDirectoryURL = [account fallbackImageDirectoryURL];
+  v7 = [fallbackImageDirectoryURL URLByAppendingPathComponent:identifierCopy isDirectory:0];
 
   v8 = [v7 URLByAppendingPathExtension:@"jpg"];
 
   return v8;
 }
 
-+ (id)fallbackImageEncryptedFallbackURLForIdentifier:(id)a3 account:(id)a4
++ (id)fallbackImageEncryptedFallbackURLForIdentifier:(id)identifier account:(id)account
 {
-  v4 = [a1 fallbackImageFallbackURLForIdentifier:a3 account:a4];
+  v4 = [self fallbackImageFallbackURLForIdentifier:identifier account:account];
   v5 = [v4 URLByAppendingPathExtension:@"encrypted"];
 
   return v5;
@@ -10142,55 +10142,55 @@ void __53__ICAttachment_Management__predicateForInlineDrawing__block_invoke()
 
 - (id)fallbackImageURL
 {
-  v3 = [(ICAttachment *)self account];
-  v4 = v3;
-  if (v3)
+  account = [(ICAttachment *)self account];
+  v4 = account;
+  if (account)
   {
-    v5 = v3;
+    account3 = account;
   }
 
   else
   {
-    v6 = [(ICAttachment *)self note];
-    v7 = [v6 account];
-    v8 = v7;
-    if (v7)
+    note = [(ICAttachment *)self note];
+    account2 = [note account];
+    v8 = account2;
+    if (account2)
     {
-      v5 = v7;
+      account3 = account2;
     }
 
     else
     {
-      v9 = [(ICAttachment *)self note];
-      v10 = [v9 folder];
-      v5 = [v10 account];
+      note2 = [(ICAttachment *)self note];
+      folder = [note2 folder];
+      account3 = [folder account];
     }
   }
 
-  v11 = [(ICAttachment *)self identifier];
+  identifier = [(ICAttachment *)self identifier];
 
   v12 = 0;
-  if (v11 && v5)
+  if (identifier && account3)
   {
-    v13 = [(ICAttachment(Management) *)self fallbackImageGenerationManager];
-    v14 = [v13 generationURL];
+    fallbackImageGenerationManager = [(ICAttachment(Management) *)self fallbackImageGenerationManager];
+    generationURL = [fallbackImageGenerationManager generationURL];
 
-    if (v14)
+    if (generationURL)
     {
-      v15 = [(ICAttachment(Management) *)self fallbackImageGenerationManager];
-      v16 = [v15 generationURL];
-      v17 = [v16 URLByAppendingPathComponent:@"FallbackImage" isDirectory:0];
+      fallbackImageGenerationManager2 = [(ICAttachment(Management) *)self fallbackImageGenerationManager];
+      generationURL2 = [fallbackImageGenerationManager2 generationURL];
+      identifier2 = [generationURL2 URLByAppendingPathComponent:@"FallbackImage" isDirectory:0];
 
-      v18 = [objc_opt_class() fallbackImageUTI];
-      v19 = [v18 pathExtension];
-      v12 = [v17 URLByAppendingPathExtension:v19];
+      fallbackImageUTI = [objc_opt_class() fallbackImageUTI];
+      pathExtension = [fallbackImageUTI pathExtension];
+      v12 = [identifier2 URLByAppendingPathExtension:pathExtension];
     }
 
     else
     {
       v20 = objc_opt_class();
-      v17 = [(ICAttachment *)self identifier];
-      v12 = [v20 fallbackImageFallbackURLForIdentifier:v17 account:v5];
+      identifier2 = [(ICAttachment *)self identifier];
+      v12 = [v20 fallbackImageFallbackURLForIdentifier:identifier2 account:account3];
     }
   }
 
@@ -10199,8 +10199,8 @@ void __53__ICAttachment_Management__predicateForInlineDrawing__block_invoke()
 
 - (id)fallbackImageEncryptedURL
 {
-  v2 = [(ICAttachment *)self fallbackImageURL];
-  v3 = [v2 URLByAppendingPathExtension:@"encrypted"];
+  fallbackImageURL = [(ICAttachment *)self fallbackImageURL];
+  v3 = [fallbackImageURL URLByAppendingPathExtension:@"encrypted"];
 
   return v3;
 }
@@ -10217,28 +10217,28 @@ void __53__ICAttachment_Management__predicateForInlineDrawing__block_invoke()
     [(ICAttachment *)self fallbackImageURL];
   }
   v3 = ;
-  v4 = [v3 ic_isReachable];
+  ic_isReachable = [v3 ic_isReachable];
 
-  return v4;
+  return ic_isReachable;
 }
 
 - (id)fallbackImageData
 {
   if ([(ICAttachment *)self isPasswordProtected])
   {
-    v3 = [(ICCloudSyncingObject *)self cryptoStrategy];
-    v4 = [v3 decryptedFallbackImageData];
+    cryptoStrategy = [(ICCloudSyncingObject *)self cryptoStrategy];
+    decryptedFallbackImageData = [cryptoStrategy decryptedFallbackImageData];
   }
 
   else
   {
-    v5 = [(ICAttachment *)self fallbackImageURL];
+    fallbackImageURL = [(ICAttachment *)self fallbackImageURL];
 
-    if (v5)
+    if (fallbackImageURL)
     {
       v6 = MEMORY[0x277CBEA90];
-      v7 = [(ICAttachment *)self fallbackImageURL];
-      v4 = [v6 dataWithContentsOfURL:v7];
+      fallbackImageURL2 = [(ICAttachment *)self fallbackImageURL];
+      decryptedFallbackImageData = [v6 dataWithContentsOfURL:fallbackImageURL2];
     }
 
     else
@@ -10249,64 +10249,64 @@ void __53__ICAttachment_Management__predicateForInlineDrawing__block_invoke()
         [(ICAttachment(Management) *)self fallbackImageData];
       }
 
-      v4 = 0;
+      decryptedFallbackImageData = 0;
     }
   }
 
-  return v4;
+  return decryptedFallbackImageData;
 }
 
-- (BOOL)writeFallbackImageData:(id)a3
+- (BOOL)writeFallbackImageData:(id)data
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = os_log_create("com.apple.notes", "CoreData");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ICCloudSyncingObject *)self shortLoggingDescription];
-    v7 = [v4 ic_sha256];
+    shortLoggingDescription = [(ICCloudSyncingObject *)self shortLoggingDescription];
+    ic_sha256 = [dataCopy ic_sha256];
     v19 = 138413058;
-    v20 = v6;
+    v20 = shortLoggingDescription;
     v21 = 2112;
     v23 = 2080;
-    v22 = v7;
+    v22 = ic_sha256;
     v24 = "[ICAttachment(Management) writeFallbackImageData:]";
     v25 = 1024;
     v26 = 2861;
     _os_log_impl(&dword_214D51000, v5, OS_LOG_TYPE_DEFAULT, "Writing fallback image data… {attachment: %@, data.sha256: %@}%s:%d", &v19, 0x26u);
   }
 
-  v8 = [(ICAttachment(Management) *)self fallbackImageGenerationManager];
+  fallbackImageGenerationManager = [(ICAttachment(Management) *)self fallbackImageGenerationManager];
 
-  if (v8)
+  if (fallbackImageGenerationManager)
   {
-    v9 = [(ICAttachment(Management) *)self fallbackImageGenerationManager];
-    v10 = [v9 beginGeneration];
+    fallbackImageGenerationManager2 = [(ICAttachment(Management) *)self fallbackImageGenerationManager];
+    beginGeneration = [fallbackImageGenerationManager2 beginGeneration];
 
-    if (v10)
+    if (beginGeneration)
     {
       if ([(ICAttachment *)self isPasswordProtected])
       {
-        v11 = [(ICCloudSyncingObject *)self cryptoStrategy];
-        v12 = [v11 writeEncryptedFallbackImageData:v4];
+        cryptoStrategy = [(ICCloudSyncingObject *)self cryptoStrategy];
+        v12 = [cryptoStrategy writeEncryptedFallbackImageData:dataCopy];
 
         if ((v12 & 1) == 0)
         {
 LABEL_18:
-          v13 = [(ICAttachment(Management) *)self fallbackImageGenerationManager];
-          [v13 rollbackGeneration];
+          fallbackImageGenerationManager3 = [(ICAttachment(Management) *)self fallbackImageGenerationManager];
+          [fallbackImageGenerationManager3 rollbackGeneration];
           goto LABEL_13;
         }
       }
 
       else
       {
-        v16 = [(ICAttachment *)self fallbackImageURL];
+        fallbackImageURL = [(ICAttachment *)self fallbackImageURL];
 
-        if (v16)
+        if (fallbackImageURL)
         {
-          v17 = [(ICAttachment *)self fallbackImageURL];
-          v18 = [v4 writeToURL:v17 atomically:1];
+          fallbackImageURL2 = [(ICAttachment *)self fallbackImageURL];
+          v18 = [dataCopy writeToURL:fallbackImageURL2 atomically:1];
 
           if (!v18)
           {
@@ -10315,13 +10315,13 @@ LABEL_18:
         }
       }
 
-      v13 = [(ICAttachment(Management) *)self fallbackImageGenerationManager];
-      v14 = [v13 commitGeneration];
+      fallbackImageGenerationManager3 = [(ICAttachment(Management) *)self fallbackImageGenerationManager];
+      commitGeneration = [fallbackImageGenerationManager3 commitGeneration];
       goto LABEL_14;
     }
 
-    v13 = os_log_create("com.apple.notes", "Cloud");
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    fallbackImageGenerationManager3 = os_log_create("com.apple.notes", "Cloud");
+    if (os_log_type_enabled(fallbackImageGenerationManager3, OS_LOG_TYPE_ERROR))
     {
       [ICAttachment(Management) writeFallbackImageData:?];
     }
@@ -10329,45 +10329,45 @@ LABEL_18:
 
   else
   {
-    v13 = os_log_create("com.apple.notes", "CoreData");
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    fallbackImageGenerationManager3 = os_log_create("com.apple.notes", "CoreData");
+    if (os_log_type_enabled(fallbackImageGenerationManager3, OS_LOG_TYPE_ERROR))
     {
       [ICAttachment(Management) writeFallbackImageData:?];
     }
   }
 
 LABEL_13:
-  v14 = 0;
+  commitGeneration = 0;
 LABEL_14:
 
-  return v14;
+  return commitGeneration;
 }
 
-+ (id)fallbackPDFContainerURLForIdentifier:(id)a3 account:(id)a4
++ (id)fallbackPDFContainerURLForIdentifier:(id)identifier account:(id)account
 {
-  v5 = a3;
-  v6 = [a4 fallbackPDFDirectoryURL];
-  v7 = [v6 URLByAppendingPathComponent:v5 isDirectory:1];
+  identifierCopy = identifier;
+  fallbackPDFDirectoryURL = [account fallbackPDFDirectoryURL];
+  v7 = [fallbackPDFDirectoryURL URLByAppendingPathComponent:identifierCopy isDirectory:1];
 
   return v7;
 }
 
-+ (id)fallbackPDFFallbackURLForIdentifier:(id)a3 account:(id)a4
++ (id)fallbackPDFFallbackURLForIdentifier:(id)identifier account:(id)account
 {
-  v6 = a3;
-  v7 = [a4 fallbackPDFDirectoryURL];
-  v8 = [v7 URLByAppendingPathComponent:v6 isDirectory:0];
+  identifierCopy = identifier;
+  fallbackPDFDirectoryURL = [account fallbackPDFDirectoryURL];
+  v8 = [fallbackPDFDirectoryURL URLByAppendingPathComponent:identifierCopy isDirectory:0];
 
-  v9 = [a1 fallbackPDFUTI];
-  v10 = [v9 pathExtension];
-  v11 = [v8 URLByAppendingPathExtension:v10];
+  fallbackPDFUTI = [self fallbackPDFUTI];
+  pathExtension = [fallbackPDFUTI pathExtension];
+  v11 = [v8 URLByAppendingPathExtension:pathExtension];
 
   return v11;
 }
 
-+ (id)fallbackPDFEncryptedFallbackURLForIdentifier:(id)a3 account:(id)a4
++ (id)fallbackPDFEncryptedFallbackURLForIdentifier:(id)identifier account:(id)account
 {
-  v4 = [a1 fallbackPDFFallbackURLForIdentifier:a3 account:a4];
+  v4 = [self fallbackPDFFallbackURLForIdentifier:identifier account:account];
   v5 = [v4 URLByAppendingPathExtension:@"encrypted"];
 
   return v5;
@@ -10375,55 +10375,55 @@ LABEL_14:
 
 - (id)fallbackPDFURL
 {
-  v3 = [(ICAttachment *)self account];
-  v4 = v3;
-  if (v3)
+  account = [(ICAttachment *)self account];
+  v4 = account;
+  if (account)
   {
-    v5 = v3;
+    account3 = account;
   }
 
   else
   {
-    v6 = [(ICAttachment *)self note];
-    v7 = [v6 account];
-    v8 = v7;
-    if (v7)
+    note = [(ICAttachment *)self note];
+    account2 = [note account];
+    v8 = account2;
+    if (account2)
     {
-      v5 = v7;
+      account3 = account2;
     }
 
     else
     {
-      v9 = [(ICAttachment *)self note];
-      v10 = [v9 folder];
-      v5 = [v10 account];
+      note2 = [(ICAttachment *)self note];
+      folder = [note2 folder];
+      account3 = [folder account];
     }
   }
 
-  v11 = [(ICAttachment *)self identifier];
+  identifier = [(ICAttachment *)self identifier];
 
   v12 = 0;
-  if (v11 && v5)
+  if (identifier && account3)
   {
-    v13 = [(ICAttachment(Management) *)self fallbackPDFGenerationManager];
-    v14 = [v13 generationURL];
+    fallbackPDFGenerationManager = [(ICAttachment(Management) *)self fallbackPDFGenerationManager];
+    generationURL = [fallbackPDFGenerationManager generationURL];
 
-    if (v14)
+    if (generationURL)
     {
-      v15 = [(ICAttachment(Management) *)self fallbackPDFGenerationManager];
-      v16 = [v15 generationURL];
-      v17 = [v16 URLByAppendingPathComponent:@"FallbackPDF" isDirectory:0];
+      fallbackPDFGenerationManager2 = [(ICAttachment(Management) *)self fallbackPDFGenerationManager];
+      generationURL2 = [fallbackPDFGenerationManager2 generationURL];
+      identifier2 = [generationURL2 URLByAppendingPathComponent:@"FallbackPDF" isDirectory:0];
 
-      v18 = [objc_opt_class() fallbackPDFUTI];
-      v19 = [v18 pathExtension];
-      v12 = [v17 URLByAppendingPathExtension:v19];
+      fallbackPDFUTI = [objc_opt_class() fallbackPDFUTI];
+      pathExtension = [fallbackPDFUTI pathExtension];
+      v12 = [identifier2 URLByAppendingPathExtension:pathExtension];
     }
 
     else
     {
       v20 = objc_opt_class();
-      v17 = [(ICAttachment *)self identifier];
-      v12 = [v20 fallbackPDFFallbackURLForIdentifier:v17 account:v5];
+      identifier2 = [(ICAttachment *)self identifier];
+      v12 = [v20 fallbackPDFFallbackURLForIdentifier:identifier2 account:account3];
     }
   }
 
@@ -10432,8 +10432,8 @@ LABEL_14:
 
 - (id)fallbackPDFEncryptedURL
 {
-  v2 = [(ICAttachment *)self fallbackPDFURL];
-  v3 = [v2 URLByAppendingPathExtension:@"encrypted"];
+  fallbackPDFURL = [(ICAttachment *)self fallbackPDFURL];
+  v3 = [fallbackPDFURL URLByAppendingPathExtension:@"encrypted"];
 
   return v3;
 }
@@ -10450,28 +10450,28 @@ LABEL_14:
     [(ICAttachment *)self fallbackPDFURL];
   }
   v3 = ;
-  v4 = [v3 ic_isReachable];
+  ic_isReachable = [v3 ic_isReachable];
 
-  return v4;
+  return ic_isReachable;
 }
 
 - (id)fallbackPDFData
 {
   if ([(ICAttachment *)self isPasswordProtected])
   {
-    v3 = [(ICCloudSyncingObject *)self cryptoStrategy];
-    v4 = [v3 decryptedFallbackPDFData];
+    cryptoStrategy = [(ICCloudSyncingObject *)self cryptoStrategy];
+    decryptedFallbackPDFData = [cryptoStrategy decryptedFallbackPDFData];
   }
 
   else
   {
-    v5 = [(ICAttachment *)self fallbackPDFURL];
+    fallbackPDFURL = [(ICAttachment *)self fallbackPDFURL];
 
-    if (v5)
+    if (fallbackPDFURL)
     {
       v6 = MEMORY[0x277CBEA90];
-      v7 = [(ICAttachment *)self fallbackPDFURL];
-      v4 = [v6 dataWithContentsOfURL:v7];
+      fallbackPDFURL2 = [(ICAttachment *)self fallbackPDFURL];
+      decryptedFallbackPDFData = [v6 dataWithContentsOfURL:fallbackPDFURL2];
     }
 
     else
@@ -10482,64 +10482,64 @@ LABEL_14:
         [(ICAttachment(Management) *)self fallbackPDFData];
       }
 
-      v4 = 0;
+      decryptedFallbackPDFData = 0;
     }
   }
 
-  return v4;
+  return decryptedFallbackPDFData;
 }
 
-- (BOOL)writeFallbackPDFData:(id)a3
+- (BOOL)writeFallbackPDFData:(id)data
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = os_log_create("com.apple.notes", "CoreData");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(ICCloudSyncingObject *)self shortLoggingDescription];
-    v7 = [v4 ic_sha256];
+    shortLoggingDescription = [(ICCloudSyncingObject *)self shortLoggingDescription];
+    ic_sha256 = [dataCopy ic_sha256];
     v19 = 138413058;
-    v20 = v6;
+    v20 = shortLoggingDescription;
     v21 = 2112;
     v23 = 2080;
-    v22 = v7;
+    v22 = ic_sha256;
     v24 = "[ICAttachment(Management) writeFallbackPDFData:]";
     v25 = 1024;
     v26 = 2974;
     _os_log_impl(&dword_214D51000, v5, OS_LOG_TYPE_DEFAULT, "Writing fallback PDF data… {attachment: %@, data.sha256: %@}%s:%d", &v19, 0x26u);
   }
 
-  v8 = [(ICAttachment(Management) *)self fallbackPDFGenerationManager];
+  fallbackPDFGenerationManager = [(ICAttachment(Management) *)self fallbackPDFGenerationManager];
 
-  if (v8)
+  if (fallbackPDFGenerationManager)
   {
-    v9 = [(ICAttachment(Management) *)self fallbackPDFGenerationManager];
-    v10 = [v9 beginGeneration];
+    fallbackPDFGenerationManager2 = [(ICAttachment(Management) *)self fallbackPDFGenerationManager];
+    beginGeneration = [fallbackPDFGenerationManager2 beginGeneration];
 
-    if (v10)
+    if (beginGeneration)
     {
       if ([(ICAttachment *)self isPasswordProtected])
       {
-        v11 = [(ICCloudSyncingObject *)self cryptoStrategy];
-        v12 = [v11 writeEncryptedFallbackPDFData:v4];
+        cryptoStrategy = [(ICCloudSyncingObject *)self cryptoStrategy];
+        v12 = [cryptoStrategy writeEncryptedFallbackPDFData:dataCopy];
 
         if ((v12 & 1) == 0)
         {
 LABEL_18:
-          v13 = [(ICAttachment(Management) *)self fallbackPDFGenerationManager];
-          [v13 rollbackGeneration];
+          fallbackPDFGenerationManager3 = [(ICAttachment(Management) *)self fallbackPDFGenerationManager];
+          [fallbackPDFGenerationManager3 rollbackGeneration];
           goto LABEL_13;
         }
       }
 
       else
       {
-        v16 = [(ICAttachment *)self fallbackPDFURL];
+        fallbackPDFURL = [(ICAttachment *)self fallbackPDFURL];
 
-        if (v16)
+        if (fallbackPDFURL)
         {
-          v17 = [(ICAttachment *)self fallbackPDFURL];
-          v18 = [v4 writeToURL:v17 atomically:1];
+          fallbackPDFURL2 = [(ICAttachment *)self fallbackPDFURL];
+          v18 = [dataCopy writeToURL:fallbackPDFURL2 atomically:1];
 
           if (!v18)
           {
@@ -10548,13 +10548,13 @@ LABEL_18:
         }
       }
 
-      v13 = [(ICAttachment(Management) *)self fallbackPDFGenerationManager];
-      v14 = [v13 commitGeneration];
+      fallbackPDFGenerationManager3 = [(ICAttachment(Management) *)self fallbackPDFGenerationManager];
+      commitGeneration = [fallbackPDFGenerationManager3 commitGeneration];
       goto LABEL_14;
     }
 
-    v13 = os_log_create("com.apple.notes", "Cloud");
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    fallbackPDFGenerationManager3 = os_log_create("com.apple.notes", "Cloud");
+    if (os_log_type_enabled(fallbackPDFGenerationManager3, OS_LOG_TYPE_ERROR))
     {
       [ICAttachment(Management) writeFallbackPDFData:?];
     }
@@ -10562,18 +10562,18 @@ LABEL_18:
 
   else
   {
-    v13 = os_log_create("com.apple.notes", "CoreData");
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    fallbackPDFGenerationManager3 = os_log_create("com.apple.notes", "CoreData");
+    if (os_log_type_enabled(fallbackPDFGenerationManager3, OS_LOG_TYPE_ERROR))
     {
       [ICAttachment(Management) writeFallbackPDFData:?];
     }
   }
 
 LABEL_13:
-  v14 = 0;
+  commitGeneration = 0;
 LABEL_14:
 
-  return v14;
+  return commitGeneration;
 }
 
 - (id)paperBundleURL
@@ -10584,14 +10584,14 @@ LABEL_14:
   v10 = __Block_byref_object_copy__56;
   v11 = __Block_byref_object_dispose__56;
   v12 = 0;
-  v3 = [(ICAttachment *)self managedObjectContext];
+  managedObjectContext = [(ICAttachment *)self managedObjectContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__ICAttachment_Management__paperBundleURL__block_invoke;
   v6[3] = &unk_278194DE8;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performBlockAndWait:v6];
+  [managedObjectContext performBlockAndWait:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -10624,31 +10624,31 @@ void __42__ICAttachment_Management__paperBundleURL__block_invoke(uint64_t a1)
 
 - (id)paperBundleDatabaseSubdirectoryURL
 {
-  v2 = [(ICAttachment *)self paperBundleURL];
-  v3 = [_TtC11NotesShared21ICSystemPaperDocument databaseDirectoryAt:v2];
+  paperBundleURL = [(ICAttachment *)self paperBundleURL];
+  v3 = [_TtC11NotesShared21ICSystemPaperDocument databaseDirectoryAt:paperBundleURL];
 
   return v3;
 }
 
 - (id)paperBundleAssetsSubdirectoryURL
 {
-  v2 = [(ICAttachment *)self paperBundleURL];
-  v3 = [_TtC11NotesShared21ICSystemPaperDocument assetsDirectoryAt:v2];
+  paperBundleURL = [(ICAttachment *)self paperBundleURL];
+  v3 = [_TtC11NotesShared21ICSystemPaperDocument assetsDirectoryAt:paperBundleURL];
 
   return v3;
 }
 
-+ (id)temporaryPaperBundleURLForIdentifier:(id)a3 account:(id)a4
++ (id)temporaryPaperBundleURLForIdentifier:(id)identifier account:(id)account
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  identifierCopy = identifier;
+  accountCopy = account;
+  if (accountCopy)
   {
-    if (v5)
+    if (identifierCopy)
     {
 LABEL_3:
-      v7 = [v6 systemPaperTemporaryDirectoryURL];
-      v8 = [v7 URLByAppendingPathComponent:v5 isDirectory:1];
+      systemPaperTemporaryDirectoryURL = [accountCopy systemPaperTemporaryDirectoryURL];
+      v8 = [systemPaperTemporaryDirectoryURL URLByAppendingPathComponent:identifierCopy isDirectory:1];
 
       v9 = [v8 URLByAppendingPathExtension:@"bundle"];
 
@@ -10659,7 +10659,7 @@ LABEL_3:
   else
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"((account) != nil)" functionName:"+[ICAttachment(Management) temporaryPaperBundleURLForIdentifier:account:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "account"}];
-    if (v5)
+    if (identifierCopy)
     {
       goto LABEL_3;
     }
@@ -10685,14 +10685,14 @@ LABEL_8:
   v10 = __Block_byref_object_copy__56;
   v11 = __Block_byref_object_dispose__56;
   v12 = 0;
-  v3 = [(ICAttachment *)self managedObjectContext];
+  managedObjectContext = [(ICAttachment *)self managedObjectContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__ICAttachment_Management__paperCoherenceContextURL__block_invoke;
   v6[3] = &unk_278194DE8;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performBlockAndWait:v6];
+  [managedObjectContext performBlockAndWait:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -10734,25 +10734,25 @@ void __52__ICAttachment_Management__paperCoherenceContextURL__block_invoke(uint6
 {
   if ([(ICAttachment *)self attachmentType]== 6 || [(ICAttachment *)self attachmentType]== 11)
   {
-    v3 = [(ICAttachment *)self identifier];
-    v4 = [(ICAttachment *)self note];
-    v5 = [v4 account];
-    v6 = v5;
-    if (v5)
+    identifier = [(ICAttachment *)self identifier];
+    note = [(ICAttachment *)self note];
+    account = [note account];
+    v6 = account;
+    if (account)
     {
-      v7 = v5;
+      account2 = account;
     }
 
     else
     {
-      v8 = [(ICAttachment *)self note];
-      v9 = [v8 folder];
-      v7 = [v9 account];
+      note2 = [(ICAttachment *)self note];
+      folder = [note2 folder];
+      account2 = [folder account];
     }
 
-    if ([v3 length])
+    if ([identifier length])
     {
-      if (v7)
+      if (account2)
       {
         goto LABEL_8;
       }
@@ -10761,12 +10761,12 @@ void __52__ICAttachment_Management__paperCoherenceContextURL__block_invoke(uint6
     else
     {
       [MEMORY[0x277D36198] handleFailedAssertWithCondition:"identifier.length" functionName:"-[ICAttachment(Management) temporaryPaperBundleURL]" simulateCrash:1 showAlert:1 format:@"identifier is empty"];
-      if (v7)
+      if (account2)
       {
 LABEL_8:
-        if (v3)
+        if (identifier)
         {
-          v10 = [objc_opt_class() temporaryPaperBundleURLForIdentifier:v3 account:v7];
+          v10 = [objc_opt_class() temporaryPaperBundleURLForIdentifier:identifier account:account2];
 LABEL_15:
 
           goto LABEL_17;
@@ -10797,8 +10797,8 @@ LABEL_17:
 - (void)removeTemporaryPaperBundle
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(ICAttachment *)self temporaryPaperBundleURL];
-  if (v3)
+  temporaryPaperBundleURL = [(ICAttachment *)self temporaryPaperBundleURL];
+  if (temporaryPaperBundleURL)
   {
     v15 = 0;
     v16[0] = &v15;
@@ -10820,15 +10820,15 @@ LABEL_17:
     v9[2] = __54__ICAttachment_Management__removeTemporaryPaperBundle__block_invoke;
     v9[3] = &unk_278195820;
     v9[4] = &v11;
-    [v4 coordinateWritingItemAtURL:v3 options:1 error:&obj byAccessor:v9];
+    [v4 coordinateWritingItemAtURL:temporaryPaperBundleURL options:1 error:&obj byAccessor:v9];
     objc_storeStrong(v6, obj);
     if ((v12[3] & 1) == 0)
     {
       v7 = os_log_create("com.apple.notes", "CoreData");
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
-        v8 = [(ICCloudSyncingObject *)self shortLoggingDescription];
-        [(ICAttachment(Management) *)v8 removeTemporaryPaperBundle:v16];
+        shortLoggingDescription = [(ICCloudSyncingObject *)self shortLoggingDescription];
+        [(ICAttachment(Management) *)shortLoggingDescription removeTemporaryPaperBundle:v16];
       }
     }
 
@@ -10852,8 +10852,8 @@ void __54__ICAttachment_Management__removeTemporaryPaperBundle__block_invoke(uin
 
 - (void)addLocationIfNeeded
 {
-  v3 = [(ICAttachment *)self location];
-  if (!v3)
+  location = [(ICAttachment *)self location];
+  if (!location)
   {
     if (([(ICAttachment *)self checkedForLocation]& 1) != 0)
     {
@@ -10861,43 +10861,43 @@ void __54__ICAttachment_Management__removeTemporaryPaperBundle__block_invoke(uin
     }
 
     [(ICAttachment *)self setCheckedForLocation:1];
-    v4 = [(ICAttachment *)self attachmentModel];
-    [v4 addLocation];
-    v3 = v4;
+    attachmentModel = [(ICAttachment *)self attachmentModel];
+    [attachmentModel addLocation];
+    location = attachmentModel;
   }
 }
 
-- (id)addLocationWithLatitude:(double)a3 longitude:(double)a4
+- (id)addLocationWithLatitude:(double)latitude longitude:(double)longitude
 {
   v7 = [ICAttachmentLocation newAttachmentLocationForAttachment:self];
   [(ICAttachment *)self setLocation:v7];
 
-  v8 = [(ICAttachment *)self location];
-  [v8 setLatitude:a3];
+  location = [(ICAttachment *)self location];
+  [location setLatitude:latitude];
 
-  v9 = [(ICAttachment *)self location];
-  [v9 setLongitude:a4];
+  location2 = [(ICAttachment *)self location];
+  [location2 setLongitude:longitude];
 
   return [(ICAttachment *)self location];
 }
 
-- (void)regenerateTitleWithInferredTitle:(id)a3
+- (void)regenerateTitleWithInferredTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(ICAttachment *)self userTitle];
+  titleCopy = title;
+  userTitle = [(ICAttachment *)self userTitle];
 
-  if (!v5)
+  if (!userTitle)
   {
     v18 = 0;
     v19 = &v18;
     v20 = 0x3032000000;
     v21 = __Block_byref_object_copy__56;
     v22 = __Block_byref_object_dispose__56;
-    v23 = v4;
+    v23 = titleCopy;
     if (!v19[5] && [(ICAttachment *)self attachmentType]== 11)
     {
       objc_opt_class();
-      v6 = [(ICAttachment *)self attachmentModel];
+      attachmentModel = [(ICAttachment *)self attachmentModel];
       v7 = ICDynamicCast();
 
       v17[0] = MEMORY[0x277D85DD0];
@@ -10910,27 +10910,27 @@ void __54__ICAttachment_Management__removeTemporaryPaperBundle__block_invoke(uin
 
     if (v19[5] || ([ICAttachment defaultTitleForAttachmentType:[(ICAttachment *)self attachmentType]], v8 = objc_claimAutoreleasedReturnValue(), v9 = v19[5], v19[5] = v8, v9, v19[5]))
     {
-      v10 = [(ICAttachment *)self title];
-      v11 = [v10 isEqualToString:v19[5]];
+      title = [(ICAttachment *)self title];
+      v11 = [title isEqualToString:v19[5]];
 
       if ((v11 & 1) == 0)
       {
         [(ICAttachment *)self setTitle:v19[5]];
         [(ICCloudSyncingObject *)self updateChangeCountWithReason:@"Regenerated attachment title"];
-        v12 = [(ICAttachment *)self note];
-        v13 = [v12 regenerateTitle:1 snippet:1];
+        note = [(ICAttachment *)self note];
+        v13 = [note regenerateTitle:1 snippet:1];
 
         if (v13)
         {
-          v14 = [(ICAttachment *)self note];
-          [v14 markShareDirtyIfNeededWithReason:@"Regenerated attachment title"];
+          note2 = [(ICAttachment *)self note];
+          [note2 markShareDirtyIfNeededWithReason:@"Regenerated attachment title"];
 
-          v15 = [(ICAttachment *)self note];
-          [v15 updateChangeCountWithReason:@"Regenerated attachment title"];
+          note3 = [(ICAttachment *)self note];
+          [note3 updateChangeCountWithReason:@"Regenerated attachment title"];
         }
 
-        v16 = [(ICAttachment *)self managedObjectContext];
-        [v16 ic_save];
+        managedObjectContext = [(ICAttachment *)self managedObjectContext];
+        [managedObjectContext ic_save];
       }
     }
 
@@ -10956,23 +10956,23 @@ void __61__ICAttachment_Management__regenerateTitleWithInferredTitle___block_inv
   }
 }
 
-- (void)updatePlaceInLocationIfNeededHandler:(id)a3
+- (void)updatePlaceInLocationIfNeededHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(ICAttachment *)self addLocationIfNeeded];
-  v5 = [(ICAttachment *)self location];
-  v6 = v5;
-  if (!v5 || ([v5 placeUpdated] & 1) != 0 || (objc_msgSend(v6, "updatingPlace") & 1) != 0)
+  location = [(ICAttachment *)self location];
+  v6 = location;
+  if (!location || ([location placeUpdated] & 1) != 0 || (objc_msgSend(v6, "updatingPlace") & 1) != 0)
   {
-    if (v4)
+    if (handlerCopy)
     {
-      (*(v4 + 2))(v4, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0);
     }
   }
 
   else
   {
-    v7 = [(ICAttachment *)self managedObjectContext];
+    managedObjectContext = [(ICAttachment *)self managedObjectContext];
     [v6 setUpdatingPlace:1];
     v8 = +[ICLocationContext sharedContext];
     [v6 latitude];
@@ -10983,11 +10983,11 @@ void __61__ICAttachment_Management__regenerateTitleWithInferredTitle___block_inv
     v14[1] = 3221225472;
     v14[2] = __65__ICAttachment_Management__updatePlaceInLocationIfNeededHandler___block_invoke;
     v14[3] = &unk_278199E58;
-    v15 = v7;
+    v15 = managedObjectContext;
     v16 = v6;
-    v17 = self;
-    v18 = v4;
-    v13 = v7;
+    selfCopy = self;
+    v18 = handlerCopy;
+    v13 = managedObjectContext;
     [v8 lookupPlaceAtLatitude:v14 longitude:v10 handler:v12];
   }
 }
@@ -11035,34 +11035,34 @@ uint64_t __65__ICAttachment_Management__updatePlaceInLocationIfNeededHandler___b
 
 - (void)noteWillMoveToRecentlyDeletedFolder
 {
-  v2 = [(ICAttachment *)self paperBundleModel];
-  [v2 removeStrokesFromStyleInventory];
+  paperBundleModel = [(ICAttachment *)self paperBundleModel];
+  [paperBundleModel removeStrokesFromStyleInventory];
 }
 
-- (id)addInlineAttachmentWithIdentifier:(id)a3
+- (id)addInlineAttachmentWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ICAttachment *)self note];
-  v6 = [(ICBaseAttachment *)ICInlineAttachment newAttachmentWithIdentifier:v4 note:v5];
+  identifierCopy = identifier;
+  note = [(ICAttachment *)self note];
+  v6 = [(ICBaseAttachment *)ICInlineAttachment newAttachmentWithIdentifier:identifierCopy note:note];
 
   [(ICAttachment *)self addInlineAttachmentsObject:v6];
-  v7 = [(ICAttachment *)self note];
-  [v7 addInlineAttachmentsObject:v6];
+  note2 = [(ICAttachment *)self note];
+  [note2 addInlineAttachmentsObject:v6];
 
   return v6;
 }
 
 - (void)updateAfterMediaChange
 {
-  v2 = [(ICAttachment *)self attachmentModel];
-  [v2 updateFileBasedAttributes];
+  attachmentModel = [(ICAttachment *)self attachmentModel];
+  [attachmentModel updateFileBasedAttributes];
 }
 
-- (id)addMediaWithData:(id)a3 filename:(id)a4 updateFileBasedAttributes:(BOOL)a5
+- (id)addMediaWithData:(id)data filename:(id)filename updateFileBasedAttributes:(BOOL)attributes
 {
-  v5 = a5;
+  attributesCopy = attributes;
   v10 = 0;
-  v7 = [ICMedia newMediaWithAttachment:self forData:a3 filename:a4 error:&v10];
+  v7 = [ICMedia newMediaWithAttachment:self forData:data filename:filename error:&v10];
   if (v10)
   {
     v8 = 1;
@@ -11070,7 +11070,7 @@ uint64_t __65__ICAttachment_Management__updatePlaceInLocationIfNeededHandler___b
 
   else
   {
-    v8 = !v5;
+    v8 = !attributesCopy;
   }
 
   if (!v8)
@@ -11084,10 +11084,10 @@ uint64_t __65__ICAttachment_Management__updatePlaceInLocationIfNeededHandler___b
   return v7;
 }
 
-- (id)addMediaWithFileWrapper:(id)a3
+- (id)addMediaWithFileWrapper:(id)wrapper
 {
   v6 = 0;
-  v4 = [ICMedia newMediaWithAttachment:self forFileWrapper:a3 error:&v6];
+  v4 = [ICMedia newMediaWithAttachment:self forFileWrapper:wrapper error:&v6];
   if (!v6)
   {
     [(ICAttachment *)self updateAfterMediaChange];
@@ -11099,11 +11099,11 @@ uint64_t __65__ICAttachment_Management__updatePlaceInLocationIfNeededHandler___b
   return v4;
 }
 
-- (id)addMediaWithURL:(id)a3 updateFileBasedAttributes:(BOOL)a4
+- (id)addMediaWithURL:(id)l updateFileBasedAttributes:(BOOL)attributes
 {
-  v4 = a4;
+  attributesCopy = attributes;
   v9 = 0;
-  v6 = [ICMedia newMediaWithAttachment:self forURL:a3 error:&v9];
+  v6 = [ICMedia newMediaWithAttachment:self forURL:l error:&v9];
   if (v9)
   {
     v7 = 1;
@@ -11111,7 +11111,7 @@ uint64_t __65__ICAttachment_Management__updatePlaceInLocationIfNeededHandler___b
 
   else
   {
-    v7 = !v4;
+    v7 = !attributesCopy;
   }
 
   if (!v7)
@@ -11125,28 +11125,28 @@ uint64_t __65__ICAttachment_Management__updatePlaceInLocationIfNeededHandler___b
   return v6;
 }
 
-- (id)addMediaWithURL:(id)a3 filename:(id)a4 updateFileBasedAttributes:(BOOL)a5
+- (id)addMediaWithURL:(id)l filename:(id)filename updateFileBasedAttributes:(BOOL)attributes
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v9 && [v9 length])
+  attributesCopy = attributes;
+  lCopy = l;
+  filenameCopy = filename;
+  v10 = filenameCopy;
+  if (filenameCopy && [filenameCopy length])
   {
-    v11 = [v10 stringByDeletingPathExtension];
-    v12 = [v8 pathExtension];
-    v13 = [v11 stringByAppendingPathExtension:v12];
+    stringByDeletingPathExtension = [v10 stringByDeletingPathExtension];
+    pathExtension = [lCopy pathExtension];
+    lastPathComponent = [stringByDeletingPathExtension stringByAppendingPathExtension:pathExtension];
   }
 
   else
   {
-    v13 = [v8 lastPathComponent];
-    v11 = v10;
+    lastPathComponent = [lCopy lastPathComponent];
+    stringByDeletingPathExtension = v10;
   }
 
   v16 = 0;
-  v14 = [ICMedia newMediaWithAttachment:self forURL:v8 filename:v13 error:&v16];
-  if (!v16 && v5)
+  v14 = [ICMedia newMediaWithAttachment:self forURL:lCopy filename:lastPathComponent error:&v16];
+  if (!v16 && attributesCopy)
   {
     [(ICAttachment *)self updateAfterMediaChange];
   }
@@ -11164,8 +11164,8 @@ uint64_t __65__ICAttachment_Management__updatePlaceInLocationIfNeededHandler___b
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(ICAttachment *)self previewImages];
-  v3 = [v2 copy];
+  previewImages = [(ICAttachment *)self previewImages];
+  v3 = [previewImages copy];
 
   v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
@@ -11209,8 +11209,8 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(ICAttachment *)self previewImages];
-  v4 = [v3 copy];
+  previewImages = [(ICAttachment *)self previewImages];
+  v4 = [previewImages copy];
 
   v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
@@ -11247,8 +11247,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(ICAttachment *)self previewImages];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  previewImages = [(ICAttachment *)self previewImages];
+  v3 = [previewImages countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -11260,14 +11260,14 @@ LABEL_11:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(previewImages);
         }
 
         [*(*(&v7 + 1) + 8 * v6++) unmarkForDeletion];
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [previewImages countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -11281,8 +11281,8 @@ LABEL_11:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(ICAttachment *)self previewImages];
-  v4 = [v3 copy];
+  previewImages = [(ICAttachment *)self previewImages];
+  v4 = [previewImages copy];
 
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
@@ -11300,13 +11300,13 @@ LABEL_11:
 
         v9 = *(*(&v12 + 1) + 8 * i);
         [(ICAttachment *)self removePreviewImagesObject:v9];
-        v10 = [(ICAttachment *)self managedObjectContext];
-        [v10 deleteObject:v9];
+        managedObjectContext = [(ICAttachment *)self managedObjectContext];
+        [managedObjectContext deleteObject:v9];
 
-        v11 = [(ICAttachment *)self attachmentModel];
-        LODWORD(v10) = [v11 requiresPostProcessing];
+        attachmentModel = [(ICAttachment *)self attachmentModel];
+        LODWORD(managedObjectContext) = [attachmentModel requiresPostProcessing];
 
-        if (v10)
+        if (managedObjectContext)
         {
           [(ICAttachment *)self setOcrSummary:0];
           [(ICAttachment *)self setImageClassificationSummary:0];
@@ -11327,8 +11327,8 @@ LABEL_11:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(ICAttachment *)self previewImages];
-  v3 = [v2 copy];
+  previewImages = [(ICAttachment *)self previewImages];
+  v3 = [previewImages copy];
 
   v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
@@ -11370,8 +11370,8 @@ LABEL_11:
   v3 = checkPreviewImagesIntegrity_sCheckedAttachments;
   objc_sync_enter(v3);
   v4 = checkPreviewImagesIntegrity_sCheckedAttachments;
-  v5 = [(ICAttachment *)self objectID];
-  LOBYTE(v4) = [v4 containsObject:v5];
+  objectID = [(ICAttachment *)self objectID];
+  LOBYTE(v4) = [v4 containsObject:objectID];
 
   if (v4)
   {
@@ -11381,18 +11381,18 @@ LABEL_11:
   else
   {
     v7 = checkPreviewImagesIntegrity_sCheckedAttachments;
-    v8 = [(ICAttachment *)self objectID];
-    [v7 addObject:v8];
+    objectID2 = [(ICAttachment *)self objectID];
+    [v7 addObject:objectID2];
 
     objc_sync_exit(v3);
-    v9 = [(ICAttachment *)self managedObjectContext];
+    managedObjectContext = [(ICAttachment *)self managedObjectContext];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __53__ICAttachment_Previews__checkPreviewImagesIntegrity__block_invoke_2;
     v17[3] = &unk_278194D68;
     v17[4] = self;
     v17[5] = &v18;
-    [v9 performBlockAndWait:v17];
+    [managedObjectContext performBlockAndWait:v17];
 
     if (v19[3])
     {
@@ -11400,13 +11400,13 @@ LABEL_11:
       goto LABEL_8;
     }
 
-    v11 = [(ICAttachment *)self managedObjectContext];
+    managedObjectContext2 = [(ICAttachment *)self managedObjectContext];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __53__ICAttachment_Previews__checkPreviewImagesIntegrity__block_invoke_3;
     v16[3] = &unk_278194B00;
     v16[4] = self;
-    [v11 performBlockAndWait:v16];
+    [managedObjectContext2 performBlockAndWait:v16];
 
     v12 = +[ICNoteContext sharedContext];
     v13 = [v12 hasContextOptions:32];
@@ -11510,24 +11510,24 @@ void __53__ICAttachment_Previews__checkPreviewImagesIntegrity__block_invoke_1126
   [v3 postNotificationName:@"ICAttachmentNeedsPreviewGenerationNotification" object:v2];
 }
 
-- (void)loadLinkPreviewForSynapseItem:(id)a3
+- (void)loadLinkPreviewForSynapseItem:(id)item
 {
-  v4 = a3;
-  v5 = [[ICSynapseLinkPreviewLoadingOperation alloc] initWithSynapseItem:v4];
+  itemCopy = item;
+  v5 = [[ICSynapseLinkPreviewLoadingOperation alloc] initWithSynapseItem:itemCopy];
   loadOperation = self->_loadOperation;
   self->_loadOperation = v5;
 
-  v7 = [(ICAttachment *)self ic_permanentObjectID];
+  ic_permanentObjectID = [(ICAttachment *)self ic_permanentObjectID];
   v8 = self->_loadOperation;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __56__ICAttachment_Previews__loadLinkPreviewForSynapseItem___block_invoke;
   v11[3] = &unk_278194DC0;
-  v12 = v4;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v4;
+  v12 = itemCopy;
+  v13 = ic_permanentObjectID;
+  selfCopy = self;
+  v9 = ic_permanentObjectID;
+  v10 = itemCopy;
   [(ICSynapseLinkPreviewLoadingOperation *)v8 loadPreviewWithCompletionBlock:v11];
 }
 
@@ -11569,20 +11569,20 @@ void __56__ICAttachment_Previews__loadLinkPreviewForSynapseItem___block_invoke_2
   [*(a1 + 48) ic_postNotificationOnMainThreadWithName:@"ICAttachmentDidLoadNotification"];
 }
 
-- (id)updateAttachmentPreviewImageWithImageData:(id)a3 size:(CGSize)a4 scale:(double)a5 appearanceType:(unint64_t)a6 scaleWhenDrawing:(BOOL)a7 metadata:(id)a8 sendNotification:(BOOL)a9
+- (id)updateAttachmentPreviewImageWithImageData:(id)data size:(CGSize)size scale:(double)scale appearanceType:(unint64_t)type scaleWhenDrawing:(BOOL)drawing metadata:(id)metadata sendNotification:(BOOL)notification
 {
-  v9 = a9;
-  v11 = a7;
-  height = a4.height;
-  width = a4.width;
-  v17 = a3;
-  v18 = [(ICAttachment *)self attachmentPreviewImageCreatingIfNecessaryWithWidth:a6 height:v11 scale:a8 appearanceType:width scaleWhenDrawing:height metadata:a5];
+  notificationCopy = notification;
+  drawingCopy = drawing;
+  height = size.height;
+  width = size.width;
+  dataCopy = data;
+  v18 = [(ICAttachment *)self attachmentPreviewImageCreatingIfNecessaryWithWidth:type height:drawingCopy scale:metadata appearanceType:width scaleWhenDrawing:height metadata:scale];
   v19 = v18;
   if (v18)
   {
-    [v18 setScaleWhenDrawing:v11];
-    v20 = [v19 setImageData:v17 withSize:a6 scale:width appearanceType:{height, a5}];
-    if (v20 && v9)
+    [v18 setScaleWhenDrawing:drawingCopy];
+    v20 = [v19 setImageData:dataCopy withSize:type scale:width appearanceType:{height, scale}];
+    if (v20 && notificationCopy)
     {
       v21 = [(ICAttachment *)self ic_postNotificationOnMainThreadAfterSaveWithName:@"ICAttachmentPreviewImagesDidUpdateNotification"];
     }
@@ -11596,8 +11596,8 @@ void __56__ICAttachment_Previews__loadLinkPreviewForSynapseItem___block_invoke_2
       }
 
       [(ICAttachment *)self removePreviewImagesObject:v19];
-      v23 = [v19 managedObjectContext];
-      [v23 deleteObject:v19];
+      managedObjectContext = [v19 managedObjectContext];
+      [managedObjectContext deleteObject:v19];
 
       v19 = 0;
     }
@@ -11606,12 +11606,12 @@ void __56__ICAttachment_Previews__loadLinkPreviewForSynapseItem___block_invoke_2
   return v19;
 }
 
-- (id)updateAttachmentPreviewImageWithImageSrc:(CGImageSource *)a3 maxDimension:(double)a4 scale:(double)a5 appearanceType:(unint64_t)a6 scaleWhenDrawing:(BOOL)a7 metadata:(id)a8 sendNotification:(BOOL)a9
+- (id)updateAttachmentPreviewImageWithImageSrc:(CGImageSource *)src maxDimension:(double)dimension scale:(double)scale appearanceType:(unint64_t)type scaleWhenDrawing:(BOOL)drawing metadata:(id)metadata sendNotification:(BOOL)notification
 {
-  v9 = a9;
-  v10 = a7;
-  v16 = a8;
-  v17 = CGImageSourceCopyPropertiesAtIndex(a3, 0, 0);
+  notificationCopy = notification;
+  drawingCopy = drawing;
+  metadataCopy = metadata;
+  v17 = CGImageSourceCopyPropertiesAtIndex(src, 0, 0);
   v18 = v17;
   if (v17)
   {
@@ -11635,7 +11635,7 @@ void __56__ICAttachment_Previews__loadLinkPreviewForSynapseItem___block_invoke_2
 
     else
     {
-      v35 = v9;
+      v35 = notificationCopy;
       [v19 floatValue];
       v25 = v24;
       v26 = v24;
@@ -11651,13 +11651,13 @@ void __56__ICAttachment_Previews__loadLinkPreviewForSynapseItem___block_invoke_2
         v29 = v27;
       }
 
-      v23 = [(ICAttachment *)self attachmentPreviewImageCreatingIfNecessaryWithWidth:a6 height:v10 scale:v16 appearanceType:round(a4 / v29 * v26) scaleWhenDrawing:round(a4 / v29 * v28) metadata:a5];
-      CFRetain(a3);
-      v30 = [(ICAttachment *)self attachmentModel];
-      v31 = [v30 previewImageTypeUTI];
-      v32 = [v23 setScaledImageFromImageSrc:a3 typeUTI:v31];
+      v23 = [(ICAttachment *)self attachmentPreviewImageCreatingIfNecessaryWithWidth:type height:drawingCopy scale:metadataCopy appearanceType:round(dimension / v29 * v26) scaleWhenDrawing:round(dimension / v29 * v28) metadata:scale];
+      CFRetain(src);
+      attachmentModel = [(ICAttachment *)self attachmentModel];
+      previewImageTypeUTI = [attachmentModel previewImageTypeUTI];
+      v32 = [v23 setScaledImageFromImageSrc:src typeUTI:previewImageTypeUTI];
 
-      CFRelease(a3);
+      CFRelease(src);
       if (v32)
       {
         if (v35)
@@ -11681,10 +11681,10 @@ void __56__ICAttachment_Previews__loadLinkPreviewForSynapseItem___block_invoke_2
   return v23;
 }
 
-- (id)attachmentPreviewImageCreatingIfNecessaryWithWidth:(double)a3 height:(double)a4 scale:(double)a5 appearanceType:(unint64_t)a6 scaleWhenDrawing:(BOOL)a7 metadata:(id)a8
+- (id)attachmentPreviewImageCreatingIfNecessaryWithWidth:(double)width height:(double)height scale:(double)scale appearanceType:(unint64_t)type scaleWhenDrawing:(BOOL)drawing metadata:(id)metadata
 {
   v40 = *MEMORY[0x277D85DE8];
-  v14 = a8;
+  metadataCopy = metadata;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -11692,31 +11692,31 @@ void __56__ICAttachment_Previews__loadLinkPreviewForSynapseItem___block_invoke_2
   v32 = __Block_byref_object_dispose__56;
   v33 = 0;
   [(ICAttachment *)self checkPreviewImagesIntegrity];
-  v15 = [(ICAttachment *)self managedObjectContext];
+  managedObjectContext = [(ICAttachment *)self managedObjectContext];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __131__ICAttachment_Previews__attachmentPreviewImageCreatingIfNecessaryWithWidth_height_scale_appearanceType_scaleWhenDrawing_metadata___block_invoke;
   v20[3] = &unk_278199EA8;
-  v23 = a5;
-  v24 = a3;
-  v25 = a4;
-  v26 = a6;
+  scaleCopy = scale;
+  widthCopy = width;
+  heightCopy = height;
+  typeCopy = type;
   v20[4] = self;
   v22 = &v28;
-  v27 = a7;
-  v16 = v14;
+  drawingCopy = drawing;
+  v16 = metadataCopy;
   v21 = v16;
-  [v15 performBlockAndWait:v20];
+  [managedObjectContext performBlockAndWait:v20];
 
   v17 = os_log_create("com.apple.notes", "PreviewGeneration");
   if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134218496;
-    v35 = a3;
+    widthCopy2 = width;
     v36 = 2048;
-    v37 = a4;
+    heightCopy2 = height;
     v38 = 2048;
-    v39 = self;
+    selfCopy = self;
     _os_log_debug_impl(&dword_214D51000, v17, OS_LOG_TYPE_DEBUG, "Update preview image %.0fx%.0f 0x%p", buf, 0x20u);
   }
 
@@ -11840,57 +11840,57 @@ LABEL_24:
   objc_sync_exit(v2);
 }
 
-- (id)attachmentPreviewImageWithMinSize:(CGSize)a3 scale:(double)a4 appearanceType:(unint64_t)a5 requireAppearance:(BOOL)a6
+- (id)attachmentPreviewImageWithMinSize:(CGSize)size scale:(double)scale appearanceType:(unint64_t)type requireAppearance:(BOOL)appearance
 {
-  v6 = a6;
-  height = a3.height;
-  width = a3.width;
-  v12 = [ICAttachment attachmentPreviewImageWithMinSize:"attachmentPreviewImageWithMinSize:scale:appearanceType:matchScale:matchAppearance:" scale:a5 appearanceType:1 matchScale:1 matchAppearance:?];
-  if (!v12)
+  appearanceCopy = appearance;
+  height = size.height;
+  width = size.width;
+  scale = [ICAttachment attachmentPreviewImageWithMinSize:"attachmentPreviewImageWithMinSize:scale:appearanceType:matchScale:matchAppearance:" scale:type appearanceType:1 matchScale:1 matchAppearance:?];
+  if (!scale)
   {
-    v12 = [(ICAttachment *)self attachmentPreviewImageWithMinSize:a5 scale:0 appearanceType:v6 matchScale:width matchAppearance:height, a4];
+    scale = [(ICAttachment *)self attachmentPreviewImageWithMinSize:type scale:0 appearanceType:appearanceCopy matchScale:width matchAppearance:height, scale];
   }
 
-  return v12;
+  return scale;
 }
 
-- (id)attachmentPreviewImageWithMinSize:(CGSize)a3 scale:(double)a4 appearanceType:(unint64_t)a5 matchScale:(BOOL)a6 matchAppearance:(BOOL)a7
+- (id)attachmentPreviewImageWithMinSize:(CGSize)size scale:(double)scale appearanceType:(unint64_t)type matchScale:(BOOL)matchScale matchAppearance:(BOOL)appearance
 {
-  v7 = a6;
-  v9 = a4;
-  height = a3.height;
-  width = a3.width;
+  matchScaleCopy = matchScale;
+  scaleCopy = scale;
+  height = size.height;
+  width = size.width;
   v64 = *MEMORY[0x277D85DE8];
-  if (a4 <= 0.0)
+  if (scale <= 0.0)
   {
     [MEMORY[0x277D36198] handleFailedAssertWithCondition:"scale > 0." functionName:"-[ICAttachment(Previews) attachmentPreviewImageWithMinSize:scale:appearanceType:matchScale:matchAppearance:]" simulateCrash:1 showAlert:0 format:@"Passing invalid scale to attachmentPreviewImageWithMinSize"];
-    v9 = 1.0;
+    scaleCopy = 1.0;
   }
 
-  v13 = [(ICAttachment *)self attachmentType];
+  attachmentType = [(ICAttachment *)self attachmentType];
   [(ICAttachment *)self checkPreviewImagesIntegrity];
-  if (v7)
+  if (matchScaleCopy)
   {
     v14 = width;
   }
 
   else
   {
-    v14 = width * v9;
+    v14 = width * scaleCopy;
   }
 
-  if (v7)
+  if (matchScaleCopy)
   {
     v15 = height;
   }
 
   else
   {
-    v15 = height * v9;
+    v15 = height * scaleCopy;
   }
 
-  v16 = [(ICAttachment *)self previewImages];
-  v17 = [v16 count];
+  previewImages = [(ICAttachment *)self previewImages];
+  v17 = [previewImages count];
 
   if (!v17)
   {
@@ -11913,8 +11913,8 @@ LABEL_24:
   }
 
   v19 = v18;
-  v52 = v9;
-  v53 = self;
+  v52 = scaleCopy;
+  selfCopy = self;
   v55 = 0;
   v20 = 0;
   v21 = *MEMORY[0x277CBF3A8];
@@ -11937,7 +11937,7 @@ LABEL_24:
       v27 = v26;
       [v25 height];
       v29 = v28;
-      if (v13 == 8 && (v27 > v57 || v28 > v58))
+      if (attachmentType == 8 && (v27 > v57 || v28 > v58))
       {
         v31 = v25;
 
@@ -11946,7 +11946,7 @@ LABEL_24:
         v55 = v31;
       }
 
-      if (!v7)
+      if (!matchScaleCopy)
       {
         [v25 scale];
         v27 = v27 * v32;
@@ -11989,14 +11989,14 @@ LABEL_24:
         LOBYTE(v41) = 0;
       }
 
-      if ([v25 appearanceType] == a5)
+      if ([v25 appearanceType] == type)
       {
         v42 = v20 != 0;
       }
 
       else
       {
-        v43 = [(ICAttachment *)v53 previewsSupportMultipleAppearances]&& a7;
+        v43 = [(ICAttachment *)selfCopy previewsSupportMultipleAppearances]&& appearance;
         v42 = v20 != 0;
         if (v43)
         {
@@ -12006,7 +12006,7 @@ LABEL_24:
 
       if ((v39 & v42 & 1) == 0)
       {
-        if (!v7 || ([v25 scale], v44 == 0.0))
+        if (!matchScaleCopy || ([v25 scale], v44 == 0.0))
         {
           if (v41)
           {
@@ -12043,7 +12043,7 @@ LABEL_55:
 
   v48 = v55;
 LABEL_56:
-  if (v13 == 8)
+  if (attachmentType == 8)
   {
     v49 = v48;
   }
@@ -12061,7 +12061,7 @@ LABEL_56:
 - (id)drawingModel
 {
   objc_opt_class();
-  v3 = [(ICAttachment *)self attachmentModel];
+  attachmentModel = [(ICAttachment *)self attachmentModel];
   v4 = ICDynamicCast();
 
   return v4;
@@ -12070,7 +12070,7 @@ LABEL_56:
 - (id)paperBundleModel
 {
   objc_opt_class();
-  v3 = [(ICAttachment *)self attachmentModel];
+  attachmentModel = [(ICAttachment *)self attachmentModel];
   v4 = ICDynamicCast();
 
   return v4;
@@ -12079,7 +12079,7 @@ LABEL_56:
 - (id)systemPaperModel
 {
   objc_opt_class();
-  v3 = [(ICAttachment *)self attachmentModel];
+  attachmentModel = [(ICAttachment *)self attachmentModel];
   v4 = ICDynamicCast();
 
   return v4;
@@ -12088,7 +12088,7 @@ LABEL_56:
 - (id)galleryModel
 {
   objc_opt_class();
-  v3 = [(ICAttachment *)self attachmentModel];
+  attachmentModel = [(ICAttachment *)self attachmentModel];
   v4 = ICDynamicCast();
 
   return v4;
@@ -12097,7 +12097,7 @@ LABEL_56:
 - (id)inlineDrawingModel
 {
   objc_opt_class();
-  v3 = [(ICAttachment *)self attachmentModel];
+  attachmentModel = [(ICAttachment *)self attachmentModel];
   v4 = ICDynamicCast();
 
   return v4;
@@ -12106,7 +12106,7 @@ LABEL_56:
 - (id)tableModel
 {
   objc_opt_class();
-  v3 = [(ICAttachment *)self attachmentModel];
+  attachmentModel = [(ICAttachment *)self attachmentModel];
   v4 = ICDynamicCast();
 
   return v4;
@@ -12115,7 +12115,7 @@ LABEL_56:
 - (id)audioModel
 {
   objc_opt_class();
-  v3 = [(ICAttachment *)self attachmentModel];
+  attachmentModel = [(ICAttachment *)self attachmentModel];
   v4 = ICDynamicCast();
 
   return v4;
@@ -12129,14 +12129,14 @@ LABEL_56:
   v10 = __Block_byref_object_copy__56;
   v11 = __Block_byref_object_dispose__56;
   v12 = 0;
-  v3 = [(ICAttachment *)self managedObjectContext];
+  managedObjectContext = [(ICAttachment *)self managedObjectContext];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __37__ICAttachment_Previews__description__block_invoke;
   v6[3] = &unk_278194DE8;
   v6[4] = self;
   v6[5] = &v7;
-  [v3 performBlockAndWait:v6];
+  [managedObjectContext performBlockAndWait:v6];
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -12154,11 +12154,11 @@ void __37__ICAttachment_Previews__description__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (void)associateAppEntityWithSearchableItemAttributeSet:(id)a3
+- (void)associateAppEntityWithSearchableItemAttributeSet:(id)set
 {
-  v4 = a3;
-  v5 = self;
-  ICAttachment.associateAppEntity(with:)(v4);
+  setCopy = set;
+  selfCopy = self;
+  ICAttachment.associateAppEntity(with:)(setCopy);
 }
 
 + (void)attachmentIdentifiersForAccount:.cold.1()
@@ -12212,7 +12212,7 @@ void __43__ICAttachment_accountWillChangeToAccount___block_invoke_cold_2()
 - (void)metadata
 {
   OUTLINED_FUNCTION_10();
-  v1 = [v0 shortLoggingDescription];
+  shortLoggingDescription = [v0 shortLoggingDescription];
   OUTLINED_FUNCTION_0_5();
   OUTLINED_FUNCTION_1_0();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0x16u);
@@ -12230,7 +12230,7 @@ void __43__ICAttachment_accountWillChangeToAccount___block_invoke_cold_2()
 - (void)metadataData
 {
   OUTLINED_FUNCTION_10();
-  v1 = [v0 shortLoggingDescription];
+  shortLoggingDescription = [v0 shortLoggingDescription];
   OUTLINED_FUNCTION_0_5();
   OUTLINED_FUNCTION_1_0();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0x16u);

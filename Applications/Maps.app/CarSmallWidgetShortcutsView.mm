@@ -1,35 +1,35 @@
 @interface CarSmallWidgetShortcutsView
-- (CarSmallWidgetShortcutsView)initWithShortcutsProvider:(id)a3;
+- (CarSmallWidgetShortcutsView)initWithShortcutsProvider:(id)provider;
 - (id)data;
-- (id)modelForItemAtIndexPath:(id)a3;
-- (void)didSelectItemAtIndexPath:(id)a3;
+- (id)modelForItemAtIndexPath:(id)path;
+- (void)didSelectItemAtIndexPath:(id)path;
 @end
 
 @implementation CarSmallWidgetShortcutsView
 
-- (void)didSelectItemAtIndexPath:(id)a3
+- (void)didSelectItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
   {
-    v5 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
-    v6 = [v5 shortcutsForCarplay];
-    v7 = [v6 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    shortcuts = +[_TtC4Maps20MapsFavoritesManager sharedManager];
+    shortcutsForCarplay = [shortcuts shortcutsForCarplay];
+    v7 = [shortcutsForCarplay objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   }
 
   else
   {
-    v5 = [(CarShortcutsProvider *)self->_shortcutsProvider shortcuts];
-    v7 = [v5 objectAtIndexedSubscript:{objc_msgSend(v4, "row")}];
+    shortcuts = [(CarShortcutsProvider *)self->_shortcutsProvider shortcuts];
+    v7 = [shortcuts objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
   }
 
   v8 = sub_100799D40();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = self;
-    if (!v9)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v14 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_13;
     }
 
@@ -37,24 +37,24 @@
     v11 = NSStringFromClass(v10);
     if (objc_opt_respondsToSelector())
     {
-      v12 = [(CarSmallWidgetShortcutsView *)v9 performSelector:"accessibilityIdentifier"];
+      v12 = [(CarSmallWidgetShortcutsView *)selfCopy performSelector:"accessibilityIdentifier"];
       v13 = v12;
       if (v12 && ![v12 isEqualToString:v11])
       {
-        v14 = [NSString stringWithFormat:@"%@<%p, %@>", v11, v9, v13];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v11, selfCopy, v13];
 
         goto LABEL_11;
       }
     }
 
-    v14 = [NSString stringWithFormat:@"%@<%p>", v11, v9];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v11, selfCopy];
 LABEL_11:
 
 LABEL_13:
     *buf = 138543618;
-    v19 = v14;
+    v19 = selfCopy;
     v20 = 2112;
-    v21 = v4;
+    v21 = pathCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}@] didSelectItemAtIndexPath: %@", buf, 0x16u);
   }
 
@@ -68,26 +68,26 @@ LABEL_13:
   [MapsCarPlayServicesShim openMapsCarPlayApplicationWithCompletion:v16];
 }
 
-- (id)modelForItemAtIndexPath:(id)a3
+- (id)modelForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
   {
     v5 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
-    v6 = [v5 shortcutsForCarplay];
-    v7 = [v4 row];
+    shortcutsForCarplay = [v5 shortcutsForCarplay];
+    v7 = [pathCopy row];
 
-    v8 = [v6 objectAtIndexedSubscript:v7];
+    v8 = [shortcutsForCarplay objectAtIndexedSubscript:v7];
 
     v9 = [[SuggestionShortcutsRowCellModel alloc] initWithMapsFavoriteItem:v8];
   }
 
   else
   {
-    v10 = [(CarShortcutsProvider *)self->_shortcutsProvider shortcuts];
-    v11 = [v4 row];
+    shortcuts = [(CarShortcutsProvider *)self->_shortcutsProvider shortcuts];
+    v11 = [pathCopy row];
 
-    v8 = [v10 objectAtIndexedSubscript:v11];
+    v8 = [shortcuts objectAtIndexedSubscript:v11];
 
     v9 = [[SuggestionShortcutsRowCellModel alloc] initWithMapsSuggestionsEntry:v8];
   }
@@ -102,27 +102,27 @@ LABEL_13:
   if (+[_TtC4Maps18LibraryUIUtilities isMyPlacesEnabled])
   {
     v3 = +[_TtC4Maps20MapsFavoritesManager sharedManager];
-    v4 = [v3 shortcutsForCarplay];
+    shortcutsForCarplay = [v3 shortcutsForCarplay];
   }
 
   else
   {
-    v4 = [(CarShortcutsProvider *)self->_shortcutsProvider shortcuts];
+    shortcutsForCarplay = [(CarShortcutsProvider *)self->_shortcutsProvider shortcuts];
   }
 
-  return v4;
+  return shortcutsForCarplay;
 }
 
-- (CarSmallWidgetShortcutsView)initWithShortcutsProvider:(id)a3
+- (CarSmallWidgetShortcutsView)initWithShortcutsProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v9.receiver = self;
   v9.super_class = CarSmallWidgetShortcutsView;
   v6 = [(CarSmallWidgetCollectionView *)&v9 initWithFrame:CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_shortcutsProvider, a3);
+    objc_storeStrong(&v6->_shortcutsProvider, provider);
     [(CarSmallWidgetShortcutsView *)v7 setAccessibilityIdentifier:@"CarSmallWidgetShortcutsView"];
   }
 

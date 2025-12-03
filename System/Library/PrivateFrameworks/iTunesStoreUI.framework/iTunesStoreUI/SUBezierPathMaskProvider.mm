@@ -1,5 +1,5 @@
 @interface SUBezierPathMaskProvider
-- (CGPath)copyPathForMaskWithSize:(CGSize)a3;
+- (CGPath)copyPathForMaskWithSize:(CGSize)size;
 - (void)dealloc;
 @end
 
@@ -12,9 +12,9 @@
   [(SUBezierPathMaskProvider *)&v3 dealloc];
 }
 
-- (CGPath)copyPathForMaskWithSize:(CGSize)a3
+- (CGPath)copyPathForMaskWithSize:(CGSize)size
 {
-  result = [(UIBezierPath *)self->_bezierPath CGPath:a3.width];
+  result = [(UIBezierPath *)self->_bezierPath CGPath:size.width];
   if (result)
   {
 

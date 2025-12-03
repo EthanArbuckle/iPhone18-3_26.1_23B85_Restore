@@ -1,11 +1,11 @@
 @interface HULinkedApplicationItem
 + (id)na_identity;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HULinkedApplicationItem)init;
 - (NSString)bundleIdentifier;
 - (id)_failedUpdateOutcome;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (int)_iconVariantForScale:(double)a3;
+- (id)_subclass_updateWithOptions:(id)options;
+- (int)_iconVariantForScale:(double)scale;
 - (unint64_t)hash;
 @end
 
@@ -28,8 +28,8 @@
 
 - (NSString)bundleIdentifier
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"HULinkedApplicationItem.m" lineNumber:58 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HULinkedApplicationItem bundleIdentifier]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HULinkedApplicationItem.m" lineNumber:58 description:{@"%s is an abstract method that must be overriden by subclass %@", "-[HULinkedApplicationItem bundleIdentifier]", objc_opt_class()}];
 
   return 0;
 }
@@ -59,27 +59,27 @@ void __38__HULinkedApplicationItem_na_identity__block_invoke_2()
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
-- (int)_iconVariantForScale:(double)a3
+- (int)_iconVariantForScale:(double)scale
 {
-  v4 = [MEMORY[0x277D75418] currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (a3 >= 2.0)
+  if (scale >= 2.0)
   {
     v6 = 15;
   }
@@ -89,7 +89,7 @@ void __38__HULinkedApplicationItem_na_identity__block_invoke_2()
     v6 = 0;
   }
 
-  if (a3 < 3.0)
+  if (scale < 3.0)
   {
     v7 = v6;
   }
@@ -99,7 +99,7 @@ void __38__HULinkedApplicationItem_na_identity__block_invoke_2()
     v7 = 32;
   }
 
-  if (a3 < 2.0)
+  if (scale < 2.0)
   {
     v8 = 1;
   }
@@ -109,7 +109,7 @@ void __38__HULinkedApplicationItem_na_identity__block_invoke_2()
     v8 = 24;
   }
 
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return v8;
   }
@@ -120,16 +120,16 @@ void __38__HULinkedApplicationItem_na_identity__block_invoke_2()
   }
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc(MEMORY[0x277D14780]);
   v11[0] = @"HFResultApplicationBundleIdentifier";
-  v5 = [(HULinkedApplicationItem *)self bundleIdentifier];
+  bundleIdentifier = [(HULinkedApplicationItem *)self bundleIdentifier];
   v11[1] = @"HFResultApplicationAssociatedAccessories";
-  v12[0] = v5;
-  v6 = [(HULinkedApplicationItem *)self associatedAccessories];
-  v12[1] = v6;
+  v12[0] = bundleIdentifier;
+  associatedAccessories = [(HULinkedApplicationItem *)self associatedAccessories];
+  v12[1] = associatedAccessories;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
   v8 = [v4 initWithResults:v7];
 

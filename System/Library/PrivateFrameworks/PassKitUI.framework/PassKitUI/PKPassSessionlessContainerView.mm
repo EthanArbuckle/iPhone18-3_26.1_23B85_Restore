@@ -1,65 +1,65 @@
 @interface PKPassSessionlessContainerView
-- (PKPassSessionlessContainerView)initWithPass:(id)a3 passStateProvider:(id)a4 context:(id)a5 paymentService:(id)a6;
+- (PKPassSessionlessContainerView)initWithPass:(id)pass passStateProvider:(id)provider context:(id)context paymentService:(id)service;
 - (double)_topMargin;
-- (id)_attributedTextWithTitle:(id)a3;
-- (id)_buttonForState:(int64_t)a3;
-- (id)_filledButtonWithTitle:(id)a3 action:(id)a4;
-- (id)_groupTileForTiles:(id)a3;
-- (void)_addTransitionCompletionHandler:(id)a3;
+- (id)_attributedTextWithTitle:(id)title;
+- (id)_buttonForState:(int64_t)state;
+- (id)_filledButtonWithTitle:(id)title action:(id)action;
+- (id)_groupTileForTiles:(id)tiles;
+- (void)_addTransitionCompletionHandler:(id)handler;
 - (void)_applyLatestContentToViews;
-- (void)_applySessionlessState:(int64_t)a3 withTextOverride:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6;
+- (void)_applySessionlessState:(int64_t)state withTextOverride:(id)override animated:(BOOL)animated completionHandler:(id)handler;
 - (void)_applyTerminalFailureState;
 - (void)_calculateTerminalStateWithRangingSuspensionReasons;
-- (void)_commitPendingSessionlessStateAnimated:(BOOL)a3;
-- (void)_configureForPaymentWithPaymentPass:(id)a3 context:(id)a4;
-- (void)_configureForStyle:(int64_t)a3 context:(id)a4;
+- (void)_commitPendingSessionlessStateAnimated:(BOOL)animated;
+- (void)_configureForPaymentWithPaymentPass:(id)pass context:(id)context;
+- (void)_configureForStyle:(int64_t)style context:(id)context;
 - (void)_didInvalidate;
-- (void)_endTransition:(BOOL)a3;
-- (void)_executeTransitionCompletionHandlers:(BOOL)a3;
-- (void)_openURL:(id)a3;
-- (void)_reportPassPresentedForPayment:(id)a3;
+- (void)_endTransition:(BOOL)transition;
+- (void)_executeTransitionCompletionHandlers:(BOOL)handlers;
+- (void)_openURL:(id)l;
+- (void)_reportPassPresentedForPayment:(id)payment;
 - (void)_resetToIdleState;
-- (void)_transitionToState:(int64_t)a3 withTextOverride:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6;
-- (void)_transitionViewsFromSessionlessState:(int64_t)a3 animated:(BOOL)a4;
+- (void)_transitionToState:(int64_t)state withTextOverride:(id)override animated:(BOOL)animated completionHandler:(id)handler;
+- (void)_transitionViewsFromSessionlessState:(int64_t)state animated:(BOOL)animated;
 - (void)_updateContentPrimaryView;
-- (void)credentialIdentifier:(id)a3 paymentApplicationIdentifier:(id)a4 secureElementIdentifier:(id)a5 didUpdateRangingSuspensionReasons:(unint64_t)a6;
+- (void)credentialIdentifier:(id)identifier paymentApplicationIdentifier:(id)applicationIdentifier secureElementIdentifier:(id)elementIdentifier didUpdateRangingSuspensionReasons:(unint64_t)reasons;
 - (void)dealloc;
-- (void)didBecomeHiddenAnimated:(BOOL)a3;
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4;
+- (void)didBecomeHiddenAnimated:(BOOL)animated;
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state;
 - (void)layoutSubviews;
-- (void)passStateProvider:(id)a3 didUpdatePassState:(id)a4;
-- (void)passTileGroupView:(id)a3 displayTileContext:(int64_t)a4 tile:(id)a5 overrideMaximumRows:(BOOL)a6;
-- (void)passTileGroupView:(id)a3 executeSEActionForPass:(id)a4 tile:(id)a5 withCompletion:(id)a6;
-- (void)passWithUniqueIdentifier:(id)a3 didUpdateTiles:(id)a4 forContext:(int64_t)a5;
-- (void)willBecomeHiddenAnimated:(BOOL)a3;
-- (void)willBecomeVisibleAnimated:(BOOL)a3;
+- (void)passStateProvider:(id)provider didUpdatePassState:(id)state;
+- (void)passTileGroupView:(id)view displayTileContext:(int64_t)context tile:(id)tile overrideMaximumRows:(BOOL)rows;
+- (void)passTileGroupView:(id)view executeSEActionForPass:(id)pass tile:(id)tile withCompletion:(id)completion;
+- (void)passWithUniqueIdentifier:(id)identifier didUpdateTiles:(id)tiles forContext:(int64_t)context;
+- (void)willBecomeHiddenAnimated:(BOOL)animated;
+- (void)willBecomeVisibleAnimated:(BOOL)animated;
 @end
 
 @implementation PKPassSessionlessContainerView
 
-- (PKPassSessionlessContainerView)initWithPass:(id)a3 passStateProvider:(id)a4 context:(id)a5 paymentService:(id)a6
+- (PKPassSessionlessContainerView)initWithPass:(id)pass passStateProvider:(id)provider context:(id)context paymentService:(id)service
 {
   v31 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 secureElementPass];
-  v15 = [v14 supportedRadioTechnologies];
+  passCopy = pass;
+  providerCopy = provider;
+  contextCopy = context;
+  serviceCopy = service;
+  secureElementPass = [passCopy secureElementPass];
+  supportedRadioTechnologies = [secureElementPass supportedRadioTechnologies];
 
-  if (v15 != 2)
+  if (supportedRadioTechnologies != 2)
   {
     __break(1u);
   }
 
   v28.receiver = self;
   v28.super_class = PKPassSessionlessContainerView;
-  v16 = [(PKPassFooterContentView *)&v28 initWithPass:v10 presentationContext:v12];
+  v16 = [(PKPassFooterContentView *)&v28 initWithPass:passCopy presentationContext:contextCopy];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_passStateProvider, a4);
-    [v11 addPassStateObserver:v17];
+    objc_storeStrong(&v16->_passStateProvider, provider);
+    [providerCopy addPassStateObserver:v17];
     v18 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
@@ -68,7 +68,7 @@
       _os_log_impl(&dword_1BD026000, v18, OS_LOG_TYPE_DEFAULT, "PKPassSessionlessContainerView (%p): initializing.", buf, 0xCu);
     }
 
-    [(PKPassSessionlessContainerView *)v17 _reportPassPresentedForPayment:v10];
+    [(PKPassSessionlessContainerView *)v17 _reportPassPresentedForPayment:passCopy];
     v19 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
     v20 = dispatch_queue_attr_make_with_autorelease_frequency(v19, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
 
@@ -76,24 +76,24 @@
     presentmentQueue = v17->_presentmentQueue;
     v17->_presentmentQueue = v21;
 
-    if (v13)
+    if (serviceCopy)
     {
       p_paymentService = &v17->_paymentService;
-      v24 = v13;
+      paymentService = serviceCopy;
     }
 
     else
     {
-      v24 = [MEMORY[0x1E69B8DB8] paymentService];
+      paymentService = [MEMORY[0x1E69B8DB8] paymentService];
       p_paymentService = &v17->_paymentService;
     }
 
     v25 = *p_paymentService;
-    *p_paymentService = v24;
+    *p_paymentService = paymentService;
 
     [*p_paymentService registerObserver:v17];
     [(PKPassSessionlessContainerView *)v17 _calculateTerminalStateWithRangingSuspensionReasons];
-    [(PKPassSessionlessContainerView *)v17 _configureForStyle:[(PKPassFooterContentView *)v17 style] context:v12];
+    [(PKPassSessionlessContainerView *)v17 _configureForStyle:[(PKPassFooterContentView *)v17 style] context:contextCopy];
     v26 = +[PKUIForegroundActiveArbiter sharedInstance];
     v17->_foregroundActiveState = [v26 registerObserver:v17];
   }
@@ -103,8 +103,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(PKPaymentService *)self->_paymentService unregisterObserver:self];
   [(PKPassDynamicStateProviding *)self->_passStateProvider removePassStateObserver:self];
@@ -165,11 +165,11 @@
   v41.receiver = self;
   v41.super_class = PKPassSessionlessContainerView;
   [(PKPassFooterContentView *)&v41 layoutSubviews];
-  v3 = [(PKPassFooterContentView *)self bottomRule];
-  v4 = [v3 superview];
-  if (v4)
+  bottomRule = [(PKPassFooterContentView *)self bottomRule];
+  superview = [bottomRule superview];
+  if (superview)
   {
-    [v3 alpha];
+    [bottomRule alpha];
     v6 = v5 > 0.0;
   }
 
@@ -188,7 +188,7 @@
   v16 = v15 + v10;
   if (v6)
   {
-    [v3 frame];
+    [bottomRule frame];
     v17 = CGRectGetMinY(v42) - v16;
   }
 
@@ -257,11 +257,11 @@
 
 - (double)_topMargin
 {
-  v2 = [(PKPassFooterContentView *)self style];
+  style = [(PKPassFooterContentView *)self style];
   v3 = 0.0;
-  if ((v2 - 1) >= 3)
+  if ((style - 1) >= 3)
   {
-    if (v2 == 4 || !v2)
+    if (style == 4 || !style)
     {
       return 10.0;
     }
@@ -279,11 +279,11 @@
   return v3;
 }
 
-- (void)willBecomeVisibleAnimated:(BOOL)a3
+- (void)willBecomeVisibleAnimated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = PKPassSessionlessContainerView;
-  [(PKPassFooterContentView *)&v4 willBecomeVisibleAnimated:a3];
+  [(PKPassFooterContentView *)&v4 willBecomeVisibleAnimated:animated];
   self->_isVisible = 1;
   if (self->_failureReason)
   {
@@ -301,32 +301,32 @@
   }
 }
 
-- (void)willBecomeHiddenAnimated:(BOOL)a3
+- (void)willBecomeHiddenAnimated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = PKPassSessionlessContainerView;
-  [(PKPassFooterContentView *)&v4 willBecomeHiddenAnimated:a3];
+  [(PKPassFooterContentView *)&v4 willBecomeHiddenAnimated:animated];
   self->_didBecomeHiddenWhileReady = self->_currentSessionlessState == 1;
   self->_isVisible = 0;
 }
 
-- (void)didBecomeHiddenAnimated:(BOOL)a3
+- (void)didBecomeHiddenAnimated:(BOOL)animated
 {
   v4.receiver = self;
   v4.super_class = PKPassSessionlessContainerView;
-  [(PKPassFooterContentView *)&v4 didBecomeHiddenAnimated:a3];
+  [(PKPassFooterContentView *)&v4 didBecomeHiddenAnimated:animated];
   [(PKPassSessionlessContainerView *)self _applySessionlessState:0];
   self->_didBecomeHiddenWhileReady = 0;
 }
 
-- (void)_reportPassPresentedForPayment:(id)a3
+- (void)_reportPassPresentedForPayment:(id)payment
 {
   v84 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 secureElementPass];
-  if (v4)
+  paymentCopy = payment;
+  secureElementPass = [paymentCopy secureElementPass];
+  if (secureElementPass)
   {
-    v70 = v3;
+    v70 = paymentCopy;
     v69 = objc_alloc_init(MEMORY[0x1E695DF90]);
     [v69 setObject:*MEMORY[0x1E69BA770] forKey:*MEMORY[0x1E69BA680]];
     v5 = *MEMORY[0x1E69BAC48];
@@ -334,9 +334,9 @@
     v74 = 0u;
     v75 = 0u;
     v76 = 0u;
-    obj = [v4 devicePaymentApplications];
+    obj = [secureElementPass devicePaymentApplications];
     v6 = [obj countByEnumeratingWithState:&v73 objects:v82 count:16];
-    v72 = v4;
+    v72 = secureElementPass;
     if (v6)
     {
       v7 = v6;
@@ -361,12 +361,12 @@
           }
 
           v13 = objc_alloc(MEMORY[0x1E695DEC8]);
-          v14 = [v12 secureElementIdentifier];
-          v15 = [v13 initWithObjects:{v14, 0}];
+          secureElementIdentifier = [v12 secureElementIdentifier];
+          v15 = [v13 initWithObjects:{secureElementIdentifier, 0}];
 
           v16 = PKDeviceClass();
-          v17 = [MEMORY[0x1E69B8A00] fromDeviceVersion];
-          v18 = [v4 eligibleExpressUpgradeRequestsForDeviceClass:v16 deviceSEIDs:v15 deviceVersion:v17 technologyTest:&__block_literal_global_119];
+          fromDeviceVersion = [MEMORY[0x1E69B8A00] fromDeviceVersion];
+          v18 = [secureElementPass eligibleExpressUpgradeRequestsForDeviceClass:v16 deviceSEIDs:v15 deviceVersion:fromDeviceVersion technologyTest:&__block_literal_global_119];
           v19 = [v18 count];
 
           if (v19)
@@ -376,7 +376,7 @@
             v10 = v20;
           }
 
-          v4 = v72;
+          secureElementPass = v72;
         }
 
         v7 = [obj countByEnumeratingWithState:&v73 objects:v82 count:16];
@@ -394,7 +394,7 @@ LABEL_14:
 
     [v69 safelySetObject:v5 forKey:*MEMORY[0x1E69BAC38]];
     v21 = v69;
-    v3 = v70;
+    paymentCopy = v70;
     v22 = v70;
     v23 = v22;
     if (!v22 || !v21)
@@ -402,33 +402,33 @@ LABEL_14:
       goto LABEL_84;
     }
 
-    v24 = [v22 passType];
+    passType = [v22 passType];
     v25 = MEMORY[0x1E69BB3A8];
     v68 = v5;
-    if ((v24 + 1) >= 3)
+    if ((passType + 1) >= 3)
     {
       v26 = *MEMORY[0x1E69BB3A8];
     }
 
     else
     {
-      v26 = off_1E801A4C0[v24 + 1];
+      v26 = off_1E801A4C0[passType + 1];
     }
 
     [v21 setObject:v26 forKeyedSubscript:*MEMORY[0x1E69BACA8]];
 
-    v27 = [v23 style];
-    v28 = [v23 secureElementPass];
-    v29 = [v28 isIdentityPass];
+    style = [v23 style];
+    secureElementPass2 = [v23 secureElementPass];
+    isIdentityPass = [secureElementPass2 isIdentityPass];
 
-    if (v29)
+    if (isIdentityPass)
     {
       v30 = @"identity";
     }
 
-    else if (v27 < 0xE && ((0x27FFu >> v27) & 1) != 0)
+    else if (style < 0xE && ((0x27FFu >> style) & 1) != 0)
     {
-      v30 = off_1E801A4D8[v27];
+      v30 = off_1E801A4D8[style];
     }
 
     else
@@ -438,40 +438,40 @@ LABEL_14:
 
     [v21 setObject:v30 forKeyedSubscript:*MEMORY[0x1E69BACA0]];
 
-    v31 = [v23 nfcPayload];
+    nfcPayload = [v23 nfcPayload];
     v32 = PKAnalyticsReportSwitchToggleResultValue();
     [v21 setObject:v32 forKeyedSubscript:*MEMORY[0x1E69BAC68]];
 
     v33 = v23;
     if ([v33 passType] == 1)
     {
-      v34 = [v33 secureElementPass];
-      v35 = [v34 cardType];
-      if (v35 <= 4)
+      secureElementPass3 = [v33 secureElementPass];
+      cardType = [secureElementPass3 cardType];
+      if (cardType <= 4)
       {
-        v29 = **(&unk_1E801A548 + v35);
+        isIdentityPass = **(&unk_1E801A548 + cardType);
       }
     }
 
     else
     {
-      v29 = @"other";
+      isIdentityPass = @"other";
     }
 
-    [v21 setObject:v29 forKeyedSubscript:*MEMORY[0x1E69BAC90]];
-    v36 = [v33 secureElementPass];
-    if ([v36 isIdentityPass])
+    [v21 setObject:isIdentityPass forKeyedSubscript:*MEMORY[0x1E69BAC90]];
+    secureElementPass4 = [v33 secureElementPass];
+    if ([secureElementPass4 isIdentityPass])
     {
-      v37 = [v36 identityType];
-      if (v37 <= 2)
+      identityType = [secureElementPass4 identityType];
+      if (identityType <= 2)
       {
-        if (v37 == 1)
+        if (identityType == 1)
         {
           v38 = MEMORY[0x1E69BA648];
           goto LABEL_51;
         }
 
-        if (v37 == 2)
+        if (identityType == 2)
         {
           v38 = MEMORY[0x1E69BB2C8];
           goto LABEL_51;
@@ -480,7 +480,7 @@ LABEL_14:
 
       else
       {
-        switch(v37)
+        switch(identityType)
         {
           case 3:
             goto LABEL_35;
@@ -503,23 +503,23 @@ LABEL_52:
       goto LABEL_65;
     }
 
-    if (![v36 isAccessPass])
+    if (![secureElementPass4 isAccessPass])
     {
       goto LABEL_44;
     }
 
-    v39 = [v36 accessType];
-    v40 = [v36 accessReportingType];
-    v41 = v40;
-    if (v39 <= 2)
+    accessType = [secureElementPass4 accessType];
+    accessReportingType = [secureElementPass4 accessReportingType];
+    v41 = accessReportingType;
+    if (accessType <= 2)
     {
-      switch(v39)
+      switch(accessType)
       {
         case 0:
           v44 = @"general";
-          if (v40)
+          if (accessReportingType)
           {
-            v44 = v40;
+            v44 = accessReportingType;
           }
 
           goto LABEL_60;
@@ -533,43 +533,43 @@ LABEL_64:
 LABEL_65:
           [v21 setObject:v42 forKeyedSubscript:*MEMORY[0x1E69BAC88]];
 
-          v45 = [v33 secureElementPass];
-          v46 = [v45 devicePaymentApplications];
-          [v46 count];
+          secureElementPass5 = [v33 secureElementPass];
+          devicePaymentApplications = [secureElementPass5 devicePaymentApplications];
+          [devicePaymentApplications count];
 
           v47 = PKAnalyticsReportSwitchToggleResultValue();
 
           [v21 setObject:v47 forKeyedSubscript:*MEMORY[0x1E69BA4E0]];
-          v48 = [v33 secureElementPass];
+          secureElementPass6 = [v33 secureElementPass];
           v49 = *v25;
-          v50 = [v48 organizationName];
-          if ([v50 length])
+          organizationName = [secureElementPass6 organizationName];
+          if ([organizationName length])
           {
-            v51 = [v48 cardType];
-            if (v51 <= 4 && ((1 << v51) & 0x16) != 0)
+            cardType2 = [secureElementPass6 cardType];
+            if (cardType2 <= 4 && ((1 << cardType2) & 0x16) != 0)
             {
-              v52 = v50;
+              v52 = organizationName;
 
               v49 = v52;
             }
           }
 
           [v21 setObject:v49 forKeyedSubscript:*MEMORY[0x1E69BAA28]];
-          v53 = [v33 secureElementPass];
-          v54 = v53;
-          if (v53)
+          secureElementPass7 = [v33 secureElementPass];
+          v54 = secureElementPass7;
+          if (secureElementPass7)
           {
-            v55 = [v53 devicePaymentApplications];
+            devicePaymentApplications2 = [secureElementPass7 devicePaymentApplications];
             v77 = 0u;
             v78 = 0u;
             v79 = 0u;
             v80 = 0u;
-            v56 = v55;
+            v56 = devicePaymentApplications2;
             v57 = [v56 countByEnumeratingWithState:&v77 objects:v83 count:16];
             if (v57)
             {
               v58 = v57;
-              v59 = 0;
+              paymentType = 0;
               v60 = *v78;
               while (2)
               {
@@ -581,14 +581,14 @@ LABEL_65:
                   }
 
                   v62 = *(*(&v77 + 1) + 8 * j);
-                  if (v59 && v59 != [*(*(&v77 + 1) + 8 * j) paymentType])
+                  if (paymentType && paymentType != [*(*(&v77 + 1) + 8 * j) paymentType])
                   {
 
                     v63 = @"multiple";
                     goto LABEL_82;
                   }
 
-                  v59 = [v62 paymentType];
+                  paymentType = [v62 paymentType];
                 }
 
                 v58 = [v56 countByEnumeratingWithState:&v77 objects:v83 count:16];
@@ -605,8 +605,8 @@ LABEL_65:
 LABEL_82:
 
             [v21 setObject:v63 forKeyedSubscript:*MEMORY[0x1E69BAD40]];
-            v64 = [v54 issuerCountryCode];
-            [v21 setObject:v64 forKeyedSubscript:*MEMORY[0x1E69BAC78]];
+            issuerCountryCode = [v54 issuerCountryCode];
+            [v21 setObject:issuerCountryCode forKeyedSubscript:*MEMORY[0x1E69BAC78]];
           }
 
           v5 = v68;
@@ -619,16 +619,16 @@ LABEL_84:
           v67 = [MEMORY[0x1E695DEC8] arrayWithObjects:v81 count:2];
           [v65 subjects:v67 sendEvent:v21];
 
-          v4 = v72;
+          secureElementPass = v72;
           goto LABEL_85;
       }
     }
 
     else
     {
-      if (v39 <= 4)
+      if (accessType <= 4)
       {
-        if (v39 == 3)
+        if (accessType == 3)
         {
           v42 = @"singlefamily";
         }
@@ -641,13 +641,13 @@ LABEL_84:
         goto LABEL_64;
       }
 
-      if (v39 == 5)
+      if (accessType == 5)
       {
         v42 = @"multifamily";
         goto LABEL_64;
       }
 
-      if (v39 == 6)
+      if (accessType == 6)
       {
         v42 = @"urbanmobility";
         goto LABEL_64;
@@ -683,15 +683,15 @@ LABEL_85:
     }
 
     objc_storeStrong(&self->_displayedPrimaryView, tileGroupView);
-    v8 = [(UIView *)self->_displayedPrimaryView layer];
-    v9 = [v8 presentationLayer];
-    v10 = v9;
-    if (!v9)
+    layer = [(UIView *)self->_displayedPrimaryView layer];
+    presentationLayer = [layer presentationLayer];
+    v10 = presentationLayer;
+    if (!presentationLayer)
     {
-      v9 = v8;
+      presentationLayer = layer;
     }
 
-    [v9 opacity];
+    [presentationLayer opacity];
     v13 = v12;
 
     v14 = v13 > 0.0 && self->_isVisible;
@@ -718,8 +718,8 @@ LABEL_85:
   {
     if (v3)
     {
-      v17 = [(UIView *)v3 layer];
-      [v17 pkui_animateToOpacity:0 withCompletion:0.0];
+      layer2 = [(UIView *)v3 layer];
+      [layer2 pkui_animateToOpacity:0 withCompletion:0.0];
 
       v16 = self->_displayedPrimaryView;
     }
@@ -732,9 +732,9 @@ LABEL_85:
 
     if (!v18 && v16)
     {
-      v19 = [(PKPassSessionlessContainerView *)self _isPrimaryViewVisible];
-      v20 = [(UIView *)self->_displayedPrimaryView layer];
-      [v20 pkui_animateToOpacity:0 withCompletion:v19];
+      _isPrimaryViewVisible = [(PKPassSessionlessContainerView *)self _isPrimaryViewVisible];
+      layer3 = [(UIView *)self->_displayedPrimaryView layer];
+      [layer3 pkui_animateToOpacity:0 withCompletion:_isPrimaryViewVisible];
     }
   }
 }
@@ -763,18 +763,18 @@ void __59__PKPassSessionlessContainerView__updateContentPrimaryView__block_invok
   [v4 setPass:v5 content:v7 passState:v8 context:v9 animated:0];
 }
 
-- (id)_attributedTextWithTitle:(id)a3
+- (id)_attributedTextWithTitle:(id)title
 {
-  v3 = a3;
+  titleCopy = title;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v5 = [MEMORY[0x1E69DB878] systemFontOfSize:{PKScaledValueForValueWithMaximumContentSizeCategory(*MEMORY[0x1E69DDC40], 20.0)}];
   [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x1E69DB648]];
 
-  v6 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  [v4 setObject:v6 forKeyedSubscript:*MEMORY[0x1E69DB650]];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  [v4 setObject:secondaryLabelColor forKeyedSubscript:*MEMORY[0x1E69DB650]];
 
-  v7 = [MEMORY[0x1E69DC888] clearColor];
-  [v4 setObject:v7 forKeyedSubscript:*MEMORY[0x1E69DB600]];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v4 setObject:clearColor forKeyedSubscript:*MEMORY[0x1E69DB600]];
 
   v8 = objc_alloc_init(MEMORY[0x1E69DB7C8]);
   [v8 setLineBreakMode:4];
@@ -783,9 +783,9 @@ void __59__PKPassSessionlessContainerView__updateContentPrimaryView__block_invok
   [v4 setObject:v9 forKeyedSubscript:*MEMORY[0x1E69DB688]];
 
   v10 = objc_alloc_init(MEMORY[0x1E696AD40]);
-  if (v3)
+  if (titleCopy)
   {
-    v11 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v3 attributes:v4];
+    v11 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:titleCopy attributes:v4];
     [v10 appendAttributedString:v11];
   }
 
@@ -794,29 +794,29 @@ void __59__PKPassSessionlessContainerView__updateContentPrimaryView__block_invok
   return v12;
 }
 
-- (void)passWithUniqueIdentifier:(id)a3 didUpdateTiles:(id)a4 forContext:(int64_t)a5
+- (void)passWithUniqueIdentifier:(id)identifier didUpdateTiles:(id)tiles forContext:(int64_t)context
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5 == 1)
+  identifierCopy = identifier;
+  tilesCopy = tiles;
+  if (context == 1)
   {
-    v10 = [(PKPassFooterContentView *)self paymentPass];
-    v11 = [v10 uniqueID];
-    v12 = v8;
+    paymentPass = [(PKPassFooterContentView *)self paymentPass];
+    uniqueID = [paymentPass uniqueID];
+    v12 = identifierCopy;
     v13 = v12;
-    if (v11 == v12)
+    if (uniqueID == v12)
     {
     }
 
     else
     {
-      if (!v12 || !v11)
+      if (!v12 || !uniqueID)
       {
 
         goto LABEL_10;
       }
 
-      v14 = [v11 isEqualToString:v12];
+      v14 = [uniqueID isEqualToString:v12];
 
       if ((v14 & 1) == 0)
       {
@@ -824,7 +824,7 @@ void __59__PKPassSessionlessContainerView__updateContentPrimaryView__block_invok
       }
     }
 
-    v15 = [(PKPassSessionlessContainerView *)self _groupTileForTiles:v9];
+    v15 = [(PKPassSessionlessContainerView *)self _groupTileForTiles:tilesCopy];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __85__PKPassSessionlessContainerView_passWithUniqueIdentifier_didUpdateTiles_forContext___block_invoke;
@@ -846,24 +846,24 @@ uint64_t __85__PKPassSessionlessContainerView_passWithUniqueIdentifier_didUpdate
   return [v2 _updateContentPrimaryView];
 }
 
-- (void)credentialIdentifier:(id)a3 paymentApplicationIdentifier:(id)a4 secureElementIdentifier:(id)a5 didUpdateRangingSuspensionReasons:(unint64_t)a6
+- (void)credentialIdentifier:(id)identifier paymentApplicationIdentifier:(id)applicationIdentifier secureElementIdentifier:(id)elementIdentifier didUpdateRangingSuspensionReasons:(unint64_t)reasons
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  applicationIdentifierCopy = applicationIdentifier;
+  elementIdentifierCopy = elementIdentifier;
   objc_initWeak(&location, self);
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __142__PKPassSessionlessContainerView_credentialIdentifier_paymentApplicationIdentifier_secureElementIdentifier_didUpdateRangingSuspensionReasons___block_invoke;
   v15[3] = &unk_1E8011E88;
   objc_copyWeak(&v20, &location);
-  v16 = v10;
-  v17 = v11;
-  v18 = v9;
-  v19 = self;
-  v12 = v9;
-  v13 = v11;
-  v14 = v10;
+  v16 = applicationIdentifierCopy;
+  v17 = elementIdentifierCopy;
+  v18 = identifierCopy;
+  selfCopy = self;
+  v12 = identifierCopy;
+  v13 = elementIdentifierCopy;
+  v14 = applicationIdentifierCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v15);
 
   objc_destroyWeak(&v20);
@@ -1086,32 +1086,32 @@ LABEL_24:
 LABEL_53:
 }
 
-- (void)foregroundActiveArbiter:(id)a3 didUpdateForegroundActiveState:(id)a4
+- (void)foregroundActiveArbiter:(id)arbiter didUpdateForegroundActiveState:(id)state
 {
-  v6 = a3;
+  arbiterCopy = arbiter;
   foreground = self->_foregroundActiveState.foreground;
-  self->_foregroundActiveState = a4;
-  if (!foreground && a4.var0)
+  self->_foregroundActiveState = state;
+  if (!foreground && state.var0)
   {
-    v8 = v6;
+    v8 = arbiterCopy;
     [(PKPassSessionlessContainerView *)self _updateContentPrimaryView];
-    v6 = v8;
+    arbiterCopy = v8;
   }
 }
 
-- (void)_configureForStyle:(int64_t)a3 context:(id)a4
+- (void)_configureForStyle:(int64_t)style context:(id)context
 {
-  if (a3 <= 1)
+  if (style <= 1)
   {
-    v6 = a4;
-    v7 = [(PKPassFooterContentView *)self paymentPass];
-    [(PKPassSessionlessContainerView *)self _configureForPaymentWithPaymentPass:v7 context:v6];
+    contextCopy = context;
+    paymentPass = [(PKPassFooterContentView *)self paymentPass];
+    [(PKPassSessionlessContainerView *)self _configureForPaymentWithPaymentPass:paymentPass context:contextCopy];
   }
 }
 
-- (void)_configureForPaymentWithPaymentPass:(id)a3 context:(id)a4
+- (void)_configureForPaymentWithPaymentPass:(id)pass context:(id)context
 {
-  [(PKPassSessionlessContainerView *)self _applyLatestContentToViews:a3];
+  [(PKPassSessionlessContainerView *)self _applyLatestContentToViews:pass];
   v5 = [MEMORY[0x1E69DD168] pkui_plainInteractiveTextViewWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   bottomTextView = self->_bottomTextView;
   self->_bottomTextView = v5;
@@ -1121,8 +1121,8 @@ LABEL_53:
   [(UITextView *)v7 setFont:v8];
 
   v9 = self->_bottomTextView;
-  v10 = [MEMORY[0x1E69DC888] systemGrayColor];
-  [(UITextView *)v9 setTextColor:v10];
+  systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+  [(UITextView *)v9 setTextColor:systemGrayColor];
 
   [(UITextView *)self->_bottomTextView setEditable:0];
   [(UITextView *)self->_bottomTextView setSelectable:1];
@@ -1131,110 +1131,110 @@ LABEL_53:
   [(UITextView *)self->_bottomTextView setAlpha:0.0];
   [(UITextView *)self->_bottomTextView setDelegate:self];
   [(PKPassSessionlessContainerView *)self addSubview:self->_bottomTextView];
-  v11 = [(PKPassFooterContentView *)self bottomRule];
-  [v11 setAlpha:0.0];
+  bottomRule = [(PKPassFooterContentView *)self bottomRule];
+  [bottomRule setAlpha:0.0];
 
   [(PKPassFooterContentView *)self setInfoButtonAlpha:0.0];
   if (([(PKPassFooterContentView *)self style]- 1) >= 3)
   {
-    v12 = [(PKPassFooterContentView *)self bottomRule];
-    [(PKPassSessionlessContainerView *)self addSubview:v12];
+    bottomRule2 = [(PKPassFooterContentView *)self bottomRule];
+    [(PKPassSessionlessContainerView *)self addSubview:bottomRule2];
   }
 
   [(PKPassSessionlessContainerView *)self _resetToIdleState];
 }
 
-- (void)_applySessionlessState:(int64_t)a3 withTextOverride:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6
+- (void)_applySessionlessState:(int64_t)state withTextOverride:(id)override animated:(BOOL)animated completionHandler:(id)handler
 {
-  v7 = a5;
-  v17 = a4;
-  v10 = a6;
+  animatedCopy = animated;
+  overrideCopy = override;
+  handlerCopy = handler;
   v11 = 12;
   if (self->_transitioning)
   {
     v11 = 16;
   }
 
-  if (*(&self->super.super.super.super.isa + OBJC_IVAR___PKPassSessionlessContainerView__passStateProvider[v11]) == a3)
+  if (*(&self->super.super.super.super.isa + OBJC_IVAR___PKPassSessionlessContainerView__passStateProvider[v11]) == state)
   {
-    if (a3 && [v17 length])
+    if (state && [overrideCopy length])
     {
-      v12 = [(UITextView *)self->_bottomTextView layer];
-      v13 = [MEMORY[0x1E6979300] pkui_shakeAnimation];
-      v14 = [v12 pkui_addAdditiveAnimation:v13];
+      layer = [(UITextView *)self->_bottomTextView layer];
+      pkui_shakeAnimation = [MEMORY[0x1E6979300] pkui_shakeAnimation];
+      v14 = [layer pkui_addAdditiveAnimation:pkui_shakeAnimation];
 
       bottomTextView = self->_bottomTextView;
-      v16 = [(PKPassSessionlessContainerView *)self _attributedTextWithTitle:v17];
+      v16 = [(PKPassSessionlessContainerView *)self _attributedTextWithTitle:overrideCopy];
       [(UITextView *)bottomTextView setAttributedText:v16];
 
       [(PKPassSessionlessContainerView *)self setNeedsLayout];
     }
 
-    if (v10)
+    if (handlerCopy)
     {
-      v10[2](v10, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
   else
   {
-    [(PKPassSessionlessContainerView *)self _transitionToState:a3 withTextOverride:v17 animated:v7 completionHandler:v10];
+    [(PKPassSessionlessContainerView *)self _transitionToState:state withTextOverride:overrideCopy animated:animatedCopy completionHandler:handlerCopy];
   }
 }
 
-- (void)_transitionToState:(int64_t)a3 withTextOverride:(id)a4 animated:(BOOL)a5 completionHandler:(id)a6
+- (void)_transitionToState:(int64_t)state withTextOverride:(id)override animated:(BOOL)animated completionHandler:(id)handler
 {
-  v7 = a5;
-  v15 = a4;
-  v10 = a6;
-  v11 = v10;
+  animatedCopy = animated;
+  overrideCopy = override;
+  handlerCopy = handler;
+  v11 = handlerCopy;
   v12 = 12;
   if (self->_transitioning)
   {
     v12 = 16;
   }
 
-  if (*(&self->super.super.super.super.isa + OBJC_IVAR___PKPassSessionlessContainerView__passStateProvider[v12]) == a3)
+  if (*(&self->super.super.super.super.isa + OBJC_IVAR___PKPassSessionlessContainerView__passStateProvider[v12]) == state)
   {
     if (self->_transitioning)
     {
-      [(PKPassSessionlessContainerView *)self _addTransitionCompletionHandler:v10];
+      [(PKPassSessionlessContainerView *)self _addTransitionCompletionHandler:handlerCopy];
     }
 
-    else if (v10)
+    else if (handlerCopy)
     {
-      (*(v10 + 2))(v10, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 
   else
   {
     [(PKPassSessionlessContainerView *)self _executeTransitionCompletionHandlers:1];
-    self->_pendingSessionlessState = a3;
-    self->_pendingSessionlessStateAnimated = v7;
-    v13 = [v15 copy];
+    self->_pendingSessionlessState = state;
+    self->_pendingSessionlessStateAnimated = animatedCopy;
+    v13 = [overrideCopy copy];
     pendingSessionlessStateTextOverride = self->_pendingSessionlessStateTextOverride;
     self->_pendingSessionlessStateTextOverride = v13;
 
     [(PKPassSessionlessContainerView *)self _addTransitionCompletionHandler:v11];
     if (!self->_transitioning)
     {
-      [(PKPassSessionlessContainerView *)self _commitPendingSessionlessStateAnimated:v7];
+      [(PKPassSessionlessContainerView *)self _commitPendingSessionlessStateAnimated:animatedCopy];
     }
   }
 }
 
-- (void)_commitPendingSessionlessStateAnimated:(BOOL)a3
+- (void)_commitPendingSessionlessStateAnimated:(BOOL)animated
 {
   currentSessionlessState = self->_currentSessionlessState;
   self->_currentSessionlessState = self->_pendingSessionlessState;
-  v5 = a3 || self->_pendingSessionlessStateAnimated;
+  v5 = animated || self->_pendingSessionlessStateAnimated;
   [(PKPassSessionlessContainerView *)self _transitionViewsFromSessionlessState:currentSessionlessState animated:v5];
 }
 
-- (void)_transitionViewsFromSessionlessState:(int64_t)a3 animated:(BOOL)a4
+- (void)_transitionViewsFromSessionlessState:(int64_t)state animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   objc_initWeak(location, self);
   self->_transitioning = 1;
   currentSessionlessState = self->_currentSessionlessState;
@@ -1242,9 +1242,9 @@ LABEL_53:
   pendingSessionlessStateTextOverride = self->_pendingSessionlessStateTextOverride;
   self->_pendingSessionlessStateTextOverride = 0;
 
-  v9 = [(PKPassFooterContentView *)self style];
-  v10 = [(PKPassSessionlessContainerView *)self _isPrimaryViewVisible];
-  if (v9 - 1) <= 2 && (PKRunningInRemoteContext())
+  style = [(PKPassFooterContentView *)self style];
+  _isPrimaryViewVisible = [(PKPassSessionlessContainerView *)self _isPrimaryViewVisible];
+  if (style - 1) <= 2 && (PKRunningInRemoteContext())
   {
     if (PKUIGetMinScreenWidthType())
     {
@@ -1288,7 +1288,7 @@ LABEL_53:
   v35[2] = __80__PKPassSessionlessContainerView__transitionViewsFromSessionlessState_animated___block_invoke_2;
   v35[3] = &unk_1E80111A8;
   objc_copyWeak(&v36, location);
-  v37 = v10;
+  v37 = _isPrimaryViewVisible;
   v17 = _Block_copy(v35);
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
@@ -1297,11 +1297,11 @@ LABEL_53:
   objc_copyWeak(v32, location);
   v18 = v15;
   v31 = v18;
-  v32[1] = v9;
+  v32[1] = style;
   v33 = v12;
-  v34 = v10;
+  v34 = _isPrimaryViewVisible;
   v19 = _Block_copy(v30);
-  if (v4)
+  if (animatedCopy)
   {
     v20 = 0.2;
   }
@@ -1323,7 +1323,7 @@ LABEL_53:
   v28[2] = *&v20;
   v23 = v19;
   v27 = v23;
-  v29 = v4;
+  v29 = animatedCopy;
   [v21 animateWithDuration:4 delay:v17 options:v25 animations:v20 completion:0.0];
 
   objc_destroyWeak(v28);
@@ -1503,7 +1503,7 @@ void __80__PKPassSessionlessContainerView__transitionViewsFromSessionlessState_a
   }
 }
 
-- (void)_endTransition:(BOOL)a3
+- (void)_endTransition:(BOOL)transition
 {
   self->_transitioning = 0;
   if (self->_currentSessionlessState == self->_pendingSessionlessState)
@@ -1513,22 +1513,22 @@ void __80__PKPassSessionlessContainerView__transitionViewsFromSessionlessState_a
 
   else
   {
-    [(PKPassSessionlessContainerView *)self _commitPendingSessionlessStateAnimated:a3];
+    [(PKPassSessionlessContainerView *)self _commitPendingSessionlessStateAnimated:transition];
   }
 }
 
-- (void)_addTransitionCompletionHandler:(id)a3
+- (void)_addTransitionCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
     transitionCompletionHandlers = self->_transitionCompletionHandlers;
-    v5 = [a3 copy];
+    v5 = [handler copy];
     v4 = _Block_copy(v5);
     [(NSMutableArray *)transitionCompletionHandlers addObject:v4];
   }
 }
 
-- (void)_executeTransitionCompletionHandlers:(BOOL)a3
+- (void)_executeTransitionCompletionHandlers:(BOOL)handlers
 {
   v15 = *MEMORY[0x1E69E9840];
   if ([(NSMutableArray *)self->_transitionCompletionHandlers count])
@@ -1568,7 +1568,7 @@ void __80__PKPassSessionlessContainerView__transitionViewsFromSessionlessState_a
   }
 }
 
-- (id)_buttonForState:(int64_t)a3
+- (id)_buttonForState:(int64_t)state
 {
   if (PKUIOnlyDemoModeEnabled() & 1) != 0 || (PKStoreDemoModeEnabled())
   {
@@ -1577,7 +1577,7 @@ void __80__PKPassSessionlessContainerView__transitionViewsFromSessionlessState_a
   }
 
   objc_initWeak(&location, self);
-  if (a3 == 2)
+  if (state == 2)
   {
     v6 = 0;
     failureAction = self->_failureAction;
@@ -1687,10 +1687,10 @@ void __50__PKPassSessionlessContainerView__buttonForState___block_invoke(uint64_
   [WeakRetained _openURL:*(a1 + 32)];
 }
 
-- (void)_openURL:(id)a3
+- (void)_openURL:(id)l
 {
   v10[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc_init(MEMORY[0x1E69636B8]);
   [v5 setSensitive:1];
   v9 = *MEMORY[0x1E699F970];
@@ -1700,24 +1700,24 @@ void __50__PKPassSessionlessContainerView__buttonForState___block_invoke(uint64_
 
   if ((PKRunningInViewService() & 1) != 0 || PKRunningInLockScreenPlugin())
   {
-    v7 = [(PKPassSessionlessContainerView *)self window];
-    v8 = v7;
-    if (v7)
+    window = [(PKPassSessionlessContainerView *)self window];
+    v8 = window;
+    if (window)
     {
-      PKPostOpenApplicationNotification(v7, v4, v5);
+      PKPostOpenApplicationNotification(window, lCopy, v5);
     }
   }
 
   else
   {
-    PKOpenApplication(v4, v5);
+    PKOpenApplication(lCopy, v5);
   }
 }
 
-- (id)_filledButtonWithTitle:(id)a3 action:(id)a4
+- (id)_filledButtonWithTitle:(id)title action:(id)action
 {
-  v5 = a4;
-  v6 = a3;
+  actionCopy = action;
+  titleCopy = title;
   PKFloatRoundToPixel();
   v8 = v7;
   v9 = PKFontForDefaultDesign(*MEMORY[0x1E69DDD00], *MEMORY[0x1E69DDC40]);
@@ -1728,22 +1728,22 @@ void __50__PKPassSessionlessContainerView__buttonForState___block_invoke(uint64_
   v16 = vdupq_n_s64(2uLL);
   v11 = [[PKContinuousButton alloc] initWithConfiguration:&v14];
   [(PKContinuousButton *)v11 setContentEdgeInsets:v8, 25.0, 16.0 - v8, 25.0];
-  v12 = [(PKContinuousButton *)v11 titleLabel];
-  [v12 setFont:v9];
-  [v12 setMinimumScaleFactor:0.5];
-  [v12 setTextAlignment:1];
-  [v12 setLineBreakMode:4];
-  [(PKContinuousButton *)v11 setTitle:v6 forState:0];
+  titleLabel = [(PKContinuousButton *)v11 titleLabel];
+  [titleLabel setFont:v9];
+  [titleLabel setMinimumScaleFactor:0.5];
+  [titleLabel setTextAlignment:1];
+  [titleLabel setLineBreakMode:4];
+  [(PKContinuousButton *)v11 setTitle:titleCopy forState:0];
 
   [(PKContinuousButton *)v11 _setTouchInsets:-10.0, -10.0, -10.0, -10.0];
   [(PKContinuousButton *)v11 setExclusiveTouch:1];
   [(PKContinuousButton *)v11 sizeToFit];
-  [(PKContinuousButton *)v11 addAction:v5 forControlEvents:64];
+  [(PKContinuousButton *)v11 addAction:actionCopy forControlEvents:64];
 
   return v11;
 }
 
-- (void)passStateProvider:(id)a3 didUpdatePassState:(id)a4
+- (void)passStateProvider:(id)provider didUpdatePassState:(id)state
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -1753,62 +1753,62 @@ void __50__PKPassSessionlessContainerView__buttonForState___block_invoke(uint64_
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)passTileGroupView:(id)a3 displayTileContext:(int64_t)a4 tile:(id)a5 overrideMaximumRows:(BOOL)a6
+- (void)passTileGroupView:(id)view displayTileContext:(int64_t)context tile:(id)tile overrideMaximumRows:(BOOL)rows
 {
-  v6 = a6;
-  v25 = a5;
-  v10 = a3;
-  v11 = [(PKPassFooterContentView *)self paymentPass];
-  v12 = [v10 pass];
+  rowsCopy = rows;
+  tileCopy = tile;
+  viewCopy = view;
+  paymentPass = [(PKPassFooterContentView *)self paymentPass];
+  pass = [viewCopy pass];
 
-  if (v12 == v11)
+  if (pass == paymentPass)
   {
-    v13 = [v25 state];
-    v14 = [v13 stateTypeGroup];
-    v15 = [v14 header];
+    state = [tileCopy state];
+    stateTypeGroup = [state stateTypeGroup];
+    header = [stateTypeGroup header];
 
     v16 = [PKDashboardSectionDataSourcePassTiles alloc];
-    v17 = [v25 metadata];
-    v18 = [v17 identifier];
-    v19 = [(PKDashboardSectionDataSourcePassTiles *)v16 initWithPass:v11 forContext:a4 tileGroupID:v18 passStateProvider:self->_passStateProvider overridesMaximumRows:v6];
+    metadata = [tileCopy metadata];
+    identifier = [metadata identifier];
+    v19 = [(PKDashboardSectionDataSourcePassTiles *)v16 initWithPass:paymentPass forContext:context tileGroupID:identifier passStateProvider:self->_passStateProvider overridesMaximumRows:rowsCopy];
 
     v20 = objc_alloc_init(MEMORY[0x1E695DF70]);
     [v20 addObject:v19];
     v21 = [[PKSectionedDashboardDataSource alloc] initWithSectionDataSources:v20];
-    v22 = [[PKDashboardTileContextViewController alloc] initWithTitle:v15 dataSource:v21];
+    v22 = [[PKDashboardTileContextViewController alloc] initWithTitle:header dataSource:v21];
     v23 = [[PKNavigationController alloc] initWithRootViewController:v22];
-    v24 = [(UIView *)self pkui_viewControllerFromResponderChain];
-    [v24 presentViewController:v23 animated:1 completion:0];
+    pkui_viewControllerFromResponderChain = [(UIView *)self pkui_viewControllerFromResponderChain];
+    [pkui_viewControllerFromResponderChain presentViewController:v23 animated:1 completion:0];
   }
 }
 
-- (void)passTileGroupView:(id)a3 executeSEActionForPass:(id)a4 tile:(id)a5 withCompletion:(id)a6
+- (void)passTileGroupView:(id)view executeSEActionForPass:(id)pass tile:(id)tile withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(PKPassFooterContentView *)self paymentPass];
-  v15 = v14;
-  if (v14 != v11)
+  viewCopy = view;
+  passCopy = pass;
+  tileCopy = tile;
+  completionCopy = completion;
+  paymentPass = [(PKPassFooterContentView *)self paymentPass];
+  v15 = paymentPass;
+  if (paymentPass != passCopy)
   {
 
 LABEL_13:
-    v13[2](v13, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_14;
   }
 
-  v16 = [(PKPassSessionlessContainerView *)self _presentmentAllowed];
+  _presentmentAllowed = [(PKPassSessionlessContainerView *)self _presentmentAllowed];
 
-  if (!v16)
+  if (!_presentmentAllowed)
   {
     goto LABEL_13;
   }
 
-  v17 = [v12 state];
+  state = [tileCopy state];
   v18 = MEMORY[0x1E69B8D10];
-  v19 = [v17 actions];
-  v20 = [v18 effectiveActionForActions:v19];
+  actions = [state actions];
+  v20 = [v18 effectiveActionForActions:actions];
 
   if (v20 && [v20 type] == 4)
   {
@@ -1822,14 +1822,14 @@ LABEL_13:
     aBlock[3] = &unk_1E8011A18;
     aBlock[4] = &v75;
     v21 = _Block_copy(aBlock);
-    v22 = [MEMORY[0x1E69DC668] sharedApplication];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
     v72[0] = MEMORY[0x1E69E9820];
     v72[1] = 3221225472;
     v72[2] = __95__PKPassSessionlessContainerView_passTileGroupView_executeSEActionForPass_tile_withCompletion___block_invoke_2;
     v72[3] = &unk_1E8010B50;
     v23 = v21;
     v73 = v23;
-    v24 = [v22 beginBackgroundTaskWithExpirationHandler:v72];
+    v24 = [mEMORY[0x1E69DC668] beginBackgroundTaskWithExpirationHandler:v72];
     v76[3] = v24;
 
     v69[0] = MEMORY[0x1E69E9820];
@@ -1838,7 +1838,7 @@ LABEL_13:
     v69[3] = &unk_1E801A3B8;
     v40 = v23;
     v70 = v40;
-    v71 = v13;
+    v71 = completionCopy;
     v25 = _Block_copy(v69);
     objc_initWeak(&location, self);
     v64 = 0;
@@ -1868,8 +1868,8 @@ LABEL_13:
     v48 = &v64;
     v49 = &v58;
     v50 = &v52;
-    v45 = v11;
-    v46 = v12;
+    v45 = passCopy;
+    v46 = tileCopy;
     v28 = [v26 startDigitalCarKeySessionWithCompletion:v44];
     if (v28)
     {
@@ -1926,7 +1926,7 @@ LABEL_13:
 
   else
   {
-    v13[2](v13, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
 LABEL_14:
@@ -2189,28 +2189,28 @@ void __95__PKPassSessionlessContainerView_passTileGroupView_executeSEActionForPa
   [v1 invalidateSessionWithCompletion:v2];
 }
 
-- (id)_groupTileForTiles:(id)a3
+- (id)_groupTileForTiles:(id)tiles
 {
-  v3 = a3;
-  if ([v3 count])
+  tilesCopy = tiles;
+  if ([tilesCopy count])
   {
-    v4 = [v3 objectAtIndexedSubscript:0];
-    v5 = [v4 metadata];
-    if ([v5 isGroupType])
+    v4 = [tilesCopy objectAtIndexedSubscript:0];
+    metadata = [v4 metadata];
+    if ([metadata isGroupType])
     {
-      [v3 pk_firstObjectPassingTest:&__block_literal_global_147];
+      [tilesCopy pk_firstObjectPassingTest:&__block_literal_global_147];
     }
 
     else
     {
-      [MEMORY[0x1E69B8A90] _createDefaultDashboardGroupTileWithChildTiles:v3];
+      [MEMORY[0x1E69B8A90] _createDefaultDashboardGroupTileWithChildTiles:tilesCopy];
     }
     v6 = ;
   }
 
   else
   {
-    v6 = [v3 pk_firstObjectPassingTest:&__block_literal_global_147];
+    v6 = [tilesCopy pk_firstObjectPassingTest:&__block_literal_global_147];
   }
 
   return v6;
@@ -2247,8 +2247,8 @@ BOOL __53__PKPassSessionlessContainerView__groupTileForTiles___block_invoke(uint
   v18 = __Block_byref_object_copy__28;
   v19 = __Block_byref_object_dispose__28;
   v20 = 0;
-  v6 = [(PKPassFooterContentView *)self paymentPass];
-  v7 = [v6 uniqueID];
+  paymentPass = [(PKPassFooterContentView *)self paymentPass];
+  uniqueID = [paymentPass uniqueID];
   dispatch_group_enter(v4);
   paymentService = self->_paymentService;
   v12[0] = MEMORY[0x1E69E9820];
@@ -2259,7 +2259,7 @@ BOOL __53__PKPassSessionlessContainerView__groupTileForTiles___block_invoke(uint
   objc_copyWeak(&v15, &location);
   v9 = v4;
   v13 = v9;
-  [(PKPaymentService *)paymentService tilesForPassWithUniqueIdentifier:v7 context:1 completion:v12];
+  [(PKPaymentService *)paymentService tilesForPassWithUniqueIdentifier:uniqueID context:1 completion:v12];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __60__PKPassSessionlessContainerView__applyLatestContentToViews__block_invoke_2;
@@ -2320,14 +2320,14 @@ void __60__PKPassSessionlessContainerView__applyLatestContentToViews__block_invo
 - (void)_calculateTerminalStateWithRangingSuspensionReasons
 {
   v34 = *MEMORY[0x1E69E9840];
-  v2 = [(PKPassFooterContentView *)self paymentPass];
-  v3 = [v2 devicePaymentApplications];
+  paymentPass = [(PKPassFooterContentView *)self paymentPass];
+  devicePaymentApplications = [paymentPass devicePaymentApplications];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v3;
+  obj = devicePaymentApplications;
   v21 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
   v4 = 0;
   if (v21)
@@ -2349,8 +2349,8 @@ void __60__PKPassSessionlessContainerView__applyLatestContentToViews__block_invo
         v25 = 0u;
         v26 = 0u;
         v27 = 0u;
-        v7 = [v6 subcredentials];
-        v8 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
+        subcredentials = [v6 subcredentials];
+        v8 = [subcredentials countByEnumeratingWithState:&v24 objects:v32 count:16];
         if (v8)
         {
           v9 = v8;
@@ -2361,21 +2361,21 @@ void __60__PKPassSessionlessContainerView__applyLatestContentToViews__block_invo
             {
               if (*v25 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(subcredentials);
               }
 
               v12 = *(*(&v24 + 1) + 8 * i);
               if (([v12 supportedRadioTechnologies] & 2) != 0)
               {
                 paymentService = self->_paymentService;
-                v14 = [v12 identifier];
-                v15 = [v6 applicationIdentifier];
-                v16 = [v6 secureElementIdentifier];
-                v4 |= [(PKPaymentService *)paymentService rangingSuspensionReasonForAppletSubcredentialIdentifier:v14 paymentApplicationIdentifier:v15 secureElementIdentifier:v16];
+                identifier = [v12 identifier];
+                applicationIdentifier = [v6 applicationIdentifier];
+                secureElementIdentifier = [v6 secureElementIdentifier];
+                v4 |= [(PKPaymentService *)paymentService rangingSuspensionReasonForAppletSubcredentialIdentifier:identifier paymentApplicationIdentifier:applicationIdentifier secureElementIdentifier:secureElementIdentifier];
               }
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v24 objects:v32 count:16];
+            v9 = [subcredentials countByEnumeratingWithState:&v24 objects:v32 count:16];
           }
 
           while (v9);
@@ -2402,7 +2402,7 @@ void __60__PKPassSessionlessContainerView__applyLatestContentToViews__block_invo
 
 - (void)_applyTerminalFailureState
 {
-  v2 = self;
+  selfCopy = self;
   v43 = *MEMORY[0x1E69E9840];
   v3 = 640;
   failureReason = self->_failureReason;
@@ -2435,21 +2435,21 @@ LABEL_30:
 
   if (failureReason == 1)
   {
-    v6 = [(PKPassFooterContentView *)self paymentPass];
-    v28 = [v6 isHomeKeyPass];
+    paymentPass = [(PKPassFooterContentView *)self paymentPass];
+    isHomeKeyPass = [paymentPass isHomeKeyPass];
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v7 = [v6 devicePaymentApplications];
-    v8 = [v7 countByEnumeratingWithState:&v33 objects:v42 count:16];
+    devicePaymentApplications = [paymentPass devicePaymentApplications];
+    v8 = [devicePaymentApplications countByEnumeratingWithState:&v33 objects:v42 count:16];
     if (v8)
     {
       v9 = v8;
-      v25 = v6;
+      v25 = paymentPass;
       v26 = 640;
-      v27 = v2;
-      v10 = 0;
+      v27 = selfCopy;
+      carKeyEntitlementType = 0;
       v11 = *v34;
       do
       {
@@ -2457,7 +2457,7 @@ LABEL_30:
         {
           if (*v34 != v11)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(devicePaymentApplications);
           }
 
           v13 = *(*(&v33 + 1) + 8 * i);
@@ -2465,8 +2465,8 @@ LABEL_30:
           v30 = 0u;
           v31 = 0u;
           v32 = 0u;
-          v14 = [v13 subcredentials];
-          v15 = [v14 countByEnumeratingWithState:&v29 objects:v41 count:16];
+          subcredentials = [v13 subcredentials];
+          v15 = [subcredentials countByEnumeratingWithState:&v29 objects:v41 count:16];
           if (v15)
           {
             v16 = v15;
@@ -2477,28 +2477,28 @@ LABEL_30:
               {
                 if (*v30 != v17)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(subcredentials);
                 }
 
                 v19 = *(*(&v29 + 1) + 8 * j);
                 if (([v19 supportedRadioTechnologies] & 2) != 0)
                 {
-                  if (v28)
+                  if (isHomeKeyPass)
                   {
-                    v10 = 1;
+                    carKeyEntitlementType = 1;
                   }
 
                   else
                   {
-                    v20 = [v19 entitlement];
-                    v10 = [v20 carKeyEntitlementType];
+                    entitlement = [v19 entitlement];
+                    carKeyEntitlementType = [entitlement carKeyEntitlementType];
                   }
 
                   goto LABEL_25;
                 }
               }
 
-              v16 = [v14 countByEnumeratingWithState:&v29 objects:v41 count:16];
+              v16 = [subcredentials countByEnumeratingWithState:&v29 objects:v41 count:16];
               if (v16)
               {
                 continue;
@@ -2511,17 +2511,17 @@ LABEL_30:
 LABEL_25:
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v33 objects:v42 count:16];
+        v9 = [devicePaymentApplications countByEnumeratingWithState:&v33 objects:v42 count:16];
       }
 
       while (v9);
 
-      if (v10 > 6)
+      if (carKeyEntitlementType > 6)
       {
         v22 = 0;
         v3 = v26;
-        v2 = v27;
-        v6 = v25;
+        selfCopy = v27;
+        paymentPass = v25;
 LABEL_35:
 
         if (v22)
@@ -2532,10 +2532,10 @@ LABEL_35:
         goto LABEL_36;
       }
 
-      v21 = off_1E801A570[v10];
+      v21 = off_1E801A570[carKeyEntitlementType];
       v3 = v26;
-      v2 = v27;
-      v6 = v25;
+      selfCopy = v27;
+      paymentPass = v25;
     }
 
     else
@@ -2558,9 +2558,9 @@ LABEL_36:
   v23 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
   {
-    v24 = *(&v2->super.super.super.super.isa + v3);
+    v24 = *(&selfCopy->super.super.super.super.isa + v3);
     *buf = 134218240;
-    v38 = v2;
+    v38 = selfCopy;
     v39 = 2048;
     v40 = v24;
     _os_log_impl(&dword_1BD026000, v23, OS_LOG_TYPE_DEFAULT, "PKPassSessionlessContainerView (%p): unexpected terminal failure: %ld", buf, 0x16u);
@@ -2568,7 +2568,7 @@ LABEL_36:
 
   v22 = 0;
 LABEL_39:
-  [(PKPassSessionlessContainerView *)v2 _applySessionlessState:2 withTextOverride:v22];
+  [(PKPassSessionlessContainerView *)selfCopy _applySessionlessState:2 withTextOverride:v22];
 }
 
 - (void)_resetToIdleState

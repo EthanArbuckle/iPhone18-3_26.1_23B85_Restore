@@ -1,123 +1,123 @@
 @interface MKPlaceCollectionImageProvider
 + (id)sharedInstance;
-- (BOOL)isJoeColorManuallyCuratedForCuratedCollection:(id)a3;
-- (BOOL)requiresGradientOperationForSource:(int64_t)a3;
-- (CGSize)desiredSizeFromFrameSize:(CGSize)a3;
+- (BOOL)isJoeColorManuallyCuratedForCuratedCollection:(id)collection;
+- (BOOL)requiresGradientOperationForSource:(int64_t)source;
+- (CGSize)desiredSizeFromFrameSize:(CGSize)size;
 - (MKPlaceCollectionImageProvider)init;
-- (id)joeColorForCompactCollection:(id)a3 usingCarouselContext:(int64_t)a4;
-- (id)joeColorForCuratedCollection:(id)a3;
-- (id)photoInfoWithPhoto:(id)a3 desiredSize:(CGSize)a4;
-- (void)cache:(id)a3 willEvictObject:(id)a4;
-- (void)cancelAllOperationsForCompactImageSource:(int64_t)a3;
-- (void)cancelAllOperationsForImageSource:(int64_t)a3;
-- (void)checkQueuesForCollectionSource:(int64_t)a3;
-- (void)checkQueuesForCompactCollectionSource:(int64_t)a3;
-- (void)loadCoverImageWithGuideLocation:(id)a3 size:(CGSize)a4 usingImageSource:(int64_t)a5 completion:(id)a6;
-- (void)loadGradientCoverImageWithCuratedCollection:(id)a3 size:(CGSize)a4 contentSizeCategory:(id)a5 usingImageSource:(int64_t)a6 completion:(id)a7;
+- (id)joeColorForCompactCollection:(id)collection usingCarouselContext:(int64_t)context;
+- (id)joeColorForCuratedCollection:(id)collection;
+- (id)photoInfoWithPhoto:(id)photo desiredSize:(CGSize)size;
+- (void)cache:(id)cache willEvictObject:(id)object;
+- (void)cancelAllOperationsForCompactImageSource:(int64_t)source;
+- (void)cancelAllOperationsForImageSource:(int64_t)source;
+- (void)checkQueuesForCollectionSource:(int64_t)source;
+- (void)checkQueuesForCompactCollectionSource:(int64_t)source;
+- (void)loadCoverImageWithGuideLocation:(id)location size:(CGSize)size usingImageSource:(int64_t)source completion:(id)completion;
+- (void)loadGradientCoverImageWithCuratedCollection:(id)collection size:(CGSize)size contentSizeCategory:(id)category usingImageSource:(int64_t)source completion:(id)completion;
 @end
 
 @implementation MKPlaceCollectionImageProvider
 
-- (void)cache:(id)a3 willEvictObject:(id)a4
+- (void)cache:(id)cache willEvictObject:(id)object
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  cacheCopy = cache;
+  objectCopy = object;
   v7 = MKGetCuratedCollectionsLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v8 = 138412546;
-    v9 = v5;
+    v9 = cacheCopy;
     v10 = 2112;
-    v11 = v6;
+    v11 = objectCopy;
     _os_log_impl(&dword_1A2EA0000, v7, OS_LOG_TYPE_DEBUG, "[!]Cache %@ is evicting: %@", &v8, 0x16u);
   }
 }
 
-- (id)joeColorForCompactCollection:(id)a3 usingCarouselContext:(int64_t)a4
+- (id)joeColorForCompactCollection:(id)collection usingCarouselContext:(int64_t)context
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (a4 == 2)
+  collectionCopy = collection;
+  if (context == 2)
   {
     v7 = 2;
   }
 
   else
   {
-    v7 = a4 == 0;
+    v7 = context == 0;
   }
 
-  v8 = [v6 photosForType:{-[MKPlaceCollectionImageProvider photoTypeForImageSource:](self, "photoTypeForImageSource:", v7)}];
-  v9 = [v8 firstObject];
+  v8 = [collectionCopy photosForType:{-[MKPlaceCollectionImageProvider photoTypeForImageSource:](self, "photoTypeForImageSource:", v7)}];
+  firstObject = [v8 firstObject];
 
-  v10 = [v9 backgroundJoeColor];
-  if (!v10 || ([MEMORY[0x1E69DC888] _maps_colorFromHexString:v10], (v11 = objc_claimAutoreleasedReturnValue()) == 0))
+  backgroundJoeColor = [firstObject backgroundJoeColor];
+  if (!backgroundJoeColor || ([MEMORY[0x1E69DC888] _maps_colorFromHexString:backgroundJoeColor], (secondarySystemBackgroundColor = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v12 = MKGetCuratedCollectionsLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = [v6 title];
+      title = [collectionCopy title];
       v15 = 138412290;
-      v16 = v13;
+      v16 = title;
       _os_log_impl(&dword_1A2EA0000, v12, OS_LOG_TYPE_ERROR, "JoeColor is missing background color string for guide location: %@", &v15, 0xCu);
     }
 
-    v11 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
   }
 
-  return v11;
+  return secondarySystemBackgroundColor;
 }
 
-- (BOOL)isJoeColorManuallyCuratedForCuratedCollection:(id)a3
+- (BOOL)isJoeColorManuallyCuratedForCuratedCollection:(id)collection
 {
-  v3 = [a3 photos];
-  v4 = [v3 firstObject];
-  v5 = [v4 isBackgroundJoeColorCurated];
+  photos = [collection photos];
+  firstObject = [photos firstObject];
+  isBackgroundJoeColorCurated = [firstObject isBackgroundJoeColorCurated];
 
-  return v5;
+  return isBackgroundJoeColorCurated;
 }
 
-- (id)joeColorForCuratedCollection:(id)a3
+- (id)joeColorForCuratedCollection:(id)collection
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 photos];
-  v5 = [v4 firstObject];
-  v6 = [v5 backgroundJoeColor];
+  collectionCopy = collection;
+  photos = [collectionCopy photos];
+  firstObject = [photos firstObject];
+  backgroundJoeColor = [firstObject backgroundJoeColor];
 
-  if (!v6 || ([MEMORY[0x1E69DC888] _maps_colorFromHexString:v6], (v7 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!backgroundJoeColor || ([MEMORY[0x1E69DC888] _maps_colorFromHexString:backgroundJoeColor], (secondarySystemBackgroundColor = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v8 = MKGetCuratedCollectionsLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [v3 collectionTitle];
+      collectionTitle = [collectionCopy collectionTitle];
       v11 = 138412290;
-      v12 = v9;
+      v12 = collectionTitle;
       _os_log_impl(&dword_1A2EA0000, v8, OS_LOG_TYPE_ERROR, "JoeColor is missing background color string for collection: %@", &v11, 0xCu);
     }
 
-    v7 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
   }
 
-  return v7;
+  return secondarySystemBackgroundColor;
 }
 
-- (id)photoInfoWithPhoto:(id)a3 desiredSize:(CGSize)a4
+- (id)photoInfoWithPhoto:(id)photo desiredSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = [(MKPlaceCollectionImageProvider *)self optionsForCollectionCells];
-  v9 = [(MKPlaceCollectionImageProvider *)self photoInfoWithPhoto:v7 desiredSize:v8 usingOptions:width, height];
+  height = size.height;
+  width = size.width;
+  photoCopy = photo;
+  optionsForCollectionCells = [(MKPlaceCollectionImageProvider *)self optionsForCollectionCells];
+  height = [(MKPlaceCollectionImageProvider *)self photoInfoWithPhoto:photoCopy desiredSize:optionsForCollectionCells usingOptions:width, height];
 
-  return v9;
+  return height;
 }
 
-- (CGSize)desiredSizeFromFrameSize:(CGSize)a3
+- (CGSize)desiredSizeFromFrameSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = +[MKSystemController sharedInstance];
   [v5 screenScale];
   v7 = v6;
@@ -129,16 +129,16 @@
   return result;
 }
 
-- (void)cancelAllOperationsForCompactImageSource:(int64_t)a3
+- (void)cancelAllOperationsForCompactImageSource:(int64_t)source
 {
   v13 = *MEMORY[0x1E69E9840];
   v4 = @"CompactCollection_SearchHome";
-  if (a3 == 1)
+  if (source == 1)
   {
     v4 = @"CompactCollection_CitySelector";
   }
 
-  if (a3 == 2)
+  if (source == 2)
   {
     v5 = @"CompactCollection_GuidesHome";
   }
@@ -148,11 +148,11 @@
     v5 = v4;
   }
 
-  v6 = [(MKPlaceCollectionImageProvider *)self downloadOperationsPair];
-  v7 = [v6 objectForKey:v5];
+  downloadOperationsPair = [(MKPlaceCollectionImageProvider *)self downloadOperationsPair];
+  v7 = [downloadOperationsPair objectForKey:v5];
 
-  v8 = [(MKPlaceCollectionImageProvider *)self gradientOperationsPair];
-  v9 = [v8 objectForKey:v5];
+  gradientOperationsPair = [(MKPlaceCollectionImageProvider *)self gradientOperationsPair];
+  v9 = [gradientOperationsPair objectForKey:v5];
 
   v10 = MKGetCuratedCollectionsLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -166,24 +166,24 @@
   [v9 cancelAllOperations];
 }
 
-- (void)cancelAllOperationsForImageSource:(int64_t)a3
+- (void)cancelAllOperationsForImageSource:(int64_t)source
 {
   v12 = *MEMORY[0x1E69E9840];
-  if ((a3 - 1) > 0xA)
+  if ((source - 1) > 0xA)
   {
     v4 = @"SeeAll";
   }
 
   else
   {
-    v4 = off_1E76C9888[a3 - 1];
+    v4 = off_1E76C9888[source - 1];
   }
 
-  v5 = [(MKPlaceCollectionImageProvider *)self downloadOperationsPair];
-  v6 = [v5 objectForKey:v4];
+  downloadOperationsPair = [(MKPlaceCollectionImageProvider *)self downloadOperationsPair];
+  v6 = [downloadOperationsPair objectForKey:v4];
 
-  v7 = [(MKPlaceCollectionImageProvider *)self gradientOperationsPair];
-  v8 = [v7 objectForKey:v4];
+  gradientOperationsPair = [(MKPlaceCollectionImageProvider *)self gradientOperationsPair];
+  v8 = [gradientOperationsPair objectForKey:v4];
 
   v9 = MKGetCuratedCollectionsLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
@@ -197,12 +197,12 @@
   [v8 cancelAllOperations];
 }
 
-- (void)loadCoverImageWithGuideLocation:(id)a3 size:(CGSize)a4 usingImageSource:(int64_t)a5 completion:(id)a6
+- (void)loadCoverImageWithGuideLocation:(id)location size:(CGSize)size usingImageSource:(int64_t)source completion:(id)completion
 {
-  v7 = a3;
-  v10 = a6;
-  v8 = v10;
-  v9 = v7;
+  locationCopy = location;
+  completionCopy = completion;
+  v8 = completionCopy;
+  v9 = locationCopy;
   geo_isolate_sync();
 }
 
@@ -408,14 +408,14 @@ void __99__MKPlaceCollectionImageProvider_loadCoverImageWithGuideLocation_size_u
   }
 }
 
-- (void)loadGradientCoverImageWithCuratedCollection:(id)a3 size:(CGSize)a4 contentSizeCategory:(id)a5 usingImageSource:(int64_t)a6 completion:(id)a7
+- (void)loadGradientCoverImageWithCuratedCollection:(id)collection size:(CGSize)size contentSizeCategory:(id)category usingImageSource:(int64_t)source completion:(id)completion
 {
-  v9 = a3;
-  v13 = a5;
-  v14 = a7;
-  v10 = v13;
-  v11 = v14;
-  v12 = v9;
+  collectionCopy = collection;
+  categoryCopy = category;
+  completionCopy = completion;
+  v10 = categoryCopy;
+  v11 = completionCopy;
+  v12 = collectionCopy;
   geo_isolate_sync();
 }
 
@@ -783,23 +783,23 @@ void __131__MKPlaceCollectionImageProvider_loadGradientCoverImageWithCuratedColl
   }
 }
 
-- (BOOL)requiresGradientOperationForSource:(int64_t)a3
+- (BOOL)requiresGradientOperationForSource:(int64_t)source
 {
-  v3 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v3 = [MEMORY[0x1E696AD98] numberWithInteger:source];
   v4 = [&unk_1F16121E0 containsObject:v3];
 
   return v4 ^ 1;
 }
 
-- (void)checkQueuesForCompactCollectionSource:(int64_t)a3
+- (void)checkQueuesForCompactCollectionSource:(int64_t)source
 {
   v4 = @"CompactCollection_SearchHome";
-  if (a3 == 1)
+  if (source == 1)
   {
     v4 = @"CompactCollection_CitySelector";
   }
 
-  if (a3 == 2)
+  if (source == 2)
   {
     v5 = @"CompactCollection_GuidesHome";
   }
@@ -809,8 +809,8 @@ void __131__MKPlaceCollectionImageProvider_loadGradientCoverImageWithCuratedColl
     v5 = v4;
   }
 
-  v6 = [(MKPlaceCollectionImageProvider *)self downloadOperationsPair];
-  v10 = [v6 objectForKey:v5];
+  downloadOperationsPair = [(MKPlaceCollectionImageProvider *)self downloadOperationsPair];
+  v10 = [downloadOperationsPair objectForKey:v5];
 
   v7 = v10;
   if (!v10)
@@ -820,27 +820,27 @@ void __131__MKPlaceCollectionImageProvider_loadGradientCoverImageWithCuratedColl
     [v11 setName:v8];
 
     [v11 setQualityOfService:25];
-    v9 = [(MKPlaceCollectionImageProvider *)self downloadOperationsPair];
-    [v9 setObject:v11 forKey:v5];
+    downloadOperationsPair2 = [(MKPlaceCollectionImageProvider *)self downloadOperationsPair];
+    [downloadOperationsPair2 setObject:v11 forKey:v5];
 
     v7 = v11;
   }
 }
 
-- (void)checkQueuesForCollectionSource:(int64_t)a3
+- (void)checkQueuesForCollectionSource:(int64_t)source
 {
-  if ((a3 - 1) > 0xA)
+  if ((source - 1) > 0xA)
   {
     v5 = @"SeeAll";
   }
 
   else
   {
-    v5 = off_1E76C9888[a3 - 1];
+    v5 = off_1E76C9888[source - 1];
   }
 
-  v6 = [(MKPlaceCollectionImageProvider *)self downloadOperationsPair];
-  v13 = [v6 objectForKey:v5];
+  downloadOperationsPair = [(MKPlaceCollectionImageProvider *)self downloadOperationsPair];
+  v13 = [downloadOperationsPair objectForKey:v5];
 
   if (!v13)
   {
@@ -849,14 +849,14 @@ void __131__MKPlaceCollectionImageProvider_loadGradientCoverImageWithCuratedColl
     [v13 setName:v7];
 
     [v13 setQualityOfService:25];
-    v8 = [(MKPlaceCollectionImageProvider *)self downloadOperationsPair];
-    [v8 setObject:v13 forKey:v5];
+    downloadOperationsPair2 = [(MKPlaceCollectionImageProvider *)self downloadOperationsPair];
+    [downloadOperationsPair2 setObject:v13 forKey:v5];
   }
 
-  if ([(MKPlaceCollectionImageProvider *)self requiresGradientOperationForSource:a3])
+  if ([(MKPlaceCollectionImageProvider *)self requiresGradientOperationForSource:source])
   {
-    v9 = [(MKPlaceCollectionImageProvider *)self gradientOperationsPair];
-    v10 = [v9 objectForKey:v5];
+    gradientOperationsPair = [(MKPlaceCollectionImageProvider *)self gradientOperationsPair];
+    v10 = [gradientOperationsPair objectForKey:v5];
 
     if (!v10)
     {
@@ -865,8 +865,8 @@ void __131__MKPlaceCollectionImageProvider_loadGradientCoverImageWithCuratedColl
       [v10 setName:v11];
 
       [v10 setQualityOfService:25];
-      v12 = [(MKPlaceCollectionImageProvider *)self gradientOperationsPair];
-      [v12 setObject:v10 forKey:v5];
+      gradientOperationsPair2 = [(MKPlaceCollectionImageProvider *)self gradientOperationsPair];
+      [gradientOperationsPair2 setObject:v10 forKey:v5];
     }
   }
 }

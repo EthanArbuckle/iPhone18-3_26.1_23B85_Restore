@@ -1,22 +1,22 @@
 @interface HFActionSetSuggestionVendor
 + (NSSet)supportedBuiltInActionSetTypes;
 - (HFActionSetSuggestionVendor)init;
-- (HFActionSetSuggestionVendor)initWithHome:(id)a3 actionSet:(id)a4 filter:(id)a5;
-- (id)_actionBuildersForBuiltInActionSetWithType:(id)a3 outDependentServiceTypes:(id *)a4;
+- (HFActionSetSuggestionVendor)initWithHome:(id)home actionSet:(id)set filter:(id)filter;
+- (id)_actionBuildersForBuiltInActionSetWithType:(id)type outDependentServiceTypes:(id *)types;
 - (id)_actionBuildersForCustomActionSet;
-- (id)_actionBuildersForCustomActionSetWithService:(id)a3;
-- (id)_actionBuildersToSetLightbulbBrightness:(double)a3;
-- (id)_actionBuildersToSetLightbulbColorWithPaletteColor:(id)a3;
-- (id)_actionBuildersToSetPowerState:(BOOL)a3 forServicesOfTypes:(id)a4;
-- (id)_actionBuildersToSetTargetBlindsPositionOpen:(BOOL)a3;
-- (id)_actionBuildersToSetTargetDoorState:(int64_t)a3 forServicesOfTypes:(id)a4;
-- (id)_actionBuildersToSetTargetLockState:(int64_t)a3 forServicesOfTypes:(id)a4;
-- (id)_actionBuildersToSetTargetSecuritySystemState:(int64_t)a3;
-- (id)_controlItemValueSourceForService:(id)a3;
-- (id)_deriveActionForPrimaryCharacteristic:(id)a3;
-- (id)_deriveActionForPrimaryCharacteristic:(id)a3 candidateServices:(id)a4 targetThreshold:(double)a5;
-- (id)_deriveActionForSecondaryCharacteristic:(id)a3 candidateServices:(id)a4;
-- (id)buildWithOutDependentServiceTypes:(id *)a3;
+- (id)_actionBuildersForCustomActionSetWithService:(id)service;
+- (id)_actionBuildersToSetLightbulbBrightness:(double)brightness;
+- (id)_actionBuildersToSetLightbulbColorWithPaletteColor:(id)color;
+- (id)_actionBuildersToSetPowerState:(BOOL)state forServicesOfTypes:(id)types;
+- (id)_actionBuildersToSetTargetBlindsPositionOpen:(BOOL)open;
+- (id)_actionBuildersToSetTargetDoorState:(int64_t)state forServicesOfTypes:(id)types;
+- (id)_actionBuildersToSetTargetLockState:(int64_t)state forServicesOfTypes:(id)types;
+- (id)_actionBuildersToSetTargetSecuritySystemState:(int64_t)state;
+- (id)_controlItemValueSourceForService:(id)service;
+- (id)_deriveActionForPrimaryCharacteristic:(id)characteristic;
+- (id)_deriveActionForPrimaryCharacteristic:(id)characteristic candidateServices:(id)services targetThreshold:(double)threshold;
+- (id)_deriveActionForSecondaryCharacteristic:(id)characteristic candidateServices:(id)services;
+- (id)buildWithOutDependentServiceTypes:(id *)types;
 @end
 
 @implementation HFActionSetSuggestionVendor
@@ -53,36 +53,36 @@ void __61__HFActionSetSuggestionVendor_supportedBuiltInActionSetTypes__block_inv
 
 - (HFActionSetSuggestionVendor)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithHome_actionSet_filter_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFActionSetSuggestionVendor.m" lineNumber:49 description:{@"%s is unavailable; use %@ instead", "-[HFActionSetSuggestionVendor init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFActionSetSuggestionVendor.m" lineNumber:49 description:{@"%s is unavailable; use %@ instead", "-[HFActionSetSuggestionVendor init]", v5}];
 
   return 0;
 }
 
-- (HFActionSetSuggestionVendor)initWithHome:(id)a3 actionSet:(id)a4 filter:(id)a5
+- (HFActionSetSuggestionVendor)initWithHome:(id)home actionSet:(id)set filter:(id)filter
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  homeCopy = home;
+  setCopy = set;
+  filterCopy = filter;
   v19.receiver = self;
   v19.super_class = HFActionSetSuggestionVendor;
   v12 = [(HFActionSetSuggestionVendor *)&v19 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_home, a3);
-    objc_storeStrong(&v13->_actionSet, a4);
-    if (v11)
+    objc_storeStrong(&v12->_home, home);
+    objc_storeStrong(&v13->_actionSet, set);
+    if (filterCopy)
     {
-      v14 = [v11 services];
+      services = [filterCopy services];
       services = v13->_services;
-      v13->_services = v14;
+      v13->_services = services;
     }
 
     else
     {
-      services = [v9 accessories];
+      services = [homeCopy accessories];
       v16 = [services na_flatMap:&__block_literal_global_14_10];
       v17 = v13->_services;
       v13->_services = v16;
@@ -100,24 +100,24 @@ id __61__HFActionSetSuggestionVendor_initWithHome_actionSet_filter___block_invok
   return v3;
 }
 
-- (id)buildWithOutDependentServiceTypes:(id *)a3
+- (id)buildWithOutDependentServiceTypes:(id *)types
 {
-  v5 = [(HFActionSetSuggestionVendor *)self actionSet];
-  v6 = [v5 actionSetType];
+  actionSet = [(HFActionSetSuggestionVendor *)self actionSet];
+  actionSetType = [actionSet actionSetType];
 
   v7 = [HFActionSetBuilder alloc];
-  v8 = [(HFActionSetSuggestionVendor *)self actionSet];
-  v9 = [(HFActionSetSuggestionVendor *)self home];
-  v10 = [(HFActionSetBuilder *)v7 initWithExistingObject:v8 inHome:v9];
+  actionSet2 = [(HFActionSetSuggestionVendor *)self actionSet];
+  home = [(HFActionSetSuggestionVendor *)self home];
+  v10 = [(HFActionSetBuilder *)v7 initWithExistingObject:actionSet2 inHome:home];
 
-  if ([v6 isEqualToString:*MEMORY[0x277CCF1A8]])
+  if ([actionSetType isEqualToString:*MEMORY[0x277CCF1A8]])
   {
     [(HFActionSetSuggestionVendor *)self _actionBuildersForCustomActionSet];
   }
 
   else
   {
-    [(HFActionSetSuggestionVendor *)self _actionBuildersForBuiltInActionSetWithType:v6 outDependentServiceTypes:a3];
+    [(HFActionSetSuggestionVendor *)self _actionBuildersForBuiltInActionSetWithType:actionSetType outDependentServiceTypes:types];
   }
   v11 = ;
   v14[0] = MEMORY[0x277D85DD0];
@@ -131,30 +131,30 @@ id __61__HFActionSetSuggestionVendor_initWithHome_actionSet_filter___block_invok
   return v12;
 }
 
-- (id)_actionBuildersForBuiltInActionSetWithType:(id)a3 outDependentServiceTypes:(id *)a4
+- (id)_actionBuildersForBuiltInActionSetWithType:(id)type outDependentServiceTypes:(id *)types
 {
   v71[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB18] array];
+  typeCopy = type;
+  array = [MEMORY[0x277CBEB18] array];
   v8 = [MEMORY[0x277CBEB58] set];
-  if ([v6 isEqualToString:*MEMORY[0x277CCF1B0]])
+  if ([typeCopy isEqualToString:*MEMORY[0x277CCF1B0]])
   {
     v9 = *MEMORY[0x277CD0E60];
     v71[0] = *MEMORY[0x277CD0EA0];
     v71[1] = v9;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v71 count:2];
     v11 = [(HFActionSetSuggestionVendor *)self _actionBuildersToSetPowerState:1 forServicesOfTypes:v10];
-    [v7 addObjectsFromArray:v11];
+    [array addObjectsFromArray:v11];
 
     v12 = [(HFActionSetSuggestionVendor *)self _actionBuildersToSetLightbulbBrightness:0.3];
-    [v7 addObjectsFromArray:v12];
+    [array addObjectsFromArray:v12];
 
     v13 = +[HFColorPalette warmWhiteColor];
     v14 = [(HFActionSetSuggestionVendor *)self _actionBuildersToSetLightbulbColorWithPaletteColor:v13];
-    [v7 addObjectsFromArray:v14];
+    [array addObjectsFromArray:v14];
 
     v15 = [(HFActionSetSuggestionVendor *)self _actionBuildersToSetTargetBlindsPositionOpen:1];
-    [v7 addObjectsFromArray:v15];
+    [array addObjectsFromArray:v15];
 
     v70 = *MEMORY[0x277CD0F60];
     v16 = MEMORY[0x277CBEA60];
@@ -168,9 +168,9 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x277CCF198]])
+  if ([typeCopy isEqualToString:*MEMORY[0x277CCF198]])
   {
-    v58 = a4;
+    typesCopy = types;
     if (qword_280E039D8 != -1)
     {
       dispatch_once(&qword_280E039D8, &__block_literal_global_23_4);
@@ -178,22 +178,22 @@ LABEL_12:
 
     v19 = qword_280E039E0;
     v20 = [(HFActionSetSuggestionVendor *)self _actionBuildersToSetPowerState:0 forServicesOfTypes:v19];
-    [v7 addObjectsFromArray:v20];
+    [array addObjectsFromArray:v20];
 
     v69 = *MEMORY[0x277CD0E58];
     v21 = v69;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v69 count:1];
     v23 = [(HFActionSetSuggestionVendor *)self _actionBuildersToSetTargetDoorState:1 forServicesOfTypes:v22];
-    [v7 addObjectsFromArray:v23];
+    [array addObjectsFromArray:v23];
 
     v68 = *MEMORY[0x277CD0EB0];
     v24 = v68;
     v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v68 count:1];
     v26 = [(HFActionSetSuggestionVendor *)self _actionBuildersToSetTargetLockState:1 forServicesOfTypes:v25];
-    [v7 addObjectsFromArray:v26];
+    [array addObjectsFromArray:v26];
 
     v27 = [(HFActionSetSuggestionVendor *)self _actionBuildersToSetTargetBlindsPositionOpen:0];
-    [v7 addObjectsFromArray:v27];
+    [array addObjectsFromArray:v27];
 
     v28 = *MEMORY[0x277CD0ED0];
     v67[0] = *MEMORY[0x277CD0EA0];
@@ -204,11 +204,11 @@ LABEL_12:
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:v67 count:5];
     [v8 addObjectsFromArray:v29];
 
-    a4 = v58;
+    types = typesCopy;
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x277CCF188]])
+  if ([typeCopy isEqualToString:*MEMORY[0x277CCF188]])
   {
     if (qword_280E039E8 != -1)
     {
@@ -217,22 +217,22 @@ LABEL_12:
 
     v19 = qword_280E039F0;
     v30 = [(HFActionSetSuggestionVendor *)self _actionBuildersToSetPowerState:0 forServicesOfTypes:v19];
-    [v7 addObjectsFromArray:v30];
+    [array addObjectsFromArray:v30];
 
     v66 = *MEMORY[0x277CD0E58];
     v57 = v66;
     v31 = [MEMORY[0x277CBEA60] arrayWithObjects:&v66 count:1];
     v32 = [(HFActionSetSuggestionVendor *)self _actionBuildersToSetTargetDoorState:1 forServicesOfTypes:v31];
-    [v7 addObjectsFromArray:v32];
+    [array addObjectsFromArray:v32];
 
     v65 = *MEMORY[0x277CD0EB0];
     v33 = v65;
     v34 = [MEMORY[0x277CBEA60] arrayWithObjects:&v65 count:1];
     v35 = [(HFActionSetSuggestionVendor *)self _actionBuildersToSetTargetLockState:1 forServicesOfTypes:v34];
-    [v7 addObjectsFromArray:v35];
+    [array addObjectsFromArray:v35];
 
     v36 = [(HFActionSetSuggestionVendor *)self _actionBuildersToSetTargetSecuritySystemState:1];
-    [v7 addObjectsFromArray:v36];
+    [array addObjectsFromArray:v36];
 
     v37 = *MEMORY[0x277CD0ED0];
     v64[0] = *MEMORY[0x277CD0EA0];
@@ -249,7 +249,7 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  if ([v6 isEqualToString:*MEMORY[0x277CCF180]])
+  if ([typeCopy isEqualToString:*MEMORY[0x277CCF180]])
   {
     v44 = *MEMORY[0x277CD0E60];
     v63[0] = *MEMORY[0x277CD0EA0];
@@ -257,33 +257,33 @@ LABEL_12:
     v63[1] = v44;
     v45 = [MEMORY[0x277CBEA60] arrayWithObjects:v63 count:2];
     v46 = [(HFActionSetSuggestionVendor *)self _actionBuildersToSetPowerState:1 forServicesOfTypes:v45];
-    [v7 addObjectsFromArray:v46];
+    [array addObjectsFromArray:v46];
 
     v47 = [(HFActionSetSuggestionVendor *)self _actionBuildersToSetLightbulbBrightness:0.7];
-    [v7 addObjectsFromArray:v47];
+    [array addObjectsFromArray:v47];
 
     v48 = +[HFColorPalette warmWhiteColor];
     v49 = [(HFActionSetSuggestionVendor *)self _actionBuildersToSetLightbulbColorWithPaletteColor:v48];
-    [v7 addObjectsFromArray:v49];
+    [array addObjectsFromArray:v49];
 
     v62 = *MEMORY[0x277CD0E58];
     v50 = [MEMORY[0x277CBEA60] arrayWithObjects:&v62 count:1];
     v51 = [(HFActionSetSuggestionVendor *)self _actionBuildersToSetTargetDoorState:0 forServicesOfTypes:v50];
-    [v7 addObjectsFromArray:v51];
+    [array addObjectsFromArray:v51];
 
-    v52 = a4;
+    typesCopy2 = types;
     v61 = *MEMORY[0x277CD0EB0];
     v53 = v61;
     v54 = [MEMORY[0x277CBEA60] arrayWithObjects:&v61 count:1];
     v55 = [(HFActionSetSuggestionVendor *)self _actionBuildersToSetTargetLockState:0 forServicesOfTypes:v54];
-    [v7 addObjectsFromArray:v55];
+    [array addObjectsFromArray:v55];
 
     v56 = [(HFActionSetSuggestionVendor *)self _actionBuildersToSetTargetSecuritySystemState:3];
-    [v7 addObjectsFromArray:v56];
+    [array addObjectsFromArray:v56];
 
     v60[0] = v43;
     v60[1] = v53;
-    a4 = v52;
+    types = typesCopy2;
     v60[2] = *MEMORY[0x277CD0ED8];
     v16 = MEMORY[0x277CBEA60];
     v17 = v60;
@@ -292,9 +292,9 @@ LABEL_12:
   }
 
 LABEL_13:
-  if (*a4)
+  if (*types)
   {
-    *a4 = [v8 copy];
+    *types = [v8 copy];
   }
 
   v59[0] = MEMORY[0x277D85DD0];
@@ -302,7 +302,7 @@ LABEL_13:
   v59[2] = __99__HFActionSetSuggestionVendor__actionBuildersForBuiltInActionSetWithType_outDependentServiceTypes___block_invoke_7;
   v59[3] = &unk_277DF4998;
   v59[4] = self;
-  v40 = [v7 na_filter:v59];
+  v40 = [array na_filter:v59];
 
   v41 = *MEMORY[0x277D85DE8];
 
@@ -358,19 +358,19 @@ uint64_t __99__HFActionSetSuggestionVendor__actionBuildersForBuiltInActionSetWit
   return v7 ^ 1u;
 }
 
-- (id)_actionBuildersToSetPowerState:(BOOL)a3 forServicesOfTypes:(id)a4
+- (id)_actionBuildersToSetPowerState:(BOOL)state forServicesOfTypes:(id)types
 {
-  v6 = a4;
-  v7 = [(HFActionSetSuggestionVendor *)self services];
+  typesCopy = types;
+  services = [(HFActionSetSuggestionVendor *)self services];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __81__HFActionSetSuggestionVendor__actionBuildersToSetPowerState_forServicesOfTypes___block_invoke;
   v11[3] = &unk_277DFF610;
-  v12 = v6;
-  v13 = self;
-  v14 = a3;
-  v8 = v6;
-  v9 = [v7 na_map:v11];
+  v12 = typesCopy;
+  selfCopy = self;
+  stateCopy = state;
+  v8 = typesCopy;
+  v9 = [services na_map:v11];
 
   return v9;
 }
@@ -454,18 +454,18 @@ LABEL_17:
   return v9;
 }
 
-- (id)_actionBuildersToSetLightbulbColorWithPaletteColor:(id)a3
+- (id)_actionBuildersToSetLightbulbColorWithPaletteColor:(id)color
 {
-  v4 = a3;
-  v5 = [(HFActionSetSuggestionVendor *)self services];
+  colorCopy = color;
+  services = [(HFActionSetSuggestionVendor *)self services];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __82__HFActionSetSuggestionVendor__actionBuildersToSetLightbulbColorWithPaletteColor___block_invoke;
   v9[3] = &unk_277DFB4C0;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 na_flatMap:v9];
+  v10 = colorCopy;
+  v6 = colorCopy;
+  v7 = [services na_flatMap:v9];
 
   return v7;
 }
@@ -526,16 +526,16 @@ HFCharacteristicWriteActionBuilder *__82__HFActionSetSuggestionVendor__actionBui
   return v9;
 }
 
-- (id)_actionBuildersToSetLightbulbBrightness:(double)a3
+- (id)_actionBuildersToSetLightbulbBrightness:(double)brightness
 {
-  v5 = [(HFActionSetSuggestionVendor *)self services];
+  services = [(HFActionSetSuggestionVendor *)self services];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __71__HFActionSetSuggestionVendor__actionBuildersToSetLightbulbBrightness___block_invoke;
   v8[3] = &unk_277DFF660;
-  *&v8[5] = a3;
+  *&v8[5] = brightness;
   v8[4] = self;
-  v6 = [v5 na_map:v8];
+  v6 = [services na_map:v8];
 
   return v6;
 }
@@ -583,19 +583,19 @@ HFCharacteristicWriteActionBuilder *__71__HFActionSetSuggestionVendor__actionBui
   return v11;
 }
 
-- (id)_actionBuildersToSetTargetDoorState:(int64_t)a3 forServicesOfTypes:(id)a4
+- (id)_actionBuildersToSetTargetDoorState:(int64_t)state forServicesOfTypes:(id)types
 {
-  v6 = a4;
-  v7 = [(HFActionSetSuggestionVendor *)self services];
+  typesCopy = types;
+  services = [(HFActionSetSuggestionVendor *)self services];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __86__HFActionSetSuggestionVendor__actionBuildersToSetTargetDoorState_forServicesOfTypes___block_invoke;
   v11[3] = &unk_277DFF688;
-  v12 = v6;
-  v13 = self;
-  v14 = a3;
-  v8 = v6;
-  v9 = [v7 na_map:v11];
+  v12 = typesCopy;
+  selfCopy = self;
+  stateCopy = state;
+  v8 = typesCopy;
+  v9 = [services na_map:v11];
 
   return v9;
 }
@@ -636,19 +636,19 @@ HFCharacteristicWriteActionBuilder *__86__HFActionSetSuggestionVendor__actionBui
   return v10;
 }
 
-- (id)_actionBuildersToSetTargetLockState:(int64_t)a3 forServicesOfTypes:(id)a4
+- (id)_actionBuildersToSetTargetLockState:(int64_t)state forServicesOfTypes:(id)types
 {
-  v6 = a4;
-  v7 = [(HFActionSetSuggestionVendor *)self services];
+  typesCopy = types;
+  services = [(HFActionSetSuggestionVendor *)self services];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __86__HFActionSetSuggestionVendor__actionBuildersToSetTargetLockState_forServicesOfTypes___block_invoke;
   v11[3] = &unk_277DFF688;
-  v12 = v6;
-  v13 = self;
-  v14 = a3;
-  v8 = v6;
-  v9 = [v7 na_map:v11];
+  v12 = typesCopy;
+  selfCopy = self;
+  stateCopy = state;
+  v8 = typesCopy;
+  v9 = [services na_map:v11];
 
   return v9;
 }
@@ -689,16 +689,16 @@ HFCharacteristicWriteActionBuilder *__86__HFActionSetSuggestionVendor__actionBui
   return v10;
 }
 
-- (id)_actionBuildersToSetTargetSecuritySystemState:(int64_t)a3
+- (id)_actionBuildersToSetTargetSecuritySystemState:(int64_t)state
 {
-  v5 = [(HFActionSetSuggestionVendor *)self services];
+  services = [(HFActionSetSuggestionVendor *)self services];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __77__HFActionSetSuggestionVendor__actionBuildersToSetTargetSecuritySystemState___block_invoke;
   v8[3] = &unk_277DFF660;
   v8[4] = self;
-  v8[5] = a3;
-  v6 = [v5 na_map:v8];
+  v8[5] = state;
+  v6 = [services na_map:v8];
 
   return v6;
 }
@@ -735,16 +735,16 @@ HFCharacteristicWriteActionBuilder *__77__HFActionSetSuggestionVendor__actionBui
   return v10;
 }
 
-- (id)_actionBuildersToSetTargetBlindsPositionOpen:(BOOL)a3
+- (id)_actionBuildersToSetTargetBlindsPositionOpen:(BOOL)open
 {
-  v5 = [(HFActionSetSuggestionVendor *)self services];
+  services = [(HFActionSetSuggestionVendor *)self services];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __76__HFActionSetSuggestionVendor__actionBuildersToSetTargetBlindsPositionOpen___block_invoke;
   v8[3] = &unk_277DFF6B0;
-  v9 = a3;
+  openCopy = open;
   v8[4] = self;
-  v6 = [v5 na_map:v8];
+  v6 = [services na_map:v8];
 
   return v6;
 }
@@ -814,39 +814,39 @@ HFCharacteristicWriteActionBuilder *__76__HFActionSetSuggestionVendor__actionBui
 
 - (id)_actionBuildersForCustomActionSet
 {
-  v3 = [(HFActionSetSuggestionVendor *)self services];
+  services = [(HFActionSetSuggestionVendor *)self services];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __64__HFActionSetSuggestionVendor__actionBuildersForCustomActionSet__block_invoke;
   v6[3] = &unk_277DFF6D8;
   v6[4] = self;
-  v4 = [v3 na_flatMap:v6];
+  v4 = [services na_flatMap:v6];
 
   return v4;
 }
 
-- (id)_actionBuildersForCustomActionSetWithService:(id)a3
+- (id)_actionBuildersForCustomActionSetWithService:(id)service
 {
-  v4 = a3;
-  v5 = [v4 serviceType];
-  v6 = [HFActionSetServiceSuggestionMetadata metadataForServiceType:v5];
+  serviceCopy = service;
+  serviceType = [serviceCopy serviceType];
+  v6 = [HFActionSetServiceSuggestionMetadata metadataForServiceType:serviceType];
 
   if (v6)
   {
-    v7 = [v6 primaryCharacteristicType];
-    v8 = [v4 hf_characteristicOfType:v7];
+    primaryCharacteristicType = [v6 primaryCharacteristicType];
+    v8 = [serviceCopy hf_characteristicOfType:primaryCharacteristicType];
 
     if (v8 && [v8 hf_isWritable])
     {
-      v9 = [(HFActionSetSuggestionVendor *)self actionSet];
-      v10 = [v9 hf_characteristicWriteActions];
+      actionSet = [(HFActionSetSuggestionVendor *)self actionSet];
+      hf_characteristicWriteActions = [actionSet hf_characteristicWriteActions];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __76__HFActionSetSuggestionVendor__actionBuildersForCustomActionSetWithService___block_invoke;
       v28[3] = &unk_277DFF440;
-      v11 = v4;
+      v11 = serviceCopy;
       v29 = v11;
-      v12 = [v10 na_any:v28];
+      v12 = [hf_characteristicWriteActions na_any:v28];
 
       if (v12)
       {
@@ -861,19 +861,19 @@ HFCharacteristicWriteActionBuilder *__76__HFActionSetSuggestionVendor__actionBui
           v15 = [MEMORY[0x277CBEB18] arrayWithObject:v14];
           if (([v14 isMutuallyExclusiveAction] & 1) == 0)
           {
-            v16 = [v14 matchingExistingActions];
-            v17 = [v16 na_map:&__block_literal_global_48_7];
+            matchingExistingActions = [v14 matchingExistingActions];
+            v17 = [matchingExistingActions na_map:&__block_literal_global_48_7];
 
-            v18 = [v6 secondaryCharacteristicTypes];
+            secondaryCharacteristicTypes = [v6 secondaryCharacteristicTypes];
             v24[0] = MEMORY[0x277D85DD0];
             v24[1] = 3221225472;
             v24[2] = __76__HFActionSetSuggestionVendor__actionBuildersForCustomActionSetWithService___block_invoke_3;
             v24[3] = &unk_277DFF700;
             v25 = v11;
-            v26 = self;
+            selfCopy = self;
             v27 = v17;
             v19 = v17;
-            v20 = [v18 na_map:v24];
+            v20 = [secondaryCharacteristicTypes na_map:v24];
             [v15 addObjectsFromArray:v20];
           }
 
@@ -952,19 +952,19 @@ HFCharacteristicWriteActionBuilder *__76__HFActionSetSuggestionVendor__actionBui
   return v6;
 }
 
-- (id)_deriveActionForPrimaryCharacteristic:(id)a3
+- (id)_deriveActionForPrimaryCharacteristic:(id)characteristic
 {
-  v4 = a3;
+  characteristicCopy = characteristic;
   v5 = MEMORY[0x277CBEB98];
-  v6 = [(HFActionSetSuggestionVendor *)self home];
-  v7 = [v6 accessories];
+  home = [(HFActionSetSuggestionVendor *)self home];
+  accessories = [home accessories];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __69__HFActionSetSuggestionVendor__deriveActionForPrimaryCharacteristic___block_invoke;
   v23[3] = &unk_277DFF750;
-  v8 = v4;
+  v8 = characteristicCopy;
   v24 = v8;
-  v9 = [v7 na_map:v23];
+  v9 = [accessories na_map:v23];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __69__HFActionSetSuggestionVendor__deriveActionForPrimaryCharacteristic___block_invoke_2;
@@ -973,17 +973,17 @@ HFCharacteristicWriteActionBuilder *__76__HFActionSetSuggestionVendor__actionBui
   v10 = [v9 na_filter:v22];
   v11 = [v5 setWithArray:v10];
 
-  v12 = [v8 service];
-  v13 = [v12 accessory];
-  v14 = [v13 room];
-  v15 = [v14 uniqueIdentifier];
+  service = [v8 service];
+  accessory = [service accessory];
+  room = [accessory room];
+  uniqueIdentifier = [room uniqueIdentifier];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __69__HFActionSetSuggestionVendor__deriveActionForPrimaryCharacteristic___block_invoke_3;
   v20[3] = &unk_277DF4020;
-  v21 = v15;
-  v16 = v15;
+  v21 = uniqueIdentifier;
+  v16 = uniqueIdentifier;
   v17 = [v11 na_filter:v20];
   v18 = [(HFActionSetSuggestionVendor *)self _deriveActionForPrimaryCharacteristic:v8 candidateServices:v17 targetThreshold:0.5];
   if (!v18)
@@ -1025,37 +1025,37 @@ uint64_t __69__HFActionSetSuggestionVendor__deriveActionForPrimaryCharacteristic
   return v6;
 }
 
-- (id)_deriveActionForPrimaryCharacteristic:(id)a3 candidateServices:(id)a4 targetThreshold:(double)a5
+- (id)_deriveActionForPrimaryCharacteristic:(id)characteristic candidateServices:(id)services targetThreshold:(double)threshold
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(HFActionSetSuggestionVendor *)self actionSet];
-  v11 = [v10 hf_characteristicWriteActions];
+  characteristicCopy = characteristic;
+  servicesCopy = services;
+  actionSet = [(HFActionSetSuggestionVendor *)self actionSet];
+  hf_characteristicWriteActions = [actionSet hf_characteristicWriteActions];
   v26 = MEMORY[0x277D85DD0];
   v27 = 3221225472;
   v28 = __103__HFActionSetSuggestionVendor__deriveActionForPrimaryCharacteristic_candidateServices_targetThreshold___block_invoke;
   v29 = &unk_277DFF3D0;
-  v12 = v9;
+  v12 = servicesCopy;
   v30 = v12;
-  v13 = v8;
+  v13 = characteristicCopy;
   v31 = v13;
-  v14 = [v11 na_filter:&v26];
+  v14 = [hf_characteristicWriteActions na_filter:&v26];
 
   if ([v14 count])
   {
     v15 = MEMORY[0x277CD1970];
-    v16 = [v13 characteristicType];
-    v17 = [v15 hf_suggestionVendorForCharacteristicType:v16];
+    characteristicType = [v13 characteristicType];
+    v17 = [v15 hf_suggestionVendorForCharacteristicType:characteristicType];
 
     v18 = [v17 suggestedActionForCharacteristic:v13 candidateActions:v14];
     v19 = v18;
     if (v18)
     {
-      v20 = [v18 matchingExistingActions];
-      v21 = [v20 count];
+      matchingExistingActions = [v18 matchingExistingActions];
+      v21 = [matchingExistingActions count];
       v22 = v21 / [v12 count];
 
-      if (v22 < a5)
+      if (v22 < threshold)
       {
         v23 = 0;
       }
@@ -1104,28 +1104,28 @@ uint64_t __103__HFActionSetSuggestionVendor__deriveActionForPrimaryCharacteristi
   return v10;
 }
 
-- (id)_deriveActionForSecondaryCharacteristic:(id)a3 candidateServices:(id)a4
+- (id)_deriveActionForSecondaryCharacteristic:(id)characteristic candidateServices:(id)services
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [v6 hf_isWritable])
+  characteristicCopy = characteristic;
+  servicesCopy = services;
+  if (characteristicCopy && [characteristicCopy hf_isWritable])
   {
-    v8 = [(HFActionSetSuggestionVendor *)self actionSet];
-    v9 = [v8 hf_characteristicWriteActions];
+    actionSet = [(HFActionSetSuggestionVendor *)self actionSet];
+    hf_characteristicWriteActions = [actionSet hf_characteristicWriteActions];
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __89__HFActionSetSuggestionVendor__deriveActionForSecondaryCharacteristic_candidateServices___block_invoke;
     v20 = &unk_277DFF3D0;
-    v10 = v6;
+    v10 = characteristicCopy;
     v21 = v10;
-    v22 = v7;
-    v11 = [v9 na_filter:&v17];
+    v22 = servicesCopy;
+    v11 = [hf_characteristicWriteActions na_filter:&v17];
 
     if ([v11 count])
     {
       v12 = MEMORY[0x277CD1970];
-      v13 = [v10 characteristicType];
-      v14 = [v12 hf_suggestionVendorForCharacteristicType:v13];
+      characteristicType = [v10 characteristicType];
+      v14 = [v12 hf_suggestionVendorForCharacteristicType:characteristicType];
 
       v15 = [v14 suggestedActionForCharacteristic:v10 candidateActions:v11];
     }
@@ -1182,17 +1182,17 @@ uint64_t __89__HFActionSetSuggestionVendor__deriveActionForSecondaryCharacterist
   return v14;
 }
 
-- (id)_controlItemValueSourceForService:(id)a3
+- (id)_controlItemValueSourceForService:(id)service
 {
-  v3 = a3;
+  serviceCopy = service;
   v4 = [HFSimpleAggregatedCharacteristicValueSource alloc];
   v5 = objc_alloc_init(HFNullValueSource);
   v6 = MEMORY[0x277CBEB98];
-  v7 = [v3 characteristics];
-  v8 = [v6 setWithArray:v7];
-  v9 = [v3 hf_serviceDescriptor];
+  characteristics = [serviceCopy characteristics];
+  v8 = [v6 setWithArray:characteristics];
+  hf_serviceDescriptor = [serviceCopy hf_serviceDescriptor];
 
-  v10 = [(HFSimpleAggregatedCharacteristicValueSource *)v4 initWithValueSource:v5 characteristics:v8 primaryServiceDescriptor:v9];
+  v10 = [(HFSimpleAggregatedCharacteristicValueSource *)v4 initWithValueSource:v5 characteristics:v8 primaryServiceDescriptor:hf_serviceDescriptor];
 
   return v10;
 }

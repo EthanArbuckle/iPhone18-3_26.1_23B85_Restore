@@ -1,46 +1,46 @@
 @interface HMDLegacyV3Model
-+ (id)createWithLegacyRecord:(id)a3 modelContainer:(id)a4 error:(id *)a5;
++ (id)createWithLegacyRecord:(id)record modelContainer:(id)container error:(id *)error;
 + (id)hmbProperties;
 - (HMDLegacyV3Model)init;
-- (id)encodeWithExistingRecord:(id)a3 cloudZone:(id)a4 modelContainer:(id)a5 error:(id *)a6;
+- (id)encodeWithExistingRecord:(id)record cloudZone:(id)zone modelContainer:(id)container error:(id *)error;
 @end
 
 @implementation HMDLegacyV3Model
 
-- (id)encodeWithExistingRecord:(id)a3 cloudZone:(id)a4 modelContainer:(id)a5 error:(id *)a6
+- (id)encodeWithExistingRecord:(id)record cloudZone:(id)zone modelContainer:(id)container error:(id *)error
 {
   v53 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (v10)
+  recordCopy = record;
+  zoneCopy = zone;
+  containerCopy = container;
+  if (recordCopy)
   {
-    v13 = [v10 recordID];
-    v14 = [v13 recordName];
-    v15 = [v14 isEqual:@"BC9706E1-E72E-4152-A2A6-417AD742DC41"];
+    recordID = [recordCopy recordID];
+    recordName = [recordID recordName];
+    v15 = [recordName isEqual:@"BC9706E1-E72E-4152-A2A6-417AD742DC41"];
 
     if ((v15 & 1) == 0)
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
-        v19 = v44 = a6;
-        [v10 recordID];
+        v19 = v44 = error;
+        [recordCopy recordID];
         v20 = v43 = v16;
-        v21 = [v20 recordName];
+        recordName2 = [v20 recordName];
         *buf = 138543874;
         v48 = v19;
         v49 = 2112;
-        v50 = v21;
+        v50 = recordName2;
         v51 = 2112;
         v52 = @"BC9706E1-E72E-4152-A2A6-417AD742DC41";
         _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_ERROR, "%{public}@UNEXPECTED RECORD NAME MISMATCH (V3) %@ != %@", buf, 0x20u);
 
         v16 = v43;
-        a6 = v44;
+        error = v44;
       }
 
       objc_autoreleasePoolPop(v16);
@@ -49,11 +49,11 @@
 
   else
   {
-    v22 = [v11 zoneID];
+    zoneID = [zoneCopy zoneID];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v23 = v22;
+      v23 = zoneID;
     }
 
     else
@@ -69,30 +69,30 @@
     }
 
     v25 = objc_alloc(MEMORY[0x277CBC5D0]);
-    v26 = [v24 zoneID];
-    v27 = [v25 initWithRecordName:@"BC9706E1-E72E-4152-A2A6-417AD742DC41" zoneID:v26];
+    zoneID2 = [v24 zoneID];
+    v27 = [v25 initWithRecordName:@"BC9706E1-E72E-4152-A2A6-417AD742DC41" zoneID:zoneID2];
 
-    v10 = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"HomeDataBlobV3" recordID:v27];
+    recordCopy = [objc_alloc(MEMORY[0x277CBC5A0]) initWithRecordType:@"HomeDataBlobV3" recordID:v27];
   }
 
-  v28 = [(HMDLegacyV3Model *)self cloudBlob];
+  cloudBlob = [(HMDLegacyV3Model *)self cloudBlob];
   v46 = 0;
-  v29 = [v12 encryptData:v28 compress:1 error:&v46];
+  v29 = [containerCopy encryptData:cloudBlob compress:1 error:&v46];
   v30 = v46;
 
   if (v30 || !v29)
   {
     v32 = objc_autoreleasePoolPush();
-    v33 = self;
+    selfCopy2 = self;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
     {
       v35 = HMFGetLogIdentifier();
       v36 = objc_opt_class();
       NSStringFromClass(v36);
-      v45 = v12;
-      v37 = v11;
-      v39 = v38 = a6;
+      v45 = containerCopy;
+      v37 = zoneCopy;
+      v39 = v38 = error;
       *buf = 138543874;
       v48 = v35;
       v49 = 2112;
@@ -101,17 +101,17 @@
       v52 = v30;
       _os_log_impl(&dword_229538000, v34, OS_LOG_TYPE_ERROR, "%{public}@[%@ encodeForCloudZone:error:] failed encryption: %@", buf, 0x20u);
 
-      a6 = v38;
-      v11 = v37;
-      v12 = v45;
+      error = v38;
+      zoneCopy = v37;
+      containerCopy = v45;
     }
 
     objc_autoreleasePoolPop(v32);
-    if (a6)
+    if (error)
     {
       v40 = v30;
       v31 = 0;
-      *a6 = v30;
+      *error = v30;
     }
 
     else
@@ -122,8 +122,8 @@
 
   else
   {
-    [v10 setObject:v29 forKeyedSubscript:@"kRecordEncodedDataBlobKey"];
-    v31 = v10;
+    [recordCopy setObject:v29 forKeyedSubscript:@"kRecordEncodedDataBlobKey"];
+    v31 = recordCopy;
   }
 
   v41 = *MEMORY[0x277D85DE8];
@@ -142,15 +142,15 @@
   return v5;
 }
 
-+ (id)createWithLegacyRecord:(id)a3 modelContainer:(id)a4 error:(id *)a5
++ (id)createWithLegacyRecord:(id)record modelContainer:(id)container error:(id *)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  recordCopy = record;
+  containerCopy = container;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = containerCopy;
   }
 
   else
@@ -165,15 +165,15 @@
     _HMFPreconditionFailure();
   }
 
-  v12 = [v8 recordType];
-  v13 = [v12 isEqual:@"HomeDataBlobV3"];
+  recordType = [recordCopy recordType];
+  v13 = [recordType isEqual:@"HomeDataBlobV3"];
 
   if (v13)
   {
-    v14 = objc_alloc_init(a1);
-    if (v8)
+    v14 = objc_alloc_init(self);
+    if (recordCopy)
     {
-      v15 = [v8 objectForKeyedSubscript:@"kRecordEncodedDataBlobKey"];
+      v15 = [recordCopy objectForKeyedSubscript:@"kRecordEncodedDataBlobKey"];
       if (v15)
       {
         v29 = 0;
@@ -183,12 +183,12 @@
         {
           v18 = v17;
           context = objc_autoreleasePoolPush();
-          v19 = a1;
+          selfCopy = self;
           v20 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
           {
             v27 = HMFGetLogIdentifier();
-            NSStringFromClass(v19);
+            NSStringFromClass(selfCopy);
             v21 = v26 = v16;
             *buf = 138543874;
             v31 = v27;
@@ -202,10 +202,10 @@
           }
 
           objc_autoreleasePoolPop(context);
-          if (a5)
+          if (error)
           {
             v22 = v18;
-            *a5 = v18;
+            *error = v18;
           }
 
           v23 = 0;
@@ -222,10 +222,10 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if (a5)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] hmfErrorWithCode:15];
-    *a5 = v23 = 0;
+    *error = v23 = 0;
   }
 
   else

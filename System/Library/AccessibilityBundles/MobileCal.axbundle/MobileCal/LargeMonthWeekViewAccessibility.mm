@@ -1,6 +1,6 @@
 @interface LargeMonthWeekViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event;
 - (id)_axMonthHeader;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axUpdateDayNumberLabels;
@@ -12,31 +12,31 @@
 
 @implementation LargeMonthWeekViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_CalendarEventsRow"];
-  [v3 validateClass:@"EKEvent" isKindOfClass:@"EKCalendarItem"];
-  [v3 validateClass:@"_CalendarEventsRow" hasInstanceMethod:@"occurrenceBlocks" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EKCalendar" hasInstanceMethod:@"source" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EKCalendar" hasInstanceMethod:@"type" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"EKCalendarItem" hasInstanceMethod:@"calendar" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EKEvent" isKindOfClass:@"EKObject"];
-  [v3 validateClass:@"EKObject" hasInstanceMethod:@"eventStore" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"EKEventStore" hasInstanceMethod:@"calendarsForEntityType:" withFullSignature:{"@", "Q", 0}];
-  [v3 validateClass:@"EKSource" hasInstanceMethod:@"isFacebookSource" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"LargeMonthWeekView" hasInstanceMethod:@"_rebuildDayNumberLabels" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"LargeMonthWeekView" hasInstanceMethod:@"reloadData" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"LargeMonthWeekView" hasInstanceMethod:@"dayIndexForToday" withFullSignature:{"q", 0}];
-  [v3 validateClass:@"LargeMonthWeekView" hasInstanceVariable:@"_dayNumberLabels" withType:"NSArray"];
-  [v3 validateClass:@"LargeMonthWeekView" hasInstanceVariable:@"_startDate" withType:"EKCalendarDate"];
-  [v3 validateClass:@"LargeMonthWeekView" hasInstanceVariable:@"_endDate" withType:"EKCalendarDate"];
-  [v3 validateClass:@"LargeMonthWeekView" hasInstanceVariable:@"_firstOfMonthLabel" withType:"UILabel"];
-  [v3 validateClass:@"LargeMonthWeekView" hasInstanceVariable:@"_showingFirstDayOfMonthLabel" withType:"B"];
-  [v3 validateClass:@"LargeMonthWeekView" hasInstanceVariable:@"_firstDayIndex" withType:"q"];
-  [v3 validateClass:@"MonthViewOccurrence" hasInstanceMethod:@"drawsTimeString" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"MonthViewOccurrence" hasInstanceMethod:@"occurrenceString" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MonthViewOccurrence" hasInstanceMethod:@"timeString" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_CalendarEventsRow"];
+  [validationsCopy validateClass:@"EKEvent" isKindOfClass:@"EKCalendarItem"];
+  [validationsCopy validateClass:@"_CalendarEventsRow" hasInstanceMethod:@"occurrenceBlocks" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EKCalendar" hasInstanceMethod:@"source" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EKCalendar" hasInstanceMethod:@"type" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"EKCalendarItem" hasInstanceMethod:@"calendar" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EKEvent" isKindOfClass:@"EKObject"];
+  [validationsCopy validateClass:@"EKObject" hasInstanceMethod:@"eventStore" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"EKEventStore" hasInstanceMethod:@"calendarsForEntityType:" withFullSignature:{"@", "Q", 0}];
+  [validationsCopy validateClass:@"EKSource" hasInstanceMethod:@"isFacebookSource" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"LargeMonthWeekView" hasInstanceMethod:@"_rebuildDayNumberLabels" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"LargeMonthWeekView" hasInstanceMethod:@"reloadData" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"LargeMonthWeekView" hasInstanceMethod:@"dayIndexForToday" withFullSignature:{"q", 0}];
+  [validationsCopy validateClass:@"LargeMonthWeekView" hasInstanceVariable:@"_dayNumberLabels" withType:"NSArray"];
+  [validationsCopy validateClass:@"LargeMonthWeekView" hasInstanceVariable:@"_startDate" withType:"EKCalendarDate"];
+  [validationsCopy validateClass:@"LargeMonthWeekView" hasInstanceVariable:@"_endDate" withType:"EKCalendarDate"];
+  [validationsCopy validateClass:@"LargeMonthWeekView" hasInstanceVariable:@"_firstOfMonthLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"LargeMonthWeekView" hasInstanceVariable:@"_showingFirstDayOfMonthLabel" withType:"B"];
+  [validationsCopy validateClass:@"LargeMonthWeekView" hasInstanceVariable:@"_firstDayIndex" withType:"q"];
+  [validationsCopy validateClass:@"MonthViewOccurrence" hasInstanceMethod:@"drawsTimeString" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"MonthViewOccurrence" hasInstanceMethod:@"occurrenceString" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MonthViewOccurrence" hasInstanceMethod:@"timeString" withFullSignature:{"@", 0}];
 }
 
 - (void)_axUpdateDayNumberLabels
@@ -46,25 +46,25 @@
   v5 = [(LargeMonthWeekViewAccessibility *)self safeValueForKey:@"_dayNumberLabels"];
   v51 = [(LargeMonthWeekViewAccessibility *)self safeValueForKey:@"_endDate"];
   v6 = [v51 differenceInDays:v4] + 1;
-  v62 = self;
+  selfCopy = self;
   v7 = [(LargeMonthWeekViewAccessibility *)self safeValueForKey:@"_firstDayIndex"];
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
 
   v61 = objc_opt_new();
-  if ([v5 count] - v8 < v6)
+  if ([v5 count] - integerValue < v6)
   {
-    v48 = v8;
+    v48 = integerValue;
     v50 = v6;
     v46 = [v5 count];
     _AXAssert();
   }
 
-  if ([v5 count] - v8 < v6)
+  if ([v5 count] - integerValue < v6)
   {
-    v6 = [v5 count] - v8;
+    v6 = [v5 count] - integerValue;
   }
 
-  v9 = [(LargeMonthWeekViewAccessibility *)v62 _accessibilityFindSubviewDescendant:&__block_literal_global_5];
+  v9 = [(LargeMonthWeekViewAccessibility *)selfCopy _accessibilityFindSubviewDescendant:&__block_literal_global_5];
   v10 = [v9 safeArrayForKey:@"_singleDayEventBuckets"];
   v11 = v10;
   if (v6 >= 1)
@@ -73,21 +73,21 @@
     v53 = v5;
     v54 = v4;
     v52 = v6;
-    v55 = v8;
+    v55 = integerValue;
     v56 = v10;
     do
     {
       v13 = v12;
       v59 = [v4 calendarDateByAddingDays:v12];
-      v14 = [v59 date];
-      v15 = _AXGetStringsForDate(v14);
+      date = [v59 date];
+      v15 = _AXGetStringsForDate(date);
 
       v60 = v13;
-      v16 = v13 + v8;
-      v17 = [(LargeMonthWeekViewAccessibility *)v62 safeValueForKey:@"dayIndexForToday"];
-      v18 = [v17 integerValue];
+      v16 = v13 + integerValue;
+      v17 = [(LargeMonthWeekViewAccessibility *)selfCopy safeValueForKey:@"dayIndexForToday"];
+      integerValue2 = [v17 integerValue];
 
-      if (v16 == v18)
+      if (v16 == integerValue2)
       {
         v19 = accessibilityLocalizedString(@"today.indicator");
         v47 = v15;
@@ -105,7 +105,7 @@
       v11 = v56;
       if (v60 >= [v56 count])
       {
-        v8 = v55;
+        integerValue = v55;
       }
 
       else
@@ -149,7 +149,7 @@
                   v70.size.height = v35;
                   if (CGRectGetWidth(v70) > 0.0)
                   {
-                    v36 = [objc_alloc(MEMORY[0x29EDC78F8]) initWithAccessibilityContainer:v62];
+                    v36 = [objc_alloc(MEMORY[0x29EDC78F8]) initWithAccessibilityContainer:selfCopy];
                     v37 = [v27 safeBoolForKey:@"drawsTimeString"];
                     v38 = [v27 safeValueForKey:@"occurrenceString"];
                     if (v37)
@@ -198,7 +198,7 @@
         v5 = v53;
         v4 = v54;
         v6 = v52;
-        v8 = v55;
+        integerValue = v55;
         v11 = v56;
       }
 
@@ -208,7 +208,7 @@
     while (v60 + 1 != v6);
   }
 
-  [(LargeMonthWeekViewAccessibility *)v62 setAccessibilityElements:v61, v47, v49];
+  [(LargeMonthWeekViewAccessibility *)selfCopy setAccessibilityElements:v61, v47, v49];
 }
 
 uint64_t __59__LargeMonthWeekViewAccessibility__axUpdateDayNumberLabels__block_invoke(uint64_t a1, void *a2)
@@ -224,7 +224,7 @@ uint64_t __59__LargeMonthWeekViewAccessibility__axUpdateDayNumberLabels__block_i
 {
   v3 = [(LargeMonthWeekViewAccessibility *)self safeValueForKey:@"_firstOfMonthLabel"];
   v4 = [(LargeMonthWeekViewAccessibility *)self safeValueForKey:@"_startDate"];
-  v5 = [v4 date];
+  date = [v4 date];
   v6 = _AXGetYearlessStringForDay();
   [v3 setAccessibilityLabel:v6];
 
@@ -242,14 +242,14 @@ uint64_t __59__LargeMonthWeekViewAccessibility__axUpdateDayNumberLabels__block_i
 
 - (void)_axUpdateMonthAXLabel
 {
-  v7 = [(LargeMonthWeekViewAccessibility *)self _axMonthHeader];
+  _axMonthHeader = [(LargeMonthWeekViewAccessibility *)self _axMonthHeader];
   v3 = [(LargeMonthWeekViewAccessibility *)self safeValueForKey:@"_startDate"];
   v4 = [v3 safeValueForKey:@"date"];
   v5 = MEMORY[0x29C2DF2A0]();
-  [v7 setAccessibilityLabel:v5];
+  [_axMonthHeader setAccessibilityLabel:v5];
 
-  v6 = [v7 accessibilityTraits];
-  [v7 setAccessibilityTraits:*MEMORY[0x29EDC7F80] | v6];
+  accessibilityTraits = [_axMonthHeader accessibilityTraits];
+  [_axMonthHeader setAccessibilityTraits:*MEMORY[0x29EDC7F80] | accessibilityTraits];
 }
 
 - (void)_rebuildDayNumberLabels
@@ -276,11 +276,11 @@ uint64_t __59__LargeMonthWeekViewAccessibility__axUpdateDayNumberLabels__block_i
   [(LargeMonthWeekViewAccessibility *)self _accessibilityRemoveValueForKey:*MEMORY[0x29EDC7620]];
 }
 
-- (id)_accessibilityHitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)_accessibilityHitTest:(CGPoint)test withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = LargeMonthWeekViewAccessibility;
-  v4 = [(LargeMonthWeekViewAccessibility *)&v7 _accessibilityHitTest:a4 withEvent:a3.x, a3.y];
+  v4 = [(LargeMonthWeekViewAccessibility *)&v7 _accessibilityHitTest:event withEvent:test.x, test.y];
   [v4 _accessibilityVisibleFrame];
   if (CGRectIsEmpty(v9))
   {

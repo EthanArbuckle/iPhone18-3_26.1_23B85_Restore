@@ -1,7 +1,7 @@
 @interface QLZipArchiveEntry
 - (NSURL)url;
 - (QLZipArchive)archive;
-- (id)readDataWithError:(id *)a3;
+- (id)readDataWithError:(id *)error;
 @end
 
 @implementation QLZipArchiveEntry
@@ -15,7 +15,7 @@
   return v4;
 }
 
-- (id)readDataWithError:(id *)a3
+- (id)readDataWithError:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
   data = self->_data;
@@ -28,10 +28,10 @@
   {
     p_error = &self->_error;
     error = self->_error;
-    if (a3 && error)
+    if (error && error)
     {
       v4 = 0;
-      *a3 = error;
+      *error = error;
     }
 
     else
@@ -47,7 +47,7 @@
       v14 = self->_data;
       self->_data = v11;
 
-      if (!a3 || self->_data)
+      if (!error || self->_data)
       {
         if (v13)
         {
@@ -70,7 +70,7 @@
       else
       {
         v15 = v13;
-        *a3 = v13;
+        *error = v13;
         objc_storeStrong(p_error, v12);
       }
 

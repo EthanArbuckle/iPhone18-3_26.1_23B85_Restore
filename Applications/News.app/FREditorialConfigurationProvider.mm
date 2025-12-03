@@ -1,8 +1,8 @@
 @interface FREditorialConfigurationProvider
 - (FREditorialConfigurationProvider)init;
-- (FREditorialConfigurationProvider)initWithAppConfigurationManager:(id)a3;
-- (void)fetchEditorialConfiguration:(id)a3;
-- (void)processConfigurationWithJSON:(id)a3 completion:(id)a4;
+- (FREditorialConfigurationProvider)initWithAppConfigurationManager:(id)manager;
+- (void)fetchEditorialConfiguration:(id)configuration;
+- (void)processConfigurationWithJSON:(id)n completion:(id)completion;
 @end
 
 @implementation FREditorialConfigurationProvider
@@ -30,10 +30,10 @@
   objc_exception_throw(v4);
 }
 
-- (FREditorialConfigurationProvider)initWithAppConfigurationManager:(id)a3
+- (FREditorialConfigurationProvider)initWithAppConfigurationManager:(id)manager
 {
-  v5 = a3;
-  if (!v5 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  managerCopy = manager;
+  if (!managerCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10007580C();
   }
@@ -44,30 +44,30 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_appConfigurationManager, a3);
+    objc_storeStrong(&v6->_appConfigurationManager, manager);
   }
 
   return v7;
 }
 
-- (void)fetchEditorialConfiguration:(id)a3
+- (void)fetchEditorialConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(FREditorialConfigurationProvider *)self appConfigurationManager];
+  configurationCopy = configuration;
+  appConfigurationManager = [(FREditorialConfigurationProvider *)self appConfigurationManager];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100063FC0;
   v7[3] = &unk_1000C3110;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 fetchAppConfigurationIfNeededWithCompletion:v7];
+  v8 = configurationCopy;
+  v6 = configurationCopy;
+  [appConfigurationManager fetchAppConfigurationIfNeededWithCompletion:v7];
 }
 
-- (void)processConfigurationWithJSON:(id)a3 completion:(id)a4
+- (void)processConfigurationWithJSON:(id)n completion:(id)completion
 {
-  v5 = a4;
-  v6 = [a3 dataUsingEncoding:4];
+  completionCopy = completion;
+  v6 = [n dataUsingEncoding:4];
   v37 = 0;
   v7 = [NSJSONSerialization JSONObjectWithData:v6 options:0 error:&v37];
   v8 = v37;
@@ -79,7 +79,7 @@
     v34[2] = sub_10006457C;
     v34[3] = &unk_1000C1BD8;
     v35 = v8;
-    v36 = v5;
+    v36 = completionCopy;
     sub_10006457C(v34);
 
     v10 = v35;
@@ -88,7 +88,7 @@
 
   v24 = v7;
   v25 = v6;
-  v26 = v5;
+  v26 = completionCopy;
   v11 = [v7 objectForKey:@"items"];
   v28 = +[NSMutableArray array];
   v12 = +[NSMutableSet set];
@@ -175,7 +175,7 @@ LABEL_18:
   while (v14);
 LABEL_20:
 
-  v5 = v26;
+  completionCopy = v26;
   if (v26)
   {
     (*(v26 + 2))(v26, v28, 0);

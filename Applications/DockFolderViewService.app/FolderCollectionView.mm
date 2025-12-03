@@ -1,12 +1,12 @@
 @interface FolderCollectionView
 - (CGPoint)contentOffset;
-- (_TtC21DockFolderViewService20FolderCollectionView)initWithCoder:(id)a3;
-- (void)setContentOffset:(CGPoint)a3;
+- (_TtC21DockFolderViewService20FolderCollectionView)initWithCoder:(id)coder;
+- (void)setContentOffset:(CGPoint)offset;
 @end
 
 @implementation FolderCollectionView
 
-- (_TtC21DockFolderViewService20FolderCollectionView)initWithCoder:(id)a3
+- (_TtC21DockFolderViewService20FolderCollectionView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC21DockFolderViewService20FolderCollectionView_itemsPinnedToBottomCount) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -24,32 +24,32 @@
   return result;
 }
 
-- (void)setContentOffset:(CGPoint)a3
+- (void)setContentOffset:(CGPoint)offset
 {
-  y = a3.y;
-  x = a3.x;
+  y = offset.y;
+  x = offset.x;
   ObjectType = swift_getObjectType();
   v15.receiver = self;
   v15.super_class = ObjectType;
-  v7 = self;
+  selfCopy = self;
   [(FolderCollectionView *)&v15 setContentOffset:x, y];
-  v8 = [(FolderCollectionView *)v7 collectionViewLayout];
+  collectionViewLayout = [(FolderCollectionView *)selfCopy collectionViewLayout];
   type metadata accessor for DOCSBFolderCollectionViewLayout();
   v9 = swift_dynamicCastClass();
   if (v9)
   {
     v10 = v9;
-    v14.receiver = v7;
+    v14.receiver = selfCopy;
     v14.super_class = ObjectType;
-    v11 = [(FolderCollectionView *)&v14 contentOffset];
-    (*((swift_isaMask & *v10) + 0x80))(v11, v12);
-    v13 = v8;
+    contentOffset = [(FolderCollectionView *)&v14 contentOffset];
+    (*((swift_isaMask & *v10) + 0x80))(contentOffset, v12);
+    v13 = collectionViewLayout;
   }
 
   else
   {
-    v13 = v7;
-    v7 = v8;
+    v13 = selfCopy;
+    selfCopy = collectionViewLayout;
   }
 }
 

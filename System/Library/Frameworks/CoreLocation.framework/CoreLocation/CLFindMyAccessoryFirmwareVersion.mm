@@ -1,36 +1,36 @@
 @interface CLFindMyAccessoryFirmwareVersion
-- (CLFindMyAccessoryFirmwareVersion)initWithBytes:(const void *)a3 length:(unint64_t)a4;
-- (CLFindMyAccessoryFirmwareVersion)initWithData:(id)a3;
+- (CLFindMyAccessoryFirmwareVersion)initWithBytes:(const void *)bytes length:(unint64_t)length;
+- (CLFindMyAccessoryFirmwareVersion)initWithData:(id)data;
 - (id)description;
 - (void)dealloc;
 @end
 
 @implementation CLFindMyAccessoryFirmwareVersion
 
-- (CLFindMyAccessoryFirmwareVersion)initWithBytes:(const void *)a3 length:(unint64_t)a4
+- (CLFindMyAccessoryFirmwareVersion)initWithBytes:(const void *)bytes length:(unint64_t)length
 {
   v11.receiver = self;
   v11.super_class = CLFindMyAccessoryFirmwareVersion;
   v6 = [(CLFindMyAccessoryFirmwareVersion *)&v11 init];
   v7 = v6;
-  if (a4 >= 0x13 && v6)
+  if (length >= 0x13 && v6)
   {
     v8 = malloc_type_malloc(0x13uLL, 0x1000040DD5176B5uLL);
     v7->_version = v8;
-    v9 = *(a3 + 15);
-    *v8 = *a3;
+    v9 = *(bytes + 15);
+    *v8 = *bytes;
     *(v8 + 15) = v9;
   }
 
   return v7;
 }
 
-- (CLFindMyAccessoryFirmwareVersion)initWithData:(id)a3
+- (CLFindMyAccessoryFirmwareVersion)initWithData:(id)data
 {
-  v5 = [a3 bytes];
-  v6 = [a3 length];
+  bytes = [data bytes];
+  v6 = [data length];
 
-  return [(CLFindMyAccessoryFirmwareVersion *)self initWithBytes:v5 length:v6];
+  return [(CLFindMyAccessoryFirmwareVersion *)self initWithBytes:bytes length:v6];
 }
 
 - (void)dealloc
@@ -44,19 +44,19 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CLFindMyAccessoryFirmwareVersion *)self vanBurenVersion];
-  v5 = [(CLFindMyAccessoryFirmwareVersion *)self rtKitVersion];
-  v6 = [(CLFindMyAccessoryFirmwareVersion *)self roseAPVersion];
-  v7 = [(CLFindMyAccessoryFirmwareVersion *)self roseDSPVersion];
-  v8 = [(CLFindMyAccessoryFirmwareVersion *)self calibrationDataVersion];
-  v9 = [(CLFindMyAccessoryFirmwareVersion *)self debugVariant];
+  vanBurenVersion = [(CLFindMyAccessoryFirmwareVersion *)self vanBurenVersion];
+  rtKitVersion = [(CLFindMyAccessoryFirmwareVersion *)self rtKitVersion];
+  roseAPVersion = [(CLFindMyAccessoryFirmwareVersion *)self roseAPVersion];
+  roseDSPVersion = [(CLFindMyAccessoryFirmwareVersion *)self roseDSPVersion];
+  calibrationDataVersion = [(CLFindMyAccessoryFirmwareVersion *)self calibrationDataVersion];
+  debugVariant = [(CLFindMyAccessoryFirmwareVersion *)self debugVariant];
   v10 = "NO";
-  if (v9)
+  if (debugVariant)
   {
     v10 = "YES";
   }
 
-  return [v3 stringWithFormat:@"CLFindMyAccessoryFirmwareVersion <%p> VanBurenVersion: %@, RTKitVersion: %@, RoseAPVersion: %lu, RoseDSPVersion: %lu, CalibrationDataVersion: %lu, DebugVariant: %s", self, v4, v5, v6, v7, v8, v10];
+  return [v3 stringWithFormat:@"CLFindMyAccessoryFirmwareVersion <%p> VanBurenVersion: %@, RTKitVersion: %@, RoseAPVersion: %lu, RoseDSPVersion: %lu, CalibrationDataVersion: %lu, DebugVariant: %s", self, vanBurenVersion, rtKitVersion, roseAPVersion, roseDSPVersion, calibrationDataVersion, v10];
 }
 
 @end

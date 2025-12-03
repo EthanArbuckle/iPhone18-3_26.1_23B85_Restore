@@ -1,22 +1,22 @@
 @interface MTContentUnavailableView
-+ (id)messageLabelWithFrame:(CGRect)a3;
-- (MTContentUnavailableView)initWithFrame:(CGRect)a3 title:(id)a4 message:(id)a5;
++ (id)messageLabelWithFrame:(CGRect)frame;
+- (MTContentUnavailableView)initWithFrame:(CGRect)frame title:(id)title message:(id)message;
 - (void)_buttonClick;
-- (void)_sizeCategoryDidChange:(id)a3;
+- (void)_sizeCategoryDidChange:(id)change;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setButtonText:(id)a3;
-- (void)setColorTheme:(id)a3;
-- (void)setMessage:(id)a3;
-- (void)setPlaceholderImage:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setButtonText:(id)text;
+- (void)setColorTheme:(id)theme;
+- (void)setMessage:(id)message;
+- (void)setPlaceholderImage:(id)image;
+- (void)setTitle:(id)title;
 @end
 
 @implementation MTContentUnavailableView
 
-+ (id)messageLabelWithFrame:(CGRect)a3
++ (id)messageLabelWithFrame:(CGRect)frame
 {
-  v3 = [[UILabel alloc] initWithFrame:{a3.origin.x, a3.origin.y, a3.size.width, a3.size.height}];
+  v3 = [[UILabel alloc] initWithFrame:{frame.origin.x, frame.origin.y, frame.size.width, frame.size.height}];
   [v3 setTextAlignment:1];
   [v3 setOpaque:0];
   v4 = +[UIColor clearColor];
@@ -33,21 +33,21 @@
   return v3;
 }
 
-- (MTContentUnavailableView)initWithFrame:(CGRect)a3 title:(id)a4 message:(id)a5
+- (MTContentUnavailableView)initWithFrame:(CGRect)frame title:(id)title message:(id)message
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
-  v12 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  titleCopy = title;
+  messageCopy = message;
   v21.receiver = self;
   v21.super_class = MTContentUnavailableView;
-  v13 = [(MTContentUnavailableView *)&v21 initWithFrame:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(MTContentUnavailableView *)&v21 initWithFrame:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    [(MTContentUnavailableView *)v13 setAutoresizingMask:18];
+    [(MTContentUnavailableView *)height setAutoresizingMask:18];
     v15 = [UIView alloc];
     [(MTContentUnavailableView *)v14 bounds];
     v16 = [v15 initWithFrame:{0.0, 0.0, CGRectGetWidth(v22), 0.0}];
@@ -55,8 +55,8 @@
     v14->_containerView = v16;
 
     [(MTContentUnavailableView *)v14 addSubview:v14->_containerView];
-    [(MTContentUnavailableView *)v14 setTitle:v11];
-    [(MTContentUnavailableView *)v14 setMessage:v12];
+    [(MTContentUnavailableView *)v14 setTitle:titleCopy];
+    [(MTContentUnavailableView *)v14 setMessage:messageCopy];
     v18 = +[UIColor whiteColor];
     [(MTContentUnavailableView *)v14 setBackgroundColor:v18];
 
@@ -77,17 +77,17 @@
   [(MTContentUnavailableView *)&v4 dealloc];
 }
 
-- (void)setColorTheme:(id)a3
+- (void)setColorTheme:(id)theme
 {
-  v15 = a3;
-  objc_storeStrong(&self->_colorTheme, a3);
-  if (v15)
+  themeCopy = theme;
+  objc_storeStrong(&self->_colorTheme, theme);
+  if (themeCopy)
   {
-    v5 = [UIColor primaryTextColorForTheme:v15];
+    v5 = [UIColor primaryTextColorForTheme:themeCopy];
     p_titleLabel = &self->_titleLabel;
     [(UILabel *)self->_titleLabel setTextColor:v5];
 
-    v7 = [UIColor secondaryTextColorForTheme:v15];
+    v7 = [UIColor secondaryTextColorForTheme:themeCopy];
     p_messageLabel = &self->_messageLabel;
     v9 = 1.0;
     v10 = &self->_messageLabel;
@@ -107,10 +107,10 @@
 
   [(UILabel *)*v10 setAlpha:v9];
   [(UILabel *)*p_titleLabel setAlpha:v9];
-  v11 = [v15 backgroundColor];
-  if (v11)
+  backgroundColor = [themeCopy backgroundColor];
+  if (backgroundColor)
   {
-    [(MTContentUnavailableView *)self setBackgroundColor:v11];
+    [(MTContentUnavailableView *)self setBackgroundColor:backgroundColor];
   }
 
   else
@@ -120,45 +120,45 @@
   }
 
   button = self->_button;
-  v14 = [UIColor tintColorForTheme:v15];
+  v14 = [UIColor tintColorForTheme:themeCopy];
   [(UIButton *)button setTitleColor:v14 forState:0];
 }
 
-- (void)setButtonText:(id)a3
+- (void)setButtonText:(id)text
 {
-  v12 = a3;
+  textCopy = text;
   if (![(NSString *)self->_buttonText isEqualToString:?])
   {
-    objc_storeStrong(&self->_buttonText, a3);
+    objc_storeStrong(&self->_buttonText, text);
     v5 = [UIButton buttonWithType:1];
     button = self->_button;
     self->_button = v5;
 
-    [(UIButton *)self->_button setTitle:v12 forState:0];
+    [(UIButton *)self->_button setTitle:textCopy forState:0];
     [(UIButton *)self->_button addTarget:self action:"_buttonClick" forControlEvents:64];
     v7 = self->_button;
     v8 = +[UIColor appTintColor];
     [(UIButton *)v7 setTitleColor:v8 forState:0];
 
     v9 = [UIFont mt_preferredFontForTextStyle:UIFontTextStyleSubheadline];
-    v10 = [(UIButton *)self->_button titleLabel];
-    [v10 setFont:v9];
+    titleLabel = [(UIButton *)self->_button titleLabel];
+    [titleLabel setFont:v9];
 
-    v11 = [(UIButton *)self->_button titleLabel];
-    [v11 setTextAlignment:1];
+    titleLabel2 = [(UIButton *)self->_button titleLabel];
+    [titleLabel2 setTextAlignment:1];
 
     [(UIButton *)self->_button sizeToFit];
     [(UIView *)self->_containerView addSubview:self->_button];
   }
 }
 
-- (void)setPlaceholderImage:(id)a3
+- (void)setPlaceholderImage:(id)image
 {
-  v7 = a3;
+  imageCopy = image;
   if (([(UIImage *)self->_placeholderImage isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_placeholderImage, a3);
-    v5 = [[UIImageView alloc] initWithImage:v7];
+    objc_storeStrong(&self->_placeholderImage, image);
+    v5 = [[UIImageView alloc] initWithImage:imageCopy];
     imageView = self->_imageView;
     self->_imageView = v5;
 
@@ -168,11 +168,11 @@
   [(MTContentUnavailableView *)self setNeedsLayout];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (self->_title != a3)
+  if (self->_title != title)
   {
-    v4 = [a3 copy];
+    v4 = [title copy];
     title = self->_title;
     self->_title = v4;
 
@@ -208,11 +208,11 @@
   }
 }
 
-- (void)setMessage:(id)a3
+- (void)setMessage:(id)message
 {
-  if (self->_message != a3)
+  if (self->_message != message)
   {
-    v4 = [a3 copy];
+    v4 = [message copy];
     message = self->_message;
     self->_message = v4;
 
@@ -368,23 +368,23 @@
 
 - (void)_buttonClick
 {
-  v3 = [(MTContentUnavailableView *)self buttonCallback];
+  buttonCallback = [(MTContentUnavailableView *)self buttonCallback];
 
-  if (v3)
+  if (buttonCallback)
   {
-    v4 = [(MTContentUnavailableView *)self buttonCallback];
-    v4[2]();
+    buttonCallback2 = [(MTContentUnavailableView *)self buttonCallback];
+    buttonCallback2[2]();
   }
 }
 
-- (void)_sizeCategoryDidChange:(id)a3
+- (void)_sizeCategoryDidChange:(id)change
 {
   v4 = [UIFont mt_preferredFontForTextStyle:UIFontTextStyleHeadline];
   [(UILabel *)self->_titleLabel setFont:v4];
 
   v5 = [UIFont mt_preferredFontForTextStyle:UIFontTextStyleSubheadline];
-  v6 = [(UIButton *)self->_button titleLabel];
-  [v6 setFont:v5];
+  titleLabel = [(UIButton *)self->_button titleLabel];
+  [titleLabel setFont:v5];
 
   [(UIButton *)self->_button sizeToFit];
   v7 = [UIFont mt_preferredFontForTextStyle:UIFontTextStyleBody];

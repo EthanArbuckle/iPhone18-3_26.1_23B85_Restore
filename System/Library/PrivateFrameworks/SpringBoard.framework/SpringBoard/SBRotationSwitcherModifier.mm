@@ -1,29 +1,29 @@
 @interface SBRotationSwitcherModifier
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3;
-- (SBRotationSwitcherModifier)initWithTransitionID:(id)a3 appLayout:(id)a4 fromInterfaceOrientation:(int64_t)a5 toInterfaceOrientation:(int64_t)a6;
-- (double)rotationAngleForIndex:(unint64_t)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space;
+- (SBRotationSwitcherModifier)initWithTransitionID:(id)d appLayout:(id)layout fromInterfaceOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation;
+- (double)rotationAngleForIndex:(unint64_t)index;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)transitionWillBegin;
 @end
 
 @implementation SBRotationSwitcherModifier
 
-- (SBRotationSwitcherModifier)initWithTransitionID:(id)a3 appLayout:(id)a4 fromInterfaceOrientation:(int64_t)a5 toInterfaceOrientation:(int64_t)a6
+- (SBRotationSwitcherModifier)initWithTransitionID:(id)d appLayout:(id)layout fromInterfaceOrientation:(int64_t)orientation toInterfaceOrientation:(int64_t)interfaceOrientation
 {
-  v12 = a4;
+  layoutCopy = layout;
   v15.receiver = self;
   v15.super_class = SBRotationSwitcherModifier;
-  v13 = [(SBTransitionSwitcherModifier *)&v15 initWithTransitionID:a3];
+  v13 = [(SBTransitionSwitcherModifier *)&v15 initWithTransitionID:d];
   if (v13)
   {
-    if (!v12)
+    if (!layoutCopy)
     {
       [SBRotationSwitcherModifier initWithTransitionID:a2 appLayout:v13 fromInterfaceOrientation:? toInterfaceOrientation:?];
     }
 
-    objc_storeStrong(&v13->_appLayout, a4);
-    v13->_fromInterfaceOrientation = a5;
-    v13->_toInterfaceOrientation = a6;
+    objc_storeStrong(&v13->_appLayout, layout);
+    v13->_fromInterfaceOrientation = orientation;
+    v13->_toInterfaceOrientation = interfaceOrientation;
   }
 
   return v13;
@@ -33,23 +33,23 @@
 {
   v7.receiver = self;
   v7.super_class = SBRotationSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v7 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v7 transitionWillBegin];
   if ([(SBRotationSwitcherModifier *)self appLayoutRequiresLegacyRotationSupport:self->_appLayout])
   {
     v4 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:4 updateMode:1];
-    v5 = SBAppendSwitcherModifierResponse(v4, v3);
+    v5 = SBAppendSwitcherModifierResponse(v4, transitionWillBegin);
 
-    v3 = v5;
+    transitionWillBegin = v5;
   }
 
-  return v3;
+  return transitionWillBegin;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v6.receiver = self;
   v6.super_class = SBRotationSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v6 animationAttributesForLayoutElement:a3];
+  v3 = [(SBTransitionSwitcherModifier *)&v6 animationAttributesForLayoutElement:element];
   v4 = [v3 mutableCopy];
 
   [v4 setUpdateMode:1];
@@ -57,7 +57,7 @@
   return v4;
 }
 
-- (double)rotationAngleForIndex:(unint64_t)a3
+- (double)rotationAngleForIndex:(unint64_t)index
 {
   if ([(SBTransitionSwitcherModifier *)self transitionPhase]== 1)
   {
@@ -69,13 +69,13 @@
   {
     v6.receiver = self;
     v6.super_class = SBRotationSwitcherModifier;
-    [(SBRotationSwitcherModifier *)&v6 rotationAngleForIndex:a3];
+    [(SBRotationSwitcherModifier *)&v6 rotationAngleForIndex:index];
   }
 
   return result;
 }
 
-- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)a3
+- (BOOL)shouldUseAnchorPointToPinLayoutRolesToSpace:(unint64_t)space
 {
   if (self->_shouldNotUseAnchorPointToPinLayoutRolesToSpace)
   {
@@ -86,7 +86,7 @@
   v8 = v4;
   v6.receiver = self;
   v6.super_class = SBRotationSwitcherModifier;
-  return [(SBRotationSwitcherModifier *)&v6 shouldUseAnchorPointToPinLayoutRolesToSpace:a3];
+  return [(SBRotationSwitcherModifier *)&v6 shouldUseAnchorPointToPinLayoutRolesToSpace:space];
 }
 
 - (void)initWithTransitionID:(uint64_t)a1 appLayout:(uint64_t)a2 fromInterfaceOrientation:toInterfaceOrientation:.cold.1(uint64_t a1, uint64_t a2)

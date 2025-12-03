@@ -1,23 +1,23 @@
 @interface WDMedicalRecordDisplayItem
 + (id)accountSourceItem;
-+ (id)conceptCardItemWithCategoryType:(int64_t)a3;
-+ (id)conceptHeaderItemWithCategoryType:(int64_t)a3 title:(id)a4;
++ (id)conceptCardItemWithCategoryType:(int64_t)type;
++ (id)conceptHeaderItemWithCategoryType:(int64_t)type title:(id)title;
 + (id)detailAttributedSubtitleItem;
 + (id)detailSpinnerItem;
 + (id)detailSubtitleItem;
-+ (id)detailSubtitleItemWithTitle:(id)a3 subtitle:(id)a4;
-+ (id)detailSubtitleItemWithTitle:(id)a3 subtitle:(id)a4 extraTopPadding:(BOOL)a5;
++ (id)detailSubtitleItemWithTitle:(id)title subtitle:(id)subtitle;
++ (id)detailSubtitleItemWithTitle:(id)title subtitle:(id)subtitle extraTopPadding:(BOOL)padding;
 + (id)detailTitleItem;
 + (id)recordCardItem;
 + (id)sectionHeaderItem;
 + (id)standaloneItem;
 + (id)timelineSummaryAppendixItem;
 + (id)timelineSummaryCategoryMinimizedItem;
-+ (id)timelineSummaryCategoryMinimizedItemWithCategoryType:(int64_t)a3;
++ (id)timelineSummaryCategoryMinimizedItemWithCategoryType:(int64_t)type;
 + (id)timelineSummaryCategoryTitleItem;
-+ (id)timelineSummaryCategoryTitleItemWithCategoryType:(int64_t)a3;
++ (id)timelineSummaryCategoryTitleItemWithCategoryType:(int64_t)type;
 + (id)timelineSummaryContentWithSubtitleItem;
-+ (id)timelineSummaryDetailCategoryTitleItemWithMedicalRecord:(id)a3;
++ (id)timelineSummaryDetailCategoryTitleItemWithMedicalRecord:(id)record;
 + (id)timelineSummaryPanelTitleItem;
 + (id)timelineSummaryReferenceRangeItem;
 + (id)timelineSummarySourceTitleItem;
@@ -56,12 +56,12 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(WDMedicalRecordDisplayItem *)self displayItemType];
-  v5 = [(WDMedicalRecordDisplayItem *)self title];
-  v6 = [(WDMedicalRecordDisplayItem *)self subtitle];
-  v7 = [(WDMedicalRecordDisplayItem *)self valueString];
-  v8 = [(WDMedicalRecordDisplayItem *)self chartValueWithRange];
-  v9 = [v3 stringWithFormat:@"Display Item Type: %li, Title: %@, Subtitle: %@, Value: %@, Chart Value: %@", v4, v5, v6, v7, v8];
+  displayItemType = [(WDMedicalRecordDisplayItem *)self displayItemType];
+  title = [(WDMedicalRecordDisplayItem *)self title];
+  subtitle = [(WDMedicalRecordDisplayItem *)self subtitle];
+  valueString = [(WDMedicalRecordDisplayItem *)self valueString];
+  chartValueWithRange = [(WDMedicalRecordDisplayItem *)self chartValueWithRange];
+  v9 = [v3 stringWithFormat:@"Display Item Type: %li, Title: %@, Subtitle: %@, Value: %@, Chart Value: %@", displayItemType, title, subtitle, valueString, chartValueWithRange];
 
   return v9;
 }
@@ -82,50 +82,50 @@
   return v2;
 }
 
-+ (id)timelineSummaryCategoryTitleItemWithCategoryType:(int64_t)a3
++ (id)timelineSummaryCategoryTitleItemWithCategoryType:(int64_t)type
 {
   v4 = objc_alloc_init(WDMedicalRecordDisplayItem);
   [(WDMedicalRecordDisplayItem *)v4 setDisplayItemType:2];
   [(WDMedicalRecordDisplayItem *)v4 setPlacement:3];
   v5 = +[WDMedicalRecordDisplayItemProvider supportedRecordCategoriesByCategoryType];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v7 = [v5 objectForKeyedSubscript:v6];
 
-  v8 = [v7 displayName];
-  [(WDMedicalRecordDisplayItem *)v4 setTitle:v8];
+  displayName = [v7 displayName];
+  [(WDMedicalRecordDisplayItem *)v4 setTitle:displayName];
 
-  v9 = [v7 displayImage];
-  [(WDMedicalRecordDisplayItem *)v4 setImage:v9];
+  displayImage = [v7 displayImage];
+  [(WDMedicalRecordDisplayItem *)v4 setImage:displayImage];
 
-  v10 = [v7 categoryMetricColors];
-  [(WDMedicalRecordDisplayItem *)v4 setMetricColors:v10];
+  categoryMetricColors = [v7 categoryMetricColors];
+  [(WDMedicalRecordDisplayItem *)v4 setMetricColors:categoryMetricColors];
 
   -[WDMedicalRecordDisplayItem setRecordCategoryType:](v4, "setRecordCategoryType:", [v7 categoryType]);
 
   return v4;
 }
 
-+ (id)timelineSummaryDetailCategoryTitleItemWithMedicalRecord:(id)a3
++ (id)timelineSummaryDetailCategoryTitleItemWithMedicalRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   v4 = objc_alloc_init(WDMedicalRecordDisplayItem);
   [(WDMedicalRecordDisplayItem *)v4 setDisplayItemType:2];
   [(WDMedicalRecordDisplayItem *)v4 setPlacement:3];
-  v5 = [v3 title];
-  [(WDMedicalRecordDisplayItem *)v4 setTitle:v5];
+  title = [recordCopy title];
+  [(WDMedicalRecordDisplayItem *)v4 setTitle:title];
 
   v6 = +[WDMedicalRecordDisplayItemProvider supportedRecordCategoriesByCategoryType];
   v7 = MEMORY[0x1E696AD98];
-  v8 = [v3 recordCategoryType];
+  recordCategoryType = [recordCopy recordCategoryType];
 
-  v9 = [v7 numberWithInteger:v8];
+  v9 = [v7 numberWithInteger:recordCategoryType];
   v10 = [v6 objectForKeyedSubscript:v9];
 
-  v11 = [v10 displayImage];
-  [(WDMedicalRecordDisplayItem *)v4 setImage:v11];
+  displayImage = [v10 displayImage];
+  [(WDMedicalRecordDisplayItem *)v4 setImage:displayImage];
 
-  v12 = [v10 categoryMetricColors];
-  [(WDMedicalRecordDisplayItem *)v4 setMetricColors:v12];
+  categoryMetricColors = [v10 categoryMetricColors];
+  [(WDMedicalRecordDisplayItem *)v4 setMetricColors:categoryMetricColors];
 
   -[WDMedicalRecordDisplayItem setRecordCategoryType:](v4, "setRecordCategoryType:", [v10 categoryType]);
 
@@ -140,17 +140,17 @@
   return v2;
 }
 
-+ (id)timelineSummaryCategoryMinimizedItemWithCategoryType:(int64_t)a3
++ (id)timelineSummaryCategoryMinimizedItemWithCategoryType:(int64_t)type
 {
   v4 = objc_alloc_init(WDMedicalRecordDisplayItem);
   [(WDMedicalRecordDisplayItem *)v4 setDisplayItemType:3];
   [(WDMedicalRecordDisplayItem *)v4 setPlacement:3];
   v5 = +[WDMedicalRecordDisplayItemProvider supportedRecordCategoriesByCategoryType];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v7 = [v5 objectForKeyedSubscript:v6];
 
-  v8 = [v7 categoryMetricColors];
-  [(WDMedicalRecordDisplayItem *)v4 setMetricColors:v8];
+  categoryMetricColors = [v7 categoryMetricColors];
+  [(WDMedicalRecordDisplayItem *)v4 setMetricColors:categoryMetricColors];
 
   -[WDMedicalRecordDisplayItem setRecordCategoryType:](v4, "setRecordCategoryType:", [v7 categoryType]);
 
@@ -224,25 +224,25 @@
   return v2;
 }
 
-+ (id)detailSubtitleItemWithTitle:(id)a3 subtitle:(id)a4
++ (id)detailSubtitleItemWithTitle:(id)title subtitle:(id)subtitle
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 detailSubtitleItem];
-  [v8 setTitle:v7];
+  subtitleCopy = subtitle;
+  titleCopy = title;
+  detailSubtitleItem = [self detailSubtitleItem];
+  [detailSubtitleItem setTitle:titleCopy];
 
-  [v8 setSubtitle:v6];
-  [v8 setSeparatorStyle:0];
-  [v8 setSeparatorHidden:0];
+  [detailSubtitleItem setSubtitle:subtitleCopy];
+  [detailSubtitleItem setSeparatorStyle:0];
+  [detailSubtitleItem setSeparatorHidden:0];
 
-  return v8;
+  return detailSubtitleItem;
 }
 
-+ (id)detailSubtitleItemWithTitle:(id)a3 subtitle:(id)a4 extraTopPadding:(BOOL)a5
++ (id)detailSubtitleItemWithTitle:(id)title subtitle:(id)subtitle extraTopPadding:(BOOL)padding
 {
-  v5 = a5;
-  v6 = [a1 detailSubtitleItemWithTitle:a3 subtitle:a4];
-  [v6 setExtraTopPadding:v5];
+  paddingCopy = padding;
+  v6 = [self detailSubtitleItemWithTitle:title subtitle:subtitle];
+  [v6 setExtraTopPadding:paddingCopy];
 
   return v6;
 }
@@ -290,34 +290,34 @@
   return v2;
 }
 
-+ (id)conceptHeaderItemWithCategoryType:(int64_t)a3 title:(id)a4
++ (id)conceptHeaderItemWithCategoryType:(int64_t)type title:(id)title
 {
-  v5 = a4;
+  titleCopy = title;
   v6 = objc_alloc_init(WDMedicalRecordDisplayItem);
   v7 = +[WDMedicalRecordDisplayItemProvider supportedRecordCategoriesByCategoryType];
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v9 = [v7 objectForKeyedSubscript:v8];
 
-  v10 = [v9 displayImage];
-  [(WDMedicalRecordDisplayItem *)v6 setImage:v10];
+  displayImage = [v9 displayImage];
+  [(WDMedicalRecordDisplayItem *)v6 setImage:displayImage];
 
-  v11 = [v9 categoryMetricColors];
-  [(WDMedicalRecordDisplayItem *)v6 setMetricColors:v11];
+  categoryMetricColors = [v9 categoryMetricColors];
+  [(WDMedicalRecordDisplayItem *)v6 setMetricColors:categoryMetricColors];
 
-  LODWORD(v11) = +[HRFeatures hideCategoryNameFromHeader];
-  v12 = [v5 length];
-  if (v11)
+  LODWORD(categoryMetricColors) = +[HRFeatures hideCategoryNameFromHeader];
+  v12 = [titleCopy length];
+  if (categoryMetricColors)
   {
     if (!v12)
     {
-      v19 = [v9 displayName];
-      [(WDMedicalRecordDisplayItem *)v6 setTitle:v19];
+      displayName = [v9 displayName];
+      [(WDMedicalRecordDisplayItem *)v6 setTitle:displayName];
 
       goto LABEL_9;
     }
 
     v13 = v6;
-    v14 = v5;
+    v14 = titleCopy;
   }
 
   else
@@ -326,9 +326,9 @@
     {
       v15 = MEMORY[0x1E696AEC0];
       v16 = HRLocalizedString(@"DATATYPE_HEADER_FORMAT_2_%@_%@");
-      v17 = [v9 displayName];
-      v18 = [v15 stringWithFormat:v16, v17, v5];
-      [(WDMedicalRecordDisplayItem *)v6 setTitle:v18];
+      displayName2 = [v9 displayName];
+      titleCopy = [v15 stringWithFormat:v16, displayName2, titleCopy];
+      [(WDMedicalRecordDisplayItem *)v6 setTitle:titleCopy];
 
       goto LABEL_9;
     }
@@ -345,18 +345,18 @@ LABEL_9:
   return v6;
 }
 
-+ (id)conceptCardItemWithCategoryType:(int64_t)a3
++ (id)conceptCardItemWithCategoryType:(int64_t)type
 {
   v4 = objc_alloc_init(WDMedicalRecordDisplayItem);
   v5 = +[WDMedicalRecordDisplayItemProvider supportedRecordCategoriesByCategoryType];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v7 = [v5 objectForKeyedSubscript:v6];
 
-  v8 = [v7 displayImage];
-  [(WDMedicalRecordDisplayItem *)v4 setImage:v8];
+  displayImage = [v7 displayImage];
+  [(WDMedicalRecordDisplayItem *)v4 setImage:displayImage];
 
-  v9 = [v7 categoryMetricColors];
-  [(WDMedicalRecordDisplayItem *)v4 setMetricColors:v9];
+  categoryMetricColors = [v7 categoryMetricColors];
+  [(WDMedicalRecordDisplayItem *)v4 setMetricColors:categoryMetricColors];
 
   [(WDMedicalRecordDisplayItem *)v4 setDisplayItemType:19];
   [(WDMedicalRecordDisplayItem *)v4 setPlacement:2];

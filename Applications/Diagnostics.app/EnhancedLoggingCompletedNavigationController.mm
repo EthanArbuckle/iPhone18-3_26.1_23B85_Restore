@@ -1,8 +1,8 @@
 @interface EnhancedLoggingCompletedNavigationController
-- (_TtC11Diagnostics44EnhancedLoggingCompletedNavigationController)initWithCoder:(id)a3;
-- (_TtC11Diagnostics44EnhancedLoggingCompletedNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4;
-- (_TtC11Diagnostics44EnhancedLoggingCompletedNavigationController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC11Diagnostics44EnhancedLoggingCompletedNavigationController)initWithRootViewController:(id)a3;
+- (_TtC11Diagnostics44EnhancedLoggingCompletedNavigationController)initWithCoder:(id)coder;
+- (_TtC11Diagnostics44EnhancedLoggingCompletedNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass;
+- (_TtC11Diagnostics44EnhancedLoggingCompletedNavigationController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC11Diagnostics44EnhancedLoggingCompletedNavigationController)initWithRootViewController:(id)controller;
 - (void)viewDidLoad;
 @end
 
@@ -10,36 +10,36 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_10008D0DC();
 }
 
-- (_TtC11Diagnostics44EnhancedLoggingCompletedNavigationController)initWithNavigationBarClass:(Class)a3 toolbarClass:(Class)a4
+- (_TtC11Diagnostics44EnhancedLoggingCompletedNavigationController)initWithNavigationBarClass:(Class)class toolbarClass:(Class)toolbarClass
 {
   v7 = OBJC_IVAR____TtC11Diagnostics44EnhancedLoggingCompletedNavigationController_enhancedLoggingCompletedViewController;
   v8 = objc_allocWithZone(type metadata accessor for EnhancedLoggingCompletedViewController());
   *(&self->super.super.super.super.isa + v7) = sub_10006C6A0();
   v10.receiver = self;
   v10.super_class = type metadata accessor for EnhancedLoggingCompletedNavigationController();
-  return [(EnhancedLoggingCompletedNavigationController *)&v10 initWithNavigationBarClass:a3 toolbarClass:a4];
+  return [(EnhancedLoggingCompletedNavigationController *)&v10 initWithNavigationBarClass:class toolbarClass:toolbarClass];
 }
 
-- (_TtC11Diagnostics44EnhancedLoggingCompletedNavigationController)initWithRootViewController:(id)a3
+- (_TtC11Diagnostics44EnhancedLoggingCompletedNavigationController)initWithRootViewController:(id)controller
 {
   v5 = OBJC_IVAR____TtC11Diagnostics44EnhancedLoggingCompletedNavigationController_enhancedLoggingCompletedViewController;
   v6 = objc_allocWithZone(type metadata accessor for EnhancedLoggingCompletedViewController());
-  v7 = a3;
+  controllerCopy = controller;
   *(&self->super.super.super.super.isa + v5) = sub_10006C6A0();
   v10.receiver = self;
   v10.super_class = type metadata accessor for EnhancedLoggingCompletedNavigationController();
-  v8 = [(EnhancedLoggingCompletedNavigationController *)&v10 initWithRootViewController:v7];
+  v8 = [(EnhancedLoggingCompletedNavigationController *)&v10 initWithRootViewController:controllerCopy];
 
   return v8;
 }
 
-- (_TtC11Diagnostics44EnhancedLoggingCompletedNavigationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11Diagnostics44EnhancedLoggingCompletedNavigationController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -52,7 +52,7 @@
 
   v8 = OBJC_IVAR____TtC11Diagnostics44EnhancedLoggingCompletedNavigationController_enhancedLoggingCompletedViewController;
   objc_allocWithZone(type metadata accessor for EnhancedLoggingCompletedViewController());
-  v9 = a4;
+  bundleCopy = bundle;
   *(&self->super.super.super.super.isa + v8) = sub_10006C6A0();
   if (v7)
   {
@@ -66,20 +66,20 @@
 
   v13.receiver = self;
   v13.super_class = type metadata accessor for EnhancedLoggingCompletedNavigationController();
-  v11 = [(EnhancedLoggingCompletedNavigationController *)&v13 initWithNibName:v10 bundle:v9];
+  v11 = [(EnhancedLoggingCompletedNavigationController *)&v13 initWithNibName:v10 bundle:bundleCopy];
 
   return v11;
 }
 
-- (_TtC11Diagnostics44EnhancedLoggingCompletedNavigationController)initWithCoder:(id)a3
+- (_TtC11Diagnostics44EnhancedLoggingCompletedNavigationController)initWithCoder:(id)coder
 {
   v5 = OBJC_IVAR____TtC11Diagnostics44EnhancedLoggingCompletedNavigationController_enhancedLoggingCompletedViewController;
   v6 = objc_allocWithZone(type metadata accessor for EnhancedLoggingCompletedViewController());
-  v7 = a3;
+  coderCopy = coder;
   *(&self->super.super.super.super.isa + v5) = sub_10006C6A0();
   v10.receiver = self;
   v10.super_class = type metadata accessor for EnhancedLoggingCompletedNavigationController();
-  v8 = [(EnhancedLoggingCompletedNavigationController *)&v10 initWithCoder:v7];
+  v8 = [(EnhancedLoggingCompletedNavigationController *)&v10 initWithCoder:coderCopy];
 
   if (v8)
   {

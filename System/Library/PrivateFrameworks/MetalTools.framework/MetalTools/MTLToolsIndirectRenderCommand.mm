@@ -18,487 +18,487 @@
 - (unint64_t)getCullMode;
 - (unint64_t)getDepthClipMode;
 - (unint64_t)getDepthStencilStateUniqueIdentifier;
-- (unint64_t)getFragmentBufferAddressAtIndex:(unint64_t)a3;
+- (unint64_t)getFragmentBufferAddressAtIndex:(unint64_t)index;
 - (unint64_t)getFrontFacingWinding;
-- (unint64_t)getMeshBufferAddressAtIndex:(unint64_t)a3;
-- (unint64_t)getObjectBufferAddressAtIndex:(unint64_t)a3;
-- (unint64_t)getObjectThreadgroupMemoryLengthAtIndex:(unint64_t)a3;
+- (unint64_t)getMeshBufferAddressAtIndex:(unint64_t)index;
+- (unint64_t)getObjectBufferAddressAtIndex:(unint64_t)index;
+- (unint64_t)getObjectThreadgroupMemoryLengthAtIndex:(unint64_t)index;
 - (unint64_t)getOptimizedStatus;
 - (unint64_t)getPipelineStateUniqueIdentifier;
 - (unint64_t)getTriangleFillMode;
-- (unint64_t)getVertexAttributeStrideAtIndex:(unint64_t)a3;
-- (unint64_t)getVertexBufferAddressAtIndex:(unint64_t)a3;
+- (unint64_t)getVertexAttributeStrideAtIndex:(unint64_t)index;
+- (unint64_t)getVertexBufferAddressAtIndex:(unint64_t)index;
 - (void)clearBarrier;
-- (void)drawIndexedPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 controlPointIndexBuffer:(id)a8 controlPointIndexBufferOffset:(unint64_t)a9 instanceCount:(unint64_t)a10 baseInstance:(unint64_t)a11 tessellationFactorBuffer:(id)a12 tessellationFactorBufferOffset:(unint64_t)a13 tessellationFactorBufferInstanceStride:(unint64_t)a14;
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseVertex:(int64_t)a9 baseInstance:(unint64_t)a10;
-- (void)drawMeshThreadgroups:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5;
-- (void)drawMeshThreads:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5;
-- (void)drawPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseInstance:(unint64_t)a9 tessellationFactorBuffer:(id)a10 tessellationFactorBufferOffset:(unint64_t)a11 tessellationFactorBufferInstanceStride:(unint64_t)a12;
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6 baseInstance:(unint64_t)a7;
-- (void)getFragmentBufferAtIndex:(unint64_t)a3;
-- (void)getVertexBufferAtIndex:(unint64_t)a3;
+- (void)drawIndexedPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset instanceCount:(unint64_t)self0 baseInstance:(unint64_t)self1 tessellationFactorBuffer:(id)self2 tessellationFactorBufferOffset:(unint64_t)self3 tessellationFactorBufferInstanceStride:(unint64_t)self4;
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseVertex:(int64_t)vertex baseInstance:(unint64_t)self0;
+- (void)drawMeshThreadgroups:(id *)threadgroups threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawMeshThreads:(id *)threads threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup;
+- (void)drawPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance tessellationFactorBuffer:(id)self0 tessellationFactorBufferOffset:(unint64_t)self1 tessellationFactorBufferInstanceStride:(unint64_t)self2;
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance;
+- (void)getFragmentBufferAtIndex:(unint64_t)index;
+- (void)getVertexBufferAtIndex:(unint64_t)index;
 - (void)reset;
 - (void)setBarrier;
-- (void)setBlendColorRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6;
-- (void)setCullMode:(unint64_t)a3;
-- (void)setDepthBias:(float)a3 slopeScale:(float)a4 clamp:(float)a5;
-- (void)setDepthClipMode:(unint64_t)a3;
-- (void)setDepthStencilState:(id)a3;
-- (void)setDepthTestMinBound:(float)a3 maxBound:(float)a4;
-- (void)setFragmentBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setFrontFacingWinding:(unint64_t)a3;
-- (void)setMeshBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setObjectBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setObjectThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4;
-- (void)setRenderPipelineState:(id)a3;
-- (void)setScissorRect:(id *)a3;
-- (void)setScissorRects:(id *)a3 count:(unint64_t)a4;
-- (void)setTriangleFillMode:(unint64_t)a3;
-- (void)setVertexBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5;
-- (void)setVertexBuffer:(id)a3 offset:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6;
-- (void)setViewport:(id *)a3;
-- (void)setViewports:(id *)a3 count:(unint64_t)a4;
+- (void)setBlendColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha;
+- (void)setCullMode:(unint64_t)mode;
+- (void)setDepthBias:(float)bias slopeScale:(float)scale clamp:(float)clamp;
+- (void)setDepthClipMode:(unint64_t)mode;
+- (void)setDepthStencilState:(id)state;
+- (void)setDepthTestMinBound:(float)bound maxBound:(float)maxBound;
+- (void)setFragmentBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setFrontFacingWinding:(unint64_t)winding;
+- (void)setMeshBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setObjectBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setObjectThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index;
+- (void)setRenderPipelineState:(id)state;
+- (void)setScissorRect:(id *)rect;
+- (void)setScissorRects:(id *)rects count:(unint64_t)count;
+- (void)setTriangleFillMode:(unint64_t)mode;
+- (void)setVertexBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index;
+- (void)setVertexBuffer:(id)buffer offset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index;
+- (void)setViewport:(id *)viewport;
+- (void)setViewports:(id *)viewports count:(unint64_t)count;
 @end
 
 @implementation MTLToolsIndirectRenderCommand
 
-- (void)drawPrimitives:(unint64_t)a3 vertexStart:(unint64_t)a4 vertexCount:(unint64_t)a5 instanceCount:(unint64_t)a6 baseInstance:(unint64_t)a7
+- (void)drawPrimitives:(unint64_t)primitives vertexStart:(unint64_t)start vertexCount:(unint64_t)count instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance
 {
-  v12 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v12 drawPrimitives:a3 vertexStart:a4 vertexCount:a5 instanceCount:a6 baseInstance:a7];
+  [baseObject drawPrimitives:primitives vertexStart:start vertexCount:count instanceCount:instanceCount baseInstance:instance];
 }
 
-- (void)drawIndexedPrimitives:(unint64_t)a3 indexCount:(unint64_t)a4 indexType:(unint64_t)a5 indexBuffer:(id)a6 indexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseVertex:(int64_t)a9 baseInstance:(unint64_t)a10
+- (void)drawIndexedPrimitives:(unint64_t)primitives indexCount:(unint64_t)count indexType:(unint64_t)type indexBuffer:(id)buffer indexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseVertex:(int64_t)vertex baseInstance:(unint64_t)self0
 {
-  v16 = [(MTLToolsObject *)self baseObject];
-  v17 = [a6 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
 
-  [v16 drawIndexedPrimitives:a3 indexCount:a4 indexType:a5 indexBuffer:v17 indexBufferOffset:a7 instanceCount:a8 baseVertex:? baseInstance:?];
+  [baseObject drawIndexedPrimitives:primitives indexCount:count indexType:type indexBuffer:baseObject2 indexBufferOffset:offset instanceCount:instanceCount baseVertex:? baseInstance:?];
 }
 
-- (void)setRenderPipelineState:(id)a3
+- (void)setRenderPipelineState:(id)state
 {
-  v4 = [(MTLToolsObject *)self baseObject];
-  v5 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [state baseObject];
 
-  [v4 setRenderPipelineState:v5];
+  [baseObject setRenderPipelineState:baseObject2];
 }
 
-- (void)drawPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 instanceCount:(unint64_t)a8 baseInstance:(unint64_t)a9 tessellationFactorBuffer:(id)a10 tessellationFactorBufferOffset:(unint64_t)a11 tessellationFactorBufferInstanceStride:(unint64_t)a12
+- (void)drawPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset instanceCount:(unint64_t)instanceCount baseInstance:(unint64_t)instance tessellationFactorBuffer:(id)self0 tessellationFactorBufferOffset:(unint64_t)self1 tessellationFactorBufferInstanceStride:(unint64_t)self2
 {
-  v17 = [(MTLToolsObject *)self baseObject];
-  v18 = [a6 baseObject];
-  [a10 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
+  [factorBuffer baseObject];
 
-  [v17 drawPatches:a3 patchStart:a4 patchCount:a5 patchIndexBuffer:v18 patchIndexBufferOffset:a7 instanceCount:a8 baseInstance:? tessellationFactorBuffer:? tessellationFactorBufferOffset:? tessellationFactorBufferInstanceStride:?];
+  [baseObject drawPatches:patches patchStart:start patchCount:count patchIndexBuffer:baseObject2 patchIndexBufferOffset:offset instanceCount:instanceCount baseInstance:? tessellationFactorBuffer:? tessellationFactorBufferOffset:? tessellationFactorBufferInstanceStride:?];
 }
 
-- (void)drawIndexedPatches:(unint64_t)a3 patchStart:(unint64_t)a4 patchCount:(unint64_t)a5 patchIndexBuffer:(id)a6 patchIndexBufferOffset:(unint64_t)a7 controlPointIndexBuffer:(id)a8 controlPointIndexBufferOffset:(unint64_t)a9 instanceCount:(unint64_t)a10 baseInstance:(unint64_t)a11 tessellationFactorBuffer:(id)a12 tessellationFactorBufferOffset:(unint64_t)a13 tessellationFactorBufferInstanceStride:(unint64_t)a14
+- (void)drawIndexedPatches:(unint64_t)patches patchStart:(unint64_t)start patchCount:(unint64_t)count patchIndexBuffer:(id)buffer patchIndexBufferOffset:(unint64_t)offset controlPointIndexBuffer:(id)indexBuffer controlPointIndexBufferOffset:(unint64_t)bufferOffset instanceCount:(unint64_t)self0 baseInstance:(unint64_t)self1 tessellationFactorBuffer:(id)self2 tessellationFactorBufferOffset:(unint64_t)self3 tessellationFactorBufferInstanceStride:(unint64_t)self4
 {
-  v17 = [(MTLToolsObject *)self baseObject];
-  v18 = [a6 baseObject];
-  v19 = [a8 baseObject];
-  [a12 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
+  baseObject3 = [indexBuffer baseObject];
+  [factorBuffer baseObject];
 
-  [v17 drawIndexedPatches:a3 patchStart:a4 patchCount:a5 patchIndexBuffer:v18 patchIndexBufferOffset:a7 controlPointIndexBuffer:v19 controlPointIndexBufferOffset:? instanceCount:? baseInstance:? tessellationFactorBuffer:? tessellationFactorBufferOffset:? tessellationFactorBufferInstanceStride:?];
+  [baseObject drawIndexedPatches:patches patchStart:start patchCount:count patchIndexBuffer:baseObject2 patchIndexBufferOffset:offset controlPointIndexBuffer:baseObject3 controlPointIndexBufferOffset:? instanceCount:? baseInstance:? tessellationFactorBuffer:? tessellationFactorBufferOffset:? tessellationFactorBufferInstanceStride:?];
 }
 
 - (void)reset
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 reset];
+  [baseObject reset];
 }
 
 - (unint64_t)getPipelineStateUniqueIdentifier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getPipelineStateUniqueIdentifier];
+  return [baseObject getPipelineStateUniqueIdentifier];
 }
 
 - (id)drawArguments
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 drawArguments];
+  return [baseObject drawArguments];
 }
 
 - (id)drawIndexedArguments
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 drawIndexedArguments];
+  return [baseObject drawIndexedArguments];
 }
 
 - (id)drawIndexedPatchesArguments
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 drawIndexedPatchesArguments];
+  return [baseObject drawIndexedPatchesArguments];
 }
 
 - (id)drawPatchesArguments
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 drawPatchesArguments];
+  return [baseObject drawPatchesArguments];
 }
 
 - (id)drawMeshThreadgroupsArguments
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 drawMeshThreadgroupsArguments];
+  return [baseObject drawMeshThreadgroupsArguments];
 }
 
 - (id)drawMeshThreadsArguments
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 drawMeshThreadsArguments];
+  return [baseObject drawMeshThreadsArguments];
 }
 
 - (id)getTessellationFactorArguments
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getTessellationFactorArguments];
+  return [baseObject getTessellationFactorArguments];
 }
 
 - (unint64_t)getCommandType
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getCommandType];
+  return [baseObject getCommandType];
 }
 
-- (void)getFragmentBufferAtIndex:(unint64_t)a3
+- (void)getFragmentBufferAtIndex:(unint64_t)index
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 getFragmentBufferAtIndex:a3];
+  return [baseObject getFragmentBufferAtIndex:index];
 }
 
-- (void)getVertexBufferAtIndex:(unint64_t)a3
+- (void)getVertexBufferAtIndex:(unint64_t)index
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 getVertexBufferAtIndex:a3];
+  return [baseObject getVertexBufferAtIndex:index];
 }
 
-- (unint64_t)getFragmentBufferAddressAtIndex:(unint64_t)a3
+- (unint64_t)getFragmentBufferAddressAtIndex:(unint64_t)index
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 getFragmentBufferAddressAtIndex:a3];
+  return [baseObject getFragmentBufferAddressAtIndex:index];
 }
 
-- (unint64_t)getVertexBufferAddressAtIndex:(unint64_t)a3
+- (unint64_t)getVertexBufferAddressAtIndex:(unint64_t)index
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 getVertexBufferAddressAtIndex:a3];
+  return [baseObject getVertexBufferAddressAtIndex:index];
 }
 
-- (unint64_t)getObjectBufferAddressAtIndex:(unint64_t)a3
+- (unint64_t)getObjectBufferAddressAtIndex:(unint64_t)index
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 getObjectBufferAddressAtIndex:a3];
+  return [baseObject getObjectBufferAddressAtIndex:index];
 }
 
-- (unint64_t)getMeshBufferAddressAtIndex:(unint64_t)a3
+- (unint64_t)getMeshBufferAddressAtIndex:(unint64_t)index
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 getMeshBufferAddressAtIndex:a3];
+  return [baseObject getMeshBufferAddressAtIndex:index];
 }
 
-- (void)setVertexBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setVertexBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v8 setVertexBuffer:a3 offset:a4 atIndex:a5];
+  [baseObject setVertexBuffer:buffer offset:offset atIndex:index];
 }
 
-- (void)setVertexBuffer:(id)a3 offset:(unint64_t)a4 attributeStride:(unint64_t)a5 atIndex:(unint64_t)a6
+- (void)setVertexBuffer:(id)buffer offset:(unint64_t)offset attributeStride:(unint64_t)stride atIndex:(unint64_t)index
 {
-  v10 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v10 setVertexBuffer:a3 offset:a4 attributeStride:a5 atIndex:a6];
+  [baseObject setVertexBuffer:buffer offset:offset attributeStride:stride atIndex:index];
 }
 
-- (void)setFragmentBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setFragmentBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v8 setFragmentBuffer:a3 offset:a4 atIndex:a5];
+  [baseObject setFragmentBuffer:buffer offset:offset atIndex:index];
 }
 
-- (void)setObjectBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setObjectBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v8 setObjectBuffer:a3 offset:a4 atIndex:a5];
+  [baseObject setObjectBuffer:buffer offset:offset atIndex:index];
 }
 
-- (void)setMeshBuffer:(id)a3 offset:(unint64_t)a4 atIndex:(unint64_t)a5
+- (void)setMeshBuffer:(id)buffer offset:(unint64_t)offset atIndex:(unint64_t)index
 {
-  v8 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v8 setMeshBuffer:a3 offset:a4 atIndex:a5];
+  [baseObject setMeshBuffer:buffer offset:offset atIndex:index];
 }
 
 - (void)setBarrier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 setBarrier];
+  [baseObject setBarrier];
 }
 
 - (void)clearBarrier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v2 clearBarrier];
+  [baseObject clearBarrier];
 }
 
 - (BOOL)hasBarrier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 hasBarrier];
+  return [baseObject hasBarrier];
 }
 
-- (void)drawMeshThreadgroups:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5
+- (void)drawMeshThreadgroups:(id *)threadgroups threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
-  v8 = [(MTLToolsObject *)self baseObject];
-  v11 = *a3;
-  v10 = *a4;
-  v9 = *a5;
-  [v8 drawMeshThreadgroups:&v11 threadsPerObjectThreadgroup:&v10 threadsPerMeshThreadgroup:&v9];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v11 = *threadgroups;
+  v10 = *threadgroup;
+  v9 = *meshThreadgroup;
+  [baseObject drawMeshThreadgroups:&v11 threadsPerObjectThreadgroup:&v10 threadsPerMeshThreadgroup:&v9];
 }
 
-- (void)drawMeshThreads:(id *)a3 threadsPerObjectThreadgroup:(id *)a4 threadsPerMeshThreadgroup:(id *)a5
+- (void)drawMeshThreads:(id *)threads threadsPerObjectThreadgroup:(id *)threadgroup threadsPerMeshThreadgroup:(id *)meshThreadgroup
 {
-  v8 = [(MTLToolsObject *)self baseObject];
-  v11 = *a3;
-  v10 = *a4;
-  v9 = *a5;
-  [v8 drawMeshThreads:&v11 threadsPerObjectThreadgroup:&v10 threadsPerMeshThreadgroup:&v9];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v11 = *threads;
+  v10 = *threadgroup;
+  v9 = *meshThreadgroup;
+  [baseObject drawMeshThreads:&v11 threadsPerObjectThreadgroup:&v10 threadsPerMeshThreadgroup:&v9];
 }
 
-- (void)setObjectThreadgroupMemoryLength:(unint64_t)a3 atIndex:(unint64_t)a4
+- (void)setObjectThreadgroupMemoryLength:(unint64_t)length atIndex:(unint64_t)index
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 setObjectThreadgroupMemoryLength:a3 atIndex:a4];
+  [baseObject setObjectThreadgroupMemoryLength:length atIndex:index];
 }
 
-- (unint64_t)getObjectThreadgroupMemoryLengthAtIndex:(unint64_t)a3
+- (unint64_t)getObjectThreadgroupMemoryLengthAtIndex:(unint64_t)index
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 getObjectThreadgroupMemoryLengthAtIndex:a3];
+  return [baseObject getObjectThreadgroupMemoryLengthAtIndex:index];
 }
 
 - (unint64_t)getOptimizedStatus
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getOptimizedStatus];
+  return [baseObject getOptimizedStatus];
 }
 
-- (unint64_t)getVertexAttributeStrideAtIndex:(unint64_t)a3
+- (unint64_t)getVertexAttributeStrideAtIndex:(unint64_t)index
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v4 getVertexAttributeStrideAtIndex:a3];
+  return [baseObject getVertexAttributeStrideAtIndex:index];
 }
 
-- (void)setDepthBias:(float)a3 slopeScale:(float)a4 clamp:(float)a5
+- (void)setDepthBias:(float)bias slopeScale:(float)scale clamp:(float)clamp
 {
-  v8 = [(MTLToolsObject *)self baseObject];
-  *&v9 = a3;
-  *&v10 = a4;
-  *&v11 = a5;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  *&v9 = bias;
+  *&v10 = scale;
+  *&v11 = clamp;
 
-  [v8 setDepthBias:v9 slopeScale:v10 clamp:v11];
+  [baseObject setDepthBias:v9 slopeScale:v10 clamp:v11];
 }
 
-- (void)setDepthClipMode:(unint64_t)a3
+- (void)setDepthClipMode:(unint64_t)mode
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setDepthClipMode:a3];
+  [baseObject setDepthClipMode:mode];
 }
 
-- (void)setCullMode:(unint64_t)a3
+- (void)setCullMode:(unint64_t)mode
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setCullMode:a3];
+  [baseObject setCullMode:mode];
 }
 
-- (void)setFrontFacingWinding:(unint64_t)a3
+- (void)setFrontFacingWinding:(unint64_t)winding
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setFrontFacingWinding:a3];
+  [baseObject setFrontFacingWinding:winding];
 }
 
-- (void)setTriangleFillMode:(unint64_t)a3
+- (void)setTriangleFillMode:(unint64_t)mode
 {
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 setTriangleFillMode:a3];
+  [baseObject setTriangleFillMode:mode];
 }
 
-- (void)setScissorRect:(id *)a3
+- (void)setScissorRect:(id *)rect
 {
-  v4 = [(MTLToolsObject *)self baseObject];
-  v5 = *&a3->var2;
-  v6[0] = *&a3->var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v5 = *&rect->var2;
+  v6[0] = *&rect->var0;
   v6[1] = v5;
-  [v4 setScissorRect:v6];
+  [baseObject setScissorRect:v6];
 }
 
-- (void)setViewport:(id *)a3
+- (void)setViewport:(id *)viewport
 {
-  v4 = [(MTLToolsObject *)self baseObject];
-  v5 = *&a3->var2;
-  v6[0] = *&a3->var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  v5 = *&viewport->var2;
+  v6[0] = *&viewport->var0;
   v6[1] = v5;
-  v6[2] = *&a3->var4;
-  [v4 setViewport:v6];
+  v6[2] = *&viewport->var4;
+  [baseObject setViewport:v6];
 }
 
-- (void)setBlendColorRed:(float)a3 green:(float)a4 blue:(float)a5 alpha:(float)a6
+- (void)setBlendColorRed:(float)red green:(float)green blue:(float)blue alpha:(float)alpha
 {
-  v10 = [(MTLToolsObject *)self baseObject];
-  *&v11 = a3;
-  *&v12 = a4;
-  *&v13 = a5;
-  *&v14 = a6;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  *&v11 = red;
+  *&v12 = green;
+  *&v13 = blue;
+  *&v14 = alpha;
 
-  [v10 setBlendColorRed:v11 green:v12 blue:v13 alpha:v14];
+  [baseObject setBlendColorRed:v11 green:v12 blue:v13 alpha:v14];
 }
 
-- (void)setScissorRects:(id *)a3 count:(unint64_t)a4
+- (void)setScissorRects:(id *)rects count:(unint64_t)count
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 setScissorRects:a3 count:a4];
+  [baseObject setScissorRects:rects count:count];
 }
 
-- (void)setViewports:(id *)a3 count:(unint64_t)a4
+- (void)setViewports:(id *)viewports count:(unint64_t)count
 {
-  v6 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v6 setViewports:a3 count:a4];
+  [baseObject setViewports:viewports count:count];
 }
 
-- (void)setDepthStencilState:(id)a3
+- (void)setDepthStencilState:(id)state
 {
-  v4 = [(MTLToolsObject *)self baseObject];
-  v5 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [state baseObject];
 
-  [v4 setDepthStencilState:v5];
+  [baseObject setDepthStencilState:baseObject2];
 }
 
-- (void)setDepthTestMinBound:(float)a3 maxBound:(float)a4
+- (void)setDepthTestMinBound:(float)bound maxBound:(float)maxBound
 {
-  v6 = [(MTLToolsObject *)self baseObject];
-  *&v7 = a3;
-  *&v8 = a4;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  *&v7 = bound;
+  *&v8 = maxBound;
 
-  [v6 setDepthTestMinBound:v7 maxBound:v8];
+  [baseObject setDepthTestMinBound:v7 maxBound:v8];
 }
 
 - (id)getDepthTestBounds
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getDepthTestBounds];
+  return [baseObject getDepthTestBounds];
 }
 
 - (unint64_t)getDepthStencilStateUniqueIdentifier
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getDepthStencilStateUniqueIdentifier];
+  return [baseObject getDepthStencilStateUniqueIdentifier];
 }
 
 - (id)getDepthBiasInfo
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getDepthBiasInfo];
+  return [baseObject getDepthBiasInfo];
 }
 
 - (id)getStencilReferenceValues
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getStencilReferenceValues];
+  return [baseObject getStencilReferenceValues];
 }
 
 - (id)getDepthStencilState
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getDepthStencilState];
+  return [baseObject getDepthStencilState];
 }
 
 - (unint64_t)getDepthClipMode
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getDepthClipMode];
+  return [baseObject getDepthClipMode];
 }
 
 - (unint64_t)getCullMode
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getCullMode];
+  return [baseObject getCullMode];
 }
 
 - (unint64_t)getFrontFacingWinding
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getFrontFacingWinding];
+  return [baseObject getFrontFacingWinding];
 }
 
 - (unint64_t)getTriangleFillMode
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getTriangleFillMode];
+  return [baseObject getTriangleFillMode];
 }
 
 - (id)getScissorRects
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getScissorRects];
+  return [baseObject getScissorRects];
 }
 
 - (id)getViewports
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getViewports];
+  return [baseObject getViewports];
 }
 
 - (id)getBlendColor
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 getBlendColor];
+  return [baseObject getBlendColor];
 }
 
 @end

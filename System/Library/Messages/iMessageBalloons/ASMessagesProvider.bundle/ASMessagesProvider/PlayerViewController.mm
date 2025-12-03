@@ -1,13 +1,13 @@
 @interface PlayerViewController
 - (UIViewController)presentingViewController;
-- (_TtC18ASMessagesProvider20PlayerViewController)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProvider20PlayerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (_TtC18ASMessagesProvider20PlayerViewController)initWithPlayerLayerView:(id)a3;
+- (_TtC18ASMessagesProvider20PlayerViewController)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProvider20PlayerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (_TtC18ASMessagesProvider20PlayerViewController)initWithPlayerLayerView:(id)view;
 - (void)dealloc;
-- (void)playerItemDidPlayToEndWithNotification:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)playerItemDidPlayToEndWithNotification:(id)notification;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PlayerViewController
@@ -15,47 +15,47 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for PlayerViewController();
   [(PlayerViewController *)&v6 dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for PlayerViewController();
   v4 = v6.receiver;
-  [(PlayerViewController *)&v6 viewDidAppear:v3];
+  [(PlayerViewController *)&v6 viewDidAppear:appearCopy];
   if (*(v4 + OBJC_IVAR____TtC18ASMessagesProvider20PlayerViewController_autoplay) == 1)
   {
-    v5 = [v4 player];
-    [v5 play];
+    player = [v4 player];
+    [player play];
   }
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_65BD1C();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v6.receiver = self;
   v6.super_class = type metadata accessor for PlayerViewController();
   v4 = v6.receiver;
-  [(PlayerViewController *)&v6 viewWillDisappear:v3];
-  v5 = [v4 player];
-  [v5 pause];
+  [(PlayerViewController *)&v6 viewWillDisappear:disappearCopy];
+  player = [v4 player];
+  [player pause];
 }
 
-- (void)playerItemDidPlayToEndWithNotification:(id)a3
+- (void)playerItemDidPlayToEndWithNotification:(id)notification
 {
   v4 = sub_756CE0();
   v5 = *(v4 - 8);
@@ -74,30 +74,30 @@
 {
   if (*(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider20PlayerViewController_alwaysShowDoneButton) == 1)
   {
-    v2 = [(PlayerViewController *)self parentViewController];
+    parentViewController = [(PlayerViewController *)self parentViewController];
   }
 
   else
   {
     v5.receiver = self;
     v5.super_class = type metadata accessor for PlayerViewController();
-    v2 = [(PlayerViewController *)&v5 presentingViewController];
+    parentViewController = [(PlayerViewController *)&v5 presentingViewController];
   }
 
-  v3 = v2;
+  v3 = parentViewController;
 
   return v3;
 }
 
-- (_TtC18ASMessagesProvider20PlayerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18ASMessagesProvider20PlayerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_769240();
     *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider20PlayerViewController_autoplay) = 0;
     *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider20PlayerViewController_shouldDismissWhenPlaysToEnd) = 1;
     *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider20PlayerViewController_alwaysShowDoneButton) = 0;
-    v6 = a4;
+    bundleCopy = bundle;
     v7 = sub_769210();
   }
 
@@ -106,26 +106,26 @@
     *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider20PlayerViewController_autoplay) = 0;
     *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider20PlayerViewController_shouldDismissWhenPlaysToEnd) = 1;
     *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider20PlayerViewController_alwaysShowDoneButton) = 0;
-    v8 = a4;
+    bundleCopy2 = bundle;
     v7 = 0;
   }
 
   v11.receiver = self;
   v11.super_class = type metadata accessor for PlayerViewController();
-  v9 = [(PlayerViewController *)&v11 initWithNibName:v7 bundle:a4];
+  v9 = [(PlayerViewController *)&v11 initWithNibName:v7 bundle:bundle];
 
   return v9;
 }
 
-- (_TtC18ASMessagesProvider20PlayerViewController)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider20PlayerViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider20PlayerViewController_autoplay) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider20PlayerViewController_shouldDismissWhenPlaysToEnd) = 1;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider20PlayerViewController_alwaysShowDoneButton) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for PlayerViewController();
-  v4 = a3;
-  v5 = [(PlayerViewController *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(PlayerViewController *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -134,14 +134,14 @@
   return v5;
 }
 
-- (_TtC18ASMessagesProvider20PlayerViewController)initWithPlayerLayerView:(id)a3
+- (_TtC18ASMessagesProvider20PlayerViewController)initWithPlayerLayerView:(id)view
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider20PlayerViewController_autoplay) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider20PlayerViewController_shouldDismissWhenPlaysToEnd) = 1;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider20PlayerViewController_alwaysShowDoneButton) = 0;
   v5.receiver = self;
   v5.super_class = type metadata accessor for PlayerViewController();
-  return [(PlayerViewController *)&v5 initWithPlayerLayerView:a3];
+  return [(PlayerViewController *)&v5 initWithPlayerLayerView:view];
 }
 
 @end

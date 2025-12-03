@@ -7,10 +7,10 @@
 - (id)mecabraHandwritingCandidate
 {
   v41 = *MEMORY[0x277D85DE8];
-  v2 = [a1 wordIDs];
-  v3 = [v2 count];
+  wordIDs = [self wordIDs];
+  v3 = [wordIDs count];
 
-  if (v3 && ([a1 wordRanges], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "count"), v4, v3 == v5))
+  if (v3 && ([self wordRanges], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "count"), v4, v3 == v5))
   {
     v28[1] = v28;
     MEMORY[0x28223BE20]();
@@ -19,8 +19,8 @@
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v8 = [a1 wordIDs];
-    v9 = [v8 countByEnumeratingWithState:&v35 objects:v40 count:16];
+    wordIDs2 = [self wordIDs];
+    v9 = [wordIDs2 countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v9)
     {
       v10 = v9;
@@ -34,7 +34,7 @@
         {
           if (*v36 != v12)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(wordIDs2);
           }
 
           v11 = v14 + 1;
@@ -42,21 +42,21 @@
         }
 
         while (v10 != v13);
-        v10 = [v8 countByEnumeratingWithState:&v35 objects:v40 count:16];
+        v10 = [wordIDs2 countByEnumeratingWithState:&v35 objects:v40 count:16];
       }
 
       while (v10);
     }
 
     MEMORY[0x28223BE20]();
-    v29 = a1;
+    selfCopy = self;
     v30 = &v28[-2 * v3];
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v15 = [a1 wordRanges];
-    v16 = [v15 countByEnumeratingWithState:&v31 objects:v39 count:16];
+    wordRanges = [self wordRanges];
+    v16 = [wordRanges countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (v16)
     {
       v17 = v16;
@@ -72,7 +72,7 @@
         {
           if (*v32 != v19)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(wordRanges);
           }
 
           *(v22 - 1) = [*(*(&v31 + 1) + 8 * v21) rangeValue];
@@ -82,13 +82,13 @@
         }
 
         while (v17 != v21);
-        v17 = [v15 countByEnumeratingWithState:&v31 objects:v39 count:16];
+        v17 = [wordRanges countByEnumeratingWithState:&v31 objects:v39 count:16];
       }
 
       while (v17);
     }
 
-    v24 = [v29 string];
+    string = [selfCopy string];
     v25 = MecabraCreateHandwritingCandidate();
   }
 

@@ -1,10 +1,10 @@
 @interface EKFrozenReminderReminder
-- (BOOL)_applyChanges:(id)a3 error:(id *)a4;
-- (BOOL)_applyChangesToSaveRequest:(id)a3 error:(id *)a4;
+- (BOOL)_applyChanges:(id)changes error:(id *)error;
+- (BOOL)_applyChangesToSaveRequest:(id)request error:(id *)error;
 - (BOOL)hasNotes;
 - (BOOL)hasRecurrenceRules;
 - (id)URLString;
-- (id)_copyToNewList:(id)a3 error:(id *)a4;
+- (id)_copyToNewList:(id)list error:(id *)error;
 - (id)actionString;
 - (id)alarms;
 - (id)appLinkData;
@@ -14,7 +14,7 @@
 - (id)completionDate;
 - (id)creationDate;
 - (id)dueDateComponents;
-- (id)initNewReminderInStore:(id)a3;
+- (id)initNewReminderInStore:(id)store;
 - (id)lastModifiedDate;
 - (id)notes;
 - (id)recurrenceRulesSet;
@@ -22,56 +22,56 @@
 - (id)startDateComponents;
 - (id)unlocalizedTitle;
 - (unint64_t)priority;
-- (void)_fixAlarmUUIDsForClone:(id)a3 from:(id)a4;
+- (void)_fixAlarmUUIDsForClone:(id)clone from:(id)from;
 @end
 
 @implementation EKFrozenReminderReminder
 
-- (id)initNewReminderInStore:(id)a3
+- (id)initNewReminderInStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_alloc_init(EKChangeSet);
   [(EKChangeSet *)v5 setSkipsPersistentObjectCopy:1];
-  v6 = [getREMReminderClass() newObjectID];
-  v7 = [v6 uuid];
-  v8 = [v7 UUIDString];
-  [(EKChangeSet *)v5 changeSingleValue:v8 forKey:@"UUID" basedOn:0];
+  newObjectID = [getREMReminderClass() newObjectID];
+  uuid = [newObjectID uuid];
+  uUIDString = [uuid UUIDString];
+  [(EKChangeSet *)v5 changeSingleValue:uUIDString forKey:@"UUID" basedOn:0];
 
   v11.receiver = self;
   v11.super_class = EKFrozenReminderReminder;
-  v9 = [(EKFrozenReminderObject *)&v11 initWithREMObject:0 inStore:v4 withChanges:v5];
+  v9 = [(EKFrozenReminderObject *)&v11 initWithREMObject:0 inStore:storeCopy withChanges:v5];
 
   return v9;
 }
 
 - (id)remObjectID
 {
-  v3 = [(EKFrozenReminderReminder *)self _reminder];
+  _reminder = [(EKFrozenReminderReminder *)self _reminder];
 
-  if (v3)
+  if (_reminder)
   {
-    v4 = [(EKFrozenReminderReminder *)self _reminder];
-    v5 = [v4 objectID];
+    _reminder2 = [(EKFrozenReminderReminder *)self _reminder];
+    objectID = [_reminder2 objectID];
   }
 
   else
   {
-    v4 = [(EKFrozenReminderReminder *)self calendarItemIdentifier];
-    v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v4];
-    v5 = [getREMReminderClass() objectIDWithUUID:v6];
+    _reminder2 = [(EKFrozenReminderReminder *)self calendarItemIdentifier];
+    v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:_reminder2];
+    objectID = [getREMReminderClass() objectIDWithUUID:v6];
   }
 
-  return v5;
+  return objectID;
 }
 
-- (BOOL)_applyChanges:(id)a3 error:(id *)a4
+- (BOOL)_applyChanges:(id)changes error:(id *)error
 {
   v92 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  changesCopy = changes;
   if ([(EKChangeSet *)self->super._changeSet hasUnsavedChangeForKey:@"unlocalizedTitle"])
   {
     v7 = [(EKChangeSet *)self->super._changeSet valueForSingleValueKey:@"unlocalizedTitle" basedOn:0];
-    [v6 setTitleAsString:v7];
+    [changesCopy setTitleAsString:v7];
   }
 
   if (![(EKChangeSet *)self->super._changeSet hasUnsavedChangeForKey:@"calendar"])
@@ -79,20 +79,20 @@
     goto LABEL_13;
   }
 
-  v8 = [(EKFrozenReminderReminder *)self _reminder];
-  v9 = [v8 list];
+  _reminder = [(EKFrozenReminderReminder *)self _reminder];
+  list = [_reminder list];
 
   v10 = [(EKChangeSet *)self->super._changeSet valueForSingleValueKey:@"calendar" basedOn:0];
-  if (!v9)
+  if (!list)
   {
     goto LABEL_10;
   }
 
-  v11 = [v9 account];
-  if ([v11 type] != 3 && objc_msgSend(v11, "type") != 4)
+  account = [list account];
+  if ([account type] != 3 && objc_msgSend(account, "type") != 4)
   {
-    v13 = [v10 _account];
-    v14 = [v11 isEqual:v13];
+    _account = [v10 _account];
+    v14 = [account isEqual:_account];
 
     if (!v14)
     {
@@ -100,9 +100,9 @@
     }
 
 LABEL_10:
-    [v6 removeFromList];
-    v15 = [v6 saveRequest];
-    WeakRetained = [v10 updateListWithSaveRequest:v15 error:a4];
+    [changesCopy removeFromList];
+    saveRequest = [changesCopy saveRequest];
+    WeakRetained = [v10 updateListWithSaveRequest:saveRequest error:error];
 
     if (!WeakRetained)
     {
@@ -111,7 +111,7 @@ LABEL_10:
       goto LABEL_78;
     }
 
-    [WeakRetained addReminderChangeItem:v6];
+    [WeakRetained addReminderChangeItem:changesCopy];
     goto LABEL_12;
   }
 
@@ -124,14 +124,14 @@ LABEL_13:
   if ([(EKChangeSet *)self->super._changeSet hasUnsavedChangeForKey:@"creationDate"])
   {
     v16 = [(EKChangeSet *)self->super._changeSet valueForSingleValueKey:@"creationDate" basedOn:0];
-    [v6 setCreationDate:v16];
+    [changesCopy setCreationDate:v16];
   }
 
   [(EKChangeSet *)self->super._changeSet hasUnsavedChangeForKey:@"structuredLocationWithoutPrediction"];
   if ([(EKChangeSet *)self->super._changeSet hasUnsavedChangeForKey:@"notes"])
   {
     v17 = [(EKChangeSet *)self->super._changeSet valueForSingleValueKey:@"notes" basedOn:0];
-    [v6 setNotesAsString:v17];
+    [changesCopy setNotesAsString:v17];
   }
 
   if ([(EKChangeSet *)self->super._changeSet hasUnsavedChangeForKey:@"URLString"])
@@ -147,52 +147,52 @@ LABEL_13:
       v19 = 0;
     }
 
-    [v6 setIcsUrl:v19];
+    [changesCopy setIcsUrl:v19];
   }
 
   if ([(EKChangeSet *)self->super._changeSet hasUnsavedChangeForKey:@"startDateComponents"])
   {
-    v20 = [(EKFrozenReminderReminder *)self startDateComponents];
-    [v6 setStartDateComponents:v20];
+    startDateComponents = [(EKFrozenReminderReminder *)self startDateComponents];
+    [changesCopy setStartDateComponents:startDateComponents];
   }
 
   if ([(EKChangeSet *)self->super._changeSet hasUnsavedChangeForKey:@"dueDateComponents"])
   {
-    v21 = [(EKFrozenReminderReminder *)self dueDateComponents];
-    v22 = [v21 timeZone];
+    dueDateComponents = [(EKFrozenReminderReminder *)self dueDateComponents];
+    timeZone = [dueDateComponents timeZone];
 
-    if (!v22)
+    if (!timeZone)
     {
-      [v21 setCalendar:0];
+      [dueDateComponents setCalendar:0];
     }
 
-    v23 = [(EKFrozenReminderReminder *)self dueDateComponents];
-    [v6 setDueDateComponents:v23];
+    dueDateComponents2 = [(EKFrozenReminderReminder *)self dueDateComponents];
+    [changesCopy setDueDateComponents:dueDateComponents2];
   }
 
   if ([(EKChangeSet *)self->super._changeSet hasUnsavedChangeForKey:@"completionDate"])
   {
-    v24 = [(EKFrozenReminderReminder *)self completionDate];
-    [v6 setCompleted:v24 != 0];
-    [v6 setCompletionDate:v24];
+    completionDate = [(EKFrozenReminderReminder *)self completionDate];
+    [changesCopy setCompleted:completionDate != 0];
+    [changesCopy setCompletionDate:completionDate];
   }
 
   if ([(EKChangeSet *)self->super._changeSet hasUnsavedChangeForKey:@"priority"])
   {
-    [v6 setPriority:{-[EKFrozenReminderReminder priority](self, "priority")}];
+    [changesCopy setPriority:{-[EKFrozenReminderReminder priority](self, "priority")}];
   }
 
   if ([(EKChangeSet *)self->super._changeSet hasUnsavedChangeForKey:@"uniqueID"])
   {
-    v25 = [(EKFrozenReminderReminder *)self calendarItemExternalIdentifier];
-    [v6 setDaCalendarItemUniqueIdentifier:v25];
+    calendarItemExternalIdentifier = [(EKFrozenReminderReminder *)self calendarItemExternalIdentifier];
+    [changesCopy setDaCalendarItemUniqueIdentifier:calendarItemExternalIdentifier];
   }
 
   if ([(EKChangeSet *)self->super._changeSet hasUnsavedMultiValueRemovalForKey:@"allAlarmsSet"])
   {
-    obj = a4;
-    v26 = [(EKChangeSet *)self->super._changeSet multiValueRemovals];
-    v27 = [v26 objectForKeyedSubscript:@"allAlarmsSet"];
+    obj = error;
+    multiValueRemovals = [(EKChangeSet *)self->super._changeSet multiValueRemovals];
+    v27 = [multiValueRemovals objectForKeyedSubscript:@"allAlarmsSet"];
 
     v85 = 0u;
     v86 = 0u;
@@ -218,8 +218,8 @@ LABEL_13:
           v80 = 0u;
           v81 = 0u;
           v82 = 0u;
-          v34 = [v33 alarms];
-          v35 = [v34 countByEnumeratingWithState:&v79 objects:v90 count:16];
+          alarms = [v33 alarms];
+          v35 = [alarms countByEnumeratingWithState:&v79 objects:v90 count:16];
           if (v35)
           {
             v36 = v35;
@@ -230,13 +230,13 @@ LABEL_13:
               {
                 if (*v80 != v37)
                 {
-                  objc_enumerationMutation(v34);
+                  objc_enumerationMutation(alarms);
                 }
 
-                [v6 removeAlarm:*(*(&v79 + 1) + 8 * j)];
+                [changesCopy removeAlarm:*(*(&v79 + 1) + 8 * j)];
               }
 
-              v36 = [v34 countByEnumeratingWithState:&v79 objects:v90 count:16];
+              v36 = [alarms countByEnumeratingWithState:&v79 objects:v90 count:16];
             }
 
             while (v36);
@@ -249,19 +249,19 @@ LABEL_13:
       while (v30);
     }
 
-    a4 = obj;
+    error = obj;
   }
 
   if ([(EKChangeSet *)self->super._changeSet hasUnsavedMultiValueAdditionForKey:@"allAlarmsSet"])
   {
-    v39 = [(EKChangeSet *)self->super._changeSet multiValueAdditions];
-    v40 = [v39 objectForKeyedSubscript:@"allAlarmsSet"];
+    multiValueAdditions = [(EKChangeSet *)self->super._changeSet multiValueAdditions];
+    v40 = [multiValueAdditions objectForKeyedSubscript:@"allAlarmsSet"];
 
-    v67 = self;
+    selfCopy = self;
     if ([v40 count])
     {
-      v41 = [(EKFrozenReminderReminder *)self remObjectID];
-      v89 = v41;
+      remObjectID = [(EKFrozenReminderReminder *)self remObjectID];
+      v89 = remObjectID;
       v42 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v89 count:1];
     }
 
@@ -293,17 +293,17 @@ LABEL_13:
           objc_opt_class();
           if ((objc_opt_isKindOfClass() & 1) == 0)
           {
-            v48 = [MEMORY[0x1E696AAA8] currentHandler];
+            currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
             v49 = objc_opt_class();
             NSStringFromClass(v49);
-            v51 = v50 = a4;
-            [v48 handleFailureInMethod:a2 object:v67 file:@"EKFrozenReminderReminder.m" lineNumber:198 description:{@"frozen alarm is of the wrong class: %@", v51}];
+            v51 = v50 = error;
+            [currentHandler handleFailureInMethod:a2 object:selfCopy file:@"EKFrozenReminderReminder.m" lineNumber:198 description:{@"frozen alarm is of the wrong class: %@", v51}];
 
-            a4 = v50;
+            error = v50;
           }
 
           [v47 setPath:v42];
-          [v47 _applyChanges:v6 error:a4];
+          [v47 _applyChanges:changesCopy error:error];
         }
 
         v44 = [obja countByEnumeratingWithState:&v75 objects:v88 count:16];
@@ -312,18 +312,18 @@ LABEL_13:
       while (v44);
     }
 
-    self = v67;
+    self = selfCopy;
   }
 
   if ([(EKChangeSet *)self->super._changeSet hasUnsavedChangeForKey:@"recurrenceRulesSet"])
   {
-    [v6 removeAllRecurrenceRules];
+    [changesCopy removeAllRecurrenceRules];
     v73 = 0u;
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v52 = [(EKFrozenReminderReminder *)self recurrenceRulesSet];
-    v53 = [v52 countByEnumeratingWithState:&v71 objects:v87 count:16];
+    recurrenceRulesSet = [(EKFrozenReminderReminder *)self recurrenceRulesSet];
+    v53 = [recurrenceRulesSet countByEnumeratingWithState:&v71 objects:v87 count:16];
     if (v53)
     {
       v54 = v53;
@@ -334,13 +334,13 @@ LABEL_13:
         {
           if (*v72 != v55)
           {
-            objc_enumerationMutation(v52);
+            objc_enumerationMutation(recurrenceRulesSet);
           }
 
-          v57 = [*(*(&v71 + 1) + 8 * m) addUpdatedRecurrenceRule:v6];
+          v57 = [*(*(&v71 + 1) + 8 * m) addUpdatedRecurrenceRule:changesCopy];
         }
 
-        v54 = [v52 countByEnumeratingWithState:&v71 objects:v87 count:16];
+        v54 = [recurrenceRulesSet countByEnumeratingWithState:&v71 objects:v87 count:16];
       }
 
       while (v54);
@@ -349,19 +349,19 @@ LABEL_13:
 
   if ([(EKChangeSet *)self->super._changeSet hasUnsavedChangeForKey:@"appLinkData"])
   {
-    v58 = [(EKFrozenReminderReminder *)self appLinkData];
-    v59 = [objc_alloc(getREMUserActivityClass()) initWithUserActivityData:v58];
-    [v6 setUserActivity:v59];
+    appLinkData = [(EKFrozenReminderReminder *)self appLinkData];
+    v59 = [objc_alloc(getREMUserActivityClass()) initWithUserActivityData:appLinkData];
+    [changesCopy setUserActivity:v59];
   }
 
   if ([(EKChangeSet *)self->super._changeSet hasUnsavedChangeForKey:@"actionString"])
   {
     v60 = MEMORY[0x1E695DFF8];
-    v61 = [(EKFrozenReminderReminder *)self actionString];
-    v62 = [v60 URLWithString:v61];
+    actionString = [(EKFrozenReminderReminder *)self actionString];
+    v62 = [v60 URLWithString:actionString];
 
     v63 = [objc_alloc(getREMUserActivityClass()) initWithUniversalLink:v62];
-    [v6 setUserActivity:v63];
+    [changesCopy setUserActivity:v63];
   }
 
   v64 = 1;
@@ -371,14 +371,14 @@ LABEL_78:
   return v64;
 }
 
-- (BOOL)_applyChangesToSaveRequest:(id)a3 error:(id *)a4
+- (BOOL)_applyChangesToSaveRequest:(id)request error:(id *)error
 {
-  v6 = a3;
-  v7 = [(EKFrozenReminderReminder *)self _reminder];
+  requestCopy = request;
+  _reminder = [(EKFrozenReminderReminder *)self _reminder];
   if ([(EKFrozenReminderObject *)self isNew])
   {
-    v8 = [(EKFrozenReminderReminder *)self calendar];
-    v9 = [v8 updateListWithSaveRequest:v6 error:a4];
+    calendar = [(EKFrozenReminderReminder *)self calendar];
+    v9 = [calendar updateListWithSaveRequest:requestCopy error:error];
     if (!v9)
     {
       v17 = 0;
@@ -386,41 +386,41 @@ LABEL_78:
     }
 
     v10 = v9;
-    v11 = [(EKFrozenReminderReminder *)self unlocalizedTitle];
-    v12 = v11;
+    unlocalizedTitle = [(EKFrozenReminderReminder *)self unlocalizedTitle];
+    v12 = unlocalizedTitle;
     v13 = &stru_1F1B49D68;
-    if (v11)
+    if (unlocalizedTitle)
     {
-      v13 = v11;
+      v13 = unlocalizedTitle;
     }
 
     v14 = v13;
 
-    v15 = [(EKFrozenReminderReminder *)self remObjectID];
-    v16 = [v6 addReminderWithTitle:v14 toListChangeItem:v10 reminderObjectID:v15];
+    remObjectID = [(EKFrozenReminderReminder *)self remObjectID];
+    v16 = [requestCopy addReminderWithTitle:v14 toListChangeItem:v10 reminderObjectID:remObjectID];
 
-    v8 = v16;
+    calendar = v16;
   }
 
   else
   {
-    v8 = [v6 updateReminder:v7];
+    calendar = [requestCopy updateReminder:_reminder];
   }
 
-  v17 = [(EKFrozenReminderReminder *)self _applyChanges:v8 error:a4];
+  v17 = [(EKFrozenReminderReminder *)self _applyChanges:calendar error:error];
 LABEL_8:
 
   return v17;
 }
 
-- (id)_copyToNewList:(id)a3 error:(id *)a4
+- (id)_copyToNewList:(id)list error:(id *)error
 {
-  v6 = a3;
-  v7 = [(EKFrozenReminderReminder *)self _reminder];
-  v8 = [v6 updateReminder:v7];
+  listCopy = list;
+  _reminder = [(EKFrozenReminderReminder *)self _reminder];
+  v8 = [listCopy updateReminder:_reminder];
 
   v9 = [(EKChangeSet *)self->super._changeSet valueForSingleValueKey:@"calendar" basedOn:0];
-  v10 = [v9 updateListWithSaveRequest:v6 error:a4];
+  v10 = [v9 updateListWithSaveRequest:listCopy error:error];
   if (v10)
   {
     v19 = 0;
@@ -442,35 +442,35 @@ LABEL_8:
     v12 = v11;
     _Block_object_dispose(&v19, 8);
     v13 = [[v11 alloc] initWithReminderChangeItem:v8 insertIntoListChangeItem:v10];
-    [v6 _trackReminderChangeItem:v13];
+    [listCopy _trackReminderChangeItem:v13];
     [(EKFrozenReminderReminder *)self _fixAlarmUUIDsForClone:v13 from:v8];
     [v8 removeFromList];
-    v14 = [v13 objectID];
-    v15 = [v14 uuid];
-    v16 = [v15 UUIDString];
+    objectID = [v13 objectID];
+    uuid = [objectID uuid];
+    uUIDString = [uuid UUIDString];
   }
 
   else
   {
-    v16 = 0;
+    uUIDString = 0;
   }
 
-  return v16;
+  return uUIDString;
 }
 
-- (void)_fixAlarmUUIDsForClone:(id)a3 from:(id)a4
+- (void)_fixAlarmUUIDsForClone:(id)clone from:(id)from
 {
   v63 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [a4 alarms];
-  v39 = v5;
-  v7 = [v5 alarms];
-  v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  cloneCopy = clone;
+  alarms = [from alarms];
+  v39 = cloneCopy;
+  alarms2 = [cloneCopy alarms];
+  v8 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(alarms, "count")}];
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  obj = v6;
+  obj = alarms;
   v9 = [obj countByEnumeratingWithState:&v54 objects:v62 count:16];
   if (v9)
   {
@@ -494,8 +494,8 @@ LABEL_8:
           [v8 setObject:v15 forKeyedSubscript:v14];
         }
 
-        v16 = [v13 alarmUID];
-        [v15 addObject:v16];
+        alarmUID = [v13 alarmUID];
+        [v15 addObject:alarmUID];
       }
 
       v10 = [obj countByEnumeratingWithState:&v54 objects:v62 count:16];
@@ -504,12 +504,12 @@ LABEL_8:
     while (v10);
   }
 
-  v42 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  v42 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(alarms2, "count")}];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v40 = v7;
+  v40 = alarms2;
   v17 = [v40 countByEnumeratingWithState:&v50 objects:v61 count:16];
   if (v17)
   {
@@ -527,11 +527,11 @@ LABEL_8:
         v21 = *(*(&v50 + 1) + 8 * j);
         v22 = [EKFrozenReminderAlarm semanticIdentifierFromREMAlarm:v21];
         v23 = [v8 objectForKeyedSubscript:v22];
-        v24 = [v21 alarmUID];
-        v25 = [v23 firstObject];
-        if (v25)
+        alarmUID2 = [v21 alarmUID];
+        firstObject = [v23 firstObject];
+        if (firstObject)
         {
-          [v42 setObject:v25 forKeyedSubscript:v24];
+          [v42 setObject:firstObject forKeyedSubscript:alarmUID2];
           if ([v23 count] >= 2)
           {
             [v23 removeObjectAtIndex:0];
@@ -583,12 +583,12 @@ LABEL_8:
         }
 
         v33 = *(*(&v44 + 1) + 8 * k);
-        v34 = [v33 alarmUID];
-        v35 = v27[2](v27, v34);
+        alarmUID3 = [v33 alarmUID];
+        v35 = v27[2](v27, alarmUID3);
         [v33 setAlarmUID:v35];
 
-        v36 = [v33 originalAlarmUID];
-        v37 = v27[2](v27, v36);
+        originalAlarmUID = [v33 originalAlarmUID];
+        v37 = v27[2](v27, originalAlarmUID);
         [v33 setOriginalAlarmUID:v37];
       }
 
@@ -790,15 +790,15 @@ id __40__EKFrozenReminderReminder_creationDate__block_invoke(uint64_t a1)
 - (id)alarms
 {
   v63 = *MEMORY[0x1E69E9840];
-  v3 = [(EKFrozenReminderReminder *)self _reminder];
-  v4 = [v3 alarms];
+  _reminder = [(EKFrozenReminderReminder *)self _reminder];
+  alarms = [_reminder alarms];
 
-  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(alarms, "count")}];
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  obj = v4;
+  obj = alarms;
   v6 = [obj countByEnumeratingWithState:&v55 objects:v62 count:16];
   if (v6)
   {
@@ -814,10 +814,10 @@ id __40__EKFrozenReminderReminder_creationDate__block_invoke(uint64_t a1)
         }
 
         v10 = *(*(&v55 + 1) + 8 * i);
-        v11 = [v10 alarmUID];
-        if (v11)
+        alarmUID = [v10 alarmUID];
+        if (alarmUID)
         {
-          v12 = v11;
+          v12 = alarmUID;
         }
 
         else
@@ -825,8 +825,8 @@ id __40__EKFrozenReminderReminder_creationDate__block_invoke(uint64_t a1)
           v12 = &stru_1F1B49D68;
         }
 
-        v13 = [v10 alarmUID];
-        v14 = [v5 objectForKeyedSubscript:v13];
+        alarmUID2 = [v10 alarmUID];
+        v14 = [v5 objectForKeyedSubscript:alarmUID2];
 
         if (!v14)
         {
@@ -846,8 +846,8 @@ id __40__EKFrozenReminderReminder_creationDate__block_invoke(uint64_t a1)
   v15 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(obj, "count")}];
   if ([obj count])
   {
-    v16 = [(EKFrozenReminderReminder *)self remObjectID];
-    v61 = v16;
+    remObjectID = [(EKFrozenReminderReminder *)self remObjectID];
+    v61 = remObjectID;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v61 count:1];
   }
 
@@ -1043,9 +1043,9 @@ id __42__EKFrozenReminderReminder_completionDate__block_invoke(uint64_t a1)
   v5[3] = &unk_1E77FD0B8;
   v5[4] = self;
   v2 = [(EKFrozenReminderObject *)self valueForSingleValueKey:@"priority" backingValue:v5];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 id __36__EKFrozenReminderReminder_priority__block_invoke(uint64_t a1)
@@ -1120,16 +1120,16 @@ id __40__EKFrozenReminderReminder_actionString__block_invoke(uint64_t a1)
 
 - (BOOL)hasRecurrenceRules
 {
-  v2 = [(EKFrozenReminderReminder *)self recurrenceRulesSet];
-  v3 = [v2 count] != 0;
+  recurrenceRulesSet = [(EKFrozenReminderReminder *)self recurrenceRulesSet];
+  v3 = [recurrenceRulesSet count] != 0;
 
   return v3;
 }
 
 - (BOOL)hasNotes
 {
-  v2 = [(EKFrozenReminderReminder *)self notes];
-  v3 = [v2 length] != 0;
+  notes = [(EKFrozenReminderReminder *)self notes];
+  v3 = [notes length] != 0;
 
   return v3;
 }
@@ -1137,15 +1137,15 @@ id __40__EKFrozenReminderReminder_actionString__block_invoke(uint64_t a1)
 - (id)recurrenceRulesSet
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = [(EKFrozenReminderReminder *)self _reminder];
-  v4 = [v3 recurrenceRules];
+  _reminder = [(EKFrozenReminderReminder *)self _reminder];
+  recurrenceRules = [_reminder recurrenceRules];
 
-  v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v4, "count")}];
+  v5 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(recurrenceRules, "count")}];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  obj = v4;
+  obj = recurrenceRules;
   v6 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {

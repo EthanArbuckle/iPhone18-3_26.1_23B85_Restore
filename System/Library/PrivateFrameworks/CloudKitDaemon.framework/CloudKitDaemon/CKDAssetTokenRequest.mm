@@ -2,7 +2,7 @@
 - (BOOL)hasSuccessfulBatches;
 - (CKDAssetTokenRequest)init;
 - (id)CKPropertiesDescription;
-- (void)addAssetBatch:(id)a3;
+- (void)addAssetBatch:(id)batch;
 @end
 
 @implementation CKDAssetTokenRequest
@@ -26,19 +26,19 @@
   return v2;
 }
 
-- (void)addAssetBatch:(id)a3
+- (void)addAssetBatch:(id)batch
 {
-  v12 = a3;
-  objc_msgSend_assetTokenRequest(v12, v4, v5);
+  batchCopy = batch;
+  objc_msgSend_assetTokenRequest(batchCopy, v4, v5);
   if (objc_claimAutoreleasedReturnValue())
   {
     __assert_rtn("[CKDAssetTokenRequest addAssetBatch:]", "CKDAssetTokenRequest.m", 35, "!assetBatch.assetTokenRequest");
   }
 
-  objc_msgSend_setAssetTokenRequest_(v12, v6, self);
-  objc_msgSend_addObject_(self->_assetBatches, v7, v12);
-  self->_sizeUpperBound += objc_msgSend_sizeUpperBound(v12, v8, v9);
-  self->_size += objc_msgSend_size(v12, v10, v11);
+  objc_msgSend_setAssetTokenRequest_(batchCopy, v6, self);
+  objc_msgSend_addObject_(self->_assetBatches, v7, batchCopy);
+  self->_sizeUpperBound += objc_msgSend_sizeUpperBound(batchCopy, v8, v9);
+  self->_size += objc_msgSend_size(batchCopy, v10, v11);
 }
 
 - (BOOL)hasSuccessfulBatches

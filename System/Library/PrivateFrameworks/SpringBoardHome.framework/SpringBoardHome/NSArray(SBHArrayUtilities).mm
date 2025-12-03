@@ -13,7 +13,7 @@
   v4[1] = 3221225472;
   v4[2] = __56__NSArray_SBHArrayUtilities__sbh_containsObjectInArray___block_invoke;
   v4[3] = &unk_1E808A8A8;
-  v4[4] = a1;
+  v4[4] = self;
   return [a3 indexOfObjectPassingTest:v4] != 0x7FFFFFFFFFFFFFFFLL;
 }
 
@@ -21,7 +21,7 @@
 {
   v18 = *MEMORY[0x1E69E9840];
   v4 = a3;
-  v5 = [a1 count];
+  v5 = [self count];
   if (v5 >= [v4 count])
   {
     v15 = 0u;
@@ -44,7 +44,7 @@
             objc_enumerationMutation(v7);
           }
 
-          if (![a1 containsObject:{*(*(&v13 + 1) + 8 * v11), v13}])
+          if (![self containsObject:{*(*(&v13 + 1) + 8 * v11), v13}])
           {
             v6 = 0;
             goto LABEL_13;
@@ -79,7 +79,7 @@ LABEL_13:
 - (id)sbh_arrayByRemovingObject:()SBHArrayUtilities
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 removeObject:v4];
 
   return v5;
@@ -88,7 +88,7 @@ LABEL_13:
 - (id)sbh_arrayByRemovingObjectsFromArray:()SBHArrayUtilities
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 removeObjectsInArray:v4];
 
   return v5;

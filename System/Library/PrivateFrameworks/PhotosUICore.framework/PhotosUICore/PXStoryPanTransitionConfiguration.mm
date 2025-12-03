@@ -1,16 +1,16 @@
 @interface PXStoryPanTransitionConfiguration
 - (PXStoryPanTransitionConfiguration)init;
-- (PXStoryPanTransitionConfiguration)initWithDuration:(id *)a3;
-- (void)addClipLayout:(id)a3 sourceRect:(CGRect)a4 targetRect:(CGRect)a5;
+- (PXStoryPanTransitionConfiguration)initWithDuration:(id *)duration;
+- (void)addClipLayout:(id)layout sourceRect:(CGRect)rect targetRect:(CGRect)targetRect;
 - (void)dealloc;
-- (void)enumerateLayoutsUsingBlock:(id)a3;
+- (void)enumerateLayoutsUsingBlock:(id)block;
 @end
 
 @implementation PXStoryPanTransitionConfiguration
 
-- (void)enumerateLayoutsUsingBlock:(id)a3
+- (void)enumerateLayoutsUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9 = 0;
   if (self->_count >= 1)
   {
@@ -20,7 +20,7 @@
     {
       v7 = [(NSMutableArray *)self->_clipLayouts objectAtIndexedSubscript:v6];
       v8 = &self->_sourceRects[v5];
-      v4[2](v4, v7, &v9, v8->origin.x, v8->origin.y, v8->size.width, v8->size.height, self->_targetRects[v5].origin.x, self->_targetRects[v5].origin.y, self->_targetRects[v5].size.width, self->_targetRects[v5].size.height);
+      blockCopy[2](blockCopy, v7, &v9, v8->origin.x, v8->origin.y, v8->size.width, v8->size.height, self->_targetRects[v5].origin.x, self->_targetRects[v5].origin.y, self->_targetRects[v5].size.width, self->_targetRects[v5].size.height);
 
       if (v9 == 1)
       {
@@ -35,9 +35,9 @@
   }
 }
 
-- (void)addClipLayout:(id)a3 sourceRect:(CGRect)a4 targetRect:(CGRect)a5
+- (void)addClipLayout:(id)layout sourceRect:(CGRect)rect targetRect:(CGRect)targetRect
 {
-  v6 = a3;
+  layoutCopy = layout;
   clipLayouts = self->_clipLayouts;
   if (!clipLayouts)
   {
@@ -48,7 +48,7 @@
     clipLayouts = self->_clipLayouts;
   }
 
-  [(NSMutableArray *)clipLayouts addObject:v6];
+  [(NSMutableArray *)clipLayouts addObject:layoutCopy];
   ++self->_count;
   _PXGArrayCapacityResizeToCount();
 }
@@ -62,15 +62,15 @@
   [(PXStoryPanTransitionConfiguration *)&v3 dealloc];
 }
 
-- (PXStoryPanTransitionConfiguration)initWithDuration:(id *)a3
+- (PXStoryPanTransitionConfiguration)initWithDuration:(id *)duration
 {
   v6.receiver = self;
   v6.super_class = PXStoryPanTransitionConfiguration;
   result = [(PXStoryPanTransitionConfiguration *)&v6 init];
   if (result)
   {
-    v5 = *&a3->var0;
-    result->_duration.epoch = a3->var3;
+    v5 = *&duration->var0;
+    result->_duration.epoch = duration->var3;
     *&result->_duration.value = v5;
   }
 
@@ -79,8 +79,8 @@
 
 - (PXStoryPanTransitionConfiguration)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:562 description:{@"%s is not available as initializer", "-[PXStoryPanTransitionConfiguration init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryTransition.m" lineNumber:562 description:{@"%s is not available as initializer", "-[PXStoryPanTransitionConfiguration init]"}];
 
   abort();
 }

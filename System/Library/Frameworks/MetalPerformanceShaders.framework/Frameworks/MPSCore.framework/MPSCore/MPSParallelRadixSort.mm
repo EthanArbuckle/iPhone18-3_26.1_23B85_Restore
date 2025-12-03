@@ -1,14 +1,14 @@
 @interface MPSParallelRadixSort
-- (MPSParallelRadixSort)initWithDevice:(id)a3 keyPairDataType:(unsigned int)a4 valuePairDataType:(unsigned int)a5;
+- (MPSParallelRadixSort)initWithDevice:(id)device keyPairDataType:(unsigned int)type valuePairDataType:(unsigned int)dataType;
 @end
 
 @implementation MPSParallelRadixSort
 
-- (MPSParallelRadixSort)initWithDevice:(id)a3 keyPairDataType:(unsigned int)a4 valuePairDataType:(unsigned int)a5
+- (MPSParallelRadixSort)initWithDevice:(id)device keyPairDataType:(unsigned int)type valuePairDataType:(unsigned int)dataType
 {
   v6.receiver = self;
   v6.super_class = MPSParallelRadixSort;
-  return [(MPSParallelSort *)&v6 initWithDevice:a3 keyPairDataType:*&a4 valuePairDataType:*&a5 sortOp:0];
+  return [(MPSParallelSort *)&v6 initWithDevice:device keyPairDataType:*&type valuePairDataType:*&dataType sortOp:0];
 }
 
 @end

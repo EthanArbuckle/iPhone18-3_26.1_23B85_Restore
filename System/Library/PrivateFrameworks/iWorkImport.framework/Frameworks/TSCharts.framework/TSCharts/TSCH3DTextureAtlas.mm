@@ -1,24 +1,24 @@
 @interface TSCH3DTextureAtlas
-+ (id)atlasWithSamples:(float)a3;
-- (TSCH3DTextureAtlas)initWithSamples:(float)a3;
-- (id)textureAtIndex:(int64_t)a3;
-- (tvec2<int>)textureSizeAtIndex:(int64_t)a3;
-- (tvec3<int>)p_addLabel:(id)a3;
-- (tvec3<int>)positionForLabel:(id)a3;
++ (id)atlasWithSamples:(float)samples;
+- (TSCH3DTextureAtlas)initWithSamples:(float)samples;
+- (id)textureAtIndex:(int64_t)index;
+- (tvec2<int>)textureSizeAtIndex:(int64_t)index;
+- (tvec3<int>)p_addLabel:(id)label;
+- (tvec3<int>)positionForLabel:(id)label;
 @end
 
 @implementation TSCH3DTextureAtlas
 
-+ (id)atlasWithSamples:(float)a3
++ (id)atlasWithSamples:(float)samples
 {
-  v4 = [a1 alloc];
-  *&v5 = a3;
+  v4 = [self alloc];
+  *&v5 = samples;
   v9 = objc_msgSend_initWithSamples_(v4, v6, v5, v7, v8);
 
   return v9;
 }
 
-- (TSCH3DTextureAtlas)initWithSamples:(float)a3
+- (TSCH3DTextureAtlas)initWithSamples:(float)samples
 {
   v10.receiver = self;
   v10.super_class = TSCH3DTextureAtlas;
@@ -33,16 +33,16 @@
     cachedLabels = v4->_cachedLabels;
     v4->_cachedLabels = v7;
 
-    v4->_samples = a3;
+    v4->_samples = samples;
   }
 
   return v4;
 }
 
-- (tvec2<int>)textureSizeAtIndex:(int64_t)a3
+- (tvec2<int>)textureSizeAtIndex:(int64_t)index
 {
   v9 = v3;
-  if (objc_msgSend_count(self->_textures, a2, v4, v5, v6) <= a3)
+  if (objc_msgSend_count(self->_textures, a2, v4, v5, v6) <= index)
   {
     v14 = MEMORY[0x277D81150];
     v34 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, "[TSCH3DTextureAtlas textureSizeAtIndex:]");
@@ -52,7 +52,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v24, v25, v26, v27);
   }
 
-  v28 = objc_msgSend_objectAtIndexedSubscript_(self->_textures, v10, v11, v12, v13, a3);
+  v28 = objc_msgSend_objectAtIndexedSubscript_(self->_textures, v10, v11, v12, v13, index);
   v35 = v28;
   if (v28)
   {
@@ -67,9 +67,9 @@
   return v33;
 }
 
-- (id)textureAtIndex:(int64_t)a3
+- (id)textureAtIndex:(int64_t)index
 {
-  if (a3 < 0 || objc_msgSend_count(self->_textures, a2, v3, v4, v5) <= a3)
+  if (index < 0 || objc_msgSend_count(self->_textures, a2, v3, v4, v5) <= index)
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, "[TSCH3DTextureAtlas textureAtIndex:]");
@@ -79,20 +79,20 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v19, v20, v21, v22);
   }
 
-  v23 = objc_msgSend_objectAtIndexedSubscript_(self->_textures, a2, v3, v4, v5, a3);
+  v23 = objc_msgSend_objectAtIndexedSubscript_(self->_textures, a2, v3, v4, v5, index);
   v28 = objc_msgSend_resource(v23, v24, v25, v26, v27);
 
   return v28;
 }
 
-- (tvec3<int>)p_addLabel:(id)a3
+- (tvec3<int>)p_addLabel:(id)label
 {
   v5 = v3;
-  v6 = a3;
-  v11 = v6;
-  if (v6)
+  labelCopy = label;
+  v11 = labelCopy;
+  if (labelCopy)
   {
-    objc_msgSend_clampedLabelSampledSize(v6, v7, v8, v9, v10);
+    objc_msgSend_clampedLabelSampledSize(labelCopy, v7, v8, v9, v10);
   }
 
   else
@@ -191,13 +191,13 @@ LABEL_28:
   return result;
 }
 
-- (tvec3<int>)positionForLabel:(id)a3
+- (tvec3<int>)positionForLabel:(id)label
 {
   v5 = v3;
-  v6 = a3;
+  labelCopy = label;
   cachedLabels = self->_cachedLabels;
-  v24 = v6;
-  v12 = objc_msgSend_attributes(v6, v8, v9, v10, v11);
+  v24 = labelCopy;
+  v12 = objc_msgSend_attributes(labelCopy, v8, v9, v10, v11);
   v17 = objc_msgSend_objectForKey_(cachedLabels, v13, v14, v15, v16, v12);
 
   if (v17)

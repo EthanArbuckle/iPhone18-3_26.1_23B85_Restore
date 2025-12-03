@@ -1,26 +1,26 @@
 @interface RWIProtocolCSSSelectorList
 - (NSArray)selectors;
 - (NSString)text;
-- (RWIProtocolCSSSelectorList)initWithSelectors:(id)a3 text:(id)a4;
+- (RWIProtocolCSSSelectorList)initWithSelectors:(id)selectors text:(id)text;
 - (RWIProtocolCSSSourceRange)range;
-- (void)setRange:(id)a3;
-- (void)setSelectors:(id)a3;
-- (void)setText:(id)a3;
+- (void)setRange:(id)range;
+- (void)setSelectors:(id)selectors;
+- (void)setText:(id)text;
 @end
 
 @implementation RWIProtocolCSSSelectorList
 
-- (RWIProtocolCSSSelectorList)initWithSelectors:(id)a3 text:(id)a4
+- (RWIProtocolCSSSelectorList)initWithSelectors:(id)selectors text:(id)text
 {
   v27 = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  v18 = a4;
+  selectorsCopy = selectors;
+  textCopy = text;
   v25.receiver = self;
   v25.super_class = RWIProtocolCSSSelectorList;
   v20 = [(RWIProtocolJSONObject *)&v25 init];
   if (v20)
   {
-    if (!v19)
+    if (!selectorsCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"selectors"}];
     }
@@ -29,7 +29,7 @@
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v6 = v19;
+    v6 = selectorsCopy;
     v7 = [v6 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v7)
     {
@@ -65,13 +65,13 @@
       while (v7);
     }
 
-    if (!v18)
+    if (!textCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"text"}];
     }
 
     [(RWIProtocolCSSSelectorList *)v20 setSelectors:v6];
-    [(RWIProtocolCSSSelectorList *)v20 setText:v18];
+    [(RWIProtocolCSSSelectorList *)v20 setText:textCopy];
     v15 = v20;
   }
 
@@ -79,14 +79,14 @@
   return v20;
 }
 
-- (void)setSelectors:(id)a3
+- (void)setSelectors:(id)selectors
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = selectors;
   v3 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {
@@ -150,11 +150,11 @@
   return v2;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSSelectorList;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"text"];
+  [(RWIProtocolJSONObject *)&v3 setString:text forKey:@"text"];
 }
 
 - (NSString)text
@@ -166,11 +166,11 @@
   return v2;
 }
 
-- (void)setRange:(id)a3
+- (void)setRange:(id)range
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSSelectorList;
-  [(RWIProtocolJSONObject *)&v3 setObject:a3 forKey:@"range"];
+  [(RWIProtocolJSONObject *)&v3 setObject:range forKey:@"range"];
 }
 
 - (RWIProtocolCSSSourceRange)range

@@ -1,34 +1,34 @@
 @interface ActivityDataProvider
 - (_TtC10FitnessApp20ActivityDataProvider)init;
 - (void)dealloc;
-- (void)setHealthStore:(id)a3;
-- (void)setWorkoutDataProvider:(id)a3;
+- (void)setHealthStore:(id)store;
+- (void)setWorkoutDataProvider:(id)provider;
 - (void)updateWidgets;
-- (void)wheelchairUseCharacteristicCache:(id)a3 wheelchairUsageDidChange:(BOOL)a4;
+- (void)wheelchairUseCharacteristicCache:(id)cache wheelchairUsageDidChange:(BOOL)change;
 @end
 
 @implementation ActivityDataProvider
 
-- (void)setHealthStore:(id)a3
+- (void)setHealthStore:(id)store
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC10FitnessApp20ActivityDataProvider_healthStore);
-  *(&self->super.isa + OBJC_IVAR____TtC10FitnessApp20ActivityDataProvider_healthStore) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC10FitnessApp20ActivityDataProvider_healthStore) = store;
+  storeCopy = store;
 }
 
-- (void)setWorkoutDataProvider:(id)a3
+- (void)setWorkoutDataProvider:(id)provider
 {
   v4 = *(&self->super.isa + OBJC_IVAR____TtC10FitnessApp20ActivityDataProvider_workoutDataProvider);
-  *(&self->super.isa + OBJC_IVAR____TtC10FitnessApp20ActivityDataProvider_workoutDataProvider) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC10FitnessApp20ActivityDataProvider_workoutDataProvider) = provider;
+  providerCopy = provider;
 }
 
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC10FitnessApp20ActivityDataProvider_wheelchairCache);
-  v3 = self;
-  [v2 removeObserver:v3];
-  v4.receiver = v3;
+  selfCopy = self;
+  [v2 removeObserver:selfCopy];
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for ActivityDataProvider();
   [(ActivityDataProvider *)&v4 dealloc];
 }
@@ -47,11 +47,11 @@
   return result;
 }
 
-- (void)wheelchairUseCharacteristicCache:(id)a3 wheelchairUsageDidChange:(BOOL)a4
+- (void)wheelchairUseCharacteristicCache:(id)cache wheelchairUsageDidChange:(BOOL)change
 {
-  v6 = a3;
-  v7 = self;
-  sub_1001FBAF8(a4);
+  cacheCopy = cache;
+  selfCopy = self;
+  sub_1001FBAF8(change);
 }
 
 @end

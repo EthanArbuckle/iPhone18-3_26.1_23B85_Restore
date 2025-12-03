@@ -1,64 +1,64 @@
 @interface ICSPredefinedValue
-+ (id)numberWithLong:(int64_t)a3;
-- (ICSPredefinedValue)initWithBytes:(const void *)a3 objCType:(const char *)a4;
-- (ICSPredefinedValue)initWithCoder:(id)a3;
-- (ICSPredefinedValue)initWithLong:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)numberWithLong:(int64_t)long;
+- (ICSPredefinedValue)initWithBytes:(const void *)bytes objCType:(const char *)type;
+- (ICSPredefinedValue)initWithCoder:(id)coder;
+- (ICSPredefinedValue)initWithLong:(int64_t)long;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICSPredefinedValue
 
-+ (id)numberWithLong:(int64_t)a3
++ (id)numberWithLong:(int64_t)long
 {
-  v3 = [objc_allocWithZone(a1) initWithLong:a3];
+  v3 = [objc_allocWithZone(self) initWithLong:long];
 
   return v3;
 }
 
-- (ICSPredefinedValue)initWithLong:(int64_t)a3
+- (ICSPredefinedValue)initWithLong:(int64_t)long
 {
   v5.receiver = self;
   v5.super_class = ICSPredefinedValue;
   result = [(ICSPredefinedValue *)&v5 init];
   if (result)
   {
-    result->_value = a3;
+    result->_value = long;
   }
 
   return result;
 }
 
-- (ICSPredefinedValue)initWithBytes:(const void *)a3 objCType:(const char *)a4
+- (ICSPredefinedValue)initWithBytes:(const void *)bytes objCType:(const char *)type
 {
   v6.receiver = self;
   v6.super_class = ICSPredefinedValue;
-  result = [(ICSPredefinedValue *)&v6 init:a3];
+  result = [(ICSPredefinedValue *)&v6 init:bytes];
   if (result)
   {
-    result->_value = *a3;
+    result->_value = *bytes;
   }
 
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3 = MEMORY[0x277CCABB0];
   value = self->_value;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [v3 numberWithLong:value];
-  [v5 encodeObject:v6 forKey:@"EnumValue"];
+  [coderCopy encodeObject:v6 forKey:@"EnumValue"];
 }
 
-- (ICSPredefinedValue)initWithCoder:(id)a3
+- (ICSPredefinedValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = ICSPredefinedValue;
   v5 = [(ICSPredefinedValue *)&v8 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EnumValue"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EnumValue"];
     v5->_value = [v6 longValue];
   }
 

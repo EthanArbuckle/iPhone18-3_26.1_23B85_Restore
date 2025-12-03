@@ -1,37 +1,37 @@
 @interface _HMDLocalDeviceHandle
-+ (BOOL)isValidDestination:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (_HMDLocalDeviceHandle)initWithCoder:(id)a3;
-- (_HMDLocalDeviceHandle)initWithDestination:(id)a3;
-- (_HMDLocalDeviceHandle)initWithDeviceIdentifier:(id)a3;
++ (BOOL)isValidDestination:(id)destination;
+- (BOOL)isEqual:(id)equal;
+- (_HMDLocalDeviceHandle)initWithCoder:(id)coder;
+- (_HMDLocalDeviceHandle)initWithDestination:(id)destination;
+- (_HMDLocalDeviceHandle)initWithDeviceIdentifier:(id)identifier;
 - (id)description;
 - (id)destination;
 - (id)privateDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HMDLocalDeviceHandle
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = _HMDLocalDeviceHandle;
-  v4 = a3;
-  [(_HMDDeviceHandle *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(_HMDDeviceHandle *)&v6 encodeWithCoder:coderCopy];
   v5 = [(_HMDLocalDeviceHandle *)self deviceIdentifier:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"HM.deviceID"];
+  [coderCopy encodeObject:v5 forKey:@"HM.deviceID"];
 }
 
-- (_HMDLocalDeviceHandle)initWithCoder:(id)a3
+- (_HMDLocalDeviceHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = _HMDLocalDeviceHandle;
-  v5 = [(_HMDDeviceHandle *)&v9 initWithCoder:v4];
+  v5 = [(_HMDDeviceHandle *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HM.deviceID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HM.deviceID"];
     deviceIdentifier = v5->_deviceIdentifier;
     v5->_deviceIdentifier = v6;
   }
@@ -41,9 +41,9 @@
 
 - (id)destination
 {
-  v2 = [(_HMDLocalDeviceHandle *)self deviceIdentifier];
-  v3 = [v2 UUIDString];
-  v4 = [@"device:" stringByAppendingString:v3];
+  deviceIdentifier = [(_HMDLocalDeviceHandle *)self deviceIdentifier];
+  uUIDString = [deviceIdentifier UUIDString];
+  v4 = [@"device:" stringByAppendingString:uUIDString];
 
   return v4;
 }
@@ -59,16 +59,16 @@
 
 - (id)description
 {
-  v2 = [(_HMDLocalDeviceHandle *)self deviceIdentifier];
-  v3 = [v2 UUIDString];
+  deviceIdentifier = [(_HMDLocalDeviceHandle *)self deviceIdentifier];
+  uUIDString = [deviceIdentifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -78,7 +78,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -89,9 +89,9 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(_HMDLocalDeviceHandle *)self deviceIdentifier];
-      v8 = [(_HMDLocalDeviceHandle *)v6 deviceIdentifier];
-      v9 = [v7 hmf_isEqualToUUID:v8];
+      deviceIdentifier = [(_HMDLocalDeviceHandle *)self deviceIdentifier];
+      deviceIdentifier2 = [(_HMDLocalDeviceHandle *)v6 deviceIdentifier];
+      v9 = [deviceIdentifier hmf_isEqualToUUID:deviceIdentifier2];
     }
 
     else
@@ -105,20 +105,20 @@
 
 - (unint64_t)hash
 {
-  v2 = [(_HMDLocalDeviceHandle *)self deviceIdentifier];
-  v3 = [v2 hash];
+  deviceIdentifier = [(_HMDLocalDeviceHandle *)self deviceIdentifier];
+  v3 = [deviceIdentifier hash];
 
   return v3;
 }
 
-- (_HMDLocalDeviceHandle)initWithDestination:(id)a3
+- (_HMDLocalDeviceHandle)initWithDestination:(id)destination
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  destinationCopy = destination;
+  v5 = destinationCopy;
+  if (destinationCopy)
   {
     v25 = 0;
-    v6 = sub_100006D90(v4, &v25);
+    v6 = sub_100006D90(destinationCopy, &v25);
     v7 = v25;
     if (v6)
     {
@@ -137,15 +137,15 @@
         v12->_deviceIdentifier = v13;
       }
 
-      v15 = v12;
+      selfCopy2 = v12;
 
-      v16 = v15;
+      v16 = selfCopy2;
     }
 
     else
     {
       v20 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy2 = self;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
@@ -167,7 +167,7 @@
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy2 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -184,23 +184,23 @@
   return v16;
 }
 
-- (_HMDLocalDeviceHandle)initWithDeviceIdentifier:(id)a3
+- (_HMDLocalDeviceHandle)initWithDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy)
   {
-    v6 = [v4 UUIDString];
-    v7 = [@"device:" stringByAppendingString:v6];
+    uUIDString = [identifierCopy UUIDString];
+    v7 = [@"device:" stringByAppendingString:uUIDString];
 
-    v8 = [(_HMDLocalDeviceHandle *)self initWithDestination:v7];
-    v9 = v8;
+    selfCopy = [(_HMDLocalDeviceHandle *)self initWithDestination:v7];
+    v9 = selfCopy;
   }
 
   else
   {
     v10 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -217,9 +217,9 @@
   return v9;
 }
 
-+ (BOOL)isValidDestination:(id)a3
++ (BOOL)isValidDestination:(id)destination
 {
-  v3 = sub_100006D90(a3, 0);
+  v3 = sub_100006D90(destination, 0);
   v4 = v3 != 0;
 
   return v4;

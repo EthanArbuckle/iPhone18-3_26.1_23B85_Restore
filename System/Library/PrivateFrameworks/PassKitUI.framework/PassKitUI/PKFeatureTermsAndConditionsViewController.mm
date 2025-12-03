@@ -1,38 +1,38 @@
 @interface PKFeatureTermsAndConditionsViewController
-- (PKFeatureTermsAndConditionsViewController)initWithSetupDelegate:(id)a3 context:(int64_t)a4;
+- (PKFeatureTermsAndConditionsViewController)initWithSetupDelegate:(id)delegate context:(int64_t)context;
 - (PKPaymentSetupViewControllerDelegate)setupDelegate;
-- (id)_loadPDFViewControllerWithFileName:(id)a3;
-- (void)_handleWalletTermsLink:(id)a3 withCompletion:(id)a4;
+- (id)_loadPDFViewControllerWithFileName:(id)name;
+- (void)_handleWalletTermsLink:(id)link withCompletion:(id)completion;
 - (void)_loadHTML;
 - (void)_loadHTMLViewController;
 - (void)_loadPDF;
-- (void)_pk_dismissViewControllerWithTransition:(int)a3 completion:(id)a4;
+- (void)_pk_dismissViewControllerWithTransition:(int)transition completion:(id)completion;
 - (void)_renderTermsView;
-- (void)_showTermsSpinner:(BOOL)a3 objectModel:(id)a4;
-- (void)_updateTermsData:(id)a3 termsFileName:(id)a4;
-- (void)dismissViewControllerWithCompletion:(id)a3;
-- (void)loader:(id)a3 didFinishLoadWithError:(id)a4;
-- (void)popViewControllerWithCompletion:(id)a3;
-- (void)preflightWithCompletion:(id)a3;
-- (void)presentWithNavigationController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)previewControllerWillDismiss:(id)a3;
+- (void)_showTermsSpinner:(BOOL)spinner objectModel:(id)model;
+- (void)_updateTermsData:(id)data termsFileName:(id)name;
+- (void)dismissViewControllerWithCompletion:(id)completion;
+- (void)loader:(id)loader didFinishLoadWithError:(id)error;
+- (void)popViewControllerWithCompletion:(id)completion;
+- (void)preflightWithCompletion:(id)completion;
+- (void)presentWithNavigationController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)previewControllerWillDismiss:(id)dismiss;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation PKFeatureTermsAndConditionsViewController
 
-- (PKFeatureTermsAndConditionsViewController)initWithSetupDelegate:(id)a3 context:(int64_t)a4
+- (PKFeatureTermsAndConditionsViewController)initWithSetupDelegate:(id)delegate context:(int64_t)context
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = PKFeatureTermsAndConditionsViewController;
   v7 = [(PKFeatureTermsAndConditionsViewController *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    v7->_context = a4;
-    objc_storeWeak(&v7->_setupDelegate, v6);
+    v7->_context = context;
+    objc_storeWeak(&v7->_setupDelegate, delegateCopy);
     [(PKFeatureTermsAndConditionsViewController *)v8 setModalInPresentation:1];
     if ([(UIViewController *)v8 pkui_userInterfaceIdiomSupportsLargeLayouts])
     {
@@ -48,18 +48,18 @@
   v5.receiver = self;
   v5.super_class = PKFeatureTermsAndConditionsViewController;
   [(PKFeatureTermsAndConditionsViewController *)&v5 viewDidLoad];
-  v3 = [(PKFeatureTermsAndConditionsViewController *)self view];
+  view = [(PKFeatureTermsAndConditionsViewController *)self view];
   v4 = PKProvisioningBackgroundColor();
-  [v3 setBackgroundColor:v4];
+  [view setBackgroundColor:v4];
 
   PKPaymentSetupApplyContextAppearance(self->_context, self);
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = PKFeatureTermsAndConditionsViewController;
-  [(PKFeatureTermsAndConditionsViewController *)&v7 viewWillAppear:a3];
+  [(PKFeatureTermsAndConditionsViewController *)&v7 viewWillAppear:appear];
   if (!self->_performedInitialLoad)
   {
     self->_performedInitialLoad = 1;
@@ -94,16 +94,16 @@ void __60__PKFeatureTermsAndConditionsViewController_viewWillAppear___block_invo
   }
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __69__PKFeatureTermsAndConditionsViewController_preflightWithCompletion___block_invoke;
   v6[3] = &unk_1E8020B18;
   objc_copyWeak(&v8, &location);
-  v5 = v4;
+  v5 = completionCopy;
   v7 = v5;
   [(PKFeatureTermsAndConditionsViewController *)self initalTermsDataWithCompletion:v6];
 
@@ -148,52 +148,52 @@ void __69__PKFeatureTermsAndConditionsViewController_preflightWithCompletion___b
 LABEL_9:
 }
 
-- (void)_updateTermsData:(id)a3 termsFileName:(id)a4
+- (void)_updateTermsData:(id)data termsFileName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 hasPDFMIMEType];
+  dataCopy = data;
+  nameCopy = name;
+  hasPDFMIMEType = [dataCopy hasPDFMIMEType];
   v9 = 4;
-  if (v8)
+  if (hasPDFMIMEType)
   {
     v9 = 3;
   }
 
   v10 = OBJC_IVAR___PKFeatureTermsAndConditionsViewController__context[v9];
   v11 = *(&self->super.super.super.super.super.isa + v10);
-  *(&self->super.super.super.super.super.isa + v10) = v6;
-  v13 = v6;
+  *(&self->super.super.super.super.super.isa + v10) = dataCopy;
+  v13 = dataCopy;
 
   termsFileName = self->_termsFileName;
-  self->_termsFileName = v7;
+  self->_termsFileName = nameCopy;
 }
 
-- (void)presentWithNavigationController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentWithNavigationController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  if (v6)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  if (animatedCopy)
   {
     if (self->_useModalPresentation)
     {
-      v6 = 8;
+      animatedCopy = 8;
     }
 
     else
     {
-      v6 = 1;
+      animatedCopy = 1;
     }
   }
 
   containerNavigationController = self->_containerNavigationController;
-  self->_containerNavigationController = v8;
-  v10 = v8;
-  v11 = a5;
+  self->_containerNavigationController = controllerCopy;
+  v10 = controllerCopy;
+  completionCopy = completion;
 
-  [(UINavigationController *)v10 presentViewController:self withTransition:v6 completion:v11];
+  [(UINavigationController *)v10 presentViewController:self withTransition:animatedCopy completion:completionCopy];
 }
 
-- (void)dismissViewControllerWithCompletion:(id)a3
+- (void)dismissViewControllerWithCompletion:(id)completion
 {
   if (self->_useModalPresentation)
   {
@@ -205,10 +205,10 @@ LABEL_9:
     v4 = 1;
   }
 
-  [(PKFeatureTermsAndConditionsViewController *)self _pk_dismissViewControllerWithTransition:v4 completion:a3];
+  [(PKFeatureTermsAndConditionsViewController *)self _pk_dismissViewControllerWithTransition:v4 completion:completion];
 }
 
-- (void)popViewControllerWithCompletion:(id)a3
+- (void)popViewControllerWithCompletion:(id)completion
 {
   if (self->_useModalPresentation)
   {
@@ -220,16 +220,16 @@ LABEL_9:
     v4 = 2;
   }
 
-  [(PKFeatureTermsAndConditionsViewController *)self _pk_dismissViewControllerWithTransition:v4 completion:a3];
+  [(PKFeatureTermsAndConditionsViewController *)self _pk_dismissViewControllerWithTransition:v4 completion:completion];
 }
 
-- (void)_pk_dismissViewControllerWithTransition:(int)a3 completion:(id)a4
+- (void)_pk_dismissViewControllerWithTransition:(int)transition completion:(id)completion
 {
-  v4 = *&a3;
+  v4 = *&transition;
   termsUIController = self->_termsUIController;
-  v7 = a4;
+  completionCopy = completion;
   [(RemoteUIController *)termsUIController setDelegate:0];
-  [(PKFeatureTermsAndConditionsViewController *)self dismissViewControllerWithTransition:v4 completion:v7];
+  [(PKFeatureTermsAndConditionsViewController *)self dismissViewControllerWithTransition:v4 completion:completionCopy];
 }
 
 - (void)_renderTermsView
@@ -487,26 +487,26 @@ void __68__PKFeatureTermsAndConditionsViewController__loadHTMLViewController__bl
   }
 }
 
-- (void)_handleWalletTermsLink:(id)a3 withCompletion:(id)a4
+- (void)_handleWalletTermsLink:(id)link withCompletion:(id)completion
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  linkCopy = link;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v19 = v6;
+    v19 = linkCopy;
     _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "Wallet terms link detected with attributes: %@", buf, 0xCu);
   }
 
-  v9 = [v6 PKStringForKey:@"termsIdentifier"];
-  v10 = [v6 PKStringForKey:@"termsDataFormat"];
-  v11 = [v6 PKStringForKey:@"termsFileName"];
+  v9 = [linkCopy PKStringForKey:@"termsIdentifier"];
+  v10 = [linkCopy PKStringForKey:@"termsDataFormat"];
+  v11 = [linkCopy PKStringForKey:@"termsFileName"];
   v12 = v11;
   if (v9 && v10 && v11 && ([v10 isEqualToString:*MEMORY[0x1E69BC550]] & 1) != 0)
   {
-    [(PKFeatureTermsAndConditionsViewController *)self reportAnalyticsForTermsLink:v6];
+    [(PKFeatureTermsAndConditionsViewController *)self reportAnalyticsForTermsLink:linkCopy];
     objc_initWeak(buf, self);
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -514,8 +514,8 @@ void __68__PKFeatureTermsAndConditionsViewController__loadHTMLViewController__bl
     v13[3] = &unk_1E8020B90;
     objc_copyWeak(&v17, buf);
     v14 = v12;
-    v15 = self;
-    v16 = v7;
+    selfCopy = self;
+    v16 = completionCopy;
     [(PKFeatureTermsAndConditionsViewController *)self pdfTermsDataWithIdentifier:v9 completion:v13];
 
     objc_destroyWeak(&v17);
@@ -525,7 +525,7 @@ void __68__PKFeatureTermsAndConditionsViewController__loadHTMLViewController__bl
   else
   {
     [(PKFeatureTermsAndConditionsViewController *)self presentErrorAlert];
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -601,12 +601,12 @@ LABEL_10:
   }
 }
 
-- (id)_loadPDFViewControllerWithFileName:(id)a3
+- (id)_loadPDFViewControllerWithFileName:(id)name
 {
   v4 = *MEMORY[0x1E6982F10];
-  v5 = a3;
-  v6 = [v4 identifier];
-  v7 = [objc_alloc(_MergedGlobals_5_7()) initWithDataProvider:self contentType:v6 previewTitle:v5];
+  nameCopy = name;
+  identifier = [v4 identifier];
+  v7 = [objc_alloc(_MergedGlobals_5_7()) initWithDataProvider:self contentType:identifier previewTitle:nameCopy];
 
   pdfItem = self->_pdfItem;
   self->_pdfItem = v7;
@@ -624,29 +624,29 @@ LABEL_10:
   return v11;
 }
 
-- (void)_showTermsSpinner:(BOOL)a3 objectModel:(id)a4
+- (void)_showTermsSpinner:(BOOL)spinner objectModel:(id)model
 {
-  v4 = a3;
+  spinnerCopy = spinner;
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = v6;
-  if (v4)
+  modelCopy = model;
+  v7 = modelCopy;
+  if (spinnerCopy)
   {
-    v8 = [(PKFeatureTermsAndConditionsViewController *)self displayTitle];
-    [v7 startNavigationBarSpinnerWithTitle:v8];
+    displayTitle = [(PKFeatureTermsAndConditionsViewController *)self displayTitle];
+    [v7 startNavigationBarSpinnerWithTitle:displayTitle];
   }
 
   else
   {
-    [v6 stopNavigationBarSpinner];
+    [modelCopy stopNavigationBarSpinner];
   }
 
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v9 = [v7 allPages];
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  allPages = [v7 allPages];
+  v10 = [allPages countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v10)
   {
     v11 = v10;
@@ -657,39 +657,39 @@ LABEL_10:
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allPages);
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
-        v15 = [v14 rightToolbarItem];
-        [v15 setEnabled:!v4];
+        rightToolbarItem = [v14 rightToolbarItem];
+        [rightToolbarItem setEnabled:!spinnerCopy];
 
-        v16 = [v14 leftToolbarItem];
-        [v16 setEnabled:!v4];
+        leftToolbarItem = [v14 leftToolbarItem];
+        [leftToolbarItem setEnabled:!spinnerCopy];
 
-        v17 = [v14 middleToolbarItem];
-        [v17 setEnabled:!v4];
+        middleToolbarItem = [v14 middleToolbarItem];
+        [middleToolbarItem setEnabled:!spinnerCopy];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v11 = [allPages countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v11);
   }
 }
 
-- (void)loader:(id)a3 didFinishLoadWithError:(id)a4
+- (void)loader:(id)loader didFinishLoadWithError:(id)error
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  loaderCopy = loader;
+  errorCopy = error;
+  if (errorCopy)
   {
     v8 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = v7;
+      v10 = errorCopy;
       _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "Error loading terms: %{public}@", &v9, 0xCu);
     }
 
@@ -697,7 +697,7 @@ LABEL_10:
   }
 }
 
-- (void)previewControllerWillDismiss:(id)a3
+- (void)previewControllerWillDismiss:(id)dismiss
 {
   pdfData = self->_pdfData;
   self->_pdfData = 0;
@@ -705,8 +705,8 @@ LABEL_10:
   previewController = self->_previewController;
   self->_previewController = 0;
 
-  v6 = [(PKFeatureTermsAndConditionsViewController *)self presentingViewController];
-  [v6 dismissViewControllerAnimated:0 completion:0];
+  presentingViewController = [(PKFeatureTermsAndConditionsViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:0 completion:0];
 }
 
 - (PKPaymentSetupViewControllerDelegate)setupDelegate

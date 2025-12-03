@@ -1,25 +1,25 @@
 @interface PXPhotosDetailsLocationSearchUIFactory
-+ (id)searchViewControllerWithAssets:(id)a3 delegate:(id)a4;
-+ (id)searchViewControllerWithAssets:(id)a3 delegate:(id)a4 completion:(id)a5;
++ (id)searchViewControllerWithAssets:(id)assets delegate:(id)delegate;
++ (id)searchViewControllerWithAssets:(id)assets delegate:(id)delegate completion:(id)completion;
 @end
 
 @implementation PXPhotosDetailsLocationSearchUIFactory
 
-+ (id)searchViewControllerWithAssets:(id)a3 delegate:(id)a4 completion:(id)a5
++ (id)searchViewControllerWithAssets:(id)assets delegate:(id)delegate completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [NSClassFromString(&cfstr_Pxphotosdetail_35.isa) searchViewControllerWithAssets:v9 delegate:v8 completion:v7];
+  completionCopy = completion;
+  delegateCopy = delegate;
+  assetsCopy = assets;
+  v10 = [NSClassFromString(&cfstr_Pxphotosdetail_35.isa) searchViewControllerWithAssets:assetsCopy delegate:delegateCopy completion:completionCopy];
 
   return v10;
 }
 
-+ (id)searchViewControllerWithAssets:(id)a3 delegate:(id)a4
++ (id)searchViewControllerWithAssets:(id)assets delegate:(id)delegate
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [NSClassFromString(&cfstr_Pxphotosdetail_35.isa) searchViewControllerWithAssets:v6 delegate:v5];
+  delegateCopy = delegate;
+  assetsCopy = assets;
+  v7 = [NSClassFromString(&cfstr_Pxphotosdetail_35.isa) searchViewControllerWithAssets:assetsCopy delegate:delegateCopy];
 
   return v7;
 }

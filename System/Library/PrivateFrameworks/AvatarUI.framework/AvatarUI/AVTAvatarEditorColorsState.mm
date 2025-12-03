@@ -1,88 +1,88 @@
 @interface AVTAvatarEditorColorsState
-- (AVTAvatarEditorColorsState)initWithVariationStore:(id)a3;
-- (id)selectedColorForCategory:(int64_t)a3 destinationIndex:(int64_t)a4;
-- (id)selectedColorPresetForCategory:(int64_t)a3 destinationIndex:(int64_t)a4;
-- (id)storageForCategory:(int64_t)a3;
-- (void)setSelectedColorPreset:(id)a3 forCoreModelColor:(id)a4;
+- (AVTAvatarEditorColorsState)initWithVariationStore:(id)store;
+- (id)selectedColorForCategory:(int64_t)category destinationIndex:(int64_t)index;
+- (id)selectedColorPresetForCategory:(int64_t)category destinationIndex:(int64_t)index;
+- (id)storageForCategory:(int64_t)category;
+- (void)setSelectedColorPreset:(id)preset forCoreModelColor:(id)color;
 @end
 
 @implementation AVTAvatarEditorColorsState
 
-- (AVTAvatarEditorColorsState)initWithVariationStore:(id)a3
+- (AVTAvatarEditorColorsState)initWithVariationStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v11.receiver = self;
   v11.super_class = AVTAvatarEditorColorsState;
   v6 = [(AVTAvatarEditorColorsState *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_variationStore, a3);
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    objc_storeStrong(&v6->_variationStore, store);
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     colorStorage = v7->_colorStorage;
-    v7->_colorStorage = v8;
+    v7->_colorStorage = dictionary;
   }
 
   return v7;
 }
 
-- (id)selectedColorForCategory:(int64_t)a3 destinationIndex:(int64_t)a4
+- (id)selectedColorForCategory:(int64_t)category destinationIndex:(int64_t)index
 {
-  v6 = [(AVTAvatarEditorColorsState *)self colorStorage];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v8 = [v6 objectForKeyedSubscript:v7];
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  colorStorage = [(AVTAvatarEditorColorsState *)self colorStorage];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:category];
+  v8 = [colorStorage objectForKeyedSubscript:v7];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:index];
   v10 = [v8 objectForKeyedSubscript:v9];
 
   return v10;
 }
 
-- (id)selectedColorPresetForCategory:(int64_t)a3 destinationIndex:(int64_t)a4
+- (id)selectedColorPresetForCategory:(int64_t)category destinationIndex:(int64_t)index
 {
-  v5 = [(AVTAvatarEditorColorsState *)self selectedColorForCategory:a3 destinationIndex:a4];
-  v6 = [v5 baseColorPreset];
-  v7 = [(AVTAvatarEditorColorsState *)self variationStore];
+  v5 = [(AVTAvatarEditorColorsState *)self selectedColorForCategory:category destinationIndex:index];
+  baseColorPreset = [v5 baseColorPreset];
+  variationStore = [(AVTAvatarEditorColorsState *)self variationStore];
 
-  if (v7)
+  if (variationStore)
   {
-    v8 = [(AVTAvatarEditorColorsState *)self variationStore];
-    v9 = [v8 colorPresetFromColor:v5];
+    variationStore2 = [(AVTAvatarEditorColorsState *)self variationStore];
+    v9 = [variationStore2 colorPresetFromColor:v5];
 
-    v6 = v9;
+    baseColorPreset = v9;
   }
 
-  return v6;
+  return baseColorPreset;
 }
 
-- (void)setSelectedColorPreset:(id)a3 forCoreModelColor:(id)a4
+- (void)setSelectedColorPreset:(id)preset forCoreModelColor:(id)color
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AVTAvatarEditorColorsState *)self variationStore];
-  [v8 saveColorPreset:v7 forColor:v6];
+  colorCopy = color;
+  presetCopy = preset;
+  variationStore = [(AVTAvatarEditorColorsState *)self variationStore];
+  [variationStore saveColorPreset:presetCopy forColor:colorCopy];
 
-  v9 = [v6 baseColorPreset];
-  v11 = -[AVTAvatarEditorColorsState storageForCategory:](self, "storageForCategory:", [v9 category]);
+  baseColorPreset = [colorCopy baseColorPreset];
+  v11 = -[AVTAvatarEditorColorsState storageForCategory:](self, "storageForCategory:", [baseColorPreset category]);
 
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v6, "settingKind")}];
-  [v11 setObject:v6 forKeyedSubscript:v10];
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(colorCopy, "settingKind")}];
+  [v11 setObject:colorCopy forKeyedSubscript:v10];
 }
 
-- (id)storageForCategory:(int64_t)a3
+- (id)storageForCategory:(int64_t)category
 {
-  v5 = [(AVTAvatarEditorColorsState *)self colorStorage];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  colorStorage = [(AVTAvatarEditorColorsState *)self colorStorage];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:category];
+  dictionary = [colorStorage objectForKeyedSubscript:v6];
 
-  if (!v7)
+  if (!dictionary)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
-    v8 = [(AVTAvatarEditorColorsState *)self colorStorage];
-    v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    [v8 setObject:v7 forKeyedSubscript:v9];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    colorStorage2 = [(AVTAvatarEditorColorsState *)self colorStorage];
+    v9 = [MEMORY[0x1E696AD98] numberWithInteger:category];
+    [colorStorage2 setObject:dictionary forKeyedSubscript:v9];
   }
 
-  return v7;
+  return dictionary;
 }
 
 @end

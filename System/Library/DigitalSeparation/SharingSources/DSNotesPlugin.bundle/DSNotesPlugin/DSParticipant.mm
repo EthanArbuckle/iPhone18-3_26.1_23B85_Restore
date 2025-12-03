@@ -1,5 +1,5 @@
 @interface DSParticipant
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (DSIdentifiable)identity;
 - (_TtC13DSNotesPlugin13DSParticipant)init;
 - (int64_t)permission;
@@ -8,11 +8,11 @@
 
 @implementation DSParticipant
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_1143C();
     swift_unknownObjectRelease();
@@ -21,7 +21,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_10BF0(v8);
@@ -58,9 +58,9 @@
 
 - (DSIdentifiable)identity
 {
-  v2 = [*(&self->super.isa + OBJC_IVAR____TtC13DSNotesPlugin13DSParticipant_participant) userIdentity];
+  userIdentity = [*(&self->super.isa + OBJC_IVAR____TtC13DSNotesPlugin13DSParticipant_participant) userIdentity];
 
-  return v2;
+  return userIdentity;
 }
 
 - (_TtC13DSNotesPlugin13DSParticipant)init

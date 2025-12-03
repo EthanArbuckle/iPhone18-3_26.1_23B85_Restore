@@ -1,11 +1,11 @@
 @interface VSRecognitionResult
-+ (id)recognitionResultWithModelIdentifier:(id)a3 classIdentifiers:(id)a4 values:(id)a5;
++ (id)recognitionResultWithModelIdentifier:(id)identifier classIdentifiers:(id)identifiers values:(id)values;
 + (void)initialize;
-- (BOOL)getElementClassIdentifier:(id *)a3 value:(id *)a4 atIndex:(int64_t)a5;
+- (BOOL)getElementClassIdentifier:(id *)identifier value:(id *)value atIndex:(int64_t)index;
 - (id)createHandler;
 - (id)description;
-- (id)recognitionResultByReplacingValueForClassIdentifier:(id)a3 withValue:(id)a4;
-- (id)valueOfFirstElementWithClassIdentifier:(id)a3;
+- (id)recognitionResultByReplacingValueForClassIdentifier:(id)identifier withValue:(id)value;
+- (id)valueOfFirstElementWithClassIdentifier:(id)identifier;
 - (int64_t)elementCount;
 @end
 
@@ -68,12 +68,12 @@ LABEL_11:
   return v5;
 }
 
-- (id)valueOfFirstElementWithClassIdentifier:(id)a3
+- (id)valueOfFirstElementWithClassIdentifier:(id)identifier
 {
-  v5 = [(VSRecognitionResult *)self elementCount];
-  if (v5 >= 1)
+  elementCount = [(VSRecognitionResult *)self elementCount];
+  if (elementCount >= 1)
   {
-    v6 = v5;
+    v6 = elementCount;
     v10 = 0;
     v11 = 0;
     v7 = 1;
@@ -81,7 +81,7 @@ LABEL_11:
     {
       if ([(VSRecognitionResult *)self getElementClassIdentifier:&v11 value:&v10 atIndex:v7 - 1])
       {
-        if ([v11 isEqualToString:a3])
+        if ([v11 isEqualToString:identifier])
         {
           result = v10;
         }
@@ -112,17 +112,17 @@ LABEL_11:
   return 0;
 }
 
-- (BOOL)getElementClassIdentifier:(id *)a3 value:(id *)a4 atIndex:(int64_t)a5
+- (BOOL)getElementClassIdentifier:(id *)identifier value:(id *)value atIndex:(int64_t)index
 {
-  VSRecognitionResultGetPhraseAtIndex(self, a5, a3, a4);
-  if (a3 && !*a3)
+  VSRecognitionResultGetPhraseAtIndex(self, index, identifier, value);
+  if (identifier && !*identifier)
   {
     return 0;
   }
 
-  if (a4)
+  if (value)
   {
-    return *a4 != 0;
+    return *value != 0;
   }
 
   return 1;
@@ -139,11 +139,11 @@ LABEL_11:
   return result;
 }
 
-- (id)recognitionResultByReplacingValueForClassIdentifier:(id)a3 withValue:(id)a4
+- (id)recognitionResultByReplacingValueForClassIdentifier:(id)identifier withValue:(id)value
 {
   isa = self[2].super.isa;
   CFRetain(isa);
-  v21 = self;
+  selfCopy = self;
   v8 = self[3].super.isa;
   CFRetain(v8);
   v9 = [(objc_class *)isa count];
@@ -155,11 +155,11 @@ LABEL_11:
     v14 = 0;
     while (1)
     {
-      if ([-[objc_class objectAtIndex:](isa objectAtIndex:{v12), "isEqualToString:", a3}])
+      if ([-[objc_class objectAtIndex:](isa objectAtIndex:{v12), "isEqualToString:", identifier}])
       {
         if (v14)
         {
-          if (!a4)
+          if (!value)
           {
             goto LABEL_12;
           }
@@ -168,7 +168,7 @@ LABEL_11:
         else
         {
           v14 = [(objc_class *)v8 mutableCopy];
-          if (!a4)
+          if (!value)
           {
 LABEL_12:
             if (!v13)
@@ -182,7 +182,7 @@ LABEL_12:
           }
         }
 
-        [v14 replaceObjectAtIndex:v12 withObject:a4];
+        [v14 replaceObjectAtIndex:v12 withObject:value];
       }
 
 LABEL_15:
@@ -200,7 +200,7 @@ LABEL_16:
   if (v14)
   {
     v15 = objc_opt_class();
-    v16 = [(VSRecognitionResult *)v21 modelIdentifier];
+    modelIdentifier = [(VSRecognitionResult *)selfCopy modelIdentifier];
     if (v13)
     {
       v17 = v13;
@@ -211,29 +211,29 @@ LABEL_16:
       v17 = isa;
     }
 
-    v18 = [v15 recognitionResultWithModelIdentifier:v16 classIdentifiers:v17 values:v14];
+    v18 = [v15 recognitionResultWithModelIdentifier:modelIdentifier classIdentifiers:v17 values:v14];
 
     return v18;
   }
 
   else
   {
-    v20 = v21;
+    v20 = selfCopy;
 
     return v20;
   }
 }
 
-+ (id)recognitionResultWithModelIdentifier:(id)a3 classIdentifiers:(id)a4 values:(id)a5
++ (id)recognitionResultWithModelIdentifier:(id)identifier classIdentifiers:(id)identifiers values:(id)values
 {
-  v5 = VSRecognitionResultCreateWithHandlerInfo(*MEMORY[0x277CBECE8], a3, a4, a5, 0);
+  v5 = VSRecognitionResultCreateWithHandlerInfo(*MEMORY[0x277CBECE8], identifier, identifiers, values, 0);
 
   return v5;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     pthread_once(&VSRecognitionResultGetTypeID___VSRecognitionResultRegisterOnce, _VSRecognitionResultRegisterClass);

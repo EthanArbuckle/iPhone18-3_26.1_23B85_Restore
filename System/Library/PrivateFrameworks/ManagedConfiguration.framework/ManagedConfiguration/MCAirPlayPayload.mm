@@ -1,6 +1,6 @@
 @interface MCAirPlayPayload
 + (id)typeStrings;
-- (MCAirPlayPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5;
+- (MCAirPlayPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error;
 - (NSArray)titlesAndDescriptions;
 - (id)namesOrIdsForAllowedDestinations;
 - (id)payloadDescriptionKeyValueSections;
@@ -24,24 +24,24 @@
   return v2;
 }
 
-- (MCAirPlayPayload)initWithDictionary:(id)a3 profile:(id)a4 outError:(id *)a5
+- (MCAirPlayPayload)initWithDictionary:(id)dictionary profile:(id)profile outError:(id *)error
 {
   v129 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dictionaryCopy = dictionary;
+  profileCopy = profile;
   v120.receiver = self;
   v120.super_class = MCAirPlayPayload;
-  v10 = [(MCPayload *)&v120 initWithDictionary:v8 profile:v9 outError:a5];
+  v10 = [(MCPayload *)&v120 initWithDictionary:dictionaryCopy profile:profileCopy outError:error];
   if (!v10)
   {
     goto LABEL_91;
   }
 
   v119 = 0;
-  v11 = [MCProfile removeOptionalObjectInDictionary:v8 key:@"AllowList" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v119];
+  v11 = [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"AllowList" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v119];
   v12 = v119;
   v13 = &_MCLogObjects;
-  if (v12 || !v11 && (v118 = 0, [MCProfile removeOptionalObjectInDictionary:v8 key:@"Whitelist" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v118], v11 = objc_claimAutoreleasedReturnValue(), (v12 = v118) != 0))
+  if (v12 || !v11 && (v118 = 0, [MCProfile removeOptionalObjectInDictionary:dictionaryCopy key:@"Whitelist" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v118], v11 = objc_claimAutoreleasedReturnValue(), (v12 = v118) != 0))
   {
     v14 = v12;
     goto LABEL_82;
@@ -49,26 +49,26 @@
 
   v96 = v10;
   v97 = v11;
-  v95 = v9;
-  if (![v9 isStub])
+  v95 = profileCopy;
+  if (![profileCopy isStub])
   {
-    v34 = [MEMORY[0x1E69AD420] sharedConfiguration];
-    v35 = [v34 isSupervised];
+    mEMORY[0x1E69AD420] = [MEMORY[0x1E69AD420] sharedConfiguration];
+    isSupervised = [mEMORY[0x1E69AD420] isSupervised];
 
     v36 = 0x1E77CF000;
-    if (!v35)
+    if (!isSupervised)
     {
       goto LABEL_39;
     }
 
-    v93 = v8;
+    v93 = dictionaryCopy;
     v33 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v105 = 0u;
     v106 = 0u;
     v107 = 0u;
     v108 = 0u;
-    v37 = v97;
-    v38 = [v37 countByEnumeratingWithState:&v105 objects:v126 count:16];
+    array = v97;
+    v38 = [array countByEnumeratingWithState:&v105 objects:v126 count:16];
     if (!v38)
     {
       goto LABEL_38;
@@ -77,14 +77,14 @@
     v39 = v38;
     v40 = *v106;
     v41 = @"DeviceName";
-    v91 = a5;
+    errorCopy2 = error;
     while (1)
     {
       for (i = 0; i != v39; ++i)
       {
         if (*v106 != v40)
         {
-          objc_enumerationMutation(v37);
+          objc_enumerationMutation(array);
         }
 
         v43 = *(*(&v105 + 1) + 8 * i);
@@ -116,7 +116,7 @@ LABEL_71:
             v14 = [MCPayload badFieldValueErrorWithField:v41];
 
 LABEL_72:
-            v8 = v93;
+            dictionaryCopy = v93;
             v10 = v96;
             goto LABEL_78;
           }
@@ -138,8 +138,8 @@ LABEL_72:
 
           v46 = v13;
           v47 = objc_alloc_init(MCAirPlayDestination);
-          v48 = [v44 uppercaseString];
-          [(MCAirPlayDestination *)v47 setDeviceID:v48];
+          uppercaseString = [v44 uppercaseString];
+          [(MCAirPlayDestination *)v47 setDeviceID:uppercaseString];
         }
 
         [v33 addObject:v47];
@@ -150,18 +150,18 @@ LABEL_72:
 LABEL_36:
       }
 
-      v39 = [v37 countByEnumeratingWithState:&v105 objects:v126 count:16];
-      a5 = v91;
+      v39 = [array countByEnumeratingWithState:&v105 objects:v126 count:16];
+      error = errorCopy2;
       if (!v39)
       {
 LABEL_38:
 
         [(MCAirPlayPayload *)v96 setAllowListDestinations:v33];
-        v8 = v93;
+        dictionaryCopy = v93;
 LABEL_39:
         v49 = *(v36 + 1640);
         v104 = 0;
-        v33 = [v49 removeOptionalObjectInDictionary:v8 key:@"Passwords" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v104];
+        v33 = [v49 removeOptionalObjectInDictionary:dictionaryCopy key:@"Passwords" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v104];
         v50 = v104;
         if (v50)
         {
@@ -170,7 +170,7 @@ LABEL_39:
           goto LABEL_80;
         }
 
-        v37 = [MEMORY[0x1E695DF70] array];
+        array = [MEMORY[0x1E695DF70] array];
         v100 = 0u;
         v101 = 0u;
         v102 = 0u;
@@ -182,7 +182,7 @@ LABEL_39:
 LABEL_68:
 
           v10 = v96;
-          [(MCAirPlayPayload *)v96 setDestinationsWithPasswords:v37];
+          [(MCAirPlayPayload *)v96 setDestinationsWithPasswords:array];
           v14 = 0;
           v13 = &_MCLogObjects;
           goto LABEL_79;
@@ -193,8 +193,8 @@ LABEL_68:
         v60 = 0x1E695D000uLL;
         v61 = @"DeviceName";
         v62 = 0x1E696A000uLL;
-        v91 = a5;
-        v94 = v8;
+        errorCopy2 = error;
+        v94 = dictionaryCopy;
 LABEL_55:
         v63 = 0;
         v99 = v58;
@@ -243,7 +243,7 @@ LABEL_55:
             v74 = objc_alloc_init(MCAirPlayDestination);
             [(MCAirPlayDestination *)v74 setDeviceName:v66];
             [(MCAirPlayDestination *)v74 setPassword:v68];
-            [v37 addObject:v74];
+            [array addObject:v74];
 
             v60 = v73;
             v61 = v72;
@@ -255,8 +255,8 @@ LABEL_55:
           if (v58 == ++v63)
           {
             v58 = [v33 countByEnumeratingWithState:&v100 objects:v125 count:16];
-            a5 = v91;
-            v8 = v94;
+            error = errorCopy2;
+            dictionaryCopy = v94;
             if (!v58)
             {
               goto LABEL_68;
@@ -271,19 +271,19 @@ LABEL_55:
 LABEL_75:
 LABEL_77:
 
-        v8 = v94;
+        dictionaryCopy = v94;
         v10 = v96;
         v13 = &_MCLogObjects;
 LABEL_78:
-        a5 = v91;
+        error = errorCopy2;
         goto LABEL_79;
       }
     }
   }
 
-  v90 = a5;
-  v92 = v8;
-  v15 = [MEMORY[0x1E695DF70] array];
+  errorCopy3 = error;
+  v92 = dictionaryCopy;
+  array2 = [MEMORY[0x1E695DF70] array];
   v114 = 0u;
   v115 = 0u;
   v116 = 0u;
@@ -328,7 +328,7 @@ LABEL_78:
 
         [v24 uppercaseString];
         v27 = v19;
-        v28 = v15;
+        v28 = array2;
         v29 = v21;
         v30 = v20;
         v32 = v31 = v16;
@@ -339,12 +339,12 @@ LABEL_78:
         v16 = v31;
         v20 = v30;
         v21 = v29;
-        v15 = v28;
+        array2 = v28;
         v19 = v27;
         v18 = v98;
       }
 
-      [v15 addObject:v26];
+      [array2 addObject:v26];
 
 LABEL_16:
       ++v22;
@@ -358,20 +358,20 @@ LABEL_16:
 LABEL_18:
 
   v10 = v96;
-  [(MCAirPlayPayload *)v96 setAllowListDestinations:v15];
+  [(MCAirPlayPayload *)v96 setAllowListDestinations:array2];
 
   v113 = 0;
-  v8 = v92;
+  dictionaryCopy = v92;
   v33 = [MCProfile removeOptionalObjectInDictionary:v92 key:@"Passwords" type:objc_opt_class() errorDomain:@"MCPayloadErrorDomain" invalidDataCode:2003 invalidDataErrorString:@"ERROR_PAYLOAD_FIELD_INVALID_P_FIELD" outError:&v113];
   v14 = v113;
   if (v14)
   {
     v13 = &_MCLogObjects;
-    a5 = v90;
+    error = errorCopy3;
     goto LABEL_80;
   }
 
-  v37 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v109 = 0u;
   v110 = 0u;
   v111 = 0u;
@@ -396,7 +396,7 @@ LABEL_18:
         {
           v56 = objc_alloc_init(MCAirPlayDestination);
           [(MCAirPlayDestination *)v56 setDeviceName:v55];
-          [v37 addObject:v56];
+          [array addObject:v56];
         }
       }
 
@@ -407,9 +407,9 @@ LABEL_18:
   }
 
   v10 = v96;
-  [(MCAirPlayPayload *)v96 setDestinationsWithPasswords:v37];
-  a5 = v90;
-  v8 = v92;
+  [(MCAirPlayPayload *)v96 setDestinationsWithPasswords:array];
+  error = errorCopy3;
+  dictionaryCopy = v92;
   v13 = &_MCLogObjects;
   v14 = 0;
 LABEL_79:
@@ -417,15 +417,15 @@ LABEL_79:
 LABEL_80:
   if (v14)
   {
-    v9 = v95;
+    profileCopy = v95;
     v11 = v97;
 LABEL_82:
     v75 = [(MCPayload *)v10 malformedPayloadErrorWithError:v14];
     v76 = v75;
-    if (a5)
+    if (error)
     {
       v77 = v75;
-      *a5 = v76;
+      *error = v76;
     }
 
     v78 = *v13;
@@ -454,21 +454,21 @@ LABEL_82:
 
   else
   {
-    v9 = v95;
+    profileCopy = v95;
     v11 = v97;
   }
 
-  if ([v8 count])
+  if ([dictionaryCopy count])
   {
     v85 = *v13;
     if (os_log_type_enabled(*v13, OS_LOG_TYPE_INFO))
     {
       v86 = v85;
-      v87 = [(MCPayload *)v10 friendlyName];
+      friendlyName = [(MCPayload *)v10 friendlyName];
       *buf = 138543618;
-      v122 = v87;
+      v122 = friendlyName;
       v123 = 2114;
-      v124 = v8;
+      v124 = dictionaryCopy;
       _os_log_impl(&dword_1A795B000, v86, OS_LOG_TYPE_INFO, "Payload “%{public}@” contains ignored fields. They are: %{public}@", buf, 0x16u);
     }
   }
@@ -483,22 +483,22 @@ LABEL_91:
   v48 = *MEMORY[0x1E69E9840];
   v45.receiver = self;
   v45.super_class = MCAirPlayPayload;
-  v3 = [(MCPayload *)&v45 stubDictionary];
-  v4 = [(MCAirPlayPayload *)self allowListDestinations];
+  stubDictionary = [(MCPayload *)&v45 stubDictionary];
+  allowListDestinations = [(MCAirPlayPayload *)self allowListDestinations];
 
-  if (v4)
+  if (allowListDestinations)
   {
-    v36 = v3;
+    v36 = stubDictionary;
     v5 = MEMORY[0x1E695DF70];
-    v6 = [(MCAirPlayPayload *)self allowListDestinations];
-    v7 = [v5 arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    allowListDestinations2 = [(MCAirPlayPayload *)self allowListDestinations];
+    v7 = [v5 arrayWithCapacity:{objc_msgSend(allowListDestinations2, "count")}];
 
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v8 = [(MCAirPlayPayload *)self allowListDestinations];
-    v9 = [v8 countByEnumeratingWithState:&v41 objects:v47 count:16];
+    allowListDestinations3 = [(MCAirPlayPayload *)self allowListDestinations];
+    v9 = [allowListDestinations3 countByEnumeratingWithState:&v41 objects:v47 count:16];
     if (!v9)
     {
       goto LABEL_14;
@@ -512,48 +512,48 @@ LABEL_91:
       {
         if (*v42 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allowListDestinations3);
         }
 
         v13 = *(*(&v41 + 1) + 8 * i);
-        v14 = [v13 deviceName];
+        deviceName = [v13 deviceName];
 
-        if (v14)
+        if (deviceName)
         {
-          v15 = [MEMORY[0x1E695DF90] dictionary];
-          v16 = [v13 deviceName];
-          v17 = v15;
-          v18 = v16;
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
+          deviceName2 = [v13 deviceName];
+          v17 = dictionary;
+          v18 = deviceName2;
           v19 = @"DeviceName";
         }
 
         else
         {
-          v20 = [v13 deviceID];
+          deviceID = [v13 deviceID];
 
-          if (!v20)
+          if (!deviceID)
           {
             continue;
           }
 
-          v15 = [MEMORY[0x1E695DF90] dictionary];
-          v16 = [v13 deviceID];
-          v17 = v15;
-          v18 = v16;
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
+          deviceName2 = [v13 deviceID];
+          v17 = dictionary;
+          v18 = deviceName2;
           v19 = @"DeviceID";
         }
 
         [v17 setObject:v18 forKey:v19];
 
-        [v7 addObject:v15];
+        [v7 addObject:dictionary];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v41 objects:v47 count:16];
+      v10 = [allowListDestinations3 countByEnumeratingWithState:&v41 objects:v47 count:16];
       if (!v10)
       {
 LABEL_14:
 
-        v3 = v36;
+        stubDictionary = v36;
         [v36 setObject:v7 forKey:@"Whitelist"];
 
         break;
@@ -561,20 +561,20 @@ LABEL_14:
     }
   }
 
-  v21 = [(MCAirPlayPayload *)self destinationsWithPasswords];
+  destinationsWithPasswords = [(MCAirPlayPayload *)self destinationsWithPasswords];
 
-  if (v21)
+  if (destinationsWithPasswords)
   {
     v22 = MEMORY[0x1E695DF70];
-    v23 = [(MCAirPlayPayload *)self destinationsWithPasswords];
-    v24 = [v22 arrayWithCapacity:{objc_msgSend(v23, "count")}];
+    destinationsWithPasswords2 = [(MCAirPlayPayload *)self destinationsWithPasswords];
+    v24 = [v22 arrayWithCapacity:{objc_msgSend(destinationsWithPasswords2, "count")}];
 
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v25 = [(MCAirPlayPayload *)self destinationsWithPasswords];
-    v26 = [v25 countByEnumeratingWithState:&v37 objects:v46 count:16];
+    destinationsWithPasswords3 = [(MCAirPlayPayload *)self destinationsWithPasswords];
+    v26 = [destinationsWithPasswords3 countByEnumeratingWithState:&v37 objects:v46 count:16];
     if (v26)
     {
       v27 = v26;
@@ -585,52 +585,52 @@ LABEL_14:
         {
           if (*v38 != v28)
           {
-            objc_enumerationMutation(v25);
+            objc_enumerationMutation(destinationsWithPasswords3);
           }
 
           v30 = *(*(&v37 + 1) + 8 * j);
-          v31 = [v30 deviceName];
+          deviceName3 = [v30 deviceName];
 
-          if (v31)
+          if (deviceName3)
           {
-            v32 = [MEMORY[0x1E695DF90] dictionary];
-            v33 = [v30 deviceName];
-            [v32 setObject:v33 forKey:@"DeviceName"];
+            dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+            deviceName4 = [v30 deviceName];
+            [dictionary2 setObject:deviceName4 forKey:@"DeviceName"];
 
-            [v24 addObject:v32];
+            [v24 addObject:dictionary2];
           }
         }
 
-        v27 = [v25 countByEnumeratingWithState:&v37 objects:v46 count:16];
+        v27 = [destinationsWithPasswords3 countByEnumeratingWithState:&v37 objects:v46 count:16];
       }
 
       while (v27);
     }
 
-    [v3 setObject:v24 forKey:@"Passwords"];
+    [stubDictionary setObject:v24 forKey:@"Passwords"];
   }
 
   v34 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return stubDictionary;
 }
 
 - (id)namesOrIdsForAllowedDestinations
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [MEMORY[0x1E695DF70] array];
-  [v3 setObject:v4 forKeyedSubscript:@"DeviceNames"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  array = [MEMORY[0x1E695DF70] array];
+  [dictionary setObject:array forKeyedSubscript:@"DeviceNames"];
 
-  v5 = [MEMORY[0x1E695DF70] array];
-  [v3 setObject:v5 forKeyedSubscript:@"DeviceIDs"];
+  array2 = [MEMORY[0x1E695DF70] array];
+  [dictionary setObject:array2 forKeyedSubscript:@"DeviceIDs"];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = [(MCAirPlayPayload *)self allowListDestinations];
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  allowListDestinations = [(MCAirPlayPayload *)self allowListDestinations];
+  v7 = [allowListDestinations countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -641,28 +641,28 @@ LABEL_14:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allowListDestinations);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [v11 deviceName];
+        deviceName = [v11 deviceName];
 
-        if (v12)
+        if (deviceName)
         {
-          v13 = [v3 objectForKeyedSubscript:@"DeviceNames"];
+          v13 = [dictionary objectForKeyedSubscript:@"DeviceNames"];
           [v11 deviceName];
         }
 
         else
         {
-          v13 = [v3 objectForKeyedSubscript:@"DeviceIDs"];
+          v13 = [dictionary objectForKeyedSubscript:@"DeviceIDs"];
           [v11 deviceID];
         }
         v14 = ;
         [v13 addObject:v14];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [allowListDestinations countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v8);
@@ -670,7 +670,7 @@ LABEL_14:
 
   v15 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (NSArray)titlesAndDescriptions
@@ -680,8 +680,8 @@ LABEL_14:
   if (!titlesAndDescriptions)
   {
     v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
-    v5 = [(MCAirPlayPayload *)self allowListDestinations];
-    v6 = [v5 count];
+    allowListDestinations = [(MCAirPlayPayload *)self allowListDestinations];
+    v6 = [allowListDestinations count];
 
     if (v6)
     {
@@ -689,16 +689,16 @@ LABEL_14:
       v7 = MCLocalizedString(@"AIRPLAY_ALLOW_LIST_TITLE_COLON");
       v38[1] = @"d";
       v39[0] = v7;
-      v8 = [(MCAirPlayPayload *)self allowListDestinations];
-      v9 = [v8 count];
+      allowListDestinations2 = [(MCAirPlayPayload *)self allowListDestinations];
+      v9 = [allowListDestinations2 count];
       v17 = MCLocalizedFormat(@"AIRPLAY_DESTINATION_COUNT", v10, v11, v12, v13, v14, v15, v16, v9);
       v39[1] = v17;
       v18 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v39 forKeys:v38 count:2];
       [(NSArray *)v4 addObject:v18];
     }
 
-    v19 = [(MCAirPlayPayload *)self destinationsWithPasswords];
-    v20 = [v19 count];
+    destinationsWithPasswords = [(MCAirPlayPayload *)self destinationsWithPasswords];
+    v20 = [destinationsWithPasswords count];
 
     if (v20)
     {
@@ -706,8 +706,8 @@ LABEL_14:
       v21 = MCLocalizedString(@"AIRPLAY_PASSWORD_TITLE_COLON");
       v36[1] = @"d";
       v37[0] = v21;
-      v22 = [(MCAirPlayPayload *)self destinationsWithPasswords];
-      v23 = [v22 count];
+      destinationsWithPasswords2 = [(MCAirPlayPayload *)self destinationsWithPasswords];
+      v23 = [destinationsWithPasswords2 count];
       v31 = MCLocalizedFormat(@"AIRPLAY_DESTINATION_COUNT", v24, v25, v26, v27, v28, v29, v30, v23);
       v37[1] = v31;
       v32 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v37 forKeys:v36 count:2];
@@ -727,13 +727,13 @@ LABEL_14:
 
 - (id)subtitle1Label
 {
-  v3 = [(MCAirPlayPayload *)self titlesAndDescriptions];
-  v4 = [v3 count];
+  titlesAndDescriptions = [(MCAirPlayPayload *)self titlesAndDescriptions];
+  v4 = [titlesAndDescriptions count];
 
   if (v4)
   {
-    v5 = [(MCAirPlayPayload *)self titlesAndDescriptions];
-    v6 = [v5 objectAtIndex:0];
+    titlesAndDescriptions2 = [(MCAirPlayPayload *)self titlesAndDescriptions];
+    v6 = [titlesAndDescriptions2 objectAtIndex:0];
     v7 = [v6 objectForKey:@"t"];
   }
 
@@ -747,13 +747,13 @@ LABEL_14:
 
 - (id)subtitle1Description
 {
-  v3 = [(MCAirPlayPayload *)self titlesAndDescriptions];
-  v4 = [v3 count];
+  titlesAndDescriptions = [(MCAirPlayPayload *)self titlesAndDescriptions];
+  v4 = [titlesAndDescriptions count];
 
   if (v4)
   {
-    v5 = [(MCAirPlayPayload *)self titlesAndDescriptions];
-    v6 = [v5 objectAtIndex:0];
+    titlesAndDescriptions2 = [(MCAirPlayPayload *)self titlesAndDescriptions];
+    v6 = [titlesAndDescriptions2 objectAtIndex:0];
     v7 = [v6 objectForKey:@"d"];
   }
 
@@ -767,8 +767,8 @@ LABEL_14:
 
 - (id)subtitle2Label
 {
-  v3 = [(MCAirPlayPayload *)self titlesAndDescriptions];
-  v4 = [v3 count];
+  titlesAndDescriptions = [(MCAirPlayPayload *)self titlesAndDescriptions];
+  v4 = [titlesAndDescriptions count];
 
   if (v4 < 2)
   {
@@ -777,8 +777,8 @@ LABEL_14:
 
   else
   {
-    v5 = [(MCAirPlayPayload *)self titlesAndDescriptions];
-    v6 = [v5 objectAtIndex:1];
+    titlesAndDescriptions2 = [(MCAirPlayPayload *)self titlesAndDescriptions];
+    v6 = [titlesAndDescriptions2 objectAtIndex:1];
     v7 = [v6 objectForKey:@"t"];
   }
 
@@ -787,8 +787,8 @@ LABEL_14:
 
 - (id)subtitle2Description
 {
-  v3 = [(MCAirPlayPayload *)self titlesAndDescriptions];
-  v4 = [v3 count];
+  titlesAndDescriptions = [(MCAirPlayPayload *)self titlesAndDescriptions];
+  v4 = [titlesAndDescriptions count];
 
   if (v4 < 2)
   {
@@ -797,8 +797,8 @@ LABEL_14:
 
   else
   {
-    v5 = [(MCAirPlayPayload *)self titlesAndDescriptions];
-    v6 = [v5 objectAtIndex:1];
+    titlesAndDescriptions2 = [(MCAirPlayPayload *)self titlesAndDescriptions];
+    v6 = [titlesAndDescriptions2 objectAtIndex:1];
     v7 = [v6 objectForKey:@"d"];
   }
 
@@ -809,26 +809,26 @@ LABEL_14:
 {
   v52 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [(MCAirPlayPayload *)self allowListDestinations];
-  v5 = [v4 count];
+  allowListDestinations = [(MCAirPlayPayload *)self allowListDestinations];
+  v5 = [allowListDestinations count];
 
   v6 = 0x1E77CF000;
   if (v5)
   {
     v7 = MEMORY[0x1E695DF70];
-    v8 = [(MCAirPlayPayload *)self allowListDestinations];
-    v9 = [v7 arrayWithCapacity:{objc_msgSend(v8, "count")}];
+    allowListDestinations2 = [(MCAirPlayPayload *)self allowListDestinations];
+    v9 = [v7 arrayWithCapacity:{objc_msgSend(allowListDestinations2, "count")}];
 
     v10 = MEMORY[0x1E695DF70];
-    v11 = [(MCAirPlayPayload *)self allowListDestinations];
-    v12 = [v10 arrayWithCapacity:{objc_msgSend(v11, "count")}];
+    allowListDestinations3 = [(MCAirPlayPayload *)self allowListDestinations];
+    v12 = [v10 arrayWithCapacity:{objc_msgSend(allowListDestinations3, "count")}];
 
     v48 = 0u;
     v49 = 0u;
     v46 = 0u;
     v47 = 0u;
-    v13 = [(MCAirPlayPayload *)self allowListDestinations];
-    v14 = [v13 countByEnumeratingWithState:&v46 objects:v51 count:16];
+    allowListDestinations4 = [(MCAirPlayPayload *)self allowListDestinations];
+    v14 = [allowListDestinations4 countByEnumeratingWithState:&v46 objects:v51 count:16];
     if (v14)
     {
       v15 = v14;
@@ -839,28 +839,28 @@ LABEL_14:
         {
           if (*v47 != v16)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(allowListDestinations4);
           }
 
           v18 = *(*(&v46 + 1) + 8 * i);
-          v19 = [v18 deviceName];
+          deviceName = [v18 deviceName];
 
-          if (v19)
+          if (deviceName)
           {
-            v20 = [v18 deviceName];
+            deviceName2 = [v18 deviceName];
             v21 = v9;
           }
 
           else
           {
-            v20 = [v18 deviceID];
+            deviceName2 = [v18 deviceID];
             v21 = v12;
           }
 
-          [v21 addObject:v20];
+          [v21 addObject:deviceName2];
         }
 
-        v15 = [v13 countByEnumeratingWithState:&v46 objects:v51 count:16];
+        v15 = [allowListDestinations4 countByEnumeratingWithState:&v46 objects:v51 count:16];
       }
 
       while (v15);
@@ -884,21 +884,21 @@ LABEL_14:
     }
   }
 
-  v26 = [(MCAirPlayPayload *)self destinationsWithPasswords];
-  v27 = [v26 count];
+  destinationsWithPasswords = [(MCAirPlayPayload *)self destinationsWithPasswords];
+  v27 = [destinationsWithPasswords count];
 
   if (v27)
   {
     v28 = MEMORY[0x1E695DF70];
-    v29 = [(MCAirPlayPayload *)self destinationsWithPasswords];
-    v30 = [v28 arrayWithCapacity:{objc_msgSend(v29, "count")}];
+    destinationsWithPasswords2 = [(MCAirPlayPayload *)self destinationsWithPasswords];
+    v30 = [v28 arrayWithCapacity:{objc_msgSend(destinationsWithPasswords2, "count")}];
 
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v31 = [(MCAirPlayPayload *)self destinationsWithPasswords];
-    v32 = [v31 countByEnumeratingWithState:&v42 objects:v50 count:16];
+    destinationsWithPasswords3 = [(MCAirPlayPayload *)self destinationsWithPasswords];
+    v32 = [destinationsWithPasswords3 countByEnumeratingWithState:&v42 objects:v50 count:16];
     if (v32)
     {
       v33 = v32;
@@ -909,14 +909,14 @@ LABEL_14:
         {
           if (*v43 != v34)
           {
-            objc_enumerationMutation(v31);
+            objc_enumerationMutation(destinationsWithPasswords3);
           }
 
-          v36 = [*(*(&v42 + 1) + 8 * j) deviceName];
-          [v30 addObject:v36];
+          deviceName3 = [*(*(&v42 + 1) + 8 * j) deviceName];
+          [v30 addObject:deviceName3];
         }
 
-        v33 = [v31 countByEnumeratingWithState:&v42 objects:v50 count:16];
+        v33 = [destinationsWithPasswords3 countByEnumeratingWithState:&v42 objects:v50 count:16];
       }
 
       while (v33);
@@ -946,18 +946,18 @@ LABEL_14:
   v3 = MEMORY[0x1E696AD60];
   v32.receiver = self;
   v32.super_class = MCAirPlayPayload;
-  v4 = [(MCPayload *)&v32 verboseDescription];
-  v5 = [v3 stringWithString:v4];
+  verboseDescription = [(MCPayload *)&v32 verboseDescription];
+  v5 = [v3 stringWithString:verboseDescription];
 
-  v6 = [(MCAirPlayPayload *)self allowListDestinations];
-  [v5 appendFormat:@"Allow List   : %d entries\n", objc_msgSend(v6, "count")];
+  allowListDestinations = [(MCAirPlayPayload *)self allowListDestinations];
+  [v5 appendFormat:@"Allow List   : %d entries\n", objc_msgSend(allowListDestinations, "count")];
 
   v30 = 0u;
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = [(MCAirPlayPayload *)self allowListDestinations];
-  v8 = [v7 countByEnumeratingWithState:&v28 objects:v34 count:16];
+  allowListDestinations2 = [(MCAirPlayPayload *)self allowListDestinations];
+  v8 = [allowListDestinations2 countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v8)
   {
     v9 = v8;
@@ -968,40 +968,40 @@ LABEL_14:
       {
         if (*v29 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allowListDestinations2);
         }
 
         v12 = *(*(&v28 + 1) + 8 * i);
-        v13 = [v12 deviceName];
+        deviceName = [v12 deviceName];
 
-        if (v13)
+        if (deviceName)
         {
-          v14 = [v12 deviceName];
-          [v5 appendFormat:@"             %@\n", v14];
+          deviceName2 = [v12 deviceName];
+          [v5 appendFormat:@"             %@\n", deviceName2];
         }
 
         else
         {
-          v14 = [v12 deviceID];
-          [v5 appendFormat:@"              %@\n", v14];
+          deviceName2 = [v12 deviceID];
+          [v5 appendFormat:@"              %@\n", deviceName2];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v28 objects:v34 count:16];
+      v9 = [allowListDestinations2 countByEnumeratingWithState:&v28 objects:v34 count:16];
     }
 
     while (v9);
   }
 
-  v15 = [(MCAirPlayPayload *)self destinationsWithPasswords];
-  [v5 appendFormat:@"Passwords   : %d entries\n", objc_msgSend(v15, "count")];
+  destinationsWithPasswords = [(MCAirPlayPayload *)self destinationsWithPasswords];
+  [v5 appendFormat:@"Passwords   : %d entries\n", objc_msgSend(destinationsWithPasswords, "count")];
 
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v16 = [(MCAirPlayPayload *)self destinationsWithPasswords];
-  v17 = [v16 countByEnumeratingWithState:&v24 objects:v33 count:16];
+  destinationsWithPasswords2 = [(MCAirPlayPayload *)self destinationsWithPasswords];
+  v17 = [destinationsWithPasswords2 countByEnumeratingWithState:&v24 objects:v33 count:16];
   if (v17)
   {
     v18 = v17;
@@ -1012,14 +1012,14 @@ LABEL_14:
       {
         if (*v25 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(destinationsWithPasswords2);
         }
 
-        v21 = [*(*(&v24 + 1) + 8 * j) deviceName];
-        [v5 appendFormat:@"              %@\n", v21];
+        deviceName3 = [*(*(&v24 + 1) + 8 * j) deviceName];
+        [v5 appendFormat:@"              %@\n", deviceName3];
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v24 objects:v33 count:16];
+      v18 = [destinationsWithPasswords2 countByEnumeratingWithState:&v24 objects:v33 count:16];
     }
 
     while (v18);

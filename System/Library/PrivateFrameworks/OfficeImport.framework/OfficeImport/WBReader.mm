@@ -1,79 +1,79 @@
 @interface WBReader
 - (BOOL)start;
 - (OCCEncryptionInfoReader)encryptionInfoReader;
-- (WBReader)initWithCancelDelegate:(id)a3;
-- (WBTextBoxReaderInfo)textBoxInfoAtIndex:(unint64_t)a3;
+- (WBReader)initWithCancelDelegate:(id)delegate;
+- (WBTextBoxReaderInfo)textBoxInfoAtIndex:(unint64_t)index;
 - (WDDocument)targetDocument;
-- (id)annotationRangeStartForBookmarkIndex:(unint64_t)a3;
-- (id)fontAtIndex:(int)a3;
+- (id)annotationRangeStartForBookmarkIndex:(unint64_t)index;
+- (id)fontAtIndex:(int)index;
 - (id)read;
-- (id)readCharactersFrom:(unsigned int)a3 to:(unsigned int)a4 textType:(int)a5;
-- (id)styleAtIndex:(int)a3;
-- (id)styleAtIndex:(int)a3 expectedType:(int)a4;
-- (void)addFont:(id)a3 index:(int)a4;
-- (void)addStyle:(id)a3 index:(int)a4;
-- (void)cacheTextBox:(id)a3 withChainIndex:(unsigned __int16)a4;
+- (id)readCharactersFrom:(unsigned int)from to:(unsigned int)to textType:(int)type;
+- (id)styleAtIndex:(int)index;
+- (id)styleAtIndex:(int)index expectedType:(int)type;
+- (void)addFont:(id)font index:(int)index;
+- (void)addStyle:(id)style index:(int)index;
+- (void)cacheTextBox:(id)box withChainIndex:(unsigned __int16)index;
 - (void)dealloc;
-- (void)setAnnotationRangeStart:(id)a3 forBookmarkIndex:(unint64_t)a4;
-- (void)setLastRowParagraphProperties:(void *)a3;
+- (void)setAnnotationRangeStart:(id)start forBookmarkIndex:(unint64_t)index;
+- (void)setLastRowParagraphProperties:(void *)properties;
 @end
 
 @implementation WBReader
 
 - (BOOL)start
 {
-  v3 = [(WBReader *)self wrdReader];
-  v4 = [(WBReader *)self wrdReader];
-  if (v4)
+  wrdReader = [(WBReader *)self wrdReader];
+  wrdReader2 = [(WBReader *)self wrdReader];
+  if (wrdReader2)
   {
-    v5 = [(OCDReader *)self fileName];
+    fileName = [(OCDReader *)self fileName];
 
-    if (v5)
+    if (fileName)
     {
-      v6 = [(OCDReader *)self fileName];
-      v7 = fopen([v6 UTF8String], "rb");
+      fileName2 = [(OCDReader *)self fileName];
+      v7 = fopen([fileName2 UTF8String], "rb");
 
       if (v7)
       {
         [(OCBReader *)self setFile:v7];
-        (*(*v3 + 16))(v3, [(OCBReader *)self file]);
+        (*(*wrdReader + 16))(wrdReader, [(OCBReader *)self file]);
 LABEL_7:
-        LOBYTE(v4) = 1;
-        return v4;
+        LOBYTE(wrdReader2) = 1;
+        return wrdReader2;
       }
 
       v12 = TCUnknownProblemMessage;
-      v13 = [(OCDReader *)self fileName];
-      [TCMessageException raise:v12, v13];
+      fileName3 = [(OCDReader *)self fileName];
+      [TCMessageException raise:v12, fileName3];
     }
 
     else
     {
-      v8 = [(OCDReader *)self data];
+      data = [(OCDReader *)self data];
 
-      if (v8)
+      if (data)
       {
-        v9 = [(OCDReader *)self data];
-        v10 = [v9 bytes];
-        v11 = [(OCDReader *)self data];
-        (*(*v3 + 120))(v3, v10, [v11 length]);
+        data2 = [(OCDReader *)self data];
+        bytes = [data2 bytes];
+        data3 = [(OCDReader *)self data];
+        (*(*wrdReader + 120))(wrdReader, bytes, [data3 length]);
 
         goto LABEL_7;
       }
     }
 
-    LOBYTE(v4) = 0;
+    LOBYTE(wrdReader2) = 0;
   }
 
-  return v4;
+  return wrdReader2;
 }
 
 - (OCCEncryptionInfoReader)encryptionInfoReader
 {
-  v2 = [(WBReader *)self wrdReader];
-  if (v2)
+  wrdReader = [(WBReader *)self wrdReader];
+  if (wrdReader)
   {
-    return v2 + 3;
+    return wrdReader + 3;
   }
 
   else
@@ -96,10 +96,10 @@ LABEL_7:
 
 - (void)dealloc
 {
-  v3 = [(WBReader *)self wrdReader];
-  if (v3)
+  wrdReader = [(WBReader *)self wrdReader];
+  if (wrdReader)
   {
-    (*(*v3 + 24))(v3);
+    (*(*wrdReader + 24))(wrdReader);
   }
 
   mFootnoteTable = self->mFootnoteTable;
@@ -203,12 +203,12 @@ LABEL_7:
   return WeakRetained;
 }
 
-- (WBReader)initWithCancelDelegate:(id)a3
+- (WBReader)initWithCancelDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v6.receiver = self;
   v6.super_class = WBReader;
-  if ([(OCBReader *)&v6 initWithCancelDelegate:v4])
+  if ([(OCBReader *)&v6 initWithCancelDelegate:delegateCopy])
   {
     operator new();
   }
@@ -216,30 +216,30 @@ LABEL_7:
   return 0;
 }
 
-- (id)readCharactersFrom:(unsigned int)a3 to:(unsigned int)a4 textType:(int)a5
+- (id)readCharactersFrom:(unsigned int)from to:(unsigned int)to textType:(int)type
 {
-  v9 = [MEMORY[0x277CCAB68] string];
-  while (a3 < a4)
+  string = [MEMORY[0x277CCAB68] string];
+  while (from < to)
   {
-    WrdText::WrdText(&v13, a5, a3, a4 - a3);
-    v10 = [(WBReader *)self wrdReader];
-    (*(*v10 + 176))(v10, &v13);
+    WrdText::WrdText(&v13, type, from, to - from);
+    wrdReader = [(WBReader *)self wrdReader];
+    (*(*wrdReader + 176))(wrdReader, &v13);
     v11 = [objc_alloc(MEMORY[0x277CCACA8]) initWithOcText:&v14];
     if (v11)
     {
-      [v9 appendString:v11];
+      [string appendString:v11];
     }
 
-    a3 += v14.var3;
+    from += v14.var3;
 
     v13 = &unk_286ED5AE0;
     OcText::~OcText(&v14);
   }
 
-  return v9;
+  return string;
 }
 
-- (void)setLastRowParagraphProperties:(void *)a3
+- (void)setLastRowParagraphProperties:(void *)properties
 {
   mLastRowParagraphProperties = self->mLastRowParagraphProperties;
   if (mLastRowParagraphProperties)
@@ -247,23 +247,23 @@ LABEL_7:
     (*(*mLastRowParagraphProperties + 8))(mLastRowParagraphProperties, a2);
   }
 
-  self->mLastRowParagraphProperties = a3;
+  self->mLastRowParagraphProperties = properties;
 }
 
-- (id)styleAtIndex:(int)a3
+- (id)styleAtIndex:(int)index
 {
   mIndexToStyles = self->mIndexToStyles;
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:*&a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInt:*&index];
   v5 = [(OITSUNoCopyDictionary *)mIndexToStyles objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (id)styleAtIndex:(int)a3 expectedType:(int)a4
+- (id)styleAtIndex:(int)index expectedType:(int)type
 {
-  v5 = [(WBReader *)self styleAtIndex:*&a3];
+  v5 = [(WBReader *)self styleAtIndex:*&index];
   v6 = v5;
-  if (v5 && [v5 type] != a4)
+  if (v5 && [v5 type] != type)
   {
 
     v6 = 0;
@@ -272,52 +272,52 @@ LABEL_7:
   return v6;
 }
 
-- (void)addStyle:(id)a3 index:(int)a4
+- (void)addStyle:(id)style index:(int)index
 {
-  v4 = *&a4;
-  v8 = a3;
+  v4 = *&index;
+  styleCopy = style;
   mIndexToStyles = self->mIndexToStyles;
   v7 = [MEMORY[0x277CCABB0] numberWithInt:v4];
-  [(OITSUNoCopyDictionary *)mIndexToStyles setObject:v8 forKey:v7];
+  [(OITSUNoCopyDictionary *)mIndexToStyles setObject:styleCopy forKey:v7];
 }
 
-- (id)fontAtIndex:(int)a3
+- (id)fontAtIndex:(int)index
 {
   mIndexToFonts = self->mIndexToFonts;
-  v4 = [MEMORY[0x277CCABB0] numberWithInt:*&a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInt:*&index];
   v5 = [(OITSUNoCopyDictionary *)mIndexToFonts objectForKey:v4];
 
   return v5;
 }
 
-- (void)addFont:(id)a3 index:(int)a4
+- (void)addFont:(id)font index:(int)index
 {
-  v4 = *&a4;
-  v6 = a3;
-  if (v6)
+  v4 = *&index;
+  fontCopy = font;
+  if (fontCopy)
   {
-    v9 = v6;
+    v9 = fontCopy;
     mIndexToFonts = self->mIndexToFonts;
     v8 = [MEMORY[0x277CCABB0] numberWithInt:v4];
     [(OITSUNoCopyDictionary *)mIndexToFonts setObject:v9 forKey:v8];
 
-    v6 = v9;
+    fontCopy = v9;
   }
 }
 
-- (void)cacheTextBox:(id)a3 withChainIndex:(unsigned __int16)a4
+- (void)cacheTextBox:(id)box withChainIndex:(unsigned __int16)index
 {
-  v6 = a3;
+  boxCopy = box;
   mTextBoxes = self->mTextBoxes;
-  v9 = v6;
-  v10 = a4;
-  v8 = v6;
+  v9 = boxCopy;
+  indexCopy = index;
+  v8 = boxCopy;
   std::vector<WBTextBoxReaderInfo>::push_back[abi:ne200100](mTextBoxes, &v9);
 }
 
-- (WBTextBoxReaderInfo)textBoxInfoAtIndex:(unint64_t)a3
+- (WBTextBoxReaderInfo)textBoxInfoAtIndex:(unint64_t)index
 {
-  v3 = *self->mTextBoxes + 16 * a3;
+  v3 = *self->mTextBoxes + 16 * index;
   v4 = *v3;
   v5 = *(v3 + 8);
   result.var1 = v5;
@@ -325,26 +325,26 @@ LABEL_7:
   return result;
 }
 
-- (id)annotationRangeStartForBookmarkIndex:(unint64_t)a3
+- (id)annotationRangeStartForBookmarkIndex:(unint64_t)index
 {
   mBookmarkIndexToAnnotationRangeStartMap = self->mBookmarkIndexToAnnotationRangeStartMap;
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
   v5 = [(NSMutableDictionary *)mBookmarkIndexToAnnotationRangeStartMap objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)setAnnotationRangeStart:(id)a3 forBookmarkIndex:(unint64_t)a4
+- (void)setAnnotationRangeStart:(id)start forBookmarkIndex:(unint64_t)index
 {
-  v6 = a3;
-  if (v6)
+  startCopy = start;
+  if (startCopy)
   {
-    v9 = v6;
+    v9 = startCopy;
     mBookmarkIndexToAnnotationRangeStartMap = self->mBookmarkIndexToAnnotationRangeStartMap;
-    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+    v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:index];
     [(NSMutableDictionary *)mBookmarkIndexToAnnotationRangeStartMap setObject:v9 forKeyedSubscript:v8];
 
-    v6 = v9;
+    startCopy = v9;
   }
 }
 

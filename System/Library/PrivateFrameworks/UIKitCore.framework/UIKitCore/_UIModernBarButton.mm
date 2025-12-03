@@ -2,20 +2,20 @@
 - (BOOL)_guardAgainstDegenerateBaselineCalculation;
 - (BOOL)_shouldAdjustToTraitCollection;
 - (CGRect)_selectedIndicatorBounds;
-- (CGRect)contentRectForBounds:(CGRect)a3;
+- (CGRect)contentRectForBounds:(CGRect)bounds;
 - (CGRect)selectionIndicatorViewFrame;
-- (CGSize)_roundSize:(CGSize)a3;
+- (CGSize)_roundSize:(CGSize)size;
 - (UIEdgeInsets)_additionalSelectionInsets;
-- (_UIModernBarButton)initWithCoder:(id)a3;
-- (_UIModernBarButton)initWithFrame:(CGRect)a3;
-- (id)_selectedIndicatorViewWithImage:(id)a3;
+- (_UIModernBarButton)initWithCoder:(id)coder;
+- (_UIModernBarButton)initWithFrame:(CGRect)frame;
+- (id)_selectedIndicatorViewWithImage:(id)image;
 - (void)_registerForTraitChangeNotifications;
-- (void)_setGuardAgainstDegenerateBaselineCalculation:(BOOL)a3;
+- (void)_setGuardAgainstDegenerateBaselineCalculation:(BOOL)calculation;
 - (void)_setupForUseAsImageButton;
 - (void)_updateMonochromaticTreatment;
 - (void)didMoveToWindow;
-- (void)setEnableMonochromaticTreatmentOnImageAndTitle:(BOOL)a3;
-- (void)setSelectionIndicatorViewFrame:(CGRect)a3;
+- (void)setEnableMonochromaticTreatmentOnImageAndTitle:(BOOL)title;
+- (void)setSelectionIndicatorViewFrame:(CGRect)frame;
 @end
 
 @implementation _UIModernBarButton
@@ -34,10 +34,10 @@
 
 - (BOOL)_guardAgainstDegenerateBaselineCalculation
 {
-  v3 = [(UIButton *)self _imageView];
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  _imageView = [(UIButton *)self _imageView];
+  if (_imageView && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    guardAgainstDegenerateBaselineCalculation = [v3 _guardAgainstDegenerateBaselineCalculation];
+    guardAgainstDegenerateBaselineCalculation = [_imageView _guardAgainstDegenerateBaselineCalculation];
   }
 
   else
@@ -51,11 +51,11 @@
 - (void)_setupForUseAsImageButton
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v3 = [(UIButton *)self imageView];
+  imageView = [(UIButton *)self imageView];
   v4 = +[UIImageSymbolConfiguration unspecifiedConfiguration];
-  v5 = [(UIView *)self traitCollection];
-  v6 = [v4 configurationWithTraitCollection:v5];
-  [v3 _setOverridingSymbolConfiguration:v6];
+  traitCollection = [(UIView *)self traitCollection];
+  v6 = [v4 configurationWithTraitCollection:traitCollection];
+  [imageView _setOverridingSymbolConfiguration:v6];
 
   v12[0] = 0x1EFE32440;
   v12[1] = 0x1EFE324A0;
@@ -64,8 +64,8 @@
   v10[1] = 3221225472;
   v10[2] = __47___UIModernBarButton__setupForUseAsImageButton__block_invoke;
   v10[3] = &unk_1E70F7390;
-  v11 = v3;
-  v8 = v3;
+  v11 = imageView;
+  v8 = imageView;
   v9 = [(UIView *)self _registerForTraitTokenChanges:v7 withHandler:v10];
 }
 
@@ -74,19 +74,19 @@
   v4.receiver = self;
   v4.super_class = _UIModernBarButton;
   [(UIView *)&v4 didMoveToWindow];
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (!v3)
+  if (!window)
   {
     [(UIButton *)self setHighlighted:0];
   }
 }
 
-- (_UIModernBarButton)initWithFrame:(CGRect)a3
+- (_UIModernBarButton)initWithFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = _UIModernBarButton;
-  result = [(UIButton *)&v5 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(UIButton *)&v5 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     v4 = *(MEMORY[0x1E695F050] + 16);
@@ -97,11 +97,11 @@
   return result;
 }
 
-- (_UIModernBarButton)initWithCoder:(id)a3
+- (_UIModernBarButton)initWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = _UIModernBarButton;
-  result = [(UIButton *)&v5 initWithCoder:a3];
+  result = [(UIButton *)&v5 initWithCoder:coder];
   if (result)
   {
     v4 = *(MEMORY[0x1E695F050] + 16);
@@ -121,7 +121,7 @@
   v5 = [(UIView *)self registerForTraitChanges:v4 withTarget:self action:sel__updateMonochromaticTreatment];
 }
 
-- (CGSize)_roundSize:(CGSize)a3
+- (CGSize)_roundSize:(CGSize)size
 {
   UICeilToViewScale(self);
   v5 = v4;
@@ -133,9 +133,9 @@
   return result;
 }
 
-- (CGRect)contentRectForBounds:(CGRect)a3
+- (CGRect)contentRectForBounds:(CGRect)bounds
 {
-  if (a3.size.width == *MEMORY[0x1E695F060] && a3.size.height == *(MEMORY[0x1E695F060] + 8))
+  if (bounds.size.width == *MEMORY[0x1E695F060] && bounds.size.height == *(MEMORY[0x1E695F060] + 8))
   {
     v6 = *MEMORY[0x1E695F058];
     v7 = *(MEMORY[0x1E695F058] + 8);
@@ -149,7 +149,7 @@
     v12 = v4;
     v10.receiver = self;
     v10.super_class = _UIModernBarButton;
-    [(UIButton *)&v10 contentRectForBounds:a3.origin.x, a3.origin.y];
+    [(UIButton *)&v10 contentRectForBounds:bounds.origin.x, bounds.origin.y];
   }
 
   result.size.height = v9;
@@ -191,14 +191,14 @@
   return result;
 }
 
-- (void)setSelectionIndicatorViewFrame:(CGRect)a3
+- (void)setSelectionIndicatorViewFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   p_selectionIndicatorViewFrame = &self->_selectionIndicatorViewFrame;
-  if (!CGRectEqualToRect(a3, self->_selectionIndicatorViewFrame))
+  if (!CGRectEqualToRect(frame, self->_selectionIndicatorViewFrame))
   {
     p_selectionIndicatorViewFrame->origin.x = x;
     p_selectionIndicatorViewFrame->origin.y = y;
@@ -209,9 +209,9 @@
   }
 }
 
-- (id)_selectedIndicatorViewWithImage:(id)a3
+- (id)_selectedIndicatorViewWithImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   if ([(_UIModernBarButton *)self usesTintColorCapsuleForSelection])
   {
     v5 = objc_alloc_init(_UIButtonBarButtonSelectedIndicatorView);
@@ -221,7 +221,7 @@
   {
     v8.receiver = self;
     v8.super_class = _UIModernBarButton;
-    v5 = [(UIButton *)&v8 _selectedIndicatorViewWithImage:v4];
+    v5 = [(UIButton *)&v8 _selectedIndicatorViewWithImage:imageCopy];
   }
 
   v6 = v5;
@@ -231,16 +231,16 @@
 
 - (void)_updateMonochromaticTreatment
 {
-  v3 = [(UIButton *)self _imageView];
+  _imageView = [(UIButton *)self _imageView];
 
-  if (v3)
+  if (_imageView)
   {
     [(UIButtonVisualProvider *)self->super._visualProvider _updateImageView];
   }
 
-  v4 = [(UIButton *)self _titleView];
+  _titleView = [(UIButton *)self _titleView];
 
-  if (v4)
+  if (_titleView)
   {
     visualProvider = self->super._visualProvider;
 
@@ -248,22 +248,22 @@
   }
 }
 
-- (void)setEnableMonochromaticTreatmentOnImageAndTitle:(BOOL)a3
+- (void)setEnableMonochromaticTreatmentOnImageAndTitle:(BOOL)title
 {
   enableMonochromaticTreatmentOnImageAndTitle = self->_enableMonochromaticTreatmentOnImageAndTitle;
-  self->_enableMonochromaticTreatmentOnImageAndTitle = a3;
-  if (enableMonochromaticTreatmentOnImageAndTitle != a3)
+  self->_enableMonochromaticTreatmentOnImageAndTitle = title;
+  if (enableMonochromaticTreatmentOnImageAndTitle != title)
   {
-    v5 = [(UIButton *)self _imageView];
+    _imageView = [(UIButton *)self _imageView];
 
-    if (v5)
+    if (_imageView)
     {
       [(UIButtonVisualProvider *)self->super._visualProvider _updateImageView];
     }
 
-    v6 = [(UIButton *)self _titleView];
+    _titleView = [(UIButton *)self _titleView];
 
-    if (v6)
+    if (_titleView)
     {
       visualProvider = self->super._visualProvider;
 
@@ -272,17 +272,17 @@
   }
 }
 
-- (void)_setGuardAgainstDegenerateBaselineCalculation:(BOOL)a3
+- (void)_setGuardAgainstDegenerateBaselineCalculation:(BOOL)calculation
 {
-  v3 = a3;
-  self->_guardAgainstDegenerateBaselineCalculation = a3;
-  v4 = [(UIButton *)self _imageView];
-  if (v4)
+  calculationCopy = calculation;
+  self->_guardAgainstDegenerateBaselineCalculation = calculation;
+  _imageView = [(UIButton *)self _imageView];
+  if (_imageView)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v4 _setGuardAgainstDegenerateBaselineCalculation:v3];
+      [_imageView _setGuardAgainstDegenerateBaselineCalculation:calculationCopy];
     }
   }
 }

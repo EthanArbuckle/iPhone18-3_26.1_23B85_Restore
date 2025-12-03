@@ -1,36 +1,36 @@
 @interface ICDocCamExtractedDocumentAnimationController
-- (ICDocCamExtractedDocumentAnimationController)initWithPresentedController:(id)a3 presentingController:(id)a4 thumbnailView:(id)a5 duration:(double)a6 isPresenting:(BOOL)a7;
-- (id)imageWithColor:(id)a3;
-- (void)animateDismissalTransition:(id)a3;
-- (void)animatePresentationOrDismissalTransition:(id)a3;
-- (void)animateTransition:(id)a3;
+- (ICDocCamExtractedDocumentAnimationController)initWithPresentedController:(id)controller presentingController:(id)presentingController thumbnailView:(id)view duration:(double)duration isPresenting:(BOOL)presenting;
+- (id)imageWithColor:(id)color;
+- (void)animateDismissalTransition:(id)transition;
+- (void)animatePresentationOrDismissalTransition:(id)transition;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation ICDocCamExtractedDocumentAnimationController
 
-- (ICDocCamExtractedDocumentAnimationController)initWithPresentedController:(id)a3 presentingController:(id)a4 thumbnailView:(id)a5 duration:(double)a6 isPresenting:(BOOL)a7
+- (ICDocCamExtractedDocumentAnimationController)initWithPresentedController:(id)controller presentingController:(id)presentingController thumbnailView:(id)view duration:(double)duration isPresenting:(BOOL)presenting
 {
-  v7 = a7;
-  v10 = a5;
+  presentingCopy = presenting;
+  viewCopy = view;
   v14.receiver = self;
   v14.super_class = ICDocCamExtractedDocumentAnimationController;
   v11 = [(ICDocCamExtractedDocumentAnimationController *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(ICDocCamExtractedDocumentAnimationController *)v11 setDuration:a6];
-    [(ICDocCamExtractedDocumentAnimationController *)v12 setIsPresenting:v7];
-    [(ICDocCamExtractedDocumentAnimationController *)v12 setThumbnailView:v10];
+    [(ICDocCamExtractedDocumentAnimationController *)v11 setDuration:duration];
+    [(ICDocCamExtractedDocumentAnimationController *)v12 setIsPresenting:presentingCopy];
+    [(ICDocCamExtractedDocumentAnimationController *)v12 setThumbnailView:viewCopy];
   }
 
   return v12;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v13 = a3;
-  v4 = [v13 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  v5 = [v13 viewControllerForKey:UITransitionContextToViewControllerKey];
+  transitionCopy = transition;
+  v4 = [transitionCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
+  v5 = [transitionCopy viewControllerForKey:UITransitionContextToViewControllerKey];
   if ([(ICDocCamExtractedDocumentAnimationController *)self isPresenting])
   {
     v6 = v5;
@@ -42,42 +42,42 @@
   }
 
   v7 = v6;
-  v8 = [v7 view];
+  view = [v7 view];
   objc_opt_class();
   v9 = ICDynamicCast();
-  v10 = [v9 topViewController];
-  v11 = [v10 view];
+  topViewController = [v9 topViewController];
+  view2 = [topViewController view];
 
   if ([(ICDocCamExtractedDocumentAnimationController *)self isPresenting])
   {
-    v12 = [v13 containerView];
-    [v12 addSubview:v8];
+    containerView = [transitionCopy containerView];
+    [containerView addSubview:view];
   }
 
-  [v13 finalFrameForViewController:v7];
-  [v8 setFrame:?];
-  [v8 setNeedsDisplay];
-  [v8 setNeedsLayout];
-  [v8 layoutIfNeeded];
-  [v11 setNeedsDisplay];
-  [v11 setNeedsLayout];
-  [v11 layoutIfNeeded];
-  [(ICDocCamExtractedDocumentAnimationController *)self animatePresentationOrDismissalTransition:v13];
+  [transitionCopy finalFrameForViewController:v7];
+  [view setFrame:?];
+  [view setNeedsDisplay];
+  [view setNeedsLayout];
+  [view layoutIfNeeded];
+  [view2 setNeedsDisplay];
+  [view2 setNeedsLayout];
+  [view2 layoutIfNeeded];
+  [(ICDocCamExtractedDocumentAnimationController *)self animatePresentationOrDismissalTransition:transitionCopy];
 }
 
-- (void)animatePresentationOrDismissalTransition:(id)a3
+- (void)animatePresentationOrDismissalTransition:(id)transition
 {
-  v4 = a3;
+  transitionCopy = transition;
   v5 = +[ICQuickNoteSessionManager sharedManager];
-  v622 = [v5 isSecureScreenShowing];
+  isSecureScreenShowing = [v5 isSecureScreenShowing];
 
-  v6 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  v7 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
+  v6 = [transitionCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
+  v7 = [transitionCopy viewControllerForKey:UITransitionContextToViewControllerKey];
   objc_opt_class();
   v610 = ICDynamicCast();
   objc_opt_class();
   v609 = ICDynamicCast();
-  v631 = self;
+  selfCopy = self;
   LODWORD(v5) = [(ICDocCamExtractedDocumentAnimationController *)self isPresenting];
   objc_opt_class();
   if (v5)
@@ -85,8 +85,8 @@
     v8 = ICDynamicCast();
     objc_opt_class();
     v630 = v8;
-    v9 = [v8 viewControllers];
-    v10 = [v9 objectAtIndexedSubscript:0];
+    viewControllers = [v8 viewControllers];
+    v10 = [viewControllers objectAtIndexedSubscript:0];
     v11 = ICDynamicCast();
   }
 
@@ -95,43 +95,43 @@
     v12 = ICDynamicCast();
     objc_opt_class();
     v630 = v12;
-    v13 = [v12 viewControllers];
-    v14 = [v13 objectAtIndexedSubscript:0];
+    viewControllers2 = [v12 viewControllers];
+    v14 = [viewControllers2 objectAtIndexedSubscript:0];
     v11 = ICDynamicCast();
 
     if (![v11 documentCount])
     {
-      [(ICDocCamExtractedDocumentAnimationController *)v631 animateDismissalTransition:v4];
+      [(ICDocCamExtractedDocumentAnimationController *)selfCopy animateDismissalTransition:transitionCopy];
       goto LABEL_327;
     }
   }
 
-  if (v622)
+  if (isSecureScreenShowing)
   {
     v15 = +[ICQuickNoteSessionManager sharedManager];
-    v16 = [v15 noteEditorViewController];
+    noteEditorViewController = [v15 noteEditorViewController];
 
-    v612 = v16;
-    v608 = [v16 navigationController];
+    noteEditorViewController2 = noteEditorViewController;
+    navigationController = [noteEditorViewController navigationController];
     v17 = 0;
-    v592 = 0;
+    ic_isViewVisible2 = 0;
     v585 = 0;
-    v588 = 0;
+    ic_isViewVisible = 0;
     v581 = 0;
     v615 = 0;
-    v596 = 0;
+    ic_viewControllerManager4 = 0;
 LABEL_18:
     v627 = 1;
     goto LABEL_19;
   }
 
-  v18 = [(ICDocCamExtractedDocumentAnimationController *)v631 isPresenting];
+  isPresenting = [(ICDocCamExtractedDocumentAnimationController *)selfCopy isPresenting];
   objc_opt_class();
-  if (v18)
+  if (isPresenting)
   {
     v19 = ICDynamicCast();
     objc_opt_class();
-    v20 = [v610 topViewController];
+    topViewController = [v610 topViewController];
     v21 = ICDynamicCast();
 
     v22 = v21;
@@ -148,7 +148,7 @@ LABEL_18:
   {
     v19 = ICDynamicCast();
     objc_opt_class();
-    v24 = [v609 topViewController];
+    topViewController2 = [v609 topViewController];
     v25 = ICDynamicCast();
 
     v22 = v25;
@@ -161,58 +161,58 @@ LABEL_18:
     v23 = v7;
   }
 
-  v26 = [v23 presentingViewController];
+  presentingViewController = [v23 presentingViewController];
   v19 = ICDynamicCast();
 
 LABEL_12:
   v27 = v19;
   if (v19)
   {
-    v28 = [v19 ic_viewControllerManager];
-    LODWORD(v19) = [v28 noteContainerViewMode] == 1;
+    ic_viewControllerManager = [v19 ic_viewControllerManager];
+    LODWORD(v19) = [ic_viewControllerManager noteContainerViewMode] == 1;
   }
 
   if (v22)
   {
-    v29 = [v22 ic_viewControllerManager];
-    LODWORD(v19) = [v29 noteContainerViewMode] == 1;
+    ic_viewControllerManager2 = [v22 ic_viewControllerManager];
+    LODWORD(v19) = [ic_viewControllerManager2 noteContainerViewMode] == 1;
   }
 
   v585 = v19;
   v581 = v22;
   if (v27)
   {
-    v30 = [v27 ic_viewControllerManager];
-    v612 = [v30 noteEditorViewController];
-    v608 = [v612 navigationController];
-    v31 = [v30 currentNoteBrowseViewController];
-    v588 = [v31 ic_isViewVisible];
+    ic_viewControllerManager3 = [v27 ic_viewControllerManager];
+    noteEditorViewController2 = [ic_viewControllerManager3 noteEditorViewController];
+    navigationController = [noteEditorViewController2 navigationController];
+    currentNoteBrowseViewController = [ic_viewControllerManager3 currentNoteBrowseViewController];
+    ic_isViewVisible = [currentNoteBrowseViewController ic_isViewVisible];
 
-    v596 = v30;
-    v32 = [v30 folderListViewController];
-    v592 = [v32 ic_isViewVisible];
+    ic_viewControllerManager4 = ic_viewControllerManager3;
+    folderListViewController = [ic_viewControllerManager3 folderListViewController];
+    ic_isViewVisible2 = [folderListViewController ic_isViewVisible];
 
     v615 = v27;
     v17 = [v27 displayMode] == 4;
     goto LABEL_18;
   }
 
-  v596 = [v22 ic_viewControllerManager];
+  ic_viewControllerManager4 = [v22 ic_viewControllerManager];
   v627 = 0;
   v17 = 0;
-  v592 = 0;
-  v588 = 0;
-  v608 = 0;
-  v612 = 0;
+  ic_isViewVisible2 = 0;
+  ic_isViewVisible = 0;
+  navigationController = 0;
+  noteEditorViewController2 = 0;
   v615 = 0;
 LABEL_19:
   v33 = objc_alloc_init(NSMutableArray);
   v34 = objc_alloc_init(NSMutableArray);
   v628 = objc_alloc_init(NSMutableArray);
   v620 = objc_alloc_init(NSMutableArray);
-  v35 = [(ICDocCamExtractedDocumentAnimationController *)v631 isPresenting];
-  v36 = v35 == 0;
-  if (v35)
+  isPresenting2 = [(ICDocCamExtractedDocumentAnimationController *)selfCopy isPresenting];
+  v36 = isPresenting2 == 0;
+  if (isPresenting2)
   {
     v37 = v7;
   }
@@ -233,30 +233,30 @@ LABEL_19:
     v38 = v33;
   }
 
-  v39 = [v37 view];
-  [v38 addObject:v39];
+  view = [v37 view];
+  [v38 addObject:view];
 
-  v40 = [v11 indexPathForCurrentDocument];
-  v611 = [v11 croppedAndFilteredmageForDocumentAtIndex:{objc_msgSend(v40, "item")}];
-  v580 = v40;
-  if ([(ICDocCamExtractedDocumentAnimationController *)v631 isPresenting])
+  indexPathForCurrentDocument = [v11 indexPathForCurrentDocument];
+  v611 = [v11 croppedAndFilteredmageForDocumentAtIndex:{objc_msgSend(indexPathForCurrentDocument, "item")}];
+  v580 = indexPathForCurrentDocument;
+  if ([(ICDocCamExtractedDocumentAnimationController *)selfCopy isPresenting])
   {
-    [v11 zoomTargetForIndexPath:v40];
+    [v11 zoomTargetForIndexPath:indexPathForCurrentDocument];
   }
 
   else
   {
-    [v11 imageRectWithZoomAndPanForIndexPath:v40];
+    [v11 imageRectWithZoomAndPanForIndexPath:indexPathForCurrentDocument];
   }
 
   v594 = v42;
   v595 = v41;
   v606 = v44;
   v607 = v43;
-  v45 = [v612 ic_windowScene];
-  v621 = [v45 statusBarManager];
+  ic_windowScene = [noteEditorViewController2 ic_windowScene];
+  statusBarManager = [ic_windowScene statusBarManager];
 
-  v626 = v4;
+  v626 = transitionCopy;
   v582 = v7;
   v583 = v6;
   v613 = v11;
@@ -270,11 +270,11 @@ LABEL_19:
   if (v627)
   {
     objc_opt_class();
-    v46 = [(ICDocCamExtractedDocumentAnimationController *)v631 thumbnailView];
+    thumbnailView = [(ICDocCamExtractedDocumentAnimationController *)selfCopy thumbnailView];
     v47 = ICDynamicCast();
 
     objc_opt_class();
-    v48 = [v47 superview];
+    superview = [v47 superview];
     v49 = ICDynamicCast();
 
     [v49 bounds];
@@ -282,26 +282,26 @@ LABEL_19:
     v53 = v52;
     v55 = v54;
     v57 = v56;
-    v58 = [v615 view];
+    view2 = [v615 view];
     v529 = v49;
-    [v49 convertRect:v58 toView:{v51, v53, v55, v57}];
+    [v49 convertRect:view2 toView:{v51, v53, v55, v57}];
     v616 = v59;
     v61 = v60;
     v63 = v62;
     v65 = v64;
 
-    v66 = [(ICDocCamExtractedDocumentAnimationController *)v631 thumbnailView];
-    [v66 bounds];
+    thumbnailView2 = [(ICDocCamExtractedDocumentAnimationController *)selfCopy thumbnailView];
+    [thumbnailView2 bounds];
     v68 = v67;
     v70 = v69;
     v72 = v71;
     v74 = v73;
 
     v530 = v47;
-    v605 = [v47 imageView];
-    v75 = [(ICDocCamExtractedDocumentAnimationController *)v631 thumbnailView];
-    v76 = [v615 view];
-    [v75 convertRect:v76 toView:{v68, v70, v72, v74}];
+    imageView = [v47 imageView];
+    thumbnailView3 = [(ICDocCamExtractedDocumentAnimationController *)selfCopy thumbnailView];
+    view3 = [v615 view];
+    [thumbnailView3 convertRect:view3 toView:{v68, v70, v72, v74}];
     v78 = v77;
     v80 = v79;
     v82 = v81;
@@ -363,8 +363,8 @@ LABEL_19:
         v94 = v687.origin.x;
         v95 = v687.size.width;
         v96 = v687.size.height;
-        v97 = [(ICDocCamExtractedDocumentAnimationController *)v631 isPresenting];
-        if (v97)
+        isPresenting3 = [(ICDocCamExtractedDocumentAnimationController *)selfCopy isPresenting];
+        if (isPresenting3)
         {
           v98 = y;
         }
@@ -375,7 +375,7 @@ LABEL_19:
         }
 
         v544 = v98;
-        if (v97)
+        if (isPresenting3)
         {
           v99 = CGPointZero.x;
         }
@@ -385,7 +385,7 @@ LABEL_19:
           v99 = v94 - v599;
         }
 
-        if (v97)
+        if (isPresenting3)
         {
           v100 = 0.0;
         }
@@ -395,7 +395,7 @@ LABEL_19:
           v100 = y;
         }
 
-        if (v97)
+        if (isPresenting3)
         {
           v101 = v94 - v599;
         }
@@ -405,7 +405,7 @@ LABEL_19:
           v101 = CGPointZero.x;
         }
 
-        if (v97)
+        if (isPresenting3)
         {
           v102 = v606;
         }
@@ -417,7 +417,7 @@ LABEL_19:
 
         v542 = v102;
         v543 = v99;
-        if (v97)
+        if (isPresenting3)
         {
           v103 = v607;
         }
@@ -428,7 +428,7 @@ LABEL_19:
         }
 
         v541 = v103;
-        if (v97)
+        if (isPresenting3)
         {
           v104 = v96;
         }
@@ -438,7 +438,7 @@ LABEL_19:
           v104 = v606;
         }
 
-        if (v97)
+        if (isPresenting3)
         {
           v105 = v95;
         }
@@ -460,9 +460,9 @@ LABEL_19:
           v569 = v100;
           if (v572 > 1.0)
           {
-            v109 = [UIImage ic_orientedImageFromImage:v107 toOrientation:3, v572];
+            v572 = [UIImage ic_orientedImageFromImage:v107 toOrientation:3, v572];
 
-            v107 = v109;
+            v107 = v572;
           }
 
           v33 = v614;
@@ -524,15 +524,15 @@ LABEL_19:
             v574 = v185;
             v80 = v618;
             v189 = v95 - v184;
-            v190 = [(ICDocCamExtractedDocumentAnimationController *)v631 isPresenting];
+            isPresenting4 = [(ICDocCamExtractedDocumentAnimationController *)selfCopy isPresenting];
             v191 = v544;
-            if (!v190)
+            if (!isPresenting4)
             {
               v191 = 0.0;
             }
 
             v560 = v191;
-            if (v190)
+            if (isPresenting4)
             {
               v192 = v543;
             }
@@ -542,7 +542,7 @@ LABEL_19:
               v192 = v183;
             }
 
-            if (v190)
+            if (isPresenting4)
             {
               v193 = v542;
             }
@@ -555,13 +555,13 @@ LABEL_19:
             height = v193;
             v553 = v192;
             v194 = v541;
-            if (!v190)
+            if (!isPresenting4)
             {
               v194 = v189;
             }
 
             width = v194;
-            if (v190)
+            if (isPresenting4)
             {
               v130 = 0.0;
             }
@@ -571,7 +571,7 @@ LABEL_19:
               v130 = y;
             }
 
-            if (v190)
+            if (isPresenting4)
             {
               v135 = v183;
             }
@@ -582,7 +582,7 @@ LABEL_19:
             }
 
             v136 = v105;
-            if (v190)
+            if (isPresenting4)
             {
               v195 = y;
             }
@@ -592,7 +592,7 @@ LABEL_19:
               v195 = 0.0;
             }
 
-            if (v190)
+            if (isPresenting4)
             {
               v196 = CGPointZero.x;
             }
@@ -604,7 +604,7 @@ LABEL_19:
 
             v534 = v196;
             v535 = v195;
-            if (v190)
+            if (isPresenting4)
             {
               v197 = 0.0;
             }
@@ -615,7 +615,7 @@ LABEL_19:
             }
 
             v536 = v197;
-            if (v190)
+            if (isPresenting4)
             {
               v198 = v542;
             }
@@ -625,7 +625,7 @@ LABEL_19:
               v198 = v574;
             }
 
-            if (v190)
+            if (isPresenting4)
             {
               v120 = v182;
             }
@@ -637,7 +637,7 @@ LABEL_19:
 
             v532 = v198;
             v533 = 0.0;
-            if (!v190)
+            if (!isPresenting4)
             {
               v114 = 0.0;
             }
@@ -661,16 +661,16 @@ LABEL_19:
             v126 = v125;
             v114 = v127;
             v579 = v128;
-            v129 = [(ICDocCamExtractedDocumentAnimationController *)v631 isPresenting];
+            isPresenting5 = [(ICDocCamExtractedDocumentAnimationController *)selfCopy isPresenting];
             v130 = v569;
             v131 = v544;
-            if (!v129)
+            if (!isPresenting5)
             {
               v131 = v117;
             }
 
             v560 = v131;
-            if (v129)
+            if (isPresenting5)
             {
               v132 = v543;
             }
@@ -680,7 +680,7 @@ LABEL_19:
               v132 = v577;
             }
 
-            if (v129)
+            if (isPresenting5)
             {
               v133 = v542;
             }
@@ -692,7 +692,7 @@ LABEL_19:
 
             height = v133;
             v553 = v132;
-            if (v129)
+            if (isPresenting5)
             {
               v134 = v541;
             }
@@ -703,7 +703,7 @@ LABEL_19:
             }
 
             width = v134;
-            if (v129)
+            if (isPresenting5)
             {
               v130 = v117;
               v135 = v577;
@@ -715,7 +715,7 @@ LABEL_19:
             }
 
             v136 = v557;
-            if (v129)
+            if (isPresenting5)
             {
               v137 = v542;
             }
@@ -725,7 +725,7 @@ LABEL_19:
               v137 = v126;
             }
 
-            if (v129)
+            if (isPresenting5)
             {
               v138 = 0.0;
             }
@@ -738,7 +738,7 @@ LABEL_19:
             v534 = v138;
             v535 = v137;
             v531 = 0.0;
-            if (v129)
+            if (isPresenting5)
             {
               v139 = v541;
             }
@@ -749,7 +749,7 @@ LABEL_19:
             }
 
             v536 = v139;
-            if (v129)
+            if (isPresenting5)
             {
               v140 = 0.0;
             }
@@ -761,13 +761,13 @@ LABEL_19:
 
             v532 = v140;
             v533 = 0.0;
-            if (!v129)
+            if (!isPresenting5)
             {
               v126 = v569 + v104;
             }
 
             v141 = v120;
-            if (v129)
+            if (isPresenting5)
             {
               v120 = v124;
               v142 = v579;
@@ -798,7 +798,7 @@ LABEL_19:
         }
 
         v180 = +[UIColor blackColor];
-        v107 = [(ICDocCamExtractedDocumentAnimationController *)v631 imageWithColor:v180];
+        v107 = [(ICDocCamExtractedDocumentAnimationController *)selfCopy imageWithColor:v180];
 
         [v106 setContents:{objc_msgSend(v107, "CGImage")}];
         [v106 setBounds:{0.0, 0.0, v105, v104}];
@@ -892,10 +892,10 @@ LABEL_141:
     v144 = v690.origin.x;
     v145 = v690.size.width;
     v146 = v690.size.height;
-    v147 = [(ICDocCamExtractedDocumentAnimationController *)v631 isPresenting];
+    isPresenting6 = [(ICDocCamExtractedDocumentAnimationController *)selfCopy isPresenting];
     v561 = v144;
     v148 = v144 - v78;
-    if (v147)
+    if (isPresenting6)
     {
       v149 = y;
     }
@@ -906,7 +906,7 @@ LABEL_141:
     }
 
     v544 = v149;
-    if (v147)
+    if (isPresenting6)
     {
       v150 = CGPointZero.x;
     }
@@ -916,7 +916,7 @@ LABEL_141:
       v150 = v144 - v78;
     }
 
-    if (v147)
+    if (isPresenting6)
     {
       v151 = 0.0;
     }
@@ -926,7 +926,7 @@ LABEL_141:
       v151 = y;
     }
 
-    if (v147)
+    if (isPresenting6)
     {
       v152 = v148;
     }
@@ -936,7 +936,7 @@ LABEL_141:
       v152 = CGPointZero.x;
     }
 
-    if (v147)
+    if (isPresenting6)
     {
       v153 = v606;
     }
@@ -948,7 +948,7 @@ LABEL_141:
 
     v542 = v153;
     v543 = v150;
-    if (v147)
+    if (isPresenting6)
     {
       v154 = v607;
     }
@@ -959,7 +959,7 @@ LABEL_141:
     }
 
     v541 = v154;
-    if (v147)
+    if (isPresenting6)
     {
       v155 = v146;
     }
@@ -970,7 +970,7 @@ LABEL_141:
     }
 
     v600 = v145;
-    if (!v147)
+    if (!isPresenting6)
     {
       v145 = v607;
     }
@@ -982,7 +982,7 @@ LABEL_141:
     if (!v90)
     {
       v181 = +[UIColor blackColor];
-      v107 = [(ICDocCamExtractedDocumentAnimationController *)v631 imageWithColor:v181];
+      v107 = [(ICDocCamExtractedDocumentAnimationController *)selfCopy imageWithColor:v181];
 
       [v156 setContents:{objc_msgSend(v107, "CGImage")}];
       [v156 setBounds:{0.0, 0.0, v145, v155}];
@@ -1006,18 +1006,18 @@ LABEL_199:
       v538 = 0.0;
 LABEL_200:
       v513 = v17;
-      v211 = [v11 pageViewController];
-      v212 = [v211 view];
-      [v212 setAlpha:0.0];
+      pageViewController = [v11 pageViewController];
+      view4 = [pageViewController view];
+      [view4 setAlpha:0.0];
 
-      [v605 setAlpha:0.0];
-      LODWORD(v211) = [(ICDocCamExtractedDocumentAnimationController *)v631 isPresenting];
+      [imageView setAlpha:0.0];
+      LODWORD(pageViewController) = [(ICDocCamExtractedDocumentAnimationController *)selfCopy isPresenting];
       v213 = [UIImageView alloc];
-      if (v211)
+      if (pageViewController)
       {
         v214 = [v213 initWithFrame:{v599, v80, v603, v602}];
-        v215 = [v4 containerView];
-        [v215 addSubview:v214];
+        containerView = [transitionCopy containerView];
+        [containerView addSubview:v214];
 
         [v214 setContentMode:1];
         [v214 setImage:v611];
@@ -1025,8 +1025,8 @@ LABEL_200:
         [v214 setFrame:{v599, v80, v603, v602}];
         if (v617)
         {
-          v216 = [v214 layer];
-          [v216 setMask:v617];
+          layer = [v214 layer];
+          [layer setMask:v617];
         }
 
         v217 = v143;
@@ -1035,8 +1035,8 @@ LABEL_200:
       else
       {
         v214 = [v213 initWithFrame:{v595, v594, v607, v606}];
-        v218 = [v4 containerView];
-        [v218 addSubview:v214];
+        containerView2 = [transitionCopy containerView];
+        [containerView2 addSubview:v214];
 
         [v214 setContentMode:1];
         [v214 setImage:v611];
@@ -1044,78 +1044,78 @@ LABEL_200:
         [v214 setFrame:{v595, v594, v607, v606}];
         if (v617)
         {
-          v219 = [v214 layer];
-          [v219 setMask:v617];
+          layer2 = [v214 layer];
+          [layer2 setMask:v617];
         }
 
         v217 = v620;
       }
 
       [v217 addObject:v214];
-      v563 = [v608 toolbar];
-      v220 = [v11 traitCollection];
-      v221 = [v220 horizontalSizeClass];
-      v528 = v220;
-      v222 = [v220 verticalSizeClass];
-      if (v622 || v221 != 1 || (v222 - 1) > 1)
+      toolbar = [navigationController toolbar];
+      traitCollection = [v11 traitCollection];
+      horizontalSizeClass = [traitCollection horizontalSizeClass];
+      v528 = traitCollection;
+      verticalSizeClass = [traitCollection verticalSizeClass];
+      if (isSecureScreenShowing || horizontalSizeClass != 1 || (verticalSizeClass - 1) > 1)
       {
-        v223 = v608;
+        v223 = navigationController;
         v224 = v143;
-        v225 = v608;
+        v225 = navigationController;
       }
 
       else
       {
-        v225 = v608;
+        v225 = navigationController;
         if (!v585)
         {
           v224 = v143;
           v362 = [v615 viewControllerForColumn:0];
-          v363 = [v362 navigationBar];
+          navigationBar = [v362 navigationBar];
 
-          v226 = v363;
+          navigationBar4 = navigationBar;
 LABEL_210:
-          v586 = v226;
-          v227 = [v226 window];
-          v228 = [v227 windowScene];
-          v229 = [v228 statusBarManager];
+          v586 = navigationBar4;
+          window = [navigationBar4 window];
+          windowScene = [window windowScene];
+          statusBarManager2 = [windowScene statusBarManager];
 
-          v558 = v229;
-          if (([v229 isStatusBarHidden] & 1) == 0)
+          v558 = statusBarManager2;
+          if (([statusBarManager2 isStatusBarHidden] & 1) == 0)
           {
             v230 = [UIView alloc];
-            [v229 statusBarFrame];
+            [statusBarManager2 statusBarFrame];
             v231 = [v230 initWithFrame:?];
             v232 = +[UIColor systemBackgroundColor];
             [v231 setBackgroundColor:v232];
 
             [v231 setAccessibilityLabel:@"noteEditorStatusBarBackground"];
             [v231 setTranslatesAutoresizingMaskIntoConstraints:0];
-            [v231 setHidden:{objc_msgSend(v229, "isStatusBarHidden")}];
-            v233 = [v4 containerView];
-            [v233 addSubview:v231];
+            [v231 setHidden:{objc_msgSend(statusBarManager2, "isStatusBarHidden")}];
+            containerView3 = [transitionCopy containerView];
+            [containerView3 addSubview:v231];
 
             [v224 addObject:v231];
           }
 
           v573 = v214;
-          if ((v622 & 1) != 0 || ((v588 | v592) & 1) == 0)
+          if ((isSecureScreenShowing & 1) != 0 || ((ic_isViewVisible | ic_isViewVisible2) & 1) == 0)
           {
             v264 = 0.0;
             v247 = 0.0;
-            if (([v229 isStatusBarHidden] & 1) == 0)
+            if (([statusBarManager2 isStatusBarHidden] & 1) == 0)
             {
-              v270 = [v586 window];
-              v271 = [v270 windowScene];
-              sub_10010C338(v271);
+              window2 = [v586 window];
+              windowScene2 = [window2 windowScene];
+              sub_10010C338(windowScene2);
               v247 = v272;
             }
 
             [v586 bounds];
             v249 = v273;
             v251 = v274;
-            v253 = v563;
-            [v563 frame];
+            v253 = toolbar;
+            [toolbar frame];
             v567 = v276;
             v571 = v275;
             v554 = v277;
@@ -1124,30 +1124,30 @@ LABEL_210:
 
           else
           {
-            v234 = [v615 view];
+            view5 = [v615 view];
             [v586 frame];
             v236 = v235;
             v238 = v237;
             v240 = v239;
             v242 = v241;
-            v243 = [v225 view];
-            [v234 convertRect:v243 fromView:{v236, v238, v240, v242}];
+            view6 = [v225 view];
+            [view5 convertRect:view6 fromView:{v236, v238, v240, v242}];
             v245 = v244;
             v247 = v246;
             v249 = v248;
             v251 = v250;
 
-            v252 = [v615 view];
-            v253 = v563;
-            [v563 frame];
+            view7 = [v615 view];
+            v253 = toolbar;
+            [toolbar frame];
             v255 = v254;
             v257 = v256;
             v259 = v258;
             v261 = v260;
-            v262 = [v225 view];
+            view8 = [v225 view];
             v263 = v261;
             v264 = v245;
-            [v252 convertRect:v262 fromView:{v255, v257, v259, v263}];
+            [view7 convertRect:view8 fromView:{v255, v257, v259, v263}];
             v567 = v266;
             v571 = v265;
             v554 = v267;
@@ -1159,12 +1159,12 @@ LABEL_210:
           v524 = v280;
           v526 = v281;
           v283 = v282;
-          v284 = [v253 _backgroundView];
+          _backgroundView = [v253 _backgroundView];
 
-          if (v284)
+          if (_backgroundView)
           {
-            v285 = [v253 _backgroundView];
-            [v285 bounds];
+            _backgroundView2 = [v253 _backgroundView];
+            [_backgroundView2 bounds];
             v287 = v286;
 
             if (v269 < v287)
@@ -1173,8 +1173,8 @@ LABEL_210:
             }
 
             v519 = v269;
-            v288 = [v253 _backgroundView];
-            [v288 bounds];
+            _backgroundView3 = [v253 _backgroundView];
+            [_backgroundView3 bounds];
             v290 = v289;
 
             if (v283 < v290)
@@ -1193,8 +1193,8 @@ LABEL_210:
           [v291 setBackgroundColor:0];
           [v291 setAccessibilityLabel:@"fakeNoteEditorNavBarBackground"];
           [v291 setTranslatesAutoresizingMaskIntoConstraints:0];
-          v292 = [v4 containerView];
-          [v292 addSubview:v291];
+          containerView4 = [transitionCopy containerView];
+          [containerView4 addSubview:v291];
 
           [v586 bounds];
           left = UIEdgeInsetsZero.left;
@@ -1205,16 +1205,16 @@ LABEL_210:
           [v296 setTranslatesAutoresizingMaskIntoConstraints:0];
           [v296 setAccessibilityLabel:@"fakeNoteEditorNavBarView"];
           [v296 setTranslatesAutoresizingMaskIntoConstraints:0];
-          v297 = [v4 containerView];
-          [v297 addSubview:v296];
+          containerView5 = [transitionCopy containerView];
+          [containerView5 addSubview:v296];
 
           v298 = [[UIView alloc] initWithFrame:{v571, v567, v554, v519}];
           [v298 setBackgroundColor:0];
           [v298 setAccessibilityLabel:@"fakeNoteEditorToolbarBackground"];
           [v298 setTranslatesAutoresizingMaskIntoConstraints:0];
           [v298 setHidden:{objc_msgSend(v253, "isHidden")}];
-          v299 = [v4 containerView];
-          [v299 addSubview:v298];
+          containerView6 = [transitionCopy containerView];
+          [containerView6 addSubview:v298];
 
           v300 = v522;
           v301 = v524;
@@ -1228,8 +1228,8 @@ LABEL_210:
           [v304 setAccessibilityLabel:@"fakeNoteEditorToolbarView"];
           [v304 setTranslatesAutoresizingMaskIntoConstraints:0];
           [v304 setHidden:{objc_msgSend(v303, "isHidden")}];
-          v305 = [v4 containerView];
-          [v305 addSubview:v304];
+          containerView7 = [transitionCopy containerView];
+          [containerView7 addSubview:v304];
 
           [v628 addObject:v291];
           if (v296)
@@ -1248,7 +1248,7 @@ LABEL_210:
             [v628 addObject:v304];
           }
 
-          if (![(ICDocCamExtractedDocumentAnimationController *)v631 isPresenting])
+          if (![(ICDocCamExtractedDocumentAnimationController *)selfCopy isPresenting])
           {
             [v33 addObject:v291];
             if (v296)
@@ -1267,12 +1267,12 @@ LABEL_210:
             }
           }
 
-          if (((v622 ^ 1) & (v592 | v588)) != 1)
+          if (((isSecureScreenShowing ^ 1) & (ic_isViewVisible2 | ic_isViewVisible)) != 1)
           {
-            v311 = 0;
-            v310 = 0;
-            v623 = 0;
-            v555 = 0;
+            toolbar3 = 0;
+            navigationBar3 = 0;
+            toolbar2 = 0;
+            navigationBar2 = 0;
             v565 = 0;
             v568 = 0;
 LABEL_278:
@@ -1285,61 +1285,61 @@ LABEL_278:
 
           if (v513)
           {
-            v306 = [v596 folderListViewController];
-            v307 = [v306 navigationController];
+            folderListViewController2 = [ic_viewControllerManager4 folderListViewController];
+            navigationController2 = [folderListViewController2 navigationController];
 
-            v555 = [v307 navigationBar];
-            v568 = v307;
-            v623 = [v307 toolbar];
-            v308 = [v596 currentNoteBrowseViewController];
-            v309 = [v308 navigationController];
+            navigationBar2 = [navigationController2 navigationBar];
+            v568 = navigationController2;
+            toolbar2 = [navigationController2 toolbar];
+            currentNoteBrowseViewController2 = [ic_viewControllerManager4 currentNoteBrowseViewController];
+            navigationController3 = [currentNoteBrowseViewController2 navigationController];
 
-            v310 = [v309 navigationBar];
-            v565 = v309;
-            v311 = [v309 toolbar];
+            navigationBar3 = [navigationController3 navigationBar];
+            v565 = navigationController3;
+            toolbar3 = [navigationController3 toolbar];
             v312 = v615;
-            if (!v588)
+            if (!ic_isViewVisible)
             {
 LABEL_265:
-              if (v592)
+              if (ic_isViewVisible2)
               {
-                v371 = [v312 view];
-                [v555 frame];
+                view9 = [v312 view];
+                [navigationBar2 frame];
                 v373 = v372;
                 v375 = v374;
                 v377 = v376;
                 v379 = v378;
-                v380 = [v555 superview];
-                [v371 convertRect:v380 fromView:{v373, v375, v377, v379}];
+                superview2 = [navigationBar2 superview];
+                [view9 convertRect:superview2 fromView:{v373, v375, v377, v379}];
                 v382 = v381;
                 v384 = v383;
                 v386 = v385;
                 v388 = v387;
 
-                v389 = [v312 view];
-                [v623 frame];
+                view10 = [v312 view];
+                [toolbar2 frame];
                 v391 = v390;
                 v393 = v392;
                 v395 = v394;
                 v397 = v396;
-                v398 = [v623 superview];
-                [v389 convertRect:v398 fromView:{v391, v393, v395, v397}];
+                superview3 = [toolbar2 superview];
+                [view10 convertRect:superview3 fromView:{v391, v393, v395, v397}];
                 v518 = v400;
                 v521 = v399;
                 v515 = v401;
                 v403 = v402;
 
-                [v623 bounds];
+                [toolbar2 bounds];
                 v508 = v404;
                 v510 = v405;
                 v512 = v406;
                 v408 = v407;
-                v409 = [v623 _backgroundView];
+                _backgroundView4 = [toolbar2 _backgroundView];
 
-                if (v409)
+                if (_backgroundView4)
                 {
-                  v410 = [v623 _backgroundView];
-                  [v410 bounds];
+                  _backgroundView5 = [toolbar2 _backgroundView];
+                  [_backgroundView5 bounds];
                   v412 = v411;
 
                   if (v408 < v412)
@@ -1347,8 +1347,8 @@ LABEL_265:
                     v408 = v412;
                   }
 
-                  v413 = [v623 _backgroundView];
-                  [v413 bounds];
+                  _backgroundView6 = [toolbar2 _backgroundView];
+                  [_backgroundView6 bounds];
                   v415 = v414;
 
                   if (v403 < v415)
@@ -1369,31 +1369,31 @@ LABEL_265:
                 [v416 setBackgroundColor:0];
                 [v416 setAccessibilityLabel:@"fakeFolderListNavBarBackground"];
                 [v416 setTranslatesAutoresizingMaskIntoConstraints:0];
-                [v416 setHidden:{objc_msgSend(v555, "isHidden")}];
-                v417 = [v4 containerView];
-                [v417 addSubview:v416];
+                [v416 setHidden:{objc_msgSend(navigationBar2, "isHidden")}];
+                containerView8 = [transitionCopy containerView];
+                [containerView8 addSubview:v416];
 
-                [v555 bounds];
-                v418 = [v555 resizableSnapshotViewFromRect:1 afterScreenUpdates:? withCapInsets:?];
+                [navigationBar2 bounds];
+                v418 = [navigationBar2 resizableSnapshotViewFromRect:1 afterScreenUpdates:? withCapInsets:?];
                 [v418 setFrame:{v382, v384, v386, v388}];
                 [v418 setAccessibilityLabel:@"fakeFolderListNavBarView"];
                 [v418 setTranslatesAutoresizingMaskIntoConstraints:0];
-                [v418 setHidden:{objc_msgSend(v555, "isHidden")}];
-                v419 = [v626 containerView];
-                [v419 addSubview:v418];
+                [v418 setHidden:{objc_msgSend(navigationBar2, "isHidden")}];
+                containerView9 = [v626 containerView];
+                [containerView9 addSubview:v418];
 
-                v420 = [v623 resizableSnapshotViewFromRect:1 afterScreenUpdates:v508 withCapInsets:{v512, v510, v504, UIEdgeInsetsZero.top, v527, v525, v523}];
+                v420 = [toolbar2 resizableSnapshotViewFromRect:1 afterScreenUpdates:v508 withCapInsets:{v512, v510, v504, UIEdgeInsetsZero.top, v527, v525, v523}];
                 [v420 setFrame:{v521, v518, v515, v506}];
                 [v420 setAccessibilityLabel:@"fakeFolderListToolbarView"];
                 [v420 setTranslatesAutoresizingMaskIntoConstraints:0];
-                [v420 setHidden:{objc_msgSend(v623, "isHidden")}];
-                v421 = [v626 containerView];
-                [v421 addSubview:v420];
+                [v420 setHidden:{objc_msgSend(toolbar2, "isHidden")}];
+                containerView10 = [v626 containerView];
+                [containerView10 addSubview:v420];
 
                 [v628 addObject:v416];
                 [v628 addObject:v418];
                 [v628 addObject:v420];
-                if ([(ICDocCamExtractedDocumentAnimationController *)v631 isPresenting])
+                if ([(ICDocCamExtractedDocumentAnimationController *)selfCopy isPresenting])
                 {
                   v422 = v629;
                 }
@@ -1409,7 +1409,7 @@ LABEL_265:
                 v33 = v614;
                 [v423 addObject:v420];
 
-                v4 = v626;
+                transitionCopy = v626;
                 v91 = v618;
               }
 
@@ -1424,77 +1424,77 @@ LABEL_265:
 
           else
           {
-            if (v592)
+            if (ic_isViewVisible2)
             {
-              v313 = [v596 folderListViewController];
-              v314 = [v313 navigationController];
+              folderListViewController3 = [ic_viewControllerManager4 folderListViewController];
+              navigationController4 = [folderListViewController3 navigationController];
 
-              v555 = [v314 navigationBar];
-              v568 = v314;
-              v623 = [v314 toolbar];
+              navigationBar2 = [navigationController4 navigationBar];
+              v568 = navigationController4;
+              toolbar2 = [navigationController4 toolbar];
             }
 
             else
             {
-              v623 = 0;
-              v555 = 0;
+              toolbar2 = 0;
+              navigationBar2 = 0;
               v568 = 0;
             }
 
             v312 = v615;
-            if (!v588)
+            if (!ic_isViewVisible)
             {
               v565 = 0;
-              v310 = 0;
-              v311 = 0;
+              navigationBar3 = 0;
+              toolbar3 = 0;
               goto LABEL_265;
             }
 
-            v315 = [v596 currentNoteBrowseViewController];
-            v316 = [v315 navigationController];
+            currentNoteBrowseViewController3 = [ic_viewControllerManager4 currentNoteBrowseViewController];
+            navigationController5 = [currentNoteBrowseViewController3 navigationController];
 
-            v310 = [v316 navigationBar];
-            v565 = v316;
-            v311 = [v316 toolbar];
+            navigationBar3 = [navigationController5 navigationBar];
+            v565 = navigationController5;
+            toolbar3 = [navigationController5 toolbar];
           }
 
-          v317 = [v312 view];
-          [v310 frame];
+          view11 = [v312 view];
+          [navigationBar3 frame];
           v319 = v318;
           v321 = v320;
           v323 = v322;
           v325 = v324;
-          v326 = [v310 superview];
-          [v317 convertRect:v326 fromView:{v319, v321, v323, v325}];
+          superview4 = [navigationBar3 superview];
+          [view11 convertRect:superview4 fromView:{v319, v321, v323, v325}];
           v328 = v327;
           v330 = v329;
           v332 = v331;
           v334 = v333;
 
-          v335 = [v312 view];
-          [v311 frame];
+          view12 = [v312 view];
+          [toolbar3 frame];
           v337 = v336;
           v339 = v338;
           v341 = v340;
           v343 = v342;
-          v344 = [v311 superview];
-          [v335 convertRect:v344 fromView:{v337, v339, v341, v343}];
+          superview5 = [toolbar3 superview];
+          [view12 convertRect:superview5 fromView:{v337, v339, v341, v343}];
           v517 = v346;
           v520 = v345;
           v514 = v347;
           v349 = v348;
 
-          [v311 bounds];
+          [toolbar3 bounds];
           v507 = v350;
           v509 = v351;
           v511 = v352;
           v354 = v353;
-          v355 = [v311 _backgroundView];
+          _backgroundView7 = [toolbar3 _backgroundView];
 
-          if (v355)
+          if (_backgroundView7)
           {
-            v356 = [v311 _backgroundView];
-            [v356 bounds];
+            _backgroundView8 = [toolbar3 _backgroundView];
+            [_backgroundView8 bounds];
             v358 = v357;
 
             if (v354 < v358)
@@ -1502,8 +1502,8 @@ LABEL_265:
               v354 = v358;
             }
 
-            v359 = [v311 _backgroundView];
-            [v359 bounds];
+            _backgroundView9 = [toolbar3 _backgroundView];
+            [_backgroundView9 bounds];
             v361 = v360;
 
             if (v349 < v361)
@@ -1524,32 +1524,32 @@ LABEL_265:
           [v364 setBackgroundColor:0];
           [v364 setAccessibilityLabel:@"fakeNoteListNavBarBackground"];
           [v364 setTranslatesAutoresizingMaskIntoConstraints:0];
-          [v364 setHidden:{objc_msgSend(v310, "isHidden")}];
-          v365 = [v4 containerView];
-          [v365 addSubview:v364];
+          [v364 setHidden:{objc_msgSend(navigationBar3, "isHidden")}];
+          containerView11 = [transitionCopy containerView];
+          [containerView11 addSubview:v364];
 
-          [v310 bounds];
-          v366 = [v310 resizableSnapshotViewFromRect:1 afterScreenUpdates:? withCapInsets:?];
+          [navigationBar3 bounds];
+          v366 = [navigationBar3 resizableSnapshotViewFromRect:1 afterScreenUpdates:? withCapInsets:?];
           [v366 setFrame:{v328, v330, v332, v334}];
           [v366 setTranslatesAutoresizingMaskIntoConstraints:0];
           [v366 setAccessibilityLabel:@"fakeNoteListNavBarView"];
           [v366 setTranslatesAutoresizingMaskIntoConstraints:0];
-          [v366 setHidden:{objc_msgSend(v310, "isHidden")}];
-          v367 = [v626 containerView];
-          [v367 addSubview:v366];
+          [v366 setHidden:{objc_msgSend(navigationBar3, "isHidden")}];
+          containerView12 = [v626 containerView];
+          [containerView12 addSubview:v366];
 
-          v368 = [v311 resizableSnapshotViewFromRect:1 afterScreenUpdates:v507 withCapInsets:{v511, v509, v503, UIEdgeInsetsZero.top, v527, v525, v523}];
+          v368 = [toolbar3 resizableSnapshotViewFromRect:1 afterScreenUpdates:v507 withCapInsets:{v511, v509, v503, UIEdgeInsetsZero.top, v527, v525, v523}];
           [v368 setFrame:{v520, v517, v514, v505}];
           [v368 setAccessibilityLabel:@"fakeNoteListToolbarView"];
           [v368 setTranslatesAutoresizingMaskIntoConstraints:0];
-          [v368 setHidden:{objc_msgSend(v311, "isHidden")}];
-          v369 = [v626 containerView];
-          [v369 addSubview:v368];
+          [v368 setHidden:{objc_msgSend(toolbar3, "isHidden")}];
+          containerView13 = [v626 containerView];
+          [containerView13 addSubview:v368];
 
           [v628 addObject:v364];
           [v628 addObject:v366];
           [v628 addObject:v368];
-          if ([(ICDocCamExtractedDocumentAnimationController *)v631 isPresenting])
+          if ([(ICDocCamExtractedDocumentAnimationController *)selfCopy isPresenting])
           {
             v370 = v629;
           }
@@ -1562,7 +1562,7 @@ LABEL_265:
           [v370 addObject:{v364, *&v503}];
           [v370 addObject:v366];
 
-          v4 = v626;
+          transitionCopy = v626;
           v312 = v615;
           v91 = v618;
           goto LABEL_265;
@@ -1572,7 +1572,7 @@ LABEL_265:
         v223 = v610;
       }
 
-      v226 = [v223 navigationBar];
+      navigationBar4 = [v223 navigationBar];
       goto LABEL_210;
     }
 
@@ -1581,9 +1581,9 @@ LABEL_265:
     v157 = v572;
     if (v572 > 1.0)
     {
-      v158 = [UIImage ic_orientedImageFromImage:v107 toOrientation:2, v572];
+      v5722 = [UIImage ic_orientedImageFromImage:v107 toOrientation:2, v572];
 
-      v107 = v158;
+      v107 = v5722;
     }
 
     v33 = v614;
@@ -1650,7 +1650,7 @@ LABEL_265:
       v562 = v200;
       v168 = v201;
       v203 = v202;
-      if ([(ICDocCamExtractedDocumentAnimationController *)v631 isPresenting])
+      if ([(ICDocCamExtractedDocumentAnimationController *)selfCopy isPresenting])
       {
         v535 = 0.0;
         v546 = v536;
@@ -1694,7 +1694,7 @@ LABEL_265:
       v174 = v173;
       v176 = v175;
       v143 = v628;
-      if ([(ICDocCamExtractedDocumentAnimationController *)v631 isPresenting])
+      if ([(ICDocCamExtractedDocumentAnimationController *)selfCopy isPresenting])
       {
         v546 = v174;
         v534 = 0.0;
@@ -1759,7 +1759,7 @@ LABEL_198:
   v597 = 0;
   r1 = 0;
   v617 = 0;
-  v605 = 0;
+  imageView = 0;
   v568 = 0;
   v573 = 0;
   v565 = 0;
@@ -1786,10 +1786,10 @@ LABEL_198:
   v93 = v630;
 LABEL_279:
   v619 = v91;
-  if (([v621 isStatusBarHidden] & 1) == 0)
+  if (([statusBarManager isStatusBarHidden] & 1) == 0)
   {
     v424 = [UIView alloc];
-    [v621 statusBarFrame];
+    [statusBarManager statusBarFrame];
     v425 = [v424 initWithFrame:?];
     v426 = +[UIColor systemBackgroundColor];
     [v425 setBackgroundColor:v426];
@@ -1797,11 +1797,11 @@ LABEL_279:
     [v425 setAccessibilityLabel:@"extractedDocumentStatusBarBackground"];
     [v425 setTranslatesAutoresizingMaskIntoConstraints:0];
     v33 = v614;
-    [v425 setHidden:{objc_msgSend(v621, "isStatusBarHidden")}];
-    v427 = [v4 containerView];
-    [v427 addSubview:v425];
+    [v425 setHidden:{objc_msgSend(statusBarManager, "isStatusBarHidden")}];
+    containerView14 = [transitionCopy containerView];
+    [containerView14 addSubview:v425];
 
-    if ([(ICDocCamExtractedDocumentAnimationController *)v631 isPresenting])
+    if ([(ICDocCamExtractedDocumentAnimationController *)selfCopy isPresenting])
     {
       v428 = v614;
     }
@@ -1815,33 +1815,33 @@ LABEL_279:
     [v92 addObject:v425];
   }
 
-  v429 = [v93 navigationBar];
+  navigationBar5 = [v93 navigationBar];
   v430 = [UIView alloc];
-  [v429 frame];
+  [navigationBar5 frame];
   v431 = [v430 initWithFrame:?];
   [v431 setBackgroundColor:0];
   [v431 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v431 setAccessibilityLabel:@"extractedDocumentNavBarBackground"];
-  [v431 setHidden:{objc_msgSend(v429, "isHidden")}];
-  v432 = [v4 containerView];
-  [v432 addSubview:v431];
+  [v431 setHidden:{objc_msgSend(navigationBar5, "isHidden")}];
+  containerView15 = [transitionCopy containerView];
+  [containerView15 addSubview:v431];
 
-  [v429 bounds];
+  [navigationBar5 bounds];
   top = UIEdgeInsetsZero.top;
   v434 = UIEdgeInsetsZero.left;
   v436 = UIEdgeInsetsZero.bottom;
   v435 = UIEdgeInsetsZero.right;
-  v437 = [v429 resizableSnapshotViewFromRect:1 afterScreenUpdates:? withCapInsets:?];
-  [v429 frame];
+  v437 = [navigationBar5 resizableSnapshotViewFromRect:1 afterScreenUpdates:? withCapInsets:?];
+  [navigationBar5 frame];
   [v437 setFrame:?];
   [v437 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v437 setAccessibilityLabel:@"extractedDocumentNavBarView"];
-  v593 = v429;
-  [v437 setHidden:{objc_msgSend(v429, "isHidden")}];
-  v438 = [v4 containerView];
-  [v438 addSubview:v437];
+  v593 = navigationBar5;
+  [v437 setHidden:{objc_msgSend(navigationBar5, "isHidden")}];
+  containerView16 = [transitionCopy containerView];
+  [containerView16 addSubview:v437];
 
-  if ([(ICDocCamExtractedDocumentAnimationController *)v631 isPresenting])
+  if ([(ICDocCamExtractedDocumentAnimationController *)selfCopy isPresenting])
   {
     v439 = v33;
   }
@@ -1857,26 +1857,26 @@ LABEL_279:
   [v92 addObject:v431];
   v587 = v437;
   [v92 addObject:v437];
-  v440 = [v11 bottomToolbar];
-  [v440 bounds];
+  bottomToolbar = [v11 bottomToolbar];
+  [bottomToolbar bounds];
   v556 = v441;
   v559 = v442;
   v564 = v443;
   v445 = v444;
-  [v440 frame];
+  [bottomToolbar frame];
   v447 = v446;
   v449 = v448;
   v624 = v450;
   v452 = v451;
-  v453 = [v11 bottomToolbar];
-  v454 = [v453 _backgroundView];
+  bottomToolbar2 = [v11 bottomToolbar];
+  _backgroundView10 = [bottomToolbar2 _backgroundView];
 
   v630 = v93;
-  if (v454)
+  if (_backgroundView10)
   {
-    v455 = [v11 bottomToolbar];
-    v456 = [v455 _backgroundView];
-    [v456 bounds];
+    bottomToolbar3 = [v11 bottomToolbar];
+    _backgroundView11 = [bottomToolbar3 _backgroundView];
+    [_backgroundView11 bounds];
     v458 = v457;
 
     if (v445 < v458)
@@ -1884,9 +1884,9 @@ LABEL_279:
       v445 = v458;
     }
 
-    v459 = [v11 bottomToolbar];
-    v460 = [v459 _backgroundView];
-    [v460 bounds];
+    bottomToolbar4 = [v11 bottomToolbar];
+    _backgroundView12 = [bottomToolbar4 _backgroundView];
+    [_backgroundView12 bounds];
     v462 = v461;
 
     if (v452 < v462)
@@ -1897,17 +1897,17 @@ LABEL_279:
     top = UIEdgeInsetsZero.top;
   }
 
-  v463 = [v440 resizableSnapshotViewFromRect:1 afterScreenUpdates:v556 withCapInsets:{v564, v559, v445, top, v434, v436, v435}];
+  v463 = [bottomToolbar resizableSnapshotViewFromRect:1 afterScreenUpdates:v556 withCapInsets:{v564, v559, v445, top, v434, v436, v435}];
   [v463 setFrame:{v447, v449, v624, v452}];
   [v463 setAccessibilityLabel:@"fakeExtractedDocumentBottomToolbar"];
   [v463 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v463 setHidden:{objc_msgSend(v440, "isHidden")}];
-  v464 = [v4 containerView];
-  [v464 addSubview:v463];
+  [v463 setHidden:{objc_msgSend(bottomToolbar, "isHidden")}];
+  containerView17 = [transitionCopy containerView];
+  [containerView17 addSubview:v463];
 
-  v465 = [(ICDocCamExtractedDocumentAnimationController *)v631 isPresenting];
-  v466 = v465 == 0;
-  if (v465)
+  isPresenting7 = [(ICDocCamExtractedDocumentAnimationController *)selfCopy isPresenting];
+  v466 = isPresenting7 == 0;
+  if (isPresenting7)
   {
     v467 = v614;
   }
@@ -1929,23 +1929,23 @@ LABEL_279:
 
   [v467 addObject:v463];
   [v468 addObject:v463];
-  [v440 setAlpha:0.0];
-  v625 = [v11 topToolbar];
-  if (([v625 isHidden] & 1) == 0 && objc_msgSend(v11, "thumbnailContainerViewIsVisible"))
+  [bottomToolbar setAlpha:0.0];
+  topToolbar = [v11 topToolbar];
+  if (([topToolbar isHidden] & 1) == 0 && objc_msgSend(v11, "thumbnailContainerViewIsVisible"))
   {
-    [v625 bounds];
-    v469 = [v625 resizableSnapshotViewFromRect:1 afterScreenUpdates:? withCapInsets:?];
+    [topToolbar bounds];
+    v469 = [topToolbar resizableSnapshotViewFromRect:1 afterScreenUpdates:? withCapInsets:?];
     [v469 setAccessibilityLabel:@"fakeExtractedDocumentTopToolbar"];
     [v469 setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v625 frame];
+    [topToolbar frame];
     [v469 setFrame:?];
-    [v469 setHidden:{objc_msgSend(v625, "isHidden")}];
-    v470 = [v4 containerView];
-    [v470 addSubview:v469];
+    [v469 setHidden:{objc_msgSend(topToolbar, "isHidden")}];
+    containerView18 = [transitionCopy containerView];
+    [containerView18 addSubview:v469];
 
-    v471 = [(ICDocCamExtractedDocumentAnimationController *)v631 isPresenting];
-    v472 = v471 == 0;
-    if (v471)
+    isPresenting8 = [(ICDocCamExtractedDocumentAnimationController *)selfCopy isPresenting];
+    v472 = isPresenting8 == 0;
+    if (isPresenting8)
     {
       v473 = v614;
     }
@@ -1967,7 +1967,7 @@ LABEL_279:
 
     [v473 addObject:v469];
     [v474 addObject:v469];
-    [v625 setAlpha:0.0];
+    [topToolbar setAlpha:0.0];
   }
 
   v681 = 0u;
@@ -1989,8 +1989,8 @@ LABEL_279:
           objc_enumerationMutation(v475);
         }
 
-        v480 = [*(*(&v679 + 1) + 8 * i) layer];
-        [v480 setOpacity:0.0];
+        layer3 = [*(*(&v679 + 1) + 8 * i) layer];
+        [layer3 setOpacity:0.0];
       }
 
       v477 = [v475 countByEnumeratingWithState:&v679 objects:v684 count:16];
@@ -2018,9 +2018,9 @@ LABEL_279:
           objc_enumerationMutation(v481);
         }
 
-        v486 = [*(*(&v675 + 1) + 8 * j) layer];
+        layer4 = [*(*(&v675 + 1) + 8 * j) layer];
         LODWORD(v487) = 1.0;
-        [v486 setOpacity:v487];
+        [layer4 setOpacity:v487];
       }
 
       v483 = [v481 countByEnumeratingWithState:&v675 objects:v683 count:16];
@@ -2031,7 +2031,7 @@ LABEL_279:
 
   if (v627)
   {
-    [(ICDocCamExtractedDocumentAnimationController *)v631 transitionDuration:v626];
+    [(ICDocCamExtractedDocumentAnimationController *)selfCopy transitionDuration:v626];
     v489 = v488;
     +[CATransaction begin];
     *&v490 = v489;
@@ -2054,7 +2054,7 @@ LABEL_279:
     +[CATransaction commit];
   }
 
-  [(ICDocCamExtractedDocumentAnimationController *)v631 transitionDuration:v626];
+  [(ICDocCamExtractedDocumentAnimationController *)selfCopy transitionDuration:v626];
   v494 = v493;
   v657[0] = _NSConcreteStackBlock;
   v657[1] = 3221225472;
@@ -2062,7 +2062,7 @@ LABEL_279:
   v657[3] = &unk_10064A2F0;
   v658 = v475;
   v659 = v481;
-  v660 = v631;
+  v660 = selfCopy;
   v674 = v627;
   v663 = v595;
   v664 = v594;
@@ -2091,7 +2091,7 @@ LABEL_279:
   v636 = v497;
   v11 = v613;
   v637 = v11;
-  v638 = v631;
+  v638 = selfCopy;
   v656 = v627;
   v498 = v661;
   v645 = v595;
@@ -2107,30 +2107,30 @@ LABEL_279:
   v653 = v584;
   v654 = origin;
   v655 = size;
-  v499 = v605;
+  v499 = imageView;
   v641 = v499;
-  v500 = v625;
+  v500 = topToolbar;
   v642 = v500;
-  v501 = v440;
+  v501 = bottomToolbar;
   v643 = v501;
   v502 = v620;
   v644 = v502;
   [UIView animateWithDuration:v657 animations:v632 completion:v494];
 
-  v4 = v626;
+  transitionCopy = v626;
   v7 = v582;
   v6 = v583;
 LABEL_327:
 }
 
-- (void)animateDismissalTransition:(id)a3
+- (void)animateDismissalTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  v6 = [v5 view];
-  [v6 setAlpha:1.0];
+  transitionCopy = transition;
+  v5 = [transitionCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
+  view = [v5 view];
+  [view setAlpha:1.0];
 
-  [(ICDocCamExtractedDocumentAnimationController *)self transitionDuration:v4];
+  [(ICDocCamExtractedDocumentAnimationController *)self transitionDuration:transitionCopy];
   v8 = v7;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
@@ -2141,23 +2141,23 @@ LABEL_327:
   v11[1] = 3221225472;
   v11[2] = sub_10010FDC4;
   v11[3] = &unk_1006487E8;
-  v12 = v4;
+  v12 = transitionCopy;
   v13 = v15;
   v9 = v15;
-  v10 = v4;
+  v10 = transitionCopy;
   [UIView animateWithDuration:v14 animations:v11 completion:v8];
 }
 
-- (id)imageWithColor:(id)a3
+- (id)imageWithColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v9.width = 1.0;
   v9.height = 1.0;
   UIGraphicsBeginImageContext(v9);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v5 = [v3 CGColor];
+  cGColor = [colorCopy CGColor];
 
-  CGContextSetFillColorWithColor(CurrentContext, v5);
+  CGContextSetFillColorWithColor(CurrentContext, cGColor);
   v10.origin.x = 0.0;
   v10.origin.y = 0.0;
   v10.size.width = 1.0;

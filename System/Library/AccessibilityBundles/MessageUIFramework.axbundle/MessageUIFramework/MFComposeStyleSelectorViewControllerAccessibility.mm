@@ -1,22 +1,22 @@
 @interface MFComposeStyleSelectorViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (void)changeFontSizeAction:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (void)changeFontSizeAction:(id)action;
 @end
 
 @implementation MFComposeStyleSelectorViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MFComposeStyleSelectorViewController" hasInstanceMethod:@"changeFontSizeAction:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"MFComposeStyleSelectorViewController" hasInstanceMethod:@"currentFontSize" withFullSignature:{"q", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MFComposeStyleSelectorViewController" hasInstanceMethod:@"changeFontSizeAction:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"MFComposeStyleSelectorViewController" hasInstanceMethod:@"currentFontSize" withFullSignature:{"q", 0}];
 }
 
-- (void)changeFontSizeAction:(id)a3
+- (void)changeFontSizeAction:(id)action
 {
   v3.receiver = self;
   v3.super_class = MFComposeStyleSelectorViewControllerAccessibility;
-  [(MFComposeStyleSelectorViewControllerAccessibility *)&v3 changeFontSizeAction:a3];
+  [(MFComposeStyleSelectorViewControllerAccessibility *)&v3 changeFontSizeAction:action];
   AXPerformBlockOnMainThreadAfterDelay();
 }
 

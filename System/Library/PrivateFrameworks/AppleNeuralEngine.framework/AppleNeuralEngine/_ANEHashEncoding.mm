@@ -1,21 +1,21 @@
 @interface _ANEHashEncoding
-+ (id)convertToHexString:(char *)a3 length:(unint64_t)a4;
-+ (id)hexStringForBytes:(char *)a3 length:(unint64_t)a4;
-+ (id)hexStringForData:(id)a3;
-+ (id)hexStringForDataArray:(id)a3;
-+ (id)hexStringForString:(id)a3;
-+ (unsigned)hashForString:(id)a3 seed:(unsigned int)a4;
-+ (void)copySHA256For:(id)a3 toBuffer:(char *)a4;
++ (id)convertToHexString:(char *)string length:(unint64_t)length;
++ (id)hexStringForBytes:(char *)bytes length:(unint64_t)length;
++ (id)hexStringForData:(id)data;
++ (id)hexStringForDataArray:(id)array;
++ (id)hexStringForString:(id)string;
++ (unsigned)hashForString:(id)string seed:(unsigned int)seed;
++ (void)copySHA256For:(id)for toBuffer:(char *)buffer;
 @end
 
 @implementation _ANEHashEncoding
 
-+ (id)convertToHexString:(char *)a3 length:(unint64_t)a4
++ (id)convertToHexString:(char *)string length:(unint64_t)length
 {
   v6 = objc_autoreleasePoolPush();
-  for (i = [&stru_1F224D6A0 mutableCopy]; a4; --a4)
+  for (i = [&stru_1F224D6A0 mutableCopy]; length; --length)
   {
-    v8 = *a3++;
+    v8 = *string++;
     [i appendFormat:@"%02X", v8];
   }
 
@@ -24,40 +24,40 @@
   return i;
 }
 
-+ (id)hexStringForBytes:(char *)a3 length:(unint64_t)a4
++ (id)hexStringForBytes:(char *)bytes length:(unint64_t)length
 {
   v9 = *MEMORY[0x1E69E9840];
-  CC_SHA256(a3, a4, md);
-  v5 = [a1 convertToHexString:md length:32];
+  CC_SHA256(bytes, length, md);
+  v5 = [self convertToHexString:md length:32];
   v6 = *MEMORY[0x1E69E9840];
 
   return v5;
 }
 
-+ (id)hexStringForString:(id)a3
++ (id)hexStringForString:(id)string
 {
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 UTF8String];
-  v8 = [v6 length];
+  stringCopy = string;
+  stringCopy2 = string;
+  uTF8String = [stringCopy2 UTF8String];
+  v8 = [stringCopy2 length];
 
-  return [a1 hexStringForBytes:v7 length:v8];
+  return [self hexStringForBytes:uTF8String length:v8];
 }
 
-+ (id)hexStringForData:(id)a3
++ (id)hexStringForData:(id)data
 {
-  v5 = a3;
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  dataCopy2 = data;
+  bytes = [dataCopy2 bytes];
+  v8 = [dataCopy2 length];
 
-  return [a1 hexStringForBytes:v7 length:v8];
+  return [self hexStringForBytes:bytes length:v8];
 }
 
-+ (id)hexStringForDataArray:(id)a3
++ (id)hexStringForDataArray:(id)array
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  arrayCopy = array;
   data = 0;
   memset(&c, 0, sizeof(c));
   CC_SHA256_Init(&c);
@@ -66,7 +66,7 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v4;
+  v5 = arrayCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v22 count:16];
   if (v6)
   {
@@ -93,48 +93,48 @@
   }
 
   CC_SHA256_Final(md, &c);
-  v12 = [a1 convertToHexString:md length:32];
+  v12 = [self convertToHexString:md length:32];
 
   v13 = *MEMORY[0x1E69E9840];
 
   return v12;
 }
 
-+ (void)copySHA256For:(id)a3 toBuffer:(char *)a4
++ (void)copySHA256For:(id)for toBuffer:(char *)buffer
 {
   v11 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [v5 UTF8String];
-  if (v6)
+  forCopy = for;
+  uTF8String = [forCopy UTF8String];
+  if (uTF8String)
   {
-    CC_SHA256(v6, [v5 length], md);
+    CC_SHA256(uTF8String, [forCopy length], md);
     v7 = v10;
-    *a4 = *md;
-    *(a4 + 1) = v7;
+    *buffer = *md;
+    *(buffer + 1) = v7;
   }
 
   v8 = *MEMORY[0x1E69E9840];
 }
 
-+ (unsigned)hashForString:(id)a3 seed:(unsigned int)a4
++ (unsigned)hashForString:(id)string seed:(unsigned int)seed
 {
   v13 = *MEMORY[0x1E69E9840];
-  v5 = [a3 UTF8String];
-  if (v5)
+  uTF8String = [string UTF8String];
+  if (uTF8String)
   {
-    v6 = v5;
-    data = bswap32(a4);
+    v6 = uTF8String;
+    data = bswap32(seed);
     memset(&v10, 0, sizeof(v10));
     CC_SHA256_Init(&v10);
     CC_SHA256_Update(&v10, &data, 4u);
     v7 = strlen(v6);
     CC_SHA256_Update(&v10, v6, v7);
     CC_SHA256_Final(md, &v10);
-    LODWORD(v5) = *md;
+    LODWORD(uTF8String) = *md;
   }
 
   v8 = *MEMORY[0x1E69E9840];
-  return v5;
+  return uTF8String;
 }
 
 @end

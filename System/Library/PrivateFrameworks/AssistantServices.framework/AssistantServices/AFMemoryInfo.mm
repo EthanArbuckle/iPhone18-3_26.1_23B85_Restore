@@ -1,70 +1,70 @@
 @interface AFMemoryInfo
-+ (id)newWithBuilder:(id)a3;
-- (AFMemoryInfo)initWithBuilder:(id)a3;
-- (AFMemoryInfo)initWithCoder:(id)a3;
-- (AFMemoryInfo)initWithVirtualMemorySizeInBytes:(unint64_t)a3 numberOfRegions:(int)a4 pageSizeInBytes:(int)a5 residentMemorySizeInBytes:(unint64_t)a6 peakResidentMemorySizeInBytes:(unint64_t)a7 physicalMemoryFootprintInBytes:(unint64_t)a8;
-- (BOOL)isEqual:(id)a3;
-- (id)_descriptionWithIndent:(unint64_t)a3;
-- (id)mutatedCopyWithMutator:(id)a3;
++ (id)newWithBuilder:(id)builder;
+- (AFMemoryInfo)initWithBuilder:(id)builder;
+- (AFMemoryInfo)initWithCoder:(id)coder;
+- (AFMemoryInfo)initWithVirtualMemorySizeInBytes:(unint64_t)bytes numberOfRegions:(int)regions pageSizeInBytes:(int)inBytes residentMemorySizeInBytes:(unint64_t)sizeInBytes peakResidentMemorySizeInBytes:(unint64_t)memorySizeInBytes physicalMemoryFootprintInBytes:(unint64_t)footprintInBytes;
+- (BOOL)isEqual:(id)equal;
+- (id)_descriptionWithIndent:(unint64_t)indent;
+- (id)mutatedCopyWithMutator:(id)mutator;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AFMemoryInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E696AD98];
   virtualMemorySizeInBytes = self->_virtualMemorySizeInBytes;
-  v6 = a3;
+  coderCopy = coder;
   v7 = [v4 numberWithUnsignedLongLong:virtualMemorySizeInBytes];
-  [v6 encodeObject:v7 forKey:@"AFMemoryInfo::virtualMemorySizeInBytes"];
+  [coderCopy encodeObject:v7 forKey:@"AFMemoryInfo::virtualMemorySizeInBytes"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithInt:self->_numberOfRegions];
-  [v6 encodeObject:v8 forKey:@"AFMemoryInfo::numberOfRegions"];
+  [coderCopy encodeObject:v8 forKey:@"AFMemoryInfo::numberOfRegions"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithInt:self->_pageSizeInBytes];
-  [v6 encodeObject:v9 forKey:@"AFMemoryInfo::pageSizeInBytes"];
+  [coderCopy encodeObject:v9 forKey:@"AFMemoryInfo::pageSizeInBytes"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_residentMemorySizeInBytes];
-  [v6 encodeObject:v10 forKey:@"AFMemoryInfo::residentMemorySizeInBytes"];
+  [coderCopy encodeObject:v10 forKey:@"AFMemoryInfo::residentMemorySizeInBytes"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_peakResidentMemorySizeInBytes];
-  [v6 encodeObject:v11 forKey:@"AFMemoryInfo::peakResidentMemorySizeInBytes"];
+  [coderCopy encodeObject:v11 forKey:@"AFMemoryInfo::peakResidentMemorySizeInBytes"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_physicalMemoryFootprintInBytes];
-  [v6 encodeObject:v12 forKey:@"AFMemoryInfo::physicalMemoryFootprintInBytes"];
+  [coderCopy encodeObject:v12 forKey:@"AFMemoryInfo::physicalMemoryFootprintInBytes"];
 }
 
-- (AFMemoryInfo)initWithCoder:(id)a3
+- (AFMemoryInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFMemoryInfo::virtualMemorySizeInBytes"];
-  v6 = [v5 unsignedLongLongValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFMemoryInfo::virtualMemorySizeInBytes"];
+  unsignedLongLongValue = [v5 unsignedLongLongValue];
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFMemoryInfo::numberOfRegions"];
-  v8 = [v7 intValue];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFMemoryInfo::numberOfRegions"];
+  intValue = [v7 intValue];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFMemoryInfo::pageSizeInBytes"];
-  v10 = [v9 intValue];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFMemoryInfo::pageSizeInBytes"];
+  intValue2 = [v9 intValue];
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFMemoryInfo::residentMemorySizeInBytes"];
-  v12 = [v11 unsignedLongLongValue];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFMemoryInfo::residentMemorySizeInBytes"];
+  unsignedLongLongValue2 = [v11 unsignedLongLongValue];
 
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFMemoryInfo::peakResidentMemorySizeInBytes"];
-  v14 = [v13 unsignedLongLongValue];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFMemoryInfo::peakResidentMemorySizeInBytes"];
+  unsignedLongLongValue3 = [v13 unsignedLongLongValue];
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AFMemoryInfo::physicalMemoryFootprintInBytes"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AFMemoryInfo::physicalMemoryFootprintInBytes"];
 
-  v16 = [v15 unsignedLongLongValue];
+  unsignedLongLongValue4 = [v15 unsignedLongLongValue];
 
-  return [(AFMemoryInfo *)self initWithVirtualMemorySizeInBytes:v6 numberOfRegions:v8 pageSizeInBytes:v10 residentMemorySizeInBytes:v12 peakResidentMemorySizeInBytes:v14 physicalMemoryFootprintInBytes:v16];
+  return [(AFMemoryInfo *)self initWithVirtualMemorySizeInBytes:unsignedLongLongValue numberOfRegions:intValue pageSizeInBytes:intValue2 residentMemorySizeInBytes:unsignedLongLongValue2 peakResidentMemorySizeInBytes:unsignedLongLongValue3 physicalMemoryFootprintInBytes:unsignedLongLongValue4];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -74,7 +74,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       virtualMemorySizeInBytes = self->_virtualMemorySizeInBytes;
       if (virtualMemorySizeInBytes == [(AFMemoryInfo *)v5 virtualMemorySizeInBytes]&& (numberOfRegions = self->_numberOfRegions, numberOfRegions == [(AFMemoryInfo *)v5 numberOfRegions]) && (pageSizeInBytes = self->_pageSizeInBytes, pageSizeInBytes == [(AFMemoryInfo *)v5 pageSizeInBytes]) && (residentMemorySizeInBytes = self->_residentMemorySizeInBytes, residentMemorySizeInBytes == [(AFMemoryInfo *)v5 residentMemorySizeInBytes]) && (peakResidentMemorySizeInBytes = self->_peakResidentMemorySizeInBytes, peakResidentMemorySizeInBytes == [(AFMemoryInfo *)v5 peakResidentMemorySizeInBytes]))
       {
@@ -115,7 +115,7 @@
   return v10 ^ v14;
 }
 
-- (id)_descriptionWithIndent:(unint64_t)a3
+- (id)_descriptionWithIndent:(unint64_t)indent
 {
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
   v8.receiver = self;
@@ -126,18 +126,18 @@
   return v6;
 }
 
-- (AFMemoryInfo)initWithVirtualMemorySizeInBytes:(unint64_t)a3 numberOfRegions:(int)a4 pageSizeInBytes:(int)a5 residentMemorySizeInBytes:(unint64_t)a6 peakResidentMemorySizeInBytes:(unint64_t)a7 physicalMemoryFootprintInBytes:(unint64_t)a8
+- (AFMemoryInfo)initWithVirtualMemorySizeInBytes:(unint64_t)bytes numberOfRegions:(int)regions pageSizeInBytes:(int)inBytes residentMemorySizeInBytes:(unint64_t)sizeInBytes peakResidentMemorySizeInBytes:(unint64_t)memorySizeInBytes physicalMemoryFootprintInBytes:(unint64_t)footprintInBytes
 {
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __168__AFMemoryInfo_initWithVirtualMemorySizeInBytes_numberOfRegions_pageSizeInBytes_residentMemorySizeInBytes_peakResidentMemorySizeInBytes_physicalMemoryFootprintInBytes___block_invoke;
   v9[3] = &__block_descriptor_72_e32_v16__0___AFMemoryInfoMutating__8l;
-  v10 = a4;
-  v11 = a5;
-  v9[4] = a3;
-  v9[5] = a6;
-  v9[6] = a7;
-  v9[7] = a8;
+  regionsCopy = regions;
+  inBytesCopy = inBytes;
+  v9[4] = bytes;
+  v9[5] = sizeInBytes;
+  v9[6] = memorySizeInBytes;
+  v9[7] = footprintInBytes;
   return [(AFMemoryInfo *)self initWithBuilder:v9];
 }
 
@@ -153,17 +153,17 @@ void __168__AFMemoryInfo_initWithVirtualMemorySizeInBytes_numberOfRegions_pageSi
   [v4 setPhysicalMemoryFootprintInBytes:*(a1 + 56)];
 }
 
-- (AFMemoryInfo)initWithBuilder:(id)a3
+- (AFMemoryInfo)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v9.receiver = self;
   v9.super_class = AFMemoryInfo;
   v5 = [(AFMemoryInfo *)&v9 init];
   v6 = v5;
-  if (v4 && v5)
+  if (builderCopy && v5)
   {
     v7 = [[_AFMemoryInfoMutation alloc] initWithBase:0];
-    v4[2](v4, v7);
+    builderCopy[2](builderCopy, v7);
     if ([(_AFMemoryInfoMutation *)v7 isDirty])
     {
       v6->_virtualMemorySizeInBytes = [(_AFMemoryInfoMutation *)v7 getVirtualMemorySizeInBytes];
@@ -178,21 +178,21 @@ void __168__AFMemoryInfo_initWithVirtualMemorySizeInBytes_numberOfRegions_pageSi
   return v6;
 }
 
-+ (id)newWithBuilder:(id)a3
++ (id)newWithBuilder:(id)builder
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:v3];
+  builderCopy = builder;
+  v4 = [objc_alloc(objc_opt_class()) initWithBuilder:builderCopy];
 
   return v4;
 }
 
-- (id)mutatedCopyWithMutator:(id)a3
+- (id)mutatedCopyWithMutator:(id)mutator
 {
-  v4 = a3;
-  if (v4)
+  mutatorCopy = mutator;
+  if (mutatorCopy)
   {
     v5 = [[_AFMemoryInfoMutation alloc] initWithBase:self];
-    v4[2](v4, v5);
+    mutatorCopy[2](mutatorCopy, v5);
     if ([(_AFMemoryInfoMutation *)v5 isDirty])
     {
       v6 = objc_alloc_init(AFMemoryInfo);

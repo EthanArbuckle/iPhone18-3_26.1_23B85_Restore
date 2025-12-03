@@ -1,24 +1,24 @@
 @interface IOGCFastPathProxyConnection
-+ (id)connectTo:(unsigned int)a3 withProxyService:(id)a4 error:(int *)a5;
++ (id)connectTo:(unsigned int)to withProxyService:(id)service error:(int *)error;
 - (IOGCFastPathProxyConnection)init;
-- (id)createInputQueueWithOptions:(id)a3 error:(int *)a4;
+- (id)createInputQueueWithOptions:(id)options error:(int *)error;
 - (id)description;
-- (id)getProperty:(id)a3;
+- (id)getProperty:(id)property;
 - (int)close;
-- (int)mapSharedMemoryAt:(unint64_t *)a3 ofSize:(unint64_t *)a4 options:(unsigned int)a5;
+- (int)mapSharedMemoryAt:(unint64_t *)at ofSize:(unint64_t *)size options:(unsigned int)options;
 - (int)open;
 - (void)close;
 - (void)dealloc;
 - (void)open;
-- (xpc_connection_t)_initWithService:(void *)a3 withProxyService:(_DWORD *)a4 error:;
+- (xpc_connection_t)_initWithService:(void *)service withProxyService:(_DWORD *)proxyService error:;
 @end
 
 @implementation IOGCFastPathProxyConnection
 
-+ (id)connectTo:(unsigned int)a3 withProxyService:(id)a4 error:(int *)a5
++ (id)connectTo:(unsigned int)to withProxyService:(id)service error:(int *)error
 {
-  v8 = a4;
-  v9 = [(IOGCFastPathProxyConnection *)[a1 alloc] _initWithService:a3 withProxyService:v8 error:a5];
+  serviceCopy = service;
+  v9 = [(IOGCFastPathProxyConnection *)[self alloc] _initWithService:to withProxyService:serviceCopy error:error];
 
   return v9;
 }
@@ -85,7 +85,7 @@ void __71__IOGCFastPathProxyConnection__initWithService_withProxyService_error__
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1D2C3B000, v3, OS_LOG_TYPE_DEFAULT, "%@::dealloc", buf, 0xCu);
   }
 
@@ -110,7 +110,7 @@ void __71__IOGCFastPathProxyConnection__initWithService_withProxyService_error__
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (int)mapSharedMemoryAt:(unint64_t *)a3 ofSize:(unint64_t *)a4 options:(unsigned int)a5
+- (int)mapSharedMemoryAt:(unint64_t *)at ofSize:(unint64_t *)size options:(unsigned int)options
 {
   keys[1] = *MEMORY[0x1E69E9840];
   v8 = _gc_log_iokit();
@@ -148,19 +148,19 @@ void __71__IOGCFastPathProxyConnection__initWithService_withProxyService_error__
         uint64 = xpc_dictionary_get_uint64(v11, "memory_size");
         if (uint64)
         {
-          value = mach_vm_map(*MEMORY[0x1E69E9A60], a3, uint64, 0, 1, v22, 0, 0, 1, 1, 0);
+          value = mach_vm_map(*MEMORY[0x1E69E9A60], at, uint64, 0, 1, v22, 0, 0, 1, 1, 0);
           if (value)
           {
             v24 = _gc_log_iokit();
             if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 67109120;
-              LODWORD(v27) = value;
+              LODWORD(selfCopy4) = value;
               _os_log_impl(&dword_1D2C3B000, v24, OS_LOG_TYPE_DEFAULT, "vm_map returns %{mach.errno}d", buf, 8u);
             }
           }
 
-          *a4 = uint64;
+          *size = uint64;
           goto LABEL_19;
         }
 
@@ -168,7 +168,7 @@ void __71__IOGCFastPathProxyConnection__initWithService_withProxyService_error__
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v27 = self;
+          selfCopy4 = self;
           _os_log_impl(&dword_1D2C3B000, v25, OS_LOG_TYPE_DEFAULT, "mapSharedMemory reply for %@ missing 'memory_size' argument", buf, 0xCu);
         }
       }
@@ -179,7 +179,7 @@ void __71__IOGCFastPathProxyConnection__initWithService_withProxyService_error__
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v27 = self;
+          selfCopy4 = self;
           _os_log_impl(&dword_1D2C3B000, v25, OS_LOG_TYPE_DEFAULT, "mapSharedMemory reply for %@ missing 'memory' argument", buf, 0xCu);
         }
       }
@@ -211,7 +211,7 @@ LABEL_19:
     if (v16)
     {
       *buf = 138412546;
-      v27 = self;
+      selfCopy4 = self;
       v28 = 2112;
       v29 = v11;
       _os_log_impl(&dword_1D2C3B000, v14, OS_LOG_TYPE_DEFAULT, "Handshake for %@ failed: %@", buf, 0x16u);
@@ -221,7 +221,7 @@ LABEL_19:
   else if (v16)
   {
     *buf = 138412546;
-    v27 = self;
+    selfCopy4 = self;
     v28 = 2112;
     v29 = v11;
     _os_log_impl(&dword_1D2C3B000, v14, OS_LOG_TYPE_DEFAULT, "Handshake for %@ unknown response: %@", buf, 0x16u);
@@ -274,7 +274,7 @@ LABEL_20:
       if (v10)
       {
         v15 = 138412546;
-        v16 = self;
+        selfCopy2 = self;
         v17 = 2112;
         v18 = v5;
         _os_log_impl(&dword_1D2C3B000, v8, OS_LOG_TYPE_DEFAULT, "Open for %@ failed: %@", &v15, 0x16u);
@@ -284,7 +284,7 @@ LABEL_20:
     else if (v10)
     {
       v15 = 138412546;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2112;
       v18 = v5;
       _os_log_impl(&dword_1D2C3B000, v8, OS_LOG_TYPE_DEFAULT, "Open for %@ unknown response: %@", &v15, 0x16u);
@@ -337,7 +337,7 @@ LABEL_20:
       if (v10)
       {
         v15 = 138412546;
-        v16 = self;
+        selfCopy2 = self;
         v17 = 2112;
         v18 = v5;
         _os_log_impl(&dword_1D2C3B000, v8, OS_LOG_TYPE_DEFAULT, "Close for %@ failed: %@", &v15, 0x16u);
@@ -347,7 +347,7 @@ LABEL_20:
     else if (v10)
     {
       v15 = 138412546;
-      v16 = self;
+      selfCopy2 = self;
       v17 = 2112;
       v18 = v5;
       _os_log_impl(&dword_1D2C3B000, v8, OS_LOG_TYPE_DEFAULT, "Close for %@ unknown response: %@", &v15, 0x16u);
@@ -360,14 +360,14 @@ LABEL_20:
   return value;
 }
 
-- (id)getProperty:(id)a3
+- (id)getProperty:(id)property
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  propertyCopy = property;
   *keys = xmmword_1E8415470;
   Name = sel_getName(sel_getProperty_);
   values[0] = xpc_string_create(Name);
-  values[1] = xpc_string_create([v4 UTF8String]);
+  values[1] = xpc_string_create([propertyCopy UTF8String]);
   v6 = xpc_dictionary_create(keys, values, 2uLL);
   v7 = xpc_connection_send_message_with_reply_sync(self->_connection, v6);
   v8 = MEMORY[0x1D38AB9A0]();
@@ -421,7 +421,7 @@ LABEL_21:
     if (v11)
     {
       v20 = 138412546;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2112;
       v23 = v7;
       _os_log_impl(&dword_1D2C3B000, v10, OS_LOG_TYPE_DEFAULT, "getProperty for %@ failed: %@", &v20, 0x16u);
@@ -431,7 +431,7 @@ LABEL_21:
   else if (v11)
   {
     v20 = 138412546;
-    v21 = self;
+    selfCopy2 = self;
     v22 = 2112;
     v23 = v7;
     _os_log_impl(&dword_1D2C3B000, v10, OS_LOG_TYPE_DEFAULT, "getProperty for %@ unknown response: %@", &v20, 0x16u);
@@ -450,7 +450,7 @@ LABEL_22:
   return v15;
 }
 
-- (id)createInputQueueWithOptions:(id)a3 error:(int *)a4
+- (id)createInputQueueWithOptions:(id)options error:(int *)error
 {
   keys[1] = *MEMORY[0x1E69E9840];
   keys[0] = "selector";
@@ -468,7 +468,7 @@ LABEL_22:
       if (value)
       {
         v15 = 0;
-        *a4 = value;
+        *error = value;
         goto LABEL_17;
       }
 
@@ -496,7 +496,7 @@ LABEL_22:
     }
 
     v15 = 0;
-    *a4 = -536870209;
+    *error = -536870209;
 LABEL_17:
 
     goto LABEL_18;
@@ -510,7 +510,7 @@ LABEL_17:
     if (v12)
     {
       v20 = 138412546;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2112;
       v23 = v8;
       _os_log_impl(&dword_1D2C3B000, v11, OS_LOG_TYPE_DEFAULT, "createInputQueue for %@ failed: %@", &v20, 0x16u);
@@ -520,7 +520,7 @@ LABEL_17:
   else if (v12)
   {
     v20 = 138412546;
-    v21 = self;
+    selfCopy2 = self;
     v22 = 2112;
     v23 = v8;
     _os_log_impl(&dword_1D2C3B000, v11, OS_LOG_TYPE_DEFAULT, "createInputQueue for %@ unknown response: %@", &v20, 0x16u);
@@ -542,24 +542,24 @@ LABEL_18:
   memset(className, 0, 128);
   IORegistryEntryGetRegistryEntryID(self->_service, &entryID);
   IOObjectGetClass(self->_service, className);
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(PROXY) %s %#llx", className, entryID];
+  entryID = [MEMORY[0x1E696AEC0] stringWithFormat:@"(PROXY) %s %#llx", className, entryID];
   v4 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return entryID;
 }
 
-- (xpc_connection_t)_initWithService:(void *)a3 withProxyService:(_DWORD *)a4 error:
+- (xpc_connection_t)_initWithService:(void *)service withProxyService:(_DWORD *)proxyService error:
 {
   v59 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = v7;
-  if (!a1)
+  serviceCopy = service;
+  v8 = serviceCopy;
+  if (!self)
   {
     v11 = 0;
     goto LABEL_27;
   }
 
-  if (v7)
+  if (serviceCopy)
   {
     if (a2)
     {
@@ -569,9 +569,9 @@ LABEL_18:
 
   else
   {
-    v42 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v44 = "name";
-    [v42 handleFailureInMethod:sel__initWithService_withProxyService_error_ object:a1 file:@"IOGCFastPathProxyConnection.m" lineNumber:32 description:@"Invalid parameter not satisfying: %s"];
+    [currentHandler handleFailureInMethod:sel__initWithService_withProxyService_error_ object:self file:@"IOGCFastPathProxyConnection.m" lineNumber:32 description:@"Invalid parameter not satisfying: %s"];
 
     if (a2)
     {
@@ -579,12 +579,12 @@ LABEL_18:
     }
   }
 
-  v43 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
   v44 = "service != IO_OBJECT_NULL";
-  [v43 handleFailureInMethod:sel__initWithService_withProxyService_error_ object:a1 file:@"IOGCFastPathProxyConnection.m" lineNumber:33 description:@"Invalid parameter not satisfying: %s"];
+  [currentHandler2 handleFailureInMethod:sel__initWithService_withProxyService_error_ object:self file:@"IOGCFastPathProxyConnection.m" lineNumber:33 description:@"Invalid parameter not satisfying: %s"];
 
 LABEL_4:
-  v52.receiver = a1;
+  v52.receiver = self;
   v52.super_class = IOGCFastPathProxyConnection;
   v9 = objc_msgSendSuper2(&v52, sel_init);
   entryID = 0;
@@ -651,7 +651,7 @@ LABEL_4:
         }
 
         xpc_connection_cancel(v9[2]);
-        *a4 = value;
+        *proxyService = value;
       }
 
       else
@@ -689,7 +689,7 @@ LABEL_25:
       }
 
       xpc_connection_cancel(v9[2]);
-      *a4 = -536870209;
+      *proxyService = -536870209;
     }
 
     v11 = 0;

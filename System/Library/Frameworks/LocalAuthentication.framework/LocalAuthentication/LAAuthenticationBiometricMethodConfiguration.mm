@@ -1,18 +1,18 @@
 @interface LAAuthenticationBiometricMethodConfiguration
-- (LAAuthenticationBiometricMethodConfiguration)initWithAutoRetry:(BOOL)a3 avoidUsingFaceIDCamera:(BOOL)a4 allowedUsers:(id)a5 authenticationContext:(id)a6;
+- (LAAuthenticationBiometricMethodConfiguration)initWithAutoRetry:(BOOL)retry avoidUsingFaceIDCamera:(BOOL)camera allowedUsers:(id)users authenticationContext:(id)context;
 @end
 
 @implementation LAAuthenticationBiometricMethodConfiguration
 
-- (LAAuthenticationBiometricMethodConfiguration)initWithAutoRetry:(BOOL)a3 avoidUsingFaceIDCamera:(BOOL)a4 allowedUsers:(id)a5 authenticationContext:(id)a6
+- (LAAuthenticationBiometricMethodConfiguration)initWithAutoRetry:(BOOL)retry avoidUsingFaceIDCamera:(BOOL)camera allowedUsers:(id)users authenticationContext:(id)context
 {
   v9.receiver = self;
   v9.super_class = LAAuthenticationBiometricMethodConfiguration;
-  result = [(LAAuthenticationMethodConfiguration *)&v9 initWithAllowedUsers:a5 authenticationContext:a6];
+  result = [(LAAuthenticationMethodConfiguration *)&v9 initWithAllowedUsers:users authenticationContext:context];
   if (result)
   {
-    result->_autoRetry = a3;
-    result->_avoidUsingFaceIDCamera = a4;
+    result->_autoRetry = retry;
+    result->_avoidUsingFaceIDCamera = camera;
   }
 
   return result;

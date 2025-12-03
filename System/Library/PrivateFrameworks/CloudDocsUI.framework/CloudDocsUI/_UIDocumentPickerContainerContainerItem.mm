@@ -1,6 +1,6 @@
 @interface _UIDocumentPickerContainerContainerItem
-- (_UIDocumentPickerContainerContainerItem)initWithContainer:(id)a3;
-- (id)_blockingThumbnailWithSize:(CGSize)a3 scale:(double)a4 wantsBorder:(BOOL *)a5;
+- (_UIDocumentPickerContainerContainerItem)initWithContainer:(id)container;
+- (id)_blockingThumbnailWithSize:(CGSize)size scale:(double)scale wantsBorder:(BOOL *)border;
 - (id)modificationDate;
 - (id)sortPath;
 - (id)title;
@@ -9,16 +9,16 @@
 
 @implementation _UIDocumentPickerContainerContainerItem
 
-- (_UIDocumentPickerContainerContainerItem)initWithContainer:(id)a3
+- (_UIDocumentPickerContainerContainerItem)initWithContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   v9.receiver = self;
   v9.super_class = _UIDocumentPickerContainerContainerItem;
   v6 = [(_UIDocumentPickerContainerItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_container, a3);
+    objc_storeStrong(&v6->_container, container);
   }
 
   return v7;
@@ -27,71 +27,71 @@
 - (id)title
 {
   v2 = self->_container;
-  v3 = [(BRContainer *)v2 localizedName];
+  localizedName = [(BRContainer *)v2 localizedName];
 
-  if (v3)
+  if (localizedName)
   {
-    v4 = [(BRContainer *)v2 localizedName];
+    localizedName2 = [(BRContainer *)v2 localizedName];
   }
 
   else
   {
-    v5 = [(BRContainer *)v2 identifier];
-    v6 = [v5 rangeOfString:@"." options:4];
+    identifier = [(BRContainer *)v2 identifier];
+    v6 = [identifier rangeOfString:@"." options:4];
     v8 = v7;
 
-    v9 = [(BRContainer *)v2 identifier];
-    v4 = v9;
+    identifier2 = [(BRContainer *)v2 identifier];
+    localizedName2 = identifier2;
     if (v6 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v10 = [v9 substringFromIndex:v6 + v8];
+      v10 = [identifier2 substringFromIndex:v6 + v8];
 
-      v4 = v10;
+      localizedName2 = v10;
     }
   }
 
-  return v4;
+  return localizedName2;
 }
 
 - (void)_modelChanged
 {
-  v7 = [(_UIDocumentPickerContainerItem *)self model];
-  v3 = [v7 modelObjects];
-  v4 = -[_UIDocumentPickerContainerItem _formattedSubtitleForNumberOfItems:](self, "_formattedSubtitleForNumberOfItems:", [v3 count]);
+  model = [(_UIDocumentPickerContainerItem *)self model];
+  modelObjects = [model modelObjects];
+  v4 = -[_UIDocumentPickerContainerItem _formattedSubtitleForNumberOfItems:](self, "_formattedSubtitleForNumberOfItems:", [modelObjects count]);
   v5 = [v4 copy];
   cachedSubtitle = self->_cachedSubtitle;
   self->_cachedSubtitle = v5;
 }
 
-- (id)_blockingThumbnailWithSize:(CGSize)a3 scale:(double)a4 wantsBorder:(BOOL *)a5
+- (id)_blockingThumbnailWithSize:(CGSize)size scale:(double)scale wantsBorder:(BOOL *)border
 {
-  height = a3.height;
-  width = a3.width;
-  if (a5)
+  height = size.height;
+  width = size.width;
+  if (border)
   {
-    *a5 = 0;
+    *border = 0;
   }
 
   v9 = objc_opt_class();
-  v10 = [(BRContainer *)self->_container documentsURL];
-  v11 = [v9 _blockingFolderIconForURL:v10 container:self->_container size:width scale:{height, a4}];
+  documentsURL = [(BRContainer *)self->_container documentsURL];
+  v11 = [v9 _blockingFolderIconForURL:documentsURL container:self->_container size:width scale:{height, scale}];
 
   return v11;
 }
 
 - (id)modificationDate
 {
-  v2 = [(_UIDocumentPickerContainerContainerItem *)self container];
-  v3 = [v2 lastServerUpdate];
+  container = [(_UIDocumentPickerContainerContainerItem *)self container];
+  lastServerUpdate = [container lastServerUpdate];
 
-  return v3;
+  return lastServerUpdate;
 }
 
 - (id)sortPath
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(_UIDocumentPickerContainerContainerItem *)self title];
-  v5 = [v4 stringByAppendingString:@"/"];
+  title = [(_UIDocumentPickerContainerContainerItem *)self title];
+  v5 = [title stringByAppendingString:@"/"];
 
   objc_autoreleasePoolPop(v3);
 

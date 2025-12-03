@@ -1,5 +1,5 @@
 @interface BKSProcessExitContext
-- (BKSProcessExitContext)initWithCoder:(id)a3;
+- (BKSProcessExitContext)initWithCoder:(id)coder;
 - (id)description;
 - (uint64_t)setExitReason:(uint64_t)result;
 @end
@@ -16,15 +16,15 @@
   return v6;
 }
 
-- (BKSProcessExitContext)initWithCoder:(id)a3
+- (BKSProcessExitContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = BKSProcessExitContext;
   v5 = [(BKSProcessExitContext *)&v7 init];
   if (v5)
   {
-    v5->_exitReason = [v4 decodeIntegerForKey:@"_exitReason"];
+    v5->_exitReason = [coderCopy decodeIntegerForKey:@"_exitReason"];
   }
 
   return v5;

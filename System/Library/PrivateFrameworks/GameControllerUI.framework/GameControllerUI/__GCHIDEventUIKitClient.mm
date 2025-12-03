@@ -1,8 +1,8 @@
 @interface __GCHIDEventUIKitClient
 + (id)sharedInstance;
 - (__GCHIDEventUIKitClient)init;
-- (id)_initWithApplication:(id *)a1;
-- (id)registerEventHandler:(uint64_t)a1;
+- (id)_initWithApplication:(id *)application;
+- (id)registerEventHandler:(uint64_t)handler;
 - (void)dealloc;
 @end
 
@@ -31,9 +31,9 @@
 - (void)dealloc
 {
   v3 = self->_application;
-  v4 = [MEMORY[0x277CCACC8] currentThread];
-  v5 = [MEMORY[0x277CCACC8] mainThread];
-  v6 = [v4 isEqual:v5];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  mainThread = [MEMORY[0x277CCACC8] mainThread];
+  v6 = [currentThread isEqual:mainThread];
 
   if (v6)
   {
@@ -55,12 +55,12 @@
   [(__GCHIDEventUIKitClient *)&v7 dealloc];
 }
 
-- (id)_initWithApplication:(id *)a1
+- (id)_initWithApplication:(id *)application
 {
   v4 = a2;
-  if (a1)
+  if (application)
   {
-    v21.receiver = a1;
+    v21.receiver = application;
     v21.super_class = __GCHIDEventUIKitClient;
     v5 = objc_msgSendSuper2(&v21, sel_init);
     objc_storeStrong(v5 + 1, a2);
@@ -77,9 +77,9 @@
     v9 = v5;
     v20 = v9;
     v10 = MEMORY[0x20F32E600](v19);
-    v11 = [MEMORY[0x277CCACC8] currentThread];
-    v12 = [MEMORY[0x277CCACC8] mainThread];
-    v13 = [v11 isEqual:v12];
+    currentThread = [MEMORY[0x277CCACC8] currentThread];
+    mainThread = [MEMORY[0x277CCACC8] mainThread];
+    v13 = [currentThread isEqual:mainThread];
 
     if (v13)
     {
@@ -98,40 +98,40 @@
       dispatch_async(MEMORY[0x277D85CD0], v15);
     }
 
-    a1 = v9;
+    application = v9;
   }
 
-  return a1;
+  return application;
 }
 
-- (id)registerEventHandler:(uint64_t)a1
+- (id)registerEventHandler:(uint64_t)handler
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (handler)
   {
     v5 = [v3 copy];
 
-    os_unfair_lock_lock((a1 + 16));
-    v6 = *(a1 + 24);
+    os_unfair_lock_lock((handler + 16));
+    v6 = *(handler + 24);
     v7 = MEMORY[0x20F32E600](v5);
     v8 = [v6 arrayByAddingObject:v7];
-    v9 = *(a1 + 24);
-    *(a1 + 24) = v8;
+    v9 = *(handler + 24);
+    *(handler + 24) = v8;
 
-    os_unfair_lock_unlock((a1 + 16));
+    os_unfair_lock_unlock((handler + 16));
     v10 = objc_alloc(MEMORY[0x277D0C8F8]);
     OUTLINED_FUNCTION_0_0();
     v12[1] = 3221225472;
     v12[2] = __48____GCHIDEventUIKitClient_registerEventHandler___block_invoke;
     v12[3] = &unk_277E1DBD0;
-    v12[4] = a1;
+    v12[4] = handler;
     v4 = v5;
     v13 = v4;
-    a1 = [v10 initWithCleanupHandler:v12];
+    handler = [v10 initWithCleanupHandler:v12];
   }
 
-  return a1;
+  return handler;
 }
 
 @end

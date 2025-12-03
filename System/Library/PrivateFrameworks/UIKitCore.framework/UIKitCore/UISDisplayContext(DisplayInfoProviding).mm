@@ -12,9 +12,9 @@
 
 - (double)homeAffordanceOverlayAllowance
 {
-  v1 = [a1 displayEdgeInfo];
-  v2 = [v1 homeAffordanceOverlayAllowance];
-  [v2 doubleValue];
+  displayEdgeInfo = [self displayEdgeInfo];
+  homeAffordanceOverlayAllowance = [displayEdgeInfo homeAffordanceOverlayAllowance];
+  [homeAffordanceOverlayAllowance doubleValue];
   v4 = v3;
 
   return v4;
@@ -22,27 +22,27 @@
 
 - (double)safeAreaInsetsPortrait
 {
-  v1 = [a1 displayEdgeInfo];
-  v2 = [v1 safeAreaInsetsPortrait];
-  v3 = UIEdgeInsetsFromApplicationSupportDisplayEdgeInsetsWrapper(v2);
+  displayEdgeInfo = [self displayEdgeInfo];
+  safeAreaInsetsPortrait = [displayEdgeInfo safeAreaInsetsPortrait];
+  v3 = UIEdgeInsetsFromApplicationSupportDisplayEdgeInsetsWrapper(safeAreaInsetsPortrait);
 
   return v3;
 }
 
 - (double)peripheryInsets
 {
-  v1 = [a1 displayEdgeInfo];
-  v2 = [v1 peripheryInsets];
-  v3 = UIEdgeInsetsFromApplicationSupportDisplayEdgeInsetsWrapper(v2);
+  displayEdgeInfo = [self displayEdgeInfo];
+  peripheryInsets = [displayEdgeInfo peripheryInsets];
+  v3 = UIEdgeInsetsFromApplicationSupportDisplayEdgeInsetsWrapper(peripheryInsets);
 
   return v3;
 }
 
 - (double)systemMinimumMargin
 {
-  v1 = [a1 displayEdgeInfo];
-  v2 = [v1 systemMinimumMargin];
-  [v2 doubleValue];
+  displayEdgeInfo = [self displayEdgeInfo];
+  systemMinimumMargin = [displayEdgeInfo systemMinimumMargin];
+  [systemMinimumMargin doubleValue];
   v4 = v3;
 
   return v4;
@@ -50,55 +50,55 @@
 
 - (double)safeAreaInsetsLandscapeLeft
 {
-  v2 = [a1 displayEdgeInfo];
-  v3 = [v2 safeAreaInsetsLandscapeLeft];
+  displayEdgeInfo = [self displayEdgeInfo];
+  safeAreaInsetsLandscapeLeft = [displayEdgeInfo safeAreaInsetsLandscapeLeft];
 
-  v4 = [a1 displayEdgeInfo];
-  v5 = v4;
-  if (v3)
+  displayEdgeInfo2 = [self displayEdgeInfo];
+  v5 = displayEdgeInfo2;
+  if (safeAreaInsetsLandscapeLeft)
   {
-    v6 = [v4 safeAreaInsetsLandscapeLeft];
+    safeAreaInsetsLandscapeLeft2 = [displayEdgeInfo2 safeAreaInsetsLandscapeLeft];
   }
 
   else
   {
-    v7 = [v4 safeAreaInsetsLandscapeRight];
+    safeAreaInsetsLandscapeRight = [displayEdgeInfo2 safeAreaInsetsLandscapeRight];
 
-    v8 = [a1 displayEdgeInfo];
-    v5 = v8;
-    if (v7)
+    displayEdgeInfo3 = [self displayEdgeInfo];
+    v5 = displayEdgeInfo3;
+    if (safeAreaInsetsLandscapeRight)
     {
-      [v8 safeAreaInsetsLandscapeRight];
+      [displayEdgeInfo3 safeAreaInsetsLandscapeRight];
     }
 
     else
     {
-      [v8 safeAreaInsetsPortrait];
+      [displayEdgeInfo3 safeAreaInsetsPortrait];
     }
-    v6 = ;
+    safeAreaInsetsLandscapeLeft2 = ;
   }
 
-  v9 = v6;
-  v10 = UIEdgeInsetsFromApplicationSupportDisplayEdgeInsetsWrapper(v6);
+  v9 = safeAreaInsetsLandscapeLeft2;
+  v10 = UIEdgeInsetsFromApplicationSupportDisplayEdgeInsetsWrapper(safeAreaInsetsLandscapeLeft2);
 
   return v10;
 }
 
 - (double)safeAreaInsetsPortraitUpsideDown
 {
-  v2 = [a1 displayEdgeInfo];
-  v3 = [v2 safeAreaInsetsPortraitUpsideDown];
+  displayEdgeInfo = [self displayEdgeInfo];
+  safeAreaInsetsPortraitUpsideDown = [displayEdgeInfo safeAreaInsetsPortraitUpsideDown];
 
-  v4 = [a1 displayEdgeInfo];
-  v5 = v4;
-  if (v3)
+  displayEdgeInfo2 = [self displayEdgeInfo];
+  v5 = displayEdgeInfo2;
+  if (safeAreaInsetsPortraitUpsideDown)
   {
-    [v4 safeAreaInsetsPortraitUpsideDown];
+    [displayEdgeInfo2 safeAreaInsetsPortraitUpsideDown];
   }
 
   else
   {
-    [v4 safeAreaInsetsPortrait];
+    [displayEdgeInfo2 safeAreaInsetsPortrait];
   }
   v6 = ;
   v7 = UIEdgeInsetsFromApplicationSupportDisplayEdgeInsetsWrapper(v6);
@@ -108,36 +108,36 @@
 
 - (double)safeAreaInsetsLandscapeRight
 {
-  v2 = [a1 displayEdgeInfo];
-  v3 = [v2 safeAreaInsetsLandscapeRight];
+  displayEdgeInfo = [self displayEdgeInfo];
+  safeAreaInsetsLandscapeRight = [displayEdgeInfo safeAreaInsetsLandscapeRight];
 
-  v4 = [a1 displayEdgeInfo];
-  v5 = v4;
-  if (v3)
+  displayEdgeInfo2 = [self displayEdgeInfo];
+  v5 = displayEdgeInfo2;
+  if (safeAreaInsetsLandscapeRight)
   {
-    v6 = [v4 safeAreaInsetsLandscapeRight];
+    safeAreaInsetsLandscapeRight2 = [displayEdgeInfo2 safeAreaInsetsLandscapeRight];
   }
 
   else
   {
-    v7 = [v4 safeAreaInsetsLandscapeLeft];
+    safeAreaInsetsLandscapeLeft = [displayEdgeInfo2 safeAreaInsetsLandscapeLeft];
 
-    v8 = [a1 displayEdgeInfo];
-    v5 = v8;
-    if (v7)
+    displayEdgeInfo3 = [self displayEdgeInfo];
+    v5 = displayEdgeInfo3;
+    if (safeAreaInsetsLandscapeLeft)
     {
-      [v8 safeAreaInsetsLandscapeLeft];
+      [displayEdgeInfo3 safeAreaInsetsLandscapeLeft];
     }
 
     else
     {
-      [v8 safeAreaInsetsPortrait];
+      [displayEdgeInfo3 safeAreaInsetsPortrait];
     }
-    v6 = ;
+    safeAreaInsetsLandscapeRight2 = ;
   }
 
-  v9 = v6;
-  v10 = UIEdgeInsetsFromApplicationSupportDisplayEdgeInsetsWrapper(v6);
+  v9 = safeAreaInsetsLandscapeRight2;
+  v10 = UIEdgeInsetsFromApplicationSupportDisplayEdgeInsetsWrapper(safeAreaInsetsLandscapeRight2);
 
   return v10;
 }

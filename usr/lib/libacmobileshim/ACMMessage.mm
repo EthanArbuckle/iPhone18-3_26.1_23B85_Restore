@@ -12,50 +12,50 @@
 - (BOOL)useAlertView;
 - (BOOL)userNameFieldEditable;
 - (id)principal;
-- (void)forwardInvocation:(id)a3;
-- (void)setAutomaticallyCancelWhenSwitchingToBackground:(BOOL)a3;
-- (void)setCanUseTouchID:(BOOL)a3;
-- (void)setCancelAllowed:(BOOL)a3;
-- (void)setDisableSingleSignOn:(BOOL)a3;
-- (void)setDoNotSaveHSASessionInKeychain:(BOOL)a3;
-- (void)setGeneratedWithTouchID:(BOOL)a3;
-- (void)setIgnoreHSASessionInKeychain:(BOOL)a3;
-- (void)setIsInApp2SVEnabledOption:(BOOL)a3;
-- (void)setLavaForceUseFailoverServerAddress:(BOOL)a3;
-- (void)setManagerSignIn:(BOOL)a3;
-- (void)setPrincipal:(id)a3;
-- (void)setUseAlertView:(BOOL)a3;
-- (void)setUserNameFieldEditable:(BOOL)a3;
+- (void)forwardInvocation:(id)invocation;
+- (void)setAutomaticallyCancelWhenSwitchingToBackground:(BOOL)background;
+- (void)setCanUseTouchID:(BOOL)d;
+- (void)setCancelAllowed:(BOOL)allowed;
+- (void)setDisableSingleSignOn:(BOOL)on;
+- (void)setDoNotSaveHSASessionInKeychain:(BOOL)keychain;
+- (void)setGeneratedWithTouchID:(BOOL)d;
+- (void)setIgnoreHSASessionInKeychain:(BOOL)keychain;
+- (void)setIsInApp2SVEnabledOption:(BOOL)option;
+- (void)setLavaForceUseFailoverServerAddress:(BOOL)address;
+- (void)setManagerSignIn:(BOOL)in;
+- (void)setPrincipal:(id)principal;
+- (void)setUseAlertView:(BOOL)view;
+- (void)setUserNameFieldEditable:(BOOL)editable;
 @end
 
 @implementation ACMMessage
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
   if (qword_2A1EB8FA0 && (ACFLogSettingsGetLevelMask() & 8) != 0)
   {
-    ACFLog(3, "[ACMMessage forwardInvocation:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMMessage.m", 41, 0, "Not implemented: %@", a3);
+    ACFLog(3, "[ACMMessage forwardInvocation:]", "/Library/Caches/com.apple.xbs/Sources/AppleConnectClients/Mobile/Common/Sources/ACMMessage.m", 41, 0, "Not implemented: %@", invocation);
   }
 
   v5.receiver = self;
   v5.super_class = ACMMessage;
-  [(ACMMessage *)&v5 forwardInvocation:a3];
+  [(ACMMessage *)&v5 forwardInvocation:invocation];
 }
 
 - (id)principal
 {
-  v3 = [(ACMMessage *)self userName];
-  v4 = [(ACMMessage *)self realm];
+  userName = [(ACMMessage *)self userName];
+  realm = [(ACMMessage *)self realm];
 
-  return [ACFPrincipal principalWithUserName:v3 realm:v4];
+  return [ACFPrincipal principalWithUserName:userName realm:realm];
 }
 
-- (void)setPrincipal:(id)a3
+- (void)setPrincipal:(id)principal
 {
-  -[ACMMessage setUserName:](self, "setUserName:", [a3 userName]);
-  v5 = [a3 realm];
+  -[ACMMessage setUserName:](self, "setUserName:", [principal userName]);
+  realm = [principal realm];
 
-  [(ACMMessage *)self setRealm:v5];
+  [(ACMMessage *)self setRealm:realm];
 }
 
 - (BOOL)isInApp2SVEnabledOption
@@ -65,9 +65,9 @@
   return [v2 BOOLValue];
 }
 
-- (void)setIsInApp2SVEnabledOption:(BOOL)a3
+- (void)setIsInApp2SVEnabledOption:(BOOL)option
 {
-  v4 = [MEMORY[0x29EDBA070] numberWithBool:a3];
+  v4 = [MEMORY[0x29EDBA070] numberWithBool:option];
 
   [(ACFMessage *)self setObject:v4 forKey:@"ACCIsInApp2SVEnabledOption"];
 }
@@ -79,9 +79,9 @@
   return [v2 BOOLValue];
 }
 
-- (void)setIgnoreHSASessionInKeychain:(BOOL)a3
+- (void)setIgnoreHSASessionInKeychain:(BOOL)keychain
 {
-  v4 = [MEMORY[0x29EDBA070] numberWithBool:a3];
+  v4 = [MEMORY[0x29EDBA070] numberWithBool:keychain];
 
   [(ACFMessage *)self setObject:v4 forKey:@"ACCIgnoreHSASessionInKeychain"];
 }
@@ -93,9 +93,9 @@
   return [v2 BOOLValue];
 }
 
-- (void)setDoNotSaveHSASessionInKeychain:(BOOL)a3
+- (void)setDoNotSaveHSASessionInKeychain:(BOOL)keychain
 {
-  v4 = [MEMORY[0x29EDBA070] numberWithBool:a3];
+  v4 = [MEMORY[0x29EDBA070] numberWithBool:keychain];
 
   [(ACFMessage *)self setObject:v4 forKey:@"ACCDoNotSaveHSASessionInKeychain"];
 }
@@ -107,9 +107,9 @@
   return [v2 BOOLValue];
 }
 
-- (void)setManagerSignIn:(BOOL)a3
+- (void)setManagerSignIn:(BOOL)in
 {
-  v4 = [MEMORY[0x29EDBA070] numberWithBool:a3];
+  v4 = [MEMORY[0x29EDBA070] numberWithBool:in];
 
   [(ACFMessage *)self setObject:v4 forKey:@"managerSignIn"];
 }
@@ -121,9 +121,9 @@
   return [v2 BOOLValue];
 }
 
-- (void)setCancelAllowed:(BOOL)a3
+- (void)setCancelAllowed:(BOOL)allowed
 {
-  v4 = [MEMORY[0x29EDBA070] numberWithBool:a3];
+  v4 = [MEMORY[0x29EDBA070] numberWithBool:allowed];
 
   [(ACFMessage *)self setObject:v4 forKey:@"cancelAllowed"];
 }
@@ -135,9 +135,9 @@
   return [v2 BOOLValue];
 }
 
-- (void)setDisableSingleSignOn:(BOOL)a3
+- (void)setDisableSingleSignOn:(BOOL)on
 {
-  v4 = [MEMORY[0x29EDBA070] numberWithBool:a3];
+  v4 = [MEMORY[0x29EDBA070] numberWithBool:on];
 
   [(ACFMessage *)self setObject:v4 forKey:@"disableSingleSignOn"];
 }
@@ -149,9 +149,9 @@
   return [v2 BOOLValue];
 }
 
-- (void)setLavaForceUseFailoverServerAddress:(BOOL)a3
+- (void)setLavaForceUseFailoverServerAddress:(BOOL)address
 {
-  v4 = [MEMORY[0x29EDBA070] numberWithBool:a3];
+  v4 = [MEMORY[0x29EDBA070] numberWithBool:address];
 
   [(ACFMessage *)self setObject:v4 forKey:@"lavaForceUseFailoverServerAddress"];
 }
@@ -163,9 +163,9 @@
   return [v2 BOOLValue];
 }
 
-- (void)setUseAlertView:(BOOL)a3
+- (void)setUseAlertView:(BOOL)view
 {
-  v4 = [MEMORY[0x29EDBA070] numberWithBool:a3];
+  v4 = [MEMORY[0x29EDBA070] numberWithBool:view];
 
   [(ACFMessage *)self setObject:v4 forKey:@"useAlertView"];
 }
@@ -177,9 +177,9 @@
   return [v2 BOOLValue];
 }
 
-- (void)setUserNameFieldEditable:(BOOL)a3
+- (void)setUserNameFieldEditable:(BOOL)editable
 {
-  v4 = [MEMORY[0x29EDBA070] numberWithBool:a3];
+  v4 = [MEMORY[0x29EDBA070] numberWithBool:editable];
 
   [(ACFMessage *)self setObject:v4 forKey:@"userNameFieldEditable"];
 }
@@ -191,9 +191,9 @@
   return [v2 BOOLValue];
 }
 
-- (void)setAutomaticallyCancelWhenSwitchingToBackground:(BOOL)a3
+- (void)setAutomaticallyCancelWhenSwitchingToBackground:(BOOL)background
 {
-  v4 = [MEMORY[0x29EDBA070] numberWithBool:a3];
+  v4 = [MEMORY[0x29EDBA070] numberWithBool:background];
 
   [(ACFMessage *)self setObject:v4 forKey:@"automaticallyCancelWhenSwitchingToBackground"];
 }
@@ -205,9 +205,9 @@
   return [v2 BOOLValue];
 }
 
-- (void)setCanUseTouchID:(BOOL)a3
+- (void)setCanUseTouchID:(BOOL)d
 {
-  v4 = [MEMORY[0x29EDBA070] numberWithBool:a3];
+  v4 = [MEMORY[0x29EDBA070] numberWithBool:d];
 
   [(ACFMessage *)self setObject:v4 forKey:@"canUseTouchID"];
 }
@@ -219,9 +219,9 @@
   return [v2 BOOLValue];
 }
 
-- (void)setGeneratedWithTouchID:(BOOL)a3
+- (void)setGeneratedWithTouchID:(BOOL)d
 {
-  v4 = [MEMORY[0x29EDBA070] numberWithBool:a3];
+  v4 = [MEMORY[0x29EDBA070] numberWithBool:d];
 
   [(ACFMessage *)self setObject:v4 forKey:@"generatedWithTouchID"];
 }

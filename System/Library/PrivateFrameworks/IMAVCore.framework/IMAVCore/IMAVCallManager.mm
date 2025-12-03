@@ -9,18 +9,18 @@
 - (id)_nonRetainingChatList;
 - (unsigned)_callState;
 - (unsigned)callState;
-- (void)_addACChatProxy:(id)a3;
-- (void)_addAVChatProxy:(id)a3;
-- (void)_addIMAVChatToChatList:(id)a3;
+- (void)_addACChatProxy:(id)proxy;
+- (void)_addAVChatProxy:(id)proxy;
+- (void)_addIMAVChatToChatList:(id)list;
 - (void)_postStateChangeIfNecessary;
-- (void)_removeIMAVChatFromChatList:(id)a3;
+- (void)_removeIMAVChatFromChatList:(id)list;
 - (void)_sendProxyUpdate;
-- (void)_setACCallState:(unsigned int)a3 quietly:(BOOL)a4;
-- (void)_setAVCallState:(unsigned int)a3 quietly:(BOOL)a4;
+- (void)_setACCallState:(unsigned int)state quietly:(BOOL)quietly;
+- (void)_setAVCallState:(unsigned int)state quietly:(BOOL)quietly;
 - (void)_updateACCallState;
-- (void)_updateACChatProxyWithInfo:(id)a3;
+- (void)_updateACChatProxyWithInfo:(id)info;
 - (void)_updateAVCallState;
-- (void)_updateAVChatProxyWithInfo:(id)a3;
+- (void)_updateAVChatProxyWithInfo:(id)info;
 - (void)_updateOverallChatState;
 @end
 
@@ -214,9 +214,9 @@ LABEL_13:
   return chatArray;
 }
 
-- (void)_addIMAVChatToChatList:(id)a3
+- (void)_addIMAVChatToChatList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v9 = objc_msgSend__chatListLock(IMAVChat, v5, v6, v7, v8);
   objc_msgSend_lock(v9, v10, v11, v12, v13);
 
@@ -228,17 +228,17 @@ LABEL_13:
   }
 
   v16 = objc_alloc(MEMORY[0x277D192E0]);
-  inited = objc_msgSend_initRefWithObject_(v16, v17, v4, v18, v19);
+  inited = objc_msgSend_initRefWithObject_(v16, v17, listCopy, v18, v19);
 
   objc_msgSend_addObject_(self->_chatArray, v20, inited, v21, v22);
   v27 = objc_msgSend__chatListLock(IMAVChat, v23, v24, v25, v26);
   objc_msgSend_unlock(v27, v28, v29, v30, v31);
 }
 
-- (void)_removeIMAVChatFromChatList:(id)a3
+- (void)_removeIMAVChatFromChatList:(id)list
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  listCopy = list;
   v9 = objc_msgSend__chatListLock(IMAVChat, v5, v6, v7, v8);
   objc_msgSend_lock(v9, v10, v11, v12, v13);
 
@@ -261,7 +261,7 @@ LABEL_3:
         objc_enumerationMutation(v14);
       }
 
-      if (objc_msgSend_hash(*(*(&v34 + 1) + 8 * v23), v17, v18, v19, v20, v34) == v4)
+      if (objc_msgSend_hash(*(*(&v34 + 1) + 8 * v23), v17, v18, v19, v20, v34) == listCopy)
       {
         break;
       }
@@ -352,16 +352,16 @@ LABEL_6:
   }
 }
 
-- (void)_setAVCallState:(unsigned int)a3 quietly:(BOOL)a4
+- (void)_setAVCallState:(unsigned int)state quietly:(BOOL)quietly
 {
   v31 = *MEMORY[0x277D85DE8];
-  if (self->_avCallState != a3)
+  if (self->_avCallState != state)
   {
     v7 = sub_254761764();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = _NSStringDescriptionForIMAVChatState(self->_avCallState);
-      v9 = _NSStringDescriptionForIMAVChatState(a3);
+      v9 = _NSStringDescriptionForIMAVChatState(state);
       v28 = 138412546;
       *v29 = v8;
       *&v29[8] = 2112;
@@ -370,9 +370,9 @@ LABEL_6:
     }
 
     v14 = objc_msgSend__callState(self, v10, v11, v12, v13);
-    self->_avCallState = a3;
+    self->_avCallState = state;
     v19 = objc_msgSend__callState(self, v15, v16, v17, v18);
-    if (!a4)
+    if (!quietly)
     {
       v20 = v19;
       if (v14 != v19)
@@ -470,16 +470,16 @@ LABEL_6:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_setACCallState:(unsigned int)a3 quietly:(BOOL)a4
+- (void)_setACCallState:(unsigned int)state quietly:(BOOL)quietly
 {
   v31 = *MEMORY[0x277D85DE8];
-  if (self->_acCallState != a3)
+  if (self->_acCallState != state)
   {
     v7 = sub_254761764();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = _NSStringDescriptionForIMAVChatState(self->_acCallState);
-      v9 = _NSStringDescriptionForIMAVChatState(a3);
+      v9 = _NSStringDescriptionForIMAVChatState(state);
       v28 = 138412546;
       *v29 = v8;
       *&v29[8] = 2112;
@@ -488,9 +488,9 @@ LABEL_6:
     }
 
     v14 = objc_msgSend__callState(self, v10, v11, v12, v13);
-    self->_acCallState = a3;
+    self->_acCallState = state;
     v19 = objc_msgSend__callState(self, v15, v16, v17, v18);
-    if (!a4)
+    if (!quietly)
     {
       v20 = v19;
       if (v14 != v19)
@@ -644,7 +644,7 @@ LABEL_6:
   v197 = 0u;
   v194 = 0u;
   v195 = 0u;
-  v189 = self;
+  selfCopy = self;
   v25 = objc_msgSend_calls(self, v15, v16, v17, v18);
   v27 = objc_msgSend_countByEnumeratingWithState_objects_count_(v25, v26, &v194, v200, 16);
   if (!v27)
@@ -746,7 +746,7 @@ LABEL_20:
   while (v28);
 LABEL_25:
 
-  objc_msgSend__sendProxyUpdate(v189, v60, v61, v62, v63);
+  objc_msgSend__sendProxyUpdate(selfCopy, v60, v61, v62, v63);
   if (v29 == 5)
   {
 
@@ -776,7 +776,7 @@ LABEL_25:
     v71 = sub_254761764();
     if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
     {
-      v76 = objc_msgSend__FTCalls(v189, v72, v73, v74, v75);
+      v76 = objc_msgSend__FTCalls(selfCopy, v72, v73, v74, v75);
       *buf = 138412290;
       v199 = v76;
       _os_log_impl(&dword_254743000, v71, OS_LOG_TYPE_DEFAULT, "Remaining chats: %@", buf, 0xCu);
@@ -788,12 +788,12 @@ LABEL_25:
 
   if (shouldRunConferences)
   {
-    avCallState = v189->_avCallState;
+    avCallState = selfCopy->_avCallState;
     v88 = MEMORY[0x277CBEAC0];
     v89 = _NSStringDescriptionForIMAVChatState(v29);
     v90 = _NSStringDescriptionForIMAVChatState(avCallState);
     v91 = MEMORY[0x277CCACA8];
-    objc_msgSend_timeIntervalSinceNow(v189->_lastCallStateChange, v92, v93, v94, v95);
+    objc_msgSend_timeIntervalSinceNow(selfCopy->_lastCallStateChange, v92, v93, v94, v95);
     v100 = objc_msgSend_stringWithFormat_(v91, v97, @"%.1f", v98, v99, fabs(v96));
     v104 = objc_msgSend_dictionaryWithObjectsAndKeys_(v88, v101, v89, v102, v103, @"CurrentState", v90, @"PreviousState", v100, @"TimeSinceLastStateChange", 0);
 
@@ -813,12 +813,12 @@ LABEL_25:
 
   if (v110)
   {
-    acCallState = v189->_acCallState;
+    acCallState = selfCopy->_acCallState;
     v116 = MEMORY[0x277CBEAC0];
     v117 = _NSStringDescriptionForIMAVChatState(v68);
     v118 = _NSStringDescriptionForIMAVChatState(acCallState);
     v119 = MEMORY[0x277CCACA8];
-    objc_msgSend_timeIntervalSinceNow(v189->_lastCallStateChange, v120, v121, v122, v123);
+    objc_msgSend_timeIntervalSinceNow(selfCopy->_lastCallStateChange, v120, v121, v122, v123);
     v128 = objc_msgSend_stringWithFormat_(v119, v125, @"%.1f", v126, v127, fabs(v124));
     v132 = objc_msgSend_dictionaryWithObjectsAndKeys_(v116, v129, v117, v130, v131, @"CurrentState", v118, @"PreviousState", v128, @"TimeSinceLastStateChange", 0);
 
@@ -834,16 +834,16 @@ LABEL_25:
   }
 
   v133 = objc_msgSend_date(MEMORY[0x277CBEAA8], v111, v112, v113, v114);
-  lastCallStateChange = v189->_lastCallStateChange;
-  v189->_lastCallStateChange = v133;
+  lastCallStateChange = selfCopy->_lastCallStateChange;
+  selfCopy->_lastCallStateChange = v133;
 
   v139 = objc_msgSend_sharedInstance(IMAVController, v135, v136, v137, v138);
   v144 = objc_msgSend__shouldRunConferences(v139, v140, v141, v142, v143);
 
   if (v144)
   {
-    objc_msgSend__setAVCallState_(v189, v145, v29, v147, v148);
-    notify_set_state(v189->_avToken, v29);
+    objc_msgSend__setAVCallState_(selfCopy, v145, v29, v147, v148);
+    notify_set_state(selfCopy->_avToken, v29);
     notify_post("kIMAVCoreAVCallStateChanged");
   }
 
@@ -852,8 +852,8 @@ LABEL_25:
 
   if (v154)
   {
-    objc_msgSend__setACCallState_(v189, v155, v68, v157, v158);
-    notify_set_state(v189->_acToken, v68);
+    objc_msgSend__setACCallState_(selfCopy, v155, v68, v157, v158);
+    notify_set_state(selfCopy->_acToken, v68);
     notify_post("kIMAVCoreACCallStateChanged");
   }
 
@@ -883,20 +883,20 @@ LABEL_25:
     v176 = 0;
   }
 
-  powerAssertion = v189->_powerAssertion;
+  powerAssertion = selfCopy->_powerAssertion;
   if (v175 & 1) != 0 || (v176)
   {
     if (!powerAssertion)
     {
       v181 = objc_alloc(MEMORY[0x277D19290]);
       v185 = objc_msgSend_initWithIdentifier_(v181, v182, @"ActiveFaceTimeConferenceAssertion", v183, v184);
-      v186 = v189->_powerAssertion;
-      v189->_powerAssertion = v185;
+      v186 = selfCopy->_powerAssertion;
+      selfCopy->_powerAssertion = v185;
 
       v180 = sub_254761764();
       if (os_log_type_enabled(v180, OS_LOG_TYPE_DEFAULT))
       {
-        v187 = v189->_powerAssertion;
+        v187 = selfCopy->_powerAssertion;
         *buf = 138412290;
         v199 = v187;
         _os_log_impl(&dword_254743000, v180, OS_LOG_TYPE_DEFAULT, "Setting power assertion: %@", buf, 0xCu);
@@ -911,14 +911,14 @@ LABEL_66:
     v178 = sub_254761764();
     if (os_log_type_enabled(v178, OS_LOG_TYPE_DEFAULT))
     {
-      v179 = v189->_powerAssertion;
+      v179 = selfCopy->_powerAssertion;
       *buf = 138412290;
       v199 = v179;
       _os_log_impl(&dword_254743000, v178, OS_LOG_TYPE_DEFAULT, "Releasing power assertion: %@", buf, 0xCu);
     }
 
-    v180 = v189->_powerAssertion;
-    v189->_powerAssertion = 0;
+    v180 = selfCopy->_powerAssertion;
+    selfCopy->_powerAssertion = 0;
     goto LABEL_66;
   }
 
@@ -926,10 +926,10 @@ LABEL_68:
   v188 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addAVChatProxy:(id)a3
+- (void)_addAVChatProxy:(id)proxy
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  proxyCopy = proxy;
   if (!self->_guidToAVChatProxyMap)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
@@ -945,10 +945,10 @@ LABEL_68:
   }
 
   v13 = self->_guidToAVChatProxyMap;
-  v14 = objc_msgSend_GUID(v8, v4, v5, v6, v7);
-  objc_msgSend_setObject_forKey_(v13, v15, v8, v14, v16);
+  v14 = objc_msgSend_GUID(proxyCopy, v4, v5, v6, v7);
+  objc_msgSend_setObject_forKey_(v13, v15, proxyCopy, v14, v16);
 
-  objc_msgSend_addObject_(self->_avChatProxyArray, v17, v8, v18, v19);
+  objc_msgSend_addObject_(self->_avChatProxyArray, v17, proxyCopy, v18, v19);
   v20 = sub_254761764();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
@@ -961,10 +961,10 @@ LABEL_68:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addACChatProxy:(id)a3
+- (void)_addACChatProxy:(id)proxy
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
+  proxyCopy = proxy;
   if (!self->_guidToACChatProxyMap)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
@@ -980,10 +980,10 @@ LABEL_68:
   }
 
   v13 = self->_guidToACChatProxyMap;
-  v14 = objc_msgSend_GUID(v8, v4, v5, v6, v7);
-  objc_msgSend_setObject_forKey_(v13, v15, v8, v14, v16);
+  v14 = objc_msgSend_GUID(proxyCopy, v4, v5, v6, v7);
+  objc_msgSend_setObject_forKey_(v13, v15, proxyCopy, v14, v16);
 
-  objc_msgSend_addObject_(self->_acChatProxyArray, v17, v8, v18, v19);
+  objc_msgSend_addObject_(self->_acChatProxyArray, v17, proxyCopy, v18, v19);
   v20 = sub_254761764();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
@@ -996,10 +996,10 @@ LABEL_68:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateAVChatProxyWithInfo:(id)a3
+- (void)_updateAVChatProxyWithInfo:(id)info
 {
   v127 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   if (!self->_guidToAVChatProxyMap)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
@@ -1028,14 +1028,14 @@ LABEL_68:
   v119 = 0u;
   v120 = 0u;
   v121 = 0u;
-  obj = v4;
+  obj = infoCopy;
   v109 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v12, &v118, v124, 16);
   if (v109)
   {
     v107 = *v119;
     *&v16 = 138412290;
     v105 = v16;
-    v108 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v109; ++i)
@@ -1107,7 +1107,7 @@ LABEL_68:
 
           v11 = v24;
           objc_msgSend_addObject_(v24, v41, v23, v42, v43);
-          v47 = objc_msgSend_objectForKey_(v108->_guidToAVChatProxyMap, v44, v23, v45, v46);
+          v47 = objc_msgSend_objectForKey_(selfCopy->_guidToAVChatProxyMap, v44, v23, v45, v46);
           v48 = sub_254761764();
           v49 = os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT);
           if (v47)
@@ -1130,13 +1130,13 @@ LABEL_68:
             }
 
             v59 = objc_alloc_init(IMAVChatProxy);
-            objc_msgSend_setObject_forKey_(v108->_guidToAVChatProxyMap, v60, v59, v23, v61);
-            objc_msgSend_addObject_(v108->_avChatProxyArray, v62, v59, v63, v64);
+            objc_msgSend_setObject_forKey_(selfCopy->_guidToAVChatProxyMap, v60, v59, v23, v61);
+            objc_msgSend_addObject_(selfCopy->_avChatProxyArray, v62, v59, v63, v64);
             objc_msgSend_updateWithInfo_(v59, v65, v18, v66, v67);
             v68 = sub_254761764();
             if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
             {
-              v69 = v108->_guidToAVChatProxyMap;
+              v69 = selfCopy->_guidToAVChatProxyMap;
               *buf = v105;
               v126 = v69;
               _os_log_impl(&dword_254743000, v68, OS_LOG_TYPE_DEFAULT, "AV Proxy Map: %@", buf, 0xCu);
@@ -1144,7 +1144,7 @@ LABEL_68:
           }
 
 LABEL_41:
-          self = v108;
+          self = selfCopy;
         }
 
         else
@@ -1224,10 +1224,10 @@ LABEL_41:
   v104 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateACChatProxyWithInfo:(id)a3
+- (void)_updateACChatProxyWithInfo:(id)info
 {
   v124 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   if (!self->_guidToACChatProxyMap)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
@@ -1256,7 +1256,7 @@ LABEL_41:
   v118 = 0u;
   v115 = 0u;
   v116 = 0u;
-  obj = v4;
+  obj = infoCopy;
   v105 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v11, &v115, v121, 16);
   if (v105)
   {

@@ -1,26 +1,26 @@
 @interface WFAskLLMModelParameter
-- (id)defaultSerializedRepresentationForEnumeration:(id)a3;
-- (id)enumeration:(id)a3 accessoryIconForPossibleState:(id)a4;
-- (id)loadPossibleStatesForEnumeration:(id)a3;
-- (id)localizedTitleForButtonWithState:(id)a3;
+- (id)defaultSerializedRepresentationForEnumeration:(id)enumeration;
+- (id)enumeration:(id)enumeration accessoryIconForPossibleState:(id)state;
+- (id)loadPossibleStatesForEnumeration:(id)enumeration;
+- (id)localizedTitleForButtonWithState:(id)state;
 @end
 
 @implementation WFAskLLMModelParameter
 
-- (id)enumeration:(id)a3 accessoryIconForPossibleState:(id)a4
+- (id)enumeration:(id)enumeration accessoryIconForPossibleState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = WFAskLLMModelParameter.enumeration(_:accessoryIconForPossibleState:)(v8, v7);
+  enumerationCopy = enumeration;
+  stateCopy = state;
+  selfCopy = self;
+  v9 = WFAskLLMModelParameter.enumeration(_:accessoryIconForPossibleState:)(selfCopy, stateCopy);
 
   return v9;
 }
 
-- (id)localizedTitleForButtonWithState:(id)a3
+- (id)localizedTitleForButtonWithState:(id)state
 {
-  v4 = a3;
-  v5 = self;
+  stateCopy = state;
+  selfCopy = self;
   WFAskLLMModelParameter.localizedTitleForButton(with:)();
   v7 = v6;
 
@@ -37,19 +37,19 @@
   return v8;
 }
 
-- (id)loadPossibleStatesForEnumeration:(id)a3
+- (id)loadPossibleStatesForEnumeration:(id)enumeration
 {
-  v4 = a3;
-  v5 = self;
+  enumerationCopy = enumeration;
+  selfCopy = self;
   v6 = WFAskLLMModelParameter.loadPossibleStates(forEnumeration:)();
 
   return v6;
 }
 
-- (id)defaultSerializedRepresentationForEnumeration:(id)a3
+- (id)defaultSerializedRepresentationForEnumeration:(id)enumeration
 {
-  v4 = a3;
-  v5 = self;
+  enumerationCopy = enumeration;
+  selfCopy = self;
   WFAskLLMModelParameter.defaultSerializedRepresentation(forEnumeration:)(v14);
 
   v6 = v15;

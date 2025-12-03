@@ -1,5 +1,5 @@
 @interface FCNewsTabiPersonalizedPaywallsConfiguration
-- (FCNewsTabiPersonalizedPaywallsConfiguration)initWithDictionary:(id)a3;
+- (FCNewsTabiPersonalizedPaywallsConfiguration)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
@@ -8,35 +8,35 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];;
-  v4 = [(FCNewsTabiPersonalizedPaywallsConfiguration *)self contextFeatureKey];
-  [v3 appendFormat:@"\n\tcontextFeatureKey: %@;", v4];
+  contextFeatureKey = [(FCNewsTabiPersonalizedPaywallsConfiguration *)self contextFeatureKey];
+  [v3 appendFormat:@"\n\tcontextFeatureKey: %@;", contextFeatureKey];
 
-  v5 = [(FCNewsTabiPersonalizedPaywallsConfiguration *)self channelIDsOutputName];
-  [v3 appendFormat:@"\n\tchannelIDsOutputName: %@;", v5];
+  channelIDsOutputName = [(FCNewsTabiPersonalizedPaywallsConfiguration *)self channelIDsOutputName];
+  [v3 appendFormat:@"\n\tchannelIDsOutputName: %@;", channelIDsOutputName];
 
   [v3 appendFormat:@"\n\tomitHardFollows: %d", -[FCNewsTabiPersonalizedPaywallsConfiguration omitHardFollows](self, "omitHardFollows")];
-  v6 = [(FCNewsTabiPersonalizedPaywallsConfiguration *)self scoresOutputName];
-  [v3 appendFormat:@"\n\tscoresOutputName: %@;", v6];
+  scoresOutputName = [(FCNewsTabiPersonalizedPaywallsConfiguration *)self scoresOutputName];
+  [v3 appendFormat:@"\n\tscoresOutputName: %@;", scoresOutputName];
 
   [v3 appendString:@"\n>"];
 
   return v3;
 }
 
-- (FCNewsTabiPersonalizedPaywallsConfiguration)initWithDictionary:(id)a3
+- (FCNewsTabiPersonalizedPaywallsConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = FCAppConfigurationStringValue(v4, @"contextFeatureKey", 0);
+  dictionaryCopy = dictionary;
+  v5 = FCAppConfigurationStringValue(dictionaryCopy, @"contextFeatureKey", 0);
   v6 = v5;
   if (v5)
   {
     v7 = v5;
-    v8 = FCAppConfigurationStringValue(v4, @"channelIDsOutputName", 0);
+    v8 = FCAppConfigurationStringValue(dictionaryCopy, @"channelIDsOutputName", 0);
     v9 = v8;
     if (v8)
     {
       v10 = v8;
-      v11 = FCAppConfigurationStringValue(v4, @"scoresOutputName", 0);
+      v11 = FCAppConfigurationStringValue(dictionaryCopy, @"scoresOutputName", 0);
       v12 = v11;
       if (v11)
       {
@@ -49,33 +49,33 @@
         {
           objc_storeStrong(&v14->_contextFeatureKey, v6);
           objc_storeStrong(&v15->_channelIDsOutputName, v9);
-          v15->_omitHardFollows = FCAppConfigurationBoolValue(v4, @"omitHardFollows", 0);
+          v15->_omitHardFollows = FCAppConfigurationBoolValue(dictionaryCopy, @"omitHardFollows", 0);
           objc_storeStrong(&v15->_scoresOutputName, v12);
         }
 
         self = v15;
 
-        v16 = self;
+        selfCopy = self;
       }
 
       else
       {
-        v16 = 0;
+        selfCopy = 0;
       }
     }
 
     else
     {
-      v16 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 @end

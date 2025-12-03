@@ -1,15 +1,15 @@
 @interface ENUILegalDocumentViewControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation ENUILegalDocumentViewControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ENUILegalDocumentViewController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"ENUILegalDocumentViewController" hasInstanceMethod:@"legalTextView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ENUILegalDocumentViewController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"ENUILegalDocumentViewController" hasInstanceMethod:@"legalTextView" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

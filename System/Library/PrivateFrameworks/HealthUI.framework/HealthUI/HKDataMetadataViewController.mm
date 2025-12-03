@@ -1,98 +1,98 @@
 @interface HKDataMetadataViewController
-- (BOOL)_addSectionIfNonNull:(id)a3;
+- (BOOL)_addSectionIfNonNull:(id)null;
 - (CGSize)_adjustedTableViewSize;
-- (HKDataMetadataViewController)initWithSample:(id)a3 usingInsetStyling:(BOOL)a4 profileName:(id)a5 regulatedFeatureInfoProvider:(id)a6 delegate:(id)a7;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)accessViewControllerForSample:(id)a3 healthStore:(id)a4;
-- (id)defaultPredicateForSampleType:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (id)viewControllerForSampleType:(id)a3 subSamplePredicate:(id)a4 title:(id)a5;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (HKDataMetadataViewController)initWithSample:(id)sample usingInsetStyling:(BOOL)styling profileName:(id)name regulatedFeatureInfoProvider:(id)provider delegate:(id)delegate;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)accessViewControllerForSample:(id)sample healthStore:(id)store;
+- (id)defaultPredicateForSampleType:(id)type;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (id)viewControllerForSampleType:(id)type subSamplePredicate:(id)predicate title:(id)title;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_addWorkoutRouteSection;
-- (void)_exportButtonAction:(id)a3;
-- (void)_fetchRoutesWithSamplesHandler:(id)a3;
+- (void)_exportButtonAction:(id)action;
+- (void)_fetchRoutesWithSamplesHandler:(id)handler;
 - (void)_fetchSubSampleTypes;
 - (void)_fetchWorkoutRouteLocations;
 - (void)_loadSections;
-- (void)_updateSubSampleTypes:(id)a3 error:(id)a4;
+- (void)_updateSubSampleTypes:(id)types error:(id)error;
 - (void)_updateWorkoutRouteSize;
 - (void)dealloc;
 - (void)finishedAggregateQuery;
-- (void)setSample:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setSample:(id)sample;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewControllerDidLeaveAdaptiveModal;
 - (void)viewControllerWillEnterAdaptiveModal;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation HKDataMetadataViewController
 
-- (HKDataMetadataViewController)initWithSample:(id)a3 usingInsetStyling:(BOOL)a4 profileName:(id)a5 regulatedFeatureInfoProvider:(id)a6 delegate:(id)a7
+- (HKDataMetadataViewController)initWithSample:(id)sample usingInsetStyling:(BOOL)styling profileName:(id)name regulatedFeatureInfoProvider:(id)provider delegate:(id)delegate
 {
-  v10 = a4;
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  stylingCopy = styling;
+  sampleCopy = sample;
+  nameCopy = name;
+  providerCopy = provider;
+  delegateCopy = delegate;
   v31.receiver = self;
   v31.super_class = HKDataMetadataViewController;
-  v17 = [(HKTableViewController *)&v31 initWithUsingInsetStyling:v10];
+  v17 = [(HKTableViewController *)&v31 initWithUsingInsetStyling:stylingCopy];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_sample, a3);
+    objc_storeStrong(&v17->_sample, sample);
     v19 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
     v20 = [v19 localizedStringForKey:@"DETAILS" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
     [(HKDataMetadataViewController *)v18 setTitle:v20];
 
-    if (v14)
+    if (nameCopy)
     {
       v21 = MEMORY[0x1E696AEC0];
       v22 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
       v23 = [v22 localizedStringForKey:@"METADATA_TITLE_%@" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-tinker"];
-      v24 = [v21 localizedStringWithFormat:v23, v14];
-      [(HKDataMetadataViewController *)v18 setTitle:v24];
+      nameCopy = [v21 localizedStringWithFormat:v23, nameCopy];
+      [(HKDataMetadataViewController *)v18 setTitle:nameCopy];
     }
 
     subSampleTypes = v18->_subSampleTypes;
     v18->_subSampleTypes = MEMORY[0x1E695E0F0];
 
-    objc_storeStrong(&v18->_regulatedFeatureInfoProvider, a6);
-    objc_storeStrong(&v18->_delegate, a7);
+    objc_storeStrong(&v18->_regulatedFeatureInfoProvider, provider);
+    objc_storeStrong(&v18->_delegate, delegate);
     v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
     sections = v18->_sections;
     v18->_sections = v26;
 
     [(HKDataMetadataViewController *)v18 _fetchWorkoutRouteLocations];
-    v28 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v28 addObserver:v18 selector:sel__localeOrDisplayTypeChange_ name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v18 selector:sel__localeOrDisplayTypeChange_ name:*MEMORY[0x1E695D8F0] object:0];
 
-    v29 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v29 addObserver:v18 selector:sel__localeOrDisplayTypeChange_ name:@"HKDisplayTypeControllerDisplayTypeStringValuesChangedNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v18 selector:sel__localeOrDisplayTypeChange_ name:@"HKDisplayTypeControllerDisplayTypeStringValuesChangedNotification" object:0];
   }
 
   return v18;
 }
 
-- (void)setSample:(id)a3
+- (void)setSample:(id)sample
 {
-  objc_storeStrong(&self->_sample, a3);
+  objc_storeStrong(&self->_sample, sample);
   [(HKDataMetadataViewController *)self _loadSections];
-  v4 = [(HKDataMetadataViewController *)self tableView];
-  [v4 reloadData];
+  tableView = [(HKDataMetadataViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E695D8F0] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E695D8F0] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:@"HKDisplayTypeControllerDisplayTypeStringValuesChangedNotification" object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:@"HKDisplayTypeControllerDisplayTypeStringValuesChangedNotification" object:0];
 
   v5.receiver = self;
   v5.super_class = HKDataMetadataViewController;
@@ -108,8 +108,8 @@
   [(HKDataMetadataViewController *)self _fetchSubSampleTypes];
   [(HKDataMetadataViewController *)self _loadSections];
   v3 = HKUIJoinStringsForAutomationIdentifier(&unk_1F4381AC8);
-  v4 = [(HKDataMetadataViewController *)self tableView];
-  [v4 setAccessibilityIdentifier:v3];
+  tableView = [(HKDataMetadataViewController *)self tableView];
+  [tableView setAccessibilityIdentifier:v3];
 
   objc_initWeak(&location, self);
   v11[0] = objc_opt_class();
@@ -131,51 +131,51 @@ void __43__HKDataMetadataViewController_viewDidLoad__block_invoke(uint64_t a1)
   [WeakRetained _updateWorkoutRouteSize];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = HKDataMetadataViewController;
-  [(HKDataMetadataViewController *)&v6 viewDidAppear:a3];
+  [(HKDataMetadataViewController *)&v6 viewDidAppear:appear];
   if (!self->_sample)
   {
-    v4 = [(HKDataMetadataViewController *)self navigationController];
-    v5 = [v4 popViewControllerAnimated:1];
+    navigationController = [(HKDataMetadataViewController *)self navigationController];
+    v5 = [navigationController popViewControllerAnimated:1];
   }
 }
 
-- (BOOL)_addSectionIfNonNull:(id)a3
+- (BOOL)_addSectionIfNonNull:(id)null
 {
-  if (a3)
+  if (null)
   {
-    [(NSMutableArray *)self->_sections addObject:a3];
+    [(NSMutableArray *)self->_sections addObject:null];
   }
 
-  return a3 != 0;
+  return null != 0;
 }
 
 - (void)_loadSections
 {
   v33 = *MEMORY[0x1E69E9840];
   [(NSMutableArray *)self->_sections removeAllObjects];
-  v3 = [(HKDataMetadataViewControllerDelegate *)self->_delegate healthStore];
+  healthStore = [(HKDataMetadataViewControllerDelegate *)self->_delegate healthStore];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(HKDataMetadataViewControllerDelegate *)self->_delegate displayTypeController];
+    displayTypeController = [(HKDataMetadataViewControllerDelegate *)self->_delegate displayTypeController];
   }
 
   else
   {
-    v4 = 0;
+    displayTypeController = 0;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(HKDataMetadataViewControllerDelegate *)self->_delegate unitController];
+    unitController = [(HKDataMetadataViewControllerDelegate *)self->_delegate unitController];
   }
 
   else
   {
-    v5 = 0;
+    unitController = 0;
   }
 
   if (objc_opt_respondsToSelector())
@@ -212,10 +212,10 @@ void __43__HKDataMetadataViewController_viewDidLoad__block_invoke(uint64_t a1)
     }
   }
 
-  v11 = [[HKDataMetadataReportSection alloc] initWithSample:self->_sample healthStore:v3];
+  v11 = [[HKDataMetadataReportSection alloc] initWithSample:self->_sample healthStore:healthStore];
   [(HKDataMetadataViewController *)self _addSectionIfNonNull:v11];
 
-  v12 = [[HKDataMetadataReportAccessSection alloc] initWithSample:self->_sample healthStore:v3 delegate:self];
+  v12 = [[HKDataMetadataReportAccessSection alloc] initWithSample:self->_sample healthStore:healthStore delegate:self];
   [(HKDataMetadataViewController *)self _addSectionIfNonNull:v12];
 
   if (objc_opt_respondsToSelector())
@@ -225,7 +225,7 @@ void __43__HKDataMetadataViewController_viewDidLoad__block_invoke(uint64_t a1)
 
   else
   {
-    v13 = [[HKDataMetadataDetailSection alloc] initWithSample:self->_sample displayTypeController:v4 unitController:v5];
+    v13 = [[HKDataMetadataDetailSection alloc] initWithSample:self->_sample displayTypeController:displayTypeController unitController:unitController];
   }
 
   v14 = v13;
@@ -253,25 +253,25 @@ void __43__HKDataMetadataViewController_viewDidLoad__block_invoke(uint64_t a1)
   objc_copyWeak(&v26, &location);
   [(HKDataMetadataViewAllQuantitySeriesSection *)v17 setReloadMetaDataVC:v25];
   [(HKDataMetadataViewController *)self _addSectionIfNonNull:v17];
-  v18 = [[HKDataMetadataSubsampleSection alloc] initWithSample:self->_sample workoutActivity:0 subSampleTypes:self->_subSampleTypes showOnlyExertion:0 healthStore:v3 displayTypeController:v4 unitController:v5 subsampleDelegate:self];
+  v18 = [[HKDataMetadataSubsampleSection alloc] initWithSample:self->_sample workoutActivity:0 subSampleTypes:self->_subSampleTypes showOnlyExertion:0 healthStore:healthStore displayTypeController:displayTypeController unitController:unitController subsampleDelegate:self];
   [(HKDataMetadataViewController *)self _addSectionIfNonNull:v18];
 
-  v19 = [[HKDataMetadataAudiogramFrequenciesSection alloc] initWithSample:self->_sample leftEar:1 unitController:v5];
+  v19 = [[HKDataMetadataAudiogramFrequenciesSection alloc] initWithSample:self->_sample leftEar:1 unitController:unitController];
   [(HKDataMetadataViewController *)self _addSectionIfNonNull:v19];
 
-  v20 = [[HKDataMetadataAudiogramFrequenciesSection alloc] initWithSample:self->_sample leftEar:0 unitController:v5];
+  v20 = [[HKDataMetadataAudiogramFrequenciesSection alloc] initWithSample:self->_sample leftEar:0 unitController:unitController];
   [(HKDataMetadataViewController *)self _addSectionIfNonNull:v20];
 
   [(HKDataMetadataViewController *)self _addWorkoutRouteSection];
   sections = self->_sections;
-  v22 = [(HKSample *)self->_sample hk_additionalMetadataSectionsWithHealthStore:v3 displayTypeController:v4 unitController:v5 subsampleDelegate:self];
+  v22 = [(HKSample *)self->_sample hk_additionalMetadataSectionsWithHealthStore:healthStore displayTypeController:displayTypeController unitController:unitController subsampleDelegate:self];
   [(NSMutableArray *)sections addObjectsFromArray:v22];
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && [(HKDataMetadataViewControllerDelegate *)self->_delegate shareDocumentUsingSample:self->_sample])
   {
-    v23 = [(HKDataMetadataViewController *)self navigationItem];
+    navigationItem = [(HKDataMetadataViewController *)self navigationItem];
     v24 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:9 target:self action:sel__exportButtonAction_];
-    [v23 setRightBarButtonItem:v24];
+    [navigationItem setRightBarButtonItem:v24];
   }
 
   objc_destroyWeak(&v26);
@@ -300,12 +300,12 @@ void __45__HKDataMetadataViewController__loadSections__block_invoke_2(uint64_t a
   [WeakRetained setSample:v1];
 }
 
-- (void)_exportButtonAction:(id)a3
+- (void)_exportButtonAction:(id)action
 {
   v19[11] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HKDataMetadataViewControllerDelegate *)self->_delegate healthStore];
-  v6 = [(HKSample *)self->_sample dataForSharingWithHealthStore:v5];
+  actionCopy = action;
+  healthStore = [(HKDataMetadataViewControllerDelegate *)self->_delegate healthStore];
+  v6 = [(HKSample *)self->_sample dataForSharingWithHealthStore:healthStore];
   if (v6)
   {
     v7 = *MEMORY[0x1E69CDAD8];
@@ -330,25 +330,25 @@ void __45__HKDataMetadataViewController__loadSections__block_invoke_2(uint64_t a
     v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v18 count:1];
     v15 = [v13 initWithActivityItems:v14 applicationActivities:0];
 
-    v16 = [v15 popoverPresentationController];
-    [v16 setSourceItem:v4];
+    popoverPresentationController = [v15 popoverPresentationController];
+    [popoverPresentationController setSourceItem:actionCopy];
 
     [v15 setExcludedActivityTypes:v12];
-    v17 = [(HKDataMetadataViewController *)self navigationController];
-    [v17 presentViewController:v15 animated:1 completion:0];
+    navigationController = [(HKDataMetadataViewController *)self navigationController];
+    [navigationController presentViewController:v15 animated:1 completion:0];
   }
 }
 
 - (void)_fetchSubSampleTypes
 {
-  v3 = [(HKDataMetadataViewControllerDelegate *)self->_delegate healthStore];
+  healthStore = [(HKDataMetadataViewControllerDelegate *)self->_delegate healthStore];
   sample = self->_sample;
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __52__HKDataMetadataViewController__fetchSubSampleTypes__block_invoke;
   v5[3] = &unk_1E81B9F48;
   v5[4] = self;
-  [(HKSample *)sample fetchSubSampleTypesWithHealthStore:v3 completion:v5];
+  [(HKSample *)sample fetchSubSampleTypesWithHealthStore:healthStore completion:v5];
 }
 
 void __52__HKDataMetadataViewController__fetchSubSampleTypes__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -368,24 +368,24 @@ void __52__HKDataMetadataViewController__fetchSubSampleTypes__block_invoke(uint6
   }
 }
 
-- (void)_updateSubSampleTypes:(id)a3 error:(id)a4
+- (void)_updateSubSampleTypes:(id)types error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  typesCopy = types;
+  errorCopy = error;
+  v9 = errorCopy;
+  if (typesCopy)
   {
-    objc_storeStrong(&self->_subSampleTypes, a3);
+    objc_storeStrong(&self->_subSampleTypes, types);
     [(HKDataMetadataViewController *)self _loadSections];
   }
 
-  else if (v8)
+  else if (errorCopy)
   {
-    v10 = [v8 hk_isDatabaseAccessibilityError];
+    hk_isDatabaseAccessibilityError = [errorCopy hk_isDatabaseAccessibilityError];
     _HKInitializeLogging();
     v11 = HKLogWellnessDashboard();
     v12 = v11;
-    if (v10)
+    if (hk_isDatabaseAccessibilityError)
     {
       v13 = os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG);
 
@@ -412,15 +412,15 @@ LABEL_11:
 
 - (CGSize)_adjustedTableViewSize
 {
-  v3 = [(HKDataMetadataViewController *)self tableView];
-  [v3 frame];
+  tableView = [(HKDataMetadataViewController *)self tableView];
+  [tableView frame];
   v5 = v4;
-  v6 = [(HKDataMetadataViewController *)self tableView];
-  [v6 _marginWidth];
+  tableView2 = [(HKDataMetadataViewController *)self tableView];
+  [tableView2 _marginWidth];
   v8 = v5 + v7 * -2.0;
 
-  v9 = [(HKDataMetadataViewController *)self tableView];
-  [v9 frame];
+  tableView3 = [(HKDataMetadataViewController *)self tableView];
+  [tableView3 frame];
   v11 = v10;
 
   v12 = fmax(v8, 0.0);
@@ -455,8 +455,8 @@ LABEL_11:
 
     if ([(HKDataMetadataViewController *)self _addSectionIfNonNull:self->_workoutRouteSection])
     {
-      v7 = [(HKDataMetadataViewController *)self tableView];
-      [v7 reloadData];
+      tableView = [(HKDataMetadataViewController *)self tableView];
+      [tableView reloadData];
     }
   }
 }
@@ -513,31 +513,31 @@ void __59__HKDataMetadataViewController__fetchWorkoutRouteLocations__block_invok
   [WeakRetained _loadSections];
 }
 
-- (void)_fetchRoutesWithSamplesHandler:(id)a3
+- (void)_fetchRoutesWithSamplesHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [HKLocationFetcher alloc];
-  v6 = [(HKDataMetadataViewControllerDelegate *)self->_delegate healthStore];
-  v7 = [(HKLocationFetcher *)v5 initWithHealthStore:v6];
+  healthStore = [(HKDataMetadataViewControllerDelegate *)self->_delegate healthStore];
+  v7 = [(HKLocationFetcher *)v5 initWithHealthStore:healthStore];
   locationFetcher = self->_locationFetcher;
   self->_locationFetcher = v7;
 
-  v9 = [(HKDataMetadataViewController *)self locationFetcher];
-  [v9 fetchLocationsFromWorkout:self->_sample applyThreshold:0 withSamplesHandler:v4];
+  locationFetcher = [(HKDataMetadataViewController *)self locationFetcher];
+  [locationFetcher fetchLocationsFromWorkout:self->_sample applyThreshold:0 withSamplesHandler:handlerCopy];
 }
 
 - (void)finishedAggregateQuery
 {
-  v2 = [(HKDataMetadataViewController *)self tableView];
-  [v2 reloadData];
+  tableView = [(HKDataMetadataViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (id)defaultPredicateForSampleType:(id)a3
+- (id)defaultPredicateForSampleType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(HKDataMetadataViewControllerDelegate *)self->_delegate defaultPredicateForSampleType:v4];
+    v5 = [(HKDataMetadataViewControllerDelegate *)self->_delegate defaultPredicateForSampleType:typeCopy];
   }
 
   else
@@ -548,14 +548,14 @@ void __59__HKDataMetadataViewController__fetchWorkoutRouteLocations__block_invok
   return v5;
 }
 
-- (id)viewControllerForSampleType:(id)a3 subSamplePredicate:(id)a4 title:(id)a5
+- (id)viewControllerForSampleType:(id)type subSamplePredicate:(id)predicate title:(id)title
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  typeCopy = type;
+  predicateCopy = predicate;
+  titleCopy = title;
   if (objc_opt_respondsToSelector())
   {
-    v11 = [(HKDataMetadataViewControllerDelegate *)self->_delegate viewControllerForSampleType:v8 subSamplePredicate:v9 title:v10];
+    v11 = [(HKDataMetadataViewControllerDelegate *)self->_delegate viewControllerForSampleType:typeCopy subSamplePredicate:predicateCopy title:titleCopy];
   }
 
   else
@@ -566,13 +566,13 @@ void __59__HKDataMetadataViewController__fetchWorkoutRouteLocations__block_invok
   return v11;
 }
 
-- (id)accessViewControllerForSample:(id)a3 healthStore:(id)a4
+- (id)accessViewControllerForSample:(id)sample healthStore:(id)store
 {
-  v6 = a3;
-  v7 = a4;
+  sampleCopy = sample;
+  storeCopy = store;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [(HKDataMetadataViewControllerDelegate *)self->_delegate accessViewControllerForSample:v6 healthStore:v7];
+    v8 = [(HKDataMetadataViewControllerDelegate *)self->_delegate accessViewControllerForSample:sampleCopy healthStore:storeCopy];
   }
 
   else
@@ -583,25 +583,25 @@ void __59__HKDataMetadataViewController__fetchWorkoutRouteLocations__block_invok
   return v8;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(NSMutableArray *)self->_sections objectAtIndex:a4];
-  v5 = [v4 sectionTitle];
+  v4 = [(NSMutableArray *)self->_sections objectAtIndex:section];
+  sectionTitle = [v4 sectionTitle];
 
-  return v5;
+  return sectionTitle;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v4 = [(NSMutableArray *)self->_sections objectAtIndex:a4];
-  v5 = [v4 sectionFooter];
+  v4 = [(NSMutableArray *)self->_sections objectAtIndex:section];
+  sectionFooter = [v4 sectionFooter];
 
-  return v5;
+  return sectionFooter;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v4 = [(HKDataMetadataViewController *)self tableView:a3 titleForHeaderInSection:a4];
+  v4 = [(HKDataMetadataViewController *)self tableView:view titleForHeaderInSection:section];
   if (v4)
   {
     v5 = *MEMORY[0x1E69DE3D0];
@@ -615,45 +615,45 @@ void __59__HKDataMetadataViewController__fetchWorkoutRouteLocations__block_invok
   return v5;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
   sections = self->_sections;
-  v6 = a3;
-  v7 = [(NSMutableArray *)sections objectAtIndex:a4];
-  v8 = [v7 sectionFooterViewInTableView:v6];
+  viewCopy = view;
+  v7 = [(NSMutableArray *)sections objectAtIndex:section];
+  v8 = [v7 sectionFooterViewInTableView:viewCopy];
 
   return v8;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(NSMutableArray *)self->_sections objectAtIndex:a4];
-  v5 = [v4 numberOfRowsInSection];
+  v4 = [(NSMutableArray *)self->_sections objectAtIndex:section];
+  numberOfRowsInSection = [v4 numberOfRowsInSection];
 
-  return v5;
+  return numberOfRowsInSection;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = -[NSMutableArray objectAtIndex:](self->_sections, "objectAtIndex:", [v6 section]);
-  v9 = [v6 row];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = -[NSMutableArray objectAtIndex:](self->_sections, "objectAtIndex:", [pathCopy section]);
+  v9 = [pathCopy row];
 
-  v10 = [v8 cellForIndex:v9 tableView:v7];
+  v10 = [v8 cellForIndex:v9 tableView:viewCopy];
 
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v9 = -[NSMutableArray objectAtIndex:](self->_sections, "objectAtIndex:", [v6 section]);
-  v7 = [v6 row];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  v9 = -[NSMutableArray objectAtIndex:](self->_sections, "objectAtIndex:", [pathCopy section]);
+  v7 = [pathCopy row];
 
-  v8 = [(HKDataMetadataViewController *)self navigationController];
-  [v9 selectCellForIndex:v7 navigationController:v8 animated:1];
+  navigationController = [(HKDataMetadataViewController *)self navigationController];
+  [v9 selectCellForIndex:v7 navigationController:navigationController animated:1];
 }
 
 - (void)viewControllerWillEnterAdaptiveModal
@@ -669,8 +669,8 @@ void __59__HKDataMetadataViewController__fetchWorkoutRouteLocations__block_invok
   v5 = [v4 actionWithHandler:&v8];
   v6 = [v3 initWithBarButtonSystemItem:0 primaryAction:{v5, v8, v9, v10, v11}];
 
-  v7 = [(HKDataMetadataViewController *)self navigationItem];
-  [v7 setLeftBarButtonItem:v6];
+  navigationItem = [(HKDataMetadataViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:v6];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -684,8 +684,8 @@ void __68__HKDataMetadataViewController_viewControllerWillEnterAdaptiveModal__bl
 
 - (void)viewControllerDidLeaveAdaptiveModal
 {
-  v2 = [(HKDataMetadataViewController *)self navigationItem];
-  [v2 setLeftBarButtonItem:0];
+  navigationItem = [(HKDataMetadataViewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItem:0];
 }
 
 - (void)_updateSubSampleTypes:(uint64_t)a1 error:(NSObject *)a2 .cold.1(uint64_t a1, NSObject *a2)

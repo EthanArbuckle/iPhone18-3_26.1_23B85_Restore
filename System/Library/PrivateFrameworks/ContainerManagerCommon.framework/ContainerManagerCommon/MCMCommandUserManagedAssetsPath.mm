@@ -4,7 +4,7 @@
 - (BOOL)createIfNecessary;
 - (BOOL)isRelative;
 - (BOOL)preflightClientAllowed;
-- (MCMCommandUserManagedAssetsPath)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5;
+- (MCMCommandUserManagedAssetsPath)initWithMessage:(id)message context:(id)context reply:(id)reply;
 - (MCMContainerIdentity)containerIdentity;
 - (void)execute;
 @end
@@ -39,21 +39,21 @@
 {
   v89 = *MEMORY[0x1E69E9840];
   context = objc_autoreleasePoolPush();
-  v3 = [(MCMCommandUserManagedAssetsPath *)self containerIdentity];
-  v4 = [v3 userIdentity];
+  containerIdentity = [(MCMCommandUserManagedAssetsPath *)self containerIdentity];
+  userIdentity = [containerIdentity userIdentity];
 
-  v5 = [(MCMCommandUserManagedAssetsPath *)self containerIdentity];
-  v6 = [v5 identifier];
+  containerIdentity2 = [(MCMCommandUserManagedAssetsPath *)self containerIdentity];
+  identifier = [containerIdentity2 identifier];
 
-  v7 = [(MCMCommand *)self context];
-  v8 = [v7 containerCache];
-  v9 = [(MCMCommandUserManagedAssetsPath *)self containerIdentity];
+  context = [(MCMCommand *)self context];
+  containerCache = [context containerCache];
+  containerIdentity3 = [(MCMCommandUserManagedAssetsPath *)self containerIdentity];
   v80 = 0;
-  v10 = [v8 entryForContainerIdentity:v9 error:&v80];
+  v10 = [containerCache entryForContainerIdentity:containerIdentity3 error:&v80];
   v11 = v80;
 
-  v71 = v6;
-  v72 = v4;
+  v71 = identifier;
+  v72 = userIdentity;
   v70 = v10;
   if (!v10)
   {
@@ -72,7 +72,7 @@ LABEL_14:
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v82 = v6;
+      v82 = identifier;
       v83 = 2112;
       v84 = v11;
       _os_log_error_impl(&dword_1DF2C3000, v43, OS_LOG_TYPE_ERROR, "Failed to create app data container for user managed assets path for %@: %@", buf, 0x16u);
@@ -86,9 +86,9 @@ LABEL_14:
     goto LABEL_21;
   }
 
-  v14 = [v12 containerPath];
+  containerPath = [v12 containerPath];
 
-  if (!v14)
+  if (!containerPath)
   {
     v11 = [[MCMError alloc] initWithErrorType:11];
 
@@ -104,7 +104,7 @@ LABEL_20:
 LABEL_21:
       v26 = 0;
 LABEL_22:
-      v48 = 0;
+      path2 = 0;
       v41 = 0;
       goto LABEL_23;
     }
@@ -119,9 +119,9 @@ LABEL_48:
     goto LABEL_20;
   }
 
-  v15 = [v12 containerPath];
-  v16 = [v15 containerDataURL];
-  v17 = [v16 URLByAppendingPathComponent:@"Library" isDirectory:1];
+  containerPath2 = [v12 containerPath];
+  containerDataURL = [containerPath2 containerDataURL];
+  v17 = [containerDataURL URLByAppendingPathComponent:@"Library" isDirectory:1];
 
   if (!v17)
   {
@@ -141,21 +141,21 @@ LABEL_48:
   }
 
   v69 = v13;
-  v18 = [v12 userManagedAssetsDirName];
+  userManagedAssetsDirName = [v12 userManagedAssetsDirName];
   v74 = v17;
-  if (v18)
+  if (userManagedAssetsDirName)
   {
-    v19 = v18;
+    v19 = userManagedAssetsDirName;
     v20 = +[MCMFileManager defaultManager];
-    v21 = [v12 userManagedAssetsDirName];
-    v22 = [v17 URLByAppendingPathComponent:v21 isDirectory:1];
+    userManagedAssetsDirName2 = [v12 userManagedAssetsDirName];
+    v22 = [v17 URLByAppendingPathComponent:userManagedAssetsDirName2 isDirectory:1];
     v23 = [v20 itemDoesNotExistAtURL:v22];
 
     if (!v23)
     {
-      v56 = [v12 userManagedAssetsDirName];
+      userManagedAssetsDirName3 = [v12 userManagedAssetsDirName];
       v41 = 1;
-      v25 = [v17 URLByAppendingPathComponent:v56 isDirectory:1];
+      v25 = [v17 URLByAppendingPathComponent:userManagedAssetsDirName3 isDirectory:1];
 
       v33 = 0;
       v30 = 0;
@@ -173,9 +173,9 @@ LABEL_48:
     if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v82 = v4;
+      v82 = userIdentity;
       v83 = 2112;
-      v84 = v6;
+      v84 = identifier;
       _os_log_error_impl(&dword_1DF2C3000, v55, OS_LOG_TYPE_ERROR, "User managed path for %@:%@ Not Found", buf, 0x16u);
     }
 
@@ -210,21 +210,21 @@ LABEL_48:
     goto LABEL_22;
   }
 
-  v27 = [v12 containerClass];
-  v28 = [v12 userIdentity];
-  v29 = [v28 posixUser];
-  v30 = [MCMContainerClassPath posixOwnerForContainerClass:v27 user:v29];
+  containerClass = [v12 containerClass];
+  userIdentity2 = [v12 userIdentity];
+  posixUser = [userIdentity2 posixUser];
+  v30 = [MCMContainerClassPath posixOwnerForContainerClass:containerClass user:posixUser];
 
   v31 = [MCMFileHandle alloc];
-  v32 = [v25 path];
+  path = [v25 path];
   LOBYTE(v67) = 1;
-  v33 = [(MCMFileHandle *)v31 initWithPath:v32 relativeToFileHandle:0 direction:9 symlinks:0 createMode:0 createDPClass:0 openLazily:v67];
+  v33 = [(MCMFileHandle *)v31 initWithPath:path relativeToFileHandle:0 direction:9 symlinks:0 createMode:0 createDPClass:0 openLazily:v67];
 
   v77 = v26;
-  LOBYTE(v32) = [(MCMFileHandle *)v33 setPermissions:493 andOwner:v30 error:&v77];
+  LOBYTE(path) = [(MCMFileHandle *)v33 setPermissions:493 andOwner:v30 error:&v77];
   v34 = v77;
 
-  if ((v32 & 1) == 0)
+  if ((path & 1) == 0)
   {
     v11 = [[MCMError alloc] initWithNSError:v34 url:v25 defaultErrorType:6];
 
@@ -236,25 +236,25 @@ LABEL_48:
       _os_log_error_impl(&dword_1DF2C3000, v60, OS_LOG_TYPE_ERROR, "Failed to set permissions on user managed assets dir; error = %@", buf, 0xCu);
     }
 
-    v48 = 0;
+    path2 = 0;
     v41 = 0;
     goto LABEL_43;
   }
 
   v68 = v34;
-  v35 = [v25 lastPathComponent];
-  v36 = [v12 metadataBySettingUserManagedAssetsDirName:v35];
+  lastPathComponent = [v25 lastPathComponent];
+  v36 = [v12 metadataBySettingUserManagedAssetsDirName:lastPathComponent];
 
   v76 = v69;
-  LOBYTE(v35) = [v36 writeMetadataToDiskWithError:&v76];
+  LOBYTE(lastPathComponent) = [v36 writeMetadataToDiskWithError:&v76];
   v11 = v76;
 
-  if (v35)
+  if (lastPathComponent)
   {
-    v37 = [(MCMCommand *)self context];
-    v38 = [v37 containerCache];
+    context2 = [(MCMCommand *)self context];
+    containerCache2 = [context2 containerCache];
     v75 = v11;
-    v39 = [v38 addContainerMetadata:v36 error:&v75];
+    v39 = [containerCache2 addContainerMetadata:v36 error:&v75];
     v40 = v75;
 
     if (v39)
@@ -267,7 +267,7 @@ LABEL_33:
       {
         [v36 userManagedAssetsDirName];
         v58 = v57 = v42;
-        v48 = [@"Library" stringByAppendingPathComponent:v58];
+        path2 = [@"Library" stringByAppendingPathComponent:v58];
 
         v12 = v36;
         v26 = v57;
@@ -275,7 +275,7 @@ LABEL_33:
 
       else
       {
-        v48 = [v25 path];
+        path2 = [v25 path];
         v12 = v36;
         v26 = v42;
       }
@@ -290,20 +290,20 @@ LABEL_33:
     v34 = v68;
     if (os_log_type_enabled(v62, OS_LOG_TYPE_ERROR))
     {
-      v65 = [v36 containerPath];
-      v66 = [v36 transient];
+      containerPath3 = [v36 containerPath];
+      transient = [v36 transient];
       *buf = 138412802;
       v82 = v36;
       v83 = 2112;
-      v84 = v65;
+      v84 = containerPath3;
       v85 = 1024;
-      v86 = v66;
+      v86 = transient;
       _os_log_error_impl(&dword_1DF2C3000, v62, OS_LOG_TYPE_ERROR, "Failed to add to cache: %@, container path: %@, transient: %d", buf, 0x1Cu);
 
       v34 = v68;
     }
 
-    v48 = 0;
+    path2 = 0;
     v41 = 0;
     v12 = v36;
 LABEL_43:
@@ -314,20 +314,20 @@ LABEL_43:
   v61 = container_log_handle_for_category();
   if (os_log_type_enabled(v61, OS_LOG_TYPE_ERROR))
   {
-    v63 = [v36 containerPath];
-    v64 = [v36 transient];
+    containerPath4 = [v36 containerPath];
+    transient2 = [v36 transient];
     *buf = 138413058;
     v82 = v36;
     v83 = 2112;
-    v84 = v63;
+    v84 = containerPath4;
     v85 = 1024;
-    v86 = v64;
+    v86 = transient2;
     v87 = 2112;
     v88 = v11;
     _os_log_error_impl(&dword_1DF2C3000, v61, OS_LOG_TYPE_ERROR, "Failed to write metadata: %@, container path: %@, transient: %d; error = %@", buf, 0x26u);
   }
 
-  v48 = 0;
+  path2 = 0;
   v41 = 0;
   v12 = v36;
   v26 = v68;
@@ -336,16 +336,16 @@ LABEL_23:
   if (os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v82 = v48;
+    v82 = path2;
     v83 = 2112;
     v84 = v11;
     _os_log_debug_impl(&dword_1DF2C3000, v49, OS_LOG_TYPE_DEBUG, "User managed assets path result: [%@], error = %@", buf, 0x16u);
   }
 
   v50 = [MCMResultWithURLBase alloc];
-  if (v48)
+  if (path2)
   {
-    v51 = [(MCMResultWithURLBase *)v50 initWithPath:v48 existed:v41 sandboxToken:0];
+    v51 = [(MCMResultWithURLBase *)v50 initWithPath:path2 existed:v41 sandboxToken:0];
   }
 
   else
@@ -354,8 +354,8 @@ LABEL_23:
   }
 
   v52 = v51;
-  v53 = [(MCMCommand *)self resultPromise];
-  [v53 completeWithResult:v52];
+  resultPromise = [(MCMCommand *)self resultPromise];
+  [resultPromise completeWithResult:v52];
 
   objc_autoreleasePoolPop(context);
   v54 = *MEMORY[0x1E69E9840];
@@ -363,39 +363,39 @@ LABEL_23:
 
 - (BOOL)preflightClientAllowed
 {
-  v2 = self;
+  selfCopy = self;
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(MCMCommandUserManagedAssetsPath *)self containerIdentity];
-  v4 = [v3 identifier];
-  v5 = [(MCMCommand *)v2 context];
-  v6 = [v5 clientIdentity];
-  v7 = [v6 codeSignInfo];
-  v8 = [v7 identifier];
-  v9 = [v4 isEqualToString:v8];
+  containerIdentity = [(MCMCommandUserManagedAssetsPath *)self containerIdentity];
+  identifier = [containerIdentity identifier];
+  context = [(MCMCommand *)selfCopy context];
+  clientIdentity = [context clientIdentity];
+  codeSignInfo = [clientIdentity codeSignInfo];
+  identifier2 = [codeSignInfo identifier];
+  v9 = [identifier isEqualToString:identifier2];
 
-  v10 = [(MCMCommand *)v2 context];
-  v11 = [v10 clientIdentity];
-  LOBYTE(v2) = [v11 isAllowedToAccessUserAssets];
+  context2 = [(MCMCommand *)selfCopy context];
+  clientIdentity2 = [context2 clientIdentity];
+  LOBYTE(selfCopy) = [clientIdentity2 isAllowedToAccessUserAssets];
 
   v12 = *MEMORY[0x1E69E9840];
-  return (v2 | v9) & 1;
+  return (selfCopy | v9) & 1;
 }
 
-- (MCMCommandUserManagedAssetsPath)initWithMessage:(id)a3 context:(id)a4 reply:(id)a5
+- (MCMCommandUserManagedAssetsPath)initWithMessage:(id)message context:(id)context reply:(id)reply
 {
   v15 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  messageCopy = message;
   v14.receiver = self;
   v14.super_class = MCMCommandUserManagedAssetsPath;
-  v9 = [(MCMCommand *)&v14 initWithMessage:v8 context:a4 reply:a5];
+  v9 = [(MCMCommand *)&v14 initWithMessage:messageCopy context:context reply:reply];
   if (v9)
   {
-    v10 = [v8 containerIdentity];
+    containerIdentity = [messageCopy containerIdentity];
     containerIdentity = v9->_containerIdentity;
-    v9->_containerIdentity = v10;
+    v9->_containerIdentity = containerIdentity;
 
-    v9->_relative = [v8 isRelative];
-    v9->_createIfNecessary = [v8 createIfNecessary];
+    v9->_relative = [messageCopy isRelative];
+    v9->_createIfNecessary = [messageCopy createIfNecessary];
   }
 
   v12 = *MEMORY[0x1E69E9840];

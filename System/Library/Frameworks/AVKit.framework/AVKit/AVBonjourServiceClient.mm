@@ -1,24 +1,24 @@
 @interface AVBonjourServiceClient
-+ (id)dictionaryFromTXTRecordData:(id)a3;
-- (AVBonjourServiceClient)initWithNetServiceType:(id)a3;
++ (id)dictionaryFromTXTRecordData:(id)data;
+- (AVBonjourServiceClient)initWithNetServiceType:(id)type;
 - (AVBonjourServiceClientDelegate)delegate;
-- (BOOL)_isServiceForCurrentAirPlayDevice:(id)a3;
+- (BOOL)_isServiceForCurrentAirPlayDevice:(id)device;
 - (NSString)description;
-- (id)airTransportSenderForNetService:(id)a3;
-- (id)identifierForNetService:(id)a3;
+- (id)airTransportSenderForNetService:(id)service;
+- (id)identifierForNetService:(id)service;
 - (void)_updatedAirPlayPairedDeviceAsync;
 - (void)beginDiscovery;
 - (void)dealloc;
 - (void)endDiscovery;
-- (void)netService:(id)a3 didNotResolve:(id)a4;
-- (void)netService:(id)a3 didUpdateTXTRecordData:(id)a4;
-- (void)netServiceBrowser:(id)a3 didFindService:(id)a4 moreComing:(BOOL)a5;
-- (void)netServiceBrowser:(id)a3 didNotSearch:(id)a4;
-- (void)netServiceBrowser:(id)a3 didRemoveService:(id)a4 moreComing:(BOOL)a5;
-- (void)netServiceDidResolveAddress:(id)a3;
-- (void)netServiceDidStop:(id)a3;
-- (void)netServiceWillResolve:(id)a3;
-- (void)setAirplayDeviceRef:(void *)a3;
+- (void)netService:(id)service didNotResolve:(id)resolve;
+- (void)netService:(id)service didUpdateTXTRecordData:(id)data;
+- (void)netServiceBrowser:(id)browser didFindService:(id)service moreComing:(BOOL)coming;
+- (void)netServiceBrowser:(id)browser didNotSearch:(id)search;
+- (void)netServiceBrowser:(id)browser didRemoveService:(id)service moreComing:(BOOL)coming;
+- (void)netServiceDidResolveAddress:(id)address;
+- (void)netServiceDidStop:(id)stop;
+- (void)netServiceWillResolve:(id)resolve;
+- (void)setAirplayDeviceRef:(void *)ref;
 @end
 
 @implementation AVBonjourServiceClient
@@ -30,7 +30,7 @@
   return WeakRetained;
 }
 
-- (void)netService:(id)a3 didUpdateTXTRecordData:(id)a4
+- (void)netService:(id)service didUpdateTXTRecordData:(id)data
 {
   v4 = _avairlog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -40,31 +40,31 @@
   }
 }
 
-- (void)netServiceDidStop:(id)a3
+- (void)netServiceDidStop:(id)stop
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  stopCopy = stop;
   v4 = _avairlog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [v3 name];
+    name = [stopCopy name];
     v6 = 138412290;
-    v7 = v5;
+    v7 = name;
     _os_log_impl(&dword_18B49C000, v4, OS_LOG_TYPE_DEFAULT, "didStop resolution request %@", &v6, 0xCu);
   }
 }
 
-- (void)netService:(id)a3 didNotResolve:(id)a4
+- (void)netService:(id)service didNotResolve:(id)resolve
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 objectForKeyedSubscript:*MEMORY[0x1E696A758]];
+  serviceCopy = service;
+  resolveCopy = resolve;
+  v8 = [resolveCopy objectForKeyedSubscript:*MEMORY[0x1E696A758]];
   v9 = _avairlog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v15 = v7;
+    v15 = resolveCopy;
     _os_log_impl(&dword_18B49C000, v9, OS_LOG_TYPE_DEFAULT, "didNotResolve %@", buf, 0xCu);
   }
 
@@ -74,7 +74,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v6;
+      v15 = serviceCopy;
       _os_log_impl(&dword_18B49C000, v10, OS_LOG_TYPE_DEFAULT, "didNotResolve %@ due to timeout!", buf, 0xCu);
     }
 
@@ -83,31 +83,31 @@
     block[1] = 3221225472;
     block[2] = __51__AVBonjourServiceClient_netService_didNotResolve___block_invoke;
     block[3] = &unk_1E720A090;
-    v13 = v6;
+    v13 = serviceCopy;
     dispatch_after(v11, MEMORY[0x1E69E96A0], block);
   }
 
   else
   {
-    [(NSMutableSet *)self->_resolvingServices removeObject:v6];
+    [(NSMutableSet *)self->_resolvingServices removeObject:serviceCopy];
   }
 }
 
-- (void)netServiceDidResolveAddress:(id)a3
+- (void)netServiceDidResolveAddress:(id)address
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  addressCopy = address;
   v5 = _avairlog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v18 = 138412290;
-    v19 = v4;
+    v19 = addressCopy;
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "didResolveAddress %@", &v18, 0xCu);
   }
 
   v6 = objc_opt_class();
-  v7 = [v4 TXTRecordData];
-  v8 = [v6 dictionaryFromTXTRecordData:v7];
+  tXTRecordData = [addressCopy TXTRecordData];
+  v8 = [v6 dictionaryFromTXTRecordData:tXTRecordData];
 
   v9 = [v8 objectForKeyedSubscript:@"receiverPairingIdentity"];
   v10 = _avairlog();
@@ -120,12 +120,12 @@
     _os_log_impl(&dword_18B49C000, v10, OS_LOG_TYPE_DEFAULT, "%s localAirPlayReceiverPairingIdentity = %@", &v18, 0x16u);
   }
 
-  [(NSMutableSet *)self->_resolvedServices addObject:v4];
-  [(NSMutableSet *)self->_resolvingServices removeObject:v4];
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 postNotificationName:@"AVBonjourServiceClientDidResolveNetServiceNotification" object:v4];
+  [(NSMutableSet *)self->_resolvedServices addObject:addressCopy];
+  [(NSMutableSet *)self->_resolvingServices removeObject:addressCopy];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"AVBonjourServiceClientDidResolveNetServiceNotification" object:addressCopy];
 
-  if ([(AVBonjourServiceClient *)self _isServiceForCurrentAirPlayDevice:v4])
+  if ([(AVBonjourServiceClient *)self _isServiceForCurrentAirPlayDevice:addressCopy])
   {
     v12 = _avairlog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -134,10 +134,10 @@
       _os_log_impl(&dword_18B49C000, v12, OS_LOG_TYPE_DEFAULT, "Found netService for the current AirPlay device; posting .DidResolveAirPlayDeviceNetServiceNotification..", &v18, 2u);
     }
 
-    v13 = [(AVBonjourServiceClient *)self airTransportSenderForNetService:v4];
-    v14 = [(AVBonjourServiceClient *)self delegate];
+    v13 = [(AVBonjourServiceClient *)self airTransportSenderForNetService:addressCopy];
+    delegate = [(AVBonjourServiceClient *)self delegate];
 
-    if (!v14)
+    if (!delegate)
     {
       v15 = _avairlog();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -147,89 +147,89 @@
       }
     }
 
-    v16 = [(AVBonjourServiceClient *)self delegate];
-    [v16 didConnectToBonjourService:v4 channel:v13];
+    delegate2 = [(AVBonjourServiceClient *)self delegate];
+    [delegate2 didConnectToBonjourService:addressCopy channel:v13];
 
-    v17 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v17 postNotificationName:@"AVBonjourServiceClientDidResolveAirPlayDeviceNetServiceNotification" object:self];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:@"AVBonjourServiceClientDidResolveAirPlayDeviceNetServiceNotification" object:self];
   }
 }
 
-- (void)netServiceWillResolve:(id)a3
+- (void)netServiceWillResolve:(id)resolve
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  resolveCopy = resolve;
   v4 = _avairlog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = resolveCopy;
     _os_log_impl(&dword_18B49C000, v4, OS_LOG_TYPE_DEFAULT, "willResolve %@", &v5, 0xCu);
   }
 }
 
-- (void)netServiceBrowser:(id)a3 didRemoveService:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didRemoveService:(id)service moreComing:(BOOL)coming
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  serviceCopy = service;
   v7 = _avairlog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v6;
+    v10 = serviceCopy;
     _os_log_impl(&dword_18B49C000, v7, OS_LOG_TYPE_DEFAULT, "didRemoveService %@", &v9, 0xCu);
   }
 
-  [v6 stopMonitoring];
-  [v6 setDelegate:0];
-  v8 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [v6 removeFromRunLoop:v8 forMode:*MEMORY[0x1E695DA28]];
+  [serviceCopy stopMonitoring];
+  [serviceCopy setDelegate:0];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [serviceCopy removeFromRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
-  [(NSMutableSet *)self->_monitoringServices removeObject:v6];
-  [(NSMutableSet *)self->_resolvingServices removeObject:v6];
-  [(NSMutableSet *)self->_resolvedServices removeObject:v6];
+  [(NSMutableSet *)self->_monitoringServices removeObject:serviceCopy];
+  [(NSMutableSet *)self->_resolvingServices removeObject:serviceCopy];
+  [(NSMutableSet *)self->_resolvedServices removeObject:serviceCopy];
 }
 
-- (void)netServiceBrowser:(id)a3 didFindService:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didFindService:(id)service moreComing:(BOOL)coming
 {
   v11 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  serviceCopy = service;
   v7 = _avairlog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v6;
+    v10 = serviceCopy;
     _os_log_impl(&dword_18B49C000, v7, OS_LOG_TYPE_DEFAULT, "didFindService %@", &v9, 0xCu);
   }
 
-  [v6 setDelegate:self];
-  [(NSMutableSet *)self->_resolvingServices addObject:v6];
-  v8 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [v6 scheduleInRunLoop:v8 forMode:*MEMORY[0x1E695DA28]];
+  [serviceCopy setDelegate:self];
+  [(NSMutableSet *)self->_resolvingServices addObject:serviceCopy];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [serviceCopy scheduleInRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
-  [v6 startMonitoring];
-  [(NSMutableSet *)self->_monitoringServices addObject:v6];
-  [v6 resolveWithTimeout:10.0];
+  [serviceCopy startMonitoring];
+  [(NSMutableSet *)self->_monitoringServices addObject:serviceCopy];
+  [serviceCopy resolveWithTimeout:10.0];
 }
 
-- (void)netServiceBrowser:(id)a3 didNotSearch:(id)a4
+- (void)netServiceBrowser:(id)browser didNotSearch:(id)search
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  searchCopy = search;
   v5 = _avairlog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = v4;
+    v7 = searchCopy;
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "didNotSearch (errorDict = %{public}@)", &v6, 0xCu);
   }
 }
 
-- (id)airTransportSenderForNetService:(id)a3
+- (id)airTransportSenderForNetService:(id)service
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(AVBonjourServiceClient *)self identifierForNetService:v4];
+  serviceCopy = service;
+  v5 = [(AVBonjourServiceClient *)self identifierForNetService:serviceCopy];
   v6 = [(NSMutableDictionary *)self->_netServiceIdentifierToChannel objectForKeyedSubscript:v5];
   if (v6)
   {
@@ -240,7 +240,7 @@
   {
     v12 = 0;
     v13 = 0;
-    if ([v4 getInputStream:&v13 outputStream:&v12])
+    if ([serviceCopy getInputStream:&v13 outputStream:&v12])
     {
       v8 = [AVAirTransport channelWithInput:v13 output:v12];
       [(NSMutableDictionary *)self->_netServiceIdentifierToChannel setObject:v8 forKeyedSubscript:v5];
@@ -250,7 +250,7 @@
         *buf = 136315650;
         v15 = "[AVBonjourServiceClient airTransportSenderForNetService:]";
         v16 = 2112;
-        v17 = v4;
+        v17 = serviceCopy;
         v18 = 2112;
         v19 = v8;
         _os_log_impl(&dword_18B49C000, v9, OS_LOG_TYPE_DEFAULT, "%s %@ ===> %@", buf, 0x20u);
@@ -276,15 +276,15 @@
   return v7;
 }
 
-- (id)identifierForNetService:(id)a3
+- (id)identifierForNetService:(id)service
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
-  v5 = [v4 hostName];
-  v6 = v5;
-  if (v5)
+  serviceCopy = service;
+  hostName = [serviceCopy hostName];
+  v6 = hostName;
+  if (hostName)
   {
-    v7 = v5;
+    v7 = hostName;
   }
 
   else
@@ -292,22 +292,22 @@
     v7 = @"?host?";
   }
 
-  v8 = [v4 port];
+  port = [serviceCopy port];
 
-  v9 = [v3 stringWithFormat:@"<%@:%ld>", v7, v8];
+  v9 = [v3 stringWithFormat:@"<%@:%ld>", v7, port];
 
   return v9;
 }
 
-- (BOOL)_isServiceForCurrentAirPlayDevice:(id)a3
+- (BOOL)_isServiceForCurrentAirPlayDevice:(id)device
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  deviceCopy = device;
   [(AVBonjourServiceClient *)self airplayDeviceRef];
   v5 = MRPairedDeviceCopyDeviceUID();
-  v6 = [v4 TXTRecordData];
+  tXTRecordData = [deviceCopy TXTRecordData];
 
-  v7 = [AVBonjourServiceClient dictionaryFromTXTRecordData:v6];
+  v7 = [AVBonjourServiceClient dictionaryFromTXTRecordData:tXTRecordData];
 
   v8 = [v7 objectForKeyedSubscript:@"receiverPairingIdentity"];
   v9 = _avairlog();
@@ -336,7 +336,7 @@
     *buf = 136315394;
     v9 = "[AVBonjourServiceClient _updatedAirPlayPairedDeviceAsync]";
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&dword_18B49C000, v3, OS_LOG_TYPE_DEFAULT, "%s %p getting device info...", buf, 0x16u);
   }
 
@@ -583,25 +583,25 @@ LABEL_15:
   }
 }
 
-- (void)setAirplayDeviceRef:(void *)a3
+- (void)setAirplayDeviceRef:(void *)ref
 {
   v25 = *MEMORY[0x1E69E9840];
   airplayDeviceRef = self->_airplayDeviceRef;
-  if (airplayDeviceRef != a3)
+  if (airplayDeviceRef != ref)
   {
-    if (a3)
+    if (ref)
     {
-      CFRetain(a3);
+      CFRetain(ref);
     }
 
-    self->_airplayDeviceRef = a3;
+    self->_airplayDeviceRef = ref;
     if (airplayDeviceRef)
     {
       CFRelease(airplayDeviceRef);
     }
 
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 postNotificationName:@"AVExternalDeviceAControllerirPlayDeviceRefDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"AVExternalDeviceAControllerirPlayDeviceRefDidChangeNotification" object:self];
 
     v22 = 0u;
     v23 = 0u;
@@ -633,9 +633,9 @@ LABEL_15:
             }
 
             v14 = [(AVBonjourServiceClient *)self airTransportSenderForNetService:v12];
-            v15 = [(AVBonjourServiceClient *)self delegate];
+            delegate = [(AVBonjourServiceClient *)self delegate];
 
-            if (!v15)
+            if (!delegate)
             {
               v16 = _avairlog();
               if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -645,11 +645,11 @@ LABEL_15:
               }
             }
 
-            v17 = [(AVBonjourServiceClient *)self delegate];
-            [v17 didConnectToBonjourService:v12 channel:v14];
+            delegate2 = [(AVBonjourServiceClient *)self delegate];
+            [delegate2 didConnectToBonjourService:v12 channel:v14];
 
-            v18 = [MEMORY[0x1E696AD88] defaultCenter];
-            [v18 postNotificationName:@"AVBonjourServiceClientDidResolveAirPlayDeviceNetServiceNotification" object:self];
+            defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+            [defaultCenter2 postNotificationName:@"AVBonjourServiceClientDidResolveAirPlayDeviceNetServiceNotification" object:self];
           }
         }
 
@@ -664,12 +664,12 @@ LABEL_15:
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AVBonjourServiceClient *)self serviceType];
-  v5 = [(AVBonjourServiceClient *)self delegate];
+  serviceType = [(AVBonjourServiceClient *)self serviceType];
+  delegate = [(AVBonjourServiceClient *)self delegate];
   v6 = objc_opt_class();
   v7 = NSStringFromClass(v6);
-  v8 = [(AVBonjourServiceClient *)self delegate];
-  v9 = [v3 stringWithFormat:@"<AVBonjourServiceClient %p (%@) delegate <%@ %p>>", self, v4, v7, v8];;
+  delegate2 = [(AVBonjourServiceClient *)self delegate];
+  v9 = [v3 stringWithFormat:@"<AVBonjourServiceClient %p (%@) delegate <%@ %p>>", self, serviceType, v7, delegate2];;
 
   return v9;
 }
@@ -715,23 +715,23 @@ LABEL_15:
 - (void)dealloc
 {
   [(AVBonjourServiceClient *)self endDiscovery];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self->_observeAirPlayVideoActiveDidChange];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self->_observeAirPlayVideoActiveDidChange];
 
   v4.receiver = self;
   v4.super_class = AVBonjourServiceClient;
   [(AVBonjourServiceClient *)&v4 dealloc];
 }
 
-- (AVBonjourServiceClient)initWithNetServiceType:(id)a3
+- (AVBonjourServiceClient)initWithNetServiceType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v34.receiver = self;
   v34.super_class = AVBonjourServiceClient;
   v5 = [(AVBonjourServiceClient *)&v34 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [typeCopy copy];
     serviceType = v5->_serviceType;
     v5->_serviceType = v6;
 
@@ -754,23 +754,23 @@ LABEL_15:
     [(NSNetServiceBrowser *)v5->_netServiceBrowser setIncludesPeerToPeer:1];
     [(NSNetServiceBrowser *)v5->_netServiceBrowser setDelegate:v5];
     v16 = v5->_netServiceBrowser;
-    v17 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    [(NSNetServiceBrowser *)v16 scheduleInRunLoop:v17 forMode:*MEMORY[0x1E695DA28]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    [(NSNetServiceBrowser *)v16 scheduleInRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
     v18 = objc_alloc_init(MEMORY[0x1E695DF90]);
     netServiceIdentifierToChannel = v5->_netServiceIdentifierToChannel;
     v5->_netServiceIdentifierToChannel = v18;
 
     objc_initWeak(&location, v5);
-    v20 = [MEMORY[0x1E696AD88] defaultCenter];
-    v21 = [MEMORY[0x1E696ADC8] mainQueue];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    mainQueue = [MEMORY[0x1E696ADC8] mainQueue];
     v22 = *MEMORY[0x1E6987440];
     v31[0] = MEMORY[0x1E69E9820];
     v31[1] = 3221225472;
     v31[2] = __49__AVBonjourServiceClient_initWithNetServiceType___block_invoke;
     v31[3] = &unk_1E7208898;
     objc_copyWeak(&v32, &location);
-    v23 = [v20 addObserverForName:v22 object:0 queue:v21 usingBlock:v31];
+    v23 = [defaultCenter addObserverForName:v22 object:0 queue:mainQueue usingBlock:v31];
     observeAirPlayVideoActiveDidChange = v5->_observeAirPlayVideoActiveDidChange;
     v5->_observeAirPlayVideoActiveDidChange = v23;
 
@@ -780,7 +780,7 @@ LABEL_15:
     v29[2] = __49__AVBonjourServiceClient_initWithNetServiceType___block_invoke_16;
     v29[3] = &unk_1E7208898;
     objc_copyWeak(&v30, &location);
-    v26 = [v20 addObserverForName:v25 object:0 queue:v21 usingBlock:v29];
+    v26 = [defaultCenter addObserverForName:v25 object:0 queue:mainQueue usingBlock:v29];
     observeMRDeviceInfoDidChange = v5->_observeMRDeviceInfoDidChange;
     v5->_observeMRDeviceInfoDidChange = v26;
 
@@ -830,17 +830,17 @@ void __49__AVBonjourServiceClient_initWithNetServiceType___block_invoke_16(uint6
   [WeakRetained _updatedAirPlayPairedDeviceAsync];
 }
 
-+ (id)dictionaryFromTXTRecordData:(id)a3
++ (id)dictionaryFromTXTRecordData:(id)data
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD70] dictionaryFromTXTRecordData:a3];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  v3 = [MEMORY[0x1E696AD70] dictionaryFromTXTRecordData:data];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v3 keyEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  keyEnumerator = [v3 keyEnumerator];
+  v6 = [keyEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -851,7 +851,7 @@ void __49__AVBonjourServiceClient_initWithNetServiceType___block_invoke_16(uint6
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
@@ -860,17 +860,17 @@ void __49__AVBonjourServiceClient_initWithNetServiceType___block_invoke_16(uint6
         if (objc_opt_isKindOfClass())
         {
           v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v11 encoding:4];
-          [v4 setObject:v12 forKeyedSubscript:v10];
+          [dictionary setObject:v12 forKeyedSubscript:v10];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [keyEnumerator countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
   }
 
-  return v4;
+  return dictionary;
 }
 
 @end

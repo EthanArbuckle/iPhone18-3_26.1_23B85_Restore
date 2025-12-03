@@ -1,28 +1,28 @@
 @interface KTSignalIDSOperation
-- (KTSignalIDSOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5 selfValidationResult:(id)a6 stateMachine:(id)a7;
+- (KTSignalIDSOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState selfValidationResult:(id)result stateMachine:(id)machine;
 - (void)groupStart;
 @end
 
 @implementation KTSignalIDSOperation
 
-- (KTSignalIDSOperation)initWithDependencies:(id)a3 intendedState:(id)a4 errorState:(id)a5 selfValidationResult:(id)a6 stateMachine:(id)a7
+- (KTSignalIDSOperation)initWithDependencies:(id)dependencies intendedState:(id)state errorState:(id)errorState selfValidationResult:(id)result stateMachine:(id)machine
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  dependenciesCopy = dependencies;
+  stateCopy = state;
+  errorStateCopy = errorState;
+  resultCopy = result;
+  machineCopy = machine;
   v21.receiver = self;
   v21.super_class = KTSignalIDSOperation;
   v17 = [(KTGroupOperation *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_deps, a3);
-    objc_storeStrong(&v18->_intendedState, a4);
-    objc_storeStrong(&v18->_nextState, a5);
-    objc_storeStrong(&v18->_selfValidationResult, a6);
-    objc_storeStrong(&v18->_stateMachine, a7);
+    objc_storeStrong(&v17->_deps, dependencies);
+    objc_storeStrong(&v18->_intendedState, state);
+    objc_storeStrong(&v18->_nextState, errorState);
+    objc_storeStrong(&v18->_selfValidationResult, result);
+    objc_storeStrong(&v18->_stateMachine, machine);
   }
 
   return v18;
@@ -30,25 +30,25 @@
 
 - (void)groupStart
 {
-  v3 = [(KTSignalIDSOperation *)self selfValidationResult];
+  selfValidationResult = [(KTSignalIDSOperation *)self selfValidationResult];
   [(KTSignalIDSOperation *)self setSelfValidationResult:0];
-  v4 = [v3 application];
-  v5 = v4;
+  application = [selfValidationResult application];
+  v5 = application;
   v6 = kKTApplicationIdentifierIDS;
-  if (v4)
+  if (application)
   {
-    v6 = v4;
+    v6 = application;
   }
 
   v7 = v6;
 
-  v8 = [(KTSignalIDSOperation *)self deps];
-  v9 = [v8 publicKeyStore];
-  v10 = [v9 applicationPublicKeyStore:v7];
+  deps = [(KTSignalIDSOperation *)self deps];
+  publicKeyStore = [deps publicKeyStore];
+  v10 = [publicKeyStore applicationPublicKeyStore:v7];
 
-  v11 = [(KTSignalIDSOperation *)self deps];
-  v12 = [v11 stateMonitor];
-  v13 = [v12 treeStateUnstable:v7 logBeginTime:{objc_msgSend(v10, "patLogBeginningMs")}];
+  deps2 = [(KTSignalIDSOperation *)self deps];
+  stateMonitor = [deps2 stateMonitor];
+  v13 = [stateMonitor treeStateUnstable:v7 logBeginTime:{objc_msgSend(v10, "patLogBeginningMs")}];
 
   if (v13)
   {
@@ -70,18 +70,18 @@
     v15 = objc_alloc_init(NSOperation);
     [(KTSignalIDSOperation *)self setFinishedOp:v15];
 
-    v16 = [(KTSignalIDSOperation *)self finishedOp];
-    [(KTGroupOperation *)self dependOnBeforeGroupFinished:v16];
+    finishedOp = [(KTSignalIDSOperation *)self finishedOp];
+    [(KTGroupOperation *)self dependOnBeforeGroupFinished:finishedOp];
 
     objc_initWeak(buf, self);
-    v17 = [(KTSignalIDSOperation *)self deps];
-    v18 = [v17 idsOperations];
+    deps3 = [(KTSignalIDSOperation *)self deps];
+    idsOperations = [deps3 idsOperations];
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v19[2] = sub_100201DD4;
     v19[3] = &unk_100329AD8;
     objc_copyWeak(&v20, buf);
-    [v18 triggerIDSCheck:v7 selfValidationResult:v3 complete:v19];
+    [idsOperations triggerIDSCheck:v7 selfValidationResult:selfValidationResult complete:v19];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(buf);

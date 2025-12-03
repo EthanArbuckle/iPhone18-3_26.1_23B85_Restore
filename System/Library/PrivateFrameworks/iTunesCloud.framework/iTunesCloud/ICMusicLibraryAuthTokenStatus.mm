@@ -1,112 +1,112 @@
 @interface ICMusicLibraryAuthTokenStatus
-- (ICMusicLibraryAuthTokenStatus)initWithBlock:(id)a3;
-- (ICMusicLibraryAuthTokenStatus)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLastError:(id)a3;
-- (void)setLastUpdatedDate:(id)a3;
-- (void)setToken:(id)a3;
+- (ICMusicLibraryAuthTokenStatus)initWithBlock:(id)block;
+- (ICMusicLibraryAuthTokenStatus)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLastError:(id)error;
+- (void)setLastUpdatedDate:(id)date;
+- (void)setToken:(id)token;
 @end
 
 @implementation ICMusicLibraryAuthTokenStatus
 
-- (void)setLastUpdatedDate:(id)a3
+- (void)setLastUpdatedDate:(id)date
 {
-  v5 = a3;
-  v9 = v5;
+  dateCopy = date;
+  v9 = dateCopy;
   if (self->_frozen)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ICMusicLibraryAuthTokenStatus.m" lineNumber:82 description:@"Attempt to mutate after being initialized."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMusicLibraryAuthTokenStatus.m" lineNumber:82 description:@"Attempt to mutate after being initialized."];
 
-    v5 = v9;
+    dateCopy = v9;
   }
 
-  v6 = [v5 copy];
+  v6 = [dateCopy copy];
   lastUpdatedDate = self->_lastUpdatedDate;
   self->_lastUpdatedDate = v6;
 }
 
-- (void)setLastError:(id)a3
+- (void)setLastError:(id)error
 {
-  v5 = a3;
-  v9 = v5;
+  errorCopy = error;
+  v9 = errorCopy;
   if (self->_frozen)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ICMusicLibraryAuthTokenStatus.m" lineNumber:77 description:@"Attempt to mutate after being initialized."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMusicLibraryAuthTokenStatus.m" lineNumber:77 description:@"Attempt to mutate after being initialized."];
 
-    v5 = v9;
+    errorCopy = v9;
   }
 
-  v6 = [v5 copy];
+  v6 = [errorCopy copy];
   lastError = self->_lastError;
   self->_lastError = v6;
 }
 
-- (void)setToken:(id)a3
+- (void)setToken:(id)token
 {
-  v5 = a3;
-  v9 = v5;
+  tokenCopy = token;
+  v9 = tokenCopy;
   if (self->_frozen)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"ICMusicLibraryAuthTokenStatus.m" lineNumber:72 description:@"Attempt to mutate after being initialized."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"ICMusicLibraryAuthTokenStatus.m" lineNumber:72 description:@"Attempt to mutate after being initialized."];
 
-    v5 = v9;
+    tokenCopy = v9;
   }
 
-  v6 = [v5 copy];
+  v6 = [tokenCopy copy];
   token = self->_token;
   self->_token = v6;
 }
 
-- (ICMusicLibraryAuthTokenStatus)initWithCoder:(id)a3
+- (ICMusicLibraryAuthTokenStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = ICMusicLibraryAuthTokenStatus;
   v5 = [(ICMusicLibraryAuthTokenStatus *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"token"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"token"];
     token = v5->_token;
     v5->_token = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastError"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastError"];
     lastError = v5->_lastError;
     v5->_lastError = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedDate"];
     lastUpdatedDate = v5->_lastUpdatedDate;
     v5->_lastUpdatedDate = v10;
 
-    v5->_shouldExcludeFromBackgroundRefresh = [v4 decodeBoolForKey:@"shouldExcludeFromBackgroundRefresh"];
+    v5->_shouldExcludeFromBackgroundRefresh = [coderCopy decodeBoolForKey:@"shouldExcludeFromBackgroundRefresh"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   token = self->_token;
-  v6 = a3;
-  [v6 encodeObject:token forKey:@"token"];
-  v5 = [(NSError *)self->_lastError msv_errorByRemovingUnsafeUserInfo];
-  [v6 encodeObject:v5 forKey:@"lastError"];
+  coderCopy = coder;
+  [coderCopy encodeObject:token forKey:@"token"];
+  msv_errorByRemovingUnsafeUserInfo = [(NSError *)self->_lastError msv_errorByRemovingUnsafeUserInfo];
+  [coderCopy encodeObject:msv_errorByRemovingUnsafeUserInfo forKey:@"lastError"];
 
-  [v6 encodeObject:self->_lastUpdatedDate forKey:@"lastUpdatedDate"];
-  [v6 encodeBool:self->_shouldExcludeFromBackgroundRefresh forKey:@"shouldExcludeFromBackgroundRefresh"];
+  [coderCopy encodeObject:self->_lastUpdatedDate forKey:@"lastUpdatedDate"];
+  [coderCopy encodeBool:self->_shouldExcludeFromBackgroundRefresh forKey:@"shouldExcludeFromBackgroundRefresh"];
 }
 
-- (ICMusicLibraryAuthTokenStatus)initWithBlock:(id)a3
+- (ICMusicLibraryAuthTokenStatus)initWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v7.receiver = self;
   v7.super_class = ICMusicLibraryAuthTokenStatus;
   v5 = [(ICMusicLibraryAuthTokenStatus *)&v7 init];
   if (v5)
   {
-    v4[2](v4, v5);
+    blockCopy[2](blockCopy, v5);
     v5->_frozen = 1;
   }
 

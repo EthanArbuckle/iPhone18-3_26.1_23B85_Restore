@@ -1,5 +1,5 @@
 @interface VOTQuickSettingsViewController
-- (VOTQuickSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (VOTQuickSettingsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (VOTQuickSettingsViewControllerDelegate)delegate;
 - (void)_dismissQuickSettings;
 - (void)viewDidLoad;
@@ -7,7 +7,7 @@
 
 @implementation VOTQuickSettingsViewController
 
-- (VOTQuickSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (VOTQuickSettingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v10.receiver = self;
   v10.super_class = VOTQuickSettingsViewController;
@@ -20,8 +20,8 @@
     v6 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:v4 action:"_handleDoneButtonTap:"];
     v11 = v6;
     v7 = [NSArray arrayWithObjects:&v11 count:1];
-    v8 = [(VOTQuickSettingsViewController *)v4 navigationItem];
-    [v8 setRightBarButtonItems:v7];
+    navigationItem = [(VOTQuickSettingsViewController *)v4 navigationItem];
+    [navigationItem setRightBarButtonItems:v7];
   }
 
   return v4;
@@ -36,29 +36,29 @@
   settingsListViewController = self->_settingsListViewController;
   self->_settingsListViewController = v3;
 
-  v5 = [(VOTQuickSettingsViewController *)self data];
-  [(VOTQuickSettingsListViewController *)self->_settingsListViewController setData:v5];
+  data = [(VOTQuickSettingsViewController *)self data];
+  [(VOTQuickSettingsListViewController *)self->_settingsListViewController setData:data];
 
-  v6 = [(VOTQuickSettingsViewController *)self view];
-  v7 = [(VOTQuickSettingsListViewController *)self->_settingsListViewController view];
+  view = [(VOTQuickSettingsViewController *)self view];
+  view2 = [(VOTQuickSettingsListViewController *)self->_settingsListViewController view];
   [(VOTQuickSettingsViewController *)self addChildViewController:self->_settingsListViewController];
-  [v6 addSubview:v7];
-  [v6 bounds];
-  [v7 setFrame:?];
-  [v7 setAutoresizingMask:18];
+  [view addSubview:view2];
+  [view bounds];
+  [view2 setFrame:?];
+  [view2 setAutoresizingMask:18];
   [(VOTQuickSettingsListViewController *)self->_settingsListViewController didMoveToParentViewController:self];
-  v8 = [(VOTQuickSettingsListViewController *)self->_settingsListViewController searchController];
-  v9 = [(VOTQuickSettingsViewController *)self navigationItem];
-  [v9 setSearchController:v8];
+  searchController = [(VOTQuickSettingsListViewController *)self->_settingsListViewController searchController];
+  navigationItem = [(VOTQuickSettingsViewController *)self navigationItem];
+  [navigationItem setSearchController:searchController];
 }
 
 - (void)_dismissQuickSettings
 {
-  v3 = [(VOTQuickSettingsViewController *)self delegate];
-  [v3 quickSettingsViewControllerWasDismissed:self];
+  delegate = [(VOTQuickSettingsViewController *)self delegate];
+  [delegate quickSettingsViewControllerWasDismissed:self];
 
-  v4 = [(VOTQuickSettingsViewController *)self presentingViewController];
-  [v4 dismissViewControllerAnimated:0 completion:0];
+  presentingViewController = [(VOTQuickSettingsViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:0 completion:0];
 }
 
 - (VOTQuickSettingsViewControllerDelegate)delegate

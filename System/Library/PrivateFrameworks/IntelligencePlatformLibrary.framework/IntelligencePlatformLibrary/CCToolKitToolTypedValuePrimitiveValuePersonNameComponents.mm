@@ -1,7 +1,7 @@
 @interface CCToolKitToolTypedValuePrimitiveValuePersonNameComponents
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCToolKitToolTypedValuePrimitiveValuePersonNameComponents)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolTypedValuePrimitiveValuePersonNameComponents)initWithNamePrefix:(id)a3 givenName:(id)a4 middleName:(id)a5 familyName:(id)a6 nameSuffix:(id)a7 nickname:(id)a8 phoneticRepresentation:(id)a9 error:(id *)a10;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCToolKitToolTypedValuePrimitiveValuePersonNameComponents)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolTypedValuePrimitiveValuePersonNameComponents)initWithNamePrefix:(id)prefix givenName:(id)name middleName:(id)middleName familyName:(id)familyName nameSuffix:(id)suffix nickname:(id)nickname phoneticRepresentation:(id)representation error:(id *)self0;
 - (CCToolKitToolTypedValuePrimitiveValuePersonNameComponentsPhoneticRepresentation)phoneticRepresentation;
 - (NSString)familyName;
 - (NSString)givenName;
@@ -10,28 +10,28 @@
 - (NSString)nameSuffix;
 - (NSString)nickname;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolTypedValuePrimitiveValuePersonNameComponents
 
-- (CCToolKitToolTypedValuePrimitiveValuePersonNameComponents)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolTypedValuePrimitiveValuePersonNameComponents)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v26[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v25 = self;
-    v9 = [v6 objectForKeyedSubscript:@"namePrefix"];
-    v24 = [v6 objectForKeyedSubscript:@"givenName"];
-    v10 = [v6 objectForKeyedSubscript:@"middleName"];
-    v11 = [v6 objectForKeyedSubscript:@"familyName"];
-    v12 = [v6 objectForKeyedSubscript:@"nameSuffix"];
-    v13 = [v6 objectForKeyedSubscript:@"nickname"];
-    v14 = [v6 objectForKeyedSubscript:@"phoneticRepresentation"];
+    selfCopy = self;
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"namePrefix"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"givenName"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"middleName"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"familyName"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"nameSuffix"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"nickname"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"phoneticRepresentation"];
     v23 = v8;
     if (v14)
     {
@@ -60,11 +60,11 @@
     }
 
     v20 = v24;
-    v19 = [[CCToolKitToolTypedValuePrimitiveValuePersonNameComponents alloc] initWithNamePrefix:v9 givenName:v24 middleName:v10 familyName:v11 nameSuffix:v12 nickname:v13 phoneticRepresentation:v16 error:a4];
+    v19 = [[CCToolKitToolTypedValuePrimitiveValuePersonNameComponents alloc] initWithNamePrefix:v9 givenName:v24 middleName:v10 familyName:v11 nameSuffix:v12 nickname:v13 phoneticRepresentation:v16 error:error];
     v15 = v16;
 LABEL_10:
 
-    self = v25;
+    self = selfCopy;
     v8 = v23;
     goto LABEL_11;
   }
@@ -81,45 +81,45 @@ LABEL_11:
   v3 = objc_opt_new();
   if (self->_namePrefix)
   {
-    v4 = [(CCToolKitToolTypedValuePrimitiveValuePersonNameComponents *)self namePrefix];
-    [v3 setObject:v4 forKeyedSubscript:@"namePrefix"];
+    namePrefix = [(CCToolKitToolTypedValuePrimitiveValuePersonNameComponents *)self namePrefix];
+    [v3 setObject:namePrefix forKeyedSubscript:@"namePrefix"];
   }
 
   if (self->_givenName)
   {
-    v5 = [(CCToolKitToolTypedValuePrimitiveValuePersonNameComponents *)self givenName];
-    [v3 setObject:v5 forKeyedSubscript:@"givenName"];
+    givenName = [(CCToolKitToolTypedValuePrimitiveValuePersonNameComponents *)self givenName];
+    [v3 setObject:givenName forKeyedSubscript:@"givenName"];
   }
 
   if (self->_middleName)
   {
-    v6 = [(CCToolKitToolTypedValuePrimitiveValuePersonNameComponents *)self middleName];
-    [v3 setObject:v6 forKeyedSubscript:@"middleName"];
+    middleName = [(CCToolKitToolTypedValuePrimitiveValuePersonNameComponents *)self middleName];
+    [v3 setObject:middleName forKeyedSubscript:@"middleName"];
   }
 
   if (self->_familyName)
   {
-    v7 = [(CCToolKitToolTypedValuePrimitiveValuePersonNameComponents *)self familyName];
-    [v3 setObject:v7 forKeyedSubscript:@"familyName"];
+    familyName = [(CCToolKitToolTypedValuePrimitiveValuePersonNameComponents *)self familyName];
+    [v3 setObject:familyName forKeyedSubscript:@"familyName"];
   }
 
   if (self->_nameSuffix)
   {
-    v8 = [(CCToolKitToolTypedValuePrimitiveValuePersonNameComponents *)self nameSuffix];
-    [v3 setObject:v8 forKeyedSubscript:@"nameSuffix"];
+    nameSuffix = [(CCToolKitToolTypedValuePrimitiveValuePersonNameComponents *)self nameSuffix];
+    [v3 setObject:nameSuffix forKeyedSubscript:@"nameSuffix"];
   }
 
   if (self->_nickname)
   {
-    v9 = [(CCToolKitToolTypedValuePrimitiveValuePersonNameComponents *)self nickname];
-    [v3 setObject:v9 forKeyedSubscript:@"nickname"];
+    nickname = [(CCToolKitToolTypedValuePrimitiveValuePersonNameComponents *)self nickname];
+    [v3 setObject:nickname forKeyedSubscript:@"nickname"];
   }
 
   if (self->_phoneticRepresentation)
   {
-    v10 = [(CCToolKitToolTypedValuePrimitiveValuePersonNameComponents *)self phoneticRepresentation];
-    v11 = [v10 jsonDictionary];
-    [v3 setObject:v11 forKeyedSubscript:@"phoneticRepresentation"];
+    phoneticRepresentation = [(CCToolKitToolTypedValuePrimitiveValuePersonNameComponents *)self phoneticRepresentation];
+    jsonDictionary = [phoneticRepresentation jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"phoneticRepresentation"];
   }
 
   v12 = [v3 copy];
@@ -127,11 +127,11 @@ LABEL_11:
   return v12;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v15 = v5;
+  v15 = blockCopy;
   if (self->_namePrefix)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] stringValue:self->_namePrefix];
@@ -227,10 +227,10 @@ LABEL_11:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -428,20 +428,20 @@ LABEL_50:
   return v36;
 }
 
-- (CCToolKitToolTypedValuePrimitiveValuePersonNameComponents)initWithNamePrefix:(id)a3 givenName:(id)a4 middleName:(id)a5 familyName:(id)a6 nameSuffix:(id)a7 nickname:(id)a8 phoneticRepresentation:(id)a9 error:(id *)a10
+- (CCToolKitToolTypedValuePrimitiveValuePersonNameComponents)initWithNamePrefix:(id)prefix givenName:(id)name middleName:(id)middleName familyName:(id)familyName nameSuffix:(id)suffix nickname:(id)nickname phoneticRepresentation:(id)representation error:(id *)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v39 = a8;
-  v38 = a9;
+  prefixCopy = prefix;
+  nameCopy = name;
+  middleNameCopy = middleName;
+  familyNameCopy = familyName;
+  suffixCopy = suffix;
+  nicknameCopy = nickname;
+  representationCopy = representation;
   v20 = objc_opt_new();
-  if (!v15)
+  if (!prefixCopy)
   {
     v22 = 0;
-    if (!v16)
+    if (!nameCopy)
     {
       goto LABEL_4;
     }
@@ -457,7 +457,7 @@ LABEL_11:
     }
 
     CCPBDataWriterWriteStringField();
-    if (v17)
+    if (middleNameCopy)
     {
       goto LABEL_5;
     }
@@ -474,14 +474,14 @@ LABEL_11:
   }
 
   CCPBDataWriterWriteStringField();
-  if (v16)
+  if (nameCopy)
   {
     goto LABEL_11;
   }
 
 LABEL_4:
   v23 = v22;
-  if (v17)
+  if (middleNameCopy)
   {
 LABEL_5:
     objc_opt_class();
@@ -494,11 +494,11 @@ LABEL_5:
     }
 
     CCPBDataWriterWriteStringField();
-    if (!v18)
+    if (!familyNameCopy)
     {
 LABEL_7:
       v23 = v22;
-      if (v19)
+      if (suffixCopy)
       {
         goto LABEL_8;
       }
@@ -511,7 +511,7 @@ LABEL_7:
 
 LABEL_13:
   v22 = v23;
-  if (!v18)
+  if (!familyNameCopy)
   {
     goto LABEL_7;
   }
@@ -524,7 +524,7 @@ LABEL_14:
   if (v27)
   {
     CCPBDataWriterWriteStringField();
-    if (v19)
+    if (suffixCopy)
     {
 LABEL_8:
       objc_opt_class();
@@ -535,7 +535,7 @@ LABEL_8:
       {
         CCPBDataWriterWriteStringField();
 LABEL_17:
-        if (v39)
+        if (nicknameCopy)
         {
           objc_opt_class();
           v28 = CCValidateIsInstanceOfExpectedClass();
@@ -544,10 +544,10 @@ LABEL_17:
           if (!v28)
           {
             CCSetError();
-            v34 = v39;
+            v34 = nicknameCopy;
             v30 = 0;
             v22 = v29;
-            v33 = self;
+            selfCopy2 = self;
             goto LABEL_28;
           }
 
@@ -559,7 +559,7 @@ LABEL_17:
           v29 = v22;
         }
 
-        if (!v38)
+        if (!representationCopy)
         {
           v22 = v29;
           goto LABEL_31;
@@ -571,14 +571,14 @@ LABEL_17:
 
         if (v31)
         {
-          v32 = [v38 data];
+          data = [representationCopy data];
           CCPBDataWriterWriteDataField();
 
 LABEL_31:
-          v36 = [v20 immutableData];
-          v33 = [(CCItemMessage *)self initWithData:v36 error:a10];
+          immutableData = [v20 immutableData];
+          selfCopy2 = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-          v30 = v33;
+          v30 = selfCopy2;
           goto LABEL_27;
         }
       }
@@ -599,9 +599,9 @@ LABEL_20:
   v30 = 0;
   v22 = v23;
 LABEL_26:
-  v33 = self;
+  selfCopy2 = self;
 LABEL_27:
-  v34 = v39;
+  v34 = nicknameCopy;
 LABEL_28:
 
   return v30;

@@ -1,8 +1,8 @@
 @interface BBMuteAssertion
-- (BBMuteAssertion)initWithCoder:(id)a3;
-- (BOOL)isActiveForThreadIdentifier:(id)a3 currentDate:(id)a4;
+- (BBMuteAssertion)initWithCoder:(id)coder;
+- (BOOL)isActiveForThreadIdentifier:(id)identifier currentDate:(id)date;
 - (id)_init;
-- (void)getNextExpirationDate:(id *)a3 wasPurged:(BOOL *)a4 currentDate:(id)a5;
+- (void)getNextExpirationDate:(id *)date wasPurged:(BOOL *)purged currentDate:(id)currentDate;
 @end
 
 @implementation BBMuteAssertion
@@ -14,21 +14,21 @@
   return [(BBMuteAssertion *)&v3 init];
 }
 
-- (BOOL)isActiveForThreadIdentifier:(id)a3 currentDate:(id)a4
+- (BOOL)isActiveForThreadIdentifier:(id)identifier currentDate:(id)date
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"BBMuteAssertion.m" lineNumber:29 description:@"use subclasses"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"BBMuteAssertion.m" lineNumber:29 description:@"use subclasses"];
 
   return 0;
 }
 
-- (void)getNextExpirationDate:(id *)a3 wasPurged:(BOOL *)a4 currentDate:(id)a5
+- (void)getNextExpirationDate:(id *)date wasPurged:(BOOL *)purged currentDate:(id)currentDate
 {
-  v7 = [MEMORY[0x277CCA890] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"BBMuteAssertion.m" lineNumber:34 description:@"use subclasses"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"BBMuteAssertion.m" lineNumber:34 description:@"use subclasses"];
 }
 
-- (BBMuteAssertion)initWithCoder:(id)a3
+- (BBMuteAssertion)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = BBMuteAssertion;

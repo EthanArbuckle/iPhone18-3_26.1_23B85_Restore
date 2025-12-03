@@ -1,34 +1,34 @@
 @interface FigSDOFEffectRendering
-- (BOOL)sanityChecksSamplingWithImage:(__CVBuffer *)a3 inputFaceAdjustedBlurMap:(__CVBuffer *)a4 inputAlphaMask:(__CVBuffer *)a5 inputGainMap:(__CVBuffer *)a6 resultImage:(__CVBuffer *)a7;
-- (FigSDOFEffectRendering)initWithCommandQueue:(id)a3;
-- (int)_prewarm:(id)a3;
-- (int)loadModelsWithTuningParameters:(id)a3;
-- (int)prewarmWithTuningParameters:(id)a3;
-- (int)runSamplingWithImage:(opaqueCMSampleBuffer *)a3 inputPixelBuffer:(__CVBuffer *)a4 inputFaceAdjustedBlurMap:(__CVBuffer *)a5 inputAlphaMask:(__CVBuffer *)a6 inputGainMap:(__CVBuffer *)a7 resultImage:(__CVBuffer *)a8;
+- (BOOL)sanityChecksSamplingWithImage:(__CVBuffer *)image inputFaceAdjustedBlurMap:(__CVBuffer *)map inputAlphaMask:(__CVBuffer *)mask inputGainMap:(__CVBuffer *)gainMap resultImage:(__CVBuffer *)resultImage;
+- (FigSDOFEffectRendering)initWithCommandQueue:(id)queue;
+- (int)_prewarm:(id)_prewarm;
+- (int)loadModelsWithTuningParameters:(id)parameters;
+- (int)prewarmWithTuningParameters:(id)parameters;
+- (int)runSamplingWithImage:(opaqueCMSampleBuffer *)image inputPixelBuffer:(__CVBuffer *)buffer inputFaceAdjustedBlurMap:(__CVBuffer *)map inputAlphaMask:(__CVBuffer *)mask inputGainMap:(__CVBuffer *)gainMap resultImage:(__CVBuffer *)resultImage;
 - (void)dealloc;
 - (void)releaseResources;
 @end
 
 @implementation FigSDOFEffectRendering
 
-- (int)prewarmWithTuningParameters:(id)a3
+- (int)prewarmWithTuningParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   v5 = [FigSDOFEffectRendering alloc];
   v8 = objc_msgSend_initWithCommandQueue_(v5, v6, self->_metalCommandQueue, v7);
-  v11 = objc_msgSend__prewarm_(v8, v9, v4, v10);
+  v11 = objc_msgSend__prewarm_(v8, v9, parametersCopy, v10);
 
   return v11;
 }
 
-- (int)_prewarm:(id)a3
+- (int)_prewarm:(id)_prewarm
 {
-  v4 = a3;
-  v6 = v4;
-  if (v4)
+  _prewarmCopy = _prewarm;
+  v6 = _prewarmCopy;
+  if (_prewarmCopy)
   {
     v11 = *MEMORY[0x29EDC0298];
-    v12 = v4;
+    v12 = _prewarmCopy;
     v7 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x29EDB8DC0], v5, &v12, &v11, 1);
     objc_msgSend_setOptionsInternal_isPrewarm_(self, v8, v7, 1);
 
@@ -44,9 +44,9 @@
   return v9;
 }
 
-- (FigSDOFEffectRendering)initWithCommandQueue:(id)a3
+- (FigSDOFEffectRendering)initWithCommandQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v42.receiver = self;
   v42.super_class = FigSDOFEffectRendering;
   v7 = [(FigSDOFEffectRendering *)&v42 init];
@@ -65,7 +65,7 @@ LABEL_18:
   }
 
   v9 = objc_alloc(MEMORY[0x29EDC0A40]);
-  inited = objc_msgSend_initWithbundle_andOptionalCommandQueue_(v9, v10, v8, v4);
+  inited = objc_msgSend_initWithbundle_andOptionalCommandQueue_(v9, v10, v8, queueCopy);
   v12 = *(v7 + 9);
   *(v7 + 9) = inited;
 
@@ -156,16 +156,16 @@ LABEL_11:
   self->_resources = 0;
 }
 
-- (int)runSamplingWithImage:(opaqueCMSampleBuffer *)a3 inputPixelBuffer:(__CVBuffer *)a4 inputFaceAdjustedBlurMap:(__CVBuffer *)a5 inputAlphaMask:(__CVBuffer *)a6 inputGainMap:(__CVBuffer *)a7 resultImage:(__CVBuffer *)a8
+- (int)runSamplingWithImage:(opaqueCMSampleBuffer *)image inputPixelBuffer:(__CVBuffer *)buffer inputFaceAdjustedBlurMap:(__CVBuffer *)map inputAlphaMask:(__CVBuffer *)mask inputGainMap:(__CVBuffer *)gainMap resultImage:(__CVBuffer *)resultImage
 {
-  if (!a3)
+  if (!image)
   {
     sub_295EB82E0(v193);
 LABEL_44:
     v187 = 0;
     v57 = 0;
     v53 = 0;
-    v9 = 0;
+    resultImageCopy = 0;
 LABEL_46:
     v188 = 0;
     v189 = 0;
@@ -176,14 +176,14 @@ LABEL_46:
     goto LABEL_60;
   }
 
-  if (!a5)
+  if (!map)
   {
     sub_295EB8234(v193);
     goto LABEL_44;
   }
 
-  v9 = a8;
-  if (!a8)
+  resultImageCopy = resultImage;
+  if (!resultImage)
   {
     sub_295EB8188(v193);
     v187 = 0;
@@ -200,7 +200,7 @@ LABEL_49:
     v188 = 0;
     v57 = 0;
     v53 = 0;
-    v9 = 0;
+    resultImageCopy = 0;
     v189 = 0;
     v190 = 0;
     v48 = 0;
@@ -210,13 +210,13 @@ LABEL_49:
     goto LABEL_41;
   }
 
-  if ((objc_msgSend_sanityChecksSamplingWithImage_inputFaceAdjustedBlurMap_inputAlphaMask_inputGainMap_resultImage_(self, a2, a4, a5, a6, a7, a8) & 1) == 0)
+  if ((objc_msgSend_sanityChecksSamplingWithImage_inputFaceAdjustedBlurMap_inputAlphaMask_inputGainMap_resultImage_(self, a2, buffer, map, mask, gainMap, resultImage) & 1) == 0)
   {
     sub_295EB7AF0();
     goto LABEL_49;
   }
 
-  v183 = a7;
+  gainMapCopy = gainMap;
   v17 = objc_msgSend_parameterSetForMode_(self->_tuningParameters, v15, 0, v16);
   v21 = v17;
   if (v17)
@@ -230,7 +230,7 @@ LABEL_49:
     v22 = 0;
   }
 
-  v23 = CMGetAttachment(a3, *MEMORY[0x29EDC0850], 0);
+  v23 = CMGetAttachment(image, *MEMORY[0x29EDC0850], 0);
   v26 = objc_msgSend_objectForKeyedSubscript_(v23, v24, *MEMORY[0x29EDC07F0], v25);
   v30 = v26;
   v185 = v21;
@@ -253,7 +253,7 @@ LABEL_49:
   v44 = objc_msgSend_objectForKeyedSubscript_(v23, v42, @"RenderingParameters", v43);
   v45 = v40(v41, v36, v44);
 
-  v190 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v46, a4, 10, 17, 0);
+  v190 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v46, buffer, 10, 17, 0);
   if (!v190)
   {
     sub_295EB8064(v193);
@@ -261,7 +261,7 @@ LABEL_49:
     v188 = 0;
     v57 = 0;
     v53 = 0;
-    v9 = 0;
+    resultImageCopy = 0;
     v189 = 0;
     v190 = 0;
     v178 = v193[0];
@@ -269,7 +269,7 @@ LABEL_49:
     goto LABEL_41;
   }
 
-  objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v47, a4, 30, 17, 1);
+  objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v47, buffer, 30, 17, 1);
   v189 = v48 = v185;
   if (!v189)
   {
@@ -278,7 +278,7 @@ LABEL_49:
     v188 = 0;
     v57 = 0;
     v53 = 0;
-    v9 = 0;
+    resultImageCopy = 0;
     v189 = 0;
     goto LABEL_60;
   }
@@ -286,12 +286,12 @@ LABEL_49:
   metalContext = self->_metalContext;
   if (v45)
   {
-    objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(metalContext, v49, a5, 30, 17, 0);
+    objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(metalContext, v49, map, 30, 17, 0);
   }
 
   else
   {
-    objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(metalContext, v49, a5, 10, 17, 0);
+    objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(metalContext, v49, map, 10, 17, 0);
   }
   v188 = ;
   if (!v188)
@@ -302,11 +302,11 @@ LABEL_49:
     v57 = 0;
     v53 = 0;
 LABEL_54:
-    v9 = 0;
+    resultImageCopy = 0;
     goto LABEL_60;
   }
 
-  v53 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v51, v9, 10, 22, 0);
+  v53 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v51, resultImageCopy, 10, 22, 0);
   if (!v53)
   {
     sub_295EB7E60(v193);
@@ -315,20 +315,20 @@ LABEL_54:
     goto LABEL_54;
   }
 
-  v9 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v52, v9, 30, 22, 1);
-  if (!v9)
+  resultImageCopy = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v52, resultImageCopy, 30, 22, 1);
+  if (!resultImageCopy)
   {
     sub_295EB7DB4(v193);
     goto LABEL_59;
   }
 
-  if (a6)
+  if (mask)
   {
-    v187 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v54, a6, 10, 17, 0);
-    v56 = v183;
+    v187 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v54, mask, 10, 17, 0);
+    v56 = gainMapCopy;
     if (v187)
     {
-      if (v183)
+      if (gainMapCopy)
       {
         goto LABEL_23;
       }
@@ -344,8 +344,8 @@ LABEL_59:
   }
 
   v187 = 0;
-  v56 = v183;
-  if (v183)
+  v56 = gainMapCopy;
+  if (gainMapCopy)
   {
 LABEL_23:
     v57 = objc_msgSend_bindPixelBufferToMTL2DTexture_pixelFormat_usage_plane_(self->_metalContext, v54, v56, 10, 17, 0);
@@ -364,7 +364,7 @@ LABEL_26:
   v57 = 0;
 LABEL_27:
   v58 = objc_msgSend_activateResources(self->_resources, v54, v56, v55);
-  v59 = CMGetAttachment(a3, *MEMORY[0x29EDC0878], 0);
+  v59 = CMGetAttachment(image, *MEMORY[0x29EDC0878], 0);
   v63 = v59;
   if (v59)
   {
@@ -424,7 +424,7 @@ LABEL_27:
     objc_msgSend_setInputImageLuma_(v70, v95, v190, v96);
     objc_msgSend_setInputImageChroma_(v70, v97, v189, v98);
     objc_msgSend_setOutputImageLuma_(v70, v99, v53, v100);
-    objc_msgSend_setOutputImageChroma_(v70, v101, v9, v102);
+    objc_msgSend_setOutputImageChroma_(v70, v101, resultImageCopy, v102);
     v106 = objc_msgSend_blurMapSmoothing_intermediate_tex(self->_resources, v103, v104, v105);
     v110 = objc_msgSend_intermediates(v70, v107, v108, v109);
     objc_msgSend_setInputIntermediateTex_(v110, v111, v106, v112);
@@ -483,13 +483,13 @@ LABEL_41:
   return v178;
 }
 
-- (int)loadModelsWithTuningParameters:(id)a3
+- (int)loadModelsWithTuningParameters:(id)parameters
 {
-  if (a3)
+  if (parameters)
   {
-    v4 = a3;
+    parametersCopy = parameters;
     v5 = [FigSDOFRenderingTuningParameters alloc];
-    v8 = objc_msgSend_initWithTuningDictionary_(v5, v6, v4, v7);
+    v8 = objc_msgSend_initWithTuningDictionary_(v5, v6, parametersCopy, v7);
 
     v11 = objc_msgSend_parameterSetForMode_(v8, v9, 0, v10);
     v15 = v11;
@@ -508,9 +508,9 @@ LABEL_41:
   return 0;
 }
 
-- (BOOL)sanityChecksSamplingWithImage:(__CVBuffer *)a3 inputFaceAdjustedBlurMap:(__CVBuffer *)a4 inputAlphaMask:(__CVBuffer *)a5 inputGainMap:(__CVBuffer *)a6 resultImage:(__CVBuffer *)a7
+- (BOOL)sanityChecksSamplingWithImage:(__CVBuffer *)image inputFaceAdjustedBlurMap:(__CVBuffer *)map inputAlphaMask:(__CVBuffer *)mask inputGainMap:(__CVBuffer *)gainMap resultImage:(__CVBuffer *)resultImage
 {
-  if (!a3 || !a4 || !a7)
+  if (!image || !map || !resultImage)
   {
     fig_log_get_emitter();
     sub_295EADC88();
@@ -520,58 +520,58 @@ LABEL_41:
 
   inputImageWidth = self->_inputImageWidth;
   inputImageHeight = self->_inputImageHeight;
-  if (CVPixelBufferGetWidth(a3) != inputImageWidth)
+  if (CVPixelBufferGetWidth(image) != inputImageWidth)
   {
     goto LABEL_24;
   }
 
-  if (CVPixelBufferGetHeight(a3) != inputImageHeight)
+  if (CVPixelBufferGetHeight(image) != inputImageHeight)
   {
     goto LABEL_24;
   }
 
   v16 = self->_inputImageWidth;
   v15 = self->_inputImageHeight;
-  if (CVPixelBufferGetWidth(a7) != v16)
+  if (CVPixelBufferGetWidth(resultImage) != v16)
   {
     goto LABEL_24;
   }
 
-  if (CVPixelBufferGetHeight(a7) != v15)
+  if (CVPixelBufferGetHeight(resultImage) != v15)
   {
     goto LABEL_24;
   }
 
   upsampledShiftMapWidth = self->_upsampledShiftMapWidth;
   upsampledShiftMapHeight = self->_upsampledShiftMapHeight;
-  if (CVPixelBufferGetWidth(a4) != upsampledShiftMapWidth || CVPixelBufferGetHeight(a4) != upsampledShiftMapHeight)
+  if (CVPixelBufferGetWidth(map) != upsampledShiftMapWidth || CVPixelBufferGetHeight(map) != upsampledShiftMapHeight)
   {
     goto LABEL_24;
   }
 
-  v19 = sub_295EAEADC(a3);
+  v19 = sub_295EAEADC(image);
   if (v19)
   {
-    v19 = sub_295EAEADC(a7);
+    v19 = sub_295EAEADC(resultImage);
     if (v19)
     {
-      if (CVPixelBufferGetPixelFormatType(a4) != 1278226488 && CVPixelBufferGetPixelFormatType(a4) != 843264056)
+      if (CVPixelBufferGetPixelFormatType(map) != 1278226488 && CVPixelBufferGetPixelFormatType(map) != 843264056)
       {
         goto LABEL_24;
       }
 
-      if (a5)
+      if (mask)
       {
         v21 = self->_upsampledShiftMapWidth;
         v20 = self->_upsampledShiftMapHeight;
-        if (CVPixelBufferGetWidth(a5) != v21 || CVPixelBufferGetHeight(a5) != v20)
+        if (CVPixelBufferGetWidth(mask) != v21 || CVPixelBufferGetHeight(mask) != v20)
         {
           goto LABEL_24;
         }
 
-        v22 = CVPixelBufferGetPixelFormatType(a5) == 1278226488;
+        v22 = CVPixelBufferGetPixelFormatType(mask) == 1278226488;
         LOBYTE(v19) = v22;
-        if (!a6 || !v22)
+        if (!gainMap || !v22)
         {
           return v19;
         }
@@ -579,9 +579,9 @@ LABEL_41:
 LABEL_21:
         v24 = self->_upsampledShiftMapWidth;
         v23 = self->_upsampledShiftMapHeight;
-        if (CVPixelBufferGetWidth(a6) == v24 && CVPixelBufferGetHeight(a6) == v23)
+        if (CVPixelBufferGetWidth(gainMap) == v24 && CVPixelBufferGetHeight(gainMap) == v23)
         {
-          LOBYTE(v19) = CVPixelBufferGetPixelFormatType(a6) == 1278226488;
+          LOBYTE(v19) = CVPixelBufferGetPixelFormatType(gainMap) == 1278226488;
           return v19;
         }
 
@@ -590,7 +590,7 @@ LABEL_24:
         return v19;
       }
 
-      if (a6)
+      if (gainMap)
       {
         goto LABEL_21;
       }

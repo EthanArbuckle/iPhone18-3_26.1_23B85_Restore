@@ -1,34 +1,34 @@
 @interface BPSBiomeStorePublisher
-- (BPSBiomeStorePublisher)initWithStreamDatastoreReader:(id)a3 streamsAccessClient:(id)a4;
-- (BPSBiomeStorePublisher)initWithStreamId:(id)a3 storeConfig:(id)a4 streamsAccessClient:(id)a5 eventDataClass:(Class)a6;
+- (BPSBiomeStorePublisher)initWithStreamDatastoreReader:(id)reader streamsAccessClient:(id)client;
+- (BPSBiomeStorePublisher)initWithStreamId:(id)id storeConfig:(id)config streamsAccessClient:(id)client eventDataClass:(Class)class;
 - (id)_newEnumerator;
 - (id)bookmark;
 - (id)nextEvent;
-- (id)startWithSubscriber:(id)a3;
-- (id)validateBookmark:(id)a3;
-- (id)withBookmark:(id)a3;
+- (id)startWithSubscriber:(id)subscriber;
+- (id)validateBookmark:(id)bookmark;
+- (id)withBookmark:(id)bookmark;
 - (void)reset;
-- (void)subscribe:(id)a3;
+- (void)subscribe:(id)subscribe;
 @end
 
 @implementation BPSBiomeStorePublisher
 
 - (id)bookmark
 {
-  v2 = [(BPSBiomeStorePublisher *)self enumerator];
-  v3 = [v2 bookmark];
+  enumerator = [(BPSBiomeStorePublisher *)self enumerator];
+  bookmark = [enumerator bookmark];
 
-  return v3;
+  return bookmark;
 }
 
 - (id)nextEvent
 {
-  v3 = [(BPSBiomeStorePublisher *)self enumerator];
-  v4 = [v3 nextEvent];
+  enumerator = [(BPSBiomeStorePublisher *)self enumerator];
+  nextEvent = [enumerator nextEvent];
 
-  if (v4)
+  if (nextEvent)
   {
-    v5 = v4;
+    v5 = nextEvent;
   }
 
   else
@@ -36,7 +36,7 @@
     [(BPSBiomeStorePublisher *)self setFinished:1];
   }
 
-  return v4;
+  return nextEvent;
 }
 
 - (void)reset
@@ -50,8 +50,8 @@
 {
   v55 = *MEMORY[0x1E69E9840];
   startTime = self->_startTime;
-  v5 = [MEMORY[0x1E695DF00] distantPast];
-  [v5 timeIntervalSinceReferenceDate];
+  distantPast = [MEMORY[0x1E695DF00] distantPast];
+  [distantPast timeIntervalSinceReferenceDate];
   v7 = v6;
 
   if (startTime == v7)
@@ -59,8 +59,8 @@
     v8 = 0.0;
     if (self->_reversed)
     {
-      v9 = [MEMORY[0x1E695DF00] distantFuture];
-      [v9 timeIntervalSinceReferenceDate];
+      distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+      [distantFuture timeIntervalSinceReferenceDate];
       v8 = v10;
     }
   }
@@ -71,8 +71,8 @@
   }
 
   endTime = self->_endTime;
-  v12 = [MEMORY[0x1E695DF00] distantFuture];
-  [v12 timeIntervalSinceReferenceDate];
+  distantFuture2 = [MEMORY[0x1E695DF00] distantFuture];
+  [distantFuture2 timeIntervalSinceReferenceDate];
   v14 = v13;
 
   if (endTime == v14)
@@ -80,8 +80,8 @@
     v15 = 0.0;
     if (!self->_reversed)
     {
-      v16 = [MEMORY[0x1E695DF00] distantFuture];
-      [v16 timeIntervalSinceReferenceDate];
+      distantFuture3 = [MEMORY[0x1E695DF00] distantFuture];
+      [distantFuture3 timeIntervalSinceReferenceDate];
       v15 = v17;
     }
   }
@@ -98,10 +98,10 @@
       goto LABEL_11;
     }
 
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    v22 = [(BPSBiomeStorePublisher *)self streamId];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    streamId = [(BPSBiomeStorePublisher *)self streamId];
     bookmark = self->_bookmark;
-    [v21 handleFailureInMethod:a2 object:self file:@"BPSBiomeStorePublisher.m" lineNumber:273 description:{@"both bookmark and indexSearch may not both be set. Stream: %@, bookmark: %@, indexSearch: %@", v22, bookmark, self->_indexSearch}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"BPSBiomeStorePublisher.m" lineNumber:273 description:{@"both bookmark and indexSearch may not both be set. Stream: %@, bookmark: %@, indexSearch: %@", streamId, bookmark, self->_indexSearch}];
 
     if (self->_bookmark)
     {
@@ -129,10 +129,10 @@ LABEL_11:
   {
     if (self->_lastEventCount != -1)
     {
-      v42 = [MEMORY[0x1E696AAA8] currentHandler];
-      v43 = [(BPSBiomeStorePublisher *)self streamId];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      streamId2 = [(BPSBiomeStorePublisher *)self streamId];
       v44 = self->_indexSearch;
-      [v42 handleFailureInMethod:a2 object:self file:@"BPSBiomeStorePublisher.m" lineNumber:287 description:{@"lastN and indexSearch may not both be set. Stream: %@, indexSearch: %@ lastN: %lu", v43, v44, self->_lastEventCount}];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"BPSBiomeStorePublisher.m" lineNumber:287 description:{@"lastN and indexSearch may not both be set. Stream: %@, indexSearch: %@ lastN: %lu", streamId2, v44, self->_lastEventCount}];
 
       indexSearch = self->_indexSearch;
     }
@@ -160,10 +160,10 @@ LABEL_11:
       v32 = __biome_log_for_category();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
-        v40 = [(BPSBiomeStorePublisher *)self streamId];
+        streamId3 = [(BPSBiomeStorePublisher *)self streamId];
         v41 = self->_indexSearch;
         *buf = 138412802;
-        v48 = v40;
+        v48 = streamId3;
         v49 = 2112;
         v50 = *&v41;
         v51 = 2112;
@@ -178,11 +178,11 @@ LABEL_11:
       if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
       {
         v37 = self->_indexSearch;
-        v38 = [(BPSBiomeStorePublisher *)self streamId];
+        streamId4 = [(BPSBiomeStorePublisher *)self streamId];
         *buf = 138412802;
         v48 = v37;
         v49 = 2112;
-        v50 = *&v38;
+        v50 = *&streamId4;
         v51 = 2112;
         v52 = *&v30;
         _os_log_error_impl(&dword_1848EE000, v32, OS_LOG_TYPE_ERROR, "[BMIndexSearch performSearchWithError:] returns a nil BMIndexRowEnumerator for BMIndexSearch: %@ nil on stream: %@. Error: %@, No enumeration performed", buf, 0x20u);
@@ -217,9 +217,9 @@ LABEL_30:
     v36 = __biome_log_for_category();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
     {
-      v39 = [(BPSBiomeStorePublisher *)self streamId];
+      streamId5 = [(BPSBiomeStorePublisher *)self streamId];
       *buf = 138413058;
-      v48 = v39;
+      v48 = streamId5;
       v49 = 2048;
       v50 = v8;
       v51 = 2048;
@@ -237,23 +237,23 @@ LABEL_35:
   return v19;
 }
 
-- (BPSBiomeStorePublisher)initWithStreamId:(id)a3 storeConfig:(id)a4 streamsAccessClient:(id)a5 eventDataClass:(Class)a6
+- (BPSBiomeStorePublisher)initWithStreamId:(id)id storeConfig:(id)config streamsAccessClient:(id)client eventDataClass:(Class)class
 {
   v10 = MEMORY[0x1E698F150];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  clientCopy = client;
+  configCopy = config;
+  idCopy = id;
   v14 = [v10 alloc];
-  v15 = [v14 initWithStream:v13 config:v12 eventDataClass:a6 useCase:*MEMORY[0x1E698E928]];
+  v15 = [v14 initWithStream:idCopy config:configCopy eventDataClass:class useCase:*MEMORY[0x1E698E928]];
 
-  v16 = [(BPSBiomeStorePublisher *)self initWithStreamDatastoreReader:v15 streamsAccessClient:v11];
+  v16 = [(BPSBiomeStorePublisher *)self initWithStreamDatastoreReader:v15 streamsAccessClient:clientCopy];
   return v16;
 }
 
-- (BPSBiomeStorePublisher)initWithStreamDatastoreReader:(id)a3 streamsAccessClient:(id)a4
+- (BPSBiomeStorePublisher)initWithStreamDatastoreReader:(id)reader streamsAccessClient:(id)client
 {
-  v7 = a3;
-  v8 = a4;
+  readerCopy = reader;
+  clientCopy = client;
   v16.receiver = self;
   v16.super_class = BPSBiomeStorePublisher;
   v9 = [(BPSBiomeStorePublisher *)&v16 init];
@@ -261,43 +261,43 @@ LABEL_35:
   if (v9)
   {
     v9->_reversed = 0;
-    v11 = [MEMORY[0x1E695DF00] distantPast];
-    [v11 timeIntervalSinceReferenceDate];
+    distantPast = [MEMORY[0x1E695DF00] distantPast];
+    [distantPast timeIntervalSinceReferenceDate];
     v10->_startTime = v12;
 
-    v13 = [MEMORY[0x1E695DF00] distantFuture];
-    [v13 timeIntervalSinceReferenceDate];
+    distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+    [distantFuture timeIntervalSinceReferenceDate];
     v10->_endTime = v14;
 
     v10->_maxEvents = -1;
     v10->_lastEventCount = -1;
-    objc_storeStrong(&v10->_streamDatastoreReader, a3);
-    objc_storeStrong(&v10->_accessClient, a4);
+    objc_storeStrong(&v10->_streamDatastoreReader, reader);
+    objc_storeStrong(&v10->_accessClient, client);
   }
 
   return v10;
 }
 
-- (void)subscribe:(id)a3
+- (void)subscribe:(id)subscribe
 {
-  v4 = a3;
-  v8 = [(BPSBiomeStorePublisher *)self _newEnumerator];
+  subscribeCopy = subscribe;
+  _newEnumerator = [(BPSBiomeStorePublisher *)self _newEnumerator];
   v5 = [_BPSInnerBiomeSubscription alloc];
-  v6 = [(BPSBiomeStorePublisher *)self streamId];
-  v7 = [(_BPSInnerBiomeSubscription *)v5 initWithStreamEnumerator:v8 downstream:v4 streamId:v6 accessClient:self->_accessClient];
+  streamId = [(BPSBiomeStorePublisher *)self streamId];
+  v7 = [(_BPSInnerBiomeSubscription *)v5 initWithStreamEnumerator:_newEnumerator downstream:subscribeCopy streamId:streamId accessClient:self->_accessClient];
 
-  [v4 receiveSubscription:v7];
+  [subscribeCopy receiveSubscription:v7];
 }
 
-- (id)startWithSubscriber:(id)a3
+- (id)startWithSubscriber:(id)subscriber
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = [(BPSBiomeStorePublisher *)self _newEnumerator];
+  _newEnumerator = [(BPSBiomeStorePublisher *)self _newEnumerator];
   if (([(BMStreamDatastoreReader *)self->_streamDatastoreReader isDataAccessible]& 1) != 0)
   {
-    if (v4)
+    if (_newEnumerator)
     {
-      [(BPSBiomeStorePublisher *)self setEnumerator:v4];
+      [(BPSBiomeStorePublisher *)self setEnumerator:_newEnumerator];
       v5 = 0;
       goto LABEL_7;
     }
@@ -342,23 +342,23 @@ LABEL_7:
   return v5;
 }
 
-- (id)validateBookmark:(id)a3
+- (id)validateBookmark:(id)bookmark
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
+  bookmarkCopy = bookmark;
+  if (bookmarkCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     v5 = objc_alloc(MEMORY[0x1E696AEC0]);
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    v10 = [v5 initWithFormat:@"%@ expected bookmark of class %@, but received %@", v7, v9, v3];
+    bookmarkCopy = [v5 initWithFormat:@"%@ expected bookmark of class %@, but received %@", v7, v9, bookmarkCopy];
 
     v11 = MEMORY[0x1E696ABC0];
     v12 = *MEMORY[0x1E698F0B0];
     v16 = *MEMORY[0x1E696A578];
-    v17[0] = v10;
+    v17[0] = bookmarkCopy;
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:&v16 count:1];
     v4 = [v11 errorWithDomain:v12 code:2 userInfo:v13];
   }
@@ -373,11 +373,11 @@ LABEL_7:
   return v4;
 }
 
-- (id)withBookmark:(id)a3
+- (id)withBookmark:(id)bookmark
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DFB0] null];
-  v6 = [v4 isEqual:v5];
+  bookmarkCopy = bookmark;
+  null = [MEMORY[0x1E695DFB0] null];
+  v6 = [bookmarkCopy isEqual:null];
 
   if (v6)
   {
@@ -390,25 +390,25 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (!v4)
+  if (!bookmarkCopy)
   {
 LABEL_8:
-    v9 = self;
+    selfCopy = self;
     goto LABEL_16;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v4 value];
+    value = [bookmarkCopy value];
   }
 
   else
   {
-    v8 = v4;
+    value = bookmarkCopy;
   }
 
-  v10 = v8;
+  v10 = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -424,7 +424,7 @@ LABEL_8:
     }
   }
 
-  v12 = self;
+  selfCopy2 = self;
 
 LABEL_16:
 

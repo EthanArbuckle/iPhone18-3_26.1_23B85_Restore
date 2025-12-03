@@ -1,9 +1,9 @@
 @interface AddEventViewController
-+ (id)editOrAddViewControllerForEventOrIntegrationWithEvent:(id)a3 model:(id)a4 creationMethod:(unint64_t)a5 viewStart:(unint64_t)a6 eventEditViewDelegate:(id)a7;
++ (id)editOrAddViewControllerForEventOrIntegrationWithEvent:(id)event model:(id)model creationMethod:(unint64_t)method viewStart:(unint64_t)start eventEditViewDelegate:(id)delegate;
 - (AddEventDelegate)addEventDelegate;
-- (AddEventViewController)initWithModel:(id)a3 event:(id)a4;
-- (AddEventViewController)initWithModel:(id)a3 eventStartDate:(id)a4;
-- (AddEventViewController)initWithModel:(id)a3 eventTitle:(id)a4 startDate:(id)a5 endDate:(id)a6 location:(id)a7;
+- (AddEventViewController)initWithModel:(id)model event:(id)event;
+- (AddEventViewController)initWithModel:(id)model eventStartDate:(id)date;
+- (AddEventViewController)initWithModel:(id)model eventTitle:(id)title startDate:(id)date endDate:(id)endDate location:(id)location;
 - (BOOL)canDismiss;
 - (BOOL)displayingRootView;
 - (BOOL)hasReminderCalendar;
@@ -22,64 +22,64 @@
 - (id)segmentedControl;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)actionButtonTapped;
-- (void)addItemViewControllerManager:(id)a3 didCompleteWithAction:(int64_t)a4;
+- (void)addItemViewControllerManager:(id)manager didCompleteWithAction:(int64_t)action;
 - (void)attemptDisplayReviewPrompt;
 - (void)cancelEditing;
-- (void)completeAndSaveWithContinueBlock:(id)a3;
+- (void)completeAndSaveWithContinueBlock:(id)block;
 - (void)configureAppearanceForSplitDayView;
 - (void)didAttemptToDismiss;
 - (void)loadViewController;
-- (void)presentationControllerDidAttemptToDismiss:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)selectSegmentIndex:(unint64_t)a3;
-- (void)setDockable:(BOOL)a3;
-- (void)setEvent:(id)a3;
-- (void)setIgnoreUnsavedChanges:(BOOL)a3;
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)selectSegmentIndex:(unint64_t)index;
+- (void)setDockable:(BOOL)dockable;
+- (void)setEvent:(id)event;
+- (void)setIgnoreUnsavedChanges:(BOOL)changes;
 - (void)setupManagers;
-- (void)setupNavigationItemFor:(id)a3;
-- (void)updateOccurrenceAwaitingRefreshTo:(id)a3 from:(id)a4;
+- (void)setupNavigationItemFor:(id)for;
+- (void)updateOccurrenceAwaitingRefreshTo:(id)to from:(id)from;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation AddEventViewController
 
-+ (id)editOrAddViewControllerForEventOrIntegrationWithEvent:(id)a3 model:(id)a4 creationMethod:(unint64_t)a5 viewStart:(unint64_t)a6 eventEditViewDelegate:(id)a7
++ (id)editOrAddViewControllerForEventOrIntegrationWithEvent:(id)event model:(id)model creationMethod:(unint64_t)method viewStart:(unint64_t)start eventEditViewDelegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a7;
-  if ([v11 isNew])
+  eventCopy = event;
+  modelCopy = model;
+  delegateCopy = delegate;
+  if ([eventCopy isNew])
   {
-    v14 = [[AddEventViewController alloc] initWithModel:v12 event:v11];
-    [(AddEventViewController *)v14 setEventCreationMethod:a5];
-    [(AddEventViewController *)v14 setCalendarItemCreationViewStart:a6];
-    [(AddEventViewController *)v14 setInternalEditViewDelegate:v13];
+    v14 = [[AddEventViewController alloc] initWithModel:modelCopy event:eventCopy];
+    [(AddEventViewController *)v14 setEventCreationMethod:method];
+    [(AddEventViewController *)v14 setCalendarItemCreationViewStart:start];
+    [(AddEventViewController *)v14 setInternalEditViewDelegate:delegateCopy];
   }
 
   else
   {
-    v14 = [EKEventEditViewController eventOrIntegrationViewControllerWithEvent:v11 creationMethod:a5 viewStart:a6 eventEditViewDelegate:v13];
+    v14 = [EKEventEditViewController eventOrIntegrationViewControllerWithEvent:eventCopy creationMethod:method viewStart:start eventEditViewDelegate:delegateCopy];
   }
 
   return v14;
 }
 
-- (AddEventViewController)initWithModel:(id)a3 eventStartDate:(id)a4
+- (AddEventViewController)initWithModel:(id)model eventStartDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  modelCopy = model;
+  dateCopy = date;
   v12.receiver = self;
   v12.super_class = AddEventViewController;
   v9 = [(AddEventViewController *)&v12 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_model, a3);
-    objc_storeStrong(&v10->_eventStartDate, a4);
+    objc_storeStrong(&v9->_model, model);
+    objc_storeStrong(&v10->_eventStartDate, date);
     [(AddEventViewController *)v10 _setClipUnderlapWhileTransitioning:1];
     [(AddEventViewController *)v10 setupManagers];
   }
@@ -87,15 +87,15 @@
   return v10;
 }
 
-- (AddEventViewController)initWithModel:(id)a3 event:(id)a4
+- (AddEventViewController)initWithModel:(id)model event:(id)event
 {
-  v6 = a4;
-  v7 = [(AddEventViewController *)self initWithModel:a3 eventStartDate:0];
+  eventCopy = event;
+  v7 = [(AddEventViewController *)self initWithModel:model eventStartDate:0];
   v8 = v7;
   if (v7)
   {
-    [(AddEventViewController *)v7 setEvent:v6];
-    if ([v6 isReminderIntegrationEvent])
+    [(AddEventViewController *)v7 setEvent:eventCopy];
+    if ([eventCopy isReminderIntegrationEvent])
     {
       if ([(NSArray *)v8->_managers count]>= 2)
       {
@@ -107,18 +107,18 @@
   return v8;
 }
 
-- (AddEventViewController)initWithModel:(id)a3 eventTitle:(id)a4 startDate:(id)a5 endDate:(id)a6 location:(id)a7
+- (AddEventViewController)initWithModel:(id)model eventTitle:(id)title startDate:(id)date endDate:(id)endDate location:(id)location
 {
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(AddEventViewController *)self initWithModel:a3 eventStartDate:a5];
+  titleCopy = title;
+  endDateCopy = endDate;
+  locationCopy = location;
+  v16 = [(AddEventViewController *)self initWithModel:model eventStartDate:date];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_eventTitle, a4);
-    objc_storeStrong(&v17->_eventEndDate, a6);
-    objc_storeStrong(&v17->_eventLocation, a7);
+    objc_storeStrong(&v16->_eventTitle, title);
+    objc_storeStrong(&v17->_eventEndDate, endDate);
+    objc_storeStrong(&v17->_eventLocation, location);
   }
 
   return v17;
@@ -159,43 +159,43 @@
   }
 }
 
-- (void)setEvent:(id)a3
+- (void)setEvent:(id)event
 {
-  v6 = a3;
+  eventCopy = event;
   if (CalDraftUIEnabled() && self->_dockable)
   {
-    [(AddEventViewController *)self updateOccurrenceAwaitingRefreshTo:v6 from:self->_event];
+    [(AddEventViewController *)self updateOccurrenceAwaitingRefreshTo:eventCopy from:self->_event];
   }
 
-  v5 = v6;
-  if (v6)
+  v5 = eventCopy;
+  if (eventCopy)
   {
-    objc_storeStrong(&self->_event, a3);
-    v5 = v6;
+    objc_storeStrong(&self->_event, event);
+    v5 = eventCopy;
   }
 }
 
-- (void)updateOccurrenceAwaitingRefreshTo:(id)a3 from:(id)a4
+- (void)updateOccurrenceAwaitingRefreshTo:(id)to from:(id)from
 {
-  v9 = a3;
-  v6 = a4;
-  if (v9 != v6)
+  toCopy = to;
+  fromCopy = from;
+  if (toCopy != fromCopy)
   {
-    if (v6)
+    if (fromCopy)
     {
-      [(CUIKCalendarModel *)self->_model removeOccurrenceAwaitingRefresh:v6];
+      [(CUIKCalendarModel *)self->_model removeOccurrenceAwaitingRefresh:fromCopy];
     }
 
     model = self->_model;
-    if (v9)
+    if (toCopy)
     {
-      [(CUIKCalendarModel *)model addOccurrenceAwaitingRefresh:v9];
-      [(CUIKCalendarModel *)self->_model setSelectedOccurrence:v9];
+      [(CUIKCalendarModel *)model addOccurrenceAwaitingRefresh:toCopy];
+      [(CUIKCalendarModel *)self->_model setSelectedOccurrence:toCopy];
     }
 
     else
     {
-      [(CUIKCalendarModel *)model removeOccurrenceAwaitingRefresh:v6];
+      [(CUIKCalendarModel *)model removeOccurrenceAwaitingRefresh:fromCopy];
     }
 
     v8 = +[NSNotificationCenter defaultCenter];
@@ -205,8 +205,8 @@
 
 - (BOOL)hasReminderCalendar
 {
-  v2 = [(CUIKCalendarModel *)self->_model reminderCalendar];
-  v3 = v2 != 0;
+  reminderCalendar = [(CUIKCalendarModel *)self->_model reminderCalendar];
+  v3 = reminderCalendar != 0;
 
   return v3;
 }
@@ -217,7 +217,7 @@
   if (!segmentedControl)
   {
     v4 = [[NSMutableArray alloc] initWithCapacity:{-[NSArray count](self->_managers, "count")}];
-    v14 = self;
+    selfCopy = self;
     objc_initWeak(&location, self);
     v20 = 0u;
     v21 = 0u;
@@ -238,14 +238,14 @@
             objc_enumerationMutation(obj);
           }
 
-          v9 = [*(*(&v18 + 1) + 8 * i) newItemTitle];
+          newItemTitle = [*(*(&v18 + 1) + 8 * i) newItemTitle];
           v16[0] = _NSConcreteStackBlock;
           v16[1] = 3221225472;
           v16[2] = sub_100123E58;
           v16[3] = &unk_100211DE0;
           objc_copyWeak(v17, &location);
           v17[1] = v6;
-          v10 = [UIAction actionWithTitle:v9 image:0 identifier:0 handler:v16];
+          v10 = [UIAction actionWithTitle:newItemTitle image:0 identifier:0 handler:v16];
 
           [v4 addObject:v10];
           objc_destroyWeak(v17);
@@ -259,13 +259,13 @@
     }
 
     v11 = [[UISegmentedControl alloc] initWithFrame:v4 actions:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-    [(UISegmentedControl *)v11 setSelectedSegmentIndex:v14->_selectedIndex];
+    [(UISegmentedControl *)v11 setSelectedSegmentIndex:selfCopy->_selectedIndex];
     [(UISegmentedControl *)v11 setAccessibilityIdentifier:@"event-reminder-control"];
-    v12 = v14->_segmentedControl;
-    v14->_segmentedControl = v11;
+    v12 = selfCopy->_segmentedControl;
+    selfCopy->_segmentedControl = v11;
 
     objc_destroyWeak(&location);
-    segmentedControl = v14->_segmentedControl;
+    segmentedControl = selfCopy->_segmentedControl;
   }
 
   return segmentedControl;
@@ -286,20 +286,20 @@
   [(AddEventViewController *)&v16 viewDidLayoutSubviews];
   if (self->_segmentedControl)
   {
-    v3 = [(AddEventViewController *)self view];
-    [v3 layoutMargins];
+    view = [(AddEventViewController *)self view];
+    [view layoutMargins];
     v5 = v4;
     v7 = v6;
 
-    v8 = [(AddEventViewController *)self navigationBar];
-    [v8 bounds];
+    navigationBar = [(AddEventViewController *)self navigationBar];
+    [navigationBar bounds];
     v10 = v9;
 
     v11 = v10 - v5 - v7;
-    v12 = [(AddEventViewController *)self traitCollection];
-    v13 = [v12 horizontalSizeClass];
+    traitCollection = [(AddEventViewController *)self traitCollection];
+    horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-    if (v13 == 2)
+    if (horizontalSizeClass == 2)
     {
       v14 = 366.0;
     }
@@ -315,46 +315,46 @@
     }
 
     [(UISegmentedControl *)self->_segmentedControl bounds];
-    v15 = [(AddEventViewController *)self traitCollection];
-    [v15 displayScale];
+    traitCollection2 = [(AddEventViewController *)self traitCollection];
+    [traitCollection2 displayScale];
     UIRectRoundToScale();
     [(UISegmentedControl *)self->_segmentedControl setFrame:?];
   }
 }
 
-- (void)setupNavigationItemFor:(id)a3
+- (void)setupNavigationItemFor:(id)for
 {
-  v20 = a3;
+  forCopy = for;
   if ([(NSArray *)self->_managers count]>= 2)
   {
     if (!self->_palette)
     {
-      v4 = [(AddEventViewController *)self segmentedControl];
-      [v4 sizeThatFits:{CGSizeZero.width, CGSizeZero.height}];
+      segmentedControl = [(AddEventViewController *)self segmentedControl];
+      [segmentedControl sizeThatFits:{CGSizeZero.width, CGSizeZero.height}];
       v6 = v5;
       v8 = v7;
-      [v4 setFrame:{0.0, 0.0, v5, v7}];
+      [segmentedControl setFrame:{0.0, 0.0, v5, v7}];
       v9 = [[UIView alloc] initWithFrame:{0.0, 0.0, v6, v8 + 12.0}];
-      [v9 addSubview:v4];
+      [v9 addSubview:segmentedControl];
       v10 = [[_UINavigationBarPalette alloc] initWithContentView:v9];
       palette = self->_palette;
       self->_palette = v10;
     }
 
-    v12 = [(AddEventViewController *)self currentRootViewController];
+    currentRootViewController = [(AddEventViewController *)self currentRootViewController];
 
-    v13 = v20;
-    if (v12 == v20)
+    v13 = forCopy;
+    if (currentRootViewController == forCopy)
     {
       v15 = +[NSBundle mainBundle];
       v16 = [v15 localizedStringForKey:@"NewItemNavigationTitle" value:@"New" table:0];
-      v17 = [v20 navigationItem];
-      [v17 setTitle:v16];
+      navigationItem = [forCopy navigationItem];
+      [navigationItem setTitle:v16];
 
-      v18 = [v20 navigationItem];
-      [v18 setBackButtonTitle:0];
+      navigationItem2 = [forCopy navigationItem];
+      [navigationItem2 setBackButtonTitle:0];
 
-      v13 = v20;
+      v13 = forCopy;
       v14 = self->_palette;
     }
 
@@ -363,23 +363,23 @@
       v14 = 0;
     }
 
-    v19 = [v13 navigationItem];
-    [v19 _setBottomPalette:v14];
+    navigationItem3 = [v13 navigationItem];
+    [navigationItem3 _setBottomPalette:v14];
   }
 }
 
-- (void)selectSegmentIndex:(unint64_t)a3
+- (void)selectSegmentIndex:(unint64_t)index
 {
-  if (self->_selectedIndex != a3)
+  if (self->_selectedIndex != index)
   {
-    v5 = [(AddEventViewController *)self currentManager];
-    v6 = [v5 viewController];
-    v7 = [v6 view];
+    currentManager = [(AddEventViewController *)self currentManager];
+    viewController = [currentManager viewController];
+    view = [viewController view];
 
-    v8 = [v7 firstResponder];
-    if (v8 && (objc_opt_respondsToSelector() & 1) != 0 && [v8 isDescendantOfView:v7])
+    firstResponder = [view firstResponder];
+    if (firstResponder && (objc_opt_respondsToSelector() & 1) != 0 && [firstResponder isDescendantOfView:view])
     {
-      [(NSMutableArray *)self->_lastFirstResponders setObject:v8 atIndexedSubscript:self->_selectedIndex];
+      [(NSMutableArray *)self->_lastFirstResponders setObject:firstResponder atIndexedSubscript:self->_selectedIndex];
     }
 
     else
@@ -388,38 +388,38 @@
       [(NSMutableArray *)self->_lastFirstResponders setObject:v9 atIndexedSubscript:self->_selectedIndex];
     }
 
-    v10 = [(AddEventViewController *)self view];
-    [v10 endEditing:1];
+    view2 = [(AddEventViewController *)self view];
+    [view2 endEditing:1];
 
-    v11 = [(AddEventViewController *)self currentManager];
-    v12 = [(AddEventViewController *)self configuration];
-    v13 = [v12 addItemState];
-    [v11 updateStateFromUI:v13];
+    currentManager2 = [(AddEventViewController *)self currentManager];
+    configuration = [(AddEventViewController *)self configuration];
+    addItemState = [configuration addItemState];
+    [currentManager2 updateStateFromUI:addItemState];
 
-    v14 = [(AddEventViewController *)self viewControllers];
-    [(NSMutableArray *)self->_preservedViewControllerStacks setObject:v14 atIndexedSubscript:self->_selectedIndex];
+    viewControllers = [(AddEventViewController *)self viewControllers];
+    [(NSMutableArray *)self->_preservedViewControllerStacks setObject:viewControllers atIndexedSubscript:self->_selectedIndex];
 
-    self->_selectedIndex = a3;
-    v15 = [(NSMutableArray *)self->_preservedViewControllerStacks objectAtIndexedSubscript:a3];
+    self->_selectedIndex = index;
+    v15 = [(NSMutableArray *)self->_preservedViewControllerStacks objectAtIndexedSubscript:index];
     if ([v15 count])
     {
-      [(NSMutableArray *)self->_preservedViewControllerStacks setObject:&__NSArray0__struct atIndexedSubscript:a3];
+      [(NSMutableArray *)self->_preservedViewControllerStacks setObject:&__NSArray0__struct atIndexedSubscript:index];
     }
 
     else
     {
-      v16 = [(AddEventViewController *)self currentRootViewController];
-      v24 = v16;
+      currentRootViewController = [(AddEventViewController *)self currentRootViewController];
+      v24 = currentRootViewController;
       v17 = [NSArray arrayWithObjects:&v24 count:1];
 
       v15 = v17;
     }
 
     [(AddEventViewController *)self setViewControllers:v15 animated:0];
-    v18 = [(AddEventViewController *)self currentManager];
-    v19 = [(AddEventViewController *)self configuration];
-    v20 = [v19 addItemState];
-    [v18 updateUIFromState:v20];
+    currentManager3 = [(AddEventViewController *)self currentManager];
+    configuration2 = [(AddEventViewController *)self configuration];
+    addItemState2 = [configuration2 addItemState];
+    [currentManager3 updateUIFromState:addItemState2];
 
     v21 = [(NSMutableArray *)self->_lastFirstResponders objectAtIndexedSubscript:self->_selectedIndex];
     v22 = +[NSNull null];
@@ -441,11 +441,11 @@
     if (!event)
     {
       v5 = self->_model;
-      v6 = [(CUIKCalendarModel *)v5 eventStore];
-      v7 = [EKEvent eventWithEventStore:v6];
+      eventStore = [(CUIKCalendarModel *)v5 eventStore];
+      v7 = [EKEvent eventWithEventStore:eventStore];
 
-      v8 = [(CUIKCalendarModel *)v5 defaultCalendarForNewEvents];
-      [v7 setCalendar:v8];
+      defaultCalendarForNewEvents = [(CUIKCalendarModel *)v5 defaultCalendarForNewEvents];
+      [v7 setCalendar:defaultCalendarForNewEvents];
 
       if (self->_eventTitle)
       {
@@ -462,44 +462,44 @@
       {
         v10 = [EKCalendarDate alloc];
         v11 = CUIKNowComponents();
-        v12 = [(CUIKCalendarModel *)v5 eventStore];
-        v13 = [v12 timeZone];
-        v9 = [v10 initWithDateComponents:v11 timeZone:v13];
+        eventStore2 = [(CUIKCalendarModel *)v5 eventStore];
+        timeZone = [eventStore2 timeZone];
+        v9 = [v10 initWithDateComponents:v11 timeZone:timeZone];
       }
 
       v30 = v9;
-      v14 = [(EKCalendarDate *)v9 date];
+      date = [(EKCalendarDate *)v9 date];
       v15 = CUIKDateRangeForNewEventOnDay();
 
-      v16 = [v15 startDate];
-      v17 = [v15 endDate];
+      startDate = [v15 startDate];
+      endDate = [v15 endDate];
       exactEventStartDate = self->_exactEventStartDate;
       if (exactEventStartDate)
       {
-        v19 = [(EKCalendarDate *)exactEventStartDate date];
+        date2 = [(EKCalendarDate *)exactEventStartDate date];
 
-        v16 = v19;
+        startDate = date2;
       }
 
       eventEndDate = self->_eventEndDate;
       v31 = v5;
       if (eventEndDate)
       {
-        v21 = [(EKCalendarDate *)eventEndDate date];
+        date3 = [(EKCalendarDate *)eventEndDate date];
 
-        v17 = v21;
+        endDate = date3;
       }
 
-      [v7 setStartDate:v16];
-      [v7 setEndDate:v17];
+      [v7 setStartDate:startDate];
+      [v7 setEndDate:endDate];
       [v7 setAllDay:self->_allDay];
-      v22 = [v7 calendar];
-      v23 = [v22 source];
-      v24 = [v23 defaultAlarmOffset];
+      calendar = [v7 calendar];
+      source = [calendar source];
+      defaultAlarmOffset = [source defaultAlarmOffset];
 
-      if (v24)
+      if (defaultAlarmOffset)
       {
-        v25 = +[EKAlarm alarmWithRelativeOffset:](EKAlarm, "alarmWithRelativeOffset:", [v24 intValue]);
+        v25 = +[EKAlarm alarmWithRelativeOffset:](EKAlarm, "alarmWithRelativeOffset:", [defaultAlarmOffset intValue]);
         [v7 addAlarm:v25];
       }
 
@@ -523,7 +523,7 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(AddEventViewController *)self view];
+  view = [(AddEventViewController *)self view];
   IsRegularInViewHierarchy = EKUICurrentWidthSizeClassIsRegularInViewHierarchy();
 
   if (IsRegularInViewHierarchy)
@@ -537,16 +537,16 @@
   }
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v7 = [(AddEventViewController *)self presentedViewController:a3];
+  v7 = [(AddEventViewController *)self presentedViewController:collection];
   NSClassFromString(@"_UIDatePickerNumericKeyboardViewController");
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(AddEventViewController *)self presentedViewController];
-    v6 = [v5 isBeingDismissed];
+    presentedViewController = [(AddEventViewController *)self presentedViewController];
+    isBeingDismissed = [presentedViewController isBeingDismissed];
 
-    if ((v6 & 1) == 0)
+    if ((isBeingDismissed & 1) == 0)
     {
 
       [(AddEventViewController *)self dismissViewControllerAnimated:0 completion:0];
@@ -560,11 +560,11 @@
 
 - (void)viewWillLayoutSubviews
 {
-  v5 = [(AddEventViewController *)self backgroundColor];
-  v3 = [(AddEventViewController *)self view];
-  [v3 setBackgroundColor:v5];
-  v4 = [(AddEventViewController *)self currentManager];
-  [v4 setEditorBackgroundColor:v5];
+  backgroundColor = [(AddEventViewController *)self backgroundColor];
+  view = [(AddEventViewController *)self view];
+  [view setBackgroundColor:backgroundColor];
+  currentManager = [(AddEventViewController *)self currentManager];
+  [currentManager setEditorBackgroundColor:backgroundColor];
 }
 
 - (id)_eventEditorForTestingOnly
@@ -574,13 +574,13 @@
   v10 = 0u;
   v11 = 0u;
   v2 = self->_managers;
-  v3 = [(NSArray *)v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
-  if (v3)
+  _eventEditorForTestingOnly = [(NSArray *)v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  if (_eventEditorForTestingOnly)
   {
     v4 = *v9;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != _eventEditorForTestingOnly; i = i + 1)
       {
         if (*v9 != v4)
         {
@@ -590,13 +590,13 @@
         v6 = *(*(&v8 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v3 = [v6 _eventEditorForTestingOnly];
+          _eventEditorForTestingOnly = [v6 _eventEditorForTestingOnly];
           goto LABEL_11;
         }
       }
 
-      v3 = [(NSArray *)v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
-      if (v3)
+      _eventEditorForTestingOnly = [(NSArray *)v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      if (_eventEditorForTestingOnly)
       {
         continue;
       }
@@ -607,7 +607,7 @@
 
 LABEL_11:
 
-  return v3;
+  return _eventEditorForTestingOnly;
 }
 
 - (id)backgroundColor
@@ -628,8 +628,8 @@ LABEL_11:
 
 - (CGSize)preferredContentSize
 {
-  v2 = [(AddEventViewController *)self currentRootViewController];
-  [v2 preferredContentSize];
+  currentRootViewController = [(AddEventViewController *)self currentRootViewController];
+  [currentRootViewController preferredContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -640,27 +640,27 @@ LABEL_11:
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = AddEventViewController;
-  [(AddEventViewController *)&v10 viewWillAppear:a3];
-  v4 = [(AddEventViewController *)self viewControllers];
-  v5 = [v4 count];
+  [(AddEventViewController *)&v10 viewWillAppear:appear];
+  viewControllers = [(AddEventViewController *)self viewControllers];
+  v5 = [viewControllers count];
 
   if (!v5)
   {
-    v6 = [(AddEventViewController *)self currentRootViewController];
-    [(AddEventViewController *)self pushViewController:v6 animated:0];
+    currentRootViewController = [(AddEventViewController *)self currentRootViewController];
+    [(AddEventViewController *)self pushViewController:currentRootViewController animated:0];
   }
 
-  v7 = [(AddEventViewController *)self presentationController];
-  v8 = [v7 delegate];
+  presentationController = [(AddEventViewController *)self presentationController];
+  delegate = [presentationController delegate];
 
-  if (!v8)
+  if (!delegate)
   {
-    v9 = [(AddEventViewController *)self presentationController];
-    [v9 setDelegate:self];
+    presentationController2 = [(AddEventViewController *)self presentationController];
+    [presentationController2 setDelegate:self];
   }
 }
 
@@ -685,44 +685,44 @@ LABEL_11:
 
 - (void)loadViewController
 {
-  v5 = [(AddEventViewController *)self currentManager];
-  v3 = [(AddEventViewController *)self configuration];
-  v4 = [v5 createViewController:v3];
+  currentManager = [(AddEventViewController *)self currentManager];
+  configuration = [(AddEventViewController *)self configuration];
+  v4 = [currentManager createViewController:configuration];
 }
 
 - (id)currentRootViewController
 {
-  v3 = [(AddEventViewController *)self currentManager];
-  v4 = [v3 viewController];
+  currentManager = [(AddEventViewController *)self currentManager];
+  viewController = [currentManager viewController];
 
-  if (!v4)
+  if (!viewController)
   {
     [(AddEventViewController *)self loadViewController];
-    v5 = [(AddEventViewController *)self currentManager];
-    v4 = [v5 viewController];
+    currentManager2 = [(AddEventViewController *)self currentManager];
+    viewController = [currentManager2 viewController];
   }
 
-  return v4;
+  return viewController;
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v3 = [(AddEventViewController *)self currentManager];
-  [v3 presentationControllerDidDismiss];
+  currentManager = [(AddEventViewController *)self currentManager];
+  [currentManager presentationControllerDidDismiss];
 }
 
-- (void)presentationControllerDidAttemptToDismiss:(id)a3
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss
 {
-  v3 = [(AddEventViewController *)self currentManager];
-  [v3 presentationControllerDidAttemptToDismiss];
+  currentManager = [(AddEventViewController *)self currentManager];
+  [currentManager presentationControllerDidAttemptToDismiss];
 }
 
-- (void)addItemViewControllerManager:(id)a3 didCompleteWithAction:(int64_t)a4
+- (void)addItemViewControllerManager:(id)manager didCompleteWithAction:(int64_t)action
 {
-  v6 = a3;
-  v7 = [(AddEventViewController *)self doneBlock];
+  managerCopy = manager;
+  doneBlock = [(AddEventViewController *)self doneBlock];
 
-  if (v7)
+  if (doneBlock)
   {
     if (objc_opt_respondsToSelector())
     {
@@ -730,7 +730,7 @@ LABEL_11:
       v20[1] = 3221225472;
       v20[2] = sub_100125110;
       v20[3] = &unk_100211E08;
-      v21 = v6;
+      v21 = managerCopy;
       v8 = objc_retainBlock(v20);
     }
 
@@ -739,8 +739,8 @@ LABEL_11:
       v8 = 0;
     }
 
-    v9 = [(AddEventViewController *)self doneBlock];
-    (v9)[2](v9, self, v8);
+    doneBlock2 = [(AddEventViewController *)self doneBlock];
+    (doneBlock2)[2](doneBlock2, self, v8);
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_editViewDelegate);
@@ -752,35 +752,35 @@ LABEL_11:
       v16 = 3221225472;
       v17 = sub_10012511C;
       v18 = &unk_100211E08;
-      v19 = v6;
-      v11 = objc_retainBlock(&v15);
+      v19 = managerCopy;
+      calendarToMakeVisibleOnSave = objc_retainBlock(&v15);
     }
 
     else
     {
-      v11 = 0;
+      calendarToMakeVisibleOnSave = 0;
     }
 
-    [WeakRetained eventEditViewController:self didCompleteWithAction:a4 completionHandler:{v11, v15, v16, v17, v18}];
+    [WeakRetained eventEditViewController:self didCompleteWithAction:action completionHandler:{calendarToMakeVisibleOnSave, v15, v16, v17, v18}];
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  if (a4 == 1)
+  if (action == 1)
   {
-    v11 = [v6 calendarToMakeVisibleOnSave];
+    calendarToMakeVisibleOnSave = [managerCopy calendarToMakeVisibleOnSave];
     model = self->_model;
-    v13 = [v11 objectID];
-    [(CUIKCalendarModel *)model ensureCalendarVisibleWithId:v13];
+    objectID = [calendarToMakeVisibleOnSave objectID];
+    [(CUIKCalendarModel *)model ensureCalendarVisibleWithId:objectID];
 
     if ([(AddEventViewController *)self showEventWhenAdded])
     {
-      v14 = [(AddEventViewController *)self addEventDelegate];
-      [v14 showNewEvent:self->_event];
+      addEventDelegate = [(AddEventViewController *)self addEventDelegate];
+      [addEventDelegate showNewEvent:self->_event];
     }
 
-    if ([v11 sharingStatus])
+    if ([calendarToMakeVisibleOnSave sharingStatus])
     {
       [(AddEventViewController *)self attemptDisplayReviewPrompt];
     }
@@ -793,26 +793,26 @@ LABEL_17:
 
 - (void)attemptDisplayReviewPrompt
 {
-  v5 = [(AddEventViewController *)self view];
-  v3 = [v5 window];
-  v4 = [v3 windowScene];
-  [EKUIAppReviewUtils displayReviewPromptIfNeededInScene:v4 calendarModel:self->_model];
+  view = [(AddEventViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  [EKUIAppReviewUtils displayReviewPromptIfNeededInScene:windowScene calendarModel:self->_model];
 }
 
 - (BOOL)canDismiss
 {
-  v2 = [(AddEventViewController *)self currentManager];
-  v3 = [v2 canDismiss];
+  currentManager = [(AddEventViewController *)self currentManager];
+  canDismiss = [currentManager canDismiss];
 
-  return v3;
+  return canDismiss;
 }
 
 - (BOOL)displayingRootView
 {
-  v3 = [(AddEventViewController *)self visibleViewController];
-  v4 = [(AddEventViewController *)self viewControllers];
-  v5 = [v4 firstObject];
-  v6 = v3 == v5;
+  visibleViewController = [(AddEventViewController *)self visibleViewController];
+  viewControllers = [(AddEventViewController *)self viewControllers];
+  firstObject = [viewControllers firstObject];
+  v6 = visibleViewController == firstObject;
 
   return v6;
 }
@@ -821,14 +821,14 @@ LABEL_17:
 {
   if ([(AddEventViewController *)self displayingRootView])
   {
-    v3 = [(AddEventViewController *)self currentManager];
-    v5 = [v3 confirmDismissAlertController];
+    currentManager = [(AddEventViewController *)self currentManager];
+    confirmDismissAlertController = [currentManager confirmDismissAlertController];
 
-    v4 = v5;
-    if (v5)
+    v4 = confirmDismissAlertController;
+    if (confirmDismissAlertController)
     {
-      [(AddEventViewController *)self presentViewController:v5 animated:1 completion:0];
-      v4 = v5;
+      [(AddEventViewController *)self presentViewController:confirmDismissAlertController animated:1 completion:0];
+      v4 = confirmDismissAlertController;
     }
   }
 }
@@ -839,70 +839,70 @@ LABEL_17:
   {
     v4 = objc_alloc_init(UINavigationBarAppearance);
     [v4 configureWithOpaqueBackground];
-    v3 = [(AddEventViewController *)self navigationBar];
-    [v3 setScrollEdgeAppearance:v4];
+    navigationBar = [(AddEventViewController *)self navigationBar];
+    [navigationBar setScrollEdgeAppearance:v4];
   }
 }
 
 - (BOOL)hasUnsavedChanges
 {
-  v2 = [(AddEventViewController *)self currentManager];
-  v3 = [v2 hasUnsavedChanges];
+  currentManager = [(AddEventViewController *)self currentManager];
+  hasUnsavedChanges = [currentManager hasUnsavedChanges];
 
-  return v3;
+  return hasUnsavedChanges;
 }
 
 - (BOOL)willPresentDialogOnSave
 {
-  v2 = [(AddEventViewController *)self currentManager];
-  v3 = [v2 willPresentDialogOnSave];
+  currentManager = [(AddEventViewController *)self currentManager];
+  willPresentDialogOnSave = [currentManager willPresentDialogOnSave];
 
-  return v3;
+  return willPresentDialogOnSave;
 }
 
-- (void)completeAndSaveWithContinueBlock:(id)a3
+- (void)completeAndSaveWithContinueBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AddEventViewController *)self currentManager];
-  [v5 completeAndSaveWithContinueBlock:v4];
+  blockCopy = block;
+  currentManager = [(AddEventViewController *)self currentManager];
+  [currentManager completeAndSaveWithContinueBlock:blockCopy];
 }
 
-- (void)setIgnoreUnsavedChanges:(BOOL)a3
+- (void)setIgnoreUnsavedChanges:(BOOL)changes
 {
-  v3 = a3;
-  v4 = [(AddEventViewController *)self currentManager];
-  [v4 setIgnoreUnsavedChanges:v3];
+  changesCopy = changes;
+  currentManager = [(AddEventViewController *)self currentManager];
+  [currentManager setIgnoreUnsavedChanges:changesCopy];
 }
 
 - (BOOL)ignoreUnsavedChanges
 {
-  v2 = [(AddEventViewController *)self currentManager];
-  v3 = [v2 ignoreUnsavedChanges];
+  currentManager = [(AddEventViewController *)self currentManager];
+  ignoreUnsavedChanges = [currentManager ignoreUnsavedChanges];
 
-  return v3;
+  return ignoreUnsavedChanges;
 }
 
 - (void)cancelEditing
 {
-  v2 = [(AddEventViewController *)self currentManager];
-  [v2 cancelEditing];
+  currentManager = [(AddEventViewController *)self currentManager];
+  [currentManager cancelEditing];
 }
 
 - (EKCalendar)calendarToMakeVisibleOnSave
 {
-  v2 = [(AddEventViewController *)self currentManager];
-  v3 = [v2 calendarToMakeVisibleOnSave];
+  currentManager = [(AddEventViewController *)self currentManager];
+  calendarToMakeVisibleOnSave = [currentManager calendarToMakeVisibleOnSave];
 
-  return v3;
+  return calendarToMakeVisibleOnSave;
 }
 
-- (void)setDockable:(BOOL)a3
+- (void)setDockable:(BOOL)dockable
 {
-  if (self->_dockable != a3)
+  if (self->_dockable != dockable)
   {
-    self->_dockable = a3;
+    self->_dockable = dockable;
     event = self->_event;
-    if (a3)
+    if (dockable)
     {
       v4 = self->_event;
       event = 0;
@@ -919,10 +919,10 @@ LABEL_17:
 
 - (id)eventForDockedView
 {
-  v3 = [(AddEventViewController *)self currentManager];
-  v4 = [(AddEventViewController *)self configuration];
-  v5 = [v4 addItemState];
-  [v3 updateStateFromUI:v5];
+  currentManager = [(AddEventViewController *)self currentManager];
+  configuration = [(AddEventViewController *)self configuration];
+  addItemState = [configuration addItemState];
+  [currentManager updateStateFromUI:addItemState];
 
   event = self->_event;
 
@@ -931,8 +931,8 @@ LABEL_17:
 
 - (void)actionButtonTapped
 {
-  v2 = [(AddEventViewController *)self currentManager];
-  [v2 completeAndSaveForDockedView];
+  currentManager = [(AddEventViewController *)self currentManager];
+  [currentManager completeAndSaveForDockedView];
 }
 
 - (EKEventOrIntegrationEditViewDelegate)internalEditViewDelegate

@@ -1,19 +1,19 @@
 @interface HMDMTSDeviceSetupServer
 + (id)logCategory;
-- (HMDMTSDeviceSetupServer)initWithAccessorySetupManager:(id)a3;
-- (void)clientProxy:(id)a3 performDeviceSetupUsingRequest:(id)a4 completionHandler:(id)a5;
+- (HMDMTSDeviceSetupServer)initWithAccessorySetupManager:(id)manager;
+- (void)clientProxy:(id)proxy performDeviceSetupUsingRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation HMDMTSDeviceSetupServer
 
-- (void)clientProxy:(id)a3 performDeviceSetupUsingRequest:(id)a4 completionHandler:(id)a5
+- (void)clientProxy:(id)proxy performDeviceSetupUsingRequest:(id)request completionHandler:(id)handler
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  proxyCopy = proxy;
+  requestCopy = request;
+  handlerCopy = handler;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -21,20 +21,20 @@
     *buf = 138543618;
     v21 = v14;
     v22 = 2112;
-    v23 = v9;
+    v23 = requestCopy;
     _os_log_impl(&dword_2531F8000, v13, OS_LOG_TYPE_INFO, "%{public}@Performing Matter ecosystem device setup using request: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v11);
-  v15 = [(HMDMTSDeviceSetupServer *)v12 accessorySetupManager];
+  accessorySetupManager = [(HMDMTSDeviceSetupServer *)selfCopy accessorySetupManager];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __88__HMDMTSDeviceSetupServer_clientProxy_performDeviceSetupUsingRequest_completionHandler___block_invoke;
   v18[3] = &unk_279733F30;
-  v18[4] = v12;
-  v19 = v10;
-  v16 = v10;
-  [v15 launchAccessorySetupHostToPerformMatterDeviceSetupWithRequest:v9 clientProxy:v8 completionHandler:v18];
+  v18[4] = selfCopy;
+  v19 = handlerCopy;
+  v16 = handlerCopy;
+  [accessorySetupManager launchAccessorySetupHostToPerformMatterDeviceSetupWithRequest:requestCopy clientProxy:proxyCopy completionHandler:v18];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -83,19 +83,19 @@ LABEL_6:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDMTSDeviceSetupServer)initWithAccessorySetupManager:(id)a3
+- (HMDMTSDeviceSetupServer)initWithAccessorySetupManager:(id)manager
 {
-  v5 = a3;
-  if (v5)
+  managerCopy = manager;
+  if (managerCopy)
   {
-    v6 = v5;
+    v6 = managerCopy;
     v12.receiver = self;
     v12.super_class = HMDMTSDeviceSetupServer;
     v7 = [(HMDMTSDeviceSetupServer *)&v12 init];
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_accessorySetupManager, a3);
+      objc_storeStrong(&v7->_accessorySetupManager, manager);
     }
 
     return v8;

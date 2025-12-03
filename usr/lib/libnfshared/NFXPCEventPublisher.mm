@@ -1,17 +1,17 @@
 @interface NFXPCEventPublisher
-- (NFXPCEventPublisher)initWithStreamName:(id)a3 queue:(id)a4;
-- (void)sendXpcNotificationEvent:(id)a3;
-- (void)sendXpcNotificationEventWithDictionary:(id)a3;
-- (void)sendXpcNotificationEventWithString:(id)a3;
+- (NFXPCEventPublisher)initWithStreamName:(id)name queue:(id)queue;
+- (void)sendXpcNotificationEvent:(id)event;
+- (void)sendXpcNotificationEventWithDictionary:(id)dictionary;
+- (void)sendXpcNotificationEventWithString:(id)string;
 @end
 
 @implementation NFXPCEventPublisher
 
-- (NFXPCEventPublisher)initWithStreamName:(id)a3 queue:(id)a4
+- (NFXPCEventPublisher)initWithStreamName:(id)name queue:(id)queue
 {
   v55 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  queueCopy = queue;
   v47.receiver = self;
   v47.super_class = NFXPCEventPublisher;
   v10 = [(NFXPCEventPublisher *)&v47 init];
@@ -21,9 +21,9 @@
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v10->_streamName, a3);
-  objc_storeStrong(&v11->_queue, a4);
-  v12 = v8;
+  objc_storeStrong(&v10->_streamName, name);
+  objc_storeStrong(&v11->_queue, queue);
+  v12 = nameCopy;
   objc_msgSend_UTF8String(v12, v13, v14);
   queue = v11->_queue;
   v16 = xpc_event_publisher_create();
@@ -52,7 +52,7 @@
     v24 = v11->_publisher;
     objc_copyWeak(v44, &location);
     v44[1] = a2;
-    v43 = v8;
+    v43 = nameCopy;
     xpc_event_publisher_set_error_handler();
     v25 = v11->_publisher;
     xpc_event_publisher_activate();
@@ -124,33 +124,33 @@ LABEL_16:
   return v26;
 }
 
-- (void)sendXpcNotificationEvent:(id)a3
+- (void)sendXpcNotificationEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = sub_22EEC8B20;
   block[3] = &unk_278872A08;
   block[4] = self;
-  v9 = v5;
+  v9 = eventCopy;
   v10 = a2;
-  v7 = v5;
+  v7 = eventCopy;
   dispatch_async(queue, block);
 }
 
-- (void)sendXpcNotificationEventWithString:(id)a3
+- (void)sendXpcNotificationEventWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   xdict = xpc_dictionary_create(0, 0, 0);
-  v5 = v4;
+  v5 = stringCopy;
   v8 = objc_msgSend_UTF8String(v5, v6, v7);
 
   xpc_dictionary_set_string(xdict, "Payload", v8);
   objc_msgSend_sendXpcNotificationEvent_(self, v9, xdict);
 }
 
-- (void)sendXpcNotificationEventWithDictionary:(id)a3
+- (void)sendXpcNotificationEventWithDictionary:(id)dictionary
 {
   v29 = *MEMORY[0x277D85DE8];
   v5 = _CFXPCCreateXPCObjectFromCFObject();

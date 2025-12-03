@@ -13,8 +13,8 @@
 
 - (uint64_t)ACX_isBuiltIn
 {
-  v1 = [a1 typeForInstallMachinery];
-  v2 = [v1 isEqualToString:*MEMORY[0x277CC1E40]];
+  typeForInstallMachinery = [self typeForInstallMachinery];
+  v2 = [typeForInstallMachinery isEqualToString:*MEMORY[0x277CC1E40]];
 
   return v2 ^ 1u;
 }
@@ -22,20 +22,20 @@
 - (uint64_t)ACX_shouldBeTrackedByAppConduit
 {
   v2 = objc_alloc(MEMORY[0x277CC1E70]);
-  v3 = [a1 bundleIdentifier];
-  v4 = [v2 initWithBundleIdentifierOfSystemPlaceholder:v3 error:0];
+  bundleIdentifier = [self bundleIdentifier];
+  v4 = [v2 initWithBundleIdentifierOfSystemPlaceholder:bundleIdentifier error:0];
 
   if (!v4)
   {
-    if ([a1 ACX_isHidden] & 1) != 0 || (objc_msgSend(a1, "isLaunchProhibited"))
+    if ([self ACX_isHidden] & 1) != 0 || (objc_msgSend(self, "isLaunchProhibited"))
     {
       return 0;
     }
 
-    if (([a1 isDeletable] & 1) == 0)
+    if (([self isDeletable] & 1) == 0)
     {
-      v7 = [a1 ACX_watchKitAppExtensionBundleID];
-      v5 = v7 != 0;
+      aCX_watchKitAppExtensionBundleID = [self ACX_watchKitAppExtensionBundleID];
+      v5 = aCX_watchKitAppExtensionBundleID != 0;
 
       return v5;
     }
@@ -47,28 +47,28 @@
 - (uint64_t)ACX_shouldBeTrackedByLaunchServicesWatcher
 {
   v2 = objc_alloc(MEMORY[0x277CC1E70]);
-  v3 = [a1 bundleIdentifier];
-  v4 = [v2 initWithBundleIdentifierOfSystemPlaceholder:v3 error:0];
+  bundleIdentifier = [self bundleIdentifier];
+  v4 = [v2 initWithBundleIdentifierOfSystemPlaceholder:bundleIdentifier error:0];
 
   if (v4)
   {
     return 1;
   }
 
-  v6 = [a1 typeForInstallMachinery];
-  if ([a1 ACX_isHidden])
+  typeForInstallMachinery = [self typeForInstallMachinery];
+  if ([self ACX_isHidden])
   {
     v5 = 0;
   }
 
-  else if ([v6 isEqualToString:*MEMORY[0x277CC1E30]])
+  else if ([typeForInstallMachinery isEqualToString:*MEMORY[0x277CC1E30]])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v6 isEqualToString:*MEMORY[0x277CC1E40]];
+    v5 = [typeForInstallMachinery isEqualToString:*MEMORY[0x277CC1E40]];
   }
 
   return v5;
@@ -76,16 +76,16 @@
 
 - (uint64_t)ACX_isHidden
 {
-  v1 = [a1 appTags];
-  v2 = [v1 containsObject:@"hidden"];
+  appTags = [self appTags];
+  v2 = [appTags containsObject:@"hidden"];
 
   return v2;
 }
 
 - (id)ACX_watchKitAppExtensionBundleID
 {
-  v1 = [a1 infoDictionary];
-  v2 = [v1 objectForKey:@"WKPluginBundleIdKey" ofClass:objc_opt_class()];
+  infoDictionary = [self infoDictionary];
+  v2 = [infoDictionary objectForKey:@"WKPluginBundleIdKey" ofClass:objc_opt_class()];
 
   return v2;
 }
@@ -97,8 +97,8 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v1 = [a1 applicationExtensionRecords];
-  v2 = [v1 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  applicationExtensionRecords = [self applicationExtensionRecords];
+  v2 = [applicationExtensionRecords countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v2)
   {
     v3 = v2;
@@ -109,13 +109,13 @@
       {
         if (*v14 != v4)
         {
-          objc_enumerationMutation(v1);
+          objc_enumerationMutation(applicationExtensionRecords);
         }
 
         v6 = *(*(&v13 + 1) + 8 * i);
-        v7 = [v6 extensionPointRecord];
-        v8 = [v7 name];
-        v9 = [v8 isEqualToString:@"com.apple.watchkit"];
+        extensionPointRecord = [v6 extensionPointRecord];
+        name = [extensionPointRecord name];
+        v9 = [name isEqualToString:@"com.apple.watchkit"];
 
         if (v9)
         {
@@ -124,7 +124,7 @@
         }
       }
 
-      v3 = [v1 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v3 = [applicationExtensionRecords countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v3)
       {
         continue;
@@ -144,9 +144,9 @@ LABEL_11:
 
 - (__CFString)ACX_wkTeamID
 {
-  v1 = [a1 teamIdentifier];
-  v2 = v1;
-  if (v1 && ([v1 isEqualToString:@"0000000000"] & 1) == 0)
+  teamIdentifier = [self teamIdentifier];
+  v2 = teamIdentifier;
+  if (teamIdentifier && ([teamIdentifier isEqualToString:@"0000000000"] & 1) == 0)
   {
     v3 = v2;
   }
@@ -161,12 +161,12 @@ LABEL_11:
 
 - (id)ACX_externalVersionIdentifier
 {
-  v1 = [a1 iTunesMetadata];
-  v2 = [v1 versionIdentifier];
+  iTunesMetadata = [self iTunesMetadata];
+  versionIdentifier = [iTunesMetadata versionIdentifier];
 
-  if (v2)
+  if (versionIdentifier)
   {
-    v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v2];
+    v3 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:versionIdentifier];
   }
 
   else

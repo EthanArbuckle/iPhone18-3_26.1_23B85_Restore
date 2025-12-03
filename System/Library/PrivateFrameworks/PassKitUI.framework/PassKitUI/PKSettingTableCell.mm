@@ -1,41 +1,41 @@
 @interface PKSettingTableCell
-- (PKSettingTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (PKSettingTableCell)initWithTitle:(id)a3 target:(id)a4 action:(SEL)a5;
+- (PKSettingTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (PKSettingTableCell)initWithTitle:(id)title target:(id)target action:(SEL)action;
 - (SEL)action;
 - (id)target;
 - (void)dealloc;
 - (void)prepareForReuse;
-- (void)setOn:(BOOL)a3 notify:(BOOL)a4;
-- (void)setTarget:(id)a3 action:(SEL)a4;
-- (void)showSpinner:(BOOL)a3;
+- (void)setOn:(BOOL)on notify:(BOOL)notify;
+- (void)setTarget:(id)target action:(SEL)action;
+- (void)showSpinner:(BOOL)spinner;
 @end
 
 @implementation PKSettingTableCell
 
-- (PKSettingTableCell)initWithTitle:(id)a3 target:(id)a4 action:(SEL)a5
+- (PKSettingTableCell)initWithTitle:(id)title target:(id)target action:(SEL)action
 {
-  v8 = a4;
-  v9 = a3;
+  targetCopy = target;
+  titleCopy = title;
   v10 = [(PKSettingTableCell *)self initWithStyle:0 reuseIdentifier:0];
-  [(PKSettingTableCell *)v10 setTarget:v8 action:a5];
+  [(PKSettingTableCell *)v10 setTarget:targetCopy action:action];
 
-  v11 = [(PKSettingTableCell *)v10 textLabel];
-  [v11 setText:v9];
+  textLabel = [(PKSettingTableCell *)v10 textLabel];
+  [textLabel setText:titleCopy];
 
-  v12 = [(PKSettingTableCell *)v10 textLabel];
-  [v12 setNumberOfLines:0];
+  textLabel2 = [(PKSettingTableCell *)v10 textLabel];
+  [textLabel2 setNumberOfLines:0];
 
-  v13 = [(PKSettingTableCell *)v10 textLabel];
-  [v13 setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
+  textLabel3 = [(PKSettingTableCell *)v10 textLabel];
+  [textLabel3 setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
 
   return v10;
 }
 
-- (PKSettingTableCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (PKSettingTableCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v10.receiver = self;
   v10.super_class = PKSettingTableCell;
-  v4 = [(PKSettingTableCell *)&v10 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PKSettingTableCell *)&v10 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc_init(MEMORY[0x1E69DCFD0]);
@@ -46,11 +46,11 @@
     [(PKSettingTableCell *)v4 setSelectionStyle:0];
   }
 
-  v7 = [(PKSettingTableCell *)v4 textLabel];
-  [v7 setNumberOfLines:0];
+  textLabel = [(PKSettingTableCell *)v4 textLabel];
+  [textLabel setNumberOfLines:0];
 
-  v8 = [(PKSettingTableCell *)v4 textLabel];
-  [v8 setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
+  textLabel2 = [(PKSettingTableCell *)v4 textLabel];
+  [textLabel2 setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
 
   return v4;
 }
@@ -62,10 +62,10 @@
   [(PKSettingTableCell *)&v2 dealloc];
 }
 
-- (void)setOn:(BOOL)a3 notify:(BOOL)a4
+- (void)setOn:(BOOL)on notify:(BOOL)notify
 {
-  v4 = a3;
-  if (!a4 && self->_action && (WeakRetained = objc_loadWeakRetained(&self->_target)) != 0)
+  onCopy = on;
+  if (!notify && self->_action && (WeakRetained = objc_loadWeakRetained(&self->_target)) != 0)
   {
     if (self->_action)
     {
@@ -79,7 +79,7 @@
 
     v10 = WeakRetained;
     [(UISwitch *)self->_settingSwitch removeTarget:WeakRetained action:action forControlEvents:4096];
-    [(UISwitch *)self->_settingSwitch setOn:v4];
+    [(UISwitch *)self->_settingSwitch setOn:onCopy];
     if (self->_action)
     {
       v9 = self->_action;
@@ -97,15 +97,15 @@
   {
     settingSwitch = self->_settingSwitch;
 
-    [(UISwitch *)settingSwitch setOn:v4];
+    [(UISwitch *)settingSwitch setOn:onCopy];
   }
 }
 
-- (void)setTarget:(id)a3 action:(SEL)a4
+- (void)setTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   p_action = &self->_action;
-  obj = v6;
+  obj = targetCopy;
   if (self->_action)
   {
     WeakRetained = objc_loadWeakRetained(&self->_target);
@@ -125,15 +125,15 @@
       [(UISwitch *)self->_settingSwitch removeTarget:WeakRetained action:v10 forControlEvents:4096];
     }
 
-    v6 = obj;
+    targetCopy = obj;
   }
 
   p_target = &self->_target;
-  if (v6 && a4)
+  if (targetCopy && action)
   {
-    objc_storeWeak(p_target, v6);
-    *p_action = a4;
-    [(UISwitch *)self->_settingSwitch addTarget:obj action:a4 forControlEvents:4096];
+    objc_storeWeak(p_target, targetCopy);
+    *p_action = action;
+    [(UISwitch *)self->_settingSwitch addTarget:obj action:action forControlEvents:4096];
   }
 
   else
@@ -143,14 +143,14 @@
   }
 }
 
-- (void)showSpinner:(BOOL)a3
+- (void)showSpinner:(BOOL)spinner
 {
-  if (self->_showingSpinner != a3)
+  if (self->_showingSpinner != spinner)
   {
     v13 = v4;
     v14 = v3;
-    self->_showingSpinner = a3;
-    if (a3)
+    self->_showingSpinner = spinner;
+    if (spinner)
     {
       p_spinner = &self->_spinner;
       spinner = self->_spinner;

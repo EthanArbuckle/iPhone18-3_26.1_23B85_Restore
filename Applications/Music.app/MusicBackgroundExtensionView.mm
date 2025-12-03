@@ -1,12 +1,12 @@
 @interface MusicBackgroundExtensionView
-- (_TtC5Music28MusicBackgroundExtensionView)initWithCoder:(id)a3;
-- (_TtC5Music28MusicBackgroundExtensionView)initWithFrame:(CGRect)a3;
+- (_TtC5Music28MusicBackgroundExtensionView)initWithCoder:(id)coder;
+- (_TtC5Music28MusicBackgroundExtensionView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation MusicBackgroundExtensionView
 
-- (_TtC5Music28MusicBackgroundExtensionView)initWithCoder:(id)a3
+- (_TtC5Music28MusicBackgroundExtensionView)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -24,7 +24,7 @@
   [v3 setFrame:?];
 }
 
-- (_TtC5Music28MusicBackgroundExtensionView)initWithFrame:(CGRect)a3
+- (_TtC5Music28MusicBackgroundExtensionView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

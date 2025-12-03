@@ -1,19 +1,19 @@
 @interface NSTextSelection
-+ (id)descriptionForAffinity:(int64_t)a3;
-+ (id)descriptionForGranularity:(int64_t)a3;
-- (BOOL)_containsLocation:(id)a3 rangeIndex:(unint64_t *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTextSelection:(id)a3;
++ (id)descriptionForAffinity:(int64_t)affinity;
++ (id)descriptionForGranularity:(int64_t)granularity;
+- (BOOL)_containsLocation:(id)location rangeIndex:(unint64_t *)index;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTextSelection:(id)selection;
 - (NSTextSelection)initWithCoder:(NSCoder *)coder;
 - (NSTextSelection)initWithLocation:(id)location affinity:(NSTextSelectionAffinity)affinity;
 - (NSTextSelection)initWithRange:(NSTextRange *)range affinity:(NSTextSelectionAffinity)affinity granularity:(NSTextSelectionGranularity)granularity;
 - (NSTextSelection)initWithRanges:(NSArray *)textRanges affinity:(NSTextSelectionAffinity)affinity granularity:(NSTextSelectionGranularity)granularity;
 - (NSTextSelection)textSelectionWithTextRanges:(NSArray *)textRanges;
 - (id)description;
-- (id)textRangeContainingLocation:(id)a3;
+- (id)textRangeContainingLocation:(id)location;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setTypingAttributes:(NSDictionary *)typingAttributes;
 @end
 
@@ -74,9 +74,9 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
     v5 = 256;
     if (!self->_transient)
@@ -91,21 +91,21 @@
       v7 = 0;
     }
 
-    [a3 encodeInteger:v6 | v7 forKey:@"NS.flags"];
-    [a3 encodeObject:self->_textRanges forKey:@"NS.textRanges"];
-    [a3 encodeInteger:self->_granularity forKey:@"NS.granularity"];
-    [a3 encodeDouble:@"NS.anchorPositionOffset" forKey:self->_anchorPositionOffset];
+    [coder encodeInteger:v6 | v7 forKey:@"NS.flags"];
+    [coder encodeObject:self->_textRanges forKey:@"NS.textRanges"];
+    [coder encodeInteger:self->_granularity forKey:@"NS.granularity"];
+    [coder encodeDouble:@"NS.anchorPositionOffset" forKey:self->_anchorPositionOffset];
     secondarySelectionLocation = self->_secondarySelectionLocation;
 
-    [a3 encodeObject:secondarySelectionLocation forKey:@"NS.secondarySelectionLocation"];
+    [coder encodeObject:secondarySelectionLocation forKey:@"NS.secondarySelectionLocation"];
   }
 }
 
-- (BOOL)_containsLocation:(id)a3 rangeIndex:(unint64_t *)a4
+- (BOOL)_containsLocation:(id)location rangeIndex:(unint64_t *)index
 {
-  v6 = [(NSTextSelection *)self textRanges];
-  *a4 = 0x7FFFFFFFFFFFFFFFLL;
-  if ([-[NSArray firstObject](v6 "firstObject")])
+  textRanges = [(NSTextSelection *)self textRanges];
+  *index = 0x7FFFFFFFFFFFFFFFLL;
+  if ([-[NSArray firstObject](textRanges "firstObject")])
   {
 LABEL_6:
     LOBYTE(v7) = 0;
@@ -113,15 +113,15 @@ LABEL_6:
 
   else
   {
-    v7 = [(NSArray *)v6 count];
+    v7 = [(NSArray *)textRanges count];
     if (v7)
     {
       v8 = v7;
       v9 = 0;
       while (1)
       {
-        v10 = [(NSArray *)v6 objectAtIndexedSubscript:v9];
-        if ([a3 compare:{objc_msgSend(v10, "endLocation")}] == -1)
+        v10 = [(NSArray *)textRanges objectAtIndexedSubscript:v9];
+        if ([location compare:{objc_msgSend(v10, "endLocation")}] == -1)
         {
           break;
         }
@@ -132,7 +132,7 @@ LABEL_6:
         }
       }
 
-      *a4 = v9;
+      *index = v9;
       LOBYTE(v7) = [objc_msgSend(v10 "location")] != 1;
     }
   }
@@ -140,16 +140,16 @@ LABEL_6:
   return v7;
 }
 
-- (id)textRangeContainingLocation:(id)a3
+- (id)textRangeContainingLocation:(id)location
 {
   v6 = 0x7FFFFFFFFFFFFFFFLL;
-  if (![(NSTextSelection *)self _containsLocation:a3 rangeIndex:&v6])
+  if (![(NSTextSelection *)self _containsLocation:location rangeIndex:&v6])
   {
     return 0;
   }
 
-  v4 = [(NSTextSelection *)self textRanges];
-  return [(NSArray *)v4 objectAtIndexedSubscript:v6];
+  textRanges = [(NSTextSelection *)self textRanges];
+  return [(NSArray *)textRanges objectAtIndexedSubscript:v6];
 }
 
 - (void)setTypingAttributes:(NSDictionary *)typingAttributes
@@ -164,50 +164,50 @@ LABEL_6:
 
 - (NSTextSelection)textSelectionWithTextRanges:(NSArray *)textRanges
 {
-  v4 = self;
+  selfCopy = self;
   if (![(NSArray *)textRanges isEqualToArray:[(NSTextSelection *)self textRanges]])
   {
-    v5 = [[NSTextSelection alloc] initWithRanges:textRanges affinity:[(NSTextSelection *)v4 affinity] granularity:[(NSTextSelection *)v4 granularity]];
-    [(NSTextSelection *)v5 setLogical:[(NSTextSelection *)v4 isLogical]];
-    [(NSTextSelection *)v5 setSecondarySelectionLocation:[(NSTextSelection *)v4 secondarySelectionLocation]];
-    [(NSTextSelection *)v5 setTypingAttributes:[(NSTextSelection *)v4 typingAttributes]];
-    [(NSTextSelection *)v5 setSelectionAnchorLocation:[(NSTextSelection *)v4 selectionAnchorLocation]];
+    v5 = [[NSTextSelection alloc] initWithRanges:textRanges affinity:[(NSTextSelection *)selfCopy affinity] granularity:[(NSTextSelection *)selfCopy granularity]];
+    [(NSTextSelection *)v5 setLogical:[(NSTextSelection *)selfCopy isLogical]];
+    [(NSTextSelection *)v5 setSecondarySelectionLocation:[(NSTextSelection *)selfCopy secondarySelectionLocation]];
+    [(NSTextSelection *)v5 setTypingAttributes:[(NSTextSelection *)selfCopy typingAttributes]];
+    [(NSTextSelection *)v5 setSelectionAnchorLocation:[(NSTextSelection *)selfCopy selectionAnchorLocation]];
     return v5;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (BOOL)isEqualToTextSelection:(id)a3
+- (BOOL)isEqualToTextSelection:(id)selection
 {
-  if (self == a3)
+  if (self == selection)
   {
     goto LABEL_16;
   }
 
-  v5 = -[NSArray isEqualToArray:](self->_textRanges, "isEqualToArray:", [a3 textRanges]);
+  v5 = -[NSArray isEqualToArray:](self->_textRanges, "isEqualToArray:", [selection textRanges]);
   if (v5)
   {
     granularity = self->_granularity;
-    if (granularity != [a3 granularity] || (affinity = self->_affinity, affinity != objc_msgSend(a3, "affinity")) || (transient = self->_transient, transient != objc_msgSend(a3, "isTransient")) || (logical = self->_logical, logical != objc_msgSend(a3, "isLogical")) || (anchorPositionOffset = self->_anchorPositionOffset, objc_msgSend(a3, "anchorPositionOffset"), anchorPositionOffset != v11))
+    if (granularity != [selection granularity] || (affinity = self->_affinity, affinity != objc_msgSend(selection, "affinity")) || (transient = self->_transient, transient != objc_msgSend(selection, "isTransient")) || (logical = self->_logical, logical != objc_msgSend(selection, "isLogical")) || (anchorPositionOffset = self->_anchorPositionOffset, objc_msgSend(selection, "anchorPositionOffset"), anchorPositionOffset != v11))
     {
       LOBYTE(v5) = 0;
       return v5;
     }
 
     secondarySelectionLocation = self->_secondarySelectionLocation;
-    if (secondarySelectionLocation == [a3 secondarySelectionLocation] || (v5 = -[NSTextLocation isEqual:](self->_secondarySelectionLocation, "isEqual:", objc_msgSend(a3, "secondarySelectionLocation"))) != 0)
+    if (secondarySelectionLocation == [selection secondarySelectionLocation] || (v5 = -[NSTextLocation isEqual:](self->_secondarySelectionLocation, "isEqual:", objc_msgSend(selection, "secondarySelectionLocation"))) != 0)
     {
       typingAttributes = self->_typingAttributes;
-      if (typingAttributes == [a3 typingAttributes] || (v5 = -[NSDictionary isEqualToDictionary:](self->_typingAttributes, "isEqualToDictionary:", objc_msgSend(a3, "typingAttributes"))) != 0)
+      if (typingAttributes == [selection typingAttributes] || (v5 = -[NSDictionary isEqualToDictionary:](self->_typingAttributes, "isEqualToDictionary:", objc_msgSend(selection, "typingAttributes"))) != 0)
       {
         selectionAnchorLocation = self->_selectionAnchorLocation;
-        if (selectionAnchorLocation != [a3 selectionAnchorLocation])
+        if (selectionAnchorLocation != [selection selectionAnchorLocation])
         {
           v15 = self->_selectionAnchorLocation;
-          v16 = [a3 selectionAnchorLocation];
+          selectionAnchorLocation = [selection selectionAnchorLocation];
 
-          LOBYTE(v5) = [(NSTextLocation *)v15 isEqual:v16];
+          LOBYTE(v5) = [(NSTextLocation *)v15 isEqual:selectionAnchorLocation];
           return v5;
         }
 
@@ -220,9 +220,9 @@ LABEL_16:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -233,7 +233,7 @@ LABEL_16:
     return 0;
   }
 
-  return [(NSTextSelection *)self isEqualToTextSelection:a3];
+  return [(NSTextSelection *)self isEqualToTextSelection:equal];
 }
 
 - (unint64_t)hash
@@ -244,28 +244,28 @@ LABEL_16:
   return v4 + v5 + [(NSTextLocation *)self->_selectionAnchorLocation hash]+ self->_affinity + self->_granularity;
 }
 
-+ (id)descriptionForGranularity:(int64_t)a3
++ (id)descriptionForGranularity:(int64_t)granularity
 {
-  if (a3 > 4)
+  if (granularity > 4)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_1E726E540[a3];
+    return off_1E726E540[granularity];
   }
 }
 
-+ (id)descriptionForAffinity:(int64_t)a3
++ (id)descriptionForAffinity:(int64_t)affinity
 {
   v3 = @"unknown";
-  if (a3 == 1)
+  if (affinity == 1)
   {
     v3 = @"downstream";
   }
 
-  if (a3)
+  if (affinity)
   {
     return v3;
   }

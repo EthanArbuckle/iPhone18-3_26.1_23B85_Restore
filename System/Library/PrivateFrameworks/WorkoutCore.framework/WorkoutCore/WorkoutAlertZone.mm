@@ -1,28 +1,28 @@
 @interface WorkoutAlertZone
 - (_TtC11WorkoutCore16WorkoutAlertZone)init;
-- (id)localizedProgressDescriptionWithUnitStyle:(unint64_t)a3 formattingManager:(id)a4;
-- (id)spokenDescriptionWithFormattingManager:(id)a3;
-- (id)spokenUserDataWithFormattingManager:(id)a3;
+- (id)localizedProgressDescriptionWithUnitStyle:(unint64_t)style formattingManager:(id)manager;
+- (id)spokenDescriptionWithFormattingManager:(id)manager;
+- (id)spokenUserDataWithFormattingManager:(id)manager;
 @end
 
 @implementation WorkoutAlertZone
 
-- (id)spokenUserDataWithFormattingManager:(id)a3
+- (id)spokenUserDataWithFormattingManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
-  WorkoutAlertZone.spokenUserData(with:)(v4);
+  managerCopy = manager;
+  selfCopy = self;
+  WorkoutAlertZone.spokenUserData(with:)(managerCopy);
 
   v6.super.isa = Dictionary._bridgeToObjectiveC()().super.isa;
 
   return v6.super.isa;
 }
 
-- (id)localizedProgressDescriptionWithUnitStyle:(unint64_t)a3 formattingManager:(id)a4
+- (id)localizedProgressDescriptionWithUnitStyle:(unint64_t)style formattingManager:(id)manager
 {
-  v6 = a4;
-  v7 = self;
-  WorkoutAlertZone.localizedProgressDescription(with:formattingManager:)(a3, v6);
+  managerCopy = manager;
+  selfCopy = self;
+  WorkoutAlertZone.localizedProgressDescription(with:formattingManager:)(style, managerCopy);
 
   _sSo23FIUIWorkoutActivityTypeCMaTm_1(0, &lazy cache variable for type metadata for NLWorkoutAlertUnitAnnotatedString, off_277D86CF0);
   v8.super.isa = Array._bridgeToObjectiveC()().super.isa;
@@ -30,11 +30,11 @@
   return v8.super.isa;
 }
 
-- (id)spokenDescriptionWithFormattingManager:(id)a3
+- (id)spokenDescriptionWithFormattingManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
-  v6 = WorkoutAlertZone.spokenDescription(with:)(v4);
+  managerCopy = manager;
+  selfCopy = self;
+  v6 = WorkoutAlertZone.spokenDescription(with:)(managerCopy);
   v8 = v7;
 
   v9 = MEMORY[0x20F2E6C00](v6, v8);

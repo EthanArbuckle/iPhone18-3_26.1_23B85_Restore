@@ -1,27 +1,27 @@
 @interface RTDaemonClientRegistrarRemoteStatus
-- (BOOL)startMonitoringForRemoteStatus:(id *)a3;
-- (RTDaemonClientRegistrarRemoteStatus)initWithIntermittentGNSSManager:(id)a3 queue:(id)a4;
+- (BOOL)startMonitoringForRemoteStatus:(id *)status;
+- (RTDaemonClientRegistrarRemoteStatus)initWithIntermittentGNSSManager:(id)manager queue:(id)queue;
 - (RTDaemonClientRegistrarRemoteStatusProtocol)delegate;
-- (void)addPendingRemoteStatusUpdateBlock:(id)a3 failBlock:(id)a4 description:(id)a5;
-- (void)onRemoteStatusUpdateNotification:(id)a3;
+- (void)addPendingRemoteStatusUpdateBlock:(id)block failBlock:(id)failBlock description:(id)description;
+- (void)onRemoteStatusUpdateNotification:(id)notification;
 - (void)stopMonitoringRemoteStatus;
 @end
 
 @implementation RTDaemonClientRegistrarRemoteStatus
 
-- (RTDaemonClientRegistrarRemoteStatus)initWithIntermittentGNSSManager:(id)a3 queue:(id)a4
+- (RTDaemonClientRegistrarRemoteStatus)initWithIntermittentGNSSManager:(id)manager queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  managerCopy = manager;
+  queueCopy = queue;
+  v9 = queueCopy;
+  if (!managerCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v14 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -32,7 +32,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!queueCopy)
   {
     v15 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -51,21 +51,21 @@ LABEL_12:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_manager, a3);
-    objc_storeStrong(&v11->_queue, a4);
+    objc_storeStrong(&v10->_manager, manager);
+    objc_storeStrong(&v11->_queue, queue);
     v12 = [[RTInvocationDispatcher alloc] initWithQueue:v9];
     dispatcher = v11->_dispatcher;
     v11->_dispatcher = v12;
   }
 
   self = v11;
-  v14 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v14;
+  return selfCopy;
 }
 
-- (BOOL)startMonitoringForRemoteStatus:(id *)a3
+- (BOOL)startMonitoringForRemoteStatus:(id *)status
 {
   v22 = *MEMORY[0x277D85DE8];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -82,12 +82,12 @@ LABEL_10:
 
   if ([(RTDaemonClientRegistrar *)self invocationsPending])
   {
-    v8 = [(RTDaemonClientRegistrarRemoteStatus *)self dispatcher];
-    [v8 dispatchPendingInvocations];
+    dispatcher = [(RTDaemonClientRegistrarRemoteStatus *)self dispatcher];
+    [dispatcher dispatchPendingInvocations];
   }
 
-  v9 = [(RTDaemonClientRegistrarRemoteStatus *)self registered];
-  if (v9)
+  registered = [(RTDaemonClientRegistrarRemoteStatus *)self registered];
+  if (registered)
   {
     v10 = MEMORY[0x277CCA9B8];
     v11 = *MEMORY[0x277D01448];
@@ -96,24 +96,24 @@ LABEL_10:
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     v13 = [v10 errorWithDomain:v11 code:11 userInfo:v12];
 
-    if (a3)
+    if (status)
     {
       v14 = v13;
-      *a3 = v13;
+      *status = v13;
     }
   }
 
   else
   {
-    v15 = [(RTDaemonClientRegistrarRemoteStatus *)self manager];
+    manager = [(RTDaemonClientRegistrarRemoteStatus *)self manager];
     v16 = +[(RTNotification *)RTIntermittentGNSSNotificationRemoteStatusUpdated];
-    [v15 addObserver:self selector:sel_onRemoteStatusUpdateNotification_ name:v16];
+    [manager addObserver:self selector:sel_onRemoteStatusUpdateNotification_ name:v16];
 
     v13 = 0;
     self->_observingManager = 1;
   }
 
-  return !v9;
+  return !registered;
 }
 
 - (void)stopMonitoringRemoteStatus
@@ -131,45 +131,45 @@ LABEL_10:
     }
   }
 
-  v6 = [(RTDaemonClientRegistrarRemoteStatus *)self dispatcher];
-  [v6 removeAllPendingInvocations];
+  dispatcher = [(RTDaemonClientRegistrarRemoteStatus *)self dispatcher];
+  [dispatcher removeAllPendingInvocations];
 
   if ([(RTDaemonClientRegistrarRemoteStatus *)self registered])
   {
-    v7 = [(RTDaemonClientRegistrarRemoteStatus *)self manager];
-    [v7 removeObserver:self];
+    manager = [(RTDaemonClientRegistrarRemoteStatus *)self manager];
+    [manager removeObserver:self];
 
     self->_observingManager = 0;
   }
 }
 
-- (void)addPendingRemoteStatusUpdateBlock:(id)a3 failBlock:(id)a4 description:(id)a5
+- (void)addPendingRemoteStatusUpdateBlock:(id)block failBlock:(id)failBlock description:(id)description
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(RTDaemonClientRegistrarRemoteStatus *)self dispatcher];
-  [v11 enqueueBlock:v10 failureBlock:v9 description:{@"%@", v8}];
+  descriptionCopy = description;
+  failBlockCopy = failBlock;
+  blockCopy = block;
+  dispatcher = [(RTDaemonClientRegistrarRemoteStatus *)self dispatcher];
+  [dispatcher enqueueBlock:blockCopy failureBlock:failBlockCopy description:{@"%@", descriptionCopy}];
 }
 
-- (void)onRemoteStatusUpdateNotification:(id)a3
+- (void)onRemoteStatusUpdateNotification:(id)notification
 {
-  v5 = a3;
+  notificationCopy = notification;
   v6 = +[(RTNotification *)RTIntermittentGNSSNotificationRemoteStatusUpdated];
-  v7 = [v5 name];
-  v8 = [v6 isEqualToString:v7];
+  name = [notificationCopy name];
+  v8 = [v6 isEqualToString:name];
 
   if (v8)
   {
-    v9 = [(RTDaemonClientRegistrarRemoteStatus *)self queue];
+    queue = [(RTDaemonClientRegistrarRemoteStatus *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __72__RTDaemonClientRegistrarRemoteStatus_onRemoteStatusUpdateNotification___block_invoke;
     block[3] = &unk_2788C5020;
-    v12 = self;
+    selfCopy = self;
     v13 = a2;
-    v11 = v5;
-    dispatch_async(v9, block);
+    v11 = notificationCopy;
+    dispatch_async(queue, block);
   }
 }
 

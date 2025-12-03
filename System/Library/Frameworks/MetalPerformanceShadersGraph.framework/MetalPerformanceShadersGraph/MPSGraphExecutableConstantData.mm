@@ -1,58 +1,58 @@
 @interface MPSGraphExecutableConstantData
-- (MPSGraphExecutableConstantData)initWithCoder:(id)a3;
-- (id)initForRequest:(id)a3;
+- (MPSGraphExecutableConstantData)initWithCoder:(id)coder;
+- (id)initForRequest:(id)request;
 - (uint64_t)loadResources:;
-- (void)encodeWithCoder:(id)a3;
-- (void)extendWithRequest:(id)a3;
-- (void)loadIntoResourceManager:(void *)a3;
-- (void)loadResources:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)extendWithRequest:(id)request;
+- (void)loadIntoResourceManager:(void *)manager;
+- (void)loadResources:(id)resources;
 @end
 
 @implementation MPSGraphExecutableConstantData
 
-- (MPSGraphExecutableConstantData)initWithCoder:(id)a3
+- (MPSGraphExecutableConstantData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MPSGraphExecutableConstantData;
   v5 = [(MPSGraphExecutableConstantData *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mpsgraphPackageURL"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mpsgraphPackageURL"];
     [(MPSGraphExecutableConstantData *)v5 setMpsgraphPackageURL:v6];
 
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v7 setWithObjects:{v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"ioSurfaces"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"ioSurfaces"];
     [(MPSGraphExecutableConstantData *)v5 setIoSurfaces:v11];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(MPSGraphExecutableConstantData *)self mpsgraphPackageURL];
-  [v6 encodeObject:v4 forKey:@"mpsgraphPackageURL"];
+  coderCopy = coder;
+  mpsgraphPackageURL = [(MPSGraphExecutableConstantData *)self mpsgraphPackageURL];
+  [coderCopy encodeObject:mpsgraphPackageURL forKey:@"mpsgraphPackageURL"];
 
-  v5 = [(MPSGraphExecutableConstantData *)self ioSurfaces];
-  [v6 encodeObject:v5 forKey:@"ioSurfaces"];
+  ioSurfaces = [(MPSGraphExecutableConstantData *)self ioSurfaces];
+  [coderCopy encodeObject:ioSurfaces forKey:@"ioSurfaces"];
 }
 
-- (void)loadResources:(id)a3
+- (void)loadResources:(id)resources
 {
   v28 = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  resourcesCopy = resources;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [v19 resourceOffsets];
-  v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  resourceOffsets = [resourcesCopy resourceOffsets];
+  v6 = [resourceOffsets countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
   {
     v7 = *v24;
@@ -62,7 +62,7 @@
       {
         if (*v24 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(resourceOffsets);
         }
 
         v9 = *(*(&v23 + 1) + 8 * i);
@@ -71,13 +71,13 @@
 
         if (v11)
         {
-          v12 = [v19 resourceOffsets];
-          v13 = [v12 objectForKeyedSubscript:v9];
-          [v4 setObject:v13 forKeyedSubscript:v9];
+          resourceOffsets2 = [resourcesCopy resourceOffsets];
+          v13 = [resourceOffsets2 objectForKeyedSubscript:v9];
+          [dictionary setObject:v13 forKeyedSubscript:v9];
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v6 = [resourceOffsets countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v6);
@@ -91,35 +91,35 @@
   v17 = [(NSURL *)mpsgraphPackageURL URLByAppendingPathComponent:v16];
 
   v20 = 0;
-  [MPSGraphPackage readResources:v4 fromURL:v17 error:&v20 usingAllocator:llvm::function_ref<char * ()(llvm::StringRef, unsigned long long, unsigned long long)>::callback_fn<[MPSGraphExecutableConstantData loadResources:]::$_3>, &p_obj];
+  [MPSGraphPackage readResources:dictionary fromURL:v17 error:&v20 usingAllocator:llvm::function_ref<char * ()(llvm::StringRef, unsigned long long, unsigned long long)>::callback_fn<[MPSGraphExecutableConstantData loadResources:]::$_3>, &p_obj];
   v18 = v20;
   objc_storeStrong(&self->_ioSurfaces, obj);
 }
 
-- (id)initForRequest:(id)a3
+- (id)initForRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v12.receiver = self;
   v12.super_class = MPSGraphExecutableConstantData;
   v5 = [(MPSGraphExecutableConstantData *)&v12 init];
   if (v5)
   {
-    v6 = [v4 mpsgraphPackageURL];
+    mpsgraphPackageURL = [requestCopy mpsgraphPackageURL];
     mpsgraphPackageURL = v5->_mpsgraphPackageURL;
-    v5->_mpsgraphPackageURL = v6;
+    v5->_mpsgraphPackageURL = mpsgraphPackageURL;
 
-    v8 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     ioSurfaces = v5->_ioSurfaces;
-    v5->_ioSurfaces = v8;
+    v5->_ioSurfaces = dictionary;
 
-    [(MPSGraphExecutableConstantData *)v5 loadResources:v4];
+    [(MPSGraphExecutableConstantData *)v5 loadResources:requestCopy];
     v10 = v5;
   }
 
   return v5;
 }
 
-- (void)loadIntoResourceManager:(void *)a3
+- (void)loadIntoResourceManager:(void *)manager
 {
   v38 = *MEMORY[0x1E69E9840];
   v24 = 0u;
@@ -143,14 +143,14 @@
         v6 = *(*(&v24 + 1) + 8 * i);
         v7 = [(NSDictionary *)self->_ioSurfaces objectForKeyedSubscript:v6];
         v8 = v7;
-        v9 = [v7 baseAddress];
-        v10 = [v7 allocationSize];
+        baseAddress = [v7 baseAddress];
+        allocationSize = [v7 allocationSize];
         v11 = v6;
-        v12 = [v6 UTF8String];
-        v13 = v12;
-        if (v12)
+        uTF8String = [v6 UTF8String];
+        v13 = uTF8String;
+        if (uTF8String)
         {
-          v14 = strlen(v12);
+          v14 = strlen(uTF8String);
         }
 
         else
@@ -158,16 +158,16 @@
           v14 = 0;
         }
 
-        v15 = [v7 bytesPerElement];
-        *&v31 = v9;
-        *(&v31 + 1) = v10;
-        v32 = v15;
+        bytesPerElement = [v7 bytesPerElement];
+        *&v31 = baseAddress;
+        *(&v31 + 1) = allocationSize;
+        v32 = bytesPerElement;
         v35 = llvm::detail::UniqueFunctionBase<void,void *,unsigned long,unsigned long>::CallbacksHolder<[MPSGraphExecutableConstantData loadIntoResourceManager:]::$_4,[MPSGraphExecutableConstantData loadIntoResourceManager:]::$_4,void>::Callbacks + 2;
         v33 = v28;
         v34 = v29;
         v30 = 0;
         v36 = 0;
-        mlir::mps::MPSResourceBlobManagerInterface::defineEntryValue(a3, v13, v14, &v31);
+        mlir::mps::MPSResourceBlobManagerInterface::defineEntryValue(manager, v13, v14, &v31);
         if (v35 >= 8)
         {
           v16 = (v35 & 2) != 0 ? &v33 : v33;
@@ -229,20 +229,20 @@
   }
 }
 
-- (void)extendWithRequest:(id)a3
+- (void)extendWithRequest:(id)request
 {
-  v6 = a3;
-  [v6 mpsgraphPackageURL];
+  requestCopy = request;
+  [requestCopy mpsgraphPackageURL];
 
-  v4 = [v6 mpsgraphPackageURL];
+  mpsgraphPackageURL = [requestCopy mpsgraphPackageURL];
   mpsgraphPackageURL = self->_mpsgraphPackageURL;
 
-  if (v4 != mpsgraphPackageURL && MTLReportFailureTypeEnabled())
+  if (mpsgraphPackageURL != mpsgraphPackageURL && MTLReportFailureTypeEnabled())
   {
     MTLReportFailure();
   }
 
-  [(MPSGraphExecutableConstantData *)self loadResources:v6];
+  [(MPSGraphExecutableConstantData *)self loadResources:requestCopy];
 }
 
 - (uint64_t)loadResources:
@@ -257,7 +257,7 @@
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:2];
 
   v12 = [objc_alloc(MEMORY[0x1E696CDE8]) initWithProperties:v11];
-  v13 = **a1;
+  v13 = **self;
   v14 = MEMORY[0x1E696AEC0];
   if (a2)
   {
@@ -306,9 +306,9 @@
   }
 
   v17 = v12;
-  v18 = [v12 baseAddress];
+  baseAddress = [v12 baseAddress];
 
-  return v18;
+  return baseAddress;
 }
 
 @end

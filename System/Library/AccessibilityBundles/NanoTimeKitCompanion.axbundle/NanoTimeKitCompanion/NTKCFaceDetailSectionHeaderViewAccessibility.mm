@@ -1,15 +1,15 @@
 @interface NTKCFaceDetailSectionHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation NTKCFaceDetailSectionHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKCFaceDetailSectionHeaderView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKCFaceDetailSectionHeaderView" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKCFaceDetailSectionHeaderView" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKCFaceDetailSectionHeaderView" hasInstanceMethod:@"subtitle" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel

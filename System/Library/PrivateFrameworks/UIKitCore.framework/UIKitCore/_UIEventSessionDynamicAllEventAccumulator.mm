@@ -1,17 +1,17 @@
 @interface _UIEventSessionDynamicAllEventAccumulator
-+ (id)accumulatorWithName:(id)a3 depth:(unint64_t)a4 block:(id)a5 delegate:(id)a6 allowedActionSourceTypes:(id)a7;
++ (id)accumulatorWithName:(id)name depth:(unint64_t)depth block:(id)block delegate:(id)delegate allowedActionSourceTypes:(id)types;
 - (_UIEventSessionDynamicAccumulatorDelegate)delegate;
-- (void)performIncreaseWithActions:(id)a3;
+- (void)performIncreaseWithActions:(id)actions;
 @end
 
 @implementation _UIEventSessionDynamicAllEventAccumulator
 
-+ (id)accumulatorWithName:(id)a3 depth:(unint64_t)a4 block:(id)a5 delegate:(id)a6 allowedActionSourceTypes:(id)a7
++ (id)accumulatorWithName:(id)name depth:(unint64_t)depth block:(id)block delegate:(id)delegate allowedActionSourceTypes:(id)types
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a7;
-  v15 = a6;
+  nameCopy = name;
+  blockCopy = block;
+  typesCopy = types;
+  delegateCopy = delegate;
   if (os_variant_has_internal_diagnostics())
   {
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("UIEventSessionActionAnalytics", &accumulatorWithName_depth_block_delegate_allowedActionSourceTypes____s_category_80);
@@ -26,15 +26,15 @@
     }
   }
 
-  v16 = [a1 accumulatorWithName:v12 depthRange:a4 block:0 allowedActionSourceTypes:{v13, v14}];
-  objc_storeWeak(v16 + 8, v15);
+  v16 = [self accumulatorWithName:nameCopy depthRange:depth block:0 allowedActionSourceTypes:{blockCopy, typesCopy}];
+  objc_storeWeak(v16 + 8, delegateCopy);
 
   return v16;
 }
 
-- (void)performIncreaseWithActions:(id)a3
+- (void)performIncreaseWithActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   if (os_variant_has_internal_diagnostics())
   {
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("UIEventSessionActionAnalytics", &performIncreaseWithActions____s_category_81);
@@ -49,20 +49,20 @@
     }
   }
 
-  v5 = [v4 firstObject];
-  v6 = [(_UIEventSessionAccumulator *)self block];
-  v7 = (v6)[2](v6, v4);
+  firstObject = [actionsCopy firstObject];
+  block = [(_UIEventSessionAccumulator *)self block];
+  v7 = (block)[2](block, actionsCopy);
 
   if (v7)
   {
-    v8 = [(_UIEventSessionDynamicAllEventAccumulator *)self delegate];
+    delegate = [(_UIEventSessionDynamicAllEventAccumulator *)self delegate];
 
-    if (v8)
+    if (delegate)
     {
-      v9 = [v4 firstObject];
-      if (v9)
+      firstObject2 = [actionsCopy firstObject];
+      if (firstObject2)
       {
-        v10 = v9;
+        v10 = firstObject2;
         v11 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:9];
         v12 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v10, "hardwareKeyboardState")}];
         [v11 setObject:v12 forKeyedSubscript:@"kbAtt"];
@@ -73,8 +73,8 @@
         v14 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v10, "uiInterfaceOrientation")}];
         [v11 setObject:v14 forKeyedSubscript:@"uiOrient"];
 
-        v15 = [v10 sessionID];
-        [v11 setObject:v15 forKeyedSubscript:@"sID"];
+        sessionID = [v10 sessionID];
+        [v11 setObject:sessionID forKeyedSubscript:@"sID"];
 
         if (os_variant_has_internal_diagnostics())
         {
@@ -91,9 +91,9 @@
         v18 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v10, "actionCount")}];
         [v11 setObject:v18 forKeyedSubscript:@"aCnt"];
 
-        v19 = [(_UIEventSessionDynamicAllEventAccumulator *)self delegate];
-        v20 = [(_UIEventSessionAccumulator *)self name];
-        [v19 writeEventWithFields:v11 andName:v20];
+        delegate2 = [(_UIEventSessionDynamicAllEventAccumulator *)self delegate];
+        name = [(_UIEventSessionAccumulator *)self name];
+        [delegate2 writeEventWithFields:v11 andName:name];
       }
     }
   }

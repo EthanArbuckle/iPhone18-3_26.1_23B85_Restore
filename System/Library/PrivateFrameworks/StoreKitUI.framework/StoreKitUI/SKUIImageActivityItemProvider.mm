@@ -26,12 +26,12 @@
   v16 = __Block_byref_object_copy__13;
   v17 = __Block_byref_object_dispose__13;
   v18 = 0;
-  v3 = [(UIActivityItemProvider *)self activityType];
-  if ([MEMORY[0x277D546D0] activityTypeShouldProvideImage:v3])
+  activityType = [(UIActivityItemProvider *)self activityType];
+  if ([MEMORY[0x277D546D0] activityTypeShouldProvideImage:activityType])
   {
-    v4 = [(SKUIDeferredActivityItemProvider *)self productPageItem];
-    v5 = [v4 artworksProvider];
-    v6 = [v5 bestArtworkForScaledSize:{100.0, 100.0}];
+    productPageItem = [(SKUIDeferredActivityItemProvider *)self productPageItem];
+    artworksProvider = [productPageItem artworksProvider];
+    v6 = [artworksProvider bestArtworkForScaledSize:{100.0, 100.0}];
     v7 = [v6 URL];
 
     if (v7)

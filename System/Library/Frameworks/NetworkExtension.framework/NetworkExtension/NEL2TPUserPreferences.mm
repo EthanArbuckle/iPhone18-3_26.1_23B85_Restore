@@ -1,25 +1,25 @@
 @interface NEL2TPUserPreferences
-+ (SCNetworkConnectionRef)createConnectionForConfiguration:(uint64_t)a1;
-+ (void)clearCurrentForConfiguration:(uint64_t)a1;
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
-- (NEL2TPUserPreferences)initWithConfiguration:(id)a3;
++ (SCNetworkConnectionRef)createConnectionForConfiguration:(uint64_t)configuration;
++ (void)clearCurrentForConfiguration:(uint64_t)configuration;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
+- (NEL2TPUserPreferences)initWithConfiguration:(id)configuration;
 - (void)dealloc;
 @end
 
 @implementation NEL2TPUserPreferences
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
-  v4 = a3;
-  v5 = [(NEL2TPUserPreferences *)self name];
-  if (v5 && (v6 = v5, -[NEL2TPUserPreferences name](self, "name"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 length], v7, v6, v8))
+  errorsCopy = errors;
+  name = [(NEL2TPUserPreferences *)self name];
+  if (name && (v6 = name, -[NEL2TPUserPreferences name](self, "name"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 length], v7, v6, v8))
   {
     v9 = 1;
   }
 
   else
   {
-    [v4 addObject:@"L2TP user preferences has no name"];
+    [errorsCopy addObject:@"L2TP user preferences has no name"];
     v9 = 0;
   }
 
@@ -28,27 +28,27 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_userPrefs;
   }
 
   CFRelease(self);
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = NEL2TPUserPreferences;
   [(NEL2TPUserPreferences *)&v3 dealloc];
 }
 
-- (NEL2TPUserPreferences)initWithConfiguration:(id)a3
+- (NEL2TPUserPreferences)initWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = NEL2TPUserPreferences;
   v5 = [(NEL2TPUserPreferences *)&v11 init];
   if (v5)
   {
-    v6 = [NEL2TPUserPreferences createConnectionForConfiguration:v4];
+    v6 = [NEL2TPUserPreferences createConnectionForConfiguration:configurationCopy];
     v5->_userPrefs = SCNetworkConnectionCreateUserPreferences();
     CFRelease(v6);
     if (!v5->_userPrefs)
@@ -68,19 +68,19 @@ LABEL_6:
   return v9;
 }
 
-+ (SCNetworkConnectionRef)createConnectionForConfiguration:(uint64_t)a1
++ (SCNetworkConnectionRef)createConnectionForConfiguration:(uint64_t)configuration
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 identifier];
+  identifier = [v2 identifier];
 
-  v4 = [v3 UUIDString];
+  uUIDString = [identifier UUIDString];
 
-  v5 = SCNetworkConnectionCreateWithServiceID(*MEMORY[0x1E695E480], v4, 0, 0);
+  v5 = SCNetworkConnectionCreateWithServiceID(*MEMORY[0x1E695E480], uUIDString, 0, 0);
   return v5;
 }
 
-+ (void)clearCurrentForConfiguration:(uint64_t)a1
++ (void)clearCurrentForConfiguration:(uint64_t)configuration
 {
   v2 = a2;
   objc_opt_self();

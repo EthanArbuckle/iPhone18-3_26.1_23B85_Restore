@@ -1,18 +1,18 @@
 @interface PXSharedLibraryReplyAssistantViewController
 - (BOOL)_canStepForward;
 - (PXAssistantViewControllerDelegate)assistantViewControllerDelegate;
-- (PXSharedLibraryReplyAssistantViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6;
-- (PXSharedLibraryReplyAssistantViewController)initWithViewModel:(id)a3 legacyDevicesFallbackMonitor:(id)a4;
-- (void)_setIsWaitingToStepForward:(BOOL)a3;
+- (PXSharedLibraryReplyAssistantViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout;
+- (PXSharedLibraryReplyAssistantViewController)initWithViewModel:(id)model legacyDevicesFallbackMonitor:(id)monitor;
+- (void)_setIsWaitingToStepForward:(BOOL)forward;
 - (void)_stepForward;
 - (void)_updateImage;
 - (void)_updateSubtitle;
 - (void)acceptAndContinue;
 - (void)declineInvitation;
-- (void)learnMoreButtonTapped:(id)a3;
+- (void)learnMoreButtonTapped:(id)tapped;
 - (void)legacyDevicesFallbackMonitorChangedState;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)traitCollectionDidChange:(id)change;
 - (void)viewDidLoad;
 @end
 
@@ -36,8 +36,8 @@
 
 - (void)declineInvitation
 {
-  v4 = [(PXSharedLibraryReplyAssistantViewController *)self viewModel];
-  v5 = [v4 sharedLibrary];
+  viewModel = [(PXSharedLibraryReplyAssistantViewController *)self viewModel];
+  sharedLibrary = [viewModel sharedLibrary];
 
   v6 = [off_1E7721960 defaultPresenterWithViewController:self];
   v7[0] = MEMORY[0x1E69E9820];
@@ -46,7 +46,7 @@
   v7[3] = &unk_1E7741CE0;
   v7[4] = self;
   v7[5] = a2;
-  PXSharedLibraryDeclineInvitation(v5, v6, @"Assistant", v7);
+  PXSharedLibraryDeclineInvitation(sharedLibrary, v6, @"Assistant", v7);
 }
 
 void __74__PXSharedLibraryReplyAssistantViewController_Internal__declineInvitation__block_invoke(uint64_t a1, int a2)
@@ -87,22 +87,22 @@ void __74__PXSharedLibraryReplyAssistantViewController_Internal__declineInvitati
 - (void)_stepForward
 {
   v4 = *MEMORY[0x1E69E9840];
-  v3 = [(PXSharedLibraryReplyAssistantViewController *)self assistantViewControllerDelegate];
-  if (!v3)
+  assistantViewControllerDelegate = [(PXSharedLibraryReplyAssistantViewController *)self assistantViewControllerDelegate];
+  if (!assistantViewControllerDelegate)
   {
     PXAssertGetLog();
   }
 
-  [v3 stepForwardInAssistantForAssistantViewController:self];
+  [assistantViewControllerDelegate stepForwardInAssistantForAssistantViewController:self];
 }
 
 - (BOOL)_canStepForward
 {
-  v2 = [(PXSharedLibraryReplyAssistantViewController *)self legacyDevicesFallbackMonitor];
-  v3 = v2;
-  if (v2)
+  legacyDevicesFallbackMonitor = [(PXSharedLibraryReplyAssistantViewController *)self legacyDevicesFallbackMonitor];
+  v3 = legacyDevicesFallbackMonitor;
+  if (legacyDevicesFallbackMonitor)
   {
-    v4 = [v2 state] != 0;
+    v4 = [legacyDevicesFallbackMonitor state] != 0;
   }
 
   else
@@ -113,20 +113,20 @@ void __74__PXSharedLibraryReplyAssistantViewController_Internal__declineInvitati
   return v4;
 }
 
-- (void)_setIsWaitingToStepForward:(BOOL)a3
+- (void)_setIsWaitingToStepForward:(BOOL)forward
 {
-  v3 = a3;
+  forwardCopy = forward;
   [(PXSharedLibraryReplyAssistantViewController *)self setWantsToStepForward:?];
-  v5 = [(PXSharedLibraryReplyAssistantViewController *)self setupButton];
-  v6 = v5;
-  if (v3)
+  setupButton = [(PXSharedLibraryReplyAssistantViewController *)self setupButton];
+  v6 = setupButton;
+  if (forwardCopy)
   {
-    [v5 showsBusyIndicator];
+    [setupButton showsBusyIndicator];
   }
 
   else
   {
-    [v5 hidesBusyIndicator];
+    [setupButton hidesBusyIndicator];
   }
 }
 
@@ -137,9 +137,9 @@ void __74__PXSharedLibraryReplyAssistantViewController_Internal__declineInvitati
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  if ((a4 & 1) != 0 && PXSharedLibraryLegacyDevicesFallbackMonitorObservationContext_239941 == a5)
+  if ((change & 1) != 0 && PXSharedLibraryLegacyDevicesFallbackMonitorObservationContext_239941 == context)
   {
     [(PXSharedLibraryReplyAssistantViewController *)self legacyDevicesFallbackMonitorChangedState];
   }
@@ -147,21 +147,21 @@ void __74__PXSharedLibraryReplyAssistantViewController_Internal__declineInvitati
 
 - (void)_updateImage
 {
-  v3 = [(PXSharedLibraryReplyAssistantViewController *)self viewIfLoaded];
+  viewIfLoaded = [(PXSharedLibraryReplyAssistantViewController *)self viewIfLoaded];
 
-  if (v3)
+  if (viewIfLoaded)
   {
-    v4 = [(PXSharedLibraryAssistantViewModel *)self->_viewModel sharedLibrary];
-    v5 = [v4 owner];
+    sharedLibrary = [(PXSharedLibraryAssistantViewModel *)self->_viewModel sharedLibrary];
+    owner = [sharedLibrary owner];
 
-    v6 = [(PXSharedLibraryReplyAssistantViewController *)self traitCollection];
+    traitCollection = [(PXSharedLibraryReplyAssistantViewController *)self traitCollection];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __59__PXSharedLibraryReplyAssistantViewController__updateImage__block_invoke;
     v7[3] = &unk_1E7749C60;
     v7[4] = self;
-    v7[5] = v5;
-    PXSharedLibraryRequestInvitationImageForOwner(v5, v6, v7);
+    v7[5] = owner;
+    PXSharedLibraryRequestInvitationImageForOwner(owner, traitCollection, v7);
   }
 }
 
@@ -194,8 +194,8 @@ void __59__PXSharedLibraryReplyAssistantViewController__updateImage__block_invok
 - (void)_updateSubtitle
 {
   v23[3] = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
-  v3 = [v2 mutableCopy];
+  defaultParagraphStyle = [MEMORY[0x1E69DB7D0] defaultParagraphStyle];
+  v3 = [defaultParagraphStyle mutableCopy];
 
   [v3 setAlignment:4];
   v4 = *MEMORY[0x1E69DB688];
@@ -203,8 +203,8 @@ void __59__PXSharedLibraryReplyAssistantViewController__updateImage__block_invok
   v5 = *MEMORY[0x1E69DB650];
   v21[0] = v4;
   v21[1] = v5;
-  v6 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v23[1] = v6;
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v23[1] = secondaryLabelColor;
   v22 = *MEMORY[0x1E69DB648];
   v7 = v22;
   v8 = *MEMORY[0x1E69DDD80];
@@ -215,21 +215,21 @@ void __59__PXSharedLibraryReplyAssistantViewController__updateImage__block_invok
   v20[0] = v3;
   v19[0] = v4;
   v19[1] = v5;
-  v11 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v20[1] = v11;
+  secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  v20[1] = secondaryLabelColor2;
   v19[2] = v7;
   v12 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:v8 addingSymbolicTraits:0 weight:*MEMORY[0x1E69DB958]];
   v20[2] = v12;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:v19 count:3];
 
-  v14 = [(PXSharedLibraryAssistantViewModel *)self->_viewModel sharedLibrary];
-  v15 = [v14 owner];
-  v16 = PXSharedLibraryReplyAssistantAttributedSubtitle(v15, v10, v13);
-  v17 = [(PXSharedLibraryReplyAssistantViewController *)self headerView];
-  [v17 setAttributedDetailText:v16];
+  sharedLibrary = [(PXSharedLibraryAssistantViewModel *)self->_viewModel sharedLibrary];
+  owner = [sharedLibrary owner];
+  v16 = PXSharedLibraryReplyAssistantAttributedSubtitle(owner, v10, v13);
+  headerView = [(PXSharedLibraryReplyAssistantViewController *)self headerView];
+  [headerView setAttributedDetailText:v16];
 }
 
-- (void)learnMoreButtonTapped:(id)a3
+- (void)learnMoreButtonTapped:(id)tapped
 {
   v3 = MEMORY[0x1E695DFF8];
   IsIPad = PLPhysicalDeviceIsIPad();
@@ -242,21 +242,21 @@ void __59__PXSharedLibraryReplyAssistantViewController__updateImage__block_invok
   v6 = v5;
   v8 = [v3 URLWithString:v6];
 
-  v7 = [MEMORY[0x1E69DC668] sharedApplication];
-  [v7 openURL:v8 options:MEMORY[0x1E695E0F8] completionHandler:0];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  [mEMORY[0x1E69DC668] openURL:v8 options:MEMORY[0x1E695E0F8] completionHandler:0];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v8.receiver = self;
   v8.super_class = PXSharedLibraryReplyAssistantViewController;
-  v4 = a3;
-  [(PXSharedLibraryReplyAssistantViewController *)&v8 traitCollectionDidChange:v4];
+  changeCopy = change;
+  [(PXSharedLibraryReplyAssistantViewController *)&v8 traitCollectionDidChange:changeCopy];
   v5 = [(PXSharedLibraryReplyAssistantViewController *)self traitCollection:v8.receiver];
-  v6 = [v5 userInterfaceStyle];
-  v7 = [v4 userInterfaceStyle];
+  userInterfaceStyle = [v5 userInterfaceStyle];
+  userInterfaceStyle2 = [changeCopy userInterfaceStyle];
 
-  if (v6 != v7)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     [(PXSharedLibraryReplyAssistantViewController *)self _updateImage];
   }
@@ -268,48 +268,48 @@ void __59__PXSharedLibraryReplyAssistantViewController__updateImage__block_invok
   v15.super_class = PXSharedLibraryReplyAssistantViewController;
   [(OBBaseWelcomeController *)&v15 viewDidLoad];
   v3 = PXLocalizedSharedLibraryString(@"PXSharedLibraryReplyAssistant_Intro_Title");
-  v4 = [(PXSharedLibraryReplyAssistantViewController *)self headerView];
-  [v4 setTitle:v3];
+  headerView = [(PXSharedLibraryReplyAssistantViewController *)self headerView];
+  [headerView setTitle:v3];
 
   [(PXSharedLibraryReplyAssistantViewController *)self _updateSubtitle];
   [(PXSharedLibraryReplyAssistantViewController *)self _updateImage];
-  v5 = [MEMORY[0x1E69B7D20] accessoryButton];
+  accessoryButton = [MEMORY[0x1E69B7D20] accessoryButton];
   v6 = PXLocalizedSharedLibraryString(@"PXSharedLibraryPreferences_Description_LearnMore_ButtonTitle");
-  [v5 setTitle:v6 forState:0];
+  [accessoryButton setTitle:v6 forState:0];
 
-  [v5 addTarget:self action:sel_learnMoreButtonTapped_ forControlEvents:0x2000];
-  v7 = [(PXSharedLibraryReplyAssistantViewController *)self headerView];
-  [v7 addAccessoryButton:v5];
+  [accessoryButton addTarget:self action:sel_learnMoreButtonTapped_ forControlEvents:0x2000];
+  headerView2 = [(PXSharedLibraryReplyAssistantViewController *)self headerView];
+  [headerView2 addAccessoryButton:accessoryButton];
 
-  v8 = [MEMORY[0x1E69B7D00] boldButton];
+  boldButton = [MEMORY[0x1E69B7D00] boldButton];
   v9 = PXLocalizedSharedLibraryString(@"PXSharedLibraryReplyAssistant_Intro_ButtonTitle_Start");
-  [v8 setTitle:v9 forState:0];
+  [boldButton setTitle:v9 forState:0];
 
-  [v8 addTarget:self action:sel_setupButtonTapped_ forControlEvents:0x2000];
-  v10 = [(PXSharedLibraryReplyAssistantViewController *)self buttonTray];
-  [v10 addButton:v8];
+  [boldButton addTarget:self action:sel_setupButtonTapped_ forControlEvents:0x2000];
+  buttonTray = [(PXSharedLibraryReplyAssistantViewController *)self buttonTray];
+  [buttonTray addButton:boldButton];
 
-  [(PXSharedLibraryReplyAssistantViewController *)self setSetupButton:v8];
+  [(PXSharedLibraryReplyAssistantViewController *)self setSetupButton:boldButton];
   v11 = [MEMORY[0x1E69DCBA0] keyCommandWithInput:@"\r" modifierFlags:0 action:sel_setupButtonTapped_];
   [(PXSharedLibraryReplyAssistantViewController *)self addKeyCommand:v11];
 
-  v12 = [MEMORY[0x1E69B7D38] linkButton];
+  linkButton = [MEMORY[0x1E69B7D38] linkButton];
   v13 = PXLocalizedSharedLibraryString(@"PXSharedLibraryReplyAssistant_Intro_ButtonTitle_Decline");
-  [v12 setTitle:v13 forState:0];
+  [linkButton setTitle:v13 forState:0];
 
-  [v12 addTarget:self action:sel_declineButtonTapped_ forControlEvents:0x2000];
-  v14 = [(PXSharedLibraryReplyAssistantViewController *)self buttonTray];
-  [v14 addButton:v12];
+  [linkButton addTarget:self action:sel_declineButtonTapped_ forControlEvents:0x2000];
+  buttonTray2 = [(PXSharedLibraryReplyAssistantViewController *)self buttonTray];
+  [buttonTray2 addButton:linkButton];
 }
 
-- (PXSharedLibraryReplyAssistantViewController)initWithViewModel:(id)a3 legacyDevicesFallbackMonitor:(id)a4
+- (PXSharedLibraryReplyAssistantViewController)initWithViewModel:(id)model legacyDevicesFallbackMonitor:(id)monitor
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  modelCopy = model;
+  monitorCopy = monitor;
+  if (!modelCopy)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryReplyAssistantViewController+iOS.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryReplyAssistantViewController+iOS.m" lineNumber:43 description:{@"Invalid parameter not satisfying: %@", @"viewModel"}];
   }
 
   v14.receiver = self;
@@ -318,21 +318,21 @@ void __59__PXSharedLibraryReplyAssistantViewController__updateImage__block_invok
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_viewModel, a3);
-    objc_storeStrong(&v11->_legacyDevicesFallbackMonitor, a4);
+    objc_storeStrong(&v10->_viewModel, model);
+    objc_storeStrong(&v11->_legacyDevicesFallbackMonitor, monitor);
     [(PXSharedLibraryLegacyDevicesFallbackMonitor *)v11->_legacyDevicesFallbackMonitor registerChangeObserver:v11 context:PXSharedLibraryLegacyDevicesFallbackMonitorObservationContext_239941];
   }
 
   return v11;
 }
 
-- (PXSharedLibraryReplyAssistantViewController)initWithTitle:(id)a3 detailText:(id)a4 icon:(id)a5 contentLayout:(int64_t)a6
+- (PXSharedLibraryReplyAssistantViewController)initWithTitle:(id)title detailText:(id)text icon:(id)icon contentLayout:(int64_t)layout
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v13 handleFailureInMethod:a2 object:self file:@"PXSharedLibraryReplyAssistantViewController+iOS.m" lineNumber:39 description:{@"%s is not available as initializer", "-[PXSharedLibraryReplyAssistantViewController initWithTitle:detailText:icon:contentLayout:]"}];
+  titleCopy = title;
+  textCopy = text;
+  iconCopy = icon;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSharedLibraryReplyAssistantViewController+iOS.m" lineNumber:39 description:{@"%s is not available as initializer", "-[PXSharedLibraryReplyAssistantViewController initWithTitle:detailText:icon:contentLayout:]"}];
 
   abort();
 }

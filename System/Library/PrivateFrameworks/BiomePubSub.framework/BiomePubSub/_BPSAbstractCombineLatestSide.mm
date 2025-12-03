@@ -1,51 +1,51 @@
 @interface _BPSAbstractCombineLatestSide
-- (_BPSAbstractCombineLatestSide)initWithIndex:(unint64_t)a3 combiner:(id)a4;
-- (int64_t)receiveInput:(id)a3;
-- (void)receiveCompletion:(id)a3;
-- (void)receiveSubscription:(id)a3;
+- (_BPSAbstractCombineLatestSide)initWithIndex:(unint64_t)index combiner:(id)combiner;
+- (int64_t)receiveInput:(id)input;
+- (void)receiveCompletion:(id)completion;
+- (void)receiveSubscription:(id)subscription;
 @end
 
 @implementation _BPSAbstractCombineLatestSide
 
-- (_BPSAbstractCombineLatestSide)initWithIndex:(unint64_t)a3 combiner:(id)a4
+- (_BPSAbstractCombineLatestSide)initWithIndex:(unint64_t)index combiner:(id)combiner
 {
-  v7 = a4;
+  combinerCopy = combiner;
   v11.receiver = self;
   v11.super_class = _BPSAbstractCombineLatestSide;
   v8 = [(_BPSAbstractCombineLatestSide *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_index = a3;
-    objc_storeStrong(&v8->_combiner, a4);
+    v8->_index = index;
+    objc_storeStrong(&v8->_combiner, combiner);
   }
 
   return v9;
 }
 
-- (void)receiveSubscription:(id)a3
+- (void)receiveSubscription:(id)subscription
 {
-  v4 = a3;
-  v5 = [(_BPSAbstractCombineLatestSide *)self combiner];
-  [v5 receiveSubscription:v4 atIndex:{-[_BPSAbstractCombineLatestSide index](self, "index")}];
+  subscriptionCopy = subscription;
+  combiner = [(_BPSAbstractCombineLatestSide *)self combiner];
+  [combiner receiveSubscription:subscriptionCopy atIndex:{-[_BPSAbstractCombineLatestSide index](self, "index")}];
 }
 
-- (int64_t)receiveInput:(id)a3
+- (int64_t)receiveInput:(id)input
 {
-  v4 = self;
-  v5 = a3;
-  v6 = [(_BPSAbstractCombineLatestSide *)v4 combiner];
-  v7 = [v6 receiveInput:v5 atIndex:{-[_BPSAbstractCombineLatestSide index](v4, "index")}];
+  selfCopy = self;
+  inputCopy = input;
+  combiner = [(_BPSAbstractCombineLatestSide *)selfCopy combiner];
+  v7 = [combiner receiveInput:inputCopy atIndex:{-[_BPSAbstractCombineLatestSide index](selfCopy, "index")}];
 
   return v7;
 }
 
-- (void)receiveCompletion:(id)a3
+- (void)receiveCompletion:(id)completion
 {
-  v6 = self;
-  v4 = a3;
-  v5 = [(_BPSAbstractCombineLatestSide *)v6 combiner];
-  [v5 receiveCompletion:v4 atIndex:{-[_BPSAbstractCombineLatestSide index](v6, "index")}];
+  selfCopy = self;
+  completionCopy = completion;
+  combiner = [(_BPSAbstractCombineLatestSide *)selfCopy combiner];
+  [combiner receiveCompletion:completionCopy atIndex:{-[_BPSAbstractCombineLatestSide index](selfCopy, "index")}];
 }
 
 @end

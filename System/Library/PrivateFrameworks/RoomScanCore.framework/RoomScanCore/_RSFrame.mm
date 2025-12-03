@@ -1,15 +1,15 @@
 @interface _RSFrame
 - (__n128)referenceOriginTransform;
-- (__n128)setReferenceOriginTransform:(__n128)a3;
+- (__n128)setReferenceOriginTransform:(__n128)transform;
 - (void)dealloc;
 @end
 
 @implementation _RSFrame
 
-- (__n128)setReferenceOriginTransform:(__n128)a3
+- (__n128)setReferenceOriginTransform:(__n128)transform
 {
   result[7] = a2;
-  result[8] = a3;
+  result[8] = transform;
   result[9] = a4;
   result[10] = a5;
   return result;
@@ -17,10 +17,10 @@
 
 - (__n128)referenceOriginTransform
 {
-  result = *(a1 + 112);
-  v2 = *(a1 + 128);
-  v3 = *(a1 + 144);
-  v4 = *(a1 + 160);
+  result = *(self + 112);
+  v2 = *(self + 128);
+  v3 = *(self + 144);
+  v4 = *(self + 160);
   return result;
 }
 

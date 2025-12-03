@@ -18,7 +18,7 @@
   v5 = a3;
   v6 = a4;
   v7 = v5;
-  v8 = v7;
+  systemRoute = v7;
   if (!v7)
   {
     v14 = 0;
@@ -39,10 +39,10 @@
 
     v10 = v9;
     _Block_object_dispose(&v14, 8);
-    v8 = [v9 systemRoute];
+    systemRoute = [v9 systemRoute];
   }
 
-  v11 = [getMPCPlayerPathClass() systemMusicPathWithRoute:v8 playerID:v6];
+  v11 = [getMPCPlayerPathClass() systemMusicPathWithRoute:systemRoute playerID:v6];
 
   return v11;
 }

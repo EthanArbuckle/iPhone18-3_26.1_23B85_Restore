@@ -1,12 +1,12 @@
 @interface _MLCGPUSoftmax
-- (_MLCGPUSoftmax)initWithDevice:(id)a3 operation:(int)a4 dimension:(unint64_t)a5;
+- (_MLCGPUSoftmax)initWithDevice:(id)device operation:(int)operation dimension:(unint64_t)dimension;
 @end
 
 @implementation _MLCGPUSoftmax
 
-- (_MLCGPUSoftmax)initWithDevice:(id)a3 operation:(int)a4 dimension:(unint64_t)a5
+- (_MLCGPUSoftmax)initWithDevice:(id)device operation:(int)operation dimension:(unint64_t)dimension
 {
-  v7 = a3;
+  deviceCopy = device;
   v43.receiver = self;
   v43.super_class = _MLCGPUSoftmax;
   v8 = [(_MLCGPUSoftmax *)&v43 init];
@@ -14,14 +14,14 @@
   if (v8)
   {
     v35 = v8;
-    v10 = [v7 deviceList];
-    v11 = [v10 count];
+    deviceList = [deviceCopy deviceList];
+    v11 = [deviceList count];
 
     v37 = [MEMORY[0x277CBEBF8] mutableCopy];
     if (v11)
     {
       v12 = 0;
-      if (a4)
+      if (operation)
       {
         v13 = @"log_softmax_forward_fast";
       }
@@ -32,7 +32,7 @@
       }
 
       v14 = @"log_softmax_forward";
-      if (!a4)
+      if (!operation)
       {
         v14 = @"softmax_forward";
       }
@@ -40,7 +40,7 @@
       v40 = v14;
       v41 = v13;
       v15 = @"softmax_gradient";
-      if (a4)
+      if (operation)
       {
         v15 = @"log_softmax_gradient";
       }
@@ -49,19 +49,19 @@
       v39 = v15;
       do
       {
-        v16 = [v7 deviceList];
-        v17 = [v16 objectAtIndexedSubscript:v12];
+        deviceList2 = [deviceCopy deviceList];
+        v17 = [deviceList2 objectAtIndexedSubscript:v12];
 
-        v18 = [v7 gpuLibrary];
-        v19 = [v18 objectAtIndexedSubscript:v12];
+        gpuLibrary = [deviceCopy gpuLibrary];
+        v19 = [gpuLibrary objectAtIndexedSubscript:v12];
         v20 = [v19 newFunctionWithName:v41];
 
-        v21 = [v7 gpuLibrary];
-        v22 = [v21 objectAtIndexedSubscript:v12];
+        gpuLibrary2 = [deviceCopy gpuLibrary];
+        v22 = [gpuLibrary2 objectAtIndexedSubscript:v12];
         v23 = [v22 newFunctionWithName:v40];
 
-        v24 = [v7 gpuLibrary];
-        v25 = [v24 objectAtIndexedSubscript:v12];
+        gpuLibrary3 = [deviceCopy gpuLibrary];
+        v25 = [gpuLibrary3 objectAtIndexedSubscript:v12];
         v26 = [v25 newFunctionWithName:v39];
 
         v27 = [v17 newComputePipelineStateWithFunction:v23 error:0];
@@ -76,7 +76,7 @@
           {
             [v31 setIsMPSKernel:0];
             [v32 setMetalKernelType:3];
-            [v32 setSoftmaxAxis:a5];
+            [v32 setSoftmaxAxis:dimension];
             [v32 setForwardStatisticsKernel:v28];
             [v32 setSourceOfForwardNeededForGradient:0];
             [v32 setResultOfForwardNeededForGradient:1];

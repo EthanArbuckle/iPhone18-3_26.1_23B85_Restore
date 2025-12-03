@@ -9,7 +9,7 @@
 
 - (NSAttributedString)attributedText
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10021C370();
 
   return v3;
@@ -17,7 +17,7 @@
 
 - (NSString)text
 {
-  v2 = self;
+  selfCopy = self;
   sub_10021C3D8();
 
   v3 = String._bridgeToObjectiveC()();
@@ -27,7 +27,7 @@
 
 - (unint64_t)confidenceRating
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10021C4D4();
 
   return v3;
@@ -35,7 +35,7 @@
 
 - (double)confidence
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10021C528();
 
   return v3;

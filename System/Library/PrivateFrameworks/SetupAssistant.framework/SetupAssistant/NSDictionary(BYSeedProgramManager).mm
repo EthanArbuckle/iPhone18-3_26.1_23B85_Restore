@@ -10,7 +10,7 @@
 {
   if (objc_opt_class())
   {
-    v2 = [a1 objectForKeyedSubscript:*MEMORY[0x1E69CA668]];
+    v2 = [self objectForKeyedSubscript:*MEMORY[0x1E69CA668]];
   }
 
   else
@@ -31,7 +31,7 @@
 {
   if (objc_opt_class())
   {
-    v2 = [a1 objectForKeyedSubscript:*MEMORY[0x1E69CA660]];
+    v2 = [self objectForKeyedSubscript:*MEMORY[0x1E69CA660]];
   }
 
   else
@@ -52,7 +52,7 @@
 {
   if (objc_opt_class())
   {
-    v2 = [a1 objectForKeyedSubscript:*MEMORY[0x1E69CA670]];
+    v2 = [self objectForKeyedSubscript:*MEMORY[0x1E69CA670]];
   }
 
   else

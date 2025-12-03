@@ -1,22 +1,22 @@
 @interface PKAccountBeneficiaryInfo
-- (PKAccountBeneficiaryInfo)initWithCoder:(id)a3;
-- (PKAccountBeneficiaryInfo)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKAccountBeneficiaryInfo)initWithCoder:(id)coder;
+- (PKAccountBeneficiaryInfo)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation PKAccountBeneficiaryInfo
 
-- (PKAccountBeneficiaryInfo)initWithDictionary:(id)a3
+- (PKAccountBeneficiaryInfo)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = PKAccountBeneficiaryInfo;
   v5 = [(PKAccountBeneficiaryInfo *)&v24 init];
   if (v5)
   {
-    v6 = [v4 PKArrayForKey:@"beneficiaries"];
+    v6 = [dictionaryCopy PKArrayForKey:@"beneficiaries"];
     if (![v6 count])
     {
 LABEL_14:
@@ -83,9 +83,9 @@ LABEL_15:
   return v18;
 }
 
-- (PKAccountBeneficiaryInfo)initWithCoder:(id)a3
+- (PKAccountBeneficiaryInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = PKAccountBeneficiaryInfo;
   v5 = [(PKAccountBeneficiaryInfo *)&v12 init];
@@ -94,7 +94,7 @@ LABEL_15:
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"beneficiaries"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"beneficiaries"];
     beneficiaries = v5->_beneficiaries;
     v5->_beneficiaries = v9;
   }
@@ -102,10 +102,10 @@ LABEL_15:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v15 = 0u;
   v16 = 0u;

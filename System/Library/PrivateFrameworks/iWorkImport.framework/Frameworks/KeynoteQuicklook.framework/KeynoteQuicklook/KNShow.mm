@@ -1,5 +1,5 @@
 @interface KNShow
-+ (KNShow)showWithSize:(CGSize)a3 context:(id)a4;
++ (KNShow)showWithSize:(CGSize)size context:(id)context;
 + (unint64_t)maximumHeight;
 + (unint64_t)maximumWidth;
 - (BOOL)hasInSyncRecording;
@@ -7,153 +7,153 @@
 - (BOOL)slideNumbersVisible;
 - (CGPoint)center;
 - (CGSize)size;
-- (KNShow)initWithSize:(CGSize)a3 context:(id)a4;
-- (id)slideNodeAtIndex:(unint64_t)a3;
-- (id)slideNodesAtIndexes:(id)a3;
-- (unint64_t)indexOfSlideNode:(id)a3;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setAutomaticallyPlaysUponOpen:(BOOL)a3;
-- (void)setAutoplayBuildDelay:(double)a3;
-- (void)setAutoplayTransitionDelay:(double)a3;
-- (void)setIdleTimerActive:(BOOL)a3;
-- (void)setIdleTimerDelay:(double)a3;
-- (void)setLoopPresentation:(BOOL)a3;
-- (void)setMode:(int64_t)a3;
-- (void)setRecording:(id)a3;
-- (void)setSize:(CGSize)a3;
-- (void)setSlideTree:(id)a3;
-- (void)setSoundtrack:(id)a3;
-- (void)setStylesheetForThemePreview:(id)a3;
-- (void)setStylesheetForUpgradeToSingleStylesheet:(id)a3;
-- (void)setTheme:(id)a3;
+- (KNShow)initWithSize:(CGSize)size context:(id)context;
+- (id)slideNodeAtIndex:(unint64_t)index;
+- (id)slideNodesAtIndexes:(id)indexes;
+- (unint64_t)indexOfSlideNode:(id)node;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setAutomaticallyPlaysUponOpen:(BOOL)open;
+- (void)setAutoplayBuildDelay:(double)delay;
+- (void)setAutoplayTransitionDelay:(double)delay;
+- (void)setIdleTimerActive:(BOOL)active;
+- (void)setIdleTimerDelay:(double)delay;
+- (void)setLoopPresentation:(BOOL)presentation;
+- (void)setMode:(int64_t)mode;
+- (void)setRecording:(id)recording;
+- (void)setSize:(CGSize)size;
+- (void)setSlideTree:(id)tree;
+- (void)setSoundtrack:(id)soundtrack;
+- (void)setStylesheetForThemePreview:(id)preview;
+- (void)setStylesheetForUpgradeToSingleStylesheet:(id)stylesheet;
+- (void)setTheme:(id)theme;
 - (void)willModify;
 @end
 
 @implementation KNShow
 
-- (void)setSlideTree:(id)a3
+- (void)setSlideTree:(id)tree
 {
-  v5 = a3;
-  if (self->_slideTree != v5)
+  treeCopy = tree;
+  if (self->_slideTree != treeCopy)
   {
-    v8 = v5;
+    v8 = treeCopy;
     objc_msgSend_willModify(self, v6, v7);
-    objc_storeStrong(&self->_slideTree, a3);
-    v5 = v8;
+    objc_storeStrong(&self->_slideTree, tree);
+    treeCopy = v8;
   }
 }
 
-- (void)setAutoplayTransitionDelay:(double)a3
+- (void)setAutoplayTransitionDelay:(double)delay
 {
-  if (self->_autoplayTransitionDelay != a3)
+  if (self->_autoplayTransitionDelay != delay)
   {
     objc_msgSend_willModify(self, a2, v3);
-    self->_autoplayTransitionDelay = a3;
+    self->_autoplayTransitionDelay = delay;
   }
 }
 
-- (void)setAutoplayBuildDelay:(double)a3
+- (void)setAutoplayBuildDelay:(double)delay
 {
-  if (self->_autoplayBuildDelay != a3)
+  if (self->_autoplayBuildDelay != delay)
   {
     objc_msgSend_willModify(self, a2, v3);
-    self->_autoplayBuildDelay = a3;
+    self->_autoplayBuildDelay = delay;
   }
 }
 
-- (void)setIdleTimerDelay:(double)a3
+- (void)setIdleTimerDelay:(double)delay
 {
-  if (self->_idleTimerDelay != a3)
+  if (self->_idleTimerDelay != delay)
   {
     objc_msgSend_willModify(self, a2, v3);
-    self->_idleTimerDelay = a3;
+    self->_idleTimerDelay = delay;
   }
 }
 
-- (void)setMode:(int64_t)a3
+- (void)setMode:(int64_t)mode
 {
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_mode = a3;
+    objc_msgSend_willModify(self, a2, mode);
+    self->_mode = mode;
   }
 }
 
-- (void)setLoopPresentation:(BOOL)a3
+- (void)setLoopPresentation:(BOOL)presentation
 {
-  if (self->_loopPresentation != a3)
+  if (self->_loopPresentation != presentation)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_loopPresentation = a3;
+    objc_msgSend_willModify(self, a2, presentation);
+    self->_loopPresentation = presentation;
   }
 }
 
-- (void)setIdleTimerActive:(BOOL)a3
+- (void)setIdleTimerActive:(BOOL)active
 {
-  if (self->_idleTimerActive != a3)
+  if (self->_idleTimerActive != active)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_idleTimerActive = a3;
+    objc_msgSend_willModify(self, a2, active);
+    self->_idleTimerActive = active;
   }
 }
 
-- (void)setAutomaticallyPlaysUponOpen:(BOOL)a3
+- (void)setAutomaticallyPlaysUponOpen:(BOOL)open
 {
-  if (self->_automaticallyPlaysUponOpen != a3)
+  if (self->_automaticallyPlaysUponOpen != open)
   {
-    objc_msgSend_willModify(self, a2, a3);
-    self->_automaticallyPlaysUponOpen = a3;
+    objc_msgSend_willModify(self, a2, open);
+    self->_automaticallyPlaysUponOpen = open;
   }
 }
 
-- (void)setSoundtrack:(id)a3
+- (void)setSoundtrack:(id)soundtrack
 {
-  v5 = a3;
-  if (self->_soundtrack != v5)
+  soundtrackCopy = soundtrack;
+  if (self->_soundtrack != soundtrackCopy)
   {
-    v8 = v5;
+    v8 = soundtrackCopy;
     objc_msgSend_willModify(self, v6, v7);
-    objc_storeStrong(&self->_soundtrack, a3);
-    v5 = v8;
+    objc_storeStrong(&self->_soundtrack, soundtrack);
+    soundtrackCopy = v8;
   }
 }
 
-- (void)setRecording:(id)a3
+- (void)setRecording:(id)recording
 {
-  v5 = a3;
-  if (self->_recording != v5)
+  recordingCopy = recording;
+  if (self->_recording != recordingCopy)
   {
-    v8 = v5;
+    v8 = recordingCopy;
     objc_msgSend_willModify(self, v6, v7);
-    objc_storeStrong(&self->_recording, a3);
-    v5 = v8;
+    objc_storeStrong(&self->_recording, recording);
+    recordingCopy = v8;
   }
 }
 
-- (void)setStylesheetForUpgradeToSingleStylesheet:(id)a3
+- (void)setStylesheetForUpgradeToSingleStylesheet:(id)stylesheet
 {
-  v5 = a3;
-  if (self->_stylesheet != v5)
+  stylesheetCopy = stylesheet;
+  if (self->_stylesheet != stylesheetCopy)
   {
-    v8 = v5;
+    v8 = stylesheetCopy;
     objc_msgSend_willModifyForUpgrade(self, v6, v7);
-    objc_storeStrong(&self->_stylesheet, a3);
-    v5 = v8;
+    objc_storeStrong(&self->_stylesheet, stylesheet);
+    stylesheetCopy = v8;
   }
 }
 
-- (void)setStylesheetForThemePreview:(id)a3
+- (void)setStylesheetForThemePreview:(id)preview
 {
-  v5 = a3;
-  if (self->_stylesheet != v5)
+  previewCopy = preview;
+  if (self->_stylesheet != previewCopy)
   {
-    v8 = v5;
+    v8 = previewCopy;
     objc_msgSend_willModifyForUpgrade(self, v6, v7);
-    objc_storeStrong(&self->_stylesheet, a3);
-    v5 = v8;
+    objc_storeStrong(&self->_stylesheet, preview);
+    previewCopy = v8;
   }
 }
 
@@ -191,34 +191,34 @@
   return v18 & 1;
 }
 
-+ (KNShow)showWithSize:(CGSize)a3 context:(id)a4
++ (KNShow)showWithSize:(CGSize)size context:(id)context
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = a4;
+  height = size.height;
+  width = size.width;
+  contextCopy = context;
   v7 = [KNShow alloc];
-  v9 = objc_msgSend_initWithSize_context_(v7, v8, v6, width, height);
+  v9 = objc_msgSend_initWithSize_context_(v7, v8, contextCopy, width, height);
 
   return v9;
 }
 
-- (KNShow)initWithSize:(CGSize)a3 context:(id)a4
+- (KNShow)initWithSize:(CGSize)size context:(id)context
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  contextCopy = context;
   v29.receiver = self;
   v29.super_class = KNShow;
-  v8 = [(KNShow *)&v29 initWithContext:v7];
+  v8 = [(KNShow *)&v29 initWithContext:contextCopy];
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x277D80AE0]);
-    canCullStyles = objc_msgSend_initWithContext_canCullStyles_(v9, v10, v7, 1);
+    canCullStyles = objc_msgSend_initWithContext_canCullStyles_(v9, v10, contextCopy, 1);
     stylesheet = v8->_stylesheet;
     v8->_stylesheet = canCullStyles;
 
     v13 = [KNTheme alloc];
-    v15 = objc_msgSend_initWithContext_documentStylesheet_(v13, v14, v7, v8->_stylesheet);
+    v15 = objc_msgSend_initWithContext_documentStylesheet_(v13, v14, contextCopy, v8->_stylesheet);
     theme = v8->_theme;
     v8->_theme = v15;
 
@@ -240,11 +240,11 @@
     v8->_loopPresentation = 0;
     v8->_idleTimerActive = 0;
     v23 = [KNSoundtrack alloc];
-    v25 = objc_msgSend_initWithSoundtrackMedia_context_(v23, v24, MEMORY[0x277CBEBF8], v7);
+    v25 = objc_msgSend_initWithSoundtrackMedia_context_(v23, v24, MEMORY[0x277CBEBF8], contextCopy);
     soundtrack = v8->_soundtrack;
     v8->_soundtrack = v25;
 
-    objc_msgSend_wasAddedToDocumentWithContext_(v8->_soundtrack, v27, v7);
+    objc_msgSend_wasAddedToDocumentWithContext_(v8->_soundtrack, v27, contextCopy);
   }
 
   return v8;
@@ -258,30 +258,30 @@
   return result;
 }
 
-- (void)setTheme:(id)a3
+- (void)setTheme:(id)theme
 {
-  v5 = a3;
-  if (self->_theme != v5)
+  themeCopy = theme;
+  if (self->_theme != themeCopy)
   {
-    v16 = v5;
+    v16 = themeCopy;
     objc_msgSend_willModify(self, v6, v7);
     v10 = objc_msgSend_owningDocument(self, v8, v9);
     v11 = self->_theme;
     objc_msgSend_willBeRemovedFromDocumentRoot_(v11, v12, v10);
     objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(v16, v13, v10, 0);
-    objc_storeStrong(&self->_theme, a3);
+    objc_storeStrong(&self->_theme, theme);
     self->_localizeDocument = 1;
     objc_msgSend_wasRemovedFromDocumentRoot_(v11, v14, v10);
     objc_msgSend_wasAddedToDocumentRoot_dolcContext_(v16, v15, v10, 0);
 
-    v5 = v16;
+    themeCopy = v16;
   }
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v51 = *MEMORY[0x277D85DE8];
   objc_msgSend_willModify(self, a2, v3);
   self->_size.width = width;
@@ -396,32 +396,32 @@
   [(KNShow *)&v2 willModify];
 }
 
-- (unint64_t)indexOfSlideNode:(id)a3
+- (unint64_t)indexOfSlideNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   v7 = objc_msgSend_slideTree(self, v5, v6);
-  v9 = objc_msgSend_indexOfSlideNode_(v7, v8, v4);
+  v9 = objc_msgSend_indexOfSlideNode_(v7, v8, nodeCopy);
 
   return v9;
 }
 
-- (id)slideNodeAtIndex:(unint64_t)a3
+- (id)slideNodeAtIndex:(unint64_t)index
 {
-  v4 = objc_msgSend_slideTree(self, a2, a3);
-  v6 = objc_msgSend_slideNodeAtIndex_ignoreHiddenNodes_(v4, v5, a3, 0);
+  v4 = objc_msgSend_slideTree(self, a2, index);
+  v6 = objc_msgSend_slideNodeAtIndex_ignoreHiddenNodes_(v4, v5, index, 0);
 
   return v6;
 }
 
-- (id)slideNodesAtIndexes:(id)a3
+- (id)slideNodesAtIndexes:(id)indexes
 {
-  v4 = a3;
+  indexesCopy = indexes;
   v7 = objc_msgSend_slideTree(self, v5, v6);
   v10 = objc_msgSend_slideNodes(v7, v8, v9);
 
-  if (objc_msgSend_lastIndex(v4, v11, v12) != 0x7FFFFFFFFFFFFFFFLL)
+  if (objc_msgSend_lastIndex(indexesCopy, v11, v12) != 0x7FFFFFFFFFFFFFFFLL)
   {
-    Index = objc_msgSend_lastIndex(v4, v13, v14);
+    Index = objc_msgSend_lastIndex(indexesCopy, v13, v14);
     if (Index >= objc_msgSend_count(v10, v16, v17))
     {
       v18 = MEMORY[0x277D81150];
@@ -433,7 +433,7 @@
     }
   }
 
-  v25 = objc_msgSend_objectsAtIndexes_(v10, v13, v4);
+  v25 = objc_msgSend_objectsAtIndexes_(v10, v13, indexesCopy);
 
   return v25;
 }
@@ -509,54 +509,54 @@ LABEL_11:
   return result;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v6 = a4;
+  unarchiverCopy = unarchiver;
   v7 = [KNSlideTree alloc];
-  if (*(a3 + 5))
+  if (*(archive + 5))
   {
-    v9 = objc_msgSend_initWithArchive_unarchiver_owner_(v7, v8, *(a3 + 5), v6, self);
+    v9 = objc_msgSend_initWithArchive_unarchiver_owner_(v7, v8, *(archive + 5), unarchiverCopy, self);
   }
 
   else
   {
-    v9 = objc_msgSend_initWithArchive_unarchiver_owner_(v7, v8, &unk_2812EB558, v6, self);
+    v9 = objc_msgSend_initWithArchive_unarchiver_owner_(v7, v8, &unk_2812EB558, unarchiverCopy, self);
   }
 
   slideTree = self->_slideTree;
   self->_slideTree = v9;
 
-  v11 = *(a3 + 4);
-  self->_loopPresentation = *(a3 + 93) & ((v11 & 0x400) >> 10);
-  self->_mode = *(a3 + 22) & (v11 << 23 >> 31);
-  v12 = *(a3 + 12);
+  v11 = *(archive + 4);
+  self->_loopPresentation = *(archive + 93) & ((v11 & 0x400) >> 10);
+  self->_mode = *(archive + 22) & (v11 << 23 >> 31);
+  v12 = *(archive + 12);
   if ((v11 & 0x2000) == 0)
   {
     v12 = 5.0;
   }
 
   self->_autoplayTransitionDelay = v12;
-  v13 = *(a3 + 13);
+  v13 = *(archive + 13);
   if ((v11 & 0x4000) == 0)
   {
     v13 = 2.0;
   }
 
   self->_autoplayBuildDelay = v13;
-  v14 = *(a3 + 6);
+  v14 = *(archive + 6);
   if (!v14)
   {
     v14 = MEMORY[0x277D809D8];
   }
 
   self->_size = vcvtq_f64_f32(v14[3]);
-  v15 = *(a3 + 4);
+  v15 = *(archive + 4);
   v53[0] = MEMORY[0x277D85DD0];
   v53[1] = 3221225472;
   v53[2] = sub_275D6F79C;
   v53[3] = &unk_27A6981B0;
   v53[4] = self;
-  v16 = v6;
+  v16 = unarchiverCopy;
   v18 = objc_opt_class();
   v19 = MEMORY[0x277D80A18];
   if (v15)
@@ -569,7 +569,7 @@ LABEL_11:
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v16, v17, MEMORY[0x277D80A18], v18, 0, v53);
   }
 
-  v20 = *(a3 + 7);
+  v20 = *(archive + 7);
   v52[0] = MEMORY[0x277D85DD0];
   v52[1] = 3221225472;
   v52[2] = sub_275D6F7B4;
@@ -587,10 +587,10 @@ LABEL_11:
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v21, v22, v19, v23, 0, v52);
   }
 
-  v26 = *(a3 + 4);
+  v26 = *(archive + 4);
   if ((v26 & 0x20) != 0)
   {
-    v27 = *(a3 + 8);
+    v27 = *(archive + 8);
     v51[0] = MEMORY[0x277D85DD0];
     v51[1] = 3221225472;
     v51[2] = sub_275D6F7CC;
@@ -600,26 +600,26 @@ LABEL_11:
     v29 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v28, v30, v27, v29, 0, v51);
 
-    v26 = *(a3 + 4);
+    v26 = *(archive + 4);
   }
 
   if ((v26 & 0x800) != 0)
   {
-    objc_msgSend_setIdleTimerActive_(self, v24, *(a3 + 94));
-    v26 = *(a3 + 4);
+    objc_msgSend_setIdleTimerActive_(self, v24, *(archive + 94));
+    v26 = *(archive + 4);
   }
 
-  v31 = *(a3 + 14);
+  v31 = *(archive + 14);
   if ((v26 & 0x8000) == 0)
   {
     v31 = 900.0;
   }
 
   objc_msgSend_setIdleTimerDelay_(self, v24, v25, v31);
-  self->_automaticallyPlaysUponOpen = *(a3 + 95);
-  if ((*(a3 + 16) & 0x40) != 0)
+  self->_automaticallyPlaysUponOpen = *(archive + 95);
+  if ((*(archive + 16) & 0x40) != 0)
   {
-    v46 = *(a3 + 9);
+    v46 = *(archive + 9);
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
     v50[2] = sub_275D6F7D8;
@@ -645,38 +645,38 @@ LABEL_11:
   }
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v65 = a4;
+  archiverCopy = archiver;
   v9 = objc_msgSend_slideTree(self, v6, v7);
-  *(a3 + 4) |= 4u;
-  v10 = *(a3 + 5);
+  *(archive + 4) |= 4u;
+  v10 = *(archive + 5);
   if (!v10)
   {
-    v11 = *(a3 + 1);
+    v11 = *(archive + 1);
     if (v11)
     {
       v11 = *(v11 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v10 = sub_275E2060C(v11);
-    *(a3 + 5) = v10;
+    *(archive + 5) = v10;
   }
 
-  objc_msgSend_saveToArchive_archiver_(v9, v8, v10, v65);
+  objc_msgSend_saveToArchive_archiver_(v9, v8, v10, archiverCopy);
 
-  *(a3 + 4) |= 8u;
-  v14 = *(a3 + 6);
+  *(archive + 4) |= 8u;
+  v14 = *(archive + 6);
   if (!v14)
   {
-    v15 = *(a3 + 1);
+    v15 = *(archive + 1);
     if (v15)
     {
       v15 = *(v15 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v14 = MEMORY[0x277C8EFF0](v15);
-    *(a3 + 6) = v14;
+    *(archive + 6) = v14;
   }
 
   objc_msgSend_size(self, v12, v13);
@@ -688,111 +688,111 @@ LABEL_11:
   *(v14 + 16) |= 2u;
   *(v14 + 28) = v20;
   v24 = objc_msgSend_theme(self, v21, v22);
-  *(a3 + 4) |= 2u;
-  v25 = *(a3 + 4);
+  *(archive + 4) |= 2u;
+  v25 = *(archive + 4);
   if (!v25)
   {
-    v26 = *(a3 + 1);
+    v26 = *(archive + 1);
     if (v26)
     {
       v26 = *(v26 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v25 = MEMORY[0x277C8F050](v26);
-    *(a3 + 4) = v25;
+    *(archive + 4) = v25;
   }
 
-  objc_msgSend_setStrongReference_message_(v65, v23, v24, v25);
+  objc_msgSend_setStrongReference_message_(archiverCopy, v23, v24, v25);
 
   v30 = objc_msgSend_stylesheet(self, v27, v28);
-  *(a3 + 4) |= 0x10u;
-  v31 = *(a3 + 7);
+  *(archive + 4) |= 0x10u;
+  v31 = *(archive + 7);
   if (!v31)
   {
-    v32 = *(a3 + 1);
+    v32 = *(archive + 1);
     if (v32)
     {
       v32 = *(v32 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v31 = MEMORY[0x277C8F050](v32);
-    *(a3 + 7) = v31;
+    *(archive + 7) = v31;
   }
 
-  objc_msgSend_setStrongReference_message_(v65, v29, v30, v31);
+  objc_msgSend_setStrongReference_message_(archiverCopy, v29, v30, v31);
 
   v37 = objc_msgSend_recording(self, v33, v34);
   if (v37)
   {
-    *(a3 + 4) |= 0x20u;
-    v38 = *(a3 + 8);
+    *(archive + 4) |= 0x20u;
+    v38 = *(archive + 8);
     if (!v38)
     {
-      v39 = *(a3 + 1);
+      v39 = *(archive + 1);
       if (v39)
       {
         v39 = *(v39 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v38 = MEMORY[0x277C8F050](v39);
-      *(a3 + 8) = v38;
+      *(archive + 8) = v38;
     }
 
-    objc_msgSend_setStrongReference_message_(v65, v35, v37, v38);
+    objc_msgSend_setStrongReference_message_(archiverCopy, v35, v37, v38);
   }
 
   v40 = objc_msgSend_loopPresentation(self, v35, v36);
-  *(a3 + 4) |= 0x400u;
-  *(a3 + 93) = v40;
+  *(archive + 4) |= 0x400u;
+  *(archive + 93) = v40;
   v43 = objc_msgSend_mode(self, v41, v42);
-  *(a3 + 4) |= 0x100u;
-  *(a3 + 22) = v43;
+  *(archive + 4) |= 0x100u;
+  *(archive + 22) = v43;
   objc_msgSend_autoplayTransitionDelay(self, v44, v45);
-  *(a3 + 4) |= 0x2000u;
-  *(a3 + 12) = v46;
+  *(archive + 4) |= 0x2000u;
+  *(archive + 12) = v46;
   objc_msgSend_autoplayBuildDelay(self, v47, v48);
-  *(a3 + 4) |= 0x4000u;
-  *(a3 + 13) = v49;
+  *(archive + 4) |= 0x4000u;
+  *(archive + 13) = v49;
   v52 = objc_msgSend_idleTimerActive(self, v50, v51);
-  *(a3 + 4) |= 0x800u;
-  *(a3 + 94) = v52;
+  *(archive + 4) |= 0x800u;
+  *(archive + 94) = v52;
   objc_msgSend_idleTimerDelay(self, v53, v54);
-  *(a3 + 4) |= 0x8000u;
-  *(a3 + 14) = v55;
+  *(archive + 4) |= 0x8000u;
+  *(archive + 14) = v55;
   v58 = objc_msgSend_automaticallyPlaysUponOpen(self, v56, v57);
-  *(a3 + 4) |= 0x1000u;
-  *(a3 + 95) = v58;
+  *(archive + 4) |= 0x1000u;
+  *(archive + 95) = v58;
   v62 = objc_msgSend_soundtrack(self, v59, v60);
   if (v62)
   {
-    *(a3 + 4) |= 0x40u;
-    v63 = *(a3 + 9);
+    *(archive + 4) |= 0x40u;
+    v63 = *(archive + 9);
     if (!v63)
     {
-      v64 = *(a3 + 1);
+      v64 = *(archive + 1);
       if (v64)
       {
         v64 = *(v64 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v63 = MEMORY[0x277C8F050](v64);
-      *(a3 + 9) = v63;
+      *(archive + 9) = v63;
     }
 
-    objc_msgSend_setStrongReference_message_(v65, v61, v62, v63);
+    objc_msgSend_setStrongReference_message_(archiverCopy, v61, v62, v63);
   }
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v17 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v17, v4, off_2812EA908[56]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812EA908[56]);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, v17);
-  if (objc_msgSend_preUFFVersion(v17, v7, v8) >= 0x51FF6C2CELL)
+  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, unarchiverCopy);
+  if (objc_msgSend_preUFFVersion(unarchiverCopy, v7, v8) >= 0x51FF6C2CELL)
   {
-    if (objc_msgSend_fileFormatVersion(v17, v9, v10) >= *MEMORY[0x277D809A8])
+    if (objc_msgSend_fileFormatVersion(unarchiverCopy, v9, v10) >= *MEMORY[0x277D809A8])
     {
       v11 = 0;
     }
@@ -812,16 +812,16 @@ LABEL_11:
   }
 
   self->_needsToUpdateThumbnails = v11;
-  self->_wasImportedAsPreUFF = objc_msgSend_hasPreUFFVersion(v17, v9, v10);
+  self->_wasImportedAsPreUFF = objc_msgSend_hasPreUFFVersion(unarchiverCopy, v9, v10);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_275D6FD5C, off_2812EA908[56]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_275D6FD5C, off_2812EA908[56]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v5, archiverCopy);
 }
 
 @end

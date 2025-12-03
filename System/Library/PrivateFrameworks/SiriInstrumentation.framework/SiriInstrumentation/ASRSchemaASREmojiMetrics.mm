@@ -1,29 +1,29 @@
 @interface ASRSchemaASREmojiMetrics
-- (ASRSchemaASREmojiMetrics)initWithDictionary:(id)a3;
-- (ASRSchemaASREmojiMetrics)initWithJSON:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ASRSchemaASREmojiMetrics)initWithDictionary:(id)dictionary;
+- (ASRSchemaASREmojiMetrics)initWithJSON:(id)n;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addRecognizedEmojis:(id)a3;
-- (void)setHasIsEmojiDisambiguationUsed:(BOOL)a3;
-- (void)setHasIsEmojiExpectedButNotRecognized:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addRecognizedEmojis:(id)emojis;
+- (void)setHasIsEmojiDisambiguationUsed:(BOOL)used;
+- (void)setHasIsEmojiExpectedButNotRecognized:(BOOL)recognized;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASRSchemaASREmojiMetrics
 
-- (ASRSchemaASREmojiMetrics)initWithDictionary:(id)a3
+- (ASRSchemaASREmojiMetrics)initWithDictionary:(id)dictionary
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v23.receiver = self;
   v23.super_class = ASRSchemaASREmojiMetrics;
   v5 = [(ASRSchemaASREmojiMetrics *)&v23 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"recognizedEmojis"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"recognizedEmojis"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -66,21 +66,21 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:{@"isEmojiPersonalizationUsed", v19}];
+    v14 = [dictionaryCopy objectForKeyedSubscript:{@"isEmojiPersonalizationUsed", v19}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASREmojiMetrics setIsEmojiPersonalizationUsed:](v5, "setIsEmojiPersonalizationUsed:", [v14 BOOLValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"isEmojiDisambiguationUsed"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"isEmojiDisambiguationUsed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ASRSchemaASREmojiMetrics setIsEmojiDisambiguationUsed:](v5, "setIsEmojiDisambiguationUsed:", [v15 BOOLValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"isEmojiExpectedButNotRecognized"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"isEmojiExpectedButNotRecognized"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -93,30 +93,30 @@
   return v5;
 }
 
-- (ASRSchemaASREmojiMetrics)initWithJSON:(id)a3
+- (ASRSchemaASREmojiMetrics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ASRSchemaASREmojiMetrics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ASRSchemaASREmojiMetrics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ASRSchemaASREmojiMetrics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -129,12 +129,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_isEmojiExpectedButNotRecognized + 1);
   if ((v4 & 2) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASREmojiMetrics isEmojiDisambiguationUsed](self, "isEmojiDisambiguationUsed")}];
-    [v3 setObject:v9 forKeyedSubscript:@"isEmojiDisambiguationUsed"];
+    [dictionary setObject:v9 forKeyedSubscript:@"isEmojiDisambiguationUsed"];
 
     v4 = *(&self->_isEmojiExpectedButNotRecognized + 1);
     if ((v4 & 4) == 0)
@@ -155,26 +155,26 @@ LABEL_3:
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASREmojiMetrics isEmojiExpectedButNotRecognized](self, "isEmojiExpectedButNotRecognized")}];
-  [v3 setObject:v10 forKeyedSubscript:@"isEmojiExpectedButNotRecognized"];
+  [dictionary setObject:v10 forKeyedSubscript:@"isEmojiExpectedButNotRecognized"];
 
   if (*(&self->_isEmojiExpectedButNotRecognized + 1))
   {
 LABEL_4:
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[ASRSchemaASREmojiMetrics isEmojiPersonalizationUsed](self, "isEmojiPersonalizationUsed")}];
-    [v3 setObject:v5 forKeyedSubscript:@"isEmojiPersonalizationUsed"];
+    [dictionary setObject:v5 forKeyedSubscript:@"isEmojiPersonalizationUsed"];
   }
 
 LABEL_5:
   if (self->_recognizedEmojis)
   {
-    v6 = [(ASRSchemaASREmojiMetrics *)self recognizedEmojis];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"recognizedEmojis"];
+    recognizedEmojis = [(ASRSchemaASREmojiMetrics *)self recognizedEmojis];
+    v7 = [recognizedEmojis copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"recognizedEmojis"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -218,30 +218,30 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_20;
   }
 
-  v5 = [(ASRSchemaASREmojiMetrics *)self recognizedEmojis];
-  v6 = [v4 recognizedEmojis];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  recognizedEmojis = [(ASRSchemaASREmojiMetrics *)self recognizedEmojis];
+  recognizedEmojis2 = [equalCopy recognizedEmojis];
+  v7 = recognizedEmojis2;
+  if ((recognizedEmojis != 0) == (recognizedEmojis2 == 0))
   {
 
     goto LABEL_20;
   }
 
-  v8 = [(ASRSchemaASREmojiMetrics *)self recognizedEmojis];
-  if (v8)
+  recognizedEmojis3 = [(ASRSchemaASREmojiMetrics *)self recognizedEmojis];
+  if (recognizedEmojis3)
   {
-    v9 = v8;
-    v10 = [(ASRSchemaASREmojiMetrics *)self recognizedEmojis];
-    v11 = [v4 recognizedEmojis];
-    v12 = [v10 isEqual:v11];
+    v9 = recognizedEmojis3;
+    recognizedEmojis4 = [(ASRSchemaASREmojiMetrics *)self recognizedEmojis];
+    recognizedEmojis5 = [equalCopy recognizedEmojis];
+    v12 = [recognizedEmojis4 isEqual:recognizedEmojis5];
 
     if (!v12)
     {
@@ -254,7 +254,7 @@ LABEL_4:
   }
 
   v13 = *(&self->_isEmojiExpectedButNotRecognized + 1);
-  v14 = v4[19];
+  v14 = equalCopy[19];
   if ((v13 & 1) != (v14 & 1))
   {
 LABEL_20:
@@ -265,13 +265,13 @@ LABEL_20:
   if (v13)
   {
     isEmojiPersonalizationUsed = self->_isEmojiPersonalizationUsed;
-    if (isEmojiPersonalizationUsed != [v4 isEmojiPersonalizationUsed])
+    if (isEmojiPersonalizationUsed != [equalCopy isEmojiPersonalizationUsed])
     {
       goto LABEL_20;
     }
 
     v13 = *(&self->_isEmojiExpectedButNotRecognized + 1);
-    v14 = v4[19];
+    v14 = equalCopy[19];
   }
 
   v16 = (v13 >> 1) & 1;
@@ -283,10 +283,10 @@ LABEL_20:
   if (v16)
   {
     isEmojiDisambiguationUsed = self->_isEmojiDisambiguationUsed;
-    if (isEmojiDisambiguationUsed == [v4 isEmojiDisambiguationUsed])
+    if (isEmojiDisambiguationUsed == [equalCopy isEmojiDisambiguationUsed])
     {
       v13 = *(&self->_isEmojiExpectedButNotRecognized + 1);
-      v14 = v4[19];
+      v14 = equalCopy[19];
       goto LABEL_16;
     }
 
@@ -303,7 +303,7 @@ LABEL_16:
   if (v18)
   {
     isEmojiExpectedButNotRecognized = self->_isEmojiExpectedButNotRecognized;
-    if (isEmojiExpectedButNotRecognized != [v4 isEmojiExpectedButNotRecognized])
+    if (isEmojiExpectedButNotRecognized != [equalCopy isEmojiExpectedButNotRecognized])
     {
       goto LABEL_20;
     }
@@ -315,10 +315,10 @@ LABEL_21:
   return v20;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -382,9 +382,9 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)setHasIsEmojiExpectedButNotRecognized:(BOOL)a3
+- (void)setHasIsEmojiExpectedButNotRecognized:(BOOL)recognized
 {
-  if (a3)
+  if (recognized)
   {
     v3 = 4;
   }
@@ -397,9 +397,9 @@ LABEL_12:
   *(&self->_isEmojiExpectedButNotRecognized + 1) = *(&self->_isEmojiExpectedButNotRecognized + 1) & 0xFB | v3;
 }
 
-- (void)setHasIsEmojiDisambiguationUsed:(BOOL)a3
+- (void)setHasIsEmojiDisambiguationUsed:(BOOL)used
 {
-  if (a3)
+  if (used)
   {
     v3 = 2;
   }
@@ -412,22 +412,22 @@ LABEL_12:
   *(&self->_isEmojiExpectedButNotRecognized + 1) = *(&self->_isEmojiExpectedButNotRecognized + 1) & 0xFD | v3;
 }
 
-- (void)addRecognizedEmojis:(id)a3
+- (void)addRecognizedEmojis:(id)emojis
 {
-  v4 = a3;
+  emojisCopy = emojis;
   recognizedEmojis = self->_recognizedEmojis;
-  v8 = v4;
+  v8 = emojisCopy;
   if (!recognizedEmojis)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_recognizedEmojis;
-    self->_recognizedEmojis = v6;
+    self->_recognizedEmojis = array;
 
-    v4 = v8;
+    emojisCopy = v8;
     recognizedEmojis = self->_recognizedEmojis;
   }
 
-  [(NSArray *)recognizedEmojis addObject:v4];
+  [(NSArray *)recognizedEmojis addObject:emojisCopy];
 }
 
 - (id)suppressMessageUnderConditions

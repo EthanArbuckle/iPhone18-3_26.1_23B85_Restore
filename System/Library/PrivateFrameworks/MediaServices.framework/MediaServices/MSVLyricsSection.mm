@@ -1,17 +1,17 @@
 @interface MSVLyricsSection
-+ (int64_t)_songPartForText:(id)a3;
++ (int64_t)_songPartForText:(id)text;
 - (MSVLyricsSection)init;
 - (id)description;
-- (void)setSongPartText:(id)a3;
+- (void)setSongPartText:(id)text;
 @end
 
 @implementation MSVLyricsSection
 
-- (void)setSongPartText:(id)a3
+- (void)setSongPartText:(id)text
 {
-  objc_storeStrong(&self->_songPartText, a3);
-  v5 = a3;
-  v6 = [MSVLyricsSection _songPartForText:v5];
+  objc_storeStrong(&self->_songPartText, text);
+  textCopy = text;
+  v6 = [MSVLyricsSection _songPartForText:textCopy];
 
   [(MSVLyricsSection *)self setSongPart:v6];
 }
@@ -19,14 +19,14 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(MSVLyricsSection *)self songPart];
-  v5 = [(MSVLyricsSection *)self songPartText];
-  v6 = [(MSVLyricsSection *)self lines];
-  v7 = [v6 count];
+  songPart = [(MSVLyricsSection *)self songPart];
+  songPartText = [(MSVLyricsSection *)self songPartText];
+  lines = [(MSVLyricsSection *)self lines];
+  v7 = [lines count];
   v11.receiver = self;
   v11.super_class = MSVLyricsSection;
   v8 = [(MSVLyricsElement *)&v11 description];
-  v9 = [v3 stringWithFormat:@"Song part: %ld (%@), %ld lines, element: %@", v4, v5, v7, v8];
+  v9 = [v3 stringWithFormat:@"Song part: %ld (%@), %ld lines, element: %@", songPart, songPartText, v7, v8];
 
   return v9;
 }
@@ -47,13 +47,13 @@
   return v3;
 }
 
-+ (int64_t)_songPartForText:(id)a3
++ (int64_t)_songPartForText:(id)text
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  textCopy = text;
+  v4 = textCopy;
+  if (textCopy)
   {
-    if ([v3 caseInsensitiveCompare:@"verse"])
+    if ([textCopy caseInsensitiveCompare:@"verse"])
     {
       if ([v4 caseInsensitiveCompare:@"chorus"])
       {

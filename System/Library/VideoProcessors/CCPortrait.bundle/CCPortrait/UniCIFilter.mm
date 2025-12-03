@@ -1,12 +1,12 @@
 @interface UniCIFilter
 - (UniCIFilter)init;
-- (UniCIFilter)initWithDevice:(id)a3;
+- (UniCIFilter)initWithDevice:(id)device;
 - (id)inputImageArray;
 - (id)inputNameArray;
-- (id)outputImage:(id)a3;
+- (id)outputImage:(id)image;
 - (id)outputImageArray;
 - (id)outputNameArray;
-- (id)run:(id)a3;
+- (id)run:(id)run;
 @end
 
 @implementation UniCIFilter
@@ -25,29 +25,29 @@
   return v4;
 }
 
-- (UniCIFilter)initWithDevice:(id)a3
+- (UniCIFilter)initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v10.receiver = self;
   v10.super_class = UniCIFilter;
   v5 = [(UniKernel *)&v10 init];
   v7 = v5;
   if (v5)
   {
-    objc_msgSend_setDevice_(v5, v6, v4);
+    objc_msgSend_setDevice_(v5, v6, deviceCopy);
     objc_msgSend_setFilter_(v7, v8, 0);
   }
 
   return v7;
 }
 
-- (id)run:(id)a3
+- (id)run:(id)run
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4)
+  runCopy = run;
+  v7 = runCopy;
+  if (runCopy)
   {
-    v10 = v4;
+    v10 = runCopy;
   }
 
   else
@@ -159,9 +159,9 @@
   return v76;
 }
 
-- (id)outputImage:(id)a3
+- (id)outputImage:(id)image
 {
-  v4 = a3;
+  imageCopy = image;
   v7 = objc_msgSend_copy(self, v5, v6);
   v10 = objc_msgSend_inputs(v7, v8, v9);
   v12 = objc_msgSend_objectForKeyedSubscript_(v10, v11, @"name");
@@ -181,7 +181,7 @@
   }
 
   v122 = v12;
-  v123 = v4;
+  v123 = imageCopy;
 
   v21 = objc_msgSend_filter(v7, v19, v20);
   objc_msgSend_setDefaults(v21, v22, v23);

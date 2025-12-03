@@ -1,9 +1,9 @@
 @interface ActivityCenterObjcBridge
 + (_TtC11ActivityKit24ActivityCenterObjcBridge)shared;
-- (BOOL)isActivityActiveWithIdentifier:(id)a3;
-- (id)observeActivitiesExceedingReducedPushBudgetWithHandler:(id)a3;
-- (void)disableActivitiesWithBundleIdentifier:(id)a3;
-- (void)endActivity:(id)a3;
+- (BOOL)isActivityActiveWithIdentifier:(id)identifier;
+- (id)observeActivitiesExceedingReducedPushBudgetWithHandler:(id)handler;
+- (void)disableActivitiesWithBundleIdentifier:(id)identifier;
+- (void)endActivity:(id)activity;
 @end
 
 @implementation ActivityCenterObjcBridge
@@ -20,39 +20,39 @@
   return v3;
 }
 
-- (BOOL)isActivityActiveWithIdentifier:(id)a3
+- (BOOL)isActivityActiveWithIdentifier:(id)identifier
 {
   v4 = sub_1A2D08444();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   LOBYTE(v4) = sub_1A2CF0CAC(v4, v6);
 
   return v4 & 1;
 }
 
-- (void)endActivity:(id)a3
+- (void)endActivity:(id)activity
 {
   v4 = sub_1A2D08444();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1A2CF0EE8(v4, v6);
 }
 
-- (void)disableActivitiesWithBundleIdentifier:(id)a3
+- (void)disableActivitiesWithBundleIdentifier:(id)identifier
 {
   v4 = sub_1A2D08444();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_1A2CF1CB4(v4, v6);
 }
 
-- (id)observeActivitiesExceedingReducedPushBudgetWithHandler:(id)a3
+- (id)observeActivitiesExceedingReducedPushBudgetWithHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = *(&self->super.isa + OBJC_IVAR____TtC11ActivityKit24ActivityCenterObjcBridge__activityCenter);
-  v7 = self;
+  selfCopy = self;
   v8 = sub_1A2CEF804(sub_1A2CF22B8, v5);
 
   return v8;

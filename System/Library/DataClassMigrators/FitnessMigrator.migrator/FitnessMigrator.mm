@@ -2,26 +2,26 @@
 - (BOOL)performMigration;
 - (int64_t)_getDataMigrationVersion;
 - (void)_migrateUnsupportedDeepBreathingReminderFrequency;
-- (void)_setDataMigrationVersion:(int64_t)a3;
+- (void)_setDataMigrationVersion:(int64_t)version;
 @end
 
 @implementation FitnessMigrator
 
 - (BOOL)performMigration
 {
-  v3 = [(FitnessMigrator *)self _getDataMigrationVersion];
+  _getDataMigrationVersion = [(FitnessMigrator *)self _getDataMigrationVersion];
   _HKInitializeLogging();
   v4 = HKLogActivity;
   if (os_log_type_enabled(HKLogActivity, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218240;
-    v9 = v3;
+    v9 = _getDataMigrationVersion;
     v10 = 2048;
     v11 = 1;
     _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "[FitnessMigrator] Performing Fitness data migration from version %ld to version %ld", &v8, 0x16u);
   }
 
-  if (v3 <= 0)
+  if (_getDataMigrationVersion <= 0)
   {
     [(FitnessMigrator *)self _migrateDefaultPaceForOutdoorRunningAndCycling];
     [(FitnessMigrator *)self _migrateUnsupportedDeepBreathingReminderFrequency];
@@ -48,10 +48,10 @@
   return 1;
 }
 
-- (void)_setDataMigrationVersion:(int64_t)a3
+- (void)_setDataMigrationVersion:(int64_t)version
 {
   v4 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.FitnessMigrator"];
-  [v4 setInteger:a3 forKey:@"CurrentDataVersion"];
+  [v4 setInteger:version forKey:@"CurrentDataVersion"];
 }
 
 - (int64_t)_getDataMigrationVersion

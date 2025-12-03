@@ -10,7 +10,7 @@
 {
   v8.receiver = self;
   v8.super_class = JavaUtilTreeMap_BoundedMap_BoundedIterator;
-  v3 = [(JavaUtilTreeMap_MapIterator *)&v8 stepForward];
+  stepForward = [(JavaUtilTreeMap_MapIterator *)&v8 stepForward];
   next = self->super.next_;
   if (next)
   {
@@ -27,14 +27,14 @@
     }
   }
 
-  return v3;
+  return stepForward;
 }
 
 - (id)stepBackward
 {
   v10.receiver = self;
   v10.super_class = JavaUtilTreeMap_BoundedMap_BoundedIterator;
-  v3 = [(JavaUtilTreeMap_MapIterator *)&v10 stepBackward];
+  stepBackward = [(JavaUtilTreeMap_MapIterator *)&v10 stepBackward];
   p_next = &self->super.next_;
   next = self->super.next_;
   if (next)
@@ -53,7 +53,7 @@
     }
   }
 
-  return v3;
+  return stepBackward;
 }
 
 - (void)dealloc

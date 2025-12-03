@@ -1,21 +1,21 @@
 @interface MFComposeWebViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)set_leadingInputAssistantItemGroups:(id)a3;
-- (void)set_trailingInputAssistantItemGroups:(id)a3;
+- (void)set_leadingInputAssistantItemGroups:(id)groups;
+- (void)set_trailingInputAssistantItemGroups:(id)groups;
 @end
 
 @implementation MFComposeWebViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MFComposeWebView" hasInstanceMethod:@"_leadingInputAssistantItemGroups" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFComposeWebView" hasInstanceMethod:@"_trailingInputAssistantItemGroups" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"MFComposeWebView" hasInstanceMethod:@"set_leadingInputAssistantItemGroups:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"MFComposeWebView" hasInstanceMethod:@"set_trailingInputAssistantItemGroups:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"MFComposeWebView" hasInstanceMethod:@"_shouldShowMarkupButton" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"UIImageAsset" hasInstanceMethod:@"assetName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MFComposeWebView" hasInstanceMethod:@"_leadingInputAssistantItemGroups" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFComposeWebView" hasInstanceMethod:@"_trailingInputAssistantItemGroups" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"MFComposeWebView" hasInstanceMethod:@"set_leadingInputAssistantItemGroups:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"MFComposeWebView" hasInstanceMethod:@"set_trailingInputAssistantItemGroups:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"MFComposeWebView" hasInstanceMethod:@"_shouldShowMarkupButton" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"UIImageAsset" hasInstanceMethod:@"assetName" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -53,8 +53,8 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v53 + 1) + 8 * i) barButtonItems];
-        [v7 axSafelyAddObjectsFromArray:v13];
+        barButtonItems = [*(*(&v53 + 1) + 8 * i) barButtonItems];
+        [v7 axSafelyAddObjectsFromArray:barButtonItems];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v53 objects:v61 count:16];
@@ -82,8 +82,8 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v49 + 1) + 8 * j) barButtonItems];
-        [v7 axSafelyAddObjectsFromArray:v19];
+        barButtonItems2 = [*(*(&v49 + 1) + 8 * j) barButtonItems];
+        [v7 axSafelyAddObjectsFromArray:barButtonItems2];
       }
 
       v16 = [v14 countByEnumeratingWithState:&v49 objects:v60 count:16];
@@ -94,7 +94,7 @@
 
   v38 = v14;
   v39 = v8;
-  v43 = self;
+  selfCopy = self;
 
   v47 = 0u;
   v48 = 0u;
@@ -121,9 +121,9 @@
         }
 
         v26 = *(*(&v45 + 1) + 8 * k);
-        v27 = [v26 image];
-        v28 = [v27 imageAsset];
-        v29 = [v28 safeValueForKey:@"assetName"];
+        image = [v26 image];
+        imageAsset = [image imageAsset];
+        v29 = [imageAsset safeValueForKey:@"assetName"];
 
         v30 = [v29 containsString:v23];
         v31 = @"format.toolbar.button";
@@ -134,7 +134,7 @@
 
         if ([v29 containsString:v24])
         {
-          if ([(MFComposeWebViewAccessibility *)v43 safeBoolForKey:@"_shouldShowMarkupButton"])
+          if ([(MFComposeWebViewAccessibility *)selfCopy safeBoolForKey:@"_shouldShowMarkupButton"])
           {
             v31 = @"markup.button";
           }
@@ -191,19 +191,19 @@ LABEL_30:
   v37 = *MEMORY[0x29EDCA608];
 }
 
-- (void)set_leadingInputAssistantItemGroups:(id)a3
+- (void)set_leadingInputAssistantItemGroups:(id)groups
 {
   v4.receiver = self;
   v4.super_class = MFComposeWebViewAccessibility;
-  [(MFComposeWebViewAccessibility *)&v4 set_leadingInputAssistantItemGroups:a3];
+  [(MFComposeWebViewAccessibility *)&v4 set_leadingInputAssistantItemGroups:groups];
   [(MFComposeWebViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)set_trailingInputAssistantItemGroups:(id)a3
+- (void)set_trailingInputAssistantItemGroups:(id)groups
 {
   v4.receiver = self;
   v4.super_class = MFComposeWebViewAccessibility;
-  [(MFComposeWebViewAccessibility *)&v4 set_trailingInputAssistantItemGroups:a3];
+  [(MFComposeWebViewAccessibility *)&v4 set_trailingInputAssistantItemGroups:groups];
   [(MFComposeWebViewAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

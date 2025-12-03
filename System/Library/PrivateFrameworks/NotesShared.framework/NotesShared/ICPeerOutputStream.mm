@@ -1,30 +1,30 @@
 @interface ICPeerOutputStream
-- (ICPeerOutputStream)initWithOutputStream:(id)a3;
+- (ICPeerOutputStream)initWithOutputStream:(id)stream;
 - (void)dealloc;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 - (void)writeData;
-- (void)writeMessageData:(id)a3;
+- (void)writeMessageData:(id)data;
 @end
 
 @implementation ICPeerOutputStream
 
-- (ICPeerOutputStream)initWithOutputStream:(id)a3
+- (ICPeerOutputStream)initWithOutputStream:(id)stream
 {
-  v5 = a3;
+  streamCopy = stream;
   v12.receiver = self;
   v12.super_class = ICPeerOutputStream;
   v6 = [(ICPeerOutputStream *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_outputStream, a3);
-    [v5 setDelegate:v7];
-    v8 = [MEMORY[0x277CBEB88] mainRunLoop];
-    [v5 scheduleInRunLoop:v8 forMode:*MEMORY[0x277CBE640]];
+    objc_storeStrong(&v6->_outputStream, stream);
+    [streamCopy setDelegate:v7];
+    mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+    [streamCopy scheduleInRunLoop:mainRunLoop forMode:*MEMORY[0x277CBE640]];
 
-    if (![v5 streamStatus])
+    if (![streamCopy streamStatus])
     {
-      [v5 open];
+      [streamCopy open];
     }
 
     v9 = objc_alloc_init(MEMORY[0x277CBEB28]);
@@ -47,54 +47,54 @@
   [(ICPeerOutputStream *)&v4 dealloc];
 }
 
-- (void)writeMessageData:(id)a3
+- (void)writeMessageData:(id)data
 {
-  v4 = a3;
-  v5 = [(ICPeerOutputStream *)self data];
-  objc_sync_enter(v5);
-  v8 = [v4 length];
-  v6 = [(ICPeerOutputStream *)self data];
-  [v6 appendBytes:&v8 length:4];
+  dataCopy = data;
+  data = [(ICPeerOutputStream *)self data];
+  objc_sync_enter(data);
+  v8 = [dataCopy length];
+  data2 = [(ICPeerOutputStream *)self data];
+  [data2 appendBytes:&v8 length:4];
 
-  v7 = [(ICPeerOutputStream *)self data];
-  [v7 appendData:v4];
+  data3 = [(ICPeerOutputStream *)self data];
+  [data3 appendData:dataCopy];
 
-  objc_sync_exit(v5);
+  objc_sync_exit(data);
   [(ICPeerOutputStream *)self writeData];
 }
 
 - (void)writeData
 {
   *buf = 138412290;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   _os_log_error_impl(&dword_214D51000, log, OS_LOG_TYPE_ERROR, "ICPeerOutputStream error writing data: %@", buf, 0xCu);
 }
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4 > 3)
+  streamCopy = stream;
+  if (event > 3)
   {
-    if (a4 != 4)
+    if (event != 4)
     {
-      if (a4 == 8)
+      if (event == 8)
       {
         v9 = os_log_create("com.apple.notes", "networking");
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [v6 streamError];
+          streamError = [streamCopy streamError];
           v14 = 138412546;
-          v15 = v6;
+          v15 = streamCopy;
           v16 = 2112;
-          v17 = v11;
+          v17 = streamError;
           _os_log_impl(&dword_214D51000, v9, OS_LOG_TYPE_DEFAULT, "Stream error occurred %@ %@.", &v14, 0x16u);
         }
       }
 
       else
       {
-        if (a4 != 16)
+        if (event != 16)
         {
           goto LABEL_25;
         }
@@ -103,14 +103,14 @@
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
           v14 = 138412290;
-          v15 = v6;
+          v15 = streamCopy;
           _os_log_impl(&dword_214D51000, v9, OS_LOG_TYPE_DEFAULT, "Stream end %@.", &v14, 0xCu);
         }
       }
 
-      [v6 close];
-      v12 = [MEMORY[0x277CBEB88] currentRunLoop];
-      [v6 removeFromRunLoop:v12 forMode:*MEMORY[0x277CBE640]];
+      [streamCopy close];
+      currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+      [streamCopy removeFromRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE640]];
 
       outputStream = self->_outputStream;
       self->_outputStream = 0;
@@ -122,7 +122,7 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v6;
+      v15 = streamCopy;
       _os_log_impl(&dword_214D51000, v10, OS_LOG_TYPE_DEFAULT, "Stream space available %@.", &v14, 0xCu);
     }
 
@@ -131,14 +131,14 @@
 
   else
   {
-    switch(a4)
+    switch(event)
     {
       case 0uLL:
         v7 = os_log_create("com.apple.notes", "networking");
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           v14 = 138412290;
-          v15 = v6;
+          v15 = streamCopy;
           v8 = "Stream none event %@.";
           goto LABEL_19;
         }
@@ -151,7 +151,7 @@ LABEL_20:
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           v14 = 138412290;
-          v15 = v6;
+          v15 = streamCopy;
           v8 = "Stream open %@.";
           goto LABEL_19;
         }
@@ -162,7 +162,7 @@ LABEL_20:
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
           v14 = 138412290;
-          v15 = v6;
+          v15 = streamCopy;
           v8 = "Stream bytes available %@.";
 LABEL_19:
           _os_log_impl(&dword_214D51000, v7, OS_LOG_TYPE_DEFAULT, v8, &v14, 0xCu);

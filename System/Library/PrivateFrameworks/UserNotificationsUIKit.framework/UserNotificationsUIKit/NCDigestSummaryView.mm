@@ -1,42 +1,42 @@
 @interface NCDigestSummaryView
-+ (id)_preferredFont:(BOOL)a3 textStyle:(id)a4 weight:(double)a5 additionalTraits:(unsigned int)a6;
++ (id)_preferredFont:(BOOL)font textStyle:(id)style weight:(double)weight additionalTraits:(unsigned int)traits;
 - (BOOL)adjustForContentSizeCategoryChange;
-- (CGRect)_layoutBoundsForTitleLabelInBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGRect)_layoutBoundsForTitleLabelInBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (id)_fontProvider;
-- (id)_newSummaryContentViewForSummaryContentProvider:(id)a3;
+- (id)_newSummaryContentViewForSummaryContentProvider:(id)provider;
 - (id)_timeStampLabelFont;
 - (id)_timeStampLabelPreferredFont;
-- (id)visualStylingProviderForCategory:(int64_t)a3;
-- (void)_configureSummaryContentView:(id)a3 withSummaryContentProvider:(id)a4;
+- (id)visualStylingProviderForCategory:(int64_t)category;
+- (void)_configureSummaryContentView:(id)view withSummaryContentProvider:(id)provider;
 - (void)_configureTimeStampLabel;
 - (void)_configureTimeStampLabelIfNecessary;
 - (void)_recycleTimeStampLabel;
-- (void)_setFontProvider:(id)a3;
+- (void)_setFontProvider:(id)provider;
 - (void)_tearDownTimeStampLabel;
 - (void)_updateTextAttributes;
 - (void)_updateTextAttributesForCountLabel;
 - (void)_updateTextAttributesForDateLabel;
 - (void)_updateTextAttributesForHeadingLabel;
 - (void)_updateTextAttributesForSubheadingLabel;
-- (void)_updateVisualStylingOfView:(id)a3 style:(int64_t)a4 visualStylingProvider:(id)a5 outgoingProvider:(id)a6;
-- (void)_updateVisualStylingProvidersForViewIfNecessary:(id)a3;
-- (void)_visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5;
+- (void)_updateVisualStylingOfView:(id)view style:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider;
+- (void)_updateVisualStylingProvidersForViewIfNecessary:(id)necessary;
+- (void)_visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setAppsSummaryContentProvider:(id)a3;
-- (void)setClearControlView:(id)a3;
-- (void)setCommunicationsSummaryContentProvider:(id)a3;
+- (void)setAppsSummaryContentProvider:(id)provider;
+- (void)setClearControlView:(id)view;
+- (void)setCommunicationsSummaryContentProvider:(id)provider;
 - (void)setCount:(unint64_t)count;
-- (void)setDate:(id)a3;
-- (void)setDateFormatStyle:(int64_t)a3;
-- (void)setFeaturedNotificationContentProviders:(id)a3;
-- (void)setHeading:(id)a3;
-- (void)setMaterialGroupNameBase:(id)a3;
-- (void)setPresentFeaturedNotificationsInline:(BOOL)a3;
-- (void)setSubheading:(id)a3;
-- (void)setTimeZone:(id)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
+- (void)setDate:(id)date;
+- (void)setDateFormatStyle:(int64_t)style;
+- (void)setFeaturedNotificationContentProviders:(id)providers;
+- (void)setHeading:(id)heading;
+- (void)setMaterialGroupNameBase:(id)base;
+- (void)setPresentFeaturedNotificationsInline:(BOOL)inline;
+- (void)setSubheading:(id)subheading;
+- (void)setTimeZone:(id)zone;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
 - (void)updateContent;
 @end
 
@@ -51,12 +51,12 @@
   [(NCDigestSummaryView *)self setNeedsLayout];
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
-  v6 = a3;
+  dateCopy = date;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [dateCopy copy];
     date = self->_date;
     self->_date = v4;
 
@@ -65,12 +65,12 @@
   }
 }
 
-- (void)setTimeZone:(id)a3
+- (void)setTimeZone:(id)zone
 {
-  v6 = a3;
+  zoneCopy = zone;
   if ((BSEqualObjects() & 1) == 0)
   {
-    v4 = [v6 copy];
+    v4 = [zoneCopy copy];
     timeZone = self->_timeZone;
     self->_timeZone = v4;
 
@@ -79,28 +79,28 @@
   }
 }
 
-- (void)setDateFormatStyle:(int64_t)a3
+- (void)setDateFormatStyle:(int64_t)style
 {
-  if (self->_dateFormatStyle != a3)
+  if (self->_dateFormatStyle != style)
   {
-    self->_dateFormatStyle = a3;
+    self->_dateFormatStyle = style;
     [(NCDigestSummaryView *)self _tearDownTimeStampLabel];
 
     [(NCDigestSummaryView *)self setNeedsLayout];
   }
 }
 
-- (void)setHeading:(id)a3
+- (void)setHeading:(id)heading
 {
-  v13 = a3;
-  v4 = [(NCDigestSummaryView *)self heading];
+  headingCopy = heading;
+  heading = [(NCDigestSummaryView *)self heading];
   v5 = BSEqualStrings();
 
-  v6 = v13;
+  v6 = headingCopy;
   if ((v5 & 1) == 0)
   {
     headingLabel = self->_headingLabel;
-    if (v13)
+    if (headingCopy)
     {
       if (!headingLabel)
       {
@@ -115,7 +115,7 @@
         v11 = [(NCDigestSummaryView *)self visualStylingProviderForCategory:1];
         [(NCDigestSummaryView *)self _updateVisualStylingOfView:v10 style:0 visualStylingProvider:v11 outgoingProvider:0];
 
-        v6 = v13;
+        v6 = headingCopy;
         headingLabel = self->_headingLabel;
       }
 
@@ -135,17 +135,17 @@
   MEMORY[0x2821F9730]();
 }
 
-- (void)setSubheading:(id)a3
+- (void)setSubheading:(id)subheading
 {
-  v13 = a3;
-  v4 = [(NCDigestSummaryView *)self subheading];
+  subheadingCopy = subheading;
+  subheading = [(NCDigestSummaryView *)self subheading];
   v5 = BSEqualStrings();
 
-  v6 = v13;
+  v6 = subheadingCopy;
   if ((v5 & 1) == 0)
   {
     subheadingLabel = self->_subheadingLabel;
-    if (v13)
+    if (subheadingCopy)
     {
       if (!subheadingLabel)
       {
@@ -160,7 +160,7 @@
         v11 = [(NCDigestSummaryView *)self visualStylingProviderForCategory:1];
         [(NCDigestSummaryView *)self _updateVisualStylingOfView:v10 style:0 visualStylingProvider:v11 outgoingProvider:0];
 
-        v6 = v13;
+        v6 = subheadingCopy;
         subheadingLabel = self->_subheadingLabel;
       }
 
@@ -194,13 +194,13 @@
         countBackgroundView = self->_countBackgroundView;
         self->_countBackgroundView = v5;
 
-        v7 = [(UIView *)self->_countBackgroundView layer];
-        [v7 setCornerCurve:*MEMORY[0x277CDA130]];
+        layer = [(UIView *)self->_countBackgroundView layer];
+        [layer setCornerCurve:*MEMORY[0x277CDA130]];
 
         [(NCDigestSummaryView *)self addSubview:self->_countBackgroundView];
         v8 = self->_countBackgroundView;
-        v9 = [MEMORY[0x277D75348] blackColor];
-        [(UIView *)v8 setBackgroundColor:v9];
+        blackColor = [MEMORY[0x277D75348] blackColor];
+        [(UIView *)v8 setBackgroundColor:blackColor];
 
         [(UIView *)self->_countBackgroundView setAlpha:0.25];
         v10 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -209,8 +209,8 @@
 
         [(UILabel *)self->_countLabel setTextAlignment:1];
         v12 = self->_countLabel;
-        v13 = [MEMORY[0x277D75348] systemWhiteColor];
-        [(UILabel *)v12 setTextColor:v13];
+        systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+        [(UILabel *)v12 setTextColor:systemWhiteColor];
 
         [(NCDigestSummaryView *)self addSubview:self->_countLabel];
         [(NCDigestSummaryView *)self _updateTextAttributesForCountLabel];
@@ -239,24 +239,24 @@
   }
 }
 
-- (void)setPresentFeaturedNotificationsInline:(BOOL)a3
+- (void)setPresentFeaturedNotificationsInline:(BOOL)inline
 {
-  if (self->_presentFeaturedNotificationsInline != a3)
+  if (self->_presentFeaturedNotificationsInline != inline)
   {
-    self->_presentFeaturedNotificationsInline = a3;
-    v6 = [(NCDigestSummaryView *)self featuredNotificationContentProviders];
+    self->_presentFeaturedNotificationsInline = inline;
+    featuredNotificationContentProviders = [(NCDigestSummaryView *)self featuredNotificationContentProviders];
     [(NCDigestFeaturedNotificationsContainerDisplaying *)self->_featuredNotificationsContainerView removeFromSuperview];
     featuredNotificationsContainerView = self->_featuredNotificationsContainerView;
     self->_featuredNotificationsContainerView = 0;
 
-    [(NCDigestSummaryView *)self setFeaturedNotificationContentProviders:v6];
+    [(NCDigestSummaryView *)self setFeaturedNotificationContentProviders:featuredNotificationContentProviders];
   }
 }
 
-- (void)setFeaturedNotificationContentProviders:(id)a3
+- (void)setFeaturedNotificationContentProviders:(id)providers
 {
-  v14 = a3;
-  v4 = [(NCDigestSummaryView *)self featuredNotificationContentProviders];
+  providersCopy = providers;
+  featuredNotificationContentProviders = [(NCDigestSummaryView *)self featuredNotificationContentProviders];
   v5 = BSEqualArrays();
 
   if (v5)
@@ -266,15 +266,15 @@
 
   else
   {
-    v6 = [v14 count];
+    v6 = [providersCopy count];
     featuredNotificationsContainerView = self->_featuredNotificationsContainerView;
     if (v6)
     {
       if (!featuredNotificationsContainerView)
       {
-        v8 = [(NCDigestSummaryView *)self presentFeaturedNotificationsInline];
+        presentFeaturedNotificationsInline = [(NCDigestSummaryView *)self presentFeaturedNotificationsInline];
         v9 = off_27836DD38;
-        if (!v8)
+        if (!presentFeaturedNotificationsInline)
         {
           v9 = off_27836DD48;
         }
@@ -290,7 +290,7 @@
         featuredNotificationsContainerView = self->_featuredNotificationsContainerView;
       }
 
-      [(NCDigestFeaturedNotificationsContainerDisplaying *)featuredNotificationsContainerView setFeaturedNotificationContentProviders:v14];
+      [(NCDigestFeaturedNotificationsContainerDisplaying *)featuredNotificationsContainerView setFeaturedNotificationContentProviders:providersCopy];
     }
 
     else
@@ -304,21 +304,21 @@
   }
 }
 
-- (void)setCommunicationsSummaryContentProvider:(id)a3
+- (void)setCommunicationsSummaryContentProvider:(id)provider
 {
-  v11 = a3;
-  v4 = [(NCDigestSummaryView *)self communicationsSummaryContentProvider];
+  providerCopy = provider;
+  communicationsSummaryContentProvider = [(NCDigestSummaryView *)self communicationsSummaryContentProvider];
   v5 = BSEqualObjects();
 
   if (v5)
   {
-    [(NCDigestSummaryView *)self _configureSummaryContentView:self->_communicationsSummaryContentView withSummaryContentProvider:v11];
+    [(NCDigestSummaryView *)self _configureSummaryContentView:self->_communicationsSummaryContentView withSummaryContentProvider:providerCopy];
   }
 
   else
   {
     communicationsSummaryContentView = self->_communicationsSummaryContentView;
-    if (v11)
+    if (providerCopy)
     {
       if (communicationsSummaryContentView)
       {
@@ -327,7 +327,7 @@
 
       else
       {
-        v8 = [(NCDigestSummaryView *)self _newSummaryContentViewForSummaryContentProvider:v11];
+        v8 = [(NCDigestSummaryView *)self _newSummaryContentViewForSummaryContentProvider:providerCopy];
         v9 = self->_communicationsSummaryContentView;
         self->_communicationsSummaryContentView = v8;
 
@@ -335,7 +335,7 @@
         [(NCDigestSummaryView *)self addSubview:self->_communicationsSummaryContentView];
       }
 
-      v10 = v11;
+      v10 = providerCopy;
       communicationsSummaryContentProvider = self->_communicationsSummaryContentProvider;
       self->_communicationsSummaryContentProvider = v10;
     }
@@ -351,21 +351,21 @@
   }
 }
 
-- (void)setAppsSummaryContentProvider:(id)a3
+- (void)setAppsSummaryContentProvider:(id)provider
 {
-  v11 = a3;
-  v4 = [(NCDigestSummaryView *)self appsSummaryContentProvider];
+  providerCopy = provider;
+  appsSummaryContentProvider = [(NCDigestSummaryView *)self appsSummaryContentProvider];
   v5 = BSEqualObjects();
 
   if (v5)
   {
-    [(NCDigestSummaryView *)self _configureSummaryContentView:self->_appsSummaryContentView withSummaryContentProvider:v11];
+    [(NCDigestSummaryView *)self _configureSummaryContentView:self->_appsSummaryContentView withSummaryContentProvider:providerCopy];
   }
 
   else
   {
     appsSummaryContentView = self->_appsSummaryContentView;
-    if (v11)
+    if (providerCopy)
     {
       if (appsSummaryContentView)
       {
@@ -374,7 +374,7 @@
 
       else
       {
-        v8 = [(NCDigestSummaryView *)self _newSummaryContentViewForSummaryContentProvider:v11];
+        v8 = [(NCDigestSummaryView *)self _newSummaryContentViewForSummaryContentProvider:providerCopy];
         v9 = self->_appsSummaryContentView;
         self->_appsSummaryContentView = v8;
 
@@ -385,7 +385,7 @@
         [(NCDigestSummaryView *)self addSubview:self->_appsSummaryContentView];
       }
 
-      v10 = v11;
+      v10 = providerCopy;
       appsSummaryContentProvider = self->_appsSummaryContentProvider;
       self->_appsSummaryContentProvider = v10;
     }
@@ -401,19 +401,19 @@
   }
 }
 
-- (void)setClearControlView:(id)a3
+- (void)setClearControlView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   clearControlView = self->_clearControlView;
-  if (clearControlView != v5)
+  if (clearControlView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     if (clearControlView)
     {
       [(UIView *)clearControlView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_clearControlView, a3);
+    objc_storeStrong(&self->_clearControlView, view);
     if (v7)
     {
       [(NCDigestSummaryView *)self addSubview:v7];
@@ -425,19 +425,19 @@
   MEMORY[0x2821F96F8](clearControlView);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  [(NCDigestSummaryView *)self _layoutBoundsForTitleLabelInBounds:0.0, 0.0, a3.width, a3.height];
+  height = fits.height;
+  width = fits.width;
+  [(NCDigestSummaryView *)self _layoutBoundsForTitleLabelInBounds:0.0, 0.0, fits.width, fits.height];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
   if (self->_timeStampLabel)
   {
-    v14 = [(NCDigestSummaryView *)self _timeStampLabelFont];
-    [v14 lineHeight];
+    _timeStampLabelFont = [(NCDigestSummaryView *)self _timeStampLabelFont];
+    [_timeStampLabelFont lineHeight];
   }
 
   [(UILabel *)self->_headingLabel unui_measuringHeightWithNumberOfLines:[(NCDigestSummaryView *)self _numberOfLinesForHeadingLabelInRect:v7, v9, v11, v13]];
@@ -453,12 +453,12 @@
     [(NCNotificationSummaryContentView *)communicationsSummaryContentView sizeThatFits:width + -36.0, height];
   }
 
-  v17 = [(NCDigestSummaryView *)self presentFeaturedNotificationsInline];
+  presentFeaturedNotificationsInline = [(NCDigestSummaryView *)self presentFeaturedNotificationsInline];
   featuredNotificationsContainerView = self->_featuredNotificationsContainerView;
   if (featuredNotificationsContainerView)
   {
     v19 = width + -36.0 + 24.0;
-    if (!v17)
+    if (!presentFeaturedNotificationsInline)
     {
       v19 = width + -36.0;
     }
@@ -488,8 +488,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(NCDigestSummaryView *)self _shouldReverseLayoutDirection];
-  if ((v11 & 1) == 0)
+  _shouldReverseLayoutDirection = [(NCDigestSummaryView *)self _shouldReverseLayoutDirection];
+  if ((_shouldReverseLayoutDirection & 1) == 0)
   {
     v94.origin.x = v4;
     v94.origin.y = v6;
@@ -502,7 +502,7 @@
   if (countLabel)
   {
     [(UILabel *)countLabel sizeThatFits:v8, v10];
-    if ((v11 & 1) == 0)
+    if ((_shouldReverseLayoutDirection & 1) == 0)
     {
       v95.origin.x = v4;
       v95.origin.y = v6;
@@ -517,12 +517,12 @@
     v18 = v17;
     v20 = v19;
     [(UIView *)self->_countBackgroundView setFrame:?];
-    v21 = [(UIView *)self->_countBackgroundView layer];
+    layer = [(UIView *)self->_countBackgroundView layer];
     v96.origin.x = v14;
     v96.origin.y = v16;
     v96.size.width = v18;
     v96.size.height = v20;
-    [v21 setCornerRadius:CGRectGetHeight(v96) * 0.5];
+    [layer setCornerRadius:CGRectGetHeight(v96) * 0.5];
 
     [(UILabel *)self->_countLabel setFrame:v14, v16, v18, v20];
   }
@@ -538,7 +538,7 @@
 
     [(UIView *)clearControlView setAlpha:v23];
     [(UIView *)self->_clearControlView sizeThatFits:v8, v10];
-    if ((v11 & 1) == 0)
+    if ((_shouldReverseLayoutDirection & 1) == 0)
     {
       v97.origin.x = v4;
       v97.origin.y = v6;
@@ -563,7 +563,7 @@
   v92 = v4;
   rect_16 = v32;
   rect_24 = v29;
-  if (v11)
+  if (_shouldReverseLayoutDirection)
   {
     v98.origin.x = v4;
     v98.origin.y = v26;
@@ -583,10 +583,10 @@
   v100.size.width = v31;
   v100.size.height = v34;
   CGRectGetWidth(v100);
-  v35 = [(NCDigestSummaryView *)self _timeStampLabelFont];
-  [v35 lineHeight];
-  v36 = [(NCDigestSummaryView *)self traitCollection];
-  [v36 displayScale];
+  _timeStampLabelFont = [(NCDigestSummaryView *)self _timeStampLabelFont];
+  [_timeStampLabelFont lineHeight];
+  traitCollection = [(NCDigestSummaryView *)self traitCollection];
+  [traitCollection displayScale];
   UICeilToScale();
   rect_8 = 18.0;
   UIRectIntegralWithScale();
@@ -600,7 +600,7 @@
   [(BSUIDateLabel *)self->_timeStampLabel setFrame:?];
   [(UILabel *)self->_headingLabel frame];
   v45 = 18.0;
-  if (v11)
+  if (_shouldReverseLayoutDirection)
   {
     v101.origin.y = v91;
     v101.origin.x = v92;
@@ -649,7 +649,7 @@
   {
     [(UILabel *)subheadingLabel frame];
     v59 = 18.0;
-    if (v11)
+    if (_shouldReverseLayoutDirection)
     {
       v106.origin.y = v91;
       v106.origin.x = v92;
@@ -714,9 +714,9 @@
   if (featuredNotificationsContainerView)
   {
     [(NCDigestFeaturedNotificationsContainerDisplaying *)featuredNotificationsContainerView frame:v112.origin.x];
-    v73 = [(NCDigestSummaryView *)self presentFeaturedNotificationsInline];
+    presentFeaturedNotificationsInline = [(NCDigestSummaryView *)self presentFeaturedNotificationsInline];
     v74 = v69 + 24.0;
-    if (!v73)
+    if (!presentFeaturedNotificationsInline)
     {
       v74 = v69;
     }
@@ -774,9 +774,9 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(NCDigestSummaryView *)self window];
+  window = [(NCDigestSummaryView *)self window];
 
-  if (v3)
+  if (window)
   {
 
     [(NCDigestSummaryView *)self adjustForContentSizeCategoryChange];
@@ -785,13 +785,13 @@
 
 - (BOOL)adjustForContentSizeCategoryChange
 {
-  v3 = [MEMORY[0x277D75128] sharedApplication];
-  v4 = [v3 preferredContentSizeCategory];
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  preferredContentSizeCategory = [mEMORY[0x277D75128] preferredContentSizeCategory];
 
-  v5 = UIContentSizeCategoryCompareToCategory(v4, self->_preferredContentSizeCategory);
+  v5 = UIContentSizeCategoryCompareToCategory(preferredContentSizeCategory, self->_preferredContentSizeCategory);
   if (v5)
   {
-    objc_storeStrong(&self->_preferredContentSizeCategory, v4);
+    objc_storeStrong(&self->_preferredContentSizeCategory, preferredContentSizeCategory);
     [(NCDigestFeaturedNotificationsContainerDisplaying *)self->_featuredNotificationsContainerView adjustForContentSizeCategoryChange];
     [(NCNotificationSummaryContentView *)self->_communicationsSummaryContentView adjustForContentSizeCategoryChange];
     [(NCNotificationSummaryContentView *)self->_appsSummaryContentView adjustForContentSizeCategoryChange];
@@ -801,7 +801,7 @@
   return v5 != NSOrderedSame;
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
   strokeVisualStylingProvider = self->_strokeVisualStylingProvider;
   if (strokeVisualStylingProvider)
@@ -813,55 +813,55 @@
   {
     v6.receiver = self;
     v6.super_class = NCDigestSummaryView;
-    v4 = [(NCDigestSummaryView *)&v6 visualStylingProviderForCategory:a3];
+    v4 = [(NCDigestSummaryView *)&v6 visualStylingProviderForCategory:category];
   }
 
   return v4;
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v6 = a3;
+  providerCopy = provider;
   strokeVisualStylingProvider = self->_strokeVisualStylingProvider;
-  if (strokeVisualStylingProvider != v6)
+  if (strokeVisualStylingProvider != providerCopy)
   {
-    v11 = v6;
-    v8 = v6;
+    v11 = providerCopy;
+    v8 = providerCopy;
     v9 = self->_strokeVisualStylingProvider;
     self->_strokeVisualStylingProvider = v8;
     v10 = strokeVisualStylingProvider;
 
-    [(NCDigestSummaryView *)self _visualStylingProviderDidChange:self->_strokeVisualStylingProvider forCategory:a4 outgoingProvider:v10];
-    [(NCDigestFeaturedNotificationsContainerDisplaying *)self->_featuredNotificationsContainerView setVisualStylingProvider:self->_strokeVisualStylingProvider forCategory:a4];
-    [(NCNotificationSummaryContentView *)self->_appsSummaryContentView setVisualStylingProvider:self->_strokeVisualStylingProvider forCategory:a4];
+    [(NCDigestSummaryView *)self _visualStylingProviderDidChange:self->_strokeVisualStylingProvider forCategory:category outgoingProvider:v10];
+    [(NCDigestFeaturedNotificationsContainerDisplaying *)self->_featuredNotificationsContainerView setVisualStylingProvider:self->_strokeVisualStylingProvider forCategory:category];
+    [(NCNotificationSummaryContentView *)self->_appsSummaryContentView setVisualStylingProvider:self->_strokeVisualStylingProvider forCategory:category];
 
-    v6 = v11;
+    providerCopy = v11;
   }
 }
 
-- (void)setMaterialGroupNameBase:(id)a3
+- (void)setMaterialGroupNameBase:(id)base
 {
-  objc_storeStrong(&self->_materialGroupNameBase, a3);
-  v5 = a3;
-  [(NCDigestFeaturedNotificationsContainerDisplaying *)self->_featuredNotificationsContainerView setMaterialGroupNameBase:v5];
+  objc_storeStrong(&self->_materialGroupNameBase, base);
+  baseCopy = base;
+  [(NCDigestFeaturedNotificationsContainerDisplaying *)self->_featuredNotificationsContainerView setMaterialGroupNameBase:baseCopy];
 }
 
-+ (id)_preferredFont:(BOOL)a3 textStyle:(id)a4 weight:(double)a5 additionalTraits:(unsigned int)a6
++ (id)_preferredFont:(BOOL)font textStyle:(id)style weight:(double)weight additionalTraits:(unsigned int)traits
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (font)
   {
-    [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:a4 addingSymbolicTraits:*&a6 options:0];
+    [MEMORY[0x277D74310] preferredFontDescriptorWithTextStyle:style addingSymbolicTraits:*&traits options:0];
   }
 
   else
   {
-    [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:a4 addingSymbolicTraits:*&a6 options:0];
+    [MEMORY[0x277D74310] defaultFontDescriptorWithTextStyle:style addingSymbolicTraits:*&traits options:0];
   }
   v7 = ;
   v16 = *MEMORY[0x277D74380];
   v14 = *MEMORY[0x277D74430];
-  v8 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+  v8 = [MEMORY[0x277CCABB0] numberWithDouble:weight];
   v15 = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v15 forKeys:&v14 count:1];
   v17[0] = v9;
@@ -875,19 +875,19 @@
 
 - (id)_timeStampLabelFont
 {
-  v3 = [(BSUIDateLabel *)self->_timeStampLabel font];
-  v4 = v3;
-  if (v3)
+  font = [(BSUIDateLabel *)self->_timeStampLabel font];
+  v4 = font;
+  if (font)
   {
-    v5 = v3;
+    _timeStampLabelPreferredFont = font;
   }
 
   else
   {
-    v5 = [(NCDigestSummaryView *)self _timeStampLabelPreferredFont];
+    _timeStampLabelPreferredFont = [(NCDigestSummaryView *)self _timeStampLabelPreferredFont];
   }
 
-  v6 = v5;
+  v6 = _timeStampLabelPreferredFont;
 
   return v6;
 }
@@ -924,12 +924,12 @@
   return v5;
 }
 
-- (void)_setFontProvider:(id)a3
+- (void)_setFontProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   if ((BSEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_fontProvider, a3);
+    objc_storeStrong(&self->_fontProvider, provider);
     [(NCDigestSummaryView *)self _updateTextAttributes];
   }
 }
@@ -939,8 +939,8 @@
   timeStampLabel = self->_timeStampLabel;
   if (timeStampLabel)
   {
-    v4 = [(NCDigestSummaryView *)self _timeStampLabelPreferredFont];
-    [(BSUIDateLabel *)timeStampLabel setFont:v4];
+    _timeStampLabelPreferredFont = [(NCDigestSummaryView *)self _timeStampLabelPreferredFont];
+    [(BSUIDateLabel *)timeStampLabel setFont:_timeStampLabelPreferredFont];
 
     [(BSUIDateLabel *)self->_timeStampLabel setNumberOfLines:1];
     [(BSUIDateLabel *)self->_timeStampLabel setLineBreakMode:3];
@@ -1007,29 +1007,29 @@
   [(NCDigestSummaryView *)self _updateTextAttributesForCountLabel];
 }
 
-- (void)_updateVisualStylingOfView:(id)a3 style:(int64_t)a4 visualStylingProvider:(id)a5 outgoingProvider:(id)a6
+- (void)_updateVisualStylingOfView:(id)view style:(int64_t)style visualStylingProvider:(id)provider outgoingProvider:(id)outgoingProvider
 {
-  if (a3)
+  if (view)
   {
-    v9 = a5;
-    v10 = a3;
-    [a6 stopAutomaticallyUpdatingView:v10];
-    [v9 automaticallyUpdateView:v10 withStyle:a4];
+    providerCopy = provider;
+    viewCopy = view;
+    [outgoingProvider stopAutomaticallyUpdatingView:viewCopy];
+    [providerCopy automaticallyUpdateView:viewCopy withStyle:style];
   }
 }
 
-- (void)_updateVisualStylingProvidersForViewIfNecessary:(id)a3
+- (void)_updateVisualStylingProvidersForViewIfNecessary:(id)necessary
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  necessaryCopy = necessary;
   if (objc_opt_respondsToSelector())
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [v4 requiredVisualStyleCategories];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    requiredVisualStyleCategories = [necessaryCopy requiredVisualStyleCategories];
+    v6 = [requiredVisualStyleCategories countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1041,18 +1041,18 @@
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(requiredVisualStyleCategories);
           }
 
-          v10 = [*(*(&v12 + 1) + 8 * v9) integerValue];
-          v11 = [(NCDigestSummaryView *)self visualStylingProviderForCategory:v10];
-          [v4 setVisualStylingProvider:v11 forCategory:v10];
+          integerValue = [*(*(&v12 + 1) + 8 * v9) integerValue];
+          v11 = [(NCDigestSummaryView *)self visualStylingProviderForCategory:integerValue];
+          [necessaryCopy setVisualStylingProvider:v11 forCategory:integerValue];
 
           ++v9;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [requiredVisualStyleCategories countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);
@@ -1060,16 +1060,16 @@
   }
 }
 
-- (void)_visualStylingProviderDidChange:(id)a3 forCategory:(int64_t)a4 outgoingProvider:(id)a5
+- (void)_visualStylingProviderDidChange:(id)change forCategory:(int64_t)category outgoingProvider:(id)provider
 {
-  if (a4 == 1)
+  if (category == 1)
   {
     timeStampLabel = self->_timeStampLabel;
-    v9 = a5;
-    v10 = a3;
-    [(NCDigestSummaryView *)self _updateVisualStylingOfView:timeStampLabel style:1 visualStylingProvider:v10 outgoingProvider:v9];
-    [(NCDigestSummaryView *)self _updateVisualStylingOfView:self->_headingLabel style:0 visualStylingProvider:v10 outgoingProvider:v9];
-    [(NCDigestSummaryView *)self _updateVisualStylingOfView:self->_subheadingLabel style:0 visualStylingProvider:v10 outgoingProvider:v9];
+    providerCopy = provider;
+    changeCopy = change;
+    [(NCDigestSummaryView *)self _updateVisualStylingOfView:timeStampLabel style:1 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+    [(NCDigestSummaryView *)self _updateVisualStylingOfView:self->_headingLabel style:0 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
+    [(NCDigestSummaryView *)self _updateVisualStylingOfView:self->_subheadingLabel style:0 visualStylingProvider:changeCopy outgoingProvider:providerCopy];
   }
 }
 
@@ -1086,8 +1086,8 @@
 
 - (void)_configureTimeStampLabel
 {
-  v3 = [MEMORY[0x277CF0D50] sharedInstance];
-  v4 = [v3 startLabelWithStartDate:self->_date endDate:0 timeZone:self->_timeZone allDay:0 forStyle:self->_dateFormatStyle];
+  mEMORY[0x277CF0D50] = [MEMORY[0x277CF0D50] sharedInstance];
+  v4 = [mEMORY[0x277CF0D50] startLabelWithStartDate:self->_date endDate:0 timeZone:self->_timeZone allDay:0 forStyle:self->_dateFormatStyle];
   timeStampLabel = self->_timeStampLabel;
   self->_timeStampLabel = v4;
 
@@ -1106,8 +1106,8 @@
   v4 = [(NCDigestSummaryView *)self visualStylingProviderForCategory:1];
   [(NCDigestSummaryView *)self _updateVisualStylingOfView:timeStampLabel style:1 visualStylingProvider:0 outgoingProvider:v4];
 
-  v5 = [MEMORY[0x277CF0D50] sharedInstance];
-  [v5 recycleLabel:self->_timeStampLabel];
+  mEMORY[0x277CF0D50] = [MEMORY[0x277CF0D50] sharedInstance];
+  [mEMORY[0x277CF0D50] recycleLabel:self->_timeStampLabel];
 }
 
 - (void)_tearDownTimeStampLabel
@@ -1133,12 +1133,12 @@ void __46__NCDigestSummaryView__tearDownTimeStampLabel__block_invoke(uint64_t a1
   }
 }
 
-- (CGRect)_layoutBoundsForTitleLabelInBounds:(CGRect)a3
+- (CGRect)_layoutBoundsForTitleLabelInBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   countBackgroundView = self->_countBackgroundView;
   if (countBackgroundView || (countBackgroundView = self->_clearControlView) != 0)
   {
@@ -1171,38 +1171,38 @@ void __46__NCDigestSummaryView__tearDownTimeStampLabel__block_invoke(uint64_t a1
   return result;
 }
 
-- (id)_newSummaryContentViewForSummaryContentProvider:(id)a3
+- (id)_newSummaryContentViewForSummaryContentProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v5 = [NCNotificationSummaryContentView alloc];
   v6 = [(NCNotificationSummaryContentView *)v5 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-  [(NCDigestSummaryView *)self _configureSummaryContentView:v6 withSummaryContentProvider:v4];
+  [(NCDigestSummaryView *)self _configureSummaryContentView:v6 withSummaryContentProvider:providerCopy];
 
   return v6;
 }
 
-- (void)_configureSummaryContentView:(id)a3 withSummaryContentProvider:(id)a4
+- (void)_configureSummaryContentView:(id)view withSummaryContentProvider:(id)provider
 {
-  if (a3)
+  if (view)
   {
-    v6 = a4;
-    v7 = a3;
-    v8 = [v6 summaryTitle];
-    [v7 setSummaryTitle:v8];
+    providerCopy = provider;
+    viewCopy = view;
+    summaryTitle = [providerCopy summaryTitle];
+    [viewCopy setSummaryTitle:summaryTitle];
 
-    v9 = [v6 summary];
-    [v7 setSummary:v9];
+    summary = [providerCopy summary];
+    [viewCopy setSummary:summary];
 
-    v10 = [v6 summaryIconViews];
-    [v7 setSummaryIconViews:v10];
+    summaryIconViews = [providerCopy summaryIconViews];
+    [viewCopy setSummaryIconViews:summaryIconViews];
 
-    [v7 setIconViewLeading:{objc_msgSend(v6, "isIconViewLeading")}];
-    v11 = [v6 summaryTitleFontName];
-    [v7 setSummaryTitleFontName:v11];
+    [viewCopy setIconViewLeading:{objc_msgSend(providerCopy, "isIconViewLeading")}];
+    summaryTitleFontName = [providerCopy summaryTitleFontName];
+    [viewCopy setSummaryTitleFontName:summaryTitleFontName];
 
-    v12 = [v6 summaryDate];
+    summaryDate = [providerCopy summaryDate];
 
-    [v7 setSummaryDate:v12];
+    [viewCopy setSummaryDate:summaryDate];
 
     [(NCDigestSummaryView *)self setNeedsLayout];
   }

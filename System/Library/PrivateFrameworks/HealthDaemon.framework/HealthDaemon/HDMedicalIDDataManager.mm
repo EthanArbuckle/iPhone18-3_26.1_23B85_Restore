@@ -1,46 +1,46 @@
 @interface HDMedicalIDDataManager
-- (BOOL)deleteMedicalIDDataWithError:(id *)a3;
-- (BOOL)obliterateMedicalIDDataWithReason:(id)a3 error:(id *)a4;
-- (BOOL)unitTest_persistMedicalIDData:(id)a3;
-- (BOOL)updateMedicalIDWithLocalData:(id)a3 error:(id *)a4;
-- (BOOL)updateMedicalIDWithSyncedData:(id)a3 provenance:(id)a4 error:(id *)a5;
-- (HDMedicalIDDataManager)initWithProfile:(id)a3;
+- (BOOL)deleteMedicalIDDataWithError:(id *)error;
+- (BOOL)obliterateMedicalIDDataWithReason:(id)reason error:(id *)error;
+- (BOOL)unitTest_persistMedicalIDData:(id)data;
+- (BOOL)updateMedicalIDWithLocalData:(id)data error:(id *)error;
+- (BOOL)updateMedicalIDWithSyncedData:(id)data provenance:(id)provenance error:(id *)error;
+- (HDMedicalIDDataManager)initWithProfile:(id)profile;
 - (HDProfile)profile;
-- (id)_fetchMedicalIDDataFromDiskWithError:(void *)a1;
+- (id)_fetchMedicalIDDataFromDiskWithError:(void *)error;
 - (id)_medicalIDURL;
-- (id)_medicalIDURLWithDirectoryPath:(void *)a1;
-- (id)_unarchiveMedicalIDDataWithRawData:(void *)a3 error:;
-- (id)fetchMedicalIDDataIfSetUpOrCreateDefaultWithError:(id *)a3;
-- (id)fetchMedicalIDIfSetUpWithError:(id *)a3;
-- (id)fetchMedicalIDWithError:(id *)a3;
-- (id)medicalIDClinicalContactsWithError:(id *)a3;
-- (id)medicalIDEmergencyContactsWithError:(id *)a3;
+- (id)_medicalIDURLWithDirectoryPath:(void *)path;
+- (id)_unarchiveMedicalIDDataWithRawData:(void *)data error:;
+- (id)fetchMedicalIDDataIfSetUpOrCreateDefaultWithError:(id *)error;
+- (id)fetchMedicalIDIfSetUpWithError:(id *)error;
+- (id)fetchMedicalIDWithError:(id *)error;
+- (id)medicalIDClinicalContactsWithError:(id *)error;
+- (id)medicalIDEmergencyContactsWithError:(id *)error;
 - (id)unitTest_medicalIDData;
-- (int64_t)medicalIDSetupStatusWithError:(id *)a3;
-- (uint64_t)_migrateMedicalIDLocationIfNecessary:(void *)a1;
-- (uint64_t)_persistMedicalIDData:(void *)a3 originalData:(void *)a4 provenance:(void *)a5 error:;
-- (uint64_t)_persistMedicalIDDataFileToDisk:(void *)a3 error:;
-- (void)_runEmergencyContactConsolidationWithCompletion:(id)a3;
-- (void)_runEmergencyContactConsolidationWithSOSManager:(id)a3 WithCompletion:(id)a4;
+- (int64_t)medicalIDSetupStatusWithError:(id *)error;
+- (uint64_t)_migrateMedicalIDLocationIfNecessary:(void *)necessary;
+- (uint64_t)_persistMedicalIDData:(void *)data originalData:(void *)originalData provenance:(void *)provenance error:;
+- (uint64_t)_persistMedicalIDDataFileToDisk:(void *)disk error:;
+- (void)_runEmergencyContactConsolidationWithCompletion:(id)completion;
+- (void)_runEmergencyContactConsolidationWithSOSManager:(id)manager WithCompletion:(id)completion;
 - (void)dealloc;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)reportDailyAnalyticsWithCoordinator:(id)a3 completion:(id)a4;
-- (void)runEmergencyContactConsolidationWithCompletion:(id)a3;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)reportDailyAnalyticsWithCoordinator:(id)coordinator completion:(id)completion;
+- (void)runEmergencyContactConsolidationWithCompletion:(id)completion;
 @end
 
 @implementation HDMedicalIDDataManager
 
-- (HDMedicalIDDataManager)initWithProfile:(id)a3
+- (HDMedicalIDDataManager)initWithProfile:(id)profile
 {
-  v4 = a3;
+  profileCopy = profile;
   v8.receiver = self;
   v8.super_class = HDMedicalIDDataManager;
   v5 = [(HDMedicalIDDataManager *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_profile, v4);
-    [v4 registerProfileReadyObserver:v6 queue:0];
+    objc_storeWeak(&v5->_profile, profileCopy);
+    [profileCopy registerProfileReadyObserver:v6 queue:0];
   }
 
   return v6;
@@ -49,16 +49,16 @@
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained daemon];
-  v5 = [v4 analyticsSubmissionCoordinator];
-  [v5 removeObserver:self];
+  daemon = [WeakRetained daemon];
+  analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
+  [analyticsSubmissionCoordinator removeObserver:self];
 
   v6.receiver = self;
   v6.super_class = HDMedicalIDDataManager;
   [(HDMedicalIDDataManager *)&v6 dealloc];
 }
 
-- (id)fetchMedicalIDWithError:(id *)a3
+- (id)fetchMedicalIDWithError:(id *)error
 {
   v10 = 0;
   v4 = [(HDMedicalIDDataManager *)self _fetchMedicalIDDataFromDiskWithError:?];
@@ -69,11 +69,11 @@
     v8 = v4;
   }
 
-  else if (a3)
+  else if (error)
   {
     v7 = v5;
     v8 = 0;
-    *a3 = v6;
+    *error = v6;
   }
 
   else
@@ -85,24 +85,24 @@
   return v8;
 }
 
-- (id)_fetchMedicalIDDataFromDiskWithError:(void *)a1
+- (id)_fetchMedicalIDDataFromDiskWithError:(void *)error
 {
   v38 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (error)
   {
     v33 = 0;
-    v4 = [(HDMedicalIDDataManager *)a1 _migrateMedicalIDLocationIfNecessary:?];
+    v4 = [(HDMedicalIDDataManager *)error _migrateMedicalIDLocationIfNecessary:?];
     v5 = v33;
     if (v4)
     {
-      v6 = [(HDMedicalIDDataManager *)a1 _medicalIDURL];
-      v7 = [v6 path];
+      _medicalIDURL = [(HDMedicalIDDataManager *)error _medicalIDURL];
+      path = [_medicalIDURL path];
 
-      v8 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v7];
+      v8 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:path];
       if (v8)
       {
         v32 = 0;
-        v9 = [(HDMedicalIDDataManager *)a1 _unarchiveMedicalIDDataWithRawData:v8 error:&v32];
+        v9 = [(HDMedicalIDDataManager *)error _unarchiveMedicalIDDataWithRawData:v8 error:&v32];
         v10 = v32;
         if (v9)
         {
@@ -115,14 +115,14 @@
             if (os_log_type_enabled(*MEMORY[0x277CCC2E0], OS_LOG_TYPE_DEFAULT))
             {
               v14 = v13;
-              v15 = [v9 schemaVersion];
+              schemaVersion = [v9 schemaVersion];
               *buf = 134217984;
-              v35 = v15;
+              errorCopy3 = schemaVersion;
               _os_log_impl(&dword_228986000, v14, OS_LOG_TYPE_DEFAULT, "[database] Migrated Medical ID data to version %li", buf, 0xCu);
             }
 
             v31 = 0;
-            v16 = [(HDMedicalIDDataManager *)a1 _persistMedicalIDData:v9 originalData:v11 provenance:&unk_283CB05A0 error:&v31];
+            v16 = [(HDMedicalIDDataManager *)error _persistMedicalIDData:v9 originalData:v11 provenance:&unk_283CB05A0 error:&v31];
             v17 = v31;
             if ((v16 & 1) == 0)
             {
@@ -131,15 +131,15 @@
               if (os_log_type_enabled(*v12, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138543362;
-                v35 = v17;
+                errorCopy3 = v17;
                 _os_log_error_impl(&dword_228986000, v18, OS_LOG_TYPE_ERROR, "[database] Failed to save migrated Medical ID data: %{public}@", buf, 0xCu);
               }
             }
           }
 
-          v19 = [a1 profile];
+          profile = [error profile];
           v30 = 0;
-          v20 = [HDMedicalIDSyncEntity touchSyncAnchorIfNecessaryWithProfile:v19 error:&v30];
+          v20 = [HDMedicalIDSyncEntity touchSyncAnchorIfNecessaryWithProfile:profile error:&v30];
           v21 = v30;
 
           if (!v20)
@@ -149,7 +149,7 @@
             if (os_log_type_enabled(*MEMORY[0x277CCC2E0], OS_LOG_TYPE_ERROR))
             {
               *buf = 138543362;
-              v35 = v21;
+              errorCopy3 = v21;
               _os_log_error_impl(&dword_228986000, v22, OS_LOG_TYPE_ERROR, "[database] Failed to touch Medical ID sync anchor: %{public}@", buf, 0xCu);
             }
           }
@@ -165,7 +165,7 @@
             if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
             {
               *buf = 138543618;
-              v35 = a1;
+              errorCopy3 = error;
               v36 = 2114;
               v37 = v10;
               _os_log_error_impl(&dword_228986000, v25, OS_LOG_TYPE_ERROR, "[database] %{public}@ Failed to unarchive Medical ID fetched from disk, error: %{public}@", buf, 0x16u);
@@ -186,7 +186,7 @@
           else if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
           {
             *buf = 138543362;
-            v35 = a1;
+            errorCopy3 = error;
             _os_log_impl(&dword_228986000, v25, OS_LOG_TYPE_INFO, "[database] %{public}@ Unarchived MedicalID on disk is nil even though raw data was retrieved.", buf, 0xCu);
           }
         }
@@ -205,20 +205,20 @@
     if (os_log_type_enabled(*MEMORY[0x277CCC2E0], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      v35 = a1;
+      errorCopy3 = error;
       v36 = 2114;
       v37 = v5;
       _os_log_error_impl(&dword_228986000, v23, OS_LOG_TYPE_ERROR, "[database] %{public}@ Failed to migrate Medical ID before update, error: %{public}@", buf, 0x16u);
     }
 
-    v7 = v5;
-    if (v7)
+    path = v5;
+    if (path)
     {
       if (a2)
       {
-        v24 = v7;
+        v24 = path;
         v9 = 0;
-        *a2 = v7;
+        *a2 = path;
 LABEL_31:
 
         goto LABEL_32;
@@ -238,10 +238,10 @@ LABEL_32:
   return v9;
 }
 
-- (id)fetchMedicalIDIfSetUpWithError:(id *)a3
+- (id)fetchMedicalIDIfSetUpWithError:(id *)error
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = [(HDMedicalIDDataManager *)self fetchMedicalIDWithError:a3];
+  v4 = [(HDMedicalIDDataManager *)self fetchMedicalIDWithError:error];
   if ([v4 isEmpty])
   {
     _HKInitializeLogging();
@@ -249,7 +249,7 @@ LABEL_32:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138543362;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&dword_228986000, v5, OS_LOG_TYPE_DEFAULT, "[database] %{public}@ Medical ID on disk is non-nil but empty, returning nil to the client in this case", &v9, 0xCu);
     }
 
@@ -266,7 +266,7 @@ LABEL_32:
   return v6;
 }
 
-- (id)fetchMedicalIDDataIfSetUpOrCreateDefaultWithError:(id *)a3
+- (id)fetchMedicalIDDataIfSetUpOrCreateDefaultWithError:(id *)error
 {
   v43 = *MEMORY[0x277D85DE8];
   v40 = 0;
@@ -283,9 +283,9 @@ LABEL_32:
       v35 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCCBA8]];
       v33 = [MEMORY[0x277CCD720] quantityTypeForIdentifier:*MEMORY[0x277CCC990]];
       WeakRetained = objc_loadWeakRetained(&self->_profile);
-      v12 = [WeakRetained userCharacteristicsManager];
+      userCharacteristicsManager = [WeakRetained userCharacteristicsManager];
       v39 = 0;
-      v13 = [v12 userCharacteristicForType:v9 error:&v39];
+      v13 = [userCharacteristicsManager userCharacteristicForType:v9 error:&v39];
       v14 = v39;
 
       if (v13)
@@ -306,10 +306,10 @@ LABEL_32:
       }
 
       v16 = objc_loadWeakRetained(&self->_profile);
-      v17 = [v16 userCharacteristicsManager];
+      userCharacteristicsManager2 = [v16 userCharacteristicsManager];
       v38 = 0;
       v34 = v10;
-      v18 = [v17 userCharacteristicForType:v10 error:&v38];
+      v18 = [userCharacteristicsManager2 userCharacteristicForType:v10 error:&v38];
       v19 = v38;
 
       if (v18)
@@ -336,8 +336,8 @@ LABEL_32:
 
       if (v22)
       {
-        v24 = [v22 quantity];
-        [v5 setHeight:v24];
+        quantity = [v22 quantity];
+        [v5 setHeight:quantity];
       }
 
       else if (v23)
@@ -359,11 +359,11 @@ LABEL_32:
 
       if (v27)
       {
-        v29 = [v27 quantity];
-        [v5 setWeight:v29];
+        quantity2 = [v27 quantity];
+        [v5 setWeight:quantity2];
       }
 
-      else if (a3)
+      else if (error)
       {
         _HKInitializeLogging();
         v30 = *MEMORY[0x277CCC2E0];
@@ -377,11 +377,11 @@ LABEL_32:
     }
   }
 
-  else if (a3)
+  else if (error)
   {
     v8 = v6;
     v5 = 0;
-    *a3 = v7;
+    *error = v7;
   }
 
   else
@@ -395,7 +395,7 @@ LABEL_32:
   return v5;
 }
 
-- (int64_t)medicalIDSetupStatusWithError:(id *)a3
+- (int64_t)medicalIDSetupStatusWithError:(id *)error
 {
   v8 = 0;
   v3 = [(HDMedicalIDDataManager *)self fetchMedicalIDIfSetUpWithError:&v8];
@@ -427,35 +427,35 @@ LABEL_32:
   return v6;
 }
 
-- (id)medicalIDEmergencyContactsWithError:(id *)a3
+- (id)medicalIDEmergencyContactsWithError:(id *)error
 {
-  v3 = [(HDMedicalIDDataManager *)self fetchMedicalIDWithError:a3];
-  v4 = [v3 emergencyContacts];
+  v3 = [(HDMedicalIDDataManager *)self fetchMedicalIDWithError:error];
+  emergencyContacts = [v3 emergencyContacts];
 
-  return v4;
+  return emergencyContacts;
 }
 
-- (id)medicalIDClinicalContactsWithError:(id *)a3
+- (id)medicalIDClinicalContactsWithError:(id *)error
 {
-  v3 = [(HDMedicalIDDataManager *)self fetchMedicalIDWithError:a3];
-  v4 = [v3 clinicalContacts];
+  v3 = [(HDMedicalIDDataManager *)self fetchMedicalIDWithError:error];
+  clinicalContacts = [v3 clinicalContacts];
 
-  return v4;
+  return clinicalContacts;
 }
 
-- (BOOL)updateMedicalIDWithSyncedData:(id)a3 provenance:(id)a4 error:(id *)a5
+- (BOOL)updateMedicalIDWithSyncedData:(id)data provenance:(id)provenance error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  provenanceCopy = provenance;
   v21 = 0;
   v10 = [(HDMedicalIDDataManager *)self _fetchMedicalIDDataFromDiskWithError:?];
   v11 = v21;
   v12 = v11;
   if (v10 || !v11)
   {
-    if (v8)
+    if (dataCopy)
     {
-      if ([v8 isEqualToSyncedData:v10])
+      if ([dataCopy isEqualToSyncedData:v10])
       {
         v15 = MEMORY[0x277CCA9B8];
         v16 = @"Attempt to save Medical ID with no updated fields.";
@@ -474,14 +474,14 @@ LABEL_32:
         }
 
         v18 = v10;
-        v19 = [v8 dateSaved];
-        v20 = [v18 dateSaved];
+        dateSaved = [dataCopy dateSaved];
+        dateSaved2 = [v18 dateSaved];
 
-        LODWORD(v18) = [v19 hk_isBeforeDate:v20];
+        LODWORD(v18) = [dateSaved hk_isBeforeDate:dateSaved2];
         if (!v18)
         {
 LABEL_17:
-          v14 = [(HDMedicalIDDataManager *)self _persistMedicalIDData:v8 originalData:v10 provenance:v9 error:a5];
+          v14 = [(HDMedicalIDDataManager *)self _persistMedicalIDData:dataCopy originalData:v10 provenance:provenanceCopy error:error];
           goto LABEL_12;
         }
 
@@ -496,11 +496,11 @@ LABEL_17:
       v16 = @"Medical ID must not be nil";
     }
 
-    [v15 hk_assignError:a5 code:3 format:v16];
+    [v15 hk_assignError:error code:3 format:v16];
     goto LABEL_11;
   }
 
-  if (!a5)
+  if (!error)
   {
     _HKLogDroppedError();
 LABEL_11:
@@ -510,33 +510,33 @@ LABEL_11:
 
   v13 = v11;
   v14 = 0;
-  *a5 = v12;
+  *error = v12;
 LABEL_12:
 
   return v14;
 }
 
-- (uint64_t)_persistMedicalIDData:(void *)a3 originalData:(void *)a4 provenance:(void *)a5 error:
+- (uint64_t)_persistMedicalIDData:(void *)data originalData:(void *)originalData provenance:(void *)provenance error:
 {
   v74 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = a4;
-  if (!a1)
+  dataCopy = data;
+  originalDataCopy = originalData;
+  if (!self)
   {
     v56 = 0;
     goto LABEL_54;
   }
 
   v66 = 0;
-  v12 = [(HDMedicalIDDataManager *)a1 _persistMedicalIDDataFileToDisk:v9 error:&v66];
+  v12 = [(HDMedicalIDDataManager *)self _persistMedicalIDDataFileToDisk:v9 error:&v66];
   v13 = v66;
   _HKInitializeLogging();
   v14 = *MEMORY[0x277CCC2E0];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E0], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
-    *&buf[4] = a1;
+    *&buf[4] = self;
     *&buf[12] = 1024;
     *&buf[14] = v12;
     *&buf[18] = 2114;
@@ -549,10 +549,10 @@ LABEL_12:
     v18 = v13;
     if (v18)
     {
-      if (a5)
+      if (provenance)
       {
         v23 = v18;
-        *a5 = v18;
+        *provenance = v18;
       }
 
       else
@@ -564,16 +564,16 @@ LABEL_12:
     goto LABEL_52;
   }
 
-  v15 = [a1 profile];
-  v16 = [v15 database];
+  profile = [self profile];
+  database = [profile database];
   v65 = 0;
   v63[0] = MEMORY[0x277D85DD0];
   v63[1] = 3221225472;
   v63[2] = __78__HDMedicalIDDataManager__persistMedicalIDData_originalData_provenance_error___block_invoke;
   v63[3] = &unk_278613218;
-  v63[4] = a1;
-  v64 = v11;
-  v17 = [(HDHealthEntity *)HDUnprotectedKeyValueEntity performWriteTransactionWithHealthDatabase:v16 error:&v65 block:v63];
+  v63[4] = self;
+  v64 = originalDataCopy;
+  v17 = [(HDHealthEntity *)HDUnprotectedKeyValueEntity performWriteTransactionWithHealthDatabase:database error:&v65 block:v63];
   v18 = v65;
 
   if (!v17)
@@ -583,7 +583,7 @@ LABEL_12:
     if (os_log_type_enabled(*MEMORY[0x277CCC2E0], OS_LOG_TYPE_ERROR))
     {
       *buf = 138543618;
-      *&buf[4] = a1;
+      *&buf[4] = self;
       *&buf[12] = 2114;
       *&buf[14] = v18;
       _os_log_error_impl(&dword_228986000, v24, OS_LOG_TYPE_ERROR, "%{public}@ Error performing write transaction to update medicalID key value parameters %{public}@", buf, 0x16u);
@@ -592,10 +592,10 @@ LABEL_12:
     v18 = v18;
     if (v18)
     {
-      if (a5)
+      if (provenance)
       {
         v25 = v18;
-        *a5 = v18;
+        *provenance = v18;
       }
 
       else
@@ -609,49 +609,49 @@ LABEL_12:
   }
 
   notify_post(*MEMORY[0x277CCE4B0]);
-  v19 = [v9 emergencyContacts];
-  v20 = [v10 emergencyContacts];
-  v62 = v11;
-  if (v19 == v20)
+  emergencyContacts = [v9 emergencyContacts];
+  emergencyContacts2 = [dataCopy emergencyContacts];
+  v62 = originalDataCopy;
+  if (emergencyContacts == emergencyContacts2)
   {
     goto LABEL_10;
   }
 
-  v21 = [v10 emergencyContacts];
-  if (v21)
+  emergencyContacts3 = [dataCopy emergencyContacts];
+  if (emergencyContacts3)
   {
-    v22 = [v9 emergencyContacts];
-    v15 = [v10 emergencyContacts];
-    if ([v22 isEqual:v15])
+    emergencyContacts4 = [v9 emergencyContacts];
+    profile = [dataCopy emergencyContacts];
+    if ([emergencyContacts4 isEqual:profile])
     {
 
 LABEL_10:
       goto LABEL_33;
     }
 
-    v61 = v22;
+    v61 = emergencyContacts4;
   }
 
-  v26 = [v9 emergencyContacts];
-  if ([v26 count])
+  emergencyContacts5 = [v9 emergencyContacts];
+  if ([emergencyContacts5 count])
   {
 
-    if (v21)
+    if (emergencyContacts3)
     {
     }
   }
 
   else
   {
-    v60 = v10;
-    v27 = [v10 emergencyContacts];
-    v59 = [v27 count];
+    v60 = dataCopy;
+    emergencyContacts6 = [dataCopy emergencyContacts];
+    v59 = [emergencyContacts6 count];
 
-    if (v21)
+    if (emergencyContacts3)
     {
     }
 
-    v10 = v60;
+    dataCopy = v60;
     if (!v59)
     {
       goto LABEL_33;
@@ -660,14 +660,14 @@ LABEL_10:
 
   notify_post(*MEMORY[0x277CCE4B8]);
 LABEL_33:
-  v28 = [a1 profile];
-  v29 = [v28 profileType];
+  profile2 = [self profile];
+  profileType = [profile2 profileType];
 
-  if (v29 == 1)
+  if (profileType == 1)
   {
-    v30 = [v9 isDisabled];
+    isDisabled = [v9 isDisabled];
     v31 = MEMORY[0x277CBED28];
-    if (v30)
+    if (isDisabled)
     {
       v31 = MEMORY[0x277CBED10];
     }
@@ -697,17 +697,17 @@ LABEL_33:
   v37 = v36;
   if (v36)
   {
-    v38 = [v36 emergencyContacts];
-    v39 = [v38 count];
+    emergencyContacts7 = [v36 emergencyContacts];
+    v39 = [emergencyContacts7 count];
 
     if (v39)
     {
-      v40 = [a1 profile];
-      v41 = [v40 daemon];
-      v42 = [v41 behavior];
-      v43 = [v42 tinkerModeEnabled];
+      profile3 = [self profile];
+      daemon = [profile3 daemon];
+      behavior = [daemon behavior];
+      tinkerModeEnabled = [behavior tinkerModeEnabled];
 
-      if (v43)
+      if (tinkerModeEnabled)
       {
         if (([getSOSUtilitiesClass() isAllowedToMessageSOSContacts] & 1) == 0)
         {
@@ -716,7 +716,7 @@ LABEL_33:
           if (os_log_type_enabled(*MEMORY[0x277CCC2E0], OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            *&buf[4] = a1;
+            *&buf[4] = self;
             _os_log_impl(&dword_228986000, v44, OS_LOG_TYPE_DEFAULT, "Set allowedToMessageSOSContacts for Medical ID on a Tinker device %{public}@", buf, 0xCu);
           }
 
@@ -726,45 +726,45 @@ LABEL_33:
     }
   }
 
-  v45 = [a1 profile];
-  v46 = [v45 nanoSyncManager];
+  profile4 = [self profile];
+  nanoSyncManager = [profile4 nanoSyncManager];
   *buf = MEMORY[0x277D85DD0];
   *&buf[8] = 3221225472;
   *&buf[16] = __66__HDMedicalIDDataManager__triggerSyncForSuccessfulMedicalIDUpdate__block_invoke;
   *&buf[24] = &unk_2786130B0;
-  v73 = a1;
-  [v46 syncHealthDataWithOptions:0 reason:@"Medical ID Update" completion:buf];
+  selfCopy = self;
+  [nanoSyncManager syncHealthDataWithOptions:0 reason:@"Medical ID Update" completion:buf];
 
-  v47 = [a1 profile];
-  v48 = [v47 cloudSyncManager];
+  profile5 = [self profile];
+  cloudSyncManager = [profile5 cloudSyncManager];
   v68 = 0;
-  v49 = [v48 canPerformCloudSyncWithError:&v68];
+  v49 = [cloudSyncManager canPerformCloudSyncWithError:&v68];
   v50 = v68;
 
   if (v49)
   {
     v51 = [[HDCloudSyncContext alloc] initForPurpose:18 options:0 reason:23];
-    v52 = [a1 profile];
-    v53 = [v52 cloudSyncManager];
+    profile6 = [self profile];
+    cloudSyncManager2 = [profile6 cloudSyncManager];
     *v69 = MEMORY[0x277D85DD0];
     *&v69[8] = 3221225472;
     *&v69[16] = __66__HDMedicalIDDataManager__triggerSyncForSuccessfulMedicalIDUpdate__block_invoke_329;
     v70 = &unk_2786130B0;
-    v71 = a1;
-    v54 = [v53 syncMedicalIDDataWithContext:v51 completion:v69];
+    selfCopy2 = self;
+    v54 = [cloudSyncManager2 syncMedicalIDDataWithContext:v51 completion:v69];
 
-    v11 = v62;
+    originalDataCopy = v62;
   }
 
   else
   {
     _HKInitializeLogging();
     v55 = *MEMORY[0x277CCC2E0];
-    v11 = v62;
+    originalDataCopy = v62;
     if (os_log_type_enabled(*MEMORY[0x277CCC2E0], OS_LOG_TYPE_INFO))
     {
       *v69 = 138543618;
-      *&v69[4] = a1;
+      *&v69[4] = self;
       *&v69[12] = 2114;
       *&v69[14] = v50;
       _os_log_impl(&dword_228986000, v55, OS_LOG_TYPE_INFO, "%{public}@: Skipping cloud sync for medical ID update: %{public}@", v69, 0x16u);
@@ -782,19 +782,19 @@ LABEL_54:
   return v56;
 }
 
-- (BOOL)updateMedicalIDWithLocalData:(id)a3 error:(id *)a4
+- (BOOL)updateMedicalIDWithLocalData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   v15 = 0;
   v7 = [(HDMedicalIDDataManager *)self _fetchMedicalIDDataFromDiskWithError:?];
   v8 = v15;
   v9 = v8;
   if (!v7 && v8)
   {
-    if (a4)
+    if (error)
     {
       v10 = v8;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -805,37 +805,37 @@ LABEL_54:
     goto LABEL_10;
   }
 
-  if (v6)
+  if (dataCopy)
   {
-    if ([v6 isEqual:v7])
+    if ([dataCopy isEqual:v7])
     {
-      [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"Attempt to save Medical ID with no updated fields."];
+      [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"Attempt to save Medical ID with no updated fields."];
 LABEL_10:
 
       goto LABEL_11;
     }
 
-    if (([v6 hasAnyModificationDate] & 1) == 0)
+    if (([dataCopy hasAnyModificationDate] & 1) == 0)
     {
-      [v6 setModificationDatesForUpdatedFieldsWithMedicalIDData:0];
+      [dataCopy setModificationDatesForUpdatedFieldsWithMedicalIDData:0];
     }
 
-    v13 = [v6 merge:v7];
+    v13 = [dataCopy merge:v7];
 
-    v14 = [v13 isEmpty];
-    if (v7 || !v14)
+    isEmpty = [v13 isEmpty];
+    if (v7 || !isEmpty)
     {
-      v11 = [(HDMedicalIDDataManager *)self _persistMedicalIDData:v13 originalData:v7 provenance:&unk_283CB05A0 error:a4];
+      v11 = [(HDMedicalIDDataManager *)self _persistMedicalIDData:v13 originalData:v7 provenance:&unk_283CB05A0 error:error];
 
       goto LABEL_12;
     }
 
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"Attempt to save empty Medical ID for the first time."];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"Attempt to save empty Medical ID for the first time."];
   }
 
   else
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a4 code:3 format:@"Medical ID must not be nil"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 format:@"Medical ID must not be nil"];
   }
 
 LABEL_11:
@@ -845,56 +845,56 @@ LABEL_12:
   return v11;
 }
 
-- (BOOL)deleteMedicalIDDataWithError:(id *)a3
+- (BOOL)deleteMedicalIDDataWithError:(id *)error
 {
   v5 = objc_alloc_init(MEMORY[0x277CCDDF0]);
   [v5 setIsDisabled:1];
   [v5 setModificationDatesToCurrentDate];
-  LOBYTE(a3) = [(HDMedicalIDDataManager *)self updateMedicalIDWithLocalData:v5 error:a3];
+  LOBYTE(error) = [(HDMedicalIDDataManager *)self updateMedicalIDWithLocalData:v5 error:error];
 
-  return a3;
+  return error;
 }
 
-- (uint64_t)_migrateMedicalIDLocationIfNecessary:(void *)a1
+- (uint64_t)_migrateMedicalIDLocationIfNecessary:(void *)necessary
 {
   v33 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!necessary)
   {
     v11 = 0;
     goto LABEL_24;
   }
 
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [a1 profile];
-  v6 = [v5 medicalIDDirectoryPath];
-  v7 = [v6 stringByStandardizingPath];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  profile = [necessary profile];
+  medicalIDDirectoryPath = [profile medicalIDDirectoryPath];
+  stringByStandardizingPath = [medicalIDDirectoryPath stringByStandardizingPath];
 
-  v8 = [a1 profile];
-  v9 = [v8 directoryPath];
-  v10 = [v9 stringByStandardizingPath];
+  profile2 = [necessary profile];
+  directoryPath = [profile2 directoryPath];
+  stringByStandardizingPath2 = [directoryPath stringByStandardizingPath];
 
-  if (([v7 isEqualToString:v10] & 1) == 0)
+  if (([stringByStandardizingPath isEqualToString:stringByStandardizingPath2] & 1) == 0)
   {
     v28 = 0;
-    if ([v4 fileExistsAtPath:v7 isDirectory:&v28])
+    if ([defaultManager fileExistsAtPath:stringByStandardizingPath isDirectory:&v28])
     {
       if ((v28 & 1) == 0)
       {
-        [MEMORY[0x277CCA9B8] hk_assignError:a2 code:100 format:{@"%@ is not a directory", v7}];
+        [MEMORY[0x277CCA9B8] hk_assignError:a2 code:100 format:{@"%@ is not a directory", stringByStandardizingPath}];
 LABEL_10:
         v11 = 0;
         goto LABEL_23;
       }
     }
 
-    else if (([v4 createDirectoryAtPath:v7 withIntermediateDirectories:1 attributes:0 error:a2] & 1) == 0)
+    else if (([defaultManager createDirectoryAtPath:stringByStandardizingPath withIntermediateDirectories:1 attributes:0 error:a2] & 1) == 0)
     {
       goto LABEL_10;
     }
 
-    v12 = [(HDMedicalIDDataManager *)a1 _medicalIDURL];
-    v13 = [v12 path];
-    v14 = [v4 fileExistsAtPath:v13 isDirectory:0];
+    _medicalIDURL = [(HDMedicalIDDataManager *)necessary _medicalIDURL];
+    path = [_medicalIDURL path];
+    v14 = [defaultManager fileExistsAtPath:path isDirectory:0];
 
     if (v14)
     {
@@ -904,9 +904,9 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v15 = [HDMedicalIDDataManager _medicalIDURLWithDirectoryPath:v10];
+    v15 = [HDMedicalIDDataManager _medicalIDURLWithDirectoryPath:stringByStandardizingPath2];
     v27 = 0;
-    v16 = [v4 moveItemAtURL:v15 toURL:v12 error:&v27];
+    v16 = [defaultManager moveItemAtURL:v15 toURL:_medicalIDURL error:&v27];
     v17 = v27;
     v18 = v17;
     if (v16)
@@ -916,12 +916,12 @@ LABEL_22:
       if (os_log_type_enabled(*MEMORY[0x277CCC2E0], OS_LOG_TYPE_DEFAULT))
       {
         v20 = v19;
-        v21 = [v15 path];
-        v22 = [v12 path];
+        path2 = [v15 path];
+        path3 = [_medicalIDURL path];
         *buf = 138543618;
-        v30 = v21;
+        v30 = path2;
         v31 = 2114;
-        v32 = v22;
+        v32 = path3;
         _os_log_impl(&dword_228986000, v20, OS_LOG_TYPE_DEFAULT, "[database] Migrated Medical ID from %{public}@ to %{public}@", buf, 0x16u);
       }
     }
@@ -963,11 +963,11 @@ LABEL_24:
 
 - (id)_medicalIDURL
 {
-  if (a1)
+  if (self)
   {
-    v1 = [a1 profile];
-    v2 = [v1 medicalIDDirectoryPath];
-    v3 = [HDMedicalIDDataManager _medicalIDURLWithDirectoryPath:v2];
+    profile = [self profile];
+    medicalIDDirectoryPath = [profile medicalIDDirectoryPath];
+    v3 = [HDMedicalIDDataManager _medicalIDURLWithDirectoryPath:medicalIDDirectoryPath];
   }
 
   else
@@ -978,10 +978,10 @@ LABEL_24:
   return v3;
 }
 
-- (id)_unarchiveMedicalIDDataWithRawData:(void *)a3 error:
+- (id)_unarchiveMedicalIDDataWithRawData:(void *)data error:
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v4 = MEMORY[0x277CCAAC8];
     v5 = a2;
@@ -1012,13 +1012,13 @@ LABEL_16:
     else if (v7)
     {
 LABEL_5:
-      v9 = [v7 domain];
-      v10 = v9;
-      if (v9 == *MEMORY[0x277CCA050])
+      domain = [v7 domain];
+      v10 = domain;
+      if (domain == *MEMORY[0x277CCA050])
       {
-        v11 = [v7 code];
+        code = [v7 code];
 
-        if (v11 == 4865)
+        if (code == 4865)
         {
 LABEL_17:
 
@@ -1043,10 +1043,10 @@ LABEL_15:
     }
 
 LABEL_11:
-    if (a3)
+    if (data)
     {
       v13 = v12;
-      *a3 = v12;
+      *data = v12;
     }
 
     else
@@ -1069,14 +1069,14 @@ LABEL_18:
   return v6;
 }
 
-- (uint64_t)_persistMedicalIDDataFileToDisk:(void *)a3 error:
+- (uint64_t)_persistMedicalIDDataFileToDisk:(void *)disk error:
 {
   v29[2] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v5 = a2;
-    v6 = [(HDMedicalIDDataManager *)a1 _medicalIDURL];
-    v7 = [v6 path];
+    _medicalIDURL = [(HDMedicalIDDataManager *)self _medicalIDURL];
+    path = [_medicalIDURL path];
 
     v23 = 0;
     v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v5 requiringSecureCoding:1 error:&v23];
@@ -1092,13 +1092,13 @@ LABEL_18:
       v29[1] = &unk_283CB05B8;
       v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:2];
       v22 = v9;
-      v13 = [v8 writeToFile:v7 options:1 error:&v22];
+      v13 = [v8 writeToFile:path options:1 error:&v22];
       v14 = v22;
 
       if (v13)
       {
-        v15 = [MEMORY[0x277CCAA00] defaultManager];
-        [v15 setAttributes:v12 ofItemAtPath:v7 error:0];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+        [defaultManager setAttributes:v12 ofItemAtPath:path error:0];
       }
 
       else
@@ -1108,19 +1108,19 @@ LABEL_18:
         if (os_log_type_enabled(*MEMORY[0x277CCC2E0], OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v25 = v7;
+          v25 = path;
           v26 = 2114;
           v27 = v14;
           _os_log_error_impl(&dword_228986000, v18, OS_LOG_TYPE_ERROR, "[database] Error writing Medical ID data file at %@, %{public}@", buf, 0x16u);
         }
 
-        v15 = v14;
-        if (v15)
+        defaultManager = v14;
+        if (defaultManager)
         {
-          if (a3)
+          if (disk)
           {
-            v19 = v15;
-            *a3 = v15;
+            v19 = defaultManager;
+            *disk = defaultManager;
           }
 
           else
@@ -1145,11 +1145,11 @@ LABEL_18:
       v12 = v9;
       if (v12)
       {
-        if (a3)
+        if (disk)
         {
           v17 = v12;
           v13 = 0;
-          *a3 = v12;
+          *disk = v12;
         }
 
         else
@@ -1311,23 +1311,23 @@ void __66__HDMedicalIDDataManager__triggerSyncForSuccessfulMedicalIDUpdate__bloc
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)obliterateMedicalIDDataWithReason:(id)a3 error:(id *)a4
+- (BOOL)obliterateMedicalIDDataWithReason:(id)reason error:(id *)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  reasonCopy = reason;
   _HKInitializeLogging();
   v7 = *MEMORY[0x277CCC2E0];
   if (os_log_type_enabled(*MEMORY[0x277CCC2E0], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v19 = v6;
+    v19 = reasonCopy;
     _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "[database] Obliterating Medical ID with reason: %{public}@", buf, 0xCu);
   }
 
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [(HDMedicalIDDataManager *)self _medicalIDURL];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  _medicalIDURL = [(HDMedicalIDDataManager *)self _medicalIDURL];
   v17 = 0;
-  v10 = [v8 removeItemAtURL:v9 error:&v17];
+  v10 = [defaultManager removeItemAtURL:_medicalIDURL error:&v17];
   v11 = v17;
 
   if (v10 & 1) != 0 || ([v11 hk_isCocoaNoSuchFileError])
@@ -1340,10 +1340,10 @@ void __66__HDMedicalIDDataManager__triggerSyncForSuccessfulMedicalIDUpdate__bloc
     v13 = v11;
     if (v13)
     {
-      if (a4)
+      if (error)
       {
         v14 = v13;
-        *a4 = v13;
+        *error = v13;
       }
 
       else
@@ -1359,47 +1359,47 @@ void __66__HDMedicalIDDataManager__triggerSyncForSuccessfulMedicalIDUpdate__bloc
   return v12;
 }
 
-- (id)_medicalIDURLWithDirectoryPath:(void *)a1
+- (id)_medicalIDURLWithDirectoryPath:(void *)path
 {
   v1 = MEMORY[0x277CBEBC0];
-  v2 = a1;
+  pathCopy = path;
   v3 = [v1 alloc];
-  v4 = [v2 stringByAppendingPathComponent:@"MedicalIDData.archive"];
+  v4 = [pathCopy stringByAppendingPathComponent:@"MedicalIDData.archive"];
 
   v5 = [v3 initFileURLWithPath:v4];
 
   return v5;
 }
 
-- (void)runEmergencyContactConsolidationWithCompletion:(id)a3
+- (void)runEmergencyContactConsolidationWithCompletion:(id)completion
 {
-  v4 = a3;
-  v3 = v4;
+  completionCopy = completion;
+  v3 = completionCopy;
   HKDispatchAsyncOnGlobalConcurrentQueue();
 }
 
 - (id)unitTest_medicalIDData
 {
   v3 = MEMORY[0x277CBEA90];
-  v4 = [(HDMedicalIDDataManager *)self _medicalIDURL];
-  v5 = [v3 dataWithContentsOfURL:v4];
+  _medicalIDURL = [(HDMedicalIDDataManager *)self _medicalIDURL];
+  v5 = [v3 dataWithContentsOfURL:_medicalIDURL];
 
   v6 = [(HDMedicalIDDataManager *)self _unarchiveMedicalIDDataWithRawData:v5 error:0];
 
   return v6;
 }
 
-- (BOOL)unitTest_persistMedicalIDData:(id)a3
+- (BOOL)unitTest_persistMedicalIDData:(id)data
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v12 = 0;
   v5 = [(HDMedicalIDDataManager *)self _migrateMedicalIDLocationIfNecessary:?];
   v6 = v12;
   if (v5)
   {
     v11 = 0;
-    v7 = [(HDMedicalIDDataManager *)self _persistMedicalIDDataFileToDisk:v4 error:&v11];
+    v7 = [(HDMedicalIDDataManager *)self _persistMedicalIDDataFileToDisk:dataCopy error:&v11];
   }
 
   else
@@ -1420,18 +1420,18 @@ void __66__HDMedicalIDDataManager__triggerSyncForSuccessfulMedicalIDUpdate__bloc
   return v7;
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained daemon];
-  v5 = [v4 analyticsSubmissionCoordinator];
-  [v5 addObserver:self queue:0];
+  daemon = [WeakRetained daemon];
+  analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
+  [analyticsSubmissionCoordinator addObserver:self queue:0];
 }
 
-- (void)reportDailyAnalyticsWithCoordinator:(id)a3 completion:(id)a4
+- (void)reportDailyAnalyticsWithCoordinator:(id)coordinator completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   if (HKImproveHealthAndActivityAnalyticsAllowed())
   {
     v18 = 0;
@@ -1458,7 +1458,7 @@ void __66__HDMedicalIDDataManager__triggerSyncForSuccessfulMedicalIDUpdate__bloc
         goto LABEL_5;
       }
 
-      if (!v5)
+      if (!completionCopy)
       {
 LABEL_15:
 
@@ -1467,17 +1467,17 @@ LABEL_15:
 
       v16 = 1;
 LABEL_14:
-      (*(v5 + 2))(v5, 0, v16, 0);
+      (*(completionCopy + 2))(completionCopy, 0, v16, 0);
       goto LABEL_15;
     }
 
 LABEL_5:
-    v10 = [getSOSUtilitiesClass() isAllowedToMessageSOSContacts];
+    isAllowedToMessageSOSContacts = [getSOSUtilitiesClass() isAllowedToMessageSOSContacts];
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v12 = [WeakRetained daemon];
-    v13 = [v12 analyticsSubmissionCoordinator];
+    daemon = [WeakRetained daemon];
+    analyticsSubmissionCoordinator = [daemon analyticsSubmissionCoordinator];
     v14 = objc_loadWeakRetained(&self->_profile);
-    [v13 medicalID_dailyReport:v6 sosContactStatus:v10 profileType:{objc_msgSend(v14, "profileType")}];
+    [analyticsSubmissionCoordinator medicalID_dailyReport:v6 sosContactStatus:isAllowedToMessageSOSContacts profileType:{objc_msgSend(v14, "profileType")}];
 
     _HKInitializeLogging();
     v15 = *v8;
@@ -1487,7 +1487,7 @@ LABEL_5:
       _os_log_impl(&dword_228986000, v15, OS_LOG_TYPE_INFO, "[analytics] Submitted daily medical id analytic event", buf, 2u);
     }
 
-    if (!v5)
+    if (!completionCopy)
     {
       goto LABEL_15;
     }
@@ -1496,9 +1496,9 @@ LABEL_5:
     goto LABEL_14;
   }
 
-  if (v5)
+  if (completionCopy)
   {
-    (*(v5 + 2))(v5, 0, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 1, 0);
   }
 
 LABEL_16:
@@ -1513,29 +1513,29 @@ LABEL_16:
   return WeakRetained;
 }
 
-- (void)_runEmergencyContactConsolidationWithCompletion:(id)a3
+- (void)_runEmergencyContactConsolidationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(HDSOSManager);
-  [(HDMedicalIDDataManager *)self _runEmergencyContactConsolidationWithSOSManager:v5 WithCompletion:v4];
+  [(HDMedicalIDDataManager *)self _runEmergencyContactConsolidationWithSOSManager:v5 WithCompletion:completionCopy];
 }
 
-- (void)_runEmergencyContactConsolidationWithSOSManager:(id)a3 WithCompletion:(id)a4
+- (void)_runEmergencyContactConsolidationWithSOSManager:(id)manager WithCompletion:(id)completion
 {
   v43 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __120__HDMedicalIDDataManager_EmergencyContactConsolidation___runEmergencyContactConsolidationWithSOSManager_WithCompletion___block_invoke;
   aBlock[3] = &unk_2786130D8;
-  v40 = v8;
+  v40 = completionCopy;
   v9 = _Block_copy(aBlock);
-  v10 = [v7 isAllowedToMessageSOSContacts];
+  isAllowedToMessageSOSContacts = [managerCopy isAllowedToMessageSOSContacts];
   v11 = MEMORY[0x277CCC2E0];
-  if (!v10)
+  if (!isAllowedToMessageSOSContacts)
   {
-    [v7 setIsAllowedToMessageSOSContacts];
+    [managerCopy setIsAllowedToMessageSOSContacts];
     _HKInitializeLogging();
     v13 = *v11;
     if (os_log_type_enabled(*v11, OS_LOG_TYPE_DEFAULT))
@@ -1544,11 +1544,11 @@ LABEL_16:
       _os_log_impl(&dword_228986000, v13, OS_LOG_TYPE_DEFAULT, "HDMedicalIDDataManager._runEmergencyContactConsolidationWithCompletion - setting isAllowedToMessageSOSContacts to true.", buf, 2u);
     }
 
-    v14 = [v7 sosContactManager];
-    v15 = [v14 legacyContactsManager];
-    v16 = [v15 SOSLegacyContactsExist];
+    sosContactManager = [managerCopy sosContactManager];
+    legacyContactsManager = [sosContactManager legacyContactsManager];
+    sOSLegacyContactsExist = [legacyContactsManager SOSLegacyContactsExist];
 
-    if ((v16 & 1) == 0)
+    if ((sOSLegacyContactsExist & 1) == 0)
     {
       _HKInitializeLogging();
       v21 = *v11;
@@ -1588,18 +1588,18 @@ LABEL_16:
       v17 = objc_alloc_init(MEMORY[0x277CCDDF0]);
     }
 
-    v22 = [v17 consolidatedSOSContactsWithSOSContactsManager:v14];
-    v23 = [v17 emergencyContacts];
-    if (v22 == v23)
+    v22 = [v17 consolidatedSOSContactsWithSOSContactsManager:sosContactManager];
+    emergencyContacts = [v17 emergencyContacts];
+    if (v22 == emergencyContacts)
     {
       goto LABEL_21;
     }
 
-    v24 = [v17 emergencyContacts];
-    if (v24)
+    emergencyContacts2 = [v17 emergencyContacts];
+    if (emergencyContacts2)
     {
-      v4 = [v17 emergencyContacts];
-      if ([v22 isEqual:v4])
+      emergencyContacts3 = [v17 emergencyContacts];
+      if ([v22 isEqual:emergencyContacts3])
       {
 
 LABEL_21:
@@ -1623,8 +1623,8 @@ LABEL_29:
 
 LABEL_34:
         [v17 setEmergencyContacts:v22];
-        v29 = [MEMORY[0x277CBEAA8] date];
-        [v17 setEmergencyContactsModifiedDate:v29];
+        date = [MEMORY[0x277CBEAA8] date];
+        [v17 setEmergencyContactsModifiedDate:date];
 
         v37 = 0;
         [(HDMedicalIDDataManager *)self updateMedicalIDWithLocalData:v17 error:&v37];
@@ -1669,10 +1669,10 @@ LABEL_40:
       v36 = v22;
     }
 
-    v28 = [v17 emergencyContacts];
-    v35 = [v28 count];
+    emergencyContacts4 = [v17 emergencyContacts];
+    v35 = [emergencyContacts4 count];
 
-    if (v24)
+    if (emergencyContacts2)
     {
     }
 

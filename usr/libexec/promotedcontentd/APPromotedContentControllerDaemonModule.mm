@@ -1,5 +1,5 @@
 @interface APPromotedContentControllerDaemonModule
-+ (BOOL)didPrewarm:(id)a3;
++ (BOOL)didPrewarm:(id)prewarm;
 + (NSDate)daemonStartTime;
 + (id)_loadSettings;
 + (id)setup;
@@ -25,20 +25,20 @@
 + (id)setup
 {
   v3 = objc_autoreleasePoolPush();
-  [a1 _migrateData];
-  v4 = [a1 _loadSettings];
+  [self _migrateData];
+  _loadSettings = [self _loadSettings];
   objc_autoreleasePoolPop(v3);
 
-  return v4;
+  return _loadSettings;
 }
 
-+ (BOOL)didPrewarm:(id)a3
++ (BOOL)didPrewarm:(id)prewarm
 {
-  v4 = [a3 objectForKey:@"pcStartTime"];
+  v4 = [prewarm objectForKey:@"pcStartTime"];
   if (v4)
   {
-    v5 = [a1 daemonStartTime];
-    [v4 timeIntervalSinceDate:v5];
+    daemonStartTime = [self daemonStartTime];
+    [v4 timeIntervalSinceDate:daemonStartTime];
     v7 = v6 < 0.0;
 
     v11 = @"coldStart";
@@ -85,37 +85,37 @@
 + (id)_loadSettings
 {
   v2 = +[APPCControllerDaemonSettings settings];
-  v3 = [v2 useAMSMescalValue];
-  v4 = [v2 httpUseFixedHttpSessionManagerValue];
-  v5 = [v2 httpMaximumConnectionsPerHostValue];
-  v6 = [v2 httpMaximumConnectionsPerHostTempSessionValue];
+  useAMSMescalValue = [v2 useAMSMescalValue];
+  httpUseFixedHttpSessionManagerValue = [v2 httpUseFixedHttpSessionManagerValue];
+  httpMaximumConnectionsPerHostValue = [v2 httpMaximumConnectionsPerHostValue];
+  httpMaximumConnectionsPerHostTempSessionValue = [v2 httpMaximumConnectionsPerHostTempSessionValue];
   [v2 httpLookBackWindowValue];
   v8 = v7;
-  v9 = [v2 cacheSizeLimitValue];
+  cacheSizeLimitValue = [v2 cacheSizeLimitValue];
   v10 = objc_alloc_init(APPromotedContentControllerDaemonModule);
-  [(APPromotedContentControllerDaemonModule *)v10 setUseAMSMescal:v3];
-  [(APPromotedContentControllerDaemonModule *)v10 setHttpUseFixedHttpSessionManager:v4];
-  [(APPromotedContentControllerDaemonModule *)v10 setHttpMaximumConnectionsPerHost:v5];
-  [(APPromotedContentControllerDaemonModule *)v10 setHttpMaximumConnectionsPerHostTempSession:v6];
+  [(APPromotedContentControllerDaemonModule *)v10 setUseAMSMescal:useAMSMescalValue];
+  [(APPromotedContentControllerDaemonModule *)v10 setHttpUseFixedHttpSessionManager:httpUseFixedHttpSessionManagerValue];
+  [(APPromotedContentControllerDaemonModule *)v10 setHttpMaximumConnectionsPerHost:httpMaximumConnectionsPerHostValue];
+  [(APPromotedContentControllerDaemonModule *)v10 setHttpMaximumConnectionsPerHostTempSession:httpMaximumConnectionsPerHostTempSessionValue];
   [(APPromotedContentControllerDaemonModule *)v10 setHttpLookBackWindow:v8];
-  [(APPromotedContentControllerDaemonModule *)v10 setCacheSizeLimit:v9];
+  [(APPromotedContentControllerDaemonModule *)v10 setCacheSizeLimit:cacheSizeLimitValue];
   v11 = +[NSProcessInfo processInfo];
-  v12 = [v11 isRunningTests];
+  isRunningTests = [v11 isRunningTests];
 
-  if ((v12 & 1) == 0)
+  if ((isRunningTests & 1) == 0)
   {
     v13 = dispatch_get_global_queue(25, 0);
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_10037C64C;
     v15[3] = &unk_1004807B0;
-    v21 = v3;
+    v21 = useAMSMescalValue;
     v16 = v2;
-    v22 = v4;
+    v22 = httpUseFixedHttpSessionManagerValue;
     v17 = v8;
-    v18 = v5;
-    v19 = v6;
-    v20 = v9;
+    v18 = httpMaximumConnectionsPerHostValue;
+    v19 = httpMaximumConnectionsPerHostTempSessionValue;
+    v20 = cacheSizeLimitValue;
     dispatch_async(v13, v15);
   }
 

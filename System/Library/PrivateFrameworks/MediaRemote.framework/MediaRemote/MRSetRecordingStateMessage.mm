@@ -1,11 +1,11 @@
 @interface MRSetRecordingStateMessage
-- (MRSetRecordingStateMessage)initWithRecordingState:(unsigned int)a3;
+- (MRSetRecordingStateMessage)initWithRecordingState:(unsigned int)state;
 - (unsigned)state;
 @end
 
 @implementation MRSetRecordingStateMessage
 
-- (MRSetRecordingStateMessage)initWithRecordingState:(unsigned int)a3
+- (MRSetRecordingStateMessage)initWithRecordingState:(unsigned int)state
 {
   v9.receiver = self;
   v9.super_class = MRSetRecordingStateMessage;
@@ -14,7 +14,7 @@
   {
     v5 = objc_alloc_init(_MRSetRecordingStateMessageProtobuf);
     v6 = v5;
-    if (a3 == 1)
+    if (state == 1)
     {
       v7 = 1;
     }
@@ -33,8 +33,8 @@
 
 - (unsigned)state
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  if ([v2 state] == 1)
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  if ([underlyingCodableMessage state] == 1)
   {
     v3 = 1;
   }

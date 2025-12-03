@@ -1,16 +1,16 @@
 @interface AXAppSelectionController
-- (id)_appAppliesTo:(id)a3;
+- (id)_appAppliesTo:(id)to;
 - (id)specifiers;
-- (void)_hideAppCombinations:(BOOL)a3;
-- (void)_setAppliesTo:(id)a3 specifier:(id)a4;
-- (void)_showAppCombinationsAnimated:(BOOL)a3;
-- (void)_showHiddenApps:(id)a3;
-- (void)_updateAppListUI:(BOOL)a3;
+- (void)_hideAppCombinations:(BOOL)combinations;
+- (void)_setAppliesTo:(id)to specifier:(id)specifier;
+- (void)_showAppCombinationsAnimated:(BOOL)animated;
+- (void)_showHiddenApps:(id)apps;
+- (void)_updateAppListUI:(BOOL)i;
 - (void)reloadSpecifiers;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)willBecomeActive;
 @end
 
@@ -21,21 +21,21 @@
   v10.receiver = self;
   v10.super_class = AXAppSelectionController;
   [(AXAppSelectionController *)&v10 viewDidLoad];
-  v3 = [(AXAppSelectionController *)self getSelectedApps];
+  getSelectedApps = [(AXAppSelectionController *)self getSelectedApps];
 
-  if (v3)
+  if (getSelectedApps)
   {
-    v4 = [(AXAppSelectionController *)self getSelectedApps];
-    v5 = v4[2]();
+    getSelectedApps2 = [(AXAppSelectionController *)self getSelectedApps];
+    v5 = getSelectedApps2[2]();
     [(AXAppSelectionController *)self setCachedSelectedApps:v5];
   }
 
-  v6 = [(AXAppSelectionController *)self getUnselectedApps];
+  getUnselectedApps = [(AXAppSelectionController *)self getUnselectedApps];
 
-  if (v6)
+  if (getUnselectedApps)
   {
-    v7 = [(AXAppSelectionController *)self getUnselectedApps];
-    v8 = v7[2]();
+    getUnselectedApps2 = [(AXAppSelectionController *)self getUnselectedApps];
+    v8 = getUnselectedApps2[2]();
     [(AXAppSelectionController *)self setCachedUnselectedApps:v8];
   }
 
@@ -51,13 +51,13 @@
   [(AXAppSelectionController *)self _updateAppListUI:0];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = AXAppSelectionController;
   [(AXAppSelectionController *)&v5 viewWillAppear:?];
-  [(AXAppSelectionController *)self _updateAppListUI:v3];
+  [(AXAppSelectionController *)self _updateAppListUI:appearCopy];
 }
 
 - (id)specifiers
@@ -86,9 +86,9 @@
       [v8 addObject:v11];
     }
 
-    v12 = [(AXAppSelectionController *)self getAppliesToAllApps];
+    getAppliesToAllApps = [(AXAppSelectionController *)self getAppliesToAllApps];
 
-    if (v12)
+    if (getAppliesToAllApps)
     {
       v13 = settingsLocString(@"APPLIES_TO", @"VoiceOverSettings");
       v14 = [PSSpecifier preferenceSpecifierNamed:v13 target:self set:"_setAppliesTo:specifier:" get:"_appAppliesTo:" detail:0 cell:6 edit:0];
@@ -107,42 +107,42 @@
   return v4;
 }
 
-- (void)_updateAppListUI:(BOOL)a3
+- (void)_updateAppListUI:(BOOL)i
 {
-  v3 = a3;
-  v5 = [(AXAppSelectionController *)self getAppliesToAllApps];
-  if (v5 && (v6 = v5, [(AXAppSelectionController *)self getAppliesToAllApps], v7 = objc_claimAutoreleasedReturnValue(), v8 = v7[2](), v7, v6, v8))
+  iCopy = i;
+  getAppliesToAllApps = [(AXAppSelectionController *)self getAppliesToAllApps];
+  if (getAppliesToAllApps && (v6 = getAppliesToAllApps, [(AXAppSelectionController *)self getAppliesToAllApps], v7 = objc_claimAutoreleasedReturnValue(), v8 = v7[2](), v7, v6, v8))
   {
 
-    [(AXAppSelectionController *)self _hideAppCombinations:v3];
+    [(AXAppSelectionController *)self _hideAppCombinations:iCopy];
   }
 
   else
   {
 
-    [(AXAppSelectionController *)self _showAppCombinationsAnimated:v3];
+    [(AXAppSelectionController *)self _showAppCombinationsAnimated:iCopy];
   }
 }
 
-- (void)_setAppliesTo:(id)a3 specifier:(id)a4
+- (void)_setAppliesTo:(id)to specifier:(id)specifier
 {
-  v5 = a3;
-  v6 = [(AXAppSelectionController *)self setAppliesToAllApps];
-  v7 = [v5 BOOLValue];
+  toCopy = to;
+  setAppliesToAllApps = [(AXAppSelectionController *)self setAppliesToAllApps];
+  bOOLValue = [toCopy BOOLValue];
 
-  (v6)[2](v6, v7);
+  (setAppliesToAllApps)[2](setAppliesToAllApps, bOOLValue);
 
   [(AXAppSelectionController *)self _updateAppListUI:1];
 }
 
-- (id)_appAppliesTo:(id)a3
+- (id)_appAppliesTo:(id)to
 {
-  v4 = [(AXAppSelectionController *)self getAppliesToAllApps];
+  getAppliesToAllApps = [(AXAppSelectionController *)self getAppliesToAllApps];
 
-  if (v4)
+  if (getAppliesToAllApps)
   {
-    v5 = [(AXAppSelectionController *)self getAppliesToAllApps];
-    v6 = [NSNumber numberWithBool:v5[2]()];
+    getAppliesToAllApps2 = [(AXAppSelectionController *)self getAppliesToAllApps];
+    v6 = [NSNumber numberWithBool:getAppliesToAllApps2[2]()];
   }
 
   else
@@ -164,11 +164,11 @@
   [(AXAppSelectionController *)self _updateAppListUI:1];
 }
 
-- (void)_showAppCombinationsAnimated:(BOOL)a3
+- (void)_showAppCombinationsAnimated:(BOOL)animated
 {
   if (!self->_appSpecifiers)
   {
-    v16 = a3;
+    animatedCopy = animated;
     v4 = objc_alloc_init(NSMutableArray);
     appSpecifiers = self->_appSpecifiers;
     self->_appSpecifiers = v4;
@@ -215,20 +215,20 @@
     [(NSMutableArray *)self->_appSpecifiers removeObjectsInArray:v17];
     v14 = self->_appSpecifiers;
     v15 = [(AXAppSelectionController *)self specifierForID:@"AppApplies"];
-    [(AXAppSelectionController *)self insertContiguousSpecifiers:v14 afterSpecifier:v15 animated:v16];
+    [(AXAppSelectionController *)self insertContiguousSpecifiers:v14 afterSpecifier:v15 animated:animatedCopy];
   }
 }
 
-- (void)_hideAppCombinations:(BOOL)a3
+- (void)_hideAppCombinations:(BOOL)combinations
 {
-  [(AXAppSelectionController *)self removeContiguousSpecifiers:self->_appSpecifiers animated:a3];
+  [(AXAppSelectionController *)self removeContiguousSpecifiers:self->_appSpecifiers animated:combinations];
   appSpecifiers = self->_appSpecifiers;
   self->_appSpecifiers = 0;
 }
 
-- (void)_showHiddenApps:(id)a3
+- (void)_showHiddenApps:(id)apps
 {
-  v4 = a3;
+  appsCopy = apps;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2050000000;
@@ -247,13 +247,13 @@
 
   v6 = v5;
   _Block_object_dispose(&v10, 8);
-  v7 = [v5 sharedGuard];
+  sharedGuard = [v5 sharedGuard];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = __44__AXAppSelectionController__showHiddenApps___block_invoke;
   v8[3] = &unk_257EA0;
   v8[4] = self;
-  [v7 authenticateUnconditionallyWithCompletion:v8];
+  [sharedGuard authenticateUnconditionallyWithCompletion:v8];
 }
 
 void __44__AXAppSelectionController__showHiddenApps___block_invoke(uint64_t a1, char a2)
@@ -287,23 +287,23 @@ void __44__AXAppSelectionController__showHiddenApps___block_invoke_2(uint64_t a1
   }
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AXAppSelectionController *)self specifierForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(AXAppSelectionController *)self specifierForIndexPath:pathCopy];
   v23.receiver = self;
   v23.super_class = AXAppSelectionController;
-  [(AXAppSelectionController *)&v23 tableView:v6 didSelectRowAtIndexPath:v7];
+  [(AXAppSelectionController *)&v23 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   v9 = [v8 propertyForKey:@"BundleIdentifier"];
   if (v9)
   {
-    v10 = [(AXAppSelectionController *)self getSelectedApps];
+    getSelectedApps = [(AXAppSelectionController *)self getSelectedApps];
 
-    if (v10)
+    if (getSelectedApps)
     {
-      v11 = [(AXAppSelectionController *)self getSelectedApps];
-      v12 = v11[2]();
+      getSelectedApps2 = [(AXAppSelectionController *)self getSelectedApps];
+      v12 = getSelectedApps2[2]();
 
       if (v12)
       {
@@ -316,7 +316,7 @@ void __44__AXAppSelectionController__showHiddenApps___block_invoke_2(uint64_t a1
       }
 
       v17 = v13;
-      v18 = [v6 cellForRowAtIndexPath:v7];
+      v18 = [viewCopy cellForRowAtIndexPath:pathCopy];
       if ([v17 containsObject:v9])
       {
         [v18 setChecked:0];
@@ -329,12 +329,12 @@ void __44__AXAppSelectionController__showHiddenApps___block_invoke_2(uint64_t a1
         [v17 addObject:v9];
       }
 
-      v19 = [(AXAppSelectionController *)self setSelectedApps];
+      setSelectedApps = [(AXAppSelectionController *)self setSelectedApps];
 
-      if (v19)
+      if (setSelectedApps)
       {
-        v20 = [(AXAppSelectionController *)self setSelectedApps];
-        (v20)[2](v20, v17);
+        setSelectedApps2 = [(AXAppSelectionController *)self setSelectedApps];
+        (setSelectedApps2)[2](setSelectedApps2, v17);
       }
 
       [(AXAppSelectionController *)self setCachedSelectedApps:v17];
@@ -343,12 +343,12 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v14 = [(AXAppSelectionController *)self getUnselectedApps];
+    getUnselectedApps = [(AXAppSelectionController *)self getUnselectedApps];
 
-    if (v14)
+    if (getUnselectedApps)
     {
-      v15 = [(AXAppSelectionController *)self getUnselectedApps];
-      v12 = v15[2]();
+      getUnselectedApps2 = [(AXAppSelectionController *)self getUnselectedApps];
+      v12 = getUnselectedApps2[2]();
 
       if (v12)
       {
@@ -361,7 +361,7 @@ LABEL_22:
       }
 
       v17 = v16;
-      v18 = [v6 cellForRowAtIndexPath:v7];
+      v18 = [viewCopy cellForRowAtIndexPath:pathCopy];
       if ([v17 containsObject:v9])
       {
         [v18 setChecked:1];
@@ -374,12 +374,12 @@ LABEL_22:
         [v17 addObject:v9];
       }
 
-      v21 = [(AXAppSelectionController *)self setUnselectedApps];
+      setUnselectedApps = [(AXAppSelectionController *)self setUnselectedApps];
 
-      if (v21)
+      if (setUnselectedApps)
       {
-        v22 = [(AXAppSelectionController *)self setUnselectedApps];
-        (v22)[2](v22, v17);
+        setUnselectedApps2 = [(AXAppSelectionController *)self setUnselectedApps];
+        (setUnselectedApps2)[2](setUnselectedApps2, v17);
       }
 
       [(AXAppSelectionController *)self setCachedUnselectedApps:v17];
@@ -390,32 +390,32 @@ LABEL_22:
 LABEL_23:
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v15 = [(AXAppSelectionController *)self specifierForIndexPath:a5];
+  cellCopy = cell;
+  v15 = [(AXAppSelectionController *)self specifierForIndexPath:path];
   v8 = [v15 propertyForKey:@"BundleIdentifier"];
   if (!v8)
   {
     goto LABEL_6;
   }
 
-  v9 = [(AXAppSelectionController *)self cachedSelectedApps];
+  cachedSelectedApps = [(AXAppSelectionController *)self cachedSelectedApps];
 
-  if (v9)
+  if (cachedSelectedApps)
   {
-    v10 = [(AXAppSelectionController *)self cachedSelectedApps];
-    v11 = [v10 containsObject:v8];
+    cachedSelectedApps2 = [(AXAppSelectionController *)self cachedSelectedApps];
+    v11 = [cachedSelectedApps2 containsObject:v8];
 
     goto LABEL_7;
   }
 
-  v12 = [(AXAppSelectionController *)self cachedUnselectedApps];
+  cachedUnselectedApps = [(AXAppSelectionController *)self cachedUnselectedApps];
 
-  if (v12)
+  if (cachedUnselectedApps)
   {
-    v13 = [(AXAppSelectionController *)self cachedUnselectedApps];
-    v14 = [v13 containsObject:v8];
+    cachedUnselectedApps2 = [(AXAppSelectionController *)self cachedUnselectedApps];
+    v14 = [cachedUnselectedApps2 containsObject:v8];
 
     v11 = (v14 ^ 1);
   }
@@ -427,8 +427,8 @@ LABEL_6:
   }
 
 LABEL_7:
-  [v7 setChecked:v11];
-  [v7 setAccessibilityTraits:UIAccessibilityTraitButton];
+  [cellCopy setChecked:v11];
+  [cellCopy setAccessibilityTraits:UIAccessibilityTraitButton];
 }
 
 @end

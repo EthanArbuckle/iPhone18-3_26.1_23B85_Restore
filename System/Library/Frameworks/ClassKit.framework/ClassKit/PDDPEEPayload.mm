@@ -1,25 +1,25 @@
 @interface PDDPEEPayload
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAction:(id)a3;
-- (int)StringAsType:(id)a3;
+- (int)StringAsAction:(id)action;
+- (int)StringAsType:(id)type;
 - (int)action;
 - (int)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPayloadSize:(BOOL)a3;
-- (void)setHasType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPayloadSize:(BOOL)size;
+- (void)setHasType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPEEPayload
 
-- (void)setHasPayloadSize:(BOOL)a3
+- (void)setHasPayloadSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 2;
   }
@@ -45,25 +45,25 @@
   }
 }
 
-- (int)StringAsAction:(id)a3
+- (int)StringAsAction:(id)action
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_ACTION"])
+  actionCopy = action;
+  if ([actionCopy isEqualToString:@"UNKNOWN_ACTION"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"UPSERT"])
+  else if ([actionCopy isEqualToString:@"UPSERT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"DELETE"])
+  else if ([actionCopy isEqualToString:@"DELETE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"REPLACE"])
+  else if ([actionCopy isEqualToString:@"REPLACE"])
   {
     v4 = 3;
   }
@@ -89,9 +89,9 @@
   }
 }
 
-- (void)setHasType:(BOOL)a3
+- (void)setHasType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -104,75 +104,75 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsType:(id)a3
+- (int)StringAsType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_TYPE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"UNKNOWN_TYPE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"STATUS"])
+  else if ([typeCopy isEqualToString:@"STATUS"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"REQUEST_ZONE"])
+  else if ([typeCopy isEqualToString:@"REQUEST_ZONE"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"RESPONSE_ZONE"])
+  else if ([typeCopy isEqualToString:@"RESPONSE_ZONE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"LOCATION"])
+  else if ([typeCopy isEqualToString:@"LOCATION"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"PERSON"])
+  else if ([typeCopy isEqualToString:@"PERSON"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"CLASS"])
+  else if ([typeCopy isEqualToString:@"CLASS"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"CLASS_MEMBER"])
+  else if ([typeCopy isEqualToString:@"CLASS_MEMBER"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"ROLE"])
+  else if ([typeCopy isEqualToString:@"ROLE"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"ORGANIZATION"])
+  else if ([typeCopy isEqualToString:@"ORGANIZATION"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"ADMIN_REQUEST"])
+  else if ([typeCopy isEqualToString:@"ADMIN_REQUEST"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"ADMIN_REQUEST_ACCOUNT"])
+  else if ([typeCopy isEqualToString:@"ADMIN_REQUEST_ACCOUNT"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"GROUP"])
+  else if ([typeCopy isEqualToString:@"GROUP"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"GROUP_MEMBER"])
+  else if ([typeCopy isEqualToString:@"GROUP_MEMBER"])
   {
     v4 = 13;
   }
@@ -190,8 +190,8 @@
   v7.receiver = self;
   v7.super_class = PDDPEEPayload;
   v3 = [(PDDPEEPayload *)&v7 description];
-  v4 = [(PDDPEEPayload *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPEEPayload *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -257,57 +257,57 @@ LABEL_14:
   status = self->_status;
   if (status)
   {
-    v11 = [(PDDPStatus *)status dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"status"];
+    dictionaryRepresentation = [(PDDPStatus *)status dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"status"];
   }
 
   requestZone = self->_requestZone;
   if (requestZone)
   {
-    v13 = [(PDDPEERequestZone *)requestZone dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"request_zone"];
+    dictionaryRepresentation2 = [(PDDPEERequestZone *)requestZone dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"request_zone"];
   }
 
   responseZone = self->_responseZone;
   if (responseZone)
   {
-    v15 = [(PDDPEEResponseZone *)responseZone dictionaryRepresentation];
-    [v3 setObject:v15 forKey:@"response_zone"];
+    dictionaryRepresentation3 = [(PDDPEEResponseZone *)responseZone dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"response_zone"];
   }
 
   location = self->_location;
   if (location)
   {
-    v17 = [(PDDPLocation *)location dictionaryRepresentation];
-    [v3 setObject:v17 forKey:@"location"];
+    dictionaryRepresentation4 = [(PDDPLocation *)location dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation4 forKey:@"location"];
   }
 
   person = self->_person;
   if (person)
   {
-    v19 = [(PDDPPerson *)person dictionaryRepresentation];
-    [v3 setObject:v19 forKey:@"person"];
+    dictionaryRepresentation5 = [(PDDPPerson *)person dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation5 forKey:@"person"];
   }
 
   classInfo = self->_classInfo;
   if (classInfo)
   {
-    v21 = [(PDDPClass *)classInfo dictionaryRepresentation];
-    [v3 setObject:v21 forKey:@"class_info"];
+    dictionaryRepresentation6 = [(PDDPClass *)classInfo dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation6 forKey:@"class_info"];
   }
 
   classMember = self->_classMember;
   if (classMember)
   {
-    v23 = [(PDDPClassMember *)classMember dictionaryRepresentation];
-    [v3 setObject:v23 forKey:@"class_member"];
+    dictionaryRepresentation7 = [(PDDPClassMember *)classMember dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation7 forKey:@"class_member"];
   }
 
   role = self->_role;
   if (role)
   {
-    v25 = [(PDDPRole *)role dictionaryRepresentation];
-    [v3 setObject:v25 forKey:@"role"];
+    dictionaryRepresentation8 = [(PDDPRole *)role dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation8 forKey:@"role"];
   }
 
   tempObjectId = self->_tempObjectId;
@@ -325,51 +325,51 @@ LABEL_14:
   organization = self->_organization;
   if (organization)
   {
-    v29 = [(PDDPOrganization *)organization dictionaryRepresentation];
-    [v3 setObject:v29 forKey:@"organization"];
+    dictionaryRepresentation9 = [(PDDPOrganization *)organization dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation9 forKey:@"organization"];
   }
 
   adminRequest = self->_adminRequest;
   if (adminRequest)
   {
-    v31 = [(PDDPAdminRequestDetails *)adminRequest dictionaryRepresentation];
-    [v3 setObject:v31 forKey:@"admin_request"];
+    dictionaryRepresentation10 = [(PDDPAdminRequestDetails *)adminRequest dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation10 forKey:@"admin_request"];
   }
 
   adminRequestAccount = self->_adminRequestAccount;
   if (adminRequestAccount)
   {
-    v33 = [(PDDPAdminRequestAccount *)adminRequestAccount dictionaryRepresentation];
-    [v3 setObject:v33 forKey:@"admin_request_account"];
+    dictionaryRepresentation11 = [(PDDPAdminRequestAccount *)adminRequestAccount dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation11 forKey:@"admin_request_account"];
   }
 
   groupInfo = self->_groupInfo;
   if (groupInfo)
   {
-    v35 = [(PDDPGroup *)groupInfo dictionaryRepresentation];
-    [v3 setObject:v35 forKey:@"group_info"];
+    dictionaryRepresentation12 = [(PDDPGroup *)groupInfo dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation12 forKey:@"group_info"];
   }
 
   groupMember = self->_groupMember;
   if (groupMember)
   {
-    v37 = [(PDDPGroupMember *)groupMember dictionaryRepresentation];
-    [v3 setObject:v37 forKey:@"group_member"];
+    dictionaryRepresentation13 = [(PDDPGroupMember *)groupMember dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation13 forKey:@"group_member"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if ((has & 2) != 0)
   {
     payloadSize = self->_payloadSize;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -390,115 +390,115 @@ LABEL_3:
 
   action = self->_action;
   PBDataWriterWriteInt32Field();
-  v4 = v9;
+  toCopy = v9;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
     type = self->_type;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
   if (self->_status)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_requestZone)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_responseZone)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_location)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_person)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_classInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_classMember)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_role)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_tempObjectId)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_tempParentObjectId)
   {
     PBDataWriterWriteStringField();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_organization)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_adminRequest)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_adminRequestAccount)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_groupInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 
   if (self->_groupMember)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v9;
+    toCopy = v9;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[20] = self->_payloadSize;
-    *(v4 + 148) |= 2u;
+    toCopy[20] = self->_payloadSize;
+    *(toCopy + 148) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -517,111 +517,111 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[2] = self->_action;
-  *(v4 + 148) |= 1u;
+  toCopy[2] = self->_action;
+  *(toCopy + 148) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    v4[36] = self->_type;
-    *(v4 + 148) |= 4u;
+    toCopy[36] = self->_type;
+    *(toCopy + 148) |= 4u;
   }
 
 LABEL_5:
-  v6 = v4;
+  v6 = toCopy;
   if (self->_status)
   {
-    [v4 setStatus:?];
-    v4 = v6;
+    [toCopy setStatus:?];
+    toCopy = v6;
   }
 
   if (self->_requestZone)
   {
     [v6 setRequestZone:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_responseZone)
   {
     [v6 setResponseZone:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_location)
   {
     [v6 setLocation:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_person)
   {
     [v6 setPerson:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_classInfo)
   {
     [v6 setClassInfo:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_classMember)
   {
     [v6 setClassMember:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_role)
   {
     [v6 setRole:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_tempObjectId)
   {
     [v6 setTempObjectId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_tempParentObjectId)
   {
     [v6 setTempParentObjectId:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_organization)
   {
     [v6 setOrganization:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_adminRequest)
   {
     [v6 setAdminRequest:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_adminRequestAccount)
   {
     [v6 setAdminRequestAccount:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_groupInfo)
   {
     [v6 setGroupInfo:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_groupMember)
   {
     [v6 setGroupMember:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) == 0)
@@ -659,87 +659,87 @@ LABEL_4:
   }
 
 LABEL_5:
-  v8 = [(PDDPStatus *)self->_status copyWithZone:a3];
+  v8 = [(PDDPStatus *)self->_status copyWithZone:zone];
   v9 = v6[15];
   v6[15] = v8;
 
-  v10 = [(PDDPEERequestZone *)self->_requestZone copyWithZone:a3];
+  v10 = [(PDDPEERequestZone *)self->_requestZone copyWithZone:zone];
   v11 = v6[12];
   v6[12] = v10;
 
-  v12 = [(PDDPEEResponseZone *)self->_responseZone copyWithZone:a3];
+  v12 = [(PDDPEEResponseZone *)self->_responseZone copyWithZone:zone];
   v13 = v6[13];
   v6[13] = v12;
 
-  v14 = [(PDDPLocation *)self->_location copyWithZone:a3];
+  v14 = [(PDDPLocation *)self->_location copyWithZone:zone];
   v15 = v6[8];
   v6[8] = v14;
 
-  v16 = [(PDDPPerson *)self->_person copyWithZone:a3];
+  v16 = [(PDDPPerson *)self->_person copyWithZone:zone];
   v17 = v6[11];
   v6[11] = v16;
 
-  v18 = [(PDDPClass *)self->_classInfo copyWithZone:a3];
+  v18 = [(PDDPClass *)self->_classInfo copyWithZone:zone];
   v19 = v6[4];
   v6[4] = v18;
 
-  v20 = [(PDDPClassMember *)self->_classMember copyWithZone:a3];
+  v20 = [(PDDPClassMember *)self->_classMember copyWithZone:zone];
   v21 = v6[5];
   v6[5] = v20;
 
-  v22 = [(PDDPRole *)self->_role copyWithZone:a3];
+  v22 = [(PDDPRole *)self->_role copyWithZone:zone];
   v23 = v6[14];
   v6[14] = v22;
 
-  v24 = [(NSString *)self->_tempObjectId copyWithZone:a3];
+  v24 = [(NSString *)self->_tempObjectId copyWithZone:zone];
   v25 = v6[16];
   v6[16] = v24;
 
-  v26 = [(NSString *)self->_tempParentObjectId copyWithZone:a3];
+  v26 = [(NSString *)self->_tempParentObjectId copyWithZone:zone];
   v27 = v6[17];
   v6[17] = v26;
 
-  v28 = [(PDDPOrganization *)self->_organization copyWithZone:a3];
+  v28 = [(PDDPOrganization *)self->_organization copyWithZone:zone];
   v29 = v6[9];
   v6[9] = v28;
 
-  v30 = [(PDDPAdminRequestDetails *)self->_adminRequest copyWithZone:a3];
+  v30 = [(PDDPAdminRequestDetails *)self->_adminRequest copyWithZone:zone];
   v31 = v6[2];
   v6[2] = v30;
 
-  v32 = [(PDDPAdminRequestAccount *)self->_adminRequestAccount copyWithZone:a3];
+  v32 = [(PDDPAdminRequestAccount *)self->_adminRequestAccount copyWithZone:zone];
   v33 = v6[3];
   v6[3] = v32;
 
-  v34 = [(PDDPGroup *)self->_groupInfo copyWithZone:a3];
+  v34 = [(PDDPGroup *)self->_groupInfo copyWithZone:zone];
   v35 = v6[6];
   v6[6] = v34;
 
-  v36 = [(PDDPGroupMember *)self->_groupMember copyWithZone:a3];
+  v36 = [(PDDPGroupMember *)self->_groupMember copyWithZone:zone];
   v37 = v6[7];
   v6[7] = v36;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_47;
   }
 
-  v5 = *(v4 + 148);
+  v5 = *(equalCopy + 148);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 148) & 2) == 0 || self->_payloadSize != *(v4 + 20))
+    if ((*(equalCopy + 148) & 2) == 0 || self->_payloadSize != *(equalCopy + 20))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 148) & 2) != 0)
+  else if ((*(equalCopy + 148) & 2) != 0)
   {
 LABEL_47:
     v21 = 0;
@@ -748,38 +748,38 @@ LABEL_47:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 148) & 1) == 0 || self->_action != *(v4 + 2))
+    if ((*(equalCopy + 148) & 1) == 0 || self->_action != *(equalCopy + 2))
     {
       goto LABEL_47;
     }
   }
 
-  else if (*(v4 + 148))
+  else if (*(equalCopy + 148))
   {
     goto LABEL_47;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 148) & 4) == 0 || self->_type != *(v4 + 36))
+    if ((*(equalCopy + 148) & 4) == 0 || self->_type != *(equalCopy + 36))
     {
       goto LABEL_47;
     }
   }
 
-  else if ((*(v4 + 148) & 4) != 0)
+  else if ((*(equalCopy + 148) & 4) != 0)
   {
     goto LABEL_47;
   }
 
   status = self->_status;
-  if (status | *(v4 + 15) && ![(PDDPStatus *)status isEqual:?])
+  if (status | *(equalCopy + 15) && ![(PDDPStatus *)status isEqual:?])
   {
     goto LABEL_47;
   }
 
   requestZone = self->_requestZone;
-  if (requestZone | *(v4 + 12))
+  if (requestZone | *(equalCopy + 12))
   {
     if (![(PDDPEERequestZone *)requestZone isEqual:?])
     {
@@ -788,7 +788,7 @@ LABEL_47:
   }
 
   responseZone = self->_responseZone;
-  if (responseZone | *(v4 + 13))
+  if (responseZone | *(equalCopy + 13))
   {
     if (![(PDDPEEResponseZone *)responseZone isEqual:?])
     {
@@ -797,7 +797,7 @@ LABEL_47:
   }
 
   location = self->_location;
-  if (location | *(v4 + 8))
+  if (location | *(equalCopy + 8))
   {
     if (![(PDDPLocation *)location isEqual:?])
     {
@@ -806,7 +806,7 @@ LABEL_47:
   }
 
   person = self->_person;
-  if (person | *(v4 + 11))
+  if (person | *(equalCopy + 11))
   {
     if (![(PDDPPerson *)person isEqual:?])
     {
@@ -815,7 +815,7 @@ LABEL_47:
   }
 
   classInfo = self->_classInfo;
-  if (classInfo | *(v4 + 4))
+  if (classInfo | *(equalCopy + 4))
   {
     if (![(PDDPClass *)classInfo isEqual:?])
     {
@@ -824,7 +824,7 @@ LABEL_47:
   }
 
   classMember = self->_classMember;
-  if (classMember | *(v4 + 5))
+  if (classMember | *(equalCopy + 5))
   {
     if (![(PDDPClassMember *)classMember isEqual:?])
     {
@@ -833,7 +833,7 @@ LABEL_47:
   }
 
   role = self->_role;
-  if (role | *(v4 + 14))
+  if (role | *(equalCopy + 14))
   {
     if (![(PDDPRole *)role isEqual:?])
     {
@@ -842,7 +842,7 @@ LABEL_47:
   }
 
   tempObjectId = self->_tempObjectId;
-  if (tempObjectId | *(v4 + 16))
+  if (tempObjectId | *(equalCopy + 16))
   {
     if (![(NSString *)tempObjectId isEqual:?])
     {
@@ -851,7 +851,7 @@ LABEL_47:
   }
 
   tempParentObjectId = self->_tempParentObjectId;
-  if (tempParentObjectId | *(v4 + 17))
+  if (tempParentObjectId | *(equalCopy + 17))
   {
     if (![(NSString *)tempParentObjectId isEqual:?])
     {
@@ -860,7 +860,7 @@ LABEL_47:
   }
 
   organization = self->_organization;
-  if (organization | *(v4 + 9))
+  if (organization | *(equalCopy + 9))
   {
     if (![(PDDPOrganization *)organization isEqual:?])
     {
@@ -869,7 +869,7 @@ LABEL_47:
   }
 
   adminRequest = self->_adminRequest;
-  if (adminRequest | *(v4 + 2))
+  if (adminRequest | *(equalCopy + 2))
   {
     if (![(PDDPAdminRequestDetails *)adminRequest isEqual:?])
     {
@@ -878,7 +878,7 @@ LABEL_47:
   }
 
   adminRequestAccount = self->_adminRequestAccount;
-  if (adminRequestAccount | *(v4 + 3))
+  if (adminRequestAccount | *(equalCopy + 3))
   {
     if (![(PDDPAdminRequestAccount *)adminRequestAccount isEqual:?])
     {
@@ -887,7 +887,7 @@ LABEL_47:
   }
 
   groupInfo = self->_groupInfo;
-  if (groupInfo | *(v4 + 6))
+  if (groupInfo | *(equalCopy + 6))
   {
     if (![(PDDPGroup *)groupInfo isEqual:?])
     {
@@ -896,7 +896,7 @@ LABEL_47:
   }
 
   groupMember = self->_groupMember;
-  if (groupMember | *(v4 + 7))
+  if (groupMember | *(equalCopy + 7))
   {
     v21 = [(PDDPGroupMember *)groupMember isEqual:?];
   }
@@ -966,15 +966,15 @@ LABEL_8:
   return v15 ^ v19 ^ [(PDDPGroupMember *)self->_groupMember hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v31 = a3;
-  v4 = *(v31 + 148);
+  fromCopy = from;
+  v4 = *(fromCopy + 148);
   if ((v4 & 2) != 0)
   {
-    self->_payloadSize = *(v31 + 20);
+    self->_payloadSize = *(fromCopy + 20);
     *&self->_has |= 2u;
-    v4 = *(v31 + 148);
+    v4 = *(fromCopy + 148);
     if ((v4 & 1) == 0)
     {
 LABEL_3:
@@ -987,23 +987,23 @@ LABEL_3:
     }
   }
 
-  else if ((*(v31 + 148) & 1) == 0)
+  else if ((*(fromCopy + 148) & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_action = *(v31 + 2);
+  self->_action = *(fromCopy + 2);
   *&self->_has |= 1u;
-  if ((*(v31 + 148) & 4) != 0)
+  if ((*(fromCopy + 148) & 4) != 0)
   {
 LABEL_4:
-    self->_type = *(v31 + 36);
+    self->_type = *(fromCopy + 36);
     *&self->_has |= 4u;
   }
 
 LABEL_5:
   status = self->_status;
-  v6 = *(v31 + 15);
+  v6 = *(fromCopy + 15);
   if (status)
   {
     if (v6)
@@ -1018,7 +1018,7 @@ LABEL_5:
   }
 
   requestZone = self->_requestZone;
-  v8 = *(v31 + 12);
+  v8 = *(fromCopy + 12);
   if (requestZone)
   {
     if (v8)
@@ -1033,7 +1033,7 @@ LABEL_5:
   }
 
   responseZone = self->_responseZone;
-  v10 = *(v31 + 13);
+  v10 = *(fromCopy + 13);
   if (responseZone)
   {
     if (v10)
@@ -1048,7 +1048,7 @@ LABEL_5:
   }
 
   location = self->_location;
-  v12 = *(v31 + 8);
+  v12 = *(fromCopy + 8);
   if (location)
   {
     if (v12)
@@ -1063,7 +1063,7 @@ LABEL_5:
   }
 
   person = self->_person;
-  v14 = *(v31 + 11);
+  v14 = *(fromCopy + 11);
   if (person)
   {
     if (v14)
@@ -1078,7 +1078,7 @@ LABEL_5:
   }
 
   classInfo = self->_classInfo;
-  v16 = *(v31 + 4);
+  v16 = *(fromCopy + 4);
   if (classInfo)
   {
     if (v16)
@@ -1093,7 +1093,7 @@ LABEL_5:
   }
 
   classMember = self->_classMember;
-  v18 = *(v31 + 5);
+  v18 = *(fromCopy + 5);
   if (classMember)
   {
     if (v18)
@@ -1108,7 +1108,7 @@ LABEL_5:
   }
 
   role = self->_role;
-  v20 = *(v31 + 14);
+  v20 = *(fromCopy + 14);
   if (role)
   {
     if (v20)
@@ -1122,18 +1122,18 @@ LABEL_5:
     [(PDDPEEPayload *)self setRole:?];
   }
 
-  if (*(v31 + 16))
+  if (*(fromCopy + 16))
   {
     [(PDDPEEPayload *)self setTempObjectId:?];
   }
 
-  if (*(v31 + 17))
+  if (*(fromCopy + 17))
   {
     [(PDDPEEPayload *)self setTempParentObjectId:?];
   }
 
   organization = self->_organization;
-  v22 = *(v31 + 9);
+  v22 = *(fromCopy + 9);
   if (organization)
   {
     if (v22)
@@ -1148,7 +1148,7 @@ LABEL_5:
   }
 
   adminRequest = self->_adminRequest;
-  v24 = *(v31 + 2);
+  v24 = *(fromCopy + 2);
   if (adminRequest)
   {
     if (v24)
@@ -1163,7 +1163,7 @@ LABEL_5:
   }
 
   adminRequestAccount = self->_adminRequestAccount;
-  v26 = *(v31 + 3);
+  v26 = *(fromCopy + 3);
   if (adminRequestAccount)
   {
     if (v26)
@@ -1178,7 +1178,7 @@ LABEL_5:
   }
 
   groupInfo = self->_groupInfo;
-  v28 = *(v31 + 6);
+  v28 = *(fromCopy + 6);
   if (groupInfo)
   {
     if (v28)
@@ -1193,7 +1193,7 @@ LABEL_5:
   }
 
   groupMember = self->_groupMember;
-  v30 = *(v31 + 7);
+  v30 = *(fromCopy + 7);
   if (groupMember)
   {
     if (v30)

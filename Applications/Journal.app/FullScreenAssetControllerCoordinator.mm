@@ -1,6 +1,6 @@
 @interface FullScreenAssetControllerCoordinator
 - (_TtC7Journal36FullScreenAssetControllerCoordinator)init;
-- (void)presentationControllerDidDismiss:(id)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
 @end
 
 @implementation FullScreenAssetControllerCoordinator
@@ -18,7 +18,7 @@
   return [(FullScreenAssetControllerCoordinator *)&v5 init];
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   v3 = *(&self->super.isa + OBJC_IVAR____TtC7Journal36FullScreenAssetControllerCoordinator_presentedController);
   *(&self->super.isa + OBJC_IVAR____TtC7Journal36FullScreenAssetControllerCoordinator_presentedController) = 0;

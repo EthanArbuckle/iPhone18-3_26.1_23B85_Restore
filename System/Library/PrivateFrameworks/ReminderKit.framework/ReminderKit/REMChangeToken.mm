@@ -1,14 +1,14 @@
 @interface REMChangeToken
 + (BOOL)supportsSecureCoding;
-- (BOOL)isEqual:(id)a3;
-- (REMChangeToken)initWithCoder:(id)a3;
-- (int64_t)compareToken:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMChangeToken)initWithCoder:(id)coder;
+- (int64_t)compareToken:(id)token error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMChangeToken
 
-- (int64_t)compareToken:(id)a3 error:(id *)a4
+- (int64_t)compareToken:(id)token error:(id *)error
 {
   v6 = MEMORY[0x1E695DF30];
   v7 = *MEMORY[0x1E695D930];
@@ -16,24 +16,24 @@
   v9 = NSStringFromSelector(a2);
   [v6 raise:v7 format:{@"Abstract method called -[%@ %@]", v8, v9}];
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x1E696ABC0] errorWithREMChangeErrorCode:0];
+    *error = [MEMORY[0x1E696ABC0] errorWithREMChangeErrorCode:0];
   }
 
   return 0;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
-  v7 = a3;
+  equalCopy = equal;
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(a2);
   [v5 raise:v6 format:{@"Abstract method called -[%@ %@]", v8, v9}];
 
-  return self == v7;
+  return self == equalCopy;
 }
 
 + (BOOL)supportsSecureCoding
@@ -47,7 +47,7 @@
   return 0;
 }
 
-- (REMChangeToken)initWithCoder:(id)a3
+- (REMChangeToken)initWithCoder:(id)coder
 {
   v5 = MEMORY[0x1E695DF30];
   v6 = *MEMORY[0x1E695D930];
@@ -58,7 +58,7 @@
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DF30];
   v5 = *MEMORY[0x1E695D930];

@@ -1,5 +1,5 @@
 @interface MessageViewStatusIndicatorManager
-- (id)_accessibilityIdentifierForIndicatorOptions:(unint64_t)a3;
+- (id)_accessibilityIdentifierForIndicatorOptions:(unint64_t)options;
 - (void)updateImageViews;
 @end
 
@@ -7,7 +7,7 @@
 
 - (void)updateImageViews
 {
-  v3 = [(MessageStatusIndicatorManager *)self effectiveIndicatorOptions];
+  effectiveIndicatorOptions = [(MessageStatusIndicatorManager *)self effectiveIndicatorOptions];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -35,7 +35,7 @@
     while (v5);
   }
 
-  if (v3)
+  if (effectiveIndicatorOptions)
   {
     if (!self->_statusIndicatorImageViews)
     {
@@ -49,7 +49,7 @@
     do
     {
       v12 = qword_1004FC318[v10];
-      if ((v12 & v3) != 0)
+      if ((v12 & effectiveIndicatorOptions) != 0)
       {
         v13 = [(MessageStatusIndicatorManager *)self statusIndicatorColorWithOptionsMask:qword_1004FC318[v10]];
         v14 = [(MessageStatusIndicatorManager *)self statusIndicatorImageWithOptionsMask:v12];
@@ -84,46 +84,46 @@
   }
 }
 
-- (id)_accessibilityIdentifierForIndicatorOptions:(unint64_t)a3
+- (id)_accessibilityIdentifierForIndicatorOptions:(unint64_t)options
 {
-  if (a3)
+  if (options)
   {
     v6 = &MSAccessibilityIdentifierMailMessageViewUnread;
   }
 
-  else if ((a3 & 2) != 0)
+  else if ((options & 2) != 0)
   {
     v6 = &MSAccessibilityIdentifierMailMessageViewVIP;
   }
 
-  else if ((a3 & 4) != 0)
+  else if ((options & 4) != 0)
   {
     v6 = &MSAccessibilityIdentifierMailMessageViewFlagged;
   }
 
-  else if ((a3 & 8) != 0)
+  else if ((options & 8) != 0)
   {
     v6 = &MSAccessibilityIdentifierMailMessageViewReplied;
   }
 
-  else if ((a3 & 0x10) != 0)
+  else if ((options & 0x10) != 0)
   {
     v6 = &MSAccessibilityIdentifierMailMessageViewForwarded;
   }
 
-  else if ((a3 & 0x20) != 0)
+  else if ((options & 0x20) != 0)
   {
     v6 = &MSAccessibilityIdentifierMailMessageViewAttachment;
   }
 
-  else if ((a3 & 0x40) != 0)
+  else if ((options & 0x40) != 0)
   {
     v6 = &MSAccessibilityIdentifierMailMessageViewNotify;
   }
 
   else
   {
-    if ((a3 & 0x100) == 0)
+    if ((options & 0x100) == 0)
     {
       v4 = 0;
 

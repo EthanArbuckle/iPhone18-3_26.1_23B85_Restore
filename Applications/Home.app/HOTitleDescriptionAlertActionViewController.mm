@@ -1,19 +1,19 @@
 @interface HOTitleDescriptionAlertActionViewController
 - (CGSize)preferredContentSize;
-- (HOTitleDescriptionAlertActionViewController)initWithCoder:(id)a3;
-- (HOTitleDescriptionAlertActionViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (HOTitleDescriptionAlertActionViewController)initWithTitle:(id)a3 titleColor:(id)a4 description:(id)a5 descriptionColor:(id)a6;
+- (HOTitleDescriptionAlertActionViewController)initWithCoder:(id)coder;
+- (HOTitleDescriptionAlertActionViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (HOTitleDescriptionAlertActionViewController)initWithTitle:(id)title titleColor:(id)color description:(id)description descriptionColor:(id)descriptionColor;
 - (void)loadView;
 @end
 
 @implementation HOTitleDescriptionAlertActionViewController
 
-- (HOTitleDescriptionAlertActionViewController)initWithTitle:(id)a3 titleColor:(id)a4 description:(id)a5 descriptionColor:(id)a6
+- (HOTitleDescriptionAlertActionViewController)initWithTitle:(id)title titleColor:(id)color description:(id)description descriptionColor:(id)descriptionColor
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  titleCopy = title;
+  colorCopy = color;
+  descriptionCopy = description;
+  descriptionColorCopy = descriptionColor;
   v22.receiver = self;
   v22.super_class = HOTitleDescriptionAlertActionViewController;
   v14 = [(HOTitleDescriptionAlertActionViewController *)&v22 initWithNibName:0 bundle:0];
@@ -23,26 +23,26 @@
     titleDescriptionView = v14->_titleDescriptionView;
     v14->_titleDescriptionView = v15;
 
-    v17 = [(HOTitleDescriptionView *)v14->_titleDescriptionView titleLabel];
-    [v17 setText:v10];
+    titleLabel = [(HOTitleDescriptionView *)v14->_titleDescriptionView titleLabel];
+    [titleLabel setText:titleCopy];
 
-    v18 = [(HOTitleDescriptionView *)v14->_titleDescriptionView titleLabel];
-    [v18 setTextColor:v11];
+    titleLabel2 = [(HOTitleDescriptionView *)v14->_titleDescriptionView titleLabel];
+    [titleLabel2 setTextColor:colorCopy];
 
-    if (v12)
+    if (descriptionCopy)
     {
-      v19 = [(HOTitleDescriptionView *)v14->_titleDescriptionView descriptionLabel];
-      [v19 setText:v12];
+      descriptionLabel = [(HOTitleDescriptionView *)v14->_titleDescriptionView descriptionLabel];
+      [descriptionLabel setText:descriptionCopy];
 
-      v20 = [(HOTitleDescriptionView *)v14->_titleDescriptionView descriptionLabel];
-      [v20 setTextColor:v13];
+      descriptionLabel2 = [(HOTitleDescriptionView *)v14->_titleDescriptionView descriptionLabel];
+      [descriptionLabel2 setTextColor:descriptionColorCopy];
     }
   }
 
   return v14;
 }
 
-- (HOTitleDescriptionAlertActionViewController)initWithCoder:(id)a3
+- (HOTitleDescriptionAlertActionViewController)initWithCoder:(id)coder
 {
   v5 = +[NSAssertionHandler currentHandler];
   v6 = NSStringFromSelector("initWithTitle:titleColor:description:descriptionColor:");
@@ -51,9 +51,9 @@
   return 0;
 }
 
-- (HOTitleDescriptionAlertActionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (HOTitleDescriptionAlertActionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v6 = [NSAssertionHandler currentHandler:a3];
+  v6 = [NSAssertionHandler currentHandler:name];
   v7 = NSStringFromSelector("initWithTitle:titleColor:description:descriptionColor:");
   [v6 handleFailureInMethod:a2 object:self file:@"HOTitleDescriptionAlertActionViewController.m" lineNumber:94 description:{@"%s is unavailable; use %@ instead", "-[HOTitleDescriptionAlertActionViewController initWithNibName:bundle:]", v7}];
 
@@ -62,8 +62,8 @@
 
 - (void)loadView
 {
-  v3 = [(HOTitleDescriptionAlertActionViewController *)self titleDescriptionView];
-  [(HOTitleDescriptionAlertActionViewController *)self setView:v3];
+  titleDescriptionView = [(HOTitleDescriptionAlertActionViewController *)self titleDescriptionView];
+  [(HOTitleDescriptionAlertActionViewController *)self setView:titleDescriptionView];
 }
 
 - (CGSize)preferredContentSize

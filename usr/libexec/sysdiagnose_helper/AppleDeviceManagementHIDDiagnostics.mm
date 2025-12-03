@@ -1,31 +1,31 @@
 @interface AppleDeviceManagementHIDDiagnostics
 + (OS_os_log)log;
-+ (void)collectDiagnosticsAndWriteToDirectory:(id)a3;
-- (AppleDeviceManagementHIDDiagnostics)initWithOutputDirectory:(id)a3;
++ (void)collectDiagnosticsAndWriteToDirectory:(id)directory;
+- (AppleDeviceManagementHIDDiagnostics)initWithOutputDirectory:(id)directory;
 - (BOOL)collectErrorStats;
-- (BOOL)handleExtractedErrorStats:(id)a3;
+- (BOOL)handleExtractedErrorStats:(id)stats;
 @end
 
 @implementation AppleDeviceManagementHIDDiagnostics
 
-+ (void)collectDiagnosticsAndWriteToDirectory:(id)a3
++ (void)collectDiagnosticsAndWriteToDirectory:(id)directory
 {
-  v4 = a3;
-  v5 = [a1 log];
+  directoryCopy = directory;
+  v5 = [self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = directoryCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Collecting HID device diagnostics and saving it to directory %@", &v10, 0xCu);
   }
 
-  v6 = [[AppleDeviceManagementHIDDiagnostics alloc] initWithOutputDirectory:v4];
-  v7 = [(AppleDeviceManagementHIDDiagnostics *)v6 collectErrorStats];
-  v8 = [a1 log];
+  v6 = [[AppleDeviceManagementHIDDiagnostics alloc] initWithOutputDirectory:directoryCopy];
+  collectErrorStats = [(AppleDeviceManagementHIDDiagnostics *)v6 collectErrorStats];
+  v8 = [self log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"failure";
-    if (v7)
+    if (collectErrorStats)
     {
       v9 = @"success";
     }
@@ -48,9 +48,9 @@
   return v3;
 }
 
-- (AppleDeviceManagementHIDDiagnostics)initWithOutputDirectory:(id)a3
+- (AppleDeviceManagementHIDDiagnostics)initWithOutputDirectory:(id)directory
 {
-  v5 = a3;
+  directoryCopy = directory;
   v11.receiver = self;
   v11.super_class = AppleDeviceManagementHIDDiagnostics;
   v6 = [(AppleDeviceManagementHIDDiagnostics *)&v11 init];
@@ -60,7 +60,7 @@
     dispatchGroup = v6->_dispatchGroup;
     v6->_dispatchGroup = v7;
 
-    objc_storeStrong(&v6->_directory, a3);
+    objc_storeStrong(&v6->_directory, directory);
     v9 = v6;
   }
 
@@ -72,9 +72,9 @@
   v3 = [objc_opt_class() log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(AppleDeviceManagementHIDDiagnostics *)self directory];
+    directory = [(AppleDeviceManagementHIDDiagnostics *)self directory];
     *buf = 138412290;
-    v56 = *&v4;
+    v56 = *&directory;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Collecting error stats and writing to directory %@", buf, 0xCu);
   }
 
@@ -95,8 +95,8 @@
   v50 = 0u;
   v51 = 0u;
   v41 = v7;
-  v9 = [v7 services];
-  v10 = [v9 countByEnumeratingWithState:&v48 objects:v59 count:16];
+  services = [v7 services];
+  v10 = [services countByEnumeratingWithState:&v48 objects:v59 count:16];
   if (v10)
   {
     v11 = v10;
@@ -107,12 +107,12 @@
       {
         if (*v49 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(services);
         }
 
         v14 = *(*(&v48 + 1) + 8 * i);
-        v15 = [(AppleDeviceManagementHIDDiagnostics *)self dispatchGroup];
-        dispatch_group_enter(v15);
+        dispatchGroup = [(AppleDeviceManagementHIDDiagnostics *)self dispatchGroup];
+        dispatch_group_enter(dispatchGroup);
 
         v16 = [v14 propertyForKey:@"PalmspringCrashlogRequestErrorStats"];
         v17 = v16;
@@ -120,37 +120,37 @@
         {
           if ([v16 intValue])
           {
-            v18 = [(AppleDeviceManagementHIDDiagnostics *)self dispatchGroup];
-            dispatch_group_leave(v18);
+            dispatchGroup2 = [(AppleDeviceManagementHIDDiagnostics *)self dispatchGroup];
+            dispatch_group_leave(dispatchGroup2);
           }
 
           [v8 addObject:v14];
-          v19 = [v17 intValue];
+          intValue = [v17 intValue];
         }
 
         else
         {
-          v20 = [(AppleDeviceManagementHIDDiagnostics *)self dispatchGroup];
-          dispatch_group_leave(v20);
+          dispatchGroup3 = [(AppleDeviceManagementHIDDiagnostics *)self dispatchGroup];
+          dispatch_group_leave(dispatchGroup3);
 
           [v8 addObject:v14];
-          v19 = -536870201;
+          intValue = -536870201;
         }
 
         v21 = [objc_opt_class() log];
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [v14 serviceID];
-          v23 = mach_error_string(v19);
+          serviceID = [v14 serviceID];
+          v23 = mach_error_string(intValue);
           *buf = 134218242;
-          v56 = *&v22;
+          v56 = *&serviceID;
           v57 = 2080;
           v58 = v23;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Get property on service 0x%llX performed to collect error stats, ret: %s", buf, 0x16u);
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v48 objects:v59 count:16];
+      v11 = [services countByEnumeratingWithState:&v48 objects:v59 count:16];
     }
 
     while (v11);
@@ -163,9 +163,9 @@
     _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Waiting to receive notifications from crashlog extraction...", buf, 2u);
   }
 
-  v25 = [(AppleDeviceManagementHIDDiagnostics *)self dispatchGroup];
+  dispatchGroup4 = [(AppleDeviceManagementHIDDiagnostics *)self dispatchGroup];
   v26 = dispatch_time(0, 3000000000);
-  v40 = dispatch_group_wait(v25, v26);
+  v40 = dispatch_group_wait(dispatchGroup4, v26);
 
   v27 = [objc_opt_class() log];
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
@@ -202,9 +202,9 @@
           v36 = [objc_opt_class() log];
           if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
           {
-            v37 = [v34 serviceID];
+            serviceID2 = [v34 serviceID];
             *buf = 134217984;
-            v56 = *&v37;
+            v56 = *&serviceID2;
             _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Successful extraction of error stats from service 0x%llX", buf, 0xCu);
           }
         }
@@ -231,12 +231,12 @@
   return v40 == 0;
 }
 
-- (BOOL)handleExtractedErrorStats:(id)a3
+- (BOOL)handleExtractedErrorStats:(id)stats
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"crashlogData"];
-  v6 = [v4 objectForKeyedSubscript:@"crashlogName"];
-  v7 = [v4 objectForKeyedSubscript:@"crashlogType"];
+  statsCopy = stats;
+  v5 = [statsCopy objectForKeyedSubscript:@"crashlogData"];
+  v6 = [statsCopy objectForKeyedSubscript:@"crashlogName"];
+  v7 = [statsCopy objectForKeyedSubscript:@"crashlogType"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
@@ -261,10 +261,10 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Crashlog %@ with type %@ received via notification", buf, 0x16u);
   }
 
-  v9 = [(AppleDeviceManagementHIDDiagnostics *)self directory];
+  directory = [(AppleDeviceManagementHIDDiagnostics *)self directory];
   v14 = 0;
   v10 = 1;
-  [PalmspringCrashlog writeToDirectory:v9 crashlogData:v5 options:1 error:&v14];
+  [PalmspringCrashlog writeToDirectory:directory crashlogData:v5 options:1 error:&v14];
   v11 = v14;
 
   if (([v7 isEqualToNumber:&off_100076CD0] & 1) == 0)

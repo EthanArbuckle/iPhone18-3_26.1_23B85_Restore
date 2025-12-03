@@ -1,29 +1,29 @@
 @interface PKContinuityProximityBLEAdvertisement
-- (PKContinuityProximityBLEAdvertisement)initWithDictionary:(id)a3;
-- (PKContinuityProximityBLEAdvertisement)initWithIdentifier:(id)a3;
+- (PKContinuityProximityBLEAdvertisement)initWithDictionary:(id)dictionary;
+- (PKContinuityProximityBLEAdvertisement)initWithIdentifier:(id)identifier;
 - (id)_dictionaryRepresentation;
 @end
 
 @implementation PKContinuityProximityBLEAdvertisement
 
-- (PKContinuityProximityBLEAdvertisement)initWithIdentifier:(id)a3
+- (PKContinuityProximityBLEAdvertisement)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v9.receiver = self;
   v9.super_class = PKContinuityProximityBLEAdvertisement;
   v6 = [(PKContinuityProximityAdvertisement *)&v9 initWithType:1];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
   }
 
   return v7;
 }
 
-- (PKContinuityProximityBLEAdvertisement)initWithDictionary:(id)a3
+- (PKContinuityProximityBLEAdvertisement)initWithDictionary:(id)dictionary
 {
-  v4 = [a3 PKStringForKey:@"identifier"];
+  v4 = [dictionary PKStringForKey:@"identifier"];
   if (v4)
   {
     v9.receiver = self;
@@ -36,25 +36,25 @@
     }
 
     self = v6;
-    v7 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)_dictionaryRepresentation
 {
   v5.receiver = self;
   v5.super_class = PKContinuityProximityBLEAdvertisement;
-  v3 = [(PKContinuityProximityAdvertisement *)&v5 _dictionaryRepresentation];
-  [v3 setObject:self->_identifier forKeyedSubscript:@"identifier"];
+  _dictionaryRepresentation = [(PKContinuityProximityAdvertisement *)&v5 _dictionaryRepresentation];
+  [_dictionaryRepresentation setObject:self->_identifier forKeyedSubscript:@"identifier"];
 
-  return v3;
+  return _dictionaryRepresentation;
 }
 
 @end

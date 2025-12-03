@@ -1,8 +1,8 @@
 @interface IAPWorkspaceObserver
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
-- (void)applicationsWillInstall:(id)a3;
-- (void)applicationsWillUninstall:(id)a3;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
+- (void)applicationsWillInstall:(id)install;
+- (void)applicationsWillUninstall:(id)uninstall;
 - (void)startObserving;
 - (void)stopObserving;
 @end
@@ -23,47 +23,47 @@
   [v3 removeObserver:self];
 }
 
-- (void)applicationsWillInstall:(id)a3
+- (void)applicationsWillInstall:(id)install
 {
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
     v6 = self->_delegate;
 
-    [(LSApplicationWorkspaceObserverProtocol *)v6 applicationsWillInstall:a3];
+    [(LSApplicationWorkspaceObserverProtocol *)v6 applicationsWillInstall:install];
   }
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
     v6 = self->_delegate;
 
-    [(LSApplicationWorkspaceObserverProtocol *)v6 applicationsDidInstall:a3];
+    [(LSApplicationWorkspaceObserverProtocol *)v6 applicationsDidInstall:install];
   }
 }
 
-- (void)applicationsWillUninstall:(id)a3
+- (void)applicationsWillUninstall:(id)uninstall
 {
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
     v6 = self->_delegate;
 
-    [(LSApplicationWorkspaceObserverProtocol *)v6 applicationsWillUninstall:a3];
+    [(LSApplicationWorkspaceObserverProtocol *)v6 applicationsWillUninstall:uninstall];
   }
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
   delegate = self->_delegate;
   if (objc_opt_respondsToSelector())
   {
     v6 = self->_delegate;
 
-    [(LSApplicationWorkspaceObserverProtocol *)v6 applicationsDidUninstall:a3];
+    [(LSApplicationWorkspaceObserverProtocol *)v6 applicationsDidUninstall:uninstall];
   }
 }
 

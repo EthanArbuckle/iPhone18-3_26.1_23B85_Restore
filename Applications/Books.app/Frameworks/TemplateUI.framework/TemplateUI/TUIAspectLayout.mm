@@ -20,12 +20,12 @@
   v4 = v3;
   [(TUILayout *)self computeHeight];
   v6 = v5;
-  v7 = [(TUILayout *)self children];
-  v24 = [v7 firstObject];
+  children = [(TUILayout *)self children];
+  firstObject = [children firstObject];
 
-  [v24 setContainingWidth:v4];
-  [v24 setContainingHeight:v6];
-  [v24 computedWidth];
+  [firstObject setContainingWidth:v4];
+  [firstObject setContainingHeight:v6];
+  [firstObject computedWidth];
   if ((v8 & 0x8000000000000) != 0)
   {
     v9 = v4;
@@ -36,8 +36,8 @@
     v9 = NAN;
   }
 
-  [v24 setFlexedWidth:v9];
-  [v24 computedHeight];
+  [firstObject setFlexedWidth:v9];
+  [firstObject computedHeight];
   if ((v10 & 0x8000000000000) != 0)
   {
     v11 = v6;
@@ -48,27 +48,27 @@
     v11 = NAN;
   }
 
-  [v24 setFlexedHeight:v11];
-  [v24 validateLayout];
-  [v24 computedTransformedSize];
+  [firstObject setFlexedHeight:v11];
+  [firstObject validateLayout];
+  [firstObject computedTransformedSize];
   v13 = v12;
   v15 = v14;
   x = CGPointZero.x;
-  v17 = [(TUILayout *)self computedLayoutDirection];
-  v18 = [v24 box];
-  v19 = [v18 halign];
+  computedLayoutDirection = [(TUILayout *)self computedLayoutDirection];
+  v18 = [firstObject box];
+  halign = [v18 halign];
 
-  if (v19 <= 1)
+  if (halign <= 1)
   {
-    if (v19)
+    if (halign)
     {
       v20 = 0.0;
-      if (v17 == 2)
+      if (computedLayoutDirection == 2)
       {
         v20 = 1.0;
       }
 
-      if (v19 == &dword_0 + 1)
+      if (halign == &dword_0 + 1)
       {
         x = v20;
       }
@@ -81,10 +81,10 @@ LABEL_16:
     goto LABEL_20;
   }
 
-  if (v19 == &dword_0 + 3)
+  if (halign == &dword_0 + 3)
   {
     v20 = 0.0;
-    if (v17 == 2)
+    if (computedLayoutDirection == 2)
     {
       x = 0.0;
     }
@@ -97,26 +97,26 @@ LABEL_16:
     goto LABEL_20;
   }
 
-  if (v19 == &dword_0 + 2)
+  if (halign == &dword_0 + 2)
   {
     goto LABEL_16;
   }
 
 LABEL_20:
-  v21 = [v24 box];
-  v22 = [v21 valign];
+  v21 = [firstObject box];
+  valign = [v21 valign];
 
-  if (v22 > 4)
+  if (valign > 4)
   {
     y = CGPointZero.y;
   }
 
   else
   {
-    y = dbl_24CF20[v22];
+    y = dbl_24CF20[valign];
   }
 
-  [v24 setComputedOrigin:{(v4 - v13) * x, (v6 - v15) * y}];
+  [firstObject setComputedOrigin:{(v4 - v13) * x, (v6 - v15) * y}];
   [(TUILayout *)self setComputedNaturalSize:v4, v6];
 }
 

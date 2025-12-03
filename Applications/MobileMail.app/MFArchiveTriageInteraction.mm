@@ -85,26 +85,26 @@
 
 - (BOOL)isMessageListItemSelectionSourceArchive
 {
-  v3 = [(MFTriageInteraction *)self messageListItemSelection];
-  v4 = [v3 isSelectAll];
+  messageListItemSelection = [(MFTriageInteraction *)self messageListItemSelection];
+  isSelectAll = [messageListItemSelection isSelectAll];
 
-  v5 = [(MFTriageInteraction *)self messageListItemSelection];
-  v6 = v5;
-  if (v4)
+  messageListItemSelection2 = [(MFTriageInteraction *)self messageListItemSelection];
+  v6 = messageListItemSelection2;
+  if (isSelectAll)
   {
-    v7 = [v5 mailboxes];
-    v8 = [v7 ef_all:&stru_1006532D8];
+    mailboxes = [messageListItemSelection2 mailboxes];
+    v8 = [mailboxes ef_all:&stru_1006532D8];
   }
 
   else
   {
-    v9 = [v5 messageListItems];
+    messageListItems = [messageListItemSelection2 messageListItems];
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_1001A537C;
     v11[3] = &unk_100653300;
     v12 = &stru_1006532B8;
-    v8 = [v9 ef_all:v11];
+    v8 = [messageListItems ef_all:v11];
   }
 
   return v8;

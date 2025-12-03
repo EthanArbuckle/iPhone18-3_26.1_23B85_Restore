@@ -1,9 +1,9 @@
 @interface MADPhotosFullTaskProvider
 - (BOOL)assetsDownloadAllowed;
-- (BOOL)checkCompatibilityForAsset:(id)a3;
-- (MADPhotosFullTaskProvider)initWithPhotoLibrary:(id)a3 cancelBlock:(id)a4 progressReporter:(id)a5 mediaType:(int64_t)a6 mediaSubtype:(unint64_t)a7 imageOnlyAnalysis:(BOOL)a8;
+- (BOOL)checkCompatibilityForAsset:(id)asset;
+- (MADPhotosFullTaskProvider)initWithPhotoLibrary:(id)library cancelBlock:(id)block progressReporter:(id)reporter mediaType:(int64_t)type mediaSubtype:(unint64_t)subtype imageOnlyAnalysis:(BOOL)analysis;
 - (id)assetPriorities;
-- (id)assetTaskWithAnalysisDatabase:(id)a3;
+- (id)assetTaskWithAnalysisDatabase:(id)database;
 - (id)mediaTypePredicatesString;
 - (id)nextAssetProcessingTask;
 - (id)nextClusterProcessingTask;
@@ -14,7 +14,7 @@
 - (unint64_t)priority;
 - (unint64_t)processingStatusTaskID;
 - (void)increaseProcessedJobCountByOne;
-- (void)retireTask:(id)a3;
+- (void)retireTask:(id)task;
 @end
 
 @implementation MADPhotosFullTaskProvider
@@ -31,18 +31,18 @@
     v3 = 0;
   }
 
-  v4 = [(MADPhotosTaskProvider *)self photoLibrary];
-  v5 = [v4 isSystemPhotoLibrary];
+  photoLibrary = [(MADPhotosTaskProvider *)self photoLibrary];
+  isSystemPhotoLibrary = [photoLibrary isSystemPhotoLibrary];
 
-  if (v5)
+  if (isSystemPhotoLibrary)
   {
     return v3 + 2;
   }
 
-  v7 = [(MADPhotosTaskProvider *)self photoLibrary];
-  v8 = [v7 vcp_isSyndicationLibrary];
+  photoLibrary2 = [(MADPhotosTaskProvider *)self photoLibrary];
+  vcp_isSyndicationLibrary = [photoLibrary2 vcp_isSyndicationLibrary];
 
-  return v3 | v8;
+  return v3 | vcp_isSyndicationLibrary;
 }
 
 - (unint64_t)iterations
@@ -97,14 +97,14 @@
   }
 }
 
-- (BOOL)checkCompatibilityForAsset:(id)a3
+- (BOOL)checkCompatibilityForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = v4;
+  assetCopy = asset;
+  v5 = assetCopy;
   if (!self->_imageOnlyAnalysis)
   {
     mediaType = self->_mediaType;
-    if (mediaType != [v4 mediaType] || objc_msgSend(v5, "mad_isNonLivePhotoImage"))
+    if (mediaType != [assetCopy mediaType] || objc_msgSend(v5, "mad_isNonLivePhotoImage"))
     {
       if (MediaAnalysisLogLevel() >= 3)
       {
@@ -113,9 +113,9 @@
         {
           logPrefix = self->_logPrefix;
           logDescription = self->_logDescription;
-          v14 = [v5 localIdentifier];
-          v15 = [v5 mediaType];
-          v16 = [v5 mediaSubtypes];
+          localIdentifier = [v5 localIdentifier];
+          mediaType = [v5 mediaType];
+          mediaSubtypes = [v5 mediaSubtypes];
           v17 = self->_mediaType;
           mediaSubtype = self->_mediaSubtype;
           v21 = 138413826;
@@ -123,11 +123,11 @@
           v23 = 2112;
           v24 = logDescription;
           v25 = 2112;
-          v26 = v14;
+          v26 = localIdentifier;
           v27 = 2048;
-          v28 = v15;
+          v28 = mediaType;
           v29 = 2048;
-          v30 = v16;
+          v30 = mediaSubtypes;
           v31 = 2048;
           v32 = v17;
           v33 = 2048;
@@ -156,13 +156,13 @@ LABEL_14:
     {
       v7 = self->_logPrefix;
       v8 = self->_logDescription;
-      v9 = [v5 localIdentifier];
+      localIdentifier2 = [v5 localIdentifier];
       v21 = 138412802;
       v22 = v7;
       v23 = 2112;
       v24 = v8;
       v25 = 2112;
-      v26 = v9;
+      v26 = localIdentifier2;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v6, "%@[%@][%@] Skip processing Live Photos/Movies during full image-only processing on non-GM device", &v21, 0x20u);
     }
   }
@@ -174,24 +174,24 @@ LABEL_15:
   return v19;
 }
 
-- (MADPhotosFullTaskProvider)initWithPhotoLibrary:(id)a3 cancelBlock:(id)a4 progressReporter:(id)a5 mediaType:(int64_t)a6 mediaSubtype:(unint64_t)a7 imageOnlyAnalysis:(BOOL)a8
+- (MADPhotosFullTaskProvider)initWithPhotoLibrary:(id)library cancelBlock:(id)block progressReporter:(id)reporter mediaType:(int64_t)type mediaSubtype:(unint64_t)subtype imageOnlyAnalysis:(BOOL)analysis
 {
-  v8 = a8;
-  v14 = a3;
-  v15 = a4;
-  v28 = a5;
+  analysisCopy = analysis;
+  libraryCopy = library;
+  blockCopy = block;
+  reporterCopy = reporter;
   v29.receiver = self;
   v29.super_class = MADPhotosFullTaskProvider;
-  v16 = [(MADPhotosTaskProvider *)&v29 initWithPhotoLibrary:v14 cancelBlock:v15];
+  v16 = [(MADPhotosTaskProvider *)&v29 initWithPhotoLibrary:libraryCopy cancelBlock:blockCopy];
   v17 = v16;
   if (v16)
   {
-    v16->_mediaType = a6;
-    v16->_mediaSubtype = a7;
-    v16->_imageOnlyAnalysis = v8;
-    objc_storeStrong(&v16->_progressReporter, a5);
-    v18 = [v14 vcp_description];
-    v19 = [NSString stringWithFormat:@"[%@][%@]", v18, objc_opt_class()];
+    v16->_mediaType = type;
+    v16->_mediaSubtype = subtype;
+    v16->_imageOnlyAnalysis = analysisCopy;
+    objc_storeStrong(&v16->_progressReporter, reporter);
+    vcp_description = [libraryCopy vcp_description];
+    v19 = [NSString stringWithFormat:@"[%@][%@]", vcp_description, objc_opt_class()];
     logPrefix = v17->_logPrefix;
     v17->_logPrefix = v19;
 
@@ -200,7 +200,7 @@ LABEL_15:
     if (mediaType == 2)
     {
       v25 = &stru_1002890F8;
-      if (v8)
+      if (analysisCopy)
       {
         v25 = @"|ImageOnly";
       }
@@ -217,7 +217,7 @@ LABEL_15:
         v22 = @"LivePhoto";
       }
 
-      if (v17->_mediaSubtype == 8 && v8)
+      if (v17->_mediaSubtype == 8 && analysisCopy)
       {
         v23 = @"|ImageOnly";
       }
@@ -341,15 +341,15 @@ LABEL_15:
     return v4;
   }
 
-  v8 = [(MADPhotosTaskProvider *)self photoLibrary];
-  v9 = [v8 vcp_isCPLEnabled];
+  photoLibrary = [(MADPhotosTaskProvider *)self photoLibrary];
+  vcp_isCPLEnabled = [photoLibrary vcp_isCPLEnabled];
 
-  if (v9)
+  if (vcp_isCPLEnabled)
   {
     v10 = +[VCPInternetReachability sharedInstance];
-    v11 = [v10 hasWifiOrEthernetConnection];
+    hasWifiOrEthernetConnection = [v10 hasWifiOrEthernetConnection];
 
-    if (v11)
+    if (hasWifiOrEthernetConnection)
     {
       LOBYTE(v4) = 1;
       return v4;
@@ -399,16 +399,16 @@ LABEL_15:
   return v4;
 }
 
-- (id)assetTaskWithAnalysisDatabase:(id)a3
+- (id)assetTaskWithAnalysisDatabase:(id)database
 {
-  v4 = a3;
-  v5 = [(MADPhotosTaskProvider *)self photoLibrary];
+  databaseCopy = database;
+  photoLibrary = [(MADPhotosTaskProvider *)self photoLibrary];
   progressReporter = self->_progressReporter;
   mediaType = self->_mediaType;
   mediaSubtype = self->_mediaSubtype;
   imageOnlyAnalysis = self->_imageOnlyAnalysis;
   LOBYTE(v12) = [(MADPhotosFullTaskProvider *)self assetsDownloadAllowed];
-  v10 = [MADPhotosFullAssetProcessingTask taskWithAnalysisDatabase:v4 photoLibrary:v5 progressReporter:progressReporter mediaType:mediaType mediaSubtype:mediaSubtype imageOnlyAnalysis:imageOnlyAnalysis downloadAllowed:v12];
+  v10 = [MADPhotosFullAssetProcessingTask taskWithAnalysisDatabase:databaseCopy photoLibrary:photoLibrary progressReporter:progressReporter mediaType:mediaType mediaSubtype:mediaSubtype imageOnlyAnalysis:imageOnlyAnalysis downloadAllowed:v12];
 
   return v10;
 }
@@ -419,7 +419,7 @@ LABEL_15:
   [v3 start];
   v9.receiver = self;
   v9.super_class = MADPhotosFullTaskProvider;
-  v4 = [(MADPhotosTaskProvider *)&v9 nextAssetProcessingTask];
+  nextAssetProcessingTask = [(MADPhotosTaskProvider *)&v9 nextAssetProcessingTask];
   [v3 stop];
   v5 = VCPCoreAnalyticsFieldForFull(self->_imageOnlyAnalysis, self->_mediaType, self->_mediaSubtype, 0);
   if (v5)
@@ -429,12 +429,12 @@ LABEL_15:
     [v6 accumulateDoubleValue:v5 forField:@"com.apple.mediaanalysisd.FullAnalysisRunSession" andEvent:?];
   }
 
-  if (v4)
+  if (nextAssetProcessingTask)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      self->_fetchedP1AssetCount += [v4 p1AssetCount];
+      self->_fetchedP1AssetCount += [nextAssetProcessingTask p1AssetCount];
     }
 
     else if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_FAULT))
@@ -442,10 +442,10 @@ LABEL_15:
       sub_1000B8C80(self);
     }
 
-    v7 = v4;
+    v7 = nextAssetProcessingTask;
   }
 
-  return v4;
+  return nextAssetProcessingTask;
 }
 
 - (id)nextDownloadAssetProcessingTask
@@ -467,17 +467,17 @@ LABEL_15:
       }
     }
 
-    v6 = 0;
+    nextDownloadAssetProcessingTask = 0;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = MADPhotosFullTaskProvider;
-    v6 = [(MADPhotosTaskProvider *)&v8 nextDownloadAssetProcessingTask];
+    nextDownloadAssetProcessingTask = [(MADPhotosTaskProvider *)&v8 nextDownloadAssetProcessingTask];
   }
 
-  return v6;
+  return nextDownloadAssetProcessingTask;
 }
 
 - (id)nextClusterProcessingTask
@@ -492,17 +492,17 @@ LABEL_15:
     {
       if (+[MADManagedKeyValueStore isMACDReadEnabled])
       {
-        v6 = [(MADPhotosTaskProvider *)self photoLibrary];
-        v7 = [v6 mad_fetchRequest];
-        [v7 dataStoreValueForKey:VCPKeyValueMediaAnalysisImagePriority1LastFullModeClusterTimestamp];
+        photoLibrary = [(MADPhotosTaskProvider *)self photoLibrary];
+        mad_fetchRequest = [photoLibrary mad_fetchRequest];
+        [mad_fetchRequest dataStoreValueForKey:VCPKeyValueMediaAnalysisImagePriority1LastFullModeClusterTimestamp];
 
         v4 = 1;
       }
 
       else
       {
-        v8 = [(MADPhotosTaskProvider *)self photoLibrary];
-        v9 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v8];
+        photoLibrary2 = [(MADPhotosTaskProvider *)self photoLibrary];
+        v9 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:photoLibrary2];
 
         v10 = [v9 valueForKey:VCPKeyValueMediaAnalysisImagePriority1LastFullModeClusterTimestamp];
         v4 = v10 == 0;
@@ -534,17 +534,17 @@ LABEL_15:
 
     if (!_os_feature_enabled_impl())
     {
-      v25 = [(MADPhotosTaskProvider *)self photoLibrary];
-      v26 = [MADPhotosFullClusterProcessingTask taskWithPhotoLibrary:v25];
+      photoLibrary3 = [(MADPhotosTaskProvider *)self photoLibrary];
+      v26 = [MADPhotosFullClusterProcessingTask taskWithPhotoLibrary:photoLibrary3];
 
       [v26 setRequiresProgressQuery:v4];
       goto LABEL_33;
     }
 
     v15 = +[NSProcessInfo processInfo];
-    v16 = [v15 processName];
+    processName = [v15 processName];
 
-    if (![v16 isEqualToString:@"mediaanalysisd"])
+    if (![processName isEqualToString:@"mediaanalysisd"])
     {
       if (MediaAnalysisLogLevel() >= 6)
       {
@@ -623,17 +623,17 @@ LABEL_26:
     {
       if (+[MADManagedKeyValueStore isMACDPersistEnabled])
       {
-        v31 = [(MADPhotosTaskProvider *)self photoLibrary];
-        [v31 mad_performAnalysisDataStoreChanges:&stru_100285778 error:0];
+        photoLibrary4 = [(MADPhotosTaskProvider *)self photoLibrary];
+        [photoLibrary4 mad_performAnalysisDataStoreChanges:&stru_100285778 error:0];
       }
 
       else
       {
-        v32 = [(MADPhotosTaskProvider *)self photoLibrary];
-        v31 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:v32];
+        photoLibrary5 = [(MADPhotosTaskProvider *)self photoLibrary];
+        photoLibrary4 = [VCPDatabaseManager sharedDatabaseForPhotoLibrary:photoLibrary5];
 
-        [v31 setValue:1 forKey:VCPKeyValueMediaAnalysisFullClusterProgressQuery];
-        [v31 commit];
+        [photoLibrary4 setValue:1 forKey:VCPKeyValueMediaAnalysisFullClusterProgressQuery];
+        [photoLibrary4 commit];
       }
     }
   }
@@ -644,19 +644,19 @@ LABEL_33:
   return v26;
 }
 
-- (void)retireTask:(id)a3
+- (void)retireTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v10.receiver = self;
   v10.super_class = MADPhotosFullTaskProvider;
-  [(MADPhotosTaskProvider *)&v10 retireTask:v4];
+  [(MADPhotosTaskProvider *)&v10 retireTask:taskCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 p1AssetCount];
-    if (v5)
+    p1AssetCount = [taskCopy p1AssetCount];
+    if (p1AssetCount)
     {
-      v6 = v5 + self->_retiredP1AssetCount;
+      v6 = p1AssetCount + self->_retiredP1AssetCount;
       self->_retiredP1AssetCount = v6;
       if (self->_imageOnlyAnalysis && v6 == self->_fetchedP1AssetCount && [(MADPhotosTaskProvider *)self currentAssetPriority]!= 1)
       {

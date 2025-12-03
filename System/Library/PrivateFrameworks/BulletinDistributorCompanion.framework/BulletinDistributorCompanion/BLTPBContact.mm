@@ -1,12 +1,12 @@
 @interface BLTPBContact
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BLTPBContact
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = BLTPBContact;
   v4 = [(BLTPBContact *)&v8 description];
-  v5 = [(BLTPBContact *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BLTPBContact *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   handle = self->_handle;
   if (handle)
   {
-    [v3 setObject:handle forKey:@"handle"];
+    [dictionary setObject:handle forKey:@"handle"];
   }
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_handleType];
@@ -78,9 +78,9 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
+  toCopy = to;
   if (self->_handle)
   {
     PBDataWriterWriteStringField();
@@ -116,84 +116,84 @@
     PBDataWriterWriteBOOLField();
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if (self->_customIdentifier)
   {
     PBDataWriterWriteStringField();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_handle)
   {
-    [v4 setHandle:?];
-    v4 = v5;
+    [toCopy setHandle:?];
+    toCopy = v5;
   }
 
-  *(v4 + 12) = self->_handleType;
+  *(toCopy + 12) = self->_handleType;
   if (self->_serviceName)
   {
     [v5 setServiceName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_displayName)
   {
     [v5 setDisplayName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_cnContactIdentifier)
   {
     [v5 setCnContactIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_cnContactFullname)
   {
     [v5 setCnContactFullname:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
-  *(v4 + 64) = self->_cnContactIdentifierSuggested;
+  *(toCopy + 64) = self->_cnContactIdentifierSuggested;
   if (*&self->_has)
   {
-    *(v4 + 65) = self->_displayNameSuggested;
-    *(v4 + 68) |= 1u;
+    *(toCopy + 65) = self->_displayNameSuggested;
+    *(toCopy + 68) |= 1u;
   }
 
   if (self->_customIdentifier)
   {
     [v5 setCustomIdentifier:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_handle copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_handle copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
   *(v5 + 48) = self->_handleType;
-  v8 = [(NSString *)self->_serviceName copyWithZone:a3];
+  v8 = [(NSString *)self->_serviceName copyWithZone:zone];
   v9 = *(v5 + 56);
   *(v5 + 56) = v8;
 
-  v10 = [(NSString *)self->_displayName copyWithZone:a3];
+  v10 = [(NSString *)self->_displayName copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
-  v12 = [(NSString *)self->_cnContactIdentifier copyWithZone:a3];
+  v12 = [(NSString *)self->_cnContactIdentifier copyWithZone:zone];
   v13 = *(v5 + 16);
   *(v5 + 16) = v12;
 
-  v14 = [(NSString *)self->_cnContactFullname copyWithZone:a3];
+  v14 = [(NSString *)self->_cnContactFullname copyWithZone:zone];
   v15 = *(v5 + 8);
   *(v5 + 8) = v14;
 
@@ -204,23 +204,23 @@
     *(v5 + 68) |= 1u;
   }
 
-  v16 = [(NSString *)self->_customIdentifier copyWithZone:a3];
+  v16 = [(NSString *)self->_customIdentifier copyWithZone:zone];
   v17 = *(v5 + 24);
   *(v5 + 24) = v16;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   handle = self->_handle;
-  if (handle | *(v4 + 5))
+  if (handle | *(equalCopy + 5))
   {
     if (![(NSString *)handle isEqual:?])
     {
@@ -228,13 +228,13 @@
     }
   }
 
-  if (self->_handleType != *(v4 + 12))
+  if (self->_handleType != *(equalCopy + 12))
   {
     goto LABEL_22;
   }
 
   serviceName = self->_serviceName;
-  if (serviceName | *(v4 + 7))
+  if (serviceName | *(equalCopy + 7))
   {
     if (![(NSString *)serviceName isEqual:?])
     {
@@ -243,7 +243,7 @@
   }
 
   displayName = self->_displayName;
-  if (displayName | *(v4 + 4))
+  if (displayName | *(equalCopy + 4))
   {
     if (![(NSString *)displayName isEqual:?])
     {
@@ -252,7 +252,7 @@
   }
 
   cnContactIdentifier = self->_cnContactIdentifier;
-  if (cnContactIdentifier | *(v4 + 2))
+  if (cnContactIdentifier | *(equalCopy + 2))
   {
     if (![(NSString *)cnContactIdentifier isEqual:?])
     {
@@ -261,7 +261,7 @@
   }
 
   cnContactFullname = self->_cnContactFullname;
-  if (cnContactFullname | *(v4 + 1))
+  if (cnContactFullname | *(equalCopy + 1))
   {
     if (![(NSString *)cnContactFullname isEqual:?])
     {
@@ -269,32 +269,32 @@
     }
   }
 
-  v10 = *(v4 + 64);
+  v10 = *(equalCopy + 64);
   if (self->_cnContactIdentifierSuggested)
   {
-    if ((*(v4 + 64) & 1) == 0)
+    if ((*(equalCopy + 64) & 1) == 0)
     {
       goto LABEL_22;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_22;
   }
 
-  v11 = *(v4 + 68);
+  v11 = *(equalCopy + 68);
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_18;
   }
 
-  if ((*(v4 + 68) & 1) == 0)
+  if ((*(equalCopy + 68) & 1) == 0)
   {
     goto LABEL_22;
   }
 
-  v11 = *(v4 + 65);
+  v11 = *(equalCopy + 65);
   if (!self->_displayNameSuggested)
   {
 LABEL_18:
@@ -308,14 +308,14 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  if ((*(v4 + 65) & 1) == 0)
+  if ((*(equalCopy + 65) & 1) == 0)
   {
     goto LABEL_22;
   }
 
 LABEL_19:
   customIdentifier = self->_customIdentifier;
-  if (customIdentifier | *(v4 + 3))
+  if (customIdentifier | *(equalCopy + 3))
   {
     v13 = [(NSString *)customIdentifier isEqual:?];
   }
@@ -352,52 +352,52 @@ LABEL_23:
   return (2654435761 * handleType) ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ (2654435761 * cnContactIdentifierSuggested) ^ v10 ^ [(NSString *)self->_customIdentifier hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 5))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(BLTPBContact *)self setHandle:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_handleType = *(v4 + 12);
-  if (*(v4 + 7))
+  self->_handleType = *(fromCopy + 12);
+  if (*(fromCopy + 7))
   {
     [(BLTPBContact *)self setServiceName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BLTPBContact *)self setDisplayName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(BLTPBContact *)self setCnContactIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 1))
+  if (*(fromCopy + 1))
   {
     [(BLTPBContact *)self setCnContactFullname:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_cnContactIdentifierSuggested = *(v4 + 64);
-  if (*(v4 + 68))
+  self->_cnContactIdentifierSuggested = *(fromCopy + 64);
+  if (*(fromCopy + 68))
   {
-    self->_displayNameSuggested = *(v4 + 65);
+    self->_displayNameSuggested = *(fromCopy + 65);
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BLTPBContact *)self setCustomIdentifier:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

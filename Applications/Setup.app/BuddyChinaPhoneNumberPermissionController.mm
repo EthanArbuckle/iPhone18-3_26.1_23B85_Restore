@@ -27,21 +27,21 @@
 
 - (void)viewDidLoad
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6.receiver = self;
   v6.super_class = BuddyChinaPhoneNumberPermissionController;
   [(BuddyPhoneNumberPermissionController *)&v6 viewDidLoad];
-  v2 = [(BuddyChinaPhoneNumberPermissionController *)v8 headerView];
+  headerView = [(BuddyChinaPhoneNumberPermissionController *)selfCopy headerView];
   v3 = +[NSBundle mainBundle];
   v4 = [UIDevice modelSpecificLocalizedStringKeyForKey:@"PHONE_NUMBER_PERMISSION_INFO_WITH_WIRELESS_DATA_NOTICE"];
   v5 = [(NSBundle *)v3 localizedStringForKey:v4 value:&stru_10032F900 table:@"Localizable"];
-  [v2 setDetailText:v5];
+  [headerView setDetailText:v5];
 }
 
 - (BOOL)controllerNeedsToRun
 {
-  v12 = self;
+  selfCopy = self;
   v11 = a2;
   v10.receiver = self;
   v10.super_class = BuddyChinaPhoneNumberPermissionController;
@@ -50,10 +50,10 @@
     return 0;
   }
 
-  v2 = [(BuddyPhoneNumberPermissionController *)v12 capabilities];
-  v3 = [(BYCapabilities *)v2 mgHasGreenTea];
+  capabilities = [(BuddyPhoneNumberPermissionController *)selfCopy capabilities];
+  mgHasGreenTea = [(BYCapabilities *)capabilities mgHasGreenTea];
 
-  if (v3)
+  if (mgHasGreenTea)
   {
     return 1;
   }

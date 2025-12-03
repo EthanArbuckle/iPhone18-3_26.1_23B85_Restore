@@ -1,22 +1,22 @@
 @interface CKMessagesControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)loadView;
-- (void)setChatController:(id)a3;
+- (void)setChatController:(id)controller;
 @end
 
 @implementation CKMessagesControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKMessagesController" isKindOfClass:@"UISplitViewController"];
-  [v3 validateClass:@"CKMessagesController" hasProperty:@"chatController" withType:"@"];
-  [v3 validateClass:@"CKMessagesController" hasInstanceMethod:@"setChatController:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CKMessagesController" hasProperty:@"conversationListController" withType:"@"];
-  [v3 validateClass:@"CKConversationListCollectionViewController" hasProperty:@"collectionView" withType:"@"];
-  [v3 validateClass:@"CKMessagesController" hasInstanceMethod:@"conversationListController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKConversationListCollectionViewController" isKindOfClass:@"UIViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKMessagesController" isKindOfClass:@"UISplitViewController"];
+  [validationsCopy validateClass:@"CKMessagesController" hasProperty:@"chatController" withType:"@"];
+  [validationsCopy validateClass:@"CKMessagesController" hasInstanceMethod:@"setChatController:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CKMessagesController" hasProperty:@"conversationListController" withType:"@"];
+  [validationsCopy validateClass:@"CKConversationListCollectionViewController" hasProperty:@"collectionView" withType:"@"];
+  [validationsCopy validateClass:@"CKMessagesController" hasInstanceMethod:@"conversationListController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKConversationListCollectionViewController" isKindOfClass:@"UIViewController"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -24,8 +24,8 @@
   v7.receiver = self;
   v7.super_class = CKMessagesControllerAccessibility;
   [(CKMessagesControllerAccessibility *)&v7 _accessibilityLoadAccessibilityInformation];
-  v3 = [(CKMessagesControllerAccessibility *)self _accessibilityWindow];
-  [v3 setAccessibilityIdentifier:@"AXChatMainWindow"];
+  _accessibilityWindow = [(CKMessagesControllerAccessibility *)self _accessibilityWindow];
+  [_accessibilityWindow setAccessibilityIdentifier:@"AXChatMainWindow"];
 
   v4 = [(CKMessagesControllerAccessibility *)self safeValueForKey:@"conversationListController"];
   objc_opt_class();
@@ -48,9 +48,9 @@
   [(CKMessagesControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 
-- (void)setChatController:(id)a3
+- (void)setChatController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8 = 0;
   objc_opt_class();
   v5 = [(CKMessagesControllerAccessibility *)self safeValueForKey:@"chatController"];
@@ -58,9 +58,9 @@
 
   v7.receiver = self;
   v7.super_class = CKMessagesControllerAccessibility;
-  [(CKMessagesControllerAccessibility *)&v7 setChatController:v4];
+  [(CKMessagesControllerAccessibility *)&v7 setChatController:controllerCopy];
   [v6 _accessibilityReloadElementRelations:0];
-  if (v4)
+  if (controllerCopy)
   {
     AXPerformBlockOnMainThreadAfterDelay();
   }

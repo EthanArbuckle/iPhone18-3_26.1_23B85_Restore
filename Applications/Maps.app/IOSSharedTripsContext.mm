@@ -1,6 +1,6 @@
 @interface IOSSharedTripsContext
 - (ActionCoordination)delegate;
-- (BOOL)provideAttachmentsForRadarDraft:(id)a3 withCompletion:(id)a4;
+- (BOOL)provideAttachmentsForRadarDraft:(id)draft withCompletion:(id)completion;
 - (ChromeViewController)chromeViewController;
 - (id)cameraController;
 - (id)desiredCards;
@@ -10,17 +10,17 @@
 - (id)searchPinsManager;
 - (id)sharedTripsAnnotationsController;
 - (id)windowScene;
-- (void)_presentCardForSharedTrip:(id)a3;
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
+- (void)_presentCardForSharedTrip:(id)trip;
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
 - (void)closeSharedTripDetail;
 - (void)didRequestContactsCard;
-- (void)didRequestDirectionsForSharedTrip:(id)a3;
-- (void)didSelectStopWithMapItem:(id)a3;
+- (void)didRequestDirectionsForSharedTrip:(id)trip;
+- (void)didSelectStopWithMapItem:(id)item;
 - (void)dismiss;
 - (void)presentDetailsForSelectedTrip;
-- (void)presentErrorForChinaTrip:(id)a3;
-- (void)presentErrorForUnsupportedProtocolOrTransportWithTrip:(id)a3;
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4;
+- (void)presentErrorForChinaTrip:(id)trip;
+- (void)presentErrorForUnsupportedProtocolOrTransportWithTrip:(id)trip;
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation;
 @end
 
 @implementation IOSSharedTripsContext
@@ -41,25 +41,25 @@
 
 - (void)dismiss
 {
-  v3 = [(IOSSharedTripsContext *)self chromeViewController];
-  v4 = [v3 isCurrentContext:self];
+  chromeViewController = [(IOSSharedTripsContext *)self chromeViewController];
+  v4 = [chromeViewController isCurrentContext:self];
 
-  v5 = [(IOSSharedTripsContext *)self chromeViewController];
-  v10 = v5;
+  chromeViewController2 = [(IOSSharedTripsContext *)self chromeViewController];
+  v10 = chromeViewController2;
   if (v4)
   {
-    [v5 popContextAnimated:1 completion:0];
+    [chromeViewController2 popContextAnimated:1 completion:0];
     v6 = v10;
   }
 
   else
   {
-    v7 = [v5 contexts];
-    v8 = [v7 mutableCopy];
+    contexts = [chromeViewController2 contexts];
+    v8 = [contexts mutableCopy];
 
     [v8 removeObject:self];
-    v9 = [(IOSSharedTripsContext *)self chromeViewController];
-    [v9 setContexts:v8 animated:0 completion:0];
+    chromeViewController3 = [(IOSSharedTripsContext *)self chromeViewController];
+    [chromeViewController3 setContexts:v8 animated:0 completion:0];
 
     v6 = v8;
   }
@@ -68,18 +68,18 @@
 - (void)didRequestContactsCard
 {
   v3 = +[AddressBookManager sharedManager];
-  v4 = [(SharedTripsContext *)self selectedTrip];
-  v5 = [v4 senderInfo];
-  v6 = [v5 localContactIdentifier];
-  v7 = [v3 contactForCNContactIdentifier:v6];
+  selectedTrip = [(SharedTripsContext *)self selectedTrip];
+  senderInfo = [selectedTrip senderInfo];
+  localContactIdentifier = [senderInfo localContactIdentifier];
+  v7 = [v3 contactForCNContactIdentifier:localContactIdentifier];
 
   if (v7)
   {
     v8 = [CNContactViewController viewControllerForContact:v7];
     [v8 setDelegate:self];
     v9 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"dismissContactsViewController"];
-    v10 = [v8 navigationItem];
-    [v10 setBackBarButtonItem:v9];
+    navigationItem = [v8 navigationItem];
+    [navigationItem setBackBarButtonItem:v9];
 
     [v8 setDisplayMode:1];
     v11 = [[UINavigationController alloc] initWithRootViewController:v8];
@@ -87,8 +87,8 @@
     self->_contactsViewController = v11;
     v13 = v11;
 
-    v14 = [(IOSSharedTripsContext *)self chromeViewController];
-    [v14 _maps_topMostPresentViewController:self->_contactsViewController animated:1 completion:0];
+    chromeViewController = [(IOSSharedTripsContext *)self chromeViewController];
+    [chromeViewController _maps_topMostPresentViewController:self->_contactsViewController animated:1 completion:0];
   }
 
   else
@@ -102,15 +102,15 @@
   }
 }
 
-- (void)didRequestDirectionsForSharedTrip:(id)a3
+- (void)didRequestDirectionsForSharedTrip:(id)trip
 {
-  v4 = a3;
-  v5 = [(IOSSharedTripsContext *)self chromeViewController];
-  [v5 popContextAnimated:1 completion:0];
+  tripCopy = trip;
+  chromeViewController = [(IOSSharedTripsContext *)self chromeViewController];
+  [chromeViewController popContextAnimated:1 completion:0];
 
-  v6 = [v4 destinationWaypointMapItem];
+  destinationWaypointMapItem = [tripCopy destinationWaypointMapItem];
 
-  v7 = [MKMapItem _itemWithGeoMapItem:v6];
+  v7 = [MKMapItem _itemWithGeoMapItem:destinationWaypointMapItem];
   v12 = v7;
   v8 = [NSArray arrayWithObjects:&v12 count:1];
   v10 = MKLaunchOptionsDirectionsModeKey;
@@ -119,61 +119,61 @@
   [MKMapItem openMapsWithItems:v8 launchOptions:v9 completionHandler:&stru_10164C708];
 }
 
-- (void)_presentCardForSharedTrip:(id)a3
+- (void)_presentCardForSharedTrip:(id)trip
 {
-  v4 = a3;
-  v5 = [[SharedTripContaineeViewController alloc] initWithSharedTrip:v4];
+  tripCopy = trip;
+  v5 = [[SharedTripContaineeViewController alloc] initWithSharedTrip:tripCopy];
 
   sharedTripInfoController = self->_sharedTripInfoController;
   self->_sharedTripInfoController = v5;
 
   [(SharedTripContaineeViewController *)self->_sharedTripInfoController setActionDelegate:self];
-  v7 = [(IOSSharedTripsContext *)self chromeViewController];
-  [v7 setNeedsUpdateComponent:@"cards" animated:1];
+  chromeViewController = [(IOSSharedTripsContext *)self chromeViewController];
+  [chromeViewController setNeedsUpdateComponent:@"cards" animated:1];
 }
 
-- (BOOL)provideAttachmentsForRadarDraft:(id)a3 withCompletion:(id)a4
+- (BOOL)provideAttachmentsForRadarDraft:(id)draft withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SharedTripsContext *)self sharedTrips];
-  v9 = [v8 count];
+  draftCopy = draft;
+  completionCopy = completion;
+  sharedTrips = [(SharedTripsContext *)self sharedTrips];
+  v9 = [sharedTrips count];
   if (v9)
   {
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100BB2308;
     block[3] = &unk_1016605F8;
-    v12 = v6;
-    v13 = v8;
-    v14 = v7;
+    v12 = draftCopy;
+    v13 = sharedTrips;
+    v14 = completionCopy;
     dispatch_async(&_dispatch_main_q, block);
   }
 
   return v9 != 0;
 }
 
-- (void)presentErrorForUnsupportedProtocolOrTransportWithTrip:(id)a3
+- (void)presentErrorForUnsupportedProtocolOrTransportWithTrip:(id)trip
 {
-  v4 = a3;
-  v5 = [(IOSSharedTripsContext *)self delegate];
-  [v5 presentUnsupportedTransportTypeOrProtocolAlertForSharedTrip:v4];
+  tripCopy = trip;
+  delegate = [(IOSSharedTripsContext *)self delegate];
+  [delegate presentUnsupportedTransportTypeOrProtocolAlertForSharedTrip:tripCopy];
 }
 
-- (void)presentErrorForChinaTrip:(id)a3
+- (void)presentErrorForChinaTrip:(id)trip
 {
-  v4 = a3;
-  v5 = [(IOSSharedTripsContext *)self delegate];
-  [v5 presentChinaAlertForSharedTrip:v4];
+  tripCopy = trip;
+  delegate = [(IOSSharedTripsContext *)self delegate];
+  [delegate presentChinaAlertForSharedTrip:tripCopy];
 }
 
 - (void)presentDetailsForSelectedTrip
 {
-  v3 = [(SharedTripsContext *)self selectedTrip];
+  selectedTrip = [(SharedTripsContext *)self selectedTrip];
 
-  if (v3)
+  if (selectedTrip)
   {
-    v4 = [(SharedTripsContext *)self selectedTrip];
+    selectedTrip2 = [(SharedTripsContext *)self selectedTrip];
     [(IOSSharedTripsContext *)self _presentCardForSharedTrip:?];
   }
 
@@ -184,63 +184,63 @@
       return;
     }
 
-    v4 = [(IOSSharedTripsContext *)self chromeViewController];
-    [v4 setNeedsUpdateComponent:@"cards" animated:1];
+    selectedTrip2 = [(IOSSharedTripsContext *)self chromeViewController];
+    [selectedTrip2 setNeedsUpdateComponent:@"cards" animated:1];
   }
 }
 
 - (id)sharedTripsAnnotationsController
 {
-  v2 = [(IOSSharedTripsContext *)self iosBasedChromeViewController];
-  v3 = [v2 sharedTripsAnnotationsController];
+  iosBasedChromeViewController = [(IOSSharedTripsContext *)self iosBasedChromeViewController];
+  sharedTripsAnnotationsController = [iosBasedChromeViewController sharedTripsAnnotationsController];
 
-  return v3;
+  return sharedTripsAnnotationsController;
 }
 
 - (id)searchPinsManager
 {
-  v2 = [(IOSSharedTripsContext *)self iosBasedChromeViewController];
-  v3 = [v2 searchPinsManager];
+  iosBasedChromeViewController = [(IOSSharedTripsContext *)self iosBasedChromeViewController];
+  searchPinsManager = [iosBasedChromeViewController searchPinsManager];
 
-  return v3;
+  return searchPinsManager;
 }
 
 - (id)routeAnnotationsController
 {
-  v2 = [(IOSSharedTripsContext *)self iosBasedChromeViewController];
-  v3 = [v2 routeAnnotationsController];
+  iosBasedChromeViewController = [(IOSSharedTripsContext *)self iosBasedChromeViewController];
+  routeAnnotationsController = [iosBasedChromeViewController routeAnnotationsController];
 
-  return v3;
+  return routeAnnotationsController;
 }
 
 - (id)personalizedItemManager
 {
-  v2 = [(IOSSharedTripsContext *)self iosBasedChromeViewController];
-  v3 = [v2 personalizedItemManager];
+  iosBasedChromeViewController = [(IOSSharedTripsContext *)self iosBasedChromeViewController];
+  personalizedItemManager = [iosBasedChromeViewController personalizedItemManager];
 
-  return v3;
+  return personalizedItemManager;
 }
 
 - (id)mapView
 {
-  v2 = [(IOSSharedTripsContext *)self chromeViewController];
-  v3 = [v2 mapView];
+  chromeViewController = [(IOSSharedTripsContext *)self chromeViewController];
+  mapView = [chromeViewController mapView];
 
-  return v3;
+  return mapView;
 }
 
 - (id)cameraController
 {
-  v2 = [(IOSSharedTripsContext *)self iosBasedChromeViewController];
-  v3 = [v2 mapCameraController];
+  iosBasedChromeViewController = [(IOSSharedTripsContext *)self iosBasedChromeViewController];
+  mapCameraController = [iosBasedChromeViewController mapCameraController];
 
-  return v3;
+  return mapCameraController;
 }
 
 - (void)closeSharedTripDetail
 {
-  v3 = [(SharedTripsContext *)self sharedTrips];
-  if ([v3 count] < 2)
+  sharedTrips = [(SharedTripsContext *)self sharedTrips];
+  if ([sharedTrips count] < 2)
   {
   }
 
@@ -254,8 +254,8 @@
       sharedTripInfoController = self->_sharedTripInfoController;
       self->_sharedTripInfoController = 0;
 
-      v6 = [(IOSSharedTripsContext *)self chromeViewController];
-      [v6 setNeedsUpdateComponent:@"cards" animated:1];
+      chromeViewController = [(IOSSharedTripsContext *)self chromeViewController];
+      [chromeViewController setNeedsUpdateComponent:@"cards" animated:1];
 
       return;
     }
@@ -264,10 +264,10 @@
   [(IOSSharedTripsContext *)self dismiss];
 }
 
-- (void)didSelectStopWithMapItem:(id)a3
+- (void)didSelectStopWithMapItem:(id)item
 {
-  v4 = a3;
-  v5 = [v4 _displayMapRegion];
+  itemCopy = item;
+  _displayMapRegion = [itemCopy _displayMapRegion];
   GEOMapRectForMapRegion();
   v18 = MKCoordinateRegionForMapRect(v17);
   latitude = v18.center.latitude;
@@ -275,49 +275,49 @@
   latitudeDelta = v18.span.latitudeDelta;
   longitudeDelta = v18.span.longitudeDelta;
 
-  v10 = [(IOSSharedTripsContext *)self chromeViewController];
-  v11 = [v10 mapView];
-  [v11 setRegion:1 animated:{latitude, longitude, latitudeDelta, longitudeDelta}];
+  chromeViewController = [(IOSSharedTripsContext *)self chromeViewController];
+  mapView = [chromeViewController mapView];
+  [mapView setRegion:1 animated:{latitude, longitude, latitudeDelta, longitudeDelta}];
 
-  v15 = [[PlaceCardItem alloc] initWithMapItem:v4];
+  v15 = [[PlaceCardItem alloc] initWithMapItem:itemCopy];
   v12 = [[_TtC4Maps29PlaceCardContextConfiguration alloc] initWithPlaceCardItem:v15 shouldInsertInHistory:0 excludedContent:[(IOSSharedTripsContext *)self _placeCardExcludedContent] buildingMultistopRoute:0];
   v13 = [[_TtC4Maps16PlaceCardContext alloc] initWithConfiguration:v12];
-  v14 = [(IOSSharedTripsContext *)self chromeViewController];
-  [v14 pushContext:v13 animated:1 completion:0];
+  chromeViewController2 = [(IOSSharedTripsContext *)self chromeViewController];
+  [chromeViewController2 pushContext:v13 animated:1 completion:0];
 }
 
 - (id)windowScene
 {
-  v2 = [(IOSSharedTripsContext *)self chromeViewController];
-  v3 = [v2 view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
+  chromeViewController = [(IOSSharedTripsContext *)self chromeViewController];
+  view = [chromeViewController view];
+  window = [view window];
+  windowScene = [window windowScene];
 
-  return v5;
+  return windowScene;
 }
 
-- (void)resignTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)resignTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v5 = a4;
+  animationCopy = animation;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100BB2B08;
   v6[3] = &unk_101661AE0;
-  v7 = [v5 isAnimated];
+  isAnimated = [animationCopy isAnimated];
   v6[4] = self;
-  [v5 addPreparation:v6];
+  [animationCopy addPreparation:v6];
 }
 
-- (void)becomeTopContextInChromeViewController:(id)a3 withAnimation:(id)a4
+- (void)becomeTopContextInChromeViewController:(id)controller withAnimation:(id)animation
 {
-  v5 = a4;
+  animationCopy = animation;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100BB2BD8;
   v6[3] = &unk_101661AE0;
-  v7 = [v5 isAnimated];
+  isAnimated = [animationCopy isAnimated];
   v6[4] = self;
-  [v5 addPreparation:v6];
+  [animationCopy addPreparation:v6];
 }
 
 - (id)desiredCards

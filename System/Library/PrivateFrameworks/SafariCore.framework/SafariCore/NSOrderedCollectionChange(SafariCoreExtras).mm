@@ -7,8 +7,8 @@
 - (id)safari_changeRemovingAssociatedIndex
 {
   v2 = objc_alloc(objc_opt_class());
-  v3 = [a1 object];
-  v4 = [v2 initWithObject:v3 type:objc_msgSend(a1 index:{"changeType"), objc_msgSend(a1, "index")}];
+  object = [self object];
+  v4 = [v2 initWithObject:object type:objc_msgSend(self index:{"changeType"), objc_msgSend(self, "index")}];
 
   return v4;
 }

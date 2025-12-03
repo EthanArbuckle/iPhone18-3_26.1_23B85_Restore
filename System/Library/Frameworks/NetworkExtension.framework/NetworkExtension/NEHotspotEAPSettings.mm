@@ -1,10 +1,10 @@
 @interface NEHotspotEAPSettings
 - (BOOL)setIdentity:(SecIdentityRef)identity;
 - (BOOL)setTrustedServerCertificates:(NSArray *)certificates;
-- (NEHotspotEAPSettings)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (NEHotspotEAPSettings)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEHotspotEAPSettings
@@ -109,7 +109,7 @@ LABEL_11:
       v13 = v12;
       v14 = *v32;
       v15 = *MEMORY[0x1E697B3D0];
-      v30 = self;
+      selfCopy = self;
 LABEL_10:
       v16 = 0;
       while (1)
@@ -179,7 +179,7 @@ LABEL_30:
         if (v13 == ++v16)
         {
           v13 = [(NSArray *)v11 countByEnumeratingWithState:&v31 objects:v40 count:16];
-          self = v30;
+          self = selfCopy;
           if (v13)
           {
             goto LABEL_10;
@@ -232,97 +232,97 @@ LABEL_27:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v12 = a3;
-  v4 = [(NEHotspotEAPSettings *)self supportedEAPTypes];
-  [v12 encodeObject:v4 forKey:@"SupportedEAPTypes"];
+  coderCopy = coder;
+  supportedEAPTypes = [(NEHotspotEAPSettings *)self supportedEAPTypes];
+  [coderCopy encodeObject:supportedEAPTypes forKey:@"SupportedEAPTypes"];
 
-  v5 = [(NEHotspotEAPSettings *)self username];
-  [v12 encodeObject:v5 forKey:@"UserName"];
+  username = [(NEHotspotEAPSettings *)self username];
+  [coderCopy encodeObject:username forKey:@"UserName"];
 
-  v6 = [(NEHotspotEAPSettings *)self outerIdentity];
-  [v12 encodeObject:v6 forKey:@"OuterIdentity"];
+  outerIdentity = [(NEHotspotEAPSettings *)self outerIdentity];
+  [coderCopy encodeObject:outerIdentity forKey:@"OuterIdentity"];
 
-  [v12 encodeInt64:-[NEHotspotEAPSettings ttlsInnerAuthenticationType](self forKey:{"ttlsInnerAuthenticationType"), @"TTLSInnerAuthenticationType"}];
-  v7 = [(NEHotspotEAPSettings *)self password];
-  [v12 encodeObject:v7 forKey:@"UserPassword"];
+  [coderCopy encodeInt64:-[NEHotspotEAPSettings ttlsInnerAuthenticationType](self forKey:{"ttlsInnerAuthenticationType"), @"TTLSInnerAuthenticationType"}];
+  password = [(NEHotspotEAPSettings *)self password];
+  [coderCopy encodeObject:password forKey:@"UserPassword"];
 
-  v8 = [(NEHotspotEAPSettings *)self identityReference];
-  [v12 encodeObject:v8 forKey:@"IdentityReference"];
+  identityReference = [(NEHotspotEAPSettings *)self identityReference];
+  [coderCopy encodeObject:identityReference forKey:@"IdentityReference"];
 
-  v9 = [(NEHotspotEAPSettings *)self clientTrustChainReference];
-  [v12 encodeObject:v9 forKey:@"ClientTrustChainReference"];
+  clientTrustChainReference = [(NEHotspotEAPSettings *)self clientTrustChainReference];
+  [coderCopy encodeObject:clientTrustChainReference forKey:@"ClientTrustChainReference"];
 
-  v10 = [(NEHotspotEAPSettings *)self trustedServerNames];
-  [v12 encodeObject:v10 forKey:@"TrustedServerNames"];
+  trustedServerNames = [(NEHotspotEAPSettings *)self trustedServerNames];
+  [coderCopy encodeObject:trustedServerNames forKey:@"TrustedServerNames"];
 
-  v11 = [(NEHotspotEAPSettings *)self trustedServerCertificateReferences];
-  [v12 encodeObject:v11 forKey:@"TrustedServerCertificateRefs"];
+  trustedServerCertificateReferences = [(NEHotspotEAPSettings *)self trustedServerCertificateReferences];
+  [coderCopy encodeObject:trustedServerCertificateReferences forKey:@"TrustedServerCertificateRefs"];
 
-  [v12 encodeBool:-[NEHotspotEAPSettings isTLSClientCertificateRequired](self forKey:{"isTLSClientCertificateRequired"), @"TLSIsCertificateRequiredKey"}];
-  [v12 encodeInt64:-[NEHotspotEAPSettings preferredTLSVersion](self forKey:{"preferredTLSVersion"), @"PreferredTLSVersion"}];
+  [coderCopy encodeBool:-[NEHotspotEAPSettings isTLSClientCertificateRequired](self forKey:{"isTLSClientCertificateRequired"), @"TLSIsCertificateRequiredKey"}];
+  [coderCopy encodeInt64:-[NEHotspotEAPSettings preferredTLSVersion](self forKey:{"preferredTLSVersion"), @"PreferredTLSVersion"}];
 }
 
-- (NEHotspotEAPSettings)initWithCoder:(id)a3
+- (NEHotspotEAPSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NEHotspotEAPSettings *)self init];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"SupportedEAPTypes"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"SupportedEAPTypes"];
     supportedEAPTypes = v5->_supportedEAPTypes;
     v5->_supportedEAPTypes = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserName"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserName"];
     username = v5->_username;
     v5->_username = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"OuterIdentity"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"OuterIdentity"];
     outerIdentity = v5->_outerIdentity;
     v5->_outerIdentity = v13;
 
-    v5->_ttlsInnerAuthenticationType = [v4 decodeInt64ForKey:@"TTLSInnerAuthenticationType"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserPassword"];
+    v5->_ttlsInnerAuthenticationType = [coderCopy decodeInt64ForKey:@"TTLSInnerAuthenticationType"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserPassword"];
     password = v5->_password;
     v5->_password = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IdentityReference"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IdentityReference"];
     identityReference = v5->_identityReference;
     v5->_identityReference = v17;
 
     v19 = MEMORY[0x1E695DFD8];
     v20 = objc_opt_class();
     v21 = [v19 setWithObjects:{v20, objc_opt_class(), 0}];
-    v22 = [v4 decodeObjectOfClasses:v21 forKey:@"ClientTrustChainReference"];
+    v22 = [coderCopy decodeObjectOfClasses:v21 forKey:@"ClientTrustChainReference"];
     clientTrustChainReference = v5->_clientTrustChainReference;
     v5->_clientTrustChainReference = v22;
 
     v24 = MEMORY[0x1E695DFD8];
     v25 = objc_opt_class();
     v26 = [v24 setWithObjects:{v25, objc_opt_class(), 0}];
-    v27 = [v4 decodeObjectOfClasses:v26 forKey:@"TrustedServerNames"];
+    v27 = [coderCopy decodeObjectOfClasses:v26 forKey:@"TrustedServerNames"];
     trustedServerNames = v5->_trustedServerNames;
     v5->_trustedServerNames = v27;
 
     v29 = MEMORY[0x1E695DFD8];
     v30 = objc_opt_class();
     v31 = [v29 setWithObjects:{v30, objc_opt_class(), 0}];
-    v32 = [v4 decodeObjectOfClasses:v31 forKey:@"TrustedServerCertificateRefs"];
+    v32 = [coderCopy decodeObjectOfClasses:v31 forKey:@"TrustedServerCertificateRefs"];
     trustedServerCertificateReferences = v5->_trustedServerCertificateReferences;
     v5->_trustedServerCertificateReferences = v32;
 
-    v5->_tlsClientCertificateRequired = [v4 decodeBoolForKey:@"TLSIsCertificateRequiredKey"];
-    v5->_preferredTLSVersion = [v4 decodeInt64ForKey:@"PreferredTLSVersion"];
+    v5->_tlsClientCertificateRequired = [coderCopy decodeBoolForKey:@"TLSIsCertificateRequiredKey"];
+    v5->_preferredTLSVersion = [coderCopy decodeInt64ForKey:@"PreferredTLSVersion"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[NEHotspotEAPSettings allocWithZone:?]];
   [(NEHotspotEAPSettings *)v4 setSupportedEAPTypes:self->_supportedEAPTypes];
@@ -342,42 +342,42 @@ LABEL_27:
 - (id)description
 {
   v3 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v4 = [(NEHotspotEAPSettings *)self supportedEAPTypes];
-  [v3 appendPrettyObject:v4 withName:@"Supported EAP Types" andIndent:0 options:0];
+  supportedEAPTypes = [(NEHotspotEAPSettings *)self supportedEAPTypes];
+  [v3 appendPrettyObject:supportedEAPTypes withName:@"Supported EAP Types" andIndent:0 options:0];
 
-  v5 = [(NEHotspotEAPSettings *)self username];
-  v6 = [v5 length];
+  username = [(NEHotspotEAPSettings *)self username];
+  v6 = [username length];
 
   if (v6)
   {
-    v7 = [(NEHotspotEAPSettings *)self username];
-    [v3 appendPrettyObject:v7 withName:@"Username" andIndent:0 options:0];
+    username2 = [(NEHotspotEAPSettings *)self username];
+    [v3 appendPrettyObject:username2 withName:@"Username" andIndent:0 options:0];
   }
 
-  v8 = [(NEHotspotEAPSettings *)self password];
-  v9 = [v8 length];
+  password = [(NEHotspotEAPSettings *)self password];
+  v9 = [password length];
 
   if (v9)
   {
-    v10 = [(NEHotspotEAPSettings *)self password];
-    [v3 appendPrettyObject:v10 withName:@"Password" andIndent:0 options:3];
+    password2 = [(NEHotspotEAPSettings *)self password];
+    [v3 appendPrettyObject:password2 withName:@"Password" andIndent:0 options:3];
   }
 
-  v11 = [(NEHotspotEAPSettings *)self outerIdentity];
-  v12 = [v11 length];
+  outerIdentity = [(NEHotspotEAPSettings *)self outerIdentity];
+  v12 = [outerIdentity length];
 
   if (v12)
   {
-    v13 = [(NEHotspotEAPSettings *)self outerIdentity];
-    [v3 appendPrettyObject:v13 withName:@"Outer Identity" andIndent:0 options:0];
+    outerIdentity2 = [(NEHotspotEAPSettings *)self outerIdentity];
+    [v3 appendPrettyObject:outerIdentity2 withName:@"Outer Identity" andIndent:0 options:0];
   }
 
-  v14 = [(NEHotspotEAPSettings *)self trustedServerNames];
+  trustedServerNames = [(NEHotspotEAPSettings *)self trustedServerNames];
 
-  if (v14)
+  if (trustedServerNames)
   {
-    v15 = [(NEHotspotEAPSettings *)self trustedServerNames];
-    [v3 appendPrettyObject:v15 withName:@"Trusted Server Names" andIndent:0 options:0];
+    trustedServerNames2 = [(NEHotspotEAPSettings *)self trustedServerNames];
+    [v3 appendPrettyObject:trustedServerNames2 withName:@"Trusted Server Names" andIndent:0 options:0];
   }
 
   if ([(NEHotspotEAPSettings *)self isTLSClientCertificateRequired])
@@ -391,15 +391,15 @@ LABEL_27:
   }
 
   [v3 appendPrettyObject:v16 withName:@"TLS Client Certificate Required" andIndent:0 options:0];
-  v17 = [(NEHotspotEAPSettings *)self preferredTLSVersion];
-  if (v17 > NEHotspotConfigurationEAPTLSVersion_1_2)
+  preferredTLSVersion = [(NEHotspotEAPSettings *)self preferredTLSVersion];
+  if (preferredTLSVersion > NEHotspotConfigurationEAPTLSVersion_1_2)
   {
     v18 = @"TLS 1.2";
   }
 
   else
   {
-    v18 = off_1E7F07B18[v17];
+    v18 = off_1E7F07B18[preferredTLSVersion];
   }
 
   [v3 appendPrettyObject:v18 withName:@"Preferred TLS Version" andIndent:0 options:0];

@@ -1,6 +1,6 @@
 @interface __StringStorage
 - (_TtCs15__StringStorage)init;
-- (const)cStringUsingEncoding:(unint64_t)a3;
+- (const)cStringUsingEncoding:(unint64_t)encoding;
 - (unint64_t)fastestEncoding;
 - (unint64_t)hash;
 @end
@@ -28,19 +28,19 @@
   }
 }
 
-- (const)cStringUsingEncoding:(unint64_t)a3
+- (const)cStringUsingEncoding:(unint64_t)encoding
 {
   if ((*self->_countAndFlags & 0x8000000000000000) != 0)
   {
-    if (a3 > 0x1E || ((1 << a3) & 0x40000012) == 0)
+    if (encoding > 0x1E || ((1 << encoding) & 0x40000012) == 0)
     {
-      return _swift_stdlib_NSStringCStringUsingEncodingTrampoline(self, a3);
+      return _swift_stdlib_NSStringCStringUsingEncodingTrampoline(self, encoding);
     }
   }
 
-  else if (a3 != 4)
+  else if (encoding != 4)
   {
-    return _swift_stdlib_NSStringCStringUsingEncodingTrampoline(self, a3);
+    return _swift_stdlib_NSStringCStringUsingEncodingTrampoline(self, encoding);
   }
 
   return &self[1];

@@ -1,9 +1,9 @@
 @interface TPSUserTypesValidation
 + (BOOL)isBetaBuild;
 + (BOOL)isInternalBuild;
-+ (BOOL)isUserMatchingType:(id)a3;
-- (TPSUserTypesValidation)initWithTargetUserTypes:(id)a3 excludeUserTypes:(id)a4;
-- (void)validateWithCompletion:(id)a3;
++ (BOOL)isUserMatchingType:(id)type;
+- (TPSUserTypesValidation)initWithTargetUserTypes:(id)types excludeUserTypes:(id)userTypes;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSUserTypesValidation
@@ -22,15 +22,15 @@
   return [v2 isUserMatchingType:@"Internal"];
 }
 
-+ (BOOL)isUserMatchingType:(id)a3
++ (BOOL)isUserMatchingType:(id)type
 {
   v3 = MEMORY[0x277D71740];
-  v4 = a3;
-  v5 = [v3 releaseType];
-  v6 = v5;
-  if (v5)
+  typeCopy = type;
+  releaseType = [v3 releaseType];
+  v6 = releaseType;
+  if (releaseType)
   {
-    v7 = v5;
+    v7 = releaseType;
   }
 
   else
@@ -40,15 +40,15 @@
 
   v8 = v7;
 
-  v9 = [v8 isEqualToString:v4];
+  v9 = [v8 isEqualToString:typeCopy];
   return v9;
 }
 
-- (TPSUserTypesValidation)initWithTargetUserTypes:(id)a3 excludeUserTypes:(id)a4
+- (TPSUserTypesValidation)initWithTargetUserTypes:(id)types excludeUserTypes:(id)userTypes
 {
-  v6 = a4;
-  v7 = [a3 valueForKeyPath:@"lowercaseString"];
-  v8 = [v6 valueForKeyPath:@"lowercaseString"];
+  userTypesCopy = userTypes;
+  v7 = [types valueForKeyPath:@"lowercaseString"];
+  v8 = [userTypesCopy valueForKeyPath:@"lowercaseString"];
 
   v11.receiver = self;
   v11.super_class = TPSUserTypesValidation;
@@ -57,34 +57,34 @@
   return v9;
 }
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TPSUserTypesValidation *)self targetUserTypes];
-  if ([v5 count])
+  completionCopy = completion;
+  targetUserTypes = [(TPSUserTypesValidation *)self targetUserTypes];
+  if ([targetUserTypes count])
   {
 
 LABEL_4:
-    v8 = [MEMORY[0x277D716E8] sharedInstance];
-    v9 = [v8 userType];
+    mEMORY[0x277D716E8] = [MEMORY[0x277D716E8] sharedInstance];
+    userType = [mEMORY[0x277D716E8] userType];
 
-    if (v9 > 2)
+    if (userType > 2)
     {
       v10 = 0;
     }
 
     else
     {
-      v10 = off_2789B1150[v9];
+      v10 = off_2789B1150[userType];
     }
 
-    v11 = [(__CFString *)v10 lowercaseString];
-    v12 = [(TPSUserTypesValidation *)self targetUserTypes];
-    if ([v12 count])
+    lowercaseString = [(__CFString *)v10 lowercaseString];
+    targetUserTypes2 = [(TPSUserTypesValidation *)self targetUserTypes];
+    if ([targetUserTypes2 count])
     {
-      v13 = [(TPSUserTypesValidation *)self targetUserTypes];
-      v14 = [v13 containsObject:v11];
+      targetUserTypes3 = [(TPSUserTypesValidation *)self targetUserTypes];
+      v14 = [targetUserTypes3 containsObject:lowercaseString];
     }
 
     else
@@ -92,53 +92,53 @@ LABEL_4:
       v14 = 1;
     }
 
-    v15 = [(TPSUserTypesValidation *)self excludeUserTypes];
-    v16 = [v15 containsObject:v11];
+    excludeUserTypes = [(TPSUserTypesValidation *)self excludeUserTypes];
+    v16 = [excludeUserTypes containsObject:lowercaseString];
 
     v17 = v14 & (v16 ^ 1u);
-    v18 = [MEMORY[0x277D71778] targeting];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
+    targeting = [MEMORY[0x277D71778] targeting];
+    if (os_log_type_enabled(targeting, OS_LOG_TYPE_DEBUG))
     {
       v20 = objc_opt_class();
       v21 = v20;
-      v22 = [(TPSUserTypesValidation *)self targetUserTypes];
-      v23 = [v22 componentsJoinedByString:{@", "}];
-      v24 = [(TPSUserTypesValidation *)self excludeUserTypes];
-      v25 = [v24 componentsJoinedByString:{@", "}];
+      targetUserTypes4 = [(TPSUserTypesValidation *)self targetUserTypes];
+      v23 = [targetUserTypes4 componentsJoinedByString:{@", "}];
+      excludeUserTypes2 = [(TPSUserTypesValidation *)self excludeUserTypes];
+      v25 = [excludeUserTypes2 componentsJoinedByString:{@", "}];
       v26 = 138413314;
       v27 = v20;
       v28 = 2112;
-      v29 = v11;
+      v29 = lowercaseString;
       v30 = 2112;
       v31 = v23;
       v32 = 2112;
       v33 = v25;
       v34 = 1024;
       v35 = v17;
-      _os_log_debug_impl(&dword_232D6F000, v18, OS_LOG_TYPE_DEBUG, "%@ - checking user type: %@, target user types: %@, exclude user types: %@. Valid: %d", &v26, 0x30u);
+      _os_log_debug_impl(&dword_232D6F000, targeting, OS_LOG_TYPE_DEBUG, "%@ - checking user type: %@, target user types: %@, exclude user types: %@. Valid: %d", &v26, 0x30u);
     }
 
     goto LABEL_13;
   }
 
-  v6 = [(TPSUserTypesValidation *)self excludeUserTypes];
-  v7 = [v6 count];
+  excludeUserTypes3 = [(TPSUserTypesValidation *)self excludeUserTypes];
+  v7 = [excludeUserTypes3 count];
 
   if (v7)
   {
     goto LABEL_4;
   }
 
-  v11 = [MEMORY[0x277D71778] targeting];
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+  lowercaseString = [MEMORY[0x277D71778] targeting];
+  if (os_log_type_enabled(lowercaseString, OS_LOG_TYPE_DEBUG))
   {
-    [(TPSUserTypesValidation *)self validateWithCompletion:v11];
+    [(TPSUserTypesValidation *)self validateWithCompletion:lowercaseString];
   }
 
   v17 = 1;
 LABEL_13:
 
-  v4[2](v4, v17, 0);
+  completionCopy[2](completionCopy, v17, 0);
   v19 = *MEMORY[0x277D85DE8];
 }
 

@@ -1,9 +1,9 @@
 @interface BKDefaults
-+ (BOOL)setNumber:(id)a3 forKey:(id)a4 withError:(id *)a5;
-+ (BOOL)setString:(id)a3 forKey:(id)a4 withError:(id *)a5;
++ (BOOL)setNumber:(id)number forKey:(id)key withError:(id *)error;
++ (BOOL)setString:(id)string forKey:(id)key withError:(id *)error;
 + (id)device;
-+ (id)numberForKey:(id)a3 withError:(id *)a4;
-+ (id)stringForKey:(id)a3 withError:(id *)a4;
++ (id)numberForKey:(id)key withError:(id *)error;
++ (id)stringForKey:(id)key withError:(id *)error;
 @end
 
 @implementation BKDefaults
@@ -12,11 +12,11 @@
 {
   v15 = *MEMORY[0x1E69E9840];
   v2 = +[BKDeviceManager availableDevices];
-  v3 = [v2 firstObject];
-  if (v3)
+  firstObject = [v2 firstObject];
+  if (firstObject)
   {
     v10 = 0;
-    v4 = [BKDevice deviceWithDescriptor:v3 error:&v10];
+    v4 = [BKDevice deviceWithDescriptor:firstObject error:&v10];
     v5 = v10;
     if (!v4)
     {
@@ -24,7 +24,7 @@
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v12 = v3;
+        v12 = firstObject;
         v13 = 2112;
         v14 = v5;
         _os_log_impl(&dword_1C82AD000, v6, OS_LOG_TYPE_ERROR, "Cannot instantiate device with descriptor %@, error %@\n", buf, 0x16u);
@@ -58,10 +58,10 @@
   return v4;
 }
 
-+ (id)numberForKey:(id)a3 withError:(id *)a4
++ (id)numberForKey:(id)key withError:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  keyCopy = key;
   v7 = MEMORY[0x1E69E9C10];
   if (__osLogTrace)
   {
@@ -76,24 +76,24 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *&buf[4] = v6;
+    *&buf[4] = keyCopy;
     _os_log_impl(&dword_1C82AD000, v8, OS_LOG_TYPE_DEFAULT, "BKDefaults::numberForKey: %@\n", buf, 0xCu);
   }
 
-  v9 = [a1 device];
-  v10 = v9;
-  if (v9)
+  device = [self device];
+  v10 = device;
+  if (device)
   {
-    v11 = *(v9 + 8);
+    v11 = *(device + 8);
     v22 = 0;
-    v12 = [v11 getPreferencesValue:&v22 forKey:v6];
+    v12 = [v11 getPreferencesValue:&v22 forKey:keyCopy];
     v13 = v22;
     v14 = v13;
     if (!v12)
     {
       if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
-        [BKDefaults numberForKey:a4 withError:?];
+        [BKDefaults numberForKey:error withError:?];
         v15 = 0;
       }
 
@@ -109,9 +109,9 @@
 
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        if (a4)
+        if (error)
         {
-          v16 = *a4;
+          v16 = *error;
         }
 
         else
@@ -120,7 +120,7 @@
         }
 
         *buf = 138412802;
-        *&buf[4] = v6;
+        *&buf[4] = keyCopy;
         v25 = 2112;
         v26 = v15;
         v27 = 2112;
@@ -140,7 +140,7 @@
   }
 
   v14 = *buf;
-  setErrorWithOSStatus(v23, a4);
+  setErrorWithOSStatus(v23, error);
   if (__osLogTrace)
   {
     v20 = __osLogTrace;
@@ -153,9 +153,9 @@
 
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
-    if (a4)
+    if (error)
     {
-      v21 = *a4;
+      v21 = *error;
     }
 
     else
@@ -164,7 +164,7 @@
     }
 
     *buf = 138412802;
-    *&buf[4] = v6;
+    *&buf[4] = keyCopy;
     v25 = 2112;
     v26 = 0;
     v27 = 2112;
@@ -180,10 +180,10 @@ LABEL_18:
   return v15;
 }
 
-+ (id)stringForKey:(id)a3 withError:(id *)a4
++ (id)stringForKey:(id)key withError:(id *)error
 {
   v29 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  keyCopy = key;
   v7 = MEMORY[0x1E69E9C10];
   if (__osLogTrace)
   {
@@ -198,24 +198,24 @@ LABEL_18:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    *&buf[4] = v6;
+    *&buf[4] = keyCopy;
     _os_log_impl(&dword_1C82AD000, v8, OS_LOG_TYPE_DEFAULT, "BKDefaults::stringForKey: %@\n", buf, 0xCu);
   }
 
-  v9 = [a1 device];
-  v10 = v9;
-  if (v9)
+  device = [self device];
+  v10 = device;
+  if (device)
   {
-    v11 = *(v9 + 8);
+    v11 = *(device + 8);
     v22 = 0;
-    v12 = [v11 getPreferencesValue:&v22 forKey:v6];
+    v12 = [v11 getPreferencesValue:&v22 forKey:keyCopy];
     v13 = v22;
     v14 = v13;
     if (!v12)
     {
       if (v13 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
       {
-        [BKDefaults stringForKey:a4 withError:?];
+        [BKDefaults stringForKey:error withError:?];
         v15 = 0;
       }
 
@@ -231,9 +231,9 @@ LABEL_18:
 
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        if (a4)
+        if (error)
         {
-          v16 = *a4;
+          v16 = *error;
         }
 
         else
@@ -242,7 +242,7 @@ LABEL_18:
         }
 
         *buf = 138412802;
-        *&buf[4] = v6;
+        *&buf[4] = keyCopy;
         v25 = 2112;
         v26 = v15;
         v27 = 2112;
@@ -262,7 +262,7 @@ LABEL_18:
   }
 
   v14 = *buf;
-  setErrorWithOSStatus(v23, a4);
+  setErrorWithOSStatus(v23, error);
   if (__osLogTrace)
   {
     v20 = __osLogTrace;
@@ -275,9 +275,9 @@ LABEL_18:
 
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
-    if (a4)
+    if (error)
     {
-      v21 = *a4;
+      v21 = *error;
     }
 
     else
@@ -286,7 +286,7 @@ LABEL_18:
     }
 
     *buf = 138412802;
-    *&buf[4] = v6;
+    *&buf[4] = keyCopy;
     v25 = 2112;
     v26 = 0;
     v27 = 2112;
@@ -302,11 +302,11 @@ LABEL_18:
   return v15;
 }
 
-+ (BOOL)setNumber:(id)a3 forKey:(id)a4 withError:(id *)a5
++ (BOOL)setNumber:(id)number forKey:(id)key withError:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  numberCopy = number;
+  keyCopy = key;
   v10 = MEMORY[0x1E69E9C10];
   if (__osLogTrace)
   {
@@ -321,17 +321,17 @@ LABEL_18:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 138412546;
-    v23 = v9;
+    v23 = keyCopy;
     v24 = 2112;
-    v25 = v8;
+    v25 = numberCopy;
     _os_log_impl(&dword_1C82AD000, v11, OS_LOG_TYPE_DEFAULT, "BKDefaults::setNumber:forKey: (%@: %@)\n", &v22, 0x16u);
   }
 
-  v12 = [a1 device];
-  v13 = v12;
-  if (v12)
+  device = [self device];
+  v13 = device;
+  if (device)
   {
-    v14 = [*(v12 + 8) setPreferencesValue:v8 forKey:v9];
+    v14 = [*(device + 8) setPreferencesValue:numberCopy forKey:keyCopy];
     if (!v14)
     {
       if (__osLogTrace)
@@ -346,9 +346,9 @@ LABEL_18:
 
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        if (a5)
+        if (error)
         {
-          v16 = *a5;
+          v16 = *error;
         }
 
         else
@@ -357,9 +357,9 @@ LABEL_18:
         }
 
         v22 = 138413058;
-        v23 = v9;
+        v23 = keyCopy;
         v24 = 2112;
-        v25 = v8;
+        v25 = numberCopy;
         v26 = 1024;
         v17 = 1;
         v27 = 1;
@@ -384,7 +384,7 @@ LABEL_18:
     +[BKDefaults setNumber:forKey:withError:];
   }
 
-  setErrorWithOSStatus(v22, a5);
+  setErrorWithOSStatus(v22, error);
   if (__osLogTrace)
   {
     v20 = __osLogTrace;
@@ -397,9 +397,9 @@ LABEL_18:
 
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
-    if (a5)
+    if (error)
     {
-      v21 = *a5;
+      v21 = *error;
     }
 
     else
@@ -408,9 +408,9 @@ LABEL_18:
     }
 
     v22 = 138413058;
-    v23 = v9;
+    v23 = keyCopy;
     v24 = 2112;
-    v25 = v8;
+    v25 = numberCopy;
     v26 = 1024;
     v27 = 0;
     v28 = 2112;
@@ -425,11 +425,11 @@ LABEL_17:
   return v17;
 }
 
-+ (BOOL)setString:(id)a3 forKey:(id)a4 withError:(id *)a5
++ (BOOL)setString:(id)string forKey:(id)key withError:(id *)error
 {
   v30 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  stringCopy = string;
+  keyCopy = key;
   v10 = MEMORY[0x1E69E9C10];
   if (__osLogTrace)
   {
@@ -444,17 +444,17 @@ LABEL_17:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v22 = 138412546;
-    v23 = v9;
+    v23 = keyCopy;
     v24 = 2112;
-    v25 = v8;
+    v25 = stringCopy;
     _os_log_impl(&dword_1C82AD000, v11, OS_LOG_TYPE_DEFAULT, "BKDevice::setString:forKey: (%@: %@)\n", &v22, 0x16u);
   }
 
-  v12 = [a1 device];
-  v13 = v12;
-  if (v12)
+  device = [self device];
+  v13 = device;
+  if (device)
   {
-    v14 = [*(v12 + 8) setPreferencesValue:v8 forKey:v9];
+    v14 = [*(device + 8) setPreferencesValue:stringCopy forKey:keyCopy];
     if (!v14)
     {
       if (__osLogTrace)
@@ -469,9 +469,9 @@ LABEL_17:
 
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
-        if (a5)
+        if (error)
         {
-          v16 = *a5;
+          v16 = *error;
         }
 
         else
@@ -480,9 +480,9 @@ LABEL_17:
         }
 
         v22 = 138413058;
-        v23 = v9;
+        v23 = keyCopy;
         v24 = 2112;
-        v25 = v8;
+        v25 = stringCopy;
         v26 = 1024;
         v17 = 1;
         v27 = 1;
@@ -507,7 +507,7 @@ LABEL_17:
     +[BKDefaults setString:forKey:withError:];
   }
 
-  setErrorWithOSStatus(v22, a5);
+  setErrorWithOSStatus(v22, error);
   if (__osLogTrace)
   {
     v20 = __osLogTrace;
@@ -520,9 +520,9 @@ LABEL_17:
 
   if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
   {
-    if (a5)
+    if (error)
     {
-      v21 = *a5;
+      v21 = *error;
     }
 
     else
@@ -531,9 +531,9 @@ LABEL_17:
     }
 
     v22 = 138413058;
-    v23 = v9;
+    v23 = keyCopy;
     v24 = 2112;
-    v25 = v8;
+    v25 = stringCopy;
     v26 = 1024;
     v27 = 0;
     v28 = 2112;

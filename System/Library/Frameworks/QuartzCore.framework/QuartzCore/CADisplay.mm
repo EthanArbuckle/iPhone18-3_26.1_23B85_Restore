@@ -13,7 +13,7 @@
 - (BOOL)isReference;
 - (BOOL)isReferenceLimited;
 - (BOOL)isSupported;
-- (BOOL)setDisplayProperties:(id)a3;
+- (BOOL)setDisplayProperties:(id)properties;
 - (BOOL)supportsExtendedColors;
 - (BOOL)supportsVariableFrameDuration;
 - (CADisplayAttributes)externalDisplayAttributes;
@@ -21,8 +21,8 @@
 - (CADisplayMode)preferredMode;
 - (CADisplayPreferences)preferences;
 - (CADisplayPreset)currentPreset;
-- (CAFrameRateRange)preferredFrameRateRangeForMaximumVelocity:(float)a3;
-- (CAFrameRateRange)preferredFrameRateRangeForVelocity:(float)a3;
+- (CAFrameRateRange)preferredFrameRateRangeForMaximumVelocity:(float)velocity;
+- (CAFrameRateRange)preferredFrameRateRangeForVelocity:(float)velocity;
 - (CGRect)bounds;
 - (CGRect)frame;
 - (CGRect)safeBounds;
@@ -50,15 +50,15 @@
 - (double)refreshRate;
 - (float)autoLuminanceBoost;
 - (float)highestLocalPreferredFrameRateRequest;
-- (id)_initWithDisplay:(void *)a3;
+- (id)_initWithDisplay:(void *)display;
 - (id)allowedHDRModes;
 - (id)availablePresets;
-- (id)flipBookWithOptions:(id)a3;
+- (id)flipBookWithOptions:(id)options;
 - (id)immutableCopy;
 - (id)preferredHDRModes;
-- (id)preferredModeWithCriteria:(id)a3;
+- (id)preferredModeWithCriteria:(id)criteria;
 - (id)stateControl;
-- (id)supportedHDRModesWithCriteria:(id)a3;
+- (id)supportedHDRModesWithCriteria:(id)criteria;
 - (int)processId;
 - (int64_t)minimumFrameDuration;
 - (int64_t)tag;
@@ -67,20 +67,20 @@
 - (unsigned)seed;
 - (void)_finalize;
 - (void)_invalidate;
-- (void)_notifyDisallowedLayersChange:(BOOL)a3;
-- (void)_postNotification:(int64_t)a3;
+- (void)_notifyDisallowedLayersChange:(BOOL)change;
+- (void)_postNotification:(int64_t)notification;
 - (void)dealloc;
-- (void)overrideDisplayTimings:(id)a3;
-- (void)overrideMinimumFrameDuration:(int64_t)a3;
-- (void)setAllowsVirtualModes:(BOOL)a3;
-- (void)setColorMode:(id)a3;
-- (void)setCurrentMode:(id)a3;
-- (void)setCurrentPreset:(id)a3;
-- (void)setDisallowedLayersCallback:(id)a3;
-- (void)setForceFixedRateLinksEnabled:(BOOL)a3;
-- (void)setLatency:(double)a3;
-- (void)setOverscanAdjustment:(id)a3;
-- (void)setPreferences:(id)a3;
+- (void)overrideDisplayTimings:(id)timings;
+- (void)overrideMinimumFrameDuration:(int64_t)duration;
+- (void)setAllowsVirtualModes:(BOOL)modes;
+- (void)setColorMode:(id)mode;
+- (void)setCurrentMode:(id)mode;
+- (void)setCurrentPreset:(id)preset;
+- (void)setDisallowedLayersCallback:(id)callback;
+- (void)setForceFixedRateLinksEnabled:(BOOL)enabled;
+- (void)setLatency:(double)latency;
+- (void)setOverscanAdjustment:(id)adjustment;
+- (void)setPreferences:(id)preferences;
 @end
 
 @implementation CADisplay
@@ -350,17 +350,17 @@
   CA::Display::Display::available_modes(__p, impl);
   if (__p[1] == __p[0])
   {
-    v4 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v5 = __p[0];
     v6 = __p[1];
     while (v5 != v6)
     {
-      [(NSArray *)v4 addObject:create_mode(self, *v5++, __p)];
+      [(NSArray *)array addObject:create_mode(self, *v5++, __p)];
     }
   }
 
@@ -372,7 +372,7 @@
     operator delete(__p[0]);
   }
 
-  return v4;
+  return array;
 }
 
 - (double)hardwareRefreshRate
@@ -961,7 +961,7 @@
   }
 }
 
-- (CAFrameRateRange)preferredFrameRateRangeForMaximumVelocity:(float)a3
+- (CAFrameRateRange)preferredFrameRateRangeForMaximumVelocity:(float)velocity
 {
   impl = self->_impl;
   if ((impl[384] & 0x1000) != 0)
@@ -974,7 +974,7 @@
   v7 = 0.0;
   if ((*(impl + 705) & 2) != 0)
   {
-    v5 = CAFrameRateRangeForVelocity(a3, 0);
+    v5 = CAFrameRateRangeForVelocity(velocity, 0);
   }
 
   result.preferred = v7;
@@ -983,7 +983,7 @@
   return result;
 }
 
-- (CAFrameRateRange)preferredFrameRateRangeForVelocity:(float)a3
+- (CAFrameRateRange)preferredFrameRateRangeForVelocity:(float)velocity
 {
   impl = self->_impl;
   if ((impl[384] & 0x1000) != 0)
@@ -996,7 +996,7 @@
   v7 = 0.0;
   if ((*(impl + 705) & 2) != 0)
   {
-    v5 = CAFrameRateRangeForVelocity(a3, 1);
+    v5 = CAFrameRateRangeForVelocity(velocity, 1);
   }
 
   result.preferred = v7;
@@ -1005,7 +1005,7 @@
   return result;
 }
 
-- (void)overrideDisplayTimings:(id)a3
+- (void)overrideDisplayTimings:(id)timings
 {
   v15[5] = *MEMORY[0x1E69E9840];
   impl = self->_impl;
@@ -1016,23 +1016,23 @@
 
   if (*(impl + 56) == 2)
   {
-    if (!a3)
+    if (!timings)
     {
       *(impl + 705) &= 0xE7u;
       return;
     }
 
-    v5 = [a3 objectForKey:@"offset"];
+    v5 = [timings objectForKey:@"offset"];
     if (!v5)
     {
       goto LABEL_14;
     }
 
-    v6 = [v5 unsignedLongLongValue];
+    unsignedLongLongValue = [v5 unsignedLongLongValue];
     v7 = *(impl + 705);
     *(impl + 705) = v7 | 0x10;
     v8 = *(impl + 68);
-    if (v8 - 1 < v6)
+    if (v8 - 1 < unsignedLongLongValue)
     {
       v9 = (v7 & 8) == 0;
       v10 = 32;
@@ -1047,7 +1047,7 @@
         goto LABEL_14;
       }
 
-      *(impl + 67) += vcvtad_u64_f64((v6 - v8) / v11);
+      *(impl + 67) += vcvtad_u64_f64((unsignedLongLongValue - v8) / v11);
     }
 
     else
@@ -1055,9 +1055,9 @@
       *(impl + 67) = 0;
     }
 
-    *(impl + 68) = v6;
+    *(impl + 68) = unsignedLongLongValue;
 LABEL_14:
-    v12 = [a3 objectForKey:@"refreshRate"];
+    v12 = [timings objectForKey:@"refreshRate"];
     if (v12)
     {
       [v12 doubleValue];
@@ -1080,7 +1080,7 @@ LABEL_14:
   }
 }
 
-- (id)flipBookWithOptions:(id)a3
+- (id)flipBookWithOptions:(id)options
 {
   impl = self->_impl;
   v6 = impl[384];
@@ -1095,27 +1095,27 @@ LABEL_14:
     return 0;
   }
 
-  v8 = [[CAFlipBook alloc] _initWithDisplayId:[(CADisplay *)self displayId] options:a3];
+  v8 = [[CAFlipBook alloc] _initWithDisplayId:[(CADisplay *)self displayId] options:options];
 
   return v8;
 }
 
-- (void)setForceFixedRateLinksEnabled:(BOOL)a3
+- (void)setForceFixedRateLinksEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   impl = self->_impl;
   if ((impl[384] & 0x2000) != 0)
   {
     [MEMORY[0x1E695DF30] raise:@"CADisplay" format:@"cannot change fixed rate link settings on an immutable CADisplay"];
   }
 
-  if (v3 && *(impl + 56))
+  if (enabledCopy && *(impl + 56))
   {
     [MEMORY[0x1E695DF30] raise:@"CADisplay" format:@"cannot enable fixed rate links on non-internal panel"];
   }
 
   v6 = objc_opt_new();
-  [v6 setForceFixedRateLinks:v3];
+  [v6 setForceFixedRateLinks:enabledCopy];
   [(CADisplay *)self setDisplayProperties:v6];
 }
 
@@ -1132,7 +1132,7 @@ LABEL_14:
   return CA::Display::Display::auto_luminance_boost(v3);
 }
 
-- (void)setCurrentPreset:(id)a3
+- (void)setCurrentPreset:(id)preset
 {
   v26 = *MEMORY[0x1E69E9840];
   if (CADeviceSupportsReferenceMode::once != -1)
@@ -1142,7 +1142,7 @@ LABEL_14:
 
   if (CADeviceSupportsReferenceMode::supports_ref == 1)
   {
-    [a3 isReference];
+    [preset isReference];
     kdebug_trace();
     impl = self->_impl;
     if ((impl[192]._os_unfair_lock_opaque & 0x1000) != 0)
@@ -1156,31 +1156,31 @@ LABEL_14:
     v8 = *&impl[98]._os_unfair_lock_opaque;
     v9 = *&impl[100]._os_unfair_lock_opaque;
     os_unfair_lock_unlock(impl + 18);
-    if ([a3 userAdjustment])
+    if ([preset userAdjustment])
     {
-      [objc_msgSend(a3 "userAdjustment")];
+      [objc_msgSend(preset "userAdjustment")];
       v6 = v10;
     }
 
-    if ([a3 userAdjustment])
+    if ([preset userAdjustment])
     {
-      [objc_msgSend(a3 "userAdjustment")];
+      [objc_msgSend(preset "userAdjustment")];
       v7 = v11;
     }
 
-    if ([a3 userAdjustment])
+    if ([preset userAdjustment])
     {
-      [objc_msgSend(a3 "userAdjustment")];
+      [objc_msgSend(preset "userAdjustment")];
       v8 = v12;
     }
 
-    if ([a3 userAdjustment])
+    if ([preset userAdjustment])
     {
-      [objc_msgSend(a3 "userAdjustment")];
+      [objc_msgSend(preset "userAdjustment")];
       v9 = v13;
     }
 
-    v14 = [a3 isReference];
+    isReference = [preset isReference];
     os_unfair_lock_opaque = impl[26]._os_unfair_lock_opaque;
     ServerPort = CARenderServerGetServerPort(0);
     if (ServerPort)
@@ -1198,7 +1198,7 @@ LABEL_14:
           *&msg[0].msgh_size = 0u;
           *&msg[1].msgh_voucher_port = *MEMORY[0x1E69E99E0];
           LODWORD(v23) = os_unfair_lock_opaque;
-          BYTE4(v23) = v14;
+          BYTE4(v23) = isReference;
           *(&v23 + 5) = 0;
           BYTE7(v23) = 0;
           *(&v23 + 1) = v6;
@@ -1236,7 +1236,7 @@ LABEL_14:
       mach_port_deallocate(*v18, v17);
     }
 
-    [a3 isReference];
+    [preset isReference];
 
     kdebug_trace();
   }
@@ -1288,8 +1288,8 @@ LABEL_14:
 {
   v8[1] = *MEMORY[0x1E69E9840];
   impl = self->_impl;
-  v4 = [(CADisplay *)self preferences];
-  if (v4 && [(CADisplayPreferences *)v4 matchContent])
+  preferences = [(CADisplay *)self preferences];
+  if (preferences && [(CADisplayPreferences *)preferences matchContent])
   {
 
     return [(CADisplay *)self supportedHDRModes];
@@ -1355,7 +1355,7 @@ LABEL_14:
   return result;
 }
 
-- (id)supportedHDRModesWithCriteria:(id)a3
+- (id)supportedHDRModesWithCriteria:(id)criteria
 {
   v21[3] = *MEMORY[0x1E69E9840];
   impl = self->_impl;
@@ -1385,7 +1385,7 @@ LABEL_14:
     dispatch_once(&CADeviceSupportsExternalHighRefreshRateAndVRR::once, &__block_literal_global_474);
   }
 
-  if (CADeviceSupportsExternalHighRefreshRateAndVRR::b & 1) == 0 && (([a3 isHighRefreshRate] & 1) != 0 || (objc_msgSend(a3, "isVariableRefreshRate")))
+  if (CADeviceSupportsExternalHighRefreshRateAndVRR::b & 1) == 0 && (([criteria isHighRefreshRate] & 1) != 0 || (objc_msgSend(criteria, "isVariableRefreshRate")))
   {
     return 0;
   }
@@ -1398,8 +1398,8 @@ LABEL_14:
   v14 = *(impl + 344);
   LODWORD(v15) = *(impl + 90);
   os_unfair_lock_unlock(impl + 18);
-  v7 = [a3 isHighRefreshRate];
-  v8 = [a3 isVariableRefreshRate];
+  isHighRefreshRate = [criteria isHighRefreshRate];
+  isVariableRefreshRate = [criteria isVariableRefreshRate];
   v21[0] = @"Dolby";
   v21[1] = @"HDR10";
   v21[2] = @"SDR";
@@ -1408,8 +1408,8 @@ LABEL_14:
   v16[1] = 3221225472;
   v16[2] = ___Z37CADisplaySupportedHDRModeWithCriteriaRKN2CA12WindowServer7Display7ModeSetERKNS1_14EDIDAttributesEbb_block_invoke;
   v16[3] = &__block_descriptor_50_e21_B24__0__NSString_8_16l;
-  v17 = v7;
-  v18 = v8;
+  v17 = isHighRefreshRate;
+  v18 = isVariableRefreshRate;
   v16[4] = __p;
   v16[5] = &v12;
   v10 = [v9 filteredArrayUsingPredicate:{objc_msgSend(MEMORY[0x1E696AE18], "predicateWithBlock:", v16)}];
@@ -1424,7 +1424,7 @@ LABEL_14:
   return v10;
 }
 
-- (id)preferredModeWithCriteria:(id)a3
+- (id)preferredModeWithCriteria:(id)criteria
 {
   v38 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
@@ -1433,37 +1433,37 @@ LABEL_14:
     CA::Display::Display::update(impl);
   }
 
-  v6 = [(CADisplay *)self preferences];
-  v7 = [a3 hdrMode];
-  if ([v7 isEqualToString:@"Dolby"])
+  preferences = [(CADisplay *)self preferences];
+  hdrMode = [criteria hdrMode];
+  if ([hdrMode isEqualToString:@"Dolby"])
   {
     v8 = 5;
   }
 
-  else if ([v7 isEqualToString:@"HDR10"])
+  else if ([hdrMode isEqualToString:@"HDR10"])
   {
     v8 = 3;
   }
 
   else
   {
-    v8 = [v7 isEqualToString:@"SDR"];
+    v8 = [hdrMode isEqualToString:@"SDR"];
   }
 
-  v9 = [(CADisplayPreferences *)v6 preferredHdrMode];
-  if ([(NSString *)v9 isEqualToString:@"Dolby"])
+  preferredHdrMode = [(CADisplayPreferences *)preferences preferredHdrMode];
+  if ([(NSString *)preferredHdrMode isEqualToString:@"Dolby"])
   {
     v10 = 5;
   }
 
-  else if ([(NSString *)v9 isEqualToString:@"HDR10"])
+  else if ([(NSString *)preferredHdrMode isEqualToString:@"HDR10"])
   {
     v10 = 3;
   }
 
   else
   {
-    v10 = [(NSString *)v9 isEqualToString:@"SDR"];
+    v10 = [(NSString *)preferredHdrMode isEqualToString:@"SDR"];
   }
 
   v31 = 0;
@@ -1480,18 +1480,18 @@ LABEL_14:
   *__p = 0u;
   v35 = 0u;
   CA::Display::Display::available_modes(__p, self->_impl);
-  [a3 resolution];
-  [a3 refreshRate];
+  [criteria resolution];
+  [criteria refreshRate];
   *&v14 = v14;
   v19 = LODWORD(v14);
   v20 = v8;
-  v21 = [a3 isHighRefreshRate];
-  v22 = [a3 isVariableRefreshRate];
-  v23 = [(CADisplayPreferences *)v6 matchContent];
+  isHighRefreshRate = [criteria isHighRefreshRate];
+  isVariableRefreshRate = [criteria isVariableRefreshRate];
+  matchContent = [(CADisplayPreferences *)preferences matchContent];
   v24 = v10;
-  v25 = [(CADisplayPreferences *)v6 prefersHighRefreshRate];
-  v26 = [(CADisplayPreferences *)v6 prefersVariableRefreshRate];
-  v27 = [a3 disableFrameDoubling] ^ 1;
+  prefersHighRefreshRate = [(CADisplayPreferences *)preferences prefersHighRefreshRate];
+  prefersVariableRefreshRate = [(CADisplayPreferences *)preferences prefersVariableRefreshRate];
+  v27 = [criteria disableFrameDoubling] ^ 1;
   v28 = &v29;
   v15 = CA::WindowServer::Display::ModeSet::preferred_mode_with_criteria(__p, &v18);
   if (v15)
@@ -1515,7 +1515,7 @@ LABEL_14:
   return mode;
 }
 
-- (void)setPreferences:(id)a3
+- (void)setPreferences:(id)preferences
 {
   v33 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
@@ -1525,13 +1525,13 @@ LABEL_14:
     impl = self->_impl;
   }
 
-  v6 = [a3 matchContent];
-  v7 = [a3 _preferredHdrType];
-  v8 = [a3 prefersHighRefreshRate];
-  v9 = [a3 prefersVariableRefreshRate];
-  v10 = v9;
+  matchContent = [preferences matchContent];
+  _preferredHdrType = [preferences _preferredHdrType];
+  prefersHighRefreshRate = [preferences prefersHighRefreshRate];
+  prefersVariableRefreshRate = [preferences prefersVariableRefreshRate];
+  v10 = prefersVariableRefreshRate;
   v11 = impl[384];
-  if ((v11 & 0x1000) != 0 || v6 != (v11 & 0x40) >> 6 || *(impl + 109) != v7 || v8 != (v11 & 0x80) >> 7 || v9 != (v11 & 0x100) >> 8)
+  if ((v11 & 0x1000) != 0 || matchContent != (v11 & 0x40) >> 6 || *(impl + 109) != _preferredHdrType || prefersHighRefreshRate != (v11 & 0x80) >> 7 || prefersVariableRefreshRate != (v11 & 0x100) >> 8)
   {
     v12 = *(impl + 26);
     ServerPort = CARenderServerGetServerPort(0);
@@ -1542,11 +1542,11 @@ LABEL_14:
       {
         v21 = *MEMORY[0x1E69E99E0];
         v22 = v12;
-        v23 = v6;
+        v23 = matchContent;
         v24 = 0;
         v25 = 0;
-        v26 = v7;
-        v27 = v8;
+        v26 = _preferredHdrType;
+        v27 = prefersHighRefreshRate;
         v28 = 0;
         v29 = 0;
         v30 = v10;
@@ -1639,7 +1639,7 @@ LABEL_30:
   return v4;
 }
 
-- (void)setLatency:(double)a3
+- (void)setLatency:(double)latency
 {
   v22 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
@@ -1648,7 +1648,7 @@ LABEL_30:
     [MEMORY[0x1E695DF30] raise:@"CADisplay" format:@"cannot change properties on an immutable CADisplay"];
   }
 
-  if (*(impl + 51) != a3)
+  if (*(impl + 51) != latency)
   {
     v5 = CA::Display::Display::retain_uuid(impl);
     if (v5)
@@ -1695,7 +1695,7 @@ LABEL_34:
       v12 = (v10 + 3) & 0xFFFFFFFC;
       v13 = &buf[v12];
       *(v13 + 44) = v7;
-      *(v13 + 52) = a3;
+      *(v13 + 52) = latency;
       reply_port = mig_get_reply_port();
       *&buf[8] = ServerPort;
       *&buf[12] = reply_port;
@@ -1856,10 +1856,10 @@ LABEL_32:
   return result;
 }
 
-- (void)setOverscanAdjustment:(id)a3
+- (void)setOverscanAdjustment:(id)adjustment
 {
   v5 = objc_alloc_init(CADisplayProperties);
-  [(CADisplayProperties *)v5 setOverscanAdjustment:a3];
+  [(CADisplayProperties *)v5 setOverscanAdjustment:adjustment];
   [(CADisplay *)self setDisplayProperties:v5];
 }
 
@@ -1887,7 +1887,7 @@ LABEL_32:
   }
 }
 
-- (void)overrideMinimumFrameDuration:(int64_t)a3
+- (void)overrideMinimumFrameDuration:(int64_t)duration
 {
   v6[5] = *MEMORY[0x1E69E9840];
   impl = self->_impl;
@@ -1896,7 +1896,7 @@ LABEL_32:
     [MEMORY[0x1E695DF30] raise:@"CADisplay" format:@"cannot change properties on an immutable CADisplay"];
   }
 
-  v5 = a3 & ~(a3 >> 63);
+  v5 = duration & ~(duration >> 63);
   if (*(impl + 138) != v5)
   {
     *(impl + 138) = v5;
@@ -2031,7 +2031,7 @@ LABEL_32:
   return result;
 }
 
-- (void)setAllowsVirtualModes:(BOOL)a3
+- (void)setAllowsVirtualModes:(BOOL)modes
 {
   v5 = *MEMORY[0x1E69E9840];
   if (x_log_get_windowserver(void)::once != -1)
@@ -2065,7 +2065,7 @@ LABEL_32:
   return 0;
 }
 
-- (void)setColorMode:(id)a3
+- (void)setColorMode:(id)mode
 {
   v5 = *MEMORY[0x1E69E9840];
   if (x_log_get_windowserver(void)::once != -1)
@@ -2099,18 +2099,18 @@ LABEL_32:
   return @"auto";
 }
 
-- (void)setCurrentMode:(id)a3
+- (void)setCurrentMode:(id)mode
 {
-  if ([a3 _display] == self && objc_msgSend(a3, "_mode"))
+  if ([mode _display] == self && objc_msgSend(mode, "_mode"))
   {
     v5 = objc_alloc_init(CADisplayProperties);
-    [(CADisplayProperties *)v5 setCurrentMode:a3];
+    [(CADisplayProperties *)v5 setCurrentMode:mode];
     [(CADisplay *)self setDisplayProperties:v5];
   }
 
   else
   {
-    [MEMORY[0x1E695DF30] raise:@"CAInvalidDisplayMode" format:{@"mode %@ is not valid for display %@", a3, self}];
+    [MEMORY[0x1E695DF30] raise:@"CAInvalidDisplayMode" format:{@"mode %@ is not valid for display %@", mode, self}];
   }
 }
 
@@ -2227,7 +2227,7 @@ LABEL_32:
   return v5;
 }
 
-- (void)setDisallowedLayersCallback:(id)a3
+- (void)setDisallowedLayersCallback:(id)callback
 {
   v22 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
@@ -2238,8 +2238,8 @@ LABEL_32:
 
   os_unfair_lock_lock(impl + 183);
   v5 = *(impl + 92);
-  v7 = v5 == a3;
-  v6 = a3 | v5;
+  v7 = v5 == callback;
+  v6 = callback | v5;
   v7 = v7 || v6 == 0;
   if (!v7)
   {
@@ -2257,9 +2257,9 @@ LABEL_32:
           *(impl + 92) = 0;
         }
 
-        if (a3)
+        if (callback)
         {
-          *(impl + 92) = _Block_copy(a3);
+          *(impl + 92) = _Block_copy(callback);
           if (!*(impl + 186))
           {
             v21 = 0u;
@@ -2320,7 +2320,7 @@ LABEL_32:
   os_unfair_lock_unlock(impl + 183);
 }
 
-- (BOOL)setDisplayProperties:(id)a3
+- (BOOL)setDisplayProperties:(id)properties
 {
   v35 = *MEMORY[0x1E69E9840];
   impl = self->_impl;
@@ -2331,9 +2331,9 @@ LABEL_32:
 
   else
   {
-    if ([a3 needsUpdateForField:1] && objc_msgSend(a3, "currentMode"))
+    if ([properties needsUpdateForField:1] && objc_msgSend(properties, "currentMode"))
     {
-      v5 = [objc_msgSend(a3 "currentMode")];
+      v5 = [objc_msgSend(properties "currentMode")];
     }
 
     else
@@ -2341,7 +2341,7 @@ LABEL_32:
       v5 = 0;
     }
 
-    if ([a3 needsUpdateForField:2] && (v6 = objc_msgSend(a3, "overscanAdjustment")) != 0)
+    if ([properties needsUpdateForField:2] && (v6 = objc_msgSend(properties, "overscanAdjustment")) != 0)
     {
       v7 = v6;
       if ([v6 isEqualToString:@"none"])
@@ -2370,56 +2370,56 @@ LABEL_32:
       v8 = 0;
     }
 
-    if ([a3 needsUpdateForField:4])
+    if ([properties needsUpdateForField:4])
     {
-      v9 = [a3 dmrrEnabled];
+      dmrrEnabled = [properties dmrrEnabled];
     }
 
     else
     {
-      v9 = 0;
+      dmrrEnabled = 0;
     }
 
-    if ([a3 needsUpdateForField:128])
+    if ([properties needsUpdateForField:128])
     {
-      v10 = [a3 forceFixedRateLinks];
-    }
-
-    else
-    {
-      v10 = 0;
-    }
-
-    if ([a3 needsUpdateForField:8])
-    {
-      v11 = [a3 connectionSeed];
+      forceFixedRateLinks = [properties forceFixedRateLinks];
     }
 
     else
     {
-      v11 = 0;
+      forceFixedRateLinks = 0;
+    }
+
+    if ([properties needsUpdateForField:8])
+    {
+      connectionSeed = [properties connectionSeed];
+    }
+
+    else
+    {
+      connectionSeed = 0;
     }
 
     v12 = 1.0;
     v13 = 1.0;
-    if ([a3 needsUpdateForField:16])
+    if ([properties needsUpdateForField:16])
     {
-      [a3 logicalScale];
+      [properties logicalScale];
       v12 = v14;
       v13 = v15;
     }
 
-    if ([a3 needsUpdateForField:32])
+    if ([properties needsUpdateForField:32])
     {
-      v16 = [a3 pointScale];
+      pointScale = [properties pointScale];
     }
 
     else
     {
-      v16 = 1;
+      pointScale = 1;
     }
 
-    v17 = [a3 updateMask];
+    updateMask = [properties updateMask];
     v18 = impl[26];
     ServerPort = CARenderServerGetServerPort(0);
     if (ServerPort)
@@ -2444,16 +2444,16 @@ LABEL_32:
         *&v31 = v18;
         *(&v31 + 1) = v5;
         LODWORD(v32) = v8;
-        BYTE4(v32) = v9;
+        BYTE4(v32) = dmrrEnabled;
         *(&v32 + 5) = 0;
         BYTE7(v32) = 0;
-        *(&v32 + 1) = __PAIR64__(v22, v11);
-        *&v33 = __PAIR64__(v16, v23);
+        *(&v32 + 1) = __PAIR64__(v22, connectionSeed);
+        *&v33 = __PAIR64__(pointScale, v23);
         DWORD2(v33) = 1;
-        BYTE12(v33) = v10;
+        BYTE12(v33) = forceFixedRateLinks;
         HIBYTE(v33) = 0;
         *(&v33 + 13) = 0;
-        v34 = v17;
+        v34 = updateMask;
         msg[0].msgh_bits = -2147483629;
         msg[0].msgh_remote_port = v20;
         *&msg[0].msgh_id = 0x100009D2DLL;
@@ -2510,15 +2510,15 @@ LABEL_45:
   return v2;
 }
 
-- (void)_notifyDisallowedLayersChange:(BOOL)a3
+- (void)_notifyDisallowedLayersChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   impl = self->_impl;
   os_unfair_lock_lock(impl + 183);
   v5 = *&impl[184]._os_unfair_lock_opaque;
   if (v5)
   {
-    (*(v5 + 16))(v5, v3);
+    (*(v5 + 16))(v5, changeCopy);
   }
 
   os_unfair_lock_unlock(impl + 183);
@@ -2583,23 +2583,23 @@ LABEL_45:
   }
 }
 
-- (void)_postNotification:(int64_t)a3
+- (void)_postNotification:(int64_t)notification
 {
   if (*(self->_impl + 14))
   {
-    if (a3 == 1)
+    if (notification == 1)
     {
       CA::Display::DisplayLink::foreach_display_link(&__block_literal_global_336);
     }
 
-    else if (!a3)
+    else if (!notification)
     {
       [(CADisplay *)self update];
     }
   }
 }
 
-- (id)_initWithDisplay:(void *)a3
+- (id)_initWithDisplay:(void *)display
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
@@ -2608,17 +2608,17 @@ LABEL_45:
   v5 = v4;
   if (v4)
   {
-    v4->_impl = a3;
-    *(a3 + 10) = v4;
-    if ((*(a3 + 384) & 0x1000) != 0)
+    v4->_impl = display;
+    *(display + 10) = v4;
+    if ((*(display + 384) & 0x1000) != 0)
     {
-      CA::Display::Display::update(a3);
+      CA::Display::Display::update(display);
     }
   }
 
-  else if (a3)
+  else if (display)
   {
-    (*(*a3 + 8))(a3);
+    (*(*display + 8))(display);
   }
 
   return v5;
@@ -2662,11 +2662,11 @@ LABEL_45:
   }
 
   v4 = ServerPort;
-  v5 = [(CADisplay *)self displayId];
+  displayId = [(CADisplay *)self displayId];
   memset(&msg_4[16], 0, 44);
   *msg_4 = 0u;
   *&msg_4[20] = *MEMORY[0x1E69E99E0];
-  *&msg_4[28] = v5;
+  *&msg_4[28] = displayId;
   reply_port = mig_get_reply_port();
   *&msg_4[4] = v4;
   *&msg_4[8] = reply_port;

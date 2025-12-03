@@ -1,7 +1,7 @@
 @interface _ADQueueObserver
-- (_ADQueueObserver)initWithQueue:(id)a3 heartBeatInterval:(double)a4 timeoutInterval:(double)a5 timeoutHandler:(id)a6;
-- (void)heartBeatFiredWithQueue:(id)a3;
-- (void)startWithQueue:(id)a3;
+- (_ADQueueObserver)initWithQueue:(id)queue heartBeatInterval:(double)interval timeoutInterval:(double)timeoutInterval timeoutHandler:(id)handler;
+- (void)heartBeatFiredWithQueue:(id)queue;
+- (void)startWithQueue:(id)queue;
 - (void)stop;
 - (void)timeoutDetected;
 @end
@@ -32,9 +32,9 @@
   }
 }
 
-- (void)heartBeatFiredWithQueue:(id)a3
+- (void)heartBeatFiredWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   objc_initWeak(&location, self);
   v23 = 0;
   v24 = &v23;
@@ -57,7 +57,7 @@
   v19[3] = &unk_10051DFE8;
   v9 = v6;
   v20 = v9;
-  v10 = [v7 initWithTimeoutInterval:v4 onQueue:v19 timeoutHandler:timeoutInterval];
+  v10 = [v7 initWithTimeoutInterval:queueCopy onQueue:v19 timeoutHandler:timeoutInterval];
   v11 = v24[5];
   v24[5] = v10;
 
@@ -68,9 +68,9 @@
   v15[2] = sub_100313058;
   v15[3] = &unk_10051C588;
   v16 = v9;
-  v17 = v4;
+  v17 = queueCopy;
   v18 = &v23;
-  v13 = v4;
+  v13 = queueCopy;
   v14 = v9;
   dispatch_async(queue, v15);
 
@@ -103,9 +103,9 @@
   }
 }
 
-- (void)startWithQueue:(id)a3
+- (void)startWithQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   if (!self->_heartBeat)
   {
     v5 = AFSiriLogContextDaemon;
@@ -115,7 +115,7 @@
       *location = 136315394;
       *&location[4] = "[_ADQueueObserver startWithQueue:]";
       v16 = 2112;
-      v17 = queue;
+      queueCopy2 = queue;
       _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%s queue = %@", location, 0x16u);
     }
 
@@ -128,7 +128,7 @@
     v12[2] = sub_1003133E4;
     v12[3] = &unk_10051BAB8;
     objc_copyWeak(&v14, location);
-    v13 = v4;
+    v13 = queueCopy;
     v9 = [v7 initWithIdentifier:v6 queue:v13 effectiveDate:0 expirationDuration:v12 heartBeatInterval:0 heartBeatHandler:0.0 invalidationHandler:heartBeatInterval];
     heartBeat = self->_heartBeat;
     self->_heartBeat = v9;
@@ -138,20 +138,20 @@
   }
 }
 
-- (_ADQueueObserver)initWithQueue:(id)a3 heartBeatInterval:(double)a4 timeoutInterval:(double)a5 timeoutHandler:(id)a6
+- (_ADQueueObserver)initWithQueue:(id)queue heartBeatInterval:(double)interval timeoutInterval:(double)timeoutInterval timeoutHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a6;
+  queueCopy = queue;
+  handlerCopy = handler;
   v18.receiver = self;
   v18.super_class = _ADQueueObserver;
   v13 = [(_ADQueueObserver *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_queue, a3);
-    v14->_heartBeatInterval = a4;
-    v14->_timeoutInterval = a5;
-    v15 = [v12 copy];
+    objc_storeStrong(&v13->_queue, queue);
+    v14->_heartBeatInterval = interval;
+    v14->_timeoutInterval = timeoutInterval;
+    v15 = [handlerCopy copy];
     timeoutHandler = v14->_timeoutHandler;
     v14->_timeoutHandler = v15;
   }

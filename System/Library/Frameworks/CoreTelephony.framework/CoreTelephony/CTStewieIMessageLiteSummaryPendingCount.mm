@@ -1,18 +1,18 @@
 @interface CTStewieIMessageLiteSummaryPendingCount
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToOther:(id)a3;
-- (CTStewieIMessageLiteSummaryPendingCount)initWithCoder:(id)a3;
-- (CTStewieIMessageLiteSummaryPendingCount)initWithOtherShortHandle:(id)a3 pendingCount:(int64_t)a4 error:(id *)p_isa;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToOther:(id)other;
+- (CTStewieIMessageLiteSummaryPendingCount)initWithCoder:(id)coder;
+- (CTStewieIMessageLiteSummaryPendingCount)initWithOtherShortHandle:(id)handle pendingCount:(int64_t)count error:(id *)p_isa;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTStewieIMessageLiteSummaryPendingCount
 
-- (CTStewieIMessageLiteSummaryPendingCount)initWithOtherShortHandle:(id)a3 pendingCount:(int64_t)a4 error:(id *)p_isa
+- (CTStewieIMessageLiteSummaryPendingCount)initWithOtherShortHandle:(id)handle pendingCount:(int64_t)count error:(id *)p_isa
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  handleCopy = handle;
   {
     v16.receiver = self;
     v16.super_class = CTStewieIMessageLiteSummaryPendingCount;
@@ -20,8 +20,8 @@
     p_isa = &v11->super.isa;
     if (v11)
     {
-      objc_storeStrong(&v11->_otherShortHandle, a3);
-      p_isa[2] = a4;
+      objc_storeStrong(&v11->_otherShortHandle, handle);
+      p_isa[2] = count;
       self = p_isa;
       p_isa = &self->super.isa;
     }
@@ -47,16 +47,16 @@
   return p_isa;
 }
 
-- (BOOL)isEqualToOther:(id)a3
+- (BOOL)isEqualToOther:(id)other
 {
-  v6 = a3;
-  v7 = [(CTStewieIMessageLiteSummaryPendingCount *)self otherShortHandle];
-  v8 = [v6 otherShortHandle];
-  if (v7 != v8)
+  otherCopy = other;
+  otherShortHandle = [(CTStewieIMessageLiteSummaryPendingCount *)self otherShortHandle];
+  otherShortHandle2 = [otherCopy otherShortHandle];
+  if (otherShortHandle != otherShortHandle2)
   {
-    v3 = [(CTStewieIMessageLiteSummaryPendingCount *)self otherShortHandle];
-    v4 = [v6 otherShortHandle];
-    if (![v3 isEqual:v4])
+    otherShortHandle3 = [(CTStewieIMessageLiteSummaryPendingCount *)self otherShortHandle];
+    otherShortHandle4 = [otherCopy otherShortHandle];
+    if (![otherShortHandle3 isEqual:otherShortHandle4])
     {
       v9 = 0;
 LABEL_5:
@@ -65,9 +65,9 @@ LABEL_5:
     }
   }
 
-  v10 = [(CTStewieIMessageLiteSummaryPendingCount *)self pendingCount];
-  v9 = v10 == [v6 pendingCount];
-  if (v7 != v8)
+  pendingCount = [(CTStewieIMessageLiteSummaryPendingCount *)self pendingCount];
+  v9 = pendingCount == [otherCopy pendingCount];
+  if (otherShortHandle != otherShortHandle2)
   {
     goto LABEL_5;
   }
@@ -77,10 +77,10 @@ LABEL_6:
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -88,37 +88,37 @@ LABEL_6:
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieIMessageLiteSummaryPendingCount *)self isEqualToOther:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(CTStewieIMessageLiteSummaryPendingCount *)self isEqualToOther:equalCopy];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(CTStewieIMessageLiteSummaryPendingCount *)self otherShortHandle];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  otherShortHandle = [(CTStewieIMessageLiteSummaryPendingCount *)self otherShortHandle];
+  v7 = [otherShortHandle copyWithZone:zone];
   [v5 setOtherShortHandle:v7];
 
   [v5 setPendingCount:{-[CTStewieIMessageLiteSummaryPendingCount pendingCount](self, "pendingCount")}];
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(CTStewieIMessageLiteSummaryPendingCount *)self otherShortHandle];
-  [v5 encodeObject:v4 forKey:@"otherShortHandle"];
+  coderCopy = coder;
+  otherShortHandle = [(CTStewieIMessageLiteSummaryPendingCount *)self otherShortHandle];
+  [coderCopy encodeObject:otherShortHandle forKey:@"otherShortHandle"];
 
-  [v5 encodeInteger:-[CTStewieIMessageLiteSummaryPendingCount pendingCount](self forKey:{"pendingCount"), @"pendingCount"}];
+  [coderCopy encodeInteger:-[CTStewieIMessageLiteSummaryPendingCount pendingCount](self forKey:{"pendingCount"), @"pendingCount"}];
 }
 
-- (CTStewieIMessageLiteSummaryPendingCount)initWithCoder:(id)a3
+- (CTStewieIMessageLiteSummaryPendingCount)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"otherShortHandle"];
-  v6 = -[CTStewieIMessageLiteSummaryPendingCount initWithOtherShortHandle:pendingCount:error:](self, "initWithOtherShortHandle:pendingCount:error:", v5, [v4 decodeIntegerForKey:@"pendingCount"], 0);
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"otherShortHandle"];
+  v6 = -[CTStewieIMessageLiteSummaryPendingCount initWithOtherShortHandle:pendingCount:error:](self, "initWithOtherShortHandle:pendingCount:error:", v5, [coderCopy decodeIntegerForKey:@"pendingCount"], 0);
 
   return v6;
 }

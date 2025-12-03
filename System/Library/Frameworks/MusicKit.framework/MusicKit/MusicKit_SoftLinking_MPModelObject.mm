@@ -1,47 +1,47 @@
 @interface MusicKit_SoftLinking_MPModelObject
-+ (id)_createUnderlyingModelObjectWithIdentifierSet:(id)a3 modelObjectType:(int64_t)a4 storageDictionary:(id)a5;
-+ (id)unarchiveUnderlyingModelObjectWithData:(id)a3 error:(id *)a4;
-+ (int64_t)keepLocalEnabledStateForRawValue:(int64_t)a3;
-+ (int64_t)keepLocalManagedStatusForRawValue:(int64_t)a3;
-+ (int64_t)rawValueForKeepLocalEnabledState:(int64_t)a3;
-+ (int64_t)rawValueForKeepLocalManagedStatus:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (MusicKit_SoftLinking_MPModelObject)initWithIdentifierSet:(id)a3 modelObjectType:(int64_t)a4 storageDictionary:(id)a5;
-- (MusicKit_SoftLinking_MPModelObject)initWithUnderlyingModelObject:(id)a3;
++ (id)_createUnderlyingModelObjectWithIdentifierSet:(id)set modelObjectType:(int64_t)type storageDictionary:(id)dictionary;
++ (id)unarchiveUnderlyingModelObjectWithData:(id)data error:(id *)error;
++ (int64_t)keepLocalEnabledStateForRawValue:(int64_t)value;
++ (int64_t)keepLocalManagedStatusForRawValue:(int64_t)value;
++ (int64_t)rawValueForKeepLocalEnabledState:(int64_t)state;
++ (int64_t)rawValueForKeepLocalManagedStatus:(int64_t)status;
+- (BOOL)isEqual:(id)equal;
+- (MusicKit_SoftLinking_MPModelObject)initWithIdentifierSet:(id)set modelObjectType:(int64_t)type storageDictionary:(id)dictionary;
+- (MusicKit_SoftLinking_MPModelObject)initWithUnderlyingModelObject:(id)object;
 - (int64_t)libraryRemovalSupportedOptions;
 @end
 
 @implementation MusicKit_SoftLinking_MPModelObject
 
-- (MusicKit_SoftLinking_MPModelObject)initWithIdentifierSet:(id)a3 modelObjectType:(int64_t)a4 storageDictionary:(id)a5
+- (MusicKit_SoftLinking_MPModelObject)initWithIdentifierSet:(id)set modelObjectType:(int64_t)type storageDictionary:(id)dictionary
 {
-  v8 = a3;
-  v9 = a5;
+  setCopy = set;
+  dictionaryCopy = dictionary;
   v14.receiver = self;
   v14.super_class = MusicKit_SoftLinking_MPModelObject;
   v10 = [(MusicKit_SoftLinking_MPModelObject *)&v14 init];
   if (v10)
   {
-    v11 = [objc_opt_class() _createUnderlyingModelObjectWithIdentifierSet:v8 modelObjectType:a4 storageDictionary:v9];
+    v11 = [objc_opt_class() _createUnderlyingModelObjectWithIdentifierSet:setCopy modelObjectType:type storageDictionary:dictionaryCopy];
     underlyingModelObject = v10->_underlyingModelObject;
     v10->_underlyingModelObject = v11;
 
-    v10->_modelObjectType = a4;
+    v10->_modelObjectType = type;
   }
 
   return v10;
 }
 
-- (MusicKit_SoftLinking_MPModelObject)initWithUnderlyingModelObject:(id)a3
+- (MusicKit_SoftLinking_MPModelObject)initWithUnderlyingModelObject:(id)object
 {
-  v5 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = MusicKit_SoftLinking_MPModelObject;
   v6 = [(MusicKit_SoftLinking_MPModelObject *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingModelObject, a3);
+    objc_storeStrong(&v6->_underlyingModelObject, object);
   }
 
   return v7;
@@ -60,12 +60,12 @@
   }
 }
 
-+ (id)_createUnderlyingModelObjectWithIdentifierSet:(id)a3 modelObjectType:(int64_t)a4 storageDictionary:(id)a5
++ (id)_createUnderlyingModelObjectWithIdentifierSet:(id)set modelObjectType:(int64_t)type storageDictionary:(id)dictionary
 {
-  v7 = a3;
-  v8 = a5;
+  setCopy = set;
+  dictionaryCopy = dictionary;
   v9 = 0;
-  switch(a4)
+  switch(type)
   {
     case 0:
       v23 = 0;
@@ -517,18 +517,18 @@ LABEL_54:
   v16[1] = 3221225472;
   v16[2] = __118__MusicKit_SoftLinking_MPModelObject__createUnderlyingModelObjectWithIdentifierSet_modelObjectType_storageDictionary___block_invoke;
   v16[3] = &unk_278229D08;
-  v17 = v8;
-  v13 = v8;
-  v14 = [v12 initWithIdentifiers:v7 block:v16];
+  v17 = dictionaryCopy;
+  v13 = dictionaryCopy;
+  v14 = [v12 initWithIdentifiers:setCopy block:v16];
 
   return v14;
 }
 
-+ (int64_t)keepLocalEnabledStateForRawValue:(int64_t)a3
++ (int64_t)keepLocalEnabledStateForRawValue:(int64_t)value
 {
-  if ((a3 + 1) < 5)
+  if ((value + 1) < 5)
   {
-    return a3 + 1;
+    return value + 1;
   }
 
   else
@@ -537,58 +537,58 @@ LABEL_54:
   }
 }
 
-+ (int64_t)rawValueForKeepLocalEnabledState:(int64_t)a3
++ (int64_t)rawValueForKeepLocalEnabledState:(int64_t)state
 {
-  if (a3 >= 5)
+  if (state >= 5)
   {
     return 0;
   }
 
   else
   {
-    return a3 - 1;
+    return state - 1;
   }
 }
 
-+ (int64_t)keepLocalManagedStatusForRawValue:(int64_t)a3
++ (int64_t)keepLocalManagedStatusForRawValue:(int64_t)value
 {
-  if ((a3 + 1) > 6)
+  if ((value + 1) > 6)
   {
     return 0;
   }
 
   else
   {
-    return qword_217756568[a3 + 1];
+    return qword_217756568[value + 1];
   }
 }
 
-+ (int64_t)rawValueForKeepLocalManagedStatus:(int64_t)a3
++ (int64_t)rawValueForKeepLocalManagedStatus:(int64_t)status
 {
-  if ((a3 - 1) > 5)
+  if ((status - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return qword_2177565A0[a3 - 1];
+    return qword_2177565A0[status - 1];
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
-  else if ([(MusicKit_SoftLinking_MPModelObject *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(MusicKit_SoftLinking_MPModelObject *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     underlyingModelObject = self->_underlyingModelObject;
-    v6 = [(MusicKit_SoftLinking_MPModelObject *)v4 _underlyingModelObject];
-    v7 = [(MPModelObject *)underlyingModelObject isEqual:v6];
+    _underlyingModelObject = [(MusicKit_SoftLinking_MPModelObject *)equalCopy _underlyingModelObject];
+    v7 = [(MPModelObject *)underlyingModelObject isEqual:_underlyingModelObject];
   }
 
   else
@@ -599,9 +599,9 @@ LABEL_54:
   return v7;
 }
 
-+ (id)unarchiveUnderlyingModelObjectWithData:(id)a3 error:(id *)a4
++ (id)unarchiveUnderlyingModelObjectWithData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = MEMORY[0x277CCAAC8];
   v12 = 0;
   v13 = &v12;
@@ -621,7 +621,7 @@ LABEL_54:
 
   v8 = v7;
   _Block_object_dispose(&v12, 8);
-  v9 = [v6 unarchivedObjectOfClass:v7 fromData:v5 error:a4];
+  v9 = [v6 unarchivedObjectOfClass:v7 fromData:dataCopy error:error];
 
   return v9;
 }

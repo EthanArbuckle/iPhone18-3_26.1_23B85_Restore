@@ -1,32 +1,32 @@
 @interface NSMutableDictionary
-- (BOOL)validateObjWithKey:(id)a3 className:(Class)a4 isOptional:(BOOL)isKindOfClass error:(id *)a6;
-- (id)popObjectForKey:(id)a3;
+- (BOOL)validateObjWithKey:(id)key className:(Class)name isOptional:(BOOL)isKindOfClass error:(id *)error;
+- (id)popObjectForKey:(id)key;
 @end
 
 @implementation NSMutableDictionary
 
-- (id)popObjectForKey:(id)a3
+- (id)popObjectForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self objectForKey:v4];
-  [(NSMutableDictionary *)self removeObjectForKey:v4];
+  keyCopy = key;
+  v5 = [(NSMutableDictionary *)self objectForKey:keyCopy];
+  [(NSMutableDictionary *)self removeObjectForKey:keyCopy];
 
   return v5;
 }
 
-- (BOOL)validateObjWithKey:(id)a3 className:(Class)a4 isOptional:(BOOL)isKindOfClass error:(id *)a6
+- (BOOL)validateObjWithKey:(id)key className:(Class)name isOptional:(BOOL)isKindOfClass error:(id *)error
 {
-  v9 = a3;
-  v10 = [(NSMutableDictionary *)self objectForKey:v9];
+  keyCopy = key;
+  v10 = [(NSMutableDictionary *)self objectForKey:keyCopy];
   if (v10)
   {
     isKindOfClass = objc_opt_isKindOfClass();
   }
 
-  if (a6 && !isKindOfClass)
+  if (error && !isKindOfClass)
   {
-    v11 = [NSString stringWithFormat:@"Validation failed for dictionary key %@.", v9];
-    *a6 = [DIError errorWithPOSIXCode:22 verboseInfo:v11];
+    keyCopy = [NSString stringWithFormat:@"Validation failed for dictionary key %@.", keyCopy];
+    *error = [DIError errorWithPOSIXCode:22 verboseInfo:keyCopy];
   }
 
   return isKindOfClass;

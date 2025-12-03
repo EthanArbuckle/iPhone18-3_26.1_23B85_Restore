@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __55__HMDLightProfileNaturalLightingActionModel_properties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (properties_onceToken_73986 != -1)
   {
     dispatch_once(&properties_onceToken_73986, block);
@@ -60,32 +60,32 @@ void __55__HMDLightProfileNaturalLightingActionModel_properties__block_invoke(ui
 {
   v14.receiver = self;
   v14.super_class = HMDLightProfileNaturalLightingActionModel;
-  v3 = [(HMDBackingStoreModelObject *)&v14 dependentUUIDs];
-  v4 = [v3 mutableCopy];
+  dependentUUIDs = [(HMDBackingStoreModelObject *)&v14 dependentUUIDs];
+  v4 = [dependentUUIDs mutableCopy];
 
-  v5 = [(HMDBackingStoreModelObject *)self parentUUID];
+  parentUUID = [(HMDBackingStoreModelObject *)self parentUUID];
 
-  if (v5)
+  if (parentUUID)
   {
-    v6 = [(HMDBackingStoreModelObject *)self parentUUID];
-    [v4 addObject:v6];
+    parentUUID2 = [(HMDBackingStoreModelObject *)self parentUUID];
+    [v4 addObject:parentUUID2];
   }
 
-  v7 = [(HMDLightProfileNaturalLightingActionModel *)self accessoryUUID];
+  accessoryUUID = [(HMDLightProfileNaturalLightingActionModel *)self accessoryUUID];
 
-  if (v7)
+  if (accessoryUUID)
   {
-    v8 = [(HMDLightProfileNaturalLightingActionModel *)self accessoryUUID];
-    [v4 addObject:v8];
+    accessoryUUID2 = [(HMDLightProfileNaturalLightingActionModel *)self accessoryUUID];
+    [v4 addObject:accessoryUUID2];
   }
 
-  v9 = [(HMDLightProfileNaturalLightingActionModel *)self serviceUUIDs];
+  serviceUUIDs = [(HMDLightProfileNaturalLightingActionModel *)self serviceUUIDs];
 
-  if (v9)
+  if (serviceUUIDs)
   {
-    v10 = [(HMDLightProfileNaturalLightingActionModel *)self serviceUUIDs];
-    v11 = [v10 allObjects];
-    [v4 addObjectsFromArray:v11];
+    serviceUUIDs2 = [(HMDLightProfileNaturalLightingActionModel *)self serviceUUIDs];
+    allObjects = [serviceUUIDs2 allObjects];
+    [v4 addObjectsFromArray:allObjects];
   }
 
   v12 = [v4 copy];
@@ -95,10 +95,10 @@ void __55__HMDLightProfileNaturalLightingActionModel_properties__block_invoke(ui
 
 - (BOOL)isNaturalLightingEnabled
 {
-  v2 = [(HMDLightProfileNaturalLightingActionModel *)self naturalLightingEnabledField];
-  v3 = [v2 BOOLValue];
+  naturalLightingEnabledField = [(HMDLightProfileNaturalLightingActionModel *)self naturalLightingEnabledField];
+  bOOLValue = [naturalLightingEnabledField BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface MTDownloadsCancelReusableView
-- (MTDownloadsCancelReusableView)initWithFrame:(CGRect)a3;
+- (MTDownloadsCancelReusableView)initWithFrame:(CGRect)frame;
 - (UIButton)cancelAllButton;
 - (void)layoutSubviews;
 @end
 
 @implementation MTDownloadsCancelReusableView
 
-- (MTDownloadsCancelReusableView)initWithFrame:(CGRect)a3
+- (MTDownloadsCancelReusableView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = MTDownloadsCancelReusableView;
-  v3 = [(MTDownloadsCancelReusableView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTDownloadsCancelReusableView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(MTDownloadsCancelReusableView *)v3 cancelAllButton];
-    [(MTDownloadsCancelReusableView *)v4 addSubview:v5];
+    cancelAllButton = [(MTDownloadsCancelReusableView *)v3 cancelAllButton];
+    [(MTDownloadsCancelReusableView *)v4 addSubview:cancelAllButton];
   }
 
   return v4;
@@ -31,8 +31,8 @@
     self->_cancelAllButton = v4;
 
     v6 = +[UIFont buttonFont];
-    v7 = [(UIButton *)self->_cancelAllButton titleLabel];
-    [v7 setFont:v6];
+    titleLabel = [(UIButton *)self->_cancelAllButton titleLabel];
+    [titleLabel setFont:v6];
 
     [(UIButton *)self->_cancelAllButton setAutoresizingMask:45];
     v8 = self->_cancelAllButton;
@@ -57,8 +57,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MTDownloadsCancelReusableView *)self cancelAllButton];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  cancelAllButton = [(MTDownloadsCancelReusableView *)self cancelAllButton];
+  [cancelAllButton setFrame:{v4, v6, v8, v10}];
 }
 
 @end

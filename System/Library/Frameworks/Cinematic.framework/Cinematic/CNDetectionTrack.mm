@@ -1,11 +1,11 @@
 @interface CNDetectionTrack
-+ (id)_internalFromTracks:(id)a3;
-+ (id)_trackFromInternal:(id)a3;
-+ (id)_tracksFromInternal:(id)a3;
++ (id)_internalFromTracks:(id)tracks;
++ (id)_trackFromInternal:(id)internal;
++ (id)_tracksFromInternal:(id)internal;
 - (CNDetection)detectionAtOrBeforeTime:(CMTime *)time;
 - (CNDetection)detectionNearestTime:(CMTime *)time;
 - (NSArray)detectionsInTimeRange:(CMTimeRange *)timeRange;
-- (id)_initWithInternal:(id)a3;
+- (id)_initWithInternal:(id)internal;
 - (unint64_t)hash;
 @end
 
@@ -62,21 +62,21 @@
 
 - (unint64_t)hash
 {
-  v2 = [(CNDetectionTrack *)self internalTrack];
-  v3 = [v2 hash];
+  internalTrack = [(CNDetectionTrack *)self internalTrack];
+  v3 = [internalTrack hash];
 
   return v3;
 }
 
-- (id)_initWithInternal:(id)a3
+- (id)_initWithInternal:(id)internal
 {
-  v4 = a3;
+  internalCopy = internal;
   v9.receiver = self;
   v9.super_class = CNDetectionTrack;
   v5 = [(CNDetectionTrack *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [internalCopy copy];
     internalTrack = v5->_internalTrack;
     v5->_internalTrack = v6;
   }
@@ -84,9 +84,9 @@
   return v5;
 }
 
-+ (id)_trackFromInternal:(id)a3
++ (id)_trackFromInternal:(id)internal
 {
-  v3 = a3;
+  internalCopy = internal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -104,21 +104,21 @@
     }
   }
 
-  v6 = [objc_alloc(*v4) _initWithInternal:v3];
+  v6 = [objc_alloc(*v4) _initWithInternal:internalCopy];
 
   return v6;
 }
 
-+ (id)_tracksFromInternal:(id)a3
++ (id)_tracksFromInternal:(id)internal
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  internalCopy = internal;
+  array = [MEMORY[0x277CBEB18] array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v6 = v4;
+  v6 = internalCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -133,8 +133,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 _trackFromInternal:{*(*(&v15 + 1) + 8 * i), v15}];
-        [v5 addObject:v11];
+        v11 = [self _trackFromInternal:{*(*(&v15 + 1) + 8 * i), v15}];
+        [array addObject:v11];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -143,22 +143,22 @@
     while (v8);
   }
 
-  v12 = [v5 copy];
+  v12 = [array copy];
   v13 = *MEMORY[0x277D85DE8];
 
   return v12;
 }
 
-+ (id)_internalFromTracks:(id)a3
++ (id)_internalFromTracks:(id)tracks
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
+  tracksCopy = tracks;
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = tracksCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -173,8 +173,8 @@
           objc_enumerationMutation(v5);
         }
 
-        v10 = [*(*(&v14 + 1) + 8 * i) internalTrack];
-        [v4 addObject:v10];
+        internalTrack = [*(*(&v14 + 1) + 8 * i) internalTrack];
+        [array addObject:internalTrack];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -183,7 +183,7 @@
     while (v7);
   }
 
-  v11 = [v4 copy];
+  v11 = [array copy];
   v12 = *MEMORY[0x277D85DE8];
 
   return v11;

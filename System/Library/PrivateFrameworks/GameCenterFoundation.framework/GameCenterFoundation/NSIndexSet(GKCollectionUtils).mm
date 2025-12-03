@@ -7,7 +7,7 @@
 
 - (id)_gkIndexSetByRemovingIndex:()GKCollectionUtils
 {
-  v4 = [a1 mutableCopy];
+  v4 = [self mutableCopy];
   [v4 removeIndex:a3];
 
   return v4;
@@ -15,7 +15,7 @@
 
 - (id)_gkIndexSetByAddingIndex:()GKCollectionUtils
 {
-  v4 = [a1 mutableCopy];
+  v4 = [self mutableCopy];
   [v4 addIndex:a3];
 
   return v4;

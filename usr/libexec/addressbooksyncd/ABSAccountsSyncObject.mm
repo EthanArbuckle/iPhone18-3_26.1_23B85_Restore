@@ -1,25 +1,25 @@
 @interface ABSAccountsSyncObject
 + (id)sha;
-+ (void)processSyncObjASAPPortion:(id)a3;
-+ (void)processSyncObjEndOfSessionPortion:(id)a3;
-- (id)createProtobufWithOptions:(id)a3;
++ (void)processSyncObjASAPPortion:(id)portion;
++ (void)processSyncObjEndOfSessionPortion:(id)portion;
+- (id)createProtobufWithOptions:(id)options;
 @end
 
 @implementation ABSAccountsSyncObject
 
-+ (void)processSyncObjASAPPortion:(id)a3
++ (void)processSyncObjASAPPortion:(id)portion
 {
-  v3 = a3;
-  if ([v3 hasLocalContainerEnabled] && objc_msgSend(v3, "localContainerEnabled"))
+  portionCopy = portion;
+  if ([portionCopy hasLocalContainerEnabled] && objc_msgSend(portionCopy, "localContainerEnabled"))
   {
     [ABSAccountsManager setLocalContainerEnabled:1];
   }
 }
 
-+ (void)processSyncObjEndOfSessionPortion:(id)a3
++ (void)processSyncObjEndOfSessionPortion:(id)portion
 {
-  v3 = a3;
-  if ([v3 hasLocalContainerEnabled] && (objc_msgSend(v3, "localContainerEnabled") & 1) == 0)
+  portionCopy = portion;
+  if ([portionCopy hasLocalContainerEnabled] && (objc_msgSend(portionCopy, "localContainerEnabled") & 1) == 0)
   {
     [ABSAccountsManager setLocalContainerEnabled:0];
   }
@@ -42,7 +42,7 @@
   return v6;
 }
 
-- (id)createProtobufWithOptions:(id)a3
+- (id)createProtobufWithOptions:(id)options
 {
   v3 = +[ABSAccountsManager primaryiCloudCardDAVAccountIdentifier];
   v4 = *(qword_100071D00 + 8);
@@ -58,15 +58,15 @@
   [(ABSPBSyncObject *)v5 setAccountsSyncObject:v6];
 
   v7 = +[ABSAccountsManager localContainerEnabled];
-  v8 = [(ABSPBSyncObject *)v5 accountsSyncObject];
-  [v8 setLocalContainerEnabled:v7];
+  accountsSyncObject = [(ABSPBSyncObject *)v5 accountsSyncObject];
+  [accountsSyncObject setLocalContainerEnabled:v7];
 
-  v9 = [(ABSPBSyncObject *)v5 accountsSyncObject];
-  [v9 setPrimaryiCloudAccountCardDAVAccountExternalIdentifier:v3];
+  accountsSyncObject2 = [(ABSPBSyncObject *)v5 accountsSyncObject];
+  [accountsSyncObject2 setPrimaryiCloudAccountCardDAVAccountExternalIdentifier:v3];
 
-  v10 = [(ABSPBSyncObject *)v5 data];
+  data = [(ABSPBSyncObject *)v5 data];
 
-  return v10;
+  return data;
 }
 
 @end

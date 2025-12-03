@@ -1,20 +1,20 @@
 @interface HWRepeatingButton
-- (HWRepeatingButton)initWithCoder:(id)a3;
-- (HWRepeatingButton)initWithFrame:(CGRect)a3;
+- (HWRepeatingButton)initWithCoder:(id)coder;
+- (HWRepeatingButton)initWithFrame:(CGRect)frame;
 - (SEL)repeatingAction;
 - (void)_commonInit;
-- (void)_sendRepeatEvent:(id)a3;
-- (void)_touchDown:(id)a3;
-- (void)setRepeatingAction:(SEL)a3;
+- (void)_sendRepeatEvent:(id)event;
+- (void)_touchDown:(id)down;
+- (void)setRepeatingAction:(SEL)action;
 @end
 
 @implementation HWRepeatingButton
 
-- (HWRepeatingButton)initWithFrame:(CGRect)a3
+- (HWRepeatingButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = HWRepeatingButton;
-  v3 = [(HWRepeatingButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HWRepeatingButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -24,11 +24,11 @@
   return v4;
 }
 
-- (HWRepeatingButton)initWithCoder:(id)a3
+- (HWRepeatingButton)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HWRepeatingButton;
-  v3 = [(HWRepeatingButton *)&v6 initWithCoder:a3];
+  v3 = [(HWRepeatingButton *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -46,14 +46,14 @@
   [(HWRepeatingButton *)self addTarget:self action:"_touchUp:" forControlEvents:192];
 }
 
-- (void)_touchDown:(id)a3
+- (void)_touchDown:(id)down
 {
   [(HWRepeatingButton *)self setRepeatCount:0];
 
   [(HWRepeatingButton *)self performSelector:"_sendRepeatEvent:" withObject:self afterDelay:0.5];
 }
 
-- (void)_sendRepeatEvent:(id)a3
+- (void)_sendRepeatEvent:(id)event
 {
   if ([(HWRepeatingButton *)self repeatingAction]&& [(HWRepeatingButton *)self isEnabled]&& [(HWRepeatingButton *)self isTracking])
   {
@@ -61,8 +61,8 @@
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v4 = [(HWRepeatingButton *)self allTargets];
-    v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allTargets = [(HWRepeatingButton *)self allTargets];
+    v5 = [allTargets countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v5)
     {
       v6 = v5;
@@ -74,7 +74,7 @@
         {
           if (*v11 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allTargets);
           }
 
           v9 = *(*(&v10 + 1) + 8 * v8);
@@ -92,7 +92,7 @@
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v6 = [allTargets countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v6);
@@ -116,19 +116,19 @@
   }
 }
 
-- (void)setRepeatingAction:(SEL)a3
+- (void)setRepeatingAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_repeatingAction = v3;
+  self->_repeatingAction = actionCopy;
 }
 
 @end

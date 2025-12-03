@@ -4,14 +4,14 @@
 - (BOOL)isPacketAvailable;
 - (EAPacket)consumeNextOutPacket;
 - (unint64_t)_sessionPacketsFromAppBytesFree;
-- (unsigned)sendBytesToApp:(const char *)a3 length:(int)a4;
+- (unsigned)sendBytesToApp:(const char *)app length:(int)length;
 - (void)_openPipeFromApp;
 - (void)_openPipeToApp;
 - (void)_readSessionDataFromAppThread;
 - (void)_sessionBufferToAppHasSpaceAvailable;
 - (void)_writeSessionDataFromAccThread;
 - (void)dealloc;
-- (void)recycleOutPacket:(EAPacket *)a3;
+- (void)recycleOutPacket:(EAPacket *)packet;
 - (void)shuttingDownSession;
 @end
 
@@ -345,7 +345,7 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  v2 = self;
+  selfCopy = self;
   p_sessionPacketsFromAppCondition = &self->_sessionPacketsFromAppCondition;
   if ((&self->_sessionPacketsFromAppCondition & 7) != 0)
   {
@@ -353,13 +353,13 @@ LABEL_15:
   }
 
   LOBYTE(self) = [(NSCondition *)*p_sessionPacketsFromAppCondition lock];
-  if ((&v2->_sessionPacketsFromApp & 7) != 0 || (&v2->_sessionPacketsFromAppReady & 3) != 0)
+  if ((&selfCopy->_sessionPacketsFromApp & 7) != 0 || (&selfCopy->_sessionPacketsFromAppReady & 3) != 0)
   {
     goto LABEL_17;
   }
 
-  sessionPacketsFromApp = v2->_sessionPacketsFromApp;
-  sessionPacketsFromAppReady = v2->_sessionPacketsFromAppReady;
+  sessionPacketsFromApp = selfCopy->_sessionPacketsFromApp;
+  sessionPacketsFromAppReady = selfCopy->_sessionPacketsFromAppReady;
   if (__CFADD__(sessionPacketsFromApp, 8 * sessionPacketsFromAppReady))
   {
 LABEL_18:
@@ -395,7 +395,7 @@ LABEL_17:
   {
 LABEL_15:
     v8 = 0;
-    v2->_hasSessionPacketFromAppNotificationBeenPosted = 0;
+    selfCopy->_hasSessionPacketFromAppNotificationBeenPosted = 0;
   }
 
   [(NSCondition *)*p_sessionPacketsFromAppCondition unlock];
@@ -410,7 +410,7 @@ LABEL_15:
     goto LABEL_37;
   }
 
-  v2 = self;
+  selfCopy = self;
   p_var14 = &self->var14;
   if ((&self->var14 & 7) != 0)
   {
@@ -418,20 +418,20 @@ LABEL_15:
   }
 
   self = [*p_var14 lock];
-  if ((&v2->var18 & 7) != 0)
+  if ((&selfCopy->var18 & 7) != 0)
   {
     goto LABEL_37;
   }
 
-  *&v2->var18 = 0xFFFFFFFFLL;
-  p_var15 = &v2->var15;
-  if ((&v2->var15 & 7) != 0)
+  *&selfCopy->var18 = 0xFFFFFFFFLL;
+  p_var15 = &selfCopy->var15;
+  if ((&selfCopy->var15 & 7) != 0)
   {
     goto LABEL_37;
   }
 
-  v5 = &v2->var16 + 1;
-  if (((&v2->var16 + 4) & 3) != 0)
+  v5 = &selfCopy->var16 + 1;
+  if (((&selfCopy->var16 + 4) & 3) != 0)
   {
     goto LABEL_37;
   }
@@ -475,7 +475,7 @@ LABEL_15:
   {
 LABEL_31:
     v13 = 0;
-    LOBYTE(v2->var28) = 0;
+    LOBYTE(selfCopy->var28) = 0;
 LABEL_36:
     [*p_var14 unlock];
     return v13;
@@ -501,12 +501,12 @@ LABEL_36:
 
   v13 = *v12;
   v21 = -21846;
-  if ((v2 + 30))
+  if ((selfCopy + 30))
   {
     goto LABEL_37;
   }
 
-  v21 = bswap32(HIWORD(v2->var3)) >> 16;
+  v21 = bswap32(HIWORD(selfCopy->var3)) >> 16;
   if ((v13 & 7) != 0 || v13 == 0)
   {
     goto LABEL_37;
@@ -534,8 +534,8 @@ LABEL_38:
   }
 
   *v17 = 0;
-  p_var16 = &v2->var16;
-  if ((&v2->var16 & 3) != 0)
+  p_var16 = &selfCopy->var16;
+  if ((&selfCopy->var16 & 3) != 0)
   {
     goto LABEL_37;
   }
@@ -545,9 +545,9 @@ LABEL_38:
   {
     if (v16 != -1)
     {
-      if (((&v2[1].var1 + 4) & 3) == 0)
+      if (((&selfCopy[1].var1 + 4) & 3) == 0)
       {
-        v20 = HIDWORD(v2[1].var1) & v19;
+        v20 = HIDWORD(selfCopy[1].var1) & v19;
         *p_var16 = v20;
 LABEL_35:
         *v5 = v20;
@@ -560,9 +560,9 @@ LABEL_35:
 
   else if (v16 != -1)
   {
-    if (((&v2[1].var1 + 4) & 3) == 0)
+    if (((&selfCopy[1].var1 + 4) & 3) == 0)
     {
-      v20 = HIDWORD(v2[1].var1) & v19;
+      v20 = HIDWORD(selfCopy[1].var1) & v19;
       goto LABEL_35;
     }
 
@@ -576,7 +576,7 @@ LABEL_39:
   return self;
 }
 
-- (void)recycleOutPacket:(EAPacket *)a3
+- (void)recycleOutPacket:(EAPacket *)packet
 {
   if (!self)
   {
@@ -590,12 +590,12 @@ LABEL_39:
   }
 
   [(NSCondition *)*p_sessionPacketsFromAppCondition lock];
-  if (!a3 || (a3 & 7) != 0)
+  if (!packet || (packet & 7) != 0)
   {
     goto LABEL_24;
   }
 
-  if ((a3->var25 & 4) == 0)
+  if ((packet->var25 & 4) == 0)
   {
     sub_1000E1D34();
   }
@@ -634,7 +634,7 @@ LABEL_24:
 
   if (!*v10)
   {
-    sub_1000B94C8(a3);
+    sub_1000B94C8(packet);
     v11 = *p_sessionPacketsFromApp;
     v12 = *p_sessionPacketsFromAppTail;
     if (!__CFADD__(*p_sessionPacketsFromApp, 8 * v12))
@@ -644,7 +644,7 @@ LABEL_24:
         v13 = &v11[v12];
         if ((v13 & 7) == 0)
         {
-          *v13 = a3;
+          *v13 = packet;
           v14 = __CFADD__(v12, 1);
           v15 = v12 + 1;
           if (v14)
@@ -688,7 +688,7 @@ LABEL_20:
 
   if (*p_sock != -1)
   {
-    v3 = self;
+    selfCopy = self;
     p_sessionDataFromAccCondition = &self->_sessionDataFromAccCondition;
     if ((&self->_sessionDataFromAccCondition & 7) == 0)
     {
@@ -699,9 +699,9 @@ LABEL_20:
         goto LABEL_9;
       }
 
-      if ((&v3->_sessionDataFromAcc & 7) == 0)
+      if ((&selfCopy->_sessionDataFromAcc & 7) == 0)
       {
-        v5 = [(NSMutableData *)v3->_sessionDataFromAcc length]< 0x40000;
+        v5 = [(NSMutableData *)selfCopy->_sessionDataFromAcc length]< 0x40000;
 LABEL_9:
         [(NSCondition *)*p_sessionDataFromAccCondition unlock];
         goto LABEL_10;
@@ -719,7 +719,7 @@ LABEL_10:
   return self;
 }
 
-- (unsigned)sendBytesToApp:(const char *)a3 length:(int)a4
+- (unsigned)sendBytesToApp:(const char *)app length:(int)length
 {
   if ((&self->super._sock & 3) != 0)
   {
@@ -728,30 +728,30 @@ LABEL_10:
 
   if (self->super._sock != -1)
   {
-    v6 = self;
+    selfCopy = self;
     LODWORD(self) = [(IAPSessionBasic *)self bufferToAppHasSpaceAvailable];
     if (!self)
     {
-      a4 = 0;
+      length = 0;
 LABEL_12:
-      if ((&v6->super._client & 7) == 0)
+      if ((&selfCopy->super._client & 7) == 0)
       {
-        [(IAPEAClient *)v6->super._client takeProcessAssertion:@"external-accessory.incoming-packet"];
+        [(IAPEAClient *)selfCopy->super._client takeProcessAssertion:@"external-accessory.incoming-packet"];
         goto LABEL_14;
       }
 
       goto LABEL_15;
     }
 
-    p_sessionDataFromAccCondition = &v6->_sessionDataFromAccCondition;
-    if ((&v6->_sessionDataFromAccCondition & 7) == 0)
+    p_sessionDataFromAccCondition = &selfCopy->_sessionDataFromAccCondition;
+    if ((&selfCopy->_sessionDataFromAccCondition & 7) == 0)
     {
       LODWORD(self) = [*p_sessionDataFromAccCondition lock];
-      p_sessionDataFromAcc = &v6->_sessionDataFromAcc;
-      if ((&v6->_sessionDataFromAcc & 7) == 0)
+      p_sessionDataFromAcc = &selfCopy->_sessionDataFromAcc;
+      if ((&selfCopy->_sessionDataFromAcc & 7) == 0)
       {
         self = [*p_sessionDataFromAcc length];
-        if (__CFADD__(self, a4))
+        if (__CFADD__(self, length))
         {
 LABEL_16:
           __break(0x5500u);
@@ -760,17 +760,17 @@ LABEL_17:
           return self;
         }
 
-        if (self + a4 > 0x40000)
+        if (self + length > 0x40000)
         {
           LODWORD(self) = [*p_sessionDataFromAcc length];
-          a4 = 0x40000 - self;
+          length = 0x40000 - self;
           if (self > 0x40000)
           {
             goto LABEL_17;
           }
         }
 
-        [*p_sessionDataFromAcc appendBytes:a3 length:a4];
+        [*p_sessionDataFromAcc appendBytes:app length:length];
         [*p_sessionDataFromAccCondition signal];
         LODWORD(self) = [*p_sessionDataFromAccCondition unlock];
         goto LABEL_12;
@@ -782,9 +782,9 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  a4 = 0;
+  length = 0;
 LABEL_14:
-  LODWORD(self) = a4;
+  LODWORD(self) = length;
   return self;
 }
 
@@ -795,17 +795,17 @@ LABEL_14:
     goto LABEL_32;
   }
 
-  v2 = self;
+  selfCopy = self;
   v3 = (self + 120);
   if (((self + 120) & 7) != 0)
   {
     goto LABEL_32;
   }
 
-  v4 = *v3;
+  selfCopy2 = *v3;
   if (*v3 != 0xFFFFFFFF)
   {
-    return v4;
+    return selfCopy2;
   }
 
   v5 = (self + 96);
@@ -827,7 +827,7 @@ LABEL_14:
 LABEL_28:
     __break(0x5513u);
 LABEL_29:
-    v4 = 0;
+    selfCopy2 = 0;
     goto LABEL_30;
   }
 
@@ -861,17 +861,17 @@ LABEL_32:
   }
 
   self = sub_1000B9424(self);
-  v4 = self;
+  selfCopy2 = self;
   if (!self)
   {
 LABEL_30:
-    *v3 = v4;
-    return v4;
+    *v3 = selfCopy2;
+    return selfCopy2;
   }
 
   if (*v6 != -1)
   {
-    v11 = (v2 + 172);
+    v11 = (selfCopy + 172);
     if ((v11 & 3) == 0)
     {
       v12 = *v11 & (*v6 + 1);
@@ -893,8 +893,8 @@ LABEL_30:
           }
 
           self = sub_1000B9424(self);
-          v15 = __CFADD__(v4, self);
-          v4 += self;
+          v15 = __CFADD__(selfCopy2, self);
+          selfCopy2 += self;
           if (v15 || v12 == -1)
           {
             goto LABEL_33;
@@ -989,7 +989,7 @@ LABEL_33:
             [(NSCondition *)*p_sessionPacketsFromAppCondition lock];
             if (*p_sock != -1)
             {
-              v11 = [(IAPSessionBasic *)self _sessionPacketsFromAppBytesFree];
+              _sessionPacketsFromAppBytesFree = [(IAPSessionBasic *)self _sessionPacketsFromAppBytesFree];
               p_sessionPacketsFromApp = &self->_sessionPacketsFromApp;
               if ((&self->_sessionPacketsFromApp & 7) != 0)
               {
@@ -1023,8 +1023,8 @@ LABEL_33:
               v15 = *v14;
               if (*v14)
               {
-                v16 = v11;
-                if (v11 >= 0x41)
+                v16 = _sessionPacketsFromAppBytesFree;
+                if (_sessionPacketsFromAppBytesFree >= 0x41)
                 {
                   v17 = 0;
                   while ((v15 & 7) == 0)

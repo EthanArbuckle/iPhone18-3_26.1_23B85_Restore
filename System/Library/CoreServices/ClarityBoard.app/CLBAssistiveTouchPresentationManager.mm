@@ -1,5 +1,5 @@
 @interface CLBAssistiveTouchPresentationManager
-- (CLBAssistiveTouchPresentationManager)initWithDelegate:(id)a3;
+- (CLBAssistiveTouchPresentationManager)initWithDelegate:(id)delegate;
 - (NSString)identifier;
 @end
 
@@ -12,11 +12,11 @@
   return v2;
 }
 
-- (CLBAssistiveTouchPresentationManager)initWithDelegate:(id)a3
+- (CLBAssistiveTouchPresentationManager)initWithDelegate:(id)delegate
 {
   v5.receiver = self;
   v5.super_class = type metadata accessor for AssistiveTouchPresentationManager();
-  return [(CLBScenePresentationManager *)&v5 initWithDelegate:a3];
+  return [(CLBScenePresentationManager *)&v5 initWithDelegate:delegate];
 }
 
 @end

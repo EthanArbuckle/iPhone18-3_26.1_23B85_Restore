@@ -8,14 +8,14 @@
 - (id)outputImage
 {
   v10[4] = *MEMORY[0x1E69E9840];
-  v3 = [(VNCIMultiplicationFilter *)self inputFactor1];
-  v10[0] = v3;
-  v4 = [(VNCIMultiplicationFilter *)self inputFactor2];
-  v10[1] = v4;
-  v5 = [(VNCIMultiplicationFilter *)self inputFactor3];
-  v10[2] = v5;
-  v6 = [(VNCIMultiplicationFilter *)self inputFactor4];
-  v10[3] = v6;
+  inputFactor1 = [(VNCIMultiplicationFilter *)self inputFactor1];
+  v10[0] = inputFactor1;
+  inputFactor2 = [(VNCIMultiplicationFilter *)self inputFactor2];
+  v10[1] = inputFactor2;
+  inputFactor3 = [(VNCIMultiplicationFilter *)self inputFactor3];
+  v10[2] = inputFactor3;
+  inputFactor4 = [(VNCIMultiplicationFilter *)self inputFactor4];
+  v10[3] = inputFactor4;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v10 count:4];
   v8 = [(VNCIFilter *)&self->super.super.super.isa applyWithArguments:v7];
 

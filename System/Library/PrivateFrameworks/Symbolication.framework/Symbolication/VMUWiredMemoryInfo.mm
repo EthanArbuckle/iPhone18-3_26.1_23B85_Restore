@@ -1,10 +1,10 @@
 @interface VMUWiredMemoryInfo
 - (BOOL)sample;
 - (VMUWiredMemoryInfo)init;
-- (VMUWiredMemoryInfo)initWithZoneNames:(mach_zone_name *)a3 nameCount:(unsigned int)a4 zoneInfo:(mach_zone_info_data *)a5 zoneInfoCount:(unsigned int)a6 wiredInfo:(mach_memory_info *)a7 wiredInfoCount:(unsigned int)a8;
+- (VMUWiredMemoryInfo)initWithZoneNames:(mach_zone_name *)names nameCount:(unsigned int)count zoneInfo:(mach_zone_info_data *)info zoneInfoCount:(unsigned int)infoCount wiredInfo:(mach_memory_info *)wiredInfo wiredInfoCount:(unsigned int)wiredInfoCount;
 - (id)counterInfo;
-- (id)getCounterNameForSite:(unint64_t)a3;
-- (id)getTagNameForSite:(unint64_t)a3;
+- (id)getCounterNameForSite:(unint64_t)site;
+- (id)getTagNameForSite:(unint64_t)site;
 - (id)vmRegionInfo;
 - (id)zoneInfo;
 - (void)dealloc;
@@ -260,19 +260,19 @@ LABEL_28:
   return result;
 }
 
-- (VMUWiredMemoryInfo)initWithZoneNames:(mach_zone_name *)a3 nameCount:(unsigned int)a4 zoneInfo:(mach_zone_info_data *)a5 zoneInfoCount:(unsigned int)a6 wiredInfo:(mach_memory_info *)a7 wiredInfoCount:(unsigned int)a8
+- (VMUWiredMemoryInfo)initWithZoneNames:(mach_zone_name *)names nameCount:(unsigned int)count zoneInfo:(mach_zone_info_data *)info zoneInfoCount:(unsigned int)infoCount wiredInfo:(mach_memory_info *)wiredInfo wiredInfoCount:(unsigned int)wiredInfoCount
 {
   v15.receiver = self;
   v15.super_class = VMUWiredMemoryInfo;
   result = [(VMUWiredMemoryInfo *)&v15 init];
   if (result)
   {
-    result->zone_names = a3;
-    result->zone_names_count = a4;
-    result->zone_info = a5;
-    result->zone_info_count = a6;
-    result->wired_info = a7;
-    result->wired_info_count = a8;
+    result->zone_names = names;
+    result->zone_names_count = count;
+    result->zone_info = info;
+    result->zone_info_count = infoCount;
+    result->wired_info = wiredInfo;
+    result->wired_info_count = wiredInfoCount;
     result->ownsMachInfo = 0;
   }
 
@@ -308,7 +308,7 @@ LABEL_28:
 
 - (BOOL)sample
 {
-  v2 = self;
+  selfCopy = self;
   p_zone_names = &self->zone_names;
   if (self->zone_names || self->zone_info || self->wired_info)
   {
@@ -316,8 +316,8 @@ LABEL_28:
   }
 
   v4 = MEMORY[0x1C695E740](self, a2);
-  v5 = mach_memory_info(v4, p_zone_names, &v2->zone_names_count, &v2->zone_info, &v2->zone_info_count, &v2->wired_info, &v2->wired_info_count);
-  v2->ownsMachInfo = 1;
+  v5 = mach_memory_info(v4, p_zone_names, &selfCopy->zone_names_count, &selfCopy->zone_info, &selfCopy->zone_info_count, &selfCopy->wired_info, &selfCopy->wired_info_count);
+  selfCopy->ownsMachInfo = 1;
   if (v5)
   {
     v6 = v5;
@@ -330,14 +330,14 @@ LABEL_12:
     }
   }
 
-  else if (v2->zone_names_count == v2->zone_info_count)
+  else if (selfCopy->zone_names_count == selfCopy->zone_info_count)
   {
     LOBYTE(v7) = 1;
   }
 
   else
   {
-    [(VMUWiredMemoryInfo *)v2 resetMachInfo];
+    [(VMUWiredMemoryInfo *)selfCopy resetMachInfo];
     v7 = os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR);
     if (v7)
     {
@@ -435,44 +435,44 @@ void __34__VMUWiredMemoryInfo_vmRegionInfo__block_invoke(uint64_t a1, void *a2, 
   return v15;
 }
 
-- (id)getTagNameForSite:(unint64_t)a3
+- (id)getTagNameForSite:(unint64_t)site
 {
-  if ([&unk_1F4638AB8 count] <= a3)
+  if ([&unk_1F4638AB8 count] <= site)
   {
-    if (a3 == 255)
+    if (site == 255)
     {
-      v4 = @"VM_KERN_MEMORY_ANY";
+      site = @"VM_KERN_MEMORY_ANY";
     }
 
-    else if (a3 == 256)
+    else if (site == 256)
     {
-      v4 = @"VM_KERN_MEMORY_COUNT";
+      site = @"VM_KERN_MEMORY_COUNT";
     }
 
     else
     {
-      v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"VM_KERN_MEMORY_%lld", a3];
+      site = [MEMORY[0x1E696AEC0] stringWithFormat:@"VM_KERN_MEMORY_%lld", site];
     }
   }
 
   else
   {
-    v4 = [&unk_1F4638AD0 objectAtIndexedSubscript:a3];
+    site = [&unk_1F4638AD0 objectAtIndexedSubscript:site];
   }
 
-  return v4;
+  return site;
 }
 
-- (id)getCounterNameForSite:(unint64_t)a3
+- (id)getCounterNameForSite:(unint64_t)site
 {
-  if ([&unk_1F4638AE8 count] <= a3)
+  if ([&unk_1F4638AE8 count] <= site)
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"VM_KERN_COUNT_%lld", a3];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"VM_KERN_COUNT_%lld", site];
   }
 
   else
   {
-    [&unk_1F4638B00 objectAtIndexedSubscript:a3];
+    [&unk_1F4638B00 objectAtIndexedSubscript:site];
   }
   v4 = ;
 
@@ -483,7 +483,7 @@ void __34__VMUWiredMemoryInfo_vmRegionInfo__block_invoke(uint64_t a1, void *a2, 
 {
   v3 = *MEMORY[0x1E69E9840];
   v2[0] = 67109120;
-  v2[1] = a1;
+  v2[1] = self;
   _os_log_error_impl(&dword_1C679D000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Insufficient permissions to call mach_memory_info: error code %d\n", v2, 8u);
   v1 = *MEMORY[0x1E69E9840];
 }

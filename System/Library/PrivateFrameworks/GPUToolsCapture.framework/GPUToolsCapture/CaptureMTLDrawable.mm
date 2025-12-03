@@ -1,20 +1,20 @@
 @interface CaptureMTLDrawable
-- (BOOL)conformsToProtocol:(id)a3;
-- (CaptureMTLDrawable)initWithBaseObject:(id)a3 captureContext:(GTTraceContext *)a4;
-- (id)forwardingTargetForSelector:(SEL)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (CaptureMTLDrawable)initWithBaseObject:(id)object captureContext:(GTTraceContext *)context;
+- (id)forwardingTargetForSelector:(SEL)selector;
 - (id)texture;
 - (unint64_t)deviceRef;
 - (unint64_t)streamReference;
 - (void)dealloc;
 - (void)present;
-- (void)presentAfterMinimumDuration:(double)a3;
-- (void)presentAtTime:(double)a3;
+- (void)presentAfterMinimumDuration:(double)duration;
+- (void)presentAtTime:(double)time;
 - (void)touch;
 @end
 
 @implementation CaptureMTLDrawable
 
-- (void)presentAfterMinimumDuration:(double)a3
+- (void)presentAfterMinimumDuration:(double)duration
 {
   PresentTelemetry(self);
   v16 = 0u;
@@ -22,7 +22,7 @@
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  [(MTLDrawable *)self->_baseObject presentAfterMinimumDuration:a3];
+  [(MTLDrawable *)self->_baseObject presentAfterMinimumDuration:duration];
   v6 = v16;
   *(v16 + 8) = -7156;
   v7 = BYTE9(v17);
@@ -42,10 +42,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLDrawable *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLDrawable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -54,7 +54,7 @@
   }
 
   *v8 = var0;
-  *(v8 + 1) = a3;
+  *(v8 + 1) = duration;
   s();
   *v13 = v14;
   *(v13 + 8) = BYTE8(v17);
@@ -62,7 +62,7 @@
   PresentTrigger(self, &v15);
 }
 
-- (void)presentAtTime:(double)a3
+- (void)presentAtTime:(double)time
 {
   PresentTelemetry(self);
   v16 = 0u;
@@ -70,7 +70,7 @@
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  [(MTLDrawable *)self->_baseObject presentAtTime:a3];
+  [(MTLDrawable *)self->_baseObject presentAtTime:time];
   v6 = v16;
   *(v16 + 8) = -7157;
   v7 = BYTE9(v17);
@@ -90,10 +90,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLDrawable *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLDrawable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -102,7 +102,7 @@
   }
 
   *v8 = var0;
-  *(v8 + 1) = a3;
+  *(v8 + 1) = time;
   s();
   *v13 = v14;
   *(v13 + 8) = BYTE8(v17);
@@ -138,10 +138,10 @@
   }
 
   *(v4 + 13) = v5;
-  v9 = [(CaptureMTLDrawable *)self traceStream];
-  if (v9)
+  traceStream = [(CaptureMTLDrawable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v9->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -164,8 +164,8 @@
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  v4 = [(MTLDrawable *)self->_baseObject texture];
-  v5 = RetrieveGPUCaptureTexture(v4);
+  texture = [(MTLDrawable *)self->_baseObject texture];
+  v5 = RetrieveGPUCaptureTexture(texture);
   v6 = v19;
   *(v19 + 8) = -7167;
   v7 = BYTE9(v20);
@@ -185,10 +185,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLDrawable *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLDrawable *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -196,10 +196,10 @@
     var0 = 0;
   }
 
-  v13 = [v5 traceStream];
-  if (v13)
+  traceStream2 = [v5 traceStream];
+  if (traceStream2)
   {
-    v14 = *v13;
+    v14 = *traceStream2;
   }
 
   else
@@ -214,7 +214,7 @@
   *(v15 + 8) = BYTE8(v20);
   *(v19 + 15) |= 8u;
 
-  return v4;
+  return texture;
 }
 
 - (void)dealloc
@@ -224,13 +224,13 @@
   [(CaptureMTLDrawable *)&v2 dealloc];
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLDrawable *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLDrawable *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -241,7 +241,7 @@
   }
 }
 
-- (id)forwardingTargetForSelector:(SEL)a3
+- (id)forwardingTargetForSelector:(SEL)selector
 {
   if (s_logUsingOsLog == 1)
   {
@@ -252,7 +252,7 @@
       *buf = 136315394;
       v13 = ClassName;
       v14 = 2080;
-      Name = sel_getName(a3);
+      Name = sel_getName(selector);
       _os_log_error_impl(&dword_0, v5, OS_LOG_TYPE_ERROR, "warning: Uncaught selector, [%s %s]", buf, 0x16u);
     }
   }
@@ -261,7 +261,7 @@
   {
     v6 = __stderrp;
     v7 = object_getClassName(self->_baseObject);
-    v8 = [NSString stringWithFormat:@"warning: Uncaught selector, [%s %s]", v7, sel_getName(a3)];
+    v8 = [NSString stringWithFormat:@"warning: Uncaught selector, [%s %s]", v7, sel_getName(selector)];
     fprintf(v6, "%s\n", [v8 UTF8String]);
   }
 
@@ -272,12 +272,12 @@
 
 - (unint64_t)deviceRef
 {
-  v2 = [(CaptureMTLDrawable *)self layer];
-  v3 = [v2 device];
-  v4 = [v3 traceStream];
-  if (v4)
+  layer = [(CaptureMTLDrawable *)self layer];
+  device = [layer device];
+  traceStream = [device traceStream];
+  if (traceStream)
   {
-    v5 = *v4;
+    v5 = *traceStream;
   }
 
   else
@@ -321,22 +321,22 @@
   }
 }
 
-- (CaptureMTLDrawable)initWithBaseObject:(id)a3 captureContext:(GTTraceContext *)a4
+- (CaptureMTLDrawable)initWithBaseObject:(id)object captureContext:(GTTraceContext *)context
 {
-  v7 = a3;
+  objectCopy = object;
   v14.receiver = self;
   v14.super_class = CaptureMTLDrawable;
   v8 = [(CaptureMTLDrawable *)&v14 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_baseObject, a3);
-    v9->_traceContext = a4;
-    v10 = DEVICEOBJECT(v7);
-    v9->_traceStream = GTTraceContext_openStream(a4, v10, v9);
+    objc_storeStrong(&v8->_baseObject, object);
+    v9->_traceContext = context;
+    v10 = DEVICEOBJECT(objectCopy);
+    v9->_traceStream = GTTraceContext_openStream(context, v10, v9);
 
-    v11 = [v7 texture];
-    v12 = RetrieveGPUCaptureTexture(v11);
+    texture = [objectCopy texture];
+    v12 = RetrieveGPUCaptureTexture(texture);
 
     [v12 updateDrawableStream:v9->_traceStream];
   }

@@ -1,8 +1,8 @@
 @interface SessionTimeProgressView
 - (BOOL)accessibilityShowRemaining;
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC9SeymourUI23SessionTimeProgressView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC9SeymourUI23SessionTimeProgressView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -11,7 +11,7 @@
 - (CGSize)intrinsicContentSize
 {
   v2 = *(&self->super.super.super.isa + OBJC_IVAR____TtC9SeymourUI23SessionTimeProgressView_label);
-  v3 = self;
+  selfCopy = self;
   [v2 intrinsicContentSize];
   v5 = v4;
   v7 = v6;
@@ -29,9 +29,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(SessionTimeProgressView *)self intrinsicContentSize:a3.width];
+  [(SessionTimeProgressView *)self intrinsicContentSize:fits.width];
   result.height = v4;
   result.width = v3;
   return result;
@@ -39,11 +39,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_20BA791B4();
 }
 
-- (_TtC9SeymourUI23SessionTimeProgressView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI23SessionTimeProgressView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -52,7 +52,7 @@
 
 - (BOOL)accessibilityShowRemaining
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_20C136974();
   v5 = v4;
   if (v3 == sub_20C136974() && v5 == v6)

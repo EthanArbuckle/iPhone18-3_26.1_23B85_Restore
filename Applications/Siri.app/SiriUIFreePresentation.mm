@@ -1,40 +1,40 @@
 @interface SiriUIFreePresentation
-- (SiriUIFreePresentation)initWithNibName:(id)a3 bundle:(id)a4 delegate:(id)a5 dataSource:(id)a6;
+- (SiriUIFreePresentation)initWithNibName:(id)name bundle:(id)bundle delegate:(id)delegate dataSource:(id)source;
 - (SiriUIPresentationDataSource)dataSource;
 - (SiriUIPresentationDelegate)delegate;
-- (void)_didPresentItemsAtIndexPaths:(id)a3;
-- (void)conversation:(id)a3 didInsertItemsAtIndexPaths:(id)a4;
-- (void)handleRequestEndBehavior:(id)a3 isAttending:(BOOL)a4;
-- (void)setDelegate:(id)a3;
-- (void)siriDidActivateFromSource:(int64_t)a3;
+- (void)_didPresentItemsAtIndexPaths:(id)paths;
+- (void)conversation:(id)conversation didInsertItemsAtIndexPaths:(id)paths;
+- (void)handleRequestEndBehavior:(id)behavior isAttending:(BOOL)attending;
+- (void)setDelegate:(id)delegate;
+- (void)siriDidActivateFromSource:(int64_t)source;
 - (void)siriDidDeactivate;
-- (void)siriDidTransitionFromState:(int64_t)a3 event:(int64_t)a4;
-- (void)siriRequestWillStartWithRequestOptions:(id)a3;
+- (void)siriDidTransitionFromState:(int64_t)state event:(int64_t)event;
+- (void)siriRequestWillStartWithRequestOptions:(id)options;
 @end
 
 @implementation SiriUIFreePresentation
 
-- (SiriUIFreePresentation)initWithNibName:(id)a3 bundle:(id)a4 delegate:(id)a5 dataSource:(id)a6
+- (SiriUIFreePresentation)initWithNibName:(id)name bundle:(id)bundle delegate:(id)delegate dataSource:(id)source
 {
-  v8 = a5;
-  v9 = a6;
+  delegateCopy = delegate;
+  sourceCopy = source;
   v13.receiver = self;
   v13.super_class = SiriUIFreePresentation;
   v10 = [(SiriUIFreePresentation *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    [(SiriUIFreePresentation *)v10 setDelegate:v8];
-    [(SiriUIFreePresentation *)v11 setDataSource:v9];
+    [(SiriUIFreePresentation *)v10 setDelegate:delegateCopy];
+    [(SiriUIFreePresentation *)v11 setDataSource:sourceCopy];
     v11->_idleTimeoutInSec = 9.0;
   }
 
   return v11;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -44,8 +44,8 @@
     v5 = obj;
     if (!self->_hasReportedPresentation)
     {
-      v6 = [(SiriUIFreePresentation *)self delegate];
-      [v6 siriPresentationDidPresentUserInterface:self];
+      delegate = [(SiriUIFreePresentation *)self delegate];
+      [delegate siriPresentationDidPresentUserInterface:self];
 
       v5 = obj;
       self->_hasReportedPresentation = 1;
@@ -53,7 +53,7 @@
   }
 }
 
-- (void)siriDidActivateFromSource:(int64_t)a3
+- (void)siriDidActivateFromSource:(int64_t)source
 {
   v5 = +[AFUISiriSession availabilityState];
   if (v5 && !self->_shouldSuppressErrorTTS)
@@ -69,15 +69,15 @@
     else
     {
       v10 = [v8 siriUILocalizedStringForKey:@"ASSISTANT_NOT_AVAILABLE_TITLE"];
-      v12 = [(SiriUIFreePresentation *)self delegate];
-      [v12 siriPresentation:self synthesizeSpeechWithText:v10 completion:0];
+      delegate = [(SiriUIFreePresentation *)self delegate];
+      [delegate siriPresentation:self synthesizeSpeechWithText:v10 completion:0];
 
       if (v5 == 3)
       {
         v14 = +[UIDevice currentDevice];
-        v15 = [v14 sf_isChinaRegionCellularDevice];
+        sf_isChinaRegionCellularDevice = [v14 sf_isChinaRegionCellularDevice];
 
-        if (v15)
+        if (sf_isChinaRegionCellularDevice)
         {
           v13 = @"ASSISTANT_NO_LOCAL_ASSETS_SUBTITLE_NOTIFICATION_CHINA";
         }
@@ -93,8 +93,8 @@
         if (v5 != 1)
         {
 LABEL_15:
-          v17 = [(SiriUIFreePresentation *)self delegate];
-          [v17 siriPresentation:self synthesizeSpeechWithText:v10 completion:0];
+          delegate2 = [(SiriUIFreePresentation *)self delegate];
+          [delegate2 siriPresentation:self synthesizeSpeechWithText:v10 completion:0];
 
           goto LABEL_16;
         }
@@ -118,7 +118,7 @@ LABEL_15:
     v19 = 136315906;
     v20 = "[SiriUIFreePresentation siriDidActivateFromSource:]";
     v21 = 2048;
-    v22 = a3;
+    sourceCopy = source;
     v23 = 2048;
     v24 = v5;
     v25 = 1024;
@@ -127,15 +127,15 @@ LABEL_15:
   }
 
 LABEL_16:
-  v18 = [(SiriUIFreePresentation *)self delegate];
-  [v18 enableIdleTimerForSiriPresentation:self];
+  delegate3 = [(SiriUIFreePresentation *)self delegate];
+  [delegate3 enableIdleTimerForSiriPresentation:self];
 }
 
-- (void)siriRequestWillStartWithRequestOptions:(id)a3
+- (void)siriRequestWillStartWithRequestOptions:(id)options
 {
   self->_shouldResumeMediaOnIdle = 0;
-  v4 = [a3 requestSource];
-  if (v4 == 43 || v4 == 27)
+  requestSource = [options requestSource];
+  if (requestSource == 43 || requestSource == 27)
   {
     v5 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -155,13 +155,13 @@ LABEL_16:
 
 - (void)siriDidDeactivate
 {
-  v3 = [(SiriUIFreePresentation *)self delegate];
-  [v3 disableIdleTimerForSiriPresentation:self];
+  delegate = [(SiriUIFreePresentation *)self delegate];
+  [delegate disableIdleTimerForSiriPresentation:self];
 }
 
-- (void)conversation:(id)a3 didInsertItemsAtIndexPaths:(id)a4
+- (void)conversation:(id)conversation didInsertItemsAtIndexPaths:(id)paths
 {
-  v5 = a4;
+  pathsCopy = paths;
   v6 = AFSiriLogContextConnection;
   if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
   {
@@ -170,25 +170,25 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s ", &v7, 0xCu);
   }
 
-  [(SiriUIFreePresentation *)self _didPresentItemsAtIndexPaths:v5];
+  [(SiriUIFreePresentation *)self _didPresentItemsAtIndexPaths:pathsCopy];
 }
 
-- (void)_didPresentItemsAtIndexPaths:(id)a3
+- (void)_didPresentItemsAtIndexPaths:(id)paths
 {
-  v4 = a3;
-  v5 = [(SiriUIFreePresentation *)self dataSource];
-  v6 = [v5 conversationIdentifiersForSiriPresentation:self];
-  v7 = [v6 lastObject];
+  pathsCopy = paths;
+  dataSource = [(SiriUIFreePresentation *)self dataSource];
+  v6 = [dataSource conversationIdentifiersForSiriPresentation:self];
+  lastObject = [v6 lastObject];
 
-  v8 = [(SiriUIFreePresentation *)self dataSource];
-  v9 = [v8 siriPresentation:self conversationWithIdentifier:v7];
+  dataSource2 = [(SiriUIFreePresentation *)self dataSource];
+  v9 = [dataSource2 siriPresentation:self conversationWithIdentifier:lastObject];
 
-  v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+  v10 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [pathsCopy count]);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = v4;
+  v11 = pathsCopy;
   v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
@@ -205,8 +205,8 @@ LABEL_16:
         }
 
         v16 = [v9 itemAtIndexPath:{*(*(&v19 + 1) + 8 * v15), v19}];
-        v17 = [v16 identifier];
-        [v10 addObject:v17];
+        identifier = [v16 identifier];
+        [v10 addObject:identifier];
 
         v15 = v15 + 1;
       }
@@ -218,14 +218,14 @@ LABEL_16:
     while (v13);
   }
 
-  v18 = [(SiriUIFreePresentation *)self delegate];
-  [v18 siriPresentation:self didPresentConversationItemsWithIdentifiers:v10];
+  delegate = [(SiriUIFreePresentation *)self delegate];
+  [delegate siriPresentation:self didPresentConversationItemsWithIdentifiers:v10];
 }
 
-- (void)handleRequestEndBehavior:(id)a3 isAttending:(BOOL)a4
+- (void)handleRequestEndBehavior:(id)behavior isAttending:(BOOL)attending
 {
-  v5 = a3;
-  if ([v5 premptivelyResumeMedia])
+  behaviorCopy = behavior;
+  if ([behaviorCopy premptivelyResumeMedia])
   {
     v6 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
@@ -238,31 +238,31 @@ LABEL_16:
     self->_shouldResumeMediaOnIdle = 1;
   }
 
-  v7 = [v5 minimumAutoDismissalTimeInMs];
+  minimumAutoDismissalTimeInMs = [behaviorCopy minimumAutoDismissalTimeInMs];
 
-  if (v7)
+  if (minimumAutoDismissalTimeInMs)
   {
     v8 = AFSiriLogContextConnection;
     if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v8;
-      v10 = [v5 minimumAutoDismissalTimeInMs];
-      v11 = [v10 longValue];
+      minimumAutoDismissalTimeInMs2 = [behaviorCopy minimumAutoDismissalTimeInMs];
+      longValue = [minimumAutoDismissalTimeInMs2 longValue];
       v13 = 136315394;
       v14 = "[SiriUIFreePresentation handleRequestEndBehavior:isAttending:]";
       v15 = 2048;
-      v16 = v11;
+      v16 = longValue;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s #autodismiss Setting delay dismissal for ui free presentation by %ld milliseconds.", &v13, 0x16u);
     }
 
-    v12 = [v5 minimumAutoDismissalTimeInMs];
-    self->_idleTimeoutInSec = [v12 longValue] / 1000.0;
+    minimumAutoDismissalTimeInMs3 = [behaviorCopy minimumAutoDismissalTimeInMs];
+    self->_idleTimeoutInSec = [minimumAutoDismissalTimeInMs3 longValue] / 1000.0;
   }
 }
 
-- (void)siriDidTransitionFromState:(int64_t)a3 event:(int64_t)a4
+- (void)siriDidTransitionFromState:(int64_t)state event:(int64_t)event
 {
-  switch(a4)
+  switch(event)
   {
     case 13:
       v7 = AFSiriLogContextConnection;
@@ -274,8 +274,8 @@ LABEL_16:
       }
 
       self->_shouldPauseAutoDismissal = 0;
-      v8 = [(SiriUIFreePresentation *)self delegate];
-      [v8 dismissSiriPresentation:self withReason:46];
+      delegate = [(SiriUIFreePresentation *)self delegate];
+      [delegate dismissSiriPresentation:self withReason:46];
 
       break;
     case 12:

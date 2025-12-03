@@ -1,22 +1,22 @@
 @interface SiriSharedUIContentPlatterScrollView
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (SiriSharedUIContentPlatterScrollView)initWithCoder:(id)a3;
-- (SiriSharedUIContentPlatterScrollView)initWithFrame:(CGRect)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (SiriSharedUIContentPlatterScrollView)initWithCoder:(id)coder;
+- (SiriSharedUIContentPlatterScrollView)initWithFrame:(CGRect)frame;
 - (SiriSharedUIContentPlatterScrollViewDelegate)platterDelegate;
 - (id)_parentScrollView;
 - (void)_sharedInit;
 - (void)layoutSubviews;
-- (void)scrollRectToVisible:(CGRect)a3 animated:(BOOL)a4;
-- (void)setFrame:(CGRect)a3;
+- (void)scrollRectToVisible:(CGRect)visible animated:(BOOL)animated;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation SiriSharedUIContentPlatterScrollView
 
-- (SiriSharedUIContentPlatterScrollView)initWithFrame:(CGRect)a3
+- (SiriSharedUIContentPlatterScrollView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SiriSharedUIContentPlatterScrollView;
-  v3 = [(SiriSharedUIContentPlatterScrollView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriSharedUIContentPlatterScrollView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -27,11 +27,11 @@
   return v4;
 }
 
-- (SiriSharedUIContentPlatterScrollView)initWithCoder:(id)a3
+- (SiriSharedUIContentPlatterScrollView)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = SiriSharedUIContentPlatterScrollView;
-  v3 = [(SiriSharedUIContentPlatterScrollView *)&v6 initWithCoder:a3];
+  v3 = [(SiriSharedUIContentPlatterScrollView *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -41,12 +41,12 @@
   return v4;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(SiriSharedUIContentPlatterScrollView *)self setAdjustContentSizeOnNextLayout:1];
   v8.receiver = self;
   v8.super_class = SiriSharedUIContentPlatterScrollView;
@@ -69,17 +69,17 @@
     v8 = v7;
     v10 = v9;
     v12 = v11;
-    v13 = [(SiriSharedUIStandardScrollView *)self isSemanticContentAttributeRightToLeft];
+    isSemanticContentAttributeRightToLeft = [(SiriSharedUIStandardScrollView *)self isSemanticContentAttributeRightToLeft];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v14 = [(SiriSharedUIStandardScrollView *)self contentViews];
-    v15 = [v14 countByEnumeratingWithState:&v27 objects:v32 count:16];
+    contentViews = [(SiriSharedUIStandardScrollView *)self contentViews];
+    v15 = [contentViews countByEnumeratingWithState:&v27 objects:v32 count:16];
     if (v15)
     {
       v16 = v15;
-      if (v13)
+      if (isSemanticContentAttributeRightToLeft)
       {
         v10 = v12;
       }
@@ -92,7 +92,7 @@
         {
           if (*v28 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(contentViews);
           }
 
           v19 = *(*(&v27 + 1) + 8 * v18);
@@ -115,7 +115,7 @@
         }
 
         while (v16 != v18);
-        v16 = [v14 countByEnumeratingWithState:&v27 objects:v32 count:16];
+        v16 = [contentViews countByEnumeratingWithState:&v27 objects:v32 count:16];
       }
 
       while (v16);
@@ -140,57 +140,57 @@
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v4 = self;
-  v5 = [(SiriSharedUIContentPlatterScrollView *)self platterDelegate:a3];
-  LOBYTE(v4) = [v5 shouldAllowSimultaneousGestureRecognizersForScrollView:v4];
+  selfCopy = self;
+  v5 = [(SiriSharedUIContentPlatterScrollView *)self platterDelegate:recognizer];
+  LOBYTE(selfCopy) = [v5 shouldAllowSimultaneousGestureRecognizersForScrollView:selfCopy];
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)scrollRectToVisible:(CGRect)a3 animated:(BOOL)a4
+- (void)scrollRectToVisible:(CGRect)visible animated:(BOOL)animated
 {
-  v4 = a4;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = [(SiriSharedUIContentPlatterScrollView *)self traitCollection];
-  v11 = [v10 isAmbientPresented];
+  animatedCopy = animated;
+  height = visible.size.height;
+  width = visible.size.width;
+  y = visible.origin.y;
+  x = visible.origin.x;
+  traitCollection = [(SiriSharedUIContentPlatterScrollView *)self traitCollection];
+  isAmbientPresented = [traitCollection isAmbientPresented];
 
-  if (([(SiriSharedUIContentPlatterScrollView *)self isScrollEnabled]& 1) == 0 && v11)
+  if (([(SiriSharedUIContentPlatterScrollView *)self isScrollEnabled]& 1) == 0 && isAmbientPresented)
   {
-    v13 = [(SiriSharedUIContentPlatterScrollView *)self _parentScrollView];
-    [(SiriSharedUIContentPlatterScrollView *)self convertRect:v13 toView:x, y, width, height];
-    v12 = v13;
-    if (v13)
+    _parentScrollView = [(SiriSharedUIContentPlatterScrollView *)self _parentScrollView];
+    [(SiriSharedUIContentPlatterScrollView *)self convertRect:_parentScrollView toView:x, y, width, height];
+    v12 = _parentScrollView;
+    if (_parentScrollView)
     {
-      [v13 scrollRectToVisible:v4 animated:?];
-      v12 = v13;
+      [_parentScrollView scrollRectToVisible:animatedCopy animated:?];
+      v12 = _parentScrollView;
     }
   }
 }
 
 - (id)_parentScrollView
 {
-  v2 = self;
-  while (v2)
+  selfCopy = self;
+  while (selfCopy)
   {
-    v3 = [(SiriSharedUIContentPlatterScrollView *)v2 superview];
+    superview = [(SiriSharedUIContentPlatterScrollView *)selfCopy superview];
 
     objc_opt_class();
-    v2 = v3;
+    selfCopy = superview;
     if (objc_opt_isKindOfClass())
     {
       goto LABEL_6;
     }
   }
 
-  v3 = 0;
+  superview = 0;
 LABEL_6:
 
-  return v3;
+  return superview;
 }
 
 - (void)_sharedInit

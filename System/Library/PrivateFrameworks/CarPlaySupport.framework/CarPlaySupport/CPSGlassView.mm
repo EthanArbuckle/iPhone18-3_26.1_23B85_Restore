@@ -1,7 +1,7 @@
 @interface CPSGlassView
 + (id)createWithTemplateConfiguration;
 - (UIColor)glassTintColor;
-- (void)setGlassTintColor:(id)a3;
+- (void)setGlassTintColor:(id)color;
 @end
 
 @implementation CPSGlassView
@@ -13,11 +13,11 @@
   return v2;
 }
 
-- (void)setGlassTintColor:(id)a3
+- (void)setGlassTintColor:(id)color
 {
-  v4 = a3;
-  v5 = self;
-  CPSGlassView.glassTintColor.setter(v4);
+  colorCopy = color;
+  selfCopy = self;
+  CPSGlassView.glassTintColor.setter(colorCopy);
 }
 
 + (id)createWithTemplateConfiguration

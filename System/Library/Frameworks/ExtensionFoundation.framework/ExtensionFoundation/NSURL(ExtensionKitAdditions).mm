@@ -11,16 +11,16 @@
 
 - (uint64_t)_EX_isDirectory
 {
-  v1 = [a1 URLByResolvingSymlinksInPath];
+  uRLByResolvingSymlinksInPath = [self URLByResolvingSymlinksInPath];
   v10 = 0;
   v2 = *MEMORY[0x1E695DB78];
   v9 = 0;
-  v3 = [v1 getResourceValue:&v10 forKey:v2 error:&v9];
+  v3 = [uRLByResolvingSymlinksInPath getResourceValue:&v10 forKey:v2 error:&v9];
   v4 = v10;
   v5 = v9;
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [v4 BOOLValue];
+    bOOLValue = [v4 BOOLValue];
   }
 
   else
@@ -31,10 +31,10 @@
       [NSURL(ExtensionKitAdditions) _EX_isDirectory];
     }
 
-    v6 = 0;
+    bOOLValue = 0;
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 - (uint64_t)_EX_isApplication
@@ -42,12 +42,12 @@
   v9 = 0;
   v1 = *MEMORY[0x1E695DB70];
   v8 = 0;
-  v2 = [a1 getResourceValue:&v9 forKey:v1 error:&v8];
+  v2 = [self getResourceValue:&v9 forKey:v1 error:&v8];
   v3 = v9;
   v4 = v8;
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
@@ -58,40 +58,40 @@
       [NSURL(ExtensionKitAdditions) _EX_isApplication];
     }
 
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
 - (id)_EX_containingApplicationBundleURL
 {
-  v1 = [a1 absoluteURL];
-  v2 = [v1 URLByDeletingLastPathComponent];
+  absoluteURL = [self absoluteURL];
+  uRLByDeletingLastPathComponent = [absoluteURL URLByDeletingLastPathComponent];
 
   v3 = objc_autoreleasePoolPush();
-  v4 = [v2 path];
-  v5 = [v4 length];
+  path = [uRLByDeletingLastPathComponent path];
+  v5 = [path length];
 
   if (v5)
   {
-    while (![v2 _EX_isApplication])
+    while (![uRLByDeletingLastPathComponent _EX_isApplication])
     {
-      v6 = [v2 URLByDeletingLastPathComponent];
+      v2URLByDeletingLastPathComponent = [uRLByDeletingLastPathComponent URLByDeletingLastPathComponent];
 
-      v7 = [v6 path];
-      v5 = [v7 length];
+      path2 = [v2URLByDeletingLastPathComponent path];
+      v5 = [path2 length];
 
-      v2 = v6;
+      uRLByDeletingLastPathComponent = v2URLByDeletingLastPathComponent;
       if (!v5)
       {
-        v2 = v6;
+        uRLByDeletingLastPathComponent = v2URLByDeletingLastPathComponent;
         goto LABEL_6;
       }
     }
 
-    v2 = v2;
-    v5 = v2;
+    uRLByDeletingLastPathComponent = uRLByDeletingLastPathComponent;
+    v5 = uRLByDeletingLastPathComponent;
   }
 
 LABEL_6:
@@ -105,8 +105,8 @@ LABEL_6:
   v9 = 2;
   v4 = MEMORY[0x1E696AC08];
   v5 = a3;
-  v6 = [v4 defaultManager];
-  v7 = [v6 getRelationship:&v9 ofDirectoryAtURL:v5 toItemAtURL:a1 error:0];
+  defaultManager = [v4 defaultManager];
+  v7 = [defaultManager getRelationship:&v9 ofDirectoryAtURL:v5 toItemAtURL:self error:0];
 
   if (v9)
   {

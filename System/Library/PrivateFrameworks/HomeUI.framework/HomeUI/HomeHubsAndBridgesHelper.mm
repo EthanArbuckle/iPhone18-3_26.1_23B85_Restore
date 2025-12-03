@@ -1,24 +1,24 @@
 @interface HomeHubsAndBridgesHelper
-+ (id)createHomeHubsAndBridgesListViewHostingControllerWithHome:(id)a3;
-+ (id)presentBridgeDetailViewForAccessory:(id)a3 withHome:(id)a4;
++ (id)createHomeHubsAndBridgesListViewHostingControllerWithHome:(id)home;
++ (id)presentBridgeDetailViewForAccessory:(id)accessory withHome:(id)home;
 - (_TtC6HomeUI24HomeHubsAndBridgesHelper)init;
 @end
 
 @implementation HomeHubsAndBridgesHelper
 
-+ (id)createHomeHubsAndBridgesListViewHostingControllerWithHome:(id)a3
++ (id)createHomeHubsAndBridgesListViewHostingControllerWithHome:(id)home
 {
   v4 = objc_allocWithZone(type metadata accessor for HomeHubsAndBridgesListViewHostingController(0));
-  HomeHubsAndBridgesListViewHostingController.init(home:)(a3);
+  HomeHubsAndBridgesListViewHostingController.init(home:)(home);
 
   return v5;
 }
 
-+ (id)presentBridgeDetailViewForAccessory:(id)a3 withHome:(id)a4
++ (id)presentBridgeDetailViewForAccessory:(id)accessory withHome:(id)home
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = _s6HomeUI0A20HubsAndBridgesHelperC23presentBridgeDetailView3for4withSo8NAFutureCySo6NSNullCGSo11HMAccessoryC_So6HMHomeCtFZ_0(v5, v6);
+  accessoryCopy = accessory;
+  homeCopy = home;
+  v7 = _s6HomeUI0A20HubsAndBridgesHelperC23presentBridgeDetailView3for4withSo8NAFutureCySo6NSNullCGSo11HMAccessoryC_So6HMHomeCtFZ_0(accessoryCopy, homeCopy);
 
   return v7;
 }

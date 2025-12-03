@@ -1,39 +1,39 @@
 @interface ANAccountNotifier
-- (ANAccountNotifier)initWithCallbackMachService:(id)a3;
+- (ANAccountNotifier)initWithCallbackMachService:(id)service;
 - (ANAccountNotifierDelegate)delegate;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (id)_createDaemonConnection;
 - (id)_daemonConnection;
 - (void)_daemonConnectionWasInterrupted;
 - (void)_daemonConnectionWasInvalidated;
 - (void)_disconnectFromDaemon;
-- (void)_startNotificationCallbackListenerWithMachServiceName:(id)a3;
+- (void)_startNotificationCallbackListenerWithMachServiceName:(id)name;
 - (void)_stopNotificationCallbackListener;
-- (void)addNotification:(id)a3;
+- (void)addNotification:(id)notification;
 - (void)dealloc;
-- (void)notificationWasActivated:(id)a3;
-- (void)notificationWasCleared:(id)a3;
-- (void)notificationWasDismissed:(id)a3;
-- (void)removeNotificationWithIdentifier:(id)a3;
-- (void)removeNotificationsWithEventIdentifier:(id)a3;
+- (void)notificationWasActivated:(id)activated;
+- (void)notificationWasCleared:(id)cleared;
+- (void)notificationWasDismissed:(id)dismissed;
+- (void)removeNotificationWithIdentifier:(id)identifier;
+- (void)removeNotificationsWithEventIdentifier:(id)identifier;
 @end
 
 @implementation ANAccountNotifier
 
-- (ANAccountNotifier)initWithCallbackMachService:(id)a3
+- (ANAccountNotifier)initWithCallbackMachService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v10.receiver = self;
   v10.super_class = ANAccountNotifier;
   v5 = [(ANAccountNotifier *)&v10 init];
   v6 = v5;
-  if (v4 && v5)
+  if (serviceCopy && v5)
   {
-    v7 = [v4 copy];
+    v7 = [serviceCopy copy];
     callbackMachService = v6->_callbackMachService;
     v6->_callbackMachService = v7;
 
-    [(ANAccountNotifier *)v6 _startNotificationCallbackListenerWithMachServiceName:v4];
+    [(ANAccountNotifier *)v6 _startNotificationCallbackListenerWithMachServiceName:serviceCopy];
   }
 
   return v6;
@@ -48,9 +48,9 @@
   [(ANAccountNotifier *)&v3 dealloc];
 }
 
-- (void)addNotification:(id)a3
+- (void)addNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = _ANLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -65,18 +65,18 @@
       [ANAccountNotifier addNotification:];
     }
 
-    [v4 setCallbackMachService:self->_callbackMachService];
+    [notificationCopy setCallbackMachService:self->_callbackMachService];
   }
 
-  v7 = [(ANAccountNotifier *)self _daemonConnection];
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_0];
+  _daemonConnection = [(ANAccountNotifier *)self _daemonConnection];
+  v8 = [_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_0];
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __37__ANAccountNotifier_addNotification___block_invoke_3;
   v10[3] = &unk_278BF92F0;
-  v11 = v4;
-  v9 = v4;
+  v11 = notificationCopy;
+  v9 = notificationCopy;
   [v8 addNotification:v9 withCompletion:v10];
 }
 
@@ -119,24 +119,24 @@ void __37__ANAccountNotifier_addNotification___block_invoke_3(uint64_t a1, char 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeNotificationWithIdentifier:(id)a3
+- (void)removeNotificationWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _ANLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ANAccountNotifier removeNotificationWithIdentifier:];
   }
 
-  v6 = [(ANAccountNotifier *)self _daemonConnection];
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_6];
+  _daemonConnection = [(ANAccountNotifier *)self _daemonConnection];
+  v7 = [_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_6];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __54__ANAccountNotifier_removeNotificationWithIdentifier___block_invoke_7;
   v9[3] = &unk_278BF92F0;
-  v10 = v4;
-  v8 = v4;
+  v10 = identifierCopy;
+  v8 = identifierCopy;
   [v7 removeNotificationWithID:v8 completion:v9];
 }
 
@@ -179,24 +179,24 @@ void __54__ANAccountNotifier_removeNotificationWithIdentifier___block_invoke_7(u
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeNotificationsWithEventIdentifier:(id)a3
+- (void)removeNotificationsWithEventIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = _ANLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ANAccountNotifier removeNotificationsWithEventIdentifier:];
   }
 
-  v6 = [(ANAccountNotifier *)self _daemonConnection];
-  v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_9];
+  _daemonConnection = [(ANAccountNotifier *)self _daemonConnection];
+  v7 = [_daemonConnection synchronousRemoteObjectProxyWithErrorHandler:&__block_literal_global_9];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __60__ANAccountNotifier_removeNotificationsWithEventIdentifier___block_invoke_10;
   v9[3] = &unk_278BF92F0;
-  v10 = v4;
-  v8 = v4;
+  v10 = identifierCopy;
+  v8 = identifierCopy;
   [v7 removeNotificationsWithEventID:v8 completion:v9];
 }
 
@@ -244,9 +244,9 @@ void __60__ANAccountNotifier_removeNotificationsWithEventIdentifier___block_invo
   daemonConnection = self->_daemonConnection;
   if (!daemonConnection)
   {
-    v4 = [(ANAccountNotifier *)self _createDaemonConnection];
+    _createDaemonConnection = [(ANAccountNotifier *)self _createDaemonConnection];
     v5 = self->_daemonConnection;
-    self->_daemonConnection = v4;
+    self->_daemonConnection = _createDaemonConnection;
 
     daemonConnection = self->_daemonConnection;
   }
@@ -352,10 +352,10 @@ void __44__ANAccountNotifier__createDaemonConnection__block_invoke_2(uint64_t a1
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startNotificationCallbackListenerWithMachServiceName:(id)a3
+- (void)_startNotificationCallbackListenerWithMachServiceName:(id)name
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   bulletinResponseListener = self->_bulletinResponseListener;
   v6 = _ANLogSystem();
   v7 = v6;
@@ -378,7 +378,7 @@ void __44__ANAccountNotifier__createDaemonConnection__block_invoke_2(uint64_t a1
       [ANAccountNotifier _startNotificationCallbackListenerWithMachServiceName:];
     }
 
-    v8 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:v4];
+    v8 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:nameCopy];
     v9 = self->_bulletinResponseListener;
     self->_bulletinResponseListener = v8;
 
@@ -398,11 +398,11 @@ void __44__ANAccountNotifier__createDaemonConnection__block_invoke_2(uint64_t a1
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
-  v6 = [v5 valueForEntitlement:@"com.apple.and.manager"];
+  connectionCopy = connection;
+  v6 = [connectionCopy valueForEntitlement:@"com.apple.and.manager"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -429,10 +429,10 @@ LABEL_10:
   }
 
   v7 = +[ANClientCallbackInterface XPCInterface];
-  [v5 setExportedInterface:v7];
+  [connectionCopy setExportedInterface:v7];
 
-  [v5 setExportedObject:self];
-  [v5 resume];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
   v8 = _ANLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -450,10 +450,10 @@ LABEL_11:
   return v9;
 }
 
-- (void)notificationWasActivated:(id)a3
+- (void)notificationWasActivated:(id)activated
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  activatedCopy = activated;
   v5 = _ANLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -470,16 +470,16 @@ LABEL_11:
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    [v8 accountNotifier:self didActivateNotification:v4];
+    [v8 accountNotifier:self didActivateNotification:activatedCopy];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notificationWasDismissed:(id)a3
+- (void)notificationWasDismissed:(id)dismissed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dismissedCopy = dismissed;
   v5 = _ANLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -496,16 +496,16 @@ LABEL_11:
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    [v8 accountNotifier:self didDismissNotification:v4];
+    [v8 accountNotifier:self didDismissNotification:dismissedCopy];
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notificationWasCleared:(id)a3
+- (void)notificationWasCleared:(id)cleared
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clearedCopy = cleared;
   v5 = _ANLogSystem();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -522,7 +522,7 @@ LABEL_11:
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_delegate);
-    [v8 accountNotifier:self didClearNotification:v4];
+    [v8 accountNotifier:self didClearNotification:clearedCopy];
   }
 
   v9 = *MEMORY[0x277D85DE8];

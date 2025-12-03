@@ -1,34 +1,34 @@
 @interface HDRaceRouteWorkoutEntity
-+ (BOOL)enumerateRoutePointsForWorkoutPersistentID:(int64_t)a3 timestampAnchor:(double)a4 limit:(unint64_t)a5 startDuration:(double)a6 finishDuration:(double)a7 transaction:(id)a8 error:(id *)a9 handler:(id)a10;
-+ (BOOL)enumerateRoutePointsForWorkoutUUID:(id)a3 timestampAnchor:(double)a4 limit:(unint64_t)a5 profile:(id)a6 error:(id *)a7 dataHandler:(id)a8;
-+ (BOOL)insertCodableRoutePoints:(id)a3 workoutPersistentID:(int64_t)a4 transaction:(id)a5 error:(id *)a6;
-+ (BOOL)markForDeletionWorkoutDataWithPersistentID:(int64_t)a3 transaction:(id)a4 error:(id *)a5;
-+ (BOOL)pruneWorkoutsMarkedForDeletionInTransaction:(id)a3 error:(id *)a4;
-+ (id)_insertWithWorkoutUUID:(uint64_t)a3 seriesKey:(void *)a4 transaction:(uint64_t)a5 error:;
-+ (id)_routeKeyForPersistentID:(void *)a3 transaction:(uint64_t)a4 error:;
-+ (id)createRaceRouteWorkoutFromWorkout:(id)a3 transaction:(id)a4 profile:(id)a5 error:(id *)a6;
-+ (id)entityForWorkoutUUID:(id)a3 transaction:(id)a4 error:(id *)a5;
-+ (id)insertCodableRacingMetrics:(id)a3 transaction:(id)a4 error:(id *)a5;
++ (BOOL)enumerateRoutePointsForWorkoutPersistentID:(int64_t)d timestampAnchor:(double)anchor limit:(unint64_t)limit startDuration:(double)duration finishDuration:(double)finishDuration transaction:(id)transaction error:(id *)error handler:(id)self0;
++ (BOOL)enumerateRoutePointsForWorkoutUUID:(id)d timestampAnchor:(double)anchor limit:(unint64_t)limit profile:(id)profile error:(id *)error dataHandler:(id)handler;
++ (BOOL)insertCodableRoutePoints:(id)points workoutPersistentID:(int64_t)d transaction:(id)transaction error:(id *)error;
++ (BOOL)markForDeletionWorkoutDataWithPersistentID:(int64_t)d transaction:(id)transaction error:(id *)error;
++ (BOOL)pruneWorkoutsMarkedForDeletionInTransaction:(id)transaction error:(id *)error;
++ (id)_insertWithWorkoutUUID:(uint64_t)d seriesKey:(void *)key transaction:(uint64_t)transaction error:;
++ (id)_routeKeyForPersistentID:(void *)d transaction:(uint64_t)transaction error:;
++ (id)createRaceRouteWorkoutFromWorkout:(id)workout transaction:(id)transaction profile:(id)profile error:(id *)error;
++ (id)entityForWorkoutUUID:(id)d transaction:(id)transaction error:(id *)error;
++ (id)insertCodableRacingMetrics:(id)metrics transaction:(id)transaction error:(id *)error;
 + (id)privateSubEntities;
-+ (id)startingPointForWorkoutWithPersistentID:(int64_t)a3 transaction:(id)a4 error:(id *)a5;
++ (id)startingPointForWorkoutWithPersistentID:(int64_t)d transaction:(id)transaction error:(id *)error;
 @end
 
 @implementation HDRaceRouteWorkoutEntity
 
-+ (id)insertCodableRacingMetrics:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)insertCodableRacingMetrics:(id)metrics transaction:(id)transaction error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 routePoints];
-  v11 = [HDRaceRouteLocationSeriesEntity insertCodableRoutePoints:v10 transaction:v9 error:a5];
+  metricsCopy = metrics;
+  transactionCopy = transaction;
+  routePoints = [metricsCopy routePoints];
+  v11 = [HDRaceRouteLocationSeriesEntity insertCodableRoutePoints:routePoints transaction:transactionCopy error:error];
 
   if (v11)
   {
     v12 = MEMORY[0x277CCAD78];
-    v13 = [v8 workoutUUID];
-    v14 = [v12 hk_UUIDWithData:v13];
+    workoutUUID = [metricsCopy workoutUUID];
+    v14 = [v12 hk_UUIDWithData:workoutUUID];
 
-    v15 = +[HDRaceRouteWorkoutEntity _insertWithWorkoutUUID:seriesKey:transaction:error:](a1, v14, [v11 longLongValue], v9, a5);
+    v15 = +[HDRaceRouteWorkoutEntity _insertWithWorkoutUUID:seriesKey:transaction:error:](self, v14, [v11 longLongValue], transactionCopy, error);
   }
 
   else
@@ -39,13 +39,13 @@
   return v15;
 }
 
-+ (id)_insertWithWorkoutUUID:(uint64_t)a3 seriesKey:(void *)a4 transaction:(uint64_t)a5 error:
++ (id)_insertWithWorkoutUUID:(uint64_t)d seriesKey:(void *)key transaction:(uint64_t)transaction error:
 {
   v20[3] = *MEMORY[0x277D85DE8];
   v8 = a2;
-  v9 = a4;
+  keyCopy = key;
   v10 = objc_opt_self();
-  v11 = [v9 databaseForEntityClass:v10];
+  v11 = [keyCopy databaseForEntityClass:v10];
 
   v20[0] = @"workout_uuid";
   v20[1] = @"route_key";
@@ -56,24 +56,24 @@
   v17[2] = __79__HDRaceRouteWorkoutEntity__insertWithWorkoutUUID_seriesKey_transaction_error___block_invoke;
   v17[3] = &unk_278616B10;
   v18 = v8;
-  v19 = a3;
+  dCopy = d;
   v13 = v8;
-  v14 = [v10 insertOrReplaceEntity:0 database:v11 properties:v12 error:a5 bindingHandler:v17];
+  v14 = [v10 insertOrReplaceEntity:0 database:v11 properties:v12 error:transaction bindingHandler:v17];
 
   v15 = *MEMORY[0x277D85DE8];
 
   return v14;
 }
 
-+ (BOOL)insertCodableRoutePoints:(id)a3 workoutPersistentID:(int64_t)a4 transaction:(id)a5 error:(id *)a6
++ (BOOL)insertCodableRoutePoints:(id)points workoutPersistentID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = [(HDRaceRouteWorkoutEntity *)a1 _routeKeyForPersistentID:a4 transaction:v11 error:a6];
+  pointsCopy = points;
+  transactionCopy = transaction;
+  v12 = [(HDRaceRouteWorkoutEntity *)self _routeKeyForPersistentID:d transaction:transactionCopy error:error];
   v13 = v12;
   if (v12)
   {
-    v14 = +[HDRaceRouteLocationSeriesEntity insertCodableRoutePoints:seriesKey:transaction:error:](HDRaceRouteLocationSeriesEntity, "insertCodableRoutePoints:seriesKey:transaction:error:", v10, [v12 longLongValue], v11, a6);
+    v14 = +[HDRaceRouteLocationSeriesEntity insertCodableRoutePoints:seriesKey:transaction:error:](HDRaceRouteLocationSeriesEntity, "insertCodableRoutePoints:seriesKey:transaction:error:", pointsCopy, [v12 longLongValue], transactionCopy, error);
   }
 
   else
@@ -84,12 +84,12 @@
   return v14;
 }
 
-+ (id)_routeKeyForPersistentID:(void *)a3 transaction:(uint64_t)a4 error:
++ (id)_routeKeyForPersistentID:(void *)d transaction:(uint64_t)transaction error:
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  dCopy = d;
   v7 = objc_opt_self();
-  v8 = [v6 databaseForEntityClass:v7];
+  v8 = [dCopy databaseForEntityClass:v7];
   v9 = MEMORY[0x277D10B18];
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a2];
   v11 = [v9 predicateWithProperty:@"ROWID" equalToValue:v10];
@@ -108,7 +108,7 @@
   v17[2] = __71__HDRaceRouteWorkoutEntity__routeKeyForPersistentID_transaction_error___block_invoke;
   v17[3] = &unk_278619E98;
   v17[4] = &v18;
-  [v12 enumerateProperties:v13 error:a4 enumerationHandler:v17];
+  [v12 enumerateProperties:v13 error:transaction enumerationHandler:v17];
 
   v14 = v19[5];
   _Block_object_dispose(&v18, 8);
@@ -118,18 +118,18 @@
   return v14;
 }
 
-+ (id)createRaceRouteWorkoutFromWorkout:(id)a3 transaction:(id)a4 profile:(id)a5 error:(id *)a6
++ (id)createRaceRouteWorkoutFromWorkout:(id)workout transaction:(id)transaction profile:(id)profile error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [HDRaceRouteLocationSeriesEntity createRoutePointsFromWorkout:v10 transaction:v11 profile:a5 error:a6];
+  workoutCopy = workout;
+  transactionCopy = transaction;
+  v12 = [HDRaceRouteLocationSeriesEntity createRoutePointsFromWorkout:workoutCopy transaction:transactionCopy profile:profile error:error];
   if (v12)
   {
-    v13 = [v11 databaseForEntity:v10];
-    v14 = [v10 UUIDForProperty:@"uuid" database:v13];
+    v13 = [transactionCopy databaseForEntity:workoutCopy];
+    v14 = [workoutCopy UUIDForProperty:@"uuid" database:v13];
     if (v14)
     {
-      v15 = +[HDRaceRouteWorkoutEntity _insertWithWorkoutUUID:seriesKey:transaction:error:](a1, v14, [v12 longLongValue], v11, a6);
+      v15 = +[HDRaceRouteWorkoutEntity _insertWithWorkoutUUID:seriesKey:transaction:error:](self, v14, [v12 longLongValue], transactionCopy, error);
     }
 
     else
@@ -146,11 +146,11 @@
   return v15;
 }
 
-+ (BOOL)markForDeletionWorkoutDataWithPersistentID:(int64_t)a3 transaction:(id)a4 error:(id *)a5
++ (BOOL)markForDeletionWorkoutDataWithPersistentID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
-  v8 = [a4 databaseForEntityClass:a1];
-  v9 = [MEMORY[0x277CCDCD0] workoutType];
-  [v9 maximumAllowedDuration];
+  v8 = [transaction databaseForEntityClass:self];
+  workoutType = [MEMORY[0x277CCDCD0] workoutType];
+  [workoutType maximumAllowedDuration];
   v11 = v10;
 
   v12 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v11];
@@ -158,17 +158,17 @@
   v18[1] = 3221225472;
   v18[2] = __89__HDRaceRouteWorkoutEntity_markForDeletionWorkoutDataWithPersistentID_transaction_error___block_invoke;
   v18[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v18[4] = a1;
+  v18[4] = self;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __89__HDRaceRouteWorkoutEntity_markForDeletionWorkoutDataWithPersistentID_transaction_error___block_invoke_2;
   v15[3] = &unk_278613B58;
   v16 = v12;
-  v17 = a3;
+  dCopy = d;
   v13 = v12;
-  LOBYTE(a5) = [v8 executeCachedStatementForKey:&markForDeletionWorkoutDataWithPersistentID_transaction_error__updateDateKey error:a5 SQLGenerator:v18 bindingHandler:v15 enumerationHandler:0];
+  LOBYTE(error) = [v8 executeCachedStatementForKey:&markForDeletionWorkoutDataWithPersistentID_transaction_error__updateDateKey error:error SQLGenerator:v18 bindingHandler:v15 enumerationHandler:0];
 
-  return a5;
+  return error;
 }
 
 id __89__HDRaceRouteWorkoutEntity_markForDeletionWorkoutDataWithPersistentID_transaction_error___block_invoke(uint64_t a1)
@@ -189,29 +189,29 @@ uint64_t __89__HDRaceRouteWorkoutEntity_markForDeletionWorkoutDataWithPersistent
   return sqlite3_bind_int64(a2, 2, v5);
 }
 
-+ (BOOL)pruneWorkoutsMarkedForDeletionInTransaction:(id)a3 error:(id *)a4
++ (BOOL)pruneWorkoutsMarkedForDeletionInTransaction:(id)transaction error:(id *)error
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 databaseForEntityClass:a1];
+  transactionCopy = transaction;
+  v7 = [transactionCopy databaseForEntityClass:self];
   v8 = MEMORY[0x277D10B18];
-  v9 = [MEMORY[0x277CBEAA8] date];
-  v10 = [v8 predicateWithProperty:@"date_to_delete" lessThanValue:v9];
+  date = [MEMORY[0x277CBEAA8] date];
+  v10 = [v8 predicateWithProperty:@"date_to_delete" lessThanValue:date];
 
-  v11 = [a1 queryWithDatabase:v7 predicate:v10];
+  v11 = [self queryWithDatabase:v7 predicate:v10];
   v20[0] = @"route_key";
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __78__HDRaceRouteWorkoutEntity_pruneWorkoutsMarkedForDeletionInTransaction_error___block_invoke;
   v18[3] = &unk_27861E4C0;
-  v13 = v6;
+  v13 = transactionCopy;
   v19 = v13;
-  v14 = [v11 enumerateProperties:v12 error:a4 enumerationHandler:v18];
+  v14 = [v11 enumerateProperties:v12 error:error enumerationHandler:v18];
 
   if (v14)
   {
-    v15 = [a1 deleteEntitiesInDatabase:v7 predicate:v10 error:a4];
+    v15 = [self deleteEntitiesInDatabase:v7 predicate:v10 error:error];
   }
 
   else
@@ -231,25 +231,25 @@ BOOL __78__HDRaceRouteWorkoutEntity_pruneWorkoutsMarkedForDeletionInTransaction_
   return [HDRaceRouteLocationSeriesEntity deleteSeriesDataWithIdentifier:v6 transaction:v7 error:a4];
 }
 
-+ (BOOL)enumerateRoutePointsForWorkoutUUID:(id)a3 timestampAnchor:(double)a4 limit:(unint64_t)a5 profile:(id)a6 error:(id *)a7 dataHandler:(id)a8
++ (BOOL)enumerateRoutePointsForWorkoutUUID:(id)d timestampAnchor:(double)anchor limit:(unint64_t)limit profile:(id)profile error:(id *)error dataHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a8;
-  v16 = [a6 database];
+  dCopy = d;
+  handlerCopy = handler;
+  database = [profile database];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __111__HDRaceRouteWorkoutEntity_enumerateRoutePointsForWorkoutUUID_timestampAnchor_limit_profile_error_dataHandler___block_invoke;
   v20[3] = &unk_2786252D0;
-  v22 = v15;
-  v23 = a1;
-  v24 = a4;
-  v25 = a5;
-  v21 = v14;
-  v17 = v15;
-  v18 = v14;
-  LOBYTE(a7) = [a1 performReadTransactionWithHealthDatabase:v16 error:a7 block:v20];
+  v22 = handlerCopy;
+  selfCopy = self;
+  anchorCopy = anchor;
+  limitCopy = limit;
+  v21 = dCopy;
+  v17 = handlerCopy;
+  v18 = dCopy;
+  LOBYTE(error) = [self performReadTransactionWithHealthDatabase:database error:error block:v20];
 
-  return a7;
+  return error;
 }
 
 BOOL __111__HDRaceRouteWorkoutEntity_enumerateRoutePointsForWorkoutUUID_timestampAnchor_limit_profile_error_dataHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -288,15 +288,15 @@ BOOL __111__HDRaceRouteWorkoutEntity_enumerateRoutePointsForWorkoutUUID_timestam
   return v13;
 }
 
-+ (BOOL)enumerateRoutePointsForWorkoutPersistentID:(int64_t)a3 timestampAnchor:(double)a4 limit:(unint64_t)a5 startDuration:(double)a6 finishDuration:(double)a7 transaction:(id)a8 error:(id *)a9 handler:(id)a10
++ (BOOL)enumerateRoutePointsForWorkoutPersistentID:(int64_t)d timestampAnchor:(double)anchor limit:(unint64_t)limit startDuration:(double)duration finishDuration:(double)finishDuration transaction:(id)transaction error:(id *)error handler:(id)self0
 {
-  v18 = a8;
-  v19 = a10;
-  v20 = [(HDRaceRouteWorkoutEntity *)a1 _routeKeyForPersistentID:a3 transaction:v18 error:a9];
+  transactionCopy = transaction;
+  handlerCopy = handler;
+  v20 = [(HDRaceRouteWorkoutEntity *)self _routeKeyForPersistentID:d transaction:transactionCopy error:error];
   v21 = v20;
   if (v20)
   {
-    v22 = +[HDRaceRouteLocationSeriesEntity enumerateRoutePointsForSeries:timestampAnchor:limit:startDuration:finishDuration:transaction:error:handler:](HDRaceRouteLocationSeriesEntity, "enumerateRoutePointsForSeries:timestampAnchor:limit:startDuration:finishDuration:transaction:error:handler:", [v20 longLongValue], a5, v18, a9, v19, a4, a6, a7);
+    v22 = +[HDRaceRouteLocationSeriesEntity enumerateRoutePointsForSeries:timestampAnchor:limit:startDuration:finishDuration:transaction:error:handler:](HDRaceRouteLocationSeriesEntity, "enumerateRoutePointsForSeries:timestampAnchor:limit:startDuration:finishDuration:transaction:error:handler:", [v20 longLongValue], limit, transactionCopy, error, handlerCopy, anchor, duration, finishDuration);
   }
 
   else
@@ -307,22 +307,22 @@ BOOL __111__HDRaceRouteWorkoutEntity_enumerateRoutePointsForWorkoutUUID_timestam
   return v22;
 }
 
-+ (id)entityForWorkoutUUID:(id)a3 transaction:(id)a4 error:(id *)a5
++ (id)entityForWorkoutUUID:(id)d transaction:(id)transaction error:(id *)error
 {
   v8 = MEMORY[0x277D10B18];
-  v9 = a4;
-  v10 = [v8 predicateWithProperty:@"workout_uuid" equalToValue:a3];
-  v11 = [v9 databaseForEntityClass:a1];
+  transactionCopy = transaction;
+  v10 = [v8 predicateWithProperty:@"workout_uuid" equalToValue:d];
+  v11 = [transactionCopy databaseForEntityClass:self];
 
-  v12 = [a1 anyInDatabase:v11 predicate:v10 error:a5];
+  v12 = [self anyInDatabase:v11 predicate:v10 error:error];
 
   return v12;
 }
 
-+ (id)startingPointForWorkoutWithPersistentID:(int64_t)a3 transaction:(id)a4 error:(id *)a5
++ (id)startingPointForWorkoutWithPersistentID:(int64_t)d transaction:(id)transaction error:(id *)error
 {
-  v8 = a4;
-  v9 = [(HDRaceRouteWorkoutEntity *)a1 _routeKeyForPersistentID:a3 transaction:v8 error:a5];
+  transactionCopy = transaction;
+  v9 = [(HDRaceRouteWorkoutEntity *)self _routeKeyForPersistentID:d transaction:transactionCopy error:error];
   v10 = v9;
   if (v9)
   {
@@ -332,13 +332,13 @@ BOOL __111__HDRaceRouteWorkoutEntity_enumerateRoutePointsForWorkoutUUID_timestam
     v19 = __Block_byref_object_copy__128;
     v20 = __Block_byref_object_dispose__128;
     v21 = 0;
-    v11 = [v9 longLongValue];
+    longLongValue = [v9 longLongValue];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __86__HDRaceRouteWorkoutEntity_startingPointForWorkoutWithPersistentID_transaction_error___block_invoke;
     v15[3] = &unk_2786252F8;
     v15[4] = &v16;
-    if ([HDRaceRouteLocationSeriesEntity enumerateRoutePointsForSeries:v11 timestampAnchor:1 limit:v8 transaction:a5 error:v15 handler:-1.0])
+    if ([HDRaceRouteLocationSeriesEntity enumerateRoutePointsForSeries:longLongValue timestampAnchor:1 limit:transactionCopy transaction:error error:v15 handler:-1.0])
     {
       v12 = v17[5];
     }

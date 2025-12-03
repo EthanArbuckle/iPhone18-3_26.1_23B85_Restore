@@ -1,33 +1,33 @@
 @interface DMDDDMStartManagingAppOperation
 + (id)whitelistedClassesForRequest;
-- (void)_endOperationWithBundleIdentifier:(id)a3;
+- (void)_endOperationWithBundleIdentifier:(id)identifier;
 - (void)_manageApp;
-- (void)_runWithRequest:(id)a3;
-- (void)_setRemovability:(id)a3;
-- (void)_setState:(unint64_t)a3 forBundleIdentifier:(id)a4;
-- (void)_setTapToPayScreenLock:(id)a3;
-- (void)runWithRequest:(id)a3;
+- (void)_runWithRequest:(id)request;
+- (void)_setRemovability:(id)removability;
+- (void)_setState:(unint64_t)state forBundleIdentifier:(id)identifier;
+- (void)_setTapToPayScreenLock:(id)lock;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
 @implementation DMDDDMStartManagingAppOperation
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v10 = a3;
-  v4 = [v10 sourceIdentifier];
-  v5 = [v4 isEqualToString:DMFAppSourceDeclarativeManagement];
+  requestCopy = request;
+  sourceIdentifier = [requestCopy sourceIdentifier];
+  v5 = [sourceIdentifier isEqualToString:DMFAppSourceDeclarativeManagement];
 
   if (v5)
   {
     v6 = objc_opt_new();
     [(DMDDDMStartManagingAppOperation *)self setMetadata:v6];
 
-    v7 = [v10 bundleIdentifier];
-    v8 = [(DMDDDMStartManagingAppOperation *)self metadata];
-    [v8 setBundleIdentifier:v7];
+    bundleIdentifier = [requestCopy bundleIdentifier];
+    metadata = [(DMDDDMStartManagingAppOperation *)self metadata];
+    [metadata setBundleIdentifier:bundleIdentifier];
 
-    [(DMDDDMStartManagingAppOperation *)self _runWithRequest:v10];
+    [(DMDDDMStartManagingAppOperation *)self _runWithRequest:requestCopy];
   }
 
   else
@@ -37,20 +37,20 @@
   }
 }
 
-- (void)_runWithRequest:(id)a3
+- (void)_runWithRequest:(id)request
 {
-  v4 = [(DMDDDMStartManagingAppOperation *)self metadata];
-  v5 = [v4 bundleIdentifier];
+  metadata = [(DMDDDMStartManagingAppOperation *)self metadata];
+  bundleIdentifier = [metadata bundleIdentifier];
   v6 = DMFAppLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543362;
-    v8 = v5;
+    v8 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Request to manage DDM app %{public}@ ", &v7, 0xCu);
   }
 
   [(DMDDDMStartManagingAppOperation *)self _manageApp];
-  [(DMDDDMStartManagingAppOperation *)self _endOperationWithBundleIdentifier:v5];
+  [(DMDDDMStartManagingAppOperation *)self _endOperationWithBundleIdentifier:bundleIdentifier];
 }
 
 - (void)_manageApp
@@ -58,22 +58,22 @@
   v3 = DMFAppLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(DMDDDMStartManagingAppOperation *)self metadata];
-    v5 = [v4 bundleIdentifier];
+    metadata = [(DMDDDMStartManagingAppOperation *)self metadata];
+    bundleIdentifier = [metadata bundleIdentifier];
     *buf = 138543362;
-    v43 = v5;
+    v43 = bundleIdentifier;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Managing DDM app: %{public}@", buf, 0xCu);
   }
 
-  v6 = [(DMDDDMStartManagingAppOperation *)self metadata];
-  v7 = [v6 lifeCycle];
-  v8 = [v7 currentState];
-  if (!v8 || v8 == 8)
+  metadata2 = [(DMDDDMStartManagingAppOperation *)self metadata];
+  lifeCycle = [metadata2 lifeCycle];
+  currentState = [lifeCycle currentState];
+  if (!currentState || currentState == 8)
   {
     v10 = 8;
   }
 
-  else if (v8 == 2)
+  else if (currentState == 2)
   {
     v9 = DMFAppLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -91,60 +91,60 @@
   }
 
   v11 = +[DMDAppController sharedController];
-  [v7 addObserver:v11];
+  [lifeCycle addObserver:v11];
 
-  v12 = [(DMDDDMStartManagingAppOperation *)self metadata];
-  v13 = [v12 bundleIdentifier];
-  [(DMDDDMStartManagingAppOperation *)self _setState:v10 forBundleIdentifier:v13];
+  metadata3 = [(DMDDDMStartManagingAppOperation *)self metadata];
+  bundleIdentifier2 = [metadata3 bundleIdentifier];
+  [(DMDDDMStartManagingAppOperation *)self _setState:v10 forBundleIdentifier:bundleIdentifier2];
 
-  v14 = [(DMDDDMStartManagingAppOperation *)self request];
+  request = [(DMDDDMStartManagingAppOperation *)self request];
   v38 = +[DMDAppController sharedController];
-  v32 = [v14 VPNUUIDString];
-  v15 = [v14 cellularSliceUUIDString];
-  v34 = [v14 contentFilterUUIDString];
-  v33 = [v14 DNSProxyUUIDString];
-  v16 = [v14 relayUUIDString];
-  v31 = [v14 associatedDomains];
-  v30 = [v14 associatedDomainsEnableDirectDownloads];
-  [v14 allowUserToHide];
+  vPNUUIDString = [request VPNUUIDString];
+  cellularSliceUUIDString = [request cellularSliceUUIDString];
+  contentFilterUUIDString = [request contentFilterUUIDString];
+  dNSProxyUUIDString = [request DNSProxyUUIDString];
+  relayUUIDString = [request relayUUIDString];
+  associatedDomains = [request associatedDomains];
+  associatedDomainsEnableDirectDownloads = [request associatedDomainsEnableDirectDownloads];
+  [request allowUserToHide];
   v17 = v35 = self;
-  [v14 allowUserToLock];
-  v18 = v37 = v7;
-  v19 = [v14 managementOptions];
-  v20 = [v14 sourceIdentifier];
-  [v6 bundleIdentifier];
-  v21 = v36 = v6;
-  [v38 setVPNUUIDString:v32 cellularSliceUUIDString:v15 contentFilterUUIDString:v34 DNSProxyUUIDString:v33 relayUUIDString:v16 associatedDomains:v31 enableDirectDownloads:v30 allowUserToHide:v17 allowUserToLock:v18 configuration:0 options:v19 sourceIdentifier:v20 forBundleIdentifier:v21];
+  [request allowUserToLock];
+  v18 = v37 = lifeCycle;
+  managementOptions = [request managementOptions];
+  sourceIdentifier = [request sourceIdentifier];
+  [metadata2 bundleIdentifier];
+  v21 = v36 = metadata2;
+  [v38 setVPNUUIDString:vPNUUIDString cellularSliceUUIDString:cellularSliceUUIDString contentFilterUUIDString:contentFilterUUIDString DNSProxyUUIDString:dNSProxyUUIDString relayUUIDString:relayUUIDString associatedDomains:associatedDomains enableDirectDownloads:associatedDomainsEnableDirectDownloads allowUserToHide:v17 allowUserToLock:v18 configuration:0 options:managementOptions sourceIdentifier:sourceIdentifier forBundleIdentifier:v21];
 
-  v22 = [v14 removable];
-  [(DMDDDMStartManagingAppOperation *)v35 _setRemovability:v22];
+  removable = [request removable];
+  [(DMDDDMStartManagingAppOperation *)v35 _setRemovability:removable];
 
-  v23 = [v14 tapToPayScreenLock];
-  [(DMDDDMStartManagingAppOperation *)v35 _setTapToPayScreenLock:v23];
+  tapToPayScreenLock = [request tapToPayScreenLock];
+  [(DMDDDMStartManagingAppOperation *)v35 _setTapToPayScreenLock:tapToPayScreenLock];
 
   v24 = +[DMDAppController sharedController];
   [v24 sendManagedAppsChangedNotification];
 
   v25 = +[DMDAppController sharedController];
-  v26 = [v14 personaIdentifier];
-  v27 = [v36 bundleIdentifier];
+  personaIdentifier = [request personaIdentifier];
+  bundleIdentifier3 = [v36 bundleIdentifier];
   v39[0] = _NSConcreteStackBlock;
   v39[1] = 3221225472;
   v39[2] = sub_100047E24;
   v39[3] = &unk_1000CDBD0;
   v40 = v36;
-  v41 = v14;
-  v28 = v14;
+  v41 = request;
+  v28 = request;
   v29 = v36;
-  [v25 updateBundleIDPersonaIDMappingForPersonaID:v26 addingBundleID:v27 completionHandler:v39];
+  [v25 updateBundleIDPersonaIDMappingForPersonaID:personaIdentifier addingBundleID:bundleIdentifier3 completionHandler:v39];
 }
 
-- (void)_setState:(unint64_t)a3 forBundleIdentifier:(id)a4
+- (void)_setState:(unint64_t)state forBundleIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = +[DMDAppController sharedController];
   v10 = 0;
-  v7 = [v6 setState:a3 forBundleIdentifier:v5 error:&v10];
+  v7 = [v6 setState:state forBundleIdentifier:identifierCopy error:&v10];
   v8 = v10;
 
   if ((v7 & 1) == 0)
@@ -152,49 +152,49 @@
     v9 = DMFAppLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      sub_1000844E4(a3, v5, v9);
+      sub_1000844E4(state, identifierCopy, v9);
     }
   }
 }
 
-- (void)_endOperationWithBundleIdentifier:(id)a3
+- (void)_endOperationWithBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = +[DMDAppController sharedController];
-  v6 = [v5 stateForBundleIdentifier:v4];
+  v6 = [v5 stateForBundleIdentifier:identifierCopy];
 
-  v7 = [[DMFDDMStartManagingAppResultObject alloc] initWithBundleIdentifier:v4 state:v6];
+  v7 = [[DMFDDMStartManagingAppResultObject alloc] initWithBundleIdentifier:identifierCopy state:v6];
   [(DMDDDMStartManagingAppOperation *)self endOperationWithResultObject:v7];
 }
 
-- (void)_setRemovability:(id)a3
+- (void)_setRemovability:(id)removability
 {
-  v4 = a3;
+  removabilityCopy = removability;
   v5 = +[DMDAppController sharedController];
-  v6 = [(DMDDDMStartManagingAppOperation *)self metadata];
-  v7 = [v6 bundleIdentifier];
+  metadata = [(DMDDDMStartManagingAppOperation *)self metadata];
+  bundleIdentifier = [metadata bundleIdentifier];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_100048140;
   v9[3] = &unk_1000CEE68;
-  v10 = v4;
-  v8 = v4;
-  [v5 setRemovability:v8 forBundleIdentifier:v7 completion:v9];
+  v10 = removabilityCopy;
+  v8 = removabilityCopy;
+  [v5 setRemovability:v8 forBundleIdentifier:bundleIdentifier completion:v9];
 }
 
-- (void)_setTapToPayScreenLock:(id)a3
+- (void)_setTapToPayScreenLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   v5 = +[DMDAppController sharedController];
-  v6 = [(DMDDDMStartManagingAppOperation *)self metadata];
-  v7 = [v6 bundleIdentifier];
+  metadata = [(DMDDDMStartManagingAppOperation *)self metadata];
+  bundleIdentifier = [metadata bundleIdentifier];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10004828C;
   v9[3] = &unk_1000CEE68;
-  v10 = v4;
-  v8 = v4;
-  [v5 setTapToPayScreenLock:v8 forBundleIdentifier:v7 completion:v9];
+  v10 = lockCopy;
+  v8 = lockCopy;
+  [v5 setTapToPayScreenLock:v8 forBundleIdentifier:bundleIdentifier completion:v9];
 }
 
 - (void)waitUntilFinished

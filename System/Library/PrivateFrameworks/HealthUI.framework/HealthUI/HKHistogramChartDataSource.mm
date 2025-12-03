@@ -1,64 +1,64 @@
 @interface HKHistogramChartDataSource
-- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)a3 zoom:(id)a4 resolution:(int64_t)a5;
-- (HKHistogramChartDataSource)initWithQuantityTypeIdentifier:(id)a3 healthStore:(id)a4 unitPreferenceController:(id)a5 predicate:(id)a6 yAxisRange:(id)a7 binCalculation:(unint64_t)a8 dateBasedBinModeConfig:(unint64_t)a9;
-- (HKHistogramChartDataSource)initWithQuantityTypeIdentifier:(id)a3 healthStore:(id)a4 unitPreferenceController:(id)a5 predicate:(id)a6 yAxisRange:(id)a7 binWidth:(double)a8;
+- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)x zoom:(id)zoom resolution:(int64_t)resolution;
+- (HKHistogramChartDataSource)initWithQuantityTypeIdentifier:(id)identifier healthStore:(id)store unitPreferenceController:(id)controller predicate:(id)predicate yAxisRange:(id)range binCalculation:(unint64_t)calculation dateBasedBinModeConfig:(unint64_t)config;
+- (HKHistogramChartDataSource)initWithQuantityTypeIdentifier:(id)identifier healthStore:(id)store unitPreferenceController:(id)controller predicate:(id)predicate yAxisRange:(id)range binWidth:(double)width;
 - (HKHistogramChartDataSourceDataFetchObserver)fetchObserver;
 - (HKQuantityType)quantityType;
 - (HKUnit)unit;
 - (NSArray)sortDescriptors;
-- (id)_buildQuantityValueRangesFromSortedSamples:(id)a3;
-- (id)_dateBasedXValueRangeForConfig:(unint64_t)a3;
+- (id)_buildQuantityValueRangesFromSortedSamples:(id)samples;
+- (id)_dateBasedXValueRangeForConfig:(unint64_t)config;
 - (id)_dayNameFormatter;
-- (id)_dayNameFromDayIndex:(unint64_t)a3;
-- (id)_dayXAxisStringForLocation:(id)a3;
+- (id)_dayNameFromDayIndex:(unint64_t)index;
+- (id)_dayXAxisStringForLocation:(id)location;
 - (id)_daysOfTheWeek;
 - (id)_displayType;
-- (id)_hourNameFromHourIndex:(unint64_t)a3;
+- (id)_hourNameFromHourIndex:(unint64_t)index;
 - (id)_hourOfTheDayFormatter;
-- (id)_hourXAxisStringForLocation:(id)a3;
-- (id)_initWithQuantityTypeIdentifier:(id)a3 healthStore:(id)a4 unitPreferenceController:(id)a5 predicate:(id)a6 xAxisRange:(id)a7 yAxisRange:(id)a8 binMode:(unint64_t)a9 binCalculation:(unint64_t)a10 binWidth:(double)a11 numberOfBins:(unint64_t)a12 dateBasedBinModeConfig:(unint64_t)a13;
+- (id)_hourXAxisStringForLocation:(id)location;
+- (id)_initWithQuantityTypeIdentifier:(id)identifier healthStore:(id)store unitPreferenceController:(id)controller predicate:(id)predicate xAxisRange:(id)range yAxisRange:(id)axisRange binMode:(unint64_t)mode binCalculation:(unint64_t)self0 binWidth:(double)self1 numberOfBins:(unint64_t)self2 dateBasedBinModeConfig:(unint64_t)self3;
 - (id)_query;
-- (id)buildBinsWithSamples:(id)a3;
-- (id)buildGraphSeriesDataBlockFromSamples:(id)a3;
-- (id)buildGraphSeriesDataBlockWithCalculatedBinValues:(id)a3;
-- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)a3 context:(id)a4;
-- (id)calculateBinValueForBins:(id)a3 usingCalculation:(unint64_t)a4;
-- (id)xAxisStringForLocation:(id)a3;
-- (unint64_t)_binIndexForSample:(id)a3;
-- (unint64_t)_dateBasedBinIndexForSample:(id)a3;
-- (unint64_t)_dayIndexForDayName:(id)a3;
-- (unint64_t)_normalBinIndexForSample:(id)a3;
+- (id)buildBinsWithSamples:(id)samples;
+- (id)buildGraphSeriesDataBlockFromSamples:(id)samples;
+- (id)buildGraphSeriesDataBlockWithCalculatedBinValues:(id)values;
+- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)path context:(id)context;
+- (id)calculateBinValueForBins:(id)bins usingCalculation:(unint64_t)calculation;
+- (id)xAxisStringForLocation:(id)location;
+- (unint64_t)_binIndexForSample:(id)sample;
+- (unint64_t)_dateBasedBinIndexForSample:(id)sample;
+- (unint64_t)_dayIndexForDayName:(id)name;
+- (unint64_t)_normalBinIndexForSample:(id)sample;
 - (void)didCompleteFetch;
 - (void)fetchData;
 @end
 
 @implementation HKHistogramChartDataSource
 
-- (id)_initWithQuantityTypeIdentifier:(id)a3 healthStore:(id)a4 unitPreferenceController:(id)a5 predicate:(id)a6 xAxisRange:(id)a7 yAxisRange:(id)a8 binMode:(unint64_t)a9 binCalculation:(unint64_t)a10 binWidth:(double)a11 numberOfBins:(unint64_t)a12 dateBasedBinModeConfig:(unint64_t)a13
+- (id)_initWithQuantityTypeIdentifier:(id)identifier healthStore:(id)store unitPreferenceController:(id)controller predicate:(id)predicate xAxisRange:(id)range yAxisRange:(id)axisRange binMode:(unint64_t)mode binCalculation:(unint64_t)self0 binWidth:(double)self1 numberOfBins:(unint64_t)self2 dateBasedBinModeConfig:(unint64_t)self3
 {
-  v21 = a3;
-  v22 = a4;
-  v23 = a5;
-  v30 = a6;
-  v29 = a7;
-  v28 = a8;
+  identifierCopy = identifier;
+  storeCopy = store;
+  controllerCopy = controller;
+  predicateCopy = predicate;
+  rangeCopy = range;
+  axisRangeCopy = axisRange;
   v31.receiver = self;
   v31.super_class = HKHistogramChartDataSource;
   v24 = [(HKGraphSeriesDataSource *)&v31 init];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_quantityIdentifier, a3);
-    objc_storeStrong(&v25->_healthStore, a4);
-    objc_storeStrong(&v25->_unitPreferenceController, a5);
-    objc_storeStrong(&v25->_predicate, a6);
-    objc_storeStrong(&v25->_xAxisRange, a7);
-    objc_storeStrong(&v25->_yAxisRange, a8);
-    v25->_binningMode = a9;
-    v25->_binCalculation = a10;
-    v25->_binWidth = a11;
-    v25->_numberOfBins = a12;
-    v25->_dateBasedBinModeConfig = a13;
+    objc_storeStrong(&v24->_quantityIdentifier, identifier);
+    objc_storeStrong(&v25->_healthStore, store);
+    objc_storeStrong(&v25->_unitPreferenceController, controller);
+    objc_storeStrong(&v25->_predicate, predicate);
+    objc_storeStrong(&v25->_xAxisRange, range);
+    objc_storeStrong(&v25->_yAxisRange, axisRange);
+    v25->_binningMode = mode;
+    v25->_binCalculation = calculation;
+    v25->_binWidth = width;
+    v25->_numberOfBins = bins;
+    v25->_dateBasedBinModeConfig = config;
     v25->_didExecuteQuery = 0;
     dataBlock = v25->_dataBlock;
     v25->_dataBlock = 0;
@@ -67,34 +67,34 @@
   return v25;
 }
 
-- (HKHistogramChartDataSource)initWithQuantityTypeIdentifier:(id)a3 healthStore:(id)a4 unitPreferenceController:(id)a5 predicate:(id)a6 yAxisRange:(id)a7 binWidth:(double)a8
+- (HKHistogramChartDataSource)initWithQuantityTypeIdentifier:(id)identifier healthStore:(id)store unitPreferenceController:(id)controller predicate:(id)predicate yAxisRange:(id)range binWidth:(double)width
 {
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
+  rangeCopy = range;
+  predicateCopy = predicate;
+  controllerCopy = controller;
+  storeCopy = store;
+  identifierCopy = identifier;
   v19 = [HKValueRange valueRangeWithMinValue:&unk_1F4381FC0 maxValue:&unk_1F4381FD8];
-  v20 = [(HKHistogramChartDataSource *)self _initWithQuantityTypeIdentifier:v18 healthStore:v17 unitPreferenceController:v16 predicate:v15 xAxisRange:v19 yAxisRange:v14 binMode:a8 binCalculation:0 binWidth:1 numberOfBins:0 dateBasedBinModeConfig:-1];
+  v20 = [(HKHistogramChartDataSource *)self _initWithQuantityTypeIdentifier:identifierCopy healthStore:storeCopy unitPreferenceController:controllerCopy predicate:predicateCopy xAxisRange:v19 yAxisRange:rangeCopy binMode:width binCalculation:0 binWidth:1 numberOfBins:0 dateBasedBinModeConfig:-1];
 
   return v20;
 }
 
-- (HKHistogramChartDataSource)initWithQuantityTypeIdentifier:(id)a3 healthStore:(id)a4 unitPreferenceController:(id)a5 predicate:(id)a6 yAxisRange:(id)a7 binCalculation:(unint64_t)a8 dateBasedBinModeConfig:(unint64_t)a9
+- (HKHistogramChartDataSource)initWithQuantityTypeIdentifier:(id)identifier healthStore:(id)store unitPreferenceController:(id)controller predicate:(id)predicate yAxisRange:(id)range binCalculation:(unint64_t)calculation dateBasedBinModeConfig:(unint64_t)config
 {
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  rangeCopy = range;
+  predicateCopy = predicate;
+  controllerCopy = controller;
+  storeCopy = store;
+  identifierCopy = identifier;
   v20 = [HKValueRange valueRangeWithMinValue:&unk_1F4381FC0 maxValue:&unk_1F4381FD8];
   v21 = 24;
-  if (!a9)
+  if (!config)
   {
     v21 = 7;
   }
 
-  v22 = [(HKHistogramChartDataSource *)self _initWithQuantityTypeIdentifier:v19 healthStore:v18 unitPreferenceController:v17 predicate:v16 xAxisRange:v20 yAxisRange:v15 binMode:1.0 binCalculation:1 binWidth:a8 numberOfBins:v21 dateBasedBinModeConfig:a9];
+  v22 = [(HKHistogramChartDataSource *)self _initWithQuantityTypeIdentifier:identifierCopy healthStore:storeCopy unitPreferenceController:controllerCopy predicate:predicateCopy xAxisRange:v20 yAxisRange:rangeCopy binMode:1.0 binCalculation:1 binWidth:calculation numberOfBins:v21 dateBasedBinModeConfig:config];
 
   return v22;
 }
@@ -102,17 +102,17 @@
 - (HKQuantityType)quantityType
 {
   v2 = MEMORY[0x1E696C2E0];
-  v3 = [(HKHistogramChartDataSource *)self quantityIdentifier];
-  v4 = [v2 quantityTypeForIdentifier:v3];
+  quantityIdentifier = [(HKHistogramChartDataSource *)self quantityIdentifier];
+  v4 = [v2 quantityTypeForIdentifier:quantityIdentifier];
 
   return v4;
 }
 
 - (HKUnit)unit
 {
-  v3 = [(HKHistogramChartDataSource *)self unitPreferenceController];
-  v4 = [(HKHistogramChartDataSource *)self _displayType];
-  v5 = [v3 unitForDisplayType:v4];
+  unitPreferenceController = [(HKHistogramChartDataSource *)self unitPreferenceController];
+  _displayType = [(HKHistogramChartDataSource *)self _displayType];
+  v5 = [unitPreferenceController unitForDisplayType:_displayType];
 
   return v5;
 }
@@ -127,70 +127,70 @@
   return v3;
 }
 
-- (id)xAxisStringForLocation:(id)a3
+- (id)xAxisStringForLocation:(id)location
 {
-  v4 = a3;
-  v5 = [(HKHistogramChartDataSource *)self xAxisStringForLocation];
+  locationCopy = location;
+  xAxisStringForLocation = [(HKHistogramChartDataSource *)self xAxisStringForLocation];
 
-  if (v5)
+  if (xAxisStringForLocation)
   {
-    v6 = [(HKHistogramChartDataSource *)self xAxisStringForLocation];
-    v5 = (v6)[2](v6, v4);
+    xAxisStringForLocation2 = [(HKHistogramChartDataSource *)self xAxisStringForLocation];
+    xAxisStringForLocation = (xAxisStringForLocation2)[2](xAxisStringForLocation2, locationCopy);
 
     goto LABEL_3;
   }
 
-  v8 = [(HKHistogramChartDataSource *)self binningMode];
-  if (v8 == 1)
+  binningMode = [(HKHistogramChartDataSource *)self binningMode];
+  if (binningMode == 1)
   {
-    v15 = [(HKHistogramChartDataSource *)self dateBasedBinModeConfig];
-    if (v15 == 1)
+    dateBasedBinModeConfig = [(HKHistogramChartDataSource *)self dateBasedBinModeConfig];
+    if (dateBasedBinModeConfig == 1)
     {
-      v16 = [(HKHistogramChartDataSource *)self _hourXAxisStringForLocation:v4];
+      v16 = [(HKHistogramChartDataSource *)self _hourXAxisStringForLocation:locationCopy];
     }
 
     else
     {
-      if (v15)
+      if (dateBasedBinModeConfig)
       {
         goto LABEL_3;
       }
 
-      v16 = [(HKHistogramChartDataSource *)self _dayXAxisStringForLocation:v4];
+      v16 = [(HKHistogramChartDataSource *)self _dayXAxisStringForLocation:locationCopy];
     }
 
-    v5 = v16;
+    xAxisStringForLocation = v16;
   }
 
-  else if (!v8)
+  else if (!binningMode)
   {
-    v9 = [v4 integerValue];
-    if (v9 < 0 || (v10 = v9, -[HKHistogramChartDataSource quantityValueRanges](self, "quantityValueRanges"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 count], v11, v10 >= v12))
+    integerValue = [locationCopy integerValue];
+    if (integerValue < 0 || (v10 = integerValue, -[HKHistogramChartDataSource quantityValueRanges](self, "quantityValueRanges"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 count], v11, v10 >= v12))
     {
-      v5 = &stru_1F42FFBE0;
+      xAxisStringForLocation = &stru_1F42FFBE0;
     }
 
     else
     {
-      v13 = [(HKHistogramChartDataSource *)self quantityValueRanges];
-      v14 = [v13 objectAtIndex:v10];
+      quantityValueRanges = [(HKHistogramChartDataSource *)self quantityValueRanges];
+      v14 = [quantityValueRanges objectAtIndex:v10];
 
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu-%lu", objc_msgSend(v14, "firstIndex"), objc_msgSend(v14, "lastIndex")];
+      xAxisStringForLocation = [MEMORY[0x1E696AEC0] stringWithFormat:@"%lu-%lu", objc_msgSend(v14, "firstIndex"), objc_msgSend(v14, "lastIndex")];
     }
   }
 
 LABEL_3:
 
-  return v5;
+  return xAxisStringForLocation;
 }
 
 - (void)fetchData
 {
   if (![(HKHistogramChartDataSource *)self didExecuteQuery])
   {
-    v3 = [(HKHistogramChartDataSource *)self healthStore];
-    v4 = [(HKHistogramChartDataSource *)self _query];
-    [v3 executeQuery:v4];
+    healthStore = [(HKHistogramChartDataSource *)self healthStore];
+    _query = [(HKHistogramChartDataSource *)self _query];
+    [healthStore executeQuery:_query];
 
     [(HKHistogramChartDataSource *)self setDidExecuteQuery:1];
   }
@@ -216,16 +216,16 @@ void __46__HKHistogramChartDataSource_didCompleteFetch__block_invoke(uint64_t a1
   [v3 dataSourceDidUpdateCache:*(a1 + 32)];
 }
 
-- (id)buildGraphSeriesDataBlockFromSamples:(id)a3
+- (id)buildGraphSeriesDataBlockFromSamples:(id)samples
 {
-  v5 = a3;
-  v6 = [(HKHistogramChartDataSource *)self dataBlockBuilder];
+  samplesCopy = samples;
+  dataBlockBuilder = [(HKHistogramChartDataSource *)self dataBlockBuilder];
 
-  if (v6)
+  if (dataBlockBuilder)
   {
-    v7 = [(HKHistogramChartDataSource *)self dataBlockBuilder];
-    v8 = [(HKHistogramChartDataSource *)self unit];
-    v9 = (v7)[2](v7, v5, v8);
+    dataBlockBuilder2 = [(HKHistogramChartDataSource *)self dataBlockBuilder];
+    unit = [(HKHistogramChartDataSource *)self unit];
+    v9 = (dataBlockBuilder2)[2](dataBlockBuilder2, samplesCopy, unit);
 LABEL_3:
     v3 = v9;
 LABEL_4:
@@ -233,35 +233,35 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v11 = [(HKHistogramChartDataSource *)self binningMode];
-  if (v11 == 1)
+  binningMode = [(HKHistogramChartDataSource *)self binningMode];
+  if (binningMode == 1)
   {
-    v7 = [(HKHistogramChartDataSource *)self buildBinsWithSamples:v5];
+    dataBlockBuilder2 = [(HKHistogramChartDataSource *)self buildBinsWithSamples:samplesCopy];
     v18 = [(HKHistogramChartDataSource *)self _dateBasedXValueRangeForConfig:[(HKHistogramChartDataSource *)self dateBasedBinModeConfig]];
     xAxisRange = self->_xAxisRange;
     self->_xAxisRange = v18;
 
-    v8 = [(HKHistogramChartDataSource *)self calculateBinValueForBins:v7 usingCalculation:[(HKHistogramChartDataSource *)self binCalculation]];
-    v9 = [(HKHistogramChartDataSource *)self buildGraphSeriesDataBlockWithCalculatedBinValues:v8];
+    unit = [(HKHistogramChartDataSource *)self calculateBinValueForBins:dataBlockBuilder2 usingCalculation:[(HKHistogramChartDataSource *)self binCalculation]];
+    v9 = [(HKHistogramChartDataSource *)self buildGraphSeriesDataBlockWithCalculatedBinValues:unit];
     goto LABEL_3;
   }
 
-  if (!v11)
+  if (!binningMode)
   {
-    v7 = [(HKHistogramChartDataSource *)self _samplesSortedByQuantity:v5];
-    v12 = [(HKHistogramChartDataSource *)self _buildQuantityValueRangesFromSortedSamples:v7];
+    dataBlockBuilder2 = [(HKHistogramChartDataSource *)self _samplesSortedByQuantity:samplesCopy];
+    v12 = [(HKHistogramChartDataSource *)self _buildQuantityValueRangesFromSortedSamples:dataBlockBuilder2];
     [(HKHistogramChartDataSource *)self setQuantityValueRanges:v12];
 
-    v13 = [(HKHistogramChartDataSource *)self quantityValueRanges];
-    -[HKHistogramChartDataSource setNumberOfBins:](self, "setNumberOfBins:", [v13 count]);
+    quantityValueRanges = [(HKHistogramChartDataSource *)self quantityValueRanges];
+    -[HKHistogramChartDataSource setNumberOfBins:](self, "setNumberOfBins:", [quantityValueRanges count]);
 
-    v8 = [(HKHistogramChartDataSource *)self buildBinsWithSamples:v7];
-    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v8, "count")}];
+    unit = [(HKHistogramChartDataSource *)self buildBinsWithSamples:dataBlockBuilder2];
+    v14 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(unit, "count")}];
     v15 = [HKValueRange valueRangeWithMinValue:&unk_1F4381FF0 maxValue:v14];
     v16 = self->_xAxisRange;
     self->_xAxisRange = v15;
 
-    v17 = [(HKHistogramChartDataSource *)self calculateBinValueForBins:v8 usingCalculation:0];
+    v17 = [(HKHistogramChartDataSource *)self calculateBinValueForBins:unit usingCalculation:0];
     v3 = [(HKHistogramChartDataSource *)self buildGraphSeriesDataBlockWithCalculatedBinValues:v17];
 
     goto LABEL_4;
@@ -272,11 +272,11 @@ LABEL_5:
   return v3;
 }
 
-- (id)buildBinsWithSamples:(id)a3
+- (id)buildBinsWithSamples:(id)samples
 {
-  v4 = a3;
-  v5 = [(HKHistogramChartDataSource *)self numberOfBins];
-  v6 = __51__HKHistogramChartDataSource_buildBinsWithSamples___block_invoke(v5, v5);
+  samplesCopy = samples;
+  numberOfBins = [(HKHistogramChartDataSource *)self numberOfBins];
+  v6 = __51__HKHistogramChartDataSource_buildBinsWithSamples___block_invoke(numberOfBins, numberOfBins);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __51__HKHistogramChartDataSource_buildBinsWithSamples___block_invoke_2;
@@ -284,7 +284,7 @@ LABEL_5:
   v11[4] = self;
   v7 = v6;
   v12 = v7;
-  [v4 enumerateObjectsUsingBlock:v11];
+  [samplesCopy enumerateObjectsUsingBlock:v11];
 
   v8 = v12;
   v9 = v7;
@@ -319,11 +319,11 @@ void __51__HKHistogramChartDataSource_buildBinsWithSamples___block_invoke_2(uint
   [v10 addValue:v9];
 }
 
-- (id)calculateBinValueForBins:(id)a3 usingCalculation:(unint64_t)a4
+- (id)calculateBinValueForBins:(id)bins usingCalculation:(unint64_t)calculation
 {
   v5 = MEMORY[0x1E695DF70];
-  v6 = a3;
-  v7 = [v5 arrayWithCapacity:{objc_msgSend(v6, "count")}];
+  binsCopy = bins;
+  v7 = [v5 arrayWithCapacity:{objc_msgSend(binsCopy, "count")}];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __72__HKHistogramChartDataSource_calculateBinValueForBins_usingCalculation___block_invoke;
@@ -331,7 +331,7 @@ void __51__HKHistogramChartDataSource_buildBinsWithSamples___block_invoke_2(uint
   v12[4] = self;
   v8 = v7;
   v13 = v8;
-  [v6 enumerateObjectsUsingBlock:v12];
+  [binsCopy enumerateObjectsUsingBlock:v12];
 
   v9 = v13;
   v10 = v8;
@@ -390,18 +390,18 @@ void __72__HKHistogramChartDataSource_calculateBinValueForBins_usingCalculation_
 LABEL_13:
 }
 
-- (id)buildGraphSeriesDataBlockWithCalculatedBinValues:(id)a3
+- (id)buildGraphSeriesDataBlockWithCalculatedBinValues:(id)values
 {
   v3 = MEMORY[0x1E695DF70];
-  v4 = a3;
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  valuesCopy = values;
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(valuesCopy, "count")}];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __79__HKHistogramChartDataSource_buildGraphSeriesDataBlockWithCalculatedBinValues___block_invoke;
   v9[3] = &unk_1E81B58B0;
   v10 = v5;
   v6 = v5;
-  [v4 enumerateObjectsUsingBlock:v9];
+  [valuesCopy enumerateObjectsUsingBlock:v9];
 
   v7 = objc_alloc_init(HKGraphSeriesDataBlock);
   [(HKGraphSeriesDataBlock *)v7 setChartPoints:v6];
@@ -419,49 +419,49 @@ void __79__HKHistogramChartDataSource_buildGraphSeriesDataBlockWithCalculatedBin
   [*(a1 + 32) addObject:v8];
 }
 
-- (id)_buildQuantityValueRangesFromSortedSamples:(id)a3
+- (id)_buildQuantityValueRangesFromSortedSamples:(id)samples
 {
-  v4 = a3;
-  v5 = [v4 firstObject];
-  v6 = [v4 lastObject];
+  samplesCopy = samples;
+  firstObject = [samplesCopy firstObject];
+  lastObject = [samplesCopy lastObject];
   v7 = MEMORY[0x1E696AD98];
-  v8 = [v5 quantity];
-  v9 = [(HKHistogramChartDataSource *)self unit];
-  [v8 doubleValueForUnit:v9];
+  quantity = [firstObject quantity];
+  unit = [(HKHistogramChartDataSource *)self unit];
+  [quantity doubleValueForUnit:unit];
   v10 = [v7 numberWithDouble:?];
-  v11 = [v10 unsignedIntegerValue];
+  unsignedIntegerValue = [v10 unsignedIntegerValue];
 
   v12 = MEMORY[0x1E696AD98];
-  v13 = [v6 quantity];
-  v14 = [(HKHistogramChartDataSource *)self unit];
-  [v13 doubleValueForUnit:v14];
+  quantity2 = [lastObject quantity];
+  unit2 = [(HKHistogramChartDataSource *)self unit];
+  [quantity2 doubleValueForUnit:unit2];
   v15 = [v12 numberWithDouble:?];
-  v16 = [v15 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v15 unsignedIntegerValue];
 
-  v17 = [MEMORY[0x1E695DF70] array];
-  while (v11 <= v16)
+  array = [MEMORY[0x1E695DF70] array];
+  while (unsignedIntegerValue <= unsignedIntegerValue2)
   {
-    v18 = [(HKHistogramChartDataSource *)self binWidth];
-    v19 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{v11, v18}];
-    [v17 addObject:v19];
-    v11 += [(HKHistogramChartDataSource *)self binWidth];
+    binWidth = [(HKHistogramChartDataSource *)self binWidth];
+    v19 = [MEMORY[0x1E696AC90] indexSetWithIndexesInRange:{unsignedIntegerValue, binWidth}];
+    [array addObject:v19];
+    unsignedIntegerValue += [(HKHistogramChartDataSource *)self binWidth];
   }
 
-  return v17;
+  return array;
 }
 
 - (id)_query
 {
   v3 = objc_alloc(MEMORY[0x1E696C3C8]);
-  v4 = [(HKHistogramChartDataSource *)self quantityType];
-  v5 = [(HKHistogramChartDataSource *)self predicate];
-  v6 = [(HKHistogramChartDataSource *)self sortDescriptors];
+  quantityType = [(HKHistogramChartDataSource *)self quantityType];
+  predicate = [(HKHistogramChartDataSource *)self predicate];
+  sortDescriptors = [(HKHistogramChartDataSource *)self sortDescriptors];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __36__HKHistogramChartDataSource__query__block_invoke;
   v9[3] = &unk_1E81B58D8;
   v9[4] = self;
-  v7 = [v3 initWithSampleType:v4 predicate:v5 limit:0 sortDescriptors:v6 resultsHandler:v9];
+  v7 = [v3 initWithSampleType:quantityType predicate:predicate limit:0 sortDescriptors:sortDescriptors resultsHandler:v9];
 
   return v7;
 }
@@ -513,25 +513,25 @@ uint64_t __55__HKHistogramChartDataSource__samplesSortedByQuantity___block_invok
 - (id)_displayType
 {
   v3 = [HKDisplayTypeController sharedInstanceForHealthStore:self->_healthStore];
-  v4 = [(HKHistogramChartDataSource *)self quantityType];
-  v5 = [v3 displayTypeForObjectType:v4];
+  quantityType = [(HKHistogramChartDataSource *)self quantityType];
+  v5 = [v3 displayTypeForObjectType:quantityType];
 
   return v5;
 }
 
-- (unint64_t)_binIndexForSample:(id)a3
+- (unint64_t)_binIndexForSample:(id)sample
 {
-  v5 = a3;
-  v6 = [(HKHistogramChartDataSource *)self binningMode];
-  if (v6 == 1)
+  sampleCopy = sample;
+  binningMode = [(HKHistogramChartDataSource *)self binningMode];
+  if (binningMode == 1)
   {
-    v7 = [(HKHistogramChartDataSource *)self _dateBasedBinIndexForSample:v5];
+    v7 = [(HKHistogramChartDataSource *)self _dateBasedBinIndexForSample:sampleCopy];
     goto LABEL_5;
   }
 
-  if (!v6)
+  if (!binningMode)
   {
-    v7 = [(HKHistogramChartDataSource *)self _normalBinIndexForSample:v5];
+    v7 = [(HKHistogramChartDataSource *)self _normalBinIndexForSample:sampleCopy];
 LABEL_5:
     v3 = v7;
   }
@@ -539,26 +539,26 @@ LABEL_5:
   return v3;
 }
 
-- (unint64_t)_normalBinIndexForSample:(id)a3
+- (unint64_t)_normalBinIndexForSample:(id)sample
 {
-  v4 = a3;
-  v5 = [v4 quantity];
-  v6 = [(HKHistogramChartDataSource *)self unit];
-  [v5 doubleValueForUnit:v6];
+  sampleCopy = sample;
+  quantity = [sampleCopy quantity];
+  unit = [(HKHistogramChartDataSource *)self unit];
+  [quantity doubleValueForUnit:unit];
   v8 = v7;
 
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
-  v9 = [(HKHistogramChartDataSource *)self quantityValueRanges];
+  quantityValueRanges = [(HKHistogramChartDataSource *)self quantityValueRanges];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __55__HKHistogramChartDataSource__normalBinIndexForSample___block_invoke;
   v12[3] = &unk_1E81B5920;
   v12[4] = &v13;
   v12[5] = vcvtad_u64_f64(v8);
-  [v9 enumerateObjectsUsingBlock:v12];
+  [quantityValueRanges enumerateObjectsUsingBlock:v12];
 
   v10 = v14[3];
   _Block_object_dispose(&v13, 8);
@@ -578,84 +578,84 @@ uint64_t __55__HKHistogramChartDataSource__normalBinIndexForSample___block_invok
   return result;
 }
 
-- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)a3 zoom:(id)a4 resolution:(int64_t)a5
+- (HKGraphSeriesDataBlockPath)blockPathForX:(SEL)x zoom:(id)zoom resolution:(int64_t)resolution
 {
   *&retstr->index = xmmword_1C3D5CE60;
   retstr->resolution = 0;
   return self;
 }
 
-- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)a3 context:(id)a4
+- (id)cachedBlockForPath:(HKGraphSeriesDataBlockPath *)path context:(id)context
 {
-  v6 = a4;
-  if (a3->index || ([(HKHistogramChartDataSource *)self dataBlock], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
+  contextCopy = context;
+  if (path->index || ([(HKHistogramChartDataSource *)self dataBlock], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
   {
-    v7 = objc_alloc_init(HKGraphSeriesDataBlock);
-    [(HKGraphSeriesDataBlock *)v7 setChartPoints:MEMORY[0x1E695E0F0]];
+    dataBlock = objc_alloc_init(HKGraphSeriesDataBlock);
+    [(HKGraphSeriesDataBlock *)dataBlock setChartPoints:MEMORY[0x1E695E0F0]];
   }
 
   else
   {
-    v7 = [(HKHistogramChartDataSource *)self dataBlock];
+    dataBlock = [(HKHistogramChartDataSource *)self dataBlock];
   }
 
-  return v7;
+  return dataBlock;
 }
 
-- (unint64_t)_dateBasedBinIndexForSample:(id)a3
+- (unint64_t)_dateBasedBinIndexForSample:(id)sample
 {
-  v5 = a3;
-  v6 = [(HKHistogramChartDataSource *)self dateBasedBinModeConfig];
-  if (v6 == 1)
+  sampleCopy = sample;
+  dateBasedBinModeConfig = [(HKHistogramChartDataSource *)self dateBasedBinModeConfig];
+  if (dateBasedBinModeConfig == 1)
   {
-    v11 = [(HKHistogramChartDataSource *)self _hourOfTheDayFormatter];
-    v12 = [v5 startDate];
-    v9 = [v11 stringFromDate:v12];
+    _hourOfTheDayFormatter = [(HKHistogramChartDataSource *)self _hourOfTheDayFormatter];
+    startDate = [sampleCopy startDate];
+    v9 = [_hourOfTheDayFormatter stringFromDate:startDate];
 
-    v10 = [v9 integerValue];
+    integerValue = [v9 integerValue];
     goto LABEL_5;
   }
 
-  if (!v6)
+  if (!dateBasedBinModeConfig)
   {
-    v7 = [(HKHistogramChartDataSource *)self _dayNameFormatter];
-    v8 = [v5 startDate];
-    v9 = [v7 stringFromDate:v8];
+    _dayNameFormatter = [(HKHistogramChartDataSource *)self _dayNameFormatter];
+    startDate2 = [sampleCopy startDate];
+    v9 = [_dayNameFormatter stringFromDate:startDate2];
 
-    v10 = [(HKHistogramChartDataSource *)self _dayIndexForDayName:v9];
+    integerValue = [(HKHistogramChartDataSource *)self _dayIndexForDayName:v9];
 LABEL_5:
-    v3 = v10;
+    v3 = integerValue;
   }
 
   return v3;
 }
 
-- (id)_dateBasedXValueRangeForConfig:(unint64_t)a3
+- (id)_dateBasedXValueRangeForConfig:(unint64_t)config
 {
-  if (a3 == 1)
+  if (config == 1)
   {
-    v3 = [objc_opt_class() _hoursInDayXValueRange];
+    _hoursInDayXValueRange = [objc_opt_class() _hoursInDayXValueRange];
   }
 
   else
   {
-    if (a3)
+    if (config)
     {
       goto LABEL_6;
     }
 
-    v3 = [objc_opt_class() _daysInWeekXValueRange];
+    _hoursInDayXValueRange = [objc_opt_class() _daysInWeekXValueRange];
   }
 
-  a2 = v3;
+  a2 = _hoursInDayXValueRange;
 LABEL_6:
 
   return a2;
 }
 
-- (id)_dayXAxisStringForLocation:(id)a3
+- (id)_dayXAxisStringForLocation:(id)location
 {
-  v3 = -[HKHistogramChartDataSource _dayNameFromDayIndex:](self, "_dayNameFromDayIndex:", [a3 integerValue]);
+  v3 = -[HKHistogramChartDataSource _dayNameFromDayIndex:](self, "_dayNameFromDayIndex:", [location integerValue]);
   v4 = [v3 substringToIndex:2];
   v5 = v4;
   if (v4)
@@ -706,55 +706,55 @@ LABEL_6:
   return v3;
 }
 
-- (unint64_t)_dayIndexForDayName:(id)a3
+- (unint64_t)_dayIndexForDayName:(id)name
 {
-  v4 = a3;
-  v5 = [(HKHistogramChartDataSource *)self _daysOfTheWeek];
-  v6 = [v5 indexOfObject:v4];
+  nameCopy = name;
+  _daysOfTheWeek = [(HKHistogramChartDataSource *)self _daysOfTheWeek];
+  v6 = [_daysOfTheWeek indexOfObject:nameCopy];
 
   return v6;
 }
 
-- (id)_dayNameFromDayIndex:(unint64_t)a3
+- (id)_dayNameFromDayIndex:(unint64_t)index
 {
-  v5 = [(HKHistogramChartDataSource *)self _daysOfTheWeek];
-  v6 = [v5 count];
+  _daysOfTheWeek = [(HKHistogramChartDataSource *)self _daysOfTheWeek];
+  v6 = [_daysOfTheWeek count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     v8 = 0;
   }
 
   else
   {
-    v7 = [(HKHistogramChartDataSource *)self _daysOfTheWeek];
-    v8 = [v7 objectAtIndex:a3];
+    _daysOfTheWeek2 = [(HKHistogramChartDataSource *)self _daysOfTheWeek];
+    v8 = [_daysOfTheWeek2 objectAtIndex:index];
   }
 
   return v8;
 }
 
-- (id)_hourXAxisStringForLocation:(id)a3
+- (id)_hourXAxisStringForLocation:(id)location
 {
-  v4 = a3;
-  v5 = [v4 integerValue];
-  if (v5 < 0)
+  locationCopy = location;
+  integerValue = [locationCopy integerValue];
+  if (integerValue < 0)
   {
-    v8 = 0;
+    stringValue = 0;
   }
 
   else
   {
-    v6 = v5;
-    v7 = [(HKHistogramChartDataSource *)self numberOfBins];
-    v8 = 0;
-    if ((v6 & 3) == 0 && v6 < v7)
+    v6 = integerValue;
+    numberOfBins = [(HKHistogramChartDataSource *)self numberOfBins];
+    stringValue = 0;
+    if ((v6 & 3) == 0 && v6 < numberOfBins)
     {
-      v8 = [v4 stringValue];
+      stringValue = [locationCopy stringValue];
     }
   }
 
-  return v8;
+  return stringValue;
 }
 
 - (id)_hourOfTheDayFormatter
@@ -773,16 +773,16 @@ LABEL_6:
   return v2;
 }
 
-- (id)_hourNameFromHourIndex:(unint64_t)a3
+- (id)_hourNameFromHourIndex:(unint64_t)index
 {
-  v3 = 0;
-  if (a3 <= 0x17 && (a3 & 3) == 0)
+  stringValue = 0;
+  if (index <= 0x17 && (index & 3) == 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
-    v3 = [v4 stringValue];
+    stringValue = [v4 stringValue];
   }
 
-  return v3;
+  return stringValue;
 }
 
 - (HKHistogramChartDataSourceDataFetchObserver)fetchObserver

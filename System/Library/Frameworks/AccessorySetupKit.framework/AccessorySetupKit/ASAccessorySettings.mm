@@ -1,11 +1,11 @@
 @interface ASAccessorySettings
 + (ASAccessorySettings)defaultSettings;
-- (ASAccessorySettings)initWithCoder:(id)a3;
-- (ASAccessorySettings)initWithXPCObject:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (ASAccessorySettings)initWithCoder:(id)coder;
+- (ASAccessorySettings)initWithXPCObject:(id)object error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithLevel:(int)level;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation ASAccessorySettings
@@ -17,12 +17,12 @@
   return v2;
 }
 
-- (ASAccessorySettings)initWithCoder:(id)a3
+- (ASAccessorySettings)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   NSDecodeObjectIfPresent();
-  v5 = v4;
+  v5 = coderCopy;
   objc_opt_class();
   NSDecodeObjectIfPresent();
 
@@ -33,47 +33,47 @@
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   displayName = self->_displayName;
-  v8 = v4;
+  v8 = coderCopy;
   if (displayName)
   {
-    [v4 encodeObject:displayName forKey:@"dNm"];
-    v4 = v8;
+    [coderCopy encodeObject:displayName forKey:@"dNm"];
+    coderCopy = v8;
   }
 
   SSID = self->_SSID;
   if (SSID)
   {
     [v8 encodeObject:SSID forKey:@"wsd"];
-    v4 = v8;
+    coderCopy = v8;
   }
 
   bluetoothTransportBridgingIdentifier = self->_bluetoothTransportBridgingIdentifier;
   if (bluetoothTransportBridgingIdentifier)
   {
     [v8 encodeObject:bluetoothTransportBridgingIdentifier forKey:@"mPid"];
-    v4 = v8;
+    coderCopy = v8;
   }
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
-  v5 = [(NSString *)self->_displayName UTF8String];
-  if (v5)
+  objectCopy = object;
+  uTF8String = [(NSString *)self->_displayName UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(v4, "dNm", v5);
+    xpc_dictionary_set_string(objectCopy, "dNm", uTF8String);
   }
 
   SSID = self->_SSID;
-  xdict = v4;
-  v7 = [(NSString *)SSID UTF8String];
-  if (v7)
+  xdict = objectCopy;
+  uTF8String2 = [(NSString *)SSID UTF8String];
+  if (uTF8String2)
   {
-    xpc_dictionary_set_string(xdict, "wsd", v7);
+    xpc_dictionary_set_string(xdict, "wsd", uTF8String2);
   }
 
   bluetoothTransportBridgingIdentifier = self->_bluetoothTransportBridgingIdentifier;
@@ -81,10 +81,10 @@
   {
     v9 = bluetoothTransportBridgingIdentifier;
     v10 = xdict;
-    v11 = [(NSData *)v9 bytes];
-    if (v11)
+    bytes = [(NSData *)v9 bytes];
+    if (bytes)
     {
-      v12 = v11;
+      v12 = bytes;
     }
 
     else
@@ -98,9 +98,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSString *)self->_displayName copy];
   v6 = v4[3];
   v4[3] = v5;
@@ -116,9 +116,9 @@
   return v4;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -171,27 +171,27 @@
   return v12;
 }
 
-- (ASAccessorySettings)initWithXPCObject:(id)a3 error:(id *)a4
+- (ASAccessorySettings)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = [(ASAccessorySettings *)self init];
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       v16 = [objc_opt_class() description];
-      *a4 = ASErrorF(-6756, "%@ init failed", v17, v18, v19, v20, v21, v22, v16);
+      *error = ASErrorF(-6756, "%@ init failed", v17, v18, v19, v20, v21, v22, v16);
     }
 
     goto LABEL_12;
   }
 
-  if (MEMORY[0x2383B4C90](v6) != MEMORY[0x277D86468])
+  if (MEMORY[0x2383B4C90](objectCopy) != MEMORY[0x277D86468])
   {
-    if (a4)
+    if (error)
     {
       ASErrorF(-6756, "XPC non-dict", v8, v9, v10, v11, v12, v13, v23);
-      *a4 = v14 = 0;
+      *error = v14 = 0;
       goto LABEL_7;
     }
 

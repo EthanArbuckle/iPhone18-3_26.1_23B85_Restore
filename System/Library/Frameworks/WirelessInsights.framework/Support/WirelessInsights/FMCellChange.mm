@@ -1,22 +1,22 @@
 @interface FMCellChange
-- (FMCellChange)initWithTime:(id)a3 andTimestamp:(unint64_t)a4 andCell:(id)a5;
+- (FMCellChange)initWithTime:(id)time andTimestamp:(unint64_t)timestamp andCell:(id)cell;
 @end
 
 @implementation FMCellChange
 
-- (FMCellChange)initWithTime:(id)a3 andTimestamp:(unint64_t)a4 andCell:(id)a5
+- (FMCellChange)initWithTime:(id)time andTimestamp:(unint64_t)timestamp andCell:(id)cell
 {
-  v9 = a3;
-  v10 = a5;
+  timeCopy = time;
+  cellCopy = cell;
   v15.receiver = self;
   v15.super_class = FMCellChange;
   v11 = [(FMCellChange *)&v15 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_time, a3);
-    v12->_timestamp = a4;
-    objc_storeStrong(&v12->_toCell, a5);
+    objc_storeStrong(&v11->_time, time);
+    v12->_timestamp = timestamp;
+    objc_storeStrong(&v12->_toCell, cell);
     v13 = v12;
   }
 

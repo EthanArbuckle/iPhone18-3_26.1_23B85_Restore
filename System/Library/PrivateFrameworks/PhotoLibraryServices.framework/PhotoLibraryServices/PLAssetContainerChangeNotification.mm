@@ -1,6 +1,6 @@
 @interface PLAssetContainerChangeNotification
-+ (id)notificationWithContainer:(id)a3 snapshot:(id)a4 changedAssets:(id)a5;
-- (BOOL)_getOldSet:(id *)a3 newSet:(id *)a4;
++ (id)notificationWithContainer:(id)container snapshot:(id)snapshot changedAssets:(id)assets;
+- (BOOL)_getOldSet:(id *)set newSet:(id *)newSet;
 - (PLAlbumProtocol)album;
 - (PLAssetContainer)assetContainer;
 - (id)description;
@@ -16,25 +16,25 @@
   v12.receiver = self;
   v12.super_class = PLAssetContainerChangeNotification;
   [(PLContainerChangeNotification *)&v12 _calculateDiffs];
-  v3 = [(PLContainerChangeNotification *)self snapshot];
-  if ([v3 hasSnapshotValueForProperty:@"title"])
+  snapshot = [(PLContainerChangeNotification *)self snapshot];
+  if ([snapshot hasSnapshotValueForProperty:@"title"])
   {
-    v4 = [(PLContainerChangeNotification *)self snapshot];
-    v5 = [v4 snapshotValueForProperty:@"title"];
-    v6 = [(PLAssetContainerChangeNotification *)self assetContainer];
-    v7 = [v6 title];
-    if (v5 == v7)
+    snapshot2 = [(PLContainerChangeNotification *)self snapshot];
+    v5 = [snapshot2 snapshotValueForProperty:@"title"];
+    assetContainer = [(PLAssetContainerChangeNotification *)self assetContainer];
+    title = [assetContainer title];
+    if (v5 == title)
     {
       self->_titleDidChange = 0;
     }
 
     else
     {
-      v8 = [(PLContainerChangeNotification *)self snapshot];
-      v9 = [v8 snapshotValueForProperty:@"title"];
-      v10 = [(PLAssetContainerChangeNotification *)self assetContainer];
-      v11 = [v10 title];
-      self->_titleDidChange = [v9 isEqual:v11] ^ 1;
+      snapshot3 = [(PLContainerChangeNotification *)self snapshot];
+      v9 = [snapshot3 snapshotValueForProperty:@"title"];
+      assetContainer2 = [(PLAssetContainerChangeNotification *)self assetContainer];
+      title2 = [assetContainer2 title];
+      self->_titleDidChange = [v9 isEqual:title2] ^ 1;
     }
   }
 
@@ -44,20 +44,20 @@
   }
 }
 
-- (BOOL)_getOldSet:(id *)a3 newSet:(id *)a4
+- (BOOL)_getOldSet:(id *)set newSet:(id *)newSet
 {
   v12.receiver = self;
   v12.super_class = PLAssetContainerChangeNotification;
   v7 = [PLContainerChangeNotification _getOldSet:sel__getOldSet_newSet_ newSet:?];
-  v8 = [(PLContainerChangeNotification *)self _managedObject];
+  _managedObject = [(PLContainerChangeNotification *)self _managedObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v10 = [(PLContainerChangeNotification *)self _managedObject];
-    *a3 = [v10 fastPointerAccessSetForAssets:*a3];
-    *a4 = [v10 fastPointerAccessSetForAssets:*a4];
+    _managedObject2 = [(PLContainerChangeNotification *)self _managedObject];
+    *set = [_managedObject2 fastPointerAccessSetForAssets:*set];
+    *newSet = [_managedObject2 fastPointerAccessSetForAssets:*newSet];
   }
 
   return v7;
@@ -65,10 +65,10 @@
 
 - (PLAssetContainer)assetContainer
 {
-  v2 = [(PLContainerChangeNotification *)self _managedObject];
-  if ([v2 conformsToProtocol:&unk_1F0FDA060])
+  _managedObject = [(PLContainerChangeNotification *)self _managedObject];
+  if ([_managedObject conformsToProtocol:&unk_1F0FDA060])
   {
-    v3 = v2;
+    v3 = _managedObject;
   }
 
   else
@@ -81,18 +81,18 @@
 
 - (PLAlbumProtocol)album
 {
-  v3 = [(PLContainerChangeNotification *)self object];
-  if ([v3 conformsToProtocol:&unk_1F0FDA510])
+  object = [(PLContainerChangeNotification *)self object];
+  if ([object conformsToProtocol:&unk_1F0FDA510])
   {
-    v4 = [(PLContainerChangeNotification *)self object];
+    object2 = [(PLContainerChangeNotification *)self object];
   }
 
   else
   {
-    v4 = 0;
+    object2 = 0;
   }
 
-  return v4;
+  return object2;
 }
 
 - (id)description
@@ -100,14 +100,14 @@
   v3 = objc_autoreleasePoolPush();
   v4 = MEMORY[0x1E696AD60];
   v5 = objc_opt_class();
-  v6 = [(PLAssetContainerChangeNotification *)self container];
+  container = [(PLAssetContainerChangeNotification *)self container];
   v7 = objc_opt_class();
-  v8 = [(PLAssetContainerChangeNotification *)self container];
-  v9 = [(PLContainerChangeNotification *)self snapshot];
-  v10 = [v4 stringWithFormat:@"<%@: %p> container: <%@ %p>, snapshot: %p", v5, self, v7, v8, v9];
+  container2 = [(PLAssetContainerChangeNotification *)self container];
+  snapshot = [(PLContainerChangeNotification *)self snapshot];
+  v10 = [v4 stringWithFormat:@"<%@: %p> container: <%@ %p>, snapshot: %p", v5, self, v7, container2, snapshot];
 
-  v11 = [(PLContainerChangeNotification *)self _diffDescription];
-  [v10 appendString:v11];
+  _diffDescription = [(PLContainerChangeNotification *)self _diffDescription];
+  [v10 appendString:_diffDescription];
 
   if (self->_keyAssetDidChange)
   {
@@ -129,36 +129,36 @@
   userInfo = self->_userInfo;
   if (!userInfo)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
-    v5 = [(PLContainerChangeNotification *)self deletedIndexes];
-    v6 = [v5 count];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    deletedIndexes = [(PLContainerChangeNotification *)self deletedIndexes];
+    v6 = [deletedIndexes count];
 
     if (v6)
     {
-      v7 = [(PLContainerChangeNotification *)self deletedIndexes];
-      [(NSDictionary *)v4 setObject:v7 forKey:@"DeletedItemsIndexesKey"];
+      deletedIndexes2 = [(PLContainerChangeNotification *)self deletedIndexes];
+      [(NSDictionary *)dictionary setObject:deletedIndexes2 forKey:@"DeletedItemsIndexesKey"];
     }
 
-    v8 = [(PLContainerChangeNotification *)self insertedIndexes];
-    v9 = [v8 count];
+    insertedIndexes = [(PLContainerChangeNotification *)self insertedIndexes];
+    v9 = [insertedIndexes count];
 
     if (v9)
     {
-      v10 = [(PLContainerChangeNotification *)self insertedIndexes];
-      [(NSDictionary *)v4 setObject:v10 forKey:@"AddedItemsIndexesKey"];
+      insertedIndexes2 = [(PLContainerChangeNotification *)self insertedIndexes];
+      [(NSDictionary *)dictionary setObject:insertedIndexes2 forKey:@"AddedItemsIndexesKey"];
     }
 
-    v11 = [(PLContainerChangeNotification *)self changedIndexes];
-    v12 = [v11 count];
+    changedIndexes = [(PLContainerChangeNotification *)self changedIndexes];
+    v12 = [changedIndexes count];
 
     if (v12)
     {
-      v13 = [(PLContainerChangeNotification *)self changedIndexes];
-      [(NSDictionary *)v4 setObject:v13 forKey:@"ChangedItemsIndexesKey"];
+      changedIndexes2 = [(PLContainerChangeNotification *)self changedIndexes];
+      [(NSDictionary *)dictionary setObject:changedIndexes2 forKey:@"ChangedItemsIndexesKey"];
     }
 
     v14 = self->_userInfo;
-    self->_userInfo = v4;
+    self->_userInfo = dictionary;
 
     userInfo = self->_userInfo;
   }
@@ -176,12 +176,12 @@
   [(PLContainerChangeNotification *)&v4 dealloc];
 }
 
-+ (id)notificationWithContainer:(id)a3 snapshot:(id)a4 changedAssets:(id)a5
++ (id)notificationWithContainer:(id)container snapshot:(id)snapshot changedAssets:(id)assets
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] _initWithObject:v10 snapshot:v9 changedObjects:v8];
+  assetsCopy = assets;
+  snapshotCopy = snapshot;
+  containerCopy = container;
+  v11 = [[self alloc] _initWithObject:containerCopy snapshot:snapshotCopy changedObjects:assetsCopy];
 
   return v11;
 }

@@ -97,8 +97,8 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v15 = [MEMORY[0x277CCA890] currentHandler];
-  [v15 handleFailureInMethod:a2 object:a1 file:@"HMAccessorySettings+HFAdditions.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"currentAllowlist"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HMAccessorySettings+HFAdditions.m" lineNumber:81 description:{@"Invalid parameter not satisfying: %@", @"currentAllowlist"}];
 
   if (!a3)
   {
@@ -132,7 +132,7 @@ LABEL_23:
 {
   v4 = a3;
   objc_opt_class();
-  v5 = [a1 hf_accessorySettingItemAtKeyPath:v4];
+  v5 = [self hf_accessorySettingItemAtKeyPath:v4];
 
   if (objc_opt_isKindOfClass())
   {
@@ -153,7 +153,7 @@ LABEL_23:
 {
   v4 = a3;
   objc_opt_class();
-  v5 = [a1 hf_accessorySettingItemAtKeyPath:v4];
+  v5 = [self hf_accessorySettingItemAtKeyPath:v4];
 
   if (objc_opt_isKindOfClass())
   {
@@ -176,24 +176,24 @@ LABEL_23:
   v5 = a3;
   if (!v5)
   {
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:a1 file:@"HMAccessorySettings+HFAdditions.m" lineNumber:130 description:{@"Invalid parameter not satisfying: %@", @"keyPath"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HMAccessorySettings+HFAdditions.m" lineNumber:130 description:{@"Invalid parameter not satisfying: %@", @"keyPath"}];
   }
 
-  v6 = [a1 rootGroup];
-  v7 = [v6 keyPath];
-  v8 = [v7 isEqualToString:v5];
+  rootGroup = [self rootGroup];
+  keyPath = [rootGroup keyPath];
+  v8 = [keyPath isEqualToString:v5];
 
   if (v8)
   {
-    v9 = a1;
+    selfCopy = self;
   }
 
   else
   {
     v29 = v5;
     v10 = [v5 componentsSeparatedByString:@"."];
-    v11 = [a1 rootGroup];
+    rootGroup2 = [self rootGroup];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -214,9 +214,9 @@ LABEL_23:
             objc_enumerationMutation(v12);
           }
 
-          if (!v11)
+          if (!rootGroup2)
           {
-            v9 = 0;
+            selfCopy = 0;
 LABEL_19:
 
             goto LABEL_22;
@@ -235,33 +235,33 @@ LABEL_19:
             v20 = [(__CFString *)v15 stringByAppendingFormat:@".%@", v18];
 
             v21 = objc_autoreleasePoolPush();
-            v22 = [v11 settings];
+            settings = [rootGroup2 settings];
             v32[0] = MEMORY[0x277D85DD0];
             v32[1] = 3221225472;
             v32[2] = __60__HMSettings_HFAdditions__hf_accessorySettingItemAtKeyPath___block_invoke;
             v32[3] = &unk_277DF57B0;
             v15 = v20;
             v33 = v15;
-            v9 = [v22 na_firstObjectPassingTest:v32];
+            selfCopy = [settings na_firstObjectPassingTest:v32];
 
             objc_autoreleasePoolPop(v21);
-            if (v9)
+            if (selfCopy)
             {
               goto LABEL_19;
             }
 
             v23 = objc_autoreleasePoolPush();
-            v24 = [v11 groups];
+            groups = [rootGroup2 groups];
             v30[0] = MEMORY[0x277D85DD0];
             v30[1] = 3221225472;
             v30[2] = __60__HMSettings_HFAdditions__hf_accessorySettingItemAtKeyPath___block_invoke_2;
             v30[3] = &unk_277E00CC8;
             v15 = v15;
             v31 = v15;
-            v25 = [v24 na_firstObjectPassingTest:v30];
+            v25 = [groups na_firstObjectPassingTest:v30];
 
             objc_autoreleasePoolPop(v23);
-            v11 = v25;
+            rootGroup2 = v25;
           }
         }
 
@@ -280,15 +280,15 @@ LABEL_19:
       v15 = 0;
     }
 
-    v11 = v11;
-    v9 = v11;
+    rootGroup2 = rootGroup2;
+    selfCopy = rootGroup2;
 LABEL_22:
     v5 = v29;
   }
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return selfCopy;
 }
 
 @end

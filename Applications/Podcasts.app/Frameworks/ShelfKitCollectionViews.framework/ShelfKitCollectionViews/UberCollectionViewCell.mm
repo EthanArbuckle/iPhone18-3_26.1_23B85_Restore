@@ -1,25 +1,25 @@
 @interface UberCollectionViewCell
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)layoutSubviews;
 @end
 
 @implementation UberCollectionViewCell
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
-  v4 = a3;
-  v5 = self;
-  [(UberCollectionViewCell *)v5 layoutIfNeeded];
-  v8.receiver = v5;
+  attributesCopy = attributes;
+  selfCopy = self;
+  [(UberCollectionViewCell *)selfCopy layoutIfNeeded];
+  v8.receiver = selfCopy;
   v8.super_class = type metadata accessor for UberCollectionViewCell();
-  v6 = [(UberCollectionViewCell *)&v8 preferredLayoutAttributesFittingAttributes:v4];
+  v6 = [(UberCollectionViewCell *)&v8 preferredLayoutAttributesFittingAttributes:attributesCopy];
 
   return v6;
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_14F4B4();
 }
 

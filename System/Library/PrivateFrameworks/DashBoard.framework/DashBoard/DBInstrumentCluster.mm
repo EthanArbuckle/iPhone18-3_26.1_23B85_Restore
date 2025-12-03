@@ -1,46 +1,46 @@
 @interface DBInstrumentCluster
-- (CGRect)sceneFrameForApplication:(id)a3;
-- (DBInstrumentCluster)initWithRootScene:(id)a3 environmentConfiguration:(id)a4 defaultSceneWorkspaceIdentifier:(id)a5;
+- (CGRect)sceneFrameForApplication:(id)application;
+- (DBInstrumentCluster)initWithRootScene:(id)scene environmentConfiguration:(id)configuration defaultSceneWorkspaceIdentifier:(id)identifier;
 - (DBInstrumentClusterThemeDelegate)clusterThemeDelegate;
 - (FBSDisplayConfiguration)displayConfiguration;
 - (FBSDisplayIdentity)displayIdentity;
 - (UIEdgeInsets)_rootViewControllerInsets;
-- (UIEdgeInsets)safeAreaInsetsForApplication:(id)a3;
-- (id)_clusterBackgroundColorForStyle:(int64_t)a3;
-- (id)_takeSnapshotOfFrame:(CGRect)a3;
-- (id)clusterThemeService:(id)a3 didSetThemeData:(id)a4;
+- (UIEdgeInsets)safeAreaInsetsForApplication:(id)application;
+- (id)_clusterBackgroundColorForStyle:(int64_t)style;
+- (id)_takeSnapshotOfFrame:(CGRect)frame;
+- (id)clusterThemeService:(id)service didSetThemeData:(id)data;
 - (id)focusWindow;
-- (id)sceneIdentifierForApplication:(id)a3;
-- (int64_t)sceneInterfaceStyleForApplication:(id)a3 proxyApplication:(id)a4;
+- (id)sceneIdentifierForApplication:(id)application;
+- (int64_t)sceneInterfaceStyleForApplication:(id)application proxyApplication:(id)proxyApplication;
 - (void)_setAirPlayCornerMaskImageDataIfNeeded;
-- (void)_startUpdatingAppearanceWithUserInterfaceStyle:(int64_t)a3;
-- (void)_updateAppearanceWithUserInterfaceStyle:(int64_t)a3;
+- (void)_startUpdatingAppearanceWithUserInterfaceStyle:(int64_t)style;
+- (void)_updateAppearanceWithUserInterfaceStyle:(int64_t)style;
 - (void)_updateWallpaper;
 - (void)acquireFocus;
-- (void)environmentConfiguration:(double)a3 viewAreaDidChangeFromViewAreaFrame:(double)a4 safeAreaInsets:(double)a5 toViewAreaFrame:(uint64_t)a6 safeAreaInsets:(void *)a7 duration:(double)a8 transitionControlType:(double)a9;
-- (void)environmentConfiguration:(id)a3 appearanceStyleDidChange:(int64_t)a4;
-- (void)environmentConfiguration:(id)a3 nightModeDidChange:(BOOL)a4;
+- (void)environmentConfiguration:(double)configuration viewAreaDidChangeFromViewAreaFrame:(double)frame safeAreaInsets:(double)insets toViewAreaFrame:(uint64_t)areaFrame safeAreaInsets:(void *)areaInsets duration:(double)duration transitionControlType:(double)type;
+- (void)environmentConfiguration:(id)configuration appearanceStyleDidChange:(int64_t)change;
+- (void)environmentConfiguration:(id)configuration nightModeDidChange:(BOOL)change;
 - (void)handleConnect;
 - (void)invalidate;
-- (void)navigationStateProvider:(id)a3 frontmostIdentifierDidChange:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)navigationStateProvider:(id)provider frontmostIdentifierDidChange:(id)change;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)releaseFocus;
-- (void)setupFocusRulesForDisplayWithConfiguration:(id)a3;
-- (void)setupSystemRulesForDisplayWithConfiguration:(id)a3;
+- (void)setupFocusRulesForDisplayWithConfiguration:(id)configuration;
+- (void)setupSystemRulesForDisplayWithConfiguration:(id)configuration;
 @end
 
 @implementation DBInstrumentCluster
 
-- (DBInstrumentCluster)initWithRootScene:(id)a3 environmentConfiguration:(id)a4 defaultSceneWorkspaceIdentifier:(id)a5
+- (DBInstrumentCluster)initWithRootScene:(id)scene environmentConfiguration:(id)configuration defaultSceneWorkspaceIdentifier:(id)identifier
 {
-  v8 = a4;
+  configurationCopy = configuration;
   v12.receiver = self;
   v12.super_class = DBInstrumentCluster;
-  v9 = [(DBScreenController *)&v12 initWithRootScene:a3 environmentConfiguration:v8 defaultSceneWorkspaceIdentifier:a5];
+  v9 = [(DBScreenController *)&v12 initWithRootScene:scene environmentConfiguration:configurationCopy defaultSceneWorkspaceIdentifier:identifier];
   if (v9)
   {
-    v10 = [v8 navigationStateProvider];
-    [v10 addObserver:v9];
+    navigationStateProvider = [configurationCopy navigationStateProvider];
+    [navigationStateProvider addObserver:v9];
   }
 
   return v9;
@@ -50,25 +50,25 @@
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_fault_impl(&dword_248146000, a2, OS_LOG_TYPE_FAULT, "Unexpected nil hardware identifier for instrument cluster display configuration: %{public}@", &v2, 0xCu);
 }
 
-- (void)setupFocusRulesForDisplayWithConfiguration:(id)a3
+- (void)setupFocusRulesForDisplayWithConfiguration:(id)configuration
 {
   v33[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
   v5 = MEMORY[0x277CF0698];
-  v6 = a3;
-  v7 = [v6 hardwareIdentifier];
-  v8 = [v5 displayWithHardwareIdentifier:v7];
+  configurationCopy = configuration;
+  hardwareIdentifier = [configurationCopy hardwareIdentifier];
+  v8 = [v5 displayWithHardwareIdentifier:hardwareIdentifier];
   v9 = [v4 setWithObject:v8];
 
-  v10 = [MEMORY[0x277CF0750] defaultFocusPredicate];
-  [v10 setDisplays:v9];
+  defaultFocusPredicate = [MEMORY[0x277CF0750] defaultFocusPredicate];
+  [defaultFocusPredicate setDisplays:v9];
   v11 = MEMORY[0x277CF0688];
-  v12 = [MEMORY[0x277CF0690] keyboardFocusTarget];
-  v13 = [v11 ruleForDispatchingDiscreteEventsMatchingPredicate:v10 toTarget:v12];
+  keyboardFocusTarget = [MEMORY[0x277CF0690] keyboardFocusTarget];
+  v13 = [v11 ruleForDispatchingDiscreteEventsMatchingPredicate:defaultFocusPredicate toTarget:keyboardFocusTarget];
 
   v14 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v15 = [MEMORY[0x277CF06B8] descriptorWithPage:12 usage:64];
@@ -96,38 +96,38 @@
   [v22 setDescriptors:v14];
   [v22 setDisplays:v9];
   v23 = MEMORY[0x277CF0688];
-  v24 = [MEMORY[0x277CF0690] keyboardFocusTarget];
-  v25 = [v23 ruleForDispatchingDiscreteEventsMatchingPredicate:v22 toTarget:v24];
+  keyboardFocusTarget2 = [MEMORY[0x277CF0690] keyboardFocusTarget];
+  v25 = [v23 ruleForDispatchingDiscreteEventsMatchingPredicate:v22 toTarget:keyboardFocusTarget2];
 
   v26 = MEMORY[0x277CCACA8];
-  v27 = [v6 identity];
+  identity = [configurationCopy identity];
 
-  v28 = [v26 stringWithFormat:@"InstrumentCluster-Focus-%@", v27];
+  v28 = [v26 stringWithFormat:@"InstrumentCluster-Focus-%@", identity];
 
-  v29 = [MEMORY[0x277CF0668] sharedInstance];
+  mEMORY[0x277CF0668] = [MEMORY[0x277CF0668] sharedInstance];
   v33[0] = v13;
   v33[1] = v25;
   v30 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:2];
-  v31 = [v29 dispatchDiscreteEventsForReason:v28 withRules:v30];
+  v31 = [mEMORY[0x277CF0668] dispatchDiscreteEventsForReason:v28 withRules:v30];
   dispatchingFocusAssertion = self->_dispatchingFocusAssertion;
   self->_dispatchingFocusAssertion = v31;
 }
 
-- (void)setupSystemRulesForDisplayWithConfiguration:(id)a3
+- (void)setupSystemRulesForDisplayWithConfiguration:(id)configuration
 {
   v33[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
   v5 = MEMORY[0x277CF0698];
-  v6 = a3;
-  v7 = [v6 hardwareIdentifier];
-  v8 = [v5 displayWithHardwareIdentifier:v7];
+  configurationCopy = configuration;
+  hardwareIdentifier = [configurationCopy hardwareIdentifier];
+  v8 = [v5 displayWithHardwareIdentifier:hardwareIdentifier];
   v9 = [v4 setWithObject:v8];
 
-  v32 = [MEMORY[0x277CF0750] defaultSystemPredicate];
-  [v32 setDisplays:v9];
+  defaultSystemPredicate = [MEMORY[0x277CF0750] defaultSystemPredicate];
+  [defaultSystemPredicate setDisplays:v9];
   v10 = MEMORY[0x277CF0688];
-  v11 = [MEMORY[0x277CF0690] systemTarget];
-  v12 = [v10 ruleForDispatchingDiscreteEventsMatchingPredicate:v32 toTarget:v11];
+  systemTarget = [MEMORY[0x277CF0690] systemTarget];
+  v12 = [v10 ruleForDispatchingDiscreteEventsMatchingPredicate:defaultSystemPredicate toTarget:systemTarget];
 
   v13 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v14 = [MEMORY[0x277CF06B8] descriptorWithPage:12 usage:548];
@@ -143,52 +143,52 @@
   [v17 setDescriptors:v13];
   [v17 setDisplays:v9];
   v18 = MEMORY[0x277CF0688];
-  v19 = [MEMORY[0x277CF0690] systemTarget];
-  v20 = [v18 ruleForDispatchingDiscreteEventsMatchingPredicate:v17 toTarget:v19];
+  systemTarget2 = [MEMORY[0x277CF0690] systemTarget];
+  v20 = [v18 ruleForDispatchingDiscreteEventsMatchingPredicate:v17 toTarget:systemTarget2];
 
   v21 = MEMORY[0x277CCACA8];
-  v22 = [v6 identity];
+  identity = [configurationCopy identity];
 
-  v23 = [v21 stringWithFormat:@"InstrumentCluster-System-%@", v22];
+  v23 = [v21 stringWithFormat:@"InstrumentCluster-System-%@", identity];
 
-  v24 = [MEMORY[0x277CF0668] sharedInstance];
+  mEMORY[0x277CF0668] = [MEMORY[0x277CF0668] sharedInstance];
   v33[0] = v12;
   v33[1] = v20;
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v33 count:2];
-  v26 = [v24 dispatchDiscreteEventsForReason:v23 withRules:v25];
+  v26 = [mEMORY[0x277CF0668] dispatchDiscreteEventsForReason:v23 withRules:v25];
   dispatchingSystemAssertion = self->_dispatchingSystemAssertion;
   self->_dispatchingSystemAssertion = v26;
 
   v28 = [objc_alloc(MEMORY[0x277D75548]) initWithTarget:self action:sel__nullGestureHandler_];
   [v28 setEnabled:0];
-  v29 = [MEMORY[0x277D76330] sharedInstance];
-  v30 = [(DBInstrumentCluster *)self displayConfiguration];
-  v31 = [v30 identity];
-  [v29 addGestureRecognizer:v28 toDisplayWithIdentity:v31];
+  mEMORY[0x277D76330] = [MEMORY[0x277D76330] sharedInstance];
+  displayConfiguration = [(DBInstrumentCluster *)self displayConfiguration];
+  identity2 = [displayConfiguration identity];
+  [mEMORY[0x277D76330] addGestureRecognizer:v28 toDisplayWithIdentity:identity2];
 }
 
 - (void)_setAirPlayCornerMaskImageDataIfNeeded
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(DBScreenController *)self screenInfo];
-  v4 = [v3 wantsCornerMasks];
+  screenInfo = [(DBScreenController *)self screenInfo];
+  wantsCornerMasks = [screenInfo wantsCornerMasks];
 
-  v5 = DBLogForCategory(0xAuLL);
-  v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  environmentConfiguration = DBLogForCategory(0xAuLL);
+  v6 = os_log_type_enabled(environmentConfiguration, OS_LOG_TYPE_DEFAULT);
+  if (wantsCornerMasks)
   {
     if (v6)
     {
-      v7 = [(DBScreenController *)self screenInfo];
-      v8 = [v7 identifier];
+      screenInfo2 = [(DBScreenController *)self screenInfo];
+      identifier = [screenInfo2 identifier];
       v17 = 138412290;
-      v18 = v8;
-      _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "Cluster screen %@ is requesting corner masks", &v17, 0xCu);
+      v18 = identifier;
+      _os_log_impl(&dword_248146000, environmentConfiguration, OS_LOG_TYPE_DEFAULT, "Cluster screen %@ is requesting corner masks", &v17, 0xCu);
     }
 
     currentCornerRadius = self->_currentCornerRadius;
-    v5 = [(DBScreenController *)self environmentConfiguration];
-    [v5 screenScale];
+    environmentConfiguration = [(DBScreenController *)self environmentConfiguration];
+    [environmentConfiguration screenScale];
     v11 = DBAirPlayCornerMaskImageData(1, currentCornerRadius, v10);
   }
 
@@ -196,90 +196,90 @@
   {
     if (v6)
     {
-      v12 = [(DBScreenController *)self screenInfo];
-      v13 = [v12 identifier];
+      screenInfo3 = [(DBScreenController *)self screenInfo];
+      identifier2 = [screenInfo3 identifier];
       v17 = 138412290;
-      v18 = v13;
-      _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "Cluster screen %@ is not requesting corner masks", &v17, 0xCu);
+      v18 = identifier2;
+      _os_log_impl(&dword_248146000, environmentConfiguration, OS_LOG_TYPE_DEFAULT, "Cluster screen %@ is not requesting corner masks", &v17, 0xCu);
     }
 
     v11 = 0;
   }
 
-  v14 = [(DBScreenController *)self environmentConfiguration];
-  v15 = [v14 session];
-  v16 = [(DBScreenController *)self screenInfo];
-  [v15 setCornerMaskImageData:v11 forScreenInfo:v16];
+  environmentConfiguration2 = [(DBScreenController *)self environmentConfiguration];
+  session = [environmentConfiguration2 session];
+  screenInfo4 = [(DBScreenController *)self screenInfo];
+  [session setCornerMaskImageData:v11 forScreenInfo:screenInfo4];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"CARClusterCornerRadius"] && !-[DBInstrumentCluster isGaugeCluster](self, "isGaugeCluster"))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"CARClusterCornerRadius"] && !-[DBInstrumentCluster isGaugeCluster](self, "isGaugeCluster"))
   {
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     [v13 floatValue];
     self->_currentCornerRadius = v14;
 
-    v15 = [(DBScreenController *)self cornerRadiusWindow];
-    [v15 setCornerRadius:self->_currentCornerRadius];
+    cornerRadiusWindow = [(DBScreenController *)self cornerRadiusWindow];
+    [cornerRadiusWindow setCornerRadius:self->_currentCornerRadius];
   }
 
   else
   {
     v16.receiver = self;
     v16.super_class = DBInstrumentCluster;
-    [(DBInstrumentCluster *)&v16 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(DBInstrumentCluster *)&v16 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
 - (id)focusWindow
 {
-  v2 = [(DBInstrumentCluster *)self focusController];
-  v3 = [v2 focusWindow];
+  focusController = [(DBInstrumentCluster *)self focusController];
+  focusWindow = [focusController focusWindow];
 
-  return v3;
+  return focusWindow;
 }
 
 - (FBSDisplayIdentity)displayIdentity
 {
-  v2 = [(DBScreenController *)self environmentConfiguration];
-  v3 = [v2 displayIdentity];
+  environmentConfiguration = [(DBScreenController *)self environmentConfiguration];
+  displayIdentity = [environmentConfiguration displayIdentity];
 
-  return v3;
+  return displayIdentity;
 }
 
 - (FBSDisplayConfiguration)displayConfiguration
 {
-  v2 = [(DBScreenController *)self environmentConfiguration];
-  v3 = [v2 displayConfiguration];
+  environmentConfiguration = [(DBScreenController *)self environmentConfiguration];
+  displayConfiguration = [environmentConfiguration displayConfiguration];
 
-  return v3;
+  return displayConfiguration;
 }
 
-- (id)sceneIdentifierForApplication:(id)a3
+- (id)sceneIdentifierForApplication:(id)application
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = a3;
-  v6 = [(DBInstrumentCluster *)self displayIdentity];
-  v7 = [v5 bundleIdentifier];
+  applicationCopy = application;
+  displayIdentity = [(DBInstrumentCluster *)self displayIdentity];
+  bundleIdentifier = [applicationCopy bundleIdentifier];
 
-  v8 = [v4 stringWithFormat:@"%@:%@", v6, v7];
+  v8 = [v4 stringWithFormat:@"%@:%@", displayIdentity, bundleIdentifier];
 
   return v8;
 }
 
-- (CGRect)sceneFrameForApplication:(id)a3
+- (CGRect)sceneFrameForApplication:(id)application
 {
-  v4 = [a3 presentsFullScreen];
-  v5 = [(DBScreenController *)self environmentConfiguration];
-  v6 = v5;
-  if (v4)
+  presentsFullScreen = [application presentsFullScreen];
+  environmentConfiguration = [(DBScreenController *)self environmentConfiguration];
+  v6 = environmentConfiguration;
+  if (presentsFullScreen)
   {
-    v7 = [v5 displayConfiguration];
-    [v7 bounds];
+    displayConfiguration = [environmentConfiguration displayConfiguration];
+    [displayConfiguration bounds];
     v9 = v8;
     v11 = v10;
     v13 = v12;
@@ -288,7 +288,7 @@
 
   else
   {
-    [v5 currentViewAreaFrame];
+    [environmentConfiguration currentViewAreaFrame];
     v13 = v16;
     v15 = v17;
 
@@ -307,9 +307,9 @@
   return result;
 }
 
-- (UIEdgeInsets)safeAreaInsetsForApplication:(id)a3
+- (UIEdgeInsets)safeAreaInsetsForApplication:(id)application
 {
-  if ([a3 presentsFullScreen])
+  if ([application presentsFullScreen])
   {
     v4 = *MEMORY[0x277D768C8];
     v5 = *(MEMORY[0x277D768C8] + 8);
@@ -319,8 +319,8 @@
 
   else
   {
-    v8 = [(DBScreenController *)self environmentConfiguration];
-    [v8 currentViewAreaSafeAreaInsets];
+    environmentConfiguration = [(DBScreenController *)self environmentConfiguration];
+    [environmentConfiguration currentViewAreaSafeAreaInsets];
     v4 = v9;
     v5 = v10;
     v6 = v11;
@@ -338,24 +338,24 @@
   return result;
 }
 
-- (int64_t)sceneInterfaceStyleForApplication:(id)a3 proxyApplication:(id)a4
+- (int64_t)sceneInterfaceStyleForApplication:(id)application proxyApplication:(id)proxyApplication
 {
-  v4 = [(DBScreenController *)self environmentConfiguration:a3];
-  v5 = [v4 resolvedUserInterfaceStyle];
+  v4 = [(DBScreenController *)self environmentConfiguration:application];
+  resolvedUserInterfaceStyle = [v4 resolvedUserInterfaceStyle];
 
-  return v5;
+  return resolvedUserInterfaceStyle;
 }
 
 - (void)invalidate
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v4 = [(DBInstrumentCluster *)self gaugeClusterRootViewController];
-  [v4 invalidate];
+  gaugeClusterRootViewController = [(DBInstrumentCluster *)self gaugeClusterRootViewController];
+  [gaugeClusterRootViewController invalidate];
 
-  v5 = [(DBInstrumentCluster *)self rootViewController];
-  [v5 invalidate];
+  rootViewController = [(DBInstrumentCluster *)self rootViewController];
+  [rootViewController invalidate];
 
   [(DBInstrumentClusterWorkspaceOwner *)self->_workspaceOwner invalidate];
   [(DBWorkspace *)self->_workspace invalidate];
@@ -363,8 +363,8 @@
   clusterWindow = self->_clusterWindow;
   self->_clusterWindow = 0;
 
-  v7 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  [v7 removeObserver:self forKeyPath:@"CARClusterCornerRadius"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  [standardUserDefaults removeObserver:self forKeyPath:@"CARClusterCornerRadius"];
 
   [(BSInvalidatable *)self->_dispatchingFocusAssertion invalidate];
   dispatchingFocusAssertion = self->_dispatchingFocusAssertion;
@@ -374,8 +374,8 @@
   dispatchingSystemAssertion = self->_dispatchingSystemAssertion;
   self->_dispatchingSystemAssertion = 0;
 
-  v10 = [(DBInstrumentCluster *)self focusController];
-  [v10 invalidate];
+  focusController = [(DBInstrumentCluster *)self focusController];
+  [focusController invalidate];
 
   v11.receiver = self;
   v11.super_class = DBInstrumentCluster;
@@ -384,12 +384,12 @@
 
 - (void)acquireFocus
 {
-  v3 = [(DBInstrumentCluster *)self clusterFocusAssertion];
+  clusterFocusAssertion = [(DBInstrumentCluster *)self clusterFocusAssertion];
 
-  if (!v3)
+  if (!clusterFocusAssertion)
   {
-    v4 = [(DBInstrumentCluster *)self focusController];
-    v5 = [v4 deferFocusToWindow:self->_clusterWindow priority:0 reason:@"ClusterFocus"];
+    focusController = [(DBInstrumentCluster *)self focusController];
+    v5 = [focusController deferFocusToWindow:self->_clusterWindow priority:0 reason:@"ClusterFocus"];
 
     [(DBInstrumentCluster *)self setClusterFocusAssertion:v5];
   }
@@ -397,18 +397,18 @@
 
 - (void)releaseFocus
 {
-  v3 = [(DBInstrumentCluster *)self clusterFocusAssertion];
-  [v3 invalidate];
+  clusterFocusAssertion = [(DBInstrumentCluster *)self clusterFocusAssertion];
+  [clusterFocusAssertion invalidate];
 
   [(DBInstrumentCluster *)self setClusterFocusAssertion:0];
 }
 
-- (id)clusterThemeService:(id)a3 didSetThemeData:(id)a4
+- (id)clusterThemeService:(id)service didSetThemeData:(id)data
 {
-  v5 = a4;
-  v6 = [(DBInstrumentCluster *)self clusterThemeDelegate];
+  dataCopy = data;
+  clusterThemeDelegate = [(DBInstrumentCluster *)self clusterThemeDelegate];
   v10 = 0;
-  [v6 setThemeData:v5 error:&v10];
+  [clusterThemeDelegate setThemeData:dataCopy error:&v10];
 
   v7 = v10;
   v8 = v10;
@@ -416,11 +416,11 @@
   return v7;
 }
 
-- (void)environmentConfiguration:(double)a3 viewAreaDidChangeFromViewAreaFrame:(double)a4 safeAreaInsets:(double)a5 toViewAreaFrame:(uint64_t)a6 safeAreaInsets:(void *)a7 duration:(double)a8 transitionControlType:(double)a9
+- (void)environmentConfiguration:(double)configuration viewAreaDidChangeFromViewAreaFrame:(double)frame safeAreaInsets:(double)insets toViewAreaFrame:(uint64_t)areaFrame safeAreaInsets:(void *)areaInsets duration:(double)duration transitionControlType:(double)type
 {
   v54[2] = *MEMORY[0x277D85DE8];
-  v26 = a7;
-  if ([a1 isGaugeCluster])
+  areaInsetsCopy = areaInsets;
+  if ([self isGaugeCluster])
   {
     v27 = DBLogForCategory(0xAuLL);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -431,37 +431,37 @@
 
   else if (*&a25 <= 0.0)
   {
-    v44 = [a1 interestingWindow];
-    [v44 setFrame:{*&a17, *&a18, *&a19, *&a20}];
+    interestingWindow = [self interestingWindow];
+    [interestingWindow setFrame:{*&a17, *&a18, *&a19, *&a20}];
 
-    v45 = [a1 cornerRadiusWindow];
-    [v45 setFrame:{*&a17, *&a18, *&a19, *&a20}];
+    cornerRadiusWindow = [self cornerRadiusWindow];
+    [cornerRadiusWindow setFrame:{*&a17, *&a18, *&a19, *&a20}];
 
-    v46 = [a1 rootViewController];
-    [v46 updateViewAreaFrame:*&a17 safeAreaInsets:{*&a18, *&a19, *&a20, a21, a22, a23, a24}];
+    rootViewController = [self rootViewController];
+    [rootViewController updateViewAreaFrame:*&a17 safeAreaInsets:{*&a18, *&a19, *&a20, a21, a22, a23, a24}];
   }
 
   else
   {
     v28 = [_TtC9DashBoard14DBResizeWindow alloc];
-    v29 = [a1 windowScene];
-    v30 = [a1 environmentConfiguration];
-    v31 = [v30 displayConfiguration];
-    [v31 bounds];
-    v32 = [(DBResizeWindow *)v28 initWithWindowScene:v29 frame:?];
+    windowScene = [self windowScene];
+    environmentConfiguration = [self environmentConfiguration];
+    displayConfiguration = [environmentConfiguration displayConfiguration];
+    [displayConfiguration bounds];
+    v32 = [(DBResizeWindow *)v28 initWithWindowScene:windowScene frame:?];
 
     [(DBResizeWindow *)v32 setHidden:0];
-    [a1 setResizeWindow:v32];
-    v33 = [a1 _takeSnapshotOfFrame:{a2, a3, a4, a5}];
+    [self setResizeWindow:v32];
+    v33 = [self _takeSnapshotOfFrame:{a2, configuration, frame, insets}];
     [v33 setAutoresizingMask:18];
-    v34 = [[_TtC9DashBoard15DBAnimationView alloc] initWithFrame:a2, a3, a4, a5];
-    [(DBAnimationView *)v34 setClipsToBounds:1];
-    [(DBResizeWindow *)v32 addSubview:v34];
-    [(DBAnimationView *)v34 setAutoresizingMask:18];
+    insets = [[_TtC9DashBoard15DBAnimationView alloc] initWithFrame:a2, configuration, frame, insets];
+    [(DBAnimationView *)insets setClipsToBounds:1];
+    [(DBResizeWindow *)v32 addSubview:insets];
+    [(DBAnimationView *)insets setAutoresizingMask:18];
     v54[0] = @"filters.gaussianBlur.inputRadius";
     v54[1] = @"filters.saturation.inputAmount";
     v35 = [MEMORY[0x277CBEA60] arrayWithObjects:v54 count:2];
-    [(DBAnimationView *)v34 setKeysToAnimate:v35];
+    [(DBAnimationView *)insets setKeysToAnimate:v35];
 
     v36 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA328]];
     [v36 setName:@"gaussianBlur"];
@@ -470,26 +470,26 @@
     v37 = [MEMORY[0x277CD9EA0] filterWithType:*MEMORY[0x277CDA2D0]];
     [v37 setName:@"saturation"];
     [v37 setValue:&unk_285AA4B18 forKey:@"inputAmount"];
-    v38 = [(DBAnimationView *)v34 layer];
+    layer = [(DBAnimationView *)insets layer];
     v53[0] = v36;
     v53[1] = v37;
     v39 = [MEMORY[0x277CBEA60] arrayWithObjects:v53 count:2];
-    [v38 setFilters:v39];
+    [layer setFilters:v39];
 
-    [(DBAnimationView *)v34 addSubview:v33];
-    [(DBAnimationView *)v34 bounds];
+    [(DBAnimationView *)insets addSubview:v33];
+    [(DBAnimationView *)insets bounds];
     [v33 setFrame:?];
     [MEMORY[0x277CD9FF0] commit];
-    v40 = [a1 rootViewController];
-    [v40 updateViewAreaFrame:*&a17 safeAreaInsets:{*&a18, *&a19, *&a20, a21, a22, a23, a24}];
+    rootViewController2 = [self rootViewController];
+    [rootViewController2 updateViewAreaFrame:*&a17 safeAreaInsets:{*&a18, *&a19, *&a20, a21, a22, a23, a24}];
 
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     v41 = MEMORY[0x277D75D18];
     v50[0] = MEMORY[0x277D85DD0];
     v50[1] = 3221225472;
     v50[2] = __160__DBInstrumentCluster_environmentConfiguration_viewAreaDidChangeFromViewAreaFrame_safeAreaInsets_toViewAreaFrame_safeAreaInsets_duration_transitionControlType___block_invoke;
     v50[3] = &unk_278F01580;
-    v42 = v34;
+    v42 = insets;
     v51 = v42;
     v47[0] = MEMORY[0x277D85DD0];
     v47[1] = 3221225472;
@@ -599,16 +599,16 @@ void __160__DBInstrumentCluster_environmentConfiguration_viewAreaDidChangeFromVi
 
 - (UIEdgeInsets)_rootViewControllerInsets
 {
-  v3 = [(DBScreenController *)self environmentConfiguration];
-  [v3 currentViewAreaFrame];
+  environmentConfiguration = [(DBScreenController *)self environmentConfiguration];
+  [environmentConfiguration currentViewAreaFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
 
-  v12 = [(DBScreenController *)self environmentConfiguration];
-  v13 = [v12 displayConfiguration];
-  [v13 bounds];
+  environmentConfiguration2 = [(DBScreenController *)self environmentConfiguration];
+  displayConfiguration = [environmentConfiguration2 displayConfiguration];
+  [displayConfiguration bounds];
   v15 = v14;
   rect = v14;
   v17 = v16;
@@ -655,13 +655,13 @@ void __160__DBInstrumentCluster_environmentConfiguration_viewAreaDidChangeFromVi
   return result;
 }
 
-- (void)environmentConfiguration:(id)a3 appearanceStyleDidChange:(int64_t)a4
+- (void)environmentConfiguration:(id)configuration appearanceStyleDidChange:(int64_t)change
 {
-  v5 = [(DBScreenController *)self environmentConfiguration:a3];
+  v5 = [(DBScreenController *)self environmentConfiguration:configuration];
   -[DBInstrumentCluster _startUpdatingAppearanceWithUserInterfaceStyle:](self, "_startUpdatingAppearanceWithUserInterfaceStyle:", [v5 resolvedUserInterfaceStyle]);
 }
 
-- (void)_startUpdatingAppearanceWithUserInterfaceStyle:(int64_t)a3
+- (void)_startUpdatingAppearanceWithUserInterfaceStyle:(int64_t)style
 {
   v12 = *MEMORY[0x277D85DE8];
   v5 = DBLogForCategory(0xAuLL);
@@ -682,14 +682,14 @@ void __160__DBInstrumentCluster_environmentConfiguration_viewAreaDidChangeFromVi
     v8[2] = __70__DBInstrumentCluster__startUpdatingAppearanceWithUserInterfaceStyle___block_invoke;
     v8[3] = &unk_278F02A58;
     objc_copyWeak(&v9, buf);
-    [(DBGaugeClusterRootViewController *)gaugeClusterRootViewController startAppearanceUpdate:a3 completion:v8];
+    [(DBGaugeClusterRootViewController *)gaugeClusterRootViewController startAppearanceUpdate:style completion:v8];
     objc_destroyWeak(&v9);
     objc_destroyWeak(buf);
   }
 
   else
   {
-    [(DBInstrumentCluster *)self _updateAppearanceWithUserInterfaceStyle:a3];
+    [(DBInstrumentCluster *)self _updateAppearanceWithUserInterfaceStyle:style];
   }
 }
 
@@ -699,7 +699,7 @@ void __70__DBInstrumentCluster__startUpdatingAppearanceWithUserInterfaceStyle___
   [WeakRetained _updateAppearanceWithUserInterfaceStyle:a2];
 }
 
-- (void)_updateAppearanceWithUserInterfaceStyle:(int64_t)a3
+- (void)_updateAppearanceWithUserInterfaceStyle:(int64_t)style
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = DBLogForCategory(0xAuLL);
@@ -711,23 +711,23 @@ void __70__DBInstrumentCluster__startUpdatingAppearanceWithUserInterfaceStyle___
     _os_log_impl(&dword_248146000, v5, OS_LOG_TYPE_DEFAULT, "Appearance style changed: %@", buf, 0xCu);
   }
 
-  v7 = [(DBScreenController *)self rootScene];
-  v8 = [v7 uiSettings];
-  v9 = [v8 userInterfaceStyle];
+  rootScene = [(DBScreenController *)self rootScene];
+  uiSettings = [rootScene uiSettings];
+  userInterfaceStyle = [uiSettings userInterfaceStyle];
 
-  if (v9 != a3)
+  if (userInterfaceStyle != style)
   {
-    v10 = [(DBScreenController *)self rootScene];
+    rootScene2 = [(DBScreenController *)self rootScene];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __63__DBInstrumentCluster__updateAppearanceWithUserInterfaceStyle___block_invoke;
     v12[3] = &unk_278F02220;
     v12[4] = self;
-    v12[5] = a3;
-    [v10 updateUISettingsWithBlock:v12];
+    v12[5] = style;
+    [rootScene2 updateUISettingsWithBlock:v12];
   }
 
-  v11 = [(DBInstrumentCluster *)self _clusterBackgroundColorForStyle:a3];
+  v11 = [(DBInstrumentCluster *)self _clusterBackgroundColorForStyle:style];
   [(DBInstrumentClusterWindow *)self->_clusterWindow setBackgroundColor:v11];
   [(DBInstrumentCluster *)self _updateWallpaper];
 }
@@ -751,9 +751,9 @@ void __63__DBInstrumentCluster__updateAppearanceWithUserInterfaceStyle___block_i
   [v3 setUserInterfaceStyle:*(a1 + 40)];
 }
 
-- (id)_clusterBackgroundColorForStyle:(int64_t)a3
+- (id)_clusterBackgroundColorForStyle:(int64_t)style
 {
-  if (a3 == 1)
+  if (style == 1)
   {
     [MEMORY[0x277D75348] whiteColor];
   }
@@ -777,25 +777,25 @@ void __63__DBInstrumentCluster__updateAppearanceWithUserInterfaceStyle___block_i
     _os_log_impl(&dword_248146000, v3, OS_LOG_TYPE_DEFAULT, "Updating #wallpaper", &v11, 2u);
   }
 
-  v4 = [(DBScreenController *)self environmentConfiguration];
-  v5 = [v4 wallpaperPreferences];
+  environmentConfiguration = [(DBScreenController *)self environmentConfiguration];
+  wallpaperPreferences = [environmentConfiguration wallpaperPreferences];
 
-  v6 = [v5 currentWallpaper];
+  currentWallpaper = [wallpaperPreferences currentWallpaper];
   v7 = DBLogForCategory(0xAuLL);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = v6;
+    v12 = currentWallpaper;
     _os_log_impl(&dword_248146000, v7, OS_LOG_TYPE_DEFAULT, "Applying #wallpaper %{public}@", &v11, 0xCu);
   }
 
-  v8 = [v6 traits];
-  v9 = [v8 hideRoundedCorners];
-  v10 = [(DBScreenController *)self cornerRadiusWindow];
-  [v10 setHidden:v9];
+  traits = [currentWallpaper traits];
+  hideRoundedCorners = [traits hideRoundedCorners];
+  cornerRadiusWindow = [(DBScreenController *)self cornerRadiusWindow];
+  [cornerRadiusWindow setHidden:hideRoundedCorners];
 }
 
-- (void)environmentConfiguration:(id)a3 nightModeDidChange:(BOOL)a4
+- (void)environmentConfiguration:(id)configuration nightModeDidChange:(BOOL)change
 {
   v8 = *MEMORY[0x277D85DE8];
   v4 = DBLogForCategory(0xAuLL);
@@ -808,32 +808,32 @@ void __63__DBInstrumentCluster__updateAppearanceWithUserInterfaceStyle___block_i
   }
 }
 
-- (id)_takeSnapshotOfFrame:(CGRect)a3
+- (id)_takeSnapshotOfFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(DBScreenController *)self rootScene];
-  v9 = [v8 snapshotContext];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  rootScene = [(DBScreenController *)self rootScene];
+  snapshotContext = [rootScene snapshotContext];
   v10 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v11 = [(DBInstrumentCluster *)self resizeWindow];
+  resizeWindow = [(DBInstrumentCluster *)self resizeWindow];
 
-  if (v11)
+  if (resizeWindow)
   {
-    v12 = [v8 layerManager];
-    v13 = [(DBInstrumentCluster *)self resizeWindow];
-    v14 = [v12 layerWithContextID:{objc_msgSend(v13, "_contextId")}];
+    layerManager = [rootScene layerManager];
+    resizeWindow2 = [(DBInstrumentCluster *)self resizeWindow];
+    v14 = [layerManager layerWithContextID:{objc_msgSend(resizeWindow2, "_contextId")}];
     [v10 addObject:v14];
   }
 
-  v15 = [(DBScreenController *)self cornerRadiusWindow];
+  cornerRadiusWindow = [(DBScreenController *)self cornerRadiusWindow];
 
-  if (v15)
+  if (cornerRadiusWindow)
   {
-    v16 = [v8 layerManager];
-    v17 = [(DBScreenController *)self cornerRadiusWindow];
-    v18 = [v16 layerWithContextID:{objc_msgSend(v17, "_contextId")}];
+    layerManager2 = [rootScene layerManager];
+    cornerRadiusWindow2 = [(DBScreenController *)self cornerRadiusWindow];
+    v18 = [layerManager2 layerWithContextID:{objc_msgSend(cornerRadiusWindow2, "_contextId")}];
 
     if (v18)
     {
@@ -841,37 +841,37 @@ void __63__DBInstrumentCluster__updateAppearanceWithUserInterfaceStyle___block_i
     }
   }
 
-  [v9 setLayersToExclude:v10];
-  [v9 setFrame:{x, y, width, height}];
-  v19 = [v8 createSnapshotWithContext:v9];
+  [snapshotContext setLayersToExclude:v10];
+  [snapshotContext setFrame:{x, y, width, height}];
+  v19 = [rootScene createSnapshotWithContext:snapshotContext];
   [v19 capture];
-  v20 = [v8 uiPresentationManager];
-  v21 = [v20 snapshotPresentationForSnapshot:v19];
+  uiPresentationManager = [rootScene uiPresentationManager];
+  v21 = [uiPresentationManager snapshotPresentationForSnapshot:v19];
 
   return v21;
 }
 
-- (void)navigationStateProvider:(id)a3 frontmostIdentifierDidChange:(id)a4
+- (void)navigationStateProvider:(id)provider frontmostIdentifierDidChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   v6 = +[DBApplicationController sharedInstance];
-  v10 = [v6 applicationWithBundleIdentifier:v5];
+  v10 = [v6 applicationWithBundleIdentifier:changeCopy];
 
   if ([v10 presentsFullScreen] && objc_msgSend(v10, "supportsInstrumentClusterNavigation"))
   {
-    v7 = [(DBScreenController *)self interestingWindow];
-    v8 = [(DBScreenController *)self environmentConfiguration];
-    v9 = [v8 displayConfiguration];
-    [v9 bounds];
-    [v7 setFrame:?];
+    interestingWindow = [(DBScreenController *)self interestingWindow];
+    environmentConfiguration = [(DBScreenController *)self environmentConfiguration];
+    displayConfiguration = [environmentConfiguration displayConfiguration];
+    [displayConfiguration bounds];
+    [interestingWindow setFrame:?];
   }
 
   else
   {
-    v7 = [(DBScreenController *)self interestingWindow];
-    v8 = [(DBScreenController *)self environmentConfiguration];
-    [v8 currentViewAreaFrame];
-    [v7 setFrame:?];
+    interestingWindow = [(DBScreenController *)self interestingWindow];
+    environmentConfiguration = [(DBScreenController *)self environmentConfiguration];
+    [environmentConfiguration currentViewAreaFrame];
+    [interestingWindow setFrame:?];
   }
 }
 

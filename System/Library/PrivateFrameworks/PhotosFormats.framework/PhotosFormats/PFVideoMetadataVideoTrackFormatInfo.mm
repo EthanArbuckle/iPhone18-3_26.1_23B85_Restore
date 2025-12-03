@@ -1,10 +1,10 @@
 @interface PFVideoMetadataVideoTrackFormatInfo
-+ (BOOL)videoTrackFormatDescriptionHasDolby8_4Metadata:(opaqueCMFormatDescription *)a3;
-+ (id)infoForFirstVideoTrackOfAsset:(id)a3;
-+ (signed)_getProfile:(char *)a3 tier:(char *)a4 level:(char *)a5 fromFormatDescriptionExtensions:(id)a6;
++ (BOOL)videoTrackFormatDescriptionHasDolby8_4Metadata:(opaqueCMFormatDescription *)metadata;
++ (id)infoForFirstVideoTrackOfAsset:(id)asset;
++ (signed)_getProfile:(char *)profile tier:(char *)tier level:(char *)level fromFormatDescriptionExtensions:(id)extensions;
 - (CGSize)displaySize;
 - (NSString)formatDebugDescription;
-- (PFVideoMetadataVideoTrackFormatInfo)initWithFirstVideoTrackOfAsset:(id)a3;
+- (PFVideoMetadataVideoTrackFormatInfo)initWithFirstVideoTrackOfAsset:(id)asset;
 - (id)hevcProfileTierLevelDescription;
 - (void)_checkFormat;
 @end
@@ -39,10 +39,10 @@
 
 - (NSString)formatDebugDescription
 {
-  v3 = [(PFVideoMetadataVideoTrackFormatInfo *)self bitsPerComponent];
-  if (v3)
+  bitsPerComponent = [(PFVideoMetadataVideoTrackFormatInfo *)self bitsPerComponent];
+  if (bitsPerComponent)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%tdbit ", v3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%tdbit ", bitsPerComponent];
   }
 
   else
@@ -65,8 +65,8 @@
   codec = self->_codec;
   v9 = v6;
   v10 = [PFMediaUtilities stringFromFourCharCode:codec];
-  v11 = [(PFVideoMetadataVideoTrackFormatInfo *)self hevcProfileTierLevelDescription];
-  v12 = v11;
+  hevcProfileTierLevelDescription = [(PFVideoMetadataVideoTrackFormatInfo *)self hevcProfileTierLevelDescription];
+  v12 = hevcProfileTierLevelDescription;
   v13 = @"no";
   if (self->_hasDolby8_4Metadata)
   {
@@ -83,7 +83,7 @@
     v13 = @"yes";
   }
 
-  v15 = [v7 stringWithFormat:@"%@ %@%@%@ size=%dx%d transfer=%@ color=%@ dv84=%@ (current device eligible for HDR: %@)", v10, v4, v9, v11, self->_displaySize.width, self->_displaySize.height, self->_transferFunction, self->_colorPrimaries, v14, v13];
+  v15 = [v7 stringWithFormat:@"%@ %@%@%@ size=%dx%d transfer=%@ color=%@ dv84=%@ (current device eligible for HDR: %@)", v10, v4, v9, hevcProfileTierLevelDescription, self->_displaySize.width, self->_displaySize.height, self->_transferFunction, self->_colorPrimaries, v14, v13];
 
   return v15;
 }
@@ -92,9 +92,9 @@
 {
   v26 = *MEMORY[0x1E69E9840];
   v3 = [PFMediaUtilities tracksWithMediaType:*MEMORY[0x1E6987608] forAsset:self->_asset];
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  if (!v4)
+  if (!firstObject)
   {
     if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -111,10 +111,10 @@ LABEL_12:
     goto LABEL_15;
   }
 
-  v5 = [v4 formatDescriptions];
-  v6 = [v5 firstObject];
+  formatDescriptions = [firstObject formatDescriptions];
+  firstObject2 = [formatDescriptions firstObject];
 
-  if (!v6)
+  if (!firstObject2)
   {
     if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -129,17 +129,17 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  self->_codec = CMFormatDescriptionGetMediaSubType(v6);
-  self->_isHighDynamicRange = [PFVideoMetadata videoTrackFormatDescriptionIsHighDynamicRange:v6];
-  self->_isHDR10 = [PFVideoMetadata videoTrackFormatDescriptionIsHDR10:v6];
-  self->_isProResLOG = [PFVideoMetadata videoTrackFormatDescriptionIsProResLOG:v6];
-  self->_hasDolby8_4Metadata = [objc_opt_class() videoTrackFormatDescriptionHasDolby8_4Metadata:v6];
-  self->_isSpatial = [PFVideoMetadata videoTrackIsSpatial:v4];
-  [v4 naturalSize];
+  self->_codec = CMFormatDescriptionGetMediaSubType(firstObject2);
+  self->_isHighDynamicRange = [PFVideoMetadata videoTrackFormatDescriptionIsHighDynamicRange:firstObject2];
+  self->_isHDR10 = [PFVideoMetadata videoTrackFormatDescriptionIsHDR10:firstObject2];
+  self->_isProResLOG = [PFVideoMetadata videoTrackFormatDescriptionIsProResLOG:firstObject2];
+  self->_hasDolby8_4Metadata = [objc_opt_class() videoTrackFormatDescriptionHasDolby8_4Metadata:firstObject2];
+  self->_isSpatial = [PFVideoMetadata videoTrackIsSpatial:firstObject];
+  [firstObject naturalSize];
   v8 = v7;
-  [v4 naturalSize];
+  [firstObject naturalSize];
   v10 = v9;
-  [v4 preferredTransform];
+  [firstObject preferredTransform];
   v27.origin.x = 0.0;
   v27.origin.y = 0.0;
   v27.size.width = v8;
@@ -147,7 +147,7 @@ LABEL_12:
   v28 = CGRectApplyAffineTransform(v27, &v25);
   self->_displaySize.width = v28.size.width;
   self->_displaySize.height = v28.size.height;
-  v11 = CMFormatDescriptionGetExtensions(v6);
+  v11 = CMFormatDescriptionGetExtensions(firstObject2);
   v12 = v11;
   if (v11)
   {
@@ -189,25 +189,25 @@ LABEL_12:
 LABEL_15:
 }
 
-- (PFVideoMetadataVideoTrackFormatInfo)initWithFirstVideoTrackOfAsset:(id)a3
+- (PFVideoMetadataVideoTrackFormatInfo)initWithFirstVideoTrackOfAsset:(id)asset
 {
-  v5 = a3;
+  assetCopy = asset;
   v9.receiver = self;
   v9.super_class = PFVideoMetadataVideoTrackFormatInfo;
   v6 = [(PFVideoMetadataVideoTrackFormatInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_asset, a3);
+    objc_storeStrong(&v6->_asset, asset);
     [(PFVideoMetadataVideoTrackFormatInfo *)v7 _checkFormat];
   }
 
   return v7;
 }
 
-+ (BOOL)videoTrackFormatDescriptionHasDolby8_4Metadata:(opaqueCMFormatDescription *)a3
++ (BOOL)videoTrackFormatDescriptionHasDolby8_4Metadata:(opaqueCMFormatDescription *)metadata
 {
-  v3 = CMFormatDescriptionGetExtensions(a3);
+  v3 = CMFormatDescriptionGetExtensions(metadata);
   v4 = v3;
   if (v3)
   {
@@ -233,9 +233,9 @@ LABEL_15:
   return v9;
 }
 
-+ (signed)_getProfile:(char *)a3 tier:(char *)a4 level:(char *)a5 fromFormatDescriptionExtensions:(id)a6
++ (signed)_getProfile:(char *)profile tier:(char *)tier level:(char *)level fromFormatDescriptionExtensions:(id)extensions
 {
-  v6 = [a6 objectForKeyedSubscript:*MEMORY[0x1E69600A0]];
+  v6 = [extensions objectForKeyedSubscript:*MEMORY[0x1E69600A0]];
   v7 = [v6 objectForKeyedSubscript:@"hvcC"];
 
   if (v7)
@@ -256,10 +256,10 @@ LABEL_15:
   return SPSProfileTierLevel;
 }
 
-+ (id)infoForFirstVideoTrackOfAsset:(id)a3
++ (id)infoForFirstVideoTrackOfAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithFirstVideoTrackOfAsset:v4];
+  assetCopy = asset;
+  v5 = [[self alloc] initWithFirstVideoTrackOfAsset:assetCopy];
 
   return v5;
 }

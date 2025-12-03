@@ -1,13 +1,13 @@
 @interface SUCorePersistedState
 - (BOOL)isPersistedStateLoaded;
 - (BOOL)loadPersistedState;
-- (SUCorePersistedState)initWithDispatchQueue:(id)a3 withPersistencePath:(id)a4 forPolicyVersion:(id)a5 issuingDefaultLevelLogging:(BOOL)a6;
+- (SUCorePersistedState)initWithDispatchQueue:(id)queue withPersistencePath:(id)path forPolicyVersion:(id)version issuingDefaultLevelLogging:(BOOL)logging;
 - (id)_createEmptyPersistedState;
 - (id)description;
 - (id)persistedContentsType;
 - (id)persistedCoreVersion;
 - (id)persistedPolicyVersion;
-- (id)secureCodedObjectForKey:(id)a3 ofClass:(Class)a4;
+- (id)secureCodedObjectForKey:(id)key ofClass:(Class)class;
 - (id)summary;
 - (void)_writePersistedState;
 - (void)persistState;
@@ -19,52 +19,52 @@
 - (BOOL)loadPersistedState
 {
   v39 = *MEMORY[0x1E69E9840];
-  v3 = [(SUCorePersistedState *)self persistedStateQueue];
-  dispatch_assert_queue_V2(v3);
+  persistedStateQueue = [(SUCorePersistedState *)self persistedStateQueue];
+  dispatch_assert_queue_V2(persistedStateQueue);
 
-  v4 = [(SUCorePersistedState *)self persistedState];
+  persistedState = [(SUCorePersistedState *)self persistedState];
 
-  v5 = [(SUCorePersistedState *)self defaultLevelLogging];
-  if (!v4)
+  defaultLevelLogging = [(SUCorePersistedState *)self defaultLevelLogging];
+  if (!persistedState)
   {
-    if (v5)
+    if (defaultLevelLogging)
     {
       v9 = +[SUCoreLog sharedLogger];
-      v10 = [v9 oslog];
+      oslog = [v9 oslog];
 
-      if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(SUCorePersistedState *)self summary];
+        summary = [(SUCorePersistedState *)self summary];
         *buf = 138543362;
-        v38 = v11;
-        _os_log_impl(&dword_1E0F71000, v10, OS_LOG_TYPE_DEFAULT, "[PERSISTED_STATE] loading persisted state with summary: %{public}@", buf, 0xCu);
+        v38 = summary;
+        _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[PERSISTED_STATE] loading persisted state with summary: %{public}@", buf, 0xCu);
       }
     }
 
     v12 = MEMORY[0x1E695DEF0];
-    v13 = [(SUCorePersistedState *)self persistencePath];
+    persistencePath = [(SUCorePersistedState *)self persistencePath];
     v36 = 0;
-    v14 = [v12 dataWithContentsOfFile:v13 options:1 error:&v36];
-    v7 = v36;
+    v14 = [v12 dataWithContentsOfFile:persistencePath options:1 error:&v36];
+    oslog5 = v36;
 
-    if (v7)
+    if (oslog5)
     {
-      v15 = [v7 domain];
-      if ([v15 isEqualToString:*MEMORY[0x1E696A250]])
+      domain = [oslog5 domain];
+      if ([domain isEqualToString:*MEMORY[0x1E696A250]])
       {
-        if ([v7 code]== 4)
+        if ([oslog5 code]== 4)
         {
 
 LABEL_27:
           if ([(SUCorePersistedState *)self defaultLevelLogging])
           {
             v26 = +[SUCoreLog sharedLogger];
-            v27 = [v26 oslog];
+            oslog2 = [v26 oslog];
 
-            if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 0;
-              _os_log_impl(&dword_1E0F71000, v27, OS_LOG_TYPE_DEFAULT, "[PERSISTED_STATE] no persisted state file found at persistence path", buf, 2u);
+              _os_log_impl(&dword_1E0F71000, oslog2, OS_LOG_TYPE_DEFAULT, "[PERSISTED_STATE] no persisted state file found at persistence path", buf, 2u);
             }
           }
 
@@ -72,9 +72,9 @@ LABEL_27:
           goto LABEL_34;
         }
 
-        v25 = [v7 code];
+        code = [oslog5 code];
 
-        if (v25 == 260)
+        if (code == 260)
         {
           goto LABEL_27;
         }
@@ -104,13 +104,13 @@ LABEL_27:
         if ([(SUCorePersistedState *)self defaultLevelLogging])
         {
           v21 = +[SUCoreLog sharedLogger];
-          v22 = [v21 oslog];
+          oslog3 = [v21 oslog];
 
-          if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
             v38 = v17;
-            _os_log_impl(&dword_1E0F71000, v22, OS_LOG_TYPE_DEFAULT, "[PERSISTED_STATE] loaded persisted state: %{public}@", buf, 0xCu);
+            _os_log_impl(&dword_1E0F71000, oslog3, OS_LOG_TYPE_DEFAULT, "[PERSISTED_STATE] loaded persisted state: %{public}@", buf, 0xCu);
           }
         }
 
@@ -130,28 +130,28 @@ LABEL_27:
     }
 
     v24 = +[SUCoreDiag sharedDiag];
-    [v24 trackError:@"[PERSISTED_STATE]" forReason:@"unable to serialize contents of persisted state file" withResult:8106 withError:v7];
+    [v24 trackError:@"[PERSISTED_STATE]" forReason:@"unable to serialize contents of persisted state file" withResult:8106 withError:oslog5];
 
     v8 = 0;
 LABEL_34:
-    v28 = [(SUCorePersistedState *)self persistedState];
+    persistedState2 = [(SUCorePersistedState *)self persistedState];
 
-    if (!v28)
+    if (!persistedState2)
     {
-      v29 = [(SUCorePersistedState *)self _createEmptyPersistedState];
-      [(SUCorePersistedState *)self setPersistedState:v29];
+      _createEmptyPersistedState = [(SUCorePersistedState *)self _createEmptyPersistedState];
+      [(SUCorePersistedState *)self setPersistedState:_createEmptyPersistedState];
 
       if ([(SUCorePersistedState *)self defaultLevelLogging])
       {
         v30 = +[SUCoreLog sharedLogger];
-        v31 = [v30 oslog];
+        oslog4 = [v30 oslog];
 
-        if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
         {
-          v32 = [(SUCorePersistedState *)self persistedState];
+          persistedState3 = [(SUCorePersistedState *)self persistedState];
           *buf = 138543362;
-          v38 = v32;
-          _os_log_impl(&dword_1E0F71000, v31, OS_LOG_TYPE_DEFAULT, "[PERSISTED_STATE] created a new, empty persisted state dictionary: %{public}@", buf, 0xCu);
+          v38 = persistedState3;
+          _os_log_impl(&dword_1E0F71000, oslog4, OS_LOG_TYPE_DEFAULT, "[PERSISTED_STATE] created a new, empty persisted state dictionary: %{public}@", buf, 0xCu);
         }
       }
     }
@@ -159,15 +159,15 @@ LABEL_34:
     goto LABEL_40;
   }
 
-  if (v5)
+  if (defaultLevelLogging)
   {
     v6 = +[SUCoreLog sharedLogger];
-    v7 = [v6 oslog];
+    oslog5 = [v6 oslog];
 
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1E0F71000, v7, OS_LOG_TYPE_DEFAULT, "[PERSISTED_STATE] attempting to load persisted state, but state is already loaded - no operation to perform", buf, 2u);
+      _os_log_impl(&dword_1E0F71000, oslog5, OS_LOG_TYPE_DEFAULT, "[PERSISTED_STATE] attempting to load persisted state, but state is already loaded - no operation to perform", buf, 2u);
     }
 
     v8 = 1;
@@ -182,21 +182,21 @@ LABEL_41:
   return v8;
 }
 
-- (SUCorePersistedState)initWithDispatchQueue:(id)a3 withPersistencePath:(id)a4 forPolicyVersion:(id)a5 issuingDefaultLevelLogging:(BOOL)a6
+- (SUCorePersistedState)initWithDispatchQueue:(id)queue withPersistencePath:(id)path forPolicyVersion:(id)version issuingDefaultLevelLogging:(BOOL)logging
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  queueCopy = queue;
+  pathCopy = path;
+  versionCopy = version;
   v18.receiver = self;
   v18.super_class = SUCorePersistedState;
   v14 = [(SUCorePersistedState *)&v18 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_persistedStateQueue, a3);
-    objc_storeStrong(&v15->_persistencePath, a4);
-    objc_storeStrong(&v15->_versionPolicyLayer, a5);
-    v15->_defaultLevelLogging = a6;
+    objc_storeStrong(&v14->_persistedStateQueue, queue);
+    objc_storeStrong(&v15->_persistencePath, path);
+    objc_storeStrong(&v15->_versionPolicyLayer, version);
+    v15->_defaultLevelLogging = logging;
     objc_storeStrong(&v15->_versionSUCore, @"2.1.0");
     persistedState = v15->_persistedState;
     v15->_persistedState = 0;
@@ -207,39 +207,39 @@ LABEL_41:
 
 - (BOOL)isPersistedStateLoaded
 {
-  v2 = self;
-  v3 = [(SUCorePersistedState *)self persistedStateQueue];
-  dispatch_assert_queue_V2(v3);
+  selfCopy = self;
+  persistedStateQueue = [(SUCorePersistedState *)self persistedStateQueue];
+  dispatch_assert_queue_V2(persistedStateQueue);
 
-  v4 = [(SUCorePersistedState *)v2 persistedState];
-  LOBYTE(v2) = v4 != 0;
+  persistedState = [(SUCorePersistedState *)selfCopy persistedState];
+  LOBYTE(selfCopy) = persistedState != 0;
 
-  return v2;
+  return selfCopy;
 }
 
 - (id)persistedContentsType
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(SUCorePersistedState *)self persistedStateQueue];
-  dispatch_assert_queue_V2(v3);
+  persistedStateQueue = [(SUCorePersistedState *)self persistedStateQueue];
+  dispatch_assert_queue_V2(persistedStateQueue);
 
-  v4 = [(SUCorePersistedState *)self persistedState];
+  persistedState = [(SUCorePersistedState *)self persistedState];
 
-  if (v4)
+  if (persistedState)
   {
-    v5 = [(SUCorePersistedState *)self persistedState];
-    v6 = [v5 safeStringForKey:@"SUCorePersistedStateContentsType"];
+    persistedState2 = [(SUCorePersistedState *)self persistedState];
+    v6 = [persistedState2 safeStringForKey:@"SUCorePersistedStateContentsType"];
 
     if ([(SUCorePersistedState *)self defaultLevelLogging])
     {
       v7 = +[SUCoreLog sharedLogger];
-      v8 = [v7 oslog];
+      oslog = [v7 oslog];
 
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138543362;
         v13 = v6;
-        _os_log_impl(&dword_1E0F71000, v8, OS_LOG_TYPE_DEFAULT, "[PERSISTED_STATE] returning persisted contents type with string value: %{public}@", &v12, 0xCu);
+        _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[PERSISTED_STATE] returning persisted contents type with string value: %{public}@", &v12, 0xCu);
       }
     }
   }
@@ -260,26 +260,26 @@ LABEL_41:
 - (id)persistedCoreVersion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(SUCorePersistedState *)self persistedStateQueue];
-  dispatch_assert_queue_V2(v3);
+  persistedStateQueue = [(SUCorePersistedState *)self persistedStateQueue];
+  dispatch_assert_queue_V2(persistedStateQueue);
 
-  v4 = [(SUCorePersistedState *)self persistedState];
+  persistedState = [(SUCorePersistedState *)self persistedState];
 
-  if (v4)
+  if (persistedState)
   {
-    v5 = [(SUCorePersistedState *)self persistedState];
-    v6 = [v5 safeStringForKey:@"SUCorePersistedStateCoreVersion"];
+    persistedState2 = [(SUCorePersistedState *)self persistedState];
+    v6 = [persistedState2 safeStringForKey:@"SUCorePersistedStateCoreVersion"];
 
     if ([(SUCorePersistedState *)self defaultLevelLogging])
     {
       v7 = +[SUCoreLog sharedLogger];
-      v8 = [v7 oslog];
+      oslog = [v7 oslog];
 
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138543362;
         v13 = v6;
-        _os_log_impl(&dword_1E0F71000, v8, OS_LOG_TYPE_DEFAULT, "[PERSISTED_STATE] returning persisted core version with string value: %{public}@", &v12, 0xCu);
+        _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[PERSISTED_STATE] returning persisted core version with string value: %{public}@", &v12, 0xCu);
       }
     }
   }
@@ -300,26 +300,26 @@ LABEL_41:
 - (id)persistedPolicyVersion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = [(SUCorePersistedState *)self persistedStateQueue];
-  dispatch_assert_queue_V2(v3);
+  persistedStateQueue = [(SUCorePersistedState *)self persistedStateQueue];
+  dispatch_assert_queue_V2(persistedStateQueue);
 
-  v4 = [(SUCorePersistedState *)self persistedState];
+  persistedState = [(SUCorePersistedState *)self persistedState];
 
-  if (v4)
+  if (persistedState)
   {
-    v5 = [(SUCorePersistedState *)self persistedState];
-    v6 = [v5 safeStringForKey:@"SUCorePersistedStatePolicyVersion"];
+    persistedState2 = [(SUCorePersistedState *)self persistedState];
+    v6 = [persistedState2 safeStringForKey:@"SUCorePersistedStatePolicyVersion"];
 
     if ([(SUCorePersistedState *)self defaultLevelLogging])
     {
       v7 = +[SUCoreLog sharedLogger];
-      v8 = [v7 oslog];
+      oslog = [v7 oslog];
 
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 138543362;
         v13 = v6;
-        _os_log_impl(&dword_1E0F71000, v8, OS_LOG_TYPE_DEFAULT, "[PERSISTED_STATE] returning persisted policy version with string value: %{public}@", &v12, 0xCu);
+        _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[PERSISTED_STATE] returning persisted policy version with string value: %{public}@", &v12, 0xCu);
       }
     }
   }
@@ -340,27 +340,27 @@ LABEL_41:
 - (void)removePersistedState
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(SUCorePersistedState *)self persistedStateQueue];
-  dispatch_assert_queue_V2(v3);
+  persistedStateQueue = [(SUCorePersistedState *)self persistedStateQueue];
+  dispatch_assert_queue_V2(persistedStateQueue);
 
   if ([(SUCorePersistedState *)self defaultLevelLogging])
   {
     v4 = +[SUCoreLog sharedLogger];
-    v5 = [v4 oslog];
+    oslog = [v4 oslog];
 
-    if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(SUCorePersistedState *)self summary];
+      summary = [(SUCorePersistedState *)self summary];
       *buf = 138543362;
-      v19 = v6;
-      _os_log_impl(&dword_1E0F71000, v5, OS_LOG_TYPE_DEFAULT, "attempting to remove persisted state with summary: %{public}@", buf, 0xCu);
+      v19 = summary;
+      _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "attempting to remove persisted state with summary: %{public}@", buf, 0xCu);
     }
   }
 
-  v7 = [MEMORY[0x1E696AC08] defaultManager];
-  v8 = [(SUCorePersistedState *)self persistencePath];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  persistencePath = [(SUCorePersistedState *)self persistencePath];
   v17 = 0;
-  v9 = [v7 removeItemAtPath:v8 error:&v17];
+  v9 = [defaultManager removeItemAtPath:persistencePath error:&v17];
   v10 = v17;
   v11 = v10;
   if (v9)
@@ -369,9 +369,9 @@ LABEL_41:
 
   else
   {
-    v12 = [v10 code];
+    code = [v10 code];
 
-    if (v12 != 4)
+    if (code != 4)
     {
       v15 = +[SUCoreDiag sharedDiag];
       [v15 trackError:@"[PERSISTED_STATE]" forReason:@"failed to remove persisted state file" withResult:8110 withError:v11];
@@ -383,12 +383,12 @@ LABEL_41:
   if ([(SUCorePersistedState *)self defaultLevelLogging])
   {
     v13 = +[SUCoreLog sharedLogger];
-    v14 = [v13 oslog];
+    oslog2 = [v13 oslog];
 
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_1E0F71000, v14, OS_LOG_TYPE_DEFAULT, "[PERSISTED_STATE] successfully removed persisted state file", buf, 2u);
+      _os_log_impl(&dword_1E0F71000, oslog2, OS_LOG_TYPE_DEFAULT, "[PERSISTED_STATE] successfully removed persisted state file", buf, 2u);
     }
   }
 
@@ -398,12 +398,12 @@ LABEL_14:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (id)secureCodedObjectForKey:(id)a3 ofClass:(Class)a4
+- (id)secureCodedObjectForKey:(id)key ofClass:(Class)class
 {
   v6 = MEMORY[0x1E695DFD8];
-  v7 = a3;
-  v8 = [[v6 alloc] initWithObjects:{a4, 0}];
-  v9 = [(SUCorePersistedState *)self secureCodedObjectForKey:v7 ofClass:a4 encodeClasses:v8 forType:3];
+  keyCopy = key;
+  v8 = [[v6 alloc] initWithObjects:{class, 0}];
+  v9 = [(SUCorePersistedState *)self secureCodedObjectForKey:keyCopy ofClass:class encodeClasses:v8 forType:3];
 
   return v9;
 }
@@ -411,24 +411,24 @@ LABEL_14:
 - (void)persistState
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(SUCorePersistedState *)self persistedStateQueue];
-  dispatch_assert_queue_V2(v3);
+  persistedStateQueue = [(SUCorePersistedState *)self persistedStateQueue];
+  dispatch_assert_queue_V2(persistedStateQueue);
 
-  v4 = [(SUCorePersistedState *)self persistedState];
+  persistedState = [(SUCorePersistedState *)self persistedState];
 
-  if (v4)
+  if (persistedState)
   {
     if ([(SUCorePersistedState *)self defaultLevelLogging])
     {
       v5 = +[SUCoreLog sharedLogger];
-      v6 = [v5 oslog];
+      oslog = [v5 oslog];
 
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         v7 = [(SUCorePersistedState *)self description];
         *buf = 138543362;
         v15 = v7;
-        _os_log_impl(&dword_1E0F71000, v6, OS_LOG_TYPE_DEFAULT, "[PERSISTED_STATE] persisting the state %{public}@", buf, 0xCu);
+        _os_log_impl(&dword_1E0F71000, oslog, OS_LOG_TYPE_DEFAULT, "[PERSISTED_STATE] persisting the state %{public}@", buf, 0xCu);
       }
     }
 
@@ -451,10 +451,10 @@ LABEL_14:
 - (id)summary
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(SUCorePersistedState *)self persistencePath];
-  v5 = [(SUCorePersistedState *)self versionPolicyLayer];
-  v6 = [(SUCorePersistedState *)self versionSUCore];
-  v7 = [v3 initWithFormat:@"persistencePath:%@, versionPolicyLayer:%@, versionSUCore:%@", v4, v5, v6];
+  persistencePath = [(SUCorePersistedState *)self persistencePath];
+  versionPolicyLayer = [(SUCorePersistedState *)self versionPolicyLayer];
+  versionSUCore = [(SUCorePersistedState *)self versionSUCore];
+  v7 = [v3 initWithFormat:@"persistencePath:%@, versionPolicyLayer:%@, versionSUCore:%@", persistencePath, versionPolicyLayer, versionSUCore];
 
   return v7;
 }
@@ -462,11 +462,11 @@ LABEL_14:
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(SUCorePersistedState *)self persistencePath];
-  v5 = [(SUCorePersistedState *)self versionPolicyLayer];
-  v6 = [(SUCorePersistedState *)self versionSUCore];
-  v7 = [(SUCorePersistedState *)self persistedState];
-  v8 = [v3 initWithFormat:@"\n[>>>\n    persistencePath: %@\n versionPolicyLayer: %@\n      versionSUCore: %@\n     persistedState: %@\n<<<]", v4, v5, v6, v7];
+  persistencePath = [(SUCorePersistedState *)self persistencePath];
+  versionPolicyLayer = [(SUCorePersistedState *)self versionPolicyLayer];
+  versionSUCore = [(SUCorePersistedState *)self versionSUCore];
+  persistedState = [(SUCorePersistedState *)self persistedState];
+  v8 = [v3 initWithFormat:@"\n[>>>\n    persistencePath: %@\n versionPolicyLayer: %@\n      versionSUCore: %@\n     persistedState: %@\n<<<]", persistencePath, versionPolicyLayer, versionSUCore, persistedState];
 
   return v8;
 }
@@ -474,23 +474,23 @@ LABEL_14:
 - (void)_writePersistedState
 {
   v3 = MEMORY[0x1E696AE40];
-  v4 = [(SUCorePersistedState *)self persistedState];
+  persistedState = [(SUCorePersistedState *)self persistedState];
   v19 = 0;
-  v5 = [v3 dataWithPropertyList:v4 format:200 options:0 error:&v19];
+  v5 = [v3 dataWithPropertyList:persistedState format:200 options:0 error:&v19];
   v6 = v19;
 
   if (v5)
   {
-    v7 = [(SUCorePersistedState *)self persistencePath];
+    persistencePath = [(SUCorePersistedState *)self persistencePath];
     v18 = v6;
-    v8 = [v5 writeToFile:v7 options:268435457 error:&v18];
+    v8 = [v5 writeToFile:persistencePath options:268435457 error:&v18];
     v9 = v18;
 
     if (v8)
     {
       v10 = MEMORY[0x1E696AC00];
-      v11 = [(SUCorePersistedState *)self persistencePath];
-      v12 = [v10 fileHandleForUpdatingAtPath:v11];
+      persistencePath2 = [(SUCorePersistedState *)self persistencePath];
+      v12 = [v10 fileHandleForUpdatingAtPath:persistencePath2];
 
       if (v12)
       {
@@ -529,11 +529,11 @@ LABEL_14:
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   [v3 setValue:@"SoftwareUpdateCorePersistedStateFile" forKey:@"SUCorePersistedStateContentsType"];
-  v4 = [(SUCorePersistedState *)self versionSUCore];
-  [v3 setValue:v4 forKey:@"SUCorePersistedStateCoreVersion"];
+  versionSUCore = [(SUCorePersistedState *)self versionSUCore];
+  [v3 setValue:versionSUCore forKey:@"SUCorePersistedStateCoreVersion"];
 
-  v5 = [(SUCorePersistedState *)self versionPolicyLayer];
-  [v3 setValue:v5 forKey:@"SUCorePersistedStatePolicyVersion"];
+  versionPolicyLayer = [(SUCorePersistedState *)self versionPolicyLayer];
+  [v3 setValue:versionPolicyLayer forKey:@"SUCorePersistedStatePolicyVersion"];
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v7 = [(SUCorePersistedState *)self _keyNameForPersistedStateType:0];

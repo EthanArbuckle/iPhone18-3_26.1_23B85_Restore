@@ -1,7 +1,7 @@
 @interface KCSRPContext
-+ (id)createWithUser:(id)a3 digestInfo:(const ccdigest_info *)a4 group:(ccdh_gp *)a5 randomSource:(ccrng_state *)a6;
++ (id)createWithUser:(id)user digestInfo:(const ccdigest_info *)info group:(ccdh_gp *)group randomSource:(ccrng_state *)source;
 - (BOOL)isAuthenticated;
-- (KCSRPContext)initWithUser:(id)a3 digestInfo:(const ccdigest_info *)a4 group:(ccdh_gp *)a5 randomSource:(ccrng_state *)a6;
+- (KCSRPContext)initWithUser:(id)user digestInfo:(const ccdigest_info *)info group:(ccdh_gp *)group randomSource:(ccrng_state *)source;
 - (const)userNameString;
 - (id)getKey;
 - (void)dealloc;
@@ -11,9 +11,9 @@
 
 - (BOOL)isAuthenticated
 {
-  v2 = [(KCSRPContext *)self context];
+  context = [(KCSRPContext *)self context];
 
-  return MEMORY[0x282201A08](v2);
+  return MEMORY[0x282201A08](context);
 }
 
 - (id)getKey
@@ -41,20 +41,20 @@
   [(KCSRPContext *)&v6 dealloc];
 }
 
-- (KCSRPContext)initWithUser:(id)a3 digestInfo:(const ccdigest_info *)a4 group:(ccdh_gp *)a5 randomSource:(ccrng_state *)a6
+- (KCSRPContext)initWithUser:(id)user digestInfo:(const ccdigest_info *)info group:(ccdh_gp *)group randomSource:(ccrng_state *)source
 {
-  v9 = a3;
+  userCopy = user;
   v13.receiver = self;
   v13.super_class = KCSRPContext;
   v10 = [(KCSRPContext *)&v13 init];
   if (v10)
   {
     v11 = ccdh_ccn_size();
-    [(KCSRPContext *)v10 setContext:malloc_type_malloc(4 * (a4->var0 + v11) + 48, 0x106004070A5FD05uLL)];
+    [(KCSRPContext *)v10 setContext:malloc_type_malloc(4 * (info->var0 + v11) + 48, 0x106004070A5FD05uLL)];
     [(KCSRPContext *)v10 context];
     ccsrp_ctx_init();
-    [(KCSRPContext *)v10 setUser:v9];
-    [(KCSRPContext *)v10 setRng:a6];
+    [(KCSRPContext *)v10 setUser:userCopy];
+    [(KCSRPContext *)v10 setRng:source];
   }
 
   return v10;
@@ -62,16 +62,16 @@
 
 - (const)userNameString
 {
-  v2 = [(KCSRPContext *)self user];
-  v3 = [v2 cStringUsingEncoding:4];
+  user = [(KCSRPContext *)self user];
+  v3 = [user cStringUsingEncoding:4];
 
   return v3;
 }
 
-+ (id)createWithUser:(id)a3 digestInfo:(const ccdigest_info *)a4 group:(ccdh_gp *)a5 randomSource:(ccrng_state *)a6
++ (id)createWithUser:(id)user digestInfo:(const ccdigest_info *)info group:(ccdh_gp *)group randomSource:(ccrng_state *)source
 {
-  v10 = a3;
-  v11 = [[a1 alloc] initWithUser:v10 digestInfo:a4 group:a5 randomSource:a6];
+  userCopy = user;
+  v11 = [[self alloc] initWithUser:userCopy digestInfo:info group:group randomSource:source];
 
   return v11;
 }

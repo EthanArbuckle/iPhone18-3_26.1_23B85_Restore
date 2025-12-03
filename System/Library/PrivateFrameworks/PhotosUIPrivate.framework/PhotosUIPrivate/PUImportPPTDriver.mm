@@ -7,21 +7,21 @@
 - (id)importController;
 - (id)importViewController;
 - (id)mediaProvider;
-- (id)modelBatchesForOptions:(id)a3;
+- (id)modelBatchesForOptions:(id)options;
 - (void)_removeCurrentImportSourceIfNecessary;
 - (void)_updateLoadingContentState;
-- (void)actionCoordinator:(id)a3 didCompleteWithImportSession:(id)a4 results:(id)a5;
-- (void)actionCoordinatorDidCancelImport:(id)a3;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)ppt_insertImportDataSourceWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)ppt_mediaProviderDidProcessAsset:(id)a3;
-- (void)ppt_performDeleteWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)ppt_performImportToLibraryWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)ppt_performThumbnailWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)ppt_removeImportDataSourceWithOptions:(id)a3 completionHandler:(id)a4;
-- (void)signalImportToLibraryTestReply:(BOOL)a3;
-- (void)signalInsertDatasourceReply:(BOOL)a3;
-- (void)signalThumbnailTestReply:(BOOL)a3;
+- (void)actionCoordinator:(id)coordinator didCompleteWithImportSession:(id)session results:(id)results;
+- (void)actionCoordinatorDidCancelImport:(id)import;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)ppt_insertImportDataSourceWithOptions:(id)options completionHandler:(id)handler;
+- (void)ppt_mediaProviderDidProcessAsset:(id)asset;
+- (void)ppt_performDeleteWithOptions:(id)options completionHandler:(id)handler;
+- (void)ppt_performImportToLibraryWithOptions:(id)options completionHandler:(id)handler;
+- (void)ppt_performThumbnailWithOptions:(id)options completionHandler:(id)handler;
+- (void)ppt_removeImportDataSourceWithOptions:(id)options completionHandler:(id)handler;
+- (void)signalImportToLibraryTestReply:(BOOL)reply;
+- (void)signalInsertDatasourceReply:(BOOL)reply;
+- (void)signalThumbnailTestReply:(BOOL)reply;
 @end
 
 @implementation PUImportPPTDriver
@@ -33,11 +33,11 @@
   return WeakRetained;
 }
 
-- (void)actionCoordinator:(id)a3 didCompleteWithImportSession:(id)a4 results:(id)a5
+- (void)actionCoordinator:(id)coordinator didCompleteWithImportSession:(id)session results:(id)results
 {
-  v22 = a3;
-  v8 = a4;
-  v9 = a5;
+  coordinatorCopy = coordinator;
+  sessionCopy = session;
+  resultsCopy = results;
   importSemaphore = self->_importSemaphore;
   if (importSemaphore)
   {
@@ -57,13 +57,13 @@
 
   if (self->_importComplete)
   {
-    v18 = [(PUImportPPTDriver *)self options];
-    v19 = [v18 objectForKeyedSubscript:@"PUImportPPTDriverBatchCountKey"];
-    v20 = [v19 integerValue];
+    options = [(PUImportPPTDriver *)self options];
+    v19 = [options objectForKeyedSubscript:@"PUImportPPTDriverBatchCountKey"];
+    integerValue = [v19 integerValue];
 
-    if (v20 >= 1)
+    if (integerValue >= 1)
     {
-      v21 = [MEMORY[0x1E696AD98] numberWithInteger:v20];
+      v21 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue];
       [(NSMutableDictionary *)self->_extraResults setObject:v21 forKeyedSubscript:@"Import batch size"];
     }
 
@@ -71,7 +71,7 @@
   }
 }
 
-- (void)actionCoordinatorDidCancelImport:(id)a3
+- (void)actionCoordinatorDidCancelImport:(id)import
 {
   importSemaphore = self->_importSemaphore;
   if (importSemaphore)
@@ -82,32 +82,32 @@
   [(PUImportPPTDriver *)self signalImportToLibraryTestReply:0];
 }
 
-- (void)ppt_mediaProviderDidProcessAsset:(id)a3
+- (void)ppt_mediaProviderDidProcessAsset:(id)asset
 {
-  v26 = a3;
-  v4 = [v26 userInfo];
+  assetCopy = asset;
+  userInfo = [assetCopy userInfo];
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   v6 = v5;
   startTime = self->_startTime;
-  v8 = [(PUImportPPTDriver *)self options];
-  v9 = [v8 objectForKeyedSubscript:@"PUImportPPTDriverThumbnailToFirstKey"];
-  v10 = [v9 BOOLValue];
+  options = [(PUImportPPTDriver *)self options];
+  v9 = [options objectForKeyedSubscript:@"PUImportPPTDriverThumbnailToFirstKey"];
+  bOOLValue = [v9 BOOLValue];
 
-  v11 = [(PUImportPPTDriver *)self options];
-  v12 = [v11 objectForKeyedSubscript:@"PUImportPPTDriverThumbnailToAllAbsoluteKey"];
-  v13 = [v12 BOOLValue];
+  options2 = [(PUImportPPTDriver *)self options];
+  v12 = [options2 objectForKeyedSubscript:@"PUImportPPTDriverThumbnailToAllAbsoluteKey"];
+  bOOLValue2 = [v12 BOOLValue];
 
-  v14 = [(PUImportPPTDriver *)self options];
-  v15 = [v14 objectForKeyedSubscript:@"PUImportPPTDriverThumbnailToAllScreenKey"];
-  v16 = [v15 BOOLValue];
+  options3 = [(PUImportPPTDriver *)self options];
+  v15 = [options3 objectForKeyedSubscript:@"PUImportPPTDriverThumbnailToAllScreenKey"];
+  bOOLValue3 = [v15 BOOLValue];
 
-  v17 = [v4 objectForKeyedSubscript:@"isLastDisplayItem"];
-  v18 = [v17 BOOLValue];
+  v17 = [userInfo objectForKeyedSubscript:@"isLastDisplayItem"];
+  bOOLValue4 = [v17 BOOLValue];
 
-  v19 = [v4 objectForKeyedSubscript:@"isLastAbsoluteItem"];
-  v20 = [v19 BOOLValue];
+  v19 = [userInfo objectForKeyedSubscript:@"isLastAbsoluteItem"];
+  bOOLValue5 = [v19 BOOLValue];
 
-  if (v20)
+  if (bOOLValue5)
   {
     self->_hasSeenAbsolulteLastThumbnailMarker = 1;
     objc_sync_enter(self);
@@ -115,22 +115,22 @@
 
   else
   {
-    v21 = self;
-    objc_sync_enter(v21);
-    v22 = [v4 objectForKeyedSubscript:@"duration"];
-    extraResults = v21->_extraResults;
-    v24 = [v4 objectForKeyedSubscript:@"filename"];
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    v22 = [userInfo objectForKeyedSubscript:@"duration"];
+    extraResults = selfCopy->_extraResults;
+    v24 = [userInfo objectForKeyedSubscript:@"filename"];
     [(NSMutableDictionary *)extraResults setObject:v22 forKeyedSubscript:v24];
 
-    v25 = [MEMORY[0x1E696AD98] numberWithDouble:v6 - startTime];
-    [(NSMutableDictionary *)v21->_extraResults setObject:v25 forKeyedSubscript:@"Image Processing Duration"];
+    startTime = [MEMORY[0x1E696AD98] numberWithDouble:v6 - startTime];
+    [(NSMutableDictionary *)selfCopy->_extraResults setObject:startTime forKeyedSubscript:@"Image Processing Duration"];
   }
 
   objc_sync_exit(self);
 
-  if (!v13)
+  if (!bOOLValue2)
   {
-    if (((v10 | v16 & v18) & 1) == 0)
+    if (((bOOLValue | bOOLValue3 & bOOLValue4) & 1) == 0)
     {
       goto LABEL_10;
     }
@@ -138,7 +138,7 @@
     goto LABEL_9;
   }
 
-  if ((self->_hasSeenAbsolulteLastThumbnailMarker | v10) & 1) != 0 || (v16 & v18)
+  if ((self->_hasSeenAbsolulteLastThumbnailMarker | bOOLValue) & 1) != 0 || (bOOLValue3 & bOOLValue4)
   {
 LABEL_9:
     [(PUImportPPTDriver *)self signalThumbnailTestReply:1];
@@ -147,7 +147,7 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)signalImportToLibraryTestReply:(BOOL)a3
+- (void)signalImportToLibraryTestReply:(BOOL)reply
 {
   if (self->_importToLibraryTestReply)
   {
@@ -163,7 +163,7 @@ void __52__PUImportPPTDriver_signalImportToLibraryTestReply___block_invoke(uint6
   *(v2 + 24) = 0;
 }
 
-- (void)signalThumbnailTestReply:(BOOL)a3
+- (void)signalThumbnailTestReply:(BOOL)reply
 {
   if (self->_thumbnailTestReply)
   {
@@ -179,7 +179,7 @@ void __46__PUImportPPTDriver_signalThumbnailTestReply___block_invoke(uint64_t a1
   *(v2 + 16) = 0;
 }
 
-- (void)signalInsertDatasourceReply:(BOOL)a3
+- (void)signalInsertDatasourceReply:(BOOL)reply
 {
   if (self->_insertDatasourceReply)
   {
@@ -190,11 +190,11 @@ void __46__PUImportPPTDriver_signalThumbnailTestReply___block_invoke(uint64_t a1
     insertDatasourceReply = self->_insertDatasourceReply;
     self->_insertDatasourceReply = 0;
 
-    v8 = [(PUImportPPTDriver *)self options];
-    v9 = [v8 objectForKeyedSubscript:@"PUImportPPTDriverReplyWhenMediaProviderReadyKey"];
-    v10 = [v9 BOOLValue];
+    options = [(PUImportPPTDriver *)self options];
+    v9 = [options objectForKeyedSubscript:@"PUImportPPTDriverReplyWhenMediaProviderReadyKey"];
+    bOOLValue = [v9 BOOLValue];
 
-    if (v10)
+    if (bOOLValue)
     {
       v11 = 1000000000;
     }
@@ -211,7 +211,7 @@ void __46__PUImportPPTDriver_signalThumbnailTestReply___block_invoke(uint64_t a1
     block[3] = &unk_1E7B7E720;
     block[4] = self;
     v15 = v6;
-    v16 = a3;
+    replyCopy = reply;
     v13 = v6;
     dispatch_after(v12, MEMORY[0x1E69E96A0], block);
   }
@@ -228,12 +228,12 @@ uint64_t __49__PUImportPPTDriver_signalInsertDatasourceReply___block_invoke(uint
 
 - (double)_contentLoadingCheckInterval
 {
-  v2 = [(PUImportPPTDriver *)self options];
-  v3 = [v2 objectForKeyedSubscript:@"PUImportPPTDriverReplyWhenAllContentIsReadyKey"];
-  v4 = [v3 BOOLValue];
+  options = [(PUImportPPTDriver *)self options];
+  v3 = [options objectForKeyedSubscript:@"PUImportPPTDriverReplyWhenAllContentIsReadyKey"];
+  bOOLValue = [v3 BOOLValue];
 
   result = 0.1;
-  if (v4)
+  if (bOOLValue)
   {
     return 15.0;
   }
@@ -243,61 +243,61 @@ uint64_t __49__PUImportPPTDriver_signalInsertDatasourceReply___block_invoke(uint
 
 - (void)_updateLoadingContentState
 {
-  v3 = [(PUImportPPTDriver *)self options];
-  v4 = [v3 objectForKeyedSubscript:@"PUImportPPTDriverReplyWhenAllContentIsReadyKey"];
-  v5 = [v4 BOOLValue];
+  options = [(PUImportPPTDriver *)self options];
+  v4 = [options objectForKeyedSubscript:@"PUImportPPTDriverReplyWhenAllContentIsReadyKey"];
+  bOOLValue = [v4 BOOLValue];
 
-  v6 = [(PUImportPPTDriver *)self options];
-  v7 = [v6 objectForKeyedSubscript:@"PUImportPPTDriverReplyWhenAnyContentIsReadyKey"];
-  v8 = [v7 BOOLValue];
+  options2 = [(PUImportPPTDriver *)self options];
+  v7 = [options2 objectForKeyedSubscript:@"PUImportPPTDriverReplyWhenAnyContentIsReadyKey"];
+  bOOLValue2 = [v7 BOOLValue];
 
-  v9 = [(PUImportPPTDriver *)self options];
-  v10 = [v9 objectForKeyedSubscript:@"PUImportPPTDriverReplyWhenMediaProviderReadyKey"];
-  v11 = [v10 BOOLValue];
+  options3 = [(PUImportPPTDriver *)self options];
+  v10 = [options3 objectForKeyedSubscript:@"PUImportPPTDriverReplyWhenMediaProviderReadyKey"];
+  bOOLValue3 = [v10 BOOLValue];
 
   WeakRetained = objc_loadWeakRetained(&self->_dataSourceManager);
-  v16 = [WeakRetained dataSource];
+  dataSource = [WeakRetained dataSource];
 
-  v13 = [v16 numberOfItems];
-  self->_loadingContentStarted = v13 != 0;
-  if (v13)
+  numberOfItems = [dataSource numberOfItems];
+  self->_loadingContentStarted = numberOfItems != 0;
+  if (numberOfItems)
   {
-    v14 = [(PUImportPPTDriver *)self importController];
-    v15 = [v14 isLoadingContent];
+    importController = [(PUImportPPTDriver *)self importController];
+    isLoadingContent = [importController isLoadingContent];
 
-    if (!(v15 & 1 | ((v5 & 1) == 0) | v11 & 1) || !(v11 & 1 | ((self->_loadingContentStarted & v8 & 1) == 0)))
+    if (!(isLoadingContent & 1 | ((bOOLValue & 1) == 0) | bOOLValue3 & 1) || !(bOOLValue3 & 1 | ((self->_loadingContentStarted & bOOLValue2 & 1) == 0)))
     {
       [(PUImportPPTDriver *)self signalInsertDatasourceReply:1];
     }
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v8 = [(PUImportPPTDriver *)self options];
-  v9 = [v8 objectForKeyedSubscript:@"PUImportPPTDriverReplyWhenAnyContentIsReadyKey"];
-  v10 = [v9 BOOLValue];
+  changeCopy = change;
+  options = [(PUImportPPTDriver *)self options];
+  v9 = [options objectForKeyedSubscript:@"PUImportPPTDriverReplyWhenAnyContentIsReadyKey"];
+  bOOLValue = [v9 BOOLValue];
 
-  if (PXImportControllerObserverContext_32648 == a5)
+  if (PXImportControllerObserverContext_32648 == context)
   {
-    if (v6)
+    if (changeCopy)
     {
-      v12 = [(PUImportPPTDriver *)self importController];
-      v13 = [v12 isLoadingContent];
+      importController = [(PUImportPPTDriver *)self importController];
+      isLoadingContent = [importController isLoadingContent];
 
-      if (v13)
+      if (isLoadingContent)
       {
         self->_loadingContentStarted = 1;
       }
     }
   }
 
-  else if ((v6 & 1) != 0 && PXImportAssetsDataSourceManagerObserverContext_32649 == a5)
+  else if ((changeCopy & 1) != 0 && PXImportAssetsDataSourceManagerObserverContext_32649 == context)
   {
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     self->_endTime = v11;
-    if (v10)
+    if (bOOLValue)
     {
 
       [(PUImportPPTDriver *)self _updateLoadingContentState];
@@ -319,29 +319,29 @@ uint64_t __50__PUImportPPTDriver_observable_didChange_context___block_invoke(uin
   return [v2 performSelector:sel__updateLoadingContentState withObject:0 afterDelay:?];
 }
 
-- (id)modelBatchesForOptions:(id)a3
+- (id)modelBatchesForOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"PUImportPPTDriverAllModelKey"];
-  v6 = [v5 BOOLValue];
+  optionsCopy = options;
+  v5 = [optionsCopy objectForKeyedSubscript:@"PUImportPPTDriverAllModelKey"];
+  bOOLValue = [v5 BOOLValue];
 
-  v7 = [v4 objectForKeyedSubscript:@"PUImportPPTDriverBatchCountKey"];
-  v8 = [v7 integerValue];
+  v7 = [optionsCopy objectForKeyedSubscript:@"PUImportPPTDriverBatchCountKey"];
+  integerValue = [v7 integerValue];
 
   v9 = objc_opt_new();
   WeakRetained = objc_loadWeakRetained(&self->_dataSourceManager);
-  v11 = [WeakRetained unfilteredDataSource];
-  v12 = [v11 allItems];
+  unfilteredDataSource = [WeakRetained unfilteredDataSource];
+  allItems = [unfilteredDataSource allItems];
 
-  if (v6)
+  if (bOOLValue)
   {
-    v13 = v12;
+    v13 = allItems;
   }
 
   else
   {
-    v14 = [v12 count];
-    if (v8 >= v14)
+    v14 = [allItems count];
+    if (integerValue >= v14)
     {
       v17 = 0;
       v15 = 0;
@@ -353,17 +353,17 @@ uint64_t __50__PUImportPPTDriver_observable_didChange_context___block_invoke(uin
       v16 = 0;
       do
       {
-        v17 = [v12 subarrayWithRange:{v15, v8}];
+        v17 = [allItems subarrayWithRange:{v15, integerValue}];
 
         [v9 addObject:v17];
-        v15 += v8;
+        v15 += integerValue;
         v16 = v17;
       }
 
-      while (v8 + v15 < v14);
+      while (integerValue + v15 < v14);
     }
 
-    v13 = [v12 subarrayWithRange:{v15, v14 - v15}];
+    v13 = [allItems subarrayWithRange:{v15, v14 - v15}];
   }
 
   [v9 addObject:v13];
@@ -373,25 +373,25 @@ uint64_t __50__PUImportPPTDriver_observable_didChange_context___block_invoke(uin
 
 - (id)mediaProvider
 {
-  v2 = [(PUImportPPTDriver *)self importController];
-  v3 = [v2 importMediaProvider];
+  importController = [(PUImportPPTDriver *)self importController];
+  importMediaProvider = [importController importMediaProvider];
 
-  return v3;
+  return importMediaProvider;
 }
 
 - (id)importController
 {
-  v2 = [(PUImportPPTDriver *)self importViewController];
-  v3 = [v2 importController];
+  importViewController = [(PUImportPPTDriver *)self importViewController];
+  importController = [importViewController importController];
 
-  return v3;
+  return importController;
 }
 
 - (id)importViewController
 {
-  v3 = [(PUImportPPTDriver *)self importViewControllerProvider];
+  importViewControllerProvider = [(PUImportPPTDriver *)self importViewControllerProvider];
   WeakRetained = objc_loadWeakRetained(&self->_currentImportSource);
-  v5 = [v3 importViewControllerForImportSource:WeakRetained];
+  v5 = [importViewControllerProvider importViewControllerForImportSource:WeakRetained];
 
   if (objc_opt_class() && (objc_opt_isKindOfClass() & 1) != 0)
   {
@@ -406,22 +406,22 @@ uint64_t __50__PUImportPPTDriver_observable_didChange_context___block_invoke(uin
   return v6;
 }
 
-- (void)ppt_performImportToLibraryWithOptions:(id)a3 completionHandler:(id)a4
+- (void)ppt_performImportToLibraryWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = _Block_copy(a4);
+  optionsCopy = options;
+  v7 = _Block_copy(handler);
   importToLibraryTestReply = self->_importToLibraryTestReply;
   self->_importToLibraryTestReply = v7;
 
-  v9 = [v6 objectForKeyedSubscript:@"PUImportPPTDriverAllModelKey"];
-  LOBYTE(a4) = [v9 BOOLValue];
+  v9 = [optionsCopy objectForKeyedSubscript:@"PUImportPPTDriverAllModelKey"];
+  LOBYTE(handler) = [v9 BOOLValue];
 
-  v10 = [(PUImportPPTDriver *)self modelBatchesForOptions:v6];
+  v10 = [(PUImportPPTDriver *)self modelBatchesForOptions:optionsCopy];
 
   v11 = [PUImportActionCoordinator alloc];
-  v12 = [(PUImportPPTDriver *)self importViewController];
-  v13 = [(PUImportPPTDriver *)self importController];
-  v14 = [(PUImportActionCoordinator *)v11 initWithViewController:v12 importController:v13 loggingSource:0];
+  importViewController = [(PUImportPPTDriver *)self importViewController];
+  importController = [(PUImportPPTDriver *)self importController];
+  v14 = [(PUImportActionCoordinator *)v11 initWithViewController:importViewController importController:importController loggingSource:0];
   actionCoordinator = self->_actionCoordinator;
   self->_actionCoordinator = v14;
 
@@ -433,7 +433,7 @@ uint64_t __50__PUImportPPTDriver_observable_didChange_context___block_invoke(uin
   block[1] = 3221225472;
   block[2] = __77__PUImportPPTDriver_ppt_performImportToLibraryWithOptions_completionHandler___block_invoke;
   block[3] = &unk_1E7B805E8;
-  v20 = a4;
+  handlerCopy = handler;
   block[4] = self;
   v19 = v10;
   v17 = v10;
@@ -575,10 +575,10 @@ uint64_t __77__PUImportPPTDriver_ppt_performImportToLibraryWithOptions_completio
   return [v4 ppt_beginImportFromBarButtonItem];
 }
 
-- (void)ppt_performThumbnailWithOptions:(id)a3 completionHandler:(id)a4
+- (void)ppt_performThumbnailWithOptions:(id)options completionHandler:(id)handler
 {
-  v21 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_importController);
 
   if (!WeakRetained)
@@ -606,18 +606,18 @@ LABEL_13:
     return;
   }
 
-  v10 = _Block_copy(v6);
+  v10 = _Block_copy(handlerCopy);
   thumbnailTestReply = self->_thumbnailTestReply;
   self->_thumbnailTestReply = v10;
 
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   self->_startTime = v12;
-  v13 = [(PUImportPPTDriver *)self options];
-  v14 = [v13 objectForKeyedSubscript:@"PUImportPPTDriverThumbnailToFirstKey"];
+  options = [(PUImportPPTDriver *)self options];
+  v14 = [options objectForKeyedSubscript:@"PUImportPPTDriverThumbnailToFirstKey"];
   if ([v14 BOOLValue])
   {
-    v15 = [(NSMutableDictionary *)self->_extraResults allValues];
-    v16 = [v15 count];
+    allValues = [(NSMutableDictionary *)self->_extraResults allValues];
+    v16 = [allValues count];
 
     if (v16 >= 2)
     {
@@ -630,10 +630,10 @@ LABEL_13:
   }
 }
 
-- (void)ppt_performDeleteWithOptions:(id)a3 completionHandler:(id)a4
+- (void)ppt_performDeleteWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   WeakRetained = objc_loadWeakRetained(&self->_importController);
 
   if (WeakRetained)
@@ -644,16 +644,16 @@ LABEL_13:
     {
       [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
       self->_startTime = v10;
-      v11 = [(PUImportPPTDriver *)self modelBatchesForOptions:v6];
+      v11 = [(PUImportPPTDriver *)self modelBatchesForOptions:optionsCopy];
       v12 = dispatch_get_global_queue(0, 0);
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __68__PUImportPPTDriver_ppt_performDeleteWithOptions_completionHandler___block_invoke;
       block[3] = &unk_1E7B80CB0;
       v17 = v11;
-      v18 = self;
-      v19 = v7;
-      v13 = v7;
+      selfCopy = self;
+      v19 = handlerCopy;
+      v13 = handlerCopy;
       v14 = v11;
       dispatch_async(v12, block);
 
@@ -781,8 +781,8 @@ void __68__PUImportPPTDriver_ppt_performDeleteWithOptions_completionHandler___bl
 
   if (v7)
   {
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 removeObserver:self name:*MEMORY[0x1E69C4088] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69C4088] object:0];
 
     objc_storeWeak(&self->_mediaProvider, 0);
   }
@@ -791,50 +791,50 @@ void __68__PUImportPPTDriver_ppt_performDeleteWithOptions_completionHandler___bl
 
   if (v9)
   {
-    v12 = [MEMORY[0x1E69DC668] sharedApplication];
-    v10 = [MEMORY[0x1E6978878] sharedInstance];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    mEMORY[0x1E6978878] = [MEMORY[0x1E6978878] sharedInstance];
     v11 = objc_loadWeakRetained(&self->_currentImportSource);
-    [v12 importController:v10 removedImportSource:v11];
+    [mEMORY[0x1E69DC668] importController:mEMORY[0x1E6978878] removedImportSource:v11];
 
     objc_storeWeak(&self->_currentImportSource, 0);
   }
 }
 
-- (void)ppt_removeImportDataSourceWithOptions:(id)a3 completionHandler:(id)a4
+- (void)ppt_removeImportDataSourceWithOptions:(id)options completionHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   [(PUImportPPTDriver *)self _removeCurrentImportSourceIfNecessary];
-  v5 = v6;
-  if (v6)
+  v5 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v6 + 2))(v6, 1);
-    v5 = v6;
+    (*(handlerCopy + 2))(handlerCopy, 1);
+    v5 = handlerCopy;
   }
 }
 
-- (void)ppt_insertImportDataSourceWithOptions:(id)a3 completionHandler:(id)a4
+- (void)ppt_insertImportDataSourceWithOptions:(id)options completionHandler:(id)handler
 {
-  v56 = a3;
-  v6 = a4;
+  optionsCopy = options;
+  handlerCopy = handler;
   [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
   self->_startTime = v7;
-  v8 = _Block_copy(v6);
+  v8 = _Block_copy(handlerCopy);
   insertDatasourceReply = self->_insertDatasourceReply;
   self->_insertDatasourceReply = v8;
 
-  [(PUImportPPTDriver *)self setOptions:v56];
+  [(PUImportPPTDriver *)self setOptions:optionsCopy];
   [(PUImportPPTDriver *)self _removeCurrentImportSourceIfNecessary];
-  v10 = [v56 objectForKeyedSubscript:@"simulateSource"];
-  v11 = [v10 BOOLValue];
+  v10 = [optionsCopy objectForKeyedSubscript:@"simulateSource"];
+  bOOLValue = [v10 BOOLValue];
 
-  if (!v11)
+  if (!bOOLValue)
   {
-    v12 = [(PUImportPPTDriver *)self importViewController];
-    v37 = [v12 importDataSourceManager];
-    objc_storeWeak(&self->_dataSourceManager, v37);
+    importViewController = [(PUImportPPTDriver *)self importViewController];
+    importDataSourceManager = [importViewController importDataSourceManager];
+    objc_storeWeak(&self->_dataSourceManager, importDataSourceManager);
 
-    v38 = [(PUImportPPTDriver *)self importController];
-    objc_storeWeak(&self->_importController, v38);
+    importController = [(PUImportPPTDriver *)self importController];
+    objc_storeWeak(&self->_importController, importController);
 
     WeakRetained = objc_loadWeakRetained(&self->_dataSourceManager);
     if (WeakRetained)
@@ -855,8 +855,8 @@ void __68__PUImportPPTDriver_ppt_performDeleteWithOptions_completionHandler___bl
         v44 = objc_loadWeakRetained(&self->_mediaProvider);
         if (!v44)
         {
-          v45 = [(PUImportPPTDriver *)self mediaProvider];
-          objc_storeWeak(&self->_mediaProvider, v45);
+          mediaProvider = [(PUImportPPTDriver *)self mediaProvider];
+          objc_storeWeak(&self->_mediaProvider, mediaProvider);
 
           v46 = objc_loadWeakRetained(&self->_mediaProvider);
           if (!v46)
@@ -866,19 +866,19 @@ LABEL_28:
             goto LABEL_29;
           }
 
-          v47 = [MEMORY[0x1E696AD88] defaultCenter];
-          [v47 addObserver:self selector:sel_ppt_mediaProviderDidProcessAsset_ name:*MEMORY[0x1E69C4088] object:0];
+          defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+          [defaultCenter addObserver:self selector:sel_ppt_mediaProviderDidProcessAsset_ name:*MEMORY[0x1E69C4088] object:0];
         }
 
-        v48 = [(PUImportPPTDriver *)self options];
-        v49 = [v48 objectForKeyedSubscript:@"PUImportPPTDriverNavigateToImportTabKey"];
+        options = [(PUImportPPTDriver *)self options];
+        v49 = [options objectForKeyedSubscript:@"PUImportPPTDriverNavigateToImportTabKey"];
         [v49 BOOLValue];
 
-        v50 = [(PUImportPPTDriver *)self options];
-        v51 = [v50 objectForKeyedSubscript:@"PUImportPPTDriverReplyWhenMediaProviderReadyKey"];
-        v52 = [v51 BOOLValue];
+        options2 = [(PUImportPPTDriver *)self options];
+        v51 = [options2 objectForKeyedSubscript:@"PUImportPPTDriverReplyWhenMediaProviderReadyKey"];
+        bOOLValue2 = [v51 BOOLValue];
 
-        if (!v52)
+        if (!bOOLValue2)
         {
           goto LABEL_22;
         }
@@ -895,24 +895,24 @@ LABEL_28:
     goto LABEL_26;
   }
 
-  v12 = [objc_opt_class() importMediaURLs];
-  if (![v12 count])
+  importViewController = [objc_opt_class() importMediaURLs];
+  if (![importViewController count])
   {
     goto LABEL_5;
   }
 
-  v13 = [(PHImportUrlSource *)[PUImportPPTImportSource alloc] initWithURLs:v12];
-  v14 = [MEMORY[0x1E69DC668] sharedApplication];
-  v15 = [MEMORY[0x1E6978878] sharedInstance];
-  [v14 importController:v15 addedImportSource:v13];
+  v13 = [(PHImportUrlSource *)[PUImportPPTImportSource alloc] initWithURLs:importViewController];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  mEMORY[0x1E6978878] = [MEMORY[0x1E6978878] sharedInstance];
+  [mEMORY[0x1E69DC668] importController:mEMORY[0x1E6978878] addedImportSource:v13];
 
-  v16 = [MEMORY[0x1E69C3630] sharedController];
-  v17 = [MEMORY[0x1E6978878] sharedInstance];
-  [v16 importController:v17 addedImportSource:v13];
+  mEMORY[0x1E69C3630] = [MEMORY[0x1E69C3630] sharedController];
+  mEMORY[0x1E6978878]2 = [MEMORY[0x1E6978878] sharedInstance];
+  [mEMORY[0x1E69C3630] importController:mEMORY[0x1E6978878]2 addedImportSource:v13];
 
   objc_storeWeak(&self->_currentImportSource, v13);
-  v18 = [(PUImportPPTDriver *)self importController];
-  objc_storeWeak(&self->_importController, v18);
+  importController2 = [(PUImportPPTDriver *)self importController];
+  objc_storeWeak(&self->_importController, importController2);
 
   v19 = objc_loadWeakRetained(&self->_importController);
   if (!v19)
@@ -925,9 +925,9 @@ LABEL_27:
   }
 
 LABEL_5:
-  v20 = [(PUImportPPTDriver *)self importViewController];
-  v21 = [v20 importDataSourceManager];
-  objc_storeWeak(&self->_dataSourceManager, v21);
+  importViewController2 = [(PUImportPPTDriver *)self importViewController];
+  importDataSourceManager2 = [importViewController2 importDataSourceManager];
+  objc_storeWeak(&self->_dataSourceManager, importDataSourceManager2);
 
   v22 = objc_loadWeakRetained(&self->_importController);
   if (!v22)
@@ -959,8 +959,8 @@ LABEL_12:
     goto LABEL_10;
   }
 
-  v28 = [(PUImportPPTDriver *)self mediaProvider];
-  objc_storeWeak(&self->_mediaProvider, v28);
+  mediaProvider2 = [(PUImportPPTDriver *)self mediaProvider];
+  objc_storeWeak(&self->_mediaProvider, mediaProvider2);
 
   v29 = objc_loadWeakRetained(&self->_mediaProvider);
   if (!v29)
@@ -971,19 +971,19 @@ LABEL_29:
     return;
   }
 
-  v30 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v30 addObserver:self selector:sel_ppt_mediaProviderDidProcessAsset_ name:*MEMORY[0x1E69C4088] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_ppt_mediaProviderDidProcessAsset_ name:*MEMORY[0x1E69C4088] object:0];
 
 LABEL_10:
-  v31 = [(PUImportPPTDriver *)self options];
-  v32 = [v31 objectForKeyedSubscript:@"PUImportPPTDriverNavigateToImportTabKey"];
+  options3 = [(PUImportPPTDriver *)self options];
+  v32 = [options3 objectForKeyedSubscript:@"PUImportPPTDriverNavigateToImportTabKey"];
   [v32 BOOLValue];
 
-  v33 = [(PUImportPPTDriver *)self options];
-  v34 = [v33 objectForKeyedSubscript:@"PUImportPPTDriverReplyWhenMediaProviderReadyKey"];
-  v35 = [v34 BOOLValue];
+  options4 = [(PUImportPPTDriver *)self options];
+  v34 = [options4 objectForKeyedSubscript:@"PUImportPPTDriverReplyWhenMediaProviderReadyKey"];
+  bOOLValue3 = [v34 BOOLValue];
 
-  if (v35)
+  if (bOOLValue3)
   {
     [MEMORY[0x1E695DF00] timeIntervalSinceReferenceDate];
     self->_endTime = v36;
@@ -1012,11 +1012,11 @@ LABEL_22:
 
 + (NSArray)importMediaURLs
 {
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v3 = [MEMORY[0x1E695DFF8] URLWithString:@"/Developer/PhotosImport/DCIM"];
   v4 = MEMORY[0x1E695DFF8];
-  v5 = [MEMORY[0x1E69DC938] currentDevice];
-  if ([v5 userInterfaceIdiom] == 1)
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  if ([currentDevice userInterfaceIdiom] == 1)
   {
     v6 = @"/Library/Wallpaper/Stills/iPad";
   }
@@ -1028,11 +1028,11 @@ LABEL_22:
 
   v7 = [v4 URLWithString:v6];
 
-  v8 = [v3 path];
-  v9 = [v2 fileExistsAtPath:v8];
+  path = [v3 path];
+  v9 = [defaultManager fileExistsAtPath:path];
 
   v10 = v3;
-  if (((v9 & 1) != 0 || ([v7 path], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v2, "fileExistsAtPath:", v11), v11, v10 = v7, v12)) && (v13 = v10) != 0)
+  if (((v9 & 1) != 0 || ([v7 path], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(defaultManager, "fileExistsAtPath:", v11), v11, v10 = v7, v12)) && (v13 = v10) != 0)
   {
     v14 = v13;
     v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -1056,7 +1056,7 @@ LABEL_22:
   block[1] = 3221225472;
   block[2] = __35__PUImportPPTDriver_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_32707 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_32707, block);

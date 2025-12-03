@@ -1,30 +1,30 @@
 @interface BSServiceConnectionEndpoint
-+ (id)_endpointForDomain:(void *)a3 service:(void *)a4 instance:;
-+ (id)_endpointForManager:(void *)a3 domain:(void *)a4 service:(void *)a5 instance:;
-+ (id)_endpointFromEndowmentRepresentation:(uint64_t)a1;
-+ (id)endpointForMachName:(id)a3 service:(id)a4 instance:(id)a5;
-+ (id)endpointForServiceName:(id)a3 oneshot:(id)a4 service:(id)a5 instance:(id)a6;
-+ (id)endpointForSystemMachName:(id)a3 service:(id)a4 instance:(id)a5;
-+ (id)endpointOfLaunchIdentifier:(id)a3 fromLaunchResponse:(id)a4 withService:(id)a5 instance:(id)a6 error:(id *)a7;
-+ (id)nullEndpointForService:(id)a3 instance:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)_endpointForDomain:(void *)domain service:(void *)service instance:;
++ (id)_endpointForManager:(void *)manager domain:(void *)domain service:(void *)service instance:;
++ (id)_endpointFromEndowmentRepresentation:(uint64_t)representation;
++ (id)endpointForMachName:(id)name service:(id)service instance:(id)instance;
++ (id)endpointForServiceName:(id)name oneshot:(id)oneshot service:(id)service instance:(id)instance;
++ (id)endpointForSystemMachName:(id)name service:(id)service instance:(id)instance;
++ (id)endpointOfLaunchIdentifier:(id)identifier fromLaunchResponse:(id)response withService:(id)service instance:(id)instance error:(id *)error;
++ (id)nullEndpointForService:(id)service instance:(id)instance;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isNonLaunching;
 - (BSServiceConnectionEndpoint)init;
-- (BSServiceConnectionEndpoint)initWithBSXPCCoder:(id)a3;
-- (BSServiceConnectionEndpoint)initWithCoder:(id)a3;
-- (BSServiceConnectionEndpoint)initWithXPCDictionary:(id)a3;
+- (BSServiceConnectionEndpoint)initWithBSXPCCoder:(id)coder;
+- (BSServiceConnectionEndpoint)initWithCoder:(id)coder;
+- (BSServiceConnectionEndpoint)initWithXPCDictionary:(id)dictionary;
 - (NSString)description;
 - (NSString)targetDescription;
 - (id)_endowmentRepresentation;
-- (id)_initForNullEndpointWithService:(void *)a3 instance:;
-- (id)_initWithEndpoint:(void *)a3 service:(void *)a4 instance:;
+- (id)_initForNullEndpointWithService:(void *)service instance:;
+- (id)_initWithEndpoint:(void *)endpoint service:(void *)service instance:;
 - (id)_injectorDescription;
-- (int64_t)compare:(id)a3;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithXPCDictionary:(id)a3;
-- (void)saveAsInjectorEndowmentForKey:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithXPCDictionary:(id)dictionary;
+- (void)saveAsInjectorEndowmentForKey:(id)key;
 @end
 
 @implementation BSServiceConnectionEndpoint
@@ -69,9 +69,9 @@
 
   [v3 appendString:self->_service withName:@"service" skipIfEmpty:0];
   [v3 appendString:self->_instance withName:@"instance" skipIfEmpty:1];
-  v5 = [v3 build];
+  build = [v3 build];
 
-  return v5;
+  return build;
 }
 
 - (BSServiceConnectionEndpoint)init
@@ -88,7 +88,7 @@
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSServiceConnectionEndpoint.m";
     v18 = 1024;
@@ -105,13 +105,13 @@
   return result;
 }
 
-- (id)_initWithEndpoint:(void *)a3 service:(void *)a4 instance:
+- (id)_initWithEndpoint:(void *)endpoint service:(void *)service instance:
 {
   v81 = *MEMORY[0x1E69E9840];
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  if (a1)
+  endpointCopy = endpoint;
+  serviceCopy = service;
+  if (self)
   {
     v11 = v8;
     if (!v11)
@@ -131,7 +131,7 @@
         v71 = 2114;
         v72 = v29;
         v73 = 2048;
-        v74 = a1;
+        selfCopy5 = self;
         v75 = 2114;
         v76 = @"BSServiceConnectionEndpoint.m";
         v77 = 1024;
@@ -152,13 +152,13 @@
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v31 = MEMORY[0x1E696AEC0];
-      v32 = [v11 classForCoder];
-      if (!v32)
+      classForCoder = [v11 classForCoder];
+      if (!classForCoder)
       {
-        v32 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v33 = NSStringFromClass(v32);
+      v33 = NSStringFromClass(classForCoder);
       v34 = objc_opt_class();
       v35 = NSStringFromClass(v34);
       v36 = [v31 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"endpoint", v33, v35];
@@ -173,7 +173,7 @@
         v71 = 2114;
         v72 = v39;
         v73 = 2048;
-        v74 = a1;
+        selfCopy5 = self;
         v75 = 2114;
         v76 = @"BSServiceConnectionEndpoint.m";
         v77 = 1024;
@@ -190,7 +190,7 @@
       JUMPOUT(0x19A87C46CLL);
     }
 
-    v12 = v9;
+    v12 = endpointCopy;
     v13 = MEMORY[0x1E696AEC0];
     if (!v12)
     {
@@ -208,7 +208,7 @@
         v71 = 2114;
         v72 = v46;
         v73 = 2048;
-        v74 = a1;
+        selfCopy5 = self;
         v75 = 2114;
         v76 = @"BSServiceConnectionEndpoint.m";
         v77 = 1024;
@@ -229,13 +229,13 @@
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v48 = MEMORY[0x1E696AEC0];
-      v49 = [v12 classForCoder];
-      if (!v49)
+      classForCoder2 = [v12 classForCoder];
+      if (!classForCoder2)
       {
-        v49 = objc_opt_class();
+        classForCoder2 = objc_opt_class();
       }
 
-      v50 = NSStringFromClass(v49);
+      v50 = NSStringFromClass(classForCoder2);
       v51 = objc_opt_class();
       v52 = NSStringFromClass(v51);
       v53 = [v48 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"service", v50, v52];
@@ -250,7 +250,7 @@
         v71 = 2114;
         v72 = v56;
         v73 = 2048;
-        v74 = a1;
+        selfCopy5 = self;
         v75 = 2114;
         v76 = @"BSServiceConnectionEndpoint.m";
         v77 = 1024;
@@ -267,20 +267,20 @@
       JUMPOUT(0x19A87C6C8);
     }
 
-    v14 = v10;
+    v14 = serviceCopy;
     if (v14)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
         v58 = MEMORY[0x1E696AEC0];
-        v59 = [v14 classForCoder];
-        if (!v59)
+        classForCoder3 = [v14 classForCoder];
+        if (!classForCoder3)
         {
-          v59 = objc_opt_class();
+          classForCoder3 = objc_opt_class();
         }
 
-        v60 = NSStringFromClass(v59);
+        v60 = NSStringFromClass(classForCoder3);
         v61 = objc_opt_class();
         v62 = NSStringFromClass(v61);
         v63 = [v58 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"instance", v60, v62];
@@ -295,7 +295,7 @@
           v71 = 2114;
           v72 = v66;
           v73 = 2048;
-          v74 = a1;
+          selfCopy5 = self;
           v75 = 2114;
           v76 = @"BSServiceConnectionEndpoint.m";
           v77 = 1024;
@@ -313,7 +313,7 @@
       }
     }
 
-    v68.receiver = a1;
+    v68.receiver = self;
     v68.super_class = BSServiceConnectionEndpoint;
     v15 = objc_msgSendSuper2(&v68, sel_init);
     v16 = v15;
@@ -339,36 +339,36 @@
   return v16;
 }
 
-- (id)_initForNullEndpointWithService:(void *)a3 instance:
+- (id)_initForNullEndpointWithService:(void *)service instance:
 {
   v5 = a2;
-  v6 = a3;
-  if (a1)
+  serviceCopy = service;
+  if (self)
   {
     v7 = +[BSXPCServiceConnectionEndpoint nullEndpoint];
-    a1 = [(BSServiceConnectionEndpoint *)a1 _initWithEndpoint:v7 service:v5 instance:v6];
+    self = [(BSServiceConnectionEndpoint *)self _initWithEndpoint:v7 service:v5 instance:serviceCopy];
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)endpointForMachName:(id)a3 service:(id)a4 instance:(id)a5
++ (id)endpointForMachName:(id)name service:(id)service instance:(id)instance
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  serviceCopy = service;
+  instanceCopy = instance;
   v10 = 0;
-  if (v7 && v8)
+  if (nameCopy && serviceCopy)
   {
-    [v7 UTF8String];
+    [nameCopy UTF8String];
     bs_named = xpc_endpoint_create_bs_named();
     if (bs_named)
     {
       v12 = [BSXPCServiceConnectionEndpoint alloc];
-      v13 = BSServiceConnectionEndpointTargetDescriptionForMachName(v7, 0);
+      v13 = BSServiceConnectionEndpointTargetDescriptionForMachName(nameCopy, 0);
       v14 = [(BSXPCServiceConnectionEndpoint *)&v12->super.isa initWithXPCEndpoint:0 oneshot:0 nonLaunching:0 targetPID:v13 targetDescription:?];
 
-      v10 = [[BSServiceConnectionEndpoint alloc] _initWithEndpoint:v14 service:v8 instance:v9];
+      v10 = [[BSServiceConnectionEndpoint alloc] _initWithEndpoint:v14 service:serviceCopy instance:instanceCopy];
     }
 
     else
@@ -380,23 +380,23 @@
   return v10;
 }
 
-+ (id)endpointForSystemMachName:(id)a3 service:(id)a4 instance:(id)a5
++ (id)endpointForSystemMachName:(id)name service:(id)service instance:(id)instance
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  nameCopy = name;
+  serviceCopy = service;
+  instanceCopy = instance;
   v10 = 0;
-  if (v7 && v8)
+  if (nameCopy && serviceCopy)
   {
-    [v7 UTF8String];
+    [nameCopy UTF8String];
     bs_named = xpc_endpoint_create_bs_named();
     if (bs_named)
     {
       v12 = [BSXPCServiceConnectionEndpoint alloc];
-      v13 = BSServiceConnectionEndpointTargetDescriptionForMachName(v7, 0);
+      v13 = BSServiceConnectionEndpointTargetDescriptionForMachName(nameCopy, 0);
       v14 = [(BSXPCServiceConnectionEndpoint *)&v12->super.isa initWithXPCEndpoint:0 oneshot:0 nonLaunching:0 targetPID:v13 targetDescription:?];
 
-      v10 = [[BSServiceConnectionEndpoint alloc] _initWithEndpoint:v14 service:v8 instance:v9];
+      v10 = [[BSServiceConnectionEndpoint alloc] _initWithEndpoint:v14 service:serviceCopy instance:instanceCopy];
     }
 
     else
@@ -408,29 +408,29 @@
   return v10;
 }
 
-+ (id)endpointForServiceName:(id)a3 oneshot:(id)a4 service:(id)a5 instance:(id)a6
++ (id)endpointForServiceName:(id)name oneshot:(id)oneshot service:(id)service instance:(id)instance
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  nameCopy = name;
+  oneshotCopy = oneshot;
+  serviceCopy = service;
+  instanceCopy = instance;
   v13 = 0;
-  if (v9 && v11)
+  if (nameCopy && serviceCopy)
   {
-    if (v10)
+    if (oneshotCopy)
     {
       v22[0] = 0;
       v22[1] = 0;
-      [v10 getUUIDBytes:v22];
-      v14 = v9;
-      [v9 UTF8String];
+      [oneshotCopy getUUIDBytes:v22];
+      v14 = nameCopy;
+      [nameCopy UTF8String];
       bs_service = xpc_endpoint_create_bs_service();
     }
 
     else
     {
-      [v9 UTF8String];
+      [nameCopy UTF8String];
       bs_service = xpc_endpoint_create_bs_service();
     }
 
@@ -438,10 +438,10 @@
     if (bs_service)
     {
       v17 = [BSXPCServiceConnectionEndpoint alloc];
-      v18 = BSServiceConnectionEndpointTargetDescriptionForServiceLookup(v9, v10);
-      v19 = [(BSXPCServiceConnectionEndpoint *)&v17->super.isa initWithXPCEndpoint:v16 oneshot:v10 nonLaunching:0 targetPID:0 targetDescription:v18];
+      v18 = BSServiceConnectionEndpointTargetDescriptionForServiceLookup(nameCopy, oneshotCopy);
+      v19 = [(BSXPCServiceConnectionEndpoint *)&v17->super.isa initWithXPCEndpoint:v16 oneshot:oneshotCopy nonLaunching:0 targetPID:0 targetDescription:v18];
 
-      v13 = [[BSServiceConnectionEndpoint alloc] _initWithEndpoint:v19 service:v11 instance:v12];
+      v13 = [[BSServiceConnectionEndpoint alloc] _initWithEndpoint:v19 service:serviceCopy instance:instanceCopy];
     }
 
     else
@@ -455,12 +455,12 @@
   return v13;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  compareCopy = compare;
   NSClassFromString(&cfstr_Bsserviceconne_6.isa);
-  if (!v5)
+  if (!compareCopy)
   {
     v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"_bs_assert_object != nil"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -473,7 +473,7 @@
       v24 = 2114;
       v25 = v15;
       v26 = 2048;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2114;
       v29 = @"BSServiceConnectionEndpoint.m";
       v30 = 1024;
@@ -503,7 +503,7 @@
       v24 = 2114;
       v25 = v20;
       v26 = 2048;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2114;
       v29 = @"BSServiceConnectionEndpoint.m";
       v30 = 1024;
@@ -520,11 +520,11 @@
     JUMPOUT(0x19A87D35CLL);
   }
 
-  v6 = [(NSString *)self->_service compare:v5[1]];
+  v6 = [(NSString *)self->_service compare:compareCopy[1]];
   if (v6 == NSOrderedSame)
   {
     instance = self->_instance;
-    v8 = v5[2];
+    v8 = compareCopy[2];
     if (BSEqualStrings())
     {
       goto LABEL_5;
@@ -537,7 +537,7 @@
       goto LABEL_12;
     }
 
-    if (!v5[2])
+    if (!compareCopy[2])
     {
       v6 = NSOrderedDescending;
       goto LABEL_12;
@@ -557,19 +557,19 @@ LABEL_12:
   return v6;
 }
 
-+ (id)nullEndpointForService:(id)a3 instance:(id)a4
++ (id)nullEndpointForService:(id)service instance:(id)instance
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[BSServiceConnectionEndpoint alloc] _initForNullEndpointWithService:v5 instance:v6];
+  serviceCopy = service;
+  instanceCopy = instance;
+  v7 = [[BSServiceConnectionEndpoint alloc] _initForNullEndpointWithService:serviceCopy instance:instanceCopy];
 
   return v7;
 }
 
-- (void)saveAsInjectorEndowmentForKey:(id)a3
+- (void)saveAsInjectorEndowmentForKey:(id)key
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keyCopy = key;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2050000000;
@@ -588,9 +588,9 @@ LABEL_12:
 
   v6 = v5;
   _Block_object_dispose(&v14, 8);
-  v7 = [(BSServiceConnectionEndpoint *)self _endowmentRepresentation];
+  _endowmentRepresentation = [(BSServiceConnectionEndpoint *)self _endowmentRepresentation];
   v13 = 0;
-  v8 = [v5 saveEndowment:v7 forKey:v4 withError:&v13];
+  v8 = [v5 saveEndowment:_endowmentRepresentation forKey:keyCopy withError:&v13];
   v9 = v13;
 
   if (v9)
@@ -609,7 +609,7 @@ LABEL_12:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      *&buf[4] = v4;
+      *&buf[4] = keyCopy;
       *&buf[12] = 2112;
       *&buf[14] = self;
       *&buf[22] = 2112;
@@ -623,19 +623,19 @@ LABEL_12:
 
 - (id)_endowmentRepresentation
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x1E695DF90] dictionary];
-    if (![(BSXPCServiceConnectionEndpoint *)a1[3] isNullEndpoint])
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    if (![(BSXPCServiceConnectionEndpoint *)self[3] isNullEndpoint])
     {
-      v3 = a1[3];
+      v3 = self[3];
       if (v3 && (v4 = *(v3 + 16)) != 0)
       {
         v5 = v4;
         v6 = objc_alloc_init(MEMORY[0x1E696B0E0]);
         [v6 _setEndpoint:v5];
 
-        [v2 setObject:v6 forKey:@"e"];
+        [dictionary setObject:v6 forKey:@"e"];
       }
 
       else
@@ -643,13 +643,13 @@ LABEL_12:
         v5 = 0;
       }
 
-      v7 = a1[3];
+      v7 = self[3];
       if (v7)
       {
         v8 = *(v7 + 24);
         if (v8)
         {
-          [v2 setObject:v8 forKey:@"o"];
+          [dictionary setObject:v8 forKey:@"o"];
         }
       }
 
@@ -658,12 +658,12 @@ LABEL_12:
         v8 = 0;
       }
 
-      v9 = a1[3];
+      v9 = self[3];
       if (v9)
       {
-        if (*(v9 + 8) != 1 || ([v2 setObject:MEMORY[0x1E695E118] forKey:@"nl"], (v9 = a1[3]) != 0))
+        if (*(v9 + 8) != 1 || ([dictionary setObject:MEMORY[0x1E695E118] forKey:@"nl"], (v9 = self[3]) != 0))
         {
-          if (!*(v9 + 12) || ([MEMORY[0x1E696AD98] numberWithInt:?], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v2, "setObject:forKey:", v10, @"p"), v10, (v9 = a1[3]) != 0))
+          if (!*(v9 + 12) || ([MEMORY[0x1E696AD98] numberWithInt:?], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(dictionary, "setObject:forKey:", v10, @"p"), v10, (v9 = self[3]) != 0))
           {
             v9 = *(v9 + 32);
           }
@@ -671,17 +671,17 @@ LABEL_12:
       }
 
       v11 = v9;
-      [v2 setObject:v11 forKey:@"t"];
+      [dictionary setObject:v11 forKey:@"t"];
     }
 
-    [v2 setObject:a1[1] forKey:@"s"];
-    v12 = a1[2];
+    [dictionary setObject:self[1] forKey:@"s"];
+    v12 = self[2];
     if (v12)
     {
-      [v2 setObject:v12 forKey:@"i"];
+      [dictionary setObject:v12 forKey:@"i"];
     }
 
-    v13 = [v2 copy];
+    v13 = [dictionary copy];
   }
 
   else
@@ -692,14 +692,14 @@ LABEL_12:
   return v13;
 }
 
-+ (id)endpointOfLaunchIdentifier:(id)a3 fromLaunchResponse:(id)a4 withService:(id)a5 instance:(id)a6 error:(id *)a7
++ (id)endpointOfLaunchIdentifier:(id)identifier fromLaunchResponse:(id)response withService:(id)service instance:(id)instance error:(id *)error
 {
   v114 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v89 = a6;
-  v16 = v13;
+  identifierCopy = identifier;
+  responseCopy = response;
+  serviceCopy = service;
+  instanceCopy = instance;
+  v16 = identifierCopy;
   v17 = MEMORY[0x1E696AEC0];
   v91 = v16;
   if (!v16)
@@ -718,7 +718,7 @@ LABEL_12:
       v106 = 2114;
       v107 = v43;
       v108 = 2048;
-      *v109 = a1;
+      *v109 = self;
       *&v109[8] = 2114;
       *&v109[10] = @"BSServiceConnectionEndpoint.m";
       v110 = 1024;
@@ -739,13 +739,13 @@ LABEL_12:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v45 = MEMORY[0x1E696AEC0];
-    v46 = [v91 classForCoder];
-    if (!v46)
+    classForCoder = [v91 classForCoder];
+    if (!classForCoder)
     {
-      v46 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v47 = NSStringFromClass(v46);
+    v47 = NSStringFromClass(classForCoder);
     v48 = objc_opt_class();
     v49 = NSStringFromClass(v48);
     v50 = [v45 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"identifier", v47, v49];
@@ -760,7 +760,7 @@ LABEL_12:
       v106 = 2114;
       v107 = v53;
       v108 = 2048;
-      *v109 = a1;
+      *v109 = self;
       *&v109[8] = 2114;
       *&v109[10] = @"BSServiceConnectionEndpoint.m";
       v110 = 1024;
@@ -777,7 +777,7 @@ LABEL_12:
     JUMPOUT(0x19A87DFC0);
   }
 
-  v18 = v14;
+  v18 = responseCopy;
   NSClassFromString(&cfstr_Rbslaunchrespo.isa);
   if (!v18)
   {
@@ -827,7 +827,7 @@ LABEL_12:
     JUMPOUT(0x19A87E168);
   }
 
-  v19 = v15;
+  v19 = serviceCopy;
   v20 = MEMORY[0x1E696AEC0];
   if (!v19)
   {
@@ -845,7 +845,7 @@ LABEL_12:
       v106 = 2114;
       v107 = v66;
       v108 = 2048;
-      *v109 = a1;
+      *v109 = self;
       *&v109[8] = 2114;
       *&v109[10] = @"BSServiceConnectionEndpoint.m";
       v110 = 1024;
@@ -866,13 +866,13 @@ LABEL_12:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v68 = MEMORY[0x1E696AEC0];
-    v69 = [v19 classForCoder];
-    if (!v69)
+    classForCoder2 = [v19 classForCoder];
+    if (!classForCoder2)
     {
-      v69 = objc_opt_class();
+      classForCoder2 = objc_opt_class();
     }
 
-    v70 = NSStringFromClass(v69);
+    v70 = NSStringFromClass(classForCoder2);
     v71 = objc_opt_class();
     v72 = NSStringFromClass(v71);
     v73 = [v68 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"service", v70, v72];
@@ -887,7 +887,7 @@ LABEL_12:
       v106 = 2114;
       v107 = v76;
       v108 = 2048;
-      *v109 = a1;
+      *v109 = self;
       *&v109[8] = 2114;
       *&v109[10] = @"BSServiceConnectionEndpoint.m";
       v110 = 1024;
@@ -904,20 +904,20 @@ LABEL_12:
     JUMPOUT(0x19A87E3C4);
   }
 
-  v21 = v89;
+  v21 = instanceCopy;
   if (v21)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v78 = MEMORY[0x1E696AEC0];
-      v79 = [v21 classForCoder];
-      if (!v79)
+      classForCoder3 = [v21 classForCoder];
+      if (!classForCoder3)
       {
-        v79 = objc_opt_class();
+        classForCoder3 = objc_opt_class();
       }
 
-      v80 = NSStringFromClass(v79);
+      v80 = NSStringFromClass(classForCoder3);
       v81 = objc_opt_class();
       v82 = NSStringFromClass(v81);
       v83 = [v78 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"instance", v80, v82];
@@ -932,7 +932,7 @@ LABEL_12:
         v106 = 2114;
         v107 = v86;
         v108 = 2048;
-        *v109 = a1;
+        *v109 = self;
         *&v109[8] = 2114;
         *&v109[10] = @"BSServiceConnectionEndpoint.m";
         v110 = 1024;
@@ -950,37 +950,37 @@ LABEL_12:
     }
   }
 
-  v22 = [v18 process];
-  v90 = [v18 managedEndpointByLaunchIdentifier];
-  v23 = [v90 objectForKey:v91];
+  process = [v18 process];
+  managedEndpointByLaunchIdentifier = [v18 managedEndpointByLaunchIdentifier];
+  v23 = [managedEndpointByLaunchIdentifier objectForKey:v91];
   v24 = v23;
-  if (v22 && v23)
+  if (process && v23)
   {
-    v25 = [v23 endpoint];
-    if (v25)
+    endpoint = [v23 endpoint];
+    if (endpoint)
     {
-      v88 = [v22 identity];
-      if ([v88 isXPCService])
+      identity = [process identity];
+      if ([identity isXPCService])
       {
-        v26 = [v88 uuid];
-        v27 = [v24 name];
-        v28 = BSServiceConnectionEndpointTargetDescriptionForServiceLookup(v27, v26);
+        uuid = [identity uuid];
+        name = [v24 name];
+        v28 = BSServiceConnectionEndpointTargetDescriptionForServiceLookup(name, uuid);
       }
 
       else
       {
-        v27 = [v24 name];
-        v28 = BSServiceConnectionEndpointTargetDescriptionForMachName(v27, 0);
-        v26 = 0;
+        name = [v24 name];
+        v28 = BSServiceConnectionEndpointTargetDescriptionForMachName(name, 0);
+        uuid = 0;
       }
 
-      v34 = -[BSXPCServiceConnectionEndpoint initWithXPCEndpoint:oneshot:nonLaunching:targetPID:targetDescription:]([BSXPCServiceConnectionEndpoint alloc], v25, v26, [v24 isNonLaunching], 0, v28);
+      v34 = -[BSXPCServiceConnectionEndpoint initWithXPCEndpoint:oneshot:nonLaunching:targetPID:targetDescription:]([BSXPCServiceConnectionEndpoint alloc], endpoint, uuid, [v24 isNonLaunching], 0, v28);
       v31 = [[BSServiceConnectionEndpoint alloc] _initWithEndpoint:v34 service:v19 instance:v21];
     }
 
     else
     {
-      if (a7)
+      if (error)
       {
         v32 = MEMORY[0x1E696ABC0];
         v33 = *MEMORY[0x1E696A5A0];
@@ -990,26 +990,26 @@ LABEL_12:
         v99[3] = &unk_1E7521348;
         v100 = v24;
         v101 = v91;
-        v102 = v22;
+        v102 = process;
         v103 = v18;
-        *a7 = [v32 bs_errorWithDomain:v33 code:1 configuration:v99];
+        *error = [v32 bs_errorWithDomain:v33 code:1 configuration:v99];
       }
 
-      v25 = 0;
+      endpoint = 0;
       v31 = 0;
     }
   }
 
   else
   {
-    if (!a7)
+    if (!error)
     {
       v31 = 0;
       goto LABEL_25;
     }
 
     v29 = MEMORY[0x1E696ABC0];
-    if (v22)
+    if (process)
     {
       v30 = *MEMORY[0x1E696A5A0];
       v94[0] = MEMORY[0x1E69E9820];
@@ -1017,13 +1017,13 @@ LABEL_12:
       v94[2] = __104__BSServiceConnectionEndpoint_endpointOfLaunchIdentifier_fromLaunchResponse_withService_instance_error___block_invoke_2;
       v94[3] = &unk_1E7521348;
       v95 = v91;
-      v96 = v22;
-      v97 = v90;
+      v96 = process;
+      v97 = managedEndpointByLaunchIdentifier;
       v98 = v18;
-      *a7 = [v29 bs_errorWithDomain:v30 code:56 configuration:v94];
+      *error = [v29 bs_errorWithDomain:v30 code:56 configuration:v94];
 
       v31 = 0;
-      v25 = v95;
+      endpoint = v95;
     }
 
     else
@@ -1035,8 +1035,8 @@ LABEL_12:
       v92[3] = &unk_1E7521370;
       v93 = v18;
       [v29 bs_errorWithDomain:v35 code:3 configuration:v92];
-      *a7 = v31 = 0;
-      v25 = v93;
+      *error = v31 = 0;
+      endpoint = v93;
     }
   }
 
@@ -1070,13 +1070,13 @@ void __104__BSServiceConnectionEndpoint_endpointOfLaunchIdentifier_fromLaunchRes
   [v4 setUnderlyingError:v3];
 }
 
-+ (id)_endpointForManager:(void *)a3 domain:(void *)a4 service:(void *)a5 instance:
++ (id)_endpointForManager:(void *)manager domain:(void *)domain service:(void *)service instance:
 {
   v72 = *MEMORY[0x1E69E9840];
   v8 = a2;
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  domainCopy = domain;
+  serviceCopy = service;
   v12 = objc_opt_self();
   v13 = v8;
   if (!v13)
@@ -1117,13 +1117,13 @@ void __104__BSServiceConnectionEndpoint_endpointOfLaunchIdentifier_fromLaunchRes
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v28 = MEMORY[0x1E696AEC0];
-    v29 = [v13 classForCoder];
-    if (!v29)
+    classForCoder = [v13 classForCoder];
+    if (!classForCoder)
     {
-      v29 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v30 = NSStringFromClass(v29);
+    v30 = NSStringFromClass(classForCoder);
     v31 = objc_opt_class();
     v32 = NSStringFromClass(v31);
     v33 = [v28 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"manager", v30, v32];
@@ -1155,7 +1155,7 @@ void __104__BSServiceConnectionEndpoint_endpointOfLaunchIdentifier_fromLaunchRes
     JUMPOUT(0x19A87ED2CLL);
   }
 
-  v14 = v9;
+  v14 = managerCopy;
   v15 = MEMORY[0x1E696AEC0];
   if (!v14)
   {
@@ -1194,13 +1194,13 @@ void __104__BSServiceConnectionEndpoint_endpointOfLaunchIdentifier_fromLaunchRes
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v45 = MEMORY[0x1E696AEC0];
-    v46 = [v14 classForCoder];
-    if (!v46)
+    classForCoder2 = [v14 classForCoder];
+    if (!classForCoder2)
     {
-      v46 = objc_opt_class();
+      classForCoder2 = objc_opt_class();
     }
 
-    v47 = NSStringFromClass(v46);
+    v47 = NSStringFromClass(classForCoder2);
     v48 = objc_opt_class();
     v49 = NSStringFromClass(v48);
     v50 = [v45 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"domainIdentifier", v47, v49];
@@ -1263,19 +1263,19 @@ void __104__BSServiceConnectionEndpoint_endpointOfLaunchIdentifier_fromLaunchRes
     JUMPOUT(0x19A87F080);
   }
 
-  v17 = [BSServiceConnectionEndpoint _endpointForDomain:v16 service:v10 instance:v11];
+  v17 = [BSServiceConnectionEndpoint _endpointForDomain:v16 service:domainCopy instance:serviceCopy];
 
   v18 = *MEMORY[0x1E69E9840];
 
   return v17;
 }
 
-+ (id)_endpointForDomain:(void *)a3 service:(void *)a4 instance:
++ (id)_endpointForDomain:(void *)domain service:(void *)service instance:
 {
   v56 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  v7 = a3;
-  v8 = a4;
+  domainCopy = domain;
+  serviceCopy = service;
   v9 = objc_opt_self();
   v10 = v6;
   if (!v10)
@@ -1316,13 +1316,13 @@ void __104__BSServiceConnectionEndpoint_endpointOfLaunchIdentifier_fromLaunchRes
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v26 = MEMORY[0x1E696AEC0];
-    v27 = [v10 classForCoder];
-    if (!v27)
+    classForCoder = [v10 classForCoder];
+    if (!classForCoder)
     {
-      v27 = objc_opt_class();
+      classForCoder = objc_opt_class();
     }
 
-    v28 = NSStringFromClass(v27);
+    v28 = NSStringFromClass(classForCoder);
     v29 = objc_opt_class();
     v30 = NSStringFromClass(v29);
     v31 = [v26 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"domain", v28, v30];
@@ -1354,11 +1354,11 @@ void __104__BSServiceConnectionEndpoint_endpointOfLaunchIdentifier_fromLaunchRes
     JUMPOUT(0x19A87F568);
   }
 
-  v11 = [(BSServiceDomain *)v10 endpoint];
-  v12 = v11;
-  if (v11)
+  endpoint = [(BSServiceDomain *)v10 endpoint];
+  v12 = endpoint;
+  if (endpoint)
   {
-    v13 = *(v11 + 16);
+    v13 = *(endpoint + 16);
   }
 
   else
@@ -1411,14 +1411,14 @@ void __104__BSServiceConnectionEndpoint_endpointOfLaunchIdentifier_fromLaunchRes
     JUMPOUT(0x19A87F67CLL);
   }
 
-  v15 = [[BSServiceConnectionEndpoint alloc] _initWithEndpoint:v12 service:v7 instance:v8];
+  v15 = [[BSServiceConnectionEndpoint alloc] _initWithEndpoint:v12 service:domainCopy instance:serviceCopy];
 
   v16 = *MEMORY[0x1E69E9840];
 
   return v15;
 }
 
-+ (id)_endpointFromEndowmentRepresentation:(uint64_t)a1
++ (id)_endpointFromEndowmentRepresentation:(uint64_t)representation
 {
   v49 = *MEMORY[0x1E69E9840];
   v2 = a2;
@@ -1449,7 +1449,7 @@ void __104__BSServiceConnectionEndpoint_endpointOfLaunchIdentifier_fromLaunchRes
 
     v9 = v6;
 
-    v10 = [v9 intValue];
+    intValue = [v9 intValue];
     v11 = [v2 objectForKey:@"e"];
     v12 = objc_opt_class();
     v13 = v11;
@@ -1474,7 +1474,7 @@ void __104__BSServiceConnectionEndpoint_endpointOfLaunchIdentifier_fromLaunchRes
     v15 = v14;
 
     v46 = v15;
-    v45 = [v15 _endpoint];
+    _endpoint = [v15 _endpoint];
     v16 = [v2 objectForKey:@"o"];
     v17 = objc_opt_class();
     v18 = v16;
@@ -1503,7 +1503,7 @@ void __104__BSServiceConnectionEndpoint_endpointOfLaunchIdentifier_fromLaunchRes
     v23 = v21;
     if (v22)
     {
-      v24 = v10;
+      v24 = intValue;
       if (objc_opt_isKindOfClass())
       {
         v25 = v23;
@@ -1517,13 +1517,13 @@ void __104__BSServiceConnectionEndpoint_endpointOfLaunchIdentifier_fromLaunchRes
 
     else
     {
-      v24 = v10;
+      v24 = intValue;
       v25 = 0;
     }
 
     v26 = v25;
 
-    v27 = [v26 BOOLValue];
+    bOOLValue = [v26 BOOLValue];
     v28 = [v2 objectForKey:@"t"];
     v29 = objc_opt_class();
     v30 = v28;
@@ -1593,7 +1593,7 @@ void __104__BSServiceConnectionEndpoint_endpointOfLaunchIdentifier_fromLaunchRes
 
     v42 = v41;
 
-    v8 = __decodedEndpoint(0, v45, v20, v27, v24 & ~(v24 >> 31), v32, v37, v42, @"endowment");
+    v8 = __decodedEndpoint(0, _endpoint, v20, bOOLValue, v24 & ~(v24 >> 31), v32, v37, v42, @"endowment");
   }
 
   else
@@ -1616,15 +1616,15 @@ void __104__BSServiceConnectionEndpoint_endpointOfLaunchIdentifier_fromLaunchRes
 
 - (id)_injectorDescription
 {
-  if (a1)
+  if (self)
   {
     v2 = MEMORY[0x1E696AEC0];
-    v3 = a1[2];
-    v4 = [a1[3] description];
-    __escaped(a1[1]);
+    v3 = self[2];
+    v4 = [self[3] description];
+    __escaped(self[1]);
     if (v3)
       v5 = {;
-      v6 = __escaped(a1[2]);
+      v6 = __escaped(self[2]);
       v7 = [v2 stringWithFormat:@"%@{%@:%@}", v4, v5, v6];
     }
 
@@ -1642,10 +1642,10 @@ void __104__BSServiceConnectionEndpoint_endpointOfLaunchIdentifier_fromLaunchRes
   return v7;
 }
 
-- (void)encodeWithXPCDictionary:(id)a3
+- (void)encodeWithXPCDictionary:(id)dictionary
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   if (![(BSXPCServiceConnectionEndpoint *)self->_underlyingEndpoint isNullEndpoint])
   {
     underlyingEndpoint = self->_underlyingEndpoint;
@@ -1654,7 +1654,7 @@ void __104__BSServiceConnectionEndpoint_endpointOfLaunchIdentifier_fromLaunchRes
       v6 = underlyingEndpoint->_xpcEndpoint;
       if (v6)
       {
-        xpc_dictionary_set_value(v4, [@"e" UTF8String], v6);
+        xpc_dictionary_set_value(dictionaryCopy, [@"e" UTF8String], v6);
       }
     }
 
@@ -1673,7 +1673,7 @@ void __104__BSServiceConnectionEndpoint_endpointOfLaunchIdentifier_fromLaunchRes
         *uuid = 0;
         v17 = 0;
         [(NSUUID *)v8 getUUIDBytes:uuid];
-        xpc_dictionary_set_uuid(v4, [@"o" UTF8String], uuid);
+        xpc_dictionary_set_uuid(dictionaryCopy, [@"o" UTF8String], uuid);
       }
     }
 
@@ -1685,10 +1685,10 @@ void __104__BSServiceConnectionEndpoint_endpointOfLaunchIdentifier_fromLaunchRes
     v10 = self->_underlyingEndpoint;
     if (v10)
     {
-      if (!v10->_nonLaunching || (xpc_dictionary_set_BOOL(v4, [@"nl" UTF8String], 1), (v10 = self->_underlyingEndpoint) != 0))
+      if (!v10->_nonLaunching || (xpc_dictionary_set_BOOL(dictionaryCopy, [@"nl" UTF8String], 1), (v10 = self->_underlyingEndpoint) != 0))
       {
         targetPID = v10->_targetPID;
-        if (!targetPID || (xpc_dictionary_set_int64(v4, [@"p" UTF8String], targetPID), (v10 = self->_underlyingEndpoint) != 0))
+        if (!targetPID || (xpc_dictionary_set_int64(dictionaryCopy, [@"p" UTF8String], targetPID), (v10 = self->_underlyingEndpoint) != 0))
         {
           v10 = v10->_targetDescription;
         }
@@ -1710,12 +1710,12 @@ void __104__BSServiceConnectionEndpoint_endpointOfLaunchIdentifier_fromLaunchRes
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BSServiceConnectionEndpoint)initWithXPCDictionary:(id)a3
+- (BSServiceConnectionEndpoint)initWithXPCDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = xpc_dictionary_get_value(v3, [@"e" UTF8String]);
-  v5 = xpc_dictionary_get_value(v3, [@"o" UTF8String]);
-  int64 = xpc_dictionary_get_int64(v3, [@"p" UTF8String]);
+  dictionaryCopy = dictionary;
+  v4 = xpc_dictionary_get_value(dictionaryCopy, [@"e" UTF8String]);
+  v5 = xpc_dictionary_get_value(dictionaryCopy, [@"o" UTF8String]);
+  int64 = xpc_dictionary_get_int64(dictionaryCopy, [@"p" UTF8String]);
   if (v4)
   {
     if (MEMORY[0x19A908710](v4) == MEMORY[0x1E69E9E90])
@@ -1754,7 +1754,7 @@ LABEL_9:
   v8 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:xpc_uuid_get_bytes(v5)];
   v16 = 1;
 LABEL_11:
-  v9 = xpc_dictionary_get_BOOL(v3, [@"nl" UTF8String]);
+  v9 = xpc_dictionary_get_BOOL(dictionaryCopy, [@"nl" UTF8String]);
   if ((int64 - 0x80000000) >= 0xFFFFFFFF80000001)
   {
     v10 = int64;
@@ -1780,9 +1780,9 @@ LABEL_11:
   return v14;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v12 = a3;
+  coderCopy = coder;
   if (![(BSXPCServiceConnectionEndpoint *)self->_underlyingEndpoint isNullEndpoint])
   {
     underlyingEndpoint = self->_underlyingEndpoint;
@@ -1791,7 +1791,7 @@ LABEL_11:
       v5 = underlyingEndpoint->_xpcEndpoint;
       if (v5)
       {
-        [v12 encodeXPCObject:v5 forKey:@"e"];
+        [coderCopy encodeXPCObject:v5 forKey:@"e"];
       }
     }
 
@@ -1806,7 +1806,7 @@ LABEL_11:
       v7 = v6->_oneshot;
       if (v7)
       {
-        [v12 encodeObject:v7 forKey:@"o"];
+        [coderCopy encodeObject:v7 forKey:@"o"];
       }
     }
 
@@ -1818,8 +1818,8 @@ LABEL_11:
     v8 = self->_underlyingEndpoint;
     if (v8)
     {
-      v9 = v12;
-      if (!v8->_nonLaunching || ([v12 encodeBool:1 forKey:@"nl"], v8 = self->_underlyingEndpoint, v9 = v12, v8))
+      v9 = coderCopy;
+      if (!v8->_nonLaunching || ([coderCopy encodeBool:1 forKey:@"nl"], v8 = self->_underlyingEndpoint, v9 = coderCopy, v8))
       {
         targetPID = v8->_targetPID;
         if (!targetPID || ([v9 encodeInt64:targetPID forKey:@"p"], (v8 = self->_underlyingEndpoint) != 0))
@@ -1830,20 +1830,20 @@ LABEL_11:
     }
 
     v11 = v8;
-    [v12 encodeObject:v11 forKey:@"t"];
+    [coderCopy encodeObject:v11 forKey:@"t"];
   }
 
-  [v12 encodeObject:self->_service forKey:@"s"];
-  [v12 encodeObject:self->_instance forKey:@"i"];
+  [coderCopy encodeObject:self->_service forKey:@"s"];
+  [coderCopy encodeObject:self->_instance forKey:@"i"];
 }
 
-- (BSServiceConnectionEndpoint)initWithBSXPCCoder:(id)a3
+- (BSServiceConnectionEndpoint)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"p"];
-  v6 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9E90] forKey:@"e"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"o"];
-  v8 = [v4 decodeBoolForKey:@"nl"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt64ForKey:@"p"];
+  v6 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E90] forKey:@"e"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"o"];
+  v8 = [coderCopy decodeBoolForKey:@"nl"];
   if ((v5 - 0x80000000) >= 0xFFFFFFFF80000001)
   {
     v9 = v5;
@@ -1854,17 +1854,17 @@ LABEL_11:
     v9 = 0;
   }
 
-  v10 = [v4 decodeStringForKey:@"t"];
-  v11 = [v4 decodeStringForKey:@"s"];
-  v12 = [v4 decodeStringForKey:@"i"];
+  v10 = [coderCopy decodeStringForKey:@"t"];
+  v11 = [coderCopy decodeStringForKey:@"s"];
+  v12 = [coderCopy decodeStringForKey:@"i"];
   v13 = __decodedEndpoint(self, v6, v7, v8, v9, v10, v11, v12, @"BSXPCSecureCoding");
 
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v17 = a3;
+  coderCopy = coder;
   if (![(BSXPCServiceConnectionEndpoint *)self->_underlyingEndpoint isNullEndpoint])
   {
     underlyingEndpoint = self->_underlyingEndpoint;
@@ -1876,7 +1876,7 @@ LABEL_11:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [v17 encodeXPCObject:v5 forKey:@"e"];
+          [coderCopy encodeXPCObject:v5 forKey:@"e"];
         }
 
         else
@@ -1902,7 +1902,7 @@ LABEL_11:
       v12 = v11->_oneshot;
       if (v12)
       {
-        [v17 encodeObject:v12 forKey:@"o"];
+        [coderCopy encodeObject:v12 forKey:@"o"];
       }
     }
 
@@ -1914,8 +1914,8 @@ LABEL_11:
     v13 = self->_underlyingEndpoint;
     if (v13)
     {
-      v14 = v17;
-      if (!v13->_nonLaunching || ([v17 encodeBool:1 forKey:@"nl"], v13 = self->_underlyingEndpoint, v14 = v17, v13))
+      v14 = coderCopy;
+      if (!v13->_nonLaunching || ([coderCopy encodeBool:1 forKey:@"nl"], v13 = self->_underlyingEndpoint, v14 = coderCopy, v13))
       {
         targetPID = v13->_targetPID;
         if (!targetPID || ([v14 encodeInt64:targetPID forKey:@"p"], (v13 = self->_underlyingEndpoint) != 0))
@@ -1926,18 +1926,18 @@ LABEL_11:
     }
 
     v16 = v13;
-    [v17 encodeObject:v16 forKey:@"t"];
+    [coderCopy encodeObject:v16 forKey:@"t"];
   }
 
-  [v17 encodeObject:self->_service forKey:@"s"];
-  [v17 encodeObject:self->_instance forKey:@"i"];
+  [coderCopy encodeObject:self->_service forKey:@"s"];
+  [coderCopy encodeObject:self->_instance forKey:@"i"];
 }
 
-- (BSServiceConnectionEndpoint)initWithCoder:(id)a3
+- (BSServiceConnectionEndpoint)initWithCoder:(id)coder
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![v4 containsValueForKey:@"e"])
+  coderCopy = coder;
+  if (![coderCopy containsValueForKey:@"e"])
   {
 LABEL_7:
     v5 = 0;
@@ -1964,24 +1964,24 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v5 = [v4 decodeXPCObjectOfType:MEMORY[0x1E69E9E90] forKey:@"e"];
+  v5 = [coderCopy decodeXPCObjectOfType:MEMORY[0x1E69E9E90] forKey:@"e"];
 LABEL_8:
-  v7 = [v4 decodeIntForKey:@"p"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"o"];
-  v9 = [v4 decodeBoolForKey:@"nl"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"t"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"s"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"i"];
+  v7 = [coderCopy decodeIntForKey:@"p"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"o"];
+  v9 = [coderCopy decodeBoolForKey:@"nl"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"t"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"s"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"i"];
   v13 = __decodedEndpoint(self, v5, v8, v9, v7 & ~(v7 >> 31), v10, v11, v12, @"NSSecureCoding");
 
   v14 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -1989,10 +1989,10 @@ LABEL_8:
   else
   {
     v5 = objc_opt_class();
-    if (v5 == objc_opt_class() && (underlyingEndpoint = self->_underlyingEndpoint, v7 = v4->_underlyingEndpoint, BSEqualObjects()) && (service = self->_service, v9 = v4->_service, BSEqualStrings()))
+    if (v5 == objc_opt_class() && (underlyingEndpoint = self->_underlyingEndpoint, v7 = equalCopy->_underlyingEndpoint, BSEqualObjects()) && (service = self->_service, v9 = equalCopy->_service, BSEqualStrings()))
     {
       instance = self->_instance;
-      v11 = v4->_instance;
+      v11 = equalCopy->_instance;
       v12 = BSEqualStrings();
     }
 

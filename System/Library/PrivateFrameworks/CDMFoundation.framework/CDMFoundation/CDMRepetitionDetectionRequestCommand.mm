@@ -1,19 +1,19 @@
 @interface CDMRepetitionDetectionRequestCommand
-- (CDMRepetitionDetectionRequestCommand)initWithQRRequest:(id)a3;
+- (CDMRepetitionDetectionRequestCommand)initWithQRRequest:(id)request;
 @end
 
 @implementation CDMRepetitionDetectionRequestCommand
 
-- (CDMRepetitionDetectionRequestCommand)initWithQRRequest:(id)a3
+- (CDMRepetitionDetectionRequestCommand)initWithQRRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v9.receiver = self;
   v9.super_class = CDMRepetitionDetectionRequestCommand;
   v6 = [(CDMBaseCommand *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_qrRequest, a3);
+    objc_storeStrong(&v6->_qrRequest, request);
   }
 
   return v7;

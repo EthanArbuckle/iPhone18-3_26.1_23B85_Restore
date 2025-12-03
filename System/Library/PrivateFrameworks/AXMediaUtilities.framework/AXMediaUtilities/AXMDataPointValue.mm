@@ -1,26 +1,26 @@
 @interface AXMDataPointValue
 + (id)emptyValue;
-+ (id)valueWithCategory:(id)a3;
-+ (id)valueWithNumber:(double)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)valueWithCategory:(id)category;
++ (id)valueWithNumber:(double)number;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation AXMDataPointValue
 
-+ (id)valueWithNumber:(double)a3
++ (id)valueWithNumber:(double)number
 {
   v4 = objc_alloc_init(AXMDataPointValue);
-  [(AXMDataPointValue *)v4 setNumber:a3];
+  [(AXMDataPointValue *)v4 setNumber:number];
 
   return v4;
 }
 
-+ (id)valueWithCategory:(id)a3
++ (id)valueWithCategory:(id)category
 {
-  v3 = a3;
+  categoryCopy = category;
   v4 = objc_alloc_init(AXMDataPointValue);
-  [(AXMDataPointValue *)v4 setCategory:v3];
+  [(AXMDataPointValue *)v4 setCategory:categoryCopy];
 
   return v4;
 }
@@ -33,13 +33,13 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [(AXMDataPointValue *)self number];
   [v4 setNumber:?];
-  v5 = [(AXMDataPointValue *)self category];
-  v6 = [v5 copy];
+  category = [(AXMDataPointValue *)self category];
+  v6 = [category copy];
   [v4 setCategory:v6];
 
   [v4 setIsEmptyValue:{-[AXMDataPointValue isEmptyValue](self, "isEmptyValue")}];
@@ -48,10 +48,10 @@
 
 - (id)description
 {
-  v3 = [(AXMDataPointValue *)self category];
-  if (v3)
+  category = [(AXMDataPointValue *)self category];
+  if (category)
   {
-    v4 = [(AXMDataPointValue *)self category];
+    category2 = [(AXMDataPointValue *)self category];
   }
 
   else
@@ -60,10 +60,10 @@
     v6 = MEMORY[0x1E696AD98];
     [(AXMDataPointValue *)self number];
     v7 = [v6 numberWithDouble:?];
-    v4 = [v5 stringWithFormat:@"%@ ", v7];
+    category2 = [v5 stringWithFormat:@"%@ ", v7];
   }
 
-  return v4;
+  return category2;
 }
 
 @end

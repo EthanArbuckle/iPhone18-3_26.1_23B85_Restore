@@ -1,117 +1,117 @@
 @interface IMTranscriptBackgroundCommandProcessingPipelineComponent
-- (IMTranscriptBackgroundCommandProcessingPipelineComponent)initWithPipelineResources:(id)a3;
-- (id)runIndividuallyWithInput:(id)a3;
+- (IMTranscriptBackgroundCommandProcessingPipelineComponent)initWithPipelineResources:(id)resources;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IMTranscriptBackgroundCommandProcessingPipelineComponent
 
-- (IMTranscriptBackgroundCommandProcessingPipelineComponent)initWithPipelineResources:(id)a3
+- (IMTranscriptBackgroundCommandProcessingPipelineComponent)initWithPipelineResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   v8.receiver = self;
   v8.super_class = IMTranscriptBackgroundCommandProcessingPipelineComponent;
   v5 = [(IMTranscriptBackgroundCommandProcessingPipelineComponent *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(IMTranscriptBackgroundCommandProcessingPipelineComponent *)v5 setPipelineResources:v4];
+    [(IMTranscriptBackgroundCommandProcessingPipelineComponent *)v5 setPipelineResources:resourcesCopy];
   }
 
   return v6;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   v60 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v50 = [v3 account];
-  v4 = [v3 transcriptBackgroundCommand];
-  v5 = [v4 type];
-  v6 = [v5 type];
+  inputCopy = input;
+  account = [inputCopy account];
+  transcriptBackgroundCommand = [inputCopy transcriptBackgroundCommand];
+  type = [transcriptBackgroundCommand type];
+  v5Type = [type type];
 
-  v7 = 0;
-  if (v6 > 1)
+  chatId = 0;
+  if (v5Type > 1)
   {
-    if (v6 == 2)
+    if (v5Type == 2)
     {
-      v8 = [v3 transcriptBackgroundCommand];
-      v9 = [v8 type];
-      v10 = [v9 request];
+      transcriptBackgroundCommand2 = [inputCopy transcriptBackgroundCommand];
+      type2 = [transcriptBackgroundCommand2 type];
+      request = [type2 request];
     }
 
     else
     {
-      if (v6 != 3)
+      if (v5Type != 3)
       {
         goto LABEL_11;
       }
 
-      v8 = [v3 transcriptBackgroundCommand];
-      v9 = [v8 type];
-      v10 = [v9 requestResponse];
+      transcriptBackgroundCommand2 = [inputCopy transcriptBackgroundCommand];
+      type2 = [transcriptBackgroundCommand2 type];
+      request = [type2 requestResponse];
     }
   }
 
-  else if (v6)
+  else if (v5Type)
   {
-    if (v6 != 1)
+    if (v5Type != 1)
     {
       goto LABEL_11;
     }
 
-    v8 = [v3 transcriptBackgroundCommand];
-    v9 = [v8 type];
-    v10 = [v9 refresh];
+    transcriptBackgroundCommand2 = [inputCopy transcriptBackgroundCommand];
+    type2 = [transcriptBackgroundCommand2 type];
+    request = [type2 refresh];
   }
 
   else
   {
-    v8 = [v3 transcriptBackgroundCommand];
-    v9 = [v8 type];
-    v10 = [v9 update];
+    transcriptBackgroundCommand2 = [inputCopy transcriptBackgroundCommand];
+    type2 = [transcriptBackgroundCommand2 type];
+    request = [type2 update];
   }
 
-  v11 = v10;
-  v7 = [v10 chatId];
+  v11 = request;
+  chatId = [request chatId];
 
 LABEL_11:
-  v12 = [v3 account];
-  v13 = [v12 service];
-  v14 = [v13 internalName];
-  v15 = v14;
+  account2 = [inputCopy account];
+  service = [account2 service];
+  internalName = [service internalName];
+  v15 = internalName;
   v16 = *MEMORY[0x277D1A620];
-  if (v14)
+  if (internalName)
   {
-    v16 = v14;
+    v16 = internalName;
   }
 
   v51 = v16;
 
-  if (!v7)
+  if (!chatId)
   {
     v19 = +[IMDChatRegistry sharedInstance];
-    v21 = [v3 fromIdentifier];
-    v22 = [v21 _stripFZIDPrefix];
-    v27 = [v3 account];
-    v26 = [v19 existingChatForID:v22 account:v27];
+    fromIdentifier = [inputCopy fromIdentifier];
+    _stripFZIDPrefix = [fromIdentifier _stripFZIDPrefix];
+    account3 = [inputCopy account];
+    v26 = [v19 existingChatForID:_stripFZIDPrefix account:account3];
 
 LABEL_27:
     goto LABEL_28;
   }
 
-  v17 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v18 = [v17 isOneChatEnabled];
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isOneChatEnabled = [mEMORY[0x277D1A9B8] isOneChatEnabled];
 
   v19 = +[IMDChatRegistry sharedInstance];
-  v20 = [v19 existingChatWithGroupID:v7 onService:v51];
-  v21 = v20;
-  if (v18)
+  v20 = [v19 existingChatWithGroupID:chatId onService:v51];
+  fromIdentifier = v20;
+  if (isOneChatEnabled)
   {
     if (!v20)
     {
-      v22 = +[IMDChatRegistry sharedInstance];
-      v23 = [v7 _stripFZIDPrefix];
-      v24 = [v22 existingChatWithIdentifier:v23 account:v50];
+      _stripFZIDPrefix = +[IMDChatRegistry sharedInstance];
+      _stripFZIDPrefix2 = [chatId _stripFZIDPrefix];
+      v24 = [_stripFZIDPrefix existingChatWithIdentifier:_stripFZIDPrefix2 account:account];
       v25 = v24;
       if (v24)
       {
@@ -121,8 +121,8 @@ LABEL_27:
       else
       {
         v49 = +[IMDChatRegistry sharedInstance];
-        v30 = [v7 _stripFZIDPrefix];
-        v26 = [v49 existingChatForID:v30 account:v50];
+        _stripFZIDPrefix3 = [chatId _stripFZIDPrefix];
+        v26 = [v49 existingChatForID:_stripFZIDPrefix3 account:account];
       }
 
       goto LABEL_25;
@@ -131,9 +131,9 @@ LABEL_27:
 
   else if (!v20)
   {
-    v22 = +[IMDChatRegistry sharedInstance];
-    v28 = [v22 existingChatWithGroupID:v7 onService:*MEMORY[0x277D1A608]];
-    v23 = v28;
+    _stripFZIDPrefix = +[IMDChatRegistry sharedInstance];
+    v28 = [_stripFZIDPrefix existingChatWithGroupID:chatId onService:*MEMORY[0x277D1A608]];
+    _stripFZIDPrefix2 = v28;
     if (v28)
     {
       v26 = v28;
@@ -143,18 +143,18 @@ LABEL_26:
     }
 
     v25 = +[IMDChatRegistry sharedInstance];
-    v29 = [v7 _stripFZIDPrefix];
-    v26 = [v25 existingChatWithIdentifier:v29 account:v50];
+    _stripFZIDPrefix4 = [chatId _stripFZIDPrefix];
+    v26 = [v25 existingChatWithIdentifier:_stripFZIDPrefix4 account:account];
 
 LABEL_25:
     goto LABEL_26;
   }
 
-  v21 = v20;
-  v26 = v21;
+  fromIdentifier = v20;
+  v26 = fromIdentifier;
 LABEL_28:
 
-  if (([v3 isFromMe] & 1) != 0 || v26 && !objc_msgSend(v26, "isFiltered"))
+  if (([inputCopy isFromMe] & 1) != 0 || v26 && !objc_msgSend(v26, "isFiltered"))
   {
     v31 = 1;
   }
@@ -162,8 +162,8 @@ LABEL_28:
   else
   {
     v32 = +[IMDChatRegistry sharedInstance];
-    v33 = [v3 fromIdentifier];
-    if ([v32 hasKnownSenderChatWithChatIdentifier:v33])
+    fromIdentifier2 = [inputCopy fromIdentifier];
+    if ([v32 hasKnownSenderChatWithChatIdentifier:fromIdentifier2])
     {
       v31 = 1;
     }
@@ -171,9 +171,9 @@ LABEL_28:
     else
     {
       v34 = +[IMDChatRegistry sharedInstance];
-      v35 = [v3 fromIdentifier];
-      v36 = [v35 _stripFZIDPrefix];
-      v31 = [v34 _hasSavedContactCardForHandle:v36];
+      fromIdentifier3 = [inputCopy fromIdentifier];
+      _stripFZIDPrefix5 = [fromIdentifier3 _stripFZIDPrefix];
+      v31 = [v34 _hasSavedContactCardForHandle:_stripFZIDPrefix5];
     }
   }
 
@@ -183,17 +183,17 @@ LABEL_28:
     v38 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
     {
-      v39 = [v3 fromIdentifier];
+      fromIdentifier4 = [inputCopy fromIdentifier];
       v40 = @"NO";
       *buf = 138413058;
-      v53 = v39;
+      v53 = fromIdentifier4;
       v54 = 2112;
       if (v31)
       {
         v40 = @"YES";
       }
 
-      v55 = v7;
+      v55 = chatId;
       v56 = 2112;
       v57 = v40;
       v58 = 2112;
@@ -205,12 +205,12 @@ LABEL_28:
   if (v26)
   {
     v41 = [IMBlastDoorTranscriptBackgroundCommand alloc];
-    v42 = [v3 transcriptBackgroundCommand];
-    v43 = [(IMBlastDoorTranscriptBackgroundCommand *)v41 initWith:v42];
+    transcriptBackgroundCommand3 = [inputCopy transcriptBackgroundCommand];
+    v43 = [(IMBlastDoorTranscriptBackgroundCommand *)v41 initWith:transcriptBackgroundCommand3];
 
-    v44 = [v3 serviceSession];
-    v45 = [v3 fromIdentifier];
-    [v44 receiveIncomingBlastdoorBackgroundCommand:v43 for:v26 sender:v45 senderContext:v37];
+    serviceSession = [inputCopy serviceSession];
+    fromIdentifier5 = [inputCopy fromIdentifier];
+    [serviceSession receiveIncomingBlastdoorBackgroundCommand:v43 for:v26 sender:fromIdentifier5 senderContext:v37];
   }
 
   else
@@ -218,11 +218,11 @@ LABEL_28:
     v43 = IMLogHandleForCategory();
     if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
     {
-      sub_22B7CF574(v7, v43);
+      sub_22B7CF574(chatId, v43);
     }
   }
 
-  v46 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v3];
+  v46 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
   v47 = *MEMORY[0x277D85DE8];
 
   return v46;

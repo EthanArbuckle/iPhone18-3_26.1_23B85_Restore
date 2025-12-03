@@ -1,32 +1,32 @@
 @interface HPSettingValue
-- (BOOL)isEqual:(id)a3;
-- (HPSettingValue)initWithCoder:(id)a3;
-- (HPSettingValue)initWithKeyPath:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HPSettingValue)initWithCoder:(id)coder;
+- (HPSettingValue)initWithKeyPath:(id)path;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HPSettingValue
 
-- (HPSettingValue)initWithKeyPath:(id)a3
+- (HPSettingValue)initWithKeyPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = HPSettingValue;
   v6 = [(HPSettingValue *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_keyPath, a3);
+    objc_storeStrong(&v6->_keyPath, path);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -36,11 +36,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HPSettingValue *)self keyPath];
-      v7 = [(HPSettingValue *)v5 keyPath];
+      v5 = equalCopy;
+      keyPath = [(HPSettingValue *)self keyPath];
+      keyPath2 = [(HPSettingValue *)v5 keyPath];
 
-      v8 = [v6 isEqualToString:v7];
+      v8 = [keyPath isEqualToString:keyPath2];
     }
 
     else
@@ -54,28 +54,28 @@
 
 - (unint64_t)hash
 {
-  v2 = [(HPSettingValue *)self keyPath];
-  v3 = [v2 hash];
+  keyPath = [(HPSettingValue *)self keyPath];
+  v3 = [keyPath hash];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HPSettingValue *)self keyPath];
-  [v4 encodeObject:v5 forKey:@"setting.keypath"];
+  coderCopy = coder;
+  keyPath = [(HPSettingValue *)self keyPath];
+  [coderCopy encodeObject:keyPath forKey:@"setting.keypath"];
 }
 
-- (HPSettingValue)initWithCoder:(id)a3
+- (HPSettingValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HPSettingValue;
   v5 = [(HPSettingValue *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setting.keypath"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setting.keypath"];
     keyPath = v5->_keyPath;
     v5->_keyPath = v6;
   }

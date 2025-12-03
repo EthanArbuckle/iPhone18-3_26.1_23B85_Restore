@@ -1,15 +1,15 @@
 @interface _PBFBSUICAPackageView
 - (BOOL)_derivedIsVisible;
-- (BOOL)updatePackageView:(id)a3 contentSize:(CGSize)a4;
+- (BOOL)updatePackageView:(id)view contentSize:(CGSize)size;
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 - (_PBFBSUICAPackageView)init;
 - (void)_layoutPackageView;
 - (void)_updateAnimation;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
-- (void)setVisible:(BOOL)a3;
+- (void)setVisible:(BOOL)visible;
 @end
 
 @implementation _PBFBSUICAPackageView
@@ -29,16 +29,16 @@
   return v3;
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  if (self->_visible != a3)
+  if (self->_visible != visible)
   {
-    self->_visible = a3;
+    self->_visible = visible;
     [(_PBFBSUICAPackageView *)self _updateAnimation];
   }
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
   width = self->_contentSize.width;
   height = self->_contentSize.height;
@@ -47,7 +47,7 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
   width = self->_contentSize.width;
   height = self->_contentSize.height;
@@ -81,33 +81,33 @@
   [(_PBFBSUICAPackageView *)self _updateAnimation];
 }
 
-- (BOOL)updatePackageView:(id)a3 contentSize:(CGSize)a4
+- (BOOL)updatePackageView:(id)view contentSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3;
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
   [(BSUICAPackageView *)self->_packageView removeFromSuperview];
   packageView = self->_packageView;
   self->_packageView = 0;
 
   self->_contentSize.width = width;
   self->_contentSize.height = height;
-  if (v8)
+  if (viewCopy)
   {
-    objc_storeStrong(&self->_packageView, a3);
+    objc_storeStrong(&self->_packageView, view);
     [(_PBFBSUICAPackageView *)self _updateAnimation];
     [(_PBFBSUICAPackageView *)self setNeedsLayout];
     [(_PBFBSUICAPackageView *)self invalidateIntrinsicContentSize];
   }
 
-  return v8 != 0;
+  return viewCopy != 0;
 }
 
 - (BOOL)_derivedIsVisible
 {
-  v3 = [(_PBFBSUICAPackageView *)self window];
+  window = [(_PBFBSUICAPackageView *)self window];
 
-  if (v3)
+  if (window)
   {
     packageView = self->_packageView;
     if (packageView)
@@ -126,9 +126,9 @@
 
 - (void)_updateAnimation
 {
-  v3 = [(_PBFBSUICAPackageView *)self _derivedIsVisible];
+  _derivedIsVisible = [(_PBFBSUICAPackageView *)self _derivedIsVisible];
   packageView = self->_packageView;
-  if (v3)
+  if (_derivedIsVisible)
   {
     [(_PBFBSUICAPackageView *)self addSubview:packageView];
 

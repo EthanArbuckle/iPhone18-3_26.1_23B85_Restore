@@ -1,19 +1,19 @@
 @interface VNTranslationalImageRegistrationRequest
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (id)supportedComputeStageDevicesAndReturnError:(id *)a3;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (id)supportedComputeStageDevicesAndReturnError:(id *)error;
 @end
 
 @implementation VNTranslationalImageRegistrationRequest
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = [(VNImageRegistrationRequest *)self cachedFloatingImageRegistrationSignatureReturningError:a5];
+  contextCopy = context;
+  v9 = [(VNImageRegistrationRequest *)self cachedFloatingImageRegistrationSignatureReturningError:error];
   if (v9)
   {
     v20 = 0;
-    v10 = [(VNImageRegistrationRequest *)self getReferenceImageBuffer:0 registrationSignature:&v20 forRequestPerformingContext:v8 error:a5];
+    v10 = [(VNImageRegistrationRequest *)self getReferenceImageBuffer:0 registrationSignature:&v20 forRequestPerformingContext:contextCopy error:error];
     v11 = v20;
     if (!v10)
     {
@@ -23,7 +23,7 @@ LABEL_11:
       goto LABEL_12;
     }
 
-    v12 = [(VNObservation *)[VNImageTranslationAlignmentObservation alloc] initWithRequestRevision:a3];
+    v12 = [(VNObservation *)[VNImageTranslationAlignmentObservation alloc] initWithRequestRevision:revision];
     [(VNImageAlignmentObservation *)v12 setReferenceImageSignature:v11];
     [(VNImageAlignmentObservation *)v12 setFloatingImageSignature:v9];
     if (v11)
@@ -31,7 +31,7 @@ LABEL_11:
       v18 = 0u;
       v19 = 0u;
       v17 = 0u;
-      if (![VNImageRegistration computeTransform:&v17 forRegisteringImageSignature:v11 withSignature:v9 minimumOverlap:a5 error:COERCE_DOUBLE(COERCE_UNSIGNED_INT(0.25))])
+      if (![VNImageRegistration computeTransform:&v17 forRegisteringImageSignature:v11 withSignature:v9 minimumOverlap:error error:COERCE_DOUBLE(COERCE_UNSIGNED_INT(0.25))])
       {
         v13 = 0;
         goto LABEL_10;
@@ -58,7 +58,7 @@ LABEL_12:
   return v13;
 }
 
-- (id)supportedComputeStageDevicesAndReturnError:(id *)a3
+- (id)supportedComputeStageDevicesAndReturnError:(id *)error
 {
   v7[1] = *MEMORY[0x1E69E9840];
   v6 = @"VNComputeStageMain";

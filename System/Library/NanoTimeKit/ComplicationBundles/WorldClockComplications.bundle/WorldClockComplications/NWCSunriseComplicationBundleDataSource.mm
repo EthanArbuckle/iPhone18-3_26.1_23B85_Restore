@@ -1,35 +1,35 @@
 @interface NWCSunriseComplicationBundleDataSource
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4;
-+ (BOOL)hasMigratedToWidgetForFamily:(int64_t)a3 device:(id)a4;
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device;
++ (BOOL)hasMigratedToWidgetForFamily:(int64_t)family device:(id)device;
 - (BOOL)_needsCurrentEventEntry;
 - (BOOL)_needsToSendGeocodingRequest;
-- (NWCSunriseComplicationBundleDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
-- (id)_animationGroupForDate:(id)a3 showingSunrise:(BOOL)a4 constantSun:(int64_t)a5 haveLocation:(BOOL)a6;
-- (id)_entryModelsForDate:(id)a3 nextEvaluationDate:(id *)a4;
-- (id)_timelineEntryFromEntry:(id)a3;
+- (NWCSunriseComplicationBundleDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
+- (id)_animationGroupForDate:(id)date showingSunrise:(BOOL)sunrise constantSun:(int64_t)sun haveLocation:(BOOL)location;
+- (id)_entryModelsForDate:(id)date nextEvaluationDate:(id *)evaluationDate;
+- (id)_timelineEntryFromEntry:(id)entry;
 - (id)currentSwitcherTemplate;
-- (void)_chinaLocationShiftRequest:(id)a3;
+- (void)_chinaLocationShiftRequest:(id)request;
 - (void)_geocodeRequestDelayTimerTriggerred;
-- (void)_handleLocation:(id)a3 error:(id)a4;
+- (void)_handleLocation:(id)location error:(id)error;
 - (void)_invalidate;
-- (void)_scheduleReverseGeocodeTimer:(double)a3;
+- (void)_scheduleReverseGeocodeTimer:(double)timer;
 - (void)_startObserving;
 - (void)_stopObserving;
 - (void)becomeActive;
 - (void)becomeInactive;
 - (void)dealloc;
-- (void)fetchWidgetMigrationForDescriptor:(id)a3 family:(int64_t)a4 completion:(id)a5;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
-- (void)getTimelineEndDateWithHandler:(id)a3;
-- (void)getTimelineEntriesAfterDate:(id)a3 limit:(unint64_t)a4 withHandler:(id)a5;
+- (void)fetchWidgetMigrationForDescriptor:(id)descriptor family:(int64_t)family completion:(id)completion;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
+- (void)getTimelineEndDateWithHandler:(id)handler;
+- (void)getTimelineEntriesAfterDate:(id)date limit:(unint64_t)limit withHandler:(id)handler;
 @end
 
 @implementation NWCSunriseComplicationBundleDataSource
 
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device
 {
-  v5 = a4;
-  if (a3 < 7 && ((0x57u >> a3) & 1) != 0)
+  deviceCopy = device;
+  if (family < 7 && ((0x57u >> family) & 1) != 0)
   {
     LOBYTE(v7) = 1;
   }
@@ -37,16 +37,16 @@
   else
   {
     LOBYTE(v7) = 1;
-    if (a3 != 3)
+    if (family != 3)
     {
       v8 = *MEMORY[0x277CBB668];
       v6 = sub_23BDD908C(v6);
       v10 = **(v9 + 3760);
-      if (v11 != a3 && v10 != a3)
+      if (v11 != family && v10 != family)
       {
-        if (a3 <= 0xC)
+        if (family <= 0xC)
         {
-          v7 = 0x1580u >> a3;
+          v7 = 0x1580u >> family;
         }
 
         else
@@ -56,15 +56,15 @@
       }
     }
 
-    if (a3 == 10)
+    if (family == 10)
     {
       LOBYTE(v7) = v7 & sub_23BDD903C(v6);
     }
 
-    else if (a3 == 11)
+    else if (family == 11)
     {
       v13 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"2C1C2266-9A61-4756-8AFD-9DFE14C54864"];
-      v14 = [v5 supportsCapability:v13];
+      v14 = [deviceCopy supportsCapability:v13];
 
       LOBYTE(v7) = v14 | v7;
     }
@@ -73,19 +73,19 @@
   return v7 & 1;
 }
 
-+ (BOOL)hasMigratedToWidgetForFamily:(int64_t)a3 device:(id)a4
++ (BOOL)hasMigratedToWidgetForFamily:(int64_t)family device:(id)device
 {
   v4 = MEMORY[0x277CCAD78];
-  v5 = a4;
+  deviceCopy = device;
   v6 = [[v4 alloc] initWithUUIDString:@"CB0D11F9-5EA4-4B0F-B640-0D6D61FC7116"];
-  v7 = [v5 supportsCapability:v6];
+  v7 = [deviceCopy supportsCapability:v6];
 
   return v7;
 }
 
-- (void)fetchWidgetMigrationForDescriptor:(id)a3 family:(int64_t)a4 completion:(id)a5
+- (void)fetchWidgetMigrationForDescriptor:(id)descriptor family:(int64_t)family completion:(id)completion
 {
-  v5 = a5;
+  completionCopy = completion;
   v6 = NTALogForCategory(7uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -94,32 +94,32 @@
   }
 
   v7 = [objc_alloc(MEMORY[0x277CBBBD0]) initWithExtensionBundleIdentifier:@"com.apple.NanoWorldClock.WorldClockWidgetExtension" containerBundleIdentifier:@"com.apple.NanoWorldClock" kind:@"SunriseSunsetWidget" intent:0];
-  v5[2](v5, v7);
+  completionCopy[2](completionCopy, v7);
 }
 
-- (NWCSunriseComplicationBundleDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (NWCSunriseComplicationBundleDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
   v21.receiver = self;
   v21.super_class = NWCSunriseComplicationBundleDataSource;
-  v5 = [(CLKCComplicationDataSource *)&v21 initWithComplication:a3 family:a4 forDevice:a5];
+  v5 = [(CLKCComplicationDataSource *)&v21 initWithComplication:complication family:family forDevice:device];
   v6 = v5;
   if (v5)
   {
     [(NWCSunriseComplicationBundleDataSource *)v5 _startObserving];
     v8 = sub_23BDD90F8(v7);
-    v10 = [*(v9 + 112) sharedLocationManager];
-    v11 = [v10 currentLocation];
+    sharedLocationManager = [*(v9 + 112) sharedLocationManager];
+    currentLocation = [sharedLocationManager currentLocation];
 
     v12 = +[NWCComplicationGeocoder sharedGeocoder];
-    v13 = [v12 cachedPlacemarkForLocation:v11];
+    v13 = [v12 cachedPlacemarkForLocation:currentLocation];
 
-    v14 = NWCComplicationLocationNameForPlacemark(v11, v13);
+    v14 = NWCComplicationLocationNameForPlacemark(currentLocation, v13);
     locationName = v6->_locationName;
     v6->_locationName = v14;
 
     displayedLocation = v6->_displayedLocation;
-    v6->_displayedLocation = v11;
-    v17 = v11;
+    v6->_displayedLocation = currentLocation;
+    v17 = currentLocation;
 
     v18 = [[NWCComplicationTimelineEntryModelCache alloc] initWithDataSource:v6];
     cache = v6->_cache;
@@ -148,8 +148,8 @@
   objc_copyWeak(&v13, &location);
   v3 = MEMORY[0x23EEBDCB0](&v9);
   v5 = sub_23BDD90F8(v4);
-  v7 = [*(v6 + 112) sharedLocationManager];
-  v8 = [v7 startLocationUpdatesWithIdentifier:@"ntk.sunriseComplicationDataSource" handler:v3];
+  sharedLocationManager = [*(v6 + 112) sharedLocationManager];
+  v8 = [sharedLocationManager startLocationUpdatesWithIdentifier:@"ntk.sunriseComplicationDataSource" handler:v3];
   [(NWCSunriseComplicationBundleDataSource *)self setToken:v8];
 
   objc_destroyWeak(&v13);
@@ -158,21 +158,21 @@
 
 - (void)becomeInactive
 {
-  v3 = [(NWCSunriseComplicationBundleDataSource *)self token];
+  token = [(NWCSunriseComplicationBundleDataSource *)self token];
 
-  if (v3)
+  if (token)
   {
     v5 = sub_23BDD90F8(v4);
-    v7 = [*(v6 + 112) sharedLocationManager];
-    v8 = [(NWCSunriseComplicationBundleDataSource *)self token];
-    [v7 stopLocationUpdatesForToken:v8];
+    sharedLocationManager = [*(v6 + 112) sharedLocationManager];
+    token2 = [(NWCSunriseComplicationBundleDataSource *)self token];
+    [sharedLocationManager stopLocationUpdatesForToken:token2];
 
     [(NWCSunriseComplicationBundleDataSource *)self setToken:0];
   }
 
   [(NWCSunriseComplicationBundleDataSource *)self setGeocodeDelayedLocation:0];
-  v9 = [(NWCSunriseComplicationBundleDataSource *)self geocodeRequestDelayTimer];
-  [v9 invalidate];
+  geocodeRequestDelayTimer = [(NWCSunriseComplicationBundleDataSource *)self geocodeRequestDelayTimer];
+  [geocodeRequestDelayTimer invalidate];
 
   [(NWCSunriseComplicationBundleDataSource *)self setGeocodeRequestDelayTimer:0];
   [(NWCSunriseComplicationBundleDataSource *)self setWaitingForGeocodeRequest:0];
@@ -183,42 +183,42 @@
 - (id)currentSwitcherTemplate
 {
   v2 = [(NWCSunriseComplicationBundleDataSource *)self _currentEntry:1];
-  v3 = [v2 complicationTemplate];
+  complicationTemplate = [v2 complicationTemplate];
 
-  return v3;
+  return complicationTemplate;
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   v6 = [(NWCSunriseComplicationBundleDataSource *)self _currentEntry:0];
-  (*(a3 + 2))(v5, v6);
+  (*(handler + 2))(handlerCopy, v6);
 }
 
-- (void)getTimelineEndDateWithHandler:(id)a3
+- (void)getTimelineEndDateWithHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(NWCSunriseComplicationBundleDataSource *)self displayedLocation];
-  if (v5)
+  handlerCopy = handler;
+  displayedLocation = [(NWCSunriseComplicationBundleDataSource *)self displayedLocation];
+  if (displayedLocation)
   {
-    v6 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
   }
 
   else
   {
-    v6 = 0;
+    distantFuture = 0;
   }
 
-  v4[2](v4, v6);
+  handlerCopy[2](handlerCopy, distantFuture);
 }
 
-- (void)getTimelineEntriesAfterDate:(id)a3 limit:(unint64_t)a4 withHandler:(id)a5
+- (void)getTimelineEntriesAfterDate:(id)date limit:(unint64_t)limit withHandler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(NWCSunriseComplicationBundleDataSource *)self cache];
-  v11 = [v10 entryModelsAfterDate:v8 limit:a4];
+  dateCopy = date;
+  handlerCopy = handler;
+  cache = [(NWCSunriseComplicationBundleDataSource *)self cache];
+  v11 = [cache entryModelsAfterDate:dateCopy limit:limit];
 
   v12 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v11, "count")}];
   v20 = 0u;
@@ -254,56 +254,56 @@
     while (v15);
   }
 
-  v9[2](v9, v12);
+  handlerCopy[2](handlerCopy, v12);
   v19 = *MEMORY[0x277D85DE8];
 }
 
 - (void)_invalidate
 {
-  v3 = [(NWCSunriseComplicationBundleDataSource *)self cache];
-  [v3 invalidate];
+  cache = [(NWCSunriseComplicationBundleDataSource *)self cache];
+  [cache invalidate];
 
-  v4 = [(CLKCComplicationDataSource *)self delegate];
-  [v4 invalidateEntries];
+  delegate = [(CLKCComplicationDataSource *)self delegate];
+  [delegate invalidateEntries];
 }
 
-- (id)_animationGroupForDate:(id)a3 showingSunrise:(BOOL)a4 constantSun:(int64_t)a5 haveLocation:(BOOL)a6
+- (id)_animationGroupForDate:(id)date showingSunrise:(BOOL)sunrise constantSun:(int64_t)sun haveLocation:(BOOL)location
 {
-  if (a6)
+  if (location)
   {
     v7 = @"sunset";
-    if (a4)
+    if (sunrise)
     {
       v7 = @"sunrise";
     }
 
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v7, a3];
-    if (a5)
+    date = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.%@", v7, date];
+    if (sun)
     {
-      v9 = [@"constant." stringByAppendingString:v8];
+      v9 = [@"constant." stringByAppendingString:date];
 
-      v8 = v9;
+      date = v9;
     }
   }
 
   else
   {
-    v8 = @"no.event";
+    date = @"no.event";
   }
 
-  return v8;
+  return date;
 }
 
 - (void)_startObserving
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__invalidate name:*MEMORY[0x277CBE620] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__invalidate name:*MEMORY[0x277CBE620] object:0];
 }
 
 - (void)_stopObserving
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x277CBE620] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x277CBE620] object:0];
 }
 
 - (void)_geocodeRequestDelayTimerTriggerred
@@ -314,14 +314,14 @@
     if (![(NWCSunriseComplicationBundleDataSource *)self isWaitingForGeocodeRequest])
     {
       [(NWCSunriseComplicationBundleDataSource *)self setWaitingForGeocodeRequest:1];
-      v5 = [(NWCSunriseComplicationBundleDataSource *)self geocodeDelayedLocation];
+      geocodeDelayedLocation = [(NWCSunriseComplicationBundleDataSource *)self geocodeDelayedLocation];
       objc_initWeak(buf, self);
       v8 = MEMORY[0x277D85DD0];
       v9 = 3221225472;
       v10 = sub_23BDD5D20;
       v11 = &unk_278B99AE8;
       objc_copyWeak(&v13, buf);
-      v3 = v5;
+      v3 = geocodeDelayedLocation;
       v12 = v3;
       v6 = MEMORY[0x23EEBDCB0](&v8);
       v7 = [NWCComplicationGeocoder sharedGeocoder:v8];
@@ -356,11 +356,11 @@ LABEL_7:
 LABEL_9:
 }
 
-- (void)_handleLocation:(id)a3 error:(id)a4
+- (void)_handleLocation:(id)location error:(id)error
 {
-  v5 = a3;
+  locationCopy = location;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  if (v5)
+  if (locationCopy)
   {
     v6 = NTALogForCategory(7uLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -371,7 +371,7 @@ LABEL_9:
 
     if ([(NWCSunriseComplicationBundleDataSource *)self _needsToSendGeocodingRequest])
     {
-      [(NWCSunriseComplicationBundleDataSource *)self setGeocodeDelayedLocation:v5];
+      [(NWCSunriseComplicationBundleDataSource *)self setGeocodeDelayedLocation:locationCopy];
       v7 = NTALogForCategory(7uLL);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
@@ -379,8 +379,8 @@ LABEL_9:
         _os_log_impl(&dword_23BDCF000, v7, OS_LOG_TYPE_DEFAULT, "For new location, check if we should start a geocode delay timer.", v14, 2u);
       }
 
-      v8 = [(NWCSunriseComplicationBundleDataSource *)self geocodeRequestDelayTimer];
-      if (!v8 || (v9 = v8, -[NWCSunriseComplicationBundleDataSource geocodeRequestDelayTimer](self, "geocodeRequestDelayTimer"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isValid], v10, v9, (v11 & 1) == 0))
+      geocodeRequestDelayTimer = [(NWCSunriseComplicationBundleDataSource *)self geocodeRequestDelayTimer];
+      if (!geocodeRequestDelayTimer || (v9 = geocodeRequestDelayTimer, -[NWCSunriseComplicationBundleDataSource geocodeRequestDelayTimer](self, "geocodeRequestDelayTimer"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 isValid], v10, v9, (v11 & 1) == 0))
       {
         [(NWCSunriseComplicationBundleDataSource *)self _scheduleReverseGeocodeTimer:900.0];
         [(NWCSunriseComplicationBundleDataSource *)self _geocodeRequestDelayTimerTriggerred];
@@ -396,35 +396,35 @@ LABEL_9:
         _os_log_impl(&dword_23BDCF000, v12, OS_LOG_TYPE_DEFAULT, "For new location, send a China location shifting request.", v13, 2u);
       }
 
-      [(NWCSunriseComplicationBundleDataSource *)self _chinaLocationShiftRequest:v5];
+      [(NWCSunriseComplicationBundleDataSource *)self _chinaLocationShiftRequest:locationCopy];
     }
   }
 
-  [(NWCSunriseComplicationBundleDataSource *)self setDisplayedLocation:v5];
+  [(NWCSunriseComplicationBundleDataSource *)self setDisplayedLocation:locationCopy];
   [(NWCSunriseComplicationBundleDataSource *)self _invalidate];
 }
 
 - (BOOL)_needsToSendGeocodingRequest
 {
-  v3 = [(CLKCComplicationDataSource *)self family];
-  if (v3 != 1)
+  family = [(CLKCComplicationDataSource *)self family];
+  if (family != 1)
   {
-    LOBYTE(v3) = [(CLKCComplicationDataSource *)self family]== 11;
+    LOBYTE(family) = [(CLKCComplicationDataSource *)self family]== 11;
   }
 
-  return v3;
+  return family;
 }
 
-- (void)_scheduleReverseGeocodeTimer:(double)a3
+- (void)_scheduleReverseGeocodeTimer:(double)timer
 {
-  v4 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__geocodeRequestDelayTimerTriggerred selector:0 userInfo:0 repeats:a3];
+  v4 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__geocodeRequestDelayTimerTriggerred selector:0 userInfo:0 repeats:timer];
   [(NWCSunriseComplicationBundleDataSource *)self setGeocodeRequestDelayTimer:v4];
 }
 
-- (void)_chinaLocationShiftRequest:(id)a3
+- (void)_chinaLocationShiftRequest:(id)request
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
   if (self->_waitingForChinaShiftingRequest)
   {
@@ -438,9 +438,9 @@ LABEL_9:
 
   else
   {
-    [v4 coordinate];
+    [requestCopy coordinate];
     v7 = v6;
-    [v4 coordinate];
+    [requestCopy coordinate];
     v9 = v8;
     if ([MEMORY[0x277D0EB88] isLocationShiftRequiredForCoordinate:v7])
     {
@@ -454,7 +454,7 @@ LABEL_9:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v27 = v4;
+        v27 = requestCopy;
         _os_log_impl(&dword_23BDCF000, v10, OS_LOG_TYPE_DEFAULT, "Kicking off asynchronous China location shift request for %@", buf, 0xCu);
       }
 
@@ -464,7 +464,7 @@ LABEL_9:
       v22[2] = sub_23BDD63DC;
       v22[3] = &unk_278B99B10;
       objc_copyWeak(&v24, &location);
-      v11 = v4;
+      v11 = requestCopy;
       v23 = v11;
       v12 = MEMORY[0x23EEBDCB0](v22);
       v17 = MEMORY[0x277D85DD0];
@@ -486,25 +486,25 @@ LABEL_9:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_entryModelsForDate:(id)a3 nextEvaluationDate:(id *)a4
+- (id)_entryModelsForDate:(id)date nextEvaluationDate:(id *)evaluationDate
 {
-  v84 = a3;
-  v6 = [(NWCSunriseComplicationBundleDataSource *)self displayedLocation];
+  dateCopy = date;
+  displayedLocation = [(NWCSunriseComplicationBundleDataSource *)self displayedLocation];
 
-  if (v6)
+  if (displayedLocation)
   {
-    v81 = a4;
+    evaluationDateCopy = evaluationDate;
     [(CLLocation *)self->_displayedLocation coordinate];
     v8 = v7;
     [(CLLocation *)self->_displayedLocation coordinate];
     v10 = v9;
-    v11 = [MEMORY[0x277CFA738] transitInfoForDate:v84 location:v8];
-    v12 = [MEMORY[0x277CBEA80] currentCalendar];
-    v13 = [v11 day];
-    v14 = [v11 rise];
-    if (v14)
+    _animationGroupForNoLocation = [MEMORY[0x277CFA738] transitInfoForDate:dateCopy location:v8];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v13 = [_animationGroupForNoLocation day];
+    rise = [_animationGroupForNoLocation rise];
+    if (rise)
     {
-      v16 = v14;
+      v16 = rise;
       v17 = sub_23BDD9010(v15);
     }
 
@@ -513,7 +513,7 @@ LABEL_9:
       v17 = 0;
     }
 
-    v21 = [v11 set];
+    v21 = [_animationGroupForNoLocation set];
     if (v21)
     {
       v23 = v21;
@@ -525,8 +525,8 @@ LABEL_9:
       v24 = 0;
     }
 
-    v25 = [v11 constantSun];
-    if (v25)
+    constantSun = [_animationGroupForNoLocation constantSun];
+    if (constantSun)
     {
       v26 = 1;
     }
@@ -542,9 +542,9 @@ LABEL_9:
     v82 = v24;
     if (v27)
     {
-      v28 = v25;
-      v29 = v12;
-      if (v25 == 2)
+      v28 = constantSun;
+      v29 = currentCalendar;
+      if (constantSun == 2)
       {
         v30 = off_278B99710;
       }
@@ -554,82 +554,82 @@ LABEL_9:
         v30 = off_278B99718;
       }
 
-      v31 = [(NWCSunriseComplicationBundleDataSource *)self _animationGroupForDate:v13 showingSunrise:v25 == 2 constantSun:v25];
+      v31 = [(NWCSunriseComplicationBundleDataSource *)self _animationGroupForDate:v13 showingSunrise:constantSun == 2 constantSun:constantSun];
       v32 = *v30;
       v33 = objc_opt_class();
-      v34 = [(NWCSunriseComplicationBundleDataSource *)self displayedLocation];
-      v35 = [(NWCSunriseComplicationBundleDataSource *)self locationName];
-      v36 = [(NWCSunriseComplicationBundleDataSource *)self chinaShiftedLocation];
-      v37 = [(CLKCComplicationDataSource *)self device];
+      displayedLocation2 = [(NWCSunriseComplicationBundleDataSource *)self displayedLocation];
+      locationName = [(NWCSunriseComplicationBundleDataSource *)self locationName];
+      chinaShiftedLocation = [(NWCSunriseComplicationBundleDataSource *)self chinaShiftedLocation];
+      device = [(CLKCComplicationDataSource *)self device];
       v83 = v31;
-      v19 = [v33 entryModelWithEntryDate:v13 eventDate:0 atLocation:v34 withDisplayName:v35 chinaShiftedLocation:v36 constantSun:v28 animationGroup:v31 device:v37];
+      v19 = [v33 entryModelWithEntryDate:v13 eventDate:0 atLocation:displayedLocation2 withDisplayName:locationName chinaShiftedLocation:chinaShiftedLocation constantSun:v28 animationGroup:v31 device:device];
 
       v20 = 0;
-      if (v81)
+      if (evaluationDateCopy)
       {
-        *v81 = 0;
+        *evaluationDateCopy = 0;
       }
     }
 
     else
     {
-      [v84 timeIntervalSinceDate:v17];
+      [dateCopy timeIntervalSinceDate:v17];
       v39 = v38;
-      [v84 timeIntervalSinceDate:v24];
-      v78 = v12;
+      [dateCopy timeIntervalSinceDate:v24];
+      v78 = currentCalendar;
       if (v39 >= 0.0)
       {
         if (v40 < 0.0)
         {
-          v51 = [v12 dateByAddingUnit:64 value:1 toDate:v17 options:0];
+          v51 = [currentCalendar dateByAddingUnit:64 value:1 toDate:v17 options:0];
           v52 = [(NWCSunriseComplicationBundleDataSource *)self _animationGroupForDate:v24 showingSunrise:0 constantSun:0];
-          v53 = [(NWCSunriseComplicationBundleDataSource *)self displayedLocation];
-          v54 = [(NWCSunriseComplicationBundleDataSource *)self locationName];
+          displayedLocation3 = [(NWCSunriseComplicationBundleDataSource *)self displayedLocation];
+          locationName2 = [(NWCSunriseComplicationBundleDataSource *)self locationName];
           [(NWCSunriseComplicationBundleDataSource *)self chinaShiftedLocation];
           v56 = v55 = v24;
-          v57 = [(CLKCComplicationDataSource *)self device];
+          device2 = [(CLKCComplicationDataSource *)self device];
           v83 = v51;
-          v19 = [(NWCSunriseComplicationTimelineEntryModel *)NWCSunriseComplicationSunsetTimelineEntryModel entryModelWithEntryDate:v51 eventDate:v55 atLocation:v53 withDisplayName:v54 chinaShiftedLocation:v56 constantSun:0 animationGroup:v52 device:v57];
+          v19 = [(NWCSunriseComplicationTimelineEntryModel *)NWCSunriseComplicationSunsetTimelineEntryModel entryModelWithEntryDate:v51 eventDate:v55 atLocation:displayedLocation3 withDisplayName:locationName2 chinaShiftedLocation:v56 constantSun:0 animationGroup:v52 device:device2];
 
           v20 = 0;
           if ([(NWCSunriseComplicationBundleDataSource *)self _needsCurrentEventEntry])
           {
-            v58 = [(NWCSunriseComplicationBundleDataSource *)self displayedLocation];
-            v59 = [(NWCSunriseComplicationBundleDataSource *)self locationName];
-            v60 = [(NWCSunriseComplicationBundleDataSource *)self chinaShiftedLocation];
-            v61 = [(CLKCComplicationDataSource *)self device];
-            v20 = [(NWCSunriseComplicationTimelineEntryModel *)NWCSunriseComplicationSunsetTimelineEntryModel currentEventEntryModelWithEntryAndEventDate:v82 atLocation:v58 withDisplayName:v59 chinaShiftedLocation:v60 constantSun:0 animationGroup:v52 device:v61];
+            displayedLocation4 = [(NWCSunriseComplicationBundleDataSource *)self displayedLocation];
+            locationName3 = [(NWCSunriseComplicationBundleDataSource *)self locationName];
+            chinaShiftedLocation2 = [(NWCSunriseComplicationBundleDataSource *)self chinaShiftedLocation];
+            device3 = [(CLKCComplicationDataSource *)self device];
+            v20 = [(NWCSunriseComplicationTimelineEntryModel *)NWCSunriseComplicationSunsetTimelineEntryModel currentEventEntryModelWithEntryAndEventDate:v82 atLocation:displayedLocation4 withDisplayName:locationName3 chinaShiftedLocation:chinaShiftedLocation2 constantSun:0 animationGroup:v52 device:device3];
           }
 
           v62 = v82;
-          if (v81)
+          if (evaluationDateCopy)
           {
             v63 = v82;
-            *v81 = v82;
+            *evaluationDateCopy = v82;
           }
 
           v29 = v78;
           goto LABEL_40;
         }
 
-        v64 = [v12 dateByAddingUnit:64 value:1 toDate:v24 options:0];
-        v65 = [v12 dateByAddingUnit:16 value:1 toDate:v84 options:0];
+        v64 = [currentCalendar dateByAddingUnit:64 value:1 toDate:v24 options:0];
+        v65 = [currentCalendar dateByAddingUnit:16 value:1 toDate:dateCopy options:0];
         v66 = [MEMORY[0x277CFA738] transitInfoForDate:v65 location:{v8, v10}];
-        v67 = [v66 rise];
+        rise2 = [v66 rise];
 
         v69 = sub_23BDD9010(v68);
 
         v70 = [(NWCSunriseComplicationBundleDataSource *)self _animationGroupForDate:v69 showingSunrise:1 constantSun:0];
-        v71 = [(NWCSunriseComplicationBundleDataSource *)self displayedLocation];
-        v72 = [(NWCSunriseComplicationBundleDataSource *)self locationName];
-        v73 = [(NWCSunriseComplicationBundleDataSource *)self chinaShiftedLocation];
-        v74 = [(CLKCComplicationDataSource *)self device];
+        displayedLocation5 = [(NWCSunriseComplicationBundleDataSource *)self displayedLocation];
+        locationName4 = [(NWCSunriseComplicationBundleDataSource *)self locationName];
+        chinaShiftedLocation3 = [(NWCSunriseComplicationBundleDataSource *)self chinaShiftedLocation];
+        device4 = [(CLKCComplicationDataSource *)self device];
         v83 = v64;
-        v19 = [(NWCSunriseComplicationTimelineEntryModel *)NWCSunriseComplicationSunriseTimelineEntryModel entryModelWithEntryDate:v64 eventDate:v69 atLocation:v71 withDisplayName:v72 chinaShiftedLocation:v73 constantSun:0 animationGroup:v70 device:v74];
+        v19 = [(NWCSunriseComplicationTimelineEntryModel *)NWCSunriseComplicationSunriseTimelineEntryModel entryModelWithEntryDate:v64 eventDate:v69 atLocation:displayedLocation5 withDisplayName:locationName4 chinaShiftedLocation:chinaShiftedLocation3 constantSun:0 animationGroup:v70 device:device4];
 
-        if (v81)
+        if (evaluationDateCopy)
         {
-          *v81 = 0;
+          *evaluationDateCopy = 0;
         }
 
         v20 = 0;
@@ -638,27 +638,27 @@ LABEL_9:
       else
       {
         v41 = [(NWCSunriseComplicationBundleDataSource *)self _animationGroupForDate:v17 showingSunrise:1 constantSun:0];
-        v42 = [(NWCSunriseComplicationBundleDataSource *)self displayedLocation];
-        v43 = [(NWCSunriseComplicationBundleDataSource *)self locationName];
-        v44 = [(NWCSunriseComplicationBundleDataSource *)self chinaShiftedLocation];
-        v45 = [(CLKCComplicationDataSource *)self device];
+        displayedLocation6 = [(NWCSunriseComplicationBundleDataSource *)self displayedLocation];
+        locationName5 = [(NWCSunriseComplicationBundleDataSource *)self locationName];
+        chinaShiftedLocation4 = [(NWCSunriseComplicationBundleDataSource *)self chinaShiftedLocation];
+        device5 = [(CLKCComplicationDataSource *)self device];
         v83 = v41;
-        v19 = [(NWCSunriseComplicationTimelineEntryModel *)NWCSunriseComplicationSunriseTimelineEntryModel entryModelWithEntryDate:v13 eventDate:v17 atLocation:v42 withDisplayName:v43 chinaShiftedLocation:v44 constantSun:0 animationGroup:v41 device:v45];
+        v19 = [(NWCSunriseComplicationTimelineEntryModel *)NWCSunriseComplicationSunriseTimelineEntryModel entryModelWithEntryDate:v13 eventDate:v17 atLocation:displayedLocation6 withDisplayName:locationName5 chinaShiftedLocation:chinaShiftedLocation4 constantSun:0 animationGroup:v41 device:device5];
 
         v20 = 0;
         if ([(NWCSunriseComplicationBundleDataSource *)self _needsCurrentEventEntry])
         {
-          v46 = [(NWCSunriseComplicationBundleDataSource *)self displayedLocation];
-          v47 = [(NWCSunriseComplicationBundleDataSource *)self locationName];
-          v48 = [(NWCSunriseComplicationBundleDataSource *)self chinaShiftedLocation];
-          v49 = [(CLKCComplicationDataSource *)self device];
-          v20 = [(NWCSunriseComplicationTimelineEntryModel *)NWCSunriseComplicationSunriseTimelineEntryModel currentEventEntryModelWithEntryAndEventDate:v17 atLocation:v46 withDisplayName:v47 chinaShiftedLocation:v48 constantSun:0 animationGroup:v41 device:v49];
+          displayedLocation7 = [(NWCSunriseComplicationBundleDataSource *)self displayedLocation];
+          locationName6 = [(NWCSunriseComplicationBundleDataSource *)self locationName];
+          chinaShiftedLocation5 = [(NWCSunriseComplicationBundleDataSource *)self chinaShiftedLocation];
+          device6 = [(CLKCComplicationDataSource *)self device];
+          v20 = [(NWCSunriseComplicationTimelineEntryModel *)NWCSunriseComplicationSunriseTimelineEntryModel currentEventEntryModelWithEntryAndEventDate:v17 atLocation:displayedLocation7 withDisplayName:locationName6 chinaShiftedLocation:chinaShiftedLocation5 constantSun:0 animationGroup:v41 device:device6];
         }
 
-        if (v81)
+        if (evaluationDateCopy)
         {
           v50 = v17;
-          *v81 = v17;
+          *evaluationDateCopy = v17;
         }
       }
 
@@ -671,14 +671,14 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  v11 = [(NWCSunriseComplicationBundleDataSource *)self _animationGroupForNoLocation];
-  v18 = [(CLKCComplicationDataSource *)self device];
-  v19 = [NWCSunriseComplicationTimelineEntryModel placeholderEntryModelWithEntryDate:v84 animationGroup:v11 device:v18];
+  _animationGroupForNoLocation = [(NWCSunriseComplicationBundleDataSource *)self _animationGroupForNoLocation];
+  device7 = [(CLKCComplicationDataSource *)self device];
+  v19 = [NWCSunriseComplicationTimelineEntryModel placeholderEntryModelWithEntryDate:dateCopy animationGroup:_animationGroupForNoLocation device:device7];
 
   v20 = 0;
-  if (a4)
+  if (evaluationDate)
   {
-    *a4 = 0;
+    *evaluationDate = 0;
   }
 
 LABEL_41:
@@ -697,22 +697,22 @@ LABEL_41:
 
 - (BOOL)_needsCurrentEventEntry
 {
-  v3 = [(CLKCComplicationDataSource *)self family];
-  if (v3 != 1)
+  family = [(CLKCComplicationDataSource *)self family];
+  if (family != 1)
   {
-    LOBYTE(v3) = [(CLKCComplicationDataSource *)self family]== 3 || [(CLKCComplicationDataSource *)self family]== 11;
+    LOBYTE(family) = [(CLKCComplicationDataSource *)self family]== 3 || [(CLKCComplicationDataSource *)self family]== 11;
   }
 
-  return v3;
+  return family;
 }
 
-- (id)_timelineEntryFromEntry:(id)a3
+- (id)_timelineEntryFromEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [v4 timelineEntryForComplicationFamily:{-[CLKCComplicationDataSource family](self, "family")}];
-  v6 = [v4 animationGroup];
+  entryCopy = entry;
+  v5 = [entryCopy timelineEntryForComplicationFamily:{-[CLKCComplicationDataSource family](self, "family")}];
+  animationGroup = [entryCopy animationGroup];
 
-  [v5 setTimelineAnimationGroup:v6];
+  [v5 setTimelineAnimationGroup:animationGroup];
 
   return v5;
 }

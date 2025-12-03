@@ -1,25 +1,25 @@
 @interface SearchUIDetailedView
-+ (id)bannerBadgeForRowModel:(id)a3;
-+ (void)addViewIfNecessary:(id)a3 toStackView:(id)a4 removeFromStackViews:(id)a5;
-- (BOOL)arrangedViewMustCenter:(id)a3;
-- (BOOL)configureMenuForFootnoteButton:(id)a3;
++ (id)bannerBadgeForRowModel:(id)model;
++ (void)addViewIfNecessary:(id)necessary toStackView:(id)view removeFromStackViews:(id)views;
+- (BOOL)arrangedViewMustCenter:(id)center;
+- (BOOL)configureMenuForFootnoteButton:(id)button;
 - (BOOL)hasSecondLine;
-- (CGRect)containerView:(id)a3 layoutFrameForArrangedSubview:(id)a4 withProposedFrame:(CGRect)a5;
-- (SearchUIDetailedView)initWithFeedbackDelegate:(id)a3;
+- (CGRect)containerView:(id)view layoutFrameForArrangedSubview:(id)subview withProposedFrame:(CGRect)frame;
+- (SearchUIDetailedView)initWithFeedbackDelegate:(id)delegate;
 - (SearchUIDetailedViewDelegate)buttonDelegate;
 - (SearchUIFeedbackDelegate)feedbackDelegate;
 - (UIView)leadingView;
-- (double)trailingMarginForAccessoryViewController:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5;
+- (double)trailingMarginForAccessoryViewController:(id)controller;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason;
 - (void)didMoveToWindow;
 - (void)footnoteButtonPressed;
-- (void)setFeedbackDelegate:(id)a3;
-- (void)setIsVerticalAlignment:(BOOL)a3;
-- (void)tlk_updateForAppearance:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setFeedbackDelegate:(id)delegate;
+- (void)setIsVerticalAlignment:(BOOL)alignment;
+- (void)tlk_updateForAppearance:(id)appearance;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateLayoutMargins;
-- (void)updateWithRowModel:(id)a3;
+- (void)updateWithRowModel:(id)model;
 @end
 
 @implementation SearchUIDetailedView
@@ -33,11 +33,11 @@
 
 - (UIView)leadingView
 {
-  v2 = [(SearchUIDetailedView *)self innerContainer];
-  v3 = [v2 visibleArrangedSubviews];
-  v4 = [v3 firstObject];
+  innerContainer = [(SearchUIDetailedView *)self innerContainer];
+  visibleArrangedSubviews = [innerContainer visibleArrangedSubviews];
+  firstObject = [visibleArrangedSubviews firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (void)didMoveToWindow
@@ -50,10 +50,10 @@
 
 - (void)updateLayoutMargins
 {
-  v3 = [(SearchUIDetailedView *)self rowModel];
-  v4 = [v3 useCompactVersionOfUI];
+  rowModel = [(SearchUIDetailedView *)self rowModel];
+  useCompactVersionOfUI = [rowModel useCompactVersionOfUI];
 
-  if (v4)
+  if (useCompactVersionOfUI)
   {
     if ([MEMORY[0x1E69D9240] isMacOS])
     {
@@ -66,16 +66,16 @@
 
     else
     {
-      v16 = [(SearchUIDetailedView *)self hasSecondLine];
+      hasSecondLine = [(SearchUIDetailedView *)self hasSecondLine];
       v17 = TLKBiggerSuggestionsLayoutEnabled();
       v18 = 11.8;
-      if (v16)
+      if (hasSecondLine)
       {
         v18 = 8.3;
       }
 
       v19 = 8.67;
-      if (v16)
+      if (hasSecondLine)
       {
         v19 = 6.84;
       }
@@ -90,8 +90,8 @@
         v20 = v19;
       }
 
-      v21 = [(SearchUIDetailedView *)self currentAccessoryViewController];
-      [(SearchUIDetailedView *)self trailingMarginForAccessoryViewController:v21];
+      currentAccessoryViewController = [(SearchUIDetailedView *)self currentAccessoryViewController];
+      [(SearchUIDetailedView *)self trailingMarginForAccessoryViewController:currentAccessoryViewController];
       v6 = v22;
 
       v8 = v6;
@@ -133,10 +133,10 @@
     v8 = v11;
     v7 = v12;
     v6 = v13;
-    v14 = [(SearchUIDetailedView *)self rowModel];
-    v15 = [v14 sectionType];
+    rowModel2 = [(SearchUIDetailedView *)self rowModel];
+    sectionType = [rowModel2 sectionType];
 
-    if (v15 == 2)
+    if (sectionType == 2)
     {
       v7 = 10.0;
       v6 = 0.0;
@@ -183,10 +183,10 @@
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v3 = [(SearchUIDetailedView *)self detailsView];
-  v4 = [v3 details];
+  detailsView = [(SearchUIDetailedView *)self detailsView];
+  details = [detailsView details];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [details countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -197,7 +197,7 @@
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(details);
         }
 
         if ([*(*(&v14 + 1) + 8 * i) hasContent])
@@ -207,7 +207,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [details countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -220,23 +220,23 @@
   v9 = 0;
 LABEL_11:
 
-  v10 = [(SearchUIDetailedView *)self detailsView];
-  v11 = [v10 footnote];
-  v12 = [v11 hasContent];
+  detailsView2 = [(SearchUIDetailedView *)self detailsView];
+  footnote = [detailsView2 footnote];
+  hasContent = [footnote hasContent];
 
-  return v9 | v12;
+  return v9 | hasContent;
 }
 
-- (SearchUIDetailedView)initWithFeedbackDelegate:(id)a3
+- (SearchUIDetailedView)initWithFeedbackDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v16.receiver = self;
   v16.super_class = SearchUIDetailedView;
   v5 = [(SearchUIDetailedView *)&v16 init];
   v6 = v5;
   if (v5)
   {
-    [(SearchUIDetailedView *)v5 setFeedbackDelegate:v4];
+    [(SearchUIDetailedView *)v5 setFeedbackDelegate:delegateCopy];
     [(NUIContainerStackView *)v6 setSpacing:*MEMORY[0x1E69D9268]];
     [(SearchUIDetailedView *)v6 setLayoutMarginsRelativeArrangement:1];
     v7 = objc_opt_new();
@@ -249,17 +249,17 @@ LABEL_11:
     [v8 setSpacing:11.0];
     [MEMORY[0x1E69D9248] makeContainerShadowCompatible:v8];
     [(SearchUIDetailedView *)v6 setButtonAndDetailViewStackView:v8];
-    v9 = [(SearchUIDetailedView *)v6 innerContainer];
-    v10 = [(SearchUIDetailedView *)v6 buttonAndDetailViewStackView];
-    [v9 addArrangedSubview:v10];
+    innerContainer = [(SearchUIDetailedView *)v6 innerContainer];
+    buttonAndDetailViewStackView = [(SearchUIDetailedView *)v6 buttonAndDetailViewStackView];
+    [innerContainer addArrangedSubview:buttonAndDetailViewStackView];
 
     v11 = objc_opt_new();
     [v11 setDelegate:v6];
     [v11 setLayoutMargins:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
     [MEMORY[0x1E69D9248] makeContainerShadowCompatible:v11];
     [(SearchUIDetailedView *)v6 setDetailsView:v11];
-    v12 = [(SearchUIDetailedView *)v6 buttonAndDetailViewStackView];
-    [v12 addArrangedSubview:v11];
+    buttonAndDetailViewStackView2 = [(SearchUIDetailedView *)v6 buttonAndDetailViewStackView];
+    [buttonAndDetailViewStackView2 addArrangedSubview:v11];
 
     v13 = objc_opt_new();
     [(SearchUIDetailedView *)v6 setLeadingViewControllers:v13];
@@ -273,28 +273,28 @@ LABEL_11:
   return v6;
 }
 
-- (void)setIsVerticalAlignment:(BOOL)a3
+- (void)setIsVerticalAlignment:(BOOL)alignment
 {
-  v3 = a3;
-  self->_isVerticalAlignment = a3;
-  v5 = [(SearchUIDetailedView *)self innerContainer];
-  v6 = v5;
-  if (v3)
+  alignmentCopy = alignment;
+  self->_isVerticalAlignment = alignment;
+  innerContainer = [(SearchUIDetailedView *)self innerContainer];
+  v6 = innerContainer;
+  if (alignmentCopy)
   {
-    [v5 setAxis:1];
+    [innerContainer setAxis:1];
 
     [(NUIContainerStackView *)self setAxis:1];
     [(NUIContainerStackView *)self setAlignment:1];
     [(NUIContainerStackView *)self setBaselineRelativeArrangement:1];
-    v7 = [(SearchUIDetailedView *)self detailsView];
-    v15 = [v7 viewForFirstBaselineLayout];
+    detailsView = [(SearchUIDetailedView *)self detailsView];
+    viewForFirstBaselineLayout = [detailsView viewForFirstBaselineLayout];
 
     v8 = objc_opt_respondsToSelector();
     if (v8)
     {
       v9 = MEMORY[0x1E69D91A8];
-      v3 = [v15 font];
-      [v9 scaledValueForValue:v3 withFont:self view:22.0];
+      alignmentCopy = [viewForFirstBaselineLayout font];
+      [v9 scaledValueForValue:alignmentCopy withFont:self view:22.0];
       v11 = v10;
     }
 
@@ -303,23 +303,23 @@ LABEL_11:
       v11 = *MEMORY[0x1E69D9268];
     }
 
-    v13 = [(SearchUIDetailedView *)self innerContainer];
-    [v13 setSpacing:v11];
+    innerContainer2 = [(SearchUIDetailedView *)self innerContainer];
+    [innerContainer2 setSpacing:v11];
 
     if (v8)
     {
     }
 
-    v14 = [(SearchUIDetailedView *)self innerContainer];
-    [v14 setBaselineRelativeArrangement:1];
+    innerContainer3 = [(SearchUIDetailedView *)self innerContainer];
+    [innerContainer3 setBaselineRelativeArrangement:1];
   }
 
   else
   {
-    [v5 setFlipsToVerticalAxisForAccessibilityContentSizes:1];
+    [innerContainer setFlipsToVerticalAxisForAccessibilityContentSizes:1];
 
-    v12 = [(SearchUIDetailedView *)self innerContainer];
-    [v12 setBaselineRelativeArrangement:0];
+    innerContainer4 = [(SearchUIDetailedView *)self innerContainer];
+    [innerContainer4 setBaselineRelativeArrangement:0];
 
     [(NUIContainerStackView *)self setAxis:0];
     [(NUIContainerStackView *)self setAlignment:3];
@@ -328,14 +328,14 @@ LABEL_11:
   }
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = SearchUIDetailedView;
-  [(SearchUIDetailedView *)&v9 traitCollectionDidChange:v4];
-  v5 = [(SearchUIDetailedView *)self traitCollection];
-  if ([v5 hasDifferentColorAppearanceComparedToTraitCollection:v4])
+  [(SearchUIDetailedView *)&v9 traitCollectionDidChange:changeCopy];
+  traitCollection = [(SearchUIDetailedView *)self traitCollection];
+  if ([traitCollection hasDifferentColorAppearanceComparedToTraitCollection:changeCopy])
   {
 
 LABEL_4:
@@ -343,11 +343,11 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [(SearchUIDetailedView *)self traitCollection];
-  v7 = [v6 _vibrancy];
-  v8 = [v4 _vibrancy];
+  traitCollection2 = [(SearchUIDetailedView *)self traitCollection];
+  _vibrancy = [traitCollection2 _vibrancy];
+  _vibrancy2 = [changeCopy _vibrancy];
 
-  if (v7 != v8)
+  if (_vibrancy != _vibrancy2)
   {
     goto LABEL_4;
   }
@@ -355,42 +355,42 @@ LABEL_4:
 LABEL_5:
 }
 
-- (void)tlk_updateForAppearance:(id)a3
+- (void)tlk_updateForAppearance:(id)appearance
 {
   v7.receiver = self;
   v7.super_class = SearchUIDetailedView;
-  v4 = a3;
-  [(SearchUIDetailedView *)&v7 tlk_updateForAppearance:v4];
+  appearanceCopy = appearance;
+  [(SearchUIDetailedView *)&v7 tlk_updateForAppearance:appearanceCopy];
   v5 = [(SearchUIDetailedView *)self currentAccessoryViewController:v7.receiver];
-  [v5 tlk_updateForAppearance:v4];
+  [v5 tlk_updateForAppearance:appearanceCopy];
 
-  v6 = [(SearchUIDetailedView *)self currentLeadingViewController];
-  [v6 tlk_updateForAppearance:v4];
+  currentLeadingViewController = [(SearchUIDetailedView *)self currentLeadingViewController];
+  [currentLeadingViewController tlk_updateForAppearance:appearanceCopy];
 }
 
-- (void)setFeedbackDelegate:(id)a3
+- (void)setFeedbackDelegate:(id)delegate
 {
-  v4 = a3;
-  objc_storeWeak(&self->_feedbackDelegate, v4);
-  v5 = [(SearchUIDetailedView *)self currentLeadingViewController];
-  [v5 setFeedbackDelegate:v4];
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_feedbackDelegate, delegateCopy);
+  currentLeadingViewController = [(SearchUIDetailedView *)self currentLeadingViewController];
+  [currentLeadingViewController setFeedbackDelegate:delegateCopy];
 
-  v6 = [(SearchUIDetailedView *)self currentAccessoryViewController];
-  [v6 setFeedbackDelegate:v4];
+  currentAccessoryViewController = [(SearchUIDetailedView *)self currentAccessoryViewController];
+  [currentAccessoryViewController setFeedbackDelegate:delegateCopy];
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
   v230 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [(SearchUIDetailedView *)self setRowModel:v4];
-  v5 = [(SearchUIDetailedView *)self currentLeadingViewController];
-  [v5 hide];
+  modelCopy = model;
+  [(SearchUIDetailedView *)self setRowModel:modelCopy];
+  currentLeadingViewController = [(SearchUIDetailedView *)self currentLeadingViewController];
+  [currentLeadingViewController hide];
 
-  v6 = [(SearchUIDetailedView *)self currentAccessoryViewController];
-  [v6 hide];
+  currentAccessoryViewController = [(SearchUIDetailedView *)self currentAccessoryViewController];
+  [currentAccessoryViewController hide];
 
-  v7 = [SearchUILeadingViewController leadingViewClassForRowModel:v4];
+  v7 = [SearchUILeadingViewController leadingViewClassForRowModel:modelCopy];
   if (!v7)
   {
     v12 = 0;
@@ -402,8 +402,8 @@ LABEL_5:
   v219 = 0u;
   v216 = 0u;
   v217 = 0u;
-  v9 = [(SearchUIDetailedView *)self leadingViewControllers];
-  v10 = [v9 countByEnumeratingWithState:&v216 objects:v229 count:16];
+  leadingViewControllers = [(SearchUIDetailedView *)self leadingViewControllers];
+  v10 = [leadingViewControllers countByEnumeratingWithState:&v216 objects:v229 count:16];
   if (v10)
   {
     v11 = v10;
@@ -415,7 +415,7 @@ LABEL_5:
       {
         if (*v217 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(leadingViewControllers);
         }
 
         v15 = *(*(&v216 + 1) + 8 * i);
@@ -427,7 +427,7 @@ LABEL_5:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v216 objects:v229 count:16];
+      v11 = [leadingViewControllers countByEnumeratingWithState:&v216 objects:v229 count:16];
     }
 
     while (v11);
@@ -443,136 +443,136 @@ LABEL_5:
   }
 
   v12 = objc_opt_new();
-  v17 = [v12 view];
-  [SearchUIAutoLayout requireIntrinsicSizeForView:v17];
+  view = [v12 view];
+  [SearchUIAutoLayout requireIntrinsicSizeForView:view];
 
-  v18 = [(SearchUIDetailedView *)self innerContainer];
-  v19 = [v12 view];
-  [v18 insertArrangedSubview:v19 atIndex:0];
+  innerContainer = [(SearchUIDetailedView *)self innerContainer];
+  view2 = [v12 view];
+  [innerContainer insertArrangedSubview:view2 atIndex:0];
 
-  v20 = [(SearchUIDetailedView *)self leadingViewControllers];
-  [v20 addObject:v12];
+  leadingViewControllers2 = [(SearchUIDetailedView *)self leadingViewControllers];
+  [leadingViewControllers2 addObject:v12];
 
 LABEL_16:
-  [v12 updateWithRowModel:v4];
-  v21 = [v12 view];
-  [v21 setHidden:0];
+  [v12 updateWithRowModel:modelCopy];
+  view3 = [v12 view];
+  [view3 setHidden:0];
 
-  v22 = [v12 view];
-  [v22 setAlpha:1.0];
+  view4 = [v12 view];
+  [view4 setAlpha:1.0];
 
-  v23 = [(SearchUIDetailedView *)self feedbackDelegate];
-  [v12 setFeedbackDelegate:v23];
+  feedbackDelegate = [(SearchUIDetailedView *)self feedbackDelegate];
+  [v12 setFeedbackDelegate:feedbackDelegate];
 
 LABEL_17:
   [(SearchUIDetailedView *)self setCurrentLeadingViewController:v12];
-  v193 = [(SearchUIDetailedView *)self detailsView];
-  v24 = [v4 title];
-  v197 = [MEMORY[0x1E69D9240] isMacOS];
-  v199 = self;
-  if (([v4 isLocalApplicationResult] & 1) != 0 || (objc_msgSend(v4, "identifyingResult"), v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "contentType"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "isEqualToString:", @"com.apple.application-bundle"), v26, v25, v27))
+  detailsView = [(SearchUIDetailedView *)self detailsView];
+  title = [modelCopy title];
+  isMacOS = [MEMORY[0x1E69D9240] isMacOS];
+  selfCopy = self;
+  if (([modelCopy isLocalApplicationResult] & 1) != 0 || (objc_msgSend(modelCopy, "identifyingResult"), v25 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v25, "contentType"), v26 = objc_claimAutoreleasedReturnValue(), v27 = objc_msgSend(v26, "isEqualToString:", @"com.apple.application-bundle"), v26, v25, v27))
   {
-    v28 = [v4 applicationBundleIdentifier];
-    v29 = [SearchUIUtilities bundleIdentifierIsBlockedForScreenTimeExpiration:v28];
+    applicationBundleIdentifier = [modelCopy applicationBundleIdentifier];
+    v29 = [SearchUIUtilities bundleIdentifierIsBlockedForScreenTimeExpiration:applicationBundleIdentifier];
 
     if (v29)
     {
-      v30 = v24;
+      v30 = title;
       v31 = objc_opt_new();
       v32 = +[SearchUIUtilities imageForBlockedApp];
       [v31 setGlyph:v32];
 
-      v33 = [v4 title];
-      v34 = [v33 text];
-      v35 = v34;
-      if (v197)
+      title2 = [modelCopy title];
+      text = [title2 text];
+      v35 = text;
+      if (isMacOS)
       {
-        v36 = [v34 stringByAppendingString:@"  "];
+        v36 = [text stringByAppendingString:@"  "];
 
         v37 = [MEMORY[0x1E69CA0F0] textWithString:v36];
         v228[0] = v37;
         v228[1] = v31;
         v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v228 count:2];
 
-        v39 = [v12 view];
-        [v39 setAlpha:0.25];
+        view5 = [v12 view];
+        [view5 setAlpha:0.25];
       }
 
       else
       {
-        v36 = [@"  " stringByAppendingString:v34];
+        v36 = [@"  " stringByAppendingString:text];
 
         v227[0] = v31;
-        v39 = [MEMORY[0x1E69CA0F0] textWithString:v36];
-        v227[1] = v39;
+        view5 = [MEMORY[0x1E69CA0F0] textWithString:v36];
+        v227[1] = view5;
         v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v227 count:2];
       }
 
-      v24 = objc_opt_new();
-      [v24 setFormattedTextPieces:v38];
-      [v24 setMaxLines:1];
+      title = objc_opt_new();
+      [title setFormattedTextPieces:v38];
+      [title setMaxLines:1];
     }
   }
 
-  v40 = [(SearchUIDetailedView *)self rowModel];
-  v41 = [v40 sectionType];
+  rowModel = [(SearchUIDetailedView *)self rowModel];
+  sectionType = [rowModel sectionType];
 
-  if (v41 == 2)
+  if (sectionType == 2)
   {
-    [v24 setMaxLines:1];
+    [title setMaxLines:1];
   }
 
-  v190 = v24;
-  v42 = [SearchUIAccessoryViewController accessoryViewClassForRowModel:v4];
+  v190 = title;
+  v42 = [SearchUIAccessoryViewController accessoryViewClassForRowModel:modelCopy];
   v188 = [(objc_class *)v42 isEqual:objc_opt_class()];
   v187 = [(objc_class *)v42 isEqual:objc_opt_class()];
-  if ([v4 buttonItemsAreTrailing])
+  if ([modelCopy buttonItemsAreTrailing])
   {
-    v43 = 0;
+    buttonItems = 0;
   }
 
   else
   {
-    v43 = [v4 buttonItems];
+    buttonItems = [modelCopy buttonItems];
   }
 
-  if ([v43 count])
+  if ([buttonItems count])
   {
-    v44 = [(SearchUIDetailedView *)self buttonItemStackView];
+    buttonItemStackView = [(SearchUIDetailedView *)self buttonItemStackView];
 
-    if (!v44)
+    if (!buttonItemStackView)
     {
       v45 = objc_opt_new();
       [(SearchUIDetailedView *)self setButtonItemStackView:v45];
 
-      v46 = [(SearchUIDetailedView *)self buttonItemStackView];
-      [v46 setIsCompact:1];
+      buttonItemStackView2 = [(SearchUIDetailedView *)self buttonItemStackView];
+      [buttonItemStackView2 setIsCompact:1];
 
-      v47 = [(SearchUIDetailedView *)self buttonItemStackView];
-      [v47 setFlipsToVerticalAxisForAccessibilityContentSizes:1];
+      buttonItemStackView3 = [(SearchUIDetailedView *)self buttonItemStackView];
+      [buttonItemStackView3 setFlipsToVerticalAxisForAccessibilityContentSizes:1];
 
-      v48 = [(SearchUIDetailedView *)self buttonAndDetailViewStackView];
-      v49 = [(SearchUIDetailedView *)self buttonItemStackView];
-      [v48 addArrangedSubview:v49];
+      buttonAndDetailViewStackView = [(SearchUIDetailedView *)self buttonAndDetailViewStackView];
+      buttonItemStackView4 = [(SearchUIDetailedView *)self buttonItemStackView];
+      [buttonAndDetailViewStackView addArrangedSubview:buttonItemStackView4];
 
-      v50 = [(SearchUIDetailedView *)self buttonAndDetailViewStackView];
-      v51 = [(SearchUIDetailedView *)self buttonItemStackView];
-      [v50 setAlignment:1 forView:v51 inAxis:0];
+      buttonAndDetailViewStackView2 = [(SearchUIDetailedView *)self buttonAndDetailViewStackView];
+      buttonItemStackView5 = [(SearchUIDetailedView *)self buttonItemStackView];
+      [buttonAndDetailViewStackView2 setAlignment:1 forView:buttonItemStackView5 inAxis:0];
     }
 
     v42 = 0;
   }
 
-  v52 = [(SearchUIDetailedView *)self buttonItemStackView];
-  v53 = [(SearchUIDetailedView *)self feedbackDelegate];
+  buttonItemStackView6 = [(SearchUIDetailedView *)self buttonItemStackView];
+  feedbackDelegate2 = [(SearchUIDetailedView *)self feedbackDelegate];
   v54 = 3;
-  [v52 updateWithButtonItems:v43 maxButtonItems:3 buttonItemViewType:3 rowModel:v4 feedbackDelegate:v53];
+  [buttonItemStackView6 updateWithButtonItems:buttonItems maxButtonItems:3 buttonItemViewType:3 rowModel:modelCopy feedbackDelegate:feedbackDelegate2];
 
-  v55 = [(SearchUIDetailedView *)self buttonItemStackView];
-  if (v55)
+  buttonItemStackView7 = [(SearchUIDetailedView *)self buttonItemStackView];
+  if (buttonItemStackView7)
   {
-    v53 = [(SearchUIDetailedView *)self buttonItemStackView];
-    if ([v53 isHidden])
+    feedbackDelegate2 = [(SearchUIDetailedView *)self buttonItemStackView];
+    if ([feedbackDelegate2 isHidden])
     {
       v54 = 3;
     }
@@ -583,20 +583,20 @@ LABEL_17:
     }
   }
 
-  v56 = [(SearchUIDetailedView *)self innerContainer];
-  [v56 setAlignment:v54];
+  innerContainer2 = [(SearchUIDetailedView *)self innerContainer];
+  [innerContainer2 setAlignment:v54];
 
-  if (v55)
+  if (buttonItemStackView7)
   {
   }
 
-  v195 = v43;
+  v195 = buttonItems;
   v196 = v12;
   if (!v42)
   {
     v66 = 0;
     v67 = v190;
-    v59 = v193;
+    v59 = detailsView;
     goto LABEL_75;
   }
 
@@ -604,19 +604,19 @@ LABEL_17:
   v215 = 0u;
   v212 = 0u;
   v213 = 0u;
-  v57 = [(SearchUIDetailedView *)self accessoryViewControllers];
-  v58 = [v57 countByEnumeratingWithState:&v212 objects:v226 count:16];
-  v59 = v193;
+  accessoryViewControllers = [(SearchUIDetailedView *)self accessoryViewControllers];
+  v58 = [accessoryViewControllers countByEnumeratingWithState:&v212 objects:v226 count:16];
+  v59 = detailsView;
   if (!v58)
   {
 
 LABEL_54:
     v61 = objc_opt_new();
-    v68 = [(SearchUIDetailedView *)self accessoryViewControllers];
-    [v68 addObject:v61];
+    accessoryViewControllers2 = [(SearchUIDetailedView *)self accessoryViewControllers];
+    [accessoryViewControllers2 addObject:v61];
 
-    v69 = [v61 view];
-    [SearchUIAutoLayout requireIntrinsicSizeForView:v69];
+    view6 = [v61 view];
+    [SearchUIAutoLayout requireIntrinsicSizeForView:view6];
 
     goto LABEL_55;
   }
@@ -630,7 +630,7 @@ LABEL_54:
     {
       if (*v213 != v62)
       {
-        objc_enumerationMutation(v57);
+        objc_enumerationMutation(accessoryViewControllers);
       }
 
       v64 = *(*(&v212 + 1) + 8 * j);
@@ -642,7 +642,7 @@ LABEL_54:
       }
     }
 
-    v60 = [v57 countByEnumeratingWithState:&v212 objects:v226 count:16];
+    v60 = [accessoryViewControllers countByEnumeratingWithState:&v212 objects:v226 count:16];
   }
 
   while (v60);
@@ -654,90 +654,90 @@ LABEL_54:
 
 LABEL_55:
   [v61 setDelegate:self];
-  v70 = [(SearchUIDetailedView *)self feedbackDelegate];
-  [v61 setFeedbackDelegate:v70];
+  feedbackDelegate3 = [(SearchUIDetailedView *)self feedbackDelegate];
+  [v61 setFeedbackDelegate:feedbackDelegate3];
 
-  v71 = [v61 view];
-  [v71 setHidden:0];
+  view7 = [v61 view];
+  [view7 setHidden:0];
 
   v72 = v61;
-  [v61 updateWithRowModel:v4];
-  v73 = [(SearchUIDetailedView *)self rowModel];
-  v74 = [v73 secondaryTitle];
+  [v61 updateWithRowModel:modelCopy];
+  rowModel2 = [(SearchUIDetailedView *)self rowModel];
+  secondaryTitle = [rowModel2 secondaryTitle];
   v67 = v190;
-  if (v74)
+  if (secondaryTitle)
   {
-    v75 = [(SearchUIDetailedView *)self rowModel];
-    v76 = [v75 secondaryTitleIsDetached];
+    rowModel3 = [(SearchUIDetailedView *)self rowModel];
+    secondaryTitleIsDetached = [rowModel3 secondaryTitleIsDetached];
   }
 
   else
   {
-    v76 = 0;
+    secondaryTitleIsDetached = 0;
   }
 
-  v77 = [v72 view];
-  v78 = [(SearchUIDetailedView *)self innerContainer];
-  if ([v78 axis] != 1)
+  view8 = [v72 view];
+  innerContainer3 = [(SearchUIDetailedView *)self innerContainer];
+  if ([innerContainer3 axis] != 1)
   {
 
     goto LABEL_63;
   }
 
-  v79 = [(SearchUIDetailedView *)self isVerticalAlignment];
+  isVerticalAlignment = [(SearchUIDetailedView *)self isVerticalAlignment];
 
-  if (v79)
+  if (isVerticalAlignment)
   {
 LABEL_63:
-    v86 = [(SearchUIDetailedView *)self isVerticalAlignment];
+    isVerticalAlignment2 = [(SearchUIDetailedView *)self isVerticalAlignment];
     v81 = objc_opt_class();
-    v87 = [(SearchUIDetailedView *)self innerContainer];
-    v83 = v87;
-    if (v86)
+    innerContainer4 = [(SearchUIDetailedView *)self innerContainer];
+    v83 = innerContainer4;
+    if (isVerticalAlignment2)
     {
-      v223 = v87;
+      v223 = innerContainer4;
       v84 = MEMORY[0x1E695DEC8];
       v85 = &v223;
       goto LABEL_65;
     }
 
-    v222 = self;
+    selfCopy2 = self;
     v92 = MEMORY[0x1E695DEC8];
-    v93 = &v222;
+    v93 = &selfCopy2;
 LABEL_68:
     v88 = [v92 arrayWithObjects:v93 count:1];
     v89 = v81;
-    v90 = v77;
-    v91 = v83;
+    v90 = view8;
+    selfCopy4 = v83;
     goto LABEL_69;
   }
 
-  v80 = [v72 shouldTopAlignForAccessibilityContentSizes];
+  shouldTopAlignForAccessibilityContentSizes = [v72 shouldTopAlignForAccessibilityContentSizes];
   v81 = objc_opt_class();
-  v82 = [(SearchUIDetailedView *)self innerContainer];
-  v83 = v82;
-  if (!v80)
+  innerContainer5 = [(SearchUIDetailedView *)self innerContainer];
+  v83 = innerContainer5;
+  if (!shouldTopAlignForAccessibilityContentSizes)
   {
-    v224 = self;
+    selfCopy3 = self;
     v92 = MEMORY[0x1E695DEC8];
-    v93 = &v224;
+    v93 = &selfCopy3;
     goto LABEL_68;
   }
 
-  v225 = v82;
+  v225 = innerContainer5;
   v84 = MEMORY[0x1E695DEC8];
   v85 = &v225;
 LABEL_65:
   v88 = [v84 arrayWithObjects:v85 count:1];
   v89 = v81;
-  v90 = v77;
-  v91 = self;
+  v90 = view8;
+  selfCopy4 = self;
 LABEL_69:
-  [v89 addViewIfNecessary:v90 toStackView:v91 removeFromStackViews:v88];
+  [v89 addViewIfNecessary:v90 toStackView:selfCopy4 removeFromStackViews:v88];
 
-  if (v76)
+  if (secondaryTitleIsDetached)
   {
-    v94 = v77;
+    v94 = view8;
   }
 
   else
@@ -745,34 +745,34 @@ LABEL_69:
     v94 = 0;
   }
 
-  [v193 setAccessoryView:v94];
-  if (v76)
+  [detailsView setAccessoryView:v94];
+  if (secondaryTitleIsDetached)
   {
     v95 = objc_opt_class();
     v221[0] = self;
-    v96 = [(SearchUIDetailedView *)self innerContainer];
-    v221[1] = v96;
+    innerContainer6 = [(SearchUIDetailedView *)self innerContainer];
+    v221[1] = innerContainer6;
     v97 = [MEMORY[0x1E695DEC8] arrayWithObjects:v221 count:2];
-    [v95 addViewIfNecessary:v77 toStackView:0 removeFromStackViews:v97];
+    [v95 addViewIfNecessary:view8 toStackView:0 removeFromStackViews:v97];
   }
 
   v66 = v72;
 LABEL_75:
   v194 = v66;
   [(SearchUIDetailedView *)self setCurrentAccessoryViewController:?];
-  v98 = [(SearchUIDetailedView *)self currentLeadingViewController];
-  v99 = [v98 shouldCenterAlignToTitle];
+  currentLeadingViewController2 = [(SearchUIDetailedView *)self currentLeadingViewController];
+  shouldCenterAlignToTitle = [currentLeadingViewController2 shouldCenterAlignToTitle];
 
   if ([(SearchUIDetailedView *)self isVerticalAlignment])
   {
     goto LABEL_102;
   }
 
-  v100 = [v4 isHorizontalInLayout];
+  isHorizontalInLayout = [modelCopy isHorizontalInLayout];
   v101 = 8.0;
   v102 = TLKBiggerSuggestionsLayoutEnabled();
   v103 = 8.0;
-  if ((v99 & 1) == 0)
+  if ((shouldCenterAlignToTitle & 1) == 0)
   {
     v104 = 10.0;
     v105 = 14.0;
@@ -781,7 +781,7 @@ LABEL_75:
       v104 = 14.0;
     }
 
-    if (v197)
+    if (isMacOS)
     {
       v105 = 12.0;
       v103 = 8.0;
@@ -792,7 +792,7 @@ LABEL_75:
       v103 = v104;
     }
 
-    if (v100)
+    if (isHorizontalInLayout)
     {
       v106 = 8.0;
     }
@@ -802,23 +802,23 @@ LABEL_75:
       v106 = v105;
     }
 
-    if (![v4 useCompactVersionOfUI])
+    if (![modelCopy useCompactVersionOfUI])
     {
       v103 = v106;
     }
   }
 
-  v107 = [(SearchUIDetailedView *)self innerContainer];
-  [v107 setSpacing:v103];
+  innerContainer7 = [(SearchUIDetailedView *)self innerContainer];
+  [innerContainer7 setSpacing:v103];
 
-  v108 = [v4 useCompactVersionOfUI];
+  useCompactVersionOfUI = [modelCopy useCompactVersionOfUI];
   v109 = 14.0;
-  if (v197)
+  if (isMacOS)
   {
     v109 = 15.0;
   }
 
-  if (v108)
+  if (useCompactVersionOfUI)
   {
     v110 = *MEMORY[0x1E698B6F8];
   }
@@ -828,33 +828,33 @@ LABEL_75:
     v110 = v109;
   }
 
-  v111 = [(SearchUIDetailedView *)self innerContainer];
-  v112 = [v111 axis];
+  innerContainer8 = [(SearchUIDetailedView *)self innerContainer];
+  axis = [innerContainer8 axis];
 
-  if (v112 != 1)
+  if (axis != 1)
   {
     goto LABEL_101;
   }
 
-  v113 = [v59 viewForFirstBaselineLayout];
+  viewForFirstBaselineLayout = [v59 viewForFirstBaselineLayout];
   v110 = 8.0;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_96;
   }
 
-  v114 = [v59 viewForFirstBaselineLayout];
-  v115 = [v114 font];
+  viewForFirstBaselineLayout2 = [v59 viewForFirstBaselineLayout];
+  font = [viewForFirstBaselineLayout2 font];
 
-  if (v115)
+  if (font)
   {
-    [MEMORY[0x1E69D91A8] scaledValueForValue:v115 withFont:self view:8.0];
+    [MEMORY[0x1E69D91A8] scaledValueForValue:font withFont:self view:8.0];
     v110 = v116;
-    v113 = v115;
+    viewForFirstBaselineLayout = font;
 LABEL_96:
   }
 
-  v117 = [v59 viewForLastBaselineLayout];
+  viewForLastBaselineLayout = [v59 viewForLastBaselineLayout];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 LABEL_100:
@@ -862,85 +862,85 @@ LABEL_100:
     goto LABEL_101;
   }
 
-  v118 = [v59 viewForLastBaselineLayout];
-  v119 = [v118 font];
+  viewForLastBaselineLayout2 = [v59 viewForLastBaselineLayout];
+  font2 = [viewForLastBaselineLayout2 font];
 
-  if (v119)
+  if (font2)
   {
-    [MEMORY[0x1E69D91A8] scaledValueForValue:v119 withFont:self view:8.0];
+    [MEMORY[0x1E69D91A8] scaledValueForValue:font2 withFont:self view:8.0];
     v101 = v120;
-    v117 = v119;
+    viewForLastBaselineLayout = font2;
     goto LABEL_100;
   }
 
 LABEL_101:
-  v121 = [(SearchUIDetailedView *)self innerContainer];
-  v122 = [(SearchUIDetailedView *)self currentLeadingViewController];
-  v123 = [v122 view];
-  [v121 setCustomSpacing:v123 afterView:v110];
+  innerContainer9 = [(SearchUIDetailedView *)self innerContainer];
+  currentLeadingViewController3 = [(SearchUIDetailedView *)self currentLeadingViewController];
+  view9 = [currentLeadingViewController3 view];
+  [innerContainer9 setCustomSpacing:view9 afterView:v110];
 
-  v124 = [(SearchUIDetailedView *)self innerContainer];
-  v125 = [(SearchUIDetailedView *)self buttonAndDetailViewStackView];
-  [v124 setCustomSpacing:v125 afterView:v101];
+  innerContainer10 = [(SearchUIDetailedView *)self innerContainer];
+  buttonAndDetailViewStackView3 = [(SearchUIDetailedView *)self buttonAndDetailViewStackView];
+  [innerContainer10 setCustomSpacing:buttonAndDetailViewStackView3 afterView:v101];
 
 LABEL_102:
-  v126 = [MEMORY[0x1E69D91A8] isSuperLargeAccessibilitySize];
+  isSuperLargeAccessibilitySize = [MEMORY[0x1E69D91A8] isSuperLargeAccessibilitySize];
   v204[0] = MEMORY[0x1E69E9820];
   v204[1] = 3221225472;
   v204[2] = __43__SearchUIDetailedView_updateWithRowModel___block_invoke;
   v204[3] = &unk_1E85B4830;
   v127 = v59;
   v205 = v127;
-  v206 = self;
-  v186 = v4;
+  selfCopy5 = self;
+  v186 = modelCopy;
   v207 = v186;
   v185 = v67;
   v208 = v185;
-  v198 = v126;
-  v209 = v126;
+  v198 = isSuperLargeAccessibilitySize;
+  v209 = isSuperLargeAccessibilitySize;
   v210 = v188;
   v211 = v187;
   [v127 performBatchUpdates:v204];
-  v128 = [(SearchUIDetailedView *)self detailsView];
-  v129 = [v128 viewForFirstBaselineLayout];
+  detailsView2 = [(SearchUIDetailedView *)self detailsView];
+  viewForFirstBaselineLayout3 = [detailsView2 viewForFirstBaselineLayout];
 
-  v130 = [(SearchUIDetailedView *)self rowModel];
-  v131 = [v130 useCompactVersionOfUI];
+  rowModel4 = [(SearchUIDetailedView *)self rowModel];
+  useCompactVersionOfUI2 = [rowModel4 useCompactVersionOfUI];
 
   v132 = 0.0;
   v133 = 0.0;
   v134 = 0.0;
-  if ((v131 & 1) == 0)
+  if ((useCompactVersionOfUI2 & 1) == 0)
   {
     if (objc_opt_respondsToSelector())
     {
-      v135 = [v129 font];
+      font3 = [viewForFirstBaselineLayout3 font];
     }
 
     else
     {
-      v135 = 0;
+      font3 = 0;
     }
 
     v136 = MEMORY[0x1E69D91A8];
-    [v135 ascender];
+    [font3 ascender];
     v138 = v137;
-    [v135 capHeight];
+    [font3 capHeight];
     [v136 deviceScaledRoundedValue:self forView:v138 - v139];
     v134 = v140;
     v141 = MEMORY[0x1E69D91A8];
-    v142 = [v127 viewForLastBaselineLayout];
-    [v142 effectiveBaselineOffsetFromContentBottom];
+    viewForLastBaselineLayout3 = [v127 viewForLastBaselineLayout];
+    [viewForLastBaselineLayout3 effectiveBaselineOffsetFromContentBottom];
     [v141 deviceScaledRoundedValue:self forView:?];
     v133 = v143;
   }
 
-  v144 = [(SearchUIDetailedView *)self rowModel];
-  v145 = [v144 isHorizontalInLayout];
+  rowModel5 = [(SearchUIDetailedView *)self rowModel];
+  isHorizontalInLayout2 = [rowModel5 isHorizontalInLayout];
 
   v146 = v134;
   v147 = 0.0;
-  if (v145)
+  if (isHorizontalInLayout2)
   {
     v146 = *MEMORY[0x1E69DDCE0];
     v132 = *(MEMORY[0x1E69DDCE0] + 8);
@@ -952,8 +952,8 @@ LABEL_102:
   v191 = v132;
   if (TLKBiggerSuggestionsLayoutEnabled())
   {
-    v148 = [(SearchUIDetailedView *)self rowModel];
-    if ([v148 useCompactVersionOfUI])
+    rowModel6 = [(SearchUIDetailedView *)self rowModel];
+    if ([rowModel6 useCompactVersionOfUI])
     {
       v149 = -3.0;
       v150 = -4.0;
@@ -978,13 +978,13 @@ LABEL_102:
     v151 = *(MEMORY[0x1E69DDCE0] + 24);
   }
 
-  if (!(v145 & 1 | ((v99 & 1) == 0)))
+  if (!(isHorizontalInLayout2 & 1 | ((shouldCenterAlignToTitle & 1) == 0)))
   {
-    [v129 intrinsicContentSize];
+    [viewForFirstBaselineLayout3 intrinsicContentSize];
     v154 = v153;
-    v155 = [(SearchUIDetailedView *)self currentLeadingViewController];
-    v156 = [v155 view];
-    [v156 intrinsicContentSize];
+    currentLeadingViewController4 = [(SearchUIDetailedView *)self currentLeadingViewController];
+    view10 = [currentLeadingViewController4 view];
+    [view10 intrinsicContentSize];
     v149 = v134 + (v154 - v157) * -0.5;
 
     v151 = 0.0;
@@ -992,22 +992,22 @@ LABEL_102:
     v152 = 0.0;
   }
 
-  v189 = v129;
+  v189 = viewForFirstBaselineLayout3;
   [MEMORY[0x1E69D91A8] deviceScaledRoundedInsets:self forView:{v149, v152, v150, v151}];
   v159 = v158;
   v161 = v160;
   v163 = v162;
   v165 = v164;
-  v166 = [(SearchUIDetailedView *)self currentLeadingViewController];
-  v167 = [v166 view];
-  [v167 setCustomAlignmentRectInsets:{v159, v161, v163, v165}];
+  currentLeadingViewController5 = [(SearchUIDetailedView *)self currentLeadingViewController];
+  view11 = [currentLeadingViewController5 view];
+  [view11 setCustomAlignmentRectInsets:{v159, v161, v163, v165}];
 
-  v168 = [v127 accessoryView];
+  accessoryView = [v127 accessoryView];
 
-  if (!v168)
+  if (!accessoryView)
   {
-    v169 = [(SearchUIDetailedView *)self currentAccessoryViewController];
-    if ([v169 type] == 1)
+    currentAccessoryViewController2 = [(SearchUIDetailedView *)self currentAccessoryViewController];
+    if ([currentAccessoryViewController2 type] == 1)
     {
       v170 = v191;
     }
@@ -1020,28 +1020,28 @@ LABEL_102:
       v147 = *(MEMORY[0x1E69DDCE0] + 24);
     }
 
-    v171 = [(SearchUIDetailedView *)self currentAccessoryViewController];
-    v172 = [v171 view];
-    [v172 setCustomAlignmentRectInsets:{v146, v170, v133, v147}];
+    currentAccessoryViewController3 = [(SearchUIDetailedView *)self currentAccessoryViewController];
+    view12 = [currentAccessoryViewController3 view];
+    [view12 setCustomAlignmentRectInsets:{v146, v170, v133, v147}];
   }
 
   v192 = v127;
-  v173 = [(SearchUIDetailedView *)self innerContainer];
-  v174 = [v173 axis] == 0;
+  innerContainer11 = [(SearchUIDetailedView *)self innerContainer];
+  v174 = [innerContainer11 axis] == 0;
 
   v202 = 0u;
   v203 = 0u;
   v200 = 0u;
   v201 = 0u;
-  v175 = [(SearchUIDetailedView *)self innerContainer];
-  v176 = [v175 arrangedSubviews];
+  innerContainer12 = [(SearchUIDetailedView *)self innerContainer];
+  arrangedSubviews = [innerContainer12 arrangedSubviews];
 
-  v177 = [v176 countByEnumeratingWithState:&v200 objects:v220 count:16];
+  v177 = [arrangedSubviews countByEnumeratingWithState:&v200 objects:v220 count:16];
   if (v177)
   {
     v178 = v177;
     v179 = *v201;
-    if (v99)
+    if (shouldCenterAlignToTitle)
     {
       v180 = 2;
     }
@@ -1057,12 +1057,12 @@ LABEL_102:
       {
         if (*v201 != v179)
         {
-          objc_enumerationMutation(v176);
+          objc_enumerationMutation(arrangedSubviews);
         }
 
         v182 = *(*(&v200 + 1) + 8 * k);
-        v183 = [(SearchUIDetailedView *)v199 innerContainer];
-        if (v198 & 1 | ![(SearchUIDetailedView *)v199 arrangedViewMustCenter:v182])
+        innerContainer13 = [(SearchUIDetailedView *)selfCopy innerContainer];
+        if (v198 & 1 | ![(SearchUIDetailedView *)selfCopy arrangedViewMustCenter:v182])
         {
           v184 = v180;
         }
@@ -1072,17 +1072,17 @@ LABEL_102:
           v184 = 3;
         }
 
-        [v183 setAlignment:v184 forView:v182 inAxis:v174];
+        [innerContainer13 setAlignment:v184 forView:v182 inAxis:v174];
       }
 
-      v178 = [v176 countByEnumeratingWithState:&v200 objects:v220 count:16];
+      v178 = [arrangedSubviews countByEnumeratingWithState:&v200 objects:v220 count:16];
     }
 
     while (v178);
   }
 
-  [(SearchUIDetailedView *)v199 updateLayoutMargins];
-  [(SearchUIDetailedView *)v199 tlk_updateWithCurrentAppearance];
+  [(SearchUIDetailedView *)selfCopy updateLayoutMargins];
+  [(SearchUIDetailedView *)selfCopy tlk_updateWithCurrentAppearance];
 }
 
 void __43__SearchUIDetailedView_updateWithRowModel___block_invoke(uint64_t a1)
@@ -1291,30 +1291,30 @@ LABEL_43:
 LABEL_44:
 }
 
-- (double)trailingMarginForAccessoryViewController:(id)a3
+- (double)trailingMarginForAccessoryViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = 0.0;
-  if ([v4 containsSymbolImage])
+  if ([controllerCopy containsSymbolImage])
   {
-    v6 = [v4 view];
-    [v6 intrinsicContentSize];
+    view = [controllerCopy view];
+    [view intrinsicContentSize];
     v8 = v7;
 
     +[SearchUIUtilities imageAccessoryAdditionalCompactHorizontalMargin];
     v5 = v9 + v8 * -0.5;
   }
 
-  v10 = [(SearchUIDetailedView *)self rowModel];
-  if (![v10 useCompactVersionOfUI])
+  rowModel = [(SearchUIDetailedView *)self rowModel];
+  if (![rowModel useCompactVersionOfUI])
   {
 
     goto LABEL_7;
   }
 
-  v11 = [MEMORY[0x1E69D9240] isMacOS];
+  isMacOS = [MEMORY[0x1E69D9240] isMacOS];
 
-  if (v11)
+  if (isMacOS)
   {
 LABEL_7:
     [MEMORY[0x1E69D9248] defaultLayoutMargins];
@@ -1329,12 +1329,12 @@ LABEL_8:
   return v13;
 }
 
-+ (id)bannerBadgeForRowModel:(id)a3
++ (id)bannerBadgeForRowModel:(id)model
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 nearbyBusinessesString];
-  v5 = [v4 length];
+  modelCopy = model;
+  nearbyBusinessesString = [modelCopy nearbyBusinessesString];
+  v5 = [nearbyBusinessesString length];
 
   if (v5)
   {
@@ -1348,9 +1348,9 @@ LABEL_8:
     v20[0] = v6;
     v11 = MEMORY[0x1E69CA0F0];
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [v3 nearbyBusinessesString];
-    v14 = [v13 localizedUppercaseString];
-    v15 = [v12 stringWithFormat:@" %@", v14];
+    nearbyBusinessesString2 = [modelCopy nearbyBusinessesString];
+    localizedUppercaseString = [nearbyBusinessesString2 localizedUppercaseString];
+    v15 = [v12 stringWithFormat:@" %@", localizedUppercaseString];
     v16 = [v11 textWithString:v15];
     v20[1] = v16;
     v17 = [MEMORY[0x1E695DEC8] arrayWithObjects:v20 count:2];
@@ -1367,53 +1367,53 @@ LABEL_8:
   return v18;
 }
 
-- (BOOL)arrangedViewMustCenter:(id)a3
+- (BOOL)arrangedViewMustCenter:(id)center
 {
-  v4 = a3;
-  v5 = [(SearchUIDetailedView *)self currentLeadingViewController];
-  v6 = [v5 view];
+  centerCopy = center;
+  currentLeadingViewController = [(SearchUIDetailedView *)self currentLeadingViewController];
+  view = [currentLeadingViewController view];
 
-  if (v6 == v4)
+  if (view == centerCopy)
   {
-    v11 = [(SearchUIDetailedView *)self currentLeadingViewController];
+    currentLeadingViewController2 = [(SearchUIDetailedView *)self currentLeadingViewController];
 LABEL_7:
-    v12 = v11;
-    v10 = [v11 shouldVerticallyCenter];
+    v12 = currentLeadingViewController2;
+    shouldVerticallyCenter = [currentLeadingViewController2 shouldVerticallyCenter];
 
     goto LABEL_8;
   }
 
-  v7 = [(SearchUIDetailedView *)self buttonAndDetailViewStackView];
+  buttonAndDetailViewStackView = [(SearchUIDetailedView *)self buttonAndDetailViewStackView];
 
-  if (v7 != v4)
+  if (buttonAndDetailViewStackView != centerCopy)
   {
-    v8 = [(SearchUIDetailedView *)self currentAccessoryViewController];
-    v9 = [v8 view];
+    currentAccessoryViewController = [(SearchUIDetailedView *)self currentAccessoryViewController];
+    view2 = [currentAccessoryViewController view];
 
-    if (v9 == v4)
+    if (view2 == centerCopy)
     {
-      v11 = [(SearchUIDetailedView *)self currentAccessoryViewController];
+      currentLeadingViewController2 = [(SearchUIDetailedView *)self currentAccessoryViewController];
       goto LABEL_7;
     }
   }
 
-  v10 = 1;
+  shouldVerticallyCenter = 1;
 LABEL_8:
 
-  return v10;
+  return shouldVerticallyCenter;
 }
 
-+ (void)addViewIfNecessary:(id)a3 toStackView:(id)a4 removeFromStackViews:(id)a5
++ (void)addViewIfNecessary:(id)necessary toStackView:(id)view removeFromStackViews:(id)views
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  necessaryCopy = necessary;
+  viewCopy = view;
+  viewsCopy = views;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v10 = [viewsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
     v11 = v10;
@@ -1424,50 +1424,50 @@ LABEL_8:
       {
         if (*v20 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(viewsCopy);
         }
 
         v14 = *(*(&v19 + 1) + 8 * i);
-        v15 = [v14 arrangedSubviews];
-        v16 = [v15 containsObject:v7];
+        arrangedSubviews = [v14 arrangedSubviews];
+        v16 = [arrangedSubviews containsObject:necessaryCopy];
 
         if (v16)
         {
-          [v14 removeArrangedSubview:v7];
+          [v14 removeArrangedSubview:necessaryCopy];
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v11 = [viewsCopy countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v11);
   }
 
-  v17 = [v8 arrangedSubviews];
-  v18 = [v17 containsObject:v7];
+  arrangedSubviews2 = [viewCopy arrangedSubviews];
+  v18 = [arrangedSubviews2 containsObject:necessaryCopy];
 
   if ((v18 & 1) == 0)
   {
-    [v8 addArrangedSubview:v7];
+    [viewCopy addArrangedSubview:necessaryCopy];
   }
 }
 
 - (void)footnoteButtonPressed
 {
-  v2 = [(SearchUIDetailedView *)self buttonDelegate];
-  [v2 footnoteButtonPressed];
+  buttonDelegate = [(SearchUIDetailedView *)self buttonDelegate];
+  [buttonDelegate footnoteButtonPressed];
 }
 
-- (BOOL)configureMenuForFootnoteButton:(id)a3
+- (BOOL)configureMenuForFootnoteButton:(id)button
 {
-  v4 = a3;
-  v5 = [(SearchUIDetailedView *)self buttonDelegate];
+  buttonCopy = button;
+  buttonDelegate = [(SearchUIDetailedView *)self buttonDelegate];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SearchUIDetailedView *)self buttonDelegate];
-    v8 = [v7 configureMenuForFootnoteButton:v4];
+    buttonDelegate2 = [(SearchUIDetailedView *)self buttonDelegate];
+    v8 = [buttonDelegate2 configureMenuForFootnoteButton:buttonCopy];
   }
 
   else
@@ -1478,16 +1478,16 @@ LABEL_8:
   return v8;
 }
 
-- (CGRect)containerView:(id)a3 layoutFrameForArrangedSubview:(id)a4 withProposedFrame:(CGRect)a5
+- (CGRect)containerView:(id)view layoutFrameForArrangedSubview:(id)subview withProposedFrame:(CGRect)frame
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v10 = a4;
-  v11 = [(SearchUIDetailedView *)self detailsView];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  subviewCopy = subview;
+  detailsView = [(SearchUIDetailedView *)self detailsView];
 
-  if (v11 == v10)
+  if (detailsView == subviewCopy)
   {
     [MEMORY[0x1E69D91A8] deviceScaledRoundedValue:self forView:0.5];
     y = y + v12;
@@ -1504,41 +1504,41 @@ LABEL_8:
   return result;
 }
 
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = [(SearchUIDetailedView *)self innerContainer];
+  viewCopy = view;
+  innerContainer = [(SearchUIDetailedView *)self innerContainer];
 
-  if (v7 == v6)
+  if (innerContainer == viewCopy)
   {
-    v8 = [(SearchUIDetailedView *)self isCompactWidth];
-    v9 = [(SearchUIDetailedView *)self currentLeadingViewController];
-    [v9 setUsesCompactWidth:v8];
+    isCompactWidth = [(SearchUIDetailedView *)self isCompactWidth];
+    currentLeadingViewController = [(SearchUIDetailedView *)self currentLeadingViewController];
+    [currentLeadingViewController setUsesCompactWidth:isCompactWidth];
   }
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v15.receiver = self;
   v15.super_class = SearchUIDetailedView;
-  v8 = [(SearchUIDetailedView *)&v15 hitTest:v7 withEvent:x, y];
+  v8 = [(SearchUIDetailedView *)&v15 hitTest:eventCopy withEvent:x, y];
   if ([v8 isDescendantOfView:self] && (-[SearchUIDetailedView currentLeadingViewController](self, "currentLeadingViewController"), v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "type"), v9, v10 == 2))
   {
-    v11 = [(SearchUIDetailedView *)self currentLeadingViewController];
-    v12 = [v11 view];
+    currentLeadingViewController = [(SearchUIDetailedView *)self currentLeadingViewController];
+    view = [currentLeadingViewController view];
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = SearchUIDetailedView;
-    v12 = [(SearchUIDetailedView *)&v14 hitTest:v7 withEvent:x, y];
+    view = [(SearchUIDetailedView *)&v14 hitTest:eventCopy withEvent:x, y];
   }
 
-  return v12;
+  return view;
 }
 
 - (SearchUIDetailedViewDelegate)buttonDelegate

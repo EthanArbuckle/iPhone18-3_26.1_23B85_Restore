@@ -1,16 +1,16 @@
 @interface SecCBORString
-- (SecCBORString)initWith:(id)a3;
-- (int64_t)compare:(id)a3;
-- (void)write:(id)a3;
+- (SecCBORString)initWith:(id)with;
+- (int64_t)compare:(id)compare;
+- (void)write:(id)write;
 @end
 
 @implementation SecCBORString
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   v5 = [(NSString *)self->m_data length];
-  v6 = [v4[1] length];
+  v6 = [compareCopy[1] length];
   if (v5 >= v6)
   {
     if (v5 > v6)
@@ -20,7 +20,7 @@
 
     else
     {
-      v7 = [(NSString *)self->m_data compare:v4[1]];
+      v7 = [(NSString *)self->m_data compare:compareCopy[1]];
     }
   }
 
@@ -32,25 +32,25 @@
   return v7;
 }
 
-- (void)write:(id)a3
+- (void)write:(id)write
 {
   m_data = self->m_data;
-  v5 = a3;
-  [(SecCBORValue *)self encodeStartItems:[(NSString *)m_data length] output:v5];
+  writeCopy = write;
+  [(SecCBORValue *)self encodeStartItems:[(NSString *)m_data length] output:writeCopy];
   v7 = [(NSString *)self->m_data dataUsingEncoding:4];
   v6 = v7;
-  [v5 appendBytes:objc_msgSend(v7 length:{"bytes"), objc_msgSend(v7, "length")}];
+  [writeCopy appendBytes:objc_msgSend(v7 length:{"bytes"), objc_msgSend(v7, "length")}];
 }
 
-- (SecCBORString)initWith:(id)a3
+- (SecCBORString)initWith:(id)with
 {
-  v4 = a3;
+  withCopy = with;
   v9.receiver = self;
   v9.super_class = SecCBORString;
   v5 = [(SecCBORString *)&v9 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:v4];
+    v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithString:withCopy];
     m_data = v5->m_data;
     v5->m_data = v6;
   }

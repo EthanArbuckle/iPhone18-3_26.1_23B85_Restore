@@ -1,6 +1,6 @@
 @interface FCManagedResourceConfiguration
 - (FCManagedResourceConfiguration)init;
-- (FCManagedResourceConfiguration)initWithResourceID:(id)a3 refreshRate:(int64_t)a4;
+- (FCManagedResourceConfiguration)initWithResourceID:(id)d refreshRate:(int64_t)rate;
 @end
 
 @implementation FCManagedResourceConfiguration
@@ -31,11 +31,11 @@
   objc_exception_throw(v6);
 }
 
-- (FCManagedResourceConfiguration)initWithResourceID:(id)a3 refreshRate:(int64_t)a4
+- (FCManagedResourceConfiguration)initWithResourceID:(id)d refreshRate:(int64_t)rate
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  if (!dCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "resourceID"];
     *buf = 136315906;
@@ -48,13 +48,13 @@
     v22 = v12;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if ((a4 & 0x8000000000000000) == 0)
+    if ((rate & 0x8000000000000000) == 0)
     {
       goto LABEL_6;
     }
   }
 
-  else if ((a4 & 0x8000000000000000) == 0)
+  else if ((rate & 0x8000000000000000) == 0)
   {
     goto LABEL_6;
   }
@@ -79,11 +79,11 @@ LABEL_6:
   v7 = [(FCManagedResourceConfiguration *)&v14 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [dCopy copy];
     resourceID = v7->_resourceID;
     v7->_resourceID = v8;
 
-    v7->_refreshRate = a4;
+    v7->_refreshRate = rate;
   }
 
   v10 = *MEMORY[0x1E69E9840];

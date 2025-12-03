@@ -1,23 +1,23 @@
 @interface IMSWHighlightCenterController
-+ (id)sharedControllerWithAppIdentifier:(id)a3;
-- (IMSWHighlightCenterController)initWithAppIdentifier:(id)a3;
-- (id)collaborationHighlightForURL:(id)a3 error:(id *)a4;
-- (id)fetchAttributionsForHighlight:(id)a3;
-- (void)fetchAttributionsForHighlight:(id)a3 completionHandler:(id)a4;
++ (id)sharedControllerWithAppIdentifier:(id)identifier;
+- (IMSWHighlightCenterController)initWithAppIdentifier:(id)identifier;
+- (id)collaborationHighlightForURL:(id)l error:(id *)error;
+- (id)fetchAttributionsForHighlight:(id)highlight;
+- (void)fetchAttributionsForHighlight:(id)highlight completionHandler:(id)handler;
 @end
 
 @implementation IMSWHighlightCenterController
 
-+ (id)sharedControllerWithAppIdentifier:(id)a3
++ (id)sharedControllerWithAppIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = sub_1A8268E7C;
   block[3] = &unk_1E780FCB0;
-  v10 = v3;
+  v10 = identifierCopy;
   v4 = qword_1EB2EA138;
-  v5 = v3;
+  v5 = identifierCopy;
   if (v4 != -1)
   {
     dispatch_once(&qword_1EB2EA138, block);
@@ -29,10 +29,10 @@
   return v6;
 }
 
-- (IMSWHighlightCenterController)initWithAppIdentifier:(id)a3
+- (IMSWHighlightCenterController)initWithAppIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = IMSWHighlightCenterController;
   v5 = [(IMSWHighlightCenterController *)&v18 init];
@@ -52,7 +52,7 @@
     if (objc_msgSend_supportsSharedWithYou(MEMORY[0x1E69A8020], v6, v7))
     {
       v9 = objc_alloc(MEMORY[0x1AC56C550](@"SWHighlightCenter", @"SharedWithYou"));
-      v11 = objc_msgSend_initWithAppIdentifier_(v9, v10, v4);
+      v11 = objc_msgSend_initWithAppIdentifier_(v9, v10, identifierCopy);
       highlightCenter = v5->_highlightCenter;
       v5->_highlightCenter = v11;
 
@@ -67,35 +67,35 @@
   return v5;
 }
 
-- (id)collaborationHighlightForURL:(id)a3 error:(id *)a4
+- (id)collaborationHighlightForURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v9 = objc_msgSend_highlightCenter(self, v7, v8);
-  v11 = objc_msgSend_collaborationHighlightForURL_error_(v9, v10, v6, a4);
+  v11 = objc_msgSend_collaborationHighlightForURL_error_(v9, v10, lCopy, error);
 
   return v11;
 }
 
-- (void)fetchAttributionsForHighlight:(id)a3 completionHandler:(id)a4
+- (void)fetchAttributionsForHighlight:(id)highlight completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  highlightCopy = highlight;
   v10 = objc_msgSend_utilities(self, v8, v9);
   v13 = objc_msgSend_highlightCenter(self, v11, v12);
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = sub_1A82691A4;
   v16[3] = &unk_1E780FCD8;
-  v17 = v6;
-  v14 = v6;
-  objc_msgSend_fetchAttributionsForHighlight_highlight_completionBlock_(v10, v15, v13, v7, v16);
+  v17 = handlerCopy;
+  v14 = handlerCopy;
+  objc_msgSend_fetchAttributionsForHighlight_highlight_completionBlock_(v10, v15, v13, highlightCopy, v16);
 }
 
-- (id)fetchAttributionsForHighlight:(id)a3
+- (id)fetchAttributionsForHighlight:(id)highlight
 {
-  v4 = a3;
+  highlightCopy = highlight;
   v7 = objc_msgSend_highlightCenter(self, v5, v6);
-  v9 = objc_msgSend_fetchAttributionsForHighlight_(v7, v8, v4);
+  v9 = objc_msgSend_fetchAttributionsForHighlight_(v7, v8, highlightCopy);
 
   return v9;
 }

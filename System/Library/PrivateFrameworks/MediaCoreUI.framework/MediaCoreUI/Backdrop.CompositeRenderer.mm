@@ -1,7 +1,7 @@
 @interface Backdrop.CompositeRenderer
 - (_TtCO11MediaCoreUI8Backdrop17CompositeRenderer)init;
-- (void)drawInMTKView:(id)a3;
-- (void)mtkView:(id)a3 drawableSizeWillChange:(CGSize)a4;
+- (void)drawInMTKView:(id)view;
+- (void)mtkView:(id)view drawableSizeWillChange:(CGSize)change;
 @end
 
 @implementation Backdrop.CompositeRenderer
@@ -13,24 +13,24 @@
   return result;
 }
 
-- (void)mtkView:(id)a3 drawableSizeWillChange:(CGSize)a4
+- (void)mtkView:(id)view drawableSizeWillChange:(CGSize)change
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v11 = self;
-  v8 = [v7 traitCollection];
-  [v8 displayScale];
+  height = change.height;
+  width = change.width;
+  viewCopy = view;
+  selfCopy = self;
+  traitCollection = [viewCopy traitCollection];
+  [traitCollection displayScale];
   v10 = v9;
 
   sub_1C5AD8138(width, height, v10);
 }
 
-- (void)drawInMTKView:(id)a3
+- (void)drawInMTKView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  Backdrop.CompositeRenderer.draw(in:)(v4);
+  viewCopy = view;
+  selfCopy = self;
+  Backdrop.CompositeRenderer.draw(in:)(viewCopy);
 }
 
 @end

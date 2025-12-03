@@ -1,7 +1,7 @@
 @interface VCPWallpaperAnalyzer
 + (id)sharedModelPool;
 - (VCPWallpaperAnalyzer)init;
-- (int)analyzeWithSceneprint:(id)a3 results:(id *)a4 cancel:(id)a5;
+- (int)analyzeWithSceneprint:(id)sceneprint results:(id *)results cancel:(id)cancel;
 - (int)createModel;
 @end
 
@@ -37,10 +37,10 @@ VCPCNNModelEspresso *__39__VCPWallpaperAnalyzer_sharedModelPool__block_invoke_2(
     resConfig = v2->_resConfig;
     v2->_resConfig = &stru_1F496CB30;
 
-    v5 = [objc_opt_class() sharedModelPool];
-    v6 = [v5 getObject];
+    sharedModelPool = [objc_opt_class() sharedModelPool];
+    getObject = [sharedModelPool getObject];
     modelEspresso = v3->_modelEspresso;
-    v3->_modelEspresso = v6;
+    v3->_modelEspresso = getObject;
 
     if (v3->_modelEspresso)
     {
@@ -65,43 +65,43 @@ VCPCNNModelEspresso *__39__VCPWallpaperAnalyzer_sharedModelPool__block_invoke_2(
 
 - (int)createModel
 {
-  v2 = self;
-  v3 = [(VCPLoaned *)self->_modelEspresso object];
-  LODWORD(v2) = [v3 prepareModelWithConfig:v2->_resConfig];
+  selfCopy = self;
+  object = [(VCPLoaned *)self->_modelEspresso object];
+  LODWORD(selfCopy) = [object prepareModelWithConfig:selfCopy->_resConfig];
 
-  return v2;
+  return selfCopy;
 }
 
-- (int)analyzeWithSceneprint:(id)a3 results:(id *)a4 cancel:(id)a5
+- (int)analyzeWithSceneprint:(id)sceneprint results:(id *)results cancel:(id)cancel
 {
   v28 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  if ([v7 requestRevision] == 3737841671)
+  sceneprintCopy = sceneprint;
+  if ([sceneprintCopy requestRevision] == 3737841671)
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = [(VCPWallpaperAnalyzer *)self createModel];
-    if (v9)
+    createModel = [(VCPWallpaperAnalyzer *)self createModel];
+    if (createModel)
     {
       v10 = 0;
     }
 
     else
     {
-      v11 = [(VCPLoaned *)self->_modelEspresso object];
-      v12 = [v7 descriptorData];
-      v9 = [v11 espressoForward:{objc_msgSend(v12, "bytes")}];
+      object = [(VCPLoaned *)self->_modelEspresso object];
+      descriptorData = [sceneprintCopy descriptorData];
+      createModel = [object espressoForward:{objc_msgSend(descriptorData, "bytes")}];
 
-      v10 = v9 == 0;
+      v10 = createModel == 0;
     }
 
     objc_autoreleasePoolPop(v8);
     if (v10)
     {
-      v13 = [(VCPLoaned *)self->_modelEspresso object];
-      [v13 outputBlob];
+      object2 = [(VCPLoaned *)self->_modelEspresso object];
+      [object2 outputBlob];
       v14 = *(*buf + 4);
 
-      if (a4)
+      if (results)
       {
         v23 = @"WPResults";
         v20 = @"wallpaperScore";
@@ -112,7 +112,7 @@ VCPCNNModelEspresso *__39__VCPWallpaperAnalyzer_sharedModelPool__block_invoke_2(
         v22 = v17;
         v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
         v24 = v18;
-        *a4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
+        *results = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
       }
     }
   }
@@ -122,16 +122,16 @@ VCPCNNModelEspresso *__39__VCPWallpaperAnalyzer_sharedModelPool__block_invoke_2(
     if (MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 134218240;
-      *&buf[4] = [v7 requestRevision];
+      *&buf[4] = [sceneprintCopy requestRevision];
       v26 = 2048;
       v27 = 3737841671;
       _os_log_impl(&dword_1C9B70000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Invalid sceneprint revision: %lu (required %lu)", buf, 0x16u);
     }
 
-    v9 = -50;
+    createModel = -50;
   }
 
-  return v9;
+  return createModel;
 }
 
 @end

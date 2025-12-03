@@ -1,5 +1,5 @@
 @interface GKHairlineView
-+ (id)hairlineViewForAlignment:(int64_t)a3;
++ (id)hairlineViewForAlignment:(int64_t)alignment;
 - (CGSize)intrinsicContentSize;
 - (GKHairlineView)init;
 - (void)sizeToFit;
@@ -7,10 +7,10 @@
 
 @implementation GKHairlineView
 
-+ (id)hairlineViewForAlignment:(int64_t)a3
++ (id)hairlineViewForAlignment:(int64_t)alignment
 {
   v4 = objc_alloc_init(GKHairlineView);
-  [(GKHairlineView *)v4 setAlignment:a3];
+  [(GKHairlineView *)v4 setAlignment:alignment];
 
   return v4;
 }
@@ -22,9 +22,9 @@
   v2 = [(GKHairlineView *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D0C868] sharedPalette];
-    v4 = [v3 separatorLineColor];
-    [(GKHairlineView *)v2 setBackgroundColor:v4];
+    mEMORY[0x277D0C868] = [MEMORY[0x277D0C868] sharedPalette];
+    separatorLineColor = [mEMORY[0x277D0C868] separatorLineColor];
+    [(GKHairlineView *)v2 setBackgroundColor:separatorLineColor];
 
     [(GKHairlineView *)v2 setAutoresizingMask:2];
     v2->_alignment = 0;
@@ -37,8 +37,8 @@
 {
   if (self->_alignment)
   {
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v3 = *MEMORY[0x277D77260];
     v5 = 1.0 / v4;
   }
@@ -46,8 +46,8 @@
   else
   {
     v5 = *MEMORY[0x277D77260];
-    v2 = [MEMORY[0x277D759A0] mainScreen];
-    [v2 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v3 = 1.0 / v6;
   }
 
@@ -60,16 +60,16 @@
 
 - (void)sizeToFit
 {
-  v13 = [(GKHairlineView *)self superview];
+  superview = [(GKHairlineView *)self superview];
   [(GKHairlineView *)self frame];
-  if (v13)
+  if (superview)
   {
     v4 = v3;
     alignment = self->_alignment;
-    [v13 bounds];
+    [superview bounds];
     v6 = CGRectGetWidth(v15) + -18.0;
-    v7 = [MEMORY[0x277D759A0] mainScreen];
-    [v7 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v9 = 1.0 / v8;
 
     if (alignment)
@@ -87,7 +87,7 @@
       v6 = v9;
     }
 
-    [v13 bounds];
+    [superview bounds];
     [(GKHairlineView *)self setFrame:round(v12 + (v11 - v6) * 0.5), v4, v6, v10];
   }
 }

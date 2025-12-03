@@ -1,9 +1,9 @@
 @interface OSAExclaveContainer
 - (OSAExclaveContainer)init;
-- (id)getFramesForThread:(id)a3 usingCatalog:(id)a4;
-- (kcdata_iter)parseKCdata:(kcdata_iter)a3;
-- (void)appendNotesTo:(id)a3;
-- (void)setThreadId:(id)a3 withScId:(id)a4;
+- (id)getFramesForThread:(id)thread usingCatalog:(id)catalog;
+- (kcdata_iter)parseKCdata:(kcdata_iter)cdata;
+- (void)appendNotesTo:(id)to;
+- (void)setThreadId:(id)id withScId:(id)scId;
 @end
 
 @implementation OSAExclaveContainer
@@ -44,28 +44,28 @@
   return v2;
 }
 
-- (void)setThreadId:(id)a3 withScId:(id)a4
+- (void)setThreadId:(id)id withScId:(id)scId
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(OSAExclaveContainer *)self threadIdToScId];
-  [v8 setObject:v6 forKeyedSubscript:v7];
+  scIdCopy = scId;
+  idCopy = id;
+  threadIdToScId = [(OSAExclaveContainer *)self threadIdToScId];
+  [threadIdToScId setObject:scIdCopy forKeyedSubscript:idCopy];
 }
 
-- (id)getFramesForThread:(id)a3 usingCatalog:(id)a4
+- (id)getFramesForThread:(id)thread usingCatalog:(id)catalog
 {
   v63 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  threadCopy = thread;
+  catalogCopy = catalog;
   if ([(OSAExclaveContainer *)self isExclaveValid])
   {
-    v8 = [(OSAExclaveContainer *)self threadIdToScId];
-    v9 = [v8 objectForKeyedSubscript:v6];
+    threadIdToScId = [(OSAExclaveContainer *)self threadIdToScId];
+    v9 = [threadIdToScId objectForKeyedSubscript:threadCopy];
 
     if (v9)
     {
-      v10 = [(OSAExclaveContainer *)self threads];
-      v11 = [v10 objectForKeyedSubscript:v9];
+      threads = [(OSAExclaveContainer *)self threads];
+      v11 = [threads objectForKeyedSubscript:v9];
 
       if (v11)
       {
@@ -89,7 +89,7 @@
                 objc_enumerationMutation(v12);
               }
 
-              [v7 addExclaveSharedCache:*(*(&v58 + 1) + 8 * i)];
+              [catalogCopy addExclaveSharedCache:*(*(&v58 + 1) + 8 * i)];
             }
 
             v14 = [(NSMutableArray *)v12 countByEnumeratingWithState:&v58 objects:v62 count:16];
@@ -98,36 +98,36 @@
           while (v14);
         }
 
-        v17 = [MEMORY[0x1E695DF70] array];
-        v18 = [v11 stackEntries];
-        v19 = [v18 count];
+        array = [MEMORY[0x1E695DF70] array];
+        stackEntries = [v11 stackEntries];
+        v19 = [stackEntries count];
 
         if (v19)
         {
           v20 = 0;
-          v54 = v6;
-          v56 = self;
+          v54 = threadCopy;
+          selfCopy = self;
           v57 = v11;
           do
           {
-            v21 = [v11 stackEntries];
-            v22 = [v11 stackEntries];
-            v23 = [v21 objectAtIndexedSubscript:{objc_msgSend(v22, "count") + ~v20}];
+            stackEntries2 = [v11 stackEntries];
+            stackEntries3 = [v11 stackEntries];
+            v23 = [stackEntries2 objectAtIndexedSubscript:{objc_msgSend(stackEntries3, "count") + ~v20}];
 
-            v24 = [(OSAExclaveContainer *)self addressSpaces];
-            v25 = [v23 addressSpaceId];
-            v26 = [v24 objectForKeyedSubscript:v25];
+            addressSpaces = [(OSAExclaveContainer *)self addressSpaces];
+            addressSpaceId = [v23 addressSpaceId];
+            v26 = [addressSpaces objectForKeyedSubscript:addressSpaceId];
 
             if (v26)
             {
-              v27 = [(OSAExclaveContainer *)self layouts];
-              v28 = [v26 layoutId];
-              v29 = [v27 objectForKeyedSubscript:v28];
+              layouts = [(OSAExclaveContainer *)self layouts];
+              layoutId = [v26 layoutId];
+              notes2 = [layouts objectForKeyedSubscript:layoutId];
 
-              if (v29)
+              if (notes2)
               {
-                v30 = [v23 frames];
-                v31 = [v30 count];
+                frames = [v23 frames];
+                v31 = [frames count];
 
                 if (v31)
                 {
@@ -135,60 +135,60 @@
                   v32 = 0;
                   do
                   {
-                    v33 = [v23 frames];
-                    v34 = [v33 objectAtIndexedSubscript:v32];
-                    v35 = [v34 unsignedLongLongValue];
-                    v36 = [v29 segments];
-                    v37 = [v7 searchFrame:v35 in:v36 result:0];
-                    [v17 addObject:v37];
+                    frames2 = [v23 frames];
+                    v34 = [frames2 objectAtIndexedSubscript:v32];
+                    unsignedLongLongValue = [v34 unsignedLongLongValue];
+                    segments = [notes2 segments];
+                    v37 = [catalogCopy searchFrame:unsignedLongLongValue in:segments result:0];
+                    [array addObject:v37];
 
                     ++v32;
-                    v38 = [v23 frames];
-                    v39 = [v38 count];
+                    frames3 = [v23 frames];
+                    v39 = [frames3 count];
                   }
 
                   while (v39 > v32);
-                  v6 = v54;
+                  threadCopy = v54;
                   v26 = v55;
-                  self = v56;
+                  self = selfCopy;
                 }
 
                 goto LABEL_22;
               }
 
-              v41 = [(OSAExclaveContainer *)self notes];
-              v43 = v6;
+              notes = [(OSAExclaveContainer *)self notes];
+              v43 = threadCopy;
               v44 = v26;
               v45 = MEMORY[0x1E696AEC0];
-              v42 = [v44 layoutId];
-              v46 = [v45 stringWithFormat:@"Thread:%@ Layout info does not exist for layout id %@", v43, v42];;
-              [v41 addObject:v46];
+              layoutId2 = [v44 layoutId];
+              v46 = [v45 stringWithFormat:@"Thread:%@ Layout info does not exist for layout id %@", v43, layoutId2];;
+              [notes addObject:v46];
 
               v26 = v44;
-              v6 = v43;
-              self = v56;
+              threadCopy = v43;
+              self = selfCopy;
             }
 
             else
             {
-              v29 = [(OSAExclaveContainer *)self notes];
+              notes2 = [(OSAExclaveContainer *)self notes];
               v40 = MEMORY[0x1E696AEC0];
-              v41 = [v23 addressSpaceId];
-              v42 = [v40 stringWithFormat:@"Thread:%@ Address space info does exist for asid %@", v6, v41];;
-              [v29 addObject:v42];
+              notes = [v23 addressSpaceId];
+              layoutId2 = [v40 stringWithFormat:@"Thread:%@ Address space info does exist for asid %@", threadCopy, notes];;
+              [notes2 addObject:layoutId2];
             }
 
 LABEL_22:
             ++v20;
             v11 = v57;
-            v47 = [v57 stackEntries];
-            v48 = [v47 count];
+            stackEntries4 = [v57 stackEntries];
+            v48 = [stackEntries4 count];
           }
 
           while (v48 > v20);
         }
 
-        [v7 clearExclaveSharedCaches];
+        [catalogCopy clearExclaveSharedCaches];
         v9 = v53;
       }
 
@@ -199,7 +199,7 @@ LABEL_22:
           [OSAExclaveContainer getFramesForThread:v9 usingCatalog:?];
         }
 
-        v17 = 0;
+        array = 0;
       }
     }
 
@@ -207,33 +207,33 @@ LABEL_22:
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
-        [OSAExclaveContainer getFramesForThread:v6 usingCatalog:?];
+        [OSAExclaveContainer getFramesForThread:threadCopy usingCatalog:?];
       }
 
-      v17 = 0;
+      array = 0;
     }
   }
 
   else
   {
-    v49 = [(OSAExclaveContainer *)self notes];
-    v50 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Omitted invalid exclave data for thread %llu", objc_msgSend(v6, "unsignedLongLongValue")];
-    [v49 addObject:v50];
+    notes3 = [(OSAExclaveContainer *)self notes];
+    v50 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Omitted invalid exclave data for thread %llu", objc_msgSend(threadCopy, "unsignedLongLongValue")];
+    [notes3 addObject:v50];
 
-    v17 = 0;
+    array = 0;
   }
 
   v51 = *MEMORY[0x1E69E9840];
 
-  return v17;
+  return array;
 }
 
-- (kcdata_iter)parseKCdata:(kcdata_iter)a3
+- (kcdata_iter)parseKCdata:(kcdata_iter)cdata
 {
-  end = a3.end;
-  item = a3.item;
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = v6;
+  end = cdata.end;
+  item = cdata.item;
+  array = [MEMORY[0x1E695DF70] array];
+  v7 = array;
   v8 = item + 1;
   v9 = item;
   if (&item[1] <= end)
@@ -281,10 +281,10 @@ LABEL_12:
     {
       v93 = item;
       v12 = 0;
-      v89 = self;
+      selfCopy = self;
       v13 = 0x1E696A000uLL;
       v91 = end;
-      v92 = v6;
+      v92 = array;
       while (1)
       {
         size = v10->size;
@@ -319,8 +319,8 @@ LABEL_121:
               }
 
               v95 = v46;
-              v47 = [v46 data];
-              v21 = [v47 objectForKeyedSubscript:&unk_1F241EB48];
+              data = [v46 data];
+              v21 = [data objectForKeyedSubscript:&unk_1F241EB48];
 
               v23 = [MEMORY[0x1E696AEC0] stringWithUTF8String:&v10[1]];
               [v21 setName:v23];
@@ -336,8 +336,8 @@ LABEL_121:
               }
 
               v95 = v34;
-              v35 = [v34 data];
-              v21 = [v35 objectForKeyedSubscript:&unk_1F241EB60];
+              data2 = [v34 data];
+              v21 = [data2 objectForKeyedSubscript:&unk_1F241EB60];
 
               v36 = [*(v13 + 3480) numberWithUnsignedLongLong:*&v10[1].type];
               [v21 setLayoutId:v36];
@@ -364,8 +364,8 @@ LABEL_121:
               }
 
               v95 = v40;
-              v41 = [v40 data];
-              v21 = [v41 objectForKeyedSubscript:&unk_1F241EB78];
+              data3 = [v40 data];
+              v21 = [data3 objectForKeyedSubscript:&unk_1F241EB78];
 
               v23 = [*(v13 + 3480) numberWithUnsignedLongLong:*&v10[1].type];
               [v21 setAddressSpaceId:v23];
@@ -381,8 +381,8 @@ LABEL_121:
               }
 
               v95 = v27;
-              v28 = [v27 data];
-              v21 = [v28 objectForKeyedSubscript:&unk_1F241EB48];
+              data4 = [v27 data];
+              v21 = [data4 objectForKeyedSubscript:&unk_1F241EB48];
 
               v29 = [*(v13 + 3480) numberWithUnsignedLongLong:*&v10[1].type];
               [v21 setAddressSpaceId:v29];
@@ -405,61 +405,61 @@ LABEL_121:
               [OSAExclaveContainer parseKCdata:];
             }
 
-            v44 = [v42 type];
-            v12 = v44 == 2377;
+            type = [v42 type];
+            v12 = type == 2377;
             v95 = v42;
-            if (v44 != 2377)
+            if (type != 2377)
             {
-              v51 = [v42 type];
-              if (v51 == 2380)
+              type2 = [v42 type];
+              if (type2 == 2380)
               {
                 v52 = v11;
                 v53 = [v7 top];
                 v54 = v42;
                 v21 = v53;
-                v55 = [v54 data];
-                v56 = [v55 objectForKeyedSubscript:&unk_1F241EB78];
+                data5 = [v54 data];
+                threads = [data5 objectForKeyedSubscript:&unk_1F241EB78];
 
-                v57 = [v21 data];
-                v58 = [v57 objectForKeyedSubscript:&unk_1F241EB30];
+                data6 = [v21 data];
+                v58 = [data6 objectForKeyedSubscript:&unk_1F241EB30];
 
-                [v58 addStackEntries:v56];
+                [v58 addStackEntries:threads];
               }
 
               else
               {
                 if ([v42 type] == 2378)
                 {
-                  v59 = [v42 data];
-                  v21 = [v59 objectForKeyedSubscript:&unk_1F241EB30];
+                  data7 = [v42 data];
+                  v21 = [data7 objectForKeyedSubscript:&unk_1F241EB30];
 
-                  v60 = [v21 schedulingContextId];
+                  schedulingContextId = [v21 schedulingContextId];
 
-                  if (!v60)
+                  if (!schedulingContextId)
                   {
                     goto LABEL_80;
                   }
 
                   v52 = v11;
-                  v56 = [(OSAExclaveContainer *)v89 threads];
-                  v61 = [v21 schedulingContextId];
+                  threads = [(OSAExclaveContainer *)selfCopy threads];
+                  schedulingContextId2 = [v21 schedulingContextId];
                 }
 
                 else if ([v42 type] == 2383)
                 {
-                  v68 = [v42 data];
-                  v21 = [v68 objectForKeyedSubscript:&unk_1F241EB48];
+                  data8 = [v42 data];
+                  v21 = [data8 objectForKeyedSubscript:&unk_1F241EB48];
 
-                  v69 = [v21 addressSpaceId];
+                  addressSpaceId = [v21 addressSpaceId];
 
-                  if (!v69)
+                  if (!addressSpaceId)
                   {
                     goto LABEL_80;
                   }
 
                   v52 = v11;
-                  v56 = [(OSAExclaveContainer *)v89 addressSpaces];
-                  v61 = [v21 addressSpaceId];
+                  threads = [(OSAExclaveContainer *)selfCopy addressSpaces];
+                  schedulingContextId2 = [v21 addressSpaceId];
                 }
 
                 else
@@ -469,23 +469,23 @@ LABEL_121:
                     goto LABEL_81;
                   }
 
-                  v70 = [v42 data];
-                  v21 = [v70 objectForKeyedSubscript:&unk_1F241EB60];
+                  data9 = [v42 data];
+                  v21 = [data9 objectForKeyedSubscript:&unk_1F241EB60];
 
-                  v71 = [v21 layoutId];
+                  layoutId = [v21 layoutId];
 
-                  if (!v71)
+                  if (!layoutId)
                   {
                     goto LABEL_80;
                   }
 
                   v52 = v11;
-                  v56 = [(OSAExclaveContainer *)v89 layouts];
-                  v61 = [v21 layoutId];
+                  threads = [(OSAExclaveContainer *)selfCopy layouts];
+                  schedulingContextId2 = [v21 layoutId];
                 }
 
-                v58 = v61;
-                [v56 setObject:v21 forKeyedSubscript:v61];
+                v58 = schedulingContextId2;
+                [threads setObject:v21 forKeyedSubscript:schedulingContextId2];
               }
 
               v7 = v92;
@@ -508,8 +508,8 @@ LABEL_81:
             }
 
             v95 = v31;
-            v32 = [v31 data];
-            v21 = [v32 objectForKeyedSubscript:&unk_1F241EB30];
+            data10 = [v31 data];
+            v21 = [data10 objectForKeyedSubscript:&unk_1F241EB30];
 
             v23 = [*(v13 + 3480) numberWithUnsignedLongLong:*&v10[1].type];
             [v21 setSchedulingContextId:v23];
@@ -583,8 +583,8 @@ LABEL_101:
                   }
 
                   v90 = v11;
-                  v79 = [v72 data];
-                  v21 = [v79 objectForKeyedSubscript:&unk_1F241EB60];
+                  data11 = [v72 data];
+                  v21 = [data11 objectForKeyedSubscript:&unk_1F241EB60];
 
                   v80 = v37;
                   if (v37)
@@ -600,7 +600,7 @@ LABEL_101:
                       v97 = __35__OSAExclaveContainer_parseKCdata___block_invoke_92;
                       v98 = &unk_1E7A27D70;
                       v99 = v21;
-                      v100 = v89;
+                      v100 = selfCopy;
                       v97(v96, v82, &v10[1] + v81);
 
                       ++v82;
@@ -610,10 +610,10 @@ LABEL_101:
                     while (v84 != v82);
                   }
 
-                  v85 = [v21 segments];
-                  [v85 sortByAddressAndSetInferredSizes];
+                  segments = [v21 segments];
+                  [segments sortByAddressAndSetInferredSizes];
 
-                  [(NSMutableArray *)v89->_sharedCaches sortByAddressAndSetInferredSizes];
+                  [(NSMutableArray *)selfCopy->_sharedCaches sortByAddressAndSetInferredSizes];
                   v12 = 0;
                 }
 
@@ -631,8 +631,8 @@ LABEL_101:
                     [OSAExclaveContainer parseKCdata:];
                   }
 
-                  v73 = [v72 data];
-                  v88 = [v73 objectForKeyedSubscript:&unk_1F241EB78];
+                  data12 = [v72 data];
+                  v88 = [data12 objectForKeyedSubscript:&unk_1F241EB78];
 
                   if (!v37)
                   {
@@ -724,12 +724,12 @@ LABEL_91:
                 v95 = v65;
                 v67 = v65;
                 v21 = v66;
-                v22 = [v67 data];
-                v23 = v22;
+                data13 = [v67 data];
+                v23 = data13;
                 v24 = v21;
                 v25 = &unk_1F241EB48;
 LABEL_77:
-                [v22 setObject:v24 forKeyedSubscript:v25];
+                [data13 setObject:v24 forKeyedSubscript:v25];
 LABEL_78:
 
 LABEL_79:
@@ -746,8 +746,8 @@ LABEL_80:
                 v95 = v48;
                 v50 = v48;
                 v21 = v49;
-                v22 = [v50 data];
-                v23 = v22;
+                data13 = [v50 data];
+                v23 = data13;
                 v24 = v21;
                 v25 = &unk_1F241EB60;
                 goto LABEL_77;
@@ -764,8 +764,8 @@ LABEL_80:
                 v95 = v62;
                 v64 = v62;
                 v21 = v63;
-                v22 = [v64 data];
-                v23 = v22;
+                data13 = [v64 data];
+                v23 = data13;
                 v24 = v21;
                 v25 = &unk_1F241EB30;
                 goto LABEL_77;
@@ -778,8 +778,8 @@ LABEL_80:
                 v95 = v18;
                 v20 = v18;
                 v21 = v19;
-                v22 = [v20 data];
-                v23 = v22;
+                data13 = [v20 data];
+                v23 = data13;
                 v24 = v21;
                 v25 = &unk_1F241EB78;
                 goto LABEL_77;
@@ -833,11 +833,11 @@ void __35__OSAExclaveContainer_parseKCdata___block_invoke_92(uint64_t a1, int a2
   }
 }
 
-- (void)appendNotesTo:(id)a3
+- (void)appendNotesTo:(id)to
 {
-  v4 = a3;
-  v5 = [(OSAExclaveContainer *)self notes];
-  [v4 addObjectsFromArray:v5];
+  toCopy = to;
+  notes = [(OSAExclaveContainer *)self notes];
+  [toCopy addObjectsFromArray:notes];
 }
 
 - (void)getFramesForThread:(uint64_t)a1 usingCatalog:.cold.1(uint64_t a1)

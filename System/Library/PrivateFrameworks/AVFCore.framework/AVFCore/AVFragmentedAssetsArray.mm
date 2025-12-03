@@ -1,7 +1,7 @@
 @interface AVFragmentedAssetsArray
 - (AVFragmentedAssetsArray)init;
-- (AVFragmentedAssetsArray)initWithCount:(unint64_t)a3 firstSequenceNumber:(unint64_t)a4;
-- (id)objectAtIndex:(unint64_t)a3;
+- (AVFragmentedAssetsArray)initWithCount:(unint64_t)count firstSequenceNumber:(unint64_t)number;
+- (id)objectAtIndex:(unint64_t)index;
 - (void)dealloc;
 @end
 
@@ -16,7 +16,7 @@
   objc_exception_throw(v12);
 }
 
-- (AVFragmentedAssetsArray)initWithCount:(unint64_t)a3 firstSequenceNumber:(unint64_t)a4
+- (AVFragmentedAssetsArray)initWithCount:(unint64_t)count firstSequenceNumber:(unint64_t)number
 {
   v9.receiver = self;
   v9.super_class = AVFragmentedAssetsArray;
@@ -24,8 +24,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_count = a3;
-    v6->_firstSequenceNumber = a4;
+    v6->_count = count;
+    v6->_firstSequenceNumber = number;
     v6->_cachedFragments = [MEMORY[0x1E695DF90] dictionary];
   }
 
@@ -39,23 +39,23 @@
   [(AVFragmentedAssetsArray *)&v3 dealloc];
 }
 
-- (id)objectAtIndex:(unint64_t)a3
+- (id)objectAtIndex:(unint64_t)index
 {
-  if (self->_count <= a3)
+  if (self->_count <= index)
   {
-    v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"index %d out of bounds.", v3, v4, v5, v6, v7, a3), 0}];
+    v13 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695DA20] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"index %d out of bounds.", v3, v4, v5, v6, v7, index), 0}];
     objc_exception_throw(v13);
   }
 
-  v10 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v11 = [(NSMutableDictionary *)self->_cachedFragments objectForKey:v10];
-  if (!v11)
+  v10 = [MEMORY[0x1E696AD98] numberWithInteger:index];
+  index = [(NSMutableDictionary *)self->_cachedFragments objectForKey:v10];
+  if (!index)
   {
-    v11 = [AVAssetFragment fragmentWithSequenceNumber:self->_firstSequenceNumber + a3];
-    [(NSMutableDictionary *)self->_cachedFragments setObject:v11 forKey:v10];
+    index = [AVAssetFragment fragmentWithSequenceNumber:self->_firstSequenceNumber + index];
+    [(NSMutableDictionary *)self->_cachedFragments setObject:index forKey:v10];
   }
 
-  return v11;
+  return index;
 }
 
 @end

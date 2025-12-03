@@ -1,5 +1,5 @@
 @interface SearchUICollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityContainsCombinedView;
 - (BOOL)_accessibilityContainsNestedAccessibilityView;
 - (BOOL)_accessibilityHasAccessibleSubviews;
@@ -14,29 +14,29 @@
 
 @implementation SearchUICollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v4 = a3;
-  [v4 validateClass:@"SearchUICardSectionView"];
-  [v4 validateClass:@"SearchUIDetailedRowCardSectionView"];
-  [v4 validateClass:@"SearchUIHomeScreenAppIconView"];
-  [v4 validateClass:@"SearchUIWebCardSectionView"];
-  [v4 validateClass:@"SearchUICombinedCardSectionsView"];
-  [v4 validateClass:@"SearchUIHeroCardSectionView"];
-  [v4 validateClass:@"SearchUILabel"];
-  [v4 validateClass:@"SearchUIMapPlaceCardSectionView"];
-  [v4 validateClass:@"SearchUIFlightCardSectionView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SearchUICardSectionView"];
+  [validationsCopy validateClass:@"SearchUIDetailedRowCardSectionView"];
+  [validationsCopy validateClass:@"SearchUIHomeScreenAppIconView"];
+  [validationsCopy validateClass:@"SearchUIWebCardSectionView"];
+  [validationsCopy validateClass:@"SearchUICombinedCardSectionsView"];
+  [validationsCopy validateClass:@"SearchUIHeroCardSectionView"];
+  [validationsCopy validateClass:@"SearchUILabel"];
+  [validationsCopy validateClass:@"SearchUIMapPlaceCardSectionView"];
+  [validationsCopy validateClass:@"SearchUIFlightCardSectionView"];
   v3 = [MEMORY[0x29EDB9F48] bundleWithIdentifier:@"com.apple.SiriUICardKitProviderSupport.framework"];
 
   if (v3)
   {
-    [v4 validateClass:@"SCKPMediaControlCardSectionView"];
+    [validationsCopy validateClass:@"SCKPMediaControlCardSectionView"];
   }
 
-  [v4 validateClass:@"SearchUITableViewCell" hasInstanceMethod:@"rowModel" withFullSignature:{"@", 0}];
-  [v4 validateClass:@"SearchUIRowModel" hasInstanceMethod:@"isTappable" withFullSignature:{"B", 0}];
-  [v4 validateClass:@"SearchUIRowModel" hasProperty:@"identifyingResult" withType:"@"];
-  [v4 validateClass:@"SFSearchResult" hasProperty:@"contentType" withType:"@"];
+  [validationsCopy validateClass:@"SearchUITableViewCell" hasInstanceMethod:@"rowModel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SearchUIRowModel" hasInstanceMethod:@"isTappable" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SearchUIRowModel" hasProperty:@"identifyingResult" withType:"@"];
+  [validationsCopy validateClass:@"SFSearchResult" hasProperty:@"contentType" withType:"@"];
 }
 
 - (id)accessibilityElements
@@ -110,14 +110,14 @@ LABEL_8:
 
 - (id)accessibilityLabel
 {
-  v3 = [(SearchUICollectionViewCellAccessibility *)self accessibilityElements];
-  v4 = MEMORY[0x29ED341C0]();
+  accessibilityElements = [(SearchUICollectionViewCellAccessibility *)self accessibilityElements];
+  _accessibilityLabelFallback = MEMORY[0x29ED341C0]();
 
   if ([(SearchUICollectionViewCellAccessibility *)self isAccessibilityElement]|| AXDoesRequestingClientDeserveAutomation())
   {
-    if (!v4)
+    if (!_accessibilityLabelFallback)
     {
-      v4 = [(SearchUICollectionViewCellAccessibility *)self _accessibilityLabelFallback];
+      _accessibilityLabelFallback = [(SearchUICollectionViewCellAccessibility *)self _accessibilityLabelFallback];
     }
 
     v5 = [(SearchUICollectionViewCellAccessibility *)self safeValueForKey:@"rowModel"];
@@ -134,13 +134,13 @@ LABEL_8:
         v13 = accessibilityLocalizedString(@"siri.shortcut");
         v10 = __UIAXStringForVariables();
 
-        v4 = v10;
+        _accessibilityLabelFallback = v10;
       }
     }
 
-    v4 = v4;
+    _accessibilityLabelFallback = _accessibilityLabelFallback;
 
-    v11 = v4;
+    v11 = _accessibilityLabelFallback;
   }
 
   else
@@ -153,27 +153,27 @@ LABEL_8:
 
 - (id)accessibilityValue
 {
-  v3 = [(SearchUICollectionViewCellAccessibility *)self accessibilityElements];
-  if ([v3 count])
+  accessibilityElements = [(SearchUICollectionViewCellAccessibility *)self accessibilityElements];
+  if ([accessibilityElements count])
   {
-    v4 = [v3 objectAtIndexedSubscript:0];
-    v5 = [v4 accessibilityValue];
+    v4 = [accessibilityElements objectAtIndexedSubscript:0];
+    accessibilityValue = [v4 accessibilityValue];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SearchUICollectionViewCellAccessibility;
-    v5 = [(SearchUICollectionViewCellAccessibility *)&v7 accessibilityValue];
+    accessibilityValue = [(SearchUICollectionViewCellAccessibility *)&v7 accessibilityValue];
   }
 
-  return v5;
+  return accessibilityValue;
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v3 = [(SearchUICollectionViewCellAccessibility *)self accessibilityElements];
-  if ([v3 count])
+  accessibilityElements = [(SearchUICollectionViewCellAccessibility *)self accessibilityElements];
+  if ([accessibilityElements count])
   {
     if ([(SearchUICollectionViewCellAccessibility *)self _accessibilityContainsNestedAccessibilityView])
     {
@@ -182,7 +182,7 @@ LABEL_8:
 
     else
     {
-      v5 = [v3 objectAtIndexedSubscript:0];
+      v5 = [accessibilityElements objectAtIndexedSubscript:0];
       v4 = [v5 isAccessibilityElement] ^ 1;
     }
   }
@@ -199,7 +199,7 @@ LABEL_8:
 {
   v7.receiver = self;
   v7.super_class = SearchUICollectionViewCellAccessibility;
-  v3 = [(SearchUICollectionViewCellAccessibility *)&v7 accessibilityTraits];
+  accessibilityTraits = [(SearchUICollectionViewCellAccessibility *)&v7 accessibilityTraits];
   v4 = [(SearchUICollectionViewCellAccessibility *)self safeValueForKey:@"rowModel"];
   if ([v4 safeBoolForKey:@"isTappable"])
   {
@@ -211,7 +211,7 @@ LABEL_8:
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
 - (BOOL)_accessibilityHasAccessibleSubviews
@@ -264,7 +264,7 @@ uint64_t __78__SearchUICollectionViewCellAccessibility__accessibilityHasAccessib
   {
     v6.receiver = self;
     v6.super_class = SearchUICollectionViewCellAccessibility;
-    v3 = [(SearchUICollectionViewCellAccessibility *)&v6 _accessibilitySupplementaryFooterViews];
+    _accessibilitySupplementaryFooterViews = [(SearchUICollectionViewCellAccessibility *)&v6 _accessibilitySupplementaryFooterViews];
   }
 
   else
@@ -279,10 +279,10 @@ uint64_t __78__SearchUICollectionViewCellAccessibility__accessibilityHasAccessib
     v5[2] = __81__SearchUICollectionViewCellAccessibility__accessibilitySupplementaryFooterViews__block_invoke_2;
     v5[3] = &unk_29F2F5068;
     v5[4] = self;
-    v3 = [(SearchUICollectionViewCellAccessibility *)self _accessibilityFindSubviewDescendantsPassingTest:v5];
+    _accessibilitySupplementaryFooterViews = [(SearchUICollectionViewCellAccessibility *)self _accessibilityFindSubviewDescendantsPassingTest:v5];
   }
 
-  return v3;
+  return _accessibilitySupplementaryFooterViews;
 }
 
 Class __81__SearchUICollectionViewCellAccessibility__accessibilitySupplementaryFooterViews__block_invoke()
@@ -329,8 +329,8 @@ uint64_t __81__SearchUICollectionViewCellAccessibility__accessibilitySupplementa
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = [(SearchUICollectionViewCellAccessibility *)self accessibilityElements];
-    v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+    accessibilityElements = [(SearchUICollectionViewCellAccessibility *)self accessibilityElements];
+    v9 = [accessibilityElements countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -341,7 +341,7 @@ uint64_t __81__SearchUICollectionViewCellAccessibility__accessibilitySupplementa
         {
           if (*v17 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(accessibilityElements);
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
@@ -352,7 +352,7 @@ uint64_t __81__SearchUICollectionViewCellAccessibility__accessibilitySupplementa
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
+        v10 = [accessibilityElements countByEnumeratingWithState:&v16 objects:v20 count:16];
         v7 = 0;
         if (v10)
         {
@@ -393,8 +393,8 @@ Class __77__SearchUICollectionViewCellAccessibility__accessibilityContainsCombin
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v2 = [(SearchUICollectionViewCellAccessibility *)self accessibilityElements];
-  v3 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  accessibilityElements = [(SearchUICollectionViewCellAccessibility *)self accessibilityElements];
+  v3 = [accessibilityElements countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -405,7 +405,7 @@ Class __77__SearchUICollectionViewCellAccessibility__accessibilityContainsCombin
       {
         if (*v12 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(accessibilityElements);
         }
 
         v7 = *(*(&v11 + 1) + 8 * i);
@@ -431,7 +431,7 @@ Class __77__SearchUICollectionViewCellAccessibility__accessibilityContainsCombin
         goto LABEL_15;
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [accessibilityElements countByEnumeratingWithState:&v11 objects:v15 count:16];
       v8 = 0;
       if (v4)
       {
@@ -494,7 +494,7 @@ LABEL_15:
             objc_enumerationMutation(v7);
           }
 
-          v15 = [*(*(&v17 + 1) + 8 * v11) accessibilityLabel];
+          accessibilityLabel = [*(*(&v17 + 1) + 8 * v11) accessibilityLabel];
           v16 = @"__AXStringForVariablesSentinel";
           v6 = __AXStringForVariables();
 
@@ -503,7 +503,7 @@ LABEL_15:
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:{16, v15, @"__AXStringForVariablesSentinel"}];
+        v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:{16, accessibilityLabel, @"__AXStringForVariablesSentinel"}];
       }
 
       while (v9);

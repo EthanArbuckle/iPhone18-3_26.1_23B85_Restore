@@ -1,52 +1,52 @@
 @interface ASTUploadItem
-- (ASTUploadItem)initWithDestinationUrl:(id)a3 andSourceData:(id)a4 andTask:(id)a5;
-- (ASTUploadItem)initWithDestinationUrl:(id)a3 andSourceUrl:(id)a4 andTask:(id)a5;
+- (ASTUploadItem)initWithDestinationUrl:(id)url andSourceData:(id)data andTask:(id)task;
+- (ASTUploadItem)initWithDestinationUrl:(id)url andSourceUrl:(id)sourceUrl andTask:(id)task;
 - (NSURLSessionUploadTask)task;
 @end
 
 @implementation ASTUploadItem
 
-- (ASTUploadItem)initWithDestinationUrl:(id)a3 andSourceUrl:(id)a4 andTask:(id)a5
+- (ASTUploadItem)initWithDestinationUrl:(id)url andSourceUrl:(id)sourceUrl andTask:(id)task
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  urlCopy = url;
+  sourceUrlCopy = sourceUrl;
+  taskCopy = task;
   v17.receiver = self;
   v17.super_class = ASTUploadItem;
   v12 = [(ASTUploadItem *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_destinationUrl, a3);
-    objc_storeStrong(&v13->_dataObject, a4);
-    objc_storeWeak(&v13->_task, v11);
+    objc_storeStrong(&v12->_destinationUrl, url);
+    objc_storeStrong(&v13->_dataObject, sourceUrl);
+    objc_storeWeak(&v13->_task, taskCopy);
     *&v13->_isComplete = 0;
-    v14 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     metaInfo = v13->_metaInfo;
-    v13->_metaInfo = v14;
+    v13->_metaInfo = dictionary;
   }
 
   return v13;
 }
 
-- (ASTUploadItem)initWithDestinationUrl:(id)a3 andSourceData:(id)a4 andTask:(id)a5
+- (ASTUploadItem)initWithDestinationUrl:(id)url andSourceData:(id)data andTask:(id)task
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  urlCopy = url;
+  dataCopy = data;
+  taskCopy = task;
   v17.receiver = self;
   v17.super_class = ASTUploadItem;
   v12 = [(ASTUploadItem *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_destinationUrl, a3);
-    objc_storeStrong(&v13->_dataObject, a4);
-    objc_storeWeak(&v13->_task, v11);
+    objc_storeStrong(&v12->_destinationUrl, url);
+    objc_storeStrong(&v13->_dataObject, data);
+    objc_storeWeak(&v13->_task, taskCopy);
     *&v13->_isComplete = 0;
-    v14 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     metaInfo = v13->_metaInfo;
-    v13->_metaInfo = v14;
+    v13->_metaInfo = dictionary;
   }
 
   return v13;

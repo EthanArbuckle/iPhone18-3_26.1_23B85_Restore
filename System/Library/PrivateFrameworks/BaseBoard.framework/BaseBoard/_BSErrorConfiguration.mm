@@ -1,22 +1,22 @@
 @interface _BSErrorConfiguration
-- (void)_setObject:(void *)a3 forKey:;
-- (void)initWithDomain:(uint64_t)a3 code:;
-- (void)setCodeDescription:(id)a3;
-- (void)setFailureDescription:(id)a3;
-- (void)setFailureReason:(id)a3;
-- (void)setUnderlyingError:(id)a3;
-- (void)setUnderlyingErrors:(id)a3;
-- (void)setUserInfoValue:(id)a3 forKey:(id)a4;
+- (void)_setObject:(void *)object forKey:;
+- (void)initWithDomain:(uint64_t)domain code:;
+- (void)setCodeDescription:(id)description;
+- (void)setFailureDescription:(id)description;
+- (void)setFailureReason:(id)reason;
+- (void)setUnderlyingError:(id)error;
+- (void)setUnderlyingErrors:(id)errors;
+- (void)setUserInfoValue:(id)value forKey:(id)key;
 @end
 
 @implementation _BSErrorConfiguration
 
-- (void)initWithDomain:(uint64_t)a3 code:
+- (void)initWithDomain:(uint64_t)domain code:
 {
   v37 = *MEMORY[0x1E69E9840];
   v5 = a2;
   v6 = v5;
-  if (a1)
+  if (self)
   {
     v7 = v5;
     NSClassFromString(&cfstr_Nsstring.isa);
@@ -33,7 +33,7 @@
         v27 = 2114;
         v28 = v17;
         v29 = 2048;
-        v30 = a1;
+        selfCopy2 = self;
         v31 = 2114;
         v32 = @"NSError+BaseBoard.m";
         v33 = 1024;
@@ -62,7 +62,7 @@
         v27 = 2114;
         v28 = v22;
         v29 = 2048;
-        v30 = a1;
+        selfCopy2 = self;
         v31 = 2114;
         v32 = @"NSError+BaseBoard.m";
         v33 = 1024;
@@ -78,7 +78,7 @@
       JUMPOUT(0x18FF5AFB0);
     }
 
-    v24.receiver = a1;
+    v24.receiver = self;
     v24.super_class = _BSErrorConfiguration;
     v8 = objc_msgSendSuper2(&v24, sel_init);
     if (v8)
@@ -87,7 +87,7 @@
       v10 = v8[1];
       v8[1] = v9;
 
-      v8[2] = a3;
+      v8[2] = domain;
       v11 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v12 = v8[3];
       v8[3] = v11;
@@ -102,30 +102,30 @@
   return v8;
 }
 
-- (void)_setObject:(void *)a3 forKey:
+- (void)_setObject:(void *)object forKey:
 {
   v7 = a2;
-  v5 = a3;
-  if (a1)
+  objectCopy = object;
+  if (self)
   {
-    v6 = *(a1 + 24);
+    v6 = *(self + 24);
     if (v7)
     {
-      [v6 setObject:v7 forKey:v5];
+      [v6 setObject:v7 forKey:objectCopy];
     }
 
     else
     {
-      [v6 removeObjectForKey:v5];
+      [v6 removeObjectForKey:objectCopy];
     }
   }
 }
 
-- (void)setFailureDescription:(id)a3
+- (void)setFailureDescription:(id)description
 {
   v24 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  if (v11)
+  descriptionCopy = description;
+  if (descriptionCopy)
   {
     NSClassFromString(&cfstr_Nsstring.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -141,7 +141,7 @@
         v14 = 2114;
         v15 = v9;
         v16 = 2048;
-        v17 = self;
+        selfCopy = self;
         v18 = 2114;
         v19 = @"NSError+BaseBoard.m";
         v20 = 1024;
@@ -158,15 +158,15 @@
     }
   }
 
-  v5 = [v11 copy];
+  v5 = [descriptionCopy copy];
   [(_BSErrorConfiguration *)self _setObject:v5 forKey:*MEMORY[0x1E696A580]];
 }
 
-- (void)setFailureReason:(id)a3
+- (void)setFailureReason:(id)reason
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  reasonCopy = reason;
+  if (reasonCopy)
   {
     NSClassFromString(&cfstr_Nsstring.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -182,7 +182,7 @@
         v14 = 2114;
         v15 = v11;
         v16 = 2048;
-        v17 = self;
+        selfCopy = self;
         v18 = 2114;
         v19 = @"NSError+BaseBoard.m";
         v20 = 1024;
@@ -199,22 +199,22 @@
     }
 
     *buf = &v25;
-    v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:v5 arguments:&v25];
+    v6 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:reasonCopy arguments:&v25];
 
-    v5 = v6;
+    reasonCopy = v6;
   }
 
-  v7 = [v5 copy];
+  v7 = [reasonCopy copy];
   [(_BSErrorConfiguration *)self _setObject:v7 forKey:*MEMORY[0x1E696A588]];
 }
 
-- (void)setUserInfoValue:(id)a3 forKey:(id)a4
+- (void)setUserInfoValue:(id)value forKey:(id)key
 {
   v41 = *MEMORY[0x1E69E9840];
-  v28 = a3;
-  v7 = a4;
+  valueCopy = value;
+  keyCopy = key;
   NSClassFromString(&cfstr_Nsstring.isa);
-  if (!v7)
+  if (!keyCopy)
   {
     v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid condition not satisfying: %@", @"_bs_assert_object != nil"];
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -227,7 +227,7 @@
       v31 = 2114;
       v32 = v13;
       v33 = 2048;
-      v34 = self;
+      selfCopy3 = self;
       v35 = 2114;
       v36 = @"NSError+BaseBoard.m";
       v37 = 1024;
@@ -256,7 +256,7 @@
       v31 = 2114;
       v32 = v18;
       v33 = 2048;
-      v34 = self;
+      selfCopy3 = self;
       v35 = 2114;
       v36 = @"NSError+BaseBoard.m";
       v37 = 1024;
@@ -272,12 +272,12 @@
     JUMPOUT(0x18FF5B830);
   }
 
-  v8 = v28;
-  if (v28)
+  v8 = valueCopy;
+  if (valueCopy)
   {
-    v9 = [objc_opt_class() supportsSecureCoding];
-    v8 = v28;
-    if ((v9 & 1) == 0)
+    supportsSecureCoding = [objc_opt_class() supportsSecureCoding];
+    v8 = valueCopy;
+    if ((supportsSecureCoding & 1) == 0)
     {
       v20 = MEMORY[0x1E696AEC0];
       v21 = objc_opt_class();
@@ -294,7 +294,7 @@
         v31 = 2114;
         v32 = v26;
         v33 = 2048;
-        v34 = self;
+        selfCopy3 = self;
         v35 = 2114;
         v36 = @"NSError+BaseBoard.m";
         v37 = 1024;
@@ -311,14 +311,14 @@
     }
   }
 
-  [(_BSErrorConfiguration *)self _setObject:v8 forKey:v7];
+  [(_BSErrorConfiguration *)self _setObject:v8 forKey:keyCopy];
 }
 
-- (void)setUnderlyingError:(id)a3
+- (void)setUnderlyingError:(id)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  if (v10)
+  errorCopy = error;
+  if (errorCopy)
   {
     NSClassFromString(&cfstr_Nserror.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -334,7 +334,7 @@
         v13 = 2114;
         v14 = v8;
         v15 = 2048;
-        v16 = self;
+        selfCopy = self;
         v17 = 2114;
         v18 = @"NSError+BaseBoard.m";
         v19 = 1024;
@@ -351,14 +351,14 @@
     }
   }
 
-  [(_BSErrorConfiguration *)self _setObject:v10 forKey:*MEMORY[0x1E696AA08]];
+  [(_BSErrorConfiguration *)self _setObject:errorCopy forKey:*MEMORY[0x1E696AA08]];
 }
 
-- (void)setUnderlyingErrors:(id)a3
+- (void)setUnderlyingErrors:(id)errors
 {
   v43 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  errorsCopy = errors;
+  if (errorsCopy)
   {
     NSClassFromString(&cfstr_Nsarray.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -374,7 +374,7 @@
         v33 = 2114;
         v34 = v24;
         v35 = 2048;
-        v36 = self;
+        selfCopy3 = self;
         v37 = 2114;
         v38 = @"NSError+BaseBoard.m";
         v39 = 1024;
@@ -391,17 +391,17 @@
     }
   }
 
-  if (![v5 count])
+  if (![errorsCopy count])
   {
 
-    v5 = 0;
+    errorsCopy = 0;
   }
 
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v6 = v5;
+  v6 = errorsCopy;
   v7 = [v6 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v7)
   {
@@ -431,7 +431,7 @@
             v33 = 2114;
             v34 = v14;
             v35 = 2048;
-            v36 = self;
+            selfCopy3 = self;
             v37 = 2114;
             v38 = @"NSError+BaseBoard.m";
             v39 = 1024;
@@ -460,7 +460,7 @@
             v33 = 2114;
             v34 = v19;
             v35 = 2048;
-            v36 = self;
+            selfCopy3 = self;
             v37 = 2114;
             v38 = @"NSError+BaseBoard.m";
             v39 = 1024;
@@ -489,11 +489,11 @@
   [(_BSErrorConfiguration *)self _setObject:v6 forKey:*MEMORY[0x1E696A750]];
 }
 
-- (void)setCodeDescription:(id)a3
+- (void)setCodeDescription:(id)description
 {
   v24 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  if (v11)
+  descriptionCopy = description;
+  if (descriptionCopy)
   {
     NSClassFromString(&cfstr_Nsstring.isa);
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -509,7 +509,7 @@
         v14 = 2114;
         v15 = v9;
         v16 = 2048;
-        v17 = self;
+        selfCopy = self;
         v18 = 2114;
         v19 = @"NSError+BaseBoard.m";
         v20 = 1024;
@@ -526,7 +526,7 @@
     }
   }
 
-  v5 = [v11 copy];
+  v5 = [descriptionCopy copy];
   [(_BSErrorConfiguration *)self _setObject:v5 forKey:@"BSErrorCodeDescription"];
 }
 

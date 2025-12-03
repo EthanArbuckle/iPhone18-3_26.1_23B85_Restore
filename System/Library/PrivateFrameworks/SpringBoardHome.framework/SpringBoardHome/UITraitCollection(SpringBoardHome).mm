@@ -36,7 +36,7 @@
 - (void)sbh_homeScreenStyleConfiguration
 {
   v2 = objc_opt_self();
-  v3 = [a1 objectForTrait:v2];
+  v3 = [self objectForTrait:v2];
 
   getPUIStylePickerHomeScreenConfigurationClass();
   v4 = objc_opt_self();
@@ -58,7 +58,7 @@
 - (void)sbh_iconEffect
 {
   v2 = objc_opt_self();
-  v3 = [a1 objectForTrait:v2];
+  v3 = [self objectForTrait:v2];
 
   if (objc_opt_respondsToSelector())
   {
@@ -78,7 +78,7 @@
 - (id)sbh_iconTintColorInferringIfNecessary:()SpringBoardHome
 {
   v5 = objc_opt_self();
-  v6 = [a1 objectForTrait:v5];
+  v6 = [self objectForTrait:v5];
 
   v7 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -111,9 +111,9 @@
     {
       v13 = v12;
 LABEL_10:
-      v16 = [v13 tintColor];
+      tintColor = [v13 tintColor];
 LABEL_11:
-      v17 = v16;
+      v17 = tintColor;
 LABEL_16:
 
       v9 = v17;
@@ -143,7 +143,7 @@ LABEL_15:
     v20 = v6;
     if ([v20 styleType] == 3)
     {
-      v16 = [v20 accentColor];
+      tintColor = [v20 accentColor];
       goto LABEL_11;
     }
 
@@ -159,7 +159,7 @@ LABEL_17:
 - (id)sbh_iconImageAppearanceInferringIfNecessary:()SpringBoardHome
 {
   v5 = objc_opt_self();
-  v6 = [a1 objectForTrait:v5];
+  v6 = [self objectForTrait:v5];
 
   v7 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -171,10 +171,10 @@ LABEL_17:
 
   else if (a3)
   {
-    v10 = [a1 sbh_iconImageStyleConfigurationInferringIfNecessary:1];
+    v10 = [self sbh_iconImageStyleConfigurationInferringIfNecessary:1];
     if (v10)
     {
-      [v10 iconImageAppearanceWithUserInterfaceStyle:{objc_msgSend(a1, "userInterfaceStyle")}];
+      [v10 iconImageAppearanceWithUserInterfaceStyle:{objc_msgSend(self, "userInterfaceStyle")}];
     }
 
     else
@@ -195,53 +195,53 @@ LABEL_17:
 - (id)sbh_iconImageStyleConfigurationInferringIfNecessary:()SpringBoardHome
 {
   v5 = objc_opt_self();
-  v6 = [a1 objectForTrait:v5];
+  v6 = [self objectForTrait:v5];
 
   v7 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v9 = v6;
+    sbh_iconImageStyleConfiguration = v6;
   }
 
   else if (a3)
   {
-    v10 = [a1 sbh_iconImageAppearanceInferringIfNecessary:0];
+    v10 = [self sbh_iconImageAppearanceInferringIfNecessary:0];
     if (v10)
     {
-      v9 = [SBHIconImageStyleConfiguration styleConfigurationWithIconImageAppearance:v10];
+      sbh_iconImageStyleConfiguration = [SBHIconImageStyleConfiguration styleConfigurationWithIconImageAppearance:v10];
     }
 
     else
     {
-      v11 = [a1 sbh_homeScreenStyleConfiguration];
-      if (v11)
+      sbh_homeScreenStyleConfiguration = [self sbh_homeScreenStyleConfiguration];
+      if (sbh_homeScreenStyleConfiguration)
       {
-        v9 = [SBHIconImageStyleConfiguration styleConfigurationWithHomeScreenConfiguration:v11];
+        sbh_iconImageStyleConfiguration = [SBHIconImageStyleConfiguration styleConfigurationWithHomeScreenConfiguration:sbh_homeScreenStyleConfiguration];
       }
 
       else
       {
-        v12 = [a1 sbh_homeScreenIconStyleConfigurationInferringIfNecessary:0];
+        v12 = [self sbh_homeScreenIconStyleConfigurationInferringIfNecessary:0];
         v13 = v12;
         if (v12)
         {
-          v9 = [v12 sbh_iconImageStyleConfiguration];
+          sbh_iconImageStyleConfiguration = [v12 sbh_iconImageStyleConfiguration];
         }
 
         else
         {
-          v14 = [a1 userInterfaceStyle];
-          v15 = [a1 sbh_iconTintColorInferringIfNecessary:0];
+          userInterfaceStyle = [self userInterfaceStyle];
+          v15 = [self sbh_iconTintColorInferringIfNecessary:0];
           if (v15)
           {
-            v16 = [[SBHIconImageStyleConfiguration alloc] initWithConfigurationType:2 variant:v14 == 2 tintColor:v15];
+            v16 = [[SBHIconImageStyleConfiguration alloc] initWithConfigurationType:2 variant:userInterfaceStyle == 2 tintColor:v15];
           }
 
           else
           {
-            if (v14 == 2)
+            if (userInterfaceStyle == 2)
             {
               +[SBHIconImageStyleConfiguration colorDarkStyleConfiguration];
             }
@@ -253,7 +253,7 @@ LABEL_17:
             v16 = ;
           }
 
-          v9 = v16;
+          sbh_iconImageStyleConfiguration = v16;
         }
       }
     }
@@ -261,16 +261,16 @@ LABEL_17:
 
   else
   {
-    v9 = 0;
+    sbh_iconImageStyleConfiguration = 0;
   }
 
-  return v9;
+  return sbh_iconImageStyleConfiguration;
 }
 
 - (id)sbh_homeScreenIconStyleConfigurationInferringIfNecessary:()SpringBoardHome
 {
   v5 = objc_opt_self();
-  v6 = [a1 objectForTrait:v5];
+  v6 = [self objectForTrait:v5];
 
   v7 = objc_opt_self();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -283,7 +283,7 @@ LABEL_17:
   else
   {
     v10 = objc_opt_self();
-    v11 = [a1 objectForTrait:v10];
+    v11 = [self objectForTrait:v10];
 
     v12 = objc_opt_self();
     LOBYTE(v10) = objc_opt_isKindOfClass();
@@ -292,7 +292,7 @@ LABEL_17:
     {
       if (a3)
       {
-        v15 = [a1 sbh_iconImageStyleConfigurationInferringIfNecessary:1];
+        v15 = [self sbh_iconImageStyleConfigurationInferringIfNecessary:1];
         v16 = v15;
         if (v15)
         {
@@ -329,15 +329,15 @@ LABEL_6:
   v5 = a4;
   if (a3)
   {
-    v6 = [a3 userInterfaceStyle];
+    userInterfaceStyle = [a3 userInterfaceStyle];
   }
 
   else
   {
-    v6 = 1;
+    userInterfaceStyle = 1;
   }
 
-  v7 = [v5 iconImageAppearanceWithUserInterfaceStyle:v6];
+  v7 = [v5 iconImageAppearanceWithUserInterfaceStyle:userInterfaceStyle];
 
   return v7;
 }
@@ -361,17 +361,17 @@ LABEL_6:
 + (id)sbh_iconImageAppearanceFromTraitCollection:()SpringBoardHome overrideIconImageAppearance:
 {
   v5 = a4;
-  v6 = v5;
+  sbh_iconImageAppearance = v5;
   if (!v5)
   {
-    v6 = [a3 sbh_iconImageAppearance];
-    if (!v6)
+    sbh_iconImageAppearance = [a3 sbh_iconImageAppearance];
+    if (!sbh_iconImageAppearance)
     {
-      v6 = +[SBHIconImageAppearance defaultAppearance];
+      sbh_iconImageAppearance = +[SBHIconImageAppearance defaultAppearance];
     }
   }
 
-  return v6;
+  return sbh_iconImageAppearance;
 }
 
 + (id)sbh_iconImageAppearanceFromTraitCollection:()SpringBoardHome overrideIconImageAppearance:overrideIconImageStyleConfiguration:
@@ -380,26 +380,26 @@ LABEL_6:
   v9 = a4;
   v10 = a5;
   v11 = v9;
-  v12 = v11;
+  sbh_iconImageAppearance = v11;
   if (!v11)
   {
-    v12 = 0;
+    sbh_iconImageAppearance = 0;
     if (v10)
     {
-      v12 = [a1 sbh_iconImageAppearanceFromTraitCollection:v8 iconImageStyleConfiguration:v10];
+      sbh_iconImageAppearance = [self sbh_iconImageAppearanceFromTraitCollection:v8 iconImageStyleConfiguration:v10];
     }
   }
 
-  if (!v12)
+  if (!sbh_iconImageAppearance)
   {
-    v12 = [v8 sbh_iconImageAppearance];
-    if (!v12)
+    sbh_iconImageAppearance = [v8 sbh_iconImageAppearance];
+    if (!sbh_iconImageAppearance)
     {
-      v12 = +[SBHIconImageAppearance defaultAppearance];
+      sbh_iconImageAppearance = +[SBHIconImageAppearance defaultAppearance];
     }
   }
 
-  return v12;
+  return sbh_iconImageAppearance;
 }
 
 + (id)sbh_iconImageStyleConfigurationFromTraitCollection:()SpringBoardHome
@@ -452,9 +452,9 @@ LABEL_6:
   v8[2] = __81__UITraitCollection_SpringBoardHome__sbh_traitCollectionWithIconImageAppearance___block_invoke;
   v8[3] = &unk_1E808B958;
   v9 = v4;
-  v10 = a1;
+  selfCopy = self;
   v5 = v4;
-  v6 = [a1 traitCollectionWithTraits:v8];
+  v6 = [self traitCollectionWithTraits:v8];
 
   return v6;
 }
@@ -466,7 +466,7 @@ LABEL_6:
   v7 = objc_opt_self();
   [v9 setObject:v6 forTrait:v7];
 
-  v8 = [a1 sbh_userInterfaceStyleForIconImageAppearance:v6];
+  v8 = [self sbh_userInterfaceStyleForIconImageAppearance:v6];
   if (v8)
   {
     [v9 setUserInterfaceStyle:v8];
@@ -480,10 +480,10 @@ LABEL_6:
   v8[1] = 3221225472;
   v8[2] = __81__UITraitCollection_SpringBoardHome__sbh_traitCollectionWithIconImageAppearance___block_invoke;
   v8[3] = &unk_1E808B980;
-  v8[4] = a1;
+  v8[4] = self;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 traitCollectionByModifyingTraits:v8];
+  v6 = [self traitCollectionByModifyingTraits:v8];
 
   return v6;
 }
@@ -497,7 +497,7 @@ LABEL_6:
   v8[3] = &unk_1E808B9A8;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 traitCollectionWithTraits:v8];
+  v6 = [self traitCollectionWithTraits:v8];
 
   return v6;
 }
@@ -511,7 +511,7 @@ LABEL_6:
   v8[3] = &unk_1E808B9A8;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 traitCollectionByModifyingTraits:v8];
+  v6 = [self traitCollectionByModifyingTraits:v8];
 
   return v6;
 }
@@ -520,15 +520,15 @@ LABEL_6:
 {
   v10 = a3;
   v7 = a4;
-  v8 = [v7 variant];
+  variant = [v7 variant];
   v9 = objc_opt_self();
   [v10 setObject:v7 forTrait:v9];
 
-  if (v8 <= 1)
+  if (variant <= 1)
   {
-    if (v8)
+    if (variant)
     {
-      if (v8 != 1)
+      if (variant != 1)
       {
         goto LABEL_9;
       }
@@ -540,9 +540,9 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (v8 != 2)
+  if (variant != 2)
   {
-    if (v8 != 3)
+    if (variant != 3)
     {
       goto LABEL_9;
     }
@@ -564,10 +564,10 @@ LABEL_9:
   v10[2] = __108__UITraitCollection_SpringBoardHome__sbh_traitCollectionWithIconImageStyleConfiguration_userInterfaceStyle___block_invoke;
   v10[3] = &unk_1E808B9D0;
   v11 = v6;
-  v12 = a1;
+  selfCopy = self;
   v13 = a4;
   v7 = v6;
-  v8 = [a1 traitCollectionWithTraits:v10];
+  v8 = [self traitCollectionWithTraits:v10];
 
   return v8;
 }
@@ -579,11 +579,11 @@ LABEL_9:
   v10[1] = 3221225472;
   v10[2] = __108__UITraitCollection_SpringBoardHome__sbh_traitCollectionWithIconImageStyleConfiguration_userInterfaceStyle___block_invoke;
   v10[3] = &unk_1E808B9F8;
-  v10[4] = a1;
+  v10[4] = self;
   v11 = v6;
   v12 = a4;
   v7 = v6;
-  v8 = [a1 traitCollectionByModifyingTraits:v10];
+  v8 = [self traitCollectionByModifyingTraits:v10];
 
   return v8;
 }
@@ -597,7 +597,7 @@ LABEL_9:
   v6[3] = &unk_1E808B9A8;
   v7 = v2;
   v3 = v2;
-  v4 = [a1 traitCollectionWithTraits:v6];
+  v4 = [self traitCollectionWithTraits:v6];
 
   return v4;
 }
@@ -605,7 +605,7 @@ LABEL_9:
 + (id)sbh_traitCollectionWithHomeScreenStyleConfiguration:()SpringBoardHome userInterfaceStyle:
 {
   v6 = [SBHIconImageStyleConfiguration styleConfigurationWithHomeScreenConfiguration:?];
-  v7 = [a1 sbh_traitCollectionWithIconImageStyleConfiguration:v6 userInterfaceStyle:a4];
+  v7 = [self sbh_traitCollectionWithIconImageStyleConfiguration:v6 userInterfaceStyle:a4];
 
   return v7;
 }
@@ -613,18 +613,18 @@ LABEL_9:
 - (id)sbh_iconImageAppearanceWithHomeScreenStyleConfiguration:()SpringBoardHome
 {
   v2 = [SBHIconImageStyleConfiguration styleConfigurationWithHomeScreenConfiguration:?];
-  v3 = [v2 iconImageAppearanceWithUserInterfaceStyle:{objc_msgSend(a1, "userInterfaceStyle")}];
+  v3 = [v2 iconImageAppearanceWithUserInterfaceStyle:{objc_msgSend(self, "userInterfaceStyle")}];
 
   return v3;
 }
 
 - (BOOL)sbh_automaticallyChangesWithUserInterfaceStyle
 {
-  v1 = [a1 sbh_iconImageStyleConfiguration];
-  v2 = v1;
-  if (v1)
+  sbh_iconImageStyleConfiguration = [self sbh_iconImageStyleConfiguration];
+  v2 = sbh_iconImageStyleConfiguration;
+  if (sbh_iconImageStyleConfiguration)
   {
-    v3 = [v1 variant] == 2;
+    v3 = [sbh_iconImageStyleConfiguration variant] == 2;
   }
 
   else
@@ -637,101 +637,101 @@ LABEL_9:
 
 + (uint64_t)sbh_iconUserInterfaceStyleFromTraitCollection:()SpringBoardHome
 {
-  v2 = [a1 sbh_iconImageAppearanceFromTraitCollection:?];
-  v3 = [a1 sbh_userInterfaceStyleForIconImageAppearance:v2];
+  v2 = [self sbh_iconImageAppearanceFromTraitCollection:?];
+  v3 = [self sbh_userInterfaceStyleForIconImageAppearance:v2];
 
   return v3;
 }
 
 + (uint64_t)sbh_iconGlassUserInterfaceStyleFromTraitCollection:()SpringBoardHome
 {
-  v1 = [a1 sbh_iconImageStyleConfigurationFromTraitCollection:?];
-  v2 = [v1 iconGlassUserInterfaceStyle];
+  v1 = [self sbh_iconImageStyleConfigurationFromTraitCollection:?];
+  iconGlassUserInterfaceStyle = [v1 iconGlassUserInterfaceStyle];
 
-  return v2;
+  return iconGlassUserInterfaceStyle;
 }
 
 + (uint64_t)sbh_dockGlassUserInterfaceStyleFromTraitCollection:()SpringBoardHome
 {
-  v1 = [a1 sbh_iconImageStyleConfigurationFromTraitCollection:?];
-  v2 = [v1 dockGlassUserInterfaceStyle];
+  v1 = [self sbh_iconImageStyleConfigurationFromTraitCollection:?];
+  dockGlassUserInterfaceStyle = [v1 dockGlassUserInterfaceStyle];
 
-  return v2;
+  return dockGlassUserInterfaceStyle;
 }
 
 + (id)sbh_highestLevelTraitCollectionForView:()SpringBoardHome
 {
   v3 = a3;
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 traitCollection];
+  window = [v3 window];
+  windowScene = [window windowScene];
+  traitCollection = [windowScene traitCollection];
 
-  if (!v6)
+  if (!traitCollection)
   {
     v7 = v3;
-    v8 = [v7 superview];
+    superview = [v7 superview];
 
-    if (v8)
+    if (superview)
     {
       do
       {
-        v9 = [v7 superview];
+        superview2 = [v7 superview];
 
-        v10 = [v9 superview];
+        v9Superview = [superview2 superview];
 
-        v7 = v9;
+        v7 = superview2;
       }
 
-      while (v10);
+      while (v9Superview);
     }
 
     else
     {
-      v9 = v7;
+      superview2 = v7;
     }
 
-    v6 = [v9 traitCollection];
+    traitCollection = [superview2 traitCollection];
   }
 
-  return v6;
+  return traitCollection;
 }
 
 + (id)sbh_highestLevelTraitCollectionForViewController:()SpringBoardHome
 {
   v3 = a3;
-  v4 = [v3 viewIfLoaded];
-  v5 = [v4 window];
-  v6 = [v5 windowScene];
-  v7 = [v6 traitCollection];
+  viewIfLoaded = [v3 viewIfLoaded];
+  window = [viewIfLoaded window];
+  windowScene = [window windowScene];
+  traitCollection = [windowScene traitCollection];
 
-  if (!v7)
+  if (!traitCollection)
   {
     v8 = v3;
-    v9 = [v8 parentViewController];
+    parentViewController = [v8 parentViewController];
 
-    if (v9)
+    if (parentViewController)
     {
       do
       {
-        v10 = [v8 parentViewController];
+        parentViewController2 = [v8 parentViewController];
 
-        v11 = [v10 parentViewController];
+        v10ParentViewController = [parentViewController2 parentViewController];
 
-        v8 = v10;
+        v8 = parentViewController2;
       }
 
-      while (v11);
+      while (v10ParentViewController);
     }
 
     else
     {
-      v10 = v8;
+      parentViewController2 = v8;
     }
 
-    v7 = [v10 traitCollection];
+    traitCollection = [parentViewController2 traitCollection];
   }
 
-  return v7;
+  return traitCollection;
 }
 
 + (id)sbh_traitCollectionWithIconEffect:()SpringBoardHome
@@ -743,7 +743,7 @@ LABEL_9:
   v8[3] = &unk_1E808B9A8;
   v9 = v4;
   v5 = v4;
-  v6 = [a1 traitCollectionWithTraits:v8];
+  v6 = [self traitCollectionWithTraits:v8];
 
   return v6;
 }

@@ -1,29 +1,29 @@
 @interface DADeviceSettings
-- (DADeviceSettings)initWithXPCObject:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithLevel:(int)a3;
-- (void)encodeWithXPCObject:(id)a3;
+- (DADeviceSettings)initWithXPCObject:(id)object error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithLevel:(int)level;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation DADeviceSettings
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
-  v5 = [(UTType *)self->_iconType identifier];
-  v6 = v4;
-  v7 = [v5 UTF8String];
-  if (v7)
+  objectCopy = object;
+  identifier = [(UTType *)self->_iconType identifier];
+  v6 = objectCopy;
+  uTF8String = [identifier UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(v6, "dvPT", v7);
+    xpc_dictionary_set_string(v6, "dvPT", uTF8String);
   }
 
   displayName = self->_displayName;
   v9 = v6;
-  v10 = [(NSString *)displayName UTF8String];
-  if (v10)
+  uTF8String2 = [(NSString *)displayName UTF8String];
+  if (uTF8String2)
   {
-    xpc_dictionary_set_string(v9, "name", v10);
+    xpc_dictionary_set_string(v9, "name", uTF8String2);
   }
 
   bridgingIdentifier = self->_bridgingIdentifier;
@@ -32,10 +32,10 @@
     v12 = bridgingIdentifier;
     v13 = v9;
     v14 = bridgingIdentifier;
-    v15 = [(NSData *)v14 bytes];
-    if (v15)
+    bytes = [(NSData *)v14 bytes];
+    if (bytes)
     {
-      v16 = v15;
+      v16 = bytes;
     }
 
     else
@@ -50,10 +50,10 @@
 
   SSID = self->_SSID;
   xdict = v9;
-  v19 = [(NSString *)SSID UTF8String];
-  if (v19)
+  uTF8String3 = [(NSString *)SSID UTF8String];
+  if (uTF8String3)
   {
-    xpc_dictionary_set_string(xdict, "ssID", v19);
+    xpc_dictionary_set_string(xdict, "ssID", uTF8String3);
   }
 
   if (self->_userInitiated)
@@ -62,13 +62,13 @@
   }
 }
 
-- (DADeviceSettings)initWithXPCObject:(id)a3 error:(id *)a4
+- (DADeviceSettings)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = [(DADeviceSettings *)self init];
   if (v7)
   {
-    if (MEMORY[0x24C1DC9E0](v6) == MEMORY[0x277D86468])
+    if (MEMORY[0x24C1DC9E0](objectCopy) == MEMORY[0x277D86468])
     {
       v17 = 0;
       if (CUXPCDecodeNSString() && CUXPCDecodeNSData() && CUXPCDecodeNSString() && CUXPCDecodeNSString() && CUXPCDecodeBool())
@@ -82,10 +82,10 @@
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       DAErrorF(350004, "XPC non-dict", v8, v9, v10, v11, v12, v13, v16);
-      *a4 = v14 = 0;
+      *error = v14 = 0;
     }
 
     else
@@ -96,16 +96,16 @@
 
   else
   {
-    [DADeviceSettings initWithXPCObject:a4 error:&v17];
+    [DADeviceSettings initWithXPCObject:error error:&v17];
     v14 = v17;
   }
 
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSData *)self->_bridgingIdentifier copy];
   v6 = v4[5];
   v4[5] = v5;
@@ -125,9 +125,9 @@
   return v4;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  if ((a3 & 0x8000000) != 0)
+  if ((level & 0x8000000) != 0)
   {
     v4 = 0;
   }
@@ -143,7 +143,7 @@
   if (iconType)
   {
     v6 = iconType;
-    v19 = [(UTType *)v6 identifier];
+    identifier = [(UTType *)v6 identifier];
     CUAppendF();
     v7 = v4;
 

@@ -1,9 +1,9 @@
 @interface ATXProactiveSuggestionFeedbackResultRouter
 - (ATXProactiveSuggestionFeedbackResultRouter)init;
-- (ATXProactiveSuggestionFeedbackResultRouter)initWithFeedbackListeners:(id)a3;
+- (ATXProactiveSuggestionFeedbackResultRouter)initWithFeedbackListeners:(id)listeners;
 - (id)clientModelIdsWithFeedbackListeners;
-- (void)_initializeFeedbackListenersDictWith:(id)a3;
-- (void)handleNewFeedbackResult:(id)a3;
+- (void)_initializeFeedbackListenersDictWith:(id)with;
+- (void)handleNewFeedbackResult:(id)result;
 @end
 
 @implementation ATXProactiveSuggestionFeedbackResultRouter
@@ -29,38 +29,38 @@
 - (id)clientModelIdsWithFeedbackListeners
 {
   v3 = objc_alloc(MEMORY[0x277CBEB98]);
-  v4 = [(NSDictionary *)self->_feedbackListeners allKeys];
-  v5 = [v3 initWithArray:v4];
+  allKeys = [(NSDictionary *)self->_feedbackListeners allKeys];
+  v5 = [v3 initWithArray:allKeys];
 
   return v5;
 }
 
-- (ATXProactiveSuggestionFeedbackResultRouter)initWithFeedbackListeners:(id)a3
+- (ATXProactiveSuggestionFeedbackResultRouter)initWithFeedbackListeners:(id)listeners
 {
-  v4 = a3;
+  listenersCopy = listeners;
   v8.receiver = self;
   v8.super_class = ATXProactiveSuggestionFeedbackResultRouter;
   v5 = [(ATXProactiveSuggestionFeedbackResultRouter *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ATXProactiveSuggestionFeedbackResultRouter *)v5 _initializeFeedbackListenersDictWith:v4];
+    [(ATXProactiveSuggestionFeedbackResultRouter *)v5 _initializeFeedbackListenersDictWith:listenersCopy];
   }
 
   return v6;
 }
 
-- (void)_initializeFeedbackListenersDictWith:(id)a3
+- (void)_initializeFeedbackListenersDictWith:(id)with
 {
-  v16 = self;
+  selfCopy = self;
   v30 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  withCopy = with;
   v4 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v3;
+  obj = withCopy;
   v19 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v19)
   {
@@ -79,8 +79,8 @@
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v7 = [v6 clientModelIds];
-        v8 = [v7 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        clientModelIds = [v6 clientModelIds];
+        v8 = [clientModelIds countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v8)
         {
           v9 = v8;
@@ -91,7 +91,7 @@
             {
               if (*v21 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(clientModelIds);
               }
 
               v12 = *(*(&v20 + 1) + 8 * j);
@@ -105,7 +105,7 @@
               [v13 addObject:v6];
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v9 = [clientModelIds countByEnumeratingWithState:&v20 objects:v28 count:16];
           }
 
           while (v9);
@@ -118,20 +118,20 @@
     while (v19);
   }
 
-  feedbackListeners = v16->_feedbackListeners;
-  v16->_feedbackListeners = v4;
+  feedbackListeners = selfCopy->_feedbackListeners;
+  selfCopy->_feedbackListeners = v4;
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleNewFeedbackResult:(id)a3
+- (void)handleNewFeedbackResult:(id)result
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 clientCacheUpdate];
-  v6 = [v5 clientModelId];
+  resultCopy = result;
+  clientCacheUpdate = [resultCopy clientCacheUpdate];
+  clientModelId = [clientCacheUpdate clientModelId];
 
-  v7 = [(NSDictionary *)self->_feedbackListeners objectForKey:v6];
+  v7 = [(NSDictionary *)self->_feedbackListeners objectForKey:clientModelId];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -155,7 +155,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_respondsToSelector())
         {
-          [v12 receiveUIFeedbackResult:v4];
+          [v12 receiveUIFeedbackResult:resultCopy];
         }
 
         ++v11;

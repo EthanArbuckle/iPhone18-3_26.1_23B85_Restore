@@ -1,25 +1,25 @@
 @interface QRStreamInfo
-- (id)initQRStreamInfo:(id)a3 subscribedStreams:(id)a4 generationCounter:(id)a5 maxConcurrentStreams:(id)a6;
+- (id)initQRStreamInfo:(id)info subscribedStreams:(id)streams generationCounter:(id)counter maxConcurrentStreams:(id)concurrentStreams;
 @end
 
 @implementation QRStreamInfo
 
-- (id)initQRStreamInfo:(id)a3 subscribedStreams:(id)a4 generationCounter:(id)a5 maxConcurrentStreams:(id)a6
+- (id)initQRStreamInfo:(id)info subscribedStreams:(id)streams generationCounter:(id)counter maxConcurrentStreams:(id)concurrentStreams
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  infoCopy = info;
+  streamsCopy = streams;
+  counterCopy = counter;
+  concurrentStreamsCopy = concurrentStreams;
   v18.receiver = self;
   v18.super_class = QRStreamInfo;
   v15 = [(QRStreamInfo *)&v18 init];
   p_isa = &v15->super.isa;
   if (v15)
   {
-    objc_storeStrong(&v15->_publishedStreams, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
-    objc_storeStrong(p_isa + 4, a6);
+    objc_storeStrong(&v15->_publishedStreams, info);
+    objc_storeStrong(p_isa + 2, streams);
+    objc_storeStrong(p_isa + 3, counter);
+    objc_storeStrong(p_isa + 4, concurrentStreams);
   }
 
   return p_isa;

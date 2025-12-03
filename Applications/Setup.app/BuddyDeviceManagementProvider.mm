@@ -1,15 +1,15 @@
 @interface BuddyDeviceManagementProvider
-- (void)loadSkipKeys:(id)a3;
+- (void)loadSkipKeys:(id)keys;
 @end
 
 @implementation BuddyDeviceManagementProvider
 
-- (void)loadSkipKeys:(id)a3
+- (void)loadSkipKeys:(id)keys
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, keys);
   v11 = objc_alloc_init(DMFFetchDevicePropertiesRequest);
   v13 = DMFDeviceSkippedSetupPanesKey;
   v3 = [NSArray arrayWithObjects:&v13 count:1];

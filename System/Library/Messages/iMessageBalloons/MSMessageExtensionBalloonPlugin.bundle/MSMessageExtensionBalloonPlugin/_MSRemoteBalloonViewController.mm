@@ -1,70 +1,70 @@
 @interface _MSRemoteBalloonViewController
-- (BOOL)_extensionLinkedBeforeSDKVersion:(id)a3;
-- (BOOL)_linkedBeforeSDKVersion:(id)a3;
+- (BOOL)_extensionLinkedBeforeSDKVersion:(id)version;
+- (BOOL)_linkedBeforeSDKVersion:(id)version;
 - (BOOL)isReadyToDisplay;
 - (BOOL)needsSizeMatchBeforeSnapshotSwap;
 - (BOOL)providesExplicitSizeSnapshot;
 - (NSCopying)requestUUID;
-- (_MSRemoteBalloonViewController)initWithExtension:(id)a3 identifier:(id)a4;
-- (_MSRemoteBalloonViewController)initWithPlugin:(id)a3 identifier:(id)a4;
+- (_MSRemoteBalloonViewController)initWithExtension:(id)extension identifier:(id)identifier;
+- (_MSRemoteBalloonViewController)initWithPlugin:(id)plugin identifier:(id)identifier;
 - (_MSRemoteBalloonViewControllerDelegate)delegate;
 - (id)extensionContext;
 - (id)remoteProxy;
 - (void)_sendResignActiveMessage;
-- (void)_updateBackwardsCompatibilityConstraintsWithInsets:(UIEdgeInsets)a3;
-- (void)becomeActiveWithConversationState:(id)a3 liveEditableInEntryView:(BOOL)a4;
+- (void)_updateBackwardsCompatibilityConstraintsWithInsets:(UIEdgeInsets)insets;
+- (void)becomeActiveWithConversationState:(id)state liveEditableInEntryView:(BOOL)view;
 - (void)dealloc;
-- (void)didChangeBackgroundLuminance:(double)a3;
-- (void)fetchInternalMessageStateForDraft:(BOOL)a3 completion:(id)a4;
+- (void)didChangeBackgroundLuminance:(double)luminance;
+- (void)fetchInternalMessageStateForDraft:(BOOL)draft completion:(id)completion;
 - (void)handleRemoteInterruption;
 - (void)loadRemoteView;
 - (void)loadView;
 - (void)purgeRemoteViewController;
-- (void)setNeedsSizeMatchBeforeSnapshotSwap:(BOOL)a3;
-- (void)setProvidesExplicitSizeSnapshot:(BOOL)a3;
-- (void)setReadyToDisplay:(BOOL)a3;
-- (void)setRemoteViewController:(id)a3;
+- (void)setNeedsSizeMatchBeforeSnapshotSwap:(BOOL)swap;
+- (void)setProvidesExplicitSizeSnapshot:(BOOL)snapshot;
+- (void)setReadyToDisplay:(BOOL)display;
+- (void)setRemoteViewController:(id)controller;
 - (void)setShouldPerformSendAnimationOnAppear;
 - (void)unloadRemoteView;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation _MSRemoteBalloonViewController
 
-- (_MSRemoteBalloonViewController)initWithExtension:(id)a3 identifier:(id)a4
+- (_MSRemoteBalloonViewController)initWithExtension:(id)extension identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  extensionCopy = extension;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = _MSRemoteBalloonViewController;
   v9 = [(_MSRemoteBalloonViewController *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [identifierCopy copy];
     identifier = v9->_identifier;
     v9->_identifier = v10;
 
-    objc_storeStrong(&v9->_extension, a3);
+    objc_storeStrong(&v9->_extension, extension);
   }
 
   return v9;
 }
 
-- (_MSRemoteBalloonViewController)initWithPlugin:(id)a3 identifier:(id)a4
+- (_MSRemoteBalloonViewController)initWithPlugin:(id)plugin identifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  pluginCopy = plugin;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = _MSRemoteBalloonViewController;
   v9 = [(_MSRemoteBalloonViewController *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [identifierCopy copy];
     identifier = v9->_identifier;
     v9->_identifier = v10;
 
-    objc_storeStrong(&v9->_plugin, a3);
+    objc_storeStrong(&v9->_plugin, plugin);
   }
 
   return v9;
@@ -116,15 +116,15 @@
   return [(UIViewController *)remoteViewController providesExplicitSizeSnapshot];
 }
 
-- (void)setProvidesExplicitSizeSnapshot:(BOOL)a3
+- (void)setProvidesExplicitSizeSnapshot:(BOOL)snapshot
 {
-  v3 = a3;
+  snapshotCopy = snapshot;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     remoteViewController = self->_remoteViewController;
 
-    [(UIViewController *)remoteViewController setProvidesExplicitSizeSnapshot:v3];
+    [(UIViewController *)remoteViewController setProvidesExplicitSizeSnapshot:snapshotCopy];
   }
 }
 
@@ -147,39 +147,39 @@
   return [(UIViewController *)remoteViewController needsSizeMatchBeforeSnapshotSwap];
 }
 
-- (void)setNeedsSizeMatchBeforeSnapshotSwap:(BOOL)a3
+- (void)setNeedsSizeMatchBeforeSnapshotSwap:(BOOL)swap
 {
-  v3 = a3;
+  swapCopy = swap;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     remoteViewController = self->_remoteViewController;
 
-    [(UIViewController *)remoteViewController setNeedsSizeMatchBeforeSnapshotSwap:v3];
+    [(UIViewController *)remoteViewController setNeedsSizeMatchBeforeSnapshotSwap:swapCopy];
   }
 }
 
-- (void)setReadyToDisplay:(BOOL)a3
+- (void)setReadyToDisplay:(BOOL)display
 {
-  v3 = a3;
+  displayCopy = display;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     remoteViewController = self->_remoteViewController;
 
-    [(UIViewController *)remoteViewController setReadyToDisplay:v3];
+    [(UIViewController *)remoteViewController setReadyToDisplay:displayCopy];
   }
 }
 
 - (void)handleRemoteInterruption
 {
   extension = self->_extension;
-  v4 = [(_MSRemoteBalloonViewController *)self requestUUID];
-  [(NSExtension *)extension cancelExtensionRequestWithIdentifier:v4];
+  requestUUID = [(_MSRemoteBalloonViewController *)self requestUUID];
+  [(NSExtension *)extension cancelExtensionRequestWithIdentifier:requestUUID];
 
   [(_MSRemoteBalloonViewController *)self setRemoteViewController:0];
-  v5 = [(_MSRemoteBalloonViewController *)self delegate];
-  v8 = [v5 remoteBalloonViewControllerContextIdentifier:self];
+  delegate = [(_MSRemoteBalloonViewController *)self delegate];
+  v8 = [delegate remoteBalloonViewControllerContextIdentifier:self];
 
   v6 = [_MSRemoteBalloonViewControllerManager viewControllerKeyForMessageIdentifier:self->_identifier contextIdentifier:v8];
   v7 = +[_MSRemoteBalloonViewControllerManager sharedInstance];
@@ -188,25 +188,25 @@
 
 - (void)purgeRemoteViewController
 {
-  v3 = [(_MSRemoteBalloonViewController *)self delegate];
-  v6 = [v3 remoteBalloonViewControllerContextIdentifier:self];
+  delegate = [(_MSRemoteBalloonViewController *)self delegate];
+  v6 = [delegate remoteBalloonViewControllerContextIdentifier:self];
 
   v4 = [_MSRemoteBalloonViewControllerManager viewControllerKeyForMessageIdentifier:self->_identifier contextIdentifier:v6];
   v5 = +[_MSRemoteBalloonViewControllerManager sharedInstance];
   [v5 removeViewControllerWithIdentifier:v4];
 }
 
-- (void)becomeActiveWithConversationState:(id)a3 liveEditableInEntryView:(BOOL)a4
+- (void)becomeActiveWithConversationState:(id)state liveEditableInEntryView:(BOOL)view
 {
-  v4 = a4;
-  v7 = a3;
-  objc_storeStrong(&self->_conversationState, a3);
+  viewCopy = view;
+  stateCopy = state;
+  objc_storeStrong(&self->_conversationState, state);
   v8 = objc_alloc_init(_MSPresentationState);
-  v9 = [(IMBalloonAppExtension *)self->_plugin extensionIdentifier];
+  extensionIdentifier = [(IMBalloonAppExtension *)self->_plugin extensionIdentifier];
   v10 = IMBalloonExtensionIDWithSuffix();
-  v11 = [v9 isEqualToString:v10];
+  v11 = [extensionIdentifier isEqualToString:v10];
 
-  if ((v11 & v4) != 0)
+  if ((v11 & viewCopy) != 0)
   {
     v12 = 4;
   }
@@ -226,18 +226,18 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v35 = self;
+      selfCopy = self;
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_DEFAULT, "LiveBubble. %p Using backwards compatibility offsets", buf, 0xCu);
     }
 
-    v17 = [v7 activeMessage];
-    v18 = [v17 isFromMe];
+    activeMessage = [stateCopy activeMessage];
+    isFromMe = [activeMessage isFromMe];
 
     v19 = +[CKUIBehavior sharedBehaviors];
     [v19 pluginBackwardsCompatibilityLeadingTrailingOffset];
     v21 = -v20;
 
-    if (v18)
+    if (isFromMe)
     {
       right = v21;
     }
@@ -266,25 +266,25 @@
   v32 = bottom;
   v33 = right;
   block[4] = self;
-  v28 = v7;
+  v28 = stateCopy;
   v29 = v8;
   v25 = v8;
-  v26 = v7;
+  v26 = stateCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_updateBackwardsCompatibilityConstraintsWithInsets:(UIEdgeInsets)a3
+- (void)_updateBackwardsCompatibilityConstraintsWithInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v8 = [(_MSRemoteBalloonViewController *)self view];
-  v9 = [v8 _shouldReverseLayoutDirection];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  view = [(_MSRemoteBalloonViewController *)self view];
+  _shouldReverseLayoutDirection = [view _shouldReverseLayoutDirection];
 
   [(NSLayoutConstraint *)self->_topRemoteViewConstraint setConstant:top];
   [(NSLayoutConstraint *)self->_bottomRemoteViewConstraint setConstant:bottom];
-  if (v9)
+  if (_shouldReverseLayoutDirection)
   {
     v10 = right;
   }
@@ -294,7 +294,7 @@
     v10 = left;
   }
 
-  if (v9)
+  if (_shouldReverseLayoutDirection)
   {
     right = left;
   }
@@ -305,26 +305,26 @@
   [(NSLayoutConstraint *)trailingRemoteViewConstraint setConstant:right];
 }
 
-- (void)fetchInternalMessageStateForDraft:(BOOL)a3 completion:(id)a4
+- (void)fetchInternalMessageStateForDraft:(BOOL)draft completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(_MSRemoteBalloonViewController *)self remoteProxy];
-  [v7 fetchInternalMessageStateForDraft:v4 completion:v6];
+  draftCopy = draft;
+  completionCopy = completion;
+  remoteProxy = [(_MSRemoteBalloonViewController *)self remoteProxy];
+  [remoteProxy fetchInternalMessageStateForDraft:draftCopy completion:completionCopy];
 }
 
 - (void)setShouldPerformSendAnimationOnAppear
 {
   self->_shouldPerformSendAnimationOnAppear = 1;
-  v2 = [(_MSRemoteBalloonViewController *)self remoteProxy];
-  [v2 setShouldPerformSendAnimationOnAppear];
+  remoteProxy = [(_MSRemoteBalloonViewController *)self remoteProxy];
+  [remoteProxy setShouldPerformSendAnimationOnAppear];
 }
 
-- (void)didChangeBackgroundLuminance:(double)a3
+- (void)didChangeBackgroundLuminance:(double)luminance
 {
-  self->_backgroundLuminance = a3;
-  v4 = [(_MSRemoteBalloonViewController *)self remoteProxy];
-  [v4 didChangeBackgroundLuminance:a3];
+  self->_backgroundLuminance = luminance;
+  remoteProxy = [(_MSRemoteBalloonViewController *)self remoteProxy];
+  [remoteProxy didChangeBackgroundLuminance:luminance];
 }
 
 - (id)extensionContext
@@ -334,17 +334,17 @@
   if (extension)
   {
     v4 = remoteViewController;
-    v5 = [(UIViewController *)v4 requestUUID];
-    v6 = [(NSExtension *)extension _extensionContextForUUID:v5];
+    requestUUID = [(UIViewController *)v4 requestUUID];
+    hostContext = [(NSExtension *)extension _extensionContextForUUID:requestUUID];
   }
 
   else
   {
-    v5 = [(UIViewController *)remoteViewController appContext];
-    v6 = [v5 hostContext];
+    requestUUID = [(UIViewController *)remoteViewController appContext];
+    hostContext = [requestUUID hostContext];
   }
 
-  return v6;
+  return hostContext;
 }
 
 - (id)remoteProxy
@@ -354,19 +354,19 @@
   if (extension)
   {
     v4 = remoteViewController;
-    v5 = [(UIViewController *)v4 requestUUID];
-    v6 = [(NSExtension *)extension _extensionContextForUUID:v5];
+    requestUUID = [(UIViewController *)v4 requestUUID];
+    v6 = [(NSExtension *)extension _extensionContextForUUID:requestUUID];
 
-    v7 = [v6 _auxiliaryConnection];
-    v8 = [v7 remoteObjectProxy];
+    _auxiliaryConnection = [v6 _auxiliaryConnection];
+    remoteObjectProxy = [_auxiliaryConnection remoteObjectProxy];
   }
 
   else
   {
-    v8 = [(UIViewController *)remoteViewController appContext];
+    remoteObjectProxy = [(UIViewController *)remoteViewController appContext];
   }
 
-  return v8;
+  return remoteObjectProxy;
 }
 
 - (void)dealloc
@@ -390,8 +390,8 @@
   v4.receiver = self;
   v4.super_class = _MSRemoteBalloonViewController;
   [(_MSRemoteBalloonViewController *)&v4 viewDidLoad];
-  v3 = [(_MSRemoteBalloonViewController *)self view];
-  [v3 setUserInteractionEnabled:1];
+  view = [(_MSRemoteBalloonViewController *)self view];
+  [view setUserInteractionEnabled:1];
 }
 
 - (void)loadView
@@ -418,8 +418,8 @@
     v8 = +[_MSRemoteBalloonViewControllerManager sharedInstance];
     extension = self->_extension;
     identifier = self->_identifier;
-    v11 = [(_MSRemoteBalloonViewController *)self delegate];
-    v12 = [v11 remoteBalloonViewControllerContextIdentifier:self];
+    delegate = [(_MSRemoteBalloonViewController *)self delegate];
+    v12 = [delegate remoteBalloonViewControllerContextIdentifier:self];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_119F0;
@@ -439,8 +439,8 @@
 
   else if (!self->_remoteViewController)
   {
-    v16 = [(IMBalloonAppExtension *)self->_plugin appBundle];
-    v23 = objc_alloc_init([v16 principalClass]);
+    appBundle = [(IMBalloonAppExtension *)self->_plugin appBundle];
+    v23 = objc_alloc_init([appBundle principalClass]);
 
     v17 = [[_MSMessageAppBundleContext alloc] initWithViewController:v23 wantsLiveView:1];
     v18 = [[_MSMessageAppContext alloc] initWithAppContext:v17];
@@ -468,7 +468,7 @@
       remoteViewController = self->_remoteViewController;
       identifier = self->_identifier;
       v8 = 134218498;
-      v9 = self;
+      selfCopy = self;
       v10 = 2048;
       v11 = remoteViewController;
       v12 = 2112;
@@ -478,8 +478,8 @@
 
     [(_MSRemoteBalloonViewController *)self _sendResignActiveMessage];
     extension = self->_extension;
-    v7 = [(_MSRemoteBalloonViewController *)self requestUUID];
-    [(NSExtension *)extension cancelExtensionRequestWithIdentifier:v7];
+    requestUUID = [(_MSRemoteBalloonViewController *)self requestUUID];
+    [(NSExtension *)extension cancelExtensionRequestWithIdentifier:requestUUID];
 
     [(_MSRemoteBalloonViewController *)self setRemoteViewController:0];
   }
@@ -493,15 +493,15 @@
     sub_2CF60(v3);
   }
 
-  v4 = [(_MSRemoteBalloonViewController *)self remoteProxy];
-  [v4 _resignActive];
+  remoteProxy = [(_MSRemoteBalloonViewController *)self remoteProxy];
+  [remoteProxy _resignActive];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = _MSRemoteBalloonViewController;
-  [(_MSRemoteBalloonViewController *)&v6 viewWillAppear:a3];
+  [(_MSRemoteBalloonViewController *)&v6 viewWillAppear:appear];
   if (!self->_remoteViewController)
   {
     [(_MSRemoteBalloonViewController *)self loadRemoteView];
@@ -510,7 +510,7 @@
     {
       identifier = self->_identifier;
       *buf = 134218242;
-      v8 = self;
+      selfCopy = self;
       v9 = 2112;
       v10 = identifier;
       _os_log_impl(&dword_0, v4, OS_LOG_TYPE_DEFAULT, "LiveBubble. %p Loading remote view for messageGUID: %@", buf, 0x16u);
@@ -523,32 +523,32 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(UIViewController *)self->_remoteViewController requestUUID];
+    requestUUID = [(UIViewController *)self->_remoteViewController requestUUID];
   }
 
   else
   {
-    v3 = 0;
+    requestUUID = 0;
   }
 
-  return v3;
+  return requestUUID;
 }
 
-- (void)setRemoteViewController:(id)a3
+- (void)setRemoteViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   remoteViewController = self->_remoteViewController;
-  if (remoteViewController != v5)
+  if (remoteViewController != controllerCopy)
   {
     if (remoteViewController)
     {
-      v7 = [(UIViewController *)remoteViewController parentViewController];
+      parentViewController = [(UIViewController *)remoteViewController parentViewController];
 
-      if (v7 == self)
+      if (parentViewController == self)
       {
         [(UIViewController *)self->_remoteViewController willMoveToParentViewController:0];
-        v8 = [(UIViewController *)self->_remoteViewController view];
-        [v8 removeFromSuperview];
+        view = [(UIViewController *)self->_remoteViewController view];
+        [view removeFromSuperview];
 
         [(UIViewController *)self->_remoteViewController removeFromParentViewController];
       }
@@ -560,9 +560,9 @@
       v10 = self->_remoteViewController;
       identifier = self->_identifier;
       *buf = 134218754;
-      v43 = self;
+      selfCopy = self;
       v44 = 2048;
-      v45 = v5;
+      v45 = controllerCopy;
       v46 = 2048;
       v47 = v10;
       v48 = 2112;
@@ -570,7 +570,7 @@
       _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "LiveBubble. %p Setting new remoteViewController: %p, old: %p, messageGUID: %@", buf, 0x2Au);
     }
 
-    objc_storeStrong(&self->_remoteViewController, a3);
+    objc_storeStrong(&self->_remoteViewController, controller);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -586,8 +586,8 @@
         [(UIViewController *)self->_remoteViewController didChangeBackgroundLuminance:self->_backgroundLuminance];
       }
 
-      v13 = [(_MSRemoteBalloonViewController *)self delegate];
-      [v13 remoteBalloonViewControllerWillLoad:self];
+      delegate = [(_MSRemoteBalloonViewController *)self delegate];
+      [delegate remoteBalloonViewControllerWillLoad:self];
 
       if (self->_shouldPerformSendAnimationOnAppear && (objc_opt_respondsToSelector() & 1) != 0)
       {
@@ -595,41 +595,41 @@
       }
 
       [(_MSRemoteBalloonViewController *)self addChildViewController:self->_remoteViewController];
-      v14 = [(UIViewController *)self->_remoteViewController view];
-      [v14 setUserInteractionEnabled:1];
-      [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v15 = [(_MSRemoteBalloonViewController *)self view];
-      [v15 bounds];
-      [v14 setFrame:?];
+      view2 = [(UIViewController *)self->_remoteViewController view];
+      [view2 setUserInteractionEnabled:1];
+      [view2 setTranslatesAutoresizingMaskIntoConstraints:0];
+      view3 = [(_MSRemoteBalloonViewController *)self view];
+      [view3 bounds];
+      [view2 setFrame:?];
 
-      v16 = [(_MSRemoteBalloonViewController *)self view];
-      [v16 addSubview:v14];
+      view4 = [(_MSRemoteBalloonViewController *)self view];
+      [view4 addSubview:view2];
 
-      v17 = [(_MSRemoteBalloonViewController *)self view];
-      v18 = [v17 topAnchor];
-      v19 = [v14 topAnchor];
-      v20 = [v18 constraintEqualToAnchor:v19 constant:0.0];
+      view5 = [(_MSRemoteBalloonViewController *)self view];
+      topAnchor = [view5 topAnchor];
+      topAnchor2 = [view2 topAnchor];
+      v20 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:0.0];
       topRemoteViewConstraint = self->_topRemoteViewConstraint;
       self->_topRemoteViewConstraint = v20;
 
-      v22 = [v14 bottomAnchor];
-      v23 = [(_MSRemoteBalloonViewController *)self view];
-      v24 = [v23 bottomAnchor];
-      v25 = [v22 constraintEqualToAnchor:v24 constant:0.0];
+      bottomAnchor = [view2 bottomAnchor];
+      view6 = [(_MSRemoteBalloonViewController *)self view];
+      bottomAnchor2 = [view6 bottomAnchor];
+      v25 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:0.0];
       bottomRemoteViewConstraint = self->_bottomRemoteViewConstraint;
       self->_bottomRemoteViewConstraint = v25;
 
-      v27 = [v14 leadingAnchor];
-      v28 = [(_MSRemoteBalloonViewController *)self view];
-      v29 = [v28 leadingAnchor];
-      v30 = [v27 constraintEqualToAnchor:v29 constant:0.0];
+      leadingAnchor = [view2 leadingAnchor];
+      view7 = [(_MSRemoteBalloonViewController *)self view];
+      leadingAnchor2 = [view7 leadingAnchor];
+      v30 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:0.0];
       leadingRemoteViewConstraint = self->_leadingRemoteViewConstraint;
       self->_leadingRemoteViewConstraint = v30;
 
-      v32 = [(_MSRemoteBalloonViewController *)self view];
-      v33 = [v32 trailingAnchor];
-      v34 = [v14 trailingAnchor];
-      v35 = [v33 constraintEqualToAnchor:v34 constant:0.0];
+      view8 = [(_MSRemoteBalloonViewController *)self view];
+      trailingAnchor = [view8 trailingAnchor];
+      trailingAnchor2 = [view2 trailingAnchor];
+      v35 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:0.0];
       trailingRemoteViewConstraint = self->_trailingRemoteViewConstraint;
       self->_trailingRemoteViewConstraint = v35;
 
@@ -643,19 +643,19 @@
       [NSLayoutConstraint activateConstraints:v39];
 
       [(UIViewController *)self->_remoteViewController didMoveToParentViewController:self];
-      v40 = [(_MSRemoteBalloonViewController *)self delegate];
-      [v40 remoteBalloonViewControllerDidLoad:self];
+      delegate2 = [(_MSRemoteBalloonViewController *)self delegate];
+      [delegate2 remoteBalloonViewControllerDidLoad:self];
     }
   }
 }
 
-- (BOOL)_linkedBeforeSDKVersion:(id)a3
+- (BOOL)_linkedBeforeSDKVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   plugin = self->_plugin;
   if (plugin)
   {
-    v6 = [(IMBalloonAppExtension *)plugin linkedBeforeSDKVersion:v4];
+    v6 = [(IMBalloonAppExtension *)plugin linkedBeforeSDKVersion:versionCopy];
   }
 
   else
@@ -666,7 +666,7 @@
       goto LABEL_6;
     }
 
-    v6 = [(_MSRemoteBalloonViewController *)self _extensionLinkedBeforeSDKVersion:v4];
+    v6 = [(_MSRemoteBalloonViewController *)self _extensionLinkedBeforeSDKVersion:versionCopy];
   }
 
   v7 = v6;
@@ -675,14 +675,14 @@ LABEL_6:
   return v7;
 }
 
-- (BOOL)_extensionLinkedBeforeSDKVersion:(id)a3
+- (BOOL)_extensionLinkedBeforeSDKVersion:(id)version
 {
-  v4 = a3;
+  versionCopy = version;
   extension = self->_extension;
   if (extension)
   {
-    v6 = [(NSExtension *)extension infoDictionary];
-    v7 = [v6 objectForKeyedSubscript:@"LSExecutableSDKVersion"];
+    infoDictionary = [(NSExtension *)extension infoDictionary];
+    v7 = [infoDictionary objectForKeyedSubscript:@"LSExecutableSDKVersion"];
     v8 = v7;
     if (v7 && [v7 length])
     {
@@ -701,11 +701,11 @@ LABEL_6:
 
   else
   {
-    v6 = ms_defaultLog();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    infoDictionary = ms_defaultLog();
+    if (os_log_type_enabled(infoDictionary, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "LiveBubble. No extension found for link check, returning NO", buf, 2u);
+      _os_log_impl(&dword_0, infoDictionary, OS_LOG_TYPE_DEFAULT, "LiveBubble. No extension found for link check, returning NO", buf, 2u);
     }
 
     v9 = 0;

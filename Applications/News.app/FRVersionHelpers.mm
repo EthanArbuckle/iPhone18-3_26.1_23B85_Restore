@@ -4,7 +4,7 @@
 - (BOOL)isDeviceAbandoned;
 - (BOOL)isUpdateRequired;
 - (FRVersionHelpers)init;
-- (FRVersionHelpers)initWithBackgroundTaskable:(id)a3 applicationProxy:(id)a4;
+- (FRVersionHelpers)initWithBackgroundTaskable:(id)taskable applicationProxy:(id)proxy;
 - (id)applicationVersionString;
 - (id)minimumOSVersionStringForUpdate;
 - (id)minimumVersionString;
@@ -14,7 +14,7 @@
 - (int64_t)minimumVersionNumber;
 - (int64_t)systemVersionNumber;
 - (void)dealloc;
-- (void)sceneDidEnterBackground:(id)a3;
+- (void)sceneDidEnterBackground:(id)background;
 - (void)updateAppObsolescenceState;
 @end
 
@@ -22,10 +22,10 @@
 
 - (void)updateAppObsolescenceState
 {
-  v3 = [(FRVersionHelpers *)self remoteDefaults];
-  v4 = [v3 isAvailable];
+  remoteDefaults = [(FRVersionHelpers *)self remoteDefaults];
+  isAvailable = [remoteDefaults isAvailable];
 
-  if (v4)
+  if (isAvailable)
   {
     v5 = +[FCNetworkReachability sharedNetworkReachability];
     [v5 setAccessRestrictedBecauseOfAppVersion:{-[FRVersionHelpers isAppUpdateRequired](self, "isAppUpdateRequired")}];
@@ -48,11 +48,11 @@
     return -1;
   }
 
-  v6 = [(FRVersionHelpers *)self applicationVersionString];
+  applicationVersionString = [(FRVersionHelpers *)self applicationVersionString];
   v5 = FCIntegerRepresentationOfBundleShortVersionString();
   if (v5 <= 0 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
-    sub_10006BCB8(v6);
+    sub_10006BCB8(applicationVersionString);
   }
 
   return v5;
@@ -60,15 +60,15 @@
 
 - (id)applicationVersionString
 {
-  v2 = [(FRVersionHelpers *)self applicationProxy];
-  v3 = [v2 shortVersionString];
+  applicationProxy = [(FRVersionHelpers *)self applicationProxy];
+  shortVersionString = [applicationProxy shortVersionString];
 
-  return v3;
+  return shortVersionString;
 }
 
 - (int64_t)minimumVersionNumber
 {
-  v2 = [(FRVersionHelpers *)self minimumVersionString];
+  minimumVersionString = [(FRVersionHelpers *)self minimumVersionString];
   v3 = FCIntegerRepresentationOfBundleShortVersionString();
 
   return v3;
@@ -77,8 +77,8 @@
 - (id)minimumVersionString
 {
   objc_opt_class();
-  v3 = [(FRVersionHelpers *)self updateInfos];
-  v4 = [v3 objectForKey:@"MinimumApplicationVersion"];
+  updateInfos = [(FRVersionHelpers *)self updateInfos];
+  v4 = [updateInfos objectForKey:@"MinimumApplicationVersion"];
   v5 = FCDynamicCast();
 
   return v5;
@@ -94,11 +94,11 @@
     return -1;
   }
 
-  v5 = [objc_opt_class() systemVersionString];
+  systemVersionString = [objc_opt_class() systemVersionString];
   v4 = FCIntegerRepresentationOfBundleShortVersionString();
   if (v4 <= 0 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
-    sub_10006BD8C(v5);
+    sub_10006BD8C(systemVersionString);
   }
 
   return v4;
@@ -118,7 +118,7 @@
 
 - (int64_t)minimumOSVersionNumberForUpdate
 {
-  v2 = [(FRVersionHelpers *)self minimumOSVersionStringForUpdate];
+  minimumOSVersionStringForUpdate = [(FRVersionHelpers *)self minimumOSVersionStringForUpdate];
   v3 = FCIntegerRepresentationOfBundleShortVersionString();
 
   return v3;
@@ -127,8 +127,8 @@
 - (id)minimumOSVersionStringForUpdate
 {
   objc_opt_class();
-  v3 = [(FRVersionHelpers *)self updateInfos];
-  v4 = [v3 objectForKey:@"MinimumOSVersion"];
+  updateInfos = [(FRVersionHelpers *)self updateInfos];
+  v4 = [updateInfos objectForKey:@"MinimumOSVersion"];
   v5 = FCDynamicCast();
 
   return v5;
@@ -146,46 +146,46 @@
 
   v6 = NFDevicePlatform();
   objc_opt_class();
-  v7 = [(FRVersionHelpers *)self updateInfos];
-  v8 = [v7 objectForKey:@"UnsupportedDevices"];
+  updateInfos = [(FRVersionHelpers *)self updateInfos];
+  v8 = [updateInfos objectForKey:@"UnsupportedDevices"];
   v9 = FCDynamicCast();
 
-  LOBYTE(v7) = [v9 containsObject:v6];
-  return v7;
+  LOBYTE(updateInfos) = [v9 containsObject:v6];
+  return updateInfos;
 }
 
 - (id)updateInfos
 {
-  v2 = [(FRVersionHelpers *)self remoteDefaults];
-  v3 = [v2 dictionaryForKey:@"iOSUpdateInfo"];
+  remoteDefaults = [(FRVersionHelpers *)self remoteDefaults];
+  v3 = [remoteDefaults dictionaryForKey:@"iOSUpdateInfo"];
 
   return v3;
 }
 
 - (BOOL)isUpdateRequired
 {
-  v3 = [(FRVersionHelpers *)self remoteDefaults];
-  v4 = [v3 isAvailable];
+  remoteDefaults = [(FRVersionHelpers *)self remoteDefaults];
+  isAvailable = [remoteDefaults isAvailable];
 
-  if (!v4)
+  if (!isAvailable)
   {
     goto LABEL_4;
   }
 
-  v5 = [(FRVersionHelpers *)self isAppUpdateRequired];
-  if (v5)
+  isAppUpdateRequired = [(FRVersionHelpers *)self isAppUpdateRequired];
+  if (isAppUpdateRequired)
   {
     if ([(FRVersionHelpers *)self isOSUpdateRequired])
     {
 LABEL_4:
-      LOBYTE(v5) = 0;
-      return v5;
+      LOBYTE(isAppUpdateRequired) = 0;
+      return isAppUpdateRequired;
     }
 
-    LOBYTE(v5) = ![(FRVersionHelpers *)self isDeviceAbandoned];
+    LOBYTE(isAppUpdateRequired) = ![(FRVersionHelpers *)self isDeviceAbandoned];
   }
 
-  return v5;
+  return isAppUpdateRequired;
 }
 
 - (FRVersionHelpers)init
@@ -211,11 +211,11 @@ LABEL_4:
   objc_exception_throw(v4);
 }
 
-- (FRVersionHelpers)initWithBackgroundTaskable:(id)a3 applicationProxy:(id)a4
+- (FRVersionHelpers)initWithBackgroundTaskable:(id)taskable applicationProxy:(id)proxy
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  taskableCopy = taskable;
+  proxyCopy = proxy;
+  if (!proxyCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_10006BBF4();
   }
@@ -225,11 +225,11 @@ LABEL_4:
   v8 = [(FRVersionHelpers *)&v13 init];
   if (v8)
   {
-    v9 = [[FCRemoteDefaults alloc] initWithBackgroundTaskable:v6];
+    v9 = [[FCRemoteDefaults alloc] initWithBackgroundTaskable:taskableCopy];
     remoteDefaults = v8->_remoteDefaults;
     v8->_remoteDefaults = v9;
 
-    objc_storeStrong(&v8->_applicationProxy, a4);
+    objc_storeStrong(&v8->_applicationProxy, proxy);
     v11 = +[NSNotificationCenter defaultCenter];
     [v11 addObserver:v8 selector:"sceneDidEnterBackground:" name:UISceneDidEnterBackgroundNotification object:0];
   }
@@ -247,10 +247,10 @@ LABEL_4:
   [(FRVersionHelpers *)&v4 dealloc];
 }
 
-- (void)sceneDidEnterBackground:(id)a3
+- (void)sceneDidEnterBackground:(id)background
 {
-  v3 = [(FRVersionHelpers *)self remoteDefaults];
-  [v3 checkForUpdate];
+  remoteDefaults = [(FRVersionHelpers *)self remoteDefaults];
+  [remoteDefaults checkForUpdate];
 }
 
 + (id)applicationName

@@ -1,16 +1,16 @@
 @interface PRSRankingRenderAndEngagementValues
-- (BOOL)getRankingValues:(signed __int16 *)a3 withRankingValueSize:(unint64_t)a4 forType:(int)a5;
+- (BOOL)getRankingValues:(signed __int16 *)values withRankingValueSize:(unint64_t)size forType:(int)type;
 - (PRSRankingRenderAndEngagementValues)init;
-- (PRSRankingRenderAndEngagementValues)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)incrementRankingValuesForType:(int)a3;
-- (void)setRankingValues:(signed __int16)a3[6] forType:(int)a4;
+- (PRSRankingRenderAndEngagementValues)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
+- (void)incrementRankingValuesForType:(int)type;
+- (void)setRankingValues:(signed __int16)values[6] forType:(int)type;
 @end
 
 @implementation PRSRankingRenderAndEngagementValues
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
   result = objc_opt_new();
@@ -34,13 +34,13 @@
   return [(PRSRankingRenderAndEngagementValues *)&v3 init];
 }
 
-- (PRSRankingRenderAndEngagementValues)initWithCoder:(id)a3
+- (PRSRankingRenderAndEngagementValues)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PRSRankingRenderAndEngagementValues *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"values"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"values"];
     if ([v6 count] == 12)
     {
       v7 = 0;
@@ -63,12 +63,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v21[12] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E696AD98];
   v5 = self->_renderValues[0];
-  v20 = a3;
+  coderCopy = coder;
   v19 = [v4 numberWithShort:v5];
   v21[0] = v19;
   v18 = [MEMORY[0x1E696AD98] numberWithShort:self->_renderValues[1]];
@@ -95,24 +95,24 @@
   v21[11] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:12];
 
-  [v20 encodeObject:v15 forKey:@"values"];
+  [coderCopy encodeObject:v15 forKey:@"values"];
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)getRankingValues:(signed __int16 *)a3 withRankingValueSize:(unint64_t)a4 forType:(int)a5
+- (BOOL)getRankingValues:(signed __int16 *)values withRankingValueSize:(unint64_t)size forType:(int)type
 {
-  if (a4 != 6)
+  if (size != 6)
   {
     return 0;
   }
 
-  if (!a5)
+  if (!type)
   {
     v5 = 20;
     goto LABEL_7;
   }
 
-  if (a5 != 1)
+  if (type != 1)
   {
     return 0;
   }
@@ -121,16 +121,16 @@
 LABEL_7:
   v7 = self + v5;
   v8 = *v7;
-  *(a3 + 2) = *(v7 + 2);
-  *a3 = v8;
+  *(values + 2) = *(v7 + 2);
+  *values = v8;
   return 1;
 }
 
-- (void)setRankingValues:(signed __int16)a3[6] forType:(int)a4
+- (void)setRankingValues:(signed __int16)values[6] forType:(int)type
 {
-  if (a4)
+  if (type)
   {
-    if (a4 != 1)
+    if (type != 1)
     {
       return;
     }
@@ -144,16 +144,16 @@ LABEL_7:
   }
 
   v5 = self + v4;
-  v6 = *a3;
-  *(v5 + 2) = *(a3 + 2);
+  v6 = *values;
+  *(v5 + 2) = *(values + 2);
   *v5 = v6;
 }
 
-- (void)incrementRankingValuesForType:(int)a3
+- (void)incrementRankingValuesForType:(int)type
 {
-  if (a3)
+  if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v3 = 0;
       renderValues = self->_renderValues;

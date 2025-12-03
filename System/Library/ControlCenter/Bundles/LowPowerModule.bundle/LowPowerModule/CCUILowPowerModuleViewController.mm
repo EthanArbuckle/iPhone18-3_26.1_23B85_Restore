@@ -1,7 +1,7 @@
 @interface CCUILowPowerModuleViewController
 - (BOOL)isEAconnected;
 - (CCUILowPowerModuleViewController)init;
-- (id)_makeLocalizedMenuItem:(id)a3 handler:(id)a4;
+- (id)_makeLocalizedMenuItem:(id)item handler:(id)handler;
 - (id)glyphPackageDescription;
 - (id)glyphState;
 - (void)_configureMenu;
@@ -10,9 +10,9 @@
 - (void)_updateState;
 - (void)dealloc;
 - (void)reconfigureView;
-- (void)refreshStateAnimated:(BOOL)a3;
-- (void)setLowPowerMode:(BOOL)a3;
-- (void)setMobileChargeMode:(BOOL)a3;
+- (void)refreshStateAnimated:(BOOL)animated;
+- (void)setLowPowerMode:(BOOL)mode;
+- (void)setMobileChargeMode:(BOOL)mode;
 - (void)toggleLowPowerMode;
 - (void)toggleMobileChargeMode;
 - (void)viewDidLoad;
@@ -78,8 +78,8 @@
 
 - (void)reconfigureView
 {
-  v3 = [(CCUILowPowerModuleViewController *)self glyphPackageDescription];
-  [(CCUIMenuModuleViewController *)self setGlyphPackageDescription:v3];
+  glyphPackageDescription = [(CCUILowPowerModuleViewController *)self glyphPackageDescription];
+  [(CCUIMenuModuleViewController *)self setGlyphPackageDescription:glyphPackageDescription];
 
   v4 = [MEMORY[0x29EDB9F48] bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"CONTROL_CENTER_TITLE" value:&stru_2A23EED98 table:0];
@@ -90,21 +90,21 @@
   MEMORY[0x2A1C70FE8](self, sel_setUseTrailingCheckmarkLayout_);
 }
 
-- (void)refreshStateAnimated:(BOOL)a3
+- (void)refreshStateAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v9[0] = MEMORY[0x29EDCA5F8];
   v9[1] = 3221225472;
   v9[2] = sub_29C9CF2AC;
   v9[3] = &unk_29F33CFE8;
   v9[4] = self;
   v5 = MEMORY[0x29ED504A0](v9, a2);
-  if (v3)
+  if (animatedCopy)
   {
     v6 = MEMORY[0x29EDC0CB0];
-    v7 = [(CCUILowPowerModuleViewController *)self viewIfLoaded];
-    v8 = [v7 window];
-    [v6 performWithoutAnimationWhileHiddenInWindow:v8 actions:v5];
+    viewIfLoaded = [(CCUILowPowerModuleViewController *)self viewIfLoaded];
+    window = [viewIfLoaded window];
+    [v6 performWithoutAnimationWhileHiddenInWindow:window actions:v5];
   }
 
   else
@@ -113,15 +113,15 @@
   }
 }
 
-- (id)_makeLocalizedMenuItem:(id)a3 handler:(id)a4
+- (id)_makeLocalizedMenuItem:(id)item handler:(id)handler
 {
   v5 = MEMORY[0x29EDB9F48];
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  itemCopy = item;
   v8 = [v5 bundleForClass:objc_opt_class()];
-  v9 = [v8 localizedStringForKey:v7 value:&stru_2A23EED98 table:0];
+  v9 = [v8 localizedStringForKey:itemCopy value:&stru_2A23EED98 table:0];
 
-  v10 = [objc_alloc(MEMORY[0x29EDC0CE0]) initWithTitle:v9 identifier:v9 handler:v6];
+  v10 = [objc_alloc(MEMORY[0x29EDC0CE0]) initWithTitle:v9 identifier:v9 handler:handlerCopy];
 
   return v10;
 }
@@ -217,28 +217,28 @@
 
 - (void)_observeSystemNotifications
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 addObserver:self selector:sel__updateState name:*MEMORY[0x29EDB9F00] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__updateState name:*MEMORY[0x29EDB9F00] object:0];
 
-  v4 = [MEMORY[0x29EDBA068] defaultCenter];
+  defaultCenter2 = [MEMORY[0x29EDBA068] defaultCenter];
   v5 = sub_29C9CF92C();
-  [v4 addObserver:self selector:sel__updateState name:v5 object:0];
+  [defaultCenter2 addObserver:self selector:sel__updateState name:v5 object:0];
 
-  v6 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v6 addObserver:self selector:sel__updateForDarkerSystemColorsChange name:*MEMORY[0x29EDC7EB0] object:0];
+  defaultCenter3 = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__updateForDarkerSystemColorsChange name:*MEMORY[0x29EDC7EB0] object:0];
 }
 
 - (void)_unobserveSystemNotifications
 {
-  v3 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x29EDB9F00] object:0];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x29EDB9F00] object:0];
 
-  v4 = [MEMORY[0x29EDBA068] defaultCenter];
+  defaultCenter2 = [MEMORY[0x29EDBA068] defaultCenter];
   v5 = sub_29C9CF92C();
-  [v4 removeObserver:self name:v5 object:0];
+  [defaultCenter2 removeObserver:self name:v5 object:0];
 
-  v6 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v6 removeObserver:self name:*MEMORY[0x29EDC7EB0] object:0];
+  defaultCenter3 = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter3 removeObserver:self name:*MEMORY[0x29EDC7EB0] object:0];
 }
 
 - (void)_updateState
@@ -258,10 +258,10 @@
   MEMORY[0x2A1C70FE8](self, sel_setLowPowerMode_);
 }
 
-- (void)setLowPowerMode:(BOOL)a3
+- (void)setLowPowerMode:(BOOL)mode
 {
-  v3 = a3;
-  if ([(CCUILowPowerModuleViewController *)self isSelected]!= a3)
+  modeCopy = mode;
+  if ([(CCUILowPowerModuleViewController *)self isSelected]!= mode)
   {
     objc_initWeak(&location, self);
     lowPowerMode = self->_lowPowerMode;
@@ -270,9 +270,9 @@
     v7[1] = 3221225472;
     v7[2] = sub_29C9CFCC8;
     v7[3] = &unk_29F33D038;
-    v9 = v3;
+    v9 = modeCopy;
     objc_copyWeak(&v8, &location);
-    [(_PMLowPowerMode *)lowPowerMode setPowerMode:v3 fromSource:v6 withCompletion:v7];
+    [(_PMLowPowerMode *)lowPowerMode setPowerMode:modeCopy fromSource:v6 withCompletion:v7];
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
   }
@@ -299,10 +299,10 @@
   }
 }
 
-- (void)setMobileChargeMode:(BOOL)a3
+- (void)setMobileChargeMode:(BOOL)mode
 {
   smartChargeClient = self->_smartChargeClient;
-  if (a3)
+  if (mode)
   {
     v15 = 0;
     v4 = &v15;

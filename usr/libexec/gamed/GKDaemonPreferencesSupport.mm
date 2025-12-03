@@ -10,25 +10,25 @@
 - (id)localPlayerInternal
 {
   v2 = objc_alloc_init(GKPlayerInternalProvider);
-  v3 = [(GKPlayerInternalProvider *)v2 localPlayer];
+  localPlayer = [(GKPlayerInternalProvider *)v2 localPlayer];
 
-  return v3;
+  return localPlayer;
 }
 
 - (NSString)localPlayerID
 {
-  v2 = [(GKDaemonPreferencesSupport *)self localPlayerInternal];
-  v3 = [v2 playerID];
+  localPlayerInternal = [(GKDaemonPreferencesSupport *)self localPlayerInternal];
+  playerID = [localPlayerInternal playerID];
 
-  return v3;
+  return playerID;
 }
 
 - (BOOL)localPlayerIsUnderage
 {
-  v2 = [(GKDaemonPreferencesSupport *)self localPlayerInternal];
-  v3 = [v2 isUnderage];
+  localPlayerInternal = [(GKDaemonPreferencesSupport *)self localPlayerInternal];
+  isUnderage = [localPlayerInternal isUnderage];
 
-  return v3;
+  return isUnderage;
 }
 
 - (int)localPlayerAgeCategory
@@ -81,9 +81,9 @@
   {
     v11 = [NSString stringWithFormat:@"Assertion failed"];
     v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKPreferencesSupport+GKDaemonAdditions.m"];
-    v13 = [v12 lastPathComponent];
-    v14 = v13;
-    v15 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (gotCallback)\n[%s (%s:%d)]", v11, "-[GKDaemonPreferencesSupport localPlayerAgeCategory]", [v13 UTF8String], 49);
+    lastPathComponent = [v12 lastPathComponent];
+    v14 = lastPathComponent;
+    v15 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (gotCallback)\n[%s (%s:%d)]", v11, "-[GKDaemonPreferencesSupport localPlayerAgeCategory]", [lastPathComponent UTF8String], 49);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v15];
   }

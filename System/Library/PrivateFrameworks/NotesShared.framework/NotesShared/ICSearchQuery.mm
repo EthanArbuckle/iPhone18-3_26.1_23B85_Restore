@@ -1,44 +1,44 @@
 @interface ICSearchQuery
 + (id)defaultAttributesToReturnFromCoreSpotlight;
-- (BOOL)run:(id *)a3;
-- (ICSearchQuery)initWithExternalRankingQueries:(id)a3;
-- (ICSearchQuery)initWithRankingQueriesDefinition:(id)a3;
+- (BOOL)run:(id *)run;
+- (ICSearchQuery)initWithExternalRankingQueries:(id)queries;
+- (ICSearchQuery)initWithRankingQueriesDefinition:(id)definition;
 - (NSDictionary)queryResults;
 - (id)attributesToFetch;
-- (id)newSearchQueryWithContext:(id)a3;
+- (id)newSearchQueryWithContext:(id)context;
 - (id)rankingQueries;
 - (void)cancel;
 - (void)forceStop;
-- (void)setupWithAttributes:(id)a3;
+- (void)setupWithAttributes:(id)attributes;
 @end
 
 @implementation ICSearchQuery
 
-- (ICSearchQuery)initWithRankingQueriesDefinition:(id)a3
+- (ICSearchQuery)initWithRankingQueriesDefinition:(id)definition
 {
-  v5 = a3;
+  definitionCopy = definition;
   v9.receiver = self;
   v9.super_class = ICSearchQuery;
   v6 = [(ICSearchQuery *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_rankingQueriesDefinition, a3);
+    objc_storeStrong(&v6->_rankingQueriesDefinition, definition);
   }
 
   return v7;
 }
 
-- (ICSearchQuery)initWithExternalRankingQueries:(id)a3
+- (ICSearchQuery)initWithExternalRankingQueries:(id)queries
 {
-  v5 = a3;
+  queriesCopy = queries;
   v9.receiver = self;
   v9.super_class = ICSearchQuery;
   v6 = [(ICSearchQuery *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_externalRankingQueries, a3);
+    objc_storeStrong(&v6->_externalRankingQueries, queries);
   }
 
   return v7;
@@ -46,20 +46,20 @@
 
 - (id)rankingQueries
 {
-  v3 = [(ICSearchQuery *)self rankingQueriesDefinition];
+  rankingQueriesDefinition = [(ICSearchQuery *)self rankingQueriesDefinition];
 
-  if (v3)
+  if (rankingQueriesDefinition)
   {
-    v4 = [(ICSearchQuery *)self rankingQueriesDefinition];
-    v5 = [v4 rankingQueries];
+    rankingQueriesDefinition2 = [(ICSearchQuery *)self rankingQueriesDefinition];
+    rankingQueries = [rankingQueriesDefinition2 rankingQueries];
   }
 
   else
   {
-    v5 = [(ICSearchQuery *)self externalRankingQueries];
+    rankingQueries = [(ICSearchQuery *)self externalRankingQueries];
   }
 
-  return v5;
+  return rankingQueries;
 }
 
 - (id)attributesToFetch
@@ -69,28 +69,28 @@
   return [v2 defaultAttributesToReturnFromCoreSpotlight];
 }
 
-- (id)newSearchQueryWithContext:(id)a3
+- (id)newSearchQueryWithContext:(id)context
 {
   v3 = MEMORY[0x277CC3498];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithQueryString:&stru_2827172C0 queryContext:v4];
+  contextCopy = context;
+  v5 = [[v3 alloc] initWithQueryString:&stru_2827172C0 queryContext:contextCopy];
 
   return v5;
 }
 
-- (BOOL)run:(id *)a3
+- (BOOL)run:(id *)run
 {
-  v5 = [(ICSearchQuery *)self searchQuery];
+  searchQuery = [(ICSearchQuery *)self searchQuery];
 
-  if (!v5)
+  if (!searchQuery)
   {
-    v6 = [(ICSearchQuery *)self attributesToFetch];
-    [(ICSearchQuery *)self setupWithAttributes:v6];
+    attributesToFetch = [(ICSearchQuery *)self attributesToFetch];
+    [(ICSearchQuery *)self setupWithAttributes:attributesToFetch];
   }
 
-  v7 = [(ICSearchQuery *)self searchQuery];
+  searchQuery2 = [(ICSearchQuery *)self searchQuery];
 
-  if (!v7)
+  if (!searchQuery2)
   {
     [(ICSearchQuery *)self cancel];
   }
@@ -111,15 +111,15 @@
   v25[3] = &unk_2781984A0;
   objc_copyWeak(&v26, &location);
   v25[4] = &v28;
-  v9 = [(ICSearchQuery *)self searchQuery];
-  [v9 setCompletionHandler:v25];
+  searchQuery3 = [(ICSearchQuery *)self searchQuery];
+  [searchQuery3 setCompletionHandler:v25];
 
-  v10 = [(ICSearchQuery *)self searchQuery];
-  [v10 start];
+  searchQuery4 = [(ICSearchQuery *)self searchQuery];
+  [searchQuery4 start];
 
-  v11 = [(ICSearchQuery *)self synchronousSemaphore];
+  synchronousSemaphore = [(ICSearchQuery *)self synchronousSemaphore];
 
-  if (!v11)
+  if (!synchronousSemaphore)
   {
     goto LABEL_11;
   }
@@ -128,15 +128,15 @@
   v13 = v12 > 0.0;
   if (v12 <= 0.0)
   {
-    v19 = [(ICSearchQuery *)self synchronousSemaphore];
-    dispatch_semaphore_wait(v19, 0xFFFFFFFFFFFFFFFFLL);
+    synchronousSemaphore2 = [(ICSearchQuery *)self synchronousSemaphore];
+    dispatch_semaphore_wait(synchronousSemaphore2, 0xFFFFFFFFFFFFFFFFLL);
     goto LABEL_13;
   }
 
-  v14 = [(ICSearchQuery *)self synchronousSemaphore];
+  synchronousSemaphore3 = [(ICSearchQuery *)self synchronousSemaphore];
   [(ICSearchQuery *)self timeoutInterval];
   v16 = dispatch_time(0, (v15 * 1000000000.0));
-  v17 = dispatch_semaphore_wait(v14, v16);
+  v17 = dispatch_semaphore_wait(synchronousSemaphore3, v16);
 
   v18 = os_log_create("com.apple.notes", "SearchIndexer");
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
@@ -151,8 +151,8 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v19 = [(ICSearchQuery *)self searchQuery];
-  [v19 cancel];
+  synchronousSemaphore2 = [(ICSearchQuery *)self searchQuery];
+  [synchronousSemaphore2 cancel];
 LABEL_13:
 
 LABEL_14:
@@ -163,9 +163,9 @@ LABEL_14:
     v29[5] = v20;
   }
 
-  if (a3)
+  if (run)
   {
-    *a3 = v29[5];
+    *run = v29[5];
   }
 
   [(ICSearchQuery *)self queryFinishedRunningWithError:v29[5]];
@@ -176,8 +176,8 @@ LABEL_14:
 
   else
   {
-    v24 = [(ICSearchQuery *)self searchQuery];
-    v22 = [v24 isCancelled] ^ 1;
+    searchQuery5 = [(ICSearchQuery *)self searchQuery];
+    v22 = [searchQuery5 isCancelled] ^ 1;
   }
 
   objc_destroyWeak(&v26);
@@ -227,12 +227,12 @@ void __21__ICSearchQuery_run___block_invoke(uint64_t a1, void *a2)
 - (void)forceStop
 {
   [(ICSearchQuery *)self setWasForceStopped:1];
-  v3 = [(ICSearchQuery *)self synchronousSemaphore];
+  synchronousSemaphore = [(ICSearchQuery *)self synchronousSemaphore];
 
-  if (v3)
+  if (synchronousSemaphore)
   {
-    v4 = [(ICSearchQuery *)self synchronousSemaphore];
-    dispatch_semaphore_signal(v4);
+    synchronousSemaphore2 = [(ICSearchQuery *)self synchronousSemaphore];
+    dispatch_semaphore_signal(synchronousSemaphore2);
 
     v5 = os_log_create("com.apple.notes", "SearchIndexer");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -246,44 +246,44 @@ void __21__ICSearchQuery_run___block_invoke(uint64_t a1, void *a2)
 
 - (void)cancel
 {
-  v3 = [(ICSearchQuery *)self searchQuery];
-  [v3 cancel];
+  searchQuery = [(ICSearchQuery *)self searchQuery];
+  [searchQuery cancel];
 
   [(ICSearchQuery *)self forceStop];
 }
 
-- (void)setupWithAttributes:(id)a3
+- (void)setupWithAttributes:(id)attributes
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  attributesCopy = attributes;
   objc_initWeak(&location, self);
-  v5 = [(ICSearchQuery *)self newSearchQueryContext];
-  [v5 setFetchAttributes:v4];
-  v6 = [(ICSearchQuery *)self rankingQueries];
-  [v5 setRankingQueries:v6];
+  newSearchQueryContext = [(ICSearchQuery *)self newSearchQueryContext];
+  [newSearchQueryContext setFetchAttributes:attributesCopy];
+  rankingQueries = [(ICSearchQuery *)self rankingQueries];
+  [newSearchQueryContext setRankingQueries:rankingQueries];
 
   v7 = ICNotesAppBundleIdentifier();
   v18[0] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:1];
-  [v5 setBundleIDs:v8];
+  [newSearchQueryContext setBundleIDs:v8];
 
-  v9 = [v5 filterQueries];
-  v10 = [v9 arrayByAddingObject:@"_kMDItemUserActivityType != *"];
-  [v5 setFilterQueries:v10];
+  filterQueries = [newSearchQueryContext filterQueries];
+  v10 = [filterQueries arrayByAddingObject:@"_kMDItemUserActivityType != *"];
+  [newSearchQueryContext setFilterQueries:v10];
 
   v17 = *MEMORY[0x277CCA1A0];
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
-  [v5 setProtectionClasses:v11];
+  [newSearchQueryContext setProtectionClasses:v11];
 
-  v12 = [(ICSearchQuery *)self newSearchQueryWithContext:v5];
+  v12 = [(ICSearchQuery *)self newSearchQueryWithContext:newSearchQueryContext];
   [(ICSearchQuery *)self setSearchQuery:v12];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __37__ICSearchQuery_setupWithAttributes___block_invoke;
   v14[3] = &unk_2781984F0;
   objc_copyWeak(&v15, &location);
-  v13 = [(ICSearchQuery *)self searchQuery];
-  [v13 setFoundItemsHandler:v14];
+  searchQuery = [(ICSearchQuery *)self searchQuery];
+  [searchQuery setFoundItemsHandler:v14];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
@@ -389,8 +389,8 @@ void __37__ICSearchQuery_setupWithAttributes___block_invoke_17(uint64_t a1, void
 
 - (NSDictionary)queryResults
 {
-  v2 = [(ICSearchQuery *)self mutableQueryResults];
-  v3 = [v2 copy];
+  mutableQueryResults = [(ICSearchQuery *)self mutableQueryResults];
+  v3 = [mutableQueryResults copy];
   v4 = v3;
   if (v3)
   {

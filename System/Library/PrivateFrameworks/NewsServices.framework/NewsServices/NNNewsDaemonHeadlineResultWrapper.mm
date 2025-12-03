@@ -1,13 +1,13 @@
 @interface NNNewsDaemonHeadlineResultWrapper
-- (NNNewsDaemonHeadlineResultWrapper)initWithResult:(id)a3 assetFileURLsByRemoteURL:(id)a4;
+- (NNNewsDaemonHeadlineResultWrapper)initWithResult:(id)result assetFileURLsByRemoteURL:(id)l;
 @end
 
 @implementation NNNewsDaemonHeadlineResultWrapper
 
-- (NNNewsDaemonHeadlineResultWrapper)initWithResult:(id)a3 assetFileURLsByRemoteURL:(id)a4
+- (NNNewsDaemonHeadlineResultWrapper)initWithResult:(id)result assetFileURLsByRemoteURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  lCopy = l;
   v34.receiver = self;
   v34.super_class = NNNewsDaemonHeadlineResultWrapper;
   v8 = [(NNNewsDaemonHeadlineResultWrapper *)&v34 init];
@@ -15,14 +15,14 @@
   if (v8)
   {
     v27 = v8;
-    v28 = v6;
-    v10 = [v6 sections];
-    v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v10 count]);
+    v28 = resultCopy;
+    sections = [resultCopy sections];
+    v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [sections count]);
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
-    obj = v10;
+    obj = sections;
     v12 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v12)
     {
@@ -39,10 +39,10 @@
           }
 
           v17 = *(*(&v30 + 1) + 8 * i);
-          v18 = [v17 items];
-          v19 = [v18 count];
+          items = [v17 items];
+          v19 = [items count];
 
-          v20 = [[NNNewsDaemonHeadlineSectionWrapper alloc] initWithSection:v17 assetFileURLsByRemoteURL:v7];
+          v20 = [[NNNewsDaemonHeadlineSectionWrapper alloc] initWithSection:v17 assetFileURLsByRemoteURL:lCopy];
           if (v20)
           {
             [v11 addObject:v20];
@@ -68,9 +68,9 @@
     sections = v27->_sections;
     v27->_sections = v21;
 
-    v6 = v28;
-    v23 = [v28 expirationDate];
-    v24 = [v23 copy];
+    resultCopy = v28;
+    expirationDate = [v28 expirationDate];
+    v24 = [expirationDate copy];
     expirationDate = v27->_expirationDate;
     v27->_expirationDate = v24;
   }

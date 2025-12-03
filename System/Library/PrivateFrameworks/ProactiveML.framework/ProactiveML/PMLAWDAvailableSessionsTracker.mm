@@ -1,8 +1,8 @@
 @interface PMLAWDAvailableSessionsTracker
 - (PMLAWDAvailableSessionsTracker)init;
-- (PMLAWDAvailableSessionsTracker)initWithAWDConnection:(id)a3;
+- (PMLAWDAvailableSessionsTracker)initWithAWDConnection:(id)connection;
 - (void)reportStatsToAWD;
-- (void)setAWDMetricQueryDelegate:(id)a3;
+- (void)setAWDMetricQueryDelegate:(id)delegate;
 @end
 
 @implementation PMLAWDAvailableSessionsTracker
@@ -18,23 +18,23 @@
 
   else
   {
-    v5 = [MEMORY[0x277CCA890] currentHandler];
-    [v5 handleFailureInMethod:a2 object:self file:@"PMLAWDAvailableSessionsTracker.m" lineNumber:54 description:@"Missing delegate to handle AWD metric request."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLAWDAvailableSessionsTracker.m" lineNumber:54 description:@"Missing delegate to handle AWD metric request."];
   }
 }
 
-- (void)setAWDMetricQueryDelegate:(id)a3
+- (void)setAWDMetricQueryDelegate:(id)delegate
 {
-  v5 = a3;
+  delegateCopy = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained)
   {
-    v8 = [MEMORY[0x277CCA890] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PMLAWDAvailableSessionsTracker.m" lineNumber:41 description:@"AWD metric query delegate can only be set once"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PMLAWDAvailableSessionsTracker.m" lineNumber:41 description:@"AWD metric query delegate can only be set once"];
   }
 
-  objc_storeWeak(&self->_delegate, v5);
+  objc_storeWeak(&self->_delegate, delegateCopy);
   objc_initWeak(&location, self);
   awdServerConnection = self->_awdServerConnection;
   v9[0] = MEMORY[0x277D85DD0];
@@ -53,9 +53,9 @@ void __60__PMLAWDAvailableSessionsTracker_setAWDMetricQueryDelegate___block_invo
   [WeakRetained reportStatsToAWD];
 }
 
-- (PMLAWDAvailableSessionsTracker)initWithAWDConnection:(id)a3
+- (PMLAWDAvailableSessionsTracker)initWithAWDConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v6 = objc_opt_new();
   v9.receiver = self;
   v9.super_class = PMLAWDAvailableSessionsTracker;
@@ -63,7 +63,7 @@ void __60__PMLAWDAvailableSessionsTracker_setAWDMetricQueryDelegate___block_invo
 
   if (v7)
   {
-    objc_storeStrong(&v7->_awdServerConnection, a3);
+    objc_storeStrong(&v7->_awdServerConnection, connection);
   }
 
   return v7;

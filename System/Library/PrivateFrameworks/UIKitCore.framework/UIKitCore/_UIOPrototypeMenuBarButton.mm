@@ -1,22 +1,22 @@
 @interface _UIOPrototypeMenuBarButton
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4;
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4;
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5;
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration;
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location;
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator;
 @end
 
 @implementation _UIOPrototypeMenuBarButton
 
-- (id)_contextMenuInteraction:(id)a3 styleForMenuWithConfiguration:(id)a4
+- (id)_contextMenuInteraction:(id)interaction styleForMenuWithConfiguration:(id)configuration
 {
   v6.receiver = self;
   v6.super_class = _UIOPrototypeMenuBarButton;
-  v4 = [(UIButton *)&v6 _contextMenuInteraction:a3 styleForMenuWithConfiguration:a4];
+  v4 = [(UIButton *)&v6 _contextMenuInteraction:interaction styleForMenuWithConfiguration:configuration];
   [v4 set_backgroundInteractionStyle:1];
 
   return v4;
 }
 
-- (id)contextMenuInteraction:(id)a3 configurationForMenuAtLocation:(CGPoint)a4
+- (id)contextMenuInteraction:(id)interaction configurationForMenuAtLocation:(CGPoint)location
 {
   v5 = objc_alloc_init(_UIContextMenuAsyncConfiguration);
   elementLoader = self->_elementLoader;
@@ -32,11 +32,11 @@
   return v7;
 }
 
-- (void)contextMenuInteraction:(id)a3 willEndForConfiguration:(id)a4 animator:(id)a5
+- (void)contextMenuInteraction:(id)interaction willEndForConfiguration:(id)configuration animator:(id)animator
 {
   v6.receiver = self;
   v6.super_class = _UIOPrototypeMenuBarButton;
-  [(UIControl *)&v6 contextMenuInteraction:a3 willEndForConfiguration:a4 animator:a5];
+  [(UIControl *)&v6 contextMenuInteraction:interaction willEndForConfiguration:configuration animator:animator];
   (*(self->_menuPresentationHandler + 2))();
 }
 

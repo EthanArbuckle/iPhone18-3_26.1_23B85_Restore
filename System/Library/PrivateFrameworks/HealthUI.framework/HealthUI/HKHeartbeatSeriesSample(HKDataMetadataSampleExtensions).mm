@@ -28,7 +28,7 @@
   v3 = v2;
   v12 = v3;
   v15 = v16;
-  [a1 _enumerateHeartbeatDataWithBlock:&v8];
+  [self _enumerateHeartbeatDataWithBlock:&v8];
   if (v20[3] == 0.0)
   {
     v4 = 0;
@@ -36,8 +36,8 @@
 
   else
   {
-    v5 = [a1 metadata];
-    v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E696C738]];
+    metadata = [self metadata];
+    v6 = [metadata objectForKeyedSubscript:*MEMORY[0x1E696C738]];
 
     if (v6)
     {

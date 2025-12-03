@@ -1,8 +1,8 @@
 @interface DrawingController
 - (void)dealloc;
-- (void)renderer:(id)a3 didInitializeWithEnvironment:(id)a4;
-- (void)renderer:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5;
-- (void)rendererDidInvalidate:(id)a3;
+- (void)renderer:(id)renderer didInitializeWithEnvironment:(id)environment;
+- (void)renderer:(id)renderer didUpdateEnvironment:(id)environment withTransition:(id)transition;
+- (void)rendererDidInvalidate:(id)invalidate;
 @end
 
 @implementation DrawingController
@@ -10,44 +10,44 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:v4];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:selfCopy];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for DrawingController();
   [(DrawingController *)&v6 dealloc];
 }
 
-- (void)renderer:(id)a3 didInitializeWithEnvironment:(id)a4
+- (void)renderer:(id)renderer didInitializeWithEnvironment:(id)environment
 {
-  v6 = a3;
+  rendererCopy = renderer;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_10000EF6C(v6, a4);
+  selfCopy = self;
+  sub_10000EF6C(rendererCopy, environment);
 
   swift_unknownObjectRelease();
 }
 
-- (void)renderer:(id)a3 didUpdateEnvironment:(id)a4 withTransition:(id)a5
+- (void)renderer:(id)renderer didUpdateEnvironment:(id)environment withTransition:(id)transition
 {
-  v8 = a3;
+  rendererCopy = renderer;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  sub_10000F824(v8, a4, a5);
+  transitionCopy = transition;
+  selfCopy = self;
+  sub_10000F824(rendererCopy, environment, transition);
 
   swift_unknownObjectRelease();
 }
 
-- (void)rendererDidInvalidate:(id)a3
+- (void)rendererDidInvalidate:(id)invalidate
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v5 = a3;
-  v6 = self;
+  invalidateCopy = invalidate;
+  selfCopy = self;
   v7 = sub_100012EA4();
-  sub_1000100E4(v5, sub_100012304, sub_1000037AC, sub_10001048C);
+  sub_1000100E4(invalidateCopy, sub_100012304, sub_1000037AC, sub_10001048C);
 
   v7(&v8, 0);
 }

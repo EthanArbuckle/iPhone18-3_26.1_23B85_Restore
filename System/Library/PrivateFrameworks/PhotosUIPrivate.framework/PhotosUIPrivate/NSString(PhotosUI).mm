@@ -8,14 +8,14 @@
 - (uint64_t)pu_platformAgnosticHash
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = [a1 length];
+  v2 = [self length];
   v3 = v2;
   v4 = v9;
   if (v2 >= 97)
   {
-    [a1 getCharacters:v9 range:{0, 32}];
-    [a1 getCharacters:&v10 range:{(v2 >> 1) - 16, 32}];
-    [a1 getCharacters:&v11 range:{v2 - 32, 32}];
+    [self getCharacters:v9 range:{0, 32}];
+    [self getCharacters:&v10 range:{(v2 >> 1) - 16, 32}];
+    [self getCharacters:&v11 range:{v2 - 32, 32}];
     v5 = &v12;
     v6 = &v12;
 LABEL_5:
@@ -30,7 +30,7 @@ LABEL_5:
     goto LABEL_9;
   }
 
-  [a1 getCharacters:v9 range:{0, v2}];
+  [self getCharacters:v9 range:{0, v2}];
   v5 = &v9[v2];
   if ((v2 & 0xFFFFFFFFFFFFFFFCLL) >= 1)
   {
@@ -50,8 +50,8 @@ LABEL_9:
 
 - (id)pu_stringByIndentingNewLines
 {
-  v2 = [a1 mutableCopy];
-  [v2 replaceOccurrencesOfString:@"\n" withString:@"\n\t" options:2 range:{0, objc_msgSend(a1, "length")}];
+  v2 = [self mutableCopy];
+  [v2 replaceOccurrencesOfString:@"\n" withString:@"\n\t" options:2 range:{0, objc_msgSend(self, "length")}];
 
   return v2;
 }

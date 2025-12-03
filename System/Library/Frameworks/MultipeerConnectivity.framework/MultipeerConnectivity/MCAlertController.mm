@@ -14,16 +14,16 @@
   [(UIWindow *)[(MCAlertController *)self alertWindow] setRootViewController:objc_alloc_init(MEMORY[0x277D75D28])];
   [(UIWindow *)[(MCAlertController *)self alertWindow] setWindowLevel:*MEMORY[0x277D772A8] + 1.0];
   [(UIWindow *)[(MCAlertController *)self alertWindow] makeKeyAndVisible];
-  v4 = [(UIWindow *)[(MCAlertController *)self alertWindow] rootViewController];
+  rootViewController = [(UIWindow *)[(MCAlertController *)self alertWindow] rootViewController];
 
-  [(UIViewController *)v4 presentViewController:self animated:1 completion:0];
+  [(UIViewController *)rootViewController presentViewController:self animated:1 completion:0];
 }
 
 - (void)dismiss
 {
-  v2 = [(UIWindow *)[(MCAlertController *)self alertWindow] rootViewController];
+  rootViewController = [(UIWindow *)[(MCAlertController *)self alertWindow] rootViewController];
 
-  [(UIViewController *)v2 dismissViewControllerAnimated:1 completion:0];
+  [(UIViewController *)rootViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 - (void)dealloc

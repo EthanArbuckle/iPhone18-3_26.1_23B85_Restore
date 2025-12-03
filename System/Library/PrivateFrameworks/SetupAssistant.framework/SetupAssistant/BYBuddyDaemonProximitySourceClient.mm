@@ -2,15 +2,15 @@
 + (id)proximitySourceClientInterface;
 - (BYBuddyDaemonProximitySourceClient)init;
 - (BYBuddyDaemonProximitySourceProtocol)delegate;
-- (void)activateWithSharingChannel:(id)a3;
-- (void)backupCompletedWithError:(id)a3;
-- (void)backupProgress:(double)a3 estimatedTimeRemaining:(int64_t)a4;
+- (void)activateWithSharingChannel:(id)channel;
+- (void)backupCompletedWithError:(id)error;
+- (void)backupProgress:(double)progress estimatedTimeRemaining:(int64_t)remaining;
 - (void)connectToDaemon;
-- (void)finishedWithError:(id)a3;
+- (void)finishedWithError:(id)error;
 - (void)invalidate;
-- (void)receivedData:(id)a3;
-- (void)syncCompletedWithErrors:(id)a3;
-- (void)syncProgress:(double)a3;
+- (void)receivedData:(id)data;
+- (void)syncCompletedWithErrors:(id)errors;
+- (void)syncProgress:(double)progress;
 @end
 
 @implementation BYBuddyDaemonProximitySourceClient
@@ -46,15 +46,15 @@
   [(BYBuddyDaemonProximitySourceClient *)self setConnection:v3];
 
   v4 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F30B0248];
-  v5 = [(BYBuddyDaemonProximitySourceClient *)self connection];
-  [v5 setRemoteObjectInterface:v4];
+  connection = [(BYBuddyDaemonProximitySourceClient *)self connection];
+  [connection setRemoteObjectInterface:v4];
 
-  v6 = [objc_opt_class() proximitySourceClientInterface];
-  v7 = [(BYBuddyDaemonProximitySourceClient *)self connection];
-  [v7 setExportedInterface:v6];
+  proximitySourceClientInterface = [objc_opt_class() proximitySourceClientInterface];
+  connection2 = [(BYBuddyDaemonProximitySourceClient *)self connection];
+  [connection2 setExportedInterface:proximitySourceClientInterface];
 
-  v8 = [(BYBuddyDaemonProximitySourceClient *)self connection];
-  [v8 setExportedObject:self];
+  connection3 = [(BYBuddyDaemonProximitySourceClient *)self connection];
+  [connection3 setExportedObject:self];
 
   objc_initWeak(&location, self);
   v14[0] = MEMORY[0x1E69E9820];
@@ -62,19 +62,19 @@
   v14[2] = __53__BYBuddyDaemonProximitySourceClient_connectToDaemon__block_invoke;
   v14[3] = &unk_1E7D027D0;
   objc_copyWeak(&v15, &location);
-  v9 = [(BYBuddyDaemonProximitySourceClient *)self connection];
-  [v9 setInvalidationHandler:v14];
+  connection4 = [(BYBuddyDaemonProximitySourceClient *)self connection];
+  [connection4 setInvalidationHandler:v14];
 
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __53__BYBuddyDaemonProximitySourceClient_connectToDaemon__block_invoke_78;
   v12[3] = &unk_1E7D027D0;
   objc_copyWeak(&v13, &location);
-  v10 = [(BYBuddyDaemonProximitySourceClient *)self connection];
-  [v10 setInterruptionHandler:v12];
+  connection5 = [(BYBuddyDaemonProximitySourceClient *)self connection];
+  [connection5 setInterruptionHandler:v12];
 
-  v11 = [(BYBuddyDaemonProximitySourceClient *)self connection];
-  [v11 resume];
+  connection6 = [(BYBuddyDaemonProximitySourceClient *)self connection];
+  [connection6 resume];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&v15);
@@ -111,60 +111,60 @@ void __53__BYBuddyDaemonProximitySourceClient_connectToDaemon__block_invoke_78(u
   [v5 finishedWithError:v3];
 }
 
-- (void)activateWithSharingChannel:(id)a3
+- (void)activateWithSharingChannel:(id)channel
 {
-  v4 = a3;
-  v6 = [(BYBuddyDaemonProximitySourceClient *)self connection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 activateWithSharingChannel:v4];
+  channelCopy = channel;
+  connection = [(BYBuddyDaemonProximitySourceClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy activateWithSharingChannel:channelCopy];
 }
 
 - (void)invalidate
 {
-  v3 = [(BYBuddyDaemonProximitySourceClient *)self connection];
-  v2 = [v3 remoteObjectProxy];
-  [v2 invalidate];
+  connection = [(BYBuddyDaemonProximitySourceClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy invalidate];
 }
 
-- (void)receivedData:(id)a3
+- (void)receivedData:(id)data
 {
-  v4 = a3;
-  v6 = [(BYBuddyDaemonProximitySourceClient *)self connection];
-  v5 = [v6 remoteObjectProxy];
-  [v5 receivedData:v4];
+  dataCopy = data;
+  connection = [(BYBuddyDaemonProximitySourceClient *)self connection];
+  remoteObjectProxy = [connection remoteObjectProxy];
+  [remoteObjectProxy receivedData:dataCopy];
 }
 
-- (void)finishedWithError:(id)a3
+- (void)finishedWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(BYBuddyDaemonProximitySourceClient *)self delegate];
-  [v5 finishedWithError:v4];
+  errorCopy = error;
+  delegate = [(BYBuddyDaemonProximitySourceClient *)self delegate];
+  [delegate finishedWithError:errorCopy];
 }
 
-- (void)backupProgress:(double)a3 estimatedTimeRemaining:(int64_t)a4
+- (void)backupProgress:(double)progress estimatedTimeRemaining:(int64_t)remaining
 {
-  v6 = [(BYBuddyDaemonProximitySourceClient *)self delegate];
-  [v6 backupProgress:a4 estimatedTimeRemaining:a3];
+  delegate = [(BYBuddyDaemonProximitySourceClient *)self delegate];
+  [delegate backupProgress:remaining estimatedTimeRemaining:progress];
 }
 
-- (void)backupCompletedWithError:(id)a3
+- (void)backupCompletedWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(BYBuddyDaemonProximitySourceClient *)self delegate];
-  [v5 backupCompletedWithError:v4];
+  errorCopy = error;
+  delegate = [(BYBuddyDaemonProximitySourceClient *)self delegate];
+  [delegate backupCompletedWithError:errorCopy];
 }
 
-- (void)syncProgress:(double)a3
+- (void)syncProgress:(double)progress
 {
-  v4 = [(BYBuddyDaemonProximitySourceClient *)self delegate];
-  [v4 syncProgress:a3];
+  delegate = [(BYBuddyDaemonProximitySourceClient *)self delegate];
+  [delegate syncProgress:progress];
 }
 
-- (void)syncCompletedWithErrors:(id)a3
+- (void)syncCompletedWithErrors:(id)errors
 {
-  v4 = a3;
-  v5 = [(BYBuddyDaemonProximitySourceClient *)self delegate];
-  [v5 syncCompletedWithErrors:v4];
+  errorsCopy = errors;
+  delegate = [(BYBuddyDaemonProximitySourceClient *)self delegate];
+  [delegate syncCompletedWithErrors:errorsCopy];
 }
 
 - (BYBuddyDaemonProximitySourceProtocol)delegate

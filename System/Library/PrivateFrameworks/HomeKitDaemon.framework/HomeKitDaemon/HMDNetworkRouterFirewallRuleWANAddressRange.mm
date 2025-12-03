@@ -1,6 +1,6 @@
 @interface HMDNetworkRouterFirewallRuleWANAddressRange
-- (BOOL)isEqual:(id)a3;
-- (HMDNetworkRouterFirewallRuleWANAddressRange)initWithAddressStart:(id)a3 addressEnd:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMDNetworkRouterFirewallRuleWANAddressRange)initWithAddressStart:(id)start addressEnd:(id)end;
 - (id)attributeDescriptions;
 - (id)prettyJSONDictionary;
 - (unint64_t)hash;
@@ -12,13 +12,13 @@
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v10[0] = @"addressStart";
-  v3 = [(HMDNetworkRouterFirewallRuleWANAddressRange *)self addressStart];
-  v4 = [v3 addressString];
+  addressStart = [(HMDNetworkRouterFirewallRuleWANAddressRange *)self addressStart];
+  addressString = [addressStart addressString];
   v10[1] = @"addressEnd";
-  v11[0] = v4;
-  v5 = [(HMDNetworkRouterFirewallRuleWANAddressRange *)self addressEnd];
-  v6 = [v5 addressString];
-  v11[1] = v6;
+  v11[0] = addressString;
+  addressEnd = [(HMDNetworkRouterFirewallRuleWANAddressRange *)self addressEnd];
+  addressString2 = [addressEnd addressString];
+  v11[1] = addressString2;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
 
   v8 = *MEMORY[0x277D85DE8];
@@ -30,12 +30,12 @@
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDNetworkRouterFirewallRuleWANAddressRange *)self addressStart];
-  v5 = [v3 initWithName:@"AddressStart" value:v4];
+  addressStart = [(HMDNetworkRouterFirewallRuleWANAddressRange *)self addressStart];
+  v5 = [v3 initWithName:@"AddressStart" value:addressStart];
   v12[0] = v5;
   v6 = objc_alloc(MEMORY[0x277D0F778]);
-  v7 = [(HMDNetworkRouterFirewallRuleWANAddressRange *)self addressEnd];
-  v8 = [v6 initWithName:@"AddressEnd" value:v7];
+  addressEnd = [(HMDNetworkRouterFirewallRuleWANAddressRange *)self addressEnd];
+  v8 = [v6 initWithName:@"AddressEnd" value:addressEnd];
   v12[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
 
@@ -46,19 +46,19 @@
 
 - (unint64_t)hash
 {
-  v3 = [(HMDNetworkRouterFirewallRuleWANAddressRange *)self addressStart];
-  v4 = [v3 hash];
+  addressStart = [(HMDNetworkRouterFirewallRuleWANAddressRange *)self addressStart];
+  v4 = [addressStart hash];
 
-  v5 = [(HMDNetworkRouterFirewallRuleWANAddressRange *)self addressEnd];
-  v6 = [v5 hash];
+  addressEnd = [(HMDNetworkRouterFirewallRuleWANAddressRange *)self addressEnd];
+  v6 = [addressEnd hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -68,7 +68,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -79,13 +79,13 @@
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDNetworkRouterFirewallRuleWANAddressRange *)self addressStart];
-      v8 = [(HMDNetworkRouterFirewallRuleWANAddressRange *)v6 addressStart];
-      if ([v7 isEqual:v8])
+      addressStart = [(HMDNetworkRouterFirewallRuleWANAddressRange *)self addressStart];
+      addressStart2 = [(HMDNetworkRouterFirewallRuleWANAddressRange *)v6 addressStart];
+      if ([addressStart isEqual:addressStart2])
       {
-        v9 = [(HMDNetworkRouterFirewallRuleWANAddressRange *)self addressEnd];
-        v10 = [(HMDNetworkRouterFirewallRuleWANAddressRange *)v6 addressEnd];
-        v11 = [v9 isEqual:v10];
+        addressEnd = [(HMDNetworkRouterFirewallRuleWANAddressRange *)self addressEnd];
+        addressEnd2 = [(HMDNetworkRouterFirewallRuleWANAddressRange *)v6 addressEnd];
+        v11 = [addressEnd isEqual:addressEnd2];
       }
 
       else
@@ -103,18 +103,18 @@
   return v11;
 }
 
-- (HMDNetworkRouterFirewallRuleWANAddressRange)initWithAddressStart:(id)a3 addressEnd:(id)a4
+- (HMDNetworkRouterFirewallRuleWANAddressRange)initWithAddressStart:(id)start addressEnd:(id)end
 {
-  v7 = a3;
-  v8 = a4;
+  startCopy = start;
+  endCopy = end;
   v13.receiver = self;
   v13.super_class = HMDNetworkRouterFirewallRuleWANAddressRange;
   v9 = [(HMDNetworkRouterFirewallRuleWANAddressRange *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_addressStart, a3);
-    objc_storeStrong(&v10->_addressEnd, a4);
+    objc_storeStrong(&v9->_addressStart, start);
+    objc_storeStrong(&v10->_addressEnd, end);
     v11 = v10;
   }
 

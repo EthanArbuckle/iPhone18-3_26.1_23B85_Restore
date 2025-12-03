@@ -1,26 +1,26 @@
 @interface CapsuleNavigationBarRegistration
-- (BOOL)_isBarItemHidden:(int64_t)a3;
-- (BOOL)containsBarItem:(int64_t)a3;
-- (CapsuleNavigationBarRegistration)initWithBar:(id)a3 barManager:(id)a4;
+- (BOOL)_isBarItemHidden:(int64_t)hidden;
+- (BOOL)containsBarItem:(int64_t)item;
+- (CapsuleNavigationBarRegistration)initWithBar:(id)bar barManager:(id)manager;
 - (NSString)description;
 - (SFCapsuleNavigationBar)bar;
-- (id)_actionForBarItem:(int64_t)a3;
-- (id)_longPressActionForBarItem:(int64_t)a3;
+- (id)_actionForBarItem:(int64_t)item;
+- (id)_longPressActionForBarItem:(int64_t)item;
 - (id)_progressView;
-- (id)_touchDownActionForBarItem:(int64_t)a3;
+- (id)_touchDownActionForBarItem:(int64_t)item;
 - (id)buttonTintColor;
-- (id)popoverSourceInfoForItem:(int64_t)a3;
-- (id)viewForBarItem:(int64_t)a3;
+- (id)popoverSourceInfoForItem:(int64_t)item;
+- (id)viewForBarItem:(int64_t)item;
 - (void)_updateDownloadState;
 - (void)_updateFormatMenuButton;
-- (void)_voiceSearchAvailabilityDidChange:(id)a3;
+- (void)_voiceSearchAvailabilityDidChange:(id)change;
 - (void)dealloc;
-- (void)setBarItem:(int64_t)a3 hidden:(BOOL)a4;
-- (void)setBarItem:(int64_t)a3 menu:(id)a4;
-- (void)setBarItem:(int64_t)a3 selected:(BOOL)a4;
-- (void)setPageFormatItemState:(unint64_t)a3;
-- (void)setProgress:(double)a3 forBarItem:(int64_t)a4;
-- (void)updateBarAnimated:(BOOL)a3;
+- (void)setBarItem:(int64_t)item hidden:(BOOL)hidden;
+- (void)setBarItem:(int64_t)item menu:(id)menu;
+- (void)setBarItem:(int64_t)item selected:(BOOL)selected;
+- (void)setPageFormatItemState:(unint64_t)state;
+- (void)setProgress:(double)progress forBarItem:(int64_t)item;
+- (void)updateBarAnimated:(BOOL)animated;
 @end
 
 @implementation CapsuleNavigationBarRegistration
@@ -28,23 +28,23 @@
 - (void)_updateFormatMenuButton
 {
   WeakRetained = objc_loadWeakRetained(&self->_bar);
-  v3 = [WeakRetained layoutStyle];
-  v4 = [WeakRetained layoutStyle];
-  v5 = [MEMORY[0x277D49A08] isSolariumEnabled];
+  layoutStyle = [WeakRetained layoutStyle];
+  layoutStyle2 = [WeakRetained layoutStyle];
+  isSolariumEnabled = [MEMORY[0x277D49A08] isSolariumEnabled];
   v6 = 10.0;
-  if (v4 == 2)
+  if (layoutStyle2 == 2)
   {
     v6 = 5.0;
   }
 
-  if (v5)
+  if (isSolariumEnabled)
   {
     v6 = 4.0;
   }
 
   [(SFNavigationBarToggleButton *)self->_formatMenuButton setMinimumSideMargin:v6];
   v7 = MEMORY[0x277D29138];
-  if (v3 != 2)
+  if (layoutStyle != 2)
   {
     v7 = MEMORY[0x277D28FE0];
   }
@@ -52,8 +52,8 @@
   [(SFNavigationBarToggleButton *)self->_formatMenuButton setResizableBackgroundCornerRadius:*v7];
   if (objc_opt_respondsToSelector())
   {
-    v8 = [WeakRetained unclippedContainer];
-    [(SFNavigationBarToggleButton *)self->_formatMenuButton setPointerPreviewContainer:v8];
+    unclippedContainer = [WeakRetained unclippedContainer];
+    [(SFNavigationBarToggleButton *)self->_formatMenuButton setPointerPreviewContainer:unclippedContainer];
   }
 }
 
@@ -80,15 +80,15 @@
     goto LABEL_2;
   }
 
-  v4 = [MEMORY[0x277CDB7A8] sharedManager];
-  if ([v4 hasUnviewedDownloads])
+  mEMORY[0x277CDB7A8] = [MEMORY[0x277CDB7A8] sharedManager];
+  if ([mEMORY[0x277CDB7A8] hasUnviewedDownloads])
   {
   }
 
   else
   {
-    v5 = [MEMORY[0x277CDB7A8] sharedManager];
-    [v5 totalProgress];
+    mEMORY[0x277CDB7A8]2 = [MEMORY[0x277CDB7A8] sharedManager];
+    [mEMORY[0x277CDB7A8]2 totalProgress];
     v7 = v6;
 
     if (v7 == -2.0)
@@ -105,26 +105,26 @@ LABEL_7:
   [(CapsuleNavigationBarRegistration *)self setPageFormatItemState:v3];
 }
 
-- (CapsuleNavigationBarRegistration)initWithBar:(id)a3 barManager:(id)a4
+- (CapsuleNavigationBarRegistration)initWithBar:(id)bar barManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  barCopy = bar;
+  managerCopy = manager;
   v34.receiver = self;
   v34.super_class = CapsuleNavigationBarRegistration;
   v8 = [(CapsuleNavigationBarRegistration *)&v34 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_bar, v6);
-    objc_storeWeak(&v9->_manager, v7);
+    objc_storeWeak(&v8->_bar, barCopy);
+    objc_storeWeak(&v9->_manager, managerCopy);
     v9->_pageFormatItemState = 0;
-    v10 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     buttonsByBarItem = v9->_buttonsByBarItem;
-    v9->_buttonsByBarItem = v10;
+    v9->_buttonsByBarItem = dictionary;
 
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     menuByBarItem = v9->_menuByBarItem;
-    v9->_menuByBarItem = v12;
+    v9->_menuByBarItem = dictionary2;
 
     leadingBarItems = v9->_leadingBarItems;
     v9->_leadingBarItems = &unk_2827FC628;
@@ -139,16 +139,16 @@ LABEL_7:
     v9->_formatMenuButton = v18;
 
     [(CapsuleNavigationBarRegistration *)v9 _updateFormatMenuButton];
-    v20 = [(CapsuleNavigationBarRegistration *)v9 buttonTintColor];
-    [(SFNavigationBarToggleButton *)v9->_formatMenuButton setGlyphTintColor:v20];
+    buttonTintColor = [(CapsuleNavigationBarRegistration *)v9 buttonTintColor];
+    [(SFNavigationBarToggleButton *)v9->_formatMenuButton setGlyphTintColor:buttonTintColor];
 
     [(SFNavigationBarToggleButton *)v9->_formatMenuButton setClipsToBounds:1];
-    v21 = [MEMORY[0x277D755D0] safari_URLFieldButtonConfiguration];
-    [(SFNavigationBarToggleButton *)v9->_formatMenuButton setPreferredSymbolConfiguration:v21];
+    safari_URLFieldButtonConfiguration = [MEMORY[0x277D755D0] safari_URLFieldButtonConfiguration];
+    [(SFNavigationBarToggleButton *)v9->_formatMenuButton setPreferredSymbolConfiguration:safari_URLFieldButtonConfiguration];
 
     [(SFNavigationBarToggleButton *)v9->_formatMenuButton setClickEnabled:1];
-    v22 = [(SFNavigationBarToggleButton *)v9->_formatMenuButton pointerInteraction];
-    [v22 setEnabled:0];
+    pointerInteraction = [(SFNavigationBarToggleButton *)v9->_formatMenuButton pointerInteraction];
+    [pointerInteraction setEnabled:0];
 
     [(SFNavigationBarToggleButton *)v9->_formatMenuButton sf_applyContentSizeCategoryLimitsForToolbarButton];
     [(SFNavigationBarToggleButton *)v9->_formatMenuButton sf_configureLargeContentViewerForBarItem:13];
@@ -169,8 +169,8 @@ LABEL_7:
     [(SFNavigationBarToggleButton *)v29 addAction:v30 forControlEvents:*MEMORY[0x277D28FE8]];
 
     [(NSMutableDictionary *)v9->_buttonsByBarItem setObject:v9->_formatMenuButton forKeyedSubscript:&unk_2827FC1C0];
-    v31 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v31 addObserver:v9 selector:sel__voiceSearchAvailabilityDidChange_ name:*MEMORY[0x277D29198] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__voiceSearchAvailabilityDidChange_ name:*MEMORY[0x277D29198] object:0];
 
     v32 = v9;
   }
@@ -180,24 +180,24 @@ LABEL_7:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CapsuleNavigationBarRegistration;
   [(CapsuleNavigationBarRegistration *)&v4 dealloc];
 }
 
-- (BOOL)_isBarItemHidden:(int64_t)a3
+- (BOOL)_isBarItemHidden:(int64_t)hidden
 {
-  if (!self->_hiddenBarItems[a3])
+  if (!self->_hiddenBarItems[hidden])
   {
     WeakRetained = objc_loadWeakRetained(&self->_bar);
-    v7 = [WeakRetained item];
-    v8 = [v7 showsStopReloadButtons];
+    item = [WeakRetained item];
+    showsStopReloadButtons = [item showsStopReloadButtons];
 
-    v9 = [WeakRetained item];
-    v10 = [v9 stopReloadButtonShowsStop];
+    item2 = [WeakRetained item];
+    stopReloadButtonShowsStop = [item2 stopReloadButtonShowsStop];
 
     if (self->_disabledBarItems[4])
     {
@@ -206,14 +206,14 @@ LABEL_7:
 
     else
     {
-      v11 = [MEMORY[0x277D28EB8] sharedManager];
-      v3 = [v11 availability] == 0;
+      mEMORY[0x277D28EB8] = [MEMORY[0x277D28EB8] sharedManager];
+      v3 = [mEMORY[0x277D28EB8] availability] == 0;
     }
 
     disabledBarItems = self->_disabledBarItems;
-    if (a3 <= 12)
+    if (hidden <= 12)
     {
-      switch(a3)
+      switch(hidden)
       {
         case 0:
           if (*disabledBarItems)
@@ -237,28 +237,28 @@ LABEL_23:
       }
 
 LABEL_18:
-      v3 = disabledBarItems[a3];
+      v3 = disabledBarItems[hidden];
       goto LABEL_23;
     }
 
-    switch(a3)
+    switch(hidden)
     {
       case 15:
-        v14 = v10 | v3 ^ 1;
+        v14 = stopReloadButtonShowsStop | v3 ^ 1;
         break;
       case 14:
-        v14 = v10 & v3 ^ 1;
+        v14 = stopReloadButtonShowsStop & v3 ^ 1;
         break;
       case 13:
-        v13 = [WeakRetained item];
-        v3 = [v13 showsPageFormatButton] ^ 1;
+        item3 = [WeakRetained item];
+        v3 = [item3 showsPageFormatButton] ^ 1;
 
         goto LABEL_23;
       default:
         goto LABEL_18;
     }
 
-    if (v8)
+    if (showsStopReloadButtons)
     {
       v3 = v14;
     }
@@ -295,36 +295,36 @@ LABEL_18:
   return progressView;
 }
 
-- (id)viewForBarItem:(int64_t)a3
+- (id)viewForBarItem:(int64_t)item
 {
   buttonsByBarItem = self->_buttonsByBarItem;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:item];
   v5 = [(NSMutableDictionary *)buttonsByBarItem objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)setBarItem:(int64_t)a3 hidden:(BOOL)a4
+- (void)setBarItem:(int64_t)item hidden:(BOOL)hidden
 {
-  self->_hiddenBarItems[a3] = a4;
-  if (a3 == 11)
+  self->_hiddenBarItems[item] = hidden;
+  if (item == 11)
   {
     [(CapsuleNavigationBarRegistration *)self _updateDownloadState];
   }
 }
 
-- (void)setBarItem:(int64_t)a3 selected:(BOOL)a4
+- (void)setBarItem:(int64_t)item selected:(BOOL)selected
 {
-  if (a3 != 6 && a3 != 13)
+  if (item != 6 && item != 13)
   {
-    v4 = a4;
+    selectedCopy = selected;
     buttonsByBarItem = self->_buttonsByBarItem;
-    v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v6 = [MEMORY[0x277CCABB0] numberWithInteger:item];
     v12 = [(NSMutableDictionary *)buttonsByBarItem objectForKeyedSubscript:v6];
 
     v7 = SFSystemImageNameForBarItem();
     v8 = v7;
-    if (!v4 || (v9 = MEMORY[0x277D755B8], [v7 stringByAppendingString:@".fill"], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "systemImageNamed:", v10), v11 = objc_claimAutoreleasedReturnValue(), v10, !v11))
+    if (!selectedCopy || (v9 = MEMORY[0x277D755B8], [v7 stringByAppendingString:@".fill"], v10 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "systemImageNamed:", v10), v11 = objc_claimAutoreleasedReturnValue(), v10, !v11))
     {
       v11 = [MEMORY[0x277D755B8] systemImageNamed:v8];
     }
@@ -333,116 +333,116 @@ LABEL_18:
   }
 }
 
-- (void)setPageFormatItemState:(unint64_t)a3
+- (void)setPageFormatItemState:(unint64_t)state
 {
-  if ((a3 & 0x40) == 0 && self->_pageFormatItemState == a3)
+  if ((state & 0x40) == 0 && self->_pageFormatItemState == state)
   {
     return;
   }
 
-  self->_pageFormatItemState = a3;
-  v5 = ~a3;
+  self->_pageFormatItemState = state;
+  v5 = ~state;
   WeakRetained = objc_loadWeakRetained(&self->_bar);
-  v6 = [WeakRetained item];
-  v7 = [v6 mediaStateIconToDisplay];
+  item = [WeakRetained item];
+  mediaStateIconToDisplay = [item mediaStateIconToDisplay];
 
   if ((v5 & 0x810) != 0)
   {
-    if ((a3 & 0x11) == 1 || (a3 & 2) != 0)
+    if ((state & 0x11) == 1 || (state & 2) != 0)
     {
-      v8 = [MEMORY[0x277D28CF0] readerImageWithSummary:(a3 >> 12) & 1];
+      translationImage = [MEMORY[0x277D28CF0] readerImageWithSummary:(state >> 12) & 1];
       v9 = @"ReaderButton";
     }
 
     else
     {
-      if ((a3 & 0x14) != 4 && (a3 & 8) == 0)
+      if ((state & 0x14) != 4 && (state & 8) == 0)
       {
-        v10 = [MEMORY[0x277D28CF0] pageMenuImageWithIntelligence:(a3 >> 13) & 1];
+        v10 = [MEMORY[0x277D28CF0] pageMenuImageWithIntelligence:(state >> 13) & 1];
         [(SFNavigationBarToggleButton *)self->_formatMenuButton setImage:v10];
 
         v11 = _SFAccessibilityIdentifierForBarItem();
         [(SFNavigationBarToggleButton *)self->_formatMenuButton setAccessibilityIdentifier:v11];
 
-        v12 = [(SFNavigationBarToggleButton *)self->_formatMenuButton image];
-        [(SFNavigationBarToggleButton *)self->_formatMenuButton setLargeContentImage:v12];
+        image = [(SFNavigationBarToggleButton *)self->_formatMenuButton image];
+        [(SFNavigationBarToggleButton *)self->_formatMenuButton setLargeContentImage:image];
 
         v13 = 1;
         goto LABEL_13;
       }
 
-      v8 = [MEMORY[0x277D28CF0] translationImage];
+      translationImage = [MEMORY[0x277D28CF0] translationImage];
       v9 = @"TranslationButton";
     }
   }
 
   else
   {
-    v8 = [MEMORY[0x277D28CF0] siriReaderPlayingImage];
+    translationImage = [MEMORY[0x277D28CF0] siriReaderPlayingImage];
     v9 = @"SiriReaderButton";
   }
 
-  [(SFNavigationBarToggleButton *)self->_formatMenuButton setImage:v8];
+  [(SFNavigationBarToggleButton *)self->_formatMenuButton setImage:translationImage];
 
   [(SFNavigationBarToggleButton *)self->_formatMenuButton setAccessibilityIdentifier:v9];
   [(SFNavigationBarToggleButton *)self->_formatMenuButton sf_configureLargeContentViewerForBarItem:13];
   v13 = 0;
 LABEL_13:
-  if ((a3 & 0x3000) != 0)
+  if ((state & 0x3000) != 0)
   {
     previousWebpageIdentifier = self->_previousWebpageIdentifier;
-    v15 = [WeakRetained item];
-    v16 = [v15 webpageIdentifier];
-    LOBYTE(previousWebpageIdentifier) = [(NSString *)previousWebpageIdentifier isEqualToString:v16];
+    item2 = [WeakRetained item];
+    webpageIdentifier = [item2 webpageIdentifier];
+    LOBYTE(previousWebpageIdentifier) = [(NSString *)previousWebpageIdentifier isEqualToString:webpageIdentifier];
 
     if ((previousWebpageIdentifier & 1) == 0)
     {
-      v17 = [MEMORY[0x277D499B8] sharedLogger];
-      [v17 didShowSparkleSBA];
+      mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+      [mEMORY[0x277D499B8] didShowSparkleSBA];
 
-      v18 = [MEMORY[0x277D49E30] sharedManager];
-      v19 = [WeakRetained item];
-      v20 = [v19 webpageIdentifier];
-      [v18 donateBrowsingAssistantVisualComponentPresentationStartedWithWebPageID:v20 componentType:0 componentIdentifier:&unk_2827FC220 tableOfContentsArrayLength:0];
+      mEMORY[0x277D49E30] = [MEMORY[0x277D49E30] sharedManager];
+      item3 = [WeakRetained item];
+      webpageIdentifier2 = [item3 webpageIdentifier];
+      [mEMORY[0x277D49E30] donateBrowsingAssistantVisualComponentPresentationStartedWithWebPageID:webpageIdentifier2 componentType:0 componentIdentifier:&unk_2827FC220 tableOfContentsArrayLength:0];
 
-      v21 = [WeakRetained item];
-      v22 = [v21 webpageIdentifier];
+      item4 = [WeakRetained item];
+      webpageIdentifier3 = [item4 webpageIdentifier];
       v23 = self->_previousWebpageIdentifier;
-      self->_previousWebpageIdentifier = v22;
+      self->_previousWebpageIdentifier = webpageIdentifier3;
     }
   }
 
-  v24 = [MEMORY[0x277CBEB18] array];
-  v25 = v24;
-  if (v7)
+  array = [MEMORY[0x277CBEB18] array];
+  v25 = array;
+  if (mediaStateIconToDisplay)
   {
-    [v24 addObject:&unk_2827FC238];
-    [(SFNavigationBarToggleButton *)self->_formatMenuButton setMediaStateIcon:v7];
+    [array addObject:&unk_2827FC238];
+    [(SFNavigationBarToggleButton *)self->_formatMenuButton setMediaStateIcon:mediaStateIconToDisplay];
   }
 
-  if ((a3 & 0x100) != 0)
+  if ((state & 0x100) != 0)
   {
     [v25 addObject:&unk_2827FC250];
   }
 
-  if ((a3 & 0x4000) != 0)
+  if ((state & 0x4000) != 0)
   {
     [v25 addObject:&unk_2827FC208];
   }
 
-  v26 = ([v25 count] + ((a3 & 0x80) >> 7)) & 0xFFFFFFFFFFFFFFFDLL;
+  v26 = ([v25 count] + ((state & 0x80) >> 7)) & 0xFFFFFFFFFFFFFFFDLL;
   if (v26)
   {
-    v27 = [MEMORY[0x277D28CF0] formatMenuBottomOnlyImage];
-    [(SFNavigationBarToggleButton *)self->_formatMenuButton setImage:v27];
+    formatMenuBottomOnlyImage = [MEMORY[0x277D28CF0] formatMenuBottomOnlyImage];
+    [(SFNavigationBarToggleButton *)self->_formatMenuButton setImage:formatMenuBottomOnlyImage];
   }
 
-  if ((a3 & 0x80) != 0)
+  if ((state & 0x80) != 0)
   {
-    v30 = [(CapsuleNavigationBarRegistration *)self _progressView];
+    _progressView = [(CapsuleNavigationBarRegistration *)self _progressView];
     formatMenuButton = self->_formatMenuButton;
     p_formatMenuButton = &self->_formatMenuButton;
-    [(SFNavigationBarToggleButton *)formatMenuButton setAccessoryView:v30];
+    [(SFNavigationBarToggleButton *)formatMenuButton setAccessoryView:_progressView];
   }
 
   else
@@ -460,16 +460,16 @@ LABEL_13:
 
   else
   {
-    v32 = v13 & (a3 >> 9);
+    v32 = v13 & (state >> 9);
   }
 
   [(SFNavigationBarToggleButton *)*p_formatMenuButton setShowsBadge:v32];
-  [(SFNavigationBarToggleButton *)*p_formatMenuButton setSelected:(a3 >> 5) & 1];
-  [(SFNavigationBarToggleButton *)*p_formatMenuButton setUsesInsetFromBackground:(a3 >> 10) & 1];
+  [(SFNavigationBarToggleButton *)*p_formatMenuButton setSelected:(state >> 5) & 1];
+  [(SFNavigationBarToggleButton *)*p_formatMenuButton setUsesInsetFromBackground:(state >> 10) & 1];
   [(SFNavigationBarToggleButton *)*p_formatMenuButton invalidateIntrinsicContentSize];
 }
 
-- (BOOL)containsBarItem:(int64_t)a3
+- (BOOL)containsBarItem:(int64_t)item
 {
   if ([(CapsuleNavigationBarRegistration *)self _isBarItemHidden:?])
   {
@@ -477,7 +477,7 @@ LABEL_13:
   }
 
   leadingBarItems = self->_leadingBarItems;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:item];
   if ([(NSArray *)leadingBarItems containsObject:v7])
   {
     v5 = 1;
@@ -486,25 +486,25 @@ LABEL_13:
   else
   {
     trailingBarItems = self->_trailingBarItems;
-    v9 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+    v9 = [MEMORY[0x277CCABB0] numberWithInteger:item];
     v5 = [(NSArray *)trailingBarItems containsObject:v9];
   }
 
   return v5;
 }
 
-- (id)popoverSourceInfoForItem:(int64_t)a3
+- (id)popoverSourceInfoForItem:(int64_t)item
 {
-  if (a3 == 13 || a3 == 11)
+  if (item == 13 || item == 11)
   {
     WeakRetained = objc_loadWeakRetained(&self->_bar);
-    v5 = [WeakRetained layoutStyle];
+    layoutStyle = [WeakRetained layoutStyle];
     v6 = objc_alloc(MEMORY[0x277D28F68]);
     v7 = v6;
-    if (v5 == 1)
+    if (layoutStyle == 1)
     {
-      v8 = [(SFNavigationBarToggleButton *)self->_formatMenuButton tiplessPopoverSourceView];
-      v9 = [v7 initWithView:v8];
+      tiplessPopoverSourceView = [(SFNavigationBarToggleButton *)self->_formatMenuButton tiplessPopoverSourceView];
+      v9 = [v7 initWithView:tiplessPopoverSourceView];
 
       [v9 setShouldPassthroughSuperview:1];
       [v9 setPermittedArrowDirections:2];
@@ -560,39 +560,39 @@ LABEL_13:
   return v9;
 }
 
-- (void)setBarItem:(int64_t)a3 menu:(id)a4
+- (void)setBarItem:(int64_t)item menu:(id)menu
 {
   menuByBarItem = self->_menuByBarItem;
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithInteger:a3];
-  [(NSMutableDictionary *)menuByBarItem setObject:v7 forKeyedSubscript:v8];
+  menuCopy = menu;
+  v8 = [v6 numberWithInteger:item];
+  [(NSMutableDictionary *)menuByBarItem setObject:menuCopy forKeyedSubscript:v8];
 }
 
-- (void)setProgress:(double)a3 forBarItem:(int64_t)a4
+- (void)setProgress:(double)progress forBarItem:(int64_t)item
 {
-  if (a4 == 11)
+  if (item == 11)
   {
-    v7 = [(CapsuleNavigationBarRegistration *)self _progressView];
-    [v7 setDownloadProgress:1 animated:a3];
+    _progressView = [(CapsuleNavigationBarRegistration *)self _progressView];
+    [_progressView setDownloadProgress:1 animated:progress];
 
     [(CapsuleNavigationBarRegistration *)self _updateDownloadState];
   }
 }
 
-- (void)updateBarAnimated:(BOOL)a3
+- (void)updateBarAnimated:(BOOL)animated
 {
   WeakRetained = objc_loadWeakRetained(&self->_bar);
   v9 = MEMORY[0x277D85DD0];
   v10 = 3221225472;
   v11 = __54__CapsuleNavigationBarRegistration_updateBarAnimated___block_invoke;
   v12 = &unk_2781DBCD0;
-  v13 = self;
+  selfCopy = self;
   v14 = WeakRetained;
   v5 = WeakRetained;
   v6 = _Block_copy(&v9);
-  v7 = [(NSArray *)self->_leadingBarItems safari_mapAndFilterObjectsUsingBlock:v6, v9, v10, v11, v12, v13];
-  [v5 setLeadingButtons:v7];
+  selfCopy = [(NSArray *)self->_leadingBarItems safari_mapAndFilterObjectsUsingBlock:v6, v9, v10, v11, v12, selfCopy];
+  [v5 setLeadingButtons:selfCopy];
 
   v8 = [(NSArray *)self->_trailingBarItems safari_mapAndFilterObjectsUsingBlock:v6];
   [v5 setTrailingButtons:v8];
@@ -669,14 +669,14 @@ id __54__CapsuleNavigationBarRegistration_updateBarAnimated___block_invoke(uint6
   return v5;
 }
 
-- (void)_voiceSearchAvailabilityDidChange:(id)a3
+- (void)_voiceSearchAvailabilityDidChange:(id)change
 {
-  v4 = [MEMORY[0x277D28EB8] sharedManager];
-  v5 = [v4 availability];
+  mEMORY[0x277D28EB8] = [MEMORY[0x277D28EB8] sharedManager];
+  availability = [mEMORY[0x277D28EB8] availability];
 
   v7 = [(NSMutableDictionary *)self->_buttonsByBarItem objectForKeyedSubscript:&unk_2827FC208];
-  [v7 setEnabled:v5 == 1];
-  if (v5 == 1)
+  [v7 setEnabled:availability == 1];
+  if (availability == 1)
   {
     [MEMORY[0x277D75348] secondaryLabelColor];
   }
@@ -689,9 +689,9 @@ id __54__CapsuleNavigationBarRegistration_updateBarAnimated___block_invoke(uint6
   [v7 setTintColor:v6];
 }
 
-- (id)_actionForBarItem:(int64_t)a3
+- (id)_actionForBarItem:(int64_t)item
 {
-  if (a3 == 5)
+  if (item == 5)
   {
     v5 = 0;
   }
@@ -702,7 +702,7 @@ id __54__CapsuleNavigationBarRegistration_updateBarAnimated___block_invoke(uint6
     v7 = SFSystemImageNameForBarItem();
     v5 = [v6 systemImageNamed:v7];
 
-    if (a3 == 11)
+    if (item == 11)
     {
       v8 = [MEMORY[0x277D755B8] systemImageNamed:@"arrow.down.circle.fill"];
 
@@ -717,7 +717,7 @@ id __54__CapsuleNavigationBarRegistration_updateBarAnimated___block_invoke(uint6
   v12[2] = __54__CapsuleNavigationBarRegistration__actionForBarItem___block_invoke;
   v12[3] = &unk_2781DBCF8;
   objc_copyWeak(v13, &location);
-  v13[1] = a3;
+  v13[1] = item;
   v10 = [v9 actionWithTitle:&stru_2827BF158 image:v5 identifier:0 handler:v12];
   objc_destroyWeak(v13);
   objc_destroyWeak(&location);
@@ -769,7 +769,7 @@ LABEL_13:
 LABEL_14:
 }
 
-- (id)_touchDownActionForBarItem:(int64_t)a3
+- (id)_touchDownActionForBarItem:(int64_t)item
 {
   objc_initWeak(&location, self);
   v4 = MEMORY[0x277D750C8];
@@ -778,7 +778,7 @@ LABEL_14:
   v7[2] = __63__CapsuleNavigationBarRegistration__touchDownActionForBarItem___block_invoke;
   v7[3] = &unk_2781DBCF8;
   objc_copyWeak(v8, &location);
-  v8[1] = a3;
+  v8[1] = item;
   v5 = [v4 actionWithTitle:&stru_2827BF158 image:0 identifier:0 handler:v7];
   objc_destroyWeak(v8);
   objc_destroyWeak(&location);
@@ -799,7 +799,7 @@ void __63__CapsuleNavigationBarRegistration__touchDownActionForBarItem___block_i
   }
 }
 
-- (id)_longPressActionForBarItem:(int64_t)a3
+- (id)_longPressActionForBarItem:(int64_t)item
 {
   objc_initWeak(&location, self);
   v4 = MEMORY[0x277D750C8];
@@ -808,7 +808,7 @@ void __63__CapsuleNavigationBarRegistration__touchDownActionForBarItem___block_i
   v7[2] = __63__CapsuleNavigationBarRegistration__longPressActionForBarItem___block_invoke;
   v7[3] = &unk_2781DBCF8;
   objc_copyWeak(v8, &location);
-  v8[1] = a3;
+  v8[1] = item;
   v5 = [v4 actionWithTitle:&stru_2827BF158 image:0 identifier:0 handler:v7];
   objc_destroyWeak(v8);
   objc_destroyWeak(&location);

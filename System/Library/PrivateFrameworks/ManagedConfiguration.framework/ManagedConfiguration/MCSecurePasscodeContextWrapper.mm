@@ -1,16 +1,16 @@
 @interface MCSecurePasscodeContextWrapper
-+ (id)contextWrapperForSecureSecretData:(id)a3 outError:(id *)a4;
-+ (id)credentialSetForPasscode:(id)a3 outError:(id *)a4;
++ (id)contextWrapperForSecureSecretData:(id)data outError:(id *)error;
++ (id)credentialSetForPasscode:(id)passcode outError:(id *)error;
 @end
 
 @implementation MCSecurePasscodeContextWrapper
 
-+ (id)contextWrapperForSecureSecretData:(id)a3 outError:(id *)a4
++ (id)contextWrapperForSecureSecretData:(id)data outError:(id *)error
 {
-  v6 = a3;
-  if ([v6 length])
+  dataCopy = data;
+  if ([dataCopy length])
   {
-    v7 = [a1 contextWrapperForData:v6 ofType:5 outError:a4];
+    v7 = [self contextWrapperForData:dataCopy ofType:5 outError:error];
   }
 
   else
@@ -21,10 +21,10 @@
   return v7;
 }
 
-+ (id)credentialSetForPasscode:(id)a3 outError:(id *)a4
++ (id)credentialSetForPasscode:(id)passcode outError:(id *)error
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  passcodeCopy = passcode;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -54,7 +54,7 @@
     v23 = 3221225472;
     v24 = __credentialSetFromPasscode_block_invoke;
     v25 = &unk_1E77D2528;
-    v26 = v5;
+    v26 = passcodeCopy;
     v27 = &v16;
     ACMContextGetExternalForm(v10, buf);
     v11 = v17[5];
@@ -82,7 +82,7 @@
 
   if (v8)
   {
-    v12 = [[a1 alloc] initWithExternalizedContext:v8 contextRef:v9 shouldDestroyContentsOnDealloc:1];
+    v12 = [[self alloc] initWithExternalizedContext:v8 contextRef:v9 shouldDestroyContentsOnDealloc:1];
   }
 
   else

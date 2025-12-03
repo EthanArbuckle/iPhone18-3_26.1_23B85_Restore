@@ -1,6 +1,6 @@
 @interface WCM_BSPMonitor
 - (WCM_BSPMonitor)init;
-- (int)getTimeToTSTForULLAMode:(int)a3;
+- (int)getTimeToTSTForULLAMode:(int)mode;
 @end
 
 @implementation WCM_BSPMonitor
@@ -12,9 +12,9 @@
   return [(WCM_BSPMonitor *)&v3 init];
 }
 
-- (int)getTimeToTSTForULLAMode:(int)a3
+- (int)getTimeToTSTForULLAMode:(int)mode
 {
-  if (a3 == 2)
+  if (mode == 2)
   {
     return 64;
   }

@@ -1,20 +1,20 @@
 @interface WFContact
-+ (id)addContactsChangeObserver:(id)a3;
-+ (id)cnContactWithINPerson:(id)a3;
-+ (id)contactWithVCardData:(id)a3 propertyID:(int)a4 multivalueIndex:(int64_t)a5;
-+ (id)contactsWithVCardData:(id)a3;
-+ (id)labelFromINPersonHandleLabel:(id)a3;
-+ (id)objectWithWFSerializedRepresentation:(id)a3;
-+ (int64_t)predictedTypeForHandleValue:(id)a3 allowsCustomHandles:(BOOL)a4;
-+ (void)removeContactsChangeObserver:(id)a3;
++ (id)addContactsChangeObserver:(id)observer;
++ (id)cnContactWithINPerson:(id)person;
++ (id)contactWithVCardData:(id)data propertyID:(int)d multivalueIndex:(int64_t)index;
++ (id)contactsWithVCardData:(id)data;
++ (id)labelFromINPersonHandleLabel:(id)label;
++ (id)objectWithWFSerializedRepresentation:(id)representation;
++ (int64_t)predictedTypeForHandleValue:(id)value allowsCustomHandles:(BOOL)handles;
++ (void)removeContactsChangeObserver:(id)observer;
 - (NSString)description;
-- (WFContact)initWithCoder:(id)a3;
+- (WFContact)initWithCoder:(id)coder;
 - (WFFileRepresentation)fullDataVCardRepresentation;
 - (WFFileRepresentation)vCardRepresentation;
 - (id)INPersonRepresentation;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)wfSerializedRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFContact
@@ -22,19 +22,19 @@
 - (id)wfSerializedRepresentation
 {
   v14[3] = *MEMORY[0x277D85DE8];
-  v3 = [(WFContact *)self vCardRepresentation];
-  v4 = [v3 data];
+  vCardRepresentation = [(WFContact *)self vCardRepresentation];
+  data = [vCardRepresentation data];
 
-  if (v4)
+  if (data)
   {
-    v5 = [(WFContact *)self multivalueIndex];
-    v14[0] = v4;
+    multivalueIndex = [(WFContact *)self multivalueIndex];
+    v14[0] = data;
     v13[0] = @"WFContactData";
     v13[1] = @"WFContactProperty";
     v6 = [MEMORY[0x277CCABB0] numberWithInt:{-[WFContact propertyID](self, "propertyID")}];
     v14[1] = v6;
     v13[2] = @"WFContactMultivalue";
-    v7 = [MEMORY[0x277CCABB0] numberWithLongLong:v5];
+    v7 = [MEMORY[0x277CCABB0] numberWithLongLong:multivalueIndex];
     v14[2] = v7;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
 
@@ -51,38 +51,38 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFContact *)self fullDataVCardRepresentation];
-  [v4 encodeObject:v5 forKey:@"vCardFile"];
+  coderCopy = coder;
+  fullDataVCardRepresentation = [(WFContact *)self fullDataVCardRepresentation];
+  [coderCopy encodeObject:fullDataVCardRepresentation forKey:@"vCardFile"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithInt:{-[WFContact propertyID](self, "propertyID")}];
-  [v4 encodeObject:v6 forKey:@"propertyId"];
+  [coderCopy encodeObject:v6 forKey:@"propertyId"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithLong:{-[WFContact multivalueIndex](self, "multivalueIndex")}];
-  [v4 encodeObject:v7 forKey:@"multivalueId"];
+  [coderCopy encodeObject:v7 forKey:@"multivalueId"];
 }
 
-- (WFContact)initWithCoder:(id)a3
+- (WFContact)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"vCardFile"];
-  v6 = [v5 data];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"propertyId"];
-  v8 = [v7 integerValue];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"vCardFile"];
+  data = [v5 data];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"propertyId"];
+  integerValue = [v7 integerValue];
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"multivalueId"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"multivalueId"];
 
-  v10 = [v9 longValue];
-  v11 = [objc_opt_class() contactWithVCardData:v6 propertyID:v8 multivalueIndex:v10];
+  longValue = [v9 longValue];
+  v11 = [objc_opt_class() contactWithVCardData:data propertyID:integerValue multivalueIndex:longValue];
 
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [objc_opt_class() allocWithZone:a3];
+  v3 = [objc_opt_class() allocWithZone:zone];
 
   return [v3 init];
 }
@@ -93,8 +93,8 @@
   v8.receiver = self;
   v8.super_class = WFContact;
   v4 = [(WFContact *)&v8 description];
-  v5 = [(WFContact *)self formattedName];
-  v6 = [v3 stringWithFormat:@"%@: %@", v4, v5];
+  formattedName = [(WFContact *)self formattedName];
+  v6 = [v3 stringWithFormat:@"%@: %@", v4, formattedName];
 
   return v6;
 }
@@ -129,73 +129,73 @@
   return vCardRepresentation;
 }
 
-+ (id)objectWithWFSerializedRepresentation:(id)a3
++ (id)objectWithWFSerializedRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [v4 wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.contact"];
+  representationCopy = representation;
+  v5 = [representationCopy wfObjectOfClass:objc_opt_class() forKey:@"link.contentkit.contact"];
   v6 = [v5 objectForKeyedSubscript:@"WFIsINPerson"];
-  v7 = [v6 BOOLValue];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
-    v8 = [WFINPersonContact objectWithWFSerializedRepresentation:v4];
+    v8 = [WFINPersonContact objectWithWFSerializedRepresentation:representationCopy];
   }
 
   else
   {
     v9 = [v5 wfObjectOfClass:objc_opt_class() forKey:@"WFContactData"];
     v10 = [v5 wfObjectOfClass:objc_opt_class() forKey:@"WFContactProperty"];
-    v11 = [v10 intValue];
+    intValue = [v10 intValue];
 
     v12 = [v5 wfObjectOfClass:objc_opt_class() forKey:@"WFContactMultivalue"];
-    v13 = [v12 longLongValue];
+    longLongValue = [v12 longLongValue];
 
-    if (v13 == 0x7FFFFFFF || v13 == 0x7FFFFFFFFFFFFFFFLL)
+    if (longLongValue == 0x7FFFFFFF || longLongValue == 0x7FFFFFFFFFFFFFFFLL)
     {
       v15 = -1;
     }
 
     else
     {
-      v15 = v13;
+      v15 = longLongValue;
     }
 
-    if (v11 - 3 < 2 && v15 == -1)
+    if (intValue - 3 < 2 && v15 == -1)
     {
       v17 = 0xFFFFFFFFLL;
     }
 
     else
     {
-      v17 = v11;
+      v17 = intValue;
     }
 
-    v8 = [a1 contactWithVCardData:v9 propertyID:v17 multivalueIndex:v15];
+    v8 = [self contactWithVCardData:v9 propertyID:v17 multivalueIndex:v15];
   }
 
   return v8;
 }
 
-+ (void)removeContactsChangeObserver:(id)a3
++ (void)removeContactsChangeObserver:(id)observer
 {
-  v4 = a3;
-  [objc_msgSend(a1 "preferredConcreteSubclass")];
+  observerCopy = observer;
+  [objc_msgSend(self "preferredConcreteSubclass")];
 }
 
-+ (id)addContactsChangeObserver:(id)a3
++ (id)addContactsChangeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [objc_msgSend(a1 "preferredConcreteSubclass")];
+  observerCopy = observer;
+  v5 = [objc_msgSend(self "preferredConcreteSubclass")];
 
   return v5;
 }
 
-+ (int64_t)predictedTypeForHandleValue:(id)a3 allowsCustomHandles:(BOOL)a4
++ (int64_t)predictedTypeForHandleValue:(id)value allowsCustomHandles:(BOOL)handles
 {
-  v4 = a4;
-  v5 = a3;
-  v6 = [WFEmailAddress stringContainsEmailAddresses:v5];
-  v7 = [WFPhoneNumber stringContainsPhoneNumbers:v5];
+  handlesCopy = handles;
+  valueCopy = value;
+  v6 = [WFEmailAddress stringContainsEmailAddresses:valueCopy];
+  v7 = [WFPhoneNumber stringContainsPhoneNumbers:valueCopy];
 
   if (v6 && !v7)
   {
@@ -208,7 +208,7 @@
   }
 
   v9 = 2;
-  if (!v4)
+  if (!handlesCopy)
   {
     v9 = 0;
   }
@@ -224,19 +224,19 @@
   }
 }
 
-+ (id)contactWithVCardData:(id)a3 propertyID:(int)a4 multivalueIndex:(int64_t)a5
++ (id)contactWithVCardData:(id)data propertyID:(int)d multivalueIndex:(int64_t)index
 {
-  v6 = *&a4;
-  v8 = a3;
-  v9 = [objc_msgSend(a1 "preferredConcreteSubclass")];
+  v6 = *&d;
+  dataCopy = data;
+  v9 = [objc_msgSend(self "preferredConcreteSubclass")];
 
   return v9;
 }
 
-+ (id)contactsWithVCardData:(id)a3
++ (id)contactsWithVCardData:(id)data
 {
-  v4 = a3;
-  v5 = [objc_msgSend(a1 "preferredConcreteSubclass")];
+  dataCopy = data;
+  v5 = [objc_msgSend(self "preferredConcreteSubclass")];
 
   return v5;
 }
@@ -245,31 +245,31 @@
 {
   v58 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [(WFContact *)self namePrefix];
-  [v3 setNamePrefix:v4];
+  namePrefix = [(WFContact *)self namePrefix];
+  [v3 setNamePrefix:namePrefix];
 
-  v5 = [(WFContact *)self firstName];
-  [v3 setGivenName:v5];
+  firstName = [(WFContact *)self firstName];
+  [v3 setGivenName:firstName];
 
-  v6 = [(WFContact *)self middleName];
-  [v3 setMiddleName:v6];
+  middleName = [(WFContact *)self middleName];
+  [v3 setMiddleName:middleName];
 
-  v7 = [(WFContact *)self lastName];
-  [v3 setFamilyName:v7];
+  lastName = [(WFContact *)self lastName];
+  [v3 setFamilyName:lastName];
 
-  v8 = [(WFContact *)self nameSuffix];
-  [v3 setNameSuffix:v8];
+  nameSuffix = [(WFContact *)self nameSuffix];
+  [v3 setNameSuffix:nameSuffix];
 
-  v9 = [(WFContact *)self nickname];
+  nickname = [(WFContact *)self nickname];
   v44 = v3;
-  [v3 setNickname:v9];
+  [v3 setNickname:nickname];
 
   v10 = objc_opt_new();
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v45 = self;
+  selfCopy = self;
   obj = [(WFContact *)self phoneNumbers];
   v11 = [obj countByEnumeratingWithState:&v52 objects:v57 count:16];
   if (v11)
@@ -287,12 +287,12 @@
 
         v15 = *(*(&v52 + 1) + 8 * i);
         v16 = objc_alloc(MEMORY[0x277CD3E98]);
-        v17 = [v15 value];
-        v18 = [v17 normalizedPhoneNumber];
-        v19 = [v15 value];
-        v20 = [v19 label];
-        v21 = INPersonHandleLabelForContactLabel(v20);
-        v22 = [v16 initWithValue:v18 type:2 label:v21];
+        value = [v15 value];
+        normalizedPhoneNumber = [value normalizedPhoneNumber];
+        value2 = [v15 value];
+        label = [value2 label];
+        v21 = INPersonHandleLabelForContactLabel(label);
+        v22 = [v16 initWithValue:normalizedPhoneNumber type:2 label:v21];
 
         [v10 addObject:v22];
       }
@@ -307,7 +307,7 @@
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obja = [(WFContact *)v45 emailAddresses];
+  obja = [(WFContact *)selfCopy emailAddresses];
   v23 = [obja countByEnumeratingWithState:&v48 objects:v56 count:16];
   if (v23)
   {
@@ -324,12 +324,12 @@
 
         v27 = *(*(&v48 + 1) + 8 * j);
         v28 = objc_alloc(MEMORY[0x277CD3E98]);
-        v29 = [v27 value];
-        v30 = [v29 address];
-        v31 = [v27 value];
-        v32 = [v31 label];
-        v33 = INPersonHandleLabelForContactLabel(v32);
-        v34 = [v28 initWithValue:v30 type:1 label:v33];
+        value3 = [v27 value];
+        address = [value3 address];
+        value4 = [v27 value];
+        label2 = [value4 label];
+        v33 = INPersonHandleLabelForContactLabel(label2);
+        v34 = [v28 initWithValue:address type:1 label:v33];
 
         [v10 addObject:v34];
       }
@@ -340,7 +340,7 @@
     while (v24);
   }
 
-  v35 = [v10 firstObject];
+  firstObject = [v10 firstObject];
   if ([v10 count] < 2)
   {
 
@@ -352,12 +352,12 @@
     [v10 removeObjectAtIndex:0];
   }
 
-  v36 = [(WFContact *)v45 imageData];
-  if ([v36 length])
+  imageData = [(WFContact *)selfCopy imageData];
+  if ([imageData length])
   {
     v37 = MEMORY[0x277CD3D10];
-    v38 = [(WFContact *)v45 imageData];
-    v39 = [v37 imageWithImageData:v38];
+    imageData2 = [(WFContact *)selfCopy imageData];
+    v39 = [v37 imageWithImageData:imageData2];
   }
 
   else
@@ -366,16 +366,16 @@
   }
 
   v40 = objc_alloc(MEMORY[0x277CD3E90]);
-  v41 = [(WFContact *)v45 contactIdentifierForINPerson];
-  v42 = [v40 initWithPersonHandle:v35 nameComponents:v44 displayName:0 image:v39 contactIdentifier:v41 customIdentifier:0 aliases:v10 suggestionType:0];
+  contactIdentifierForINPerson = [(WFContact *)selfCopy contactIdentifierForINPerson];
+  v42 = [v40 initWithPersonHandle:firstObject nameComponents:v44 displayName:0 image:v39 contactIdentifier:contactIdentifierForINPerson customIdentifier:0 aliases:v10 suggestionType:0];
 
   return v42;
 }
 
-+ (id)cnContactWithINPerson:(id)a3
++ (id)cnContactWithINPerson:(id)person
 {
   v71 = *MEMORY[0x277D85DE8];
-  v55 = a3;
+  personCopy = person;
   v62 = 0;
   v63 = &v62;
   v64 = 0x2050000000;
@@ -398,16 +398,16 @@
   v56 = objc_opt_new();
   v57 = objc_opt_new();
   v6 = objc_opt_new();
-  v7 = [v55 personHandle];
+  personHandle = [personCopy personHandle];
 
-  if (v7)
+  if (personHandle)
   {
-    v8 = [v55 personHandle];
-    [v6 addObject:v8];
+    personHandle2 = [personCopy personHandle];
+    [v6 addObject:personHandle2];
   }
 
-  v9 = [v55 aliases];
-  [v6 addObjectsFromArray:v9];
+  aliases = [personCopy aliases];
+  [v6 addObjectsFromArray:aliases];
 
   v60 = 0u;
   v61 = 0u;
@@ -428,31 +428,31 @@
         }
 
         v14 = *(*(&v58 + 1) + 8 * i);
-        v15 = [v14 value];
+        value = [v14 value];
 
-        if (v15)
+        if (value)
         {
-          v16 = [v14 type];
-          if (v16 == 1)
+          type = [v14 type];
+          if (type == 1)
           {
             CNLabeledValueClass_11888 = getCNLabeledValueClass_11888();
-            v18 = [v14 label];
-            v19 = [a1 labelFromINPersonHandleLabel:v18];
-            v22 = [v14 value];
-            v23 = [CNLabeledValueClass_11888 labeledValueWithLabel:v19 value:v22];
+            label = [v14 label];
+            v19 = [self labelFromINPersonHandleLabel:label];
+            value2 = [v14 value];
+            v23 = [CNLabeledValueClass_11888 labeledValueWithLabel:v19 value:value2];
             [v57 addObject:v23];
           }
 
           else
           {
-            if (v16 != 2)
+            if (type != 2)
             {
               continue;
             }
 
             v17 = getCNLabeledValueClass_11888();
-            v18 = [v14 label];
-            v19 = [a1 labelFromINPersonHandleLabel:v18];
+            label = [v14 label];
+            v19 = [self labelFromINPersonHandleLabel:label];
             v62 = 0;
             v63 = &v62;
             v64 = 0x2050000000;
@@ -471,8 +471,8 @@
 
             v21 = v20;
             _Block_object_dispose(&v62, 8);
-            v22 = [v14 value];
-            v23 = [v20 phoneNumberWithStringValue:v22];
+            value2 = [v14 value];
+            v23 = [v20 phoneNumberWithStringValue:value2];
             v24 = [v17 labeledValueWithLabel:v19 value:v23];
             [v56 addObject:v24];
           }
@@ -485,16 +485,16 @@
     while (v11);
   }
 
-  v26 = [v55 contactIdentifier];
-  if (v26 && ![v57 count])
+  contactIdentifier = [personCopy contactIdentifier];
+  if (contactIdentifier && ![v57 count])
   {
     v32 = [v56 count] == 0;
 
     if (v32)
     {
-      v27 = objc_alloc_init(WFCNContactStore);
-      v33 = [v55 contactIdentifier];
-      v34 = [(WFCNContactStore *)v27 contactWithIdentifier:v33];
+      nameComponents = objc_alloc_init(WFCNContactStore);
+      contactIdentifier2 = [personCopy contactIdentifier];
+      v34 = [(WFCNContactStore *)nameComponents contactWithIdentifier:contactIdentifier2];
 
       goto LABEL_51;
     }
@@ -504,88 +504,88 @@
   {
   }
 
-  v27 = [v55 nameComponents];
-  if (!v27)
+  nameComponents = [personCopy nameComponents];
+  if (!nameComponents)
   {
-    v28 = [v55 displayName];
-    v29 = v28 == 0;
+    displayName = [personCopy displayName];
+    v29 = displayName == 0;
 
     if (v29)
     {
-      v27 = 0;
+      nameComponents = 0;
     }
 
     else
     {
       v30 = objc_alloc_init(MEMORY[0x277CCAC08]);
-      v31 = [v55 displayName];
-      v27 = [v30 personNameComponentsFromString:v31];
+      displayName2 = [personCopy displayName];
+      nameComponents = [v30 personNameComponentsFromString:displayName2];
     }
   }
 
-  v35 = [(WFCNContactStore *)v27 namePrefix];
+  namePrefix = [(WFCNContactStore *)nameComponents namePrefix];
 
-  if (v35)
+  if (namePrefix)
   {
-    v36 = [(WFCNContactStore *)v27 namePrefix];
-    [v54 setNamePrefix:v36];
+    namePrefix2 = [(WFCNContactStore *)nameComponents namePrefix];
+    [v54 setNamePrefix:namePrefix2];
   }
 
-  v37 = [(WFCNContactStore *)v27 nameSuffix];
+  nameSuffix = [(WFCNContactStore *)nameComponents nameSuffix];
 
-  if (v37)
+  if (nameSuffix)
   {
-    v38 = [(WFCNContactStore *)v27 nameSuffix];
-    [v54 setNameSuffix:v38];
+    nameSuffix2 = [(WFCNContactStore *)nameComponents nameSuffix];
+    [v54 setNameSuffix:nameSuffix2];
   }
 
-  v39 = [(WFCNContactStore *)v27 givenName];
+  givenName = [(WFCNContactStore *)nameComponents givenName];
 
-  if (v39)
+  if (givenName)
   {
-    v40 = [(WFCNContactStore *)v27 givenName];
-    [v54 setGivenName:v40];
+    givenName2 = [(WFCNContactStore *)nameComponents givenName];
+    [v54 setGivenName:givenName2];
   }
 
-  v41 = [(WFCNContactStore *)v27 middleName];
+  middleName = [(WFCNContactStore *)nameComponents middleName];
 
-  if (v41)
+  if (middleName)
   {
-    v42 = [(WFCNContactStore *)v27 middleName];
-    [v54 setMiddleName:v42];
+    middleName2 = [(WFCNContactStore *)nameComponents middleName];
+    [v54 setMiddleName:middleName2];
   }
 
-  v43 = [(WFCNContactStore *)v27 familyName];
+  familyName = [(WFCNContactStore *)nameComponents familyName];
 
-  if (v43)
+  if (familyName)
   {
-    v44 = [(WFCNContactStore *)v27 familyName];
-    [v54 setFamilyName:v44];
+    familyName2 = [(WFCNContactStore *)nameComponents familyName];
+    [v54 setFamilyName:familyName2];
   }
 
-  v45 = [(WFCNContactStore *)v27 nickname];
+  nickname = [(WFCNContactStore *)nameComponents nickname];
 
-  if (v45)
+  if (nickname)
   {
-    v46 = [(WFCNContactStore *)v27 nickname];
-    [v54 setNickname:v46];
+    nickname2 = [(WFCNContactStore *)nameComponents nickname];
+    [v54 setNickname:nickname2];
   }
 
-  v47 = [v55 image];
-  if (([v47 _requiresRetrieval] & 1) == 0)
+  image = [personCopy image];
+  if (([image _requiresRetrieval] & 1) == 0)
   {
-    v48 = [v55 image];
-    v49 = [v48 _imageData];
-    v50 = v49 == 0;
+    image2 = [personCopy image];
+    _imageData = [image2 _imageData];
+    v50 = _imageData == 0;
 
     if (v50)
     {
       goto LABEL_45;
     }
 
-    v47 = [v55 image];
-    v51 = [v47 _imageData];
-    [v54 setImageData:v51];
+    image = [personCopy image];
+    _imageData2 = [image _imageData];
+    [v54 setImageData:_imageData2];
   }
 
 LABEL_45:
@@ -608,57 +608,57 @@ LABEL_51:
   return v34;
 }
 
-+ (id)labelFromINPersonHandleLabel:(id)a3
++ (id)labelFromINPersonHandleLabel:(id)label
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x277CD3870]])
+  labelCopy = label;
+  if ([labelCopy isEqualToString:*MEMORY[0x277CD3870]])
   {
     v4 = getCNLabelHome();
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CD38A8]])
+  else if ([labelCopy isEqualToString:*MEMORY[0x277CD38A8]])
   {
     v4 = getCNLabelWork();
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CD3890]])
+  else if ([labelCopy isEqualToString:*MEMORY[0x277CD3890]])
   {
     v4 = getCNLabelOther();
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CD38B8]])
+  else if ([labelCopy isEqualToString:*MEMORY[0x277CD38B8]])
   {
     v4 = getCNLabelPhoneNumberiPhone();
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CD3888]])
+  else if ([labelCopy isEqualToString:*MEMORY[0x277CD3888]])
   {
     v4 = getCNLabelPhoneNumberMobile();
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CD3880]])
+  else if ([labelCopy isEqualToString:*MEMORY[0x277CD3880]])
   {
     v4 = getCNLabelPhoneNumberMain();
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CD3878]])
+  else if ([labelCopy isEqualToString:*MEMORY[0x277CD3878]])
   {
     v4 = getCNLabelPhoneNumberHomeFax();
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CD38B0]])
+  else if ([labelCopy isEqualToString:*MEMORY[0x277CD38B0]])
   {
     v4 = getCNLabelPhoneNumberWorkFax();
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x277CD3898]])
+  else if ([labelCopy isEqualToString:*MEMORY[0x277CD3898]])
   {
     v4 = getCNLabelPhoneNumberPager();
   }
 
   else
   {
-    v4 = v3;
+    v4 = labelCopy;
   }
 
   v5 = v4;

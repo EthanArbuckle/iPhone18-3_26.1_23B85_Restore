@@ -1,37 +1,37 @@
 @interface HDIDSMessageOptions
-+ (id)defaultOptionsWithPriority:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
-- (HDIDSMessageOptions)initWithPriority:(unint64_t)a3 timeoutInterval:(double)a4;
++ (id)defaultOptionsWithPriority:(unint64_t)priority;
+- (BOOL)isEqual:(id)equal;
+- (HDIDSMessageOptions)initWithPriority:(unint64_t)priority timeoutInterval:(double)interval;
 - (unint64_t)hash;
 @end
 
 @implementation HDIDSMessageOptions
 
-- (HDIDSMessageOptions)initWithPriority:(unint64_t)a3 timeoutInterval:(double)a4
+- (HDIDSMessageOptions)initWithPriority:(unint64_t)priority timeoutInterval:(double)interval
 {
   v7.receiver = self;
   v7.super_class = HDIDSMessageOptions;
   result = [(HDIDSMessageOptions *)&v7 init];
   if (result)
   {
-    result->_priority = a3;
-    result->_timeoutInterval = a4;
+    result->_priority = priority;
+    result->_timeoutInterval = interval;
   }
 
   return result;
 }
 
-+ (id)defaultOptionsWithPriority:(unint64_t)a3
++ (id)defaultOptionsWithPriority:(unint64_t)priority
 {
-  v3 = [objc_alloc(objc_opt_class()) initWithPriority:a3 timeoutInterval:0.0];
+  v3 = [objc_alloc(objc_opt_class()) initWithPriority:priority timeoutInterval:0.0];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -39,7 +39,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_priority == v4->_priority && self->_timeoutInterval == v4->_timeoutInterval;
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && self->_priority == equalCopy->_priority && self->_timeoutInterval == equalCopy->_timeoutInterval;
   }
 
   return v5;

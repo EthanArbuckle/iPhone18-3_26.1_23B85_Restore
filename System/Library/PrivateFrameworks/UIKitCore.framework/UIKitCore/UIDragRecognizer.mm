@@ -1,24 +1,24 @@
 @interface UIDragRecognizer
 - (CGPoint)startPosition;
-- (UIDragRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (UIDragRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)_resetGestureRecognizer;
 - (void)clearIgnoreTouch;
 - (void)clearTimer;
 - (void)dealloc;
-- (void)tooSlow:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)tooSlow:(id)slow;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation UIDragRecognizer
 
-- (UIDragRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (UIDragRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = UIDragRecognizer;
-  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(UIGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -58,7 +58,7 @@
   self->_tooSlow = 0;
 }
 
-- (void)tooSlow:(id)a3
+- (void)tooSlow:(id)slow
 {
   [(UIDragRecognizer *)self clearTimer];
 
@@ -67,31 +67,31 @@
 
 - (void)clearIgnoreTouch
 {
-  v3 = [(UIDragRecognizer *)self ignoreTouch];
-  [v3 unschedule];
+  ignoreTouch = [(UIDragRecognizer *)self ignoreTouch];
+  [ignoreTouch unschedule];
 
   [(UIDragRecognizer *)self setIgnoreTouch:0];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v16 = a3;
+  beganCopy = began;
   tooSlow = [(UIDragRecognizer *)self ignoreTouch];
   if (tooSlow)
   {
     goto LABEL_2;
   }
 
-  v6 = [(UIDragRecognizer *)self touch];
+  touch = [(UIDragRecognizer *)self touch];
 
-  if (!v6)
+  if (!touch)
   {
-    v11 = [v16 anyObject];
-    [(UIDragRecognizer *)self setTouch:v11];
+    anyObject = [beganCopy anyObject];
+    [(UIDragRecognizer *)self setTouch:anyObject];
 
-    v12 = [(UIDragRecognizer *)self touch];
-    v13 = [(UIGestureRecognizer *)self view];
-    [v12 locationInView:v13];
+    touch2 = [(UIDragRecognizer *)self touch];
+    view = [(UIGestureRecognizer *)self view];
+    [touch2 locationInView:view];
     [(UIDragRecognizer *)self setStartPosition:?];
 
     v14 = [UIDelayedAction alloc];
@@ -104,30 +104,30 @@ LABEL_2:
   [(UIDragRecognizer *)self quietPeriod];
   if (v7 > 0.0)
   {
-    v8 = [(UIDragRecognizer *)self ignoreTouch];
+    ignoreTouch = [(UIDragRecognizer *)self ignoreTouch];
 
-    if (v8)
+    if (ignoreTouch)
     {
-      v9 = [(UIDragRecognizer *)self ignoreTouch];
+      ignoreTouch2 = [(UIDragRecognizer *)self ignoreTouch];
       [(UIDragRecognizer *)self quietPeriod];
-      [(UIDelayedAction *)v9 touchWithDelay:?];
+      [(UIDelayedAction *)ignoreTouch2 touchWithDelay:?];
     }
 
     else
     {
       v10 = [UIDelayedAction alloc];
       [(UIDragRecognizer *)self quietPeriod];
-      v9 = [(UIDelayedAction *)v10 initWithTarget:self action:sel_clearIgnoreTouch userInfo:0 delay:*MEMORY[0x1E695DA28] mode:?];
-      [(UIDragRecognizer *)self setIgnoreTouch:v9];
+      ignoreTouch2 = [(UIDelayedAction *)v10 initWithTarget:self action:sel_clearIgnoreTouch userInfo:0 delay:*MEMORY[0x1E695DA28] mode:?];
+      [(UIDragRecognizer *)self setIgnoreTouch:ignoreTouch2];
     }
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v5 = a3;
-  v6 = [(UIDragRecognizer *)self touch];
-  v7 = [v5 containsObject:v6];
+  movedCopy = moved;
+  touch = [(UIDragRecognizer *)self touch];
+  v7 = [movedCopy containsObject:touch];
 
   if (!v7)
   {
@@ -143,9 +143,9 @@ LABEL_35:
     return;
   }
 
-  v9 = [(UIDragRecognizer *)self touch];
-  v10 = [(UIGestureRecognizer *)self view];
-  [v9 locationInView:v10];
+  touch2 = [(UIDragRecognizer *)self touch];
+  view = [(UIGestureRecognizer *)self view];
+  [touch2 locationInView:view];
   v12 = v11;
   v14 = v13;
 
@@ -224,10 +224,10 @@ LABEL_35:
 
   [(UIDragRecognizer *)self minimumDistance];
   v36 = v35;
-  v37 = [(UIDragRecognizer *)self restrictsToAngle];
+  restrictsToAngle = [(UIDragRecognizer *)self restrictsToAngle];
   if (v30 <= v36)
   {
-    if (v30 > 20.0 && v37)
+    if (v30 > 20.0 && restrictsToAngle)
     {
       [(UIDragRecognizer *)self maximumDeviation];
       if (v25 > v41)
@@ -241,7 +241,7 @@ LABEL_35:
 
   else
   {
-    if (v37)
+    if (restrictsToAngle)
     {
       [(UIDragRecognizer *)self maximumDeviation];
       v39 = v25 <= v38;
@@ -263,11 +263,11 @@ LABEL_35:
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
-  v5 = a3;
-  v6 = [(UIDragRecognizer *)self touch];
-  v7 = [v5 containsObject:v6];
+  endedCopy = ended;
+  touch = [(UIDragRecognizer *)self touch];
+  v7 = [endedCopy containsObject:touch];
 
   if (v7)
   {
@@ -286,9 +286,9 @@ LABEL_35:
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
-  [(UIDragRecognizer *)self clearTimer:a3];
+  [(UIDragRecognizer *)self clearTimer:cancelled];
 
   [(UIGestureRecognizer *)self setState:5];
 }

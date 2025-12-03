@@ -1,40 +1,40 @@
 @interface SXStrokeRenderer
-- (CGContext)newContextForFrame:(double)a3;
-- (double)phaseForBorderWidth:(int)a3 style:(double *)a4 borderSide:(double)a5 length:(double)a6 startingGap:;
-- (id)imageFromContext:(uint64_t)a1;
-- (id)initWithComponentView:(id *)a1;
-- (id)lineForStyle:(double)a3 andFrame:(double)a4;
+- (CGContext)newContextForFrame:(double)frame;
+- (double)phaseForBorderWidth:(int)width style:(double *)style borderSide:(double)side length:(double)length startingGap:;
+- (id)imageFromContext:(uint64_t)context;
+- (id)initWithComponentView:(id *)view;
+- (id)lineForStyle:(double)style andFrame:(double)frame;
 @end
 
 @implementation SXStrokeRenderer
 
-- (id)initWithComponentView:(id *)a1
+- (id)initWithComponentView:(id *)view
 {
   v3 = a2;
-  if (a1)
+  if (view)
   {
-    v6.receiver = a1;
+    v6.receiver = view;
     v6.super_class = SXStrokeRenderer;
     v4 = objc_msgSendSuper2(&v6, sel_init);
-    a1 = v4;
+    view = v4;
     if (v4)
     {
       objc_storeWeak(v4 + 1, v3);
     }
   }
 
-  return a1;
+  return view;
 }
 
-- (CGContext)newContextForFrame:(double)a3
+- (CGContext)newContextForFrame:(double)frame
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v7 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   v9 = v8;
 
   v10 = a5 * v9;
@@ -42,24 +42,24 @@
   v12 = CGBitmapContextCreate(0, (a4 * v9), v10, 8uLL, vcvtd_n_u64_f64(a4 * v9, 2uLL), DeviceRGB, 1u);
   CGColorSpaceRelease(DeviceRGB);
   CGContextTranslateCTM(v12, 0.0, v10);
-  v13 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v13 scale];
+  mainScreen2 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen2 scale];
   v15 = v14;
-  v16 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v16 scale];
+  mainScreen3 = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen3 scale];
   CGContextScaleCTM(v12, v15, -v17);
 
   return v12;
 }
 
-- (id)imageFromContext:(uint64_t)a1
+- (id)imageFromContext:(uint64_t)context
 {
-  if (a1)
+  if (context)
   {
     Image = CGBitmapContextCreateImage(context);
     v3 = MEMORY[0x1E69DCAB8];
-    v4 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v4 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v5 = [v3 imageWithCGImage:Image scale:0 orientation:?];
 
     CGImageRelease(Image);
@@ -73,42 +73,42 @@
   return v5;
 }
 
-- (id)lineForStyle:(double)a3 andFrame:(double)a4
+- (id)lineForStyle:(double)style andFrame:(double)frame
 {
   v28 = *MEMORY[0x1E69E9840];
   v11 = a2;
-  if (a1)
+  if (self)
   {
-    v12 = [MEMORY[0x1E69DC888] blackColor];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
     if (v11)
     {
-      WeakRetained = objc_loadWeakRetained(a1 + 1);
-      v16 = [WeakRetained unitConverter];
-      v17 = [v11 width];
-      OUTLINED_FUNCTION_3_1(v17, v18);
+      WeakRetained = objc_loadWeakRetained(self + 1);
+      unitConverter = [WeakRetained unitConverter];
+      width = [v11 width];
+      OUTLINED_FUNCTION_3_1(width, v18);
       v13 = v19;
 
-      v20 = [v11 color];
+      color = [v11 color];
 
-      v14 = [v11 style];
-      v12 = v20;
+      style = [v11 style];
+      blackColor = color;
     }
 
     else
     {
       v13 = 1.0;
-      v14 = 1;
+      style = 1;
     }
 
     Mutable = CGPathCreateMutable();
     CGPathMoveToPoint(Mutable, 0, 0.0, v13 * 0.5);
     CGPathAddLineToPoint(Mutable, 0, a5, v13 * 0.5);
-    v22 = [(SXStrokeRenderer *)a1 newContextForFrame:a3, a4, a5, a6];
-    if ((v14 & 0xFFFFFFFE) == 2)
+    v22 = [(SXStrokeRenderer *)self newContextForFrame:style, frame, a5, a6];
+    if ((style & 0xFFFFFFFE) == 2)
     {
       v25 = 0;
-      v23 = [(SXStrokeRenderer *)a1 phaseForBorderWidth:v14 style:1 borderSide:&v25 length:v13 startingGap:a5];
-      if (v14 == 2)
+      v23 = [(SXStrokeRenderer *)self phaseForBorderWidth:style style:1 borderSide:&v25 length:v13 startingGap:a5];
+      if (style == 2)
       {
         lengths = v13 * 3.0;
         v27 = v13 * 3.0;
@@ -126,52 +126,52 @@
 
     CGContextAddPath(v22, Mutable);
     CGContextSetLineWidth(v22, v13);
-    CGContextSetStrokeColorWithColor(v22, [v12 CGColor]);
+    CGContextSetStrokeColorWithColor(v22, [blackColor CGColor]);
     CGContextStrokePath(v22);
     CGPathRelease(Mutable);
-    a1 = [(SXStrokeRenderer *)a1 imageFromContext:v22];
+    self = [(SXStrokeRenderer *)self imageFromContext:v22];
     CGContextRelease(v22);
   }
 
-  return a1;
+  return self;
 }
 
-- (double)phaseForBorderWidth:(int)a3 style:(double *)a4 borderSide:(double)a5 length:(double)a6 startingGap:
+- (double)phaseForBorderWidth:(int)width style:(double *)style borderSide:(double)side length:(double)length startingGap:
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
   if (a2 == 2)
   {
-    v6 = a5 * 3.0;
+    sideCopy = side * 3.0;
   }
 
   else
   {
-    v6 = a5;
+    sideCopy = side;
   }
 
-  v7 = v6 + v6;
-  v8 = a6 / (v6 + v6) - (a6 / (v6 + v6));
+  v7 = sideCopy + sideCopy;
+  v8 = length / (sideCopy + sideCopy) - (length / (sideCopy + sideCopy));
   if (v8 >= 0.5)
   {
     v8 = v8 + -1.0;
   }
 
-  v9 = v6 - v7 * v8;
+  v9 = sideCopy - v7 * v8;
   v10 = roundf(v9) * 0.5;
-  v11 = v6 - v10;
-  if ((a3 - 1) <= 1 && v11 < a5)
+  v11 = sideCopy - v10;
+  if ((width - 1) <= 1 && v11 < side)
   {
-    if (a4)
+    if (style)
     {
       v13 = v11;
-      *a4 = floorf(v13);
+      *style = floorf(v13);
     }
 
-    v10 = v6 + v10;
+    v10 = sideCopy + v10;
   }
 
   v14 = v10;

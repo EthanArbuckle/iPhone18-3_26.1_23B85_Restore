@@ -1,23 +1,23 @@
 @interface BKAVAudiobookTrack
-- (BKAVAudiobookTrack)initWithAssetURL:(id)a3;
+- (BKAVAudiobookTrack)initWithAssetURL:(id)l;
 - (BKAudiobook)audiobook;
 - (NSString)description;
 - (void)dealloc;
-- (void)setArtwork:(CGImage *)a3;
+- (void)setArtwork:(CGImage *)artwork;
 @end
 
 @implementation BKAVAudiobookTrack
 
-- (BKAVAudiobookTrack)initWithAssetURL:(id)a3
+- (BKAVAudiobookTrack)initWithAssetURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = BKAVAudiobookTrack;
   v6 = [(BKAVAudiobookTrack *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assetURL, a3);
+    objc_storeStrong(&v6->_assetURL, l);
     v8 = objc_opt_new();
     avChapters = v7->_avChapters;
     v7->_avChapters = v8;
@@ -34,24 +34,24 @@
   [(BKAVAudiobookTrack *)&v3 dealloc];
 }
 
-- (void)setArtwork:(CGImage *)a3
+- (void)setArtwork:(CGImage *)artwork
 {
-  CGImageRetain(a3);
+  CGImageRetain(artwork);
   CGImageRelease(self->_artwork);
-  self->_artwork = a3;
+  self->_artwork = artwork;
 }
 
 - (NSString)description
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(BKAVAudiobookTrack *)self assetURL];
-  v6 = [(BKAVAudiobookTrack *)self title];
-  v7 = [(BKAVAudiobookTrack *)self author];
-  v8 = [(BKAVAudiobookTrack *)self artwork];
-  v9 = [(BKAVAudiobookTrack *)self hasAlternateArtwork];
+  assetURL = [(BKAVAudiobookTrack *)self assetURL];
+  title = [(BKAVAudiobookTrack *)self title];
+  author = [(BKAVAudiobookTrack *)self author];
+  artwork = [(BKAVAudiobookTrack *)self artwork];
+  hasAlternateArtwork = [(BKAVAudiobookTrack *)self hasAlternateArtwork];
   [(BKAVAudiobookTrack *)self duration];
-  v11 = [NSMutableString stringWithFormat:@"<%@:%p url=%@ title=%@ author=%@ artwork=%p hasAlternateArtwork=%d duration=%lf chapters=\n", v4, self, v5, v6, v7, v8, v9, v10];
+  v11 = [NSMutableString stringWithFormat:@"<%@:%p url=%@ title=%@ author=%@ artwork=%p hasAlternateArtwork=%d duration=%lf chapters=\n", v4, self, assetURL, title, author, artwork, hasAlternateArtwork, v10];
 
   v12 = [(NSMutableArray *)self->_avChapters count];
   if (v12)

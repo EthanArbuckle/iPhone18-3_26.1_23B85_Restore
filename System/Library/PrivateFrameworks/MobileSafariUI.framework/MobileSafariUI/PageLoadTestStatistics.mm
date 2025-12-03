@@ -1,42 +1,42 @@
 @interface PageLoadTestStatistics
 - (BOOL)_pageLoadEventsAreStillPending;
-- (PageLoadTestStatistics)initWithInjectedBundle:(BOOL)a3 withCallback:(id)a4;
+- (PageLoadTestStatistics)initWithInjectedBundle:(BOOL)bundle withCallback:(id)callback;
 - (void)_cancelPageLoadingTimeoutTimerIfNeeded;
 - (void)_cancelWaitForNewPageLoadEventsTimer;
 - (void)_maybePageLoadFinishedForTests;
 - (void)_pageLoadFinishedForTests;
-- (void)_pageLoadTimeoutTimerFired:(id)a3;
+- (void)_pageLoadTimeoutTimerFired:(id)fired;
 - (void)_scheduleWaitForNewPageLoadEventsTimer;
-- (void)_waitForNewPageLoadEventsTimerFired:(id)a3;
+- (void)_waitForNewPageLoadEventsTimerFired:(id)fired;
 - (void)dealloc;
-- (void)didGeneratePageLoadTiming:(id)a3;
-- (void)failedNavigation:(id)a3 withError:(id)a4;
+- (void)didGeneratePageLoadTiming:(id)timing;
+- (void)failedNavigation:(id)navigation withError:(id)error;
 - (void)finishedFirstVisualLayout;
 - (void)finishedLoadingResources;
-- (void)finishedNavigation:(id)a3;
+- (void)finishedNavigation:(id)navigation;
 - (void)handledOnloadEvents;
-- (void)pageLoadFinishedForTestsWK2WithLoadData:(id)a3;
-- (void)setPageLoadingTimeoutInterval:(double)a3;
+- (void)pageLoadFinishedForTestsWK2WithLoadData:(id)data;
+- (void)setPageLoadingTimeoutInterval:(double)interval;
 - (void)startedLoadingResources;
-- (void)startedNavigation:(id)a3;
+- (void)startedNavigation:(id)navigation;
 - (void)startedPageLoad;
 @end
 
 @implementation PageLoadTestStatistics
 
-- (PageLoadTestStatistics)initWithInjectedBundle:(BOOL)a3 withCallback:(id)a4
+- (PageLoadTestStatistics)initWithInjectedBundle:(BOOL)bundle withCallback:(id)callback
 {
-  v6 = a4;
+  callbackCopy = callback;
   v12.receiver = self;
   v12.super_class = PageLoadTestStatistics;
   v7 = [(PageLoadTestStatistics *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_useInjectedBundle = a3;
-    if (v6)
+    v7->_useInjectedBundle = bundle;
+    if (callbackCopy)
     {
-      v9 = [v6 copy];
+      v9 = [callbackCopy copy];
       callbackBlock = v8->_callbackBlock;
       v8->_callbackBlock = v9;
     }
@@ -71,12 +71,12 @@
   self->_loadStartDate = v3;
 }
 
-- (void)startedNavigation:(id)a3
+- (void)startedNavigation:(id)navigation
 {
   navigation = self->_navigation;
   if (navigation)
   {
-    v4 = navigation == a3;
+    v4 = navigation == navigation;
   }
 
   else
@@ -121,13 +121,13 @@
   [(PageLoadTestStatistics *)self _maybePageLoadFinishedForTests];
 }
 
-- (void)failedNavigation:(id)a3 withError:(id)a4
+- (void)failedNavigation:(id)navigation withError:(id)error
 {
-  v14 = a4;
+  errorCopy = error;
   navigation = self->_navigation;
   if (navigation)
   {
-    v8 = navigation == a3;
+    v8 = navigation == navigation;
   }
 
   else
@@ -137,8 +137,8 @@
 
   if (v8)
   {
-    v9 = [MEMORY[0x277CBEAA8] date];
-    [v9 timeIntervalSinceDate:self->_loadStartDate];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:self->_loadStartDate];
     v11 = v10;
 
     if (v11 >= 0.05)
@@ -147,23 +147,23 @@
       lastPageLoadEventDate = self->_lastPageLoadEventDate;
       self->_lastPageLoadEventDate = v12;
 
-      objc_storeStrong(&self->_loadError, a4);
+      objc_storeStrong(&self->_loadError, error);
       [(PageLoadTestStatistics *)self _pageLoadFinishedForTests];
     }
 
     else
     {
-      NSLog(@"PageLoadTestStatistics ignoring error due to 'load duration < 50ms' heuristic: %@", v14);
+      NSLog(@"PageLoadTestStatistics ignoring error due to 'load duration < 50ms' heuristic: %@", errorCopy);
     }
   }
 }
 
-- (void)finishedNavigation:(id)a3
+- (void)finishedNavigation:(id)navigation
 {
   navigation = self->_navigation;
   if (navigation)
   {
-    v5 = navigation == a3;
+    v5 = navigation == navigation;
   }
 
   else
@@ -181,14 +181,14 @@
   }
 }
 
-- (void)pageLoadFinishedForTestsWK2WithLoadData:(id)a3
+- (void)pageLoadFinishedForTestsWK2WithLoadData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   if (self->_useInjectedBundle)
   {
     v5 = MEMORY[0x277CBEAA8];
-    v30 = v4;
-    v6 = [v4 objectForKey:@"PageLoadStartTime"];
+    v30 = dataCopy;
+    v6 = [dataCopy objectForKey:@"PageLoadStartTime"];
     [v6 doubleValue];
     v7 = [v5 dateWithTimeIntervalSinceReferenceDate:?];
 
@@ -247,36 +247,36 @@
       callbackBlock[2](callbackBlock, self);
     }
 
-    v4 = v30;
+    dataCopy = v30;
   }
 }
 
-- (void)didGeneratePageLoadTiming:(id)a3
+- (void)didGeneratePageLoadTiming:(id)timing
 {
-  v4 = a3;
+  timingCopy = timing;
   if (!self->_useInjectedBundle)
   {
-    v24 = v4;
+    v24 = timingCopy;
     if (objc_opt_respondsToSelector())
     {
-      v5 = [v24 firstVisualLayout];
-      v6 = [v24 firstMeaningfulPaint];
-      v7 = [v5 laterDate:v6];
-      v8 = [v24 documentFinishedLoading];
-      v9 = [v7 laterDate:v8];
-      v10 = [v24 allSubresourcesFinishedLoading];
-      v11 = [v9 laterDate:v10];
+      firstVisualLayout = [v24 firstVisualLayout];
+      firstMeaningfulPaint = [v24 firstMeaningfulPaint];
+      v7 = [firstVisualLayout laterDate:firstMeaningfulPaint];
+      documentFinishedLoading = [v24 documentFinishedLoading];
+      v9 = [v7 laterDate:documentFinishedLoading];
+      allSubresourcesFinishedLoading = [v24 allSubresourcesFinishedLoading];
+      v11 = [v9 laterDate:allSubresourcesFinishedLoading];
 
       self->_framesToLoad = 0;
       self->_onloadEventsHandled = 0;
       self->_pendingResourceLoad = 0;
-      v12 = [v24 firstVisualLayout];
+      firstVisualLayout2 = [v24 firstVisualLayout];
       firstVisualLayoutDate = self->_firstVisualLayoutDate;
-      self->_firstVisualLayoutDate = v12;
+      self->_firstVisualLayoutDate = firstVisualLayout2;
 
-      v14 = [v24 navigationStart];
+      navigationStart = [v24 navigationStart];
       loadStartDate = self->_loadStartDate;
-      self->_loadStartDate = v14;
+      self->_loadStartDate = navigationStart;
 
       objc_storeStrong(&self->_lastOnloadEventDate, v11);
       objc_storeStrong(&self->_mainFrameLoadDate, v11);
@@ -287,17 +287,17 @@
 
       self->_memoryBeforeWarning = 0;
       self->_memoryAfterWarning = 0;
-      v17 = [v24 documentFinishedLoading];
+      documentFinishedLoading2 = [v24 documentFinishedLoading];
       domContentLoadedDate = self->_domContentLoadedDate;
-      self->_domContentLoadedDate = v17;
+      self->_domContentLoadedDate = documentFinishedLoading2;
 
-      v19 = [v24 firstMeaningfulPaint];
+      firstMeaningfulPaint2 = [v24 firstMeaningfulPaint];
       firstMeaningfulPaintDate = self->_firstMeaningfulPaintDate;
-      self->_firstMeaningfulPaintDate = v19;
+      self->_firstMeaningfulPaintDate = firstMeaningfulPaint2;
 
-      v21 = [v24 allSubresourcesFinishedLoading];
+      allSubresourcesFinishedLoading2 = [v24 allSubresourcesFinishedLoading];
       allSubresourcesLoadedDate = self->_allSubresourcesLoadedDate;
-      self->_allSubresourcesLoadedDate = v21;
+      self->_allSubresourcesLoadedDate = allSubresourcesFinishedLoading2;
 
       callbackBlock = self->_callbackBlock;
       if (callbackBlock)
@@ -320,7 +320,7 @@
   }
 }
 
-- (void)_waitForNewPageLoadEventsTimerFired:(id)a3
+- (void)_waitForNewPageLoadEventsTimerFired:(id)fired
 {
   [(PageLoadTestStatistics *)self _cancelWaitForNewPageLoadEventsTimer];
   if (![(PageLoadTestStatistics *)self _pageLoadEventsAreStillPending]&& !self->_lastPageLoadEventDate)
@@ -384,18 +384,18 @@
   self->_pageLoadingTimeoutTimer = 0;
 }
 
-- (void)_pageLoadTimeoutTimerFired:(id)a3
+- (void)_pageLoadTimeoutTimerFired:(id)fired
 {
   navigation = self->_navigation;
   v5 = [MEMORY[0x277CCA9B8] errorWithDomain:kPageLoadStatsErrorDomain code:-1 userInfo:0];
   [(PageLoadTestStatistics *)self failedNavigation:navigation withError:?];
 }
 
-- (void)setPageLoadingTimeoutInterval:(double)a3
+- (void)setPageLoadingTimeoutInterval:(double)interval
 {
-  if (self->_pageLoadingTimeoutInterval != a3)
+  if (self->_pageLoadingTimeoutInterval != interval)
   {
-    self->_pageLoadingTimeoutInterval = a3;
+    self->_pageLoadingTimeoutInterval = interval;
     [(PageLoadTestStatistics *)self _cancelPageLoadingTimeoutTimerIfNeeded];
     if (self->_pageLoadingTimeoutInterval > 0.0)
     {

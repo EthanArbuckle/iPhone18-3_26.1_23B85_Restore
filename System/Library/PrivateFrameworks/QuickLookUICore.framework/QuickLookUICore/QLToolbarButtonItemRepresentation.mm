@@ -1,16 +1,16 @@
 @interface QLToolbarButtonItemRepresentation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (QLToolbarButton)originalButton;
 - (QLToolbarButtonDelegate)presentingViewController;
-- (void)setLongPressTarget:(id)a3 action:(SEL)a4;
+- (void)setLongPressTarget:(id)target action:(SEL)action;
 @end
 
 @implementation QLToolbarButtonItemRepresentation
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -20,37 +20,37 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(QLToolbarButtonItemRepresentation *)self identifier];
-      v7 = [(QLToolbarButtonItemRepresentation *)v5 identifier];
-      v8 = [v6 isEqualToString:v7];
+      v5 = equalCopy;
+      identifier = [(QLToolbarButtonItemRepresentation *)self identifier];
+      identifier2 = [(QLToolbarButtonItemRepresentation *)v5 identifier];
+      v8 = [identifier isEqualToString:identifier2];
 
       if (!v8)
       {
         goto LABEL_7;
       }
 
-      v9 = [(QLToolbarButtonItemRepresentation *)self action];
-      if (v9 != [(QLToolbarButtonItemRepresentation *)v5 action])
+      action = [(QLToolbarButtonItemRepresentation *)self action];
+      if (action != [(QLToolbarButtonItemRepresentation *)v5 action])
       {
         goto LABEL_7;
       }
 
-      v10 = [(QLToolbarButtonItemRepresentation *)self placement];
-      if (v10 == [(QLToolbarButtonItemRepresentation *)v5 placement]&& ([(QLToolbarButtonItemRepresentation *)self target], v11 = objc_claimAutoreleasedReturnValue(), [(QLToolbarButtonItemRepresentation *)v5 target], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v11 == v12))
+      placement = [(QLToolbarButtonItemRepresentation *)self placement];
+      if (placement == [(QLToolbarButtonItemRepresentation *)v5 placement]&& ([(QLToolbarButtonItemRepresentation *)self target], v11 = objc_claimAutoreleasedReturnValue(), [(QLToolbarButtonItemRepresentation *)v5 target], v12 = objc_claimAutoreleasedReturnValue(), v12, v11, v11 == v12))
       {
-        v15 = [(QLToolbarButtonItemRepresentation *)self originalButton];
-        v16 = [(QLToolbarButtonItemRepresentation *)v5 originalButton];
-        if (v15 == v16)
+        originalButton = [(QLToolbarButtonItemRepresentation *)self originalButton];
+        originalButton2 = [(QLToolbarButtonItemRepresentation *)v5 originalButton];
+        if (originalButton == originalButton2)
         {
           v13 = 1;
         }
 
         else
         {
-          v17 = [(QLToolbarButtonItemRepresentation *)self originalButton];
-          v18 = [(QLToolbarButtonItemRepresentation *)v5 originalButton];
-          v13 = [v17 isEqual:v18];
+          originalButton3 = [(QLToolbarButtonItemRepresentation *)self originalButton];
+          originalButton4 = [(QLToolbarButtonItemRepresentation *)v5 originalButton];
+          v13 = [originalButton3 isEqual:originalButton4];
         }
       }
 
@@ -70,20 +70,20 @@ LABEL_7:
   return v13 & 1;
 }
 
-- (void)setLongPressTarget:(id)a3 action:(SEL)a4
+- (void)setLongPressTarget:(id)target action:(SEL)action
 {
-  v11 = a3;
-  v6 = [(QLToolbarButtonItemRepresentation *)self longPressGestureRecognizer];
+  targetCopy = target;
+  longPressGestureRecognizer = [(QLToolbarButtonItemRepresentation *)self longPressGestureRecognizer];
 
-  if (!v6)
+  if (!longPressGestureRecognizer)
   {
-    v7 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:v11 action:a4];
+    v7 = [objc_alloc(MEMORY[0x277D75708]) initWithTarget:targetCopy action:action];
     [(QLToolbarButtonItemRepresentation *)self setLongPressGestureRecognizer:v7];
-    v8 = [(QLToolbarButtonItemRepresentation *)self _gestureRecognizers];
-    v9 = [v8 mutableCopy];
+    _gestureRecognizers = [(QLToolbarButtonItemRepresentation *)self _gestureRecognizers];
+    v9 = [_gestureRecognizers mutableCopy];
 
-    v10 = [(QLToolbarButtonItemRepresentation *)self longPressGestureRecognizer];
-    [v9 addObject:v10];
+    longPressGestureRecognizer2 = [(QLToolbarButtonItemRepresentation *)self longPressGestureRecognizer];
+    [v9 addObject:longPressGestureRecognizer2];
 
     [(QLToolbarButtonItemRepresentation *)self _setGestureRecognizers:v9];
   }

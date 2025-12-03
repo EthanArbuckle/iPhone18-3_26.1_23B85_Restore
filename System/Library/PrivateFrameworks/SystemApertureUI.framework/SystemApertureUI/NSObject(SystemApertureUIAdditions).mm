@@ -6,10 +6,10 @@
 
 - (id)uniqueElementIdentifier
 {
-  v1 = a1;
-  objc_sync_enter(v1);
-  v2 = objc_getAssociatedObject(v1, "com.apple.SystemAperture.elementUniqueIdentifier");
-  objc_sync_exit(v1);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v2 = objc_getAssociatedObject(selfCopy, "com.apple.SystemAperture.elementUniqueIdentifier");
+  objc_sync_exit(selfCopy);
 
   return v2;
 }

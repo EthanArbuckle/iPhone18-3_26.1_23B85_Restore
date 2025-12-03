@@ -26,11 +26,11 @@ uint64_t __76__VCAggregatorHomeKitVideo_dispatchedProcessEventWithCategory_type_
   dispatch_assert_queue_V2(self->super.super._stateQueue);
   v5.receiver = self;
   v5.super_class = VCAggregatorHomeKitVideo;
-  v3 = [(VCAggregatorVideoStream *)&v5 dispatchedAggregatedSessionReport];
-  [v3 setObject:&unk_284FA57C8 forKeyedSubscript:@"RVER"];
-  [v3 setObject:@"video" forKeyedSubscript:@"HKMT"];
-  [v3 setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_connectionType), @"HKCT"}];
-  return v3;
+  dispatchedAggregatedSessionReport = [(VCAggregatorVideoStream *)&v5 dispatchedAggregatedSessionReport];
+  [dispatchedAggregatedSessionReport setObject:&unk_284FA57C8 forKeyedSubscript:@"RVER"];
+  [dispatchedAggregatedSessionReport setObject:@"video" forKeyedSubscript:@"HKMT"];
+  [dispatchedAggregatedSessionReport setObject:objc_msgSend(MEMORY[0x277CCABA8] forKeyedSubscript:{"numberWithUnsignedInt:", self->_connectionType), @"HKCT"}];
+  return dispatchedAggregatedSessionReport;
 }
 
 @end

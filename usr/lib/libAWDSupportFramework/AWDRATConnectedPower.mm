@@ -1,16 +1,16 @@
 @interface AWDRATConnectedPower
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRAT:(id)a3;
+- (int)StringAsRAT:(id)t;
 - (int)rAT;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasPowerConnectedMicroWatt:(BOOL)a3;
-- (void)setHasRAT:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasPowerConnectedMicroWatt:(BOOL)watt;
+- (void)setHasRAT:(BOOL)t;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDRATConnectedPower
@@ -28,9 +28,9 @@
   }
 }
 
-- (void)setHasRAT:(BOOL)a3
+- (void)setHasRAT:(BOOL)t
 {
-  if (a3)
+  if (t)
   {
     v3 = 4;
   }
@@ -43,44 +43,44 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsRAT:(id)a3
+- (int)StringAsRAT:(id)t
 {
-  if ([a3 isEqualToString:@"RAT_TYPE_UNKNOWN"])
+  if ([t isEqualToString:@"RAT_TYPE_UNKNOWN"])
   {
     return 0;
   }
 
-  if ([a3 isEqualToString:@"RAT_TYPE_UMTS"])
+  if ([t isEqualToString:@"RAT_TYPE_UMTS"])
   {
     return 1;
   }
 
-  if ([a3 isEqualToString:@"RAT_TYPE_GSM"])
+  if ([t isEqualToString:@"RAT_TYPE_GSM"])
   {
     return 2;
   }
 
-  if ([a3 isEqualToString:@"RAT_TYPE_WCDMA"])
+  if ([t isEqualToString:@"RAT_TYPE_WCDMA"])
   {
     return 3;
   }
 
-  if ([a3 isEqualToString:@"RAT_TYPE_1xEVDO"])
+  if ([t isEqualToString:@"RAT_TYPE_1xEVDO"])
   {
     return 4;
   }
 
-  if ([a3 isEqualToString:@"RAT_TYPE_LTE"])
+  if ([t isEqualToString:@"RAT_TYPE_LTE"])
   {
     return 5;
   }
 
-  if ([a3 isEqualToString:@"RAT_TYPE_TDSCDMA"])
+  if ([t isEqualToString:@"RAT_TYPE_TDSCDMA"])
   {
     return 6;
   }
 
-  if ([a3 isEqualToString:@"RAT_TYPE_TDLTE"])
+  if ([t isEqualToString:@"RAT_TYPE_TDLTE"])
   {
     return 7;
   }
@@ -88,9 +88,9 @@
   return 0;
 }
 
-- (void)setHasPowerConnectedMicroWatt:(BOOL)a3
+- (void)setHasPowerConnectedMicroWatt:(BOOL)watt
 {
-  if (a3)
+  if (watt)
   {
     v3 = 2;
   }
@@ -112,7 +112,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -127,25 +127,25 @@
       v6 = off_29EE32BC8[rAT];
     }
 
-    [v3 setObject:v6 forKey:@"RAT"];
+    [dictionary setObject:v6 forKey:@"RAT"];
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_powerConnectedMicroWatt), @"powerConnectedMicroWatt"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_powerConnectedMicroWatt), @"powerConnectedMicroWatt"}];
     has = self->_has;
   }
 
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_powerConnSetupMicroWatt), @"powerConnSetupMicroWatt"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_powerConnSetupMicroWatt), @"powerConnSetupMicroWatt"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 4) == 0)
@@ -186,13 +186,13 @@ LABEL_7:
   PBDataWriterWriteUint32Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 4) != 0)
   {
-    *(a3 + 4) = self->_rAT;
-    *(a3 + 20) |= 4u;
+    *(to + 4) = self->_rAT;
+    *(to + 20) |= 4u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -203,8 +203,8 @@ LABEL_3:
       }
 
 LABEL_7:
-      *(a3 + 2) = self->_powerConnSetupMicroWatt;
-      *(a3 + 20) |= 1u;
+      *(to + 2) = self->_powerConnSetupMicroWatt;
+      *(to + 20) |= 1u;
       return;
     }
   }
@@ -214,17 +214,17 @@ LABEL_7:
     goto LABEL_3;
   }
 
-  *(a3 + 3) = self->_powerConnectedMicroWatt;
-  *(a3 + 20) |= 2u;
+  *(to + 3) = self->_powerConnectedMicroWatt;
+  *(to + 20) |= 2u;
   if (*&self->_has)
   {
     goto LABEL_7;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -261,20 +261,20 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 20) & 4) == 0 || self->_rAT != *(a3 + 4))
+      if ((*(equal + 20) & 4) == 0 || self->_rAT != *(equal + 4))
       {
         goto LABEL_16;
       }
     }
 
-    else if ((*(a3 + 20) & 4) != 0)
+    else if ((*(equal + 20) & 4) != 0)
     {
 LABEL_16:
       LOBYTE(v5) = 0;
@@ -283,21 +283,21 @@ LABEL_16:
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 20) & 2) == 0 || self->_powerConnectedMicroWatt != *(a3 + 3))
+      if ((*(equal + 20) & 2) == 0 || self->_powerConnectedMicroWatt != *(equal + 3))
       {
         goto LABEL_16;
       }
     }
 
-    else if ((*(a3 + 20) & 2) != 0)
+    else if ((*(equal + 20) & 2) != 0)
     {
       goto LABEL_16;
     }
 
-    LOBYTE(v5) = (*(a3 + 20) & 1) == 0;
+    LOBYTE(v5) = (*(equal + 20) & 1) == 0;
     if (*&self->_has)
     {
-      if ((*(a3 + 20) & 1) == 0 || self->_powerConnSetupMicroWatt != *(a3 + 2))
+      if ((*(equal + 20) & 1) == 0 || self->_powerConnSetupMicroWatt != *(equal + 2))
       {
         goto LABEL_16;
       }
@@ -349,14 +349,14 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 20);
+  v3 = *(from + 20);
   if ((v3 & 4) != 0)
   {
-    self->_rAT = *(a3 + 4);
+    self->_rAT = *(from + 4);
     *&self->_has |= 4u;
-    v3 = *(a3 + 20);
+    v3 = *(from + 20);
     if ((v3 & 2) == 0)
     {
 LABEL_3:
@@ -366,20 +366,20 @@ LABEL_3:
       }
 
 LABEL_7:
-      self->_powerConnSetupMicroWatt = *(a3 + 2);
+      self->_powerConnSetupMicroWatt = *(from + 2);
       *&self->_has |= 1u;
       return;
     }
   }
 
-  else if ((*(a3 + 20) & 2) == 0)
+  else if ((*(from + 20) & 2) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_powerConnectedMicroWatt = *(a3 + 3);
+  self->_powerConnectedMicroWatt = *(from + 3);
   *&self->_has |= 2u;
-  if (*(a3 + 20))
+  if (*(from + 20))
   {
     goto LABEL_7;
   }

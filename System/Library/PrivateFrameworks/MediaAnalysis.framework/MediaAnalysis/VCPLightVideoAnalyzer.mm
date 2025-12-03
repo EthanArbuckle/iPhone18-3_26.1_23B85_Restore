@@ -1,30 +1,30 @@
 @interface VCPLightVideoAnalyzer
-- (VCPLightVideoAnalyzer)initWithAVAsset:(id)a3 forAnalysisTypes:(unint64_t)a4;
-- (id)findMetaTrackforType:(id)a3;
-- (int)analyzeAsset:(id)a3 flags:(unint64_t *)a4;
+- (VCPLightVideoAnalyzer)initWithAVAsset:(id)asset forAnalysisTypes:(unint64_t)types;
+- (id)findMetaTrackforType:(id)type;
+- (int)analyzeAsset:(id)asset flags:(unint64_t *)flags;
 - (int)checkTimeRangeConsistency;
 - (int)postProcessOrientationResults;
-- (int)processMetaTrackForType:(id)a3 cancel:(id)a4 flags:(unint64_t *)a5;
+- (int)processMetaTrackForType:(id)type cancel:(id)cancel flags:(unint64_t *)flags;
 @end
 
 @implementation VCPLightVideoAnalyzer
 
-- (VCPLightVideoAnalyzer)initWithAVAsset:(id)a3 forAnalysisTypes:(unint64_t)a4
+- (VCPLightVideoAnalyzer)initWithAVAsset:(id)asset forAnalysisTypes:(unint64_t)types
 {
-  v7 = a3;
+  assetCopy = asset;
   v23.receiver = self;
   v23.super_class = VCPLightVideoAnalyzer;
   v8 = [(VCPLightVideoAnalyzer *)&v23 init];
   v9 = v8;
   if (v8)
   {
-    if (!v7)
+    if (!assetCopy)
     {
       goto LABEL_9;
     }
 
-    objc_storeStrong(&v8->_avAsset, a3);
-    v10 = [v7 vcp_firstEnabledTrackWithMediaType:*MEMORY[0x1E6987608]];
+    objc_storeStrong(&v8->_avAsset, asset);
+    v10 = [assetCopy vcp_firstEnabledTrackWithMediaType:*MEMORY[0x1E6987608]];
     v11 = v10;
     if (v10)
     {
@@ -42,17 +42,17 @@
     *&v9->_transform.c = v21;
     *&v9->_transform.tx = v22;
 
-    v9->_requestedAnalyses = a4;
+    v9->_requestedAnalyses = types;
     metaTracks = v9->_metaTracks;
     v9->_metaTracks = 0;
 
-    v14 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     publicMutableResults = v9->_publicMutableResults;
-    v9->_publicMutableResults = v14;
+    v9->_publicMutableResults = dictionary;
 
-    v16 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     privateMutableResults = v9->_privateMutableResults;
-    v9->_privateMutableResults = v16;
+    v9->_privateMutableResults = dictionary2;
 
     if (!v9->_publicMutableResults || (v18 = v9, !v9->_privateMutableResults))
     {
@@ -71,10 +71,10 @@ LABEL_9:
   return v12;
 }
 
-- (id)findMetaTrackforType:(id)a3
+- (id)findMetaTrackforType:(id)type
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  typeCopy = type;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
@@ -98,8 +98,8 @@ LABEL_9:
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v9 = [v8 formatDescriptions];
-        v10 = [v9 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        formatDescriptions = [v8 formatDescriptions];
+        v10 = [formatDescriptions countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v10)
         {
           v11 = *v19;
@@ -109,12 +109,12 @@ LABEL_9:
             {
               if (*v19 != v11)
               {
-                objc_enumerationMutation(v9);
+                objc_enumerationMutation(formatDescriptions);
               }
 
               v13 = CMMetadataFormatDescriptionGetIdentifiers(*(*(&v18 + 1) + 8 * j));
               v14 = v13;
-              if (v13 && ([v13 containsObject:v4] & 1) != 0)
+              if (v13 && ([v13 containsObject:typeCopy] & 1) != 0)
               {
                 v15 = v8;
 
@@ -122,7 +122,7 @@ LABEL_9:
               }
             }
 
-            v10 = [v9 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v10 = [formatDescriptions countByEnumeratingWithState:&v18 objects:v26 count:16];
             if (v10)
             {
               continue;
@@ -150,12 +150,12 @@ LABEL_20:
   return v15;
 }
 
-- (int)processMetaTrackForType:(id)a3 cancel:(id)a4 flags:(unint64_t *)a5
+- (int)processMetaTrackForType:(id)type cancel:(id)cancel flags:(unint64_t *)flags
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = [(VCPLightVideoAnalyzer *)self findMetaTrackforType:v7];
+  typeCopy = type;
+  cancelCopy = cancel;
+  v9 = [(VCPLightVideoAnalyzer *)self findMetaTrackforType:typeCopy];
   v34 = v9;
   if (!v9)
   {
@@ -170,8 +170,8 @@ LABEL_13:
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v10 = [v9 formatDescriptions];
-  v11 = [v10 countByEnumeratingWithState:&v36 objects:v40 count:16];
+  formatDescriptions = [v9 formatDescriptions];
+  v11 = [formatDescriptions countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v11)
   {
     v12 = *v37;
@@ -181,20 +181,20 @@ LABEL_13:
       {
         if (*v37 != v12)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(formatDescriptions);
         }
 
         v14 = *(*(&v36 + 1) + 8 * i);
         v15 = CMMetadataFormatDescriptionGetIdentifiers(v14);
         v16 = v15;
-        if (v15 && ([v15 containsObject:v7] & 1) != 0)
+        if (v15 && ([v15 containsObject:typeCopy] & 1) != 0)
         {
 
           goto LABEL_15;
         }
       }
 
-      v11 = [v10 countByEnumeratingWithState:&v36 objects:v40 count:16];
+      v11 = [formatDescriptions countByEnumeratingWithState:&v36 objects:v40 count:16];
       if (v11)
       {
         continue;
@@ -219,7 +219,7 @@ LABEL_15:
   v35[0] = *&self->_transform.a;
   v35[1] = v19;
   v35[2] = *&self->_transform.tx;
-  v17 = [VCPVideoMetaAnalyzer analyzerForTrackType:v7 withTransform:v35 requestAnalyses:self->_requestedAnalyses formatDescription:v14];
+  v17 = [VCPVideoMetaAnalyzer analyzerForTrackType:typeCopy withTransform:v35 requestAnalyses:self->_requestedAnalyses formatDescription:v14];
   [(VCPLightVideoAnalyzer *)self photoOffset];
   [v17 setPhotoOffset:?];
   if (!v17)
@@ -231,7 +231,7 @@ LABEL_15:
   do
   {
     v20 = objc_autoreleasePoolPush();
-    if (v8[2](v8))
+    if (cancelCopy[2](cancelCopy))
     {
       LODWORD(v14) = -128;
       v21 = 1;
@@ -239,10 +239,10 @@ LABEL_15:
 
     else
     {
-      v22 = [(VCPMetaTrackDecoder *)v18 copyNextMetadataGroup];
-      if (v22)
+      copyNextMetadataGroup = [(VCPMetaTrackDecoder *)v18 copyNextMetadataGroup];
+      if (copyNextMetadataGroup)
       {
-        v23 = [v17 processMetadataGroup:v22 flags:a5];
+        v23 = [v17 processMetadataGroup:copyNextMetadataGroup flags:flags];
         v21 = v23 != 0;
         if (v23)
         {
@@ -271,24 +271,24 @@ LABEL_15:
     LODWORD(v14) = [v17 finalizeAnalysis];
     if (!v14)
     {
-      v24 = [v17 publicResults];
-      v25 = v24 == 0;
+      publicResults = [v17 publicResults];
+      v25 = publicResults == 0;
 
       if (!v25)
       {
         publicMutableResults = self->_publicMutableResults;
-        v27 = [v17 publicResults];
-        [(NSMutableDictionary *)publicMutableResults addEntriesFromDictionary:v27];
+        publicResults2 = [v17 publicResults];
+        [(NSMutableDictionary *)publicMutableResults addEntriesFromDictionary:publicResults2];
       }
 
-      v28 = [v17 privateResults];
-      v29 = v28 == 0;
+      privateResults = [v17 privateResults];
+      v29 = privateResults == 0;
 
       if (!v29)
       {
         privateMutableResults = self->_privateMutableResults;
-        v31 = [v17 privateResults];
-        [(NSMutableDictionary *)privateMutableResults addEntriesFromDictionary:v31];
+        privateResults2 = [v17 privateResults];
+        [(NSMutableDictionary *)privateMutableResults addEntriesFromDictionary:privateResults2];
       }
 
       goto LABEL_13;
@@ -357,7 +357,7 @@ LABEL_36:
   v15 = [(NSMutableDictionary *)self->_privateMutableResults objectForKeyedSubscript:?];
   if (v15)
   {
-    v2 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
@@ -397,7 +397,7 @@ LABEL_36:
           v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
           [v7 setObject:v12 forKeyedSubscript:@"attributes"];
 
-          [v2 addObject:v7];
+          [array addObject:v7];
         }
 
         v3 = [obj countByEnumeratingWithState:&v17 objects:v23 count:16];
@@ -406,18 +406,18 @@ LABEL_36:
       while (v3);
     }
 
-    [(NSMutableDictionary *)self->_publicMutableResults setObject:v2 forKeyedSubscript:@"OrientationResults"];
+    [(NSMutableDictionary *)self->_publicMutableResults setObject:array forKeyedSubscript:@"OrientationResults"];
   }
 
   return 0;
 }
 
-- (int)analyzeAsset:(id)a3 flags:(unint64_t *)a4
+- (int)analyzeAsset:(id)asset flags:(unint64_t *)flags
 {
-  v6 = a3;
+  assetCopy = asset;
   if ([(NSMutableDictionary *)self->_publicMutableResults count]&& [(NSMutableDictionary *)self->_privateMutableResults count])
   {
-    v7 = 0;
+    checkTimeRangeConsistency = 0;
     goto LABEL_24;
   }
 
@@ -429,13 +429,13 @@ LABEL_36:
   if (!self->_metaTracks)
   {
 LABEL_23:
-    v7 = 0;
-    *a4 |= v12;
+    checkTimeRangeConsistency = 0;
+    *flags |= v12;
     goto LABEL_24;
   }
 
-  v7 = [(VCPLightVideoAnalyzer *)self processMetaTrackForType:*MEMORY[0x1E69603B8] cancel:v6 flags:&v12];
-  if (v7)
+  checkTimeRangeConsistency = [(VCPLightVideoAnalyzer *)self processMetaTrackForType:*MEMORY[0x1E69603B8] cancel:assetCopy flags:&v12];
+  if (checkTimeRangeConsistency)
   {
     goto LABEL_24;
   }
@@ -443,8 +443,8 @@ LABEL_23:
   requestedAnalyses = self->_requestedAnalyses;
   if ((requestedAnalyses & 0xC) == 4)
   {
-    v7 = [(VCPLightVideoAnalyzer *)self processMetaTrackForType:*MEMORY[0x1E69877B0] cancel:v6 flags:&v12];
-    if (v7)
+    checkTimeRangeConsistency = [(VCPLightVideoAnalyzer *)self processMetaTrackForType:*MEMORY[0x1E69877B0] cancel:assetCopy flags:&v12];
+    if (checkTimeRangeConsistency)
     {
       goto LABEL_24;
     }
@@ -454,14 +454,14 @@ LABEL_23:
 
   if ((requestedAnalyses & 0xC0) != 0)
   {
-    v7 = [(VCPLightVideoAnalyzer *)self processMetaTrackForType:*MEMORY[0x1E69877F0] cancel:v6 flags:&v12];
-    if (v7)
+    checkTimeRangeConsistency = [(VCPLightVideoAnalyzer *)self processMetaTrackForType:*MEMORY[0x1E69877F0] cancel:assetCopy flags:&v12];
+    if (checkTimeRangeConsistency)
     {
       goto LABEL_24;
     }
 
-    v7 = [(VCPLightVideoAnalyzer *)self checkTimeRangeConsistency];
-    if (v7)
+    checkTimeRangeConsistency = [(VCPLightVideoAnalyzer *)self checkTimeRangeConsistency];
+    if (checkTimeRangeConsistency)
     {
       goto LABEL_24;
     }
@@ -469,8 +469,8 @@ LABEL_23:
     requestedAnalyses = self->_requestedAnalyses;
     if ((requestedAnalyses & 0xC0) == 0x40)
     {
-      v7 = [(VCPLightVideoAnalyzer *)self postProcessOrientationResults];
-      if (v7)
+      checkTimeRangeConsistency = [(VCPLightVideoAnalyzer *)self postProcessOrientationResults];
+      if (checkTimeRangeConsistency)
       {
         goto LABEL_24;
       }
@@ -481,8 +481,8 @@ LABEL_23:
 
   if ((requestedAnalyses & 0x40000140300002C0) != 0)
   {
-    v7 = [(VCPLightVideoAnalyzer *)self processMetaTrackForType:*MEMORY[0x1E6990A00] cancel:v6 flags:a4];
-    if (v7)
+    checkTimeRangeConsistency = [(VCPLightVideoAnalyzer *)self processMetaTrackForType:*MEMORY[0x1E6990A00] cancel:assetCopy flags:flags];
+    if (checkTimeRangeConsistency)
     {
       goto LABEL_24;
     }
@@ -492,8 +492,8 @@ LABEL_23:
 
   if ((requestedAnalyses & 0x10000000000) != 0)
   {
-    v7 = [(VCPLightVideoAnalyzer *)self processMetaTrackForType:*MEMORY[0x1E69629E0] cancel:v6 flags:a4];
-    if (v7)
+    checkTimeRangeConsistency = [(VCPLightVideoAnalyzer *)self processMetaTrackForType:*MEMORY[0x1E69629E0] cancel:assetCopy flags:flags];
+    if (checkTimeRangeConsistency)
     {
       goto LABEL_24;
     }
@@ -506,15 +506,15 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v7 = [(VCPLightVideoAnalyzer *)self processMetaTrackForType:@"mdta/com.apple.quicktime.smartstyle-info" cancel:v6 flags:a4];
-  if (!v7)
+  checkTimeRangeConsistency = [(VCPLightVideoAnalyzer *)self processMetaTrackForType:@"mdta/com.apple.quicktime.smartstyle-info" cancel:assetCopy flags:flags];
+  if (!checkTimeRangeConsistency)
   {
     goto LABEL_23;
   }
 
 LABEL_24:
 
-  return v7;
+  return checkTimeRangeConsistency;
 }
 
 @end

@@ -1,36 +1,36 @@
 @interface SBRingerHUDViewController
-- (SBRingerHUDViewController)initWithActivatedForPreviewing:(BOOL)a3;
+- (SBRingerHUDViewController)initWithActivatedForPreviewing:(BOOL)previewing;
 - (SBRingerHUDViewControllerDelegate)delegate;
 - (void)_dismiss;
 - (void)_extendDismissalTimer;
 - (void)_layoutPillView;
-- (void)_updateStateAnimated:(BOOL)a3 invert:(BOOL)a4;
-- (void)_updateVolumeSliderAnimated:(BOOL)a3;
-- (void)nudgeUp:(BOOL)a3;
-- (void)presentForMuteChange:(BOOL)a3;
-- (void)presentableDidAppearAsBanner:(id)a3;
-- (void)setRingerSilent:(BOOL)a3;
-- (void)setVolume:(float)a3 animated:(BOOL)a4 forKeyPress:(BOOL)a5;
+- (void)_updateStateAnimated:(BOOL)animated invert:(BOOL)invert;
+- (void)_updateVolumeSliderAnimated:(BOOL)animated;
+- (void)nudgeUp:(BOOL)up;
+- (void)presentForMuteChange:(BOOL)change;
+- (void)presentableDidAppearAsBanner:(id)banner;
+- (void)setRingerSilent:(BOOL)silent;
+- (void)setVolume:(float)volume animated:(BOOL)animated forKeyPress:(BOOL)press;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SBRingerHUDViewController
 
-- (SBRingerHUDViewController)initWithActivatedForPreviewing:(BOOL)a3
+- (SBRingerHUDViewController)initWithActivatedForPreviewing:(BOOL)previewing
 {
-  v3 = a3;
+  previewingCopy = previewing;
   v12.receiver = self;
   v12.super_class = SBRingerHUDViewController;
   v4 = [(SBRingerHUDViewController *)&v12 initWithNibName:0 bundle:0];
   v5 = v4;
   if (v4)
   {
-    v4->_activatedForPreviewing = v3;
-    v6 = [(SBRingerHUDViewController *)v4 transitioningDelegate];
+    v4->_activatedForPreviewing = previewingCopy;
+    transitioningDelegate = [(SBRingerHUDViewController *)v4 transitioningDelegate];
 
-    if (!v6 && v3)
+    if (!transitioningDelegate && previewingCopy)
     {
       customTransitioningDelegate = v5->_customTransitioningDelegate;
       if (!customTransitioningDelegate)
@@ -60,8 +60,8 @@
 
   [(SBRingerPillView *)self->_pillView _setTouchInsets:0.0, 0.0, -30.0, 0.0];
   [(SBRingerPillView *)self->_pillView sizeToFit];
-  v5 = [(SBRingerHUDViewController *)self view];
-  [v5 addSubview:self->_pillView];
+  view = [(SBRingerHUDViewController *)self view];
+  [view addSubview:self->_pillView];
 
   [(SBRingerHUDViewController *)self _layoutPillView];
   [(SBRingerPillView *)self->_pillView bounds];
@@ -77,37 +77,37 @@
   [(SBRingerHUDViewController *)self _layoutPillView];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SBRingerHUDViewController;
-  [(SBRingerHUDViewController *)&v4 viewWillAppear:a3];
+  [(SBRingerHUDViewController *)&v4 viewWillAppear:appear];
   [(SBRingerHUDViewController *)self _updateVolumeSliderAnimated:0];
 }
 
-- (void)setRingerSilent:(BOOL)a3
+- (void)setRingerSilent:(BOOL)silent
 {
-  v3 = a3;
+  silentCopy = silent;
   v7 = *MEMORY[0x277D85DE8];
   v5 = SBLogRingerHUD();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = silentCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "SBRingerHUDViewController setRingerSilent: %{BOOL}d", v6, 8u);
   }
 
-  if (self->_ringerSilent != v3)
+  if (self->_ringerSilent != silentCopy)
   {
-    self->_ringerSilent = v3;
+    self->_ringerSilent = silentCopy;
     self->_lastEventIsAVolumeChange = 0;
     [(SBRingerHUDViewController *)self _updateStateAnimated:1 invert:0];
   }
 }
 
-- (void)nudgeUp:(BOOL)a3
+- (void)nudgeUp:(BOOL)up
 {
-  if (a3)
+  if (up)
   {
     if ((BSFloatIsOne() & 1) == 0)
     {
@@ -132,36 +132,36 @@
   [(SBRingerHUDViewController *)self _updateVolumeSliderAnimated:1];
 }
 
-- (void)setVolume:(float)a3 animated:(BOOL)a4 forKeyPress:(BOOL)a5
+- (void)setVolume:(float)volume animated:(BOOL)animated forKeyPress:(BOOL)press
 {
-  v5 = a5;
-  v6 = a4;
+  pressCopy = press;
+  animatedCopy = animated;
   v16 = *MEMORY[0x277D85DE8];
   v9 = SBLogRingerHUD();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134218496;
-    v11 = a3;
+    volumeCopy = volume;
     v12 = 1024;
-    v13 = v6;
+    v13 = animatedCopy;
     v14 = 1024;
-    v15 = v5;
+    v15 = pressCopy;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "SBRingerHUDViewController setVolume:%.2f animated:%{BOOL}d forKeyPress:%{BOOL}d", &v10, 0x18u);
   }
 
   [(SBRingerHUDViewController *)self _extendDismissalTimer];
-  if (v5)
+  if (pressCopy)
   {
     self->_lastEventIsAVolumeChange = 1;
   }
 
   if ((BSFloatEqualToFloat() & 1) == 0)
   {
-    self->_volume = a3;
-    [(SBRingerHUDViewController *)self _updateVolumeSliderAnimated:v6];
+    self->_volume = volume;
+    [(SBRingerHUDViewController *)self _updateVolumeSliderAnimated:animatedCopy];
   }
 
-  if (v5)
+  if (pressCopy)
   {
     [(SBRingerHUDViewController *)self _updateStateAnimated:1 invert:0];
   }
@@ -169,48 +169,48 @@
 
 - (void)_layoutPillView
 {
-  v4 = [(SBRingerHUDViewController *)self view];
-  [v4 bounds];
+  view = [(SBRingerHUDViewController *)self view];
+  [view bounds];
   pillView = self->_pillView;
   UIRectGetCenter();
   [(SBRingerPillView *)pillView setCenter:?];
 }
 
-- (void)_updateVolumeSliderAnimated:(BOOL)a3
+- (void)_updateVolumeSliderAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v8 = *MEMORY[0x277D85DE8];
   v5 = SBLogRingerHUD();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7[0] = 67109120;
-    v7[1] = v3;
+    v7[1] = animatedCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "SBRingerHUDViewController _updateVolumeSliderAnimated:%{BOOL}d", v7, 8u);
   }
 
   v6 = self->_overshoot + self->_volume;
-  [(SBRingerPillView *)self->_pillView setSliderValue:v3 animated:v6];
+  [(SBRingerPillView *)self->_pillView setSliderValue:animatedCopy animated:v6];
 }
 
-- (void)_updateStateAnimated:(BOOL)a3 invert:(BOOL)a4
+- (void)_updateStateAnimated:(BOOL)animated invert:(BOOL)invert
 {
-  v5 = a3;
+  animatedCopy = animated;
   if ([(SBRingerHUDViewController *)self isViewLoaded])
   {
     v7 = +[SBDefaults externalDefaults];
-    v8 = [v7 soundDefaults];
+    soundDefaults = [v7 soundDefaults];
 
-    v9 = [v8 buttonsCanChangeRingerVolume];
+    buttonsCanChangeRingerVolume = [soundDefaults buttonsCanChangeRingerVolume];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __57__SBRingerHUDViewController__updateStateAnimated_invert___block_invoke;
     v20[3] = &unk_2783AC158;
-    v21 = v9;
+    v21 = buttonsCanChangeRingerVolume;
     v20[4] = self;
-    v22 = a4;
+    invertCopy = invert;
     v10 = MEMORY[0x223D6F7F0](v20);
     v11 = v10;
-    if (v5)
+    if (animatedCopy)
     {
       if (self->_activatedForPreviewing)
       {
@@ -224,13 +224,13 @@
           v12 = 2;
         }
 
-        v13 = [(SBRingerHUDViewController *)self view];
+        view = [(SBRingerHUDViewController *)self view];
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
         v16[2] = __57__SBRingerHUDViewController__updateStateAnimated_invert___block_invoke_3;
         v16[3] = &unk_2783A9348;
         v17 = v11;
-        [v13 sb_animateStateChangeWithBlock:v16 style:v12];
+        [view sb_animateStateChangeWithBlock:v16 style:v12];
 
         v14 = v17;
       }
@@ -291,32 +291,32 @@ uint64_t __57__SBRingerHUDViewController__updateStateAnimated_invert___block_inv
   return [v6 layoutIfNeeded];
 }
 
-- (void)presentForMuteChange:(BOOL)a3
+- (void)presentForMuteChange:(BOOL)change
 {
-  v3 = a3;
+  changeCopy = change;
   v18 = *MEMORY[0x277D85DE8];
   v5 = SBLogRingerHUD();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v17 = v3;
+    v17 = changeCopy;
     _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "SBRingerHUDViewController presentForMuteChange: %{BOOL}d", buf, 8u);
   }
 
-  v6 = [(SBBannerBasePresentableViewController *)self isPresentableAppearingOrAppeared];
+  isPresentableAppearingOrAppeared = [(SBBannerBasePresentableViewController *)self isPresentableAppearingOrAppeared];
   [(SBRingerHUDViewController *)self _extendDismissalTimer];
-  if (!v6)
+  if (!isPresentableAppearingOrAppeared)
   {
-    v7 = [(SBRingerHUDViewController *)self delegate];
-    [v7 ringerHUDViewControllerWantsToBePresented:self];
+    delegate = [(SBRingerHUDViewController *)self delegate];
+    [delegate ringerHUDViewControllerWantsToBePresented:self];
 
     [(SBRingerHUDViewController *)self setShouldExtendDismissalTimerUponDidAppear:1];
-    if (v3)
+    if (changeCopy)
     {
       [(SBRingerHUDViewController *)self _updateStateAnimated:0 invert:1];
-      v8 = [(SBRingerHUDViewController *)self view];
-      v9 = [v8 window];
-      [v9 safeAreaInsets];
+      view = [(SBRingerHUDViewController *)self view];
+      window = [view window];
+      [window safeAreaInsets];
       v11 = v10;
 
       if (v11 != 0.0)
@@ -331,17 +331,17 @@ uint64_t __57__SBRingerHUDViewController__updateStateAnimated_invert___block_inv
         return;
       }
 
-      v13 = self;
+      selfCopy2 = self;
       v14 = 1;
     }
 
     else
     {
-      v13 = self;
+      selfCopy2 = self;
       v14 = 0;
     }
 
-    [(SBRingerHUDViewController *)v13 _updateStateAnimated:v14 invert:0];
+    [(SBRingerHUDViewController *)selfCopy2 _updateStateAnimated:v14 invert:0];
   }
 }
 
@@ -354,8 +354,8 @@ uint64_t __57__SBRingerHUDViewController__updateStateAnimated_invert___block_inv
     _os_log_impl(&dword_21ED4E000, v3, OS_LOG_TYPE_DEFAULT, "SBRingerHUDViewController dismiss", v5, 2u);
   }
 
-  v4 = [(SBRingerHUDViewController *)self delegate];
-  [v4 ringerHUDViewControllerWantsToBeDismissed:self];
+  delegate = [(SBRingerHUDViewController *)self delegate];
+  [delegate ringerHUDViewControllerWantsToBeDismissed:self];
 }
 
 - (void)_extendDismissalTimer
@@ -399,7 +399,7 @@ void __50__SBRingerHUDViewController__extendDismissalTimer__block_invoke(uint64_
   [WeakRetained setDismissalTimer:0];
 }
 
-- (void)presentableDidAppearAsBanner:(id)a3
+- (void)presentableDidAppearAsBanner:(id)banner
 {
   if ([(SBRingerHUDViewController *)self shouldExtendDismissalTimerUponDidAppear])
   {

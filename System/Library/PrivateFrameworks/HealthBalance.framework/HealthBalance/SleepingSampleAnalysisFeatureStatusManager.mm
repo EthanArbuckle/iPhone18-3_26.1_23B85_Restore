@@ -1,16 +1,16 @@
 @interface SleepingSampleAnalysisFeatureStatusManager
 - (_TtC13HealthBalance42SleepingSampleAnalysisFeatureStatusManager)init;
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4;
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status;
 @end
 
 @implementation SleepingSampleAnalysisFeatureStatusManager
 
-- (void)featureStatusProviding:(id)a3 didUpdateFeatureStatus:(id)a4
+- (void)featureStatusProviding:(id)providing didUpdateFeatureStatus:(id)status
 {
   swift_unknownObjectRetain();
-  v7 = a4;
-  v8 = self;
-  SleepingSampleAnalysisFeatureStatusManager.featureStatusProviding(_:didUpdate:)(a3);
+  statusCopy = status;
+  selfCopy = self;
+  SleepingSampleAnalysisFeatureStatusManager.featureStatusProviding(_:didUpdate:)(providing);
   swift_unknownObjectRelease();
 }
 

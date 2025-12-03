@@ -1,30 +1,30 @@
 @interface TaskingCriteriaRange
-- (BOOL)_checkForWholeCriteriaArray:(id)a3;
-- (BOOL)_elementExistsInStats:(id)a3 statsProvider:(id)a4 forCriteriaDict:(id)a5;
-- (BOOL)_elementPassesWhiteListCheck:(id)a3 whiteListRef:(id)a4 forCriteriaDict:(id)a5;
-- (BOOL)_evaluateWholeCriteriaArray:(id)a3;
-- (BOOL)_validateElement:(id)a3 isOptional:(BOOL)isKindOfClass forCriteriaDict:(id)a5;
-- (BOOL)allStatIdsExistInStatsProvider:(id)a3;
-- (BOOL)evaluateCriteriaUsingStatsProvider:(id)a3 doWhiteListCheck:(BOOL)a4;
+- (BOOL)_checkForWholeCriteriaArray:(id)array;
+- (BOOL)_elementExistsInStats:(id)stats statsProvider:(id)provider forCriteriaDict:(id)dict;
+- (BOOL)_elementPassesWhiteListCheck:(id)check whiteListRef:(id)ref forCriteriaDict:(id)dict;
+- (BOOL)_evaluateWholeCriteriaArray:(id)array;
+- (BOOL)_validateElement:(id)element isOptional:(BOOL)isKindOfClass forCriteriaDict:(id)dict;
+- (BOOL)allStatIdsExistInStatsProvider:(id)provider;
+- (BOOL)evaluateCriteriaUsingStatsProvider:(id)provider doWhiteListCheck:(BOOL)check;
 - (BOOL)passWhiteListCheck;
 - (BOOL)validateCriteria;
-- (float)_getElementValue:(id)a3 forElementName:(id)a4 criteriaDict:(id)a5;
-- (float)getCriteriaValueUsingStatsProvider:(id)a3 forCriteriaDict:(id)a4;
-- (id)initFromTaskingCrit:(id)a3;
+- (float)_getElementValue:(id)value forElementName:(id)name criteriaDict:(id)dict;
+- (float)getCriteriaValueUsingStatsProvider:(id)provider forCriteriaDict:(id)dict;
+- (id)initFromTaskingCrit:(id)crit;
 @end
 
 @implementation TaskingCriteriaRange
 
-- (id)initFromTaskingCrit:(id)a3
+- (id)initFromTaskingCrit:(id)crit
 {
-  v5 = a3;
+  critCopy = crit;
   v10.receiver = self;
   v10.super_class = TaskingCriteriaRange;
   v6 = [(TaskingCriteriaRange *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_myTaskingCriteria, a3);
+    objc_storeStrong(&v6->_myTaskingCriteria, crit);
     v8 = v7;
   }
 
@@ -33,8 +33,8 @@
 
 - (BOOL)validateCriteria
 {
-  v3 = [(TaskingCriteriaRange *)self myTaskingCriteria];
-  v4 = [v3 count];
+  myTaskingCriteria = [(TaskingCriteriaRange *)self myTaskingCriteria];
+  v4 = [myTaskingCriteria count];
 
   if ((v4 - 5) < 0xFFFFFFFFFFFFFFFCLL)
   {
@@ -45,8 +45,8 @@
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v6 = [(TaskingCriteriaRange *)self myTaskingCriteria];
-  v7 = [v6 countByEnumeratingWithState:&v32 objects:v37 count:16];
+  myTaskingCriteria2 = [(TaskingCriteriaRange *)self myTaskingCriteria];
+  v7 = [myTaskingCriteria2 countByEnumeratingWithState:&v32 objects:v37 count:16];
   if (v7)
   {
     v8 = v7;
@@ -59,7 +59,7 @@
       {
         if (*v33 != v11)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(myTaskingCriteria2);
         }
 
         v13 = *(*(&v32 + 1) + 8 * i);
@@ -84,7 +84,7 @@
           v24 = i;
           v25 = v11;
           v26 = v8;
-          v27 = v6;
+          v27 = myTaskingCriteria2;
           v17 = 0;
           v18 = *v29;
           while (2)
@@ -136,7 +136,7 @@
 LABEL_31:
 
                 v5 = 0;
-                v6 = v27;
+                myTaskingCriteria2 = v27;
                 goto LABEL_32;
               }
 
@@ -155,14 +155,14 @@ LABEL_31:
           }
 
           v8 = v26;
-          v6 = v27;
+          myTaskingCriteria2 = v27;
           v10 = &MSURetrievePreviousRestoreDate_ptr;
           i = v24;
           v11 = v25;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v32 objects:v37 count:16];
+      v8 = [myTaskingCriteria2 countByEnumeratingWithState:&v32 objects:v37 count:16];
       if (v8)
       {
         continue;
@@ -183,9 +183,9 @@ LABEL_32:
   return v5;
 }
 
-- (BOOL)_validateElement:(id)a3 isOptional:(BOOL)isKindOfClass forCriteriaDict:(id)a5
+- (BOOL)_validateElement:(id)element isOptional:(BOOL)isKindOfClass forCriteriaDict:(id)dict
 {
-  v6 = [a5 objectForKeyedSubscript:a3];
+  v6 = [dict objectForKeyedSubscript:element];
   v7 = v6;
   if (!v6)
   {
@@ -240,15 +240,15 @@ LABEL_11:
   return isKindOfClass;
 }
 
-- (BOOL)_checkForWholeCriteriaArray:(id)a3
+- (BOOL)_checkForWholeCriteriaArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v5 = [(TaskingCriteriaRange *)self myTaskingCriteria];
-  v6 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  myTaskingCriteria = [(TaskingCriteriaRange *)self myTaskingCriteria];
+  v6 = [myTaskingCriteria countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v6)
   {
     v7 = v6;
@@ -263,7 +263,7 @@ LABEL_11:
       {
         if (*v27 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(myTaskingCriteria);
         }
 
         v11 = *(*(&v26 + 1) + 8 * v10);
@@ -292,7 +292,7 @@ LABEL_11:
 
               v14 = *(*(&v22 + 1) + 8 * v16);
 
-              if (!v4[2](v4, v14))
+              if (!arrayCopy[2](arrayCopy, v14))
               {
 
                 v18 = 0;
@@ -321,7 +321,7 @@ LABEL_11:
       }
 
       while (v10 != v7);
-      v7 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v7 = [myTaskingCriteria countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v7);
@@ -337,9 +337,9 @@ LABEL_19:
   return v18;
 }
 
-- (BOOL)_evaluateWholeCriteriaArray:(id)a3
+- (BOOL)_evaluateWholeCriteriaArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -388,7 +388,7 @@ LABEL_19:
 
               v11 = *(*(&v21 + 1) + 8 * v14);
 
-              v13 &= v4[2](v4, v11);
+              v13 &= arrayCopy[2](arrayCopy, v11);
               v14 = v14 + 1;
               v15 = v11;
             }
@@ -424,10 +424,10 @@ LABEL_19:
   return v6 & 1;
 }
 
-- (float)_getElementValue:(id)a3 forElementName:(id)a4 criteriaDict:(id)a5
+- (float)_getElementValue:(id)value forElementName:(id)name criteriaDict:(id)dict
 {
-  v7 = a3;
-  v8 = [a5 objectForKeyedSubscript:a4];
+  valueCopy = value;
+  v8 = [dict objectForKeyedSubscript:name];
   v9 = [v8 objectForKeyedSubscript:@"TYPE"];
   if ([v9 isEqualToString:@"TYPE_CONST"])
   {
@@ -442,27 +442,27 @@ LABEL_19:
     if ([v9 isEqualToString:@"TYPE_STAT"])
     {
       v13 = [v8 objectForKeyedSubscript:@"STAT_ID"];
-      v14 = [v13 integerValue];
+      integerValue = [v13 integerValue];
 
       v15 = [v8 objectForKeyedSubscript:@"STAT_TIME_DELTA"];
-      v16 = [v15 unsignedIntValue];
+      unsignedIntValue = [v15 unsignedIntValue];
 
       v17 = [v8 objectForKeyedSubscript:@"START_IDX"];
 
       if (v17)
       {
         v18 = [v8 objectForKeyedSubscript:@"START_IDX"];
-        v19 = [v18 unsignedIntValue];
+        unsignedIntValue2 = [v18 unsignedIntValue];
 
         v20 = [v8 objectForKeyedSubscript:@"END_IDX"];
-        v21 = [v20 unsignedIntValue];
+        unsignedIntValue3 = [v20 unsignedIntValue];
 
-        [v7 getStatsDeltaForArr:v14 startIdx:v19 endIdx:v21 :v16];
+        [valueCopy getStatsDeltaForArr:integerValue startIdx:unsignedIntValue2 endIdx:unsignedIntValue3 :unsignedIntValue];
       }
 
       else
       {
-        [v7 getStatsDelta:v14 :v16];
+        [valueCopy getStatsDelta:integerValue :unsignedIntValue];
       }
 
       v12 = v22;
@@ -472,15 +472,15 @@ LABEL_19:
   return v12;
 }
 
-- (float)getCriteriaValueUsingStatsProvider:(id)a3 forCriteriaDict:(id)a4
+- (float)getCriteriaValueUsingStatsProvider:(id)provider forCriteriaDict:(id)dict
 {
-  v6 = a3;
-  v7 = a4;
-  [(TaskingCriteriaRange *)self _getElementValue:v6 forElementName:@"A" criteriaDict:v7];
+  providerCopy = provider;
+  dictCopy = dict;
+  [(TaskingCriteriaRange *)self _getElementValue:providerCopy forElementName:@"A" criteriaDict:dictCopy];
   v9 = v8;
-  [(TaskingCriteriaRange *)self _getElementValue:v6 forElementName:@"B" criteriaDict:v7];
+  [(TaskingCriteriaRange *)self _getElementValue:providerCopy forElementName:@"B" criteriaDict:dictCopy];
   v11 = v10;
-  v12 = [v7 objectForKeyedSubscript:@"C"];
+  v12 = [dictCopy objectForKeyedSubscript:@"C"];
 
   if (!v12)
   {
@@ -490,7 +490,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  [(TaskingCriteriaRange *)self _getElementValue:v6 forElementName:@"C" criteriaDict:v7];
+  [(TaskingCriteriaRange *)self _getElementValue:providerCopy forElementName:@"C" criteriaDict:dictCopy];
   v14 = 0.0;
   if (v13 != 0.0)
   {
@@ -502,27 +502,27 @@ LABEL_6:
   return v14;
 }
 
-- (BOOL)_elementPassesWhiteListCheck:(id)a3 whiteListRef:(id)a4 forCriteriaDict:(id)a5
+- (BOOL)_elementPassesWhiteListCheck:(id)check whiteListRef:(id)ref forCriteriaDict:(id)dict
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 objectForKeyedSubscript:v7];
+  checkCopy = check;
+  refCopy = ref;
+  dictCopy = dict;
+  v10 = [dictCopy objectForKeyedSubscript:checkCopy];
   if (!v10)
   {
     goto LABEL_4;
   }
 
   v11 = v10;
-  v12 = [v9 objectForKeyedSubscript:v7];
+  v12 = [dictCopy objectForKeyedSubscript:checkCopy];
   v13 = [v12 objectForKeyedSubscript:@"TYPE"];
   v14 = [v13 isEqualToString:@"TYPE_STAT"];
 
   if (v14)
   {
-    v15 = [v9 objectForKeyedSubscript:v7];
+    v15 = [dictCopy objectForKeyedSubscript:checkCopy];
     v16 = [v15 objectForKeyedSubscript:@"STAT_ID"];
-    v17 = [v8 containsObject:v16];
+    v17 = [refCopy containsObject:v16];
   }
 
   else
@@ -542,7 +542,7 @@ LABEL_4:
   v5[2] = sub_100011D7C;
   v5[3] = &unk_10009CAD0;
   v6 = &off_1000D2F48;
-  v7 = self;
+  selfCopy = self;
   v8 = &off_1000D2F30;
   LOBYTE(self) = [(TaskingCriteriaRange *)self _checkForWholeCriteriaArray:v5];
 
@@ -550,34 +550,34 @@ LABEL_4:
   return self;
 }
 
-- (BOOL)_elementExistsInStats:(id)a3 statsProvider:(id)a4 forCriteriaDict:(id)a5
+- (BOOL)_elementExistsInStats:(id)stats statsProvider:(id)provider forCriteriaDict:(id)dict
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v9 objectForKeyedSubscript:v7];
-  if (v10 && ([v9 objectForKeyedSubscript:v7], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "objectForKeyedSubscript:", @"TYPE"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", @"TYPE_STAT"), v12, v11, v13))
+  statsCopy = stats;
+  providerCopy = provider;
+  dictCopy = dict;
+  v10 = [dictCopy objectForKeyedSubscript:statsCopy];
+  if (v10 && ([dictCopy objectForKeyedSubscript:statsCopy], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "objectForKeyedSubscript:", @"TYPE"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", @"TYPE_STAT"), v12, v11, v13))
   {
     v14 = [v10 objectForKeyedSubscript:@"STAT_ID"];
-    v15 = [v14 integerValue];
+    integerValue = [v14 integerValue];
 
     v16 = [v10 objectForKeyedSubscript:@"STAT_TIME_DELTA"];
-    v17 = [v16 unsignedIntValue];
+    unsignedIntValue = [v16 unsignedIntValue];
 
     v18 = [v10 objectForKeyedSubscript:@"START_IDX"];
 
     if (v18)
     {
       v19 = [v10 objectForKeyedSubscript:@"START_IDX"];
-      v20 = [v19 unsignedIntValue];
+      unsignedIntValue2 = [v19 unsignedIntValue];
 
       v22 = [v10 objectForKeyedSubscript:@"END_IDX"];
-      v21 = [v22 unsignedIntValue];
+      unsignedIntValue3 = [v22 unsignedIntValue];
 
-      LOBYTE(v22) = [v8 doesStatIdExistOnDeviceForArr:v15 startIdx:v20 endIdx:v21 timeAgo:0];
-      if (v17)
+      LOBYTE(v22) = [providerCopy doesStatIdExistOnDeviceForArr:integerValue startIdx:unsignedIntValue2 endIdx:unsignedIntValue3 timeAgo:0];
+      if (unsignedIntValue)
       {
-        v23 = [v8 doesStatIdExistOnDeviceForArr:v15 startIdx:v20 endIdx:v21 timeAgo:v17];
+        v23 = [providerCopy doesStatIdExistOnDeviceForArr:integerValue startIdx:unsignedIntValue2 endIdx:unsignedIntValue3 timeAgo:unsignedIntValue];
 LABEL_9:
         LOBYTE(v22) = v22 & v23;
       }
@@ -585,10 +585,10 @@ LABEL_9:
 
     else
     {
-      v22 = [v8 doesStatIdExistOnDevice:v15 timeAgo:0];
-      if (v17)
+      v22 = [providerCopy doesStatIdExistOnDevice:integerValue timeAgo:0];
+      if (unsignedIntValue)
       {
-        v23 = [v8 doesStatIdExistOnDevice:v15 timeAgo:v17];
+        v23 = [providerCopy doesStatIdExistOnDevice:integerValue timeAgo:unsignedIntValue];
         goto LABEL_9;
       }
     }
@@ -602,38 +602,38 @@ LABEL_9:
   return v22;
 }
 
-- (BOOL)allStatIdsExistInStatsProvider:(id)a3
+- (BOOL)allStatIdsExistInStatsProvider:(id)provider
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100012164;
   v6[3] = &unk_10009CAD0;
   v7 = &off_1000D2F60;
-  v8 = self;
-  v9 = a3;
-  v3 = v9;
-  v4 = [(TaskingCriteriaRange *)v8 _checkForWholeCriteriaArray:v6];
+  selfCopy = self;
+  providerCopy = provider;
+  v3 = providerCopy;
+  v4 = [(TaskingCriteriaRange *)selfCopy _checkForWholeCriteriaArray:v6];
 
   return v4;
 }
 
-- (BOOL)evaluateCriteriaUsingStatsProvider:(id)a3 doWhiteListCheck:(BOOL)a4
+- (BOOL)evaluateCriteriaUsingStatsProvider:(id)provider doWhiteListCheck:(BOOL)check
 {
-  v4 = a4;
-  v6 = a3;
+  checkCopy = check;
+  providerCopy = provider;
   if (![(TaskingCriteriaRange *)self validateCriteria])
   {
     v9 = [NSException exceptionWithName:@"CriteriaValidationFail" reason:@"Tasking criteria failed basic validation" userInfo:0];
     objc_exception_throw(v9);
   }
 
-  if (v4 && ![(TaskingCriteriaRange *)self passWhiteListCheck])
+  if (checkCopy && ![(TaskingCriteriaRange *)self passWhiteListCheck])
   {
     v11 = [NSException exceptionWithName:@"NonWhitelistedStatsKey" reason:@"Non-whitelisted key exists in tasking information" userInfo:0];
     objc_exception_throw(v11);
   }
 
-  if (![(TaskingCriteriaRange *)self allStatIdsExistInStatsProvider:v6])
+  if (![(TaskingCriteriaRange *)self allStatIdsExistInStatsProvider:providerCopy])
   {
     v10 = [NSException exceptionWithName:@"StatsKeyNotOnDevice" reason:@"Stat key absent from device stats exists in tasking information" userInfo:0];
     objc_exception_throw(v10);
@@ -644,7 +644,7 @@ LABEL_9:
   v12[2] = sub_10001259C;
   v12[3] = &unk_10009CAF8;
   v12[4] = self;
-  v13 = v6;
+  v13 = providerCopy;
   v7 = [(TaskingCriteriaRange *)self _evaluateWholeCriteriaArray:v12];
 
   return v7;

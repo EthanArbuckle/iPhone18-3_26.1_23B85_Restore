@@ -1,41 +1,41 @@
 @interface KNAnimParameterSavedGroup
 - (KNAnimParameterSavedGroup)init;
-- (KNAnimParameterSavedGroup)initWithCoder:(id)a3;
-- (id)parameterForName:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (KNAnimParameterSavedGroup)initWithCoder:(id)coder;
+- (id)parameterForName:(id)name;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation KNAnimParameterSavedGroup
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7 = objc_msgSend_name(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v4, v8, v7, @"nm");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"nm");
 
   v11 = objc_msgSend_version(self, v9, v10);
-  objc_msgSend_encodeObject_forKey_(v4, v12, v11, @"vers");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, v11, @"vers");
 
   v16 = objc_msgSend_parameters(self, v13, v14);
-  objc_msgSend_encodeObject_forKey_(v4, v15, v16, @"params");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v15, v16, @"params");
 }
 
-- (KNAnimParameterSavedGroup)initWithCoder:(id)a3
+- (KNAnimParameterSavedGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = KNAnimParameterSavedGroup;
   v5 = [(KNAnimParameterSavedGroup *)&v32 init];
   if (v5)
   {
     v6 = objc_opt_class();
-    v8 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v7, v6, @"nm");
+    v8 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v7, v6, @"nm");
     v11 = objc_msgSend_copy(v8, v9, v10);
     name = v5->_name;
     v5->_name = v11;
 
     v13 = objc_opt_class();
-    v15 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v14, v13, @"vers");
+    v15 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v14, v13, @"vers");
     v18 = objc_msgSend_copy(v15, v16, v17);
     version = v5->_version;
     v5->_version = v18;
@@ -45,7 +45,7 @@
     v22 = objc_opt_class();
     v23 = objc_opt_class();
     v25 = objc_msgSend_setWithObjects_(v20, v24, v21, v22, v23, 0);
-    v27 = objc_msgSend_decodeObjectOfClasses_forKey_(v4, v26, v25, @"params");
+    v27 = objc_msgSend_decodeObjectOfClasses_forKey_(coderCopy, v26, v25, @"params");
     parameters = v5->_parameters;
     v5->_parameters = v27;
 
@@ -75,11 +75,11 @@
   return v2;
 }
 
-- (id)parameterForName:(id)a3
+- (id)parameterForName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v7 = objc_msgSend_parameters(self, v5, v6);
-  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, v4);
+  v9 = objc_msgSend_objectForKeyedSubscript_(v7, v8, nameCopy);
 
   return v9;
 }

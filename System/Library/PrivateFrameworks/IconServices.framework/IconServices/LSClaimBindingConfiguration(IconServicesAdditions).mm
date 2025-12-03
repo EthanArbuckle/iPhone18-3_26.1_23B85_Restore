@@ -10,7 +10,7 @@
   if (result)
   {
 
-    return [a1 setAddClaimRecordIfMissing:a3];
+    return [self setAddClaimRecordIfMissing:a3];
   }
 
   return result;

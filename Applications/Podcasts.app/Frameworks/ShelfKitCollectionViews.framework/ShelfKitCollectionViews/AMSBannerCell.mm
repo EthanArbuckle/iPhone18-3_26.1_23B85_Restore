@@ -1,17 +1,17 @@
 @interface AMSBannerCell
-- (_TtC23ShelfKitCollectionViews13AMSBannerCell)initWithFrame:(CGRect)a3;
-- (void)messageViewController:(id)a3 didSelectActionWithDialogResult:(id)a4;
-- (void)messageViewController:(id)a3 enqueueEventWithFields:(id)a4 inTopic:(id)a5;
+- (_TtC23ShelfKitCollectionViews13AMSBannerCell)initWithFrame:(CGRect)frame;
+- (void)messageViewController:(id)controller didSelectActionWithDialogResult:(id)result;
+- (void)messageViewController:(id)controller enqueueEventWithFields:(id)fields inTopic:(id)topic;
 @end
 
 @implementation AMSBannerCell
 
-- (_TtC23ShelfKitCollectionViews13AMSBannerCell)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews13AMSBannerCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews13AMSBannerCell_objectGraph) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews13AMSBannerCell_metricsController) = 0;
@@ -22,21 +22,21 @@
   return [(AMSBannerCell *)&v10 initWithFrame:x, y, width, height];
 }
 
-- (void)messageViewController:(id)a3 didSelectActionWithDialogResult:(id)a4
+- (void)messageViewController:(id)controller didSelectActionWithDialogResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_11EC28(v7);
+  controllerCopy = controller;
+  resultCopy = result;
+  selfCopy = self;
+  sub_11EC28(resultCopy);
 }
 
-- (void)messageViewController:(id)a3 enqueueEventWithFields:(id)a4 inTopic:(id)a5
+- (void)messageViewController:(id)controller enqueueEventWithFields:(id)fields inTopic:(id)topic
 {
   v8 = sub_30BF98();
-  if (a5)
+  if (topic)
   {
     v9 = sub_30C0D8();
-    a5 = v10;
+    topic = v10;
   }
 
   else
@@ -44,9 +44,9 @@
     v9 = 0;
   }
 
-  v11 = a3;
-  v12 = self;
-  sub_11EEF0(v8, v9, a5);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_11EEF0(v8, v9, topic);
 }
 
 @end

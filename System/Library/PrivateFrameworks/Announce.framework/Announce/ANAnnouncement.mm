@@ -1,27 +1,27 @@
 @interface ANAnnouncement
-+ (id)messageFromData:(id)a3 data:(id)a4;
-+ (id)messageWithoutDataFromMessage:(id)a3;
-+ (unint64_t)sourceFromString:(id)a3;
++ (id)messageFromData:(id)data data:(id)a4;
++ (id)messageWithoutDataFromMessage:(id)message;
++ (unint64_t)sourceFromString:(id)string;
 - (ANAnnouncement)init;
-- (ANAnnouncement)initWithCoder:(id)a3;
-- (ANAnnouncement)initWithMessage:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)updateWithContentsOfAnnouncement:(id)a3;
+- (ANAnnouncement)initWithCoder:(id)coder;
+- (ANAnnouncement)initWithMessage:(id)message;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)updateWithContentsOfAnnouncement:(id)announcement;
 - (NSData)fileData;
 - (NSDictionary)metadata;
 - (NSString)description;
 - (id)_generateGroupID;
-- (id)_stringForAction:(unint64_t)a3;
-- (id)_stringForDataType:(unint64_t)a3;
-- (id)_uuidFromUUIDs:(id)a3;
+- (id)_stringForAction:(unint64_t)action;
+- (id)_stringForDataType:(unint64_t)type;
+- (id)_uuidFromUUIDs:(id)ds;
 - (id)copy;
 - (id)message;
 - (id)messageForCompanion;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)processAudioTranscription:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)processAudioTranscription:(id)transcription;
 - (void)removeAudioFileDataItems;
-- (void)setCmStartTime:(id *)a3;
+- (void)setCmStartTime:(id *)time;
 @end
 
 @implementation ANAnnouncement
@@ -35,10 +35,10 @@
   if (v2)
   {
     v2->_statusFlags = 0;
-    v4 = [MEMORY[0x277CCAD78] UUID];
-    v5 = [v4 UUIDString];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v3->_identifier;
-    v3->_identifier = v5;
+    v3->_identifier = uUIDString;
 
     v7 = objc_opt_new();
     announcer = v3->_announcer;
@@ -51,9 +51,9 @@
     *&v3->_productType = 0;
     v3->_productTypeOverride = 0;
     v3->_deviceClass = +[ANDevice deviceClass];
-    v10 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     creationTimestamp = v3->_creationTimestamp;
-    v3->_creationTimestamp = v10;
+    v3->_creationTimestamp = date;
 
     v3->_source = 0;
   }
@@ -65,15 +65,15 @@
 {
   v44 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(ANAnnouncement *)self listeners];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  listeners = [(ANAnnouncement *)self listeners];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(listeners, "count")}];
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v6 = [(ANAnnouncement *)self listeners];
-  v7 = [v6 countByEnumeratingWithState:&v38 objects:v43 count:16];
+  listeners2 = [(ANAnnouncement *)self listeners];
+  v7 = [listeners2 countByEnumeratingWithState:&v38 objects:v43 count:16];
   if (v7)
   {
     v8 = v7;
@@ -84,29 +84,29 @@
       {
         if (*v39 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(listeners2);
         }
 
-        v11 = [*(*(&v38 + 1) + 8 * i) info];
-        [v5 addObject:v11];
+        info = [*(*(&v38 + 1) + 8 * i) info];
+        [v5 addObject:info];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v38 objects:v43 count:16];
+      v8 = [listeners2 countByEnumeratingWithState:&v38 objects:v43 count:16];
     }
 
     while (v8);
   }
 
   v12 = MEMORY[0x277CBEB18];
-  v13 = [(ANAnnouncement *)self dataItems];
-  v14 = [v12 arrayWithCapacity:{objc_msgSend(v13, "count")}];
+  dataItems = [(ANAnnouncement *)self dataItems];
+  v14 = [v12 arrayWithCapacity:{objc_msgSend(dataItems, "count")}];
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v15 = [(ANAnnouncement *)self dataItems];
-  v16 = [v15 countByEnumeratingWithState:&v34 objects:v42 count:16];
+  dataItems2 = [(ANAnnouncement *)self dataItems];
+  v16 = [dataItems2 countByEnumeratingWithState:&v34 objects:v42 count:16];
   if (v16)
   {
     v17 = v16;
@@ -117,14 +117,14 @@
       {
         if (*v35 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(dataItems2);
         }
 
-        v20 = [*(*(&v34 + 1) + 8 * j) info];
-        [v14 addObject:v20];
+        info2 = [*(*(&v34 + 1) + 8 * j) info];
+        [v14 addObject:info2];
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v34 objects:v42 count:16];
+      v17 = [dataItems2 countByEnumeratingWithState:&v34 objects:v42 count:16];
     }
 
     while (v17);
@@ -133,8 +133,8 @@
   v21 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v21 setObject:self->_messageVersion forKeyedSubscript:@"MessageVersion"];
   [v21 setObject:self->_filePath forKeyedSubscript:@"File"];
-  v22 = [(ANParticipant *)self->_announcer info];
-  [v21 setObject:v22 forKeyedSubscript:@"Announcer"];
+  info3 = [(ANParticipant *)self->_announcer info];
+  [v21 setObject:info3 forKeyedSubscript:@"Announcer"];
 
   [v21 setObject:v5 forKeyedSubscript:@"Listeners"];
   [v21 setObject:self->_playbackDeadline forKeyedSubscript:@"PlaybackDeadline"];
@@ -144,8 +144,8 @@
   [v21 setObject:self->_identifier forKeyedSubscript:@"AnnouncementID"];
   [v21 setObject:self->_groupID forKeyedSubscript:@"GroupID"];
   [v21 setObject:self->_sender forKeyedSubscript:@"Sender"];
-  v24 = [(ANLocation *)self->_location message];
-  [v21 setObject:v24 forKeyedSubscript:@"Location"];
+  message = [(ANLocation *)self->_location message];
+  [v21 setObject:message forKeyedSubscript:@"Location"];
 
   v25 = [MEMORY[0x277CCABB0] numberWithLong:*&self->_productType];
   [v21 setObject:v25 forKeyedSubscript:@"ProductType"];
@@ -174,25 +174,25 @@
   return v31;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  v6 = [v4 identifier];
-  if (!v6)
+  identifier = [equalCopy identifier];
+  if (!identifier)
   {
     goto LABEL_5;
   }
 
-  v7 = v6;
-  v8 = [(ANAnnouncement *)self identifier];
-  v9 = [v5 identifier];
-  v10 = [v8 isEqual:v9];
+  v7 = identifier;
+  identifier2 = [(ANAnnouncement *)self identifier];
+  identifier3 = [v5 identifier];
+  v10 = [identifier2 isEqual:identifier3];
 
   if (v10)
   {
@@ -210,8 +210,8 @@ LABEL_5:
 
 - (unint64_t)hash
 {
-  v2 = [(ANAnnouncement *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(ANAnnouncement *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -219,51 +219,51 @@ LABEL_5:
 - (id)copy
 {
   v3 = objc_opt_new();
-  v4 = [(ANAnnouncement *)self identifier];
+  identifier = [(ANAnnouncement *)self identifier];
   v5 = v3[2];
-  v3[2] = v4;
+  v3[2] = identifier;
 
-  v6 = [(ANAnnouncement *)self messageVersion];
-  [v3 setMessageVersion:v6];
+  messageVersion = [(ANAnnouncement *)self messageVersion];
+  [v3 setMessageVersion:messageVersion];
 
-  v7 = [(ANAnnouncement *)self announcer];
-  v8 = [v7 copy];
+  announcer = [(ANAnnouncement *)self announcer];
+  v8 = [announcer copy];
   [v3 setAnnouncer:v8];
 
-  v9 = [(ANAnnouncement *)self listeners];
-  v10 = [v9 copy];
+  listeners = [(ANAnnouncement *)self listeners];
+  v10 = [listeners copy];
   [v3 setListeners:v10];
 
-  v11 = [(ANAnnouncement *)self playbackDeadline];
-  [v3 setPlaybackDeadline:v11];
+  playbackDeadline = [(ANAnnouncement *)self playbackDeadline];
+  [v3 setPlaybackDeadline:playbackDeadline];
 
   [v3 setAction:{-[ANAnnouncement action](self, "action")}];
-  v12 = [(ANAnnouncement *)self groupID];
+  groupID = [(ANAnnouncement *)self groupID];
   v13 = v3[3];
-  v3[3] = v12;
+  v3[3] = groupID;
 
   [v3 setProductType:{-[ANAnnouncement productType](self, "productType")}];
   [v3 setProductTypeOverride:{-[ANAnnouncement productTypeOverride](self, "productTypeOverride")}];
   [v3 setDeviceClass:{-[ANAnnouncement deviceClass](self, "deviceClass")}];
-  v14 = [(ANAnnouncement *)self location];
-  v15 = [v14 copy];
+  location = [(ANAnnouncement *)self location];
+  v15 = [location copy];
   [v3 setLocation:v15];
 
-  v16 = [(ANAnnouncement *)self transcriptionText];
-  [v3 setTranscriptionText:v16];
+  transcriptionText = [(ANAnnouncement *)self transcriptionText];
+  [v3 setTranscriptionText:transcriptionText];
 
-  v17 = [(ANAnnouncement *)self dataItems];
-  v18 = [v17 copy];
+  dataItems = [(ANAnnouncement *)self dataItems];
+  v18 = [dataItems copy];
   [v3 setDataItems:v18];
 
-  v19 = [(ANAnnouncement *)self creationTimestamp];
-  v20 = [v19 copy];
+  creationTimestamp = [(ANAnnouncement *)self creationTimestamp];
+  v20 = [creationTimestamp copy];
   [v3 setCreationTimestamp:v20];
 
   [v3 setSource:{-[ANAnnouncement source](self, "source")}];
-  v21 = [(ANAnnouncement *)self receiptTimestamp];
+  receiptTimestamp = [(ANAnnouncement *)self receiptTimestamp];
   v22 = v3[18];
-  v3[18] = v21;
+  v3[18] = receiptTimestamp;
 
   [(ANAnnouncement *)self cmStartTime];
   v24 = v26;
@@ -280,30 +280,30 @@ LABEL_5:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(ANAnnouncement *)self dataItems];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
-  if (v3)
+  dataItems = [(ANAnnouncement *)self dataItems];
+  data = [dataItems countByEnumeratingWithState:&v9 objects:v13 count:16];
+  if (data)
   {
     v4 = *v10;
     while (2)
     {
-      for (i = 0; i != v3; i = i + 1)
+      for (i = 0; i != data; i = i + 1)
       {
         if (*v10 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(dataItems);
         }
 
         v6 = *(*(&v9 + 1) + 8 * i);
         if ([v6 type] == 1)
         {
-          v3 = [v6 data];
+          data = [v6 data];
           goto LABEL_11;
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
-      if (v3)
+      data = [dataItems countByEnumeratingWithState:&v9 objects:v13 count:16];
+      if (data)
       {
         continue;
       }
@@ -316,15 +316,15 @@ LABEL_11:
 
   v7 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return data;
 }
 
-- (BOOL)updateWithContentsOfAnnouncement:(id)a3
+- (BOOL)updateWithContentsOfAnnouncement:(id)announcement
 {
-  v7 = a3;
-  v8 = [(ANAnnouncement *)self announcer];
-  v9 = [v8 homeKitID];
-  if (v9 && (-[ANAnnouncement announcer](self, "announcer"), v4 = objc_claimAutoreleasedReturnValue(), [v4 homeKitID], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "length")))
+  announcementCopy = announcement;
+  announcer = [(ANAnnouncement *)self announcer];
+  homeKitID = [announcer homeKitID];
+  if (homeKitID && (-[ANAnnouncement announcer](self, "announcer"), announcer3 = objc_claimAutoreleasedReturnValue(), [announcer3 homeKitID], v3 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v3, "length")))
   {
 
     v10 = 0;
@@ -332,34 +332,34 @@ LABEL_11:
 
   else
   {
-    v11 = [v7 announcer];
-    v5 = [v11 homeKitID];
+    announcer2 = [announcementCopy announcer];
+    homeKitID2 = [announcer2 homeKitID];
 
-    if (v9)
+    if (homeKitID)
     {
     }
 
-    if (!v5)
+    if (!homeKitID2)
     {
       v10 = 0;
       goto LABEL_10;
     }
 
-    v8 = [v7 announcer];
-    v9 = [v8 homeKitID];
-    v4 = [(ANAnnouncement *)self announcer];
-    [v4 setHomeKitID:v9];
+    announcer = [announcementCopy announcer];
+    homeKitID = [announcer homeKitID];
+    announcer3 = [(ANAnnouncement *)self announcer];
+    [announcer3 setHomeKitID:homeKitID];
     v10 = 1;
   }
 
 LABEL_10:
-  v12 = [(ANAnnouncement *)self announcer];
-  v13 = [v12 userID];
-  if (v13)
+  announcer4 = [(ANAnnouncement *)self announcer];
+  userID = [announcer4 userID];
+  if (userID)
   {
-    v4 = [(ANAnnouncement *)self announcer];
-    v5 = [v4 userID];
-    if ([v5 length])
+    announcer3 = [(ANAnnouncement *)self announcer];
+    homeKitID2 = [announcer3 userID];
+    if ([homeKitID2 length])
     {
 
 LABEL_17:
@@ -367,29 +367,29 @@ LABEL_17:
     }
   }
 
-  v14 = [v7 announcer];
-  v15 = [v14 userID];
+  announcer5 = [announcementCopy announcer];
+  userID2 = [announcer5 userID];
 
-  if (v13)
+  if (userID)
   {
   }
 
-  if (v15)
+  if (userID2)
   {
-    v12 = [v7 announcer];
-    v13 = [v12 userID];
-    v4 = [(ANAnnouncement *)self announcer];
-    [v4 setUserID:v13];
+    announcer4 = [announcementCopy announcer];
+    userID = [announcer4 userID];
+    announcer3 = [(ANAnnouncement *)self announcer];
+    [announcer3 setUserID:userID];
     v10 = 1;
     goto LABEL_17;
   }
 
 LABEL_18:
-  v16 = [(ANAnnouncement *)self transcriptionText];
-  if (v16)
+  transcriptionText = [(ANAnnouncement *)self transcriptionText];
+  if (transcriptionText)
   {
-    v13 = [(ANAnnouncement *)self transcriptionText];
-    if ([v13 length])
+    userID = [(ANAnnouncement *)self transcriptionText];
+    if ([userID length])
     {
 
 LABEL_25:
@@ -397,28 +397,28 @@ LABEL_25:
     }
   }
 
-  v4 = [v7 transcriptionText];
+  announcer3 = [announcementCopy transcriptionText];
 
-  if (v16)
+  if (transcriptionText)
   {
   }
 
-  if (v4)
+  if (announcer3)
   {
-    v16 = [v7 transcriptionText];
-    [(ANAnnouncement *)self setTranscriptionText:v16];
+    transcriptionText = [announcementCopy transcriptionText];
+    [(ANAnnouncement *)self setTranscriptionText:transcriptionText];
     v10 = 1;
     goto LABEL_25;
   }
 
 LABEL_26:
-  v17 = [(ANAnnouncement *)self announcer];
-  v18 = [v17 name];
-  if (v18)
+  announcer6 = [(ANAnnouncement *)self announcer];
+  name = [announcer6 name];
+  if (name)
   {
-    v4 = [(ANAnnouncement *)self announcer];
-    v5 = [v4 name];
-    if ([v5 length])
+    announcer3 = [(ANAnnouncement *)self announcer];
+    homeKitID2 = [announcer3 name];
+    if ([homeKitID2 length])
     {
 
 LABEL_33:
@@ -426,19 +426,19 @@ LABEL_33:
     }
   }
 
-  v19 = [v7 announcer];
-  v20 = [v19 name];
+  announcer7 = [announcementCopy announcer];
+  name2 = [announcer7 name];
 
-  if (v18)
+  if (name)
   {
   }
 
-  if (v20)
+  if (name2)
   {
-    v17 = [v7 announcer];
-    v18 = [v17 name];
-    v4 = [(ANAnnouncement *)self announcer];
-    [v4 setName:v18];
+    announcer6 = [announcementCopy announcer];
+    name = [announcer6 name];
+    announcer3 = [(ANAnnouncement *)self announcer];
+    [announcer3 setName:name];
     v10 = 1;
     goto LABEL_33;
   }
@@ -451,15 +451,15 @@ LABEL_34:
 - (void)removeAudioFileDataItems
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(ANAnnouncement *)self dataItems];
-  v4 = [v3 mutableCopy];
+  dataItems = [(ANAnnouncement *)self dataItems];
+  v4 = [dataItems mutableCopy];
 
   v15 = 0u;
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(ANAnnouncement *)self dataItems];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  dataItems2 = [(ANAnnouncement *)self dataItems];
+  v6 = [dataItems2 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -470,7 +470,7 @@ LABEL_34:
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(dataItems2);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
@@ -480,7 +480,7 @@ LABEL_34:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [dataItems2 countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -492,50 +492,50 @@ LABEL_34:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (unint64_t)sourceFromString:(id)a3
++ (unint64_t)sourceFromString:(id)string
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"com.apple.siri.SiriAnnounceExtensions.AnnounceIntentExtension"])
+  stringCopy = string;
+  if ([stringCopy isEqualToString:@"com.apple.siri.SiriAnnounceExtensions.AnnounceIntentExtension"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.Home"])
+  else if ([stringCopy isEqualToString:@"com.apple.Home"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.NanoHome"])
+  else if ([stringCopy isEqualToString:@"com.apple.NanoHome"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.assistant.assistantd"])
+  else if ([stringCopy isEqualToString:@"com.apple.assistant.assistantd"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.SoundBoard"])
+  else if ([stringCopy isEqualToString:@"com.apple.SoundBoard"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.SiriHeadlessService"])
+  else if ([stringCopy isEqualToString:@"com.apple.SiriHeadlessService"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.Home.HomeUtilNotification"])
+  else if ([stringCopy isEqualToString:@"com.apple.Home.HomeUtilNotification"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.Home.HomeControlService"])
+  else if ([stringCopy isEqualToString:@"com.apple.Home.HomeControlService"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"com.apple.homehubd"])
+  else if ([stringCopy isEqualToString:@"com.apple.homehubd"])
   {
     v4 = 9;
   }
@@ -548,10 +548,10 @@ LABEL_34:
   return v4;
 }
 
-- (ANAnnouncement)initWithMessage:(id)a3
+- (ANAnnouncement)initWithMessage:(id)message
 {
   v62 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v60.receiver = self;
   v60.super_class = ANAnnouncement;
   v5 = [(ANAnnouncement *)&v60 init];
@@ -562,26 +562,26 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"MessageVersion"];
+  v6 = [messageCopy objectForKeyedSubscript:@"MessageVersion"];
   v7 = v6;
   if (v6 && [v6 isEqualToString:@"1.0"])
   {
     objc_storeStrong(&v5->_messageVersion, v7);
-    v8 = [v4 objectForKeyedSubscript:@"Action"];
+    v8 = [messageCopy objectForKeyedSubscript:@"Action"];
     v9 = v8;
     if (v8)
     {
       v5->_action = [v8 unsignedIntegerValue];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"ProductType"];
+    v10 = [messageCopy objectForKeyedSubscript:@"ProductType"];
     v11 = v10;
     if (v10)
     {
       *&v5->_productType = [v10 unsignedIntValue];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"ProductTypeOverride"];
+    v12 = [messageCopy objectForKeyedSubscript:@"ProductTypeOverride"];
     v13 = v12;
     if (v12)
     {
@@ -591,7 +591,7 @@ LABEL_28:
     v53 = v13;
     v54 = v11;
     v55 = v9;
-    v14 = [v4 objectForKeyedSubscript:@"DeviceClass"];
+    v14 = [messageCopy objectForKeyedSubscript:@"DeviceClass"];
     v15 = v14;
     if (v14)
     {
@@ -599,24 +599,24 @@ LABEL_28:
     }
 
     v52 = v15;
-    v16 = [v4 objectForKeyedSubscript:@"PlaybackDeadline"];
+    v16 = [messageCopy objectForKeyedSubscript:@"PlaybackDeadline"];
     playbackDeadline = v5->_playbackDeadline;
     v5->_playbackDeadline = v16;
 
-    v18 = [v4 objectForKeyedSubscript:@"AnnouncementID"];
+    v18 = [messageCopy objectForKeyedSubscript:@"AnnouncementID"];
     identifier = v5->_identifier;
     v5->_identifier = v18;
 
-    v20 = [v4 objectForKeyedSubscript:@"GroupID"];
+    v20 = [messageCopy objectForKeyedSubscript:@"GroupID"];
     groupID = v5->_groupID;
     v5->_groupID = v20;
 
-    v51 = [v4 objectForKeyedSubscript:@"Announcer"];
+    v51 = [messageCopy objectForKeyedSubscript:@"Announcer"];
     v22 = [[ANParticipant alloc] initWithMessage:v51];
     announcer = v5->_announcer;
     v5->_announcer = v22;
 
-    v24 = [v4 objectForKeyedSubscript:@"Listeners"];
+    v24 = [messageCopy objectForKeyedSubscript:@"Listeners"];
     v25 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v24, "count")}];
     v56 = 0u;
     v57 = 0u;
@@ -652,41 +652,41 @@ LABEL_28:
       objc_storeStrong(&v5->_listeners, v25);
     }
 
-    v32 = [v4 objectForKeyedSubscript:@"Location"];
+    v32 = [messageCopy objectForKeyedSubscript:@"Location"];
     v33 = [[ANLocation alloc] initWithMessage:v32];
     location = v5->_location;
     v5->_location = v33;
 
-    v35 = [v4 objectForKeyedSubscript:@"DataItems"];
+    v35 = [messageCopy objectForKeyedSubscript:@"DataItems"];
     v36 = [ANAnnouncementDataItem strictSecureDecodeFromData:v35];
     dataItems = v5->_dataItems;
     v5->_dataItems = v36;
 
-    v38 = [v4 objectForKeyedSubscript:@"File"];
+    v38 = [messageCopy objectForKeyedSubscript:@"File"];
     filePath = v5->_filePath;
     v5->_filePath = v38;
 
-    v40 = [v4 objectForKeyedSubscript:@"CreationTimestamp"];
+    v40 = [messageCopy objectForKeyedSubscript:@"CreationTimestamp"];
     creationTimestamp = v5->_creationTimestamp;
     v5->_creationTimestamp = v40;
 
-    v42 = [v4 objectForKeyedSubscript:@"ReceiptTimestamp"];
+    v42 = [messageCopy objectForKeyedSubscript:@"ReceiptTimestamp"];
     v43 = v42;
     if (v42)
     {
-      v44 = v42;
+      date = v42;
     }
 
     else
     {
-      v44 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
     receiptTimestamp = v5->_receiptTimestamp;
-    v5->_receiptTimestamp = v44;
+    v5->_receiptTimestamp = date;
 
     v5->_statusFlags = 0;
-    v47 = [v4 objectForKeyedSubscript:@"Source"];
+    v47 = [messageCopy objectForKeyedSubscript:@"Source"];
     v48 = v47;
     if (v47)
     {
@@ -706,9 +706,9 @@ LABEL_29:
 - (id)message
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = [(ANAnnouncement *)self _generateGroupID];
+  _generateGroupID = [(ANAnnouncement *)self _generateGroupID];
   groupID = self->_groupID;
-  self->_groupID = v3;
+  self->_groupID = _generateGroupID;
 
   dataItems = self->_dataItems;
   v22 = 0;
@@ -719,11 +719,11 @@ LABEL_29:
     v8 = ANLogHandleAnnouncement();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      v9 = [(ANAnnouncement *)self identifier];
+      identifier = [(ANAnnouncement *)self identifier];
       *buf = 138412546;
       v24 = &stru_2836DAA20;
       v25 = 2112;
-      v26 = v9;
+      v26 = identifier;
       _os_log_impl(&dword_2237C8000, v8, OS_LOG_TYPE_ERROR, "%@Failed to archive data for Announcement %@", buf, 0x16u);
     }
   }
@@ -731,16 +731,16 @@ LABEL_29:
   v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
   [v10 setObject:self->_messageVersion forKeyedSubscript:@"MessageVersion"];
   [v10 setObject:v6 forKeyedSubscript:@"DataItems"];
-  v11 = [(ANParticipant *)self->_announcer message];
-  [v10 setObject:v11 forKeyedSubscript:@"Announcer"];
+  message = [(ANParticipant *)self->_announcer message];
+  [v10 setObject:message forKeyedSubscript:@"Announcer"];
 
   [v10 setObject:self->_playbackDeadline forKeyedSubscript:@"PlaybackDeadline"];
   v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_action];
   [v10 setObject:v12 forKeyedSubscript:@"Action"];
 
   [v10 setObject:self->_identifier forKeyedSubscript:@"AnnouncementID"];
-  v13 = [(ANAnnouncement *)self groupID];
-  [v10 setObject:v13 forKeyedSubscript:@"GroupID"];
+  groupID = [(ANAnnouncement *)self groupID];
+  [v10 setObject:groupID forKeyedSubscript:@"GroupID"];
 
   v14 = [MEMORY[0x277CCABB0] numberWithLong:*&self->_productType];
   [v10 setObject:v14 forKeyedSubscript:@"ProductType"];
@@ -751,8 +751,8 @@ LABEL_29:
   v16 = [MEMORY[0x277CCABB0] numberWithInt:self->_deviceClass];
   [v10 setObject:v16 forKeyedSubscript:@"DeviceClass"];
 
-  v17 = [(ANLocation *)self->_location message];
-  [v10 setObject:v17 forKeyedSubscript:@"Location"];
+  message2 = [(ANLocation *)self->_location message];
+  [v10 setObject:message2 forKeyedSubscript:@"Location"];
 
   [v10 setObject:self->_transcriptionText forKeyedSubscript:@"AudioTranscription"];
   [v10 setObject:self->_creationTimestamp forKeyedSubscript:@"CreationTimestamp"];
@@ -768,11 +768,11 @@ LABEL_29:
 - (id)messageForCompanion
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = [(ANAnnouncement *)self message];
-  v5 = [v3 dictionaryWithDictionary:v4];
+  message = [(ANAnnouncement *)self message];
+  v5 = [v3 dictionaryWithDictionary:message];
 
-  v6 = [(ANParticipant *)self->_announcer messageForCompanion];
-  [v5 setObject:v6 forKeyedSubscript:@"Announcer"];
+  messageForCompanion = [(ANParticipant *)self->_announcer messageForCompanion];
+  [v5 setObject:messageForCompanion forKeyedSubscript:@"Announcer"];
 
   v7 = [v5 copy];
 
@@ -782,8 +782,8 @@ LABEL_29:
 - (NSDictionary)metadata
 {
   v3 = MEMORY[0x277CBEB38];
-  v4 = [(ANAnnouncement *)self message];
-  v5 = [v3 dictionaryWithDictionary:v4];
+  message = [(ANAnnouncement *)self message];
+  v5 = [v3 dictionaryWithDictionary:message];
 
   [v5 setObject:self->_filePath forKeyedSubscript:@"File"];
   [v5 setObject:self->_receiptTimestamp forKeyedSubscript:@"ReceiptTimestamp"];
@@ -793,19 +793,19 @@ LABEL_29:
   return v6;
 }
 
-+ (id)messageWithoutDataFromMessage:(id)a3
++ (id)messageWithoutDataFromMessage:(id)message
 {
-  v3 = [a3 mutableCopy];
+  v3 = [message mutableCopy];
   [v3 setObject:0 forKeyedSubscript:@"DataItems"];
   v4 = [v3 copy];
 
   return v4;
 }
 
-+ (id)messageFromData:(id)a3 data:(id)a4
++ (id)messageFromData:(id)data data:(id)a4
 {
   v5 = a4;
-  v6 = [a3 mutableCopy];
+  v6 = [data mutableCopy];
   [v6 setObject:v5 forKeyedSubscript:@"DataItems"];
 
   v7 = [v6 copy];
@@ -813,60 +813,60 @@ LABEL_29:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   messageVersion = self->_messageVersion;
-  v5 = a3;
-  [v5 encodeObject:messageVersion forKey:@"MessageVersion"];
-  [v5 encodeObject:self->_filePath forKey:@"File"];
-  [v5 encodeObject:self->_announcer forKey:@"Announcer"];
-  [v5 encodeObject:self->_listeners forKey:@"Listeners"];
-  [v5 encodeObject:self->_playbackDeadline forKey:@"PlaybackDeadline"];
+  coderCopy = coder;
+  [coderCopy encodeObject:messageVersion forKey:@"MessageVersion"];
+  [coderCopy encodeObject:self->_filePath forKey:@"File"];
+  [coderCopy encodeObject:self->_announcer forKey:@"Announcer"];
+  [coderCopy encodeObject:self->_listeners forKey:@"Listeners"];
+  [coderCopy encodeObject:self->_playbackDeadline forKey:@"PlaybackDeadline"];
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_action];
-  [v5 encodeObject:v6 forKey:@"Action"];
+  [coderCopy encodeObject:v6 forKey:@"Action"];
 
-  [v5 encodeObject:self->_identifier forKey:@"AnnouncementID"];
-  [v5 encodeObject:self->_groupID forKey:@"GroupID"];
-  [v5 encodeObject:self->_sender forKey:@"Sender"];
-  [v5 encodeObject:self->_location forKey:@"Location"];
+  [coderCopy encodeObject:self->_identifier forKey:@"AnnouncementID"];
+  [coderCopy encodeObject:self->_groupID forKey:@"GroupID"];
+  [coderCopy encodeObject:self->_sender forKey:@"Sender"];
+  [coderCopy encodeObject:self->_location forKey:@"Location"];
   v7 = [MEMORY[0x277CCABB0] numberWithLong:*&self->_productType];
-  [v5 encodeObject:v7 forKey:@"ProductType"];
+  [coderCopy encodeObject:v7 forKey:@"ProductType"];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_productTypeOverride];
-  [v5 encodeObject:v8 forKey:@"ProductTypeOverride"];
+  [coderCopy encodeObject:v8 forKey:@"ProductTypeOverride"];
 
   v9 = [MEMORY[0x277CCABB0] numberWithInt:self->_deviceClass];
-  [v5 encodeObject:v9 forKey:@"DeviceClass"];
+  [coderCopy encodeObject:v9 forKey:@"DeviceClass"];
 
-  [v5 encodeObject:self->_transcriptionText forKey:@"AudioTranscription"];
+  [coderCopy encodeObject:self->_transcriptionText forKey:@"AudioTranscription"];
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_statusFlags];
-  [v5 encodeObject:v10 forKey:@"StatusFlags"];
+  [coderCopy encodeObject:v10 forKey:@"StatusFlags"];
 
-  [v5 encodeObject:self->_dataItems forKey:@"DataItems"];
+  [coderCopy encodeObject:self->_dataItems forKey:@"DataItems"];
   v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:self->_source];
-  [v5 encodeObject:v11 forKey:@"Source"];
+  [coderCopy encodeObject:v11 forKey:@"Source"];
 }
 
-- (ANAnnouncement)initWithCoder:(id)a3
+- (ANAnnouncement)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v48.receiver = self;
   v48.super_class = ANAnnouncement;
   v5 = [(ANAnnouncement *)&v48 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MessageVersion"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MessageVersion"];
     messageVersion = v5->_messageVersion;
     v5->_messageVersion = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Action"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Action"];
     v9 = v8;
     if (v8)
     {
       v5->_action = [v8 unsignedIntegerValue];
     }
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProductType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProductType"];
     v11 = v10;
     if (v10)
     {
@@ -874,60 +874,60 @@ LABEL_29:
     }
 
     v47 = v11;
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ProductTypeOverride"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ProductTypeOverride"];
     v13 = v12;
     if (v12)
     {
       v5->_productTypeOverride = [v12 unsignedIntegerValue];
     }
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DeviceClass"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DeviceClass"];
     v15 = v14;
     if (v14)
     {
       v5->_deviceClass = [v14 integerValue];
     }
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"StatusFlags"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"StatusFlags"];
     v17 = v16;
     if (v16)
     {
       v5->_statusFlags = [v16 integerValue];
     }
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PlaybackDeadline"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PlaybackDeadline"];
     playbackDeadline = v5->_playbackDeadline;
     v5->_playbackDeadline = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"File"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"File"];
     filePath = v5->_filePath;
     v5->_filePath = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AnnouncementID"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AnnouncementID"];
     identifier = v5->_identifier;
     v5->_identifier = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"GroupID"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"GroupID"];
     groupID = v5->_groupID;
     v5->_groupID = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Announcer"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Announcer"];
     announcer = v5->_announcer;
     v5->_announcer = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Location"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Location"];
     location = v5->_location;
     v5->_location = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Sender"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Sender"];
     sender = v5->_sender;
     v5->_sender = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AudioTranscription"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AudioTranscription"];
     transcriptionText = v5->_transcriptionText;
     v5->_transcriptionText = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Source"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Source"];
     v35 = v34;
     if (v34)
     {
@@ -937,14 +937,14 @@ LABEL_29:
     v36 = MEMORY[0x277CBEB98];
     v37 = objc_opt_class();
     v38 = [v36 setWithObjects:{v37, objc_opt_class(), 0}];
-    v39 = [v4 decodeObjectOfClasses:v38 forKey:@"Listeners"];
+    v39 = [coderCopy decodeObjectOfClasses:v38 forKey:@"Listeners"];
     listeners = v5->_listeners;
     v5->_listeners = v39;
 
     v41 = MEMORY[0x277CBEB98];
     v42 = objc_opt_class();
     v43 = [v41 setWithObjects:{v42, objc_opt_class(), 0}];
-    v44 = [v4 decodeObjectOfClasses:v43 forKey:@"DataItems"];
+    v44 = [coderCopy decodeObjectOfClasses:v43 forKey:@"DataItems"];
     dataItems = v5->_dataItems;
     v5->_dataItems = v44;
   }
@@ -952,75 +952,75 @@ LABEL_29:
   return v5;
 }
 
-- (id)_stringForAction:(unint64_t)a3
+- (id)_stringForAction:(unint64_t)action
 {
-  if (a3 > 5)
+  if (action > 5)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2784E1CE0[a3];
+    return off_2784E1CE0[action];
   }
 }
 
-- (id)_stringForDataType:(unint64_t)a3
+- (id)_stringForDataType:(unint64_t)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2784E1D10[a3];
+    return off_2784E1D10[type];
   }
 }
 
 - (id)_generateGroupID
 {
   v3 = objc_opt_new();
-  v4 = [(ANAnnouncement *)self location];
-  v5 = [v4 homeUUID];
+  location = [(ANAnnouncement *)self location];
+  homeUUID = [location homeUUID];
 
-  if (v5)
+  if (homeUUID)
   {
-    [v3 addObject:v5];
+    [v3 addObject:homeUUID];
   }
 
-  v6 = [(ANAnnouncement *)self location];
-  v7 = [v6 zoneUUIDs];
+  location2 = [(ANAnnouncement *)self location];
+  zoneUUIDs = [location2 zoneUUIDs];
 
-  if (v7)
+  if (zoneUUIDs)
   {
-    [v3 addObjectsFromArray:v7];
+    [v3 addObjectsFromArray:zoneUUIDs];
   }
 
-  v8 = [(ANAnnouncement *)self location];
-  v9 = [v8 roomUUIDs];
+  location3 = [(ANAnnouncement *)self location];
+  roomUUIDs = [location3 roomUUIDs];
 
-  if (v9)
+  if (roomUUIDs)
   {
-    [v3 addObjectsFromArray:v9];
+    [v3 addObjectsFromArray:roomUUIDs];
   }
 
   v10 = [(ANAnnouncement *)self _uuidFromUUIDs:v3];
-  v11 = [v10 UUIDString];
+  uUIDString = [v10 UUIDString];
 
-  return v11;
+  return uUIDString;
 }
 
-- (id)_uuidFromUUIDs:(id)a3
+- (id)_uuidFromUUIDs:(id)ds
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dsCopy = ds;
   v18 = 0uLL;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v17 count:16];
+  v4 = [dsCopy countByEnumeratingWithState:&v12 objects:v17 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1031,7 +1031,7 @@ LABEL_29:
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(dsCopy);
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
@@ -1040,7 +1040,7 @@ LABEL_29:
         v18 = veorq_s8(v18, v16);
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v17 count:16];
+      v5 = [dsCopy countByEnumeratingWithState:&v12 objects:v17 count:16];
     }
 
     while (v5);
@@ -1053,10 +1053,10 @@ LABEL_29:
   return v9;
 }
 
-- (void)processAudioTranscription:(id)a3
+- (void)processAudioTranscription:(id)transcription
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transcriptionCopy = transcription;
   if (processAudioTranscription__onceToken != -1)
   {
     [ANAnnouncement processAudioTranscription:];
@@ -1066,8 +1066,8 @@ LABEL_29:
   {
     v5 = objc_alloc(MEMORY[0x277CDCF08]);
     v6 = MEMORY[0x277CBEBC0];
-    v7 = [(ANAnnouncement *)self filePath];
-    v8 = [v6 fileURLWithPath:v7];
+    filePath = [(ANAnnouncement *)self filePath];
+    v8 = [v6 fileURLWithPath:filePath];
     v9 = [v5 initWithURL:v8];
 
     [v9 setRequiresOnDeviceRecognition:1];
@@ -1078,7 +1078,7 @@ LABEL_29:
     v14[2] = __44__ANAnnouncement_processAudioTranscription___block_invoke_115;
     v14[3] = &unk_2784E1CC0;
     v14[4] = self;
-    v15 = v4;
+    v15 = transcriptionCopy;
     v11 = [v10 recognitionTaskWithRequest:v9 resultHandler:v14];
   }
 
@@ -1092,9 +1092,9 @@ LABEL_29:
       _os_log_impl(&dword_2237C8000, v12, OS_LOG_TYPE_DEFAULT, "%@On device recognition not available, not processing", buf, 0xCu);
     }
 
-    if (v4)
+    if (transcriptionCopy)
     {
-      (*(v4 + 2))(v4, 0);
+      (*(transcriptionCopy + 2))(transcriptionCopy, 0);
     }
   }
 
@@ -1167,10 +1167,10 @@ void __44__ANAnnouncement_processAudioTranscription___block_invoke_115(uint64_t 
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setCmStartTime:(id *)a3
+- (void)setCmStartTime:(id *)time
 {
-  v3 = *&a3->var0;
-  self->_cmStartTime.epoch = a3->var3;
+  v3 = *&time->var0;
+  self->_cmStartTime.epoch = time->var3;
   *&self->_cmStartTime.value = v3;
 }
 

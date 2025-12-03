@@ -1,14 +1,14 @@
 @interface TransferPosterViewModel
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TransferPosterViewModel
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  TransferPosterViewModel.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  TransferPosterViewModel.encode(with:)(coderCopy);
 }
 
 @end

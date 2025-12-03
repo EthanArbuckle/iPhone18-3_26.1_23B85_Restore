@@ -1,7 +1,7 @@
 @interface ICPushNotificationsEnableTypesRequest
-- (ICPushNotificationsEnableTypesRequest)initWithRequestContext:(id)a3 notificationType:(id)a4 notificationParameters:(id)a5;
+- (ICPushNotificationsEnableTypesRequest)initWithRequestContext:(id)context notificationType:(id)type notificationParameters:(id)parameters;
 - (void)execute;
-- (void)performRequestWithResponseHandler:(id)a3;
+- (void)performRequestWithResponseHandler:(id)handler;
 @end
 
 @implementation ICPushNotificationsEnableTypesRequest
@@ -15,7 +15,7 @@
     notificationType = self->_notificationType;
     notificationParams = self->_notificationParams;
     *buf = 138543874;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
     v12 = notificationType;
     v13 = 2114;
@@ -158,16 +158,16 @@ void __48__ICPushNotificationsEnableTypesRequest_execute__block_invoke_21(uint64
   [*(a1 + 32) finishWithError:v5];
 }
 
-- (void)performRequestWithResponseHandler:(id)a3
+- (void)performRequestWithResponseHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __75__ICPushNotificationsEnableTypesRequest_performRequestWithResponseHandler___block_invoke;
   v6[3] = &unk_1E7BFA490;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(ICRequestOperation *)self performRequestWithCompletionHandler:v6];
 }
 
@@ -182,25 +182,25 @@ uint64_t __75__ICPushNotificationsEnableTypesRequest_performRequestWithResponseH
   return result;
 }
 
-- (ICPushNotificationsEnableTypesRequest)initWithRequestContext:(id)a3 notificationType:(id)a4 notificationParameters:(id)a5
+- (ICPushNotificationsEnableTypesRequest)initWithRequestContext:(id)context notificationType:(id)type notificationParameters:(id)parameters
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  typeCopy = type;
+  parametersCopy = parameters;
   v19.receiver = self;
   v19.super_class = ICPushNotificationsEnableTypesRequest;
   v11 = [(ICRequestOperation *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [contextCopy copy];
     requestContext = v11->_requestContext;
     v11->_requestContext = v12;
 
-    v14 = [v9 copy];
+    v14 = [typeCopy copy];
     notificationType = v11->_notificationType;
     v11->_notificationType = v14;
 
-    v16 = [v10 copy];
+    v16 = [parametersCopy copy];
     notificationParams = v11->_notificationParams;
     v11->_notificationParams = v16;
   }

@@ -1,7 +1,7 @@
 @interface PXCuratedLibraryVisibleContentSnapshot
 - (NSString)localizedPlaceholderText;
 - (PXCuratedLibraryVisibleContentSnapshot)init;
-- (PXCuratedLibraryVisibleContentSnapshot)initWithLibraryLayout:(id)a3 dateType:(unint64_t)a4;
+- (PXCuratedLibraryVisibleContentSnapshot)initWithLibraryLayout:(id)layout dateType:(unint64_t)type;
 @end
 
 @implementation PXCuratedLibraryVisibleContentSnapshot
@@ -21,15 +21,15 @@
   return v3;
 }
 
-- (PXCuratedLibraryVisibleContentSnapshot)initWithLibraryLayout:(id)a3 dateType:(unint64_t)a4
+- (PXCuratedLibraryVisibleContentSnapshot)initWithLibraryLayout:(id)layout dateType:(unint64_t)type
 {
-  v5 = a3;
+  layoutCopy = layout;
   v7.receiver = self;
   v7.super_class = PXCuratedLibraryVisibleContentSnapshot;
   if ([(PXCuratedLibraryVisibleContentSnapshot *)&v7 init])
   {
-    [v5 visibleRect];
-    [v5 safeAreaInsets];
+    [layoutCopy visibleRect];
+    [layoutCopy safeAreaInsets];
     PXEdgeInsetsInsetRect();
   }
 
@@ -38,8 +38,8 @@
 
 - (PXCuratedLibraryVisibleContentSnapshot)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryVisibleContentSnapshot.m" lineNumber:27 description:{@"%s is not available as initializer", "-[PXCuratedLibraryVisibleContentSnapshot init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryVisibleContentSnapshot.m" lineNumber:27 description:{@"%s is not available as initializer", "-[PXCuratedLibraryVisibleContentSnapshot init]"}];
 
   abort();
 }

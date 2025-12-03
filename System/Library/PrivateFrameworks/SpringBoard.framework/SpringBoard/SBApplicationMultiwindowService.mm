@@ -1,10 +1,10 @@
 @interface SBApplicationMultiwindowService
 + (SBApplicationMultiwindowService)sharedInstance;
 - (SBApplicationMultiwindowService)init;
-- (void)applicationServer:(id)a3 client:(id)a4 requestShelfPresentationForSceneWithIdentifier:(id)a5;
-- (void)applicationServer:(id)a3 client:(id)a4 showAllWindowsForBundleIdentifier:(id)a5;
-- (void)triggerShowAllWindowsForApplicationBundleIdentifier:(id)a3;
-- (void)triggerShowAllWindowsForApplicationBundleIdentifier:(id)a3 displayConfiguration:(id)a4;
+- (void)applicationServer:(id)server client:(id)client requestShelfPresentationForSceneWithIdentifier:(id)identifier;
+- (void)applicationServer:(id)server client:(id)client showAllWindowsForBundleIdentifier:(id)identifier;
+- (void)triggerShowAllWindowsForApplicationBundleIdentifier:(id)identifier;
+- (void)triggerShowAllWindowsForApplicationBundleIdentifier:(id)identifier displayConfiguration:(id)configuration;
 @end
 
 @implementation SBApplicationMultiwindowService
@@ -52,23 +52,23 @@ void __49__SBApplicationMultiwindowService_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)applicationServer:(id)a3 client:(id)a4 showAllWindowsForBundleIdentifier:(id)a5
+- (void)applicationServer:(id)server client:(id)client showAllWindowsForBundleIdentifier:(id)identifier
 {
-  v7 = a5;
-  if ([(FBServiceClientAuthenticator *)self->_triggerShowAllWindowsEntitlementAuthenticator authenticateClient:a4])
+  identifierCopy = identifier;
+  if ([(FBServiceClientAuthenticator *)self->_triggerShowAllWindowsEntitlementAuthenticator authenticateClient:client])
   {
-    [(SBApplicationMultiwindowService *)self triggerShowAllWindowsForApplicationBundleIdentifier:v7];
+    [(SBApplicationMultiwindowService *)self triggerShowAllWindowsForApplicationBundleIdentifier:identifierCopy];
   }
 }
 
-- (void)applicationServer:(id)a3 client:(id)a4 requestShelfPresentationForSceneWithIdentifier:(id)a5
+- (void)applicationServer:(id)server client:(id)client requestShelfPresentationForSceneWithIdentifier:(id)identifier
 {
-  v7 = a4;
-  v8 = a5;
-  if ([(FBServiceClientAuthenticator *)self->_requestShelfPresentationEntitlementAuthenticator authenticateClient:v7])
+  clientCopy = client;
+  identifierCopy = identifier;
+  if ([(FBServiceClientAuthenticator *)self->_requestShelfPresentationEntitlementAuthenticator authenticateClient:clientCopy])
   {
-    v9 = v8;
-    v10 = v7;
+    v9 = identifierCopy;
+    v10 = clientCopy;
     BSDispatchMain();
   }
 }
@@ -250,10 +250,10 @@ LABEL_6:
 LABEL_26:
 }
 
-- (void)triggerShowAllWindowsForApplicationBundleIdentifier:(id)a3
+- (void)triggerShowAllWindowsForApplicationBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v3 = v4;
+  identifierCopy = identifier;
+  v3 = identifierCopy;
   BSDispatchMain();
 }
 
@@ -289,13 +289,13 @@ void __87__SBApplicationMultiwindowService_triggerShowAllWindowsForApplicationBu
   [v3 setWaitsForSceneUpdates:0];
 }
 
-- (void)triggerShowAllWindowsForApplicationBundleIdentifier:(id)a3 displayConfiguration:(id)a4
+- (void)triggerShowAllWindowsForApplicationBundleIdentifier:(id)identifier displayConfiguration:(id)configuration
 {
-  v5 = a3;
-  v8 = a4;
-  v9 = v5;
-  v6 = v5;
-  v7 = v8;
+  identifierCopy = identifier;
+  configurationCopy = configuration;
+  v9 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = configurationCopy;
   BSDispatchMain();
 }
 

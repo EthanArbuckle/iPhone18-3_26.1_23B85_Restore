@@ -1,16 +1,16 @@
 @interface RMMigrationMathSettings
-- (BOOL)_removeOldRestrictions:(id *)a3;
-- (BOOL)executeReturningError:(id *)a3;
+- (BOOL)_removeOldRestrictions:(id *)restrictions;
+- (BOOL)executeReturningError:(id *)error;
 @end
 
 @implementation RMMigrationMathSettings
 
-- (BOOL)executeReturningError:(id *)a3
+- (BOOL)executeReturningError:(id *)error
 {
   if (+[RMBundle managementScope]== 1)
   {
 
-    return [(RMMigrationMathSettings *)self _removeOldRestrictions:a3];
+    return [(RMMigrationMathSettings *)self _removeOldRestrictions:error];
   }
 
   else
@@ -25,7 +25,7 @@
   }
 }
 
-- (BOOL)_removeOldRestrictions:(id *)a3
+- (BOOL)_removeOldRestrictions:(id *)restrictions
 {
   v3 = +[MCProfileConnection sharedConnection];
   v4 = [v3 allClientUUIDsForClientType:@"com.apple.remotemanagementd"];
@@ -51,8 +51,8 @@
 
         v10 = *(*(&v38 + 1) + 8 * i);
         v11 = [RMStoreDeclarationKey newDeclarationKey:v10];
-        v12 = [v11 subscriberIdentifier];
-        v13 = [v12 isEqualToString:@"com.apple.RemoteManagement.MathSettingsExtension"];
+        subscriberIdentifier = [v11 subscriberIdentifier];
+        v13 = [subscriberIdentifier isEqualToString:@"com.apple.RemoteManagement.MathSettingsExtension"];
 
         if (v13)
         {
@@ -78,10 +78,10 @@
               sub_1000545B8(v24, v26);
             }
 
-            if (a3 && v24)
+            if (restrictions && v24)
             {
               v34 = v24;
-              *a3 = v24;
+              *restrictions = v24;
             }
           }
 

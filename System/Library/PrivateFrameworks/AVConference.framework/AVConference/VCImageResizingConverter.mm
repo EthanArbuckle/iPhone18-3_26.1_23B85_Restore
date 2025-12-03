@@ -1,22 +1,22 @@
 @interface VCImageResizingConverter
-- (VCImageResizingConverter)initWithOutputWidth:(unint64_t)a3 outputHeight:(unint64_t)a4 formatType:(unsigned int)a5;
+- (VCImageResizingConverter)initWithOutputWidth:(unint64_t)width outputHeight:(unint64_t)height formatType:(unsigned int)type;
 - (void)dealloc;
 @end
 
 @implementation VCImageResizingConverter
 
-- (VCImageResizingConverter)initWithOutputWidth:(unint64_t)a3 outputHeight:(unint64_t)a4 formatType:(unsigned int)a5
+- (VCImageResizingConverter)initWithOutputWidth:(unint64_t)width outputHeight:(unint64_t)height formatType:(unsigned int)type
 {
   v25 = *MEMORY[0x1E69E9840];
   v12.receiver = self;
   v12.super_class = VCImageResizingConverter;
-  v7 = [(VCImageConverterBase *)&v12 initWithFormatType:*&a5];
+  v7 = [(VCImageConverterBase *)&v12 initWithFormatType:*&type];
   v8 = v7;
   if (v7)
   {
     VTPixelTransferSessionCreate(0, &v7->_transferSession);
     VTSessionSetProperty(v8->_transferSession, *MEMORY[0x1E6983E30], *MEMORY[0x1E69840F8]);
-    if ([(VCImageConverterBase *)v8 setUpBufferPoolForOutputWidth:a3 outputHeight:a4])
+    if ([(VCImageConverterBase *)v8 setUpBufferPoolForOutputWidth:width outputHeight:height])
     {
       if (VRTraceGetErrorLogLevelForModule() >= 7)
       {
@@ -33,9 +33,9 @@
           v19 = 2048;
           v20 = v8;
           v21 = 2048;
-          v22 = a3;
+          widthCopy = width;
           v23 = 2048;
-          v24 = a4;
+          heightCopy = height;
           _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Frame Transform resize, %p outputSize %zux%zu", buf, 0x3Au);
         }
       }

@@ -1,7 +1,7 @@
 @interface CDMServiceAssetConfig
 - (CDMServiceAssetConfig)init;
-- (id)getCDMAssetFactorToFoldersMappingForAssetSet:(int64_t)a3;
-- (void)addCDMFactorToFoldersMapping:(id)a3 forAssetSet:(int64_t)a4;
+- (id)getCDMAssetFactorToFoldersMappingForAssetSet:(int64_t)set;
+- (void)addCDMFactorToFoldersMapping:(id)mapping forAssetSet:(int64_t)set;
 @end
 
 @implementation CDMServiceAssetConfig
@@ -23,29 +23,29 @@
   return v2;
 }
 
-- (id)getCDMAssetFactorToFoldersMappingForAssetSet:(int64_t)a3
+- (id)getCDMAssetFactorToFoldersMappingForAssetSet:(int64_t)set
 {
-  v3 = [(CDMAssetSetToFactorsConfig *)self->_assetSetToFactorsConfig getCDMFactorConfigForAssetSet:a3];
+  v3 = [(CDMAssetSetToFactorsConfig *)self->_assetSetToFactorsConfig getCDMFactorConfigForAssetSet:set];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 getFactorToFoldersMapping];
+    getFactorToFoldersMapping = [v3 getFactorToFoldersMapping];
   }
 
   else
   {
-    v5 = 0;
+    getFactorToFoldersMapping = 0;
   }
 
-  return v5;
+  return getFactorToFoldersMapping;
 }
 
-- (void)addCDMFactorToFoldersMapping:(id)a3 forAssetSet:(int64_t)a4
+- (void)addCDMFactorToFoldersMapping:(id)mapping forAssetSet:(int64_t)set
 {
-  v6 = a3;
-  v7 = [[CDMAssetsFactorConfig alloc] initWithFactorToFoldersMapping:v6];
+  mappingCopy = mapping;
+  v7 = [[CDMAssetsFactorConfig alloc] initWithFactorToFoldersMapping:mappingCopy];
 
-  [(CDMAssetSetToFactorsConfig *)self->_assetSetToFactorsConfig setCDMAssetsFactorConfig:v7 forAssetSet:a4];
+  [(CDMAssetSetToFactorsConfig *)self->_assetSetToFactorsConfig setCDMAssetsFactorConfig:v7 forAssetSet:set];
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface HMNumberSetting
-- (BOOL)isKindOfClass:(Class)a3;
-- (HMNumberSetting)initWithIdentifier:(id)a3 name:(id)a4 type:(int64_t)a5 value:(id)a6 properties:(unint64_t)a7 minimumValue:(id)a8 maximumValue:(id)a9 stepValue:(id)a10;
+- (BOOL)isKindOfClass:(Class)class;
+- (HMNumberSetting)initWithIdentifier:(id)identifier name:(id)name type:(int64_t)type value:(id)value properties:(unint64_t)properties minimumValue:(id)minimumValue maximumValue:(id)maximumValue stepValue:(id)self0;
 - (id)internalValue;
-- (id)valueForUpdate:(id)a3;
+- (id)valueForUpdate:(id)update;
 @end
 
 @implementation HMNumberSetting
 
-- (id)valueForUpdate:(id)a3
+- (id)valueForUpdate:(id)update
 {
-  v3 = a3;
-  if (v3)
+  updateCopy = update;
+  if (updateCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -20,7 +20,7 @@
     }
   }
 
-  v4 = [[HMSettingValue alloc] initNumberSettingWithValue:v3];
+  v4 = [[HMSettingValue alloc] initNumberSettingWithValue:updateCopy];
 
   return v4;
 }
@@ -28,33 +28,33 @@
 - (id)internalValue
 {
   v3 = [HMSettingValue alloc];
-  v4 = [(HMSetting *)self value];
-  v5 = [(HMSettingValue *)v3 initNumberSettingWithValue:v4];
+  value = [(HMSetting *)self value];
+  v5 = [(HMSettingValue *)v3 initNumberSettingWithValue:value];
 
   return v5;
 }
 
-- (BOOL)isKindOfClass:(Class)a3
+- (BOOL)isKindOfClass:(Class)class
 {
   v5.receiver = self;
   v5.super_class = HMNumberSetting;
-  return [(HMNumberSetting *)&v5 isKindOfClass:?]|| objc_opt_class() == a3;
+  return [(HMNumberSetting *)&v5 isKindOfClass:?]|| objc_opt_class() == class;
 }
 
-- (HMNumberSetting)initWithIdentifier:(id)a3 name:(id)a4 type:(int64_t)a5 value:(id)a6 properties:(unint64_t)a7 minimumValue:(id)a8 maximumValue:(id)a9 stepValue:(id)a10
+- (HMNumberSetting)initWithIdentifier:(id)identifier name:(id)name type:(int64_t)type value:(id)value properties:(unint64_t)properties minimumValue:(id)minimumValue maximumValue:(id)maximumValue stepValue:(id)self0
 {
-  v22 = a8;
-  v21 = a9;
-  v17 = a10;
+  minimumValueCopy = minimumValue;
+  maximumValueCopy = maximumValue;
+  stepValueCopy = stepValue;
   v23.receiver = self;
   v23.super_class = HMNumberSetting;
-  v18 = [(HMSetting *)&v23 initWithIdentifier:a3 name:a4 type:a5 value:a6 properties:a7];
+  v18 = [(HMSetting *)&v23 initWithIdentifier:identifier name:name type:type value:value properties:properties];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_minimumValue, a8);
-    objc_storeStrong(&v19->_maximumValue, a9);
-    objc_storeStrong(&v19->_stepValue, a10);
+    objc_storeStrong(&v18->_minimumValue, minimumValue);
+    objc_storeStrong(&v19->_maximumValue, maximumValue);
+    objc_storeStrong(&v19->_stepValue, stepValue);
   }
 
   return v19;

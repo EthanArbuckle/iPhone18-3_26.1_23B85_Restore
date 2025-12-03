@@ -1,40 +1,40 @@
 @interface SBApplicationDropSession
-+ (BOOL)_dragItemRepresentsAcceptableFileDrag:(id)a3;
-+ (BOOL)_itemProviderRequiresOpenInPlace:(id)a3;
-+ (BOOL)canHandleUIDragDropSession:(id)a3;
-+ (SBApplicationDropSession)dropSessionWithWindowUIDragSession:(id)a3;
-+ (id)_applicationForHandlingDragItem:(id)a3 URL:(id)a4 error:(id *)a5;
-+ (id)_applicationForIconLeafIdentifier:(id)a3;
-+ (id)_applicationProxyForIdentifiers:(id)a3 forURL:(id)a4 passingTest:(id)a5 error:(id *)a6;
-+ (void)_getFileDropSessionWithUIDragDropSession:(id)a3 dragItem:(id)a4 systemSession:(id)a5 targetApplication:(id)a6 completion:(id)a7;
-+ (void)_getLocalAppDropSessionWithUIDragDropSession:(id)a3 dragItem:(id)a4 systemSession:(id)a5 completion:(id)a6;
-+ (void)_getURLDropSessionWithUIDragDropSession:(id)a3 dragItem:(id)a4 systemSession:(id)a5 targetApplication:(id)a6 completion:(id)a7;
-+ (void)_getUserActivityDropSessionWithUIDragDropSession:(id)a3 dragItem:(id)a4 systemSession:(id)a5 targetApplication:(id)a6 completion:(id)a7;
-+ (void)_getUserNotificationDropSessionWithUIDragDropSession:(id)a3 systemSession:(id)a4 dragItem:(id)a5 completion:(id)a6;
-+ (void)getDropSessionWithUIDropSession:(id)a3 sceneProvider:(id)a4 defaultToSourceApplication:(BOOL)a5 completion:(id)a6;
++ (BOOL)_dragItemRepresentsAcceptableFileDrag:(id)drag;
++ (BOOL)_itemProviderRequiresOpenInPlace:(id)place;
++ (BOOL)canHandleUIDragDropSession:(id)session;
++ (SBApplicationDropSession)dropSessionWithWindowUIDragSession:(id)session;
++ (id)_applicationForHandlingDragItem:(id)item URL:(id)l error:(id *)error;
++ (id)_applicationForIconLeafIdentifier:(id)identifier;
++ (id)_applicationProxyForIdentifiers:(id)identifiers forURL:(id)l passingTest:(id)test error:(id *)error;
++ (void)_getFileDropSessionWithUIDragDropSession:(id)session dragItem:(id)item systemSession:(id)systemSession targetApplication:(id)application completion:(id)completion;
++ (void)_getLocalAppDropSessionWithUIDragDropSession:(id)session dragItem:(id)item systemSession:(id)systemSession completion:(id)completion;
++ (void)_getURLDropSessionWithUIDragDropSession:(id)session dragItem:(id)item systemSession:(id)systemSession targetApplication:(id)application completion:(id)completion;
++ (void)_getUserActivityDropSessionWithUIDragDropSession:(id)session dragItem:(id)item systemSession:(id)systemSession targetApplication:(id)application completion:(id)completion;
++ (void)_getUserNotificationDropSessionWithUIDragDropSession:(id)session systemSession:(id)systemSession dragItem:(id)item completion:(id)completion;
++ (void)getDropSessionWithUIDropSession:(id)session sceneProvider:(id)provider defaultToSourceApplication:(BOOL)application completion:(id)completion;
 - (BOOL)_isApplicationBoundToVisibleIcon;
 - (SBActivationSettings)activationSettings;
-- (SBApplicationDropSession)initWithUIDragDropSession:(id)a3 systemSession:(id)a4 application:(id)a5 activity:(id)a6 activityData:(id)a7;
-- (SBApplicationDropSession)initWithUIDragDropSession:(id)a3 systemSession:(id)a4 application:(id)a5 targetContentIdentifier:(id)a6;
-- (SBApplicationDropSession)initWithUIDragDropSession:(id)a3 systemSession:(id)a4 application:(id)a5 targetContentIdentifier:(id)a6 URL:(id)a7 requiresOpenInPlace:(BOOL)a8;
-- (SBApplicationDropSession)initWithUIDragDropSession:(id)a3 systemSession:(id)a4 application:(id)a5 targetContentIdentifier:(id)a6 localContext:(id)a7 activity:(id)a8 activityData:(id)a9;
-- (id)_activityContinuationActionFromActivity:(id)a3 activityData:(id)a4;
-- (id)_initWithUIDragDropSession:(id)a3 application:(id)a4 targetContentIdentifier:(id)a5;
+- (SBApplicationDropSession)initWithUIDragDropSession:(id)session systemSession:(id)systemSession application:(id)application activity:(id)activity activityData:(id)data;
+- (SBApplicationDropSession)initWithUIDragDropSession:(id)session systemSession:(id)systemSession application:(id)application targetContentIdentifier:(id)identifier;
+- (SBApplicationDropSession)initWithUIDragDropSession:(id)session systemSession:(id)systemSession application:(id)application targetContentIdentifier:(id)identifier URL:(id)l requiresOpenInPlace:(BOOL)place;
+- (SBApplicationDropSession)initWithUIDragDropSession:(id)session systemSession:(id)systemSession application:(id)application targetContentIdentifier:(id)identifier localContext:(id)context activity:(id)activity activityData:(id)data;
+- (id)_activityContinuationActionFromActivity:(id)activity activityData:(id)data;
+- (id)_initWithUIDragDropSession:(id)session application:(id)application targetContentIdentifier:(id)identifier;
 - (int64_t)dropZones;
-- (void)calculateSceneIdentityWithSceneProvider:(id)a3 completion:(id)a4;
+- (void)calculateSceneIdentityWithSceneProvider:(id)provider completion:(id)completion;
 @end
 
 @implementation SBApplicationDropSession
 
-+ (BOOL)canHandleUIDragDropSession:(id)a3
++ (BOOL)canHandleUIDragDropSession:(id)session
 {
   v13[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sessionCopy = session;
   v13[0] = *MEMORY[0x277D66E40];
   v13[1] = @"com.apple.springboard.private.windowdrag";
   v13[2] = *MEMORY[0x277D78028];
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:3];
-  v6 = [v4 hasItemsConformingToTypeIdentifiers:v5];
+  v6 = [sessionCopy hasItemsConformingToTypeIdentifiers:v5];
 
   if (v6)
   {
@@ -46,8 +46,8 @@
     v8 = SBFSafeProtocolCast();
     if (v8)
     {
-      v9 = [MEMORY[0x277D75490] sharedInstance];
-      v10 = [v9 sessionForDropSession:v8];
+      mEMORY[0x277D75490] = [MEMORY[0x277D75490] sharedInstance];
+      v10 = [mEMORY[0x277D75490] sessionForDropSession:v8];
 
       if (v10)
       {
@@ -59,7 +59,7 @@
         else
         {
           v11 = SBApplicationDropSessionGetDragItem(v8);
-          v7 = [a1 _dragItemRepresentsAcceptableFileDrag:v11];
+          v7 = [self _dragItemRepresentsAcceptableFileDrag:v11];
         }
       }
 
@@ -78,12 +78,12 @@
   return v7;
 }
 
-+ (SBApplicationDropSession)dropSessionWithWindowUIDragSession:(id)a3
++ (SBApplicationDropSession)dropSessionWithWindowUIDragSession:(id)session
 {
-  v3 = a3;
+  sessionCopy = session;
   v4 = objc_opt_class();
-  v5 = [v3 localContext];
-  v6 = SBSafeCast(v4, v5);
+  localContext = [sessionCopy localContext];
+  v6 = SBSafeCast(v4, localContext);
 
   if (!v6)
   {
@@ -95,63 +95,63 @@
     +[SBApplicationDropSession dropSessionWithWindowUIDragSession:];
   }
 
-  v7 = [v6 draggedSceneIdentifier];
+  draggedSceneIdentifier = [v6 draggedSceneIdentifier];
 
-  if (!v7)
+  if (!draggedSceneIdentifier)
   {
     +[SBApplicationDropSession dropSessionWithWindowUIDragSession:];
   }
 
   v8 = +[SBApplicationController sharedInstance];
-  v9 = [v6 applicationBundleIdentifier];
-  v10 = [v8 applicationWithBundleIdentifier:v9];
+  applicationBundleIdentifier = [v6 applicationBundleIdentifier];
+  v10 = [v8 applicationWithBundleIdentifier:applicationBundleIdentifier];
 
-  v11 = [[SBApplicationDropSession alloc] initWithUIDragDropSession:v3 systemSession:0 application:v10 targetContentIdentifier:0 localContext:v6 activity:0 activityData:0];
-  v12 = [v6 draggedSceneIdentifier];
-  if (v12)
+  v11 = [[SBApplicationDropSession alloc] initWithUIDragDropSession:sessionCopy systemSession:0 application:v10 targetContentIdentifier:0 localContext:v6 activity:0 activityData:0];
+  draggedSceneIdentifier2 = [v6 draggedSceneIdentifier];
+  if (draggedSceneIdentifier2)
   {
-    v13 = [MEMORY[0x277D0ADC0] identityForIdentifier:v12];
+    v13 = [MEMORY[0x277D0ADC0] identityForIdentifier:draggedSceneIdentifier2];
     [(SBApplicationDropSession *)v11 setSceneIdentity:v13];
   }
 
   return v11;
 }
 
-+ (void)getDropSessionWithUIDropSession:(id)a3 sceneProvider:(id)a4 defaultToSourceApplication:(BOOL)a5 completion:(id)a6
++ (void)getDropSessionWithUIDropSession:(id)session sceneProvider:(id)provider defaultToSourceApplication:(BOOL)application completion:(id)completion
 {
-  v7 = a5;
+  applicationCopy = application;
   v94[2] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  sessionCopy = session;
+  providerCopy = provider;
+  completionCopy = completion;
   v89[0] = MEMORY[0x277D85DD0];
   v89[1] = 3221225472;
   v89[2] = __112__SBApplicationDropSession_getDropSessionWithUIDropSession_sceneProvider_defaultToSourceApplication_completion___block_invoke;
   v89[3] = &unk_2783BEDF8;
-  v13 = v12;
+  v13 = completionCopy;
   v91 = v13;
-  v14 = v11;
+  v14 = providerCopy;
   v90 = v14;
   v15 = MEMORY[0x223D6F7F0](v89);
-  v16 = SBApplicationDropSessionGetDragItem(v10);
+  v16 = SBApplicationDropSessionGetDragItem(sessionCopy);
   if (!v16)
   {
-    v17 = [v10 items];
-    v28 = [v17 count];
+    items = [sessionCopy items];
+    v28 = [items count];
     v19 = SBApplicationDropSessionErrorCreate(1, @"Incorrect number of drag items: %ld [expected 1]", v29, v30, v31, v32, v33, v34, v28);
     (v15)[2](v15, 0, v19);
     goto LABEL_31;
   }
 
-  v83 = v7;
-  v17 = SBFSafeProtocolCast();
-  v18 = [MEMORY[0x277D75490] sharedInstance];
-  v19 = [v18 sessionForDropSession:v17];
+  v83 = applicationCopy;
+  items = SBFSafeProtocolCast();
+  mEMORY[0x277D75490] = [MEMORY[0x277D75490] sharedInstance];
+  v19 = [mEMORY[0x277D75490] sessionForDropSession:items];
 
   v94[0] = *MEMORY[0x277D66E40];
   v94[1] = @"com.apple.springboard.private.windowdrag";
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v94 count:2];
-  v21 = [v10 hasItemsConformingToTypeIdentifiers:v20];
+  v21 = [sessionCopy hasItemsConformingToTypeIdentifiers:v20];
 
   if (!v21)
   {
@@ -163,28 +163,28 @@
       goto LABEL_31;
     }
 
-    v82 = a1;
-    v35 = [v16 itemProvider];
-    v36 = [v35 sbui_preferredApplicationBundleIdentifier];
+    selfCopy = self;
+    itemProvider = [v16 itemProvider];
+    sbui_preferredApplicationBundleIdentifier = [itemProvider sbui_preferredApplicationBundleIdentifier];
 
-    v37 = [v16 itemProvider];
-    v38 = [v37 sbui_requiredApplicationBundleIdentifier];
+    itemProvider2 = [v16 itemProvider];
+    sbui_requiredApplicationBundleIdentifier = [itemProvider2 sbui_requiredApplicationBundleIdentifier];
 
-    v39 = v38;
-    if (v36 | v38)
+    v39 = sbui_requiredApplicationBundleIdentifier;
+    if (sbui_preferredApplicationBundleIdentifier | sbui_requiredApplicationBundleIdentifier)
     {
-      if (v38)
+      if (sbui_requiredApplicationBundleIdentifier)
       {
-        v40 = v38;
+        v40 = sbui_requiredApplicationBundleIdentifier;
       }
 
       else
       {
-        v40 = v36;
+        v40 = sbui_preferredApplicationBundleIdentifier;
       }
 
-      v41 = [v82 _applicationForIconLeafIdentifier:v40];
-      if (v38)
+      v41 = [selfCopy _applicationForIconLeafIdentifier:v40];
+      if (sbui_requiredApplicationBundleIdentifier)
       {
         v48 = 0x277CBE000;
         if (!v41)
@@ -199,19 +199,19 @@ LABEL_30:
 LABEL_16:
         v79 = v41;
         v80 = v39;
-        v81 = v36;
+        v81 = sbui_preferredApplicationBundleIdentifier;
         v93 = *MEMORY[0x277D67F60];
         v51 = [*(v48 + 2656) arrayWithObjects:&v93 count:1];
-        v52 = [v10 hasItemsConformingToTypeIdentifiers:v51];
+        v52 = [sessionCopy hasItemsConformingToTypeIdentifiers:v51];
 
         if (v52)
         {
           v53 = MEMORY[0x277D0AAF8];
-          v54 = [v19 info];
-          v55 = v54;
-          if (v54)
+          info = [v19 info];
+          v55 = info;
+          if (info)
           {
-            [v54 auditToken];
+            [info auditToken];
           }
 
           else
@@ -236,51 +236,51 @@ LABEL_16:
           v84[2] = __112__SBApplicationDropSession_getDropSessionWithUIDropSession_sceneProvider_defaultToSourceApplication_completion___block_invoke_4;
           v84[3] = &unk_2783BEE20;
           v87 = v15;
-          v85 = v10;
+          v85 = sessionCopy;
           v86 = v19;
           [v86 loadUserActivityForItem:v16 completion:v84];
         }
 
         v92 = *MEMORY[0x277D78028];
         v63 = [*(v48 + 2656) arrayWithObjects:&v92 count:1];
-        v64 = [v10 hasItemsConformingToTypeIdentifiers:v63];
+        v64 = [sessionCopy hasItemsConformingToTypeIdentifiers:v63];
 
         if (v64)
         {
-          [v82 _getUserNotificationDropSessionWithUIDragDropSession:v10 systemSession:v19 dragItem:v16 completion:v15];
+          [selfCopy _getUserNotificationDropSessionWithUIDragDropSession:sessionCopy systemSession:v19 dragItem:v16 completion:v15];
 LABEL_24:
           v39 = v80;
-          v36 = v81;
+          sbui_preferredApplicationBundleIdentifier = v81;
 LABEL_25:
           v49 = v79;
           goto LABEL_30;
         }
 
         v39 = v80;
-        if (![v10 canLoadObjectsOfClass:objc_opt_class()])
+        if (![sessionCopy canLoadObjectsOfClass:objc_opt_class()])
         {
-          v36 = v81;
-          if ([v82 _dragItemRepresentsAcceptableFileDrag:v16])
+          sbui_preferredApplicationBundleIdentifier = v81;
+          if ([selfCopy _dragItemRepresentsAcceptableFileDrag:v16])
           {
             v49 = v79;
-            [v82 _getFileDropSessionWithUIDragDropSession:v10 dragItem:v16 systemSession:v19 targetApplication:v79 completion:v15];
+            [selfCopy _getFileDropSessionWithUIDragDropSession:sessionCopy dragItem:v16 systemSession:v19 targetApplication:v79 completion:v15];
             goto LABEL_30;
           }
 
-          if ([v10 canLoadObjectsOfClass:objc_opt_class()])
+          if ([sessionCopy canLoadObjectsOfClass:objc_opt_class()])
           {
             v49 = v79;
-            [v82 _getURLDropSessionWithUIDragDropSession:v10 dragItem:v16 systemSession:v19 targetApplication:v79 completion:v15];
+            [selfCopy _getURLDropSessionWithUIDragDropSession:sessionCopy dragItem:v16 systemSession:v19 targetApplication:v79 completion:v15];
             goto LABEL_30;
           }
 
           if (v83)
           {
-            v72 = [v19 info];
+            info2 = [v19 info];
             v73 = +[SBApplicationController sharedInstance];
-            v74 = [v73 applicationWithPid:{objc_msgSend(v72, "processIdentifier")}];
+            v74 = [v73 applicationWithPid:{objc_msgSend(info2, "processIdentifier")}];
 
-            v75 = [[SBApplicationDropSession alloc] initWithUIDragDropSession:v10 systemSession:v19 application:v74 targetContentIdentifier:0];
+            v75 = [[SBApplicationDropSession alloc] initWithUIDragDropSession:sessionCopy systemSession:v19 application:v74 targetContentIdentifier:0];
             if (v75)
             {
               v76 = v75;
@@ -290,7 +290,7 @@ LABEL_25:
             }
 
             v39 = v80;
-            v36 = v81;
+            sbui_preferredApplicationBundleIdentifier = v81;
           }
 
           v77 = SBApplicationDropSessionErrorCreate(6, @"Drag item did not contain any conforming type identifiers", v66, v67, v68, v69, v70, v71, v78);
@@ -300,9 +300,9 @@ LABEL_25:
         }
 
         v49 = v79;
-        [v82 _getUserActivityDropSessionWithUIDragDropSession:v10 dragItem:v16 systemSession:v19 targetApplication:v79 completion:v15];
+        [selfCopy _getUserActivityDropSessionWithUIDragDropSession:sessionCopy dragItem:v16 systemSession:v19 targetApplication:v79 completion:v15];
 LABEL_29:
-        v36 = v81;
+        sbui_preferredApplicationBundleIdentifier = v81;
         goto LABEL_30;
       }
     }
@@ -316,7 +316,7 @@ LABEL_29:
     goto LABEL_16;
   }
 
-  [a1 _getLocalAppDropSessionWithUIDragDropSession:v10 dragItem:v16 systemSession:v19 completion:v15];
+  [self _getLocalAppDropSessionWithUIDragDropSession:sessionCopy dragItem:v16 systemSession:v19 completion:v15];
 LABEL_31:
 }
 
@@ -422,17 +422,17 @@ void __112__SBApplicationDropSession_getDropSessionWithUIDropSession_sceneProvid
   }
 }
 
-+ (void)_getLocalAppDropSessionWithUIDragDropSession:(id)a3 dragItem:(id)a4 systemSession:(id)a5 completion:(id)a6
++ (void)_getLocalAppDropSessionWithUIDragDropSession:(id)session dragItem:(id)item systemSession:(id)systemSession completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [a4 sbh_appDragLocalContext];
-  v20 = v13;
-  if (v13)
+  sessionCopy = session;
+  systemSessionCopy = systemSession;
+  completionCopy = completion;
+  sbh_appDragLocalContext = [item sbh_appDragLocalContext];
+  v20 = sbh_appDragLocalContext;
+  if (sbh_appDragLocalContext)
   {
-    v21 = [v13 uniqueIdentifier];
-    v28 = [a1 _applicationForIconLeafIdentifier:v21];
+    uniqueIdentifier = [sbh_appDragLocalContext uniqueIdentifier];
+    v28 = [self _applicationForIconLeafIdentifier:uniqueIdentifier];
     if (v28)
     {
       if ([v20 isSourceLocal])
@@ -442,44 +442,44 @@ void __112__SBApplicationDropSession_getDropSessionWithUIDropSession_sceneProvid
 
       else
       {
-        v29 = v11;
+        v29 = systemSessionCopy;
       }
 
       v30 = v29;
-      v31 = [v20 userActivity];
-      if (v31)
+      userActivity = [v20 userActivity];
+      if (userActivity)
       {
         v34[0] = MEMORY[0x277D85DD0];
         v34[1] = 3221225472;
         v34[2] = __107__SBApplicationDropSession__getLocalAppDropSessionWithUIDragDropSession_dragItem_systemSession_completion___block_invoke;
         v34[3] = &unk_2783BEE48;
-        v35 = v10;
+        v35 = sessionCopy;
         v36 = v30;
         v37 = v28;
         v38 = v20;
-        v39 = v31;
-        v40 = v12;
+        v39 = userActivity;
+        v40 = completionCopy;
         [v39 _createUserActivityDataWithOptions:MEMORY[0x277CBEC10] completionHandler:v34];
       }
 
       else
       {
-        v32 = [[SBApplicationDropSession alloc] initWithUIDragDropSession:v10 systemSession:v30 application:v28 targetContentIdentifier:0 localContext:v20 activity:0 activityData:0];
-        (*(v12 + 2))(v12, v32, 0);
+        v32 = [[SBApplicationDropSession alloc] initWithUIDragDropSession:sessionCopy systemSession:v30 application:v28 targetContentIdentifier:0 localContext:v20 activity:0 activityData:0];
+        (*(completionCopy + 2))(completionCopy, v32, 0);
       }
     }
 
     else
     {
       v30 = SBApplicationDropSessionErrorCreate(2, @"Drag item contains app drag local context, but missing icon identifier.", v22, v23, v24, v25, v26, v27, v33);
-      (*(v12 + 2))(v12, 0, v30);
+      (*(completionCopy + 2))(completionCopy, 0, v30);
     }
   }
 
   else
   {
-    v21 = SBApplicationDropSessionErrorCreate(2, @"Drag item contains app drag private type identifier, but missing SBAppDragLocalContext", v14, v15, v16, v17, v18, v19, v33);
-    (*(v12 + 2))(v12, 0, v21);
+    uniqueIdentifier = SBApplicationDropSessionErrorCreate(2, @"Drag item contains app drag private type identifier, but missing SBAppDragLocalContext", v14, v15, v16, v17, v18, v19, v33);
+    (*(completionCopy + 2))(completionCopy, 0, uniqueIdentifier);
   }
 }
 
@@ -491,63 +491,63 @@ void __107__SBApplicationDropSession__getLocalAppDropSessionWithUIDragDropSessio
   (*(a1[9] + 16))();
 }
 
-+ (void)_getUserNotificationDropSessionWithUIDragDropSession:(id)a3 systemSession:(id)a4 dragItem:(id)a5 completion:(id)a6
++ (void)_getUserNotificationDropSessionWithUIDragDropSession:(id)session systemSession:(id)systemSession dragItem:(id)item completion:(id)completion
 {
-  v39 = a3;
-  v10 = a4;
-  v11 = a6;
-  v12 = [a5 sbh_appDragLocalContext];
-  v19 = v12;
-  if (v12)
+  sessionCopy = session;
+  systemSessionCopy = systemSession;
+  completionCopy = completion;
+  sbh_appDragLocalContext = [item sbh_appDragLocalContext];
+  v19 = sbh_appDragLocalContext;
+  if (sbh_appDragLocalContext)
   {
-    v20 = [v12 uniqueIdentifier];
-    v27 = [a1 _applicationForIconLeafIdentifier:v20];
+    uniqueIdentifier = [sbh_appDragLocalContext uniqueIdentifier];
+    v27 = [self _applicationForIconLeafIdentifier:uniqueIdentifier];
     if (v27)
     {
-      v28 = [v19 launchActions];
-      v38 = [v28 anyObject];
+      launchActions = [v19 launchActions];
+      anyObject = [launchActions anyObject];
 
-      v29 = [v38 response];
-      [v29 notification];
-      v31 = v30 = v10;
-      v32 = [v31 request];
-      v33 = [v32 content];
-      v34 = [v33 targetContentIdentifier];
+      response = [anyObject response];
+      [response notification];
+      v31 = v30 = systemSessionCopy;
+      request = [v31 request];
+      content = [request content];
+      targetContentIdentifier = [content targetContentIdentifier];
 
-      v10 = v30;
-      v35 = [[SBApplicationDropSession alloc] initWithUIDragDropSession:v39 systemSession:v30 application:v27 targetContentIdentifier:v34 localContext:v19 activity:0 activityData:0];
-      v11[2](v11, v35, 0);
+      systemSessionCopy = v30;
+      v35 = [[SBApplicationDropSession alloc] initWithUIDragDropSession:sessionCopy systemSession:v30 application:v27 targetContentIdentifier:targetContentIdentifier localContext:v19 activity:0 activityData:0];
+      completionCopy[2](completionCopy, v35, 0);
 
-      v36 = v38;
+      v36 = anyObject;
     }
 
     else
     {
       v36 = SBApplicationDropSessionErrorCreate(2, @"Drag item contains app drag local context, but missing icon identifier.", v21, v22, v23, v24, v25, v26, v37);
-      (v11)[2](v11, 0, v36);
+      (completionCopy)[2](completionCopy, 0, v36);
     }
   }
 
   else
   {
-    v20 = SBApplicationDropSessionErrorCreate(2, @"Drag item contains app drag private type identifier, but missing SBAppDragLocalContext", v13, v14, v15, v16, v17, v18, v37);
-    (v11)[2](v11, 0, v20);
+    uniqueIdentifier = SBApplicationDropSessionErrorCreate(2, @"Drag item contains app drag private type identifier, but missing SBAppDragLocalContext", v13, v14, v15, v16, v17, v18, v37);
+    (completionCopy)[2](completionCopy, 0, uniqueIdentifier);
   }
 }
 
-+ (id)_applicationForIconLeafIdentifier:(id)a3
++ (id)_applicationForIconLeafIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[SBApplicationController sharedInstanceIfExists];
-  v5 = [v4 applicationWithBundleIdentifier:v3];
+  v5 = [v4 applicationWithBundleIdentifier:identifierCopy];
 
   if (!v5)
   {
     v6 = +[SBIconController sharedIconRepository];
-    v7 = [v6 iconForIdentifier:v3];
+    v7 = [v6 iconForIdentifier:identifierCopy];
     if ([v7 isBookmarkIcon])
     {
-      v8 = [v7 applicationToLaunch];
+      applicationToLaunch = [v7 applicationToLaunch];
     }
 
     else
@@ -558,24 +558,24 @@ void __107__SBApplicationDropSession__getLocalAppDropSessionWithUIDragDropSessio
         goto LABEL_8;
       }
 
-      v8 = [v7 application];
+      applicationToLaunch = [v7 application];
     }
 
-    v5 = v8;
+    v5 = applicationToLaunch;
 LABEL_8:
   }
 
   return v5;
 }
 
-+ (BOOL)_dragItemRepresentsAcceptableFileDrag:(id)a3
++ (BOOL)_dragItemRepresentsAcceptableFileDrag:(id)drag
 {
   v16 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (drag)
   {
-    v3 = [a3 itemProvider];
+    itemProvider = [drag itemProvider];
     LOBYTE(v4) = 1;
-    v5 = [v3 registeredTypeIdentifiersWithFileOptions:1];
+    v5 = [itemProvider registeredTypeIdentifiersWithFileOptions:1];
     v6 = [v5 count];
 
     if (!v6)
@@ -584,8 +584,8 @@ LABEL_8:
       v14 = 0u;
       v11 = 0u;
       v12 = 0u;
-      v7 = [v3 registeredTypeIdentifiers];
-      v4 = [v7 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      registeredTypeIdentifiers = [itemProvider registeredTypeIdentifiers];
+      v4 = [registeredTypeIdentifiers countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v4)
       {
         v8 = *v12;
@@ -595,17 +595,17 @@ LABEL_8:
           {
             if (*v12 != v8)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(registeredTypeIdentifiers);
             }
 
-            if ([v3 isDataAvailableImmediatelyForTypeIdentifier:*(*(&v11 + 1) + 8 * i)])
+            if ([itemProvider isDataAvailableImmediatelyForTypeIdentifier:*(*(&v11 + 1) + 8 * i)])
             {
               LOBYTE(v4) = 1;
               goto LABEL_14;
             }
           }
 
-          v4 = [v7 countByEnumeratingWithState:&v11 objects:v15 count:16];
+          v4 = [registeredTypeIdentifiers countByEnumeratingWithState:&v11 objects:v15 count:16];
           if (v4)
           {
             continue;
@@ -627,33 +627,33 @@ LABEL_14:
   return v4;
 }
 
-+ (BOOL)_itemProviderRequiresOpenInPlace:(id)a3
++ (BOOL)_itemProviderRequiresOpenInPlace:(id)place
 {
-  v3 = [a3 registeredTypeIdentifiersWithFileOptions:1];
+  v3 = [place registeredTypeIdentifiersWithFileOptions:1];
   v4 = [v3 count] != 0;
 
   return v4;
 }
 
-+ (id)_applicationProxyForIdentifiers:(id)a3 forURL:(id)a4 passingTest:(id)a5 error:(id *)a6
++ (id)_applicationProxyForIdentifiers:(id)identifiers forURL:(id)l passingTest:(id)test error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v29 = a4;
-  v10 = a5;
+  identifiersCopy = identifiers;
+  lCopy = l;
+  testCopy = test;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v9;
+  obj = identifiersCopy;
   v11 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v11)
   {
     v12 = v11;
     v13 = *v33;
     v14 = *MEMORY[0x277CC1F20];
-    v28 = v10;
-    v15 = v29;
+    v28 = testCopy;
+    v15 = lCopy;
     while (2)
     {
       for (i = 0; i != v12; ++i)
@@ -665,8 +665,8 @@ LABEL_14:
 
         v17 = *(*(&v32 + 1) + 8 * i);
         v18 = MEMORY[0x277CC1EB8];
-        v19 = [v15 lastPathComponent];
-        v20 = [v18 documentProxyForName:v19 type:v17 MIMEType:0];
+        lastPathComponent = [v15 lastPathComponent];
+        v20 = [v18 documentProxyForName:lastPathComponent type:v17 MIMEType:0];
 
         v21 = [MEMORY[0x277CBEB98] setWithObject:v14];
         v31 = 0;
@@ -675,26 +675,26 @@ LABEL_14:
 
         if (v23)
         {
-          if (a6)
+          if (error)
           {
             v24 = v23;
-            *a6 = v23;
+            *error = v23;
           }
         }
 
         else
         {
           v25 = [v22 objectForKeyedSubscript:v14];
-          v26 = [v25 firstObject];
+          firstObject = [v25 firstObject];
 
-          if (v28[2](v28, v26))
+          if (v28[2](v28, firstObject))
           {
 
-            v15 = v29;
+            v15 = lCopy;
             goto LABEL_15;
           }
 
-          v15 = v29;
+          v15 = lCopy;
         }
       }
 
@@ -707,34 +707,34 @@ LABEL_14:
       break;
     }
 
-    v26 = 0;
+    firstObject = 0;
 LABEL_15:
-    v10 = v28;
+    testCopy = v28;
   }
 
   else
   {
-    v26 = 0;
-    v15 = v29;
+    firstObject = 0;
+    v15 = lCopy;
   }
 
-  return v26;
+  return firstObject;
 }
 
-+ (id)_applicationForHandlingDragItem:(id)a3 URL:(id)a4 error:(id *)a5
++ (id)_applicationForHandlingDragItem:(id)item URL:(id)l error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = [a3 itemProvider];
-  v10 = [v9 registeredTypeIdentifiersWithFileOptions:1];
+  lCopy = l;
+  itemProvider = [item itemProvider];
+  v10 = [itemProvider registeredTypeIdentifiersWithFileOptions:1];
   if ([v10 count])
   {
-    v11 = [a1 _applicationProxyForIdentifiers:v10 forURL:v8 passingTest:&__block_literal_global_154_0 error:a5];
+    v11 = [self _applicationProxyForIdentifiers:v10 forURL:lCopy passingTest:&__block_literal_global_154_0 error:error];
   }
 
   else
   {
-    [v9 registeredTypeIdentifiers];
+    [itemProvider registeredTypeIdentifiers];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -744,7 +744,7 @@ LABEL_15:
     {
       v14 = v13;
       v22 = v10;
-      v23 = v8;
+      v23 = lCopy;
       v15 = 0;
       v16 = *v25;
       while (2)
@@ -757,19 +757,19 @@ LABEL_15:
           }
 
           v18 = *(*(&v24 + 1) + 8 * i);
-          if ([v9 isDataAvailableImmediatelyForTypeIdentifier:{v18, v22}])
+          if ([itemProvider isDataAvailableImmediatelyForTypeIdentifier:{v18, v22}])
           {
             v28 = v18;
             v15 = 1;
             [MEMORY[0x277CBEA60] arrayWithObjects:&v28 count:1];
             v20 = v19 = v12;
-            v11 = [a1 _applicationProxyForIdentifiers:v20 forURL:v23 passingTest:&__block_literal_global_156 error:a5];
+            v11 = [self _applicationProxyForIdentifiers:v20 forURL:v23 passingTest:&__block_literal_global_156 error:error];
 
             v12 = v19;
             if (v11)
             {
               v10 = v22;
-              v8 = v23;
+              lCopy = v23;
               goto LABEL_16;
             }
           }
@@ -795,7 +795,7 @@ LABEL_15:
       }
 
       v10 = v22;
-      v8 = v23;
+      lCopy = v23;
     }
 
     else
@@ -808,28 +808,28 @@ LABEL_16:
   return v11;
 }
 
-+ (void)_getFileDropSessionWithUIDragDropSession:(id)a3 dragItem:(id)a4 systemSession:(id)a5 targetApplication:(id)a6 completion:(id)a7
++ (void)_getFileDropSessionWithUIDragDropSession:(id)session dragItem:(id)item systemSession:(id)systemSession targetApplication:(id)application completion:(id)completion
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  sessionCopy = session;
+  itemCopy = item;
+  systemSessionCopy = systemSession;
+  applicationCopy = application;
+  completionCopy = completion;
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __121__SBApplicationDropSession__getFileDropSessionWithUIDragDropSession_dragItem_systemSession_targetApplication_completion___block_invoke;
   v22[3] = &unk_2783BEEB8;
-  v23 = v12;
-  v24 = v14;
-  v27 = v16;
-  v28 = a1;
-  v25 = v13;
-  v26 = v15;
-  v17 = v15;
-  v18 = v13;
-  v19 = v14;
-  v20 = v12;
-  v21 = v16;
+  v23 = sessionCopy;
+  v24 = systemSessionCopy;
+  v27 = completionCopy;
+  selfCopy = self;
+  v25 = itemCopy;
+  v26 = applicationCopy;
+  v17 = applicationCopy;
+  v18 = itemCopy;
+  v19 = systemSessionCopy;
+  v20 = sessionCopy;
+  v21 = completionCopy;
   [v19 loadURLForItem:v18 completion:v22];
 }
 
@@ -949,25 +949,25 @@ void __121__SBApplicationDropSession__getFileDropSessionWithUIDragDropSession_dr
   }
 }
 
-+ (void)_getURLDropSessionWithUIDragDropSession:(id)a3 dragItem:(id)a4 systemSession:(id)a5 targetApplication:(id)a6 completion:(id)a7
++ (void)_getURLDropSessionWithUIDragDropSession:(id)session dragItem:(id)item systemSession:(id)systemSession targetApplication:(id)application completion:(id)completion
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  sessionCopy = session;
+  systemSessionCopy = systemSession;
+  applicationCopy = application;
+  completionCopy = completion;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __120__SBApplicationDropSession__getURLDropSessionWithUIDragDropSession_dragItem_systemSession_targetApplication_completion___block_invoke;
   v19[3] = &unk_2783BEF30;
-  v20 = v11;
-  v21 = v12;
-  v22 = v13;
-  v23 = v14;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v14;
-  [v16 loadURLForItem:a4 completion:v19];
+  v20 = sessionCopy;
+  v21 = systemSessionCopy;
+  v22 = applicationCopy;
+  v23 = completionCopy;
+  v15 = applicationCopy;
+  v16 = systemSessionCopy;
+  v17 = sessionCopy;
+  v18 = completionCopy;
+  [v16 loadURLForItem:item completion:v19];
 }
 
 void __120__SBApplicationDropSession__getURLDropSessionWithUIDragDropSession_dragItem_systemSession_targetApplication_completion___block_invoke(uint64_t a1, void *a2)
@@ -1098,25 +1098,25 @@ void __120__SBApplicationDropSession__getURLDropSessionWithUIDragDropSession_dra
   }
 }
 
-+ (void)_getUserActivityDropSessionWithUIDragDropSession:(id)a3 dragItem:(id)a4 systemSession:(id)a5 targetApplication:(id)a6 completion:(id)a7
++ (void)_getUserActivityDropSessionWithUIDragDropSession:(id)session dragItem:(id)item systemSession:(id)systemSession targetApplication:(id)application completion:(id)completion
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  sessionCopy = session;
+  systemSessionCopy = systemSession;
+  applicationCopy = application;
+  completionCopy = completion;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __129__SBApplicationDropSession__getUserActivityDropSessionWithUIDragDropSession_dragItem_systemSession_targetApplication_completion___block_invoke;
   v19[3] = &unk_2783BEFA8;
-  v20 = v11;
-  v21 = v12;
-  v22 = v13;
-  v23 = v14;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v14;
-  [v16 loadUserActivityForItem:a4 completion:v19];
+  v20 = sessionCopy;
+  v21 = systemSessionCopy;
+  v22 = applicationCopy;
+  v23 = completionCopy;
+  v15 = applicationCopy;
+  v16 = systemSessionCopy;
+  v17 = sessionCopy;
+  v18 = completionCopy;
+  [v16 loadUserActivityForItem:item completion:v19];
 }
 
 void __129__SBApplicationDropSession__getUserActivityDropSessionWithUIDragDropSession_dragItem_systemSession_targetApplication_completion___block_invoke(uint64_t a1, void *a2)
@@ -1273,32 +1273,32 @@ void __129__SBApplicationDropSession__getUserActivityDropSessionWithUIDragDropSe
   v3 = +[SBIconController sharedIconRepository];
   if ([(SBApplication *)self->_application isWebApplication])
   {
-    v4 = [(SBApplicationDropSession *)self localContext];
-    v5 = [v4 draggedSceneIdentifier];
+    localContext = [(SBApplicationDropSession *)self localContext];
+    draggedSceneIdentifier = [localContext draggedSceneIdentifier];
 
-    v6 = [SBWebApplication _webClipIdentifierFromWebAppIdentifier:v5];
+    v6 = [SBWebApplication _webClipIdentifierFromWebAppIdentifier:draggedSceneIdentifier];
     v7 = [v3 iconForIdentifier:v6];
   }
 
   else
   {
-    v5 = [(SBApplication *)self->_application bundleIdentifier];
-    v7 = [v3 applicationIconForBundleIdentifier:v5];
+    draggedSceneIdentifier = [(SBApplication *)self->_application bundleIdentifier];
+    v7 = [v3 applicationIconForBundleIdentifier:draggedSceneIdentifier];
   }
 
   return v7 != 0;
 }
 
-- (id)_initWithUIDragDropSession:(id)a3 application:(id)a4 targetContentIdentifier:(id)a5
+- (id)_initWithUIDragDropSession:(id)session application:(id)application targetContentIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sessionCopy = session;
+  applicationCopy = application;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = SBApplicationDropSession;
   v12 = [(SBApplicationDropSession *)&v18 init];
   v13 = v12;
-  if (v12 && (objc_storeStrong(&v12->_uiDragDropSession, a3), objc_storeStrong(&v13->_application, a4), v14 = [v11 copy], targetContentIdentifier = v13->_targetContentIdentifier, v13->_targetContentIdentifier = v14, targetContentIdentifier, !v10))
+  if (v12 && (objc_storeStrong(&v12->_uiDragDropSession, session), objc_storeStrong(&v13->_application, application), v14 = [identifierCopy copy], targetContentIdentifier = v13->_targetContentIdentifier, v13->_targetContentIdentifier = v14, targetContentIdentifier, !applicationCopy))
   {
     v16 = 0;
   }
@@ -1311,12 +1311,12 @@ void __129__SBApplicationDropSession__getUserActivityDropSessionWithUIDragDropSe
   return v16;
 }
 
-- (SBApplicationDropSession)initWithUIDragDropSession:(id)a3 systemSession:(id)a4 application:(id)a5 targetContentIdentifier:(id)a6
+- (SBApplicationDropSession)initWithUIDragDropSession:(id)session systemSession:(id)systemSession application:(id)application targetContentIdentifier:(id)identifier
 {
-  v11 = a4;
-  v12 = [(SBApplicationDropSession *)self _initWithUIDragDropSession:a3 application:a5 targetContentIdentifier:a6];
+  systemSessionCopy = systemSession;
+  v12 = [(SBApplicationDropSession *)self _initWithUIDragDropSession:session application:application targetContentIdentifier:identifier];
   v13 = v12;
-  if (v12 && (objc_storeStrong(v12 + 7, a4), [MEMORY[0x277CBEB98] set], v14 = objc_claimAutoreleasedReturnValue(), v15 = v13[9], v13[9] = v14, v15, (objc_msgSend(v13, "_isApplicationBoundToVisibleIcon") & 1) == 0))
+  if (v12 && (objc_storeStrong(v12 + 7, systemSession), [MEMORY[0x277CBEB98] set], v14 = objc_claimAutoreleasedReturnValue(), v15 = v13[9], v13[9] = v14, v15, (objc_msgSend(v13, "_isApplicationBoundToVisibleIcon") & 1) == 0))
   {
     v17 = SBLogMedusaDropDestination();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -1335,34 +1335,34 @@ void __129__SBApplicationDropSession__getUserActivityDropSessionWithUIDragDropSe
   return v16;
 }
 
-- (SBApplicationDropSession)initWithUIDragDropSession:(id)a3 systemSession:(id)a4 application:(id)a5 targetContentIdentifier:(id)a6 localContext:(id)a7 activity:(id)a8 activityData:(id)a9
+- (SBApplicationDropSession)initWithUIDragDropSession:(id)session systemSession:(id)systemSession application:(id)application targetContentIdentifier:(id)identifier localContext:(id)context activity:(id)activity activityData:(id)data
 {
   v52[1] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a7;
-  v46 = a8;
-  v45 = a9;
-  v18 = [(SBApplicationDropSession *)self _initWithUIDragDropSession:v15 application:a5 targetContentIdentifier:a6];
+  sessionCopy = session;
+  systemSessionCopy = systemSession;
+  contextCopy = context;
+  activityCopy = activity;
+  dataCopy = data;
+  v18 = [(SBApplicationDropSession *)self _initWithUIDragDropSession:sessionCopy application:application targetContentIdentifier:identifier];
   v19 = v18;
   if (!v18)
   {
     goto LABEL_23;
   }
 
-  objc_storeStrong(v18 + 7, a4);
-  objc_storeStrong((v19 + 64), a7);
+  objc_storeStrong(v18 + 7, systemSession);
+  objc_storeStrong((v19 + 64), context);
   v52[0] = *MEMORY[0x277D78028];
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v52 count:1];
-  v21 = [v15 hasItemsConformingToTypeIdentifiers:v20];
+  v21 = [sessionCopy hasItemsConformingToTypeIdentifiers:v20];
 
   if (v21)
   {
     *(v19 + 16) = 1;
   }
 
-  v22 = [v17 launchActions];
-  v23 = [v22 mutableCopy];
+  launchActions = [contextCopy launchActions];
+  v23 = [launchActions mutableCopy];
   v24 = v23;
   if (v23)
   {
@@ -1376,11 +1376,11 @@ void __129__SBApplicationDropSession__getUserActivityDropSessionWithUIDragDropSe
 
   v26 = v25;
 
-  v27 = [v17 launchURL];
+  launchURL = [contextCopy launchURL];
 
-  if (v27)
+  if (launchURL)
   {
-    v44 = v16;
+    v44 = systemSessionCopy;
     v49 = 0u;
     v50 = 0u;
     v47 = 0u;
@@ -1424,21 +1424,21 @@ LABEL_10:
 LABEL_16:
 
       v33 = objc_alloc(MEMORY[0x277D757D0]);
-      v34 = [v17 launchURL];
-      v35 = [v33 initWithURL:v34];
+      launchURL2 = [contextCopy launchURL];
+      v35 = [v33 initWithURL:launchURL2];
       [v28 addObject:v35];
 
-      v28 = v34;
+      v28 = launchURL2;
     }
 
-    v16 = v44;
+    systemSessionCopy = v44;
   }
 
-  v37 = v45;
-  v36 = v46;
-  if (v46 && v45)
+  v37 = dataCopy;
+  v36 = activityCopy;
+  if (activityCopy && dataCopy)
   {
-    v38 = [v19 _activityContinuationActionFromActivity:v46 activityData:v45];
+    v38 = [v19 _activityContinuationActionFromActivity:activityCopy activityData:dataCopy];
     [v26 addObject:v38];
   }
 
@@ -1451,8 +1451,8 @@ LABEL_16:
 
 LABEL_23:
     v41 = v19;
-    v37 = v45;
-    v36 = v46;
+    v37 = dataCopy;
+    v36 = activityCopy;
     goto LABEL_27;
   }
 
@@ -1468,64 +1468,64 @@ LABEL_27:
   return v41;
 }
 
-- (SBApplicationDropSession)initWithUIDragDropSession:(id)a3 systemSession:(id)a4 application:(id)a5 targetContentIdentifier:(id)a6 URL:(id)a7 requiresOpenInPlace:(BOOL)a8
+- (SBApplicationDropSession)initWithUIDragDropSession:(id)session systemSession:(id)systemSession application:(id)application targetContentIdentifier:(id)identifier URL:(id)l requiresOpenInPlace:(BOOL)place
 {
-  v8 = a8;
+  placeCopy = place;
   v61 = *MEMORY[0x277D85DE8];
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = [(SBApplicationDropSession *)self _initWithUIDragDropSession:a3 application:v16 targetContentIdentifier:a6];
+  systemSessionCopy = systemSession;
+  applicationCopy = application;
+  lCopy = l;
+  v18 = [(SBApplicationDropSession *)self _initWithUIDragDropSession:session application:applicationCopy targetContentIdentifier:identifier];
   v19 = v18;
   if (!v18)
   {
     goto LABEL_21;
   }
 
-  objc_storeStrong(v18 + 7, a4);
+  objc_storeStrong(v18 + 7, systemSession);
   v20 = MEMORY[0x277CBEB98];
-  v21 = [objc_alloc(MEMORY[0x277D757D0]) initWithURL:v17];
+  v21 = [objc_alloc(MEMORY[0x277D757D0]) initWithURL:lCopy];
   v22 = [v20 setWithObject:v21];
   v23 = *(v19 + 72);
   *(v19 + 72) = v22;
 
-  if ([v17 isFileURL])
+  if ([lCopy isFileURL])
   {
-    if (v8)
+    if (placeCopy)
     {
       v24 = dispatch_group_create();
       v25 = *(v19 + 8);
       *(v19 + 8) = v24;
 
       dispatch_group_enter(*(v19 + 8));
-      [v17 startAccessingSecurityScopedResource];
-      [v16 bundleIdentifier];
+      [lCopy startAccessingSecurityScopedResource];
+      [applicationCopy bundleIdentifier];
       v56 = v19;
-      v57 = v17;
+      v57 = lCopy;
       FPExtendBookmarkForDocumentURL();
 
-      v26 = v56;
+      lastPathComponent = v56;
     }
 
     else
     {
-      v26 = [v17 lastPathComponent];
-      v27 = [v16 info];
-      v28 = [v27 dataContainerURL];
-      v29 = [v28 URLByAppendingPathComponent:@"tmp" isDirectory:1];
+      lastPathComponent = [lCopy lastPathComponent];
+      info = [applicationCopy info];
+      dataContainerURL = [info dataContainerURL];
+      v29 = [dataContainerURL URLByAppendingPathComponent:@"tmp" isDirectory:1];
 
-      if (v29 && v26)
+      if (v29 && lastPathComponent)
       {
-        v55 = v26;
+        v55 = lastPathComponent;
         v30 = MEMORY[0x277CCACA8];
-        v31 = v17;
+        v31 = lCopy;
         v32 = v29;
         v54 = [v30 stringWithFormat:@"%@.XXXXXX", @"drag&Drop"];
         v33 = [v32 URLByAppendingPathComponent:? isDirectory:?];
         v53 = v32;
 
-        v34 = [v33 path];
-        [v34 getFileSystemRepresentation:v60 maxLength:1024];
+        path = [v33 path];
+        [path getFileSystemRepresentation:v60 maxLength:1024];
 
         if (mkdtemp(v60))
         {
@@ -1537,9 +1537,9 @@ LABEL_27:
 
         v37 = [v33 URLByAppendingPathComponent:v55];
 
-        v38 = [v31 fileSystemRepresentation];
+        fileSystemRepresentation = [v31 fileSystemRepresentation];
         v39 = 0;
-        if (!copyfile(v38, [v37 fileSystemRepresentation], 0, 0x100800Fu))
+        if (!copyfile(fileSystemRepresentation, [v37 fileSystemRepresentation], 0, 0x100800Fu))
         {
           v39 = v37;
         }
@@ -1559,8 +1559,8 @@ LABEL_27:
         }
       }
 
-      v44 = [v16 bundleIdentifier];
-      v45 = [v44 isEqualToString:@"com.apple.DocumentsApp"];
+      bundleIdentifier = [applicationCopy bundleIdentifier];
+      v45 = [bundleIdentifier isEqualToString:@"com.apple.DocumentsApp"];
 
       if (v45)
       {
@@ -1631,26 +1631,26 @@ void __128__SBApplicationDropSession_initWithUIDragDropSession_systemSession_app
   dispatch_group_leave(*(*(a1 + 32) + 8));
 }
 
-- (SBApplicationDropSession)initWithUIDragDropSession:(id)a3 systemSession:(id)a4 application:(id)a5 activity:(id)a6 activityData:(id)a7
+- (SBApplicationDropSession)initWithUIDragDropSession:(id)session systemSession:(id)systemSession application:(id)application activity:(id)activity activityData:(id)data
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  v16 = a5;
-  v17 = [v14 targetContentIdentifier];
-  v18 = [(SBApplicationDropSession *)self _initWithUIDragDropSession:v12 application:v16 targetContentIdentifier:v17];
+  sessionCopy = session;
+  systemSessionCopy = systemSession;
+  activityCopy = activity;
+  dataCopy = data;
+  applicationCopy = application;
+  targetContentIdentifier = [activityCopy targetContentIdentifier];
+  v18 = [(SBApplicationDropSession *)self _initWithUIDragDropSession:sessionCopy application:applicationCopy targetContentIdentifier:targetContentIdentifier];
 
   if (!v18)
   {
     goto LABEL_5;
   }
 
-  objc_storeStrong(v18 + 7, a4);
+  objc_storeStrong(v18 + 7, systemSession);
   v28[0] = *MEMORY[0x277D768B8];
   v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v28 count:1];
-  v20 = [v12 hasItemsConformingToTypeIdentifiers:v19];
+  v20 = [sessionCopy hasItemsConformingToTypeIdentifiers:v19];
 
   if (v20)
   {
@@ -1658,7 +1658,7 @@ void __128__SBApplicationDropSession_initWithUIDragDropSession_systemSession_app
   }
 
   v21 = MEMORY[0x277CBEB98];
-  v22 = [v18 _activityContinuationActionFromActivity:v14 activityData:v15];
+  v22 = [v18 _activityContinuationActionFromActivity:activityCopy activityData:dataCopy];
   v23 = [v21 setWithObject:v22];
   v24 = v18[9];
   v18[9] = v23;
@@ -1683,22 +1683,22 @@ LABEL_5:
   return v25;
 }
 
-- (id)_activityContinuationActionFromActivity:(id)a3 activityData:(id)a4
+- (id)_activityContinuationActionFromActivity:(id)activity activityData:(id)data
 {
   v5 = MEMORY[0x277CBEB38];
-  v6 = a4;
-  v7 = a3;
+  dataCopy = data;
+  activityCopy = activity;
   v8 = [v5 dictionaryWithCapacity:4];
-  [v8 setObject:v6 forKeyedSubscript:&unk_283371A50];
+  [v8 setObject:dataCopy forKeyedSubscript:&unk_283371A50];
 
-  v9 = [v7 activityType];
-  [v8 setObject:v9 forKeyedSubscript:&unk_283371A68];
+  activityType = [activityCopy activityType];
+  [v8 setObject:activityType forKeyedSubscript:&unk_283371A68];
 
-  v10 = [v7 activityType];
+  activityType2 = [activityCopy activityType];
 
-  [v8 setObject:v10 forKeyedSubscript:&unk_283371A80];
-  v11 = [MEMORY[0x277CBEAA8] date];
-  [v8 setObject:v11 forKeyedSubscript:&unk_283371A98];
+  [v8 setObject:activityType2 forKeyedSubscript:&unk_283371A80];
+  date = [MEMORY[0x277CBEAA8] date];
+  [v8 setObject:date forKeyedSubscript:&unk_283371A98];
 
   v12 = [objc_alloc(MEMORY[0x277D750D8]) initWithSettings:v8];
 
@@ -1719,46 +1719,46 @@ LABEL_5:
   return activationSettings;
 }
 
-- (void)calculateSceneIdentityWithSceneProvider:(id)a3 completion:(id)a4
+- (void)calculateSceneIdentityWithSceneProvider:(id)provider completion:(id)completion
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  providerCopy = provider;
+  completionCopy = completion;
   dispatch_assert_queue_V2(MEMORY[0x277D85CD0]);
-  v8 = [(SBApplicationDropSession *)self application];
-  if (!v8)
+  application = [(SBApplicationDropSession *)self application];
+  if (!application)
   {
     [SBApplicationDropSession calculateSceneIdentityWithSceneProvider:completion:];
   }
 
-  v9 = [(SBApplicationDropSession *)self localContext];
-  v10 = [v9 draggedSceneIdentifier];
+  localContext = [(SBApplicationDropSession *)self localContext];
+  draggedSceneIdentifier = [localContext draggedSceneIdentifier];
 
-  if (v10)
+  if (draggedSceneIdentifier)
   {
-    v11 = [MEMORY[0x277D0ADC0] identityForIdentifier:v10];
+    v11 = [MEMORY[0x277D0ADC0] identityForIdentifier:draggedSceneIdentifier];
     sceneIdentity = self->_sceneIdentity;
     self->_sceneIdentity = v11;
   }
 
   else
   {
-    v13 = [v8 info];
-    v14 = [v13 supportsMultiwindow];
+    info = [application info];
+    supportsMultiwindow = [info supportsMultiwindow];
 
-    if (v14)
+    if (supportsMultiwindow)
     {
-      v15 = [(SBApplicationDropSession *)self uiDragDropSession];
+      uiDragDropSession = [(SBApplicationDropSession *)self uiDragDropSession];
       v20[0] = *MEMORY[0x277D66E40];
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
-      v17 = [v15 hasItemsConformingToTypeIdentifiers:v16];
+      v17 = [uiDragDropSession hasItemsConformingToTypeIdentifiers:v16];
 
-      v18 = [v6 preferredSceneIdentityForApplication:v8 targetContentIdentifier:self->_targetContentIdentifier preferNewScene:v17 ^ 1u];
+      v18 = [providerCopy preferredSceneIdentityForApplication:application targetContentIdentifier:self->_targetContentIdentifier preferNewScene:v17 ^ 1u];
     }
 
     else
     {
-      v18 = [v6 mostRecentSceneIdentityExcludingLiveScenesForApplication:v8];
+      v18 = [providerCopy mostRecentSceneIdentityExcludingLiveScenesForApplication:application];
     }
 
     v19 = v18;
@@ -1771,16 +1771,16 @@ LABEL_5:
     self->_sceneIdentity = v19;
   }
 
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
 - (int64_t)dropZones
 {
-  v3 = [(SBApplicationDropSession *)self systemSession];
-  if (v3 && ![(SBApplicationDropSession *)self isNotificationDrag])
+  systemSession = [(SBApplicationDropSession *)self systemSession];
+  if (systemSession && ![(SBApplicationDropSession *)self isNotificationDrag])
   {
-    v5 = [(SBApplicationDropSession *)self localContext];
-    v4 = [v5 startLocation] != 5;
+    localContext = [(SBApplicationDropSession *)self localContext];
+    v4 = [localContext startLocation] != 5;
   }
 
   else

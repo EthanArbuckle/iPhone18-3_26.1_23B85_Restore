@@ -1,13 +1,13 @@
 @interface GKScoreParser
-+ (id)formattedDifferenceBetweenFirstScore:(id)a3 secondScore:(id)a4;
-- (void)parseScore:(id)a3;
++ (id)formattedDifferenceBetweenFirstScore:(id)score secondScore:(id)secondScore;
+- (void)parseScore:(id)score;
 @end
 
 @implementation GKScoreParser
 
-- (void)parseScore:(id)a3
+- (void)parseScore:(id)score
 {
-  v4 = a3;
+  scoreCopy = score;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2020000000;
@@ -31,7 +31,7 @@
   v7 = objc_opt_new();
   [(GKScoreParser *)self setNumericSeparators:v7];
 
-  v8 = [v4 length];
+  v8 = [scoreCopy length];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __28__GKScoreParser_parseScore___block_invoke;
@@ -41,7 +41,7 @@
   v13 = v14;
   v9[4] = self;
   v10 = @" ";
-  [v4 enumerateSubstringsInRange:0 options:v8 usingBlock:{2, v9}];
+  [scoreCopy enumerateSubstringsInRange:0 options:v8 usingBlock:{2, v9}];
 
   _Block_object_dispose(v14, 8);
   _Block_object_dispose(v16, 8);
@@ -224,17 +224,17 @@ LABEL_42:
 LABEL_43:
 }
 
-+ (id)formattedDifferenceBetweenFirstScore:(id)a3 secondScore:(id)a4
++ (id)formattedDifferenceBetweenFirstScore:(id)score secondScore:(id)secondScore
 {
-  v5 = a3;
-  v6 = a4;
+  scoreCopy = score;
+  secondScoreCopy = secondScore;
   v7 = objc_opt_new();
-  v8 = [v5 formattedScore];
-  [v7 parseScore:v8];
+  formattedScore = [scoreCopy formattedScore];
+  [v7 parseScore:formattedScore];
 
   v9 = objc_opt_new();
-  v10 = [v6 formattedScore];
-  [v9 parseScore:v10];
+  formattedScore2 = [secondScoreCopy formattedScore];
+  [v9 parseScore:formattedScore2];
 
   if ([v7 error] & 1) != 0 || (objc_msgSend(v9, "error"))
   {
@@ -242,24 +242,24 @@ LABEL_43:
     goto LABEL_63;
   }
 
-  v12 = [v5 score];
-  v13 = [v6 score];
-  if (v12 - v13 >= 0)
+  score = [scoreCopy score];
+  score2 = [secondScoreCopy score];
+  if (score - score2 >= 0)
   {
-    v14 = v12 - v13;
+    v14 = score - score2;
   }
 
   else
   {
-    v14 = v13 - v12;
+    v14 = score2 - score;
   }
 
-  if (v12 != v13)
+  if (score != score2)
   {
-    v16 = [v7 numericSeparators];
-    v17 = [v16 count];
-    v18 = [v9 numericSeparators];
-    if (v17 >= [v18 count])
+    numericSeparators = [v7 numericSeparators];
+    v17 = [numericSeparators count];
+    numericSeparators2 = [v9 numericSeparators];
+    if (v17 >= [numericSeparators2 count])
     {
       v19 = v7;
     }
@@ -269,10 +269,10 @@ LABEL_43:
       v19 = v9;
     }
 
-    v20 = [v19 numericSeparators];
+    numericSeparators3 = [v19 numericSeparators];
 
-    v21 = [v7 colonCount];
-    if (v21 >= [v9 colonCount])
+    colonCount = [v7 colonCount];
+    if (colonCount >= [v9 colonCount])
     {
       v22 = v7;
     }
@@ -282,9 +282,9 @@ LABEL_43:
       v22 = v9;
     }
 
-    v23 = [v22 colonCount];
-    v24 = [v7 precision];
-    if (v24 >= [v9 precision])
+    colonCount2 = [v22 colonCount];
+    precision = [v7 precision];
+    if (precision >= [v9 precision])
     {
       v25 = v7;
     }
@@ -294,12 +294,12 @@ LABEL_43:
       v25 = v9;
     }
 
-    v26 = [v25 precision];
-    if (v23 >= 1)
+    precision2 = [v25 precision];
+    if (colonCount2 >= 1)
     {
-      if ([v20 count] < 2)
+      if ([numericSeparators3 count] < 2)
       {
-        if (v23 == 1)
+        if (colonCount2 == 1)
         {
           [MEMORY[0x277CCACA8] stringWithFormat:@"%ld:%02ld", v14 / 0x3C, v14 % 0x3C, v52];
         }
@@ -316,26 +316,26 @@ LABEL_43:
       }
       v15 = ;
 LABEL_43:
-      v39 = [v5 score];
-      if (v39 >= 0)
+      score3 = [scoreCopy score];
+      if (score3 >= 0)
       {
-        v40 = v39;
+        v40 = score3;
       }
 
       else
       {
-        v40 = -v39;
+        v40 = -score3;
       }
 
-      v41 = [v6 score];
-      if (v41 >= 0)
+      score4 = [secondScoreCopy score];
+      if (score4 >= 0)
       {
-        v42 = v41;
+        v42 = score4;
       }
 
       else
       {
-        v42 = -v41;
+        v42 = -score4;
       }
 
       if (v40 >= v42)
@@ -348,27 +348,27 @@ LABEL_43:
         v43 = v9;
       }
 
-      v44 = [v43 prefix];
-      v45 = [v5 score];
-      if (v45 >= 0)
+      prefix = [v43 prefix];
+      score5 = [scoreCopy score];
+      if (score5 >= 0)
       {
-        v46 = v45;
+        v46 = score5;
       }
 
       else
       {
-        v46 = -v45;
+        v46 = -score5;
       }
 
-      v47 = [v6 score];
-      if (v47 >= 0)
+      score6 = [secondScoreCopy score];
+      if (score6 >= 0)
       {
-        v48 = v47;
+        v48 = score6;
       }
 
       else
       {
-        v48 = -v47;
+        v48 = -score6;
       }
 
       if (v46 >= v48)
@@ -381,23 +381,23 @@ LABEL_43:
         v49 = v9;
       }
 
-      v50 = [v49 suffix];
-      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@%@", v44, v15, v50];
+      suffix = [v49 suffix];
+      v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@%@", prefix, v15, suffix];
 
       goto LABEL_62;
     }
 
-    v27 = v26;
-    v28 = [v7 numericSeparators];
-    if ([v28 count])
+    v27 = precision2;
+    numericSeparators4 = [v7 numericSeparators];
+    if ([numericSeparators4 count])
     {
-      v29 = [v9 numericSeparators];
-      v30 = [v29 count];
+      numericSeparators5 = [v9 numericSeparators];
+      v30 = [numericSeparators5 count];
 
       if (v30)
       {
-        v31 = [v20 objectAtIndexedSubscript:{objc_msgSend(v20, "count") - 1}];
-        v32 = [v20 count];
+        v31 = [numericSeparators3 objectAtIndexedSubscript:{objc_msgSend(numericSeparators3, "count") - 1}];
+        v32 = [numericSeparators3 count];
         if (v27 == 3 && v32 == 1)
         {
           v34 = 0;
@@ -420,9 +420,9 @@ LABEL_43:
     v31 = 0;
 LABEL_35:
     v35 = objc_opt_new();
-    if ([v20 count])
+    if ([numericSeparators3 count])
     {
-      v36 = [v20 objectAtIndexedSubscript:0];
+      v36 = [numericSeparators3 objectAtIndexedSubscript:0];
       [v35 setGroupingSeparator:v36];
     }
 

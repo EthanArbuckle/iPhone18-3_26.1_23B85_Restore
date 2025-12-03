@@ -1,17 +1,17 @@
 @interface RAPAuxiliaryControlWatch
-- (BOOL)isSameControlAsControl:(id)a3;
-- (RAPAuxiliaryControlWatch)initWithPropertiesOfDevice:(id)a3;
+- (BOOL)isSameControlAsControl:(id)control;
+- (RAPAuxiliaryControlWatch)initWithPropertiesOfDevice:(id)device;
 @end
 
 @implementation RAPAuxiliaryControlWatch
 
-- (BOOL)isSameControlAsControl:(id)a3
+- (BOOL)isSameControlAsControl:(id)control
 {
-  v4 = a3;
+  controlCopy = control;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = controlCopy;
   }
 
   else
@@ -34,9 +34,9 @@
   return v8;
 }
 
-- (RAPAuxiliaryControlWatch)initWithPropertiesOfDevice:(id)a3
+- (RAPAuxiliaryControlWatch)initWithPropertiesOfDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v19.receiver = self;
   v19.super_class = RAPAuxiliaryControlWatch;
   v5 = [(RAPAuxiliaryControlWatch *)&v19 init];
@@ -45,16 +45,16 @@
     goto LABEL_11;
   }
 
-  v6 = [v4 valueForProperty:NRDevicePropertySerialNumber];
+  v6 = [deviceCopy valueForProperty:NRDevicePropertySerialNumber];
   serialNumber = v5->_serialNumber;
   v5->_serialNumber = v6;
 
-  v8 = [v4 valueForProperty:NRDevicePropertyIsActive];
+  v8 = [deviceCopy valueForProperty:NRDevicePropertyIsActive];
   v5->_active = [v8 BOOLValue];
 
-  v9 = [v4 valueForProperty:NRDevicePropertyProductType];
-  v10 = [v4 valueForProperty:NRDevicePropertySystemVersion];
-  v11 = [v4 valueForProperty:NRDevicePropertySystemBuildVersion];
+  v9 = [deviceCopy valueForProperty:NRDevicePropertyProductType];
+  v10 = [deviceCopy valueForProperty:NRDevicePropertySystemVersion];
+  v11 = [deviceCopy valueForProperty:NRDevicePropertySystemBuildVersion];
   v12 = v11;
   if (v9)
   {

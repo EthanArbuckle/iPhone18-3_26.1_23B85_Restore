@@ -1,5 +1,5 @@
 @interface PSOrchestratorStatisticsDelegate
-- (PSOrchestratorStatisticsDelegate)initWithHistoryCapacity:(unint64_t)a3 getTime:(id)a4;
+- (PSOrchestratorStatisticsDelegate)initWithHistoryCapacity:(unint64_t)capacity getTime:(id)time;
 - (id)statistics;
 - (void)dealloc;
 - (void)didEndOrchestration;
@@ -7,9 +7,9 @@
 
 @implementation PSOrchestratorStatisticsDelegate
 
-- (PSOrchestratorStatisticsDelegate)initWithHistoryCapacity:(unint64_t)a3 getTime:(id)a4
+- (PSOrchestratorStatisticsDelegate)initWithHistoryCapacity:(unint64_t)capacity getTime:(id)time
 {
-  v6 = a4;
+  timeCopy = time;
   v13.receiver = self;
   v13.super_class = PSOrchestratorStatisticsDelegate;
   v7 = [(PSOrchestratorStatisticsDelegate *)&v13 init];
@@ -19,9 +19,9 @@
     v7->_allTimeStatistics.numberOfOrchestrations = 0;
     *&v7->_allTimeStatistics.max.start = 0u;
     *&v7->_allTimeStatistics.max.orchestrationNumber = 0u;
-    v7->_recentHistoryBufferCapacity = a3;
-    v7->_recentHistory = malloc_type_calloc(a3, 0x10uLL, 0x1000040451B5BE8uLL);
-    v9 = objc_retainBlock(v6);
+    v7->_recentHistoryBufferCapacity = capacity;
+    v7->_recentHistory = malloc_type_calloc(capacity, 0x10uLL, 0x1000040451B5BE8uLL);
+    v9 = objc_retainBlock(timeCopy);
     getTime = v8->_getTime;
     v8->_getTime = v9;
 

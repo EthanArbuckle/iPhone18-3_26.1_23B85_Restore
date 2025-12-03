@@ -1,27 +1,27 @@
 @interface UNCKeyedDataStoreRepository
-- (BOOL)_saveObjects:(id)a3 atPath:(id)a4;
-- (BOOL)_useReplacementToImport:(id)a3 into:(id)a4;
-- (UNCKeyedDataStoreRepository)initWithDirectory:(id)a3 fileName:(id)a4 pathExtension:(id)a5 librarian:(id)a6 repositoryProtectionStrategy:(id)a7 objectIdentifierKey:(id)a8 maxObjectsPerKey:(int64_t)a9;
-- (id)_addObject:(id)a3 toObjects:(id)a4 mustReplace:(BOOL)a5 receipt:(id *)a6;
-- (id)_dataAtPath:(id)a3;
-- (id)_directoryForKey:(id)a3;
-- (id)_objectsAtPath:(id)a3;
-- (id)_objectsForData:(id)a3 identifier:(id)a4;
-- (id)_objectsPassingTest:(id)a3 atPath:(id)a4;
-- (id)_pathForKey:(id)a3;
-- (id)_removeObjectsPassingTest:(id)a3 atPath:(id)a4;
+- (BOOL)_saveObjects:(id)objects atPath:(id)path;
+- (BOOL)_useReplacementToImport:(id)import into:(id)into;
+- (UNCKeyedDataStoreRepository)initWithDirectory:(id)directory fileName:(id)name pathExtension:(id)extension librarian:(id)librarian repositoryProtectionStrategy:(id)strategy objectIdentifierKey:(id)key maxObjectsPerKey:(int64_t)perKey;
+- (id)_addObject:(id)object toObjects:(id)objects mustReplace:(BOOL)replace receipt:(id *)receipt;
+- (id)_dataAtPath:(id)path;
+- (id)_directoryForKey:(id)key;
+- (id)_objectsAtPath:(id)path;
+- (id)_objectsForData:(id)data identifier:(id)identifier;
+- (id)_objectsPassingTest:(id)test atPath:(id)path;
+- (id)_pathForKey:(id)key;
+- (id)_removeObjectsPassingTest:(id)test atPath:(id)path;
 - (id)allKeys;
-- (id)objectsForKey:(id)a3;
-- (id)objectsPassingTest:(id)a3 forKey:(id)a4;
-- (id)removeObjectsPassingTest:(id)a3 forKey:(id)a4;
-- (void)_removeItemAtPath:(id)a3;
-- (void)_setObjects:(id)a3 atPath:(id)a4;
-- (void)migrateStoreAtPath:(id)a3 forKey:(id)a4;
+- (id)objectsForKey:(id)key;
+- (id)objectsPassingTest:(id)test forKey:(id)key;
+- (id)removeObjectsPassingTest:(id)test forKey:(id)key;
+- (void)_removeItemAtPath:(id)path;
+- (void)_setObjects:(id)objects atPath:(id)path;
+- (void)migrateStoreAtPath:(id)path forKey:(id)key;
 - (void)protectionStateChanged;
-- (void)removeAllObjectsForKey:(id)a3;
-- (void)removeStoreForKey:(id)a3;
-- (void)removeStoreForKey:(id)a3 overridePathExtension:(id)a4;
-- (void)setObjects:(id)a3 forKey:(id)a4;
+- (void)removeAllObjectsForKey:(id)key;
+- (void)removeStoreForKey:(id)key;
+- (void)removeStoreForKey:(id)key overridePathExtension:(id)extension;
+- (void)setObjects:(id)objects forKey:(id)key;
 @end
 
 @implementation UNCKeyedDataStoreRepository
@@ -41,38 +41,38 @@
   }
 }
 
-- (UNCKeyedDataStoreRepository)initWithDirectory:(id)a3 fileName:(id)a4 pathExtension:(id)a5 librarian:(id)a6 repositoryProtectionStrategy:(id)a7 objectIdentifierKey:(id)a8 maxObjectsPerKey:(int64_t)a9
+- (UNCKeyedDataStoreRepository)initWithDirectory:(id)directory fileName:(id)name pathExtension:(id)extension librarian:(id)librarian repositoryProtectionStrategy:(id)strategy objectIdentifierKey:(id)key maxObjectsPerKey:(int64_t)perKey
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  directoryCopy = directory;
+  nameCopy = name;
+  extensionCopy = extension;
+  librarianCopy = librarian;
+  strategyCopy = strategy;
+  keyCopy = key;
   v31.receiver = self;
   v31.super_class = UNCKeyedDataStoreRepository;
   v21 = [(UNCKeyedDataStoreRepository *)&v31 init];
   if (v21)
   {
-    v22 = [v15 copy];
+    v22 = [directoryCopy copy];
     directory = v21->_directory;
     v21->_directory = v22;
 
-    v24 = [v16 copy];
+    v24 = [nameCopy copy];
     fileName = v21->_fileName;
     v21->_fileName = v24;
 
-    v26 = [v17 copy];
+    v26 = [extensionCopy copy];
     pathExtension = v21->_pathExtension;
     v21->_pathExtension = v26;
 
-    objc_storeStrong(&v21->_librarian, a6);
-    objc_storeStrong(&v21->_protectionStrategy, a7);
-    v28 = [v20 copy];
+    objc_storeStrong(&v21->_librarian, librarian);
+    objc_storeStrong(&v21->_protectionStrategy, strategy);
+    v28 = [keyCopy copy];
     objectIdentifierKey = v21->_objectIdentifierKey;
     v21->_objectIdentifierKey = v28;
 
-    v21->_maxObjectsPerKey = a9;
+    v21->_maxObjectsPerKey = perKey;
   }
 
   return v21;
@@ -81,12 +81,12 @@
 - (id)allKeys
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v27 = [MEMORY[0x1E695DF70] array];
-  v3 = [MEMORY[0x1E696AC08] defaultManager];
+  array = [MEMORY[0x1E695DF70] array];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v4 = [MEMORY[0x1E695DFF8] fileURLWithPath:self->_directory];
   v37[0] = *MEMORY[0x1E695DB78];
   v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:1];
-  v6 = [v3 enumeratorAtURL:v4 includingPropertiesForKeys:v5 options:1 errorHandler:&__block_literal_global_22];
+  v6 = [defaultManager enumeratorAtURL:v4 includingPropertiesForKeys:v5 options:1 errorHandler:&__block_literal_global_22];
 
   v30 = 0u;
   v31 = 0u;
@@ -110,22 +110,22 @@
         v12 = *(*(&v28 + 1) + 8 * i);
         v13 = objc_autoreleasePoolPush();
         protectionStrategy = self->_protectionStrategy;
-        v15 = [v12 path];
-        LOBYTE(protectionStrategy) = [(UNSContentProtectionStrategy *)protectionStrategy dataIsAvailableAtPath:v15];
+        path = [v12 path];
+        LOBYTE(protectionStrategy) = [(UNSContentProtectionStrategy *)protectionStrategy dataIsAvailableAtPath:path];
 
         if (protectionStrategy)
         {
           librarian = self->_librarian;
-          v17 = [v12 lastPathComponent];
-          v18 = [(UNCBundleLibrarian *)librarian bundleIdentifierForUniqueIdentifier:v17];
+          lastPathComponent = [v12 lastPathComponent];
+          v18 = [(UNCBundleLibrarian *)librarian bundleIdentifierForUniqueIdentifier:lastPathComponent];
 
           v19 = *MEMORY[0x1E6983368];
           if (os_log_type_enabled(*MEMORY[0x1E6983368], OS_LOG_TYPE_DEFAULT))
           {
             v20 = v19;
-            v21 = [v12 path];
+            path2 = [v12 path];
             *buf = 138412546;
-            v33 = v21;
+            v33 = path2;
             v34 = 2112;
             v35 = v18;
             _os_log_impl(&dword_1DA7A9000, v20, OS_LOG_TYPE_DEFAULT, "UNCKeyedDataStoreRepository allKeys: Loading: %@ bundleIdentifier: %@", buf, 0x16u);
@@ -133,7 +133,7 @@
 
           if (v18)
           {
-            [v27 addObject:v18];
+            [array addObject:v18];
           }
         }
 
@@ -143,9 +143,9 @@
           if (os_log_type_enabled(*MEMORY[0x1E6983368], OS_LOG_TYPE_DEFAULT))
           {
             v23 = v22;
-            v24 = [v12 path];
+            path3 = [v12 path];
             *buf = 138412290;
-            v33 = v24;
+            v33 = path3;
             _os_log_impl(&dword_1DA7A9000, v23, OS_LOG_TYPE_DEFAULT, "UNCKeyedDataStoreRepository allKeys: !dataIsAvailableAtPath: %@", buf, 0xCu);
           }
         }
@@ -161,7 +161,7 @@
 
   v25 = *MEMORY[0x1E69E9840];
 
-  return v27;
+  return array;
 }
 
 uint64_t __38__UNCKeyedDataStoreRepository_allKeys__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -183,39 +183,39 @@ uint64_t __38__UNCKeyedDataStoreRepository_allKeys__block_invoke(uint64_t a1, vo
   return 1;
 }
 
-- (id)_directoryForKey:(id)a3
+- (id)_directoryForKey:(id)key
 {
-  v4 = [(UNCBundleLibrarian *)self->_librarian uniqueIdentifierForBundleIdentifier:a3];
+  v4 = [(UNCBundleLibrarian *)self->_librarian uniqueIdentifierForBundleIdentifier:key];
   v5 = [v4 stringByReplacingOccurrencesOfString:@"/" withString:&stru_1F563BF08];
   v6 = [(NSString *)self->_directory stringByAppendingPathComponent:v5];
 
   return v6;
 }
 
-- (id)_pathForKey:(id)a3
+- (id)_pathForKey:(id)key
 {
-  v4 = [(UNCKeyedDataStoreRepository *)self _directoryForKey:a3];
+  v4 = [(UNCKeyedDataStoreRepository *)self _directoryForKey:key];
   v5 = [v4 stringByAppendingPathComponent:self->_fileName];
   v6 = [v5 stringByAppendingPathExtension:self->_pathExtension];
 
   return v6;
 }
 
-- (id)objectsForKey:(id)a3
+- (id)objectsForKey:(id)key
 {
-  v4 = [(UNCKeyedDataStoreRepository *)self _pathForKey:a3];
+  v4 = [(UNCKeyedDataStoreRepository *)self _pathForKey:key];
   v5 = [(UNCKeyedDataStoreRepository *)self _objectsAtPath:v4];
 
   return v5;
 }
 
-- (id)_objectsAtPath:(id)a3
+- (id)_objectsAtPath:(id)path
 {
-  v4 = a3;
-  v5 = [(UNCKeyedDataStoreRepository *)self _dataAtPath:v4];
+  pathCopy = path;
+  v5 = [(UNCKeyedDataStoreRepository *)self _dataAtPath:pathCopy];
   if (v5)
   {
-    v6 = [(UNCKeyedDataStoreRepository *)self _objectsForData:v5 identifier:v4];
+    v6 = [(UNCKeyedDataStoreRepository *)self _objectsForData:v5 identifier:pathCopy];
   }
 
   else
@@ -226,13 +226,13 @@ uint64_t __38__UNCKeyedDataStoreRepository_allKeys__block_invoke(uint64_t a1, vo
   return v6;
 }
 
-- (id)objectsPassingTest:(id)a3 forKey:(id)a4
+- (id)objectsPassingTest:(id)test forKey:(id)key
 {
-  if (a3)
+  if (test)
   {
-    v6 = a3;
-    v7 = [(UNCKeyedDataStoreRepository *)self _pathForKey:a4];
-    v8 = [(UNCKeyedDataStoreRepository *)self _objectsPassingTest:v6 atPath:v7];
+    testCopy = test;
+    v7 = [(UNCKeyedDataStoreRepository *)self _pathForKey:key];
+    v8 = [(UNCKeyedDataStoreRepository *)self _objectsPassingTest:testCopy atPath:v7];
   }
 
   else
@@ -243,15 +243,15 @@ uint64_t __38__UNCKeyedDataStoreRepository_allKeys__block_invoke(uint64_t a1, vo
   return v8;
 }
 
-- (id)_objectsPassingTest:(id)a3 atPath:(id)a4
+- (id)_objectsPassingTest:(id)test atPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UNCKeyedDataStoreRepository *)self _dataAtPath:v7];
+  testCopy = test;
+  pathCopy = path;
+  v8 = [(UNCKeyedDataStoreRepository *)self _dataAtPath:pathCopy];
   if (v8)
   {
-    v9 = [(UNCKeyedDataStoreRepository *)self _objectsForData:v8 identifier:v7];
-    v10 = [v9 bs_filter:v6];
+    v9 = [(UNCKeyedDataStoreRepository *)self _objectsForData:v8 identifier:pathCopy];
+    v10 = [v9 bs_filter:testCopy];
   }
 
   else
@@ -262,11 +262,11 @@ uint64_t __38__UNCKeyedDataStoreRepository_allKeys__block_invoke(uint64_t a1, vo
   return v10;
 }
 
-- (id)_objectsForData:(id)a3 identifier:(id)a4
+- (id)_objectsForData:(id)data identifier:(id)identifier
 {
   v28 = *MEMORY[0x1E69E9840];
-  v26 = a3;
-  v25 = a4;
+  dataCopy = data;
+  identifierCopy = identifier;
   context = objc_autoreleasePoolPush();
   v22 = MEMORY[0x1E696ACD0];
   v24 = MEMORY[0x1E695DFD8];
@@ -282,7 +282,7 @@ uint64_t __38__UNCKeyedDataStoreRepository_allKeys__block_invoke(uint64_t a1, vo
   v12 = objc_opt_class();
   v13 = objc_opt_class();
   v14 = [v24 setWithObjects:{v23, v21, v5, v6, v7, v8, v9, v10, v11, v12, v13, objc_opt_class(), 0}];
-  v15 = [v22 unarchivedObjectOfClasses:v14 fromData:v26 error:0];
+  v15 = [v22 unarchivedObjectOfClasses:v14 fromData:dataCopy error:0];
 
   objc_autoreleasePoolPop(context);
   if (v15)
@@ -294,7 +294,7 @@ uint64_t __38__UNCKeyedDataStoreRepository_allKeys__block_invoke(uint64_t a1, vo
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         v17 = objc_opt_class();
-        [(UNCKeyedDataStoreRepository *)v17 _objectsForData:v25 identifier:v27, v16];
+        [(UNCKeyedDataStoreRepository *)v17 _objectsForData:identifierCopy identifier:v27, v16];
       }
 
       v15 = 0;
@@ -306,45 +306,45 @@ uint64_t __38__UNCKeyedDataStoreRepository_allKeys__block_invoke(uint64_t a1, vo
   return v15;
 }
 
-- (id)_dataAtPath:(id)a3
+- (id)_dataAtPath:(id)path
 {
-  v4 = a3;
-  v5 = [(UNSContentProtectionStrategy *)self->_protectionStrategy dataAtPath:v4];
+  pathCopy = path;
+  v5 = [(UNSContentProtectionStrategy *)self->_protectionStrategy dataAtPath:pathCopy];
   if (!v5)
   {
     v6 = *MEMORY[0x1E6983368];
     if (os_log_type_enabled(*MEMORY[0x1E6983368], OS_LOG_TYPE_ERROR))
     {
-      [(UNCKeyedDictionaryRepository *)v4 _dataAtPath:v6];
+      [(UNCKeyedDictionaryRepository *)pathCopy _dataAtPath:v6];
     }
   }
 
   return v5;
 }
 
-- (BOOL)_saveObjects:(id)a3 atPath:(id)a4
+- (BOOL)_saveObjects:(id)objects atPath:(id)path
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  objectsCopy = objects;
+  pathCopy = path;
   v8 = MEMORY[0x1E6983368];
   v9 = *MEMORY[0x1E6983368];
   if (os_log_type_enabled(*MEMORY[0x1E6983368], OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
     *buf = 138543618;
-    v28 = v7;
+    v28 = pathCopy;
     v29 = 2048;
-    v30 = [v6 count];
+    v30 = [objectsCopy count];
     _os_log_impl(&dword_1DA7A9000, v10, OS_LOG_TYPE_DEFAULT, "Saving file at %{public}@ with %lu items", buf, 0x16u);
   }
 
-  v11 = [MEMORY[0x1E696AC08] defaultManager];
-  v12 = [v7 stringByDeletingLastPathComponent];
-  if (([v11 fileExistsAtPath:v12] & 1) == 0)
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  stringByDeletingLastPathComponent = [pathCopy stringByDeletingLastPathComponent];
+  if (([defaultManager fileExistsAtPath:stringByDeletingLastPathComponent] & 1) == 0)
   {
     v26 = 0;
-    v13 = [v11 createDirectoryAtPath:v12 withIntermediateDirectories:1 attributes:0 error:&v26];
+    v13 = [defaultManager createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v26];
     v14 = v26;
     if ((v13 & 1) == 0 && os_log_type_enabled(*v8, OS_LOG_TYPE_ERROR))
     {
@@ -353,13 +353,13 @@ uint64_t __38__UNCKeyedDataStoreRepository_allKeys__block_invoke(uint64_t a1, vo
   }
 
   v25 = 0;
-  v15 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:v6 requiringSecureCoding:1 error:&v25];
+  v15 = [MEMORY[0x1E696ACC8] archivedDataWithRootObject:objectsCopy requiringSecureCoding:1 error:&v25];
   v16 = v25;
   if (v15)
   {
     protectionStrategy = self->_protectionStrategy;
     v24 = v16;
-    v18 = [(UNSContentProtectionStrategy *)protectionStrategy writeData:v15 atPath:v7 error:&v24];
+    v18 = [(UNSContentProtectionStrategy *)protectionStrategy writeData:v15 atPath:pathCopy error:&v24];
     v19 = v24;
 
     if (v18)
@@ -395,19 +395,19 @@ uint64_t __38__UNCKeyedDataStoreRepository_allKeys__block_invoke(uint64_t a1, vo
   return v20;
 }
 
-- (void)removeAllObjectsForKey:(id)a3
+- (void)removeAllObjectsForKey:(id)key
 {
-  v4 = [(UNCKeyedDataStoreRepository *)self _pathForKey:a3];
+  v4 = [(UNCKeyedDataStoreRepository *)self _pathForKey:key];
   [(UNCKeyedDataStoreRepository *)self _saveObjects:MEMORY[0x1E695E0F0] atPath:v4];
 }
 
-- (id)removeObjectsPassingTest:(id)a3 forKey:(id)a4
+- (id)removeObjectsPassingTest:(id)test forKey:(id)key
 {
-  if (a3)
+  if (test)
   {
-    v6 = a3;
-    v7 = [(UNCKeyedDataStoreRepository *)self _pathForKey:a4];
-    v8 = [(UNCKeyedDataStoreRepository *)self _removeObjectsPassingTest:v6 atPath:v7];
+    testCopy = test;
+    v7 = [(UNCKeyedDataStoreRepository *)self _pathForKey:key];
+    v8 = [(UNCKeyedDataStoreRepository *)self _removeObjectsPassingTest:testCopy atPath:v7];
   }
 
   else
@@ -418,12 +418,12 @@ uint64_t __38__UNCKeyedDataStoreRepository_allKeys__block_invoke(uint64_t a1, vo
   return v8;
 }
 
-- (id)_removeObjectsPassingTest:(id)a3 atPath:(id)a4
+- (id)_removeObjectsPassingTest:(id)test atPath:(id)path
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v19 = self;
-  v20 = a4;
+  testCopy = test;
+  selfCopy = self;
+  pathCopy = path;
   v7 = [(UNCKeyedDataStoreRepository *)self _objectsAtPath:?];
   v21 = 0u;
   v22 = 0u;
@@ -446,32 +446,32 @@ uint64_t __38__UNCKeyedDataStoreRepository_allKeys__block_invoke(uint64_t a1, vo
         }
 
         v14 = *(*(&v21 + 1) + 8 * i);
-        if (v6[2](v6, v14))
+        if (testCopy[2](testCopy, v14))
         {
           if (v11)
           {
-            v15 = v11;
+            array = v11;
           }
 
           else
           {
-            v15 = [MEMORY[0x1E695DF70] array];
-            v11 = v15;
+            array = [MEMORY[0x1E695DF70] array];
+            v11 = array;
           }
         }
 
         else if (v10)
         {
-          v15 = v10;
+          array = v10;
         }
 
         else
         {
-          v15 = [MEMORY[0x1E695DF70] array];
-          v10 = v15;
+          array = [MEMORY[0x1E695DF70] array];
+          v10 = array;
         }
 
-        [v15 addObject:v14];
+        [array addObject:v14];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -486,7 +486,7 @@ uint64_t __38__UNCKeyedDataStoreRepository_allKeys__block_invoke(uint64_t a1, vo
     v11 = 0;
   }
 
-  [(UNCKeyedDataStoreRepository *)v19 _saveObjects:v10 atPath:v20];
+  [(UNCKeyedDataStoreRepository *)selfCopy _saveObjects:v10 atPath:pathCopy];
   v16 = [UNCDataStoreReceipt receiptWithAddedObjects:0 replacedObjects:0 replacementObjects:0 removedObjects:v11];
 
   v17 = *MEMORY[0x1E69E9840];
@@ -494,19 +494,19 @@ uint64_t __38__UNCKeyedDataStoreRepository_allKeys__block_invoke(uint64_t a1, vo
   return v16;
 }
 
-- (void)setObjects:(id)a3 forKey:(id)a4
+- (void)setObjects:(id)objects forKey:(id)key
 {
-  v6 = a3;
-  v7 = [(UNCKeyedDataStoreRepository *)self _pathForKey:a4];
-  [(UNCKeyedDataStoreRepository *)self _setObjects:v6 atPath:v7];
+  objectsCopy = objects;
+  v7 = [(UNCKeyedDataStoreRepository *)self _pathForKey:key];
+  [(UNCKeyedDataStoreRepository *)self _setObjects:objectsCopy atPath:v7];
 }
 
-- (void)_setObjects:(id)a3 atPath:(id)a4
+- (void)_setObjects:(id)objects atPath:(id)path
 {
   v26 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 mutableCopy];
+  objectsCopy = objects;
+  pathCopy = path;
+  v8 = [objectsCopy mutableCopy];
   v9 = [v8 count];
   maxObjectsPerKey = self->_maxObjectsPerKey;
   if (v9 > maxObjectsPerKey)
@@ -524,13 +524,13 @@ uint64_t __38__UNCKeyedDataStoreRepository_allKeys__block_invoke(uint64_t a1, vo
     v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (!v12)
     {
-      v14 = v11;
+      array = v11;
       goto LABEL_18;
     }
 
     v13 = v12;
-    v20 = v6;
-    v14 = 0;
+    v20 = objectsCopy;
+    array = 0;
     v15 = *v22;
     do
     {
@@ -544,12 +544,12 @@ uint64_t __38__UNCKeyedDataStoreRepository_allKeys__block_invoke(uint64_t a1, vo
         v17 = *(*(&v21 + 1) + 8 * i);
         if (((*(self->_recordValidationTest + 2))() & 1) == 0)
         {
-          if (!v14)
+          if (!array)
           {
-            v14 = [MEMORY[0x1E695DF70] array];
+            array = [MEMORY[0x1E695DF70] array];
           }
 
-          [v14 addObject:v17];
+          [array addObject:v17];
         }
       }
 
@@ -558,35 +558,35 @@ uint64_t __38__UNCKeyedDataStoreRepository_allKeys__block_invoke(uint64_t a1, vo
 
     while (v13);
 
-    v6 = v20;
-    if (v14)
+    objectsCopy = v20;
+    if (array)
     {
-      [v11 removeObjectsInArray:v14];
+      [v11 removeObjectsInArray:array];
 LABEL_18:
     }
   }
 
   v18 = objc_autoreleasePoolPush();
-  [(UNCKeyedDataStoreRepository *)self _saveObjects:v8 atPath:v7];
+  [(UNCKeyedDataStoreRepository *)self _saveObjects:v8 atPath:pathCopy];
   objc_autoreleasePoolPop(v18);
 
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_addObject:(id)a3 toObjects:(id)a4 mustReplace:(BOOL)a5 receipt:(id *)a6
+- (id)_addObject:(id)object toObjects:(id)objects mustReplace:(BOOL)replace receipt:(id *)receipt
 {
-  LODWORD(v41) = a5;
+  LODWORD(v41) = replace;
   v55 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x1E695DF70] array];
-  v43 = v8;
-  [v10 addObject:v8];
+  objectCopy = object;
+  objectsCopy = objects;
+  array = [MEMORY[0x1E695DF70] array];
+  v43 = objectCopy;
+  [array addObject:objectCopy];
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v9;
+  obj = objectsCopy;
   v11 = [obj countByEnumeratingWithState:&v49 objects:v54 count:16];
   if (v11)
   {
@@ -612,7 +612,7 @@ LABEL_18:
 
         else
         {
-          [v10 addObject:v16];
+          [array addObject:v16];
         }
       }
 
@@ -633,11 +633,11 @@ LABEL_18:
     v37 = 0;
     v24 = 0;
     v26 = 0;
-    v36 = a6;
-    if (a6)
+    receiptCopy3 = receipt;
+    if (receipt)
     {
 LABEL_41:
-      *v36 = [UNCDataStoreReceipt receiptWithAddedObjects:v37 replacedObjects:v21 replacementObjects:v24 removedObjects:v26, v41];
+      *receiptCopy3 = [UNCDataStoreReceipt receiptWithAddedObjects:v37 replacedObjects:v21 replacementObjects:v24 removedObjects:v26, v41];
     }
   }
 
@@ -664,16 +664,16 @@ LABEL_41:
       v24 = 0;
     }
 
-    v25 = [v10 count];
+    v25 = [array count];
     v26 = 0;
     maxObjectsPerKey = self->_maxObjectsPerKey;
     if (v25 > maxObjectsPerKey)
     {
-      v28 = [v10 count] - self->_maxObjectsPerKey;
-      v29 = [v10 subarrayWithRange:{maxObjectsPerKey, v28}];
+      v28 = [array count] - self->_maxObjectsPerKey;
+      v29 = [array subarrayWithRange:{maxObjectsPerKey, v28}];
       v26 = [v29 mutableCopy];
 
-      [v10 removeObjectsInRange:{maxObjectsPerKey, v28}];
+      [array removeObjectsInRange:{maxObjectsPerKey, v28}];
     }
 
     if (self->_recordValidationTest)
@@ -682,7 +682,7 @@ LABEL_41:
       v48 = 0u;
       v45 = 0u;
       v46 = 0u;
-      v30 = v10;
+      v30 = array;
       v31 = [v30 countByEnumeratingWithState:&v45 objects:v53 count:16];
       if (v31)
       {
@@ -720,63 +720,63 @@ LABEL_41:
         [v30 removeObjectsInArray:v26];
       }
 
-      v36 = a6;
+      receiptCopy3 = receipt;
       v21 = v13;
     }
 
     else
     {
-      v36 = a6;
+      receiptCopy3 = receipt;
     }
 
     v37 = v41;
-    if (v36)
+    if (receiptCopy3)
     {
       goto LABEL_41;
     }
   }
 
-  v38 = [v10 copy];
+  v38 = [array copy];
 
   v39 = *MEMORY[0x1E69E9840];
 
   return v38;
 }
 
-- (void)removeStoreForKey:(id)a3
+- (void)removeStoreForKey:(id)key
 {
-  v4 = [(UNCKeyedDataStoreRepository *)self _pathForKey:a3];
+  v4 = [(UNCKeyedDataStoreRepository *)self _pathForKey:key];
   [(UNCKeyedDataStoreRepository *)self _removeItemAtPath:v4];
 }
 
-- (void)removeStoreForKey:(id)a3 overridePathExtension:(id)a4
+- (void)removeStoreForKey:(id)key overridePathExtension:(id)extension
 {
-  v6 = a4;
-  v9 = [(UNCKeyedDataStoreRepository *)self _pathForKey:a3];
-  v7 = [v9 stringByDeletingPathExtension];
-  v8 = [v7 stringByAppendingPathExtension:v6];
+  extensionCopy = extension;
+  v9 = [(UNCKeyedDataStoreRepository *)self _pathForKey:key];
+  stringByDeletingPathExtension = [v9 stringByDeletingPathExtension];
+  v8 = [stringByDeletingPathExtension stringByAppendingPathExtension:extensionCopy];
 
   [(UNCKeyedDataStoreRepository *)self _removeItemAtPath:v8];
 }
 
-- (void)_removeItemAtPath:(id)a3
+- (void)_removeItemAtPath:(id)path
 {
   protectionStrategy = self->_protectionStrategy;
   v4 = 0;
-  [(UNSContentProtectionStrategy *)protectionStrategy removeItemAtPath:a3 error:&v4];
+  [(UNSContentProtectionStrategy *)protectionStrategy removeItemAtPath:path error:&v4];
 }
 
-- (void)migrateStoreAtPath:(id)a3 forKey:(id)a4
+- (void)migrateStoreAtPath:(id)path forKey:(id)key
 {
-  v6 = a4;
+  keyCopy = key;
   v7 = MEMORY[0x1E696AC08];
-  v8 = a3;
-  v9 = [v7 defaultManager];
-  v10 = [(UNCKeyedDataStoreRepository *)self _directoryForKey:v6];
-  if (([v9 fileExistsAtPath:v10] & 1) == 0)
+  pathCopy = path;
+  defaultManager = [v7 defaultManager];
+  v10 = [(UNCKeyedDataStoreRepository *)self _directoryForKey:keyCopy];
+  if (([defaultManager fileExistsAtPath:v10] & 1) == 0)
   {
     v14 = 0;
-    [v9 createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:&v14];
+    [defaultManager createDirectoryAtPath:v10 withIntermediateDirectories:1 attributes:0 error:&v14];
     v11 = v14;
     if (v11 && os_log_type_enabled(*MEMORY[0x1E6983368], OS_LOG_TYPE_ERROR))
     {
@@ -785,15 +785,15 @@ LABEL_41:
   }
 
   protectionStrategy = self->_protectionStrategy;
-  v13 = [(UNCKeyedDataStoreRepository *)self _pathForKey:v6];
-  [(UNSContentProtectionStrategy *)protectionStrategy migrateDataAtPath:v8 toPath:v13];
+  v13 = [(UNCKeyedDataStoreRepository *)self _pathForKey:keyCopy];
+  [(UNSContentProtectionStrategy *)protectionStrategy migrateDataAtPath:pathCopy toPath:v13];
 }
 
-- (BOOL)_useReplacementToImport:(id)a3 into:(id)a4
+- (BOOL)_useReplacementToImport:(id)import into:(id)into
 {
-  v6 = a4;
-  v7 = [a3 count];
-  v8 = [v6 count];
+  intoCopy = into;
+  v7 = [import count];
+  v8 = [intoCopy count];
 
   if (!v7 || !v8)
   {

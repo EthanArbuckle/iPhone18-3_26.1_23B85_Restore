@@ -1,36 +1,36 @@
 @interface CHDocumentLayoutAnalysisManager
-- (CHDocumentLayoutAnalysisManager)initWithStrokeProvider:(id)a3 documentLayoutAnalyzer:(id)a4 locales:(id)a5;
-- (id)subjectStrokeGroupingResult:(id)a3 allOrderedStrokeIdentifiers:(id)a4 lastGroupingResult:(id)a5 lastDocumentLayoutAnalysisResult:(id)a6 lastStrokeClassificationResult:(id)a7 cancellationBlock:(id)a8;
-- (id)updatedStrokeClassificationResult:(id)a3 subjectStrokeIdentifiers:(id)a4 lastStrokeClassificationResult:(id)a5 lastTilingResult:(id)a6 lastDocumentLayoutAnalysisResult:(id)a7 lastGroupingResult:(id)a8 outTilingResult:(id *)a9 outDocumentLayoutAnalysisResult:(id *)a10 outStrokeGroupingResult:(id *)a11 shouldRebuildResult:(BOOL)a12 cancellationBlock:(id)a13;
+- (CHDocumentLayoutAnalysisManager)initWithStrokeProvider:(id)provider documentLayoutAnalyzer:(id)analyzer locales:(id)locales;
+- (id)subjectStrokeGroupingResult:(id)result allOrderedStrokeIdentifiers:(id)identifiers lastGroupingResult:(id)groupingResult lastDocumentLayoutAnalysisResult:(id)analysisResult lastStrokeClassificationResult:(id)classificationResult cancellationBlock:(id)block;
+- (id)updatedStrokeClassificationResult:(id)result subjectStrokeIdentifiers:(id)identifiers lastStrokeClassificationResult:(id)classificationResult lastTilingResult:(id)tilingResult lastDocumentLayoutAnalysisResult:(id)analysisResult lastGroupingResult:(id)groupingResult outTilingResult:(id *)outTilingResult outDocumentLayoutAnalysisResult:(id *)self0 outStrokeGroupingResult:(id *)self1 shouldRebuildResult:(BOOL)self2 cancellationBlock:(id)self3;
 @end
 
 @implementation CHDocumentLayoutAnalysisManager
 
-- (CHDocumentLayoutAnalysisManager)initWithStrokeProvider:(id)a3 documentLayoutAnalyzer:(id)a4 locales:(id)a5
+- (CHDocumentLayoutAnalysisManager)initWithStrokeProvider:(id)provider documentLayoutAnalyzer:(id)analyzer locales:(id)locales
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  providerCopy = provider;
+  analyzerCopy = analyzer;
+  localesCopy = locales;
   v41.receiver = self;
   v41.super_class = CHDocumentLayoutAnalysisManager;
   v12 = [(CHDocumentLayoutAnalysisManager *)&v41 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_strokeProvider, a3);
-    objc_storeStrong(&v13->_documentLayoutAnalyzer, a4);
+    objc_storeStrong(&v12->_strokeProvider, provider);
+    objc_storeStrong(&v13->_documentLayoutAnalyzer, analyzer);
     v14 = [CHTilingManager alloc];
-    v19 = objc_msgSend_initWithStrokeProvider_(v14, v15, v9, v16, v17, v18);
+    v19 = objc_msgSend_initWithStrokeProvider_(v14, v15, providerCopy, v16, v17, v18);
     tilingManager = v13->_tilingManager;
     v13->_tilingManager = v19;
 
     v21 = [CHBottomUpStrokeGroupingStrategy alloc];
-    isInlineContinuousMode_inlineContinuousModeTargets = objc_msgSend_initWithStrokeProvider_defaultWritingOrientation_locales_isInlineContinuousMode_inlineContinuousModeTargets_(v21, v22, v9, 1, v11, 0, 0);
+    isInlineContinuousMode_inlineContinuousModeTargets = objc_msgSend_initWithStrokeProvider_defaultWritingOrientation_locales_isInlineContinuousMode_inlineContinuousModeTargets_(v21, v22, providerCopy, 1, localesCopy, 0, 0);
     leftToRightBottomUpStrategy = v13->_leftToRightBottomUpStrategy;
     v13->_leftToRightBottomUpStrategy = isInlineContinuousMode_inlineContinuousModeTargets;
 
     v25 = [CHBottomUpStrokeGroupingStrategy alloc];
-    v27 = objc_msgSend_initWithStrokeProvider_defaultWritingOrientation_locales_isInlineContinuousMode_inlineContinuousModeTargets_(v25, v26, v9, 2, v11, 0, 0);
+    v27 = objc_msgSend_initWithStrokeProvider_defaultWritingOrientation_locales_isInlineContinuousMode_inlineContinuousModeTargets_(v25, v26, providerCopy, 2, localesCopy, 0, 0);
     rightToLeftBottomUpStrategy = v13->_rightToLeftBottomUpStrategy;
     v13->_rightToLeftBottomUpStrategy = v27;
 
@@ -43,18 +43,18 @@
   return v13;
 }
 
-- (id)updatedStrokeClassificationResult:(id)a3 subjectStrokeIdentifiers:(id)a4 lastStrokeClassificationResult:(id)a5 lastTilingResult:(id)a6 lastDocumentLayoutAnalysisResult:(id)a7 lastGroupingResult:(id)a8 outTilingResult:(id *)a9 outDocumentLayoutAnalysisResult:(id *)a10 outStrokeGroupingResult:(id *)a11 shouldRebuildResult:(BOOL)a12 cancellationBlock:(id)a13
+- (id)updatedStrokeClassificationResult:(id)result subjectStrokeIdentifiers:(id)identifiers lastStrokeClassificationResult:(id)classificationResult lastTilingResult:(id)tilingResult lastDocumentLayoutAnalysisResult:(id)analysisResult lastGroupingResult:(id)groupingResult outTilingResult:(id *)outTilingResult outDocumentLayoutAnalysisResult:(id *)self0 outStrokeGroupingResult:(id *)self1 shouldRebuildResult:(BOOL)self2 cancellationBlock:(id)self3
 {
   v1726 = *MEMORY[0x1E69E9840];
-  v19 = a3;
-  v1587 = a4;
-  v1633 = a5;
-  v1590 = a6;
-  v1601 = a7;
-  v1585 = a8;
-  v1618 = a13;
-  v1611 = v19;
-  if (!v19)
+  resultCopy = result;
+  identifiersCopy = identifiers;
+  classificationResultCopy = classificationResult;
+  tilingResultCopy = tilingResult;
+  analysisResultCopy = analysisResult;
+  groupingResultCopy = groupingResult;
+  blockCopy = block;
+  v1611 = resultCopy;
+  if (!resultCopy)
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -85,15 +85,15 @@
     goto LABEL_361;
   }
 
-  v1630 = self;
+  selfCopy = self;
   v1584 = objc_msgSend_orderedStrokes(self->_strokeProvider, v20, v21, v22, v23, v24);
-  if (v1587)
+  if (identifiersCopy)
   {
     v1685[0] = MEMORY[0x1E69E9820];
     v1685[1] = 3221225472;
     v1685[2] = sub_1838AFBFC;
     v1685[3] = &unk_1E6DDF690;
-    v1686 = v1587;
+    v1686 = identifiersCopy;
     v34 = objc_msgSend_indexesOfObjectsPassingTest_(v1584, v30, v1685, v31, v32, v33);
     v39 = objc_msgSend_objectsAtIndexes_(v1584, v35, v34, v36, v37, v38);
 
@@ -107,14 +107,14 @@
   v1602 = objc_msgSend_array(MEMORY[0x1E695DF70], v55, v56, v57, v58, v59);
   v1592 = objc_msgSend_set(MEMORY[0x1E695DFA8], v60, v61, v62, v63, v64);
   v1612 = objc_msgSend_set(MEMORY[0x1E695DFA8], v65, v66, v67, v68, v69);
-  v75 = objc_msgSend_strokeClassificationsByStrokeIdentifier(v1633, v70, v71, v72, v73, v74);
+  v75 = objc_msgSend_strokeClassificationsByStrokeIdentifier(classificationResultCopy, v70, v71, v72, v73, v74);
   v81 = objc_msgSend_allKeys(v75, v76, v77, v78, v79, v80);
   objc_msgSend_addObjectsFromArray_(v1612, v82, v81, v83, v84, v85);
 
   v1619 = objc_msgSend_set(MEMORY[0x1E695DFA8], v86, v87, v88, v89, v90);
-  if (v1601)
+  if (analysisResultCopy)
   {
-    v96 = objc_msgSend_strokeBoundsPerStrokeIdentifier(v1601, v91, v92, v93, v94, v95);
+    v96 = objc_msgSend_strokeBoundsPerStrokeIdentifier(analysisResultCopy, v91, v92, v93, v94, v95);
     v1634 = objc_msgSend_mutableCopy(v96, v97, v98, v99, v100, v101);
   }
 
@@ -142,20 +142,20 @@ LABEL_18:
       }
 
       v115 = *(*(&v1681 + 1) + 8 * v114);
-      if (v1618 && (v1618[2]() & 1) != 0)
+      if (blockCopy && (blockCopy[2]() & 1) != 0)
       {
         break;
       }
 
       v116 = objc_msgSend_encodedStrokeIdentifier(v115, v107, v108, v109, v110, v111);
       objc_msgSend_removeObject_(v1612, v117, v116, v118, v119, v120);
-      v126 = objc_msgSend_strokeClassificationsByStrokeIdentifier(v19, v121, v122, v123, v124, v125);
+      v126 = objc_msgSend_strokeClassificationsByStrokeIdentifier(resultCopy, v121, v122, v123, v124, v125);
       v131 = objc_msgSend_objectForKeyedSubscript_(v126, v127, v116, v128, v129, v130);
 
       if (objc_msgSend_integerValue(v131, v132, v133, v134, v135, v136) == 8)
       {
         objc_msgSend_addObject_(v1604, v137, v115, v138, v139, v140);
-        v146 = objc_msgSend_strokeClassificationsByStrokeIdentifier(v1633, v141, v142, v143, v144, v145);
+        v146 = objc_msgSend_strokeClassificationsByStrokeIdentifier(classificationResultCopy, v141, v142, v143, v144, v145);
         v151 = objc_msgSend_objectForKeyedSubscript_(v146, v147, v116, v148, v149, v150);
 
         if (v151)
@@ -176,7 +176,7 @@ LABEL_18:
       {
         objc_msgSend_addObject_(v1610, v137, v115, v138, v139, v140);
         objc_msgSend_addObject_(v1603, v161, v116, v162, v163, v164);
-        v170 = objc_msgSend_strokeClassificationsByStrokeIdentifier(v1633, v165, v166, v167, v168, v169);
+        v170 = objc_msgSend_strokeClassificationsByStrokeIdentifier(classificationResultCopy, v165, v166, v167, v168, v169);
         v151 = objc_msgSend_objectForKeyedSubscript_(v170, v171, v116, v172, v173, v174);
 
         if (v151 && objc_msgSend_integerValue(v151, v175, v176, v177, v178, v179) != 8)
@@ -229,7 +229,7 @@ LABEL_33:
         }
 
         v200 = *(*(&v1677 + 1) + 8 * i);
-        v201 = objc_msgSend_strokeClassificationsByStrokeIdentifier(v1633, v192, v193, v194, v195, v196);
+        v201 = objc_msgSend_strokeClassificationsByStrokeIdentifier(classificationResultCopy, v192, v193, v194, v195, v196);
         v206 = objc_msgSend_objectForKeyedSubscript_(v201, v202, v200, v203, v204, v205);
 
         if (v206 && objc_msgSend_integerValue(v206, v207, v208, v209, v210, v211) != 8)
@@ -244,28 +244,28 @@ LABEL_33:
     while (v197);
   }
 
-  v216 = v1590;
+  v216 = tilingResultCopy;
   v227 = 0x1E695D000uLL;
   if (!objc_msgSend_count(v1602, v217, v218, v219, v220, v221) && !objc_msgSend_count(v1632, v222, v223, v224, v225, v226))
   {
-    v1586 = v1590;
-    DocumentLayoutAnalysisResult_affectedLayoutAnalysisResultsPerTile_allLayoutAnalysisResultsPerTile_updatedStrokeIdentifiers_orderedStrokeIdentifiers_strokeBoundsPerStrokeIdentifier = v1601;
+    v1586 = tilingResultCopy;
+    DocumentLayoutAnalysisResult_affectedLayoutAnalysisResultsPerTile_allLayoutAnalysisResultsPerTile_updatedStrokeIdentifiers_orderedStrokeIdentifiers_strokeBoundsPerStrokeIdentifier = analysisResultCopy;
     if (v1593)
     {
-      if (v1633)
+      if (classificationResultCopy)
       {
-        v934 = objc_msgSend_mutableCopy(v1633, v929, v930, v931, v932, v933);
+        v934 = objc_msgSend_mutableCopy(classificationResultCopy, v929, v930, v931, v932, v933);
       }
 
       else
       {
-        v934 = objc_msgSend_mutableCopy(v19, v929, v930, v931, v932, v933);
+        v934 = objc_msgSend_mutableCopy(resultCopy, v929, v930, v931, v932, v933);
       }
 
       v1478 = v934;
-      if (v1585)
+      if (groupingResultCopy)
       {
-        v1479 = objc_msgSend_strokeGroups(v1585, v935, v936, v937, v938, v939);
+        v1479 = objc_msgSend_strokeGroups(groupingResultCopy, v935, v936, v937, v938, v939);
         v1629 = objc_msgSend_mutableCopy(v1479, v1480, v1481, v1482, v1483, v1484);
 
         v227 = 0x1E695D000;
@@ -299,7 +299,7 @@ LABEL_33:
             v1501 = *(*(&v1635 + 1) + 8 * j);
             objc_msgSend_updateByAddingClutterStroke_(v1478, v1494, v1501, v1495, v1496, v1497);
             v1507 = objc_msgSend_encodedStrokeIdentifier(v1501, v1502, v1503, v1504, v1505, v1506);
-            v1511 = objc_msgSend_scriptClassificationRawResultsForOneScriptClassification_scriptCodeMap_(CHStrokeClassifier, v1508, 8, v1630->_scriptCodeMap, v1509, v1510);
+            v1511 = objc_msgSend_scriptClassificationRawResultsForOneScriptClassification_scriptCodeMap_(CHStrokeClassifier, v1508, 8, selfCopy->_scriptCodeMap, v1509, v1510);
             objc_msgSend_updateStrokeIdentifier_withClassificationRawResult_(v1478, v1512, v1507, v1511, v1513, v1514);
 
             v1520 = objc_msgSend_encodedStrokeIdentifier(v1501, v1515, v1516, v1517, v1518, v1519);
@@ -333,9 +333,9 @@ LABEL_33:
     else
     {
       v1474 = [CHStrokeGroupingResult alloc];
-      if (v1585)
+      if (groupingResultCopy)
       {
-        objc_msgSend_strokeGroups(v1585, v1469, v1470, v1471, v1472, v1473);
+        objc_msgSend_strokeGroups(groupingResultCopy, v1469, v1470, v1471, v1472, v1473);
       }
 
       else
@@ -345,19 +345,19 @@ LABEL_33:
       v1475 = ;
       v1615 = objc_msgSend_initWithStrokeGroups_createdStrokeGroups_deletedStrokeGroups_(v1474, v1476, v1475, 0, 0, v1477);
 
-      v1563 = v1633;
-      if (!v1633)
+      v1563 = classificationResultCopy;
+      if (!classificationResultCopy)
       {
-        v1563 = v19;
+        v1563 = resultCopy;
       }
 
       v1462 = v1563;
     }
 
-    v1601 = DocumentLayoutAnalysisResult_affectedLayoutAnalysisResultsPerTile_allLayoutAnalysisResultsPerTile_updatedStrokeIdentifiers_orderedStrokeIdentifiers_strokeBoundsPerStrokeIdentifier;
-    v1590 = v1586;
+    analysisResultCopy = DocumentLayoutAnalysisResult_affectedLayoutAnalysisResultsPerTile_allLayoutAnalysisResultsPerTile_updatedStrokeIdentifiers_orderedStrokeIdentifiers_strokeBoundsPerStrokeIdentifier;
+    tilingResultCopy = v1586;
     v1463 = v1462;
-    if (a9)
+    if (outTilingResult)
     {
       goto LABEL_354;
     }
@@ -368,13 +368,13 @@ LABEL_33:
   v228 = objc_msgSend_count(v1610, v222, v223, v224, v225, v226);
   v234 = objc_msgSend_count(v1619, v229, v230, v231, v232, v233);
   v245 = v234 + v228 - objc_msgSend_count(v1602, v235, v236, v237, v238, v239);
-  if (v1590)
+  if (tilingResultCopy)
   {
     v1676 = 0u;
     v1675 = 0u;
     v1674 = 0u;
     v1673 = 0u;
-    v246 = objc_msgSend_documentTiles(v1590, v240, v241, v242, v243, v244);
+    v246 = objc_msgSend_documentTiles(tilingResultCopy, v240, v241, v242, v243, v244);
     v252 = objc_msgSend_allValues(v246, v247, v248, v249, v250, v251);
 
     v255 = 0;
@@ -419,7 +419,7 @@ LABEL_33:
       while (v261);
     }
 
-    v216 = v1590;
+    v216 = tilingResultCopy;
     if (v255 != v245)
     {
 LABEL_68:
@@ -439,8 +439,8 @@ LABEL_76:
 
 LABEL_77:
 
-      v1601 = 0;
-      v1590 = 0;
+      analysisResultCopy = 0;
+      tilingResultCopy = 0;
       if (qword_1EA84DC48 == -1)
       {
         goto LABEL_78;
@@ -450,10 +450,10 @@ LABEL_77:
     }
   }
 
-  if (!v1601)
+  if (!analysisResultCopy)
   {
-    v1601 = 0;
-    v1590 = v216;
+    analysisResultCopy = 0;
+    tilingResultCopy = v216;
     if (qword_1EA84DC48 == -1)
     {
       goto LABEL_78;
@@ -462,7 +462,7 @@ LABEL_77:
     goto LABEL_289;
   }
 
-  v284 = objc_msgSend_strokeClassificationMatrix(v1601, v240, v241, v242, v243, v244);
+  v284 = objc_msgSend_strokeClassificationMatrix(analysisResultCopy, v240, v241, v242, v243, v244);
   if (0xAAAAAAAAAAAAAAABLL * ((v284[1] - *v284) >> 3) != v245)
   {
 LABEL_72:
@@ -482,7 +482,7 @@ LABEL_72:
     goto LABEL_77;
   }
 
-  v290 = objc_msgSend_strokeClassificationMatrix(v1601, v285, v286, v287, v288, v289);
+  v290 = objc_msgSend_strokeClassificationMatrix(analysisResultCopy, v285, v286, v287, v288, v289);
   v291 = *v290;
   if (*v290 != *(v290 + 8))
   {
@@ -537,11 +537,11 @@ LABEL_78:
     _os_log_impl(&dword_18366B000, v300, OS_LOG_TYPE_DEFAULT, "BEGIN CHDocumentLayoutAnalysisManagerTiling", buf, 2u);
   }
 
-  tilingManager = v1630->_tilingManager;
-  maxNumStrokesPerTile = v1630->_maxNumStrokesPerTile;
-  if (v1590)
+  tilingManager = selfCopy->_tilingManager;
+  maxNumStrokesPerTile = selfCopy->_maxNumStrokesPerTile;
+  if (tilingResultCopy)
   {
-    objc_msgSend_updatedTilingResult_addingStrokes_removingStrokeIdentifiers_allStrokes_strokeBoundsPerStrokeIdentifier_maxTileSize_(tilingManager, v301, v1590, v1602, v1632, v1610, v1634, maxNumStrokesPerTile);
+    objc_msgSend_updatedTilingResult_addingStrokes_removingStrokeIdentifiers_allStrokes_strokeBoundsPerStrokeIdentifier_maxTileSize_(tilingManager, v301, tilingResultCopy, v1602, v1632, v1610, v1634, maxNumStrokesPerTile);
   }
 
   else
@@ -672,7 +672,7 @@ LABEL_118:
       }
 
       v352 = *(*(&v1665 + 1) + 8 * v351);
-      if (v1618 && (v1618[2]() & 1) != 0)
+      if (blockCopy && (blockCopy[2]() & 1) != 0)
       {
         goto LABEL_142;
       }
@@ -701,7 +701,7 @@ LABEL_119:
       }
     }
 
-    v360 = objc_msgSend_layoutAnalysisResultsPerTile(v1601, v344, v345, v346, v347, v348);
+    v360 = objc_msgSend_layoutAnalysisResultsPerTile(analysisResultCopy, v344, v345, v346, v347, v348);
     v365 = objc_msgSend_objectForKeyedSubscript_(v360, v361, v352, v362, v363, v364);
 
     if (v365)
@@ -713,9 +713,9 @@ LABEL_140:
     }
 
     v371 = objc_msgSend_orderedStrokeIdentifiers(v352, v366, v367, v368, v369, v370);
-    v1623 = objc_msgSend_strokesForIdentifiers_inStrokeProvider_(CHStrokeUtilities, v372, v371, v1630->_strokeProvider, v373, v374);
+    v1623 = objc_msgSend_strokesForIdentifiers_inStrokeProvider_(CHStrokeUtilities, v372, v371, selfCopy->_strokeProvider, v373, v374);
 
-    v376 = objc_msgSend_createDrawingForStrokes_interpolationType_resolution_cancellationBlock_(CHStrokeUtilities, v375, v1623, 0, 1, v1618);
+    v376 = objc_msgSend_createDrawingForStrokes_interpolationType_resolution_cancellationBlock_(CHStrokeUtilities, v375, v1623, 0, 1, blockCopy);
     objc_msgSend_bounds(v376, v377, v378, v379, v380, v381);
     v383 = v382;
     objc_msgSend_bounds(v376, v384, v385, v386, v387, v388);
@@ -723,7 +723,7 @@ LABEL_140:
     objc_msgSend_scale(v352, v391, v392, v393, v394, v395);
     v1620 = objc_msgSend_drawingTransformedWithTranslation_scaleFactor_(v376, v396, v397, v398, v399, v400, -v383, -v390, v401);
 
-    if (v1618 && (v1618[2]() & 1) != 0)
+    if (blockCopy && (blockCopy[2]() & 1) != 0)
     {
       v365 = 0;
       goto LABEL_139;
@@ -731,7 +731,7 @@ LABEL_140:
 
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    documentLayoutAnalyzer = v1630->_documentLayoutAnalyzer;
+    documentLayoutAnalyzer = selfCopy->_documentLayoutAnalyzer;
     if (isKindOfClass)
     {
       v413 = objc_msgSend_orderedStrokeIdentifiers(v352, v407, v408, v409, v410, v411);
@@ -789,7 +789,7 @@ LABEL_139:
     {
       v421 = objc_msgSend_orderedStrokeIdentifiers(v352, v407, v408, v409, v410, v411);
       v422 = objc_msgSend_contextStrokeIdentifiers(v352, v429, v430, v431, v432, v433);
-      v365 = objc_msgSend_analyzeDrawing_strokeIdentifiers_contextStrokeIdentifiers_options_shouldCancel_(documentLayoutAnalyzer, v434, v1620, v421, v422, 0, v1618);
+      v365 = objc_msgSend_analyzeDrawing_strokeIdentifiers_contextStrokeIdentifiers_options_shouldCancel_(documentLayoutAnalyzer, v434, v1620, v421, v422, 0, blockCopy);
     }
 
     goto LABEL_138;
@@ -836,13 +836,13 @@ LABEL_146:
     _os_log_impl(&dword_18366B000, v436, OS_LOG_TYPE_DEFAULT, "END CHDocumentLayoutAnalysisManagerInference", buf, 2u);
   }
 
-  if (!objc_msgSend_count(v1609, v437, v438, v439, v440, v441) || v1618 && (v1618[2]() & 1) != 0)
+  if (!objc_msgSend_count(v1609, v437, v438, v439, v440, v441) || blockCopy && (blockCopy[2]() & 1) != 0)
   {
     DocumentLayoutAnalysisResult_affectedLayoutAnalysisResultsPerTile_allLayoutAnalysisResultsPerTile_updatedStrokeIdentifiers_orderedStrokeIdentifiers_strokeBoundsPerStrokeIdentifier = 0;
     goto LABEL_194;
   }
 
-  if (!v1601 || a12 || objc_msgSend_count(v1632, v442, v443, v444, v445, v446) || (v452 = objc_msgSend_count(v1589, v447, v448, v449, v450, v451), v452 >= objc_msgSend_count(v1609, v453, v454, v455, v456, v457) >> 1))
+  if (!analysisResultCopy || rebuildResult || objc_msgSend_count(v1632, v442, v443, v444, v445, v446) || (v452 = objc_msgSend_count(v1589, v447, v448, v449, v450, v451), v452 >= objc_msgSend_count(v1609, v453, v454, v455, v456, v457) >> 1))
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -978,7 +978,7 @@ LABEL_169:
     v550 = sub_183761FE4(13);
     if (os_log_type_enabled(v550, OS_LOG_TYPE_DEBUG))
     {
-      v556 = objc_msgSend_layoutAnalysisResultsPerTile(v1601, v551, v552, v553, v554, v555);
+      v556 = objc_msgSend_layoutAnalysisResultsPerTile(analysisResultCopy, v551, v552, v553, v554, v555);
       v562 = objc_msgSend_count(v556, v557, v558, v559, v560, v561);
       *buf = 134218240;
       v1723 = v562;
@@ -989,16 +989,16 @@ LABEL_169:
 
     v563 = [CHDocumentLayoutAnalysisResult alloc];
     v569 = objc_msgSend_copy(v1634, v564, v565, v566, v567, v568);
-    DocumentLayoutAnalysisResult_affectedLayoutAnalysisResultsPerTile_allLayoutAnalysisResultsPerTile_updatedStrokeIdentifiers_orderedStrokeIdentifiers_strokeBoundsPerStrokeIdentifier = objc_msgSend_initWithLastDocumentLayoutAnalysisResult_affectedLayoutAnalysisResultsPerTile_allLayoutAnalysisResultsPerTile_updatedStrokeIdentifiers_orderedStrokeIdentifiers_strokeBoundsPerStrokeIdentifier_(v563, v570, v1601, v534, v1609, v463, v1603, v569);
+    DocumentLayoutAnalysisResult_affectedLayoutAnalysisResultsPerTile_allLayoutAnalysisResultsPerTile_updatedStrokeIdentifiers_orderedStrokeIdentifiers_strokeBoundsPerStrokeIdentifier = objc_msgSend_initWithLastDocumentLayoutAnalysisResult_affectedLayoutAnalysisResultsPerTile_allLayoutAnalysisResultsPerTile_updatedStrokeIdentifiers_orderedStrokeIdentifiers_strokeBoundsPerStrokeIdentifier_(v563, v570, analysisResultCopy, v534, v1609, v463, v1603, v569);
   }
 
 LABEL_194:
   v1628 = objc_msgSend_mutableCopy(v1611, v442, v443, v444, v445, v446);
   if (!DocumentLayoutAnalysisResult_affectedLayoutAnalysisResultsPerTile_allLayoutAnalysisResultsPerTile_updatedStrokeIdentifiers_orderedStrokeIdentifiers_strokeBoundsPerStrokeIdentifier)
   {
-    if (!v1618)
+    if (!blockCopy)
     {
-      if (!a11)
+      if (!strokeGroupingResult)
       {
 LABEL_287:
         v1615 = 0;
@@ -1015,8 +1015,8 @@ LABEL_351:
     }
 
 LABEL_283:
-    v927 = v1618[2]();
-    if (a11)
+    v927 = blockCopy[2]();
+    if (strokeGroupingResult)
     {
       v928 = v927;
     }
@@ -1034,7 +1034,7 @@ LABEL_283:
     goto LABEL_351;
   }
 
-  if (v1618 && (v1618[2]() & 1) != 0)
+  if (blockCopy && (blockCopy[2]() & 1) != 0)
   {
     goto LABEL_283;
   }
@@ -1058,7 +1058,7 @@ LABEL_283:
         }
 
         v597 = objc_msgSend_encodedStrokeIdentifier(*(*(&v1648 + 1) + 8 * kk), v589, v590, v591, v592, v593);
-        v601 = objc_msgSend_scriptClassificationRawResultsForOneScriptClassification_scriptCodeMap_(CHStrokeClassifier, v598, 8, v1630->_scriptCodeMap, v599, v600);
+        v601 = objc_msgSend_scriptClassificationRawResultsForOneScriptClassification_scriptCodeMap_(CHStrokeClassifier, v598, 8, selfCopy->_scriptCodeMap, v599, v600);
         objc_msgSend_updateStrokeIdentifier_withClassificationRawResult_(v1628, v602, v597, v601, v603, v604);
       }
 
@@ -1069,20 +1069,20 @@ LABEL_283:
   }
 
   v610 = 0;
-  v1599 = (v1618 + 2);
-  while (v610 < objc_msgSend_count(v1610, v605, v606, v607, v608, v609) && (!v1618 || (v1618[2]() & 1) == 0))
+  v1599 = (blockCopy + 2);
+  while (v610 < objc_msgSend_count(v1610, v605, v606, v607, v608, v609) && (!blockCopy || (blockCopy[2]() & 1) == 0))
   {
     v615 = objc_msgSend_objectAtIndexedSubscript_(v1610, v611, v610, v612, v613, v614);
     v1607 = v1628;
     v1624 = v615;
     spida = DocumentLayoutAnalysisResult_affectedLayoutAnalysisResultsPerTile_allLayoutAnalysisResultsPerTile_updatedStrokeIdentifiers_orderedStrokeIdentifiers_strokeBoundsPerStrokeIdentifier;
-    v1621 = v1633;
-    if (!v1630)
+    v1621 = classificationResultCopy;
+    if (!selfCopy)
     {
       goto LABEL_236;
     }
 
-    v1616 = objc_msgSend_probabilityByScriptClassificationsForStrokeIndex_scriptCodeMap_(spida, v616, v610, v1630->_scriptCodeMap, v617, v618);
+    v1616 = objc_msgSend_probabilityByScriptClassificationsForStrokeIndex_scriptCodeMap_(spida, v616, v610, selfCopy->_scriptCodeMap, v617, v618);
     v624 = objc_msgSend_scriptClassificationRawResultsByStrokeIdentifier(v1621, v619, v620, v621, v622, v623);
     v630 = objc_msgSend_encodedStrokeIdentifier(v1624, v625, v626, v627, v628, v629);
     v635 = objc_msgSend_objectForKeyedSubscript_(v624, v631, v630, v632, v633, v634);
@@ -1186,18 +1186,18 @@ LABEL_236:
     ++v610;
   }
 
-  strokeProvider = v1630->_strokeProvider;
+  strokeProvider = selfCopy->_strokeProvider;
   v1647 = 0;
   v763 = objc_msgSend_resultWithStrokeClassesFromScriptClassesInResult_strokeProvider_outChangedSupportStrokes_(CHStrokeClassifier, v611, v1628, strokeProvider, &v1647, v614);
   v1568 = v1647;
-  v1578 = objc_msgSend_resultWithRefinedNonTextCandidateInResult_changedSupportStrokesByStrokeIdentifiers_strokeProvider_(CHStrokeClassifier, v764, v763, v1568, v1630->_strokeProvider, v765);
+  v1578 = objc_msgSend_resultWithRefinedNonTextCandidateInResult_changedSupportStrokesByStrokeIdentifiers_strokeProvider_(CHStrokeClassifier, v764, v763, v1568, selfCopy->_strokeProvider, v765);
 
   v1625 = objc_msgSend_dictionary(MEMORY[0x1E695DF90], v766, v767, v768, v769, v770);
   v1645 = 0u;
   v1646 = 0u;
   v1643 = 0u;
   v1644 = 0u;
-  v776 = objc_msgSend_strokeGroups(v1585, v771, v772, v773, v774, v775);
+  v776 = objc_msgSend_strokeGroups(groupingResultCopy, v771, v772, v773, v774, v775);
   v784 = objc_msgSend_countByEnumeratingWithState_objects_count_(v776, v777, &v1643, v1709, 16, v778);
   if (v784)
   {
@@ -1255,8 +1255,8 @@ LABEL_236:
     _os_log_impl(&dword_18366B000, v795, OS_LOG_TYPE_DEFAULT, "BEGIN CHDocumentLayoutAnalysisManagerClustering", buf, 2u);
   }
 
-  v1566 = sub_1838AFC54(v1630, v1610, @"text-math", v1578, v1633, DocumentLayoutAnalysisResult_affectedLayoutAnalysisResultsPerTile_allLayoutAnalysisResultsPerTile_updatedStrokeIdentifiers_orderedStrokeIdentifiers_strokeBoundsPerStrokeIdentifier, v1634, v1625);
-  v1567 = sub_1838AFC54(v1630, v1610, @"non-text", v1578, v1633, DocumentLayoutAnalysisResult_affectedLayoutAnalysisResultsPerTile_allLayoutAnalysisResultsPerTile_updatedStrokeIdentifiers_orderedStrokeIdentifiers_strokeBoundsPerStrokeIdentifier, v1634, v1625);
+  v1566 = sub_1838AFC54(selfCopy, v1610, @"text-math", v1578, classificationResultCopy, DocumentLayoutAnalysisResult_affectedLayoutAnalysisResultsPerTile_allLayoutAnalysisResultsPerTile_updatedStrokeIdentifiers_orderedStrokeIdentifiers_strokeBoundsPerStrokeIdentifier, v1634, v1625);
+  v1567 = sub_1838AFC54(selfCopy, v1610, @"non-text", v1578, classificationResultCopy, DocumentLayoutAnalysisResult_affectedLayoutAnalysisResultsPerTile_allLayoutAnalysisResultsPerTile_updatedStrokeIdentifiers_orderedStrokeIdentifiers_strokeBoundsPerStrokeIdentifier, v1634, v1625);
   v1622 = objc_msgSend_mutableCopy(v1566, v796, v797, v798, v799, v800);
   objc_msgSend_unionSet_(v1622, v801, v1567, v802, v803, v804);
   v1641 = 0u;
@@ -1298,12 +1298,12 @@ LABEL_236:
     while (v813);
   }
 
-  v847 = v1585;
+  v847 = groupingResultCopy;
   v1569 = v1622;
   v1565 = obj;
-  v1591 = v1618;
+  v1591 = blockCopy;
   v1600 = v847;
-  if (v1630)
+  if (selfCopy)
   {
     v1631 = objc_msgSend_set(MEMORY[0x1E695DFA8], v848, v849, v850, v851, v852);
     v858 = objc_msgSend_set(MEMORY[0x1E695DFA8], v853, v854, v855, v856, v857);
@@ -1397,7 +1397,7 @@ LABEL_236:
     {
 LABEL_333:
 
-      if (v1618)
+      if (blockCopy)
       {
         goto LABEL_336;
       }
@@ -1417,7 +1417,7 @@ LABEL_300:
       }
 
       v949 = *(*(&v1695 + 1) + 8 * v948);
-      if (!v1618 || ((*v1599)(v1591) & 1) == 0)
+      if (!blockCopy || ((*v1599)(v1591) & 1) == 0)
       {
         v1605 = v948;
         v1694 = 0u;
@@ -1721,26 +1721,26 @@ LABEL_353:
 
   v1462 = v1578;
   v1463 = v1578;
-  if (a9)
+  if (outTilingResult)
   {
 LABEL_354:
     v1464 = v1586;
-    *a9 = v1586;
+    *outTilingResult = v1586;
     v1462 = v1463;
   }
 
 LABEL_355:
-  if (a10)
+  if (layoutAnalysisResult)
   {
     v1465 = DocumentLayoutAnalysisResult_affectedLayoutAnalysisResultsPerTile_allLayoutAnalysisResultsPerTile_updatedStrokeIdentifiers_orderedStrokeIdentifiers_strokeBoundsPerStrokeIdentifier;
-    *a10 = DocumentLayoutAnalysisResult_affectedLayoutAnalysisResultsPerTile_allLayoutAnalysisResultsPerTile_updatedStrokeIdentifiers_orderedStrokeIdentifiers_strokeBoundsPerStrokeIdentifier;
+    *layoutAnalysisResult = DocumentLayoutAnalysisResult_affectedLayoutAnalysisResultsPerTile_allLayoutAnalysisResultsPerTile_updatedStrokeIdentifiers_orderedStrokeIdentifiers_strokeBoundsPerStrokeIdentifier;
     v1462 = v1463;
   }
 
-  if (a11)
+  if (strokeGroupingResult)
   {
     v1466 = v1615;
-    *a11 = v1615;
+    *strokeGroupingResult = v1615;
     v1462 = v1463;
   }
 
@@ -1753,24 +1753,24 @@ LABEL_361:
   return v104;
 }
 
-- (id)subjectStrokeGroupingResult:(id)a3 allOrderedStrokeIdentifiers:(id)a4 lastGroupingResult:(id)a5 lastDocumentLayoutAnalysisResult:(id)a6 lastStrokeClassificationResult:(id)a7 cancellationBlock:(id)a8
+- (id)subjectStrokeGroupingResult:(id)result allOrderedStrokeIdentifiers:(id)identifiers lastGroupingResult:(id)groupingResult lastDocumentLayoutAnalysisResult:(id)analysisResult lastStrokeClassificationResult:(id)classificationResult cancellationBlock:(id)block
 {
   v338[1] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v303 = a4;
-  v302 = a5;
-  v305 = a6;
-  v304 = a7;
-  v310 = v13;
-  v311 = a8;
-  if (v13 && v302 && v305 && v304)
+  resultCopy = result;
+  identifiersCopy = identifiers;
+  groupingResultCopy = groupingResult;
+  analysisResultCopy = analysisResult;
+  classificationResultCopy = classificationResult;
+  v310 = resultCopy;
+  blockCopy = block;
+  if (resultCopy && groupingResultCopy && analysisResultCopy && classificationResultCopy)
   {
     v307 = objc_msgSend_set(MEMORY[0x1E695DFA8], v14, v15, v16, v17, v18);
     v322 = 0u;
     v323 = 0u;
     v320 = 0u;
     v321 = 0u;
-    obj = objc_msgSend_strokeGroups(v302, v19, v20, v21, v22, v23);
+    obj = objc_msgSend_strokeGroups(groupingResultCopy, v19, v20, v21, v22, v23);
     v309 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v24, &v320, v337, 16, v25);
     if (v309)
     {
@@ -1785,9 +1785,9 @@ LABEL_7:
         }
 
         v31 = *(*(&v320 + 1) + 8 * v312);
-        if (v311)
+        if (blockCopy)
         {
-          if (v311[2]())
+          if (blockCopy[2]())
           {
             break;
           }
@@ -1811,9 +1811,9 @@ LABEL_7:
           {
             v317 = objc_msgSend_classification(v31, v58, v59, v60, v61, v62);
             v314 = v313;
-            v63 = v303;
-            v318 = v304;
-            v319 = v305;
+            v63 = identifiersCopy;
+            v318 = classificationResultCopy;
+            v319 = analysisResultCopy;
             if (self)
             {
               v69 = objc_msgSend_count(v63, v64, v65, v66, v67, v68);
@@ -2044,7 +2044,7 @@ LABEL_35:
                       v325 = 3221225472;
                       v326 = sub_1838B2D4C;
                       v327 = &unk_1E6DDD268;
-                      v328 = self;
+                      selfCopy = self;
                       v175 = objc_msgSend_sortedArrayUsingComparator_(v170, v171, buf, v172, v173, v174);
                     }
 
@@ -2140,7 +2140,7 @@ LABEL_35:
     goto LABEL_120;
   }
 
-  if (!v13)
+  if (!resultCopy)
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -2181,7 +2181,7 @@ LABEL_90:
   }
 
 LABEL_91:
-  if (v302)
+  if (groupingResultCopy)
   {
     goto LABEL_100;
   }
@@ -2221,7 +2221,7 @@ LABEL_98:
 LABEL_99:
 
 LABEL_100:
-  if (!v305)
+  if (!analysisResultCopy)
   {
     if (qword_1EA84DC48 != -1)
     {
@@ -2262,7 +2262,7 @@ LABEL_108:
   }
 
 LABEL_109:
-  if (v304)
+  if (classificationResultCopy)
   {
     v292 = 0;
     goto LABEL_121;

@@ -1,29 +1,29 @@
 @interface CAMDrawerLivePhotoButton
-- (BOOL)isMenuItemSelected:(id)a3;
+- (BOOL)isMenuItemSelected:(id)selected;
 - (id)imageNameForAXHUD;
 - (id)loadMenuItems;
-- (void)didSelectMenuItem:(id)a3;
-- (void)setLivePhotoMode:(int64_t)a3 animated:(BOOL)a4;
+- (void)didSelectMenuItem:(id)item;
+- (void)setLivePhotoMode:(int64_t)mode animated:(BOOL)animated;
 @end
 
 @implementation CAMDrawerLivePhotoButton
 
-- (void)setLivePhotoMode:(int64_t)a3 animated:(BOOL)a4
+- (void)setLivePhotoMode:(int64_t)mode animated:(BOOL)animated
 {
-  if (self->_livePhotoMode != a3)
+  if (self->_livePhotoMode != mode)
   {
-    self->_livePhotoMode = a3;
-    [(CAMControlDrawerButton *)self updateImageAnimated:a4];
+    self->_livePhotoMode = mode;
+    [(CAMControlDrawerButton *)self updateImageAnimated:animated];
 
     [(CAMControlDrawerMenuButton *)self updateLabelsIfNeeded];
   }
 }
 
-- (BOOL)isMenuItemSelected:(id)a3
+- (BOOL)isMenuItemSelected:(id)selected
 {
-  v4 = [a3 value];
-  v5 = [v4 integerValue];
-  LOBYTE(self) = v5 == [(CAMDrawerLivePhotoButton *)self livePhotoMode];
+  value = [selected value];
+  integerValue = [value integerValue];
+  LOBYTE(self) = integerValue == [(CAMDrawerLivePhotoButton *)self livePhotoMode];
 
   return self;
 }
@@ -65,14 +65,14 @@
   return v15;
 }
 
-- (void)didSelectMenuItem:(id)a3
+- (void)didSelectMenuItem:(id)item
 {
-  v4 = [a3 value];
-  v5 = [v4 integerValue];
+  value = [item value];
+  integerValue = [value integerValue];
 
-  if (v5 != [(CAMDrawerLivePhotoButton *)self livePhotoMode])
+  if (integerValue != [(CAMDrawerLivePhotoButton *)self livePhotoMode])
   {
-    [(CAMDrawerLivePhotoButton *)self setLivePhotoMode:v5 animated:1];
+    [(CAMDrawerLivePhotoButton *)self setLivePhotoMode:integerValue animated:1];
 
     [(CAMDrawerLivePhotoButton *)self sendActionsForControlEvents:4096];
   }
@@ -82,15 +82,15 @@
 {
   if ([(CAMDrawerLivePhotoButton *)self shouldShowSlashForCurrentState])
   {
-    v3 = @"livephoto.slash";
+    imageNameForCurrentState = @"livephoto.slash";
   }
 
   else
   {
-    v3 = [(CAMDrawerLivePhotoButton *)self imageNameForCurrentState];
+    imageNameForCurrentState = [(CAMDrawerLivePhotoButton *)self imageNameForCurrentState];
   }
 
-  return v3;
+  return imageNameForCurrentState;
 }
 
 @end

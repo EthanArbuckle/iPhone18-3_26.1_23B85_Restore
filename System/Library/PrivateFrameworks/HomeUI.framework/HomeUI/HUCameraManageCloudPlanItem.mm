@@ -1,26 +1,26 @@
 @interface HUCameraManageCloudPlanItem
-- (HUCameraManageCloudPlanItem)initWithCameraProfile:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HUCameraManageCloudPlanItem)initWithCameraProfile:(id)profile;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUCameraManageCloudPlanItem
 
-- (HUCameraManageCloudPlanItem)initWithCameraProfile:(id)a3
+- (HUCameraManageCloudPlanItem)initWithCameraProfile:(id)profile
 {
-  v5 = a3;
+  profileCopy = profile;
   v9.receiver = self;
   v9.super_class = HUCameraManageCloudPlanItem;
   v6 = [(HFStaticItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cameraProfile, a3);
+    objc_storeStrong(&v6->_cameraProfile, profile);
   }
 
   return v7;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v14[2] = *MEMORY[0x277D85DE8];
   v13[0] = *MEMORY[0x277D13F60];
@@ -28,8 +28,8 @@
   v14[0] = v4;
   v13[1] = *MEMORY[0x277D13DA8];
   v5 = MEMORY[0x277CBEB98];
-  v6 = [(HUCameraManageCloudPlanItem *)self cameraProfile];
-  v7 = [v5 setWithObject:v6];
+  cameraProfile = [(HUCameraManageCloudPlanItem *)self cameraProfile];
+  v7 = [v5 setWithObject:cameraProfile];
   v14[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
 

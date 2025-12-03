@@ -20,7 +20,7 @@
   }
 
   while (v5 != 4);
-  v6 = [a1 valueWithBytes:v8 objCType:"{simd_float4x4_layout=[4{simd_float4_layout=ffff}]}"];
+  v6 = [self valueWithBytes:v8 objCType:"{simd_float4x4_layout=[4{simd_float4_layout=ffff}]}"];
 
   return v6;
 }
@@ -28,7 +28,7 @@
 - (double)gc_simdFloat4x4Value
 {
   memset(v3, 0, sizeof(v3));
-  [a1 getValue:v3 size:64];
+  [self getValue:v3 size:64];
   v1 = 0;
   memset(v4, 0, sizeof(v4));
   do

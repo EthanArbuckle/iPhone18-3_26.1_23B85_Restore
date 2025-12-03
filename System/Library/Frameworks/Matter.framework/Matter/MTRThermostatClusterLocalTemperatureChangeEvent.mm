@@ -1,6 +1,6 @@
 @interface MTRThermostatClusterLocalTemperatureChangeEvent
 - (MTRThermostatClusterLocalTemperatureChangeEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,11 +21,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRThermostatClusterLocalTemperatureChangeEvent);
-  v5 = [(MTRThermostatClusterLocalTemperatureChangeEvent *)self currentLocalTemperature];
-  [(MTRThermostatClusterLocalTemperatureChangeEvent *)v4 setCurrentLocalTemperature:v5];
+  currentLocalTemperature = [(MTRThermostatClusterLocalTemperatureChangeEvent *)self currentLocalTemperature];
+  [(MTRThermostatClusterLocalTemperatureChangeEvent *)v4 setCurrentLocalTemperature:currentLocalTemperature];
 
   return v4;
 }

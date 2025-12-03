@@ -1,22 +1,22 @@
 @interface TRICKServerEnvironmentReader
 + (int)currentPopulation;
-+ (int)validatedPopulationFromNumber:(int64_t)a3;
++ (int)validatedPopulationFromNumber:(int64_t)number;
 + (int64_t)currentEnvironment;
-+ (int64_t)validatedEnvironmentFromNumber:(id)a3;
++ (int64_t)validatedEnvironmentFromNumber:(id)number;
 @end
 
 @implementation TRICKServerEnvironmentReader
 
-+ (int64_t)validatedEnvironmentFromNumber:(id)a3
++ (int64_t)validatedEnvironmentFromNumber:(id)number
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 unsignedIntValue];
+  numberCopy = number;
+  unsignedIntValue = [numberCopy unsignedIntValue];
   v5 = TRILogCategory_ClientFramework();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4 > 2)
+  if (unsignedIntValue > 2)
   {
-    switch(v4)
+    switch(unsignedIntValue)
     {
       case 3:
         if (v6)
@@ -52,7 +52,7 @@
 
   else
   {
-    if (!v4)
+    if (!unsignedIntValue)
     {
       if (v6)
       {
@@ -69,9 +69,9 @@ LABEL_21:
       goto LABEL_29;
     }
 
-    if (v4 != 1)
+    if (unsignedIntValue != 1)
     {
-      if (v4 == 2)
+      if (unsignedIntValue == 2)
       {
         if (v6)
         {
@@ -92,7 +92,7 @@ LABEL_18:
       if (v6)
       {
         v13 = 138412290;
-        v14 = v3;
+        v14 = numberCopy;
         v8 = "Reading currentEnvironment from NSUserDefaults: other (%@), using Unknown";
         v9 = v5;
         v10 = 12;
@@ -121,19 +121,19 @@ LABEL_29:
 {
   if ([MEMORY[0x277D737A8] hostingProcessIsTriald])
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   }
 
   else
   {
-    v3 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.triald"];
+    standardUserDefaults = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.triald"];
   }
 
-  v4 = v3;
-  v5 = [v3 valueForKey:*MEMORY[0x277D739E8]];
+  v4 = standardUserDefaults;
+  v5 = [standardUserDefaults valueForKey:*MEMORY[0x277D739E8]];
   if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v6 = [a1 validatedEnvironmentFromNumber:v5];
+    v6 = [self validatedEnvironmentFromNumber:v5];
   }
 
   else
@@ -144,14 +144,14 @@ LABEL_29:
   return v6;
 }
 
-+ (int)validatedPopulationFromNumber:(int64_t)a3
++ (int)validatedPopulationFromNumber:(int64_t)number
 {
   v12 = *MEMORY[0x277D85DE8];
   v4 = TRILogCategory_ClientFramework();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (a3 > 2)
+  if (number > 2)
   {
-    switch(a3)
+    switch(number)
     {
       case 3:
         if (v5)
@@ -184,7 +184,7 @@ LABEL_29:
 LABEL_18:
         if (v5)
         {
-          v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+          v7 = [MEMORY[0x277CCABB0] numberWithInteger:number];
           v10 = 138412290;
           v11 = v7;
           _os_log_impl(&dword_26F567000, v4, OS_LOG_TYPE_DEFAULT, "Reading currentPopulation from NSUserDefaults: other (%@), using POPULATION_UNKNOWN", &v10, 0xCu);
@@ -198,7 +198,7 @@ LABEL_20:
 
   else
   {
-    if (!a3)
+    if (!number)
     {
       if (v5)
       {
@@ -209,9 +209,9 @@ LABEL_20:
       goto LABEL_20;
     }
 
-    if (a3 != 1)
+    if (number != 1)
     {
-      if (a3 == 2)
+      if (number == 2)
       {
         if (v5)
         {
@@ -250,16 +250,16 @@ LABEL_28:
 {
   if ([MEMORY[0x277D737A8] hostingProcessIsTriald])
   {
-    v3 = [MEMORY[0x277CBEBD0] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
   }
 
   else
   {
-    v3 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.triald"];
+    standardUserDefaults = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.triald"];
   }
 
-  v4 = v3;
-  v5 = [a1 validatedPopulationFromNumber:{objc_msgSend(v3, "integerForKey:", @"com.apple.triald.population.override"}];
+  v4 = standardUserDefaults;
+  v5 = [self validatedPopulationFromNumber:{objc_msgSend(standardUserDefaults, "integerForKey:", @"com.apple.triald.population.override"}];
 
   return v5;
 }

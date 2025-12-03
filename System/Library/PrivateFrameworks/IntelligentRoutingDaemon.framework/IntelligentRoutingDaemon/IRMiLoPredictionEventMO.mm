@@ -1,41 +1,41 @@
 @interface IRMiLoPredictionEventMO
-+ (IRMiLoPredictionEventMO)miloPredictionEventMOWithmiloPredictionEventDO:(id)a3 historyEventMO:(id)a4 inManagedObjectContext:(id)a5;
-+ (void)setPropertiesOfMiloPredictionEventMO:(id)a3 withMiloPredictionEventDO:(id)a4;
++ (IRMiLoPredictionEventMO)miloPredictionEventMOWithmiloPredictionEventDO:(id)o historyEventMO:(id)mO inManagedObjectContext:(id)context;
++ (void)setPropertiesOfMiloPredictionEventMO:(id)o withMiloPredictionEventDO:(id)dO;
 - (id)convert;
 @end
 
 @implementation IRMiLoPredictionEventMO
 
-+ (IRMiLoPredictionEventMO)miloPredictionEventMOWithmiloPredictionEventDO:(id)a3 historyEventMO:(id)a4 inManagedObjectContext:(id)a5
++ (IRMiLoPredictionEventMO)miloPredictionEventMOWithmiloPredictionEventDO:(id)o historyEventMO:(id)mO inManagedObjectContext:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[IRMiLoPredictionEventMO alloc] initWithContext:v7];
+  contextCopy = context;
+  mOCopy = mO;
+  oCopy = o;
+  v10 = [[IRMiLoPredictionEventMO alloc] initWithContext:contextCopy];
 
-  [(IRMiLoPredictionEventMO *)v10 setHistoryEvent:v8];
-  [IRMiLoPredictionEventMO setPropertiesOfMiloPredictionEventMO:v10 withMiloPredictionEventDO:v9];
+  [(IRMiLoPredictionEventMO *)v10 setHistoryEvent:mOCopy];
+  [IRMiLoPredictionEventMO setPropertiesOfMiloPredictionEventMO:v10 withMiloPredictionEventDO:oCopy];
 
   return v10;
 }
 
-+ (void)setPropertiesOfMiloPredictionEventMO:(id)a3 withMiloPredictionEventDO:(id)a4
++ (void)setPropertiesOfMiloPredictionEventMO:(id)o withMiloPredictionEventDO:(id)dO
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 label];
-  [v6 setLabel:v7];
+  dOCopy = dO;
+  oCopy = o;
+  label = [dOCopy label];
+  [oCopy setLabel:label];
 
-  v8 = [v5 predictionId];
+  predictionId = [dOCopy predictionId];
 
-  [v6 setPredictionId:v8];
+  [oCopy setPredictionId:predictionId];
 }
 
 - (id)convert
 {
-  v3 = [(IRMiLoPredictionEventMO *)self label];
-  v4 = [(IRMiLoPredictionEventMO *)self predictionId];
-  v5 = [IRMiLoPredictionEventDO miLoPredictionEventDOWithLabel:v3 predictionId:v4];
+  label = [(IRMiLoPredictionEventMO *)self label];
+  predictionId = [(IRMiLoPredictionEventMO *)self predictionId];
+  v5 = [IRMiLoPredictionEventDO miLoPredictionEventDOWithLabel:label predictionId:predictionId];
 
   return v5;
 }

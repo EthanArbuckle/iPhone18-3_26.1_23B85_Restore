@@ -1,57 +1,57 @@
 @interface VTUIEnrollTrainingViewMediatorGM
-- (VTUIEnrollTrainingViewMediatorGM)initWithTrainingView:(id)a3;
-- (void)addTargetToRadarExitButton:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5;
-- (void)animateSuccessfulStep:(BOOL)a3 completion:(id)a4;
+- (VTUIEnrollTrainingViewMediatorGM)initWithTrainingView:(id)view;
+- (void)addTargetToRadarExitButton:(id)button action:(SEL)action forControlEvents:(unint64_t)events;
+- (void)animateSuccessfulStep:(BOOL)step completion:(id)completion;
 - (void)animateToListeningState;
 - (void)hideInstructions;
-- (void)hideTrainingView:(BOOL)a3;
-- (void)setPowerLevel:(float)a3;
-- (void)showStatusMessage:(id)a3 afterDelay:(double)a4 completion:(id)a5;
+- (void)hideTrainingView:(BOOL)view;
+- (void)setPowerLevel:(float)level;
+- (void)showStatusMessage:(id)message afterDelay:(double)delay completion:(id)completion;
 - (void)showTrainingView;
 @end
 
 @implementation VTUIEnrollTrainingViewMediatorGM
 
-- (VTUIEnrollTrainingViewMediatorGM)initWithTrainingView:(id)a3
+- (VTUIEnrollTrainingViewMediatorGM)initWithTrainingView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = VTUIEnrollTrainingViewMediatorGM;
   v6 = [(VTUIEnrollTrainingViewMediatorGM *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_trainingView, a3);
+    objc_storeStrong(&v6->_trainingView, view);
   }
 
   return v7;
 }
 
-- (void)animateSuccessfulStep:(BOOL)a3 completion:(id)a4
+- (void)animateSuccessfulStep:(BOOL)step completion:(id)completion
 {
-  v4 = a3;
+  stepCopy = step;
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = *MEMORY[0x277CEF0E8];
   if (os_log_type_enabled(*MEMORY[0x277CEF0E8], OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315394;
     v11 = "[VTUIEnrollTrainingViewMediatorGM animateSuccessfulStep:completion:]";
     v12 = 1024;
-    v13 = v4;
+    v13 = stepCopy;
     _os_log_impl(&dword_2728BC000, v7, OS_LOG_TYPE_DEFAULT, "%s Animate. For Success: %d", &v10, 0x12u);
   }
 
-  v8 = [(VTUIEnrollTrainingIntelligentLightView *)self->_trainingView lightLayer];
-  [v8 transitionToNextBuddyStep];
+  lightLayer = [(VTUIEnrollTrainingIntelligentLightView *)self->_trainingView lightLayer];
+  [lightLayer transitionToNextBuddyStep];
 
-  [(VTUIEnrollTrainingIntelligentLightView *)self->_trainingView animateSuccessfulStepWithCompletion:v6];
+  [(VTUIEnrollTrainingIntelligentLightView *)self->_trainingView animateSuccessfulStepWithCompletion:completionCopy];
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hideTrainingView:(BOOL)a3
+- (void)hideTrainingView:(BOOL)view
 {
-  if (a3)
+  if (view)
   {
     if (self->_trainingView)
     {
@@ -113,33 +113,33 @@ void __53__VTUIEnrollTrainingViewMediatorGM_hideTrainingView___block_invoke_2(ui
 
 - (void)animateToListeningState
 {
-  v2 = [(VTUIEnrollTrainingIntelligentLightView *)self->_trainingView lightLayer];
-  [v2 setPaused:0];
+  lightLayer = [(VTUIEnrollTrainingIntelligentLightView *)self->_trainingView lightLayer];
+  [lightLayer setPaused:0];
 }
 
-- (void)addTargetToRadarExitButton:(id)a3 action:(SEL)a4 forControlEvents:(unint64_t)a5
+- (void)addTargetToRadarExitButton:(id)button action:(SEL)action forControlEvents:(unint64_t)events
 {
   trainingView = self->_trainingView;
-  v8 = a3;
-  v9 = [(VTUIEnrollTrainingIntelligentLightView *)trainingView radarExitButton];
-  [v9 addTarget:v8 action:a4 forControlEvents:a5];
+  buttonCopy = button;
+  radarExitButton = [(VTUIEnrollTrainingIntelligentLightView *)trainingView radarExitButton];
+  [radarExitButton addTarget:buttonCopy action:action forControlEvents:events];
 }
 
-- (void)showStatusMessage:(id)a3 afterDelay:(double)a4 completion:(id)a5
+- (void)showStatusMessage:(id)message afterDelay:(double)delay completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  messageCopy = message;
+  completionCopy = completion;
   objc_initWeak(&location, self);
-  v10 = dispatch_time(0, (a4 * 1000000000.0));
+  v10 = dispatch_time(0, (delay * 1000000000.0));
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __76__VTUIEnrollTrainingViewMediatorGM_showStatusMessage_afterDelay_completion___block_invoke;
   v13[3] = &unk_279E54B48;
   objc_copyWeak(&v16, &location);
-  v14 = v8;
-  v15 = v9;
-  v11 = v8;
-  v12 = v9;
+  v14 = messageCopy;
+  v15 = completionCopy;
+  v11 = messageCopy;
+  v12 = completionCopy;
   dispatch_after(v10, MEMORY[0x277D85CD0], v13);
 
   objc_destroyWeak(&v16);
@@ -250,11 +250,11 @@ uint64_t __76__VTUIEnrollTrainingViewMediatorGM_showStatusMessage_afterDelay_com
   return result;
 }
 
-- (void)setPowerLevel:(float)a3
+- (void)setPowerLevel:(float)level
 {
-  v5 = [(VTUIEnrollTrainingIntelligentLightView *)self->_trainingView lightLayer];
-  *&v4 = a3;
-  [v5 updateVolumeInputdB:v4];
+  lightLayer = [(VTUIEnrollTrainingIntelligentLightView *)self->_trainingView lightLayer];
+  *&v4 = level;
+  [lightLayer updateVolumeInputdB:v4];
 }
 
 @end

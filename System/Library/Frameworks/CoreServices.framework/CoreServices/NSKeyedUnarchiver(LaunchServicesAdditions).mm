@@ -6,7 +6,7 @@
 
 + (id)ls_unarchivedObjectOfClass:()LaunchServicesAdditions fromData:error:
 {
-  v7 = [a1 unarchivedObjectOfClass:? fromData:? error:?];
+  v7 = [self unarchivedObjectOfClass:? fromData:? error:?];
   if (v7)
   {
     v8 = [MEMORY[0x1E695DFD8] setWithObject:a3];

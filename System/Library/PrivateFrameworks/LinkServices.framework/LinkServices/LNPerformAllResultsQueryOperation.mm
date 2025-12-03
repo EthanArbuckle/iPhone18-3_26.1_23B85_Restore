@@ -1,32 +1,32 @@
 @interface LNPerformAllResultsQueryOperation
-- (LNPerformAllResultsQueryOperation)initWithConnectionInterface:(id)a3 entityMangledTypeName:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)finishWithError:(id)a3;
+- (LNPerformAllResultsQueryOperation)initWithConnectionInterface:(id)interface entityMangledTypeName:(id)name queue:(id)queue completionHandler:(id)handler;
+- (void)finishWithError:(id)error;
 - (void)start;
 @end
 
 @implementation LNPerformAllResultsQueryOperation
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(LNPerformAllResultsQueryOperation *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(LNPerformAllResultsQueryOperation *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(LNPerformAllResultsQueryOperation *)self output];
-    v7 = [(LNConnectionOperation *)self validatingResult:v6 error:v4];
+    output = [(LNPerformAllResultsQueryOperation *)self output];
+    v7 = [(LNConnectionOperation *)self validatingResult:output error:errorCopy];
 
-    v8 = [(LNPerformAllResultsQueryOperation *)self completionHandler];
-    v9 = [(LNPerformAllResultsQueryOperation *)self output];
-    (v8)[2](v8, v9, v7);
+    completionHandler2 = [(LNPerformAllResultsQueryOperation *)self completionHandler];
+    output2 = [(LNPerformAllResultsQueryOperation *)self output];
+    (completionHandler2)[2](completionHandler2, output2, v7);
 
     [(LNPerformAllResultsQueryOperation *)self setCompletionHandler:0];
-    v4 = v7;
+    errorCopy = v7;
   }
 
   v10.receiver = self;
   v10.super_class = LNPerformAllResultsQueryOperation;
-  [(LNConnectionOperation *)&v10 finishWithError:v4];
+  [(LNConnectionOperation *)&v10 finishWithError:errorCopy];
 }
 
 - (void)start
@@ -34,14 +34,14 @@
   v6.receiver = self;
   v6.super_class = LNPerformAllResultsQueryOperation;
   [(LNConnectionOperation *)&v6 start];
-  v3 = [(LNInterfaceConnectionOperation *)self connectionInterface];
-  v4 = [(LNPerformAllResultsQueryOperation *)self entityMangledTypeName];
+  connectionInterface = [(LNInterfaceConnectionOperation *)self connectionInterface];
+  entityMangledTypeName = [(LNPerformAllResultsQueryOperation *)self entityMangledTypeName];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __42__LNPerformAllResultsQueryOperation_start__block_invoke;
   v5[3] = &unk_1E74B1F50;
   v5[4] = self;
-  [v3 performAllEntitiesQueryWithEntityMangledTypeName:v4 completionHandler:v5];
+  [connectionInterface performAllEntitiesQueryWithEntityMangledTypeName:entityMangledTypeName completionHandler:v5];
 }
 
 void __42__LNPerformAllResultsQueryOperation_start__block_invoke(uint64_t a1, void *a2, void *a3)
@@ -56,24 +56,24 @@ void __42__LNPerformAllResultsQueryOperation_start__block_invoke(uint64_t a1, vo
   os_activity_scope_leave(&v8);
 }
 
-- (LNPerformAllResultsQueryOperation)initWithConnectionInterface:(id)a3 entityMangledTypeName:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (LNPerformAllResultsQueryOperation)initWithConnectionInterface:(id)interface entityMangledTypeName:(id)name queue:(id)queue completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  interfaceCopy = interface;
+  nameCopy = name;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (interfaceCopy)
   {
-    if (v12)
+    if (nameCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v25 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v25 handleFailureInMethod:a2 object:self file:@"LNPerformAllResultsQueryOperation.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"entityMangledTypeName"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNPerformAllResultsQueryOperation.m" lineNumber:36 description:{@"Invalid parameter not satisfying: %@", @"entityMangledTypeName"}];
 
-    if (v14)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -81,40 +81,40 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v24 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v24 handleFailureInMethod:a2 object:self file:@"LNPerformAllResultsQueryOperation.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNPerformAllResultsQueryOperation.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface"}];
 
-  if (!v12)
+  if (!nameCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v14)
+  if (handlerCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v26 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v26 handleFailureInMethod:a2 object:self file:@"LNPerformAllResultsQueryOperation.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNPerformAllResultsQueryOperation.m" lineNumber:37 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_4:
-  v15 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v27.receiver = self;
   v27.super_class = LNPerformAllResultsQueryOperation;
-  v16 = [(LNInterfaceConnectionOperation *)&v27 initWithIdentifier:v15 connectionInterface:v11 priority:1 queue:v13 activity:&__block_literal_global_12307];
+  v16 = [(LNInterfaceConnectionOperation *)&v27 initWithIdentifier:uUID connectionInterface:interfaceCopy priority:1 queue:queueCopy activity:&__block_literal_global_12307];
 
   if (v16)
   {
     entityType = v16->_entityType;
     v16->_entityType = 0;
 
-    v18 = [v12 copy];
+    v18 = [nameCopy copy];
     entityMangledTypeName = v16->_entityMangledTypeName;
     v16->_entityMangledTypeName = v18;
 
-    v20 = [v14 copy];
+    v20 = [handlerCopy copy];
     completionHandler = v16->_completionHandler;
     v16->_completionHandler = v20;
 

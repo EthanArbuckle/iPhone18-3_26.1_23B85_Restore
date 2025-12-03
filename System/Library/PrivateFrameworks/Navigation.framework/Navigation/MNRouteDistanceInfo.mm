@@ -1,17 +1,17 @@
 @interface MNRouteDistanceInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MNRouteDistanceInfo)init;
-- (MNRouteDistanceInfo)initWithCoder:(id)a3;
-- (MNRouteDistanceInfo)initWithDistanceRemainingToEndOfLeg:(double)a3 distanceRemainingToEndOfRoute:(double)a4 forLegIndex:(unint64_t)a5 forRouteID:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (MNRouteDistanceInfo)initWithCoder:(id)coder;
+- (MNRouteDistanceInfo)initWithDistanceRemainingToEndOfLeg:(double)leg distanceRemainingToEndOfRoute:(double)route forLegIndex:(unint64_t)index forRouteID:(id)d;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MNRouteDistanceInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -21,7 +21,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       if (self->_distanceRemainingToEndOfLeg == v5->_distanceRemainingToEndOfLeg && self->_distanceRemainingToEndOfRoute == v5->_distanceRemainingToEndOfRoute && self->_legIndex == v5->_legIndex)
       {
@@ -55,28 +55,28 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   distanceRemainingToEndOfLeg = self->_distanceRemainingToEndOfLeg;
-  v5 = a3;
-  [v5 encodeDouble:@"_distanceRemainingToEndOfLeg" forKey:distanceRemainingToEndOfLeg];
-  [v5 encodeDouble:@"_distanceRemainingToEndOfRoute" forKey:self->_distanceRemainingToEndOfRoute];
-  [v5 encodeInteger:self->_legIndex forKey:@"_legIndex"];
-  [v5 encodeObject:self->_routeID forKey:@"_routeID"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"_distanceRemainingToEndOfLeg" forKey:distanceRemainingToEndOfLeg];
+  [coderCopy encodeDouble:@"_distanceRemainingToEndOfRoute" forKey:self->_distanceRemainingToEndOfRoute];
+  [coderCopy encodeInteger:self->_legIndex forKey:@"_legIndex"];
+  [coderCopy encodeObject:self->_routeID forKey:@"_routeID"];
 }
 
-- (MNRouteDistanceInfo)initWithCoder:(id)a3
+- (MNRouteDistanceInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(MNRouteDistanceInfo *)self initWithDistanceRemainingToEndOfLeg:0 distanceRemainingToEndOfRoute:0 forLegIndex:0.0 forRouteID:0.0];
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"_distanceRemainingToEndOfLeg"];
+    [coderCopy decodeDoubleForKey:@"_distanceRemainingToEndOfLeg"];
     v5->_distanceRemainingToEndOfLeg = v6;
-    [v4 decodeDoubleForKey:@"_distanceRemainingToEndOfRoute"];
+    [coderCopy decodeDoubleForKey:@"_distanceRemainingToEndOfRoute"];
     v5->_distanceRemainingToEndOfRoute = v7;
-    v5->_legIndex = [v4 decodeIntegerForKey:@"_legIndex"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_routeID"];
+    v5->_legIndex = [coderCopy decodeIntegerForKey:@"_legIndex"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_routeID"];
     routeID = v5->_routeID;
     v5->_routeID = v8;
   }
@@ -84,19 +84,19 @@
   return v5;
 }
 
-- (MNRouteDistanceInfo)initWithDistanceRemainingToEndOfLeg:(double)a3 distanceRemainingToEndOfRoute:(double)a4 forLegIndex:(unint64_t)a5 forRouteID:(id)a6
+- (MNRouteDistanceInfo)initWithDistanceRemainingToEndOfLeg:(double)leg distanceRemainingToEndOfRoute:(double)route forLegIndex:(unint64_t)index forRouteID:(id)d
 {
-  v11 = a6;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = MNRouteDistanceInfo;
   v12 = [(MNRouteDistanceInfo *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_distanceRemainingToEndOfLeg = a3;
-    v12->_distanceRemainingToEndOfRoute = a4;
-    v12->_legIndex = a5;
-    objc_storeStrong(&v12->_routeID, a6);
+    v12->_distanceRemainingToEndOfLeg = leg;
+    v12->_distanceRemainingToEndOfRoute = route;
+    v12->_legIndex = index;
+    objc_storeStrong(&v12->_routeID, d);
   }
 
   return v13;

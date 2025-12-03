@@ -1,28 +1,28 @@
 @interface PKAccountUserFamilyMemberRowModel
-+ (id)sortedAccountUserFamilyMemberRowModelsForFamilyMemberCollection:(id)a3 account:(id)a4 accountUserCollection:(id)a5 invitations:(id)a6;
++ (id)sortedAccountUserFamilyMemberRowModelsForFamilyMemberCollection:(id)collection account:(id)account accountUserCollection:(id)userCollection invitations:(id)invitations;
 - (NSString)detailText;
 - (NSString)titleText;
-- (PKAccountUserFamilyMemberRowModel)initWithFamilyMember:(id)a3;
-- (int64_t)compare:(id)a3;
+- (PKAccountUserFamilyMemberRowModel)initWithFamilyMember:(id)member;
+- (int64_t)compare:(id)compare;
 @end
 
 @implementation PKAccountUserFamilyMemberRowModel
 
-+ (id)sortedAccountUserFamilyMemberRowModelsForFamilyMemberCollection:(id)a3 account:(id)a4 accountUserCollection:(id)a5 invitations:(id)a6
++ (id)sortedAccountUserFamilyMemberRowModelsForFamilyMemberCollection:(id)collection account:(id)account accountUserCollection:(id)userCollection invitations:(id)invitations
 {
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v32 = a6;
+  collectionCopy = collection;
+  userCollectionCopy = userCollection;
+  invitationsCopy = invitations;
   v34 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v10 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v33 = v9;
-  v11 = [v9 accountUsers];
-  v12 = [v11 countByEnumeratingWithState:&v39 objects:v44 count:16];
+  v33 = userCollectionCopy;
+  accountUsers = [userCollectionCopy accountUsers];
+  v12 = [accountUsers countByEnumeratingWithState:&v39 objects:v44 count:16];
   if (v12)
   {
     v13 = v12;
@@ -33,24 +33,24 @@
       {
         if (*v40 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(accountUsers);
         }
 
         v16 = *(*(&v39 + 1) + 8 * i);
-        v17 = [v16 altDSID];
-        v18 = [v8 familyMemberForAltDSID:v17];
+        altDSID = [v16 altDSID];
+        v18 = [collectionCopy familyMemberForAltDSID:altDSID];
         [v16 accountState];
-        if (([v16 isCurrentUser] & 1) == 0 && (PKAccountStateIsTerminal() & 1) == 0 && (objc_msgSend(v10, "containsObject:", v17) & 1) == 0)
+        if (([v16 isCurrentUser] & 1) == 0 && (PKAccountStateIsTerminal() & 1) == 0 && (objc_msgSend(v10, "containsObject:", altDSID) & 1) == 0)
         {
           v19 = [[PKAccountUserFamilyMemberRowModel alloc] initWithFamilyMember:v18];
           [(PKAccountUserFamilyMemberRowModel *)v19 setAccountUser:v16];
           [(PKAccountUserFamilyMemberRowModel *)v19 setAccountUserCollection:v33];
           [v34 addObject:v19];
-          [v10 addObject:v17];
+          [v10 addObject:altDSID];
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v39 objects:v44 count:16];
+      v13 = [accountUsers countByEnumeratingWithState:&v39 objects:v44 count:16];
     }
 
     while (v13);
@@ -60,7 +60,7 @@
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v20 = v32;
+  v20 = invitationsCopy;
   v21 = [v20 countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (v21)
   {
@@ -76,16 +76,16 @@
         }
 
         v25 = *(*(&v35 + 1) + 8 * j);
-        v26 = [v25 invitationDetails];
-        v27 = [v26 accountUserAltDSID];
+        invitationDetails = [v25 invitationDetails];
+        accountUserAltDSID = [invitationDetails accountUserAltDSID];
 
-        v28 = [v8 familyMemberForAltDSID:v27];
-        if (([v10 containsObject:v27] & 1) == 0)
+        v28 = [collectionCopy familyMemberForAltDSID:accountUserAltDSID];
+        if (([v10 containsObject:accountUserAltDSID] & 1) == 0)
         {
           v29 = [[PKAccountUserFamilyMemberRowModel alloc] initWithFamilyMember:v28];
           [(PKAccountUserFamilyMemberRowModel *)v29 setInvitation:v25];
           [v34 addObject:v29];
-          [v10 addObject:v27];
+          [v10 addObject:accountUserAltDSID];
         }
       }
 
@@ -101,32 +101,32 @@
   return v30;
 }
 
-- (PKAccountUserFamilyMemberRowModel)initWithFamilyMember:(id)a3
+- (PKAccountUserFamilyMemberRowModel)initWithFamilyMember:(id)member
 {
-  v5 = a3;
+  memberCopy = member;
   v9.receiver = self;
   v9.super_class = PKAccountUserFamilyMemberRowModel;
   v6 = [(PKAccountUserFamilyMemberRowModel *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_familyMember, a3);
+    objc_storeStrong(&v6->_familyMember, member);
   }
 
   return v7;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   v5 = PKAccountUserFamilyRowPriorityFromRow(self);
-  v6 = PKAccountUserFamilyRowPriorityFromRow(v4);
+  v6 = PKAccountUserFamilyRowPriorityFromRow(compareCopy);
   if (v5 == v6)
   {
-    v7 = [(PKFamilyMember *)self->_familyMember labelName];
-    v8 = [v4 familyMember];
-    v9 = [v8 labelName];
-    v10 = [v7 compare:v9];
+    labelName = [(PKFamilyMember *)self->_familyMember labelName];
+    familyMember = [compareCopy familyMember];
+    labelName2 = [familyMember labelName];
+    v10 = [labelName compare:labelName2];
   }
 
   else if (v5 < v6)
@@ -144,23 +144,23 @@
 
 - (NSString)titleText
 {
-  v3 = [(PKAccountUser *)self->_accountUser nameComponents];
-  v4 = v3;
-  if (v3)
+  nameComponents = [(PKAccountUser *)self->_accountUser nameComponents];
+  v4 = nameComponents;
+  if (nameComponents)
   {
-    v5 = v3;
+    accountUserNameComponents = nameComponents;
   }
 
   else
   {
-    v6 = [(PKFeatureApplication *)self->_invitation invitationDetails];
-    v5 = [v6 accountUserNameComponents];
+    invitationDetails = [(PKFeatureApplication *)self->_invitation invitationDetails];
+    accountUserNameComponents = [invitationDetails accountUserNameComponents];
   }
 
-  v7 = [MEMORY[0x1E69B8740] contactForFamilyMember:self->_familyMember nameComponents:v5 imageData:0];
-  v8 = [v7 pkFullName];
+  v7 = [MEMORY[0x1E69B8740] contactForFamilyMember:self->_familyMember nameComponents:accountUserNameComponents imageData:0];
+  pkFullName = [v7 pkFullName];
 
-  return v8;
+  return pkFullName;
 }
 
 - (NSString)detailText
@@ -168,10 +168,10 @@
   accountUser = self->_accountUser;
   if (accountUser)
   {
-    v4 = [(PKAccountUser *)accountUser accessLevel];
-    if (v4 != 2)
+    accessLevel = [(PKAccountUser *)accountUser accessLevel];
+    if (accessLevel != 2)
     {
-      if (v4 != 1)
+      if (accessLevel != 1)
       {
         invitation = 0;
         goto LABEL_11;

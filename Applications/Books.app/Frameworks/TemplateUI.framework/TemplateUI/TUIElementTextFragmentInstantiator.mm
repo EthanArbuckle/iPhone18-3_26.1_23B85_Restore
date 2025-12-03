@@ -1,16 +1,16 @@
 @interface TUIElementTextFragmentInstantiator
-+ (void)configureContainingBuilder:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6;
++ (void)configureContainingBuilder:(id)builder withNode:(id)node attributes:(id)attributes context:(id)context;
 @end
 
 @implementation TUIElementTextFragmentInstantiator
 
-+ (void)configureContainingBuilder:(id)a3 withNode:(id)a4 attributes:(id)a5 context:(id)a6
++ (void)configureContainingBuilder:(id)builder withNode:(id)node attributes:(id)attributes context:(id)context
 {
-  v9 = a3;
-  v8 = [a5 stringForAttribute:0 node:a4.var0];
+  builderCopy = builder;
+  v8 = [attributes stringForAttribute:0 node:node.var0];
   if (v8)
   {
-    [v9 appendString:v8];
+    [builderCopy appendString:v8];
   }
 }
 

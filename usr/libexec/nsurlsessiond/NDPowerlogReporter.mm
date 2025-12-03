@@ -1,5 +1,5 @@
 @interface NDPowerlogReporter
-- (NDPowerlogReporter)initWithTaskDescription:(id)a3;
+- (NDPowerlogReporter)initWithTaskDescription:(id)description;
 - (void)taskWillResume;
 @end
 
@@ -20,16 +20,16 @@
   }
 }
 
-- (NDPowerlogReporter)initWithTaskDescription:(id)a3
+- (NDPowerlogReporter)initWithTaskDescription:(id)description
 {
-  v5 = a3;
+  descriptionCopy = description;
   v9.receiver = self;
   v9.super_class = NDPowerlogReporter;
   v6 = [(NDPowerlogReporter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_taskDescription, a3);
+    objc_storeStrong(&v6->_taskDescription, description);
     v7->_hasStarted = 0;
     v7->_suspendedDurationSinceLastUpdate = 0.0;
   }

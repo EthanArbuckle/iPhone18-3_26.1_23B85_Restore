@@ -1,13 +1,13 @@
 @interface PPSocialHighlightPropertyValueProvider
-- (id)valueForHighlight:(id)a3;
-- (void)initWithProvidingBlock:(void *)a1;
+- (id)valueForHighlight:(id)highlight;
+- (void)initWithProvidingBlock:(void *)block;
 @end
 
 @implementation PPSocialHighlightPropertyValueProvider
 
-- (id)valueForHighlight:(id)a3
+- (id)valueForHighlight:(id)highlight
 {
-  v4 = a3;
+  highlightCopy = highlight;
   v5 = objc_autoreleasePoolPush();
   v6 = MEMORY[0x277CCABB0];
   (*(self->_providingBlock + 2))();
@@ -17,23 +17,23 @@
   return v7;
 }
 
-- (void)initWithProvidingBlock:(void *)a1
+- (void)initWithProvidingBlock:(void *)block
 {
   v3 = a2;
-  if (a1)
+  if (block)
   {
-    v7.receiver = a1;
+    v7.receiver = block;
     v7.super_class = PPSocialHighlightPropertyValueProvider;
-    a1 = objc_msgSendSuper2(&v7, sel_init);
-    if (a1)
+    block = objc_msgSendSuper2(&v7, sel_init);
+    if (block)
     {
       v4 = [v3 copy];
-      v5 = a1[1];
-      a1[1] = v4;
+      v5 = block[1];
+      block[1] = v4;
     }
   }
 
-  return a1;
+  return block;
 }
 
 @end

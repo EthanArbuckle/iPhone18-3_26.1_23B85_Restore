@@ -6,9 +6,9 @@
 - (void)_configureFeedbackLabel;
 - (void)_configureVisualizerView;
 - (void)layoutSubviews;
-- (void)setStyleDisabled:(BOOL)a3;
-- (void)showCorrectWithString:(id)a3;
-- (void)updateWithMagnitudes:(id)a3;
+- (void)setStyleDisabled:(BOOL)disabled;
+- (void)showCorrectWithString:(id)string;
+- (void)updateWithMagnitudes:(id)magnitudes;
 @end
 
 @implementation SoundActionsPracticeVisualizerView
@@ -29,8 +29,8 @@
     v4 = settingsLocString(@"SOUND_ACTION_PRACTICE_PAGE_VISUALIZER", @"Accessibility");
     [(SoundActionsPracticeVisualizerView *)v3 setAccessibilityLabel:v4];
 
-    v5 = [(SoundActionsPracticeVisualizerView *)v3 accessibilityTraits];
-    [(SoundActionsPracticeVisualizerView *)v3 setAccessibilityTraits:UIAccessibilityTraitImage | v5];
+    accessibilityTraits = [(SoundActionsPracticeVisualizerView *)v3 accessibilityTraits];
+    [(SoundActionsPracticeVisualizerView *)v3 setAccessibilityTraits:UIAccessibilityTraitImage | accessibilityTraits];
   }
 
   return v3;
@@ -96,15 +96,15 @@
 {
   if (([(UILabel *)self->_feedbackLabel isHidden]& 1) != 0)
   {
-    v3 = 0;
+    text = 0;
   }
 
   else
   {
-    v3 = [(UILabel *)self->_feedbackLabel text];
+    text = [(UILabel *)self->_feedbackLabel text];
   }
 
-  return v3;
+  return text;
 }
 
 - (void)layoutSubviews
@@ -198,8 +198,8 @@
     v26 = [NSArray arrayWithObjects:v28 count:4];
     [(CAGradientLayer *)self->_checkmarkBackgroundGradient setColors:v26];
 
-    v27 = [(UIView *)self->_checkmarkBackgroundView layer];
-    [v27 insertSublayer:self->_checkmarkBackgroundGradient atIndex:0];
+    layer = [(UIView *)self->_checkmarkBackgroundView layer];
+    [layer insertSublayer:self->_checkmarkBackgroundGradient atIndex:0];
   }
 }
 
@@ -239,19 +239,19 @@
   }
 }
 
-- (void)showCorrectWithString:(id)a3
+- (void)showCorrectWithString:(id)string
 {
   if (!self->_isAnimating)
   {
     self->_isAnimating = 1;
     visualizerView = self->_visualizerView;
-    v5 = a3;
+    stringCopy = string;
     [(SoundDetectionAudioVisualizationView *)visualizerView zeroOut];
     v6 = self->_visualizerView;
     v7 = +[UIColor systemLightGrayColor];
     [(SoundDetectionAudioVisualizationView *)v6 setTintColor:v7];
 
-    [(UILabel *)self->_feedbackLabel setText:v5];
+    [(UILabel *)self->_feedbackLabel setText:stringCopy];
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = __60__SoundActionsPracticeVisualizerView_showCorrectWithString___block_invoke;
@@ -309,10 +309,10 @@ void __60__SoundActionsPracticeVisualizerView_showCorrectWithString___block_invo
   *(*(a1 + 32) + 48) = 0;
 }
 
-- (void)setStyleDisabled:(BOOL)a3
+- (void)setStyleDisabled:(BOOL)disabled
 {
-  v3 = a3;
-  if (a3)
+  disabledCopy = disabled;
+  if (disabled)
   {
     [(SoundActionsPracticeVisualizerView *)self _zeroOut];
     visualizerView = self->_visualizerView;
@@ -329,14 +329,14 @@ void __60__SoundActionsPracticeVisualizerView_showCorrectWithString___block_invo
 
   feedbackLabel = self->_feedbackLabel;
 
-  [(UILabel *)feedbackLabel setHidden:v3];
+  [(UILabel *)feedbackLabel setHidden:disabledCopy];
 }
 
-- (void)updateWithMagnitudes:(id)a3
+- (void)updateWithMagnitudes:(id)magnitudes
 {
   if (!self->_isAnimating)
   {
-    [(SoundDetectionAudioVisualizationView *)self->_visualizerView updateWithMagnitudes:a3];
+    [(SoundDetectionAudioVisualizationView *)self->_visualizerView updateWithMagnitudes:magnitudes];
   }
 }
 

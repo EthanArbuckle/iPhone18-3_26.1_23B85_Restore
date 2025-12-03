@@ -3946,43 +3946,6 @@ void ___LayoutConstants_block_invoke_47(void *a1@<X1>, uint64_t a2@<X8>)
   *(a2 + 72) = v21 * v23;
 }
 
-{
-  v7 = a1;
-  os_unfair_lock_lock(&_block_invoke_lock_50);
-  if (_block_invoke___cachedDevice_50)
-  {
-    v3 = _block_invoke___cachedDevice_50 == v7;
-  }
-
-  else
-  {
-    v3 = 0;
-  }
-
-  if (!v3 || (v4 = [v7 version], v4 != _block_invoke___previousCLKDeviceVersion_50))
-  {
-    _block_invoke___cachedDevice_50 = v7;
-    _block_invoke___previousCLKDeviceVersion_50 = [v7 version];
-    ___LayoutConstants_block_invoke_2_38(v7, v8);
-    xmmword_27DA302E0 = v8[2];
-    unk_27DA302F0 = v8[3];
-    xmmword_27DA30300 = v8[4];
-    qword_27DA30310 = v9;
-    _block_invoke_value_35 = v8[0];
-    *algn_27DA302D0 = v8[1];
-  }
-
-  v5 = unk_27DA302F0;
-  *(a2 + 32) = xmmword_27DA302E0;
-  *(a2 + 48) = v5;
-  *(a2 + 64) = xmmword_27DA30300;
-  *(a2 + 80) = qword_27DA30310;
-  v6 = *algn_27DA302D0;
-  *a2 = _block_invoke_value_35;
-  *(a2 + 16) = v6;
-  os_unfair_lock_unlock(&_block_invoke_lock_50);
-}
-
 double ___LayoutConstants_block_invoke_44(uint64_t a1, void *a2)
 {
   v2 = a2;

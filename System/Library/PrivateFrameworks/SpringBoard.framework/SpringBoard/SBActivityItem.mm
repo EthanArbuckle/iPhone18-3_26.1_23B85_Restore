@@ -1,41 +1,41 @@
 @interface SBActivityItem
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (SBActivityItem)initWithContentUpdate:(id)a3;
+- (SBActivityItem)initWithContentUpdate:(id)update;
 - (double)relevanceScore;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
-- (void)setContentUpdate:(id)a3;
+- (void)setContentUpdate:(id)update;
 @end
 
 @implementation SBActivityItem
 
-- (SBActivityItem)initWithContentUpdate:(id)a3
+- (SBActivityItem)initWithContentUpdate:(id)update
 {
-  v5 = a3;
+  updateCopy = update;
   v9.receiver = self;
   v9.super_class = SBActivityItem;
   v6 = [(SBActivityItem *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contentUpdate, a3);
+    objc_storeStrong(&v6->_contentUpdate, update);
   }
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   identifier = self->_identifier;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __26__SBActivityItem_isEqual___block_invoke;
   v18[3] = &unk_2783A91C8;
-  v7 = v4;
+  v7 = equalCopy;
   v19 = v7;
   v8 = [v5 appendObject:identifier counterpart:v18];
   relevanceScore = self->_relevanceScore;
@@ -51,23 +51,23 @@
   return v7;
 }
 
-- (void)setContentUpdate:(id)a3
+- (void)setContentUpdate:(id)update
 {
-  v5 = a3;
+  updateCopy = update;
   contentUpdate = self->_contentUpdate;
   p_contentUpdate = &self->_contentUpdate;
-  if (contentUpdate != v5)
+  if (contentUpdate != updateCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_contentUpdate, a3);
-    v5 = v8;
+    v8 = updateCopy;
+    objc_storeStrong(p_contentUpdate, update);
+    updateCopy = v8;
   }
 }
 
 - (double)relevanceScore
 {
-  v2 = [(ACActivityContentUpdate *)self->_contentUpdate content];
-  [v2 relevanceScore];
+  content = [(ACActivityContentUpdate *)self->_contentUpdate content];
+  [content relevanceScore];
   v4 = v3;
 
   return v4;
@@ -85,28 +85,28 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBActivityItem *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBActivityItem *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBActivityItem *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBActivityItem *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBActivityItem *)self succinctDescriptionBuilder];
-  v5 = [v4 appendObject:self->_identifier withName:@"identifier"];
-  v6 = [v4 appendObject:self->_descriptor withName:@"descriptor"];
-  v7 = [v4 appendDouble:@"relevanceScore" withName:2 decimalPrecision:self->_relevanceScore];
+  succinctDescriptionBuilder = [(SBActivityItem *)self succinctDescriptionBuilder];
+  v5 = [succinctDescriptionBuilder appendObject:self->_identifier withName:@"identifier"];
+  v6 = [succinctDescriptionBuilder appendObject:self->_descriptor withName:@"descriptor"];
+  v7 = [succinctDescriptionBuilder appendDouble:@"relevanceScore" withName:2 decimalPrecision:self->_relevanceScore];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

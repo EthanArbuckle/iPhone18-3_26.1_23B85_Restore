@@ -1,18 +1,18 @@
 @interface CryptexRemoteObject
-- (CryptexRemoteObject)initWithDesc:(id)a3;
+- (CryptexRemoteObject)initWithDesc:(id)desc;
 - (void)dealloc;
 @end
 
 @implementation CryptexRemoteObject
 
-- (CryptexRemoteObject)initWithDesc:(id)a3
+- (CryptexRemoteObject)initWithDesc:(id)desc
 {
   v15 = *MEMORY[0x29EDCA608];
-  v4 = a3;
+  descCopy = desc;
   v12.receiver = self;
   v12.super_class = CryptexRemoteObject;
   v5 = [(CryptexRemoteObject *)&v12 init];
-  string = xpc_dictionary_get_string(v4, "remote-cryptex-identifier");
+  string = xpc_dictionary_get_string(descCopy, "remote-cryptex-identifier");
   if (_dispatch_is_multithreaded())
   {
     while (1)
@@ -37,7 +37,7 @@
   }
 
   v5->_identifier = v7;
-  v8 = xpc_dictionary_get_string(v4, "remote-cryptex-version");
+  v8 = xpc_dictionary_get_string(descCopy, "remote-cryptex-version");
   if (_dispatch_is_multithreaded())
   {
     while (1)

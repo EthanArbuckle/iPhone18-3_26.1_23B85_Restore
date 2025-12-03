@@ -1,33 +1,33 @@
 @interface XPCNSClientConnection
-- (XPCNSClientConnection)initWithServiceName:(id)a3 delegate:(id)a4;
-- (void)XPCClientConnection:(id)a3 didReceiveRequest:(id)a4;
-- (void)sendMessage:(id)a3 data:(id)a4 withHandler:(id)a5;
-- (void)sendMessageReliably:(id)a3 data:(id)a4 maxRetryCount:(int)a5 withHandler:(id)a6;
+- (XPCNSClientConnection)initWithServiceName:(id)name delegate:(id)delegate;
+- (void)XPCClientConnection:(id)connection didReceiveRequest:(id)request;
+- (void)sendMessage:(id)message data:(id)data withHandler:(id)handler;
+- (void)sendMessageReliably:(id)reliably data:(id)data maxRetryCount:(int)count withHandler:(id)handler;
 @end
 
 @implementation XPCNSClientConnection
 
-- (void)XPCClientConnection:(id)a3 didReceiveRequest:(id)a4
+- (void)XPCClientConnection:(id)connection didReceiveRequest:(id)request
 {
   delegate = self->_delegate;
-  v6 = a4;
-  v7 = [[XPCNSRequest alloc] initWithXPCRequest:v6];
+  requestCopy = request;
+  v7 = [[XPCNSRequest alloc] initWithXPCRequest:requestCopy];
 
   [(XPCNSClientConnectionDelegate *)delegate XPCNSClientConnection:self didReceiveRequest:v7];
 }
 
-- (void)sendMessageReliably:(id)a3 data:(id)a4 maxRetryCount:(int)a5 withHandler:(id)a6
+- (void)sendMessageReliably:(id)reliably data:(id)data maxRetryCount:(int)count withHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __76__XPCNSClientConnection_sendMessageReliably_data_maxRetryCount_withHandler___block_invoke;
   v12[3] = &unk_2798A52B0;
-  v14 = a5;
+  countCopy = count;
   v12[4] = self;
-  v13 = v10;
-  v11 = v10;
-  [(XPCNSClientConnection *)self sendMessage:a3 data:a4 withHandler:v12];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [(XPCNSClientConnection *)self sendMessage:reliably data:data withHandler:v12];
 }
 
 uint64_t __76__XPCNSClientConnection_sendMessageReliably_data_maxRetryCount_withHandler___block_invoke(uint64_t a1, int a2, void *a3, int a4, unint64_t a5)
@@ -59,15 +59,15 @@ LABEL_15:
   return v12;
 }
 
-- (void)sendMessage:(id)a3 data:(id)a4 withHandler:(id)a5
+- (void)sendMessage:(id)message data:(id)data withHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  handlerCopy = handler;
+  dataCopy = data;
+  messageCopy = message;
   v11 = xpc_dictionary_create(0, 0, 0);
   v24 = 0;
   v25 = 0;
-  inserted = _insertMessage(v11, v10, v9, &v25, &v24);
+  inserted = _insertMessage(v11, messageCopy, dataCopy, &v25, &v24);
 
   if (inserted)
   {
@@ -77,7 +77,7 @@ LABEL_15:
     v20[2] = __54__XPCNSClientConnection_sendMessage_data_withHandler___block_invoke;
     v20[3] = &unk_2798A5288;
     v20[4] = self;
-    v21 = v8;
+    v21 = handlerCopy;
     v22 = v25;
     v23 = v24;
     [(XPCClientConnection *)clientConnection sendMessage:v11 withHandler:v20];
@@ -129,20 +129,20 @@ uint64_t __54__XPCNSClientConnection_sendMessage_data_withHandler___block_invoke
   return v18;
 }
 
-- (XPCNSClientConnection)initWithServiceName:(id)a3 delegate:(id)a4
+- (XPCNSClientConnection)initWithServiceName:(id)name delegate:(id)delegate
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  delegateCopy = delegate;
   v12.receiver = self;
   v12.super_class = XPCNSClientConnection;
   v8 = [(XPCNSClientConnection *)&v12 init];
   if (v8)
   {
-    v9 = [[XPCClientConnection alloc] initWithServiceName:v6 delegate:v8];
+    v9 = [[XPCClientConnection alloc] initWithServiceName:nameCopy delegate:v8];
     clientConnection = v8->_clientConnection;
     v8->_clientConnection = v9;
 
-    v8->_delegate = v7;
+    v8->_delegate = delegateCopy;
   }
 
   return v8;

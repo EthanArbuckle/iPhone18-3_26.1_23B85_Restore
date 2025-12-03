@@ -2,14 +2,14 @@
 - (BOOL)shouldShowAvatarView;
 - (BOOL)splitViewControllerIsCollapsed;
 - (CKNavbarCanvasViewControllerDelegate)delegate;
-- (NSDirectionalEdgeInsets)systemMinimumLayoutMarginsForView:(id)a3;
+- (NSDirectionalEdgeInsets)systemMinimumLayoutMarginsForView:(id)view;
 - (UIButton)cancelButton;
 - (UILabel)titleLabel;
 - (double)preferredHeightOverride;
 - (id)_windowTraitCollection;
 - (void)_setupDefaultCanvasView;
 - (void)loadView;
-- (void)updateTitle:(id)a3 animated:(BOOL)a4;
+- (void)updateTitle:(id)title animated:(BOOL)animated;
 - (void)viewDidLoad;
 @end
 
@@ -25,35 +25,35 @@
 - (void)loadView
 {
   [(CKComposeNavbarCanvasViewController *)self _setupDefaultCanvasView];
-  v3 = [(CKComposeNavbarCanvasViewController *)self canvasView];
-  [v3 setDelegate:self];
+  canvasView = [(CKComposeNavbarCanvasViewController *)self canvasView];
+  [canvasView setDelegate:self];
 
-  v4 = [(CKComposeNavbarCanvasViewController *)self canvasView];
-  [(CKComposeNavbarCanvasViewController *)self setView:v4];
+  canvasView2 = [(CKComposeNavbarCanvasViewController *)self canvasView];
+  [(CKComposeNavbarCanvasViewController *)self setView:canvasView2];
 }
 
-- (void)updateTitle:(id)a3 animated:(BOOL)a4
+- (void)updateTitle:(id)title animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CKComposeNavbarCanvasViewController *)self titleLabel];
-  v8 = [v7 text];
-  v9 = [v8 isEqualToString:v6];
+  animatedCopy = animated;
+  titleCopy = title;
+  titleLabel = [(CKComposeNavbarCanvasViewController *)self titleLabel];
+  text = [titleLabel text];
+  v9 = [text isEqualToString:titleCopy];
 
   if ((v9 & 1) == 0)
   {
-    v10 = [(CKComposeNavbarCanvasViewController *)self titleLabel];
+    titleLabel2 = [(CKComposeNavbarCanvasViewController *)self titleLabel];
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __60__CKComposeNavbarCanvasViewController_updateTitle_animated___block_invoke;
     aBlock[3] = &unk_1E72EB880;
-    v11 = v10;
+    v11 = titleLabel2;
     v15 = v11;
-    v16 = v6;
-    v17 = self;
+    v16 = titleCopy;
+    selfCopy = self;
     v12 = _Block_copy(aBlock);
     v13 = v12;
-    if (v4)
+    if (animatedCopy)
     {
       [MEMORY[0x1E69DD250] transitionWithView:v11 duration:5242880 options:v12 animations:0 completion:0.35];
     }
@@ -76,11 +76,11 @@ void __60__CKComposeNavbarCanvasViewController_updateTitle_animated___block_invo
 {
   v3 = [CKNavigationBarCanvasView alloc];
   v6 = [(CKNavigationBarCanvasView *)v3 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-  v4 = [(CKComposeNavbarCanvasViewController *)self titleLabel];
-  [(CKNavigationBarCanvasView *)v6 setTitleView:v4];
+  titleLabel = [(CKComposeNavbarCanvasViewController *)self titleLabel];
+  [(CKNavigationBarCanvasView *)v6 setTitleView:titleLabel];
 
-  v5 = [(CKComposeNavbarCanvasViewController *)self cancelButton];
-  [(CKNavigationBarCanvasView *)v6 setRightItemView:v5];
+  cancelButton = [(CKComposeNavbarCanvasViewController *)self cancelButton];
+  [(CKNavigationBarCanvasView *)v6 setRightItemView:cancelButton];
 
   [(CKComposeNavbarCanvasViewController *)self setCanvasView:v6];
 }
@@ -114,9 +114,9 @@ void __60__CKComposeNavbarCanvasViewController_updateTitle_animated___block_invo
     v5 = self->_cancelButton;
     self->_cancelButton = v4;
 
-    v6 = [(UIButton *)self->_cancelButton titleLabel];
+    titleLabel = [(UIButton *)self->_cancelButton titleLabel];
     v7 = [MEMORY[0x1E69DB878] defaultFontForTextStyle:*MEMORY[0x1E69DDCF8]];
-    [v6 setFont:v7];
+    [titleLabel setFont:v7];
 
     v8 = self->_cancelButton;
     v9 = CKFrameworkBundle();
@@ -131,24 +131,24 @@ void __60__CKComposeNavbarCanvasViewController_updateTitle_animated___block_invo
 
 - (id)_windowTraitCollection
 {
-  v2 = [MEMORY[0x1E69DD2E8] keyWindow];
-  v3 = [v2 traitCollection];
+  keyWindow = [MEMORY[0x1E69DD2E8] keyWindow];
+  traitCollection = [keyWindow traitCollection];
 
-  return v3;
+  return traitCollection;
 }
 
 - (BOOL)shouldShowAvatarView
 {
-  v2 = [(CKComposeNavbarCanvasViewController *)self delegate];
-  v3 = [v2 shouldShowAvatarViewInNavBarCanvas];
+  delegate = [(CKComposeNavbarCanvasViewController *)self delegate];
+  shouldShowAvatarViewInNavBarCanvas = [delegate shouldShowAvatarViewInNavBarCanvas];
 
-  return v3;
+  return shouldShowAvatarViewInNavBarCanvas;
 }
 
-- (NSDirectionalEdgeInsets)systemMinimumLayoutMarginsForView:(id)a3
+- (NSDirectionalEdgeInsets)systemMinimumLayoutMarginsForView:(id)view
 {
-  v4 = [(CKComposeNavbarCanvasViewController *)self delegate];
-  [v4 systemMinimumLayoutMarginsForViewController:self];
+  delegate = [(CKComposeNavbarCanvasViewController *)self delegate];
+  [delegate systemMinimumLayoutMarginsForViewController:self];
   v6 = v5;
   v8 = v7;
   v10 = v9;
@@ -167,16 +167,16 @@ void __60__CKComposeNavbarCanvasViewController_updateTitle_animated___block_invo
 
 - (BOOL)splitViewControllerIsCollapsed
 {
-  v2 = [(CKComposeNavbarCanvasViewController *)self delegate];
-  v3 = [v2 splitViewController];
-  v4 = [v3 isCollapsed];
+  delegate = [(CKComposeNavbarCanvasViewController *)self delegate];
+  splitViewController = [delegate splitViewController];
+  isCollapsed = [splitViewController isCollapsed];
 
-  return v4;
+  return isCollapsed;
 }
 
 - (double)preferredHeightOverride
 {
-  v3 = [(CKComposeNavbarCanvasViewController *)self _windowTraitCollection];
+  _windowTraitCollection = [(CKComposeNavbarCanvasViewController *)self _windowTraitCollection];
   if ([(CKComposeNavbarCanvasViewController *)self shouldShowAvatarView])
   {
     v4 = +[CKUIBehavior sharedBehaviors];
@@ -184,9 +184,9 @@ void __60__CKComposeNavbarCanvasViewController_updateTitle_animated___block_invo
     v6 = v5;
   }
 
-  else if ([v3 verticalSizeClass] == 1)
+  else if ([_windowTraitCollection verticalSizeClass] == 1)
   {
-    [v3 horizontalSizeClass];
+    [_windowTraitCollection horizontalSizeClass];
     +[CKNavigationBarCanvasView preferredLandscapeHeightForRegularWidth];
     v6 = v7;
   }

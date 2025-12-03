@@ -1,6 +1,6 @@
 @interface MBDigestSHA256
 - (MBDigestSHA256)init;
-- (void)updateWithBytes:(const void *)a3 length:(unint64_t)a4;
+- (void)updateWithBytes:(const void *)bytes length:(unint64_t)length;
 @end
 
 @implementation MBDigestSHA256
@@ -19,31 +19,31 @@
   return v3;
 }
 
-- (void)updateWithBytes:(const void *)a3 length:(unint64_t)a4
+- (void)updateWithBytes:(const void *)bytes length:(unint64_t)length
 {
-  if (a4)
+  if (length)
   {
     v7 = 0;
-    v8 = a4;
+    lengthCopy = length;
     do
     {
-      v9 = v8 - 0x4000;
-      if (v8 >= 0x4000)
+      v9 = lengthCopy - 0x4000;
+      if (lengthCopy >= 0x4000)
       {
         v10 = 0x4000;
       }
 
       else
       {
-        v10 = v8;
+        v10 = lengthCopy;
       }
 
-      CC_SHA256_Update(&self->_context, a3 + v7, v10);
+      CC_SHA256_Update(&self->_context, bytes + v7, v10);
       v7 += 0x4000;
-      v8 = v9;
+      lengthCopy = v9;
     }
 
-    while (v7 < a4);
+    while (v7 < length);
   }
 }
 

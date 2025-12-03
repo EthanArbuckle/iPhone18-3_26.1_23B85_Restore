@@ -1,11 +1,11 @@
 @interface CRLWPShapeRep
 - (BOOL)allowDraggingShape;
-- (BOOL)beginEditingAtPoint:(CGPoint)a3;
-- (BOOL)canBeginEditingChildRepOnDoubleTap:(id)a3 ignoreSelectionState:(BOOL)a4;
+- (BOOL)beginEditingAtPoint:(CGPoint)point;
+- (BOOL)canBeginEditingChildRepOnDoubleTap:(id)tap ignoreSelectionState:(BOOL)state;
 - (BOOL)canMakePathEditable;
-- (BOOL)handleDragOperation:(unint64_t)a3 withDragInfo:(id)a4 atUnscaledPoint:(CGPoint)a5;
+- (BOOL)handleDragOperation:(unint64_t)operation withDragInfo:(id)info atUnscaledPoint:(CGPoint)point;
 - (BOOL)hasTextOverflowGlyph;
-- (BOOL)i_currentSelectionPathPreventsEditingChildRepOnDoubleTap:(id)a3;
+- (BOOL)i_currentSelectionPathPreventsEditingChildRepOnDoubleTap:(id)tap;
 - (BOOL)isEditingChildRep;
 - (BOOL)isReadOnlyAndInstructional;
 - (BOOL)scribbleElementIsFocused;
@@ -14,43 +14,43 @@
 - (BOOL)shouldDelayScribbleFocus;
 - (BOOL)shouldHitTestWithFill;
 - (BOOL)shouldShowSelectionHighlight;
-- (BOOL)wantsToManuallyHandleEditMenuTapAtPoint:(CGPoint)a3;
+- (BOOL)wantsToManuallyHandleEditMenuTapAtPoint:(CGPoint)point;
 - (CGPoint)originalAutosizePositionOffset;
 - (CGRect)scaledScribbleEditingFrame;
 - (CRLContainerInfo)containerInfo;
 - (CRLWPDragAndDropHelper)dragAndDropHelper;
 - (CRLWPRep)textRep;
-- (CRLWPShapeRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (CRLWPShapeRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (NSArray)scribbleCapableElements;
-- (UIEdgeInsets)hitToleranceInsetsWithDefaultInsets:(UIEdgeInsets)a3;
+- (UIEdgeInsets)hitToleranceInsetsWithDefaultInsets:(UIEdgeInsets)insets;
 - (_TtC8Freeform12CRLWPStorage)storage;
 - (_TtC8Freeform12CRLWPStorage)storageForDragDropOperation;
 - (double)pParagraphAlignmentOffset;
 - (id)additionalRenderablesOverRenderable;
-- (id)dragItemsForBeginningDragAtPoint:(CGPoint)a3;
+- (id)dragItemsForBeginningDragAtPoint:(CGPoint)point;
 - (id)dynamicResizeDidBegin;
-- (id)newSelectionKnobForType:(unint64_t)a3 tag:(unint64_t)a4;
+- (id)newSelectionKnobForType:(unint64_t)type tag:(unint64_t)tag;
 - (id)overlayRenderables;
-- (id)p_hyperlinkAtUnscaledPoint:(CGPoint)a3;
+- (id)p_hyperlinkAtUnscaledPoint:(CGPoint)point;
 - (id)prepareForScribbleBlock;
-- (id)resizedGeometryForTransform:(CGAffineTransform *)a3;
+- (id)resizedGeometryForTransform:(CGAffineTransform *)transform;
 - (id)scribbleEditingBlock;
-- (id)selectionForDragAndDropNaturalPoint:(CGPoint)a3;
+- (id)selectionForDragAndDropNaturalPoint:(CGPoint)point;
 - (id)shapeItem;
-- (id)textEditorForDropIntoStorage:(id)a3;
-- (unint64_t)dragOperationForDragInfo:(id)a3 atUnscaledPoint:(CGPoint)a4;
+- (id)textEditorForDropIntoStorage:(id)storage;
+- (unint64_t)dragOperationForDragInfo:(id)info atUnscaledPoint:(CGPoint)point;
 - (unint64_t)enabledKnobMask;
 - (unint64_t)overflowKnobTag;
 - (void)beginEditingAtBeginningOfText;
-- (void)beginEditingAtRange:(id)a3;
+- (void)beginEditingAtRange:(id)range;
 - (void)dynamicOperationDidEnd;
-- (void)handleEditMenuTapAtPoint:(CGPoint)a3 inputType:(int64_t)a4;
+- (void)handleEditMenuTapAtPoint:(CGPoint)point inputType:(int64_t)type;
 - (void)p_prepareForScribble;
 - (void)p_resetOverflowGlyphRenderableIfNecessary;
-- (void)processChangedProperty:(unint64_t)a3;
+- (void)processChangedProperty:(unint64_t)property;
 - (void)updateChildrenFromLayout;
-- (void)willBeginEditingContainedInfo:(id)a3;
-- (void)willEndEditingContainedInfo:(id)a3;
+- (void)willBeginEditingContainedInfo:(id)info;
+- (void)willEndEditingContainedInfo:(id)info;
 @end
 
 @implementation CRLWPShapeRep
@@ -62,9 +62,9 @@
     goto LABEL_2;
   }
 
-  v8 = [(CRLWPShapeRep *)self containedRep];
+  containedRep = [(CRLWPShapeRep *)self containedRep];
 
-  if (!v8)
+  if (!containedRep)
   {
     v7 = [[CRLWPDragAndDropHelper alloc] initWithOwningRep:self];
     goto LABEL_9;
@@ -73,14 +73,14 @@
   if (self->_dragAndDropHelper)
   {
 LABEL_2:
-    v3 = [(CRLWPShapeRep *)self containedRep];
-    if (v3)
+    containedRep2 = [(CRLWPShapeRep *)self containedRep];
+    if (containedRep2)
     {
-      v4 = v3;
-      v5 = [(CRLCanvasRep *)self layout];
-      v6 = [v5 supportsInstructionalText];
+      v4 = containedRep2;
+      layout = [(CRLCanvasRep *)self layout];
+      supportsInstructionalText = [layout supportsInstructionalText];
 
-      if ((v6 & 1) == 0)
+      if ((supportsInstructionalText & 1) == 0)
       {
         v7 = 0;
 LABEL_9:
@@ -95,12 +95,12 @@ LABEL_9:
   return v10;
 }
 
-- (CRLWPShapeRep)initWithLayout:(id)a3 canvas:(id)a4
+- (CRLWPShapeRep)initWithLayout:(id)layout canvas:(id)canvas
 {
-  v6 = a3;
-  v7 = a4;
+  layoutCopy = layout;
+  canvasCopy = canvas;
   v8 = objc_opt_class();
-  v9 = sub_100014370(v8, v6);
+  v9 = sub_100014370(v8, layoutCopy);
 
   if (!v9)
   {
@@ -134,7 +134,7 @@ LABEL_9:
 
   v19.receiver = self;
   v19.super_class = CRLWPShapeRep;
-  v15 = [(CRLShapeRep *)&v19 initWithLayout:v6 canvas:v7];
+  v15 = [(CRLShapeRep *)&v19 initWithLayout:layoutCopy canvas:canvasCopy];
   if (v15)
   {
     v16 = +[NSUUID UUID];
@@ -148,20 +148,20 @@ LABEL_9:
 - (CRLWPRep)textRep
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRep *)self childReps];
-  v5 = [v4 crl_firstObjectPassingTest:&stru_10183ECB8];
+  childReps = [(CRLCanvasRep *)self childReps];
+  v5 = [childReps crl_firstObjectPassingTest:&stru_10183ECB8];
   v6 = sub_100014370(v3, v5);
 
   return v6;
 }
 
-- (void)processChangedProperty:(unint64_t)a3
+- (void)processChangedProperty:(unint64_t)property
 {
   v6.receiver = self;
   v6.super_class = CRLWPShapeRep;
   [(CRLShapeRep *)&v6 processChangedProperty:?];
-  v5 = [(CRLWPShapeRep *)self textRep];
-  [v5 processChangedProperty:a3];
+  textRep = [(CRLWPShapeRep *)self textRep];
+  [textRep processChangedProperty:property];
 }
 
 - (BOOL)isEditingChildRep
@@ -170,13 +170,13 @@ LABEL_9:
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  v3 = [(CRLCanvasRep *)self canvas];
-  v4 = [v3 isCanvasInteractive];
+  canvas = [(CRLCanvasRep *)self canvas];
+  isCanvasInteractive = [canvas isCanvasInteractive];
 
-  if (v4)
+  if (isCanvasInteractive)
   {
-    v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v6 = [v5 editorController];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    editorController = [interactiveCanvasController editorController];
 
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
@@ -184,7 +184,7 @@ LABEL_9:
     v9[3] = &unk_10183ECE0;
     v9[4] = self;
     v9[5] = &v10;
-    [v6 enumerateEditorsOnStackUsingBlock:v9];
+    [editorController enumerateEditorsOnStackUsingBlock:v9];
   }
 
   v7 = *(v11 + 24);
@@ -218,15 +218,15 @@ LABEL_9:
 
 - (unint64_t)enabledKnobMask
 {
-  v3 = [(CRLCanvasRep *)self layout];
-  v4 = [v3 autosizes];
+  layout = [(CRLCanvasRep *)self layout];
+  autosizes = [layout autosizes];
 
-  if (v4)
+  if (autosizes)
   {
-    v5 = [(CRLCanvasRep *)self info];
-    v6 = [v5 textIsVertical];
+    info = [(CRLCanvasRep *)self info];
+    textIsVertical = [info textIsVertical];
 
-    if (v6)
+    if (textIsVertical)
     {
       return 772;
     }
@@ -245,49 +245,49 @@ LABEL_9:
   }
 }
 
-- (id)newSelectionKnobForType:(unint64_t)a3 tag:(unint64_t)a4
+- (id)newSelectionKnobForType:(unint64_t)type tag:(unint64_t)tag
 {
-  v7 = [(CRLCanvasRep *)self layout];
-  if (![v7 autosizes])
+  layout = [(CRLCanvasRep *)self layout];
+  if (![layout autosizes])
   {
 
     goto LABEL_7;
   }
 
-  v8 = sub_10034601C(a4);
+  v8 = sub_10034601C(tag);
 
   if (!v8)
   {
 LABEL_7:
     v12.receiver = self;
     v12.super_class = CRLWPShapeRep;
-    return [(CRLCanvasRep *)&v12 newSelectionKnobForType:a3 tag:a4];
+    return [(CRLCanvasRep *)&v12 newSelectionKnobForType:type tag:tag];
   }
 
   v9 = [CRLCanvasKnob alloc];
   y = CGPointZero.y;
 
-  return [(CRLCanvasKnob *)v9 initWithType:3 position:a4 radius:self tag:CGPointZero.x onRep:y, 15.0];
+  return [(CRLCanvasKnob *)v9 initWithType:3 position:tag radius:self tag:CGPointZero.x onRep:y, 15.0];
 }
 
-- (BOOL)canBeginEditingChildRepOnDoubleTap:(id)a3 ignoreSelectionState:(BOOL)a4
+- (BOOL)canBeginEditingChildRepOnDoubleTap:(id)tap ignoreSelectionState:(BOOL)state
 {
-  v6 = a3;
-  v7 = [(CRLCanvasRep *)self interactiveCanvasController];
+  tapCopy = tap;
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v8 = [v7 editorController];
-  v9 = [v8 currentEditors];
+  editorController = [interactiveCanvasController editorController];
+  currentEditors = [editorController currentEditors];
 
-  v10 = [v9 countByEnumeratingWithState:&v27 objects:v31 count:16];
+  v10 = [currentEditors countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v10)
   {
     v11 = v10;
-    v26 = a4;
-    v12 = v7;
-    v13 = v6;
+    stateCopy = state;
+    v12 = interactiveCanvasController;
+    v13 = tapCopy;
     v14 = *v28;
     while (2)
     {
@@ -295,7 +295,7 @@ LABEL_7:
       {
         if (*v28 != v14)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(currentEditors);
         }
 
         v16 = *(*(&v27 + 1) + 8 * i);
@@ -306,7 +306,7 @@ LABEL_7:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      v11 = [currentEditors countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v11)
       {
         continue;
@@ -317,9 +317,9 @@ LABEL_7:
 
     v17 = 1;
 LABEL_12:
-    v6 = v13;
-    v7 = v12;
-    a4 = v26;
+    tapCopy = v13;
+    interactiveCanvasController = v12;
+    state = stateCopy;
   }
 
   else
@@ -327,15 +327,15 @@ LABEL_12:
     v17 = 1;
   }
 
-  v18 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v19 = [v18 editingDisabled];
+  interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+  editingDisabled = [interactiveCanvasController2 editingDisabled];
 
-  if (v17 && !a4 && [(CRLWPShapeRep *)self i_currentSelectionPathPreventsEditingChildRepOnDoubleTap:v6])
+  if (v17 && !state && [(CRLWPShapeRep *)self i_currentSelectionPathPreventsEditingChildRepOnDoubleTap:tapCopy])
   {
-    v17 = v19;
+    v17 = editingDisabled;
   }
 
-  if (v19 & 1 | ((v17 & 1) == 0) || a4)
+  if (editingDisabled & 1 | ((v17 & 1) == 0) || state)
   {
     if (!v17)
     {
@@ -345,10 +345,10 @@ LABEL_12:
 
   else
   {
-    v20 = [(CRLCanvasRep *)self layout];
-    v21 = [v20 isInTopLevelContainerForEditing];
+    layout = [(CRLCanvasRep *)self layout];
+    isInTopLevelContainerForEditing = [layout isInTopLevelContainerForEditing];
 
-    if ((v21 & 1) == 0)
+    if ((isInTopLevelContainerForEditing & 1) == 0)
     {
 LABEL_21:
       LOBYTE(v22) = 0;
@@ -356,11 +356,11 @@ LABEL_21:
     }
   }
 
-  v23 = [(CRLWPShapeRep *)self containedRep];
-  if (v23 == v6)
+  containedRep = [(CRLWPShapeRep *)self containedRep];
+  if (containedRep == tapCopy)
   {
-    v24 = [(CRLShapeRep *)self shapeLayout];
-    if ([v24 pathIsLineSegment])
+    shapeLayout = [(CRLShapeRep *)self shapeLayout];
+    if ([shapeLayout pathIsLineSegment])
     {
       LOBYTE(v22) = 0;
     }
@@ -385,12 +385,12 @@ LABEL_30:
   v13.receiver = self;
   v13.super_class = CRLWPShapeRep;
   [(CRLCanvasRep *)&v13 updateChildrenFromLayout];
-  v3 = [(CRLWPShapeRep *)self containedRep];
-  v4 = [v3 layout];
-  v5 = [(CRLCanvasRep *)self layout];
-  v6 = [v5 textLayout];
+  containedRep = [(CRLWPShapeRep *)self containedRep];
+  layout = [containedRep layout];
+  layout2 = [(CRLCanvasRep *)self layout];
+  textLayout = [layout2 textLayout];
 
-  if (v4 != v6)
+  if (layout != textLayout)
   {
     v7 = +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -420,49 +420,49 @@ LABEL_30:
     [CRLAssertionHandler handleFailureInFunction:v10 file:v11 lineNumber:180 isFatal:0 description:"expected equality between %{public}s and %{public}s", "self.containedRep.layout", "self.layout.textLayout"];
   }
 
-  v12 = [(CRLWPShapeRep *)self containedRep];
-  [v12 updateChildrenFromLayout];
+  containedRep2 = [(CRLWPShapeRep *)self containedRep];
+  [containedRep2 updateChildrenFromLayout];
 }
 
-- (BOOL)beginEditingAtPoint:(CGPoint)a3
+- (BOOL)beginEditingAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CRLWPShapeRep *)self shapeItem];
-  v7 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v8 = [_TtC8Freeform11CRLWPEditor canEditTextIn:v6 using:v7];
+  y = point.y;
+  x = point.x;
+  shapeItem = [(CRLWPShapeRep *)self shapeItem];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  v8 = [_TtC8Freeform11CRLWPEditor canEditTextIn:shapeItem using:interactiveCanvasController];
 
   if (v8)
   {
-    v9 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v10 = [v9 hitRep:{x, y}];
-    v11 = [v10 repForSelecting];
-    v12 = v11;
-    if (!v11 || v11 == self)
+    interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+    v10 = [interactiveCanvasController2 hitRep:{x, y}];
+    repForSelecting = [v10 repForSelecting];
+    v12 = repForSelecting;
+    if (!repForSelecting || repForSelecting == self)
     {
-      v17 = [(CRLCanvasRep *)self info];
-      v18 = [v17 text];
-      v19 = [v18 length];
+      info = [(CRLCanvasRep *)self info];
+      text = [info text];
+      v19 = [text length];
 
       if (v19)
       {
         v20 = objc_opt_class();
-        v21 = [(CRLCanvasRep *)self layout];
-        v36 = sub_100014370(v20, v21);
+        layout = [(CRLCanvasRep *)self layout];
+        v36 = sub_100014370(v20, layout);
 
         v22 = objc_opt_class();
-        v23 = [v36 textLayout];
-        v24 = sub_100014370(v22, v23);
+        textLayout = [v36 textLayout];
+        v24 = sub_100014370(v22, textLayout);
 
         [v24 convertNaturalPointFromUnscaledCanvas:{x, y}];
         v35 = [v24 closestPositionTo:?];
-        v25 = [(CRLWPShapeRep *)self storage];
-        v26 = [v25 findRangeOfWordBackwardFromCharIndex:objc_msgSend(v35 expandingRangeToEndOfWord:{"location"), 1}];
+        storage = [(CRLWPShapeRep *)self storage];
+        v26 = [storage findRangeOfWordBackwardFromCharIndex:objc_msgSend(v35 expandingRangeToEndOfWord:{"location"), 1}];
         v28 = v27;
 
-        v29 = [(CRLCanvasRep *)self info];
-        v30 = [v29 text];
-        [(CRLWPShapeRep *)self willBeginEditingContainedInfo:v30];
+        info2 = [(CRLCanvasRep *)self info];
+        text2 = [info2 text];
+        [(CRLWPShapeRep *)self willBeginEditingContainedInfo:text2];
 
         v31 = [[_TtC8Freeform12CRLTextRange alloc] initWithRange:v26, v28];
         [(CRLWPShapeRep *)self beginEditingAtRange:v31];
@@ -470,9 +470,9 @@ LABEL_30:
 
       else
       {
-        v32 = [(CRLCanvasRep *)self info];
-        v33 = [v32 text];
-        [(CRLWPShapeRep *)self willBeginEditingContainedInfo:v33];
+        info3 = [(CRLCanvasRep *)self info];
+        text3 = [info3 text];
+        [(CRLWPShapeRep *)self willBeginEditingContainedInfo:text3];
 
         [(CRLWPShapeRep *)self beginEditingAtBeginningOfText];
       }
@@ -480,11 +480,11 @@ LABEL_30:
 
     else
     {
-      v13 = [v9 canvasEditor];
-      v14 = [(CRLCanvasRep *)v12 info];
-      v15 = [v13 selectionPathWithInfo:v14];
-      v16 = [v9 editorController];
-      [v16 setSelectionPath:v15];
+      canvasEditor = [interactiveCanvasController2 canvasEditor];
+      info4 = [(CRLCanvasRep *)v12 info];
+      v15 = [canvasEditor selectionPathWithInfo:info4];
+      editorController = [interactiveCanvasController2 editorController];
+      [editorController setSelectionPath:v15];
     }
   }
 
@@ -493,70 +493,70 @@ LABEL_30:
 
 - (void)beginEditingAtBeginningOfText
 {
-  v5 = [(CRLCanvasRep *)self info];
-  v3 = [v5 text];
-  v4 = [_TtC8Freeform12CRLTextRange textRangeForStartOf:v3];
+  info = [(CRLCanvasRep *)self info];
+  text = [info text];
+  v4 = [_TtC8Freeform12CRLTextRange textRangeForStartOf:text];
   [(CRLWPShapeRep *)self beginEditingAtRange:v4];
 }
 
-- (void)beginEditingAtRange:(id)a3
+- (void)beginEditingAtRange:(id)range
 {
-  v21 = a3;
-  v4 = [(CRLWPShapeRep *)self shapeItem];
-  v5 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v6 = [_TtC8Freeform11CRLWPEditor canEditTextIn:v4 using:v5];
+  rangeCopy = range;
+  shapeItem = [(CRLWPShapeRep *)self shapeItem];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  v6 = [_TtC8Freeform11CRLWPEditor canEditTextIn:shapeItem using:interactiveCanvasController];
 
   if (v6)
   {
-    v7 = [(CRLCanvasRep *)self info];
-    v8 = [NSSet setWithObject:v7];
+    info = [(CRLCanvasRep *)self info];
+    v8 = [NSSet setWithObject:info];
 
-    v9 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v10 = [v9 selectionModelTranslator];
-    v11 = [v10 selectionPathForInfos:v8];
+    interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+    selectionModelTranslator = [interactiveCanvasController2 selectionModelTranslator];
+    v11 = [selectionModelTranslator selectionPathForInfos:v8];
 
-    v12 = [v21 nsRange];
+    nsRange = [rangeCopy nsRange];
     v14 = v13;
-    v15 = [(CRLCanvasRep *)self info];
-    v16 = [v15 text];
-    v17 = [CRLWPSelection selectionWithRange:v12 type:v14 leadingEdge:7 storage:1, v16];
+    info2 = [(CRLCanvasRep *)self info];
+    text = [info2 text];
+    v17 = [CRLWPSelection selectionWithRange:nsRange type:v14 leadingEdge:7 storage:1, text];
 
     v18 = [v11 selectionPathByAppendingOrReplacingMostSpecificSelectionWithSelection:v17];
-    v19 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v20 = [v19 editorController];
-    [v20 setSelectionPath:v18 withFlags:8710];
+    interactiveCanvasController3 = [(CRLCanvasRep *)self interactiveCanvasController];
+    editorController = [interactiveCanvasController3 editorController];
+    [editorController setSelectionPath:v18 withFlags:8710];
   }
 }
 
 - (BOOL)shouldHitTestWithFill
 {
-  v3 = [(CRLCanvasRep *)self info];
-  if (([v3 isAutogrowingTextBox] & 1) != 0 || (v8.receiver = self, v8.super_class = CRLWPShapeRep, -[CRLShapeRep shouldHitTestWithFill](&v8, "shouldHitTestWithFill")))
+  info = [(CRLCanvasRep *)self info];
+  if (([info isAutogrowingTextBox] & 1) != 0 || (v8.receiver = self, v8.super_class = CRLWPShapeRep, -[CRLShapeRep shouldHitTestWithFill](&v8, "shouldHitTestWithFill")))
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(CRLCanvasRep *)self info];
-    v6 = [v5 textStorage];
-    v4 = [v6 length] != 0;
+    info2 = [(CRLCanvasRep *)self info];
+    textStorage = [info2 textStorage];
+    v4 = [textStorage length] != 0;
   }
 
   return v4;
 }
 
-- (BOOL)wantsToManuallyHandleEditMenuTapAtPoint:(CGPoint)a3
+- (BOOL)wantsToManuallyHandleEditMenuTapAtPoint:(CGPoint)point
 {
-  v3 = [(CRLWPShapeRep *)self p_hyperlinkAtUnscaledPoint:a3.x, a3.y];
+  v3 = [(CRLWPShapeRep *)self p_hyperlinkAtUnscaledPoint:point.x, point.y];
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)handleEditMenuTapAtPoint:(CGPoint)a3 inputType:(int64_t)a4
+- (void)handleEditMenuTapAtPoint:(CGPoint)point inputType:(int64_t)type
 {
-  v5 = [(CRLWPShapeRep *)self p_hyperlinkAtUnscaledPoint:a4, a3.x, a3.y];
+  v5 = [(CRLWPShapeRep *)self p_hyperlinkAtUnscaledPoint:type, point.x, point.y];
   v4 = [v5 url];
   if (v4 && [_TtC8Freeform14CRLURLLauncher canOpenURL:v4])
   {
@@ -564,29 +564,29 @@ LABEL_30:
   }
 }
 
-- (id)p_hyperlinkAtUnscaledPoint:(CGPoint)a3
+- (id)p_hyperlinkAtUnscaledPoint:(CGPoint)point
 {
-  [(CRLCanvasRep *)self convertNaturalPointFromUnscaledCanvas:a3.x, a3.y];
+  [(CRLCanvasRep *)self convertNaturalPointFromUnscaledCanvas:point.x, point.y];
   v5 = v4;
   v7 = v6;
   v8 = objc_opt_class();
-  v9 = [(CRLWPShapeRep *)self textRep];
-  v10 = [v9 smartFieldAtPoint:{v5, v7}];
+  textRep = [(CRLWPShapeRep *)self textRep];
+  v10 = [textRep smartFieldAtPoint:{v5, v7}];
   v11 = sub_100014370(v8, v10);
 
   return v11;
 }
 
-- (void)willBeginEditingContainedInfo:(id)a3
+- (void)willBeginEditingContainedInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(CRLCanvasRep *)self info];
-  v6 = [v5 text];
+  infoCopy = info;
+  info = [(CRLCanvasRep *)self info];
+  text = [info text];
 
-  if (v6 == v4)
+  if (text == infoCopy)
   {
-    v7 = [(CRLCanvasRep *)self layout];
-    [v7 createTextLayout];
+    layout = [(CRLCanvasRep *)self layout];
+    [layout createTextLayout];
 
     [(CRLWPShapeRep *)self updateChildrenFromLayout];
     [(CRLCanvasRep *)self invalidateKnobs];
@@ -595,20 +595,20 @@ LABEL_30:
   }
 }
 
-- (void)willEndEditingContainedInfo:(id)a3
+- (void)willEndEditingContainedInfo:(id)info
 {
-  v4 = [(CRLCanvasRep *)self info];
-  v5 = [v4 text];
+  info = [(CRLCanvasRep *)self info];
+  text = [info text];
 
-  [v5 length];
+  [text length];
   [(CRLCanvasRep *)self invalidateKnobs];
 }
 
-- (BOOL)i_currentSelectionPathPreventsEditingChildRepOnDoubleTap:(id)a3
+- (BOOL)i_currentSelectionPathPreventsEditingChildRepOnDoubleTap:(id)tap
 {
-  v4 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v5 = [(CRLCanvasRep *)self info];
-  v6 = [v4 currentSelectionPathContainsInfo:v5];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  info = [(CRLCanvasRep *)self info];
+  v6 = [interactiveCanvasController currentSelectionPathContainsInfo:info];
 
   return v6 ^ 1;
 }
@@ -620,8 +620,8 @@ LABEL_30:
     goto LABEL_5;
   }
 
-  v3 = [(CRLCanvasRep *)self canvas];
-  [v3 contentsScale];
+  canvas = [(CRLCanvasRep *)self canvas];
+  [canvas contentsScale];
   v5 = v4;
   [(CRLCanvasRenderable *)self->_overflowGlyphRenderable contentsScale];
   v7 = v6;
@@ -636,16 +636,16 @@ LABEL_30:
   if (!self->_overflowGlyphRenderable)
   {
 LABEL_5:
-    v12 = [(CRLWPShapeRep *)self p_overflowKnobImage];
+    p_overflowKnobImage = [(CRLWPShapeRep *)self p_overflowKnobImage];
     v9 = +[CRLCanvasRenderable renderable];
     v10 = self->_overflowGlyphRenderable;
     self->_overflowGlyphRenderable = v9;
 
-    v11 = [(CRLCanvasRep *)self canvas];
-    [v11 contentsScale];
-    -[CRLCanvasRenderable setContents:](self->_overflowGlyphRenderable, "setContents:", [v12 CGImageForContentsScale:?]);
+    canvas2 = [(CRLCanvasRep *)self canvas];
+    [canvas2 contentsScale];
+    -[CRLCanvasRenderable setContents:](self->_overflowGlyphRenderable, "setContents:", [p_overflowKnobImage CGImageForContentsScale:?]);
 
-    [v12 size];
+    [p_overflowKnobImage size];
     [(CRLCanvasRenderable *)self->_overflowGlyphRenderable setBounds:sub_10011ECB4()];
     [(CRLCanvasRenderable *)self->_overflowGlyphRenderable setDelegate:self];
   }
@@ -653,8 +653,8 @@ LABEL_5:
 
 - (unint64_t)overflowKnobTag
 {
-  v2 = [(CRLCanvasRep *)self info];
-  if ([v2 textIsVertical])
+  info = [(CRLCanvasRep *)self info];
+  if ([info textIsVertical])
   {
     v3 = 4;
   }
@@ -669,29 +669,29 @@ LABEL_5:
 
 - (BOOL)hasTextOverflowGlyph
 {
-  v3 = [(CRLCanvasRep *)self canvas];
-  if ([v3 shouldShowTextOverflowGlyphs] && !-[CRLShapeRep isEditingPath](self, "isEditingPath"))
+  canvas = [(CRLCanvasRep *)self canvas];
+  if ([canvas shouldShowTextOverflowGlyphs] && !-[CRLShapeRep isEditingPath](self, "isEditingPath"))
   {
-    v5 = [(CRLWPShapeRep *)self textRep];
-    if ([v5 isOverflowing])
+    textRep = [(CRLWPShapeRep *)self textRep];
+    if ([textRep isOverflowing])
     {
       v7.receiver = self;
       v7.super_class = CRLWPShapeRep;
-      v4 = [(CRLShapeRep *)&v7 shouldShowKnobs];
+      shouldShowKnobs = [(CRLShapeRep *)&v7 shouldShowKnobs];
     }
 
     else
     {
-      v4 = 0;
+      shouldShowKnobs = 0;
     }
   }
 
   else
   {
-    v4 = 0;
+    shouldShowKnobs = 0;
   }
 
-  return v4;
+  return shouldShowKnobs;
 }
 
 - (BOOL)shouldShowSelectionHighlight
@@ -708,92 +708,92 @@ LABEL_5:
 
 - (id)overlayRenderables
 {
-  v3 = [(CRLWPShapeRep *)self overflowKnobTag];
-  v4 = [(CRLCanvasRep *)self knobForTag:v3];
-  v5 = [(CRLWPShapeRep *)self hasTextOverflowGlyph];
-  v6 = [v4 renderable];
-  [v6 setHidden:v5];
+  overflowKnobTag = [(CRLWPShapeRep *)self overflowKnobTag];
+  v4 = [(CRLCanvasRep *)self knobForTag:overflowKnobTag];
+  hasTextOverflowGlyph = [(CRLWPShapeRep *)self hasTextOverflowGlyph];
+  renderable = [v4 renderable];
+  [renderable setHidden:hasTextOverflowGlyph];
 
   v34.receiver = self;
   v34.super_class = CRLWPShapeRep;
-  v7 = [(CRLShapeRep *)&v34 overlayRenderables];
+  overlayRenderables = [(CRLShapeRep *)&v34 overlayRenderables];
   if ([(CRLWPShapeRep *)self hasTextOverflowGlyph]&& [(CRLCanvasRep *)self isSelectedIgnoringLocking])
   {
     [(CRLWPShapeRep *)self p_resetOverflowGlyphRenderableIfNecessary];
-    v8 = [(CRLCanvasRep *)self interactiveCanvasController];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
     [(CRLCanvasRep *)self boundsForStandardKnobs];
-    [(CRLCanvasRep *)self convertNaturalPointToUnscaledCanvas:sub_100345F44(v3, v9, v10, v11, v12)];
-    [v8 convertUnscaledToBoundsPoint:?];
+    [(CRLCanvasRep *)self convertNaturalPointToUnscaledCanvas:sub_100345F44(overflowKnobTag, v9, v10, v11, v12)];
+    [interactiveCanvasController convertUnscaledToBoundsPoint:?];
     v14 = v13;
     v16 = v15;
     [(CRLCanvasRenderable *)self->_overflowGlyphRenderable bounds];
     v21 = sub_100120414(v17, v18, v19, v20);
     v22 = sub_10011F31C(v14, v16, v21);
     v24 = v23;
-    v25 = [v8 canvas];
-    [v25 contentsScale];
+    canvas = [interactiveCanvasController canvas];
+    [canvas contentsScale];
     v27 = sub_10012218C(v22, v24, v26);
     v29 = sub_10011F334(v27, v28, v21);
     v31 = v30;
 
     [(CRLCanvasRenderable *)self->_overflowGlyphRenderable setPosition:v29, v31];
-    v32 = [v7 arrayByAddingObject:self->_overflowGlyphRenderable];
+    v32 = [overlayRenderables arrayByAddingObject:self->_overflowGlyphRenderable];
 
-    v7 = v32;
+    overlayRenderables = v32;
   }
 
-  return v7;
+  return overlayRenderables;
 }
 
 - (id)additionalRenderablesOverRenderable
 {
   v35.receiver = self;
   v35.super_class = CRLWPShapeRep;
-  v3 = [(CRLShapeRep *)&v35 additionalRenderablesOverRenderable];
+  additionalRenderablesOverRenderable = [(CRLShapeRep *)&v35 additionalRenderablesOverRenderable];
   if ([(CRLWPShapeRep *)self hasTextOverflowGlyph]&& ![(CRLCanvasRep *)self isSelectedIgnoringLocking])
   {
     [(CRLWPShapeRep *)self p_resetOverflowGlyphRenderableIfNecessary];
-    v4 = [(CRLCanvasRep *)self interactiveCanvasController];
-    v5 = [(CRLWPShapeRep *)self overflowKnobTag];
+    interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+    overflowKnobTag = [(CRLWPShapeRep *)self overflowKnobTag];
     [(CRLCanvasRep *)self boundsForStandardKnobs];
-    [(CRLCanvasRep *)self convertNaturalPointToUnscaledCanvas:sub_100345F44(v5, v6, v7, v8, v9)];
-    [v4 convertUnscaledToBoundsPoint:?];
+    [(CRLCanvasRep *)self convertNaturalPointToUnscaledCanvas:sub_100345F44(overflowKnobTag, v6, v7, v8, v9)];
+    [interactiveCanvasController convertUnscaledToBoundsPoint:?];
     v11 = v10;
     v13 = v12;
     [(CRLCanvasRenderable *)self->_overflowGlyphRenderable bounds];
     v18 = sub_100120414(v14, v15, v16, v17);
     v19 = sub_10011F31C(v11, v13, v18);
     v21 = v20;
-    v22 = [(CRLCanvasRep *)self parentRep];
+    parentRep = [(CRLCanvasRep *)self parentRep];
 
-    if (v22)
+    if (parentRep)
     {
-      v23 = [(CRLCanvasRep *)self parentRep];
-      [v23 layerFrameInScaledCanvas];
+      parentRep2 = [(CRLCanvasRep *)self parentRep];
+      [parentRep2 layerFrameInScaledCanvas];
       v19 = sub_10011F31C(v19, v21, v24);
       v21 = v25;
     }
 
-    v26 = [v4 canvas];
-    [v26 contentsScale];
+    canvas = [interactiveCanvasController canvas];
+    [canvas contentsScale];
     v28 = sub_10012218C(v19, v21, v27);
     v30 = sub_10011F334(v28, v29, v18);
     v32 = v31;
 
     [(CRLCanvasRenderable *)self->_overflowGlyphRenderable setPosition:v30, v32];
-    v33 = [v3 arrayByAddingObject:self->_overflowGlyphRenderable];
+    v33 = [additionalRenderablesOverRenderable arrayByAddingObject:self->_overflowGlyphRenderable];
 
-    v3 = v33;
+    additionalRenderablesOverRenderable = v33;
   }
 
-  return v3;
+  return additionalRenderablesOverRenderable;
 }
 
 - (double)pParagraphAlignmentOffset
 {
-  v3 = [(CRLWPShapeRep *)self shapeItem];
-  v4 = [v3 text];
-  v5 = [v4 paragraphStyleAtParIndex:0 effectiveRange:0];
+  shapeItem = [(CRLWPShapeRep *)self shapeItem];
+  text = [shapeItem text];
+  v5 = [text paragraphStyleAtParIndex:0 effectiveRange:0];
 
   v6 = [v5 intValueForProperty:29];
   if (v6 == 1)
@@ -811,9 +811,9 @@ LABEL_5:
     v7 = 0.0;
     if (v6 == 4)
     {
-      v8 = [(CRLWPShapeRep *)self shapeItem];
-      v9 = [v8 text];
-      v10 = [v9 isWritingDirectionRightToLeftForParagraphAtParIndex:0];
+      shapeItem2 = [(CRLWPShapeRep *)self shapeItem];
+      text2 = [shapeItem2 text];
+      v10 = [text2 isWritingDirectionRightToLeftForParagraphAtParIndex:0];
 
       if (v10)
       {
@@ -834,28 +834,28 @@ LABEL_5:
 {
   v11.receiver = self;
   v11.super_class = CRLWPShapeRep;
-  v3 = [(CRLShapeRep *)&v11 dynamicResizeDidBegin];
-  v4 = [(CRLCanvasRep *)self layout];
-  if ([v4 autosizes])
+  dynamicResizeDidBegin = [(CRLShapeRep *)&v11 dynamicResizeDidBegin];
+  layout = [(CRLCanvasRep *)self layout];
+  if ([layout autosizes])
   {
-    v5 = [(CRLCanvasRep *)self info];
-    v6 = [v5 geometry];
-    v7 = [v6 widthValid];
+    info = [(CRLCanvasRep *)self info];
+    geometry = [info geometry];
+    widthValid = [geometry widthValid];
 
-    if (v7)
+    if (widthValid)
     {
       goto LABEL_5;
     }
 
-    v4 = [(CRLCanvasRep *)self layout];
-    [v4 autosizePositionOffsetForFixedWidth:1 height:1];
+    layout = [(CRLCanvasRep *)self layout];
+    [layout autosizePositionOffsetForFixedWidth:1 height:1];
     self->_originalAutosizePositionOffset.x = v8;
     self->_originalAutosizePositionOffset.y = v9;
   }
 
 LABEL_5:
 
-  return v3;
+  return dynamicResizeDidBegin;
 }
 
 - (void)dynamicOperationDidEnd
@@ -866,18 +866,18 @@ LABEL_5:
   [(CRLCanvasRep *)self recursivelyPerformSelectorIfImplemented:"invalidateKnobs"];
 }
 
-- (id)resizedGeometryForTransform:(CGAffineTransform *)a3
+- (id)resizedGeometryForTransform:(CGAffineTransform *)transform
 {
-  v5 = [(CRLCanvasRep *)self info];
-  v6 = [v5 geometry];
+  info = [(CRLCanvasRep *)self info];
+  geometry = [info geometry];
 
   memset(&v38, 0, sizeof(v38));
-  v7 = [(CRLCanvasRep *)self layout];
-  v8 = [v7 originalPureGeometry];
-  v9 = v8;
-  if (v8)
+  layout = [(CRLCanvasRep *)self layout];
+  originalPureGeometry = [layout originalPureGeometry];
+  v9 = originalPureGeometry;
+  if (originalPureGeometry)
   {
-    [v8 fullTransform];
+    [originalPureGeometry fullTransform];
   }
 
   else
@@ -885,33 +885,33 @@ LABEL_5:
     memset(&t1, 0, sizeof(t1));
   }
 
-  v10 = *&a3->c;
-  *&t2.a = *&a3->a;
+  v10 = *&transform->c;
+  *&t2.a = *&transform->a;
   *&t2.c = v10;
-  *&t2.tx = *&a3->tx;
+  *&t2.tx = *&transform->tx;
   CGAffineTransformConcat(&v38, &t1, &t2);
 
-  v11 = [(CRLCanvasRep *)self info];
-  v12 = [v11 textIsVertical];
+  info2 = [(CRLCanvasRep *)self info];
+  textIsVertical = [info2 textIsVertical];
 
-  if (v12)
+  if (textIsVertical)
   {
-    if ([v6 widthValid])
+    if ([geometry widthValid])
     {
       goto LABEL_26;
     }
 
-    v13 = [(CRLCanvasRep *)self info];
-    v14 = [v13 verticalAlignment];
+    info3 = [(CRLCanvasRep *)self info];
+    verticalAlignment = [info3 verticalAlignment];
 
     v15 = 0.5;
     v16 = 0.0;
-    if (v14 == 2)
+    if (verticalAlignment == 2)
     {
       v15 = 0.0;
     }
 
-    if (v14)
+    if (verticalAlignment)
     {
       v17 = v15;
     }
@@ -921,7 +921,7 @@ LABEL_5:
       v17 = 1.0;
     }
 
-    if (-[CRLCanvasRep isBeingRotated](self, "isBeingRotated", v15) && ([v6 heightValid] & 1) == 0)
+    if (-[CRLCanvasRep isBeingRotated](self, "isBeingRotated", v15) && ([geometry heightValid] & 1) == 0)
     {
       [(CRLWPShapeRep *)self pParagraphAlignmentOffset];
       v16 = v18;
@@ -934,22 +934,22 @@ LABEL_5:
 
   else
   {
-    if ([v6 heightValid])
+    if ([geometry heightValid])
     {
       goto LABEL_26;
     }
 
-    v21 = [(CRLCanvasRep *)self info];
-    v22 = [v21 verticalAlignment];
+    info4 = [(CRLCanvasRep *)self info];
+    verticalAlignment2 = [info4 verticalAlignment];
 
     v23 = 0.5;
-    if (v22 == 2)
+    if (verticalAlignment2 == 2)
     {
       v23 = 1.0;
     }
 
     v24 = 0.0;
-    if (v22)
+    if (verticalAlignment2)
     {
       v25 = v23;
     }
@@ -959,7 +959,7 @@ LABEL_5:
       v25 = 0.0;
     }
 
-    if (-[CRLCanvasRep isBeingRotated](self, "isBeingRotated", v23) && ([v6 widthValid] & 1) == 0)
+    if (-[CRLCanvasRep isBeingRotated](self, "isBeingRotated", v23) && ([geometry widthValid] & 1) == 0)
     {
       [(CRLWPShapeRep *)self pParagraphAlignmentOffset];
       v24 = v26;
@@ -976,15 +976,15 @@ LABEL_5:
   CGAffineTransformConcat(&t2, &v35, &v34);
   v38 = t2;
 LABEL_26:
-  v27 = [v6 widthValid];
-  v28 = [v6 heightValid];
-  v29 = [(CRLCanvasRep *)self isBeingRotated];
-  v30 = v12 ^ 1 | v27;
-  v31 = v12 | v28;
-  if (v29)
+  widthValid = [geometry widthValid];
+  heightValid = [geometry heightValid];
+  isBeingRotated = [(CRLCanvasRep *)self isBeingRotated];
+  v30 = textIsVertical ^ 1 | widthValid;
+  v31 = textIsVertical | heightValid;
+  if (isBeingRotated)
   {
-    v30 = v27;
-    v31 = v28;
+    v30 = widthValid;
+    v31 = heightValid;
   }
 
   t1 = v38;
@@ -995,15 +995,15 @@ LABEL_26:
 
 - (BOOL)canMakePathEditable
 {
-  v3 = [(CRLCanvasRep *)self info];
-  v4 = [v3 isAutogrowingTextBox];
+  info = [(CRLCanvasRep *)self info];
+  isAutogrowingTextBox = [info isAutogrowingTextBox];
 
-  if (v4)
+  if (isAutogrowingTextBox)
   {
-    v5 = [(CRLCanvasRep *)self info];
-    v6 = [v5 text];
+    info2 = [(CRLCanvasRep *)self info];
+    text = [info2 text];
 
-    v7 = [v6 length] != 0;
+    v7 = [text length] != 0;
   }
 
   else
@@ -1018,8 +1018,8 @@ LABEL_26:
 
 - (CRLContainerInfo)containerInfo
 {
-  v2 = [(CRLCanvasRep *)self info];
-  v9 = sub_1003035DC(v2, 1, v3, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLContainerInfo);
+  info = [(CRLCanvasRep *)self info];
+  v9 = sub_1003035DC(info, 1, v3, v4, v5, v6, v7, v8, &OBJC_PROTOCOL___CRLContainerInfo);
 
   return v9;
 }
@@ -1027,81 +1027,81 @@ LABEL_26:
 - (id)shapeItem
 {
   v3 = objc_opt_class();
-  v4 = [(CRLCanvasRep *)self info];
-  v5 = sub_100014370(v3, v4);
+  info = [(CRLCanvasRep *)self info];
+  v5 = sub_100014370(v3, info);
 
   return v5;
 }
 
 - (_TtC8Freeform12CRLWPStorage)storageForDragDropOperation
 {
-  v2 = [(CRLCanvasRep *)self info];
-  if (sub_10012602C(v2))
+  info = [(CRLCanvasRep *)self info];
+  if (sub_10012602C(info))
   {
-    v3 = 0;
+    textStorage = 0;
   }
 
   else
   {
-    v3 = [v2 textStorage];
+    textStorage = [info textStorage];
   }
 
-  return v3;
+  return textStorage;
 }
 
-- (unint64_t)dragOperationForDragInfo:(id)a3 atUnscaledPoint:(CGPoint)a4
+- (unint64_t)dragOperationForDragInfo:(id)info atUnscaledPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3;
+  y = point.y;
+  x = point.x;
+  infoCopy = info;
   v12.receiver = self;
   v12.super_class = CRLWPShapeRep;
-  v8 = [(CRLShapeRep *)&v12 dragOperationForDragInfo:v7 atUnscaledPoint:x, y];
+  v8 = [(CRLShapeRep *)&v12 dragOperationForDragInfo:infoCopy atUnscaledPoint:x, y];
   if (!v8)
   {
-    v9 = [(CRLWPShapeRep *)self textRep];
+    textRep = [(CRLWPShapeRep *)self textRep];
 
-    if (v9)
+    if (textRep)
     {
       v8 = 0;
     }
 
     else
     {
-      v10 = [(CRLWPShapeRep *)self dragAndDropHelper];
-      v8 = [v10 dragOperationForDragInfo:v7 atUnscaledPoint:{x, y}];
+      dragAndDropHelper = [(CRLWPShapeRep *)self dragAndDropHelper];
+      v8 = [dragAndDropHelper dragOperationForDragInfo:infoCopy atUnscaledPoint:{x, y}];
     }
   }
 
   return v8;
 }
 
-- (BOOL)handleDragOperation:(unint64_t)a3 withDragInfo:(id)a4 atUnscaledPoint:(CGPoint)a5
+- (BOOL)handleDragOperation:(unint64_t)operation withDragInfo:(id)info atUnscaledPoint:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v9 = a4;
+  y = point.y;
+  x = point.x;
+  infoCopy = info;
   v18.receiver = self;
   v18.super_class = CRLWPShapeRep;
-  if ([(CRLShapeRep *)&v18 dragOperationForDragInfo:v9 atUnscaledPoint:x, y])
+  if ([(CRLShapeRep *)&v18 dragOperationForDragInfo:infoCopy atUnscaledPoint:x, y])
   {
     v17.receiver = self;
     v17.super_class = CRLWPShapeRep;
-    v10 = [(CRLShapeRep *)&v17 handleDragOperation:a3 withDragInfo:v9 atUnscaledPoint:x, y];
+    v10 = [(CRLShapeRep *)&v17 handleDragOperation:operation withDragInfo:infoCopy atUnscaledPoint:x, y];
   }
 
   else
   {
-    v11 = [(CRLWPShapeRep *)self textRep];
-    if (v11 && (v12 = v11, -[CRLCanvasRep layout](self, "layout"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 supportsInstructionalText], v13, v12, !v14))
+    textRep = [(CRLWPShapeRep *)self textRep];
+    if (textRep && (v12 = textRep, -[CRLCanvasRep layout](self, "layout"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 supportsInstructionalText], v13, v12, !v14))
     {
       v10 = 0;
     }
 
     else
     {
-      v15 = [(CRLWPShapeRep *)self dragAndDropHelper];
-      v10 = [v15 handleDragOperation:a3 withDragInfo:v9 atUnscaledPoint:{x, y}];
+      dragAndDropHelper = [(CRLWPShapeRep *)self dragAndDropHelper];
+      v10 = [dragAndDropHelper handleDragOperation:operation withDragInfo:infoCopy atUnscaledPoint:{x, y}];
     }
   }
 
@@ -1110,52 +1110,52 @@ LABEL_26:
 
 - (_TtC8Freeform12CRLWPStorage)storage
 {
-  v2 = [(CRLCanvasRep *)self info];
-  v3 = [v2 textStorage];
+  info = [(CRLCanvasRep *)self info];
+  textStorage = [info textStorage];
 
-  return v3;
+  return textStorage;
 }
 
-- (id)selectionForDragAndDropNaturalPoint:(CGPoint)a3
+- (id)selectionForDragAndDropNaturalPoint:(CGPoint)point
 {
-  v4 = [(CRLCanvasRep *)self interactiveCanvasController:a3.x];
-  v5 = [(CRLCanvasRep *)self info];
-  v6 = [v5 textStorage];
-  v7 = [v4 wpSelectionClassForStorage:v6];
+  v4 = [(CRLCanvasRep *)self interactiveCanvasController:point.x];
+  info = [(CRLCanvasRep *)self info];
+  textStorage = [info textStorage];
+  v7 = [v4 wpSelectionClassForStorage:textStorage];
 
   return [v7 selectionWithRange:{0, 0}];
 }
 
-- (id)textEditorForDropIntoStorage:(id)a3
+- (id)textEditorForDropIntoStorage:(id)storage
 {
-  v4 = a3;
+  storageCopy = storage;
   v5 = objc_opt_class();
   v6 = objc_opt_class();
-  v7 = [v4 parentInfo];
+  parentInfo = [storageCopy parentInfo];
 
-  v8 = sub_100014370(v6, v7);
+  v8 = sub_100014370(v6, parentInfo);
 
   v9 = [v5 alloc];
-  v10 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v11 = [v10 editingCoordinator];
-  v12 = [(CRLCanvasRep *)self interactiveCanvasController];
-  v13 = [v9 initWithEditingCoordinator:v11 enclosingShape:v8 icc:v12];
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  editingCoordinator = [interactiveCanvasController editingCoordinator];
+  interactiveCanvasController2 = [(CRLCanvasRep *)self interactiveCanvasController];
+  v13 = [v9 initWithEditingCoordinator:editingCoordinator enclosingShape:v8 icc:interactiveCanvasController2];
 
   return v13;
 }
 
 - (NSArray)scribbleCapableElements
 {
-  v3 = [(CRLWPShapeRep *)self containedRep];
-  if (v3 && (v4 = v3, [(CRLWPShapeRep *)self containedRep], v5 = objc_claimAutoreleasedReturnValue(), v6 = [(CRLWPShapeRep *)self canBeginEditingChildRepOnDoubleTap:v5 ignoreSelectionState:1], v5, v4, !v6))
+  containedRep = [(CRLWPShapeRep *)self containedRep];
+  if (containedRep && (v4 = containedRep, [(CRLWPShapeRep *)self containedRep], v5 = objc_claimAutoreleasedReturnValue(), v6 = [(CRLWPShapeRep *)self canBeginEditingChildRepOnDoubleTap:v5 ignoreSelectionState:1], v5, v4, !v6))
   {
     v7 = &__NSArray0__struct;
   }
 
   else
   {
-    v9 = self;
-    v7 = [NSArray arrayWithObjects:&v9 count:1];
+    selfCopy = self;
+    v7 = [NSArray arrayWithObjects:&selfCopy count:1];
   }
 
   return v7;
@@ -1163,12 +1163,12 @@ LABEL_26:
 
 - (void)p_prepareForScribble
 {
-  v3 = [(CRLWPShapeRep *)self containedRep];
+  containedRep = [(CRLWPShapeRep *)self containedRep];
 
-  if (!v3)
+  if (!containedRep)
   {
-    v4 = [(CRLCanvasRep *)self layout];
-    [v4 createTextLayoutForScribble:1];
+    layout = [(CRLCanvasRep *)self layout];
+    [layout createTextLayoutForScribble:1];
 
     [(CRLWPShapeRep *)self updateChildrenFromLayout];
     [(CRLCanvasRep *)self invalidateKnobs];
@@ -1180,26 +1180,26 @@ LABEL_26:
 - (id)prepareForScribbleBlock
 {
   [(CRLWPShapeRep *)self p_prepareForScribble];
-  v3 = [(CRLWPShapeRep *)self containedRep];
-  v4 = [v3 prepareForScribbleBlock];
+  containedRep = [(CRLWPShapeRep *)self containedRep];
+  prepareForScribbleBlock = [containedRep prepareForScribbleBlock];
 
-  return v4;
+  return prepareForScribbleBlock;
 }
 
 - (id)scribbleEditingBlock
 {
   [(CRLWPShapeRep *)self p_prepareForScribble];
-  v3 = [(CRLWPShapeRep *)self containedRep];
-  v4 = [v3 scribbleEditingBlock];
+  containedRep = [(CRLWPShapeRep *)self containedRep];
+  scribbleEditingBlock = [containedRep scribbleEditingBlock];
 
-  return v4;
+  return scribbleEditingBlock;
 }
 
 - (CGRect)scaledScribbleEditingFrame
 {
   [(CRLWPShapeRep *)self p_prepareForScribble];
-  v3 = [(CRLWPShapeRep *)self containedRep];
-  [v3 scaledScribbleEditingFrame];
+  containedRep = [(CRLWPShapeRep *)self containedRep];
+  [containedRep scaledScribbleEditingFrame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1219,30 +1219,30 @@ LABEL_26:
 - (BOOL)shouldDelayScribbleFocus
 {
   [(CRLWPShapeRep *)self p_prepareForScribble];
-  v3 = [(CRLWPShapeRep *)self containedRep];
-  v4 = [v3 shouldDelayScribbleFocus];
+  containedRep = [(CRLWPShapeRep *)self containedRep];
+  shouldDelayScribbleFocus = [containedRep shouldDelayScribbleFocus];
 
-  return v4;
+  return shouldDelayScribbleFocus;
 }
 
 - (BOOL)scribbleElementIsFocused
 {
   [(CRLWPShapeRep *)self p_prepareForScribble];
-  v3 = [(CRLWPShapeRep *)self containedRep];
-  v4 = [v3 scribbleElementIsFocused];
+  containedRep = [(CRLWPShapeRep *)self containedRep];
+  scribbleElementIsFocused = [containedRep scribbleElementIsFocused];
 
-  return v4;
+  return scribbleElementIsFocused;
 }
 
-- (UIEdgeInsets)hitToleranceInsetsWithDefaultInsets:(UIEdgeInsets)a3
+- (UIEdgeInsets)hitToleranceInsetsWithDefaultInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   [(CRLWPShapeRep *)self p_prepareForScribble];
-  v8 = [(CRLWPShapeRep *)self containedRep];
-  [v8 hitToleranceInsetsWithDefaultInsets:{top, left, bottom, right}];
+  containedRep = [(CRLWPShapeRep *)self containedRep];
+  [containedRep hitToleranceInsetsWithDefaultInsets:{top, left, bottom, right}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -1259,10 +1259,10 @@ LABEL_26:
   return result;
 }
 
-- (id)dragItemsForBeginningDragAtPoint:(CGPoint)a3
+- (id)dragItemsForBeginningDragAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   if ([(CRLWPShapeRep *)self allowDraggingShape])
   {
     v8.receiver = self;
@@ -1280,11 +1280,11 @@ LABEL_26:
 
 - (BOOL)allowDraggingShape
 {
-  v3 = [(CRLWPShapeRep *)self containedRep];
-  v4 = v3;
-  if (v3)
+  containedRep = [(CRLWPShapeRep *)self containedRep];
+  v4 = containedRep;
+  if (containedRep)
   {
-    if ([v3 isBeingEdited])
+    if ([containedRep isBeingEdited])
     {
       LOBYTE(v5) = 0;
     }
@@ -1305,20 +1305,20 @@ LABEL_26:
 
 - (BOOL)isReadOnlyAndInstructional
 {
-  v3 = [(CRLCanvasRep *)self interactiveCanvasController];
-  if ([v3 editingDisabled])
+  interactiveCanvasController = [(CRLCanvasRep *)self interactiveCanvasController];
+  if ([interactiveCanvasController editingDisabled])
   {
-    v4 = [(CRLWPShapeRep *)self containedRep];
-    v5 = [v4 layout];
-    v6 = [v5 isInstructional];
+    containedRep = [(CRLWPShapeRep *)self containedRep];
+    layout = [containedRep layout];
+    isInstructional = [layout isInstructional];
   }
 
   else
   {
-    v6 = 0;
+    isInstructional = 0;
   }
 
-  return v6;
+  return isInstructional;
 }
 
 - (CGPoint)originalAutosizePositionOffset

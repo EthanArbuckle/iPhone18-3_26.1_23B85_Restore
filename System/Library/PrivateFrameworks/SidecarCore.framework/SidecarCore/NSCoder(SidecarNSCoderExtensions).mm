@@ -6,10 +6,10 @@
 
 - (void)decodeObjectOfClass:()SidecarNSCoderExtensions
 {
-  v1 = [a1 decodeObject];
+  decodeObject = [self decodeObject];
   if (objc_opt_isKindOfClass())
   {
-    v2 = v1;
+    v2 = decodeObject;
   }
 
   else

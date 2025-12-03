@@ -1,25 +1,25 @@
 @interface VCPProtoMovieSafetyResult
-+ (id)resultFromLegacyDictionary:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)resultFromLegacyDictionary:(id)dictionary;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)exportToLegacyDictionary;
 - (unint64_t)hash;
-- (void)addClassification:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addClassification:(id)classification;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoMovieSafetyResult
 
-+ (id)resultFromLegacyDictionary:(id)a3
++ (id)resultFromLegacyDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [v3 objectForKeyedSubscript:@"attributes"];
+  dictionaryCopy = dictionary;
+  v4 = [dictionaryCopy objectForKeyedSubscript:@"attributes"];
   memset(&v14, 0, sizeof(v14));
-  CMTimeRangeMakeFromDictionary(&v14, v3);
+  CMTimeRangeMakeFromDictionary(&v14, dictionaryCopy);
   v5 = [v4 objectForKeyedSubscript:@"Sensitivity"];
   v6 = [v4 objectForKeyedSubscript:@"SensitivitySceneResults"];
   if (v14.start.flags)
@@ -72,11 +72,11 @@ void __74__VCPProtoMovieSafetyResult_LegacyConversion__resultFromLegacyDictionar
 - (id)exportToLegacyDictionary
 {
   v20[2] = *MEMORY[0x1E69E9840];
-  v3 = [(VCPProtoMovieSafetyResult *)self timeRange];
-  v4 = v3;
-  if (v3)
+  timeRange = [(VCPProtoMovieSafetyResult *)self timeRange];
+  v4 = timeRange;
+  if (timeRange)
   {
-    [v3 timeRangeValue];
+    [timeRange timeRangeValue];
   }
 
   else
@@ -96,8 +96,8 @@ void __74__VCPProtoMovieSafetyResult_LegacyConversion__resultFromLegacyDictionar
     [v9 confidence];
     v11 = [v10 numberWithFloat:?];
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{objc_msgSend(v9, "identifier")}];
-    v13 = [v12 stringValue];
-    [v7 setObject:v11 forKey:v13];
+    stringValue = [v12 stringValue];
+    [v7 setObject:v11 forKey:stringValue];
   }
 
   v19[0] = @"Sensitivity";
@@ -111,22 +111,22 @@ void __74__VCPProtoMovieSafetyResult_LegacyConversion__resultFromLegacyDictionar
   return v6;
 }
 
-- (void)addClassification:(id)a3
+- (void)addClassification:(id)classification
 {
-  v4 = a3;
+  classificationCopy = classification;
   classifications = self->_classifications;
-  v8 = v4;
+  v8 = classificationCopy;
   if (!classifications)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_classifications;
     self->_classifications = v6;
 
-    v4 = v8;
+    classificationCopy = v8;
     classifications = self->_classifications;
   }
 
-  [(NSMutableArray *)classifications addObject:v4];
+  [(NSMutableArray *)classifications addObject:classificationCopy];
 }
 
 - (id)description
@@ -135,8 +135,8 @@ void __74__VCPProtoMovieSafetyResult_LegacyConversion__resultFromLegacyDictionar
   v8.receiver = self;
   v8.super_class = VCPProtoMovieSafetyResult;
   v4 = [(VCPProtoMovieSafetyResult *)&v8 description];
-  v5 = [(VCPProtoMovieSafetyResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoMovieSafetyResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -144,16 +144,16 @@ void __74__VCPProtoMovieSafetyResult_LegacyConversion__resultFromLegacyDictionar
 - (id)dictionaryRepresentation
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   timeRange = self->_timeRange;
   if (timeRange)
   {
-    v5 = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"timeRange"];
+    dictionaryRepresentation = [(VCPProtoTimeRange *)timeRange dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"timeRange"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithInt:self->_sensitivity];
-  [v3 setObject:v6 forKey:@"sensitivity"];
+  [dictionary setObject:v6 forKey:@"sensitivity"];
 
   if ([(NSMutableArray *)self->_classifications count])
   {
@@ -177,8 +177,8 @@ void __74__VCPProtoMovieSafetyResult_LegacyConversion__resultFromLegacyDictionar
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
-          [v7 addObject:v13];
+          dictionaryRepresentation2 = [*(*(&v15 + 1) + 8 * i) dictionaryRepresentation];
+          [v7 addObject:dictionaryRepresentation2];
         }
 
         v10 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -187,16 +187,16 @@ void __74__VCPProtoMovieSafetyResult_LegacyConversion__resultFromLegacyDictionar
       while (v10);
     }
 
-    [v3 setObject:v7 forKey:@"classification"];
+    [dictionary setObject:v7 forKey:@"classification"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   PBDataWriterWriteSubmessage();
   PBDataWriterWriteInt32Field();
   v12 = 0u;
@@ -231,32 +231,32 @@ void __74__VCPProtoMovieSafetyResult_LegacyConversion__resultFromLegacyDictionar
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v8 = a3;
-  [v8 setTimeRange:self->_timeRange];
-  v8[4] = self->_sensitivity;
+  toCopy = to;
+  [toCopy setTimeRange:self->_timeRange];
+  toCopy[4] = self->_sensitivity;
   if ([(VCPProtoMovieSafetyResult *)self classificationsCount])
   {
-    [v8 clearClassifications];
-    v4 = [(VCPProtoMovieSafetyResult *)self classificationsCount];
-    if (v4)
+    [toCopy clearClassifications];
+    classificationsCount = [(VCPProtoMovieSafetyResult *)self classificationsCount];
+    if (classificationsCount)
     {
-      v5 = v4;
+      v5 = classificationsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(VCPProtoMovieSafetyResult *)self classificationAtIndex:i];
-        [v8 addClassification:v7];
+        [toCopy addClassification:v7];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(VCPProtoTimeRange *)self->_timeRange copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
@@ -281,7 +281,7 @@ void __74__VCPProtoMovieSafetyResult_LegacyConversion__resultFromLegacyDictionar
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{a3, v15}];
+        v13 = [*(*(&v15 + 1) + 8 * v12) copyWithZone:{zone, v15}];
         [v5 addClassification:v13];
 
         ++v12;
@@ -297,13 +297,13 @@ void __74__VCPProtoMovieSafetyResult_LegacyConversion__resultFromLegacyDictionar
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | v4[3])) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && self->_sensitivity == *(v4 + 4))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((timeRange = self->_timeRange, !(timeRange | equalCopy[3])) || -[VCPProtoTimeRange isEqual:](timeRange, "isEqual:")) && self->_sensitivity == *(equalCopy + 4))
   {
     classifications = self->_classifications;
-    if (classifications | v4[1])
+    if (classifications | equalCopy[1])
     {
       v7 = [(NSMutableArray *)classifications isEqual:?];
     }
@@ -329,12 +329,12 @@ void __74__VCPProtoMovieSafetyResult_LegacyConversion__resultFromLegacyDictionar
   return v4 ^ v3 ^ [(NSMutableArray *)self->_classifications hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  fromCopy = from;
   timeRange = self->_timeRange;
-  v6 = *(v4 + 3);
+  v6 = *(fromCopy + 3);
   if (timeRange)
   {
     if (v6)
@@ -348,12 +348,12 @@ void __74__VCPProtoMovieSafetyResult_LegacyConversion__resultFromLegacyDictionar
     [(VCPProtoMovieSafetyResult *)self setTimeRange:?];
   }
 
-  self->_sensitivity = *(v4 + 4);
+  self->_sensitivity = *(fromCopy + 4);
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = *(v4 + 1);
+  v7 = *(fromCopy + 1);
   v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {

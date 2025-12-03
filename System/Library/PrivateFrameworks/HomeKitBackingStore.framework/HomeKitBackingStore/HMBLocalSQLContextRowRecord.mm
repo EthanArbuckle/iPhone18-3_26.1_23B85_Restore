@@ -1,6 +1,6 @@
 @interface HMBLocalSQLContextRowRecord
-- (HMBLocalSQLContextRowRecord)initWithRecordRow:(unint64_t)a3 externalID:(id)a4 externalData:(id)a5 modelID:(id)a6 modelEncoding:(unint64_t)a7 modelData:(id)a8 modelSchema:(id)a9 modelType:(id)a10 pushEncoding:(unint64_t)a11 pushData:(id)a12 pushBlockRow:(id)a13;
-- (HMBLocalSQLContextRowRecord)initWithStatement:(sqlite3_stmt *)a3 returning:(unint64_t)a4;
+- (HMBLocalSQLContextRowRecord)initWithRecordRow:(unint64_t)row externalID:(id)d externalData:(id)data modelID:(id)iD modelEncoding:(unint64_t)encoding modelData:(id)modelData modelSchema:(id)schema modelType:(id)self0 pushEncoding:(unint64_t)self1 pushData:(id)self2 pushBlockRow:(id)self3;
+- (HMBLocalSQLContextRowRecord)initWithStatement:(sqlite3_stmt *)statement returning:(unint64_t)returning;
 - (id)attributeDescriptions;
 @end
 
@@ -8,120 +8,120 @@
 
 - (id)attributeDescriptions
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v4 = objc_alloc(MEMORY[0x277D0F778]);
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMBLocalSQLContextRowRecord recordRow](self, "recordRow")}];
   v6 = [v4 initWithName:@"Record Row" value:v5];
-  [v3 addObject:v6];
+  [array addObject:v6];
 
-  v7 = [(HMBLocalSQLContextRowRecord *)self externalID];
+  externalID = [(HMBLocalSQLContextRowRecord *)self externalID];
 
-  if (v7)
+  if (externalID)
   {
     v8 = objc_alloc(MEMORY[0x277D0F778]);
-    v9 = [(HMBLocalSQLContextRowRecord *)self externalID];
-    v10 = [v9 hmbDescription];
-    v11 = [v8 initWithName:@"External ID" value:v10];
-    [v3 addObject:v11];
+    externalID2 = [(HMBLocalSQLContextRowRecord *)self externalID];
+    hmbDescription = [externalID2 hmbDescription];
+    v11 = [v8 initWithName:@"External ID" value:hmbDescription];
+    [array addObject:v11];
   }
 
-  v12 = [(HMBLocalSQLContextRowRecord *)self externalData];
+  externalData = [(HMBLocalSQLContextRowRecord *)self externalData];
 
-  if (v12)
+  if (externalData)
   {
     v13 = objc_alloc(MEMORY[0x277D0F778]);
-    v14 = [(HMBLocalSQLContextRowRecord *)self externalData];
-    v15 = [v14 hmbDescription];
-    v16 = [v13 initWithName:@"External Data" value:v15];
-    [v3 addObject:v16];
+    externalData2 = [(HMBLocalSQLContextRowRecord *)self externalData];
+    hmbDescription2 = [externalData2 hmbDescription];
+    v16 = [v13 initWithName:@"External Data" value:hmbDescription2];
+    [array addObject:v16];
   }
 
   v17 = objc_alloc(MEMORY[0x277D0F778]);
   v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMBLocalSQLContextRowRecord modelEncoding](self, "modelEncoding")}];
   v19 = [v17 initWithName:@"Model Encoding" value:v18];
-  [v3 addObject:v19];
+  [array addObject:v19];
 
-  v20 = [(HMBLocalSQLContextRowRecord *)self modelID];
+  modelID = [(HMBLocalSQLContextRowRecord *)self modelID];
 
-  if (v20)
+  if (modelID)
   {
     v21 = objc_alloc(MEMORY[0x277D0F778]);
-    v22 = [(HMBLocalSQLContextRowRecord *)self modelID];
-    v23 = [v21 initWithName:@"Model ID" value:v22];
-    [v3 addObject:v23];
+    modelID2 = [(HMBLocalSQLContextRowRecord *)self modelID];
+    v23 = [v21 initWithName:@"Model ID" value:modelID2];
+    [array addObject:v23];
   }
 
-  v24 = [(HMBLocalSQLContextRowRecord *)self modelData];
+  modelData = [(HMBLocalSQLContextRowRecord *)self modelData];
 
-  if (v24)
+  if (modelData)
   {
     v25 = objc_alloc(MEMORY[0x277D0F778]);
-    v26 = [(HMBLocalSQLContextRowRecord *)self modelData];
-    v27 = [v26 hmbDescription];
-    v28 = [v25 initWithName:@"Model Data" value:v27];
-    [v3 addObject:v28];
+    modelData2 = [(HMBLocalSQLContextRowRecord *)self modelData];
+    hmbDescription3 = [modelData2 hmbDescription];
+    v28 = [v25 initWithName:@"Model Data" value:hmbDescription3];
+    [array addObject:v28];
   }
 
-  v29 = [(HMBLocalSQLContextRowRecord *)self modelSchema];
+  modelSchema = [(HMBLocalSQLContextRowRecord *)self modelSchema];
 
-  if (v29)
+  if (modelSchema)
   {
     v30 = objc_alloc(MEMORY[0x277D0F778]);
-    v31 = [(HMBLocalSQLContextRowRecord *)self modelSchema];
-    v32 = [v31 UUIDString];
-    v33 = [v30 initWithName:@"Model Schema" value:v32];
-    [v3 addObject:v33];
+    modelSchema2 = [(HMBLocalSQLContextRowRecord *)self modelSchema];
+    uUIDString = [modelSchema2 UUIDString];
+    v33 = [v30 initWithName:@"Model Schema" value:uUIDString];
+    [array addObject:v33];
   }
 
-  v34 = [(HMBLocalSQLContextRowRecord *)self modelType];
+  modelType = [(HMBLocalSQLContextRowRecord *)self modelType];
 
-  if (v34)
+  if (modelType)
   {
     v35 = objc_alloc(MEMORY[0x277D0F778]);
-    v36 = [(HMBLocalSQLContextRowRecord *)self modelType];
-    v37 = [v35 initWithName:@"Model Type" value:v36];
-    [v3 addObject:v37];
+    modelType2 = [(HMBLocalSQLContextRowRecord *)self modelType];
+    v37 = [v35 initWithName:@"Model Type" value:modelType2];
+    [array addObject:v37];
   }
 
   v38 = objc_alloc(MEMORY[0x277D0F778]);
   v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HMBLocalSQLContextRowRecord pushEncoding](self, "pushEncoding")}];
   v40 = [v38 initWithName:@"Push Encoding" value:v39];
-  [v3 addObject:v40];
+  [array addObject:v40];
 
-  v41 = [(HMBLocalSQLContextRowRecord *)self pushData];
+  pushData = [(HMBLocalSQLContextRowRecord *)self pushData];
 
-  if (v41)
+  if (pushData)
   {
     v42 = objc_alloc(MEMORY[0x277D0F778]);
-    v43 = [(HMBLocalSQLContextRowRecord *)self pushData];
-    v44 = [v43 hmbDescription];
-    v45 = [v42 initWithName:@"Push Data" value:v44];
-    [v3 addObject:v45];
+    pushData2 = [(HMBLocalSQLContextRowRecord *)self pushData];
+    hmbDescription4 = [pushData2 hmbDescription];
+    v45 = [v42 initWithName:@"Push Data" value:hmbDescription4];
+    [array addObject:v45];
   }
 
-  v46 = [(HMBLocalSQLContextRowRecord *)self pushBlockRow];
+  pushBlockRow = [(HMBLocalSQLContextRowRecord *)self pushBlockRow];
 
-  if (v46)
+  if (pushBlockRow)
   {
     v47 = objc_alloc(MEMORY[0x277D0F778]);
-    v48 = [(HMBLocalSQLContextRowRecord *)self pushBlockRow];
-    v49 = [v47 initWithName:@"Push Block Row" value:v48];
-    [v3 addObject:v49];
+    pushBlockRow2 = [(HMBLocalSQLContextRowRecord *)self pushBlockRow];
+    v49 = [v47 initWithName:@"Push Block Row" value:pushBlockRow2];
+    [array addObject:v49];
   }
 
-  v50 = [v3 copy];
+  v50 = [array copy];
 
   return v50;
 }
 
-- (HMBLocalSQLContextRowRecord)initWithStatement:(sqlite3_stmt *)a3 returning:(unint64_t)a4
+- (HMBLocalSQLContextRowRecord)initWithStatement:(sqlite3_stmt *)statement returning:(unint64_t)returning
 {
-  v4 = a4;
-  v18 = sqlite3_column_int64(a3, 0);
-  if (v4)
+  returningCopy = returning;
+  v18 = sqlite3_column_int64(statement, 0);
+  if (returningCopy)
   {
-    v7 = [MEMORY[0x277CBEA90] hmbDataWithSQLite3Column:a3 column:1];
-    v6 = [MEMORY[0x277CBEA90] hmbDataWithSQLite3Column:a3 column:2];
+    v7 = [MEMORY[0x277CBEA90] hmbDataWithSQLite3Column:statement column:1];
+    v6 = [MEMORY[0x277CBEA90] hmbDataWithSQLite3Column:statement column:2];
   }
 
   else
@@ -130,13 +130,13 @@
     v7 = 0;
   }
 
-  if ((v4 & 2) != 0)
+  if ((returningCopy & 2) != 0)
   {
-    v8 = sqlite3_column_int64(a3, 3);
-    v9 = [MEMORY[0x277CBEA90] hmbDataWithSQLite3Column:a3 column:4];
-    v10 = [MEMORY[0x277CCAD78] hmbUUIDWithSQLite3Column:a3 column:5];
-    v11 = [MEMORY[0x277CCACA8] hmbStringWithSQLite3Column:a3 column:6];
-    if ((v4 & 4) != 0)
+    v8 = sqlite3_column_int64(statement, 3);
+    v9 = [MEMORY[0x277CBEA90] hmbDataWithSQLite3Column:statement column:4];
+    v10 = [MEMORY[0x277CCAD78] hmbUUIDWithSQLite3Column:statement column:5];
+    v11 = [MEMORY[0x277CCACA8] hmbStringWithSQLite3Column:statement column:6];
+    if ((returningCopy & 4) != 0)
     {
       goto LABEL_6;
     }
@@ -152,49 +152,49 @@ LABEL_8:
   v9 = 0;
   v10 = 0;
   v11 = 0;
-  if ((v4 & 4) == 0)
+  if ((returningCopy & 4) == 0)
   {
     goto LABEL_8;
   }
 
 LABEL_6:
-  v12 = sqlite3_column_int64(a3, 7);
-  v13 = [MEMORY[0x277CBEA90] hmbDataWithSQLite3Column:a3 column:8];
-  v14 = [MEMORY[0x277CCABB0] hmbNumberWithSQLite3Column:a3 column:9];
+  v12 = sqlite3_column_int64(statement, 7);
+  v13 = [MEMORY[0x277CBEA90] hmbDataWithSQLite3Column:statement column:8];
+  v14 = [MEMORY[0x277CCABB0] hmbNumberWithSQLite3Column:statement column:9];
 LABEL_9:
-  v15 = [MEMORY[0x277CCAD78] hmbUUIDWithSQLite3Column:a3 column:10];
+  v15 = [MEMORY[0x277CCAD78] hmbUUIDWithSQLite3Column:statement column:10];
   v16 = [(HMBLocalSQLContextRowRecord *)self initWithRecordRow:v18 externalID:v7 externalData:v6 modelID:v15 modelEncoding:v8 modelData:v9 modelSchema:v10 modelType:v11 pushEncoding:v12 pushData:v13 pushBlockRow:v14];
 
   return v16;
 }
 
-- (HMBLocalSQLContextRowRecord)initWithRecordRow:(unint64_t)a3 externalID:(id)a4 externalData:(id)a5 modelID:(id)a6 modelEncoding:(unint64_t)a7 modelData:(id)a8 modelSchema:(id)a9 modelType:(id)a10 pushEncoding:(unint64_t)a11 pushData:(id)a12 pushBlockRow:(id)a13
+- (HMBLocalSQLContextRowRecord)initWithRecordRow:(unint64_t)row externalID:(id)d externalData:(id)data modelID:(id)iD modelEncoding:(unint64_t)encoding modelData:(id)modelData modelSchema:(id)schema modelType:(id)self0 pushEncoding:(unint64_t)self1 pushData:(id)self2 pushBlockRow:(id)self3
 {
-  v30 = a4;
-  v29 = a5;
-  v28 = a6;
-  v27 = a8;
-  v26 = a9;
-  v25 = a10;
-  v24 = a12;
-  v18 = a13;
+  dCopy = d;
+  dataCopy = data;
+  iDCopy = iD;
+  modelDataCopy = modelData;
+  schemaCopy = schema;
+  typeCopy = type;
+  pushDataCopy = pushData;
+  blockRowCopy = blockRow;
   v31.receiver = self;
   v31.super_class = HMBLocalSQLContextRowRecord;
   v19 = [(HMBLocalSQLContextRowRecord *)&v31 init];
   v20 = v19;
   if (v19)
   {
-    v19->_recordRow = a3;
-    objc_storeStrong(&v19->_externalID, a4);
-    objc_storeStrong(&v20->_externalData, a5);
-    objc_storeStrong(&v20->_modelID, a6);
-    v20->_modelEncoding = a7;
-    objc_storeStrong(&v20->_modelData, a8);
-    objc_storeStrong(&v20->_modelSchema, a9);
-    objc_storeStrong(&v20->_modelType, a10);
-    v20->_pushEncoding = a11;
-    objc_storeStrong(&v20->_pushData, a12);
-    objc_storeStrong(&v20->_pushBlockRow, a13);
+    v19->_recordRow = row;
+    objc_storeStrong(&v19->_externalID, d);
+    objc_storeStrong(&v20->_externalData, data);
+    objc_storeStrong(&v20->_modelID, iD);
+    v20->_modelEncoding = encoding;
+    objc_storeStrong(&v20->_modelData, modelData);
+    objc_storeStrong(&v20->_modelSchema, schema);
+    objc_storeStrong(&v20->_modelType, type);
+    v20->_pushEncoding = pushEncoding;
+    objc_storeStrong(&v20->_pushData, pushData);
+    objc_storeStrong(&v20->_pushBlockRow, blockRow);
   }
 
   return v20;

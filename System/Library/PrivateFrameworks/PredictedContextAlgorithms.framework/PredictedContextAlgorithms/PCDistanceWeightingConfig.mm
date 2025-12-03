@@ -1,7 +1,7 @@
 @interface PCDistanceWeightingConfig
 + (id)clusteringConfiguration;
 + (id)predictionConfiguration;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PCDistanceWeightingConfig
@@ -54,16 +54,16 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setConfigType:{-[PCDistanceWeightingConfig configType](self, "configType")}];
-  v6 = [(PCDistanceWeightingConfig *)self configName];
-  v7 = [v6 copyWithZone:a3];
+  configName = [(PCDistanceWeightingConfig *)self configName];
+  v7 = [configName copyWithZone:zone];
   [v5 setConfigName:v7];
 
-  v8 = [(PCDistanceWeightingConfig *)self weights];
-  v9 = [v8 copyWithZone:a3];
+  weights = [(PCDistanceWeightingConfig *)self weights];
+  v9 = [weights copyWithZone:zone];
   [v5 setWeights:v9];
 
   [v5 setMinPoints:{-[PCDistanceWeightingConfig minPoints](self, "minPoints")}];

@@ -1,23 +1,23 @@
 @interface MIOTimeRangeMetadataTrackReader
-- (CVSMPTETime)grabNextTimeRangeMetadataSampleOfStream:(SEL)a3 rangeStartTime:(id)a4 rangeEndTime:(unint64_t *)a5 presentationTimeRange:(unint64_t *)a6 error:(id *)a7;
-- (MIOTimeRangeMetadataTrackReader)initWithMetadataTrackId:(int)a3 asset:(id)a4;
-- (id)readTimeRangeMetadataSamplesOutError:(id *)a3;
+- (CVSMPTETime)grabNextTimeRangeMetadataSampleOfStream:(SEL)stream rangeStartTime:(id)time rangeEndTime:(unint64_t *)endTime presentationTimeRange:(unint64_t *)range error:(id *)error;
+- (MIOTimeRangeMetadataTrackReader)initWithMetadataTrackId:(int)id asset:(id)asset;
+- (id)readTimeRangeMetadataSamplesOutError:(id *)error;
 - (void)dealloc;
 @end
 
 @implementation MIOTimeRangeMetadataTrackReader
 
-- (MIOTimeRangeMetadataTrackReader)initWithMetadataTrackId:(int)a3 asset:(id)a4
+- (MIOTimeRangeMetadataTrackReader)initWithMetadataTrackId:(int)id asset:(id)asset
 {
-  v7 = a4;
+  assetCopy = asset;
   v11.receiver = self;
   v11.super_class = MIOTimeRangeMetadataTrackReader;
   v8 = [(MIOTimeRangeMetadataTrackReader *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_trackId = a3;
-    objc_storeStrong(&v8->_asset, a4);
+    v8->_trackId = id;
+    objc_storeStrong(&v8->_asset, asset);
   }
 
   return v9;
@@ -40,16 +40,16 @@
   [(MIOTimeRangeMetadataTrackReader *)&v4 dealloc];
 }
 
-- (id)readTimeRangeMetadataSamplesOutError:(id *)a3
+- (id)readTimeRangeMetadataSamplesOutError:(id *)error
 {
   v5 = objc_alloc_init(MOVStreamReader);
-  v6 = [objc_alloc(MEMORY[0x277CE6410]) initWithAsset:self->_asset error:a3];
+  v6 = [objc_alloc(MEMORY[0x277CE6410]) initWithAsset:self->_asset error:error];
   if (v6)
   {
     v7 = [(AVAsset *)self->_asset trackWithTrackID:self->_trackId];
     v8 = [MOVStreamReaderStreamOutput alloc];
     v9 = +[MIOVersion versionZero];
-    v10 = [(MOVStreamReaderStreamOutput *)v8 initWithMetadataTrack:v7 assetReader:v6 version:v9 unknownStreamId:&stru_2868CF868 reader:v5 delegate:self error:a3];
+    v10 = [(MOVStreamReaderStreamOutput *)v8 initWithMetadataTrack:v7 assetReader:v6 version:v9 unknownStreamId:&stru_2868CF868 reader:v5 delegate:self error:error];
 
     if (v10)
     {
@@ -62,7 +62,7 @@
       {
         v31 = 0;
         v32 = 0;
-        [(MIOTimeRangeMetadataTrackReader *)self grabNextTimeRangeMetadataSampleOfStream:v10 rangeStartTime:&v32 rangeEndTime:&v31 presentationTimeRange:0 error:a3];
+        [(MIOTimeRangeMetadataTrackReader *)self grabNextTimeRangeMetadataSampleOfStream:v10 rangeStartTime:&v32 rangeEndTime:&v31 presentationTimeRange:0 error:error];
         v29 = v25;
         v13 = v27;
         v30 = v26;
@@ -78,12 +78,12 @@
         if ((v13 & 1) == 0)
         {
           v17 = MEMORY[0x277CCACA8];
-          v18 = [(MOVStreamReaderStreamOutput *)v10 streamId];
+          streamId = [(MOVStreamReaderStreamOutput *)v10 streamId];
           v7 = v23;
           v5 = v24;
-          v19 = [v17 stringWithFormat:@"Time code that was read for stream %@ was not valid, error: %@", v18, *a3];
+          v19 = [v17 stringWithFormat:@"Time code that was read for stream %@ was not valid, error: %@", streamId, *error];
 
-          [MEMORY[0x277CCA9B8] populateReaderError:a3 message:v19 code:0];
+          [MEMORY[0x277CCA9B8] populateReaderError:error message:v19 code:0];
           goto LABEL_14;
         }
 
@@ -105,12 +105,12 @@
       }
 
       v20 = MEMORY[0x277CCACA8];
-      v21 = [(MOVStreamReaderStreamOutput *)v10 streamId];
+      streamId2 = [(MOVStreamReaderStreamOutput *)v10 streamId];
       v7 = v23;
       v5 = v24;
-      v19 = [v20 stringWithFormat:@"Time ranges are not strictly increasing or overlap for stream %@.", v21];
+      v19 = [v20 stringWithFormat:@"Time ranges are not strictly increasing or overlap for stream %@.", streamId2];
 
-      [MEMORY[0x277CCA9B8] populateReaderError:a3 message:v19 code:0];
+      [MEMORY[0x277CCA9B8] populateReaderError:error message:v19 code:0];
 LABEL_14:
 
       v16 = 0;
@@ -131,22 +131,22 @@ LABEL_15:
   return v16;
 }
 
-- (CVSMPTETime)grabNextTimeRangeMetadataSampleOfStream:(SEL)a3 rangeStartTime:(id)a4 rangeEndTime:(unint64_t *)a5 presentationTimeRange:(unint64_t *)a6 error:(id *)a7
+- (CVSMPTETime)grabNextTimeRangeMetadataSampleOfStream:(SEL)stream rangeStartTime:(id)time rangeEndTime:(unint64_t *)endTime presentationTimeRange:(unint64_t *)range error:(id *)error
 {
   v52 = *MEMORY[0x277D85DE8];
-  v11 = a4;
-  if ([v11 isTimeRangeMetadataStream])
+  timeCopy = time;
+  if ([timeCopy isTimeRangeMetadataStream])
   {
-    v37 = v11;
-    v38 = [v11 grabNextTimedMetadataGroupOfStreamError:a8];
-    if ([v11 endOfStreamReached])
+    v37 = timeCopy;
+    v38 = [timeCopy grabNextTimedMetadataGroupOfStreamError:a8];
+    if ([timeCopy endOfStreamReached])
     {
       *&retstr->subframes = 0;
       *&retstr->type = 0;
       *&retstr->hours = 0;
 LABEL_35:
 
-      v11 = v37;
+      timeCopy = v37;
       goto LABEL_36;
     }
 
@@ -160,11 +160,11 @@ LABEL_35:
     v15 = [obj countByEnumeratingWithState:&v45 objects:v51 count:16];
     if (v15)
     {
-      v34 = a5;
-      v35 = a6;
-      v36 = a7;
-      v16 = 0;
-      v17 = 0;
+      endTimeCopy = endTime;
+      rangeCopy = range;
+      errorCopy = error;
+      unsignedLongLongValue = 0;
+      unsignedLongLongValue2 = 0;
       v18 = 0;
       v19 = *v46;
       do
@@ -177,8 +177,8 @@ LABEL_35:
           }
 
           v21 = *(*(&v45 + 1) + 8 * i);
-          v22 = [v21 identifier];
-          v23 = [@"mdta/com.apple.stream_time_code" isEqualToString:v22];
+          identifier = [v21 identifier];
+          v23 = [@"mdta/com.apple.stream_time_code" isEqualToString:identifier];
 
           if (v23)
           {
@@ -200,26 +200,26 @@ LABEL_35:
 
           else
           {
-            v24 = [v21 identifier];
-            v25 = [@"mdta/com.apple.stream_time_range_start" isEqualToString:v24];
+            identifier2 = [v21 identifier];
+            v25 = [@"mdta/com.apple.stream_time_range_start" isEqualToString:identifier2];
 
             if (v25)
             {
-              v26 = [v21 numberValue];
-              v16 = [v26 unsignedLongLongValue];
+              numberValue = [v21 numberValue];
+              unsignedLongLongValue = [numberValue unsignedLongLongValue];
 
               v18 |= 2u;
             }
 
             else
             {
-              v27 = [v21 identifier];
-              v28 = [@"mdta/com.apple.stream_time_range_end" isEqualToString:v27];
+              identifier3 = [v21 identifier];
+              v28 = [@"mdta/com.apple.stream_time_range_end" isEqualToString:identifier3];
 
               if (v28)
               {
-                v29 = [v21 numberValue];
-                v17 = [v29 unsignedLongLongValue];
+                numberValue2 = [v21 numberValue];
+                unsignedLongLongValue2 = [numberValue2 unsignedLongLongValue];
 
                 v18 |= 4u;
               }
@@ -234,17 +234,17 @@ LABEL_35:
 
       if (v18 == 7)
       {
-        if (v34)
+        if (endTimeCopy)
         {
-          *v34 = v16;
+          *endTimeCopy = unsignedLongLongValue;
         }
 
-        if (v35)
+        if (rangeCopy)
         {
-          *v35 = v17;
+          *rangeCopy = unsignedLongLongValue2;
         }
 
-        if (v36)
+        if (errorCopy)
         {
           if (v38)
           {
@@ -258,9 +258,9 @@ LABEL_35:
             v42 = 0u;
           }
 
-          *&v36->var0.var0 = v42;
-          *&v36->var0.var3 = v43;
-          *&v36->var1.var1 = v44;
+          *&errorCopy->var0.var0 = v42;
+          *&errorCopy->var0.var3 = v43;
+          *&errorCopy->var1.var1 = v44;
         }
 
         *&retstr->subframes = v49;
@@ -274,8 +274,8 @@ LABEL_35:
     }
 
     v30 = MEMORY[0x277CCACA8];
-    v31 = [v37 streamId];
-    v32 = [v30 stringWithFormat:@"The metadata stream '%@' did not contain all metadata items to be time range metadata.", v31];
+    streamId = [v37 streamId];
+    v32 = [v30 stringWithFormat:@"The metadata stream '%@' did not contain all metadata items to be time range metadata.", streamId];
 
     [MEMORY[0x277CCA9B8] populateReaderError:a8 message:v32 code:31];
     *&retstr->subframes = 0;
@@ -287,8 +287,8 @@ LABEL_34:
   }
 
   v12 = MEMORY[0x277CCACA8];
-  v13 = [v11 streamId];
-  v14 = [v12 stringWithFormat:@"The metadata stream '%@' is not indicated as time range metadata.", v13];
+  streamId2 = [timeCopy streamId];
+  v14 = [v12 stringWithFormat:@"The metadata stream '%@' is not indicated as time range metadata.", streamId2];
 
   [MEMORY[0x277CCA9B8] populateReaderError:a8 message:v14 code:31];
   *&retstr->subframes = 0;

@@ -1,101 +1,101 @@
 @interface SBIconDragManagerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_axIsIconDragging;
 - (CGPoint)_accessibilityLastPausedLocation;
 - (id)_axGrabbedIconView;
 - (id)_axGrabbedIcons;
 - (id)_axGrabbedIconsLabel;
 - (id)_axRecipientIconView;
-- (id)createNewFolderFromRecipientIcon:(id)a3 grabbedIcon:(id)a4 inListModel:(id)a5;
-- (id)iconDropSessionDidUpdate:(id)a3 inIconListView:(id)a4;
+- (id)createNewFolderFromRecipientIcon:(id)icon grabbedIcon:(id)grabbedIcon inListModel:(id)model;
+- (id)iconDropSessionDidUpdate:(id)update inIconListView:(id)view;
 - (void)_accessibilityIconMovedToPosition;
-- (void)_axDragPauseForLocation:(CGPoint)a3 iconListView:(id)a4;
-- (void)_axScheduleAnnouncementForRow:(unint64_t)a3 col:(unint64_t)a4;
-- (void)_axUpdateDragPauseForLocation:(CGPoint)a3 iconListView:(id)a4;
-- (void)iconDropSession:(id)a3 didPauseAtLocation:(CGPoint)a4 inIconListView:(id)a5;
-- (void)iconDropSessionDidEnd:(id)a3;
-- (void)iconViewWillBeginDrag:(id)a3 session:(id)a4;
-- (void)updatePlaceholderPositionForDragWithIdentifier:(id)a3;
+- (void)_axDragPauseForLocation:(CGPoint)location iconListView:(id)view;
+- (void)_axScheduleAnnouncementForRow:(unint64_t)row col:(unint64_t)col;
+- (void)_axUpdateDragPauseForLocation:(CGPoint)location iconListView:(id)view;
+- (void)iconDropSession:(id)session didPauseAtLocation:(CGPoint)location inIconListView:(id)view;
+- (void)iconDropSessionDidEnd:(id)end;
+- (void)iconViewWillBeginDrag:(id)drag session:(id)session;
+- (void)updatePlaceholderPositionForDragWithIdentifier:(id)identifier;
 @end
 
 @implementation SBIconDragManagerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SBIconDragManager" hasInstanceMethod:@"iconDropSessionDidUpdate:inIconListView:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"SBIconDragManager" hasInstanceMethod:@"iconDropSessionDidEnd:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBIconDragManager" hasInstanceMethod:@"iconDragContextForDropSession:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"SBIconDragManager" hasInstanceMethod:@"iconViewWillBeginDrag:session:" withFullSignature:{"v", "@", "@", 0}];
-  [v3 validateClass:@"SBIconDragManager" hasInstanceMethod:@"cancelAllDrags" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SBIconDragContext"];
-  [v3 validateClass:@"SBIconListView"];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"coordinateForIcon:" withFullSignature:{"{SBIconCoordinate=qq}", "@", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"iconAtPoint:index:" withFullSignature:{"@", "{CGPoint=dd}", "^Q", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"iconViewForIcon:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"SBIconDragManager" hasInstanceMethod:@"iconDropSession:didPauseAtLocation:inIconListView:" withFullSignature:{"v", "@", "{CGPoint=dd}", "@", 0}];
-  [v3 validateClass:@"SBIcon" hasInstanceMethod:@"isPlaceholder" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBIconView" hasInstanceMethod:@"isFolderIcon" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBIconDragContext" hasInstanceMethod:@"initialTouchOffsetFromIconImageCenter" withFullSignature:{"{CGPoint=dd}", 0}];
-  [v3 validateClass:@"SBIconDragManager" hasInstanceMethod:@"updatePlaceholderPositionForDragWithIdentifier:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"SBIconDragManager" hasInstanceMethod:@"uniqueIdentifierForIconDropSession:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"SBIconDragManager" hasInstanceMethod:@"iconDragContextForDragWithIdentifier:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"SBIconDragContext" hasInstanceMethod:@"initialTouchOffsetFromIconImageCenter" withFullSignature:{"{CGPoint=dd}", 0}];
-  [v3 validateClass:@"SBIconDragManager" hasInstanceMethod:@"createNewFolderFromRecipientIcon:grabbedIcon:inListModel:" withFullSignature:{"@", "@", "@", "@", 0}];
-  [v3 validateClass:@"SBIconDragManager" hasInstanceMethod:@"enumerateIconDragContextsUsingBlock:" withFullSignature:{"v", "@?", 0}];
-  [v3 validateClass:@"SBIconDragContext" hasInstanceMethod:@"isUserActive" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBIconDragContext" hasInstanceMethod:@"draggedIcons" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBIconDragContext" hasInstanceVariable:@"_sourceIconViews" withType:"NSMutableSet"];
-  [v3 validateClass:@"SBIconDragContext" hasInstanceMethod:@"recipientIconView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBPlaceholderIcon"];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"iconRowsForCurrentOrientation" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"iconColumnsForCurrentOrientation" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"iconRowsForCurrentOrientation" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"SBIconListView" hasInstanceMethod:@"icons" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"hasOpenFolder" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SBHIconManager" hasInstanceMethod:@"openedFolder" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SBFolder" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SBIconDragManager" hasInstanceMethod:@"iconDropSessionDidUpdate:inIconListView:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"SBIconDragManager" hasInstanceMethod:@"iconDropSessionDidEnd:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBIconDragManager" hasInstanceMethod:@"iconDragContextForDropSession:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"SBIconDragManager" hasInstanceMethod:@"iconViewWillBeginDrag:session:" withFullSignature:{"v", "@", "@", 0}];
+  [validationsCopy validateClass:@"SBIconDragManager" hasInstanceMethod:@"cancelAllDrags" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SBIconDragContext"];
+  [validationsCopy validateClass:@"SBIconListView"];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"coordinateForIcon:" withFullSignature:{"{SBIconCoordinate=qq}", "@", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"iconAtPoint:index:" withFullSignature:{"@", "{CGPoint=dd}", "^Q", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"iconViewForIcon:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"SBIconDragManager" hasInstanceMethod:@"iconDropSession:didPauseAtLocation:inIconListView:" withFullSignature:{"v", "@", "{CGPoint=dd}", "@", 0}];
+  [validationsCopy validateClass:@"SBIcon" hasInstanceMethod:@"isPlaceholder" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBIconView" hasInstanceMethod:@"isFolderIcon" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBIconDragContext" hasInstanceMethod:@"initialTouchOffsetFromIconImageCenter" withFullSignature:{"{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"SBIconDragManager" hasInstanceMethod:@"updatePlaceholderPositionForDragWithIdentifier:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"SBIconDragManager" hasInstanceMethod:@"uniqueIdentifierForIconDropSession:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"SBIconDragManager" hasInstanceMethod:@"iconDragContextForDragWithIdentifier:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"SBIconDragContext" hasInstanceMethod:@"initialTouchOffsetFromIconImageCenter" withFullSignature:{"{CGPoint=dd}", 0}];
+  [validationsCopy validateClass:@"SBIconDragManager" hasInstanceMethod:@"createNewFolderFromRecipientIcon:grabbedIcon:inListModel:" withFullSignature:{"@", "@", "@", "@", 0}];
+  [validationsCopy validateClass:@"SBIconDragManager" hasInstanceMethod:@"enumerateIconDragContextsUsingBlock:" withFullSignature:{"v", "@?", 0}];
+  [validationsCopy validateClass:@"SBIconDragContext" hasInstanceMethod:@"isUserActive" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBIconDragContext" hasInstanceMethod:@"draggedIcons" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBIconDragContext" hasInstanceVariable:@"_sourceIconViews" withType:"NSMutableSet"];
+  [validationsCopy validateClass:@"SBIconDragContext" hasInstanceMethod:@"recipientIconView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBPlaceholderIcon"];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"iconRowsForCurrentOrientation" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"iconColumnsForCurrentOrientation" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"iconRowsForCurrentOrientation" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"SBIconListView" hasInstanceMethod:@"icons" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"hasOpenFolder" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SBHIconManager" hasInstanceMethod:@"openedFolder" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SBFolder" hasInstanceMethod:@"displayName" withFullSignature:{"@", 0}];
 }
 
-- (void)iconViewWillBeginDrag:(id)a3 session:(id)a4
+- (void)iconViewWillBeginDrag:(id)drag session:(id)session
 {
-  v6 = a3;
-  v7 = a4;
+  dragCopy = drag;
+  sessionCopy = session;
   v12.receiver = self;
   v12.super_class = SBIconDragManagerAccessibility;
-  [(SBIconDragManagerAccessibility *)&v12 iconViewWillBeginDrag:v6 session:v7];
+  [(SBIconDragManagerAccessibility *)&v12 iconViewWillBeginDrag:dragCopy session:sessionCopy];
   objc_opt_class();
   v8 = __UIAccessibilityCastAsClass();
-  v9 = [v8 window];
-  v10 = [v9 windowScene];
-  v11 = [v10 focusSystem];
+  window = [v8 window];
+  windowScene = [window windowScene];
+  focusSystem = [windowScene focusSystem];
 
-  [v11 requestFocusUpdateToEnvironment:v11];
+  [focusSystem requestFocusUpdateToEnvironment:focusSystem];
 }
 
-- (id)iconDropSessionDidUpdate:(id)a3 inIconListView:(id)a4
+- (id)iconDropSessionDidUpdate:(id)update inIconListView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  viewCopy = view;
   v30.receiver = self;
   v30.super_class = SBIconDragManagerAccessibility;
-  v8 = [(SBIconDragManagerAccessibility *)&v30 iconDropSessionDidUpdate:v6 inIconListView:v7];
+  v8 = [(SBIconDragManagerAccessibility *)&v30 iconDropSessionDidUpdate:updateCopy inIconListView:viewCopy];
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__3;
   v28 = __Block_byref_object_dispose__3;
   v29 = 0;
-  v9 = v6;
+  v9 = updateCopy;
   AXPerformSafeBlock();
   v10 = v25[5];
 
   _Block_object_dispose(&v24, 8);
-  [v9 locationInView:v7];
+  [v9 locationInView:viewCopy];
   v12 = v11;
   v14 = v13;
   [v10 safeCGPointForKey:@"initialTouchOffsetFromIconImageCenter"];
-  v17 = [v7 iconAtPoint:0 index:{v12 - v15, v14 - v16}];
+  v17 = [viewCopy iconAtPoint:0 index:{v12 - v15, v14 - v16}];
   v24 = 0;
   v25 = &v24;
   v26 = 0x3010000000;
@@ -103,7 +103,7 @@
   v28 = 0;
   v29 = 0;
   v23 = MEMORY[0x29EDCA5F8];
-  v18 = v7;
+  v18 = viewCopy;
   v19 = v17;
   AXPerformSafeBlock();
   v20 = v25[4];
@@ -134,11 +134,11 @@ uint64_t __74__SBIconDragManagerAccessibility_iconDropSessionDidUpdate_inIconLis
   return result;
 }
 
-- (void)iconDropSessionDidEnd:(id)a3
+- (void)iconDropSessionDidEnd:(id)end
 {
   v4.receiver = self;
   v4.super_class = SBIconDragManagerAccessibility;
-  [(SBIconDragManagerAccessibility *)&v4 iconDropSessionDidEnd:a3];
+  [(SBIconDragManagerAccessibility *)&v4 iconDropSessionDidEnd:end];
   if (UIAccessibilityIsVoiceOverRunning() || UIAccessibilityIsSwitchControlRunning())
   {
     AXPerformSafeBlock();
@@ -155,9 +155,9 @@ uint64_t __74__SBIconDragManagerAccessibility_iconDropSessionDidUpdate_inIconLis
   return result;
 }
 
-- (void)updatePlaceholderPositionForDragWithIdentifier:(id)a3
+- (void)updatePlaceholderPositionForDragWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -169,8 +169,8 @@ uint64_t __74__SBIconDragManagerAccessibility_iconDropSessionDidUpdate_inIconLis
   v15 = __81__SBIconDragManagerAccessibility_updatePlaceholderPositionForDragWithIdentifier___block_invoke;
   v16 = &unk_29F300310;
   v19 = &v20;
-  v17 = self;
-  v5 = v4;
+  selfCopy = self;
+  v5 = identifierCopy;
   v18 = v5;
   AXPerformSafeBlock();
   v6 = v21[5];
@@ -195,12 +195,12 @@ uint64_t __81__SBIconDragManagerAccessibility_updatePlaceholderPositionForDragWi
   return MEMORY[0x2A1C71028]();
 }
 
-- (id)createNewFolderFromRecipientIcon:(id)a3 grabbedIcon:(id)a4 inListModel:(id)a5
+- (id)createNewFolderFromRecipientIcon:(id)icon grabbedIcon:(id)grabbedIcon inListModel:(id)model
 {
   SBAXIconCreatingFolder = 1;
   v16.receiver = self;
   v16.super_class = SBIconDragManagerAccessibility;
-  v5 = [(SBIconDragManagerAccessibility *)&v16 createNewFolderFromRecipientIcon:a3 grabbedIcon:a4 inListModel:a5];
+  v5 = [(SBIconDragManagerAccessibility *)&v16 createNewFolderFromRecipientIcon:icon grabbedIcon:grabbedIcon inListModel:model];
   v6 = objc_allocWithZone(MEMORY[0x29EDB8DC0]);
   v7 = [MEMORY[0x29EDBA070] numberWithInt:1];
   v8 = [v6 initWithObjectsAndKeys:{v7, *MEMORY[0x29EDBD860], 0}];
@@ -220,11 +220,11 @@ uint64_t __81__SBIconDragManagerAccessibility_updatePlaceholderPositionForDragWi
   return v5;
 }
 
-- (void)_axDragPauseForLocation:(CGPoint)a3 iconListView:(id)a4
+- (void)_axDragPauseForLocation:(CGPoint)location iconListView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
   v9 = AXSBHIconManagerFromSharedIconController();
   v48 = 0;
   v49 = &v48;
@@ -234,7 +234,7 @@ uint64_t __81__SBIconDragManagerAccessibility_updatePlaceholderPositionForDragWi
   v44 = 3221225472;
   v45 = __71__SBIconDragManagerAccessibility__axDragPauseForLocation_iconListView___block_invoke;
   v46 = &unk_29F300418;
-  v10 = v8;
+  v10 = viewCopy;
   v47 = v10;
   AXPerformSafeBlock();
   if ((SBAXPerformingAXDrag & 1) == 0)
@@ -262,26 +262,26 @@ uint64_t __81__SBIconDragManagerAccessibility_updatePlaceholderPositionForDragWi
     SBAXIconMovedIntoDock = 0;
     SBAXIconJustMovedIntoDock = 0;
     SBAXIconJustLeftDock = 0;
-    v15 = [(SBIconDragManagerAccessibility *)self _axGrabbedIcons];
-    v16 = [v15 firstObject];
+    _axGrabbedIcons = [(SBIconDragManagerAccessibility *)self _axGrabbedIcons];
+    firstObject = [_axGrabbedIcons firstObject];
 
-    if (v16)
+    if (firstObject)
     {
       v17 = [v10 safeValueForKey:@"iconRowsForCurrentOrientation"];
-      v18 = [v17 unsignedIntegerValue];
+      unsignedIntegerValue = [v17 unsignedIntegerValue];
 
       v19 = [v10 safeValueForKey:@"iconColumnsForCurrentOrientation"];
-      v20 = [v19 unsignedIntegerValue];
+      unsignedIntegerValue2 = [v19 unsignedIntegerValue];
 
       v21 = [_axDragPauseForLocation_iconListView__previousIconList safeValueForKey:@"iconRowsForCurrentOrientation"];
-      v22 = [v21 unsignedIntegerValue];
+      unsignedIntegerValue3 = [v21 unsignedIntegerValue];
 
       v23 = v49[3];
-      SBAXIconMovedY = v23 / v20 + 1;
-      SBAXIconMovedX = v23 % v20 + 1;
-      if (v18 == 1)
+      SBAXIconMovedY = v23 / unsignedIntegerValue2 + 1;
+      SBAXIconMovedX = v23 % unsignedIntegerValue2 + 1;
+      if (unsignedIntegerValue == 1)
       {
-        if (v22 == 1)
+        if (unsignedIntegerValue3 == 1)
         {
           SBAXIconMovedIntoDock = 1;
           v24 = SBAXIconPreItemInDock;
@@ -303,9 +303,9 @@ uint64_t __81__SBIconDragManagerAccessibility_updatePlaceholderPositionForDragWi
               if (v29 - 1 < v30)
               {
                 v31 = [v27 objectAtIndex:v49[3] - 1];
-                v32 = [v31 accessibilityLabel];
+                accessibilityLabel = [v31 accessibilityLabel];
                 v33 = SBAXIconPreItemInDock;
-                SBAXIconPreItemInDock = v32;
+                SBAXIconPreItemInDock = accessibilityLabel;
 
                 v28 = v49;
               }
@@ -315,9 +315,9 @@ uint64_t __81__SBIconDragManagerAccessibility_updatePlaceholderPositionForDragWi
             if (v34 < [v27 count] - 1)
             {
               v35 = [v27 objectAtIndex:v49[3] + 1];
-              v36 = [v35 accessibilityLabel];
+              accessibilityLabel2 = [v35 accessibilityLabel];
               v37 = SBAXIconNextItemInDock;
-              SBAXIconNextItemInDock = v36;
+              SBAXIconNextItemInDock = accessibilityLabel2;
             }
           }
         }
@@ -331,16 +331,16 @@ uint64_t __81__SBIconDragManagerAccessibility_updatePlaceholderPositionForDragWi
         goto LABEL_25;
       }
 
-      if (v22 == 1 && v18)
+      if (unsignedIntegerValue3 == 1 && unsignedIntegerValue)
       {
         SBAXIconJustLeftDock = 1;
 LABEL_25:
-        v41 = [(SBIconDragManagerAccessibility *)self _axGrabbedIconsLabel];
+        _axGrabbedIconsLabel = [(SBIconDragManagerAccessibility *)self _axGrabbedIconsLabel];
         v42 = SBAXIconMovedIconLabel;
-        SBAXIconMovedIconLabel = v41;
+        SBAXIconMovedIconLabel = _axGrabbedIconsLabel;
 
 LABEL_26:
-        objc_storeStrong(&_axDragPauseForLocation_iconListView__previousIconList, a4);
+        objc_storeStrong(&_axDragPauseForLocation_iconListView__previousIconList, view);
         _axDragPauseForLocation_iconListView__previousIconIndex = v49[3];
         goto LABEL_27;
       }
@@ -380,26 +380,26 @@ void __71__SBIconDragManagerAccessibility__axDragPauseForLocation_iconListView__
   }
 }
 
-- (void)_axUpdateDragPauseForLocation:(CGPoint)a3 iconListView:(id)a4
+- (void)_axUpdateDragPauseForLocation:(CGPoint)location iconListView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [a4 window];
-  if ((SBAXPerformingAXDrag & 1) != 0 || !v6)
+  y = location.y;
+  x = location.x;
+  window = [view window];
+  if ((SBAXPerformingAXDrag & 1) != 0 || !window)
   {
     goto LABEL_29;
   }
 
-  v29 = v6;
-  v7 = [MEMORY[0x29EDC7C40] mainScreen];
-  [v7 bounds];
+  v29 = window;
+  mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+  [mainScreen bounds];
   v9 = v8;
   v11 = v10;
 
-  v12 = [v29 windowScene];
-  v13 = [v12 interfaceOrientation];
+  windowScene = [v29 windowScene];
+  interfaceOrientation = [windowScene interfaceOrientation];
 
-  if ((v13 - 3) >= 2)
+  if ((interfaceOrientation - 3) >= 2)
   {
     if ((x <= 20.0 || x > 50.0) && (x < v9 + -50.0 || x >= v9 + -20.0))
     {
@@ -455,14 +455,14 @@ LABEL_22:
 
   _axUpdateDragPauseForLocation_iconListView__previousCloseFolderTimerStatus = v23;
 
-  v6 = v29;
+  window = v29;
 LABEL_29:
 }
 
 - (void)_accessibilityIconMovedToPosition
 {
-  v3 = [(SBIconDragManagerAccessibility *)self _axGrabbedIcons];
-  v4 = [v3 count];
+  _axGrabbedIcons = [(SBIconDragManagerAccessibility *)self _axGrabbedIcons];
+  v4 = [_axGrabbedIcons count];
 
   if (v4 != 1)
   {
@@ -474,9 +474,9 @@ LABEL_29:
     goto LABEL_23;
   }
 
-  v5 = [(SBIconDragManagerAccessibility *)self _axRecipientIconView];
+  _axRecipientIconView = [(SBIconDragManagerAccessibility *)self _axRecipientIconView];
 
-  if (v5)
+  if (_axRecipientIconView)
   {
     goto LABEL_23;
   }
@@ -549,19 +549,19 @@ LABEL_23:
   [v20 setFireDate:v21];
 }
 
-- (void)iconDropSession:(id)a3 didPauseAtLocation:(CGPoint)a4 inIconListView:(id)a5
+- (void)iconDropSession:(id)session didPauseAtLocation:(CGPoint)location inIconListView:(id)view
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  v10 = a5;
+  y = location.y;
+  x = location.x;
+  sessionCopy = session;
+  viewCopy = view;
   v35.receiver = self;
   v35.super_class = SBIconDragManagerAccessibility;
-  [(SBIconDragManagerAccessibility *)&v35 iconDropSession:v9 didPauseAtLocation:v10 inIconListView:x, y];
+  [(SBIconDragManagerAccessibility *)&v35 iconDropSession:sessionCopy didPauseAtLocation:viewCopy inIconListView:x, y];
   if ((SBAXPerformingAXDrag & 1) == 0)
   {
-    v11 = [v10 _accessibilityWindow];
-    if (!v11)
+    _accessibilityWindow = [viewCopy _accessibilityWindow];
+    if (!_accessibilityWindow)
     {
 LABEL_15:
 
@@ -574,7 +574,7 @@ LABEL_15:
     v32 = __Block_byref_object_copy__3;
     v33 = __Block_byref_object_dispose__3;
     v34 = 0;
-    v28 = v10;
+    v28 = viewCopy;
     AXPerformSafeBlock();
     v12 = v30[5];
 
@@ -591,12 +591,12 @@ LABEL_15:
     v14 = v30[5];
 
     _Block_object_dispose(&v29, 8);
-    v15 = [(SBIconDragManagerAccessibility *)self _accessibilityGetLastAnnouncedIcon];
+    _accessibilityGetLastAnnouncedIcon = [(SBIconDragManagerAccessibility *)self _accessibilityGetLastAnnouncedIcon];
     if (v14 && (-[SBIconDragManagerAccessibility _axIconForIconView:](self, "_axIconForIconView:", v14), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 safeBoolForKey:@"isPlaceholder"], v16, (v17 & 1) == 0))
     {
-      v22 = [v14 accessibilityLabel];
-      v18 = v22;
-      if (v14 != v15 && [v22 length])
+      accessibilityLabel = [v14 accessibilityLabel];
+      accessibilityLabel2 = accessibilityLabel;
+      if (v14 != _accessibilityGetLastAnnouncedIcon && [accessibilityLabel length])
       {
         v19 = [v14 safeBoolForKey:@"isFolderIcon"];
         v20 = @"dragged.over.app";
@@ -607,10 +607,10 @@ LABEL_15:
 
     else
     {
-      v18 = [v15 accessibilityLabel];
-      if ([v18 length])
+      accessibilityLabel2 = [_accessibilityGetLastAnnouncedIcon accessibilityLabel];
+      if ([accessibilityLabel2 length])
       {
-        v19 = [v15 safeBoolForKey:@"isFolderIcon"];
+        v19 = [_accessibilityGetLastAnnouncedIcon safeBoolForKey:@"isFolderIcon"];
         v20 = @"dragged.off.app";
         v21 = @"dragged.off.folder";
 LABEL_10:
@@ -626,7 +626,7 @@ LABEL_10:
 
         v24 = MEMORY[0x29EDBA0F8];
         v25 = accessibilityLocalizedString(v23);
-        v26 = [v24 stringWithFormat:v25, v18];
+        v26 = [v24 stringWithFormat:v25, accessibilityLabel2];
 
         UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v26);
       }
@@ -653,24 +653,24 @@ uint64_t __84__SBIconDragManagerAccessibility_iconDropSession_didPauseAtLocation
   return MEMORY[0x2A1C71028]();
 }
 
-- (void)_axScheduleAnnouncementForRow:(unint64_t)a3 col:(unint64_t)a4
+- (void)_axScheduleAnnouncementForRow:(unint64_t)row col:(unint64_t)col
 {
-  v7 = [(SBIconDragManagerAccessibility *)self _axRowColScheduledRow];
-  if ([(SBIconDragManagerAccessibility *)self _axRowColScheduledCol]!= a4 || v7 != a3)
+  _axRowColScheduledRow = [(SBIconDragManagerAccessibility *)self _axRowColScheduledRow];
+  if ([(SBIconDragManagerAccessibility *)self _axRowColScheduledCol]!= col || _axRowColScheduledRow != row)
   {
-    v8 = [(SBIconDragManagerAccessibility *)self _axRowColAnnouncementTimer];
-    [v8 invalidate];
+    _axRowColAnnouncementTimer = [(SBIconDragManagerAccessibility *)self _axRowColAnnouncementTimer];
+    [_axRowColAnnouncementTimer invalidate];
     v10[0] = MEMORY[0x29EDCA5F8];
     v10[1] = 3221225472;
     v10[2] = __68__SBIconDragManagerAccessibility__axScheduleAnnouncementForRow_col___block_invoke;
     v10[3] = &__block_descriptor_48_e17_v16__0__NSTimer_8l;
-    v10[4] = a3;
-    v10[5] = a4;
+    v10[4] = row;
+    v10[5] = col;
     v9 = [MEMORY[0x29EDB8E68] scheduledTimerWithTimeInterval:0 repeats:v10 block:1.0];
 
     [(SBIconDragManagerAccessibility *)self _axSetRowColAnnouncementTimer:v9];
-    [(SBIconDragManagerAccessibility *)self _axSetRowColScheduledRow:a3];
-    [(SBIconDragManagerAccessibility *)self _axSetRowColScheduledCol:a4];
+    [(SBIconDragManagerAccessibility *)self _axSetRowColScheduledRow:row];
+    [(SBIconDragManagerAccessibility *)self _axSetRowColScheduledCol:col];
   }
 }
 
@@ -758,8 +758,8 @@ void __54__SBIconDragManagerAccessibility__axGrabbedIconsLabel__block_invoke_2(u
 
 - (BOOL)_axIsIconDragging
 {
-  v2 = [(SBIconDragManagerAccessibility *)self _axGrabbedIconsLabel];
-  v3 = [v2 length] != 0;
+  _axGrabbedIconsLabel = [(SBIconDragManagerAccessibility *)self _axGrabbedIconsLabel];
+  v3 = [_axGrabbedIconsLabel length] != 0;
 
   return v3;
 }

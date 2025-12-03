@@ -1,8 +1,8 @@
 @interface MapsSuggestionsDonater
 - (BOOL)_openConnectionIfNecessary;
-- (BOOL)donateETA:(id)a3 entry:(id)a4;
-- (BOOL)donateFlightLookupWithFlightNumber:(id)a3 departureAirportCode:(id)a4 departureTime:(id)a5;
-- (BOOL)donateSignalPack:(id)a3;
+- (BOOL)donateETA:(id)a entry:(id)entry;
+- (BOOL)donateFlightLookupWithFlightNumber:(id)number departureAirportCode:(id)code departureTime:(id)time;
+- (BOOL)donateSignalPack:(id)pack;
 - (MapsSuggestionsDonater)init;
 - (NSString)uniqueName;
 - (void)_closeConnection;
@@ -38,17 +38,17 @@
 
 - (BOOL)_openConnectionIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(*(a1 + 8));
-    if (!*(a1 + 16))
+    dispatch_assert_queue_V2(*(self + 8));
+    if (!*(self + 16))
     {
       v2 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.maps.destinationd.donations" options:0];
       v3 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:&unk_1F448E438];
       [v2 setRemoteObjectInterface:v3];
 
-      [v2 setExportedObject:a1];
-      objc_initWeak(&location, a1);
+      [v2 setExportedObject:self];
+      objc_initWeak(&location, self);
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __52__MapsSuggestionsDonater__openConnectionIfNecessary__block_invoke;
@@ -67,7 +67,7 @@
       v9 = &unk_1E81F5438;
       objc_copyWeak(&v10, &location);
       v4 = [v2 remoteObjectProxyWithErrorHandler:&v6];
-      objc_storeStrong((a1 + 16), v2);
+      objc_storeStrong((self + 16), v2);
       [v2 resume];
       objc_destroyWeak(&v10);
       objc_destroyWeak(&v12);
@@ -76,14 +76,14 @@
     }
   }
 
-  return a1 != 0;
+  return self != 0;
 }
 
 - (void)_scheduleCloseConnection
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(a1[1]);
+    dispatch_assert_queue_V2(self[1]);
     v2 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
     {
@@ -91,12 +91,12 @@
       _os_log_impl(v3, v4, v5, v6, v7, 2u);
     }
 
-    [(MapsSuggestionsDonater *)a1 _initCloseTimerIfNecessary];
+    [(MapsSuggestionsDonater *)self _initCloseTimerIfNecessary];
     GEOConfigGetDouble();
     v9 = v8;
     GEOConfigGetDouble();
     v11 = v10;
-    v12 = a1[3];
+    v12 = self[3];
     v13 = dispatch_time(0, (v9 * 1000000000.0));
     dispatch_source_set_timer(v12, v13, 0xFFFFFFFFFFFFFFFFLL, (v11 * 1000000000.0));
   }
@@ -104,10 +104,10 @@
 
 - (void)_initCloseTimerIfNecessary
 {
-  if (a1)
+  if (self)
   {
-    dispatch_assert_queue_V2(a1[1]);
-    if (!a1[3])
+    dispatch_assert_queue_V2(self[1]);
+    if (!self[3])
     {
       v2 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
@@ -116,20 +116,20 @@
         _os_log_impl(&dword_1C5126000, v2, OS_LOG_TYPE_DEBUG, "Re-initializing the _closeTimer", buf, 2u);
       }
 
-      objc_initWeak(buf, a1);
-      v3 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, a1[1]);
-      v4 = a1[3];
-      a1[3] = v3;
+      objc_initWeak(buf, self);
+      v3 = dispatch_source_create(MEMORY[0x1E69E9710], 0, 0, self[1]);
+      v4 = self[3];
+      self[3] = v3;
 
-      dispatch_source_set_timer(a1[3], 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
-      v5 = a1[3];
+      dispatch_source_set_timer(self[3], 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
+      v5 = self[3];
       handler[0] = MEMORY[0x1E69E9820];
       handler[1] = 3221225472;
       handler[2] = __52__MapsSuggestionsDonater__initCloseTimerIfNecessary__block_invoke;
       handler[3] = &unk_1E81F53E8;
       objc_copyWeak(&v7, buf);
       dispatch_source_set_event_handler(v5, handler);
-      dispatch_resume(a1[3]);
+      dispatch_resume(self[3]);
       objc_destroyWeak(&v7);
       objc_destroyWeak(buf);
     }
@@ -148,12 +148,12 @@
   [(MapsSuggestionsDonater *)&v4 dealloc];
 }
 
-- (BOOL)donateETA:(id)a3 entry:(id)a4
+- (BOOL)donateETA:(id)a entry:(id)entry
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  aCopy = a;
+  entryCopy = entry;
+  if (!aCopy)
   {
     v18 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -174,7 +174,7 @@
 
   v8 = GEOFindOrCreateLog();
   v9 = v8;
-  if (!v7)
+  if (!entryCopy)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -196,9 +196,9 @@ LABEL_16:
 
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v10 = [(MapsSuggestionsDonater *)self uniqueName];
+    uniqueName = [(MapsSuggestionsDonater *)self uniqueName];
     *buf = 138412546;
-    v25 = v10;
+    v25 = uniqueName;
     v26 = 2080;
     *v27 = "donateETA:entry:";
     _os_log_impl(&dword_1C5126000, v9, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -214,15 +214,15 @@ LABEL_16:
   v12 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v13 = [v7 uniqueIdentifier];
+    uniqueIdentifier = [entryCopy uniqueIdentifier];
     *buf = 138412546;
-    v25 = v6;
+    v25 = aCopy;
     v26 = 2112;
-    *v27 = v13;
+    *v27 = uniqueIdentifier;
     _os_log_impl(&dword_1C5126000, v12, OS_LOG_TYPE_DEBUG, "Donating ETA %@ for Entry %@", buf, 0x16u);
   }
 
-  v14 = [v6 data];
+  data = [aCopy data];
   objc_initWeak(buf, self);
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
@@ -230,9 +230,9 @@ LABEL_16:
   block[2] = __42__MapsSuggestionsDonater_donateETA_entry___block_invoke;
   block[3] = &unk_1E81F5410;
   objc_copyWeak(&v23, buf);
-  v21 = v14;
-  v22 = v7;
-  v16 = v14;
+  v21 = data;
+  v22 = entryCopy;
+  v16 = data;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v23);
@@ -323,19 +323,19 @@ void __42__MapsSuggestionsDonater_donateETA_entry___block_invoke_135(uint64_t a1
   }
 }
 
-- (BOOL)donateSignalPack:(id)a3
+- (BOOL)donateSignalPack:(id)pack
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  packCopy = pack;
   v5 = GEOFindOrCreateLog();
   v6 = v5;
-  if (v4)
+  if (packCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
-      v7 = [(MapsSuggestionsDonater *)self uniqueName];
+      uniqueName = [(MapsSuggestionsDonater *)self uniqueName];
       *buf = 138412546;
-      v18 = v7;
+      v18 = uniqueName;
       v19 = 2080;
       *v20 = "donateSignalPack";
       _os_log_impl(&dword_1C5126000, v6, OS_LOG_TYPE_DEBUG, "{MSgDebug} OBJECT{%@} %s BEGIN", buf, 0x16u);
@@ -352,11 +352,11 @@ void __42__MapsSuggestionsDonater_donateETA_entry___block_invoke_135(uint64_t a1
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v18 = v4;
+      v18 = packCopy;
       _os_log_impl(&dword_1C5126000, v9, OS_LOG_TYPE_DEBUG, "Donating SignalPack %@", buf, 0xCu);
     }
 
-    v10 = [v4 data];
+    data = [packCopy data];
     objc_initWeak(buf, self);
     queue = self->_queue;
     v14[0] = MEMORY[0x1E69E9820];
@@ -364,8 +364,8 @@ void __42__MapsSuggestionsDonater_donateETA_entry___block_invoke_135(uint64_t a1
     v14[2] = __43__MapsSuggestionsDonater_donateSignalPack___block_invoke;
     v14[3] = &unk_1E81F4F48;
     objc_copyWeak(&v16, buf);
-    v15 = v10;
-    v12 = v10;
+    v15 = data;
+    v12 = data;
     dispatch_async(queue, v14);
 
     objc_destroyWeak(&v16);
@@ -388,7 +388,7 @@ void __42__MapsSuggestionsDonater_donateETA_entry___block_invoke_135(uint64_t a1
     }
   }
 
-  return v4 != 0;
+  return packCopy != 0;
 }
 
 void __43__MapsSuggestionsDonater_donateSignalPack___block_invoke(uint64_t a1)
@@ -470,14 +470,14 @@ void __43__MapsSuggestionsDonater_donateSignalPack___block_invoke_139(uint64_t a
   }
 }
 
-- (BOOL)donateFlightLookupWithFlightNumber:(id)a3 departureAirportCode:(id)a4 departureTime:(id)a5
+- (BOOL)donateFlightLookupWithFlightNumber:(id)number departureAirportCode:(id)code departureTime:(id)time
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v7)
+  numberCopy = number;
+  codeCopy = code;
+  timeCopy = time;
+  v10 = timeCopy;
+  if (!numberCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -499,7 +499,7 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v8)
+  if (!codeCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -519,7 +519,7 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  if (!v9)
+  if (!timeCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -543,11 +543,11 @@ LABEL_15:
 
   v23[0] = @"fullFlightNumber";
   v23[1] = @"departureAirportCode";
-  v24[0] = v7;
-  v24[1] = v8;
+  v24[0] = numberCopy;
+  v24[1] = codeCopy;
   v23[2] = @"departureTimeSince1970";
   v11 = MEMORY[0x1E696AD98];
-  [v9 timeIntervalSince1970];
+  [timeCopy timeIntervalSince1970];
   v12 = [v11 numberWithDouble:?];
   v24[2] = v12;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:3];
@@ -802,7 +802,7 @@ void __52__MapsSuggestionsDonater__initCloseTimerIfNecessary__block_invoke(uint6
 
 - (void)_unscheduleCloseConnection
 {
-  if (a1)
+  if (self)
   {
     v2 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
@@ -811,13 +811,13 @@ void __52__MapsSuggestionsDonater__initCloseTimerIfNecessary__block_invoke(uint6
       _os_log_impl(v3, v4, v5, v6, v7, 2u);
     }
 
-    v8 = *(a1 + 24);
+    v8 = *(self + 24);
     if (v8)
     {
       dispatch_source_set_timer(v8, 0xFFFFFFFFFFFFFFFFLL, 0xFFFFFFFFFFFFFFFFLL, 0);
-      dispatch_source_cancel(*(a1 + 24));
-      v9 = *(a1 + 24);
-      *(a1 + 24) = 0;
+      dispatch_source_cancel(*(self + 24));
+      v9 = *(self + 24);
+      *(self + 24) = 0;
     }
   }
 }
@@ -825,12 +825,12 @@ void __52__MapsSuggestionsDonater__initCloseTimerIfNecessary__block_invoke(uint6
 - (void)_closeConnection
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v2 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v2, OS_LOG_TYPE_DEBUG))
     {
-      v3 = [a1 uniqueName];
+      uniqueName = [self uniqueName];
       OUTLINED_FUNCTION_1();
       OUTLINED_FUNCTION_2_0(&dword_1C5126000, v4, v5, "{MSgDebug} OBJECT{%@} %s BEGIN", v6, v7, v8, v9, v22[0]);
     }
@@ -842,10 +842,10 @@ void __52__MapsSuggestionsDonater__initCloseTimerIfNecessary__block_invoke(uint6
       _os_signpost_emit_with_name_impl(&dword_1C5126000, v10, OS_SIGNPOST_INTERVAL_BEGIN, 0xEEEEB0B5B2B2EEEELL, "_closeConnection", "", v22, 2u);
     }
 
-    v11 = a1[2];
+    v11 = self[2];
     if (v11)
     {
-      a1[2] = 0;
+      self[2] = 0;
       v12 = v11;
 
       [v12 setInterruptionHandler:0];
@@ -853,11 +853,11 @@ void __52__MapsSuggestionsDonater__initCloseTimerIfNecessary__block_invoke(uint6
       [v12 invalidate];
     }
 
-    [(MapsSuggestionsDonater *)a1 _unscheduleCloseConnection];
+    [(MapsSuggestionsDonater *)self _unscheduleCloseConnection];
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
-      v14 = [a1 uniqueName];
+      uniqueName2 = [self uniqueName];
       OUTLINED_FUNCTION_1();
       OUTLINED_FUNCTION_2_0(&dword_1C5126000, v15, v16, "{MSgDebug} OBJECT{%@} %s END", v17, v18, v19, v20, v22[0]);
     }

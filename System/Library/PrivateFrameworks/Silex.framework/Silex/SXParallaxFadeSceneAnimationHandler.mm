@@ -1,10 +1,10 @@
 @interface SXParallaxFadeSceneAnimationHandler
-- (double)factorForVisibileBounds:(CGRect)a3 andAbsoluteComponentRect:(CGRect)a4;
+- (double)factorForVisibileBounds:(CGRect)bounds andAbsoluteComponentRect:(CGRect)rect;
 - (id)componentViewToAnimate;
 - (void)finishAnimation;
 - (void)prepareAnimation;
 - (void)startAnimation;
-- (void)updateAnimationWithFactor:(double)a3;
+- (void)updateAnimationWithFactor:(double)factor;
 @end
 
 @implementation SXParallaxFadeSceneAnimationHandler
@@ -14,88 +14,88 @@
   v30.receiver = self;
   v30.super_class = SXParallaxFadeSceneAnimationHandler;
   [(SXComponentAnimationHandler *)&v30 prepareAnimation];
-  v3 = [(SXComponentAnimationHandler *)self component];
+  component = [(SXComponentAnimationHandler *)self component];
   v4 = *(MEMORY[0x1E695EFD0] + 16);
   v29[0] = *MEMORY[0x1E695EFD0];
   v29[1] = v4;
   v29[2] = *(MEMORY[0x1E695EFD0] + 32);
-  [v3 setTransform:v29];
+  [component setTransform:v29];
 
-  v5 = [(SXParallaxFadeSceneAnimationHandler *)self overlayView];
+  overlayView = [(SXParallaxFadeSceneAnimationHandler *)self overlayView];
 
-  if (!v5)
+  if (!overlayView)
   {
-    v6 = [(SXComponentAnimationHandler *)self animation];
-    v7 = [v6 fadeColor];
-    if (v7)
+    animation = [(SXComponentAnimationHandler *)self animation];
+    fadeColor = [animation fadeColor];
+    if (fadeColor)
     {
-      v8 = [(SXComponentAnimationHandler *)self animation];
-      v9 = [v8 fadeColor];
+      animation2 = [(SXComponentAnimationHandler *)self animation];
+      fadeColor2 = [animation2 fadeColor];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E69DC888] blackColor];
+      fadeColor2 = [MEMORY[0x1E69DC888] blackColor];
     }
 
-    v10 = [(SXComponentAnimationHandler *)self component];
-    v11 = [v10 componentViewsForRole:12 recursive:1];
+    component2 = [(SXComponentAnimationHandler *)self component];
+    v11 = [component2 componentViewsForRole:12 recursive:1];
 
-    v12 = [v11 firstObject];
-    [v12 setAnimationsAndBehaviorsEnabled:0];
-    [(SXParallaxFadeSceneAnimationHandler *)self setHeaderComponentView:v12];
-    v13 = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
-    v14 = [v13 fillView];
-    v15 = [v14 fill];
-    -[SXParallaxFadeSceneAnimationHandler setAttachmentType:](self, "setAttachmentType:", [v15 attachment]);
+    firstObject = [v11 firstObject];
+    [firstObject setAnimationsAndBehaviorsEnabled:0];
+    [(SXParallaxFadeSceneAnimationHandler *)self setHeaderComponentView:firstObject];
+    headerComponentView = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
+    fillView = [headerComponentView fillView];
+    fill = [fillView fill];
+    -[SXParallaxFadeSceneAnimationHandler setAttachmentType:](self, "setAttachmentType:", [fill attachment]);
 
     v16 = objc_alloc(MEMORY[0x1E69DD250]);
-    [v12 bounds];
+    [firstObject bounds];
     v17 = [v16 initWithFrame:?];
     [(SXParallaxFadeSceneAnimationHandler *)self setOverlayView:v17];
 
-    v18 = [(SXParallaxFadeSceneAnimationHandler *)self overlayView];
-    [v18 setAutoresizingMask:18];
+    overlayView2 = [(SXParallaxFadeSceneAnimationHandler *)self overlayView];
+    [overlayView2 setAutoresizingMask:18];
 
-    v19 = [(SXParallaxFadeSceneAnimationHandler *)self overlayView];
-    [v19 setBackgroundColor:v9];
+    overlayView3 = [(SXParallaxFadeSceneAnimationHandler *)self overlayView];
+    [overlayView3 setBackgroundColor:fadeColor2];
 
-    v20 = [(SXParallaxFadeSceneAnimationHandler *)self overlayView];
-    [v20 setAlpha:0.0];
+    overlayView4 = [(SXParallaxFadeSceneAnimationHandler *)self overlayView];
+    [overlayView4 setAlpha:0.0];
 
-    v21 = [v12 fillView];
+    fillView2 = [firstObject fillView];
 
-    if (v21)
+    if (fillView2)
     {
-      v22 = [(SXParallaxFadeSceneAnimationHandler *)self overlayView];
-      v23 = [v12 fillView];
-      [v12 insertSubview:v22 aboveSubview:v23];
+      overlayView5 = [(SXParallaxFadeSceneAnimationHandler *)self overlayView];
+      fillView3 = [firstObject fillView];
+      [firstObject insertSubview:overlayView5 aboveSubview:fillView3];
     }
 
     else
     {
-      if (!v12)
+      if (!firstObject)
       {
 LABEL_10:
 
         goto LABEL_11;
       }
 
-      v22 = [(SXParallaxFadeSceneAnimationHandler *)self overlayView];
-      [v12 insertSubview:v22 atIndex:0];
+      overlayView5 = [(SXParallaxFadeSceneAnimationHandler *)self overlayView];
+      [firstObject insertSubview:overlayView5 atIndex:0];
     }
 
     goto LABEL_10;
   }
 
 LABEL_11:
-  v24 = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
-  [v24 bounds];
+  headerComponentView2 = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
+  [headerComponentView2 bounds];
   Height = CGRectGetHeight(v31);
 
-  v26 = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
-  v27 = [v26 viewport];
-  [v27 bounds];
+  headerComponentView3 = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
+  viewport = [headerComponentView3 viewport];
+  [viewport bounds];
   v28 = CGRectGetHeight(v32);
 
   if (Height >= v28)
@@ -114,44 +114,44 @@ LABEL_11:
   [(SXComponentAnimationHandler *)&v2 startAnimation];
 }
 
-- (void)updateAnimationWithFactor:(double)a3
+- (void)updateAnimationWithFactor:(double)factor
 {
   v44.receiver = self;
   v44.super_class = SXParallaxFadeSceneAnimationHandler;
   [(SXComponentAnimationHandler *)&v44 updateAnimationWithFactor:?];
-  v5 = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
+  headerComponentView = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
   v40 = *(MEMORY[0x1E695EFD0] + 16);
   v41 = *MEMORY[0x1E695EFD0];
   *&v43.a = *MEMORY[0x1E695EFD0];
   *&v43.c = v40;
   v39 = *(MEMORY[0x1E695EFD0] + 32);
   *&v43.tx = v39;
-  [v5 setTransform:&v43];
+  [headerComponentView setTransform:&v43];
 
-  v6 = [(SXComponentAnimationHandler *)self component];
-  v7 = [v6 viewport];
-  v8 = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
-  [v8 frame];
+  component = [(SXComponentAnimationHandler *)self component];
+  viewport = [component viewport];
+  headerComponentView2 = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
+  [headerComponentView2 frame];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  v17 = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
-  v18 = [v17 superview];
-  [v7 convertRect:v18 fromView:{v10, v12, v14, v16}];
+  headerComponentView3 = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
+  superview = [headerComponentView3 superview];
+  [viewport convertRect:superview fromView:{v10, v12, v14, v16}];
   v20 = v19;
   v22 = v21;
   v24 = v23;
   v26 = v25;
 
   [(SXParallaxFadeSceneAnimationHandler *)self scrollDistance];
-  *&v27 = v27 * a3;
+  *&v27 = v27 * factor;
   v28 = roundf(*&v27);
   [(SXParallaxFadeSceneAnimationHandler *)self alphaDistance];
   v30 = v29;
-  v31 = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
-  v32 = [v31 viewport];
-  [v32 documentSize];
+  headerComponentView4 = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
+  viewport2 = [headerComponentView4 viewport];
+  [viewport2 documentSize];
   v34 = v33;
 
   v45.origin.x = v20;
@@ -181,13 +181,13 @@ LABEL_11:
       *&v43.tx = v39;
     }
 
-    v37 = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
+    headerComponentView5 = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
     v42 = v43;
-    [v37 setTransform:&v42];
+    [headerComponentView5 setTransform:&v42];
   }
 
-  v38 = [(SXParallaxFadeSceneAnimationHandler *)self overlayView];
-  [v38 setAlpha:v28 / v30];
+  overlayView = [(SXParallaxFadeSceneAnimationHandler *)self overlayView];
+  [overlayView setAlpha:v28 / v30];
 }
 
 - (void)finishAnimation
@@ -197,13 +197,13 @@ LABEL_11:
   [(SXComponentAnimationHandler *)&v2 finishAnimation];
 }
 
-- (double)factorForVisibileBounds:(CGRect)a3 andAbsoluteComponentRect:(CGRect)a4
+- (double)factorForVisibileBounds:(CGRect)bounds andAbsoluteComponentRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView:a3.origin.x];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v9 = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView:bounds.origin.x];
 
   v10 = 0.0;
   if (v9)
@@ -219,17 +219,17 @@ LABEL_11:
     v44.size.width = width;
     v44.size.height = height;
     v39 = CGRectGetHeight(v44);
-    v12 = [(SXComponentAnimationHandler *)self component];
-    v13 = [v12 viewport];
-    v14 = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
-    [v14 frameUsingCenterAndBounds];
+    component = [(SXComponentAnimationHandler *)self component];
+    viewport = [component viewport];
+    headerComponentView = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
+    [headerComponentView frameUsingCenterAndBounds];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    v23 = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
-    v24 = [v23 superview];
-    [v13 convertRectToViewportCoordinateSpace:v24 fromView:{v16, v18, v20, v22}];
+    headerComponentView2 = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
+    superview = [headerComponentView2 superview];
+    [viewport convertRectToViewportCoordinateSpace:superview fromView:{v16, v18, v20, v22}];
     v26 = v25;
     v28 = v27;
     v30 = v29;
@@ -302,17 +302,17 @@ LABEL_11:
 {
   v7.receiver = self;
   v7.super_class = SXParallaxFadeSceneAnimationHandler;
-  v3 = [(SXComponentAnimationHandler *)&v7 componentViewToAnimate];
-  v4 = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
+  componentViewToAnimate = [(SXComponentAnimationHandler *)&v7 componentViewToAnimate];
+  headerComponentView = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
 
-  if (v4)
+  if (headerComponentView)
   {
-    v5 = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
+    headerComponentView2 = [(SXParallaxFadeSceneAnimationHandler *)self headerComponentView];
 
-    v3 = v5;
+    componentViewToAnimate = headerComponentView2;
   }
 
-  return v3;
+  return componentViewToAnimate;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface UITrackingLayoutGuide
-- (BOOL)changeOffsetConstants:(UIOffset)a3;
-- (BOOL)changeSizingConstants:(CGSize)a3;
+- (BOOL)changeOffsetConstants:(UIOffset)constants;
+- (BOOL)changeSizingConstants:(CGSize)constants;
 - (NSArray)constraintsActiveWhenAwayFromEdge:(NSDirectionalRectEdge)edge;
 - (NSArray)constraintsActiveWhenNearEdge:(NSDirectionalRectEdge)edge;
 - (NSDictionary)edgeConstraints;
@@ -8,27 +8,27 @@
 - (UIEdgeInsets)triggerInsetsForPortrait;
 - (UIEdgeInsets)triggerProportions;
 - (UITrackingLayoutGuide)init;
-- (id)_awayFromCombinedTrackedConstraintsForEdgeKey:(id)a3;
-- (id)_keysFromEdges:(unint64_t)a3;
-- (id)_keysInvolvingEdges:(unint64_t)a3;
-- (id)_nearEdgeCombinedTrackedConstraintsForEdgeKey:(id)a3;
+- (id)_awayFromCombinedTrackedConstraintsForEdgeKey:(id)key;
+- (id)_keysFromEdges:(unint64_t)edges;
+- (id)_keysInvolvingEdges:(unint64_t)edges;
+- (id)_nearEdgeCombinedTrackedConstraintsForEdgeKey:(id)key;
 - (void)_createThresholdsFromProportions;
-- (void)_layoutOwningViewAnimated:(BOOL)a3;
-- (void)_setOwningView:(id)a3;
+- (void)_layoutOwningViewAnimated:(BOOL)animated;
+- (void)_setOwningView:(id)view;
 - (void)_thresholdCheck;
-- (void)_thresholdCheckForGuide:(CGRect)a3 inContext:(CGRect)a4;
-- (void)_updateForOverlappingEdges:(unint64_t)a3;
-- (void)pauseUpdatingConstraintsForEdges:(unint64_t)a3;
+- (void)_thresholdCheckForGuide:(CGRect)guide inContext:(CGRect)context;
+- (void)_updateForOverlappingEdges:(unint64_t)edges;
+- (void)pauseUpdatingConstraintsForEdges:(unint64_t)edges;
 - (void)removeAllTrackedConstraints;
-- (void)removeTrackedConstraintsFromViewBasedGuide:(id)a3;
+- (void)removeTrackedConstraintsFromViewBasedGuide:(id)guide;
 - (void)resetAnimationOptions;
-- (void)setConstrainedToWindowGuide:(BOOL)a3;
+- (void)setConstrainedToWindowGuide:(BOOL)guide;
 - (void)setConstraints:(NSArray *)trackingConstraints activeWhenAwayFromEdge:(NSDirectionalRectEdge)edge;
 - (void)setConstraints:(NSArray *)trackingConstraints activeWhenNearEdge:(NSDirectionalRectEdge)edge;
-- (void)setEdgeThresholds:(UIEdgeInsets)a3 forOrientation:(int64_t)a4;
-- (void)startUpdatingConstraintsForEdges:(unint64_t)a3;
-- (void)stopTrackingConstraintsForEdge:(unint64_t)a3;
-- (void)trackConstraintsFromViewBasedGuide:(id)a3;
+- (void)setEdgeThresholds:(UIEdgeInsets)thresholds forOrientation:(int64_t)orientation;
+- (void)startUpdatingConstraintsForEdges:(unint64_t)edges;
+- (void)stopTrackingConstraintsForEdge:(unint64_t)edge;
+- (void)trackConstraintsFromViewBasedGuide:(id)guide;
 - (void)updateConstraintsForActiveEdges;
 @end
 
@@ -69,19 +69,19 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v15 = [(UILayoutGuide *)self owningView];
-  [v15 bounds];
+  owningView = [(UILayoutGuide *)self owningView];
+  [owningView bounds];
   [(UITrackingLayoutGuide *)self _thresholdCheckForGuide:v4 inContext:v6, v8, v10, v11, v12, v13, v14];
 }
 
 - (void)_createThresholdsFromProportions
 {
-  v3 = [(UILayoutGuide *)self owningView];
+  owningView = [(UILayoutGuide *)self owningView];
 
-  if (v3)
+  if (owningView)
   {
-    v4 = [(UILayoutGuide *)self owningView];
-    [v4 bounds];
+    owningView2 = [(UILayoutGuide *)self owningView];
+    [owningView2 bounds];
     v18 = v6;
     v19 = v5;
 
@@ -111,12 +111,12 @@
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v12[0] = @"UIKBNearEdgeConstraintsByEdge";
-  v3 = [(UITrackingLayoutGuide *)self nearEdgeConstraintsByEdge];
-  v4 = v3;
+  nearEdgeConstraintsByEdge = [(UITrackingLayoutGuide *)self nearEdgeConstraintsByEdge];
+  v4 = nearEdgeConstraintsByEdge;
   v5 = MEMORY[0x1E695E0F8];
-  if (v3)
+  if (nearEdgeConstraintsByEdge)
   {
-    v6 = v3;
+    v6 = nearEdgeConstraintsByEdge;
   }
 
   else
@@ -126,11 +126,11 @@
 
   v12[1] = @"UIKBAwayFromEdgeConstraintsByEdge";
   v13[0] = v6;
-  v7 = [(UITrackingLayoutGuide *)self awayFromConstraintsByEdge];
-  v8 = v7;
-  if (v7)
+  awayFromConstraintsByEdge = [(UITrackingLayoutGuide *)self awayFromConstraintsByEdge];
+  v8 = awayFromConstraintsByEdge;
+  if (awayFromConstraintsByEdge)
   {
-    v9 = v7;
+    v9 = awayFromConstraintsByEdge;
   }
 
   else
@@ -160,25 +160,25 @@
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:edge];
   [(NSMutableDictionary *)nearEdgeConstraintsByEdge setObject:v18 forKey:v9];
 
-  v10 = [(UILayoutGuide *)self owningView];
-  v11 = [v10 window];
+  owningView = [(UILayoutGuide *)self owningView];
+  window = [owningView window];
 
-  if (v11)
+  if (window)
   {
     [(UITrackingLayoutGuide *)self setConstrainedToWindowGuide:1];
   }
 
-  v12 = [(UILayoutGuide *)self owningView];
-  v13 = [v12 _window];
-  v14 = [v13 _primaryKeyboardTrackingGuide];
-  [v14 trackConstraintsFromViewBasedGuide:self];
+  owningView2 = [(UILayoutGuide *)self owningView];
+  _window = [owningView2 _window];
+  _primaryKeyboardTrackingGuide = [_window _primaryKeyboardTrackingGuide];
+  [_primaryKeyboardTrackingGuide trackConstraintsFromViewBasedGuide:self];
 
   if ((self->_overlappingEdges & edge) != 0)
   {
-    v15 = [(UILayoutGuide *)self owningView];
-    v16 = [v15 _window];
-    v17 = [v16 _primaryKeyboardTrackingGuide];
-    [v17 updateConstraintsForActiveEdges];
+    owningView3 = [(UILayoutGuide *)self owningView];
+    _window2 = [owningView3 _window];
+    _primaryKeyboardTrackingGuide2 = [_window2 _primaryKeyboardTrackingGuide];
+    [_primaryKeyboardTrackingGuide2 updateConstraintsForActiveEdges];
   }
 }
 
@@ -229,25 +229,25 @@
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:edge];
   [(NSMutableDictionary *)awayFromConstraintsByEdge setObject:v18 forKey:v9];
 
-  v10 = [(UILayoutGuide *)self owningView];
-  v11 = [v10 window];
+  owningView = [(UILayoutGuide *)self owningView];
+  window = [owningView window];
 
-  if (v11)
+  if (window)
   {
     [(UITrackingLayoutGuide *)self setConstrainedToWindowGuide:1];
   }
 
-  v12 = [(UILayoutGuide *)self owningView];
-  v13 = [v12 _window];
-  v14 = [v13 _primaryKeyboardTrackingGuide];
-  [v14 trackConstraintsFromViewBasedGuide:self];
+  owningView2 = [(UILayoutGuide *)self owningView];
+  _window = [owningView2 _window];
+  _primaryKeyboardTrackingGuide = [_window _primaryKeyboardTrackingGuide];
+  [_primaryKeyboardTrackingGuide trackConstraintsFromViewBasedGuide:self];
 
   if ((self->_overlappingEdges & edge) == 0)
   {
-    v15 = [(UILayoutGuide *)self owningView];
-    v16 = [v15 _window];
-    v17 = [v16 _primaryKeyboardTrackingGuide];
-    [v17 updateConstraintsForActiveEdges];
+    owningView3 = [(UILayoutGuide *)self owningView];
+    _window2 = [owningView3 _window];
+    _primaryKeyboardTrackingGuide2 = [_window2 _primaryKeyboardTrackingGuide];
+    [_primaryKeyboardTrackingGuide2 updateConstraintsForActiveEdges];
   }
 }
 
@@ -282,7 +282,7 @@
   return v8;
 }
 
-- (void)stopTrackingConstraintsForEdge:(unint64_t)a3
+- (void)stopTrackingConstraintsForEdge:(unint64_t)edge
 {
   nearEdgeConstraintsByEdge = self->_nearEdgeConstraintsByEdge;
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:?];
@@ -290,50 +290,50 @@
 
   if (v18)
   {
-    v7 = [v18 firstObject];
-    v8 = [v7 isActive];
+    firstObject = [v18 firstObject];
+    isActive = [firstObject isActive];
 
-    if (v8)
+    if (isActive)
     {
       [MEMORY[0x1E69977A0] deactivateConstraints:v18];
     }
   }
 
   awayFromConstraintsByEdge = self->_awayFromConstraintsByEdge;
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:edge];
   v11 = [(NSMutableDictionary *)awayFromConstraintsByEdge objectForKey:v10];
 
   if (v11)
   {
-    v12 = [v11 firstObject];
-    v13 = [v12 isActive];
+    firstObject2 = [v11 firstObject];
+    isActive2 = [firstObject2 isActive];
 
-    if (v13)
+    if (isActive2)
     {
       [MEMORY[0x1E69977A0] deactivateConstraints:v11];
     }
   }
 
   v14 = self->_nearEdgeConstraintsByEdge;
-  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v15 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:edge];
   [(NSMutableDictionary *)v14 removeObjectForKey:v15];
 
   v16 = self->_awayFromConstraintsByEdge;
-  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:edge];
   [(NSMutableDictionary *)v16 removeObjectForKey:v17];
 }
 
 - (void)removeAllTrackedConstraints
 {
-  v3 = [(UILayoutGuide *)self owningView];
-  v4 = [v3 window];
+  owningView = [(UILayoutGuide *)self owningView];
+  window = [owningView window];
 
-  if (v4)
+  if (window)
   {
-    v5 = [(UILayoutGuide *)self owningView];
-    v6 = [v5 window];
-    v7 = [v6 _primaryKeyboardTrackingGuide];
-    [v7 removeTrackedConstraintsFromViewBasedGuide:self];
+    owningView2 = [(UILayoutGuide *)self owningView];
+    window2 = [owningView2 window];
+    _primaryKeyboardTrackingGuide = [window2 _primaryKeyboardTrackingGuide];
+    [_primaryKeyboardTrackingGuide removeTrackedConstraintsFromViewBasedGuide:self];
   }
 
   [(NSMutableDictionary *)self->_nearEdgeConstraintsByEdge removeAllObjects];
@@ -342,21 +342,21 @@
   [(NSMutableDictionary *)awayFromConstraintsByEdge removeAllObjects];
 }
 
-- (void)setConstrainedToWindowGuide:(BOOL)a3
+- (void)setConstrainedToWindowGuide:(BOOL)guide
 {
-  if (self->_constrainedToWindowGuide != a3)
+  if (self->_constrainedToWindowGuide != guide)
   {
-    self->_constrainedToWindowGuide = a3;
+    self->_constrainedToWindowGuide = guide;
   }
 }
 
-- (id)_nearEdgeCombinedTrackedConstraintsForEdgeKey:(id)a3
+- (id)_nearEdgeCombinedTrackedConstraintsForEdgeKey:(id)key
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UILayoutGuide *)self owningView];
-  v6 = [v5 window];
-  if (v6)
+  keyCopy = key;
+  owningView = [(UILayoutGuide *)self owningView];
+  window = [owningView window];
+  if (window)
   {
 
 LABEL_4:
@@ -364,14 +364,14 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v7 = [(UITrackingLayoutGuide *)self constrainedToWindowGuide];
+  constrainedToWindowGuide = [(UITrackingLayoutGuide *)self constrainedToWindowGuide];
 
-  if (v7)
+  if (constrainedToWindowGuide)
   {
     goto LABEL_4;
   }
 
-  v10 = [(NSMutableDictionary *)self->_nearEdgeConstraintsByEdge objectForKey:v4];
+  v10 = [(NSMutableDictionary *)self->_nearEdgeConstraintsByEdge objectForKey:keyCopy];
   if (v10)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -379,8 +379,8 @@ LABEL_4:
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = [v10 allKeys];
-    v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    allKeys = [v10 allKeys];
+    v12 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v12)
     {
       v13 = v12;
@@ -391,7 +391,7 @@ LABEL_4:
         {
           if (*v18 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(allKeys);
           }
 
           v16 = [v10 objectForKey:*(*(&v17 + 1) + 8 * i)];
@@ -401,7 +401,7 @@ LABEL_4:
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v13 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v13);
@@ -421,13 +421,13 @@ LABEL_5:
   return v8;
 }
 
-- (id)_awayFromCombinedTrackedConstraintsForEdgeKey:(id)a3
+- (id)_awayFromCombinedTrackedConstraintsForEdgeKey:(id)key
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(UILayoutGuide *)self owningView];
-  v6 = [v5 window];
-  if (v6)
+  keyCopy = key;
+  owningView = [(UILayoutGuide *)self owningView];
+  window = [owningView window];
+  if (window)
   {
 
 LABEL_4:
@@ -435,14 +435,14 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v7 = [(UITrackingLayoutGuide *)self constrainedToWindowGuide];
+  constrainedToWindowGuide = [(UITrackingLayoutGuide *)self constrainedToWindowGuide];
 
-  if (v7)
+  if (constrainedToWindowGuide)
   {
     goto LABEL_4;
   }
 
-  v10 = [(NSMutableDictionary *)self->_awayFromConstraintsByEdge objectForKey:v4];
+  v10 = [(NSMutableDictionary *)self->_awayFromConstraintsByEdge objectForKey:keyCopy];
   if (v10)
   {
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -450,8 +450,8 @@ LABEL_4:
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v11 = [v10 allKeys];
-    v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    allKeys = [v10 allKeys];
+    v12 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v12)
     {
       v13 = v12;
@@ -462,7 +462,7 @@ LABEL_4:
         {
           if (*v18 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(allKeys);
           }
 
           v16 = [v10 objectForKey:*(*(&v17 + 1) + 8 * i)];
@@ -472,7 +472,7 @@ LABEL_4:
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v13 = [allKeys countByEnumeratingWithState:&v17 objects:v21 count:16];
       }
 
       while (v13);
@@ -531,38 +531,38 @@ LABEL_5:
   return result;
 }
 
-- (void)_setOwningView:(id)a3
+- (void)_setOwningView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v6.receiver = self;
   v6.super_class = UITrackingLayoutGuide;
-  [(UILayoutGuide *)&v6 _setOwningView:v4];
-  v5 = [v4 window];
+  [(UILayoutGuide *)&v6 _setOwningView:viewCopy];
+  window = [viewCopy window];
 
-  if (v5)
+  if (window)
   {
     [(UITrackingLayoutGuide *)self setConstrainedToWindowGuide:1];
   }
 
-  self->_owningViewInterfaceLayoutDirection = [v4 effectiveUserInterfaceLayoutDirection];
+  self->_owningViewInterfaceLayoutDirection = [viewCopy effectiveUserInterfaceLayoutDirection];
   if (vmaxv_u16(vmovn_s32(vmvnq_s8(vuzp1q_s32(vceqzq_f64(*&self->_triggerProportions.top), vceqzq_f64(*&self->_triggerProportions.bottom))))))
   {
     [(UITrackingLayoutGuide *)self _createThresholdsFromProportions];
   }
 }
 
-- (void)trackConstraintsFromViewBasedGuide:(id)a3
+- (void)trackConstraintsFromViewBasedGuide:(id)guide
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 != self && ![(UITrackingLayoutGuide *)self constrainedToWindowGuide])
+  guideCopy = guide;
+  if (guideCopy != self && ![(UITrackingLayoutGuide *)self constrainedToWindowGuide])
   {
-    v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", v4];
-    v6 = [(UITrackingLayoutGuide *)v4 edgeConstraints];
-    v7 = [v6 objectForKey:@"UIKBNearEdgeConstraintsByEdge"];
+    guideCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", guideCopy];
+    edgeConstraints = [(UITrackingLayoutGuide *)guideCopy edgeConstraints];
+    v7 = [edgeConstraints objectForKey:@"UIKBNearEdgeConstraintsByEdge"];
 
     v29 = v7;
-    v26 = v4;
+    v26 = guideCopy;
     if ([v7 count])
     {
       v36 = 0u;
@@ -594,7 +594,7 @@ LABEL_5:
             }
 
             v15 = [v29 objectForKey:v12];
-            [v14 setObject:v15 forKey:v5];
+            [v14 setObject:v15 forKey:guideCopy];
 
             [(NSMutableDictionary *)self->_nearEdgeConstraintsByEdge setObject:v14 forKey:v12];
           }
@@ -606,8 +606,8 @@ LABEL_5:
       }
     }
 
-    v16 = [(UITrackingLayoutGuide *)v4 edgeConstraints];
-    v17 = [v16 objectForKey:@"UIKBAwayFromEdgeConstraintsByEdge"];
+    edgeConstraints2 = [(UITrackingLayoutGuide *)guideCopy edgeConstraints];
+    v17 = [edgeConstraints2 objectForKey:@"UIKBAwayFromEdgeConstraintsByEdge"];
 
     if ([v17 count])
     {
@@ -640,7 +640,7 @@ LABEL_5:
             }
 
             v25 = [v17 objectForKey:v22];
-            [v24 setObject:v25 forKey:v5];
+            [v24 setObject:v25 forKey:guideCopy];
 
             [(NSMutableDictionary *)self->_awayFromConstraintsByEdge setObject:v24 forKey:v22];
           }
@@ -651,34 +651,34 @@ LABEL_5:
         while (v19);
       }
 
-      v4 = v26;
+      guideCopy = v26;
     }
   }
 }
 
-- (void)removeTrackedConstraintsFromViewBasedGuide:(id)a3
+- (void)removeTrackedConstraintsFromViewBasedGuide:(id)guide
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4 == self)
+  guideCopy = guide;
+  if (guideCopy == self)
   {
     [(UITrackingLayoutGuide *)self removeAllTrackedConstraints];
   }
 
   else if (![(UITrackingLayoutGuide *)self constrainedToWindowGuide])
   {
-    [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", v4];
-    v28 = v27 = v4;
-    v5 = [(UITrackingLayoutGuide *)v4 edgeConstraints];
-    v6 = [v5 objectForKey:@"UIKBNearEdgeConstraintsByEdge"];
+    [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", guideCopy];
+    v28 = v27 = guideCopy;
+    edgeConstraints = [(UITrackingLayoutGuide *)guideCopy edgeConstraints];
+    v6 = [edgeConstraints objectForKey:@"UIKBNearEdgeConstraintsByEdge"];
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
     v26 = v6;
-    v7 = [v6 allKeys];
-    v8 = [v7 countByEnumeratingWithState:&v33 objects:v38 count:16];
+    allKeys = [v6 allKeys];
+    v8 = [allKeys countByEnumeratingWithState:&v33 objects:v38 count:16];
     if (v8)
     {
       v9 = v8;
@@ -689,7 +689,7 @@ LABEL_5:
         {
           if (*v34 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allKeys);
           }
 
           v12 = *(*(&v33 + 1) + 8 * i);
@@ -703,22 +703,22 @@ LABEL_5:
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v33 objects:v38 count:16];
+        v9 = [allKeys countByEnumeratingWithState:&v33 objects:v38 count:16];
       }
 
       while (v9);
     }
 
-    v15 = [(UITrackingLayoutGuide *)v27 edgeConstraints];
-    v16 = [v15 objectForKey:@"UIKBAwayFromEdgeConstraintsByEdge"];
+    edgeConstraints2 = [(UITrackingLayoutGuide *)v27 edgeConstraints];
+    v16 = [edgeConstraints2 objectForKey:@"UIKBAwayFromEdgeConstraintsByEdge"];
 
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
     v30 = 0u;
     v25 = v16;
-    v17 = [v16 allKeys];
-    v18 = [v17 countByEnumeratingWithState:&v29 objects:v37 count:16];
+    allKeys2 = [v16 allKeys];
+    v18 = [allKeys2 countByEnumeratingWithState:&v29 objects:v37 count:16];
     if (v18)
     {
       v19 = v18;
@@ -729,7 +729,7 @@ LABEL_5:
         {
           if (*v30 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(allKeys2);
           }
 
           v22 = *(*(&v29 + 1) + 8 * j);
@@ -743,35 +743,35 @@ LABEL_5:
           }
         }
 
-        v19 = [v17 countByEnumeratingWithState:&v29 objects:v37 count:16];
+        v19 = [allKeys2 countByEnumeratingWithState:&v29 objects:v37 count:16];
       }
 
       while (v19);
     }
 
-    v4 = v27;
+    guideCopy = v27;
   }
 }
 
-- (void)pauseUpdatingConstraintsForEdges:(unint64_t)a3
+- (void)pauseUpdatingConstraintsForEdges:(unint64_t)edges
 {
-  self->_pausedEdges = a3;
+  self->_pausedEdges = edges;
   self->_overlappingEdges = 0;
   [(UITrackingLayoutGuide *)self setSkipAnimationOnNextPassOnly:1];
 
   [(UITrackingLayoutGuide *)self _thresholdCheck];
 }
 
-- (void)startUpdatingConstraintsForEdges:(unint64_t)a3
+- (void)startUpdatingConstraintsForEdges:(unint64_t)edges
 {
-  if (a3 == 15)
+  if (edges == 15)
   {
     self->_pausedEdges = 0;
   }
 
   else
   {
-    self->_pausedEdges &= ~a3;
+    self->_pausedEdges &= ~edges;
   }
 
   self->_overlappingEdges = 0;
@@ -788,11 +788,11 @@ LABEL_5:
   [(UITrackingLayoutGuide *)self _thresholdCheck];
 }
 
-- (BOOL)changeOffsetConstants:(UIOffset)a3
+- (BOOL)changeOffsetConstants:(UIOffset)constants
 {
-  if (a3.horizontal >= 0.0)
+  if (constants.horizontal >= 0.0)
   {
-    horizontal = a3.horizontal;
+    horizontal = constants.horizontal;
   }
 
   else
@@ -800,9 +800,9 @@ LABEL_5:
     horizontal = 0.0;
   }
 
-  if (a3.vertical >= 0.0)
+  if (constants.vertical >= 0.0)
   {
-    vertical = a3.vertical;
+    vertical = constants.vertical;
   }
 
   else
@@ -810,22 +810,22 @@ LABEL_5:
     vertical = 0.0;
   }
 
-  v6 = [(UILayoutGuide *)self _systemConstraints];
-  v7 = [v6 objectAtIndexedSubscript:1];
+  _systemConstraints = [(UILayoutGuide *)self _systemConstraints];
+  v7 = [_systemConstraints objectAtIndexedSubscript:1];
   [v7 constant];
   v9 = v8;
-  v10 = [(UILayoutGuide *)self _systemConstraints];
-  v11 = [v10 objectAtIndexedSubscript:2];
+  _systemConstraints2 = [(UILayoutGuide *)self _systemConstraints];
+  v11 = [_systemConstraints2 objectAtIndexedSubscript:2];
   [v11 constant];
   v13 = v12;
 
   v14 = v13 == vertical && v9 == horizontal;
-  v15 = [(UILayoutGuide *)self _systemConstraints];
-  v16 = [v15 objectAtIndexedSubscript:1];
+  _systemConstraints3 = [(UILayoutGuide *)self _systemConstraints];
+  v16 = [_systemConstraints3 objectAtIndexedSubscript:1];
   [v16 setConstant:horizontal];
 
-  v17 = [(UILayoutGuide *)self _systemConstraints];
-  v18 = [v17 objectAtIndexedSubscript:2];
+  _systemConstraints4 = [(UILayoutGuide *)self _systemConstraints];
+  v18 = [_systemConstraints4 objectAtIndexedSubscript:2];
   [v18 setConstant:vertical];
 
   if (!v14)
@@ -837,26 +837,26 @@ LABEL_5:
   return v14;
 }
 
-- (BOOL)changeSizingConstants:(CGSize)a3
+- (BOOL)changeSizingConstants:(CGSize)constants
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(UILayoutGuide *)self _systemConstraints];
-  v7 = [v6 objectAtIndexedSubscript:0];
+  height = constants.height;
+  width = constants.width;
+  _systemConstraints = [(UILayoutGuide *)self _systemConstraints];
+  v7 = [_systemConstraints objectAtIndexedSubscript:0];
   [v7 constant];
   v9 = v8;
-  v10 = [(UILayoutGuide *)self _systemConstraints];
-  v11 = [v10 objectAtIndexedSubscript:3];
+  _systemConstraints2 = [(UILayoutGuide *)self _systemConstraints];
+  v11 = [_systemConstraints2 objectAtIndexedSubscript:3];
   [v11 constant];
   v13 = v12;
 
   v14 = v13 != height || v9 != width;
-  v15 = [(UILayoutGuide *)self _systemConstraints];
-  v16 = [v15 objectAtIndexedSubscript:0];
+  _systemConstraints3 = [(UILayoutGuide *)self _systemConstraints];
+  v16 = [_systemConstraints3 objectAtIndexedSubscript:0];
   [v16 setConstant:width];
 
-  v17 = [(UILayoutGuide *)self _systemConstraints];
-  v18 = [v17 objectAtIndexedSubscript:3];
+  _systemConstraints4 = [(UILayoutGuide *)self _systemConstraints];
+  v18 = [_systemConstraints4 objectAtIndexedSubscript:3];
   [v18 setConstant:height];
 
   if (!v14)
@@ -868,9 +868,9 @@ LABEL_5:
   return v14;
 }
 
-- (void)_layoutOwningViewAnimated:(BOOL)a3
+- (void)_layoutOwningViewAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __61__UITrackingLayoutGuide_Internal___layoutOwningViewAnimated___block_invoke;
@@ -878,7 +878,7 @@ LABEL_5:
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
   v6 = v5;
-  if (v3)
+  if (animatedCopy)
   {
     if (!self->_animatingConstraintsChange && self->_animatesChanges && [(UITrackingLayoutGuide *)self constrainedToWindowGuide])
     {
@@ -922,11 +922,11 @@ void __61__UITrackingLayoutGuide_Internal___layoutOwningViewAnimated___block_inv
   }
 }
 
-- (void)setEdgeThresholds:(UIEdgeInsets)a3 forOrientation:(int64_t)a4
+- (void)setEdgeThresholds:(UIEdgeInsets)thresholds forOrientation:(int64_t)orientation
 {
-  if ((a4 - 1) >= 2)
+  if ((orientation - 1) >= 2)
   {
-    if ((a4 - 3) > 1)
+    if ((orientation - 3) > 1)
     {
       return;
     }
@@ -939,19 +939,19 @@ void __61__UITrackingLayoutGuide_Internal___layoutOwningViewAnimated___block_inv
     v4 = &OBJC_IVAR___UITrackingLayoutGuide__triggerInsetsForPortrait;
   }
 
-  *(&self->super.super.isa + *v4) = a3;
+  *(&self->super.super.isa + *v4) = thresholds;
 }
 
-- (void)_thresholdCheckForGuide:(CGRect)a3 inContext:(CGRect)a4
+- (void)_thresholdCheckForGuide:(CGRect)guide inContext:(CGRect)context
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v30 = a4.origin.x;
-  v7 = a3.origin.x;
+  height = context.size.height;
+  width = context.size.width;
+  y = context.origin.y;
+  x = context.origin.x;
+  v30 = context.origin.x;
+  v7 = guide.origin.x;
   v9 = 3;
-  if (a4.size.width > a4.size.height)
+  if (context.size.width > context.size.height)
   {
     v9 = 4;
   }
@@ -961,13 +961,13 @@ void __61__UITrackingLayoutGuide_Internal___layoutOwningViewAnimated___block_inv
   v38 = v10[1];
   v41 = v10[2];
   v39 = v10[3];
-  v31 = a3.origin.x;
-  v32 = a3.size.width;
-  v11 = a3.origin.y;
-  v12 = a3.size.width;
-  v13 = a3.size.height;
-  v33 = a3.size.height;
-  MinY = CGRectGetMinY(a3);
+  v31 = guide.origin.x;
+  v32 = guide.size.width;
+  v11 = guide.origin.y;
+  v12 = guide.size.width;
+  v13 = guide.size.height;
+  v33 = guide.size.height;
+  MinY = CGRectGetMinY(guide);
   v43.origin.x = x;
   v43.origin.y = y;
   v43.size.width = width;
@@ -1003,9 +1003,9 @@ void __61__UITrackingLayoutGuide_Internal___layoutOwningViewAnimated___block_inv
   v49.size.width = v32;
   v49.size.height = v33;
   v18 = MaxX - CGRectGetMaxX(v49);
-  v19 = [(UITrackingLayoutGuide *)self _isRTL];
+  _isRTL = [(UITrackingLayoutGuide *)self _isRTL];
   v20 = 2;
-  if (v19)
+  if (_isRTL)
   {
     v21 = 8;
   }
@@ -1015,7 +1015,7 @@ void __61__UITrackingLayoutGuide_Internal___layoutOwningViewAnimated___block_inv
     v21 = 2;
   }
 
-  if (!v19)
+  if (!_isRTL)
   {
     v20 = 8;
   }
@@ -1053,14 +1053,14 @@ void __61__UITrackingLayoutGuide_Internal___layoutOwningViewAnimated___block_inv
   [(UITrackingLayoutGuide *)self _updateForOverlappingEdges:v29, v41, v35];
 }
 
-- (void)_updateForOverlappingEdges:(unint64_t)a3
+- (void)_updateForOverlappingEdges:(unint64_t)edges
 {
   v58 = *MEMORY[0x1E69E9840];
-  if (self->_overlappingEdges != a3)
+  if (self->_overlappingEdges != edges)
   {
     v5 = [(UITrackingLayoutGuide *)self validatedOverlappingEdges:?];
     self->_overlappingEdges = v5;
-    if (a3)
+    if (edges)
     {
       v6 = self->_pausedEdges | v5 ^ 0xF;
     }
@@ -1232,32 +1232,32 @@ LABEL_49:
   [(UITrackingLayoutGuide *)self setSkipAnimationOnNextPassOnly:0];
 }
 
-- (id)_keysFromEdges:(unint64_t)a3
+- (id)_keysFromEdges:(unint64_t)edges
 {
-  v3 = a3;
+  edgesCopy = edges;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = v4;
-  if ((v3 & 1) == 0)
+  if ((edgesCopy & 1) == 0)
   {
-    v6 = v3 & 2;
+    v6 = edgesCopy & 2;
     goto LABEL_17;
   }
 
   [v4 addObject:&unk_1EFE2FC38];
-  if ((v3 & 2) != 0)
+  if ((edgesCopy & 2) != 0)
   {
     [v5 addObject:&unk_1EFE2FC50];
-    if ((v3 & 8) != 0)
+    if ((edgesCopy & 8) != 0)
     {
       [v5 addObject:&unk_1EFE2FC68];
-      if ((v3 & 4) == 0)
+      if ((edgesCopy & 4) == 0)
       {
         [v5 addObject:&unk_1EFE2FCB0];
 LABEL_18:
         [v5 addObject:&unk_1EFE2FCF8];
-        if ((v3 & 8) == 0)
+        if ((edgesCopy & 8) == 0)
         {
-          if ((v3 & 4) == 0)
+          if ((edgesCopy & 4) == 0)
           {
             goto LABEL_30;
           }
@@ -1266,11 +1266,11 @@ LABEL_18:
         }
 
         [v5 addObject:&unk_1EFE2FD10];
-        if ((v3 & 4) != 0)
+        if ((edgesCopy & 4) != 0)
         {
           [v5 addObject:&unk_1EFE2FD28];
 LABEL_23:
-          v8 = v3 & 8;
+          v8 = edgesCopy & 8;
           [v5 addObject:&unk_1EFE2FD40];
 LABEL_27:
           [v5 addObject:&unk_1EFE2FD58];
@@ -1290,25 +1290,25 @@ LABEL_29:
       [v5 addObject:&unk_1EFE2FC80];
     }
 
-    else if ((v3 & 4) == 0)
+    else if ((edgesCopy & 4) == 0)
     {
       goto LABEL_18;
     }
 
-    v7 = v3 & 8;
+    v7 = edgesCopy & 8;
     [v5 addObject:&unk_1EFE2FC98];
   }
 
   else
   {
-    v7 = v3 & 8;
+    v7 = edgesCopy & 8;
   }
 
-  v6 = v3 & 2;
+  v6 = edgesCopy & 2;
   if (v7)
   {
     [v5 addObject:&unk_1EFE2FCB0];
-    if ((v3 & 4) == 0)
+    if ((edgesCopy & 4) == 0)
     {
       goto LABEL_17;
     }
@@ -1316,7 +1316,7 @@ LABEL_29:
     [v5 addObject:&unk_1EFE2FCC8];
   }
 
-  else if ((v3 & 4) == 0)
+  else if ((edgesCopy & 4) == 0)
   {
     goto LABEL_17;
   }
@@ -1328,13 +1328,13 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v8 = v3 & 8;
-  if ((v3 & 4) != 0)
+  v8 = edgesCopy & 8;
+  if ((edgesCopy & 4) != 0)
   {
     goto LABEL_27;
   }
 
-  if ((v3 & 8) != 0)
+  if ((edgesCopy & 8) != 0)
   {
     goto LABEL_29;
   }
@@ -1344,12 +1344,12 @@ LABEL_30:
   return v5;
 }
 
-- (id)_keysInvolvingEdges:(unint64_t)a3
+- (id)_keysInvolvingEdges:(unint64_t)edges
 {
-  v3 = a3;
+  edgesCopy = edges;
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = v4;
-  if (v3)
+  if (edgesCopy)
   {
     [v4 addObject:&unk_1EFE2FC38];
     [v5 addObject:&unk_1EFE2FC50];
@@ -1358,10 +1358,10 @@ LABEL_30:
     [v5 addObject:&unk_1EFE2FC68];
     [v5 addObject:&unk_1EFE2FC98];
     [v5 addObject:&unk_1EFE2FCC8];
-    if ((v3 & 2) == 0)
+    if ((edgesCopy & 2) == 0)
     {
 LABEL_3:
-      if ((v3 & 4) == 0)
+      if ((edgesCopy & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -1370,7 +1370,7 @@ LABEL_3:
     }
   }
 
-  else if ((v3 & 2) == 0)
+  else if ((edgesCopy & 2) == 0)
   {
     goto LABEL_3;
   }
@@ -1382,10 +1382,10 @@ LABEL_3:
   [v5 addObject:&unk_1EFE2FC50];
   [v5 addObject:&unk_1EFE2FC98];
   [v5 addObject:&unk_1EFE2FC68];
-  if ((v3 & 4) == 0)
+  if ((edgesCopy & 4) == 0)
   {
 LABEL_4:
-    if ((v3 & 8) == 0)
+    if ((edgesCopy & 8) == 0)
     {
       goto LABEL_6;
     }
@@ -1401,7 +1401,7 @@ LABEL_13:
   [v5 addObject:&unk_1EFE2FC98];
   [v5 addObject:&unk_1EFE2FCC8];
   [v5 addObject:&unk_1EFE2FD28];
-  if ((v3 & 8) != 0)
+  if ((edgesCopy & 8) != 0)
   {
 LABEL_5:
     [v5 addObject:&unk_1EFE2FD88];

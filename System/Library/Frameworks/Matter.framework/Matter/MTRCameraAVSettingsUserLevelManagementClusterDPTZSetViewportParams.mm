@@ -1,8 +1,8 @@
 @interface MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3;
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader;
 - (MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams)init;
-- (id)_encodeAsDataValue:(id *)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_encodeAsDataValue:(id *)value;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -33,20 +33,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams);
-  v5 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)self videoStreamID];
-  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)v4 setVideoStreamID:v5];
+  videoStreamID = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)self videoStreamID];
+  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)v4 setVideoStreamID:videoStreamID];
 
-  v6 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)self viewport];
-  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)v4 setViewport:v6];
+  viewport = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)self viewport];
+  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)v4 setViewport:viewport];
 
-  v7 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)self timedInvokeTimeoutMs];
-  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)v4 setTimedInvokeTimeoutMs:v7];
+  timedInvokeTimeoutMs = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)self timedInvokeTimeoutMs];
+  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)v4 setTimedInvokeTimeoutMs:timedInvokeTimeoutMs];
 
-  v8 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)self serverSideProcessingTimeout];
-  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)v4 setServerSideProcessingTimeout:v8];
+  serverSideProcessingTimeout = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)self serverSideProcessingTimeout];
+  [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)v4 setServerSideProcessingTimeout:serverSideProcessingTimeout];
 
   return v4;
 }
@@ -61,30 +61,30 @@
   return v6;
 }
 
-- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)a3
+- (ChipError)_encodeToTLVReader:(PacketBufferTLVReader *)reader
 {
-  v30 = 0;
+  unsignedShortValue = 0;
   v31 = 0;
   v29[0] = 0;
   v29[1] = 0;
   v28 = v29;
-  v5 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)self videoStreamID];
-  v30 = [v5 unsignedShortValue];
+  videoStreamID = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)self videoStreamID];
+  unsignedShortValue = [videoStreamID unsignedShortValue];
 
-  v6 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)self viewport];
-  v7 = [v6 x1];
+  viewport = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)self viewport];
+  v7 = [viewport x1];
   LOWORD(v31) = [v7 unsignedShortValue];
 
-  v8 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)self viewport];
-  v9 = [v8 y1];
+  viewport2 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)self viewport];
+  v9 = [viewport2 y1];
   WORD1(v31) = [v9 unsignedShortValue];
 
-  v10 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)self viewport];
-  v11 = [v10 x2];
+  viewport3 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)self viewport];
+  v11 = [viewport3 x2];
   WORD2(v31) = [v11 unsignedShortValue];
 
-  v12 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)self viewport];
-  v13 = [v12 y2];
+  viewport4 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)self viewport];
+  v13 = [viewport4 y2];
   HIWORD(v31) = [v13 unsignedShortValue];
 
   sub_2393D9C18(0x62FuLL, 0, &v27);
@@ -97,7 +97,7 @@
     v26 = 0;
     sub_238EA16C4(&v23, &v27, 0);
     sub_2393C7BF0(v22, &v23, 0xFFFFFFFF);
-    v14 = sub_238F03094(&v30, v22, 0x100uLL);
+    v14 = sub_238F03094(&unsignedShortValue, v22, 0x100uLL);
     v16 = v14;
     if (v14 || (v14 = sub_238DD2EFC(v22, &v27), v16 = v14, v14))
     {
@@ -106,8 +106,8 @@
 
     else
     {
-      sub_238DD2F90(a3, &v27);
-      v14 = sub_2393C7114(a3, 21, 256);
+      sub_238DD2F90(reader, &v27);
+      v14 = sub_2393C7114(reader, 21, 256);
       v17 = v21;
       v16 = v14;
     }
@@ -135,19 +135,19 @@
   return result;
 }
 
-- (id)_encodeAsDataValue:(id *)a3
+- (id)_encodeAsDataValue:(id *)value
 {
   v5 = sub_2393C5AAC(v12);
   v13 = 0;
   v7 = [(MTRCameraAVSettingsUserLevelManagementClusterDPTZSetViewportParams *)self _encodeToTLVReader:v12, v5];
   if (v7)
   {
-    if (a3)
+    if (value)
     {
       v8 = sub_23921C1E4(MTRError, v7, v6);
       v9 = 0;
 LABEL_7:
-      *a3 = v8;
+      *value = v8;
       goto LABEL_9;
     }
 
@@ -158,7 +158,7 @@ LABEL_7:
   {
     v10 = sub_238EE60DC(v12, 0);
     v9 = v10;
-    if (a3 && !v10)
+    if (value && !v10)
     {
       v8 = sub_23921C1E4(MTRError, 0x8BBF00000003, "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/zap-generated/MTRCommandPayloadsObjc.mm");
       goto LABEL_7;

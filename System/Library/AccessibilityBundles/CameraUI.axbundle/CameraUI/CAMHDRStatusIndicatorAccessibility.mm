@@ -8,16 +8,16 @@
 - (id)accessibilityValue
 {
   v2 = [(CAMHDRStatusIndicatorAccessibility *)self safeValueForKey:@"hdrMode"];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  if (v3 > 2)
+  if (integerValue > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = accessibilityCameraUILocalizedString(off_29F2AD448[v3]);
+    v4 = accessibilityCameraUILocalizedString(off_29F2AD448[integerValue]);
   }
 
   return v4;

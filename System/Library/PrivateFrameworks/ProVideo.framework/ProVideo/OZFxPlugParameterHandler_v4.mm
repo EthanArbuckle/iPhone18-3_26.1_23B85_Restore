@@ -1,29 +1,29 @@
 @interface OZFxPlugParameterHandler_v4
-- (BOOL)_getFontName:(id *)a3 fromParm:(unsigned int)a4 atTime:(id)a5;
-- (BOOL)addFlags:(unsigned int)a3 toParm:(unsigned int)a4;
-- (BOOL)addFontMenuWithName:(id)a3 parmId:(unsigned int)a4 fontName:(id)a5 parmFlags:(unsigned int)a6;
-- (BOOL)addHelpButtonWithName:(id)a3 parmId:(unsigned int)a4 selector:(SEL)a5 parmFlags:(unsigned int)a6;
-- (BOOL)addPushButtonWithName:(id)a3 parmId:(unsigned int)a4 selector:(SEL)a5 parmFlags:(unsigned int)a6;
-- (BOOL)getBitmap:(id *)a3 layerOffsetX:(double *)a4 layerOffsetY:(double *)a5 requestInfo:(id *)a6 fromParm:(unsigned int)a7 atFxTime:(id)a8;
-- (BOOL)getCustomParameterValue:(id *)a3 fromParm:(unsigned int)a4;
-- (BOOL)getGradientStartEnd:(double *)a3 startY:(double *)a4 endX:(double *)a5 endY:(double *)a6 type:(int *)a7 fromParm:(unsigned int)a8 atFxTime:(id)a9;
-- (BOOL)getParameterFlags:(unsigned int *)a3 fromParm:(unsigned int)a4;
-- (BOOL)getRGBABitmap:(id *)a3 layerOffsetX:(double *)a4 layerOffsetY:(double *)a5 requestInfo:(id *)a6 fromParameter:(unsigned int)a7 atTime:(id)a8;
-- (BOOL)getStringParameterValue:(id *)a3 fromParm:(unsigned int)a4;
-- (BOOL)getTexture:(id *)a3 layerOffsetX:(double *)a4 layerOffsetY:(double *)a5 requestInfo:(id *)a6 fromParm:(unsigned int)a7 atFxTime:(id)a8;
-- (BOOL)removeFlags:(unsigned int)a3 fromParm:(unsigned int)a4;
-- (BOOL)setCustomParameterValue:(id)a3 toParm:(unsigned int)a4;
-- (BOOL)setParameterFlags:(unsigned int)a3 toParm:(unsigned int)a4;
-- (BOOL)setStringParameterValue:(id)a3 toParm:(unsigned int)a4;
-- (id)pushButtonSelectorNameForParameterID:(unsigned int)a3;
+- (BOOL)_getFontName:(id *)name fromParm:(unsigned int)parm atTime:(id)time;
+- (BOOL)addFlags:(unsigned int)flags toParm:(unsigned int)parm;
+- (BOOL)addFontMenuWithName:(id)name parmId:(unsigned int)id fontName:(id)fontName parmFlags:(unsigned int)flags;
+- (BOOL)addHelpButtonWithName:(id)name parmId:(unsigned int)id selector:(SEL)selector parmFlags:(unsigned int)flags;
+- (BOOL)addPushButtonWithName:(id)name parmId:(unsigned int)id selector:(SEL)selector parmFlags:(unsigned int)flags;
+- (BOOL)getBitmap:(id *)bitmap layerOffsetX:(double *)x layerOffsetY:(double *)y requestInfo:(id *)info fromParm:(unsigned int)parm atFxTime:(id)time;
+- (BOOL)getCustomParameterValue:(id *)value fromParm:(unsigned int)parm;
+- (BOOL)getGradientStartEnd:(double *)end startY:(double *)y endX:(double *)x endY:(double *)endY type:(int *)type fromParm:(unsigned int)parm atFxTime:(id)time;
+- (BOOL)getParameterFlags:(unsigned int *)flags fromParm:(unsigned int)parm;
+- (BOOL)getRGBABitmap:(id *)bitmap layerOffsetX:(double *)x layerOffsetY:(double *)y requestInfo:(id *)info fromParameter:(unsigned int)parameter atTime:(id)time;
+- (BOOL)getStringParameterValue:(id *)value fromParm:(unsigned int)parm;
+- (BOOL)getTexture:(id *)texture layerOffsetX:(double *)x layerOffsetY:(double *)y requestInfo:(id *)info fromParm:(unsigned int)parm atFxTime:(id)time;
+- (BOOL)removeFlags:(unsigned int)flags fromParm:(unsigned int)parm;
+- (BOOL)setCustomParameterValue:(id)value toParm:(unsigned int)parm;
+- (BOOL)setParameterFlags:(unsigned int)flags toParm:(unsigned int)parm;
+- (BOOL)setStringParameterValue:(id)value toParm:(unsigned int)parm;
+- (id)pushButtonSelectorNameForParameterID:(unsigned int)d;
 @end
 
 @implementation OZFxPlugParameterHandler_v4
 
-- (BOOL)addFontMenuWithName:(id)a3 parmId:(unsigned int)a4 fontName:(id)a5 parmFlags:(unsigned int)a6
+- (BOOL)addFontMenuWithName:(id)name parmId:(unsigned int)id fontName:(id)fontName parmFlags:(unsigned int)flags
 {
-  LODWORD(v7) = a4;
-  if ([(OZFxPlugParameterHandler *)self hasValidParameterID:*&a4 checkMix:1 checkSpecialCheckboxIDs:1, v7])
+  LODWORD(v7) = id;
+  if ([(OZFxPlugParameterHandler *)self hasValidParameterID:*&id checkMix:1 checkSpecialCheckboxIDs:1, v7])
   {
     operator new();
   }
@@ -31,13 +31,13 @@
   return 0;
 }
 
-- (BOOL)addPushButtonWithName:(id)a3 parmId:(unsigned int)a4 selector:(SEL)a5 parmFlags:(unsigned int)a6
+- (BOOL)addPushButtonWithName:(id)name parmId:(unsigned int)id selector:(SEL)selector parmFlags:(unsigned int)flags
 {
-  v10 = a4;
-  LODWORD(v9) = a6;
-  v7 = [(OZFxPlugParameterHandler *)self _intParameter:*&a4 hasValidMin:0 max:1 sliderMin:0 sliderMax:1 defaultValue:0 paramFlags:v9];
+  idCopy = id;
+  LODWORD(v9) = flags;
+  v7 = [(OZFxPlugParameterHandler *)self _intParameter:*&id hasValidMin:0 max:1 sliderMin:0 sliderMax:1 defaultValue:0 paramFlags:v9];
   result = 0;
-  if (v7 && a4 - 1 <= 0x270D)
+  if (v7 && id - 1 <= 0x270D)
   {
     operator new();
   }
@@ -45,13 +45,13 @@
   return result;
 }
 
-- (BOOL)addHelpButtonWithName:(id)a3 parmId:(unsigned int)a4 selector:(SEL)a5 parmFlags:(unsigned int)a6
+- (BOOL)addHelpButtonWithName:(id)name parmId:(unsigned int)id selector:(SEL)selector parmFlags:(unsigned int)flags
 {
-  v10 = a4;
-  LODWORD(v9) = a6;
-  v7 = [(OZFxPlugParameterHandler *)self _intParameter:*&a4 hasValidMin:0 max:1 sliderMin:0 sliderMax:1 defaultValue:0 paramFlags:v9];
+  idCopy = id;
+  LODWORD(v9) = flags;
+  v7 = [(OZFxPlugParameterHandler *)self _intParameter:*&id hasValidMin:0 max:1 sliderMin:0 sliderMax:1 defaultValue:0 paramFlags:v9];
   result = 0;
-  if (v7 && a4 - 1 <= 0x270D)
+  if (v7 && id - 1 <= 0x270D)
   {
     operator new();
   }
@@ -59,9 +59,9 @@
   return result;
 }
 
-- (BOOL)_getFontName:(id *)a3 fromParm:(unsigned int)a4 atTime:(id)a5
+- (BOOL)_getFontName:(id *)name fromParm:(unsigned int)parm atTime:(id)time
 {
-  v7 = [(OZFxPlugParameterHandler *)self channelForParameterID:*&a4];
+  v7 = [(OZFxPlugParameterHandler *)self channelForParameterID:*&parm];
   if (v7)
   {
     if (self)
@@ -74,124 +74,124 @@
       v9 = 0;
     }
 
-    *a3 = PCString::ns_str(&v7[5].var11);
+    *name = PCString::ns_str(&v7[5].var11);
     ProCore_Impl::PCNSRefImpl::release(&v9);
   }
 
   return v7 != 0;
 }
 
-- (BOOL)getRGBABitmap:(id *)a3 layerOffsetX:(double *)a4 layerOffsetY:(double *)a5 requestInfo:(id *)a6 fromParameter:(unsigned int)a7 atTime:(id)a8
+- (BOOL)getRGBABitmap:(id *)bitmap layerOffsetX:(double *)x layerOffsetY:(double *)y requestInfo:(id *)info fromParameter:(unsigned int)parameter atTime:(id)time
 {
-  v8 = *&a6->var2;
-  v12[0] = *&a6->var0.var0;
+  v8 = *&info->var2;
+  v12[0] = *&info->var0.var0;
   v12[1] = v8;
-  v12[2] = *&a6->var4;
+  v12[2] = *&info->var4;
   LOBYTE(v11) = 1;
   LOBYTE(v10) = 0;
-  return [(OZFxPlugParameterHandler *)self retrieveImage:a3 layerOffsetX:a4 layerOffsetY:a5 requestInfo:v12 fromParm:*&a7 atTime:a8.var1 retriever:sel_textureRetriever_ ARGB:v10 imageType:1 forAnalysis:v11];
+  return [(OZFxPlugParameterHandler *)self retrieveImage:bitmap layerOffsetX:x layerOffsetY:y requestInfo:v12 fromParm:*&parameter atTime:time.var1 retriever:sel_textureRetriever_ ARGB:v10 imageType:1 forAnalysis:v11];
 }
 
-- (BOOL)getBitmap:(id *)a3 layerOffsetX:(double *)a4 layerOffsetY:(double *)a5 requestInfo:(id *)a6 fromParm:(unsigned int)a7 atFxTime:(id)a8
+- (BOOL)getBitmap:(id *)bitmap layerOffsetX:(double *)x layerOffsetY:(double *)y requestInfo:(id *)info fromParm:(unsigned int)parm atFxTime:(id)time
 {
-  v8 = *&a6->var2;
-  v12[0] = *&a6->var0.var0;
+  v8 = *&info->var2;
+  v12[0] = *&info->var0.var0;
   v12[1] = v8;
-  v12[2] = *&a6->var4;
+  v12[2] = *&info->var4;
   LOBYTE(v11) = 0;
   LOBYTE(v10) = 1;
-  return [(OZFxPlugParameterHandler *)self retrieveImage:a3 layerOffsetX:a4 layerOffsetY:a5 requestInfo:v12 fromParm:*&a7 atTime:a8.var1 retriever:sel_textureRetriever_ ARGB:v10 imageType:1 forAnalysis:v11];
+  return [(OZFxPlugParameterHandler *)self retrieveImage:bitmap layerOffsetX:x layerOffsetY:y requestInfo:v12 fromParm:*&parm atTime:time.var1 retriever:sel_textureRetriever_ ARGB:v10 imageType:1 forAnalysis:v11];
 }
 
-- (BOOL)getTexture:(id *)a3 layerOffsetX:(double *)a4 layerOffsetY:(double *)a5 requestInfo:(id *)a6 fromParm:(unsigned int)a7 atFxTime:(id)a8
+- (BOOL)getTexture:(id *)texture layerOffsetX:(double *)x layerOffsetY:(double *)y requestInfo:(id *)info fromParm:(unsigned int)parm atFxTime:(id)time
 {
-  v8 = *&a6->var2;
-  v12[0] = *&a6->var0.var0;
+  v8 = *&info->var2;
+  v12[0] = *&info->var0.var0;
   v12[1] = v8;
-  v12[2] = *&a6->var4;
+  v12[2] = *&info->var4;
   LOBYTE(v11) = 0;
   LOBYTE(v10) = 1;
-  return [(OZFxPlugParameterHandler *)self retrieveImage:a3 layerOffsetX:a4 layerOffsetY:a5 requestInfo:v12 fromParm:*&a7 atTime:a8.var1 retriever:sel_textureRetriever_ ARGB:v10 imageType:2 forAnalysis:v11];
+  return [(OZFxPlugParameterHandler *)self retrieveImage:texture layerOffsetX:x layerOffsetY:y requestInfo:v12 fromParm:*&parm atTime:time.var1 retriever:sel_textureRetriever_ ARGB:v10 imageType:2 forAnalysis:v11];
 }
 
-- (BOOL)getCustomParameterValue:(id *)a3 fromParm:(unsigned int)a4
+- (BOOL)getCustomParameterValue:(id *)value fromParm:(unsigned int)parm
 {
   v5.receiver = self;
   v5.super_class = OZFxPlugParameterHandler_v4;
-  return [(OZFxPlugParameterHandler *)&v5 getCustomParameterValue:a3 fromParm:*&a4];
+  return [(OZFxPlugParameterHandler *)&v5 getCustomParameterValue:value fromParm:*&parm];
 }
 
-- (BOOL)getParameterFlags:(unsigned int *)a3 fromParm:(unsigned int)a4
+- (BOOL)getParameterFlags:(unsigned int *)flags fromParm:(unsigned int)parm
 {
   v5.receiver = self;
   v5.super_class = OZFxPlugParameterHandler_v4;
-  return [(OZFxPlugParameterHandler *)&v5 getParameterFlags:a3 fromParm:*&a4];
+  return [(OZFxPlugParameterHandler *)&v5 getParameterFlags:flags fromParm:*&parm];
 }
 
-- (BOOL)getStringParameterValue:(id *)a3 fromParm:(unsigned int)a4
+- (BOOL)getStringParameterValue:(id *)value fromParm:(unsigned int)parm
 {
   v5.receiver = self;
   v5.super_class = OZFxPlugParameterHandler_v4;
-  return [(OZFxPlugParameterHandler *)&v5 getStringParameterValue:a3 fromParm:*&a4];
+  return [(OZFxPlugParameterHandler *)&v5 getStringParameterValue:value fromParm:*&parm];
 }
 
-- (BOOL)setCustomParameterValue:(id)a3 toParm:(unsigned int)a4
+- (BOOL)setCustomParameterValue:(id)value toParm:(unsigned int)parm
 {
   v5.receiver = self;
   v5.super_class = OZFxPlugParameterHandler_v4;
-  return [(OZFxPlugParameterHandler *)&v5 setCustomParameterValue:a3 toParm:*&a4];
+  return [(OZFxPlugParameterHandler *)&v5 setCustomParameterValue:value toParm:*&parm];
 }
 
-- (BOOL)setParameterFlags:(unsigned int)a3 toParm:(unsigned int)a4
+- (BOOL)setParameterFlags:(unsigned int)flags toParm:(unsigned int)parm
 {
   v5.receiver = self;
   v5.super_class = OZFxPlugParameterHandler_v4;
-  return [(OZFxPlugParameterHandler *)&v5 setParameterFlags:*&a3 toParm:*&a4];
+  return [(OZFxPlugParameterHandler *)&v5 setParameterFlags:*&flags toParm:*&parm];
 }
 
-- (BOOL)addFlags:(unsigned int)a3 toParm:(unsigned int)a4
+- (BOOL)addFlags:(unsigned int)flags toParm:(unsigned int)parm
 {
-  v4 = *&a4;
+  v4 = *&parm;
   v9 = 0;
   v7 = [(OZFxPlugParameterHandler_v4 *)self getParameterFlags:&v9 fromParm:?];
   result = 0;
   if (v7)
   {
-    return [(OZFxPlugParameterHandler_v4 *)self setParameterFlags:v9 | a3 toParm:v4];
+    return [(OZFxPlugParameterHandler_v4 *)self setParameterFlags:v9 | flags toParm:v4];
   }
 
   return result;
 }
 
-- (BOOL)removeFlags:(unsigned int)a3 fromParm:(unsigned int)a4
+- (BOOL)removeFlags:(unsigned int)flags fromParm:(unsigned int)parm
 {
-  v4 = *&a4;
+  v4 = *&parm;
   v9 = 0;
   v7 = [(OZFxPlugParameterHandler_v4 *)self getParameterFlags:&v9 fromParm:?];
   result = 0;
   if (v7)
   {
-    return [(OZFxPlugParameterHandler_v4 *)self setParameterFlags:v9 & ~a3 toParm:v4];
+    return [(OZFxPlugParameterHandler_v4 *)self setParameterFlags:v9 & ~flags toParm:v4];
   }
 
   return result;
 }
 
-- (BOOL)setStringParameterValue:(id)a3 toParm:(unsigned int)a4
+- (BOOL)setStringParameterValue:(id)value toParm:(unsigned int)parm
 {
   v5.receiver = self;
   v5.super_class = OZFxPlugParameterHandler_v4;
-  return [(OZFxPlugParameterHandler *)&v5 setStringParameterValue:a3 toParm:*&a4];
+  return [(OZFxPlugParameterHandler *)&v5 setStringParameterValue:value toParm:*&parm];
 }
 
-- (BOOL)getGradientStartEnd:(double *)a3 startY:(double *)a4 endX:(double *)a5 endY:(double *)a6 type:(int *)a7 fromParm:(unsigned int)a8 atFxTime:(id)a9
+- (BOOL)getGradientStartEnd:(double *)end startY:(double *)y endX:(double *)x endY:(double *)endY type:(int *)type fromParm:(unsigned int)parm atFxTime:(id)time
 {
   v10.receiver = self;
   v10.super_class = OZFxPlugParameterHandler_v4;
-  return [(OZFxPlugParameterHandler *)&v10 getGradientStartEnd:a3 startY:a4 endX:a5 endY:a6 type:a7 fromParm:*&a8 atTime:a9.var1];
+  return [(OZFxPlugParameterHandler *)&v10 getGradientStartEnd:end startY:y endX:x endY:endY type:type fromParm:*&parm atTime:time.var1];
 }
 
-- (id)pushButtonSelectorNameForParameterID:(unsigned int)a3
+- (id)pushButtonSelectorNameForParameterID:(unsigned int)d
 {
   channelMap = self->super._channelMap;
   v6 = channelMap[1];
@@ -206,8 +206,8 @@
   do
   {
     v8 = *(v5 + 8);
-    v9 = v8 >= a3;
-    v10 = v8 < a3;
+    v9 = v8 >= d;
+    v10 = v8 < d;
     if (v9)
     {
       v7 = v5;
@@ -222,7 +222,7 @@
     return 0;
   }
 
-  if (*(v7 + 8) > a3)
+  if (*(v7 + 8) > d)
   {
     return 0;
   }

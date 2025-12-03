@@ -1,59 +1,59 @@
 @interface FigCaptureSmartStyle
-+ (FigCaptureSmartStyle)styleWithCast:(id)a3 intensity:(float)a4 toneBias:(float)a5 colorBias:(float)a6;
-+ (id)createFromDictionary:(id)a3;
++ (FigCaptureSmartStyle)styleWithCast:(id)cast intensity:(float)intensity toneBias:(float)bias colorBias:(float)colorBias;
++ (id)createFromDictionary:(id)dictionary;
 + (id)identityStyle;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isIdentity;
-- (FigCaptureSmartStyle)initWithCoder:(id)a3;
-- (FigCaptureSmartStyle)initWithXPCEncoding:(id)a3;
+- (FigCaptureSmartStyle)initWithCoder:(id)coder;
+- (FigCaptureSmartStyle)initWithXPCEncoding:(id)encoding;
 - (NSDictionary)dictionaryRepresentation;
 - (NSString)description;
-- (float)_initWithCast:(float)a3 intensity:(float)a4 toneBias:(float)a5 colorBias:;
-- (id)copyWithZone:(_NSZone *)a3;
+- (float)_initWithCast:(float)cast intensity:(float)intensity toneBias:(float)bias colorBias:;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FigCaptureSmartStyle
 
-+ (FigCaptureSmartStyle)styleWithCast:(id)a3 intensity:(float)a4 toneBias:(float)a5 colorBias:(float)a6
++ (FigCaptureSmartStyle)styleWithCast:(id)cast intensity:(float)intensity toneBias:(float)bias colorBias:(float)colorBias
 {
-  v6 = [[FigCaptureSmartStyle alloc] _initWithCast:a3 intensity:a4 toneBias:a5 colorBias:a6];
+  v6 = [[FigCaptureSmartStyle alloc] _initWithCast:cast intensity:intensity toneBias:bias colorBias:colorBias];
 
   return v6;
 }
 
-- (float)_initWithCast:(float)a3 intensity:(float)a4 toneBias:(float)a5 colorBias:
+- (float)_initWithCast:(float)cast intensity:(float)intensity toneBias:(float)bias colorBias:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v13.receiver = a1;
+  v13.receiver = self;
   v13.super_class = FigCaptureSmartStyle;
   v9 = objc_msgSendSuper2(&v13, sel_init);
   v10 = v9;
   if (v9)
   {
     v11 = @"intensity must be between 0.0 and 1.0";
-    if (a3 >= 0.0 && a4 <= 1.0)
+    if (cast >= 0.0 && intensity <= 1.0)
     {
-      if (a4 < -1.0)
+      if (intensity < -1.0)
       {
         v11 = @"toneBias must be between -1.0 and 1.0";
       }
 
       else
       {
-        if (fabsf(a5) <= 1.0)
+        if (fabsf(bias) <= 1.0)
         {
           *(v9 + 1) = [a2 copy];
-          v10[4] = a3;
-          v10[5] = a4;
-          v10[6] = a5;
-          *(v10 + 4) = (a4 * 10000.0) ^ (a3 * 10000.0) ^ (a5 * 10000.0);
+          v10[4] = cast;
+          v10[5] = intensity;
+          v10[6] = bias;
+          *(v10 + 4) = (intensity * 10000.0) ^ (cast * 10000.0) ^ (bias * 10000.0);
           return v10;
         }
 
@@ -74,12 +74,12 @@
   [(FigCaptureSmartStyle *)&v3 dealloc];
 }
 
-- (FigCaptureSmartStyle)initWithXPCEncoding:(id)a3
+- (FigCaptureSmartStyle)initWithXPCEncoding:(id)encoding
 {
-  v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{xpc_dictionary_get_string(a3, "cast")}];
-  v6 = xpc_dictionary_get_double(a3, "intensity");
-  v7 = xpc_dictionary_get_double(a3, "toneBias");
-  v8 = xpc_dictionary_get_double(a3, "colorBias");
+  v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{xpc_dictionary_get_string(encoding, "cast")}];
+  v6 = xpc_dictionary_get_double(encoding, "intensity");
+  v7 = xpc_dictionary_get_double(encoding, "toneBias");
+  v8 = xpc_dictionary_get_double(encoding, "colorBias");
 
   return [(FigCaptureSmartStyle *)self _initWithCast:v5 intensity:v6 toneBias:v7 colorBias:v8];
 }
@@ -94,39 +94,39 @@
   return v3;
 }
 
-- (FigCaptureSmartStyle)initWithCoder:(id)a3
+- (FigCaptureSmartStyle)initWithCoder:(id)coder
 {
-  v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", "cast")}];
-  [a3 decodeFloatForKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", "intensity")}];
+  v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", "cast")}];
+  [coder decodeFloatForKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", "intensity")}];
   v7 = v6;
-  [a3 decodeFloatForKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", "toneBias")}];
+  [coder decodeFloatForKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", "toneBias")}];
   v9 = v8;
-  [a3 decodeFloatForKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", "colorBias")}];
+  [coder decodeFloatForKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", "colorBias")}];
 
   return [(FigCaptureSmartStyle *)self _initWithCast:v5 intensity:v7 toneBias:v9 colorBias:v10];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->_cast forKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", "cast")}];
+  [coder encodeObject:self->_cast forKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithUTF8String:", "cast")}];
   intensity = self->_intensity;
   v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"intensity"];
   *&v7 = intensity;
-  [a3 encodeFloat:v6 forKey:v7];
+  [coder encodeFloat:v6 forKey:v7];
   toneBias = self->_toneBias;
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"toneBias"];
   *&v10 = toneBias;
-  [a3 encodeFloat:v9 forKey:v10];
+  [coder encodeFloat:v9 forKey:v10];
   colorBias = self->_colorBias;
   v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"colorBias"];
   *&v13 = colorBias;
 
-  [a3 encodeFloat:v12 forKey:v13];
+  [coder encodeFloat:v12 forKey:v13];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v5) = 1;
   }
@@ -141,12 +141,12 @@ LABEL_6:
       return v5;
     }
 
-    v5 = -[NSString isEqualToString:](-[FigCaptureSmartStyle cast](self, "cast"), "isEqualToString:", [a3 cast]);
+    v5 = -[NSString isEqualToString:](-[FigCaptureSmartStyle cast](self, "cast"), "isEqualToString:", [equal cast]);
     if (v5)
     {
       [(FigCaptureSmartStyle *)self intensity];
       v7 = v6;
-      [a3 intensity];
+      [equal intensity];
       if (v7 != v8)
       {
         goto LABEL_6;
@@ -154,7 +154,7 @@ LABEL_6:
 
       [(FigCaptureSmartStyle *)self toneBias];
       v10 = v9;
-      [a3 toneBias];
+      [equal toneBias];
       if (v10 != v11)
       {
         goto LABEL_6;
@@ -162,7 +162,7 @@ LABEL_6:
 
       [(FigCaptureSmartStyle *)self colorBias];
       v13 = v12;
-      [a3 colorBias];
+      [equal colorBias];
       LOBYTE(v5) = v13 == v14;
     }
   }
@@ -170,17 +170,17 @@ LABEL_6:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [FigCaptureSmartStyle alloc];
-  v5 = [(FigCaptureSmartStyle *)self cast];
+  cast = [(FigCaptureSmartStyle *)self cast];
   [(FigCaptureSmartStyle *)self intensity];
   v7 = v6;
   [(FigCaptureSmartStyle *)self toneBias];
   v9 = v8;
   [(FigCaptureSmartStyle *)self colorBias];
 
-  return [(FigCaptureSmartStyle *)v4 _initWithCast:v5 intensity:v7 toneBias:v9 colorBias:v10];
+  return [(FigCaptureSmartStyle *)v4 _initWithCast:cast intensity:v7 toneBias:v9 colorBias:v10];
 }
 
 - (BOOL)isIdentity
@@ -242,7 +242,7 @@ LABEL_6:
   return v4;
 }
 
-+ (id)createFromDictionary:(id)a3
++ (id)createFromDictionary:(id)dictionary
 {
   v4 = OUTLINED_FUNCTION_8_45([MEMORY[0x1E696AEC0] stringWithUTF8String:"cast"]);
   if (!v4)
@@ -281,7 +281,7 @@ LABEL_6:
   LODWORD(v17) = v13;
   LODWORD(v18) = v15;
 
-  return [a1 styleWithCast:v5 intensity:v17 toneBias:v18 colorBias:v16];
+  return [self styleWithCast:v5 intensity:v17 toneBias:v18 colorBias:v16];
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface SKUIProductPageTableTextBoxSection
-- (SKUIProductPageTableTextBoxSection)initWithClientContext:(id)a3;
-- (double)heightForCellInTableView:(id)a3 indexPath:(id)a4;
-- (id)selectionActionForTableView:(id)a3 indexPath:(id)a4;
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4;
+- (SKUIProductPageTableTextBoxSection)initWithClientContext:(id)context;
+- (double)heightForCellInTableView:(id)view indexPath:(id)path;
+- (id)selectionActionForTableView:(id)view indexPath:(id)path;
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path;
 @end
 
 @implementation SKUIProductPageTableTextBoxSection
 
-- (SKUIProductPageTableTextBoxSection)initWithClientContext:(id)a3
+- (SKUIProductPageTableTextBoxSection)initWithClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIProductPageTableTextBoxSection initWithClientContext:];
@@ -21,26 +21,26 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientContext, a3);
+    objc_storeStrong(&v6->_clientContext, context);
   }
 
   return v7;
 }
 
-- (double)heightForCellInTableView:(id)a3 indexPath:(id)a4
+- (double)heightForCellInTableView:(id)view indexPath:(id)path
 {
-  v5 = [(SKUILayoutCache *)self->_textLayoutCache layoutForIndex:self->_stringIndex, a4];
-  [(SKUIProductPageTableSection *)self heightForTextLayout:v5 isExpanded:self->_isExpanded];
+  path = [(SKUILayoutCache *)self->_textLayoutCache layoutForIndex:self->_stringIndex, path];
+  [(SKUIProductPageTableSection *)self heightForTextLayout:path isExpanded:self->_isExpanded];
   v7 = v6;
 
   return v7;
 }
 
-- (id)selectionActionForTableView:(id)a3 indexPath:(id)a4
+- (id)selectionActionForTableView:(id)view indexPath:(id)path
 {
-  v5 = [(SKUILayoutCache *)self->_textLayoutCache layoutForIndex:self->_stringIndex, a4];
-  v6 = v5;
-  if (self->_isExpanded || ![v5 requiresTruncation])
+  path = [(SKUILayoutCache *)self->_textLayoutCache layoutForIndex:self->_stringIndex, path];
+  v6 = path;
+  if (self->_isExpanded || ![path requiresTruncation])
   {
     v7 = 0;
   }
@@ -54,23 +54,23 @@
   return v7;
 }
 
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path
 {
-  v5 = [(SKUIProductPageTableSection *)self textBoxTableViewCellForTableView:a3 indexPath:a4];
-  v6 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+  v5 = [(SKUIProductPageTableSection *)self textBoxTableViewCellForTableView:view indexPath:path];
+  primaryTextColor = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
 
-  if (v6)
+  if (primaryTextColor)
   {
-    v7 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-    [v5 setBottomBorderColor:v7];
+    primaryTextColor2 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+    [v5 setBottomBorderColor:primaryTextColor2];
   }
 
   v8 = [(SKUILayoutCache *)self->_textLayoutCache layoutForIndex:self->_stringIndex];
-  v9 = [v5 textBoxView];
-  v10 = v9;
+  textBoxView = [v5 textBoxView];
+  v10 = textBoxView;
   if (v8)
   {
-    [v9 setFixedWidthTextFrame:{objc_msgSend(v8, "textFrame")}];
+    [textBoxView setFixedWidthTextFrame:{objc_msgSend(v8, "textFrame")}];
     clientContext = self->_clientContext;
     if (clientContext)
     {
@@ -95,18 +95,18 @@
     }
 
     [v10 setNumberOfVisibleLines:v13];
-    v14 = [(SKUIProductPageTableTextBoxSection *)self subtitle];
-    [v10 setSubtitle:v14];
+    subtitle = [(SKUIProductPageTableTextBoxSection *)self subtitle];
+    [v10 setSubtitle:subtitle];
 
-    v15 = [(SKUIProductPageTableTextBoxSection *)self title];
-    [v10 setTitle:v15];
+    title = [(SKUIProductPageTableTextBoxSection *)self title];
+    [v10 setTitle:title];
 
     [v10 setColorScheme:self->_colorScheme];
   }
 
   else
   {
-    [v9 reset];
+    [textBoxView reset];
   }
 
   return v5;

@@ -1,23 +1,23 @@
 @interface BNBannerLayoutManager
-+ (CGRect)_dismissedFrameForContentWithPreferredSize:(CGSize)a3 inUseableContainerFrame:(CGRect)a4 containerBounds:(CGRect)a5 layoutInfo:(BNBannerLayoutInfoV2 *)a6 overshoot:(BOOL)a7 scale:(double)a8;
-+ (CGRect)_presentedFrameForContentWithFrame:(CGRect)a3 afterContentWithFrame:(CGRect)a4 layoutInfo:(BNBannerLayoutInfoV2 *)a5;
-+ (CGRect)_presentedFrameForContentWithPreferredSize:(CGSize)a3 inUseableContainerFrame:(CGRect)a4 containerBounds:(CGRect)a5 layoutInfo:(BNBannerLayoutInfoV2 *)a6 scale:(double)a7;
-+ (CGRect)_useableContainerFrameInContainerBounds:(CGRect)a3 inWindow:(id)a4;
-+ (CGRect)_useableContainerFrameInContainerBounds:(CGRect)a3 onScreen:(id)a4;
-+ (CGRect)_useableContainerFrameInContainerBounds:(CGRect)a3 onScreen:(id)a4 interfaceOrientation:(int64_t)a5;
++ (CGRect)_dismissedFrameForContentWithPreferredSize:(CGSize)size inUseableContainerFrame:(CGRect)frame containerBounds:(CGRect)bounds layoutInfo:(BNBannerLayoutInfoV2 *)info overshoot:(BOOL)overshoot scale:(double)scale;
++ (CGRect)_presentedFrameForContentWithFrame:(CGRect)frame afterContentWithFrame:(CGRect)withFrame layoutInfo:(BNBannerLayoutInfoV2 *)info;
++ (CGRect)_presentedFrameForContentWithPreferredSize:(CGSize)size inUseableContainerFrame:(CGRect)frame containerBounds:(CGRect)bounds layoutInfo:(BNBannerLayoutInfoV2 *)info scale:(double)scale;
++ (CGRect)_useableContainerFrameInContainerBounds:(CGRect)bounds inWindow:(id)window;
++ (CGRect)_useableContainerFrameInContainerBounds:(CGRect)bounds onScreen:(id)screen;
++ (CGRect)_useableContainerFrameInContainerBounds:(CGRect)bounds onScreen:(id)screen interfaceOrientation:(int64_t)orientation;
 + (void)initialize;
 - (BNBannerLayoutInfo)layoutInfo;
 - (BNBannerLayoutInfoV2)_effectiveLayoutInfo;
 - (BNBannerLayoutInfoV2)layoutInfoV2;
 - (BNBannerLayoutManager)init;
-- (CGRect)dismissedFrameForContentWithPreferredSize:(CGSize)a3 inUseableContainerFrame:(CGRect)a4 containerBounds:(CGRect)a5 overshoot:(BOOL)a6 scale:(double)a7;
-- (CGRect)presentedFrameForContentWithFrame:(CGRect)a3 afterContentWithFrame:(CGRect)a4;
-- (CGRect)presentedFrameForContentWithPreferredSize:(CGSize)a3 inUseableContainerFrame:(CGRect)a4 containerBounds:(CGRect)a5 scale:(double)a6;
-- (CGRect)useableContainerFrameInContainerBounds:(CGRect)a3 inWindow:(id)a4;
-- (CGRect)useableContainerFrameInContainerBounds:(CGRect)a3 onScreen:(id)a4;
-- (CGRect)useableContainerFrameInContainerBounds:(CGRect)a3 onScreen:(id)a4 interfaceOrientation:(int64_t)a5;
-- (void)setLayoutInfo:(BNBannerLayoutInfo *)a3;
-- (void)setLayoutInfoV2:(BNBannerLayoutInfoV2 *)a3;
+- (CGRect)dismissedFrameForContentWithPreferredSize:(CGSize)size inUseableContainerFrame:(CGRect)frame containerBounds:(CGRect)bounds overshoot:(BOOL)overshoot scale:(double)scale;
+- (CGRect)presentedFrameForContentWithFrame:(CGRect)frame afterContentWithFrame:(CGRect)withFrame;
+- (CGRect)presentedFrameForContentWithPreferredSize:(CGSize)size inUseableContainerFrame:(CGRect)frame containerBounds:(CGRect)bounds scale:(double)scale;
+- (CGRect)useableContainerFrameInContainerBounds:(CGRect)bounds inWindow:(id)window;
+- (CGRect)useableContainerFrameInContainerBounds:(CGRect)bounds onScreen:(id)screen;
+- (CGRect)useableContainerFrameInContainerBounds:(CGRect)bounds onScreen:(id)screen interfaceOrientation:(int64_t)orientation;
+- (void)setLayoutInfo:(BNBannerLayoutInfo *)info;
+- (void)setLayoutInfoV2:(BNBannerLayoutInfoV2 *)v2;
 @end
 
 @implementation BNBannerLayoutManager
@@ -74,7 +74,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     BNRegisterBannerKitLogging();
@@ -98,9 +98,9 @@
   return result;
 }
 
-+ (CGRect)_useableContainerFrameInContainerBounds:(CGRect)a3 onScreen:(id)a4 interfaceOrientation:(int64_t)a5
++ (CGRect)_useableContainerFrameInContainerBounds:(CGRect)bounds onScreen:(id)screen interfaceOrientation:(int64_t)orientation
 {
-  [a4 _bn_portraitPeripheryInsets];
+  [screen _bn_portraitPeripheryInsets];
   UIEdgeInsetsRotate();
 
   UIRectInset();
@@ -111,9 +111,9 @@
   return result;
 }
 
-+ (CGRect)_useableContainerFrameInContainerBounds:(CGRect)a3 onScreen:(id)a4
++ (CGRect)_useableContainerFrameInContainerBounds:(CGRect)bounds onScreen:(id)screen
 {
-  [a4 _peripheryInsets];
+  [screen _peripheryInsets];
 
   UIRectInset();
   result.size.height = v7;
@@ -123,17 +123,17 @@
   return result;
 }
 
-+ (CGRect)_useableContainerFrameInContainerBounds:(CGRect)a3 inWindow:(id)a4
++ (CGRect)_useableContainerFrameInContainerBounds:(CGRect)bounds inWindow:(id)window
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
-  v10 = [v9 screen];
-  v11 = [v9 interfaceOrientation];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  windowCopy = window;
+  screen = [windowCopy screen];
+  interfaceOrientation = [windowCopy interfaceOrientation];
 
-  [a1 _useableContainerFrameInContainerBounds:v10 onScreen:v11 interfaceOrientation:{x, y, width, height}];
+  [self _useableContainerFrameInContainerBounds:screen onScreen:interfaceOrientation interfaceOrientation:{x, y, width, height}];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -150,18 +150,18 @@
   return result;
 }
 
-+ (CGRect)_presentedFrameForContentWithPreferredSize:(CGSize)a3 inUseableContainerFrame:(CGRect)a4 containerBounds:(CGRect)a5 layoutInfo:(BNBannerLayoutInfoV2 *)a6 scale:(double)a7
++ (CGRect)_presentedFrameForContentWithPreferredSize:(CGSize)size inUseableContainerFrame:(CGRect)frame containerBounds:(CGRect)bounds layoutInfo:(BNBannerLayoutInfoV2 *)info scale:(double)scale
 {
-  width = a4.size.width;
-  height = a4.size.height;
-  x = a4.origin.x;
-  y = a4.origin.y;
-  v8 = a5.size.height;
-  v10 = a5.origin.x;
-  v9 = a5.origin.y;
-  v11 = a5.size.width;
-  CGRectGetWidth(a5);
-  CGRectGetHeight(a5);
+  width = frame.size.width;
+  height = frame.size.height;
+  x = frame.origin.x;
+  y = frame.origin.y;
+  v8 = bounds.size.height;
+  v10 = bounds.origin.x;
+  v9 = bounds.origin.y;
+  v11 = bounds.size.width;
+  CGRectGetWidth(bounds);
+  CGRectGetHeight(bounds);
   UISizeRoundToScale();
   v13 = v12;
   v15 = v14;
@@ -183,7 +183,7 @@
     v10 = v20;
     v11 = v21;
     v8 = v22;
-    if (a6->presentationEdge == 4)
+    if (info->presentationEdge == 4)
     {
       v23 = v19;
       v35.origin.x = x;
@@ -222,34 +222,34 @@
   return result;
 }
 
-+ (CGRect)_dismissedFrameForContentWithPreferredSize:(CGSize)a3 inUseableContainerFrame:(CGRect)a4 containerBounds:(CGRect)a5 layoutInfo:(BNBannerLayoutInfoV2 *)a6 overshoot:(BOOL)a7 scale:(double)a8
++ (CGRect)_dismissedFrameForContentWithPreferredSize:(CGSize)size inUseableContainerFrame:(CGRect)frame containerBounds:(CGRect)bounds layoutInfo:(BNBannerLayoutInfoV2 *)info overshoot:(BOOL)overshoot scale:(double)scale
 {
-  v8 = a7;
-  v10 = *&a6->contentInsets.left;
-  v29[0] = *&a6->presentationEdge;
+  overshootCopy = overshoot;
+  v10 = *&info->contentInsets.left;
+  v29[0] = *&info->presentationEdge;
   v29[1] = v10;
-  v11 = *&a6->maximumContentSize.height;
-  v29[2] = *&a6->contentInsets.right;
+  v11 = *&info->maximumContentSize.height;
+  v29[2] = *&info->contentInsets.right;
   v29[3] = v11;
-  [a1 _presentedFrameForContentWithPreferredSize:v29 inUseableContainerFrame:a3.width containerBounds:a3.height layoutInfo:a4.origin.x scale:{a4.origin.y, a4.size.width, a4.size.height, *&a5.origin.x, *&a5.origin.y, *&a5.size.width, *&a5.size.height, *&a8}];
+  [self _presentedFrameForContentWithPreferredSize:v29 inUseableContainerFrame:size.width containerBounds:size.height layoutInfo:frame.origin.x scale:{frame.origin.y, frame.size.width, frame.size.height, *&bounds.origin.x, *&bounds.origin.y, *&bounds.size.width, *&bounds.size.height, *&scale}];
   v16 = v12;
   v17 = v14;
   v18 = v15;
-  if ((v14 != a5.size.width || v15 != a5.size.height) && (a6->presentationEdge & 5) != 0)
+  if ((v14 != bounds.size.width || v15 != bounds.size.height) && (info->presentationEdge & 5) != 0)
   {
     Height = CGRectGetHeight(*&v12);
     v20 = Height * 0.5;
-    if (!v8)
+    if (!overshootCopy)
     {
       v20 = 0.0;
     }
 
     v21 = Height + v20;
-    x = a5.origin.x;
-    y = a5.origin.y;
-    width = a5.size.width;
-    v25 = a5.size.height;
-    if (a6->presentationEdge == 4)
+    x = bounds.origin.x;
+    y = bounds.origin.y;
+    width = bounds.size.width;
+    v25 = bounds.size.height;
+    if (info->presentationEdge == 4)
     {
       v13 = v21 + CGRectGetMaxY(*&x);
     }
@@ -270,19 +270,19 @@
   return result;
 }
 
-+ (CGRect)_presentedFrameForContentWithFrame:(CGRect)a3 afterContentWithFrame:(CGRect)a4 layoutInfo:(BNBannerLayoutInfoV2 *)a5
++ (CGRect)_presentedFrameForContentWithFrame:(CGRect)frame afterContentWithFrame:(CGRect)withFrame layoutInfo:(BNBannerLayoutInfoV2 *)info
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.size.height;
-  v11 = a3.size.width;
-  v12 = a3.origin.x;
-  presentationEdge = a5->presentationEdge;
-  if ((a5->presentationEdge & 5) == 0)
+  height = withFrame.size.height;
+  width = withFrame.size.width;
+  y = withFrame.origin.y;
+  x = withFrame.origin.x;
+  v10 = frame.size.height;
+  v11 = frame.size.width;
+  v12 = frame.origin.x;
+  presentationEdge = info->presentationEdge;
+  if ((info->presentationEdge & 5) == 0)
   {
-    [(BNBannerLayoutManager *)a2 _presentedFrameForContentWithFrame:a1 afterContentWithFrame:a5 layoutInfo:&v22];
+    [(BNBannerLayoutManager *)a2 _presentedFrameForContentWithFrame:self afterContentWithFrame:info layoutInfo:&v22];
     presentationEdge = v22;
   }
 
@@ -292,12 +292,12 @@
   v17 = height;
   if (presentationEdge == 4)
   {
-    v18 = CGRectGetMinY(*&v14) - a5->interBannerSpacing;
+    v18 = CGRectGetMinY(*&v14) - info->interBannerSpacing;
   }
 
   else
   {
-    v18 = CGRectGetMaxY(*&v14) + a5->interBannerSpacing;
+    v18 = CGRectGetMaxY(*&v14) + info->interBannerSpacing;
   }
 
   v19 = v12;
@@ -310,14 +310,14 @@
   return result;
 }
 
-- (CGRect)useableContainerFrameInContainerBounds:(CGRect)a3 onScreen:(id)a4 interfaceOrientation:(int64_t)a5
+- (CGRect)useableContainerFrameInContainerBounds:(CGRect)bounds onScreen:(id)screen interfaceOrientation:(int64_t)orientation
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
-  [objc_opt_class() _useableContainerFrameInContainerBounds:v10 onScreen:a5 interfaceOrientation:{x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  screenCopy = screen;
+  [objc_opt_class() _useableContainerFrameInContainerBounds:screenCopy onScreen:orientation interfaceOrientation:{x, y, width, height}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
@@ -334,14 +334,14 @@
   return result;
 }
 
-- (CGRect)useableContainerFrameInContainerBounds:(CGRect)a3 onScreen:(id)a4
+- (CGRect)useableContainerFrameInContainerBounds:(CGRect)bounds onScreen:(id)screen
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
-  [objc_opt_class() _useableContainerFrameInContainerBounds:v8 onScreen:{x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  screenCopy = screen;
+  [objc_opt_class() _useableContainerFrameInContainerBounds:screenCopy onScreen:{x, y, width, height}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -358,14 +358,14 @@
   return result;
 }
 
-- (CGRect)useableContainerFrameInContainerBounds:(CGRect)a3 inWindow:(id)a4
+- (CGRect)useableContainerFrameInContainerBounds:(CGRect)bounds inWindow:(id)window
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
-  [objc_opt_class() _useableContainerFrameInContainerBounds:v8 inWindow:{x, y, width, height}];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  windowCopy = window;
+  [objc_opt_class() _useableContainerFrameInContainerBounds:windowCopy inWindow:{x, y, width, height}];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -382,18 +382,18 @@
   return result;
 }
 
-- (CGRect)dismissedFrameForContentWithPreferredSize:(CGSize)a3 inUseableContainerFrame:(CGRect)a4 containerBounds:(CGRect)a5 overshoot:(BOOL)a6 scale:(double)a7
+- (CGRect)dismissedFrameForContentWithPreferredSize:(CGSize)size inUseableContainerFrame:(CGRect)frame containerBounds:(CGRect)bounds overshoot:(BOOL)overshoot scale:(double)scale
 {
-  v7 = a6;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3.height;
-  v13 = a3.width;
+  overshootCopy = overshoot;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v12 = size.height;
+  v13 = size.width;
   v15 = objc_opt_class();
   [(BNBannerLayoutManager *)self _effectiveLayoutInfo];
-  [v15 _dismissedFrameForContentWithPreferredSize:v20 inUseableContainerFrame:v7 containerBounds:v13 layoutInfo:v12 overshoot:x scale:{y, width, height, *&a5.origin.x, *&a5.origin.y, *&a5.size.width, *&a5.size.height, *&a7}];
+  [v15 _dismissedFrameForContentWithPreferredSize:v20 inUseableContainerFrame:overshootCopy containerBounds:v13 layoutInfo:v12 overshoot:x scale:{y, width, height, *&bounds.origin.x, *&bounds.origin.y, *&bounds.size.width, *&bounds.size.height, *&scale}];
   result.size.height = v19;
   result.size.width = v18;
   result.origin.y = v17;
@@ -401,17 +401,17 @@
   return result;
 }
 
-- (CGRect)presentedFrameForContentWithPreferredSize:(CGSize)a3 inUseableContainerFrame:(CGRect)a4 containerBounds:(CGRect)a5 scale:(double)a6
+- (CGRect)presentedFrameForContentWithPreferredSize:(CGSize)size inUseableContainerFrame:(CGRect)frame containerBounds:(CGRect)bounds scale:(double)scale
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3.height;
-  v11 = a3.width;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v10 = size.height;
+  v11 = size.width;
   v13 = objc_opt_class();
   [(BNBannerLayoutManager *)self _effectiveLayoutInfo];
-  [v13 _presentedFrameForContentWithPreferredSize:v18 inUseableContainerFrame:v11 containerBounds:v10 layoutInfo:x scale:{y, width, height, *&a5.origin.x, *&a5.origin.y, *&a5.size.width, *&a5.size.height, *&a6}];
+  [v13 _presentedFrameForContentWithPreferredSize:v18 inUseableContainerFrame:v11 containerBounds:v10 layoutInfo:x scale:{y, width, height, *&bounds.origin.x, *&bounds.origin.y, *&bounds.size.width, *&bounds.size.height, *&scale}];
   result.size.height = v17;
   result.size.width = v16;
   result.origin.y = v15;
@@ -419,16 +419,16 @@
   return result;
 }
 
-- (CGRect)presentedFrameForContentWithFrame:(CGRect)a3 afterContentWithFrame:(CGRect)a4
+- (CGRect)presentedFrameForContentWithFrame:(CGRect)frame afterContentWithFrame:(CGRect)withFrame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = withFrame.size.height;
+  width = withFrame.size.width;
+  y = withFrame.origin.y;
+  x = withFrame.origin.x;
+  v8 = frame.size.height;
+  v9 = frame.size.width;
+  v10 = frame.origin.y;
+  v11 = frame.origin.x;
   v13 = objc_opt_class();
   [(BNBannerLayoutManager *)self _effectiveLayoutInfo];
   [v13 _presentedFrameForContentWithFrame:&v18 afterContentWithFrame:v11 layoutInfo:{v10, v9, v8, x, y, width, height}];
@@ -439,7 +439,7 @@
   return result;
 }
 
-- (void)setLayoutInfo:(BNBannerLayoutInfo *)a3
+- (void)setLayoutInfo:(BNBannerLayoutInfo *)info
 {
   v3 = MEMORY[0x1E69DDCE0];
   self->_layoutInfoV2.presentationEdge = 0;
@@ -449,10 +449,10 @@
   *&self->_layoutInfoV2.contentInsets.bottom = v4;
   self->_layoutInfoV2.maximumContentSize = *v5;
   self->_layoutInfoV2.interBannerSpacing = 0.0;
-  v7 = *&a3->contentInsets.left;
-  v6 = *&a3->contentInsets.right;
-  height = a3->maximumContentSize.height;
-  *&self->_layoutInfo.presentationEdge = *&a3->presentationEdge;
+  v7 = *&info->contentInsets.left;
+  v6 = *&info->contentInsets.right;
+  height = info->maximumContentSize.height;
+  *&self->_layoutInfo.presentationEdge = *&info->presentationEdge;
   self->_layoutInfo.maximumContentSize.height = height;
   *&self->_layoutInfo.contentInsets.right = v6;
   *&self->_layoutInfo.contentInsets.left = v7;
@@ -468,12 +468,12 @@
   return self;
 }
 
-- (void)setLayoutInfoV2:(BNBannerLayoutInfoV2 *)a3
+- (void)setLayoutInfoV2:(BNBannerLayoutInfoV2 *)v2
 {
-  v3 = *&a3->presentationEdge;
-  v4 = *&a3->contentInsets.left;
-  v5 = *&a3->maximumContentSize.height;
-  *&self->_layoutInfoV2.contentInsets.right = *&a3->contentInsets.right;
+  v3 = *&v2->presentationEdge;
+  v4 = *&v2->contentInsets.left;
+  v5 = *&v2->maximumContentSize.height;
+  *&self->_layoutInfoV2.contentInsets.right = *&v2->contentInsets.right;
   *&self->_layoutInfoV2.maximumContentSize.height = v5;
   *&self->_layoutInfoV2.presentationEdge = v3;
   *&self->_layoutInfoV2.contentInsets.left = v4;

@@ -8,14 +8,14 @@
 
 + (id)sharedRemotePlugin
 {
-  v2 = sub_10009BF28(a1, a2);
+  v2 = sub_10009BF28(self, a2);
 
   return v2;
 }
 
 + (id)sharedNonremotePlugin
 {
-  v2 = sub_10009C1A4(a1, a2);
+  v2 = sub_10009C1A4(self, a2);
 
   return v2;
 }

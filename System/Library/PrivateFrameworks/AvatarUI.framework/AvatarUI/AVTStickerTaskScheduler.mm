@@ -1,92 +1,92 @@
 @interface AVTStickerTaskScheduler
-+ (AVTStickerTaskScheduler)schedulerWithRecordDataSource:(id)a3;
-- (AVTStickerTaskScheduler)initWithEnvironment:(id)a3 recordDataSource:(id)a4;
-- (id)nextPickerThumbnailFromTasksBacklogStorage:(id)a3 allAvatarRecordIdentifiers:(id)a4;
-- (id)nextPickerThumbnailFromTasksStorage:(id)a3 allAvatarRecordIdentifiers:(id)a4;
-- (id)nextSelectedSheetStickerFromTasksStorage:(id)a3 selectedAvatarRecordIdentifier:(id)a4;
-- (id)nextSheetPlaceHolderFromTasksStorage:(id)a3 allAvatarRecordIdentifiers:(id)a4;
-- (id)nextSheetStickerFromTasksStorage:(id)a3 allAvatarRecordIdentifiers:(id)a4;
-- (id)nextTaskToRunFromStickerPickerTasks:(id)a3 stickerPickerBacklogStorage:(id)a4 stickerSheetPlaceholderTasks:(id)a5 stickerSheetsTasks:(id)a6;
-- (id)nextVisibleSelectedSheetStickerFromTasksStorage:(id)a3 selectedAvatarRecordIdentifier:(id)a4 visibleIndexPaths:(id)a5;
-- (id)selectedPickerThumbnailFromTasksStorage:(id)a3 selectedAvatarRecordIdentifier:(id)a4;
-- (id)selectedSheetPlaceholderFromTasksStorage:(id)a3 selectedAvatarRecordIdentifier:(id)a4;
++ (AVTStickerTaskScheduler)schedulerWithRecordDataSource:(id)source;
+- (AVTStickerTaskScheduler)initWithEnvironment:(id)environment recordDataSource:(id)source;
+- (id)nextPickerThumbnailFromTasksBacklogStorage:(id)storage allAvatarRecordIdentifiers:(id)identifiers;
+- (id)nextPickerThumbnailFromTasksStorage:(id)storage allAvatarRecordIdentifiers:(id)identifiers;
+- (id)nextSelectedSheetStickerFromTasksStorage:(id)storage selectedAvatarRecordIdentifier:(id)identifier;
+- (id)nextSheetPlaceHolderFromTasksStorage:(id)storage allAvatarRecordIdentifiers:(id)identifiers;
+- (id)nextSheetStickerFromTasksStorage:(id)storage allAvatarRecordIdentifiers:(id)identifiers;
+- (id)nextTaskToRunFromStickerPickerTasks:(id)tasks stickerPickerBacklogStorage:(id)storage stickerSheetPlaceholderTasks:(id)placeholderTasks stickerSheetsTasks:(id)sheetsTasks;
+- (id)nextVisibleSelectedSheetStickerFromTasksStorage:(id)storage selectedAvatarRecordIdentifier:(id)identifier visibleIndexPaths:(id)paths;
+- (id)selectedPickerThumbnailFromTasksStorage:(id)storage selectedAvatarRecordIdentifier:(id)identifier;
+- (id)selectedSheetPlaceholderFromTasksStorage:(id)storage selectedAvatarRecordIdentifier:(id)identifier;
 - (void)cancelAllTasks;
-- (void)cancelPickerTask:(id)a3 avatarRecordIdentifier:(id)a4;
-- (void)cancelStickerSheetTasksForAvatarRecordIdentifier:(id)a3;
-- (void)didCompleteTask:(id)a3;
-- (void)lowerStickerPickerTaskPriority:(id)a3 avatarRecordIdentifier:(id)a4;
-- (void)performStateWork:(id)a3;
+- (void)cancelPickerTask:(id)task avatarRecordIdentifier:(id)identifier;
+- (void)cancelStickerSheetTasksForAvatarRecordIdentifier:(id)identifier;
+- (void)didCompleteTask:(id)task;
+- (void)lowerStickerPickerTaskPriority:(id)priority avatarRecordIdentifier:(id)identifier;
+- (void)performStateWork:(id)work;
 - (void)reloadData;
-- (void)scheduleStickerTask:(id)a3;
-- (void)setVisibleIndexPaths:(id)a3;
-- (void)startTask:(id)a3;
+- (void)scheduleStickerTask:(id)task;
+- (void)setVisibleIndexPaths:(id)paths;
+- (void)startTask:(id)task;
 @end
 
 @implementation AVTStickerTaskScheduler
 
-+ (AVTStickerTaskScheduler)schedulerWithRecordDataSource:(id)a3
++ (AVTStickerTaskScheduler)schedulerWithRecordDataSource:(id)source
 {
-  v3 = a3;
+  sourceCopy = source;
   v4 = objc_alloc(objc_opt_class());
   v5 = +[AVTUIEnvironment defaultEnvironment];
-  v6 = [v4 initWithEnvironment:v5 recordDataSource:v3];
+  v6 = [v4 initWithEnvironment:v5 recordDataSource:sourceCopy];
 
   return v6;
 }
 
-- (AVTStickerTaskScheduler)initWithEnvironment:(id)a3 recordDataSource:(id)a4
+- (AVTStickerTaskScheduler)initWithEnvironment:(id)environment recordDataSource:(id)source
 {
-  v6 = a3;
-  v7 = a4;
+  environmentCopy = environment;
+  sourceCopy = source;
   v23.receiver = self;
   v23.super_class = AVTStickerTaskScheduler;
   v8 = [(AVTStickerTaskScheduler *)&v23 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     stickerPickerTasks = v8->_stickerPickerTasks;
-    v8->_stickerPickerTasks = v9;
+    v8->_stickerPickerTasks = dictionary;
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     stickerPickerBacklogTasks = v8->_stickerPickerBacklogTasks;
-    v8->_stickerPickerBacklogTasks = v11;
+    v8->_stickerPickerBacklogTasks = dictionary2;
 
-    v13 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary3 = [MEMORY[0x1E695DF90] dictionary];
     stickerSheetPlaceholderTasks = v8->_stickerSheetPlaceholderTasks;
-    v8->_stickerSheetPlaceholderTasks = v13;
+    v8->_stickerSheetPlaceholderTasks = dictionary3;
 
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary4 = [MEMORY[0x1E695DF90] dictionary];
     stickerSheetsTasks = v8->_stickerSheetsTasks;
-    v8->_stickerSheetsTasks = v15;
+    v8->_stickerSheetsTasks = dictionary4;
 
-    v17 = [v6 lockProvider];
-    v18 = (v17)[2](v17, "com.apple.AvatarUI.AVTStickerScheduler.stateLock");
+    lockProvider = [environmentCopy lockProvider];
+    v18 = (lockProvider)[2](lockProvider, "com.apple.AvatarUI.AVTStickerScheduler.stateLock");
     stateLock = v8->_stateLock;
     v8->_stateLock = v18;
 
-    v20 = [v6 logger];
+    logger = [environmentCopy logger];
     logger = v8->_logger;
-    v8->_logger = v20;
+    v8->_logger = logger;
 
-    objc_storeStrong(&v8->_recordDataSource, a4);
+    objc_storeStrong(&v8->_recordDataSource, source);
     [(AVTStickerTaskScheduler *)v8 reloadData];
   }
 
   return v8;
 }
 
-- (void)performStateWork:(id)a3
+- (void)performStateWork:(id)work
 {
-  v4 = a3;
-  v5 = [(AVTStickerTaskScheduler *)self stateLock];
+  workCopy = work;
+  stateLock = [(AVTStickerTaskScheduler *)self stateLock];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __44__AVTStickerTaskScheduler_performStateWork___block_invoke;
   v7[3] = &unk_1E7F3A8A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = workCopy;
+  v6 = workCopy;
+  dispatch_sync(stateLock, v7);
 }
 
 void __44__AVTStickerTaskScheduler_performStateWork___block_invoke(uint64_t a1)
@@ -99,9 +99,9 @@ void __44__AVTStickerTaskScheduler_performStateWork___block_invoke(uint64_t a1)
   (*(v2 + 16))(v2, v6, v3, v4, v5);
 }
 
-- (void)scheduleStickerTask:(id)a3
+- (void)scheduleStickerTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -110,16 +110,16 @@ void __44__AVTStickerTaskScheduler_performStateWork___block_invoke(uint64_t a1)
   v8[1] = 3221225472;
   v8[2] = __47__AVTStickerTaskScheduler_scheduleStickerTask___block_invoke;
   v8[3] = &unk_1E7F3CA88;
-  v5 = v4;
-  v10 = self;
+  v5 = taskCopy;
+  selfCopy = self;
   v11 = &v12;
   v9 = v5;
   [(AVTStickerTaskScheduler *)self performStateWork:v8];
   if (*(v13 + 24) == 1)
   {
-    v6 = [(AVTStickerTaskScheduler *)self logger];
+    logger = [(AVTStickerTaskScheduler *)self logger];
     v7 = [v5 description];
-    [v6 logStickerSchedulerStartedTask:v7 forSchedulerRule:@"first task to run"];
+    [logger logStickerSchedulerStartedTask:v7 forSchedulerRule:@"first task to run"];
 
     [(AVTStickerTaskScheduler *)self startTask:v5];
   }
@@ -187,18 +187,18 @@ uint64_t __47__AVTStickerTaskScheduler_scheduleStickerTask___block_invoke_2(uint
   return result;
 }
 
-- (void)lowerStickerPickerTaskPriority:(id)a3 avatarRecordIdentifier:(id)a4
+- (void)lowerStickerPickerTaskPriority:(id)priority avatarRecordIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  priorityCopy = priority;
+  identifierCopy = identifier;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __81__AVTStickerTaskScheduler_lowerStickerPickerTaskPriority_avatarRecordIdentifier___block_invoke;
   v10[3] = &unk_1E7F3CAB0;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = identifierCopy;
+  v12 = priorityCopy;
+  v8 = priorityCopy;
+  v9 = identifierCopy;
   [(AVTStickerTaskScheduler *)self performStateWork:v10];
 }
 
@@ -217,19 +217,19 @@ void __81__AVTStickerTaskScheduler_lowerStickerPickerTaskPriority_avatarRecordId
   }
 }
 
-- (void)startTask:(id)a3
+- (void)startTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   objc_initWeak(&location, self);
-  v5 = [v4 task];
+  task = [taskCopy task];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__AVTStickerTaskScheduler_startTask___block_invoke;
   v7[3] = &unk_1E7F3A990;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = taskCopy;
   v8 = v6;
-  (v5)[2](v5, v7);
+  (task)[2](task, v7);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -241,9 +241,9 @@ void __37__AVTStickerTaskScheduler_startTask___block_invoke(uint64_t a1)
   [WeakRetained didCompleteTask:*(a1 + 32)];
 }
 
-- (void)didCompleteTask:(id)a3
+- (void)didCompleteTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -254,8 +254,8 @@ void __37__AVTStickerTaskScheduler_startTask___block_invoke(uint64_t a1)
   v6[1] = 3221225472;
   v6[2] = __43__AVTStickerTaskScheduler_didCompleteTask___block_invoke;
   v6[3] = &unk_1E7F3CA88;
-  v5 = v4;
-  v8 = self;
+  v5 = taskCopy;
+  selfCopy = self;
   v9 = &v10;
   v7 = v5;
   [(AVTStickerTaskScheduler *)self performStateWork:v6];
@@ -319,19 +319,19 @@ void __43__AVTStickerTaskScheduler_didCompleteTask___block_invoke_2(uint64_t a1,
   }
 }
 
-- (void)cancelPickerTask:(id)a3 avatarRecordIdentifier:(id)a4
+- (void)cancelPickerTask:(id)task avatarRecordIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  identifierCopy = identifier;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __67__AVTStickerTaskScheduler_cancelPickerTask_avatarRecordIdentifier___block_invoke;
   v10[3] = &unk_1E7F3CB00;
-  v12 = self;
-  v13 = v6;
-  v11 = v7;
-  v8 = v6;
-  v9 = v7;
+  selfCopy = self;
+  v13 = taskCopy;
+  v11 = identifierCopy;
+  v8 = taskCopy;
+  v9 = identifierCopy;
   [(AVTStickerTaskScheduler *)self performStateWork:v10];
 }
 
@@ -377,16 +377,16 @@ LABEL_7:
   }
 }
 
-- (void)cancelStickerSheetTasksForAvatarRecordIdentifier:(id)a3
+- (void)cancelStickerSheetTasksForAvatarRecordIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __76__AVTStickerTaskScheduler_cancelStickerSheetTasksForAvatarRecordIdentifier___block_invoke;
   v6[3] = &unk_1E7F3CB28;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = identifierCopy;
+  selfCopy = self;
+  v5 = identifierCopy;
   [(AVTStickerTaskScheduler *)self performStateWork:v6];
 }
 
@@ -462,77 +462,77 @@ void __41__AVTStickerTaskScheduler_cancelAllTasks__block_invoke(uint64_t a1, voi
 
 - (void)reloadData
 {
-  v12 = [MEMORY[0x1E695DF70] array];
-  v3 = [(AVTStickerTaskScheduler *)self recordDataSource];
-  objc_sync_enter(v3);
-  v4 = [(AVTStickerTaskScheduler *)self recordDataSource];
-  v5 = [v4 numberOfRecords];
+  array = [MEMORY[0x1E695DF70] array];
+  recordDataSource = [(AVTStickerTaskScheduler *)self recordDataSource];
+  objc_sync_enter(recordDataSource);
+  recordDataSource2 = [(AVTStickerTaskScheduler *)self recordDataSource];
+  numberOfRecords = [recordDataSource2 numberOfRecords];
 
-  if (v5 >= 1)
+  if (numberOfRecords >= 1)
   {
-    for (i = 0; i != v5; ++i)
+    for (i = 0; i != numberOfRecords; ++i)
     {
-      v7 = [(AVTStickerTaskScheduler *)self recordDataSource];
-      v8 = [v7 recordAtIndex:i];
+      recordDataSource3 = [(AVTStickerTaskScheduler *)self recordDataSource];
+      v8 = [recordDataSource3 recordAtIndex:i];
 
-      v9 = [v8 identifier];
-      [v12 addObject:v9];
+      identifier = [v8 identifier];
+      [array addObject:identifier];
     }
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(recordDataSource);
 
-  v10 = [(AVTStickerTaskScheduler *)self allAvatarRecordIdentifiers];
-  objc_sync_enter(v10);
-  v11 = [v12 copy];
+  allAvatarRecordIdentifiers = [(AVTStickerTaskScheduler *)self allAvatarRecordIdentifiers];
+  objc_sync_enter(allAvatarRecordIdentifiers);
+  v11 = [array copy];
   [(AVTStickerTaskScheduler *)self setAllAvatarRecordIdentifiers:v11];
 
-  objc_sync_exit(v10);
+  objc_sync_exit(allAvatarRecordIdentifiers);
 }
 
-- (void)setVisibleIndexPaths:(id)a3
+- (void)setVisibleIndexPaths:(id)paths
 {
-  v4 = [a3 sortedArrayUsingComparator:&__block_literal_global_22];
+  v4 = [paths sortedArrayUsingComparator:&__block_literal_global_22];
   [(AVTStickerTaskScheduler *)self setSortedVisibleIndexPaths:v4];
 }
 
-- (id)nextTaskToRunFromStickerPickerTasks:(id)a3 stickerPickerBacklogStorage:(id)a4 stickerSheetPlaceholderTasks:(id)a5 stickerSheetsTasks:(id)a6
+- (id)nextTaskToRunFromStickerPickerTasks:(id)tasks stickerPickerBacklogStorage:(id)storage stickerSheetPlaceholderTasks:(id)placeholderTasks stickerSheetsTasks:(id)sheetsTasks
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(AVTStickerTaskScheduler *)self selectedAvatarRecordIdentifier];
-  v15 = [v14 copy];
+  tasksCopy = tasks;
+  storageCopy = storage;
+  placeholderTasksCopy = placeholderTasks;
+  sheetsTasksCopy = sheetsTasks;
+  selectedAvatarRecordIdentifier = [(AVTStickerTaskScheduler *)self selectedAvatarRecordIdentifier];
+  v15 = [selectedAvatarRecordIdentifier copy];
 
-  v16 = [(AVTStickerTaskScheduler *)self allAvatarRecordIdentifiers];
-  v17 = [v16 copy];
+  allAvatarRecordIdentifiers = [(AVTStickerTaskScheduler *)self allAvatarRecordIdentifiers];
+  v17 = [allAvatarRecordIdentifiers copy];
 
-  v18 = [(AVTStickerTaskScheduler *)self sortedVisibleIndexPaths];
-  v19 = [v18 copy];
+  sortedVisibleIndexPaths = [(AVTStickerTaskScheduler *)self sortedVisibleIndexPaths];
+  v19 = [sortedVisibleIndexPaths copy];
 
-  v20 = [(AVTStickerTaskScheduler *)self selectedPickerThumbnailFromTasksStorage:v10 selectedAvatarRecordIdentifier:v15];
+  v20 = [(AVTStickerTaskScheduler *)self selectedPickerThumbnailFromTasksStorage:tasksCopy selectedAvatarRecordIdentifier:v15];
   if (!v20)
   {
-    v20 = [(AVTStickerTaskScheduler *)self selectedSheetPlaceholderFromTasksStorage:v12 selectedAvatarRecordIdentifier:v15];
+    v20 = [(AVTStickerTaskScheduler *)self selectedSheetPlaceholderFromTasksStorage:placeholderTasksCopy selectedAvatarRecordIdentifier:v15];
     if (!v20)
     {
-      v20 = [(AVTStickerTaskScheduler *)self nextVisibleSelectedSheetStickerFromTasksStorage:v13 selectedAvatarRecordIdentifier:v15 visibleIndexPaths:v19];
+      v20 = [(AVTStickerTaskScheduler *)self nextVisibleSelectedSheetStickerFromTasksStorage:sheetsTasksCopy selectedAvatarRecordIdentifier:v15 visibleIndexPaths:v19];
       if (!v20)
       {
-        v20 = [(AVTStickerTaskScheduler *)self nextPickerThumbnailFromTasksStorage:v10 allAvatarRecordIdentifiers:v17];
+        v20 = [(AVTStickerTaskScheduler *)self nextPickerThumbnailFromTasksStorage:tasksCopy allAvatarRecordIdentifiers:v17];
         if (!v20)
         {
-          v20 = [(AVTStickerTaskScheduler *)self nextSelectedSheetStickerFromTasksStorage:v13 selectedAvatarRecordIdentifier:v15];
+          v20 = [(AVTStickerTaskScheduler *)self nextSelectedSheetStickerFromTasksStorage:sheetsTasksCopy selectedAvatarRecordIdentifier:v15];
           if (!v20)
           {
-            v20 = [(AVTStickerTaskScheduler *)self nextPickerThumbnailFromTasksBacklogStorage:v11 allAvatarRecordIdentifiers:v17];
+            v20 = [(AVTStickerTaskScheduler *)self nextPickerThumbnailFromTasksBacklogStorage:storageCopy allAvatarRecordIdentifiers:v17];
             if (!v20)
             {
-              v20 = [(AVTStickerTaskScheduler *)self nextSheetPlaceHolderFromTasksStorage:v12 allAvatarRecordIdentifiers:v17];
+              v20 = [(AVTStickerTaskScheduler *)self nextSheetPlaceHolderFromTasksStorage:placeholderTasksCopy allAvatarRecordIdentifiers:v17];
               if (!v20)
               {
-                v20 = [(AVTStickerTaskScheduler *)self nextSheetStickerFromTasksStorage:v13 allAvatarRecordIdentifiers:v17];
+                v20 = [(AVTStickerTaskScheduler *)self nextSheetStickerFromTasksStorage:sheetsTasksCopy allAvatarRecordIdentifiers:v17];
               }
             }
           }
@@ -546,18 +546,18 @@ void __41__AVTStickerTaskScheduler_cancelAllTasks__block_invoke(uint64_t a1, voi
   return v21;
 }
 
-- (id)nextPickerThumbnailFromTasksStorage:(id)a3 allAvatarRecordIdentifiers:(id)a4
+- (id)nextPickerThumbnailFromTasksStorage:(id)storage allAvatarRecordIdentifiers:(id)identifiers
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  storageCopy = storage;
+  identifiersCopy = identifiers;
+  if ([storageCopy count])
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = v7;
+    v8 = identifiersCopy;
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
@@ -572,13 +572,13 @@ void __41__AVTStickerTaskScheduler_cancelAllTasks__block_invoke(uint64_t a1, voi
             objc_enumerationMutation(v8);
           }
 
-          v13 = [v6 objectForKeyedSubscript:{*(*(&v18 + 1) + 8 * i), v18}];
+          v13 = [storageCopy objectForKeyedSubscript:{*(*(&v18 + 1) + 8 * i), v18}];
           if (v13)
           {
             v14 = v13;
-            v15 = [(AVTStickerTaskScheduler *)self logger];
+            logger = [(AVTStickerTaskScheduler *)self logger];
             v16 = [v14 description];
-            [v15 logStickerSchedulerStartedTask:v16 forSchedulerRule:@"next picker thumbnail"];
+            [logger logStickerSchedulerStartedTask:v16 forSchedulerRule:@"next picker thumbnail"];
 
             goto LABEL_12;
           }
@@ -606,18 +606,18 @@ LABEL_12:
   return v14;
 }
 
-- (id)nextPickerThumbnailFromTasksBacklogStorage:(id)a3 allAvatarRecordIdentifiers:(id)a4
+- (id)nextPickerThumbnailFromTasksBacklogStorage:(id)storage allAvatarRecordIdentifiers:(id)identifiers
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  storageCopy = storage;
+  identifiersCopy = identifiers;
+  if ([storageCopy count])
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = v7;
+    v8 = identifiersCopy;
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
@@ -632,13 +632,13 @@ LABEL_12:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [v6 objectForKeyedSubscript:{*(*(&v18 + 1) + 8 * i), v18}];
+          v13 = [storageCopy objectForKeyedSubscript:{*(*(&v18 + 1) + 8 * i), v18}];
           if (v13)
           {
             v14 = v13;
-            v15 = [(AVTStickerTaskScheduler *)self logger];
+            logger = [(AVTStickerTaskScheduler *)self logger];
             v16 = [v14 description];
-            [v15 logStickerSchedulerStartedTask:v16 forSchedulerRule:@"next picker thumbnail"];
+            [logger logStickerSchedulerStartedTask:v16 forSchedulerRule:@"next picker thumbnail"];
 
             goto LABEL_12;
           }
@@ -666,18 +666,18 @@ LABEL_12:
   return v14;
 }
 
-- (id)selectedPickerThumbnailFromTasksStorage:(id)a3 selectedAvatarRecordIdentifier:(id)a4
+- (id)selectedPickerThumbnailFromTasksStorage:(id)storage selectedAvatarRecordIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  storageCopy = storage;
+  identifierCopy = identifier;
+  if ([storageCopy count])
   {
-    v8 = [v6 objectForKeyedSubscript:v7];
+    v8 = [storageCopy objectForKeyedSubscript:identifierCopy];
     if (v8)
     {
-      v9 = [(AVTStickerTaskScheduler *)self logger];
+      logger = [(AVTStickerTaskScheduler *)self logger];
       v10 = [v8 description];
-      [v9 logStickerSchedulerStartedTask:v10 forSchedulerRule:@"selected picker thumbnail"];
+      [logger logStickerSchedulerStartedTask:v10 forSchedulerRule:@"selected picker thumbnail"];
     }
   }
 
@@ -689,18 +689,18 @@ LABEL_12:
   return v8;
 }
 
-- (id)selectedSheetPlaceholderFromTasksStorage:(id)a3 selectedAvatarRecordIdentifier:(id)a4
+- (id)selectedSheetPlaceholderFromTasksStorage:(id)storage selectedAvatarRecordIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  storageCopy = storage;
+  identifierCopy = identifier;
+  if ([storageCopy count])
   {
-    v8 = [v6 objectForKeyedSubscript:v7];
+    v8 = [storageCopy objectForKeyedSubscript:identifierCopy];
     if (v8)
     {
-      v9 = [(AVTStickerTaskScheduler *)self logger];
+      logger = [(AVTStickerTaskScheduler *)self logger];
       v10 = [v8 description];
-      [v9 logStickerSchedulerStartedTask:v10 forSchedulerRule:@"selected sheet placeholder"];
+      [logger logStickerSchedulerStartedTask:v10 forSchedulerRule:@"selected sheet placeholder"];
     }
   }
 
@@ -712,29 +712,29 @@ LABEL_12:
   return v8;
 }
 
-- (id)nextVisibleSelectedSheetStickerFromTasksStorage:(id)a3 selectedAvatarRecordIdentifier:(id)a4 visibleIndexPaths:(id)a5
+- (id)nextVisibleSelectedSheetStickerFromTasksStorage:(id)storage selectedAvatarRecordIdentifier:(id)identifier visibleIndexPaths:(id)paths
 {
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count] && objc_msgSend(v10, "count"))
+  storageCopy = storage;
+  identifierCopy = identifier;
+  pathsCopy = paths;
+  if ([storageCopy count] && objc_msgSend(pathsCopy, "count"))
   {
-    v11 = [v8 objectForKeyedSubscript:v9];
+    v11 = [storageCopy objectForKeyedSubscript:identifierCopy];
     if ([v11 count])
     {
       v41 = 0u;
       v42 = 0u;
       v39 = 0u;
       v40 = 0u;
-      v12 = v10;
+      v12 = pathsCopy;
       v30 = [v12 countByEnumeratingWithState:&v39 objects:v44 count:16];
       if (v30)
       {
-        v29 = self;
+        selfCopy = self;
         v13 = *v40;
         v33 = v11;
-        v34 = v9;
+        v34 = identifierCopy;
         v32 = v12;
         v28 = *v40;
         do
@@ -769,18 +769,18 @@ LABEL_12:
                   }
 
                   v21 = *(*(&v35 + 1) + 8 * i);
-                  v22 = [v21 indexPath];
-                  v23 = [v22 isEqual:v15];
+                  indexPath = [v21 indexPath];
+                  v23 = [indexPath isEqual:v15];
 
                   if (v23)
                   {
-                    v25 = [(AVTStickerTaskScheduler *)v29 logger];
+                    logger = [(AVTStickerTaskScheduler *)selfCopy logger];
                     v26 = [v21 description];
-                    [v25 logStickerSchedulerStartedTask:v26 forSchedulerRule:@"next visible selected sheet sticker"];
+                    [logger logStickerSchedulerStartedTask:v26 forSchedulerRule:@"next visible selected sheet sticker"];
 
                     v24 = v21;
                     v11 = v33;
-                    v9 = v34;
+                    identifierCopy = v34;
                     v12 = v32;
                     goto LABEL_24;
                   }
@@ -798,7 +798,7 @@ LABEL_12:
 
             v14 = v31 + 1;
             v11 = v33;
-            v9 = v34;
+            identifierCopy = v34;
             v12 = v32;
             v13 = v28;
           }
@@ -833,50 +833,50 @@ LABEL_24:
   return v24;
 }
 
-- (id)nextSelectedSheetStickerFromTasksStorage:(id)a3 selectedAvatarRecordIdentifier:(id)a4
+- (id)nextSelectedSheetStickerFromTasksStorage:(id)storage selectedAvatarRecordIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  storageCopy = storage;
+  identifierCopy = identifier;
+  if ([storageCopy count])
   {
-    v8 = [v6 objectForKeyedSubscript:v7];
+    v8 = [storageCopy objectForKeyedSubscript:identifierCopy];
     if ([v8 count])
     {
-      v9 = [v8 firstObject];
-      if (v9)
+      firstObject = [v8 firstObject];
+      if (firstObject)
       {
-        v10 = [(AVTStickerTaskScheduler *)self logger];
-        v11 = [v9 description];
-        [v10 logStickerSchedulerStartedTask:v11 forSchedulerRule:@"next selected sheet sticker"];
+        logger = [(AVTStickerTaskScheduler *)self logger];
+        v11 = [firstObject description];
+        [logger logStickerSchedulerStartedTask:v11 forSchedulerRule:@"next selected sheet sticker"];
       }
     }
 
     else
     {
-      v9 = 0;
+      firstObject = 0;
     }
   }
 
   else
   {
-    v9 = 0;
+    firstObject = 0;
   }
 
-  return v9;
+  return firstObject;
 }
 
-- (id)nextSheetPlaceHolderFromTasksStorage:(id)a3 allAvatarRecordIdentifiers:(id)a4
+- (id)nextSheetPlaceHolderFromTasksStorage:(id)storage allAvatarRecordIdentifiers:(id)identifiers
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  storageCopy = storage;
+  identifiersCopy = identifiers;
+  if ([storageCopy count])
   {
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v8 = v7;
+    v8 = identifiersCopy;
     v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v9)
     {
@@ -891,13 +891,13 @@ LABEL_24:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [v6 objectForKeyedSubscript:{*(*(&v18 + 1) + 8 * i), v18}];
+          v13 = [storageCopy objectForKeyedSubscript:{*(*(&v18 + 1) + 8 * i), v18}];
           if (v13)
           {
             v14 = v13;
-            v15 = [(AVTStickerTaskScheduler *)self logger];
+            logger = [(AVTStickerTaskScheduler *)self logger];
             v16 = [v14 description];
-            [v15 logStickerSchedulerStartedTask:v16 forSchedulerRule:@"next sheet placeholder"];
+            [logger logStickerSchedulerStartedTask:v16 forSchedulerRule:@"next sheet placeholder"];
 
             goto LABEL_12;
           }
@@ -925,18 +925,18 @@ LABEL_12:
   return v14;
 }
 
-- (id)nextSheetStickerFromTasksStorage:(id)a3 allAvatarRecordIdentifiers:(id)a4
+- (id)nextSheetStickerFromTasksStorage:(id)storage allAvatarRecordIdentifiers:(id)identifiers
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  storageCopy = storage;
+  identifiersCopy = identifiers;
+  if ([storageCopy count])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v8 = v7;
+    v8 = identifiersCopy;
     v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
@@ -951,16 +951,16 @@ LABEL_12:
             objc_enumerationMutation(v8);
           }
 
-          v13 = [v6 objectForKeyedSubscript:{*(*(&v19 + 1) + 8 * i), v19}];
+          v13 = [storageCopy objectForKeyedSubscript:{*(*(&v19 + 1) + 8 * i), v19}];
           if ([v13 count])
           {
-            v14 = [v13 firstObject];
-            if (v14)
+            firstObject = [v13 firstObject];
+            if (firstObject)
             {
-              v15 = v14;
-              v16 = [(AVTStickerTaskScheduler *)self logger];
+              v15 = firstObject;
+              logger = [(AVTStickerTaskScheduler *)self logger];
               v17 = [v15 description];
-              [v16 logStickerSchedulerStartedTask:v17 forSchedulerRule:@"next sheet sticker"];
+              [logger logStickerSchedulerStartedTask:v17 forSchedulerRule:@"next sheet sticker"];
 
               goto LABEL_14;
             }

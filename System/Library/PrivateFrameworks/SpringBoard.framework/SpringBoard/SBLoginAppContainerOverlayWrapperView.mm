@@ -1,26 +1,26 @@
 @interface SBLoginAppContainerOverlayWrapperView
-- (SBLoginAppContainerOverlayWrapperView)initWithFrame:(CGRect)a3 overlayView:(id)a4;
+- (SBLoginAppContainerOverlayWrapperView)initWithFrame:(CGRect)frame overlayView:(id)view;
 - (void)layoutSubviews;
 @end
 
 @implementation SBLoginAppContainerOverlayWrapperView
 
-- (SBLoginAppContainerOverlayWrapperView)initWithFrame:(CGRect)a3 overlayView:(id)a4
+- (SBLoginAppContainerOverlayWrapperView)initWithFrame:(CGRect)frame overlayView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  viewCopy = view;
   v23.receiver = self;
   v23.super_class = SBLoginAppContainerOverlayWrapperView;
-  v11 = [(SBLoginAppContainerOverlayWrapperView *)&v23 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(SBLoginAppContainerOverlayWrapperView *)&v23 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    objc_storeStrong(&v11->_overlayView, a4);
-    v13 = [(SBUILockOverlayView *)v12->_overlayView underlayPropertiesFactory];
-    v14 = [v13 propertiesWithDeviceDefaultGraphicsQuality];
+    objc_storeStrong(&height->_overlayView, view);
+    underlayPropertiesFactory = [(SBUILockOverlayView *)v12->_overlayView underlayPropertiesFactory];
+    propertiesWithDeviceDefaultGraphicsQuality = [underlayPropertiesFactory propertiesWithDeviceDefaultGraphicsQuality];
 
     v15 = [MEMORY[0x277D75DF0] settingsForPrivateStyle:-2];
     [v15 setBackdropVisible:1];
@@ -28,17 +28,17 @@
     backdropView = v12->_backdropView;
     v12->_backdropView = v16;
 
-    v18 = [(_UIBackdropView *)v12->_backdropView inputSettings];
-    [v14 blurRadius];
-    [v18 setBlurRadius:?];
+    inputSettings = [(_UIBackdropView *)v12->_backdropView inputSettings];
+    [propertiesWithDeviceDefaultGraphicsQuality blurRadius];
+    [inputSettings setBlurRadius:?];
 
-    v19 = [(_UIBackdropView *)v12->_backdropView inputSettings];
-    v20 = [v14 tintColor];
-    [v19 setColorTint:v20];
+    inputSettings2 = [(_UIBackdropView *)v12->_backdropView inputSettings];
+    tintColor = [propertiesWithDeviceDefaultGraphicsQuality tintColor];
+    [inputSettings2 setColorTint:tintColor];
 
-    v21 = [(_UIBackdropView *)v12->_backdropView inputSettings];
-    [v14 tintAlpha];
-    [v21 setColorTintAlpha:?];
+    inputSettings3 = [(_UIBackdropView *)v12->_backdropView inputSettings];
+    [propertiesWithDeviceDefaultGraphicsQuality tintAlpha];
+    [inputSettings3 setColorTintAlpha:?];
 
     [(SBLoginAppContainerOverlayWrapperView *)v12 addSubview:v12->_backdropView];
     [(SBLoginAppContainerOverlayWrapperView *)v12 addSubview:v12->_overlayView];

@@ -1,5 +1,5 @@
 @interface WAApple80211
-- (BOOL)currentChannelInfo:(apple80211_channel *)a3;
+- (BOOL)currentChannelInfo:(apple80211_channel *)info;
 - (BOOL)everAssociated;
 - (BOOL)grabAndSubmitFWTrapInfo;
 - (BOOL)grabAndSubmitLqmMetrics;
@@ -9,15 +9,15 @@
 - (BOOL)hasSoftAPInterfaceListed;
 - (BOOL)isAXAssociatoin;
 - (BOOL)isAssociated;
-- (BOOL)triggerDpsReset:(id)a3 metaData:(id)a4;
+- (BOOL)triggerDpsReset:(id)reset metaData:(id)data;
 - (BOOL)triggerFastDpsReset;
-- (BOOL)triggerReassociation:(id)a3;
+- (BOOL)triggerReassociation:(id)reassociation;
 - (WAApple80211)init;
-- (WAApple80211)initWithInterfaceName:(id)a3;
+- (WAApple80211)initWithInterfaceName:(id)name;
 - (id)currentBSSIDandSSID;
 - (id)getChipSet;
-- (id)getIOReportLegendItemsGroupBeginsWith:(id)a3 groupContains:(id)a4 groupEndsWith:(id)a5 groupEquals:(id)a6 subgroupBeginsWith:(id)a7 subgroupContains:(id)a8 subgroupEndsWith:(id)a9 subgroupEquals:(id)a10 channelEquals:(id)a11 retErr:(char *)a12;
-- (id)getIOReportLegendItemsMatching:(id *)a3 retErr:(char *)a4;
+- (id)getIOReportLegendItemsGroupBeginsWith:(id)with groupContains:(id)contains groupEndsWith:(id)endsWith groupEquals:(id)equals subgroupBeginsWith:(id)beginsWith subgroupContains:(id)subgroupContains subgroupEndsWith:(id)subgroupEndsWith subgroupEquals:(id)self0 channelEquals:(id)self1 retErr:(char *)self2;
+- (id)getIOReportLegendItemsMatching:(id *)matching retErr:(char *)err;
 - (id)getIOReportingClassPath;
 - (id)getIOReportingDriverName;
 - (id)initByFindingInterfaceName;
@@ -26,9 +26,9 @@
 - (unint64_t)getIOReportingDriverID;
 - (unint64_t)getPhyMode;
 - (unsigned)getIOReportingService;
-- (void)_storeAttemptedRecovery:(id)a3 reason:(id)a4 fromSSID:(id)a5 fromBSSID:(id)a6 commandResult:(int)a7;
+- (void)_storeAttemptedRecovery:(id)recovery reason:(id)reason fromSSID:(id)d fromBSSID:(id)iD commandResult:(int)result;
 - (void)dealloc;
-- (void)submitLqmMetrics:(id)a3;
+- (void)submitLqmMetrics:(id)metrics;
 @end
 
 @implementation WAApple80211
@@ -250,9 +250,9 @@ LABEL_12:
   return v2;
 }
 
-- (WAApple80211)initWithInterfaceName:(id)a3
+- (WAApple80211)initWithInterfaceName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v31.receiver = self;
   v31.super_class = WAApple80211;
   v6 = [(WAApple80211 *)&v31 init];
@@ -279,7 +279,7 @@ LABEL_19:
       *buf = 67109378;
       *v33 = v8;
       *&v33[4] = 2112;
-      *&v33[6] = v5;
+      *&v33[6] = nameCopy;
       _os_log_fault_impl(&_mh_execute_header, v30, OS_LOG_TYPE_FAULT, "Failed to init WAApple80211 err is: %d, interface %@", buf, 0x12u);
     }
 
@@ -289,7 +289,7 @@ LABEL_19:
     goto LABEL_7;
   }
 
-  objc_storeStrong(&v6->_ifName, a3);
+  objc_storeStrong(&v6->_ifName, name);
   if (!v7->_ifName)
   {
     v23 = WALogCategoryDefaultHandle();
@@ -658,7 +658,7 @@ LABEL_7:
   if (!v5)
   {
     v7 = [v3 objectForKeyedSubscript:@"PHYMODE_ACTIVE"];
-    v8 = [v7 intValue];
+    intValue = [v7 intValue];
     goto LABEL_11;
   }
 
@@ -676,10 +676,10 @@ LABEL_12:
   }
 
   v7 = 0;
-  v8 = 0;
+  intValue = 0;
 LABEL_11:
 
-  return v8;
+  return intValue;
 }
 
 - (BOOL)grabAndSubmitFWTrapInfo
@@ -739,9 +739,9 @@ LABEL_22:
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 bytes];
+      bytes = [v7 bytes];
       [v8 length];
-      CCSubmitLogToCrashTracer(v9);
+      CCSubmitLogToCrashTracer(bytes);
       v10 = WALogCategoryDefaultHandle();
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
@@ -752,9 +752,9 @@ LABEL_15:
         if (v8)
         {
           v17 = v15;
-          v18 = [v16 bytes];
+          bytes2 = [v16 bytes];
           [v16 length];
-          CCSubmitBinaryToCrashTracer(v18);
+          CCSubmitBinaryToCrashTracer(bytes2);
           v19 = WALogCategoryDefaultHandle();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
           {
@@ -902,9 +902,9 @@ LABEL_18:
     v8 = v7;
     if (v7)
     {
-      v9 = [v7 bytes];
+      bytes = [v7 bytes];
       [v8 length];
-      CCSubmitLqmMetricsTLVBlockToCrashTracer(v9);
+      CCSubmitLqmMetricsTLVBlockToCrashTracer(bytes);
       v10 = WALogCategoryDefaultHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
@@ -962,12 +962,12 @@ LABEL_15:
   return v11;
 }
 
-- (void)submitLqmMetrics:(id)a3
+- (void)submitLqmMetrics:(id)metrics
 {
-  v3 = a3;
-  v4 = [v3 bytes];
-  [v3 length];
-  CCSubmitLqmMetricsTLVBlockToCrashTracer(v4);
+  metricsCopy = metrics;
+  bytes = [metricsCopy bytes];
+  [metricsCopy length];
+  CCSubmitLqmMetricsTLVBlockToCrashTracer(bytes);
   v5 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -976,30 +976,30 @@ LABEL_15:
     v8 = 1024;
     v9 = 367;
     v10 = 2048;
-    v11 = [v3 length];
+    v11 = [metricsCopy length];
     v12 = 2112;
-    v13 = v3;
+    v13 = metricsCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:CCSubmitLqmMetricsTLVBlockToCrashTracer() length(%ld): %@", &v6, 0x26u);
   }
 }
 
-- (void)_storeAttemptedRecovery:(id)a3 reason:(id)a4 fromSSID:(id)a5 fromBSSID:(id)a6 commandResult:(int)a7
+- (void)_storeAttemptedRecovery:(id)recovery reason:(id)reason fromSSID:(id)d fromBSSID:(id)iD commandResult:(int)result
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  recoveryCopy = recovery;
+  reasonCopy = reason;
+  iDCopy = iD;
   v13 = +[WADeviceAnalyticsClient sharedDeviceAnalyticsClient];
   v14 = +[NSDate date];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10003E3A4;
   v17[3] = &unk_1000EDAA0;
-  v15 = v10;
+  v15 = recoveryCopy;
   v18 = v15;
-  v16 = v11;
+  v16 = reasonCopy;
   v19 = v16;
-  v20 = a7;
-  [v13 recoveryEventOnBssid:v12 at:v14 with:v17];
+  resultCopy = result;
+  [v13 recoveryEventOnBssid:iDCopy at:v14 with:v17];
 }
 
 - (BOOL)triggerFastDpsReset
@@ -1019,11 +1019,11 @@ LABEL_15:
   v28 = 0;
   if ([(WAApple80211 *)self isAssociated])
   {
-    v4 = [(WAApple80211 *)self currentBSSIDandSSID];
-    v5 = v4;
-    if (v4)
+    currentBSSIDandSSID = [(WAApple80211 *)self currentBSSIDandSSID];
+    v5 = currentBSSIDandSSID;
+    if (currentBSSIDandSSID)
     {
-      v6 = [v4 objectForKeyedSubscript:@"bssid"];
+      v6 = [currentBSSIDandSSID objectForKeyedSubscript:@"bssid"];
       v7 = v6 == 0;
 
       if (!v7)
@@ -1117,14 +1117,14 @@ LABEL_15:
   return v16 == 0;
 }
 
-- (BOOL)triggerDpsReset:(id)a3 metaData:(id)a4
+- (BOOL)triggerDpsReset:(id)reset metaData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  resetCopy = reset;
+  dataCopy = data;
   v8 = &stru_1000F04E0;
-  if (v6)
+  if (resetCopy)
   {
-    v9 = v6;
+    v9 = resetCopy;
   }
 
   else
@@ -1132,9 +1132,9 @@ LABEL_15:
     v9 = &stru_1000F04E0;
   }
 
-  if (v7)
+  if (dataCopy)
   {
-    v8 = v7;
+    v8 = dataCopy;
   }
 
   v10 = [NSString stringWithFormat:@"%@%@", v9, v8];
@@ -1153,11 +1153,11 @@ LABEL_15:
   v41 = 0;
   if ([(WAApple80211 *)self isAssociated])
   {
-    v12 = [(WAApple80211 *)self currentBSSIDandSSID];
-    v13 = v12;
-    if (v12)
+    currentBSSIDandSSID = [(WAApple80211 *)self currentBSSIDandSSID];
+    v13 = currentBSSIDandSSID;
+    if (currentBSSIDandSSID)
     {
-      v14 = [v12 objectForKeyedSubscript:@"bssid"];
+      v14 = [currentBSSIDandSSID objectForKeyedSubscript:@"bssid"];
       v15 = v14 == 0;
 
       if (!v15)
@@ -1242,7 +1242,7 @@ LABEL_15:
     if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412546;
-      v49 = v6;
+      v49 = resetCopy;
       v50 = 1024;
       v51 = v25;
       _os_log_fault_impl(&_mh_execute_header, v30, OS_LOG_TYPE_FAULT, "Failed to triggerDpsReset: %@, err %d", buf, 0x12u);
@@ -1268,9 +1268,9 @@ LABEL_15:
   return v25 == 0;
 }
 
-- (BOOL)triggerReassociation:(id)a3
+- (BOOL)triggerReassociation:(id)reassociation
 {
-  v4 = a3;
+  reassociationCopy = reassociation;
   v5 = +[NSMutableDictionary dictionary];
   v35 = 0;
   v36 = &v35;
@@ -1286,11 +1286,11 @@ LABEL_15:
   v34 = 0;
   if ([(WAApple80211 *)self isAssociated])
   {
-    v6 = [(WAApple80211 *)self currentBSSIDandSSID];
-    v7 = v6;
-    if (v6)
+    currentBSSIDandSSID = [(WAApple80211 *)self currentBSSIDandSSID];
+    v7 = currentBSSIDandSSID;
+    if (currentBSSIDandSSID)
     {
-      v8 = [v6 objectForKeyedSubscript:@"bssid"];
+      v8 = [currentBSSIDandSSID objectForKeyedSubscript:@"bssid"];
       v9 = v8 == 0;
 
       if (!v9)
@@ -1325,7 +1325,7 @@ LABEL_15:
     }
   }
 
-  [v5 setValue:v4 forKeyPath:@"REASSOC_CC_TRIGGER"];
+  [v5 setValue:reassociationCopy forKeyPath:@"REASSOC_CC_TRIGGER"];
   v16 = 7;
   while (1)
   {
@@ -1363,7 +1363,7 @@ LABEL_15:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
     {
       *buf = 138412546;
-      v42 = v4;
+      v42 = reassociationCopy;
       v43 = 1024;
       v44 = v18;
       _os_log_fault_impl(&_mh_execute_header, v23, OS_LOG_TYPE_FAULT, "Failed to triggerReassociation: %@, err %d", buf, 0x12u);
@@ -1376,11 +1376,11 @@ LABEL_15:
   block[2] = sub_10003F274;
   block[3] = &unk_1000EDAF0;
   block[4] = self;
-  v25 = v4;
+  v25 = reassociationCopy;
   v26 = &v29;
   v27 = &v35;
   v28 = v18;
-  v20 = v4;
+  v20 = reassociationCopy;
   dispatch_async(analyticsMOCQueue, block);
 
   _Block_object_dispose(&v29, 8);
@@ -1389,7 +1389,7 @@ LABEL_15:
   return v18 == 0;
 }
 
-- (BOOL)currentChannelInfo:(apple80211_channel *)a3
+- (BOOL)currentChannelInfo:(apple80211_channel *)info
 {
   v5 = [NSMutableDictionary dictionaryWithCapacity:0];
   v6 = +[NSDate date];
@@ -1410,8 +1410,8 @@ LABEL_15:
       }
 
       v15 = qword_10010DE08;
-      a3->var2 = dword_10010DE10;
-      *&a3->var0 = v15;
+      info->var2 = dword_10010DE10;
+      *&info->var0 = v15;
 LABEL_16:
       v16 = 1;
       goto LABEL_17;
@@ -1441,13 +1441,13 @@ LABEL_11:
       if (!v10)
       {
         v11 = [v5 objectForKey:@"CHANNEL"];
-        a3->var1 = [v11 unsignedIntValue];
+        info->var1 = [v11 unsignedIntValue];
 
         v12 = [v5 objectForKey:@"CHANNEL_FLAGS"];
-        a3->var2 = [v12 unsignedIntValue];
+        info->var2 = [v12 unsignedIntValue];
 
-        v13 = *&a3->var0;
-        dword_10010DE10 = a3->var2;
+        v13 = *&info->var0;
+        dword_10010DE10 = info->var2;
         qword_10010DE08 = v13;
         goto LABEL_16;
       }
@@ -2109,11 +2109,11 @@ LABEL_29:
   }
 
   v8 = [v3 objectForKey:@"PHYMODE_ACTIVE"];
-  v9 = [v8 unsignedIntValue];
+  unsignedIntValue = [v8 unsignedIntValue];
 
   v10 = WALogCategoryDefaultHandle();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG);
-  if (v9 != 256)
+  if (unsignedIntValue != 256)
   {
     if (!v11)
     {
@@ -2181,7 +2181,7 @@ LABEL_23:
 
 LABEL_18:
 
-    v9 = 0;
+    unsignedIntValue = 0;
     goto LABEL_19;
   }
 
@@ -2243,49 +2243,49 @@ LABEL_18:
   }
 
   v8 = [v3 objectForKey:@"PHYMODE_ACTIVE"];
-  v9 = [v8 unsignedIntValue];
+  unsignedIntValue = [v8 unsignedIntValue];
 
 LABEL_19:
-  return v9;
+  return unsignedIntValue;
 }
 
-- (id)getIOReportLegendItemsGroupBeginsWith:(id)a3 groupContains:(id)a4 groupEndsWith:(id)a5 groupEquals:(id)a6 subgroupBeginsWith:(id)a7 subgroupContains:(id)a8 subgroupEndsWith:(id)a9 subgroupEquals:(id)a10 channelEquals:(id)a11 retErr:(char *)a12
+- (id)getIOReportLegendItemsGroupBeginsWith:(id)with groupContains:(id)contains groupEndsWith:(id)endsWith groupEquals:(id)equals subgroupBeginsWith:(id)beginsWith subgroupContains:(id)subgroupContains subgroupEndsWith:(id)subgroupEndsWith subgroupEquals:(id)self0 channelEquals:(id)self1 retErr:(char *)self2
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a11;
-  v39 = v17;
+  withCopy = with;
+  containsCopy = contains;
+  endsWithCopy = endsWith;
+  equalsCopy = equals;
+  beginsWithCopy = beginsWith;
+  subgroupContainsCopy = subgroupContains;
+  subgroupEndsWithCopy = subgroupEndsWith;
+  subgroupEqualsCopy = subgroupEquals;
+  channelEqualsCopy = channelEquals;
+  v39 = withCopy;
   v45 = v39;
-  v40 = v18;
+  v40 = containsCopy;
   v46 = v40;
-  v41 = v19;
+  v41 = endsWithCopy;
   v47 = v41;
-  v26 = v20;
+  v26 = equalsCopy;
   v48 = v26;
-  v27 = v21;
+  v27 = beginsWithCopy;
   v49 = v27;
-  v28 = v22;
+  v28 = subgroupContainsCopy;
   v50 = v28;
-  v29 = v23;
+  v29 = subgroupEndsWithCopy;
   v51 = v29;
-  v30 = v24;
+  v30 = subgroupEqualsCopy;
   v52 = v30;
-  v31 = [(WAApple80211 *)self getIOReportLegendItemsMatching:&v45 retErr:a12];
+  v31 = [(WAApple80211 *)self getIOReportLegendItemsMatching:&v45 retErr:err];
   v32 = v31;
-  v33 = v25;
-  if (v25)
+  v33 = channelEqualsCopy;
+  if (channelEqualsCopy)
   {
     v43[0] = _NSConcreteStackBlock;
     v43[1] = 3221225472;
     v43[2] = sub_100040FF0;
     v43[3] = &unk_1000EDB18;
-    v34 = v25;
+    v34 = channelEqualsCopy;
     v44 = v34;
     v35 = [NSPredicate predicateWithBlock:v43, v39, v40, v41];
     v36 = [v32 filteredArrayUsingPredicate:v35];
@@ -2313,7 +2313,7 @@ LABEL_19:
   return v36;
 }
 
-- (id)getIOReportLegendItemsMatching:(id *)a3 retErr:(char *)a4
+- (id)getIOReportLegendItemsMatching:(id *)matching retErr:(char *)err
 {
   errorString = 0;
   if (qword_10010DDF8 != -1)
@@ -2323,48 +2323,48 @@ LABEL_19:
 
   v7 = qword_10010DE00;
   bzero(qword_10010DE00, 0x3988uLL);
-  if (a3->var0)
+  if (matching->var0)
   {
-    snprintf((v7 + 8), 0x30uLL, "%s", [a3->var0 UTF8String]);
+    snprintf((v7 + 8), 0x30uLL, "%s", [matching->var0 UTF8String]);
   }
 
-  var1 = a3->var1;
+  var1 = matching->var1;
   if (var1)
   {
     snprintf((qword_10010DE00 + 56), 0x30uLL, "%s", [var1 UTF8String]);
   }
 
-  var2 = a3->var2;
+  var2 = matching->var2;
   if (var2)
   {
     snprintf((qword_10010DE00 + 104), 0x30uLL, "%s", [var2 UTF8String]);
   }
 
-  var3 = a3->var3;
+  var3 = matching->var3;
   if (var3)
   {
     snprintf((qword_10010DE00 + 152), 0x30uLL, "%s", [var3 UTF8String]);
   }
 
-  var4 = a3->var4;
+  var4 = matching->var4;
   if (var4)
   {
     snprintf((qword_10010DE00 + 200), 0x30uLL, "%s", [var4 UTF8String]);
   }
 
-  var5 = a3->var5;
+  var5 = matching->var5;
   if (var5)
   {
     snprintf((qword_10010DE00 + 248), 0x30uLL, "%s", [var5 UTF8String]);
   }
 
-  var6 = a3->var6;
+  var6 = matching->var6;
   if (var6)
   {
     snprintf((qword_10010DE00 + 296), 0x30uLL, "%s", [var6 UTF8String]);
   }
 
-  var7 = a3->var7;
+  var7 = matching->var7;
   if (var7)
   {
     snprintf((qword_10010DE00 + 344), 0x30uLL, "%s", [var7 UTF8String]);
@@ -2407,7 +2407,7 @@ LABEL_28:
           if (v19)
           {
             v21 = v19;
-            *a4 = 0;
+            *err = 0;
 
             goto LABEL_52;
           }
@@ -2493,14 +2493,14 @@ LABEL_26:
   v22 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
-    var0 = a3->var0;
-    v24 = a3->var1;
-    v25 = a3->var2;
-    v26 = a3->var3;
-    v27 = a3->var4;
-    v28 = a3->var5;
-    v29 = a3->var6;
-    v30 = a3->var7;
+    var0 = matching->var0;
+    v24 = matching->var1;
+    v25 = matching->var2;
+    v26 = matching->var3;
+    v27 = matching->var4;
+    v28 = matching->var5;
+    v29 = matching->var6;
+    v30 = matching->var7;
     *buf = 136448514;
     v51 = "[WAApple80211 getIOReportLegendItemsMatching:retErr:]";
     v52 = 1024;
@@ -2528,14 +2528,14 @@ LABEL_26:
   v31 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_FAULT))
   {
-    v32 = a3->var0;
-    v33 = a3->var1;
-    v34 = a3->var2;
-    v35 = a3->var3;
-    v36 = a3->var4;
-    v37 = a3->var5;
-    v38 = a3->var6;
-    v39 = a3->var7;
+    v32 = matching->var0;
+    v33 = matching->var1;
+    v34 = matching->var2;
+    v35 = matching->var3;
+    v36 = matching->var4;
+    v37 = matching->var5;
+    v38 = matching->var6;
+    v39 = matching->var7;
     *buf = 138414082;
     v51 = v32;
     v52 = 2112;
@@ -2571,7 +2571,7 @@ LABEL_49:
   }
 
   v21 = 0;
-  *a4 = 1;
+  *err = 1;
 LABEL_52:
 
   return v21;
@@ -2691,24 +2691,24 @@ LABEL_11:
 
 - (int64_t)getDriverType
 {
-  v3 = [(WAApple80211 *)self getIOReportingDriverName];
-  v4 = [(WAApple80211 *)self getIOReportingClassPath];
-  if ([v3 containsString:@"ACIWiFiDriver"])
+  getIOReportingDriverName = [(WAApple80211 *)self getIOReportingDriverName];
+  getIOReportingClassPath = [(WAApple80211 *)self getIOReportingClassPath];
+  if ([getIOReportingDriverName containsString:@"ACIWiFiDriver"])
   {
     v5 = 2;
   }
 
-  else if ([v4 containsString:@"AppleSunriseWLAN"] && (objc_msgSend(v3, "containsString:", @"IO80211ReporterProxy") & 1) != 0)
+  else if ([getIOReportingClassPath containsString:@"AppleSunriseWLAN"] && (objc_msgSend(getIOReportingDriverName, "containsString:", @"IO80211ReporterProxy") & 1) != 0)
   {
     v5 = 4;
   }
 
-  else if ([v4 containsString:@"AppleWLANDriver"] && (objc_msgSend(v3, "containsString:", @"IO80211ReporterProxy") & 1) != 0)
+  else if ([getIOReportingClassPath containsString:@"AppleWLANDriver"] && (objc_msgSend(getIOReportingDriverName, "containsString:", @"IO80211ReporterProxy") & 1) != 0)
   {
     v5 = 3;
   }
 
-  else if ([v4 containsString:@"BCM"] & 1) != 0 || (objc_msgSend(v3, "containsString:", @"IO80211ReporterProxy"))
+  else if ([getIOReportingClassPath containsString:@"BCM"] & 1) != 0 || (objc_msgSend(getIOReportingDriverName, "containsString:", @"IO80211ReporterProxy"))
   {
     v5 = 1;
   }
@@ -2723,9 +2723,9 @@ LABEL_11:
       v10 = 1024;
       v11 = 953;
       v12 = 2112;
-      v13 = v3;
+      v13 = getIOReportingDriverName;
       v14 = 2112;
-      v15 = v4;
+      v15 = getIOReportingClassPath;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "%{public}s::%d:Failed to determine WLAN driver type: drvName %@ drvPath %@", &v8, 0x26u);
     }
 

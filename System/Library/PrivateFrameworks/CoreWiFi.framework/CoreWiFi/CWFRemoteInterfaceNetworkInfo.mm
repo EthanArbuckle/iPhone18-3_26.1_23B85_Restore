@@ -1,133 +1,133 @@
 @interface CWFRemoteInterfaceNetworkInfo
-- (CWFRemoteInterfaceNetworkInfo)initWithCoder:(id)a3;
-- (CWFRemoteInterfaceNetworkInfo)initWithInterface:(id)a3;
-- (CWFRemoteInterfaceNetworkInfo)initWithSSID:(id)a3;
-- (CWFRemoteInterfaceNetworkInfo)initWithScanResult:(id)a3;
+- (CWFRemoteInterfaceNetworkInfo)initWithCoder:(id)coder;
+- (CWFRemoteInterfaceNetworkInfo)initWithInterface:(id)interface;
+- (CWFRemoteInterfaceNetworkInfo)initWithSSID:(id)d;
+- (CWFRemoteInterfaceNetworkInfo)initWithScanResult:(id)result;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CWFRemoteInterfaceNetworkInfo
 
-- (CWFRemoteInterfaceNetworkInfo)initWithScanResult:(id)a3
+- (CWFRemoteInterfaceNetworkInfo)initWithScanResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v15.receiver = self;
   v15.super_class = CWFRemoteInterfaceNetworkInfo;
   v5 = [(CWFRemoteInterfaceNetworkInfo *)&v15 init];
   if (v5)
   {
-    v6 = [v4 networkName];
+    networkName = [resultCopy networkName];
     SSID = v5->_SSID;
-    v5->_SSID = v6;
+    v5->_SSID = networkName;
 
-    v8 = [v4 displayName];
+    displayName = [resultCopy displayName];
     networkName = v5->_networkName;
-    v5->_networkName = v8;
+    v5->_networkName = displayName;
 
-    v10 = [v4 BSSID];
+    bSSID = [resultCopy BSSID];
     BSSID = v5->_BSSID;
-    v5->_BSSID = v10;
+    v5->_BSSID = bSSID;
 
-    v5->_RSSI = [v4 RSSI];
-    v5->_securityType = [v4 supportedSecurityTypes];
+    v5->_RSSI = [resultCopy RSSI];
+    v5->_securityType = [resultCopy supportedSecurityTypes];
     v5->_state = 0;
-    v12 = [v4 primaryMAC];
+    primaryMAC = [resultCopy primaryMAC];
     macAddress = v5->_macAddress;
-    v5->_macAddress = v12;
+    v5->_macAddress = primaryMAC;
   }
 
   return v5;
 }
 
-- (CWFRemoteInterfaceNetworkInfo)initWithInterface:(id)a3
+- (CWFRemoteInterfaceNetworkInfo)initWithInterface:(id)interface
 {
-  v4 = a3;
+  interfaceCopy = interface;
   v15.receiver = self;
   v15.super_class = CWFRemoteInterfaceNetworkInfo;
   v5 = [(CWFRemoteInterfaceNetworkInfo *)&v15 init];
   if (v5)
   {
-    v6 = [v4 networkName];
+    networkName = [interfaceCopy networkName];
     SSID = v5->_SSID;
-    v5->_SSID = v6;
+    v5->_SSID = networkName;
 
-    v8 = [v4 networkName];
+    networkName2 = [interfaceCopy networkName];
     networkName = v5->_networkName;
-    v5->_networkName = v8;
+    v5->_networkName = networkName2;
 
-    v10 = [v4 BSSID];
+    bSSID = [interfaceCopy BSSID];
     BSSID = v5->_BSSID;
-    v5->_BSSID = v10;
+    v5->_BSSID = bSSID;
 
-    v5->_RSSI = [v4 RSSI];
-    v5->_securityType = [v4 securityType];
-    v5->_state = [v4 state];
-    v12 = [v4 MACAddress];
+    v5->_RSSI = [interfaceCopy RSSI];
+    v5->_securityType = [interfaceCopy securityType];
+    v5->_state = [interfaceCopy state];
+    mACAddress = [interfaceCopy MACAddress];
     macAddress = v5->_macAddress;
-    v5->_macAddress = v12;
+    v5->_macAddress = mACAddress;
   }
 
   return v5;
 }
 
-- (CWFRemoteInterfaceNetworkInfo)initWithSSID:(id)a3
+- (CWFRemoteInterfaceNetworkInfo)initWithSSID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = CWFRemoteInterfaceNetworkInfo;
   v6 = [(CWFRemoteInterfaceNetworkInfo *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_SSID, a3);
-    objc_storeStrong(&v7->_networkName, a3);
+    objc_storeStrong(&v6->_SSID, d);
+    objc_storeStrong(&v7->_networkName, d);
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CWFRemoteInterfaceNetworkInfo *)self SSID];
-  [v4 encodeObject:v5 forKey:SSIDKey];
+  coderCopy = coder;
+  sSID = [(CWFRemoteInterfaceNetworkInfo *)self SSID];
+  [coderCopy encodeObject:sSID forKey:SSIDKey];
 
-  v6 = [(CWFRemoteInterfaceNetworkInfo *)self networkName];
-  [v4 encodeObject:v6 forKey:NetworkNameKey];
+  networkName = [(CWFRemoteInterfaceNetworkInfo *)self networkName];
+  [coderCopy encodeObject:networkName forKey:NetworkNameKey];
 
-  v7 = [(CWFRemoteInterfaceNetworkInfo *)self BSSID];
-  [v4 encodeObject:v7 forKey:BSSIDKey];
+  bSSID = [(CWFRemoteInterfaceNetworkInfo *)self BSSID];
+  [coderCopy encodeObject:bSSID forKey:BSSIDKey];
 
-  v8 = [(CWFRemoteInterfaceNetworkInfo *)self RSSI];
-  [v4 encodeInteger:v8 forKey:RSSIKey];
+  rSSI = [(CWFRemoteInterfaceNetworkInfo *)self RSSI];
+  [coderCopy encodeInteger:rSSI forKey:RSSIKey];
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CWFRemoteInterfaceNetworkInfo securityType](self, "securityType")}];
-  [v4 encodeObject:v9 forKey:SecurityTypeKey];
+  [coderCopy encodeObject:v9 forKey:SecurityTypeKey];
 
-  v10 = [(CWFRemoteInterfaceNetworkInfo *)self state];
-  [v4 encodeInteger:v10 forKey:NetworkStateKey];
-  v11 = [(CWFRemoteInterfaceNetworkInfo *)self macAddress];
-  [v4 encodeObject:v11 forKey:MACAddressKey];
+  state = [(CWFRemoteInterfaceNetworkInfo *)self state];
+  [coderCopy encodeInteger:state forKey:NetworkStateKey];
+  macAddress = [(CWFRemoteInterfaceNetworkInfo *)self macAddress];
+  [coderCopy encodeObject:macAddress forKey:MACAddressKey];
 }
 
-- (CWFRemoteInterfaceNetworkInfo)initWithCoder:(id)a3
+- (CWFRemoteInterfaceNetworkInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc_init(CWFRemoteInterfaceNetworkInfo);
-  v6 = [v4 decodeObjectForKey:SSIDKey];
+  v6 = [coderCopy decodeObjectForKey:SSIDKey];
   [(CWFRemoteInterfaceNetworkInfo *)v5 setSSID:v6];
 
-  v7 = [v4 decodeObjectForKey:NetworkNameKey];
+  v7 = [coderCopy decodeObjectForKey:NetworkNameKey];
   [(CWFRemoteInterfaceNetworkInfo *)v5 setNetworkName:v7];
 
-  v8 = [v4 decodeObjectForKey:BSSIDKey];
+  v8 = [coderCopy decodeObjectForKey:BSSIDKey];
   [(CWFRemoteInterfaceNetworkInfo *)v5 setBSSID:v8];
 
-  -[CWFRemoteInterfaceNetworkInfo setRSSI:](v5, "setRSSI:", [v4 decodeIntegerForKey:RSSIKey]);
-  v9 = [v4 decodeObjectForKey:SecurityTypeKey];
+  -[CWFRemoteInterfaceNetworkInfo setRSSI:](v5, "setRSSI:", [coderCopy decodeIntegerForKey:RSSIKey]);
+  v9 = [coderCopy decodeObjectForKey:SecurityTypeKey];
   -[CWFRemoteInterfaceNetworkInfo setSecurityType:](v5, "setSecurityType:", [v9 unsignedIntegerValue]);
-  -[CWFRemoteInterfaceNetworkInfo setState:](v5, "setState:", [v4 decodeIntegerForKey:NetworkStateKey]);
-  v10 = [v4 decodeObjectForKey:MACAddressKey];
+  -[CWFRemoteInterfaceNetworkInfo setState:](v5, "setState:", [coderCopy decodeIntegerForKey:NetworkStateKey]);
+  v10 = [coderCopy decodeObjectForKey:MACAddressKey];
 
   [(CWFRemoteInterfaceNetworkInfo *)v5 setMacAddress:v10];
   return v5;
@@ -136,14 +136,14 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(CWFRemoteInterfaceNetworkInfo *)self SSID];
-  v5 = [(CWFRemoteInterfaceNetworkInfo *)self networkName];
-  v6 = [(CWFRemoteInterfaceNetworkInfo *)self BSSID];
-  v7 = [(CWFRemoteInterfaceNetworkInfo *)self RSSI];
-  v8 = [(CWFRemoteInterfaceNetworkInfo *)self securityType];
+  sSID = [(CWFRemoteInterfaceNetworkInfo *)self SSID];
+  networkName = [(CWFRemoteInterfaceNetworkInfo *)self networkName];
+  bSSID = [(CWFRemoteInterfaceNetworkInfo *)self BSSID];
+  rSSI = [(CWFRemoteInterfaceNetworkInfo *)self RSSI];
+  securityType = [(CWFRemoteInterfaceNetworkInfo *)self securityType];
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[CWFRemoteInterfaceNetworkInfo state](self, "state")}];
-  v10 = [(CWFRemoteInterfaceNetworkInfo *)self macAddress];
-  v11 = [v3 stringWithFormat:@"SSID: %@, networkName: %@ BSSID: %@, RSSI: %ld, security: %lu, state: %@, macAddress: %@", v4, v5, v6, v7, v8, v9, v10];
+  macAddress = [(CWFRemoteInterfaceNetworkInfo *)self macAddress];
+  v11 = [v3 stringWithFormat:@"SSID: %@, networkName: %@ BSSID: %@, RSSI: %ld, security: %lu, state: %@, macAddress: %@", sSID, networkName, bSSID, rSSI, securityType, v9, macAddress];
 
   return v11;
 }

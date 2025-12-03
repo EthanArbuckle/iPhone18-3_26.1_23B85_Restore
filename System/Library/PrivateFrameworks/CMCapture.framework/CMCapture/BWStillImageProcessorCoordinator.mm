@@ -1,15 +1,15 @@
 @interface BWStillImageProcessorCoordinator
-- (BWStillImageProcessorCoordinator)initWithProcessorControllers:(id)a3;
+- (BWStillImageProcessorCoordinator)initWithProcessorControllers:(id)controllers;
 - (NSSet)processorControllerNames;
-- (id)controllerForType:(unint64_t)a3;
-- (void)addController:(id)a3;
+- (id)controllerForType:(unint64_t)type;
+- (void)addController:(id)controller;
 - (void)dealloc;
 - (void)releaseControllers;
 @end
 
 @implementation BWStillImageProcessorCoordinator
 
-- (BWStillImageProcessorCoordinator)initWithProcessorControllers:(id)a3
+- (BWStillImageProcessorCoordinator)initWithProcessorControllers:(id)controllers
 {
   v15.receiver = self;
   v15.super_class = BWStillImageProcessorCoordinator;
@@ -22,7 +22,7 @@
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+    v5 = [controllers countByEnumeratingWithState:&v11 objects:v10 count:16];
     if (v5)
     {
       v6 = v5;
@@ -34,7 +34,7 @@
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(controllers);
           }
 
           -[NSMutableDictionary setObject:forKeyedSubscript:](v4->_processorControllersByType, "setObject:forKeyedSubscript:", *(*(&v11 + 1) + 8 * v8), [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(*(*(&v11 + 1) + 8 * v8), "type")}]);
@@ -42,7 +42,7 @@
         }
 
         while (v6 != v8);
-        v6 = [a3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+        v6 = [controllers countByEnumeratingWithState:&v11 objects:v10 count:16];
       }
 
       while (v6);
@@ -60,18 +60,18 @@
   [(BWStillImageProcessorCoordinator *)&v3 dealloc];
 }
 
-- (id)controllerForType:(unint64_t)a3
+- (id)controllerForType:(unint64_t)type
 {
   os_unfair_lock_lock(&self->_processorControllersLock);
-  v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_processorControllersByType, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3]);
+  v5 = -[NSMutableDictionary objectForKeyedSubscript:](self->_processorControllersByType, "objectForKeyedSubscript:", [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:type]);
   os_unfair_lock_unlock(&self->_processorControllersLock);
   return v5;
 }
 
-- (void)addController:(id)a3
+- (void)addController:(id)controller
 {
   os_unfair_lock_lock(&self->_processorControllersLock);
-  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_processorControllersByType, "setObject:forKeyedSubscript:", a3, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(a3, "type")}]);
+  -[NSMutableDictionary setObject:forKeyedSubscript:](self->_processorControllersByType, "setObject:forKeyedSubscript:", controller, [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(controller, "type")}]);
 
   os_unfair_lock_unlock(&self->_processorControllersLock);
 }
@@ -85,8 +85,8 @@
   v16 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(NSMutableDictionary *)self->_processorControllersByType allValues];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v12 count:16];
+  allValues = [(NSMutableDictionary *)self->_processorControllersByType allValues];
+  v6 = [allValues countByEnumeratingWithState:&v13 objects:v12 count:16];
   if (v6)
   {
     v7 = v6;
@@ -98,7 +98,7 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
         v10 = objc_opt_class();
@@ -107,7 +107,7 @@
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v12 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v13 objects:v12 count:16];
     }
 
     while (v7);
@@ -125,8 +125,8 @@
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(NSMutableDictionary *)self->_processorControllersByType allKeys];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+  allKeys = [(NSMutableDictionary *)self->_processorControllersByType allKeys];
+  v4 = [allKeys countByEnumeratingWithState:&v10 objects:v9 count:16];
   if (v4)
   {
     v5 = v4;
@@ -137,7 +137,7 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -150,7 +150,7 @@
         FigCaptureCurrentProcessIsDeferredmediad();
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v9 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v10 objects:v9 count:16];
     }
 
     while (v5);

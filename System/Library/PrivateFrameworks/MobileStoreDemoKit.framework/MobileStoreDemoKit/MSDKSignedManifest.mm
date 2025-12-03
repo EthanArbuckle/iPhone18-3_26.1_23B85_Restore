@@ -1,26 +1,26 @@
 @interface MSDKSignedManifest
-- (BOOL)_addDependenciesForComponent:(id)a3 withLookupDict:(id)a4;
+- (BOOL)_addDependenciesForComponent:(id)component withLookupDict:(id)dict;
 - (BOOL)_buildAppDepedencies;
-- (BOOL)_parseInstallationOrder:(id)a3;
+- (BOOL)_parseInstallationOrder:(id)order;
 - (BOOL)_parseLocale;
-- (BOOL)_parseManifestInfo:(id)a3;
-- (id)_componentListForSection:(id)a3 fromPayload:(id)a4;
-- (id)_manifestDataFromFile:(id)a3;
+- (BOOL)_parseManifestInfo:(id)info;
+- (id)_componentListForSection:(id)section fromPayload:(id)payload;
+- (id)_manifestDataFromFile:(id)file;
 - (id)_parseAllFiles;
 - (id)_parseFactoryBackupList;
-- (id)_toComponentDictionary:(id)a3;
+- (id)_toComponentDictionary:(id)dictionary;
 - (id)description;
-- (id)initFromManifestAtPath:(id)a3 verifyManifest:(BOOL)a4;
+- (id)initFromManifestAtPath:(id)path verifyManifest:(BOOL)manifest;
 - (void)_parseLocale;
 @end
 
 @implementation MSDKSignedManifest
 
-- (id)initFromManifestAtPath:(id)a3 verifyManifest:(BOOL)a4
+- (id)initFromManifestAtPath:(id)path verifyManifest:(BOOL)manifest
 {
-  v4 = a4;
+  manifestCopy = manifest;
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  pathCopy = path;
   v45.receiver = self;
   v45.super_class = MSDKSignedManifest;
   v7 = [(MSDKSignedManifest *)&v45 init];
@@ -33,12 +33,12 @@
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v47 = v6;
+    v47 = pathCopy;
     _os_log_impl(&dword_259B7D000, v8, OS_LOG_TYPE_DEFAULT, "Reading manifest at path %{public}@...", buf, 0xCu);
   }
 
-  [(MSDKSignedManifest *)v7 setFilePath:v6];
-  v9 = [(MSDKSignedManifest *)v7 _manifestDataFromFile:v6];
+  [(MSDKSignedManifest *)v7 setFilePath:pathCopy];
+  v9 = [(MSDKSignedManifest *)v7 _manifestDataFromFile:pathCopy];
   if (!v9)
   {
 LABEL_41:
@@ -65,12 +65,12 @@ LABEL_41:
 
   v14 = defaultLogHandle();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (manifestCopy)
   {
     if (v15)
     {
       *buf = 138543362;
-      v47 = v6;
+      v47 = pathCopy;
       _os_log_impl(&dword_259B7D000, v14, OS_LOG_TYPE_DEFAULT, "Verifying manifest at path %{public}@...", buf, 0xCu);
     }
 
@@ -94,7 +94,7 @@ LABEL_41:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v47 = v6;
+      v47 = pathCopy;
       _os_log_impl(&dword_259B7D000, v14, OS_LOG_TYPE_DEFAULT, "Manifest at path %{public}@ verified", buf, 0xCu);
     }
   }
@@ -104,7 +104,7 @@ LABEL_41:
     if (v15)
     {
       *buf = 138543362;
-      v47 = v6;
+      v47 = pathCopy;
       _os_log_impl(&dword_259B7D000, v14, OS_LOG_TYPE_DEFAULT, "Skipping verification for manifest at path %{public}@", buf, 0xCu);
     }
 
@@ -203,11 +203,11 @@ LABEL_41:
     goto LABEL_39;
   }
 
-  v37 = [(MSDKSignedManifest *)v7 _parseFactoryBackupList];
+  _parseFactoryBackupList = [(MSDKSignedManifest *)v7 _parseFactoryBackupList];
   factoryBackupList = v7->_factoryBackupList;
-  v7->_factoryBackupList = v37;
+  v7->_factoryBackupList = _parseFactoryBackupList;
 
-  if (!v37 || ([(MSDKSignedManifest *)v7 _parseAllFiles], v39 = objc_claimAutoreleasedReturnValue(), allFiles = v7->_allFiles, v7->_allFiles = v39, allFiles, !v39) || ![(MSDKSignedManifest *)v7 _parseLocale]|| ![(MSDKSignedManifest *)v7 _buildAppDepedencies])
+  if (!_parseFactoryBackupList || ([(MSDKSignedManifest *)v7 _parseAllFiles], v39 = objc_claimAutoreleasedReturnValue(), allFiles = v7->_allFiles, v7->_allFiles = v39, allFiles, !v39) || ![(MSDKSignedManifest *)v7 _parseLocale]|| ![(MSDKSignedManifest *)v7 _buildAppDepedencies])
   {
 LABEL_39:
     v10 = v18;
@@ -221,7 +221,7 @@ LABEL_35:
   if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v47 = v6;
+    v47 = pathCopy;
     _os_log_impl(&dword_259B7D000, v41, OS_LOG_TYPE_DEFAULT, "Successfully parsed manifest at path %{public}@", buf, 0xCu);
   }
 
@@ -242,29 +242,29 @@ LABEL_38:
   return v6;
 }
 
-- (id)_manifestDataFromFile:(id)a3
+- (id)_manifestDataFromFile:(id)file
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v4 fileExistsAtPath:v3];
+  fileCopy = file;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v5 = [defaultManager fileExistsAtPath:fileCopy];
 
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEAE0] inputStreamWithFileAtPath:v3];
+    v6 = [MEMORY[0x277CBEAE0] inputStreamWithFileAtPath:fileCopy];
     if (v6)
     {
       v7 = v6;
-      v8 = [MEMORY[0x277CBEB88] currentRunLoop];
+      currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
       v9 = *MEMORY[0x277CBE640];
-      [v7 scheduleInRunLoop:v8 forMode:*MEMORY[0x277CBE640]];
+      [v7 scheduleInRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE640]];
 
       [v7 open];
       v14 = 0;
       v10 = [MEMORY[0x277CCAC58] propertyListWithStream:v7 options:2 format:0 error:&v14];
       v11 = v14;
       [v7 close];
-      v12 = [MEMORY[0x277CBEB88] currentRunLoop];
-      [v7 removeFromRunLoop:v12 forMode:v9];
+      currentRunLoop2 = [MEMORY[0x277CBEB88] currentRunLoop];
+      [v7 removeFromRunLoop:currentRunLoop2 forMode:v9];
 
       if (!v10)
       {
@@ -278,7 +278,7 @@ LABEL_38:
         goto LABEL_5;
       }
 
-      [(MSDKSignedManifest *)v3 _manifestDataFromFile:v10];
+      [(MSDKSignedManifest *)fileCopy _manifestDataFromFile:v10];
     }
 
     else
@@ -306,10 +306,10 @@ LABEL_5:
   return v10;
 }
 
-- (BOOL)_parseManifestInfo:(id)a3
+- (BOOL)_parseManifestInfo:(id)info
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  infoCopy = info;
   v5 = defaultLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -318,7 +318,7 @@ LABEL_5:
     _os_log_impl(&dword_259B7D000, v5, OS_LOG_TYPE_DEFAULT, "Parsing %{public}@ section...", buf, 0xCu);
   }
 
-  v6 = [v4 objectForKey:@"Info" ofType:objc_opt_class()];
+  v6 = [infoCopy objectForKey:@"Info" ofType:objc_opt_class()];
 
   if (!v6)
   {
@@ -389,10 +389,10 @@ LABEL_17:
   return v29;
 }
 
-- (BOOL)_parseInstallationOrder:(id)a3
+- (BOOL)_parseInstallationOrder:(id)order
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  orderCopy = order;
   v5 = defaultLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -403,7 +403,7 @@ LABEL_17:
 
   [(MSDKSignedManifest *)self setCriticalComponents:MEMORY[0x277CBEBF8]];
   v6 = objc_opt_new();
-  v7 = [v4 objectForKey:@"InstallationOrder"];
+  v7 = [orderCopy objectForKey:@"InstallationOrder"];
 
   if (!v7)
   {
@@ -497,8 +497,8 @@ LABEL_18:
         }
 
         v12 = *(*(&v19 + 1) + 8 * i);
-        v13 = [v12 identifier];
-        v14 = [v3 containsObject:v13];
+        identifier = [v12 identifier];
+        v14 = [v3 containsObject:identifier];
 
         if (v14)
         {
@@ -549,8 +549,8 @@ LABEL_3:
       }
 
       v8 = *(*(&v25 + 1) + 8 * v7);
-      v9 = [v8 identifier];
-      v10 = [v9 isEqualToString:@"locale"];
+      identifier = [v8 identifier];
+      v10 = [identifier isEqualToString:@"locale"];
 
       if (v10)
       {
@@ -569,24 +569,24 @@ LABEL_3:
       }
     }
 
-    v11 = [v8 data];
-    v12 = [v11 firstObject];
+    data = [v8 data];
+    firstObject = [data firstObject];
 
-    if (v12)
+    if (firstObject)
     {
-      v13 = [v12 data];
+      data2 = [firstObject data];
 
-      if (v13)
+      if (data2)
       {
-        v14 = [v12 data];
-        v15 = [v14 objectForKey:@"language"];
+        data3 = [firstObject data];
+        v15 = [data3 objectForKey:@"language"];
         languageCode = self->_languageCode;
         self->_languageCode = v15;
 
         if (self->_languageCode)
         {
-          v17 = [v12 data];
-          v18 = [v17 objectForKey:@"region"];
+          data4 = [firstObject data];
+          v18 = [data4 objectForKey:@"region"];
           regionCode = self->_regionCode;
           self->_regionCode = v18;
 
@@ -698,8 +698,8 @@ LABEL_17:
               v29 = 0u;
               v30 = 0u;
               v31 = 0u;
-              v11 = [v10 data];
-              v12 = [v11 countByEnumeratingWithState:&v28 objects:v40 count:16];
+              data = [v10 data];
+              v12 = [data countByEnumeratingWithState:&v28 objects:v40 count:16];
               if (v12)
               {
                 v13 = v12;
@@ -710,7 +710,7 @@ LABEL_17:
                   {
                     if (*v29 != v14)
                     {
-                      objc_enumerationMutation(v11);
+                      objc_enumerationMutation(data);
                     }
 
                     v16 = *(*(&v28 + 1) + 8 * j);
@@ -724,15 +724,15 @@ LABEL_17:
                       }
                     }
 
-                    v17 = [v16 fileHash];
+                    fileHash = [v16 fileHash];
 
-                    if (v17)
+                    if (fileHash)
                     {
                       [v3 addObject:v16];
                     }
                   }
 
-                  v13 = [v11 countByEnumeratingWithState:&v28 objects:v40 count:16];
+                  v13 = [data countByEnumeratingWithState:&v28 objects:v40 count:16];
                 }
 
                 while (v13);
@@ -824,9 +824,9 @@ LABEL_17:
         }
 
         v19 = *(*(&v24 + 1) + 8 * i);
-        v20 = [v19 getRawDependency];
+        getRawDependency = [v19 getRawDependency];
 
-        if (v20)
+        if (getRawDependency)
         {
           [(MSDKSignedManifest *)self _addDependenciesForComponent:v19 withLookupDict:v12];
         }
@@ -842,16 +842,16 @@ LABEL_17:
   return 1;
 }
 
-- (id)_toComponentDictionary:(id)a3
+- (id)_toComponentDictionary:(id)dictionary
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_opt_new();
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = v3;
+  v5 = dictionaryCopy;
   v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
@@ -867,8 +867,8 @@ LABEL_17:
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        [v4 setObject:v10 forKey:v11];
+        identifier = [v10 identifier];
+        [v4 setObject:v10 forKey:identifier];
       }
 
       v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -882,12 +882,12 @@ LABEL_17:
   return v4;
 }
 
-- (BOOL)_addDependenciesForComponent:(id)a3 withLookupDict:(id)a4
+- (BOOL)_addDependenciesForComponent:(id)component withLookupDict:(id)dict
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v28 = a4;
-  [v5 getRawDependency];
+  componentCopy = component;
+  dictCopy = dict;
+  [componentCopy getRawDependency];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -911,7 +911,7 @@ LABEL_17:
       }
 
       v8 = *(*(&v33 + 1) + 8 * i);
-      v9 = [v28 objectForKey:v8];
+      v9 = [dictCopy objectForKey:v8];
       if (!v9)
       {
         [MSDKSignedManifest _addDependenciesForComponent:withLookupDict:];
@@ -978,7 +978,7 @@ LABEL_22:
             }
 
             v18 = v17;
-            [v5 addDependency:v17];
+            [componentCopy addDependency:v17];
           }
 
           v13 = [v11 countByEnumeratingWithState:&v29 objects:v42 count:16];
@@ -1010,28 +1010,28 @@ LABEL_24:
   return v19;
 }
 
-- (id)_componentListForSection:(id)a3 fromPayload:(id)a4
+- (id)_componentListForSection:(id)section fromPayload:(id)payload
 {
   v40 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  sectionCopy = section;
+  payloadCopy = payload;
   v7 = defaultLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v35 = v5;
+    v35 = sectionCopy;
     _os_log_impl(&dword_259B7D000, v7, OS_LOG_TYPE_DEFAULT, "Parsing %{public}@ section...", buf, 0xCu);
   }
 
   v29 = objc_opt_new();
-  v8 = [v6 objectForKey:v5 ofType:objc_opt_class()];
+  v8 = [payloadCopy objectForKey:sectionCopy ofType:objc_opt_class()];
   if (!v8)
   {
     v21 = 0;
     goto LABEL_23;
   }
 
-  v9 = [&unk_286AE18A0 objectForKey:v5];
+  v9 = [&unk_286AE18A0 objectForKey:sectionCopy];
   if (!v9)
   {
     v10 = defaultLogHandle();
@@ -1039,7 +1039,7 @@ LABEL_24:
     {
       *buf = 136315394;
       OUTLINED_FUNCTION_3();
-      v36 = v5;
+      v36 = sectionCopy;
       _os_log_error_impl(&dword_259B7D000, v10, OS_LOG_TYPE_ERROR, "%s: cannot determine component type for section %{public}@", buf, 0x16u);
     }
 
@@ -1049,7 +1049,7 @@ LABEL_21:
   }
 
   v10 = v9;
-  v28 = v5;
+  v28 = sectionCopy;
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
@@ -1084,14 +1084,14 @@ LABEL_21:
           OUTLINED_FUNCTION_3();
           v36 = v16;
           v37 = v25;
-          v5 = v28;
+          sectionCopy = v28;
           v38 = v28;
           _os_log_error_impl(&dword_259B7D000, v18, OS_LOG_TYPE_ERROR, "%s: component %{public}@ in section %{public}@ is of wrong format", buf, 0x20u);
         }
 
         else
         {
-          v5 = v28;
+          sectionCopy = v28;
         }
 
 LABEL_20:
@@ -1105,7 +1105,7 @@ LABEL_20:
       if (!v19)
       {
         v22 = defaultLogHandle();
-        v5 = v28;
+        sectionCopy = v28;
         if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
         {
           *buf = 136315650;
@@ -1135,7 +1135,7 @@ LABEL_20:
 LABEL_14:
 
   v21 = v29;
-  v5 = v28;
+  sectionCopy = v28;
   v8 = v27;
 LABEL_22:
 

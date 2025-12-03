@@ -1,37 +1,37 @@
 @interface CLEEDCryptoUtilities
-+ (__SecCertificate)copyCertFromBase64String:(id)a3;
-+ (__SecKey)copyPublicKeyFromPrivateKey:(__SecKey *)a3;
-+ (__SecKey)createKeyFromExternalRepresentationData:(id)a3 keyClass:(id)a4;
-+ (__SecKey)createKeyFromExternalRepresentationString:(id)a3 keyClass:(id)a4;
++ (__SecCertificate)copyCertFromBase64String:(id)string;
++ (__SecKey)copyPublicKeyFromPrivateKey:(__SecKey *)key;
++ (__SecKey)createKeyFromExternalRepresentationData:(id)data keyClass:(id)class;
++ (__SecKey)createKeyFromExternalRepresentationString:(id)string keyClass:(id)class;
 + (__SecKey)createRandomP256PrivateKey;
-+ (id)copyAdrPublicKeyData:(id)a3;
-+ (id)createKeyExternalRepresentation:(__SecKey *)a3;
-+ (id)getAESGCMDecryptedData:(id)a3 key:(id)a4 iv:(id)a5 authTag:(id)a6;
-+ (id)getDerivedKeyWithLength:(int)a3 secretData:(id)a4 additionalInfo:(id)a5;
-+ (id)getECIESDecryptedData:(id)a3 key:(__SecKey *)a4 sharedInfo:(id)a5;
-+ (id)getECIESEncryptedData:(id)a3 key:(__SecKey *)a4 sharedInfo:(id)a5 prependKeyFingerprint:(BOOL)a6;
-+ (id)getGMACWithAuthData:(id)a3 key:(id)a4 iv:(id)a5;
-+ (id)getKeyExternalRepresentation:(__SecKey *)a3;
-+ (id)getKeyFingerprint:(__SecKey *)a3;
-+ (id)getKeyFingerprintWithKeyData:(id)a3;
-+ (id)getRandomBytes:(int)a3;
-+ (id)getSessionIDWithPhoneNumber:(id)a3 sessionStartTime:(int64_t)a4;
++ (id)copyAdrPublicKeyData:(id)data;
++ (id)createKeyExternalRepresentation:(__SecKey *)representation;
++ (id)getAESGCMDecryptedData:(id)data key:(id)key iv:(id)iv authTag:(id)tag;
++ (id)getDerivedKeyWithLength:(int)length secretData:(id)data additionalInfo:(id)info;
++ (id)getECIESDecryptedData:(id)data key:(__SecKey *)key sharedInfo:(id)info;
++ (id)getECIESEncryptedData:(id)data key:(__SecKey *)key sharedInfo:(id)info prependKeyFingerprint:(BOOL)fingerprint;
++ (id)getGMACWithAuthData:(id)data key:(id)key iv:(id)iv;
++ (id)getKeyExternalRepresentation:(__SecKey *)representation;
++ (id)getKeyFingerprint:(__SecKey *)fingerprint;
++ (id)getKeyFingerprintWithKeyData:(id)data;
++ (id)getRandomBytes:(int)bytes;
++ (id)getSessionIDWithPhoneNumber:(id)number sessionStartTime:(int64_t)time;
 @end
 
 @implementation CLEEDCryptoUtilities
 
-+ (id)getSessionIDWithPhoneNumber:(id)a3 sessionStartTime:(int64_t)a4
++ (id)getSessionIDWithPhoneNumber:(id)number sessionStartTime:(int64_t)time
 {
-  v7 = a4;
-  v5 = [MEMORY[0x1E695DF88] dataWithCapacity:{objc_msgSend(a3, "length") + 8}];
-  [v5 appendData:{objc_msgSend(a3, "dataUsingEncoding:", 4)}];
-  [v5 appendBytes:&v7 length:8];
+  timeCopy = time;
+  v5 = [MEMORY[0x1E695DF88] dataWithCapacity:{objc_msgSend(number, "length") + 8}];
+  [v5 appendData:{objc_msgSend(number, "dataUsingEncoding:", 4)}];
+  [v5 appendBytes:&timeCopy length:8];
   return v5;
 }
 
-+ (__SecCertificate)copyCertFromBase64String:(id)a3
++ (__SecCertificate)copyCertFromBase64String:(id)string
 {
-  v3 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:a3 options:0];
+  v3 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:string options:0];
   v4 = v3;
   if (v3 && [(__CFData *)v3 length])
   {
@@ -47,14 +47,14 @@
   }
 }
 
-+ (id)getECIESDecryptedData:(id)a3 key:(__SecKey *)a4 sharedInfo:(id)a5
++ (id)getECIESDecryptedData:(id)data key:(__SecKey *)key sharedInfo:(id)info
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (a3 && a4 && a5)
+  if (data && key && info)
   {
     v13 = *MEMORY[0x1E697B230];
-    v14 = a5;
-    [MEMORY[0x1E695DF20] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
+    infoCopy = info;
+    [MEMORY[0x1E695DF20] dictionaryWithObjects:&infoCopy forKeys:&v13 count:1];
     v5 = *MEMORY[0x1E697B138];
     DecryptedDataWithParameters = SecKeyCreateDecryptedDataWithParameters();
     v7 = DecryptedDataWithParameters;
@@ -99,10 +99,10 @@
   return DecryptedDataWithParameters;
 }
 
-+ (__SecKey)copyPublicKeyFromPrivateKey:(__SecKey *)a3
++ (__SecKey)copyPublicKeyFromPrivateKey:(__SecKey *)key
 {
   v14 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!key)
   {
     if (qword_1EAFE46E0 != -1)
     {
@@ -140,7 +140,7 @@
     goto LABEL_25;
   }
 
-  result = SecKeyCopyPublicKey(a3);
+  result = SecKeyCopyPublicKey(key);
   if (!result)
   {
     if (qword_1EAFE46E0 != -1)
@@ -186,10 +186,10 @@ LABEL_26:
   return result;
 }
 
-+ (id)createKeyExternalRepresentation:(__SecKey *)a3
++ (id)createKeyExternalRepresentation:(__SecKey *)representation
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!representation)
   {
     if (qword_1EAFE46E0 != -1)
     {
@@ -230,7 +230,7 @@ LABEL_26:
   }
 
   error = 0;
-  result = SecKeyCopyExternalRepresentation(a3, &error);
+  result = SecKeyCopyExternalRepresentation(representation, &error);
   if (error)
   {
     if (qword_1EAFE46E0 != -1)
@@ -241,13 +241,13 @@ LABEL_26:
     v4 = qword_1EAFE4718;
     if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_ERROR))
     {
-      v5 = [(__CFError *)error code];
+      code = [(__CFError *)error code];
       v6 = [-[__CFError domain](error "domain")];
       v7 = [-[__CFError localizedDescription](error "localizedDescription")];
       *buf = 136446978;
       v28 = "+[CLEEDCryptoUtilities createKeyExternalRepresentation:]";
       v29 = 1024;
-      v30 = v5;
+      v30 = code;
       v31 = 2080;
       v32 = v6;
       v33 = 2080;
@@ -267,13 +267,13 @@ LABEL_26:
       dispatch_once(&qword_1EAFE46E0, &unk_1F0E6D4E0);
     }
 
-    v9 = [(__CFError *)error code];
+    code2 = [(__CFError *)error code];
     v10 = [-[__CFError domain](error "domain")];
     v11 = [-[__CFError localizedDescription](error "localizedDescription")];
     v19 = 136446978;
     v20 = "+[CLEEDCryptoUtilities createKeyExternalRepresentation:]";
     v21 = 1024;
-    v22 = v9;
+    v22 = code2;
     v23 = 2080;
     v24 = v10;
     v25 = 2080;
@@ -296,10 +296,10 @@ LABEL_26:
   return result;
 }
 
-+ (id)getKeyExternalRepresentation:(__SecKey *)a3
++ (id)getKeyExternalRepresentation:(__SecKey *)representation
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!representation)
   {
     if (qword_1EAFE46E0 != -1)
     {
@@ -384,10 +384,10 @@ LABEL_27:
   return 0;
 }
 
-+ (__SecKey)createKeyFromExternalRepresentationData:(id)a3 keyClass:(id)a4
++ (__SecKey)createKeyFromExternalRepresentationData:(id)data keyClass:(id)class
 {
   v40 = *MEMORY[0x1E69E9840];
-  if (!a3 || !a4)
+  if (!data || !class)
   {
     if (qword_1EAFE46E0 != -1)
     {
@@ -432,9 +432,9 @@ LABEL_27:
   v30[0] = *MEMORY[0x1E697AD68];
   v30[1] = v5;
   v31[0] = v4;
-  v31[1] = a4;
+  v31[1] = class;
   error = 0;
-  result = SecKeyCreateWithData(a3, [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:2], &error);
+  result = SecKeyCreateWithData(data, [MEMORY[0x1E695DF20] dictionaryWithObjects:v31 forKeys:v30 count:2], &error);
   if (error)
   {
     if (qword_1EAFE46E0 != -1)
@@ -445,13 +445,13 @@ LABEL_27:
     v7 = qword_1EAFE4718;
     if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_ERROR))
     {
-      v8 = [(__CFError *)error code];
+      code = [(__CFError *)error code];
       v9 = [-[__CFError domain](error "domain")];
       v10 = [-[__CFError localizedDescription](error "localizedDescription")];
       *buf = 136446978;
       v33 = "+[CLEEDCryptoUtilities createKeyFromExternalRepresentationData:keyClass:]";
       v34 = 1024;
-      v35 = v8;
+      v35 = code;
       v36 = 2080;
       v37 = v9;
       v38 = 2080;
@@ -471,13 +471,13 @@ LABEL_27:
       dispatch_once(&qword_1EAFE46E0, &unk_1F0E6D4E0);
     }
 
-    v12 = [(__CFError *)error code];
+    code2 = [(__CFError *)error code];
     v13 = [-[__CFError domain](error "domain")];
     v14 = [-[__CFError localizedDescription](error "localizedDescription")];
     v22 = 136446978;
     v23 = "+[CLEEDCryptoUtilities createKeyFromExternalRepresentationData:keyClass:]";
     v24 = 1024;
-    v25 = v12;
+    v25 = code2;
     v26 = 2080;
     v27 = v13;
     v28 = 2080;
@@ -500,10 +500,10 @@ LABEL_27:
   return result;
 }
 
-+ (__SecKey)createKeyFromExternalRepresentationString:(id)a3 keyClass:(id)a4
++ (__SecKey)createKeyFromExternalRepresentationString:(id)string keyClass:(id)class
 {
   v18 = *MEMORY[0x1E69E9840];
-  if (!a3 || !a4)
+  if (!string || !class)
   {
     if (qword_1EAFE46E0 != -1)
     {
@@ -541,8 +541,8 @@ LABEL_27:
     goto LABEL_26;
   }
 
-  v5 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:a3 options:0];
-  v6 = [CLEEDCryptoUtilities createKeyFromExternalRepresentationData:v5 keyClass:a4];
+  v5 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:string options:0];
+  v6 = [CLEEDCryptoUtilities createKeyFromExternalRepresentationData:v5 keyClass:class];
 
   if (!v6)
   {
@@ -589,10 +589,10 @@ LABEL_27:
   return v6;
 }
 
-+ (id)copyAdrPublicKeyData:(id)a3
++ (id)copyAdrPublicKeyData:(id)data
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!data)
   {
     if (qword_1EAFE46E0 != -1)
     {
@@ -752,12 +752,12 @@ LABEL_52:
   return v7;
 }
 
-+ (id)getRandomBytes:(int)a3
++ (id)getRandomBytes:(int)bytes
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF88] dataWithLength:a3];
-  v6 = SecRandomCopyBytes(*MEMORY[0x1E697B308], v4, [v5 mutableBytes]);
+  bytesCopy = bytes;
+  v5 = [MEMORY[0x1E695DF88] dataWithLength:bytes];
+  v6 = SecRandomCopyBytes(*MEMORY[0x1E697B308], bytesCopy, [v5 mutableBytes]);
   if (v6)
   {
     v7 = v6;
@@ -772,7 +772,7 @@ LABEL_52:
       *buf = 136446722;
       v14 = "+[CLEEDCryptoUtilities getRandomBytes:]";
       v15 = 1024;
-      v16 = a3;
+      bytesCopy2 = bytes;
       v17 = 1024;
       v18 = v7;
       _os_log_impl(&dword_19B873000, v8, OS_LOG_TYPE_ERROR, "#EED2FWK,%{public}s,failed to create %d random bytes with error code %d\n", buf, 0x18u);
@@ -823,13 +823,13 @@ LABEL_52:
     v5 = qword_1EAFE4718;
     if (os_log_type_enabled(qword_1EAFE4718, OS_LOG_TYPE_ERROR))
     {
-      v6 = [(__CFError *)error code];
+      code = [(__CFError *)error code];
       v7 = [-[__CFError domain](error "domain")];
       v8 = [-[__CFError localizedDescription](error "localizedDescription")];
       *buf = 136446978;
       v25 = "+[CLEEDCryptoUtilities createRandomP256PrivateKey]";
       v26 = 2048;
-      v27 = v6;
+      v27 = code;
       v28 = 2080;
       v29 = v7;
       v30 = 2080;
@@ -846,13 +846,13 @@ LABEL_52:
         dispatch_once(&qword_1EAFE46E0, &unk_1F0E6D4E0);
       }
 
-      v10 = [(__CFError *)error code];
+      code2 = [(__CFError *)error code];
       v11 = [-[__CFError domain](error "domain")];
       v12 = [-[__CFError localizedDescription](error "localizedDescription")];
       v16 = 136446978;
       v17 = "+[CLEEDCryptoUtilities createRandomP256PrivateKey]";
       v18 = 2048;
-      v19 = v10;
+      v19 = code2;
       v20 = 2080;
       v21 = v11;
       v22 = 2080;
@@ -872,13 +872,13 @@ LABEL_52:
   return result;
 }
 
-+ (id)getKeyFingerprintWithKeyData:(id)a3
++ (id)getKeyFingerprintWithKeyData:(id)data
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (data)
   {
     v4 = [MEMORY[0x1E695DF88] dataWithLength:32];
-    CC_SHA256([a3 bytes], objc_msgSend(a3, "length"), objc_msgSend(v4, "mutableBytes"));
+    CC_SHA256([data bytes], objc_msgSend(data, "length"), objc_msgSend(v4, "mutableBytes"));
     v5 = *MEMORY[0x1E69E9840];
 
     return [v4 subdataWithRange:{0, 2}];
@@ -921,10 +921,10 @@ LABEL_52:
   }
 }
 
-+ (id)getKeyFingerprint:(__SecKey *)a3
++ (id)getKeyFingerprint:(__SecKey *)fingerprint
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!fingerprint)
   {
     if (qword_1EAFE46E0 != -1)
     {
@@ -1011,10 +1011,10 @@ LABEL_29:
   return MEMORY[0x1EEE66B58](CLEEDCryptoUtilities, sel_getKeyFingerprintWithKeyData_);
 }
 
-+ (id)getDerivedKeyWithLength:(int)a3 secretData:(id)a4 additionalInfo:(id)a5
++ (id)getDerivedKeyWithLength:(int)length secretData:(id)data additionalInfo:(id)info
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (!a4 || !a5)
+  if (!data || !info)
   {
     if (qword_1EAFE46E0 != -1)
     {
@@ -1052,8 +1052,8 @@ LABEL_29:
     goto LABEL_35;
   }
 
-  [a5 bytes];
-  [a5 length];
+  [info bytes];
+  [info length];
   AnsiX963 = CCKDFParametersCreateAnsiX963();
   if (AnsiX963)
   {
@@ -1103,9 +1103,9 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v16 = [MEMORY[0x1E695DF88] dataWithLength:a3];
-  [a4 bytes];
-  [a4 length];
+  v16 = [MEMORY[0x1E695DF88] dataWithLength:length];
+  [data bytes];
+  [data length];
   [v16 mutableBytes];
   [v16 length];
   v17 = CCDeriveKey();
@@ -1147,10 +1147,10 @@ LABEL_37:
   return v16;
 }
 
-+ (id)getGMACWithAuthData:(id)a3 key:(id)a4 iv:(id)a5
++ (id)getGMACWithAuthData:(id)data key:(id)key iv:(id)iv
 {
   v24 = *MEMORY[0x1E69E9840];
-  if (!a3 || !a4 || !a5)
+  if (!data || !key || !iv)
   {
     if (qword_1EAFE46E0 != -1)
     {
@@ -1189,12 +1189,12 @@ LABEL_37:
   }
 
   v8 = [MEMORY[0x1E695DF88] dataWithLength:16];
-  [a4 bytes];
-  [a4 length];
-  [a5 bytes];
-  [a5 length];
-  [a3 bytes];
-  [a3 length];
+  [key bytes];
+  [key length];
+  [iv bytes];
+  [iv length];
+  [data bytes];
+  [data length];
   [v8 mutableBytes];
   [v8 length];
   v9 = CCCryptorGCMOneshotEncrypt();
@@ -1246,10 +1246,10 @@ LABEL_28:
   return v8;
 }
 
-+ (id)getAESGCMDecryptedData:(id)a3 key:(id)a4 iv:(id)a5 authTag:(id)a6
++ (id)getAESGCMDecryptedData:(id)data key:(id)key iv:(id)iv authTag:(id)tag
 {
   v26 = *MEMORY[0x1E69E9840];
-  if (!a3 || !a4 || !a5 || !a6)
+  if (!data || !key || !iv || !tag)
   {
     if (qword_1EAFE46E0 != -1)
     {
@@ -1287,16 +1287,16 @@ LABEL_28:
     goto LABEL_28;
   }
 
-  v10 = [MEMORY[0x1E695DF88] dataWithLength:{objc_msgSend(a3, "length")}];
-  [a4 bytes];
-  [a4 length];
-  [a5 bytes];
-  [a5 length];
-  [a3 bytes];
-  [a3 length];
+  v10 = [MEMORY[0x1E695DF88] dataWithLength:{objc_msgSend(data, "length")}];
+  [key bytes];
+  [key length];
+  [iv bytes];
+  [iv length];
+  [data bytes];
+  [data length];
   [v10 mutableBytes];
-  [a6 bytes];
-  [a6 length];
+  [tag bytes];
+  [tag length];
   v11 = CCCryptorGCMOneshotDecrypt();
   if (v11)
   {
@@ -1346,10 +1346,10 @@ LABEL_29:
   return v10;
 }
 
-+ (id)getECIESEncryptedData:(id)a3 key:(__SecKey *)a4 sharedInfo:(id)a5 prependKeyFingerprint:(BOOL)a6
++ (id)getECIESEncryptedData:(id)data key:(__SecKey *)key sharedInfo:(id)info prependKeyFingerprint:(BOOL)fingerprint
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (!a3 || !a4 || !a5)
+  if (!data || !key || !info)
   {
     if (qword_1EAFE46E0 != -1)
     {
@@ -1391,16 +1391,16 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  v7 = a6;
+  fingerprintCopy = fingerprint;
   v23 = *MEMORY[0x1E697B230];
-  v24 = a5;
-  [MEMORY[0x1E695DF20] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
+  infoCopy = info;
+  [MEMORY[0x1E695DF20] dictionaryWithObjects:&infoCopy forKeys:&v23 count:1];
   v8 = *MEMORY[0x1E697B138];
   EncryptedDataWithParameters = SecKeyCreateEncryptedDataWithParameters();
   v10 = EncryptedDataWithParameters;
-  if (v7)
+  if (fingerprintCopy)
   {
-    v17 = [CLEEDCryptoUtilities getKeyFingerprint:a4];
+    v17 = [CLEEDCryptoUtilities getKeyFingerprint:key];
     if (v17)
     {
       v18 = v17;

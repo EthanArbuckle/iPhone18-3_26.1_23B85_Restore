@@ -25,8 +25,8 @@
 
   else
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"NSValueTransformer+MTLPredefinedTransformerAdditions.m" lineNumber:360 description:{@"Invalid parameter not satisfying: %@", @"formatter != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSValueTransformer+MTLPredefinedTransformerAdditions.m" lineNumber:360 description:{@"Invalid parameter not satisfying: %@", @"formatter != nil"}];
 
     if (a4)
     {
@@ -34,8 +34,8 @@
     }
   }
 
-  v12 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v12 handleFailureInMethod:a2 object:a1 file:@"NSValueTransformer+MTLPredefinedTransformerAdditions.m" lineNumber:361 description:{@"Invalid parameter not satisfying: %@", @"objectClass != nil"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"NSValueTransformer+MTLPredefinedTransformerAdditions.m" lineNumber:361 description:{@"Invalid parameter not satisfying: %@", @"objectClass != nil"}];
 
 LABEL_3:
   v16[0] = MEMORY[0x1E69E9820];
@@ -64,7 +64,7 @@ LABEL_3:
   [v8 setNumberStyle:a3];
   [v8 setLocale:v7];
 
-  v9 = [a1 mtl_transformerWithFormatter:v8 forObjectClass:objc_opt_class()];
+  v9 = [self mtl_transformerWithFormatter:v8 forObjectClass:objc_opt_class()];
 
   return v9;
 }
@@ -78,8 +78,8 @@ LABEL_3:
   v17 = a3;
   if (![v17 length])
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:a1 file:@"NSValueTransformer+MTLPredefinedTransformerAdditions.m" lineNumber:334 description:{@"Invalid parameter not satisfying: %@", @"dateFormat.length"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSValueTransformer+MTLPredefinedTransformerAdditions.m" lineNumber:334 description:{@"Invalid parameter not satisfying: %@", @"dateFormat.length"}];
   }
 
   v18 = objc_alloc_init(MEMORY[0x1E696AB78]);
@@ -103,20 +103,20 @@ LABEL_3:
   v11 = a5;
   if (!v9)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:a1 file:@"NSValueTransformer+MTLPredefinedTransformerAdditions.m" lineNumber:309 description:{@"Invalid parameter not satisfying: %@", @"dictionary != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSValueTransformer+MTLPredefinedTransformerAdditions.m" lineNumber:309 description:{@"Invalid parameter not satisfying: %@", @"dictionary != nil"}];
   }
 
   v12 = [v9 count];
   v13 = MEMORY[0x1E695DFD8];
-  v14 = [v9 allValues];
-  v15 = [v13 setWithArray:v14];
+  allValues = [v9 allValues];
+  v15 = [v13 setWithArray:allValues];
   v16 = [v15 count];
 
   if (v12 != v16)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:a1 file:@"NSValueTransformer+MTLPredefinedTransformerAdditions.m" lineNumber:310 description:{@"Invalid parameter not satisfying: %@", @"dictionary.count == [[NSSet setWithArray:dictionary.allValues] count]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"NSValueTransformer+MTLPredefinedTransformerAdditions.m" lineNumber:310 description:{@"Invalid parameter not satisfying: %@", @"dictionary.count == [[NSSet setWithArray:dictionary.allValues] count]"}];
   }
 
   v27[0] = MEMORY[0x1E69E9820];
@@ -143,8 +143,8 @@ LABEL_3:
 {
   if (!a3)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"NSValueTransformer+MTLPredefinedTransformerAdditions.m" lineNumber:287 description:{@"Invalid parameter not satisfying: %@", @"modelClass != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSValueTransformer+MTLPredefinedTransformerAdditions.m" lineNumber:287 description:{@"Invalid parameter not satisfying: %@", @"modelClass != nil"}];
   }
 
   v9[0] = MEMORY[0x1E69E9820];
@@ -162,8 +162,8 @@ LABEL_3:
   v5 = a3;
   if (!v5)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:a1 file:@"NSValueTransformer+MTLPredefinedTransformerAdditions.m" lineNumber:162 description:{@"Invalid parameter not satisfying: %@", @"transformer != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"NSValueTransformer+MTLPredefinedTransformerAdditions.m" lineNumber:162 description:{@"Invalid parameter not satisfying: %@", @"transformer != nil"}];
   }
 
   aBlock[0] = MEMORY[0x1E69E9820];

@@ -50,7 +50,7 @@
   v4 = +[_OSLockHistory sharedInstance];
   if ([v4 hasEnoughHistoryForInactivityPrediction])
   {
-    v37 = self;
+    selfCopy = self;
     v39 = v3;
     v5 = +[NSMutableDictionary dictionary];
     v6 = +[NSMutableDictionary dictionary];
@@ -77,25 +77,25 @@
           }
 
           v10 = *(*(&v48 + 1) + 8 * i);
-          v11 = [v10 startDate];
-          v12 = [v43 components:32 fromDate:v11];
-          v13 = [v12 hour];
+          startDate = [v10 startDate];
+          v12 = [v43 components:32 fromDate:startDate];
+          hour = [v12 hour];
 
-          v14 = [v10 endDate];
-          v15 = [v10 startDate];
-          [v14 timeIntervalSinceDate:v15];
+          endDate = [v10 endDate];
+          startDate2 = [v10 startDate];
+          [endDate timeIntervalSinceDate:startDate2];
           v17 = v16;
 
-          v18 = [NSNumber numberWithInteger:v13];
+          v18 = [NSNumber numberWithInteger:hour];
           v19 = [v5 objectForKeyedSubscript:v18];
           v20 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v19 intValue] + 1);
-          v21 = [NSNumber numberWithInteger:v13];
+          v21 = [NSNumber numberWithInteger:hour];
           [v5 setObject:v20 forKeyedSubscript:v21];
 
           v6 = v42;
           if (v17 > 10800.0)
           {
-            v22 = [NSNumber numberWithInteger:v13];
+            v22 = [NSNumber numberWithInteger:hour];
             v23 = [v42 objectForKeyedSubscript:v22];
 
             if (!v23)
@@ -104,7 +104,7 @@
             }
 
             [v23 addObject:v10];
-            v24 = [NSNumber numberWithInteger:v13];
+            v24 = [NSNumber numberWithInteger:hour];
             [v42 setObject:v23 forKeyedSubscript:v24];
           }
         }
@@ -115,12 +115,12 @@
       while (v8);
     }
 
-    log = v37->_log;
+    log = selfCopy->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_INFO))
     {
       v26 = log;
-      v27 = [v6 allKeys];
-      v28 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v27 count]);
+      allKeys = [v6 allKeys];
+      v28 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [allKeys count]);
       *buf = 138412290;
       v53 = v28;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "Found %@ events", buf, 0xCu);
@@ -137,7 +137,7 @@
     v45 = v30;
     v31 = v29;
     v46 = v31;
-    v47 = v37;
+    v47 = selfCopy;
     [v6 enumerateKeysAndObjectsUsingBlock:v44];
     v32 = [NSKeyedArchiver archivedDataWithRootObject:v31 requiringSecureCoding:1 error:0];
     v33 = [NSString stringWithFormat:@"backup.v%d", 2];

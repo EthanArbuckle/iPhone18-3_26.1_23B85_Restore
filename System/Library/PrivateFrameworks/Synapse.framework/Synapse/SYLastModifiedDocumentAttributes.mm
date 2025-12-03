@@ -1,43 +1,43 @@
 @interface SYLastModifiedDocumentAttributes
-- (SYLastModifiedDocumentAttributes)initWithCoder:(id)a3;
-- (SYLastModifiedDocumentAttributes)initWithFileURL:(id)a3 modifiedDate:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (SYLastModifiedDocumentAttributes)initWithCoder:(id)coder;
+- (SYLastModifiedDocumentAttributes)initWithFileURL:(id)l modifiedDate:(id)date;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SYLastModifiedDocumentAttributes
 
-- (SYLastModifiedDocumentAttributes)initWithFileURL:(id)a3 modifiedDate:(id)a4
+- (SYLastModifiedDocumentAttributes)initWithFileURL:(id)l modifiedDate:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  lCopy = l;
+  dateCopy = date;
   v12.receiver = self;
   v12.super_class = SYLastModifiedDocumentAttributes;
   v9 = [(SYLastModifiedDocumentAttributes *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_fileURL, a3);
-    objc_storeStrong(&v10->_modifiedDate, a4);
+    objc_storeStrong(&v9->_fileURL, l);
+    objc_storeStrong(&v10->_modifiedDate, date);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SYLastModifiedDocumentAttributes *)self fileURL];
-  [v4 encodeObject:v5 forKey:@"fileURL"];
+  coderCopy = coder;
+  fileURL = [(SYLastModifiedDocumentAttributes *)self fileURL];
+  [coderCopy encodeObject:fileURL forKey:@"fileURL"];
 
-  v6 = [(SYLastModifiedDocumentAttributes *)self modifiedDate];
-  [v4 encodeObject:v6 forKey:@"modifiedDate"];
+  modifiedDate = [(SYLastModifiedDocumentAttributes *)self modifiedDate];
+  [coderCopy encodeObject:modifiedDate forKey:@"modifiedDate"];
 }
 
-- (SYLastModifiedDocumentAttributes)initWithCoder:(id)a3
+- (SYLastModifiedDocumentAttributes)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileURL"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"modifiedDate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileURL"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"modifiedDate"];
 
   if (v5)
   {
@@ -51,16 +51,16 @@
 
   if (v7)
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SYLastModifiedDocumentAttributes *)self initWithFileURL:v5 modifiedDate:v6];
-    v8 = self;
+    selfCopy = self;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 @end

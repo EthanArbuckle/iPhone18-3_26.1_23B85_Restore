@@ -1,15 +1,15 @@
 @interface RBSWorkloop
-+ (dispatch_queue_t)createCalloutQueue:(uint64_t)a1;
-+ (id)createBackgroundQueue:(id)a3;
-+ (id)createSyncingQueue:(id)a3;
++ (dispatch_queue_t)createCalloutQueue:(uint64_t)queue;
++ (id)createBackgroundQueue:(id)queue;
++ (id)createSyncingQueue:(id)queue;
 + (id)sharedBackgroundWorkloop;
 + (id)sharedCalloutWorkloop;
 + (id)sharedInstance;
 + (id)sharedSyncingWorkloop;
-+ (void)performBackgroundWork:(id)a3;
-+ (void)performBackgroundWorkWithServiceClass:(unsigned int)a3 block:(id)a4;
-+ (void)performCallout:(uint64_t)a1;
-+ (void)performCalloutWithServiceClass:(void *)a3 block:;
++ (void)performBackgroundWork:(id)work;
++ (void)performBackgroundWorkWithServiceClass:(unsigned int)class block:(id)block;
++ (void)performCallout:(uint64_t)callout;
++ (void)performCalloutWithServiceClass:(void *)class block:;
 - (dispatch_workloop_t)_init;
 @end
 
@@ -54,12 +54,12 @@ uint64_t __29__RBSWorkloop_sharedInstance__block_invoke()
 
 - (dispatch_workloop_t)_init
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = RBSWorkloop;
   v1 = objc_msgSendSuper2(&v12, sel_init);
   if (v1)
@@ -101,20 +101,20 @@ uint64_t __29__RBSWorkloop_sharedInstance__block_invoke()
   return v3;
 }
 
-+ (dispatch_queue_t)createCalloutQueue:(uint64_t)a1
++ (dispatch_queue_t)createCalloutQueue:(uint64_t)queue
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 UTF8String];
+  uTF8String = [v2 UTF8String];
 
   v4 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v5 = +[RBSWorkloop sharedCalloutWorkloop];
-  v6 = dispatch_queue_create_with_target_V2(v3, v4, v5);
+  v6 = dispatch_queue_create_with_target_V2(uTF8String, v4, v5);
 
   return v6;
 }
 
-+ (void)performCallout:(uint64_t)a1
++ (void)performCallout:(uint64_t)callout
 {
   v2 = a2;
   objc_opt_self();
@@ -122,47 +122,47 @@ uint64_t __29__RBSWorkloop_sharedInstance__block_invoke()
   dispatch_async(v3, v2);
 }
 
-+ (void)performCalloutWithServiceClass:(void *)a3 block:
++ (void)performCalloutWithServiceClass:(void *)class block:
 {
-  v4 = a3;
+  classCopy = class;
   objc_opt_self();
   v5 = +[RBSWorkloop sharedCalloutWorkloop];
-  RBSDispatchAsyncWithQoS(v5, a2, v4);
+  RBSDispatchAsyncWithQoS(v5, a2, classCopy);
 }
 
-+ (id)createBackgroundQueue:(id)a3
++ (id)createBackgroundQueue:(id)queue
 {
-  v5 = a3;
-  v6 = [a3 UTF8String];
+  queueCopy = queue;
+  uTF8String = [queue UTF8String];
   v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v8 = [a1 sharedBackgroundWorkloop];
-  v9 = dispatch_queue_create_with_target_V2(v6, v7, v8);
+  sharedBackgroundWorkloop = [self sharedBackgroundWorkloop];
+  v9 = dispatch_queue_create_with_target_V2(uTF8String, v7, sharedBackgroundWorkloop);
 
   return v9;
 }
 
-+ (void)performBackgroundWork:(id)a3
++ (void)performBackgroundWork:(id)work
 {
-  v4 = a3;
-  v5 = [a1 sharedBackgroundWorkloop];
-  dispatch_async(v5, v4);
+  workCopy = work;
+  sharedBackgroundWorkloop = [self sharedBackgroundWorkloop];
+  dispatch_async(sharedBackgroundWorkloop, workCopy);
 }
 
-+ (void)performBackgroundWorkWithServiceClass:(unsigned int)a3 block:(id)a4
++ (void)performBackgroundWorkWithServiceClass:(unsigned int)class block:(id)block
 {
-  v5 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, a3, 0, a4);
-  [a1 performBackgroundWork:v5];
+  v5 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS, class, 0, block);
+  [self performBackgroundWork:v5];
 }
 
-+ (id)createSyncingQueue:(id)a3
++ (id)createSyncingQueue:(id)queue
 {
-  v3 = a3;
+  queueCopy = queue;
   v4 = +[RBSWorkloop sharedInstance];
   v5 = v4[3];
 
-  v6 = [v3 UTF8String];
+  uTF8String = [queueCopy UTF8String];
   v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-  v8 = dispatch_queue_create_with_target_V2(v6, v7, v5);
+  v8 = dispatch_queue_create_with_target_V2(uTF8String, v7, v5);
 
   return v8;
 }

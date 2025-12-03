@@ -2,39 +2,39 @@
 - (BOOL)isEnabled;
 - (BOOL)isSelected;
 - (BOOL)isSpringLoaded;
-- (UIEdgeInsets)imageInsetsForStyle:(int64_t)a3 state:(int64_t)a4;
-- (_UITabBarItemBridgedElement)initWithViewController:(id)a3;
+- (UIEdgeInsets)imageInsetsForStyle:(int64_t)style state:(int64_t)state;
+- (_UITabBarItemBridgedElement)initWithViewController:(id)controller;
 - (id)accessibilityAttributedLabel;
 - (id)accessibilityIdentifier;
-- (id)badgeForStyle:(int64_t)a3 state:(int64_t)a4;
+- (id)badgeForStyle:(int64_t)style state:(int64_t)state;
 - (id)badgeValue;
-- (id)imageForStyle:(int64_t)a3 state:(int64_t)a4;
+- (id)imageForStyle:(int64_t)style state:(int64_t)state;
 - (id)scrollEdgeAppearance;
 - (id)standardAppearance;
 - (id)title;
-- (id)titleForStyle:(int64_t)a3 state:(int64_t)a4;
+- (id)titleForStyle:(int64_t)style state:(int64_t)state;
 - (int64_t)preferredPlacement;
 - (void)_reloadTabBarItem;
-- (void)_setBridgedTabBarItem:(id)a3;
-- (void)_tabDataProviderContentDidChange:(id)a3;
+- (void)_setBridgedTabBarItem:(id)item;
+- (void)_tabDataProviderContentDidChange:(id)change;
 @end
 
 @implementation _UITabBarItemBridgedElement
 
 - (int64_t)preferredPlacement
 {
-  v2 = [(_UITabBarItemBridgedElement *)self tabBarItem];
-  v3 = [v2 preferredPlacement];
+  tabBarItem = [(_UITabBarItemBridgedElement *)self tabBarItem];
+  preferredPlacement = [tabBarItem preferredPlacement];
 
-  return v3;
+  return preferredPlacement;
 }
 
 - (id)badgeValue
 {
-  v2 = [(_UITabBarItemBridgedElement *)self tabBarItem];
-  v3 = [v2 badgeValue];
+  tabBarItem = [(_UITabBarItemBridgedElement *)self tabBarItem];
+  badgeValue = [tabBarItem badgeValue];
 
-  return v3;
+  return badgeValue;
 }
 
 - (id)title
@@ -56,20 +56,20 @@
   return v4;
 }
 
-- (_UITabBarItemBridgedElement)initWithViewController:(id)a3
+- (_UITabBarItemBridgedElement)initWithViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v6 = [v5 UUIDString];
+  controllerCopy = controller;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
   v13.receiver = self;
   v13.super_class = _UITabBarItemBridgedElement;
-  v7 = [(_UITabElement *)&v13 initWithIdentifier:v6 title:&stru_1EFB14550 image:0];
+  v7 = [(_UITabElement *)&v13 initWithIdentifier:uUIDString title:&stru_1EFB14550 image:0];
 
   if (v7)
   {
-    v8 = [v4 tabBarItem];
+    tabBarItem = [controllerCopy tabBarItem];
     tabBarItem = v7->_tabBarItem;
-    v7->_tabBarItem = v8;
+    v7->_tabBarItem = tabBarItem;
 
     v10 = v7->_tabBarItem;
     if (v10)
@@ -84,7 +84,7 @@
     }
 
     [(UITabBarItem *)v11 set_fallbackSourceItem:v7];
-    [(_UITabElement *)v7 _setViewController:v4];
+    [(_UITabElement *)v7 _setViewController:controllerCopy];
   }
 
   return v7;
@@ -92,22 +92,22 @@
 
 - (void)_reloadTabBarItem
 {
-  v3 = [(_UITabElement *)self _viewController];
-  v4 = [v3 tabBarItem];
+  _viewController = [(_UITabElement *)self _viewController];
+  tabBarItem = [_viewController tabBarItem];
 
-  [(_UITabBarItemBridgedElement *)self _setBridgedTabBarItem:v4];
+  [(_UITabBarItemBridgedElement *)self _setBridgedTabBarItem:tabBarItem];
 }
 
-- (void)_setBridgedTabBarItem:(id)a3
+- (void)_setBridgedTabBarItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   tabBarItem = self->_tabBarItem;
-  if (tabBarItem != v5)
+  if (tabBarItem != itemCopy)
   {
-    v12 = v5;
-    v7 = [(UITabBarItem *)&tabBarItem->super.super.isa _changeObserver];
+    v12 = itemCopy;
+    _changeObserver = [(UITabBarItem *)&tabBarItem->super.super.isa _changeObserver];
 
-    if (v7 == self)
+    if (_changeObserver == self)
     {
       v8 = self->_tabBarItem;
       if (v8)
@@ -124,7 +124,7 @@
       [(UITabBarItem *)v9 set_fallbackSourceItem:?];
     }
 
-    objc_storeStrong(&self->_tabBarItem, a3);
+    objc_storeStrong(&self->_tabBarItem, item);
     v10 = self->_tabBarItem;
     if (v10)
     {
@@ -138,62 +138,62 @@
     }
 
     [(UITabBarItem *)v11 set_fallbackSourceItem:?];
-    v5 = v12;
+    itemCopy = v12;
   }
 }
 
 - (BOOL)isEnabled
 {
-  v2 = [(_UITabBarItemBridgedElement *)self tabBarItem];
-  v3 = [v2 isEnabled];
+  tabBarItem = [(_UITabBarItemBridgedElement *)self tabBarItem];
+  isEnabled = [tabBarItem isEnabled];
 
-  return v3;
+  return isEnabled;
 }
 
 - (BOOL)isSelected
 {
-  v2 = [(_UITabBarItemBridgedElement *)self tabBarItem];
-  v3 = [v2 isSelected];
+  tabBarItem = [(_UITabBarItemBridgedElement *)self tabBarItem];
+  isSelected = [tabBarItem isSelected];
 
-  return v3;
+  return isSelected;
 }
 
 - (BOOL)isSpringLoaded
 {
-  v2 = [(_UITabBarItemBridgedElement *)self tabBarItem];
-  v3 = [v2 isSpringLoaded];
+  tabBarItem = [(_UITabBarItemBridgedElement *)self tabBarItem];
+  isSpringLoaded = [tabBarItem isSpringLoaded];
 
-  return v3;
+  return isSpringLoaded;
 }
 
-- (id)titleForStyle:(int64_t)a3 state:(int64_t)a4
+- (id)titleForStyle:(int64_t)style state:(int64_t)state
 {
-  v6 = [(_UITabBarItemBridgedElement *)self tabBarItem];
-  v7 = [v6 titleForStyle:a3 state:a4];
+  tabBarItem = [(_UITabBarItemBridgedElement *)self tabBarItem];
+  v7 = [tabBarItem titleForStyle:style state:state];
 
   return v7;
 }
 
-- (id)badgeForStyle:(int64_t)a3 state:(int64_t)a4
+- (id)badgeForStyle:(int64_t)style state:(int64_t)state
 {
-  v6 = [(_UITabBarItemBridgedElement *)self tabBarItem];
-  v7 = [v6 badgeForStyle:a3 state:a4];
+  tabBarItem = [(_UITabBarItemBridgedElement *)self tabBarItem];
+  v7 = [tabBarItem badgeForStyle:style state:state];
 
   return v7;
 }
 
-- (id)imageForStyle:(int64_t)a3 state:(int64_t)a4
+- (id)imageForStyle:(int64_t)style state:(int64_t)state
 {
-  v6 = [(_UITabBarItemBridgedElement *)self tabBarItem];
-  v7 = [v6 imageForStyle:a3 state:a4];
+  tabBarItem = [(_UITabBarItemBridgedElement *)self tabBarItem];
+  v7 = [tabBarItem imageForStyle:style state:state];
 
   return v7;
 }
 
-- (UIEdgeInsets)imageInsetsForStyle:(int64_t)a3 state:(int64_t)a4
+- (UIEdgeInsets)imageInsetsForStyle:(int64_t)style state:(int64_t)state
 {
-  v6 = [(_UITabBarItemBridgedElement *)self tabBarItem];
-  [v6 imageInsetsForStyle:a3 state:a4];
+  tabBarItem = [(_UITabBarItemBridgedElement *)self tabBarItem];
+  [tabBarItem imageInsetsForStyle:style state:state];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -212,40 +212,40 @@
 
 - (id)standardAppearance
 {
-  v2 = [(_UITabBarItemBridgedElement *)self tabBarItem];
-  v3 = [v2 standardAppearance];
+  tabBarItem = [(_UITabBarItemBridgedElement *)self tabBarItem];
+  standardAppearance = [tabBarItem standardAppearance];
 
-  return v3;
+  return standardAppearance;
 }
 
 - (id)scrollEdgeAppearance
 {
-  v2 = [(_UITabBarItemBridgedElement *)self tabBarItem];
-  v3 = [v2 scrollEdgeAppearance];
+  tabBarItem = [(_UITabBarItemBridgedElement *)self tabBarItem];
+  scrollEdgeAppearance = [tabBarItem scrollEdgeAppearance];
 
-  return v3;
+  return scrollEdgeAppearance;
 }
 
-- (void)_tabDataProviderContentDidChange:(id)a3
+- (void)_tabDataProviderContentDidChange:(id)change
 {
-  v4 = [(UITab *)self _tabModel];
-  [v4 tabContentDidChange:self];
+  _tabModel = [(UITab *)self _tabModel];
+  [_tabModel tabContentDidChange:self];
 }
 
 - (id)accessibilityIdentifier
 {
-  v2 = [(_UITabBarItemBridgedElement *)self tabBarItem];
-  v3 = [v2 accessibilityIdentifier];
+  tabBarItem = [(_UITabBarItemBridgedElement *)self tabBarItem];
+  accessibilityIdentifier = [tabBarItem accessibilityIdentifier];
 
-  return v3;
+  return accessibilityIdentifier;
 }
 
 - (id)accessibilityAttributedLabel
 {
-  v2 = [(_UITabBarItemBridgedElement *)self tabBarItem];
-  v3 = [v2 accessibilityAttributedLabel];
+  tabBarItem = [(_UITabBarItemBridgedElement *)self tabBarItem];
+  accessibilityAttributedLabel = [tabBarItem accessibilityAttributedLabel];
 
-  return v3;
+  return accessibilityAttributedLabel;
 }
 
 @end

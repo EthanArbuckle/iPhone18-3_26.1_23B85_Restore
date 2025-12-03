@@ -1,14 +1,14 @@
 @interface OrgApacheLuceneCodecsStoredFieldsReader
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation OrgApacheLuceneCodecsStoredFieldsReader
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(OrgApacheLuceneCodecsStoredFieldsReader *)self clone];
+  clone = [(OrgApacheLuceneCodecsStoredFieldsReader *)self clone];
 
-  return v3;
+  return clone;
 }
 
 @end

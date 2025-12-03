@@ -1,26 +1,26 @@
 @interface ForegroundAppRecord
 - (id)description;
-- (void)setIsForeground:(BOOL)a3;
-- (void)setPolicyId:(unint64_t)a3;
+- (void)setIsForeground:(BOOL)foreground;
+- (void)setPolicyId:(unint64_t)id;
 @end
 
 @implementation ForegroundAppRecord
 
-- (void)setIsForeground:(BOOL)a3
+- (void)setIsForeground:(BOOL)foreground
 {
-  if (self->_isForeground != a3 || self->_stateChangeTime == 0.0)
+  if (self->_isForeground != foreground || self->_stateChangeTime == 0.0)
   {
-    self->_isForeground = a3;
+    self->_isForeground = foreground;
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     self->_stateChangeTime = v4;
   }
 }
 
-- (void)setPolicyId:(unint64_t)a3
+- (void)setPolicyId:(unint64_t)id
 {
-  if (self->_policyId != a3)
+  if (self->_policyId != id)
   {
-    self->_policyId = a3;
+    self->_policyId = id;
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     self->_stateChangeTime = v4;
   }

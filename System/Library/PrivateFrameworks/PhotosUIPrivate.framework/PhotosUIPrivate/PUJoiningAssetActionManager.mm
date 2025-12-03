@@ -1,82 +1,82 @@
 @interface PUJoiningAssetActionManager
-- (BOOL)canPerformAction:(unint64_t)a3 onAllAssetsByAssetCollection:(id)a4;
-- (BOOL)canPerformActionType:(unint64_t)a3 onAsset:(id)a4 inAssetCollection:(id)a5;
-- (BOOL)shouldEnableActionType:(unint64_t)a3 onAllAssetsByAssetCollection:(id)a4;
-- (BOOL)shouldEnableActionType:(unint64_t)a3 onAsset:(id)a4 inAssetCollection:(id)a5;
+- (BOOL)canPerformAction:(unint64_t)action onAllAssetsByAssetCollection:(id)collection;
+- (BOOL)canPerformActionType:(unint64_t)type onAsset:(id)asset inAssetCollection:(id)collection;
+- (BOOL)shouldEnableActionType:(unint64_t)type onAllAssetsByAssetCollection:(id)collection;
+- (BOOL)shouldEnableActionType:(unint64_t)type onAsset:(id)asset inAssetCollection:(id)collection;
 - (PUJoiningAssetActionManager)init;
-- (id)_actionManagerForAsset:(id)a3;
-- (id)_actionManagerForAssets:(id)a3;
-- (id)_actionManagerForAssetsByAssetCollection:(id)a3;
-- (id)actionPerformerForDuplicatingAssetsByAssetCollection:(id)a3 withNewStillImageTime:(id *)a4;
-- (id)actionPerformerForEditingAudioMixMode:(id)a3 onAsset:(id)a4;
-- (id)actionPerformerForEditingPlaybackRate:(float)a3 onAsset:(id)a4;
-- (id)actionPerformerForEditingWithPendingEditsRequest:(id)a3 onAsset:(id)a4;
-- (id)actionPerformerForEditingWithQuickCropContext:(id)a3 onAsset:(id)a4;
-- (id)actionPerformerForSettingFavoriteTo:(BOOL)a3 onAssetsByAssetCollection:(id)a4;
-- (id)actionPerformerForSimpleActionType:(unint64_t)a3 onAssetsByAssetCollection:(id)a4;
-- (void)registerActionManager:(id)a3 forAssetClass:(Class)a4;
+- (id)_actionManagerForAsset:(id)asset;
+- (id)_actionManagerForAssets:(id)assets;
+- (id)_actionManagerForAssetsByAssetCollection:(id)collection;
+- (id)actionPerformerForDuplicatingAssetsByAssetCollection:(id)collection withNewStillImageTime:(id *)time;
+- (id)actionPerformerForEditingAudioMixMode:(id)mode onAsset:(id)asset;
+- (id)actionPerformerForEditingPlaybackRate:(float)rate onAsset:(id)asset;
+- (id)actionPerformerForEditingWithPendingEditsRequest:(id)request onAsset:(id)asset;
+- (id)actionPerformerForEditingWithQuickCropContext:(id)context onAsset:(id)asset;
+- (id)actionPerformerForSettingFavoriteTo:(BOOL)to onAssetsByAssetCollection:(id)collection;
+- (id)actionPerformerForSimpleActionType:(unint64_t)type onAssetsByAssetCollection:(id)collection;
+- (void)registerActionManager:(id)manager forAssetClass:(Class)class;
 @end
 
 @implementation PUJoiningAssetActionManager
 
-- (id)actionPerformerForEditingWithPendingEditsRequest:(id)a3 onAsset:(id)a4
+- (id)actionPerformerForEditingWithPendingEditsRequest:(id)request onAsset:(id)asset
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUJoiningAssetActionManager *)self _actionManagerForAsset:v6];
-  v9 = [v8 actionPerformerForEditingWithPendingEditsRequest:v7 onAsset:v6];
+  assetCopy = asset;
+  requestCopy = request;
+  v8 = [(PUJoiningAssetActionManager *)self _actionManagerForAsset:assetCopy];
+  v9 = [v8 actionPerformerForEditingWithPendingEditsRequest:requestCopy onAsset:assetCopy];
 
   return v9;
 }
 
-- (id)actionPerformerForEditingAudioMixMode:(id)a3 onAsset:(id)a4
+- (id)actionPerformerForEditingAudioMixMode:(id)mode onAsset:(id)asset
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUJoiningAssetActionManager *)self _actionManagerForAsset:v6];
-  v9 = [v8 actionPerformerForEditingAudioMixMode:v7 onAsset:v6];
+  assetCopy = asset;
+  modeCopy = mode;
+  v8 = [(PUJoiningAssetActionManager *)self _actionManagerForAsset:assetCopy];
+  v9 = [v8 actionPerformerForEditingAudioMixMode:modeCopy onAsset:assetCopy];
 
   return v9;
 }
 
-- (id)actionPerformerForEditingPlaybackRate:(float)a3 onAsset:(id)a4
+- (id)actionPerformerForEditingPlaybackRate:(float)rate onAsset:(id)asset
 {
-  v6 = a4;
-  v7 = [(PUJoiningAssetActionManager *)self _actionManagerForAsset:v6];
-  *&v8 = a3;
-  v9 = [v7 actionPerformerForEditingPlaybackRate:v6 onAsset:v8];
+  assetCopy = asset;
+  v7 = [(PUJoiningAssetActionManager *)self _actionManagerForAsset:assetCopy];
+  *&v8 = rate;
+  v9 = [v7 actionPerformerForEditingPlaybackRate:assetCopy onAsset:v8];
 
   return v9;
 }
 
-- (id)actionPerformerForEditingWithQuickCropContext:(id)a3 onAsset:(id)a4
+- (id)actionPerformerForEditingWithQuickCropContext:(id)context onAsset:(id)asset
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUJoiningAssetActionManager *)self _actionManagerForAsset:v6];
-  v9 = [v8 actionPerformerForEditingWithQuickCropContext:v7 onAsset:v6];
+  assetCopy = asset;
+  contextCopy = context;
+  v8 = [(PUJoiningAssetActionManager *)self _actionManagerForAsset:assetCopy];
+  v9 = [v8 actionPerformerForEditingWithQuickCropContext:contextCopy onAsset:assetCopy];
 
   return v9;
 }
 
-- (id)actionPerformerForDuplicatingAssetsByAssetCollection:(id)a3 withNewStillImageTime:(id *)a4
+- (id)actionPerformerForDuplicatingAssetsByAssetCollection:(id)collection withNewStillImageTime:(id *)time
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  collectionCopy = collection;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v7 = [v6 allValues];
-  v8 = [v7 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  allValues = [collectionCopy allValues];
+  v8 = [allValues countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v8)
   {
     v9 = v8;
-    v23 = a4;
-    v24 = v6;
+    timeCopy = time;
+    v24 = collectionCopy;
     v10 = 0;
     v11 = *v34;
-    obj = v7;
+    obj = allValues;
     do
     {
       for (i = 0; i != v9; ++i)
@@ -140,12 +140,12 @@ LABEL_17:
 
     while (v9);
 
-    a4 = v23;
-    v6 = v24;
+    time = timeCopy;
+    collectionCopy = v24;
     if (v10)
     {
-      v27 = *&v23->var0;
-      var3 = v23->var3;
+      v27 = *&timeCopy->var0;
+      var3 = timeCopy->var3;
       v21 = [v10 actionPerformerForDuplicatingAssetsByAssetCollection:v24 withNewStillImageTime:&v27];
       goto LABEL_23;
     }
@@ -157,32 +157,32 @@ LABEL_17:
 
   v26.receiver = self;
   v26.super_class = PUJoiningAssetActionManager;
-  v27 = *&a4->var0;
-  var3 = a4->var3;
-  v21 = [(PUAssetActionManager *)&v26 actionPerformerForDuplicatingAssetsByAssetCollection:v6 withNewStillImageTime:&v27];
+  v27 = *&time->var0;
+  var3 = time->var3;
+  v21 = [(PUAssetActionManager *)&v26 actionPerformerForDuplicatingAssetsByAssetCollection:collectionCopy withNewStillImageTime:&v27];
   v10 = 0;
 LABEL_23:
 
   return v21;
 }
 
-- (id)actionPerformerForSettingFavoriteTo:(BOOL)a3 onAssetsByAssetCollection:(id)a4
+- (id)actionPerformerForSettingFavoriteTo:(BOOL)to onAssetsByAssetCollection:(id)collection
 {
-  v4 = a3;
+  toCopy = to;
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  collectionCopy = collection;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v7 = [v6 allValues];
-  v8 = [v7 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  allValues = [collectionCopy allValues];
+  v8 = [allValues countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v8)
   {
     v9 = v8;
-    v23 = v4;
-    v24 = v6;
-    obj = v7;
+    v23 = toCopy;
+    v24 = collectionCopy;
+    obj = allValues;
     v10 = 0;
     v11 = *v32;
     do
@@ -248,8 +248,8 @@ LABEL_17:
 
     while (v9);
 
-    v6 = v24;
-    v4 = v23;
+    collectionCopy = v24;
+    toCopy = v23;
     if (v10)
     {
       v21 = [v10 actionPerformerForSettingFavoriteTo:v23 onAssetsByAssetCollection:v24];
@@ -263,31 +263,31 @@ LABEL_17:
 
   v26.receiver = self;
   v26.super_class = PUJoiningAssetActionManager;
-  v21 = [(PUAssetActionManager *)&v26 actionPerformerForSettingFavoriteTo:v4 onAssetsByAssetCollection:v6];
+  v21 = [(PUAssetActionManager *)&v26 actionPerformerForSettingFavoriteTo:toCopy onAssetsByAssetCollection:collectionCopy];
   v10 = 0;
 LABEL_23:
 
   return v21;
 }
 
-- (id)actionPerformerForSimpleActionType:(unint64_t)a3 onAssetsByAssetCollection:(id)a4
+- (id)actionPerformerForSimpleActionType:(unint64_t)type onAssetsByAssetCollection:(id)collection
 {
-  v6 = a4;
-  v7 = [v6 allKeys];
-  v8 = [v7 firstObject];
+  collectionCopy = collection;
+  allKeys = [collectionCopy allKeys];
+  firstObject = [allKeys firstObject];
 
-  v9 = [v6 objectForKeyedSubscript:v8];
-  v10 = [v9 firstObject];
-  v11 = [(PUJoiningAssetActionManager *)self _actionManagerForAsset:v10];
-  v12 = [v11 actionPerformerForSimpleActionType:a3 onAssetsByAssetCollection:v6];
+  v9 = [collectionCopy objectForKeyedSubscript:firstObject];
+  firstObject2 = [v9 firstObject];
+  v11 = [(PUJoiningAssetActionManager *)self _actionManagerForAsset:firstObject2];
+  v12 = [v11 actionPerformerForSimpleActionType:type onAssetsByAssetCollection:collectionCopy];
 
   return v12;
 }
 
-- (BOOL)shouldEnableActionType:(unint64_t)a3 onAllAssetsByAssetCollection:(id)a4
+- (BOOL)shouldEnableActionType:(unint64_t)type onAllAssetsByAssetCollection:(id)collection
 {
-  v6 = a4;
-  if ([v6 count])
+  collectionCopy = collection;
+  if ([collectionCopy count])
   {
     v13 = 0;
     v14 = &v13;
@@ -306,8 +306,8 @@ LABEL_23:
     v10[4] = self;
     v10[5] = &v13;
     v10[6] = v11;
-    v10[7] = a3;
-    [v6 enumerateKeysAndObjectsUsingBlock:v10];
+    v10[7] = type;
+    [collectionCopy enumerateKeysAndObjectsUsingBlock:v10];
     v7 = *(v14 + 24);
     _Block_object_dispose(v11, 8);
 
@@ -316,8 +316,8 @@ LABEL_23:
 
   else
   {
-    v8 = [(PUJoiningAssetActionManager *)self _actionManagerForNoAsset];
-    v7 = [v8 shouldEnableActionType:a3 onAllAssetsByAssetCollection:v6];
+    _actionManagerForNoAsset = [(PUJoiningAssetActionManager *)self _actionManagerForNoAsset];
+    v7 = [_actionManagerForNoAsset shouldEnableActionType:type onAllAssetsByAssetCollection:collectionCopy];
   }
 
   return v7 & 1;
@@ -398,10 +398,10 @@ LABEL_3:
   *a4 = *(*(*(a1 + 40) + 8) + 24) ^ 1;
 }
 
-- (BOOL)canPerformAction:(unint64_t)a3 onAllAssetsByAssetCollection:(id)a4
+- (BOOL)canPerformAction:(unint64_t)action onAllAssetsByAssetCollection:(id)collection
 {
-  v6 = a4;
-  if ([v6 count])
+  collectionCopy = collection;
+  if ([collectionCopy count])
   {
     v13 = 0;
     v14 = &v13;
@@ -420,8 +420,8 @@ LABEL_3:
     v10[4] = self;
     v10[5] = &v13;
     v10[6] = v11;
-    v10[7] = a3;
-    [v6 enumerateKeysAndObjectsUsingBlock:v10];
+    v10[7] = action;
+    [collectionCopy enumerateKeysAndObjectsUsingBlock:v10];
     v7 = *(v14 + 24);
     _Block_object_dispose(v11, 8);
 
@@ -430,8 +430,8 @@ LABEL_3:
 
   else
   {
-    v8 = [(PUJoiningAssetActionManager *)self _actionManagerForNoAsset];
-    v7 = [v8 canPerformActionType:a3 onAsset:0 inAssetCollection:0];
+    _actionManagerForNoAsset = [(PUJoiningAssetActionManager *)self _actionManagerForNoAsset];
+    v7 = [_actionManagerForNoAsset canPerformActionType:action onAsset:0 inAssetCollection:0];
   }
 
   return v7 & 1;
@@ -512,22 +512,22 @@ LABEL_3:
   *a4 = *(*(*(a1 + 40) + 8) + 24) ^ 1;
 }
 
-- (BOOL)shouldEnableActionType:(unint64_t)a3 onAsset:(id)a4 inAssetCollection:(id)a5
+- (BOOL)shouldEnableActionType:(unint64_t)type onAsset:(id)asset inAssetCollection:(id)collection
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(PUJoiningAssetActionManager *)self _actionManagerForAsset:v9];
+  collectionCopy = collection;
+  assetCopy = asset;
+  v10 = [(PUJoiningAssetActionManager *)self _actionManagerForAsset:assetCopy];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 shouldEnableActionType:a3 onAsset:v9 inAssetCollection:v8];
+    v12 = [v10 shouldEnableActionType:type onAsset:assetCopy inAssetCollection:collectionCopy];
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = PUJoiningAssetActionManager;
-    v12 = [(PUAssetActionManager *)&v15 shouldEnableActionType:a3 onAsset:v9 inAssetCollection:v8];
+    v12 = [(PUAssetActionManager *)&v15 shouldEnableActionType:type onAsset:assetCopy inAssetCollection:collectionCopy];
   }
 
   v13 = v12;
@@ -535,22 +535,22 @@ LABEL_3:
   return v13;
 }
 
-- (BOOL)canPerformActionType:(unint64_t)a3 onAsset:(id)a4 inAssetCollection:(id)a5
+- (BOOL)canPerformActionType:(unint64_t)type onAsset:(id)asset inAssetCollection:(id)collection
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(PUJoiningAssetActionManager *)self _actionManagerForAsset:v9];
+  collectionCopy = collection;
+  assetCopy = asset;
+  v10 = [(PUJoiningAssetActionManager *)self _actionManagerForAsset:assetCopy];
   v11 = v10;
   if (v10)
   {
-    v12 = [v10 canPerformActionType:a3 onAsset:v9 inAssetCollection:v8];
+    v12 = [v10 canPerformActionType:type onAsset:assetCopy inAssetCollection:collectionCopy];
   }
 
   else
   {
     v15.receiver = self;
     v15.super_class = PUJoiningAssetActionManager;
-    v12 = [(PUAssetActionManager *)&v15 canPerformActionType:a3 onAsset:v9 inAssetCollection:v8];
+    v12 = [(PUAssetActionManager *)&v15 canPerformActionType:type onAsset:assetCopy inAssetCollection:collectionCopy];
   }
 
   v13 = v12;
@@ -558,10 +558,10 @@ LABEL_3:
   return v13;
 }
 
-- (id)_actionManagerForAssetsByAssetCollection:(id)a3
+- (id)_actionManagerForAssetsByAssetCollection:(id)collection
 {
-  v4 = a3;
-  if ([v4 count])
+  collectionCopy = collection;
+  if ([collectionCopy count])
   {
     v11 = 0;
     v12 = &v11;
@@ -575,10 +575,10 @@ LABEL_3:
     v10[3] = &unk_1E7B789E0;
     v10[4] = self;
     v10[5] = &v11;
-    [v4 enumerateKeysAndObjectsUsingBlock:v10];
+    [collectionCopy enumerateKeysAndObjectsUsingBlock:v10];
     v5 = v12[5];
-    v6 = [MEMORY[0x1E695DFB0] null];
-    LODWORD(v5) = [v5 isEqual:v6];
+    null = [MEMORY[0x1E695DFB0] null];
+    LODWORD(v5) = [v5 isEqual:null];
 
     if (v5)
     {
@@ -586,16 +586,16 @@ LABEL_3:
       v12[5] = 0;
     }
 
-    v8 = v12[5];
+    _actionManagerForNoAsset = v12[5];
     _Block_object_dispose(&v11, 8);
   }
 
   else
   {
-    v8 = [(PUJoiningAssetActionManager *)self _actionManagerForNoAsset];
+    _actionManagerForNoAsset = [(PUJoiningAssetActionManager *)self _actionManagerForNoAsset];
   }
 
-  return v8;
+  return _actionManagerForNoAsset;
 }
 
 void __72__PUJoiningAssetActionManager__actionManagerForAssetsByAssetCollection___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, _BYTE *a4)
@@ -632,27 +632,27 @@ void __72__PUJoiningAssetActionManager__actionManagerForAssetsByAssetCollection_
   }
 }
 
-- (id)_actionManagerForAssets:(id)a3
+- (id)_actionManagerForAssets:(id)assets
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  assetsCopy = assets;
+  if ([assetsCopy count])
   {
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v4;
+    v5 = assetsCopy;
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = v6;
-      v8 = 0;
+      _actionManagerForNoAsset = 0;
       v9 = *v15;
       while (2)
       {
         v10 = 0;
-        v11 = v8;
+        v11 = _actionManagerForNoAsset;
         do
         {
           if (*v15 != v9)
@@ -661,7 +661,7 @@ void __72__PUJoiningAssetActionManager__actionManagerForAssetsByAssetCollection_
           }
 
           v12 = [(PUJoiningAssetActionManager *)self _actionManagerForAsset:*(*(&v14 + 1) + 8 * v10), v14];
-          v8 = v12;
+          _actionManagerForNoAsset = v12;
           if (v11 && v11 != v12)
           {
 
@@ -669,7 +669,7 @@ void __72__PUJoiningAssetActionManager__actionManagerForAssetsByAssetCollection_
           }
 
           ++v10;
-          v11 = v8;
+          v11 = _actionManagerForNoAsset;
         }
 
         while (v7 != v10);
@@ -686,36 +686,36 @@ void __72__PUJoiningAssetActionManager__actionManagerForAssetsByAssetCollection_
     else
     {
 LABEL_13:
-      v8 = 0;
+      _actionManagerForNoAsset = 0;
     }
   }
 
   else
   {
-    v8 = [(PUJoiningAssetActionManager *)self _actionManagerForNoAsset];
+    _actionManagerForNoAsset = [(PUJoiningAssetActionManager *)self _actionManagerForNoAsset];
   }
 
-  return v8;
+  return _actionManagerForNoAsset;
 }
 
-- (id)_actionManagerForAsset:(id)a3
+- (id)_actionManagerForAsset:(id)asset
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  assetCopy = asset;
+  if (assetCopy)
   {
-    v5 = [(PUJoiningAssetActionManager *)self _actionManagerByClass];
-    v6 = [v5 objectForKey:objc_opt_class()];
+    _actionManagerByClass = [(PUJoiningAssetActionManager *)self _actionManagerByClass];
+    _actionManagerForNoAsset = [_actionManagerByClass objectForKey:objc_opt_class()];
 
-    if (!v6)
+    if (!_actionManagerForNoAsset)
     {
-      v7 = [(PUJoiningAssetActionManager *)self _actionManagerByClass];
+      _actionManagerByClass2 = [(PUJoiningAssetActionManager *)self _actionManagerByClass];
       v15 = 0u;
       v16 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v8 = [v7 keyEnumerator];
-      v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      keyEnumerator = [_actionManagerByClass2 keyEnumerator];
+      v9 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v9)
       {
         v10 = v9;
@@ -726,24 +726,24 @@ LABEL_13:
           {
             if (*v16 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(keyEnumerator);
             }
 
             v13 = *(*(&v15 + 1) + 8 * i);
             if ([objc_opt_class() isSubclassOfClass:v13])
             {
-              v6 = [v7 objectForKey:v13];
+              _actionManagerForNoAsset = [_actionManagerByClass2 objectForKey:v13];
 
-              if (v6)
+              if (_actionManagerForNoAsset)
               {
-                [v7 setObject:v6 forKey:objc_opt_class()];
+                [_actionManagerByClass2 setObject:_actionManagerForNoAsset forKey:objc_opt_class()];
               }
 
               goto LABEL_15;
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+          v10 = [keyEnumerator countByEnumeratingWithState:&v15 objects:v19 count:16];
           if (v10)
           {
             continue;
@@ -753,40 +753,40 @@ LABEL_13:
         }
       }
 
-      v6 = 0;
+      _actionManagerForNoAsset = 0;
 LABEL_15:
     }
   }
 
   else
   {
-    v6 = [(PUJoiningAssetActionManager *)self _actionManagerForNoAsset];
+    _actionManagerForNoAsset = [(PUJoiningAssetActionManager *)self _actionManagerForNoAsset];
   }
 
-  return v6;
+  return _actionManagerForNoAsset;
 }
 
-- (void)registerActionManager:(id)a3 forAssetClass:(Class)a4
+- (void)registerActionManager:(id)manager forAssetClass:(Class)class
 {
-  v7 = a3;
-  v10 = v7;
-  if (!v7)
+  managerCopy = manager;
+  v10 = managerCopy;
+  if (!managerCopy)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PUJoiningAssetActionManager.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"actionManager != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUJoiningAssetActionManager.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"actionManager != nil"}];
 
-    v7 = 0;
+    managerCopy = 0;
   }
 
-  if (a4)
+  if (class)
   {
-    v8 = [(PUJoiningAssetActionManager *)self _actionManagerByClass];
-    [v8 setObject:v10 forKey:a4];
+    _actionManagerByClass = [(PUJoiningAssetActionManager *)self _actionManagerByClass];
+    [_actionManagerByClass setObject:v10 forKey:class];
   }
 
   else
   {
-    [(PUJoiningAssetActionManager *)self _setActionManagerForNoAsset:v7];
+    [(PUJoiningAssetActionManager *)self _setActionManagerForNoAsset:managerCopy];
   }
 }
 
@@ -797,9 +797,9 @@ LABEL_15:
   v2 = [(PUJoiningAssetActionManager *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
     actionManagerByClass = v2->__actionManagerByClass;
-    v2->__actionManagerByClass = v3;
+    v2->__actionManagerByClass = strongToStrongObjectsMapTable;
   }
 
   return v2;

@@ -1,30 +1,30 @@
 @interface AXAuditCategoryEmbedded
-+ (CGRect)_appRelativeRectForRect:(CGRect)a3 contextId:(unsigned int)a4;
-+ (int64_t)axDeviceOrientationForInterfaceOrientation:(int)a3;
++ (CGRect)_appRelativeRectForRect:(CGRect)rect contextId:(unsigned int)id;
++ (int64_t)axDeviceOrientationForInterfaceOrientation:(int)orientation;
 - ($5A02F7D70E7A678ABCAACDC101C00631)windowContextInformation;
-- (CGRect)frameForElement:(id)a3;
-- (CGRect)orientedFrameForElement:(id)a3;
-- (CGRect)orientedFrameForRect:(CGRect)a3;
+- (CGRect)frameForElement:(id)element;
+- (CGRect)orientedFrameForElement:(id)element;
+- (CGRect)orientedFrameForRect:(CGRect)rect;
 - (CGRect)orientedScreenBounds;
 - (id)_topLevelAppElement;
-- (id)elementDescriptionForElement:(id)a3;
+- (id)elementDescriptionForElement:(id)element;
 - (id)iOSFrontmostAppForTargetPid;
 - (int)interfaceOrientation;
-- (void)testOnAllVisibleElements:(id)a3;
+- (void)testOnAllVisibleElements:(id)elements;
 @end
 
 @implementation AXAuditCategoryEmbedded
 
-- (void)testOnAllVisibleElements:(id)a3
+- (void)testOnAllVisibleElements:(id)elements
 {
-  v4 = a3;
-  v5 = [(AXAuditCategoryEmbedded *)self iOSFrontmostAppForTargetPid];
+  elementsCopy = elements;
+  iOSFrontmostAppForTargetPid = [(AXAuditCategoryEmbedded *)self iOSFrontmostAppForTargetPid];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [v5 visibleElements];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  visibleElements = [iOSFrontmostAppForTargetPid visibleElements];
+  v7 = [visibleElements countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -36,15 +36,15 @@
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(visibleElements);
         }
 
-        v4[2](v4, *(*(&v11 + 1) + 8 * v10));
+        elementsCopy[2](elementsCopy, *(*(&v11 + 1) + 8 * v10));
         v10 = v10 + 1;
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [visibleElements countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -113,9 +113,9 @@ LABEL_13:
   return v10;
 }
 
-- (CGRect)frameForElement:(id)a3
+- (CGRect)frameForElement:(id)element
 {
-  [a3 frame];
+  [element frame];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -123,9 +123,9 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)orientedFrameForElement:(id)a3
+- (CGRect)orientedFrameForElement:(id)element
 {
-  [a3 frame];
+  [element frame];
 
   [(AXAuditCategoryEmbedded *)self orientedFrameForRect:?];
   result.size.height = v7;
@@ -135,12 +135,12 @@ LABEL_13:
   return result;
 }
 
-- (CGRect)orientedFrameForRect:(CGRect)a3
+- (CGRect)orientedFrameForRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = [objc_opt_class() axDeviceOrientationForInterfaceOrientation:{-[AXAuditCategoryEmbedded interfaceOrientation](self, "interfaceOrientation")}];
   v8.n128_f64[0] = x;
   v9.n128_f64[0] = y;
@@ -155,17 +155,17 @@ LABEL_13:
   return result;
 }
 
-- (id)elementDescriptionForElement:(id)a3
+- (id)elementDescriptionForElement:(id)element
 {
-  v3 = [a3 elementRef];
+  elementRef = [element elementRef];
   pid = 0;
-  if (AXUIElementGetPid(v3, &pid) || !AuditDoesAllowDeveloperAttributes())
+  if (AXUIElementGetPid(elementRef, &pid) || !AuditDoesAllowDeveloperAttributes())
   {
     goto LABEL_7;
   }
 
   cf = 0;
-  v4 = AXUIElementCopyAttributeValue(v3, (&loc_13B4 + 1), &cf);
+  v4 = AXUIElementCopyAttributeValue(elementRef, (&loc_13B4 + 1), &cf);
   v5 = 0;
   if (v4 == kAXErrorSuccess)
   {
@@ -188,49 +188,49 @@ LABEL_7:
 
 - (id)_topLevelAppElement
 {
-  v2 = [(AXAuditCategoryEmbedded *)self iOSFrontmostAppForTargetPid];
-  v3 = [v2 uiElement];
+  iOSFrontmostAppForTargetPid = [(AXAuditCategoryEmbedded *)self iOSFrontmostAppForTargetPid];
+  uiElement = [iOSFrontmostAppForTargetPid uiElement];
 
-  return v3;
+  return uiElement;
 }
 
 - (int)interfaceOrientation
 {
-  v2 = [(AXAuditCategoryEmbedded *)self _topLevelAppElement];
-  v3 = [v2 uiElementsWithAttribute:2017];
-  v4 = [v3 lastObject];
+  _topLevelAppElement = [(AXAuditCategoryEmbedded *)self _topLevelAppElement];
+  v3 = [_topLevelAppElement uiElementsWithAttribute:2017];
+  lastObject = [v3 lastObject];
 
-  v5 = [v4 numberWithAXAttribute:3035];
-  v6 = [v5 unsignedIntegerValue];
+  v5 = [lastObject numberWithAXAttribute:3035];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  if (!v6)
+  if (!unsignedIntegerValue)
   {
     v7 = +[AXUIElement uiSystemWideApplication];
     v8 = [v7 uiElementsWithAttribute:1001];
-    v9 = [v8 lastObject];
+    lastObject2 = [v8 lastObject];
 
-    v10 = [v9 numberWithAXAttribute:1503];
-    v11 = [v10 intValue];
+    v10 = [lastObject2 numberWithAXAttribute:1503];
+    intValue = [v10 intValue];
 
-    if (v11 <= 1)
+    if (intValue <= 1)
     {
       v12 = 1;
     }
 
     else
     {
-      v12 = v11;
+      v12 = intValue;
     }
 
-    v6 = [objc_opt_class() axInterfaceOrientationForDeviceOrientation:v12];
+    unsignedIntegerValue = [objc_opt_class() axInterfaceOrientationForDeviceOrientation:v12];
   }
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
-+ (int64_t)axDeviceOrientationForInterfaceOrientation:(int)a3
++ (int64_t)axDeviceOrientationForInterfaceOrientation:(int)orientation
 {
-  v3 = (a3 - 1);
+  v3 = (orientation - 1);
   if (v3 < 4)
   {
     return v3 + 1;
@@ -270,8 +270,8 @@ LABEL_7:
 
 - ($5A02F7D70E7A678ABCAACDC101C00631)windowContextInformation
 {
-  v37 = [(AXAuditCategoryEmbedded *)self _topLevelAppElement];
-  v3 = [v37 arrayWithAXAttribute:3052];
+  _topLevelAppElement = [(AXAuditCategoryEmbedded *)self _topLevelAppElement];
+  v3 = [_topLevelAppElement arrayWithAXAttribute:3052];
   v39 = +[NSMutableArray array];
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -307,12 +307,12 @@ LABEL_7:
         if (objc_opt_isKindOfClass())
         {
           v17 = [v14 objectForKeyedSubscript:@"isKeyboardWindow"];
-          v18 = [v17 BOOLValue];
+          bOOLValue = [v17 BOOLValue];
         }
 
         else
         {
-          v18 = 0;
+          bOOLValue = 0;
         }
 
         v19 = [v14 objectForKeyedSubscript:@"isMainWindow"];
@@ -323,9 +323,9 @@ LABEL_7:
           v21 = v11;
           v22 = v10;
           v23 = [v14 objectForKeyedSubscript:@"isKeyboardWindow"];
-          v24 = [v23 BOOLValue];
+          bOOLValue2 = [v23 BOOLValue];
 
-          if (v18 & 1 | ((v24 & 1) == 0))
+          if (bOOLValue & 1 | ((bOOLValue2 & 1) == 0))
           {
             v10 = v22;
             v11 = v21;
@@ -344,8 +344,8 @@ LABEL_7:
             }
 
             v26 = objc_opt_class();
-            v27 = [v15 unsignedIntValue];
-            [v26 _appRelativeRectForRect:v27 contextId:{valuePtr, v43}];
+            unsignedIntValue = [v15 unsignedIntValue];
+            [v26 _appRelativeRectForRect:unsignedIntValue contextId:{valuePtr, v43}];
             v29 = v28;
             v31 = v30;
             v33 = v32;
@@ -406,10 +406,10 @@ LABEL_7:
   return result;
 }
 
-+ (CGRect)_appRelativeRectForRect:(CGRect)a3 contextId:(unsigned int)a4
++ (CGRect)_appRelativeRectForRect:(CGRect)rect contextId:(unsigned int)id
 {
-  v4 = *&a4;
-  valuePtr = a3;
+  v4 = *&id;
+  valuePtr = rect;
   v5 = AXValueCreate(kAXValueTypeCGRect, &valuePtr);
   v6 = +[AXUIElement uiSystemWideApplication];
   v7 = [NSNumber numberWithUnsignedInt:v4];

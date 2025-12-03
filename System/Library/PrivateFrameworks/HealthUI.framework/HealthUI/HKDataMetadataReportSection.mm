@@ -1,16 +1,16 @@
 @interface HKDataMetadataReportSection
-- (HKDataMetadataReportSection)initWithSample:(id)a3 healthStore:(id)a4;
-- (id)cellForIndex:(unint64_t)a3 tableView:(id)a4;
+- (HKDataMetadataReportSection)initWithSample:(id)sample healthStore:(id)store;
+- (id)cellForIndex:(unint64_t)index tableView:(id)view;
 - (id)documentImageForXMLFiles;
-- (void)selectCellForIndex:(unint64_t)a3 navigationController:(id)a4 animated:(BOOL)a5;
+- (void)selectCellForIndex:(unint64_t)index navigationController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation HKDataMetadataReportSection
 
-- (HKDataMetadataReportSection)initWithSample:(id)a3 healthStore:(id)a4
+- (HKDataMetadataReportSection)initWithSample:(id)sample healthStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  sampleCopy = sample;
+  storeCopy = store;
   v15.receiver = self;
   v15.super_class = HKDataMetadataReportSection;
   v9 = [(HKDataMetadataReportSection *)&v15 init];
@@ -19,16 +19,16 @@
     goto LABEL_5;
   }
 
-  v10 = [v7 hasAssociatedReport];
+  hasAssociatedReport = [sampleCopy hasAssociatedReport];
   v11 = 0;
-  if (v8 && v10)
+  if (storeCopy && hasAssociatedReport)
   {
-    v12 = [v7 detailedReportName];
+    detailedReportName = [sampleCopy detailedReportName];
     detailedReportName = v9->_detailedReportName;
-    v9->_detailedReportName = v12;
+    v9->_detailedReportName = detailedReportName;
 
-    objc_storeStrong(&v9->_sample, a3);
-    objc_storeStrong(&v9->_healthStore, a4);
+    objc_storeStrong(&v9->_sample, sample);
+    objc_storeStrong(&v9->_healthStore, store);
 LABEL_5:
     v11 = v9;
   }
@@ -60,25 +60,25 @@ void __55__HKDataMetadataReportSection_documentImageForXMLFiles__block_invoke()
   documentImageForXMLFiles__CachedImage = v3;
 }
 
-- (id)cellForIndex:(unint64_t)a3 tableView:(id)a4
+- (id)cellForIndex:(unint64_t)index tableView:(id)view
 {
-  v5 = [a4 dequeueReusableCellWithIdentifier:@"report_cell_identifier"];
+  v5 = [view dequeueReusableCellWithIdentifier:@"report_cell_identifier"];
   if (!v5)
   {
     v5 = objc_alloc_init(_HKReportTableViewCell);
   }
 
   detailedReportName = self->_detailedReportName;
-  v7 = [(HKDataMetadataReportSection *)self documentImageForXMLFiles];
-  [(_HKReportTableViewCell *)v5 setReportName:detailedReportName reportImage:v7];
+  documentImageForXMLFiles = [(HKDataMetadataReportSection *)self documentImageForXMLFiles];
+  [(_HKReportTableViewCell *)v5 setReportName:detailedReportName reportImage:documentImageForXMLFiles];
 
   return v5;
 }
 
-- (void)selectCellForIndex:(unint64_t)a3 navigationController:(id)a4 animated:(BOOL)a5
+- (void)selectCellForIndex:(unint64_t)index navigationController:(id)controller animated:(BOOL)animated
 {
-  v7 = a4;
-  objc_initWeak(&location, v7);
+  controllerCopy = controller;
+  objc_initWeak(&location, controllerCopy);
   sample = self->_sample;
   healthStore = self->_healthStore;
   v10[0] = MEMORY[0x1E69E9820];
@@ -87,7 +87,7 @@ void __55__HKDataMetadataReportSection_documentImageForXMLFiles__block_invoke()
   v10[3] = &unk_1E81B6CA8;
   v10[4] = self;
   objc_copyWeak(&v11, &location);
-  v12 = a5;
+  animatedCopy = animated;
   [(HKSample *)sample fetchDetailedReportWithHealthStore:healthStore reportDataBlock:v10];
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);

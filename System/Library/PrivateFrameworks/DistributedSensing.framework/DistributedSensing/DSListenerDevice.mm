@@ -1,14 +1,14 @@
 @interface DSListenerDevice
-- (DSListenerDevice)initWithRapportDevice:(id)a3 queue:(id)a4;
+- (DSListenerDevice)initWithRapportDevice:(id)device queue:(id)queue;
 @end
 
 @implementation DSListenerDevice
 
-- (DSListenerDevice)initWithRapportDevice:(id)a3 queue:(id)a4
+- (DSListenerDevice)initWithRapportDevice:(id)device queue:(id)queue
 {
   v8.receiver = self;
   v8.super_class = DSListenerDevice;
-  v4 = [(DSRapportDevice *)&v8 initWithRapportDevice:a3 queue:a4];
+  v4 = [(DSRapportDevice *)&v8 initWithRapportDevice:device queue:queue];
   v5 = v4;
   if (v4)
   {

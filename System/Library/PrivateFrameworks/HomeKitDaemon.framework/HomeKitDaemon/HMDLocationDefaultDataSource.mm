@@ -1,16 +1,16 @@
 @interface HMDLocationDefaultDataSource
-- (id)makeLocationManagerWithEffectiveBundle:(id)a3 delegate:(id)a4 onQueue:(id)a5;
+- (id)makeLocationManagerWithEffectiveBundle:(id)bundle delegate:(id)delegate onQueue:(id)queue;
 @end
 
 @implementation HMDLocationDefaultDataSource
 
-- (id)makeLocationManagerWithEffectiveBundle:(id)a3 delegate:(id)a4 onQueue:(id)a5
+- (id)makeLocationManagerWithEffectiveBundle:(id)bundle delegate:(id)delegate onQueue:(id)queue
 {
   v7 = MEMORY[0x277CBFC10];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v7 alloc] initWithEffectiveBundle:v10 delegate:v9 onQueue:v8];
+  queueCopy = queue;
+  delegateCopy = delegate;
+  bundleCopy = bundle;
+  v11 = [[v7 alloc] initWithEffectiveBundle:bundleCopy delegate:delegateCopy onQueue:queueCopy];
 
   return v11;
 }

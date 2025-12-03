@@ -1,30 +1,30 @@
 @interface CEKSliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
-- (double)_axGetDeltaForCurrentValue:(double)a3 toIncrement:(BOOL)a4;
+- (double)_axGetDeltaForCurrentValue:(double)value toIncrement:(BOOL)increment;
 - (double)_axNumberOfTickSegments;
 - (id)accessibilityLabel;
 - (id)accessibilityValue;
 - (unint64_t)accessibilityTraits;
-- (void)scrollViewDidScroll:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
 @end
 
 @implementation CEKSliderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CEKSlider" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CEKSlider" hasInstanceMethod:@"value" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"CEKSlider" hasInstanceMethod:@"maximumValue" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"CEKSlider" hasInstanceMethod:@"minimumValue" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"CEKSlider" hasInstanceMethod:@"tickMarkSize" withFullSignature:{"{CGSize=dd}", 0}];
-  [v3 validateClass:@"CameraEditKit.TickMarksModel" hasSwiftField:@"tickMarkSpacing" withSwiftType:"CGFloat"];
-  [v3 validateClass:@"CameraEditKit.TickMarksModel" hasSwiftField:@"mainTickMarkInterval" withSwiftType:"Int"];
-  [v3 validateClass:@"CEKSlider" hasInstanceMethod:@"setValue:" withFullSignature:{"v", "d", 0}];
-  [v3 validateClass:@"CEKSlider" hasInstanceMethod:@"scrollViewDidScroll:" withFullSignature:{"v", "@", 0}];
-  [v3 validateClass:@"CEKSlider" hasInstanceMethod:@"_tickMarksView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CEKSliderTickMarksView" hasInstanceMethod:@"tickMarksModel" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CEKSlider" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CEKSlider" hasInstanceMethod:@"value" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"CEKSlider" hasInstanceMethod:@"maximumValue" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"CEKSlider" hasInstanceMethod:@"minimumValue" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"CEKSlider" hasInstanceMethod:@"tickMarkSize" withFullSignature:{"{CGSize=dd}", 0}];
+  [validationsCopy validateClass:@"CameraEditKit.TickMarksModel" hasSwiftField:@"tickMarkSpacing" withSwiftType:"CGFloat"];
+  [validationsCopy validateClass:@"CameraEditKit.TickMarksModel" hasSwiftField:@"mainTickMarkInterval" withSwiftType:"Int"];
+  [validationsCopy validateClass:@"CEKSlider" hasInstanceMethod:@"setValue:" withFullSignature:{"v", "d", 0}];
+  [validationsCopy validateClass:@"CEKSlider" hasInstanceMethod:@"scrollViewDidScroll:" withFullSignature:{"v", "@", 0}];
+  [validationsCopy validateClass:@"CEKSlider" hasInstanceMethod:@"_tickMarksView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CEKSliderTickMarksView" hasInstanceMethod:@"tickMarksModel" withFullSignature:{"@", 0}];
 }
 
 - (double)_axNumberOfTickSegments
@@ -42,7 +42,7 @@
 {
   v7.receiver = self;
   v7.super_class = CEKSliderAccessibility;
-  v3 = [(CEKSliderAccessibility *)&v7 accessibilityTraits];
+  accessibilityTraits = [(CEKSliderAccessibility *)&v7 accessibilityTraits];
   v4 = [(CEKSliderAccessibility *)self safeBoolForKey:@"isEnabled"];
   v5 = *MEMORY[0x29EDC7F60];
   if (!v4)
@@ -50,7 +50,7 @@
     v5 = 0;
   }
 
-  return v5 | v3;
+  return v5 | accessibilityTraits;
 }
 
 - (id)accessibilityLabel
@@ -66,8 +66,8 @@
 
     v6 = MEMORY[0x29EDBA0F8];
     v7 = accessibilityCameraEditKitD2xLocalizedString(@"intensity.slider");
-    v8 = [v5 _axPhotoFilterName];
-    v9 = [v6 stringWithFormat:v7, v8];
+    _axPhotoFilterName = [v5 _axPhotoFilterName];
+    accessibilityLabel = [v6 stringWithFormat:v7, _axPhotoFilterName];
 
 LABEL_5:
     goto LABEL_7;
@@ -94,7 +94,7 @@ LABEL_5:
     AXPerformSafeBlock();
     v11 = MEMORY[0x29EDBA0F8];
     v12 = accessibilityCameraEditKitD2xLocalizedString(@"intensity.slider");
-    v9 = [v11 stringWithFormat:v12, v23[5]];
+    accessibilityLabel = [v11 stringWithFormat:v12, v23[5]];
 
     _Block_object_dispose(&v22, 8);
     goto LABEL_5;
@@ -102,10 +102,10 @@ LABEL_5:
 
   v14.receiver = self;
   v14.super_class = CEKSliderAccessibility;
-  v9 = [(CEKSliderAccessibility *)&v14 accessibilityLabel];
+  accessibilityLabel = [(CEKSliderAccessibility *)&v14 accessibilityLabel];
 LABEL_7:
 
-  return v9;
+  return accessibilityLabel;
 }
 
 void __44__CEKSliderAccessibility_accessibilityLabel__block_invoke(uint64_t a1)
@@ -131,22 +131,22 @@ void __44__CEKSliderAccessibility_accessibilityLabel__block_invoke(uint64_t a1)
     v8 = v7;
     [(CEKSliderAccessibility *)self safeCGFloatForKey:@"defaultValue"];
     AXScaledSliderValues(v8, v6, v4, v9);
-    v10 = AXFormatFloatWithPercentage();
+    accessibilityValue = AXFormatFloatWithPercentage();
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = CEKSliderAccessibility;
-    v10 = [(CEKSliderAccessibility *)&v12 accessibilityValue];
+    accessibilityValue = [(CEKSliderAccessibility *)&v12 accessibilityValue];
   }
 
-  return v10;
+  return accessibilityValue;
 }
 
-- (double)_axGetDeltaForCurrentValue:(double)a3 toIncrement:(BOOL)a4
+- (double)_axGetDeltaForCurrentValue:(double)value toIncrement:(BOOL)increment
 {
-  v4 = a4;
+  incrementCopy = increment;
   [(CEKSliderAccessibility *)self safeCGFloatForKey:@"maximumValue"];
   v8 = v7;
   [(CEKSliderAccessibility *)self safeCGFloatForKey:@"minimumValue"];
@@ -162,18 +162,18 @@ void __44__CEKSliderAccessibility_accessibilityLabel__block_invoke(uint64_t a1)
   result = (v11 - v10) / 100.0;
   if (!v14)
   {
-    if (v13 == a3)
+    if (v13 == value)
     {
-      if (v4)
+      if (incrementCopy)
       {
         return (v8 - v13) / 100.0;
       }
     }
 
-    else if (v10 >= a3 || v13 <= a3)
+    else if (v10 >= value || v13 <= value)
     {
       result = 0.01;
-      if (v8 > a3)
+      if (v8 > value)
       {
         return (v8 - v13) / 100.0;
       }
@@ -193,14 +193,14 @@ uint64_t __41__CEKSliderAccessibility__axAdjustValue___block_invoke_2(uint64_t a
   return [v2 sliderDidEndScrolling:v3];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = a3;
+  scrollCopy = scroll;
   [(CEKSliderAccessibility *)self safeCGFloatForKey:@"value"];
   v6 = v5;
   v24.receiver = self;
   v24.super_class = CEKSliderAccessibility;
-  [(CEKSliderAccessibility *)&v24 scrollViewDidScroll:v4];
+  [(CEKSliderAccessibility *)&v24 scrollViewDidScroll:scrollCopy];
   v7 = [(CEKSliderAccessibility *)self safeValueForKey:@"delegate"];
   MEMORY[0x29C2CE830](@"PUFilterToolController");
   if (objc_opt_isKindOfClass())

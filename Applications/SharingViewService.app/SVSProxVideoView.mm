@@ -1,11 +1,11 @@
 @interface SVSProxVideoView
-- (_TtC18SharingViewService16SVSProxVideoView)initWithCoder:(id)a3;
-- (_TtC18SharingViewService16SVSProxVideoView)initWithFrame:(CGRect)a3;
+- (_TtC18SharingViewService16SVSProxVideoView)initWithCoder:(id)coder;
+- (_TtC18SharingViewService16SVSProxVideoView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation SVSProxVideoView
 
-- (_TtC18SharingViewService16SVSProxVideoView)initWithCoder:(id)a3
+- (_TtC18SharingViewService16SVSProxVideoView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18SharingViewService16SVSProxVideoView_movieView;
   type metadata accessor for MediaPlayerView();
@@ -15,7 +15,7 @@
   return result;
 }
 
-- (_TtC18SharingViewService16SVSProxVideoView)initWithFrame:(CGRect)a3
+- (_TtC18SharingViewService16SVSProxVideoView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

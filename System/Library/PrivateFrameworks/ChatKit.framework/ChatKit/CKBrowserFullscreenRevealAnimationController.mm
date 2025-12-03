@@ -1,24 +1,24 @@
 @interface CKBrowserFullscreenRevealAnimationController
-- (CKBrowserFullscreenRevealAnimationController)initWithDirection:(BOOL)a3;
-- (double)transitionDuration:(id)a3;
-- (void)animateTransition:(id)a3;
+- (CKBrowserFullscreenRevealAnimationController)initWithDirection:(BOOL)direction;
+- (double)transitionDuration:(id)duration;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation CKBrowserFullscreenRevealAnimationController
 
-- (CKBrowserFullscreenRevealAnimationController)initWithDirection:(BOOL)a3
+- (CKBrowserFullscreenRevealAnimationController)initWithDirection:(BOOL)direction
 {
-  v3 = a3;
+  directionCopy = direction;
   v13.receiver = self;
   v13.super_class = CKBrowserFullscreenRevealAnimationController;
   v4 = [(CKBrowserFullscreenRevealAnimationController *)&v13 init];
   v5 = v4;
   if (v4)
   {
-    v4->_presenting = v3;
+    v4->_presenting = directionCopy;
     v6 = [objc_alloc(MEMORY[0x1E69DC908]) initWithControlPoint1:0.187800005 controlPoint2:{0.00230000005, 0.539900005, 0.962899983}];
     v7 = [CKBrowserFullscreenCubicSpringTimingParameters alloc];
-    if (v3)
+    if (directionCopy)
     {
       v8 = 100.0;
     }
@@ -40,46 +40,46 @@
   return v5;
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
-  v3 = [(CKBrowserFullscreenRevealAnimationController *)self ascentDescentAnimator];
-  [v3 duration];
+  ascentDescentAnimator = [(CKBrowserFullscreenRevealAnimationController *)self ascentDescentAnimator];
+  [ascentDescentAnimator duration];
   v5 = v4;
 
   return v5;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [(CKBrowserFullscreenRevealAnimationController *)self isPresenting];
+  transitionCopy = transition;
+  isPresenting = [(CKBrowserFullscreenRevealAnimationController *)self isPresenting];
   v6 = MEMORY[0x1E69DE778];
-  if (!v5)
+  if (!isPresenting)
   {
     v6 = MEMORY[0x1E69DE768];
   }
 
-  v7 = [v4 viewControllerForKey:*v6];
-  v8 = [(CKBrowserFullscreenRevealAnimationController *)self isPresenting];
+  v7 = [transitionCopy viewControllerForKey:*v6];
+  isPresenting2 = [(CKBrowserFullscreenRevealAnimationController *)self isPresenting];
   v9 = MEMORY[0x1E69DE780];
-  if (!v8)
+  if (!isPresenting2)
   {
     v9 = MEMORY[0x1E69DE770];
   }
 
-  v10 = [v4 viewForKey:*v9];
-  v11 = [v4 containerView];
-  [v4 finalFrameForViewController:v7];
+  v10 = [transitionCopy viewForKey:*v9];
+  containerView = [transitionCopy containerView];
+  [transitionCopy finalFrameForViewController:v7];
   v13 = v12;
   v15 = v14;
   v17 = v16;
   v19 = v18;
   if ([(CKBrowserFullscreenRevealAnimationController *)self isPresenting])
   {
-    [v11 addSubview:v10];
+    [containerView addSubview:v10];
     [v10 setFrame:{v13, v15, v17, v19}];
     [v10 layoutIfNeeded];
-    [v11 bounds];
+    [containerView bounds];
     Height = CGRectGetHeight(v48);
     v49.origin.x = v13;
     v49.origin.y = v15;
@@ -103,15 +103,15 @@
   v37[2] = __66__CKBrowserFullscreenRevealAnimationController_animateTransition___block_invoke_2;
   v37[3] = &unk_1E72F3A20;
   v38 = v22;
-  v39 = v11;
+  v39 = containerView;
   v40 = v13;
   v41 = v15;
   v42 = v17;
   v43 = v19;
-  v24 = v11;
+  v24 = containerView;
   v25 = v22;
   v26 = _Block_copy(v37);
-  v27 = [(CKBrowserFullscreenRevealAnimationController *)self ascentDescentAnimator];
+  ascentDescentAnimator = [(CKBrowserFullscreenRevealAnimationController *)self ascentDescentAnimator];
   if ([(CKBrowserFullscreenRevealAnimationController *)self isPresenting])
   {
     v28 = v23;
@@ -122,16 +122,16 @@
     v28 = v26;
   }
 
-  [v27 addAnimations:v28];
+  [ascentDescentAnimator addAnimations:v28];
 
-  v29 = [(CKBrowserFullscreenRevealAnimationController *)self ascentDescentAnimator];
+  ascentDescentAnimator2 = [(CKBrowserFullscreenRevealAnimationController *)self ascentDescentAnimator];
   v32 = MEMORY[0x1E69E9820];
   v33 = 3221225472;
   v34 = __66__CKBrowserFullscreenRevealAnimationController_animateTransition___block_invoke_3;
   v35 = &unk_1E72ED838;
-  v36 = v4;
-  v30 = v4;
-  [v29 addCompletion:&v32];
+  v36 = transitionCopy;
+  v30 = transitionCopy;
+  [ascentDescentAnimator2 addCompletion:&v32];
 
   v31 = [(CKBrowserFullscreenRevealAnimationController *)self ascentDescentAnimator:v32];
   [v31 startAnimation];

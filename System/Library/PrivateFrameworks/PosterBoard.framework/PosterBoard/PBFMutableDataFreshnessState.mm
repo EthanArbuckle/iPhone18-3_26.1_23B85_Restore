@@ -1,6 +1,6 @@
 @interface PBFMutableDataFreshnessState
 - (PBFMutableDataFreshnessState)init;
-- (void)track:(id)a3;
+- (void)track:(id)track;
 @end
 
 @implementation PBFMutableDataFreshnessState
@@ -15,11 +15,11 @@
   return v4;
 }
 
-- (void)track:(id)a3
+- (void)track:(id)track
 {
-  v11 = a3;
+  trackCopy = track;
   NSClassFromString(&cfstr_Pbfdatacompone_4.isa);
-  if (!v11)
+  if (!trackCopy)
   {
     [PBFMutableDataFreshnessState track:a2];
   }
@@ -29,8 +29,8 @@
     [PBFMutableDataFreshnessState track:a2];
   }
 
-  v5 = [(PBFDataFreshnessState *)self freshnessProviders];
-  v6 = [v5 mutableCopy];
+  freshnessProviders = [(PBFDataFreshnessState *)self freshnessProviders];
+  v6 = [freshnessProviders mutableCopy];
   v7 = v6;
   if (v6)
   {
@@ -44,7 +44,7 @@
 
   v9 = v8;
 
-  [v9 addObject:v11];
+  [v9 addObject:trackCopy];
   v10 = [v9 copy];
   [(PBFDataFreshnessState *)self setFreshnessProviders:v10];
 }

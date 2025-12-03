@@ -1,5 +1,5 @@
 @interface CKDeclarativePredicateValidator
-- (BOOL)validate:(id)a3 error:(id *)a4;
+- (BOOL)validate:(id)validate error:(id *)error;
 - (CKDeclarativePredicateValidator)init;
 @end
 
@@ -33,13 +33,13 @@
   return v2;
 }
 
-- (BOOL)validate:(id)a3 error:(id *)a4
+- (BOOL)validate:(id)validate error:(id *)error
 {
-  v6 = a3;
-  v9 = objc_msgSend_validate_error_(self->_validator, v7, v6, 0);
+  validateCopy = validate;
+  v9 = objc_msgSend_validate_error_(self->_validator, v7, validateCopy, 0);
   if ((v9 & 1) == 0)
   {
-    objc_msgSend_validate_error_(self->_validator, v8, v6, a4);
+    objc_msgSend_validate_error_(self->_validator, v8, validateCopy, error);
   }
 
   return v9;

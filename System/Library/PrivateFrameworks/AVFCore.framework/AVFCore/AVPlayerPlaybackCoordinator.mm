@@ -1,7 +1,7 @@
 @interface AVPlayerPlaybackCoordinator
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)expectedItemTimeAtHostTime:(SEL)a3;
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)expectedItemTimeAtHostTime:(SEL)time;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)networkToHostTimeOffset;
-- (AVPlayerPlaybackCoordinator)initWithPlayer:(id)a3;
+- (AVPlayerPlaybackCoordinator)initWithPlayer:(id)player;
 - (BOOL)_hasFigPlaybackCoordinator;
 - (BOOL)isConnectedToLocalPlaybackCoordinationMedium;
 - (BOOL)isDefunct;
@@ -9,77 +9,77 @@
 - (OpaqueFigPlaybackCoordinator)_copyFigPlaybackCoordinator;
 - (id)_currentWaitingPoliciesArray;
 - (id)_pendingFigPlaybackCoordinatorProperties;
-- (id)_pendingFigPlaybackCoordinatorPropertyForKey:(id)a3;
-- (id)avfParticipantsForFigParticipantsUUIDs:(id)a3;
-- (id)beginSuspensionForReason:(id)a3;
+- (id)_pendingFigPlaybackCoordinatorPropertyForKey:(id)key;
+- (id)avfParticipantsForFigParticipantsUUIDs:(id)ds;
+- (id)beginSuspensionForReason:(id)reason;
 - (id)coordinationMediumDelegate;
 - (id)currentLamportTimestampForIdentifier;
 - (id)currentSuspensions;
 - (id)delegate;
 - (id)description;
-- (id)identifierForPlayerItem:(id)a3;
+- (id)identifierForPlayerItem:(id)item;
 - (id)interstitialPlaybackCoordinator;
-- (id)interstitialTimeRangesForPlayerItem:(id)a3;
-- (id)itemIdentifierForPlayerItem:(id)a3;
+- (id)interstitialTimeRangesForPlayerItem:(id)item;
+- (id)itemIdentifierForPlayerItem:(id)item;
 - (id)mediumLoggingIdentifier;
 - (id)otherParticipants;
-- (id)participantForIdentifier:(id)a3;
+- (id)participantForIdentifier:(id)identifier;
 - (id)playbackCoordinationMedium;
 - (id)suspensionReasons;
 - (id)suspensionReasonsThatTriggerWaiting;
 - (id)trackedTransportControlStateDictionaries;
 - (int)_disconnectFromCoordinationMedium;
-- (int64_t)participantLimitForWaitingOutSuspensionsWithReason:(id)a3;
+- (int64_t)participantLimitForWaitingOutSuspensionsWithReason:(id)reason;
 - (unsigned)defaultItemIdentifierCounter;
-- (void)_addFigPlaybackCoordinatorListeners:(OpaqueFigPlaybackCoordinator *)a3;
-- (void)_applyAdjustedIntegratedSeekTimeFromTime:(id *)a3 withNetworkTime:(id)a4 rate:(id)a5;
-- (void)_endSuspension:(OpaqueFigTimelineCoordinatorSuspension *)a3;
-- (void)_endSuspension:(OpaqueFigTimelineCoordinatorSuspension *)a3 proposingNewTime:(id *)a4;
-- (void)_endSuspensionWithReason:(id)a3;
-- (void)_postNotificationWithName:(id)a3 userInfo:(id)a4;
+- (void)_addFigPlaybackCoordinatorListeners:(OpaqueFigPlaybackCoordinator *)listeners;
+- (void)_applyAdjustedIntegratedSeekTimeFromTime:(id *)time withNetworkTime:(id)networkTime rate:(id)rate;
+- (void)_endSuspension:(OpaqueFigTimelineCoordinatorSuspension *)suspension;
+- (void)_endSuspension:(OpaqueFigTimelineCoordinatorSuspension *)suspension proposingNewTime:(id *)time;
+- (void)_endSuspensionWithReason:(id)reason;
+- (void)_postNotificationWithName:(id)name userInfo:(id)info;
 - (void)_reactToNewDelegate;
-- (void)_removeSuspension:(OpaqueFigTimelineCoordinatorSuspension *)a3;
-- (void)_replaceAllParticipantStateDictionariesOnFigPlaybackCoordinator:(OpaqueFigPlaybackCoordinator *)a3;
-- (void)_resetGroupTimelineExpectationsForIdentifier:(id)a3;
-- (void)_setInterstitialActive:(unsigned __int8)a3;
+- (void)_removeSuspension:(OpaqueFigTimelineCoordinatorSuspension *)suspension;
+- (void)_replaceAllParticipantStateDictionariesOnFigPlaybackCoordinator:(OpaqueFigPlaybackCoordinator *)coordinator;
+- (void)_resetGroupTimelineExpectationsForIdentifier:(id)identifier;
+- (void)_setInterstitialActive:(unsigned __int8)active;
 - (void)_setIsInExpanseMediaPlaybackOnAVAudioSession;
-- (void)_setIsLocallyCoordinated:(__CFBoolean *)a3;
+- (void)_setIsLocallyCoordinated:(__CFBoolean *)coordinated;
 - (void)_setNetworkToHostTimeOffset;
-- (void)_setPendingFigPlaybackCoordinatorProperty:(id)a3 forKey:(id)a4;
-- (void)_setStorage:(id)a3;
-- (void)_setWeakReferenceToPlayerItem:(id)a3 withItemIdentifier:(id)a4;
-- (void)_storageRead:(id)a3;
-- (void)_storageWrite:(id)a3;
+- (void)_setPendingFigPlaybackCoordinatorProperty:(id)property forKey:(id)key;
+- (void)_setStorage:(id)storage;
+- (void)_setWeakReferenceToPlayerItem:(id)item withItemIdentifier:(id)identifier;
+- (void)_storageRead:(id)read;
+- (void)_storageWrite:(id)write;
 - (void)_synchronizeFigPlayerEvents;
-- (void)_synchronizeWorkOnPlayerQueue:(id)a3;
+- (void)_synchronizeWorkOnPlayerQueue:(id)queue;
 - (void)_updateCoordinationMediumDelegateOnFigPlaybackCoordinator;
-- (void)_updateLocalParticipantUUIDOnFigPlaybackCoordinator:(OpaqueFigPlaybackCoordinator *)a3;
-- (void)_updateOtherParticipantsUsingFigParticipantUUIDs:(id)a3;
-- (void)_updateParticipantLimitOnFigPlaybackCoordinatorWithReason:(id)a3;
-- (void)_updateParticipantStateDictionaryWithParticipantState:(id)a3;
-- (void)_updateParticipantStateOnFigPlaybackCoordinatorForItemWithIdentifier:(id)a3;
+- (void)_updateLocalParticipantUUIDOnFigPlaybackCoordinator:(OpaqueFigPlaybackCoordinator *)coordinator;
+- (void)_updateOtherParticipantsUsingFigParticipantUUIDs:(id)ds;
+- (void)_updateParticipantLimitOnFigPlaybackCoordinatorWithReason:(id)reason;
+- (void)_updateParticipantStateDictionaryWithParticipantState:(id)state;
+- (void)_updateParticipantStateOnFigPlaybackCoordinatorForItemWithIdentifier:(id)identifier;
 - (void)_updatePauseSnapsToMediaTimeOfOriginatorOnFigPlaybackCoordinator;
-- (void)_updateSuspensionReasons:(id)a3;
+- (void)_updateSuspensionReasons:(id)reasons;
 - (void)_updateSuspensionReasonsThatTriggerWaitingOFigPlaybackCoordinator;
-- (void)_updateSuspensionsForNewSuspensionReasons:(id)a3;
-- (void)_updateTransportControlStateDictionaryOnFigPlaybackCoordinatorForItemIdentifier:(id)a3;
-- (void)_updateTransportControlStateDictionaryWithTransportControlState:(id)a3;
-- (void)_updateWaitingPoliciesArray:(id)a3 withPolicies:(id)a4;
-- (void)_updateWaitingPoliciesOnFigPlaybackCoordinator:(OpaqueFigPlaybackCoordinator *)a3;
+- (void)_updateSuspensionsForNewSuspensionReasons:(id)reasons;
+- (void)_updateTransportControlStateDictionaryOnFigPlaybackCoordinatorForItemIdentifier:(id)identifier;
+- (void)_updateTransportControlStateDictionaryWithTransportControlState:(id)state;
+- (void)_updateWaitingPoliciesArray:(id)array withPolicies:(id)policies;
+- (void)_updateWaitingPoliciesOnFigPlaybackCoordinator:(OpaqueFigPlaybackCoordinator *)coordinator;
 - (void)dealloc;
-- (void)handleNewParticipantStateDictionary:(id)a3;
-- (void)handleNewTransportControlStateDictionary:(id)a3;
-- (void)handleRemovalOfParticipant:(id)a3;
-- (void)handleReplacementParticipantStateDictionaries:(id)a3;
-- (void)setCoordinationMediumDelegate:(id)a3;
-- (void)setDefaultItemIdentifierCounter:(unsigned int)a3 postingNotification:(unsigned __int8)a4;
+- (void)handleNewParticipantStateDictionary:(id)dictionary;
+- (void)handleNewTransportControlStateDictionary:(id)dictionary;
+- (void)handleRemovalOfParticipant:(id)participant;
+- (void)handleReplacementParticipantStateDictionaries:(id)dictionaries;
+- (void)setCoordinationMediumDelegate:(id)delegate;
+- (void)setDefaultItemIdentifierCounter:(unsigned int)counter postingNotification:(unsigned __int8)notification;
 - (void)setDelegate:(id)delegate;
-- (void)setFigPlaybackCoordinator:(OpaqueFigPlaybackCoordinator *)a3;
-- (void)setInterstitialPlaybackCoordinator:(id)a3;
-- (void)setMediumLoggingIdentifier:(id)a3;
-- (void)setParticipantLimit:(int64_t)a3 forWaitingOutSuspensionsWithReason:(id)a4;
-- (void)setPauseSnapsToMediaTimeOfOriginator:(BOOL)a3;
-- (void)setSuspensionReasonsThatTriggerWaiting:(id)a3;
+- (void)setFigPlaybackCoordinator:(OpaqueFigPlaybackCoordinator *)coordinator;
+- (void)setInterstitialPlaybackCoordinator:(id)coordinator;
+- (void)setMediumLoggingIdentifier:(id)identifier;
+- (void)setParticipantLimit:(int64_t)limit forWaitingOutSuspensionsWithReason:(id)reason;
+- (void)setPauseSnapsToMediaTimeOfOriginator:(BOOL)originator;
+- (void)setSuspensionReasonsThatTriggerWaiting:(id)waiting;
 @end
 
 @implementation AVPlayerPlaybackCoordinator
@@ -155,8 +155,8 @@
     v7[4] = &v8;
     [(AVPlayerPlaybackCoordinator *)self _storageRead:v7];
     [(AVPlayerPlaybackCoordinator *)self _setIsLocallyCoordinated:*MEMORY[0x1E695E4C0]];
-    v3 = [(AVPlayerPlaybackCoordinator *)self playbackCoordinationMedium];
-    v4 = [v3 disconnectPlaybackCoordinatorWithIdentifier:v9[5]];
+    playbackCoordinationMedium = [(AVPlayerPlaybackCoordinator *)self playbackCoordinationMedium];
+    v4 = [playbackCoordinationMedium disconnectPlaybackCoordinatorWithIdentifier:v9[5]];
     [(AVPlayerPlaybackCoordinator *)self setCoordinationMediumDelegate:0];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -201,16 +201,16 @@ id __57__AVPlayerPlaybackCoordinator_playbackCoordinationMedium__block_invoke(ui
   return result;
 }
 
-- (AVPlayerPlaybackCoordinator)initWithPlayer:(id)a3
+- (AVPlayerPlaybackCoordinator)initWithPlayer:(id)player
 {
   v25 = *MEMORY[0x1E69E9840];
   v23.receiver = self;
   v23.super_class = AVPlayerPlaybackCoordinator;
-  v4 = [(AVPlaybackCoordinator *)&v23 initInternal];
-  v5 = v4;
-  if (v4)
+  initInternal = [(AVPlaybackCoordinator *)&v23 initInternal];
+  v5 = initInternal;
+  if (initInternal)
   {
-    objc_storeWeak(v4 + 1, a3);
+    objc_storeWeak(initInternal + 1, player);
     v5->_otherParticipants = objc_alloc_init(MEMORY[0x1E695DF70]);
     v5->_ivarAccessQueue = av_readwrite_dispatch_queue_create("com.apple.avplaybackcoordinator.ivars");
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -235,7 +235,7 @@ id __57__AVPlayerPlaybackCoordinator_playbackCoordinationMedium__block_invoke(ui
     v5->_playerItemToItemIdentifierMap = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
     v5->_defaultItemIdentifierCounter = 0;
     v5->_shouldOverrideGroupState = 0;
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
@@ -259,7 +259,7 @@ id __57__AVPlayerPlaybackCoordinator_playbackCoordinationMedium__block_invoke(ui
             objc_enumerationMutation(suspensionReasonsThatTriggerWaiting);
           }
 
-          [v8 addObject:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjectsAndKeys:", AVPlaybackCoordinatorFigSuspensionReasonForAVFReason(*(*(&v19 + 1) + 8 * i)), v13, v14, v15, 0)}];
+          [array addObject:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjectsAndKeys:", AVPlaybackCoordinatorFigSuspensionReasonForAVFReason(*(*(&v19 + 1) + 8 * i)), v13, v14, v15, 0)}];
         }
 
         v11 = [(NSMutableArray *)suspensionReasonsThatTriggerWaiting countByEnumeratingWithState:&v19 objects:v24 count:16];
@@ -269,39 +269,39 @@ id __57__AVPlayerPlaybackCoordinator_playbackCoordinationMedium__block_invoke(ui
     }
 
     v5 = v18;
-    [(AVPlayerPlaybackCoordinator *)v18 _updateWaitingPoliciesArray:v18->_storage->waitingPoliciesArray withPolicies:v8];
+    [(AVPlayerPlaybackCoordinator *)v18 _updateWaitingPoliciesArray:v18->_storage->waitingPoliciesArray withPolicies:array];
   }
 
   return v5;
 }
 
-- (void)_addFigPlaybackCoordinatorListeners:(OpaqueFigPlaybackCoordinator *)a3
+- (void)_addFigPlaybackCoordinatorListeners:(OpaqueFigPlaybackCoordinator *)listeners
 {
   objc_initWeak(&location, self);
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6 = *MEMORY[0x1E6972400];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __67__AVPlayerPlaybackCoordinator__addFigPlaybackCoordinatorListeners___block_invoke;
   v15[3] = &unk_1E7460BB0;
   objc_copyWeak(&v16, &location);
-  self->_suspensionsChangedNotificationToken = [v5 addObserverForName:v6 object:a3 queue:0 usingBlock:v15];
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  self->_suspensionsChangedNotificationToken = [defaultCenter addObserverForName:v6 object:listeners queue:0 usingBlock:v15];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
   v8 = *MEMORY[0x1E69723F8];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __67__AVPlayerPlaybackCoordinator__addFigPlaybackCoordinatorListeners___block_invoke_2;
   v13[3] = &unk_1E7460BB0;
   objc_copyWeak(&v14, &location);
-  self->_participantsChangedNotificationToken = [v7 addObserverForName:v8 object:a3 queue:0 usingBlock:v13];
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
+  self->_participantsChangedNotificationToken = [defaultCenter2 addObserverForName:v8 object:listeners queue:0 usingBlock:v13];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
   v10 = *MEMORY[0x1E69723F0];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __67__AVPlayerPlaybackCoordinator__addFigPlaybackCoordinatorListeners___block_invoke_3;
   v11[3] = &unk_1E7460BB0;
   objc_copyWeak(&v12, &location);
-  self->_didIssueCommandToPlaybackObjectNotificationToken = [v9 addObserverForName:v10 object:a3 queue:0 usingBlock:v11];
+  self->_didIssueCommandToPlaybackObjectNotificationToken = [defaultCenter3 addObserverForName:v10 object:listeners queue:0 usingBlock:v11];
   objc_destroyWeak(&v12);
   objc_destroyWeak(&v14);
   objc_destroyWeak(&v16);
@@ -371,15 +371,15 @@ uint64_t __67__AVPlayerPlaybackCoordinator__addFigPlaybackCoordinatorListeners__
   return [v4 _postNotificationWithName:@"AVPlaybackCoordinatorDidIssueCommandToPlaybackObjectNotification" userInfo:UserInfoForDidIssueCommandToPlaybackObjectNotification];
 }
 
-- (void)_postNotificationWithName:(id)a3 userInfo:(id)a4
+- (void)_postNotificationWithName:(id)name userInfo:(id)info
 {
-  v4 = [MEMORY[0x1E696AD80] notificationWithName:a3 object:self userInfo:a4];
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
+  v4 = [MEMORY[0x1E696AD80] notificationWithName:name object:self userInfo:info];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v5 postNotification:v4];
+  [defaultCenter postNotification:v4];
 }
 
-- (void)_storageRead:(id)a3
+- (void)_storageRead:(id)read
 {
   rwQueue = self->_storage->rwQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -387,11 +387,11 @@ uint64_t __67__AVPlayerPlaybackCoordinator__addFigPlaybackCoordinatorListeners__
   v4[2] = __44__AVPlayerPlaybackCoordinator__storageRead___block_invoke;
   v4[3] = &unk_1E7462650;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = read;
   av_readwrite_dispatch_queue_read(rwQueue, v4);
 }
 
-- (void)_storageWrite:(id)a3
+- (void)_storageWrite:(id)write
 {
   rwQueue = self->_storage->rwQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -399,7 +399,7 @@ uint64_t __67__AVPlayerPlaybackCoordinator__addFigPlaybackCoordinatorListeners__
   v4[2] = __45__AVPlayerPlaybackCoordinator__storageWrite___block_invoke;
   v4[3] = &unk_1E7462650;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = write;
   av_readwrite_dispatch_queue_write(rwQueue, v4);
 }
 
@@ -434,10 +434,10 @@ uint64_t __42__AVPlayerPlaybackCoordinator_description__block_invoke(uint64_t a1
   return result;
 }
 
-- (void)setFigPlaybackCoordinator:(OpaqueFigPlaybackCoordinator *)a3
+- (void)setFigPlaybackCoordinator:(OpaqueFigPlaybackCoordinator *)coordinator
 {
   v34 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!coordinator)
   {
     v20 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v3, v4, v5, v6, v7, "figPlaybackCoordinator != NULL"), 0}];
     objc_exception_throw(v20);
@@ -453,19 +453,19 @@ uint64_t __42__AVPlayerPlaybackCoordinator_description__block_invoke(uint64_t a1
   v28[2] = __57__AVPlayerPlaybackCoordinator_setFigPlaybackCoordinator___block_invoke;
   v28[3] = &unk_1E7462990;
   v28[5] = &v29;
-  v28[6] = a3;
+  v28[6] = coordinator;
   v28[4] = self;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, v28);
   if (*(v30 + 24) == 1)
   {
-    [(AVPlayerPlaybackCoordinator *)self _addFigPlaybackCoordinatorListeners:a3];
+    [(AVPlayerPlaybackCoordinator *)self _addFigPlaybackCoordinatorListeners:coordinator];
     [(AVPlayerPlaybackCoordinator *)self _ensureIntegratedTimelineIsEstablished];
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v11 = [(AVPlayerPlaybackCoordinator *)self currentSuspensions];
-    v12 = [v11 countByEnumeratingWithState:&v24 objects:v33 count:16];
+    currentSuspensions = [(AVPlayerPlaybackCoordinator *)self currentSuspensions];
+    v12 = [currentSuspensions countByEnumeratingWithState:&v24 objects:v33 count:16];
     if (v12)
     {
       v13 = *v25;
@@ -475,18 +475,18 @@ uint64_t __42__AVPlayerPlaybackCoordinator_description__block_invoke(uint64_t a1
         {
           if (*v25 != v13)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(currentSuspensions);
           }
 
           v15 = *(*(&v24 + 1) + 8 * i);
           v16 = *(*(CMBaseObjectGetVTable() + 16) + 8);
           if (v16)
           {
-            v16(a3, v15);
+            v16(coordinator, v15);
           }
         }
 
-        v12 = [v11 countByEnumeratingWithState:&v24 objects:v33 count:16];
+        v12 = [currentSuspensions countByEnumeratingWithState:&v24 objects:v33 count:16];
       }
 
       while (v12);
@@ -500,7 +500,7 @@ uint64_t __42__AVPlayerPlaybackCoordinator_description__block_invoke(uint64_t a1
     v17 = *(*(CMBaseObjectGetVTable() + 16) + 40);
     if (v17)
     {
-      v18 = v17(a3, self, v23);
+      v18 = v17(coordinator, self, v23);
     }
 
     else
@@ -508,15 +508,15 @@ uint64_t __42__AVPlayerPlaybackCoordinator_description__block_invoke(uint64_t a1
       v18 = -12782;
     }
 
-    [(AVPlayerPlaybackCoordinator *)self _updateLocalParticipantUUIDOnFigPlaybackCoordinator:a3];
-    CFRetain(a3);
+    [(AVPlayerPlaybackCoordinator *)self _updateLocalParticipantUUIDOnFigPlaybackCoordinator:coordinator];
+    CFRetain(coordinator);
     figPlaybackCoordinatorConfigQueue = self->_figPlaybackCoordinatorConfigQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __57__AVPlayerPlaybackCoordinator_setFigPlaybackCoordinator___block_invoke_2;
     block[3] = &unk_1E7463880;
     block[4] = self;
-    block[5] = a3;
+    block[5] = coordinator;
     v22 = v18;
     dispatch_async(figPlaybackCoordinatorConfigQueue, block);
   }
@@ -676,11 +676,11 @@ void __57__AVPlayerPlaybackCoordinator_setFigPlaybackCoordinator___block_invoke_
 
 - (BOOL)_hasFigPlaybackCoordinator
 {
-  v2 = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
-  v3 = v2;
-  if (v2)
+  _copyFigPlaybackCoordinator = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
+  v3 = _copyFigPlaybackCoordinator;
+  if (_copyFigPlaybackCoordinator)
   {
-    CFRelease(v2);
+    CFRelease(_copyFigPlaybackCoordinator);
   }
 
   return v3 != 0;
@@ -745,7 +745,7 @@ uint64_t __71__AVPlayerPlaybackCoordinator__pendingFigPlaybackCoordinatorPropert
   return result;
 }
 
-- (id)_pendingFigPlaybackCoordinatorPropertyForKey:(id)a3
+- (id)_pendingFigPlaybackCoordinatorPropertyForKey:(id)key
 {
   v7 = 0;
   v8 = &v7;
@@ -758,7 +758,7 @@ uint64_t __71__AVPlayerPlaybackCoordinator__pendingFigPlaybackCoordinatorPropert
   block[1] = 3221225472;
   block[2] = __76__AVPlayerPlaybackCoordinator__pendingFigPlaybackCoordinatorPropertyForKey___block_invoke;
   block[3] = &unk_1E7461068;
-  block[5] = a3;
+  block[5] = key;
   block[6] = &v7;
   block[4] = self;
   av_readwrite_dispatch_queue_read(ivarAccessQueue, block);
@@ -774,16 +774,16 @@ id __76__AVPlayerPlaybackCoordinator__pendingFigPlaybackCoordinatorPropertyForKe
   return result;
 }
 
-- (void)_setPendingFigPlaybackCoordinatorProperty:(id)a3 forKey:(id)a4
+- (void)_setPendingFigPlaybackCoordinatorProperty:(id)property forKey:(id)key
 {
   ivarAccessQueue = self->_ivarAccessQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __80__AVPlayerPlaybackCoordinator__setPendingFigPlaybackCoordinatorProperty_forKey___block_invoke;
   block[3] = &unk_1E7460E90;
-  block[4] = a3;
+  block[4] = property;
   block[5] = self;
-  block[6] = a4;
+  block[6] = key;
   av_readwrite_dispatch_queue_read(ivarAccessQueue, block);
 }
 
@@ -802,9 +802,9 @@ uint64_t __80__AVPlayerPlaybackCoordinator__setPendingFigPlaybackCoordinatorProp
   }
 }
 
-- (void)_setInterstitialActive:(unsigned __int8)a3
+- (void)_setInterstitialActive:(unsigned __int8)active
 {
-  v3 = a3;
+  activeCopy = active;
   v13[0] = 0;
   v13[1] = v13;
   v13[2] = 0x2020000000;
@@ -813,14 +813,14 @@ uint64_t __80__AVPlayerPlaybackCoordinator__setPendingFigPlaybackCoordinatorProp
   v10 = &v9;
   v11 = 0x2020000000;
   v5 = MEMORY[0x1E695E4D0];
-  if (!a3)
+  if (!active)
   {
     v5 = MEMORY[0x1E695E4C0];
   }
 
   v12 = *v5;
-  v6 = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
-  if (v6)
+  _copyFigPlaybackCoordinator = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
+  if (_copyFigPlaybackCoordinator)
   {
     figPlaybackCoordinatorConfigQueue = self->_figPlaybackCoordinatorConfigQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -829,7 +829,7 @@ uint64_t __80__AVPlayerPlaybackCoordinator__setPendingFigPlaybackCoordinatorProp
     block[3] = &unk_1E74630E0;
     block[4] = v13;
     block[5] = &v9;
-    block[6] = v6;
+    block[6] = _copyFigPlaybackCoordinator;
     dispatch_async(figPlaybackCoordinatorConfigQueue, block);
   }
 
@@ -867,15 +867,15 @@ void __54__AVPlayerPlaybackCoordinator__setInterstitialActive___block_invoke(voi
   }
 }
 
-- (void)setInterstitialPlaybackCoordinator:(id)a3
+- (void)setInterstitialPlaybackCoordinator:(id)coordinator
 {
-  [a3 _setStorage:self->_storage];
+  [coordinator _setStorage:self->_storage];
   ivarAccessQueue = self->_ivarAccessQueue;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__AVPlayerPlaybackCoordinator_setInterstitialPlaybackCoordinator___block_invoke;
   v6[3] = &unk_1E7460DF0;
-  v6[4] = a3;
+  v6[4] = coordinator;
   v6[5] = self;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, v6);
 }
@@ -894,7 +894,7 @@ void *__66__AVPlayerPlaybackCoordinator_setInterstitialPlaybackCoordinator___blo
   return result;
 }
 
-- (void)_setStorage:(id)a3
+- (void)_setStorage:(id)storage
 {
   ivarAccessQueue = self->_ivarAccessQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -902,7 +902,7 @@ void *__66__AVPlayerPlaybackCoordinator_setInterstitialPlaybackCoordinator___blo
   v4[2] = __43__AVPlayerPlaybackCoordinator__setStorage___block_invoke;
   v4[3] = &unk_1E7460DF0;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = storage;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, v4);
 }
 
@@ -979,9 +979,9 @@ id __43__AVPlayerPlaybackCoordinator_setDelegate___block_invoke(uint64_t a1, uin
 - (void)_reactToNewDelegate
 {
   v2 = [MEMORY[0x1E696AD80] notificationWithName:@"AVPlaybackCoordinatorItemIdentifierForCoordinatedPlaybackDidChangeNotification" object:self];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v3 postNotification:v2];
+  [defaultCenter postNotification:v2];
 }
 
 - (id)delegate
@@ -1010,7 +1010,7 @@ id __39__AVPlayerPlaybackCoordinator_delegate__block_invoke(uint64_t a1, uint64_
   return result;
 }
 
-- (id)itemIdentifierForPlayerItem:(id)a3
+- (id)itemIdentifierForPlayerItem:(id)item
 {
   v7 = 0;
   v8 = &v7;
@@ -1023,7 +1023,7 @@ id __39__AVPlayerPlaybackCoordinator_delegate__block_invoke(uint64_t a1, uint64_
   block[1] = 3221225472;
   block[2] = __59__AVPlayerPlaybackCoordinator_itemIdentifierForPlayerItem___block_invoke;
   block[3] = &unk_1E7461068;
-  block[5] = a3;
+  block[5] = item;
   block[6] = &v7;
   block[4] = self;
   av_readwrite_dispatch_queue_read(ivarAccessQueue, block);
@@ -1039,7 +1039,7 @@ uint64_t __59__AVPlayerPlaybackCoordinator_itemIdentifierForPlayerItem___block_i
   return result;
 }
 
-- (void)_setWeakReferenceToPlayerItem:(id)a3 withItemIdentifier:(id)a4
+- (void)_setWeakReferenceToPlayerItem:(id)item withItemIdentifier:(id)identifier
 {
   ivarAccessQueue = self->_ivarAccessQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -1047,18 +1047,18 @@ uint64_t __59__AVPlayerPlaybackCoordinator_itemIdentifierForPlayerItem___block_i
   v5[2] = __80__AVPlayerPlaybackCoordinator__setWeakReferenceToPlayerItem_withItemIdentifier___block_invoke;
   v5[3] = &unk_1E7460E90;
   v5[4] = self;
-  v5[5] = a4;
-  v5[6] = a3;
+  v5[5] = identifier;
+  v5[6] = item;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, v5);
 }
 
-- (id)identifierForPlayerItem:(id)a3
+- (id)identifierForPlayerItem:(id)item
 {
-  v5 = [(AVPlayerPlaybackCoordinator *)self delegate];
-  if (v5 && (v6 = v5, (objc_opt_respondsToSelector() & 1) != 0))
+  delegate = [(AVPlayerPlaybackCoordinator *)self delegate];
+  if (delegate && (v6 = delegate, (objc_opt_respondsToSelector() & 1) != 0))
   {
 
-    return [v6 playbackCoordinator:self identifierForPlayerItem:a3];
+    return [v6 playbackCoordinator:self identifierForPlayerItem:item];
   }
 
   else
@@ -1068,37 +1068,37 @@ uint64_t __59__AVPlayerPlaybackCoordinator_itemIdentifierForPlayerItem___block_i
       return 0;
     }
 
-    v8 = [(AVPlayerPlaybackCoordinator *)self itemIdentifierForPlayerItem:a3];
+    v8 = [(AVPlayerPlaybackCoordinator *)self itemIdentifierForPlayerItem:item];
     if (!v8)
     {
-      v9 = [(AVPlayerPlaybackCoordinator *)self defaultItemIdentifierCounter];
-      [(AVPlayerPlaybackCoordinator *)self setDefaultItemIdentifierCounter:(v9 + 1) postingNotification:0];
-      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%u", 0x1F0A8A370, v9];
-      [(AVPlayerPlaybackCoordinator *)self _setWeakReferenceToPlayerItem:a3 withItemIdentifier:v8];
+      defaultItemIdentifierCounter = [(AVPlayerPlaybackCoordinator *)self defaultItemIdentifierCounter];
+      [(AVPlayerPlaybackCoordinator *)self setDefaultItemIdentifierCounter:(defaultItemIdentifierCounter + 1) postingNotification:0];
+      v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%u", 0x1F0A8A370, defaultItemIdentifierCounter];
+      [(AVPlayerPlaybackCoordinator *)self _setWeakReferenceToPlayerItem:item withItemIdentifier:v8];
     }
 
     return v8;
   }
 }
 
-- (id)interstitialTimeRangesForPlayerItem:(id)a3
+- (id)interstitialTimeRangesForPlayerItem:(id)item
 {
-  v5 = [(AVPlayerPlaybackCoordinator *)self delegate];
-  if (!v5)
+  delegate = [(AVPlayerPlaybackCoordinator *)self delegate];
+  if (!delegate)
   {
     return 0;
   }
 
-  v6 = v5;
+  v6 = delegate;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     return 0;
   }
 
-  return [v6 playbackCoordinator:self interstitialTimeRangesForPlayerItem:a3];
+  return [v6 playbackCoordinator:self interstitialTimeRangesForPlayerItem:item];
 }
 
-- (void)_updateLocalParticipantUUIDOnFigPlaybackCoordinator:(OpaqueFigPlaybackCoordinator *)a3
+- (void)_updateLocalParticipantUUIDOnFigPlaybackCoordinator:(OpaqueFigPlaybackCoordinator *)coordinator
 {
   localParticipantUUIDConfigQueue = self->_localParticipantUUIDConfigQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1106,7 +1106,7 @@ uint64_t __59__AVPlayerPlaybackCoordinator_itemIdentifierForPlayerItem___block_i
   v4[2] = __83__AVPlayerPlaybackCoordinator__updateLocalParticipantUUIDOnFigPlaybackCoordinator___block_invoke;
   v4[3] = &unk_1E7460FA8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = coordinator;
   dispatch_sync(localParticipantUUIDConfigQueue, v4);
 }
 
@@ -1178,10 +1178,10 @@ id __83__AVPlayerPlaybackCoordinator__updateLocalParticipantUUIDOnFigPlaybackCoo
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [[(AVPlayerPlaybackCoordinator *)self player] audioSession];
-  if (!v3)
+  audioSession = [[(AVPlayerPlaybackCoordinator *)self player] audioSession];
+  if (!audioSession)
   {
-    v3 = [MEMORY[0x1E6958460] sharedInstance];
+    audioSession = [MEMORY[0x1E6958460] sharedInstance];
   }
 
   ivarAccessQueue = self->_ivarAccessQueue;
@@ -1192,11 +1192,11 @@ id __83__AVPlayerPlaybackCoordinator__updateLocalParticipantUUIDOnFigPlaybackCoo
   v5[6] = &v10;
   v5[7] = &v6;
   v5[4] = self;
-  v5[5] = v3;
+  v5[5] = audioSession;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, v5);
-  if (*(v7 + 24) != *(v11 + 24) && v3)
+  if (*(v7 + 24) != *(v11 + 24) && audioSession)
   {
-    [AVAudioSession setIsExpanseMediaSession:v3 error:"setIsExpanseMediaSession:error:"];
+    [AVAudioSession setIsExpanseMediaSession:audioSession error:"setIsExpanseMediaSession:error:"];
   }
 
   _Block_object_dispose(&v6, 8);
@@ -1221,23 +1221,23 @@ uint64_t __75__AVPlayerPlaybackCoordinator__setIsInExpanseMediaPlaybackOnAVAudio
   return result;
 }
 
-- (id)avfParticipantsForFigParticipantsUUIDs:(id)a3
+- (id)avfParticipantsForFigParticipantsUUIDs:(id)ds
 {
   v36 = *MEMORY[0x1E69E9840];
-  v24 = [MEMORY[0x1E695DF70] array];
-  v5 = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
-  if (v5)
+  array = [MEMORY[0x1E695DF70] array];
+  _copyFigPlaybackCoordinator = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
+  if (_copyFigPlaybackCoordinator)
   {
-    v6 = v5;
+    v6 = _copyFigPlaybackCoordinator;
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v7 = [a3 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    v7 = [ds countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v7)
     {
       v8 = v7;
-      obj = a3;
+      obj = ds;
       v23 = *v31;
       do
       {
@@ -1250,7 +1250,7 @@ uint64_t __75__AVPlayerPlaybackCoordinator__setIsInExpanseMediaPlaybackOnAVAudio
 
           v10 = *(*(&v30 + 1) + 8 * i);
           NSUUIDFromCFUUID = AVPlaybackCoordinatorGetNSUUIDFromCFUUID(v10);
-          v12 = [MEMORY[0x1E695DF70] array];
+          array2 = [MEMORY[0x1E695DF70] array];
           cf = 0;
           v13 = *(*(CMBaseObjectGetVTable() + 16) + 56);
           if (v13)
@@ -1280,7 +1280,7 @@ uint64_t __75__AVPlayerPlaybackCoordinator__setIsInExpanseMediaPlaybackOnAVAudio
                     objc_enumerationMutation(v15);
                   }
 
-                  [v12 addObject:AVPlaybackCoordinatorAVFSuspensionReasonForFigReason(*(*(&v25 + 1) + 8 * j))];
+                  [array2 addObject:AVPlaybackCoordinatorAVFSuspensionReasonForFigReason(*(*(&v25 + 1) + 8 * j))];
                 }
 
                 v17 = [v15 countByEnumeratingWithState:&v25 objects:v34 count:16];
@@ -1300,8 +1300,8 @@ uint64_t __75__AVPlayerPlaybackCoordinator__setIsInExpanseMediaPlaybackOnAVAudio
             v14 = 0;
           }
 
-          v20 = [[AVCoordinatedPlaybackParticipant alloc] initWithParticipantIdentifier:NSUUIDFromCFUUID readyToPlay:v14 suspensionReasons:v12];
-          [v24 addObject:v20];
+          v20 = [[AVCoordinatedPlaybackParticipant alloc] initWithParticipantIdentifier:NSUUIDFromCFUUID readyToPlay:v14 suspensionReasons:array2];
+          [array addObject:v20];
         }
 
         v8 = [obj countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -1313,16 +1313,16 @@ uint64_t __75__AVPlayerPlaybackCoordinator__setIsInExpanseMediaPlaybackOnAVAudio
     CFRelease(v6);
   }
 
-  return v24;
+  return array;
 }
 
-- (void)_updateOtherParticipantsUsingFigParticipantUUIDs:(id)a3
+- (void)_updateOtherParticipantsUsingFigParticipantUUIDs:(id)ds
 {
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
   v11 = 0;
-  v4 = [(AVPlayerPlaybackCoordinator *)self avfParticipantsForFigParticipantsUUIDs:a3];
+  v4 = [(AVPlayerPlaybackCoordinator *)self avfParticipantsForFigParticipantsUUIDs:ds];
   ivarAccessQueue = self->_ivarAccessQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -1384,7 +1384,7 @@ uint64_t __48__AVPlayerPlaybackCoordinator_otherParticipants__block_invoke(uint6
   return result;
 }
 
-- (id)participantForIdentifier:(id)a3
+- (id)participantForIdentifier:(id)identifier
 {
   v7 = 0;
   v8 = &v7;
@@ -1398,7 +1398,7 @@ uint64_t __48__AVPlayerPlaybackCoordinator_otherParticipants__block_invoke(uint6
   block[2] = __56__AVPlayerPlaybackCoordinator_participantForIdentifier___block_invoke;
   block[3] = &unk_1E7460F30;
   block[4] = self;
-  block[5] = a3;
+  block[5] = identifier;
   block[6] = &v7;
   av_readwrite_dispatch_queue_read(ivarAccessQueue, block);
   v4 = v8[5];
@@ -1431,7 +1431,7 @@ uint64_t __56__AVPlayerPlaybackCoordinator_participantForIdentifier___block_invo
   return result;
 }
 
-- ($3CC8671D27C23BF42ADDB32F2B5E48AE)expectedItemTimeAtHostTime:(SEL)a3
+- ($3CC8671D27C23BF42ADDB32F2B5E48AE)expectedItemTimeAtHostTime:(SEL)time
 {
   *retstr = **&MEMORY[0x1E6960C70];
   result = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
@@ -1454,14 +1454,14 @@ uint64_t __56__AVPlayerPlaybackCoordinator_participantForIdentifier___block_invo
   return result;
 }
 
-- (void)setCoordinationMediumDelegate:(id)a3
+- (void)setCoordinationMediumDelegate:(id)delegate
 {
-  v5 = [a3 localParticipantUUIDForPlaybackCoordinator:self];
+  v5 = [delegate localParticipantUUIDForPlaybackCoordinator:self];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __61__AVPlayerPlaybackCoordinator_setCoordinationMediumDelegate___block_invoke;
   v6[3] = &unk_1E7465328;
-  v6[4] = a3;
+  v6[4] = delegate;
   v6[5] = v5;
   [(AVPlayerPlaybackCoordinator *)self _storageWrite:v6];
   [(AVPlayerPlaybackCoordinator *)self _updateCoordinationMediumDelegateOnFigPlaybackCoordinator];
@@ -1480,11 +1480,11 @@ void __61__AVPlayerPlaybackCoordinator_setCoordinationMediumDelegate___block_inv
 
 - (void)_updateCoordinationMediumDelegateOnFigPlaybackCoordinator
 {
-  v3 = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
-  if (v3)
+  _copyFigPlaybackCoordinator = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
+  if (_copyFigPlaybackCoordinator)
   {
-    v4 = v3;
-    [(AVPlayerPlaybackCoordinator *)self _updateLocalParticipantUUIDOnFigPlaybackCoordinator:v3];
+    v4 = _copyFigPlaybackCoordinator;
+    [(AVPlayerPlaybackCoordinator *)self _updateLocalParticipantUUIDOnFigPlaybackCoordinator:_copyFigPlaybackCoordinator];
 
     CFRelease(v4);
   }
@@ -1516,13 +1516,13 @@ id __57__AVPlayerPlaybackCoordinator_coordinationMediumDelegate__block_invoke(ui
   return result;
 }
 
-- (void)setMediumLoggingIdentifier:(id)a3
+- (void)setMediumLoggingIdentifier:(id)identifier
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __58__AVPlayerPlaybackCoordinator_setMediumLoggingIdentifier___block_invoke;
   v3[3] = &unk_1E7465350;
-  v3[4] = a3;
+  v3[4] = identifier;
   [(AVPlayerPlaybackCoordinator *)self _storageWrite:v3];
 }
 
@@ -1592,13 +1592,13 @@ uint64_t __71__AVPlayerPlaybackCoordinator_trackedTransportControlStateDictionar
   return result;
 }
 
-- (void)_updateTransportControlStateDictionaryWithTransportControlState:(id)a3
+- (void)_updateTransportControlStateDictionaryWithTransportControlState:(id)state
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __95__AVPlayerPlaybackCoordinator__updateTransportControlStateDictionaryWithTransportControlState___block_invoke;
   v3[3] = &unk_1E7465328;
-  v3[4] = a3;
+  v3[4] = state;
   v3[5] = self;
   [(AVPlayerPlaybackCoordinator *)self _storageWrite:v3];
 }
@@ -1717,13 +1717,13 @@ uint64_t __66__AVPlayerPlaybackCoordinator__removeUnusedTransportControlStates__
   return result;
 }
 
-- (void)_updateParticipantStateDictionaryWithParticipantState:(id)a3
+- (void)_updateParticipantStateDictionaryWithParticipantState:(id)state
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __85__AVPlayerPlaybackCoordinator__updateParticipantStateDictionaryWithParticipantState___block_invoke;
   v3[3] = &unk_1E7465350;
-  v3[4] = a3;
+  v3[4] = state;
   [(AVPlayerPlaybackCoordinator *)self _storageWrite:v3];
 }
 
@@ -1736,18 +1736,18 @@ uint64_t __85__AVPlayerPlaybackCoordinator__updateParticipantStateDictionaryWith
   return [v3 setObject:v2 forKeyedSubscript:v4];
 }
 
-- (void)handleNewTransportControlStateDictionary:(id)a3
+- (void)handleNewTransportControlStateDictionary:(id)dictionary
 {
   [(AVPlayerPlaybackCoordinator *)self _updateTransportControlStateDictionaryWithTransportControlState:?];
-  v5 = [a3 objectForKeyedSubscript:@"Identifier"];
+  v5 = [dictionary objectForKeyedSubscript:@"Identifier"];
 
   [(AVPlayerPlaybackCoordinator *)self _updateTransportControlStateDictionaryOnFigPlaybackCoordinatorForItemIdentifier:v5];
 }
 
-- (void)_updateTransportControlStateDictionaryOnFigPlaybackCoordinatorForItemIdentifier:(id)a3
+- (void)_updateTransportControlStateDictionaryOnFigPlaybackCoordinatorForItemIdentifier:(id)identifier
 {
-  v5 = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
-  if (v5)
+  _copyFigPlaybackCoordinator = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
+  if (_copyFigPlaybackCoordinator)
   {
     figPlaybackCoordinatorConfigQueue = self->_figPlaybackCoordinatorConfigQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -1755,16 +1755,16 @@ uint64_t __85__AVPlayerPlaybackCoordinator__updateParticipantStateDictionaryWith
     block[2] = __111__AVPlayerPlaybackCoordinator__updateTransportControlStateDictionaryOnFigPlaybackCoordinatorForItemIdentifier___block_invoke;
     block[3] = &unk_1E7460FF0;
     block[4] = self;
-    block[5] = a3;
-    block[6] = v5;
+    block[5] = identifier;
+    block[6] = _copyFigPlaybackCoordinator;
     dispatch_async(figPlaybackCoordinatorConfigQueue, block);
   }
 
   else
   {
-    v7 = [(AVPlayerPlaybackCoordinator *)self interstitialPlaybackCoordinator];
+    interstitialPlaybackCoordinator = [(AVPlayerPlaybackCoordinator *)self interstitialPlaybackCoordinator];
 
-    [v7 _updateTransportControlStateDictionaryOnFigPlaybackCoordinatorForItemIdentifier:a3];
+    [interstitialPlaybackCoordinator _updateTransportControlStateDictionaryOnFigPlaybackCoordinatorForItemIdentifier:identifier];
   }
 }
 
@@ -1834,21 +1834,21 @@ uint64_t __111__AVPlayerPlaybackCoordinator__updateTransportControlStateDictiona
   return result;
 }
 
-- (void)handleNewParticipantStateDictionary:(id)a3
+- (void)handleNewParticipantStateDictionary:(id)dictionary
 {
   [(AVPlayerPlaybackCoordinator *)self _updateParticipantStateDictionaryWithParticipantState:?];
   [(AVPlayerPlaybackCoordinator *)self _removeUnusedTransportControlStates];
-  v5 = [a3 objectForKeyedSubscript:@"UUID"];
+  v5 = [dictionary objectForKeyedSubscript:@"UUID"];
   [(AVPlayerPlaybackCoordinator *)self _updateParticipantStateOnFigPlaybackCoordinatorForItemWithIdentifier:v5];
-  v6 = [(AVPlayerPlaybackCoordinator *)self interstitialPlaybackCoordinator];
+  interstitialPlaybackCoordinator = [(AVPlayerPlaybackCoordinator *)self interstitialPlaybackCoordinator];
 
-  [v6 _updateParticipantStateOnFigPlaybackCoordinatorForItemWithIdentifier:v5];
+  [interstitialPlaybackCoordinator _updateParticipantStateOnFigPlaybackCoordinatorForItemWithIdentifier:v5];
 }
 
-- (void)_updateParticipantStateOnFigPlaybackCoordinatorForItemWithIdentifier:(id)a3
+- (void)_updateParticipantStateOnFigPlaybackCoordinatorForItemWithIdentifier:(id)identifier
 {
-  v5 = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
-  if (v5)
+  _copyFigPlaybackCoordinator = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
+  if (_copyFigPlaybackCoordinator)
   {
     figPlaybackCoordinatorConfigQueue = self->_figPlaybackCoordinatorConfigQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -1856,8 +1856,8 @@ uint64_t __111__AVPlayerPlaybackCoordinator__updateTransportControlStateDictiona
     block[2] = __100__AVPlayerPlaybackCoordinator__updateParticipantStateOnFigPlaybackCoordinatorForItemWithIdentifier___block_invoke;
     block[3] = &unk_1E7460FF0;
     block[4] = self;
-    block[5] = a3;
-    block[6] = v5;
+    block[5] = identifier;
+    block[6] = _copyFigPlaybackCoordinator;
     dispatch_async(figPlaybackCoordinatorConfigQueue, block);
   }
 }
@@ -1905,17 +1905,17 @@ uint64_t __100__AVPlayerPlaybackCoordinator__updateParticipantStateOnFigPlayback
   return result;
 }
 
-- (void)handleReplacementParticipantStateDictionaries:(id)a3
+- (void)handleReplacementParticipantStateDictionaries:(id)dictionaries
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __77__AVPlayerPlaybackCoordinator_handleReplacementParticipantStateDictionaries___block_invoke;
   v7[3] = &unk_1E7465350;
-  v7[4] = a3;
+  v7[4] = dictionaries;
   [(AVPlayerPlaybackCoordinator *)self _storageWrite:v7];
   [(AVPlayerPlaybackCoordinator *)self _removeUnusedTransportControlStates];
-  v4 = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
-  if (v4)
+  _copyFigPlaybackCoordinator = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
+  if (_copyFigPlaybackCoordinator)
   {
     figPlaybackCoordinatorConfigQueue = self->_figPlaybackCoordinatorConfigQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -1923,7 +1923,7 @@ uint64_t __100__AVPlayerPlaybackCoordinator__updateParticipantStateOnFigPlayback
     block[2] = __77__AVPlayerPlaybackCoordinator_handleReplacementParticipantStateDictionaries___block_invoke_2;
     block[3] = &unk_1E7460FA8;
     block[4] = self;
-    block[5] = v4;
+    block[5] = _copyFigPlaybackCoordinator;
     dispatch_async(figPlaybackCoordinatorConfigQueue, block);
   }
 }
@@ -1978,7 +1978,7 @@ void __77__AVPlayerPlaybackCoordinator_handleReplacementParticipantStateDictiona
   }
 }
 
-- (void)_replaceAllParticipantStateDictionariesOnFigPlaybackCoordinator:(OpaqueFigPlaybackCoordinator *)a3
+- (void)_replaceAllParticipantStateDictionariesOnFigPlaybackCoordinator:(OpaqueFigPlaybackCoordinator *)coordinator
 {
   v14 = *MEMORY[0x1E69E9840];
   v8 = 0;
@@ -1995,7 +1995,7 @@ void __77__AVPlayerPlaybackCoordinator_handleReplacementParticipantStateDictiona
   [(AVPlayerPlaybackCoordinator *)self _storageRead:v7];
   v4 = v9[5];
   v5 = *(*(CMBaseObjectGetVTable() + 16) + 96);
-  if (!v5 || v5(a3, v4))
+  if (!v5 || v5(coordinator, v4))
   {
     os_log_and_send_and_compose_flags_and_os_log_type = fig_log_emitter_get_os_log_and_send_and_compose_flags_and_os_log_type();
     os_log_type_enabled(os_log_and_send_and_compose_flags_and_os_log_type, OS_LOG_TYPE_DEFAULT);
@@ -2012,25 +2012,25 @@ uint64_t __95__AVPlayerPlaybackCoordinator__replaceAllParticipantStateDictionari
   return result;
 }
 
-- (void)handleRemovalOfParticipant:(id)a3
+- (void)handleRemovalOfParticipant:(id)participant
 {
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __58__AVPlayerPlaybackCoordinator_handleRemovalOfParticipant___block_invoke;
   v8[3] = &unk_1E7465350;
-  v8[4] = a3;
+  v8[4] = participant;
   [(AVPlayerPlaybackCoordinator *)self _storageWrite:v8];
   [(AVPlayerPlaybackCoordinator *)self _removeUnusedTransportControlStates];
-  v5 = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
-  if (v5)
+  _copyFigPlaybackCoordinator = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
+  if (_copyFigPlaybackCoordinator)
   {
     figPlaybackCoordinatorConfigQueue = self->_figPlaybackCoordinatorConfigQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __58__AVPlayerPlaybackCoordinator_handleRemovalOfParticipant___block_invoke_2;
     block[3] = &unk_1E7460FA8;
-    block[4] = a3;
-    block[5] = v5;
+    block[4] = participant;
+    block[5] = _copyFigPlaybackCoordinator;
     dispatch_async(figPlaybackCoordinatorConfigQueue, block);
   }
 }
@@ -2076,23 +2076,23 @@ void __58__AVPlayerPlaybackCoordinator_handleRemovalOfParticipant___block_invoke
   }
 }
 
-- (void)_updateSuspensionsForNewSuspensionReasons:(id)a3
+- (void)_updateSuspensionsForNewSuspensionReasons:(id)reasons
 {
-  v5 = [(AVPlayerPlaybackCoordinator *)self suspensionReasons];
-  if ([(AVPlayerPlaybackCoordinator *)self _hasRemovedSuspensionReason:@"AVCoordinatedPlaybackSuspensionReasonBackgroundTransition" currentReasons:v5 newReasons:a3])
+  suspensionReasons = [(AVPlayerPlaybackCoordinator *)self suspensionReasons];
+  if ([(AVPlayerPlaybackCoordinator *)self _hasRemovedSuspensionReason:@"AVCoordinatedPlaybackSuspensionReasonBackgroundTransition" currentReasons:suspensionReasons newReasons:reasons])
   {
     [[(AVPlayerPlaybackCoordinator *)self player] _removeCoordinatedPlaybackSuspensionWithReason:@"AVCoordinatedPlaybackSuspensionReasonBackgroundTransition" requiringSuspensionEnd:0];
   }
 
-  if (-[AVPlayerPlaybackCoordinator playbackCoordinationMedium](self, "playbackCoordinationMedium") && [-[AVPlayerPlaybackCoordinator playbackCoordinationMedium](self "playbackCoordinationMedium")] && -[AVPlayerPlaybackCoordinator _hasRemovedSuspensionReason:currentReasons:newReasons:](self, "_hasRemovedSuspensionReason:currentReasons:newReasons:", @"AVCoordinatedPlaybackSuspensionReasonAudioSessionInterrupted", v5, a3))
+  if (-[AVPlayerPlaybackCoordinator playbackCoordinationMedium](self, "playbackCoordinationMedium") && [-[AVPlayerPlaybackCoordinator playbackCoordinationMedium](self "playbackCoordinationMedium")] && -[AVPlayerPlaybackCoordinator _hasRemovedSuspensionReason:currentReasons:newReasons:](self, "_hasRemovedSuspensionReason:currentReasons:newReasons:", @"AVCoordinatedPlaybackSuspensionReasonAudioSessionInterrupted", suspensionReasons, reasons))
   {
-    v6 = [(AVPlayerPlaybackCoordinator *)self playbackCoordinationMedium];
+    playbackCoordinationMedium = [(AVPlayerPlaybackCoordinator *)self playbackCoordinationMedium];
 
-    [v6 endSuspensionOnAllCoordinatorsWithReason:@"AVCoordinatedPlaybackSuspensionReasonAudioSessionInterrupted"];
+    [playbackCoordinationMedium endSuspensionOnAllCoordinatorsWithReason:@"AVCoordinatedPlaybackSuspensionReasonAudioSessionInterrupted"];
   }
 }
 
-- (void)_updateSuspensionReasons:(id)a3
+- (void)_updateSuspensionReasons:(id)reasons
 {
   v8 = 0;
   v9 = &v8;
@@ -2105,7 +2105,7 @@ void __58__AVPlayerPlaybackCoordinator_handleRemovalOfParticipant___block_invoke
   v7[2] = __56__AVPlayerPlaybackCoordinator__updateSuspensionReasons___block_invoke;
   v7[3] = &unk_1E7460F30;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = reasons;
   v7[6] = &v8;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, v7);
   if (*(v9 + 24) == 1)
@@ -2187,9 +2187,9 @@ uint64_t __49__AVPlayerPlaybackCoordinator_currentSuspensions__block_invoke(uint
   return result;
 }
 
-- (id)beginSuspensionForReason:(id)a3
+- (id)beginSuspensionForReason:(id)reason
 {
-  v5 = [[AVCoordinatedPlaybackSuspension alloc] initWithCoordinator:self reason:a3];
+  v5 = [[AVCoordinatedPlaybackSuspension alloc] initWithCoordinator:self reason:reason];
   ivarAccessQueue = self->_ivarAccessQueue;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
@@ -2198,15 +2198,15 @@ uint64_t __49__AVPlayerPlaybackCoordinator_currentSuspensions__block_invoke(uint
   v12[4] = self;
   v12[5] = v5;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, v12);
-  v7 = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
-  if (v7)
+  _copyFigPlaybackCoordinator = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
+  if (_copyFigPlaybackCoordinator)
   {
-    v8 = v7;
-    v9 = [(AVCoordinatedPlaybackSuspension *)v5 _figSuspension];
+    v8 = _copyFigPlaybackCoordinator;
+    _figSuspension = [(AVCoordinatedPlaybackSuspension *)v5 _figSuspension];
     v10 = *(*(CMBaseObjectGetVTable() + 16) + 8);
     if (v10)
     {
-      v10(v8, v9);
+      v10(v8, _figSuspension);
     }
 
     CFRelease(v8);
@@ -2230,10 +2230,10 @@ uint64_t __56__AVPlayerPlaybackCoordinator_beginSuspensionForReason___block_invo
 
 - (void)_synchronizeFigPlayerEvents
 {
-  v2 = [[(AVPlayerPlaybackCoordinator *)self player] _copyFigPlayer];
-  if (v2)
+  _copyFigPlayer = [[(AVPlayerPlaybackCoordinator *)self player] _copyFigPlayer];
+  if (_copyFigPlayer)
   {
-    v3 = v2;
+    v3 = _copyFigPlayer;
     cf = 0;
     FigBaseObject = FigPlayerGetFigBaseObject();
     v5 = *(*(CMBaseObjectGetVTable() + 8) + 48);
@@ -2250,16 +2250,16 @@ uint64_t __56__AVPlayerPlaybackCoordinator_beginSuspensionForReason___block_invo
   }
 }
 
-- (void)_synchronizeWorkOnPlayerQueue:(id)a3
+- (void)_synchronizeWorkOnPlayerQueue:(id)queue
 {
-  v5 = [[(AVPlayerPlaybackCoordinator *)self player] _copyFigPlayer];
-  if (v5)
+  _copyFigPlayer = [[(AVPlayerPlaybackCoordinator *)self player] _copyFigPlayer];
+  if (_copyFigPlayer)
   {
-    v6 = v5;
+    v6 = _copyFigPlayer;
     if (FigPlayerAsyncDispatchToPlayerQueue())
     {
       [(AVPlayerPlaybackCoordinator *)self _synchronizeFigPlayerEvents];
-      (*(a3 + 2))(a3);
+      (*(queue + 2))(queue);
     }
 
     CFRelease(v6);
@@ -2268,13 +2268,13 @@ uint64_t __56__AVPlayerPlaybackCoordinator_beginSuspensionForReason___block_invo
   else
   {
     [(AVPlayerPlaybackCoordinator *)self _synchronizeFigPlayerEvents];
-    v7 = *(a3 + 2);
+    v7 = *(queue + 2);
 
-    v7(a3);
+    v7(queue);
   }
 }
 
-- (void)_removeSuspension:(OpaqueFigTimelineCoordinatorSuspension *)a3
+- (void)_removeSuspension:(OpaqueFigTimelineCoordinatorSuspension *)suspension
 {
   ivarAccessQueue = self->_ivarAccessQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2282,11 +2282,11 @@ uint64_t __56__AVPlayerPlaybackCoordinator_beginSuspensionForReason___block_invo
   v4[2] = __49__AVPlayerPlaybackCoordinator__removeSuspension___block_invoke;
   v4[3] = &unk_1E7460FA8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = suspension;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, v4);
 }
 
-- (void)_endSuspension:(OpaqueFigTimelineCoordinatorSuspension *)a3
+- (void)_endSuspension:(OpaqueFigTimelineCoordinatorSuspension *)suspension
 {
   ivarAccessQueue = self->_ivarAccessQueue;
   v9[0] = MEMORY[0x1E69E9820];
@@ -2294,15 +2294,15 @@ uint64_t __56__AVPlayerPlaybackCoordinator_beginSuspensionForReason___block_invo
   v9[2] = __46__AVPlayerPlaybackCoordinator__endSuspension___block_invoke;
   v9[3] = &unk_1E7460FA8;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = suspension;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, v9);
-  v6 = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
-  if (v6)
+  _copyFigPlaybackCoordinator = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
+  if (_copyFigPlaybackCoordinator)
   {
-    v7 = v6;
-    if (a3)
+    v7 = _copyFigPlaybackCoordinator;
+    if (suspension)
     {
-      CFRetain(a3);
+      CFRetain(suspension);
     }
 
     v8[0] = MEMORY[0x1E69E9820];
@@ -2310,7 +2310,7 @@ uint64_t __56__AVPlayerPlaybackCoordinator_beginSuspensionForReason___block_invo
     v8[2] = __46__AVPlayerPlaybackCoordinator__endSuspension___block_invoke_2;
     v8[3] = &__block_descriptor_48_e5_v8__0l;
     v8[4] = v7;
-    v8[5] = a3;
+    v8[5] = suspension;
     [(AVPlayerPlaybackCoordinator *)self _synchronizeWorkOnPlayerQueue:v8];
   }
 }
@@ -2339,7 +2339,7 @@ void __46__AVPlayerPlaybackCoordinator__endSuspension___block_invoke_2(uint64_t 
   }
 }
 
-- (void)_endSuspension:(OpaqueFigTimelineCoordinatorSuspension *)a3 proposingNewTime:(id *)a4
+- (void)_endSuspension:(OpaqueFigTimelineCoordinatorSuspension *)suspension proposingNewTime:(id *)time
 {
   ivarAccessQueue = self->_ivarAccessQueue;
   v13[0] = MEMORY[0x1E69E9820];
@@ -2347,15 +2347,15 @@ void __46__AVPlayerPlaybackCoordinator__endSuspension___block_invoke_2(uint64_t 
   v13[2] = __63__AVPlayerPlaybackCoordinator__endSuspension_proposingNewTime___block_invoke;
   v13[3] = &unk_1E7460FA8;
   v13[4] = self;
-  v13[5] = a3;
+  v13[5] = suspension;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, v13);
-  v8 = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
-  if (v8)
+  _copyFigPlaybackCoordinator = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
+  if (_copyFigPlaybackCoordinator)
   {
-    v9 = v8;
-    if (a3)
+    v9 = _copyFigPlaybackCoordinator;
+    if (suspension)
     {
-      CFRetain(a3);
+      CFRetain(suspension);
     }
 
     v10[0] = MEMORY[0x1E69E9820];
@@ -2363,9 +2363,9 @@ void __46__AVPlayerPlaybackCoordinator__endSuspension___block_invoke_2(uint64_t 
     v10[2] = __63__AVPlayerPlaybackCoordinator__endSuspension_proposingNewTime___block_invoke_2;
     v10[3] = &__block_descriptor_72_e5_v8__0l;
     v10[4] = v9;
-    v10[5] = a3;
-    v11 = *&a4->var0;
-    var3 = a4->var3;
+    v10[5] = suspension;
+    v11 = *&time->var0;
+    var3 = time->var3;
     [(AVPlayerPlaybackCoordinator *)self _synchronizeWorkOnPlayerQueue:v10];
   }
 }
@@ -2397,16 +2397,16 @@ void __63__AVPlayerPlaybackCoordinator__endSuspension_proposingNewTime___block_i
   }
 }
 
-- (void)_endSuspensionWithReason:(id)a3
+- (void)_endSuspensionWithReason:(id)reason
 {
   [(AVPlayerPlaybackCoordinator *)self suspensionReasons];
   if (FigCFArrayContainsValue() == 1)
   {
-    v5 = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
-    if (v5)
+    _copyFigPlaybackCoordinator = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
+    if (_copyFigPlaybackCoordinator)
     {
-      v6 = v5;
-      v7 = AVPlaybackCoordinatorFigSuspensionReasonForAVFReason(a3);
+      v6 = _copyFigPlaybackCoordinator;
+      v7 = AVPlaybackCoordinatorFigSuspensionReasonForAVFReason(reason);
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __56__AVPlayerPlaybackCoordinator__endSuspensionWithReason___block_invoke;
@@ -2436,14 +2436,14 @@ void __56__AVPlayerPlaybackCoordinator__endSuspensionWithReason___block_invoke(u
   }
 }
 
-- (void)_updateWaitingPoliciesArray:(id)a3 withPolicies:(id)a4
+- (void)_updateWaitingPoliciesArray:(id)array withPolicies:(id)policies
 {
   v27 = *MEMORY[0x1E69E9840];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = [a4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+  v5 = [policies countByEnumeratingWithState:&v21 objects:v26 count:16];
   if (v5)
   {
     v6 = v5;
@@ -2455,7 +2455,7 @@ void __56__AVPlayerPlaybackCoordinator__endSuspensionWithReason___block_invoke(u
       {
         if (*v22 != v16)
         {
-          objc_enumerationMutation(a4);
+          objc_enumerationMutation(policies);
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
@@ -2463,7 +2463,7 @@ void __56__AVPlayerPlaybackCoordinator__endSuspensionWithReason___block_invoke(u
         v18 = 0u;
         v19 = 0u;
         v20 = 0u;
-        v10 = [a3 countByEnumeratingWithState:&v17 objects:v25 count:16];
+        v10 = [array countByEnumeratingWithState:&v17 objects:v25 count:16];
         if (v10)
         {
           v11 = v10;
@@ -2474,7 +2474,7 @@ void __56__AVPlayerPlaybackCoordinator__endSuspensionWithReason___block_invoke(u
             {
               if (*v18 != v12)
               {
-                objc_enumerationMutation(a3);
+                objc_enumerationMutation(array);
               }
 
               v14 = *(*(&v17 + 1) + 8 * j);
@@ -2484,14 +2484,14 @@ void __56__AVPlayerPlaybackCoordinator__endSuspensionWithReason___block_invoke(u
               {
                 if (v14)
                 {
-                  [a3 removeObject:v14];
+                  [array removeObject:v14];
                 }
 
                 goto LABEL_17;
               }
             }
 
-            v11 = [a3 countByEnumeratingWithState:&v17 objects:v25 count:16];
+            v11 = [array countByEnumeratingWithState:&v17 objects:v25 count:16];
             if (v11)
             {
               continue;
@@ -2502,10 +2502,10 @@ void __56__AVPlayerPlaybackCoordinator__endSuspensionWithReason___block_invoke(u
         }
 
 LABEL_17:
-        [a3 addObject:v9];
+        [array addObject:v9];
       }
 
-      v6 = [a4 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      v6 = [policies countByEnumeratingWithState:&v21 objects:v26 count:16];
     }
 
     while (v6);
@@ -2538,30 +2538,30 @@ uint64_t __59__AVPlayerPlaybackCoordinator__currentWaitingPoliciesArray__block_i
   return result;
 }
 
-- (void)_updateWaitingPoliciesOnFigPlaybackCoordinator:(OpaqueFigPlaybackCoordinator *)a3
+- (void)_updateWaitingPoliciesOnFigPlaybackCoordinator:(OpaqueFigPlaybackCoordinator *)coordinator
 {
-  v3 = [(AVPlayerPlaybackCoordinator *)self _currentWaitingPoliciesArray];
+  _currentWaitingPoliciesArray = [(AVPlayerPlaybackCoordinator *)self _currentWaitingPoliciesArray];
   CMBaseObject = FigPlaybackCoordinatorGetCMBaseObject();
   v5 = *(*(CMBaseObjectGetVTable() + 8) + 56);
   if (v5)
   {
     v6 = *MEMORY[0x1E69632C8];
 
-    v5(CMBaseObject, v6, v3);
+    v5(CMBaseObject, v6, _currentWaitingPoliciesArray);
   }
 }
 
-- (void)setParticipantLimit:(int64_t)a3 forWaitingOutSuspensionsWithReason:(id)a4
+- (void)setParticipantLimit:(int64_t)limit forWaitingOutSuspensionsWithReason:(id)reason
 {
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __86__AVPlayerPlaybackCoordinator_setParticipantLimit_forWaitingOutSuspensionsWithReason___block_invoke;
   v6[3] = &unk_1E74653E0;
   v6[5] = self;
-  v6[6] = a3;
-  v6[4] = a4;
+  v6[6] = limit;
+  v6[4] = reason;
   [(AVPlayerPlaybackCoordinator *)self _storageWrite:v6];
-  [(AVPlayerPlaybackCoordinator *)self _updateParticipantLimitOnFigPlaybackCoordinatorWithReason:a4];
+  [(AVPlayerPlaybackCoordinator *)self _updateParticipantLimitOnFigPlaybackCoordinatorWithReason:reason];
   [-[AVPlayerPlaybackCoordinator interstitialPlaybackCoordinator](self "interstitialPlaybackCoordinator")];
 }
 
@@ -2589,10 +2589,10 @@ uint64_t __86__AVPlayerPlaybackCoordinator_setParticipantLimit_forWaitingOutSusp
   return [v13 _updateWaitingPoliciesArray:v14 withPolicies:{objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v16, 1)}];
 }
 
-- (void)_updateParticipantLimitOnFigPlaybackCoordinatorWithReason:(id)a3
+- (void)_updateParticipantLimitOnFigPlaybackCoordinatorWithReason:(id)reason
 {
-  v4 = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
-  if (v4)
+  _copyFigPlaybackCoordinator = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
+  if (_copyFigPlaybackCoordinator)
   {
     figPlaybackCoordinatorConfigQueue = self->_figPlaybackCoordinatorConfigQueue;
     v6[0] = MEMORY[0x1E69E9820];
@@ -2600,7 +2600,7 @@ uint64_t __86__AVPlayerPlaybackCoordinator_setParticipantLimit_forWaitingOutSusp
     v6[2] = __89__AVPlayerPlaybackCoordinator__updateParticipantLimitOnFigPlaybackCoordinatorWithReason___block_invoke;
     v6[3] = &unk_1E7460FA8;
     v6[4] = self;
-    v6[5] = v4;
+    v6[5] = _copyFigPlaybackCoordinator;
     dispatch_async(figPlaybackCoordinatorConfigQueue, v6);
   }
 }
@@ -2616,7 +2616,7 @@ void __89__AVPlayerPlaybackCoordinator__updateParticipantLimitOnFigPlaybackCoord
   }
 }
 
-- (int64_t)participantLimitForWaitingOutSuspensionsWithReason:(id)a3
+- (int64_t)participantLimitForWaitingOutSuspensionsWithReason:(id)reason
 {
   v7 = 0;
   v8 = &v7;
@@ -2628,22 +2628,22 @@ void __89__AVPlayerPlaybackCoordinator__updateParticipantLimitOnFigPlaybackCoord
   v6[1] = 3221225472;
   v6[2] = __82__AVPlayerPlaybackCoordinator_participantLimitForWaitingOutSuspensionsWithReason___block_invoke;
   v6[3] = &unk_1E7465398;
-  v6[4] = a3;
+  v6[4] = reason;
   v6[5] = &v7;
   [(AVPlayerPlaybackCoordinator *)self _storageRead:v6];
   v3 = v8[5];
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   _Block_object_dispose(&v7, 8);
-  return v4;
+  return integerValue;
 }
 
 uint64_t __82__AVPlayerPlaybackCoordinator_participantLimitForWaitingOutSuspensionsWithReason___block_invoke(uint64_t a1, uint64_t a2)
@@ -2653,13 +2653,13 @@ uint64_t __82__AVPlayerPlaybackCoordinator_participantLimitForWaitingOutSuspensi
   return result;
 }
 
-- (void)setSuspensionReasonsThatTriggerWaiting:(id)a3
+- (void)setSuspensionReasonsThatTriggerWaiting:(id)waiting
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __70__AVPlayerPlaybackCoordinator_setSuspensionReasonsThatTriggerWaiting___block_invoke;
   v4[3] = &unk_1E7465328;
-  v4[4] = a3;
+  v4[4] = waiting;
   v4[5] = self;
   [(AVPlayerPlaybackCoordinator *)self _storageWrite:v4];
   [(AVPlayerPlaybackCoordinator *)self _updateSuspensionReasonsThatTriggerWaitingOFigPlaybackCoordinator];
@@ -2779,8 +2779,8 @@ LABEL_9:
 
 - (void)_updateSuspensionReasonsThatTriggerWaitingOFigPlaybackCoordinator
 {
-  v3 = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
-  if (v3)
+  _copyFigPlaybackCoordinator = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
+  if (_copyFigPlaybackCoordinator)
   {
     figPlaybackCoordinatorConfigQueue = self->_figPlaybackCoordinatorConfigQueue;
     v5[0] = MEMORY[0x1E69E9820];
@@ -2788,7 +2788,7 @@ LABEL_9:
     v5[2] = __96__AVPlayerPlaybackCoordinator__updateSuspensionReasonsThatTriggerWaitingOFigPlaybackCoordinator__block_invoke;
     v5[3] = &unk_1E7460FA8;
     v5[4] = self;
-    v5[5] = v3;
+    v5[5] = _copyFigPlaybackCoordinator;
     dispatch_async(figPlaybackCoordinatorConfigQueue, v5);
   }
 }
@@ -2830,13 +2830,13 @@ uint64_t __66__AVPlayerPlaybackCoordinator_suspensionReasonsThatTriggerWaiting__
   return result;
 }
 
-- (void)setPauseSnapsToMediaTimeOfOriginator:(BOOL)a3
+- (void)setPauseSnapsToMediaTimeOfOriginator:(BOOL)originator
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __68__AVPlayerPlaybackCoordinator_setPauseSnapsToMediaTimeOfOriginator___block_invoke;
   v4[3] = &__block_descriptor_33_e44_v16__0__AVPlayerPlaybackCoordinatorStorage_8l;
-  v5 = a3;
+  originatorCopy = originator;
   [(AVPlayerPlaybackCoordinator *)self _storageWrite:v4];
   [(AVPlayerPlaybackCoordinator *)self _updatePauseSnapsToMediaTimeOfOriginatorOnFigPlaybackCoordinator];
   [-[AVPlayerPlaybackCoordinator interstitialPlaybackCoordinator](self "interstitialPlaybackCoordinator")];
@@ -2844,8 +2844,8 @@ uint64_t __66__AVPlayerPlaybackCoordinator_suspensionReasonsThatTriggerWaiting__
 
 - (void)_updatePauseSnapsToMediaTimeOfOriginatorOnFigPlaybackCoordinator
 {
-  v3 = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
-  if (v3)
+  _copyFigPlaybackCoordinator = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
+  if (_copyFigPlaybackCoordinator)
   {
     figPlaybackCoordinatorConfigQueue = self->_figPlaybackCoordinatorConfigQueue;
     v5[0] = MEMORY[0x1E69E9820];
@@ -2853,7 +2853,7 @@ uint64_t __66__AVPlayerPlaybackCoordinator_suspensionReasonsThatTriggerWaiting__
     v5[2] = __95__AVPlayerPlaybackCoordinator__updatePauseSnapsToMediaTimeOfOriginatorOnFigPlaybackCoordinator__block_invoke;
     v5[3] = &unk_1E7460FA8;
     v5[4] = self;
-    v5[5] = v3;
+    v5[5] = _copyFigPlaybackCoordinator;
     dispatch_async(figPlaybackCoordinatorConfigQueue, v5);
   }
 }
@@ -2902,14 +2902,14 @@ void __95__AVPlayerPlaybackCoordinator__updatePauseSnapsToMediaTimeOfOriginatorO
   return v2;
 }
 
-- (void)_setIsLocallyCoordinated:(__CFBoolean *)a3
+- (void)_setIsLocallyCoordinated:(__CFBoolean *)coordinated
 {
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x2020000000;
   v9 = 0;
-  v5 = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
-  if (v5)
+  _copyFigPlaybackCoordinator = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
+  if (_copyFigPlaybackCoordinator)
   {
     figPlaybackCoordinatorConfigQueue = self->_figPlaybackCoordinatorConfigQueue;
     block[0] = MEMORY[0x1E69E9820];
@@ -2917,14 +2917,14 @@ void __95__AVPlayerPlaybackCoordinator__updatePauseSnapsToMediaTimeOfOriginatorO
     block[2] = __56__AVPlayerPlaybackCoordinator__setIsLocallyCoordinated___block_invoke;
     block[3] = &unk_1E7462BD8;
     block[4] = v8;
-    block[5] = v5;
-    block[6] = a3;
+    block[5] = _copyFigPlaybackCoordinator;
+    block[6] = coordinated;
     dispatch_async(figPlaybackCoordinatorConfigQueue, block);
   }
 
   else
   {
-    [(AVPlayerPlaybackCoordinator *)self _setPendingFigPlaybackCoordinatorProperty:a3 forKey:*MEMORY[0x1E69632B0]];
+    [(AVPlayerPlaybackCoordinator *)self _setPendingFigPlaybackCoordinatorProperty:coordinated forKey:*MEMORY[0x1E69632B0]];
   }
 
   [-[AVPlayerPlaybackCoordinator interstitialPlaybackCoordinator](self "interstitialPlaybackCoordinator")];
@@ -2974,18 +2974,18 @@ void __56__AVPlayerPlaybackCoordinator__setIsLocallyCoordinated___block_invoke(v
   return v3;
 }
 
-- (void)setDefaultItemIdentifierCounter:(unsigned int)a3 postingNotification:(unsigned __int8)a4
+- (void)setDefaultItemIdentifierCounter:(unsigned int)counter postingNotification:(unsigned __int8)notification
 {
-  v4 = a4;
+  notificationCopy = notification;
   ivarAccessQueue = self->_ivarAccessQueue;
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __83__AVPlayerPlaybackCoordinator_setDefaultItemIdentifierCounter_postingNotification___block_invoke;
   v8[3] = &unk_1E74628F8;
   v8[4] = self;
-  v9 = a3;
+  counterCopy = counter;
   av_readwrite_dispatch_queue_write(ivarAccessQueue, v8);
-  if (v4)
+  if (notificationCopy)
   {
     v7 = [MEMORY[0x1E696AD80] notificationWithName:@"AVPlaybackCoordinatorItemIdentifierForCoordinatedPlaybackDidChangeNotification" object:self];
     [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
@@ -3057,10 +3057,10 @@ __n128 __54__AVPlayerPlaybackCoordinator_networkToHostTimeOffset__block_invoke(u
 
 - (void)_setNetworkToHostTimeOffset
 {
-  v3 = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
-  if (v3)
+  _copyFigPlaybackCoordinator = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
+  if (_copyFigPlaybackCoordinator)
   {
-    v4 = v3;
+    v4 = _copyFigPlaybackCoordinator;
     v12 = 0;
     v11 = **&MEMORY[0x1E6960C70];
     CMBaseObject = FigPlaybackCoordinatorGetCMBaseObject();
@@ -3105,7 +3105,7 @@ __n128 __58__AVPlayerPlaybackCoordinator__setNetworkToHostTimeOffset__block_invo
   return result;
 }
 
-- (void)_applyAdjustedIntegratedSeekTimeFromTime:(id *)a3 withNetworkTime:(id)a4 rate:(id)a5
+- (void)_applyAdjustedIntegratedSeekTimeFromTime:(id *)time withNetworkTime:(id)networkTime rate:(id)rate
 {
   if (self)
   {
@@ -3117,9 +3117,9 @@ __n128 __58__AVPlayerPlaybackCoordinator__setNetworkToHostTimeOffset__block_invo
 
     v11 = 0uLL;
     v12 = 0;
-    v9 = *&a3->var0;
-    var3 = a3->var3;
-    [(AVPlayerPlaybackCoordinator *)self _convertToMediaTimeForTime:&v9 withNetworkTime:a4 rate:a5];
+    v9 = *&time->var0;
+    var3 = time->var3;
+    [(AVPlayerPlaybackCoordinator *)self _convertToMediaTimeForTime:&v9 withNetworkTime:networkTime rate:rate];
     if (BYTE12(v11))
     {
       v9 = v11;
@@ -3134,16 +3134,16 @@ __n128 __58__AVPlayerPlaybackCoordinator__setNetworkToHostTimeOffset__block_invo
   }
 }
 
-- (void)_resetGroupTimelineExpectationsForIdentifier:(id)a3
+- (void)_resetGroupTimelineExpectationsForIdentifier:(id)identifier
 {
-  v5 = [(AVPlayerPlaybackCoordinator *)self interstitialPlaybackCoordinator];
+  interstitialPlaybackCoordinator = [(AVPlayerPlaybackCoordinator *)self interstitialPlaybackCoordinator];
   if (![-[AVPlayerPlaybackCoordinator currentSuspensions](self "currentSuspensions")])
   {
-    v6 = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
-    if (!v6)
+    _copyFigPlaybackCoordinator = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
+    if (!_copyFigPlaybackCoordinator)
     {
       self->_shouldOverrideGroupState = 1;
-      if (!v5)
+      if (!interstitialPlaybackCoordinator)
       {
         return;
       }
@@ -3151,24 +3151,24 @@ __n128 __58__AVPlayerPlaybackCoordinator__setNetworkToHostTimeOffset__block_invo
       goto LABEL_7;
     }
 
-    v7 = v6;
+    v7 = _copyFigPlaybackCoordinator;
     v8 = *(*(CMBaseObjectGetVTable() + 16) + 128);
     if (v8)
     {
-      v8(v7, a3);
+      v8(v7, identifier);
     }
 
     CFRelease(v7);
   }
 
-  if (!v5)
+  if (!interstitialPlaybackCoordinator)
   {
     return;
   }
 
 LABEL_7:
 
-  [v5 _resetGroupTimelineExpectationsForIdentifier:a3];
+  [interstitialPlaybackCoordinator _resetGroupTimelineExpectationsForIdentifier:identifier];
 }
 
 - (id)currentLamportTimestampForIdentifier
@@ -3200,10 +3200,10 @@ uint64_t __67__AVPlayerPlaybackCoordinator_currentLamportTimestampForIdentifier_
 - (BOOL)isDefunct
 {
   v8 = 0;
-  v2 = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
-  if (v2)
+  _copyFigPlaybackCoordinator = [(AVPlayerPlaybackCoordinator *)self _copyFigPlaybackCoordinator];
+  if (_copyFigPlaybackCoordinator)
   {
-    v3 = v2;
+    v3 = _copyFigPlaybackCoordinator;
     v4 = *(CMBaseObjectGetVTable() + 8);
     if (*v4 < 5uLL || (v5 = v4[11]) == 0 || (v6 = v5(v3, &v8), !v8) && v6)
     {
@@ -3211,10 +3211,10 @@ uint64_t __67__AVPlayerPlaybackCoordinator_currentLamportTimestampForIdentifier_
     }
 
     CFRelease(v3);
-    LOBYTE(v2) = v8 == 1;
+    LOBYTE(_copyFigPlaybackCoordinator) = v8 == 1;
   }
 
-  return v2;
+  return _copyFigPlaybackCoordinator;
 }
 
 @end

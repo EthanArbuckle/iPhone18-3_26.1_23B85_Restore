@@ -1,6 +1,6 @@
 @interface RouteStepFooterItem
 - (RoutePlanningFooterViewDelegate)delegate;
-- (RouteStepFooterItem)initWithCommandSet:(int64_t)a3 cellClass:(Class)a4 state:(unint64_t)a5 metrics:(id)a6 context:(int64_t)a7 route:(id)a8 scale:(double)a9;
+- (RouteStepFooterItem)initWithCommandSet:(int64_t)set cellClass:(Class)class state:(unint64_t)state metrics:(id)metrics context:(int64_t)context route:(id)route scale:(double)scale;
 @end
 
 @implementation RouteStepFooterItem
@@ -12,14 +12,14 @@
   return WeakRetained;
 }
 
-- (RouteStepFooterItem)initWithCommandSet:(int64_t)a3 cellClass:(Class)a4 state:(unint64_t)a5 metrics:(id)a6 context:(int64_t)a7 route:(id)a8 scale:(double)a9
+- (RouteStepFooterItem)initWithCommandSet:(int64_t)set cellClass:(Class)class state:(unint64_t)state metrics:(id)metrics context:(int64_t)context route:(id)route scale:(double)scale
 {
   v11.receiver = self;
   v11.super_class = RouteStepFooterItem;
-  result = [(RouteStepItem *)&v11 initWithCellClass:a4 state:a5 metrics:a6 context:a7 route:a8 scale:a9];
+  result = [(RouteStepItem *)&v11 initWithCellClass:class state:state metrics:metrics context:context route:route scale:scale];
   if (result)
   {
-    result->_commandSet = a3;
+    result->_commandSet = set;
   }
 
   return result;

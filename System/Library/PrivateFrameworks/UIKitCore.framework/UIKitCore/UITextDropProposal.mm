@@ -1,15 +1,15 @@
 @interface UITextDropProposal
-- (UITextDropProposal)initWithDropOperation:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (UITextDropProposal)initWithDropOperation:(unint64_t)operation;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation UITextDropProposal
 
-- (UITextDropProposal)initWithDropOperation:(unint64_t)a3
+- (UITextDropProposal)initWithDropOperation:(unint64_t)operation
 {
   v6.receiver = self;
   v6.super_class = UITextDropProposal;
-  v3 = [(UIDropProposal *)&v6 initWithDropOperation:a3];
+  v3 = [(UIDropProposal *)&v6 initWithDropOperation:operation];
   v4 = v3;
   if (v3)
   {
@@ -23,11 +23,11 @@
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = UITextDropProposal;
-  v4 = [(UIDropProposal *)&v6 copyWithZone:a3];
+  v4 = [(UIDropProposal *)&v6 copyWithZone:zone];
   [v4 setDropAction:{-[UITextDropProposal dropAction](self, "dropAction")}];
   [v4 setUseFastSameViewOperations:{-[UITextDropProposal useFastSameViewOperations](self, "useFastSameViewOperations")}];
   [v4 setDropProgressMode:{-[UITextDropProposal dropProgressMode](self, "dropProgressMode")}];

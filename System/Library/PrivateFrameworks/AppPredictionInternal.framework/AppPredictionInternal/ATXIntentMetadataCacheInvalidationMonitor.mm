@@ -1,29 +1,29 @@
 @interface ATXIntentMetadataCacheInvalidationMonitor
 - (void)_checkForOSUpdate;
 - (void)_listenForAppRegistrationAndUninstall;
-- (void)_notifyDelegateApplicationsDidUninstall:(id)a3;
-- (void)_notifyDelegateApplicationsDidUpdate:(id)a3;
+- (void)_notifyDelegateApplicationsDidUninstall:(id)uninstall;
+- (void)_notifyDelegateApplicationsDidUpdate:(id)update;
 - (void)_notifyDelegateSystemDidUpdate;
-- (void)setDelegateAndStartMonitoring:(id)a3;
-- (void)setDelegateAndStartMonitoring:(id)a3 userDefaults:(id)a4;
+- (void)setDelegateAndStartMonitoring:(id)monitoring;
+- (void)setDelegateAndStartMonitoring:(id)monitoring userDefaults:(id)defaults;
 @end
 
 @implementation ATXIntentMetadataCacheInvalidationMonitor
 
-- (void)setDelegateAndStartMonitoring:(id)a3
+- (void)setDelegateAndStartMonitoring:(id)monitoring
 {
   v4 = MEMORY[0x277CBEBD0];
-  v5 = a3;
+  monitoringCopy = monitoring;
   v6 = [v4 alloc];
   v7 = [v6 initWithSuiteName:*MEMORY[0x277CEBD00]];
-  [(ATXIntentMetadataCacheInvalidationMonitor *)self setDelegateAndStartMonitoring:v5 userDefaults:v7];
+  [(ATXIntentMetadataCacheInvalidationMonitor *)self setDelegateAndStartMonitoring:monitoringCopy userDefaults:v7];
 }
 
-- (void)setDelegateAndStartMonitoring:(id)a3 userDefaults:(id)a4
+- (void)setDelegateAndStartMonitoring:(id)monitoring userDefaults:(id)defaults
 {
-  objc_storeStrong(&self->_userDefaults, a4);
-  v6 = a3;
-  objc_storeWeak(&self->_delegate, v6);
+  objc_storeStrong(&self->_userDefaults, defaults);
+  monitoringCopy = monitoring;
+  objc_storeWeak(&self->_delegate, monitoringCopy);
 
   [(ATXIntentMetadataCacheInvalidationMonitor *)self _listenForAppRegistrationAndUninstall];
 
@@ -98,8 +98,8 @@ void __82__ATXIntentMetadataCacheInvalidationMonitor__listenForAppRegistrationAn
 - (void)_checkForOSUpdate
 {
   v3 = [(NSUserDefaults *)self->_userDefaults stringForKey:@"ATXIntentCache.OSVersion"];
-  v4 = [(ATXIntentMetadataCacheInvalidationMonitor *)self _getCurrentBuild];
-  if (([v3 isEqualToString:v4] & 1) == 0)
+  _getCurrentBuild = [(ATXIntentMetadataCacheInvalidationMonitor *)self _getCurrentBuild];
+  if (([v3 isEqualToString:_getCurrentBuild] & 1) == 0)
   {
     v5 = __atxlog_handle_default();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -111,21 +111,21 @@ void __82__ATXIntentMetadataCacheInvalidationMonitor__listenForAppRegistrationAn
     [(ATXIntentMetadataCacheInvalidationMonitor *)self _notifyDelegateSystemDidUpdate];
   }
 
-  [(NSUserDefaults *)self->_userDefaults setObject:v4 forKey:@"ATXIntentCache.OSVersion"];
+  [(NSUserDefaults *)self->_userDefaults setObject:_getCurrentBuild forKey:@"ATXIntentCache.OSVersion"];
 }
 
-- (void)_notifyDelegateApplicationsDidUpdate:(id)a3
+- (void)_notifyDelegateApplicationsDidUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained applicationsDidUpdate:v4];
+  [WeakRetained applicationsDidUpdate:updateCopy];
 }
 
-- (void)_notifyDelegateApplicationsDidUninstall:(id)a3
+- (void)_notifyDelegateApplicationsDidUninstall:(id)uninstall
 {
-  v4 = a3;
+  uninstallCopy = uninstall;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained applicationsDidUninstall:v4];
+  [WeakRetained applicationsDidUninstall:uninstallCopy];
 }
 
 - (void)_notifyDelegateSystemDidUpdate

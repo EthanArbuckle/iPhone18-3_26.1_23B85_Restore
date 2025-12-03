@@ -1,21 +1,21 @@
 @interface LocalSocketProxy
-- (LocalSocketProxy)initWithLocalSocketPath:(id)a3;
+- (LocalSocketProxy)initWithLocalSocketPath:(id)path;
 - (void)_cancel;
 - (void)_flushWaiters;
 - (void)_listenerReady;
-- (void)_newConnection:(id)a3;
-- (void)_withPort:(id)a3;
+- (void)_newConnection:(id)connection;
+- (void)_withPort:(id)port;
 - (void)cancel;
 - (void)dealloc;
 - (void)start;
-- (void)withPort:(id)a3;
+- (void)withPort:(id)port;
 @end
 
 @implementation LocalSocketProxy
 
-- (LocalSocketProxy)initWithLocalSocketPath:(id)a3
+- (LocalSocketProxy)initWithLocalSocketPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = LocalSocketProxy;
   v6 = [(LocalSocketProxy *)&v13 init];
@@ -26,7 +26,7 @@
     queue = v6->_queue;
     v6->_queue = v8;
 
-    objc_storeStrong(&v6->_path, a3);
+    objc_storeStrong(&v6->_path, path);
     v10 = objc_opt_new();
     connections = v6->_connections;
     v6->_connections = v10;
@@ -100,18 +100,18 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_newConnection:(id)a3
+- (void)_newConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v5 = _PKLogCategory(PKLogCategoryNetwork[0]);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v13 = v4;
+    v13 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "LocalSocketProxy: New connection %@", buf, 0xCu);
   }
 
-  v6 = [[LocalProxyConnection alloc] initWithConnection:v4 path:self->_path queue:self->_queue];
+  v6 = [[LocalProxyConnection alloc] initWithConnection:connectionCopy path:self->_path queue:self->_queue];
   [(NSMutableSet *)self->_connections addObject:v6];
   v7 = self->_connections;
   v10[0] = _NSConcreteStackBlock;
@@ -167,9 +167,9 @@
   }
 }
 
-- (void)withPort:(id)a3
+- (void)withPort:(id)port
 {
-  v4 = a3;
+  portCopy = port;
   objc_initWeak(&location, self);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -177,27 +177,27 @@
   block[2] = sub_10002512C;
   block[3] = &unk_1000A2300;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = portCopy;
+  v6 = portCopy;
   dispatch_async(queue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
 }
 
-- (void)_withPort:(id)a3
+- (void)_withPort:(id)port
 {
-  v4 = a3;
-  v5 = v4;
+  portCopy = port;
+  v5 = portCopy;
   if (!self->_listener || self->_port)
   {
-    v4[2](v4);
+    portCopy[2](portCopy);
   }
 
   else
   {
     waiters = self->_waiters;
-    v7 = objc_retainBlock(v4);
+    v7 = objc_retainBlock(portCopy);
     v8 = v7;
     if (waiters)
     {

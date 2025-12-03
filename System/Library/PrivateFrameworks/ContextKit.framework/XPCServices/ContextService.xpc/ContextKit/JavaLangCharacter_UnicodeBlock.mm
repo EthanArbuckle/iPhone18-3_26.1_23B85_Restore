@@ -1,21 +1,21 @@
 @interface JavaLangCharacter_UnicodeBlock
 + (void)initialize;
-- (JavaLangCharacter_UnicodeBlock)initWithNSString:(id)a3 withInt:(int)a4 withInt:(int)a5;
+- (JavaLangCharacter_UnicodeBlock)initWithNSString:(id)string withInt:(int)int withInt:(int)withInt;
 @end
 
 @implementation JavaLangCharacter_UnicodeBlock
 
-- (JavaLangCharacter_UnicodeBlock)initWithNSString:(id)a3 withInt:(int)a4 withInt:(int)a5
+- (JavaLangCharacter_UnicodeBlock)initWithNSString:(id)string withInt:(int)int withInt:(int)withInt
 {
-  JavaLangCharacter_Subset_initWithNSString_(self, a3);
-  self->rangeStart_ = a4;
-  self->rangeEnd_ = a5;
+  JavaLangCharacter_Subset_initWithNSString_(self, string);
+  self->rangeStart_ = int;
+  self->rangeEnd_ = withInt;
   return self;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [JavaLangCharacter_UnicodeBlock alloc];
     JreStrongAssign(&v2->super.name_, @"SURROGATES_AREA");

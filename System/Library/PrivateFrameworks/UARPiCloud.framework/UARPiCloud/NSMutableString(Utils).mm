@@ -9,10 +9,10 @@
   va_start(va, format);
   for (i = CFStringCreateWithFormatAndArguments(*MEMORY[0x277CBECE8], 0, format, va); a3; --a3)
   {
-    [a1 appendString:@"\t"];
+    [self appendString:@"\t"];
   }
 
-  [a1 appendString:i];
+  [self appendString:i];
   CFRelease(i);
 }
 

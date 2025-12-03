@@ -3,11 +3,11 @@
 - (void)connect;
 - (void)dealloc;
 - (void)disconnect;
-- (void)retrocomputeStateWithHandler:(id)a3;
-- (void)retrocomputeStatusWithHandler:(id)a3;
+- (void)retrocomputeStateWithHandler:(id)handler;
+- (void)retrocomputeStatusWithHandler:(id)handler;
 - (void)startRetrocomputeStatusUpdates;
 - (void)stopRetrocomputeStatusUpdates;
-- (void)triggerRetrocomputeWithHandler:(id)a3;
+- (void)triggerRetrocomputeWithHandler:(id)handler;
 @end
 
 @implementation CMVO2MaxRetrocomputeManager
@@ -61,10 +61,10 @@
   }
 }
 
-- (void)retrocomputeStatusWithHandler:(id)a3
+- (void)retrocomputeStatusWithHandler:(id)handler
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!handler)
   {
     v14 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v14, v15, a2, self, @"CMVO2MaxRetrocomputeManager.mm", 96, @"Invalid parameter not satisfying: %@", @"handler");
@@ -78,7 +78,7 @@
   {
     if (self->fLocationdConnection)
     {
-      objc_msgSend_copy(a3, v5, v6);
+      objc_msgSend_copy(handler, v5, v6);
       sub_19B5B64E0();
     }
 
@@ -119,15 +119,15 @@
     v7 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], v5, @"CMErrorDomain", 109, 0);
   }
 
-  (*(a3 + 2))(a3, v17[3], 0, 0, v7);
+  (*(handler + 2))(handler, v17[3], 0, 0, v7);
   _Block_object_dispose(&v16, 8);
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)retrocomputeStateWithHandler:(id)a3
+- (void)retrocomputeStateWithHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!handler)
   {
     v17 = objc_msgSend_currentHandler(MEMORY[0x1E696AAA8], a2, 0);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v17, v18, a2, self, @"CMVO2MaxRetrocomputeManager.mm", 161, @"Invalid parameter not satisfying: %@", @"handler");
@@ -137,7 +137,7 @@
   {
     if (self->fLocationdConnection)
     {
-      objc_msgSend_copy(a3, v5, v6);
+      objc_msgSend_copy(handler, v5, v6);
       sub_19B5B64E0();
     }
 
@@ -171,26 +171,26 @@
     }
 
     v14 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], v12, @"CMErrorDomain", 103, 0);
-    (*(a3 + 2))(a3, 0, v14);
+    (*(handler + 2))(handler, 0, v14);
     v15 = *MEMORY[0x1E69E9840];
   }
 
   else
   {
     v7 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], v5, @"CMErrorDomain", 109, 0);
-    v8 = *(a3 + 2);
+    v8 = *(handler + 2);
     v9 = *MEMORY[0x1E69E9840];
 
-    v8(a3, 0, v7);
+    v8(handler, 0, v7);
   }
 }
 
-- (void)triggerRetrocomputeWithHandler:(id)a3
+- (void)triggerRetrocomputeWithHandler:(id)handler
 {
   v13 = *MEMORY[0x1E69E9840];
   if (sub_19B43B6EC())
   {
-    objc_msgSend_copy(a3, v4, v5);
+    objc_msgSend_copy(handler, v4, v5);
     sub_19B686CD4();
   }
 
@@ -224,7 +224,7 @@
   }
 
   v10 = objc_msgSend_errorWithDomain_code_userInfo_(MEMORY[0x1E696ABC0], v8, @"CMErrorDomain", 109, 0);
-  (*(a3 + 2))(a3, v10);
+  (*(handler + 2))(handler, v10);
   v11 = *MEMORY[0x1E69E9840];
 }
 

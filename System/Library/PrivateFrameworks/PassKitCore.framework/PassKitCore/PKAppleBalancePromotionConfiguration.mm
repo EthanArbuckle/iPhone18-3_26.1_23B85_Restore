@@ -1,19 +1,19 @@
 @interface PKAppleBalancePromotionConfiguration
-- (BOOL)isEqual:(id)a3;
-- (PKAppleBalancePromotionConfiguration)initWithAMSOfferDictionary:(id)a3;
-- (PKAppleBalancePromotionConfiguration)initWithCoder:(id)a3;
-- (PKAppleBalancePromotionConfiguration)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKAppleBalancePromotionConfiguration)initWithAMSOfferDictionary:(id)dictionary;
+- (PKAppleBalancePromotionConfiguration)initWithCoder:(id)coder;
+- (PKAppleBalancePromotionConfiguration)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAppleBalancePromotionConfiguration
 
-- (PKAppleBalancePromotionConfiguration)initWithDictionary:(id)a3
+- (PKAppleBalancePromotionConfiguration)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = PKAppleBalancePromotionConfiguration;
   v5 = [(PKAppleBalancePromotionConfiguration *)&v25 init];
@@ -22,38 +22,38 @@
     goto LABEL_4;
   }
 
-  if (v4)
+  if (dictionaryCopy)
   {
-    v6 = [v4 PKStringForKey:@"promotionType"];
+    v6 = [dictionaryCopy PKStringForKey:@"promotionType"];
     v5->_promotionType = PKAppleBalancePromotionTypeFromString(v6);
 
-    v7 = [v4 PKStringForKey:@"programIdentifier"];
+    v7 = [dictionaryCopy PKStringForKey:@"programIdentifier"];
     programIdentifier = v5->_programIdentifier;
     v5->_programIdentifier = v7;
 
-    v9 = [v4 PKStringForKey:@"versionIdentifier"];
+    v9 = [dictionaryCopy PKStringForKey:@"versionIdentifier"];
     versionIdentifier = v5->_versionIdentifier;
     v5->_versionIdentifier = v9;
 
-    v5->_generationIdentifier = [v4 PKIntegerForKey:@"generationIdentifier"];
-    v5->_stamp = [v4 PKIntegerForKey:@"stamp"];
-    v11 = [v4 PKDecimalNumberForKey:@"bonusMinAmount"];
+    v5->_generationIdentifier = [dictionaryCopy PKIntegerForKey:@"generationIdentifier"];
+    v5->_stamp = [dictionaryCopy PKIntegerForKey:@"stamp"];
+    v11 = [dictionaryCopy PKDecimalNumberForKey:@"bonusMinAmount"];
     bonusMinAmount = v5->_bonusMinAmount;
     v5->_bonusMinAmount = v11;
 
-    v13 = [v4 PKDecimalNumberForKey:@"bonusMaxAmount"];
+    v13 = [dictionaryCopy PKDecimalNumberForKey:@"bonusMaxAmount"];
     bonusMaxAmount = v5->_bonusMaxAmount;
     v5->_bonusMaxAmount = v13;
 
-    v15 = [v4 PKStringForKey:@"offerText"];
+    v15 = [dictionaryCopy PKStringForKey:@"offerText"];
     offerText = v5->_offerText;
     v5->_offerText = v15;
 
-    v17 = [v4 PKStringForKey:@"conditionText"];
+    v17 = [dictionaryCopy PKStringForKey:@"conditionText"];
     conditionText = v5->_conditionText;
     v5->_conditionText = v17;
 
-    v19 = [v4 PKDateForKey:@"lastUpdatedDate"];
+    v19 = [dictionaryCopy PKDateForKey:@"lastUpdatedDate"];
     lastUpdatedDate = v5->_lastUpdatedDate;
     v5->_lastUpdatedDate = v19;
 
@@ -75,9 +75,9 @@ LABEL_8:
   return v21;
 }
 
-- (PKAppleBalancePromotionConfiguration)initWithAMSOfferDictionary:(id)a3
+- (PKAppleBalancePromotionConfiguration)initWithAMSOfferDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v28.receiver = self;
   v28.super_class = PKAppleBalancePromotionConfiguration;
   v5 = [(PKAppleBalancePromotionConfiguration *)&v28 init];
@@ -88,32 +88,32 @@ LABEL_6:
     goto LABEL_10;
   }
 
-  if (v4)
+  if (dictionaryCopy)
   {
-    v6 = [v4 PKArrayForKey:@"details"];
-    v7 = [v6 firstObject];
-    v8 = [v7 PKStringForKey:@"bonus-type"];
+    v6 = [dictionaryCopy PKArrayForKey:@"details"];
+    firstObject = [v6 firstObject];
+    v8 = [firstObject PKStringForKey:@"bonus-type"];
     v5->_promotionType = PKAppleBalancePromotionTypeFromString(v8);
 
-    v9 = [v7 PKStringForKey:@"program-id"];
+    v9 = [firstObject PKStringForKey:@"program-id"];
     programIdentifier = v5->_programIdentifier;
     v5->_programIdentifier = v9;
 
-    v11 = [v7 PKStringForKey:@"version-id"];
+    v11 = [firstObject PKStringForKey:@"version-id"];
     versionIdentifier = v5->_versionIdentifier;
     v5->_versionIdentifier = v11;
 
-    v5->_generationIdentifier = [v7 PKIntegerForKey:@"generation-id"];
-    v5->_stamp = [v7 PKIntegerForKey:@"stamp"];
-    v13 = [v7 PKDecimalNumberForKey:@"bonus-min-amount"];
+    v5->_generationIdentifier = [firstObject PKIntegerForKey:@"generation-id"];
+    v5->_stamp = [firstObject PKIntegerForKey:@"stamp"];
+    v13 = [firstObject PKDecimalNumberForKey:@"bonus-min-amount"];
     bonusMinAmount = v5->_bonusMinAmount;
     v5->_bonusMinAmount = v13;
 
-    v15 = [v7 PKDecimalNumberForKey:@"bonus-max-amount"];
+    v15 = [firstObject PKDecimalNumberForKey:@"bonus-max-amount"];
     bonusMaxAmount = v5->_bonusMaxAmount;
     v5->_bonusMaxAmount = v15;
 
-    v17 = [v7 PKStringForKey:@"text"];
+    v17 = [firstObject PKStringForKey:@"text"];
     offerText = v5->_offerText;
     v5->_offerText = v17;
 
@@ -125,9 +125,9 @@ LABEL_6:
       v5->_conditionText = v20;
     }
 
-    v22 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     lastUpdatedDate = v5->_lastUpdatedDate;
-    v5->_lastUpdatedDate = v22;
+    v5->_lastUpdatedDate = date;
 
     goto LABEL_6;
   }
@@ -145,40 +145,40 @@ LABEL_10:
   return v24;
 }
 
-- (PKAppleBalancePromotionConfiguration)initWithCoder:(id)a3
+- (PKAppleBalancePromotionConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PKAppleBalancePromotionConfiguration *)self init];
   if (v5)
   {
-    v5->_promotionType = [v4 decodeIntegerForKey:@"promotionType"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"programIdentifier"];
+    v5->_promotionType = [coderCopy decodeIntegerForKey:@"promotionType"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"programIdentifier"];
     programIdentifier = v5->_programIdentifier;
     v5->_programIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"versionIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"versionIdentifier"];
     versionIdentifier = v5->_versionIdentifier;
     v5->_versionIdentifier = v8;
 
-    v5->_generationIdentifier = [v4 decodeIntegerForKey:@"generationIdentifier"];
-    v5->_stamp = [v4 decodeIntegerForKey:@"stamp"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bonusMinAmount"];
+    v5->_generationIdentifier = [coderCopy decodeIntegerForKey:@"generationIdentifier"];
+    v5->_stamp = [coderCopy decodeIntegerForKey:@"stamp"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bonusMinAmount"];
     bonusMinAmount = v5->_bonusMinAmount;
     v5->_bonusMinAmount = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bonusMaxAmount"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bonusMaxAmount"];
     bonusMaxAmount = v5->_bonusMaxAmount;
     v5->_bonusMaxAmount = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"offerText"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"offerText"];
     offerText = v5->_offerText;
     v5->_offerText = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"conditionText"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"conditionText"];
     conditionText = v5->_conditionText;
     v5->_conditionText = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedDate"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastUpdatedDate"];
     lastUpdatedDate = v5->_lastUpdatedDate;
     v5->_lastUpdatedDate = v18;
   }
@@ -186,25 +186,25 @@ LABEL_10:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   promotionType = self->_promotionType;
-  v5 = a3;
-  [v5 encodeInteger:promotionType forKey:@"promotionType"];
-  [v5 encodeObject:self->_programIdentifier forKey:@"programIdentifier"];
-  [v5 encodeObject:self->_versionIdentifier forKey:@"versionIdentifier"];
-  [v5 encodeInteger:self->_generationIdentifier forKey:@"generationIdentifier"];
-  [v5 encodeInteger:self->_stamp forKey:@"stamp"];
-  [v5 encodeObject:self->_bonusMinAmount forKey:@"bonusMinAmount"];
-  [v5 encodeObject:self->_bonusMaxAmount forKey:@"bonusMaxAmount"];
-  [v5 encodeObject:self->_offerText forKey:@"offerText"];
-  [v5 encodeObject:self->_conditionText forKey:@"conditionText"];
-  [v5 encodeObject:self->_lastUpdatedDate forKey:@"lastUpdatedDate"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:promotionType forKey:@"promotionType"];
+  [coderCopy encodeObject:self->_programIdentifier forKey:@"programIdentifier"];
+  [coderCopy encodeObject:self->_versionIdentifier forKey:@"versionIdentifier"];
+  [coderCopy encodeInteger:self->_generationIdentifier forKey:@"generationIdentifier"];
+  [coderCopy encodeInteger:self->_stamp forKey:@"stamp"];
+  [coderCopy encodeObject:self->_bonusMinAmount forKey:@"bonusMinAmount"];
+  [coderCopy encodeObject:self->_bonusMaxAmount forKey:@"bonusMaxAmount"];
+  [coderCopy encodeObject:self->_offerText forKey:@"offerText"];
+  [coderCopy encodeObject:self->_conditionText forKey:@"conditionText"];
+  [coderCopy encodeObject:self->_lastUpdatedDate forKey:@"lastUpdatedDate"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -212,7 +212,7 @@ LABEL_10:
   }
 
   programIdentifier = self->_programIdentifier;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (programIdentifier && v6)
   {
     if (([(NSString *)programIdentifier isEqual:?]& 1) == 0)
@@ -227,7 +227,7 @@ LABEL_10:
   }
 
   versionIdentifier = self->_versionIdentifier;
-  v8 = v4[3];
+  v8 = equalCopy[3];
   if (versionIdentifier && v8)
   {
     if (([(NSString *)versionIdentifier isEqual:?]& 1) == 0)
@@ -241,13 +241,13 @@ LABEL_10:
     goto LABEL_39;
   }
 
-  if (self->_generationIdentifier != v4[4] || self->_stamp != v4[5])
+  if (self->_generationIdentifier != equalCopy[4] || self->_stamp != equalCopy[5])
   {
     goto LABEL_39;
   }
 
   bonusMinAmount = self->_bonusMinAmount;
-  v10 = v4[6];
+  v10 = equalCopy[6];
   if (bonusMinAmount && v10)
   {
     if (([(NSDecimalNumber *)bonusMinAmount isEqual:?]& 1) == 0)
@@ -262,7 +262,7 @@ LABEL_10:
   }
 
   bonusMaxAmount = self->_bonusMaxAmount;
-  v12 = v4[7];
+  v12 = equalCopy[7];
   if (bonusMaxAmount && v12)
   {
     if (([(NSDecimalNumber *)bonusMaxAmount isEqual:?]& 1) == 0)
@@ -277,7 +277,7 @@ LABEL_10:
   }
 
   offerText = self->_offerText;
-  v14 = v4[8];
+  v14 = equalCopy[8];
   if (offerText && v14)
   {
     if (([(NSString *)offerText isEqual:?]& 1) == 0)
@@ -292,7 +292,7 @@ LABEL_10:
   }
 
   conditionText = self->_conditionText;
-  v16 = v4[9];
+  v16 = equalCopy[9];
   if (conditionText && v16)
   {
     if (([(NSString *)conditionText isEqual:?]& 1) == 0)
@@ -307,7 +307,7 @@ LABEL_10:
   }
 
   lastUpdatedDate = self->_lastUpdatedDate;
-  v18 = v4[10];
+  v18 = equalCopy[10];
   if (!lastUpdatedDate || !v18)
   {
     if (lastUpdatedDate == v18)
@@ -326,7 +326,7 @@ LABEL_39:
   }
 
 LABEL_37:
-  v19 = self->_promotionType == v4[1];
+  v19 = self->_promotionType == equalCopy[1];
 LABEL_40:
 
   return v19;
@@ -378,37 +378,37 @@ LABEL_40:
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKAppleBalancePromotionConfiguration allocWithZone:](PKAppleBalancePromotionConfiguration init];
   v5->_promotionType = self->_promotionType;
-  v6 = [(NSString *)self->_programIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_programIdentifier copyWithZone:zone];
   programIdentifier = v5->_programIdentifier;
   v5->_programIdentifier = v6;
 
-  v8 = [(NSString *)self->_versionIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_versionIdentifier copyWithZone:zone];
   versionIdentifier = v5->_versionIdentifier;
   v5->_versionIdentifier = v8;
 
   v5->_generationIdentifier = self->_generationIdentifier;
   v5->_stamp = self->_stamp;
-  v10 = [(NSDecimalNumber *)self->_bonusMinAmount copyWithZone:a3];
+  v10 = [(NSDecimalNumber *)self->_bonusMinAmount copyWithZone:zone];
   bonusMinAmount = v5->_bonusMinAmount;
   v5->_bonusMinAmount = v10;
 
-  v12 = [(NSDecimalNumber *)self->_bonusMaxAmount copyWithZone:a3];
+  v12 = [(NSDecimalNumber *)self->_bonusMaxAmount copyWithZone:zone];
   bonusMaxAmount = v5->_bonusMaxAmount;
   v5->_bonusMaxAmount = v12;
 
-  v14 = [(NSString *)self->_offerText copyWithZone:a3];
+  v14 = [(NSString *)self->_offerText copyWithZone:zone];
   offerText = v5->_offerText;
   v5->_offerText = v14;
 
-  v16 = [(NSString *)self->_conditionText copyWithZone:a3];
+  v16 = [(NSString *)self->_conditionText copyWithZone:zone];
   conditionText = v5->_conditionText;
   v5->_conditionText = v16;
 
-  v18 = [(NSDate *)self->_lastUpdatedDate copyWithZone:a3];
+  v18 = [(NSDate *)self->_lastUpdatedDate copyWithZone:zone];
   lastUpdatedDate = v5->_lastUpdatedDate;
   v5->_lastUpdatedDate = v18;
 

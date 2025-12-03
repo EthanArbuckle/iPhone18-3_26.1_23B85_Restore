@@ -2,12 +2,12 @@
 + (id)sharedWiFi3BarsObserver;
 - (WiFi3BarsObserver)init;
 - (void)_cleanupMaintenanceTask;
-- (void)_installDeferMonitorForActivity:(id)a3 proxy:(id)a4;
+- (void)_installDeferMonitorForActivity:(id)activity proxy:(id)proxy;
 - (void)dealloc;
-- (void)fetch3BarsNetworksForLocation:(id)a3;
-- (void)forceFetch3BarsNetworkMatchingBSSID:(id)a3 completionHandler:(id)a4;
-- (void)prune3BarsNetworks:(unint64_t)a3;
-- (void)run3BarsObserver:(void *)a3 withActivity:(id)a4 withCompletion:(id)a5;
+- (void)fetch3BarsNetworksForLocation:(id)location;
+- (void)forceFetch3BarsNetworkMatchingBSSID:(id)d completionHandler:(id)handler;
+- (void)prune3BarsNetworks:(unint64_t)networks;
+- (void)run3BarsObserver:(void *)observer withActivity:(id)activity withCompletion:(id)completion;
 @end
 
 @implementation WiFi3BarsObserver
@@ -34,7 +34,7 @@
   [(WiFi3BarsObserver *)&v3 dealloc];
 }
 
-- (void)_installDeferMonitorForActivity:(id)a3 proxy:(id)a4
+- (void)_installDeferMonitorForActivity:(id)activity proxy:(id)proxy
 {
   v7 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, self->_timerQueue);
   self->_timer = v7;
@@ -54,8 +54,8 @@
   v11[2] = sub_100119A70;
   v11[3] = &unk_100262558;
   v11[4] = self;
-  v11[5] = a4;
-  v11[6] = a3;
+  v11[5] = proxy;
+  v11[6] = activity;
   dispatch_source_set_event_handler(v10, v11);
   dispatch_resume(self->_timer);
 }
@@ -77,33 +77,33 @@
   }
 }
 
-- (void)fetch3BarsNetworksForLocation:(id)a3
+- (void)fetch3BarsNetworksForLocation:(id)location
 {
   v4 = [(NSXPCConnection *)self->_connectionToService remoteObjectProxyWithErrorHandler:&stru_1002633A8];
   if (v4)
   {
 
-    [v4 fetch3BarsNetworksForLocation:a3];
+    [v4 fetch3BarsNetworksForLocation:location];
   }
 }
 
-- (void)prune3BarsNetworks:(unint64_t)a3
+- (void)prune3BarsNetworks:(unint64_t)networks
 {
   v4 = [(NSXPCConnection *)self->_connectionToService remoteObjectProxyWithErrorHandler:&stru_1002633C8];
   if (v4)
   {
 
-    [v4 prune3BarsNetworks:a3];
+    [v4 prune3BarsNetworks:networks];
   }
 }
 
-- (void)forceFetch3BarsNetworkMatchingBSSID:(id)a3 completionHandler:(id)a4
+- (void)forceFetch3BarsNetworkMatchingBSSID:(id)d completionHandler:(id)handler
 {
   v6 = [(NSXPCConnection *)self->_connectionToService remoteObjectProxyWithErrorHandler:&stru_1002633E8];
   if (v6)
   {
 
-    [v6 forceFetch3BarsNetworkMatchingBSSID:a3 completionHandler:a4];
+    [v6 forceFetch3BarsNetworkMatchingBSSID:d completionHandler:handler];
   }
 }
 
@@ -144,9 +144,9 @@
   return v2;
 }
 
-- (void)run3BarsObserver:(void *)a3 withActivity:(id)a4 withCompletion:(id)a5
+- (void)run3BarsObserver:(void *)observer withActivity:(id)activity withCompletion:(id)completion
 {
-  if (!sub_100076C24(a3))
+  if (!sub_100076C24(observer))
   {
     v13 = objc_autoreleasePoolPush();
     if (off_100298C40)
@@ -157,7 +157,7 @@
     v9 = 0;
 LABEL_13:
     objc_autoreleasePoolPop(v13);
-    (*(a5 + 2))(a5, 0);
+    (*(completion + 2))(completion, 0);
     if (!v9)
     {
       return;
@@ -166,8 +166,8 @@ LABEL_13:
     goto LABEL_6;
   }
 
-  v9 = sub_10000FB4C(a3);
-  if (!sub_10008653C(a3, v9))
+  v9 = sub_10000FB4C(observer);
+  if (!sub_10008653C(observer, v9))
   {
     v13 = objc_autoreleasePoolPush();
     if (off_100298C40)
@@ -183,18 +183,18 @@ LABEL_13:
   v15[1] = 3221225472;
   v15[2] = sub_100119C04;
   v15[3] = &unk_100263340;
-  v15[4] = a5;
+  v15[4] = completion;
   v11 = [(NSXPCConnection *)connectionToService remoteObjectProxyWithErrorHandler:v15];
   if (v11)
   {
     v12 = v11;
-    [(WiFi3BarsObserver *)self _installDeferMonitorForActivity:a4 proxy:v11];
+    [(WiFi3BarsObserver *)self _installDeferMonitorForActivity:activity proxy:v11];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100119C94;
     v14[3] = &unk_100263368;
     v14[4] = self;
-    v14[5] = a5;
+    v14[5] = completion;
     [v12 maintenanceTask:104857600 location:v9 predictedForDuration:1 maxPredictedLocations:v14 completionHandler:86400.0];
   }
 

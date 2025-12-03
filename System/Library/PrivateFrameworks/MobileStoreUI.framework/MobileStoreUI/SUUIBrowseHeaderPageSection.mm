@@ -1,55 +1,55 @@
 @interface SUUIBrowseHeaderPageSection
-- (CGSize)cellSizeForIndexPath:(id)a3;
-- (SUUIBrowseHeaderPageSection)initWithPageComponent:(id)a3;
+- (CGSize)cellSizeForIndexPath:(id)path;
+- (SUUIBrowseHeaderPageSection)initWithPageComponent:(id)component;
 - (UIEdgeInsets)sectionContentInset;
-- (id)cellForIndexPath:(id)a3;
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4;
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3;
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3;
-- (void)willAppearInContext:(id)a3;
+- (id)cellForIndexPath:(id)path;
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session;
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path;
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path;
+- (void)willAppearInContext:(id)context;
 @end
 
 @implementation SUUIBrowseHeaderPageSection
 
-- (SUUIBrowseHeaderPageSection)initWithPageComponent:(id)a3
+- (SUUIBrowseHeaderPageSection)initWithPageComponent:(id)component
 {
   v4.receiver = self;
   v4.super_class = SUUIBrowseHeaderPageSection;
-  return [(SUUIStorePageSection *)&v4 initWithPageComponent:a3];
+  return [(SUUIStorePageSection *)&v4 initWithPageComponent:component];
 }
 
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session
 {
-  v5 = a4;
-  v7 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = [v7 viewElement];
-  [v5 addItemViewElement:v6];
+  sessionCopy = session;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  [sessionCopy addItemViewElement:viewElement];
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pathCopy = path;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v7 = [(SUUIStorePageSection *)self context];
-  v8 = [v7 collectionView];
-  v9 = [v8 dequeueReusableCellWithReuseIdentifier:@"SUUIBrowseHeaderPageSectionReuseIdentifier" forIndexPath:v4];
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v9 = [collectionView dequeueReusableCellWithReuseIdentifier:@"SUUIBrowseHeaderPageSectionReuseIdentifier" forIndexPath:pathCopy];
 
-  v10 = [v6 titleLabels];
-  v11 = [v10 firstObject];
-  v12 = [v11 text];
-  v13 = [v12 string];
-  [v9 setTitle:v13];
+  titleLabels = [viewElement titleLabels];
+  firstObject = [titleLabels firstObject];
+  text = [firstObject text];
+  string = [text string];
+  [v9 setTitle:string];
 
   return v9;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
-  v3 = [(SUUIStorePageSection *)self context];
-  v4 = [v3 collectionView];
-  [v4 bounds];
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  [collectionView bounds];
   v6 = v5;
 
   v7 = 44.0;
@@ -59,34 +59,34 @@
   return result;
 }
 
-- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)a3
+- (void)collectionViewWillDisplayCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pathCopy = path;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v7 = [(SUUIStorePageSection *)self context];
-  v8 = [v7 activeMetricsImpressionSession];
-  [v8 beginActiveImpressionForViewElement:v6];
+  context = [(SUUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+  [activeMetricsImpressionSession beginActiveImpressionForViewElement:viewElement];
 
   v9.receiver = self;
   v9.super_class = SUUIBrowseHeaderPageSection;
-  [(SUUIStorePageSection *)&v9 collectionViewWillDisplayCellForItemAtIndexPath:v4];
+  [(SUUIStorePageSection *)&v9 collectionViewWillDisplayCellForItemAtIndexPath:pathCopy];
 }
 
-- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)a3
+- (void)collectionViewDidEndDisplayingCellForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = [v5 viewElement];
+  pathCopy = path;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
 
-  v7 = [(SUUIStorePageSection *)self context];
-  v8 = [v7 activeMetricsImpressionSession];
-  [v8 endActiveImpressionForViewElement:v6];
+  context = [(SUUIStorePageSection *)self context];
+  activeMetricsImpressionSession = [context activeMetricsImpressionSession];
+  [activeMetricsImpressionSession endActiveImpressionForViewElement:viewElement];
 
   v9.receiver = self;
   v9.super_class = SUUIBrowseHeaderPageSection;
-  [(SUUIStorePageSection *)&v9 collectionViewDidEndDisplayingCellForItemAtIndexPath:v4];
+  [(SUUIStorePageSection *)&v9 collectionViewDidEndDisplayingCellForItemAtIndexPath:pathCopy];
 }
 
 - (UIEdgeInsets)sectionContentInset
@@ -102,15 +102,15 @@
   return result;
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 collectionView];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SUUIBrowseHeaderPageSectionReuseIdentifier"];
+  contextCopy = context;
+  collectionView = [contextCopy collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SUUIBrowseHeaderPageSectionReuseIdentifier"];
 
   v6.receiver = self;
   v6.super_class = SUUIBrowseHeaderPageSection;
-  [(SUUIStorePageSection *)&v6 willAppearInContext:v4];
+  [(SUUIStorePageSection *)&v6 willAppearInContext:contextCopy];
 }
 
 @end

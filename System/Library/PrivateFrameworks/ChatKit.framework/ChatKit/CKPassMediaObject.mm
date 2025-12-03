@@ -1,7 +1,7 @@
 @interface CKPassMediaObject
-- (CKPassMediaObject)initWithTransfer:(id)a3 context:(id)a4 forceInlinePreview:(BOOL)a5;
+- (CKPassMediaObject)initWithTransfer:(id)transfer context:(id)context forceInlinePreview:(BOOL)preview;
 - (UIImage)icon;
-- (id)generateThumbnailFillToSize:(CGSize)a3 contentAlignmentInsets:(UIEdgeInsets)a4;
+- (id)generateThumbnailFillToSize:(CGSize)size contentAlignmentInsets:(UIEdgeInsets)insets;
 - (id)passView;
 - (id)subtitle;
 - (id)title;
@@ -9,19 +9,19 @@
 
 @implementation CKPassMediaObject
 
-- (CKPassMediaObject)initWithTransfer:(id)a3 context:(id)a4 forceInlinePreview:(BOOL)a5
+- (CKPassMediaObject)initWithTransfer:(id)transfer context:(id)context forceInlinePreview:(BOOL)preview
 {
   v10.receiver = self;
   v10.super_class = CKPassMediaObject;
-  v5 = [(CKMediaObject *)&v10 initWithTransfer:a3 context:a4 forceInlinePreview:a5];
+  v5 = [(CKMediaObject *)&v10 initWithTransfer:transfer context:context forceInlinePreview:preview];
   if (v5)
   {
-    v6 = [MEMORY[0x1E69DC938] currentDevice];
-    v7 = [v6 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if ((v7 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
-      v8 = [(CKPassMediaObject *)v5 icon];
+      icon = [(CKPassMediaObject *)v5 icon];
     }
   }
 
@@ -34,16 +34,16 @@
   {
     v6.receiver = self;
     v6.super_class = CKPassMediaObject;
-    v3 = [(CKMediaObject *)&v6 title];
+    title = [(CKMediaObject *)&v6 title];
   }
 
   else
   {
-    v4 = [(CKPassbookMediaObject *)self pass];
-    v3 = [CKPassKitHelper localizedNameForPass:v4];
+    pass = [(CKPassbookMediaObject *)self pass];
+    title = [CKPassKitHelper localizedNameForPass:pass];
   }
 
-  return v3;
+  return title;
 }
 
 - (id)subtitle
@@ -52,16 +52,16 @@
   {
     v6.receiver = self;
     v6.super_class = CKPassMediaObject;
-    v3 = [(CKMediaObject *)&v6 subtitle];
+    subtitle = [(CKMediaObject *)&v6 subtitle];
   }
 
   else
   {
-    v4 = [(CKPassbookMediaObject *)self pass];
-    v3 = [CKPassKitHelper organizationNameForPass:v4];
+    pass = [(CKPassbookMediaObject *)self pass];
+    subtitle = [CKPassKitHelper organizationNameForPass:pass];
   }
 
-  return v3;
+  return subtitle;
 }
 
 - (UIImage)icon
@@ -70,7 +70,7 @@
   {
     v25.receiver = self;
     v25.super_class = CKPassMediaObject;
-    v3 = [(CKMediaObject *)&v25 icon];
+    icon = [(CKMediaObject *)&v25 icon];
   }
 
   else
@@ -78,16 +78,16 @@
     icon = self->_icon;
     if (!icon)
     {
-      v5 = [(CKPassbookMediaObject *)self pass];
-      v6 = [CKPassKitHelper mailAttachmentIconForPass:v5];
+      pass = [(CKPassbookMediaObject *)self pass];
+      v6 = [CKPassKitHelper mailAttachmentIconForPass:pass];
 
       if (v6)
       {
         v7 = *MEMORY[0x1E695F058];
         v8 = *(MEMORY[0x1E695F058] + 8);
         v9 = +[CKUIBehavior sharedBehaviors];
-        v10 = [v9 genericDocumentIcon];
-        [v10 size];
+        genericDocumentIcon = [v9 genericDocumentIcon];
+        [genericDocumentIcon size];
         v12 = v11;
         v14 = v13;
 
@@ -121,17 +121,17 @@
       icon = self->_icon;
     }
 
-    v3 = icon;
+    icon = icon;
   }
 
-  return v3;
+  return icon;
 }
 
-- (id)generateThumbnailFillToSize:(CGSize)a3 contentAlignmentInsets:(UIEdgeInsets)a4
+- (id)generateThumbnailFillToSize:(CGSize)size contentAlignmentInsets:(UIEdgeInsets)insets
 {
-  height = a3.height;
-  width = a3.width;
-  if ([(CKMediaObject *)self transcoderPreviewGenerationFailed:a3.width])
+  height = size.height;
+  width = size.width;
+  if ([(CKMediaObject *)self transcoderPreviewGenerationFailed:size.width])
   {
     v7 = IMLogHandleForCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -144,10 +144,10 @@
 
   else
   {
-    v9 = [(CKPassMediaObject *)self passView];
-    v10 = [v9 snapshotOfFrontFace];
+    passView = [(CKPassMediaObject *)self passView];
+    snapshotOfFrontFace = [passView snapshotOfFrontFace];
 
-    [v10 size];
+    [snapshotOfFrontFace size];
     v13 = width / v12;
     v14 = v12 == 0.0;
     v15 = 0.0;
@@ -162,11 +162,11 @@
     }
 
     v16 = fmax(v13, v15);
-    v17 = [MEMORY[0x1E69DCEB0] mainScreen];
-    [v17 scale];
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    [mainScreen scale];
     v19 = v18 / v16;
 
-    v8 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:objc_msgSend(v10 scale:"CGImage") orientation:{0, v19}];
+    v8 = [objc_alloc(MEMORY[0x1E69DCAB8]) initWithCGImage:objc_msgSend(snapshotOfFrontFace scale:"CGImage") orientation:{0, v19}];
   }
 
   return v8;
@@ -192,12 +192,12 @@
       [CKPassMediaObject passView];
     }
 
-    v5 = [(CKPassbookMediaObject *)self pass];
-    v4 = [CKPassKitHelper passViewForPass:v5 content:5];
+    pass = [(CKPassbookMediaObject *)self pass];
+    v4 = [CKPassKitHelper passViewForPass:pass content:5];
 
     [v4 setSuppressedContent:6];
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    [v4 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [v4 setBackgroundColor:clearColor];
   }
 
   return v4;

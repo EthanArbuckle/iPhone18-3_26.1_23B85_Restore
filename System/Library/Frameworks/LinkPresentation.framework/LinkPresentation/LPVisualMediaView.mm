@@ -1,68 +1,68 @@
 @interface LPVisualMediaView
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)isParented;
-- (BOOL)shouldAllowHighlightToRecognizeSimultaneouslyWithGesture:(id)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (LPVisualMediaView)initWithHost:(id)a3 media:(id)a4 style:(id)a5 posterFrame:(id)a6 posterFrameStyle:(id)a7 configuration:(id)a8;
+- (BOOL)shouldAllowHighlightToRecognizeSimultaneouslyWithGesture:(id)gesture;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (LPVisualMediaView)initWithHost:(id)host media:(id)media style:(id)style posterFrame:(id)frame posterFrameStyle:(id)frameStyle configuration:(id)configuration;
 - (LPVisualMediaViewConfiguration)configuration;
 - (double)unobscuredAreaFraction;
 - (id)_createPosterFrameView;
 - (id)_createPulsingLoadIndicator;
 - (void)_buildVisualMediaPlaceholderView;
-- (void)_muteButtonHighlightLongPressRecognized:(id)a3;
-- (void)_muteButtonTapRecognized:(id)a3;
+- (void)_muteButtonHighlightLongPressRecognized:(id)recognized;
+- (void)_muteButtonTapRecognized:(id)recognized;
 - (void)_startPlaybackWatchdogTimer;
-- (void)_swapVideoPlaceholderForVideoForAutoPlay:(BOOL)a3;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)applicationWillEnterForeground:(id)a3;
+- (void)_swapVideoPlaceholderForVideoForAutoPlay:(BOOL)play;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)applicationWillEnterForeground:(id)foreground;
 - (void)buildSubviewsIfNeeded;
 - (void)componentViewDidMoveToWindow;
 - (void)dealloc;
 - (void)destroyFullScreenViewController;
-- (void)didChangeMutedState:(BOOL)a3;
-- (void)didChangePlayingState:(BOOL)a3;
+- (void)didChangeMutedState:(BOOL)state;
+- (void)didChangePlayingState:(BOOL)state;
 - (void)enterFullScreen;
 - (void)fadeInMuteButton;
 - (void)fullScreenVideoDidPresent;
 - (void)fullScreenVideoWillDismiss;
-- (void)hidePlayButtonAnimated:(BOOL)a3;
+- (void)hidePlayButtonAnimated:(BOOL)animated;
 - (void)layoutComponentView;
 - (void)recreateFullScreenViewControllerIfNeeded;
 - (void)removePlaceholderViews;
 - (void)resetToPlaceholderView;
-- (void)setAllowsUserInteractionWithVideoPlayer:(BOOL)a3;
-- (void)setWaitingForPlayback:(BOOL)a3;
+- (void)setAllowsUserInteractionWithVideoPlayer:(BOOL)player;
+- (void)setWaitingForPlayback:(BOOL)playback;
 - (void)showMuteButton;
-- (void)showPlayButtonAnimated:(BOOL)a3;
+- (void)showPlayButtonAnimated:(BOOL)animated;
 - (void)swapVideoPlaceholderForPlaybackIfNeeded;
-- (void)tapRecognized:(id)a3;
-- (void)updateMuteButtonWithAnimation:(BOOL)a3;
+- (void)tapRecognized:(id)recognized;
+- (void)updateMuteButtonWithAnimation:(BOOL)animation;
 - (void)updatePlayButtonVisibility;
 @end
 
 @implementation LPVisualMediaView
 
-- (LPVisualMediaView)initWithHost:(id)a3 media:(id)a4 style:(id)a5 posterFrame:(id)a6 posterFrameStyle:(id)a7 configuration:(id)a8
+- (LPVisualMediaView)initWithHost:(id)host media:(id)media style:(id)style posterFrame:(id)frame posterFrameStyle:(id)frameStyle configuration:(id)configuration
 {
-  v14 = a3;
-  v15 = a4;
-  v31 = a5;
-  v30 = a6;
-  v16 = a7;
-  v17 = a8;
+  hostCopy = host;
+  mediaCopy = media;
+  styleCopy = style;
+  frameCopy = frame;
+  frameStyleCopy = frameStyle;
+  configurationCopy = configuration;
   v32.receiver = self;
   v32.super_class = LPVisualMediaView;
-  v18 = [(LPComponentView *)&v32 initWithHost:v14];
+  v18 = [(LPComponentView *)&v32 initWithHost:hostCopy];
   p_isa = &v18->super.super.super.super.isa;
   v20 = v18;
   if (v18)
   {
     v18->_loggingID = ++initWithHost_media_style_posterFrame_posterFrameStyle_configuration__nextLoggingID;
-    objc_storeStrong(&v18->_media, a4);
-    objc_storeStrong(p_isa + 53, a5);
-    objc_storeStrong(p_isa + 54, a6);
-    objc_storeStrong(p_isa + 55, a7);
-    v21 = [v17 copy];
+    objc_storeStrong(&v18->_media, media);
+    objc_storeStrong(p_isa + 53, style);
+    objc_storeStrong(p_isa + 54, frame);
+    objc_storeStrong(p_isa + 55, frameStyle);
+    v21 = [configurationCopy copy];
     configuration = v20->_configuration;
     v20->_configuration = v21;
 
@@ -74,9 +74,9 @@
     }
 
     v20->_showingPlayButton = 1;
-    v25 = [v15 properties];
-    v26 = [v25 accessibilityText];
-    [(LPVisualMediaView *)v20 setAccessibilityLabel:v26];
+    properties = [mediaCopy properties];
+    accessibilityText = [properties accessibilityText];
+    [(LPVisualMediaView *)v20 setAccessibilityLabel:accessibilityText];
 
     v27 = +[LPMediaPlaybackManager shared];
     [v27 addMediaPlayer:v20];
@@ -111,8 +111,8 @@
     return 1;
   }
 
-  v3 = [(LPVisualMediaView *)self window];
-  v2 = v3 != 0;
+  window = [(LPVisualMediaView *)self window];
+  v2 = window != 0;
 
   return v2;
 }
@@ -137,9 +137,9 @@
 
       else
       {
-        v4 = [(LPVisualMediaView *)self isWaitingForPlayback];
-        self->_wasPlayingOrWaitingToPlayWhenUnparented = v4;
-        if (!v4)
+        isWaitingForPlayback = [(LPVisualMediaView *)self isWaitingForPlayback];
+        self->_wasPlayingOrWaitingToPlayWhenUnparented = isWaitingForPlayback;
+        if (!isWaitingForPlayback)
         {
           return;
         }
@@ -174,23 +174,23 @@ uint64_t __49__LPVisualMediaView_componentViewDidMoveToWindow__block_invoke(uint
   if (!self->_hasBuilt)
   {
     [(LPVisualMediaView *)self setUserInteractionEnabled:1];
-    v3 = [(LPVisualMediaView *)self layer];
-    [v3 setMasksToBounds:1];
+    layer = [(LPVisualMediaView *)self layer];
+    [layer setMasksToBounds:1];
 
-    v4 = [MEMORY[0x1E69DD250] _lp_createFlippedView];
+    _lp_createFlippedView = [MEMORY[0x1E69DD250] _lp_createFlippedView];
     containerView = self->_containerView;
-    self->_containerView = v4;
+    self->_containerView = _lp_createFlippedView;
 
     [(LPVisualMediaView *)self addSubview:self->_containerView];
     if (+[LPSettings showDebugIndicators])
     {
-      v6 = [MEMORY[0x1E69DC888] yellowColor];
-      v7 = [v6 CGColor];
-      v8 = [(UIView *)self->_containerView layer];
-      [v8 setBorderColor:v7];
+      yellowColor = [MEMORY[0x1E69DC888] yellowColor];
+      cGColor = [yellowColor CGColor];
+      layer2 = [(UIView *)self->_containerView layer];
+      [layer2 setBorderColor:cGColor];
 
-      v9 = [(UIView *)self->_containerView layer];
-      [v9 setBorderWidth:3.0];
+      layer3 = [(UIView *)self->_containerView layer];
+      [layer3 setBorderWidth:3.0];
 
       v10 = objc_alloc_init(MEMORY[0x1E6979508]);
       debugIndicator = self->_debugIndicator;
@@ -200,16 +200,16 @@ uint64_t __49__LPVisualMediaView_componentViewDidMoveToWindow__block_invoke(uint
       [(CATextLayer *)self->_debugIndicator setDelegate:v12];
 
       v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_loggingID];
-      v14 = [v13 stringValue];
-      [(CATextLayer *)self->_debugIndicator setString:v14];
+      stringValue = [v13 stringValue];
+      [(CATextLayer *)self->_debugIndicator setString:stringValue];
 
       -[CATextLayer setFont:](self->_debugIndicator, "setFont:", [MEMORY[0x1E69DB878] systemFontOfSize:16.0]);
       [(CATextLayer *)self->_debugIndicator setFontSize:16.0];
-      v15 = [MEMORY[0x1E69DC888] blackColor];
-      -[CATextLayer setForegroundColor:](self->_debugIndicator, "setForegroundColor:", [v15 CGColor]);
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
+      -[CATextLayer setForegroundColor:](self->_debugIndicator, "setForegroundColor:", [blackColor CGColor]);
 
-      v16 = [MEMORY[0x1E69DC888] whiteColor];
-      -[CATextLayer setShadowColor:](self->_debugIndicator, "setShadowColor:", [v16 CGColor]);
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      -[CATextLayer setShadowColor:](self->_debugIndicator, "setShadowColor:", [whiteColor CGColor]);
 
       LODWORD(v17) = 1.0;
       [(CATextLayer *)self->_debugIndicator setShadowOpacity:v17];
@@ -217,8 +217,8 @@ uint64_t __49__LPVisualMediaView_componentViewDidMoveToWindow__block_invoke(uint
       [(CATextLayer *)self->_debugIndicator setShadowOffset:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
       [(UIView *)self _lp_backingScaleFactor];
       [(CATextLayer *)self->_debugIndicator setContentsScale:?];
-      v18 = [(LPVisualMediaView *)self layer];
-      [v18 addSublayer:self->_debugIndicator];
+      layer4 = [(LPVisualMediaView *)self layer];
+      [layer4 addSublayer:self->_debugIndicator];
     }
 
     [(LPVisualMediaView *)self _buildVisualMediaPlaceholderView];
@@ -250,20 +250,20 @@ uint64_t __49__LPVisualMediaView_componentViewDidMoveToWindow__block_invoke(uint
         [(LPVisualMediaView *)self beginLoadingMediaForPreroll];
       }
 
-      v23 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v23 addObserver:self selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter addObserver:self selector:sel_applicationDidEnterBackground_ name:*MEMORY[0x1E69DDAC8] object:0];
 
-      v24 = [MEMORY[0x1E696AD88] defaultCenter];
-      [v24 addObserver:self selector:sel_applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+      [defaultCenter2 addObserver:self selector:sel_applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
     }
 
     self->_hasBuilt = 1;
   }
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
-  v5 = a3;
+  backgroundCopy = background;
   playing = self->_playing;
   self->_wasPlayingWhenSuspended = playing;
   if (playing)
@@ -282,7 +282,7 @@ uint64_t __49__LPVisualMediaView_componentViewDidMoveToWindow__block_invoke(uint
   }
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
   if (self->_wasPlayingWhenSuspended && [(LPVisualMediaView *)self isParented])
   {
@@ -294,9 +294,9 @@ uint64_t __49__LPVisualMediaView_componentViewDidMoveToWindow__block_invoke(uint
 - (void)layoutComponentView
 {
   [(LPVisualMediaView *)self buildSubviewsIfNeeded];
-  v3 = [(UIView *)self->_containerView superview];
+  superview = [(UIView *)self->_containerView superview];
 
-  if (v3 == self)
+  if (superview == self)
   {
     [(LPVisualMediaView *)self bounds];
     [(UIView *)self->_containerView setFrame:?];
@@ -309,9 +309,9 @@ uint64_t __49__LPVisualMediaView_componentViewDidMoveToWindow__block_invoke(uint
   [(LPVisualMediaView *)self bounds];
   v43 = CGRectInset(v42, 10.0, 10.0);
   [(CATextLayer *)self->_debugIndicator setFrame:v43.origin.x, v43.origin.y, v43.size.width, v43.size.height];
-  v4 = [(LPVisualMediaViewStyle *)self->_style playButton];
-  v5 = [v4 backgroundSize];
-  [v5 asSize];
+  playButton = [(LPVisualMediaViewStyle *)self->_style playButton];
+  backgroundSize = [playButton backgroundSize];
+  [backgroundSize asSize];
   v7 = v6;
   v9 = v8;
 
@@ -320,8 +320,8 @@ uint64_t __49__LPVisualMediaView_componentViewDidMoveToWindow__block_invoke(uint
   MidX = CGRectGetMidX(v44);
   [(UIView *)self->_containerView bounds];
   MidY = CGRectGetMidY(v45);
-  v12 = [(UIView *)self->_playButtonContainerView layer];
-  [v12 setPosition:{MidX, MidY}];
+  layer = [(UIView *)self->_playButtonContainerView layer];
+  [layer setPosition:{MidX, MidY}];
 
   [(UIView *)self->_playButtonView setBounds:0.0, 0.0, v7, v9];
   [(UIView *)self->_playButtonView frame];
@@ -329,33 +329,33 @@ uint64_t __49__LPVisualMediaView_componentViewDidMoveToWindow__block_invoke(uint
   muteButtonView = self->_muteButtonView;
   if (muteButtonView)
   {
-    v14 = [(UIImageView *)muteButtonView image];
+    image = [(UIImageView *)muteButtonView image];
     v15 = +[LPResources muteButton];
-    v16 = [v15 platformImage];
-    [(UIImageView *)self->_muteButtonView setImage:v16];
+    platformImage = [v15 platformImage];
+    [(UIImageView *)self->_muteButtonView setImage:platformImage];
 
     [(UIImageView *)self->_muteButtonView intrinsicContentSize];
     v18 = v17;
     v20 = v19;
     v21 = +[LPResources unmuteButton];
-    v22 = [v21 platformImage];
-    [(UIImageView *)self->_muteButtonView setImage:v22];
+    platformImage2 = [v21 platformImage];
+    [(UIImageView *)self->_muteButtonView setImage:platformImage2];
 
     [(UIImageView *)self->_muteButtonView intrinsicContentSize];
     v24 = v23;
     v26 = v25;
-    [(UIImageView *)self->_muteButtonView setImage:v14];
-    v27 = [(LPVisualMediaViewStyle *)self->_style muteButtonPadding];
-    [v27 asInsetsForLTR:{-[UIView _lp_isLTR](self, "_lp_isLTR")}];
+    [(UIImageView *)self->_muteButtonView setImage:image];
+    muteButtonPadding = [(LPVisualMediaViewStyle *)self->_style muteButtonPadding];
+    [muteButtonPadding asInsetsForLTR:{-[UIView _lp_isLTR](self, "_lp_isLTR")}];
     v29 = v28;
     v31 = v30;
     v33 = v32;
     v35 = v34;
 
-    v36 = [(UIView *)self->_muteButtonContainerView _lp_isLTR];
+    _lp_isLTR = [(UIView *)self->_muteButtonContainerView _lp_isLTR];
     v37 = fmax(v18, v24);
     v38 = 0.0;
-    if (v36)
+    if (_lp_isLTR)
     {
       [(UIView *)self->_containerView bounds];
       v38 = v39 - (v35 + v37 + v31);
@@ -372,10 +372,10 @@ uint64_t __49__LPVisualMediaView_componentViewDidMoveToWindow__block_invoke(uint
   [(LPVisualMediaView *)self updatePlayButtonVisibility];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   posterFrame = self->_posterFrame;
   if (posterFrame)
   {
@@ -387,8 +387,8 @@ uint64_t __49__LPVisualMediaView_componentViewDidMoveToWindow__block_invoke(uint
   {
     posterFrame = self->_posterFrame;
 LABEL_7:
-    v12 = [(LPImage *)posterFrame platformImage];
-    [v12 size];
+    platformImage = [(LPImage *)posterFrame platformImage];
+    [platformImage size];
     sizeFittingInsideSizeMaintainingAspectRatio(v13, v14, width, height);
     width = v15;
     v11 = v16;
@@ -455,8 +455,8 @@ void __34__LPVisualMediaView_sizeThatFits___block_invoke(uint64_t a1, double a2,
 - (id)_createPulsingLoadIndicator
 {
   v3 = objc_alloc_init(MEMORY[0x1E69DD250]);
-  v4 = [(LPVisualMediaViewStyle *)self->_style pulsingLoadIndicatorColor];
-  [v3 _lp_setBackgroundColor:v4];
+  pulsingLoadIndicatorColor = [(LPVisualMediaViewStyle *)self->_style pulsingLoadIndicatorColor];
+  [v3 _lp_setBackgroundColor:pulsingLoadIndicatorColor];
 
   v5 = objc_alloc_init(MEMORY[0x1E6979318]);
   [v5 setKeyPath:@"opacity"];
@@ -469,15 +469,15 @@ void __34__LPVisualMediaView_sizeThatFits___block_invoke(uint64_t a1, double a2,
   [(LPVisualMediaViewStyle *)self->_style pulsingLoadIndicatorDuration];
   [v5 setDuration:?];
   [v5 setFillMode:*MEMORY[0x1E69797E0]];
-  v8 = [(LPVisualMediaViewStyle *)self->_style pulsingLoadIndicatorTimingFunction];
-  [v5 setTimingFunction:v8];
+  pulsingLoadIndicatorTimingFunction = [(LPVisualMediaViewStyle *)self->_style pulsingLoadIndicatorTimingFunction];
+  [v5 setTimingFunction:pulsingLoadIndicatorTimingFunction];
 
   LODWORD(v9) = 2139095040;
   [v5 setRepeatCount:v9];
   [v5 setRemovedOnCompletion:0];
   [v5 setAutoreverses:1];
-  v10 = [v3 layer];
-  [v10 addAnimation:v5 forKey:@"fade"];
+  layer = [v3 layer];
+  [layer addAnimation:v5 forKey:@"fade"];
 
   return v3;
 }
@@ -508,19 +508,19 @@ void __48__LPVisualMediaView__startPlaybackWatchdogTimer__block_invoke(uint64_t 
   }
 }
 
-- (void)_swapVideoPlaceholderForVideoForAutoPlay:(BOOL)a3
+- (void)_swapVideoPlaceholderForVideoForAutoPlay:(BOOL)play
 {
-  v5 = [(LPVisualMediaView *)self createVideoPlayerView];
+  createVideoPlayerView = [(LPVisualMediaView *)self createVideoPlayerView];
   playbackView = self->_playbackView;
-  self->_playbackView = v5;
+  self->_playbackView = createVideoPlayerView;
 
-  self->_waitingForPlaybackDueToAutoPlay |= a3;
+  self->_waitingForPlaybackDueToAutoPlay |= play;
   [(UIView *)self->_containerView _lp_insertSubview:self->_playbackView belowSubview:self->_videoPlaceholderView];
-  if (!a3)
+  if (!play)
   {
-    v7 = [(LPVisualMediaView *)self _createPulsingLoadIndicator];
+    _createPulsingLoadIndicator = [(LPVisualMediaView *)self _createPulsingLoadIndicator];
     pulsingLoadView = self->_pulsingLoadView;
-    self->_pulsingLoadView = v7;
+    self->_pulsingLoadView = _createPulsingLoadIndicator;
 
     [(UIView *)self->_containerView _lp_insertSubview:self->_pulsingLoadView aboveSubview:self->_videoPlaceholderView];
   }
@@ -531,19 +531,19 @@ void __48__LPVisualMediaView__startPlaybackWatchdogTimer__block_invoke(uint64_t 
     [(LPVisualMediaView *)self showMuteButton];
   }
 
-  v9 = [(LPVisualMediaView *)self createFullScreenVideoViewController];
+  createFullScreenVideoViewController = [(LPVisualMediaView *)self createFullScreenVideoViewController];
   fullScreenController = self->_fullScreenController;
-  self->_fullScreenController = v9;
+  self->_fullScreenController = createFullScreenVideoViewController;
 
   [(UIView *)self _lp_setNeedsLayout];
 }
 
-- (void)setWaitingForPlayback:(BOOL)a3
+- (void)setWaitingForPlayback:(BOOL)playback
 {
-  if (self->_waitingForPlayback != a3)
+  if (self->_waitingForPlayback != playback)
   {
-    self->_waitingForPlayback = a3;
-    if (!a3)
+    self->_waitingForPlayback = playback;
+    if (!playback)
     {
       [(UIView *)self _lp_setNeedsLayout];
       self->_waitingForPlaybackDueToAutoPlay = 0;
@@ -558,8 +558,8 @@ void __48__LPVisualMediaView__startPlaybackWatchdogTimer__block_invoke(uint64_t 
   result = 0.0;
   if (!IsEmpty)
   {
-    v5 = [(LPVisualMediaView *)self window];
-    [v5 bounds];
+    window = [(LPVisualMediaView *)self window];
+    [window bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -585,9 +585,9 @@ void __48__LPVisualMediaView__startPlaybackWatchdogTimer__block_invoke(uint64_t 
 - (void)resetToPlaceholderView
 {
   [(LPVisualMediaView *)self didChangePlayingState:0];
-  v3 = [(LPVisualMediaView *)self _createPosterFrameView];
+  _createPosterFrameView = [(LPVisualMediaView *)self _createPosterFrameView];
   videoPlaceholderView = self->_videoPlaceholderView;
-  self->_videoPlaceholderView = v3;
+  self->_videoPlaceholderView = _createPosterFrameView;
 
   [(UIView *)self->_containerView _lp_insertSubview:self->_videoPlaceholderView belowSubview:self->_playButtonContainerView];
   [(UIView *)self->_playbackView removeFromSuperview];
@@ -614,8 +614,8 @@ void __48__LPVisualMediaView__startPlaybackWatchdogTimer__block_invoke(uint64_t 
   self->_fullScreen = 0;
   [(LPVisualMediaView *)self setHidden:0];
   [(UIView *)self _lp_setNeedsLayout];
-  v9 = [(LPComponentView *)self host];
-  [v9 componentViewDidChangeMediaState:self];
+  host = [(LPComponentView *)self host];
+  [host componentViewDidChangeMediaState:self];
 }
 
 - (void)removePlaceholderViews
@@ -629,12 +629,12 @@ void __48__LPVisualMediaView__startPlaybackWatchdogTimer__block_invoke(uint64_t 
   self->_pulsingLoadView = 0;
 }
 
-- (void)didChangePlayingState:(BOOL)a3
+- (void)didChangePlayingState:(BOOL)state
 {
-  if (self->_playing != a3)
+  if (self->_playing != state)
   {
-    v3 = a3;
-    if (a3)
+    stateCopy = state;
+    if (state)
     {
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
@@ -644,13 +644,13 @@ void __48__LPVisualMediaView__startPlaybackWatchdogTimer__block_invoke(uint64_t 
       [(LPVisualMediaView *)self prepareForDisplayWithCompletionHandler:v7];
     }
 
-    self->_playing = v3;
+    self->_playing = stateCopy;
     [(UIView *)self _lp_setNeedsLayout];
     v5 = +[LPMediaPlaybackManager shared];
-    [v5 mediaPlayer:self didChangePlayingState:v3];
+    [v5 mediaPlayer:self didChangePlayingState:stateCopy];
 
-    v6 = [(LPComponentView *)self host];
-    [v6 componentViewDidChangeMediaState:self];
+    host = [(LPComponentView *)self host];
+    [host componentViewDidChangeMediaState:self];
   }
 }
 
@@ -666,9 +666,9 @@ uint64_t __43__LPVisualMediaView_didChangePlayingState___block_invoke(uint64_t a
   return result;
 }
 
-- (void)updateMuteButtonWithAnimation:(BOOL)a3
+- (void)updateMuteButtonWithAnimation:(BOOL)animation
 {
-  v3 = a3;
+  animationCopy = animation;
   if ([(LPVisualMediaView *)self isMuted])
   {
     +[LPResources muteButton];
@@ -679,44 +679,44 @@ uint64_t __43__LPVisualMediaView_didChangePlayingState___block_invoke(uint64_t a
     +[LPResources unmuteButton];
   }
   v5 = ;
-  v13 = [v5 platformImage];
+  platformImage = [v5 platformImage];
 
   muteButtonView = self->_muteButtonView;
-  if (v3)
+  if (animationCopy)
   {
-    v7 = [MEMORY[0x1E6982288] replaceDownUpTransition];
-    [(UIImageView *)muteButtonView setSymbolImage:v13 withContentTransition:v7];
+    replaceDownUpTransition = [MEMORY[0x1E6982288] replaceDownUpTransition];
+    [(UIImageView *)muteButtonView setSymbolImage:platformImage withContentTransition:replaceDownUpTransition];
   }
 
   else
   {
-    [(UIImageView *)self->_muteButtonView setImage:v13];
+    [(UIImageView *)self->_muteButtonView setImage:platformImage];
   }
 
-  v8 = [(LPVisualMedia *)self->_video properties];
-  v9 = [v8 _overlappingControlsColor];
-  v10 = v9;
-  if (v9)
+  properties = [(LPVisualMedia *)self->_video properties];
+  _overlappingControlsColor = [properties _overlappingControlsColor];
+  v10 = _overlappingControlsColor;
+  if (_overlappingControlsColor)
   {
-    v11 = v9;
+    whiteColor = _overlappingControlsColor;
   }
 
   else
   {
-    v11 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
-  v12 = v11;
+  v12 = whiteColor;
 
   [(UIImageView *)self->_muteButtonView _lp_setTintColor:v12];
 }
 
-- (void)didChangeMutedState:(BOOL)a3
+- (void)didChangeMutedState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   [(LPVisualMediaView *)self updateMuteButtonWithAnimation:1];
   v5 = +[LPMediaPlaybackManager shared];
-  [v5 mediaPlayer:self didChangeMutedState:v3];
+  [v5 mediaPlayer:self didChangeMutedState:stateCopy];
 }
 
 - (void)updatePlayButtonVisibility
@@ -727,13 +727,13 @@ uint64_t __43__LPVisualMediaView_didChangePlayingState___block_invoke(uint64_t a
     v3 &= [(LPVisualMediaView *)self hasEverPlayed];
   }
 
-  v4 = [(LPVisualMediaView *)self isWaitingForPlayback];
+  isWaitingForPlayback = [(LPVisualMediaView *)self isWaitingForPlayback];
   if (self->_wasPlayingWhenSuspended)
   {
-    v5 = [MEMORY[0x1E69DC668] sharedApplication];
-    v6 = [v5 applicationState];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    applicationState = [mEMORY[0x1E69DC668] applicationState];
 
-    if (v6 == 2)
+    if (applicationState == 2)
     {
       if (!self->_showingPlayButton)
       {
@@ -744,7 +744,7 @@ uint64_t __43__LPVisualMediaView_didChangePlayingState___block_invoke(uint64_t a
     }
   }
 
-  v7 = !v4 & v3;
+  v7 = !isWaitingForPlayback & v3;
   if (self->_showingPlayButton == v7)
   {
     return;
@@ -762,9 +762,9 @@ LABEL_12:
   [(LPVisualMediaView *)self showPlayButtonAnimated:1];
 }
 
-- (void)showPlayButtonAnimated:(BOOL)a3
+- (void)showPlayButtonAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   self->_showingPlayButton = 1;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -773,7 +773,7 @@ LABEL_12:
   aBlock[4] = self;
   v4 = _Block_copy(aBlock);
   v5 = v4;
-  if (v3)
+  if (animatedCopy)
   {
     [MEMORY[0x1E69DD250] animateWithDuration:0x20000 delay:v4 options:0 animations:0.2 completion:0.0];
   }
@@ -806,9 +806,9 @@ uint64_t __44__LPVisualMediaView_showPlayButtonAnimated___block_invoke(uint64_t 
   return [*(*(a1 + 32) + 496) _lp_setOpacity:1.0];
 }
 
-- (void)hidePlayButtonAnimated:(BOOL)a3
+- (void)hidePlayButtonAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   self->_showingPlayButton = 0;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -822,7 +822,7 @@ uint64_t __44__LPVisualMediaView_showPlayButtonAnimated___block_invoke(uint64_t 
   v7[3] = &unk_1E7A359F0;
   v7[4] = self;
   v6 = _Block_copy(v7);
-  if (v3)
+  if (animatedCopy)
   {
     [MEMORY[0x1E69DD250] animateWithDuration:v5 animations:v6 completion:0.2];
   }
@@ -858,8 +858,8 @@ uint64_t __44__LPVisualMediaView_hidePlayButtonAnimated___block_invoke(uint64_t 
     self->_muteButtonView = v5;
 
     v11 = +[LPResources muteButton];
-    v7 = [v11 platformImage];
-    [(UIImageView *)self->_muteButtonView setImage:v7];
+    platformImage = [v11 platformImage];
+    [(UIImageView *)self->_muteButtonView setImage:platformImage];
 
     [(UIImageView *)self->_muteButtonView setContentMode:1];
     [(UIView *)self->_muteButtonContainerView addSubview:self->_muteButtonView];
@@ -895,8 +895,8 @@ uint64_t __44__LPVisualMediaView_hidePlayButtonAnimated___block_invoke(uint64_t 
   v5 = [v4 numberWithDouble:?];
   [v7 setToValue:v5];
 
-  v6 = [(UIView *)self->_muteButtonContainerView layer];
-  [v6 addAnimation:v7 forKey:@"fadeIn"];
+  layer = [(UIView *)self->_muteButtonContainerView layer];
+  [layer addAnimation:v7 forKey:@"fadeIn"];
 }
 
 - (id)_createPosterFrameView
@@ -904,8 +904,8 @@ uint64_t __44__LPVisualMediaView_hidePlayButtonAnimated___block_invoke(uint64_t 
   if (self->_posterFrame)
   {
     v3 = [LPImageView alloc];
-    v4 = [(LPComponentView *)self host];
-    v5 = [(LPImageView *)v3 initWithHost:v4 image:self->_posterFrame properties:0 style:self->_posterFrameStyle];
+    host = [(LPComponentView *)self host];
+    v5 = [(LPImageView *)v3 initWithHost:host image:self->_posterFrame properties:0 style:self->_posterFrameStyle];
   }
 
   else
@@ -913,72 +913,72 @@ uint64_t __44__LPVisualMediaView_hidePlayButtonAnimated___block_invoke(uint64_t 
     v5 = objc_alloc_init(MEMORY[0x1E69DD250]);
   }
 
-  v6 = [MEMORY[0x1E69DC888] blackColor];
-  [(UIView *)v5 _lp_setBackgroundColor:v6];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [(UIView *)v5 _lp_setBackgroundColor:blackColor];
 
   return v5;
 }
 
-- (void)setAllowsUserInteractionWithVideoPlayer:(BOOL)a3
+- (void)setAllowsUserInteractionWithVideoPlayer:(BOOL)player
 {
-  v3 = a3;
-  self->_allowsUserInteractionWithVideoPlayer = a3;
-  [(UIView *)self->_muteButtonContainerView setUserInteractionEnabled:!a3];
-  [(UIView *)self->_muteButtonContainerView setHidden:v3];
+  playerCopy = player;
+  self->_allowsUserInteractionWithVideoPlayer = player;
+  [(UIView *)self->_muteButtonContainerView setUserInteractionEnabled:!player];
+  [(UIView *)self->_muteButtonContainerView setHidden:playerCopy];
   tapRecognizer = self->_tapRecognizer;
 
-  [(UIGestureRecognizer *)tapRecognizer setEnabled:v3 ^ 1];
+  [(UIGestureRecognizer *)tapRecognizer setEnabled:playerCopy ^ 1];
 }
 
 - (void)_buildVisualMediaPlaceholderView
 {
-  v3 = [(LPVisualMediaView *)self playButtonImage];
-  v25 = [v3 platformImage];
+  playButtonImage = [(LPVisualMediaView *)self playButtonImage];
+  platformImage = [playButtonImage platformImage];
 
   v4 = [MEMORY[0x1E69DC738] buttonWithType:1];
   [(UIView *)v4 addTarget:self action:sel_tapRecognized_ forControlEvents:0x2000];
-  v5 = [MEMORY[0x1E69DC740] filledButtonConfiguration];
-  v6 = [v25 imageWithRenderingMode:2];
-  [v5 setImage:v6];
+  filledButtonConfiguration = [MEMORY[0x1E69DC740] filledButtonConfiguration];
+  v6 = [platformImage imageWithRenderingMode:2];
+  [filledButtonConfiguration setImage:v6];
 
-  [v5 setCornerStyle:4];
+  [filledButtonConfiguration setCornerStyle:4];
   v7 = [MEMORY[0x1E69DC730] effectWithStyle:1];
-  v8 = [v5 background];
-  [v8 setVisualEffect:v7];
+  background = [filledButtonConfiguration background];
+  [background setVisualEffect:v7];
 
-  v9 = [(LPVisualMediaViewStyle *)self->_style playButton];
-  v10 = [v9 color];
-  [v5 setBaseForegroundColor:v10];
+  playButton = [(LPVisualMediaViewStyle *)self->_style playButton];
+  color = [playButton color];
+  [filledButtonConfiguration setBaseForegroundColor:color];
 
   v11 = [MEMORY[0x1E69DC888] colorWithWhite:1.0 alpha:0.15];
-  [v5 setBaseBackgroundColor:v11];
+  [filledButtonConfiguration setBaseBackgroundColor:v11];
 
   v12 = MEMORY[0x1E69DCAD8];
-  v13 = [(LPVisualMediaViewStyle *)self->_style playButton];
-  v14 = [v13 size];
-  v15 = [v14 width];
-  [v15 value];
+  playButton2 = [(LPVisualMediaViewStyle *)self->_style playButton];
+  v14 = [playButton2 size];
+  width = [v14 width];
+  [width value];
   v16 = [v12 configurationWithPointSize:?];
 
-  [v5 setPreferredSymbolConfigurationForImage:v16];
+  [filledButtonConfiguration setPreferredSymbolConfigurationForImage:v16];
   [(UIView *)v4 setPreferredBehavioralStyle:1];
-  [(UIView *)v4 setConfiguration:v5];
+  [(UIView *)v4 setConfiguration:filledButtonConfiguration];
   [(UIView *)v4 setContentMode:4];
-  v17 = [MEMORY[0x1E69DC888] blackColor];
-  [(UIView *)v4 setTintColor:v17];
+  blackColor = [MEMORY[0x1E69DC888] blackColor];
+  [(UIView *)v4 setTintColor:blackColor];
 
   v18 = objc_alloc_init(MEMORY[0x1E69DD250]);
   if ([(LPVisualMediaViewConfiguration *)self->_configuration disablePlayback]|| [(LPVisualMediaViewConfiguration *)self->_configuration disablePlaybackControls])
   {
-    v19 = [(LPVisualMediaViewStyle *)self->_style playButton];
-    [v19 disabledOpacity];
+    playButton3 = [(LPVisualMediaViewStyle *)self->_style playButton];
+    [playButton3 disabledOpacity];
     [(UIView *)v4 setAlpha:?];
   }
 
   [(UIView *)v18 addSubview:v4];
-  v20 = [(LPVisualMediaView *)self _createPosterFrameView];
+  _createPosterFrameView = [(LPVisualMediaView *)self _createPosterFrameView];
   videoPlaceholderView = self->_videoPlaceholderView;
-  self->_videoPlaceholderView = v20;
+  self->_videoPlaceholderView = _createPosterFrameView;
 
   [(UIView *)self->_containerView addSubview:self->_videoPlaceholderView];
   [(UIView *)self->_containerView addSubview:v18];
@@ -990,17 +990,17 @@ uint64_t __44__LPVisualMediaView_hidePlayButtonAnimated___block_invoke(uint64_t 
   self->_playButtonView = v4;
 }
 
-- (BOOL)shouldAllowHighlightToRecognizeSimultaneouslyWithGesture:(id)a3
+- (BOOL)shouldAllowHighlightToRecognizeSimultaneouslyWithGesture:(id)gesture
 {
-  v4 = [a3 view];
-  LOBYTE(self) = v4 != self->_muteButtonContainerView;
+  view = [gesture view];
+  LOBYTE(self) = view != self->_muteButtonContainerView;
 
   return self;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v4 = a4;
+  gestureRecognizerCopy = gestureRecognizer;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1015,7 +1015,7 @@ uint64_t __44__LPVisualMediaView_hidePlayButtonAnimated___block_invoke(uint64_t 
   }
 }
 
-- (void)tapRecognized:(id)a3
+- (void)tapRecognized:(id)recognized
 {
   [(LPVisualMediaView *)self userInteractedWithVideoView];
   if (self->_playbackView)
@@ -1049,9 +1049,9 @@ uint64_t __44__LPVisualMediaView_hidePlayButtonAnimated___block_invoke(uint64_t 
 {
   if (!self->_fullScreenController)
   {
-    v3 = [(LPVisualMediaView *)self createFullScreenVideoViewController];
+    createFullScreenVideoViewController = [(LPVisualMediaView *)self createFullScreenVideoViewController];
     fullScreenController = self->_fullScreenController;
-    self->_fullScreenController = v3;
+    self->_fullScreenController = createFullScreenVideoViewController;
   }
 }
 
@@ -1089,13 +1089,13 @@ uint64_t __44__LPVisualMediaView_hidePlayButtonAnimated___block_invoke(uint64_t 
   [(LPVisualMediaView *)self hideMuteButton];
 }
 
-- (void)_muteButtonHighlightLongPressRecognized:(id)a3
+- (void)_muteButtonHighlightLongPressRecognized:(id)recognized
 {
-  v6 = a3;
-  v4 = [v6 state];
-  if ((v4 - 3) >= 2)
+  recognizedCopy = recognized;
+  state = [recognizedCopy state];
+  if ((state - 3) >= 2)
   {
-    if (v4 != 1)
+    if (state != 1)
     {
       goto LABEL_6;
     }
@@ -1114,7 +1114,7 @@ uint64_t __44__LPVisualMediaView_hidePlayButtonAnimated___block_invoke(uint64_t 
 LABEL_6:
 }
 
-- (void)_muteButtonTapRecognized:(id)a3
+- (void)_muteButtonTapRecognized:(id)recognized
 {
   [(LPVisualMediaView *)self userInteractedWithVideoView];
   v4 = [(LPVisualMediaView *)self isMuted]^ 1;

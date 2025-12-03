@@ -2,10 +2,10 @@
 - (MPSImageAreaMax)initWithCoder:(NSCoder *)aDecoder device:(id)device;
 - (MPSImageAreaMax)initWithDevice:(id)device;
 - (MPSImageAreaMax)initWithDevice:(id)device kernelWidth:(NSUInteger)kernelWidth kernelHeight:(NSUInteger)kernelHeight;
-- (MPSRegion)sourceRegionForDestinationSize:(SEL)a3;
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4;
+- (MPSRegion)sourceRegionForDestinationSize:(SEL)size;
+- (id)copyWithZone:(_NSZone *)zone device:(id)device;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)initEncoder;
 @end
 
@@ -47,14 +47,14 @@
   return objc_msgSend_initWithDevice_kernelWidth_kernelHeight_(self, v5, device, 1, 1, v6);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + *MEMORY[0x277CD7358] + 2) = 1;
   v11.receiver = self;
   v11.super_class = MPSImageAreaMax;
   [(MPSUnaryImageKernel *)&v11 encodeWithCoder:?];
-  objc_msgSend_encodeInt64_forKey_(a3, v5, self->_kernelWidth, @"MPSMinMax.kernelWidth", v6, v7);
-  objc_msgSend_encodeInt64_forKey_(a3, v8, self->_kernelHeight, @"MPSMinMax.kernelHeight", v9, v10);
+  objc_msgSend_encodeInt64_forKey_(coder, v5, self->_kernelWidth, @"MPSMinMax.kernelWidth", v6, v7);
+  objc_msgSend_encodeInt64_forKey_(coder, v8, self->_kernelHeight, @"MPSMinMax.kernelHeight", v9, v10);
 }
 
 - (MPSImageAreaMax)initWithCoder:(NSCoder *)aDecoder device:(id)device
@@ -88,11 +88,11 @@
   return 0;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 device:(id)a4
+- (id)copyWithZone:(_NSZone *)zone device:(id)device
 {
   v12.receiver = self;
   v12.super_class = MPSImageAreaMax;
-  result = [(MPSUnaryImageKernel *)&v12 copyWithZone:a3 device:a4];
+  result = [(MPSUnaryImageKernel *)&v12 copyWithZone:zone device:device];
   if (result)
   {
     *(result + 26) = self->_kernelWidth;
@@ -118,7 +118,7 @@
   return objc_msgSend_stringWithFormat_(v3, v17, @"%@\n\tkernelWidth: %lu\n\tkernelHeight: %lu", v18, v19, v20, v4, v10, v16);
 }
 
-- (MPSRegion)sourceRegionForDestinationSize:(SEL)a3
+- (MPSRegion)sourceRegionForDestinationSize:(SEL)size
 {
   *&retstr->origin.z = 0u;
   *&retstr->size.height = 0u;

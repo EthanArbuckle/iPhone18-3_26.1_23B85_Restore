@@ -23,9 +23,9 @@
   v6.receiver = self;
   v6.super_class = BKUIFullscreenInstructingViewController;
   [(OBBaseWelcomeController *)&v6 viewDidLoad];
-  v3 = [(BKUIFullscreenInstructingViewController *)self view];
-  v4 = [MEMORY[0x277D75348] redColor];
-  v5 = [v3 bkui_debugBorder:v4 withWidth:3];
+  view = [(BKUIFullscreenInstructingViewController *)self view];
+  redColor = [MEMORY[0x277D75348] redColor];
+  v5 = [view bkui_debugBorder:redColor withWidth:3];
 }
 
 @end

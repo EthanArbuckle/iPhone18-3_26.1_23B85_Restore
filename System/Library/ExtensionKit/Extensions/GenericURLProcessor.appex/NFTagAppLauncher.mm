@@ -1,6 +1,6 @@
 @interface NFTagAppLauncher
 - (NFTagAppLauncher)init;
-- (id)processNDEFMesssage:(id)a3 outputMessage:(id *)a4 tag:(id)a5 stopProcessing:(BOOL *)a6;
+- (id)processNDEFMesssage:(id)messsage outputMessage:(id *)message tag:(id)tag stopProcessing:(BOOL *)processing;
 @end
 
 @implementation NFTagAppLauncher
@@ -20,21 +20,21 @@
   return v2;
 }
 
-- (id)processNDEFMesssage:(id)a3 outputMessage:(id *)a4 tag:(id)a5 stopProcessing:(BOOL *)a6
+- (id)processNDEFMesssage:(id)messsage outputMessage:(id *)message tag:(id)tag stopProcessing:(BOOL *)processing
 {
-  v10 = a3;
-  *a6 = 0;
-  *a4 = 0;
+  messsageCopy = messsage;
+  *processing = 0;
+  *message = 0;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v11 = [v10 records];
-  v12 = [v11 countByEnumeratingWithState:&v40 objects:v56 count:16];
+  records = [messsageCopy records];
+  v12 = [records countByEnumeratingWithState:&v40 objects:v56 count:16];
   if (v12)
   {
     v13 = v12;
-    v39 = self;
+    selfCopy = self;
     v14 = *v41;
     while (2)
     {
@@ -42,27 +42,27 @@
       {
         if (*v41 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(records);
         }
 
         v16 = *(*(&v40 + 1) + 8 * i);
         if ([v16 isURIRecord])
         {
-          v17 = [v16 decode];
-          v18 = [NSURLComponents componentsWithString:v17];
+          decode = [v16 decode];
+          v18 = [NSURLComponents componentsWithString:decode];
           if (v18)
           {
             v20 = v18;
-            v21 = v10;
-            *a4 = v10;
+            v21 = messsageCopy;
+            *message = messsageCopy;
             dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
             Logger = NFLogGetLogger();
             if (Logger)
             {
               v23 = Logger;
-              Class = object_getClass(v39);
+              Class = object_getClass(selfCopy);
               isMetaClass = class_isMetaClass(Class);
-              ClassName = object_getClassName(v39);
+              ClassName = object_getClassName(selfCopy);
               v27 = a2;
               Name = sel_getName(a2);
               v29 = [v20 URL];
@@ -74,14 +74,14 @@
                 v30 = 43;
               }
 
-              v23(6, "%c[%{public}s %{public}s]:%i Found App URL: %@, Orig msg: %@", v30, ClassName, v38, 69, v29, v10);
+              v23(6, "%c[%{public}s %{public}s]:%i Found App URL: %@, Orig msg: %@", v30, ClassName, v38, 69, v29, messsageCopy);
             }
 
             dispatch_get_specific(kNFLOG_DISPATCH_SPECIFIC_KEY);
             v31 = NFSharedLogGetLogger();
             if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
             {
-              v32 = object_getClass(v39);
+              v32 = object_getClass(selfCopy);
               if (class_isMetaClass(v32))
               {
                 v33 = 43;
@@ -92,7 +92,7 @@
                 v33 = 45;
               }
 
-              v34 = object_getClassName(v39);
+              v34 = object_getClassName(selfCopy);
               v35 = sel_getName(a2);
               v36 = [v20 URL];
               *buf = 67110402;
@@ -106,7 +106,7 @@
               v52 = 2112;
               v53 = v36;
               v54 = 2112;
-              v55 = v10;
+              v55 = messsageCopy;
               _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "%c[%{public}s %{public}s]:%i Found App URL: %@, Orig msg: %@", buf, 0x36u);
             }
 
@@ -117,7 +117,7 @@
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v40 objects:v56 count:16];
+      v13 = [records countByEnumeratingWithState:&v40 objects:v56 count:16];
       if (v13)
       {
         continue;

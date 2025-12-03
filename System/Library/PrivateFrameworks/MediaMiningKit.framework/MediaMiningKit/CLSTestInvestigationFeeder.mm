@@ -1,6 +1,6 @@
 @interface CLSTestInvestigationFeeder
 + (void)initialize;
-- (CLSTestInvestigationFeeder)initWithItems:(id)a3;
+- (CLSTestInvestigationFeeder)initWithItems:(id)items;
 - (id)approximateLocation;
 - (id)localEndDate;
 - (id)localEndDateComponents;
@@ -34,10 +34,10 @@
           objc_enumerationMutation(v2);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) clsLocation];
-        if (v7)
+        clsLocation = [*(*(&v10 + 1) + 8 * i) clsLocation];
+        if (clsLocation)
         {
-          v8 = v7;
+          v8 = clsLocation;
           goto LABEL_11;
         }
       }
@@ -60,61 +60,61 @@ LABEL_11:
 
 - (id)universalEndDate
 {
-  v2 = [(NSArray *)self->_items lastObject];
-  v3 = [v2 cls_universalDate];
+  lastObject = [(NSArray *)self->_items lastObject];
+  cls_universalDate = [lastObject cls_universalDate];
 
-  return v3;
+  return cls_universalDate;
 }
 
 - (id)universalStartDate
 {
-  v2 = [(NSArray *)self->_items firstObject];
-  v3 = [v2 cls_universalDate];
+  firstObject = [(NSArray *)self->_items firstObject];
+  cls_universalDate = [firstObject cls_universalDate];
 
-  return v3;
+  return cls_universalDate;
 }
 
 - (id)localEndDate
 {
-  v2 = [(NSArray *)self->_items lastObject];
-  v3 = [v2 cls_localDate];
+  lastObject = [(NSArray *)self->_items lastObject];
+  cls_localDate = [lastObject cls_localDate];
 
-  return v3;
+  return cls_localDate;
 }
 
 - (id)localStartDate
 {
-  v2 = [(NSArray *)self->_items firstObject];
-  v3 = [v2 cls_localDate];
+  firstObject = [(NSArray *)self->_items firstObject];
+  cls_localDate = [firstObject cls_localDate];
 
-  return v3;
+  return cls_localDate;
 }
 
 - (id)localEndDateComponents
 {
-  v2 = [(NSArray *)self->_items lastObject];
-  v3 = [v2 cls_localDateComponents];
+  lastObject = [(NSArray *)self->_items lastObject];
+  cls_localDateComponents = [lastObject cls_localDateComponents];
 
-  return v3;
+  return cls_localDateComponents;
 }
 
 - (id)localStartDateComponents
 {
-  v2 = [(NSArray *)self->_items firstObject];
-  v3 = [v2 cls_localDateComponents];
+  firstObject = [(NSArray *)self->_items firstObject];
+  cls_localDateComponents = [firstObject cls_localDateComponents];
 
-  return v3;
+  return cls_localDateComponents;
 }
 
-- (CLSTestInvestigationFeeder)initWithItems:(id)a3
+- (CLSTestInvestigationFeeder)initWithItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v9.receiver = self;
   v9.super_class = CLSTestInvestigationFeeder;
   v5 = [(CLSInvestigationFeeder *)&v9 init];
   if (v5)
   {
-    v6 = [v4 sortedArrayUsingComparator:&__block_literal_global_3484];
+    v6 = [itemsCopy sortedArrayUsingComparator:&__block_literal_global_3484];
     items = v5->_items;
     v5->_items = v6;
   }
@@ -134,7 +134,7 @@ uint64_t __44__CLSTestInvestigationFeeder_initWithItems___block_invoke(uint64_t 
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     sCurationModel = [objc_alloc(MEMORY[0x277D3C798]) initForTesting];
 

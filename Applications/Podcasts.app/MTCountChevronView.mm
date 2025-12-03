@@ -1,50 +1,50 @@
 @interface MTCountChevronView
-- (CGRect)_chevronFrameForViewSize:(CGSize)a3;
-- (CGRect)_countFrameForViewSize:(CGSize)a3;
+- (CGRect)_chevronFrameForViewSize:(CGSize)size;
+- (CGRect)_countFrameForViewSize:(CGSize)size;
 - (CGSize)_chevronSize;
 - (CGSize)_countSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (MTChevronView)chevronView;
-- (MTCountChevronView)initWithFrame:(CGRect)a3;
+- (MTCountChevronView)initWithFrame:(CGRect)frame;
 - (UIFont)font;
 - (UILabel)countLabel;
 - (void)_updateCurrentTextColor;
 - (void)layoutSubviews;
-- (void)setCount:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setTextColor:(id)a3;
+- (void)setCount:(id)count;
+- (void)setFont:(id)font;
+- (void)setTextColor:(id)color;
 @end
 
 @implementation MTCountChevronView
 
-- (MTCountChevronView)initWithFrame:(CGRect)a3
+- (MTCountChevronView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = MTCountChevronView;
-  v3 = [(MTCountChevronView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTCountChevronView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(MTCountChevronView *)v3 countLabel];
-    [(MTCountChevronView *)v4 addSubview:v5];
+    countLabel = [(MTCountChevronView *)v3 countLabel];
+    [(MTCountChevronView *)v4 addSubview:countLabel];
 
-    v6 = [(MTCountChevronView *)v4 chevronView];
-    [(MTCountChevronView *)v4 addSubview:v6];
+    chevronView = [(MTCountChevronView *)v4 chevronView];
+    [(MTCountChevronView *)v4 addSubview:chevronView];
   }
 
   return v4;
 }
 
-- (void)setCount:(id)a3
+- (void)setCount:(id)count
 {
-  v5 = a3;
+  countCopy = count;
   count = self->_count;
-  if (count != v5)
+  if (count != countCopy)
   {
-    v10 = v5;
-    if (!v5 || (v7 = [(NSNumber *)count isEqualToNumber:v5], v5 = v10, (v7 & 1) == 0))
+    v10 = countCopy;
+    if (!countCopy || (v7 = [(NSNumber *)count isEqualToNumber:countCopy], countCopy = v10, (v7 & 1) == 0))
     {
-      objc_storeStrong(&self->_count, a3);
+      objc_storeStrong(&self->_count, count);
       if ([(NSNumber *)v10 longLongValue]< 0)
       {
         v8 = @"!";
@@ -60,37 +60,37 @@
         v8 = 0;
       }
 
-      v9 = [(MTCountChevronView *)self countLabel];
-      [v9 setText:v8];
+      countLabel = [(MTCountChevronView *)self countLabel];
+      [countLabel setText:v8];
 
       [(MTCountChevronView *)self _updateCurrentTextColor];
       [(MTCountChevronView *)self setNeedsLayout];
 
-      v5 = v10;
+      countCopy = v10;
     }
   }
 }
 
 - (UIFont)font
 {
-  v2 = [(MTCountChevronView *)self countLabel];
-  v3 = [v2 font];
+  countLabel = [(MTCountChevronView *)self countLabel];
+  font = [countLabel font];
 
-  return v3;
+  return font;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v4 = a3;
-  v5 = [(MTCountChevronView *)self countLabel];
-  [v5 setFont:v4];
+  fontCopy = font;
+  countLabel = [(MTCountChevronView *)self countLabel];
+  [countLabel setFont:fontCopy];
 
   [(MTCountChevronView *)self setNeedsLayout];
 }
 
-- (void)setTextColor:(id)a3
+- (void)setTextColor:(id)color
 {
-  objc_storeStrong(&self->_textColor, a3);
+  objc_storeStrong(&self->_textColor, color);
 
   [(MTCountChevronView *)self _updateCurrentTextColor];
 }
@@ -108,21 +108,21 @@
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(MTCountChevronView *)self countLabel];
-  [v15 setFrame:{v8, v10, v12, v14}];
+  countLabel = [(MTCountChevronView *)self countLabel];
+  [countLabel setFrame:{v8, v10, v12, v14}];
 
   [(MTCountChevronView *)self _chevronFrameForViewSize:v4, v6];
   v17 = v16;
   v19 = v18;
   v21 = v20;
   v23 = v22;
-  v24 = [(MTCountChevronView *)self chevronView];
-  [v24 setFrame:{v17, v19, v21, v23}];
+  chevronView = [(MTCountChevronView *)self chevronView];
+  [chevronView setFrame:{v17, v19, v21, v23}];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(MTCountChevronView *)self _countSize:a3.width];
+  [(MTCountChevronView *)self _countSize:fits.width];
   v5 = v4;
   v7 = v6;
   [(MTCountChevronView *)self _chevronSize];
@@ -150,21 +150,21 @@
     [(MTCountChevronView *)self textColor];
   }
   v3 = ;
-  v4 = [(MTCountChevronView *)self countLabel];
-  [v4 setTextColor:v3];
+  countLabel = [(MTCountChevronView *)self countLabel];
+  [countLabel setTextColor:v3];
 }
 
-- (CGRect)_chevronFrameForViewSize:(CGSize)a3
+- (CGRect)_chevronFrameForViewSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   [(MTCountChevronView *)self _chevronSize];
   v6 = v5;
   v8 = v7;
   IMRoundToPixel();
   v10 = v9;
-  v11 = [(MTCountChevronView *)self mt_isRTL];
+  mt_isRTL = [(MTCountChevronView *)self mt_isRTL];
   v12 = width - v6;
-  if (v11)
+  if (mt_isRTL)
   {
     v12 = 0.0;
   }
@@ -181,8 +181,8 @@
 
 - (CGSize)_chevronSize
 {
-  v2 = [(MTCountChevronView *)self chevronView];
-  [v2 frame];
+  chevronView = [(MTCountChevronView *)self chevronView];
+  [chevronView frame];
   v4 = v3;
   v6 = v5;
 
@@ -195,8 +195,8 @@
 
 - (CGSize)_countSize
 {
-  v2 = [(MTCountChevronView *)self countLabel];
-  [v2 sizeThatFits:{1.79769313e308, 1.79769313e308}];
+  countLabel = [(MTCountChevronView *)self countLabel];
+  [countLabel sizeThatFits:{1.79769313e308, 1.79769313e308}];
   v4 = v3;
   v6 = v5;
 
@@ -207,17 +207,17 @@
   return result;
 }
 
-- (CGRect)_countFrameForViewSize:(CGSize)a3
+- (CGRect)_countFrameForViewSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   [(MTCountChevronView *)self _countSize];
   v6 = v5;
   v8 = v7;
   IMRoundToPixel();
   v10 = v9;
-  v11 = [(MTCountChevronView *)self mt_isRTL];
+  mt_isRTL = [(MTCountChevronView *)self mt_isRTL];
   v12 = width - v6;
-  if (!v11)
+  if (!mt_isRTL)
   {
     v12 = 0.0;
   }
@@ -241,11 +241,11 @@
     v5 = self->_countLabel;
     self->_countLabel = v4;
 
-    v6 = [(MTCountChevronView *)self font];
-    [(UILabel *)self->_countLabel setFont:v6];
+    font = [(MTCountChevronView *)self font];
+    [(UILabel *)self->_countLabel setFont:font];
 
-    v7 = [(MTCountChevronView *)self textColor];
-    [(UILabel *)self->_countLabel setTextColor:v7];
+    textColor = [(MTCountChevronView *)self textColor];
+    [(UILabel *)self->_countLabel setTextColor:textColor];
 
     countLabel = self->_countLabel;
   }

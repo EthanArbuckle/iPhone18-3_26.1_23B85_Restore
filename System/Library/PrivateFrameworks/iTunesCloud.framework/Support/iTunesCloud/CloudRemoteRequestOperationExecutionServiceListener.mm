@@ -1,47 +1,47 @@
 @interface CloudRemoteRequestOperationExecutionServiceListener
 + (CloudRemoteRequestOperationExecutionServiceListener)sharedRemoteRequestOperationExecutionServiceListener;
 - (BOOL)isActive;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (id)_init;
 - (void)dealloc;
-- (void)performRemoteRequestOperationWithExecutionContext:(id)a3 completionHandler:(id)a4;
+- (void)performRemoteRequestOperationWithExecutionContext:(id)context completionHandler:(id)handler;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation CloudRemoteRequestOperationExecutionServiceListener
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  [v5 setExportedObject:self];
+  connectionCopy = connection;
+  [connectionCopy setExportedObject:self];
   v6 = +[ICRemoteRequestOperationExecuting serviceInterface];
-  [v5 setExportedInterface:v6];
+  [connectionCopy setExportedInterface:v6];
 
   v7 = +[ICRemoteRequestOperationExecuting clientInterface];
-  [v5 setRemoteObjectInterface:v7];
+  [connectionCopy setRemoteObjectInterface:v7];
 
-  [v5 resume];
+  [connectionCopy resume];
   return 1;
 }
 
-- (void)performRemoteRequestOperationWithExecutionContext:(id)a3 completionHandler:(id)a4
+- (void)performRemoteRequestOperationWithExecutionContext:(id)context completionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [v6 remoteRequestOperation];
-  [v7 _setShadowOperationForRemoteExecution:1];
-  v8 = [v6 qualityOfService];
+  handlerCopy = handler;
+  contextCopy = context;
+  remoteRequestOperation = [contextCopy remoteRequestOperation];
+  [remoteRequestOperation _setShadowOperationForRemoteExecution:1];
+  qualityOfService = [contextCopy qualityOfService];
 
-  v9 = [NSOperationQueue ic_sharedRequestOperationQueueWithQualityOfService:v8];
+  v9 = [NSOperationQueue ic_sharedRequestOperationQueueWithQualityOfService:qualityOfService];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1001007C0;
   v12[3] = &unk_1001DFC28;
-  v13 = v7;
-  v14 = v5;
-  v10 = v5;
-  v11 = v7;
+  v13 = remoteRequestOperation;
+  v14 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = remoteRequestOperation;
   [v11 performRequestOnOperationQueue:v9 withCompletionHandler:v12];
 }
 

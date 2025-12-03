@@ -2,15 +2,15 @@
 + (id)sharedInstance;
 - (BKTetherController)init;
 - (BOOL)_reverseTetheringActive;
-- (BOOL)_serviceExists:(__CFString *)a3;
+- (BOOL)_serviceExists:(__CFString *)exists;
 - (BOOL)isTethered;
 - (BOOL)usesDisplayPortTethering;
 - (unsigned)_demoCardConnection;
 - (void)_handleDemoModeChanged;
-- (void)_setTetherState:(int)a3;
+- (void)_setTetherState:(int)state;
 - (void)dealloc;
-- (void)noteInterfaceOrientationChangedWithInterfaceOrientation:(int)a3;
-- (void)setDitheringEnabled:(int)a3;
+- (void)noteInterfaceOrientationChangedWithInterfaceOrientation:(int)orientation;
+- (void)setDitheringEnabled:(int)enabled;
 - (void)updatePreferencesIfNeeded;
 @end
 
@@ -37,12 +37,12 @@
 
   if (![(BKTetherController *)self usesDisplayPortTethering])
   {
-    v9 = [(BKTetherController *)self _demoCardConnection];
-    if (v9)
+    _demoCardConnection = [(BKTetherController *)self _demoCardConnection];
+    if (_demoCardConnection)
     {
       input = 0;
       outputCnt = 0;
-      if (IOConnectCallScalarMethod(v9, 0, &input, 1u, 0, &outputCnt))
+      if (IOConnectCallScalarMethod(_demoCardConnection, 0, &input, 1u, 0, &outputCnt))
       {
         v10 = 2;
       }
@@ -58,20 +58,20 @@
       v10 = 2;
     }
 
-    v6 = self;
+    selfCopy2 = self;
     goto LABEL_15;
   }
 
   v3 = +[BKSDefaults externalDefaults];
-  v4 = [v3 lockdownDefaults];
-  v5 = [v4 tetheredDisplayPortMode];
+  lockdownDefaults = [v3 lockdownDefaults];
+  tetheredDisplayPortMode = [lockdownDefaults tetheredDisplayPortMode];
 
-  v6 = self;
-  if (!v5)
+  selfCopy2 = self;
+  if (!tetheredDisplayPortMode)
   {
     v10 = 2;
 LABEL_15:
-    [(BKTetherController *)v6 _setTetherState:v10];
+    [(BKTetherController *)selfCopy2 _setTetherState:v10];
     return self->_tetherState == 1;
   }
 
@@ -102,12 +102,12 @@ LABEL_15:
     CFNotificationCenterPostNotification(DarwinNotifyCenter, @"com.apple.backboardd.tetherPrefsNeedUpdate", 0, 0, 1u);
     [v6 setDitheringEnabled:0];
     v4 = +[BKSDefaults externalDefaults];
-    v5 = [v4 persistentConnectionDefaults];
+    persistentConnectionDefaults = [v4 persistentConnectionDefaults];
 
-    [v5 setForceDemoMaxHBI:300];
+    [persistentConnectionDefaults setForceDemoMaxHBI:300];
     if ([(BKTetherController *)self _reverseTetheringActive])
     {
-      [v5 setWifiInterfaceName:@"en1"];
+      [persistentConnectionDefaults setWifiInterfaceName:@"en1"];
     }
   }
 }
@@ -210,7 +210,7 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)_serviceExists:(__CFString *)a3
+- (BOOL)_serviceExists:(__CFString *)exists
 {
   v4 = BKLogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -271,7 +271,7 @@ LABEL_16:
             BSDName = SCNetworkInterfaceGetBSDName(Interface);
             if (BSDName)
             {
-              if (CFEqual(BSDName, a3))
+              if (CFEqual(BSDName, exists))
               {
                 break;
               }
@@ -327,7 +327,7 @@ LABEL_25:
   return v17;
 }
 
-- (void)setDitheringEnabled:(int)a3
+- (void)setDitheringEnabled:(int)enabled
 {
   v4 = IOServiceMatching("AppleH1CLCD");
   MatchingService = IOServiceGetMatchingService(kIOMainPortDefault, v4);
@@ -384,12 +384,12 @@ LABEL_12:
   else if (v13)
   {
     *buf = 67109120;
-    v15 = a3;
+    enabledCopy = enabled;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Tether dithering: %d", buf, 8u);
   }
 }
 
-- (void)noteInterfaceOrientationChangedWithInterfaceOrientation:(int)a3
+- (void)noteInterfaceOrientationChangedWithInterfaceOrientation:(int)orientation
 {
   if ([(BKTetherController *)self usesDisplayPortTethering])
   {
@@ -412,9 +412,9 @@ LABEL_12:
     input[8] = 0;
     input[9] = 0;
     sub_100002E40(input);
-    if (a3 > 2)
+    if (orientation > 2)
     {
-      if (a3 == 3)
+      if (orientation == 3)
       {
         if (buf[0] == 3)
         {
@@ -450,7 +450,7 @@ LABEL_42:
         return;
       }
 
-      if (a3 != 4)
+      if (orientation != 4)
       {
         return;
       }
@@ -469,7 +469,7 @@ LABEL_42:
       v12 = 4;
     }
 
-    else if (a3 == 1)
+    else if (orientation == 1)
     {
       if (buf[0] == 3)
       {
@@ -487,7 +487,7 @@ LABEL_42:
 
     else
     {
-      if (a3 != 2)
+      if (orientation != 2)
       {
         return;
       }
@@ -519,14 +519,14 @@ LABEL_42:
     goto LABEL_42;
   }
 
-  v8 = [(BKTetherController *)self _demoCardConnection];
-  if (!v8)
+  _demoCardConnection = [(BKTetherController *)self _demoCardConnection];
+  if (!_demoCardConnection)
   {
     return;
   }
 
   input[0] = 0;
-  switch(a3)
+  switch(orientation)
   {
     case 4:
       v9 = 2;
@@ -544,7 +544,7 @@ LABEL_42:
   input[0] = v9;
 LABEL_25:
   outputCnt = 0;
-  v13 = IOConnectCallScalarMethod(v8, 1u, input, 1u, 0, &outputCnt);
+  v13 = IOConnectCallScalarMethod(_demoCardConnection, 1u, input, 1u, 0, &outputCnt);
   if (v13)
   {
     v14 = v13;
@@ -569,9 +569,9 @@ LABEL_25:
     v4 = BKLogDetailed();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
-      v6 = [(BKTetherController *)self isTethered];
+      isTethered = [(BKTetherController *)self isTethered];
       v7 = @"not tethered";
-      if (v6)
+      if (isTethered)
       {
         v7 = @"tethered";
       }
@@ -596,13 +596,13 @@ LABEL_25:
   return byte_100125FC0;
 }
 
-- (void)_setTetherState:(int)a3
+- (void)_setTetherState:(int)state
 {
-  if (self->_tetherState != a3)
+  if (self->_tetherState != state)
   {
     if ([(BKTetherController *)self usesDisplayPortTethering])
     {
-      if (a3 == 1)
+      if (state == 1)
       {
         DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
         CFNotificationCenterAddObserver(DarwinNotifyCenter, self, sub_100056DD0, @"com.apple.backboardd.deviceinterfaceorientation", 0, CFNotificationSuspensionBehaviorDrop);
@@ -618,7 +618,7 @@ LABEL_25:
       }
     }
 
-    self->_tetherState = a3;
+    self->_tetherState = state;
   }
 }
 
@@ -757,9 +757,9 @@ LABEL_14:
     if ([(BKTetherController *)v3 isTethered])
     {
       v5 = +[BKSDefaults localDefaults];
-      v6 = [v5 isDitheringEnabled];
+      isDitheringEnabled = [v5 isDitheringEnabled];
 
-      [(BKTetherController *)v3 setDitheringEnabled:v6];
+      [(BKTetherController *)v3 setDitheringEnabled:isDitheringEnabled];
     }
   }
 

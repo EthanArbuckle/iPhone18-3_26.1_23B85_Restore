@@ -1,15 +1,15 @@
 @interface HAP2CoAPIO
 + (BOOL)isRunning;
-+ (BOOL)setCoapAddressFromString:(id)a3 port:(unsigned __int16)a4 coapAddress:(coap_address_t *)a5;
++ (BOOL)setCoapAddressFromString:(id)string port:(unsigned __int16)port coapAddress:(coap_address_t *)address;
 + (HAP2CoAPIOThread)thread;
 + (HAP2Lock)lock;
 + (NSMutableArray)consumers;
 + (id)new;
-+ (void)queueSessionCompletionForConsumer:(id)a3;
-+ (void)registerConsumer:(id)a3;
-+ (void)setConsumers:(id)a3;
-+ (void)setThread:(id)a3;
-+ (void)unregisterConsumer:(id)a3;
++ (void)queueSessionCompletionForConsumer:(id)consumer;
++ (void)registerConsumer:(id)consumer;
++ (void)setConsumers:(id)consumers;
++ (void)setThread:(id)thread;
++ (void)unregisterConsumer:(id)consumer;
 - (HAP2CoAPIO)init;
 @end
 
@@ -28,26 +28,26 @@
   objc_exception_throw(v7);
 }
 
-+ (BOOL)setCoapAddressFromString:(id)a3 port:(unsigned __int16)a4 coapAddress:(coap_address_t *)a5
++ (BOOL)setCoapAddressFromString:(id)string port:(unsigned __int16)port coapAddress:(coap_address_t *)address
 {
-  v6 = a4;
+  portCopy = port;
   v13 = *MEMORY[0x277D85DE8];
-  v7 = [a3 UTF8String];
-  if (v7)
+  uTF8String = [string UTF8String];
+  if (uTF8String)
   {
-    v8 = v7;
+    v8 = uTF8String;
     memset(&v12[4], 0, 24);
     *v12 = 7708;
-    v9 = __rev16(v6);
+    v9 = __rev16(portCopy);
     *&v12[2] = v9;
-    if (inet_pton(30, v7, &v12[8]) == 1)
+    if (inet_pton(30, uTF8String, &v12[8]) == 1)
     {
-      if (a5)
+      if (address)
       {
-        a5->size = v12[0];
-        a5->addr.sa = *v12;
-        *(&a5->addr.sin6.sin6_addr + 4) = *&v12[12];
-        LOBYTE(v7) = 1;
+        address->size = v12[0];
+        address->addr.sa = *v12;
+        *(&address->addr.sin6.sin6_addr + 4) = *&v12[12];
+        LOBYTE(uTF8String) = 1;
         goto LABEL_9;
       }
     }
@@ -58,18 +58,18 @@
       *&v12[2] = v9;
       *&v12[4] = 0;
       *&v12[8] = 0;
-      LOBYTE(v7) = inet_pton(2, v8, &v12[4]) == 1;
-      if (!v7)
+      LOBYTE(uTF8String) = inet_pton(2, v8, &v12[4]) == 1;
+      if (!uTF8String)
       {
         goto LABEL_9;
       }
 
-      if (a5)
+      if (address)
       {
-        a5->addr.sin6.sin6_scope_id = 0;
-        *&a5->addr.sin6.sin6_addr.__u6_addr32[2] = 0;
-        a5->size = v12[0];
-        a5->addr.sa = *v12;
+        address->addr.sin6.sin6_scope_id = 0;
+        *&address->addr.sin6.sin6_addr.__u6_addr32[2] = 0;
+        address->size = v12[0];
+        address->addr.sa = *v12;
         goto LABEL_9;
       }
     }
@@ -79,28 +79,28 @@
 
 LABEL_9:
   v10 = *MEMORY[0x277D85DE8];
-  return v7;
+  return uTF8String;
 }
 
-+ (void)queueSessionCompletionForConsumer:(id)a3
++ (void)queueSessionCompletionForConsumer:(id)consumer
 {
-  v4 = a3;
+  consumerCopy = consumer;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__17262;
   v16 = __Block_byref_object_dispose__17263;
   v17 = 0;
-  v5 = [a1 lock];
+  lock = [self lock];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __48__HAP2CoAPIO_queueSessionCompletionForConsumer___block_invoke;
   v8[3] = &unk_2786D5778;
-  v11 = a1;
-  v6 = v4;
+  selfCopy = self;
+  v6 = consumerCopy;
   v9 = v6;
   v10 = &v12;
-  [v5 performBlock:v8];
+  [lock performBlock:v8];
 
   v7 = v13[5];
   if (v7)
@@ -167,9 +167,9 @@ void __87__HAP2CoAPIO_queueSessionBlockForConsumer_sessionBlock_withTimeout_requ
   }
 }
 
-+ (void)unregisterConsumer:(id)a3
++ (void)unregisterConsumer:(id)consumer
 {
-  v4 = a3;
+  consumerCopy = consumer;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -184,18 +184,18 @@ void __87__HAP2CoAPIO_queueSessionBlockForConsumer_sessionBlock_withTimeout_requ
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v5 = [a1 lock];
+  lock = [self lock];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __33__HAP2CoAPIO_unregisterConsumer___block_invoke;
   v8[3] = &unk_2786D5728;
-  v13 = a1;
-  v6 = v4;
+  selfCopy = self;
+  v6 = consumerCopy;
   v9 = v6;
   v10 = &v18;
   v11 = &v22;
   v12 = &v14;
-  [v5 performBlock:v8];
+  [lock performBlock:v8];
 
   v7 = v23[5];
   if (v7)
@@ -302,10 +302,10 @@ LABEL_6:
 LABEL_10:
 }
 
-+ (void)registerConsumer:(id)a3
++ (void)registerConsumer:(id)consumer
 {
-  v4 = a3;
-  v5 = [[HAP2CoAPIOConsumerWeakHolder alloc] initWithConsumer:v4];
+  consumerCopy = consumer;
+  v5 = [[HAP2CoAPIOConsumerWeakHolder alloc] initWithConsumer:consumerCopy];
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -316,19 +316,19 @@ LABEL_10:
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  v6 = [a1 lock];
+  lock = [self lock];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __31__HAP2CoAPIO_registerConsumer___block_invoke;
   v10[3] = &unk_2786D56D8;
-  v15 = a1;
-  v7 = v4;
+  selfCopy = self;
+  v7 = consumerCopy;
   v11 = v7;
   v8 = v5;
   v12 = v8;
   v13 = &v20;
   v14 = &v16;
-  [v6 performBlock:v10];
+  [lock performBlock:v10];
 
   v9 = v21[5];
   if (v9)
@@ -433,23 +433,23 @@ void __31__HAP2CoAPIO_registerConsumer___block_invoke_2(uint64_t a1, void *a2, u
 
 + (BOOL)isRunning
 {
-  v2 = a1;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [a1 lock];
+  lock = [self lock];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __23__HAP2CoAPIO_isRunning__block_invoke;
   v5[3] = &unk_2786D5688;
   v5[4] = &v6;
-  v5[5] = v2;
-  [v3 performBlock:v5];
+  v5[5] = selfCopy;
+  [lock performBlock:v5];
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __23__HAP2CoAPIO_isRunning__block_invoke(uint64_t a1)
@@ -458,40 +458,40 @@ void __23__HAP2CoAPIO_isRunning__block_invoke(uint64_t a1)
   *(*(*(a1 + 32) + 8) + 24) = v2 != 0;
 }
 
-+ (void)setThread:(id)a3
++ (void)setThread:(id)thread
 {
-  v4 = a3;
-  v5 = [a1 lock];
-  [v5 assertOwner];
+  threadCopy = thread;
+  lock = [self lock];
+  [lock assertOwner];
 
   v6 = _thread;
-  _thread = v4;
+  _thread = threadCopy;
 }
 
 + (HAP2CoAPIOThread)thread
 {
-  v2 = [a1 lock];
-  [v2 assertOwner];
+  lock = [self lock];
+  [lock assertOwner];
 
   v3 = _thread;
 
   return v3;
 }
 
-+ (void)setConsumers:(id)a3
++ (void)setConsumers:(id)consumers
 {
-  v4 = a3;
-  v5 = [a1 lock];
-  [v5 assertOwner];
+  consumersCopy = consumers;
+  lock = [self lock];
+  [lock assertOwner];
 
   v6 = _consumers;
-  _consumers = v4;
+  _consumers = consumersCopy;
 }
 
 + (NSMutableArray)consumers
 {
-  v2 = [a1 lock];
-  [v2 assertOwner];
+  lock = [self lock];
+  [lock assertOwner];
 
   v3 = _consumers;
 

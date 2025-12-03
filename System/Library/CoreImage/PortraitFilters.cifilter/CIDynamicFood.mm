@@ -232,11 +232,11 @@
       v25 = 100.0;
     }
 
-    v26 = [(CIImage *)v10 localLightStatisticsNoProxy];
+    localLightStatisticsNoProxy = [(CIImage *)v10 localLightStatisticsNoProxy];
     v27 = dbl_55540[[v16 intValue] == 11];
     v28 = v18;
     v243[0] = @"inputLightMap";
-    v29 = [v26 objectForKeyedSubscript:@"lightMap"];
+    v29 = [localLightStatisticsNoProxy objectForKeyedSubscript:@"lightMap"];
     v243[1] = @"inputGuideImage";
     v244[0] = v29;
     v244[1] = v11;
@@ -454,13 +454,13 @@
       v141 = width * 0.5 + x;
       v142 = height * 0.5 + y;
       v146 = [CIVector vectorWithX:v141 Y:v142];
-      v147 = [(CIDynamicFood *)self _foodVignette];
+      _foodVignette = [(CIDynamicFood *)self _foodVignette];
       [(CIImage *)self->super.inputImage extent];
       v229[0] = v206;
       v229[1] = v67;
       v229[2] = v146;
       v229[3] = v145;
-      v67 = [v147 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v229, 4), v148, v149, v150, v151}];
+      v67 = [_foodVignette applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v229, 4), v148, v149, v150, v151}];
     }
 
     else
@@ -554,13 +554,13 @@
             *&v104 = v104 * 0.45;
             v106 = [CIVector vectorWithX:0.0 / ((*&v104 + *&v104) * *&v104) + 1.0 / ((*&v102 + *&v102) * *&v102) Y:0.0 / (*&v104 * 4.0 * *&v104) - 0.0 / (*&v102 * 4.0 * *&v102) Z:1.0 / ((*&v104 + *&v104) * *&v104) + 0.0 / ((*&v102 + *&v102) * *&v102) W:0.7];
             v107 = [CIVector vectorWithX:v103 Y:v105];
-            v108 = [(CIDynamicFood *)self _foodVignette];
+            _foodVignette2 = [(CIDynamicFood *)self _foodVignette];
             [(CIImage *)self->super.inputImage extent];
             v231[0] = v206;
             v231[1] = v67;
             v231[2] = v107;
             v231[3] = v106;
-            v67 = [v108 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v231, 4), v109, v110, v111, v112}];
+            v67 = [_foodVignette2 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v231, 4), v109, v110, v111, v112}];
           }
 
           v70 = [(NSArray *)obj countByEnumeratingWithState:&v217 objects:v232 count:16];
@@ -570,7 +570,7 @@
       }
     }
 
-    v152 = [(CIDynamicFood *)self _applyVignette];
+    _applyVignette = [(CIDynamicFood *)self _applyVignette];
     [(CIImage *)self->super.inputImage extent];
     v153 = self->super.inputImage;
     v228[0] = v206;
@@ -578,7 +578,7 @@
     inputVignetteStrength = self->inputVignetteStrength;
     v228[2] = v67;
     v228[3] = inputVignetteStrength;
-    v46 = [v152 applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v228, 4), v155, v156, v157, v158}];
+    v46 = [_applyVignette applyWithExtent:+[NSArray arrayWithObjects:count:](NSArray arguments:{"arrayWithObjects:count:", v228, 4), v155, v156, v157, v158}];
     v14 = v201;
     v16 = v202;
     p_info = (@"kernel vec4 _pf_eyeBrightenSoftlight (__sample uCb, __sample m, float str) \n { \n float g = .75*(1.0-dot(uCb.rgb, vec3(.333333))); \n vec4 uCf = vec4(g, g, g, 1.0); \n vec4 D = compare(uCb-0.25, ((16.0*uCb-12.0)*uCb+4.0)*uCb, sqrt(uCb)); \n vec4 Ct = clamp(uCb + (2.0*uCf-1.0) * compare(uCf - 0.5, uCb*(1.0-uCb), D-uCb), 0.0, 1.0); \n vec4 bright = Ct; \n uCf.rgb = mix(uCb.rgb, bright.rgb, m.r); \n uCf.rgb = mix(uCb.rgb, uCf.rgb, str); \n return uCf; \n }" + 8);
@@ -689,11 +689,11 @@
     v208.super_class = v194;
     if ([-[CIDynamicRender writeDebugData:](&v208 writeDebugData:{&off_7A908), "intValue"}] >= 1)
     {
-      v195 = [v16 intValue];
+      intValue = [v16 intValue];
       [v14 floatValue];
       LODWORD(v197) = v196;
       *&v198 = v193;
-      return [(CIDynamicRender *)self overlayText:v46 strength:v195 captureType:v198 bv:v197];
+      return [(CIDynamicRender *)self overlayText:v46 strength:intValue captureType:v198 bv:v197];
     }
   }
 

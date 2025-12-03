@@ -1,6 +1,6 @@
 @interface PKPaymentSetupBuiltInPrimaryAccountNumberFieldCell
 - (PKPaymentSetupBuiltInPrimaryAccountNumberFieldCell)init;
-- (void)setPaymentSetupField:(id)a3;
+- (void)setPaymentSetupField:(id)field;
 @end
 
 @implementation PKPaymentSetupBuiltInPrimaryAccountNumberFieldCell
@@ -13,18 +13,18 @@
   v3 = v2;
   if (v2)
   {
-    v4 = [(PKPaymentSetupFieldCell *)v2 editableTextField];
-    [v4 setTextContentType:*MEMORY[0x1E69DE480]];
+    editableTextField = [(PKPaymentSetupFieldCell *)v2 editableTextField];
+    [editableTextField setTextContentType:*MEMORY[0x1E69DE480]];
   }
 
   return v3;
 }
 
-- (void)setPaymentSetupField:(id)a3
+- (void)setPaymentSetupField:(id)field
 {
   v3.receiver = self;
   v3.super_class = PKPaymentSetupBuiltInPrimaryAccountNumberFieldCell;
-  [(PKPaymentSetupFieldCell *)&v3 setPaymentSetupField:a3];
+  [(PKPaymentSetupFieldCell *)&v3 setPaymentSetupField:field];
 }
 
 @end

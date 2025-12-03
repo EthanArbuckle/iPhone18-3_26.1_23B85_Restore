@@ -1,23 +1,23 @@
 @interface CKCallStateResult
-+ (id)callStateResultWithButtonStyle:(int64_t)a3 isFaceTimeVideoAvailable:(BOOL)a4 isFaceTimeAudioAvailable:(BOOL)a5 isTelephonyAvailable:(BOOL)a6 isScreenSharingAvailable:(BOOL)a7;
++ (id)callStateResultWithButtonStyle:(int64_t)style isFaceTimeVideoAvailable:(BOOL)available isFaceTimeAudioAvailable:(BOOL)audioAvailable isTelephonyAvailable:(BOOL)telephonyAvailable isScreenSharingAvailable:(BOOL)sharingAvailable;
 - (BOOL)shouldShowUnifiedCallButton;
 - (int64_t)callMode;
 @end
 
 @implementation CKCallStateResult
 
-+ (id)callStateResultWithButtonStyle:(int64_t)a3 isFaceTimeVideoAvailable:(BOOL)a4 isFaceTimeAudioAvailable:(BOOL)a5 isTelephonyAvailable:(BOOL)a6 isScreenSharingAvailable:(BOOL)a7
++ (id)callStateResultWithButtonStyle:(int64_t)style isFaceTimeVideoAvailable:(BOOL)available isFaceTimeAudioAvailable:(BOOL)audioAvailable isTelephonyAvailable:(BOOL)telephonyAvailable isScreenSharingAvailable:(BOOL)sharingAvailable
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
+  sharingAvailableCopy = sharingAvailable;
+  telephonyAvailableCopy = telephonyAvailable;
+  audioAvailableCopy = audioAvailable;
+  availableCopy = available;
   v12 = objc_alloc_init(CKCallStateResult);
-  [(CKCallStateResult *)v12 setCallButtonStyle:a3];
-  [(CKCallStateResult *)v12 setIsFaceTimeVideoAvailable:v10];
-  [(CKCallStateResult *)v12 setIsFaceTimeAudioAvailable:v9];
-  [(CKCallStateResult *)v12 setIsTelephonyAvailable:v8];
-  [(CKCallStateResult *)v12 setIsScreenSharingAvailable:v7];
+  [(CKCallStateResult *)v12 setCallButtonStyle:style];
+  [(CKCallStateResult *)v12 setIsFaceTimeVideoAvailable:availableCopy];
+  [(CKCallStateResult *)v12 setIsFaceTimeAudioAvailable:audioAvailableCopy];
+  [(CKCallStateResult *)v12 setIsTelephonyAvailable:telephonyAvailableCopy];
+  [(CKCallStateResult *)v12 setIsScreenSharingAvailable:sharingAvailableCopy];
 
   return v12;
 }

@@ -1,34 +1,34 @@
 @interface QLAudioItemViewController
 - (double)waveformImageDimension;
 - (void)addScrubberWithDeferral;
-- (void)buttonPressedWithIdentifier:(id)a3 completionHandler:(id)a4;
+- (void)buttonPressedWithIdentifier:(id)identifier completionHandler:(id)handler;
 - (void)dealloc;
 - (void)didChangePlayingStatus;
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setPlayControlsHidden:(BOOL)a3 animated:(BOOL)a4;
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setPlayControlsHidden:(BOOL)hidden animated:(BOOL)animated;
 - (void)setupConstraints;
-- (void)transitionDidStart:(BOOL)a3;
+- (void)transitionDidStart:(BOOL)start;
 @end
 
 @implementation QLAudioItemViewController
 
-- (void)loadPreviewControllerWithContents:(id)a3 context:(id)a4 completionHandler:(id)a5
+- (void)loadPreviewControllerWithContents:(id)contents context:(id)context completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  contextCopy = context;
+  handlerCopy = handler;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __89__QLAudioItemViewController_loadPreviewControllerWithContents_context_completionHandler___block_invoke;
   v13[3] = &unk_278B582D8;
-  v15 = self;
-  v16 = v9;
-  v14 = v8;
+  selfCopy = self;
+  v16 = handlerCopy;
+  v14 = contextCopy;
   v12.receiver = self;
   v12.super_class = QLAudioItemViewController;
-  v10 = v9;
-  v11 = v8;
-  [(QLMediaItemViewController *)&v12 loadPreviewControllerWithContents:a3 context:v11 completionHandler:v13];
+  v10 = handlerCopy;
+  v11 = contextCopy;
+  [(QLMediaItemViewController *)&v12 loadPreviewControllerWithContents:contents context:v11 completionHandler:v13];
 }
 
 void __89__QLAudioItemViewController_loadPreviewControllerWithContents_context_completionHandler___block_invoke(uint64_t a1, void *a2)
@@ -137,11 +137,11 @@ void __89__QLAudioItemViewController_loadPreviewControllerWithContents_context_c
   [(QLMediaItemViewController *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (self->_scrubber == a4)
+  if (self->_scrubber == object)
   {
-    if ([a3 isEqualToString:@"userInteractingWithScrubber"])
+    if ([path isEqualToString:@"userInteractingWithScrubber"])
     {
       if ([(QLVideoScrubberView *)self->_scrubber isUserInteractingWithScrubber])
       {
@@ -161,7 +161,7 @@ void __89__QLAudioItemViewController_loadPreviewControllerWithContents_context_c
   {
     v7.receiver = self;
     v7.super_class = QLAudioItemViewController;
-    [QLMediaItemViewController observeValueForKeyPath:sel_observeValueForKeyPath_ofObject_change_context_ ofObject:a3 change:? context:?];
+    [QLMediaItemViewController observeValueForKeyPath:sel_observeValueForKeyPath_ofObject_change_context_ ofObject:path change:? context:?];
   }
 }
 
@@ -282,35 +282,35 @@ uint64_t __52__QLAudioItemViewController_addScrubberWithDeferral__block_invoke(u
   return result;
 }
 
-- (void)buttonPressedWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)buttonPressedWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"QLDoneButtonIdentifier"])
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if ([identifierCopy isEqualToString:@"QLDoneButtonIdentifier"])
   {
     [(QLMediaItemBaseViewController *)self stop];
   }
 
   v8.receiver = self;
   v8.super_class = QLAudioItemViewController;
-  [(QLMediaItemBaseViewController *)&v8 buttonPressedWithIdentifier:v6 completionHandler:v7];
+  [(QLMediaItemBaseViewController *)&v8 buttonPressedWithIdentifier:identifierCopy completionHandler:handlerCopy];
 }
 
-- (void)setPlayControlsHidden:(BOOL)a3 animated:(BOOL)a4
+- (void)setPlayControlsHidden:(BOOL)hidden animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  hiddenCopy = hidden;
   [(QLOverlayPlayButton *)self->_playButton alpha];
-  if (v7 == v5)
+  if (v7 == hiddenCopy)
   {
-    if (v4)
+    if (animatedCopy)
     {
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __60__QLAudioItemViewController_setPlayControlsHidden_animated___block_invoke;
       v9[3] = &unk_278B57340;
       v9[4] = self;
-      v10 = v5;
+      v10 = hiddenCopy;
       [MEMORY[0x277D75D18] animateWithDuration:v9 animations:0.2];
     }
 
@@ -318,17 +318,17 @@ uint64_t __52__QLAudioItemViewController_addScrubberWithDeferral__block_invoke(u
     {
       playButton = self->_playButton;
 
-      [(QLOverlayPlayButton *)playButton setAlpha:!v5];
+      [(QLOverlayPlayButton *)playButton setAlpha:!hiddenCopy];
     }
   }
 }
 
 - (void)didChangePlayingStatus
 {
-  v3 = [(QLMediaItemBaseViewController *)self playingStatus];
-  v4 = [(QLVideoScrubberView *)self->_scrubber isUserInteractingWithScrubber];
+  playingStatus = [(QLMediaItemBaseViewController *)self playingStatus];
+  isUserInteractingWithScrubber = [(QLVideoScrubberView *)self->_scrubber isUserInteractingWithScrubber];
   v5 = 1;
-  if (!v4 && v3 != 1)
+  if (!isUserInteractingWithScrubber && playingStatus != 1)
   {
     v5 = [(QLMediaItemBaseViewController *)self playable]^ 1;
   }
@@ -336,13 +336,13 @@ uint64_t __52__QLAudioItemViewController_addScrubberWithDeferral__block_invoke(u
   [(QLAudioItemViewController *)self setPlayControlsHidden:v5 animated:0];
 }
 
-- (void)transitionDidStart:(BOOL)a3
+- (void)transitionDidStart:(BOOL)start
 {
-  v3 = a3;
-  if (!a3 || [(QLMediaItemBaseViewController *)self playingStatus]!= 1)
+  startCopy = start;
+  if (!start || [(QLMediaItemBaseViewController *)self playingStatus]!= 1)
   {
 
-    [(QLAudioItemViewController *)self setPlayControlsHidden:!v3 animated:1];
+    [(QLAudioItemViewController *)self setPlayControlsHidden:!startCopy animated:1];
   }
 }
 
@@ -354,43 +354,43 @@ uint64_t __52__QLAudioItemViewController_addScrubberWithDeferral__block_invoke(u
     v4 = v3;
     [(QLAudioItemViewController *)self maximumWaveformDimension];
     v6 = v4 / v5 * 13.0;
-    v7 = [(QLAudioItemViewController *)self view];
+    view = [(QLAudioItemViewController *)self view];
     v8 = MEMORY[0x277CCAAD0];
-    v9 = [(QLAudioItemViewController *)self view];
-    v10 = [v8 constraintWithItem:v9 attribute:10 relatedBy:0 toItem:self->_backgroundIconImageView attribute:10 multiplier:1.0 constant:v6];
-    [v7 addConstraint:v10];
+    view2 = [(QLAudioItemViewController *)self view];
+    v10 = [v8 constraintWithItem:view2 attribute:10 relatedBy:0 toItem:self->_backgroundIconImageView attribute:10 multiplier:1.0 constant:v6];
+    [view addConstraint:v10];
 
-    v11 = [(QLAudioItemViewController *)self view];
+    view3 = [(QLAudioItemViewController *)self view];
     v12 = MEMORY[0x277CCAAD0];
-    v13 = [(QLAudioItemViewController *)self view];
-    v14 = [v12 constraintWithItem:v13 attribute:9 relatedBy:0 toItem:self->_backgroundIconImageView attribute:9 multiplier:1.0 constant:0.0];
-    [v11 addConstraint:v14];
+    view4 = [(QLAudioItemViewController *)self view];
+    v14 = [v12 constraintWithItem:view4 attribute:9 relatedBy:0 toItem:self->_backgroundIconImageView attribute:9 multiplier:1.0 constant:0.0];
+    [view3 addConstraint:v14];
   }
 
   if (self->_playButton)
   {
-    v15 = [(QLAudioItemViewController *)self view];
+    view5 = [(QLAudioItemViewController *)self view];
     v16 = MEMORY[0x277CCAAD0];
-    v17 = [(QLAudioItemViewController *)self view];
-    v18 = [v16 constraintWithItem:v17 attribute:9 relatedBy:0 toItem:self->_playButton attribute:9 multiplier:1.0 constant:0.0];
-    [v15 addConstraint:v18];
+    view6 = [(QLAudioItemViewController *)self view];
+    v18 = [v16 constraintWithItem:view6 attribute:9 relatedBy:0 toItem:self->_playButton attribute:9 multiplier:1.0 constant:0.0];
+    [view5 addConstraint:v18];
 
-    v22 = [(QLAudioItemViewController *)self view];
+    view7 = [(QLAudioItemViewController *)self view];
     v19 = MEMORY[0x277CCAAD0];
-    v20 = [(QLAudioItemViewController *)self view];
-    v21 = [v19 constraintWithItem:v20 attribute:10 relatedBy:0 toItem:self->_playButton attribute:10 multiplier:1.0 constant:0.0];
-    [v22 addConstraint:v21];
+    view8 = [(QLAudioItemViewController *)self view];
+    v21 = [v19 constraintWithItem:view8 attribute:10 relatedBy:0 toItem:self->_playButton attribute:10 multiplier:1.0 constant:0.0];
+    [view7 addConstraint:v21];
   }
 }
 
 - (double)waveformImageDimension
 {
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 bounds];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen bounds];
   v5 = v4;
 
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 bounds];
+  mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen2 bounds];
   v8 = v7;
 
   if (v5 >= v8)

@@ -1,26 +1,26 @@
 @interface MRUNowPlayingView
 - (CGRect)suggestionsFrame;
 - (CGSize)artworkOverrideSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (MRUNowPlayingView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (MRUNowPlayingView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)contentEdgeInsets;
 - (void)layoutSubviews;
 - (void)layoutSubviewsHorizontal;
 - (void)layoutSubviewsSmall;
 - (void)layoutSubviewsVertical;
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3;
-- (void)setContext:(int64_t)a3;
-- (void)setLayout:(int64_t)a3;
-- (void)setOnScreen:(BOOL)a3;
-- (void)setShowArtworkView:(BOOL)a3;
-- (void)setShowSuggestionsView:(BOOL)a3;
-- (void)setShowTimeControlsView:(BOOL)a3;
-- (void)setShowTransportControlsView:(BOOL)a3;
-- (void)setShowVolumeControlsView:(BOOL)a3;
-- (void)setStylingProvider:(id)a3;
-- (void)setSuggestionsView:(id)a3;
-- (void)setSupportsHorizontalLayout:(BOOL)a3;
-- (void)setUseArtworkOverrideSize:(BOOL)a3;
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets;
+- (void)setContext:(int64_t)context;
+- (void)setLayout:(int64_t)layout;
+- (void)setOnScreen:(BOOL)screen;
+- (void)setShowArtworkView:(BOOL)view;
+- (void)setShowSuggestionsView:(BOOL)view;
+- (void)setShowTimeControlsView:(BOOL)view;
+- (void)setShowTransportControlsView:(BOOL)view;
+- (void)setShowVolumeControlsView:(BOOL)view;
+- (void)setStylingProvider:(id)provider;
+- (void)setSuggestionsView:(id)view;
+- (void)setSupportsHorizontalLayout:(BOOL)layout;
+- (void)setUseArtworkOverrideSize:(BOOL)size;
 - (void)updateArtworkStyle;
 - (void)updateLayout;
 - (void)updateOnScreen;
@@ -30,16 +30,16 @@
 
 @implementation MRUNowPlayingView
 
-- (MRUNowPlayingView)initWithFrame:(CGRect)a3
+- (MRUNowPlayingView)initWithFrame:(CGRect)frame
 {
   v20.receiver = self;
   v20.super_class = MRUNowPlayingView;
-  v3 = [(MRUNowPlayingView *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUNowPlayingView *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(MRUNowPlayingView *)v3 layer];
-    [v5 setHitTestsAsOpaque:1];
+    layer = [(MRUNowPlayingView *)v3 layer];
+    [layer setHitTestsAsOpaque:1];
 
     v6 = objc_alloc_init(MRUNowPlayingHeaderView);
     headerView = v4->_headerView;
@@ -70,8 +70,8 @@
     artworkView = v4->_artworkView;
     v4->_artworkView = v16;
 
-    v18 = [(MRUArtworkView *)v4->_artworkView pointerInteraction];
-    [v18 setEnabled:1];
+    pointerInteraction = [(MRUArtworkView *)v4->_artworkView pointerInteraction];
+    [pointerInteraction setEnabled:1];
 
     [(MRUArtworkView *)v4->_artworkView setRefreshInterval:0.45];
     [(MRUNowPlayingView *)v4 addSubview:v4->_artworkView];
@@ -111,8 +111,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MRUNowPlayingView *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(MRUNowPlayingView *)self traitCollection];
+  [traitCollection displayScale];
   v13 = v12;
 
   layout = self->_layout;
@@ -953,8 +953,8 @@ LABEL_71:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MRUNowPlayingView *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(MRUNowPlayingView *)self traitCollection];
+  [traitCollection displayScale];
   v13 = v12;
 
   layout = self->_layout;
@@ -1726,8 +1726,8 @@ LABEL_53:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(MRUNowPlayingView *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(MRUNowPlayingView *)self traitCollection];
+  [traitCollection displayScale];
   v13 = v12;
 
   v36.origin.x = v4;
@@ -1789,10 +1789,10 @@ LABEL_53:
   [(MRUNowPlayingContainerView *)containerView setFrame:0.0, v32, Width, 0.0];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   layout = self->_layout;
   if (layout <= 2)
   {
@@ -1912,7 +1912,7 @@ LABEL_53:
     v21 = self->_contentEdgeInsets.left + self->_contentEdgeInsets.right;
     if (self->_showSuggestionsView)
     {
-      [(UIView *)self->_suggestionsView sizeThatFits:a3.width, a3.height];
+      [(UIView *)self->_suggestionsView sizeThatFits:fits.width, fits.height];
       v23 = height - v20 - v22;
       v24 = v20 + v22;
     }
@@ -1920,7 +1920,7 @@ LABEL_53:
     else
     {
       v24 = v20 + self->_contentEdgeInsets.top;
-      v23 = a3.height - v24;
+      v23 = fits.height - v24;
     }
 
     v28 = width - v21;
@@ -2011,7 +2011,7 @@ LABEL_65:
 
   else if (layout == 3)
   {
-    [(MRUNowPlayingHeaderView *)self->_headerView sizeThatFits:a3.width, a3.height];
+    [(MRUNowPlayingHeaderView *)self->_headerView sizeThatFits:fits.width, fits.height];
     if (v12 <= 60.0)
     {
       height = 60.0;
@@ -2031,11 +2031,11 @@ LABEL_66:
   return result;
 }
 
-- (void)setLayout:(int64_t)a3
+- (void)setLayout:(int64_t)layout
 {
-  if (self->_layout != a3)
+  if (self->_layout != layout)
   {
-    self->_layout = a3;
+    self->_layout = layout;
     [(MRUNowPlayingView *)self updateLayout];
     [(MRUNowPlayingView *)self updateArtworkStyle];
     [(MRUNowPlayingView *)self updateTextAlignment];
@@ -2046,50 +2046,50 @@ LABEL_66:
   }
 }
 
-- (void)setContext:(int64_t)a3
+- (void)setContext:(int64_t)context
 {
-  if (self->_context != a3)
+  if (self->_context != context)
   {
-    self->_context = a3;
+    self->_context = context;
     [(MRUNowPlayingView *)self updateArtworkStyle];
 
     [(MRUNowPlayingView *)self setNeedsLayout];
   }
 }
 
-- (void)setStylingProvider:(id)a3
+- (void)setStylingProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_stylingProvider != v5)
+  providerCopy = provider;
+  if (self->_stylingProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_stylingProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_stylingProvider, provider);
     [(MRUArtworkView *)self->_artworkView setStylingProvider:v6];
     [(MRUNowPlayingHeaderView *)self->_headerView setStylingProvider:v6];
     [(MRUNowPlayingTimeControlsView *)self->_timeControlsView setStylingProvider:v6];
     [(MRUNowPlayingTransportControlsView *)self->_transportControlsView setStylingProvider:v6];
     [(MRUNowPlayingVolumeControlsView *)self->_volumeControlsView setStylingProvider:v6];
     [(MRUNowPlayingContainerView *)self->_containerView setStylingProvider:v6];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setSuggestionsView:(id)a3
+- (void)setSuggestionsView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   suggestionsView = self->_suggestionsView;
-  if (suggestionsView != v5)
+  if (suggestionsView != viewCopy)
   {
     [(UIView *)suggestionsView removeFromSuperview];
-    objc_storeStrong(&self->_suggestionsView, a3);
-    [(MRUNowPlayingView *)self addSubview:v5];
+    objc_storeStrong(&self->_suggestionsView, view);
+    [(MRUNowPlayingView *)self addSubview:viewCopy];
     v7 = MEMORY[0x1E69DD250];
     v8 = MEMORY[0x1E69E9820];
     v9 = 3221225472;
     v10 = __40__MRUNowPlayingView_setSuggestionsView___block_invoke;
     v11 = &unk_1E76639D0;
-    v12 = v5;
-    v13 = self;
+    v12 = viewCopy;
+    selfCopy = self;
     [v7 performWithoutAnimation:&v8];
     [(MRUNowPlayingView *)self updateVisibility:v8];
     [(MRUNowPlayingView *)self setNeedsLayout];
@@ -2105,20 +2105,20 @@ uint64_t __40__MRUNowPlayingView_setSuggestionsView___block_invoke(uint64_t a1)
   return [v2 layoutIfNeeded];
 }
 
-- (void)setOnScreen:(BOOL)a3
+- (void)setOnScreen:(BOOL)screen
 {
-  if (self->_onScreen != a3)
+  if (self->_onScreen != screen)
   {
-    self->_onScreen = a3;
+    self->_onScreen = screen;
     [(MRUNowPlayingView *)self updateOnScreen];
   }
 }
 
-- (void)setShowArtworkView:(BOOL)a3
+- (void)setShowArtworkView:(BOOL)view
 {
-  if (self->_showArtworkView != a3)
+  if (self->_showArtworkView != view)
   {
-    self->_showArtworkView = a3;
+    self->_showArtworkView = view;
     [(MRUNowPlayingView *)self updateTextAlignment];
     [(MRUNowPlayingView *)self updateVisibility];
 
@@ -2126,44 +2126,44 @@ uint64_t __40__MRUNowPlayingView_setSuggestionsView___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setShowTimeControlsView:(BOOL)a3
+- (void)setShowTimeControlsView:(BOOL)view
 {
-  if (self->_showTimeControlsView != a3)
+  if (self->_showTimeControlsView != view)
   {
-    self->_showTimeControlsView = a3;
+    self->_showTimeControlsView = view;
     [(MRUNowPlayingView *)self updateVisibility];
 
     [(MRUNowPlayingView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowTransportControlsView:(BOOL)a3
+- (void)setShowTransportControlsView:(BOOL)view
 {
-  if (self->_showTransportControlsView != a3)
+  if (self->_showTransportControlsView != view)
   {
-    self->_showTransportControlsView = a3;
+    self->_showTransportControlsView = view;
     [(MRUNowPlayingView *)self updateVisibility];
 
     [(MRUNowPlayingView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowVolumeControlsView:(BOOL)a3
+- (void)setShowVolumeControlsView:(BOOL)view
 {
-  if (self->_showVolumeControlsView != a3)
+  if (self->_showVolumeControlsView != view)
   {
-    self->_showVolumeControlsView = a3;
+    self->_showVolumeControlsView = view;
     [(MRUNowPlayingView *)self updateVisibility];
 
     [(MRUNowPlayingView *)self setNeedsLayout];
   }
 }
 
-- (void)setShowSuggestionsView:(BOOL)a3
+- (void)setShowSuggestionsView:(BOOL)view
 {
-  if (self->_showSuggestionsView != a3)
+  if (self->_showSuggestionsView != view)
   {
-    self->_showSuggestionsView = a3;
+    self->_showSuggestionsView = view;
     [(MRUNowPlayingView *)self updateTextAlignment];
     [(MRUNowPlayingView *)self updateVisibility];
 
@@ -2171,33 +2171,33 @@ uint64_t __40__MRUNowPlayingView_setSuggestionsView___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setSupportsHorizontalLayout:(BOOL)a3
+- (void)setSupportsHorizontalLayout:(BOOL)layout
 {
-  if (self->_supportsHorizontalLayout != a3)
+  if (self->_supportsHorizontalLayout != layout)
   {
-    self->_supportsHorizontalLayout = a3;
+    self->_supportsHorizontalLayout = layout;
     [(MRUNowPlayingContainerView *)self->_containerView setSupportsHorizontalLayout:?];
 
     [(MRUNowPlayingView *)self setNeedsLayout];
   }
 }
 
-- (void)setContentEdgeInsets:(UIEdgeInsets)a3
+- (void)setContentEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_contentEdgeInsets.top, v3), vceqq_f64(*&self->_contentEdgeInsets.bottom, v4)))) & 1) == 0)
   {
-    self->_contentEdgeInsets = a3;
+    self->_contentEdgeInsets = insets;
     [(MRUNowPlayingView *)self setNeedsLayout];
   }
 }
 
-- (void)setUseArtworkOverrideSize:(BOOL)a3
+- (void)setUseArtworkOverrideSize:(BOOL)size
 {
-  self->_useArtworkOverrideSize = a3;
+  self->_useArtworkOverrideSize = size;
   [(MRUNowPlayingView *)self setNeedsLayout];
 
   [(MRUNowPlayingView *)self updateVisibility];
@@ -2257,8 +2257,8 @@ uint64_t __40__MRUNowPlayingView_setSuggestionsView___block_invoke(uint64_t a1)
 {
   [(MRUNowPlayingHeaderView *)self->_headerView setLayout:MRUNowPlayingHeaderLayoutFromNowPlayingLayout(self->_layout)];
   v3 = MRUNowPlayingLabelViewLayoutFromNowPlayingLayout(self->_layout);
-  v4 = [(MRUNowPlayingHeaderView *)self->_headerView labelView];
-  [v4 setLayout:v3];
+  labelView = [(MRUNowPlayingHeaderView *)self->_headerView labelView];
+  [labelView setLayout:v3];
 
   [(MRUNowPlayingTimeControlsView *)self->_timeControlsView setLayout:MRUNowPlayingTimeControlsLayoutFromNowPlayingLayout(self->_layout)];
   [(MRUNowPlayingTransportControlsView *)self->_transportControlsView setLayout:MRUNowPlayingTransportControlsLayoutFromNowPlayingLayout(self->_layout)];
@@ -2315,16 +2315,16 @@ LABEL_7:
     if (((1 << layout) & 0x16) != 0)
     {
       onScreen = self->_onScreen;
-      v6 = [(MRUNowPlayingHeaderView *)self->_headerView labelView];
-      [v6 setMarqueeEnabled:onScreen];
+      labelView = [(MRUNowPlayingHeaderView *)self->_headerView labelView];
+      [labelView setMarqueeEnabled:onScreen];
 
       v7 = self->_onScreen;
     }
 
     else
     {
-      v8 = [(MRUNowPlayingHeaderView *)self->_headerView labelView];
-      [v8 setMarqueeEnabled:0];
+      labelView2 = [(MRUNowPlayingHeaderView *)self->_headerView labelView];
+      [labelView2 setMarqueeEnabled:0];
 
       v7 = 0;
     }

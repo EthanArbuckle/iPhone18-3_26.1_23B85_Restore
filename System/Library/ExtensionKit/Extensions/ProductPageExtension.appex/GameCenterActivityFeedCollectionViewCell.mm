@@ -1,6 +1,6 @@
 @interface GameCenterActivityFeedCollectionViewCell
-- (_TtC20ProductPageExtension40GameCenterActivityFeedCollectionViewCell)initWithCoder:(id)a3;
-- (_TtC20ProductPageExtension40GameCenterActivityFeedCollectionViewCell)initWithFrame:(CGRect)a3;
+- (_TtC20ProductPageExtension40GameCenterActivityFeedCollectionViewCell)initWithCoder:(id)coder;
+- (_TtC20ProductPageExtension40GameCenterActivityFeedCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)prepareForReuse;
 @end
 
@@ -15,23 +15,23 @@
   sub_1007707FC();
 }
 
-- (_TtC20ProductPageExtension40GameCenterActivityFeedCollectionViewCell)initWithFrame:(CGRect)a3
+- (_TtC20ProductPageExtension40GameCenterActivityFeedCollectionViewCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   return [(SwiftUIViewHostingCell *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC20ProductPageExtension40GameCenterActivityFeedCollectionViewCell)initWithCoder:(id)a3
+- (_TtC20ProductPageExtension40GameCenterActivityFeedCollectionViewCell)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(SwiftUIViewHostingCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(SwiftUIViewHostingCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

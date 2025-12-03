@@ -1,26 +1,26 @@
 @interface TVLabelAccessibility__TVMLKit__TVKit
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation TVLabelAccessibility__TVMLKit__TVKit
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"IKTextElement" hasInstanceMethod:@"badges" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IKTextBadgeAttachment" hasInstanceMethod:@"badge" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IKViewElement" hasInstanceMethod:@"accessibilityText" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"IKImageElement" hasInstanceMethod:@"url" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"IKTextElement" hasInstanceMethod:@"badges" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IKTextBadgeAttachment" hasInstanceMethod:@"badge" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IKViewElement" hasInstanceMethod:@"accessibilityText" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"IKImageElement" hasInstanceMethod:@"url" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityLabel
 {
   v7.receiver = self;
   v7.super_class = TVLabelAccessibility__TVMLKit__TVKit;
-  v3 = [(TVLabelAccessibility__TVMLKit__TVKit *)&v7 accessibilityLabel];
-  v4 = [(TVLabelAccessibility__TVMLKit__TVKit *)self _atvaccessibilityITMLAccessibilityContent];
-  v5 = [MEMORY[0x29EDBDE00] textByReconcilingClientText:v3 withServerText:v4];
+  accessibilityLabel = [(TVLabelAccessibility__TVMLKit__TVKit *)&v7 accessibilityLabel];
+  _atvaccessibilityITMLAccessibilityContent = [(TVLabelAccessibility__TVMLKit__TVKit *)self _atvaccessibilityITMLAccessibilityContent];
+  v5 = [MEMORY[0x29EDBDE00] textByReconcilingClientText:accessibilityLabel withServerText:_atvaccessibilityITMLAccessibilityContent];
 
   return v5;
 }

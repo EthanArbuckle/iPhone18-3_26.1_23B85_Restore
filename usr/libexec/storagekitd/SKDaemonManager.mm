@@ -1,83 +1,83 @@
 @interface SKDaemonManager
 + (id)sharedManager;
-- (BOOL)addAppearedDisk:(id)a3;
-- (BOOL)diskHasMutated:(id)a3 rawIOContent:(id)a4 diskDesc:(id)a5 mediaUUID:(id)a6;
+- (BOOL)addAppearedDisk:(id)disk;
+- (BOOL)diskHasMutated:(id)mutated rawIOContent:(id)content diskDesc:(id)desc mediaUUID:(id)d;
 - (SKDaemonManager)init;
-- (id)_apfsStoreDiskWithUUID:(id)a3;
-- (id)_cachedDiskWithDADisk:(id)a3;
-- (id)_cachedDiskWithDiskIdentifier:(id)a3;
-- (id)_diskOperationIdentifierWithDADisk:(id)a3;
-- (id)_diskWithDADisk:(id)a3;
-- (id)_filesystemForDMFilesystemType:(id)a3 isEncrypted:(BOOL)a4;
-- (id)_filesystemForIOContent:(id)a3;
-- (id)_filesystemForUnlocalizedName:(id)a3 dmPersonality:(id)a4;
-- (id)_firstFilesystemForMajorType:(id)a3;
-- (id)_fullRecacheWithDisks:(id)a3 options:(unint64_t)a4;
-- (id)_processAppearedOrChangedWithDisk:(id)a3 operation:(id)a4;
-- (id)_processDiskNotificationsForMap:(id)a3 isCompleteDiskList:(BOOL)a4;
-- (id)_recacheSyncDisk:(id)a3;
+- (id)_apfsStoreDiskWithUUID:(id)d;
+- (id)_cachedDiskWithDADisk:(id)disk;
+- (id)_cachedDiskWithDiskIdentifier:(id)identifier;
+- (id)_diskOperationIdentifierWithDADisk:(id)disk;
+- (id)_diskWithDADisk:(id)disk;
+- (id)_filesystemForDMFilesystemType:(id)type isEncrypted:(BOOL)encrypted;
+- (id)_filesystemForIOContent:(id)content;
+- (id)_filesystemForUnlocalizedName:(id)name dmPersonality:(id)personality;
+- (id)_firstFilesystemForMajorType:(id)type;
+- (id)_fullRecacheWithDisks:(id)disks options:(unint64_t)options;
+- (id)_processAppearedOrChangedWithDisk:(id)disk operation:(id)operation;
+- (id)_processDiskNotificationsForMap:(id)map isCompleteDiskList:(BOOL)list;
+- (id)_recacheSyncDisk:(id)disk;
 - (id)allDisks;
-- (id)copyExtendedDiskInfoWithDiskIdentifier:(id)a3;
-- (id)copyUpdatedDADiskForDisk:(id)a3;
-- (id)eraseWithEraser:(id)a3 completionBlock:(id)a4;
+- (id)copyExtendedDiskInfoWithDiskIdentifier:(id)identifier;
+- (id)copyUpdatedDADiskForDisk:(id)disk;
+- (id)eraseWithEraser:(id)eraser completionBlock:(id)block;
 - (id)formatableFileSystems;
-- (id)knownDiskForDictionary:(id)a3;
-- (id)resize:(id)a3 toSize:(unint64_t)a4 completionBlock:(id)a5;
+- (id)knownDiskForDictionary:(id)dictionary;
+- (id)resize:(id)resize toSize:(unint64_t)size completionBlock:(id)block;
 - (id)rootWholeDisk;
-- (id)wholeDiskForDisk:(id)a3;
+- (id)wholeDiskForDisk:(id)disk;
 - (unint64_t)nextDiskObjectID;
-- (void)_addToExtendedDiskInfoCacheWithDictionary:(id)a3;
+- (void)_addToExtendedDiskInfoCacheWithDictionary:(id)dictionary;
 - (void)_advanceOperationQueue;
 - (void)_advanceOperationQueueOnWorkQueue;
 - (void)_diskEjectThread;
 - (void)_diskQueueHeartbeat;
 - (void)_diskQueueWatchdog;
-- (void)_disksAppeared:(id)a3;
-- (void)_disksChanged:(id)a3;
-- (void)_disksDisappeared:(id)a3;
-- (void)_fastRecacheWithDisks:(id)a3 options:(unint64_t)a4;
-- (void)_handleDANotificationWithDisk:(id)a3 operation:(id)a4;
+- (void)_disksAppeared:(id)appeared;
+- (void)_disksChanged:(id)changed;
+- (void)_disksDisappeared:(id)disappeared;
+- (void)_fastRecacheWithDisks:(id)disks options:(unint64_t)options;
+- (void)_handleDANotificationWithDisk:(id)disk operation:(id)operation;
 - (void)_idleCallback;
 - (void)_invalidateExtendedDiskInfoCache;
-- (void)_notifyLockedDisksNotificationsWaitersWithDisk:(id)a3;
-- (void)_performDiskStateUpdateSelector:(SEL)a3 onListener:(id)a4 withDisks:(id)a5;
-- (void)_processNotificationWithDiskOperation:(id)a3;
-- (void)_processNotificationsWithDiskOperations:(id)a3;
-- (void)_scheduleGenericOperationWithCompletionBlock:(id)a3;
-- (void)_scheduleOperation:(id)a3;
+- (void)_notifyLockedDisksNotificationsWaitersWithDisk:(id)disk;
+- (void)_performDiskStateUpdateSelector:(SEL)selector onListener:(id)listener withDisks:(id)disks;
+- (void)_processNotificationWithDiskOperation:(id)operation;
+- (void)_processNotificationsWithDiskOperations:(id)operations;
+- (void)_scheduleGenericOperationWithCompletionBlock:(id)block;
+- (void)_scheduleOperation:(id)operation;
 - (void)_workerThread;
-- (void)addChangedDisk:(id)a3;
-- (void)addDisappearedDisk:(id)a3;
-- (void)addListener:(id)a3;
+- (void)addChangedDisk:(id)disk;
+- (void)addDisappearedDisk:(id)disk;
+- (void)addListener:(id)listener;
 - (void)addMissingDisappearedDisks;
-- (void)childDisksForWholeDisk:(id)a3 withCallbackBlock:(id)a4;
+- (void)childDisksForWholeDisk:(id)disk withCallbackBlock:(id)block;
 - (void)createDASession;
-- (void)dispatchBoostedToWorkThread:(id)a3;
-- (void)dispatchSyncToEjectThread:(id)a3;
-- (void)dispatchSyncToWorkThread:(id)a3;
-- (void)dispatchToEjectThread:(id)a3;
-- (void)dispatchToWorkThread:(id)a3;
-- (void)dmAsyncFinishedForDisk:(__DADisk *)a3 mainError:(int)a4 detailError:(int)a5 dictionary:(id)a6;
-- (void)dmAsyncMessageForDisk:(__DADisk *)a3 string:(id)a4 dictionary:(id)a5;
-- (void)dmAsyncStartedForDisk:(__DADisk *)a3;
-- (void)ejectDisk:(id)a3 withCompletionBlock:(id)a4;
-- (void)filesystemsWithCallbackBlock:(id)a3;
-- (void)isBusy:(id)a3;
-- (void)performVMDiskResizeWithSize:(unint64_t)a3;
-- (void)physicalStoresForAPFSVolume:(id)a3 completionBlock:(id)a4;
-- (void)postProcessWithDisk:(id)a3;
-- (void)recacheDisk:(id)a3 options:(unint64_t)a4 callbackBlock:(id)a5;
+- (void)dispatchBoostedToWorkThread:(id)thread;
+- (void)dispatchSyncToEjectThread:(id)thread;
+- (void)dispatchSyncToWorkThread:(id)thread;
+- (void)dispatchToEjectThread:(id)thread;
+- (void)dispatchToWorkThread:(id)thread;
+- (void)dmAsyncFinishedForDisk:(__DADisk *)disk mainError:(int)error detailError:(int)detailError dictionary:(id)dictionary;
+- (void)dmAsyncMessageForDisk:(__DADisk *)disk string:(id)string dictionary:(id)dictionary;
+- (void)dmAsyncStartedForDisk:(__DADisk *)disk;
+- (void)ejectDisk:(id)disk withCompletionBlock:(id)block;
+- (void)filesystemsWithCallbackBlock:(id)block;
+- (void)isBusy:(id)busy;
+- (void)performVMDiskResizeWithSize:(unint64_t)size;
+- (void)physicalStoresForAPFSVolume:(id)volume completionBlock:(id)block;
+- (void)postProcessWithDisk:(id)disk;
+- (void)recacheDisk:(id)disk options:(unint64_t)options callbackBlock:(id)block;
 - (void)registerDiskArbCallbacks;
 - (void)removeLIFSAPFSContainers;
-- (void)removeListener:(id)a3;
-- (void)removePostProcessWithCachedDisk:(id)a3;
-- (void)renameDisk:(id)a3 to:(id)a4 withCompletionBlock:(id)a5;
-- (void)syncAllDisksWithCompletionBlock:(id)a3;
-- (void)unmountDisk:(id)a3 options:(id)a4 withCompletionBlock:(id)a5;
-- (void)updatePhysicalStoresWithContainer:(id)a3;
-- (void)updatePhysicalStoresWithDisks:(id)a3;
-- (void)volumesForAPFSPS:(id)a3 completionBlock:(id)a4;
-- (void)wholeDiskForDisk:(id)a3 withCallbackBlock:(id)a4;
+- (void)removeListener:(id)listener;
+- (void)removePostProcessWithCachedDisk:(id)disk;
+- (void)renameDisk:(id)disk to:(id)to withCompletionBlock:(id)block;
+- (void)syncAllDisksWithCompletionBlock:(id)block;
+- (void)unmountDisk:(id)disk options:(id)options withCompletionBlock:(id)block;
+- (void)updatePhysicalStoresWithContainer:(id)container;
+- (void)updatePhysicalStoresWithDisks:(id)disks;
+- (void)volumesForAPFSPS:(id)s completionBlock:(id)block;
+- (void)wholeDiskForDisk:(id)disk withCallbackBlock:(id)block;
 @end
 
 @implementation SKDaemonManager
@@ -271,46 +271,46 @@ LABEL_9:
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)dispatchToWorkThread:(id)a3
+- (void)dispatchToWorkThread:(id)thread
 {
   diskWorkThread = self->diskWorkThread;
-  v5 = objc_retainBlock(a3);
+  v5 = objc_retainBlock(thread);
   [(SKDaemonManager *)self performSelector:"_doBlockOnWorkThread:" onThread:diskWorkThread withObject:v5 waitUntilDone:0];
 }
 
-- (void)dispatchSyncToWorkThread:(id)a3
+- (void)dispatchSyncToWorkThread:(id)thread
 {
   diskWorkThread = self->diskWorkThread;
-  v5 = objc_retainBlock(a3);
+  v5 = objc_retainBlock(thread);
   [(SKDaemonManager *)self performSelector:"_doBlockOnWorkThread:" onThread:diskWorkThread withObject:v5 waitUntilDone:1];
 }
 
-- (void)dispatchToEjectThread:(id)a3
+- (void)dispatchToEjectThread:(id)thread
 {
   diskEjectThread = self->diskEjectThread;
-  v5 = objc_retainBlock(a3);
+  v5 = objc_retainBlock(thread);
   [(SKDaemonManager *)self performSelector:"_doBlockOnEjectThread:" onThread:diskEjectThread withObject:v5 waitUntilDone:0];
 }
 
-- (void)dispatchSyncToEjectThread:(id)a3
+- (void)dispatchSyncToEjectThread:(id)thread
 {
   diskEjectThread = self->diskEjectThread;
-  v5 = objc_retainBlock(a3);
+  v5 = objc_retainBlock(thread);
   [(SKDaemonManager *)self performSelector:"_doBlockOnEjectThread:" onThread:diskEjectThread withObject:v5 waitUntilDone:1];
 }
 
-- (void)dispatchBoostedToWorkThread:(id)a3
+- (void)dispatchBoostedToWorkThread:(id)thread
 {
-  v4 = a3;
-  v5 = [(SKDaemonManager *)self boosterQueue];
+  threadCopy = thread;
+  boosterQueue = [(SKDaemonManager *)self boosterQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100019EF0;
   v7[3] = &unk_1000493B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 dispatchWithBlock:v7];
+  v8 = threadCopy;
+  v6 = threadCopy;
+  [boosterQueue dispatchWithBlock:v7];
 }
 
 - (void)registerDiskArbCallbacks
@@ -325,27 +325,27 @@ LABEL_9:
   DARegisterIdleCallback();
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  v6 = a3;
-  v4 = [(SKDaemonManager *)self allDisks];
+  listenerCopy = listener;
+  allDisks = [(SKDaemonManager *)self allDisks];
   v5 = self->_listeners;
   objc_sync_enter(v5);
-  [(NSMutableSet *)self->_listeners addObject:v6];
-  if ([v4 count])
+  [(NSMutableSet *)self->_listeners addObject:listenerCopy];
+  if ([allDisks count])
   {
-    [(SKDaemonManager *)self _performDiskStateUpdateSelector:"disksAppeared:" onListener:v6 withDisks:v4];
+    [(SKDaemonManager *)self _performDiskStateUpdateSelector:"disksAppeared:" onListener:listenerCopy withDisks:allDisks];
   }
 
   objc_sync_exit(v5);
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  v5 = a3;
+  listenerCopy = listener;
   v4 = self->_listeners;
   objc_sync_enter(v4);
-  [(NSMutableSet *)self->_listeners removeObject:v5];
+  [(NSMutableSet *)self->_listeners removeObject:listenerCopy];
   objc_sync_exit(v4);
 }
 
@@ -359,11 +359,11 @@ LABEL_9:
   return v4;
 }
 
-- (id)knownDiskForDictionary:(id)a3
+- (id)knownDiskForDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"diskIdentifier"];
-  v6 = [v4 objectForKey:@"type"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"diskIdentifier"];
+  v6 = [dictionaryCopy objectForKey:@"type"];
   if (![v6 isEqualToString:kSKDiskTypeAPFSLV])
   {
     if ([v6 isEqualToString:kSKDiskTypeAPFSContainer])
@@ -400,7 +400,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v7 = [v4 objectForKeyedSubscript:@"mountPoint"];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"mountPoint"];
   if (!v7)
   {
     goto LABEL_9;
@@ -440,8 +440,8 @@ LABEL_15:
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
-        v9 = [v8 mountPoint];
-        v10 = [v9 isEqualToString:@"/"];
+        mountPoint = [v8 mountPoint];
+        v10 = [mountPoint isEqualToString:@"/"];
 
         if (v10)
         {
@@ -466,9 +466,9 @@ LABEL_11:
   objc_sync_exit(v3);
   if (v11 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v12 = [v11 container];
-    v13 = [v12 designatedPhysicalStore];
-    v14 = [(SKDaemonManager *)self wholeDiskForDisk:v13];
+    container = [v11 container];
+    designatedPhysicalStore = [container designatedPhysicalStore];
+    v14 = [(SKDaemonManager *)self wholeDiskForDisk:designatedPhysicalStore];
     if (!v14)
     {
       v15 = sub_10000BFD0();
@@ -477,9 +477,9 @@ LABEL_11:
         *buf = 136315650;
         v22 = "[SKDaemonManager rootWholeDisk]";
         v23 = 2112;
-        v24 = v12;
+        v24 = container;
         v25 = 2112;
-        v26 = v13;
+        v26 = designatedPhysicalStore;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s: Couldn't find root disk. container: %@, PS: %@", buf, 0x20u);
       }
     }
@@ -487,12 +487,12 @@ LABEL_11:
 
   else
   {
-    v12 = sub_10000BFD0();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    container = sub_10000BFD0();
+    if (os_log_type_enabled(container, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v22 = v11;
-      _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Root volume must be APFS - found: %@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, container, OS_LOG_TYPE_ERROR, "Root volume must be APFS - found: %@", buf, 0xCu);
     }
 
     v14 = 0;
@@ -501,13 +501,13 @@ LABEL_11:
   return v14;
 }
 
-- (void)performVMDiskResizeWithSize:(unint64_t)a3
+- (void)performVMDiskResizeWithSize:(unint64_t)size
 {
   v5 = sub_10000BFD0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v9 = a3;
+    sizeCopy = size;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Requested to resize the VM's internal disk to %lld bytes", buf, 0xCu);
   }
 
@@ -515,7 +515,7 @@ LABEL_11:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
-    v9 = "[SKDaemonManager performVMDiskResizeWithSize:]";
+    sizeCopy = "[SKDaemonManager performVMDiskResizeWithSize:]";
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s: Root disk (the system's snapshot) might appear after first DA idle, waiting a bit", buf, 0xCu);
   }
 
@@ -525,7 +525,7 @@ LABEL_11:
   v7[2] = sub_10001AC34;
   v7[3] = &unk_100049400;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = size;
   [(SKDaemonManager *)self syncAllDisksWithCompletionBlock:v7];
 }
 
@@ -618,9 +618,9 @@ LABEL_11:
       v4 = sub_10000BFD0();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
       {
-        v5 = [(SKDaemonManager *)self lastOperationName];
+        lastOperationName = [(SKDaemonManager *)self lastOperationName];
         *buf = 138412290;
-        v35 = v5;
+        v35 = lastOperationName;
         _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Disk queue stuck, last operation: %@", buf, 0xCu);
       }
 
@@ -675,10 +675,10 @@ LABEL_26:
   _Block_object_dispose(&v28, 8);
 }
 
-- (id)_cachedDiskWithDiskIdentifier:(id)a3
+- (id)_cachedDiskWithDiskIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (sub_1000101BC(v4))
+  identifierCopy = identifier;
+  if (sub_1000101BC(identifierCopy))
   {
     v5 = self->allDisks;
     objc_sync_enter(v5);
@@ -701,8 +701,8 @@ LABEL_26:
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [v10 diskIdentifier];
-          v12 = [v4 isEqual:v11];
+          diskIdentifier = [v10 diskIdentifier];
+          v12 = [identifierCopy isEqual:diskIdentifier];
 
           if (v12)
           {
@@ -734,10 +734,10 @@ LABEL_13:
   return v7;
 }
 
-- (id)_cachedDiskWithDADisk:(id)a3
+- (id)_cachedDiskWithDADisk:(id)disk
 {
-  v4 = a3;
-  if (v4)
+  diskCopy = disk;
+  if (diskCopy)
   {
     v5 = self->allDisks;
     objc_sync_enter(v5);
@@ -760,11 +760,11 @@ LABEL_13:
           }
 
           v10 = *(*(&v15 + 1) + 8 * i);
-          v11 = [v10 daDisk];
-          if (v11)
+          daDisk = [v10 daDisk];
+          if (daDisk)
           {
-            v12 = [v10 daDisk];
-            v13 = [v4 isEqual:v12];
+            daDisk2 = [v10 daDisk];
+            v13 = [diskCopy isEqual:daDisk2];
 
             if (v13)
             {
@@ -797,12 +797,12 @@ LABEL_14:
   return v7;
 }
 
-- (id)_diskWithDADisk:(id)a3
+- (id)_diskWithDADisk:(id)disk
 {
-  v4 = a3;
-  if (v4)
+  diskCopy = disk;
+  if (diskCopy)
   {
-    v5 = [(SKDaemonManager *)self _cachedDiskWithDADisk:v4];
+    v5 = [(SKDaemonManager *)self _cachedDiskWithDADisk:diskCopy];
     v6 = v5;
     if (v5)
     {
@@ -817,11 +817,11 @@ LABEL_14:
       v19 = sub_10001BACC;
       v20 = sub_10001BADC;
       v21 = 0;
-      v8 = [(SKDaemonManager *)self _diskOperationIdentifierWithDADisk:v4];
+      v8 = [(SKDaemonManager *)self _diskOperationIdentifierWithDADisk:diskCopy];
       v24 = v8;
       v22[0] = off_1000592F8;
       v22[1] = off_1000592C0;
-      v23[0] = v4;
+      v23[0] = diskCopy;
       v23[1] = off_1000592E8;
       v9 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:2];
       v25 = v9;
@@ -850,12 +850,12 @@ LABEL_14:
   return v7;
 }
 
-- (void)renameDisk:(id)a3 to:(id)a4 withCompletionBlock:(id)a5
+- (void)renameDisk:(id)disk to:(id)to withCompletionBlock:(id)block
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [[SKRenameOperation alloc] initWithDisk:v10 name:v8 withCompletionBlock:v9];
+  toCopy = to;
+  blockCopy = block;
+  diskCopy = disk;
+  v11 = [[SKRenameOperation alloc] initWithDisk:diskCopy name:toCopy withCompletionBlock:blockCopy];
 
   if (v11)
   {
@@ -869,21 +869,21 @@ LABEL_14:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v14 = 138412546;
-      v15 = self;
+      selfCopy = self;
       v16 = 2112;
-      v17 = v8;
+      v17 = toCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Could not rename disk %@ to %@", &v14, 0x16u);
     }
 
     v12 = [SKError errorWithCode:102 userInfo:0];
-    v9[2](v9, v12);
+    blockCopy[2](blockCopy, v12);
   }
 }
 
-- (id)_apfsStoreDiskWithUUID:(id)a3
+- (id)_apfsStoreDiskWithUUID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v5 = self->allDisks;
     objc_sync_enter(v5);
@@ -909,8 +909,8 @@ LABEL_14:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v11 = [v10 apfsUUID];
-            v12 = [v11 isEqualToString:v4];
+            apfsUUID = [v10 apfsUUID];
+            v12 = [apfsUUID isEqualToString:dCopy];
 
             if (v12)
             {
@@ -951,17 +951,17 @@ LABEL_14:
   objc_sync_exit(obj);
 }
 
-- (void)_addToExtendedDiskInfoCacheWithDictionary:(id)a3
+- (void)_addToExtendedDiskInfoCacheWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   obj = self->_extendedDiskInfoCache;
   objc_sync_enter(obj);
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  allKeys = [dictionaryCopy allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = *v15;
@@ -971,7 +971,7 @@ LABEL_14:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
@@ -980,19 +980,19 @@ LABEL_14:
         if (v10)
         {
           v11 = [(NSMutableDictionary *)self->_extendedDiskInfoCache objectForKeyedSubscript:v9];
-          v12 = [v4 objectForKeyedSubscript:v9];
+          v12 = [dictionaryCopy objectForKeyedSubscript:v9];
           [v11 addEntriesFromDictionary:v12];
         }
 
         else
         {
-          v11 = [v4 objectForKeyedSubscript:v9];
+          v11 = [dictionaryCopy objectForKeyedSubscript:v9];
           v12 = [NSMutableDictionary dictionaryWithDictionary:v11];
           [(NSMutableDictionary *)self->_extendedDiskInfoCache setObject:v12 forKeyedSubscript:v9];
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -1001,42 +1001,42 @@ LABEL_14:
   objc_sync_exit(obj);
 }
 
-- (id)copyExtendedDiskInfoWithDiskIdentifier:(id)a3
+- (id)copyExtendedDiskInfoWithDiskIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = self->_extendedDiskInfoCache;
   objc_sync_enter(v5);
-  v6 = [(NSMutableDictionary *)self->_extendedDiskInfoCache objectForKeyedSubscript:v4];
+  v6 = [(NSMutableDictionary *)self->_extendedDiskInfoCache objectForKeyedSubscript:identifierCopy];
   v7 = [v6 copy];
 
   objc_sync_exit(v5);
   return v7;
 }
 
-- (id)copyUpdatedDADiskForDisk:(id)a3
+- (id)copyUpdatedDADiskForDisk:(id)disk
 {
-  v4 = a3;
-  if ([v4 isIOMediaDisk])
+  diskCopy = disk;
+  if ([diskCopy isIOMediaDisk])
   {
     daSession = self->daSession;
-    v6 = [v4 diskIdentifier];
-    v7 = DADiskCreateFromBSDName(0, daSession, [v6 UTF8String]);
+    diskIdentifier = [diskCopy diskIdentifier];
+    v7 = DADiskCreateFromBSDName(0, daSession, [diskIdentifier UTF8String]);
   }
 
   else
   {
-    v8 = [v4 mountPoint];
+    mountPoint = [diskCopy mountPoint];
 
-    if (!v8)
+    if (!mountPoint)
     {
       v10 = 0;
       goto LABEL_6;
     }
 
-    v9 = [v4 mountPoint];
-    v6 = [NSURL fileURLWithPath:v9];
+    mountPoint2 = [diskCopy mountPoint];
+    diskIdentifier = [NSURL fileURLWithPath:mountPoint2];
 
-    v7 = DADiskCreateFromVolumePath(0, self->daSession, v6);
+    v7 = DADiskCreateFromVolumePath(0, self->daSession, diskIdentifier);
   }
 
   v10 = v7;
@@ -1045,18 +1045,18 @@ LABEL_6:
   return v10;
 }
 
-- (void)_fastRecacheWithDisks:(id)a3 options:(unint64_t)a4
+- (void)_fastRecacheWithDisks:(id)disks options:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
-  v15 = self;
+  optionsCopy = options;
+  disksCopy = disks;
+  selfCopy = self;
   [(SKDaemonManager *)self _invalidateExtendedDiskInfoCache];
-  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v6, "count")}];
+  v7 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(disksCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v6;
+  v8 = disksCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v26 count:16];
   if (v9)
   {
@@ -1082,11 +1082,11 @@ LABEL_6:
             v22 = 2112;
             v23 = v13;
             v24 = 1024;
-            v25 = v4;
+            v25 = optionsCopy;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "%s: %@ options=0x%x", buf, 0x1Cu);
           }
 
-          [v13 _cacheSpacesWithPurgeable:(v4 & 4) == 0];
+          [v13 _cacheSpacesWithPurgeable:(optionsCopy & 4) == 0];
           [v7 addObject:v13];
         }
       }
@@ -1097,12 +1097,12 @@ LABEL_6:
     while (v10);
   }
 
-  [(SKDaemonManager *)v15 _disksChanged:v7];
+  [(SKDaemonManager *)selfCopy _disksChanged:v7];
 }
 
-- (id)_fullRecacheWithDisks:(id)a3 options:(unint64_t)a4
+- (id)_fullRecacheWithDisks:(id)disks options:(unint64_t)options
 {
-  v5 = a3;
+  disksCopy = disks;
   v24 = objc_alloc_init(NSMutableDictionary);
   v32 = 0;
   v33 = &v32;
@@ -1114,7 +1114,7 @@ LABEL_6:
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = v5;
+  v6 = disksCopy;
   v7 = [v6 countByEnumeratingWithState:&v28 objects:v44 count:16];
   if (v7)
   {
@@ -1142,11 +1142,11 @@ LABEL_6:
             v43[0] = v12;
             v43[1] = off_1000592E0;
             v42[2] = off_1000592F0;
-            v14 = [NSNumber numberWithUnsignedInteger:a4];
+            v14 = [NSNumber numberWithUnsignedInteger:options];
             v43[2] = v14;
             v15 = [NSDictionary dictionaryWithObjects:v43 forKeys:v42 count:3];
-            v16 = [v11 diskIdentifier];
-            [v24 setObject:v15 forKeyedSubscript:v16];
+            diskIdentifier = [v11 diskIdentifier];
+            [v24 setObject:v15 forKeyedSubscript:diskIdentifier];
 
             v17 = sub_10000BFD0();
             if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
@@ -1205,28 +1205,28 @@ LABEL_12:
   return v20;
 }
 
-- (void)recacheDisk:(id)a3 options:(unint64_t)a4 callbackBlock:(id)a5
+- (void)recacheDisk:(id)disk options:(unint64_t)options callbackBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8 && ([v8 diskIdentifier], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
+  diskCopy = disk;
+  blockCopy = block;
+  if (diskCopy && ([diskCopy diskIdentifier], v10 = objc_claimAutoreleasedReturnValue(), v10, v10))
   {
-    v11 = [NSMutableArray arrayWithObject:v8];
-    if (a4)
+    v11 = [NSMutableArray arrayWithObject:diskCopy];
+    if (options)
     {
-      v12 = [v8 children];
-      if (v12)
+      children = [diskCopy children];
+      if (children)
       {
-        [v11 addObjectsFromArray:v12];
+        [v11 addObjectsFromArray:children];
       }
     }
 
-    if ((a4 & 2) != 0)
+    if ((options & 2) != 0)
     {
-      [(SKDaemonManager *)self _fastRecacheWithDisks:v11 options:a4];
-      if (v9)
+      [(SKDaemonManager *)self _fastRecacheWithDisks:v11 options:options];
+      if (blockCopy)
       {
-        v9[2](v9);
+        blockCopy[2](blockCopy);
       }
     }
 
@@ -1238,49 +1238,49 @@ LABEL_12:
       v13[3] = &unk_100049478;
       v13[4] = self;
       v14 = v11;
-      v16 = a4;
-      v15 = v9;
+      optionsCopy = options;
+      v15 = blockCopy;
       [(SKDaemonManager *)self dispatchBoostedToWorkThread:v13];
     }
   }
 
-  else if (v9)
+  else if (blockCopy)
   {
-    v9[2](v9);
+    blockCopy[2](blockCopy);
   }
 }
 
-- (id)_recacheSyncDisk:(id)a3
+- (id)_recacheSyncDisk:(id)disk
 {
-  if (a3)
+  if (disk)
   {
-    v8 = a3;
-    v4 = a3;
-    v5 = [NSArray arrayWithObjects:&v8 count:1];
+    diskCopy = disk;
+    diskCopy2 = disk;
+    v5 = [NSArray arrayWithObjects:&diskCopy count:1];
 
-    v6 = [(SKDaemonManager *)self _fullRecacheWithDisks:v5 options:0, v8];
+    diskCopy = [(SKDaemonManager *)self _fullRecacheWithDisks:v5 options:0, diskCopy];
   }
 
   else
   {
-    v6 = 0;
+    diskCopy = 0;
   }
 
-  return v6;
+  return diskCopy;
 }
 
-- (void)_scheduleOperation:(id)a3
+- (void)_scheduleOperation:(id)operation
 {
-  v4 = a3;
-  v5 = [(SKDaemonManager *)self boosterQueue];
+  operationCopy = operation;
+  boosterQueue = [(SKDaemonManager *)self boosterQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001CBCC;
   v7[3] = &unk_100048F38;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 dispatchWithBlock:v7];
+  v8 = operationCopy;
+  v6 = operationCopy;
+  [boosterQueue dispatchWithBlock:v7];
 }
 
 - (void)_advanceOperationQueue
@@ -1346,11 +1346,11 @@ LABEL_12:
   }
 }
 
-- (void)_scheduleGenericOperationWithCompletionBlock:(id)a3
+- (void)_scheduleGenericOperationWithCompletionBlock:(id)block
 {
-  v5 = a3;
+  blockCopy = block;
   v4 = objc_opt_new();
-  [v4 setCompletionBlock:v5];
+  [v4 setCompletionBlock:blockCopy];
   if (v4)
   {
     [(SKDaemonManager *)self _scheduleOperation:v4];
@@ -1358,23 +1358,23 @@ LABEL_12:
 
   else
   {
-    v5[2]();
+    blockCopy[2]();
   }
 }
 
-- (void)_disksChanged:(id)a3
+- (void)_disksChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v17 = 112;
   obj = self->_listeners;
   objc_sync_enter(obj);
-  v5 = [(SKDaemonManager *)self allDisks];
-  v6 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v4, "count")}];
+  allDisks = [(SKDaemonManager *)self allDisks];
+  v6 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(changedCopy, "count")}];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v7 = v4;
+  v7 = changedCopy;
   v8 = [v7 countByEnumeratingWithState:&v23 objects:v32 count:16];
   if (v8)
   {
@@ -1389,7 +1389,7 @@ LABEL_12:
         }
 
         v11 = *(*(&v23 + 1) + 8 * i);
-        if ([v5 containsObject:{v11, v17}])
+        if ([allDisks containsObject:{v11, v17}])
         {
           [v6 addObject:v11];
         }
@@ -1445,12 +1445,12 @@ LABEL_12:
   objc_sync_exit(obj);
 }
 
-- (void)_disksAppeared:(id)a3
+- (void)_disksAppeared:(id)appeared
 {
-  v4 = a3;
+  appearedCopy = appeared;
   v5 = self->_listeners;
   objc_sync_enter(v5);
-  sub_10000C17C(OS_LOG_TYPE_DEFAULT, "DAEMON - Disks appeared:", v4);
+  sub_10000C17C(OS_LOG_TYPE_DEFAULT, "DAEMON - Disks appeared:", appearedCopy);
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -1469,7 +1469,7 @@ LABEL_12:
           objc_enumerationMutation(v6);
         }
 
-        [(SKDaemonManager *)self _performDiskStateUpdateSelector:"disksAppeared:" onListener:*(*(&v10 + 1) + 8 * i) withDisks:v4, v10];
+        [(SKDaemonManager *)self _performDiskStateUpdateSelector:"disksAppeared:" onListener:*(*(&v10 + 1) + 8 * i) withDisks:appearedCopy, v10];
       }
 
       v7 = [(NSMutableSet *)v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -1481,12 +1481,12 @@ LABEL_12:
   objc_sync_exit(v5);
 }
 
-- (void)_disksDisappeared:(id)a3
+- (void)_disksDisappeared:(id)disappeared
 {
-  v4 = a3;
+  disappearedCopy = disappeared;
   v5 = self->_listeners;
   objc_sync_enter(v5);
-  sub_10000C17C(OS_LOG_TYPE_DEFAULT, "DAEMON - Disks disappeared:", v4);
+  sub_10000C17C(OS_LOG_TYPE_DEFAULT, "DAEMON - Disks disappeared:", disappearedCopy);
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
@@ -1505,7 +1505,7 @@ LABEL_12:
           objc_enumerationMutation(v6);
         }
 
-        [(SKDaemonManager *)self _performDiskStateUpdateSelector:"disksDisappeared:" onListener:*(*(&v10 + 1) + 8 * i) withDisks:v4, v10];
+        [(SKDaemonManager *)self _performDiskStateUpdateSelector:"disksDisappeared:" onListener:*(*(&v10 + 1) + 8 * i) withDisks:disappearedCopy, v10];
       }
 
       v7 = [(NSMutableSet *)v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
@@ -1517,16 +1517,16 @@ LABEL_12:
   objc_sync_exit(v5);
 }
 
-- (void)_performDiskStateUpdateSelector:(SEL)a3 onListener:(id)a4 withDisks:(id)a5
+- (void)_performDiskStateUpdateSelector:(SEL)selector onListener:(id)listener withDisks:(id)disks
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v8 count]);
+  listenerCopy = listener;
+  disksCopy = disks;
+  v9 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [disksCopy count]);
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v10 = v8;
+  v10 = disksCopy;
   v11 = [v10 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v11)
   {
@@ -1542,8 +1542,8 @@ LABEL_12:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v22 + 1) + 8 * v14) dictionaryRepresentation];
-        [v9 addObject:v15];
+        dictionaryRepresentation = [*(*(&v22 + 1) + 8 * v14) dictionaryRepresentation];
+        [v9 addObject:dictionaryRepresentation];
 
         v14 = v14 + 1;
       }
@@ -1557,33 +1557,33 @@ LABEL_12:
 
   if (objc_opt_respondsToSelector())
   {
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ([v7 visibleDiskRoles], v16 = objc_claimAutoreleasedReturnValue(), v16, v16))
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ([listenerCopy visibleDiskRoles], v16 = objc_claimAutoreleasedReturnValue(), v16, v16))
     {
       v20[0] = _NSConcreteStackBlock;
       v20[1] = 3221225472;
       v20[2] = sub_10001DA50;
       v20[3] = &unk_1000494A0;
-      v17 = v7;
+      v17 = listenerCopy;
       v21 = v17;
       v18 = [NSPredicate predicateWithBlock:v20];
       v19 = [v9 filteredArrayUsingPredicate:v18];
-      [v17 performSelector:a3 withObject:v19];
+      [v17 performSelector:selector withObject:v19];
     }
 
     else
     {
-      [v7 performSelector:a3 withObject:v9];
+      [listenerCopy performSelector:selector withObject:v9];
     }
   }
 }
 
 - (unint64_t)nextDiskObjectID
 {
-  v3 = [(SKDaemonManager *)self lastDiskObjectIDLock];
-  objc_sync_enter(v3);
+  lastDiskObjectIDLock = [(SKDaemonManager *)self lastDiskObjectIDLock];
+  objc_sync_enter(lastDiskObjectIDLock);
   v4 = self->_lastDiskObjectID + 1;
   self->_lastDiskObjectID = v4;
-  objc_sync_exit(v3);
+  objc_sync_exit(lastDiskObjectIDLock);
 
   return v4;
 }
@@ -1598,36 +1598,36 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%s: DA idle received", buf, 0xCu);
   }
 
-  v4 = [(SKDaemonManager *)self diskListCompleteReceived];
+  diskListCompleteReceived = [(SKDaemonManager *)self diskListCompleteReceived];
   [(SKDaemonManager *)self setDiskListCompleteReceived:0];
   v5 = self->_diskOperationMap;
   objc_sync_enter(v5);
   diskOperationMap = self->_diskOperationMap;
-  v7 = [(SKDaemonManager *)self preIdleOperationMap];
-  [(NSMutableDictionary *)diskOperationMap addEntriesFromDictionary:v7];
+  preIdleOperationMap = [(SKDaemonManager *)self preIdleOperationMap];
+  [(NSMutableDictionary *)diskOperationMap addEntriesFromDictionary:preIdleOperationMap];
 
   objc_sync_exit(v5);
-  v8 = [(SKDaemonManager *)self preIdleOperationMap];
-  [v8 removeAllObjects];
+  preIdleOperationMap2 = [(SKDaemonManager *)self preIdleOperationMap];
+  [preIdleOperationMap2 removeAllObjects];
 
-  v9 = [(SKDaemonManager *)self notificationsSyncQueue];
+  notificationsSyncQueue = [(SKDaemonManager *)self notificationsSyncQueue];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10001DCDC;
   v10[3] = &unk_1000494C8;
   v10[4] = self;
-  v11 = v4;
-  dispatch_async(v9, v10);
+  v11 = diskListCompleteReceived;
+  dispatch_async(notificationsSyncQueue, v10);
 }
 
-- (id)_diskOperationIdentifierWithDADisk:(id)a3
+- (id)_diskOperationIdentifierWithDADisk:(id)disk
 {
-  v3 = a3;
-  BSDName = DADiskGetBSDName(v3);
+  diskCopy = disk;
+  BSDName = DADiskGetBSDName(diskCopy);
   if (BSDName)
   {
-    v5 = [NSString stringWithUTF8String:BSDName];
-    if (v5)
+    uUIDString = [NSString stringWithUTF8String:BSDName];
+    if (uUIDString)
     {
       goto LABEL_4;
     }
@@ -1635,66 +1635,66 @@ LABEL_12:
 
   else
   {
-    v8 = DADiskCopyDescription(v3);
+    v8 = DADiskCopyDescription(diskCopy);
     v9 = [(__CFDictionary *)v8 objectForKeyedSubscript:kDADiskDescriptionVolumeLifsURLKey];
     if (v9)
     {
       v10 = [(__CFDictionary *)v8 objectForKeyedSubscript:kDADiskDescriptionVolumePathKey];
-      v11 = [v10 path];
-      v5 = [NSString stringWithFormat:@"%@_%@", v9, v11];
+      path = [v10 path];
+      uUIDString = [NSString stringWithFormat:@"%@_%@", v9, path];
     }
 
     else
     {
-      v5 = 0;
+      uUIDString = 0;
     }
 
-    if (v5)
+    if (uUIDString)
     {
       goto LABEL_4;
     }
   }
 
   v6 = +[NSUUID UUID];
-  v5 = [v6 UUIDString];
+  uUIDString = [v6 UUIDString];
 
 LABEL_4:
 
-  return v5;
+  return uUIDString;
 }
 
-- (void)_handleDANotificationWithDisk:(id)a3 operation:(id)a4
+- (void)_handleDANotificationWithDisk:(id)disk operation:(id)operation
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  diskCopy = disk;
+  operationCopy = operation;
+  if (diskCopy)
   {
-    v8 = [(SKDaemonManager *)self _diskOperationIdentifierWithDADisk:v6];
+    v8 = [(SKDaemonManager *)self _diskOperationIdentifierWithDADisk:diskCopy];
     v14[0] = off_1000592F8;
     v14[1] = off_1000592C0;
-    v15[0] = v6;
-    v15[1] = v7;
+    v15[0] = diskCopy;
+    v15[1] = operationCopy;
     v9 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:2];
-    v10 = [(SKDaemonManager *)self preIdleOperationMap];
-    [v10 setObject:v9 forKeyedSubscript:v8];
+    preIdleOperationMap = [(SKDaemonManager *)self preIdleOperationMap];
+    [preIdleOperationMap setObject:v9 forKeyedSubscript:v8];
 
-    v11 = [(SKDaemonManager *)self disksNotificationsWaiters];
-    objc_sync_enter(v11);
-    v12 = [(SKDaemonManager *)self disksNotificationsWaiters];
-    v13 = [v12 count] == 0;
+    disksNotificationsWaiters = [(SKDaemonManager *)self disksNotificationsWaiters];
+    objc_sync_enter(disksNotificationsWaiters);
+    disksNotificationsWaiters2 = [(SKDaemonManager *)self disksNotificationsWaiters];
+    v13 = [disksNotificationsWaiters2 count] == 0;
 
     if (!v13)
     {
-      [(SKDaemonManager *)self _notifyLockedDisksNotificationsWaitersWithDisk:v6];
+      [(SKDaemonManager *)self _notifyLockedDisksNotificationsWaitersWithDisk:diskCopy];
     }
 
-    objc_sync_exit(v11);
+    objc_sync_exit(disksNotificationsWaiters);
   }
 }
 
-- (void)_notifyLockedDisksNotificationsWaitersWithDisk:(id)a3
+- (void)_notifyLockedDisksNotificationsWaitersWithDisk:(id)disk
 {
-  v4 = DADiskCopyDescription(a3);
+  v4 = DADiskCopyDescription(disk);
   v5 = [(__CFDictionary *)v4 objectForKeyedSubscript:kDADiskDescriptionMediaBSDNameKey];
   if (!v5)
   {
@@ -1706,16 +1706,16 @@ LABEL_4:
 
     v7 = v6;
     v8 = [[NSURL alloc] initWithString:v6];
-    v9 = [v8 host];
-    v5 = [NSString stringWithFormat:@"apfs://%@", v9];
+    host = [v8 host];
+    v5 = [NSString stringWithFormat:@"apfs://%@", host];
   }
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v10 = [(SKDaemonManager *)self disksNotificationsWaiters];
-  v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  disksNotificationsWaiters = [(SKDaemonManager *)self disksNotificationsWaiters];
+  v11 = [disksNotificationsWaiters countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v11)
   {
     v12 = v11;
@@ -1726,21 +1726,21 @@ LABEL_4:
       {
         if (*v20 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(disksNotificationsWaiters);
         }
 
         v15 = *(*(&v19 + 1) + 8 * i);
-        v16 = [v15 expectedDiskIdentifier];
-        v17 = [v16 isEqual:v5];
+        expectedDiskIdentifier = [v15 expectedDiskIdentifier];
+        v17 = [expectedDiskIdentifier isEqual:v5];
 
         if (v17)
         {
-          v18 = [v15 semaphore];
-          dispatch_semaphore_signal(v18);
+          semaphore = [v15 semaphore];
+          dispatch_semaphore_signal(semaphore);
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v12 = [disksNotificationsWaiters countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v12);
@@ -1749,79 +1749,79 @@ LABEL_4:
 LABEL_14:
 }
 
-- (void)dmAsyncStartedForDisk:(__DADisk *)a3
+- (void)dmAsyncStartedForDisk:(__DADisk *)disk
 {
   currentOperation = self->currentOperation;
   if (objc_opt_respondsToSelector())
   {
     v6 = self->currentOperation;
 
-    [(SKManagerOperation *)v6 dmAsyncStartedForDisk:a3];
+    [(SKManagerOperation *)v6 dmAsyncStartedForDisk:disk];
   }
 }
 
-- (void)dmAsyncMessageForDisk:(__DADisk *)a3 string:(id)a4 dictionary:(id)a5
+- (void)dmAsyncMessageForDisk:(__DADisk *)disk string:(id)string dictionary:(id)dictionary
 {
-  v10 = a4;
-  v8 = a5;
+  stringCopy = string;
+  dictionaryCopy = dictionary;
   currentOperation = self->currentOperation;
   if (objc_opt_respondsToSelector())
   {
-    [(SKManagerOperation *)self->currentOperation dmAsyncMessageForDisk:a3 string:v10 dictionary:v8];
+    [(SKManagerOperation *)self->currentOperation dmAsyncMessageForDisk:disk string:stringCopy dictionary:dictionaryCopy];
   }
 }
 
-- (void)dmAsyncFinishedForDisk:(__DADisk *)a3 mainError:(int)a4 detailError:(int)a5 dictionary:(id)a6
+- (void)dmAsyncFinishedForDisk:(__DADisk *)disk mainError:(int)error detailError:(int)detailError dictionary:(id)dictionary
 {
-  v10 = a6;
-  if (a3)
+  dictionaryCopy = dictionary;
+  if (disk)
   {
-    CFRetain(a3);
+    CFRetain(disk);
   }
 
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10001E76C;
   v12[3] = &unk_100049518;
-  v13 = v10;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  v13 = dictionaryCopy;
+  diskCopy = disk;
+  errorCopy = error;
+  detailErrorCopy = detailError;
   v12[4] = self;
-  v11 = v10;
+  v11 = dictionaryCopy;
   [(SKDaemonManager *)self dispatchToWorkThread:v12];
 }
 
-- (void)syncAllDisksWithCompletionBlock:(id)a3
+- (void)syncAllDisksWithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(SKDaemonManager *)self waitForCompletionQueue];
+  blockCopy = block;
+  waitForCompletionQueue = [(SKDaemonManager *)self waitForCompletionQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001E898;
   v7[3] = &unk_1000493B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = blockCopy;
+  v6 = blockCopy;
+  dispatch_async(waitForCompletionQueue, v7);
 }
 
-- (id)wholeDiskForDisk:(id)a3
+- (id)wholeDiskForDisk:(id)disk
 {
-  v4 = a3;
-  if ([v4 isWholeDisk])
+  diskCopy = disk;
+  if ([diskCopy isWholeDisk])
   {
-    v5 = v4;
+    v5 = diskCopy;
   }
 
   else
   {
-    v6 = [v4 daDisk];
+    daDisk = [diskCopy daDisk];
 
-    if (v6)
+    if (daDisk)
     {
-      v7 = [v4 daDisk];
-      v8 = DADiskCopyWholeDisk(v7);
+      daDisk2 = [diskCopy daDisk];
+      v8 = DADiskCopyWholeDisk(daDisk2);
 
       if (v8)
       {
@@ -1843,45 +1843,45 @@ LABEL_14:
   return v5;
 }
 
-- (void)wholeDiskForDisk:(id)a3 withCallbackBlock:(id)a4
+- (void)wholeDiskForDisk:(id)disk withCallbackBlock:(id)block
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10001ECC4;
   v7[3] = &unk_100049540;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(SKDaemonManager *)v8 dispatchBoostedToWorkThread:v7];
+  selfCopy = self;
+  diskCopy = disk;
+  blockCopy = block;
+  v5 = blockCopy;
+  v6 = diskCopy;
+  [(SKDaemonManager *)selfCopy dispatchBoostedToWorkThread:v7];
 }
 
-- (void)childDisksForWholeDisk:(id)a3 withCallbackBlock:(id)a4
+- (void)childDisksForWholeDisk:(id)disk withCallbackBlock:(id)block
 {
-  v6 = a3;
+  diskCopy = disk;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10001EDE8;
   v9[3] = &unk_100049568;
-  v11 = self;
-  v12 = a4;
-  v10 = v6;
-  v7 = v12;
-  v8 = v6;
+  selfCopy = self;
+  blockCopy = block;
+  v10 = diskCopy;
+  v7 = blockCopy;
+  v8 = diskCopy;
   [(SKDaemonManager *)self dispatchBoostedToWorkThread:v9];
 }
 
-- (void)isBusy:(id)a3
+- (void)isBusy:(id)busy
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10001EFCC;
   v4[3] = &unk_100049390;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(SKDaemonManager *)v5 dispatchBoostedToWorkThread:v4];
+  selfCopy = self;
+  busyCopy = busy;
+  v3 = busyCopy;
+  [(SKDaemonManager *)selfCopy dispatchBoostedToWorkThread:v4];
 }
 
 - (id)formatableFileSystems
@@ -1893,9 +1893,9 @@ LABEL_14:
   return v4;
 }
 
-- (void)filesystemsWithCallbackBlock:(id)a3
+- (void)filesystemsWithCallbackBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = +[SKFilesystem buildFilesystems];
   v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
   v12 = 0u;
@@ -1918,8 +1918,8 @@ LABEL_14:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v12 + 1) + 8 * v10) dictionaryRepresentation];
-        [v5 addObject:v11];
+        dictionaryRepresentation = [*(*(&v12 + 1) + 8 * v10) dictionaryRepresentation];
+        [v5 addObject:dictionaryRepresentation];
 
         v10 = v10 + 1;
       }
@@ -1931,16 +1931,16 @@ LABEL_14:
     while (v8);
   }
 
-  if (v3)
+  if (blockCopy)
   {
-    v3[2](v3, v5);
+    blockCopy[2](blockCopy, v5);
   }
 }
 
-- (id)_filesystemForDMFilesystemType:(id)a3 isEncrypted:(BOOL)a4
+- (id)_filesystemForDMFilesystemType:(id)type isEncrypted:(BOOL)encrypted
 {
-  v4 = a4;
-  v5 = a3;
+  encryptedCopy = encrypted;
+  typeCopy = type;
   +[SKFilesystem buildFilesystems];
   v16 = 0u;
   v17 = 0u;
@@ -1961,12 +1961,12 @@ LABEL_14:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 dmPersonality];
-        if ([v12 isEqualToString:v5])
+        dmPersonality = [v11 dmPersonality];
+        if ([dmPersonality isEqualToString:typeCopy])
         {
-          v13 = [v11 isEncrypted];
+          isEncrypted = [v11 isEncrypted];
 
-          if (v13 == v4)
+          if (isEncrypted == encryptedCopy)
           {
             v14 = v11;
             goto LABEL_13;
@@ -1990,9 +1990,9 @@ LABEL_13:
   return v14;
 }
 
-- (id)_filesystemForIOContent:(id)a3
+- (id)_filesystemForIOContent:(id)content
 {
-  v3 = a3;
+  contentCopy = content;
   +[SKFilesystem buildFilesystems];
   v12 = 0u;
   v13 = 0u;
@@ -2012,8 +2012,8 @@ LABEL_13:
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v8 contentMask];
-        v10 = [v9 isEqualToString:v3];
+        contentMask = [v8 contentMask];
+        v10 = [contentMask isEqualToString:contentCopy];
 
         if (v10)
         {
@@ -2037,9 +2037,9 @@ LABEL_11:
   return v5;
 }
 
-- (id)_firstFilesystemForMajorType:(id)a3
+- (id)_firstFilesystemForMajorType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   +[SKFilesystem buildFilesystems];
   v12 = 0u;
   v13 = 0u;
@@ -2059,8 +2059,8 @@ LABEL_11:
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v8 majorType];
-        v10 = [v9 isEqualToString:v3];
+        majorType = [v8 majorType];
+        v10 = [majorType isEqualToString:typeCopy];
 
         if (v10)
         {
@@ -2084,13 +2084,13 @@ LABEL_11:
   return v5;
 }
 
-- (id)_filesystemForUnlocalizedName:(id)a3 dmPersonality:(id)a4
+- (id)_filesystemForUnlocalizedName:(id)name dmPersonality:(id)personality
 {
-  v5 = a3;
-  v6 = a4;
+  nameCopy = name;
+  personalityCopy = personality;
   v7 = +[SKFilesystem buildFilesystems];
   v8 = v7;
-  if (v5)
+  if (nameCopy)
   {
     v34 = 0u;
     v35 = 0u;
@@ -2113,15 +2113,15 @@ LABEL_11:
           }
 
           v14 = *(*(&v32 + 1) + 8 * i);
-          v15 = [v14 unlocalizedName];
-          if ([v5 isEqualToString:v15])
+          unlocalizedName = [v14 unlocalizedName];
+          if ([nameCopy isEqualToString:unlocalizedName])
           {
 
             goto LABEL_24;
           }
 
-          v16 = [v14 unlocalizedEncryptedName];
-          v17 = [v5 isEqualToString:v16];
+          unlocalizedEncryptedName = [v14 unlocalizedEncryptedName];
+          v17 = [nameCopy isEqualToString:unlocalizedEncryptedName];
 
           if (v17)
           {
@@ -2148,7 +2148,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  if (v6)
+  if (personalityCopy)
   {
     v30 = 0u;
     v31 = 0u;
@@ -2171,8 +2171,8 @@ LABEL_25:
           }
 
           v14 = *(*(&v28 + 1) + 8 * j);
-          v24 = [v14 dmPersonality];
-          v25 = [v6 isEqualToString:v24];
+          dmPersonality = [v14 dmPersonality];
+          v25 = [personalityCopy isEqualToString:dmPersonality];
 
           if (v25)
           {
@@ -2204,25 +2204,25 @@ LABEL_26:
   return v18;
 }
 
-- (void)physicalStoresForAPFSVolume:(id)a3 completionBlock:(id)a4
+- (void)physicalStoresForAPFSVolume:(id)volume completionBlock:(id)block
 {
-  v26 = a3;
-  v6 = a4;
-  if (v26 && ([v26 daDisk], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  volumeCopy = volume;
+  blockCopy = block;
+  if (volumeCopy && ([volumeCopy daDisk], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
     v8 = [SKIOMedia alloc];
-    v9 = [v26 daDisk];
-    v10 = [(SKIOMedia *)v8 initWithDADisk:v9];
+    daDisk = [volumeCopy daDisk];
+    v10 = [(SKIOMedia *)v8 initWithDADisk:daDisk];
 
     v11 = [(SKIOObject *)v10 ioObjectWithClassName:@"AppleAPFSContainer" iterateParents:1];
-    v12 = [v11 copyParent];
-    v13 = v12;
-    if (v12)
+    copyParent = [v11 copyParent];
+    v13 = copyParent;
+    if (copyParent)
     {
       v24 = v11;
       v25 = v10;
-      v23 = v12;
-      v14 = [v12 newIteratorWithOptions:2];
+      v23 = copyParent;
+      v14 = [copyParent newIteratorWithOptions:2];
       v15 = +[NSMutableArray array];
       v16 = [(SKIOObject *)[SKIOMedia alloc] initWithIteratorNext:v14];
       if (v16)
@@ -2238,8 +2238,8 @@ LABEL_26:
           if (IOObjectConformsTo([(SKIOObject *)v17 ioObj], "IOMedia"))
           {
             daSession = self->daSession;
-            v19 = [(SKIOMedia *)v17 BSDName];
-            v20 = DADiskCreateFromBSDName(0, daSession, [v19 fileSystemRepresentation]);
+            bSDName = [(SKIOMedia *)v17 BSDName];
+            v20 = DADiskCreateFromBSDName(0, daSession, [bSDName fileSystemRepresentation]);
 
             if (v20)
             {
@@ -2259,7 +2259,7 @@ LABEL_26:
         while (v22);
       }
 
-      v6[2](v6, v15);
+      blockCopy[2](blockCopy, v15);
 
       v11 = v24;
       v10 = v25;
@@ -2268,31 +2268,31 @@ LABEL_26:
 
     else
     {
-      v6[2](v6, &__NSArray0__struct);
+      blockCopy[2](blockCopy, &__NSArray0__struct);
     }
   }
 
   else
   {
-    v6[2](v6, &__NSArray0__struct);
+    blockCopy[2](blockCopy, &__NSArray0__struct);
   }
 }
 
-- (void)volumesForAPFSPS:(id)a3 completionBlock:(id)a4
+- (void)volumesForAPFSPS:(id)s completionBlock:(id)block
 {
-  v35 = a3;
-  v5 = a4;
-  if (v35 && ([v35 daDisk], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
+  sCopy = s;
+  blockCopy = block;
+  if (sCopy && ([sCopy daDisk], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     p_superclass = &OBJC_METACLASS___SKTaskExecuter.superclass;
     v8 = [SKIOMedia alloc];
-    v9 = [v35 daDisk];
-    v10 = [(SKIOMedia *)v8 initWithDADisk:v9];
+    daDisk = [sCopy daDisk];
+    v10 = [(SKIOMedia *)v8 initWithDADisk:daDisk];
 
     v11 = [(SKIOObject *)v10 ioObjectWithClassName:@"AppleAPFSContainer" iterateParents:0];
     if (v11)
     {
-      v31 = v5;
+      v31 = blockCopy;
       v33 = v10;
       v12 = +[NSMutableArray array];
       v32 = v11;
@@ -2323,8 +2323,8 @@ LABEL_26:
               v24 = v17;
               v25 = v16;
               daSession = self->daSession;
-              v27 = [(SKIOMedia *)v15 BSDName];
-              v28 = DADiskCreateFromBSDName(0, daSession, [v27 fileSystemRepresentation]);
+              bSDName = [(SKIOMedia *)v15 BSDName];
+              v28 = DADiskCreateFromBSDName(0, daSession, [bSDName fileSystemRepresentation]);
 
               if (v28)
               {
@@ -2350,7 +2350,7 @@ LABEL_26:
         while (v30);
       }
 
-      v5 = v31;
+      blockCopy = v31;
       v31[2](v31, v12);
 
       v11 = v32;
@@ -2359,22 +2359,22 @@ LABEL_26:
 
     else
     {
-      v5[2](v5, &__NSArray0__struct);
+      blockCopy[2](blockCopy, &__NSArray0__struct);
     }
   }
 
   else
   {
-    v5[2](v5, &__NSArray0__struct);
+    blockCopy[2](blockCopy, &__NSArray0__struct);
   }
 }
 
-- (void)unmountDisk:(id)a3 options:(id)a4 withCompletionBlock:(id)a5
+- (void)unmountDisk:(id)disk options:(id)options withCompletionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [[SKUnmountOperation alloc] initWithDisk:v7 options:v9 withCompletionBlock:v8];
+  diskCopy = disk;
+  blockCopy = block;
+  optionsCopy = options;
+  v10 = [[SKUnmountOperation alloc] initWithDisk:diskCopy options:optionsCopy withCompletionBlock:blockCopy];
 
   if (v10)
   {
@@ -2388,20 +2388,20 @@ LABEL_26:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       v13 = 138412290;
-      v14 = v7;
+      v14 = diskCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "Could not unmount disk %@", &v13, 0xCu);
     }
 
     v11 = [SKError errorWithCode:102 userInfo:0];
-    v8[2](v8, v11);
+    blockCopy[2](blockCopy, v11);
   }
 }
 
-- (void)ejectDisk:(id)a3 withCompletionBlock:(id)a4
+- (void)ejectDisk:(id)disk withCompletionBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[SKEjectOperation alloc] initWithDisk:v5 withCompletionBlock:v6];
+  diskCopy = disk;
+  blockCopy = block;
+  v7 = [[SKEjectOperation alloc] initWithDisk:diskCopy withCompletionBlock:blockCopy];
   if (v7)
   {
     v8 = +[SKDaemonManager sharedManager];
@@ -2414,44 +2414,44 @@ LABEL_26:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v10 = 138412290;
-      v11 = v5;
+      v11 = diskCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Could not eject disk %@", &v10, 0xCu);
     }
 
     v8 = [SKError errorWithCode:102 userInfo:0];
-    v6[2](v6, v8);
+    blockCopy[2](blockCopy, v8);
   }
 }
 
-- (id)eraseWithEraser:(id)a3 completionBlock:(id)a4
+- (id)eraseWithEraser:(id)eraser completionBlock:(id)block
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[SKEraseOperation alloc] initWithEraser:v6 withCompletionBlock:v5];
+  blockCopy = block;
+  eraserCopy = eraser;
+  v7 = [[SKEraseOperation alloc] initWithEraser:eraserCopy withCompletionBlock:blockCopy];
 
   v8 = +[SKDaemonManager sharedManager];
   [v8 _scheduleOperation:v7];
 
-  v9 = [v6 progress];
+  progress = [eraserCopy progress];
 
-  return v9;
+  return progress;
 }
 
-- (id)resize:(id)a3 toSize:(unint64_t)a4 completionBlock:(id)a5
+- (id)resize:(id)resize toSize:(unint64_t)size completionBlock:(id)block
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 daDisk];
+  resizeCopy = resize;
+  blockCopy = block;
+  daDisk = [resizeCopy daDisk];
 
-  if (v9)
+  if (daDisk)
   {
-    v10 = [[SKResizeOperation alloc] initWithDisk:v7 toSize:a4 withCompletionBlock:v8];
+    v10 = [[SKResizeOperation alloc] initWithDisk:resizeCopy toSize:size withCompletionBlock:blockCopy];
     if (v10)
     {
       v11 = +[SKDaemonManager sharedManager];
       [v11 _scheduleOperation:v10];
 
-      v12 = [(SKManagerOperation *)v10 skProgress];
+      skProgress = [(SKManagerOperation *)v10 skProgress];
       goto LABEL_11;
     }
 
@@ -2459,12 +2459,12 @@ LABEL_26:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v17 = 138412290;
-      v18 = v7;
+      v18 = resizeCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Could not resize disk %@", &v17, 0xCu);
     }
 
     v15 = [SKError errorWithCode:102 userInfo:0];
-    v8[2](v8, v15);
+    blockCopy[2](blockCopy, v15);
   }
 
   else
@@ -2477,19 +2477,19 @@ LABEL_26:
     }
 
     v10 = [SKError errorWithCode:117 userInfo:0];
-    v8[2](v8, v10);
+    blockCopy[2](blockCopy, v10);
   }
 
-  v12 = 0;
+  skProgress = 0;
 LABEL_11:
 
-  return v12;
+  return skProgress;
 }
 
-- (BOOL)addAppearedDisk:(id)a3
+- (BOOL)addAppearedDisk:(id)disk
 {
-  v4 = a3;
-  if (v4)
+  diskCopy = disk;
+  if (diskCopy)
   {
     v5 = sub_10000BFD0();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2497,27 +2497,27 @@ LABEL_11:
       v10 = 136315394;
       v11 = "[SKDaemonManager(DiskNotifications) addAppearedDisk:]";
       v12 = 2112;
-      v13 = v4;
+      v13 = diskCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: %@", &v10, 0x16u);
     }
 
     v6 = self->allDisks;
     objc_sync_enter(v6);
-    [(NSMutableArray *)self->allDisks addObject:v4];
-    v7 = [(SKDaemonManager *)self notificationsCache];
-    v8 = [v7 appearedDisks];
-    [v8 addObject:v4];
+    [(NSMutableArray *)self->allDisks addObject:diskCopy];
+    notificationsCache = [(SKDaemonManager *)self notificationsCache];
+    appearedDisks = [notificationsCache appearedDisks];
+    [appearedDisks addObject:diskCopy];
 
     objc_sync_exit(v6);
   }
 
-  return v4 != 0;
+  return diskCopy != 0;
 }
 
-- (void)addChangedDisk:(id)a3
+- (void)addChangedDisk:(id)disk
 {
-  v4 = a3;
-  if (v4)
+  diskCopy = disk;
+  if (diskCopy)
   {
     v5 = sub_10000BFD0();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2525,26 +2525,26 @@ LABEL_11:
       v10 = 136315394;
       v11 = "[SKDaemonManager(DiskNotifications) addChangedDisk:]";
       v12 = 2112;
-      v13 = v4;
+      v13 = diskCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: %@", &v10, 0x16u);
     }
 
-    v6 = [(SKDaemonManager *)self notificationsCache];
-    v7 = [v6 changedDisks];
+    notificationsCache = [(SKDaemonManager *)self notificationsCache];
+    changedDisks = [notificationsCache changedDisks];
 
-    objc_sync_enter(v7);
-    v8 = [(SKDaemonManager *)self notificationsCache];
-    v9 = [v8 changedDisks];
-    [v9 addObject:v4];
+    objc_sync_enter(changedDisks);
+    notificationsCache2 = [(SKDaemonManager *)self notificationsCache];
+    changedDisks2 = [notificationsCache2 changedDisks];
+    [changedDisks2 addObject:diskCopy];
 
-    objc_sync_exit(v7);
+    objc_sync_exit(changedDisks);
   }
 }
 
-- (void)addDisappearedDisk:(id)a3
+- (void)addDisappearedDisk:(id)disk
 {
-  v4 = a3;
-  if (v4)
+  diskCopy = disk;
+  if (diskCopy)
   {
     v5 = sub_10000BFD0();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2552,16 +2552,16 @@ LABEL_11:
       v9 = 136315394;
       v10 = "[SKDaemonManager(DiskNotifications) addDisappearedDisk:]";
       v11 = 2112;
-      v12 = v4;
+      v12 = diskCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s: %@", &v9, 0x16u);
     }
 
     v6 = self->allDisks;
     objc_sync_enter(v6);
-    [(NSMutableArray *)self->allDisks removeObject:v4];
-    v7 = [(SKDaemonManager *)self notificationsCache];
-    v8 = [v7 disappearedDisks];
-    [v8 addObject:v4];
+    [(NSMutableArray *)self->allDisks removeObject:diskCopy];
+    notificationsCache = [(SKDaemonManager *)self notificationsCache];
+    disappearedDisks = [notificationsCache disappearedDisks];
+    [disappearedDisks addObject:diskCopy];
 
     objc_sync_exit(v6);
   }
@@ -2573,8 +2573,8 @@ LABEL_11:
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v3 = [(SKDaemonManager *)self allDisks];
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v25 count:16];
+  allDisks = [(SKDaemonManager *)self allDisks];
+  v4 = [allDisks countByEnumeratingWithState:&v15 objects:v25 count:16];
   if (v4)
   {
     v6 = v4;
@@ -2587,7 +2587,7 @@ LABEL_11:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allDisks);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
@@ -2615,48 +2615,48 @@ LABEL_11:
         }
       }
 
-      v6 = [v3 countByEnumeratingWithState:&v15 objects:v25 count:16];
+      v6 = [allDisks countByEnumeratingWithState:&v15 objects:v25 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_processNotificationsWithDiskOperations:(id)a3
+- (void)_processNotificationsWithDiskOperations:(id)operations
 {
-  v4 = a3;
-  v5 = [v4 wholeDiskOperation];
-  [(SKDaemonManager *)self _processNotificationWithDiskOperation:v5];
+  operationsCopy = operations;
+  wholeDiskOperation = [operationsCopy wholeDiskOperation];
+  [(SKDaemonManager *)self _processNotificationWithDiskOperation:wholeDiskOperation];
 
-  v6 = [v4 childrenOperations];
-  v7 = [v6 count];
+  childrenOperations = [operationsCopy childrenOperations];
+  v7 = [childrenOperations count];
 
   if (v7)
   {
-    v8 = [v4 childrenOperations];
-    v9 = [v8 count];
+    childrenOperations2 = [operationsCopy childrenOperations];
+    v9 = [childrenOperations2 count];
 
     if (v9)
     {
       v10 = 0;
       do
       {
-        v11 = [(SKDaemonManager *)self notificationsProcessingQueue];
-        v12 = [(SKDaemonManager *)self notificationsCache];
-        v13 = [v12 processingGroup];
+        notificationsProcessingQueue = [(SKDaemonManager *)self notificationsProcessingQueue];
+        notificationsCache = [(SKDaemonManager *)self notificationsCache];
+        processingGroup = [notificationsCache processingGroup];
         v17[0] = _NSConcreteStackBlock;
         v17[1] = 3221225472;
         v17[2] = sub_10002A0BC;
         v17[3] = &unk_1000499A0;
         v17[4] = self;
-        v14 = v4;
+        v14 = operationsCopy;
         v18 = v14;
         v19 = v10;
-        [v11 dispatchWithGroup:v13 block:v17];
+        [notificationsProcessingQueue dispatchWithGroup:processingGroup block:v17];
 
         ++v10;
-        v15 = [v14 childrenOperations];
-        v16 = [v15 count];
+        childrenOperations3 = [v14 childrenOperations];
+        v16 = [childrenOperations3 count];
       }
 
       while (v10 < v16);
@@ -2664,129 +2664,129 @@ LABEL_11:
   }
 }
 
-- (id)_processDiskNotificationsForMap:(id)a3 isCompleteDiskList:(BOOL)a4
+- (id)_processDiskNotificationsForMap:(id)map isCompleteDiskList:(BOOL)list
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[SKNotificationsCache alloc] initWithDiskOperationMap:v6];
+  listCopy = list;
+  mapCopy = map;
+  v7 = [[SKNotificationsCache alloc] initWithDiskOperationMap:mapCopy];
   [(SKDaemonManager *)self setNotificationsCache:v7];
 
-  v8 = [(SKDaemonManager *)self notificationsCache];
-  if (!v8)
+  notificationsCache = [(SKDaemonManager *)self notificationsCache];
+  if (!notificationsCache)
   {
     goto LABEL_15;
   }
 
-  v9 = v8;
-  v10 = [(SKDaemonManager *)self notificationsCache];
-  v11 = [v10 disksToProcess];
-  v12 = [v11 count];
+  v9 = notificationsCache;
+  notificationsCache2 = [(SKDaemonManager *)self notificationsCache];
+  disksToProcess = [notificationsCache2 disksToProcess];
+  v12 = [disksToProcess count];
 
   if (v12)
   {
     [(SKDaemonManager *)self _invalidateExtendedDiskInfoCache];
-    if (v4)
+    if (listCopy)
     {
       [(SKDaemonManager *)self addMissingDisappearedDisks];
     }
 
-    v13 = [(SKDaemonManager *)self notificationsCache];
-    v14 = [v13 disksToProcess];
-    v15 = [v14 count];
+    notificationsCache3 = [(SKDaemonManager *)self notificationsCache];
+    disksToProcess2 = [notificationsCache3 disksToProcess];
+    v15 = [disksToProcess2 count];
 
     if (v15)
     {
       v16 = 0;
       do
       {
-        v17 = [(SKDaemonManager *)self notificationsProcessingQueue];
-        v18 = [(SKDaemonManager *)self notificationsCache];
-        v19 = [v18 processingGroup];
+        notificationsProcessingQueue = [(SKDaemonManager *)self notificationsProcessingQueue];
+        notificationsCache4 = [(SKDaemonManager *)self notificationsCache];
+        processingGroup = [notificationsCache4 processingGroup];
         v46[0] = _NSConcreteStackBlock;
         v46[1] = 3221225472;
         v46[2] = sub_10002A4DC;
         v46[3] = &unk_100049400;
         v46[4] = self;
         v46[5] = v16;
-        [v17 dispatchWithGroup:v19 block:v46];
+        [notificationsProcessingQueue dispatchWithGroup:processingGroup block:v46];
 
         ++v16;
-        v20 = [(SKDaemonManager *)self notificationsCache];
-        v21 = [v20 disksToProcess];
-        v22 = [v21 count];
+        notificationsCache5 = [(SKDaemonManager *)self notificationsCache];
+        disksToProcess3 = [notificationsCache5 disksToProcess];
+        v22 = [disksToProcess3 count];
       }
 
       while (v16 < v22);
     }
 
-    v23 = [(SKDaemonManager *)self notificationsCache];
-    v24 = [v23 processingGroup];
-    dispatch_group_wait(v24, 0xFFFFFFFFFFFFFFFFLL);
+    notificationsCache6 = [(SKDaemonManager *)self notificationsCache];
+    processingGroup2 = [notificationsCache6 processingGroup];
+    dispatch_group_wait(processingGroup2, 0xFFFFFFFFFFFFFFFFLL);
 
     [(SKDaemonManager *)self updateRAIDDisks];
     [(SKDaemonManager *)self removeLIFSAPFSContainers];
-    v25 = [(SKDaemonManager *)self notificationsCache];
-    v26 = [v25 appearedDisks];
-    v27 = [v26 copy];
+    notificationsCache7 = [(SKDaemonManager *)self notificationsCache];
+    appearedDisks = [notificationsCache7 appearedDisks];
+    v27 = [appearedDisks copy];
     [(SKDaemonManager *)self updatePhysicalStoresWithDisks:v27];
 
-    v28 = [(SKDaemonManager *)self notificationsCache];
-    v29 = [v28 disappearedDisks];
-    v30 = [v29 count];
+    notificationsCache8 = [(SKDaemonManager *)self notificationsCache];
+    disappearedDisks = [notificationsCache8 disappearedDisks];
+    v30 = [disappearedDisks count];
 
     if (v30)
     {
-      v31 = [(SKDaemonManager *)self notificationsCache];
-      v32 = [v31 disappearedDisks];
-      [(SKDaemonManager *)self _disksDisappeared:v32];
+      notificationsCache9 = [(SKDaemonManager *)self notificationsCache];
+      disappearedDisks2 = [notificationsCache9 disappearedDisks];
+      [(SKDaemonManager *)self _disksDisappeared:disappearedDisks2];
     }
 
-    v33 = [(SKDaemonManager *)self notificationsCache];
-    v34 = [v33 appearedDisks];
-    v35 = [v34 count];
+    notificationsCache10 = [(SKDaemonManager *)self notificationsCache];
+    appearedDisks2 = [notificationsCache10 appearedDisks];
+    v35 = [appearedDisks2 count];
 
     if (v35)
     {
-      v36 = [(SKDaemonManager *)self notificationsCache];
-      v37 = [v36 appearedDisks];
-      [(SKDaemonManager *)self _disksAppeared:v37];
+      notificationsCache11 = [(SKDaemonManager *)self notificationsCache];
+      appearedDisks3 = [notificationsCache11 appearedDisks];
+      [(SKDaemonManager *)self _disksAppeared:appearedDisks3];
     }
 
-    v38 = [(SKDaemonManager *)self notificationsCache];
-    v39 = [v38 changedDisks];
-    v40 = [v39 count];
+    notificationsCache12 = [(SKDaemonManager *)self notificationsCache];
+    changedDisks = [notificationsCache12 changedDisks];
+    v40 = [changedDisks count];
 
     if (v40)
     {
-      v41 = [(SKDaemonManager *)self notificationsCache];
-      v42 = [v41 changedDisks];
-      [(SKDaemonManager *)self _disksChanged:v42];
+      notificationsCache13 = [(SKDaemonManager *)self notificationsCache];
+      changedDisks2 = [notificationsCache13 changedDisks];
+      [(SKDaemonManager *)self _disksChanged:changedDisks2];
     }
 
-    v43 = [(SKDaemonManager *)self notificationsCache];
-    v44 = [v43 processedDisk];
+    notificationsCache14 = [(SKDaemonManager *)self notificationsCache];
+    processedDisk = [notificationsCache14 processedDisk];
   }
 
   else
   {
 LABEL_15:
-    v44 = 0;
+    processedDisk = 0;
   }
 
-  return v44;
+  return processedDisk;
 }
 
-- (void)removePostProcessWithCachedDisk:(id)a3
+- (void)removePostProcessWithCachedDisk:(id)disk
 {
-  v4 = a3;
-  [(SKDaemonManager *)self addDisappearedDisk:v4];
-  [(SKDaemonManager *)self postProcessWithDisk:v4];
+  diskCopy = disk;
+  [(SKDaemonManager *)self addDisappearedDisk:diskCopy];
+  [(SKDaemonManager *)self postProcessWithDisk:diskCopy];
 }
 
-- (id)_processAppearedOrChangedWithDisk:(id)a3 operation:(id)a4
+- (id)_processAppearedOrChangedWithDisk:(id)disk operation:(id)operation
 {
-  v5 = a3;
-  v6 = DADiskCopyDescription(v5);
+  diskCopy = disk;
+  v6 = DADiskCopyDescription(diskCopy);
   if (!v6)
   {
     goto LABEL_21;
@@ -2800,7 +2800,7 @@ LABEL_15:
     goto LABEL_5;
   }
 
-  v17 = [[SKIOMedia alloc] initWithDADisk:v5];
+  v17 = [[SKIOMedia alloc] initWithDADisk:diskCopy];
   if (!v17)
   {
 LABEL_21:
@@ -2813,11 +2813,11 @@ LABEL_21:
   v8 = [(SKIOObject *)v18 copyPropertyWithClass:objc_opt_class() key:@"UUID"];
 
 LABEL_5:
-  v10 = [(SKDaemonManager *)self _cachedDiskWithDADisk:v5];
+  v10 = [(SKDaemonManager *)self _cachedDiskWithDADisk:diskCopy];
   v11 = v10;
   if (v10)
   {
-    [v10 setDaDisk:v5];
+    [v10 setDaDisk:diskCopy];
     if (![(SKDaemonManager *)self diskHasMutated:v11 rawIOContent:v9 diskDesc:v6 mediaUUID:v8])
     {
       if ([v11 _cacheInfo])
@@ -2836,7 +2836,7 @@ LABEL_5:
       v22 = 136315394;
       v23 = "[SKDaemonManager(DiskNotifications) _processAppearedOrChangedWithDisk:operation:]";
       v24 = 2112;
-      v25 = v5;
+      v25 = diskCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s: Disk %@ mutated", &v22, 0x16u);
     }
 
@@ -2849,14 +2849,14 @@ LABEL_5:
     goto LABEL_12;
   }
 
-  if (![SKAPFSStoreDisk isIOMediaStoreWithDisk:v5])
+  if (![SKAPFSStoreDisk isIOMediaStoreWithDisk:diskCopy])
   {
     if ([SKAPFSStoreDisk isLiveFSStoreWithRawIOContent:v9 diskDesc:v6])
     {
-      v15 = [[SKAPFSStoreDisk alloc] initWithDADisk:v5 isLiveFSContainer:1];
+      v15 = [[SKAPFSStoreDisk alloc] initWithDADisk:diskCopy isLiveFSContainer:1];
       if (v15)
       {
-        v19 = [[SKAPFSContainerDisk alloc] initWithPhysicalStoreDisk:v5];
+        v19 = [[SKAPFSContainerDisk alloc] initWithPhysicalStoreDisk:diskCopy];
         if (v19)
         {
           v14 = v19;
@@ -2876,14 +2876,14 @@ LABEL_30:
 
     if ([v9 isEqualToString:@"EF57347C-0000-11AA-AA11-00306543ECAC"])
     {
-      if ([(SKDaemonManager *)self delayedAPFSDiskNotificationWithDisk:v5 wholeDisk:v5])
+      if ([(SKDaemonManager *)self delayedAPFSDiskNotificationWithDisk:diskCopy wholeDisk:diskCopy])
       {
         goto LABEL_28;
       }
 
       v13 = SKAPFSContainerDisk;
 LABEL_12:
-      v14 = [[v13 alloc] initWithDADisk:v5];
+      v14 = [[v13 alloc] initWithDADisk:diskCopy];
       v15 = v14;
       if ([(SKDaemonManager *)self addAppearedDisk:v14])
       {
@@ -2893,7 +2893,7 @@ LABEL_12:
       goto LABEL_30;
     }
 
-    if ((v7 & 1) != 0 || [SKAPFSSnapshotDisk diskIsSnapshot:v5])
+    if ((v7 & 1) != 0 || [SKAPFSSnapshotDisk diskIsSnapshot:diskCopy])
     {
       v13 = SKAPFSSnapshotDisk;
       goto LABEL_12;
@@ -2902,7 +2902,7 @@ LABEL_12:
     if (![v9 isEqualToString:@"41504653-0000-11AA-AA11-00306543ECAC"])
     {
 LABEL_31:
-      v14 = [[SKDisk alloc] initWithDADisk:v5];
+      v14 = [[SKDisk alloc] initWithDADisk:diskCopy];
       if ([(SKDaemonManager *)self addAppearedDisk:v14])
       {
         v15 = v14;
@@ -2916,7 +2916,7 @@ LABEL_31:
           v22 = 136315394;
           v23 = "[SKDaemonManager(DiskNotifications) _processAppearedOrChangedWithDisk:operation:]";
           v24 = 2112;
-          v25 = v5;
+          v25 = diskCopy;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%s: Failed to initialize SKDisk of any kind for %@", &v22, 0x16u);
         }
 
@@ -2926,10 +2926,10 @@ LABEL_31:
       goto LABEL_36;
     }
 
-    v14 = DADiskCopyWholeDisk(v5);
-    if (![(SKDaemonManager *)self delayedAPFSDiskNotificationWithDisk:v5 wholeDisk:v14])
+    v14 = DADiskCopyWholeDisk(diskCopy);
+    if (![(SKDaemonManager *)self delayedAPFSDiskNotificationWithDisk:diskCopy wholeDisk:v14])
     {
-      v15 = [[SKAPFSDisk alloc] initWithDADisk:v5];
+      v15 = [[SKAPFSDisk alloc] initWithDADisk:diskCopy];
       if ([(SKDaemonManager *)self addAppearedDisk:v15])
       {
         goto LABEL_36;
@@ -2943,7 +2943,7 @@ LABEL_28:
     goto LABEL_37;
   }
 
-  v16 = [[SKAPFSStoreDisk alloc] initWithDADisk:v5 isLiveFSContainer:0];
+  v16 = [[SKAPFSStoreDisk alloc] initWithDADisk:diskCopy isLiveFSContainer:0];
   if (!v16)
   {
     goto LABEL_31;
@@ -2958,32 +2958,32 @@ LABEL_38:
   return v15;
 }
 
-- (void)postProcessWithDisk:(id)a3
+- (void)postProcessWithDisk:(id)disk
 {
-  v3 = a3;
+  diskCopy = disk;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [v4 apfsVolumeGroupUUID];
+    v4 = diskCopy;
+    apfsVolumeGroupUUID = [v4 apfsVolumeGroupUUID];
 
-    if (v5)
+    if (apfsVolumeGroupUUID)
     {
-      v6 = [v4 container];
-      if (v6)
+      container = [v4 container];
+      if (container)
       {
-        v25 = v3;
+        v25 = diskCopy;
         v7 = sub_10000BFD0();
         if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
         {
-          v8 = [v4 diskIdentifier];
-          v9 = [v4 apfsVolumeGroupUUID];
+          diskIdentifier = [v4 diskIdentifier];
+          apfsVolumeGroupUUID2 = [v4 apfsVolumeGroupUUID];
           *buf = 136315650;
           v33 = "[SKDaemonManager(DiskNotifications) postProcessWithDisk:]";
           v34 = 2114;
-          v35 = v8;
+          v35 = diskIdentifier;
           v36 = 2114;
-          v37 = v9;
+          v37 = apfsVolumeGroupUUID2;
           _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s: volume %{public}@ changed or disappeared, looking for other volumes in group %{public}@", buf, 0x20u);
         }
 
@@ -2991,9 +2991,9 @@ LABEL_38:
         v30 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v24 = v6;
-        v10 = [v6 volumes];
-        v11 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
+        v24 = container;
+        volumes = [container volumes];
+        v11 = [volumes countByEnumeratingWithState:&v27 objects:v31 count:16];
         if (v11)
         {
           v12 = v11;
@@ -3004,17 +3004,17 @@ LABEL_38:
             {
               if (*v28 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(volumes);
               }
 
               v15 = *(*(&v27 + 1) + 8 * i);
-              v16 = [v15 apfsVolumeGroupUUID];
-              if (v16)
+              apfsVolumeGroupUUID3 = [v15 apfsVolumeGroupUUID];
+              if (apfsVolumeGroupUUID3)
               {
-                v17 = v16;
-                v18 = [v4 apfsVolumeGroupUUID];
-                v19 = [v15 apfsVolumeGroupUUID];
-                if ([v18 isEqualToString:v19])
+                v17 = apfsVolumeGroupUUID3;
+                apfsVolumeGroupUUID4 = [v4 apfsVolumeGroupUUID];
+                apfsVolumeGroupUUID5 = [v15 apfsVolumeGroupUUID];
+                if ([apfsVolumeGroupUUID4 isEqualToString:apfsVolumeGroupUUID5])
                 {
                   v20 = [v4 isEqual:v15];
 
@@ -3023,14 +3023,14 @@ LABEL_38:
                     v21 = sub_10000BFD0();
                     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
                     {
-                      v22 = [v15 diskIdentifier];
-                      v23 = [v15 apfsVolumeGroupUUID];
+                      diskIdentifier2 = [v15 diskIdentifier];
+                      apfsVolumeGroupUUID6 = [v15 apfsVolumeGroupUUID];
                       *buf = 136315650;
                       v33 = "[SKDaemonManager(DiskNotifications) postProcessWithDisk:]";
                       v34 = 2114;
-                      v35 = v22;
+                      v35 = diskIdentifier2;
                       v36 = 2114;
-                      v37 = v23;
+                      v37 = apfsVolumeGroupUUID6;
                       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "%s: %{public}@ is also a member of %{public}@ group, re-caching it", buf, 0x20u);
                     }
 
@@ -3047,32 +3047,32 @@ LABEL_38:
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v27 objects:v31 count:16];
+            v12 = [volumes countByEnumeratingWithState:&v27 objects:v31 count:16];
           }
 
           while (v12);
         }
 
-        v6 = v24;
-        v3 = v25;
+        container = v24;
+        diskCopy = v25;
       }
     }
   }
 }
 
-- (void)_processNotificationWithDiskOperation:(id)a3
+- (void)_processNotificationWithDiskOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   v5 = sub_10000BFD0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v15 = 138543362;
-    v16 = v4;
+    v16 = operationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Starting to process: %{public}@", &v15, 0xCu);
   }
 
-  v6 = [v4 objectForKeyedSubscript:off_1000592C0];
-  v7 = [v4 objectForKeyedSubscript:off_1000592F8];
+  v6 = [operationCopy objectForKeyedSubscript:off_1000592C0];
+  v7 = [operationCopy objectForKeyedSubscript:off_1000592F8];
   if ([v6 isEqualToString:off_1000592D8])
   {
     v8 = [(SKDaemonManager *)self _cachedDiskWithDADisk:v7];
@@ -3081,20 +3081,20 @@ LABEL_38:
 
   else
   {
-    v9 = [(SKDaemonManager *)self _processAppearedOrChangedWithDisk:v7 operation:v4];
-    v10 = [(SKDaemonManager *)self notificationsCache];
-    objc_sync_enter(v10);
-    v11 = [(SKDaemonManager *)self notificationsCache];
-    v12 = [v11 processedDisk];
-    v13 = v12 == 0;
+    v9 = [(SKDaemonManager *)self _processAppearedOrChangedWithDisk:v7 operation:operationCopy];
+    notificationsCache = [(SKDaemonManager *)self notificationsCache];
+    objc_sync_enter(notificationsCache);
+    notificationsCache2 = [(SKDaemonManager *)self notificationsCache];
+    processedDisk = [notificationsCache2 processedDisk];
+    v13 = processedDisk == 0;
 
     if (v13)
     {
-      v14 = [(SKDaemonManager *)self notificationsCache];
-      [v14 setProcessedDisk:v9];
+      notificationsCache3 = [(SKDaemonManager *)self notificationsCache];
+      [notificationsCache3 setProcessedDisk:v9];
     }
 
-    objc_sync_exit(v10);
+    objc_sync_exit(notificationsCache);
 
     if ([v6 isEqualToString:off_1000592D0])
     {
@@ -3113,10 +3113,10 @@ LABEL_38:
   }
 }
 
-- (void)updatePhysicalStoresWithContainer:(id)a3
+- (void)updatePhysicalStoresWithContainer:(id)container
 {
-  v22 = a3;
-  v24 = [v22 copyPhysicalStoresUUIDs];
+  containerCopy = container;
+  copyPhysicalStoresUUIDs = [containerCopy copyPhysicalStoresUUIDs];
   v4 = +[NSMutableArray array];
   obj = self->allDisks;
   objc_sync_enter(obj);
@@ -3141,8 +3141,8 @@ LABEL_38:
         v9 = *(*(&v29 + 1) + 8 * i);
         if ([v9 isMemberOfClass:objc_opt_class()])
         {
-          v10 = [v9 mediaUUID];
-          v11 = [v24 containsObject:v10];
+          mediaUUID = [v9 mediaUUID];
+          v11 = [copyPhysicalStoresUUIDs containsObject:mediaUUID];
 
           if (v11)
           {
@@ -3180,17 +3180,17 @@ LABEL_38:
         v17 = sub_10000BFD0();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
         {
-          v18 = [v16 diskIdentifier];
+          diskIdentifier = [v16 diskIdentifier];
           *buf = 136315394;
           v34 = "[SKDaemonManager(DiskNotifications) updatePhysicalStoresWithContainer:]";
           v35 = 2114;
-          v36 = v18;
+          v36 = diskIdentifier;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%s: Re-creating APFS physical store %{public}@", buf, 0x16u);
         }
 
         v19 = [SKAPFSStoreDisk alloc];
-        v20 = [v16 daDisk];
-        v21 = [v19 initWithDADisk:v20 isLiveFSContainer:0];
+        daDisk = [v16 daDisk];
+        v21 = [v19 initWithDADisk:daDisk isLiveFSContainer:0];
 
         if (v21)
         {
@@ -3206,14 +3206,14 @@ LABEL_38:
   }
 }
 
-- (void)updatePhysicalStoresWithDisks:(id)a3
+- (void)updatePhysicalStoresWithDisks:(id)disks
 {
-  v4 = a3;
+  disksCopy = disks;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [disksCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -3225,7 +3225,7 @@ LABEL_38:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(disksCopy);
         }
 
         v9 = *(*(&v10 + 1) + 8 * v8);
@@ -3239,35 +3239,35 @@ LABEL_38:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [disksCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (BOOL)diskHasMutated:(id)a3 rawIOContent:(id)a4 diskDesc:(id)a5 mediaUUID:(id)a6
+- (BOOL)diskHasMutated:(id)mutated rawIOContent:(id)content diskDesc:(id)desc mediaUUID:(id)d
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if ([v9 isIOMediaDisk])
+  mutatedCopy = mutated;
+  contentCopy = content;
+  descCopy = desc;
+  dCopy = d;
+  if ([mutatedCopy isIOMediaDisk])
   {
-    v13 = [v9 daDisk];
-    if ([SKAPFSStoreDisk isIOMediaStoreWithDisk:v13])
+    daDisk = [mutatedCopy daDisk];
+    if ([SKAPFSStoreDisk isIOMediaStoreWithDisk:daDisk])
     {
       v14 = 1;
     }
 
     else
     {
-      v14 = [SKAPFSStoreDisk isLiveFSStoreWithRawIOContent:v10 diskDesc:v11];
+      v14 = [SKAPFSStoreDisk isLiveFSStoreWithRawIOContent:contentCopy diskDesc:descCopy];
     }
 
-    v16 = [v10 isEqualToString:@"EF57347C-0000-11AA-AA11-00306543ECAC"];
-    v17 = [v10 isEqualToString:@"41504653-0000-11AA-AA11-00306543ECAC"];
-    v18 = [v9 isMemberOfClass:objc_opt_class()];
+    v16 = [contentCopy isEqualToString:@"EF57347C-0000-11AA-AA11-00306543ECAC"];
+    v17 = [contentCopy isEqualToString:@"41504653-0000-11AA-AA11-00306543ECAC"];
+    v18 = [mutatedCopy isMemberOfClass:objc_opt_class()];
     if (v14)
     {
       if ((v18 & 1) == 0)
@@ -3281,7 +3281,7 @@ LABEL_38:
       goto LABEL_16;
     }
 
-    v19 = [v9 isMemberOfClass:objc_opt_class()];
+    v19 = [mutatedCopy isMemberOfClass:objc_opt_class()];
     if (v16)
     {
       if ((v19 & 1) == 0)
@@ -3305,25 +3305,25 @@ LABEL_14:
         goto LABEL_16;
       }
 
-      v22 = [v9 mediaUUID];
-      v23 = v12;
+      mediaUUID = [mutatedCopy mediaUUID];
+      v23 = dCopy;
       v24 = v23;
-      if ((v23 != 0) != (v22 != 0) || v23 && ([v22 isEqualToString:v23] & 1) == 0)
+      if ((v23 != 0) != (mediaUUID != 0) || v23 && ([mediaUUID isEqualToString:v23] & 1) == 0)
       {
         v25 = sub_10000BFD0();
         if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
         {
-          v26 = [v9 diskIdentifier];
+          diskIdentifier = [mutatedCopy diskIdentifier];
           v27 = objc_opt_class();
           v28 = NSStringFromClass(v27);
           v29 = 136316162;
           v30 = "[SKDaemonManager(DiskNotifications) diskHasMutated:rawIOContent:diskDesc:mediaUUID:]";
           v31 = 2114;
-          v32 = v26;
+          v32 = diskIdentifier;
           v33 = 2114;
           v34 = v28;
           v35 = 2114;
-          v36 = v22;
+          v36 = mediaUUID;
           v37 = 2114;
           v38 = v24;
           _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "%s: UUID of %{public}@ (%{public}@) changed from %{public}@ to %{public}@", &v29, 0x34u);
@@ -3365,10 +3365,10 @@ LABEL_18:
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v4 = [(SKDaemonManager *)self notificationsCache];
-  v5 = [v4 disappearedDisks];
+  notificationsCache = [(SKDaemonManager *)self notificationsCache];
+  disappearedDisks = [notificationsCache disappearedDisks];
 
-  v6 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+  v6 = [disappearedDisks countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3379,7 +3379,7 @@ LABEL_18:
       {
         if (*v27 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(disappearedDisks);
         }
 
         v10 = *(*(&v26 + 1) + 8 * i);
@@ -3387,17 +3387,17 @@ LABEL_18:
         if (objc_opt_isKindOfClass())
         {
           v11 = v10;
-          v12 = [v11 privateCache];
-          v13 = [v12 isLiveFSContainer];
+          privateCache = [v11 privateCache];
+          isLiveFSContainer = [privateCache isLiveFSContainer];
 
-          if (v13)
+          if (isLiveFSContainer)
           {
-            v14 = [v11 container];
-            v15 = v14;
-            if (v14)
+            container = [v11 container];
+            v15 = container;
+            if (container)
             {
-              v16 = [v14 designatedPhysicalStore];
-              if (!v16)
+              designatedPhysicalStore = [container designatedPhysicalStore];
+              if (!designatedPhysicalStore)
               {
                 [v3 addObject:v15];
               }
@@ -3406,7 +3406,7 @@ LABEL_18:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+      v7 = [disappearedDisks countByEnumeratingWithState:&v26 objects:v31 count:16];
     }
 
     while (v7);

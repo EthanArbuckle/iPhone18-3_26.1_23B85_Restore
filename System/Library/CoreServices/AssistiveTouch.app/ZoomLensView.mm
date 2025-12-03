@@ -1,17 +1,17 @@
 @interface ZoomLensView
-- (void)animationDidStart:(id)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (void)animationDidStart:(id)start;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 @end
 
 @implementation ZoomLensView
 
-- (void)animationDidStart:(id)a3
+- (void)animationDidStart:(id)start
 {
-  v6 = self;
+  selfCopy = self;
   v3 = sub_100126AE0();
-  [(ZoomLensView *)v6 bounds];
+  [(ZoomLensView *)selfCopy bounds];
   Width = CGRectGetWidth(v8);
-  [(ZoomLensView *)v6 bounds];
+  [(ZoomLensView *)selfCopy bounds];
   Height = CGRectGetHeight(v9);
   if (Width > Height)
   {
@@ -21,9 +21,9 @@
   [v3 setMarginWidth:Height];
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v5 = self;
+  selfCopy = self;
   v4 = sub_100126AE0();
   [v4 setMarginWidth:0.0];
 }

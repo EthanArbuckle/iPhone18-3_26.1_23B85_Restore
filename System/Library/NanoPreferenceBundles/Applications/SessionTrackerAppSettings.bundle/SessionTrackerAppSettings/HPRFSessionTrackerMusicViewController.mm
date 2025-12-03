@@ -6,10 +6,10 @@
 - (id)bundle;
 - (id)localizedPaneTitle;
 - (id)specifiers;
-- (void)_setWorkoutPlaylistID:(id)a3;
+- (void)_setWorkoutPlaylistID:(id)d;
 - (void)dealloc;
-- (void)getAllPlaylistsWithCompletion:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)getAllPlaylistsWithCompletion:(id)completion;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -18,18 +18,18 @@
 + (BOOL)didSelectWorkoutMusicPlaylist
 {
   v2 = +[NMSMediaPinningManager sharedManager];
-  v3 = [v2 workoutPlaylistID];
-  v4 = v3 != 0;
+  workoutPlaylistID = [v2 workoutPlaylistID];
+  v4 = workoutPlaylistID != 0;
 
   return v4;
 }
 
 + (id)selectedMusicViewString
 {
-  v2 = [a1 didSelectWorkoutMusicPlaylist];
+  didSelectWorkoutMusicPlaylist = [self didSelectWorkoutMusicPlaylist];
   v3 = [NSBundle bundleForClass:objc_opt_class()];
   v4 = v3;
-  if (v2)
+  if (didSelectWorkoutMusicPlaylist)
   {
     v5 = @"MUSIC_ENABLED";
   }
@@ -52,9 +52,9 @@
   if (v2)
   {
     v3 = +[NMSMediaPinningManager sharedManager];
-    v4 = [v3 workoutPlaylistID];
+    workoutPlaylistID = [v3 workoutPlaylistID];
     selectedPlaylistId = v2->_selectedPlaylistId;
-    v2->_selectedPlaylistId = v4;
+    v2->_selectedPlaylistId = workoutPlaylistID;
 
     DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
     CFNotificationCenterAddObserver(DarwinNotifyCenter, v2, sub_33D0, kNLSessionTrackerAppPreferencesChangedNotification, 0, 0);
@@ -117,8 +117,8 @@
     [v8 setName:v10];
 
     [v5 addObject:v8];
-    v11 = [(HPRFSessionTrackerMusicViewController *)self localizedPaneTitle];
-    [(HPRFSessionTrackerMusicViewController *)self setTitle:v11];
+    localizedPaneTitle = [(HPRFSessionTrackerMusicViewController *)self localizedPaneTitle];
+    [(HPRFSessionTrackerMusicViewController *)self setTitle:localizedPaneTitle];
 
     v12 = objc_alloc_init(PSSpecifier);
     [v12 setCellType:0];
@@ -156,9 +156,9 @@
   return v4;
 }
 
-- (void)getAllPlaylistsWithCompletion:(id)a3
+- (void)getAllPlaylistsWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_alloc_init(MPModelLibraryRequest);
   v5 = [MPModelSong kindWithVariants:1];
   v19 = v5;
@@ -183,19 +183,19 @@
   v15[1] = 3221225472;
   v15[2] = sub_3D20;
   v15[3] = &unk_34FB0;
-  v16 = v3;
-  v14 = v3;
+  v16 = completionCopy;
+  v14 = completionCopy;
   [v4 performWithResponseHandler:v15];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HPRFSessionTrackerMusicViewController *)self indexForIndexPath:v6];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [(HPRFSessionTrackerMusicViewController *)self indexForIndexPath:pathCopy];
   v9 = [*&self->BPSNotificationAppController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v8];
-  v10 = [v9 identifier];
-  v11 = [v10 isEqualToString:@"NONE_AUTOSTART_ID"];
+  identifier = [v9 identifier];
+  v11 = [identifier isEqualToString:@"NONE_AUTOSTART_ID"];
 
   if (v11)
   {
@@ -218,25 +218,25 @@
 
   v16.receiver = self;
   v16.super_class = HPRFSessionTrackerMusicViewController;
-  [(HPRFSessionTrackerMusicViewController *)&v16 tableView:v7 didSelectRowAtIndexPath:v6];
+  [(HPRFSessionTrackerMusicViewController *)&v16 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
 }
 
-- (void)_setWorkoutPlaylistID:(id)a3
+- (void)_setWorkoutPlaylistID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[NMSMediaPinningManager sharedManager];
-  [v4 setWorkoutPlaylistID:v3];
+  [v4 setWorkoutPlaylistID:dCopy];
 
   _HKInitializeLogging();
   v5 = HKLogWorkouts;
   if (os_log_type_enabled(HKLogWorkouts, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v3;
+    v7 = dCopy;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "[workoutmusic] Set playlist persistent ID %@ to sync", &v6, 0xCu);
   }
 
-  if (v3)
+  if (dCopy)
   {
     +[HPRFSessionTrackerAppSettingsTipKitHelper sendWorkoutPlaylistSelectedTipEvent];
   }
@@ -251,10 +251,10 @@
 
 - (id)applicationBundleIdentifier
 {
-  v2 = [(HPRFSessionTrackerMusicViewController *)self bundle];
-  v3 = [v2 bundleIdentifier];
+  bundle = [(HPRFSessionTrackerMusicViewController *)self bundle];
+  bundleIdentifier = [bundle bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 @end

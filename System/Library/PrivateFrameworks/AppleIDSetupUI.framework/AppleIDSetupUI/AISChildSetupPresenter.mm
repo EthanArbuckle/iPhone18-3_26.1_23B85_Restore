@@ -1,9 +1,9 @@
 @interface AISChildSetupPresenter
 - (AISChildSetupPresenterDelegate)delegate;
 - (AISChildSetupStoreProtocol)childSetupStore;
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5;
-- (void)setPresentationHandler:(id)a3;
-- (void)startFlowWithViewControllerPresentationHandler:(id)a3;
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated;
+- (void)setPresentationHandler:(id)handler;
+- (void)startFlowWithViewControllerPresentationHandler:(id)handler;
 @end
 
 @implementation AISChildSetupPresenter
@@ -16,11 +16,11 @@
   return Strong;
 }
 
-- (void)setPresentationHandler:(id)a3
+- (void)setPresentationHandler:(id)handler
 {
   v4 = *(self + OBJC_IVAR___AISChildSetupPresenter_presentationHandler);
-  *(self + OBJC_IVAR___AISChildSetupPresenter_presentationHandler) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___AISChildSetupPresenter_presentationHandler) = handler;
+  handlerCopy = handler;
 }
 
 - (AISChildSetupStoreProtocol)childSetupStore
@@ -31,19 +31,19 @@
   return v3;
 }
 
-- (void)startFlowWithViewControllerPresentationHandler:(id)a3
+- (void)startFlowWithViewControllerPresentationHandler:(id)handler
 {
   swift_getObjectType();
-  v5 = a3;
-  v6 = self;
-  sub_2409FC588(v5, v6);
+  handlerCopy = handler;
+  selfCopy = self;
+  sub_2409FC588(handlerCopy, selfCopy);
 }
 
-- (void)navigationController:(id)a3 didShowViewController:(id)a4 animated:(BOOL)a5
+- (void)navigationController:(id)controller didShowViewController:(id)viewController animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = self;
-  sub_2409FB6B8(v6);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_2409FB6B8(controllerCopy);
 }
 
 @end

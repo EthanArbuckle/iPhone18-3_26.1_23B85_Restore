@@ -1,9 +1,9 @@
 @interface CaptureSceneDelegate
 - (UIWindow)window;
-- (void)scene:(id)a3 openURLContexts:(id)a4;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
-- (void)sceneDidDisconnect:(id)a3;
-- (void)setWindow:(id)a3;
+- (void)scene:(id)scene openURLContexts:(id)contexts;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
+- (void)sceneDidDisconnect:(id)disconnect;
+- (void)setWindow:(id)window;
 @end
 
 @implementation CaptureSceneDelegate
@@ -15,34 +15,34 @@
   return *(&self->super.super.isa + v3);
 }
 
-- (void)setWindow:(id)a3
+- (void)setWindow:(id)window
 {
   v5 = OBJC_IVAR____TtC16SecureCaptureKit20CaptureSceneDelegate_window;
   swift_beginAccess();
   v6 = *(&self->super.super.isa + v5);
-  *(&self->super.super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.super.isa + v5) = window;
+  windowCopy = window;
 }
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_264F10FE0(v8, v10);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_264F10FE0(sceneCopy, optionsCopy);
 }
 
-- (void)scene:(id)a3 openURLContexts:(id)a4
+- (void)scene:(id)scene openURLContexts:(id)contexts
 {
   sub_264F10430();
   sub_264F11C68();
   v5 = sub_264F13374();
-  v6 = self;
+  selfCopy = self;
   sub_264F106F8(v5);
 }
 
-- (void)sceneDidDisconnect:(id)a3
+- (void)sceneDidDisconnect:(id)disconnect
 {
   v4 = OBJC_IVAR____TtC16SecureCaptureKit20CaptureSceneDelegate_window;
   swift_beginAccess();

@@ -1,26 +1,26 @@
 @interface AVCaptureDeviceRotationCoordinator
 + (void)initialize;
 - (AVCaptureDeviceRotationCoordinator)initWithDevice:(AVCaptureDevice *)device previewLayer:(CALayer *)previewLayer;
-- (BOOL)_isExternalDeviceType:(id)a3;
-- (double)_systemReferenceAngleForDeviceOrientation:(int64_t)a3;
+- (BOOL)_isExternalDeviceType:(id)type;
+- (double)_systemReferenceAngleForDeviceOrientation:(int64_t)orientation;
 - (id)description;
 - (int64_t)_currentDeviceOrientation;
-- (void)_calculateVideoRotationAngleForHorizonLevelCaptureWithDeviceOrientation:(int64_t)a3;
-- (void)_calculateVideoRotationAngleForHorizonLevelPreviewWithSystemReferenceAngle:(double)a3;
-- (void)_handleActiveInterfaceOrientationUpdate:(id)a3;
-- (void)_handleSystemReferenceAngleDidChangeNotification:(id)a3;
+- (void)_calculateVideoRotationAngleForHorizonLevelCaptureWithDeviceOrientation:(int64_t)orientation;
+- (void)_calculateVideoRotationAngleForHorizonLevelPreviewWithSystemReferenceAngle:(double)angle;
+- (void)_handleActiveInterfaceOrientationUpdate:(id)update;
+- (void)_handleSystemReferenceAngleDidChangeNotification:(id)notification;
 - (void)_updateVideoRotationAngleForHorizonLevelCapture;
 - (void)_updateVideoRotationAngleForHorizonLevelPreview;
 - (void)dealloc;
-- (void)externalDisplayLayerObserver:(id)a3 visibiltyChanged:(BOOL)a4;
-- (void)handleVideoPreviewLayerDidBecomeVisibleNotification:(id)a3;
+- (void)externalDisplayLayerObserver:(id)observer visibiltyChanged:(BOOL)changed;
+- (void)handleVideoPreviewLayerDidBecomeVisibleNotification:(id)notification;
 @end
 
 @implementation AVCaptureDeviceRotationCoordinator
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -199,28 +199,28 @@ void *__66__AVCaptureDeviceRotationCoordinator_initWithDevice_previewLayer___blo
   return [v3 stringWithFormat:@"<%@: %p %@>", NSStringFromClass(v4), self, -[AVCaptureDeviceRotationCoordinator debugDescription](self, "debugDescription")];
 }
 
-- (BOOL)_isExternalDeviceType:(id)a3
+- (BOOL)_isExternalDeviceType:(id)type
 {
-  if ([a3 isEqualToString:@"AVCaptureDeviceTypeExternal"])
+  if ([type isEqualToString:@"AVCaptureDeviceTypeExternal"])
   {
     return 1;
   }
 
-  return [a3 isEqualToString:@"AVCaptureDeviceTypeContinuityCamera"];
+  return [type isEqualToString:@"AVCaptureDeviceTypeContinuityCamera"];
 }
 
-- (void)handleVideoPreviewLayerDidBecomeVisibleNotification:(id)a3
+- (void)handleVideoPreviewLayerDidBecomeVisibleNotification:(id)notification
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
 
   [(AVCaptureDeviceRotationCoordinator *)self _updateVideoRotationAngleForHorizonLevelPreview];
 }
 
-- (void)externalDisplayLayerObserver:(id)a3 visibiltyChanged:(BOOL)a4
+- (void)externalDisplayLayerObserver:(id)observer visibiltyChanged:(BOOL)changed
 {
-  v4 = a4;
+  changedCopy = changed;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (v4)
+  if (changedCopy)
   {
 
     [(AVCaptureDeviceRotationCoordinator *)self _updateVideoRotationAngleForHorizonLevelPreview];
@@ -229,12 +229,12 @@ void *__66__AVCaptureDeviceRotationCoordinator_initWithDevice_previewLayer___blo
 
 - (void)_updateVideoRotationAngleForHorizonLevelPreview
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v0 handleFailureInFunction:objc_msgSend(MEMORY[0x1E696AEC0] file:"stringWithUTF8String:" lineNumber:"UISSystemReferenceAngleMode AVUISSystemReferenceAngleModeForContextID(uint32_t)") description:{@"AVCaptureDeviceRotationCoordinator.m", 49, @"%s", dlerror()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInFunction:objc_msgSend(MEMORY[0x1E696AEC0] file:"stringWithUTF8String:" lineNumber:"UISSystemReferenceAngleMode AVUISSystemReferenceAngleModeForContextID(uint32_t)") description:{@"AVCaptureDeviceRotationCoordinator.m", 49, @"%s", dlerror()}];
   __break(1u);
 }
 
-- (void)_calculateVideoRotationAngleForHorizonLevelPreviewWithSystemReferenceAngle:(double)a3
+- (void)_calculateVideoRotationAngleForHorizonLevelPreviewWithSystemReferenceAngle:(double)angle
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   if (!self->_monitorSystemReferenceAngle)
@@ -243,11 +243,11 @@ void *__66__AVCaptureDeviceRotationCoordinator_initWithDevice_previewLayer___blo
     return;
   }
 
-  v5 = [(AVWeakReference *)self->_previewLayerWeakReference referencedObject];
+  referencedObject = [(AVWeakReference *)self->_previewLayerWeakReference referencedObject];
   v6 = FigCaptureCameraRequires180DegreesRotation();
-  if (v5)
+  if (referencedObject)
   {
-    if (a3 == 0.0)
+    if (angle == 0.0)
     {
       v7 = ((self->_devicePosition != 2) | v6 & 1) == 0;
       v8 = 270.0;
@@ -257,7 +257,7 @@ void *__66__AVCaptureDeviceRotationCoordinator_initWithDevice_previewLayer___blo
     else
     {
       v8 = 90.0;
-      if (a3 == 90.0)
+      if (angle == 90.0)
       {
         if (v6)
         {
@@ -272,7 +272,7 @@ void *__66__AVCaptureDeviceRotationCoordinator_initWithDevice_previewLayer___blo
         goto LABEL_12;
       }
 
-      if (a3 == -90.0)
+      if (angle == -90.0)
       {
         v7 = v6 == 0;
         v8 = 180.0;
@@ -281,7 +281,7 @@ void *__66__AVCaptureDeviceRotationCoordinator_initWithDevice_previewLayer___blo
 
       else
       {
-        if (a3 != 180.0)
+        if (angle != 180.0)
         {
           v10 = 0.0;
 LABEL_12:
@@ -332,14 +332,14 @@ LABEL_12:
   }
 }
 
-- (void)_handleSystemReferenceAngleDidChangeNotification:(id)a3
+- (void)_handleSystemReferenceAngleDidChangeNotification:(id)notification
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  v5 = [(AVWeakReference *)self->_previewLayerWeakReference referencedObject];
-  if (v5)
+  referencedObject = [(AVWeakReference *)self->_previewLayerWeakReference referencedObject];
+  if (referencedObject)
   {
-    v6 = [objc_msgSend(v5 "context")];
-    v7 = [a3 userInfo];
+    v6 = [objc_msgSend(referencedObject "context")];
+    userInfo = [notification userInfo];
     v11 = 0;
     v12 = &v11;
     v13 = 0x2020000000;
@@ -359,7 +359,7 @@ LABEL_12:
       [AVCaptureDeviceRotationCoordinator _handleSystemReferenceAngleDidChangeNotification:];
     }
 
-    v10 = [v7 objectForKeyedSubscript:*v8];
+    v10 = [userInfo objectForKeyedSubscript:*v8];
     if ([v10 containsObject:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v6)}])
     {
       [(AVCaptureDeviceRotationCoordinator *)self _updateVideoRotationAngleForHorizonLevelPreview];
@@ -367,19 +367,19 @@ LABEL_12:
   }
 }
 
-- (void)_handleActiveInterfaceOrientationUpdate:(id)a3
+- (void)_handleActiveInterfaceOrientationUpdate:(id)update
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
 
   [(AVCaptureDeviceRotationCoordinator *)self _updateVideoRotationAngleForHorizonLevelPreview];
 }
 
-- (double)_systemReferenceAngleForDeviceOrientation:(int64_t)a3
+- (double)_systemReferenceAngleForDeviceOrientation:(int64_t)orientation
 {
   result = 0.0;
-  if ((a3 - 2) <= 2)
+  if ((orientation - 2) <= 2)
   {
-    return dbl_1A92AB148[a3 - 2];
+    return dbl_1A92AB148[orientation - 2];
   }
 
   return result;
@@ -387,12 +387,12 @@ LABEL_12:
 
 - (void)_updateVideoRotationAngleForHorizonLevelCapture
 {
-  v3 = [(AVCaptureDeviceRotationCoordinator *)self _currentDeviceOrientation];
+  _currentDeviceOrientation = [(AVCaptureDeviceRotationCoordinator *)self _currentDeviceOrientation];
 
-  [(AVCaptureDeviceRotationCoordinator *)self _calculateVideoRotationAngleForHorizonLevelCaptureWithDeviceOrientation:v3];
+  [(AVCaptureDeviceRotationCoordinator *)self _calculateVideoRotationAngleForHorizonLevelCaptureWithDeviceOrientation:_currentDeviceOrientation];
 }
 
-- (void)_calculateVideoRotationAngleForHorizonLevelCaptureWithDeviceOrientation:(int64_t)a3
+- (void)_calculateVideoRotationAngleForHorizonLevelCaptureWithDeviceOrientation:(int64_t)orientation
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   if (!self->_monitorDeviceOrientation)
@@ -402,10 +402,10 @@ LABEL_12:
   }
 
   v5 = FigCaptureCameraRequires180DegreesRotation();
-  if (!self->_isInitialVideoRotationAngleForHorizonLevelCaptureSet && (a3 - 5) <= 1 && !self->_previewLayerWeakReference)
+  if (!self->_isInitialVideoRotationAngleForHorizonLevelCaptureSet && (orientation - 5) <= 1 && !self->_previewLayerWeakReference)
   {
     v6 = objc_alloc_init(getFBSOrientationObserverClass());
-    a3 = [v6 activeInterfaceOrientation];
+    orientation = [v6 activeInterfaceOrientation];
     if (dword_1EB3859B8)
     {
       v29 = 0;
@@ -418,11 +418,11 @@ LABEL_12:
     [v6 invalidate];
   }
 
-  if (a3 <= 2)
+  if (orientation <= 2)
   {
-    if (a3 != 1)
+    if (orientation != 1)
     {
-      if (a3 == 2)
+      if (orientation == 2)
       {
         v8 = ((self->_devicePosition != 2) | v5 & 1) == 0;
         v9 = 90.0;
@@ -462,9 +462,9 @@ LABEL_15:
           v22 = 136315650;
           v23 = "[AVCaptureDeviceRotationCoordinator _calculateVideoRotationAngleForHorizonLevelCaptureWithDeviceOrientation:]";
           v24 = 2114;
-          v25 = self;
+          selfCopy2 = self;
           v26 = 1024;
-          LODWORD(v27) = a3;
+          LODWORD(v27) = orientation;
           _os_log_send_and_compose_impl();
         }
 
@@ -492,9 +492,9 @@ LABEL_18:
     goto LABEL_24;
   }
 
-  if (a3 != 3)
+  if (orientation != 3)
   {
-    if (a3 != 4)
+    if (orientation != 4)
     {
       goto LABEL_15;
     }
@@ -547,7 +547,7 @@ LABEL_28:
         v22 = 136315650;
         v23 = "[AVCaptureDeviceRotationCoordinator _calculateVideoRotationAngleForHorizonLevelCaptureWithDeviceOrientation:]";
         v24 = 2114;
-        v25 = self;
+        selfCopy2 = self;
         v26 = 2048;
         v27 = videoRotationAngleForHorizonLevelCapture;
         _os_log_send_and_compose_impl();

@@ -1,24 +1,24 @@
 @interface SKUISubmitFieldSettingDescriptionView
-+ (BOOL)prefetchResourcesForSettingDescription:(id)a3 reason:(int64_t)a4 context:(id)a5;
-+ (CGSize)preferredSizeForSettingDescription:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingDescription:(id)a4 context:(id)a5;
-+ (void)requestLayoutForSettingDescription:(id)a3 width:(double)a4 context:(id)a5;
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5;
++ (BOOL)prefetchResourcesForSettingDescription:(id)description reason:(int64_t)reason context:(id)context;
++ (CGSize)preferredSizeForSettingDescription:(id)description context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width settingDescription:(id)description context:(id)context;
++ (void)requestLayoutForSettingDescription:(id)description width:(double)width context:(id)context;
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context;
 - (id)_currentControllerValue;
-- (void)_addInputWithElement:(id)a3;
-- (void)_addSubmitInputWithElement:(id)a3;
+- (void)_addInputWithElement:(id)element;
+- (void)_addSubmitInputWithElement:(id)element;
 - (void)layoutSubviews;
-- (void)reloadWithSettingDescription:(id)a3 width:(double)a4 context:(id)a5;
-- (void)setContentInset:(UIEdgeInsets)a3;
-- (void)setEnabled:(BOOL)a3;
+- (void)reloadWithSettingDescription:(id)description width:(double)width context:(id)context;
+- (void)setContentInset:(UIEdgeInsets)inset;
+- (void)setEnabled:(BOOL)enabled;
 - (void)tintColorDidChange;
 @end
 
 @implementation SKUISubmitFieldSettingDescriptionView
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -33,11 +33,11 @@
 
   v15.receiver = self;
   v15.super_class = SKUISubmitFieldSettingDescriptionView;
-  [(SKUIFieldSettingDescriptionView *)&v15 setEnabled:v3];
+  [(SKUIFieldSettingDescriptionView *)&v15 setEnabled:enabledCopy];
   label = self->_label;
   if (label)
   {
-    if (v3)
+    if (enabledCopy)
     {
       [(SKUISubmitFieldSettingDescriptionView *)self tintColor];
     }
@@ -51,7 +51,7 @@
   }
 }
 
-+ (BOOL)prefetchResourcesForSettingDescription:(id)a3 reason:(int64_t)a4 context:(id)a5
++ (BOOL)prefetchResourcesForSettingDescription:(id)description reason:(int64_t)reason context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -68,7 +68,7 @@
   return 0;
 }
 
-+ (CGSize)preferredSizeForSettingDescription:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForSettingDescription:(id)description context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -89,10 +89,10 @@
   return result;
 }
 
-+ (void)requestLayoutForSettingDescription:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForSettingDescription:(id)description width:(double)width context:(id)context
 {
-  v6 = a3;
-  v7 = a5;
+  descriptionCopy = description;
+  contextCopy = context;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -105,7 +105,7 @@
     }
   }
 
-  v16 = [v6 viewElement];
+  viewElement = [descriptionCopy viewElement];
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x3032000000;
@@ -117,7 +117,7 @@
   v17[2] = __90__SKUISubmitFieldSettingDescriptionView_requestLayoutForSettingDescription_width_context___block_invoke;
   v17[3] = &unk_2781F8568;
   v17[4] = v18;
-  [v16 enumerateChildrenUsingBlock:v17];
+  [viewElement enumerateChildrenUsingBlock:v17];
   _Block_object_dispose(v18, 8);
 }
 
@@ -131,7 +131,7 @@ void __90__SKUISubmitFieldSettingDescriptionView_requestLayoutForSettingDescript
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 settingDescription:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width settingDescription:(id)description context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -152,9 +152,9 @@ void __90__SKUISubmitFieldSettingDescriptionView_requestLayoutForSettingDescript
   return result;
 }
 
-- (void)reloadWithSettingDescription:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithSettingDescription:(id)description width:(double)width context:(id)context
 {
-  v6 = a3;
+  descriptionCopy = description;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -168,16 +168,16 @@ void __90__SKUISubmitFieldSettingDescriptionView_requestLayoutForSettingDescript
   }
 
   settingDescription = self->_settingDescription;
-  self->_settingDescription = v6;
-  v16 = v6;
+  self->_settingDescription = descriptionCopy;
+  v16 = descriptionCopy;
 
-  v17 = [(SKUISettingDescription *)v16 viewElement];
+  viewElement = [(SKUISettingDescription *)v16 viewElement];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __84__SKUISubmitFieldSettingDescriptionView_reloadWithSettingDescription_width_context___block_invoke;
   v18[3] = &unk_2781F9640;
   v18[4] = self;
-  [v17 enumerateChildrenUsingBlock:v18];
+  [viewElement enumerateChildrenUsingBlock:v18];
   [(SKUISubmitFieldSettingDescriptionView *)self setNeedsLayout];
 }
 
@@ -191,7 +191,7 @@ void __84__SKUISubmitFieldSettingDescriptionView_reloadWithSettingDescription_wi
   }
 }
 
-- (void)setContentInset:(UIEdgeInsets)a3
+- (void)setContentInset:(UIEdgeInsets)inset
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {
@@ -203,7 +203,7 @@ void __84__SKUISubmitFieldSettingDescriptionView_reloadWithSettingDescription_wi
   }
 }
 
-- (BOOL)setImage:(id)a3 forArtworkRequest:(id)a4 context:(id)a5
+- (BOOL)setImage:(id)image forArtworkRequest:(id)request context:(id)context
 {
   if (os_variant_has_internal_content())
   {
@@ -270,13 +270,13 @@ void __84__SKUISubmitFieldSettingDescriptionView_reloadWithSettingDescription_wi
   v20 = v18 - v19;
   [(UILabel *)self->_label sizeThatFits:v15, 1.0];
   [(UILabel *)self->_label setFrame:v12, v20, v15, v21];
-  v22 = [(SKUISubmitFieldSettingDescriptionView *)self _currentControllerValue];
+  _currentControllerValue = [(SKUISubmitFieldSettingDescriptionView *)self _currentControllerValue];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v23 = [v22 BOOLValue];
+    bOOLValue = [_currentControllerValue BOOLValue];
     label = self->_label;
-    if (v23)
+    if (bOOLValue)
     {
       [(SKUISubmitFieldSettingDescriptionView *)self tintColor];
     }
@@ -290,31 +290,31 @@ void __84__SKUISubmitFieldSettingDescriptionView_reloadWithSettingDescription_wi
   }
 }
 
-- (void)_addInputWithElement:(id)a3
+- (void)_addInputWithElement:(id)element
 {
-  v5 = a3;
-  objc_storeStrong(&self->_inputViewElement, a3);
-  if ([v5 isMemberOfClass:objc_opt_class()])
+  elementCopy = element;
+  objc_storeStrong(&self->_inputViewElement, element);
+  if ([elementCopy isMemberOfClass:objc_opt_class()])
   {
-    [(SKUISubmitFieldSettingDescriptionView *)self _addSubmitInputWithElement:v5];
+    [(SKUISubmitFieldSettingDescriptionView *)self _addSubmitInputWithElement:elementCopy];
   }
 }
 
-- (void)_addSubmitInputWithElement:(id)a3
+- (void)_addSubmitInputWithElement:(id)element
 {
   v4 = MEMORY[0x277D756B8];
-  v5 = a3;
+  elementCopy = element;
   v6 = objc_alloc_init(v4);
   label = self->_label;
   self->_label = v6;
 
   v8 = self->_label;
-  v9 = [v5 label];
+  label = [elementCopy label];
 
-  [(UILabel *)v8 setText:v9];
+  [(UILabel *)v8 setText:label];
   v10 = self->_label;
-  v11 = [MEMORY[0x277D75348] grayColor];
-  [(UILabel *)v10 setTextColor:v11];
+  grayColor = [MEMORY[0x277D75348] grayColor];
+  [(UILabel *)v10 setTextColor:grayColor];
 
   v12 = self->_label;
 
@@ -323,10 +323,10 @@ void __84__SKUISubmitFieldSettingDescriptionView_reloadWithSettingDescription_wi
 
 - (id)_currentControllerValue
 {
-  v3 = [(SKUIFieldSettingDescription *)self->_settingDescription controller];
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  controller = [(SKUIFieldSettingDescription *)self->_settingDescription controller];
+  if ([controller isMemberOfClass:objc_opt_class()])
   {
-    v4 = [v3 valueForSettingDescription:self->_settingDescription];
+    v4 = [controller valueForSettingDescription:self->_settingDescription];
   }
 
   else

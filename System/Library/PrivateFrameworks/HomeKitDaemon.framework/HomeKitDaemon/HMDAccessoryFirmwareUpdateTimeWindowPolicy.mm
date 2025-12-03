@@ -1,53 +1,53 @@
 @interface HMDAccessoryFirmwareUpdateTimeWindowPolicy
 + (id)logCategory;
 - (BOOL)evaluate;
-- (BOOL)isEqual:(id)a3;
-- (HMDAccessoryFirmwareUpdateTimeWindowPolicy)initWithAccessory:(id)a3 timeWindow:(id)a4 workQueue:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (HMDAccessoryFirmwareUpdateTimeWindowPolicy)initWithAccessory:(id)accessory timeWindow:(id)window workQueue:(id)queue;
 - (unint64_t)hash;
-- (void)_startReevaluateTimer:(id)a3;
+- (void)_startReevaluateTimer:(id)timer;
 - (void)_stopReevaluateTimer;
 - (void)configure;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDAccessoryFirmwareUpdateTimeWindowPolicy
 
 - (void)_stopReevaluateTimer
 {
-  v3 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self reevaluateTimer];
-  [v3 cancel];
+  reevaluateTimer = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self reevaluateTimer];
+  [reevaluateTimer cancel];
 
   [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self setReevaluateTimer:0];
 }
 
-- (void)_startReevaluateTimer:(id)a3
+- (void)_startReevaluateTimer:(id)timer
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [v4 date];
-  [v5 timeIntervalSinceDate:v6];
+  timerCopy = timer;
+  date = [v4 date];
+  [timerCopy timeIntervalSinceDate:date];
   v8 = v7;
 
   v9 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:1 options:v8];
   [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self setReevaluateTimer:v9];
 
-  v10 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self reevaluateTimer];
-  [v10 setDelegate:self];
+  reevaluateTimer = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self reevaluateTimer];
+  [reevaluateTimer setDelegate:self];
 
-  v11 = [(HMDAccessoryFirmwareUpdatePolicy *)self workQueue];
-  v12 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self reevaluateTimer];
-  [v12 setDelegateQueue:v11];
+  workQueue = [(HMDAccessoryFirmwareUpdatePolicy *)self workQueue];
+  reevaluateTimer2 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self reevaluateTimer];
+  [reevaluateTimer2 setDelegateQueue:workQueue];
 
-  v13 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self reevaluateTimer];
-  [v13 resume];
+  reevaluateTimer3 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self reevaluateTimer];
+  [reevaluateTimer3 resume];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self reevaluateTimer];
+  fireCopy = fire;
+  reevaluateTimer = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self reevaluateTimer];
 
-  if (v5 == v4)
+  if (reevaluateTimer == fireCopy)
   {
 
     [(HMDAccessoryFirmwareUpdatePolicy *)self evaluateAndNotify];
@@ -57,46 +57,46 @@
 - (BOOL)evaluate
 {
   v65 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEA80] currentCalendar];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [v3 components:252 fromDate:v4];
+  currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = [currentCalendar components:252 fromDate:date];
 
-  v6 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self updateTimeWindow];
-  v7 = [v6 startTimeComponents];
-  [v5 setHour:{objc_msgSend(v7, "hour")}];
+  updateTimeWindow = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self updateTimeWindow];
+  startTimeComponents = [updateTimeWindow startTimeComponents];
+  [v5 setHour:{objc_msgSend(startTimeComponents, "hour")}];
 
-  v8 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self updateTimeWindow];
-  v9 = [v8 startTimeComponents];
-  [v5 setMinute:{objc_msgSend(v9, "minute")}];
+  updateTimeWindow2 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self updateTimeWindow];
+  startTimeComponents2 = [updateTimeWindow2 startTimeComponents];
+  [v5 setMinute:{objc_msgSend(startTimeComponents2, "minute")}];
 
-  v10 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self updateTimeWindow];
-  v11 = [v10 startTimeComponents];
-  [v5 setSecond:{objc_msgSend(v11, "second")}];
+  updateTimeWindow3 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self updateTimeWindow];
+  startTimeComponents3 = [updateTimeWindow3 startTimeComponents];
+  [v5 setSecond:{objc_msgSend(startTimeComponents3, "second")}];
 
-  v12 = [v3 dateFromComponents:v5];
-  v13 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self updateTimeWindow];
-  v14 = [v13 endTimeComponents];
-  [v5 setHour:{objc_msgSend(v14, "hour")}];
+  v12 = [currentCalendar dateFromComponents:v5];
+  updateTimeWindow4 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self updateTimeWindow];
+  endTimeComponents = [updateTimeWindow4 endTimeComponents];
+  [v5 setHour:{objc_msgSend(endTimeComponents, "hour")}];
 
-  v15 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self updateTimeWindow];
-  v16 = [v15 endTimeComponents];
-  [v5 setMinute:{objc_msgSend(v16, "minute")}];
+  updateTimeWindow5 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self updateTimeWindow];
+  endTimeComponents2 = [updateTimeWindow5 endTimeComponents];
+  [v5 setMinute:{objc_msgSend(endTimeComponents2, "minute")}];
 
-  v17 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self updateTimeWindow];
-  v18 = [v17 endTimeComponents];
-  [v5 setSecond:{objc_msgSend(v18, "second")}];
+  updateTimeWindow6 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self updateTimeWindow];
+  endTimeComponents3 = [updateTimeWindow6 endTimeComponents];
+  [v5 setSecond:{objc_msgSend(endTimeComponents3, "second")}];
 
-  v19 = [v3 dateFromComponents:v5];
+  v19 = [currentCalendar dateFromComponents:v5];
   if ([v12 compare:v19] == 1)
   {
     v20 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-    v21 = [MEMORY[0x277CBEAA8] date];
-    v22 = [v21 compare:v19];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    v22 = [date2 compare:v19];
 
     if (v22 == 1)
     {
       [v20 setDay:1];
-      v23 = [v3 dateByAddingComponents:v20 toDate:v19 options:0];
+      v23 = [currentCalendar dateByAddingComponents:v20 toDate:v19 options:0];
       v24 = v19;
       v19 = v23;
     }
@@ -104,7 +104,7 @@
     else
     {
       [v20 setDay:-1];
-      v25 = [v3 dateByAddingComponents:v20 toDate:v12 options:0];
+      v25 = [currentCalendar dateByAddingComponents:v20 toDate:v12 options:0];
       v24 = v12;
       v12 = v25;
     }
@@ -114,7 +114,7 @@
   if (!v12 || !v19)
   {
     v38 = objc_autoreleasePoolPush();
-    v39 = self;
+    selfCopy = self;
     v40 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
     {
@@ -125,30 +125,30 @@
     }
 
     objc_autoreleasePoolPop(v38);
-    v26 = objc_alloc_init(MEMORY[0x277CBEAB8]);
-    [v26 setHour:12];
-    v42 = [MEMORY[0x277CBEAA8] date];
-    v43 = [v3 dateByAddingComponents:v26 toDate:v42 options:0];
+    date4 = objc_alloc_init(MEMORY[0x277CBEAB8]);
+    [date4 setHour:12];
+    date3 = [MEMORY[0x277CBEAA8] date];
+    v43 = [currentCalendar dateByAddingComponents:date4 toDate:date3 options:0];
 
-    [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)v39 _startReevaluateTimer:v43];
+    [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)selfCopy _startReevaluateTimer:v43];
     goto LABEL_15;
   }
 
   v56 = v12;
-  v26 = [MEMORY[0x277CBEAA8] date];
+  date4 = [MEMORY[0x277CBEAA8] date];
   v27 = objc_autoreleasePoolPush();
-  v28 = self;
+  selfCopy2 = self;
   v29 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
   {
     v51 = HMFGetLogIdentifier();
-    v53 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)v28 dateFormatter];
-    v30 = [v53 stringFromDate:v26];
-    [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)v28 dateFormatter];
-    v52 = v55 = v3;
+    dateFormatter = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)selfCopy2 dateFormatter];
+    v30 = [dateFormatter stringFromDate:date4];
+    [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)selfCopy2 dateFormatter];
+    v52 = v55 = currentCalendar;
     v31 = [v52 stringFromDate:v56];
-    v32 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)v28 dateFormatter];
-    [v32 stringFromDate:v19];
+    dateFormatter2 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)selfCopy2 dateFormatter];
+    [dateFormatter2 stringFromDate:v19];
     v33 = v54 = v27;
     *buf = 138544130;
     v58 = v51;
@@ -161,38 +161,38 @@
     v64 = v33;
     _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_INFO, "%{public}@Evaluate now=%@ in interval=[%@, %@]", buf, 0x2Au);
 
-    v3 = v55;
+    currentCalendar = v55;
     v27 = v54;
   }
 
   objc_autoreleasePoolPop(v27);
-  if ([v26 compare:v19] == 1)
+  if ([date4 compare:v19] == 1)
   {
     v35 = objc_alloc_init(MEMORY[0x277CBEAB8]);
     [v35 setDay:1];
-    v36 = [v3 dateByAddingComponents:v35 toDate:v56 options:0];
+    v36 = [currentCalendar dateByAddingComponents:v35 toDate:v56 options:0];
 
-    [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)v28 _startReevaluateTimer:v36];
+    [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)selfCopy2 _startReevaluateTimer:v36];
     v37 = 0;
     v12 = v36;
     goto LABEL_18;
   }
 
   v12 = v56;
-  if ([v26 compare:v56] == -1)
+  if ([date4 compare:v56] == -1)
   {
-    [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)v28 _startReevaluateTimer:v56];
+    [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)selfCopy2 _startReevaluateTimer:v56];
 LABEL_15:
     v37 = 0;
     goto LABEL_18;
   }
 
-  [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)v28 _startReevaluateTimer:v19];
+  [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)selfCopy2 _startReevaluateTimer:v19];
   v37 = 1;
 LABEL_18:
 
   v44 = objc_autoreleasePoolPush();
-  v45 = self;
+  selfCopy3 = self;
   v46 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
   {
@@ -212,21 +212,21 @@ LABEL_18:
 
 - (void)configure
 {
-  v3 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self evaluate];
+  evaluate = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self evaluate];
 
-  [(HMDAccessoryFirmwareUpdatePolicy *)self setStatus:v3];
+  [(HMDAccessoryFirmwareUpdatePolicy *)self setStatus:evaluate];
 }
 
-- (HMDAccessoryFirmwareUpdateTimeWindowPolicy)initWithAccessory:(id)a3 timeWindow:(id)a4 workQueue:(id)a5
+- (HMDAccessoryFirmwareUpdateTimeWindowPolicy)initWithAccessory:(id)accessory timeWindow:(id)window workQueue:(id)queue
 {
-  v9 = a4;
+  windowCopy = window;
   v15.receiver = self;
   v15.super_class = HMDAccessoryFirmwareUpdateTimeWindowPolicy;
-  v10 = [(HMDAccessoryFirmwareUpdatePolicy *)&v15 initWithAccessory:a3 workQueue:a5];
+  v10 = [(HMDAccessoryFirmwareUpdatePolicy *)&v15 initWithAccessory:accessory workQueue:queue];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_updateTimeWindow, a4);
+    objc_storeStrong(&v10->_updateTimeWindow, window);
     v12 = objc_alloc_init(MEMORY[0x277CCA968]);
     dateFormatter = v11->_dateFormatter;
     v11->_dateFormatter = v12;
@@ -237,10 +237,10 @@ LABEL_18:
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v16 = 1;
   }
@@ -250,7 +250,7 @@ LABEL_18:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -261,28 +261,28 @@ LABEL_18:
     v6 = v5;
     if (v6)
     {
-      v7 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self updateTimeWindow];
-      v8 = [v7 startTimeComponents];
-      v9 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)v6 updateTimeWindow];
-      v10 = [v9 startTimeComponents];
-      if ([v8 isEqual:v10])
+      updateTimeWindow = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self updateTimeWindow];
+      startTimeComponents = [updateTimeWindow startTimeComponents];
+      updateTimeWindow2 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)v6 updateTimeWindow];
+      startTimeComponents2 = [updateTimeWindow2 startTimeComponents];
+      if ([startTimeComponents isEqual:startTimeComponents2])
       {
-        v11 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self updateTimeWindow];
-        v12 = [v11 endTimeComponents];
-        v22 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)v6 updateTimeWindow];
-        v13 = [v22 endTimeComponents];
-        if ([v12 isEqual:v13])
+        updateTimeWindow3 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self updateTimeWindow];
+        endTimeComponents = [updateTimeWindow3 endTimeComponents];
+        updateTimeWindow4 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)v6 updateTimeWindow];
+        endTimeComponents2 = [updateTimeWindow4 endTimeComponents];
+        if ([endTimeComponents isEqual:endTimeComponents2])
         {
-          v19 = [(HMDAccessoryFirmwareUpdatePolicy *)self accessory];
-          v18 = [v19 uuid];
+          accessory = [(HMDAccessoryFirmwareUpdatePolicy *)self accessory];
+          uuid = [accessory uuid];
           [(HMDAccessoryFirmwareUpdatePolicy *)v6 accessory];
-          v14 = v21 = v11;
+          v14 = v21 = updateTimeWindow3;
           [v14 uuid];
-          v15 = v20 = v12;
-          v16 = [v18 isEqual:v15];
+          v15 = v20 = endTimeComponents;
+          v16 = [uuid isEqual:v15];
 
-          v12 = v20;
-          v11 = v21;
+          endTimeComponents = v20;
+          updateTimeWindow3 = v21;
         }
 
         else
@@ -308,13 +308,13 @@ LABEL_18:
 
 - (unint64_t)hash
 {
-  v3 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self updateTimeWindow];
-  v4 = [v3 startTimeComponents];
-  v5 = [v4 hash];
+  updateTimeWindow = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self updateTimeWindow];
+  startTimeComponents = [updateTimeWindow startTimeComponents];
+  v5 = [startTimeComponents hash];
 
-  v6 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self updateTimeWindow];
-  v7 = [v6 endTimeComponents];
-  v8 = [v7 hash];
+  updateTimeWindow2 = [(HMDAccessoryFirmwareUpdateTimeWindowPolicy *)self updateTimeWindow];
+  endTimeComponents = [updateTimeWindow2 endTimeComponents];
+  v8 = [endTimeComponents hash];
 
   return v8 ^ v5;
 }

@@ -2,21 +2,21 @@
 - ($DE2CA4548F4C2DB4D89410195F9427A4)getMeasurementInfo;
 - ($DE2CA4548F4C2DB4D89410195F9427A4)measurementInfoDefault;
 - (BOOL)_allocBuffers;
-- (BOOL)_connectToAccessoryManager:(int)a3;
+- (BOOL)_connectToAccessoryManager:(int)manager;
 - (BOOL)_createSleepWakeNotifier;
-- (BOOL)_readCalibrationParameters:(id)a3;
-- (BOOL)_writeCalResults:(id)a3;
-- (BOOL)setLiquidDetected:(BOOL)a3;
-- (BOOL)setMitigations:(BOOL)a3;
+- (BOOL)_readCalibrationParameters:(id)parameters;
+- (BOOL)_writeCalResults:(id)results;
+- (BOOL)setLiquidDetected:(BOOL)detected;
+- (BOOL)setMitigations:(BOOL)mitigations;
 - (BOOL)supportsSelfTest;
-- (id)_buildMeasurementOutputString:(id *)a3;
-- (id)_buildVerboseMeasurementOutputString:(id *)a3;
-- (id)_getHalogenMeasurementTypeString:(int)a3;
-- (id)_getLDCMPinString:(int)a3;
-- (id)getHalogenResultString:(int)a3;
+- (id)_buildMeasurementOutputString:(id *)string;
+- (id)_buildVerboseMeasurementOutputString:(id *)string;
+- (id)_getHalogenMeasurementTypeString:(int)string;
+- (id)_getLDCMPinString:(int)string;
+- (id)getHalogenResultString:(int)string;
 - (id)getVerboseMeasurementOutputString;
-- (int)recordCallBackFunc:(unsigned int *)a3 AudioTimeStamp:(const AudioTimeStamp *)a4 busNum:(unsigned int)a5 numFrames:(unsigned int)a6 AudioBufferList:(AudioBufferList *)a7;
-- (int)saveAsWav:(id)a3;
+- (int)recordCallBackFunc:(unsigned int *)func AudioTimeStamp:(const AudioTimeStamp *)stamp busNum:(unsigned int)num numFrames:(unsigned int)frames AudioBufferList:(AudioBufferList *)list;
+- (int)saveAsWav:(id)wav;
 - (uint64_t)supportsSelfTest;
 - (void)_allocBuffers;
 - (void)_createSleepWakeNotifier;
@@ -25,11 +25,11 @@
 - (void)_freeBuffers;
 - (void)_generateSineWave;
 - (void)_resetCalcValues;
-- (void)_runHPMTool:(BOOL)a3;
-- (void)_storeMeasurementData:(int)a3 measurementType:(int)a4 measurementInfo:(id *)a5 halogenResult:(int)a6;
+- (void)_runHPMTool:(BOOL)tool;
+- (void)_storeMeasurementData:(int)data measurementType:(int)type measurementInfo:(id *)info halogenResult:(int)result;
 - (void)dealloc;
-- (void)setMeasurementInfoDefault:(id *)a3;
-- (void)setWetTooLong:(BOOL)a3;
+- (void)setMeasurementInfoDefault:(id *)default;
+- (void)setWetTooLong:(BOOL)long;
 @end
 
 @implementation HalogenTypeC
@@ -107,10 +107,10 @@
     dispatch_release([(HalogenTypeC *)self systemPowerQueue]);
   }
 
-  v3 = [(HalogenTypeC *)self powerStateCond];
+  powerStateCond = [(HalogenTypeC *)self powerStateCond];
 }
 
-- (BOOL)_connectToAccessoryManager:(int)a3
+- (BOOL)_connectToAccessoryManager:(int)manager
 {
   ServiceWithSupportedFeature = IOAccessoryManagerGetServiceWithSupportedFeature();
   self->_service = ServiceWithSupportedFeature;
@@ -220,10 +220,10 @@
     goto LABEL_7;
   }
 
-  v6 = [(HalogenTypeC *)v3 == 0 supportsSelfTest];
+  supportsSelfTest = [(HalogenTypeC *)v3 == 0 supportsSelfTest];
   v4 = 0;
   result = 0;
-  if ((v6 & 1) == 0)
+  if ((supportsSelfTest & 1) == 0)
   {
 LABEL_7:
 
@@ -235,18 +235,18 @@ LABEL_7:
 
 - (void)_generateSineWave
 {
-  v3 = [(NSMutableData *)self->_pcmOutputData bytes];
+  bytes = [(NSMutableData *)self->_pcmOutputData bytes];
   if (self->_nTotalSamples >= 1)
   {
-    v4 = v3;
+    v4 = bytes;
     v5 = 0;
     v6 = self->_signalFreq * 6.28318531 / self->_sampleRate;
     v7 = (self->_initalPhaseInDegrees / 360.0 + self->_initalPhaseInDegrees / 360.0) * 3.14159265;
     do
     {
       v8 = sin(v7);
-      v9 = [(HalogenTypeC *)self maxOutputAmplitude];
-      v10 = -([(HalogenTypeC *)self signalOffset]- v8 * v9);
+      maxOutputAmplitude = [(HalogenTypeC *)self maxOutputAmplitude];
+      v10 = -([(HalogenTypeC *)self signalOffset]- v8 * maxOutputAmplitude);
       *(v4 + 4 * v5) = v10;
       v7 = v7 + v6;
       ++v5;
@@ -256,17 +256,17 @@ LABEL_7:
   }
 }
 
-- (void)_runHPMTool:(BOOL)a3
+- (void)_runHPMTool:(BOOL)tool
 {
-  v3 = a3;
+  toolCopy = tool;
   v11[2] = *MEMORY[0x277D85DE8];
   [objc_msgSend(MEMORY[0x277CCAC38] "processInfo")];
-  v4 = [MEMORY[0x277CCAC10] pipe];
-  v5 = [v4 fileHandleForReading];
+  pipe = [MEMORY[0x277CCAC10] pipe];
+  fileHandleForReading = [pipe fileHandleForReading];
   v6 = objc_alloc_init(MEMORY[0x277CCACB0]);
   [v6 setLaunchPath:@"/usr/local/bin/hpmtool"];
   v7 = @"--data=0x110B0402";
-  if (v3)
+  if (toolCopy)
   {
     v7 = @"--data=0x110B0400";
   }
@@ -274,22 +274,22 @@ LABEL_7:
   v11[0] = @"--command=DVEn";
   v11[1] = v7;
   [v6 setArguments:{objc_msgSend(MEMORY[0x277CBEA60], "arrayWithObjects:count:", v11, 2)}];
-  [v6 setStandardOutput:v4];
+  [v6 setStandardOutput:pipe];
   [v6 launch];
-  v8 = [v5 readDataToEndOfFile];
-  [v5 closeFile];
-  v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v8 encoding:4];
+  readDataToEndOfFile = [fileHandleForReading readDataToEndOfFile];
+  [fileHandleForReading closeFile];
+  v9 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:readDataToEndOfFile encoding:4];
   NSLog(&cfstr_HpmtoolReturne.isa, v9);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (int)recordCallBackFunc:(unsigned int *)a3 AudioTimeStamp:(const AudioTimeStamp *)a4 busNum:(unsigned int)a5 numFrames:(unsigned int)a6 AudioBufferList:(AudioBufferList *)a7
+- (int)recordCallBackFunc:(unsigned int *)func AudioTimeStamp:(const AudioTimeStamp *)stamp busNum:(unsigned int)num numFrames:(unsigned int)frames AudioBufferList:(AudioBufferList *)list
 {
   v28 = *MEMORY[0x277D85DE8];
   *&ioData.mNumberBuffers = 0xAAAAAAAAAAAAAAAALL;
   *&ioData.mBuffers[0].mNumberChannels = 0xAAAAAAAAAAAAAAAALL;
-  v9 = self->_inputFrameSizeInBytes * a6;
+  v9 = self->_inputFrameSizeInBytes * frames;
   if (self->_pcmInputDataMaxSzInBytes - self->_pcmInputDataIndexInBytes < v9)
   {
     [HalogenTypeC recordCallBackFunc:AudioTimeStamp:busNum:numFrames:AudioBufferList:];
@@ -303,7 +303,7 @@ LABEL_7:
     halogenAudioUnit = self->_halogenAudioUnit;
     if (halogenAudioUnit)
     {
-      v14 = AudioUnitRender([(HalogenAudio *)halogenAudioUnit getAudioComponentInstance], a3, a4, a5, a6, &ioData);
+      v14 = AudioUnitRender([(HalogenAudio *)halogenAudioUnit getAudioComponentInstance], func, stamp, num, frames, &ioData);
       if (v14)
       {
         v15 = v14;
@@ -316,7 +316,7 @@ LABEL_7:
       }
 
       [(HalogenTypeC *)self setPcmInputDataIndexInBytes:(self->_pcmInputDataIndexInBytes + v9)];
-      [(HalogenTypeC *)self setPcmInputDataSampleCnt:self->_pcmInputDataSampleCnt + a6];
+      [(HalogenTypeC *)self setPcmInputDataSampleCnt:self->_pcmInputDataSampleCnt + frames];
       pcmInputDataSampleCnt = self->_pcmInputDataSampleCnt;
       nMeasurementSamples = self->_nMeasurementSamples;
       if (pcmInputDataSampleCnt >= nMeasurementSamples + self->_calibrationSampleOffsetInFrames)
@@ -370,18 +370,18 @@ LABEL_7:
   return 0;
 }
 
-- (int)saveAsWav:(id)a3
+- (int)saveAsWav:(id)wav
 {
   outExtAudioFile = 0xAAAAAAAAAAAAAAAALL;
-  v4 = [a3 UTF8String];
+  uTF8String = [wav UTF8String];
   if (!self->_isMeasurementDone)
   {
     [HalogenTypeC saveAsWav:?];
     return LODWORD(inStreamDesc.mSampleRate);
   }
 
-  v5 = v4;
-  v6 = strlen(v4);
+  v5 = uTF8String;
+  v6 = strlen(uTF8String);
   v7 = CFURLCreateFromFileSystemRepresentation(0, v5, v6, 0);
   if (!v7)
   {
@@ -422,7 +422,7 @@ LABEL_7:
   return v13;
 }
 
-- (BOOL)setMitigations:(BOOL)a3
+- (BOOL)setMitigations:(BOOL)mitigations
 {
   connect = self->_connect;
   v4 = IOAccessoryManagerLDCMEnableMitigations();
@@ -441,9 +441,9 @@ LABEL_7:
   return v4 == 0;
 }
 
-- (BOOL)setLiquidDetected:(BOOL)a3
+- (BOOL)setLiquidDetected:(BOOL)detected
 {
-  v3 = a3;
+  detectedCopy = detected;
   v10 = *MEMORY[0x277D85DE8];
   connect = self->_connect;
   v5 = IOAccessoryManagerLDCMSetLiquidDetected();
@@ -456,7 +456,7 @@ LABEL_7:
   else if (v6)
   {
     v9[0] = 67109120;
-    v9[1] = v3;
+    v9[1] = detectedCopy;
     _os_log_impl(&dword_2548F1000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "HalogenTypeC:Liquid Detected Set:%d.", v9, 8u);
   }
 
@@ -465,7 +465,7 @@ LABEL_7:
   return result;
 }
 
-- (BOOL)_writeCalResults:(id)a3
+- (BOOL)_writeCalResults:(id)results
 {
   v5 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v6 = [objc_alloc(MEMORY[0x277CCABB0]) initWithDouble:self->_voltageGainCorrection];
@@ -474,7 +474,7 @@ LABEL_7:
   [v5 setObject:v6 forKey:@"VoltageGainCorrection"];
   [v5 setObject:v7 forKey:@"CurrentGainCorrection"];
   [v5 setObject:v8 forKey:@"CurrentPhaseCompensation"];
-  v9 = [v5 writeToFile:a3 atomically:1];
+  v9 = [v5 writeToFile:results atomically:1];
 
   if ((v9 & 1) == 0)
   {
@@ -484,9 +484,9 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)_readCalibrationParameters:(id)a3
+- (BOOL)_readCalibrationParameters:(id)parameters
 {
-  v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithContentsOfFile:a3];
+  v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithContentsOfFile:parameters];
   __asm { FMOV            V0.2D, #1.0 }
 
   *&self->_voltageGainCorrection = _Q0;
@@ -527,9 +527,9 @@ LABEL_7:
   return 1;
 }
 
-- (void)setWetTooLong:(BOOL)a3
+- (void)setWetTooLong:(BOOL)long
 {
-  self->_wetTooLong = a3;
+  self->_wetTooLong = long;
   halogenCalcTypeC = self->_halogenCalcTypeC;
   if (halogenCalcTypeC)
   {
@@ -537,20 +537,20 @@ LABEL_7:
   }
 }
 
-- (id)_buildMeasurementOutputString:(id *)a3
+- (id)_buildMeasurementOutputString:(id *)string
 {
   v5 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v5 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-  v6 = [MEMORY[0x277CCAB68] stringWithFormat:@"%@\n%@\n%@\n%@\n%.12f\n%.12f\n%.12f\n%.12f\n%.12f\n%.12f\n%.12f\n%.12f\n%.12f\n%.12f\n%.12f\n%.12f\n%.12f\n%.12f\n%.12f\n", objc_msgSend(v5, "stringFromDate:", objc_msgSend(MEMORY[0x277CBEAA8], "date")), -[HalogenTypeC _getHalogenMeasurementTypeString:](self, "_getHalogenMeasurementTypeString:", a3->var0), -[HalogenTypeC _getLDCMPinString:](self, "_getLDCMPinString:", a3->var1), -[HalogenTypeC getHalogenResultString:](self, "getHalogenResultString:", a3->var2), *&a3->var3, *&a3->var4, *&a3->var5, *&a3->var16, *&a3->var17, *&a3->var18, a3->var19 * 10000000.0, *&a3->var20, *&a3->var21, *&a3->var10, *&a3->var11, *&a3->var14, *&a3->var15, *&a3->var22, *&a3->var23];
+  v6 = [MEMORY[0x277CCAB68] stringWithFormat:@"%@\n%@\n%@\n%@\n%.12f\n%.12f\n%.12f\n%.12f\n%.12f\n%.12f\n%.12f\n%.12f\n%.12f\n%.12f\n%.12f\n%.12f\n%.12f\n%.12f\n%.12f\n", objc_msgSend(v5, "stringFromDate:", objc_msgSend(MEMORY[0x277CBEAA8], "date")), -[HalogenTypeC _getHalogenMeasurementTypeString:](self, "_getHalogenMeasurementTypeString:", string->var0), -[HalogenTypeC _getLDCMPinString:](self, "_getLDCMPinString:", string->var1), -[HalogenTypeC getHalogenResultString:](self, "getHalogenResultString:", string->var2), *&string->var3, *&string->var4, *&string->var5, *&string->var16, *&string->var17, *&string->var18, string->var19 * 10000000.0, *&string->var20, *&string->var21, *&string->var10, *&string->var11, *&string->var14, *&string->var15, *&string->var22, *&string->var23];
 
   return v6;
 }
 
-- (id)_buildVerboseMeasurementOutputString:(id *)a3
+- (id)_buildVerboseMeasurementOutputString:(id *)string
 {
   v5 = objc_alloc_init(MEMORY[0x277CCA968]);
   [v5 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"TimeStamp, %@\nMeasurementType, %@\nMeasurementPin, %@\nMeasurementResult, %@\nVolGainCorrection, %.12f\nCurGainCorrection, %.12f\nCurPhaseCompensation, %.12f\nVolSNR, %.12f\nCurSNR, %.12f\nVolAmplitude, %.12f\nCurAmplitudeMicroA, %.12f\nVolPhase, %.12f\nCurPhase, %.12f\nGoertzelImpedance, %.12f\nGoertzelPhase, %.12f\nResistanceInOhms, %.12f\nCapacitanceInNanoF, %.12f\nLoadImpedenceMagnitude, %.12f\nLoadImpedancePhase, %.12f\n", objc_msgSend(v5, "stringFromDate:", objc_msgSend(MEMORY[0x277CBEAA8], "date")), -[HalogenTypeC _getHalogenMeasurementTypeString:](self, "_getHalogenMeasurementTypeString:", a3->var0), -[HalogenTypeC _getLDCMPinString:](self, "_getLDCMPinString:", a3->var1), -[HalogenTypeC getHalogenResultString:](self, "getHalogenResultString:", a3->var2), *&a3->var3, *&a3->var4, *&a3->var5, *&a3->var16, *&a3->var17, *&a3->var18, a3->var19 * 10000000.0, *&a3->var20, *&a3->var21, *&a3->var10, *&a3->var11, *&a3->var14, *&a3->var15, *&a3->var22, *&a3->var23];
+  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"TimeStamp, %@\nMeasurementType, %@\nMeasurementPin, %@\nMeasurementResult, %@\nVolGainCorrection, %.12f\nCurGainCorrection, %.12f\nCurPhaseCompensation, %.12f\nVolSNR, %.12f\nCurSNR, %.12f\nVolAmplitude, %.12f\nCurAmplitudeMicroA, %.12f\nVolPhase, %.12f\nCurPhase, %.12f\nGoertzelImpedance, %.12f\nGoertzelPhase, %.12f\nResistanceInOhms, %.12f\nCapacitanceInNanoF, %.12f\nLoadImpedenceMagnitude, %.12f\nLoadImpedancePhase, %.12f\n", objc_msgSend(v5, "stringFromDate:", objc_msgSend(MEMORY[0x277CBEAA8], "date")), -[HalogenTypeC _getHalogenMeasurementTypeString:](self, "_getHalogenMeasurementTypeString:", string->var0), -[HalogenTypeC _getLDCMPinString:](self, "_getLDCMPinString:", string->var1), -[HalogenTypeC getHalogenResultString:](self, "getHalogenResultString:", string->var2), *&string->var3, *&string->var4, *&string->var5, *&string->var16, *&string->var17, *&string->var18, string->var19 * 10000000.0, *&string->var20, *&string->var21, *&string->var10, *&string->var11, *&string->var14, *&string->var15, *&string->var22, *&string->var23];
 
   return v6;
 }
@@ -562,87 +562,87 @@ LABEL_7:
   return [v2 copy];
 }
 
-- (void)_storeMeasurementData:(int)a3 measurementType:(int)a4 measurementInfo:(id *)a5 halogenResult:(int)a6
+- (void)_storeMeasurementData:(int)data measurementType:(int)type measurementInfo:(id *)info halogenResult:(int)result
 {
-  a5->var0 = a4;
-  a5->var1 = a3;
-  a5->var2 = a6;
+  info->var0 = type;
+  info->var1 = data;
+  info->var2 = result;
   [(HalogenTypeC *)self voltageGainCorrection];
-  a5->var3 = v8;
+  info->var3 = v8;
   [(HalogenTypeC *)self currentGainCorrection];
-  a5->var4 = v9;
+  info->var4 = v9;
   [(HalogenTypeC *)self calVoltageSNR];
-  a5->var6 = v10;
+  info->var6 = v10;
   [(HalogenTypeC *)self calCurrentSNR];
-  a5->var7 = v11;
+  info->var7 = v11;
   [(HalogenTypeC *)self calVoltageAmplitude];
-  a5->var8 = v12;
+  info->var8 = v12;
   [(HalogenTypeC *)self calCurrentAmplitude];
-  a5->var9 = v13;
+  info->var9 = v13;
   [(HalogenTypeC *)self currentPhaseCompensation];
-  a5->var5 = v14;
+  info->var5 = v14;
   [(HalogenTypeC *)self measurementVoltageSNR];
-  a5->var16 = v15;
+  info->var16 = v15;
   [(HalogenTypeC *)self measurementCurrentSNR];
-  a5->var17 = v16;
+  info->var17 = v16;
   [(HalogenTypeC *)self measurementVoltageAmplitude];
-  a5->var18 = v17;
+  info->var18 = v17;
   [(HalogenTypeC *)self measurementCurrentAmplitude];
-  a5->var19 = v18;
+  info->var19 = v18;
   [(HalogenTypeC *)self measurementVoltagePhase];
-  a5->var20 = v19;
+  info->var20 = v19;
   [(HalogenTypeC *)self measurementCurrentPhase];
-  a5->var21 = v20;
+  info->var21 = v20;
   [(HalogenTypeC *)self goertzelImpedance];
-  a5->var10 = v21;
+  info->var10 = v21;
   [(HalogenTypeC *)self goertzelPhase];
-  a5->var11 = v22;
+  info->var11 = v22;
   [(HalogenTypeC *)self resistanceInOhms];
-  a5->var14 = v23;
+  info->var14 = v23;
   [(HalogenTypeC *)self capacitanceInNanoF];
-  a5->var15 = v24;
+  info->var15 = v24;
   [(HalogenTypeC *)self measurementLoadImpedanceMagnitude];
-  a5->var22 = v25;
+  info->var22 = v25;
   [(HalogenTypeC *)self measurementLoadImpedancePhase];
-  a5->var23 = v26;
+  info->var23 = v26;
 }
 
-- (id)getHalogenResultString:(int)a3
+- (id)getHalogenResultString:(int)string
 {
-  if (a3 > 0xB)
+  if (string > 0xB)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_279793058[a3];
+    return off_279793058[string];
   }
 }
 
-- (id)_getHalogenMeasurementTypeString:(int)a3
+- (id)_getHalogenMeasurementTypeString:(int)string
 {
-  if (a3 > 2)
+  if (string > 2)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_2797930B8[a3];
+    return off_2797930B8[string];
   }
 }
 
-- (id)_getLDCMPinString:(int)a3
+- (id)_getLDCMPinString:(int)string
 {
-  if (a3 > 4)
+  if (string > 4)
   {
     return @"Undefined";
   }
 
   else
   {
-    return off_2797930D0[a3];
+    return off_2797930D0[string];
   }
 }
 
@@ -708,26 +708,26 @@ LABEL_7:
   return self;
 }
 
-- (void)setMeasurementInfoDefault:(id *)a3
+- (void)setMeasurementInfoDefault:(id *)default
 {
-  v3 = *&a3->var0;
-  v4 = *&a3->var3;
-  v5 = *&a3->var7;
-  *&self->_measurementInfoDefault.currentPhaseCompensation = *&a3->var5;
+  v3 = *&default->var0;
+  v4 = *&default->var3;
+  v5 = *&default->var7;
+  *&self->_measurementInfoDefault.currentPhaseCompensation = *&default->var5;
   *&self->_measurementInfoDefault.calCurrentSNR = v5;
   *&self->_measurementInfoDefault.type = v3;
   *&self->_measurementInfoDefault.voltageGainCorrection = v4;
-  v6 = *&a3->var9;
-  v7 = *&a3->var11;
-  v8 = *&a3->var15;
-  *&self->_measurementInfoDefault.compensatedPhase = *&a3->var13;
+  v6 = *&default->var9;
+  v7 = *&default->var11;
+  v8 = *&default->var15;
+  *&self->_measurementInfoDefault.compensatedPhase = *&default->var13;
   *&self->_measurementInfoDefault.capacitanceInNanoF = v8;
   *&self->_measurementInfoDefault.calCurrentAmplitude = v6;
   *&self->_measurementInfoDefault.goertzelPhase = v7;
-  v9 = *&a3->var17;
-  v10 = *&a3->var19;
-  v11 = *&a3->var21;
-  self->_measurementInfoDefault.measurementLoadImpedancePhase = a3->var23;
+  v9 = *&default->var17;
+  v10 = *&default->var19;
+  v11 = *&default->var21;
+  self->_measurementInfoDefault.measurementLoadImpedancePhase = default->var23;
   *&self->_measurementInfoDefault.measurementCurrentAmplitude = v10;
   *&self->_measurementInfoDefault.measurementCurrentPhase = v11;
   *&self->_measurementInfoDefault.measurementCurrentSNR = v9;
@@ -785,7 +785,7 @@ LABEL_7:
     _os_log_impl(v2, v3, v4, v5, v6, 2u);
   }
 
-  *a1 = 0;
+  *self = 0;
 }
 
 - (void)_connectToAccessoryManager:.cold.1()
@@ -826,7 +826,7 @@ LABEL_7:
     _os_log_impl(v2, v3, v4, v5, v6, 2u);
   }
 
-  *a1 = 0;
+  *self = 0;
 }
 
 - (uint64_t)supportsSelfTest
@@ -837,7 +837,7 @@ LABEL_7:
     _os_log_impl(v2, v3, v4, v5, v6, 2u);
   }
 
-  return a1 & 1;
+  return self & 1;
 }
 
 - (void)recordCallBackFunc:AudioTimeStamp:busNum:numFrames:AudioBufferList:.cold.1()

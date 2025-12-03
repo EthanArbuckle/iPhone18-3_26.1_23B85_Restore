@@ -1,6 +1,6 @@
 @interface NTNoContentTodayResultOperation
 - (BOOL)validateOperation;
-- (void)operationWillFinishWithError:(id)a3;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 - (void)validateOperation;
 @end
@@ -9,22 +9,22 @@
 
 - (BOOL)validateOperation
 {
-  v2 = [(NTTodayResultOperation *)self headlineResultCompletionHandler];
+  headlineResultCompletionHandler = [(NTTodayResultOperation *)self headlineResultCompletionHandler];
 
-  if (!v2 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  if (!headlineResultCompletionHandler && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTNoContentTodayResultOperation validateOperation];
   }
 
-  return v2 != 0;
+  return headlineResultCompletionHandler != 0;
 }
 
 - (void)performOperation
 {
   v3 = [NTTodayResults alloc];
   v4 = objc_opt_new();
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v7 = [(NTTodayResults *)v3 initWithSourceIdentifier:@"unknown" sections:v4 expirationDate:v5 headlineScale:1.0];
+  date = [MEMORY[0x277CBEAA8] date];
+  v7 = [(NTTodayResults *)v3 initWithSourceIdentifier:@"unknown" sections:v4 expirationDate:date headlineScale:1.0];
 
   v6 = objc_opt_new();
   [v6 setTodaySourceIdentifier:@"unknown"];
@@ -34,14 +34,14 @@
   [(FCOperation *)self finishedPerformingOperationWithError:0];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v4 = a3;
-  v8 = [(NTTodayResultOperation *)self headlineResultCompletionHandler];
-  v5 = [(NTNoContentTodayResultOperation *)self resultTodayResults];
-  v6 = [(NTNoContentTodayResultOperation *)self resultAssetHandlesByAssetID];
-  v7 = [(NTNoContentTodayResultOperation *)self resultFetchInfo];
-  v8[2](v8, v5, v6, v7, v4);
+  errorCopy = error;
+  headlineResultCompletionHandler = [(NTTodayResultOperation *)self headlineResultCompletionHandler];
+  resultTodayResults = [(NTNoContentTodayResultOperation *)self resultTodayResults];
+  resultAssetHandlesByAssetID = [(NTNoContentTodayResultOperation *)self resultAssetHandlesByAssetID];
+  resultFetchInfo = [(NTNoContentTodayResultOperation *)self resultFetchInfo];
+  headlineResultCompletionHandler[2](headlineResultCompletionHandler, resultTodayResults, resultAssetHandlesByAssetID, resultFetchInfo, errorCopy);
 }
 
 - (void)validateOperation

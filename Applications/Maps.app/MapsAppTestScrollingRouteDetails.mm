@@ -8,21 +8,21 @@
 
 - (void)_performScrollTest
 {
-  v3 = [(MapsAppTest *)self testCoordinator];
-  v4 = [v3 pptTestScrollViewForDirectionsDetails];
+  testCoordinator = [(MapsAppTest *)self testCoordinator];
+  pptTestScrollViewForDirectionsDetails = [testCoordinator pptTestScrollViewForDirectionsDetails];
 
-  if (v4)
+  if (pptTestScrollViewForDirectionsDetails)
   {
     objc_initWeak(&location, self);
-    v5 = [(MapsAppTest *)self testName];
+    testName = [(MapsAppTest *)self testName];
     RPTGetBoundsForView();
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
     v14 = [RPTScrollViewTestParameters alloc];
-    [v4 contentSize];
-    v16 = [v14 initWithTestName:v5 scrollBounds:1 scrollContentLength:&stru_101622480 direction:v7 completionHandler:{v9, v11, v13, v15}];
+    [pptTestScrollViewForDirectionsDetails contentSize];
+    v16 = [v14 initWithTestName:testName scrollBounds:1 scrollContentLength:&stru_101622480 direction:v7 completionHandler:{v9, v11, v13, v15}];
     v24 = v16;
     v17 = [NSArray arrayWithObjects:&v24 count:1];
     v20[0] = _NSConcreteStackBlock;
@@ -30,7 +30,7 @@
     v20[2] = sub_100589974;
     v20[3] = &unk_101661340;
     objc_copyWeak(&v22, &location);
-    v18 = v5;
+    v18 = testName;
     v21 = v18;
     v19 = [RPTGroupScrollTestParameters newWithTestName:v18 parameters:v17 completionHandler:v20];
 

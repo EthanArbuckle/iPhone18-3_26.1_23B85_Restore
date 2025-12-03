@@ -1,55 +1,55 @@
 @interface MTATimerBaseCollectionViewCell
 + (double)cellHeight;
-- (MTATimerBaseCollectionViewCell)initWithFrame:(CGRect)a3;
+- (MTATimerBaseCollectionViewCell)initWithFrame:(CGRect)frame;
 - (MTATimerCollectionViewCellDelegate)delegate;
 - (void)setupConstraints;
 @end
 
 @implementation MTATimerBaseCollectionViewCell
 
-- (MTATimerBaseCollectionViewCell)initWithFrame:(CGRect)a3
+- (MTATimerBaseCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v29.receiver = self;
   v29.super_class = MTATimerBaseCollectionViewCell;
-  v3 = [(MTATimerBaseCollectionViewCell *)&v29 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MTATimerBaseCollectionViewCell *)&v29 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[MTATimerControlsView alloc] initWithDelegate:v3 style:[(MTATimerBaseCollectionViewCell *)v3 defaultViewStyle] timerControlState:1];
     [(MTATimerBaseCollectionViewCell *)v3 setTimerControlsView:v4];
 
-    v5 = [(MTATimerBaseCollectionViewCell *)v3 timerControlsView];
-    [v5 setTranslatesAutoresizingMaskIntoConstraints:0];
+    timerControlsView = [(MTATimerBaseCollectionViewCell *)v3 timerControlsView];
+    [timerControlsView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v6 = [(MTATimerBaseCollectionViewCell *)v3 contentView];
-    [v6 bounds];
+    contentView = [(MTATimerBaseCollectionViewCell *)v3 contentView];
+    [contentView bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
     v14 = v13;
-    v15 = [(MTATimerBaseCollectionViewCell *)v3 timerControlsView];
-    [v15 setFrame:{v8, v10, v12, v14}];
+    timerControlsView2 = [(MTATimerBaseCollectionViewCell *)v3 timerControlsView];
+    [timerControlsView2 setFrame:{v8, v10, v12, v14}];
 
-    v16 = [(MTATimerBaseCollectionViewCell *)v3 contentView];
-    [v16 addSubview:v3->_timerControlsView];
+    contentView2 = [(MTATimerBaseCollectionViewCell *)v3 contentView];
+    [contentView2 addSubview:v3->_timerControlsView];
 
     v17 = +[UIColor mtui_foregroundColor];
-    v18 = [(MTATimerBaseCollectionViewCell *)v3 contentView];
-    [v18 setBackgroundColor:v17];
+    contentView3 = [(MTATimerBaseCollectionViewCell *)v3 contentView];
+    [contentView3 setBackgroundColor:v17];
 
-    v19 = [(MTATimerBaseCollectionViewCell *)v3 traitCollection];
+    traitCollection = [(MTATimerBaseCollectionViewCell *)v3 traitCollection];
     _UITableViewDefaultSectionCornerRadiusForTraitCollection();
     v21 = v20;
-    v22 = [(MTATimerBaseCollectionViewCell *)v3 contentView];
-    v23 = [v22 layer];
-    [v23 setCornerRadius:v21];
+    contentView4 = [(MTATimerBaseCollectionViewCell *)v3 contentView];
+    layer = [contentView4 layer];
+    [layer setCornerRadius:v21];
 
-    v24 = [(MTATimerBaseCollectionViewCell *)v3 contentView];
-    v25 = [v24 layer];
-    [v25 setMasksToBounds:1];
+    contentView5 = [(MTATimerBaseCollectionViewCell *)v3 contentView];
+    layer2 = [contentView5 layer];
+    [layer2 setMasksToBounds:1];
 
-    v26 = [(MTATimerBaseCollectionViewCell *)v3 timerControlsView];
+    timerControlsView3 = [(MTATimerBaseCollectionViewCell *)v3 timerControlsView];
     v27 = +[UIColor mtui_foregroundColor];
-    [v26 applyBackgroundColor:v27];
+    [timerControlsView3 applyBackgroundColor:v27];
 
     [(MTATimerBaseCollectionViewCell *)v3 setupConstraints];
   }
@@ -60,32 +60,32 @@
 - (void)setupConstraints
 {
   v23 = objc_opt_new();
-  v3 = [(MTATimerBaseCollectionViewCell *)self timerControlsView];
-  v4 = [v3 leadingAnchor];
-  v5 = [(MTATimerBaseCollectionViewCell *)self contentView];
-  v6 = [v5 leadingAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
+  timerControlsView = [(MTATimerBaseCollectionViewCell *)self timerControlsView];
+  leadingAnchor = [timerControlsView leadingAnchor];
+  contentView = [(MTATimerBaseCollectionViewCell *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  v7 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v23 addObject:v7];
 
-  v8 = [(MTATimerBaseCollectionViewCell *)self timerControlsView];
-  v9 = [v8 trailingAnchor];
-  v10 = [(MTATimerBaseCollectionViewCell *)self contentView];
-  v11 = [v10 trailingAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11];
+  timerControlsView2 = [(MTATimerBaseCollectionViewCell *)self timerControlsView];
+  trailingAnchor = [timerControlsView2 trailingAnchor];
+  contentView2 = [(MTATimerBaseCollectionViewCell *)self contentView];
+  trailingAnchor2 = [contentView2 trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v23 addObject:v12];
 
-  v13 = [(MTATimerBaseCollectionViewCell *)self timerControlsView];
-  v14 = [v13 topAnchor];
-  v15 = [(MTATimerBaseCollectionViewCell *)self contentView];
-  v16 = [v15 topAnchor];
-  v17 = [v14 constraintEqualToAnchor:v16];
+  timerControlsView3 = [(MTATimerBaseCollectionViewCell *)self timerControlsView];
+  topAnchor = [timerControlsView3 topAnchor];
+  contentView3 = [(MTATimerBaseCollectionViewCell *)self contentView];
+  topAnchor2 = [contentView3 topAnchor];
+  v17 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v23 addObject:v17];
 
-  v18 = [(MTATimerBaseCollectionViewCell *)self timerControlsView];
-  v19 = [v18 bottomAnchor];
-  v20 = [(MTATimerBaseCollectionViewCell *)self contentView];
-  v21 = [v20 bottomAnchor];
-  v22 = [v19 constraintEqualToAnchor:v21];
+  timerControlsView4 = [(MTATimerBaseCollectionViewCell *)self timerControlsView];
+  bottomAnchor = [timerControlsView4 bottomAnchor];
+  contentView4 = [(MTATimerBaseCollectionViewCell *)self contentView];
+  bottomAnchor2 = [contentView4 bottomAnchor];
+  v22 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v23 addObject:v22];
 
   [NSLayoutConstraint activateConstraints:v23];

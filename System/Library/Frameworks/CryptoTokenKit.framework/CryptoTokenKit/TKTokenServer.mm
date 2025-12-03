@@ -1,17 +1,17 @@
 @interface TKTokenServer
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (BOOL)waitForRegistry;
 - (TKCTKDConnection)ctkdConnection;
-- (TKTokenServer)initWithTokenServer:(id)a3;
+- (TKTokenServer)initWithTokenServer:(id)server;
 - (id)tokenAccessManager;
 - (void)cleanupInvalidTokenAccessRecords;
 - (void)dealloc;
-- (void)getEndpoint:(id)a3;
-- (void)hostTokenRegistry:(id)a3 addedToken:(id)a4 persistent:(BOOL)a5;
-- (void)hostTokenRegistry:(id)a3 removedToken:(id)a4 persistent:(BOOL)a5;
-- (void)setTokenRegistry:(id)a3;
+- (void)getEndpoint:(id)endpoint;
+- (void)hostTokenRegistry:(id)registry addedToken:(id)token persistent:(BOOL)persistent;
+- (void)hostTokenRegistry:(id)registry removedToken:(id)token persistent:(BOOL)persistent;
+- (void)setTokenRegistry:(id)registry;
 - (void)start;
-- (void)startWatchingWithReply:(id)a3;
+- (void)startWatchingWithReply:(id)reply;
 - (void)stop;
 @end
 
@@ -20,44 +20,44 @@
 - (TKCTKDConnection)ctkdConnection
 {
   v3 = [TKCTKDConnection alloc];
-  v4 = [(TKTokenServer *)self tokenServerListener];
-  v5 = [v4 endpoint];
-  v6 = [v3 initWithCTKDEndpoint:v5 targetUID:0];
+  tokenServerListener = [(TKTokenServer *)self tokenServerListener];
+  endpoint = [tokenServerListener endpoint];
+  v6 = [v3 initWithCTKDEndpoint:endpoint targetUID:0];
 
   return v6;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(TKTokenServer *)self tokenServerListener];
+  connectionCopy = connection;
+  listenerCopy = listener;
+  tokenServerListener = [(TKTokenServer *)self tokenServerListener];
 
-  if (v8 == v7)
+  if (tokenServerListener == listenerCopy)
   {
     objc_opt_class();
-    v9 = [[TKTokenClientConnection alloc] initWithConnection:v6 server:self];
+    v9 = [[TKTokenClientConnection alloc] initWithConnection:connectionCopy server:self];
     v10 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___TKClientTokenServerProtocol];
-    [v6 setExportedInterface:v10];
+    [connectionCopy setExportedInterface:v10];
 
     v11 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___TKProtocolTokenWatcherHost];
-    [v6 setRemoteObjectInterface:v11];
+    [connectionCopy setRemoteObjectInterface:v11];
 
-    [v6 setExportedObject:v9];
-    [v6 resume];
+    [connectionCopy setExportedObject:v9];
+    [connectionCopy resume];
   }
 
-  return v8 == v7;
+  return tokenServerListener == listenerCopy;
 }
 
-- (void)startWatchingWithReply:(id)a3
+- (void)startWatchingWithReply:(id)reply
 {
-  v32 = a3;
+  replyCopy = reply;
   v4 = self->_watcherConnections;
   objc_sync_enter(v4);
   v5 = +[NSXPCConnection currentConnection];
   [(NSHashTable *)self->_watcherConnections addObject:v5];
-  v35 = self;
+  selfCopy = self;
 
   objc_sync_exit(v4);
   v6 = [&__NSArray0__struct mutableCopy];
@@ -81,8 +81,8 @@
         }
 
         v46 = *(*(&v40 + 1) + 8 * v10);
-        v11 = [NSArray arrayWithObjects:&v46 count:1, v32];
-        [v6 addObject:v11];
+        replyCopy = [NSArray arrayWithObjects:&v46 count:1, replyCopy];
+        [v6 addObject:replyCopy];
 
         v10 = v10 + 1;
       }
@@ -98,8 +98,8 @@
   v39 = 0u;
   v36 = 0u;
   v37 = 0u;
-  v12 = [(TKTokenServer *)v35 tokenRegistry];
-  obj = [v12 tokens];
+  tokenRegistry = [(TKTokenServer *)selfCopy tokenRegistry];
+  obj = [tokenRegistry tokens];
 
   v13 = [obj countByEnumeratingWithState:&v36 objects:v45 count:16];
   if (v13)
@@ -116,37 +116,37 @@
         }
 
         v15 = *(*(&v36 + 1) + 8 * v14);
-        v16 = [(TKTokenServer *)v35 tokenRegistry];
-        v17 = [v16 tokenWithTokenID:v15];
+        tokenRegistry2 = [(TKTokenServer *)selfCopy tokenRegistry];
+        v17 = [tokenRegistry2 tokenWithTokenID:v15];
 
-        v18 = [v17 driver];
-        if (!v18)
+        driver = [v17 driver];
+        if (!driver)
         {
-          v19 = [v17 registry];
-          v20 = [v19 driverCache];
-          v21 = [v17 tokenID];
-          v22 = [v21 classID];
-          v18 = [v20 hostTokenDriverWithClassID:v22 error:0];
+          registry = [v17 registry];
+          driverCache = [registry driverCache];
+          tokenID = [v17 tokenID];
+          classID = [tokenID classID];
+          driver = [driverCache hostTokenDriverWithClassID:classID error:0];
         }
 
-        v23 = [v15 stringRepresentation];
-        v44[0] = v23;
-        v24 = [v18 extension];
-        v25 = [v24 _localizedName];
-        v26 = v25;
+        stringRepresentation = [v15 stringRepresentation];
+        v44[0] = stringRepresentation;
+        extension = [driver extension];
+        _localizedName = [extension _localizedName];
+        v26 = _localizedName;
         v27 = &stru_1000392E8;
-        if (v25)
+        if (_localizedName)
         {
-          v27 = v25;
+          v27 = _localizedName;
         }
 
         v44[1] = v27;
-        v28 = [v17 slotName];
-        v29 = v28;
+        slotName = [v17 slotName];
+        v29 = slotName;
         v30 = &stru_1000392E8;
-        if (v28)
+        if (slotName)
         {
-          v30 = v28;
+          v30 = slotName;
         }
 
         v44[2] = v30;
@@ -163,44 +163,44 @@
     while (v13);
   }
 
-  v32[2](v32, v6);
+  replyCopy[2](replyCopy, v6);
 }
 
-- (void)getEndpoint:(id)a3
+- (void)getEndpoint:(id)endpoint
 {
   tokenWatcherListener = self->_tokenWatcherListener;
-  v5 = a3;
-  v6 = [(NSXPCListener *)tokenWatcherListener endpoint];
-  (*(a3 + 2))(v5, v6);
+  endpointCopy = endpoint;
+  endpoint = [(NSXPCListener *)tokenWatcherListener endpoint];
+  (*(endpoint + 2))(endpointCopy, endpoint);
 }
 
-- (void)hostTokenRegistry:(id)a3 addedToken:(id)a4 persistent:(BOOL)a5
+- (void)hostTokenRegistry:(id)registry addedToken:(id)token persistent:(BOOL)persistent
 {
-  v36 = a3;
-  v39 = a4;
-  v8 = [(TKTokenServer *)self tokenRegistry];
-  v41 = [v8 tokenWithTokenID:v39];
+  registryCopy = registry;
+  tokenCopy = token;
+  tokenRegistry = [(TKTokenServer *)self tokenRegistry];
+  v41 = [tokenRegistry tokenWithTokenID:tokenCopy];
 
-  v40 = [v41 driver];
-  if (!v40)
+  driver = [v41 driver];
+  if (!driver)
   {
-    v9 = [v41 registry];
-    v10 = [v9 driverCache];
-    v11 = [v41 tokenID];
-    v12 = [v11 classID];
-    v40 = [v10 hostTokenDriverWithClassID:v12 error:0];
+    registry = [v41 registry];
+    driverCache = [registry driverCache];
+    tokenID = [v41 tokenID];
+    classID = [tokenID classID];
+    driver = [driverCache hostTokenDriverWithClassID:classID error:0];
   }
 
-  if (!a5)
+  if (!persistent)
   {
     v46 = 0;
     v13 = [(TKTokenServer *)self pairingNotification:&v46];
     v14 = v46;
-    v15 = [v41 slotName];
-    v16 = v15;
-    if (v15)
+    slotName = [v41 slotName];
+    v16 = slotName;
+    if (slotName)
     {
-      v17 = v15;
+      v17 = slotName;
     }
 
     else
@@ -208,12 +208,12 @@
       v17 = &stru_1000392E8;
     }
 
-    v18 = [v40 extension];
-    v19 = [v18 _localizedName];
-    v20 = v19;
-    if (v19)
+    extension = [driver extension];
+    _localizedName = [extension _localizedName];
+    v20 = _localizedName;
+    if (_localizedName)
     {
-      v21 = v19;
+      v21 = _localizedName;
     }
 
     else
@@ -221,8 +221,8 @@
       v21 = &stru_1000392E8;
     }
 
-    v22 = [v39 stringRepresentation];
-    [v13 tokenInserted:v17 driverName:v21 tokenID:v22 reply:&stru_100039058];
+    stringRepresentation = [tokenCopy stringRepresentation];
+    [v13 tokenInserted:v17 driverName:v21 tokenID:stringRepresentation reply:&stru_100039058];
 
     [v14 invalidate];
   }
@@ -247,15 +247,15 @@
           objc_enumerationMutation(obj);
         }
 
-        v26 = [*(*(&v42 + 1) + 8 * i) remoteObjectProxy];
-        v27 = [v39 stringRepresentation];
-        v47[0] = v27;
-        v28 = [v40 extension];
-        v29 = [v28 _localizedName];
-        v30 = v29;
-        if (v29)
+        remoteObjectProxy = [*(*(&v42 + 1) + 8 * i) remoteObjectProxy];
+        stringRepresentation2 = [tokenCopy stringRepresentation];
+        v47[0] = stringRepresentation2;
+        extension2 = [driver extension];
+        _localizedName2 = [extension2 _localizedName];
+        v30 = _localizedName2;
+        if (_localizedName2)
         {
-          v31 = v29;
+          v31 = _localizedName2;
         }
 
         else
@@ -264,11 +264,11 @@
         }
 
         v47[1] = v31;
-        v32 = [v41 slotName];
-        v33 = v32;
-        if (v32)
+        slotName2 = [v41 slotName];
+        v33 = slotName2;
+        if (slotName2)
         {
-          v34 = v32;
+          v34 = slotName2;
         }
 
         else
@@ -278,7 +278,7 @@
 
         v47[2] = v34;
         v35 = [NSArray arrayWithObjects:v47 count:3];
-        [v26 insertedToken:v35];
+        [remoteObjectProxy insertedToken:v35];
       }
 
       v23 = [(NSHashTable *)obj countByEnumeratingWithState:&v42 objects:v48 count:16];
@@ -290,11 +290,11 @@
   objc_sync_exit(v37);
 }
 
-- (void)hostTokenRegistry:(id)a3 removedToken:(id)a4 persistent:(BOOL)a5
+- (void)hostTokenRegistry:(id)registry removedToken:(id)token persistent:(BOOL)persistent
 {
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  registryCopy = registry;
+  tokenCopy = token;
+  if (persistent)
   {
     v10 = 0;
   }
@@ -304,8 +304,8 @@
     v24 = 0;
     v11 = [(TKTokenServer *)self pairingNotification:&v24];
     v10 = v24;
-    v12 = [v9 stringRepresentation];
-    [v11 tokenRemoved:v12 reply:&stru_100039078];
+    stringRepresentation = [tokenCopy stringRepresentation];
+    [v11 tokenRemoved:stringRepresentation reply:&stru_100039078];
 
     [v10 invalidate];
   }
@@ -331,9 +331,9 @@
           objc_enumerationMutation(v14);
         }
 
-        v18 = [*(*(&v20 + 1) + 8 * v17) remoteObjectProxy];
-        v19 = [v9 stringRepresentation];
-        [v18 removedToken:v19];
+        remoteObjectProxy = [*(*(&v20 + 1) + 8 * v17) remoteObjectProxy];
+        stringRepresentation2 = [tokenCopy stringRepresentation];
+        [remoteObjectProxy removedToken:stringRepresentation2];
 
         v17 = v17 + 1;
       }
@@ -348,9 +348,9 @@
   objc_sync_exit(v13);
 }
 
-- (TKTokenServer)initWithTokenServer:(id)a3
+- (TKTokenServer)initWithTokenServer:(id)server
 {
-  v4 = a3;
+  serverCopy = server;
   v15.receiver = self;
   v15.super_class = TKTokenServer;
   v5 = [(TKTokenServer *)&v15 init];
@@ -360,9 +360,9 @@
     tokenRegistrySetCondition = v5->_tokenRegistrySetCondition;
     v5->_tokenRegistrySetCondition = v6;
 
-    if (v4)
+    if (serverCopy)
     {
-      v8 = v4;
+      v8 = serverCopy;
     }
 
     else
@@ -386,9 +386,9 @@
   return v5;
 }
 
-- (void)setTokenRegistry:(id)a3
+- (void)setTokenRegistry:(id)registry
 {
-  v5 = a3;
+  registryCopy = registry;
   v6 = sub_1000164FC();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -399,7 +399,7 @@
   {
     [(NSCondition *)self->_tokenRegistrySetCondition lock];
     self->_tokenRegistrySet = 1;
-    objc_storeStrong(&self->_tokenRegistry, a3);
+    objc_storeStrong(&self->_tokenRegistry, registry);
     [(TKHostTokenRegistry *)self->_tokenRegistry setDelegate:self];
     [(NSCondition *)self->_tokenRegistrySetCondition broadcast];
     [(NSCondition *)self->_tokenRegistrySetCondition unlock];
@@ -426,8 +426,8 @@
   }
 
   [(NSCondition *)self->_tokenRegistrySetCondition unlock];
-  v3 = [(TKTokenServer *)self tokenRegistry];
-  v4 = v3 != 0;
+  tokenRegistry = [(TKTokenServer *)self tokenRegistry];
+  v4 = tokenRegistry != 0;
 
   return v4;
 }
@@ -442,8 +442,8 @@
 
 - (void)start
 {
-  v3 = [(TKTokenServer *)self tokenServerListener];
-  [v3 resume];
+  tokenServerListener = [(TKTokenServer *)self tokenServerListener];
+  [tokenServerListener resume];
 
   if (notify_post([TKTokenWatcherServerStartedNotification UTF8String]))
   {
@@ -454,8 +454,8 @@
     }
   }
 
-  v5 = [(TKTokenServer *)self tokenAccessManager];
-  [v5 startAppsUninstallObservation];
+  tokenAccessManager = [(TKTokenServer *)self tokenAccessManager];
+  [tokenAccessManager startAppsUninstallObservation];
 
   [(TKTokenServer *)self cleanupInvalidTokenAccessRecords];
 }
@@ -464,8 +464,8 @@
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [(TKTokenServer *)obj tokenServerListener];
-  [v2 invalidate];
+  tokenServerListener = [(TKTokenServer *)obj tokenServerListener];
+  [tokenServerListener invalidate];
 
   tokenServerListener = obj->_tokenServerListener;
   obj->_tokenServerListener = 0;
@@ -478,9 +478,9 @@
   }
 
   [(NSCondition *)obj->_tokenRegistrySetCondition unlock];
-  v4 = [(TKTokenServer *)obj tokenRegistry];
-  v5 = [v4 driverCache];
-  [v5 invalidate];
+  tokenRegistry = [(TKTokenServer *)obj tokenRegistry];
+  driverCache = [tokenRegistry driverCache];
+  [driverCache invalidate];
 
   objc_sync_exit(obj);
 }

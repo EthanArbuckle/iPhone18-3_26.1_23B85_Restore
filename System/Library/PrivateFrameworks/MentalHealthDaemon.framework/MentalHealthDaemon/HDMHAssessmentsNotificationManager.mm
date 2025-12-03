@@ -1,50 +1,50 @@
 @interface HDMHAssessmentsNotificationManager
-- (HDMHAssessmentsNotificationManager)initWithProfile:(id)a3 settingsManager:(id)a4 restorableAlarm:(id)a5 promptedAssessmentsManager:(id)a6 unitTest_didEvaluateIfMaintenanceWorkIsNeeded:(id)a7;
+- (HDMHAssessmentsNotificationManager)initWithProfile:(id)profile settingsManager:(id)manager restorableAlarm:(id)alarm promptedAssessmentsManager:(id)assessmentsManager unitTest_didEvaluateIfMaintenanceWorkIsNeeded:(id)needed;
 - (id)_currentDate;
 - (id)_eventsToSchedule;
-- (id)_nextBehaviorBasedDateWithError:(id *)a3;
-- (id)_nextRegularlyScheduledDateWithError:(id *)a3;
+- (id)_nextBehaviorBasedDateWithError:(id *)error;
+- (id)_nextRegularlyScheduledDateWithError:(id *)error;
 - (id)_periodicAssessmentEvent;
-- (id)_requestFromAlarmEvent:(id)a3;
-- (id)scheduledNotificationsWithError:(id *)a3;
+- (id)_requestFromAlarmEvent:(id)event;
+- (id)scheduledNotificationsWithError:(id *)error;
 - (void)_periodicAssessmentEvent;
-- (void)_queue_alarm:(id)a3 didReceiveDueEvents:(id)a4;
+- (void)_queue_alarm:(id)_queue_alarm didReceiveDueEvents:(id)events;
 - (void)_queue_enqueueMaintenanceRemovalIfNeeded;
 - (void)_queue_removeAllScheduledNotifications;
 - (void)_queue_removeAllScheduledNotificationsIfNotEnabled;
 - (void)_queue_rescheduleNotifications;
 - (void)_queue_runMaintenanceRemoval;
 - (void)_queue_start;
-- (void)_removeRelatedDeliveredHDMHNotificationsForEvent:(id)a3;
+- (void)_removeRelatedDeliveredHDMHNotificationsForEvent:(id)event;
 - (void)_rescheduleNotifications;
-- (void)_triggerImmediateSyncWithReason:(id)a3;
+- (void)_triggerImmediateSyncWithReason:(id)reason;
 - (void)dealloc;
-- (void)profileDidBecomeReady:(id)a3;
-- (void)promptedAssessmentsManagerDidUpdatePromptedAssessments:(id)a3;
-- (void)settingsManagerDidUpdateNotificationSettings:(id)a3;
+- (void)profileDidBecomeReady:(id)ready;
+- (void)promptedAssessmentsManagerDidUpdatePromptedAssessments:(id)assessments;
+- (void)settingsManagerDidUpdateNotificationSettings:(id)settings;
 @end
 
 @implementation HDMHAssessmentsNotificationManager
 
-- (HDMHAssessmentsNotificationManager)initWithProfile:(id)a3 settingsManager:(id)a4 restorableAlarm:(id)a5 promptedAssessmentsManager:(id)a6 unitTest_didEvaluateIfMaintenanceWorkIsNeeded:(id)a7
+- (HDMHAssessmentsNotificationManager)initWithProfile:(id)profile settingsManager:(id)manager restorableAlarm:(id)alarm promptedAssessmentsManager:(id)assessmentsManager unitTest_didEvaluateIfMaintenanceWorkIsNeeded:(id)needed
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  profileCopy = profile;
+  managerCopy = manager;
+  alarmCopy = alarm;
+  assessmentsManagerCopy = assessmentsManager;
+  neededCopy = needed;
   v32.receiver = self;
   v32.super_class = HDMHAssessmentsNotificationManager;
   v17 = [(HDMHAssessmentsNotificationManager *)&v32 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeWeak(&v17->_profile, v12);
-    v19 = [v14 eventHandlerQueue];
-    v20 = v19;
-    if (v19)
+    objc_storeWeak(&v17->_profile, profileCopy);
+    eventHandlerQueue = [alarmCopy eventHandlerQueue];
+    v20 = eventHandlerQueue;
+    if (eventHandlerQueue)
     {
-      v21 = v19;
+      v21 = eventHandlerQueue;
     }
 
     else
@@ -61,26 +61,26 @@
     assessmentNotificationStateKeyValueDomain = v18->_assessmentNotificationStateKeyValueDomain;
     v18->_assessmentNotificationStateKeyValueDomain = v25;
 
-    v27 = [MEMORY[0x277CCDD30] sharedBehavior];
-    v28 = [v27 isAppleWatch];
+    mEMORY[0x277CCDD30] = [MEMORY[0x277CCDD30] sharedBehavior];
+    isAppleWatch = [mEMORY[0x277CCDD30] isAppleWatch];
 
-    if (!v14 && (v28 & 1) == 0)
+    if (!alarmCopy && (isAppleWatch & 1) == 0)
     {
       v29 = objc_alloc(MEMORY[0x277D10838]);
       v30 = objc_loadWeakRetained(&v18->_profile);
-      v14 = [v29 initWithProfile:v30 clientIdentifier:@"HDMHAssessmentsNotificationManager" eventHandlerQueue:v18->_queue];
+      alarmCopy = [v29 initWithProfile:v30 clientIdentifier:@"HDMHAssessmentsNotificationManager" eventHandlerQueue:v18->_queue];
     }
 
-    if (v16)
+    if (neededCopy)
     {
-      [(HDMHAssessmentsNotificationManager *)v18 setUnitTest_didEvaluateIfMaintenanceWorkIsNeeded:v16];
+      [(HDMHAssessmentsNotificationManager *)v18 setUnitTest_didEvaluateIfMaintenanceWorkIsNeeded:neededCopy];
     }
 
     v18->_queue_hasEnqueuedMaintenanceWork = 0;
-    objc_storeStrong(&v18->_restorableAlarm, v14);
-    objc_storeStrong(&v18->_settingsManager, a4);
-    objc_storeStrong(&v18->_promptedAssessmentsManager, a6);
-    [v12 registerProfileReadyObserver:v18 queue:v18->_queue];
+    objc_storeStrong(&v18->_restorableAlarm, alarmCopy);
+    objc_storeStrong(&v18->_settingsManager, manager);
+    objc_storeStrong(&v18->_promptedAssessmentsManager, assessmentsManager);
+    [profileCopy registerProfileReadyObserver:v18 queue:v18->_queue];
   }
 
   return v18;
@@ -95,7 +95,7 @@
   }
 
   *buf = 138543618;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   *(buf + 6) = 2114;
   *(buf + 14) = v5;
   _os_log_debug_impl(&dword_258977000, log, OS_LOG_TYPE_DEBUG, "[%{public}@] Assessments notifications enabled: %{public}@", buf, 0x16u);
@@ -120,7 +120,7 @@ void __50__HDMHAssessmentsNotificationManager__queue_start__block_invoke(uint64_
     *buf = 138543618;
     v9 = objc_opt_class();
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v5 = v9;
     _os_log_impl(&dword_258977000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@] Invalidating notification manager: %p", buf, 0x16u);
   }
@@ -133,9 +133,9 @@ void __50__HDMHAssessmentsNotificationManager__queue_start__block_invoke(uint64_
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)scheduledNotificationsWithError:(id *)a3
+- (id)scheduledNotificationsWithError:(id *)error
 {
-  v3 = [(HDRestorableAlarm *)self->_restorableAlarm allScheduledEventsWithError:a3];
+  v3 = [(HDRestorableAlarm *)self->_restorableAlarm allScheduledEventsWithError:error];
   v4 = [v3 hk_map:&__block_literal_global_2];
 
   return v4;
@@ -158,26 +158,26 @@ id __70__HDMHAssessmentsNotificationManager_scheduledNotificationsWithError___bl
   currentDateOverride = self->_currentDateOverride;
   if (currentDateOverride)
   {
-    v3 = currentDateOverride;
+    date = currentDateOverride;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
-  return v3;
+  return date;
 }
 
-- (void)settingsManagerDidUpdateNotificationSettings:(id)a3
+- (void)settingsManagerDidUpdateNotificationSettings:(id)settings
 {
   v13 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
-  v4 = [(HKMHSettingsManager *)self->_settingsManager hasAnyAssessmentNotificationsEnabled];
+  hasAnyAssessmentNotificationsEnabled = [(HKMHSettingsManager *)self->_settingsManager hasAnyAssessmentNotificationsEnabled];
   _HKInitializeLogging();
   v5 = *MEMORY[0x277CCC2F0];
   v6 = os_log_type_enabled(*MEMORY[0x277CCC2F0], OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (hasAnyAssessmentNotificationsEnabled)
   {
     if (v6)
     {
@@ -208,14 +208,14 @@ id __70__HDMHAssessmentsNotificationManager_scheduledNotificationsWithError___bl
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_requestFromAlarmEvent:(id)a3
+- (id)_requestFromAlarmEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 eventIdentifier];
+  eventCopy = event;
+  eventIdentifier = [eventCopy eventIdentifier];
   v5 = *MEMORY[0x277D28038];
-  v6 = [v4 containsString:*MEMORY[0x277D28038]];
+  v6 = [eventIdentifier containsString:*MEMORY[0x277D28038]];
 
-  if (!v6 || (v7 = MEMORY[0x277CE1FC0], [v3 dueDate], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "hkmh_requestForCategoryIdentifier:date:", v5, v8), v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
+  if (!v6 || (v7 = MEMORY[0x277CE1FC0], [eventCopy dueDate], v8 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v7, "hkmh_requestForCategoryIdentifier:date:", v5, v8), v9 = objc_claimAutoreleasedReturnValue(), v8, !v9))
   {
     _HKInitializeLogging();
     if (os_log_type_enabled(*MEMORY[0x277CCC2F0], OS_LOG_TYPE_ERROR))
@@ -229,10 +229,10 @@ id __70__HDMHAssessmentsNotificationManager_scheduledNotificationsWithError___bl
   return v9;
 }
 
-- (void)_queue_alarm:(id)a3 didReceiveDueEvents:(id)a4
+- (void)_queue_alarm:(id)_queue_alarm didReceiveDueEvents:(id)events
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  eventsCopy = events;
   dispatch_assert_queue_V2(self->_queue);
   _HKInitializeLogging();
   v6 = MEMORY[0x277CCC2F0];
@@ -243,22 +243,22 @@ id __70__HDMHAssessmentsNotificationManager_scheduledNotificationsWithError___bl
     v9 = objc_opt_class();
     v10 = MEMORY[0x277CCABB0];
     v11 = v9;
-    v12 = [v10 numberWithUnsignedInteger:{objc_msgSend(v5, "count")}];
+    v12 = [v10 numberWithUnsignedInteger:{objc_msgSend(eventsCopy, "count")}];
     *buf = 138543874;
     v33 = v9;
     v34 = 2114;
     v35 = v12;
     v36 = 2112;
-    v37 = v5;
+    v37 = eventsCopy;
     _os_log_impl(&dword_258977000, v8, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received %{public}@ due events: %@", buf, 0x20u);
   }
 
   v13 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-86400.0];
-  v14 = [v5 firstObject];
+  firstObject = [eventsCopy firstObject];
   if (([(HKMHSettingsManager *)self->_settingsManager hasAnyAssessmentNotificationsEnabled]& 1) != 0)
   {
-    v15 = [v14 currentDueDate];
-    v16 = [v15 hk_isBeforeDate:v13];
+    currentDueDate = [firstObject currentDueDate];
+    v16 = [currentDueDate hk_isBeforeDate:v13];
 
     if (v16)
     {
@@ -271,16 +271,16 @@ id __70__HDMHAssessmentsNotificationManager_scheduledNotificationsWithError___bl
         *buf = 138543618;
         v33 = v19;
         v34 = 2112;
-        v35 = v14;
+        v35 = firstObject;
         v20 = v19;
         _os_log_impl(&dword_258977000, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@] Notification for event was due more than one day ago: %@", buf, 0x16u);
       }
     }
 
-    [(HDMHAssessmentsNotificationManager *)self _removeRelatedDeliveredHDMHNotificationsForEvent:v14];
-    v21 = [(HDMHAssessmentsNotificationManager *)self _requestFromAlarmEvent:v14];
+    [(HDMHAssessmentsNotificationManager *)self _removeRelatedDeliveredHDMHNotificationsForEvent:firstObject];
+    v21 = [(HDMHAssessmentsNotificationManager *)self _requestFromAlarmEvent:firstObject];
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v23 = [WeakRetained notificationManager];
+    notificationManager = [WeakRetained notificationManager];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __71__HDMHAssessmentsNotificationManager__queue_alarm_didReceiveDueEvents___block_invoke;
@@ -288,7 +288,7 @@ id __70__HDMHAssessmentsNotificationManager_scheduledNotificationsWithError___bl
     v30[4] = self;
     v31 = v21;
     v24 = v21;
-    [v23 postNotificationWithRequest:v24 completion:v30];
+    [notificationManager postNotificationWithRequest:v24 completion:v30];
   }
 
   else
@@ -302,7 +302,7 @@ id __70__HDMHAssessmentsNotificationManager_scheduledNotificationsWithError___bl
       *buf = 138543618;
       v33 = v27;
       v34 = 2112;
-      v35 = v14;
+      v35 = firstObject;
       v28 = v27;
       _os_log_impl(&dword_258977000, v26, OS_LOG_TYPE_DEFAULT, "[%{public}@] Skipping sending notification for event; assessment notifications are not enabled and supported: %@", buf, 0x16u);
     }
@@ -380,11 +380,11 @@ void __71__HDMHAssessmentsNotificationManager__queue_alarm_didReceiveDueEvents__
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_triggerImmediateSyncWithReason:(id)a3
+- (void)_triggerImmediateSyncWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained cloudSyncManager];
+  cloudSyncManager = [WeakRetained cloudSyncManager];
   v7 = objc_alloc(MEMORY[0x277CCD140]);
   v8 = [objc_alloc(MEMORY[0x277CCD0C8]) initWithPush:1 pull:0 lite:1];
   v9 = [v7 initWithChangesSyncRequest:v8];
@@ -393,9 +393,9 @@ void __71__HDMHAssessmentsNotificationManager__queue_alarm_didReceiveDueEvents__
   v11[2] = __70__HDMHAssessmentsNotificationManager__triggerImmediateSyncWithReason___block_invoke;
   v11[3] = &unk_2798AAD48;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
-  [v6 syncWithRequest:v9 reason:v10 completion:v11];
+  v12 = reasonCopy;
+  v10 = reasonCopy;
+  [cloudSyncManager syncWithRequest:v9 reason:v10 completion:v11];
 }
 
 void __70__HDMHAssessmentsNotificationManager__triggerImmediateSyncWithReason___block_invoke(uint64_t a1, int a2, void *a3)
@@ -430,12 +430,12 @@ void __70__HDMHAssessmentsNotificationManager__triggerImmediateSyncWithReason___
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeRelatedDeliveredHDMHNotificationsForEvent:(id)a3
+- (void)_removeRelatedDeliveredHDMHNotificationsForEvent:(id)event
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v3 = [WeakRetained notificationManager];
-  v4 = [MEMORY[0x277D28098] assessmentsNotificationCategories];
-  [v3 removeDeliveredNotificationsWithIdentifiers:v4];
+  notificationManager = [WeakRetained notificationManager];
+  assessmentsNotificationCategories = [MEMORY[0x277D28098] assessmentsNotificationCategories];
+  [notificationManager removeDeliveredNotificationsWithIdentifiers:assessmentsNotificationCategories];
 }
 
 - (void)_queue_rescheduleNotifications
@@ -482,10 +482,10 @@ void __68__HDMHAssessmentsNotificationManager__queue_rescheduleNotifications__bl
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   if ([(HKMHSettingsManager *)self->_settingsManager periodicPromptedAssessmentNotificationsEnabled])
   {
-    v4 = [(HDMHAssessmentsNotificationManager *)self _periodicAssessmentEvent];
-    if (v4)
+    _periodicAssessmentEvent = [(HDMHAssessmentsNotificationManager *)self _periodicAssessmentEvent];
+    if (_periodicAssessmentEvent)
     {
-      [v3 addObject:v4];
+      [v3 addObject:_periodicAssessmentEvent];
     }
   }
 
@@ -532,16 +532,16 @@ void __68__HDMHAssessmentsNotificationManager__queue_rescheduleNotifications__bl
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)profileDidBecomeReady:(id)a3
+- (void)profileDidBecomeReady:(id)ready
 {
   queue = self->_queue;
-  v5 = a3;
+  readyCopy = ready;
   dispatch_assert_queue_V2(queue);
   [(HDMHAssessmentsNotificationManager *)self _queue_start];
-  v6 = [v5 database];
+  database = [readyCopy database];
 
-  LODWORD(v5) = [v6 isProtectedDataAvailable];
-  if (v5)
+  LODWORD(readyCopy) = [database isProtectedDataAvailable];
+  if (readyCopy)
   {
 
     [(HDMHAssessmentsNotificationManager *)self _queue_enqueueMaintenanceRemovalIfNeeded];
@@ -550,14 +550,14 @@ void __68__HDMHAssessmentsNotificationManager__queue_rescheduleNotifications__bl
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v8 = [WeakRetained database];
+    database2 = [WeakRetained database];
     v9 = self->_queue;
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __60__HDMHAssessmentsNotificationManager_profileDidBecomeReady___block_invoke;
     v10[3] = &unk_2798AAB58;
     v10[4] = self;
-    [v8 performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:v9 block:v10];
+    [database2 performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:v9 block:v10];
   }
 }
 
@@ -573,7 +573,7 @@ void __68__HDMHAssessmentsNotificationManager__queue_rescheduleNotifications__bl
   else
   {
     v3 = MEMORY[0x277D10748];
-    v4 = [(HDMHAssessmentsNotificationManager *)self maintenanceOperationName];
+    maintenanceOperationName = [(HDMHAssessmentsNotificationManager *)self maintenanceOperationName];
     queue = self->_queue;
     v10[4] = self;
     v11[0] = MEMORY[0x277D85DD0];
@@ -585,12 +585,12 @@ void __68__HDMHAssessmentsNotificationManager__queue_rescheduleNotifications__bl
     v10[1] = 3221225472;
     v10[2] = __78__HDMHAssessmentsNotificationManager__queue_enqueueMaintenanceRemovalIfNeeded__block_invoke_2;
     v10[3] = &unk_2798AAB58;
-    v6 = [v3 maintenanceOperationWithName:v4 queue:queue synchronousBlock:v11 canceledBlock:v10];
+    v6 = [v3 maintenanceOperationWithName:maintenanceOperationName queue:queue synchronousBlock:v11 canceledBlock:v10];
 
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v8 = [WeakRetained daemon];
-    v9 = [v8 maintenanceWorkCoordinator];
-    [v9 enqueueMaintenanceOperation:v6];
+    daemon = [WeakRetained daemon];
+    maintenanceWorkCoordinator = [daemon maintenanceWorkCoordinator];
+    [maintenanceWorkCoordinator enqueueMaintenanceOperation:v6];
 
     self->_queue_hasEnqueuedMaintenanceWork = 1;
     [(HDMHAssessmentsNotificationManager *)self _unitTest_notifyDidEvaluateIfMaintenanceWorkIsNeeded:1];
@@ -626,7 +626,7 @@ void __78__HDMHAssessmentsNotificationManager__queue_enqueueMaintenanceRemovalIf
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)promptedAssessmentsManagerDidUpdatePromptedAssessments:(id)a3
+- (void)promptedAssessmentsManagerDidUpdatePromptedAssessments:(id)assessments
 {
   v10 = *MEMORY[0x277D85DE8];
   _HKInitializeLogging();
@@ -645,7 +645,7 @@ void __78__HDMHAssessmentsNotificationManager__queue_enqueueMaintenanceRemovalIf
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_nextBehaviorBasedDateWithError:(id *)a3
+- (id)_nextBehaviorBasedDateWithError:(id *)error
 {
   promptedAssessmentsManager = self->_promptedAssessmentsManager;
   v12 = 0;
@@ -659,31 +659,31 @@ void __78__HDMHAssessmentsNotificationManager__queue_enqueueMaintenanceRemovalIf
       [HDMHAssessmentsNotificationManager _nextBehaviorBasedDateWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       v7 = v6;
-      v8 = 0;
-      *a3 = v6;
+      eligibilityStartDate = 0;
+      *error = v6;
     }
 
     else
     {
       _HKLogDroppedError();
-      v8 = 0;
+      eligibilityStartDate = 0;
     }
   }
 
   else
   {
     v9 = [v5 hk_filter:&__block_literal_global_328];
-    v10 = [v9 firstObject];
-    v8 = [v10 eligibilityStartDate];
+    firstObject = [v9 firstObject];
+    eligibilityStartDate = [firstObject eligibilityStartDate];
   }
 
-  return v8;
+  return eligibilityStartDate;
 }
 
-- (id)_nextRegularlyScheduledDateWithError:(id *)a3
+- (id)_nextRegularlyScheduledDateWithError:(id *)error
 {
   assessmentNotificationStateKeyValueDomain = self->_assessmentNotificationStateKeyValueDomain;
   v18 = 0;
@@ -708,11 +708,11 @@ void __78__HDMHAssessmentsNotificationManager__queue_enqueueMaintenanceRemovalIf
       [HDMHAssessmentsNotificationManager _nextRegularlyScheduledDateWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       v14 = v8;
       v15 = 0;
-      *a3 = v8;
+      *error = v8;
       goto LABEL_20;
     }
 
@@ -739,10 +739,10 @@ LABEL_17:
       [HDMHAssessmentsNotificationManager _nextRegularlyScheduledDateWithError:];
     }
 
-    if (a3)
+    if (error)
     {
       v12 = v8;
-      *a3 = v8;
+      *error = v8;
     }
 
     else
@@ -815,15 +815,15 @@ LABEL_20:
 
       if (v8)
       {
-        v14 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-        v15 = [(HKMHSettingsManager *)self->_settingsManager periodicPromptedAssessmentNotificationTimeOfDay];
-        v16 = [v14 dateBySettingHour:objc_msgSend(v15 minute:"hour") second:objc_msgSend(v15 ofDate:"minute") options:{objc_msgSend(v15, "second"), v8, 0}];
+        hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+        periodicPromptedAssessmentNotificationTimeOfDay = [(HKMHSettingsManager *)self->_settingsManager periodicPromptedAssessmentNotificationTimeOfDay];
+        v16 = [hk_gregorianCalendar dateBySettingHour:objc_msgSend(periodicPromptedAssessmentNotificationTimeOfDay minute:"hour") second:objc_msgSend(periodicPromptedAssessmentNotificationTimeOfDay ofDate:"minute") options:{objc_msgSend(periodicPromptedAssessmentNotificationTimeOfDay, "second"), v8, 0}];
         v17 = [HDMHNotification alloc];
-        v18 = [v8 hk_dayIndexWithCalendar:v14];
-        v19 = [(HDMHNotification *)v17 initWithFireOnDayIndex:v18 dateComponents:v15 category:*MEMORY[0x277D28038]];
+        v18 = [v8 hk_dayIndexWithCalendar:hk_gregorianCalendar];
+        v19 = [(HDMHNotification *)v17 initWithFireOnDayIndex:v18 dateComponents:periodicPromptedAssessmentNotificationTimeOfDay category:*MEMORY[0x277D28038]];
         restorableAlarm = self->_restorableAlarm;
-        v21 = [(HDMHNotification *)v19 eventIdentifier];
-        v6 = [(HDRestorableAlarm *)restorableAlarm eventWithIdentifier:v21 dueDate:v16 eventOptions:0];
+        eventIdentifier = [(HDMHNotification *)v19 eventIdentifier];
+        v6 = [(HDRestorableAlarm *)restorableAlarm eventWithIdentifier:eventIdentifier dueDate:v16 eventOptions:0];
       }
 
       else

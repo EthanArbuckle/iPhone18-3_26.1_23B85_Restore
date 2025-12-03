@@ -1,6 +1,6 @@
 @interface TRIPersistentUserSettings
-+ (id)settingsWithKeyValueStore:(id)a3;
-- (TRIPersistentUserSettings)initWithKeyValueStore:(id)a3;
++ (id)settingsWithKeyValueStore:(id)store;
+- (TRIPersistentUserSettings)initWithKeyValueStore:(id)store;
 - (id)persistedActiveDictationLocales;
 - (id)persistedMapsBucketId;
 - (id)persistedMapsDeviceCountryCode;
@@ -9,46 +9,46 @@
 - (unsigned)persistedDiagnosticsUsageEnabled;
 - (unsigned)persistedIsSiriEnabled;
 - (unsigned)persistedOptOutStatus;
-- (void)persistAIState:(int64_t)a3;
-- (void)persistActiveDictationLocales:(id)a3;
-- (void)persistDiagnosticsUsageEnabled:(unsigned __int8)a3;
-- (void)persistIsSiriEnabled:(unsigned __int8)a3;
-- (void)persistMapsBucketId:(id)a3;
-- (void)persistMapsDeviceCountryCode:(id)a3;
-- (void)persistOptOutStatus:(unsigned __int8)a3;
-- (void)persistSiriLocale:(id)a3;
+- (void)persistAIState:(int64_t)state;
+- (void)persistActiveDictationLocales:(id)locales;
+- (void)persistDiagnosticsUsageEnabled:(unsigned __int8)enabled;
+- (void)persistIsSiriEnabled:(unsigned __int8)enabled;
+- (void)persistMapsBucketId:(id)id;
+- (void)persistMapsDeviceCountryCode:(id)code;
+- (void)persistOptOutStatus:(unsigned __int8)status;
+- (void)persistSiriLocale:(id)locale;
 @end
 
 @implementation TRIPersistentUserSettings
 
-- (TRIPersistentUserSettings)initWithKeyValueStore:(id)a3
+- (TRIPersistentUserSettings)initWithKeyValueStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v9.receiver = self;
   v9.super_class = TRIPersistentUserSettings;
   v6 = [(TRIPersistentUserSettings *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_keyValueStore, a3);
+    objc_storeStrong(&v6->_keyValueStore, store);
   }
 
   return v7;
 }
 
-+ (id)settingsWithKeyValueStore:(id)a3
++ (id)settingsWithKeyValueStore:(id)store
 {
-  v3 = a3;
-  v4 = [[TRIPersistentUserSettings alloc] initWithKeyValueStore:v3];
+  storeCopy = store;
+  v4 = [[TRIPersistentUserSettings alloc] initWithKeyValueStore:storeCopy];
 
   return v4;
 }
 
 - (unsigned)persistedOptOutStatus
 {
-  v3 = [(TRIPersistentUserSettings *)self keyValueStore];
+  keyValueStore = [(TRIPersistentUserSettings *)self keyValueStore];
 
-  if (!v3)
+  if (!keyValueStore)
   {
     v5 = TRILogCategory_Server();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -60,8 +60,8 @@
     goto LABEL_9;
   }
 
-  v4 = [(TRIPersistentUserSettings *)self keyValueStore];
-  v5 = [v4 blobForKey:@"com.apple.triald.optout.experiment" usingTransaction:0];
+  keyValueStore2 = [(TRIPersistentUserSettings *)self keyValueStore];
+  v5 = [keyValueStore2 blobForKey:@"com.apple.triald.optout.experiment" usingTransaction:0];
 
   if (![v5 length])
   {
@@ -83,19 +83,19 @@ LABEL_10:
   return v6;
 }
 
-- (void)persistOptOutStatus:(unsigned __int8)a3
+- (void)persistOptOutStatus:(unsigned __int8)status
 {
-  v10 = a3;
-  v4 = [MEMORY[0x277CBEA90] dataWithBytes:&v10 length:1];
-  v5 = [(TRIPersistentUserSettings *)self keyValueStore];
+  statusCopy = status;
+  v4 = [MEMORY[0x277CBEA90] dataWithBytes:&statusCopy length:1];
+  keyValueStore = [(TRIPersistentUserSettings *)self keyValueStore];
 
-  if (v5)
+  if (keyValueStore)
   {
     if (v4)
     {
 LABEL_3:
-      v6 = [(TRIPersistentUserSettings *)self keyValueStore];
-      [v6 setBlob:v4 forKey:@"com.apple.triald.optout.experiment" usingTransaction:0];
+      keyValueStore2 = [(TRIPersistentUserSettings *)self keyValueStore];
+      [keyValueStore2 setBlob:v4 forKey:@"com.apple.triald.optout.experiment" usingTransaction:0];
       goto LABEL_9;
     }
   }
@@ -115,11 +115,11 @@ LABEL_3:
     }
   }
 
-  v6 = TRILogCategory_Server();
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  keyValueStore2 = TRILogCategory_Server();
+  if (os_log_type_enabled(keyValueStore2, OS_LOG_TYPE_ERROR))
   {
     *v8 = 0;
-    _os_log_error_impl(&dword_26F567000, v6, OS_LOG_TYPE_ERROR, "Data to be persisted for opt-out status was nil", v8, 2u);
+    _os_log_error_impl(&dword_26F567000, keyValueStore2, OS_LOG_TYPE_ERROR, "Data to be persisted for opt-out status was nil", v8, 2u);
   }
 
 LABEL_9:
@@ -127,9 +127,9 @@ LABEL_9:
 
 - (unsigned)persistedIsSiriEnabled
 {
-  v3 = [(TRIPersistentUserSettings *)self keyValueStore];
+  keyValueStore = [(TRIPersistentUserSettings *)self keyValueStore];
 
-  if (!v3)
+  if (!keyValueStore)
   {
     v5 = TRILogCategory_Server();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -141,8 +141,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v4 = [(TRIPersistentUserSettings *)self keyValueStore];
-  v5 = [v4 blobForKey:@"com.apple.triald.persisted.userSettingsIsSiriEnabled" usingTransaction:0];
+  keyValueStore2 = [(TRIPersistentUserSettings *)self keyValueStore];
+  v5 = [keyValueStore2 blobForKey:@"com.apple.triald.persisted.userSettingsIsSiriEnabled" usingTransaction:0];
 
   if (![v5 length])
   {
@@ -164,19 +164,19 @@ LABEL_10:
   return v6;
 }
 
-- (void)persistIsSiriEnabled:(unsigned __int8)a3
+- (void)persistIsSiriEnabled:(unsigned __int8)enabled
 {
-  v10 = a3;
-  v4 = [MEMORY[0x277CBEA90] dataWithBytes:&v10 length:1];
-  v5 = [(TRIPersistentUserSettings *)self keyValueStore];
+  enabledCopy = enabled;
+  v4 = [MEMORY[0x277CBEA90] dataWithBytes:&enabledCopy length:1];
+  keyValueStore = [(TRIPersistentUserSettings *)self keyValueStore];
 
-  if (v5)
+  if (keyValueStore)
   {
     if (v4)
     {
 LABEL_3:
-      v6 = [(TRIPersistentUserSettings *)self keyValueStore];
-      [v6 setBlob:v4 forKey:@"com.apple.triald.persisted.userSettingsIsSiriEnabled" usingTransaction:0];
+      keyValueStore2 = [(TRIPersistentUserSettings *)self keyValueStore];
+      [keyValueStore2 setBlob:v4 forKey:@"com.apple.triald.persisted.userSettingsIsSiriEnabled" usingTransaction:0];
       goto LABEL_9;
     }
   }
@@ -196,11 +196,11 @@ LABEL_3:
     }
   }
 
-  v6 = TRILogCategory_Server();
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  keyValueStore2 = TRILogCategory_Server();
+  if (os_log_type_enabled(keyValueStore2, OS_LOG_TYPE_ERROR))
   {
     *v8 = 0;
-    _os_log_error_impl(&dword_26F567000, v6, OS_LOG_TYPE_ERROR, "Data to be persisted for siri enablement was nil", v8, 2u);
+    _os_log_error_impl(&dword_26F567000, keyValueStore2, OS_LOG_TYPE_ERROR, "Data to be persisted for siri enablement was nil", v8, 2u);
   }
 
 LABEL_9:
@@ -209,12 +209,12 @@ LABEL_9:
 - (id)persistedSiriLocale
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(TRIPersistentUserSettings *)self keyValueStore];
+  keyValueStore = [(TRIPersistentUserSettings *)self keyValueStore];
 
-  if (v3)
+  if (keyValueStore)
   {
-    v4 = [(TRIPersistentUserSettings *)self keyValueStore];
-    v5 = [v4 blobForKey:@"com.apple.triald.persisted.userSettingsSiriLocale" usingTransaction:0];
+    keyValueStore2 = [(TRIPersistentUserSettings *)self keyValueStore];
+    v5 = [keyValueStore2 blobForKey:@"com.apple.triald.persisted.userSettingsSiriLocale" usingTransaction:0];
 
     if (v5 && [v5 length])
     {
@@ -281,19 +281,19 @@ LABEL_9:
   return v12;
 }
 
-- (void)persistSiriLocale:(id)a3
+- (void)persistSiriLocale:(id)locale
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  localeCopy = locale;
+  if (!localeCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"TRIPersistentUserSettings.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"siriLocale"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIPersistentUserSettings.m" lineNumber:122 description:{@"Invalid parameter not satisfying: %@", @"siriLocale"}];
   }
 
-  v6 = [(TRIPersistentUserSettings *)self keyValueStore];
+  keyValueStore = [(TRIPersistentUserSettings *)self keyValueStore];
 
-  if (!v6)
+  if (!keyValueStore)
   {
     v7 = TRILogCategory_Server();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -304,37 +304,37 @@ LABEL_9:
   }
 
   v16 = 0;
-  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v5 requiringSecureCoding:0 error:&v16];
+  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:localeCopy requiringSecureCoding:0 error:&v16];
   v9 = v16;
   if (!v9)
   {
     if (v8)
     {
-      v10 = [(TRIPersistentUserSettings *)self keyValueStore];
-      [v10 setBlob:v8 forKey:@"com.apple.triald.persisted.userSettingsSiriLocale" usingTransaction:0];
+      keyValueStore2 = [(TRIPersistentUserSettings *)self keyValueStore];
+      [keyValueStore2 setBlob:v8 forKey:@"com.apple.triald.persisted.userSettingsSiriLocale" usingTransaction:0];
       goto LABEL_14;
     }
 
-    v10 = TRILogCategory_Server();
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    keyValueStore2 = TRILogCategory_Server();
+    if (!os_log_type_enabled(keyValueStore2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_14;
     }
 
     *buf = 0;
     v11 = "Data to be persisted for siri locale was nil";
-    v12 = v10;
+    v12 = keyValueStore2;
     v13 = 2;
     goto LABEL_10;
   }
 
-  v10 = TRILogCategory_Server();
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  keyValueStore2 = TRILogCategory_Server();
+  if (os_log_type_enabled(keyValueStore2, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
     v18 = v9;
     v11 = "Unable to archive siri locale from Trial persisted storage, encountered: %@";
-    v12 = v10;
+    v12 = keyValueStore2;
     v13 = 12;
 LABEL_10:
     _os_log_error_impl(&dword_26F567000, v12, OS_LOG_TYPE_ERROR, v11, buf, v13);
@@ -348,8 +348,8 @@ LABEL_14:
 - (id)persistedActiveDictationLocales
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(TRIPersistentUserSettings *)self keyValueStore];
-  v3 = [v2 blobForKey:@"com.apple.triald.persisted.activeDictationLocales" usingTransaction:0];
+  keyValueStore = [(TRIPersistentUserSettings *)self keyValueStore];
+  v3 = [keyValueStore blobForKey:@"com.apple.triald.persisted.activeDictationLocales" usingTransaction:0];
 
   if (v3 && [v3 length])
   {
@@ -405,41 +405,41 @@ LABEL_14:
   return v12;
 }
 
-- (void)persistActiveDictationLocales:(id)a3
+- (void)persistActiveDictationLocales:(id)locales
 {
   v14 = *MEMORY[0x277D85DE8];
   v11 = 0;
-  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a3 requiringSecureCoding:0 error:&v11];
+  v4 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:locales requiringSecureCoding:0 error:&v11];
   v5 = v11;
   if (!v5)
   {
     if (v4)
     {
-      v6 = [(TRIPersistentUserSettings *)self keyValueStore];
-      [v6 setBlob:v4 forKey:@"com.apple.triald.persisted.activeDictationLocales" usingTransaction:0];
+      keyValueStore = [(TRIPersistentUserSettings *)self keyValueStore];
+      [keyValueStore setBlob:v4 forKey:@"com.apple.triald.persisted.activeDictationLocales" usingTransaction:0];
       goto LABEL_8;
     }
 
-    v6 = TRILogCategory_Server();
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+    keyValueStore = TRILogCategory_Server();
+    if (!os_log_type_enabled(keyValueStore, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_8;
     }
 
     *buf = 0;
     v7 = "Data to be persisted for dictation locales was nil";
-    v8 = v6;
+    v8 = keyValueStore;
     v9 = 2;
     goto LABEL_4;
   }
 
-  v6 = TRILogCategory_Server();
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  keyValueStore = TRILogCategory_Server();
+  if (os_log_type_enabled(keyValueStore, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
     v13 = v5;
     v7 = "Unable to archive dictation locales from Trial persisted storage, encountered: %@";
-    v8 = v6;
+    v8 = keyValueStore;
     v9 = 12;
 LABEL_4:
     _os_log_error_impl(&dword_26F567000, v8, OS_LOG_TYPE_ERROR, v7, buf, v9);
@@ -452,9 +452,9 @@ LABEL_8:
 
 - (unsigned)persistedDiagnosticsUsageEnabled
 {
-  v3 = [(TRIPersistentUserSettings *)self keyValueStore];
+  keyValueStore = [(TRIPersistentUserSettings *)self keyValueStore];
 
-  if (!v3)
+  if (!keyValueStore)
   {
     v5 = TRILogCategory_Server();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -466,8 +466,8 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v4 = [(TRIPersistentUserSettings *)self keyValueStore];
-  v5 = [v4 blobForKey:@"com.apple.triald.persisted.diagnosticsUsageEnabled" usingTransaction:0];
+  keyValueStore2 = [(TRIPersistentUserSettings *)self keyValueStore];
+  v5 = [keyValueStore2 blobForKey:@"com.apple.triald.persisted.diagnosticsUsageEnabled" usingTransaction:0];
 
   if (![v5 length])
   {
@@ -489,19 +489,19 @@ LABEL_10:
   return v6;
 }
 
-- (void)persistDiagnosticsUsageEnabled:(unsigned __int8)a3
+- (void)persistDiagnosticsUsageEnabled:(unsigned __int8)enabled
 {
-  v10 = a3;
-  v4 = [MEMORY[0x277CBEA90] dataWithBytes:&v10 length:1];
-  v5 = [(TRIPersistentUserSettings *)self keyValueStore];
+  enabledCopy = enabled;
+  v4 = [MEMORY[0x277CBEA90] dataWithBytes:&enabledCopy length:1];
+  keyValueStore = [(TRIPersistentUserSettings *)self keyValueStore];
 
-  if (v5)
+  if (keyValueStore)
   {
     if (v4)
     {
 LABEL_3:
-      v6 = [(TRIPersistentUserSettings *)self keyValueStore];
-      [v6 setBlob:v4 forKey:@"com.apple.triald.persisted.diagnosticsUsageEnabled" usingTransaction:0];
+      keyValueStore2 = [(TRIPersistentUserSettings *)self keyValueStore];
+      [keyValueStore2 setBlob:v4 forKey:@"com.apple.triald.persisted.diagnosticsUsageEnabled" usingTransaction:0];
       goto LABEL_9;
     }
   }
@@ -521,11 +521,11 @@ LABEL_3:
     }
   }
 
-  v6 = TRILogCategory_Server();
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  keyValueStore2 = TRILogCategory_Server();
+  if (os_log_type_enabled(keyValueStore2, OS_LOG_TYPE_ERROR))
   {
     *v8 = 0;
-    _os_log_error_impl(&dword_26F567000, v6, OS_LOG_TYPE_ERROR, "Data to be persisted for diagnostics and usage was nil", v8, 2u);
+    _os_log_error_impl(&dword_26F567000, keyValueStore2, OS_LOG_TYPE_ERROR, "Data to be persisted for diagnostics and usage was nil", v8, 2u);
   }
 
 LABEL_9:
@@ -534,9 +534,9 @@ LABEL_9:
 - (int64_t)persistedAIState
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(TRIPersistentUserSettings *)self keyValueStore];
+  keyValueStore = [(TRIPersistentUserSettings *)self keyValueStore];
 
-  if (!v3)
+  if (!keyValueStore)
   {
     v5 = TRILogCategory_Server();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -548,8 +548,8 @@ LABEL_9:
     goto LABEL_14;
   }
 
-  v4 = [(TRIPersistentUserSettings *)self keyValueStore];
-  v5 = [v4 blobForKey:@"com.apple.triald.persisted.AIState" usingTransaction:0];
+  keyValueStore2 = [(TRIPersistentUserSettings *)self keyValueStore];
+  v5 = [keyValueStore2 blobForKey:@"com.apple.triald.persisted.AIState" usingTransaction:0];
 
   if (!v5 || ![v5 length])
   {
@@ -588,19 +588,19 @@ LABEL_15:
   return v6;
 }
 
-- (void)persistAIState:(int64_t)a3
+- (void)persistAIState:(int64_t)state
 {
-  v10 = a3;
-  v4 = [MEMORY[0x277CBEA90] dataWithBytes:&v10 length:8];
-  v5 = [(TRIPersistentUserSettings *)self keyValueStore];
+  stateCopy = state;
+  v4 = [MEMORY[0x277CBEA90] dataWithBytes:&stateCopy length:8];
+  keyValueStore = [(TRIPersistentUserSettings *)self keyValueStore];
 
-  if (v5)
+  if (keyValueStore)
   {
     if (v4)
     {
 LABEL_3:
-      v6 = [(TRIPersistentUserSettings *)self keyValueStore];
-      [v6 setBlob:v4 forKey:@"com.apple.triald.persisted.AIState" usingTransaction:0];
+      keyValueStore2 = [(TRIPersistentUserSettings *)self keyValueStore];
+      [keyValueStore2 setBlob:v4 forKey:@"com.apple.triald.persisted.AIState" usingTransaction:0];
       goto LABEL_9;
     }
   }
@@ -620,11 +620,11 @@ LABEL_3:
     }
   }
 
-  v6 = TRILogCategory_Server();
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
+  keyValueStore2 = TRILogCategory_Server();
+  if (os_log_type_enabled(keyValueStore2, OS_LOG_TYPE_ERROR))
   {
     *v8 = 0;
-    _os_log_error_impl(&dword_26F567000, v6, OS_LOG_TYPE_ERROR, "Data to be persisted for Apple Intelligence and usage was nil", v8, 2u);
+    _os_log_error_impl(&dword_26F567000, keyValueStore2, OS_LOG_TYPE_ERROR, "Data to be persisted for Apple Intelligence and usage was nil", v8, 2u);
   }
 
 LABEL_9:
@@ -633,8 +633,8 @@ LABEL_9:
 - (id)persistedMapsBucketId
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [(TRIPersistentUserSettings *)self keyValueStore];
-  v3 = [v2 blobForKey:@"com.apple.triald.persisted.Maps.BucketId" usingTransaction:0];
+  keyValueStore = [(TRIPersistentUserSettings *)self keyValueStore];
+  v3 = [keyValueStore blobForKey:@"com.apple.triald.persisted.Maps.BucketId" usingTransaction:0];
 
   if (v3 && [v3 length])
   {
@@ -683,19 +683,19 @@ LABEL_9:
   return v9;
 }
 
-- (void)persistMapsBucketId:(id)a3
+- (void)persistMapsBucketId:(id)id
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  idCopy = id;
+  if (!idCopy)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"TRIPersistentUserSettings.m" lineNumber:255 description:{@"Invalid parameter not satisfying: %@", @"mapsBucketId != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIPersistentUserSettings.m" lineNumber:255 description:{@"Invalid parameter not satisfying: %@", @"mapsBucketId != nil"}];
   }
 
-  v6 = [(TRIPersistentUserSettings *)self keyValueStore];
+  keyValueStore = [(TRIPersistentUserSettings *)self keyValueStore];
 
-  if (!v6)
+  if (!keyValueStore)
   {
     v7 = TRILogCategory_Server();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -706,37 +706,37 @@ LABEL_9:
   }
 
   v16 = 0;
-  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v5 requiringSecureCoding:0 error:&v16];
+  v8 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:idCopy requiringSecureCoding:0 error:&v16];
   v9 = v16;
   if (!v9)
   {
     if (v8)
     {
-      v10 = [(TRIPersistentUserSettings *)self keyValueStore];
-      [v10 setBlob:v8 forKey:@"com.apple.triald.persisted.Maps.BucketId" usingTransaction:0];
+      keyValueStore2 = [(TRIPersistentUserSettings *)self keyValueStore];
+      [keyValueStore2 setBlob:v8 forKey:@"com.apple.triald.persisted.Maps.BucketId" usingTransaction:0];
       goto LABEL_14;
     }
 
-    v10 = TRILogCategory_Server();
-    if (!os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    keyValueStore2 = TRILogCategory_Server();
+    if (!os_log_type_enabled(keyValueStore2, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_14;
     }
 
     *buf = 0;
     v11 = "Data to be persisted for maps bucket id was nil";
-    v12 = v10;
+    v12 = keyValueStore2;
     v13 = 2;
     goto LABEL_10;
   }
 
-  v10 = TRILogCategory_Server();
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+  keyValueStore2 = TRILogCategory_Server();
+  if (os_log_type_enabled(keyValueStore2, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
     v18 = v9;
     v11 = "Unable to archive maps bucket id from Trial persisted storage, encountered: %@";
-    v12 = v10;
+    v12 = keyValueStore2;
     v13 = 12;
 LABEL_10:
     _os_log_error_impl(&dword_26F567000, v12, OS_LOG_TYPE_ERROR, v11, buf, v13);
@@ -750,8 +750,8 @@ LABEL_14:
 - (id)persistedMapsDeviceCountryCode
 {
   v17 = *MEMORY[0x277D85DE8];
-  v2 = [(TRIPersistentUserSettings *)self keyValueStore];
-  v3 = [v2 blobForKey:@"com.apple.triald.persisted.Maps.DeviceCountryCode" usingTransaction:0];
+  keyValueStore = [(TRIPersistentUserSettings *)self keyValueStore];
+  v3 = [keyValueStore blobForKey:@"com.apple.triald.persisted.Maps.DeviceCountryCode" usingTransaction:0];
 
   if (v3 && [v3 length])
   {
@@ -805,33 +805,33 @@ LABEL_14:
   return v10;
 }
 
-- (void)persistMapsDeviceCountryCode:(id)a3
+- (void)persistMapsDeviceCountryCode:(id)code
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  codeCopy = code;
+  if (!codeCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"TRIPersistentUserSettings.m" lineNumber:292 description:{@"Invalid parameter not satisfying: %@", @"countryCode"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIPersistentUserSettings.m" lineNumber:292 description:{@"Invalid parameter not satisfying: %@", @"countryCode"}];
   }
 
   v11 = 0;
-  v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v5 requiringSecureCoding:0 error:&v11];
+  v6 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:codeCopy requiringSecureCoding:0 error:&v11];
   v7 = v11;
   if (v6)
   {
-    v8 = [(TRIPersistentUserSettings *)self keyValueStore];
-    [v8 setBlob:v6 forKey:@"com.apple.triald.persisted.Maps.DeviceCountryCode" usingTransaction:0];
+    keyValueStore = [(TRIPersistentUserSettings *)self keyValueStore];
+    [keyValueStore setBlob:v6 forKey:@"com.apple.triald.persisted.Maps.DeviceCountryCode" usingTransaction:0];
   }
 
   else
   {
-    v8 = TRILogCategory_Server();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    keyValueStore = TRILogCategory_Server();
+    if (os_log_type_enabled(keyValueStore, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
       v13 = v7;
-      _os_log_error_impl(&dword_26F567000, v8, OS_LOG_TYPE_ERROR, "Data to be persisted for Maps country code was nil, encountered: %@", buf, 0xCu);
+      _os_log_error_impl(&dword_26F567000, keyValueStore, OS_LOG_TYPE_ERROR, "Data to be persisted for Maps country code was nil, encountered: %@", buf, 0xCu);
     }
   }
 

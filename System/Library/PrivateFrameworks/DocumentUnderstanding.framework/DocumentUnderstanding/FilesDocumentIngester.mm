@@ -1,11 +1,11 @@
 @interface FilesDocumentIngester
-+ (id)getEffectiveFileExtensionForURLWithFileURL:(id)a3;
-+ (id)readTextFromImageOn:(id)a3;
++ (id)getEffectiveFileExtensionForURLWithFileURL:(id)l;
++ (id)readTextFromImageOn:(id)on;
 @end
 
 @implementation FilesDocumentIngester
 
-+ (id)getEffectiveFileExtensionForURLWithFileURL:(id)a3
++ (id)getEffectiveFileExtensionForURLWithFileURL:(id)l
 {
   v3 = sub_232CE8C00();
   v4 = *(v3 - 8);
@@ -20,7 +20,7 @@
   return v8;
 }
 
-+ (id)readTextFromImageOn:(id)a3
++ (id)readTextFromImageOn:(id)on
 {
   sub_232CE9D50();
   static FilesDocumentIngester.readTextFromImage(on:)();

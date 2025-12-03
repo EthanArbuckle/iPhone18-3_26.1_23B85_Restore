@@ -1,38 +1,38 @@
 @interface SBShelfIconBounceTransitionModifier
 - (CGRect)bounceIconInitialFrame;
-- (SBShelfIconBounceTransitionModifier)initWithTransitionID:(id)a3 shelf:(id)a4;
-- (unint64_t)bounceIconGenerationCountForCurrentCount:(unint64_t)a3;
+- (SBShelfIconBounceTransitionModifier)initWithTransitionID:(id)d shelf:(id)shelf;
+- (unint64_t)bounceIconGenerationCountForCurrentCount:(unint64_t)count;
 @end
 
 @implementation SBShelfIconBounceTransitionModifier
 
-- (SBShelfIconBounceTransitionModifier)initWithTransitionID:(id)a3 shelf:(id)a4
+- (SBShelfIconBounceTransitionModifier)initWithTransitionID:(id)d shelf:(id)shelf
 {
-  v7 = a4;
+  shelfCopy = shelf;
   v11.receiver = self;
   v11.super_class = SBShelfIconBounceTransitionModifier;
-  v8 = [(SBTransitionSwitcherModifier *)&v11 initWithTransitionID:a3];
+  v8 = [(SBTransitionSwitcherModifier *)&v11 initWithTransitionID:d];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_shelf, a4);
+    objc_storeStrong(&v8->_shelf, shelf);
   }
 
   return v9;
 }
 
-- (unint64_t)bounceIconGenerationCountForCurrentCount:(unint64_t)a3
+- (unint64_t)bounceIconGenerationCountForCurrentCount:(unint64_t)count
 {
   [(SBShelfIconBounceTransitionModifier *)self presentationAttributesForShelf:self->_shelf];
   v5 = v8;
   if ([(SBTransitionSwitcherModifier *)self transitionPhase]== 1 && v5 == 1)
   {
-    return a3 + 1;
+    return count + 1;
   }
 
   else
   {
-    return a3;
+    return count;
   }
 }
 

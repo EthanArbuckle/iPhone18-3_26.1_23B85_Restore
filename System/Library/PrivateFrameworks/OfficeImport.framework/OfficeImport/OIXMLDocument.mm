@@ -1,7 +1,7 @@
 @interface OIXMLDocument
-- (OIXMLDocument)initWithRootElement:(id)a3;
+- (OIXMLDocument)initWithRootElement:(id)element;
 - (id)XMLString;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)createMutableXMLString;
 @end
 
@@ -9,9 +9,9 @@
 
 - (id)XMLString
 {
-  v2 = [(OIXMLDocument *)self createMutableXMLString];
+  createMutableXMLString = [(OIXMLDocument *)self createMutableXMLString];
 
-  return v2;
+  return createMutableXMLString;
 }
 
 - (id)createMutableXMLString
@@ -21,34 +21,34 @@
   return v3;
 }
 
-- (OIXMLDocument)initWithRootElement:(id)a3
+- (OIXMLDocument)initWithRootElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = OIXMLDocument;
   v5 = [(OIXMLDocument *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(OIXMLDocument *)v5 setRootElement:v4];
+    [(OIXMLDocument *)v5 setRootElement:elementCopy];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [OIXMLDocument alloc];
-  v6 = [(OIXMLElement *)self->_rootElement copyWithZone:a3];
+  v6 = [(OIXMLElement *)self->_rootElement copyWithZone:zone];
   v7 = [(OIXMLDocument *)v5 initWithRootElement:v6];
 
-  v8 = [(OIXMLDocument *)self version];
-  [(OIXMLDocument *)v7 setVersion:v8];
+  version = [(OIXMLDocument *)self version];
+  [(OIXMLDocument *)v7 setVersion:version];
 
-  v9 = [(OIXMLDocument *)self characterEncoding];
-  [(OIXMLDocument *)v7 setCharacterEncoding:v9];
+  characterEncoding = [(OIXMLDocument *)self characterEncoding];
+  [(OIXMLDocument *)v7 setCharacterEncoding:characterEncoding];
 
-  v10 = [(NSString *)self->_encoding copyWithZone:a3];
+  v10 = [(NSString *)self->_encoding copyWithZone:zone];
   encoding = v7->_encoding;
   v7->_encoding = v10;
 

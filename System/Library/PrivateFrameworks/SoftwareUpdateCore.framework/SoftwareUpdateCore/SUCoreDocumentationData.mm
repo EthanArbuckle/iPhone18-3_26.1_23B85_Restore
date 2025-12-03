@@ -1,35 +1,35 @@
 @interface SUCoreDocumentationData
-- (SUCoreDocumentationData)initWithCoder:(id)a3;
-- (SUCoreDocumentationData)initWithDocumentationDataDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SUCoreDocumentationData)initWithCoder:(id)coder;
+- (SUCoreDocumentationData)initWithDocumentationDataDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SUCoreDocumentationData
 
-- (SUCoreDocumentationData)initWithDocumentationDataDictionary:(id)a3
+- (SUCoreDocumentationData)initWithDocumentationDataDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v22.receiver = self;
   v22.super_class = SUCoreDocumentationData;
   v5 = [(SUCoreDocumentationData *)&v22 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"ReadMe"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"ReadMe"];
     readme = v5->_readme;
     v5->_readme = v6;
 
-    v8 = [v4 objectForKeyedSubscript:@"ReadMeSummary"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"ReadMeSummary"];
     readmeSummary = v5->_readmeSummary;
     v5->_readmeSummary = v8;
 
-    v10 = [v4 objectForKeyedSubscript:@"License"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"License"];
     license = v5->_license;
     v5->_license = v10;
 
-    v12 = [v4 objectForKeyedSubscript:@"HumanReadableUpdateName"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"HumanReadableUpdateName"];
     if (v12)
     {
       v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v12 encoding:4];
@@ -37,7 +37,7 @@
       v5->_humanReadableUpdateName = v13;
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"HumanReadableUpdateTitle"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"HumanReadableUpdateTitle"];
     if (v15)
     {
       v16 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v15 encoding:4];
@@ -45,7 +45,7 @@
       v5->_humanReadableUpdateTitle = v16;
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"HumanReadableUpdateVersion"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"HumanReadableUpdateVersion"];
     if (v18)
     {
       v19 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v18 encoding:4];
@@ -60,8 +60,8 @@
 - (id)summary
 {
   v18 = MEMORY[0x277CCACA8];
-  v19 = [(SUCoreDocumentationData *)self humanReadableUpdateName];
-  if (v19)
+  humanReadableUpdateName = [(SUCoreDocumentationData *)self humanReadableUpdateName];
+  if (humanReadableUpdateName)
   {
     v3 = @"YES";
   }
@@ -72,8 +72,8 @@
   }
 
   v17 = v3;
-  v4 = [(SUCoreDocumentationData *)self humanReadableUpdateTitle];
-  if (v4)
+  humanReadableUpdateTitle = [(SUCoreDocumentationData *)self humanReadableUpdateTitle];
+  if (humanReadableUpdateTitle)
   {
     v5 = @"YES";
   }
@@ -84,8 +84,8 @@
   }
 
   v16 = v5;
-  v6 = [(SUCoreDocumentationData *)self humanReadableUpdateVersion];
-  if (v6)
+  humanReadableUpdateVersion = [(SUCoreDocumentationData *)self humanReadableUpdateVersion];
+  if (humanReadableUpdateVersion)
   {
     v7 = @"YES";
   }
@@ -95,8 +95,8 @@
     v7 = @"NO";
   }
 
-  v8 = [(SUCoreDocumentationData *)self readme];
-  if (v8)
+  readme = [(SUCoreDocumentationData *)self readme];
+  if (readme)
   {
     v9 = @"YES";
   }
@@ -106,8 +106,8 @@
     v9 = @"NO";
   }
 
-  v10 = [(SUCoreDocumentationData *)self readmeSummary];
-  if (v10)
+  readmeSummary = [(SUCoreDocumentationData *)self readmeSummary];
+  if (readmeSummary)
   {
     v11 = @"YES";
   }
@@ -117,8 +117,8 @@
     v11 = @"NO";
   }
 
-  v12 = [(SUCoreDocumentationData *)self license];
-  if (v12)
+  license = [(SUCoreDocumentationData *)self license];
+  if (license)
   {
     v13 = @"YES";
   }
@@ -136,56 +136,56 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CCAB68] stringWithString:@"SUCoreDocumentationData:\n"];
-  v4 = [(SUCoreDocumentationData *)self humanReadableUpdateName];
-  [v3 appendFormat:@"humanReadableUpdateName:\n%@\n", v4];
+  humanReadableUpdateName = [(SUCoreDocumentationData *)self humanReadableUpdateName];
+  [v3 appendFormat:@"humanReadableUpdateName:\n%@\n", humanReadableUpdateName];
 
-  v5 = [(SUCoreDocumentationData *)self humanReadableUpdateTitle];
-  [v3 appendFormat:@"humanReadableUpdateTitle:\n%@\n", v5];
+  humanReadableUpdateTitle = [(SUCoreDocumentationData *)self humanReadableUpdateTitle];
+  [v3 appendFormat:@"humanReadableUpdateTitle:\n%@\n", humanReadableUpdateTitle];
 
-  v6 = [(SUCoreDocumentationData *)self humanReadableUpdateVersion];
-  [v3 appendFormat:@"humanReadableUpdateVersion:\n%@\n", v6];
+  humanReadableUpdateVersion = [(SUCoreDocumentationData *)self humanReadableUpdateVersion];
+  [v3 appendFormat:@"humanReadableUpdateVersion:\n%@\n", humanReadableUpdateVersion];
 
-  v7 = [(SUCoreDocumentationData *)self readme];
-  [v3 appendFormat:@"readme:\n%@\n", v7];
+  readme = [(SUCoreDocumentationData *)self readme];
+  [v3 appendFormat:@"readme:\n%@\n", readme];
 
-  v8 = [(SUCoreDocumentationData *)self readmeSummary];
-  [v3 appendFormat:@"readmeSummary:\n%@\n", v8];
+  readmeSummary = [(SUCoreDocumentationData *)self readmeSummary];
+  [v3 appendFormat:@"readmeSummary:\n%@\n", readmeSummary];
 
-  v9 = [(SUCoreDocumentationData *)self license];
-  [v3 appendFormat:@"license:\n%@\n", v9];
+  license = [(SUCoreDocumentationData *)self license];
+  [v3 appendFormat:@"license:\n%@\n", license];
 
   return v3;
 }
 
-- (SUCoreDocumentationData)initWithCoder:(id)a3
+- (SUCoreDocumentationData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = SUCoreDocumentationData;
   v5 = [(SUCoreDocumentationData *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HumanReadableUpdateName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HumanReadableUpdateName"];
     humanReadableUpdateName = v5->_humanReadableUpdateName;
     v5->_humanReadableUpdateName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HumanReadableUpdateTitle"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HumanReadableUpdateTitle"];
     humanReadableUpdateTitle = v5->_humanReadableUpdateTitle;
     v5->_humanReadableUpdateTitle = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"HumanReadableUpdateVersion"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"HumanReadableUpdateVersion"];
     humanReadableUpdateVersion = v5->_humanReadableUpdateVersion;
     v5->_humanReadableUpdateVersion = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ReadMe"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ReadMe"];
     readme = v5->_readme;
     v5->_readme = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"ReadMeSummary"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"ReadMeSummary"];
     readmeSummary = v5->_readmeSummary;
     v5->_readmeSummary = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"License"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"License"];
     license = v5->_license;
     v5->_license = v16;
   }
@@ -193,53 +193,53 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(SUCoreDocumentationData *)self humanReadableUpdateName];
-  [v4 encodeObject:v5 forKey:@"HumanReadableUpdateName"];
+  coderCopy = coder;
+  humanReadableUpdateName = [(SUCoreDocumentationData *)self humanReadableUpdateName];
+  [coderCopy encodeObject:humanReadableUpdateName forKey:@"HumanReadableUpdateName"];
 
-  v6 = [(SUCoreDocumentationData *)self humanReadableUpdateTitle];
-  [v4 encodeObject:v6 forKey:@"HumanReadableUpdateTitle"];
+  humanReadableUpdateTitle = [(SUCoreDocumentationData *)self humanReadableUpdateTitle];
+  [coderCopy encodeObject:humanReadableUpdateTitle forKey:@"HumanReadableUpdateTitle"];
 
-  v7 = [(SUCoreDocumentationData *)self humanReadableUpdateVersion];
-  [v4 encodeObject:v7 forKey:@"HumanReadableUpdateVersion"];
+  humanReadableUpdateVersion = [(SUCoreDocumentationData *)self humanReadableUpdateVersion];
+  [coderCopy encodeObject:humanReadableUpdateVersion forKey:@"HumanReadableUpdateVersion"];
 
-  v8 = [(SUCoreDocumentationData *)self readme];
-  [v4 encodeObject:v8 forKey:@"ReadMe"];
+  readme = [(SUCoreDocumentationData *)self readme];
+  [coderCopy encodeObject:readme forKey:@"ReadMe"];
 
-  v9 = [(SUCoreDocumentationData *)self readmeSummary];
-  [v4 encodeObject:v9 forKey:@"ReadMeSummary"];
+  readmeSummary = [(SUCoreDocumentationData *)self readmeSummary];
+  [coderCopy encodeObject:readmeSummary forKey:@"ReadMeSummary"];
 
-  v10 = [(SUCoreDocumentationData *)self license];
-  [v4 encodeObject:v10 forKey:@"License"];
+  license = [(SUCoreDocumentationData *)self license];
+  [coderCopy encodeObject:license forKey:@"License"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [(SUCoreDocumentationData *)self humanReadableUpdateName];
-  v7 = [v6 copyWithZone:a3];
+  humanReadableUpdateName = [(SUCoreDocumentationData *)self humanReadableUpdateName];
+  v7 = [humanReadableUpdateName copyWithZone:zone];
   [v5 setHumanReadableUpdateName:v7];
 
-  v8 = [(SUCoreDocumentationData *)self humanReadableUpdateTitle];
-  v9 = [v8 copyWithZone:a3];
+  humanReadableUpdateTitle = [(SUCoreDocumentationData *)self humanReadableUpdateTitle];
+  v9 = [humanReadableUpdateTitle copyWithZone:zone];
   [v5 setHumanReadableUpdateTitle:v9];
 
-  v10 = [(SUCoreDocumentationData *)self humanReadableUpdateVersion];
-  v11 = [v10 copyWithZone:a3];
+  humanReadableUpdateVersion = [(SUCoreDocumentationData *)self humanReadableUpdateVersion];
+  v11 = [humanReadableUpdateVersion copyWithZone:zone];
   [v5 setHumanReadableUpdateVersion:v11];
 
-  v12 = [(SUCoreDocumentationData *)self readme];
-  v13 = [v12 copyWithZone:a3];
+  readme = [(SUCoreDocumentationData *)self readme];
+  v13 = [readme copyWithZone:zone];
   [v5 setReadme:v13];
 
-  v14 = [(SUCoreDocumentationData *)self readmeSummary];
-  v15 = [v14 copyWithZone:a3];
+  readmeSummary = [(SUCoreDocumentationData *)self readmeSummary];
+  v15 = [readmeSummary copyWithZone:zone];
   [v5 setReadmeSummary:v15];
 
-  v16 = [(SUCoreDocumentationData *)self license];
-  v17 = [v16 copyWithZone:a3];
+  license = [(SUCoreDocumentationData *)self license];
+  v17 = [license copyWithZone:zone];
   [v5 setLicense:v17];
 
   return v5;

@@ -1,16 +1,16 @@
 @interface CarMapWidgetETACardViewController
-- ($FEAE32A1819615878361D0F810751286)cornerMaskForCarCardLayout:(SEL)a3;
-- (CarMapWidgetETACardViewController)initWithDestination:(unint64_t)a3 presentationType:(unint64_t)a4;
+- ($FEAE32A1819615878361D0F810751286)cornerMaskForCarCardLayout:(SEL)layout;
+- (CarMapWidgetETACardViewController)initWithDestination:(unint64_t)destination presentationType:(unint64_t)type;
 - (void)_applyDynamicScaling;
 - (void)_scaleConstraints;
 - (void)_scaleFonts;
 - (void)_setupConstraints;
 - (void)_updateArrangedSubviewsIfNeeded;
 - (void)_updateContents;
-- (void)setLatestETA:(id)a3;
-- (void)setShouldUseWideLayout:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)setLatestETA:(id)a;
+- (void)setShouldUseWideLayout:(BOOL)layout;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -23,39 +23,39 @@
   {
     if ([(CarMapWidgetETACardViewController *)self shouldUseWideLayout]&& ([(GuidanceETA *)self->_latestETA arrivalBatteryCharge], v3 = objc_claimAutoreleasedReturnValue(), v3, v3))
     {
-      v4 = [UIFont _mapsCar_fontForTextStyle:UIFontTextStyleFootnote weight:UIFontWeightSemibold];
-      v5 = [(GuidanceETA *)self->_latestETA arrivalWithBatteryChargeStringWithFont:v4];
+      arrivalTimeExpandedString = [UIFont _mapsCar_fontForTextStyle:UIFontTextStyleFootnote weight:UIFontWeightSemibold];
+      v5 = [(GuidanceETA *)self->_latestETA arrivalWithBatteryChargeStringWithFont:arrivalTimeExpandedString];
       [(UILabel *)self->_etaLabel setAttributedText:v5];
     }
 
     else
     {
-      v4 = [(GuidanceETA *)self->_latestETA arrivalTimeExpandedString];
-      [(UILabel *)self->_etaLabel setText:v4];
+      arrivalTimeExpandedString = [(GuidanceETA *)self->_latestETA arrivalTimeExpandedString];
+      [(UILabel *)self->_etaLabel setText:arrivalTimeExpandedString];
     }
 
     [(GuidanceETA *)self->_latestETA remainingDistance];
     if (v6 >= 0.0)
     {
-      v7 = [(GuidanceETA *)self->_latestETA distanceValue];
-      v8 = [(GuidanceETA *)self->_latestETA distanceUnit];
-      v9 = [NSString stringWithFormat:@"%@ %@", v7, v8];
+      distanceValue = [(GuidanceETA *)self->_latestETA distanceValue];
+      distanceUnit = [(GuidanceETA *)self->_latestETA distanceUnit];
+      v9 = [NSString stringWithFormat:@"%@ %@", distanceValue, distanceUnit];
       [(UILabel *)self->_distanceLabel setText:v9];
 
-      v10 = [(GuidanceETA *)self->_latestETA distanceValue];
-      v11 = [(GuidanceETA *)self->_latestETA distanceUnitAccessibility];
-      v12 = [NSString stringWithFormat:@"%@ %@", v10, v11];
+      distanceValue2 = [(GuidanceETA *)self->_latestETA distanceValue];
+      distanceUnitAccessibility = [(GuidanceETA *)self->_latestETA distanceUnitAccessibility];
+      v12 = [NSString stringWithFormat:@"%@ %@", distanceValue2, distanceUnitAccessibility];
       [(UILabel *)self->_distanceLabel setAccessibilityLabel:v12];
     }
 
-    v13 = [(GuidanceETA *)self->_latestETA timeValue];
-    v14 = [(GuidanceETA *)self->_latestETA timeUnit];
-    v15 = [NSString stringWithFormat:@"%@ %@", v13, v14];
+    timeValue = [(GuidanceETA *)self->_latestETA timeValue];
+    timeUnit = [(GuidanceETA *)self->_latestETA timeUnit];
+    v15 = [NSString stringWithFormat:@"%@ %@", timeValue, timeUnit];
     [(UILabel *)self->_timeLabel setText:v15];
 
-    v16 = [(GuidanceETA *)self->_latestETA timeValue];
-    v17 = [(GuidanceETA *)self->_latestETA timeUnitAccessibility];
-    v18 = [NSString stringWithFormat:@"%@ %@", v16, v17];
+    timeValue2 = [(GuidanceETA *)self->_latestETA timeValue];
+    timeUnitAccessibility = [(GuidanceETA *)self->_latestETA timeUnitAccessibility];
+    v18 = [NSString stringWithFormat:@"%@ %@", timeValue2, timeUnitAccessibility];
     [(UILabel *)self->_timeLabel setAccessibilityLabel:v18];
 
     [(UIStackView *)self->_labelStackView setNeedsLayout];
@@ -75,7 +75,7 @@
   }
 }
 
-- ($FEAE32A1819615878361D0F810751286)cornerMaskForCarCardLayout:(SEL)a3
+- ($FEAE32A1819615878361D0F810751286)cornerMaskForCarCardLayout:(SEL)layout
 {
   retstr->var0 = 15;
   retstr->var1 = 0.0;
@@ -86,32 +86,32 @@
   return result;
 }
 
-- (void)setLatestETA:(id)a3
+- (void)setLatestETA:(id)a
 {
-  v6 = a3;
+  aCopy = a;
   latestETA = self->_latestETA;
-  if (latestETA == v6)
+  if (latestETA == aCopy)
   {
     goto LABEL_14;
   }
 
-  v12 = v6;
-  v8 = [(GuidanceETA *)latestETA arrivalBatteryCharge];
-  if (!v8 || ([(GuidanceETA *)v12 arrivalBatteryCharge], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  v12 = aCopy;
+  arrivalBatteryCharge = [(GuidanceETA *)latestETA arrivalBatteryCharge];
+  if (!arrivalBatteryCharge || ([(GuidanceETA *)v12 arrivalBatteryCharge], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v10 = [(GuidanceETA *)self->_latestETA arrivalBatteryCharge];
-    if (v10)
+    arrivalBatteryCharge2 = [(GuidanceETA *)self->_latestETA arrivalBatteryCharge];
+    if (arrivalBatteryCharge2)
     {
       v9 = 0;
     }
 
     else
     {
-      v11 = [(GuidanceETA *)v12 arrivalBatteryCharge];
-      v9 = v11 != 0;
+      arrivalBatteryCharge3 = [(GuidanceETA *)v12 arrivalBatteryCharge];
+      v9 = arrivalBatteryCharge3 != 0;
     }
 
-    if (!v8)
+    if (!arrivalBatteryCharge)
     {
       goto LABEL_10;
     }
@@ -123,29 +123,29 @@
   }
 
 LABEL_10:
-  objc_storeStrong(&self->_latestETA, a3);
+  objc_storeStrong(&self->_latestETA, a);
   if (v9 && [(CarMapWidgetETACardViewController *)self isViewLoaded])
   {
     [(CarMapWidgetETACardViewController *)self _updateArrangedSubviewsIfNeeded];
   }
 
   [(CarMapWidgetETACardViewController *)self _updateContents];
-  v6 = v12;
+  aCopy = v12;
 LABEL_14:
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v26.receiver = self;
   v26.super_class = CarMapWidgetETACardViewController;
-  [(CarMapWidgetETACardViewController *)&v26 traitCollectionDidChange:v4];
+  [(CarMapWidgetETACardViewController *)&v26 traitCollectionDidChange:changeCopy];
   if (_os_feature_enabled_impl())
   {
-    v5 = [v4 preferredContentSizeCategory];
-    v6 = [(CarMapWidgetETACardViewController *)self traitCollection];
-    v7 = [v6 preferredContentSizeCategory];
-    v8 = [v5 isEqualToString:v7];
+    preferredContentSizeCategory = [changeCopy preferredContentSizeCategory];
+    traitCollection = [(CarMapWidgetETACardViewController *)self traitCollection];
+    preferredContentSizeCategory2 = [traitCollection preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {
@@ -153,11 +153,11 @@ LABEL_14:
     }
   }
 
-  v9 = [v4 userInterfaceStyle];
-  v10 = [(CarMapWidgetETACardViewController *)self traitCollection];
-  v11 = [v10 userInterfaceStyle];
+  userInterfaceStyle = [changeCopy userInterfaceStyle];
+  traitCollection2 = [(CarMapWidgetETACardViewController *)self traitCollection];
+  userInterfaceStyle2 = [traitCollection2 userInterfaceStyle];
 
-  if (v9 != v11)
+  if (userInterfaceStyle != userInterfaceStyle2)
   {
     v12 = sub_100CE04F4();
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
@@ -167,10 +167,10 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v13 = self;
-    if (!v13)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v18 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_14;
     }
 
@@ -178,43 +178,43 @@ LABEL_21:
     v15 = NSStringFromClass(v14);
     if (objc_opt_respondsToSelector())
     {
-      v16 = [(CarMapWidgetETACardViewController *)v13 performSelector:"accessibilityIdentifier"];
+      v16 = [(CarMapWidgetETACardViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v17 = v16;
       if (v16 && ![v16 isEqualToString:v15])
       {
-        v18 = [NSString stringWithFormat:@"%@<%p, %@>", v15, v13, v17];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v15, selfCopy, v17];
 
         goto LABEL_12;
       }
     }
 
-    v18 = [NSString stringWithFormat:@"%@<%p>", v15, v13];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v15, selfCopy];
 LABEL_12:
 
 LABEL_14:
-    v19 = v18;
-    v20 = [v4 userInterfaceStyle];
-    if (v20 >= 3)
+    v19 = selfCopy;
+    userInterfaceStyle3 = [changeCopy userInterfaceStyle];
+    if (userInterfaceStyle3 >= 3)
     {
-      v21 = [NSString stringWithFormat:@"<Unknown %ld>", v20];
+      v21 = [NSString stringWithFormat:@"<Unknown %ld>", userInterfaceStyle3];
     }
 
     else
     {
-      v21 = *(&off_101650AC8 + v20);
+      v21 = *(&off_101650AC8 + userInterfaceStyle3);
     }
 
     v22 = v21;
-    v23 = [(CarMapWidgetETACardViewController *)v13 traitCollection];
-    v24 = [v23 userInterfaceStyle];
-    if (v24 >= 3)
+    traitCollection3 = [(CarMapWidgetETACardViewController *)selfCopy traitCollection];
+    userInterfaceStyle4 = [traitCollection3 userInterfaceStyle];
+    if (userInterfaceStyle4 >= 3)
     {
-      v25 = [NSString stringWithFormat:@"<Unknown %ld>", v24];
+      v25 = [NSString stringWithFormat:@"<Unknown %ld>", userInterfaceStyle4];
     }
 
     else
     {
-      v25 = *(&off_101650AC8 + v24);
+      v25 = *(&off_101650AC8 + userInterfaceStyle4);
     }
 
     *buf = 138543874;
@@ -233,31 +233,31 @@ LABEL_22:
 
 - (void)_scaleConstraints
 {
-  v3 = [(CarMapWidgetETACardViewController *)self view];
-  [v3 _car_dynamicPointScaleValue];
+  view = [(CarMapWidgetETACardViewController *)self view];
+  [view _car_dynamicPointScaleValue];
   v5 = v4;
 
   v6 = _os_feature_enabled_impl();
   v7 = 0.0;
   if (v6)
   {
-    v8 = [(CarMapWidgetETACardViewController *)self traitCollection];
-    v9 = [v8 preferredContentSizeCategory];
-    v10 = [v9 isEqualToString:UIContentSizeCategoryExtraLarge];
+    traitCollection = [(CarMapWidgetETACardViewController *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    v10 = [preferredContentSizeCategory isEqualToString:UIContentSizeCategoryExtraLarge];
 
     v7 = 2.0;
     if ((v10 & 1) == 0)
     {
-      v11 = [(CarMapWidgetETACardViewController *)self traitCollection];
-      v12 = [v11 preferredContentSizeCategory];
-      v13 = [v12 isEqualToString:UIContentSizeCategoryExtraExtraLarge];
+      traitCollection2 = [(CarMapWidgetETACardViewController *)self traitCollection];
+      preferredContentSizeCategory2 = [traitCollection2 preferredContentSizeCategory];
+      v13 = [preferredContentSizeCategory2 isEqualToString:UIContentSizeCategoryExtraExtraLarge];
 
       v7 = 4.0;
       if ((v13 & 1) == 0)
       {
-        v14 = [(CarMapWidgetETACardViewController *)self traitCollection];
-        v15 = [v14 preferredContentSizeCategory];
-        v16 = [v15 isEqualToString:UIContentSizeCategoryExtraExtraExtraLarge];
+        traitCollection3 = [(CarMapWidgetETACardViewController *)self traitCollection];
+        preferredContentSizeCategory3 = [traitCollection3 preferredContentSizeCategory];
+        v16 = [preferredContentSizeCategory3 isEqualToString:UIContentSizeCategoryExtraExtraExtraLarge];
 
         v7 = 0.0;
         if (v16)
@@ -277,8 +277,8 @@ LABEL_22:
 
 - (void)_scaleFonts
 {
-  v3 = [(CarMapWidgetETACardViewController *)self view];
-  [v3 _car_dynamicPointScaleValue];
+  view = [(CarMapWidgetETACardViewController *)self view];
+  [view _car_dynamicPointScaleValue];
   v5 = v4;
 
   v6 = [UIFont _mapsCar_fontForTextStyle:UIFontTextStyleFootnote weight:UIFontWeightSemibold];
@@ -304,11 +304,11 @@ LABEL_22:
 
 - (void)_updateArrangedSubviewsIfNeeded
 {
-  v4 = [(CarMapWidgetETACardViewController *)self shouldUseWideLayout];
-  if (v4)
+  shouldUseWideLayout = [(CarMapWidgetETACardViewController *)self shouldUseWideLayout];
+  if (shouldUseWideLayout)
   {
-    v2 = [(GuidanceETA *)self->_latestETA arrivalBatteryCharge];
-    if (!v2)
+    arrivalBatteryCharge = [(GuidanceETA *)self->_latestETA arrivalBatteryCharge];
+    if (!arrivalBatteryCharge)
     {
       timeLabel = self->_timeLabel;
       v8[0] = self->_etaLabel;
@@ -321,7 +321,7 @@ LABEL_22:
 
   etaLabel = self->_etaLabel;
   v5 = [NSArray arrayWithObjects:&etaLabel count:1];
-  if (v4)
+  if (shouldUseWideLayout)
   {
 LABEL_6:
   }
@@ -335,11 +335,11 @@ LABEL_6:
   }
 }
 
-- (void)setShouldUseWideLayout:(BOOL)a3
+- (void)setShouldUseWideLayout:(BOOL)layout
 {
-  if (self->_shouldUseWideLayout != a3)
+  if (self->_shouldUseWideLayout != layout)
   {
-    self->_shouldUseWideLayout = a3;
+    self->_shouldUseWideLayout = layout;
     [(CarMapWidgetETACardViewController *)self _updateArrangedSubviewsIfNeeded];
 
     [(CarMapWidgetETACardViewController *)self _updateContents];
@@ -348,47 +348,47 @@ LABEL_6:
 
 - (void)_setupConstraints
 {
-  v3 = [(UIStackView *)self->_labelStackView topAnchor];
-  v4 = [(CarMapWidgetETACardViewController *)self view];
-  v5 = [v4 topAnchor];
-  v6 = [v3 constraintEqualToAnchor:v5 constant:6.0];
+  topAnchor = [(UIStackView *)self->_labelStackView topAnchor];
+  view = [(CarMapWidgetETACardViewController *)self view];
+  topAnchor2 = [view topAnchor];
+  v6 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:6.0];
   topConstraint = self->_topConstraint;
   self->_topConstraint = v6;
 
-  v8 = [(CarMapWidgetETACardViewController *)self view];
-  v9 = [v8 bottomAnchor];
-  v10 = [(UIStackView *)self->_labelStackView bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10 constant:6.0];
+  view2 = [(CarMapWidgetETACardViewController *)self view];
+  bottomAnchor = [view2 bottomAnchor];
+  bottomAnchor2 = [(UIStackView *)self->_labelStackView bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:6.0];
   bottomConstraint = self->_bottomConstraint;
   self->_bottomConstraint = v11;
 
   v31 = [NSMutableArray alloc];
-  v42 = [(UIStackView *)self->_labelStackView centerXAnchor];
-  v43 = [(CarMapWidgetETACardViewController *)self view];
-  v41 = [v43 centerXAnchor];
-  v40 = [v42 constraintEqualToAnchor:v41];
+  centerXAnchor = [(UIStackView *)self->_labelStackView centerXAnchor];
+  view3 = [(CarMapWidgetETACardViewController *)self view];
+  centerXAnchor2 = [view3 centerXAnchor];
+  v40 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v45[0] = v40;
-  v38 = [(UIStackView *)self->_labelStackView leadingAnchor];
-  v39 = [(CarMapWidgetETACardViewController *)self view];
-  v37 = [v39 leadingAnchor];
+  leadingAnchor = [(UIStackView *)self->_labelStackView leadingAnchor];
+  view4 = [(CarMapWidgetETACardViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
   LODWORD(v13) = 1132068864;
-  v36 = [v38 constraintEqualToAnchor:v37 constant:24.0 priority:v13];
+  v36 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:24.0 priority:v13];
   v45[1] = v36;
-  v34 = [(UIStackView *)self->_labelStackView leadingAnchor];
-  v35 = [(CarMapWidgetETACardViewController *)self view];
-  v33 = [v35 leadingAnchor];
-  v32 = [v34 constraintGreaterThanOrEqualToAnchor:v33 constant:12.0];
+  leadingAnchor3 = [(UIStackView *)self->_labelStackView leadingAnchor];
+  view5 = [(CarMapWidgetETACardViewController *)self view];
+  leadingAnchor4 = [view5 leadingAnchor];
+  v32 = [leadingAnchor3 constraintGreaterThanOrEqualToAnchor:leadingAnchor4 constant:12.0];
   v45[2] = v32;
-  v14 = [(CarMapWidgetETACardViewController *)self view];
-  v15 = [v14 trailingAnchor];
-  v16 = [(UIStackView *)self->_labelStackView trailingAnchor];
+  view6 = [(CarMapWidgetETACardViewController *)self view];
+  trailingAnchor = [view6 trailingAnchor];
+  trailingAnchor2 = [(UIStackView *)self->_labelStackView trailingAnchor];
   LODWORD(v17) = 1132068864;
-  v18 = [v15 constraintEqualToAnchor:v16 constant:24.0 priority:v17];
+  v18 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:24.0 priority:v17];
   v45[3] = v18;
-  v19 = [(CarMapWidgetETACardViewController *)self view];
-  v20 = [v19 trailingAnchor];
-  v21 = [(UIStackView *)self->_labelStackView trailingAnchor];
-  v22 = [v20 constraintGreaterThanOrEqualToAnchor:v21 constant:12.0];
+  view7 = [(CarMapWidgetETACardViewController *)self view];
+  trailingAnchor3 = [view7 trailingAnchor];
+  trailingAnchor4 = [(UIStackView *)self->_labelStackView trailingAnchor];
+  v22 = [trailingAnchor3 constraintGreaterThanOrEqualToAnchor:trailingAnchor4 constant:12.0];
   v45[4] = v22;
   v23 = self->_bottomConstraint;
   v45[5] = self->_topConstraint;
@@ -412,20 +412,20 @@ LABEL_6:
   v27 = fmax(0.0 + 0.0, v26);
   if (v27 > 0.0)
   {
-    v28 = [(CarMapWidgetETACardViewController *)self view];
-    v29 = [v28 heightAnchor];
-    v30 = [v29 constraintGreaterThanOrEqualToConstant:v27];
+    view8 = [(CarMapWidgetETACardViewController *)self view];
+    heightAnchor = [view8 heightAnchor];
+    v30 = [heightAnchor constraintGreaterThanOrEqualToConstant:v27];
     [v44 addObject:v30];
   }
 
   [NSLayoutConstraint activateConstraints:v44];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CarMapWidgetETACardViewController;
-  [(CarMapWidgetETACardViewController *)&v4 viewDidAppear:a3];
+  [(CarMapWidgetETACardViewController *)&v4 viewDidAppear:appear];
   [(CarMapWidgetETACardViewController *)self _updateContents];
   [(CarMapWidgetETACardViewController *)self _applyDynamicScaling];
   [(CarMapWidgetETACardViewController *)self _scaleConstraints];
@@ -449,10 +449,10 @@ LABEL_6:
       return;
     }
 
-    v4 = [(CarMapWidgetETACardViewController *)self view];
-    v5 = [v4 window];
-    v6 = [v5 safeAreaLayoutGuide];
-    [v6 layoutFrame];
+    view = [(CarMapWidgetETACardViewController *)self view];
+    window = [view window];
+    safeAreaLayoutGuide = [window safeAreaLayoutGuide];
+    [safeAreaLayoutGuide layoutFrame];
     Width = CGRectGetWidth(v10);
 
     v8 = Width > 298.0;
@@ -466,8 +466,8 @@ LABEL_6:
   v36.receiver = self;
   v36.super_class = CarMapWidgetETACardViewController;
   [(CarMapWidgetETACardViewController *)&v36 viewDidLoad];
-  v3 = [(CarMapWidgetETACardViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"CarMapWidgetETACardView"];
+  view = [(CarMapWidgetETACardViewController *)self view];
+  [view setAccessibilityIdentifier:@"CarMapWidgetETACardView"];
 
   v4 = [UILabel alloc];
   y = CGRectZero.origin.y;
@@ -541,8 +541,8 @@ LABEL_6:
   [(UIStackView *)self->_labelStackView setContentHuggingPriority:0 forAxis:v34];
   [(UIStackView *)self->_labelStackView setSpacing:12.0];
   [(UIStackView *)self->_labelStackView setAxis:0];
-  v35 = [(CarMapWidgetETACardViewController *)self view];
-  [v35 addSubview:self->_labelStackView];
+  view2 = [(CarMapWidgetETACardViewController *)self view];
+  [view2 addSubview:self->_labelStackView];
 
   if (_os_feature_enabled_impl())
   {
@@ -556,15 +556,15 @@ LABEL_6:
   [(CarMapWidgetETACardViewController *)self _updateContents];
 }
 
-- (CarMapWidgetETACardViewController)initWithDestination:(unint64_t)a3 presentationType:(unint64_t)a4
+- (CarMapWidgetETACardViewController)initWithDestination:(unint64_t)destination presentationType:(unint64_t)type
 {
   v7.receiver = self;
   v7.super_class = CarMapWidgetETACardViewController;
   result = [(CarMapWidgetETACardViewController *)&v7 initWithNibName:0 bundle:0];
   if (result)
   {
-    result->_destination = a3;
-    result->_presentationType = a4;
+    result->_destination = destination;
+    result->_presentationType = type;
   }
 
   return result;

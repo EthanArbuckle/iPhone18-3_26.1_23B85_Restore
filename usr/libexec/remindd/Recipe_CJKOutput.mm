@@ -1,6 +1,6 @@
 @interface Recipe_CJKOutput
 - (NSSet)featureNames;
-- (id)featureValueForName:(id)a3;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation Recipe_CJKOutput
@@ -9,7 +9,7 @@
 {
   v2 = *self->provider;
 
-  v3 = [v2 featureNames];
+  featureNames = [v2 featureNames];
   static Set._unconditionallyBridgeFromObjectiveC(_:)();
 
   v4.super.isa = Set._bridgeToObjectiveC()().super.isa;
@@ -17,9 +17,9 @@
   return v4.super.isa;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v3 = [*self->provider featureValueForName:a3];
+  v3 = [*self->provider featureValueForName:name];
 
   return v3;
 }

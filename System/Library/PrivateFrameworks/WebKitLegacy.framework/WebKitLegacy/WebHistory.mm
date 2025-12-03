@@ -1,12 +1,12 @@
 @interface WebHistory
 + (WebHistory)optionalSharedHistory;
-+ (void)_setVisitedLinkTrackingEnabled:(BOOL)a3;
++ (void)_setVisitedLinkTrackingEnabled:(BOOL)enabled;
 + (void)setOptionalSharedHistory:(WebHistory *)history;
 - (BOOL)loadFromURL:(NSURL *)URL error:(NSError *)error;
 - (BOOL)saveToURL:(NSURL *)URL error:(NSError *)error;
 - (WebHistory)init;
-- (void)_sendNotification:(id)a3 entries:(id)a4;
-- (void)_visitedURL:(id)a3 withTitle:(id)a4 method:(id)a5 wasFailure:(BOOL)a6;
+- (void)_sendNotification:(id)notification entries:(id)entries;
+- (void)_visitedURL:(id)l withTitle:(id)title method:(id)method wasFailure:(BOOL)failure;
 - (void)addItems:(NSArray *)newItems;
 - (void)dealloc;
 - (void)removeAllItems;
@@ -52,7 +52,7 @@
 
   if (history)
   {
-    a1 = history;
+    self = history;
     v4 = qword_1ED6A6210;
   }
 
@@ -67,10 +67,10 @@
 
   else
   {
-    a1 = WebVisitedLinkStore::removeAllVisitedLinks(a1, a2);
+    self = WebVisitedLinkStore::removeAllVisitedLinks(self, a2);
   }
 
-  WebVisitedLinkStore::removeAllVisitedLinks(a1, a2);
+  WebVisitedLinkStore::removeAllVisitedLinks(self, a2);
 }
 
 - (WebHistory)init
@@ -81,8 +81,8 @@
   if (v2)
   {
     v2->_historyPrivate = objc_alloc_init(WebHistoryPrivate);
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel_timeZoneChanged_ name:*MEMORY[0x1E695DA68] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_timeZoneChanged_ name:*MEMORY[0x1E695DA68] object:0];
   }
 
   return v2;
@@ -90,19 +90,19 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E695DA68] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E695DA68] object:0];
 
   v4.receiver = self;
   v4.super_class = WebHistory;
   [(WebHistory *)&v4 dealloc];
 }
 
-- (void)_sendNotification:(id)a3 entries:(id)a4
+- (void)_sendNotification:(id)notification entries:(id)entries
 {
   v5[1] = *MEMORY[0x1E69E9840];
   v4 = WebHistoryItemsKey;
-  v5[0] = a4;
+  v5[0] = entries;
   [MEMORY[0x1E695DF20] dictionaryWithObjects:v5 forKeys:&v4 count:1];
   WebThreadPostNotification();
 }
@@ -119,12 +119,12 @@
 
 - (void)removeAllItems
 {
-  v3 = [(WebHistoryPrivate *)self->_historyPrivate allItems];
+  allItems = [(WebHistoryPrivate *)self->_historyPrivate allItems];
   if ([(WebHistoryPrivate *)self->_historyPrivate removeAllItems])
   {
     v4 = WebHistoryAllItemsRemovedNotification;
 
-    [(WebHistory *)self _sendNotification:v4 entries:v3];
+    [(WebHistory *)self _sendNotification:v4 entries:allItems];
   }
 }
 
@@ -169,24 +169,24 @@
   return v4;
 }
 
-+ (void)_setVisitedLinkTrackingEnabled:(BOOL)a3
++ (void)_setVisitedLinkTrackingEnabled:(BOOL)enabled
 {
-  if (s_shouldTrackVisitedLinks != a3)
+  if (s_shouldTrackVisitedLinks != enabled)
   {
-    s_shouldTrackVisitedLinks = a3;
-    if (!a3)
+    s_shouldTrackVisitedLinks = enabled;
+    if (!enabled)
     {
-      WebVisitedLinkStore::removeAllVisitedLinks(a1, a2);
+      WebVisitedLinkStore::removeAllVisitedLinks(self, a2);
     }
   }
 }
 
-- (void)_visitedURL:(id)a3 withTitle:(id)a4 method:(id)a5 wasFailure:(BOOL)a6
+- (void)_visitedURL:(id)l withTitle:(id)title method:(id)method wasFailure:(BOOL)failure
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v9 = [(WebHistoryPrivate *)self->_historyPrivate visitedURL:a3 withTitle:a4, a5];
-  *(*(v9[1] + 8) + 136) = a6;
-  v10 = v9[1];
+  method = [(WebHistoryPrivate *)self->_historyPrivate visitedURL:l withTitle:title, method];
+  *(*(method[1] + 8) + 136) = failure;
+  v10 = method[1];
   v11 = *(v10 + 24);
   *(v10 + 24) = 0;
   if (v11)
@@ -223,7 +223,7 @@
     WTF::fastFree(v11, v8);
   }
 
-  v16[0] = v9;
+  v16[0] = method;
   -[WebHistory _sendNotification:entries:](self, "_sendNotification:entries:", WebHistoryItemsAddedNotification, [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1]);
 }
 

@@ -1,6 +1,6 @@
 @interface MTRDataTypeMeasurementAccuracyRangeStruct
 - (MTRDataTypeMeasurementAccuracyRangeStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -42,32 +42,32 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDataTypeMeasurementAccuracyRangeStruct);
-  v5 = [(MTRDataTypeMeasurementAccuracyRangeStruct *)self rangeMin];
-  [(MTRDataTypeMeasurementAccuracyRangeStruct *)v4 setRangeMin:v5];
+  rangeMin = [(MTRDataTypeMeasurementAccuracyRangeStruct *)self rangeMin];
+  [(MTRDataTypeMeasurementAccuracyRangeStruct *)v4 setRangeMin:rangeMin];
 
-  v6 = [(MTRDataTypeMeasurementAccuracyRangeStruct *)self rangeMax];
-  [(MTRDataTypeMeasurementAccuracyRangeStruct *)v4 setRangeMax:v6];
+  rangeMax = [(MTRDataTypeMeasurementAccuracyRangeStruct *)self rangeMax];
+  [(MTRDataTypeMeasurementAccuracyRangeStruct *)v4 setRangeMax:rangeMax];
 
-  v7 = [(MTRDataTypeMeasurementAccuracyRangeStruct *)self percentMax];
-  [(MTRDataTypeMeasurementAccuracyRangeStruct *)v4 setPercentMax:v7];
+  percentMax = [(MTRDataTypeMeasurementAccuracyRangeStruct *)self percentMax];
+  [(MTRDataTypeMeasurementAccuracyRangeStruct *)v4 setPercentMax:percentMax];
 
-  v8 = [(MTRDataTypeMeasurementAccuracyRangeStruct *)self percentMin];
-  [(MTRDataTypeMeasurementAccuracyRangeStruct *)v4 setPercentMin:v8];
+  percentMin = [(MTRDataTypeMeasurementAccuracyRangeStruct *)self percentMin];
+  [(MTRDataTypeMeasurementAccuracyRangeStruct *)v4 setPercentMin:percentMin];
 
-  v9 = [(MTRDataTypeMeasurementAccuracyRangeStruct *)self percentTypical];
-  [(MTRDataTypeMeasurementAccuracyRangeStruct *)v4 setPercentTypical:v9];
+  percentTypical = [(MTRDataTypeMeasurementAccuracyRangeStruct *)self percentTypical];
+  [(MTRDataTypeMeasurementAccuracyRangeStruct *)v4 setPercentTypical:percentTypical];
 
-  v10 = [(MTRDataTypeMeasurementAccuracyRangeStruct *)self fixedMax];
-  [(MTRDataTypeMeasurementAccuracyRangeStruct *)v4 setFixedMax:v10];
+  fixedMax = [(MTRDataTypeMeasurementAccuracyRangeStruct *)self fixedMax];
+  [(MTRDataTypeMeasurementAccuracyRangeStruct *)v4 setFixedMax:fixedMax];
 
-  v11 = [(MTRDataTypeMeasurementAccuracyRangeStruct *)self fixedMin];
-  [(MTRDataTypeMeasurementAccuracyRangeStruct *)v4 setFixedMin:v11];
+  fixedMin = [(MTRDataTypeMeasurementAccuracyRangeStruct *)self fixedMin];
+  [(MTRDataTypeMeasurementAccuracyRangeStruct *)v4 setFixedMin:fixedMin];
 
-  v12 = [(MTRDataTypeMeasurementAccuracyRangeStruct *)self fixedTypical];
-  [(MTRDataTypeMeasurementAccuracyRangeStruct *)v4 setFixedTypical:v12];
+  fixedTypical = [(MTRDataTypeMeasurementAccuracyRangeStruct *)self fixedTypical];
+  [(MTRDataTypeMeasurementAccuracyRangeStruct *)v4 setFixedTypical:fixedTypical];
 
   return v4;
 }

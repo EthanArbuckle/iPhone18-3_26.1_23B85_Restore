@@ -1,6 +1,6 @@
 @interface CNUIInteractionDonor
 + (OS_os_log)log;
-- (void)donateInteraction:(id)a3;
+- (void)donateInteraction:(id)interaction;
 @end
 
 @implementation CNUIInteractionDonor
@@ -24,14 +24,14 @@ uint64_t __27__CNUIInteractionDonor_log__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)donateInteraction:(id)a3
+- (void)donateInteraction:(id)interaction
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __42__CNUIInteractionDonor_donateInteraction___block_invoke;
   v3[3] = &unk_1E76E7970;
   v3[4] = self;
-  [a3 donateInteractionWithCompletion:v3];
+  [interaction donateInteractionWithCompletion:v3];
 }
 
 void __42__CNUIInteractionDonor_donateInteraction___block_invoke(uint64_t a1, void *a2)

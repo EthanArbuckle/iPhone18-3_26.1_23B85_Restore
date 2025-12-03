@@ -1,27 +1,27 @@
 @interface CPTextBoxMaker
-+ (void)boxLayoutsIn:(id)a3;
-+ (void)promoteLayoutsIn:(id)a3;
-- (BOOL)layoutIsSliced:(id)a3;
-- (void)boxLayout:(id)a3;
-- (void)boxLayoutsIn:(id)a3;
-- (void)makeBoxesWith:(id)a3 parent:(id)a4;
-- (void)promoteLayoutsIn:(id)a3;
-- (void)promoteLayoutsInCertainRegions:(id)a3;
-- (void)rotate:(id)a3;
-- (void)rotateTextBox:(id)a3;
++ (void)boxLayoutsIn:(id)in;
++ (void)promoteLayoutsIn:(id)in;
+- (BOOL)layoutIsSliced:(id)sliced;
+- (void)boxLayout:(id)layout;
+- (void)boxLayoutsIn:(id)in;
+- (void)makeBoxesWith:(id)with parent:(id)parent;
+- (void)promoteLayoutsIn:(id)in;
+- (void)promoteLayoutsInCertainRegions:(id)regions;
+- (void)rotate:(id)rotate;
+- (void)rotateTextBox:(id)box;
 @end
 
 @implementation CPTextBoxMaker
 
-- (void)boxLayoutsIn:(id)a3
+- (void)boxLayoutsIn:(id)in
 {
-  self->mainZone = a3;
+  self->mainZone = in;
   v5 = objc_opt_class();
 
-  [a3 mapSafely:sel_boxLayout_ target:self childrenOfClass:v5];
+  [in mapSafely:sel_boxLayout_ target:self childrenOfClass:v5];
 }
 
-- (void)boxLayout:(id)a3
+- (void)boxLayout:(id)layout
 {
   v5 = objc_alloc_init(CPTextBox);
   if ([(CPZone *)self->mainZone hasRotatedCharacters])
@@ -30,33 +30,33 @@
     [(CPTextBox *)v5 setRotationAngle:?];
   }
 
-  [(CPChunk *)v5 add:a3];
+  [(CPChunk *)v5 add:layout];
   [(CPChunk *)self->mainZone add:v5];
 }
 
-- (void)promoteLayoutsIn:(id)a3
+- (void)promoteLayoutsIn:(id)in
 {
-  self->bodyZone = a3;
+  self->bodyZone = in;
   v5 = objc_opt_class();
 
-  [a3 map:sel_promoteLayoutsInCertainRegions_ target:self childrenOfClass:v5];
+  [in map:sel_promoteLayoutsInCertainRegions_ target:self childrenOfClass:v5];
 }
 
-- (void)promoteLayoutsInCertainRegions:(id)a3
+- (void)promoteLayoutsInCertainRegions:(id)regions
 {
-  if ([a3 isGraphicalRegion])
+  if ([regions isGraphicalRegion])
   {
-    [a3 firstChild];
+    [regions firstChild];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [a3 firstChild];
-      if ([v5 count])
+      firstChild = [regions firstChild];
+      if ([firstChild count])
       {
-        if (![v5 isUprightRectangle] || -[CPTextBoxMaker layoutIsSliced:](self, "layoutIsSliced:", v5))
+        if (![firstChild isUprightRectangle] || -[CPTextBoxMaker layoutIsSliced:](self, "layoutIsSliced:", firstChild))
         {
           v6 = objc_alloc_init(CPTextBox);
-          [(CPChunk *)v6 addChildrenOf:v5];
+          [(CPChunk *)v6 addChildrenOf:firstChild];
           [(CPChunk *)self->bodyZone add:v6];
         }
       }
@@ -64,35 +64,35 @@
   }
 }
 
-- (BOOL)layoutIsSliced:(id)a3
+- (BOOL)layoutIsSliced:(id)sliced
 {
-  v4 = [a3 count];
+  v4 = [sliced count];
   if (v4)
   {
-    v5 = [a3 firstChild];
-    v6 = [v5 zOrder];
-    v7 = [a3 zOrder];
-    if (v6 <= v7)
+    firstChild = [sliced firstChild];
+    zOrder = [firstChild zOrder];
+    zOrder2 = [sliced zOrder];
+    if (zOrder <= zOrder2)
     {
-      v8 = v7;
+      v8 = zOrder2;
     }
 
     else
     {
-      v8 = v6;
+      v8 = zOrder;
     }
 
-    if (v6 >= v7)
+    if (zOrder >= zOrder2)
     {
-      v9 = v7;
+      v9 = zOrder2;
     }
 
     else
     {
-      v9 = v6;
+      v9 = zOrder;
     }
 
-    v10 = [objc_msgSend(v5 "page")];
+    v10 = [objc_msgSend(firstChild "page")];
     v11 = [v10 count];
     v12 = v11;
     if (v11 < 1)
@@ -123,12 +123,12 @@
 
     if (v15 <= v8)
     {
-      [a3 bounds];
+      [sliced bounds];
       v41 = v17;
       v42 = v16;
       v39 = v19;
       v40 = v18;
-      [v5 bounds];
+      [firstChild bounds];
       if (v13 < v12)
       {
         v24 = v20;
@@ -182,21 +182,21 @@
   return v4;
 }
 
-- (void)rotate:(id)a3
+- (void)rotate:(id)rotate
 {
   v5 = objc_opt_class();
 
-  [a3 map:sel_rotateTextBox_ target:self childrenOfClass:v5];
+  [rotate map:sel_rotateTextBox_ target:self childrenOfClass:v5];
 }
 
-- (void)rotateTextBox:(id)a3
+- (void)rotateTextBox:(id)box
 {
-  [a3 rotationAngle];
+  [box rotationAngle];
   v5 = v4;
   if (fabs(v4) > 2.0)
   {
-    v6 = [a3 firstChild];
-    v7 = [v6 count];
+    firstChild = [box firstChild];
+    v7 = [firstChild count];
     if (v7 >= 1)
     {
       v8 = v7;
@@ -208,7 +208,7 @@
       v12 = v17.f64[1];
       do
       {
-        v13 = [v6 childAtIndex:{v10, *&v16, *&v17}];
+        v13 = [firstChild childAtIndex:{v10, *&v16, *&v17}];
         [v13 bounds];
         [v13 setBounds:{v14 * v17.f64[0] + v16.f64[0] * v15 + 0.0, v14 * v12 + v11 * v15 + 0.0}];
         v10 = (v10 + 1);
@@ -219,17 +219,17 @@
   }
 }
 
-- (void)makeBoxesWith:(id)a3 parent:(id)a4
+- (void)makeBoxesWith:(id)with parent:(id)parent
 {
-  v6 = [a4 hasRotatedCharacters];
+  hasRotatedCharacters = [parent hasRotatedCharacters];
   v7 = 0.0;
-  if (v6)
+  if (hasRotatedCharacters)
   {
-    [a4 rotationAngle];
+    [parent rotationAngle];
     v7 = v8;
   }
 
-  v9 = [a3 count];
+  v9 = [with count];
   v10 = v9;
   if (v9)
   {
@@ -238,14 +238,14 @@
     {
       v12 = objc_alloc_init(CPTextBox);
       v13 = v12;
-      if (v6)
+      if (hasRotatedCharacters)
       {
         [(CPTextBox *)v12 setRotationAngle:v7];
       }
 
-      [a4 add:v13];
+      [parent add:v13];
 
-      v14 = [a3 objectAtIndex:v11];
+      v14 = [with objectAtIndex:v11];
       v15 = objc_alloc_init(CPLayoutArea);
       [(CPChunk *)v13 add:v15];
 
@@ -260,16 +260,16 @@
   }
 }
 
-+ (void)boxLayoutsIn:(id)a3
++ (void)boxLayoutsIn:(id)in
 {
   v4 = objc_alloc_init(CPTextBoxMaker);
-  [(CPTextBoxMaker *)v4 boxLayoutsIn:a3];
+  [(CPTextBoxMaker *)v4 boxLayoutsIn:in];
 }
 
-+ (void)promoteLayoutsIn:(id)a3
++ (void)promoteLayoutsIn:(id)in
 {
   v4 = objc_alloc_init(CPTextBoxMaker);
-  [(CPTextBoxMaker *)v4 promoteLayoutsIn:a3];
+  [(CPTextBoxMaker *)v4 promoteLayoutsIn:in];
 }
 
 @end

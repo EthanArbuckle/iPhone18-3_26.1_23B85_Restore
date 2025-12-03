@@ -1,22 +1,22 @@
 @interface WLKSportsFavoriteFactory
-+ (id)favoriteFromDictionary:(id)a3;
-+ (id)favoriteWithID:(id)a3;
++ (id)favoriteFromDictionary:(id)dictionary;
++ (id)favoriteWithID:(id)d;
 @end
 
 @implementation WLKSportsFavoriteFactory
 
-+ (id)favoriteWithID:(id)a3
++ (id)favoriteWithID:(id)d
 {
-  v3 = a3;
-  v4 = [[WLKSportsFavorite alloc] initWithID:v3];
+  dCopy = d;
+  v4 = [[WLKSportsFavorite alloc] initWithID:dCopy];
 
   return v4;
 }
 
-+ (id)favoriteFromDictionary:(id)a3
++ (id)favoriteFromDictionary:(id)dictionary
 {
-  v3 = a3;
-  v4 = [[WLKSportsFavorite alloc] initWithDictionary:v3];
+  dictionaryCopy = dictionary;
+  v4 = [[WLKSportsFavorite alloc] initWithDictionary:dictionaryCopy];
 
   return v4;
 }

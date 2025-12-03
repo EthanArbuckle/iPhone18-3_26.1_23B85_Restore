@@ -4,16 +4,16 @@
 - (BOOL)_wouldArmForDiscreteParameters;
 - (BOOL)_wouldArmIfNotForDND;
 - (BOOL)_wouldArmIfNotForDNDAndNotificationContent;
-- (CSNotificationClearingTrigger)initWithDelegate:(id)a3;
+- (CSNotificationClearingTrigger)initWithDelegate:(id)delegate;
 - (CSNotificationClearingTriggerDelegate)delegate;
 - (void)_clearIfNeeded;
 - (void)_updateTriggerAndClearIfNeeded;
-- (void)setAuthenticated:(BOOL)a3;
-- (void)setDidDisableCarDNDUntilEndOfDrive:(BOOL)a3;
-- (void)setHadNotificationContentAtDisappearance:(BOOL)a3;
-- (void)setScreenInactive:(BOOL)a3;
-- (void)setScreenOff:(BOOL)a3;
-- (void)setUiLocked:(BOOL)a3;
+- (void)setAuthenticated:(BOOL)authenticated;
+- (void)setDidDisableCarDNDUntilEndOfDrive:(BOOL)drive;
+- (void)setHadNotificationContentAtDisappearance:(BOOL)disappearance;
+- (void)setScreenInactive:(BOOL)inactive;
+- (void)setScreenOff:(BOOL)off;
+- (void)setUiLocked:(BOOL)locked;
 @end
 
 @implementation CSNotificationClearingTrigger
@@ -35,32 +35,32 @@
 
 - (BOOL)_shouldArm
 {
-  v3 = [(CSNotificationClearingTrigger *)self _wouldArmForDiscreteParameters];
-  if (v3)
+  _wouldArmForDiscreteParameters = [(CSNotificationClearingTrigger *)self _wouldArmForDiscreteParameters];
+  if (_wouldArmForDiscreteParameters)
   {
-    LOBYTE(v3) = ![(CSNotificationClearingTrigger *)self didDisableCarDNDUntilEndOfDrive];
+    LOBYTE(_wouldArmForDiscreteParameters) = ![(CSNotificationClearingTrigger *)self didDisableCarDNDUntilEndOfDrive];
   }
 
-  return v3;
+  return _wouldArmForDiscreteParameters;
 }
 
 - (BOOL)_wouldArmForDiscreteParameters
 {
   if ([(CSNotificationClearingTrigger *)self screenOff])
   {
-    LOBYTE(v3) = 0;
+    LOBYTE(authenticated) = 0;
   }
 
   else
   {
-    v3 = [(CSNotificationClearingTrigger *)self authenticated];
-    if (v3)
+    authenticated = [(CSNotificationClearingTrigger *)self authenticated];
+    if (authenticated)
     {
-      LOBYTE(v3) = ![(CSNotificationClearingTrigger *)self uiLocked];
+      LOBYTE(authenticated) = ![(CSNotificationClearingTrigger *)self uiLocked];
     }
   }
 
-  return v3;
+  return authenticated;
 }
 
 - (BOOL)_wouldArmIfNotForDND
@@ -87,10 +87,10 @@
 {
   if ([(CSNotificationClearingTrigger *)self _shouldFire])
   {
-    v3 = [(CSNotificationClearingTrigger *)self delegate];
+    delegate = [(CSNotificationClearingTrigger *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v3 coverSheetNotificationClearingTriggerDidFire:self];
+      [delegate coverSheetNotificationClearingTriggerDidFire:self];
     }
 
     [(CSNotificationClearingTrigger *)self _reset];
@@ -99,8 +99,8 @@
 
 - (BOOL)_shouldFire
 {
-  v3 = [(CSNotificationClearingTrigger *)self uiLocked]|| [(CSNotificationClearingTrigger *)self screenInactive];
-  if (![(CSNotificationClearingTrigger *)self screenOff]|| !v3)
+  screenInactive = [(CSNotificationClearingTrigger *)self uiLocked]|| [(CSNotificationClearingTrigger *)self screenInactive];
+  if (![(CSNotificationClearingTrigger *)self screenOff]|| !screenInactive)
   {
     return 0;
   }
@@ -108,16 +108,16 @@
   return [(CSNotificationClearingTrigger *)self triggerArmed];
 }
 
-- (CSNotificationClearingTrigger)initWithDelegate:(id)a3
+- (CSNotificationClearingTrigger)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = CSNotificationClearingTrigger;
   v5 = [(CSNotificationClearingTrigger *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v6->_authenticated = 0;
     v6->_uiLocked = 1;
   }
@@ -125,56 +125,56 @@
   return v6;
 }
 
-- (void)setAuthenticated:(BOOL)a3
+- (void)setAuthenticated:(BOOL)authenticated
 {
-  if (self->_authenticated != a3)
+  if (self->_authenticated != authenticated)
   {
-    self->_authenticated = a3;
+    self->_authenticated = authenticated;
     [(CSNotificationClearingTrigger *)self _updateTriggerAndClearIfNeeded];
   }
 }
 
-- (void)setDidDisableCarDNDUntilEndOfDrive:(BOOL)a3
+- (void)setDidDisableCarDNDUntilEndOfDrive:(BOOL)drive
 {
-  if (self->_didDisableCarDNDUntilEndOfDrive != a3)
+  if (self->_didDisableCarDNDUntilEndOfDrive != drive)
   {
-    self->_didDisableCarDNDUntilEndOfDrive = a3;
+    self->_didDisableCarDNDUntilEndOfDrive = drive;
     [(CSNotificationClearingTrigger *)self _updateTriggerAndClearIfNeeded];
   }
 }
 
-- (void)setHadNotificationContentAtDisappearance:(BOOL)a3
+- (void)setHadNotificationContentAtDisappearance:(BOOL)disappearance
 {
-  if (self->_hadNotificationContentAtDisappearance != a3)
+  if (self->_hadNotificationContentAtDisappearance != disappearance)
   {
-    self->_hadNotificationContentAtDisappearance = a3;
+    self->_hadNotificationContentAtDisappearance = disappearance;
     [(CSNotificationClearingTrigger *)self _updateTriggerAndClearIfNeeded];
   }
 }
 
-- (void)setUiLocked:(BOOL)a3
+- (void)setUiLocked:(BOOL)locked
 {
-  if (self->_uiLocked != a3)
+  if (self->_uiLocked != locked)
   {
-    self->_uiLocked = a3;
+    self->_uiLocked = locked;
     [(CSNotificationClearingTrigger *)self _updateTriggerAndClearIfNeeded];
   }
 }
 
-- (void)setScreenOff:(BOOL)a3
+- (void)setScreenOff:(BOOL)off
 {
-  if (self->_screenOff != a3)
+  if (self->_screenOff != off)
   {
-    self->_screenOff = a3;
+    self->_screenOff = off;
     [(CSNotificationClearingTrigger *)self _updateTriggerAndClearIfNeeded];
   }
 }
 
-- (void)setScreenInactive:(BOOL)a3
+- (void)setScreenInactive:(BOOL)inactive
 {
-  if (self->_screenInactive != a3)
+  if (self->_screenInactive != inactive)
   {
-    self->_screenInactive = a3;
+    self->_screenInactive = inactive;
     [(CSNotificationClearingTrigger *)self _updateTriggerAndClearIfNeeded];
   }
 }

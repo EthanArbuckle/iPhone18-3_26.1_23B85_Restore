@@ -1,18 +1,18 @@
 @interface CPLCloudKitCMMZoneIdentification
 + (id)shareTypes;
 + (id)supportedZonePrefixes;
-+ (int64_t)proposedScopeTypeForCloudKitScope:(id)a3;
-+ (int64_t)scopeTypeForCloudKitScope:(id)a3 proposedScopeType:(int64_t)a4 fetchedRecords:(id)a5 currentUserID:(id)a6;
-- (BOOL)supportsDeletionOfRecord:(id)a3 scopeProvider:(id)a4;
-- (BOOL)supportsDeletionOfRecordClass:(Class)a3;
-- (BOOL)supportsDirectDeletionOfRecord:(id)a3 scopeProvider:(id)a4;
-- (BOOL)supportsDirectDeletionOfRecordClass:(Class)a3;
-- (BOOL)supportsDownloadOfChange:(id)a3 scopeProvider:(id)a4;
-- (BOOL)supportsDownloadOfRecordClass:(Class)a3;
-- (BOOL)supportsUploadOfChange:(id)a3 scopeProvider:(id)a4;
-- (BOOL)supportsUploadOfRecordClass:(Class)a3;
++ (int64_t)proposedScopeTypeForCloudKitScope:(id)scope;
++ (int64_t)scopeTypeForCloudKitScope:(id)scope proposedScopeType:(int64_t)type fetchedRecords:(id)records currentUserID:(id)d;
+- (BOOL)supportsDeletionOfRecord:(id)record scopeProvider:(id)provider;
+- (BOOL)supportsDeletionOfRecordClass:(Class)class;
+- (BOOL)supportsDirectDeletionOfRecord:(id)record scopeProvider:(id)provider;
+- (BOOL)supportsDirectDeletionOfRecordClass:(Class)class;
+- (BOOL)supportsDownloadOfChange:(id)change scopeProvider:(id)provider;
+- (BOOL)supportsDownloadOfRecordClass:(Class)class;
+- (BOOL)supportsUploadOfChange:(id)change scopeProvider:(id)provider;
+- (BOOL)supportsUploadOfRecordClass:(Class)class;
 - (id)shareRecordIDToDelete;
-- (id)shareTypeForScopeChange:(id)a3;
+- (id)shareTypeForScopeChange:(id)change;
 @end
 
 @implementation CPLCloudKitCMMZoneIdentification
@@ -25,18 +25,18 @@
   return v2;
 }
 
-+ (int64_t)proposedScopeTypeForCloudKitScope:(id)a3
++ (int64_t)proposedScopeTypeForCloudKitScope:(id)scope
 {
-  v4 = a3;
-  v5 = [v4 zoneID];
-  v6 = [v5 zoneName];
+  scopeCopy = scope;
+  zoneID = [scopeCopy zoneID];
+  zoneName = [zoneID zoneName];
 
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v7 = [a1 supportedZonePrefixes];
-  v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  supportedZonePrefixes = [self supportedZonePrefixes];
+  v8 = [supportedZonePrefixes countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v8)
   {
     v9 = *v13;
@@ -46,12 +46,12 @@
       {
         if (*v13 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(supportedZonePrefixes);
         }
 
-        if ([v6 hasPrefix:*(*(&v12 + 1) + 8 * i)])
+        if ([zoneName hasPrefix:*(*(&v12 + 1) + 8 * i)])
         {
-          if ([v4 isShared])
+          if ([scopeCopy isShared])
           {
             v8 = 3;
           }
@@ -65,7 +65,7 @@
         }
       }
 
-      v8 = [v7 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v8 = [supportedZonePrefixes countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v8)
       {
         continue;
@@ -80,27 +80,27 @@ LABEL_13:
   return v8;
 }
 
-+ (int64_t)scopeTypeForCloudKitScope:(id)a3 proposedScopeType:(int64_t)a4 fetchedRecords:(id)a5 currentUserID:(id)a6
++ (int64_t)scopeTypeForCloudKitScope:(id)scope proposedScopeType:(int64_t)type fetchedRecords:(id)records currentUserID:(id)d
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if ((a4 - 2) >= 2)
+  scopeCopy = scope;
+  recordsCopy = records;
+  dCopy = d;
+  if ((type - 2) >= 2)
   {
-    if (!a4)
+    if (!type)
     {
-      v13 = [v10 zoneID];
-      if (![a1 isSupportedZoneID:v13])
+      zoneID = [scopeCopy zoneID];
+      if (![self isSupportedZoneID:zoneID])
       {
-        a4 = 0;
+        type = 0;
 LABEL_18:
 
         goto LABEL_19;
       }
 
-      v14 = [v11 cplRecordWithName:@"cmm-share" zonedID:v13];
-      v15 = [v11 cplRecordWithName:@"cmm-root" zonedID:v13];
-      if (v14 && ([a1 isSupportedShare:v14] & 1) == 0)
+      v14 = [recordsCopy cplRecordWithName:@"cmm-share" zonedID:zoneID];
+      v15 = [recordsCopy cplRecordWithName:@"cmm-root" zonedID:zoneID];
+      if (v14 && ([self isSupportedShare:v14] & 1) == 0)
       {
 
         v14 = 0;
@@ -108,21 +108,21 @@ LABEL_18:
 
       if (v15)
       {
-        v16 = [v15 recordType];
-        v17 = [v16 isEqualToString:@"CMMRoot"];
+        recordType = [v15 recordType];
+        v17 = [recordType isEqualToString:@"CMMRoot"];
 
         if (v17)
         {
           if (v14)
           {
-            if ([v10 isShared])
+            if ([scopeCopy isShared])
             {
-              a4 = 3;
+              type = 3;
             }
 
             else
             {
-              a4 = 2;
+              type = 2;
             }
 
             goto LABEL_17;
@@ -136,18 +136,18 @@ LABEL_18:
         }
       }
 
-      a4 = 0;
+      type = 0;
 LABEL_17:
 
       goto LABEL_18;
     }
 
-    a4 = 0;
+    type = 0;
   }
 
 LABEL_19:
 
-  return a4;
+  return type;
 }
 
 + (id)shareTypes
@@ -163,16 +163,16 @@ LABEL_19:
   }
 }
 
-- (id)shareTypeForScopeChange:(id)a3
+- (id)shareTypeForScopeChange:(id)change
 {
-  v5 = a3;
+  changeCopy = change;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    sub_1001A9560(a2, self, v5);
+    sub_1001A9560(a2, self, changeCopy);
   }
 
-  if (+[CPLFingerprintScheme alwaysCreateEPPMomentShares](CPLFingerprintScheme, "alwaysCreateEPPMomentShares") & 1) != 0 || ([v5 hasEPPAssets])
+  if (+[CPLFingerprintScheme alwaysCreateEPPMomentShares](CPLFingerprintScheme, "alwaysCreateEPPMomentShares") & 1) != 0 || ([changeCopy hasEPPAssets])
   {
     v6 = @"photos_links";
   }
@@ -181,7 +181,7 @@ LABEL_19:
   {
     v8.receiver = self;
     v8.super_class = CPLCloudKitCMMZoneIdentification;
-    v6 = [(CPLCloudKitZoneIdentification *)&v8 shareTypeForScopeChange:v5];
+    v6 = [(CPLCloudKitZoneIdentification *)&v8 shareTypeForScopeChange:changeCopy];
   }
 
   return v6;
@@ -202,16 +202,16 @@ LABEL_19:
   return v3;
 }
 
-- (BOOL)supportsUploadOfChange:(id)a3 scopeProvider:(id)a4
+- (BOOL)supportsUploadOfChange:(id)change scopeProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  providerCopy = provider;
   v8 = sub_10008C178();
-  if ([v8 containsObject:{objc_msgSend(v6, "recordClass")}])
+  if ([v8 containsObject:{objc_msgSend(changeCopy, "recordClass")}])
   {
     v11.receiver = self;
     v11.super_class = CPLCloudKitCMMZoneIdentification;
-    v9 = [(CPLCloudKitZoneIdentification *)&v11 supportsUploadOfChange:v6 scopeProvider:v7];
+    v9 = [(CPLCloudKitZoneIdentification *)&v11 supportsUploadOfChange:changeCopy scopeProvider:providerCopy];
   }
 
   else
@@ -222,16 +222,16 @@ LABEL_19:
   return v9;
 }
 
-- (BOOL)supportsDownloadOfChange:(id)a3 scopeProvider:(id)a4
+- (BOOL)supportsDownloadOfChange:(id)change scopeProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  providerCopy = provider;
   v8 = sub_10008C178();
-  if ([v8 containsObject:{objc_msgSend(v6, "recordClass")}])
+  if ([v8 containsObject:{objc_msgSend(changeCopy, "recordClass")}])
   {
     v11.receiver = self;
     v11.super_class = CPLCloudKitCMMZoneIdentification;
-    v9 = [(CPLCloudKitZoneIdentification *)&v11 supportsDownloadOfChange:v6 scopeProvider:v7];
+    v9 = [(CPLCloudKitZoneIdentification *)&v11 supportsDownloadOfChange:changeCopy scopeProvider:providerCopy];
   }
 
   else
@@ -242,16 +242,16 @@ LABEL_19:
   return v9;
 }
 
-- (BOOL)supportsDirectDeletionOfRecord:(id)a3 scopeProvider:(id)a4
+- (BOOL)supportsDirectDeletionOfRecord:(id)record scopeProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  providerCopy = provider;
   v8 = sub_10008C178();
-  if ([v8 containsObject:{objc_msgSend(v6, "recordClass")}])
+  if ([v8 containsObject:{objc_msgSend(recordCopy, "recordClass")}])
   {
     v11.receiver = self;
     v11.super_class = CPLCloudKitCMMZoneIdentification;
-    v9 = [(CPLCloudKitZoneIdentification *)&v11 supportsDirectDeletionOfRecord:v6 scopeProvider:v7];
+    v9 = [(CPLCloudKitZoneIdentification *)&v11 supportsDirectDeletionOfRecord:recordCopy scopeProvider:providerCopy];
   }
 
   else
@@ -262,16 +262,16 @@ LABEL_19:
   return v9;
 }
 
-- (BOOL)supportsDeletionOfRecord:(id)a3 scopeProvider:(id)a4
+- (BOOL)supportsDeletionOfRecord:(id)record scopeProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  recordCopy = record;
+  providerCopy = provider;
   v8 = sub_10008C178();
-  if ([v8 containsObject:{objc_msgSend(v6, "recordClass")}])
+  if ([v8 containsObject:{objc_msgSend(recordCopy, "recordClass")}])
   {
     v11.receiver = self;
     v11.super_class = CPLCloudKitCMMZoneIdentification;
-    v9 = [(CPLCloudKitZoneIdentification *)&v11 supportsDeletionOfRecord:v6 scopeProvider:v7];
+    v9 = [(CPLCloudKitZoneIdentification *)&v11 supportsDeletionOfRecord:recordCopy scopeProvider:providerCopy];
   }
 
   else
@@ -282,14 +282,14 @@ LABEL_19:
   return v9;
 }
 
-- (BOOL)supportsUploadOfRecordClass:(Class)a3
+- (BOOL)supportsUploadOfRecordClass:(Class)class
 {
   v5 = sub_10008C178();
-  if ([v5 containsObject:a3])
+  if ([v5 containsObject:class])
   {
     v8.receiver = self;
     v8.super_class = CPLCloudKitCMMZoneIdentification;
-    v6 = [(CPLCloudKitZoneIdentification *)&v8 supportsUploadOfRecordClass:a3];
+    v6 = [(CPLCloudKitZoneIdentification *)&v8 supportsUploadOfRecordClass:class];
   }
 
   else
@@ -300,14 +300,14 @@ LABEL_19:
   return v6;
 }
 
-- (BOOL)supportsDownloadOfRecordClass:(Class)a3
+- (BOOL)supportsDownloadOfRecordClass:(Class)class
 {
   v5 = sub_10008C178();
-  if ([v5 containsObject:a3])
+  if ([v5 containsObject:class])
   {
     v8.receiver = self;
     v8.super_class = CPLCloudKitCMMZoneIdentification;
-    v6 = [(CPLCloudKitZoneIdentification *)&v8 supportsDownloadOfRecordClass:a3];
+    v6 = [(CPLCloudKitZoneIdentification *)&v8 supportsDownloadOfRecordClass:class];
   }
 
   else
@@ -318,14 +318,14 @@ LABEL_19:
   return v6;
 }
 
-- (BOOL)supportsDirectDeletionOfRecordClass:(Class)a3
+- (BOOL)supportsDirectDeletionOfRecordClass:(Class)class
 {
   v5 = sub_10008C178();
-  if ([v5 containsObject:a3])
+  if ([v5 containsObject:class])
   {
     v8.receiver = self;
     v8.super_class = CPLCloudKitCMMZoneIdentification;
-    v6 = [(CPLCloudKitZoneIdentification *)&v8 supportsDirectDeletionOfRecordClass:a3];
+    v6 = [(CPLCloudKitZoneIdentification *)&v8 supportsDirectDeletionOfRecordClass:class];
   }
 
   else
@@ -336,14 +336,14 @@ LABEL_19:
   return v6;
 }
 
-- (BOOL)supportsDeletionOfRecordClass:(Class)a3
+- (BOOL)supportsDeletionOfRecordClass:(Class)class
 {
   v5 = sub_10008C178();
-  if ([v5 containsObject:a3])
+  if ([v5 containsObject:class])
   {
     v8.receiver = self;
     v8.super_class = CPLCloudKitCMMZoneIdentification;
-    v6 = [(CPLCloudKitZoneIdentification *)&v8 supportsDeletionOfRecordClass:a3];
+    v6 = [(CPLCloudKitZoneIdentification *)&v8 supportsDeletionOfRecordClass:class];
   }
 
   else

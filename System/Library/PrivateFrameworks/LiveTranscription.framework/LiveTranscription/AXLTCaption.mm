@@ -3,15 +3,15 @@
 - (NSArray)segments;
 - (NSAttributedString)textWithConfidence;
 - (_TtC17LiveTranscription11AXLTCaption)init;
-- (_TtC17LiveTranscription11AXLTCaption)initWithCaption:(id)a3;
-- (_TtC17LiveTranscription11AXLTCaption)initWithId:(int64_t)a3 appID:(id)a4 appName:(id)a5 time:(id)a6 text:(id)a7 segments:(id)a8 placeholder:(id)a9 actionType:(int64_t)a10;
-- (_TtC17LiveTranscription11AXLTCaption)initWithId:(int64_t)a3 liveCaption:(id)a4;
+- (_TtC17LiveTranscription11AXLTCaption)initWithCaption:(id)caption;
+- (_TtC17LiveTranscription11AXLTCaption)initWithId:(int64_t)id appID:(id)d appName:(id)name time:(id)time text:(id)text segments:(id)segments placeholder:(id)placeholder actionType:(int64_t)self0;
+- (_TtC17LiveTranscription11AXLTCaption)initWithId:(int64_t)id liveCaption:(id)caption;
 - (int64_t)actionType;
 - (int64_t)resultType;
-- (void)setActionType:(int64_t)a3;
-- (void)setPrivileged:(BOOL)a3;
-- (void)setResultType:(int64_t)a3;
-- (void)setSegments:(id)a3;
+- (void)setActionType:(int64_t)type;
+- (void)setPrivileged:(BOOL)privileged;
+- (void)setResultType:(int64_t)type;
+- (void)setSegments:(id)segments;
 @end
 
 @implementation AXLTCaption
@@ -28,7 +28,7 @@
   return v5;
 }
 
-- (void)setSegments:(id)a3
+- (void)setSegments:(id)segments
 {
   sub_25603AB14(0, &qword_27F825818, 0x277CDCF18);
   v4 = sub_25605375C();
@@ -61,11 +61,11 @@
   return *(self + v3);
 }
 
-- (void)setActionType:(int64_t)a3
+- (void)setActionType:(int64_t)type
 {
   v5 = OBJC_IVAR____TtC17LiveTranscription11AXLTCaption_actionType;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 - (int64_t)resultType
@@ -75,11 +75,11 @@
   return *(self + v3);
 }
 
-- (void)setResultType:(int64_t)a3
+- (void)setResultType:(int64_t)type
 {
   v5 = OBJC_IVAR____TtC17LiveTranscription11AXLTCaption_resultType;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = type;
 }
 
 - (BOOL)privileged
@@ -89,14 +89,14 @@
   return *(self + v3);
 }
 
-- (void)setPrivileged:(BOOL)a3
+- (void)setPrivileged:(BOOL)privileged
 {
   v5 = OBJC_IVAR____TtC17LiveTranscription11AXLTCaption_privileged;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = privileged;
 }
 
-- (_TtC17LiveTranscription11AXLTCaption)initWithId:(int64_t)a3 appID:(id)a4 appName:(id)a5 time:(id)a6 text:(id)a7 segments:(id)a8 placeholder:(id)a9 actionType:(int64_t)a10
+- (_TtC17LiveTranscription11AXLTCaption)initWithId:(int64_t)id appID:(id)d appName:(id)name time:(id)time text:(id)text segments:(id)segments placeholder:(id)placeholder actionType:(int64_t)self0
 {
   v10 = sub_2560536AC();
   v12 = v11;
@@ -109,21 +109,21 @@
   sub_25603AB14(0, &qword_27F825818, 0x277CDCF18);
   v22 = sub_25605375C();
   v23 = sub_2560536AC();
-  return AXLTCaption.init(id:appID:appName:time:text:segments:placeholder:actionType:)(a3, v10, v12, v13, v15, v16, v18, v19, v21, v22, v23, v24, a10);
+  return AXLTCaption.init(id:appID:appName:time:text:segments:placeholder:actionType:)(id, v10, v12, v13, v15, v16, v18, v19, v21, v22, v23, v24, type);
 }
 
-- (_TtC17LiveTranscription11AXLTCaption)initWithId:(int64_t)a3 liveCaption:(id)a4
+- (_TtC17LiveTranscription11AXLTCaption)initWithId:(int64_t)id liveCaption:(id)caption
 {
-  v5 = a4;
-  v6 = sub_256039C84(a3, v5);
+  captionCopy = caption;
+  v6 = sub_256039C84(id, captionCopy);
 
   return v6;
 }
 
-- (_TtC17LiveTranscription11AXLTCaption)initWithCaption:(id)a3
+- (_TtC17LiveTranscription11AXLTCaption)initWithCaption:(id)caption
 {
-  v3 = a3;
-  v4 = sub_256039F04(v3);
+  captionCopy = caption;
+  v4 = sub_256039F04(captionCopy);
 
   return v4;
 }

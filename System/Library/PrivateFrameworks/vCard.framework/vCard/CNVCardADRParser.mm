@@ -1,28 +1,28 @@
 @interface CNVCardADRParser
-+ (BOOL)parseNextStringWithParser:(id)a3 components:(id)a4 key:(id)a5;
-+ (id)addressValueWithPrimaryAddress:(id)a3 extendedAddress:(id)a4 poBox:(id)a5;
-+ (id)countryCodeForLine:(id)a3 validCountryCodes:(id)a4 parser:(id)a5;
-+ (id)parseStreetAddressComponentsWithParser:(id)a3;
-+ (id)valueWithParser:(id)a3;
-+ (void)collectStreetAddressComponentsIntoSingleKeyInAddress:(id)a3;
-+ (void)processExtensionValuesForLines:(id)a3 validCountryCodes:(id)a4 parser:(id)a5;
++ (BOOL)parseNextStringWithParser:(id)parser components:(id)components key:(id)key;
++ (id)addressValueWithPrimaryAddress:(id)address extendedAddress:(id)extendedAddress poBox:(id)box;
++ (id)countryCodeForLine:(id)line validCountryCodes:(id)codes parser:(id)parser;
++ (id)parseStreetAddressComponentsWithParser:(id)parser;
++ (id)valueWithParser:(id)parser;
++ (void)collectStreetAddressComponentsIntoSingleKeyInAddress:(id)address;
++ (void)processExtensionValuesForLines:(id)lines validCountryCodes:(id)codes parser:(id)parser;
 @end
 
 @implementation CNVCardADRParser
 
-+ (id)valueWithParser:(id)a3
++ (id)valueWithParser:(id)parser
 {
-  v4 = [a1 parseStreetAddressComponentsWithParser:a3];
-  [a1 collectStreetAddressComponentsIntoSingleKeyInAddress:v4];
+  v4 = [self parseStreetAddressComponentsWithParser:parser];
+  [self collectStreetAddressComponentsIntoSingleKeyInAddress:v4];
 
   return v4;
 }
 
-+ (id)parseStreetAddressComponentsWithParser:(id)a3
++ (id)parseStreetAddressComponentsWithParser:(id)parser
 {
   v18[7] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  parserCopy = parser;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v18[0] = @"postOfficeBox";
   v18[1] = @"extendedStreet";
   v18[2] = @"street";
@@ -49,7 +49,7 @@ LABEL_3:
         objc_enumerationMutation(v6);
       }
 
-      if (![a1 parseNextStringWithParser:v4 components:v5 key:{*(*(&v13 + 1) + 8 * v10), v13}])
+      if (![self parseNextStringWithParser:parserCopy components:dictionary key:{*(*(&v13 + 1) + 8 * v10), v13}])
       {
         break;
       }
@@ -69,74 +69,74 @@ LABEL_3:
 
   v11 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return dictionary;
 }
 
-+ (BOOL)parseNextStringWithParser:(id)a3 components:(id)a4 key:(id)a5
++ (BOOL)parseNextStringWithParser:(id)parser components:(id)components key:(id)key
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = a3;
-  v10 = [v9 parseStringValue];
+  componentsCopy = components;
+  keyCopy = key;
+  parserCopy = parser;
+  parseStringValue = [parserCopy parseStringValue];
   if ((*(*MEMORY[0x277CFBD30] + 16))())
   {
 
-    v10 = 0;
+    parseStringValue = 0;
   }
 
-  [v7 setObject:v10 forKeyedSubscript:v8];
-  v11 = [v9 advancePastSemicolon];
+  [componentsCopy setObject:parseStringValue forKeyedSubscript:keyCopy];
+  advancePastSemicolon = [parserCopy advancePastSemicolon];
 
-  return v11;
+  return advancePastSemicolon;
 }
 
-+ (void)collectStreetAddressComponentsIntoSingleKeyInAddress:(id)a3
++ (void)collectStreetAddressComponentsIntoSingleKeyInAddress:(id)address
 {
   v11[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"street"];
-  v6 = [v4 objectForKey:@"extendedStreet"];
-  v7 = [v4 objectForKey:@"postOfficeBox"];
-  v8 = [a1 addressValueWithPrimaryAddress:v5 extendedAddress:v6 poBox:v7];
+  addressCopy = address;
+  v5 = [addressCopy objectForKey:@"street"];
+  v6 = [addressCopy objectForKey:@"extendedStreet"];
+  v7 = [addressCopy objectForKey:@"postOfficeBox"];
+  v8 = [self addressValueWithPrimaryAddress:v5 extendedAddress:v6 poBox:v7];
   v11[0] = @"street";
   v11[1] = @"extendedStreet";
   v11[2] = @"postOfficeBox";
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:3];
-  [v4 removeObjectsForKeys:v9];
+  [addressCopy removeObjectsForKeys:v9];
 
-  [v4 setObject:v8 forKey:@"street"];
+  [addressCopy setObject:v8 forKey:@"street"];
   v10 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)addressValueWithPrimaryAddress:(id)a3 extendedAddress:(id)a4 poBox:(id)a5
++ (id)addressValueWithPrimaryAddress:(id)address extendedAddress:(id)extendedAddress poBox:(id)box
 {
   v7 = MEMORY[0x277CBEB18];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v7 array];
-  [v11 _cn_addNonNilObject:v8];
+  boxCopy = box;
+  extendedAddressCopy = extendedAddress;
+  addressCopy = address;
+  array = [v7 array];
+  [array _cn_addNonNilObject:boxCopy];
 
-  [v11 _cn_addNonNilObject:v10];
-  [v11 _cn_addNonNilObject:v9];
+  [array _cn_addNonNilObject:addressCopy];
+  [array _cn_addNonNilObject:extendedAddressCopy];
 
-  v12 = [v11 componentsJoinedByString:@"\n"];
+  v12 = [array componentsJoinedByString:@"\n"];
 
   return v12;
 }
 
-+ (void)processExtensionValuesForLines:(id)a3 validCountryCodes:(id)a4 parser:(id)a5
++ (void)processExtensionValuesForLines:(id)lines validCountryCodes:(id)codes parser:(id)parser
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v24 = a4;
-  v8 = a5;
+  linesCopy = lines;
+  codesCopy = codes;
+  parserCopy = parser;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = v7;
-  v9 = [v7 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  obj = linesCopy;
+  v9 = [linesCopy countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v9)
   {
     v10 = v9;
@@ -151,15 +151,15 @@ LABEL_3:
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
-        v13 = [v12 grouping];
-        v14 = [v8 firstValueForKey:@"X-APPLE-SUBLOCALITY" inExtensionGroup:v13];
+        grouping = [v12 grouping];
+        v14 = [parserCopy firstValueForKey:@"X-APPLE-SUBLOCALITY" inExtensionGroup:grouping];
 
-        v15 = [v12 grouping];
-        v16 = [v8 firstValueForKey:@"X-APPLE-SUBADMINISTRATIVEAREA" inExtensionGroup:v15];
+        grouping2 = [v12 grouping];
+        v16 = [parserCopy firstValueForKey:@"X-APPLE-SUBADMINISTRATIVEAREA" inExtensionGroup:grouping2];
 
-        v17 = [a1 countryCodeForLine:v12 validCountryCodes:v24 parser:v8];
-        v18 = [v12 value];
-        v19 = [v18 mutableCopy];
+        v17 = [self countryCodeForLine:v12 validCountryCodes:codesCopy parser:parserCopy];
+        value = [v12 value];
+        v19 = [value mutableCopy];
 
         [v19 setObject:v14 forKeyedSubscript:@"subLocality"];
         [v19 setObject:v16 forKeyedSubscript:@"subAdministrativeArea"];
@@ -176,12 +176,12 @@ LABEL_3:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)countryCodeForLine:(id)a3 validCountryCodes:(id)a4 parser:(id)a5
++ (id)countryCodeForLine:(id)line validCountryCodes:(id)codes parser:(id)parser
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [a3 grouping];
-  v10 = [v8 firstValueForKey:@"X-ABADR" inExtensionGroup:v9];
+  codesCopy = codes;
+  parserCopy = parser;
+  grouping = [line grouping];
+  v10 = [parserCopy firstValueForKey:@"X-ABADR" inExtensionGroup:grouping];
 
   if ((*(*MEMORY[0x277CFBD30] + 16))())
   {
@@ -190,10 +190,10 @@ LABEL_3:
 
   else
   {
-    if (v7)
+    if (codesCopy)
     {
-      v12 = [v10 lowercaseString];
-      v13 = [v7 containsObject:v12];
+      lowercaseString = [v10 lowercaseString];
+      v13 = [codesCopy containsObject:lowercaseString];
 
       if ((v13 & 1) == 0)
       {

@@ -1,8 +1,8 @@
 @interface FirstRestoreNotInProgressPrecondition
 - (NSString)description;
 - (_TtC16HealthExperience37FirstRestoreNotInProgressPrecondition)init;
-- (void)cloudSyncObserver:(id)a3 didFailToPopulateStatusWithError:(id)a4;
-- (void)cloudSyncObserverStatusUpdated:(id)a3 status:(id)a4;
+- (void)cloudSyncObserver:(id)observer didFailToPopulateStatusWithError:(id)error;
+- (void)cloudSyncObserverStatusUpdated:(id)updated status:(id)status;
 - (void)dealloc;
 @end
 
@@ -10,7 +10,7 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
 
   sub_1D0FF4518();
 
@@ -18,14 +18,14 @@
 
   sub_1D0FF4528();
 
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for FirstRestoreNotInProgressPrecondition();
   [(FirstRestoreNotInProgressPrecondition *)&v3 dealloc];
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D0F9CFBC();
 
   v3 = sub_1D0FF53E8();
@@ -40,19 +40,19 @@
   return result;
 }
 
-- (void)cloudSyncObserverStatusUpdated:(id)a3 status:(id)a4
+- (void)cloudSyncObserverStatusUpdated:(id)updated status:(id)status
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_1D0F9D71C(v7);
+  updatedCopy = updated;
+  statusCopy = status;
+  selfCopy = self;
+  sub_1D0F9D71C(statusCopy);
 }
 
-- (void)cloudSyncObserver:(id)a3 didFailToPopulateStatusWithError:(id)a4
+- (void)cloudSyncObserver:(id)observer didFailToPopulateStatusWithError:(id)error
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
+  observerCopy = observer;
+  errorCopy = error;
+  selfCopy = self;
   _s16HealthExperience37FirstRestoreNotInProgressPreconditionC17cloudSyncObserver_32didFailToPopulateStatusWithErrorySo07HKCloudjK0C_s0R0_ptF_0();
 }
 

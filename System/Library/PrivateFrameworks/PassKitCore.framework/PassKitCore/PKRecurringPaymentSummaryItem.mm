@@ -1,13 +1,13 @@
 @interface PKRecurringPaymentSummaryItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToRecurringPaymentSummaryItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToRecurringPaymentSummaryItem:(id)item;
 - (PKRecurringPaymentSummaryItem)init;
-- (PKRecurringPaymentSummaryItem)initWithCoder:(id)a3;
-- (PKRecurringPaymentSummaryItem)initWithDictionary:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKRecurringPaymentSummaryItem)initWithCoder:(id)coder;
+- (PKRecurringPaymentSummaryItem)initWithDictionary:(id)dictionary error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKRecurringPaymentSummaryItem
@@ -26,16 +26,16 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = PKRecurringPaymentSummaryItem;
   v5 = [(PKPaymentSummaryItem *)&v11 copyWithZone:?];
-  v6 = [(NSDate *)self->_startDate copyWithZone:a3];
+  v6 = [(NSDate *)self->_startDate copyWithZone:zone];
   v7 = v5[7];
   v5[7] = v6;
 
-  v8 = [(NSDate *)self->_endDate copyWithZone:a3];
+  v8 = [(NSDate *)self->_endDate copyWithZone:zone];
   v9 = v5[10];
   v5[10] = v8;
 
@@ -44,41 +44,41 @@
   return v5;
 }
 
-- (PKRecurringPaymentSummaryItem)initWithCoder:(id)a3
+- (PKRecurringPaymentSummaryItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = PKRecurringPaymentSummaryItem;
-  v5 = [(PKPaymentSummaryItem *)&v9 initWithCoder:v4];
+  v5 = [(PKPaymentSummaryItem *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     [(PKRecurringPaymentSummaryItem *)v5 setStartDate:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
     [(PKRecurringPaymentSummaryItem *)v5 setEndDate:v7];
 
-    -[PKRecurringPaymentSummaryItem setIntervalUnit:](v5, "setIntervalUnit:", [v4 decodeIntegerForKey:@"intervalUnit"]);
-    -[PKRecurringPaymentSummaryItem setIntervalCount:](v5, "setIntervalCount:", [v4 decodeIntegerForKey:@"intervalCount"]);
+    -[PKRecurringPaymentSummaryItem setIntervalUnit:](v5, "setIntervalUnit:", [coderCopy decodeIntegerForKey:@"intervalUnit"]);
+    -[PKRecurringPaymentSummaryItem setIntervalCount:](v5, "setIntervalCount:", [coderCopy decodeIntegerForKey:@"intervalCount"]);
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = PKRecurringPaymentSummaryItem;
-  v4 = a3;
-  [(PKPaymentSummaryItem *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(PKPaymentSummaryItem *)&v7 encodeWithCoder:coderCopy];
   v5 = [(PKRecurringPaymentSummaryItem *)self startDate:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"startDate"];
+  [coderCopy encodeObject:v5 forKey:@"startDate"];
 
-  v6 = [(PKRecurringPaymentSummaryItem *)self endDate];
-  [v4 encodeObject:v6 forKey:@"endDate"];
+  endDate = [(PKRecurringPaymentSummaryItem *)self endDate];
+  [coderCopy encodeObject:endDate forKey:@"endDate"];
 
-  [v4 encodeInteger:-[PKRecurringPaymentSummaryItem intervalUnit](self forKey:{"intervalUnit"), @"intervalUnit"}];
-  [v4 encodeInteger:-[PKRecurringPaymentSummaryItem intervalCount](self forKey:{"intervalCount"), @"intervalCount"}];
+  [coderCopy encodeInteger:-[PKRecurringPaymentSummaryItem intervalUnit](self forKey:{"intervalUnit"), @"intervalUnit"}];
+  [coderCopy encodeInteger:-[PKRecurringPaymentSummaryItem intervalCount](self forKey:{"intervalCount"), @"intervalCount"}];
 }
 
 - (unint64_t)hash
@@ -96,33 +96,33 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKRecurringPaymentSummaryItem *)self isEqualToRecurringPaymentSummaryItem:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKRecurringPaymentSummaryItem *)self isEqualToRecurringPaymentSummaryItem:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToRecurringPaymentSummaryItem:(id)a3
+- (BOOL)isEqualToRecurringPaymentSummaryItem:(id)item
 {
-  v4 = a3;
-  if (![(PKPaymentSummaryItem *)self isEqualToPaymentSummaryItem:v4])
+  itemCopy = item;
+  if (![(PKPaymentSummaryItem *)self isEqualToPaymentSummaryItem:itemCopy])
   {
     goto LABEL_20;
   }
 
   startDate = self->_startDate;
-  v6 = v4[7];
+  v6 = itemCopy[7];
   if (startDate)
   {
     v7 = v6 == 0;
@@ -147,7 +147,7 @@
   }
 
   endDate = self->_endDate;
-  v9 = v4[10];
+  v9 = itemCopy[10];
   if (endDate)
   {
     v10 = v9 == 0;
@@ -176,40 +176,40 @@ LABEL_20:
   }
 
 LABEL_18:
-  if (self->_intervalUnit != v4[8])
+  if (self->_intervalUnit != itemCopy[8])
   {
     goto LABEL_20;
   }
 
-  v11 = self->_intervalCount == v4[9];
+  v11 = self->_intervalCount == itemCopy[9];
 LABEL_21:
 
   return v11;
 }
 
-- (PKRecurringPaymentSummaryItem)initWithDictionary:(id)a3 error:(id *)a4
+- (PKRecurringPaymentSummaryItem)initWithDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v17.receiver = self;
   v17.super_class = PKRecurringPaymentSummaryItem;
-  v7 = [(PKPaymentSummaryItem *)&v17 initWithDictionary:v6 error:a4];
+  v7 = [(PKPaymentSummaryItem *)&v17 initWithDictionary:dictionaryCopy error:error];
   if (v7)
   {
-    v8 = [v6 PKDateForKey:@"startDate"];
+    v8 = [dictionaryCopy PKDateForKey:@"startDate"];
     startDate = v7->_startDate;
     v7->_startDate = v8;
 
-    v10 = [v6 PKDateForKey:@"endDate"];
+    v10 = [dictionaryCopy PKDateForKey:@"endDate"];
     endDate = v7->_endDate;
     v7->_endDate = v10;
 
-    v12 = [v6 PKIntegerForKey:@"intervalCount"];
+    v12 = [dictionaryCopy PKIntegerForKey:@"intervalCount"];
     if (v12 >= 1)
     {
       v7->_intervalCount = v12;
     }
 
-    v13 = [v6 PKStringForKey:@"intervalUnit"];
+    v13 = [dictionaryCopy PKStringForKey:@"intervalUnit"];
     v14 = v13;
     if (v13)
     {
@@ -228,8 +228,8 @@ LABEL_21:
 {
   v13.receiver = self;
   v13.super_class = PKRecurringPaymentSummaryItem;
-  v3 = [(PKPaymentSummaryItem *)&v13 dictionaryRepresentation];
-  v4 = [v3 mutableCopy];
+  dictionaryRepresentation = [(PKPaymentSummaryItem *)&v13 dictionaryRepresentation];
+  v4 = [dictionaryRepresentation mutableCopy];
 
   startDate = self->_startDate;
   if (startDate)

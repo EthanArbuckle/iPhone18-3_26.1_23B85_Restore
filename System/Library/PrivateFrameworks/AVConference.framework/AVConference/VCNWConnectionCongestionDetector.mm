@@ -1,8 +1,8 @@
 @interface VCNWConnectionCongestionDetector
-- (BOOL)processNWConnectionNotification:(tagVCNWConnectionNotification *)a3;
-- (BOOL)processNWConnectionPacketEvent:(packet_id *)a3 eventType:(int)a4;
+- (BOOL)processNWConnectionNotification:(tagVCNWConnectionNotification *)notification;
+- (BOOL)processNWConnectionPacketEvent:(packet_id *)event eventType:(int)type;
 - (void)dealloc;
-- (void)sendCongestionEventWithTimestamp:(unsigned int)a3;
+- (void)sendCongestionEventWithTimestamp:(unsigned int)timestamp;
 @end
 
 @implementation VCNWConnectionCongestionDetector
@@ -16,10 +16,10 @@
   [(VCNWConnectionCongestionDetector *)&v3 dealloc];
 }
 
-- (BOOL)processNWConnectionNotification:(tagVCNWConnectionNotification *)a3
+- (BOOL)processNWConnectionNotification:(tagVCNWConnectionNotification *)notification
 {
   v37 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!notification)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -33,25 +33,25 @@
     return 0;
   }
 
-  if (a3->version >= 3u)
+  if (notification->version >= 3u)
   {
     logNWDump = self->_logNWDump;
     if (logNWDump)
     {
-      VRLogfilePrint(logNWDump, "NWConnection notification has a bad version: %d\n", a3, v3, v4, v5, v6, v7, a3->version);
+      VRLogfilePrint(logNWDump, "NWConnection notification has a bad version: %d\n", notification, v3, v4, v5, v6, v7, notification->version);
     }
 
     return 0;
   }
 
-  timestamp = a3->var1.advisory.timestamp;
+  timestamp = notification->var1.advisory.timestamp;
   v13 = self->_previousStatistics.var0.nwConnection.timestamp;
   if (timestamp == v13 || (timestamp - v13) >> 32 != 0)
   {
     v15 = self->_logNWDump;
     if (v15)
     {
-      VRLogfilePrint(v15, "NWConnection notifications have identical timestamps or out of order [current timestamp:%llu, previous timestamp:%llu]\n", a3, v3, v4, v5, v6, v7, a3->var1.advisory.timestamp);
+      VRLogfilePrint(v15, "NWConnection notifications have identical timestamps or out of order [current timestamp:%llu, previous timestamp:%llu]\n", notification, v3, v4, v5, v6, v7, notification->var1.advisory.timestamp);
     }
 
     return 0;
@@ -72,16 +72,16 @@
   *(&v26 + 1) = micro();
   v16 = 1;
   BYTE2(v27) = 1;
-  WORD4(v27) = *&a3->var1.advisory.version;
+  WORD4(v27) = *&notification->var1.advisory.version;
   *&v28[0] = timestamp;
-  *(v28 + 8) = *(&a3->var1.thermalUpdate + 1);
-  *(&v28[1] + 1) = *(&a3->var1.thermalUpdate + 5);
-  LODWORD(v29) = a3->var1.advisory.average_delay;
+  *(v28 + 8) = *(&notification->var1.thermalUpdate + 1);
+  *(&v28[1] + 1) = *(&notification->var1.thermalUpdate + 5);
+  LODWORD(v29) = notification->var1.advisory.average_delay;
   maxAveragePacketDelayMs = v29;
-  *(&v29 + 1) = a3->var1.advisory.average_throughput;
-  LODWORD(v30) = a3->var1.advisory.rate_trend_suggestion;
-  v19 = *(&a3->var1.thermalUpdate + 65);
-  *&v32[24] = *(&a3->var1.thermalUpdate + 81);
+  *(&v29 + 1) = notification->var1.advisory.average_throughput;
+  LODWORD(v30) = notification->var1.advisory.rate_trend_suggestion;
+  v19 = *(&notification->var1.thermalUpdate + 65);
+  *&v32[24] = *(&notification->var1.thermalUpdate + 81);
   *&v32[8] = v19;
   self->_averageThroughputBps = DWORD2(v29);
   self->_averagePacketDelayMs = maxAveragePacketDelayMs;
@@ -114,9 +114,9 @@
   return v16;
 }
 
-- (BOOL)processNWConnectionPacketEvent:(packet_id *)a3 eventType:(int)a4
+- (BOOL)processNWConnectionPacketEvent:(packet_id *)event eventType:(int)type
 {
-  if (!a3)
+  if (!event)
   {
     if (VRTraceGetErrorLogLevelForModule() >= 3)
     {
@@ -135,8 +135,8 @@ LABEL_12:
     return logNWDump;
   }
 
-  v8 = a4;
-  if (a3->var0 != 1)
+  typeCopy = type;
+  if (event->var0 != 1)
   {
     logNWDump = self->_logNWDump;
     if (!logNWDump)
@@ -144,13 +144,13 @@ LABEL_12:
       return logNWDump;
     }
 
-    VRLogfilePrint(logNWDump, "NWConnection packet event has a bad version: %d, type: %d\n", a3, *&a4, v4, v5, v6, v7, a3->var0);
+    VRLogfilePrint(logNWDump, "NWConnection packet event has a bad version: %d, type: %d\n", event, *&type, v4, v5, v6, v7, event->var0);
     goto LABEL_12;
   }
 
   lastTimestampWithPacketDrop = self->_lastTimestampWithPacketDrop;
   ++self->_packetDropCount;
-  if (lastTimestampWithPacketDrop == a3->var3)
+  if (lastTimestampWithPacketDrop == event->var3)
   {
     v12 = self->_packetDropCountPerFrame + 1;
     self->_packetDropCountPerFrame = v12;
@@ -164,21 +164,21 @@ LABEL_12:
   else
   {
     self->_packetDropCountPerFrame = 1;
-    self->_lastTimestampWithPacketDrop = a3->var3;
+    self->_lastTimestampWithPacketDrop = event->var3;
     self->_didSendCongestionEvent = 0;
   }
 
   v15 = self->_logNWDump;
   if (v15)
   {
-    VRLogfilePrint(v15, "NWConnection packet NACK event [type:%d, timestamp:%u, identifier:%u, seq:%u, dropCountPerFrame:%d, dropCount:%d, congestionEvent:%d]\n", lastTimestampWithPacketDrop, *&a4, v4, v5, v6, v7, v8);
+    VRLogfilePrint(v15, "NWConnection packet NACK event [type:%d, timestamp:%u, identifier:%u, seq:%u, dropCountPerFrame:%d, dropCount:%d, congestionEvent:%d]\n", lastTimestampWithPacketDrop, *&type, v4, v5, v6, v7, typeCopy);
   }
 
   LOBYTE(logNWDump) = 1;
   return logNWDump;
 }
 
-- (void)sendCongestionEventWithTimestamp:(unsigned int)a3
+- (void)sendCongestionEventWithTimestamp:(unsigned int)timestamp
 {
   v19 = *MEMORY[0x1E69E9840];
   v18 = 0;
@@ -196,7 +196,7 @@ LABEL_12:
   v7 = 0u;
   v6[1] = micro();
   BYTE2(v7) = 1;
-  *&v8 = a3;
+  *&v8 = timestamp;
   packetDropCountPerFrame = self->_packetDropCountPerFrame;
   LODWORD(v11) = 0x80000000;
   DWORD1(v11) = packetDropCountPerFrame;

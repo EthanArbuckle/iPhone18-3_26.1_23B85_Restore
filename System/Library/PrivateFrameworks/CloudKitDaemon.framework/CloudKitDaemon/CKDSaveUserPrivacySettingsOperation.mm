@@ -1,20 +1,20 @@
 @interface CKDSaveUserPrivacySettingsOperation
-- (CKDSaveUserPrivacySettingsOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDSaveUserPrivacySettingsOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)activityCreate;
 - (void)main;
 @end
 
 @implementation CKDSaveUserPrivacySettingsOperation
 
-- (CKDSaveUserPrivacySettingsOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDSaveUserPrivacySettingsOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
+  infoCopy = info;
   v11.receiver = self;
   v11.super_class = CKDSaveUserPrivacySettingsOperation;
-  v9 = [(CKDOperation *)&v11 initWithOperationInfo:v6 container:a4];
+  v9 = [(CKDOperation *)&v11 initWithOperationInfo:infoCopy container:container];
   if (v9)
   {
-    v9->_discoverable = objc_msgSend_discoverable(v6, v7, v8);
+    v9->_discoverable = objc_msgSend_discoverable(infoCopy, v7, v8);
   }
 
   return v9;

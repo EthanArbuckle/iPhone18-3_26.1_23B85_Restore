@@ -1,7 +1,7 @@
 @interface CRLUSDRenderingExtensionConnector.ViewControllerDelegate
 - (_TtCC8Freeform33CRLUSDRenderingExtensionConnectorP33_3F2C14ED993E13602DE61854D66D868F22ViewControllerDelegate)init;
-- (void)hostViewController:(id)a3 didBeginHosting:(id)a4;
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4;
+- (void)hostViewController:(id)controller didBeginHosting:(id)hosting;
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error;
 @end
 
 @implementation CRLUSDRenderingExtensionConnector.ViewControllerDelegate
@@ -17,20 +17,20 @@
   return [(CRLUSDRenderingExtensionConnector.ViewControllerDelegate *)&v7 init];
 }
 
-- (void)hostViewController:(id)a3 didBeginHosting:(id)a4
+- (void)hostViewController:(id)controller didBeginHosting:(id)hosting
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  hostingCopy = hosting;
+  selfCopy = self;
   sub_100B8974C();
 }
 
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_100B89974(a4);
+  deactivateCopy = deactivate;
+  selfCopy = self;
+  errorCopy = error;
+  sub_100B89974(error);
 }
 
 @end

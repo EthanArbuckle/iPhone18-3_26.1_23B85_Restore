@@ -4,15 +4,15 @@
 - (void)durationChanged;
 - (void)loadFrameRate;
 - (void)loadedTimeRangesChanged;
-- (void)playedToEnd:(id)a3;
-- (void)seekToStartWithCompletionBlock:(id)a3;
-- (void)setCumulativeTimePlayed:(id *)a3;
-- (void)setElapsedTime:(double)a3 duration:(double)a4;
+- (void)playedToEnd:(id)end;
+- (void)seekToStartWithCompletionBlock:(id)block;
+- (void)setCumulativeTimePlayed:(id *)played;
+- (void)setElapsedTime:(double)time duration:(double)duration;
 - (void)startTimeObserver;
 - (void)statusChanged;
 - (void)stopTimeObserver;
 - (void)timeControlStatusChanged;
-- (void)updateTime:(id *)a3 duration:(id *)a4;
+- (void)updateTime:(id *)time duration:(id *)duration;
 @end
 
 @implementation SVAVPlayer
@@ -28,16 +28,16 @@
   [(SVAVPlayer *)&v4 dealloc];
 }
 
-- (void)seekToStartWithCompletionBlock:(id)a3
+- (void)seekToStartWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   objc_initWeak(&location, self);
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __45__SVAVPlayer_seekToStartWithCompletionBlock___block_invoke;
   v8[3] = &unk_279BC5FE0;
   objc_copyWeak(&v10, &location);
-  v5 = v4;
+  v5 = blockCopy;
   v9 = v5;
   v6 = *MEMORY[0x277CC08F0];
   v7 = *(MEMORY[0x277CC08F0] + 16);
@@ -77,14 +77,14 @@ void __45__SVAVPlayer_seekToStartWithCompletionBlock___block_invoke(uint64_t a1,
 - (void)loadFrameRate
 {
   objc_initWeak(&location, self);
-  v3 = [(SVAVPlayer *)self currentItem];
-  v4 = [v3 asset];
+  currentItem = [(SVAVPlayer *)self currentItem];
+  asset = [currentItem asset];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __27__SVAVPlayer_loadFrameRate__block_invoke;
   v5[3] = &unk_279BC5F18;
   objc_copyWeak(&v6, &location);
-  [v4 loadValuesAsynchronouslyForKeys:&unk_2877C6DA8 completionHandler:v5];
+  [asset loadValuesAsynchronouslyForKeys:&unk_2877C6DA8 completionHandler:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -134,11 +134,11 @@ uint64_t __27__SVAVPlayer_loadFrameRate__block_invoke_2(uint64_t a1)
   v24 = 0;
   [(SVAVPlayer *)self currentTime];
   v3 = v19;
-  v4 = [(SVAVPlayer *)self currentItem];
-  v5 = v4;
-  if (v4)
+  currentItem = [(SVAVPlayer *)self currentItem];
+  v5 = currentItem;
+  if (currentItem)
   {
-    [v4 duration];
+    [currentItem duration];
   }
 
   else
@@ -220,11 +220,11 @@ void __31__SVAVPlayer_startTimeObserver__block_invoke(uint64_t a1, __int128 *a2)
   }
 }
 
-- (void)updateTime:(id *)a3 duration:(id *)a4
+- (void)updateTime:(id *)time duration:(id *)duration
 {
-  if ((a3->var2 & 0x11) == 1)
+  if ((time->var2 & 0x11) == 1)
   {
-    var2 = a4->var2;
+    var2 = duration->var2;
     if (var2)
     {
       v14 = v7;
@@ -233,8 +233,8 @@ void __31__SVAVPlayer_startTimeObserver__block_invoke(uint64_t a1, __int128 *a2)
       v17 = v5;
       if ((var2 & 0x1D) == 1)
       {
-        *&v13.value = *&a4->var0;
-        var3 = a4->var3;
+        *&v13.value = *&duration->var0;
+        var3 = duration->var3;
       }
 
       else
@@ -244,7 +244,7 @@ void __31__SVAVPlayer_startTimeObserver__block_invoke(uint64_t a1, __int128 *a2)
       }
 
       v13.epoch = var3;
-      v12 = *a3;
+      v12 = *time;
       Seconds = CMTimeGetSeconds(&v12);
       v12 = v13;
       [(SVAVPlayer *)self setElapsedTime:Seconds duration:CMTimeGetSeconds(&v12)];
@@ -254,8 +254,8 @@ void __31__SVAVPlayer_startTimeObserver__block_invoke(uint64_t a1, __int128 *a2)
 
 - (void)stopTimeObserver
 {
-  v3 = [(SVAVPlayer *)self timeObserver];
-  [(SVAVPlayer *)self removeTimeObserver:v3];
+  timeObserver = [(SVAVPlayer *)self timeObserver];
+  [(SVAVPlayer *)self removeTimeObserver:timeObserver];
 
   [(SVAVPlayer *)self setTimeObserver:0];
 }
@@ -273,38 +273,38 @@ void __31__SVAVPlayer_startTimeObserver__block_invoke(uint64_t a1, __int128 *a2)
   [(SVAVPlayer *)self setTimeControlStatusObserver:v4];
 
   v5 = [SVKeyValueObserver alloc];
-  v6 = [(SVAVPlayer *)self currentItem];
+  currentItem = [(SVAVPlayer *)self currentItem];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __26__SVAVPlayer_addObservers__block_invoke_2;
   v20[3] = &unk_279BC5D60;
   objc_copyWeak(&v21, &location);
-  v7 = [(SVKeyValueObserver *)v5 initWithKeyPath:@"status" ofObject:v6 withOptions:1 change:v20];
+  v7 = [(SVKeyValueObserver *)v5 initWithKeyPath:@"status" ofObject:currentItem withOptions:1 change:v20];
   [(SVAVPlayer *)self setStatusObserver:v7];
 
   v8 = [SVKeyValueObserver alloc];
-  v9 = [(SVAVPlayer *)self currentItem];
+  currentItem2 = [(SVAVPlayer *)self currentItem];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __26__SVAVPlayer_addObservers__block_invoke_3;
   v18[3] = &unk_279BC5D60;
   objc_copyWeak(&v19, &location);
-  v10 = [(SVKeyValueObserver *)v8 initWithKeyPath:@"duration" ofObject:v9 withOptions:1 change:v18];
+  v10 = [(SVKeyValueObserver *)v8 initWithKeyPath:@"duration" ofObject:currentItem2 withOptions:1 change:v18];
   [(SVAVPlayer *)self setDurationObserver:v10];
 
   v11 = [SVKeyValueObserver alloc];
-  v12 = [(SVAVPlayer *)self currentItem];
+  currentItem3 = [(SVAVPlayer *)self currentItem];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __26__SVAVPlayer_addObservers__block_invoke_4;
   v16[3] = &unk_279BC5D60;
   objc_copyWeak(&v17, &location);
-  v13 = [(SVKeyValueObserver *)v11 initWithKeyPath:@"loadedTimeRanges" ofObject:v12 withOptions:1 change:v16];
+  v13 = [(SVKeyValueObserver *)v11 initWithKeyPath:@"loadedTimeRanges" ofObject:currentItem3 withOptions:1 change:v16];
   [(SVAVPlayer *)self setLoadedTimeRangesObserver:v13];
 
-  v14 = [MEMORY[0x277CCAB98] defaultCenter];
-  v15 = [(SVAVPlayer *)self currentItem];
-  [v14 addObserver:self selector:sel_playedToEnd_ name:*MEMORY[0x277CE60C0] object:v15];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  currentItem4 = [(SVAVPlayer *)self currentItem];
+  [defaultCenter addObserver:self selector:sel_playedToEnd_ name:*MEMORY[0x277CE60C0] object:currentItem4];
 
   objc_destroyWeak(&v17);
   objc_destroyWeak(&v19);
@@ -352,60 +352,60 @@ void __26__SVAVPlayer_addObservers__block_invoke_4(uint64_t a1)
   [WeakRetained loadedTimeRangesChanged];
 }
 
-- (void)playedToEnd:(id)a3
+- (void)playedToEnd:(id)end
 {
   [(SVAVPlayer *)self setPlaybackPosition:1];
 
   [(SVAVPlayer *)self setPlaybackStatus:4];
 }
 
-- (void)setElapsedTime:(double)a3 duration:(double)a4
+- (void)setElapsedTime:(double)time duration:(double)duration
 {
-  if (self->_elapsedTime != a3 || self->_duration != a4)
+  if (self->_elapsedTime != time || self->_duration != duration)
   {
-    if (a3 < 0.0)
+    if (time < 0.0)
     {
-      a3 = 0.0;
+      time = 0.0;
     }
 
-    [(SVAVPlayer *)self setElapsedTime:a3];
-    if (a4 >= 0.0)
+    [(SVAVPlayer *)self setElapsedTime:time];
+    if (duration >= 0.0)
     {
-      v6 = a4;
+      durationCopy = duration;
     }
 
     else
     {
-      v6 = 0.0;
+      durationCopy = 0.0;
     }
 
-    [(SVAVPlayer *)self setDuration:v6];
-    v7 = [(SVAVPlayer *)self playbackProgressBlock];
+    [(SVAVPlayer *)self setDuration:durationCopy];
+    playbackProgressBlock = [(SVAVPlayer *)self playbackProgressBlock];
 
-    if (v7)
+    if (playbackProgressBlock)
     {
-      v11 = [(SVAVPlayer *)self playbackProgressBlock];
+      playbackProgressBlock2 = [(SVAVPlayer *)self playbackProgressBlock];
       [(SVAVPlayer *)self elapsedTime];
       v9 = v8;
       [(SVAVPlayer *)self duration];
-      v11[2](v11, self, v9, v10);
+      playbackProgressBlock2[2](playbackProgressBlock2, self, v9, v10);
     }
   }
 }
 
 - (void)statusChanged
 {
-  v3 = [(SVAVPlayer *)self currentItem];
-  v4 = [v3 status];
+  currentItem = [(SVAVPlayer *)self currentItem];
+  status = [currentItem status];
 
-  if (v4 == 2)
+  if (status == 2)
   {
     v5 = 5;
   }
 
   else
   {
-    if (v4 != 1 || [(SVAVPlayer *)self playbackStatus])
+    if (status != 1 || [(SVAVPlayer *)self playbackStatus])
     {
       return;
     }
@@ -441,24 +441,24 @@ void __26__SVAVPlayer_addObservers__block_invoke_4(uint64_t a1)
 
 - (void)loadedTimeRangesChanged
 {
-  v3 = [(SVAVPlayer *)self loadingProgressBlock];
+  loadingProgressBlock = [(SVAVPlayer *)self loadingProgressBlock];
 
-  if (v3)
+  if (loadingProgressBlock)
   {
-    v6 = [(SVAVPlayer *)self loadingProgressBlock];
-    v4 = [(SVAVPlayer *)self currentItem];
-    v5 = [v4 loadedTimeRanges];
-    v6[2](v6, self, v5);
+    loadingProgressBlock2 = [(SVAVPlayer *)self loadingProgressBlock];
+    currentItem = [(SVAVPlayer *)self currentItem];
+    loadedTimeRanges = [currentItem loadedTimeRanges];
+    loadingProgressBlock2[2](loadingProgressBlock2, self, loadedTimeRanges);
   }
 }
 
 - (void)durationChanged
 {
-  v3 = [(SVAVPlayer *)self currentItem];
-  v4 = v3;
-  if (v3)
+  currentItem = [(SVAVPlayer *)self currentItem];
+  v4 = currentItem;
+  if (currentItem)
   {
-    [v3 currentTime];
+    [currentItem currentTime];
   }
 
   else
@@ -466,11 +466,11 @@ void __26__SVAVPlayer_addObservers__block_invoke_4(uint64_t a1)
     memset(v8, 0, sizeof(v8));
   }
 
-  v5 = [(SVAVPlayer *)self currentItem];
-  v6 = v5;
-  if (v5)
+  currentItem2 = [(SVAVPlayer *)self currentItem];
+  v6 = currentItem2;
+  if (currentItem2)
   {
-    [v5 duration];
+    [currentItem2 duration];
   }
 
   else
@@ -481,10 +481,10 @@ void __26__SVAVPlayer_addObservers__block_invoke_4(uint64_t a1)
   [(SVAVPlayer *)self updateTime:v8 duration:v7];
 }
 
-- (void)setCumulativeTimePlayed:(id *)a3
+- (void)setCumulativeTimePlayed:(id *)played
 {
-  var3 = a3->var3;
-  *&self->_cumulativeTimePlayed.value = *&a3->var0;
+  var3 = played->var3;
+  *&self->_cumulativeTimePlayed.value = *&played->var0;
   self->_cumulativeTimePlayed.epoch = var3;
 }
 

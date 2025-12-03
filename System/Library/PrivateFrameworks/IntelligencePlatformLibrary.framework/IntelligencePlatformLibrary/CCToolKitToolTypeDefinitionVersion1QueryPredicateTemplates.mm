@@ -1,34 +1,34 @@
 @interface CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
 - (CCToolKitToolAllPredicate)all;
 - (CCToolKitToolIdSearchPredicateTemplate)idSearch;
 - (CCToolKitToolSearchableItemPredicateTemplate)searchableItem;
 - (CCToolKitToolStringSearchPredicateTemplate)stringSearch;
 - (CCToolKitToolSuggestedPredicate)suggested;
-- (CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates)initWithComparison:(id)a3 stringSearch:(id)a4 idSearch:(id)a5 all:(id)a6 suggested:(id)a7 sampleInvocations:(id)a8 searchableItem:(id)a9 valid:(id)a10 valueSearch:(id)a11 metadata:(id)a12 error:(id *)a13;
-- (CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates)initWithJSONDictionary:(id)a3 error:(id *)a4;
+- (CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates)initWithComparison:(id)comparison stringSearch:(id)search idSearch:(id)idSearch all:(id)all suggested:(id)suggested sampleInvocations:(id)invocations searchableItem:(id)item valid:(id)self0 valueSearch:(id)self1 metadata:(id)self2 error:(id *)self3;
+- (CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates)initWithJSONDictionary:(id)dictionary error:(id *)error;
 - (CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplatesPredicateMetadata)metadata;
 - (CCToolKitToolValidPredicate)valid;
 - (CCToolKitToolValueSearchPredicateTemplate)valueSearch;
 - (NSArray)comparison;
 - (NSArray)sampleInvocations;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates
 
-- (CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
   v106 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v103 = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"comparison"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"comparison"];
     if (v9)
     {
       v10 = v9;
@@ -111,7 +111,7 @@ LABEL_88:
       v12 = v8;
     }
 
-    v24 = [v6 objectForKeyedSubscript:@"stringSearch"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"stringSearch"];
     if (v24)
     {
       v96 = 0;
@@ -130,7 +130,7 @@ LABEL_87:
       v24 = v25;
     }
 
-    v27 = [v6 objectForKeyedSubscript:@"idSearch"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"idSearch"];
     if (v27)
     {
       v95 = 0;
@@ -149,7 +149,7 @@ LABEL_86:
       v27 = v28;
     }
 
-    v25 = [v6 objectForKeyedSubscript:@"all"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"all"];
     if (v25)
     {
       v94 = 0;
@@ -166,7 +166,7 @@ LABEL_86:
       v25 = v30;
     }
 
-    v28 = [v6 objectForKeyedSubscript:@"suggested"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"suggested"];
     v78 = v25;
     if (v28)
     {
@@ -200,7 +200,7 @@ LABEL_62:
       v35 = v12;
     }
 
-    v38 = [v6 objectForKeyedSubscript:@"sampleInvocations"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"sampleInvocations"];
     if (!v38)
     {
       v30 = 0;
@@ -284,7 +284,7 @@ LABEL_62:
       v30 = v42;
       v25 = v78;
 LABEL_57:
-      v52 = [v6 objectForKeyedSubscript:@"searchableItem"];
+      v52 = [dictionaryCopy objectForKeyedSubscript:@"searchableItem"];
       if (v52)
       {
         v76 = v30;
@@ -314,7 +314,7 @@ LABEL_84:
         objb = 0;
       }
 
-      v55 = [v6 objectForKeyedSubscript:@"valid"];
+      v55 = [dictionaryCopy objectForKeyedSubscript:@"valid"];
       v73 = v28;
       if (v55)
       {
@@ -332,7 +332,7 @@ LABEL_84:
         v55 = v57;
       }
 
-      v59 = [v6 objectForKeyedSubscript:@"valueSearch"];
+      v59 = [dictionaryCopy objectForKeyedSubscript:@"valueSearch"];
       if (v59)
       {
         v60 = v30;
@@ -361,7 +361,7 @@ LABEL_84:
       }
 
       v77 = v55;
-      v63 = [v6 objectForKeyedSubscript:@"metadata"];
+      v63 = [dictionaryCopy objectForKeyedSubscript:@"metadata"];
       if (v63)
       {
         v57 = v63;
@@ -393,7 +393,7 @@ LABEL_84:
       v57 = v65;
       v55 = v77;
       v25 = v78;
-      v37 = [[CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates alloc] initWithComparison:v13 stringSearch:v24 idSearch:v27 all:v78 suggested:v73 sampleInvocations:v30 searchableItem:objb valid:v77 valueSearch:v82 metadata:v70 error:a4];
+      v37 = [[CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates alloc] initWithComparison:v13 stringSearch:v24 idSearch:v27 all:v78 suggested:v73 sampleInvocations:v30 searchableItem:objb valid:v77 valueSearch:v82 metadata:v70 error:error];
 LABEL_83:
 
       v28 = v73;
@@ -430,8 +430,8 @@ LABEL_89:
     v42 = 0u;
     v43 = 0u;
     v44 = 0u;
-    v5 = [(CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates *)self comparison];
-    v6 = [v5 countByEnumeratingWithState:&v41 objects:v46 count:16];
+    comparison = [(CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates *)self comparison];
+    v6 = [comparison countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v6)
     {
       v7 = v6;
@@ -442,14 +442,14 @@ LABEL_89:
         {
           if (*v42 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(comparison);
           }
 
-          v10 = [*(*(&v41 + 1) + 8 * i) jsonDictionary];
-          [v4 addObject:v10];
+          jsonDictionary = [*(*(&v41 + 1) + 8 * i) jsonDictionary];
+          [v4 addObject:jsonDictionary];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v41 objects:v46 count:16];
+        v7 = [comparison countByEnumeratingWithState:&v41 objects:v46 count:16];
       }
 
       while (v7);
@@ -460,30 +460,30 @@ LABEL_89:
 
   if (self->_stringSearch)
   {
-    v11 = [(CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates *)self stringSearch];
-    v12 = [v11 jsonDictionary];
-    [v3 setObject:v12 forKeyedSubscript:@"stringSearch"];
+    stringSearch = [(CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates *)self stringSearch];
+    jsonDictionary2 = [stringSearch jsonDictionary];
+    [v3 setObject:jsonDictionary2 forKeyedSubscript:@"stringSearch"];
   }
 
   if (self->_idSearch)
   {
-    v13 = [(CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates *)self idSearch];
-    v14 = [v13 jsonDictionary];
-    [v3 setObject:v14 forKeyedSubscript:@"idSearch"];
+    idSearch = [(CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates *)self idSearch];
+    jsonDictionary3 = [idSearch jsonDictionary];
+    [v3 setObject:jsonDictionary3 forKeyedSubscript:@"idSearch"];
   }
 
   if (self->_all)
   {
     v15 = [(CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates *)self all];
-    v16 = [v15 jsonDictionary];
-    [v3 setObject:v16 forKeyedSubscript:@"all"];
+    jsonDictionary4 = [v15 jsonDictionary];
+    [v3 setObject:jsonDictionary4 forKeyedSubscript:@"all"];
   }
 
   if (self->_suggested)
   {
-    v17 = [(CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates *)self suggested];
-    v18 = [v17 jsonDictionary];
-    [v3 setObject:v18 forKeyedSubscript:@"suggested"];
+    suggested = [(CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates *)self suggested];
+    jsonDictionary5 = [suggested jsonDictionary];
+    [v3 setObject:jsonDictionary5 forKeyedSubscript:@"suggested"];
   }
 
   if (self->_sampleInvocations)
@@ -493,8 +493,8 @@ LABEL_89:
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v20 = [(CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates *)self sampleInvocations];
-    v21 = [v20 countByEnumeratingWithState:&v37 objects:v45 count:16];
+    sampleInvocations = [(CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates *)self sampleInvocations];
+    v21 = [sampleInvocations countByEnumeratingWithState:&v37 objects:v45 count:16];
     if (v21)
     {
       v22 = v21;
@@ -505,14 +505,14 @@ LABEL_89:
         {
           if (*v38 != v23)
           {
-            objc_enumerationMutation(v20);
+            objc_enumerationMutation(sampleInvocations);
           }
 
-          v25 = [*(*(&v37 + 1) + 8 * j) jsonDictionary];
-          [v19 addObject:v25];
+          jsonDictionary6 = [*(*(&v37 + 1) + 8 * j) jsonDictionary];
+          [v19 addObject:jsonDictionary6];
         }
 
-        v22 = [v20 countByEnumeratingWithState:&v37 objects:v45 count:16];
+        v22 = [sampleInvocations countByEnumeratingWithState:&v37 objects:v45 count:16];
       }
 
       while (v22);
@@ -523,30 +523,30 @@ LABEL_89:
 
   if (self->_searchableItem)
   {
-    v26 = [(CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates *)self searchableItem];
-    v27 = [v26 jsonDictionary];
-    [v3 setObject:v27 forKeyedSubscript:@"searchableItem"];
+    searchableItem = [(CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates *)self searchableItem];
+    jsonDictionary7 = [searchableItem jsonDictionary];
+    [v3 setObject:jsonDictionary7 forKeyedSubscript:@"searchableItem"];
   }
 
   if (self->_valid)
   {
-    v28 = [(CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates *)self valid];
-    v29 = [v28 jsonDictionary];
-    [v3 setObject:v29 forKeyedSubscript:@"valid"];
+    valid = [(CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates *)self valid];
+    jsonDictionary8 = [valid jsonDictionary];
+    [v3 setObject:jsonDictionary8 forKeyedSubscript:@"valid"];
   }
 
   if (self->_valueSearch)
   {
-    v30 = [(CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates *)self valueSearch];
-    v31 = [v30 jsonDictionary];
-    [v3 setObject:v31 forKeyedSubscript:@"valueSearch"];
+    valueSearch = [(CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates *)self valueSearch];
+    jsonDictionary9 = [valueSearch jsonDictionary];
+    [v3 setObject:jsonDictionary9 forKeyedSubscript:@"valueSearch"];
   }
 
   if (self->_metadata)
   {
-    v32 = [(CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates *)self metadata];
-    v33 = [v32 jsonDictionary];
-    [v3 setObject:v33 forKeyedSubscript:@"metadata"];
+    metadata = [(CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates *)self metadata];
+    jsonDictionary10 = [metadata jsonDictionary];
+    [v3 setObject:jsonDictionary10 forKeyedSubscript:@"metadata"];
   }
 
   v34 = [v3 copy];
@@ -556,11 +556,11 @@ LABEL_89:
   return v34;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v5 = a3;
+  blockCopy = block;
   v6 = MEMORY[0x1E69939A8];
-  v18 = v5;
+  v18 = blockCopy;
   if (self->_comparison)
   {
     v7 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:*MEMORY[0x1E69939A8] repeatedSubMessageValue:self->_comparison];
@@ -695,10 +695,10 @@ LABEL_89:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v54 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v54];
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   if (*&v5[*MEMORY[0x1E6993AB8]] < *&v5[*MEMORY[0x1E6993AB0]])
@@ -962,13 +962,13 @@ LABEL_63:
   {
     CCSetError();
     v46 = 0;
-    v47 = v54;
+    v47 = dataCopy;
   }
 
   else
   {
     v48 = MEMORY[0x1E6993AA8];
-    v47 = v54;
+    v47 = dataCopy;
     if (*&v5[*MEMORY[0x1E6993AA8]])
     {
       v49 = objc_opt_class();
@@ -989,23 +989,23 @@ LABEL_63:
   return v46;
 }
 
-- (CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates)initWithComparison:(id)a3 stringSearch:(id)a4 idSearch:(id)a5 all:(id)a6 suggested:(id)a7 sampleInvocations:(id)a8 searchableItem:(id)a9 valid:(id)a10 valueSearch:(id)a11 metadata:(id)a12 error:(id *)a13
+- (CCToolKitToolTypeDefinitionVersion1QueryPredicateTemplates)initWithComparison:(id)comparison stringSearch:(id)search idSearch:(id)idSearch all:(id)all suggested:(id)suggested sampleInvocations:(id)invocations searchableItem:(id)item valid:(id)self0 valueSearch:(id)self1 metadata:(id)self2 error:(id *)self3
 {
-  v66 = a13;
+  errorCopy = error;
   v93 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v76 = a4;
-  v75 = a5;
-  v19 = a6;
-  v74 = a7;
-  v73 = a8;
-  v68 = a9;
-  v71 = a10;
-  v20 = a11;
-  v70 = a12;
+  comparisonCopy = comparison;
+  searchCopy = search;
+  idSearchCopy = idSearch;
+  allCopy = all;
+  suggestedCopy = suggested;
+  invocationsCopy = invocations;
+  itemCopy = item;
+  validCopy = valid;
+  valueSearchCopy = valueSearch;
+  metadataCopy = metadata;
   v21 = objc_opt_new();
-  v72 = v20;
-  if (v18)
+  v72 = valueSearchCopy;
+  if (comparisonCopy)
   {
     objc_opt_class();
     v90 = 0;
@@ -1015,10 +1015,10 @@ LABEL_63:
     {
       CCSetError();
       v34 = 0;
-      v35 = self;
-      v30 = v19;
+      selfCopy5 = self;
+      v30 = allCopy;
 LABEL_30:
-      v42 = v73;
+      v42 = invocationsCopy;
       goto LABEL_31;
     }
 
@@ -1026,7 +1026,7 @@ LABEL_30:
     v89 = 0u;
     v86 = 0u;
     v87 = 0u;
-    v24 = v18;
+    v24 = comparisonCopy;
     v25 = [v24 countByEnumeratingWithState:&v86 objects:v92 count:16];
     if (v25)
     {
@@ -1041,7 +1041,7 @@ LABEL_30:
             objc_enumerationMutation(v24);
           }
 
-          v29 = [*(*(&v86 + 1) + 8 * i) data];
+          data = [*(*(&v86 + 1) + 8 * i) data];
           CCPBDataWriterWriteDataField();
         }
 
@@ -1057,8 +1057,8 @@ LABEL_30:
     v23 = 0;
   }
 
-  v30 = v19;
-  if (v76)
+  v30 = allCopy;
+  if (searchCopy)
   {
     objc_opt_class();
     v85 = v23;
@@ -1070,7 +1070,7 @@ LABEL_30:
       goto LABEL_27;
     }
 
-    v33 = [v76 data];
+    data2 = [searchCopy data];
     CCPBDataWriterWriteDataField();
   }
 
@@ -1079,7 +1079,7 @@ LABEL_30:
     v32 = v23;
   }
 
-  if (v75)
+  if (idSearchCopy)
   {
     objc_opt_class();
     v84 = v32;
@@ -1094,10 +1094,10 @@ LABEL_28:
       goto LABEL_29;
     }
 
-    v37 = [v75 data];
+    data3 = [idSearchCopy data];
     CCPBDataWriterWriteDataField();
 
-    if (!v19)
+    if (!allCopy)
     {
       goto LABEL_20;
     }
@@ -1106,7 +1106,7 @@ LABEL_28:
   else
   {
     v23 = v32;
-    if (!v19)
+    if (!allCopy)
     {
 LABEL_20:
       v32 = v23;
@@ -1126,15 +1126,15 @@ LABEL_27:
     v34 = 0;
     v23 = v32;
 LABEL_29:
-    v35 = self;
+    selfCopy5 = self;
     goto LABEL_30;
   }
 
-  v39 = [v19 data];
+  data4 = [allCopy data];
   CCPBDataWriterWriteDataField();
 
 LABEL_24:
-  if (!v74)
+  if (!suggestedCopy)
   {
     v23 = v32;
     goto LABEL_35;
@@ -1150,12 +1150,12 @@ LABEL_24:
     goto LABEL_28;
   }
 
-  v41 = [v74 data];
+  data5 = [suggestedCopy data];
   CCPBDataWriterWriteDataField();
 
 LABEL_35:
-  v42 = v73;
-  if (!v73)
+  v42 = invocationsCopy;
+  if (!invocationsCopy)
   {
     v48 = v23;
     goto LABEL_46;
@@ -1172,7 +1172,7 @@ LABEL_35:
     v80 = 0u;
     v77 = 0u;
     v78 = 0u;
-    v49 = v73;
+    v49 = invocationsCopy;
     v50 = [v49 countByEnumeratingWithState:&v77 objects:v91 count:16];
     if (v50)
     {
@@ -1187,7 +1187,7 @@ LABEL_35:
             objc_enumerationMutation(v49);
           }
 
-          v54 = [*(*(&v77 + 1) + 8 * j) data];
+          data6 = [*(*(&v77 + 1) + 8 * j) data];
           CCPBDataWriterWriteDataField();
         }
 
@@ -1197,10 +1197,10 @@ LABEL_35:
       while (v51);
     }
 
-    v30 = v19;
+    v30 = allCopy;
 LABEL_46:
-    v43 = v68;
-    if (v68)
+    v43 = itemCopy;
+    if (itemCopy)
     {
       objc_opt_class();
       v55 = CCValidateIsInstanceOfExpectedClass();
@@ -1211,7 +1211,7 @@ LABEL_46:
         goto LABEL_58;
       }
 
-      v56 = [v68 data];
+      data7 = [itemCopy data];
       CCPBDataWriterWriteDataField();
     }
 
@@ -1220,7 +1220,7 @@ LABEL_46:
       v23 = v48;
     }
 
-    if (v71)
+    if (validCopy)
     {
       objc_opt_class();
       v57 = CCValidateIsInstanceOfExpectedClass();
@@ -1231,13 +1231,13 @@ LABEL_46:
         CCSetError();
         v34 = 0;
         v23 = v58;
-        v35 = self;
-        v44 = v71;
-        v42 = v73;
+        selfCopy5 = self;
+        v44 = validCopy;
+        v42 = invocationsCopy;
         goto LABEL_33;
       }
 
-      v59 = [v71 data];
+      data8 = [validCopy data];
       CCPBDataWriterWriteDataField();
     }
 
@@ -1258,17 +1258,17 @@ LABEL_46:
 
     if (v60)
     {
-      v61 = [v72 data];
+      data9 = [v72 data];
       CCPBDataWriterWriteDataField();
 
 LABEL_62:
-      if (!v70)
+      if (!metadataCopy)
       {
 LABEL_65:
-        v65 = [v21 immutableData];
-        v35 = [(CCItemMessage *)self initWithData:v65 error:v67];
+        immutableData = [v21 immutableData];
+        selfCopy5 = [(CCItemMessage *)self initWithData:immutableData error:v67];
 
-        v34 = v35;
+        v34 = selfCopy5;
         goto LABEL_66;
       }
 
@@ -1278,7 +1278,7 @@ LABEL_65:
 
       if (v62)
       {
-        v64 = [v70 data];
+        data10 = [metadataCopy data];
         CCPBDataWriterWriteDataField();
 
         v23 = v63;
@@ -1289,9 +1289,9 @@ LABEL_65:
       v34 = 0;
       v23 = v63;
 LABEL_59:
-      v35 = self;
+      selfCopy5 = self;
 LABEL_66:
-      v42 = v73;
+      v42 = invocationsCopy;
       goto LABEL_32;
     }
 
@@ -1304,11 +1304,11 @@ LABEL_58:
   CCSetError();
   v34 = 0;
   v23 = v48;
-  v35 = self;
+  selfCopy5 = self;
 LABEL_31:
-  v43 = v68;
+  v43 = itemCopy;
 LABEL_32:
-  v44 = v71;
+  v44 = validCopy;
 LABEL_33:
 
   v45 = *MEMORY[0x1E69E9840];

@@ -7,11 +7,11 @@
 
 - (id)ad_recipientDevicesType
 {
-  v2 = [(SAExecuteOnRemoteRequest *)self serializedCommand];
+  serializedCommand = [(SAExecuteOnRemoteRequest *)self serializedCommand];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [AceObject aceObjectWithPlistData:v2];
+    v3 = [AceObject aceObjectWithPlistData:serializedCommand];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -35,11 +35,11 @@
 
 - (id)ad_preferredMessagingOption
 {
-  v2 = [(SAExecuteOnRemoteRequest *)self serializedCommand];
+  serializedCommand = [(SAExecuteOnRemoteRequest *)self serializedCommand];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [AceObject aceObjectWithPlistData:v2];
+    v3 = [AceObject aceObjectWithPlistData:serializedCommand];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

@@ -3,7 +3,7 @@
 + (id)rankingQueryFieldsForGenericHighlighting;
 + (id)rankingQueryFieldsForSorting;
 + (id)rankingQueryFieldsForWordSpecificHighlighting;
-+ (id)stringByEscapingSearchString:(id)a3;
++ (id)stringByEscapingSearchString:(id)string;
 @end
 
 @implementation ICSpotlightUtilities
@@ -112,9 +112,9 @@ void __52__ICSpotlightUtilities_rankingQueryFieldsForSorting__block_invoke()
   rankingQueryFieldsForSorting_rankingQueryFields = v3;
 }
 
-+ (id)stringByEscapingSearchString:(id)a3
++ (id)stringByEscapingSearchString:(id)string
 {
-  v3 = [a3 mutableCopy];
+  v3 = [string mutableCopy];
   [v3 replaceOccurrencesOfString:@"\ withString:@"\\\ options:0 range:{0, objc_msgSend(v3, "length")}];
   [v3 replaceOccurrencesOfString:@" withString:@"\ options:0 range:{0, objc_msgSend(v3, "length")}];
   [v3 replaceOccurrencesOfString:@"'" withString:@"\\'" options:0 range:{0, objc_msgSend(v3, "length")}];

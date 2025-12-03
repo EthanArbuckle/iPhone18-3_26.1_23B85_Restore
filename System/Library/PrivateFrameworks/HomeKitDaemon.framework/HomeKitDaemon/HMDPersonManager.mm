@@ -1,94 +1,94 @@
 @interface HMDPersonManager
 + (id)logCategory;
-+ (id)zoneNameForZoneUUID:(id)a3;
++ (id)zoneNameForZoneUUID:(id)d;
 - (BOOL)isCurrentDeviceAvailableResident;
 - (BOOL)isDataAvailable;
 - (BOOL)isDataSyncInProgress;
-- (BOOL)manager:(id)a3 shouldShareWithUser:(id)a4;
-- (HMDPersonManager)initWithUUID:(id)a3 zoneManager:(id)a4 coreDataManager:(id)a5 dataInterfaces:(id)a6 workQueue:(id)a7 featuresDataSource:(id)a8;
+- (BOOL)manager:(id)manager shouldShareWithUser:(id)user;
+- (HMDPersonManager)initWithUUID:(id)d zoneManager:(id)manager coreDataManager:(id)dataManager dataInterfaces:(id)interfaces workQueue:(id)queue featuresDataSource:(id)source;
 - (HMDPersonManagerSettings)settings;
 - (NSString)zoneName;
-- (id)_faceCropUUIDsForPersonWithUUID:(id)a3;
-- (id)_faceCropsModelsWithUUIDs:(id)a3;
-- (id)_removeFaceprintsForFaceCropsWithUUIDs:(id)a3;
+- (id)_faceCropUUIDsForPersonWithUUID:(id)d;
+- (id)_faceCropsModelsWithUUIDs:(id)ds;
+- (id)_removeFaceprintsForFaceCropsWithUUIDs:(id)ds;
 - (id)_removePersonZones;
-- (id)_unassociatedFaceCropsModelsWithUUIDs:(id)a3;
-- (id)addOrUpdateFaceCrops:(id)a3;
-- (id)addOrUpdateFaceCrops:(id)a3 andRemoveFaceCropsWithUUIDs:(id)a4;
-- (id)addOrUpdateFaceprints:(id)a3;
-- (id)addOrUpdatePersons:(id)a3;
-- (id)addOrUpdatePersons:(id)a3 andRemovePersonsWithUUIDs:(id)a4;
-- (id)addUnassociatedFaceCropWithUUID:(id)a3 data:(id)a4;
-- (id)associateFaceCropsWithUUIDs:(id)a3 toPersonWithUUID:(id)a4 forSource:(int64_t)a5;
-- (id)associatedUnassociatedFaceCropWithUUID:(id)a3;
+- (id)_unassociatedFaceCropsModelsWithUUIDs:(id)ds;
+- (id)addOrUpdateFaceCrops:(id)crops;
+- (id)addOrUpdateFaceCrops:(id)crops andRemoveFaceCropsWithUUIDs:(id)ds;
+- (id)addOrUpdateFaceprints:(id)faceprints;
+- (id)addOrUpdatePersons:(id)persons;
+- (id)addOrUpdatePersons:(id)persons andRemovePersonsWithUUIDs:(id)ds;
+- (id)addUnassociatedFaceCropWithUUID:(id)d data:(id)data;
+- (id)associateFaceCropsWithUUIDs:(id)ds toPersonWithUUID:(id)d forSource:(int64_t)source;
+- (id)associatedUnassociatedFaceCropWithUUID:(id)d;
 - (id)attributeDescriptions;
 - (id)createBatchChange;
-- (id)disassociateFaceCropsWithUUIDs:(id)a3;
-- (id)faceCropsForPersonWithUUID:(id)a3;
+- (id)disassociateFaceCropsWithUUIDs:(id)ds;
+- (id)faceCropsForPersonWithUUID:(id)d;
 - (id)fetchFaceCropUUIDsByPersonUUID;
-- (id)fetchFaceCropsForPersonsWithUUIDs:(id)a3;
-- (id)fetchFaceCropsWithUUIDs:(id)a3;
+- (id)fetchFaceCropsForPersonsWithUUIDs:(id)ds;
+- (id)fetchFaceCropsWithUUIDs:(id)ds;
 - (id)performCloudPull;
-- (id)personFaceCropWithUUID:(id)a3;
-- (id)personWithUUID:(id)a3;
-- (id)personsWithUUIDs:(id)a3;
-- (id)removeAllAssociatedDataDueToHomeGraphObjectRemoval:(BOOL)a3;
-- (id)removeFaceCropsWithUUIDs:(id)a3;
-- (id)removeFaceprintsWithUUIDs:(id)a3;
-- (id)removePersonsWithUUIDs:(id)a3;
-- (id)unassociatedFaceCropWithUUID:(id)a3;
+- (id)personFaceCropWithUUID:(id)d;
+- (id)personWithUUID:(id)d;
+- (id)personsWithUUIDs:(id)ds;
+- (id)removeAllAssociatedDataDueToHomeGraphObjectRemoval:(BOOL)removal;
+- (id)removeFaceCropsWithUUIDs:(id)ds;
+- (id)removeFaceprintsWithUUIDs:(id)ds;
+- (id)removePersonsWithUUIDs:(id)ds;
+- (id)unassociatedFaceCropWithUUID:(id)d;
 - (void)_cleanUpExpiredUnassociatedFaceCrops;
-- (void)_createOrRemoveZonesForSettings:(id)a3;
+- (void)_createOrRemoveZonesForSettings:(id)settings;
 - (void)_createZones;
-- (void)_handleCreatedOrUpdatedFaceprint:(id)a3 mirrorOutputFuture:(id)a4;
-- (void)_handleCreatedOrUpdatedModel:(id)a3 mirrorOutputFuture:(id)a4;
-- (void)_handleCreatedOrUpdatedPerson:(id)a3 mirrorOutputFuture:(id)a4;
-- (void)_handleCreatedOrUpdatedPersonFaceCrop:(id)a3 mirrorOutputFuture:(id)a4;
-- (void)_handleCreatedOrUpdatedUnassociatedFaceCrop:(id)a3 mirrorOutputFuture:(id)a4;
-- (void)_handleDeletedFaceCropWithUUID:(id)a3 mirrorOutputFuture:(id)a4;
-- (void)_handleDeletedFaceprintWithUUID:(id)a3 mirrorOutputFuture:(id)a4;
-- (void)_handleDeletedModel:(id)a3 mirrorOutputFuture:(id)a4;
-- (void)_handleDeletedPersonWithUUID:(id)a3 mirrorOutputFuture:(id)a4;
+- (void)_handleCreatedOrUpdatedFaceprint:(id)faceprint mirrorOutputFuture:(id)future;
+- (void)_handleCreatedOrUpdatedModel:(id)model mirrorOutputFuture:(id)future;
+- (void)_handleCreatedOrUpdatedPerson:(id)person mirrorOutputFuture:(id)future;
+- (void)_handleCreatedOrUpdatedPersonFaceCrop:(id)crop mirrorOutputFuture:(id)future;
+- (void)_handleCreatedOrUpdatedUnassociatedFaceCrop:(id)crop mirrorOutputFuture:(id)future;
+- (void)_handleDeletedFaceCropWithUUID:(id)d mirrorOutputFuture:(id)future;
+- (void)_handleDeletedFaceprintWithUUID:(id)d mirrorOutputFuture:(id)future;
+- (void)_handleDeletedModel:(id)model mirrorOutputFuture:(id)future;
+- (void)_handleDeletedPersonWithUUID:(id)d mirrorOutputFuture:(id)future;
 - (void)_notifyDataInterfacesOfCurrentIsCurrentDeviceAvailableResident;
 - (void)_notifyDataInterfacesOfCurrentIsDataSyncInProgress;
-- (void)configureWithHome:(id)a3;
-- (void)coreDataManager:(id)a3 didRemoveFaceprintsWithUUIDs:(id)a4;
-- (void)coreDataManager:(id)a3 didRemovePersonsWithUUIDs:(id)a4;
-- (void)coreDataManager:(id)a3 didUpdateFaceprints:(id)a4;
-- (void)coreDataManager:(id)a3 didUpdatePersons:(id)a4;
+- (void)configureWithHome:(id)home;
+- (void)coreDataManager:(id)manager didRemoveFaceprintsWithUUIDs:(id)ds;
+- (void)coreDataManager:(id)manager didRemovePersonsWithUUIDs:(id)ds;
+- (void)coreDataManager:(id)manager didUpdateFaceprints:(id)faceprints;
+- (void)coreDataManager:(id)manager didUpdatePersons:(id)persons;
 - (void)dealloc;
-- (void)enumerateFaceCropsUsingBlock:(id)a3;
-- (void)enumerateFaceprintsForFaceCropsWithUUIDs:(id)a3 usingBlock:(id)a4;
-- (void)enumerateFaceprintsUsingBlock:(id)a3;
-- (void)enumeratePersonFaceCropsUsingBlock:(id)a3;
-- (void)enumeratePersonsUsingBlock:(id)a3;
-- (void)enumerateUnassociatedFaceCropsUsingBlock:(id)a3;
-- (void)handleDataSyncInProgressChangedNotification:(id)a3;
-- (void)handleFaceMisclassificationForFaceCropData:(id)a3 personUUID:(id)a4;
-- (void)handleResidentWasAddedNotification:(id)a3;
-- (void)handleResidentWasRemovedNotification:(id)a3;
-- (void)handleResidentWasUpdatedNotification:(id)a3;
-- (void)handleUserPrivilegeDidChangeNotification:(id)a3;
-- (void)localZone:(id)a3 didProcessModelCreation:(id)a4;
-- (void)localZone:(id)a3 didProcessModelDeletion:(id)a4;
-- (void)localZone:(id)a3 didProcessModelUpdate:(id)a4;
-- (void)timerDidFire:(id)a3;
-- (void)zoneManagerDidStart:(id)a3;
-- (void)zoneManagerDidStop:(id)a3;
+- (void)enumerateFaceCropsUsingBlock:(id)block;
+- (void)enumerateFaceprintsForFaceCropsWithUUIDs:(id)ds usingBlock:(id)block;
+- (void)enumerateFaceprintsUsingBlock:(id)block;
+- (void)enumeratePersonFaceCropsUsingBlock:(id)block;
+- (void)enumeratePersonsUsingBlock:(id)block;
+- (void)enumerateUnassociatedFaceCropsUsingBlock:(id)block;
+- (void)handleDataSyncInProgressChangedNotification:(id)notification;
+- (void)handleFaceMisclassificationForFaceCropData:(id)data personUUID:(id)d;
+- (void)handleResidentWasAddedNotification:(id)notification;
+- (void)handleResidentWasRemovedNotification:(id)notification;
+- (void)handleResidentWasUpdatedNotification:(id)notification;
+- (void)handleUserPrivilegeDidChangeNotification:(id)notification;
+- (void)localZone:(id)zone didProcessModelCreation:(id)creation;
+- (void)localZone:(id)zone didProcessModelDeletion:(id)deletion;
+- (void)localZone:(id)zone didProcessModelUpdate:(id)update;
+- (void)timerDidFire:(id)fire;
+- (void)zoneManagerDidStart:(id)start;
+- (void)zoneManagerDidStop:(id)stop;
 @end
 
 @implementation HMDPersonManager
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self unassociatedFaceCropsCleanupTimer];
+  fireCopy = fire;
+  unassociatedFaceCropsCleanupTimer = [(HMDPersonManager *)self unassociatedFaceCropsCleanupTimer];
 
-  if (v5 == v4)
+  if (unassociatedFaceCropsCleanupTimer == fireCopy)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -99,7 +99,7 @@
     }
 
     objc_autoreleasePoolPop(v6);
-    [(HMDPersonManager *)v7 _cleanUpExpiredUnassociatedFaceCrops];
+    [(HMDPersonManager *)selfCopy _cleanUpExpiredUnassociatedFaceCrops];
   }
 
   v10 = *MEMORY[0x277D85DE8];
@@ -109,8 +109,8 @@
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDPersonManager *)self UUID];
-  v5 = [v3 initWithName:@"UUID" value:v4];
+  uUID = [(HMDPersonManager *)self UUID];
+  v5 = [v3 initWithName:@"UUID" value:uUID];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -136,7 +136,7 @@
 {
   v28 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -147,25 +147,25 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDPersonManager *)v4 localZone];
-  if (v7)
+  localZone = [(HMDPersonManager *)selfCopy localZone];
+  if (localZone)
   {
-    v8 = v7;
+    v8 = localZone;
     v23 = 0;
-    v9 = [v7 createLocalInputWithError:&v23];
+    v9 = [localZone createLocalInputWithError:&v23];
     v10 = v23;
     v11 = v10;
     if (v9)
     {
 
       v12 = [[HMDPersonDataBatchChange alloc] initWithLocalInput:v9];
-      [(HMDPersonDataBatchChange *)v12 setDataSource:v4];
+      [(HMDPersonDataBatchChange *)v12 setDataSource:selfCopy];
 
       goto LABEL_13;
     }
 
     v17 = objc_autoreleasePoolPush();
-    v18 = v4;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -183,7 +183,7 @@
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = v4;
+    v14 = selfCopy;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -203,15 +203,15 @@ LABEL_13:
   return v12;
 }
 
-- (id)removeFaceprintsWithUUIDs:(id)a3
+- (id)removeFaceprintsWithUUIDs:(id)ds
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  dsCopy = ds;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -219,20 +219,20 @@ LABEL_13:
     v25 = 138543618;
     v26 = v9;
     v27 = 2112;
-    v28 = v4;
+    v28 = dsCopy;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Removing faceprints with UUIDs: %@", &v25, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDPersonManager *)v7 localZone];
-  if (v10)
+  localZone = [(HMDPersonManager *)selfCopy localZone];
+  if (localZone)
   {
     v11 = [MEMORY[0x277D17108] optionsWithLabel:@"Remove faceprints"];
-    v12 = [v10 removeModelIDs:v4 options:v11];
+    v12 = [localZone removeModelIDs:dsCopy options:v11];
 
     v13 = MEMORY[0x277D2C938];
-    v14 = [(HMDPersonManager *)v7 workQueue];
-    v15 = [v13 schedulerWithDispatchQueue:v14];
+    workQueue2 = [(HMDPersonManager *)selfCopy workQueue];
+    v15 = [v13 schedulerWithDispatchQueue:workQueue2];
     v16 = [v12 reschedule:v15];
     v17 = [v16 flatMap:&__block_literal_global_165_91268];
   }
@@ -240,7 +240,7 @@ LABEL_13:
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = v7;
+    v19 = selfCopy;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -261,15 +261,15 @@ LABEL_13:
   return v17;
 }
 
-- (id)disassociateFaceCropsWithUUIDs:(id)a3
+- (id)disassociateFaceCropsWithUUIDs:(id)ds
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  dsCopy = ds;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -277,23 +277,23 @@ LABEL_13:
     v28 = 138543618;
     v29 = v9;
     v30 = 2112;
-    v31 = v4;
+    v31 = dsCopy;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Disassociating face crops with UUIDs %@", &v28, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDPersonManager *)v7 localZone];
-  if (v10)
+  localZone = [(HMDPersonManager *)selfCopy localZone];
+  if (localZone)
   {
-    v11 = [(HMDPersonManager *)v7 _faceCropsModelsWithUUIDs:v4];
+    v11 = [(HMDPersonManager *)selfCopy _faceCropsModelsWithUUIDs:dsCopy];
     v12 = [v11 na_map:&__block_literal_global_152];
     v13 = [v11 na_map:&__block_literal_global_155];
     v14 = [MEMORY[0x277D17108] optionsWithLabel:@"Disassociate face crops"];
-    v15 = [v10 addModels:v13 andRemoveModelIDs:v12 options:v14];
+    v15 = [localZone addModels:v13 andRemoveModelIDs:v12 options:v14];
 
     v16 = MEMORY[0x277D2C938];
-    v17 = [(HMDPersonManager *)v7 workQueue];
-    v18 = [v16 schedulerWithDispatchQueue:v17];
+    workQueue2 = [(HMDPersonManager *)selfCopy workQueue];
+    v18 = [v16 schedulerWithDispatchQueue:workQueue2];
     v19 = [v15 reschedule:v18];
     v20 = [v19 flatMap:&__block_literal_global_160];
   }
@@ -301,7 +301,7 @@ LABEL_13:
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = v7;
+    v22 = selfCopy;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -359,16 +359,16 @@ HMDUnassociatedFaceCropModel *__51__HMDPersonManager_disassociateFaceCropsWithUU
   return v7;
 }
 
-- (id)associateFaceCropsWithUUIDs:(id)a3 toPersonWithUUID:(id)a4 forSource:(int64_t)a5
+- (id)associateFaceCropsWithUUIDs:(id)ds toPersonWithUUID:(id)d forSource:(int64_t)source
 {
   v81 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v65 = a4;
-  v8 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  dsCopy = ds;
+  dCopy = d;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v9 = objc_autoreleasePoolPush();
-  v10 = self;
+  selfCopy = self;
   v11 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -376,21 +376,21 @@ HMDUnassociatedFaceCropModel *__51__HMDPersonManager_disassociateFaceCropsWithUU
     *buf = 138543874;
     v76 = v12;
     v77 = 2112;
-    v78 = v7;
+    v78 = dsCopy;
     v79 = 2112;
-    v80 = v65;
+    v80 = dCopy;
     _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, "%{public}@Associating face crops with UUIDs %@ to person with UUID %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v9);
-  v13 = [(HMDPersonManager *)v10 localZone];
-  v14 = v13;
-  if (v13)
+  localZone = [(HMDPersonManager *)selfCopy localZone];
+  v14 = localZone;
+  if (localZone)
   {
-    v60 = v7;
-    v61 = v13;
-    v59 = v10;
-    v15 = [(HMDPersonManager *)v10 _unassociatedFaceCropsModelsWithUUIDs:v7];
+    v60 = dsCopy;
+    v61 = localZone;
+    v59 = selfCopy;
+    v15 = [(HMDPersonManager *)selfCopy _unassociatedFaceCropsModelsWithUUIDs:dsCopy];
     v16 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v15, "count")}];
     v69 = 0u;
     v70 = 0u;
@@ -412,35 +412,35 @@ HMDUnassociatedFaceCropModel *__51__HMDPersonManager_disassociateFaceCropsWithUU
           }
 
           v21 = *(*(&v69 + 1) + 8 * i);
-          v22 = [v21 createUnassociatedFaceCrop];
-          if (!v22)
+          createUnassociatedFaceCrop = [v21 createUnassociatedFaceCrop];
+          if (!createUnassociatedFaceCrop)
           {
             v46 = 0;
             v33 = obj;
             v47 = obj;
-            v7 = v60;
+            dsCopy = v60;
             goto LABEL_14;
           }
 
-          v23 = v22;
+          v23 = createUnassociatedFaceCrop;
           v24 = objc_alloc(MEMORY[0x277CD1C78]);
           [MEMORY[0x277CCAD78] UUID];
           v26 = v25 = v16;
-          v27 = [v23 dataRepresentation];
-          v28 = [v23 dateCreated];
+          dataRepresentation = [v23 dataRepresentation];
+          dateCreated = [v23 dateCreated];
           [v23 faceBoundingBox];
-          v29 = [v24 initWithUUID:v26 dataRepresentation:v27 dateCreated:v28 faceBoundingBox:v65 personUUID:?];
+          v29 = [v24 initWithUUID:v26 dataRepresentation:dataRepresentation dateCreated:dateCreated faceBoundingBox:dCopy personUUID:?];
 
           v16 = v25;
-          v30 = [v23 UUID];
-          [v29 setUnassociatedFaceCropUUID:v30];
+          uUID = [v23 UUID];
+          [v29 setUnassociatedFaceCropUUID:uUID];
 
-          [v29 setSource:a5];
+          [v29 setSource:source];
           v31 = [[HMDFaceCropModel alloc] initWithPersonFaceCrop:v29];
           [v25 addObject:v31];
 
-          v32 = [v29 UUID];
-          [v21 setPersonFaceCropUUID:v32];
+          uUID2 = [v29 UUID];
+          [v21 setPersonFaceCropUUID:uUID2];
         }
 
         v18 = [obj countByEnumeratingWithState:&v69 objects:v74 count:16];
@@ -456,14 +456,14 @@ HMDUnassociatedFaceCropModel *__51__HMDPersonManager_disassociateFaceCropsWithUU
     v58 = v16;
     v33 = obj;
 
-    v7 = v60;
+    dsCopy = v60;
     v57 = [(HMDPersonManager *)v59 _faceCropsModelsWithUUIDs:v60];
     v66[0] = MEMORY[0x277D85DD0];
     v66[1] = 3221225472;
     v66[2] = __75__HMDPersonManager_associateFaceCropsWithUUIDs_toPersonWithUUID_forSource___block_invoke;
     v66[3] = &unk_278677278;
-    v67 = v65;
-    v68 = a5;
+    v67 = dCopy;
+    sourceCopy = source;
     v34 = [v57 na_map:v66];
     v35 = [MEMORY[0x277D17108] optionsWithLabel:@"Associate unassociated face crops"];
     v56 = [v61 addModels:v16 options:v35];
@@ -481,8 +481,8 @@ HMDUnassociatedFaceCropModel *__51__HMDPersonManager_disassociateFaceCropsWithUU
     v40 = [MEMORY[0x277CBEA60] arrayWithObjects:v73 count:2];
     v41 = [v39 chainFutures:v40];
     v42 = MEMORY[0x277D2C938];
-    v43 = [(HMDPersonManager *)v59 workQueue];
-    v44 = [v42 schedulerWithDispatchQueue:v43];
+    workQueue2 = [(HMDPersonManager *)v59 workQueue];
+    v44 = [v42 schedulerWithDispatchQueue:workQueue2];
     v45 = [v41 reschedule:v44];
     v46 = [v45 flatMap:&__block_literal_global_149];
 
@@ -496,17 +496,17 @@ LABEL_14:
   else
   {
     v48 = objc_autoreleasePoolPush();
-    v49 = v10;
+    v49 = selfCopy;
     v50 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v50, OS_LOG_TYPE_ERROR))
     {
       HMFGetLogIdentifier();
-      v52 = v51 = v7;
+      v52 = v51 = dsCopy;
       *buf = 138543362;
       v76 = v52;
       _os_log_impl(&dword_229538000, v50, OS_LOG_TYPE_ERROR, "%{public}@Cannot associate face crops because the local zone is not available", buf, 0xCu);
 
-      v7 = v51;
+      dsCopy = v51;
     }
 
     objc_autoreleasePoolPop(v48);
@@ -534,15 +534,15 @@ HMDFaceCropModel *__75__HMDPersonManager_associateFaceCropsWithUUIDs_toPersonWit
   return v7;
 }
 
-- (id)addOrUpdateFaceprints:(id)a3
+- (id)addOrUpdateFaceprints:(id)faceprints
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  faceprintsCopy = faceprints;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -550,22 +550,22 @@ HMDFaceCropModel *__75__HMDPersonManager_associateFaceCropsWithUUIDs_toPersonWit
     v27 = 138543618;
     v28 = v9;
     v29 = 2112;
-    v30 = v4;
+    v30 = faceprintsCopy;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Adding/updating faceprints: %@", &v27, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDPersonManager *)v7 localZone];
-  if (v10)
+  localZone = [(HMDPersonManager *)selfCopy localZone];
+  if (localZone)
   {
-    v11 = [v4 na_map:&__block_literal_global_132];
-    v12 = [(HMDPersonManager *)v7 localZone];
+    v11 = [faceprintsCopy na_map:&__block_literal_global_132];
+    localZone2 = [(HMDPersonManager *)selfCopy localZone];
     v13 = [MEMORY[0x277D17108] optionsWithLabel:@"Add faceprints"];
-    v14 = [v12 addModels:v11 options:v13];
+    v14 = [localZone2 addModels:v11 options:v13];
 
     v15 = MEMORY[0x277D2C938];
-    v16 = [(HMDPersonManager *)v7 workQueue];
-    v17 = [v15 schedulerWithDispatchQueue:v16];
+    workQueue2 = [(HMDPersonManager *)selfCopy workQueue];
+    v17 = [v15 schedulerWithDispatchQueue:workQueue2];
     v18 = [v14 reschedule:v17];
     v19 = [v18 flatMap:&__block_literal_global_137];
   }
@@ -573,7 +573,7 @@ HMDFaceCropModel *__75__HMDPersonManager_associateFaceCropsWithUUIDs_toPersonWit
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = v7;
+    v21 = selfCopy;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
@@ -602,21 +602,21 @@ HMDFaceprintModel *__42__HMDPersonManager_addOrUpdateFaceprints___block_invoke(u
   return v3;
 }
 
-- (void)enumerateFaceprintsForFaceCropsWithUUIDs:(id)a3 usingBlock:(id)a4
+- (void)enumerateFaceprintsForFaceCropsWithUUIDs:(id)ds usingBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  blockCopy = block;
+  dsCopy = ds;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __72__HMDPersonManager_enumerateFaceprintsForFaceCropsWithUUIDs_usingBlock___block_invoke;
   v10[3] = &unk_27867B0D0;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [v7 hmf_enumerateWithAutoreleasePoolUsingBlock:v10];
+  v11 = blockCopy;
+  v9 = blockCopy;
+  [dsCopy hmf_enumerateWithAutoreleasePoolUsingBlock:v10];
 }
 
 void __72__HMDPersonManager_enumerateFaceprintsForFaceCropsWithUUIDs_usingBlock___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -647,21 +647,21 @@ void __72__HMDPersonManager_enumerateFaceprintsForFaceCropsWithUUIDs_usingBlock_
   }
 }
 
-- (void)enumerateFaceprintsUsingBlock:(id)a3
+- (void)enumerateFaceprintsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  blockCopy = block;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDPersonManager *)self localZone];
-  v7 = [v6 queryModelsOfType:objc_opt_class()];
+  localZone = [(HMDPersonManager *)self localZone];
+  v7 = [localZone queryModelsOfType:objc_opt_class()];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __50__HMDPersonManager_enumerateFaceprintsUsingBlock___block_invoke;
   v9[3] = &unk_278677208;
-  v10 = v4;
-  v8 = v4;
+  v10 = blockCopy;
+  v8 = blockCopy;
   [v7 enumerateObjectsUsingBlock:v9];
 }
 
@@ -676,19 +676,19 @@ void __50__HMDPersonManager_enumerateFaceprintsUsingBlock___block_invoke(uint64_
   }
 }
 
-- (id)fetchFaceCropsForPersonsWithUUIDs:(id)a3
+- (id)fetchFaceCropsForPersonsWithUUIDs:(id)ds
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  dsCopy = ds;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = [MEMORY[0x277CBEB58] set];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = v4;
+  v7 = dsCopy;
   v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
@@ -720,16 +720,16 @@ void __50__HMDPersonManager_enumerateFaceprintsUsingBlock___block_invoke(uint64_
   return v13;
 }
 
-- (id)fetchFaceCropsWithUUIDs:(id)a3
+- (id)fetchFaceCropsWithUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  dsCopy = ds;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDPersonManager *)self _faceCropsModelsWithUUIDs:v4];
+  v6 = [(HMDPersonManager *)self _faceCropsModelsWithUUIDs:dsCopy];
   v7 = [v6 na_map:&__block_literal_global_124_91303];
 
-  v8 = [(HMDPersonManager *)self _unassociatedFaceCropsModelsWithUUIDs:v4];
+  v8 = [(HMDPersonManager *)self _unassociatedFaceCropsModelsWithUUIDs:dsCopy];
 
   v9 = [v8 na_map:&__block_literal_global_127];
 
@@ -740,21 +740,21 @@ void __50__HMDPersonManager_enumerateFaceprintsUsingBlock___block_invoke(uint64_
   return v12;
 }
 
-- (void)enumerateUnassociatedFaceCropsUsingBlock:(id)a3
+- (void)enumerateUnassociatedFaceCropsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  blockCopy = block;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDPersonManager *)self localZone];
-  v7 = [v6 queryModelsOfType:objc_opt_class()];
+  localZone = [(HMDPersonManager *)self localZone];
+  v7 = [localZone queryModelsOfType:objc_opt_class()];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __61__HMDPersonManager_enumerateUnassociatedFaceCropsUsingBlock___block_invoke;
   v9[3] = &unk_2786771A0;
-  v10 = v4;
-  v8 = v4;
+  v10 = blockCopy;
+  v8 = blockCopy;
   [v7 enumerateObjectsUsingBlock:v9];
 }
 
@@ -769,22 +769,22 @@ void __61__HMDPersonManager_enumerateUnassociatedFaceCropsUsingBlock___block_inv
   }
 }
 
-- (void)enumerateFaceCropsUsingBlock:(id)a3
+- (void)enumerateFaceCropsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  blockCopy = block;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  [(HMDPersonManager *)self enumerateUnassociatedFaceCropsUsingBlock:v4];
-  v6 = [(HMDPersonManager *)self localZone];
-  v7 = [v6 queryModelsOfType:objc_opt_class()];
+  [(HMDPersonManager *)self enumerateUnassociatedFaceCropsUsingBlock:blockCopy];
+  localZone = [(HMDPersonManager *)self localZone];
+  v7 = [localZone queryModelsOfType:objc_opt_class()];
 
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __49__HMDPersonManager_enumerateFaceCropsUsingBlock___block_invoke;
   v9[3] = &unk_278677070;
-  v10 = v4;
-  v8 = v4;
+  v10 = blockCopy;
+  v8 = blockCopy;
   [v7 enumerateObjectsUsingBlock:v9];
 }
 
@@ -799,18 +799,18 @@ void __49__HMDPersonManager_enumerateFaceCropsUsingBlock___block_invoke(uint64_t
   }
 }
 
-- (id)personsWithUUIDs:(id)a3
+- (id)personsWithUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  dsCopy = ds;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __37__HMDPersonManager_personsWithUUIDs___block_invoke;
   v8[3] = &unk_278677178;
   v8[4] = self;
-  v6 = [v4 na_map:v8];
+  v6 = [dsCopy na_map:v8];
 
   return v6;
 }
@@ -818,11 +818,11 @@ void __49__HMDPersonManager_enumerateFaceCropsUsingBlock___block_invoke(uint64_t
 - (id)performCloudPull
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPersonManager *)self cloudZone];
-  if (v3)
+  cloudZone = [(HMDPersonManager *)self cloudZone];
+  if (cloudZone)
   {
     v4 = [objc_alloc(MEMORY[0x277D17108]) initWithLabel:@"Explicit cloud pull"];
-    v5 = [v3 performCloudPullWithOptions:v4];
+    v5 = [cloudZone performCloudPullWithOptions:v4];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __36__HMDPersonManager_performCloudPull__block_invoke;
@@ -834,7 +834,7 @@ void __49__HMDPersonManager_enumerateFaceCropsUsingBlock___block_invoke(uint64_t
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -878,28 +878,28 @@ void __36__HMDPersonManager_performCloudPull__block_invoke(uint64_t a1, void *a2
 
 - (BOOL)isCurrentDeviceAvailableResident
 {
-  v2 = [(HMDPersonManager *)self zoneManager];
-  v3 = [v2 home];
-  v4 = [v3 residentDeviceManager];
-  v5 = [v4 isCurrentDeviceAvailableResident];
+  zoneManager = [(HMDPersonManager *)self zoneManager];
+  home = [zoneManager home];
+  residentDeviceManager = [home residentDeviceManager];
+  isCurrentDeviceAvailableResident = [residentDeviceManager isCurrentDeviceAvailableResident];
 
-  return v5;
+  return isCurrentDeviceAvailableResident;
 }
 
 - (BOOL)isDataAvailable
 {
-  v2 = [(HMDPersonManager *)self localZone];
-  v3 = v2 != 0;
+  localZone = [(HMDPersonManager *)self localZone];
+  v3 = localZone != 0;
 
   return v3;
 }
 
-- (void)coreDataManager:(id)a3 didRemoveFaceprintsWithUUIDs:(id)a4
+- (void)coreDataManager:(id)manager didRemoveFaceprintsWithUUIDs:(id)ds
 {
   v30 = *MEMORY[0x277D85DE8];
-  v19 = a4;
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  dsCopy = ds;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v26 = 0u;
   v27 = 0u;
@@ -926,7 +926,7 @@ void __36__HMDPersonManager_performCloudPull__block_invoke(uint64_t a1, void *a2
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v10 = v19;
+        v10 = dsCopy;
         v11 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v11)
         {
@@ -971,12 +971,12 @@ void __36__HMDPersonManager_performCloudPull__block_invoke(uint64_t a1, void *a2
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)coreDataManager:(id)a3 didUpdateFaceprints:(id)a4
+- (void)coreDataManager:(id)manager didUpdateFaceprints:(id)faceprints
 {
   v30 = *MEMORY[0x277D85DE8];
-  v19 = a4;
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  faceprintsCopy = faceprints;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v26 = 0u;
   v27 = 0u;
@@ -1003,7 +1003,7 @@ void __36__HMDPersonManager_performCloudPull__block_invoke(uint64_t a1, void *a2
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v10 = v19;
+        v10 = faceprintsCopy;
         v11 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v11)
         {
@@ -1048,12 +1048,12 @@ void __36__HMDPersonManager_performCloudPull__block_invoke(uint64_t a1, void *a2
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)coreDataManager:(id)a3 didRemovePersonsWithUUIDs:(id)a4
+- (void)coreDataManager:(id)manager didRemovePersonsWithUUIDs:(id)ds
 {
   v30 = *MEMORY[0x277D85DE8];
-  v19 = a4;
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  dsCopy = ds;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v26 = 0u;
   v27 = 0u;
@@ -1080,7 +1080,7 @@ void __36__HMDPersonManager_performCloudPull__block_invoke(uint64_t a1, void *a2
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v10 = v19;
+        v10 = dsCopy;
         v11 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v11)
         {
@@ -1125,12 +1125,12 @@ void __36__HMDPersonManager_performCloudPull__block_invoke(uint64_t a1, void *a2
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)coreDataManager:(id)a3 didUpdatePersons:(id)a4
+- (void)coreDataManager:(id)manager didUpdatePersons:(id)persons
 {
   v30 = *MEMORY[0x277D85DE8];
-  v19 = a4;
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  personsCopy = persons;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v26 = 0u;
   v27 = 0u;
@@ -1157,7 +1157,7 @@ void __36__HMDPersonManager_performCloudPull__block_invoke(uint64_t a1, void *a2
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v10 = v19;
+        v10 = personsCopy;
         v11 = [v10 countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v11)
         {
@@ -1202,15 +1202,15 @@ void __36__HMDPersonManager_performCloudPull__block_invoke(uint64_t a1, void *a2
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)zoneManagerDidStop:(id)a3
+- (void)zoneManagerDidStop:(id)stop
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  stopCopy = stop;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -1221,21 +1221,21 @@ void __36__HMDPersonManager_performCloudPull__block_invoke(uint64_t a1, void *a2
   }
 
   objc_autoreleasePoolPop(v6);
-  [(HMDPersonManager *)v7 setLocalZone:0];
-  [(HMDPersonManager *)v7 setCloudZone:0];
+  [(HMDPersonManager *)selfCopy setLocalZone:0];
+  [(HMDPersonManager *)selfCopy setCloudZone:0];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)zoneManagerDidStart:(id)a3
+- (void)zoneManagerDidStart:(id)start
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  startCopy = start;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -1246,58 +1246,58 @@ void __36__HMDPersonManager_performCloudPull__block_invoke(uint64_t a1, void *a2
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [(HMDPersonManager *)v7 zoneManager];
-  v11 = [v10 localZone];
-  [(HMDPersonManager *)v7 setLocalZone:v11];
+  zoneManager = [(HMDPersonManager *)selfCopy zoneManager];
+  localZone = [zoneManager localZone];
+  [(HMDPersonManager *)selfCopy setLocalZone:localZone];
 
-  v12 = [(HMDPersonManager *)v7 localZone];
-  [v12 addObserverForAllModels:v7];
+  localZone2 = [(HMDPersonManager *)selfCopy localZone];
+  [localZone2 addObserverForAllModels:selfCopy];
 
-  v13 = [(HMDPersonManager *)v7 localZone];
-  [v13 startUp];
+  localZone3 = [(HMDPersonManager *)selfCopy localZone];
+  [localZone3 startUp];
 
-  v14 = [(HMDPersonManager *)v7 zoneManager];
-  v15 = [v14 cloudZone];
-  [(HMDPersonManager *)v7 setCloudZone:v15];
+  zoneManager2 = [(HMDPersonManager *)selfCopy zoneManager];
+  cloudZone = [zoneManager2 cloudZone];
+  [(HMDPersonManager *)selfCopy setCloudZone:cloudZone];
 
-  [(HMDPersonManager *)v7 _cleanUpExpiredUnassociatedFaceCrops];
-  v16 = [(HMDPersonManager *)v7 unassociatedFaceCropsCleanupTimerFactory];
-  v17 = v16[2](v16, 4, 86400.0);
-  [(HMDPersonManager *)v7 setUnassociatedFaceCropsCleanupTimer:v17];
+  [(HMDPersonManager *)selfCopy _cleanUpExpiredUnassociatedFaceCrops];
+  unassociatedFaceCropsCleanupTimerFactory = [(HMDPersonManager *)selfCopy unassociatedFaceCropsCleanupTimerFactory];
+  v17 = unassociatedFaceCropsCleanupTimerFactory[2](unassociatedFaceCropsCleanupTimerFactory, 4, 86400.0);
+  [(HMDPersonManager *)selfCopy setUnassociatedFaceCropsCleanupTimer:v17];
 
-  v18 = [(HMDPersonManager *)v7 unassociatedFaceCropsCleanupTimer];
-  [v18 setDelegate:v7];
+  unassociatedFaceCropsCleanupTimer = [(HMDPersonManager *)selfCopy unassociatedFaceCropsCleanupTimer];
+  [unassociatedFaceCropsCleanupTimer setDelegate:selfCopy];
 
-  v19 = [(HMDPersonManager *)v7 workQueue];
-  v20 = [(HMDPersonManager *)v7 unassociatedFaceCropsCleanupTimer];
-  [v20 setDelegateQueue:v19];
+  workQueue2 = [(HMDPersonManager *)selfCopy workQueue];
+  unassociatedFaceCropsCleanupTimer2 = [(HMDPersonManager *)selfCopy unassociatedFaceCropsCleanupTimer];
+  [unassociatedFaceCropsCleanupTimer2 setDelegateQueue:workQueue2];
 
-  v21 = [(HMDPersonManager *)v7 unassociatedFaceCropsCleanupTimer];
-  [v21 resume];
+  unassociatedFaceCropsCleanupTimer3 = [(HMDPersonManager *)selfCopy unassociatedFaceCropsCleanupTimer];
+  [unassociatedFaceCropsCleanupTimer3 resume];
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)manager:(id)a3 shouldShareWithUser:(id)a4
+- (BOOL)manager:(id)manager shouldShareWithUser:(id)user
 {
-  v4 = [(HMDPersonManager *)self workQueue:a3];
+  v4 = [(HMDPersonManager *)self workQueue:manager];
   dispatch_assert_queue_V2(v4);
 
   return 0;
 }
 
-- (void)localZone:(id)a3 didProcessModelDeletion:(id)a4
+- (void)localZone:(id)zone didProcessModelDeletion:(id)deletion
 {
-  v5 = a4;
-  v6 = [(HMDPersonManager *)self workQueue];
+  deletionCopy = deletion;
+  workQueue = [(HMDPersonManager *)self workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__HMDPersonManager_localZone_didProcessModelDeletion___block_invoke;
   v8[3] = &unk_27868A750;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_sync(v6, v8);
+  v9 = deletionCopy;
+  v7 = deletionCopy;
+  dispatch_sync(workQueue, v8);
 }
 
 void __54__HMDPersonManager_localZone_didProcessModelDeletion___block_invoke(uint64_t a1)
@@ -1308,18 +1308,18 @@ void __54__HMDPersonManager_localZone_didProcessModelDeletion___block_invoke(uin
   [v2 _handleDeletedModel:v4 mirrorOutputFuture:v3];
 }
 
-- (void)localZone:(id)a3 didProcessModelUpdate:(id)a4
+- (void)localZone:(id)zone didProcessModelUpdate:(id)update
 {
-  v5 = a4;
-  v6 = [(HMDPersonManager *)self workQueue];
+  updateCopy = update;
+  workQueue = [(HMDPersonManager *)self workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __52__HMDPersonManager_localZone_didProcessModelUpdate___block_invoke;
   v8[3] = &unk_27868A750;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_sync(v6, v8);
+  v9 = updateCopy;
+  v7 = updateCopy;
+  dispatch_sync(workQueue, v8);
 }
 
 void __52__HMDPersonManager_localZone_didProcessModelUpdate___block_invoke(uint64_t a1)
@@ -1330,18 +1330,18 @@ void __52__HMDPersonManager_localZone_didProcessModelUpdate___block_invoke(uint6
   [v2 _handleCreatedOrUpdatedModel:v4 mirrorOutputFuture:v3];
 }
 
-- (void)localZone:(id)a3 didProcessModelCreation:(id)a4
+- (void)localZone:(id)zone didProcessModelCreation:(id)creation
 {
-  v5 = a4;
-  v6 = [(HMDPersonManager *)self workQueue];
+  creationCopy = creation;
+  workQueue = [(HMDPersonManager *)self workQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__HMDPersonManager_localZone_didProcessModelCreation___block_invoke;
   v8[3] = &unk_27868A750;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_sync(v6, v8);
+  v9 = creationCopy;
+  v7 = creationCopy;
+  dispatch_sync(workQueue, v8);
 }
 
 void __54__HMDPersonManager_localZone_didProcessModelCreation___block_invoke(uint64_t a1)
@@ -1352,15 +1352,15 @@ void __54__HMDPersonManager_localZone_didProcessModelCreation___block_invoke(uin
   [v2 _handleCreatedOrUpdatedModel:v4 mirrorOutputFuture:v3];
 }
 
-- (void)handleDataSyncInProgressChangedNotification:(id)a3
+- (void)handleDataSyncInProgressChangedNotification:(id)notification
 {
-  v4 = [(HMDPersonManager *)self workQueue];
+  workQueue = [(HMDPersonManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __64__HMDPersonManager_handleDataSyncInProgressChangedNotification___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 uint64_t __64__HMDPersonManager_handleDataSyncInProgressChangedNotification___block_invoke(uint64_t a1)
@@ -1387,18 +1387,18 @@ uint64_t __64__HMDPersonManager_handleDataSyncInProgressChangedNotification___bl
   return result;
 }
 
-- (void)handleResidentWasRemovedNotification:(id)a3
+- (void)handleResidentWasRemovedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self workQueue];
+  notificationCopy = notification;
+  workQueue = [(HMDPersonManager *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__HMDPersonManager_handleResidentWasRemovedNotification___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __57__HMDPersonManager_handleResidentWasRemovedNotification___block_invoke(uint64_t a1)
@@ -1440,18 +1440,18 @@ void __57__HMDPersonManager_handleResidentWasRemovedNotification___block_invoke(
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleResidentWasUpdatedNotification:(id)a3
+- (void)handleResidentWasUpdatedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self workQueue];
+  notificationCopy = notification;
+  workQueue = [(HMDPersonManager *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__HMDPersonManager_handleResidentWasUpdatedNotification___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __57__HMDPersonManager_handleResidentWasUpdatedNotification___block_invoke(uint64_t a1)
@@ -1493,18 +1493,18 @@ void __57__HMDPersonManager_handleResidentWasUpdatedNotification___block_invoke(
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleResidentWasAddedNotification:(id)a3
+- (void)handleResidentWasAddedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self workQueue];
+  notificationCopy = notification;
+  workQueue = [(HMDPersonManager *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __55__HMDPersonManager_handleResidentWasAddedNotification___block_invoke;
   v7[3] = &unk_27868A750;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __55__HMDPersonManager_handleResidentWasAddedNotification___block_invoke(uint64_t a1)
@@ -1547,15 +1547,15 @@ void __55__HMDPersonManager_handleResidentWasAddedNotification___block_invoke(ui
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUserPrivilegeDidChangeNotification:(id)a3
+- (void)handleUserPrivilegeDidChangeNotification:(id)notification
 {
-  v4 = [(HMDPersonManager *)self workQueue];
+  workQueue = [(HMDPersonManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__HMDPersonManager_handleUserPrivilegeDidChangeNotification___block_invoke;
   block[3] = &unk_27868A728;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(workQueue, block);
 }
 
 void __61__HMDPersonManager_handleUserPrivilegeDidChangeNotification___block_invoke(uint64_t a1)
@@ -1567,11 +1567,11 @@ void __61__HMDPersonManager_handleUserPrivilegeDidChangeNotification___block_inv
 - (id)_removePersonZones
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -1582,14 +1582,14 @@ void __61__HMDPersonManager_handleUserPrivilegeDidChangeNotification___block_inv
   }
 
   objc_autoreleasePoolPop(v4);
-  v8 = [(HMDPersonManager *)v5 zoneManager];
-  v9 = [v8 remove];
+  zoneManager = [(HMDPersonManager *)selfCopy zoneManager];
+  remove = [zoneManager remove];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __38__HMDPersonManager__removePersonZones__block_invoke;
   v13[3] = &unk_27868A250;
-  v13[4] = v5;
-  v10 = [v9 addFailureBlock:v13];
+  v13[4] = selfCopy;
+  v10 = [remove addFailureBlock:v13];
 
   v11 = *MEMORY[0x277D85DE8];
 
@@ -1620,14 +1620,14 @@ void __38__HMDPersonManager__removePersonZones__block_invoke(uint64_t a1, void *
 - (void)_cleanUpExpiredUnassociatedFaceCrops
 {
   v32[2] = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-*MEMORY[0x277CCF378]];
   v31[0] = @"dateAfter";
-  v5 = [MEMORY[0x277CBEAA8] distantPast];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
   v31[1] = @"dateBefore";
-  v32[0] = v5;
+  v32[0] = distantPast;
   v32[1] = v4;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
 
@@ -1635,21 +1635,21 @@ void __38__HMDPersonManager__removePersonZones__block_invoke(uint64_t a1, void *
   v8 = [MEMORY[0x277D17108] optionsWithLabel:@"Remove expired unassociated face crops"];
   [v8 setShouldEnqueueMirrorOutput:0];
   v9 = [HMDUnassociatedFaceCropModel unassociatedFaceCropsBetweenDatesQueryWithIsAscending:1];
-  v10 = [(HMDPersonManager *)self localZone];
-  v11 = [v10 queryModelsUsingQuery:v9 arguments:v6];
+  localZone = [(HMDPersonManager *)self localZone];
+  v11 = [localZone queryModelsUsingQuery:v9 arguments:v6];
 
   v21 = MEMORY[0x277D85DD0];
   v22 = 3221225472;
   v23 = __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke;
   v24 = &unk_278677150;
-  v25 = self;
+  selfCopy = self;
   v12 = v7;
   v26 = v12;
   [v11 enumerateObjectsUsingBlock:&v21];
   if ([v12 count])
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
@@ -1663,8 +1663,8 @@ void __38__HMDPersonManager__removePersonZones__block_invoke(uint64_t a1, void *
     }
 
     objc_autoreleasePoolPop(v13);
-    v18 = [(HMDPersonManager *)v14 localZone];
-    v19 = [v18 removeModelIDs:v12 options:v8];
+    localZone2 = [(HMDPersonManager *)selfCopy2 localZone];
+    v19 = [localZone2 removeModelIDs:v12 options:v8];
 
     [v12 removeAllObjects];
   }
@@ -1727,11 +1727,11 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
 - (void)_createZones
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -1742,13 +1742,13 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
   }
 
   objc_autoreleasePoolPop(v4);
-  v8 = [(HMDPersonManager *)v5 zoneManager];
-  v9 = [v8 defaultConfiguration];
-  v10 = [v9 mutableCopy];
+  zoneManager = [(HMDPersonManager *)selfCopy zoneManager];
+  defaultConfiguration = [zoneManager defaultConfiguration];
+  v10 = [defaultConfiguration mutableCopy];
 
   [v10 setShouldCreateZone:1];
-  v11 = [(HMDPersonManager *)v5 zoneManager];
-  [v11 startWithConfiguration:v10];
+  zoneManager2 = [(HMDPersonManager *)selfCopy zoneManager];
+  [zoneManager2 startWithConfiguration:v10];
 
   v12 = *MEMORY[0x277D85DE8];
 }
@@ -1756,15 +1756,15 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
 - (void)_notifyDataInterfacesOfCurrentIsDataSyncInProgress
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(HMDPersonManager *)self dataInterfaces];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  dataInterfaces = [(HMDPersonManager *)self dataInterfaces];
+  v5 = [dataInterfaces countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1776,7 +1776,7 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dataInterfaces);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
@@ -1789,7 +1789,7 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [dataInterfaces countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1801,15 +1801,15 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
 - (void)_notifyDataInterfacesOfCurrentIsCurrentDeviceAvailableResident
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(HMDPersonManager *)self dataInterfaces];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  dataInterfaces = [(HMDPersonManager *)self dataInterfaces];
+  v5 = [dataInterfaces countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1821,7 +1821,7 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dataInterfaces);
         }
 
         v9 = *(*(&v11 + 1) + 8 * v8);
@@ -1834,7 +1834,7 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [dataInterfaces countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -1843,13 +1843,13 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDeletedFaceprintWithUUID:(id)a3 mirrorOutputFuture:(id)a4
+- (void)_handleDeletedFaceprintWithUUID:(id)d mirrorOutputFuture:(id)future
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  futureCopy = future;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -1857,7 +1857,7 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
     *buf = 138543618;
     v25 = v11;
     v26 = 2112;
-    v27 = v6;
+    v27 = dCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Handling deleted faceprint with UUID: %@", buf, 0x16u);
   }
 
@@ -1866,8 +1866,8 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v12 = [(HMDPersonManager *)v9 dataInterfaces];
-  v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  dataInterfaces = [(HMDPersonManager *)selfCopy dataInterfaces];
+  v13 = [dataInterfaces countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1879,20 +1879,20 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
       {
         if (*v20 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(dataInterfaces);
         }
 
         v17 = *(*(&v19 + 1) + 8 * v16);
         if (objc_opt_respondsToSelector())
         {
-          [v17 handleRemovedFaceprintWithUUID:v6 mirrorOutputFuture:v7];
+          [v17 handleRemovedFaceprintWithUUID:dCopy mirrorOutputFuture:futureCopy];
         }
 
         ++v16;
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v14 = [dataInterfaces countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v14);
@@ -1901,13 +1901,13 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDeletedFaceCropWithUUID:(id)a3 mirrorOutputFuture:(id)a4
+- (void)_handleDeletedFaceCropWithUUID:(id)d mirrorOutputFuture:(id)future
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  futureCopy = future;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -1915,20 +1915,20 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
     *buf = 138543618;
     v27 = v11;
     v28 = 2112;
-    v29 = v6;
+    v29 = dCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Handling deleted face crop with UUID: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [MEMORY[0x277CBEB98] setWithObject:v6];
-  v13 = [(HMDPersonManager *)v9 _removeFaceprintsForFaceCropsWithUUIDs:v12];
+  v12 = [MEMORY[0x277CBEB98] setWithObject:dCopy];
+  v13 = [(HMDPersonManager *)selfCopy _removeFaceprintsForFaceCropsWithUUIDs:v12];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v14 = [(HMDPersonManager *)v9 dataInterfaces];
-  v15 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  dataInterfaces = [(HMDPersonManager *)selfCopy dataInterfaces];
+  v15 = [dataInterfaces countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v15)
   {
     v16 = v15;
@@ -1940,20 +1940,20 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
       {
         if (*v22 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(dataInterfaces);
         }
 
         v19 = *(*(&v21 + 1) + 8 * v18);
         if (objc_opt_respondsToSelector())
         {
-          [v19 handleRemovedFaceCropWithUUID:v6 mirrorOutputFuture:v7];
+          [v19 handleRemovedFaceCropWithUUID:dCopy mirrorOutputFuture:futureCopy];
         }
 
         ++v18;
       }
 
       while (v16 != v18);
-      v16 = [v14 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v16 = [dataInterfaces countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v16);
@@ -1962,13 +1962,13 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDeletedPersonWithUUID:(id)a3 mirrorOutputFuture:(id)a4
+- (void)_handleDeletedPersonWithUUID:(id)d mirrorOutputFuture:(id)future
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  futureCopy = future;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -1976,7 +1976,7 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
     *buf = 138543618;
     v25 = v11;
     v26 = 2112;
-    v27 = v6;
+    v27 = dCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Handling deleted person with UUID: %@", buf, 0x16u);
   }
 
@@ -1985,8 +1985,8 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v12 = [(HMDPersonManager *)v9 dataInterfaces];
-  v13 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  dataInterfaces = [(HMDPersonManager *)selfCopy dataInterfaces];
+  v13 = [dataInterfaces countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v13)
   {
     v14 = v13;
@@ -1998,20 +1998,20 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
       {
         if (*v20 != v15)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(dataInterfaces);
         }
 
         v17 = *(*(&v19 + 1) + 8 * v16);
         if (objc_opt_respondsToSelector())
         {
-          [v17 handleRemovedPersonWithUUID:v6 mirrorOutputFuture:v7];
+          [v17 handleRemovedPersonWithUUID:dCopy mirrorOutputFuture:futureCopy];
         }
 
         ++v16;
       }
 
       while (v14 != v16);
-      v14 = [v12 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v14 = [dataInterfaces countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v14);
@@ -2020,15 +2020,15 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleDeletedModel:(id)a3 mirrorOutputFuture:(id)a4
+- (void)_handleDeletedModel:(id)model mirrorOutputFuture:(id)future
 {
   v32 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  modelCopy = model;
+  futureCopy = future;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = v6;
+  v9 = modelCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2044,8 +2044,8 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
 
   if (v11)
   {
-    v12 = [v11 hmbModelID];
-    [(HMDPersonManager *)self _handleDeletedPersonWithUUID:v12 mirrorOutputFuture:v7];
+    hmbModelID = [v11 hmbModelID];
+    [(HMDPersonManager *)self _handleDeletedPersonWithUUID:hmbModelID mirrorOutputFuture:futureCopy];
   }
 
   else
@@ -2062,12 +2062,12 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
       v14 = 0;
     }
 
-    v12 = v14;
+    hmbModelID = v14;
 
-    if (v12)
+    if (hmbModelID)
     {
-      v15 = [v12 hmbModelID];
-      [(HMDPersonManager *)self _handleDeletedFaceCropWithUUID:v15 mirrorOutputFuture:v7];
+      v12HmbModelID = [hmbModelID hmbModelID];
+      [(HMDPersonManager *)self _handleDeletedFaceCropWithUUID:v12HmbModelID mirrorOutputFuture:futureCopy];
     }
 
     else
@@ -2084,12 +2084,12 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
         v17 = 0;
       }
 
-      v15 = v17;
+      v12HmbModelID = v17;
 
-      if (v15)
+      if (v12HmbModelID)
       {
-        v18 = [v15 hmbModelID];
-        [(HMDPersonManager *)self _handleDeletedFaceCropWithUUID:v18 mirrorOutputFuture:v7];
+        v15HmbModelID = [v12HmbModelID hmbModelID];
+        [(HMDPersonManager *)self _handleDeletedFaceCropWithUUID:v15HmbModelID mirrorOutputFuture:futureCopy];
       }
 
       else
@@ -2106,18 +2106,18 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
           v20 = 0;
         }
 
-        v18 = v20;
+        v15HmbModelID = v20;
 
-        if (v18)
+        if (v15HmbModelID)
         {
-          v21 = [v18 hmbModelID];
-          [(HMDPersonManager *)self _handleDeletedFaceprintWithUUID:v21 mirrorOutputFuture:v7];
+          v18HmbModelID = [v15HmbModelID hmbModelID];
+          [(HMDPersonManager *)self _handleDeletedFaceprintWithUUID:v18HmbModelID mirrorOutputFuture:futureCopy];
         }
 
         else
         {
           v22 = objc_autoreleasePoolPush();
-          v23 = self;
+          selfCopy = self;
           v24 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
           {
@@ -2141,17 +2141,17 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCreatedOrUpdatedFaceprint:(id)a3 mirrorOutputFuture:(id)a4
+- (void)_handleCreatedOrUpdatedFaceprint:(id)faceprint mirrorOutputFuture:(id)future
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  faceprintCopy = faceprint;
+  futureCopy = future;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(HMDPersonManager *)self dataInterfaces];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  dataInterfaces = [(HMDPersonManager *)self dataInterfaces];
+  v9 = [dataInterfaces countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2163,20 +2163,20 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(dataInterfaces);
         }
 
         v13 = *(*(&v15 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 handleUpdatedFaceprint:v6 mirrorOutputFuture:v7];
+          [v13 handleUpdatedFaceprint:faceprintCopy mirrorOutputFuture:futureCopy];
         }
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [dataInterfaces countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -2185,17 +2185,17 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCreatedOrUpdatedUnassociatedFaceCrop:(id)a3 mirrorOutputFuture:(id)a4
+- (void)_handleCreatedOrUpdatedUnassociatedFaceCrop:(id)crop mirrorOutputFuture:(id)future
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  cropCopy = crop;
+  futureCopy = future;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(HMDPersonManager *)self dataInterfaces];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  dataInterfaces = [(HMDPersonManager *)self dataInterfaces];
+  v9 = [dataInterfaces countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2207,20 +2207,20 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(dataInterfaces);
         }
 
         v13 = *(*(&v15 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 handleUpdatedUnassociatedFaceCrop:v6 mirrorOutputFuture:v7];
+          [v13 handleUpdatedUnassociatedFaceCrop:cropCopy mirrorOutputFuture:futureCopy];
         }
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [dataInterfaces countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -2229,17 +2229,17 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCreatedOrUpdatedPersonFaceCrop:(id)a3 mirrorOutputFuture:(id)a4
+- (void)_handleCreatedOrUpdatedPersonFaceCrop:(id)crop mirrorOutputFuture:(id)future
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  cropCopy = crop;
+  futureCopy = future;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(HMDPersonManager *)self dataInterfaces];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  dataInterfaces = [(HMDPersonManager *)self dataInterfaces];
+  v9 = [dataInterfaces countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2251,20 +2251,20 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(dataInterfaces);
         }
 
         v13 = *(*(&v15 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 handleUpdatedPersonFaceCrop:v6 mirrorOutputFuture:v7];
+          [v13 handleUpdatedPersonFaceCrop:cropCopy mirrorOutputFuture:futureCopy];
         }
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [dataInterfaces countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -2273,17 +2273,17 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCreatedOrUpdatedPerson:(id)a3 mirrorOutputFuture:(id)a4
+- (void)_handleCreatedOrUpdatedPerson:(id)person mirrorOutputFuture:(id)future
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  personCopy = person;
+  futureCopy = future;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [(HMDPersonManager *)self dataInterfaces];
-  v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  dataInterfaces = [(HMDPersonManager *)self dataInterfaces];
+  v9 = [dataInterfaces countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v9)
   {
     v10 = v9;
@@ -2295,20 +2295,20 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
       {
         if (*v16 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(dataInterfaces);
         }
 
         v13 = *(*(&v15 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 handleUpdatedPerson:v6 mirrorOutputFuture:v7];
+          [v13 handleUpdatedPerson:personCopy mirrorOutputFuture:futureCopy];
         }
 
         ++v12;
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v10 = [dataInterfaces countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v10);
@@ -2317,15 +2317,15 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleCreatedOrUpdatedModel:(id)a3 mirrorOutputFuture:(id)a4
+- (void)_handleCreatedOrUpdatedModel:(id)model mirrorOutputFuture:(id)future
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v8);
+  modelCopy = model;
+  futureCopy = future;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v9 = v6;
+  v9 = modelCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2342,7 +2342,7 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
   if (v11)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
@@ -2355,10 +2355,10 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
     }
 
     objc_autoreleasePoolPop(v12);
-    v16 = [v11 createPerson];
-    if (v16)
+    createPerson = [v11 createPerson];
+    if (createPerson)
     {
-      [(HMDPersonManager *)v13 _handleCreatedOrUpdatedPerson:v16 mirrorOutputFuture:v7];
+      [(HMDPersonManager *)selfCopy _handleCreatedOrUpdatedPerson:createPerson mirrorOutputFuture:futureCopy];
     }
   }
 
@@ -2376,29 +2376,29 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
       v18 = 0;
     }
 
-    v16 = v18;
+    createPerson = v18;
 
-    if (v16)
+    if (createPerson)
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = self;
+      selfCopy2 = self;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
       {
         v22 = HMFGetLogIdentifier();
-        v23 = [v16 hmbModelID];
+        hmbModelID = [createPerson hmbModelID];
         v42 = 138543618;
         v43 = v22;
         v44 = 2112;
-        v45 = v23;
+        v45 = hmbModelID;
         _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_DEBUG, "%{public}@Handling new/updated face crop model: %@", &v42, 0x16u);
       }
 
       objc_autoreleasePoolPop(v19);
-      v24 = [v16 createPersonFaceCrop];
-      if (v24)
+      createPersonFaceCrop = [createPerson createPersonFaceCrop];
+      if (createPersonFaceCrop)
       {
-        [(HMDPersonManager *)v20 _handleCreatedOrUpdatedPersonFaceCrop:v24 mirrorOutputFuture:v7];
+        [(HMDPersonManager *)selfCopy2 _handleCreatedOrUpdatedPersonFaceCrop:createPersonFaceCrop mirrorOutputFuture:futureCopy];
       }
     }
 
@@ -2416,12 +2416,12 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
         v26 = 0;
       }
 
-      v24 = v26;
+      createPersonFaceCrop = v26;
 
-      if (v24)
+      if (createPersonFaceCrop)
       {
         v27 = objc_autoreleasePoolPush();
-        v28 = self;
+        selfCopy3 = self;
         v29 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEBUG))
         {
@@ -2429,15 +2429,15 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
           v42 = 138543618;
           v43 = v30;
           v44 = 2112;
-          v45 = v24;
+          v45 = createPersonFaceCrop;
           _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_DEBUG, "%{public}@Handling new/updated unassociated face crop model: %@", &v42, 0x16u);
         }
 
         objc_autoreleasePoolPop(v27);
-        v31 = [v24 createUnassociatedFaceCrop];
-        if (v31)
+        createUnassociatedFaceCrop = [createPersonFaceCrop createUnassociatedFaceCrop];
+        if (createUnassociatedFaceCrop)
         {
-          [(HMDPersonManager *)v28 _handleCreatedOrUpdatedUnassociatedFaceCrop:v31 mirrorOutputFuture:v7];
+          [(HMDPersonManager *)selfCopy3 _handleCreatedOrUpdatedUnassociatedFaceCrop:createUnassociatedFaceCrop mirrorOutputFuture:futureCopy];
         }
       }
 
@@ -2455,13 +2455,13 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
           v33 = 0;
         }
 
-        v31 = v33;
+        createUnassociatedFaceCrop = v33;
 
         v34 = objc_autoreleasePoolPush();
-        v35 = self;
+        selfCopy4 = self;
         v36 = HMFGetOSLogHandle();
         v37 = v36;
-        if (v31)
+        if (createUnassociatedFaceCrop)
         {
           if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
           {
@@ -2469,15 +2469,15 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
             v42 = 138543618;
             v43 = v38;
             v44 = 2112;
-            v45 = v31;
+            v45 = createUnassociatedFaceCrop;
             _os_log_impl(&dword_229538000, v37, OS_LOG_TYPE_INFO, "%{public}@Handling new/updated faceprint model: %@", &v42, 0x16u);
           }
 
           objc_autoreleasePoolPop(v34);
-          v39 = [v31 createFaceprint];
-          if (v39)
+          createFaceprint = [createUnassociatedFaceCrop createFaceprint];
+          if (createFaceprint)
           {
-            [(HMDPersonManager *)v35 _handleCreatedOrUpdatedFaceprint:v39 mirrorOutputFuture:v7];
+            [(HMDPersonManager *)selfCopy4 _handleCreatedOrUpdatedFaceprint:createFaceprint mirrorOutputFuture:futureCopy];
           }
         }
 
@@ -2494,7 +2494,7 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
           }
 
           objc_autoreleasePoolPop(v34);
-          v31 = 0;
+          createUnassociatedFaceCrop = 0;
         }
       }
     }
@@ -2503,20 +2503,20 @@ void __56__HMDPersonManager__cleanUpExpiredUnassociatedFaceCrops__block_invoke(u
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_removeFaceprintsForFaceCropsWithUUIDs:(id)a3
+- (id)_removeFaceprintsForFaceCropsWithUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  dsCopy = ds;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(v4, "count")}];
+  v6 = [MEMORY[0x277CBEB58] setWithCapacity:{objc_msgSend(dsCopy, "count")}];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __59__HMDPersonManager__removeFaceprintsForFaceCropsWithUUIDs___block_invoke;
   v10[3] = &unk_27867F760;
   v11 = v6;
   v7 = v6;
-  [(HMDPersonManager *)self enumerateFaceprintsForFaceCropsWithUUIDs:v4 usingBlock:v10];
+  [(HMDPersonManager *)self enumerateFaceprintsForFaceCropsWithUUIDs:dsCopy usingBlock:v10];
 
   v8 = [(HMDPersonManager *)self removeFaceprintsWithUUIDs:v7];
 
@@ -2530,18 +2530,18 @@ void __59__HMDPersonManager__removeFaceprintsForFaceCropsWithUUIDs___block_invok
   [v2 addObject:v3];
 }
 
-- (id)_faceCropsModelsWithUUIDs:(id)a3
+- (id)_faceCropsModelsWithUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  dsCopy = ds;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __46__HMDPersonManager__faceCropsModelsWithUUIDs___block_invoke;
   v8[3] = &unk_278677128;
   v8[4] = self;
-  v6 = [v4 na_map:v8];
+  v6 = [dsCopy na_map:v8];
 
   return v6;
 }
@@ -2556,21 +2556,21 @@ id __46__HMDPersonManager__faceCropsModelsWithUUIDs___block_invoke(uint64_t a1, 
   return v5;
 }
 
-- (id)_faceCropUUIDsForPersonWithUUID:(id)a3
+- (id)_faceCropUUIDsForPersonWithUUID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self localZone];
-  if (v5)
+  dCopy = d;
+  localZone = [(HMDPersonManager *)self localZone];
+  if (localZone)
   {
-    v6 = [(HMDPersonManager *)self faceCropsForPersonWithUUID:v4];
+    v6 = [(HMDPersonManager *)self faceCropsForPersonWithUUID:dCopy];
     v7 = [v6 na_map:&__block_literal_global_83_91366];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -2589,18 +2589,18 @@ id __46__HMDPersonManager__faceCropsModelsWithUUIDs___block_invoke(uint64_t a1, 
   return v7;
 }
 
-- (id)_unassociatedFaceCropsModelsWithUUIDs:(id)a3
+- (id)_unassociatedFaceCropsModelsWithUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  dsCopy = ds;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __58__HMDPersonManager__unassociatedFaceCropsModelsWithUUIDs___block_invoke;
   v8[3] = &unk_2786770E0;
   v8[4] = self;
-  v6 = [v4 na_map:v8];
+  v6 = [dsCopy na_map:v8];
 
   return v6;
 }
@@ -2617,27 +2617,27 @@ id __58__HMDPersonManager__unassociatedFaceCropsModelsWithUUIDs___block_invoke(u
 
 - (BOOL)isDataSyncInProgress
 {
-  v2 = [(HMDPersonManager *)self zoneManager];
-  v3 = [v2 home];
-  v4 = [v3 homeManager];
-  v5 = [v4 isDataSyncInProgress];
+  zoneManager = [(HMDPersonManager *)self zoneManager];
+  home = [zoneManager home];
+  homeManager = [home homeManager];
+  isDataSyncInProgress = [homeManager isDataSyncInProgress];
 
-  return v5;
+  return isDataSyncInProgress;
 }
 
-- (void)_createOrRemoveZonesForSettings:(id)a3
+- (void)_createOrRemoveZonesForSettings:(id)settings
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  settingsCopy = settings;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (-[HMDPersonManager isDataAvailable](self, "isDataAvailable") || ![v4 requiresPersistentStorage])
+  if (-[HMDPersonManager isDataAvailable](self, "isDataAvailable") || ![settingsCopy requiresPersistentStorage])
   {
-    if (-[HMDPersonManager isDataAvailable](self, "isDataAvailable") && ([v4 requiresPersistentStorage] & 1) == 0)
+    if (-[HMDPersonManager isDataAvailable](self, "isDataAvailable") && ([settingsCopy requiresPersistentStorage] & 1) == 0)
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
@@ -2648,14 +2648,14 @@ id __58__HMDPersonManager__unassociatedFaceCropsModelsWithUUIDs___block_invoke(u
       }
 
       objc_autoreleasePoolPop(v10);
-      v14 = [(HMDPersonManager *)v11 _removePersonZones];
+      _removePersonZones = [(HMDPersonManager *)selfCopy _removePersonZones];
     }
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy2 = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -2666,19 +2666,19 @@ id __58__HMDPersonManager__unassociatedFaceCropsModelsWithUUIDs___block_invoke(u
     }
 
     objc_autoreleasePoolPop(v6);
-    [(HMDPersonManager *)v7 _createZones];
+    [(HMDPersonManager *)selfCopy2 _createZones];
   }
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)addOrUpdateFaceCrops:(id)a3 andRemoveFaceCropsWithUUIDs:(id)a4
+- (id)addOrUpdateFaceCrops:(id)crops andRemoveFaceCropsWithUUIDs:(id)ds
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  cropsCopy = crops;
+  dsCopy = ds;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -2686,27 +2686,27 @@ id __58__HMDPersonManager__unassociatedFaceCropsModelsWithUUIDs___block_invoke(u
     v24 = 138543874;
     v25 = v11;
     v26 = 2112;
-    v27 = v6;
+    v27 = cropsCopy;
     v28 = 2112;
-    v29 = v7;
+    v29 = dsCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Adding/updating face crops: %@, removing face crops with UUIDs: %@", &v24, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMDPersonManager *)v9 localZone];
-  if (v12)
+  localZone = [(HMDPersonManager *)selfCopy localZone];
+  if (localZone)
   {
-    v13 = [v6 na_map:&__block_literal_global_73];
+    v13 = [cropsCopy na_map:&__block_literal_global_73];
     v14 = [MEMORY[0x277D17108] optionsWithLabel:@"Add/remove face crops"];
     [v14 setTransactionItemsBatchLimit:5];
-    v15 = [v12 addModels:v13 andRemoveModelIDs:v7 options:v14];
+    v15 = [localZone addModels:v13 andRemoveModelIDs:dsCopy options:v14];
     v16 = [v15 flatMap:&__block_literal_global_79];
   }
 
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = v9;
+    v18 = selfCopy;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
@@ -2757,35 +2757,35 @@ HMDFaceCropModel *__69__HMDPersonManager_addOrUpdateFaceCrops_andRemoveFaceCrops
   return v6;
 }
 
-- (id)removeFaceCropsWithUUIDs:(id)a3
+- (id)removeFaceCropsWithUUIDs:(id)ds
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  dsCopy = ds;
   v6 = [v4 set];
-  v7 = [(HMDPersonManager *)self addOrUpdateFaceCrops:v6 andRemoveFaceCropsWithUUIDs:v5];
+  v7 = [(HMDPersonManager *)self addOrUpdateFaceCrops:v6 andRemoveFaceCropsWithUUIDs:dsCopy];
 
   return v7;
 }
 
-- (id)addOrUpdateFaceCrops:(id)a3
+- (id)addOrUpdateFaceCrops:(id)crops
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  cropsCopy = crops;
   v6 = [v4 set];
-  v7 = [(HMDPersonManager *)self addOrUpdateFaceCrops:v5 andRemoveFaceCropsWithUUIDs:v6];
+  v7 = [(HMDPersonManager *)self addOrUpdateFaceCrops:cropsCopy andRemoveFaceCropsWithUUIDs:v6];
 
   return v7;
 }
 
 - (id)fetchFaceCropUUIDsByPersonUUID
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__HMDPersonManager_fetchFaceCropUUIDsByPersonUUID__block_invoke;
   v7[3] = &unk_27867F738;
-  v8 = v3;
-  v4 = v3;
+  v8 = dictionary;
+  v4 = dictionary;
   [(HMDPersonManager *)self enumeratePersonFaceCropsUsingBlock:v7];
   v5 = [MEMORY[0x277D2C900] futureWithResult:v4];
 
@@ -2812,13 +2812,13 @@ void __50__HMDPersonManager_fetchFaceCropUUIDsByPersonUUID__block_invoke(uint64_
   [v6 addObject:v9];
 }
 
-- (id)addOrUpdatePersons:(id)a3 andRemovePersonsWithUUIDs:(id)a4
+- (id)addOrUpdatePersons:(id)persons andRemovePersonsWithUUIDs:(id)ds
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  personsCopy = persons;
+  dsCopy = ds;
   v8 = objc_autoreleasePoolPush();
-  v9 = self;
+  selfCopy = self;
   v10 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
@@ -2826,22 +2826,22 @@ void __50__HMDPersonManager_fetchFaceCropUUIDsByPersonUUID__block_invoke(uint64_
     *buf = 138543874;
     v21 = v11;
     v22 = 2112;
-    v23 = v6;
+    v23 = personsCopy;
     v24 = 2112;
-    v25 = v7;
+    v25 = dsCopy;
     _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Adding/updating persons: %@, removing persons with UUIDs: %@", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v8);
-  v12 = [(HMDPersonManager *)v9 coreDataManager];
-  v13 = [v12 addOrUpdatePersons:v6 andRemovePersonsWithUUIDs:v7];
+  coreDataManager = [(HMDPersonManager *)selfCopy coreDataManager];
+  v13 = [coreDataManager addOrUpdatePersons:personsCopy andRemovePersonsWithUUIDs:dsCopy];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __65__HMDPersonManager_addOrUpdatePersons_andRemovePersonsWithUUIDs___block_invoke;
   v18[3] = &unk_278680EA0;
-  v18[4] = v9;
-  v19 = v7;
-  v14 = v7;
+  v18[4] = selfCopy;
+  v19 = dsCopy;
+  v14 = dsCopy;
   v15 = [v13 flatMap:v18];
 
   v16 = *MEMORY[0x277D85DE8];
@@ -2897,38 +2897,38 @@ id __65__HMDPersonManager_addOrUpdatePersons_andRemovePersonsWithUUIDs___block_i
   return v13;
 }
 
-- (id)removePersonsWithUUIDs:(id)a3
+- (id)removePersonsWithUUIDs:(id)ds
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  dsCopy = ds;
   v6 = [v4 set];
-  v7 = [(HMDPersonManager *)self addOrUpdatePersons:v6 andRemovePersonsWithUUIDs:v5];
+  v7 = [(HMDPersonManager *)self addOrUpdatePersons:v6 andRemovePersonsWithUUIDs:dsCopy];
 
   return v7;
 }
 
-- (id)addOrUpdatePersons:(id)a3
+- (id)addOrUpdatePersons:(id)persons
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  personsCopy = persons;
   v6 = [v4 set];
-  v7 = [(HMDPersonManager *)self addOrUpdatePersons:v5 andRemovePersonsWithUUIDs:v6];
+  v7 = [(HMDPersonManager *)self addOrUpdatePersons:personsCopy andRemovePersonsWithUUIDs:v6];
 
   return v7;
 }
 
-- (void)enumeratePersonFaceCropsUsingBlock:(id)a3
+- (void)enumeratePersonFaceCropsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self localZone];
-  v6 = [v5 queryModelsOfType:objc_opt_class()];
+  blockCopy = block;
+  localZone = [(HMDPersonManager *)self localZone];
+  v6 = [localZone queryModelsOfType:objc_opt_class()];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __55__HMDPersonManager_enumeratePersonFaceCropsUsingBlock___block_invoke;
   v8[3] = &unk_278677070;
-  v9 = v4;
-  v7 = v4;
+  v9 = blockCopy;
+  v7 = blockCopy;
   [v6 enumerateObjectsUsingBlock:v8];
 }
 
@@ -2943,31 +2943,31 @@ void __55__HMDPersonManager_enumeratePersonFaceCropsUsingBlock___block_invoke(ui
   }
 }
 
-- (void)enumeratePersonsUsingBlock:(id)a3
+- (void)enumeratePersonsUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self coreDataManager];
-  [v5 enumeratePersonsUsingBlock:v4];
+  blockCopy = block;
+  coreDataManager = [(HMDPersonManager *)self coreDataManager];
+  [coreDataManager enumeratePersonsUsingBlock:blockCopy];
 }
 
-- (id)addUnassociatedFaceCropWithUUID:(id)a3 data:(id)a4
+- (id)addUnassociatedFaceCropWithUUID:(id)d data:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  dataCopy = data;
   v8 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v9 = [(HMDPersonManager *)self workQueue];
+  workQueue = [(HMDPersonManager *)self workQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __57__HMDPersonManager_addUnassociatedFaceCropWithUUID_data___block_invoke;
   v16[3] = &unk_2786891E0;
   v16[4] = self;
-  v17 = v7;
-  v18 = v6;
+  v17 = dataCopy;
+  v18 = dCopy;
   v10 = v8;
   v19 = v10;
-  v11 = v6;
-  v12 = v7;
-  dispatch_async(v9, v16);
+  v11 = dCopy;
+  v12 = dataCopy;
+  dispatch_async(workQueue, v16);
 
   v13 = v19;
   v14 = v10;
@@ -3008,21 +3008,21 @@ void __57__HMDPersonManager_addUnassociatedFaceCropWithUUID_data___block_invoke(
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleFaceMisclassificationForFaceCropData:(id)a3 personUUID:(id)a4
+- (void)handleFaceMisclassificationForFaceCropData:(id)data personUUID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDPersonManager *)self workQueue];
+  dataCopy = data;
+  dCopy = d;
+  workQueue = [(HMDPersonManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __74__HMDPersonManager_handleFaceMisclassificationForFaceCropData_personUUID___block_invoke;
   block[3] = &unk_27868A010;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = dataCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = dataCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __74__HMDPersonManager_handleFaceMisclassificationForFaceCropData_personUUID___block_invoke(uint64_t a1)
@@ -3085,18 +3085,18 @@ void __74__HMDPersonManager_handleFaceMisclassificationForFaceCropData_personUUI
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)faceCropsForPersonWithUUID:(id)a3
+- (id)faceCropsForPersonWithUUID:(id)d
 {
   v21[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB58];
-  v5 = a3;
+  dCopy = d;
   v6 = [v4 set];
   v20 = @"personUUID";
-  v21[0] = v5;
+  v21[0] = dCopy;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-  v8 = [(HMDPersonManager *)self localZone];
+  localZone = [(HMDPersonManager *)self localZone];
   v9 = +[HMDFaceCropModel faceCropsForPersonUUIDQuery];
-  v10 = [v8 queryModelsUsingQuery:v9 arguments:v7];
+  v10 = [localZone queryModelsUsingQuery:v9 arguments:v7];
 
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
@@ -3123,64 +3123,64 @@ void __47__HMDPersonManager_faceCropsForPersonWithUUID___block_invoke(uint64_t a
   }
 }
 
-- (id)personFaceCropWithUUID:(id)a3
+- (id)personFaceCropWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self localZone];
-  v6 = [v5 fetchModelWithModelID:v4 ofType:objc_opt_class() error:0];
+  dCopy = d;
+  localZone = [(HMDPersonManager *)self localZone];
+  v6 = [localZone fetchModelWithModelID:dCopy ofType:objc_opt_class() error:0];
 
-  v7 = [v6 createPersonFaceCrop];
+  createPersonFaceCrop = [v6 createPersonFaceCrop];
 
-  return v7;
+  return createPersonFaceCrop;
 }
 
-- (id)associatedUnassociatedFaceCropWithUUID:(id)a3
+- (id)associatedUnassociatedFaceCropWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self localZone];
-  v6 = [v5 fetchModelWithModelID:v4 ofType:objc_opt_class() error:0];
+  dCopy = d;
+  localZone = [(HMDPersonManager *)self localZone];
+  v6 = [localZone fetchModelWithModelID:dCopy ofType:objc_opt_class() error:0];
 
-  v7 = [v6 createAssociatedUnassociatedFaceCrop];
+  createAssociatedUnassociatedFaceCrop = [v6 createAssociatedUnassociatedFaceCrop];
 
-  return v7;
+  return createAssociatedUnassociatedFaceCrop;
 }
 
-- (id)unassociatedFaceCropWithUUID:(id)a3
+- (id)unassociatedFaceCropWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self localZone];
-  v6 = [v5 fetchModelWithModelID:v4 ofType:objc_opt_class() error:0];
+  dCopy = d;
+  localZone = [(HMDPersonManager *)self localZone];
+  v6 = [localZone fetchModelWithModelID:dCopy ofType:objc_opt_class() error:0];
 
-  v7 = [v6 createUnassociatedFaceCrop];
+  createUnassociatedFaceCrop = [v6 createUnassociatedFaceCrop];
 
-  return v7;
+  return createUnassociatedFaceCrop;
 }
 
-- (id)personWithUUID:(id)a3
+- (id)personWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self coreDataManager];
-  v6 = [v5 personWithUUID:v4];
+  dCopy = d;
+  coreDataManager = [(HMDPersonManager *)self coreDataManager];
+  v6 = [coreDataManager personWithUUID:dCopy];
 
   return v6;
 }
 
 - (NSString)zoneName
 {
-  v2 = [(HMDPersonManager *)self zoneManager];
-  v3 = [v2 zoneName];
+  zoneManager = [(HMDPersonManager *)self zoneManager];
+  zoneName = [zoneManager zoneName];
 
-  return v3;
+  return zoneName;
 }
 
-- (id)removeAllAssociatedDataDueToHomeGraphObjectRemoval:(BOOL)a3
+- (id)removeAllAssociatedDataDueToHomeGraphObjectRemoval:(BOOL)removal
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -3194,42 +3194,42 @@ void __47__HMDPersonManager_faceCropsForPersonWithUUID___block_invoke(uint64_t a
   }
 
   objc_autoreleasePoolPop(v6);
-  if (a3)
+  if (removal)
   {
-    v11 = [(HMDPersonManager *)v7 _removePersonZones];
+    _removePersonZones = [(HMDPersonManager *)selfCopy _removePersonZones];
   }
 
   else
   {
-    v12 = [(HMDPersonManager *)v7 coreDataManager];
-    v13 = [v12 removeAllAssociatedData];
+    coreDataManager = [(HMDPersonManager *)selfCopy coreDataManager];
+    removeAllAssociatedData = [coreDataManager removeAllAssociatedData];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __71__HMDPersonManager_removeAllAssociatedDataDueToHomeGraphObjectRemoval___block_invoke;
     v16[3] = &unk_2786837F8;
-    v16[4] = v7;
-    v11 = [v13 flatMap:v16];
+    v16[4] = selfCopy;
+    _removePersonZones = [removeAllAssociatedData flatMap:v16];
   }
 
   v14 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return _removePersonZones;
 }
 
-- (void)configureWithHome:(id)a3
+- (void)configureWithHome:(id)home
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDPersonManager *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  homeCopy = home;
+  workQueue = [(HMDPersonManager *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  if (!v4)
+  if (!homeCopy)
   {
     _HMFPreconditionFailure();
   }
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -3237,68 +3237,68 @@ void __47__HMDPersonManager_faceCropsForPersonWithUUID___block_invoke(uint64_t a
     *buf = 138543618;
     v43 = v9;
     v44 = 2112;
-    v45 = v4;
+    v45 = homeCopy;
     _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Configuring person manager with home: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v10 addObserver:v7 selector:sel_handleUserPrivilegeDidChangeNotification_ name:@"HMDUserPrivilegeDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:selfCopy selector:sel_handleUserPrivilegeDidChangeNotification_ name:@"HMDUserPrivilegeDidChangeNotification" object:0];
 
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
-  v12 = [v4 residentDeviceManager];
-  [v11 addObserver:v7 selector:sel_handleResidentWasAddedNotification_ name:@"HMDResidentDeviceManagerAddResidentNotification" object:v12];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  residentDeviceManager = [homeCopy residentDeviceManager];
+  [defaultCenter2 addObserver:selfCopy selector:sel_handleResidentWasAddedNotification_ name:@"HMDResidentDeviceManagerAddResidentNotification" object:residentDeviceManager];
 
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
-  v14 = [v4 residentDeviceManager];
-  [v13 addObserver:v7 selector:sel_handleResidentWasUpdatedNotification_ name:@"HMDResidentDeviceManagerUpdateResidentNotification" object:v14];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  residentDeviceManager2 = [homeCopy residentDeviceManager];
+  [defaultCenter3 addObserver:selfCopy selector:sel_handleResidentWasUpdatedNotification_ name:@"HMDResidentDeviceManagerUpdateResidentNotification" object:residentDeviceManager2];
 
-  v15 = [MEMORY[0x277CCAB98] defaultCenter];
-  v16 = [v4 residentDeviceManager];
-  [v15 addObserver:v7 selector:sel_handleResidentWasRemovedNotification_ name:@"HMDResidentDeviceManagerRemoveResidentNotification" object:v16];
+  defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+  residentDeviceManager3 = [homeCopy residentDeviceManager];
+  [defaultCenter4 addObserver:selfCopy selector:sel_handleResidentWasRemovedNotification_ name:@"HMDResidentDeviceManagerRemoveResidentNotification" object:residentDeviceManager3];
 
-  v17 = [MEMORY[0x277CCAB98] defaultCenter];
-  v18 = [v4 homeManager];
-  [v17 addObserver:v7 selector:sel_handleDataSyncInProgressChangedNotification_ name:@"HMDHomeManagerDataSyncInProgressChangedNotification" object:v18];
+  defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+  homeManager = [homeCopy homeManager];
+  [defaultCenter5 addObserver:selfCopy selector:sel_handleDataSyncInProgressChangedNotification_ name:@"HMDHomeManagerDataSyncInProgressChangedNotification" object:homeManager];
 
-  v19 = [(HMDPersonManager *)v7 zoneManager];
-  v20 = [v19 defaultConfiguration];
-  v21 = [v20 mutableCopy];
+  zoneManager = [(HMDPersonManager *)selfCopy zoneManager];
+  defaultConfiguration = [zoneManager defaultConfiguration];
+  v21 = [defaultConfiguration mutableCopy];
 
   v22 = objc_alloc_init(MEMORY[0x277D170E8]);
   [v22 setShouldRebuildOnManateeKeyLoss:1];
   [v21 setCloudZoneConfiguration:v22];
   [v21 setShouldCreateZone:0];
-  v23 = [(HMDPersonManager *)v7 zoneManager];
-  [v23 setDefaultConfiguration:v21];
+  zoneManager2 = [(HMDPersonManager *)selfCopy zoneManager];
+  [zoneManager2 setDefaultConfiguration:v21];
 
-  v24 = [(HMDPersonManager *)v7 zoneManager];
-  [v24 setDelegate:v7];
+  zoneManager3 = [(HMDPersonManager *)selfCopy zoneManager];
+  [zoneManager3 setDelegate:selfCopy];
 
-  v25 = [(HMDPersonManager *)v7 zoneManager];
-  [v25 setDataSource:v7];
+  zoneManager4 = [(HMDPersonManager *)selfCopy zoneManager];
+  [zoneManager4 setDataSource:selfCopy];
 
-  v26 = [(HMDPersonManager *)v7 zoneManager];
-  [v26 configure];
+  zoneManager5 = [(HMDPersonManager *)selfCopy zoneManager];
+  [zoneManager5 configure];
 
-  v27 = [(HMDPersonManager *)v7 zoneManager];
-  [v27 start];
+  zoneManager6 = [(HMDPersonManager *)selfCopy zoneManager];
+  [zoneManager6 start];
 
-  v28 = [(HMDPersonManager *)v7 coreDataManager];
-  [v28 setDelegate:v7];
+  coreDataManager = [(HMDPersonManager *)selfCopy coreDataManager];
+  [coreDataManager setDelegate:selfCopy];
 
-  v29 = [(HMDPersonManager *)v7 coreDataManager];
-  [v29 configureWithDataSource:v7];
+  coreDataManager2 = [(HMDPersonManager *)selfCopy coreDataManager];
+  [coreDataManager2 configureWithDataSource:selfCopy];
 
-  v30 = [(HMDPersonManager *)v7 settings];
-  [(HMDPersonManager *)v7 _createOrRemoveZonesForSettings:v30];
+  settings = [(HMDPersonManager *)selfCopy settings];
+  [(HMDPersonManager *)selfCopy _createOrRemoveZonesForSettings:settings];
 
   v39 = 0u;
   v40 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v31 = [(HMDPersonManager *)v7 dataInterfaces];
-  v32 = [v31 countByEnumeratingWithState:&v37 objects:v41 count:16];
+  dataInterfaces = [(HMDPersonManager *)selfCopy dataInterfaces];
+  v32 = [dataInterfaces countByEnumeratingWithState:&v37 objects:v41 count:16];
   if (v32)
   {
     v33 = v32;
@@ -3309,20 +3309,20 @@ void __47__HMDPersonManager_faceCropsForPersonWithUUID___block_invoke(uint64_t a
       {
         if (*v38 != v34)
         {
-          objc_enumerationMutation(v31);
+          objc_enumerationMutation(dataInterfaces);
         }
 
-        [*(*(&v37 + 1) + 8 * i) configureWithDataSource:v7 home:v4];
+        [*(*(&v37 + 1) + 8 * i) configureWithDataSource:selfCopy home:homeCopy];
       }
 
-      v33 = [v31 countByEnumeratingWithState:&v37 objects:v41 count:16];
+      v33 = [dataInterfaces countByEnumeratingWithState:&v37 objects:v41 count:16];
     }
 
     while (v33);
   }
 
-  [(HMDPersonManager *)v7 _notifyDataInterfacesOfCurrentIsCurrentDeviceAvailableResident];
-  [(HMDPersonManager *)v7 _notifyDataInterfacesOfCurrentIsDataSyncInProgress];
+  [(HMDPersonManager *)selfCopy _notifyDataInterfacesOfCurrentIsCurrentDeviceAvailableResident];
+  [(HMDPersonManager *)selfCopy _notifyDataInterfacesOfCurrentIsDataSyncInProgress];
 
   v36 = *MEMORY[0x277D85DE8];
 }
@@ -3331,7 +3331,7 @@ void __47__HMDPersonManager_faceCropsForPersonWithUUID___block_invoke(uint64_t a
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -3339,61 +3339,61 @@ void __47__HMDPersonManager_faceCropsForPersonWithUUID___block_invoke(uint64_t a
     *buf = 138543618;
     v10 = v6;
     v11 = 2112;
-    v12 = v4;
+    v12 = selfCopy;
     _os_log_impl(&dword_229538000, v5, OS_LOG_TYPE_INFO, "%{public}@Deallocating %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v3);
-  v8.receiver = v4;
+  v8.receiver = selfCopy;
   v8.super_class = HMDPersonManager;
   [(HMDPersonManager *)&v8 dealloc];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDPersonManager)initWithUUID:(id)a3 zoneManager:(id)a4 coreDataManager:(id)a5 dataInterfaces:(id)a6 workQueue:(id)a7 featuresDataSource:(id)a8
+- (HMDPersonManager)initWithUUID:(id)d zoneManager:(id)manager coreDataManager:(id)dataManager dataInterfaces:(id)interfaces workQueue:(id)queue featuresDataSource:(id)source
 {
-  v14 = a3;
-  v15 = a4;
-  v31 = a5;
-  v30 = a6;
-  v16 = a7;
-  v17 = a8;
-  if (!v14)
+  dCopy = d;
+  managerCopy = manager;
+  dataManagerCopy = dataManager;
+  interfacesCopy = interfaces;
+  queueCopy = queue;
+  sourceCopy = source;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  if (!v15)
+  if (!managerCopy)
   {
 LABEL_11:
     _HMFPreconditionFailure();
     goto LABEL_12;
   }
 
-  if (!v31)
+  if (!dataManagerCopy)
   {
 LABEL_12:
     _HMFPreconditionFailure();
     goto LABEL_13;
   }
 
-  if (!v30)
+  if (!interfacesCopy)
   {
 LABEL_13:
     _HMFPreconditionFailure();
     goto LABEL_14;
   }
 
-  if (!v16)
+  if (!queueCopy)
   {
 LABEL_14:
     _HMFPreconditionFailure();
     goto LABEL_15;
   }
 
-  v18 = v17;
-  if (!v17)
+  v18 = sourceCopy;
+  if (!sourceCopy)
   {
 LABEL_15:
     v29 = _HMFPreconditionFailure();
@@ -3406,18 +3406,18 @@ LABEL_15:
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_workQueue, a7);
-    v21 = [v14 copy];
+    objc_storeStrong(&v19->_workQueue, queue);
+    v21 = [dCopy copy];
     UUID = v20->_UUID;
     v20->_UUID = v21;
 
-    objc_storeStrong(&v20->_zoneManager, a4);
-    objc_storeStrong(&v20->_dataInterfaces, a6);
-    objc_storeStrong(&v20->_coreDataManager, a5);
-    objc_storeStrong(&v20->_featuresDataSource, a8);
+    objc_storeStrong(&v20->_zoneManager, manager);
+    objc_storeStrong(&v20->_dataInterfaces, interfaces);
+    objc_storeStrong(&v20->_coreDataManager, dataManager);
+    objc_storeStrong(&v20->_featuresDataSource, source);
     v23 = MEMORY[0x277CCACA8];
-    v24 = [v15 zoneName];
-    v25 = [v23 stringWithFormat:@"%@/%@", v14, v24];
+    zoneName = [managerCopy zoneName];
+    v25 = [v23 stringWithFormat:@"%@/%@", dCopy, zoneName];
     logIdentifier = v20->_logIdentifier;
     v20->_logIdentifier = v25;
 
@@ -3456,9 +3456,9 @@ void __31__HMDPersonManager_logCategory__block_invoke()
   logCategory__hmf_once_v59 = v1;
 }
 
-+ (id)zoneNameForZoneUUID:(id)a3
++ (id)zoneNameForZoneUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

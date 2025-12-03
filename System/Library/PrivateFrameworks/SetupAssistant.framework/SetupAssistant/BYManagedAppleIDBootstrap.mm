@@ -11,25 +11,25 @@
 - (NSString)shortLivedToken;
 - (OS_dispatch_queue)notificationQueue;
 - (UMUserSwitchContext)userSwitchContext;
-- (id)_authenticationContextWithAuthenticationResults:(id)a3;
+- (id)_authenticationContextWithAuthenticationResults:(id)results;
 - (id)_fetchAKURLBagSynchronously;
 - (id)_languageConfigurationDictionary;
-- (void)_createAppleAccountWithAuthenticationResults:(id)a3 completion:(id)a4;
+- (void)_createAppleAccountWithAuthenticationResults:(id)results completion:(id)completion;
 - (void)_fetchAKURLBagSynchronously;
-- (void)_modifyAuthenticationContextIfNeeded:(id)a3;
-- (void)_registerForStartupCompletionNotificationWithTask:(id)a3;
-- (void)_runPostStartupTasksWithAccountStore:(id)a3 completion:(id)a4;
-- (void)_runSilentLoginUpgradeWithCompletion:(id)a3 shortLivedTokenUpgradeCompletion:(id)a4;
-- (void)_upgradeShortLivedTokenCompletion:(id)a3;
+- (void)_modifyAuthenticationContextIfNeeded:(id)needed;
+- (void)_registerForStartupCompletionNotificationWithTask:(id)task;
+- (void)_runPostStartupTasksWithAccountStore:(id)store completion:(id)completion;
+- (void)_runSilentLoginUpgradeWithCompletion:(id)completion shortLivedTokenUpgradeCompletion:(id)upgradeCompletion;
+- (void)_upgradeShortLivedTokenCompletion:(id)completion;
 - (void)dealloc;
 - (void)ingestManagedBuddyData;
 - (void)markUserWithManagedCredentials;
 - (void)postUserSwitchContextHasBeenUsed;
-- (void)recoverEMCSWithCompletion:(id)a3;
-- (void)runSilentLoginUpgradeIfNeededWithCompletion:(id)a3 shortLivedTokenUpgradeCompletion:(id)a4 willNotCompleteBlock:(id)a5;
-- (void)switchToLoginWindowDueToError:(id)a3 completion:(id)a4;
+- (void)recoverEMCSWithCompletion:(id)completion;
+- (void)runSilentLoginUpgradeIfNeededWithCompletion:(id)completion shortLivedTokenUpgradeCompletion:(id)upgradeCompletion willNotCompleteBlock:(id)block;
+- (void)switchToLoginWindowDueToError:(id)error completion:(id)completion;
 - (void)userSwitchContextHasBeenUsed;
-- (void)writeAccountConfigurationIfNeededWithCompletion:(id)a3;
+- (void)writeAccountConfigurationIfNeededWithCompletion:(id)completion;
 @end
 
 @implementation BYManagedAppleIDBootstrap
@@ -85,28 +85,28 @@ uint64_t __42__BYManagedAppleIDBootstrap_sharedManager__block_invoke()
 
 + (BOOL)isMultiUser
 {
-  v2 = [MEMORY[0x1E69DF068] sharedManager];
-  v3 = [v2 isMultiUser];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  isMultiUser = [mEMORY[0x1E69DF068] isMultiUser];
 
-  return v3;
+  return isMultiUser;
 }
 
 + (BOOL)isFirstTimeLogin
 {
-  v2 = [MEMORY[0x1E69DF068] sharedManager];
-  if ([v2 isMultiUser])
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  if ([mEMORY[0x1E69DF068] isMultiUser])
   {
-    v3 = [MEMORY[0x1E69DF068] sharedManager];
-    v4 = [v3 currentUser];
-    v5 = [v4 inFirstLoginSession];
+    mEMORY[0x1E69DF068]2 = [MEMORY[0x1E69DF068] sharedManager];
+    currentUser = [mEMORY[0x1E69DF068]2 currentUser];
+    inFirstLoginSession = [currentUser inFirstLoginSession];
   }
 
   else
   {
-    v5 = 0;
+    inFirstLoginSession = 0;
   }
 
-  return v5;
+  return inFirstLoginSession;
 }
 
 + (BOOL)isSettingUpMultiUser
@@ -129,28 +129,28 @@ uint64_t __42__BYManagedAppleIDBootstrap_sharedManager__block_invoke()
 
   v3 = v2;
   _Block_object_dispose(&v8, 8);
-  v4 = [v2 sharedConnection];
-  v5 = [v4 userMode] == 1 && !objc_msgSend(v4, "isEphemeralMultiUser");
+  sharedConnection = [v2 sharedConnection];
+  v5 = [sharedConnection userMode] == 1 && !objc_msgSend(sharedConnection, "isEphemeralMultiUser");
 
   return v5;
 }
 
 + (BOOL)isManagedAppleIDSignedIn
 {
-  v2 = [MEMORY[0x1E6959A48] defaultStore];
-  v3 = [v2 aa_primaryAppleAccount];
+  defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+  aa_primaryAppleAccount = [defaultStore aa_primaryAppleAccount];
 
-  LOBYTE(v2) = [v3 aa_isManagedAppleID];
-  return v2;
+  LOBYTE(defaultStore) = [aa_primaryAppleAccount aa_isManagedAppleID];
+  return defaultStore;
 }
 
 - (BOOL)isLoginUser
 {
-  v2 = [MEMORY[0x1E69DF068] sharedManager];
-  v3 = [v2 currentUser];
-  v4 = [v3 isLoginUser];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentUser = [mEMORY[0x1E69DF068] currentUser];
+  isLoginUser = [currentUser isLoginUser];
 
-  return v4;
+  return isLoginUser;
 }
 
 - (void)userSwitchContextHasBeenUsed
@@ -167,8 +167,8 @@ uint64_t __42__BYManagedAppleIDBootstrap_sharedManager__block_invoke()
   {
     self->_userSwitchContext = 0;
 
-    v5 = [MEMORY[0x1E69DF068] sharedManager];
-    [v5 currentUserSwitchContextHasBeenUsed];
+    mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+    [mEMORY[0x1E69DF068] currentUserSwitchContextHasBeenUsed];
   }
 }
 
@@ -178,19 +178,19 @@ uint64_t __42__BYManagedAppleIDBootstrap_sharedManager__block_invoke()
   userSwitchContext = self->_userSwitchContext;
   if (!userSwitchContext)
   {
-    v4 = [MEMORY[0x1E69DF068] sharedManager];
-    v5 = [v4 currentUserSwitchContext];
+    mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+    currentUserSwitchContext = [mEMORY[0x1E69DF068] currentUserSwitchContext];
     v6 = self->_userSwitchContext;
-    self->_userSwitchContext = v5;
+    self->_userSwitchContext = currentUserSwitchContext;
 
     if (self->_userSwitchContext)
     {
       v7 = _BYLoggingFacility();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(UMUserSwitchContext *)self->_userSwitchContext secondaryActionRequired];
+        secondaryActionRequired = [(UMUserSwitchContext *)self->_userSwitchContext secondaryActionRequired];
         v9 = @"NERP";
-        if (v8)
+        if (secondaryActionRequired)
         {
           v9 = @"YASE";
         }
@@ -211,19 +211,19 @@ uint64_t __42__BYManagedAppleIDBootstrap_sharedManager__block_invoke()
 
 - (NSString)shortLivedToken
 {
-  v2 = [(BYManagedAppleIDBootstrap *)self userSwitchContext];
-  v3 = [v2 shortLivedToken];
-  v4 = [v3 copy];
+  userSwitchContext = [(BYManagedAppleIDBootstrap *)self userSwitchContext];
+  shortLivedToken = [userSwitchContext shortLivedToken];
+  v4 = [shortLivedToken copy];
 
   return v4;
 }
 
 - (BOOL)passwordChangeFlowNeedsToRun
 {
-  v2 = [(BYManagedAppleIDBootstrap *)self userSwitchContext];
-  v3 = [v2 secondaryActionRequired];
+  userSwitchContext = [(BYManagedAppleIDBootstrap *)self userSwitchContext];
+  secondaryActionRequired = [userSwitchContext secondaryActionRequired];
 
-  return v3;
+  return secondaryActionRequired;
 }
 
 - (OS_dispatch_queue)notificationQueue
@@ -257,7 +257,7 @@ uint64_t __42__BYManagedAppleIDBootstrap_sharedManager__block_invoke()
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_1B862F000, a2, OS_LOG_TYPE_DEBUG, "Buddy data from IdMS: %@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -269,31 +269,31 @@ uint64_t __42__BYManagedAppleIDBootstrap_sharedManager__block_invoke()
     return 0;
   }
 
-  v3 = [(BYManagedAppleIDBootstrap *)self shortLivedToken];
-  v4 = v3 != 0;
+  shortLivedToken = [(BYManagedAppleIDBootstrap *)self shortLivedToken];
+  v4 = shortLivedToken != 0;
 
   return v4;
 }
 
-- (void)switchToLoginWindowDueToError:(id)a3 completion:(id)a4
+- (void)switchToLoginWindowDueToError:(id)error completion:(id)completion
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  errorCopy = error;
+  completionCopy = completion;
   v8 = _BYLoggingFacility();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     if (_BYIsInternalInstall())
     {
       v9 = 0;
-      v10 = v6;
+      v10 = errorCopy;
     }
 
-    else if (v6)
+    else if (errorCopy)
     {
       v11 = MEMORY[0x1E696AEC0];
-      v4 = [v6 domain];
-      v10 = [v11 stringWithFormat:@"<Error domain: %@, code %ld>", v4, objc_msgSend(v6, "code")];
+      domain = [errorCopy domain];
+      v10 = [v11 stringWithFormat:@"<Error domain: %@, code %ld>", domain, objc_msgSend(errorCopy, "code")];
       v9 = 1;
     }
 
@@ -311,14 +311,14 @@ uint64_t __42__BYManagedAppleIDBootstrap_sharedManager__block_invoke()
     }
   }
 
-  v12 = [MEMORY[0x1E69DF068] sharedManager];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __70__BYManagedAppleIDBootstrap_switchToLoginWindowDueToError_completion___block_invoke;
   v15[3] = &unk_1E7D02BD8;
-  v16 = v7;
-  v13 = v7;
-  [v12 switchToLoginUserWithError:v6 completionHandler:v15];
+  v16 = completionCopy;
+  v13 = completionCopy;
+  [mEMORY[0x1E69DF068] switchToLoginUserWithError:errorCopy completionHandler:v15];
 
   v14 = *MEMORY[0x1E69E9840];
 }
@@ -359,19 +359,19 @@ void __70__BYManagedAppleIDBootstrap_switchToLoginWindowDueToError_completion___
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_runSilentLoginUpgradeWithCompletion:(id)a3 shortLivedTokenUpgradeCompletion:(id)a4
+- (void)_runSilentLoginUpgradeWithCompletion:(id)completion shortLivedTokenUpgradeCompletion:(id)upgradeCompletion
 {
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  upgradeCompletionCopy = upgradeCompletion;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __99__BYManagedAppleIDBootstrap__runSilentLoginUpgradeWithCompletion_shortLivedTokenUpgradeCompletion___block_invoke;
   v10[3] = &unk_1E7D02C60;
   v10[4] = self;
-  v11 = v7;
-  v12 = v6;
-  v8 = v6;
-  v9 = v7;
+  v11 = upgradeCompletionCopy;
+  v12 = completionCopy;
+  v8 = completionCopy;
+  v9 = upgradeCompletionCopy;
   [(BYManagedAppleIDBootstrap *)self _upgradeShortLivedTokenCompletion:v10];
 }
 
@@ -541,25 +541,25 @@ LABEL_6:
   return [*(a1 + 32) _runSilentLoginUpgradeWithCompletion:*(a1 + 40) shortLivedTokenUpgradeCompletion:*(a1 + 48)];
 }
 
-- (void)runSilentLoginUpgradeIfNeededWithCompletion:(id)a3 shortLivedTokenUpgradeCompletion:(id)a4 willNotCompleteBlock:(id)a5
+- (void)runSilentLoginUpgradeIfNeededWithCompletion:(id)completion shortLivedTokenUpgradeCompletion:(id)upgradeCompletion willNotCompleteBlock:(id)block
 {
   v36 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (completion)
   {
-    v7 = a3;
+    completionCopy = completion;
   }
 
   else
   {
-    v7 = &__block_literal_global_64;
+    completionCopy = &__block_literal_global_64;
   }
 
-  v8 = a5;
-  v9 = a4;
-  v10 = MEMORY[0x1B8CC28E0](v7);
-  if (v9)
+  blockCopy = block;
+  upgradeCompletionCopy = upgradeCompletion;
+  v10 = MEMORY[0x1B8CC28E0](completionCopy);
+  if (upgradeCompletionCopy)
   {
-    v11 = v9;
+    v11 = upgradeCompletionCopy;
   }
 
   else
@@ -569,9 +569,9 @@ LABEL_6:
 
   v12 = MEMORY[0x1B8CC28E0](v11);
 
-  if (v8)
+  if (blockCopy)
   {
-    v13 = v8;
+    v13 = blockCopy;
   }
 
   else
@@ -586,11 +586,11 @@ LABEL_6:
     goto LABEL_22;
   }
 
-  v15 = [(BYManagedAppleIDBootstrap *)self needsToUpgradeShortLivedToken];
-  v16 = [(BYManagedAppleIDBootstrap *)self passwordChangeFlowNeedsToRun];
+  needsToUpgradeShortLivedToken = [(BYManagedAppleIDBootstrap *)self needsToUpgradeShortLivedToken];
+  passwordChangeFlowNeedsToRun = [(BYManagedAppleIDBootstrap *)self passwordChangeFlowNeedsToRun];
   if ([objc_opt_class() isMultiUser])
   {
-    v17 = v15 && !v16;
+    v17 = needsToUpgradeShortLivedToken && !passwordChangeFlowNeedsToRun;
   }
 
   else
@@ -602,9 +602,9 @@ LABEL_6:
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109632;
-    v31 = v15;
+    v31 = needsToUpgradeShortLivedToken;
     v32 = 1024;
-    v33 = v16;
+    v33 = passwordChangeFlowNeedsToRun;
     v34 = 1024;
     v35 = v17;
     _os_log_impl(&dword_1B862F000, v18, OS_LOG_TYPE_DEFAULT, "Silent token upgrade requirements: needs upgrade: %d, password change required: %d, running silent upgrade: %d", buf, 0x14u);
@@ -615,8 +615,8 @@ LABEL_6:
     if (+[BYManagedAppleIDBootstrap isFirstTimeLogin])
     {
       v19 = +[BYAppleIDAccountsManager sharedManager];
-      v20 = [objc_opt_class() delegateBundleIDsForManagedAccount];
-      [v19 preloadDefaultLoginParametersWithBundleIDs:v20];
+      delegateBundleIDsForManagedAccount = [objc_opt_class() delegateBundleIDsForManagedAccount];
+      [v19 preloadDefaultLoginParametersWithBundleIDs:delegateBundleIDsForManagedAccount];
 
       v21 = dispatch_get_global_queue(25, 0);
       block[0] = MEMORY[0x1E69E9820];
@@ -754,24 +754,24 @@ uint64_t __127__BYManagedAppleIDBootstrap_runSilentLoginUpgradeIfNeededWithCompl
   }
 }
 
-- (void)_runPostStartupTasksWithAccountStore:(id)a3 completion:(id)a4
+- (void)_runPostStartupTasksWithAccountStore:(id)store completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BYManagedAppleIDBootstrap *)self authenticationResults];
+  storeCopy = store;
+  completionCopy = completion;
+  authenticationResults = [(BYManagedAppleIDBootstrap *)self authenticationResults];
 
-  if (v8)
+  if (authenticationResults)
   {
-    v9 = [objc_alloc(MEMORY[0x1E698C268]) initWithAccountStore:v6];
-    v10 = [(BYManagedAppleIDBootstrap *)self authenticationResults];
-    v11 = [(BYManagedAppleIDBootstrap *)self _authenticationContextWithAuthenticationResults:v10];
+    v9 = [objc_alloc(MEMORY[0x1E698C268]) initWithAccountStore:storeCopy];
+    authenticationResults2 = [(BYManagedAppleIDBootstrap *)self authenticationResults];
+    v11 = [(BYManagedAppleIDBootstrap *)self _authenticationContextWithAuthenticationResults:authenticationResults2];
 
     v32[0] = MEMORY[0x1E69E9820];
     v32[1] = 3221225472;
     v32[2] = __77__BYManagedAppleIDBootstrap__runPostStartupTasksWithAccountStore_completion___block_invoke;
     v32[3] = &unk_1E7D02D20;
     v32[4] = self;
-    v33 = v6;
+    v33 = storeCopy;
     v12 = MEMORY[0x1B8CC28E0](v32);
     v29[0] = MEMORY[0x1E69E9820];
     v29[1] = 3221225472;
@@ -797,16 +797,16 @@ uint64_t __127__BYManagedAppleIDBootstrap_runSilentLoginUpgradeIfNeededWithCompl
     v22[3] = &unk_1E7D02DC0;
     v23 = v12;
     v24 = v18;
-    v25 = v7;
+    v25 = completionCopy;
     v19 = v15[2];
     v20 = v18;
     v21 = v12;
     v19(v15, v22);
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    v7[2](v7);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -1013,10 +1013,10 @@ uint64_t __77__BYManagedAppleIDBootstrap__runPostStartupTasksWithAccountStore_co
   return result;
 }
 
-- (void)recoverEMCSWithCompletion:(id)a3
+- (void)recoverEMCSWithCompletion:(id)completion
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  completionCopy = completion;
   v4 = _BYLoggingFacility();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1079,8 +1079,8 @@ uint64_t __77__BYManagedAppleIDBootstrap__runPostStartupTasksWithAccountStore_co
   v16[2] = __55__BYManagedAppleIDBootstrap_recoverEMCSWithCompletion___block_invoke;
   v16[3] = &unk_1E7D02DE8;
 
-  v17 = v3;
-  v14 = v3;
+  v17 = completionCopy;
+  v14 = completionCopy;
   [v7 recoverWithInfo:v13 completionBlock:v16];
 
   v15 = *MEMORY[0x1E69E9840];
@@ -1130,13 +1130,13 @@ void __55__BYManagedAppleIDBootstrap_recoverEMCSWithCompletion___block_invoke(ui
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_createAppleAccountWithAuthenticationResults:(id)a3 completion:(id)a4
+- (void)_createAppleAccountWithAuthenticationResults:(id)results completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  resultsCopy = results;
   kdebug_trace();
   v8 = objc_alloc_init(getACAccountStoreClass());
-  v9 = [(BYManagedAppleIDBootstrap *)self _authenticationContextWithAuthenticationResults:v7];
+  v9 = [(BYManagedAppleIDBootstrap *)self _authenticationContextWithAuthenticationResults:resultsCopy];
 
   v10 = [objc_alloc(MEMORY[0x1E698C268]) initWithAccountStore:v8];
   v11 = *MEMORY[0x1E698C218];
@@ -1144,8 +1144,8 @@ void __55__BYManagedAppleIDBootstrap_recoverEMCSWithCompletion___block_invoke(ui
   v13[1] = 3221225472;
   v13[2] = __85__BYManagedAppleIDBootstrap__createAppleAccountWithAuthenticationResults_completion___block_invoke;
   v13[3] = &unk_1E7D02C10;
-  v14 = v6;
-  v12 = v6;
+  v14 = completionCopy;
+  v12 = completionCopy;
   [v10 signInService:v11 withContext:v9 completion:v13];
 }
 
@@ -1196,25 +1196,25 @@ void __85__BYManagedAppleIDBootstrap__createAppleAccountWithAuthenticationResult
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_registerForStartupCompletionNotificationWithTask:(id)a3
+- (void)_registerForStartupCompletionNotificationWithTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v18[0] = 0;
   v18[1] = v18;
   v18[2] = 0x2020000000;
   v19 = 0;
-  v5 = [@"com.apple.LoginKit.isLoggedIn" UTF8String];
-  v6 = [(BYManagedAppleIDBootstrap *)self notificationQueue];
+  uTF8String = [@"com.apple.LoginKit.isLoggedIn" UTF8String];
+  notificationQueue = [(BYManagedAppleIDBootstrap *)self notificationQueue];
   handler[0] = MEMORY[0x1E69E9820];
   handler[1] = 3221225472;
   handler[2] = __79__BYManagedAppleIDBootstrap__registerForStartupCompletionNotificationWithTask___block_invoke;
   handler[3] = &unk_1E7D02E10;
-  v7 = v4;
+  v7 = taskCopy;
   v16 = v7;
   v17 = v18;
-  LODWORD(v5) = notify_register_dispatch(v5, &self->_notifyToken, v6, handler);
+  LODWORD(uTF8String) = notify_register_dispatch(uTF8String, &self->_notifyToken, notificationQueue, handler);
 
-  if (v5)
+  if (uTF8String)
   {
     v8 = _BYLoggingFacility();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -1224,7 +1224,7 @@ void __85__BYManagedAppleIDBootstrap__createAppleAccountWithAuthenticationResult
   }
 
   v9 = dispatch_time(0, 30000000000);
-  v10 = [(BYManagedAppleIDBootstrap *)self notificationQueue];
+  notificationQueue2 = [(BYManagedAppleIDBootstrap *)self notificationQueue];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __79__BYManagedAppleIDBootstrap__registerForStartupCompletionNotificationWithTask___block_invoke_85;
@@ -1232,7 +1232,7 @@ void __85__BYManagedAppleIDBootstrap__createAppleAccountWithAuthenticationResult
   v13 = v7;
   v14 = v18;
   v11 = v7;
-  dispatch_after(v9, v10, v12);
+  dispatch_after(v9, notificationQueue2, v12);
 
   _Block_object_dispose(v18, 8);
 }
@@ -1281,10 +1281,10 @@ uint64_t __79__BYManagedAppleIDBootstrap__registerForStartupCompletionNotificati
   return result;
 }
 
-- (void)_upgradeShortLivedTokenCompletion:(id)a3
+- (void)_upgradeShortLivedTokenCompletion:(id)completion
 {
   v45 = *MEMORY[0x1E69E9840];
-  v25 = a3;
+  completionCopy = completion;
   v4 = _BYLoggingFacility();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -1323,24 +1323,24 @@ uint64_t __79__BYManagedAppleIDBootstrap__registerForStartupCompletionNotificati
   }
 
 LABEL_6:
-  v6 = [(BYManagedAppleIDBootstrap *)self shortLivedToken];
-  v7 = [MEMORY[0x1E69DF068] sharedManager];
-  v8 = [v7 currentUser];
-  v9 = [v8 username];
-  v10 = [v8 alternateDSID];
+  shortLivedToken = [(BYManagedAppleIDBootstrap *)self shortLivedToken];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentUser = [mEMORY[0x1E69DF068] currentUser];
+  username = [currentUser username];
+  alternateDSID = [currentUser alternateDSID];
   v11 = _BYLoggingFacility();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    *&buf[4] = v9;
+    *&buf[4] = username;
     *&buf[12] = 2112;
-    *&buf[14] = v10;
+    *&buf[14] = alternateDSID;
     *&buf[22] = 2112;
-    v42 = v6;
+    v42 = shortLivedToken;
     _os_log_debug_impl(&dword_1B862F000, v11, OS_LOG_TYPE_DEBUG, "Username: %@, altDSID: %@, SLT: %@", buf, 0x20u);
   }
 
-  if (v9 && v10 && v6)
+  if (username && alternateDSID && shortLivedToken)
   {
     *buf = 0;
     *&buf[8] = buf;
@@ -1367,20 +1367,20 @@ LABEL_6:
     _Block_object_dispose(&v32, 8);
     v44 = objc_alloc_init(v12);
     [*(*&buf[8] + 40) setShouldPreventInteractiveAuth:1];
-    [*(*&buf[8] + 40) setUsername:v9];
-    [*(*&buf[8] + 40) _setShortLivedToken:v6];
-    [*(*&buf[8] + 40) setAltDSID:v10];
+    [*(*&buf[8] + 40) setUsername:username];
+    [*(*&buf[8] + 40) _setShortLivedToken:shortLivedToken];
+    [*(*&buf[8] + 40) setAltDSID:alternateDSID];
     [*(*&buf[8] + 40) setShouldUpdatePersistentServiceTokens:1];
     [(BYManagedAppleIDBootstrap *)self _modifyAuthenticationContextIfNeeded:*(*&buf[8] + 40)];
     v14 = objc_alloc_init(getACAccountStoreClass());
-    v15 = [v14 aa_primaryAppleAccount];
-    v16 = v15 != 0;
+    aa_primaryAppleAccount = [v14 aa_primaryAppleAccount];
+    v16 = aa_primaryAppleAccount != 0;
 
     v17 = _BYLoggingFacility();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       v18 = @"NERP";
-      if (v15)
+      if (aa_primaryAppleAccount)
       {
         v18 = @"YASE";
       }
@@ -1390,7 +1390,7 @@ LABEL_6:
       _os_log_impl(&dword_1B862F000, v17, OS_LOG_TYPE_DEFAULT, "Primary account exists: %@", v36, 0xCu);
     }
 
-    if (!v15)
+    if (!aa_primaryAppleAccount)
     {
       [*(*&buf[8] + 40) setFirstTimeLogin:1];
     }
@@ -1409,7 +1409,7 @@ LABEL_6:
     v26[2] = __63__BYManagedAppleIDBootstrap__upgradeShortLivedTokenCompletion___block_invoke;
     v26[3] = &unk_1E7D02ED8;
     v31 = v16;
-    v28 = v25;
+    v28 = completionCopy;
     v26[4] = self;
     v21 = v14;
     v27 = v21;
@@ -1421,7 +1421,7 @@ LABEL_6:
     _Block_object_dispose(buf, 8);
   }
 
-  else if (v25)
+  else if (completionCopy)
   {
     v22 = _BYLoggingFacility();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -1430,7 +1430,7 @@ LABEL_6:
       _os_log_impl(&dword_1B862F000, v22, OS_LOG_TYPE_DEFAULT, "Missing required data to do token upgrade", buf, 2u);
     }
 
-    (*(v25 + 2))(v25, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   v23 = *MEMORY[0x1E69E9840];
@@ -1575,9 +1575,9 @@ void __63__BYManagedAppleIDBootstrap__upgradeShortLivedTokenCompletion___block_i
   return v2;
 }
 
-- (void)writeAccountConfigurationIfNeededWithCompletion:(id)a3
+- (void)writeAccountConfigurationIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if ([objc_opt_class() isMultiUser])
   {
     v5 = dispatch_get_global_queue(25, 0);
@@ -1586,13 +1586,13 @@ void __63__BYManagedAppleIDBootstrap__upgradeShortLivedTokenCompletion___block_i
     v6[2] = __77__BYManagedAppleIDBootstrap_writeAccountConfigurationIfNeededWithCompletion___block_invoke;
     v6[3] = &unk_1E7D02F28;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     dispatch_async(v5, v6);
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
-    v4[2](v4);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -1737,9 +1737,9 @@ void __77__BYManagedAppleIDBootstrap_writeAccountConfigurationIfNeededWithComple
 
 - (id)_fetchAKURLBagSynchronously
 {
-  v2 = [MEMORY[0x1E698DDF8] sharedBag];
+  mEMORY[0x1E698DDF8] = [MEMORY[0x1E698DDF8] sharedBag];
   v6 = 0;
-  [v2 requestNewURLBagIfNecessaryWithError:&v6];
+  [mEMORY[0x1E698DDF8] requestNewURLBagIfNecessaryWithError:&v6];
   v3 = v6;
 
   if (v3)
@@ -1754,12 +1754,12 @@ void __77__BYManagedAppleIDBootstrap_writeAccountConfigurationIfNeededWithComple
   return v3;
 }
 
-- (id)_authenticationContextWithAuthenticationResults:(id)a3
+- (id)_authenticationContextWithAuthenticationResults:(id)results
 {
   v3 = MEMORY[0x1E698C258];
-  v4 = a3;
+  resultsCopy = results;
   v5 = objc_alloc_init(v3);
-  [v5 setAuthenticationResults:v4];
+  [v5 setAuthenticationResults:resultsCopy];
 
   [v5 setShouldForceOperation:0];
   [v5 setOperationUIPermissions:0];
@@ -1769,11 +1769,11 @@ void __77__BYManagedAppleIDBootstrap_writeAccountConfigurationIfNeededWithComple
 
 - (void)markUserWithManagedCredentials
 {
-  v2 = [MEMORY[0x1E69DF068] sharedManager];
-  v3 = [v2 currentUser];
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentUser = [mEMORY[0x1E69DF068] currentUser];
 
-  [v3 refetchUser];
-  if (([v3 hasManagedCredentials] & 1) == 0)
+  [currentUser refetchUser];
+  if (([currentUser hasManagedCredentials] & 1) == 0)
   {
     v4 = _BYLoggingFacility();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1782,27 +1782,27 @@ void __77__BYManagedAppleIDBootstrap_writeAccountConfigurationIfNeededWithComple
       _os_log_impl(&dword_1B862F000, v4, OS_LOG_TYPE_DEFAULT, "User has a managed credential set up, update it", v6, 2u);
     }
 
-    v5 = [v3 mutableCopy];
+    v5 = [currentUser mutableCopy];
     [v5 setHasManagedCredentials:1];
     [v5 commitChanges];
   }
 }
 
-- (void)_modifyAuthenticationContextIfNeeded:(id)a3
+- (void)_modifyAuthenticationContextIfNeeded:(id)needed
 {
-  v6 = a3;
+  neededCopy = needed;
   if (os_variant_has_internal_ui())
   {
-    v3 = [v6 altDSID];
-    v4 = [v3 containsString:@"restrictionlessLogin"];
+    altDSID = [neededCopy altDSID];
+    v4 = [altDSID containsString:@"restrictionlessLogin"];
 
     if (v4)
     {
-      [v6 setAltDSID:0];
-      v5 = [v6 _shortLivedToken];
-      [v6 _setPassword:v5];
+      [neededCopy setAltDSID:0];
+      _shortLivedToken = [neededCopy _shortLivedToken];
+      [neededCopy _setPassword:_shortLivedToken];
 
-      [v6 _setShortLivedToken:0];
+      [neededCopy _setShortLivedToken:0];
     }
   }
 }
@@ -1820,7 +1820,7 @@ void __127__BYManagedAppleIDBootstrap_runSilentLoginUpgradeIfNeededWithCompletio
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1B862F000, a2, OS_LOG_TYPE_ERROR, "Fetching AKURLBag failed with error:%@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

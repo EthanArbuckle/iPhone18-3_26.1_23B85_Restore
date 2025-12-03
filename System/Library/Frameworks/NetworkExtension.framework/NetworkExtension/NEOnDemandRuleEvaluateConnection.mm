@@ -1,26 +1,26 @@
 @interface NEOnDemandRuleEvaluateConnection
-- (BOOL)checkValidityAndCollectErrors:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)checkValidityAndCollectErrors:(id)errors;
+- (BOOL)isEqual:(id)equal;
 - (NEOnDemandRuleEvaluateConnection)init;
-- (NEOnDemandRuleEvaluateConnection)initWithCoder:(id)a3;
+- (NEOnDemandRuleEvaluateConnection)initWithCoder:(id)coder;
 - (id)copyLegacyDictionary;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)initFromLegacyDictionary:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)initFromLegacyDictionary:(id)dictionary;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NEOnDemandRuleEvaluateConnection
 
-- (id)initFromLegacyDictionary:(id)a3
+- (id)initFromLegacyDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = NEOnDemandRuleEvaluateConnection;
-  v5 = [(NEOnDemandRule *)&v24 initFromLegacyDictionary:v4];
+  v5 = [(NEOnDemandRule *)&v24 initFromLegacyDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69827E8]];
+    v6 = [dictionaryCopy objectForKeyedSubscript:*MEMORY[0x1E69827E8]];
     if (isa_nsarray(v6))
     {
       v22 = 0u;
@@ -87,18 +87,18 @@ LABEL_17:
   v20 = *MEMORY[0x1E69E9840];
   v18.receiver = self;
   v18.super_class = NEOnDemandRuleEvaluateConnection;
-  v3 = [(NEOnDemandRule *)&v18 copyLegacyDictionary];
-  v4 = [(NEOnDemandRuleEvaluateConnection *)self connectionRules];
+  copyLegacyDictionary = [(NEOnDemandRule *)&v18 copyLegacyDictionary];
+  connectionRules = [(NEOnDemandRuleEvaluateConnection *)self connectionRules];
 
-  if (v4)
+  if (connectionRules)
   {
     v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = [(NEOnDemandRuleEvaluateConnection *)self connectionRules];
-    v7 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+    connectionRules2 = [(NEOnDemandRuleEvaluateConnection *)self connectionRules];
+    v7 = [connectionRules2 countByEnumeratingWithState:&v14 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -110,46 +110,46 @@ LABEL_17:
         {
           if (*v15 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(connectionRules2);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * v10) copyLegacyDictionary];
-          [v5 addObject:v11];
+          copyLegacyDictionary2 = [*(*(&v14 + 1) + 8 * v10) copyLegacyDictionary];
+          [v5 addObject:copyLegacyDictionary2];
 
           ++v10;
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+        v8 = [connectionRules2 countByEnumeratingWithState:&v14 objects:v19 count:16];
       }
 
       while (v8);
     }
 
-    [v3 setObject:v5 forKeyedSubscript:*MEMORY[0x1E69827E8]];
+    [copyLegacyDictionary setObject:v5 forKeyedSubscript:*MEMORY[0x1E69827E8]];
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return v3;
+  return copyLegacyDictionary;
 }
 
-- (BOOL)checkValidityAndCollectErrors:(id)a3
+- (BOOL)checkValidityAndCollectErrors:(id)errors
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorsCopy = errors;
   v19.receiver = self;
   v19.super_class = NEOnDemandRuleEvaluateConnection;
-  v5 = [(NEOnDemandRule *)&v19 checkValidityAndCollectErrors:v4];
-  v6 = [(NEOnDemandRuleEvaluateConnection *)self connectionRules];
+  v5 = [(NEOnDemandRule *)&v19 checkValidityAndCollectErrors:errorsCopy];
+  connectionRules = [(NEOnDemandRuleEvaluateConnection *)self connectionRules];
 
-  if (v6)
+  if (connectionRules)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [(NEOnDemandRuleEvaluateConnection *)self connectionRules];
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
+    connectionRules2 = [(NEOnDemandRuleEvaluateConnection *)self connectionRules];
+    v8 = [connectionRules2 countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -160,24 +160,24 @@ LABEL_17:
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(connectionRules2);
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v5 = [v12 checkValidityAndCollectErrors:v4];
+            v5 = [v12 checkValidityAndCollectErrors:errorsCopy];
           }
 
           else
           {
-            [NEConfiguration addError:v4 toList:?];
+            [NEConfiguration addError:errorsCopy toList:?];
             v5 = 0;
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v9 = [connectionRules2 countByEnumeratingWithState:&v15 objects:v20 count:16];
       }
 
       while (v9);
@@ -186,7 +186,7 @@ LABEL_17:
 
   else
   {
-    [NEConfiguration addError:v4 toList:?];
+    [NEConfiguration addError:errorsCopy toList:?];
     v5 = 0;
   }
 
@@ -194,48 +194,48 @@ LABEL_17:
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = NEOnDemandRuleEvaluateConnection;
-  v4 = [(NEOnDemandRule *)&v10 copyWithZone:a3];
-  v5 = [(NEOnDemandRuleEvaluateConnection *)self connectionRules];
+  v4 = [(NEOnDemandRule *)&v10 copyWithZone:zone];
+  connectionRules = [(NEOnDemandRuleEvaluateConnection *)self connectionRules];
 
-  if (v5)
+  if (connectionRules)
   {
     v6 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v7 = [(NEOnDemandRuleEvaluateConnection *)self connectionRules];
-    v8 = [v6 initWithArray:v7 copyItems:1];
+    connectionRules2 = [(NEOnDemandRuleEvaluateConnection *)self connectionRules];
+    v8 = [v6 initWithArray:connectionRules2 copyItems:1];
     [v4 setConnectionRules:v8];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = NEOnDemandRuleEvaluateConnection;
-  v4 = a3;
-  [(NEOnDemandRule *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(NEOnDemandRule *)&v6 encodeWithCoder:coderCopy];
   v5 = [(NEOnDemandRuleEvaluateConnection *)self connectionRules:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"Rules"];
+  [coderCopy encodeObject:v5 forKey:@"Rules"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v10.receiver = self;
   v10.super_class = NEOnDemandRuleEvaluateConnection;
-  if ([(NEOnDemandRule *)&v10 isEqual:v4])
+  if ([(NEOnDemandRule *)&v10 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(NEOnDemandRuleEvaluateConnection *)self connectionRules];
-      v7 = [v5 connectionRules];
-      v8 = [v6 isEqualToArray:v7];
+      connectionRules = [(NEOnDemandRuleEvaluateConnection *)self connectionRules];
+      connectionRules2 = [v5 connectionRules];
+      v8 = [connectionRules isEqualToArray:connectionRules2];
     }
 
     else
@@ -252,18 +252,18 @@ LABEL_17:
   return v8;
 }
 
-- (NEOnDemandRuleEvaluateConnection)initWithCoder:(id)a3
+- (NEOnDemandRuleEvaluateConnection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = NEOnDemandRuleEvaluateConnection;
-  v5 = [(NEOnDemandRule *)&v12 initWithCoder:v4];
+  v5 = [(NEOnDemandRule *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"Rules"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"Rules"];
     connectionRules = v5->_connectionRules;
     v5->_connectionRules = v9;
   }

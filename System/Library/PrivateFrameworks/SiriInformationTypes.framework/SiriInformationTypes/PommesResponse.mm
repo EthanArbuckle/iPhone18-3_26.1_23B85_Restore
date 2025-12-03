@@ -1,13 +1,13 @@
 @interface PommesResponse
 - (NSString)description;
 - (_TtC21SiriInformationSearch14PommesResponse)init;
-- (_TtC21SiriInformationSearch14PommesResponse)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC21SiriInformationSearch14PommesResponse)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PommesResponse
 
-- (_TtC21SiriInformationSearch14PommesResponse)initWithCoder:(id)a3
+- (_TtC21SiriInformationSearch14PommesResponse)initWithCoder:(id)coder
 {
   v5 = type metadata accessor for PommesResponse.Builder(0);
   v6 = *(*(v5 - 8) + 64);
@@ -17,8 +17,8 @@
   v11 = &v18 - v10;
   ObjectType = swift_getObjectType();
   PommesResponse.Builder.init()(v11);
-  v13 = a3;
-  closure #1 in PommesResponse.init(coder:)(v11, v13);
+  coderCopy = coder;
+  closure #1 in PommesResponse.init(coder:)(v11, coderCopy);
   outlined init with copy of PommesResponse.Builder(v11, v9);
   v14 = (*(ObjectType + 360))(v9);
 
@@ -29,16 +29,16 @@
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  PommesResponse.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  PommesResponse.encode(with:)(coderCopy);
 }
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PommesResponse.description.getter();
   v5 = v4;
 

@@ -1,58 +1,58 @@
 @interface PXStoryExportAudioCompositionBuilder
 - (AVMutableComposition)audioComposition;
-- (BOOL)addAudioFromVideoHighlightAsset:(id)a3 fromTime:(id *)a4 atStoryTimeRange:(id *)a5 volume:(float)a6 fadeIn:(double)a7 fadeOut:(double)a8 shouldDuck:(BOOL)a9 error:(id *)a10;
-- (BOOL)addMusicAsset:(id)a3 withAudioMix:(id)a4 preferredVolume:(float)a5 error:(id *)a6;
-- (PXStoryExportAudioCompositionBuilder)initWithMaximumDuration:(id *)a3 outroDuration:(id *)a4;
-- (id)_insertAudioTrack:(id)a3 fromTime:(id *)a4 intoAudioCompositionTrack:(id)a5 atTimeRange:(id *)a6 error:(id *)a7;
-- (id)_mutableAudioMixParametersCreatedIfNeededForCompositionTrack:(id)a3;
-- (id)_mutableAudioMixParametersForCompositionTrack:(id)a3;
+- (BOOL)addAudioFromVideoHighlightAsset:(id)asset fromTime:(id *)time atStoryTimeRange:(id *)range volume:(float)volume fadeIn:(double)in fadeOut:(double)out shouldDuck:(BOOL)duck error:(id *)self0;
+- (BOOL)addMusicAsset:(id)asset withAudioMix:(id)mix preferredVolume:(float)volume error:(id *)error;
+- (PXStoryExportAudioCompositionBuilder)initWithMaximumDuration:(id *)duration outroDuration:(id *)outroDuration;
+- (id)_insertAudioTrack:(id)track fromTime:(id *)time intoAudioCompositionTrack:(id)compositionTrack atTimeRange:(id *)range error:(id *)error;
+- (id)_mutableAudioMixParametersCreatedIfNeededForCompositionTrack:(id)track;
+- (id)_mutableAudioMixParametersForCompositionTrack:(id)track;
 - (void)_applyMusicDuckingAndFadeOut;
-- (void)_applyVolumeRampsToVideoHilightAudioSegment:(id)a3 inAudioCompositionTrack:(id)a4 volume:(float)a5 fadeIn:(double)a6 fadeOut:(double)a7;
-- (void)finishAndWaitWithResultHandler:(id)a3;
-- (void)setMaximumDuration:(id *)a3;
-- (void)setOutroDuration:(id *)a3;
+- (void)_applyVolumeRampsToVideoHilightAudioSegment:(id)segment inAudioCompositionTrack:(id)track volume:(float)volume fadeIn:(double)in fadeOut:(double)out;
+- (void)finishAndWaitWithResultHandler:(id)handler;
+- (void)setMaximumDuration:(id *)duration;
+- (void)setOutroDuration:(id *)duration;
 @end
 
 @implementation PXStoryExportAudioCompositionBuilder
 
-- (void)setMaximumDuration:(id *)a3
+- (void)setMaximumDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_maximumDuration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_maximumDuration.epoch = duration->var3;
   *&self->_maximumDuration.value = v3;
 }
 
-- (void)setOutroDuration:(id *)a3
+- (void)setOutroDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  self->_outroDuration.epoch = a3->var3;
+  v3 = *&duration->var0;
+  self->_outroDuration.epoch = duration->var3;
   *&self->_outroDuration.value = v3;
 }
 
-- (id)_mutableAudioMixParametersCreatedIfNeededForCompositionTrack:(id)a3
+- (id)_mutableAudioMixParametersCreatedIfNeededForCompositionTrack:(id)track
 {
-  v4 = a3;
-  v5 = [(PXStoryExportAudioCompositionBuilder *)self _mutableAudioMixParametersForCompositionTrack:v4];
+  trackCopy = track;
+  v5 = [(PXStoryExportAudioCompositionBuilder *)self _mutableAudioMixParametersForCompositionTrack:trackCopy];
   if (!v5)
   {
-    v5 = [MEMORY[0x1E6988040] audioMixInputParametersWithTrack:v4];
-    v6 = [(PXStoryExportAudioCompositionBuilder *)self audioMixParameters];
-    [v6 addObject:v5];
+    v5 = [MEMORY[0x1E6988040] audioMixInputParametersWithTrack:trackCopy];
+    audioMixParameters = [(PXStoryExportAudioCompositionBuilder *)self audioMixParameters];
+    [audioMixParameters addObject:v5];
   }
 
   return v5;
 }
 
-- (id)_mutableAudioMixParametersForCompositionTrack:(id)a3
+- (id)_mutableAudioMixParametersForCompositionTrack:(id)track
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = [a3 trackID];
+  trackID = [track trackID];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v5 = [(PXStoryExportAudioCompositionBuilder *)self audioMixParameters];
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  audioMixParameters = [(PXStoryExportAudioCompositionBuilder *)self audioMixParameters];
+  v6 = [audioMixParameters countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -63,18 +63,18 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(audioMixParameters);
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        if ([v10 trackID] == v4)
+        if ([v10 trackID] == trackID)
         {
           v11 = v10;
           goto LABEL_11;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [audioMixParameters countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v7)
       {
         continue;
@@ -113,8 +113,8 @@ LABEL_11:
   *&lhs.start.value = v64;
   lhs.start.epoch = v65;
   CMTimeRangeMake(&v63, &start.start, &lhs.start);
-  v9 = [(PXStoryExportAudioCompositionBuilder *)self duckingAudioSegments];
-  v10 = [v9 sortedArrayUsingComparator:&__block_literal_global_248304];
+  duckingAudioSegments = [(PXStoryExportAudioCompositionBuilder *)self duckingAudioSegments];
+  v10 = [duckingAudioSegments sortedArrayUsingComparator:&__block_literal_global_248304];
 
   v61 = 0u;
   v62 = 0u;
@@ -130,7 +130,7 @@ LABEL_11:
     v40 = *MEMORY[0x1E6960C70];
     v37 = *(MEMORY[0x1E6960C70] + 12);
     v39 = *(MEMORY[0x1E6960C70] + 8);
-    v42 = self;
+    selfCopy = self;
     do
     {
       v12 = 0;
@@ -369,12 +369,12 @@ LABEL_42:
           [v13 setVolumeRampFromStartVolume:&lhs toEndVolume:COERCE_DOUBLE(__PAIR64__(start.duration.flags timeRange:{LODWORD(Seconds))), v29}];
         }
 
-        v30 = [(PXStoryExportAudioCompositionBuilder *)v42 _mutableAudioMixParametersForCompositionTrack:v44];
+        v30 = [(PXStoryExportAudioCompositionBuilder *)selfCopy _mutableAudioMixParametersForCompositionTrack:v44];
         if (v30)
         {
           v31 = v30;
-          v32 = [(PXStoryExportAudioCompositionBuilder *)v42 audioMixParameters];
-          [v32 removeObjectIdenticalTo:v31];
+          audioMixParameters = [(PXStoryExportAudioCompositionBuilder *)selfCopy audioMixParameters];
+          [audioMixParameters removeObjectIdenticalTo:v31];
 
           v33 = [PXFlexMusicLibrary coalesceAudioMixInputParametersA:v31 withAudioMixInputParametersB:v13 audioTrack:v44];
         }
@@ -384,8 +384,8 @@ LABEL_42:
           v33 = v13;
         }
 
-        v34 = [(PXStoryExportAudioCompositionBuilder *)v42 audioMixParameters];
-        [v34 addObject:v33];
+        audioMixParameters2 = [(PXStoryExportAudioCompositionBuilder *)selfCopy audioMixParameters];
+        [audioMixParameters2 addObject:v33];
 
         v12 = v45 + 1;
       }
@@ -442,18 +442,18 @@ uint64_t __68__PXStoryExportAudioCompositionBuilder__applyMusicDuckingAndFadeOut
   return v6;
 }
 
-- (void)_applyVolumeRampsToVideoHilightAudioSegment:(id)a3 inAudioCompositionTrack:(id)a4 volume:(float)a5 fadeIn:(double)a6 fadeOut:(double)a7
+- (void)_applyVolumeRampsToVideoHilightAudioSegment:(id)segment inAudioCompositionTrack:(id)track volume:(float)volume fadeIn:(double)in fadeOut:(double)out
 {
-  v12 = a3;
-  v13 = [(PXStoryExportAudioCompositionBuilder *)self _mutableAudioMixParametersCreatedIfNeededForCompositionTrack:a4];
+  segmentCopy = segment;
+  v13 = [(PXStoryExportAudioCompositionBuilder *)self _mutableAudioMixParametersCreatedIfNeededForCompositionTrack:track];
   v14 = +[PXStorySettings sharedInstance];
-  v15 = [v14 audioFadeCurve];
-  if (v12)
+  audioFadeCurve = [v14 audioFadeCurve];
+  if (segmentCopy)
   {
-    [v12 timeMapping];
+    [segmentCopy timeMapping];
     *&v45.value = v42;
     v45.epoch = v43;
-    [v12 timeMapping];
+    [segmentCopy timeMapping];
   }
 
   else
@@ -477,16 +477,16 @@ uint64_t __68__PXStoryExportAudioCompositionBuilder__applyMusicDuckingAndFadeOut
   *v38 = v32;
   *&v38[16] = v33;
   v30 = v45;
-  if (a6 <= 0.0)
+  if (in <= 0.0)
   {
     time.start = v45;
-    [v13 setVolume:&time atTime:{COERCE_DOUBLE(__PAIR64__(HIDWORD(v45.value), LODWORD(a5)))}];
+    [v13 setVolume:&time atTime:{COERCE_DOUBLE(__PAIR64__(HIDWORD(v45.value), LODWORD(volume)))}];
   }
 
   else
   {
     memset(&v29, 0, sizeof(v29));
-    CMTimeMakeWithSeconds(&v29, a6, 600);
+    CMTimeMakeWithSeconds(&v29, in, 600);
     memset(&v28, 0, sizeof(v28));
     time.start = v29;
     v16 = 1;
@@ -498,10 +498,10 @@ uint64_t __68__PXStoryExportAudioCompositionBuilder__applyMusicDuckingAndFadeOut
       start.start = v30;
       duration = v28;
       CMTimeRangeMake(&time, &start.start, &duration);
-      v18 = PXVolumeGainForAudioCurveAtTime(v15, v16 / 30.0);
-      v19 = v18 * a5;
+      v18 = PXVolumeGainForAudioCurveAtTime(audioFadeCurve, v16 / 30.0);
+      v19 = v18 * volume;
       start = time;
-      [v13 setVolumeRampFromStartVolume:&start toEndVolume:COERCE_DOUBLE(__PAIR64__(time.duration.flags timeRange:{LODWORD(v17))), COERCE_DOUBLE(__PAIR64__(HIDWORD(time.start.epoch), v18 * a5))}];
+      [v13 setVolumeRampFromStartVolume:&start toEndVolume:COERCE_DOUBLE(__PAIR64__(time.duration.flags timeRange:{LODWORD(v17))), COERCE_DOUBLE(__PAIR64__(HIDWORD(time.start.epoch), v18 * volume))}];
       start.start = v30;
       duration = v28;
       CMTimeAdd(&v30, &start.start, &duration);
@@ -512,10 +512,10 @@ uint64_t __68__PXStoryExportAudioCompositionBuilder__applyMusicDuckingAndFadeOut
     while (v16 != 31);
   }
 
-  if (a7 > 0.0)
+  if (out > 0.0)
   {
     memset(&v29, 0, sizeof(v29));
-    CMTimeMakeWithSeconds(&v29, a7, 600);
+    CMTimeMakeWithSeconds(&v29, out, 600);
     memset(&v28, 0, sizeof(v28));
     time.start = v45;
     *&start.start.value = *&v38[8];
@@ -536,7 +536,7 @@ uint64_t __68__PXStoryExportAudioCompositionBuilder__applyMusicDuckingAndFadeOut
       start.start = v28;
       v24 = duration;
       CMTimeRangeMake(&time, &start.start, &v24);
-      v22 = PXVolumeGainForAudioCurveAtTime(v15, v20 / 30.0) * a5;
+      v22 = PXVolumeGainForAudioCurveAtTime(audioFadeCurve, v20 / 30.0) * volume;
       start = time;
       HIDWORD(v23) = time.duration.flags;
       *&v23 = v22;
@@ -549,20 +549,20 @@ uint64_t __68__PXStoryExportAudioCompositionBuilder__applyMusicDuckingAndFadeOut
   }
 }
 
-- (id)_insertAudioTrack:(id)a3 fromTime:(id *)a4 intoAudioCompositionTrack:(id)a5 atTimeRange:(id *)a6 error:(id *)a7
+- (id)_insertAudioTrack:(id)track fromTime:(id *)time intoAudioCompositionTrack:(id)compositionTrack atTimeRange:(id *)range error:(id *)error
 {
-  v12 = a3;
-  v13 = a5;
+  trackCopy = track;
+  compositionTrackCopy = compositionTrack;
   memset(&v26[80], 0, 48);
-  if (v12)
+  if (trackCopy)
   {
-    [v12 timeRange];
+    [trackCopy timeRange];
   }
 
   memset(&v26[56], 0, 24);
   [(PXStoryExportAudioCompositionBuilder *)self maximumDuration];
-  v14 = *&a4->var0;
-  time.epoch = a4->var3;
+  v14 = *&time->var0;
+  time.epoch = time->var3;
   range = *&v26[80];
   *&time.value = v14;
   CMTimeClampToRange(v26, &time, &range);
@@ -574,7 +574,7 @@ uint64_t __68__PXStoryExportAudioCompositionBuilder__applyMusicDuckingAndFadeOut
   range.start = *&v26[104];
   time2 = *v26;
   CMTimeSubtract(&time, &range.start, &time2);
-  time2 = a6->var1;
+  time2 = range->var1;
   CMTimeMinimum(&range.start, &time2, &time);
   *&v26[40] = range.start.epoch;
   *&v26[24] = *&range.start.value;
@@ -584,17 +584,17 @@ uint64_t __68__PXStoryExportAudioCompositionBuilder__applyMusicDuckingAndFadeOut
   *&v26[24] = range.start;
   memset(&time, 0, sizeof(time));
   range.start = *&v26[56];
-  time2 = a6->var0;
+  time2 = range->var0;
   CMTimeMinimum(&time, &range.start, &time2);
   v22 = 0;
   range = *v26;
   time2 = time;
-  v15 = [v13 insertTimeRange:&range ofTrack:v12 atTime:&time2 error:&v22];
+  v15 = [compositionTrackCopy insertTimeRange:&range ofTrack:trackCopy atTime:&time2 error:&v22];
   v16 = v22;
-  if (v15 && ([v13 segments], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "count"), v17, v18))
+  if (v15 && ([compositionTrackCopy segments], v17 = objc_claimAutoreleasedReturnValue(), v18 = objc_msgSend(v17, "count"), v17, v18))
   {
     range.start = time;
-    v19 = [v13 segmentForTrackTime:&range];
+    v19 = [compositionTrackCopy segmentForTrackTime:&range];
     if (!v19)
     {
       PXAssertGetLog();
@@ -606,10 +606,10 @@ uint64_t __68__PXStoryExportAudioCompositionBuilder__applyMusicDuckingAndFadeOut
     v19 = 0;
   }
 
-  if (a7)
+  if (error)
   {
     v20 = v16;
-    *a7 = v16;
+    *error = v16;
   }
 
   return v19;
@@ -630,26 +630,26 @@ uint64_t __68__PXStoryExportAudioCompositionBuilder__applyMusicDuckingAndFadeOut
   return audioComposition;
 }
 
-- (BOOL)addAudioFromVideoHighlightAsset:(id)a3 fromTime:(id *)a4 atStoryTimeRange:(id *)a5 volume:(float)a6 fadeIn:(double)a7 fadeOut:(double)a8 shouldDuck:(BOOL)a9 error:(id *)a10
+- (BOOL)addAudioFromVideoHighlightAsset:(id)asset fromTime:(id *)time atStoryTimeRange:(id *)range volume:(float)volume fadeIn:(double)in fadeOut:(double)out shouldDuck:(BOOL)duck error:(id *)self0
 {
-  v11 = a9;
+  duckCopy = duck;
   v60 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v19 = [(PXStoryExportAudioCompositionBuilder *)self error];
-  if (!v19)
+  assetCopy = asset;
+  error = [(PXStoryExportAudioCompositionBuilder *)self error];
+  if (!error)
   {
     v57 = 0u;
     v58 = 0u;
     v55 = 0u;
     v56 = 0u;
     v20 = *MEMORY[0x1E69875A0];
-    v21 = [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E69875A0] forAsset:v18];
+    v21 = [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E69875A0] forAsset:assetCopy];
     v22 = [v21 countByEnumeratingWithState:&v55 objects:v59 count:16];
     if (v22)
     {
       v23 = v22;
       v49 = v20;
-      v50 = v11;
+      v50 = duckCopy;
       v24 = *v56;
 LABEL_4:
       v25 = 0;
@@ -682,77 +682,77 @@ LABEL_4:
 
       if (!v27)
       {
-        v19 = 0;
+        error = 0;
         goto LABEL_27;
       }
 
-      v28 = [(PXStoryExportAudioCompositionBuilder *)self currentVideoHighlightCompositionTrack];
-      v29 = [(PXStoryExportAudioCompositionBuilder *)self videoHighlightCompositionTrackB];
+      currentVideoHighlightCompositionTrack = [(PXStoryExportAudioCompositionBuilder *)self currentVideoHighlightCompositionTrack];
+      videoHighlightCompositionTrackB = [(PXStoryExportAudioCompositionBuilder *)self videoHighlightCompositionTrackB];
 
-      if (v28 == v29)
+      if (currentVideoHighlightCompositionTrack == videoHighlightCompositionTrackB)
       {
-        v35 = [(PXStoryExportAudioCompositionBuilder *)self videoHighlightCompositionTrackA];
+        videoHighlightCompositionTrackA = [(PXStoryExportAudioCompositionBuilder *)self videoHighlightCompositionTrackA];
 
         v31 = v50;
-        if (!v35)
+        if (!videoHighlightCompositionTrackA)
         {
-          v36 = [(PXStoryExportAudioCompositionBuilder *)self audioComposition];
-          v37 = [v36 addMutableTrackWithMediaType:v49 preferredTrackID:0];
+          audioComposition = [(PXStoryExportAudioCompositionBuilder *)self audioComposition];
+          v37 = [audioComposition addMutableTrackWithMediaType:v49 preferredTrackID:0];
 
           [(PXStoryExportAudioCompositionBuilder *)self setVideoHighlightCompositionTrackA:v37];
         }
 
-        v34 = [(PXStoryExportAudioCompositionBuilder *)self videoHighlightCompositionTrackA];
+        videoHighlightCompositionTrackA2 = [(PXStoryExportAudioCompositionBuilder *)self videoHighlightCompositionTrackA];
       }
 
       else
       {
-        v30 = [(PXStoryExportAudioCompositionBuilder *)self videoHighlightCompositionTrackB];
+        videoHighlightCompositionTrackB2 = [(PXStoryExportAudioCompositionBuilder *)self videoHighlightCompositionTrackB];
 
         v31 = v50;
-        if (!v30)
+        if (!videoHighlightCompositionTrackB2)
         {
-          v32 = [(PXStoryExportAudioCompositionBuilder *)self audioComposition];
-          v33 = [v32 addMutableTrackWithMediaType:v49 preferredTrackID:0];
+          audioComposition2 = [(PXStoryExportAudioCompositionBuilder *)self audioComposition];
+          v33 = [audioComposition2 addMutableTrackWithMediaType:v49 preferredTrackID:0];
 
           [(PXStoryExportAudioCompositionBuilder *)self setVideoHighlightCompositionTrackB:v33];
         }
 
-        v34 = [(PXStoryExportAudioCompositionBuilder *)self videoHighlightCompositionTrackB];
+        videoHighlightCompositionTrackA2 = [(PXStoryExportAudioCompositionBuilder *)self videoHighlightCompositionTrackB];
       }
 
-      v38 = v34;
-      [(PXStoryExportAudioCompositionBuilder *)self setCurrentVideoHighlightCompositionTrack:v34];
+      v38 = videoHighlightCompositionTrackA2;
+      [(PXStoryExportAudioCompositionBuilder *)self setCurrentVideoHighlightCompositionTrack:videoHighlightCompositionTrackA2];
 
-      v39 = [(PXStoryExportAudioCompositionBuilder *)self currentVideoHighlightCompositionTrack];
-      v40 = *&a5->var0.var3;
-      v54[0] = *&a5->var0.var0;
+      currentVideoHighlightCompositionTrack2 = [(PXStoryExportAudioCompositionBuilder *)self currentVideoHighlightCompositionTrack];
+      v40 = *&range->var0.var3;
+      v54[0] = *&range->var0.var0;
       v54[1] = v40;
-      v54[2] = *&a5->var1.var1;
-      v51 = *&a4->var0;
-      var3 = a4->var3;
+      v54[2] = *&range->var1.var1;
+      v51 = *&time->var0;
+      var3 = time->var3;
       v53 = 0;
-      v41 = [(PXStoryExportAudioCompositionBuilder *)self _insertAudioTrack:v27 fromTime:&v51 intoAudioCompositionTrack:v39 atTimeRange:v54 error:&v53];
-      v19 = v53;
+      v41 = [(PXStoryExportAudioCompositionBuilder *)self _insertAudioTrack:v27 fromTime:&v51 intoAudioCompositionTrack:currentVideoHighlightCompositionTrack2 atTimeRange:v54 error:&v53];
+      error = v53;
 
       if (v41)
       {
-        v42 = [(PXStoryExportAudioCompositionBuilder *)self currentVideoHighlightCompositionTrack];
-        *&v43 = a6;
-        [(PXStoryExportAudioCompositionBuilder *)self _applyVolumeRampsToVideoHilightAudioSegment:v41 inAudioCompositionTrack:v42 volume:v43 fadeIn:a7 fadeOut:a8];
+        currentVideoHighlightCompositionTrack3 = [(PXStoryExportAudioCompositionBuilder *)self currentVideoHighlightCompositionTrack];
+        *&v43 = volume;
+        [(PXStoryExportAudioCompositionBuilder *)self _applyVolumeRampsToVideoHilightAudioSegment:v41 inAudioCompositionTrack:currentVideoHighlightCompositionTrack3 volume:v43 fadeIn:in fadeOut:out];
 
         if (v31)
         {
-          v44 = [(PXStoryExportAudioCompositionBuilder *)self duckingAudioSegments];
+          duckingAudioSegments = [(PXStoryExportAudioCompositionBuilder *)self duckingAudioSegments];
 
-          if (!v44)
+          if (!duckingAudioSegments)
           {
             v45 = objc_alloc_init(MEMORY[0x1E695DF70]);
             [(PXStoryExportAudioCompositionBuilder *)self setDuckingAudioSegments:v45];
           }
 
-          v46 = [(PXStoryExportAudioCompositionBuilder *)self duckingAudioSegments];
-          [v46 addObject:v41];
+          duckingAudioSegments2 = [(PXStoryExportAudioCompositionBuilder *)self duckingAudioSegments];
+          [duckingAudioSegments2 addObject:v41];
         }
       }
     }
@@ -760,52 +760,52 @@ LABEL_4:
     else
     {
 LABEL_10:
-      v19 = 0;
+      error = 0;
       v27 = v21;
     }
   }
 
 LABEL_27:
-  if (a10)
+  if (error)
   {
-    v47 = v19;
-    *a10 = v19;
+    v47 = error;
+    *error = error;
   }
 
-  [(PXStoryExportAudioCompositionBuilder *)self setError:v19];
+  [(PXStoryExportAudioCompositionBuilder *)self setError:error];
 
-  return v19 == 0;
+  return error == 0;
 }
 
-- (BOOL)addMusicAsset:(id)a3 withAudioMix:(id)a4 preferredVolume:(float)a5 error:(id *)a6
+- (BOOL)addMusicAsset:(id)asset withAudioMix:(id)mix preferredVolume:(float)volume error:(id *)error
 {
   v69 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = [(PXStoryExportAudioCompositionBuilder *)self error];
-  if (!v12)
+  assetCopy = asset;
+  mixCopy = mix;
+  error = [(PXStoryExportAudioCompositionBuilder *)self error];
+  if (!error)
   {
-    v41 = a6;
+    errorCopy = error;
     v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
     [(PXStoryExportAudioCompositionBuilder *)self setMusicCompositionTracks:v13];
 
-    *&v14 = a5;
+    *&v14 = volume;
     [(PXStoryExportAudioCompositionBuilder *)self setMusicCompositionDefaultVolume:v14];
     v65 = 0u;
     v66 = 0u;
     v63 = 0u;
     v64 = 0u;
     v15 = *MEMORY[0x1E69875A0];
-    v42 = v10;
-    v16 = [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E69875A0] forAsset:v10];
+    v42 = assetCopy;
+    v16 = [MEMORY[0x1E69C0708] tracksWithMediaType:*MEMORY[0x1E69875A0] forAsset:assetCopy];
     v17 = [v16 countByEnumeratingWithState:&v63 objects:v68 count:16];
     if (v17)
     {
       v18 = v17;
-      v12 = 0;
+      error = 0;
       v19 = *v64;
-      v45 = v11;
-      v46 = self;
+      v45 = mixCopy;
+      selfCopy = self;
       v43 = v15;
       v44 = v16;
       v47 = *v64;
@@ -823,13 +823,13 @@ LABEL_27:
           v21 = *(*(&v63 + 1) + 8 * v20);
           if ([v21 isEnabled])
           {
-            v22 = [v21 segments];
-            v23 = [v22 count];
+            segments = [v21 segments];
+            v23 = [segments count];
 
             if (v23)
             {
-              v24 = [(PXStoryExportAudioCompositionBuilder *)self audioComposition];
-              v25 = [v24 addMutableTrackWithMediaType:v15 preferredTrackID:0];
+              audioComposition = [(PXStoryExportAudioCompositionBuilder *)self audioComposition];
+              v25 = [audioComposition addMutableTrackWithMediaType:v15 preferredTrackID:0];
 
               v61 = 0u;
               v62 = 0u;
@@ -840,7 +840,7 @@ LABEL_27:
               }
 
               v58 = v61;
-              v59 = v12;
+              v59 = error;
               v54 = v60;
               v55 = v61;
               v56 = v62;
@@ -851,14 +851,14 @@ LABEL_27:
               if (v26)
               {
                 v48 = v27;
-                if (v11)
+                if (mixCopy)
                 {
                   v52 = 0u;
                   v53 = 0u;
                   v50 = 0u;
                   v51 = 0u;
-                  v28 = [v11 inputParameters];
-                  v29 = [v28 countByEnumeratingWithState:&v50 objects:v67 count:16];
+                  inputParameters = [mixCopy inputParameters];
+                  v29 = [inputParameters countByEnumeratingWithState:&v50 objects:v67 count:16];
                   if (v29)
                   {
                     v30 = v29;
@@ -869,25 +869,25 @@ LABEL_27:
                       {
                         if (*v51 != v31)
                         {
-                          objc_enumerationMutation(v28);
+                          objc_enumerationMutation(inputParameters);
                         }
 
                         v33 = *(*(&v50 + 1) + 8 * i);
-                        v34 = [v33 trackID];
-                        if (v34 == [v21 trackID])
+                        trackID = [v33 trackID];
+                        if (trackID == [v21 trackID])
                         {
                           v35 = [v33 mutableCopy];
                           [v35 setTrackID:{objc_msgSend(v25, "trackID")}];
-                          self = v46;
-                          v36 = [(PXStoryExportAudioCompositionBuilder *)v46 audioMixParameters];
-                          [v36 addObject:v35];
+                          self = selfCopy;
+                          audioMixParameters = [(PXStoryExportAudioCompositionBuilder *)selfCopy audioMixParameters];
+                          [audioMixParameters addObject:v35];
 
                           goto LABEL_23;
                         }
                       }
 
-                      v30 = [v28 countByEnumeratingWithState:&v50 objects:v67 count:16];
-                      self = v46;
+                      v30 = [inputParameters countByEnumeratingWithState:&v50 objects:v67 count:16];
+                      self = selfCopy;
                       if (v30)
                       {
                         continue;
@@ -900,7 +900,7 @@ LABEL_27:
 LABEL_23:
 
                   v16 = v44;
-                  v11 = v45;
+                  mixCopy = v45;
                   v15 = v43;
                 }
 
@@ -908,14 +908,14 @@ LABEL_23:
                 v54 = *MEMORY[0x1E6960CC0];
                 *&v55 = *(MEMORY[0x1E6960CC0] + 16);
                 [v37 setVolume:&v54 atTime:0.0];
-                v38 = [(PXStoryExportAudioCompositionBuilder *)self audioMixParametersWithoutMusic];
-                [v38 addObject:v37];
+                audioMixParametersWithoutMusic = [(PXStoryExportAudioCompositionBuilder *)self audioMixParametersWithoutMusic];
+                [audioMixParametersWithoutMusic addObject:v37];
 
                 [(NSMutableArray *)self->_musicCompositionTracks addObject:v25];
                 v27 = v48;
               }
 
-              v12 = v27;
+              error = v27;
               v19 = v47;
             }
 
@@ -934,33 +934,33 @@ LABEL_23:
 
     else
     {
-      v12 = 0;
+      error = 0;
     }
 
-    a6 = v41;
-    v10 = v42;
+    error = errorCopy;
+    assetCopy = v42;
   }
 
-  if (a6)
+  if (error)
   {
-    v39 = v12;
-    *a6 = v12;
+    v39 = error;
+    *error = error;
   }
 
-  [(PXStoryExportAudioCompositionBuilder *)self setError:v12];
+  [(PXStoryExportAudioCompositionBuilder *)self setError:error];
 
-  return v12 == 0;
+  return error == 0;
 }
 
-- (void)finishAndWaitWithResultHandler:(id)a3
+- (void)finishAndWaitWithResultHandler:(id)handler
 {
-  v17 = a3;
-  v4 = [(PXStoryExportAudioCompositionBuilder *)self error];
+  handlerCopy = handler;
+  error = [(PXStoryExportAudioCompositionBuilder *)self error];
 
-  if (v4)
+  if (error)
   {
-    v5 = [(PXStoryExportAudioCompositionBuilder *)self error];
-    (*(v17 + 2))(v17, 0, 0, 0, v5);
+    error2 = [(PXStoryExportAudioCompositionBuilder *)self error];
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, error2);
   }
 
   else
@@ -970,21 +970,21 @@ LABEL_23:
       [(PXStoryExportAudioCompositionBuilder *)self _applyMusicDuckingAndFadeOut];
       if ([(NSMutableArray *)self->_audioMixParameters count])
       {
-        v5 = objc_alloc_init(MEMORY[0x1E6988038]);
-        v6 = [(PXStoryExportAudioCompositionBuilder *)self audioMixParameters];
-        [v5 setInputParameters:v6];
+        error2 = objc_alloc_init(MEMORY[0x1E6988038]);
+        audioMixParameters = [(PXStoryExportAudioCompositionBuilder *)self audioMixParameters];
+        [error2 setInputParameters:audioMixParameters];
       }
 
       else
       {
-        v5 = 0;
+        error2 = 0;
       }
 
       if ([(NSMutableArray *)self->_audioMixParametersWithoutMusic count])
       {
         v7 = objc_alloc_init(MEMORY[0x1E6988038]);
-        v8 = [(PXStoryExportAudioCompositionBuilder *)self audioMixParametersWithoutMusic];
-        [v7 setInputParameters:v8];
+        audioMixParametersWithoutMusic = [(PXStoryExportAudioCompositionBuilder *)self audioMixParametersWithoutMusic];
+        [v7 setInputParameters:audioMixParametersWithoutMusic];
       }
 
       else
@@ -996,16 +996,16 @@ LABEL_23:
     else
     {
       v7 = 0;
-      v5 = 0;
+      error2 = 0;
     }
 
-    (*(v17 + 2))(v17, self->_audioComposition, v5, v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, self->_audioComposition, error2, v7, 0);
     v15 = PXStoryErrorCreateWithCodeDebugFormat(13, @"cannot use object after finishWithResultHandler was called", v9, v10, v11, v12, v13, v14, v16);
     [(PXStoryExportAudioCompositionBuilder *)self setError:v15];
   }
 }
 
-- (PXStoryExportAudioCompositionBuilder)initWithMaximumDuration:(id *)a3 outroDuration:(id *)a4
+- (PXStoryExportAudioCompositionBuilder)initWithMaximumDuration:(id *)duration outroDuration:(id *)outroDuration
 {
   v15.receiver = self;
   v15.super_class = PXStoryExportAudioCompositionBuilder;
@@ -1013,11 +1013,11 @@ LABEL_23:
   v7 = v6;
   if (v6)
   {
-    v8 = *&a3->var0;
-    *(v6 + 17) = a3->var3;
+    v8 = *&duration->var0;
+    *(v6 + 17) = duration->var3;
     *(v6 + 120) = v8;
-    v9 = *&a4->var0;
-    *(v6 + 14) = a4->var3;
+    v9 = *&outroDuration->var0;
+    *(v6 + 14) = outroDuration->var3;
     *(v6 + 6) = v9;
     v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
     audioMixParameters = v7->_audioMixParameters;

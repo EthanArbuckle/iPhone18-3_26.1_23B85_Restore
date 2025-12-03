@@ -1,12 +1,12 @@
 @interface CacheServiceConnection.TransactionReceiver
-- (void)receivedTransactions:(id)a3;
+- (void)receivedTransactions:(id)transactions;
 @end
 
 @implementation CacheServiceConnection.TransactionReceiver
 
-- (void)receivedTransactions:(id)a3
+- (void)receivedTransactions:(id)transactions
 {
-  if (a3)
+  if (transactions)
   {
     v4 = sub_1B256DC5C();
   }
@@ -16,7 +16,7 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_1B24E4990(v4);
 }
 

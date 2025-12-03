@@ -1,12 +1,12 @@
 @interface MCNewWebClipPayloadHandler
-- (BOOL)_addWebClip:(id)a3;
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6;
+- (BOOL)_addWebClip:(id)clip;
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error;
 - (BOOL)isInstalled;
-- (id)_findInstalledClipWithIdentifier:(id)a3;
+- (id)_findInstalledClipWithIdentifier:(id)identifier;
 - (id)_installedWebClip;
 - (id)_webclipFailedToCreateOnDiskError;
 - (id)savedWebClipIdentifier;
-- (void)_removeWebClip:(id)a3;
+- (void)_removeWebClip:(id)clip;
 - (void)remove;
 - (void)setAside;
 - (void)unsetAside;
@@ -16,55 +16,55 @@
 
 - (id)savedWebClipIdentifier
 {
-  v2 = [(MCNewPayloadHandler *)self payload];
-  v3 = [v2 savedIdentifier];
-  if (!v3)
+  payload = [(MCNewPayloadHandler *)self payload];
+  savedIdentifier = [payload savedIdentifier];
+  if (!savedIdentifier)
   {
-    v4 = [v2 fullScreen];
-    v5 = [v2 UUID];
-    v3 = v5;
-    if (v4)
+    fullScreen = [payload fullScreen];
+    uUID = [payload UUID];
+    savedIdentifier = uUID;
+    if (fullScreen)
     {
-      v6 = [v5 stringByReplacingOccurrencesOfString:@"-" withString:&stru_10011E740];
+      v6 = [uUID stringByReplacingOccurrencesOfString:@"-" withString:&stru_10011E740];
 
-      v3 = v6;
+      savedIdentifier = v6;
     }
 
     v7 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
     {
       v8 = v7;
-      v9 = [v2 friendlyName];
+      friendlyName = [payload friendlyName];
       v11 = 138543618;
-      v12 = v9;
+      v12 = friendlyName;
       v13 = 2114;
-      v14 = v3;
+      v14 = savedIdentifier;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "WebClipHandler missing saved ID for payload '%{public}@'. Falling back to identifier: %{public}@", &v11, 0x16u);
     }
   }
 
-  return v3;
+  return savedIdentifier;
 }
 
-- (BOOL)installWithInstaller:(id)a3 options:(id)a4 interactionClient:(id)a5 outError:(id *)a6
+- (BOOL)installWithInstaller:(id)installer options:(id)options interactionClient:(id)client outError:(id *)error
 {
-  v8 = a4;
-  v9 = [(MCNewPayloadHandler *)self payload];
-  v10 = [v8 objectForKeyedSubscript:kMCInstallProfileOptionIsInstalledByMDM];
+  optionsCopy = options;
+  payload = [(MCNewPayloadHandler *)self payload];
+  v10 = [optionsCopy objectForKeyedSubscript:kMCInstallProfileOptionIsInstalledByMDM];
 
-  v11 = [v10 BOOLValue];
+  bOOLValue = [v10 BOOLValue];
   v12 = +[NSString MCMakeUUID];
   v13 = [v12 stringByReplacingOccurrencesOfString:@"-" withString:&stru_10011E740];
 
   v14 = [UIWebClip webClipWithIdentifier:v13];
-  [v14 setFullScreen:{objc_msgSend(v9, "fullScreen")}];
-  v15 = [v9 URL];
+  [v14 setFullScreen:{objc_msgSend(payload, "fullScreen")}];
+  v15 = [payload URL];
   [v14 setPageURL:v15];
 
-  v16 = [v9 label];
-  [v14 setTitle:v16];
+  label = [payload label];
+  [v14 setTitle:label];
 
-  [v14 setRemovalDisallowed:{objc_msgSend(v9, "isRemovable") ^ 1}];
+  [v14 setRemovalDisallowed:{objc_msgSend(payload, "isRemovable") ^ 1}];
   if (objc_opt_respondsToSelector())
   {
     [v14 setConfigurationIsManaged:1];
@@ -72,21 +72,21 @@
 
   if (objc_opt_respondsToSelector())
   {
-    [v14 setIgnoreManifestScope:{objc_msgSend(v9, "ignoreManifestScope")}];
+    [v14 setIgnoreManifestScope:{objc_msgSend(payload, "ignoreManifestScope")}];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v17 = [v9 contentMode];
-    [v14 setContentModeWithString:v17];
+    contentMode = [payload contentMode];
+    [v14 setContentModeWithString:contentMode];
   }
 
-  if (v11)
+  if (bOOLValue)
   {
     if (objc_opt_respondsToSelector())
     {
-      v18 = [v9 targetApplicationBundleIdentifier];
-      [v14 setApplicationBundleIdentifier:v18];
+      targetApplicationBundleIdentifier = [payload targetApplicationBundleIdentifier];
+      [v14 setApplicationBundleIdentifier:targetApplicationBundleIdentifier];
     }
   }
 
@@ -99,30 +99,30 @@
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "WebClipHandler ignoring target application identifier because the profile is not being installed by MDM", buf, 2u);
     }
 
-    [v9 setTargetApplicationBundleIdentifier:0];
+    [payload setTargetApplicationBundleIdentifier:0];
   }
 
-  v20 = [v9 iconData];
+  iconData = [payload iconData];
 
-  if (v20)
+  if (iconData)
   {
-    v21 = [v9 iconData];
-    v22 = [UIImage imageWithData:v21];
-    [v14 setIconImage:v22 isPrecomposed:{objc_msgSend(v9, "precomposed")}];
+    iconData2 = [payload iconData];
+    v22 = [UIImage imageWithData:iconData2];
+    [v14 setIconImage:v22 isPrecomposed:{objc_msgSend(payload, "precomposed")}];
   }
 
   if ([(MCNewWebClipPayloadHandler *)self _addWebClip:v14])
   {
-    [v9 setSavedIdentifier:v13];
+    [payload setSavedIdentifier:v13];
 
 LABEL_23:
     v35 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
     {
       v36 = v35;
-      v37 = [v9 friendlyName];
+      friendlyName = [payload friendlyName];
       *buf = 138543362;
-      v40 = v37;
+      v40 = friendlyName;
       _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "WebClipHandler successfully installed web clip for payload '%{public}@'", buf, 0xCu);
     }
 
@@ -130,35 +130,35 @@ LABEL_23:
     goto LABEL_26;
   }
 
-  v23 = [(MCNewWebClipPayloadHandler *)self _webclipFailedToCreateOnDiskError];
+  _webclipFailedToCreateOnDiskError = [(MCNewWebClipPayloadHandler *)self _webclipFailedToCreateOnDiskError];
 
-  if (!v23)
+  if (!_webclipFailedToCreateOnDiskError)
   {
     goto LABEL_23;
   }
 
   v24 = MCInstallationErrorDomain;
-  v25 = [(MCNewPayloadHandler *)self payload];
-  v26 = [v25 friendlyName];
+  payload2 = [(MCNewPayloadHandler *)self payload];
+  friendlyName2 = [payload2 friendlyName];
   v27 = MCErrorArray();
-  v28 = [NSError MCErrorWithDomain:v24 code:4001 descriptionArray:v27 underlyingError:v23 errorType:MCErrorTypeFatal, v26, 0];
+  v28 = [NSError MCErrorWithDomain:v24 code:4001 descriptionArray:v27 underlyingError:_webclipFailedToCreateOnDiskError errorType:MCErrorTypeFatal, friendlyName2, 0];
 
-  if (a6)
+  if (error)
   {
     v29 = v28;
-    *a6 = v28;
+    *error = v28;
   }
 
   v30 = _MCLogObjects[0];
   if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
   {
     v31 = v30;
-    v32 = [v9 friendlyName];
-    v33 = [v28 MCVerboseDescription];
+    friendlyName3 = [payload friendlyName];
+    mCVerboseDescription = [v28 MCVerboseDescription];
     *buf = 138543618;
-    v40 = v32;
+    v40 = friendlyName3;
     v41 = 2114;
-    v42 = v33;
+    v42 = mCVerboseDescription;
     _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_ERROR, "WebClipHandler cannot install webclip for payload '%{public}@' with error: %{public}@", buf, 0x16u);
   }
 
@@ -168,9 +168,9 @@ LABEL_26:
   return v34;
 }
 
-- (id)_findInstalledClipWithIdentifier:(id)a3
+- (id)_findInstalledClipWithIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   +[UIWebClip webClips];
   v12 = 0u;
   v13 = 0u;
@@ -190,8 +190,8 @@ LABEL_26:
         }
 
         v8 = *(*(&v12 + 1) + 8 * i);
-        v9 = [v8 identifier];
-        v10 = [v9 isEqualToString:v3];
+        identifier = [v8 identifier];
+        v10 = [identifier isEqualToString:identifierCopy];
 
         if (v10)
         {
@@ -217,8 +217,8 @@ LABEL_11:
 
 - (id)_installedWebClip
 {
-  v3 = [(MCNewWebClipPayloadHandler *)self savedWebClipIdentifier];
-  v4 = [(MCNewWebClipPayloadHandler *)self _findInstalledClipWithIdentifier:v3];
+  savedWebClipIdentifier = [(MCNewWebClipPayloadHandler *)self savedWebClipIdentifier];
+  v4 = [(MCNewWebClipPayloadHandler *)self _findInstalledClipWithIdentifier:savedWebClipIdentifier];
   if (v4)
   {
     v5 = v4;
@@ -226,7 +226,7 @@ LABEL_11:
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138543362;
-      v15 = v3;
+      v15 = savedWebClipIdentifier;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "WebClipHandler found webclip for saved ID: %{public}@", &v14, 0xCu);
     }
 
@@ -235,10 +235,10 @@ LABEL_11:
 
   else
   {
-    v8 = [(MCNewPayloadHandler *)self payload];
-    v9 = [v8 UUID];
+    payload = [(MCNewPayloadHandler *)self payload];
+    uUID = [payload UUID];
 
-    v7 = [(MCNewWebClipPayloadHandler *)self _findInstalledClipWithIdentifier:v9];
+    v7 = [(MCNewWebClipPayloadHandler *)self _findInstalledClipWithIdentifier:uUID];
     v10 = _MCLogObjects[0];
     v11 = os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT);
     if (v7)
@@ -246,7 +246,7 @@ LABEL_11:
       if (v11)
       {
         v14 = 138543362;
-        v15 = v9;
+        v15 = uUID;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "WebClipHandler found webclip for payload UUID: %{public}@", &v14, 0xCu);
       }
 
@@ -256,9 +256,9 @@ LABEL_11:
     else if (v11)
     {
       v14 = 138543618;
-      v15 = v3;
+      v15 = savedWebClipIdentifier;
       v16 = 2114;
-      v17 = v9;
+      v17 = uUID;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "WebClipHandler could not find webclip for saved ID '%{public}@' or payload UUID '%{public}@'", &v14, 0x16u);
     }
   }
@@ -268,10 +268,10 @@ LABEL_11:
 
 - (void)remove
 {
-  v3 = [(MCNewPayloadHandler *)self profileHandler];
-  v4 = [v3 isSetAside];
+  profileHandler = [(MCNewPayloadHandler *)self profileHandler];
+  isSetAside = [profileHandler isSetAside];
 
-  if (v4)
+  if (isSetAside)
   {
     v5 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
@@ -283,10 +283,10 @@ LABEL_11:
 
   else
   {
-    v6 = [(MCNewWebClipPayloadHandler *)self _installedWebClip];
-    if (v6)
+    _installedWebClip = [(MCNewWebClipPayloadHandler *)self _installedWebClip];
+    if (_installedWebClip)
     {
-      [(MCNewWebClipPayloadHandler *)self _removeWebClip:v6];
+      [(MCNewWebClipPayloadHandler *)self _removeWebClip:_installedWebClip];
     }
 
     else
@@ -303,17 +303,17 @@ LABEL_11:
 
 - (BOOL)isInstalled
 {
-  v2 = [(MCNewWebClipPayloadHandler *)self _installedWebClip];
-  v3 = v2 != 0;
+  _installedWebClip = [(MCNewWebClipPayloadHandler *)self _installedWebClip];
+  v3 = _installedWebClip != 0;
 
   return v3;
 }
 
 - (void)setAside
 {
-  v3 = [(MCNewWebClipPayloadHandler *)self _installedWebClip];
+  _installedWebClip = [(MCNewWebClipPayloadHandler *)self _installedWebClip];
   setAsideClip = self->_setAsideClip;
-  self->_setAsideClip = v3;
+  self->_setAsideClip = _installedWebClip;
 
   if (self->_setAsideClip)
   {
@@ -364,22 +364,22 @@ LABEL_11:
   return v4;
 }
 
-- (BOOL)_addWebClip:(id)a3
+- (BOOL)_addWebClip:(id)clip
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = [v3 createOnDisk];
+  clipCopy = clip;
+  identifier = [clipCopy identifier];
+  createOnDisk = [clipCopy createOnDisk];
 
-  if (v5)
+  if (createOnDisk)
   {
     MCSBSSpringBoardServerPort();
-    [v4 UTF8String];
+    [identifier UTF8String];
     MCSBAddWebClipToHomeScreen();
     v6 = _MCLogObjects[0];
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138543362;
-      v13 = v4;
+      v13 = identifier;
       v7 = "WebClipHandler added webclip with identifier: %{public}@";
       v8 = v6;
       v9 = OS_LOG_TYPE_DEFAULT;
@@ -394,7 +394,7 @@ LABEL_6:
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
     {
       v12 = 138543362;
-      v13 = v4;
+      v13 = identifier;
       v7 = "WebClipHandler failed to create webclip on disk with identifier: %{public}@";
       v8 = v10;
       v9 = OS_LOG_TYPE_ERROR;
@@ -402,25 +402,25 @@ LABEL_6:
     }
   }
 
-  return v5;
+  return createOnDisk;
 }
 
-- (void)_removeWebClip:(id)a3
+- (void)_removeWebClip:(id)clip
 {
-  v3 = a3;
-  v4 = [v3 identifier];
+  clipCopy = clip;
+  identifier = [clipCopy identifier];
   MCSBSSpringBoardServerPort();
-  [v4 UTF8String];
+  [identifier UTF8String];
   MCSBRemoveWebClipFromHomeScreen();
-  v5 = [v3 removeFromDisk];
+  removeFromDisk = [clipCopy removeFromDisk];
 
   v6 = _MCLogObjects[0];
-  if (v5)
+  if (removeFromDisk)
   {
     if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138543362;
-      v11 = v4;
+      v11 = identifier;
       v7 = "WebClipHandler removed webclip with identifier: %{public}@";
       v8 = v6;
       v9 = OS_LOG_TYPE_DEFAULT;
@@ -432,7 +432,7 @@ LABEL_6:
   else if (os_log_type_enabled(_MCLogObjects[0], OS_LOG_TYPE_ERROR))
   {
     v10 = 138543362;
-    v11 = v4;
+    v11 = identifier;
     v7 = "WebClipHandler failed to remove webclip from disk with identifier: %{public}@";
     v8 = v6;
     v9 = OS_LOG_TYPE_ERROR;

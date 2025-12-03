@@ -1,58 +1,58 @@
 @interface HMDBackgroundOperationManager
-+ (id)findAccessoryUsing:(id)a3 fromHome:(id)a4;
-+ (id)findAccessoryUsing:(id)a3 homeManager:(id)a4;
-+ (id)findHomeUsingIdentifier:(id)a3 homeManager:(id)a4;
-+ (id)findHomeWhereThisDeviceIsConfirmedPrimaryResident:(id)a3;
-+ (id)findUserWithUUID:(id)a3 fromHomeManager:(id)a4;
-+ (id)getAllReachableAccessories:(id)a3;
++ (id)findAccessoryUsing:(id)using fromHome:(id)home;
++ (id)findAccessoryUsing:(id)using homeManager:(id)manager;
++ (id)findHomeUsingIdentifier:(id)identifier homeManager:(id)manager;
++ (id)findHomeWhereThisDeviceIsConfirmedPrimaryResident:(id)resident;
++ (id)findUserWithUUID:(id)d fromHomeManager:(id)manager;
++ (id)getAllReachableAccessories:(id)accessories;
 + (id)logCategory;
-- (BOOL)_scheduleKeyRollForAccessory:(id)a3;
-- (BOOL)addOperationDependency:(id)a3 dependsOn:(id)a4;
-- (BOOL)scheduleHH2KeyRollForAccessory:(id)a3 previousIdentity:(id)a4 newIdentity:(id)a5;
-- (BOOL)scheduleHH2KeyRollForAirPlayAccessory:(id)a3 previousIdentity:(id)a4 newIdentity:(id)a5;
-- (BOOL)scheduleOperationsWithDependenciesOnEachOtherFromArray:(id)a3;
+- (BOOL)_scheduleKeyRollForAccessory:(id)accessory;
+- (BOOL)addOperationDependency:(id)dependency dependsOn:(id)on;
+- (BOOL)scheduleHH2KeyRollForAccessory:(id)accessory previousIdentity:(id)identity newIdentity:(id)newIdentity;
+- (BOOL)scheduleHH2KeyRollForAirPlayAccessory:(id)accessory previousIdentity:(id)identity newIdentity:(id)newIdentity;
+- (BOOL)scheduleOperationsWithDependenciesOnEachOtherFromArray:(id)array;
 - (BOOL)shouldWeScheduleKeyRollOperationsOnThisDevice;
-- (HMDBackgroundOperationManager)initWithHomeManager:(id)a3;
-- (HMDBackgroundOperationManager)initWithHomeManager:(id)a3 currentDeviceStateDataSource:(id)a4 notificationCenter:(id)a5;
+- (HMDBackgroundOperationManager)initWithHomeManager:(id)manager;
+- (HMDBackgroundOperationManager)initWithHomeManager:(id)manager currentDeviceStateDataSource:(id)source notificationCenter:(id)center;
 - (HMDHomeManager)homeManager;
 - (HMFTimer)dataSourceCoalescingTimer;
 - (HMFTimer)deferralTimer;
 - (HMFTimer)expirationTimer;
 - (NSMutableArray)operationList;
 - (id)__getReadyToExecuteOperations;
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3;
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level;
 - (id)getHH1ControllerKey;
 - (id)getHH2ControllerKey;
 - (void)__removeAllDataSourcesForUnitTesting;
 - (void)__removeAllOperationsForUnitTesting;
 - (void)__resetAndRebuildOperationGraphForUnitTesting;
-- (void)_dataSourceHasUpdate:(id)a3;
-- (void)_runOperation:(id)a3 withParameters:(id)a4;
-- (void)_runOperationsAfterEvaluatingPredicate:(id)a3;
-- (void)_scheduleHH2AirPlayKeyRollIfNecessary:(id)a3;
-- (void)_scheduleHH2KeyRollIfNecessary:(id)a3;
-- (void)addDataSource:(id)a3;
+- (void)_dataSourceHasUpdate:(id)update;
+- (void)_runOperation:(id)operation withParameters:(id)parameters;
+- (void)_runOperationsAfterEvaluatingPredicate:(id)predicate;
+- (void)_scheduleHH2AirPlayKeyRollIfNecessary:(id)necessary;
+- (void)_scheduleHH2KeyRollIfNecessary:(id)necessary;
+- (void)addDataSource:(id)source;
 - (void)addDefaultDataSources;
-- (void)addOperation:(id)a3;
-- (void)auditKeyChainEntriesAndScheduleKeyRollOperationsIfNecessaryForHome:(id)a3 isRunningOnResident:(BOOL)a4;
-- (void)auditKeyChainEntryForAccessory:(id)a3 isRunningOnResident:(BOOL)a4;
-- (void)auditOwnerPairingForAirPlayAccessory:(id)a3 isRunningOnResident:(BOOL)a4;
+- (void)addOperation:(id)operation;
+- (void)auditKeyChainEntriesAndScheduleKeyRollOperationsIfNecessaryForHome:(id)home isRunningOnResident:(BOOL)resident;
+- (void)auditKeyChainEntryForAccessory:(id)accessory isRunningOnResident:(BOOL)resident;
+- (void)auditOwnerPairingForAirPlayAccessory:(id)accessory isRunningOnResident:(BOOL)resident;
 - (void)checkAndRemoveExpiredOperations;
-- (void)completeProcessingForOperation:(id)a3;
-- (void)dataSourceHasUpdate:(id)a3;
+- (void)completeProcessingForOperation:(id)operation;
+- (void)dataSourceHasUpdate:(id)update;
 - (void)makeSureToLoadPairingIdentities;
 - (void)registerForNotifications;
-- (void)removeAllOperationForAccessoryIdentifier:(id)a3;
+- (void)removeAllOperationForAccessoryIdentifier:(id)identifier;
 - (void)removeAllOperationsBeforeStartingHH2Migration;
-- (void)removeOperation:(id)a3;
-- (void)removeOperationsForAccessoryIdentifier:(id)a3 operationKind:(id)a4;
-- (void)removeOperationsForAccessoryIdentifier:(id)a3 operationKind:(id)a4 withBlock:(id)a5;
-- (void)scheduleHH2KeyRollForAccessory:(id)a3;
-- (void)scheduleHH2KeyRollForAirPlayAccessory:(id)a3;
-- (void)scheduleHH2KeyRollIfNecessaryDueToNotification:(id)a3;
+- (void)removeOperation:(id)operation;
+- (void)removeOperationsForAccessoryIdentifier:(id)identifier operationKind:(id)kind;
+- (void)removeOperationsForAccessoryIdentifier:(id)identifier operationKind:(id)kind withBlock:(id)block;
+- (void)scheduleHH2KeyRollForAccessory:(id)accessory;
+- (void)scheduleHH2KeyRollForAirPlayAccessory:(id)accessory;
+- (void)scheduleHH2KeyRollIfNecessaryDueToNotification:(id)notification;
 - (void)scheduleTimerToCheckAndRemoveExpiredOperation;
 - (void)scheduleTimerToRetryDeferredOperations;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDBackgroundOperationManager
@@ -78,46 +78,46 @@ void __77__HMDBackgroundOperationManager_ScheduleHH2KeyRoll__registerForNotifica
 
 - (BOOL)shouldWeScheduleKeyRollOperationsOnThisDevice
 {
-  v3 = [(HMDBackgroundOperationManager *)self currentDeviceStateDataSource];
-  if ([v3 isiOSDevice])
+  currentDeviceStateDataSource = [(HMDBackgroundOperationManager *)self currentDeviceStateDataSource];
+  if ([currentDeviceStateDataSource isiOSDevice])
   {
-    v4 = 1;
+    isHomePod = 1;
   }
 
   else
   {
-    v5 = [(HMDBackgroundOperationManager *)self currentDeviceStateDataSource];
-    if ([v5 isAppleTV])
+    currentDeviceStateDataSource2 = [(HMDBackgroundOperationManager *)self currentDeviceStateDataSource];
+    if ([currentDeviceStateDataSource2 isAppleTV])
     {
-      v4 = 1;
+      isHomePod = 1;
     }
 
     else
     {
-      v6 = [(HMDBackgroundOperationManager *)self currentDeviceStateDataSource];
-      v4 = [v6 isHomePod];
+      currentDeviceStateDataSource3 = [(HMDBackgroundOperationManager *)self currentDeviceStateDataSource];
+      isHomePod = [currentDeviceStateDataSource3 isHomePod];
     }
   }
 
-  return v4;
+  return isHomePod;
 }
 
 - (id)getHH2ControllerKey
 {
-  v2 = [MEMORY[0x277CFEC78] systemStore];
-  v3 = [v2 getPreferredHH2ControllerKey];
+  systemStore = [MEMORY[0x277CFEC78] systemStore];
+  getPreferredHH2ControllerKey = [systemStore getPreferredHH2ControllerKey];
 
-  return v3;
+  return getPreferredHH2ControllerKey;
 }
 
 - (id)getHH1ControllerKey
 {
   v21 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CFEC78] systemStore];
+  systemStore = [MEMORY[0x277CFEC78] systemStore];
   v15 = 0;
   v16 = 0;
   v14 = 0;
-  v3 = [v2 getControllerPublicKey:&v16 secretKey:0 username:&v15 allowCreation:0 error:&v14];
+  v3 = [systemStore getControllerPublicKey:&v16 secretKey:0 username:&v15 allowCreation:0 error:&v14];
   v4 = v16;
   v5 = v15;
   v6 = v14;
@@ -151,34 +151,34 @@ void __77__HMDBackgroundOperationManager_ScheduleHH2KeyRoll__registerForNotifica
   return v8;
 }
 
-- (BOOL)scheduleHH2KeyRollForAirPlayAccessory:(id)a3 previousIdentity:(id)a4 newIdentity:(id)a5
+- (BOOL)scheduleHH2KeyRollForAirPlayAccessory:(id)accessory previousIdentity:(id)identity newIdentity:(id)newIdentity
 {
   v56 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  accessoryCopy = accessory;
+  identityCopy = identity;
+  newIdentityCopy = newIdentity;
+  if (!accessoryCopy)
   {
     _HMFPreconditionFailure();
 LABEL_27:
     _HMFPreconditionFailure();
   }
 
-  v11 = v10;
-  v12 = [v8 identifier];
+  v11 = newIdentityCopy;
+  identifier = [accessoryCopy identifier];
 
-  if (!v12)
+  if (!identifier)
   {
     goto LABEL_27;
   }
 
-  if (v9 && v11)
+  if (identityCopy && v11)
   {
     v47[0] = objc_opt_class();
     v47[1] = objc_opt_class();
     v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v47 count:2];
     v14 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy = self;
     v16 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
@@ -186,30 +186,30 @@ LABEL_27:
       *buf = 138543874;
       v49 = v17;
       v50 = 2112;
-      v51 = v8;
+      v51 = accessoryCopy;
       v52 = 2112;
       v53 = v11;
       _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@Going to schedule key roll for Accessory : %@, with new pairing : %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v14);
-    v18 = [v8 uuid];
-    [(HMDBackgroundOperationManager *)v15 removeOperationsForAccessoryIdentifier:v18 operationKind:v13];
+    uuid = [accessoryCopy uuid];
+    [(HMDBackgroundOperationManager *)selfCopy removeOperationsForAccessoryIdentifier:uuid operationKind:v13];
 
-    v19 = [v8 home];
-    v20 = [v19 isOwnerUser];
+    home = [accessoryCopy home];
+    isOwnerUser = [home isOwnerUser];
 
-    v21 = [[HMDAddAccessoryPairingOperation alloc] initWithAccessory:v8 newPairingIdentity:v11 asOwner:v20 asAdmin:1 shouldUpdateKeyChainEntry:0];
+    v21 = [[HMDAddAccessoryPairingOperation alloc] initWithAccessory:accessoryCopy newPairingIdentity:v11 asOwner:isOwnerUser asAdmin:1 shouldUpdateKeyChainEntry:0];
     if (v21)
     {
-      v22 = [[HMDRemoveAccessoryPairingOperation alloc] initWithAccessory:v8 isOwnerIdentity:0 identityToRemove:v9];
+      v22 = [[HMDRemoveAccessoryPairingOperation alloc] initWithAccessory:accessoryCopy isOwnerIdentity:0 identityToRemove:identityCopy];
       if (v22)
       {
-        v23 = v22;
-        [(HMDBackgroundOperationManager *)v15 addOperation:v21];
-        if ([(HMDBackgroundOperationManager *)v15 addOperationDependency:v23 dependsOn:v21])
+        uuid4 = v22;
+        [(HMDBackgroundOperationManager *)selfCopy addOperation:v21];
+        if ([(HMDBackgroundOperationManager *)selfCopy addOperationDependency:uuid4 dependsOn:v21])
         {
-          [(HMDBackgroundOperationManager *)v15 evaluateOperations];
+          [(HMDBackgroundOperationManager *)selfCopy evaluateOperations];
           v24 = 1;
 LABEL_24:
 
@@ -217,7 +217,7 @@ LABEL_24:
         }
 
         v40 = objc_autoreleasePoolPush();
-        v41 = v15;
+        v41 = selfCopy;
         v42 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
         {
@@ -228,14 +228,14 @@ LABEL_24:
         }
 
         objc_autoreleasePoolPop(v40);
-        v44 = [v8 uuid];
-        [(HMDBackgroundOperationManager *)v41 removeOperationsForAccessoryIdentifier:v44 operationKind:v13];
+        uuid2 = [accessoryCopy uuid];
+        [(HMDBackgroundOperationManager *)v41 removeOperationsForAccessoryIdentifier:uuid2 operationKind:v13];
       }
 
       else
       {
         v35 = objc_autoreleasePoolPush();
-        v36 = v15;
+        v36 = selfCopy;
         v37 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
         {
@@ -246,17 +246,17 @@ LABEL_24:
         }
 
         objc_autoreleasePoolPop(v35);
-        v39 = [v8 uuid];
-        [(HMDBackgroundOperationManager *)v36 removeOperationsForAccessoryIdentifier:v39 operationKind:v13];
+        uuid3 = [accessoryCopy uuid];
+        [(HMDBackgroundOperationManager *)v36 removeOperationsForAccessoryIdentifier:uuid3 operationKind:v13];
 
-        v23 = 0;
+        uuid4 = 0;
       }
     }
 
     else
     {
       v31 = objc_autoreleasePoolPush();
-      v32 = v15;
+      v32 = selfCopy;
       v33 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
@@ -267,8 +267,8 @@ LABEL_24:
       }
 
       objc_autoreleasePoolPop(v31);
-      v23 = [v8 uuid];
-      [(HMDBackgroundOperationManager *)v32 removeOperationsForAccessoryIdentifier:v23 operationKind:v13];
+      uuid4 = [accessoryCopy uuid];
+      [(HMDBackgroundOperationManager *)v32 removeOperationsForAccessoryIdentifier:uuid4 operationKind:v13];
     }
 
     v24 = 0;
@@ -276,21 +276,21 @@ LABEL_24:
   }
 
   v25 = objc_autoreleasePoolPush();
-  v26 = self;
+  selfCopy2 = self;
   v27 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
   {
     v28 = HMFGetLogIdentifier();
-    v29 = [(HMDBackgroundOperationManager *)v26 hh1Key];
-    v30 = [(HMDBackgroundOperationManager *)v26 hh2Key];
+    hh1Key = [(HMDBackgroundOperationManager *)selfCopy2 hh1Key];
+    hh2Key = [(HMDBackgroundOperationManager *)selfCopy2 hh2Key];
     *buf = 138544130;
     v49 = v28;
     v50 = 2112;
-    v51 = v8;
+    v51 = accessoryCopy;
     v52 = 2112;
-    v53 = v29;
+    v53 = hh1Key;
     v54 = 2112;
-    v55 = v30;
+    v55 = hh2Key;
     _os_log_impl(&dword_229538000, v27, OS_LOG_TYPE_INFO, "%{public}@Not scheduling key roll operation for accessory [%@] as we don't have needed keys to work with: [hh1: %@] [hh2: %@]", buf, 0x2Au);
   }
 
@@ -302,37 +302,37 @@ LABEL_25:
   return v24;
 }
 
-- (BOOL)scheduleHH2KeyRollForAccessory:(id)a3 previousIdentity:(id)a4 newIdentity:(id)a5
+- (BOOL)scheduleHH2KeyRollForAccessory:(id)accessory previousIdentity:(id)identity newIdentity:(id)newIdentity
 {
   v66 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  accessoryCopy = accessory;
+  identityCopy = identity;
+  newIdentityCopy = newIdentity;
+  if (!accessoryCopy)
   {
     _HMFPreconditionFailure();
 LABEL_44:
     _HMFPreconditionFailure();
   }
 
-  v11 = v10;
-  v12 = [v8 identifier];
+  v11 = newIdentityCopy;
+  identifier = [accessoryCopy identifier];
 
-  if (!v12)
+  if (!identifier)
   {
     goto LABEL_44;
   }
 
-  if (v9 && v11)
+  if (identityCopy && v11)
   {
-    if ([(HMDBackgroundOperationManager *)self _scheduleKeyRollForAccessory:v8])
+    if ([(HMDBackgroundOperationManager *)self _scheduleKeyRollForAccessory:accessoryCopy])
     {
       v57[0] = objc_opt_class();
       v57[1] = objc_opt_class();
       v57[2] = objc_opt_class();
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v57 count:3];
       v14 = objc_autoreleasePoolPush();
-      v15 = self;
+      selfCopy = self;
       v16 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
       {
@@ -340,22 +340,22 @@ LABEL_44:
         *buf = 138543874;
         v59 = v17;
         v60 = 2112;
-        v61 = v8;
+        v61 = accessoryCopy;
         v62 = 2112;
         v63 = v11;
         _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@Going to schedule key roll for Accessory : %@, with new pairing : %@", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v14);
-      v18 = [v8 uuid];
-      [(HMDBackgroundOperationManager *)v15 removeOperationsForAccessoryIdentifier:v18 operationKind:v13];
+      uuid = [accessoryCopy uuid];
+      [(HMDBackgroundOperationManager *)selfCopy removeOperationsForAccessoryIdentifier:uuid operationKind:v13];
 
-      v19 = [v8 home];
-      v20 = -[HMDAddAccessoryPairingOperation initWithAccessory:newPairingIdentity:asOwner:asAdmin:shouldUpdateKeyChainEntry:]([HMDAddAccessoryPairingOperation alloc], "initWithAccessory:newPairingIdentity:asOwner:asAdmin:shouldUpdateKeyChainEntry:", v8, v11, [v19 isOwnerUser], 1, 1);
+      home = [accessoryCopy home];
+      v20 = -[HMDAddAccessoryPairingOperation initWithAccessory:newPairingIdentity:asOwner:asAdmin:shouldUpdateKeyChainEntry:]([HMDAddAccessoryPairingOperation alloc], "initWithAccessory:newPairingIdentity:asOwner:asAdmin:shouldUpdateKeyChainEntry:", accessoryCopy, v11, [home isOwnerUser], 1, 1);
       if (!v20)
       {
         v39 = objc_autoreleasePoolPush();
-        v40 = v15;
+        v40 = selfCopy;
         v41 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
         {
@@ -366,17 +366,17 @@ LABEL_44:
         }
 
         objc_autoreleasePoolPop(v39);
-        v21 = [v8 uuid];
-        [(HMDBackgroundOperationManager *)v40 removeOperationsForAccessoryIdentifier:v21 operationKind:v13];
+        uuid2 = [accessoryCopy uuid];
+        [(HMDBackgroundOperationManager *)v40 removeOperationsForAccessoryIdentifier:uuid2 operationKind:v13];
         v33 = 0;
         goto LABEL_41;
       }
 
-      v21 = -[HMDRemoveAccessoryPairingOperation initWithAccessory:isOwnerIdentity:identityToRemove:]([HMDRemoveAccessoryPairingOperation alloc], "initWithAccessory:isOwnerIdentity:identityToRemove:", v8, [v19 isOwnerUser], v9);
-      if (!v21)
+      uuid2 = -[HMDRemoveAccessoryPairingOperation initWithAccessory:isOwnerIdentity:identityToRemove:]([HMDRemoveAccessoryPairingOperation alloc], "initWithAccessory:isOwnerIdentity:identityToRemove:", accessoryCopy, [home isOwnerUser], identityCopy);
+      if (!uuid2)
       {
         v43 = objc_autoreleasePoolPush();
-        v44 = v15;
+        v44 = selfCopy;
         v45 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
         {
@@ -390,19 +390,19 @@ LABEL_44:
         }
 
         objc_autoreleasePoolPop(v43);
-        v23 = [v8 uuid];
-        [(HMDBackgroundOperationManager *)v44 removeOperationsForAccessoryIdentifier:v23 operationKind:v13];
+        uuid3 = [accessoryCopy uuid];
+        [(HMDBackgroundOperationManager *)v44 removeOperationsForAccessoryIdentifier:uuid3 operationKind:v13];
         goto LABEL_39;
       }
 
-      if ([v8 hasIPLink])
+      if ([accessoryCopy hasIPLink])
       {
         v22 = [HMDForcePairVerifyAccessoryOperation alloc];
-        v23 = [(HMDAccessoryBackgroundOperation *)v22 initWithAccessory:v8 userData:MEMORY[0x277CBEC10]];
-        if (!v23)
+        uuid3 = [(HMDAccessoryBackgroundOperation *)v22 initWithAccessory:accessoryCopy userData:MEMORY[0x277CBEC10]];
+        if (!uuid3)
         {
           v24 = objc_autoreleasePoolPush();
-          v25 = v15;
+          v25 = selfCopy;
           log = HMFGetOSLogHandle();
           if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
           {
@@ -412,20 +412,20 @@ LABEL_44:
             _os_log_impl(&dword_229538000, log, OS_LOG_TYPE_ERROR, "%{public}@Could not create forcePV operation, not adding addAccessoryPairingWithHH2Identity and removeOldPairing", buf, 0xCu);
           }
 
-          v23 = 0;
+          uuid3 = 0;
           goto LABEL_38;
         }
       }
 
       else
       {
-        v23 = 0;
+        uuid3 = 0;
       }
 
-      [(HMDBackgroundOperationManager *)v15 addOperation:v20];
-      if ([(HMDBackgroundOperationManager *)v15 addOperationDependency:v21 dependsOn:v20])
+      [(HMDBackgroundOperationManager *)selfCopy addOperation:v20];
+      if ([(HMDBackgroundOperationManager *)selfCopy addOperationDependency:uuid2 dependsOn:v20])
       {
-        if (!v23 || [(HMDBackgroundOperationManager *)v15 addOperationDependency:v23 dependsOn:v21])
+        if (!uuid3 || [(HMDBackgroundOperationManager *)selfCopy addOperationDependency:uuid3 dependsOn:uuid2])
         {
           v33 = 1;
 LABEL_40:
@@ -435,7 +435,7 @@ LABEL_41:
         }
 
         v54 = objc_autoreleasePoolPush();
-        v50 = v15;
+        v50 = selfCopy;
         log = HMFGetOSLogHandle();
         if (!os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
         {
@@ -451,7 +451,7 @@ LABEL_41:
       else
       {
         v54 = objc_autoreleasePoolPush();
-        v47 = v15;
+        v47 = selfCopy;
         log = HMFGetOSLogHandle();
         if (!os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
         {
@@ -460,8 +460,8 @@ LABEL_37:
 LABEL_38:
 
           objc_autoreleasePoolPop(v24);
-          v51 = [v8 uuid];
-          [(HMDBackgroundOperationManager *)v15 removeOperationsForAccessoryIdentifier:v51 operationKind:v13];
+          uuid4 = [accessoryCopy uuid];
+          [(HMDBackgroundOperationManager *)selfCopy removeOperationsForAccessoryIdentifier:uuid4 operationKind:v13];
 
 LABEL_39:
           v33 = 0;
@@ -480,16 +480,16 @@ LABEL_39:
     }
 
     v34 = objc_autoreleasePoolPush();
-    v35 = self;
+    selfCopy2 = self;
     v36 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
     {
       v37 = HMFGetLogIdentifier();
-      v38 = [v8 shortDescription];
+      shortDescription = [accessoryCopy shortDescription];
       *buf = 138543618;
       v59 = v37;
       v60 = 2112;
-      v61 = v38;
+      v61 = shortDescription;
       _os_log_impl(&dword_229538000, v36, OS_LOG_TYPE_INFO, "%{public}@Not scheduling HH2 key roll operations for accessory: %@", buf, 0x16u);
     }
 
@@ -500,21 +500,21 @@ LABEL_39:
   else
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy3 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
       v30 = HMFGetLogIdentifier();
-      v31 = [(HMDBackgroundOperationManager *)v28 hh1Key];
-      v32 = [(HMDBackgroundOperationManager *)v28 hh2Key];
+      hh1Key = [(HMDBackgroundOperationManager *)selfCopy3 hh1Key];
+      hh2Key = [(HMDBackgroundOperationManager *)selfCopy3 hh2Key];
       *buf = 138544130;
       v59 = v30;
       v60 = 2112;
-      v61 = v8;
+      v61 = accessoryCopy;
       v62 = 2112;
-      v63 = v31;
+      v63 = hh1Key;
       v64 = 2112;
-      v65 = v32;
+      v65 = hh2Key;
       _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_INFO, "%{public}@Not scheduling key roll operation for accessory [%@] as we don't have needed keys to work with: [hh1: %@] [hh2: %@]", buf, 0x2Au);
     }
 
@@ -528,19 +528,19 @@ LABEL_42:
   return v33;
 }
 
-- (void)auditOwnerPairingForAirPlayAccessory:(id)a3 isRunningOnResident:(BOOL)a4
+- (void)auditOwnerPairingForAirPlayAccessory:(id)accessory isRunningOnResident:(BOOL)resident
 {
-  v4 = a4;
+  residentCopy = resident;
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [v6 home];
-  v8 = v7;
-  if (v4)
+  accessoryCopy = accessory;
+  home = [accessoryCopy home];
+  v8 = home;
+  if (residentCopy)
   {
-    if (([v7 isCurrentDeviceConfirmedPrimaryResident] & 1) == 0)
+    if (([home isCurrentDeviceConfirmedPrimaryResident] & 1) == 0)
     {
       v9 = objc_autoreleasePoolPush();
-      v10 = self;
+      selfCopy2 = self;
       v11 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
@@ -548,7 +548,7 @@ LABEL_42:
         *buf = 138543618;
         v19 = v12;
         v20 = 2112;
-        v21 = v6;
+        v21 = accessoryCopy;
         v13 = "%{public}@Not scheduling the audit for the accessory [%@] as current device is not the primary resident";
 LABEL_8:
         _os_log_impl(&dword_229538000, v11, OS_LOG_TYPE_INFO, v13, buf, 0x16u);
@@ -560,10 +560,10 @@ LABEL_8:
     }
   }
 
-  else if ([v7 hasAnyResident])
+  else if ([home hasAnyResident])
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -571,7 +571,7 @@ LABEL_8:
       *buf = 138543618;
       v19 = v12;
       v20 = 2112;
-      v21 = v6;
+      v21 = accessoryCopy;
       v13 = "%{public}@Not scheduling the audit for the accessory [%@] as current device is not a resident and the home has residents.";
       goto LABEL_8;
     }
@@ -586,14 +586,14 @@ LABEL_12:
   if ([v8 isOwnerUser])
   {
     v9 = objc_autoreleasePoolPush();
-    v14 = [(HMDBackgroundOperationManager *)self queue];
+    queue = [(HMDBackgroundOperationManager *)self queue];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __110__HMDBackgroundOperationManager_ScheduleHH2KeyRoll__auditOwnerPairingForAirPlayAccessory_isRunningOnResident___block_invoke;
     v16[3] = &unk_27868A750;
     v16[4] = self;
-    v17 = v6;
-    [v14 addOperationWithBlock:v16];
+    v17 = accessoryCopy;
+    [queue addOperationWithBlock:v16];
 
     goto LABEL_12;
   }
@@ -612,33 +612,33 @@ void __110__HMDBackgroundOperationManager_ScheduleHH2KeyRoll__auditOwnerPairingF
   [v2 scheduleHH2KeyRollForAirPlayAccessory:v3 previousIdentity:v5 newIdentity:v4];
 }
 
-- (void)auditKeyChainEntryForAccessory:(id)a3 isRunningOnResident:(BOOL)a4
+- (void)auditKeyChainEntryForAccessory:(id)accessory isRunningOnResident:(BOOL)resident
 {
-  v4 = a4;
+  residentCopy = resident;
   v36 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = v6;
-  if (v4)
+  accessoryCopy = accessory;
+  v7 = accessoryCopy;
+  if (residentCopy)
   {
-    v8 = [v6 home];
-    v9 = [v8 isCurrentDeviceConfirmedPrimaryResident];
+    home = [accessoryCopy home];
+    isCurrentDeviceConfirmedPrimaryResident = [home isCurrentDeviceConfirmedPrimaryResident];
 
-    if ((v9 & 1) == 0)
+    if ((isCurrentDeviceConfirmedPrimaryResident & 1) == 0)
     {
       v24 = objc_autoreleasePoolPush();
-      v25 = self;
+      selfCopy2 = self;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
         v27 = HMFGetLogIdentifier();
         *buf = 0;
         *&buf[8] = 0;
-        v29 = [v7 uuid];
+        uuid = [v7 uuid];
 
-        if (v29)
+        if (uuid)
         {
-          v30 = [v7 uuid];
-          [v30 getUUIDBytes:buf];
+          uuid2 = [v7 uuid];
+          [uuid2 getUUIDBytes:buf];
         }
 
         else
@@ -667,16 +667,16 @@ LABEL_18:
   if (![(HMDBackgroundOperationManager *)self _scheduleKeyRollForAccessory:v7])
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = self;
+    selfCopy2 = self;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
     {
       v27 = HMFGetLogIdentifier();
-      v28 = [v7 shortDescription];
+      shortDescription = [v7 shortDescription];
       *buf = 138543618;
       *&buf[4] = v27;
       *&buf[12] = 2112;
-      *&buf[14] = v28;
+      *&buf[14] = shortDescription;
       _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_INFO, "%{public}@Not scheduling the audit for accessory [%@]", buf, 0x16u);
 
 LABEL_17:
@@ -686,24 +686,24 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v10 = [MEMORY[0x277CFEC78] systemStore];
-  v11 = [v7 identifier];
-  v12 = [v10 getAssociatedControllerKeyForAccessory:v11];
+  systemStore = [MEMORY[0x277CFEC78] systemStore];
+  identifier = [v7 identifier];
+  v12 = [systemStore getAssociatedControllerKeyForAccessory:identifier];
 
   v13 = objc_autoreleasePoolPush();
-  v14 = self;
+  selfCopy3 = self;
   v15 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     v16 = HMFGetLogIdentifier();
-    v17 = [v12 identifier];
-    v18 = [v7 identifier];
+    identifier2 = [v12 identifier];
+    identifier3 = [v7 identifier];
     *buf = 138543874;
     *&buf[4] = v16;
     *&buf[12] = 2112;
-    *&buf[14] = v17;
+    *&buf[14] = identifier2;
     *&buf[22] = 2112;
-    *&buf[24] = v18;
+    *&buf[24] = identifier3;
     _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_INFO, "%{public}@Associated controller key : %@ for accessory : %@", buf, 0x20u);
   }
 
@@ -711,14 +711,14 @@ LABEL_17:
   if (!v12 || ([MEMORY[0x277CFEC78] systemStore], v19 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "identifier"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v19, "isHH2KeyType:", v20), v20, v19, (v21 & 1) == 0))
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = [(HMDBackgroundOperationManager *)v14 queue];
+    queue = [(HMDBackgroundOperationManager *)selfCopy3 queue];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = 3221225472;
     v32[2] = __104__HMDBackgroundOperationManager_ScheduleHH2KeyRoll__auditKeyChainEntryForAccessory_isRunningOnResident___block_invoke;
     v32[3] = &unk_27868A750;
-    v32[4] = v14;
+    v32[4] = selfCopy3;
     v33 = v7;
-    [v23 addOperationWithBlock:v32];
+    [queue addOperationWithBlock:v32];
 
     objc_autoreleasePoolPop(v22);
   }
@@ -736,19 +736,19 @@ void __104__HMDBackgroundOperationManager_ScheduleHH2KeyRoll__auditKeyChainEntry
   [v2 scheduleHH2KeyRollForAccessory:v3 previousIdentity:v5 newIdentity:v4];
 }
 
-- (void)auditKeyChainEntriesAndScheduleKeyRollOperationsIfNecessaryForHome:(id)a3 isRunningOnResident:(BOOL)a4
+- (void)auditKeyChainEntriesAndScheduleKeyRollOperationsIfNecessaryForHome:(id)home isRunningOnResident:(BOOL)resident
 {
-  v6 = a3;
+  homeCopy = home;
   [(HMDBackgroundOperationManager *)self makeSureToLoadPairingIdentities];
-  v7 = [v6 accessories];
+  accessories = [homeCopy accessories];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __140__HMDBackgroundOperationManager_ScheduleHH2KeyRoll__auditKeyChainEntriesAndScheduleKeyRollOperationsIfNecessaryForHome_isRunningOnResident___block_invoke;
   v8[3] = &unk_278679E60;
   v8[4] = self;
-  v9 = a4;
-  [v7 hmf_enumerateWithAutoreleasePoolUsingBlock:v8];
+  residentCopy = resident;
+  [accessories hmf_enumerateWithAutoreleasePoolUsingBlock:v8];
 }
 
 void __140__HMDBackgroundOperationManager_ScheduleHH2KeyRoll__auditKeyChainEntriesAndScheduleKeyRollOperationsIfNecessaryForHome_isRunningOnResident___block_invoke(uint64_t a1, void *a2)
@@ -818,16 +818,16 @@ void __140__HMDBackgroundOperationManager_ScheduleHH2KeyRoll__auditKeyChainEntri
 - (void)makeSureToLoadPairingIdentities
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDBackgroundOperationManager *)self hh1Key];
+  hh1Key = [(HMDBackgroundOperationManager *)self hh1Key];
 
-  if (!v3)
+  if (!hh1Key)
   {
-    v4 = [(HMDBackgroundOperationManager *)self getHH1ControllerKey];
+    getHH1ControllerKey = [(HMDBackgroundOperationManager *)self getHH1ControllerKey];
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     v8 = v7;
-    if (v4)
+    if (getHH1ControllerKey)
     {
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
@@ -835,12 +835,12 @@ void __140__HMDBackgroundOperationManager_ScheduleHH2KeyRoll__auditKeyChainEntri
         v20 = 138543618;
         v21 = v9;
         v22 = 2112;
-        v23 = v4;
+        v23 = getHH1ControllerKey;
         _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@HH1 pairing identity : %@", &v20, 0x16u);
       }
 
       objc_autoreleasePoolPop(v5);
-      [(HMDBackgroundOperationManager *)v6 setHh1Key:v4];
+      [(HMDBackgroundOperationManager *)selfCopy setHh1Key:getHH1ControllerKey];
     }
 
     else
@@ -857,16 +857,16 @@ void __140__HMDBackgroundOperationManager_ScheduleHH2KeyRoll__auditKeyChainEntri
     }
   }
 
-  v11 = [(HMDBackgroundOperationManager *)self hh2Key];
+  hh2Key = [(HMDBackgroundOperationManager *)self hh2Key];
 
-  if (!v11)
+  if (!hh2Key)
   {
-    v12 = [(HMDBackgroundOperationManager *)self getHH2ControllerKey];
+    getHH2ControllerKey = [(HMDBackgroundOperationManager *)self getHH2ControllerKey];
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     v16 = v15;
-    if (v12)
+    if (getHH2ControllerKey)
     {
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
@@ -874,12 +874,12 @@ void __140__HMDBackgroundOperationManager_ScheduleHH2KeyRoll__auditKeyChainEntri
         v20 = 138543618;
         v21 = v17;
         v22 = 2112;
-        v23 = v12;
+        v23 = getHH2ControllerKey;
         _os_log_impl(&dword_229538000, v16, OS_LOG_TYPE_INFO, "%{public}@HH2 pairing identity : %@", &v20, 0x16u);
       }
 
       objc_autoreleasePoolPop(v13);
-      [(HMDBackgroundOperationManager *)v14 setHh2Key:v12];
+      [(HMDBackgroundOperationManager *)selfCopy2 setHh2Key:getHH2ControllerKey];
     }
 
     else
@@ -899,25 +899,25 @@ void __140__HMDBackgroundOperationManager_ScheduleHH2KeyRoll__auditKeyChainEntri
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)scheduleHH2KeyRollIfNecessaryDueToNotification:(id)a3
+- (void)scheduleHH2KeyRollIfNecessaryDueToNotification:(id)notification
 {
-  v4 = [(HMDBackgroundOperationManager *)self queue];
+  queue = [(HMDBackgroundOperationManager *)self queue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __100__HMDBackgroundOperationManager_ScheduleHH2KeyRoll__scheduleHH2KeyRollIfNecessaryDueToNotification___block_invoke;
   v5[3] = &unk_27868A728;
   v5[4] = self;
-  [v4 addOperationWithBlock:v5];
+  [queue addOperationWithBlock:v5];
 }
 
-- (void)_scheduleHH2KeyRollIfNecessary:(id)a3
+- (void)_scheduleHH2KeyRollIfNecessary:(id)necessary
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  necessaryCopy = necessary;
   if (![(HMDBackgroundOperationManager *)self shouldWeScheduleKeyRollOperationsOnThisDevice])
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -934,19 +934,19 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  if (![(HMDBackgroundOperationManager *)self _scheduleKeyRollForAccessory:v4])
+  if (![(HMDBackgroundOperationManager *)self _scheduleKeyRollForAccessory:necessaryCopy])
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = HMFGetLogIdentifier();
-      v12 = [v4 shortDescription];
+      shortDescription = [necessaryCopy shortDescription];
       *buf = 138543618;
       v23 = v11;
       v24 = 2112;
-      v25 = v12;
+      v25 = shortDescription;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Not scheduling HH2 key roll operations on this accessory: %@", buf, 0x16u);
 
       goto LABEL_11;
@@ -955,37 +955,37 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v5 = [v4 home];
-  v6 = v5;
-  if (!v5 || [v5 isOwnerUser] && (objc_msgSend(v6, "isAdminUser") & 1) != 0)
+  home = [necessaryCopy home];
+  v6 = home;
+  if (!home || [home isOwnerUser] && (objc_msgSend(v6, "isAdminUser") & 1) != 0)
   {
     [(HMDBackgroundOperationManager *)self registerForNotifications];
-    v7 = [(HMDBackgroundOperationManager *)self queue];
+    queue = [(HMDBackgroundOperationManager *)self queue];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __84__HMDBackgroundOperationManager_ScheduleHH2KeyRoll___scheduleHH2KeyRollIfNecessary___block_invoke;
     v20[3] = &unk_27868A750;
     v20[4] = self;
-    v21 = v4;
-    [v7 addOperationWithBlock:v20];
+    v21 = necessaryCopy;
+    [queue addOperationWithBlock:v20];
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy3 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [v4 shortDescription];
-      v18 = [v6 shortDescription];
+      shortDescription2 = [necessaryCopy shortDescription];
+      shortDescription3 = [v6 shortDescription];
       *buf = 138543874;
       v23 = v16;
       v24 = 2112;
-      v25 = v17;
+      v25 = shortDescription2;
       v26 = 2112;
-      v27 = v18;
+      v27 = shortDescription3;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_INFO, "%{public}@Not scheduling key roll operations for accessory: %@ as this user is not the admin owner of the home: %@", buf, 0x20u);
     }
 
@@ -1036,44 +1036,44 @@ LABEL_9:
   [v6 startSchedulingKeyRollOperations:0 forAccessory:v7];
 }
 
-- (void)_scheduleHH2AirPlayKeyRollIfNecessary:(id)a3
+- (void)_scheduleHH2AirPlayKeyRollIfNecessary:(id)necessary
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  necessaryCopy = necessary;
   if ([(HMDBackgroundOperationManager *)self shouldWeScheduleKeyRollOperationsOnThisDevice])
   {
-    v5 = [v4 home];
-    v6 = v5;
-    if (!v5 || [v5 isOwnerUser] && (objc_msgSend(v6, "isAdminUser") & 1) != 0)
+    home = [necessaryCopy home];
+    v6 = home;
+    if (!home || [home isOwnerUser] && (objc_msgSend(v6, "isAdminUser") & 1) != 0)
     {
       [(HMDBackgroundOperationManager *)self registerForNotifications];
       [(HMDBackgroundOperationManager *)self makeSureToLoadPairingIdentities];
-      v7 = [(HMDBackgroundOperationManager *)self queue];
+      queue = [(HMDBackgroundOperationManager *)self queue];
       v19[0] = MEMORY[0x277D85DD0];
       v19[1] = 3221225472;
       v19[2] = __91__HMDBackgroundOperationManager_ScheduleHH2KeyRoll___scheduleHH2AirPlayKeyRollIfNecessary___block_invoke;
       v19[3] = &unk_27868A750;
       v19[4] = self;
-      v20 = v4;
-      [v7 addOperationWithBlock:v19];
+      v20 = necessaryCopy;
+      [queue addOperationWithBlock:v19];
     }
 
     else
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v15 = HMFGetLogIdentifier();
-        v16 = [v4 shortDescription];
-        v17 = [v6 shortDescription];
+        shortDescription = [necessaryCopy shortDescription];
+        shortDescription2 = [v6 shortDescription];
         *buf = 138543874;
         v22 = v15;
         v23 = 2112;
-        v24 = v16;
+        v24 = shortDescription;
         v25 = 2112;
-        v26 = v17;
+        v26 = shortDescription2;
         _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_INFO, "%{public}@Not scheduling key roll operations for accessory: %@ as this user is not the admin owner of the home: %@", buf, 0x20u);
       }
 
@@ -1084,7 +1084,7 @@ LABEL_9:
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -1141,31 +1141,31 @@ void __91__HMDBackgroundOperationManager_ScheduleHH2KeyRoll___scheduleHH2AirPlay
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_scheduleKeyRollForAccessory:(id)a3
+- (BOOL)_scheduleKeyRollForAccessory:(id)accessory
 {
-  v3 = a3;
-  v4 = [v3 bridge];
+  accessoryCopy = accessory;
+  bridge = [accessoryCopy bridge];
 
-  if (v4)
+  if (bridge)
   {
     LOBYTE(v5) = 0;
   }
 
   else
   {
-    v5 = [v3 isDemoAccessory] ^ 1;
+    v5 = [accessoryCopy isDemoAccessory] ^ 1;
   }
 
   return v5;
 }
 
-- (void)scheduleHH2KeyRollForAirPlayAccessory:(id)a3
+- (void)scheduleHH2KeyRollForAirPlayAccessory:(id)accessory
 {
-  v4 = a3;
-  if (v4)
+  accessoryCopy = accessory;
+  if (accessoryCopy)
   {
-    v8 = v4;
-    [(HMDBackgroundOperationManager *)self _scheduleHH2AirPlayKeyRollIfNecessary:v4];
+    v8 = accessoryCopy;
+    [(HMDBackgroundOperationManager *)self _scheduleHH2AirPlayKeyRollIfNecessary:accessoryCopy];
   }
 
   else
@@ -1175,13 +1175,13 @@ void __91__HMDBackgroundOperationManager_ScheduleHH2KeyRoll___scheduleHH2AirPlay
   }
 }
 
-- (void)scheduleHH2KeyRollForAccessory:(id)a3
+- (void)scheduleHH2KeyRollForAccessory:(id)accessory
 {
-  v4 = a3;
-  if (v4)
+  accessoryCopy = accessory;
+  if (accessoryCopy)
   {
-    v7 = v4;
-    [(HMDBackgroundOperationManager *)self _scheduleHH2KeyRollIfNecessary:v4];
+    v7 = accessoryCopy;
+    [(HMDBackgroundOperationManager *)self _scheduleHH2KeyRollIfNecessary:accessoryCopy];
   }
 
   else
@@ -1198,20 +1198,20 @@ void __91__HMDBackgroundOperationManager_ScheduleHH2KeyRoll___scheduleHH2AirPlay
   return WeakRetained;
 }
 
-- (id)dumpStateWithPrivacyLevel:(unint64_t)a3
+- (id)dumpStateWithPrivacyLevel:(unint64_t)level
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = [(HMDBackgroundOperationManager *)self operationList];
-  v6 = [v4 arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  operationList = [(HMDBackgroundOperationManager *)self operationList];
+  v6 = [v4 arrayWithCapacity:{objc_msgSend(operationList, "count")}];
 
-  v7 = [(HMDBackgroundOperationManager *)self operationList];
+  operationList2 = [(HMDBackgroundOperationManager *)self operationList];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __59__HMDBackgroundOperationManager_dumpStateWithPrivacyLevel___block_invoke;
   v11[3] = &unk_27867A8C0;
   v12 = v6;
   v8 = v6;
-  [v7 hmf_enumerateWithAutoreleasePoolUsingBlock:v11];
+  [operationList2 hmf_enumerateWithAutoreleasePoolUsingBlock:v11];
 
   v9 = [v8 copy];
 
@@ -1225,23 +1225,23 @@ void __59__HMDBackgroundOperationManager_dumpStateWithPrivacyLevel___block_invok
   [v2 addObject:v3];
 }
 
-- (BOOL)scheduleOperationsWithDependenciesOnEachOtherFromArray:(id)a3
+- (BOOL)scheduleOperationsWithDependenciesOnEachOtherFromArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 1;
-  v5 = [(HMDBackgroundOperationManager *)self queue];
+  queue = [(HMDBackgroundOperationManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __88__HMDBackgroundOperationManager_scheduleOperationsWithDependenciesOnEachOtherFromArray___block_invoke;
   v8[3] = &unk_27868A4D8;
-  v6 = v4;
+  v6 = arrayCopy;
   v9 = v6;
-  v10 = self;
+  selfCopy = self;
   v11 = &v12;
-  [v5 addOperationWithBlock:v8];
+  [queue addOperationWithBlock:v8];
 
   LOBYTE(self) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
@@ -1356,28 +1356,28 @@ LABEL_8:
 
 - (id)__getReadyToExecuteOperations
 {
-  v3 = [(HMDBackgroundOperationManager *)self operationList];
-  v4 = [v3 hmf_isEmpty];
+  operationList = [(HMDBackgroundOperationManager *)self operationList];
+  hmf_isEmpty = [operationList hmf_isEmpty];
 
-  if (v4)
+  if (hmf_isEmpty)
   {
     v5 = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v7 = objc_autoreleasePoolPush();
     os_unfair_lock_lock_with_options();
-    v8 = [(HMDBackgroundOperationGraph *)self->_opGraph getIndependentVertices];
+    getIndependentVertices = [(HMDBackgroundOperationGraph *)self->_opGraph getIndependentVertices];
     operationList = self->_operationList;
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __62__HMDBackgroundOperationManager___getReadyToExecuteOperations__block_invoke;
     v12[3] = &unk_27867A898;
-    v10 = v8;
+    v10 = getIndependentVertices;
     v13 = v10;
-    v5 = v6;
+    v5 = array;
     v14 = v5;
     [(NSMutableArray *)operationList hmf_enumerateWithAutoreleasePoolUsingBlock:v12];
 
@@ -1402,30 +1402,30 @@ void __62__HMDBackgroundOperationManager___getReadyToExecuteOperations__block_in
   }
 }
 
-- (void)removeOperationsForAccessoryIdentifier:(id)a3 operationKind:(id)a4 withBlock:(id)a5
+- (void)removeOperationsForAccessoryIdentifier:(id)identifier operationKind:(id)kind withBlock:(id)block
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v9 && (v11 = [v9 hmf_isEmpty], v10) && !v11)
+  identifierCopy = identifier;
+  kindCopy = kind;
+  blockCopy = block;
+  if (kindCopy && (v11 = [kindCopy hmf_isEmpty], blockCopy) && !v11)
   {
-    v12 = [(HMDBackgroundOperationManager *)self operationList];
+    operationList = [(HMDBackgroundOperationManager *)self operationList];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __96__HMDBackgroundOperationManager_removeOperationsForAccessoryIdentifier_operationKind_withBlock___block_invoke;
     v18[3] = &unk_27867A960;
-    v19 = v9;
-    v20 = v8;
-    v21 = self;
-    v22 = v10;
-    [v12 hmf_enumerateWithAutoreleasePoolUsingBlock:v18];
+    v19 = kindCopy;
+    v20 = identifierCopy;
+    selfCopy = self;
+    v22 = blockCopy;
+    [operationList hmf_enumerateWithAutoreleasePoolUsingBlock:v18];
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -1508,29 +1508,29 @@ void __96__HMDBackgroundOperationManager_removeOperationsForAccessoryIdentifier_
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeOperationsForAccessoryIdentifier:(id)a3 operationKind:(id)a4
+- (void)removeOperationsForAccessoryIdentifier:(id)identifier operationKind:(id)kind
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && ![v7 hmf_isEmpty])
+  identifierCopy = identifier;
+  kindCopy = kind;
+  v8 = kindCopy;
+  if (kindCopy && ![kindCopy hmf_isEmpty])
   {
-    v13 = [(HMDBackgroundOperationManager *)self operationList];
+    operationList = [(HMDBackgroundOperationManager *)self operationList];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __86__HMDBackgroundOperationManager_removeOperationsForAccessoryIdentifier_operationKind___block_invoke;
     v15[3] = &unk_27867A938;
     v16 = v8;
-    v17 = v6;
-    v18 = self;
-    [v13 hmf_enumerateWithAutoreleasePoolUsingBlock:v15];
+    v17 = identifierCopy;
+    selfCopy = self;
+    [operationList hmf_enumerateWithAutoreleasePoolUsingBlock:v15];
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -1606,18 +1606,18 @@ void __86__HMDBackgroundOperationManager_removeOperationsForAccessoryIdentifier_
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeAllOperationForAccessoryIdentifier:(id)a3
+- (void)removeAllOperationForAccessoryIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(HMDBackgroundOperationManager *)self operationList];
+  identifierCopy = identifier;
+  operationList = [(HMDBackgroundOperationManager *)self operationList];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __74__HMDBackgroundOperationManager_removeAllOperationForAccessoryIdentifier___block_invoke;
   v7[3] = &unk_27867A898;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  [v5 hmf_enumerateWithAutoreleasePoolUsingBlock:v7];
+  v8 = identifierCopy;
+  selfCopy = self;
+  v6 = identifierCopy;
+  [operationList hmf_enumerateWithAutoreleasePoolUsingBlock:v7];
 }
 
 void __74__HMDBackgroundOperationManager_removeAllOperationForAccessoryIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -1676,7 +1676,7 @@ void __74__HMDBackgroundOperationManager_removeAllOperationForAccessoryIdentifie
   if ([(NSMutableArray *)self->_operationList count])
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = self;
+    selfCopy = self;
     v5 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -1687,22 +1687,22 @@ void __74__HMDBackgroundOperationManager_removeAllOperationForAccessoryIdentifie
     }
 
     objc_autoreleasePoolPop(v3);
-    v7 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     operationList = self->_operationList;
-    self->_operationList = v7;
+    self->_operationList = array;
   }
 
   os_unfair_lock_unlock(&self->_lock);
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)completeProcessingForOperation:(id)a3
+- (void)completeProcessingForOperation:(id)operation
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  operationCopy = operation;
   os_unfair_lock_lock_with_options();
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1710,26 +1710,26 @@ void __74__HMDBackgroundOperationManager_removeAllOperationForAccessoryIdentifie
     *buf = 138543618;
     v23 = v8;
     v24 = 2112;
-    v25 = v4;
+    v25 = operationCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@complete processing for : %@. Will remove it from the graph", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  opGraph = v6->_opGraph;
-  v10 = [v4 operationUUID];
-  [(HMDBackgroundOperationGraph *)opGraph removeVertex:v10];
+  opGraph = selfCopy->_opGraph;
+  operationUUID = [operationCopy operationUUID];
+  [(HMDBackgroundOperationGraph *)opGraph removeVertex:operationUUID];
 
-  [(NSMutableArray *)v6->_operationList removeObject:v4];
-  operationList = v6->_operationList;
+  [(NSMutableArray *)selfCopy->_operationList removeObject:operationCopy];
+  operationList = selfCopy->_operationList;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __64__HMDBackgroundOperationManager_completeProcessingForOperation___block_invoke;
   v20[3] = &unk_278685618;
-  v12 = v4;
+  v12 = operationCopy;
   v21 = v12;
   if ([(NSMutableArray *)operationList na_any:v20])
   {
-    v13 = v6->_operationList;
+    v13 = selfCopy->_operationList;
     v15 = MEMORY[0x277D85DD0];
     v16 = 3221225472;
     v17 = __64__HMDBackgroundOperationManager_completeProcessingForOperation___block_invoke_2;
@@ -1738,15 +1738,15 @@ void __74__HMDBackgroundOperationManager_removeAllOperationForAccessoryIdentifie
     [(NSMutableArray *)v13 hmf_enumerateWithAutoreleasePoolUsingBlock:&v15];
 
     os_unfair_lock_unlock(&self->_lock);
-    [(HMDBackgroundOperationManager *)v6 scheduleTimerToCheckAndRemoveExpiredOperation:v15];
-    [(HMDBackgroundOperationManager *)v6 evaluateOperations];
+    [(HMDBackgroundOperationManager *)selfCopy scheduleTimerToCheckAndRemoveExpiredOperation:v15];
+    [(HMDBackgroundOperationManager *)selfCopy evaluateOperations];
   }
 
   else
   {
 
     os_unfair_lock_unlock(&self->_lock);
-    [(HMDBackgroundOperationManager *)v6 scheduleTimerToCheckAndRemoveExpiredOperation];
+    [(HMDBackgroundOperationManager *)selfCopy scheduleTimerToCheckAndRemoveExpiredOperation];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -1770,12 +1770,12 @@ void __64__HMDBackgroundOperationManager_completeProcessingForOperation___block_
   [v3 removeDependency:v4];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
-  v4 = a3;
-  v5 = [(HMDBackgroundOperationManager *)self expirationTimer];
+  fireCopy = fire;
+  expirationTimer = [(HMDBackgroundOperationManager *)self expirationTimer];
 
-  if (v5 == v4)
+  if (expirationTimer == fireCopy)
   {
     [(HMDBackgroundOperationManager *)self checkAndRemoveExpiredOperations];
     [(HMDBackgroundOperationManager *)self scheduleTimerToCheckAndRemoveExpiredOperation];
@@ -1783,9 +1783,9 @@ void __64__HMDBackgroundOperationManager_completeProcessingForOperation___block_
 
   else
   {
-    v6 = [(HMDBackgroundOperationManager *)self deferralTimer];
+    deferralTimer = [(HMDBackgroundOperationManager *)self deferralTimer];
 
-    if (v6 == v4)
+    if (deferralTimer == fireCopy)
     {
       [(HMDBackgroundOperationManager *)self dataSourceHasUpdate:0];
       [(HMDBackgroundOperationManager *)self scheduleTimerToRetryDeferredOperations];
@@ -1793,9 +1793,9 @@ void __64__HMDBackgroundOperationManager_completeProcessingForOperation___block_
 
     else
     {
-      v7 = [(HMDBackgroundOperationManager *)self dataSourceCoalescingTimer];
+      dataSourceCoalescingTimer = [(HMDBackgroundOperationManager *)self dataSourceCoalescingTimer];
 
-      if (v7 == v4)
+      if (dataSourceCoalescingTimer == fireCopy)
       {
         queue = self->_queue;
         v9[0] = MEMORY[0x277D85DD0];
@@ -1811,10 +1811,10 @@ void __64__HMDBackgroundOperationManager_completeProcessingForOperation___block_
 
 - (void)scheduleTimerToRetryDeferredOperations
 {
-  v3 = [(HMDBackgroundOperationManager *)self operationList];
-  v4 = [v3 hmf_isEmpty];
+  operationList = [(HMDBackgroundOperationManager *)self operationList];
+  hmf_isEmpty = [operationList hmf_isEmpty];
 
-  if ((v4 & 1) == 0)
+  if ((hmf_isEmpty & 1) == 0)
   {
     v23 = 0;
     v24 = &v23;
@@ -1822,18 +1822,18 @@ void __64__HMDBackgroundOperationManager_completeProcessingForOperation___block_
     v26 = __Block_byref_object_copy__138955;
     v27 = __Block_byref_object_dispose__138956;
     v28 = 0;
-    v5 = [(HMDBackgroundOperationManager *)self currentDeviceStateDataSource];
-    v6 = [v5 currentDate];
+    currentDeviceStateDataSource = [(HMDBackgroundOperationManager *)self currentDeviceStateDataSource];
+    currentDate = [currentDeviceStateDataSource currentDate];
 
-    v7 = [(HMDBackgroundOperationManager *)self operationList];
+    operationList2 = [(HMDBackgroundOperationManager *)self operationList];
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __71__HMDBackgroundOperationManager_scheduleTimerToRetryDeferredOperations__block_invoke;
     v20 = &unk_27867A8E8;
-    v8 = v6;
+    v8 = currentDate;
     v21 = v8;
     v22 = &v23;
-    [v7 hmf_enumerateWithAutoreleasePoolUsingBlock:&v17];
+    [operationList2 hmf_enumerateWithAutoreleasePoolUsingBlock:&v17];
 
     v9 = v24[5];
     if (v9)
@@ -1843,17 +1843,17 @@ void __64__HMDBackgroundOperationManager_completeProcessingForOperation___block_
       if (v10 > 0.0)
       {
         os_unfair_lock_lock_with_options();
-        v12 = [(HMDBackgroundOperationManager *)self currentDeviceStateDataSource];
-        v13 = [v12 timerWithTimeInterval:1 options:@"deferralTimer" label:v11];
+        currentDeviceStateDataSource2 = [(HMDBackgroundOperationManager *)self currentDeviceStateDataSource];
+        v13 = [currentDeviceStateDataSource2 timerWithTimeInterval:1 options:@"deferralTimer" label:v11];
         deferralTimer = self->_deferralTimer;
         self->_deferralTimer = v13;
 
         os_unfair_lock_unlock(&self->_lock);
-        v15 = [(HMDBackgroundOperationManager *)self deferralTimer];
-        [v15 setDelegate:self];
+        deferralTimer = [(HMDBackgroundOperationManager *)self deferralTimer];
+        [deferralTimer setDelegate:self];
 
-        v16 = [(HMDBackgroundOperationManager *)self deferralTimer];
-        [v16 resume];
+        deferralTimer2 = [(HMDBackgroundOperationManager *)self deferralTimer];
+        [deferralTimer2 resume];
       }
     }
 
@@ -1898,13 +1898,13 @@ void __71__HMDBackgroundOperationManager_scheduleTimerToRetryDeferredOperations_
 
 - (void)scheduleTimerToCheckAndRemoveExpiredOperation
 {
-  v3 = [(HMDBackgroundOperationManager *)self operationList];
-  v4 = [v3 hmf_isEmpty];
+  operationList = [(HMDBackgroundOperationManager *)self operationList];
+  hmf_isEmpty = [operationList hmf_isEmpty];
 
-  if ((v4 & 1) == 0)
+  if ((hmf_isEmpty & 1) == 0)
   {
-    v5 = [(HMDBackgroundOperationManager *)self currentDeviceStateDataSource];
-    v6 = [v5 currentDate];
+    currentDeviceStateDataSource = [(HMDBackgroundOperationManager *)self currentDeviceStateDataSource];
+    currentDate = [currentDeviceStateDataSource currentDate];
 
     v23 = 0;
     v24 = &v23;
@@ -1912,15 +1912,15 @@ void __71__HMDBackgroundOperationManager_scheduleTimerToRetryDeferredOperations_
     v26 = __Block_byref_object_copy__138955;
     v27 = __Block_byref_object_dispose__138956;
     v28 = 0;
-    v7 = [(HMDBackgroundOperationManager *)self operationList];
+    operationList2 = [(HMDBackgroundOperationManager *)self operationList];
     v17 = MEMORY[0x277D85DD0];
     v18 = 3221225472;
     v19 = __78__HMDBackgroundOperationManager_scheduleTimerToCheckAndRemoveExpiredOperation__block_invoke;
     v20 = &unk_27867A8E8;
-    v8 = v6;
+    v8 = currentDate;
     v21 = v8;
     v22 = &v23;
-    [v7 hmf_enumerateWithAutoreleasePoolUsingBlock:&v17];
+    [operationList2 hmf_enumerateWithAutoreleasePoolUsingBlock:&v17];
 
     v9 = v24[5];
     if (v9)
@@ -1930,17 +1930,17 @@ void __71__HMDBackgroundOperationManager_scheduleTimerToRetryDeferredOperations_
       if (v10 > 0.0)
       {
         os_unfair_lock_lock_with_options();
-        v12 = [(HMDBackgroundOperationManager *)self currentDeviceStateDataSource];
-        v13 = [v12 timerWithTimeInterval:1 options:@"expirationTimer" label:v11];
+        currentDeviceStateDataSource2 = [(HMDBackgroundOperationManager *)self currentDeviceStateDataSource];
+        v13 = [currentDeviceStateDataSource2 timerWithTimeInterval:1 options:@"expirationTimer" label:v11];
         expirationTimer = self->_expirationTimer;
         self->_expirationTimer = v13;
 
         os_unfair_lock_unlock(&self->_lock);
-        v15 = [(HMDBackgroundOperationManager *)self expirationTimer];
-        [v15 setDelegate:self];
+        expirationTimer = [(HMDBackgroundOperationManager *)self expirationTimer];
+        [expirationTimer setDelegate:self];
 
-        v16 = [(HMDBackgroundOperationManager *)self expirationTimer];
-        [v16 resume];
+        expirationTimer2 = [(HMDBackgroundOperationManager *)self expirationTimer];
+        [expirationTimer2 resume];
       }
     }
 
@@ -2011,18 +2011,18 @@ void __64__HMDBackgroundOperationManager_checkAndRemoveExpiredOperations__block_
   }
 }
 
-- (void)_runOperation:(id)a3 withParameters:(id)a4
+- (void)_runOperation:(id)operation withParameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isReadyToRun])
+  operationCopy = operation;
+  parametersCopy = parameters;
+  if ([operationCopy isReadyToRun])
   {
-    v8 = [objc_opt_class() predicate];
-    v9 = [v8 evaluateWithObject:v7];
+    predicate = [objc_opt_class() predicate];
+    v9 = [predicate evaluateWithObject:parametersCopy];
 
     if (v9)
     {
-      objc_initWeak(&location, v6);
+      objc_initWeak(&location, operationCopy);
       v10 = MEMORY[0x277CCA8C8];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
@@ -2031,10 +2031,10 @@ void __64__HMDBackgroundOperationManager_checkAndRemoveExpiredOperations__block_
       objc_copyWeak(&v14, &location);
       v13[4] = self;
       v11 = [v10 blockOperationWithBlock:v13];
-      [v6 setScheduled:1];
-      [v11 setQualityOfService:{objc_msgSend(v6, "qualityOfService")}];
-      v12 = [(HMDBackgroundOperationManager *)self queue];
-      [v12 addOperation:v11];
+      [operationCopy setScheduled:1];
+      [v11 setQualityOfService:{objc_msgSend(operationCopy, "qualityOfService")}];
+      queue = [(HMDBackgroundOperationManager *)self queue];
+      [queue addOperation:v11];
 
       objc_destroyWeak(&v14);
       objc_destroyWeak(&location);
@@ -2101,19 +2101,19 @@ void __62__HMDBackgroundOperationManager__runOperation_withParameters___block_in
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_runOperationsAfterEvaluatingPredicate:(id)a3
+- (void)_runOperationsAfterEvaluatingPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [(HMDBackgroundOperationManager *)self __getReadyToExecuteOperations];
-  v6 = [v5 sortedArrayUsingComparator:&__block_literal_global_138978];
+  predicateCopy = predicate;
+  __getReadyToExecuteOperations = [(HMDBackgroundOperationManager *)self __getReadyToExecuteOperations];
+  v6 = [__getReadyToExecuteOperations sortedArrayUsingComparator:&__block_literal_global_138978];
 
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __72__HMDBackgroundOperationManager__runOperationsAfterEvaluatingPredicate___block_invoke_2;
   v8[3] = &unk_27867A898;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
+  v9 = predicateCopy;
+  selfCopy = self;
+  v7 = predicateCopy;
   [v6 hmf_enumerateWithAutoreleasePoolUsingBlock:v8];
 }
 
@@ -2168,17 +2168,17 @@ uint64_t __72__HMDBackgroundOperationManager__runOperationsAfterEvaluatingPredic
   return v10;
 }
 
-- (void)_dataSourceHasUpdate:(id)a3
+- (void)_dataSourceHasUpdate:(id)update
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDBackgroundOperationManager *)self operationList];
-  v6 = [v5 hmf_isEmpty];
+  updateCopy = update;
+  operationList = [(HMDBackgroundOperationManager *)self operationList];
+  hmf_isEmpty = [operationList hmf_isEmpty];
 
   v7 = objc_autoreleasePoolPush();
-  if (v6)
+  if (hmf_isEmpty)
   {
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
@@ -2186,24 +2186,24 @@ uint64_t __72__HMDBackgroundOperationManager__runOperationsAfterEvaluatingPredic
       *buf = 138543618;
       v17 = v10;
       v18 = 2112;
-      v19 = v4;
+      v19 = updateCopy;
       _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_DEBUG, "%{public}@No background operations to run. Not evaluating data source : [%@]", buf, 0x16u);
     }
   }
 
   else
   {
-    v11 = [MEMORY[0x277CBEB38] dictionary];
-    v12 = [(HMDBackgroundOperationManager *)self dataSourceList];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    dataSourceList = [(HMDBackgroundOperationManager *)self dataSourceList];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __54__HMDBackgroundOperationManager__dataSourceHasUpdate___block_invoke;
     v14[3] = &unk_27867A850;
-    v15 = v11;
-    v8 = v11;
-    [v12 hmf_enumerateWithAutoreleasePoolUsingBlock:v14];
+    v15 = dictionary;
+    selfCopy = dictionary;
+    [dataSourceList hmf_enumerateWithAutoreleasePoolUsingBlock:v14];
 
-    [(HMDBackgroundOperationManager *)self _runOperationsAfterEvaluatingPredicate:v8];
+    [(HMDBackgroundOperationManager *)self _runOperationsAfterEvaluatingPredicate:selfCopy];
     v9 = v15;
   }
 
@@ -2222,32 +2222,32 @@ void __54__HMDBackgroundOperationManager__dataSourceHasUpdate___block_invoke(uin
   [v2 setObject:v6 forKey:v5];
 }
 
-- (void)dataSourceHasUpdate:(id)a3
+- (void)dataSourceHasUpdate:(id)update
 {
-  v3 = [(HMDBackgroundOperationManager *)self dataSourceCoalescingTimer];
-  [v3 resume];
+  dataSourceCoalescingTimer = [(HMDBackgroundOperationManager *)self dataSourceCoalescingTimer];
+  [dataSourceCoalescingTimer resume];
 }
 
 - (void)addDefaultDataSources
 {
   dataSourceList = self->_dataSourceList;
   v4 = [HMDBackgroundOperationAccessoryManagerDataSource alloc];
-  v6 = [(HMDBackgroundOperationManager *)self notificationCenter];
-  v5 = [(HMDBackgroundOperationAccessoryManagerDataSource *)v4 initWithOperationManager:self notificationCenter:v6];
+  notificationCenter = [(HMDBackgroundOperationManager *)self notificationCenter];
+  v5 = [(HMDBackgroundOperationAccessoryManagerDataSource *)v4 initWithOperationManager:self notificationCenter:notificationCenter];
   [(NSMutableArray *)dataSourceList addObject:v5];
 }
 
-- (void)addDataSource:(id)a3
+- (void)addDataSource:(id)source
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  sourceCopy = source;
+  if (sourceCopy)
   {
     os_unfair_lock_lock_with_options();
-    if ([(NSMutableArray *)self->_dataSourceList containsObject:v4])
+    if ([(NSMutableArray *)self->_dataSourceList containsObject:sourceCopy])
     {
       v5 = objc_autoreleasePoolPush();
-      v6 = self;
+      selfCopy = self;
       v7 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
@@ -2255,7 +2255,7 @@ void __54__HMDBackgroundOperationManager__dataSourceHasUpdate___block_invoke(uin
         v14 = 138543618;
         v15 = v8;
         v16 = 2112;
-        v17 = v4;
+        v17 = sourceCopy;
         _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_ERROR, "%{public}@Could not add the operation as it already exist : %@", &v14, 0x16u);
       }
 
@@ -2264,7 +2264,7 @@ void __54__HMDBackgroundOperationManager__dataSourceHasUpdate___block_invoke(uin
 
     else
     {
-      [(NSMutableArray *)self->_dataSourceList addObject:v4];
+      [(NSMutableArray *)self->_dataSourceList addObject:sourceCopy];
     }
 
     os_unfair_lock_unlock(&self->_lock);
@@ -2273,7 +2273,7 @@ void __54__HMDBackgroundOperationManager__dataSourceHasUpdate___block_invoke(uin
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -2289,14 +2289,14 @@ void __54__HMDBackgroundOperationManager__dataSourceHasUpdate___block_invoke(uin
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeOperation:(id)a3
+- (void)removeOperation:(id)operation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  operationCopy = operation;
+  if (!operationCopy)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy2 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -2318,13 +2318,13 @@ LABEL_9:
   }
 
   [(HMDBackgroundOperationManager *)self checkAndRemoveExpiredOperations];
-  v5 = [(HMDBackgroundOperationManager *)self operationList];
-  v6 = [v5 containsObject:v4];
+  operationList = [(HMDBackgroundOperationManager *)self operationList];
+  v6 = [operationList containsObject:operationCopy];
 
   if ((v6 & 1) == 0)
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy2 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -2332,7 +2332,7 @@ LABEL_9:
       v16 = 138543618;
       v17 = v10;
       v18 = 2112;
-      v19 = v4;
+      v19 = operationCopy;
       v11 = "%{public}@Could not remove the operation as it was not found : %@";
       v12 = v9;
       v13 = OS_LOG_TYPE_INFO;
@@ -2343,22 +2343,22 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  [(HMDBackgroundOperationManager *)self completeProcessingForOperation:v4];
+  [(HMDBackgroundOperationManager *)self completeProcessingForOperation:operationCopy];
 LABEL_10:
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)addOperationDependency:(id)a3 dependsOn:(id)a4
+- (BOOL)addOperationDependency:(id)dependency dependsOn:(id)on
 {
   v49 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6 || !v7)
+  dependencyCopy = dependency;
+  onCopy = on;
+  v8 = onCopy;
+  if (!dependencyCopy || !onCopy)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -2374,7 +2374,7 @@ LABEL_10:
   if (HMFEqualObjects())
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -2392,19 +2392,19 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  [(HMDBackgroundOperationManager *)self addOperation:v6];
+  [(HMDBackgroundOperationManager *)self addOperation:dependencyCopy];
   os_unfair_lock_lock_with_options();
-  v17 = [(HMDBackgroundOperationManager *)self opGraph];
+  opGraph = [(HMDBackgroundOperationManager *)self opGraph];
   v18 = v8;
-  v19 = v17;
-  v20 = [v6 operationUUID];
-  v21 = [v18 operationUUID];
+  v19 = opGraph;
+  operationUUID = [dependencyCopy operationUUID];
+  operationUUID2 = [v18 operationUUID];
 
-  v22 = [v19 canAddEdgeFrom:v20 to:v21];
+  v22 = [v19 canAddEdgeFrom:operationUUID to:operationUUID2];
   if (v22)
   {
     v23 = objc_autoreleasePoolPush();
-    v24 = self;
+    selfCopy3 = self;
     v25 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
@@ -2414,7 +2414,7 @@ LABEL_10:
       v41 = 2112;
       v42 = v18;
       v43 = 2112;
-      v44 = v6;
+      v44 = dependencyCopy;
       _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_ERROR, "%{public}@Cycle detected while adding %@ to as dependency for %@", &v39, 0x20u);
     }
 
@@ -2424,35 +2424,35 @@ LABEL_10:
   }
 
   os_unfair_lock_unlock(&self->_lock);
-  v27 = [v18 operationUUID];
-  [v6 addDependency:v27];
+  operationUUID3 = [v18 operationUUID];
+  [dependencyCopy addDependency:operationUUID3];
 
   [(HMDBackgroundOperationManager *)self addOperation:v18];
-  v28 = [(HMDBackgroundOperationManager *)self opGraph];
-  v29 = [v6 operationUUID];
-  v30 = [v18 operationUUID];
-  [v28 addEdgeFrom:v29 to:v30];
+  opGraph2 = [(HMDBackgroundOperationManager *)self opGraph];
+  operationUUID4 = [dependencyCopy operationUUID];
+  operationUUID5 = [v18 operationUUID];
+  [opGraph2 addEdgeFrom:operationUUID4 to:operationUUID5];
 
   v31 = objc_autoreleasePoolPush();
-  v32 = self;
+  selfCopy4 = self;
   v33 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
   {
     v34 = HMFGetLogIdentifier();
     v35 = objc_opt_class();
-    v36 = [v6 operationUUID];
+    operationUUID6 = [dependencyCopy operationUUID];
     v37 = objc_opt_class();
-    v38 = [v18 operationUUID];
+    operationUUID7 = [v18 operationUUID];
     v39 = 138544386;
     v40 = v34;
     v41 = 2112;
     v42 = v35;
     v43 = 2112;
-    v44 = v36;
+    v44 = operationUUID6;
     v45 = 2112;
     v46 = v37;
     v47 = 2112;
-    v48 = v38;
+    v48 = operationUUID7;
     _os_log_impl(&dword_229538000, v33, OS_LOG_TYPE_INFO, "%{public}@%@/%@ depends on %@/%@", &v39, 0x34u);
   }
 
@@ -2464,28 +2464,28 @@ LABEL_11:
   return v14;
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  operationCopy = operation;
+  if (operationCopy)
   {
     [(HMDBackgroundOperationManager *)self checkAndRemoveExpiredOperations];
     os_unfair_lock_lock_with_options();
-    if (([(NSMutableArray *)self->_operationList containsObject:v4]& 1) != 0)
+    if (([(NSMutableArray *)self->_operationList containsObject:operationCopy]& 1) != 0)
     {
       os_unfair_lock_unlock(&self->_lock);
     }
 
     else
     {
-      [(NSMutableArray *)self->_operationList addObject:v4];
+      [(NSMutableArray *)self->_operationList addObject:operationCopy];
       opGraph = self->_opGraph;
-      v10 = [v4 operationUUID];
-      [(HMDBackgroundOperationGraph *)opGraph addVertex:v10];
+      operationUUID = [operationCopy operationUUID];
+      [(HMDBackgroundOperationGraph *)opGraph addVertex:operationUUID];
 
       v11 = objc_autoreleasePoolPush();
-      v12 = self;
+      selfCopy = self;
       v13 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
@@ -2493,20 +2493,20 @@ LABEL_11:
         v16 = 138543618;
         v17 = v14;
         v18 = 2112;
-        v19 = v4;
+        v19 = operationCopy;
         _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_INFO, "%{public}@Enqueued operation: %@", &v16, 0x16u);
       }
 
       objc_autoreleasePoolPop(v11);
       os_unfair_lock_unlock(&self->_lock);
-      [(HMDBackgroundOperationManager *)v12 scheduleTimerToCheckAndRemoveExpiredOperation];
+      [(HMDBackgroundOperationManager *)selfCopy scheduleTimerToCheckAndRemoveExpiredOperation];
     }
   }
 
   else
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy2 = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -2558,21 +2558,21 @@ LABEL_11:
   return v3;
 }
 
-- (HMDBackgroundOperationManager)initWithHomeManager:(id)a3 currentDeviceStateDataSource:(id)a4 notificationCenter:(id)a5
+- (HMDBackgroundOperationManager)initWithHomeManager:(id)manager currentDeviceStateDataSource:(id)source notificationCenter:(id)center
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  sourceCopy = source;
+  centerCopy = center;
   v26.receiver = self;
   v26.super_class = HMDBackgroundOperationManager;
   v11 = [(HMDBackgroundOperationManager *)&v26 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeWeak(&v11->_homeManager, v8);
-    v13 = [MEMORY[0x277CBEB18] array];
+    objc_storeWeak(&v11->_homeManager, managerCopy);
+    array = [MEMORY[0x277CBEB18] array];
     dataSourceList = v12->_dataSourceList;
-    v12->_dataSourceList = v13;
+    v12->_dataSourceList = array;
 
     v15 = objc_alloc_init(MEMORY[0x277CCABD8]);
     queue = v12->_queue;
@@ -2583,19 +2583,19 @@ LABEL_11:
     [(NSOperationQueue *)v12->_queue setName:v17];
 
     [(NSOperationQueue *)v12->_queue setQualityOfService:9];
-    objc_storeStrong(&v12->_currentDeviceStateDataSource, a4);
-    objc_storeStrong(&v12->_notificationCenter, a5);
+    objc_storeStrong(&v12->_currentDeviceStateDataSource, source);
+    objc_storeStrong(&v12->_notificationCenter, center);
     v12->_lock._os_unfair_lock_opaque = 0;
-    v18 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     operationList = v12->_operationList;
-    v12->_operationList = v18;
+    v12->_operationList = array2;
 
     v20 = [[HMDBackgroundOperationGraph alloc] initWithOperations:v12->_operationList];
     opGraph = v12->_opGraph;
     v12->_opGraph = v20;
 
-    v22 = [(HMDBackgroundOperationManager *)v12 currentDeviceStateDataSource];
-    v23 = [v22 timerWithTimeInterval:8 options:@"dataSourceCoalescingTimer" label:1.0];
+    currentDeviceStateDataSource = [(HMDBackgroundOperationManager *)v12 currentDeviceStateDataSource];
+    v23 = [currentDeviceStateDataSource timerWithTimeInterval:8 options:@"dataSourceCoalescingTimer" label:1.0];
     dataSourceCoalescingTimer = v12->_dataSourceCoalescingTimer;
     v12->_dataSourceCoalescingTimer = v23;
 
@@ -2608,35 +2608,35 @@ LABEL_11:
   return v12;
 }
 
-- (HMDBackgroundOperationManager)initWithHomeManager:(id)a3
+- (HMDBackgroundOperationManager)initWithHomeManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v5 = objc_alloc_init(HMDBackgroundOperationManagerCurrentDeviceStateDataSource);
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  v7 = [(HMDBackgroundOperationManager *)self initWithHomeManager:v4 currentDeviceStateDataSource:v5 notificationCenter:v6];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  v7 = [(HMDBackgroundOperationManager *)self initWithHomeManager:managerCopy currentDeviceStateDataSource:v5 notificationCenter:defaultCenter];
 
   return v7;
 }
 
-+ (id)findUserWithUUID:(id)a3 fromHomeManager:(id)a4
++ (id)findUserWithUUID:(id)d fromHomeManager:(id)manager
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  managerCopy = manager;
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = __Block_byref_object_copy__138955;
   v18 = __Block_byref_object_dispose__138956;
   v19 = 0;
-  v7 = [v6 homes];
+  homes = [managerCopy homes];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __66__HMDBackgroundOperationManager_findUserWithUUID_fromHomeManager___block_invoke;
   v11[3] = &unk_27867A9B0;
   v13 = &v14;
-  v8 = v5;
+  v8 = dCopy;
   v12 = v8;
-  [v7 hmf_enumerateWithAutoreleasePoolUsingBlock:v11];
+  [homes hmf_enumerateWithAutoreleasePoolUsingBlock:v11];
 
   v9 = v15[5];
   _Block_object_dispose(&v14, 8);
@@ -2657,17 +2657,17 @@ void __66__HMDBackgroundOperationManager_findUserWithUUID_fromHomeManager___bloc
   }
 }
 
-+ (id)findHomeUsingIdentifier:(id)a3 homeManager:(id)a4
++ (id)findHomeUsingIdentifier:(id)identifier homeManager:(id)manager
 {
-  v5 = a3;
-  v6 = [a4 homes];
+  identifierCopy = identifier;
+  homes = [manager homes];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__HMDBackgroundOperationManager_findHomeUsingIdentifier_homeManager___block_invoke;
   v10[3] = &unk_278685BA0;
-  v11 = v5;
-  v7 = v5;
-  v8 = [v6 na_firstObjectPassingTest:v10];
+  v11 = identifierCopy;
+  v7 = identifierCopy;
+  v8 = [homes na_firstObjectPassingTest:v10];
 
   return v8;
 }
@@ -2681,17 +2681,17 @@ uint64_t __69__HMDBackgroundOperationManager_findHomeUsingIdentifier_homeManager
   return v4;
 }
 
-+ (id)findAccessoryUsing:(id)a3 fromHome:(id)a4
++ (id)findAccessoryUsing:(id)using fromHome:(id)home
 {
-  v5 = a3;
-  v6 = [a4 accessories];
+  usingCopy = using;
+  accessories = [home accessories];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __61__HMDBackgroundOperationManager_findAccessoryUsing_fromHome___block_invoke;
   v10[3] = &unk_278681708;
-  v11 = v5;
-  v7 = v5;
-  v8 = [v6 na_firstObjectPassingTest:v10];
+  v11 = usingCopy;
+  v7 = usingCopy;
+  v8 = [accessories na_firstObjectPassingTest:v10];
 
   return v8;
 }
@@ -2705,16 +2705,16 @@ uint64_t __61__HMDBackgroundOperationManager_findAccessoryUsing_fromHome___block
   return v5;
 }
 
-+ (id)findAccessoryUsing:(id)a3 homeManager:(id)a4
++ (id)findAccessoryUsing:(id)using homeManager:(id)manager
 {
-  v6 = a3;
-  v7 = [a1 getAllPairedAccessoriesOfAllHomes:a4];
+  usingCopy = using;
+  v7 = [self getAllPairedAccessoriesOfAllHomes:manager];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __64__HMDBackgroundOperationManager_findAccessoryUsing_homeManager___block_invoke;
   v11[3] = &unk_278681708;
-  v12 = v6;
-  v8 = v6;
+  v12 = usingCopy;
+  v8 = usingCopy;
   v9 = [v7 na_firstObjectPassingTest:v11];
 
   return v9;
@@ -2729,17 +2729,17 @@ uint64_t __64__HMDBackgroundOperationManager_findAccessoryUsing_homeManager___bl
   return v5;
 }
 
-+ (id)findHomeWhereThisDeviceIsConfirmedPrimaryResident:(id)a3
++ (id)findHomeWhereThisDeviceIsConfirmedPrimaryResident:(id)resident
 {
-  v3 = [a3 homes];
-  v4 = [v3 na_firstObjectPassingTest:&__block_literal_global_47_139019];
+  homes = [resident homes];
+  v4 = [homes na_firstObjectPassingTest:&__block_literal_global_47_139019];
 
   return v4;
 }
 
-+ (id)getAllReachableAccessories:(id)a3
++ (id)getAllReachableAccessories:(id)accessories
 {
-  v3 = [a1 getAllPairedAccessoriesOfAllHomes:a3];
+  v3 = [self getAllPairedAccessoriesOfAllHomes:accessories];
   v4 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v3, "count")}];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;

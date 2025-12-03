@@ -1,7 +1,7 @@
 @interface VSSpeechAudioPowerService
 + (id)sharedServices;
 - (AFAudioPowerProviding)previousProvider;
-- (BOOL)getAveragePower:(float *)a3 andPeakPower:(float *)a4;
+- (BOOL)getAveragePower:(float *)power andPeakPower:(float *)peakPower;
 - (id)getCurrentAudioPowerProvider;
 - (void)didEndAccessPower;
 @end
@@ -15,27 +15,27 @@
   return WeakRetained;
 }
 
-- (BOOL)getAveragePower:(float *)a3 andPeakPower:(float *)a4
+- (BOOL)getAveragePower:(float *)power andPeakPower:(float *)peakPower
 {
-  v7 = [(VSSpeechAudioPowerService *)self getCurrentAudioPowerProvider];
-  v8 = v7 == 0;
-  if (!v7)
+  getCurrentAudioPowerProvider = [(VSSpeechAudioPowerService *)self getCurrentAudioPowerProvider];
+  v8 = getCurrentAudioPowerProvider == 0;
+  if (!getCurrentAudioPowerProvider)
   {
     goto LABEL_6;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_previousProvider);
 
-  if (v7 != WeakRetained)
+  if (getCurrentAudioPowerProvider != WeakRetained)
   {
     v10 = objc_loadWeakRetained(&self->_previousProvider);
     [v10 didEndAccessPower];
 
-    [v7 willBeginAccessPower];
-    objc_storeWeak(&self->_previousProvider, v7);
+    [getCurrentAudioPowerProvider willBeginAccessPower];
+    objc_storeWeak(&self->_previousProvider, getCurrentAudioPowerProvider);
   }
 
-  if ([v7 getAveragePower:a3 andPeakPower:a4])
+  if ([getCurrentAudioPowerProvider getAveragePower:power andPeakPower:peakPower])
   {
     v8 = 1;
   }
@@ -43,8 +43,8 @@
   else
   {
 LABEL_6:
-    *a3 = -120.0;
-    *a4 = -120.0;
+    *power = -120.0;
+    *peakPower = -120.0;
   }
 
   return v8;
@@ -61,28 +61,28 @@ LABEL_6:
 - (id)getCurrentAudioPowerProvider
 {
   v2 = +[VSSpeechTaskQueue mainDeviceQueue];
-  v3 = [v2 currentTask];
+  currentTask = [v2 currentTask];
 
-  if ([v3 conformsToProtocol:&unk_2881D6B48])
+  if ([currentTask conformsToProtocol:&unk_2881D6B48])
   {
-    v4 = v3;
+    v4 = currentTask;
     if ([v4 isSpeaking] && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v5 = [v4 audioPowerProvider];
+      audioPowerProvider = [v4 audioPowerProvider];
     }
 
     else
     {
-      v5 = 0;
+      audioPowerProvider = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    audioPowerProvider = 0;
   }
 
-  return v5;
+  return audioPowerProvider;
 }
 
 + (id)sharedServices

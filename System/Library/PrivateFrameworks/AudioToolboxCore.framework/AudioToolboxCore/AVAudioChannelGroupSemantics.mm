@@ -1,20 +1,20 @@
 @interface AVAudioChannelGroupSemantics
-- (AVAudioChannelGroupSemantics)initWithAudioChannelGroupSemantics:(const AudioChannelGroupSemantics *)a3;
-- (AVAudioChannelGroupSemantics)initWithChannelCount:(unsigned int)a3 semantics:(unsigned int)a4 terminalType:(unsigned int)a5 layout:(id)a6;
-- (AVAudioChannelGroupSemantics)initWithCoder:(id)a3;
+- (AVAudioChannelGroupSemantics)initWithAudioChannelGroupSemantics:(const AudioChannelGroupSemantics *)semantics;
+- (AVAudioChannelGroupSemantics)initWithChannelCount:(unsigned int)count semantics:(unsigned int)semantics terminalType:(unsigned int)type layout:(id)layout;
+- (AVAudioChannelGroupSemantics)initWithCoder:(id)coder;
 - (AVAudioChannelLayout)layout;
 - (AudioChannelGroupSemantics)createAudioChannelGroupSemantics;
 - (uint64_t)createAudioChannelGroupSemantics;
-- (void)encodeWithCoder:(id)a3;
-- (void)setLayout:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setLayout:(id)layout;
 @end
 
 @implementation AVAudioChannelGroupSemantics
 
-- (void)setLayout:(id)a3
+- (void)setLayout:(id)layout
 {
-  v6 = a3;
-  v4 = [objc_alloc(getAVAudioChannelLayoutClass()) initWithLayout:{objc_msgSend(v6, "layout")}];
+  layoutCopy = layout;
+  v4 = [objc_alloc(getAVAudioChannelLayoutClass()) initWithLayout:{objc_msgSend(layoutCopy, "layout")}];
   layout = self->_layout;
   self->_layout = v4;
 }
@@ -26,22 +26,22 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt:self->_channelCount forKey:@"channelCount"];
-  [v4 encodeInt:self->_semantics forKey:@"semantics"];
-  [v4 encodeInt:self->_terminalType forKey:@"terminalType"];
-  [v4 encodeObject:self->_layout forKey:@"layout"];
+  coderCopy = coder;
+  [coderCopy encodeInt:self->_channelCount forKey:@"channelCount"];
+  [coderCopy encodeInt:self->_semantics forKey:@"semantics"];
+  [coderCopy encodeInt:self->_terminalType forKey:@"terminalType"];
+  [coderCopy encodeObject:self->_layout forKey:@"layout"];
 }
 
-- (AVAudioChannelGroupSemantics)initWithCoder:(id)a3
+- (AVAudioChannelGroupSemantics)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntForKey:@"channelCount"];
-  v6 = [v4 decodeIntForKey:@"semantics"];
-  v7 = [v4 decodeIntForKey:@"terminalType"];
-  v8 = [v4 decodeObjectForKey:@"layout"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntForKey:@"channelCount"];
+  v6 = [coderCopy decodeIntForKey:@"semantics"];
+  v7 = [coderCopy decodeIntForKey:@"terminalType"];
+  v8 = [coderCopy decodeObjectForKey:@"layout"];
   v9 = [(AVAudioChannelGroupSemantics *)self initWithChannelCount:v5 semantics:v6 terminalType:v7 layout:v8];
 
   return v9;
@@ -74,16 +74,16 @@
 
 - (uint64_t)createAudioChannelGroupSemantics
 {
-  if (MEMORY[0x193ADF1D0]() > *a1)
+  if (MEMORY[0x193ADF1D0]() > *self)
   {
-    free(**(a1 + 8));
-    **(a1 + 8) = 0;
+    free(**(self + 8));
+    **(self + 8) = 0;
   }
 
-  return a1;
+  return self;
 }
 
-- (AVAudioChannelGroupSemantics)initWithAudioChannelGroupSemantics:(const AudioChannelGroupSemantics *)a3
+- (AVAudioChannelGroupSemantics)initWithAudioChannelGroupSemantics:(const AudioChannelGroupSemantics *)semantics
 {
   v9.receiver = self;
   v9.super_class = AVAudioChannelGroupSemantics;
@@ -91,10 +91,10 @@
   v5 = v4;
   if (v4)
   {
-    v4->_channelCount = a3->var0;
-    v4->_semantics = a3->var1;
-    v4->_terminalType = a3->var2;
-    v6 = [objc_alloc(getAVAudioChannelLayoutClass()) initWithLayout:&a3->var3];
+    v4->_channelCount = semantics->var0;
+    v4->_semantics = semantics->var1;
+    v4->_terminalType = semantics->var2;
+    v6 = [objc_alloc(getAVAudioChannelLayoutClass()) initWithLayout:&semantics->var3];
     layout = v5->_layout;
     v5->_layout = v6;
   }
@@ -102,19 +102,19 @@
   return v5;
 }
 
-- (AVAudioChannelGroupSemantics)initWithChannelCount:(unsigned int)a3 semantics:(unsigned int)a4 terminalType:(unsigned int)a5 layout:(id)a6
+- (AVAudioChannelGroupSemantics)initWithChannelCount:(unsigned int)count semantics:(unsigned int)semantics terminalType:(unsigned int)type layout:(id)layout
 {
-  v11 = a6;
+  layoutCopy = layout;
   v15.receiver = self;
   v15.super_class = AVAudioChannelGroupSemantics;
   v12 = [(AVAudioChannelGroupSemantics *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_terminalType = a5;
-    v12->_channelCount = a3;
-    v12->_semantics = a4;
-    objc_storeStrong(&v12->_layout, a6);
+    v12->_terminalType = type;
+    v12->_channelCount = count;
+    v12->_semantics = semantics;
+    objc_storeStrong(&v12->_layout, layout);
   }
 
   return v13;

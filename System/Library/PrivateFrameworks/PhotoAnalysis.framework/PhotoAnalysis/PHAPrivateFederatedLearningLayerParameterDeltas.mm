@@ -1,40 +1,40 @@
 @interface PHAPrivateFederatedLearningLayerParameterDeltas
-+ (id)deltasFromLayerParameters:(id)a3 toLayerParameters:(id)a4;
-- (PHAPrivateFederatedLearningLayerParameterDeltas)initWithWeightDeltas:(id)a3 biasDeltas:(id)a4;
++ (id)deltasFromLayerParameters:(id)parameters toLayerParameters:(id)layerParameters;
+- (PHAPrivateFederatedLearningLayerParameterDeltas)initWithWeightDeltas:(id)deltas biasDeltas:(id)biasDeltas;
 @end
 
 @implementation PHAPrivateFederatedLearningLayerParameterDeltas
 
-- (PHAPrivateFederatedLearningLayerParameterDeltas)initWithWeightDeltas:(id)a3 biasDeltas:(id)a4
+- (PHAPrivateFederatedLearningLayerParameterDeltas)initWithWeightDeltas:(id)deltas biasDeltas:(id)biasDeltas
 {
-  v7 = a3;
-  v8 = a4;
+  deltasCopy = deltas;
+  biasDeltasCopy = biasDeltas;
   v12.receiver = self;
   v12.super_class = PHAPrivateFederatedLearningLayerParameterDeltas;
   v9 = [(PHAPrivateFederatedLearningLayerParameterDeltas *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_weightDeltas, a3);
-    objc_storeStrong(&v10->_biasDeltas, a4);
+    objc_storeStrong(&v9->_weightDeltas, deltas);
+    objc_storeStrong(&v10->_biasDeltas, biasDeltas);
   }
 
   return v10;
 }
 
-+ (id)deltasFromLayerParameters:(id)a3 toLayerParameters:(id)a4
++ (id)deltasFromLayerParameters:(id)parameters toLayerParameters:(id)layerParameters
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
-  v9 = [v7 weights];
-  v10 = [v6 weights];
-  v11 = [v9 vectorBySubtractingVector:v10];
-  v12 = [v7 bias];
+  layerParametersCopy = layerParameters;
+  parametersCopy = parameters;
+  v8 = [self alloc];
+  weights = [parametersCopy weights];
+  weights2 = [layerParametersCopy weights];
+  v11 = [weights vectorBySubtractingVector:weights2];
+  bias = [parametersCopy bias];
 
-  v13 = [v6 bias];
+  bias2 = [layerParametersCopy bias];
 
-  v14 = [v12 vectorBySubtractingVector:v13];
+  v14 = [bias vectorBySubtractingVector:bias2];
   v15 = [v8 initWithWeightDeltas:v11 biasDeltas:v14];
 
   return v15;

@@ -1,12 +1,12 @@
 @interface RouteLargeStepLabelListView
-+ (id)fontsForStrings:(id)a3 route:(id)a4 step:(id)a5 tableMode:(BOOL)a6;
++ (id)fontsForStrings:(id)strings route:(id)route step:(id)step tableMode:(BOOL)mode;
 @end
 
 @implementation RouteLargeStepLabelListView
 
-+ (id)fontsForStrings:(id)a3 route:(id)a4 step:(id)a5 tableMode:(BOOL)a6
++ (id)fontsForStrings:(id)strings route:(id)route step:(id)step tableMode:(BOOL)mode
 {
-  v6 = [a3 count];
+  v6 = [strings count];
   v7 = [NSMutableArray arrayWithCapacity:v6];
   v8 = [UIFont _maps_boldSystemFontWithSize:35.0];
   [v7 addObject:v8];

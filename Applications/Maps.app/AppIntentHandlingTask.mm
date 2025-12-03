@@ -1,5 +1,5 @@
 @interface AppIntentHandlingTask
-- (AppIntentHandlingTask)initWithMapsAction:(id)a3;
+- (AppIntentHandlingTask)initWithMapsAction:(id)action;
 - (void)performTask;
 @end
 
@@ -12,16 +12,16 @@
   [(RichMapsActivityCreatingTaskImpl *)self taskFinished:v3];
 }
 
-- (AppIntentHandlingTask)initWithMapsAction:(id)a3
+- (AppIntentHandlingTask)initWithMapsAction:(id)action
 {
-  v5 = a3;
+  actionCopy = action;
   v9.receiver = self;
   v9.super_class = AppIntentHandlingTask;
   v6 = [(AppIntentHandlingTask *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_mapsAction, a3);
+    objc_storeStrong(&v6->_mapsAction, action);
   }
 
   return v7;

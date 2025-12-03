@@ -1,23 +1,23 @@
 @interface PalmspringCrashlogInfoEntry
-- (PalmspringCrashlogInfoEntry)initWithUniqueID:(unsigned __int8)a3 type:(unsigned __int8)a4 headerAndRawBlobSize:(unsigned int)a5 name:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PalmspringCrashlogInfoEntry)initWithUniqueID:(unsigned __int8)d type:(unsigned __int8)type headerAndRawBlobSize:(unsigned int)size name:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PalmspringCrashlogInfoEntry
 
-- (PalmspringCrashlogInfoEntry)initWithUniqueID:(unsigned __int8)a3 type:(unsigned __int8)a4 headerAndRawBlobSize:(unsigned int)a5 name:(id)a6
+- (PalmspringCrashlogInfoEntry)initWithUniqueID:(unsigned __int8)d type:(unsigned __int8)type headerAndRawBlobSize:(unsigned int)size name:(id)name
 {
-  v10 = a6;
+  nameCopy = name;
   v17.receiver = self;
   v17.super_class = PalmspringCrashlogInfoEntry;
   v11 = [(PalmspringCrashlogInfoEntry *)&v17 init];
   v12 = v11;
   if (v11)
   {
-    v11->_uniqueID = a3;
-    v11->_type = a4;
-    v11->_headerAndRawBlobSize = a5;
-    v13 = [v10 copy];
+    v11->_uniqueID = d;
+    v11->_type = type;
+    v11->_headerAndRawBlobSize = size;
+    v13 = [nameCopy copy];
     name = v12->_name;
     v12->_name = v13;
 
@@ -27,9 +27,9 @@
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [PalmspringCrashlogInfoEntry allocWithZone:a3];
+  v4 = [PalmspringCrashlogInfoEntry allocWithZone:zone];
   uniqueID = self->_uniqueID;
   type = self->_type;
   headerAndRawBlobSize = self->_headerAndRawBlobSize;

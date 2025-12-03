@@ -1,12 +1,12 @@
 @interface VCPProtoVideoKeyFrame
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoVideoKeyFrame
@@ -17,48 +17,48 @@
   v8.receiver = self;
   v8.super_class = VCPProtoVideoKeyFrame;
   v4 = [(VCPProtoVideoKeyFrame *)&v8 description];
-  v5 = [(VCPProtoVideoKeyFrame *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoVideoKeyFrame *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   timestamp = self->_timestamp;
   if (timestamp)
   {
-    v6 = [(VCPProtoTime *)timestamp dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"timestamp"];
+    dictionaryRepresentation = [(VCPProtoTime *)timestamp dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"timestamp"];
   }
 
   *&v4 = self->_curationScore;
   v7 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v7 forKey:@"curationScore"];
+  [dictionary setObject:v7 forKey:@"curationScore"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteSubmessage();
   PBDataWriterWriteFloatField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   timestamp = self->_timestamp;
-  v5 = a3;
-  [v5 setTimestamp:timestamp];
-  v5[2] = self->_curationScore;
+  toCopy = to;
+  [toCopy setTimestamp:timestamp];
+  toCopy[2] = self->_curationScore;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(VCPProtoTime *)self->_timestamp copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(VCPProtoTime *)self->_timestamp copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -66,10 +66,10 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v6 = [v4 isMemberOfClass:objc_opt_class()] && ((timestamp = self->_timestamp, !(timestamp | *(v4 + 2))) || -[VCPProtoTime isEqual:](timestamp, "isEqual:")) && self->_curationScore == *(v4 + 2);
+  equalCopy = equal;
+  v6 = [equalCopy isMemberOfClass:objc_opt_class()] && ((timestamp = self->_timestamp, !(timestamp | *(equalCopy + 2))) || -[VCPProtoTime isEqual:](timestamp, "isEqual:")) && self->_curationScore == *(equalCopy + 2);
 
   return v6;
 }
@@ -105,11 +105,11 @@
   return v11 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   timestamp = self->_timestamp;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (timestamp)
   {
     if (!v6)
@@ -117,7 +117,7 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(VCPProtoTime *)timestamp mergeFrom:?];
   }
 
@@ -128,13 +128,13 @@
       goto LABEL_7;
     }
 
-    v7 = v4;
+    v7 = fromCopy;
     [(VCPProtoVideoKeyFrame *)self setTimestamp:?];
   }
 
-  v4 = v7;
+  fromCopy = v7;
 LABEL_7:
-  self->_curationScore = *(v4 + 2);
+  self->_curationScore = *(fromCopy + 2);
 }
 
 @end

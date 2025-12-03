@@ -1,27 +1,27 @@
 @interface HistoryListHeaderView
-- (_TtC24MenstrualCyclesAppPlugin21HistoryListHeaderView)initWithCoder:(id)a3;
-- (_TtC24MenstrualCyclesAppPlugin21HistoryListHeaderView)initWithFrame:(CGRect)a3;
+- (_TtC24MenstrualCyclesAppPlugin21HistoryListHeaderView)initWithCoder:(id)coder;
+- (_TtC24MenstrualCyclesAppPlugin21HistoryListHeaderView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation HistoryListHeaderView
 
-- (_TtC24MenstrualCyclesAppPlugin21HistoryListHeaderView)initWithFrame:(CGRect)a3
+- (_TtC24MenstrualCyclesAppPlugin21HistoryListHeaderView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = OBJC_IVAR____TtC24MenstrualCyclesAppPlugin21HistoryListHeaderView_headerLabel;
   *(&self->super.super.super.super.isa + v8) = [objc_allocWithZone(MEMORY[0x29EDC7B38]) init];
   v11.receiver = self;
   v11.super_class = type metadata accessor for HistoryListHeaderView();
-  v9 = [(HistoryListHeaderView *)&v11 initWithFrame:x, y, width, height];
+  height = [(HistoryListHeaderView *)&v11 initWithFrame:x, y, width, height];
   sub_29E27E404();
 
-  return v9;
+  return height;
 }
 
-- (_TtC24MenstrualCyclesAppPlugin21HistoryListHeaderView)initWithCoder:(id)a3
+- (_TtC24MenstrualCyclesAppPlugin21HistoryListHeaderView)initWithCoder:(id)coder
 {
   v3 = OBJC_IVAR____TtC24MenstrualCyclesAppPlugin21HistoryListHeaderView_headerLabel;
   *(&self->super.super.super.super.isa + v3) = [objc_allocWithZone(MEMORY[0x29EDC7B38]) init];

@@ -1,17 +1,17 @@
 @interface _DPDediscoHPKEEncryption
-+ (id)encryptWithPublicKey:(id)a3 info:(id)a4 inputShare:(id)a5 additionalData:(id)a6 error:(id *)a7;
++ (id)encryptWithPublicKey:(id)key info:(id)info inputShare:(id)share additionalData:(id)data error:(id *)error;
 + (id)generatePublicKey;
 - (_DPDediscoHPKEEncryption)init;
 @end
 
 @implementation _DPDediscoHPKEEncryption
 
-+ (id)encryptWithPublicKey:(id)a3 info:(id)a4 inputShare:(id)a5 additionalData:(id)a6 error:(id *)a7
++ (id)encryptWithPublicKey:(id)key info:(id)info inputShare:(id)share additionalData:(id)data error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  keyCopy = key;
+  infoCopy = info;
+  shareCopy = share;
+  dataCopy = data;
   v14 = sub_100050300();
   v16 = v15;
 

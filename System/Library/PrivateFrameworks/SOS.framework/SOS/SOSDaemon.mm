@@ -3,8 +3,8 @@
 - (SOSDaemon)init;
 - (id)keepAliveFileDirectory;
 - (id)keepAliveFilePath;
-- (void)SOSHasActiveTriggerChanged:(id)a3;
-- (void)SOSSendingLocationUpdateChanged:(id)a3;
+- (void)SOSHasActiveTriggerChanged:(id)changed;
+- (void)SOSSendingLocationUpdateChanged:(id)changed;
 - (void)createKeepAlivePathStateFile;
 - (void)dealloc;
 - (void)deleteKeepAlivePathStateFile;
@@ -78,8 +78,8 @@
     v4->_xpcListener = v14;
 
     v16 = v4->_xpcListener;
-    v17 = [(SOSEngine *)v4->_sosEngine sosStatusManager];
-    [(NSXPCListener *)v16 setDelegate:v17];
+    sosStatusManager = [(SOSEngine *)v4->_sosEngine sosStatusManager];
+    [(NSXPCListener *)v16 setDelegate:sosStatusManager];
 
     [(NSXPCListener *)v4->_xpcListener resume];
     v18 = notify_register_dispatch(SOSD_CONNECTION_REQUEST_NOTIFICATION_NAME, &v4->_notifyToken, &_dispatch_main_q, &stru_100004270);
@@ -117,22 +117,22 @@
   [(SOSDaemon *)&v5 dealloc];
 }
 
-- (void)SOSSendingLocationUpdateChanged:(id)a3
+- (void)SOSSendingLocationUpdateChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = sub_10000225C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v4;
+    v10 = changedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "notification: %@", &v9, 0xCu);
   }
 
-  v6 = [v4 userInfo];
-  v7 = [v6 objectForKeyedSubscript:SOSSendingLocationUpdateValueKey];
-  v8 = [v7 BOOLValue];
+  userInfo = [changedCopy userInfo];
+  v7 = [userInfo objectForKeyedSubscript:SOSSendingLocationUpdateValueKey];
+  bOOLValue = [v7 BOOLValue];
 
-  if (v8)
+  if (bOOLValue)
   {
     [(SOSDaemon *)self startSendingLocationUpdateNotification];
   }
@@ -174,9 +174,9 @@
   }
 }
 
-- (void)SOSHasActiveTriggerChanged:(id)a3
+- (void)SOSHasActiveTriggerChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = sub_10000225C();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -184,9 +184,9 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "SOSDaemon, SOSHasActiveTriggerChanged", v8, 2u);
   }
 
-  v6 = [v4 userInfo];
+  userInfo = [changedCopy userInfo];
 
-  v7 = [v6 objectForKeyedSubscript:SOSHasActiveTriggerValueKey];
+  v7 = [userInfo objectForKeyedSubscript:SOSHasActiveTriggerValueKey];
   self->_sosIsStarting = [v7 BOOLValue];
 
   if (self->_sosIsStarting)
@@ -291,9 +291,9 @@
 
 - (id)keepAliveFilePath
 {
-  v3 = [(SOSDaemon *)self keepAliveFileDirectory];
-  v4 = [(SOSDaemon *)self keepAliveFilename];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  keepAliveFileDirectory = [(SOSDaemon *)self keepAliveFileDirectory];
+  keepAliveFilename = [(SOSDaemon *)self keepAliveFilename];
+  v5 = [keepAliveFileDirectory stringByAppendingPathComponent:keepAliveFilename];
 
   return v5;
 }
@@ -301,22 +301,22 @@
 - (void)createKeepAlivePathStateFile
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(SOSDaemon *)self keepAliveFilePath];
-  v5 = [v3 fileExistsAtPath:v4 isDirectory:0];
+  keepAliveFilePath = [(SOSDaemon *)self keepAliveFilePath];
+  v5 = [v3 fileExistsAtPath:keepAliveFilePath isDirectory:0];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(SOSDaemon *)self keepAliveFileDirectory];
+    keepAliveFileDirectory = [(SOSDaemon *)self keepAliveFileDirectory];
     v17 = 0;
-    v7 = [v3 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:&v17];
+    v7 = [v3 createDirectoryAtPath:keepAliveFileDirectory withIntermediateDirectories:1 attributes:0 error:&v17];
     v8 = v17;
 
     v9 = sub_10000225C();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(SOSDaemon *)self keepAliveFileDirectory];
+      keepAliveFileDirectory2 = [(SOSDaemon *)self keepAliveFileDirectory];
       *buf = 138412802;
-      v19 = v10;
+      v19 = keepAliveFileDirectory2;
       v20 = 1024;
       v21 = v7;
       v22 = 2112;
@@ -324,17 +324,17 @@
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Created directory at path %@ with success: %d error: %@", buf, 0x1Cu);
     }
 
-    v11 = [(SOSDaemon *)self keepAliveFilePath];
+    keepAliveFilePath2 = [(SOSDaemon *)self keepAliveFilePath];
     v16 = 0;
-    v12 = [@"SOS_in_progress\n" writeToFile:v11 atomically:1 encoding:4 error:&v16];
+    v12 = [@"SOS_in_progress\n" writeToFile:keepAliveFilePath2 atomically:1 encoding:4 error:&v16];
     v13 = v16;
 
     v14 = sub_10000225C();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = [(SOSDaemon *)self keepAliveFilePath];
+      keepAliveFilePath3 = [(SOSDaemon *)self keepAliveFilePath];
       *buf = 138412802;
-      v19 = v15;
+      v19 = keepAliveFilePath3;
       v20 = 1024;
       v21 = v12;
       v22 = 2112;
@@ -347,17 +347,17 @@
 - (void)deleteKeepAlivePathStateFile
 {
   v3 = +[NSFileManager defaultManager];
-  v4 = [(SOSDaemon *)self keepAliveFilePath];
+  keepAliveFilePath = [(SOSDaemon *)self keepAliveFilePath];
   v9 = 0;
-  v5 = [v3 removeItemAtPath:v4 error:&v9];
+  v5 = [v3 removeItemAtPath:keepAliveFilePath error:&v9];
   v6 = v9;
 
   v7 = sub_10000225C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(SOSDaemon *)self keepAliveFilePath];
+    keepAliveFilePath2 = [(SOSDaemon *)self keepAliveFilePath];
     *buf = 138412802;
-    v11 = v8;
+    v11 = keepAliveFilePath2;
     v12 = 1024;
     v13 = v5;
     v14 = 2112;

@@ -1,18 +1,18 @@
 @interface PKAutoFillCardCredential
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFPANCardCredential:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFPANCardCredential:(id)credential;
 - (NSString)expiration;
-- (PKAutoFillCardCredential)initWithCardholderName:(id)a3 pan:(id)a4 expiration:(id)a5 securityCode:(id)a6 billingAddress:(id)a7;
-- (PKAutoFillCardCredential)initWithCardholderName:(id)a3 pan:(id)a4 expirationDate:(id)a5 securityCode:(id)a6 billingAddress:(id)a7;
-- (PKAutoFillCardCredential)initWithCoder:(id)a3;
-- (PKAutoFillCardCredential)initWithVirtualCard:(id)a3 credential:(id)a4;
+- (PKAutoFillCardCredential)initWithCardholderName:(id)name pan:(id)pan expiration:(id)expiration securityCode:(id)code billingAddress:(id)address;
+- (PKAutoFillCardCredential)initWithCardholderName:(id)name pan:(id)pan expirationDate:(id)date securityCode:(id)code billingAddress:(id)address;
+- (PKAutoFillCardCredential)initWithCoder:(id)coder;
+- (PKAutoFillCardCredential)initWithVirtualCard:(id)card credential:(id)credential;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)_copyInto:(id)a3 zone:(_NSZone *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)_copyInto:(id)into zone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAutoFillCardCredential
@@ -32,78 +32,78 @@
   return v2;
 }
 
-- (PKAutoFillCardCredential)initWithCardholderName:(id)a3 pan:(id)a4 expirationDate:(id)a5 securityCode:(id)a6 billingAddress:(id)a7
+- (PKAutoFillCardCredential)initWithCardholderName:(id)name pan:(id)pan expirationDate:(id)date securityCode:(id)code billingAddress:(id)address
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(PKAutoFillCardCredential *)self _init];
-  if (v17)
+  nameCopy = name;
+  panCopy = pan;
+  dateCopy = date;
+  codeCopy = code;
+  addressCopy = address;
+  _init = [(PKAutoFillCardCredential *)self _init];
+  if (_init)
   {
-    v18 = [v12 copy];
-    cardholderName = v17->_cardholderName;
-    v17->_cardholderName = v18;
+    v18 = [nameCopy copy];
+    cardholderName = _init->_cardholderName;
+    _init->_cardholderName = v18;
 
-    v20 = [v13 pk_zString];
-    primaryAccountNumber = v17->_primaryAccountNumber;
-    v17->_primaryAccountNumber = v20;
+    pk_zString = [panCopy pk_zString];
+    primaryAccountNumber = _init->_primaryAccountNumber;
+    _init->_primaryAccountNumber = pk_zString;
 
-    objc_storeStrong(&v17->_expirationDate, a5);
-    v22 = [v15 copy];
-    v23 = [v22 pk_zString];
-    securityCode = v17->_securityCode;
-    v17->_securityCode = v23;
+    objc_storeStrong(&_init->_expirationDate, date);
+    v22 = [codeCopy copy];
+    pk_zString2 = [v22 pk_zString];
+    securityCode = _init->_securityCode;
+    _init->_securityCode = pk_zString2;
 
-    v25 = [v16 copy];
-    billingAddress = v17->_billingAddress;
-    v17->_billingAddress = v25;
+    v25 = [addressCopy copy];
+    billingAddress = _init->_billingAddress;
+    _init->_billingAddress = v25;
   }
 
-  return v17;
+  return _init;
 }
 
-- (PKAutoFillCardCredential)initWithCardholderName:(id)a3 pan:(id)a4 expiration:(id)a5 securityCode:(id)a6 billingAddress:(id)a7
+- (PKAutoFillCardCredential)initWithCardholderName:(id)name pan:(id)pan expiration:(id)expiration securityCode:(id)code billingAddress:(id)address
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [(PKAutoFillCardCredential *)self _init];
-  v18 = v17;
-  if (v17)
+  nameCopy = name;
+  panCopy = pan;
+  expirationCopy = expiration;
+  codeCopy = code;
+  addressCopy = address;
+  _init = [(PKAutoFillCardCredential *)self _init];
+  v18 = _init;
+  if (_init)
   {
-    v19 = [v17[1] dateFromString:v14];
-    v18 = [(PKAutoFillCardCredential *)v18 initWithCardholderName:v12 pan:v13 expirationDate:v19 securityCode:v15 billingAddress:v16];
+    v19 = [_init[1] dateFromString:expirationCopy];
+    v18 = [(PKAutoFillCardCredential *)v18 initWithCardholderName:nameCopy pan:panCopy expirationDate:v19 securityCode:codeCopy billingAddress:addressCopy];
   }
 
   return v18;
 }
 
-- (PKAutoFillCardCredential)initWithVirtualCard:(id)a3 credential:(id)a4
+- (PKAutoFillCardCredential)initWithVirtualCard:(id)card credential:(id)credential
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKAutoFillCardCredential *)self _init];
-  if (!v8)
+  cardCopy = card;
+  credentialCopy = credential;
+  _init = [(PKAutoFillCardCredential *)self _init];
+  if (!_init)
   {
     goto LABEL_16;
   }
 
-  v24 = [v6 cardholderName];
-  v9 = [v24 copy];
-  v23 = v9;
-  if (v9)
+  cardholderName = [cardCopy cardholderName];
+  nameFromSafari = [cardholderName copy];
+  v23 = nameFromSafari;
+  if (nameFromSafari)
   {
     v22 = 0;
   }
 
   else
   {
-    v9 = [v6 nameFromSafari];
-    if (!v9)
+    nameFromSafari = [cardCopy nameFromSafari];
+    if (!nameFromSafari)
     {
       v22 = 1;
       v26 = PKMeContactFullName();
@@ -112,30 +112,30 @@
     }
 
     v22 = 0;
-    v20 = v9;
+    v20 = nameFromSafari;
   }
 
-  v26 = v9;
+  v26 = nameFromSafari;
 LABEL_7:
-  v21 = [v7 primaryAccountNumber];
-  v10 = [v21 pk_zString];
-  expirationDateFormatter = v8->_expirationDateFormatter;
-  v12 = [v7 expiration];
-  v13 = v12;
-  if (!v12)
+  primaryAccountNumber = [credentialCopy primaryAccountNumber];
+  pk_zString = [primaryAccountNumber pk_zString];
+  expirationDateFormatter = _init->_expirationDateFormatter;
+  expiration = [credentialCopy expiration];
+  expiration2 = expiration;
+  if (!expiration)
   {
-    v13 = [v6 expiration];
+    expiration2 = [cardCopy expiration];
   }
 
-  v14 = [(NSDateFormatter *)expirationDateFormatter dateFromString:v13];
-  v15 = [v7 cardSecurityCode];
-  v16 = [v15 pk_zString];
-  v25 = v6;
-  v17 = [v6 billingAddress];
-  v18 = [v17 copy];
-  v8 = [(PKAutoFillCardCredential *)v8 initWithCardholderName:v26 pan:v10 expirationDate:v14 securityCode:v16 billingAddress:v18];
+  v14 = [(NSDateFormatter *)expirationDateFormatter dateFromString:expiration2];
+  cardSecurityCode = [credentialCopy cardSecurityCode];
+  pk_zString2 = [cardSecurityCode pk_zString];
+  v25 = cardCopy;
+  billingAddress = [cardCopy billingAddress];
+  v18 = [billingAddress copy];
+  _init = [(PKAutoFillCardCredential *)_init initWithCardholderName:v26 pan:pk_zString expirationDate:v14 securityCode:pk_zString2 billingAddress:v18];
 
-  if (!v12)
+  if (!expiration)
   {
   }
 
@@ -143,56 +143,56 @@ LABEL_7:
   {
   }
 
-  v6 = v25;
+  cardCopy = v25;
   if (!v23)
   {
   }
 
 LABEL_16:
-  return v8;
+  return _init;
 }
 
-- (PKAutoFillCardCredential)initWithCoder:(id)a3
+- (PKAutoFillCardCredential)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PKAutoFillCardCredential *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(PKAutoFillCardCredential *)self _init];
+  if (_init)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cardholderName"];
-    cardholderName = v5->_cardholderName;
-    v5->_cardholderName = v6;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cardholderName"];
+    cardholderName = _init->_cardholderName;
+    _init->_cardholderName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pan"];
-    v9 = [v8 pk_zString];
-    primaryAccountNumber = v5->_primaryAccountNumber;
-    v5->_primaryAccountNumber = v9;
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pan"];
+    pk_zString = [v8 pk_zString];
+    primaryAccountNumber = _init->_primaryAccountNumber;
+    _init->_primaryAccountNumber = pk_zString;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
-    expirationDate = v5->_expirationDate;
-    v5->_expirationDate = v11;
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"expirationDate"];
+    expirationDate = _init->_expirationDate;
+    _init->_expirationDate = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"securityCode"];
-    v14 = [v13 pk_zString];
-    securityCode = v5->_securityCode;
-    v5->_securityCode = v14;
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"securityCode"];
+    pk_zString2 = [v13 pk_zString];
+    securityCode = _init->_securityCode;
+    _init->_securityCode = pk_zString2;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"billingAddress"];
-    billingAddress = v5->_billingAddress;
-    v5->_billingAddress = v16;
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"billingAddress"];
+    billingAddress = _init->_billingAddress;
+    _init->_billingAddress = v16;
   }
 
-  return v5;
+  return _init;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   cardholderName = self->_cardholderName;
-  v5 = a3;
-  [v5 encodeObject:cardholderName forKey:@"cardholderName"];
-  [v5 encodeObject:self->_primaryAccountNumber forKey:@"pan"];
-  [v5 encodeObject:self->_expirationDate forKey:@"expirationDate"];
-  [v5 encodeObject:self->_securityCode forKey:@"securityCode"];
-  [v5 encodeObject:self->_billingAddress forKey:@"billingAddress"];
+  coderCopy = coder;
+  [coderCopy encodeObject:cardholderName forKey:@"cardholderName"];
+  [coderCopy encodeObject:self->_primaryAccountNumber forKey:@"pan"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"expirationDate"];
+  [coderCopy encodeObject:self->_securityCode forKey:@"securityCode"];
+  [coderCopy encodeObject:self->_billingAddress forKey:@"billingAddress"];
 }
 
 - (id)description
@@ -247,11 +247,11 @@ LABEL_16:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_cardholderName)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_primaryAccountNumber)
@@ -279,28 +279,28 @@ LABEL_16:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAutoFillCardCredential *)self isEqualToFPANCardCredential:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAutoFillCardCredential *)self isEqualToFPANCardCredential:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToFPANCardCredential:(id)a3
+- (BOOL)isEqualToFPANCardCredential:(id)credential
 {
-  v4 = a3;
+  credentialCopy = credential;
   cardholderName = self->_cardholderName;
-  v6 = v4[3];
+  v6 = credentialCopy[3];
   if (cardholderName)
   {
     v7 = v6 == 0;
@@ -325,7 +325,7 @@ LABEL_16:
   }
 
   primaryAccountNumber = self->_primaryAccountNumber;
-  v9 = v4[4];
+  v9 = credentialCopy[4];
   if (primaryAccountNumber && v9)
   {
     if (([(NSString *)primaryAccountNumber isEqual:?]& 1) == 0)
@@ -340,7 +340,7 @@ LABEL_16:
   }
 
   expirationDate = self->_expirationDate;
-  v11 = v4[2];
+  v11 = credentialCopy[2];
   if (expirationDate && v11)
   {
     if (([(NSDate *)expirationDate isEqual:?]& 1) == 0)
@@ -355,7 +355,7 @@ LABEL_16:
   }
 
   securityCode = self->_securityCode;
-  v13 = v4[5];
+  v13 = credentialCopy[5];
   if (!securityCode || !v13)
   {
     if (securityCode == v13)
@@ -375,7 +375,7 @@ LABEL_26:
 
 LABEL_22:
   billingAddress = self->_billingAddress;
-  v15 = v4[6];
+  v15 = credentialCopy[6];
   if (billingAddress && v15)
   {
     v16 = [(CNContact *)billingAddress isEqual:?];
@@ -391,52 +391,52 @@ LABEL_27:
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [+[PKAutoFillCardCredential allocWithZone:](PKAutoFillCardCredential _init];
-  [(PKAutoFillCardCredential *)self _copyInto:v5 zone:a3];
-  return v5;
+  _init = [+[PKAutoFillCardCredential allocWithZone:](PKAutoFillCardCredential _init];
+  [(PKAutoFillCardCredential *)self _copyInto:_init zone:zone];
+  return _init;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v5 = [(PKAutoFillCardCredential *)[PKMutableAutofillCardCredential alloc] _init];
-  [(PKAutoFillCardCredential *)self _copyInto:v5 zone:a3];
-  return v5;
+  _init = [(PKAutoFillCardCredential *)[PKMutableAutofillCardCredential alloc] _init];
+  [(PKAutoFillCardCredential *)self _copyInto:_init zone:zone];
+  return _init;
 }
 
-- (void)_copyInto:(id)a3 zone:(_NSZone *)a4
+- (void)_copyInto:(id)into zone:(_NSZone *)zone
 {
   cardholderName = self->_cardholderName;
-  v7 = a3;
-  v8 = [(NSString *)cardholderName copyWithZone:a4];
-  v9 = v7[3];
-  v7[3] = v8;
+  intoCopy = into;
+  v8 = [(NSString *)cardholderName copyWithZone:zone];
+  v9 = intoCopy[3];
+  intoCopy[3] = v8;
 
-  v10 = [(NSString *)self->_primaryAccountNumber copyWithZone:a4];
-  v11 = [v10 pk_zString];
-  v12 = v7[4];
-  v7[4] = v11;
+  v10 = [(NSString *)self->_primaryAccountNumber copyWithZone:zone];
+  pk_zString = [v10 pk_zString];
+  v12 = intoCopy[4];
+  intoCopy[4] = pk_zString;
 
-  v13 = [(NSDate *)self->_expirationDate copyWithZone:a4];
-  v14 = v7[2];
-  v7[2] = v13;
+  v13 = [(NSDate *)self->_expirationDate copyWithZone:zone];
+  v14 = intoCopy[2];
+  intoCopy[2] = v13;
 
-  v15 = [(NSString *)self->_securityCode copyWithZone:a4];
-  v16 = [v15 pk_zString];
-  v17 = v7[5];
-  v7[5] = v16;
+  v15 = [(NSString *)self->_securityCode copyWithZone:zone];
+  pk_zString2 = [v15 pk_zString];
+  v17 = intoCopy[5];
+  intoCopy[5] = pk_zString2;
 
-  v18 = [(CNContact *)self->_billingAddress copyWithZone:a4];
-  v19 = v7[6];
-  v7[6] = v18;
+  v18 = [(CNContact *)self->_billingAddress copyWithZone:zone];
+  v19 = intoCopy[6];
+  intoCopy[6] = v18;
 }
 
 - (NSString)expiration
 {
   expirationDateFormatter = self->_expirationDateFormatter;
-  v3 = [(PKAutoFillCardCredential *)self expirationDate];
-  v4 = [(NSDateFormatter *)expirationDateFormatter stringFromDate:v3];
+  expirationDate = [(PKAutoFillCardCredential *)self expirationDate];
+  v4 = [(NSDateFormatter *)expirationDateFormatter stringFromDate:expirationDate];
 
   return v4;
 }

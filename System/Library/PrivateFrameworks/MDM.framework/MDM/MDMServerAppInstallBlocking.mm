@@ -2,9 +2,9 @@
 - (BOOL)isAppInstallBlocked;
 - (MDMServerAppInstallBlocking)init;
 - (MDMServerCore)server;
-- (void)blockAppInstallsWithCompletion:(id)a3;
+- (void)blockAppInstallsWithCompletion:(id)completion;
 - (void)didUnblockAppInstalls;
-- (void)unblockAppInstallsWithCompletion:(id)a3;
+- (void)unblockAppInstallsWithCompletion:(id)completion;
 @end
 
 @implementation MDMServerAppInstallBlocking
@@ -26,23 +26,23 @@
 
 - (BOOL)isAppInstallBlocked
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(MDMServerAppInstallBlocking *)self appBlockQueue];
+  appBlockQueue = [(MDMServerAppInstallBlocking *)self appBlockQueue];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __50__MDMServerAppInstallBlocking_isAppInstallBlocked__block_invoke;
   v5[3] = &unk_27982BB40;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(appBlockQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 void __50__MDMServerAppInstallBlocking_isAppInstallBlocked__block_invoke(uint64_t a1)
@@ -51,9 +51,9 @@ void __50__MDMServerAppInstallBlocking_isAppInstallBlocked__block_invoke(uint64_
   *(*(*(a1 + 40) + 8) + 24) = v2 != 0;
 }
 
-- (void)blockAppInstallsWithCompletion:(id)a3
+- (void)blockAppInstallsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = *(DMCLogObjects() + 8);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -61,15 +61,15 @@ void __50__MDMServerAppInstallBlocking_isAppInstallBlocked__block_invoke(uint64_
     _os_log_impl(&dword_2561F5000, v5, OS_LOG_TYPE_DEFAULT, "block app installs, server block", buf, 2u);
   }
 
-  v6 = [(MDMServerAppInstallBlocking *)self appBlockQueue];
+  appBlockQueue = [(MDMServerAppInstallBlocking *)self appBlockQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __62__MDMServerAppInstallBlocking_blockAppInstallsWithCompletion___block_invoke;
   v8[3] = &unk_27982CA78;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_sync(appBlockQueue, v8);
 }
 
 void __62__MDMServerAppInstallBlocking_blockAppInstallsWithCompletion___block_invoke(uint64_t a1)
@@ -108,9 +108,9 @@ void __62__MDMServerAppInstallBlocking_blockAppInstallsWithCompletion___block_in
   }
 }
 
-- (void)unblockAppInstallsWithCompletion:(id)a3
+- (void)unblockAppInstallsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = *(DMCLogObjects() + 8);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -118,15 +118,15 @@ void __62__MDMServerAppInstallBlocking_blockAppInstallsWithCompletion___block_in
     _os_log_impl(&dword_2561F5000, v5, OS_LOG_TYPE_DEFAULT, "block app installs, server unblock", buf, 2u);
   }
 
-  v6 = [(MDMServerAppInstallBlocking *)self appBlockQueue];
+  appBlockQueue = [(MDMServerAppInstallBlocking *)self appBlockQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __64__MDMServerAppInstallBlocking_unblockAppInstallsWithCompletion___block_invoke;
   v8[3] = &unk_27982CA78;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = completionCopy;
+  v7 = completionCopy;
+  dispatch_sync(appBlockQueue, v8);
 }
 
 uint64_t __64__MDMServerAppInstallBlocking_unblockAppInstallsWithCompletion___block_invoke(uint64_t a1)
@@ -166,8 +166,8 @@ uint64_t __64__MDMServerAppInstallBlocking_unblockAppInstallsWithCompletion___bl
 
 - (void)didUnblockAppInstalls
 {
-  v2 = [(MDMServerAppInstallBlocking *)self server];
-  [v2 retryNotNowWithCompletion:&__block_literal_global_6];
+  server = [(MDMServerAppInstallBlocking *)self server];
+  [server retryNotNowWithCompletion:&__block_literal_global_6];
 }
 
 void __52__MDMServerAppInstallBlocking_didUnblockAppInstalls__block_invoke(uint64_t a1, void *a2)

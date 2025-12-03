@@ -7,44 +7,44 @@
 - (NSNumber)totalAnimationDuration;
 - (NSString)currentLanguage;
 - (SASBookendViewProvider)init;
-- (SASBookendViewProvider)initWithBookendType:(unint64_t)a3 callbacks:(id)a4;
+- (SASBookendViewProvider)initWithBookendType:(unint64_t)type callbacks:(id)callbacks;
 - (UIView)view;
 - (id)animationConstrainingView;
 - (void)advanceToEndOfAnimation;
 - (void)pauseAnimation;
-- (void)setAnimationConfiguration:(id)a3;
-- (void)setBackgroundData:(id)a3;
-- (void)setBackgroundTexture:(id)a3;
-- (void)setBackgroundTextureDataSource:(id)a3;
-- (void)setCallbackConfiguration:(id)a3;
-- (void)setView:(id)a3;
-- (void)shouldRenderBackgroundTexture:(BOOL)a3;
+- (void)setAnimationConfiguration:(id)configuration;
+- (void)setBackgroundData:(id)data;
+- (void)setBackgroundTexture:(id)texture;
+- (void)setBackgroundTextureDataSource:(id)source;
+- (void)setCallbackConfiguration:(id)configuration;
+- (void)setView:(id)view;
+- (void)shouldRenderBackgroundTexture:(BOOL)texture;
 - (void)startAnimation;
 - (void)stopAnimation;
-- (void)updateLanguages:(id)a3;
+- (void)updateLanguages:(id)languages;
 @end
 
 @implementation SASBookendViewProvider
 
 - (UIView)view
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_265A66D7C();
 
   return v3;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
   v4 = *(&self->super.isa + OBJC_IVAR___SASBookendViewProvider____lazy_storage___view);
-  *(&self->super.isa + OBJC_IVAR___SASBookendViewProvider____lazy_storage___view) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___SASBookendViewProvider____lazy_storage___view) = view;
+  viewCopy = view;
 }
 
-- (SASBookendViewProvider)initWithBookendType:(unint64_t)a3 callbacks:(id)a4
+- (SASBookendViewProvider)initWithBookendType:(unint64_t)type callbacks:(id)callbacks
 {
-  v6 = a4;
-  v7 = sub_265A69688(a3, a4);
+  callbacksCopy = callbacks;
+  v7 = sub_265A69688(type, callbacks);
 
   return v7;
 }
@@ -54,7 +54,7 @@
   v3 = *&self->$__lazy_storage_$_view[OBJC_IVAR___SASBookendViewProvider_viewWrapper];
   ObjectType = swift_getObjectType();
   v5 = *(v3 + 24);
-  v6 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
   v7 = v5(ObjectType, v3);
   v9 = v8;
@@ -87,13 +87,13 @@ LABEL_6:
 
 - (NSNumber)totalAnimationDuration
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SASBookendViewProvider.totalAnimationDuration.getter();
 
   return v3;
 }
 
-- (void)setCallbackConfiguration:(id)a3
+- (void)setCallbackConfiguration:(id)configuration
 {
   v5 = *(&self->super.isa + OBJC_IVAR___SASBookendViewProvider_viewWrapper);
   swift_getObjectType();
@@ -113,15 +113,15 @@ LABEL_6:
     v8 = v6;
     ObjectType = swift_getObjectType();
     v10 = *(v8 + 48);
-    v11 = a3;
-    v12 = self;
+    configurationCopy = configuration;
+    selfCopy = self;
     swift_unknownObjectRetain();
-    v10(a3, ObjectType, v8);
+    v10(configuration, ObjectType, v8);
     swift_unknownObjectRelease();
   }
 }
 
-- (void)setAnimationConfiguration:(id)a3
+- (void)setAnimationConfiguration:(id)configuration
 {
   v5 = *(&self->super.isa + OBJC_IVAR___SASBookendViewProvider_viewWrapper);
   swift_getObjectType();
@@ -141,10 +141,10 @@ LABEL_6:
     v8 = v6;
     ObjectType = swift_getObjectType();
     v10 = *(v8 + 40);
-    v11 = a3;
-    v12 = self;
+    configurationCopy = configuration;
+    selfCopy = self;
     swift_unknownObjectRetain();
-    v10(v11, ObjectType, v8);
+    v10(configurationCopy, ObjectType, v8);
     swift_unknownObjectRelease();
   }
 }
@@ -154,7 +154,7 @@ LABEL_6:
   v3 = *&self->$__lazy_storage_$_view[OBJC_IVAR___SASBookendViewProvider_viewWrapper];
   ObjectType = swift_getObjectType();
   v5 = *(v3 + 24);
-  v6 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
   v7 = v5(ObjectType, v3);
   v9 = v8;
@@ -179,7 +179,7 @@ LABEL_6:
   v3 = *&self->$__lazy_storage_$_view[OBJC_IVAR___SASBookendViewProvider_viewWrapper];
   ObjectType = swift_getObjectType();
   v5 = *(v3 + 24);
-  v6 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
   v7 = v5(ObjectType, v3);
   v9 = v8;
@@ -201,39 +201,39 @@ LABEL_6:
 
 - (void)advanceToEndOfAnimation
 {
-  v2 = self;
+  selfCopy = self;
   SASBookendViewProvider.advanceToEndOfAnimation()();
 }
 
 - (void)startAnimation
 {
-  v2 = self;
+  selfCopy = self;
   SASBookendViewProvider.startAnimation()();
 }
 
 - (void)stopAnimation
 {
-  v2 = self;
+  selfCopy = self;
   SASBookendViewProvider.stopAnimation()();
 }
 
 - (void)pauseAnimation
 {
-  v2 = self;
+  selfCopy = self;
   SASBookendViewProvider.pauseAnimation()();
 }
 
-- (void)updateLanguages:(id)a3
+- (void)updateLanguages:(id)languages
 {
   v4 = sub_265AA7640();
-  v5 = self;
+  selfCopy = self;
   SASBookendViewProvider.updateLanguages(_:)(v4);
 }
 
-- (void)setBackgroundData:(id)a3
+- (void)setBackgroundData:(id)data
 {
-  v4 = a3;
-  v8 = self;
+  dataCopy = data;
+  selfCopy = self;
   v5 = sub_265AA6D90();
   v7 = v6;
 
@@ -241,29 +241,29 @@ LABEL_6:
   sub_265A6572C(v5, v7);
 }
 
-- (void)setBackgroundTexture:(id)a3
+- (void)setBackgroundTexture:(id)texture
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  SASBookendViewProvider.setBackgroundTexture(_:)(a3);
+  selfCopy = self;
+  SASBookendViewProvider.setBackgroundTexture(_:)(texture);
   swift_unknownObjectRelease();
 }
 
-- (void)setBackgroundTextureDataSource:(id)a3
+- (void)setBackgroundTextureDataSource:(id)source
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  SASBookendViewProvider.setBackgroundTextureDataSource(_:)(a3);
+  selfCopy = self;
+  SASBookendViewProvider.setBackgroundTextureDataSource(_:)(source);
   swift_unknownObjectRelease();
 }
 
-- (void)shouldRenderBackgroundTexture:(BOOL)a3
+- (void)shouldRenderBackgroundTexture:(BOOL)texture
 {
-  v3 = a3;
+  textureCopy = texture;
   v5 = *&self->$__lazy_storage_$_view[OBJC_IVAR___SASBookendViewProvider_viewWrapper];
   ObjectType = swift_getObjectType();
   v7 = *(v5 + 24);
-  v12 = self;
+  selfCopy = self;
   swift_unknownObjectRetain();
   v8 = v7(ObjectType, v5);
   v10 = v9;
@@ -271,7 +271,7 @@ LABEL_6:
   if (v8)
   {
     v11 = swift_getObjectType();
-    (*(v10 + 40))(v3, v11, v10);
+    (*(v10 + 40))(textureCopy, v11, v10);
     swift_unknownObjectRelease();
   }
 }
@@ -279,9 +279,9 @@ LABEL_6:
 + (BOOL)willShowAnimationWithLogo
 {
   v2 = [objc_allocWithZone(SASBookendViewProvider) initWithBookendType:0 callbacks:0];
-  v3 = [v2 willAnimateWithLogo];
+  willAnimateWithLogo = [v2 willAnimateWithLogo];
 
-  return v3;
+  return willAnimateWithLogo;
 }
 
 - (CGImage)layerSnapshot
@@ -309,7 +309,7 @@ LABEL_6:
     v6 = v4;
     ObjectType = swift_getObjectType();
     v8 = *(v6 + 56);
-    v9 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     v10 = v8(ObjectType, v6);
     swift_unknownObjectRelease();
@@ -344,7 +344,7 @@ LABEL_6:
     v10 = v4;
     ObjectType = swift_getObjectType();
     v12 = *(v10 + 72);
-    v13 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     v14 = v12(ObjectType, v10);
     v16 = v15;
@@ -390,7 +390,7 @@ LABEL_6:
     v6 = v4;
     ObjectType = swift_getObjectType();
     v8 = *(v6 + 64);
-    v9 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     v10 = v8(ObjectType, v6);
     swift_unknownObjectRelease();

@@ -1,23 +1,23 @@
 @interface CAMSlashContainer
-- (CAMSlashContainer)initWithFrame:(CGRect)a3;
+- (CAMSlashContainer)initWithFrame:(CGRect)frame;
 - (CGSize)intrinsicContentSize;
 - (CGSize)slashSize;
 - (UIEdgeInsets)alignmentRectInsets;
-- (void)_updateOrientationAnimated:(BOOL)a3;
-- (void)_updateSlashAnimated:(BOOL)a3;
+- (void)_updateOrientationAnimated:(BOOL)animated;
+- (void)_updateSlashAnimated:(BOOL)animated;
 - (void)layoutSubviews;
-- (void)setContentView:(id)a3;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setSlashed:(BOOL)a3 animated:(BOOL)a4;
+- (void)setContentView:(id)view;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setSlashed:(BOOL)slashed animated:(BOOL)animated;
 @end
 
 @implementation CAMSlashContainer
 
-- (CAMSlashContainer)initWithFrame:(CGRect)a3
+- (CAMSlashContainer)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = CAMSlashContainer;
-  v3 = [(CAMSlashContainer *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMSlashContainer *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -30,8 +30,8 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = [(CAMSlashContainer *)self contentView];
-  [v2 intrinsicContentSize];
+  contentView = [(CAMSlashContainer *)self contentView];
+  [contentView intrinsicContentSize];
   v4 = v3;
   v6 = v5;
 
@@ -44,8 +44,8 @@
 
 - (UIEdgeInsets)alignmentRectInsets
 {
-  v2 = [(CAMSlashContainer *)self contentView];
-  [v2 alignmentRectInsets];
+  contentView = [(CAMSlashContainer *)self contentView];
+  [contentView alignmentRectInsets];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -70,22 +70,22 @@
   v8 = v7;
   v10 = v9;
   UIRectGetCenter();
-  v11 = [(CAMSlashContainer *)self traitCollection];
-  [v11 displayScale];
+  traitCollection = [(CAMSlashContainer *)self traitCollection];
+  [traitCollection displayScale];
 
-  v12 = [(CAMSlashContainer *)self contentView];
-  CAMViewSetBoundsAndCenterForFrame(v12, v4, v6, v8, v10);
+  contentView = [(CAMSlashContainer *)self contentView];
+  CAMViewSetBoundsAndCenterForFrame(contentView, v4, v6, v8, v10);
 
-  v13 = [(CAMSlashContainer *)self _slashView];
-  if (v13)
+  _slashView = [(CAMSlashContainer *)self _slashView];
+  if (_slashView)
   {
-    v14 = v13;
-    v15 = [(CAMSlashContainer *)self _slashMaskView];
+    v14 = _slashView;
+    _slashMaskView = [(CAMSlashContainer *)self _slashMaskView];
 
-    if (v15)
+    if (_slashMaskView)
     {
-      v16 = [(CAMSlashContainer *)self _slashMaskView];
-      CAMViewSetBoundsAndCenterForFrame(v16, v4, v6, v8, v10);
+      _slashMaskView2 = [(CAMSlashContainer *)self _slashMaskView];
+      CAMViewSetBoundsAndCenterForFrame(_slashMaskView2, v4, v6, v8, v10);
 
       [(CAMSlashContainer *)self slashSize];
       CEKRectWithSize();
@@ -97,104 +97,104 @@
       UIRectGetCenter();
       v26 = v25;
       v28 = v27;
-      v29 = [(CAMSlashContainer *)self _slashView];
-      [v29 setCenter:{v26, v28}];
-      [v29 setBounds:{v18, v20, v22, v24}];
+      _slashView2 = [(CAMSlashContainer *)self _slashView];
+      [_slashView2 setCenter:{v26, v28}];
+      [_slashView2 setBounds:{v18, v20, v22, v24}];
       [(CAMSlashContainer *)self _updateSlashAnimated:0];
     }
   }
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    self->_orientation = a3;
-    [(CAMSlashContainer *)self _updateOrientationAnimated:a4];
+    self->_orientation = orientation;
+    [(CAMSlashContainer *)self _updateOrientationAnimated:animated];
   }
 }
 
-- (void)_updateOrientationAnimated:(BOOL)a3
+- (void)_updateOrientationAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CAMSlashContainer *)self orientation];
-  v6 = [(CAMSlashContainer *)self contentView];
-  [CAMView rotateView:v6 toInterfaceOrientation:v5 animated:v3];
+  animatedCopy = animated;
+  orientation = [(CAMSlashContainer *)self orientation];
+  contentView = [(CAMSlashContainer *)self contentView];
+  [CAMView rotateView:contentView toInterfaceOrientation:orientation animated:animatedCopy];
 
-  v7 = [(CAMSlashContainer *)self _slashView];
-  [CAMView rotateView:v7 toInterfaceOrientation:v5 animated:v3];
+  _slashView = [(CAMSlashContainer *)self _slashView];
+  [CAMView rotateView:_slashView toInterfaceOrientation:orientation animated:animatedCopy];
 }
 
-- (void)setContentView:(id)a3
+- (void)setContentView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   contentView = self->_contentView;
-  if (contentView != v5)
+  if (contentView != viewCopy)
   {
-    v10 = v5;
-    v7 = [(UIView *)contentView superview];
+    v10 = viewCopy;
+    superview = [(UIView *)contentView superview];
 
-    if (v7 == self)
+    if (superview == self)
     {
       [(UIView *)self->_contentView removeFromSuperview];
     }
 
-    v8 = [(CAMSlashContainer *)self _slashMaskView];
-    v9 = [(UIView *)self->_contentView maskView];
+    _slashMaskView = [(CAMSlashContainer *)self _slashMaskView];
+    maskView = [(UIView *)self->_contentView maskView];
 
-    if (v9 == v8)
+    if (maskView == _slashMaskView)
     {
       [(UIView *)self->_contentView setMaskView:0];
     }
 
-    objc_storeStrong(&self->_contentView, a3);
+    objc_storeStrong(&self->_contentView, view);
     [(CAMSlashContainer *)self addSubview:v10];
-    [(UIView *)v10 setMaskView:v8];
+    [(UIView *)v10 setMaskView:_slashMaskView];
     [(CAMSlashContainer *)self _updateOrientationAnimated:0];
 
-    v5 = v10;
+    viewCopy = v10;
   }
 
-  MEMORY[0x1EEE66BB8](contentView, v5);
+  MEMORY[0x1EEE66BB8](contentView, viewCopy);
 }
 
-- (void)setSlashed:(BOOL)a3 animated:(BOOL)a4
+- (void)setSlashed:(BOOL)slashed animated:(BOOL)animated
 {
-  if (self->_slashed != a3)
+  if (self->_slashed != slashed)
   {
-    v4 = a4;
-    v5 = a3;
-    v9 = [(CAMSlashContainer *)self _slashView];
-    v7 = [(CAMSlashContainer *)self _slashMaskView];
-    if (v5 && !v9 && !v7)
+    animatedCopy = animated;
+    slashedCopy = slashed;
+    _slashView = [(CAMSlashContainer *)self _slashView];
+    _slashMaskView = [(CAMSlashContainer *)self _slashMaskView];
+    if (slashedCopy && !_slashView && !_slashMaskView)
     {
-      v7 = objc_alloc_init(CAMSlashMaskView);
-      v9 = objc_alloc_init(CAMSlashView);
-      [(CAMSlashContainer *)self _setSlashView:v9];
-      [(CAMSlashContainer *)self _setSlashMaskView:v7];
+      _slashMaskView = objc_alloc_init(CAMSlashMaskView);
+      _slashView = objc_alloc_init(CAMSlashView);
+      [(CAMSlashContainer *)self _setSlashView:_slashView];
+      [(CAMSlashContainer *)self _setSlashMaskView:_slashMaskView];
       [(CAMSlashContainer *)self _updateOrientationAnimated:0];
-      v8 = [(CAMSlashContainer *)self contentView];
-      [v8 setMaskView:v7];
+      contentView = [(CAMSlashContainer *)self contentView];
+      [contentView setMaskView:_slashMaskView];
 
-      [(CAMSlashContainer *)self addSubview:v9];
+      [(CAMSlashContainer *)self addSubview:_slashView];
       [(CAMSlashContainer *)self layoutIfNeeded];
     }
 
-    self->_slashed = v5;
-    [(CAMSlashContainer *)self _updateSlashAnimated:v4];
+    self->_slashed = slashedCopy;
+    [(CAMSlashContainer *)self _updateSlashAnimated:animatedCopy];
   }
 }
 
-- (void)_updateSlashAnimated:(BOOL)a3
+- (void)_updateSlashAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v7 = [(CAMSlashContainer *)self _slashView];
-  v5 = [(CAMSlashContainer *)self _slashMaskView];
-  v6 = [(CAMSlashContainer *)self isSlashed];
-  [v7 bounds];
-  [v5 convertRect:v7 fromView:?];
-  [v5 setSlashBounds:v3 animated:?];
-  [v7 setVisible:v6 animated:v3];
+  animatedCopy = animated;
+  _slashView = [(CAMSlashContainer *)self _slashView];
+  _slashMaskView = [(CAMSlashContainer *)self _slashMaskView];
+  isSlashed = [(CAMSlashContainer *)self isSlashed];
+  [_slashView bounds];
+  [_slashMaskView convertRect:_slashView fromView:?];
+  [_slashMaskView setSlashBounds:animatedCopy animated:?];
+  [_slashView setVisible:isSlashed animated:animatedCopy];
 }
 
 - (CGSize)slashSize

@@ -1,8 +1,8 @@
 @interface PHRecentsController
-+ (id)indexPathsToInsertIntoCachedRecentCalls:(id)a3 fromBackingRecentCalls:(id)a4;
++ (id)indexPathsToInsertIntoCachedRecentCalls:(id)calls fromBackingRecentCalls:(id)recentCalls;
 - (BOOL)canLoadOlderRecentCalls;
 - (BOOL)isInitializationBlockQueued;
-- (BOOL)isLocalizedSubtitleUnknown:(id)a3;
+- (BOOL)isLocalizedSubtitleUnknown:(id)unknown;
 - (CNContactFormatter)contactFormatter;
 - (CNContactStore)contactStore;
 - (CNContactStore)suggestedContactStore;
@@ -13,112 +13,112 @@
 - (NSMutableDictionary)itemCache;
 - (NSNumberFormatter)numberFormatter;
 - (PHRecentsController)init;
-- (PHRecentsController)initWithCallHistoryController:(id)a3 callProviderManager:(id)a4 contactStore:(id)a5 suggestedContactStore:(id)a6 metadataCache:(id)a7;
+- (PHRecentsController)initWithCallHistoryController:(id)controller callProviderManager:(id)manager contactStore:(id)store suggestedContactStore:(id)contactStore metadataCache:(id)cache;
 - (TUCallProviderManager)callProviderManager;
 - (TUMetadataCache)metadataCache;
-- (id)coalesceRecentCall:(id)a3 withRecentCall:(id)a4;
-- (id)contactByHandleForRecentCall:(id)a3 keyDescriptors:(id)a4;
-- (id)contactForHandle:(id)a3;
-- (id)contactForRecentCall:(id)a3 keyDescriptors:(id)a4;
-- (id)contactHandlesForHandle:(id)a3;
-- (id)contactHandlesForRecentCalls:(id)a3;
-- (id)contactsByHandleForRecentCall:(id)a3 keyDescriptors:(id)a4;
-- (id)dialRequestForRecentCall:(id)a3;
-- (id)fetchCallProviderForRecentCall:(id)a3;
-- (id)fetchContactForContactCardDisplay:(id)a3;
+- (id)coalesceRecentCall:(id)call withRecentCall:(id)recentCall;
+- (id)contactByHandleForRecentCall:(id)call keyDescriptors:(id)descriptors;
+- (id)contactForHandle:(id)handle;
+- (id)contactForRecentCall:(id)call keyDescriptors:(id)descriptors;
+- (id)contactHandlesForHandle:(id)handle;
+- (id)contactHandlesForRecentCalls:(id)calls;
+- (id)contactsByHandleForRecentCall:(id)call keyDescriptors:(id)descriptors;
+- (id)dialRequestForRecentCall:(id)call;
+- (id)fetchCallProviderForRecentCall:(id)call;
+- (id)fetchContactForContactCardDisplay:(id)display;
 - (id)fetchContactFormatter;
-- (id)fetchImageForRecentCall:(id)a3;
-- (id)fetchMutableItemForRecentCall:(id)a3;
-- (id)fetchMutableItemForRecentCall:(id)a3 numberOfOccurences:(unint64_t)a4;
+- (id)fetchImageForRecentCall:(id)call;
+- (id)fetchMutableItemForRecentCall:(id)call;
+- (id)fetchMutableItemForRecentCall:(id)call numberOfOccurences:(unint64_t)occurences;
 - (id)fetchNumberFormatter;
 - (id)fetchRecentCalls;
-- (id)fetchUnifiedContactForID:(id)a3 withDescriptors:(id)a4;
-- (id)formattedNameForHandle:(id)a3 countryCode:(id)a4;
-- (id)itemForRecentCall:(id)a3 numberOfOccurences:(unint64_t)a4;
-- (id)itemForRecentCall:(id)a3 presentationStyle:(int64_t)a4;
-- (id)localizedSubtitleForRecentCall:(id)a3;
-- (id)localizedSubtitleForRecentEmergencyCall:(id)a3;
-- (id)metadataItemsForRecentCall:(id)a3;
-- (id)recentCallsChangedFromCachedRecentCalls:(id)a3 callHistoryControllerRecentCalls:(id)a4;
-- (id)subtitleForRecentEmergencyCall:(id)a3;
+- (id)fetchUnifiedContactForID:(id)d withDescriptors:(id)descriptors;
+- (id)formattedNameForHandle:(id)handle countryCode:(id)code;
+- (id)itemForRecentCall:(id)call numberOfOccurences:(unint64_t)occurences;
+- (id)itemForRecentCall:(id)call presentationStyle:(int64_t)style;
+- (id)localizedSubtitleForRecentCall:(id)call;
+- (id)localizedSubtitleForRecentEmergencyCall:(id)call;
+- (id)metadataItemsForRecentCall:(id)call;
+- (id)recentCallsChangedFromCachedRecentCalls:(id)calls callHistoryControllerRecentCalls:(id)recentCalls;
+- (id)subtitleForRecentEmergencyCall:(id)call;
 - (id)unknownLabel;
-- (id)updatedTitleForTempHandles:(id)a3 countOfExcludedHandles:(int64_t)a4;
+- (id)updatedTitleForTempHandles:(id)handles countOfExcludedHandles:(int64_t)excludedHandles;
 - (unint64_t)callHistoryControllerCoalescingStrategy;
 - (unint64_t)callHistoryControllerOptions;
 - (unint64_t)unreadCallCount;
 - (void)addAcceptedIntroductionsNotifier;
-- (void)addDelegate:(id)a3 queue:(id)a4;
+- (void)addDelegate:(id)delegate queue:(id)queue;
 - (void)cancelSearchFetchOperations;
 - (void)checkRecentMissedCallCount;
-- (void)continuousScrollingReachedIndexPath:(int64_t)a3;
+- (void)continuousScrollingReachedIndexPath:(int64_t)path;
 - (void)dealloc;
 - (void)deleteAllRecentCalls;
-- (void)deleteRecentCalls:(id)a3;
-- (void)fetchBlockedStatusForRecentCalls:(id)a3;
-- (void)fetchContactsForHandles:(id)a3;
-- (void)fetchContactsForRecentCalls:(id)a3;
-- (void)fetchMetadataForRecentCalls:(id)a3;
-- (void)handleCNContactStoreDidChangeNotification:(id)a3;
-- (void)handleIDSServiceAvailabilityDidChangeNotification:(id)a3;
-- (void)handleNSCurrentLocaleDidChangeNotification:(id)a3;
-- (void)handleTUCallHistoryControllerRecentCallsDidChangeNotification:(id)a3;
-- (void)handleTUCallHistoryControllerUnreadCallCountDidChangeNotification:(id)a3;
-- (void)handleTUMetadataCacheDidFinishUpdatingNotification:(id)a3;
-- (void)handleUIApplicationDidBecomeActiveNotification:(id)a3;
-- (void)handleUIApplicationSignificantTimeChangeNotification:(id)a3;
+- (void)deleteRecentCalls:(id)calls;
+- (void)fetchBlockedStatusForRecentCalls:(id)calls;
+- (void)fetchContactsForHandles:(id)handles;
+- (void)fetchContactsForRecentCalls:(id)calls;
+- (void)fetchMetadataForRecentCalls:(id)calls;
+- (void)handleCNContactStoreDidChangeNotification:(id)notification;
+- (void)handleIDSServiceAvailabilityDidChangeNotification:(id)notification;
+- (void)handleNSCurrentLocaleDidChangeNotification:(id)notification;
+- (void)handleTUCallHistoryControllerRecentCallsDidChangeNotification:(id)notification;
+- (void)handleTUCallHistoryControllerUnreadCallCountDidChangeNotification:(id)notification;
+- (void)handleTUMetadataCacheDidFinishUpdatingNotification:(id)notification;
+- (void)handleUIApplicationDidBecomeActiveNotification:(id)notification;
+- (void)handleUIApplicationSignificantTimeChangeNotification:(id)notification;
 - (void)handleUpdatedContacts;
-- (void)loadOlderCallsIfNecessaryForRemainingRowCount:(int64_t)a3;
-- (void)logRecentsScrollingEvent:(int64_t)a3;
+- (void)loadOlderCallsIfNecessaryForRemainingRowCount:(int64_t)count;
+- (void)logRecentsScrollingEvent:(int64_t)event;
 - (void)markRecentAudioCallsAsRead;
 - (void)markRecentCallsAsRead;
 - (void)markRecentVideoCallsAsRead;
-- (void)notifyDelegatesRecentsController:(id)a3 didChangeCalls:(id)a4;
-- (void)notifyDelegatesRecentsController:(id)a3 didChangeUnreadCallCount:(unint64_t)a4;
-- (void)notifyDelegatesRecentsController:(id)a3 didCompleteFetchingCalls:(id)a4;
-- (void)notifyDelegatesRecentsController:(id)a3 didUpdateCalls:(id)a4;
-- (void)notifyDelegatesRecentsControllerDidChangeMessages:(id)a3;
-- (void)performDialRequest:(id)a3;
-- (void)performDialRequestForRecentCall:(id)a3;
-- (void)performJoinRequestForRecentCall:(id)a3 overrideProvider:(id)a4;
-- (void)performSynchronousBlock:(id)a3;
-- (void)populateCachesForRecentCalls:(id)a3;
-- (void)populateItemCacheForRecentCalls:(id)a3;
-- (void)providersChangedForProviderManager:(id)a3;
-- (void)queryCommTrustBlockedForCalls:(id)a3 completion:(id)a4;
+- (void)notifyDelegatesRecentsController:(id)controller didChangeCalls:(id)calls;
+- (void)notifyDelegatesRecentsController:(id)controller didChangeUnreadCallCount:(unint64_t)count;
+- (void)notifyDelegatesRecentsController:(id)controller didCompleteFetchingCalls:(id)calls;
+- (void)notifyDelegatesRecentsController:(id)controller didUpdateCalls:(id)calls;
+- (void)notifyDelegatesRecentsControllerDidChangeMessages:(id)messages;
+- (void)performDialRequest:(id)request;
+- (void)performDialRequestForRecentCall:(id)call;
+- (void)performJoinRequestForRecentCall:(id)call overrideProvider:(id)provider;
+- (void)performSynchronousBlock:(id)block;
+- (void)populateCachesForRecentCalls:(id)calls;
+- (void)populateItemCacheForRecentCalls:(id)calls;
+- (void)providersChangedForProviderManager:(id)manager;
+- (void)queryCommTrustBlockedForCalls:(id)calls completion:(id)completion;
 - (void)recentCallsWillShow;
-- (void)removeDelegate:(id)a3;
-- (void)setContactFormatter:(id)a3;
-- (void)setInitializationBlockQueued:(BOOL)a3;
-- (void)setNumberFormatter:(id)a3;
-- (void)setPreFetchingPredicate:(id)a3;
-- (void)setRecentCalls:(id)a3;
-- (void)setUnreadCallCount:(unint64_t)a3;
+- (void)removeDelegate:(id)delegate;
+- (void)setContactFormatter:(id)formatter;
+- (void)setInitializationBlockQueued:(BOOL)queued;
+- (void)setNumberFormatter:(id)formatter;
+- (void)setPreFetchingPredicate:(id)predicate;
+- (void)setRecentCalls:(id)calls;
+- (void)setUnreadCallCount:(unint64_t)count;
 - (void)updateRecentCalls;
-- (void)updateReminderUUID:(id)a3 forRecentCall:(id)a4;
+- (void)updateReminderUUID:(id)d forRecentCall:(id)call;
 @end
 
 @implementation PHRecentsController
 
-+ (id)indexPathsToInsertIntoCachedRecentCalls:(id)a3 fromBackingRecentCalls:(id)a4
++ (id)indexPathsToInsertIntoCachedRecentCalls:(id)calls fromBackingRecentCalls:(id)recentCalls
 {
-  v5 = a3;
-  v6 = a4;
+  callsCopy = calls;
+  recentCallsCopy = recentCalls;
   v7 = +[NSMutableArray array];
   v8 = 0;
-  if ([v6 count])
+  if ([recentCallsCopy count])
   {
     v9 = 0;
     do
     {
-      v10 = [v6 objectAtIndexedSubscript:v9];
-      if (v8 >= [v5 count])
+      v10 = [recentCallsCopy objectAtIndexedSubscript:v9];
+      if (v8 >= [callsCopy count])
       {
         v11 = 0;
       }
 
       else
       {
-        v11 = [v5 objectAtIndexedSubscript:v8];
+        v11 = [callsCopy objectAtIndexedSubscript:v8];
       }
 
       if ([v11 isEqual:v10])
@@ -135,10 +135,10 @@
       ++v9;
     }
 
-    while (v9 < [v6 count]);
+    while (v9 < [recentCallsCopy count]);
   }
 
-  if (v8 == [v5 count])
+  if (v8 == [callsCopy count])
   {
     v13 = v7;
   }
@@ -160,13 +160,13 @@
   return 0;
 }
 
-- (PHRecentsController)initWithCallHistoryController:(id)a3 callProviderManager:(id)a4 contactStore:(id)a5 suggestedContactStore:(id)a6 metadataCache:(id)a7
+- (PHRecentsController)initWithCallHistoryController:(id)controller callProviderManager:(id)manager contactStore:(id)store suggestedContactStore:(id)contactStore metadataCache:(id)cache
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v45 = a6;
-  v16 = a7;
+  controllerCopy = controller;
+  managerCopy = manager;
+  storeCopy = store;
+  contactStoreCopy = contactStore;
+  cacheCopy = cache;
   v48.receiver = self;
   v48.super_class = PHRecentsController;
   v17 = [(PHRecentsController *)&v48 init];
@@ -179,34 +179,34 @@
     v18->_delegateToQueue = v19;
 
     v18->_initializationBlockQueued = 1;
-    v44 = v13;
+    v44 = controllerCopy;
     v21 = [NSString stringWithFormat:@"com.apple.calls.queue.%@.%p", objc_opt_class(), v18];
     dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
-    v22 = v43 = v15;
+    v22 = v43 = storeCopy;
     v23 = dispatch_queue_create([v21 UTF8String], v22);
     serialQueue = v18->_serialQueue;
     v18->_serialQueue = v23;
 
     dispatch_queue_set_specific(v18->_serialQueue, PHRecentsControllerSerialQueueContextKey, v18, 0);
     objc_storeStrong(&v18->_completionDispatchQueue, &_dispatch_main_q);
-    objc_storeStrong(&v18->_callHistoryController, a3);
+    objc_storeStrong(&v18->_callHistoryController, controller);
     v25 = objc_alloc_init(NSCache);
     callProviderCache = v18->_callProviderCache;
     v18->_callProviderCache = v25;
 
-    objc_storeStrong(&v18->_callProviderManager, a4);
+    objc_storeStrong(&v18->_callProviderManager, manager);
     callProviderManager = v18->_callProviderManager;
-    v28 = [(PHRecentsController *)v18 serialQueue];
-    [(TUCallProviderManager *)callProviderManager addDelegate:v18 queue:v28];
+    serialQueue = [(PHRecentsController *)v18 serialQueue];
+    [(TUCallProviderManager *)callProviderManager addDelegate:v18 queue:serialQueue];
 
     v29 = objc_alloc_init(NSMutableDictionary);
     contactCache = v18->_contactCache;
     v18->_contactCache = v29;
 
-    objc_storeStrong(&v18->_contactStore, a5);
-    objc_storeStrong(&v18->_suggestedContactStore, a6);
-    objc_storeStrong(&v18->_metadataCache, a7);
-    v31 = [[TUSubtitleProvider alloc] initWithMetadataCache:v16 callProviderManager:v14];
+    objc_storeStrong(&v18->_contactStore, store);
+    objc_storeStrong(&v18->_suggestedContactStore, contactStore);
+    objc_storeStrong(&v18->_metadataCache, cache);
+    v31 = [[TUSubtitleProvider alloc] initWithMetadataCache:cacheCopy callProviderManager:managerCopy];
     subtitleProvider = v18->_subtitleProvider;
     v18->_subtitleProvider = v31;
 
@@ -235,8 +235,8 @@
     v47 = v18;
     dispatch_async(v41, block);
 
-    v15 = v43;
-    v13 = v44;
+    storeCopy = v43;
+    controllerCopy = v44;
   }
 
   return v18;
@@ -428,18 +428,18 @@ uint64_t __34__PHRecentsController_recentCalls__block_invoke_135(uint64_t a1)
   return unreadCallCount;
 }
 
-- (id)itemForRecentCall:(id)a3 presentationStyle:(int64_t)a4
+- (id)itemForRecentCall:(id)call presentationStyle:(int64_t)style
 {
-  v6 = a3;
-  v7 = -[PHRecentsController itemForRecentCall:numberOfOccurences:](self, "itemForRecentCall:numberOfOccurences:", v6, [v6 numberOfOccurrences]);
-  v8 = [v6 serviceProvider];
-  if ([v8 isEqualToString:kCHServiceProviderTelephony])
+  callCopy = call;
+  v7 = -[PHRecentsController itemForRecentCall:numberOfOccurences:](self, "itemForRecentCall:numberOfOccurences:", callCopy, [callCopy numberOfOccurrences]);
+  serviceProvider = [callCopy serviceProvider];
+  if ([serviceProvider isEqualToString:kCHServiceProviderTelephony])
   {
-    v9 = [v6 remoteParticipantHandles];
-    v10 = [v9 count];
+    remoteParticipantHandles = [callCopy remoteParticipantHandles];
+    v10 = [remoteParticipantHandles count];
     v11 = v10 != 1;
 
-    if (!a4)
+    if (!style)
     {
       if (v10 == 1)
       {
@@ -455,7 +455,7 @@ LABEL_10:
   else
   {
 
-    if (!a4)
+    if (!style)
     {
       goto LABEL_10;
     }
@@ -463,8 +463,8 @@ LABEL_10:
     v11 = 1;
   }
 
-  v12 = [v6 imageURL];
-  if (v12)
+  imageURL = [callCopy imageURL];
+  if (imageURL)
   {
 
     goto LABEL_10;
@@ -476,23 +476,23 @@ LABEL_10:
   }
 
 LABEL_11:
-  v13 = [v6 remoteParticipantHandles];
-  v14 = [v13 anyObject];
+  remoteParticipantHandles2 = [callCopy remoteParticipantHandles];
+  anyObject = [remoteParticipantHandles2 anyObject];
 
-  if (!v14)
+  if (!anyObject)
   {
     goto LABEL_17;
   }
 
-  v15 = [v6 name];
-  if (!v15)
+  name = [callCopy name];
+  if (!name)
   {
     goto LABEL_17;
   }
 
-  v16 = v15;
-  v17 = [v6 name];
-  v18 = [v17 length];
+  v16 = name;
+  name2 = [callCopy name];
+  v18 = [name2 length];
 
   if (!v18)
   {
@@ -511,14 +511,14 @@ LABEL_11:
   v23[3] = &unk_1002853C0;
   v25 = &v26;
   v23[4] = self;
-  v24 = v14;
+  v24 = anyObject;
   [(PHRecentsController *)self performSynchronousBlock:v23];
   v19 = v27[5];
   if (!v19)
   {
     v20 = [v7 mutableCopy];
-    v21 = [v6 name];
-    [v20 setLocalizedSubtitle:v21];
+    name3 = [callCopy name];
+    [v20 setLocalizedSubtitle:name3];
 
     self = [v20 copy];
   }
@@ -542,7 +542,7 @@ uint64_t __59__PHRecentsController_itemForRecentCall_presentationStyle___block_i
   return _objc_release_x1();
 }
 
-- (id)itemForRecentCall:(id)a3 numberOfOccurences:(unint64_t)a4
+- (id)itemForRecentCall:(id)call numberOfOccurences:(unint64_t)occurences
 {
   v11 = 0;
   v12 = &v11;
@@ -555,10 +555,10 @@ uint64_t __59__PHRecentsController_itemForRecentCall_presentationStyle___block_i
   v7[2] = __60__PHRecentsController_itemForRecentCall_numberOfOccurences___block_invoke;
   v7[3] = &unk_1002853C0;
   v10 = &v11;
-  v8 = self;
-  v4 = a3;
-  v9 = v4;
-  [(PHRecentsController *)v8 performSynchronousBlock:v7];
+  selfCopy = self;
+  callCopy = call;
+  v9 = callCopy;
+  [(PHRecentsController *)selfCopy performSynchronousBlock:v7];
   v5 = v12[5];
 
   _Block_object_dispose(&v11, 8);
@@ -576,28 +576,28 @@ void __60__PHRecentsController_itemForRecentCall_numberOfOccurences___block_invo
   *(v4 + 40) = v3;
 }
 
-- (id)coalesceRecentCall:(id)a3 withRecentCall:(id)a4
+- (id)coalesceRecentCall:(id)call withRecentCall:(id)recentCall
 {
-  v6 = a3;
-  v7 = a4;
+  callCopy = call;
+  recentCallCopy = recentCall;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__7;
   v21 = __Block_byref_object_dispose__7;
   v22 = 0;
-  v8 = [(PHRecentsController *)self serialQueue];
+  serialQueue = [(PHRecentsController *)self serialQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __57__PHRecentsController_coalesceRecentCall_withRecentCall___block_invoke;
   v13[3] = &unk_100286130;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = callCopy;
+  v15 = recentCallCopy;
   v16 = &v17;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, v13);
+  v9 = recentCallCopy;
+  v10 = callCopy;
+  dispatch_sync(serialQueue, v13);
 
   v11 = v18[5];
   _Block_object_dispose(&v17, 8);
@@ -638,13 +638,13 @@ void __57__PHRecentsController_coalesceRecentCall_withRecentCall___block_invoke(
 
 - (void)deleteAllRecentCalls
 {
-  v3 = [(PHRecentsController *)self serialQueue];
+  serialQueue = [(PHRecentsController *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __43__PHRecentsController_deleteAllRecentCalls__block_invoke;
   block[3] = &unk_100284FD0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serialQueue, block);
 }
 
 void __43__PHRecentsController_deleteAllRecentCalls__block_invoke(uint64_t a1)
@@ -653,18 +653,18 @@ void __43__PHRecentsController_deleteAllRecentCalls__block_invoke(uint64_t a1)
   [v1 deleteAllRecentCalls];
 }
 
-- (void)deleteRecentCalls:(id)a3
+- (void)deleteRecentCalls:(id)calls
 {
-  v4 = a3;
-  v5 = [(PHRecentsController *)self serialQueue];
+  callsCopy = calls;
+  serialQueue = [(PHRecentsController *)self serialQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __41__PHRecentsController_deleteRecentCalls___block_invoke;
   v7[3] = &unk_1002852E0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = callsCopy;
+  v6 = callsCopy;
+  dispatch_async(serialQueue, v7);
 }
 
 void __41__PHRecentsController_deleteRecentCalls___block_invoke(uint64_t a1)
@@ -682,13 +682,13 @@ void __41__PHRecentsController_deleteRecentCalls___block_invoke(uint64_t a1)
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Mark recent calls as read", buf, 2u);
   }
 
-  v4 = [(PHRecentsController *)self serialQueue];
+  serialQueue = [(PHRecentsController *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __44__PHRecentsController_markRecentCallsAsRead__block_invoke;
   block[3] = &unk_100284FD0;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(serialQueue, block);
 }
 
 void __44__PHRecentsController_markRecentCallsAsRead__block_invoke(uint64_t a1)
@@ -699,13 +699,13 @@ void __44__PHRecentsController_markRecentCallsAsRead__block_invoke(uint64_t a1)
 
 - (void)markRecentAudioCallsAsRead
 {
-  v3 = [(PHRecentsController *)self serialQueue];
+  serialQueue = [(PHRecentsController *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __49__PHRecentsController_markRecentAudioCallsAsRead__block_invoke;
   block[3] = &unk_100284FD0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serialQueue, block);
 }
 
 void __49__PHRecentsController_markRecentAudioCallsAsRead__block_invoke(uint64_t a1)
@@ -716,13 +716,13 @@ void __49__PHRecentsController_markRecentAudioCallsAsRead__block_invoke(uint64_t
 
 - (void)markRecentVideoCallsAsRead
 {
-  v3 = [(PHRecentsController *)self serialQueue];
+  serialQueue = [(PHRecentsController *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __49__PHRecentsController_markRecentVideoCallsAsRead__block_invoke;
   block[3] = &unk_100284FD0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serialQueue, block);
 }
 
 void __49__PHRecentsController_markRecentVideoCallsAsRead__block_invoke(uint64_t a1)
@@ -731,31 +731,31 @@ void __49__PHRecentsController_markRecentVideoCallsAsRead__block_invoke(uint64_t
   [v1 markRecentVideoCallsAsRead];
 }
 
-- (void)updateReminderUUID:(id)a3 forRecentCall:(id)a4
+- (void)updateReminderUUID:(id)d forRecentCall:(id)call
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  callCopy = call;
   v8 = PHDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v16 = v6;
+    v16 = dCopy;
     v17 = 2112;
-    v18 = v7;
+    v18 = callCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Updating reminderUUID: %@, for recent call: %@", buf, 0x16u);
   }
 
-  v9 = [(PHRecentsController *)self serialQueue];
+  serialQueue = [(PHRecentsController *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __56__PHRecentsController_updateReminderUUID_forRecentCall___block_invoke;
   block[3] = &unk_1002853E8;
   block[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  dispatch_async(v9, block);
+  v13 = dCopy;
+  v14 = callCopy;
+  v10 = callCopy;
+  v11 = dCopy;
+  dispatch_async(serialQueue, block);
 }
 
 void __56__PHRecentsController_updateReminderUUID_forRecentCall___block_invoke(uint64_t a1)
@@ -764,18 +764,18 @@ void __56__PHRecentsController_updateReminderUUID_forRecentCall___block_invoke(u
   [v2 updateReminderUUID:*(a1 + 40) forRecentCall:*(a1 + 48)];
 }
 
-- (id)contactForRecentCall:(id)a3 keyDescriptors:(id)a4
+- (id)contactForRecentCall:(id)call keyDescriptors:(id)descriptors
 {
-  v6 = a3;
-  v7 = a4;
+  callCopy = call;
+  descriptorsCopy = descriptors;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__7;
   v25 = __Block_byref_object_dispose__7;
   v26 = 0;
-  v8 = [v6 validRemoteParticipantHandles];
-  v9 = [v8 count];
+  validRemoteParticipantHandles = [callCopy validRemoteParticipantHandles];
+  v9 = [validRemoteParticipantHandles count];
 
   if (v9 == 1)
   {
@@ -784,8 +784,8 @@ void __56__PHRecentsController_updateReminderUUID_forRecentCall___block_invoke(u
     v17[2] = __59__PHRecentsController_contactForRecentCall_keyDescriptors___block_invoke;
     v17[3] = &unk_100286E50;
     v17[4] = self;
-    v18 = v6;
-    v19 = v7;
+    v18 = callCopy;
+    v19 = descriptorsCopy;
     v20 = &v21;
     [(PHRecentsController *)self performSynchronousBlock:v17];
   }
@@ -793,8 +793,8 @@ void __56__PHRecentsController_updateReminderUUID_forRecentCall___block_invoke(u
   v10 = v22[5];
   if (!v10)
   {
-    v11 = [(PHRecentsController *)self metadataCache];
-    v12 = [CNMutableContact contactForRecentCall:v6 metadataCache:v11];
+    metadataCache = [(PHRecentsController *)self metadataCache];
+    v12 = [CNMutableContact contactForRecentCall:callCopy metadataCache:metadataCache];
     v13 = [v12 copy];
     v14 = v22[5];
     v22[5] = v13;
@@ -819,10 +819,10 @@ void __59__PHRecentsController_contactForRecentCall_keyDescriptors___block_invok
   *(v5 + 40) = v4;
 }
 
-- (id)contactByHandleForRecentCall:(id)a3 keyDescriptors:(id)a4
+- (id)contactByHandleForRecentCall:(id)call keyDescriptors:(id)descriptors
 {
-  v6 = a3;
-  v7 = a4;
+  callCopy = call;
+  descriptorsCopy = descriptors;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -833,10 +833,10 @@ void __59__PHRecentsController_contactForRecentCall_keyDescriptors___block_invok
   v13 = 3221225472;
   v14 = __67__PHRecentsController_contactByHandleForRecentCall_keyDescriptors___block_invoke;
   v15 = &unk_100286E50;
-  v16 = self;
-  v8 = v6;
+  selfCopy = self;
+  v8 = callCopy;
   v17 = v8;
-  v9 = v7;
+  v9 = descriptorsCopy;
   v18 = v9;
   v19 = &v20;
   [(PHRecentsController *)self performSynchronousBlock:&v12];
@@ -913,7 +913,7 @@ void __55__PHRecentsController_addAcceptedIntroductionsNotifier__block_invoke(ui
   [WeakRetained handleUpdatedContacts];
 }
 
-- (id)dialRequestForRecentCall:(id)a3
+- (id)dialRequestForRecentCall:(id)call
 {
   v11 = 0;
   v12 = &v11;
@@ -925,10 +925,10 @@ void __55__PHRecentsController_addAcceptedIntroductionsNotifier__block_invoke(ui
   v7[1] = 3221225472;
   v7[2] = __48__PHRecentsController_dialRequestForRecentCall___block_invoke;
   v7[3] = &unk_1002856E0;
-  v4 = a3;
-  v9 = self;
+  callCopy = call;
+  selfCopy = self;
   v10 = &v11;
-  v8 = v4;
+  v8 = callCopy;
   [(PHRecentsController *)self performSynchronousBlock:v7];
   v5 = v12[5];
 
@@ -979,14 +979,14 @@ void __48__PHRecentsController_dialRequestForRecentCall___block_invoke(uint64_t 
   }
 }
 
-- (void)performDialRequest:(id)a3
+- (void)performDialRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(PHRecentsController *)self presentScreenTimeShield];
-  if (v5 && (v6 = v5, +[TUCallCenter sharedInstance](TUCallCenter, "sharedInstance"), v7 = objc_claimAutoreleasedReturnValue(), [v7 callFilterController], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "shouldRestrictDialRequest:performSynchronously:", v4, 1), v8, v7, v6, v9))
+  requestCopy = request;
+  presentScreenTimeShield = [(PHRecentsController *)self presentScreenTimeShield];
+  if (presentScreenTimeShield && (v6 = presentScreenTimeShield, +[TUCallCenter sharedInstance](TUCallCenter, "sharedInstance"), v7 = objc_claimAutoreleasedReturnValue(), [v7 callFilterController], v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "shouldRestrictDialRequest:performSynchronously:", requestCopy, 1), v8, v7, v6, v9))
   {
-    v10 = [(PHRecentsController *)self presentScreenTimeShield];
-    (v10)[2](v10, v4);
+    presentScreenTimeShield2 = [(PHRecentsController *)self presentScreenTimeShield];
+    (presentScreenTimeShield2)[2](presentScreenTimeShield2, requestCopy);
   }
 
   else
@@ -996,7 +996,7 @@ void __48__PHRecentsController_dialRequestForRecentCall___block_invoke(uint64_t 
     v12[1] = 3221225472;
     v12[2] = __42__PHRecentsController_performDialRequest___block_invoke;
     v12[3] = &unk_100285568;
-    v13 = v4;
+    v13 = requestCopy;
     [v11 launchAppForDialRequest:v13 completion:v12];
   }
 }
@@ -1014,9 +1014,9 @@ void __42__PHRecentsController_performDialRequest___block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)performDialRequestForRecentCall:(id)a3
+- (void)performDialRequestForRecentCall:(id)call
 {
-  v4 = [(PHRecentsController *)self dialRequestForRecentCall:a3];
+  v4 = [(PHRecentsController *)self dialRequestForRecentCall:call];
   if (v4)
   {
     [(PHRecentsController *)self performDialRequest:v4];
@@ -1025,10 +1025,10 @@ void __42__PHRecentsController_performDialRequest___block_invoke(uint64_t a1, vo
   _objc_release_x1();
 }
 
-- (void)performJoinRequestForRecentCall:(id)a3 overrideProvider:(id)a4
+- (void)performJoinRequestForRecentCall:(id)call overrideProvider:(id)provider
 {
-  v6 = a3;
-  v7 = a4;
+  callCopy = call;
+  providerCopy = provider;
   v8 = PHDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -1036,20 +1036,20 @@ void __42__PHRecentsController_performDialRequest___block_invoke(uint64_t a1, vo
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "PHRecentsController -performJoinRequestForRecentCall", buf, 2u);
   }
 
-  v9 = [(PHRecentsController *)self featureFlags];
-  v10 = [v9 callHistorySearchEnabled];
+  featureFlags = [(PHRecentsController *)self featureFlags];
+  callHistorySearchEnabled = [featureFlags callHistorySearchEnabled];
 
-  if (v10)
+  if (callHistorySearchEnabled)
   {
-    v11 = [(PHRecentsController *)self callProviderManager];
-    v12 = [v11 joinConversationRequestForRecentCall:v6];
+    callProviderManager = [(PHRecentsController *)self callProviderManager];
+    v12 = [callProviderManager joinConversationRequestForRecentCall:callCopy];
 
     if (v12)
     {
       [v12 setOriginatingUIType:8];
-      if (v7)
+      if (providerCopy)
       {
-        [v12 setProvider:v7];
+        [v12 setProvider:providerCopy];
       }
 
       v13 = +[TUCallCenter sharedInstance];
@@ -1064,23 +1064,23 @@ void __42__PHRecentsController_performDialRequest___block_invoke(uint64_t a1, vo
     }
 
     *buf = 138412290;
-    v44 = v6;
+    v44 = callCopy;
 LABEL_31:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Could not create join request for recent call: %@", buf, 0xCu);
     goto LABEL_32;
   }
 
-  v36 = self;
-  v14 = [v6 validRemoteParticipantHandles];
-  v12 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v14 count]);
+  selfCopy = self;
+  validRemoteParticipantHandles = [callCopy validRemoteParticipantHandles];
+  v12 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [validRemoteParticipantHandles count]);
 
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v37 = v6;
-  v15 = [v6 validRemoteParticipantHandles];
-  v16 = [v15 countByEnumeratingWithState:&v38 objects:v42 count:16];
+  v37 = callCopy;
+  validRemoteParticipantHandles2 = [callCopy validRemoteParticipantHandles];
+  v16 = [validRemoteParticipantHandles2 countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v16)
   {
     v17 = v16;
@@ -1091,21 +1091,21 @@ LABEL_31:
       {
         if (*v39 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(validRemoteParticipantHandles2);
         }
 
-        v20 = [*(*(&v38 + 1) + 8 * i) tuHandle];
-        if (v20)
+        tuHandle = [*(*(&v38 + 1) + 8 * i) tuHandle];
+        if (tuHandle)
         {
           v21 = [TUConversationMember alloc];
-          v22 = [NSSet setWithObject:v20];
+          v22 = [NSSet setWithObject:tuHandle];
           v23 = [v21 initWithHandles:v22];
 
           [v12 addObject:v23];
         }
       }
 
-      v17 = [v15 countByEnumeratingWithState:&v38 objects:v42 count:16];
+      v17 = [validRemoteParticipantHandles2 countByEnumeratingWithState:&v38 objects:v42 count:16];
     }
 
     while (v17);
@@ -1114,7 +1114,7 @@ LABEL_31:
   if (![v12 count])
   {
     v13 = PHDefaultLog();
-    v6 = v37;
+    callCopy = v37;
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_32;
@@ -1126,54 +1126,54 @@ LABEL_31:
   }
 
   v13 = [[TUJoinConversationRequest alloc] initWithRemoteMembers:v12 originatingUIType:8];
-  v6 = v37;
+  callCopy = v37;
   -[NSObject setVideo:](v13, "setVideo:", [v37 mediaType] == 2);
   -[NSObject setVideoEnabled:](v13, "setVideoEnabled:", [v37 mediaType] == 2);
   [v13 setOriginatingUIType:8];
-  if (v7)
+  if (providerCopy)
   {
     [v13 setProvider:?];
   }
 
-  v24 = [(PHRecentsController *)v36 callProviderManager];
-  v25 = [v24 faceTimeProvider];
-  v26 = [v37 outgoingLocalParticipantUUID];
-  v27 = [v25 senderIdentityForAccountUUID:v26];
+  callProviderManager2 = [(PHRecentsController *)selfCopy callProviderManager];
+  faceTimeProvider = [callProviderManager2 faceTimeProvider];
+  outgoingLocalParticipantUUID = [v37 outgoingLocalParticipantUUID];
+  v27 = [faceTimeProvider senderIdentityForAccountUUID:outgoingLocalParticipantUUID];
 
   if (v27)
   {
-    v28 = [v27 handle];
-    [v13 setCallerID:v28];
+    handle = [v27 handle];
+    [v13 setCallerID:handle];
   }
 
   v29 = +[TUCallProviderManager invitationPreferencesForRecentCall];
   [v13 setInvitationPreferences:v29];
 
-  v30 = [(PHRecentsController *)v36 presentScreenTimeShield];
-  if (v30 && (v31 = v30, +[TUCallCenter sharedInstance](TUCallCenter, "sharedInstance"), v32 = objc_claimAutoreleasedReturnValue(), [v32 callFilterController], v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "shouldRestrictJoinConversationRequest:performSynchronously:", v13, 1), v33, v6 = v37, v32, v31, v34))
+  presentScreenTimeShield = [(PHRecentsController *)selfCopy presentScreenTimeShield];
+  if (presentScreenTimeShield && (v31 = presentScreenTimeShield, +[TUCallCenter sharedInstance](TUCallCenter, "sharedInstance"), v32 = objc_claimAutoreleasedReturnValue(), [v32 callFilterController], v33 = objc_claimAutoreleasedReturnValue(), v34 = objc_msgSend(v33, "shouldRestrictJoinConversationRequest:performSynchronously:", v13, 1), v33, callCopy = v37, v32, v31, v34))
   {
-    v35 = [(PHRecentsController *)v36 presentScreenTimeShield];
-    (v35)[2](v35, v13);
+    presentScreenTimeShield2 = [(PHRecentsController *)selfCopy presentScreenTimeShield];
+    (presentScreenTimeShield2)[2](presentScreenTimeShield2, v13);
   }
 
   else
   {
-    v35 = +[TUCallCenter sharedInstance];
-    [v35 launchAppForJoinRequest:v13];
+    presentScreenTimeShield2 = +[TUCallCenter sharedInstance];
+    [presentScreenTimeShield2 launchAppForJoinRequest:v13];
   }
 
 LABEL_32:
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v9 = a4;
-  v6 = a3;
+  queueCopy = queue;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_accessorLock);
-  v7 = [(PHRecentsController *)self delegateToQueue];
-  if (v9)
+  delegateToQueue = [(PHRecentsController *)self delegateToQueue];
+  if (queueCopy)
   {
-    v8 = v9;
+    v8 = queueCopy;
   }
 
   else
@@ -1181,38 +1181,38 @@ LABEL_32:
     v8 = &_dispatch_main_q;
   }
 
-  [v7 setObject:v8 forKey:v6];
+  [delegateToQueue setObject:v8 forKey:delegateCopy];
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->_accessorLock);
-  v5 = [(PHRecentsController *)self delegateToQueue];
-  [v5 removeObjectForKey:v4];
+  delegateToQueue = [(PHRecentsController *)self delegateToQueue];
+  [delegateToQueue removeObjectForKey:delegateCopy];
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)notifyDelegatesRecentsController:(id)a3 didUpdateCalls:(id)a4
+- (void)notifyDelegatesRecentsController:(id)controller didUpdateCalls:(id)calls
 {
-  v6 = a3;
-  v18 = a4;
-  v7 = [(PHRecentsController *)self featureFlags];
-  v8 = [v7 phoneRecentsAvatarsEnabled];
+  controllerCopy = controller;
+  callsCopy = calls;
+  featureFlags = [(PHRecentsController *)self featureFlags];
+  phoneRecentsAvatarsEnabled = [featureFlags phoneRecentsAvatarsEnabled];
 
-  if (v8)
+  if (phoneRecentsAvatarsEnabled)
   {
     os_unfair_lock_assert_owner(&self->_accessorLock);
-    v17 = self;
-    v9 = [(PHRecentsController *)self delegateToQueue];
+    selfCopy = self;
+    delegateToQueue = [(PHRecentsController *)self delegateToQueue];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v10 = [delegateToQueue countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (!v10)
     {
       goto LABEL_14;
@@ -1226,20 +1226,20 @@ LABEL_32:
       {
         if (*v25 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(delegateToQueue);
         }
 
         v14 = *(*(&v24 + 1) + 8 * i);
         if (objc_opt_respondsToSelector())
         {
-          v15 = [v9 objectForKey:v14];
+          v15 = [delegateToQueue objectForKey:v14];
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
           block[2] = __71__PHRecentsController_notifyDelegatesRecentsController_didUpdateCalls___block_invoke;
           block[3] = &unk_1002853E8;
           block[4] = v14;
-          v22 = v6;
-          v23 = v18;
+          v22 = controllerCopy;
+          v23 = callsCopy;
           dispatch_async(v15, block);
 
           v16 = &v22;
@@ -1252,20 +1252,20 @@ LABEL_32:
             continue;
           }
 
-          v15 = [v9 objectForKey:v14];
+          v15 = [delegateToQueue objectForKey:v14];
           v19[0] = _NSConcreteStackBlock;
           v19[1] = 3221225472;
           v19[2] = __71__PHRecentsController_notifyDelegatesRecentsController_didUpdateCalls___block_invoke_2;
           v19[3] = &unk_1002853E8;
           v19[4] = v14;
-          v20[0] = v6;
-          v20[1] = v17;
+          v20[0] = controllerCopy;
+          v20[1] = selfCopy;
           dispatch_async(v15, v19);
           v16 = v20;
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v11 = [delegateToQueue countByEnumeratingWithState:&v24 objects:v28 count:16];
       if (!v11)
       {
 LABEL_14:
@@ -1276,22 +1276,22 @@ LABEL_14:
   }
 }
 
-- (void)notifyDelegatesRecentsController:(id)a3 didCompleteFetchingCalls:(id)a4
+- (void)notifyDelegatesRecentsController:(id)controller didCompleteFetchingCalls:(id)calls
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PHRecentsController *)self featureFlags];
-  v9 = [v8 callHistorySearchEnabled];
+  controllerCopy = controller;
+  callsCopy = calls;
+  featureFlags = [(PHRecentsController *)self featureFlags];
+  callHistorySearchEnabled = [featureFlags callHistorySearchEnabled];
 
-  if (v9)
+  if (callHistorySearchEnabled)
   {
     os_unfair_lock_assert_owner(&self->_accessorLock);
-    v10 = [(PHRecentsController *)self delegateToQueue];
+    delegateToQueue = [(PHRecentsController *)self delegateToQueue];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v11 = [delegateToQueue countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1303,20 +1303,20 @@ LABEL_14:
         {
           if (*v21 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(delegateToQueue);
           }
 
           v15 = *(*(&v20 + 1) + 8 * v14);
           if (objc_opt_respondsToSelector())
           {
-            v16 = [v10 objectForKey:v15];
+            v16 = [delegateToQueue objectForKey:v15];
             block[0] = _NSConcreteStackBlock;
             block[1] = 3221225472;
             block[2] = __81__PHRecentsController_notifyDelegatesRecentsController_didCompleteFetchingCalls___block_invoke;
             block[3] = &unk_1002853E8;
             block[4] = v15;
-            v18 = v6;
-            v19 = v7;
+            v18 = controllerCopy;
+            v19 = callsCopy;
             dispatch_async(v16, block);
           }
 
@@ -1324,7 +1324,7 @@ LABEL_14:
         }
 
         while (v12 != v14);
-        v12 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v12 = [delegateToQueue countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v12);
@@ -1332,17 +1332,17 @@ LABEL_14:
   }
 }
 
-- (void)notifyDelegatesRecentsController:(id)a3 didChangeCalls:(id)a4
+- (void)notifyDelegatesRecentsController:(id)controller didChangeCalls:(id)calls
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  callsCopy = calls;
   os_unfair_lock_assert_owner(&self->_accessorLock);
-  v8 = [(PHRecentsController *)self delegateToQueue];
+  delegateToQueue = [(PHRecentsController *)self delegateToQueue];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v9 = [delegateToQueue countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1354,20 +1354,20 @@ LABEL_14:
       {
         if (*v19 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(delegateToQueue);
         }
 
         v13 = *(*(&v18 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          v14 = [v8 objectForKey:v13];
+          v14 = [delegateToQueue objectForKey:v13];
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
           block[2] = __71__PHRecentsController_notifyDelegatesRecentsController_didChangeCalls___block_invoke;
           block[3] = &unk_1002853E8;
           block[4] = v13;
-          v16 = v6;
-          v17 = v7;
+          v16 = controllerCopy;
+          v17 = callsCopy;
           dispatch_async(v14, block);
         }
 
@@ -1375,23 +1375,23 @@ LABEL_14:
       }
 
       while (v10 != v12);
-      v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v10 = [delegateToQueue countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)notifyDelegatesRecentsController:(id)a3 didChangeUnreadCallCount:(unint64_t)a4
+- (void)notifyDelegatesRecentsController:(id)controller didChangeUnreadCallCount:(unint64_t)count
 {
-  v6 = a3;
+  controllerCopy = controller;
   os_unfair_lock_assert_owner(&self->_accessorLock);
-  v7 = [(PHRecentsController *)self delegateToQueue];
+  delegateToQueue = [(PHRecentsController *)self delegateToQueue];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v8 = [delegateToQueue countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1403,20 +1403,20 @@ LABEL_14:
       {
         if (*v18 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(delegateToQueue);
         }
 
         v12 = *(*(&v17 + 1) + 8 * v11);
         if (objc_opt_respondsToSelector())
         {
-          v13 = [v7 objectForKey:v12];
+          v13 = [delegateToQueue objectForKey:v12];
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
           block[2] = __81__PHRecentsController_notifyDelegatesRecentsController_didChangeUnreadCallCount___block_invoke;
           block[3] = &unk_100286180;
           block[4] = v12;
-          v15 = v6;
-          v16 = a4;
+          v15 = controllerCopy;
+          countCopy = count;
           dispatch_async(v13, block);
         }
 
@@ -1424,23 +1424,23 @@ LABEL_14:
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v9 = [delegateToQueue countByEnumeratingWithState:&v17 objects:v21 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)notifyDelegatesRecentsControllerDidChangeMessages:(id)a3
+- (void)notifyDelegatesRecentsControllerDidChangeMessages:(id)messages
 {
-  v4 = a3;
+  messagesCopy = messages;
   os_unfair_lock_assert_owner(&self->_accessorLock);
-  v5 = [(PHRecentsController *)self delegateToQueue];
+  delegateToQueue = [(PHRecentsController *)self delegateToQueue];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v6 = [delegateToQueue countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1452,19 +1452,19 @@ LABEL_14:
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(delegateToQueue);
         }
 
         v10 = *(*(&v14 + 1) + 8 * v9);
         if (objc_opt_respondsToSelector())
         {
-          v11 = [v5 objectForKey:v10];
+          v11 = [delegateToQueue objectForKey:v10];
           v12[0] = _NSConcreteStackBlock;
           v12[1] = 3221225472;
           v12[2] = __73__PHRecentsController_notifyDelegatesRecentsControllerDidChangeMessages___block_invoke;
           v12[3] = &unk_1002852E0;
           v12[4] = v10;
-          v13 = v4;
+          v13 = messagesCopy;
           dispatch_async(v11, v12);
         }
 
@@ -1472,7 +1472,7 @@ LABEL_14:
       }
 
       while (v7 != v9);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [delegateToQueue countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -1481,8 +1481,8 @@ LABEL_14:
 
 - (NSCache)callProviderCache
 {
-  v3 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   callProviderCache = self->_callProviderCache;
 
@@ -1491,8 +1491,8 @@ LABEL_14:
 
 - (NSDictionary)blockedStatusCache
 {
-  v3 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   blockedStatusCache = self->_blockedStatusCache;
 
@@ -1501,8 +1501,8 @@ LABEL_14:
 
 - (NSMutableDictionary)contactCache
 {
-  v3 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   contactCache = self->_contactCache;
 
@@ -1511,25 +1511,25 @@ LABEL_14:
 
 - (CNContactFormatter)contactFormatter
 {
-  v3 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   contactFormatter = self->_contactFormatter;
 
   return contactFormatter;
 }
 
-- (void)setContactFormatter:(id)a3
+- (void)setContactFormatter:(id)formatter
 {
-  v8 = a3;
-  v5 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  formatterCopy = formatter;
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   contactFormatter = self->_contactFormatter;
   p_contactFormatter = &self->_contactFormatter;
-  if (contactFormatter != v8)
+  if (contactFormatter != formatterCopy)
   {
-    objc_storeStrong(p_contactFormatter, a3);
+    objc_storeStrong(p_contactFormatter, formatter);
   }
 }
 
@@ -1541,13 +1541,13 @@ LABEL_14:
   return initializationBlockQueued;
 }
 
-- (void)setInitializationBlockQueued:(BOOL)a3
+- (void)setInitializationBlockQueued:(BOOL)queued
 {
-  v3 = a3;
+  queuedCopy = queued;
   os_unfair_lock_lock(&self->_accessorLock);
-  if (self->_initializationBlockQueued != v3)
+  if (self->_initializationBlockQueued != queuedCopy)
   {
-    self->_initializationBlockQueued = v3;
+    self->_initializationBlockQueued = queuedCopy;
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
@@ -1555,8 +1555,8 @@ LABEL_14:
 
 - (NSMutableDictionary)itemCache
 {
-  v3 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   itemCache = self->_itemCache;
 
@@ -1565,36 +1565,36 @@ LABEL_14:
 
 - (NSNumberFormatter)numberFormatter
 {
-  v3 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   numberFormatter = self->_numberFormatter;
 
   return numberFormatter;
 }
 
-- (void)setNumberFormatter:(id)a3
+- (void)setNumberFormatter:(id)formatter
 {
-  v8 = a3;
-  v5 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  formatterCopy = formatter;
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   numberFormatter = self->_numberFormatter;
   p_numberFormatter = &self->_numberFormatter;
-  if (numberFormatter != v8)
+  if (numberFormatter != formatterCopy)
   {
-    objc_storeStrong(p_numberFormatter, a3);
+    objc_storeStrong(p_numberFormatter, formatter);
   }
 }
 
-- (void)setRecentCalls:(id)a3
+- (void)setRecentCalls:(id)calls
 {
-  v7 = a3;
+  callsCopy = calls;
   os_unfair_lock_lock(&self->_accessorLock);
   recentCalls = self->_recentCalls;
-  if (recentCalls != v7 && ![(NSArray *)recentCalls isEqualToArray:v7])
+  if (recentCalls != callsCopy && ![(NSArray *)recentCalls isEqualToArray:callsCopy])
   {
-    v5 = [(NSArray *)v7 copy];
+    v5 = [(NSArray *)callsCopy copy];
     v6 = self->_recentCalls;
     self->_recentCalls = v5;
 
@@ -1604,39 +1604,39 @@ LABEL_14:
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setUnreadCallCount:(unint64_t)a3
+- (void)setUnreadCallCount:(unint64_t)count
 {
   os_unfair_lock_lock(&self->_accessorLock);
-  if (self->_unreadCallCount != a3)
+  if (self->_unreadCallCount != count)
   {
-    self->_unreadCallCount = a3;
-    [(PHRecentsController *)self notifyDelegatesRecentsController:self didChangeUnreadCallCount:a3];
+    self->_unreadCallCount = count;
+    [(PHRecentsController *)self notifyDelegatesRecentsController:self didChangeUnreadCallCount:count];
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (void)setPreFetchingPredicate:(id)a3
+- (void)setPreFetchingPredicate:(id)predicate
 {
-  v6 = a3;
+  predicateCopy = predicate;
   os_unfair_lock_lock(&self->_accessorLock);
-  if (self->_preFetchingPredicate != v6)
+  if (self->_preFetchingPredicate != predicateCopy)
   {
-    objc_storeStrong(&self->_preFetchingPredicate, a3);
-    v5 = [(PHRecentsController *)self callHistoryController];
-    [v5 setPreFetchingPredicate:v6];
+    objc_storeStrong(&self->_preFetchingPredicate, predicate);
+    callHistoryController = [(PHRecentsController *)self callHistoryController];
+    [callHistoryController setPreFetchingPredicate:predicateCopy];
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
 }
 
-- (id)contactForHandle:(id)a3
+- (id)contactForHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  handleCopy = handle;
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  [(PHRecentsController *)self contactHandlesForHandle:v4];
+  [(PHRecentsController *)self contactHandlesForHandle:handleCopy];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -1656,11 +1656,11 @@ LABEL_14:
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        v12 = [(PHRecentsController *)self contactCache];
-        v13 = [v12 objectForKeyedSubscript:v11];
-        v14 = [v13 value];
+        contactCache = [(PHRecentsController *)self contactCache];
+        v13 = [contactCache objectForKeyedSubscript:v11];
+        value = [v13 value];
 
-        if (v14)
+        if (value)
         {
           v15 = v6;
           goto LABEL_13;
@@ -1681,22 +1681,22 @@ LABEL_14:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v22 = v4;
+    v22 = handleCopy;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Handle not found in cache: %@", buf, 0xCu);
   }
 
-  v14 = 0;
+  value = 0;
 LABEL_13:
 
-  return v14;
+  return value;
 }
 
-- (id)contactsByHandleForRecentCall:(id)a3 keyDescriptors:(id)a4
+- (id)contactsByHandleForRecentCall:(id)call keyDescriptors:(id)descriptors
 {
-  v6 = a3;
-  v54 = a4;
-  v7 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v7);
+  callCopy = call;
+  descriptorsCopy = descriptors;
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   v53 = objc_alloc_init(NSMutableOrderedSet);
   v48 = objc_alloc_init(NSMutableDictionary);
@@ -1704,8 +1704,8 @@ LABEL_13:
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v44 = v6;
-  obj = [v6 validRemoteParticipantHandles];
+  v44 = callCopy;
+  obj = [callCopy validRemoteParticipantHandles];
   v47 = [obj countByEnumeratingWithState:&v68 objects:v75 count:16];
   if (v47)
   {
@@ -1744,13 +1744,13 @@ LABEL_13:
               }
 
               v15 = *(*(&v64 + 1) + 8 * i);
-              v16 = [(PHRecentsController *)self contactCache];
-              v17 = [v16 objectForKeyedSubscript:v15];
+              contactCache = [(PHRecentsController *)self contactCache];
+              v17 = [contactCache objectForKeyedSubscript:v15];
 
-              if (v17 && (([v17 value], (v18 = objc_claimAutoreleasedReturnValue()) == 0) || (v19 = v18, objc_msgSend(v17, "value"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "areKeysAvailable:", v54), v20, v8 = v53, v19, v21)))
+              if (v17 && (([v17 value], (v18 = objc_claimAutoreleasedReturnValue()) == 0) || (v19 = v18, objc_msgSend(v17, "value"), v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v20, "areKeysAvailable:", descriptorsCopy), v20, v8 = v53, v19, v21)))
               {
-                v22 = [v17 value];
-                if (v22)
+                value = [v17 value];
+                if (value)
                 {
                   v23 = v55;
                   if (!v55)
@@ -1766,7 +1766,7 @@ LABEL_13:
                     [v55 setObject:v24 forKeyedSubscript:v51];
                   }
 
-                  [v24 addObject:v22];
+                  [v24 addObject:value];
                 }
               }
 
@@ -1802,9 +1802,9 @@ LABEL_13:
 
   if ([v8 count])
   {
-    v25 = [(PHRecentsController *)self contactStore];
-    v26 = [v8 array];
-    v27 = [v25 contactsForHandles:v26 keyDescriptors:v54];
+    contactStore = [(PHRecentsController *)self contactStore];
+    array = [v8 array];
+    v27 = [contactStore contactsForHandles:array keyDescriptors:descriptorsCopy];
 
     if (v27)
     {
@@ -1819,8 +1819,8 @@ LABEL_13:
       v63 = 0u;
       v60 = 0u;
       v61 = 0u;
-      v50 = [v48 allKeys];
-      v29 = [v50 countByEnumeratingWithState:&v60 objects:v73 count:16];
+      allKeys = [v48 allKeys];
+      v29 = [allKeys countByEnumeratingWithState:&v60 objects:v73 count:16];
       if (v29)
       {
         v30 = v29;
@@ -1831,7 +1831,7 @@ LABEL_13:
           {
             if (*v61 != v52)
             {
-              objc_enumerationMutation(v50);
+              objc_enumerationMutation(allKeys);
             }
 
             v32 = *(*(&v60 + 1) + 8 * j);
@@ -1875,11 +1875,11 @@ LABEL_13:
               [v55 setObject:v40 forKeyedSubscript:v32];
             }
 
-            v41 = [v33 array];
-            [v40 addObjectsFromArray:v41];
+            array2 = [v33 array];
+            [v40 addObjectsFromArray:array2];
           }
 
-          v30 = [v50 countByEnumeratingWithState:&v60 objects:v73 count:16];
+          v30 = [allKeys countByEnumeratingWithState:&v60 objects:v73 count:16];
         }
 
         while (v30);
@@ -1894,23 +1894,23 @@ LABEL_13:
   return v42;
 }
 
-- (id)contactHandlesForHandle:(id)a3
+- (id)contactHandlesForHandle:(id)handle
 {
-  v3 = a3;
+  handleCopy = handle;
   v4 = +[NSMutableArray array];
-  v5 = [v3 value];
-  if ([v5 length])
+  value = [handleCopy value];
+  if ([value length])
   {
-    [v4 addObject:v5];
-    v6 = [v3 normalizedValue];
-    if ([v6 length])
+    [v4 addObject:value];
+    normalizedValue = [handleCopy normalizedValue];
+    if ([normalizedValue length])
     {
-      v7 = [v3 value];
-      v8 = [v6 isEqualToString:v7];
+      value2 = [handleCopy value];
+      v8 = [normalizedValue isEqualToString:value2];
 
       if ((v8 & 1) == 0)
       {
-        [v4 addObject:v6];
+        [v4 addObject:normalizedValue];
       }
     }
   }
@@ -1920,15 +1920,15 @@ LABEL_13:
   return v9;
 }
 
-- (id)contactHandlesForRecentCalls:(id)a3
+- (id)contactHandlesForRecentCalls:(id)calls
 {
-  v4 = a3;
+  callsCopy = calls;
   v5 = objc_alloc_init(NSMutableOrderedSet);
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = v4;
+  obj = callsCopy;
   v6 = [obj countByEnumeratingWithState:&v24 objects:v29 count:16];
   if (v6)
   {
@@ -1948,8 +1948,8 @@ LABEL_13:
         v21 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v11 = [v10 validRemoteParticipantHandles];
-        v12 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
+        validRemoteParticipantHandles = [v10 validRemoteParticipantHandles];
+        v12 = [validRemoteParticipantHandles countByEnumeratingWithState:&v20 objects:v28 count:16];
         if (v12)
         {
           v13 = v12;
@@ -1960,14 +1960,14 @@ LABEL_13:
             {
               if (*v21 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(validRemoteParticipantHandles);
               }
 
               v16 = [(PHRecentsController *)self contactHandlesForHandle:*(*(&v20 + 1) + 8 * j)];
               [v5 addObjectsFromArray:v16];
             }
 
-            v13 = [v11 countByEnumeratingWithState:&v20 objects:v28 count:16];
+            v13 = [validRemoteParticipantHandles countByEnumeratingWithState:&v20 objects:v28 count:16];
           }
 
           while (v13);
@@ -1980,38 +1980,38 @@ LABEL_13:
     while (v7);
   }
 
-  v17 = [v5 array];
+  array = [v5 array];
 
-  return v17;
+  return array;
 }
 
-- (id)formattedNameForHandle:(id)a3 countryCode:(id)a4
+- (id)formattedNameForHandle:(id)handle countryCode:(id)code
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 type];
+  handleCopy = handle;
+  codeCopy = code;
+  type = [handleCopy type];
   v8 = PHDefaultLog();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7 == 2)
+  if (type == 2)
   {
     if (v9)
     {
-      v10 = [v5 value];
+      value = [handleCopy value];
       v16 = 138412546;
-      v17 = v10;
+      v17 = value;
       v18 = 2112;
-      v19 = v6;
+      v19 = codeCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "     - we'll format the destinationID '%@' with the country code '%@'", &v16, 0x16u);
     }
 
-    v11 = [v5 value];
-    v12 = TUFormattedPhoneNumber();
+    value2 = [handleCopy value];
+    value4 = TUFormattedPhoneNumber();
 
-    if (!v12)
+    if (!value4)
     {
 LABEL_9:
       v14 = +[NSBundle mainBundle];
-      v12 = [v14 localizedStringForKey:@"UNKNOWN_CALLER" value:&stru_10028F310 table:@"PHRecents"];
+      value4 = [v14 localizedStringForKey:@"UNKNOWN_CALLER" value:&stru_10028F310 table:@"PHRecents"];
     }
   }
 
@@ -2019,46 +2019,46 @@ LABEL_9:
   {
     if (v9)
     {
-      v13 = [v5 value];
+      value3 = [handleCopy value];
       v16 = 138412290;
-      v17 = v13;
+      v17 = value3;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "     - handle can't/shouldn't be formatted as a phone number, so using the unmodified destination ID '%@'", &v16, 0xCu);
     }
 
-    v12 = [v5 value];
-    if (!v12)
+    value4 = [handleCopy value];
+    if (!value4)
     {
       goto LABEL_9;
     }
   }
 
-  return v12;
+  return value4;
 }
 
-- (id)fetchCallProviderForRecentCall:(id)a3
+- (id)fetchCallProviderForRecentCall:(id)call
 {
-  v5 = a3;
-  v6 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v6);
+  callCopy = call;
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  v7 = [v5 serviceProvider];
-  v8 = [(PHRecentsController *)self callProviderManager];
-  if (v7)
+  serviceProvider = [callCopy serviceProvider];
+  callProviderManager = [(PHRecentsController *)self callProviderManager];
+  if (serviceProvider)
   {
-    v9 = [(PHRecentsController *)self callProviderCache];
-    v10 = [v9 objectForKey:v7];
+    callProviderCache = [(PHRecentsController *)self callProviderCache];
+    v10 = [callProviderCache objectForKey:serviceProvider];
 
     if (v10)
     {
       goto LABEL_11;
     }
 
-    v11 = [v8 providerForRecentCall:v5];
+    v11 = [callProviderManager providerForRecentCall:callCopy];
     if (v11)
     {
       v10 = v11;
-      v12 = [(PHRecentsController *)self callProviderCache];
-      [v12 setObject:v10 forKey:v7];
+      callProviderCache2 = [(PHRecentsController *)self callProviderCache];
+      [callProviderCache2 setObject:v10 forKey:serviceProvider];
 
       goto LABEL_11;
     }
@@ -2067,20 +2067,20 @@ LABEL_9:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v18 = v5;
+      v18 = callCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Could not retrieve a call provider for the specified recent call: %@", buf, 0xCu);
     }
   }
 
   else
   {
-    v13 = [NSString stringWithFormat:@"Service provider is nil for the specified recent call: %@", v5];
-    NSLog(@"** TUAssertion failure: %@", v13);
+    callCopy = [NSString stringWithFormat:@"Service provider is nil for the specified recent call: %@", callCopy];
+    NSLog(@"** TUAssertion failure: %@", callCopy);
 
     if (_TUAssertShouldCrashApplication())
     {
       v14 = +[NSAssertionHandler currentHandler];
-      [v14 handleFailureInMethod:a2 object:self file:@"PHRecentsController.m" lineNumber:1039 description:{@"Service provider is nil for the specified recent call: %@", v5}];
+      [v14 handleFailureInMethod:a2 object:self file:@"PHRecentsController.m" lineNumber:1039 description:{@"Service provider is nil for the specified recent call: %@", callCopy}];
     }
   }
 
@@ -2090,18 +2090,18 @@ LABEL_11:
   return v10;
 }
 
-- (void)fetchContactsForRecentCalls:(id)a3
+- (void)fetchContactsForRecentCalls:(id)calls
 {
-  v4 = a3;
-  v5 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  callsCopy = calls;
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  v6 = [(PHRecentsController *)self contactHandlesForRecentCalls:v4];
+  v6 = [(PHRecentsController *)self contactHandlesForRecentCalls:callsCopy];
   v7 = PHDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 134218240;
-    v9 = [v4 count];
+    v9 = [callsCopy count];
     v10 = 2048;
     v11 = [v6 count];
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Fetching contacts for %lu calls using %lu handles", &v8, 0x16u);
@@ -2110,10 +2110,10 @@ LABEL_11:
   [(PHRecentsController *)self fetchContactsForHandles:v6];
 }
 
-- (id)fetchContactForContactCardDisplay:(id)a3
+- (id)fetchContactForContactCardDisplay:(id)display
 {
-  v4 = a3;
-  if ([v4 canExceedUnifyingThreshold])
+  displayCopy = display;
+  if ([displayCopy canExceedUnifyingThreshold])
   {
     v12 = 0;
     v13 = &v12;
@@ -2121,16 +2121,16 @@ LABEL_11:
     v15 = __Block_byref_object_copy__7;
     v16 = __Block_byref_object_dispose__7;
     v17 = 0;
-    v5 = [(PHRecentsController *)self serialQueue];
+    serialQueue = [(PHRecentsController *)self serialQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __57__PHRecentsController_fetchContactForContactCardDisplay___block_invoke;
     block[3] = &unk_1002853C0;
-    v10 = v4;
+    v10 = displayCopy;
     v11 = &v12;
     block[4] = self;
-    v6 = v4;
-    dispatch_sync(v5, block);
+    v6 = displayCopy;
+    dispatch_sync(serialQueue, block);
 
     v7 = v13[5];
     if (!v7)
@@ -2138,12 +2138,12 @@ LABEL_11:
       v7 = v6;
     }
 
-    v4 = v7;
+    displayCopy = v7;
 
     _Block_object_dispose(&v12, 8);
   }
 
-  return v4;
+  return displayCopy;
 }
 
 void __57__PHRecentsController_fetchContactForContactCardDisplay___block_invoke(uint64_t a1)
@@ -2159,26 +2159,26 @@ void __57__PHRecentsController_fetchContactForContactCardDisplay___block_invoke(
   *(v7 + 40) = v6;
 }
 
-- (id)fetchUnifiedContactForID:(id)a3 withDescriptors:(id)a4
+- (id)fetchUnifiedContactForID:(id)d withDescriptors:(id)descriptors
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v8);
+  dCopy = d;
+  descriptorsCopy = descriptors;
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  v9 = [(PHRecentsController *)self contactStore];
+  contactStore = [(PHRecentsController *)self contactStore];
   v10 = PHDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138740227;
-    v25 = v6;
+    v25 = dCopy;
     v26 = 2112;
-    v27 = v9;
+    v27 = contactStore;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Fetching unified contact for handle %{sensitive}@ using contact store %@", buf, 0x16u);
   }
 
-  v11 = v7;
-  if (!v7)
+  v11 = descriptorsCopy;
+  if (!descriptorsCopy)
   {
     if (_defaultContactsKeyDescriptors_onceToken != -1)
     {
@@ -2189,9 +2189,9 @@ void __57__PHRecentsController_fetchContactForContactCardDisplay___block_invoke(
   }
 
   v23 = 0;
-  v12 = [v9 unifiedContactWithIdentifier:v6 keysToFetch:v11 error:&v23];
+  v12 = [contactStore unifiedContactWithIdentifier:dCopy keysToFetch:v11 error:&v23];
   v13 = v23;
-  if (!v7)
+  if (!descriptorsCopy)
   {
   }
 
@@ -2199,13 +2199,13 @@ void __57__PHRecentsController_fetchContactForContactCardDisplay___block_invoke(
   if (v13)
   {
     v15 = [v14 initWithValue:0];
-    v16 = [(PHRecentsController *)self contactCache];
-    [v16 setObject:v15 forKeyedSubscript:v6];
+    contactCache = [(PHRecentsController *)self contactCache];
+    [contactCache setObject:v15 forKeyedSubscript:dCopy];
 
     v17 = PHDefaultLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      [PHRecentsController fetchUnifiedContactForID:v6 withDescriptors:v17];
+      [PHRecentsController fetchUnifiedContactForID:dCopy withDescriptors:v17];
     }
 
     v18 = 0;
@@ -2214,8 +2214,8 @@ void __57__PHRecentsController_fetchContactForContactCardDisplay___block_invoke(
   else
   {
     v19 = [v14 initWithValue:v12];
-    v20 = [(PHRecentsController *)self contactCache];
-    [v20 setObject:v19 forKeyedSubscript:v6];
+    contactCache2 = [(PHRecentsController *)self contactCache];
+    [contactCache2 setObject:v19 forKeyedSubscript:dCopy];
 
     v21 = PHDefaultLog();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
@@ -2223,7 +2223,7 @@ void __57__PHRecentsController_fetchContactForContactCardDisplay___block_invoke(
       *buf = 138740227;
       v25 = v12;
       v26 = 2117;
-      v27 = v6;
+      v27 = dCopy;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Found unified contact %{sensitive}@ for contact handle %{sensitive}@", buf, 0x16u);
     }
 
@@ -2233,18 +2233,18 @@ void __57__PHRecentsController_fetchContactForContactCardDisplay___block_invoke(
   return v18;
 }
 
-- (void)fetchContactsForHandles:(id)a3
+- (void)fetchContactsForHandles:(id)handles
 {
-  v4 = a3;
-  v5 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  handlesCopy = handles;
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  v6 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [v4 count]);
+  v6 = +[NSMutableSet setWithCapacity:](NSMutableSet, "setWithCapacity:", [handlesCopy count]);
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v7 = v4;
+  v7 = handlesCopy;
   v8 = [v7 countByEnumeratingWithState:&v39 objects:v50 count:16];
   if (v8)
   {
@@ -2260,8 +2260,8 @@ void __57__PHRecentsController_fetchContactForContactCardDisplay___block_invoke(
         }
 
         v12 = *(*(&v39 + 1) + 8 * i);
-        v13 = [(PHRecentsController *)self contactCache];
-        v14 = [v13 objectForKeyedSubscript:v12];
+        contactCache = [(PHRecentsController *)self contactCache];
+        v14 = [contactCache objectForKeyedSubscript:v12];
 
         if (!v14)
         {
@@ -2277,7 +2277,7 @@ void __57__PHRecentsController_fetchContactForContactCardDisplay___block_invoke(
 
   if ([v6 count])
   {
-    v15 = [(PHRecentsController *)self contactStore];
+    contactStore = [(PHRecentsController *)self contactStore];
     v16 = PHDefaultLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
@@ -2285,19 +2285,19 @@ void __57__PHRecentsController_fetchContactForContactCardDisplay___block_invoke(
       *buf = 134218242;
       v44 = v17;
       v45 = 2112;
-      v46 = v15;
+      v46 = contactStore;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Fetching contacts for %lu handles using contact store %@", buf, 0x16u);
     }
 
-    v18 = [v6 allObjects];
+    allObjects = [v6 allObjects];
     v32 = v7;
     if (_defaultContactsKeyDescriptors_onceToken != -1)
     {
       [PHRecentsController fetchUnifiedContactForID:withDescriptors:];
     }
 
-    v31 = v15;
-    v19 = [v15 contactsForHandles:v18 keyDescriptors:_defaultContactsKeyDescriptors_keyDescriptors alwaysUnifyLabeledValues:0];
+    v31 = contactStore;
+    v19 = [contactStore contactsForHandles:allObjects keyDescriptors:_defaultContactsKeyDescriptors_keyDescriptors alwaysUnifyLabeledValues:0];
 
     v37 = 0u;
     v38 = 0u;
@@ -2321,7 +2321,7 @@ void __57__PHRecentsController_fetchContactForContactCardDisplay___block_invoke(
 
           v24 = *(*(&v35 + 1) + 8 * j);
           v25 = [v19 objectForKeyedSubscript:v24];
-          v26 = [v25 firstObject];
+          firstObject = [v25 firstObject];
           if ([v25 count] >= 2)
           {
             v27 = PHDefaultLog();
@@ -2333,14 +2333,14 @@ void __57__PHRecentsController_fetchContactForContactCardDisplay___block_invoke(
               v45 = 2117;
               v46 = v24;
               v47 = 2117;
-              v48 = v26;
+              v48 = firstObject;
               _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Found %lu contacts for contact handle %{sensitive}@; caching the first contact %{sensitive}@", buf, 0x20u);
             }
           }
 
-          v29 = [[TUOptionalObject alloc] initWithValue:v26];
-          v30 = [(PHRecentsController *)self contactCache];
-          [v30 setObject:v29 forKeyedSubscript:v24];
+          v29 = [[TUOptionalObject alloc] initWithValue:firstObject];
+          contactCache2 = [(PHRecentsController *)self contactCache];
+          [contactCache2 setObject:v29 forKeyedSubscript:v24];
         }
 
         v21 = [obj countByEnumeratingWithState:&v35 objects:v49 count:16];
@@ -2356,8 +2356,8 @@ void __57__PHRecentsController_fetchContactForContactCardDisplay___block_invoke(
 
 - (id)fetchContactFormatter
 {
-  v2 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v2);
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   v3 = objc_alloc_init(CNContactFormatter);
   [v3 setStyle:0];
@@ -2365,14 +2365,14 @@ void __57__PHRecentsController_fetchContactForContactCardDisplay___block_invoke(
   return v3;
 }
 
-- (id)fetchImageForRecentCall:(id)a3
+- (id)fetchImageForRecentCall:(id)call
 {
-  v4 = a3;
-  v5 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  callCopy = call;
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  v6 = [v4 ttyType];
-  if (v6 == 2)
+  ttyType = [callCopy ttyType];
+  if (ttyType == 2)
   {
     v7 = +[UIImage recentsTTYRelayGlyphImage];
 LABEL_5:
@@ -2385,31 +2385,31 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (v6 == 1)
+  if (ttyType == 1)
   {
     v7 = +[UIImage recentsTTYDirectGlyphImage];
     goto LABEL_5;
   }
 
 LABEL_6:
-  v9 = [v4 callStatus];
-  if (v9 != kCHCallStatusConnectedOutgoing)
+  callStatus = [callCopy callStatus];
+  if (callStatus != kCHCallStatusConnectedOutgoing)
   {
-    v10 = [v4 callStatus];
-    if (v10 != kCHCallStatusCancelled)
+    callStatus2 = [callCopy callStatus];
+    if (callStatus2 != kCHCallStatusCancelled)
     {
       goto LABEL_11;
     }
   }
 
-  v11 = [v4 mediaType];
-  if (v11 == 2)
+  mediaType = [callCopy mediaType];
+  if (mediaType == 2)
   {
     v12 = +[UIImage recentsOutgoingVideoCallGlyphImage];
     goto LABEL_13;
   }
 
-  if (v11 != 1)
+  if (mediaType != 1)
   {
 LABEL_11:
     v8 = 0;
@@ -2424,81 +2424,81 @@ LABEL_14:
   return v8;
 }
 
-- (id)fetchMutableItemForRecentCall:(id)a3
+- (id)fetchMutableItemForRecentCall:(id)call
 {
-  v4 = a3;
-  v5 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  callCopy = call;
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  v6 = -[PHRecentsController fetchMutableItemForRecentCall:numberOfOccurences:](self, "fetchMutableItemForRecentCall:numberOfOccurences:", v4, [v4 numberOfOccurrences]);
+  v6 = -[PHRecentsController fetchMutableItemForRecentCall:numberOfOccurences:](self, "fetchMutableItemForRecentCall:numberOfOccurences:", callCopy, [callCopy numberOfOccurrences]);
 
   return v6;
 }
 
-- (id)updatedTitleForTempHandles:(id)a3 countOfExcludedHandles:(int64_t)a4
+- (id)updatedTitleForTempHandles:(id)handles countOfExcludedHandles:(int64_t)excludedHandles
 {
-  v6 = a3;
-  if (![v6 length])
+  handlesCopy = handles;
+  if (![handlesCopy length])
   {
     goto LABEL_6;
   }
 
-  if (a4 == 1)
+  if (excludedHandles == 1)
   {
     v7 = TUBundle();
     v8 = [v7 localizedStringForKey:@"%@_AND_ONE_OTHER" value:&stru_10028F310 table:@"TelephonyUtilities"];
-    v9 = [NSString stringWithFormat:v8, v6];
+    handlesCopy = [NSString stringWithFormat:v8, handlesCopy];
 
     goto LABEL_7;
   }
 
-  if (a4 >= 2)
+  if (excludedHandles >= 2)
   {
     v10 = TUBundle();
     v11 = [v10 localizedStringForKey:@"%@_AND_%@_OTHERS" value:&stru_10028F310 table:@"TelephonyUtilities"];
-    v12 = [(PHRecentsController *)self numberFormatter];
-    v13 = [NSNumber numberWithInteger:a4];
-    v14 = [v12 stringFromNumber:v13];
-    v9 = [NSString stringWithFormat:v11, v6, v14];
+    numberFormatter = [(PHRecentsController *)self numberFormatter];
+    v13 = [NSNumber numberWithInteger:excludedHandles];
+    v14 = [numberFormatter stringFromNumber:v13];
+    handlesCopy = [NSString stringWithFormat:v11, handlesCopy, v14];
   }
 
   else
   {
 LABEL_6:
-    v9 = v6;
+    handlesCopy = handlesCopy;
   }
 
 LABEL_7:
 
-  return v9;
+  return handlesCopy;
 }
 
-- (id)fetchMutableItemForRecentCall:(id)a3 numberOfOccurences:(unint64_t)a4
+- (id)fetchMutableItemForRecentCall:(id)call numberOfOccurences:(unint64_t)occurences
 {
-  v6 = a3;
-  v7 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v7);
+  callCopy = call;
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   v8 = objc_alloc_init(PKMutableRecentsItem);
-  v9 = [v6 validRemoteParticipantHandles];
-  v10 = [v9 count];
-  v11 = [v6 countOfExcludedHandles];
-  v12 = v11;
-  v158 = v9;
-  if (v10 || v11 < 1)
+  validRemoteParticipantHandles = [callCopy validRemoteParticipantHandles];
+  v10 = [validRemoteParticipantHandles count];
+  countOfExcludedHandles = [callCopy countOfExcludedHandles];
+  v12 = countOfExcludedHandles;
+  v158 = validRemoteParticipantHandles;
+  if (v10 || countOfExcludedHandles < 1)
   {
     if (v10 > 1)
     {
-      v150 = v11;
+      v150 = countOfExcludedHandles;
       v154 = v8;
-      v156 = a4;
-      v160 = v6;
-      v23 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v9 count]);
+      occurencesCopy = occurences;
+      v160 = callCopy;
+      v23 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [validRemoteParticipantHandles count]);
       v161 = 0u;
       v162 = 0u;
       v163 = 0u;
       v164 = 0u;
-      v24 = v9;
+      v24 = validRemoteParticipantHandles;
       v25 = [v24 countByEnumeratingWithState:&v161 objects:v169 count:16];
       if (v25)
       {
@@ -2517,26 +2517,26 @@ LABEL_7:
             v30 = [(PHRecentsController *)self contactForHandle:v29];
             if (v30)
             {
-              v31 = [(PHRecentsController *)self contactFormatter];
-              v32 = [v31 stringFromContact:v30];
+              contactFormatter = [(PHRecentsController *)self contactFormatter];
+              isoCountryCode2 = [contactFormatter stringFromContact:v30];
 
-              if (v32)
+              if (isoCountryCode2)
               {
-                [v23 addObject:v32];
+                [v23 addObject:isoCountryCode2];
               }
 
               else
               {
-                v34 = [v160 isoCountryCode];
-                v35 = [(PHRecentsController *)self formattedNameForHandle:v29 countryCode:v34];
+                isoCountryCode = [v160 isoCountryCode];
+                v35 = [(PHRecentsController *)self formattedNameForHandle:v29 countryCode:isoCountryCode];
                 [v23 addObject:v35];
               }
             }
 
             else
             {
-              v32 = [v160 isoCountryCode];
-              v33 = [(PHRecentsController *)self formattedNameForHandle:v29 countryCode:v32];
+              isoCountryCode2 = [v160 isoCountryCode];
+              v33 = [(PHRecentsController *)self formattedNameForHandle:v29 countryCode:isoCountryCode2];
               [v23 addObject:v33];
             }
           }
@@ -2574,13 +2574,13 @@ LABEL_7:
             v142 = [v23 objectAtIndexedSubscript:0];
             v108 = [v23 objectAtIndexedSubscript:1];
             v109 = [v23 objectAtIndexedSubscript:2];
-            v110 = [(PHRecentsController *)self numberFormatter];
+            numberFormatter = [(PHRecentsController *)self numberFormatter];
             v111 = [NSNumber numberWithInteger:v150];
-            v112 = [v110 stringFromNumber:v111];
-            v113 = [NSString stringWithFormat:v143, v142, v108, v109, v112];
+            v112 = [numberFormatter stringFromNumber:v111];
+            v112 = [NSString stringWithFormat:v143, v142, v108, v109, v112];
 
-            [v146 appendString:v113];
-            v54 = v113;
+            [v146 appendString:v112];
+            v54 = v112;
           }
 
           else
@@ -2593,7 +2593,7 @@ LABEL_7:
             [v146 appendString:v59];
           }
 
-          v6 = v160;
+          callCopy = v160;
           v8 = v154;
 
           v114 = TUBundle();
@@ -2601,7 +2601,7 @@ LABEL_7:
           v116 = [v23 objectAtIndexedSubscript:0];
           v117 = [v23 objectAtIndexedSubscript:1];
           v118 = [v23 objectAtIndexedSubscript:2];
-          v16 = [NSString stringWithFormat:v115, v116, v117, v118];
+          v118 = [NSString stringWithFormat:v115, v116, v117, v118];
 
           v36 = v146;
           break;
@@ -2613,25 +2613,25 @@ LABEL_7:
             v49 = [v48 localizedStringForKey:@"%@_%@_AND_ONE_OTHER" value:&stru_10028F310 table:@"TelephonyUtilities"];
             v50 = [v23 objectAtIndexedSubscript:0];
             v51 = [v23 objectAtIndexedSubscript:1];
-            v52 = [NSString stringWithFormat:v49, v50, v51];
-            v6 = v160;
+            v103 = [NSString stringWithFormat:v49, v50, v51];
+            callCopy = v160;
             v8 = v154;
           }
 
           else
           {
-            v6 = v160;
+            callCopy = v160;
             v8 = v154;
             if (v150)
             {
               v49 = [v48 localizedStringForKey:@"%@_%@_AND_%@_OTHERS" value:&stru_10028F310 table:@"TelephonyUtilities"];
               v50 = [v23 objectAtIndexedSubscript:0];
               v51 = [v23 objectAtIndexedSubscript:1];
-              v141 = [(PHRecentsController *)self numberFormatter];
+              numberFormatter2 = [(PHRecentsController *)self numberFormatter];
               v102 = [NSNumber numberWithInteger:v150];
-              [v141 stringFromNumber:v102];
+              [numberFormatter2 stringFromNumber:v102];
               v103 = v148 = v36;
-              v52 = [NSString stringWithFormat:v49, v50, v51, v103];
+              v103 = [NSString stringWithFormat:v49, v50, v51, v103];
 
               v36 = v148;
             }
@@ -2641,29 +2641,29 @@ LABEL_7:
               v49 = [v48 localizedStringForKey:@"%@_AND_%@" value:&stru_10028F310 table:@"TelephonyUtilities"];
               v50 = [v23 objectAtIndexedSubscript:0];
               v51 = [v23 objectAtIndexedSubscript:1];
-              v52 = [NSString stringWithFormat:v49, v50, v51];
+              v103 = [NSString stringWithFormat:v49, v50, v51];
             }
           }
 
-          [v36 appendString:v52];
+          [v36 appendString:v103];
           v104 = TUBundle();
           v105 = [v104 localizedStringForKey:@"%@_AND_%@" value:&stru_10028F310 table:@"TelephonyUtilities"];
           v106 = [v23 objectAtIndexedSubscript:0];
           v107 = [v23 objectAtIndexedSubscript:1];
-          v16 = [NSString stringWithFormat:v105, v106, v107];
+          v118 = [NSString stringWithFormat:v105, v106, v107];
 
           break;
         case 1:
-          v6 = v160;
+          callCopy = v160;
           v8 = v154;
           if (v150 == 1)
           {
             v98 = v36;
-            v38 = TUBundle();
-            v99 = [v38 localizedStringForKey:@"%@_AND_ONE_OTHER" value:&stru_10028F310 table:@"TelephonyUtilities"];
+            v123 = TUBundle();
+            v99 = [v123 localizedStringForKey:@"%@_AND_ONE_OTHER" value:&stru_10028F310 table:@"TelephonyUtilities"];
             v100 = [v23 objectAtIndexedSubscript:0];
-            v101 = [NSString stringWithFormat:v99, v100];
-            [v98 appendString:v101];
+            v100 = [NSString stringWithFormat:v99, v100];
+            [v98 appendString:v100];
 
             v36 = v98;
           }
@@ -2675,30 +2675,30 @@ LABEL_7:
               v145 = TUBundle();
               v119 = [v145 localizedStringForKey:@"%@_AND_%@_OTHERS" value:&stru_10028F310 table:@"TelephonyUtilities"];
               v120 = [v23 objectAtIndexedSubscript:0];
-              v121 = [(PHRecentsController *)self numberFormatter];
+              numberFormatter3 = [(PHRecentsController *)self numberFormatter];
               [NSNumber numberWithInteger:v150];
               v122 = v149 = v36;
-              v123 = [v121 stringFromNumber:v122];
+              v123 = [numberFormatter3 stringFromNumber:v122];
               v124 = v119;
-              v38 = [NSString stringWithFormat:v119, v120, v123];
+              v123 = [NSString stringWithFormat:v119, v120, v123];
 
               v36 = v149;
             }
 
             else
             {
-              v38 = [v23 objectAtIndexedSubscript:0];
+              v123 = [v23 objectAtIndexedSubscript:0];
             }
 
-            [v36 appendString:v38];
+            [v36 appendString:v123];
           }
 
-          v16 = [v23 objectAtIndexedSubscript:0];
+          v118 = [v23 objectAtIndexedSubscript:0];
           break;
         default:
           if (v37 < 4)
           {
-            v16 = 0;
+            v118 = 0;
           }
 
           else
@@ -2710,9 +2710,9 @@ LABEL_7:
             v62 = [v23 objectAtIndexedSubscript:0];
             v63 = [v23 objectAtIndexedSubscript:1];
             v64 = [v23 objectAtIndexedSubscript:2];
-            v65 = [(PHRecentsController *)self numberFormatter];
+            numberFormatter4 = [(PHRecentsController *)self numberFormatter];
             v66 = [NSNumber numberWithUnsignedInteger:v60];
-            v67 = [v65 stringFromNumber:v66];
+            v67 = [numberFormatter4 stringFromNumber:v66];
             v68 = v61;
             v69 = [NSString stringWithFormat:v61, v62, v63, v64, v67];
             [v147 appendString:v69];
@@ -2722,15 +2722,15 @@ LABEL_7:
             v71 = [v23 objectAtIndexedSubscript:0];
             v72 = [v23 objectAtIndexedSubscript:1];
             v73 = [v23 objectAtIndexedSubscript:2];
-            v74 = [(PHRecentsController *)self numberFormatter];
+            numberFormatter5 = [(PHRecentsController *)self numberFormatter];
             v75 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v23 count] - 3);
-            v76 = [v74 stringFromNumber:v75];
-            v16 = [NSString stringWithFormat:v70, v71, v72, v73, v76];
+            v76 = [numberFormatter5 stringFromNumber:v75];
+            v118 = [NSString stringWithFormat:v70, v71, v72, v73, v76];
 
             v36 = v147;
           }
 
-          v6 = v160;
+          callCopy = v160;
           v8 = v154;
           break;
       }
@@ -2745,29 +2745,29 @@ LABEL_7:
         v44 = 0;
       }
 
-      a4 = v156;
+      occurences = occurencesCopy;
     }
 
     else
     {
-      v14 = [v9 anyObject];
-      v155 = v14;
-      if (v14)
+      anyObject = [validRemoteParticipantHandles anyObject];
+      v155 = anyObject;
+      if (anyObject)
       {
-        [(PHRecentsController *)self contactHandlesForHandle:v14];
+        [(PHRecentsController *)self contactHandlesForHandle:anyObject];
         v165 = 0u;
         v166 = 0u;
         v167 = 0u;
         v15 = v168 = 0u;
-        v16 = [v15 countByEnumeratingWithState:&v165 objects:v170 count:16];
-        if (v16)
+        v118 = [v15 countByEnumeratingWithState:&v165 objects:v170 count:16];
+        if (v118)
         {
           v153 = v8;
-          v159 = v6;
+          v159 = callCopy;
           v17 = *v166;
           while (2)
           {
-            for (j = 0; j != v16; j = j + 1)
+            for (j = 0; j != v118; j = j + 1)
             {
               if (*v166 != v17)
               {
@@ -2775,25 +2775,25 @@ LABEL_7:
               }
 
               v19 = *(*(&v165 + 1) + 8 * j);
-              v20 = [(PHRecentsController *)self contactCache];
-              v21 = [v20 objectForKeyedSubscript:v19];
-              v22 = [v21 value];
+              contactCache = [(PHRecentsController *)self contactCache];
+              v21 = [contactCache objectForKeyedSubscript:v19];
+              value = [v21 value];
 
-              if (v22)
+              if (value)
               {
-                v45 = [(PHRecentsController *)self contactFormatter];
-                v46 = [v45 stringFromContact:v22];
+                contactFormatter2 = [(PHRecentsController *)self contactFormatter];
+                v46 = [contactFormatter2 stringFromContact:value];
                 v44 = [(PHRecentsController *)self updatedTitleForTempHandles:v46 countOfExcludedHandles:v12];
 
-                v47 = [(PHRecentsController *)self contactFormatter];
-                v16 = [v47 stringFromContact:v22];
+                contactFormatter3 = [(PHRecentsController *)self contactFormatter];
+                v118 = [contactFormatter3 stringFromContact:value];
 
                 goto LABEL_37;
               }
             }
 
-            v16 = [v15 countByEnumeratingWithState:&v165 objects:v170 count:16];
-            if (v16)
+            v118 = [v15 countByEnumeratingWithState:&v165 objects:v170 count:16];
+            if (v118)
             {
               continue;
             }
@@ -2803,7 +2803,7 @@ LABEL_7:
 
           v44 = 0;
 LABEL_37:
-          v6 = v159;
+          callCopy = v159;
           v8 = v153;
         }
 
@@ -2815,37 +2815,37 @@ LABEL_37:
 
       else
       {
-        v16 = 0;
+        v118 = 0;
         v44 = 0;
       }
 
-      v77 = [(PHRecentsController *)self fetchCallProviderForRecentCall:v6];
+      v77 = [(PHRecentsController *)self fetchCallProviderForRecentCall:callCopy];
       if (![v44 length] && (objc_msgSend(v77, "isTelephonyProvider") & 1) == 0)
       {
-        v78 = [v6 name];
-        v79 = [(PHRecentsController *)self updatedTitleForTempHandles:v78 countOfExcludedHandles:v12];
+        name = [callCopy name];
+        v79 = [(PHRecentsController *)self updatedTitleForTempHandles:name countOfExcludedHandles:v12];
 
-        v80 = [v6 name];
+        name2 = [callCopy name];
 
-        v16 = v80;
+        v118 = name2;
         v44 = v79;
       }
 
       if (![v44 length])
       {
-        v81 = [v6 callerIdForDisplay];
-        v82 = [(PHRecentsController *)self updatedTitleForTempHandles:v81 countOfExcludedHandles:v12];
+        callerIdForDisplay = [callCopy callerIdForDisplay];
+        v82 = [(PHRecentsController *)self updatedTitleForTempHandles:callerIdForDisplay countOfExcludedHandles:v12];
 
-        v16 = v81;
+        v118 = callerIdForDisplay;
         v44 = v82;
       }
 
       if (![v44 length])
       {
-        v83 = [v6 callerIdIsBlocked];
+        callerIdIsBlocked = [callCopy callerIdIsBlocked];
         v84 = +[NSBundle mainBundle];
         v85 = v84;
-        if (v83)
+        if (callerIdIsBlocked)
         {
           v86 = @"NO_CALLER_ID";
         }
@@ -2858,7 +2858,7 @@ LABEL_37:
         v87 = [v84 localizedStringForKey:v86 value:&stru_10028F310 table:@"PHRecents"];
         v88 = [(PHRecentsController *)self updatedTitleForTempHandles:v87 countOfExcludedHandles:v12];
 
-        if ([v6 callerIdIsBlocked])
+        if ([callCopy callerIdIsBlocked])
         {
           v89 = @"NO_CALLER_ID";
         }
@@ -2871,7 +2871,7 @@ LABEL_37:
         v90 = +[NSBundle mainBundle];
         v91 = [v90 localizedStringForKey:v89 value:&stru_10028F310 table:@"PHRecents"];
 
-        v16 = v91;
+        v118 = v91;
         v44 = v88;
       }
     }
@@ -2879,7 +2879,7 @@ LABEL_37:
 
   else
   {
-    if (v11 == 1)
+    if (countOfExcludedHandles == 1)
     {
       v13 = TUBundle();
       v44 = [v13 localizedStringForKey:@"ONE_OTHER" value:&stru_10028F310 table:@"TelephonyUtilities"];
@@ -2889,63 +2889,63 @@ LABEL_37:
     {
       v39 = TUBundle();
       [v39 localizedStringForKey:@"%@_OTHERS" value:&stru_10028F310 table:@"TelephonyUtilities"];
-      v40 = v157 = a4;
-      v41 = [(PHRecentsController *)self numberFormatter];
+      v40 = v157 = occurences;
+      numberFormatter6 = [(PHRecentsController *)self numberFormatter];
       v42 = [NSNumber numberWithInteger:v12];
-      v43 = [v41 stringFromNumber:v42];
+      v43 = [numberFormatter6 stringFromNumber:v42];
       v44 = [NSString stringWithFormat:v40, v43];
 
-      a4 = v157;
+      occurences = v157;
     }
 
-    v16 = 0;
+    v118 = 0;
   }
 
-  v125 = [v6 date];
-  [v8 setDate:v125];
+  date = [callCopy date];
+  [v8 setDate:date];
 
-  v126 = [v8 image];
+  image = [v8 image];
 
-  if (!v126)
+  if (!image)
   {
-    v127 = [(PHRecentsController *)self fetchImageForRecentCall:v6];
+    v127 = [(PHRecentsController *)self fetchImageForRecentCall:callCopy];
     [v8 setImage:v127];
   }
 
-  if (a4 <= 1)
+  if (occurences <= 1)
   {
     [v8 setLocalizedCount:0];
   }
 
   else
   {
-    v128 = [(PHRecentsController *)self numberFormatter];
-    v129 = [NSNumber numberWithUnsignedInteger:a4];
-    v130 = [v128 stringFromNumber:v129];
-    v131 = [NSString stringWithFormat:@"(%@)", v130];
-    [v8 setLocalizedCount:v131];
+    numberFormatter7 = [(PHRecentsController *)self numberFormatter];
+    v129 = [NSNumber numberWithUnsignedInteger:occurences];
+    v130 = [numberFormatter7 stringFromNumber:v129];
+    v130 = [NSString stringWithFormat:@"(%@)", v130];
+    [v8 setLocalizedCount:v130];
   }
 
   [v8 setLocalizedTitle:v44];
-  [v8 setLocalizedValidHandlesTitle:v16];
-  [v8 setVerified:{objc_msgSend(v6, "verificationStatus") == 1}];
+  [v8 setLocalizedValidHandlesTitle:v118];
+  [v8 setVerified:{objc_msgSend(callCopy, "verificationStatus") == 1}];
   if (PHDeviceSupportsDualSim())
   {
-    v132 = [(PHRecentsController *)self fetchCallProviderForRecentCall:v6];
-    if ([v6 ph_supportsLocalParticipantBadge])
+    v132 = [(PHRecentsController *)self fetchCallProviderForRecentCall:callCopy];
+    if ([callCopy ph_supportsLocalParticipantBadge])
     {
-      v133 = [v132 prioritizedSenderIdentities];
-      v134 = [v133 count];
+      prioritizedSenderIdentities = [v132 prioritizedSenderIdentities];
+      v134 = [prioritizedSenderIdentities count];
 
       if (v134 >= 2)
       {
-        v135 = [(PHRecentsController *)self callProviderManager];
-        v136 = [v135 telephonyProvider];
-        v137 = [v6 localParticipantUUID];
-        v138 = [v136 senderIdentityForAccountUUID:v137];
+        callProviderManager = [(PHRecentsController *)self callProviderManager];
+        telephonyProvider = [callProviderManager telephonyProvider];
+        localParticipantUUID = [callCopy localParticipantUUID];
+        v138 = [telephonyProvider senderIdentityForAccountUUID:localParticipantUUID];
 
-        v139 = [v138 localizedShortName];
-        [v8 setLocalizedSenderIdentityTitle:v139];
+        localizedShortName = [v138 localizedShortName];
+        [v8 setLocalizedSenderIdentityTitle:localizedShortName];
       }
     }
   }
@@ -2953,46 +2953,46 @@ LABEL_37:
   return v8;
 }
 
-- (void)fetchMetadataForRecentCalls:(id)a3
+- (void)fetchMetadataForRecentCalls:(id)calls
 {
-  v4 = a3;
-  v5 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  callsCopy = calls;
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  v6 = [(PHRecentsController *)self metadataCache];
+  metadataCache = [(PHRecentsController *)self metadataCache];
 
-  if (v6)
+  if (metadataCache)
   {
-    v7 = [TUMetadataDestinationID metadataDestinationIDsForCHRecentCalls:v4];
+    v7 = [TUMetadataDestinationID metadataDestinationIDsForCHRecentCalls:callsCopy];
     v8 = PHDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v16 = [v4 count];
+      v16 = [callsCopy count];
       v17 = 2048;
       v18 = [v7 count];
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Fetching metadata for %lu recent calls using %lu handles", buf, 0x16u);
     }
 
-    v9 = [(PHRecentsController *)self featureFlags];
-    v10 = [v9 phoneRecentsAvatarsEnabled];
+    featureFlags = [(PHRecentsController *)self featureFlags];
+    phoneRecentsAvatarsEnabled = [featureFlags phoneRecentsAvatarsEnabled];
 
-    v11 = [(PHRecentsController *)self metadataCache];
-    v12 = v11;
-    if (v10)
+    metadataCache2 = [(PHRecentsController *)self metadataCache];
+    v12 = metadataCache2;
+    if (phoneRecentsAvatarsEnabled)
     {
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = __51__PHRecentsController_fetchMetadataForRecentCalls___block_invoke;
       v13[3] = &unk_1002852E0;
       v13[4] = self;
-      v14 = v4;
+      v14 = callsCopy;
       [v12 updateCacheWithDestinationIDs:v7 completion:v13];
     }
 
     else
     {
-      [v11 updateCacheWithDestinationIDs:v7];
+      [metadataCache2 updateCacheWithDestinationIDs:v7];
     }
   }
 }
@@ -3069,28 +3069,28 @@ void __51__PHRecentsController_fetchMetadataForRecentCalls___block_invoke_2(uint
   }
 }
 
-- (void)fetchBlockedStatusForRecentCalls:(id)a3
+- (void)fetchBlockedStatusForRecentCalls:(id)calls
 {
-  v4 = a3;
-  v5 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  callsCopy = calls;
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  if ([v4 count])
+  if ([callsCopy count])
   {
-    v6 = [(PHRecentsController *)self blockedStatusCache];
+    blockedStatusCache = [(PHRecentsController *)self blockedStatusCache];
 
-    if (v6)
+    if (blockedStatusCache)
     {
-      v7 = [(PHRecentsController *)self featureFlags];
-      v8 = [v7 betterBlockingEnabled];
+      featureFlags = [(PHRecentsController *)self featureFlags];
+      betterBlockingEnabled = [featureFlags betterBlockingEnabled];
 
-      if (v8)
+      if (betterBlockingEnabled)
       {
         v9 = PHDefaultLog();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          v15 = [v4 count];
+          v15 = [callsCopy count];
           _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Fetching blocked status for %lu recent calls", buf, 0xCu);
         }
 
@@ -3100,8 +3100,8 @@ void __51__PHRecentsController_fetchMetadataForRecentCalls___block_invoke_2(uint
         v10[2] = __56__PHRecentsController_fetchBlockedStatusForRecentCalls___block_invoke;
         v10[3] = &unk_100286E78;
         objc_copyWeak(&v13, buf);
-        v11 = v4;
-        v12 = self;
+        v11 = callsCopy;
+        selfCopy = self;
         [(PHRecentsController *)self queryCommTrustBlockedForCalls:v11 completion:v10];
 
         objc_destroyWeak(&v13);
@@ -3230,8 +3230,8 @@ LABEL_18:
 
 - (id)fetchNumberFormatter
 {
-  v2 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v2);
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   v3 = objc_alloc_init(NSNumberFormatter);
 
@@ -3240,40 +3240,40 @@ LABEL_18:
 
 - (BOOL)canLoadOlderRecentCalls
 {
-  v3 = [(PHRecentsController *)self featureFlags];
-  if ([v3 increaseCallHistoryEnabled])
+  featureFlags = [(PHRecentsController *)self featureFlags];
+  if ([featureFlags increaseCallHistoryEnabled])
   {
-    v4 = [(PHRecentsController *)self callHistoryController];
-    v5 = [v4 canLoadOlderRecentCalls];
+    callHistoryController = [(PHRecentsController *)self callHistoryController];
+    canLoadOlderRecentCalls = [callHistoryController canLoadOlderRecentCalls];
   }
 
   else
   {
-    v5 = 0;
+    canLoadOlderRecentCalls = 0;
   }
 
-  return v5;
+  return canLoadOlderRecentCalls;
 }
 
-- (void)continuousScrollingReachedIndexPath:(int64_t)a3
+- (void)continuousScrollingReachedIndexPath:(int64_t)path
 {
-  v5 = [(PHRecentsController *)self featureFlags];
-  v6 = [v5 increaseCallHistoryEnabled];
+  featureFlags = [(PHRecentsController *)self featureFlags];
+  increaseCallHistoryEnabled = [featureFlags increaseCallHistoryEnabled];
 
-  if (v6)
+  if (increaseCallHistoryEnabled)
   {
-    v7 = [(PHRecentsController *)self recentCalls];
-    v8 = [v7 count] - a3;
+    recentCalls = [(PHRecentsController *)self recentCalls];
+    v8 = [recentCalls count] - path;
 
     v9 = PHDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218496;
-      v13 = a3;
+      pathCopy = path;
       v14 = 2048;
       v15 = v8;
       v16 = 1024;
-      v17 = [(PHRecentsController *)self startedLoadingOlderCalls];
+      startedLoadingOlderCalls = [(PHRecentsController *)self startedLoadingOlderCalls];
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "_continuousScrollingReachedIndexPath %ld, remaining rows: %ld startedLoadingOlderCalls: %d", buf, 0x1Cu);
     }
 
@@ -3284,31 +3284,31 @@ LABEL_18:
     v11[2] = __59__PHRecentsController_continuousScrollingReachedIndexPath___block_invoke;
     v11[3] = &unk_1002852B8;
     v11[4] = self;
-    v11[5] = a3;
+    v11[5] = path;
     dispatch_async(serialQueue, v11);
   }
 }
 
-- (void)loadOlderCallsIfNecessaryForRemainingRowCount:(int64_t)a3
+- (void)loadOlderCallsIfNecessaryForRemainingRowCount:(int64_t)count
 {
-  v5 = [(PHRecentsController *)self featureFlags];
-  v6 = [v5 increaseCallHistoryEnabled];
+  featureFlags = [(PHRecentsController *)self featureFlags];
+  increaseCallHistoryEnabled = [featureFlags increaseCallHistoryEnabled];
 
-  if (v6 && ![(PHRecentsController *)self startedLoadingOlderCalls])
+  if (increaseCallHistoryEnabled && ![(PHRecentsController *)self startedLoadingOlderCalls])
   {
-    v13 = [(PHRecentsController *)self recentCalls];
-    v7 = [v13 count];
-    v8 = [(PHRecentsController *)self callHistoryController];
-    v9 = [v8 callHistoryControllerCallHistoryFetchLimit];
-    if (a3 > 50 || v7 >= v9)
+    recentCalls = [(PHRecentsController *)self recentCalls];
+    v7 = [recentCalls count];
+    callHistoryController = [(PHRecentsController *)self callHistoryController];
+    callHistoryControllerCallHistoryFetchLimit = [callHistoryController callHistoryControllerCallHistoryFetchLimit];
+    if (count > 50 || v7 >= callHistoryControllerCallHistoryFetchLimit)
     {
     }
 
     else
     {
-      v10 = [(PHRecentsController *)self canLoadOlderRecentCalls];
+      canLoadOlderRecentCalls = [(PHRecentsController *)self canLoadOlderRecentCalls];
 
-      if (v10)
+      if (canLoadOlderRecentCalls)
       {
         v11 = PHDefaultLog();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -3318,8 +3318,8 @@ LABEL_18:
         }
 
         [(PHRecentsController *)self setStartedLoadingOlderCalls:1];
-        v12 = [(PHRecentsController *)self callHistoryController];
-        [v12 loadOlderRecentCalls];
+        callHistoryController2 = [(PHRecentsController *)self callHistoryController];
+        [callHistoryController2 loadOlderRecentCalls];
       }
     }
   }
@@ -3327,18 +3327,18 @@ LABEL_18:
 
 - (void)checkRecentMissedCallCount
 {
-  v3 = [(PHRecentsController *)self featureFlags];
-  v4 = [v3 increaseCallHistoryEnabled];
+  featureFlags = [(PHRecentsController *)self featureFlags];
+  increaseCallHistoryEnabled = [featureFlags increaseCallHistoryEnabled];
 
-  if (v4)
+  if (increaseCallHistoryEnabled)
   {
-    v5 = [(PHRecentsController *)self serialQueue];
+    serialQueue = [(PHRecentsController *)self serialQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __49__PHRecentsController_checkRecentMissedCallCount__block_invoke;
     block[3] = &unk_100284FD0;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(serialQueue, block);
   }
 }
 
@@ -3392,17 +3392,17 @@ void __49__PHRecentsController_checkRecentMissedCallCount__block_invoke(uint64_t
   [*(a1 + 32) loadOlderCallsIfNecessaryForRemainingRowCount:v6];
 }
 
-- (id)recentCallsChangedFromCachedRecentCalls:(id)a3 callHistoryControllerRecentCalls:(id)a4
+- (id)recentCallsChangedFromCachedRecentCalls:(id)calls callHistoryControllerRecentCalls:(id)recentCalls
 {
-  v5 = a3;
-  v6 = a4;
+  callsCopy = calls;
+  recentCallsCopy = recentCalls;
   v7 = objc_alloc_init(NSMutableArray);
   v8 = objc_alloc_init(NSMutableDictionary);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v9 = v5;
+  v9 = callsCopy;
   v10 = [v9 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v10)
   {
@@ -3418,8 +3418,8 @@ void __49__PHRecentsController_checkRecentMissedCallCount__block_invoke(uint64_t
         }
 
         v14 = *(*(&v29 + 1) + 8 * i);
-        v15 = [v14 uniqueId];
-        [v8 setObject:v14 forKeyedSubscript:v15];
+        uniqueId = [v14 uniqueId];
+        [v8 setObject:v14 forKeyedSubscript:uniqueId];
       }
 
       v11 = [v9 countByEnumeratingWithState:&v29 objects:v34 count:16];
@@ -3432,7 +3432,7 @@ void __49__PHRecentsController_checkRecentMissedCallCount__block_invoke(uint64_t
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v16 = v6;
+  v16 = recentCallsCopy;
   v17 = [v16 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v17)
   {
@@ -3448,8 +3448,8 @@ void __49__PHRecentsController_checkRecentMissedCallCount__block_invoke(uint64_t
         }
 
         v21 = *(*(&v25 + 1) + 8 * j);
-        v22 = [v21 uniqueId];
-        v23 = [v8 objectForKey:v22];
+        uniqueId2 = [v21 uniqueId];
+        v23 = [v8 objectForKey:uniqueId2];
 
         if (!v23 || ([v23 isEqual:v21] & 1) == 0)
         {
@@ -3468,14 +3468,14 @@ void __49__PHRecentsController_checkRecentMissedCallCount__block_invoke(uint64_t
 
 - (id)fetchRecentCalls
 {
-  v3 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v3);
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  v4 = [(PHRecentsController *)self recentCalls];
-  v5 = [(PHRecentsController *)self callHistoryController];
-  v6 = [v5 recentCalls];
+  recentCalls = [(PHRecentsController *)self recentCalls];
+  callHistoryController = [(PHRecentsController *)self callHistoryController];
+  recentCalls2 = [callHistoryController recentCalls];
 
-  if ([v4 isEqualToArray:v6])
+  if ([recentCalls isEqualToArray:recentCalls2])
   {
     v7 = PHDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -3484,30 +3484,30 @@ void __49__PHRecentsController_checkRecentMissedCallCount__block_invoke(uint64_t
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Recent calls array has not changed. Ignoring", &v20, 2u);
     }
 
-    v8 = [(PHRecentsController *)self featureFlags];
-    v9 = [v8 callHistorySearchEnabled];
+    featureFlags = [(PHRecentsController *)self featureFlags];
+    callHistorySearchEnabled = [featureFlags callHistorySearchEnabled];
 
-    if (v9)
+    if (callHistorySearchEnabled)
     {
       os_unfair_lock_lock(&self->_accessorLock);
-      [(PHRecentsController *)self notifyDelegatesRecentsController:self didCompleteFetchingCalls:v4];
+      [(PHRecentsController *)self notifyDelegatesRecentsController:self didCompleteFetchingCalls:recentCalls];
       os_unfair_lock_unlock(&self->_accessorLock);
     }
 
-    v10 = v4;
+    v10 = recentCalls;
     goto LABEL_16;
   }
 
-  v11 = [(PHRecentsController *)self featureFlags];
-  v12 = [v11 increaseCallHistoryEnabled];
+  featureFlags2 = [(PHRecentsController *)self featureFlags];
+  increaseCallHistoryEnabled = [featureFlags2 increaseCallHistoryEnabled];
 
-  if (!v12)
+  if (!increaseCallHistoryEnabled)
   {
-    v18 = [(PHRecentsController *)self itemCache];
-    [v18 removeAllObjects];
+    itemCache = [(PHRecentsController *)self itemCache];
+    [itemCache removeAllObjects];
 
-    [(PHRecentsController *)self populateCachesForRecentCalls:v6];
-    v10 = v6;
+    [(PHRecentsController *)self populateCachesForRecentCalls:recentCalls2];
+    v10 = recentCalls2;
 LABEL_16:
     v17 = v10;
     goto LABEL_17;
@@ -3520,7 +3520,7 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Recent calls array has changed. Find the changed objects and only update their cache", &v20, 2u);
   }
 
-  v14 = [(PHRecentsController *)self recentCallsChangedFromCachedRecentCalls:v4 callHistoryControllerRecentCalls:v6];
+  v14 = [(PHRecentsController *)self recentCallsChangedFromCachedRecentCalls:recentCalls callHistoryControllerRecentCalls:recentCalls2];
   v15 = PHDefaultLog();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -3535,20 +3535,20 @@ LABEL_16:
     [(PHRecentsController *)self populateCachesForRecentCalls:v14];
   }
 
-  v17 = v6;
+  v17 = recentCalls2;
 
 LABEL_17:
 
   return v17;
 }
 
-- (void)populateCachesForRecentCalls:(id)a3
+- (void)populateCachesForRecentCalls:(id)calls
 {
-  v4 = a3;
-  v5 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  callsCopy = calls;
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  v6 = [v4 count];
+  v6 = [callsCopy count];
   v7 = PHDefaultLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -3557,7 +3557,7 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Requesting contacts for %lu calls", &v11, 0xCu);
   }
 
-  [(PHRecentsController *)self fetchContactsForRecentCalls:v4];
+  [(PHRecentsController *)self fetchContactsForRecentCalls:callsCopy];
   v8 = PHDefaultLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -3566,7 +3566,7 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Requesting metadata for %lu recent calls.", &v11, 0xCu);
   }
 
-  [(PHRecentsController *)self fetchMetadataForRecentCalls:v4];
+  [(PHRecentsController *)self fetchMetadataForRecentCalls:callsCopy];
   v9 = PHDefaultLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
@@ -3575,7 +3575,7 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Requesting blocked status with %lu recent calls", &v11, 0xCu);
   }
 
-  [(PHRecentsController *)self fetchBlockedStatusForRecentCalls:v4];
+  [(PHRecentsController *)self fetchBlockedStatusForRecentCalls:callsCopy];
   v10 = PHDefaultLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
@@ -3584,21 +3584,21 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Populating item cache with %lu recent calls", &v11, 0xCu);
   }
 
-  [(PHRecentsController *)self populateItemCacheForRecentCalls:v4];
+  [(PHRecentsController *)self populateItemCacheForRecentCalls:callsCopy];
 }
 
-- (void)populateItemCacheForRecentCalls:(id)a3
+- (void)populateItemCacheForRecentCalls:(id)calls
 {
-  v4 = a3;
-  v5 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  callsCopy = calls;
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  v6 = [(PHRecentsController *)self itemCache];
+  itemCache = [(PHRecentsController *)self itemCache];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = v4;
+  v7 = callsCopy;
   v8 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v8)
   {
@@ -3619,8 +3619,8 @@ LABEL_17:
         [v13 setLocalizedSubtitle:v14];
 
         v15 = [v13 copy];
-        v16 = [v12 uniqueId];
-        [v6 setObject:v15 forKeyedSubscript:v16];
+        uniqueId = [v12 uniqueId];
+        [itemCache setObject:v15 forKeyedSubscript:uniqueId];
       }
 
       v9 = [v7 countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -3632,13 +3632,13 @@ LABEL_17:
 
 - (void)updateRecentCalls
 {
-  v3 = [(PHRecentsController *)self fetchRecentCalls];
-  [(PHRecentsController *)self setRecentCalls:v3];
+  fetchRecentCalls = [(PHRecentsController *)self fetchRecentCalls];
+  [(PHRecentsController *)self setRecentCalls:fetchRecentCalls];
 
-  v4 = [(PHRecentsController *)self featureFlags];
-  v5 = [v4 callHistorySearchEnabled];
+  featureFlags = [(PHRecentsController *)self featureFlags];
+  callHistorySearchEnabled = [featureFlags callHistorySearchEnabled];
 
-  if ((v5 & 1) == 0)
+  if ((callHistorySearchEnabled & 1) == 0)
   {
 
     [(PHRecentsController *)self checkRecentMissedCallCount];
@@ -3647,15 +3647,15 @@ LABEL_17:
 
 - (void)recentCallsWillShow
 {
-  v2 = [(PHRecentsController *)self callHistoryController];
-  [v2 boostQualityOfService];
+  callHistoryController = [(PHRecentsController *)self callHistoryController];
+  [callHistoryController boostQualityOfService];
 }
 
-- (id)metadataItemsForRecentCall:(id)a3
+- (id)metadataItemsForRecentCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   v5 = +[NSMutableArray array];
-  v6 = [TUMetadataDestinationID metadataDestinationIDsForCHRecentCall:v4];
+  v6 = [TUMetadataDestinationID metadataDestinationIDsForCHRecentCall:callCopy];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -3675,8 +3675,8 @@ LABEL_17:
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [(PHRecentsController *)self metadataCache];
-        v13 = [v12 metadataForDestinationID:v11];
+        metadataCache = [(PHRecentsController *)self metadataCache];
+        v13 = [metadataCache metadataForDestinationID:v11];
 
         [v5 addObject:v13];
       }
@@ -3694,13 +3694,13 @@ LABEL_17:
 
 - (void)handleUpdatedContacts
 {
-  v3 = [(PHRecentsController *)self serialQueue];
+  serialQueue = [(PHRecentsController *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __44__PHRecentsController_handleUpdatedContacts__block_invoke;
   block[3] = &unk_100284FD0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(serialQueue, block);
 }
 
 void __44__PHRecentsController_handleUpdatedContacts__block_invoke(uint64_t a1)
@@ -3725,79 +3725,79 @@ void __44__PHRecentsController_handleUpdatedContacts__block_invoke(uint64_t a1)
   }
 }
 
-- (void)handleCNContactStoreDidChangeNotification:(id)a3
+- (void)handleCNContactStoreDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     v9 = 138412802;
     v10 = v6;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v8;
+    v14 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ <%p> is handling <%@>", &v9, 0x20u);
   }
 
   [(PHRecentsController *)self handleUpdatedContacts];
 }
 
-- (void)handleIDSServiceAvailabilityDidChangeNotification:(id)a3
+- (void)handleIDSServiceAvailabilityDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     *buf = 138412802;
     v12 = v6;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v8;
+    v16 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ <%p> is handling <%@>", buf, 0x20u);
   }
 
-  v9 = [(PHRecentsController *)self serialQueue];
+  serialQueue = [(PHRecentsController *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __73__PHRecentsController_handleIDSServiceAvailabilityDidChangeNotification___block_invoke;
   block[3] = &unk_100284FD0;
   block[4] = self;
-  dispatch_async(v9, block);
+  dispatch_async(serialQueue, block);
 }
 
-- (void)handleNSCurrentLocaleDidChangeNotification:(id)a3
+- (void)handleNSCurrentLocaleDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     *buf = 138412802;
     v12 = v6;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v8;
+    v16 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ <%p> is handling <%@>", buf, 0x20u);
   }
 
-  v9 = [(PHRecentsController *)self serialQueue];
+  serialQueue = [(PHRecentsController *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __66__PHRecentsController_handleNSCurrentLocaleDidChangeNotification___block_invoke;
   block[3] = &unk_100284FD0;
   block[4] = self;
-  dispatch_async(v9, block);
+  dispatch_async(serialQueue, block);
 }
 
 void __66__PHRecentsController_handleNSCurrentLocaleDidChangeNotification___block_invoke(uint64_t a1)
@@ -3834,44 +3834,44 @@ void __66__PHRecentsController_handleNSCurrentLocaleDidChangeNotification___bloc
   }
 }
 
-- (void)handleTUCallHistoryControllerRecentCallsDidChangeNotification:(id)a3
+- (void)handleTUCallHistoryControllerRecentCallsDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [(PHRecentsController *)self callHistoryController];
-  v7 = [v5 isEqual:v6];
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  callHistoryController = [(PHRecentsController *)self callHistoryController];
+  v7 = [object isEqual:callHistoryController];
 
-  v8 = PHDefaultLog();
-  v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
+  serialQueue = PHDefaultLog();
+  v9 = os_log_type_enabled(serialQueue, OS_LOG_TYPE_DEFAULT);
   if (v7)
   {
     if (v9)
     {
       v10 = objc_opt_class();
       v11 = v10;
-      v12 = [v4 name];
+      name = [notificationCopy name];
       *buf = 138412802;
       v15 = v10;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
-      v19 = v12;
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ <%p> is handling <%@>", buf, 0x20u);
+      v19 = name;
+      _os_log_impl(&_mh_execute_header, serialQueue, OS_LOG_TYPE_DEFAULT, "%@ <%p> is handling <%@>", buf, 0x20u);
     }
 
-    v8 = [(PHRecentsController *)self serialQueue];
+    serialQueue = [(PHRecentsController *)self serialQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __85__PHRecentsController_handleTUCallHistoryControllerRecentCallsDidChangeNotification___block_invoke;
     block[3] = &unk_100284FD0;
     block[4] = self;
-    dispatch_async(v8, block);
+    dispatch_async(serialQueue, block);
   }
 
   else if (v9)
   {
     *buf = 0;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Ignoring calls change notification from different callHistoryController", buf, 2u);
+    _os_log_impl(&_mh_execute_header, serialQueue, OS_LOG_TYPE_DEFAULT, "Ignoring calls change notification from different callHistoryController", buf, 2u);
   }
 }
 
@@ -3883,12 +3883,12 @@ id __85__PHRecentsController_handleTUCallHistoryControllerRecentCallsDidChangeNo
   return [v2 updateRecentCalls];
 }
 
-- (void)handleTUCallHistoryControllerUnreadCallCountDidChangeNotification:(id)a3
+- (void)handleTUCallHistoryControllerUnreadCallCountDidChangeNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [(PHRecentsController *)self callHistoryController];
-  v7 = [v5 isEqual:v6];
+  notificationCopy = notification;
+  object = [notificationCopy object];
+  callHistoryController = [(PHRecentsController *)self callHistoryController];
+  v7 = [object isEqual:callHistoryController];
 
   if (v7)
   {
@@ -3897,55 +3897,55 @@ id __85__PHRecentsController_handleTUCallHistoryControllerRecentCallsDidChangeNo
     {
       v9 = objc_opt_class();
       v10 = v9;
-      v11 = [v4 name];
+      name = [notificationCopy name];
       v14 = 138412802;
       v15 = v9;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
-      v19 = v11;
+      v19 = name;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%@ <%p> is handling <%@>", &v14, 0x20u);
     }
 
-    v12 = [v4 object];
-    v13 = v12;
-    if (v12)
+    object2 = [notificationCopy object];
+    v13 = object2;
+    if (object2)
     {
-      -[PHRecentsController setUnreadCallCount:](self, "setUnreadCallCount:", [v12 unreadCallCount]);
+      -[PHRecentsController setUnreadCallCount:](self, "setUnreadCallCount:", [object2 unreadCallCount]);
     }
   }
 }
 
-- (void)handleTUMetadataCacheDidFinishUpdatingNotification:(id)a3
+- (void)handleTUMetadataCacheDidFinishUpdatingNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(PHRecentsController *)self featureFlags];
-  v6 = [v5 phoneRecentsAvatarsEnabled];
+  notificationCopy = notification;
+  featureFlags = [(PHRecentsController *)self featureFlags];
+  phoneRecentsAvatarsEnabled = [featureFlags phoneRecentsAvatarsEnabled];
 
-  if ((v6 & 1) == 0)
+  if ((phoneRecentsAvatarsEnabled & 1) == 0)
   {
     v7 = PHDefaultLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = objc_opt_class();
       v9 = v8;
-      v10 = [v4 name];
+      name = [notificationCopy name];
       *buf = 138412802;
       v14 = v8;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2112;
-      v18 = v10;
+      v18 = name;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%@ <%p> is handling <%@>", buf, 0x20u);
     }
 
-    v11 = [(PHRecentsController *)self serialQueue];
+    serialQueue = [(PHRecentsController *)self serialQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __74__PHRecentsController_handleTUMetadataCacheDidFinishUpdatingNotification___block_invoke;
     block[3] = &unk_100284FD0;
     block[4] = self;
-    dispatch_async(v11, block);
+    dispatch_async(serialQueue, block);
   }
 }
 
@@ -4004,31 +4004,31 @@ void __74__PHRecentsController_handleTUMetadataCacheDidFinishUpdatingNotificatio
   }
 }
 
-- (void)handleUIApplicationSignificantTimeChangeNotification:(id)a3
+- (void)handleUIApplicationSignificantTimeChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     *buf = 138412802;
     v12 = v6;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v8;
+    v16 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ <%p> is handling <%@>", buf, 0x20u);
   }
 
-  v9 = [(PHRecentsController *)self serialQueue];
+  serialQueue = [(PHRecentsController *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __76__PHRecentsController_handleUIApplicationSignificantTimeChangeNotification___block_invoke;
   block[3] = &unk_100284FD0;
   block[4] = self;
-  dispatch_async(v9, block);
+  dispatch_async(serialQueue, block);
 }
 
 void __76__PHRecentsController_handleUIApplicationSignificantTimeChangeNotification___block_invoke(uint64_t a1)
@@ -4046,55 +4046,55 @@ void __76__PHRecentsController_handleUIApplicationSignificantTimeChangeNotificat
   }
 }
 
-- (void)handleUIApplicationDidBecomeActiveNotification:(id)a3
+- (void)handleUIApplicationDidBecomeActiveNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = v6;
-    v8 = [v4 name];
+    name = [notificationCopy name];
     *buf = 138412802;
     v12 = v6;
     v13 = 2048;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
-    v16 = v8;
+    v16 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ <%p> is handling <%@>", buf, 0x20u);
   }
 
-  v9 = [(PHRecentsController *)self serialQueue];
+  serialQueue = [(PHRecentsController *)self serialQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __70__PHRecentsController_handleUIApplicationDidBecomeActiveNotification___block_invoke;
   block[3] = &unk_100284FD0;
   block[4] = self;
-  dispatch_async(v9, block);
+  dispatch_async(serialQueue, block);
 }
 
-- (void)performSynchronousBlock:(id)a3
+- (void)performSynchronousBlock:(id)block
 {
   if (dispatch_get_specific(PHRecentsControllerSerialQueueContextKey) == self)
   {
-    v6 = *(a3 + 2);
-    v7 = a3;
+    v6 = *(block + 2);
+    blockCopy = block;
     v6();
   }
 
   else
   {
-    v5 = a3;
-    v7 = [(PHRecentsController *)self serialQueue];
-    dispatch_sync(v7, v5);
+    blockCopy2 = block;
+    blockCopy = [(PHRecentsController *)self serialQueue];
+    dispatch_sync(blockCopy, blockCopy2);
   }
 }
 
-- (void)providersChangedForProviderManager:(id)a3
+- (void)providersChangedForProviderManager:(id)manager
 {
-  v4 = a3;
-  v5 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  managerCopy = manager;
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
   v6 = PHDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -4102,41 +4102,41 @@ void __76__PHRecentsController_handleUIApplicationSignificantTimeChangeNotificat
     v10 = 138412802;
     v11 = objc_opt_class();
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v4;
+    v15 = managerCopy;
     v7 = v11;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%@ <%p> is handling providersChangedForProviderManager %@", &v10, 0x20u);
   }
 
-  v8 = [(PHRecentsController *)self recentCalls];
-  if ([v8 count])
+  recentCalls = [(PHRecentsController *)self recentCalls];
+  if ([recentCalls count])
   {
-    v9 = [(PHRecentsController *)self itemCache];
-    [v9 removeAllObjects];
+    itemCache = [(PHRecentsController *)self itemCache];
+    [itemCache removeAllObjects];
 
-    [(PHRecentsController *)self populateItemCacheForRecentCalls:v8];
+    [(PHRecentsController *)self populateItemCacheForRecentCalls:recentCalls];
     os_unfair_lock_lock(&self->_accessorLock);
-    [(PHRecentsController *)self notifyDelegatesRecentsController:self didChangeCalls:v8];
+    [(PHRecentsController *)self notifyDelegatesRecentsController:self didChangeCalls:recentCalls];
     os_unfair_lock_unlock(&self->_accessorLock);
   }
 }
 
-- (id)subtitleForRecentEmergencyCall:(id)a3
+- (id)subtitleForRecentEmergencyCall:(id)call
 {
-  v4 = [a3 callOccurrences];
-  v5 = [(PHRecentsController *)self localizedSubtitleForRecentEmergencyCall:v4];
+  callOccurrences = [call callOccurrences];
+  v5 = [(PHRecentsController *)self localizedSubtitleForRecentEmergencyCall:callOccurrences];
 
   return v5;
 }
 
-- (id)localizedSubtitleForRecentEmergencyCall:(id)a3
+- (id)localizedSubtitleForRecentEmergencyCall:(id)call
 {
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  obj = a3;
+  obj = call;
   v3 = [obj countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (!v3)
   {
@@ -4252,49 +4252,49 @@ LABEL_34:
   return v21;
 }
 
-- (id)localizedSubtitleForRecentCall:(id)a3
+- (id)localizedSubtitleForRecentCall:(id)call
 {
-  v4 = a3;
-  v5 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  callCopy = call;
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  if ([v4 wasEmergencyCall])
+  if ([callCopy wasEmergencyCall])
   {
-    v6 = [(PHRecentsController *)self subtitleForRecentEmergencyCall:v4];
+    v6 = [(PHRecentsController *)self subtitleForRecentEmergencyCall:callCopy];
     goto LABEL_95;
   }
 
-  v7 = [v4 blockedByExtension];
+  blockedByExtension = [callCopy blockedByExtension];
 
-  if (v7)
+  if (blockedByExtension)
   {
     v8 = +[NSBundle mainBundle];
     v9 = [v8 localizedStringForKey:@"%@_BLOCKED_BY" value:&stru_10028F310 table:@"PHRecents"];
-    v10 = [v4 localizedBlockedByExtensionName];
-    v6 = [NSString stringWithFormat:v9, v10];
+    localizedBlockedByExtensionName = [callCopy localizedBlockedByExtensionName];
+    v6 = [NSString stringWithFormat:v9, localizedBlockedByExtensionName];
 
     goto LABEL_95;
   }
 
-  v11 = [v4 uniqueId];
-  v12 = [(PHRecentsController *)self featureFlags];
-  v13 = [v12 increaseCallHistoryEnabled];
+  uniqueId = [callCopy uniqueId];
+  featureFlags = [(PHRecentsController *)self featureFlags];
+  increaseCallHistoryEnabled = [featureFlags increaseCallHistoryEnabled];
 
-  if (!v13)
+  if (!increaseCallHistoryEnabled)
   {
     v15 = 0;
 LABEL_9:
-    v16 = [(PHRecentsController *)self featureFlags];
-    v17 = [v16 callHistorySearchEnabled];
+    featureFlags2 = [(PHRecentsController *)self featureFlags];
+    callHistorySearchEnabled = [featureFlags2 callHistorySearchEnabled];
 
-    if (v17)
+    if (callHistorySearchEnabled)
     {
-      v18 = [v4 remoteParticipantHandles];
-      v19 = [v18 anyObject];
+      remoteParticipantHandles = [callCopy remoteParticipantHandles];
+      anyObject = [remoteParticipantHandles anyObject];
 
-      if (v19)
+      if (anyObject)
       {
-        [(PHRecentsController *)self contactHandlesForHandle:v19];
+        [(PHRecentsController *)self contactHandlesForHandle:anyObject];
         v89 = 0u;
         v90 = 0u;
         v91 = 0u;
@@ -4302,9 +4302,9 @@ LABEL_9:
         v21 = [v20 countByEnumeratingWithState:&v89 objects:v94 count:16];
         if (v21)
         {
-          v79 = v19;
+          v79 = anyObject;
           v81 = v15;
-          v83 = v11;
+          v83 = uniqueId;
           v22 = *v90;
           while (2)
           {
@@ -4316,11 +4316,11 @@ LABEL_9:
               }
 
               v24 = *(*(&v89 + 1) + 8 * i);
-              v25 = [(PHRecentsController *)self contactCache];
-              v26 = [v25 objectForKeyedSubscript:v24];
-              v27 = [v26 value];
+              contactCache = [(PHRecentsController *)self contactCache];
+              v26 = [contactCache objectForKeyedSubscript:v24];
+              value = [v26 value];
 
-              if (v27)
+              if (value)
               {
                 v21 = v24;
                 goto LABEL_25;
@@ -4336,39 +4336,39 @@ LABEL_9:
             break;
           }
 
-          v27 = 0;
+          value = 0;
 LABEL_25:
           v15 = v81;
-          v11 = v83;
-          v19 = v79;
+          uniqueId = v83;
+          anyObject = v79;
         }
 
         else
         {
-          v27 = 0;
+          value = 0;
         }
       }
 
       else
       {
         v21 = 0;
-        v27 = 0;
+        value = 0;
       }
 
-      v45 = [(PHRecentsController *)self subtitleProvider];
-      v46 = [v45 localizedSubtitleForRecentCall:v4 handle:v21 contact:v27];
+      subtitleProvider = [(PHRecentsController *)self subtitleProvider];
+      v46 = [subtitleProvider localizedSubtitleForRecentCall:callCopy handle:v21 contact:value];
 
       if (![v46 length])
       {
-        v47 = [(PHRecentsController *)self unknownLabel];
+        unknownLabel = [(PHRecentsController *)self unknownLabel];
 
-        v46 = v47;
+        v46 = unknownLabel;
       }
 
-      if (v11)
+      if (uniqueId)
       {
-        v48 = [(PHRecentsController *)self localizedSubtitleCache];
-        [v48 setObject:v46 forKey:v11];
+        localizedSubtitleCache = [(PHRecentsController *)self localizedSubtitleCache];
+        [localizedSubtitleCache setObject:v46 forKey:uniqueId];
       }
 
       v6 = v46;
@@ -4376,7 +4376,7 @@ LABEL_25:
       goto LABEL_94;
     }
 
-    v28 = [(PHRecentsController *)self fetchCallProviderForRecentCall:v4];
+    v28 = [(PHRecentsController *)self fetchCallProviderForRecentCall:callCopy];
     v29 = v28;
     if (!v28)
     {
@@ -4385,10 +4385,10 @@ LABEL_25:
 
     if ([v28 isFaceTimeProvider])
     {
-      v30 = [v4 mediaType];
+      mediaType = [callCopy mediaType];
       v31 = +[NSBundle mainBundle];
       v32 = v31;
-      if (v30 == 2)
+      if (mediaType == 2)
       {
         v33 = @"RECENTS_FACETIME_VIDEO";
       }
@@ -4405,31 +4405,31 @@ LABEL_25:
 
     if (![v29 isTelephonyProvider])
     {
-      v50 = [v4 mediaType];
-      if (v50 == 1)
+      mediaType2 = [callCopy mediaType];
+      if (mediaType2 == 1)
       {
         v51 = @"RECENTS_CALL_PROVIDER_NAME_%@_CALL_CATEGORY_AUDIO";
       }
 
       else
       {
-        if (v50 != 2)
+        if (mediaType2 != 2)
         {
 LABEL_88:
           if (![v15 length])
           {
-            v73 = [(PHRecentsController *)self unknownLabel];
+            unknownLabel2 = [(PHRecentsController *)self unknownLabel];
 
-            v15 = v73;
+            v15 = unknownLabel2;
           }
 
-          v74 = [(PHRecentsController *)self featureFlags];
-          v75 = [v74 increaseCallHistoryEnabled];
+          featureFlags3 = [(PHRecentsController *)self featureFlags];
+          increaseCallHistoryEnabled2 = [featureFlags3 increaseCallHistoryEnabled];
 
-          if (v75 && v11)
+          if (increaseCallHistoryEnabled2 && uniqueId)
           {
-            v76 = [(PHRecentsController *)self localizedSubtitleCache];
-            [v76 setObject:v15 forKey:v11];
+            localizedSubtitleCache2 = [(PHRecentsController *)self localizedSubtitleCache];
+            [localizedSubtitleCache2 setObject:v15 forKey:uniqueId];
           }
 
           v6 = v15;
@@ -4442,21 +4442,21 @@ LABEL_88:
 
       v56 = +[NSBundle mainBundle];
       v57 = [v56 localizedStringForKey:v51 value:&stru_10028F310 table:@"PHRecents"];
-      v58 = [v29 localizedName];
-      v49 = [NSString stringWithFormat:v57, v58];
+      localizedName = [v29 localizedName];
+      v49 = [NSString stringWithFormat:v57, localizedName];
 
 LABEL_57:
       v15 = v49;
       goto LABEL_88;
     }
 
-    v34 = [v4 remoteParticipantHandles];
-    v35 = [v34 anyObject];
+    remoteParticipantHandles2 = [callCopy remoteParticipantHandles];
+    anyObject2 = [remoteParticipantHandles2 anyObject];
 
-    if (v35)
+    if (anyObject2)
     {
-      v80 = v35;
-      [(PHRecentsController *)self contactHandlesForHandle:v35];
+      v80 = anyObject2;
+      [(PHRecentsController *)self contactHandlesForHandle:anyObject2];
       v85 = 0u;
       v86 = 0u;
       v87 = 0u;
@@ -4467,7 +4467,7 @@ LABEL_57:
         v38 = v37;
         v78 = v29;
         v82 = v15;
-        v84 = v11;
+        v84 = uniqueId;
         v39 = *v86;
 LABEL_31:
         v40 = 0;
@@ -4479,11 +4479,11 @@ LABEL_31:
           }
 
           v41 = *(*(&v85 + 1) + 8 * v40);
-          v42 = [(PHRecentsController *)self contactCache];
-          v43 = [v42 objectForKeyedSubscript:v41];
-          v44 = [v43 value];
+          contactCache2 = [(PHRecentsController *)self contactCache];
+          v43 = [contactCache2 objectForKeyedSubscript:v41];
+          value2 = [v43 value];
 
-          if (v44)
+          if (value2)
           {
             break;
           }
@@ -4497,19 +4497,19 @@ LABEL_31:
             }
 
             v15 = v82;
-            v11 = v84;
+            uniqueId = v84;
             v29 = v78;
             goto LABEL_38;
           }
         }
 
-        v35 = v80;
-        v52 = [v80 type];
-        if (v52 == 3)
+        anyObject2 = v80;
+        type = [v80 type];
+        if (type == 3)
         {
-          v53 = [v44 labeledValueForEmailAddress:v41];
-          v54 = [v53 label];
-          v55 = [CNLabeledValue localizedDisplayStringForLabel:v54 propertyName:CNContactEmailAddressesKey];
+          v53 = [value2 labeledValueForEmailAddress:v41];
+          label = [v53 label];
+          v55 = [CNLabeledValue localizedDisplayStringForLabel:label propertyName:CNContactEmailAddressesKey];
           v15 = v82;
           v29 = v78;
         }
@@ -4518,14 +4518,14 @@ LABEL_31:
         {
           v15 = v82;
           v29 = v78;
-          if (v52 == 2)
+          if (type == 2)
           {
-            v59 = [v4 isoCountryCode];
-            v54 = [CNPhoneNumber phoneNumberWithDigits:v41 countryCode:v59];
+            isoCountryCode = [callCopy isoCountryCode];
+            label = [CNPhoneNumber phoneNumberWithDigits:v41 countryCode:isoCountryCode];
 
-            if (v54)
+            if (label)
             {
-              v53 = [v44 labeledValueForPhoneNumber:v54];
+              v53 = [value2 labeledValueForPhoneNumber:label];
             }
 
             else
@@ -4533,77 +4533,77 @@ LABEL_31:
               v53 = 0;
             }
 
-            v60 = [v53 label];
-            v55 = [CNLabeledValue localizedDisplayStringForLabel:v60 propertyName:CNContactPhoneNumbersKey];
+            label2 = [v53 label];
+            v55 = [CNLabeledValue localizedDisplayStringForLabel:label2 propertyName:CNContactPhoneNumbersKey];
 
-            v15 = v60;
+            v15 = label2;
           }
 
           else
           {
-            if (v52 != 1)
+            if (type != 1)
             {
 LABEL_64:
 
-              v11 = v84;
+              uniqueId = v84;
               goto LABEL_65;
             }
 
-            v53 = [v44 labeledValueForSocialProfileWithUsername:v41];
-            v54 = [v53 label];
-            v55 = [CNLabeledValue localizedDisplayStringForLabel:v54 propertyName:CNContactSocialProfilesKey];
+            v53 = [value2 labeledValueForSocialProfileWithUsername:v41];
+            label = [v53 label];
+            v55 = [CNLabeledValue localizedDisplayStringForLabel:label propertyName:CNContactSocialProfilesKey];
           }
         }
 
         v15 = v55;
-        v35 = v80;
+        anyObject2 = v80;
         goto LABEL_64;
       }
 
 LABEL_38:
-      v35 = v80;
+      anyObject2 = v80;
 LABEL_65:
     }
 
-    if (-[PHRecentsController isLocalizedSubtitleUnknown:](self, "isLocalizedSubtitleUnknown:", v15) && [v4 isJunk])
+    if (-[PHRecentsController isLocalizedSubtitleUnknown:](self, "isLocalizedSubtitleUnknown:", v15) && [callCopy isJunk])
     {
-      v61 = [v4 junkIdentificationCategory];
-      if (v61)
+      junkIdentificationCategory = [callCopy junkIdentificationCategory];
+      if (junkIdentificationCategory)
       {
-        v62 = [v4 junkIdentificationCategory];
+        junkIdentificationCategory2 = [callCopy junkIdentificationCategory];
       }
 
       else
       {
-        v62 = @"MAYBE_JUNK";
+        junkIdentificationCategory2 = @"MAYBE_JUNK";
       }
 
       v63 = +[NSBundle mainBundle];
-      v64 = [v63 localizedStringForKey:v62 value:&stru_10028F310 table:@"PHRecents"];
+      v64 = [v63 localizedStringForKey:junkIdentificationCategory2 value:&stru_10028F310 table:@"PHRecents"];
 
       v15 = v64;
     }
 
     if ([(PHRecentsController *)self isLocalizedSubtitleUnknown:v15])
     {
-      v65 = [TUMetadataDestinationID metadataDestinationIDsForCHRecentCall:v4];
-      v66 = [v65 firstObject];
+      v65 = [TUMetadataDestinationID metadataDestinationIDsForCHRecentCall:callCopy];
+      firstObject = [v65 firstObject];
 
-      if (v66)
+      if (firstObject)
       {
-        v67 = [(PHRecentsController *)self metadataCache];
-        v68 = [v67 metadataForDestinationID:v66];
+        metadataCache = [(PHRecentsController *)self metadataCache];
+        v68 = [metadataCache metadataForDestinationID:firstObject];
 
         if (v68)
         {
-          if (-[PHRecentsController isLocalizedSubtitleUnknown:](self, "isLocalizedSubtitleUnknown:", v15) && ([v4 callerIdIsBlocked] & 1) == 0)
+          if (-[PHRecentsController isLocalizedSubtitleUnknown:](self, "isLocalizedSubtitleUnknown:", v15) && ([callCopy callerIdIsBlocked] & 1) == 0)
           {
             v69 = [v68 metadataForProvider:objc_opt_class()];
 
             v15 = v69;
           }
 
-          if (-[PHRecentsController isLocalizedSubtitleUnknown:](self, "isLocalizedSubtitleUnknown:", v15) && ([v4 callerIdIsBlocked] & 1) == 0)
+          if (-[PHRecentsController isLocalizedSubtitleUnknown:](self, "isLocalizedSubtitleUnknown:", v15) && ([callCopy callerIdIsBlocked] & 1) == 0)
           {
             v70 = [v68 metadataForProvider:objc_opt_class()];
 
@@ -4635,8 +4635,8 @@ LABEL_65:
     goto LABEL_88;
   }
 
-  v14 = [(PHRecentsController *)self localizedSubtitleCache];
-  v15 = [v14 objectForKey:v11];
+  localizedSubtitleCache3 = [(PHRecentsController *)self localizedSubtitleCache];
+  v15 = [localizedSubtitleCache3 objectForKey:uniqueId];
 
   if ([(PHRecentsController *)self isLocalizedSubtitleUnknown:v15])
   {
@@ -4651,16 +4651,16 @@ LABEL_95:
   return v6;
 }
 
-- (BOOL)isLocalizedSubtitleUnknown:(id)a3
+- (BOOL)isLocalizedSubtitleUnknown:(id)unknown
 {
-  v4 = a3;
-  v5 = [(PHRecentsController *)self featureFlags];
-  v6 = [v5 increaseCallHistoryEnabled];
+  unknownCopy = unknown;
+  featureFlags = [(PHRecentsController *)self featureFlags];
+  increaseCallHistoryEnabled = [featureFlags increaseCallHistoryEnabled];
 
-  v7 = [v4 length];
+  v7 = [unknownCopy length];
   if (v7)
   {
-    v8 = v6;
+    v8 = increaseCallHistoryEnabled;
   }
 
   else
@@ -4668,10 +4668,10 @@ LABEL_95:
     v8 = 1;
   }
 
-  if (v6 && v7)
+  if (increaseCallHistoryEnabled && v7)
   {
-    v9 = [(PHRecentsController *)self unknownLabel];
-    v8 = [v4 isEqualToString:v9];
+    unknownLabel = [(PHRecentsController *)self unknownLabel];
+    v8 = [unknownCopy isEqualToString:unknownLabel];
   }
 
   return v8;
@@ -4711,53 +4711,53 @@ void __35__PHRecentsController_unknownLabel__block_invoke(uint64_t a1)
   }
 }
 
-- (void)logRecentsScrollingEvent:(int64_t)a3
+- (void)logRecentsScrollingEvent:(int64_t)event
 {
-  v5 = [(PHRecentsController *)self serialQueue];
-  dispatch_assert_queue_V2(v5);
+  serialQueue = [(PHRecentsController *)self serialQueue];
+  dispatch_assert_queue_V2(serialQueue);
 
-  if (!(a3 % 100))
+  if (!(event % 100))
   {
     v9 = objc_alloc_init(NSMutableDictionary);
-    v6 = [NSNumber numberWithInteger:a3 / 100];
+    v6 = [NSNumber numberWithInteger:event / 100];
     [v9 setObject:v6 forKey:@"BucketedScrollingIndex"];
 
     [v9 setObject:&off_100295438 forKey:@"AppName"];
-    v7 = [(PHRecentsController *)self analyticsLogger];
+    analyticsLogger = [(PHRecentsController *)self analyticsLogger];
     v8 = [v9 copy];
-    [v7 logEvent:@"com.apple.MobilePhone.RecentsScrollingIndex" withCoreAnalyticsDictionary:v8];
+    [analyticsLogger logEvent:@"com.apple.MobilePhone.RecentsScrollingIndex" withCoreAnalyticsDictionary:v8];
   }
 }
 
 - (unint64_t)callHistoryControllerOptions
 {
-  v2 = [(PHRecentsController *)self callHistoryController];
-  v3 = [v2 options];
+  callHistoryController = [(PHRecentsController *)self callHistoryController];
+  options = [callHistoryController options];
 
-  return v3;
+  return options;
 }
 
 - (unint64_t)callHistoryControllerCoalescingStrategy
 {
-  v2 = [(PHRecentsController *)self callHistoryController];
-  v3 = [v2 coalescingStrategy];
+  callHistoryController = [(PHRecentsController *)self callHistoryController];
+  coalescingStrategy = [callHistoryController coalescingStrategy];
 
-  return v3;
+  return coalescingStrategy;
 }
 
 - (void)cancelSearchFetchOperations
 {
-  v2 = [(PHRecentsController *)self callHistoryController];
-  [v2 cancelSearchFetchOperations];
+  callHistoryController = [(PHRecentsController *)self callHistoryController];
+  [callHistoryController cancelSearchFetchOperations];
 }
 
-- (void)queryCommTrustBlockedForCalls:(id)a3 completion:(id)a4
+- (void)queryCommTrustBlockedForCalls:(id)calls completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   type metadata accessor for NSMutableArray(0, &lazy cache variable for type metadata for CHRecentCall);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   _Block_copy(v5);
-  v7 = self;
+  selfCopy = self;
   specialized PHRecentsController.queryCommTrustBlocked(for:completion:)(v6, v5);
   _Block_release(v5);
   _Block_release(v5);

@@ -1,7 +1,7 @@
 @interface BlurBackgroundView
 + (Class)layerClass;
-- (_TtC11FMFindingUI18BlurBackgroundView)initWithCoder:(id)a3;
-- (_TtC11FMFindingUI18BlurBackgroundView)initWithFrame:(CGRect)a3;
+- (_TtC11FMFindingUI18BlurBackgroundView)initWithCoder:(id)coder;
+- (_TtC11FMFindingUI18BlurBackgroundView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation BlurBackgroundView
@@ -13,14 +13,14 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC11FMFindingUI18BlurBackgroundView)initWithCoder:(id)a3
+- (_TtC11FMFindingUI18BlurBackgroundView)initWithCoder:(id)coder
 {
   result = sub_24A62F444();
   __break(1u);
   return result;
 }
 
-- (_TtC11FMFindingUI18BlurBackgroundView)initWithFrame:(CGRect)a3
+- (_TtC11FMFindingUI18BlurBackgroundView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

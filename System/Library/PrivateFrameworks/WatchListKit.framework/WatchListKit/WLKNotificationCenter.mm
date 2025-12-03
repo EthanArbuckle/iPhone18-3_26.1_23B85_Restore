@@ -2,9 +2,9 @@
 + (id)defaultCenter;
 - (WLKNotificationCenter)init;
 - (WLKNotificationCenterDelegate)delegate;
-- (void)post:(id)a3 title:(id)a4 body:(id)a5 options:(id)a6;
-- (void)setBadgeNumber:(id)a3 withCompletionHandler:(id)a4;
-- (void)setBadgeString:(id)a3 withCompletionHandler:(id)a4;
+- (void)post:(id)post title:(id)title body:(id)body options:(id)options;
+- (void)setBadgeNumber:(id)number withCompletionHandler:(id)handler;
+- (void)setBadgeString:(id)string withCompletionHandler:(id)handler;
 @end
 
 @implementation WLKNotificationCenter
@@ -43,18 +43,18 @@ uint64_t __38__WLKNotificationCenter_defaultCenter__block_invoke()
   return v2;
 }
 
-- (void)post:(id)a3 title:(id)a4 body:(id)a5 options:(id)a6
+- (void)post:(id)post title:(id)title body:(id)body options:(id)options
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if ([v10 length])
+  postCopy = post;
+  titleCopy = title;
+  bodyCopy = body;
+  optionsCopy = options;
+  if ([postCopy length])
   {
-    v14 = [v13 objectForKeyedSubscript:@"expirationDate"];
-    v15 = [MEMORY[0x277CBEAA8] date];
+    v14 = [optionsCopy objectForKeyedSubscript:@"expirationDate"];
+    date = [MEMORY[0x277CBEAA8] date];
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v15 compare:v14] == 1)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [date compare:v14] == 1)
     {
       NSLog(&cfstr_Wlknotificatio_0.isa);
     }
@@ -67,10 +67,10 @@ uint64_t __38__WLKNotificationCenter_defaultCenter__block_invoke()
       v17[2] = __49__WLKNotificationCenter_post_title_body_options___block_invoke;
       v17[3] = &unk_279E5F470;
       v17[4] = self;
-      v18 = v10;
-      v19 = v11;
-      v20 = v12;
-      v21 = v13;
+      v18 = postCopy;
+      v19 = titleCopy;
+      v20 = bodyCopy;
+      v21 = optionsCopy;
       [(WLKNotificationsImpl *)impl getNotificationSettings:v17];
     }
   }
@@ -99,23 +99,23 @@ void __49__WLKNotificationCenter_post_title_body_options___block_invoke(void *a1
   }
 }
 
-- (void)setBadgeNumber:(id)a3 withCompletionHandler:(id)a4
+- (void)setBadgeNumber:(id)number withCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v6 = a4;
-  if (([v7 integerValue] & 0x8000000000000000) == 0)
+  numberCopy = number;
+  handlerCopy = handler;
+  if (([numberCopy integerValue] & 0x8000000000000000) == 0)
   {
-    [(WLKNotificationsImpl *)self->_impl setBadgeNumber:v7 withCompletionHandler:v6];
+    [(WLKNotificationsImpl *)self->_impl setBadgeNumber:numberCopy withCompletionHandler:handlerCopy];
   }
 }
 
-- (void)setBadgeString:(id)a3 withCompletionHandler:(id)a4
+- (void)setBadgeString:(id)string withCompletionHandler:(id)handler
 {
-  v7 = a3;
-  v6 = a4;
-  if (![v7 length] || objc_msgSend(v7, "isEqualToString:", @" "))
+  stringCopy = string;
+  handlerCopy = handler;
+  if (![stringCopy length] || objc_msgSend(stringCopy, "isEqualToString:", @" "))
   {
-    [(WLKNotificationsImpl *)self->_impl setBadgeString:v7 withCompletionHandler:v6];
+    [(WLKNotificationsImpl *)self->_impl setBadgeString:stringCopy withCompletionHandler:handlerCopy];
   }
 }
 

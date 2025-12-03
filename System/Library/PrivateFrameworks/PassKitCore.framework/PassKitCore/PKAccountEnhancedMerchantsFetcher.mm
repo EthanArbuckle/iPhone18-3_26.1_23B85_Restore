@@ -1,40 +1,40 @@
 @interface PKAccountEnhancedMerchantsFetcher
-- (BOOL)dataIsWithinThresholdForCooldownLevel:(unint64_t)a3;
-- (PKAccountEnhancedMerchantsFetcher)initWithAccountIdentifier:(id)a3 accountService:(id)a4;
+- (BOOL)dataIsWithinThresholdForCooldownLevel:(unint64_t)level;
+- (PKAccountEnhancedMerchantsFetcher)initWithAccountIdentifier:(id)identifier accountService:(id)service;
 - (id)_enhancedMerchantBehaviorCopy;
 - (id)_lastUpdateCopy;
-- (id)addUpdateHandler:(id)a3;
-- (id)enhancedMerchantMatchingPaymentIdentifier:(id)a3;
+- (id)addUpdateHandler:(id)handler;
+- (id)enhancedMerchantMatchingPaymentIdentifier:(id)identifier;
 - (id)enhancedMerchants;
-- (id)enhancedMerchantsWithOrderingContext:(unint64_t)a3;
-- (void)_executeWithLock:(id)a3;
-- (void)_reloadDataIncludeOrderings:(BOOL)a3 includeBehavior:(BOOL)a4 includeMerchants:(BOOL)a5 completion:(id)a6;
-- (void)_setLastUpdate:(id)a3;
+- (id)enhancedMerchantsWithOrderingContext:(unint64_t)context;
+- (void)_executeWithLock:(id)lock;
+- (void)_reloadDataIncludeOrderings:(BOOL)orderings includeBehavior:(BOOL)behavior includeMerchants:(BOOL)merchants completion:(id)completion;
+- (void)_setLastUpdate:(id)update;
 - (void)_triggerUpdateHandlers;
 - (void)dealloc;
-- (void)didUpdateAccountEnhancedMerchants:(id)a3 accountIdentifier:(id)a4 lastUpdate:(id)a5;
-- (void)removeUpdateHandler:(id)a3;
-- (void)setItems:(id)a3;
-- (void)updateDataWithCooldownLevel:(unint64_t)a3 ignoreErrorBackoff:(BOOL)a4 completion:(id)a5;
+- (void)didUpdateAccountEnhancedMerchants:(id)merchants accountIdentifier:(id)identifier lastUpdate:(id)update;
+- (void)removeUpdateHandler:(id)handler;
+- (void)setItems:(id)items;
+- (void)updateDataWithCooldownLevel:(unint64_t)level ignoreErrorBackoff:(BOOL)backoff completion:(id)completion;
 @end
 
 @implementation PKAccountEnhancedMerchantsFetcher
 
-- (PKAccountEnhancedMerchantsFetcher)initWithAccountIdentifier:(id)a3 accountService:(id)a4
+- (PKAccountEnhancedMerchantsFetcher)initWithAccountIdentifier:(id)identifier accountService:(id)service
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  serviceCopy = service;
   v20.receiver = self;
   v20.super_class = PKAccountEnhancedMerchantsFetcher;
   v9 = [(PKAccountEnhancedMerchantsFetcher *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_accountIdentifier, a3);
-    objc_storeStrong(&v10->_accountService, a4);
-    v11 = [MEMORY[0x1E695DEC8] array];
+    objc_storeStrong(&v9->_accountIdentifier, identifier);
+    objc_storeStrong(&v10->_accountService, service);
+    array = [MEMORY[0x1E695DEC8] array];
     items = v10->_items;
-    v10->_items = v11;
+    v10->_items = array;
 
     orderings = v10->_orderings;
     v10->_orderings = 0;
@@ -47,9 +47,9 @@
     v10->_lastUpdate = 0;
 
     v10->_itemsLock._os_unfair_lock_opaque = 0;
-    v17 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     tokenToUpdateHandlerMap = v10->_tokenToUpdateHandlerMap;
-    v10->_tokenToUpdateHandlerMap = v17;
+    v10->_tokenToUpdateHandlerMap = dictionary;
 
     v10->_updateHandlersLock._os_unfair_lock_opaque = 0;
     [(PKAccountService *)v10->_accountService registerObserver:v10];
@@ -66,21 +66,21 @@
   [(PKAccountEnhancedMerchantsFetcher *)&v3 dealloc];
 }
 
-- (void)_reloadDataIncludeOrderings:(BOOL)a3 includeBehavior:(BOOL)a4 includeMerchants:(BOOL)a5 completion:(id)a6
+- (void)_reloadDataIncludeOrderings:(BOOL)orderings includeBehavior:(BOOL)behavior includeMerchants:(BOOL)merchants completion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
-  v8 = a3;
-  v10 = a6;
-  v11 = v10;
-  if (v10 && !v6 && !v7 && !v8)
+  merchantsCopy = merchants;
+  behaviorCopy = behavior;
+  orderingsCopy = orderings;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (completionCopy && !merchantsCopy && !behaviorCopy && !orderingsCopy)
   {
-    (*(v10 + 2))(v10, 1);
+    (*(completionCopy + 2))(completionCopy, 1);
   }
 
   v12 = objc_alloc_init(PKAsyncUnaryOperationComposer);
   objc_initWeak(&location, self);
-  if (v8)
+  if (orderingsCopy)
   {
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
@@ -91,7 +91,7 @@
     objc_destroyWeak(&v23);
   }
 
-  if (v7)
+  if (behaviorCopy)
   {
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
@@ -102,7 +102,7 @@
     objc_destroyWeak(&v21);
   }
 
-  if (v6)
+  if (merchantsCopy)
   {
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
@@ -113,14 +113,14 @@
     objc_destroyWeak(&v19);
   }
 
-  v13 = [MEMORY[0x1E695DFB0] null];
+  null = [MEMORY[0x1E695DFB0] null];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __109__PKAccountEnhancedMerchantsFetcher__reloadDataIncludeOrderings_includeBehavior_includeMerchants_completion___block_invoke_9;
   v16[3] = &unk_1E79D04A0;
   v14 = v11;
   v17 = v14;
-  v15 = [(PKAsyncUnaryOperationComposer *)v12 evaluateWithInput:v13 completion:v16];
+  v15 = [(PKAsyncUnaryOperationComposer *)v12 evaluateWithInput:null completion:v16];
 
   objc_destroyWeak(&location);
 }
@@ -301,12 +301,12 @@ uint64_t __109__PKAccountEnhancedMerchantsFetcher__reloadDataIncludeOrderings_in
   return result;
 }
 
-- (void)updateDataWithCooldownLevel:(unint64_t)a3 ignoreErrorBackoff:(BOOL)a4 completion:(id)a5
+- (void)updateDataWithCooldownLevel:(unint64_t)level ignoreErrorBackoff:(BOOL)backoff completion:(id)completion
 {
-  v5 = a4;
+  backoffCopy = backoff;
   v22 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = [(PKAccountEnhancedMerchantsFetcher *)self dataIsWithinThresholdForCooldownLevel:a3];
+  completionCopy = completion;
+  v9 = [(PKAccountEnhancedMerchantsFetcher *)self dataIsWithinThresholdForCooldownLevel:level];
   v10 = PKLogFacilityTypeGetObject(0xFuLL);
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
   if (v9)
@@ -314,13 +314,13 @@ uint64_t __109__PKAccountEnhancedMerchantsFetcher__reloadDataIncludeOrderings_in
     if (v11)
     {
       *buf = 134217984;
-      v21 = a3;
+      levelCopy2 = level;
       _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "Account enhanced merchants were updated within the specified time interval (level %ld), returning existing data", buf, 0xCu);
     }
 
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 1);
+      completionCopy[2](completionCopy, 1);
     }
   }
 
@@ -329,11 +329,11 @@ uint64_t __109__PKAccountEnhancedMerchantsFetcher__reloadDataIncludeOrderings_in
     if (v11)
     {
       *buf = 134217984;
-      v21 = a3;
+      levelCopy2 = level;
       _os_log_impl(&dword_1AD337000, v10, OS_LOG_TYPE_DEFAULT, "Updating account enhanced merchants to within cooldown level %ld", buf, 0xCu);
     }
 
-    v12 = [(PKAccountEnhancedMerchantsFetcher *)self _enhancedMerchantBehaviorCopy];
+    _enhancedMerchantBehaviorCopy = [(PKAccountEnhancedMerchantsFetcher *)self _enhancedMerchantBehaviorCopy];
     objc_initWeak(buf, self);
     accountIdentifier = self->_accountIdentifier;
     accountService = self->_accountService;
@@ -341,12 +341,12 @@ uint64_t __109__PKAccountEnhancedMerchantsFetcher__reloadDataIncludeOrderings_in
     v16[1] = 3221225472;
     v16[2] = __95__PKAccountEnhancedMerchantsFetcher_updateDataWithCooldownLevel_ignoreErrorBackoff_completion___block_invoke;
     v16[3] = &unk_1E79DE430;
-    v18 = v8;
+    v18 = completionCopy;
     objc_copyWeak(v19, buf);
-    v19[1] = a3;
-    v15 = v12;
+    v19[1] = level;
+    v15 = _enhancedMerchantBehaviorCopy;
     v17 = v15;
-    [(PKAccountService *)accountService updateAccountEnhancedMerchantsForAccountWithIdentifier:accountIdentifier ignoreErrorBackoff:v5 cooldownLevel:a3 completion:v16];
+    [(PKAccountService *)accountService updateAccountEnhancedMerchantsForAccountWithIdentifier:accountIdentifier ignoreErrorBackoff:backoffCopy cooldownLevel:level completion:v16];
 
     objc_destroyWeak(v19);
     objc_destroyWeak(buf);
@@ -449,13 +449,13 @@ uint64_t __95__PKAccountEnhancedMerchantsFetcher_updateDataWithCooldownLevel_ign
   return result;
 }
 
-- (BOOL)dataIsWithinThresholdForCooldownLevel:(unint64_t)a3
+- (BOOL)dataIsWithinThresholdForCooldownLevel:(unint64_t)level
 {
-  v5 = [(PKAccountEnhancedMerchantsFetcher *)self _lastUpdateCopy];
-  v6 = [(PKAccountEnhancedMerchantsFetcher *)self _enhancedMerchantBehaviorCopy];
-  LOBYTE(a3) = DateIsWithinThresholdForCooldownLevel(v5, a3, v6);
+  _lastUpdateCopy = [(PKAccountEnhancedMerchantsFetcher *)self _lastUpdateCopy];
+  _enhancedMerchantBehaviorCopy = [(PKAccountEnhancedMerchantsFetcher *)self _enhancedMerchantBehaviorCopy];
+  LOBYTE(level) = DateIsWithinThresholdForCooldownLevel(_lastUpdateCopy, level, _enhancedMerchantBehaviorCopy);
 
-  return a3;
+  return level;
 }
 
 - (id)enhancedMerchants
@@ -467,20 +467,20 @@ uint64_t __95__PKAccountEnhancedMerchantsFetcher_updateDataWithCooldownLevel_ign
   return v3;
 }
 
-- (id)enhancedMerchantsWithOrderingContext:(unint64_t)a3
+- (id)enhancedMerchantsWithOrderingContext:(unint64_t)context
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (context)
   {
-    v5 = [(PKAccountEnhancedMerchantsFetcher *)self enhancedMerchants];
-    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+    enhancedMerchants = [(PKAccountEnhancedMerchantsFetcher *)self enhancedMerchants];
+    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(enhancedMerchants, "count")}];
     os_unfair_lock_lock(&self->_itemsLock);
     orderings = self->_orderings;
     v25[0] = MEMORY[0x1E69E9820];
     v25[1] = 3221225472;
     v25[2] = __74__PKAccountEnhancedMerchantsFetcher_enhancedMerchantsWithOrderingContext___block_invoke;
     v25[3] = &__block_descriptor_40_e33_B16__0__PKAccountEntityOrdering_8l;
-    v25[4] = a3;
+    v25[4] = context;
     v8 = [(NSArray *)orderings pk_firstObjectPassingTest:v25];
     v9 = [v8 copy];
     os_unfair_lock_unlock(&self->_itemsLock);
@@ -491,8 +491,8 @@ uint64_t __95__PKAccountEnhancedMerchantsFetcher_updateDataWithCooldownLevel_ign
       v24 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v10 = [v9 ordering];
-      v11 = [v10 countByEnumeratingWithState:&v21 objects:v26 count:16];
+      ordering = [v9 ordering];
+      v11 = [ordering countByEnumeratingWithState:&v21 objects:v26 count:16];
       if (v11)
       {
         v12 = v11;
@@ -503,7 +503,7 @@ uint64_t __95__PKAccountEnhancedMerchantsFetcher_updateDataWithCooldownLevel_ign
           {
             if (*v22 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(ordering);
             }
 
             v15 = *(*(&v21 + 1) + 8 * i);
@@ -512,11 +512,11 @@ uint64_t __95__PKAccountEnhancedMerchantsFetcher_updateDataWithCooldownLevel_ign
             v20[2] = __74__PKAccountEnhancedMerchantsFetcher_enhancedMerchantsWithOrderingContext___block_invoke_2;
             v20[3] = &unk_1E79DE478;
             v20[4] = v15;
-            v16 = [v5 pk_firstObjectPassingTest:v20];
+            v16 = [enhancedMerchants pk_firstObjectPassingTest:v20];
             [v6 safelyAddObject:v16];
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v21 objects:v26 count:16];
+          v12 = [ordering countByEnumeratingWithState:&v21 objects:v26 count:16];
         }
 
         while (v12);
@@ -578,21 +578,21 @@ uint64_t __74__PKAccountEnhancedMerchantsFetcher_enhancedMerchantsWithOrderingCo
   return v8;
 }
 
-- (id)enhancedMerchantMatchingPaymentIdentifier:(id)a3
+- (id)enhancedMerchantMatchingPaymentIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length])
+  identifierCopy = identifier;
+  if ([identifierCopy length])
   {
-    v5 = [(PKAccountEnhancedMerchantsFetcher *)self enhancedMerchants];
-    v6 = [v4 lowercaseString];
+    enhancedMerchants = [(PKAccountEnhancedMerchantsFetcher *)self enhancedMerchants];
+    lowercaseString = [identifierCopy lowercaseString];
 
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __79__PKAccountEnhancedMerchantsFetcher_enhancedMerchantMatchingPaymentIdentifier___block_invoke;
     v9[3] = &unk_1E79DE478;
-    v4 = v6;
-    v10 = v4;
-    v7 = [v5 pk_firstObjectPassingTest:v9];
+    identifierCopy = lowercaseString;
+    v10 = identifierCopy;
+    v7 = [enhancedMerchants pk_firstObjectPassingTest:v9];
   }
 
   else
@@ -639,64 +639,64 @@ uint64_t __79__PKAccountEnhancedMerchantsFetcher_enhancedMerchantMatchingPayment
   return v3;
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __46__PKAccountEnhancedMerchantsFetcher_setItems___block_invoke;
   v6[3] = &unk_1E79C4DD8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = itemsCopy;
+  v5 = itemsCopy;
   [(PKAccountEnhancedMerchantsFetcher *)self _executeWithLock:v6];
 }
 
-- (void)_setLastUpdate:(id)a3
+- (void)_setLastUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __52__PKAccountEnhancedMerchantsFetcher__setLastUpdate___block_invoke;
   v6[3] = &unk_1E79C4DD8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = updateCopy;
+  v5 = updateCopy;
   [(PKAccountEnhancedMerchantsFetcher *)self _executeWithLock:v6];
 }
 
-- (void)_executeWithLock:(id)a3
+- (void)_executeWithLock:(id)lock
 {
-  if (a3)
+  if (lock)
   {
-    v4 = a3;
+    lockCopy = lock;
     os_unfair_lock_lock(&self->_itemsLock);
-    v4[2](v4);
+    lockCopy[2](lockCopy);
 
     os_unfair_lock_unlock(&self->_itemsLock);
   }
 }
 
-- (id)addUpdateHandler:(id)a3
+- (id)addUpdateHandler:(id)handler
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [v4 UUID];
+  handlerCopy = handler;
+  uUID = [v4 UUID];
   os_unfair_lock_lock(&self->_updateHandlersLock);
   tokenToUpdateHandlerMap = self->_tokenToUpdateHandlerMap;
-  v8 = _Block_copy(v5);
+  v8 = _Block_copy(handlerCopy);
 
-  [(NSMutableDictionary *)tokenToUpdateHandlerMap setObject:v8 forKey:v6];
+  [(NSMutableDictionary *)tokenToUpdateHandlerMap setObject:v8 forKey:uUID];
   os_unfair_lock_unlock(&self->_updateHandlersLock);
 
-  return v6;
+  return uUID;
 }
 
-- (void)removeUpdateHandler:(id)a3
+- (void)removeUpdateHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   os_unfair_lock_lock(&self->_updateHandlersLock);
-  [(NSMutableDictionary *)self->_tokenToUpdateHandlerMap removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_tokenToUpdateHandlerMap removeObjectForKey:handlerCopy];
 
   os_unfair_lock_unlock(&self->_updateHandlersLock);
 }
@@ -721,13 +721,13 @@ void __59__PKAccountEnhancedMerchantsFetcher__triggerUpdateHandlers__block_invok
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)didUpdateAccountEnhancedMerchants:(id)a3 accountIdentifier:(id)a4 lastUpdate:(id)a5
+- (void)didUpdateAccountEnhancedMerchants:(id)merchants accountIdentifier:(id)identifier lastUpdate:(id)update
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a5;
+  merchantsCopy = merchants;
+  identifierCopy = identifier;
+  updateCopy = update;
   accountIdentifier = self->_accountIdentifier;
-  v11 = v8;
+  v11 = identifierCopy;
   v12 = accountIdentifier;
   v13 = v12;
   if (v12 == v11)
@@ -747,8 +747,8 @@ void __59__PKAccountEnhancedMerchantsFetcher__triggerUpdateHandlers__block_invok
   if (v14)
   {
 LABEL_7:
-    [(PKAccountEnhancedMerchantsFetcher *)self setItems:v15];
-    [(PKAccountEnhancedMerchantsFetcher *)self _setLastUpdate:v9];
+    [(PKAccountEnhancedMerchantsFetcher *)self setItems:merchantsCopy];
+    [(PKAccountEnhancedMerchantsFetcher *)self _setLastUpdate:updateCopy];
     [(PKAccountEnhancedMerchantsFetcher *)self _triggerUpdateHandlers];
   }
 

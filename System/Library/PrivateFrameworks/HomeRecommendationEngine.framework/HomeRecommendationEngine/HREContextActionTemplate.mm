@@ -1,14 +1,14 @@
 @interface HREContextActionTemplate
-- (id)createStarterRecommendationInHome:(id)a3;
+- (id)createStarterRecommendationInHome:(id)home;
 @end
 
 @implementation HREContextActionTemplate
 
-- (id)createStarterRecommendationInHome:(id)a3
+- (id)createStarterRecommendationInHome:(id)home
 {
   v11.receiver = self;
   v11.super_class = HREContextActionTemplate;
-  v4 = [(HREActionTemplate *)&v11 createStarterRecommendationInHome:a3];
+  v4 = [(HREActionTemplate *)&v11 createStarterRecommendationInHome:home];
   objc_opt_class();
   v5 = v4;
   if (objc_opt_isKindOfClass())
@@ -25,11 +25,11 @@
 
   if (v7)
   {
-    v8 = [(HREContextActionTemplate *)self contextActionName];
-    [v7 setName:v8];
+    contextActionName = [(HREContextActionTemplate *)self contextActionName];
+    [v7 setName:contextActionName];
 
-    v9 = [(HREContextActionTemplate *)self iconDescriptor];
-    [v7 setIconDescriptor:v9];
+    iconDescriptor = [(HREContextActionTemplate *)self iconDescriptor];
+    [v7 setIconDescriptor:iconDescriptor];
   }
 
   return v5;

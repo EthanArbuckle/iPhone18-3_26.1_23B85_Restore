@@ -1,15 +1,15 @@
 @interface _VLStatistics
-- (_VLStatistics)initWithCoder:(id)a3;
-- (_VLStatistics)initWithStats:(id *)a3;
+- (_VLStatistics)initWithCoder:(id)coder;
+- (_VLStatistics)initWithStats:(id *)stats;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _VLStatistics
 
-- (_VLStatistics)initWithStats:(id *)a3
+- (_VLStatistics)initWithStats:(id *)stats
 {
-  if (a3)
+  if (stats)
   {
     v8.receiver = self;
     v8.super_class = _VLStatistics;
@@ -17,7 +17,7 @@
     v5 = v4;
     if (v4)
     {
-      memcpy(&v4->_stats, a3, sizeof(v4->_stats));
+      memcpy(&v4->_stats, stats, sizeof(v4->_stats));
       v6 = v5;
     }
 
@@ -39,12 +39,12 @@
   return result;
 }
 
-- (_VLStatistics)initWithCoder:(id)a3
+- (_VLStatistics)initWithCoder:(id)coder
 {
   v152[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v108 = 0;
-  v5 = [v4 decodeBytesForKey:@"statistics" returnedLength:&v108];
+  v5 = [coderCopy decodeBytesForKey:@"statistics" returnedLength:&v108];
   if (v108 != 504)
   {
     v31 = MEMORY[0x277CCA9B8];
@@ -53,7 +53,7 @@
     v152[0] = @"statistics bytes were not the expected length";
     v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v152 forKeys:&v151 count:1];
     v34 = [v31 errorWithDomain:v32 code:4864 userInfo:v33];
-    [v4 failWithError:v34];
+    [coderCopy failWithError:v34];
 
 LABEL_18:
 LABEL_22:
@@ -80,21 +80,21 @@ LABEL_22:
   if (self)
   {
     *&__dst[0] = 0;
-    v6 = [v4 decodeBytesForKey:@"points3D" returnedLength:__dst];
+    v6 = [coderCopy decodeBytesForKey:@"points3D" returnedLength:__dst];
     if (*&__dst[0] == 8 * ((3 * self->_stats.num_inliers) & ~((3 * self->_stats.num_inliers) >> 31)))
     {
       v7 = malloc_type_malloc(*&__dst[0], 0x100004000313F17uLL);
       self->_stats.points3d = v7;
       memcpy(v7, v6, *&__dst[0]);
       *&__dst[0] = 0;
-      v8 = [v4 decodeBytesForKey:@"points2D" returnedLength:__dst];
+      v8 = [coderCopy decodeBytesForKey:@"points2D" returnedLength:__dst];
       if (*&__dst[0] == 4 * ((2 * self->_stats.num_inliers) & ~((2 * self->_stats.num_inliers) >> 31)))
       {
         v9 = malloc_type_malloc(*&__dst[0], 0x100004052888210uLL);
         self->_stats.points2d = v9;
         memcpy(v9, v8, *&__dst[0]);
         *&__dst[0] = 0;
-        v10 = [v4 decodeBytesForKey:@"inlierIndices" returnedLength:__dst];
+        v10 = [coderCopy decodeBytesForKey:@"inlierIndices" returnedLength:__dst];
         if (*&__dst[0] != 4 * (self->_stats.num_inliers & ~(self->_stats.num_inliers >> 31)))
         {
           v44 = MEMORY[0x277CCA9B8];
@@ -112,7 +112,7 @@ LABEL_22:
         self->_stats.inlier_indices = v11;
         memcpy(v11, v10, *&__dst[0]);
         *&__dst[0] = 0;
-        v12 = [v4 decodeBytesForKey:@"slam_pt3s_inlier_idx" returnedLength:__dst];
+        v12 = [coderCopy decodeBytesForKey:@"slam_pt3s_inlier_idx" returnedLength:__dst];
         if (*&__dst[0] != 2 * (self->_stats.num_inliers & ~(self->_stats.num_inliers >> 31)))
         {
           v44 = MEMORY[0x277CCA9B8];
@@ -130,7 +130,7 @@ LABEL_22:
         self->_stats.slam_pt3s_inlier_idx = v13;
         memcpy(v13, v12, *&__dst[0]);
         *&__dst[0] = 0;
-        v14 = [v4 decodeBytesForKey:@"solverConf" returnedLength:__dst];
+        v14 = [coderCopy decodeBytesForKey:@"solverConf" returnedLength:__dst];
         if (*&__dst[0] != 4 * (self->_stats.num_confs & ~(self->_stats.num_confs >> 31)))
         {
           v44 = MEMORY[0x277CCA9B8];
@@ -148,7 +148,7 @@ LABEL_22:
         self->_stats.solver_conf = v15;
         memcpy(v15, v14, *&__dst[0]);
         *&__dst[0] = 0;
-        v16 = [v4 decodeBytesForKey:@"fusedConf" returnedLength:__dst];
+        v16 = [coderCopy decodeBytesForKey:@"fusedConf" returnedLength:__dst];
         if (*&__dst[0] != 4 * (self->_stats.num_confs & ~(self->_stats.num_confs >> 31)))
         {
           v44 = MEMORY[0x277CCA9B8];
@@ -166,7 +166,7 @@ LABEL_22:
         self->_stats.fused_conf = v17;
         memcpy(v17, v16, *&__dst[0]);
         *&__dst[0] = 0;
-        v18 = [v4 decodeBytesForKey:@"tiles" returnedLength:__dst];
+        v18 = [coderCopy decodeBytesForKey:@"tiles" returnedLength:__dst];
         if (*&__dst[0] != 16 * (self->_stats.num_frames & ~(self->_stats.num_frames >> 31)))
         {
           v44 = MEMORY[0x277CCA9B8];
@@ -189,7 +189,7 @@ LABEL_22:
         }
 
         *&__dst[0] = 0;
-        v20 = [v4 decodeBytesForKey:@"SLAMTracks" returnedLength:__dst];
+        v20 = [coderCopy decodeBytesForKey:@"SLAMTracks" returnedLength:__dst];
         if (*&__dst[0] != 4 * ((3 * self->_stats.num_slam_pt3s) & ~((3 * self->_stats.num_slam_pt3s) >> 31)))
         {
           v44 = MEMORY[0x277CCA9B8];
@@ -207,7 +207,7 @@ LABEL_22:
         self->_stats.slam_pt3s = v21;
         memcpy(v21, v20, *&__dst[0]);
         *&__dst[0] = 0;
-        v22 = [v4 decodeBytesForKey:@"SLAMTrackDescriptors" returnedLength:__dst];
+        v22 = [coderCopy decodeBytesForKey:@"SLAMTrackDescriptors" returnedLength:__dst];
         if (*&__dst[0] != ((self->_stats.desc_dim * self->_stats.num_slam_pt3s) & ~((self->_stats.desc_dim * self->_stats.num_slam_pt3s) >> 31)))
         {
           v44 = MEMORY[0x277CCA9B8];
@@ -225,7 +225,7 @@ LABEL_22:
         self->_stats.slam_pt3_desc = v23;
         memcpy(v23, v22, *&__dst[0]);
         *&__dst[0] = 0;
-        v24 = [v4 decodeBytesForKey:@"SLAMTrackObservations" returnedLength:__dst];
+        v24 = [coderCopy decodeBytesForKey:@"SLAMTrackObservations" returnedLength:__dst];
         if (*&__dst[0] != 2 * (self->_stats.num_slam_pt3s & ~(self->_stats.num_slam_pt3s >> 31)))
         {
           v44 = MEMORY[0x277CCA9B8];
@@ -344,14 +344,14 @@ LABEL_42:
 
 LABEL_44:
         *&__dst[0] = 0;
-        v74 = [v4 decodeBytesForKey:@"SLAMTrackPositions" returnedLength:__dst];
+        v74 = [coderCopy decodeBytesForKey:@"SLAMTrackPositions" returnedLength:__dst];
         if (*&__dst[0] == 8 * v29)
         {
           v75 = malloc_type_malloc(*&__dst[0], 0x100004052888210uLL);
           self->_stats.slam_tracks = v75;
           memcpy(v75, v74, *&__dst[0]);
           *&__dst[0] = 0;
-          v76 = [v4 decodeBytesForKey:@"SLAMTrackImageIndices" returnedLength:__dst];
+          v76 = [coderCopy decodeBytesForKey:@"SLAMTrackImageIndices" returnedLength:__dst];
           if (*&__dst[0] == 2 * v29)
           {
             v77 = malloc_type_malloc(*&__dst[0], 0x1000040BDFB0063uLL);
@@ -364,63 +364,63 @@ LABEL_47:
             }
 
             *&__dst[0] = 0;
-            v78 = [v4 decodeBytesForKey:@"inlierNumber" returnedLength:__dst];
+            v78 = [coderCopy decodeBytesForKey:@"inlierNumber" returnedLength:__dst];
             if (*&__dst[0] == 2 * (self->_stats.num_frames & ~(self->_stats.num_frames >> 31)))
             {
               v79 = malloc_type_malloc(*&__dst[0], 0x1000040BDFB0063uLL);
               self->_stats.inlier_number = v79;
               memcpy(v79, v78, *&__dst[0]);
               *&__dst[0] = 0;
-              v80 = [v4 decodeBytesForKey:@"VIOStatus" returnedLength:__dst];
+              v80 = [coderCopy decodeBytesForKey:@"VIOStatus" returnedLength:__dst];
               if (*&__dst[0] == 4 * (self->_stats.num_frames & ~(self->_stats.num_frames >> 31)))
               {
                 v81 = malloc_type_malloc(*&__dst[0], 0x100004052888210uLL);
                 self->_stats.vio_status = v81;
                 memcpy(v81, v80, *&__dst[0]);
                 *&__dst[0] = 0;
-                v82 = [v4 decodeBytesForKey:@"VIOPoses" returnedLength:__dst];
+                v82 = [coderCopy decodeBytesForKey:@"VIOPoses" returnedLength:__dst];
                 if (*&__dst[0] == 4 * ((12 * self->_stats.num_frames) & ~((12 * self->_stats.num_frames) >> 31)))
                 {
                   v83 = malloc_type_malloc(*&__dst[0], 0x100004052888210uLL);
                   self->_stats.vio_poses = v83;
                   memcpy(v83, v82, *&__dst[0]);
                   *&__dst[0] = 0;
-                  v84 = [v4 decodeBytesForKey:@"CalibrationMatrices" returnedLength:__dst];
+                  v84 = [coderCopy decodeBytesForKey:@"CalibrationMatrices" returnedLength:__dst];
                   if (*&__dst[0] == 4 * ((9 * self->_stats.num_frames) & ~((9 * self->_stats.num_frames) >> 31)))
                   {
                     v85 = malloc_type_malloc(*&__dst[0], 0x100004052888210uLL);
                     self->_stats.K = v85;
                     memcpy(v85, v84, *&__dst[0]);
                     *&__dst[0] = 0;
-                    v86 = [v4 decodeBytesForKey:@"Distortion" returnedLength:__dst];
+                    v86 = [coderCopy decodeBytesForKey:@"Distortion" returnedLength:__dst];
                     if (*&__dst[0] == 4 * ((2 * self->_stats.num_frames) & ~((2 * self->_stats.num_frames) >> 31)))
                     {
                       v87 = malloc_type_malloc(*&__dst[0], 0x100004052888210uLL);
                       self->_stats.distortion = v87;
                       memcpy(v87, v86, *&__dst[0]);
                       *&__dst[0] = 0;
-                      v88 = [v4 decodeBytesForKey:@"slam_timestamps" returnedLength:__dst];
+                      v88 = [coderCopy decodeBytesForKey:@"slam_timestamps" returnedLength:__dst];
                       if (*&__dst[0] == 8 * (self->_stats.num_frames & ~(self->_stats.num_frames >> 31)))
                       {
                         v89 = malloc_type_malloc(*&__dst[0], 0x100004000313F17uLL);
                         self->_stats.slam_time_stamps = v89;
                         memcpy(v89, v88, *&__dst[0]);
                         *&__dst[0] = 0;
-                        v90 = [v4 decodeBytesForKey:@"slam_poses" returnedLength:__dst];
+                        v90 = [coderCopy decodeBytesForKey:@"slam_poses" returnedLength:__dst];
                         if (*&__dst[0] == 4 * ((12 * self->_stats.num_frames) & ~((12 * self->_stats.num_frames) >> 31)))
                         {
                           v91 = malloc_type_malloc(*&__dst[0], 0x100004052888210uLL);
                           self->_stats.slam_poses = v91;
                           memcpy(v91, v90, *&__dst[0]);
                           *&__dst[0] = 0;
-                          v92 = [v4 decodeBytesForKey:@"result_poses" returnedLength:__dst];
+                          v92 = [coderCopy decodeBytesForKey:@"result_poses" returnedLength:__dst];
                           if (*&__dst[0] == 248 * (self->_stats.num_frames & ~(self->_stats.num_frames >> 31)))
                           {
                             v93 = malloc_type_malloc(*&__dst[0], 0x10000409B83B951uLL);
                             self->_stats.result_poses = v93;
                             memcpy(v93, v92, *&__dst[0]);
                             *&__dst[0] = 0;
-                            v94 = [v4 decodeBytesForKey:@"result_status" returnedLength:__dst];
+                            v94 = [coderCopy decodeBytesForKey:@"result_status" returnedLength:__dst];
                             if (*&__dst[0] == 4 * (self->_stats.num_frames & ~(self->_stats.num_frames >> 31)))
                             {
                               v95 = malloc_type_malloc(*&__dst[0], 0x100004052888210uLL);
@@ -466,7 +466,7 @@ LABEL_47:
 
                         v104 = [v101 dictionaryWithObjects:v102 forKeys:v103 count:1];
                         v105 = [v98 errorWithDomain:v99 code:4864 userInfo:v104];
-                        [v4 failWithError:v105];
+                        [coderCopy failWithError:v105];
 
                         goto LABEL_22;
                       }
@@ -573,7 +573,7 @@ LABEL_47:
 LABEL_66:
         v96 = [v46 dictionaryWithObjects:v47 forKeys:v48 count:1];
         v97 = [v44 errorWithDomain:v45 code:4864 userInfo:v96];
-        [v4 failWithError:v97];
+        [coderCopy failWithError:v97];
 
         goto LABEL_18;
       }
@@ -602,7 +602,7 @@ LABEL_66:
 
     v41 = [v38 dictionaryWithObjects:v39 forKeys:v40 count:1];
     v42 = [v35 errorWithDomain:v36 code:4864 userInfo:v41];
-    [v4 failWithError:v42];
+    [coderCopy failWithError:v42];
 
     goto LABEL_22;
   }
@@ -612,14 +612,14 @@ LABEL_23:
   return self;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = v4;
+  coderCopy = coder;
+  v5 = coderCopy;
   num_inliers = self->_stats.num_inliers;
   if (num_inliers >= 1)
   {
-    [v4 encodeBytes:self->_stats.points3d length:24 * num_inliers forKey:@"points3D"];
+    [coderCopy encodeBytes:self->_stats.points3d length:24 * num_inliers forKey:@"points3D"];
     [v5 encodeBytes:self->_stats.points2d length:4 * ((2 * self->_stats.num_inliers) & ~((2 * self->_stats.num_inliers) >> 31)) forKey:@"points2D"];
     [v5 encodeBytes:self->_stats.inlier_indices length:4 * (self->_stats.num_inliers & ~(self->_stats.num_inliers >> 31)) forKey:@"inlierIndices"];
     [v5 encodeBytes:self->_stats.slam_pt3s_inlier_idx length:2 * (self->_stats.num_inliers & ~(self->_stats.num_inliers >> 31)) forKey:@"slam_pt3s_inlier_idx"];

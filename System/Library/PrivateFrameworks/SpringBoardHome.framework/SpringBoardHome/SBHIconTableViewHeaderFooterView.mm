@@ -1,19 +1,19 @@
 @interface SBHIconTableViewHeaderFooterView
 - (NSDirectionalEdgeInsets)titleLayoutMargins;
-- (SBHIconTableViewHeaderFooterView)initWithReuseIdentifier:(id)a3;
+- (SBHIconTableViewHeaderFooterView)initWithReuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
-- (void)setTitle:(id)a3;
-- (void)setTitleLayoutMargins:(NSDirectionalEdgeInsets)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)setTitle:(id)title;
+- (void)setTitleLayoutMargins:(NSDirectionalEdgeInsets)margins;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation SBHIconTableViewHeaderFooterView
 
-- (SBHIconTableViewHeaderFooterView)initWithReuseIdentifier:(id)a3
+- (SBHIconTableViewHeaderFooterView)initWithReuseIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = SBHIconTableViewHeaderFooterView;
-  v3 = [(SBHIconTableViewHeaderFooterView *)&v6 initWithReuseIdentifier:a3];
+  v3 = [(SBHIconTableViewHeaderFooterView *)&v6 initWithReuseIdentifier:identifier];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DD250]);
@@ -23,40 +23,40 @@
   return v3;
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
-  v24 = a3;
-  v4 = [(SBHIconTableViewHeaderFooterView *)self defaultContentConfiguration];
-  v5 = [v4 updatedConfigurationForState:v24];
+  stateCopy = state;
+  defaultContentConfiguration = [(SBHIconTableViewHeaderFooterView *)self defaultContentConfiguration];
+  v5 = [defaultContentConfiguration updatedConfigurationForState:stateCopy];
 
-  v6 = [(SBHIconTableViewHeaderFooterView *)self tableView];
-  v7 = [v6 sectionIndexColor];
+  tableView = [(SBHIconTableViewHeaderFooterView *)self tableView];
+  sectionIndexColor = [tableView sectionIndexColor];
 
-  v8 = [(SBHIconTableViewHeaderFooterView *)self title];
-  if ([v8 isEqualToString:*MEMORY[0x1E69DE3E0]])
+  title = [(SBHIconTableViewHeaderFooterView *)self title];
+  if ([title isEqualToString:*MEMORY[0x1E69DE3E0]])
   {
     v9 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"appclip"];
     [v5 setImage:v9];
 
-    v10 = [v5 imageProperties];
-    [v10 setTintColor:v7];
+    imageProperties = [v5 imageProperties];
+    [imageProperties setTintColor:sectionIndexColor];
   }
 
   else
   {
-    v11 = [v24 traitCollection];
+    traitCollection = [stateCopy traitCollection];
     v12 = MEMORY[0x1E69DD1B8];
-    v13 = [v11 preferredContentSizeCategory];
-    v14 = SBHContentSizeCategoryClip(v13, *MEMORY[0x1E69DDC88], *MEMORY[0x1E69DDC28]);
-    v10 = [v12 traitCollectionWithPreferredContentSizeCategory:v14];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    v14 = SBHContentSizeCategoryClip(preferredContentSizeCategory, *MEMORY[0x1E69DDC88], *MEMORY[0x1E69DDC28]);
+    imageProperties = [v12 traitCollectionWithPreferredContentSizeCategory:v14];
 
-    v15 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD40] compatibleWithTraitCollection:v10];
-    [v5 setText:v8];
-    v16 = [v5 textProperties];
-    [v16 setFont:v15];
+    v15 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD40] compatibleWithTraitCollection:imageProperties];
+    [v5 setText:title];
+    textProperties = [v5 textProperties];
+    [textProperties setFont:v15];
 
-    v17 = [v5 textProperties];
-    [v17 setColor:v7];
+    textProperties2 = [v5 textProperties];
+    [textProperties2 setColor:sectionIndexColor];
   }
 
   [(SBHIconTableViewHeaderFooterView *)self titleLayoutMargins];
@@ -81,25 +81,25 @@
   [(SBHIconTableViewHeaderFooterView *)self setTitleLayoutMargins:*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   if (![(NSString *)self->_title isEqualToString:?])
   {
-    objc_storeStrong(&self->_title, a3);
+    objc_storeStrong(&self->_title, title);
     [(SBHIconTableViewHeaderFooterView *)self setNeedsUpdateConfiguration];
   }
 }
 
-- (void)setTitleLayoutMargins:(NSDirectionalEdgeInsets)a3
+- (void)setTitleLayoutMargins:(NSDirectionalEdgeInsets)margins
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.leading;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.trailing;
+  v3.f64[0] = margins.top;
+  v3.f64[1] = margins.leading;
+  v4.f64[0] = margins.bottom;
+  v4.f64[1] = margins.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_titleLayoutMargins.top, v3), vceqq_f64(*&self->_titleLayoutMargins.bottom, v4)))) & 1) == 0)
   {
-    self->_titleLayoutMargins = a3;
+    self->_titleLayoutMargins = margins;
     [(SBHIconTableViewHeaderFooterView *)self setNeedsUpdateConfiguration];
   }
 }

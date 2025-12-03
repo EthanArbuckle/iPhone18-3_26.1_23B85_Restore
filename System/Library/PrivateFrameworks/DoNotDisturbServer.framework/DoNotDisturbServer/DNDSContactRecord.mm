@@ -1,77 +1,77 @@
 @interface DNDSContactRecord
-+ (id)migrateDictionaryRepresentation:(id)a3 fromVersionNumber:(unint64_t)a4 toVersionNumber:(unint64_t)a5;
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)migrateDictionaryRepresentation:(id)representation fromVersionNumber:(unint64_t)number toVersionNumber:(unint64_t)versionNumber;
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (id)_initWithContactIdentifier:(id)a3 firstName:(id)a4 middleName:(id)a5 lastName:(id)a6 nickName:(id)a7 organizationName:(id)a8 phoneNumbers:(id)a9 emailAddresses:(id)a10;
-- (id)_initWithRecord:(id)a3;
-- (id)dictionaryRepresentationWithContext:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)_initWithContactIdentifier:(id)identifier firstName:(id)name middleName:(id)middleName lastName:(id)lastName nickName:(id)nickName organizationName:(id)organizationName phoneNumbers:(id)numbers emailAddresses:(id)self0;
+- (id)_initWithRecord:(id)record;
+- (id)dictionaryRepresentationWithContext:(id)context;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation DNDSContactRecord
 
-- (id)_initWithRecord:(id)a3
+- (id)_initWithRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 contactIdentifier];
-  v6 = [v4 firstName];
-  v7 = [v4 middleName];
-  v8 = [v4 lastName];
-  v9 = [v4 nickName];
-  v10 = [v4 organizationName];
-  v11 = [v4 phoneNumbers];
-  v12 = [v4 emailAddresses];
+  recordCopy = record;
+  contactIdentifier = [recordCopy contactIdentifier];
+  firstName = [recordCopy firstName];
+  middleName = [recordCopy middleName];
+  lastName = [recordCopy lastName];
+  nickName = [recordCopy nickName];
+  organizationName = [recordCopy organizationName];
+  phoneNumbers = [recordCopy phoneNumbers];
+  emailAddresses = [recordCopy emailAddresses];
 
-  v13 = [(DNDSContactRecord *)self _initWithContactIdentifier:v5 firstName:v6 middleName:v7 lastName:v8 nickName:v9 organizationName:v10 phoneNumbers:v11 emailAddresses:v12];
+  v13 = [(DNDSContactRecord *)self _initWithContactIdentifier:contactIdentifier firstName:firstName middleName:middleName lastName:lastName nickName:nickName organizationName:organizationName phoneNumbers:phoneNumbers emailAddresses:emailAddresses];
   return v13;
 }
 
-- (id)_initWithContactIdentifier:(id)a3 firstName:(id)a4 middleName:(id)a5 lastName:(id)a6 nickName:(id)a7 organizationName:(id)a8 phoneNumbers:(id)a9 emailAddresses:(id)a10
+- (id)_initWithContactIdentifier:(id)identifier firstName:(id)name middleName:(id)middleName lastName:(id)lastName nickName:(id)nickName organizationName:(id)organizationName phoneNumbers:(id)numbers emailAddresses:(id)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
+  identifierCopy = identifier;
+  nameCopy = name;
+  middleNameCopy = middleName;
+  lastNameCopy = lastName;
+  nickNameCopy = nickName;
+  organizationNameCopy = organizationName;
+  numbersCopy = numbers;
+  addressesCopy = addresses;
   v42.receiver = self;
   v42.super_class = DNDSContactRecord;
   v24 = [(DNDSContactRecord *)&v42 init];
   if (v24)
   {
-    v25 = [v16 copy];
+    v25 = [identifierCopy copy];
     contactIdentifier = v24->_contactIdentifier;
     v24->_contactIdentifier = v25;
 
-    v27 = [v17 copy];
+    v27 = [nameCopy copy];
     firstName = v24->_firstName;
     v24->_firstName = v27;
 
-    v29 = [v18 copy];
+    v29 = [middleNameCopy copy];
     middleName = v24->_middleName;
     v24->_middleName = v29;
 
-    v31 = [v19 copy];
+    v31 = [lastNameCopy copy];
     lastName = v24->_lastName;
     v24->_lastName = v31;
 
-    v33 = [v20 copy];
+    v33 = [nickNameCopy copy];
     nickName = v24->_nickName;
     v24->_nickName = v33;
 
-    v35 = [v21 copy];
+    v35 = [organizationNameCopy copy];
     organizationName = v24->_organizationName;
     v24->_organizationName = v35;
 
-    v37 = [v22 copy];
+    v37 = [numbersCopy copy];
     phoneNumbers = v24->_phoneNumbers;
     v24->_phoneNumbers = v37;
 
-    v39 = [v23 copy];
+    v39 = [addressesCopy copy];
     emailAddresses = v24->_emailAddresses;
     v24->_emailAddresses = v39;
   }
@@ -81,30 +81,30 @@
 
 - (unint64_t)hash
 {
-  v3 = [(DNDSContactRecord *)self contactIdentifier];
-  v4 = [v3 hash];
-  v5 = [(DNDSContactRecord *)self firstName];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(DNDSContactRecord *)self middleName];
-  v8 = [v7 hash];
-  v9 = [(DNDSContactRecord *)self lastName];
-  v10 = v6 ^ v8 ^ [v9 hash];
-  v11 = [(DNDSContactRecord *)self nickName];
-  v12 = [v11 hash];
-  v13 = [(DNDSContactRecord *)self organizationName];
-  v14 = v12 ^ [v13 hash];
-  v15 = [(DNDSContactRecord *)self phoneNumbers];
-  v16 = v10 ^ v14 ^ [v15 hash];
-  v17 = [(DNDSContactRecord *)self emailAddresses];
-  v18 = [v17 hash];
+  contactIdentifier = [(DNDSContactRecord *)self contactIdentifier];
+  v4 = [contactIdentifier hash];
+  firstName = [(DNDSContactRecord *)self firstName];
+  v6 = [firstName hash] ^ v4;
+  middleName = [(DNDSContactRecord *)self middleName];
+  v8 = [middleName hash];
+  lastName = [(DNDSContactRecord *)self lastName];
+  v10 = v6 ^ v8 ^ [lastName hash];
+  nickName = [(DNDSContactRecord *)self nickName];
+  v12 = [nickName hash];
+  organizationName = [(DNDSContactRecord *)self organizationName];
+  v14 = v12 ^ [organizationName hash];
+  phoneNumbers = [(DNDSContactRecord *)self phoneNumbers];
+  v16 = v10 ^ v14 ^ [phoneNumbers hash];
+  emailAddresses = [(DNDSContactRecord *)self emailAddresses];
+  v18 = [emailAddresses hash];
 
   return v16 ^ v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v17 = 1;
     goto LABEL_126;
@@ -117,17 +117,17 @@
     goto LABEL_126;
   }
 
-  v6 = v5;
-  v7 = [(DNDSContactRecord *)self contactIdentifier];
-  v8 = [(DNDSContactRecord *)v6 contactIdentifier];
-  v9 = v7 != v8;
-  if (v7 == v8)
+  v6 = equalCopy;
+  contactIdentifier = [(DNDSContactRecord *)self contactIdentifier];
+  contactIdentifier2 = [(DNDSContactRecord *)v6 contactIdentifier];
+  emailAddresses4 = contactIdentifier != contactIdentifier2;
+  if (contactIdentifier == contactIdentifier2)
   {
     goto LABEL_10;
   }
 
-  v10 = [(DNDSContactRecord *)self contactIdentifier];
-  if (!v10)
+  contactIdentifier3 = [(DNDSContactRecord *)self contactIdentifier];
+  if (!contactIdentifier3)
   {
     v93 = 0;
     memset(v94, 0, sizeof(v94));
@@ -143,9 +143,9 @@
     goto LABEL_63;
   }
 
-  v93 = v10;
-  v11 = [(DNDSContactRecord *)v6 contactIdentifier];
-  if (!v11)
+  v93 = contactIdentifier3;
+  contactIdentifier4 = [(DNDSContactRecord *)v6 contactIdentifier];
+  if (!contactIdentifier4)
   {
     v90 = 0;
     memset(v98, 0, 12);
@@ -163,25 +163,25 @@
     goto LABEL_63;
   }
 
-  v90 = v11;
-  v12 = [(DNDSContactRecord *)self contactIdentifier];
+  v90 = contactIdentifier4;
+  contactIdentifier5 = [(DNDSContactRecord *)self contactIdentifier];
   [(DNDSContactRecord *)v6 contactIdentifier];
-  v85 = v86 = v12;
-  if ([v12 isEqual:?])
+  v85 = v86 = contactIdentifier5;
+  if ([contactIdentifier5 isEqual:?])
   {
 LABEL_10:
-    v18 = [(DNDSContactRecord *)self firstName];
-    v91 = [(DNDSContactRecord *)v6 firstName];
-    v92 = v18;
-    v19 = v18 != v91;
-    HIDWORD(v98[1]) = v7 != v8;
-    if (v18 == v91)
+    firstName = [(DNDSContactRecord *)self firstName];
+    firstName2 = [(DNDSContactRecord *)v6 firstName];
+    v92 = firstName;
+    v19 = firstName != firstName2;
+    HIDWORD(v98[1]) = contactIdentifier != contactIdentifier2;
+    if (firstName == firstName2)
     {
       goto LABEL_16;
     }
 
-    v20 = [(DNDSContactRecord *)self firstName];
-    if (!v20)
+    firstName3 = [(DNDSContactRecord *)self firstName];
+    if (!firstName3)
     {
       v89 = 0;
       v97 = 0;
@@ -196,18 +196,18 @@ LABEL_10:
       v16 = 0;
       v17 = 0;
       LODWORD(v98[1]) = 0;
-      v98[0] = (v7 != v8) | 0x100000000;
+      v98[0] = (contactIdentifier != contactIdentifier2) | 0x100000000;
       LODWORD(v98[2]) = 1;
       goto LABEL_63;
     }
 
-    v89 = v20;
-    v21 = [(DNDSContactRecord *)v6 firstName];
-    if (!v21)
+    v89 = firstName3;
+    firstName4 = [(DNDSContactRecord *)v6 firstName];
+    if (!firstName4)
     {
       v84 = 0;
       v13 = 0;
-      v98[0] = (v7 != v8) | 0x100000000;
+      v98[0] = (contactIdentifier != contactIdentifier2) | 0x100000000;
       v96 = 0;
       *(&v98[2] + 4) = 0;
       *(&v98[3] + 4) = 0;
@@ -223,19 +223,19 @@ LABEL_10:
       goto LABEL_63;
     }
 
-    v84 = v21;
-    v22 = [(DNDSContactRecord *)self firstName];
-    v79 = [(DNDSContactRecord *)v6 firstName];
-    v80 = v22;
-    if ([v22 isEqual:?])
+    v84 = firstName4;
+    firstName5 = [(DNDSContactRecord *)self firstName];
+    firstName6 = [(DNDSContactRecord *)v6 firstName];
+    v80 = firstName5;
+    if ([firstName5 isEqual:?])
     {
 LABEL_16:
-      v23 = [(DNDSContactRecord *)self middleName];
-      v24 = [(DNDSContactRecord *)v6 middleName];
-      v25 = v23;
-      v26 = v23 == v24;
-      v27 = v23 != v24;
-      v87 = v24;
+      middleName = [(DNDSContactRecord *)self middleName];
+      middleName2 = [(DNDSContactRecord *)v6 middleName];
+      v25 = middleName;
+      v26 = middleName == middleName2;
+      v27 = middleName != middleName2;
+      v87 = middleName2;
       v88 = v25;
       LODWORD(v98[2]) = v19;
       if (v26)
@@ -243,8 +243,8 @@ LABEL_16:
         goto LABEL_23;
       }
 
-      v28 = [(DNDSContactRecord *)self middleName];
-      if (!v28)
+      middleName3 = [(DNDSContactRecord *)self middleName];
+      if (!middleName3)
       {
         v83 = 0;
         v96 = 0;
@@ -255,7 +255,7 @@ LABEL_16:
         v15 = 0;
         v16 = 0;
         v17 = 0;
-        v98[0] = (v7 != v8) | 0x100000000;
+        v98[0] = (contactIdentifier != contactIdentifier2) | 0x100000000;
         v97 = v19 | 0x100000000;
         v13 = v19;
         v14 = 0;
@@ -263,9 +263,9 @@ LABEL_16:
         goto LABEL_63;
       }
 
-      v83 = v28;
-      v29 = [(DNDSContactRecord *)v6 middleName];
-      if (!v29)
+      v83 = middleName3;
+      middleName4 = [(DNDSContactRecord *)v6 middleName];
+      if (!middleName4)
       {
         v78 = 0;
         *v95 = 0;
@@ -276,7 +276,7 @@ LABEL_16:
         v15 = 0;
         v16 = 0;
         v17 = 0;
-        v98[0] = (v7 != v8) | 0x100000000;
+        v98[0] = (contactIdentifier != contactIdentifier2) | 0x100000000;
         v97 = v19 | 0x100000000;
         v13 = v19;
         v14 = 0;
@@ -285,30 +285,30 @@ LABEL_16:
         goto LABEL_63;
       }
 
-      v78 = v29;
-      v3 = [(DNDSContactRecord *)self middleName];
-      v73 = [(DNDSContactRecord *)v6 middleName];
-      v74 = v3;
-      if ([v3 isEqual:?])
+      v78 = middleName4;
+      middleName5 = [(DNDSContactRecord *)self middleName];
+      middleName6 = [(DNDSContactRecord *)v6 middleName];
+      v74 = middleName5;
+      if ([middleName5 isEqual:?])
       {
 LABEL_23:
-        v30 = [(DNDSContactRecord *)self lastName];
-        v31 = [(DNDSContactRecord *)v6 lastName];
-        v32 = v30;
-        v81 = v31;
-        v26 = v30 == v31;
-        v3 = v30 != v31;
+        lastName = [(DNDSContactRecord *)self lastName];
+        lastName2 = [(DNDSContactRecord *)v6 lastName];
+        v32 = lastName;
+        v81 = lastName2;
+        v26 = lastName == lastName2;
+        middleName5 = lastName != lastName2;
         LODWORD(v98[1]) = v27;
         v82 = v32;
         if (v26)
         {
-          LODWORD(v98[4]) = v3;
+          LODWORD(v98[4]) = middleName5;
         }
 
         else
         {
-          v33 = [(DNDSContactRecord *)self lastName];
-          if (!v33)
+          lastName3 = [(DNDSContactRecord *)self lastName];
+          if (!lastName3)
           {
             v77 = 0;
             v98[3] = 0;
@@ -321,7 +321,7 @@ LABEL_23:
             v15 = 0;
             v16 = 0;
             v17 = 0;
-            v98[0] = (v7 != v8) | 0x100000000;
+            v98[0] = (contactIdentifier != contactIdentifier2) | 0x100000000;
             v97 = v19 | 0x100000000;
             v13 = v19;
             v14 = 0;
@@ -329,9 +329,9 @@ LABEL_23:
             goto LABEL_63;
           }
 
-          v77 = v33;
-          v34 = [(DNDSContactRecord *)v6 lastName];
-          if (!v34)
+          v77 = lastName3;
+          lastName4 = [(DNDSContactRecord *)v6 lastName];
+          if (!lastName4)
           {
             v72 = 0;
             *&v94[24] = 0;
@@ -346,7 +346,7 @@ LABEL_23:
             v15 = 0;
             v16 = 0;
             v17 = 0;
-            v98[0] = (v7 != v8) | 0x100000000;
+            v98[0] = (contactIdentifier != contactIdentifier2) | 0x100000000;
             v97 = v19 | 0x100000000;
             v13 = v19;
             v14 = 0;
@@ -355,12 +355,12 @@ LABEL_23:
             goto LABEL_63;
           }
 
-          LODWORD(v98[4]) = v3;
-          v72 = v34;
-          v3 = [(DNDSContactRecord *)self lastName];
-          v67 = [(DNDSContactRecord *)v6 lastName];
-          v68 = v3;
-          if (![v3 isEqual:?])
+          LODWORD(v98[4]) = middleName5;
+          v72 = lastName4;
+          middleName5 = [(DNDSContactRecord *)self lastName];
+          lastName5 = [(DNDSContactRecord *)v6 lastName];
+          v68 = middleName5;
+          if (![middleName5 isEqual:?])
           {
             *&v94[24] = 0;
             *&v94[32] = 0;
@@ -374,7 +374,7 @@ LABEL_23:
             v15 = 0;
             v16 = 0;
             v17 = 0;
-            v98[0] = (v7 != v8) | 0x100000000;
+            v98[0] = (contactIdentifier != contactIdentifier2) | 0x100000000;
             v97 = v19 | 0x100000000;
             v13 = v19;
             v14 = 0;
@@ -384,17 +384,17 @@ LABEL_23:
           }
         }
 
-        v3 = [(DNDSContactRecord *)self nickName];
-        v75 = [(DNDSContactRecord *)v6 nickName];
-        HIDWORD(v98[3]) = v3 != v75;
-        v76 = v3;
-        if (v3 == v75)
+        middleName5 = [(DNDSContactRecord *)self nickName];
+        nickName = [(DNDSContactRecord *)v6 nickName];
+        HIDWORD(v98[3]) = middleName5 != nickName;
+        v76 = middleName5;
+        if (middleName5 == nickName)
         {
           goto LABEL_38;
         }
 
-        v35 = [(DNDSContactRecord *)self nickName];
-        if (!v35)
+        nickName2 = [(DNDSContactRecord *)self nickName];
+        if (!nickName2)
         {
           v71 = 0;
           *v94 = 0;
@@ -408,7 +408,7 @@ LABEL_23:
           v15 = 0;
           v16 = 0;
           v17 = 0;
-          v98[0] = (v7 != v8) | 0x100000000;
+          v98[0] = (contactIdentifier != contactIdentifier2) | 0x100000000;
           v97 = v19 | 0x100000000;
           v13 = v19;
           v14 = 0;
@@ -420,9 +420,9 @@ LABEL_23:
           goto LABEL_63;
         }
 
-        v71 = v35;
-        v36 = [(DNDSContactRecord *)v6 nickName];
-        if (!v36)
+        v71 = nickName2;
+        nickName3 = [(DNDSContactRecord *)v6 nickName];
+        if (!nickName3)
         {
           v66 = 0;
           *&v94[4] = 0;
@@ -435,7 +435,7 @@ LABEL_23:
           v15 = 0;
           v16 = 0;
           v17 = 0;
-          v98[0] = (v7 != v8) | 0x100000000;
+          v98[0] = (contactIdentifier != contactIdentifier2) | 0x100000000;
           v97 = v19 | 0x100000000;
           v13 = v19;
           v14 = 0;
@@ -449,25 +449,25 @@ LABEL_23:
           goto LABEL_63;
         }
 
-        v66 = v36;
-        v3 = [(DNDSContactRecord *)self nickName];
-        v61 = [(DNDSContactRecord *)v6 nickName];
-        v62 = v3;
-        if ([v3 isEqual:?])
+        v66 = nickName3;
+        middleName5 = [(DNDSContactRecord *)self nickName];
+        nickName4 = [(DNDSContactRecord *)v6 nickName];
+        v62 = middleName5;
+        if ([middleName5 isEqual:?])
         {
 LABEL_38:
-          v3 = [(DNDSContactRecord *)self organizationName];
-          v37 = [(DNDSContactRecord *)v6 organizationName];
-          LODWORD(v98[3]) = v3 != v37;
-          v69 = v37;
-          v70 = v3;
-          if (v3 == v37)
+          middleName5 = [(DNDSContactRecord *)self organizationName];
+          organizationName = [(DNDSContactRecord *)v6 organizationName];
+          LODWORD(v98[3]) = middleName5 != organizationName;
+          v69 = organizationName;
+          v70 = middleName5;
+          if (middleName5 == organizationName)
           {
             goto LABEL_45;
           }
 
-          v38 = [(DNDSContactRecord *)self organizationName];
-          if (!v38)
+          organizationName2 = [(DNDSContactRecord *)self organizationName];
+          if (!organizationName2)
           {
             v65 = 0;
             *&v94[32] = 0x100000000;
@@ -479,7 +479,7 @@ LABEL_38:
             v15 = 0;
             v16 = 0;
             v17 = 0;
-            v98[0] = (v7 != v8) | 0x100000000;
+            v98[0] = (contactIdentifier != contactIdentifier2) | 0x100000000;
             v97 = v19 | 0x100000000;
             v13 = v19;
             v14 = 0;
@@ -491,9 +491,9 @@ LABEL_38:
             goto LABEL_63;
           }
 
-          v65 = v38;
-          v39 = [(DNDSContactRecord *)v6 organizationName];
-          if (!v39)
+          v65 = organizationName2;
+          organizationName3 = [(DNDSContactRecord *)v6 organizationName];
+          if (!organizationName3)
           {
             v60 = 0;
             *&v94[32] = 0x100000000;
@@ -505,7 +505,7 @@ LABEL_38:
             v15 = 0;
             v16 = 0;
             v17 = 0;
-            v98[0] = (v7 != v8) | 0x100000000;
+            v98[0] = (contactIdentifier != contactIdentifier2) | 0x100000000;
             v97 = v19 | 0x100000000;
             v13 = v19;
             v14 = 0;
@@ -518,24 +518,24 @@ LABEL_38:
             goto LABEL_63;
           }
 
-          v60 = v39;
-          v3 = [(DNDSContactRecord *)self organizationName];
-          v55 = [(DNDSContactRecord *)v6 organizationName];
-          v56 = v3;
-          if ([v3 isEqual:?])
+          v60 = organizationName3;
+          middleName5 = [(DNDSContactRecord *)self organizationName];
+          organizationName4 = [(DNDSContactRecord *)v6 organizationName];
+          v56 = middleName5;
+          if ([middleName5 isEqual:?])
           {
 LABEL_45:
-            v3 = [(DNDSContactRecord *)self phoneNumbers];
-            v63 = [(DNDSContactRecord *)v6 phoneNumbers];
-            HIDWORD(v98[2]) = v3 != v63;
-            v64 = v3;
-            if (v3 == v63)
+            middleName5 = [(DNDSContactRecord *)self phoneNumbers];
+            phoneNumbers = [(DNDSContactRecord *)v6 phoneNumbers];
+            HIDWORD(v98[2]) = middleName5 != phoneNumbers;
+            v64 = middleName5;
+            if (middleName5 == phoneNumbers)
             {
               goto LABEL_52;
             }
 
-            v40 = [(DNDSContactRecord *)self phoneNumbers];
-            if (!v40)
+            phoneNumbers2 = [(DNDSContactRecord *)self phoneNumbers];
+            if (!phoneNumbers2)
             {
               v59 = 0;
               *v95 = 0;
@@ -545,7 +545,7 @@ LABEL_45:
               v15 = 0;
               v16 = 0;
               v17 = 0;
-              v98[0] = (v7 != v8) | 0x100000000;
+              v98[0] = (contactIdentifier != contactIdentifier2) | 0x100000000;
               v97 = v19 | 0x100000000;
               v13 = v19;
               v14 = 0;
@@ -560,9 +560,9 @@ LABEL_45:
               goto LABEL_63;
             }
 
-            v59 = v40;
-            v41 = [(DNDSContactRecord *)v6 phoneNumbers];
-            if (!v41)
+            v59 = phoneNumbers2;
+            phoneNumbers3 = [(DNDSContactRecord *)v6 phoneNumbers];
+            if (!phoneNumbers3)
             {
               v54 = 0;
               *v95 = 0;
@@ -572,7 +572,7 @@ LABEL_45:
               v15 = 0;
               v16 = 0;
               v17 = 0;
-              v98[0] = (v7 != v8) | 0x100000000;
+              v98[0] = (contactIdentifier != contactIdentifier2) | 0x100000000;
               v97 = v19 | 0x100000000;
               v13 = v19;
               v14 = 0;
@@ -587,21 +587,21 @@ LABEL_45:
               goto LABEL_63;
             }
 
-            v54 = v41;
-            v3 = [(DNDSContactRecord *)self phoneNumbers];
-            v51 = [(DNDSContactRecord *)v6 phoneNumbers];
-            v52 = v3;
-            if ([v3 isEqual:?])
+            v54 = phoneNumbers3;
+            middleName5 = [(DNDSContactRecord *)self phoneNumbers];
+            phoneNumbers4 = [(DNDSContactRecord *)v6 phoneNumbers];
+            v52 = middleName5;
+            if ([middleName5 isEqual:?])
             {
 LABEL_52:
-              v3 = [(DNDSContactRecord *)self emailAddresses];
-              v57 = [(DNDSContactRecord *)v6 emailAddresses];
-              v58 = v3;
-              if (v3 == v57)
+              middleName5 = [(DNDSContactRecord *)self emailAddresses];
+              emailAddresses = [(DNDSContactRecord *)v6 emailAddresses];
+              v58 = middleName5;
+              if (middleName5 == emailAddresses)
               {
                 v15 = 0;
                 v16 = 0;
-                v98[0] = (v7 != v8) | 0x100000000;
+                v98[0] = (contactIdentifier != contactIdentifier2) | 0x100000000;
                 v97 = v19 | 0x100000000;
                 v13 = v19;
                 v14 = 0;
@@ -622,18 +622,18 @@ LABEL_52:
 
               else
               {
-                v42 = [(DNDSContactRecord *)self emailAddresses];
-                if (v42)
+                emailAddresses2 = [(DNDSContactRecord *)self emailAddresses];
+                if (emailAddresses2)
                 {
-                  v53 = v42;
-                  v43 = [(DNDSContactRecord *)v6 emailAddresses];
-                  if (v43)
+                  v53 = emailAddresses2;
+                  emailAddresses3 = [(DNDSContactRecord *)v6 emailAddresses];
+                  if (emailAddresses3)
                   {
-                    v50 = v43;
-                    v3 = [(DNDSContactRecord *)self emailAddresses];
-                    v9 = [(DNDSContactRecord *)v6 emailAddresses];
-                    v17 = [v3 isEqual:v9];
-                    v98[0] = (v7 != v8) | 0x100000000;
+                    v50 = emailAddresses3;
+                    middleName5 = [(DNDSContactRecord *)self emailAddresses];
+                    emailAddresses4 = [(DNDSContactRecord *)v6 emailAddresses];
+                    v17 = [middleName5 isEqual:emailAddresses4];
+                    v98[0] = (contactIdentifier != contactIdentifier2) | 0x100000000;
                     v97 = v19 | 0x100000000;
                     v13 = v19;
                     *&v95[4] = v27;
@@ -655,7 +655,7 @@ LABEL_52:
                     v50 = 0;
                     v16 = 0;
                     v17 = 0;
-                    v98[0] = (v7 != v8) | 0x100000000;
+                    v98[0] = (contactIdentifier != contactIdentifier2) | 0x100000000;
                     v97 = v19 | 0x100000000;
                     v13 = v19;
                     *&v95[4] = v27;
@@ -682,7 +682,7 @@ LABEL_52:
                   v15 = 0;
                   v16 = 0;
                   v17 = 0;
-                  v98[0] = (v7 != v8) | 0x100000000;
+                  v98[0] = (contactIdentifier != contactIdentifier2) | 0x100000000;
                   v97 = v19 | 0x100000000;
                   v13 = v19;
                   *&v95[4] = v27;
@@ -709,7 +709,7 @@ LABEL_52:
             v15 = 0;
             v16 = 0;
             v17 = 0;
-            v98[0] = (v7 != v8) | 0x100000000;
+            v98[0] = (contactIdentifier != contactIdentifier2) | 0x100000000;
             v97 = v19 | 0x100000000;
             v13 = v19;
             v14 = 0;
@@ -736,7 +736,7 @@ LABEL_52:
             v15 = 0;
             v16 = 0;
             v17 = 0;
-            v98[0] = (v7 != v8) | 0x100000000;
+            v98[0] = (contactIdentifier != contactIdentifier2) | 0x100000000;
             v97 = v19 | 0x100000000;
             v13 = v19;
             v14 = 0;
@@ -759,7 +759,7 @@ LABEL_52:
           v15 = 0;
           v16 = 0;
           v17 = 0;
-          v98[0] = (v7 != v8) | 0x100000000;
+          v98[0] = (contactIdentifier != contactIdentifier2) | 0x100000000;
           v97 = v19 | 0x100000000;
           v13 = v19;
           v14 = 0;
@@ -782,7 +782,7 @@ LABEL_52:
         v15 = 0;
         v16 = 0;
         v17 = 0;
-        v98[0] = (v7 != v8) | 0x100000000;
+        v98[0] = (contactIdentifier != contactIdentifier2) | 0x100000000;
         v97 = v19 | 0x100000000;
         v13 = v19;
         v14 = 0;
@@ -794,7 +794,7 @@ LABEL_52:
 
     else
     {
-      LODWORD(v98[0]) = v7 != v8;
+      LODWORD(v98[0]) = contactIdentifier != contactIdentifier2;
       v96 = 0;
       *(&v98[2] + 4) = 0;
       *(&v98[3] + 4) = 0;
@@ -831,8 +831,8 @@ LABEL_52:
 LABEL_63:
   if (v16)
   {
-    v44 = v8;
-    v45 = v7;
+    v44 = contactIdentifier2;
+    v45 = contactIdentifier;
     v46 = v14;
     v47 = v13;
     v48 = v15;
@@ -840,8 +840,8 @@ LABEL_63:
     v15 = v48;
     v13 = v47;
     v14 = v46;
-    v7 = v45;
-    v8 = v44;
+    contactIdentifier = v45;
+    contactIdentifier2 = v44;
   }
 
   if (v15)
@@ -960,7 +960,7 @@ LABEL_63:
   {
   }
 
-  if (v7 != v8)
+  if (contactIdentifier != contactIdentifier2)
   {
   }
 
@@ -972,35 +972,35 @@ LABEL_126:
 {
   v14 = MEMORY[0x277CCACA8];
   v3 = objc_opt_class();
-  v4 = [(DNDSContactRecord *)self contactIdentifier];
-  v5 = [(DNDSContactRecord *)self firstName];
-  v6 = [(DNDSContactRecord *)self middleName];
-  v7 = [(DNDSContactRecord *)self lastName];
-  v8 = [(DNDSContactRecord *)self nickName];
-  v9 = [(DNDSContactRecord *)self organizationName];
-  v10 = [(DNDSContactRecord *)self phoneNumbers];
-  v11 = [(DNDSContactRecord *)self emailAddresses];
-  v12 = [v14 stringWithFormat:@"<%@: %p contactIdentifier: %@; firstName: '%@'; middleName: %@; lastName: %@; nickName: %@; organizationName: %@; phoneNumbers: %@; emailAddresses: %@>", v3, self, v4, v5, v6, v7, v8, v9, v10, v11];;
+  contactIdentifier = [(DNDSContactRecord *)self contactIdentifier];
+  firstName = [(DNDSContactRecord *)self firstName];
+  middleName = [(DNDSContactRecord *)self middleName];
+  lastName = [(DNDSContactRecord *)self lastName];
+  nickName = [(DNDSContactRecord *)self nickName];
+  organizationName = [(DNDSContactRecord *)self organizationName];
+  phoneNumbers = [(DNDSContactRecord *)self phoneNumbers];
+  emailAddresses = [(DNDSContactRecord *)self emailAddresses];
+  v12 = [v14 stringWithFormat:@"<%@: %p contactIdentifier: %@; firstName: '%@'; middleName: %@; lastName: %@; nickName: %@; organizationName: %@; phoneNumbers: %@; emailAddresses: %@>", v3, self, contactIdentifier, firstName, middleName, lastName, nickName, organizationName, phoneNumbers, emailAddresses];;
 
   return v12;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DNDSMutableContactRecord alloc];
 
   return [(DNDSContactRecord *)v4 _initWithRecord:self];
 }
 
-+ (id)migrateDictionaryRepresentation:(id)a3 fromVersionNumber:(unint64_t)a4 toVersionNumber:(unint64_t)a5
++ (id)migrateDictionaryRepresentation:(id)representation fromVersionNumber:(unint64_t)number toVersionNumber:(unint64_t)versionNumber
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [v7 mutableCopy];
-  if (a4 <= 1 && a5 >= 2)
+  representationCopy = representation;
+  v8 = [representationCopy mutableCopy];
+  if (number <= 1 && versionNumber >= 2)
   {
     v9 = MEMORY[0x277CBEB98];
-    v10 = [v7 bs_safeArrayForKey:@"phoneNumbers"];
+    v10 = [representationCopy bs_safeArrayForKey:@"phoneNumbers"];
     v11 = [v9 setWithArray:v10];
 
     v12 = objc_opt_new();
@@ -1033,8 +1033,8 @@ LABEL_126:
       while (v15);
     }
 
-    v19 = [v12 allObjects];
-    [v8 bs_setSafeObject:v19 forKey:@"phoneNumbers"];
+    allObjects = [v12 allObjects];
+    [v8 bs_setSafeObject:allObjects forKey:@"phoneNumbers"];
   }
 
   v20 = *MEMORY[0x277D85DE8];
@@ -1042,26 +1042,26 @@ LABEL_126:
   return v8;
 }
 
-+ (id)newWithDictionaryRepresentation:(id)a3 context:(id)a4
++ (id)newWithDictionaryRepresentation:(id)representation context:(id)context
 {
-  v44 = a4;
-  v5 = a3;
-  v48 = [v5 bs_safeObjectForKey:@"contactIdentifier" ofType:objc_opt_class()];
-  v47 = [v5 bs_safeObjectForKey:@"firstName" ofType:objc_opt_class()];
-  v6 = [v5 bs_safeObjectForKey:@"middleName" ofType:objc_opt_class()];
-  v7 = [v5 bs_safeObjectForKey:@"lastName" ofType:objc_opt_class()];
-  v46 = [v5 bs_safeObjectForKey:@"nickName" ofType:objc_opt_class()];
-  v45 = [v5 bs_safeObjectForKey:@"organizationName" ofType:objc_opt_class()];
+  contextCopy = context;
+  representationCopy = representation;
+  v48 = [representationCopy bs_safeObjectForKey:@"contactIdentifier" ofType:objc_opt_class()];
+  v47 = [representationCopy bs_safeObjectForKey:@"firstName" ofType:objc_opt_class()];
+  v6 = [representationCopy bs_safeObjectForKey:@"middleName" ofType:objc_opt_class()];
+  v7 = [representationCopy bs_safeObjectForKey:@"lastName" ofType:objc_opt_class()];
+  v46 = [representationCopy bs_safeObjectForKey:@"nickName" ofType:objc_opt_class()];
+  v45 = [representationCopy bs_safeObjectForKey:@"organizationName" ofType:objc_opt_class()];
   v8 = MEMORY[0x277CBEB98];
-  v9 = [v5 bs_safeArrayForKey:@"phoneNumbers"];
+  v9 = [representationCopy bs_safeArrayForKey:@"phoneNumbers"];
   v10 = [v8 setWithArray:v9];
 
   v11 = MEMORY[0x277CBEB98];
-  v12 = [v5 bs_safeArrayForKey:@"emailAddresses"];
+  v12 = [representationCopy bs_safeArrayForKey:@"emailAddresses"];
   v13 = [v11 setWithArray:v12];
 
-  v14 = [v5 bs_safeObjectForKey:@"type" ofType:objc_opt_class()];
-  v15 = [v5 bs_safeObjectForKey:@"value" ofType:objc_opt_class()];
+  v14 = [representationCopy bs_safeObjectForKey:@"type" ofType:objc_opt_class()];
+  v15 = [representationCopy bs_safeObjectForKey:@"value" ofType:objc_opt_class()];
 
   v16 = v14;
   v43 = v15;
@@ -1084,11 +1084,11 @@ LABEL_126:
 
   else
   {
-    v21 = [v14 unsignedIntegerValue];
+    unsignedIntegerValue = [v14 unsignedIntegerValue];
     v20 = v45;
     v19 = v46;
     v18 = v13;
-    if (v21 != 2)
+    if (unsignedIntegerValue != 2)
     {
       goto LABEL_9;
     }
@@ -1100,7 +1100,7 @@ LABEL_126:
 LABEL_9:
   if (v48)
   {
-    v22 = [[a1 alloc] _initWithContactIdentifier:v48 firstName:v47 middleName:v6 lastName:v7 nickName:v19 organizationName:v20 phoneNumbers:v17 emailAddresses:v18];
+    v22 = [[self alloc] _initWithContactIdentifier:v48 firstName:v47 middleName:v6 lastName:v7 nickName:v19 organizationName:v20 phoneNumbers:v17 emailAddresses:v18];
   }
 
   else
@@ -1114,24 +1114,24 @@ LABEL_9:
     [v23 setOrganizationName:v20];
     [v23 setPhoneNumbers:v17];
     [v23 setEmailAddresses:v18];
-    v24 = [v44 contactProvider];
-    [v24 contactForContact:v23];
+    contactProvider = [contextCopy contactProvider];
+    [contactProvider contactForContact:v23];
     v25 = v39 = v17;
 
-    v36 = [a1 alloc];
-    v35 = [v25 contactIdentifier];
-    v34 = [v25 firstName];
-    v26 = [v25 middleName];
-    v27 = [v25 lastName];
+    v36 = [self alloc];
+    contactIdentifier = [v25 contactIdentifier];
+    firstName = [v25 firstName];
+    middleName = [v25 middleName];
+    lastName = [v25 lastName];
     [v25 nickName];
     v28 = v42 = v6;
     [v25 organizationName];
     v29 = v40 = v7;
     [v25 phoneNumbers];
     v30 = v37 = v18;
-    v31 = [v25 emailAddresses];
-    v32 = v26;
-    v22 = [v36 _initWithContactIdentifier:v35 firstName:v34 middleName:v26 lastName:v27 nickName:v28 organizationName:v29 phoneNumbers:v30 emailAddresses:v31];
+    emailAddresses = [v25 emailAddresses];
+    v32 = middleName;
+    v22 = [v36 _initWithContactIdentifier:contactIdentifier firstName:firstName middleName:middleName lastName:lastName nickName:v28 organizationName:v29 phoneNumbers:v30 emailAddresses:emailAddresses];
 
     v20 = v45;
     v18 = v37;
@@ -1147,17 +1147,17 @@ LABEL_9:
   return v22;
 }
 
-- (id)dictionaryRepresentationWithContext:(id)a3
+- (id)dictionaryRepresentationWithContext:(id)context
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  contextCopy = context;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = [v4 arrayHealingSource];
-  v7 = [v6 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  arrayHealingSource = [contextCopy arrayHealingSource];
+  v7 = [arrayHealingSource countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1168,21 +1168,21 @@ LABEL_9:
       {
         if (*v27 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(arrayHealingSource);
         }
 
         v11 = *(*(&v26 + 1) + 8 * i);
-        v12 = [objc_opt_class() newWithDictionaryRepresentation:v11 context:v4];
+        v12 = [objc_opt_class() newWithDictionaryRepresentation:v11 context:contextCopy];
         if ([(DNDSContactRecord *)self isEqual:v12])
         {
           v13 = [v11 mutableCopy];
 
-          v5 = v13;
+          dictionary = v13;
           goto LABEL_11;
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v8 = [arrayHealingSource countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v8)
       {
         continue;
@@ -1194,38 +1194,38 @@ LABEL_9:
 
 LABEL_11:
 
-  v14 = [(DNDSContactRecord *)self firstName];
-  [v5 bs_setSafeObject:v14 forKey:@"firstName"];
+  firstName = [(DNDSContactRecord *)self firstName];
+  [dictionary bs_setSafeObject:firstName forKey:@"firstName"];
 
-  v15 = [(DNDSContactRecord *)self middleName];
-  [v5 bs_setSafeObject:v15 forKey:@"middleName"];
+  middleName = [(DNDSContactRecord *)self middleName];
+  [dictionary bs_setSafeObject:middleName forKey:@"middleName"];
 
-  v16 = [(DNDSContactRecord *)self lastName];
-  [v5 bs_setSafeObject:v16 forKey:@"lastName"];
+  lastName = [(DNDSContactRecord *)self lastName];
+  [dictionary bs_setSafeObject:lastName forKey:@"lastName"];
 
-  v17 = [(DNDSContactRecord *)self nickName];
-  [v5 bs_setSafeObject:v17 forKey:@"nickName"];
+  nickName = [(DNDSContactRecord *)self nickName];
+  [dictionary bs_setSafeObject:nickName forKey:@"nickName"];
 
-  v18 = [(DNDSContactRecord *)self organizationName];
-  [v5 bs_setSafeObject:v18 forKey:@"organizationName"];
+  organizationName = [(DNDSContactRecord *)self organizationName];
+  [dictionary bs_setSafeObject:organizationName forKey:@"organizationName"];
 
-  v19 = [(DNDSContactRecord *)self phoneNumbers];
-  v20 = [v19 allObjects];
-  [v5 bs_setSafeObject:v20 forKey:@"phoneNumbers"];
+  phoneNumbers = [(DNDSContactRecord *)self phoneNumbers];
+  allObjects = [phoneNumbers allObjects];
+  [dictionary bs_setSafeObject:allObjects forKey:@"phoneNumbers"];
 
-  v21 = [(DNDSContactRecord *)self emailAddresses];
-  v22 = [v21 allObjects];
-  [v5 bs_setSafeObject:v22 forKey:@"emailAddresses"];
+  emailAddresses = [(DNDSContactRecord *)self emailAddresses];
+  allObjects2 = [emailAddresses allObjects];
+  [dictionary bs_setSafeObject:allObjects2 forKey:@"emailAddresses"];
 
-  if ([v4 destination] == 1)
+  if ([contextCopy destination] == 1)
   {
-    v23 = [(DNDSContactRecord *)self contactIdentifier];
-    [v5 bs_setSafeObject:v23 forKey:@"contactIdentifier"];
+    contactIdentifier = [(DNDSContactRecord *)self contactIdentifier];
+    [dictionary bs_setSafeObject:contactIdentifier forKey:@"contactIdentifier"];
   }
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return dictionary;
 }
 
 @end

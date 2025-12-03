@@ -1,18 +1,18 @@
 @interface _MKMapFeatureAnnotationView
-- (CGPoint)_anchorPointForCalloutAnchorPosition:(int64_t)a3;
+- (CGPoint)_anchorPointForCalloutAnchorPosition:(int64_t)position;
 - (CGPoint)_openInMapsAnchorPoint;
 - (CGRect)_frameForSelectionAdjustment;
 - (CGRect)_labelDisplayFrame;
-- (_MKMapFeatureAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4;
-- (unint64_t)_reasonToDeferSelectionAccessoryPresentationStyle:(id)a3;
+- (_MKMapFeatureAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier;
+- (unint64_t)_reasonToDeferSelectionAccessoryPresentationStyle:(id)style;
 @end
 
 @implementation _MKMapFeatureAnnotationView
 
-- (unint64_t)_reasonToDeferSelectionAccessoryPresentationStyle:(id)a3
+- (unint64_t)_reasonToDeferSelectionAccessoryPresentationStyle:(id)style
 {
-  v4 = a3;
-  if (([v4 _style] | 2) == 3)
+  styleCopy = style;
+  if (([styleCopy _style] | 2) == 3)
   {
     v5 = 1;
   }
@@ -21,7 +21,7 @@
   {
     v7.receiver = self;
     v7.super_class = _MKMapFeatureAnnotationView;
-    v5 = [(MKAnnotationView *)&v7 _reasonToDeferSelectionAccessoryPresentationStyle:v4];
+    v5 = [(MKAnnotationView *)&v7 _reasonToDeferSelectionAccessoryPresentationStyle:styleCopy];
   }
 
   return v5;
@@ -29,12 +29,12 @@
 
 - (CGRect)_labelDisplayFrame
 {
-  v3 = [(MKAnnotationView *)self annotation];
-  v4 = [v3 marker];
+  annotation = [(MKAnnotationView *)self annotation];
+  marker = [annotation marker];
 
-  v5 = [(MKAnnotationView *)self _mapView];
-  [v4 screenBounds];
-  [v5 convertRect:self toView:?];
+  _mapView = [(MKAnnotationView *)self _mapView];
+  [marker screenBounds];
+  [_mapView convertRect:self toView:?];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -53,10 +53,10 @@
 
 - (CGRect)_frameForSelectionAdjustment
 {
-  v2 = [(MKAnnotationView *)self annotation];
-  v3 = [v2 marker];
+  annotation = [(MKAnnotationView *)self annotation];
+  marker = [annotation marker];
 
-  [v3 screenBounds];
+  [marker screenBounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -73,25 +73,25 @@
   return result;
 }
 
-- (CGPoint)_anchorPointForCalloutAnchorPosition:(int64_t)a3
+- (CGPoint)_anchorPointForCalloutAnchorPosition:(int64_t)position
 {
   [(_MKMapFeatureAnnotationView *)self _labelDisplayFrame];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(MKAnnotationView *)self annotation];
-  v14 = v13;
-  if (a3 > 2)
+  annotation = [(MKAnnotationView *)self annotation];
+  v14 = annotation;
+  if (position > 2)
   {
-    if (a3 == 3)
+    if (position == 3)
     {
-      v24 = [v13 featureType];
+      featureType = [annotation featureType];
       v25 = v6;
       v26 = v8;
       v27 = v10;
       v28 = v12;
-      if (v24)
+      if (featureType)
       {
         MaxX = CGRectGetMaxX(*&v25);
         goto LABEL_13;
@@ -103,17 +103,17 @@
 
     else
     {
-      if (a3 != 4)
+      if (position != 4)
       {
         goto LABEL_9;
       }
 
-      v17 = [v13 featureType];
+      featureType2 = [annotation featureType];
       v18 = v6;
       v19 = v8;
       v20 = v10;
       v21 = v12;
-      if (v17)
+      if (featureType2)
       {
         MaxX = CGRectGetMinX(*&v18);
 LABEL_13:
@@ -139,7 +139,7 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  if (a3 == 1)
+  if (position == 1)
   {
     v36.origin.x = v6;
     v36.origin.y = v8;
@@ -154,7 +154,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (a3 == 2)
+  if (position == 2)
   {
     v34.origin.x = v6;
     v34.origin.y = v8;
@@ -202,11 +202,11 @@ LABEL_15:
   return result;
 }
 
-- (_MKMapFeatureAnnotationView)initWithAnnotation:(id)a3 reuseIdentifier:(id)a4
+- (_MKMapFeatureAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = _MKMapFeatureAnnotationView;
-  v4 = [(MKAnnotationView *)&v7 initWithAnnotation:a3 reuseIdentifier:a4];
+  v4 = [(MKAnnotationView *)&v7 initWithAnnotation:annotation reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {

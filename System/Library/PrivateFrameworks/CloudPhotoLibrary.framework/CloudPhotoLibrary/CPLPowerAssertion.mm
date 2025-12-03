@@ -1,12 +1,12 @@
 @interface CPLPowerAssertion
 + (BOOL)hasEnoughPower;
 + (id)powerAssertionStatus;
-+ (void)_doProtected:(id)a3;
++ (void)_doProtected:(id)protected;
 + (void)_releaseAssertion;
 + (void)_retainAssertion;
 + (void)disableSleep;
 + (void)enableSleep;
-+ (void)setHasEnoughPower:(BOOL)a3;
++ (void)setHasEnoughPower:(BOOL)power;
 @end
 
 @implementation CPLPowerAssertion
@@ -18,8 +18,8 @@
   v2[2] = __32__CPLPowerAssertion_enableSleep__block_invoke;
   v2[3] = &__block_descriptor_48_e5_v8__0l;
   v2[4] = a2;
-  v2[5] = a1;
-  [a1 _doProtected:v2];
+  v2[5] = self;
+  [self _doProtected:v2];
 }
 
 + (void)_releaseAssertion
@@ -51,10 +51,10 @@
             }
           }
 
-          v6 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"void releasePowerAssertion(void)"];
           v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/cloudphotolibrary/Engine/CPLPowerAssertion.m"];
-          [v6 handleFailureInFunction:v7 file:v8 lineNumber:58 description:@"Power assertion should be present"];
+          [currentHandler handleFailureInFunction:v7 file:v8 lineNumber:58 description:@"Power assertion should be present"];
 
           abort();
         }
@@ -128,8 +128,8 @@ uint64_t __32__CPLPowerAssertion_enableSleep__block_invoke(uint64_t result)
   v2[1] = 3221225472;
   v2[2] = __33__CPLPowerAssertion_disableSleep__block_invoke;
   v2[3] = &__block_descriptor_40_e5_v8__0l;
-  v2[4] = a1;
-  [a1 _doProtected:v2];
+  v2[4] = self;
+  [self _doProtected:v2];
 }
 
 uint64_t __33__CPLPowerAssertion_disableSleep__block_invoke(uint64_t result)
@@ -192,9 +192,9 @@ uint64_t __33__CPLPowerAssertion_disableSleep__block_invoke(uint64_t result)
   v4[2] = __41__CPLPowerAssertion_powerAssertionStatus__block_invoke;
   v4[3] = &unk_1E861BAD8;
   v4[5] = a2;
-  v4[6] = a1;
+  v4[6] = self;
   v4[4] = &v5;
-  [a1 _doProtected:v4];
+  [self _doProtected:v4];
   v2 = v6[5];
   _Block_object_dispose(&v5, 8);
 
@@ -266,15 +266,15 @@ uint64_t __41__CPLPowerAssertion_powerAssertionStatus__block_invoke(uint64_t res
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)setHasEnoughPower:(BOOL)a3
++ (void)setHasEnoughPower:(BOOL)power
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __39__CPLPowerAssertion_setHasEnoughPower___block_invoke;
   v3[3] = &__block_descriptor_41_e5_v8__0l;
-  v4 = a3;
-  v3[4] = a1;
-  [a1 _doProtected:v3];
+  powerCopy = power;
+  v3[4] = self;
+  [self _doProtected:v3];
 }
 
 uint64_t __39__CPLPowerAssertion_setHasEnoughPower___block_invoke(uint64_t result)
@@ -312,7 +312,7 @@ uint64_t __39__CPLPowerAssertion_setHasEnoughPower___block_invoke(uint64_t resul
   v4[2] = __35__CPLPowerAssertion_hasEnoughPower__block_invoke;
   v4[3] = &unk_1E861B528;
   v4[4] = &v5;
-  [a1 _doProtected:v4];
+  [self _doProtected:v4];
   v2 = *(v6 + 24);
   _Block_object_dispose(&v5, 8);
   return v2;
@@ -358,14 +358,14 @@ void __38__CPLPowerAssertion__releaseAssertion__block_invoke(uint64_t a1)
   }
 }
 
-+ (void)_doProtected:(id)a3
++ (void)_doProtected:(id)protected
 {
   v3 = _doProtected__onceToken;
-  v4 = a3;
-  v6 = v4;
+  protectedCopy = protected;
+  v6 = protectedCopy;
   if (v3 == -1)
   {
-    v5 = v4;
+    v5 = protectedCopy;
   }
 
   else

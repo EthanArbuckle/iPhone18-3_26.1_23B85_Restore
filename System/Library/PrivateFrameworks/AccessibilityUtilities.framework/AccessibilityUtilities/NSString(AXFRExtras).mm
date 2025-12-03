@@ -6,19 +6,19 @@
 
 - (id)stringByTrimmingEmptySpaceEdges
 {
-  if ([a1 length])
+  if ([self length])
   {
-    v2 = [a1 mutableCopy];
+    v2 = [self mutableCopy];
     CFStringTrimWhitespace(v2);
-    v3 = [(__CFString *)v2 copy];
+    selfCopy = [(__CFString *)v2 copy];
   }
 
   else
   {
-    v3 = a1;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 @end

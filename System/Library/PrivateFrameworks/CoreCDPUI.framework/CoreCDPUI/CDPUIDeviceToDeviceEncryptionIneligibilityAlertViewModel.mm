@@ -8,40 +8,40 @@
 
 - (id)title
 {
-  v3 = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)self context];
-  v4 = [v3 featureName];
+  context = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)self context];
+  featureName = [context featureName];
 
-  if (v4)
+  if (featureName)
   {
     v5 = MEMORY[0x277CCACA8];
     v6 = [MEMORY[0x277CFD508] builderForKey:@"D2DENCRYPTION_INELIGIBLE_TITLE_WITH_FEATURE"];
-    v7 = [v6 localizedString];
-    v8 = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)self context];
-    v9 = [v8 featureName];
-    v10 = [v5 stringWithValidatedFormat:v7 validFormatSpecifiers:@"%@" error:0, v9];
+    localizedString = [v6 localizedString];
+    context2 = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)self context];
+    featureName2 = [context2 featureName];
+    localizedString2 = [v5 stringWithValidatedFormat:localizedString validFormatSpecifiers:@"%@" error:0, featureName2];
   }
 
   else
   {
     v6 = [MEMORY[0x277CFD508] builderForKey:@"D2DENCRYPTION_INELIGIBLE_TITLE"];
-    v10 = [v6 localizedString];
+    localizedString2 = [v6 localizedString];
   }
 
-  return v10;
+  return localizedString2;
 }
 
 - (id)message
 {
-  v3 = [MEMORY[0x277CF0130] sharedInstance];
-  v4 = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)self context];
-  v5 = [v4 altDSID];
-  v6 = [v3 authKitAccountWithAltDSID:v5];
+  mEMORY[0x277CF0130] = [MEMORY[0x277CF0130] sharedInstance];
+  context = [(CDPUIDeviceToDeviceEncryptionMessagingViewModel *)self context];
+  altDSID = [context altDSID];
+  v6 = [mEMORY[0x277CF0130] authKitAccountWithAltDSID:altDSID];
 
   v7 = MEMORY[0x277CCACA8];
   v8 = [MEMORY[0x277CFD508] builderForKey:@"D2DENCRYPTION_INELIGIBLE_MESSAGE_REBRAND"];
-  v9 = [v8 localizedString];
-  v10 = [v6 username];
-  v11 = [v7 stringWithValidatedFormat:v9 validFormatSpecifiers:@"%@" error:0, v10];
+  localizedString = [v8 localizedString];
+  username = [v6 username];
+  v11 = [v7 stringWithValidatedFormat:localizedString validFormatSpecifiers:@"%@" error:0, username];
 
   return v11;
 }
@@ -49,9 +49,9 @@
 - (id)continueTitle
 {
   v2 = [MEMORY[0x277CFD508] builderForKey:@"OK"];
-  v3 = [v2 localizedString];
+  localizedString = [v2 localizedString];
 
-  return v3;
+  return localizedString;
 }
 
 @end

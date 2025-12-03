@@ -1,36 +1,36 @@
 @interface SBContinuousExposeFullScreenToStripTransitionSwitcherModifier
-- (BOOL)shouldAllowGroupOpacityForAppLayout:(id)a3;
-- (CGPoint)anchorPointForIndex:(unint64_t)a3;
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3;
-- (CGRect)frameForIconOverlayInAppLayout:(id)a3;
-- (CGRect)frameForIndex:(unint64_t)a3;
-- (SBContinuousExposeFullScreenToStripTransitionSwitcherModifier)initWithTransitionID:(id)a3 outgoingAppLayout:(id)a4;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
-- (double)scaleForIndex:(unint64_t)a3;
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleTimerEvent:(id)a3;
+- (BOOL)shouldAllowGroupOpacityForAppLayout:(id)layout;
+- (CGPoint)anchorPointForIndex:(unint64_t)index;
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index;
+- (CGRect)frameForIconOverlayInAppLayout:(id)layout;
+- (CGRect)frameForIndex:(unint64_t)index;
+- (SBContinuousExposeFullScreenToStripTransitionSwitcherModifier)initWithTransitionID:(id)d outgoingAppLayout:(id)layout;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
+- (double)titleAndIconOpacityForIndex:(unint64_t)index;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleTimerEvent:(id)event;
 - (id)transitionWillBegin;
 @end
 
 @implementation SBContinuousExposeFullScreenToStripTransitionSwitcherModifier
 
-- (SBContinuousExposeFullScreenToStripTransitionSwitcherModifier)initWithTransitionID:(id)a3 outgoingAppLayout:(id)a4
+- (SBContinuousExposeFullScreenToStripTransitionSwitcherModifier)initWithTransitionID:(id)d outgoingAppLayout:(id)layout
 {
-  v7 = a4;
+  layoutCopy = layout;
   v16.receiver = self;
   v16.super_class = SBContinuousExposeFullScreenToStripTransitionSwitcherModifier;
-  v8 = [(SBTransitionSwitcherModifier *)&v16 initWithTransitionID:a3];
+  v8 = [(SBTransitionSwitcherModifier *)&v16 initWithTransitionID:d];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_outgoingAppLayout, a4);
+    objc_storeStrong(&v8->_outgoingAppLayout, layout);
     v9->_animationPhase = 0;
     v10 = MEMORY[0x277CCACA8];
-    v11 = [MEMORY[0x277CCAD78] UUID];
-    v12 = [v11 UUIDString];
-    v13 = [v10 stringWithFormat:@"%@:%@", @"SBContinuousExposeFullScreenToStripTransitionSwitcherModifierTimerEventReason", v12];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v13 = [v10 stringWithFormat:@"%@:%@", @"SBContinuousExposeFullScreenToStripTransitionSwitcherModifierTimerEventReason", uUIDString];
     timerReason = v9->_timerReason;
     v9->_timerReason = v13;
   }
@@ -42,29 +42,29 @@
 {
   v8.receiver = self;
   v8.super_class = SBContinuousExposeFullScreenToStripTransitionSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v8 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v8 transitionWillBegin];
   if (!self->_animationPhase)
   {
     v4 = [[SBTimerEventSwitcherEventResponse alloc] initWithDelay:0 validator:self->_timerReason reason:0.14];
-    v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:v3];
+    v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:transitionWillBegin];
 
     v6 = [[SBTimerEventSwitcherEventResponse alloc] initWithDelay:0 validator:self->_timerReason reason:0.14];
-    v3 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v6 toResponse:v5];
+    transitionWillBegin = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v6 toResponse:v5];
   }
 
-  return v3;
+  return transitionWillBegin;
 }
 
-- (id)handleTimerEvent:(id)a3
+- (id)handleTimerEvent:(id)event
 {
   v13.receiver = self;
   v13.super_class = SBContinuousExposeFullScreenToStripTransitionSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBTransitionSwitcherModifier *)&v13 handleTimerEvent:v4];
-  v6 = [v4 reason];
+  eventCopy = event;
+  v5 = [(SBTransitionSwitcherModifier *)&v13 handleTimerEvent:eventCopy];
+  reason = [eventCopy reason];
 
-  LODWORD(v4) = [v6 isEqualToString:self->_timerReason];
-  if (v4)
+  LODWORD(eventCopy) = [reason isEqualToString:self->_timerReason];
+  if (eventCopy)
   {
     animationPhase = self->_animationPhase;
     if (animationPhase)
@@ -96,10 +96,10 @@ LABEL_7:
   return v5;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
-  v5 = [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (![(SBAppLayout *)self->_outgoingAppLayout isEqual:v6])
   {
@@ -111,7 +111,7 @@ LABEL_7:
   {
     v30.receiver = self;
     v30.super_class = SBContinuousExposeFullScreenToStripTransitionSwitcherModifier;
-    [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)&v30 frameForIndex:a3];
+    [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)&v30 frameForIndex:index];
     v14 = v25;
     v16 = v26;
     v10 = v27 * 0.1;
@@ -124,7 +124,7 @@ LABEL_7:
 LABEL_5:
     v29.receiver = self;
     v29.super_class = SBContinuousExposeFullScreenToStripTransitionSwitcherModifier;
-    [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)&v29 frameForIndex:a3];
+    [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)&v29 frameForIndex:index];
     v10 = v17;
     v12 = v18;
     v14 = v19;
@@ -154,13 +154,13 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)frameForIconOverlayInAppLayout:(id)a3
+- (CGRect)frameForIconOverlayInAppLayout:(id)layout
 {
   outgoingAppLayout = self->_outgoingAppLayout;
-  v5 = a3;
-  if ([(SBAppLayout *)outgoingAppLayout isEqual:v5])
+  layoutCopy = layout;
+  if ([(SBAppLayout *)outgoingAppLayout isEqual:layoutCopy])
   {
-    v6 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:v5];
+    v6 = [(SBSwitcherModifier *)self flexibleAutoLayoutSpaceForAppLayout:layoutCopy];
 
     [v6 boundingBox];
     v8 = v7;
@@ -173,7 +173,7 @@ LABEL_6:
   {
     v23.receiver = self;
     v23.super_class = SBContinuousExposeFullScreenToStripTransitionSwitcherModifier;
-    [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)&v23 frameForIconOverlayInAppLayout:v5];
+    [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)&v23 frameForIconOverlayInAppLayout:layoutCopy];
     v8 = v15;
     v10 = v16;
     v12 = v17;
@@ -191,15 +191,15 @@ LABEL_6:
   return result;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
-  v5 = [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ([(SBAppLayout *)self->_outgoingAppLayout isEqual:v6]&& !self->_animationPhase)
   {
     [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)self bestSupportedDefaultCornerRadiusForAppLayout:v6];
-    [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)self scaleForIndex:a3];
+    [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)self scaleForIndex:index];
     SBRectCornerRadiiForRadius();
   }
 
@@ -207,7 +207,7 @@ LABEL_6:
   {
     v19.receiver = self;
     v19.super_class = SBContinuousExposeFullScreenToStripTransitionSwitcherModifier;
-    [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)&v19 cornerRadiiForIndex:a3];
+    [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)&v19 cornerRadiiForIndex:index];
   }
 
   v11 = v7;
@@ -226,16 +226,16 @@ LABEL_6:
   return result;
 }
 
-- (CGPoint)anchorPointForIndex:(unint64_t)a3
+- (CGPoint)anchorPointForIndex:(unint64_t)index
 {
-  v5 = [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (![(SBAppLayout *)self->_outgoingAppLayout isEqual:v6]|| (v7 = 0.5, v8 = 0.5, self->_animationPhase >= 2))
   {
     v13.receiver = self;
     v13.super_class = SBContinuousExposeFullScreenToStripTransitionSwitcherModifier;
-    [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)&v13 anchorPointForIndex:a3];
+    [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)&v13 anchorPointForIndex:index];
     v7 = v9;
     v8 = v10;
   }
@@ -247,10 +247,10 @@ LABEL_6:
   return result;
 }
 
-- (CGPoint)perspectiveAngleForIndex:(unint64_t)a3
+- (CGPoint)perspectiveAngleForIndex:(unint64_t)index
 {
-  v5 = [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if ([(SBAppLayout *)self->_outgoingAppLayout isEqual:v6]&& !self->_animationPhase)
   {
@@ -262,7 +262,7 @@ LABEL_6:
   {
     v13.receiver = self;
     v13.super_class = SBContinuousExposeFullScreenToStripTransitionSwitcherModifier;
-    [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)&v13 perspectiveAngleForIndex:a3];
+    [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)&v13 perspectiveAngleForIndex:index];
     v8 = v7;
     v10 = v9;
   }
@@ -274,10 +274,10 @@ LABEL_6:
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
-  v5 = [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (![(SBAppLayout *)self->_outgoingAppLayout isEqual:v6])
   {
@@ -296,15 +296,15 @@ LABEL_6:
 LABEL_5:
     v14.receiver = self;
     v14.super_class = SBContinuousExposeFullScreenToStripTransitionSwitcherModifier;
-    [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)&v14 scaleForIndex:a3];
+    [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)&v14 scaleForIndex:index];
     v11 = v12;
   }
 
   else
   {
-    v8 = [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)self switcherSettings];
-    v9 = [v8 animationSettings];
-    [v9 crossblurDosidoSmallScale];
+    switcherSettings = [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)self switcherSettings];
+    animationSettings = [switcherSettings animationSettings];
+    [animationSettings crossblurDosidoSmallScale];
     v11 = v10;
   }
 
@@ -313,49 +313,49 @@ LABEL_6:
   return v11;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
-  if (![(SBAppLayout *)self->_outgoingAppLayout isEqual:v8]|| (v9 = 0.0, self->_animationPhase >= 2))
+  layoutCopy = layout;
+  if (![(SBAppLayout *)self->_outgoingAppLayout isEqual:layoutCopy]|| (v9 = 0.0, self->_animationPhase >= 2))
   {
     v12.receiver = self;
     v12.super_class = SBContinuousExposeFullScreenToStripTransitionSwitcherModifier;
-    [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)&v12 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+    [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)&v12 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
     v9 = v10;
   }
 
   return v9;
 }
 
-- (double)titleAndIconOpacityForIndex:(unint64_t)a3
+- (double)titleAndIconOpacityForIndex:(unint64_t)index
 {
-  v5 = [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
   if (![(SBAppLayout *)self->_outgoingAppLayout isEqual:v6]|| (v7 = 0.0, self->_animationPhase >= 2))
   {
     v10.receiver = self;
     v10.super_class = SBContinuousExposeFullScreenToStripTransitionSwitcherModifier;
-    [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)&v10 titleAndIconOpacityForIndex:a3];
+    [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)&v10 titleAndIconOpacityForIndex:index];
     v7 = v8;
   }
 
   return v7;
 }
 
-- (BOOL)shouldAllowGroupOpacityForAppLayout:(id)a3
+- (BOOL)shouldAllowGroupOpacityForAppLayout:(id)layout
 {
-  v4 = a3;
+  layoutCopy = layout;
   if (SBFIsChamoisFullScreenToStripGroupOpacityAvailable())
   {
-    v5 = [(SBAppLayout *)self->_outgoingAppLayout isEqual:v4];
+    v5 = [(SBAppLayout *)self->_outgoingAppLayout isEqual:layoutCopy];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SBContinuousExposeFullScreenToStripTransitionSwitcherModifier;
-    v5 = [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)&v8 shouldAllowGroupOpacityForAppLayout:v4];
+    v5 = [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)&v8 shouldAllowGroupOpacityForAppLayout:layoutCopy];
   }
 
   v6 = v5;
@@ -363,26 +363,26 @@ LABEL_6:
   return v6;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v15.receiver = self;
   v15.super_class = SBContinuousExposeFullScreenToStripTransitionSwitcherModifier;
-  v4 = [(SBTransitionSwitcherModifier *)&v15 animationAttributesForLayoutElement:a3];
+  v4 = [(SBTransitionSwitcherModifier *)&v15 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)self switcherSettings];
-  v7 = [v6 animationSettings];
-  v8 = [v7 crossblurDosidoSettings];
-  v9 = [v8 copy];
+  switcherSettings = [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)self switcherSettings];
+  animationSettings = [switcherSettings animationSettings];
+  crossblurDosidoSettings = [animationSettings crossblurDosidoSettings];
+  v9 = [crossblurDosidoSettings copy];
 
   [v9 setResponse:0.4];
   [v9 setDampingRatio:1.0];
   [v5 setLayoutUpdateMode:3];
   [v5 setLayoutSettings:v9];
-  v10 = [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)self switcherSettings];
-  v11 = [v10 animationSettings];
-  v12 = [v11 crossblurDosidoSettings];
-  v13 = [v12 copy];
+  switcherSettings2 = [(SBContinuousExposeFullScreenToStripTransitionSwitcherModifier *)self switcherSettings];
+  animationSettings2 = [switcherSettings2 animationSettings];
+  crossblurDosidoSettings2 = [animationSettings2 crossblurDosidoSettings];
+  v13 = [crossblurDosidoSettings2 copy];
 
   [v13 setResponse:0.15];
   [v5 setOpacitySettings:v13];

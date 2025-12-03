@@ -1,16 +1,16 @@
 @interface WFAutomationTypeExplanationPlatterViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGPoint)accessibilityActivationPoint;
 - (id)accessibilityLabel;
 @end
 
 @implementation WFAutomationTypeExplanationPlatterViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WFAutomationTypeExplanationPlatterView" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"WFAutomationTypeExplanationPlatterView" hasInstanceVariable:@"_explanationTextLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WFAutomationTypeExplanationPlatterView" hasInstanceMethod:@"button" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"WFAutomationTypeExplanationPlatterView" hasInstanceVariable:@"_explanationTextLabel" withType:"UILabel"];
 }
 
 - (CGPoint)accessibilityActivationPoint

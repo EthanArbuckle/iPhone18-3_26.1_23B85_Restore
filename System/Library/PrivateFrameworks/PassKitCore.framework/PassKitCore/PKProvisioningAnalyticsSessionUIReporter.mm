@@ -1,87 +1,87 @@
 @interface PKProvisioningAnalyticsSessionUIReporter
-- (PKProvisioningAnalyticsSessionUIReporter)initWithResponder:(id)a3 sessionID:(id)a4 pageTag:(id)a5;
-- (void)reportButtonPressed:(unint64_t)a3;
-- (void)reportButtonPressed:(unint64_t)a3 context:(id)a4;
-- (void)reportOtherButtonPressed:(id)a3;
-- (void)reportOtherButtonPressed:(id)a3 context:(id)a4;
-- (void)reportPageCompleted:(BOOL)a3 context:(id)a4;
-- (void)reportStateChangedWithContext:(id)a3;
-- (void)reportViewAppearedWithContext:(id)a3;
-- (void)setPass:(id)a3;
+- (PKProvisioningAnalyticsSessionUIReporter)initWithResponder:(id)responder sessionID:(id)d pageTag:(id)tag;
+- (void)reportButtonPressed:(unint64_t)pressed;
+- (void)reportButtonPressed:(unint64_t)pressed context:(id)context;
+- (void)reportOtherButtonPressed:(id)pressed;
+- (void)reportOtherButtonPressed:(id)pressed context:(id)context;
+- (void)reportPageCompleted:(BOOL)completed context:(id)context;
+- (void)reportStateChangedWithContext:(id)context;
+- (void)reportViewAppearedWithContext:(id)context;
+- (void)setPass:(id)pass;
 @end
 
 @implementation PKProvisioningAnalyticsSessionUIReporter
 
-- (PKProvisioningAnalyticsSessionUIReporter)initWithResponder:(id)a3 sessionID:(id)a4 pageTag:(id)a5
+- (PKProvisioningAnalyticsSessionUIReporter)initWithResponder:(id)responder sessionID:(id)d pageTag:(id)tag
 {
-  v9 = a5;
+  tagCopy = tag;
   v13.receiver = self;
   v13.super_class = PKProvisioningAnalyticsSessionUIReporter;
-  v10 = [(PKProvisioningAnalyticsSessionReporter *)&v13 initWithResponder:a3 sessionID:a4];
+  v10 = [(PKProvisioningAnalyticsSessionReporter *)&v13 initWithResponder:responder sessionID:d];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_pageTag, a5);
+    objc_storeStrong(&v10->_pageTag, tag);
   }
 
   return v11;
 }
 
-- (void)setPass:(id)a3
+- (void)setPass:(id)pass
 {
-  v4 = a3;
-  v5 = [(PKProvisioningAnalyticsSessionReporter *)self responder];
-  [v5 setPass:v4];
+  passCopy = pass;
+  responder = [(PKProvisioningAnalyticsSessionReporter *)self responder];
+  [responder setPass:passCopy];
 }
 
-- (void)reportViewAppearedWithContext:(id)a3
+- (void)reportViewAppearedWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(PKProvisioningAnalyticsSessionReporter *)self responder];
-  [v5 reportViewAppearedForReporter:self context:v4];
+  contextCopy = context;
+  responder = [(PKProvisioningAnalyticsSessionReporter *)self responder];
+  [responder reportViewAppearedForReporter:self context:contextCopy];
 }
 
-- (void)reportPageCompleted:(BOOL)a3 context:(id)a4
+- (void)reportPageCompleted:(BOOL)completed context:(id)context
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(PKProvisioningAnalyticsSessionReporter *)self responder];
-  [v7 reportPageCompletedForReporter:self success:v4 context:v6];
+  completedCopy = completed;
+  contextCopy = context;
+  responder = [(PKProvisioningAnalyticsSessionReporter *)self responder];
+  [responder reportPageCompletedForReporter:self success:completedCopy context:contextCopy];
 }
 
-- (void)reportButtonPressed:(unint64_t)a3
+- (void)reportButtonPressed:(unint64_t)pressed
 {
-  v5 = [(PKProvisioningAnalyticsSessionReporter *)self responder];
-  [v5 reportButtonPressedForReporter:self buttonTag:a3 context:0];
+  responder = [(PKProvisioningAnalyticsSessionReporter *)self responder];
+  [responder reportButtonPressedForReporter:self buttonTag:pressed context:0];
 }
 
-- (void)reportButtonPressed:(unint64_t)a3 context:(id)a4
+- (void)reportButtonPressed:(unint64_t)pressed context:(id)context
 {
-  v6 = a4;
-  v7 = [(PKProvisioningAnalyticsSessionReporter *)self responder];
-  [v7 reportButtonPressedForReporter:self buttonTag:a3 context:v6];
+  contextCopy = context;
+  responder = [(PKProvisioningAnalyticsSessionReporter *)self responder];
+  [responder reportButtonPressedForReporter:self buttonTag:pressed context:contextCopy];
 }
 
-- (void)reportOtherButtonPressed:(id)a3
+- (void)reportOtherButtonPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = [(PKProvisioningAnalyticsSessionReporter *)self responder];
-  [v5 reportOtherButtonPressedForReporter:self otherButtonTag:v4 context:0];
+  pressedCopy = pressed;
+  responder = [(PKProvisioningAnalyticsSessionReporter *)self responder];
+  [responder reportOtherButtonPressedForReporter:self otherButtonTag:pressedCopy context:0];
 }
 
-- (void)reportOtherButtonPressed:(id)a3 context:(id)a4
+- (void)reportOtherButtonPressed:(id)pressed context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PKProvisioningAnalyticsSessionReporter *)self responder];
-  [v8 reportOtherButtonPressedForReporter:self otherButtonTag:v7 context:v6];
+  contextCopy = context;
+  pressedCopy = pressed;
+  responder = [(PKProvisioningAnalyticsSessionReporter *)self responder];
+  [responder reportOtherButtonPressedForReporter:self otherButtonTag:pressedCopy context:contextCopy];
 }
 
-- (void)reportStateChangedWithContext:(id)a3
+- (void)reportStateChangedWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [(PKProvisioningAnalyticsSessionReporter *)self responder];
-  [v5 reportStateChangedForReporter:self context:v4];
+  contextCopy = context;
+  responder = [(PKProvisioningAnalyticsSessionReporter *)self responder];
+  [responder reportStateChangedForReporter:self context:contextCopy];
 }
 
 @end

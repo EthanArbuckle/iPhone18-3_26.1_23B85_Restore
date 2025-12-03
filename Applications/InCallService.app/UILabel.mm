@@ -1,36 +1,36 @@
 @interface UILabel
-- (void)setAttributedOrPlainText:(id)a3;
+- (void)setAttributedOrPlainText:(id)text;
 @end
 
 @implementation UILabel
 
-- (void)setAttributedOrPlainText:(id)a3
+- (void)setAttributedOrPlainText:(id)text
 {
-  v7 = a3;
+  textCopy = text;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = self;
-    v5 = v7;
+    selfCopy2 = self;
+    v5 = textCopy;
 LABEL_3:
-    [(UILabel *)v4 setText:v5];
+    [(UILabel *)selfCopy2 setText:v5];
 LABEL_6:
-    v6 = v7;
+    v6 = textCopy;
     goto LABEL_7;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [(UILabel *)self setAttributedText:v7];
+    [(UILabel *)self setAttributedText:textCopy];
     goto LABEL_6;
   }
 
-  v6 = v7;
-  if (!v7)
+  v6 = textCopy;
+  if (!textCopy)
   {
     v5 = &stru_100361FD0;
-    v4 = self;
+    selfCopy2 = self;
     goto LABEL_3;
   }
 

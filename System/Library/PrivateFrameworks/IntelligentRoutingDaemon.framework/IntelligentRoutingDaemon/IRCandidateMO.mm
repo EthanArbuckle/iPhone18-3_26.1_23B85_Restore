@@ -1,64 +1,64 @@
 @interface IRCandidateMO
-+ (id)MOCandidate:(id)a3 candidatesContainerMO:(id)a4 inManagedObjectContext:(id)a5;
-+ (void)setPropertiesOfCandidateMO:(id)a3 withCandidate:(id)a4 managedObjectContext:(id)a5;
++ (id)MOCandidate:(id)candidate candidatesContainerMO:(id)o inManagedObjectContext:(id)context;
++ (void)setPropertiesOfCandidateMO:(id)o withCandidate:(id)candidate managedObjectContext:(id)context;
 - (id)convert;
 @end
 
 @implementation IRCandidateMO
 
-+ (id)MOCandidate:(id)a3 candidatesContainerMO:(id)a4 inManagedObjectContext:(id)a5
++ (id)MOCandidate:(id)candidate candidatesContainerMO:(id)o inManagedObjectContext:(id)context
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[IRCandidateMO alloc] initWithContext:v7];
-  [(IRCandidateMO *)v10 setCandidatesContainer:v8];
+  contextCopy = context;
+  oCopy = o;
+  candidateCopy = candidate;
+  v10 = [[IRCandidateMO alloc] initWithContext:contextCopy];
+  [(IRCandidateMO *)v10 setCandidatesContainer:oCopy];
 
-  [IRCandidateMO setPropertiesOfCandidateMO:v10 withCandidate:v9 managedObjectContext:v7];
+  [IRCandidateMO setPropertiesOfCandidateMO:v10 withCandidate:candidateCopy managedObjectContext:contextCopy];
 
   return v10;
 }
 
-+ (void)setPropertiesOfCandidateMO:(id)a3 withCandidate:(id)a4 managedObjectContext:(id)a5
++ (void)setPropertiesOfCandidateMO:(id)o withCandidate:(id)candidate managedObjectContext:(id)context
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v9 lastSeenDate];
-  [v7 setLastSeenDate:v10];
+  oCopy = o;
+  contextCopy = context;
+  candidateCopy = candidate;
+  lastSeenDate = [candidateCopy lastSeenDate];
+  [oCopy setLastSeenDate:lastSeenDate];
 
-  v11 = [v9 lastUsedDate];
-  [v7 setLastUsedDate:v11];
+  lastUsedDate = [candidateCopy lastUsedDate];
+  [oCopy setLastUsedDate:lastUsedDate];
 
-  v12 = [v9 firstSeenDate];
-  [v7 setFirstSeenDate:v12];
+  firstSeenDate = [candidateCopy firstSeenDate];
+  [oCopy setFirstSeenDate:firstSeenDate];
 
-  v13 = [v9 candidateIdentifier];
-  [v7 setCandidateIdentifier:v13];
+  candidateIdentifier = [candidateCopy candidateIdentifier];
+  [oCopy setCandidateIdentifier:candidateIdentifier];
 
-  v14 = [v7 nodes];
+  nodes = [oCopy nodes];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __79__IRCandidateMO_setPropertiesOfCandidateMO_withCandidate_managedObjectContext___block_invoke;
   v23[3] = &unk_2797E13A8;
-  v15 = v8;
+  v15 = contextCopy;
   v24 = v15;
-  [v14 enumerateObjectsUsingBlock:v23];
+  [nodes enumerateObjectsUsingBlock:v23];
 
-  v16 = [v7 nodes];
-  [v7 removeNodes:v16];
+  nodes2 = [oCopy nodes];
+  [oCopy removeNodes:nodes2];
 
-  v17 = [v9 nodes];
+  nodes3 = [candidateCopy nodes];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __79__IRCandidateMO_setPropertiesOfCandidateMO_withCandidate_managedObjectContext___block_invoke_2;
   v20[3] = &unk_2797E13D0;
-  v21 = v7;
+  v21 = oCopy;
   v22 = v15;
   v18 = v15;
-  v19 = v7;
-  [v17 enumerateObjectsUsingBlock:v20];
+  v19 = oCopy;
+  [nodes3 enumerateObjectsUsingBlock:v20];
 }
 
 void __79__IRCandidateMO_setPropertiesOfCandidateMO_withCandidate_managedObjectContext___block_invoke_2(uint64_t a1, uint64_t a2)
@@ -71,20 +71,20 @@ void __79__IRCandidateMO_setPropertiesOfCandidateMO_withCandidate_managedObjectC
 - (id)convert
 {
   v3 = objc_opt_new();
-  v4 = [(IRCandidateMO *)self nodes];
+  nodes = [(IRCandidateMO *)self nodes];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __24__IRCandidateMO_convert__block_invoke;
   v12[3] = &unk_2797E13A8;
   v13 = v3;
   v5 = v3;
-  [v4 enumerateObjectsUsingBlock:v12];
+  [nodes enumerateObjectsUsingBlock:v12];
 
-  v6 = [(IRCandidateMO *)self lastSeenDate];
-  v7 = [(IRCandidateMO *)self lastUsedDate];
-  v8 = [(IRCandidateMO *)self firstSeenDate];
-  v9 = [(IRCandidateMO *)self candidateIdentifier];
-  v10 = [IRCandidateDO candidateDOWithLastSeenDate:v6 lastUsedDate:v7 firstSeenDate:v8 candidateIdentifier:v9 nodes:v5];
+  lastSeenDate = [(IRCandidateMO *)self lastSeenDate];
+  lastUsedDate = [(IRCandidateMO *)self lastUsedDate];
+  firstSeenDate = [(IRCandidateMO *)self firstSeenDate];
+  candidateIdentifier = [(IRCandidateMO *)self candidateIdentifier];
+  v10 = [IRCandidateDO candidateDOWithLastSeenDate:lastSeenDate lastUsedDate:lastUsedDate firstSeenDate:firstSeenDate candidateIdentifier:candidateIdentifier nodes:v5];
 
   return v10;
 }

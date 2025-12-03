@@ -1,16 +1,16 @@
 @interface NSTextCheckingKeyEvent
-- (BOOL)isEqual:(id)a3;
-- (NSTextCheckingKeyEvent)initWithCoder:(id)a3;
-- (NSTextCheckingKeyEvent)initWithKeyboardLayoutType:(int64_t)a3 keyboardType:(unint64_t)a4 identifier:(id)a5 primaryLanguage:(id)a6 flags:(unint64_t)a7 timestamp:(double)a8 characters:(id)a9 charactersIgnoringModifiers:(id)a10;
+- (BOOL)isEqual:(id)equal;
+- (NSTextCheckingKeyEvent)initWithCoder:(id)coder;
+- (NSTextCheckingKeyEvent)initWithKeyboardLayoutType:(int64_t)type keyboardType:(unint64_t)keyboardType identifier:(id)identifier primaryLanguage:(id)language flags:(unint64_t)flags timestamp:(double)timestamp characters:(id)characters charactersIgnoringModifiers:(id)self0;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSTextCheckingKeyEvent
 
-- (NSTextCheckingKeyEvent)initWithKeyboardLayoutType:(int64_t)a3 keyboardType:(unint64_t)a4 identifier:(id)a5 primaryLanguage:(id)a6 flags:(unint64_t)a7 timestamp:(double)a8 characters:(id)a9 charactersIgnoringModifiers:(id)a10
+- (NSTextCheckingKeyEvent)initWithKeyboardLayoutType:(int64_t)type keyboardType:(unint64_t)keyboardType identifier:(id)identifier primaryLanguage:(id)language flags:(unint64_t)flags timestamp:(double)timestamp characters:(id)characters charactersIgnoringModifiers:(id)self0
 {
   v21 = *MEMORY[0x1E69E9840];
   v20.receiver = self;
@@ -19,14 +19,14 @@
   v18 = v17;
   if (v17)
   {
-    v17->_layoutType = a3;
-    v17->_keyboardType = a4;
-    v17->_identifier = [a5 copy];
-    v18->_primaryLanguage = [a6 copy];
-    v18->_flags = a7;
-    v18->_time = a8;
-    v18->_keys = [a9 copy];
-    v18->_ukeys = [a10 copy];
+    v17->_layoutType = type;
+    v17->_keyboardType = keyboardType;
+    v17->_identifier = [identifier copy];
+    v18->_primaryLanguage = [language copy];
+    v18->_flags = flags;
+    v18->_time = timestamp;
+    v18->_keys = [characters copy];
+    v18->_ukeys = [modifiers copy];
   }
 
   return v18;
@@ -41,9 +41,9 @@
   [(NSTextCheckingKeyEvent *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v14) = 1;
     return v14;
@@ -59,25 +59,25 @@
   }
 
   identifier = self->_identifier;
-  if (identifier == [a3 keyboardLayoutIdentifier] || (v14 = -[NSString isEqual:](self->_identifier, "isEqual:", objc_msgSend(a3, "keyboardLayoutIdentifier"))))
+  if (identifier == [equal keyboardLayoutIdentifier] || (v14 = -[NSString isEqual:](self->_identifier, "isEqual:", objc_msgSend(equal, "keyboardLayoutIdentifier"))))
   {
     primaryLanguage = self->_primaryLanguage;
-    if (primaryLanguage == [a3 primaryLanguage] || (v14 = -[NSString isEqual:](self->_primaryLanguage, "isEqual:", objc_msgSend(a3, "primaryLanguage"))))
+    if (primaryLanguage == [equal primaryLanguage] || (v14 = -[NSString isEqual:](self->_primaryLanguage, "isEqual:", objc_msgSend(equal, "primaryLanguage"))))
     {
       keys = self->_keys;
-      if (keys == [a3 characters] || (v14 = -[NSString isEqual:](self->_keys, "isEqual:", objc_msgSend(a3, "characters"))))
+      if (keys == [equal characters] || (v14 = -[NSString isEqual:](self->_keys, "isEqual:", objc_msgSend(equal, "characters"))))
       {
         ukeys = self->_ukeys;
-        if (ukeys == [a3 charactersIgnoringModifiers] || (v14 = -[NSString isEqual:](self->_ukeys, "isEqual:", objc_msgSend(a3, "charactersIgnoringModifiers"))))
+        if (ukeys == [equal charactersIgnoringModifiers] || (v14 = -[NSString isEqual:](self->_ukeys, "isEqual:", objc_msgSend(equal, "charactersIgnoringModifiers"))))
         {
           layoutType = self->_layoutType;
-          if (layoutType == [a3 keyboardLayoutType])
+          if (layoutType == [equal keyboardLayoutType])
           {
             flags = self->_flags;
-            if (flags == [a3 flags])
+            if (flags == [equal flags])
             {
               time = self->_time;
-              [a3 timestamp];
+              [equal timestamp];
               LOBYTE(v14) = time == v21;
               return v14;
             }
@@ -126,52 +126,52 @@ LABEL_15:
     v3 = @"ANSI";
   }
 
-  v4 = [(NSTextCheckingKeyEvent *)self keyboardLayoutIdentifier];
-  v5 = [(NSTextCheckingKeyEvent *)self primaryLanguage];
-  v6 = [(NSTextCheckingKeyEvent *)self keyboardType];
-  v7 = [(NSTextCheckingKeyEvent *)self flags];
+  keyboardLayoutIdentifier = [(NSTextCheckingKeyEvent *)self keyboardLayoutIdentifier];
+  primaryLanguage = [(NSTextCheckingKeyEvent *)self primaryLanguage];
+  keyboardType = [(NSTextCheckingKeyEvent *)self keyboardType];
+  flags = [(NSTextCheckingKeyEvent *)self flags];
   [(NSTextCheckingKeyEvent *)self timestamp];
-  return [NSString stringWithFormat:@"keyboard %@/%@/%@/%llu flags 0x%llx time %g <%@> <%@>", v4, v5, v3, v6, v7, v8, [(NSTextCheckingKeyEvent *)self characters], [(NSTextCheckingKeyEvent *)self charactersIgnoringModifiers]];
+  return [NSString stringWithFormat:@"keyboard %@/%@/%@/%llu flags 0x%llx time %g <%@> <%@>", keyboardLayoutIdentifier, primaryLanguage, v3, keyboardType, flags, v8, [(NSTextCheckingKeyEvent *)self characters], [(NSTextCheckingKeyEvent *)self charactersIgnoringModifiers]];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     v6 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@ requires keyed coding", objc_opt_class()), 0}];
     objc_exception_throw(v6);
   }
 
-  [a3 encodeInteger:-[NSTextCheckingKeyEvent keyboardLayoutType](self forKey:{"keyboardLayoutType"), @"NSKeyboardLayoutType"}];
-  [a3 encodeInteger:-[NSTextCheckingKeyEvent keyboardType](self forKey:{"keyboardType"), @"NSKeyboardType"}];
-  [a3 encodeObject:-[NSTextCheckingKeyEvent keyboardLayoutIdentifier](self forKey:{"keyboardLayoutIdentifier"), @"NSKeyboardLayoutIdentifier"}];
-  [a3 encodeObject:-[NSTextCheckingKeyEvent primaryLanguage](self forKey:{"primaryLanguage"), @"NSPrimaryLanguage"}];
-  [a3 encodeInteger:-[NSTextCheckingKeyEvent flags](self forKey:{"flags"), @"NSFlags"}];
+  [coder encodeInteger:-[NSTextCheckingKeyEvent keyboardLayoutType](self forKey:{"keyboardLayoutType"), @"NSKeyboardLayoutType"}];
+  [coder encodeInteger:-[NSTextCheckingKeyEvent keyboardType](self forKey:{"keyboardType"), @"NSKeyboardType"}];
+  [coder encodeObject:-[NSTextCheckingKeyEvent keyboardLayoutIdentifier](self forKey:{"keyboardLayoutIdentifier"), @"NSKeyboardLayoutIdentifier"}];
+  [coder encodeObject:-[NSTextCheckingKeyEvent primaryLanguage](self forKey:{"primaryLanguage"), @"NSPrimaryLanguage"}];
+  [coder encodeInteger:-[NSTextCheckingKeyEvent flags](self forKey:{"flags"), @"NSFlags"}];
   [(NSTextCheckingKeyEvent *)self timestamp];
-  [a3 encodeDouble:@"NSTimestamp" forKey:?];
-  [a3 encodeObject:-[NSTextCheckingKeyEvent characters](self forKey:{"characters"), @"NSCharacters"}];
-  v5 = [(NSTextCheckingKeyEvent *)self charactersIgnoringModifiers];
+  [coder encodeDouble:@"NSTimestamp" forKey:?];
+  [coder encodeObject:-[NSTextCheckingKeyEvent characters](self forKey:{"characters"), @"NSCharacters"}];
+  charactersIgnoringModifiers = [(NSTextCheckingKeyEvent *)self charactersIgnoringModifiers];
 
-  [a3 encodeObject:v5 forKey:@"NSCharactersIgnoringModifiers"];
+  [coder encodeObject:charactersIgnoringModifiers forKey:@"NSCharactersIgnoringModifiers"];
 }
 
-- (NSTextCheckingKeyEvent)initWithCoder:(id)a3
+- (NSTextCheckingKeyEvent)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     v16 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:+[NSString stringWithFormat:](NSString userInfo:{"stringWithFormat:", @"%@ requires keyed coding", objc_opt_class()), 0}];
     objc_exception_throw(v16);
   }
 
-  v5 = [a3 decodeIntegerForKey:@"NSKeyboardLayoutType"];
-  v6 = [a3 decodeIntegerForKey:@"NSKeyboardType"];
-  v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSKeyboardLayoutIdentifier"];
-  v8 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSPrimaryLanguage"];
-  v9 = [a3 decodeIntegerForKey:@"NSFlags"];
-  [a3 decodeDoubleForKey:@"NSTimestamp"];
+  v5 = [coder decodeIntegerForKey:@"NSKeyboardLayoutType"];
+  v6 = [coder decodeIntegerForKey:@"NSKeyboardType"];
+  v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSKeyboardLayoutIdentifier"];
+  v8 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSPrimaryLanguage"];
+  v9 = [coder decodeIntegerForKey:@"NSFlags"];
+  [coder decodeDoubleForKey:@"NSTimestamp"];
   v11 = v10;
-  v12 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSCharacters"];
-  v13 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"NSCharactersIgnoringModifiers"];
+  v12 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSCharacters"];
+  v13 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"NSCharactersIgnoringModifiers"];
   if (v7 && (_NSIsNSString() & 1) == 0)
   {
 
@@ -200,7 +200,7 @@ LABEL_15:
     v15 = @"Characters ignoring modifiers is not a string";
   }
 
-  [a3 failWithError:{+[NSError _readCorruptErrorWithFormat:](NSError, "_readCorruptErrorWithFormat:", v15)}];
+  [coder failWithError:{+[NSError _readCorruptErrorWithFormat:](NSError, "_readCorruptErrorWithFormat:", v15)}];
   return 0;
 }
 

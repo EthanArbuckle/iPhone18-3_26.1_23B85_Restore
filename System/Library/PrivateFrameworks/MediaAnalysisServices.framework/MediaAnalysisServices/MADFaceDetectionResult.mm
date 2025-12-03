@@ -1,43 +1,43 @@
 @interface MADFaceDetectionResult
-+ (id)resultWithDetectedFaces:(id)a3;
-- (MADFaceDetectionResult)initWithCoder:(id)a3;
-- (MADFaceDetectionResult)initWithDetectedFaces:(id)a3;
++ (id)resultWithDetectedFaces:(id)faces;
+- (MADFaceDetectionResult)initWithCoder:(id)coder;
+- (MADFaceDetectionResult)initWithDetectedFaces:(id)faces;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADFaceDetectionResult
 
-- (MADFaceDetectionResult)initWithDetectedFaces:(id)a3
+- (MADFaceDetectionResult)initWithDetectedFaces:(id)faces
 {
-  v5 = a3;
+  facesCopy = faces;
   v9.receiver = self;
   v9.super_class = MADFaceDetectionResult;
   v6 = [(MADResult *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_faces, a3);
+    objc_storeStrong(&v6->_faces, faces);
   }
 
   return v7;
 }
 
-+ (id)resultWithDetectedFaces:(id)a3
++ (id)resultWithDetectedFaces:(id)faces
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDetectedFaces:v4];
+  facesCopy = faces;
+  v5 = [[self alloc] initWithDetectedFaces:facesCopy];
 
   return v5;
 }
 
-- (MADFaceDetectionResult)initWithCoder:(id)a3
+- (MADFaceDetectionResult)initWithCoder:(id)coder
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = MADFaceDetectionResult;
-  v5 = [(MADResult *)&v12 initWithCoder:v4];
+  v5 = [(MADResult *)&v12 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x1E695DFD8];
@@ -46,7 +46,7 @@
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:2];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"DetectedFaces"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"DetectedFaces"];
     faces = v5->_faces;
     v5->_faces = v9;
   }
@@ -54,25 +54,25 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = MADFaceDetectionResult;
-  [(MADResult *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_faces forKey:@"DetectedFaces"];
+  [(MADResult *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_faces forKey:@"DetectedFaces"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"%@: %lu count>", @"DetectedFaces", -[NSSet count](self->_faces, "count")];
+  [string appendFormat:@"%@: %lu count>", @"DetectedFaces", -[NSSet count](self->_faces, "count")];
 
-  return v3;
+  return string;
 }
 
 @end

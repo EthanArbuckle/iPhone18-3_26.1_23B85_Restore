@@ -1,35 +1,35 @@
 @interface WFLinkSnippetDialogResponse
-- (WFLinkSnippetDialogResponse)initWithBSXPCCoder:(id)a3;
-- (WFLinkSnippetDialogResponse)initWithCoder:(id)a3;
-- (WFLinkSnippetDialogResponse)initWithRequestedOpenURL:(id)a3;
-- (WFLinkSnippetDialogResponse)initWithResponseCode:(int64_t)a3;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFLinkSnippetDialogResponse)initWithBSXPCCoder:(id)coder;
+- (WFLinkSnippetDialogResponse)initWithCoder:(id)coder;
+- (WFLinkSnippetDialogResponse)initWithRequestedOpenURL:(id)l;
+- (WFLinkSnippetDialogResponse)initWithResponseCode:(int64_t)code;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFLinkSnippetDialogResponse
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WFLinkSnippetDialogResponse;
-  v4 = a3;
-  [(WFDialogResponse *)&v6 encodeWithBSXPCCoder:v4];
-  [v4 encodeInt64:-[WFLinkSnippetDialogResponse snippetResponseCode](self forKey:{"snippetResponseCode", v6.receiver, v6.super_class), @"snippetResponseCode"}];
-  v5 = [(WFLinkSnippetDialogResponse *)self requestedOpenURL];
-  [v4 encodeObject:v5 forKey:@"requestedOpenURL"];
+  coderCopy = coder;
+  [(WFDialogResponse *)&v6 encodeWithBSXPCCoder:coderCopy];
+  [coderCopy encodeInt64:-[WFLinkSnippetDialogResponse snippetResponseCode](self forKey:{"snippetResponseCode", v6.receiver, v6.super_class), @"snippetResponseCode"}];
+  requestedOpenURL = [(WFLinkSnippetDialogResponse *)self requestedOpenURL];
+  [coderCopy encodeObject:requestedOpenURL forKey:@"requestedOpenURL"];
 }
 
-- (WFLinkSnippetDialogResponse)initWithBSXPCCoder:(id)a3
+- (WFLinkSnippetDialogResponse)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFLinkSnippetDialogResponse;
-  v5 = [(WFDialogResponse *)&v10 initWithBSXPCCoder:v4];
+  v5 = [(WFDialogResponse *)&v10 initWithBSXPCCoder:coderCopy];
   if (v5)
   {
-    v5->_snippetResponseCode = [v4 decodeInt64ForKey:@"snippetResponseCode"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestedOpenURL"];
+    v5->_snippetResponseCode = [coderCopy decodeInt64ForKey:@"snippetResponseCode"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestedOpenURL"];
     requestedOpenURL = v5->_requestedOpenURL;
     v5->_requestedOpenURL = v6;
 
@@ -39,27 +39,27 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = WFLinkSnippetDialogResponse;
-  v4 = a3;
-  [(WFDialogResponse *)&v6 encodeWithCoder:v4];
-  [v4 encodeInteger:-[WFLinkSnippetDialogResponse snippetResponseCode](self forKey:{"snippetResponseCode", v6.receiver, v6.super_class), @"snippetResponseCode"}];
-  v5 = [(WFLinkSnippetDialogResponse *)self requestedOpenURL];
-  [v4 encodeObject:v5 forKey:@"requestedOpenURL"];
+  coderCopy = coder;
+  [(WFDialogResponse *)&v6 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:-[WFLinkSnippetDialogResponse snippetResponseCode](self forKey:{"snippetResponseCode", v6.receiver, v6.super_class), @"snippetResponseCode"}];
+  requestedOpenURL = [(WFLinkSnippetDialogResponse *)self requestedOpenURL];
+  [coderCopy encodeObject:requestedOpenURL forKey:@"requestedOpenURL"];
 }
 
-- (WFLinkSnippetDialogResponse)initWithCoder:(id)a3
+- (WFLinkSnippetDialogResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = WFLinkSnippetDialogResponse;
-  v5 = [(WFDialogResponse *)&v10 initWithCoder:v4];
+  v5 = [(WFDialogResponse *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_snippetResponseCode = [v4 decodeIntegerForKey:@"snippetResponseCode"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestedOpenURL"];
+    v5->_snippetResponseCode = [coderCopy decodeIntegerForKey:@"snippetResponseCode"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestedOpenURL"];
     requestedOpenURL = v5->_requestedOpenURL;
     v5->_requestedOpenURL = v6;
 
@@ -69,9 +69,9 @@
   return v5;
 }
 
-- (WFLinkSnippetDialogResponse)initWithRequestedOpenURL:(id)a3
+- (WFLinkSnippetDialogResponse)initWithRequestedOpenURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = WFLinkSnippetDialogResponse;
   v5 = [(WFDialogResponse *)&v11 initWithResponseCode:0];
@@ -79,7 +79,7 @@
   if (v5)
   {
     v5->_snippetResponseCode = 0;
-    v7 = [v4 copy];
+    v7 = [lCopy copy];
     requestedOpenURL = v6->_requestedOpenURL;
     v6->_requestedOpenURL = v7;
 
@@ -89,11 +89,11 @@
   return v6;
 }
 
-- (WFLinkSnippetDialogResponse)initWithResponseCode:(int64_t)a3
+- (WFLinkSnippetDialogResponse)initWithResponseCode:(int64_t)code
 {
   v7.receiver = self;
   v7.super_class = WFLinkSnippetDialogResponse;
-  v3 = [(WFDialogResponse *)&v7 initWithResponseCode:a3];
+  v3 = [(WFDialogResponse *)&v7 initWithResponseCode:code];
   v4 = v3;
   if (v3)
   {

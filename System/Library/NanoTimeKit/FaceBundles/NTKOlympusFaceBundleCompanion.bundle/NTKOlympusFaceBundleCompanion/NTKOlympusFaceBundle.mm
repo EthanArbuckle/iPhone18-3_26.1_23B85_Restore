@@ -1,24 +1,24 @@
 @interface NTKOlympusFaceBundle
-- (id)_galleryFacesForColorOptions:(id)a3 device:(id)a4;
-- (id)_graceDefaultFacesForDevice:(id)a3;
-- (id)_hunterDefaultFacesForDevice:(id)a3;
-- (id)_legacyGalleryFacesForDevice:(id)a3;
-- (id)_olympusFaceWithStyle:(unint64_t)a3 dial:(unint64_t)a4 colorOption:(id)a5 complicationTypesBySlot:(id)a6 forDevice:(id)a7;
-- (id)_olympusFacesWithColorOption:(id)a3 complicationTypesBySlot:(id)a4 forDevice:(id)a5;
-- (id)_spring2020DefaultFacesForDevice:(id)a3;
+- (id)_galleryFacesForColorOptions:(id)options device:(id)device;
+- (id)_graceDefaultFacesForDevice:(id)device;
+- (id)_hunterDefaultFacesForDevice:(id)device;
+- (id)_legacyGalleryFacesForDevice:(id)device;
+- (id)_olympusFaceWithStyle:(unint64_t)style dial:(unint64_t)dial colorOption:(id)option complicationTypesBySlot:(id)slot forDevice:(id)device;
+- (id)_olympusFacesWithColorOption:(id)option complicationTypesBySlot:(id)slot forDevice:(id)device;
+- (id)_spring2020DefaultFacesForDevice:(id)device;
 - (id)complicationTypesBySlot;
-- (id)galleryEditOptionsForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryPigmentsForDevice:(id)a3;
-- (id)galleryRowPrioritiesForDevice:(id)a3;
-- (id)heroGraceDefaultFacesForDevice:(id)a3;
-- (id)heroSpring2020DefaultFacesForDevice:(id)a3;
+- (id)galleryEditOptionsForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryPigmentsForDevice:(id)device;
+- (id)galleryRowPrioritiesForDevice:(id)device;
+- (id)heroGraceDefaultFacesForDevice:(id)device;
+- (id)heroSpring2020DefaultFacesForDevice:(id)device;
 - (id)spring2020ComplicationTypesBySlot;
 @end
 
 @implementation NTKOlympusFaceBundle
 
-- (id)galleryRowPrioritiesForDevice:(id)a3
+- (id)galleryRowPrioritiesForDevice:(id)device
 {
   v5 = &off_10810;
   v6 = &off_10828;
@@ -27,40 +27,40 @@
   return v3;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 isRunningNapiliGMOrLater])
+  deviceCopy = device;
+  if ([deviceCopy isRunningNapiliGMOrLater])
   {
     v10.receiver = self;
     v10.super_class = NTKOlympusFaceBundle;
-    v5 = [(NTKOlympusFaceBundle *)&v10 galleryFacesForDevice:v4];
+    v5 = [(NTKOlympusFaceBundle *)&v10 galleryFacesForDevice:deviceCopy];
     [v5 enumerateObjectsUsingBlock:&stru_103E0];
   }
 
   else
   {
-    v6 = [(NTKOlympusFaceBundle *)self defaultFaceForDevice:v4];
-    v7 = [v6 deviceSupportsPigmentEditOption];
+    v6 = [(NTKOlympusFaceBundle *)self defaultFaceForDevice:deviceCopy];
+    deviceSupportsPigmentEditOption = [v6 deviceSupportsPigmentEditOption];
 
-    if (v7)
+    if (deviceSupportsPigmentEditOption)
     {
-      v8 = [(NTKOlympusFaceBundle *)self galleryDefaultPigmentOptionsForDevice:v4];
-      v5 = [(NTKOlympusFaceBundle *)self _galleryFacesForColorOptions:v8 device:v4];
+      v8 = [(NTKOlympusFaceBundle *)self galleryDefaultPigmentOptionsForDevice:deviceCopy];
+      v5 = [(NTKOlympusFaceBundle *)self _galleryFacesForColorOptions:v8 device:deviceCopy];
     }
 
     else
     {
-      v5 = [(NTKOlympusFaceBundle *)self _legacyGalleryFacesForDevice:v4];
+      v5 = [(NTKOlympusFaceBundle *)self _legacyGalleryFacesForDevice:deviceCopy];
     }
   }
 
   return v5;
 }
 
-- (id)galleryEditOptionsForDevice:(id)a3
+- (id)galleryEditOptionsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v5[0] = &off_10840;
     v5[1] = &off_108A0;
@@ -77,9 +77,9 @@
   return v3;
 }
 
-- (id)galleryPigmentsForDevice:(id)a3
+- (id)galleryPigmentsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v3 = ntk_victory_black;
     v4 = [NTKPigmentEditOption duotoneNameWithName:ntk_victory_purePlatinum otherName:ntk_victory_black];
@@ -106,31 +106,31 @@
   return v11;
 }
 
-- (id)heroGraceDefaultFacesForDevice:(id)a3
+- (id)heroGraceDefaultFacesForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = +[NSMutableArray array];
-  v5 = [NTKFace defaultFaceOfStyle:35 forDevice:v3];
-  v6 = [NTKOlympusStyleEditOption optionWithStyle:0 forDevice:v3];
+  v5 = [NTKFace defaultFaceOfStyle:35 forDevice:deviceCopy];
+  v6 = [NTKOlympusStyleEditOption optionWithStyle:0 forDevice:deviceCopy];
   [v5 selectOption:v6 forCustomEditMode:15 slot:0];
 
-  v7 = [NTKOlympusDialShapeEditOption optionWithShape:0 forDevice:v3];
+  v7 = [NTKOlympusDialShapeEditOption optionWithShape:0 forDevice:deviceCopy];
   [v5 selectOption:v7 forCustomEditMode:12 slot:0];
 
   [v4 addObject:v5];
-  v8 = [NTKFace defaultFaceOfStyle:35 forDevice:v3];
-  v9 = [NTKOlympusStyleEditOption optionWithStyle:2 forDevice:v3];
+  v8 = [NTKFace defaultFaceOfStyle:35 forDevice:deviceCopy];
+  v9 = [NTKOlympusStyleEditOption optionWithStyle:2 forDevice:deviceCopy];
   [v8 selectOption:v9 forCustomEditMode:15 slot:0];
 
-  v10 = [NTKOlympusDialShapeEditOption optionWithShape:1 forDevice:v3];
+  v10 = [NTKOlympusDialShapeEditOption optionWithShape:1 forDevice:deviceCopy];
   [v8 selectOption:v10 forCustomEditMode:12 slot:0];
 
   [v4 addObject:v8];
-  v11 = [NTKFace defaultFaceOfStyle:35 forDevice:v3];
-  v12 = [NTKOlympusStyleEditOption optionWithStyle:3 forDevice:v3];
+  v11 = [NTKFace defaultFaceOfStyle:35 forDevice:deviceCopy];
+  v12 = [NTKOlympusStyleEditOption optionWithStyle:3 forDevice:deviceCopy];
   [v11 selectOption:v12 forCustomEditMode:15 slot:0];
 
-  v13 = [NTKOlympusDialShapeEditOption optionWithShape:0 forDevice:v3];
+  v13 = [NTKOlympusDialShapeEditOption optionWithShape:0 forDevice:deviceCopy];
 
   [v11 selectOption:v13 forCustomEditMode:12 slot:0];
   [v4 addObject:v11];
@@ -139,18 +139,18 @@
   return v14;
 }
 
-- (id)heroSpring2020DefaultFacesForDevice:(id)a3
+- (id)heroSpring2020DefaultFacesForDevice:(id)device
 {
-  v3 = a3;
+  deviceCopy = device;
   v4 = +[NSMutableArray array];
-  v5 = [NTKFace defaultFaceOfStyle:35 forDevice:v3];
-  v6 = [NTKOlympusColorEditOption optionWithOlympusColor:26 forDevice:v3];
+  v5 = [NTKFace defaultFaceOfStyle:35 forDevice:deviceCopy];
+  v6 = [NTKOlympusColorEditOption optionWithOlympusColor:26 forDevice:deviceCopy];
   [v5 selectOption:v6 forCustomEditMode:10 slot:0];
 
-  v7 = [NTKOlympusStyleEditOption optionWithStyle:0 forDevice:v3];
+  v7 = [NTKOlympusStyleEditOption optionWithStyle:0 forDevice:deviceCopy];
   [v5 selectOption:v7 forCustomEditMode:15 slot:0];
 
-  v8 = [NTKOlympusDialShapeEditOption optionWithShape:0 forDevice:v3];
+  v8 = [NTKOlympusDialShapeEditOption optionWithShape:0 forDevice:deviceCopy];
   [v5 selectOption:v8 forCustomEditMode:12 slot:0];
 
   v17[0] = NTKComplicationSlotTopLeft;
@@ -168,15 +168,15 @@
 
   [v4 addObject:v5];
   v10 = [v5 copy];
-  v11 = [NTKOlympusStyleEditOption optionWithStyle:2 forDevice:v3];
+  v11 = [NTKOlympusStyleEditOption optionWithStyle:2 forDevice:deviceCopy];
   [v10 selectOption:v11 forCustomEditMode:15 slot:0];
 
-  v12 = [NTKOlympusDialShapeEditOption optionWithShape:1 forDevice:v3];
+  v12 = [NTKOlympusDialShapeEditOption optionWithShape:1 forDevice:deviceCopy];
   [v10 selectOption:v12 forCustomEditMode:12 slot:0];
 
   [v4 addObject:v10];
   v13 = [v5 copy];
-  v14 = [NTKOlympusStyleEditOption optionWithStyle:3 forDevice:v3];
+  v14 = [NTKOlympusStyleEditOption optionWithStyle:3 forDevice:deviceCopy];
 
   [v13 selectOption:v14 forCustomEditMode:15 slot:0];
   [v4 addObject:v13];
@@ -185,24 +185,24 @@
   return v15;
 }
 
-- (id)_legacyGalleryFacesForDevice:(id)a3
+- (id)_legacyGalleryFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 supportsPDRCapability:2919474315])
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:2919474315])
   {
-    v5 = [(NTKOlympusFaceBundle *)self _hunterDefaultFacesForDevice:v4];
+    v5 = [(NTKOlympusFaceBundle *)self _hunterDefaultFacesForDevice:deviceCopy];
   }
 
   else
   {
-    if ([v4 supportsPDRCapability:753405533])
+    if ([deviceCopy supportsPDRCapability:753405533])
     {
-      [(NTKOlympusFaceBundle *)self _spring2020DefaultFacesForDevice:v4];
+      [(NTKOlympusFaceBundle *)self _spring2020DefaultFacesForDevice:deviceCopy];
     }
 
     else
     {
-      [(NTKOlympusFaceBundle *)self _graceDefaultFacesForDevice:v4];
+      [(NTKOlympusFaceBundle *)self _graceDefaultFacesForDevice:deviceCopy];
     }
     v5 = ;
   }
@@ -212,17 +212,17 @@
   return v6;
 }
 
-- (id)_graceDefaultFacesForDevice:(id)a3
+- (id)_graceDefaultFacesForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(NTKOlympusFaceBundle *)self complicationTypesBySlot];
+  deviceCopy = device;
+  complicationTypesBySlot = [(NTKOlympusFaceBundle *)self complicationTypesBySlot];
   v6 = +[NSMutableArray array];
-  v7 = [(NTKOlympusFaceBundle *)self _colorOptionFromColorValue:7 device:v4];
-  v8 = [(NTKOlympusFaceBundle *)self _olympusFacesWithColorOption:v7 complicationTypesBySlot:v5 forDevice:v4];
+  v7 = [(NTKOlympusFaceBundle *)self _colorOptionFromColorValue:7 device:deviceCopy];
+  v8 = [(NTKOlympusFaceBundle *)self _olympusFacesWithColorOption:v7 complicationTypesBySlot:complicationTypesBySlot forDevice:deviceCopy];
   [v6 addObjectsFromArray:v8];
 
-  v9 = [(NTKOlympusFaceBundle *)self _colorOptionFromColorValue:15 device:v4];
-  v10 = [(NTKOlympusFaceBundle *)self _olympusFacesWithColorOption:v9 complicationTypesBySlot:v5 forDevice:v4];
+  v9 = [(NTKOlympusFaceBundle *)self _colorOptionFromColorValue:15 device:deviceCopy];
+  v10 = [(NTKOlympusFaceBundle *)self _olympusFacesWithColorOption:v9 complicationTypesBySlot:complicationTypesBySlot forDevice:deviceCopy];
 
   [v6 addObjectsFromArray:v10];
   v11 = [v6 copy];
@@ -230,25 +230,25 @@
   return v11;
 }
 
-- (id)_galleryFacesForColorOptions:(id)a3 device:(id)a4
+- (id)_galleryFacesForColorOptions:(id)options device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NTKOlympusFaceBundle *)self spring2020ComplicationTypesBySlot];
+  optionsCopy = options;
+  deviceCopy = device;
+  spring2020ComplicationTypesBySlot = [(NTKOlympusFaceBundle *)self spring2020ComplicationTypesBySlot];
   v9 = +[NSMutableArray array];
-  if ([v6 count])
+  if ([optionsCopy count])
   {
     v10 = 0;
     do
     {
-      v11 = [v6 objectAtIndexedSubscript:v10];
-      v12 = [(NTKOlympusFaceBundle *)self _olympusFacesWithColorOption:v11 complicationTypesBySlot:v8 forDevice:v7];
+      v11 = [optionsCopy objectAtIndexedSubscript:v10];
+      v12 = [(NTKOlympusFaceBundle *)self _olympusFacesWithColorOption:v11 complicationTypesBySlot:spring2020ComplicationTypesBySlot forDevice:deviceCopy];
       [v9 addObjectsFromArray:v12];
 
       v10 += 3;
     }
 
-    while ([v6 count] > v10);
+    while ([optionsCopy count] > v10);
   }
 
   v13 = [v9 copy];
@@ -256,17 +256,17 @@
   return v13;
 }
 
-- (id)_hunterDefaultFacesForDevice:(id)a3
+- (id)_hunterDefaultFacesForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(NTKOlympusFaceBundle *)self spring2020ComplicationTypesBySlot];
+  deviceCopy = device;
+  spring2020ComplicationTypesBySlot = [(NTKOlympusFaceBundle *)self spring2020ComplicationTypesBySlot];
   v6 = +[NSMutableArray array];
-  v7 = [(NTKOlympusFaceBundle *)self _colorOptionFromColorValue:31 device:v4];
-  v8 = [(NTKOlympusFaceBundle *)self _olympusFacesWithColorOption:v7 complicationTypesBySlot:v5 forDevice:v4];
+  v7 = [(NTKOlympusFaceBundle *)self _colorOptionFromColorValue:31 device:deviceCopy];
+  v8 = [(NTKOlympusFaceBundle *)self _olympusFacesWithColorOption:v7 complicationTypesBySlot:spring2020ComplicationTypesBySlot forDevice:deviceCopy];
   [v6 addObjectsFromArray:v8];
 
-  v9 = [(NTKOlympusFaceBundle *)self _colorOptionFromColorValue:34 device:v4];
-  v10 = [(NTKOlympusFaceBundle *)self _olympusFacesWithColorOption:v9 complicationTypesBySlot:v5 forDevice:v4];
+  v9 = [(NTKOlympusFaceBundle *)self _colorOptionFromColorValue:34 device:deviceCopy];
+  v10 = [(NTKOlympusFaceBundle *)self _olympusFacesWithColorOption:v9 complicationTypesBySlot:spring2020ComplicationTypesBySlot forDevice:deviceCopy];
 
   [v6 addObjectsFromArray:v10];
   v11 = [v6 copy];
@@ -274,26 +274,26 @@
   return v11;
 }
 
-- (id)_spring2020DefaultFacesForDevice:(id)a3
+- (id)_spring2020DefaultFacesForDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(NTKOlympusFaceBundle *)self spring2020ComplicationTypesBySlot];
+  deviceCopy = device;
+  spring2020ComplicationTypesBySlot = [(NTKOlympusFaceBundle *)self spring2020ComplicationTypesBySlot];
   v6 = +[NSMutableArray array];
-  v7 = [(NTKOlympusFaceBundle *)self _colorOptionFromColorValue:26 device:v4];
-  v8 = [(NTKOlympusFaceBundle *)self _olympusFacesWithColorOption:v7 complicationTypesBySlot:v5 forDevice:v4];
+  v7 = [(NTKOlympusFaceBundle *)self _colorOptionFromColorValue:26 device:deviceCopy];
+  v8 = [(NTKOlympusFaceBundle *)self _olympusFacesWithColorOption:v7 complicationTypesBySlot:spring2020ComplicationTypesBySlot forDevice:deviceCopy];
   [v6 addObjectsFromArray:v8];
 
   v15 = _NSConcreteStackBlock;
   v16 = 3221225472;
   v17 = sub_65F4;
   v18 = &unk_10408;
-  v19 = self;
-  v20 = v4;
-  v21 = v5;
+  selfCopy = self;
+  v20 = deviceCopy;
+  v21 = spring2020ComplicationTypesBySlot;
   v22 = v6;
   v9 = v6;
-  v10 = v5;
-  v11 = v4;
+  v10 = spring2020ComplicationTypesBySlot;
+  v11 = deviceCopy;
   v12 = objc_retainBlock(&v15);
   (v12[2])(v12, 0);
   (v12[2])(v12, 2);
@@ -303,50 +303,50 @@
   return v13;
 }
 
-- (id)_olympusFacesWithColorOption:(id)a3 complicationTypesBySlot:(id)a4 forDevice:(id)a5
+- (id)_olympusFacesWithColorOption:(id)option complicationTypesBySlot:(id)slot forDevice:(id)device
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
+  slotCopy = slot;
+  deviceCopy = device;
+  optionCopy = option;
   +[NSMutableArray array];
   v17 = _NSConcreteStackBlock;
   v18 = 3221225472;
   v19 = sub_68A0;
   v20 = &unk_10430;
-  v21 = self;
-  v22 = v8;
-  v24 = v23 = v9;
+  selfCopy = self;
+  v22 = slotCopy;
+  v24 = v23 = deviceCopy;
   v11 = v24;
-  v12 = v9;
-  v13 = v8;
+  v12 = deviceCopy;
+  v13 = slotCopy;
   v14 = objc_retainBlock(&v17);
-  (v14[2])(v14, 0, 0, v10);
-  (v14[2])(v14, 0, 1, v10);
-  (v14[2])(v14, 2, 0, v10);
-  (v14[2])(v14, 2, 1, v10);
-  (v14[2])(v14, 3, 0, v10);
-  (v14[2])(v14, 3, 1, v10);
+  (v14[2])(v14, 0, 0, optionCopy);
+  (v14[2])(v14, 0, 1, optionCopy);
+  (v14[2])(v14, 2, 0, optionCopy);
+  (v14[2])(v14, 2, 1, optionCopy);
+  (v14[2])(v14, 3, 0, optionCopy);
+  (v14[2])(v14, 3, 1, optionCopy);
 
   v15 = [v11 copy];
 
   return v15;
 }
 
-- (id)_olympusFaceWithStyle:(unint64_t)a3 dial:(unint64_t)a4 colorOption:(id)a5 complicationTypesBySlot:(id)a6 forDevice:(id)a7
+- (id)_olympusFaceWithStyle:(unint64_t)style dial:(unint64_t)dial colorOption:(id)option complicationTypesBySlot:(id)slot forDevice:(id)device
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = [NTKFace defaultFaceOfStyle:35 forDevice:v11];
-  [v14 selectOption:v13 forCustomEditMode:10 slot:0];
+  deviceCopy = device;
+  slotCopy = slot;
+  optionCopy = option;
+  v14 = [NTKFace defaultFaceOfStyle:35 forDevice:deviceCopy];
+  [v14 selectOption:optionCopy forCustomEditMode:10 slot:0];
 
-  v15 = [NTKOlympusStyleEditOption optionWithStyle:a3 forDevice:v11];
+  v15 = [NTKOlympusStyleEditOption optionWithStyle:style forDevice:deviceCopy];
   [v14 selectOption:v15 forCustomEditMode:15 slot:0];
 
-  v16 = [NTKOlympusDialShapeEditOption optionWithShape:a4 forDevice:v11];
+  v16 = [NTKOlympusDialShapeEditOption optionWithShape:dial forDevice:deviceCopy];
 
   [v14 selectOption:v16 forCustomEditMode:12 slot:0];
-  [v14 _setFaceGalleryComplicationTypesForSlots:v12];
+  [v14 _setFaceGalleryComplicationTypesForSlots:slotCopy];
 
   return v14;
 }

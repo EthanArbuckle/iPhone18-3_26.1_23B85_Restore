@@ -1,19 +1,19 @@
 @interface UnpairSessionAccessoryController
 - (UnpairSessionAccessoryController)init;
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 @end
 
 @implementation UnpairSessionAccessoryController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
   swift_unknownObjectRetain();
-  v7 = self;
-  if ([a4 respondsToSelector:"unpairSessionAccessoryOnTestCompletion"])
+  selfCopy = self;
+  if ([responder respondsToSelector:"unpairSessionAccessoryOnTestCompletion"])
   {
-    v6 = *&v7->DKDiagnosticController_opaque[OBJC_IVAR___UnpairSessionAccessoryController_accessoryResponder];
-    *&v7->DKDiagnosticController_opaque[OBJC_IVAR___UnpairSessionAccessoryController_accessoryResponder] = a4;
+    v6 = *&selfCopy->DKDiagnosticController_opaque[OBJC_IVAR___UnpairSessionAccessoryController_accessoryResponder];
+    *&selfCopy->DKDiagnosticController_opaque[OBJC_IVAR___UnpairSessionAccessoryController_accessoryResponder] = responder;
 
     swift_unknownObjectRelease();
   }
@@ -26,7 +26,7 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_10000126C();
 }
 

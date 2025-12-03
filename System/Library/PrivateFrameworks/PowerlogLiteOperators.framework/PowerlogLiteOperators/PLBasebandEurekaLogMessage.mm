@@ -1,18 +1,18 @@
 @interface PLBasebandEurekaLogMessage
-- (BOOL)parseData:(id)a3;
-- (PLBasebandEurekaLogMessage)initWithData:(id)a3;
+- (BOOL)parseData:(id)data;
+- (PLBasebandEurekaLogMessage)initWithData:(id)data;
 - (id)payloadString;
 - (id)tooShortErrorString;
 - (unsigned)eventCode;
-- (void)logWithLogger:(id)a3;
+- (void)logWithLogger:(id)logger;
 @end
 
 @implementation PLBasebandEurekaLogMessage
 
-- (PLBasebandEurekaLogMessage)initWithData:(id)a3
+- (PLBasebandEurekaLogMessage)initWithData:(id)data
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -31,9 +31,9 @@
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBasebandEurekaLogMessage initWithData:]"];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandEurekaLogMessage.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandEurekaLogMessage initWithData:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:23];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:23];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -47,9 +47,9 @@
 
   v18.receiver = self;
   v18.super_class = PLBasebandEurekaLogMessage;
-  v12 = [(PLBasebandMessage *)&v18 initWithData:v4];
+  v12 = [(PLBasebandMessage *)&v18 initWithData:dataCopy];
   v13 = v12;
-  if (!v12 || (v12->_header = 0, payload = v12->_payload, v12->_payload = 0, payload, v15 = 0, [(PLBasebandEurekaLogMessage *)v13 parseData:v4]))
+  if (!v12 || (v12->_header = 0, payload = v12->_payload, v12->_payload = 0, payload, v15 = 0, [(PLBasebandEurekaLogMessage *)v13 parseData:dataCopy]))
   {
     v15 = v13;
   }
@@ -65,10 +65,10 @@ uint64_t __43__PLBasebandEurekaLogMessage_initWithData___block_invoke(uint64_t a
   return result;
 }
 
-- (BOOL)parseData:(id)a3
+- (BOOL)parseData:(id)data
 {
   v36 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -87,9 +87,9 @@ uint64_t __43__PLBasebandEurekaLogMessage_initWithData___block_invoke(uint64_t a
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBasebandEurekaLogMessage parseData:]", block, v26, v27, v28, v29];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandEurekaLogMessage.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandEurekaLogMessage parseData:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:36];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:36];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -101,13 +101,13 @@ uint64_t __43__PLBasebandEurekaLogMessage_initWithData___block_invoke(uint64_t a
     }
   }
 
-  v12 = [v4 bytes];
-  v13 = &v12[2 * (*v12 == 129)];
+  bytes = [dataCopy bytes];
+  v13 = &bytes[2 * (*bytes == 129)];
   self->_header = v13;
   v14 = &v13->var3[7];
   v15 = [(PLBasebandEurekaLogMessage *)self header][1];
   v16 = v15 - 12;
-  if (v15 >= 0xD && (v17 = &v14[v16 - [v4 bytes]], v17 <= objc_msgSend(v4, "length")))
+  if (v15 >= 0xD && (v17 = &v14[v16 - [dataCopy bytes]], v17 <= objc_msgSend(dataCopy, "length")))
   {
     v20 = [MEMORY[0x277CBEA90] dataWithBytes:v14 length:v16];
     p_super = &self->_payload->super;
@@ -120,8 +120,8 @@ uint64_t __43__PLBasebandEurekaLogMessage_initWithData___block_invoke(uint64_t a
     p_super = PLLogCommon();
     if (os_log_type_enabled(p_super, OS_LOG_TYPE_ERROR))
     {
-      v23 = &v14[v16 - [v4 bytes]];
-      v24 = [v4 length];
+      v23 = &v14[v16 - [dataCopy bytes]];
+      v24 = [dataCopy length];
       *buf = 134218498;
       v31 = v23;
       v32 = 2048;
@@ -147,13 +147,13 @@ uint64_t __40__PLBasebandEurekaLogMessage_parseData___block_invoke(uint64_t a1)
 
 - (id)payloadString
 {
-  v3 = [(PLBasebandEurekaLogMessage *)self payload];
+  payload = [(PLBasebandEurekaLogMessage *)self payload];
 
-  if (v3)
+  if (payload)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(PLBasebandEurekaLogMessage *)self payload];
-    v6 = [v4 stringWithFormat:@"%@", v5];
+    payload2 = [(PLBasebandEurekaLogMessage *)self payload];
+    v6 = [v4 stringWithFormat:@"%@", payload2];
   }
 
   else
@@ -164,10 +164,10 @@ uint64_t __40__PLBasebandEurekaLogMessage_parseData___block_invoke(uint64_t a1)
   return v6;
 }
 
-- (void)logWithLogger:(id)a3
+- (void)logWithLogger:(id)logger
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  loggerCopy = logger;
   if ([MEMORY[0x277D3F180] debugEnabled])
   {
     v5 = objc_opt_class();
@@ -186,9 +186,9 @@ uint64_t __40__PLBasebandEurekaLogMessage_parseData___block_invoke(uint64_t a1)
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBasebandEurekaLogMessage logWithLogger:]"];
       v7 = MEMORY[0x277D3F178];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandEurekaLogMessage.m"];
-      v9 = [v8 lastPathComponent];
+      lastPathComponent = [v8 lastPathComponent];
       v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandEurekaLogMessage logWithLogger:]"];
-      [v7 logMessage:v6 fromFile:v9 fromFunction:v10 fromLineNumber:93];
+      [v7 logMessage:v6 fromFile:lastPathComponent fromFunction:v10 fromLineNumber:93];
 
       v11 = PLLogCommon();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
@@ -202,26 +202,26 @@ uint64_t __40__PLBasebandEurekaLogMessage_parseData___block_invoke(uint64_t a1)
 
   v42.receiver = self;
   v42.super_class = PLBasebandEurekaLogMessage;
-  [(PLBasebandMessage *)&v42 logWithLogger:v4];
+  [(PLBasebandMessage *)&v42 logWithLogger:loggerCopy];
   v12 = objc_opt_new();
   v13 = objc_alloc_init(PLBBEurekaLogMsg);
-  v14 = [(PLBasebandMessage *)self agent];
-  [(PLBasebandMessage *)v13 setAgent:v14];
+  agent = [(PLBasebandMessage *)self agent];
+  [(PLBasebandMessage *)v13 setAgent:agent];
 
   [(PLBBEurekaLogMsg *)v13 setEventCode:[(PLBasebandEurekaLogMessage *)self eventCode]];
   [(PLBBEurekaLogMsg *)v13 setError:@"notSet"];
-  v15 = [(PLBasebandMessage *)self seqNum];
-  v16 = [(PLBasebandMessage *)self date];
+  seqNum = [(PLBasebandMessage *)self seqNum];
+  date = [(PLBasebandMessage *)self date];
   [(PLBasebandMessage *)self timeCal];
-  [(PLBBEurekaLogMsg *)v13 setHeaderWithSeqNum:v15 andDate:v16 andTimeCal:?];
+  [(PLBBEurekaLogMsg *)v13 setHeaderWithSeqNum:seqNum andDate:date andTimeCal:?];
 
-  v17 = [(PLBasebandEurekaLogMessage *)self payload];
+  payload = [(PLBasebandEurekaLogMessage *)self payload];
 
-  if (v17)
+  if (payload)
   {
     v18 = objc_alloc(MEMORY[0x277CCACA8]);
-    v19 = [(PLBasebandEurekaLogMessage *)self payloadString];
-    v20 = [v18 initWithString:v19];
+    payloadString = [(PLBasebandEurekaLogMessage *)self payloadString];
+    v20 = [v18 initWithString:payloadString];
     [(PLBBEurekaLogMsg *)v13 setPayload:v20];
   }
 
@@ -229,46 +229,46 @@ uint64_t __40__PLBasebandEurekaLogMessage_parseData___block_invoke(uint64_t a1)
   {
     if ([(PLBasebandEurekaLogMessage *)self header][1] > 0x27u)
     {
-      v41 = v4;
-      v22 = [(PLBasebandEurekaLogMessage *)self payload];
-      v23 = [v22 bytes];
+      v41 = loggerCopy;
+      payload2 = [(PLBasebandEurekaLogMessage *)self payload];
+      bytes = [payload2 bytes];
 
-      v24 = *(v23 + 4);
+      v24 = *(bytes + 4);
       if (([MEMORY[0x277D3F208] isBasebandClass:1003001] & 1) != 0 || objc_msgSend(MEMORY[0x277D3F208], "isBasebandClass:", 1003002))
       {
-        v25 = *(v23 + 5);
-        v39 = *(v23 + 6);
-        v21 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*v23];
-        v26 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:v23[4]];
-        v27 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(v23 + 2)];
-        v28 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:(*(v23 + 2) + 1)];
+        v25 = *(bytes + 5);
+        v39 = *(bytes + 6);
+        tooShortErrorString = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*bytes];
+        v26 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:bytes[4]];
+        v27 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(bytes + 2)];
+        v28 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:(*(bytes + 2) + 1)];
         v29 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:v24];
         v30 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:v25];
         v31 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:v39];
-        [(PLBBEurekaLogMsg *)v13 logEventBackwardLTESleepMgrStatsWithVer:v21 andML1State:v26 andSES:v27 andSDS:v28 andStDur:v29 andDSlpDur:v30 andLSlpDur:v31];
+        [(PLBBEurekaLogMsg *)v13 logEventBackwardLTESleepMgrStatsWithVer:tooShortErrorString andML1State:v26 andSES:v27 andSDS:v28 andStDur:v29 andDSlpDur:v30 andLSlpDur:v31];
       }
 
       else
       {
-        v40 = *(v23 + 6) + *(v23 + 7);
-        v38 = *(v23 + 8);
-        v21 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*v23];
-        v26 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:v23[4]];
-        v32 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(v23 + 2)];
-        v33 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(v23 + 3)];
-        v34 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(v23 + 4)];
-        v35 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(v23 + 5)];
+        v40 = *(bytes + 6) + *(bytes + 7);
+        v38 = *(bytes + 8);
+        tooShortErrorString = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:*bytes];
+        v26 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedChar:bytes[4]];
+        v32 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(bytes + 2)];
+        v33 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(bytes + 3)];
+        v34 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(bytes + 4)];
+        v35 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:*(bytes + 5)];
         v36 = [objc_alloc(MEMORY[0x277CCABB0]) initWithUnsignedInt:(v40 + v38)];
-        [(PLBBEurekaLogMsg *)v13 logEventBackwardLTESleepMgrStatsWithVer:v21 andML1State:v26 andSES:v32 andSDS:v33 andStDur:v34 andDSlpDur:v35 andLSlpDur:v36];
+        [(PLBBEurekaLogMsg *)v13 logEventBackwardLTESleepMgrStatsWithVer:tooShortErrorString andML1State:v26 andSES:v32 andSDS:v33 andStDur:v34 andDSlpDur:v35 andLSlpDur:v36];
       }
 
-      v4 = v41;
+      loggerCopy = v41;
     }
 
     else
     {
-      v21 = [(PLBasebandEurekaLogMessage *)self tooShortErrorString];
-      [(PLBBEurekaLogMsg *)v13 setError:v21];
+      tooShortErrorString = [(PLBasebandEurekaLogMessage *)self tooShortErrorString];
+      [(PLBBEurekaLogMsg *)v13 setError:tooShortErrorString];
     }
   }
 
@@ -305,9 +305,9 @@ uint64_t __44__PLBasebandEurekaLogMessage_logWithLogger___block_invoke(uint64_t 
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBasebandEurekaLogMessage eventCode]", block, v13, v14, v15, v16];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandEurekaLogMessage.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandEurekaLogMessage eventCode]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:175];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:175];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -359,9 +359,9 @@ uint64_t __52__PLBasebandEurekaLogMessage_stringForUnknownBytes___block_invoke(u
       v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s", "-[PLBasebandEurekaLogMessage tooShortErrorString]", block, v14, v15, v16, v17];
       v5 = MEMORY[0x277D3F178];
       v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/PerfPowerServices_Operators/Utilities/Baseband/PLBasebandEurekaLogMessage.m"];
-      v7 = [v6 lastPathComponent];
+      lastPathComponent = [v6 lastPathComponent];
       v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PLBasebandEurekaLogMessage tooShortErrorString]"];
-      [v5 logMessage:v4 fromFile:v7 fromFunction:v8 fromLineNumber:208];
+      [v5 logMessage:v4 fromFile:lastPathComponent fromFunction:v8 fromLineNumber:208];
 
       v9 = PLLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))

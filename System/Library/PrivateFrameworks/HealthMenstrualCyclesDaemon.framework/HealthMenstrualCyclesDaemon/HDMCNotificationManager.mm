@@ -1,54 +1,54 @@
 @interface HDMCNotificationManager
-- (HDMCNotificationManager)initWithProfile:(id)a3 analysisManager:(id)a4 settingsManager:(id)a5 deviceScopedStorageManager:(id)a6 notificationSyncManager:(id)a7;
+- (HDMCNotificationManager)initWithProfile:(id)profile analysisManager:(id)manager settingsManager:(id)settingsManager deviceScopedStorageManager:(id)storageManager notificationSyncManager:(id)syncManager;
 - (id)_currentDate;
 - (id)_notificationCategoriesWithBasicAnalytics;
-- (id)_periodEventFromNotificationCategory:(id)a3 notificationFireDayIndex:(int64_t)a4;
-- (id)_requestFromAlarmEvent:(id)a3;
-- (id)scheduledNotificationsWithError:(id *)a3;
-- (void)_queue_alarm:(id)a3 didReceiveDueEvents:(id)a4;
+- (id)_periodEventFromNotificationCategory:(id)category notificationFireDayIndex:(int64_t)index;
+- (id)_requestFromAlarmEvent:(id)event;
+- (id)scheduledNotificationsWithError:(id *)error;
+- (void)_queue_alarm:(id)_queue_alarm didReceiveDueEvents:(id)events;
 - (void)_queue_notificationOrSensorInputSettingsDidChange;
 - (void)_queue_removeAllScheduledNotificationsIfNotEnabled;
-- (void)_queue_rescheduleNotificationsForAnalysis:(id)a3;
-- (void)_triggerImmediateSyncWithReason:(id)a3;
-- (void)_unitTest_alarm:(id)a3 didReceiveDueEvents:(id)a4;
-- (void)_unitTest_didSkipNotificationForDueEvent:(id)a3 reason:(int64_t)a4;
-- (void)didUpdateAnalysis:(id)a3;
-- (void)featureSettingsManager:(id)a3 didUpdateSettingsForFeatureIdentifier:(id)a4;
+- (void)_queue_rescheduleNotificationsForAnalysis:(id)analysis;
+- (void)_triggerImmediateSyncWithReason:(id)reason;
+- (void)_unitTest_alarm:(id)test_alarm didReceiveDueEvents:(id)events;
+- (void)_unitTest_didSkipNotificationForDueEvent:(id)event reason:(int64_t)reason;
+- (void)didUpdateAnalysis:(id)analysis;
+- (void)featureSettingsManager:(id)manager didUpdateSettingsForFeatureIdentifier:(id)identifier;
 - (void)invalidate;
-- (void)settingsManagerDidUpdateNotificationSettings:(id)a3;
+- (void)settingsManagerDidUpdateNotificationSettings:(id)settings;
 - (void)start;
 @end
 
 @implementation HDMCNotificationManager
 
-- (HDMCNotificationManager)initWithProfile:(id)a3 analysisManager:(id)a4 settingsManager:(id)a5 deviceScopedStorageManager:(id)a6 notificationSyncManager:(id)a7
+- (HDMCNotificationManager)initWithProfile:(id)profile analysisManager:(id)manager settingsManager:(id)settingsManager deviceScopedStorageManager:(id)storageManager notificationSyncManager:(id)syncManager
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  profileCopy = profile;
+  managerCopy = manager;
+  settingsManagerCopy = settingsManager;
+  storageManagerCopy = storageManager;
+  syncManagerCopy = syncManager;
   v40.receiver = self;
   v40.super_class = HDMCNotificationManager;
   v17 = [(HDMCNotificationManager *)&v40 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_analysisManager, a4);
-    objc_storeWeak(&v18->_profile, v12);
+    objc_storeStrong(&v17->_analysisManager, manager);
+    objc_storeWeak(&v18->_profile, profileCopy);
     v19 = HKCreateSerialDispatchQueue();
     queue = v18->_queue;
     v18->_queue = v19;
 
-    objc_storeStrong(&v18->_notificationSyncManager, a7);
+    objc_storeStrong(&v18->_notificationSyncManager, syncManager);
     v21 = objc_alloc(MEMORY[0x277D10838]);
     WeakRetained = objc_loadWeakRetained(&v18->_profile);
     v23 = [v21 initWithProfile:WeakRetained clientIdentifier:@"HDMCNotificationManager" eventHandlerQueue:v18->_queue];
     scheduler = v18->_scheduler;
     v18->_scheduler = v23;
 
-    objc_storeStrong(&v18->_settingsManager, a5);
-    objc_storeStrong(&v18->_deviceScopedStorageManager, a6);
+    objc_storeStrong(&v18->_settingsManager, settingsManager);
+    objc_storeStrong(&v18->_deviceScopedStorageManager, storageManager);
     v25 = MEMORY[0x277D10718];
     v26 = objc_loadWeakRetained(&v18->_profile);
     v27 = [v25 hdmc_syncedUnprotectedDomainWithProfile:v26];
@@ -57,7 +57,7 @@
 
     v29 = [HDMCOvulationConfirmationStateManager alloc];
     v30 = objc_loadWeakRetained(&v18->_profile);
-    v31 = [(HDMCOvulationConfirmationStateManager *)v29 initWithProfile:v30 settingsManager:v14 queue:v18->_queue];
+    v31 = [(HDMCOvulationConfirmationStateManager *)v29 initWithProfile:v30 settingsManager:settingsManagerCopy queue:v18->_queue];
     ovulationConfirmationStateManager = v18->_ovulationConfirmationStateManager;
     v18->_ovulationConfirmationStateManager = v31;
 
@@ -67,7 +67,7 @@
     unconfirmedDeviationStateKeyValueDomain = v18->_unconfirmedDeviationStateKeyValueDomain;
     v18->_unconfirmedDeviationStateKeyValueDomain = v35;
 
-    v37 = [MEMORY[0x277D10718] hdmc_syncedMenstrualCyclesDefaultsDomainWithProfile:v12];
+    v37 = [MEMORY[0x277D10718] hdmc_syncedMenstrualCyclesDefaultsDomainWithProfile:profileCopy];
     deviationDismissalKeyValueDomain = v18->_deviationDismissalKeyValueDomain;
     v18->_deviationDismissalKeyValueDomain = v37;
   }
@@ -121,13 +121,13 @@ void __32__HDMCNotificationManager_start__block_invoke_2(uint64_t a1, void *a2, 
   [(HDRestorableAlarm *)self->_scheduler invalidate];
   [(HKMCSettingsManager *)self->_settingsManager removeObserver:self];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v3 = [WeakRetained featureSettingsManager];
-  [v3 unregisterObserver:self];
+  featureSettingsManager = [WeakRetained featureSettingsManager];
+  [featureSettingsManager unregisterObserver:self];
 }
 
-- (id)scheduledNotificationsWithError:(id *)a3
+- (id)scheduledNotificationsWithError:(id *)error
 {
-  v3 = [(HDRestorableAlarm *)self->_scheduler allScheduledEventsWithError:a3];
+  v3 = [(HDRestorableAlarm *)self->_scheduler allScheduledEventsWithError:error];
   v4 = [v3 hk_map:&__block_literal_global_1];
 
   return v4;
@@ -151,49 +151,49 @@ id __59__HDMCNotificationManager_scheduledNotificationsWithError___block_invoke(
   unitTest_currentDateOverride = self->_unitTest_currentDateOverride;
   if (unitTest_currentDateOverride)
   {
-    v3 = unitTest_currentDateOverride;
+    date = unitTest_currentDateOverride;
   }
 
   else
   {
-    v3 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
   }
 
-  return v3;
+  return date;
 }
 
-- (void)_unitTest_didSkipNotificationForDueEvent:(id)a3 reason:(int64_t)a4
+- (void)_unitTest_didSkipNotificationForDueEvent:(id)event reason:(int64_t)reason
 {
   unitTest_didSkipNotificationForDueEventHandler = self->_unitTest_didSkipNotificationForDueEventHandler;
   if (unitTest_didSkipNotificationForDueEventHandler)
   {
-    unitTest_didSkipNotificationForDueEventHandler[2](unitTest_didSkipNotificationForDueEventHandler, a3, a4);
+    unitTest_didSkipNotificationForDueEventHandler[2](unitTest_didSkipNotificationForDueEventHandler, event, reason);
   }
 }
 
-- (void)_unitTest_alarm:(id)a3 didReceiveDueEvents:(id)a4
+- (void)_unitTest_alarm:(id)test_alarm didReceiveDueEvents:(id)events
 {
-  v6 = a3;
-  v7 = a4;
+  test_alarmCopy = test_alarm;
+  eventsCopy = events;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __63__HDMCNotificationManager__unitTest_alarm_didReceiveDueEvents___block_invoke;
   block[3] = &unk_27865AA30;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = test_alarmCopy;
+  v13 = eventsCopy;
+  v9 = eventsCopy;
+  v10 = test_alarmCopy;
   dispatch_sync(queue, block);
 }
 
-- (void)didUpdateAnalysis:(id)a3
+- (void)didUpdateAnalysis:(id)analysis
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  analysisCopy = analysis;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(HKMCAnalysis *)self->_lastAnalysis isEqual:v4];
+  v5 = [(HKMCAnalysis *)self->_lastAnalysis isEqual:analysisCopy];
   deviationDismissalKeyValueDomain = self->_deviationDismissalKeyValueDomain;
   v31 = 0;
   v7 = [(HDKeyValueDomain *)deviationDismissalKeyValueDomain hdmc_unconfirmedDeviationDismissalDayIndexWithError:&v31];
@@ -224,8 +224,8 @@ id __59__HDMCNotificationManager_scheduledNotificationsWithError___block_invoke(
     goto LABEL_12;
   }
 
-  v12 = [(NSNumber *)self->_lastDismissalDayIndex integerValue];
-  if (v12 == [v7 integerValue])
+  integerValue = [(NSNumber *)self->_lastDismissalDayIndex integerValue];
+  if (integerValue == [v7 integerValue])
   {
     v28 = v9;
     v13 = [(HDMCNotificationManager *)self scheduledNotificationsWithError:&v28];
@@ -273,7 +273,7 @@ LABEL_12:
   v29[2] = __45__HDMCNotificationManager_didUpdateAnalysis___block_invoke;
   v29[3] = &unk_27865AA58;
   v29[4] = self;
-  v30 = v4;
+  v30 = analysisCopy;
   [(HDRestorableAlarm *)scheduler checkForDueEventsWithCompletion:v29];
 
 LABEL_15:
@@ -296,25 +296,25 @@ void __45__HDMCNotificationManager_didUpdateAnalysis___block_invoke(uint64_t a1,
   [*(a1 + 32) _queue_rescheduleNotificationsForAnalysis:*(a1 + 40)];
 }
 
-- (void)featureSettingsManager:(id)a3 didUpdateSettingsForFeatureIdentifier:(id)a4
+- (void)featureSettingsManager:(id)manager didUpdateSettingsForFeatureIdentifier:(id)identifier
 {
   dispatch_assert_queue_V2(self->_queue);
 
   [(HDMCNotificationManager *)self _queue_notificationOrSensorInputSettingsDidChange];
 }
 
-- (void)settingsManagerDidUpdateNotificationSettings:(id)a3
+- (void)settingsManagerDidUpdateNotificationSettings:(id)settings
 {
   v15 = *MEMORY[0x277D85DE8];
   dispatch_assert_queue_V2(self->_queue);
   [(HDMCNotificationManager *)self _queue_notificationOrSensorInputSettingsDidChange];
   if ([(HKMCSettingsManager *)self->_settingsManager someNotificationsEnabled])
   {
-    v4 = [(HDMCAnalysisManager *)self->_analysisManager currentAnalysis];
+    currentAnalysis = [(HDMCAnalysisManager *)self->_analysisManager currentAnalysis];
     _HKInitializeLogging();
     v5 = *MEMORY[0x277CCC2E8];
     v6 = *MEMORY[0x277CCC2E8];
-    if (v4)
+    if (currentAnalysis)
     {
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
@@ -325,7 +325,7 @@ void __45__HDMCNotificationManager_didUpdateAnalysis___block_invoke(uint64_t a1,
         _os_log_impl(&dword_2293D1000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Notification settings changed: rescheduling notifications using current analysis", v14, 0xCu);
       }
 
-      [(HDMCNotificationManager *)self _queue_rescheduleNotificationsForAnalysis:v4, *v14];
+      [(HDMCNotificationManager *)self _queue_rescheduleNotificationsForAnalysis:currentAnalysis, *v14];
     }
 
     else if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -356,12 +356,12 @@ void __45__HDMCNotificationManager_didUpdateAnalysis___block_invoke(uint64_t a1,
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_requestFromAlarmEvent:(id)a3
+- (id)_requestFromAlarmEvent:(id)event
 {
-  v3 = a3;
+  eventCopy = event;
   v4 = MEMORY[0x277CE1FC0];
-  v5 = [v3 eventIdentifier];
-  v6 = [v4 hkmc_requestForCategoryIdentifier:v5];
+  eventIdentifier = [eventCopy eventIdentifier];
+  v6 = [v4 hkmc_requestForCategoryIdentifier:eventIdentifier];
 
   if (!v6)
   {
@@ -375,36 +375,36 @@ void __45__HDMCNotificationManager_didUpdateAnalysis___block_invoke(uint64_t a1,
   return v6;
 }
 
-- (void)_queue_alarm:(id)a3 didReceiveDueEvents:(id)a4
+- (void)_queue_alarm:(id)_queue_alarm didReceiveDueEvents:(id)events
 {
   v151 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  _queue_alarmCopy = _queue_alarm;
+  eventsCopy = events;
   dispatch_assert_queue_V2(self->_queue);
   _HKInitializeLogging();
   v8 = MEMORY[0x277CCC2E8];
   v9 = *MEMORY[0x277CCC2E8];
-  v124 = self;
+  selfCopy = self;
   if (os_log_type_enabled(*MEMORY[0x277CCC2E8], OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
     v11 = objc_opt_class();
     v12 = MEMORY[0x277CCABB0];
     v13 = v11;
-    v14 = [v12 numberWithUnsignedInteger:{objc_msgSend(v7, "count")}];
+    v14 = [v12 numberWithUnsignedInteger:{objc_msgSend(eventsCopy, "count")}];
     *buf = 138543874;
     v146 = v11;
     v147 = 2114;
     v148 = v14;
     v149 = 2112;
-    v150 = v7;
+    v150 = eventsCopy;
     _os_log_impl(&dword_2293D1000, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Received %{public}@ due events: %@", buf, 0x20u);
 
-    self = v124;
+    self = selfCopy;
   }
 
-  v15 = [(HDMCNotificationManager *)self _currentDate];
-  v16 = [v15 dateByAddingTimeInterval:-86400.0];
+  _currentDate = [(HDMCNotificationManager *)self _currentDate];
+  v16 = [_currentDate dateByAddingTimeInterval:-86400.0];
 
   notificationSyncManager = self->_notificationSyncManager;
   v142 = 0;
@@ -422,25 +422,25 @@ void __45__HDMCNotificationManager_didUpdateAnalysis___block_invoke(uint64_t a1,
     v118 = objc_alloc_init(MEMORY[0x277CBEB98]);
   }
 
-  v19 = [(HKMCSettingsManager *)self->_settingsManager someNotificationsEnabledAndSupported];
-  v20 = v19;
-  if (v19)
+  someNotificationsEnabledAndSupported = [(HKMCSettingsManager *)self->_settingsManager someNotificationsEnabledAndSupported];
+  v20 = someNotificationsEnabledAndSupported;
+  if (someNotificationsEnabledAndSupported)
   {
     v21 = [(HDMCDeviceScopedStorageManager *)self->_deviceScopedStorageManager accountDevicesInfoWithError:0];
-    v120 = [v21 shouldFireNotifications];
+    shouldFireNotifications = [v21 shouldFireNotifications];
   }
 
   else
   {
-    v120 = 0;
+    shouldFireNotifications = 0;
   }
 
-  v110 = v6;
+  v110 = _queue_alarmCopy;
   v140 = 0u;
   v141 = 0u;
   v138 = 0u;
   v139 = 0u;
-  obj = v7;
+  obj = eventsCopy;
   v22 = [obj countByEnumeratingWithState:&v138 objects:v144 count:16];
   v114 = v16;
   if (!v22)
@@ -484,13 +484,13 @@ void __45__HDMCNotificationManager_didUpdateAnalysis___block_invoke(uint64_t a1,
           _os_log_impl(&dword_2293D1000, v37, OS_LOG_TYPE_DEFAULT, "[%{public}@] Skipping sending notification for event; notifications are not enabled and supported: %@", buf, 0x16u);
         }
 
-        v33 = self;
+        selfCopy4 = self;
         v34 = v26;
         v35 = 0;
         goto LABEL_27;
       }
 
-      if ((v120 & 1) == 0)
+      if ((shouldFireNotifications & 1) == 0)
       {
         _HKInitializeLogging();
         v40 = *v8;
@@ -506,14 +506,14 @@ void __45__HDMCNotificationManager_didUpdateAnalysis___block_invoke(uint64_t a1,
           _os_log_impl(&dword_2293D1000, v41, OS_LOG_TYPE_DEFAULT, "[%{public}@] Skipping sending notification for event; other health devices have a higher algorithm version: %@", buf, 0x16u);
         }
 
-        v33 = self;
+        selfCopy4 = self;
         v34 = v26;
         v35 = 1;
         goto LABEL_27;
       }
 
-      v27 = [*(*(&v138 + 1) + 8 * v25) currentDueDate];
-      v28 = [v27 hk_isBeforeDate:v16];
+      currentDueDate = [*(*(&v138 + 1) + 8 * v25) currentDueDate];
+      v28 = [currentDueDate hk_isBeforeDate:v16];
 
       if (v28)
       {
@@ -531,17 +531,17 @@ void __45__HDMCNotificationManager_didUpdateAnalysis___block_invoke(uint64_t a1,
           _os_log_impl(&dword_2293D1000, v30, OS_LOG_TYPE_DEFAULT, "[%{public}@] Skipping sending notification for event due more than one day ago: %@", buf, 0x16u);
         }
 
-        v33 = self;
+        selfCopy4 = self;
         v34 = v26;
         v35 = 2;
 LABEL_27:
-        [(HDMCNotificationManager *)v33 _unitTest_didSkipNotificationForDueEvent:v34 reason:v35];
+        [(HDMCNotificationManager *)selfCopy4 _unitTest_didSkipNotificationForDueEvent:v34 reason:v35];
         goto LABEL_28;
       }
 
       context = objc_autoreleasePoolPush();
-      v44 = [v26 hdmc_categoryIdentifier];
-      if ([v118 containsObject:v44])
+      hdmc_categoryIdentifier = [v26 hdmc_categoryIdentifier];
+      if ([v118 containsObject:hdmc_categoryIdentifier])
       {
         _HKInitializeLogging();
         v45 = *v8;
@@ -552,24 +552,24 @@ LABEL_27:
           *buf = 138543618;
           v146 = v47;
           v147 = 2114;
-          v148 = v44;
+          v148 = hdmc_categoryIdentifier;
           v48 = v47;
           _os_log_impl(&dword_2293D1000, v46, OS_LOG_TYPE_DEFAULT, "[%{public}@] Skipping sending notification due to hold: %{public}@", buf, 0x16u);
 
-          self = v124;
+          self = selfCopy;
         }
 
         [(HDMCNotificationManager *)self _unitTest_didSkipNotificationForDueEvent:v26 reason:3];
         goto LABEL_60;
       }
 
-      if ([v44 isEqualToString:v115])
+      if ([hdmc_categoryIdentifier isEqualToString:v115])
       {
         if (v117)
         {
-          v49 = [v117 currentDueDate];
-          v50 = [v26 currentDueDate];
-          v51 = [v49 hk_isBeforeDate:v50];
+          currentDueDate2 = [v117 currentDueDate];
+          currentDueDate3 = [v26 currentDueDate];
+          v51 = [currentDueDate2 hk_isBeforeDate:currentDueDate3];
 
           if (v51)
           {
@@ -580,11 +580,11 @@ LABEL_27:
               v53 = v52;
               v54 = objc_opt_class();
               v111 = v54;
-              v55 = [v26 eventIdentifier];
+              eventIdentifier = [v26 eventIdentifier];
               *buf = 138543618;
               v146 = v54;
               v147 = 2112;
-              v148 = v55;
+              v148 = eventIdentifier;
               _os_log_impl(&dword_2293D1000, v53, OS_LOG_TYPE_DEFAULT, "[%{public}@] Skipping sending notification for earlier event: %@", buf, 0x16u);
             }
 
@@ -603,20 +603,20 @@ LABEL_27:
       }
 
       v57 = HKMCPeriodNotificationCategories();
-      v58 = [v57 containsObject:v44];
+      v58 = [v57 containsObject:hdmc_categoryIdentifier];
 
       if (!v58)
       {
         v67 = HKMCFertileWindowNotificationCategories();
-        v68 = [v67 containsObject:v44];
+        v68 = [v67 containsObject:hdmc_categoryIdentifier];
 
         if (v68)
         {
           if (v123)
           {
-            v69 = [v123 currentDueDate];
-            v70 = [v26 currentDueDate];
-            v71 = [v69 hk_isBeforeDate:v70];
+            currentDueDate4 = [v123 currentDueDate];
+            currentDueDate5 = [v26 currentDueDate];
+            v71 = [currentDueDate4 hk_isBeforeDate:currentDueDate5];
 
             if (v71)
             {
@@ -627,11 +627,11 @@ LABEL_27:
                 v73 = v72;
                 v74 = objc_opt_class();
                 v113 = v74;
-                v75 = [v26 eventIdentifier];
+                eventIdentifier2 = [v26 eventIdentifier];
                 *buf = 138543618;
                 v146 = v74;
                 v147 = 2112;
-                v148 = v75;
+                v148 = eventIdentifier2;
                 _os_log_impl(&dword_2293D1000, v73, OS_LOG_TYPE_DEFAULT, "[%{public}@] Skipping sending notification for earlier event: %@", buf, 0x16u);
               }
 
@@ -650,7 +650,7 @@ LABEL_27:
         {
           _HKInitializeLogging();
           v77 = *v8;
-          self = v124;
+          self = selfCopy;
           if (!os_log_type_enabled(*v8, OS_LOG_TYPE_ERROR))
           {
             goto LABEL_60;
@@ -659,18 +659,18 @@ LABEL_27:
           v78 = v77;
           v79 = objc_opt_class();
           v80 = v79;
-          v81 = [v26 eventIdentifier];
+          eventIdentifier3 = [v26 eventIdentifier];
           *buf = 138543618;
           v146 = v79;
           v147 = 2112;
-          v148 = v81;
+          v148 = eventIdentifier3;
           _os_log_error_impl(&dword_2293D1000, v78, OS_LOG_TYPE_ERROR, "[%{public}@] Skipping sending notification for unknown event identifier type: %@", buf, 0x16u);
 
           v16 = v114;
         }
 
 LABEL_59:
-        self = v124;
+        self = selfCopy;
         goto LABEL_60;
       }
 
@@ -680,9 +680,9 @@ LABEL_59:
         goto LABEL_59;
       }
 
-      v59 = [v116 currentDueDate];
-      v60 = [v26 currentDueDate];
-      v61 = [v59 hk_isBeforeDate:v60];
+      currentDueDate6 = [v116 currentDueDate];
+      currentDueDate7 = [v26 currentDueDate];
+      v61 = [currentDueDate6 hk_isBeforeDate:currentDueDate7];
 
       if (v61)
       {
@@ -693,11 +693,11 @@ LABEL_59:
           v63 = v62;
           v64 = objc_opt_class();
           v112 = v64;
-          v65 = [v26 eventIdentifier];
+          eventIdentifier4 = [v26 eventIdentifier];
           *buf = 138543618;
           v146 = v64;
           v147 = 2112;
-          v148 = v65;
+          v148 = eventIdentifier4;
           _os_log_impl(&dword_2293D1000, v63, OS_LOG_TYPE_DEFAULT, "[%{public}@] Skipping sending notification for earlier event: %@", buf, 0x16u);
         }
 
@@ -707,7 +707,7 @@ LABEL_59:
       }
 
 LABEL_54:
-      self = v124;
+      self = selfCopy;
       v16 = v114;
 LABEL_60:
 
@@ -755,14 +755,14 @@ LABEL_67:
 LABEL_70:
       if (v123)
       {
-        v89 = [v123 hdmc_fertileWindowEndDayIndex];
+        hdmc_fertileWindowEndDayIndex = [v123 hdmc_fertileWindowEndDayIndex];
         ovulationConfirmationStateManager = self->_ovulationConfirmationStateManager;
         v137 = 0;
         v91 = [(HDMCOvulationConfirmationStateManager *)ovulationConfirmationStateManager scheduledNotificationFertileWindowEndDayIndexWithEvent:v123 error:&v137];
         v92 = v137;
         if (v91 && [v91 integerValue])
         {
-          v89 = [v91 integerValue];
+          hdmc_fertileWindowEndDayIndex = [v91 integerValue];
         }
 
         else
@@ -789,8 +789,8 @@ LABEL_70:
         }
 
         v96 = MEMORY[0x277CE1FC0];
-        v97 = [v123 hdmc_categoryIdentifier];
-        v98 = [v96 hkmc_requestForCategoryIdentifier:v97 fertileWindowEndDayIndex:v89 daysShiftedFromCalendarMethod:v94];
+        hdmc_categoryIdentifier2 = [v123 hdmc_categoryIdentifier];
+        v98 = [v96 hkmc_requestForCategoryIdentifier:hdmc_categoryIdentifier2 fertileWindowEndDayIndex:hdmc_fertileWindowEndDayIndex daysShiftedFromCalendarMethod:v94];
 
         if (v98)
         {
@@ -829,17 +829,17 @@ LABEL_70:
 
             v104 = *(*(&v132 + 1) + 8 * i);
             dispatch_group_enter(v99);
-            WeakRetained = objc_loadWeakRetained(&v124->_profile);
-            v106 = [WeakRetained notificationManager];
+            WeakRetained = objc_loadWeakRetained(&selfCopy->_profile);
+            notificationManager = [WeakRetained notificationManager];
             v129[0] = MEMORY[0x277D85DD0];
             v129[1] = 3221225472;
             v129[2] = __60__HDMCNotificationManager__queue_alarm_didReceiveDueEvents___block_invoke;
             v129[3] = &unk_27865AA80;
-            v129[4] = v124;
+            v129[4] = selfCopy;
             v129[5] = v104;
             v130 = v123;
             v131 = v99;
-            [v106 postNotificationWithRequest:v104 completion:v129];
+            [notificationManager postNotificationWithRequest:v104 completion:v129];
           }
 
           v101 = [v121 countByEnumeratingWithState:&v132 objects:v143 count:16];
@@ -848,7 +848,7 @@ LABEL_70:
         while (v101);
       }
 
-      queue = v124->_queue;
+      queue = selfCopy->_queue;
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __60__HDMCNotificationManager__queue_alarm_didReceiveDueEvents___block_invoke_322;
@@ -856,7 +856,7 @@ LABEL_70:
       v84 = v110;
       v126 = v110;
       v127 = obj;
-      v128 = v124;
+      v128 = selfCopy;
       dispatch_group_async(v99, queue, block);
 
       v16 = v114;
@@ -1134,37 +1134,37 @@ void __60__HDMCNotificationManager__queue_alarm_didReceiveDueEvents___block_invo
   return v4;
 }
 
-- (id)_periodEventFromNotificationCategory:(id)a3 notificationFireDayIndex:(int64_t)a4
+- (id)_periodEventFromNotificationCategory:(id)category notificationFireDayIndex:(int64_t)index
 {
   settingsManager = self->_settingsManager;
-  v7 = a3;
-  v8 = [(HKMCSettingsManager *)settingsManager hdmc_dateComponentsForMenstruationNotificationOnDayIndex:a4];
-  v9 = [(HDRestorableAlarm *)self->_scheduler eventWithIdentifier:v7 dueDateComponents:v8 eventOptions:0];
+  categoryCopy = category;
+  v8 = [(HKMCSettingsManager *)settingsManager hdmc_dateComponentsForMenstruationNotificationOnDayIndex:index];
+  v9 = [(HDRestorableAlarm *)self->_scheduler eventWithIdentifier:categoryCopy dueDateComponents:v8 eventOptions:0];
 
   return v9;
 }
 
-- (void)_queue_rescheduleNotificationsForAnalysis:(id)a3
+- (void)_queue_rescheduleNotificationsForAnalysis:(id)analysis
 {
   v180 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  analysisCopy = analysis;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(HDMCNotificationManager *)self _currentDate];
+  _currentDate = [(HDMCNotificationManager *)self _currentDate];
   v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:4];
-  v7 = [(HKMCSettingsManager *)self->_settingsManager menstruationNotificationsEnabled];
+  menstruationNotificationsEnabled = [(HKMCSettingsManager *)self->_settingsManager menstruationNotificationsEnabled];
   v8 = MEMORY[0x277CCC2E8];
-  if (v7)
+  if (menstruationNotificationsEnabled)
   {
-    v9 = [v4 hdmc_beforePeriodStartNotification];
-    v161 = v9;
-    if (v9)
+    hdmc_beforePeriodStartNotification = [analysisCopy hdmc_beforePeriodStartNotification];
+    v161 = hdmc_beforePeriodStartNotification;
+    if (hdmc_beforePeriodStartNotification)
     {
-      v10 = v9;
-      v11 = [v9 category];
-      v12 = -[HDMCNotificationManager _periodEventFromNotificationCategory:notificationFireDayIndex:](self, "_periodEventFromNotificationCategory:notificationFireDayIndex:", v11, [v10 fireOnDayIndex]);
+      v10 = hdmc_beforePeriodStartNotification;
+      category = [hdmc_beforePeriodStartNotification category];
+      v12 = -[HDMCNotificationManager _periodEventFromNotificationCategory:notificationFireDayIndex:](self, "_periodEventFromNotificationCategory:notificationFireDayIndex:", category, [v10 fireOnDayIndex]);
 
-      v13 = [v12 currentDueDate];
-      v14 = [v13 hk_isAfterDate:v5];
+      currentDueDate = [v12 currentDueDate];
+      v14 = [currentDueDate hk_isAfterDate:_currentDate];
 
       if (v14)
       {
@@ -1195,15 +1195,15 @@ void __60__HDMCNotificationManager__queue_alarm_didReceiveDueEvents___block_invo
       }
     }
 
-    v22 = [v4 hdmc_afterPeriodStartNotification];
-    v23 = v22;
-    if (v22)
+    hdmc_afterPeriodStartNotification = [analysisCopy hdmc_afterPeriodStartNotification];
+    v23 = hdmc_afterPeriodStartNotification;
+    if (hdmc_afterPeriodStartNotification)
     {
-      v24 = [v22 category];
-      v25 = -[HDMCNotificationManager _periodEventFromNotificationCategory:notificationFireDayIndex:](self, "_periodEventFromNotificationCategory:notificationFireDayIndex:", v24, [v23 fireOnDayIndex]);
+      category2 = [hdmc_afterPeriodStartNotification category];
+      v25 = -[HDMCNotificationManager _periodEventFromNotificationCategory:notificationFireDayIndex:](self, "_periodEventFromNotificationCategory:notificationFireDayIndex:", category2, [v23 fireOnDayIndex]);
 
-      v26 = [v25 currentDueDate];
-      v27 = [v26 hk_isAfterDate:v5];
+      currentDueDate2 = [v25 currentDueDate];
+      v27 = [currentDueDate2 hk_isAfterDate:_currentDate];
 
       if (v27)
       {
@@ -1220,27 +1220,27 @@ void __60__HDMCNotificationManager__queue_alarm_didReceiveDueEvents___block_invo
           v30 = objc_opt_class();
           v31 = v30;
           HKSensitiveLogItem();
-          v33 = v32 = v5;
+          v33 = v32 = _currentDate;
           *buf = 138543618;
           v173 = v30;
           v174 = 2112;
           v175 = v33;
           _os_log_impl(&dword_2293D1000, v29, OS_LOG_TYPE_DEFAULT, "[%{public}@] Skipping scheduling past due event %@", buf, 0x16u);
 
-          v5 = v32;
+          _currentDate = v32;
         }
       }
     }
 
-    v34 = [v4 hdmc_afterPeriodEndNotification];
-    v35 = v34;
-    if (v34)
+    hdmc_afterPeriodEndNotification = [analysisCopy hdmc_afterPeriodEndNotification];
+    v35 = hdmc_afterPeriodEndNotification;
+    if (hdmc_afterPeriodEndNotification)
     {
-      v36 = [v34 category];
-      v37 = -[HDMCNotificationManager _periodEventFromNotificationCategory:notificationFireDayIndex:](self, "_periodEventFromNotificationCategory:notificationFireDayIndex:", v36, [v35 fireOnDayIndex]);
+      category3 = [hdmc_afterPeriodEndNotification category];
+      v37 = -[HDMCNotificationManager _periodEventFromNotificationCategory:notificationFireDayIndex:](self, "_periodEventFromNotificationCategory:notificationFireDayIndex:", category3, [v35 fireOnDayIndex]);
 
-      v38 = [v37 currentDueDate];
-      v39 = [v38 hk_isAfterDate:v5];
+      currentDueDate3 = [v37 currentDueDate];
+      v39 = [currentDueDate3 hk_isAfterDate:_currentDate];
 
       if (v39)
       {
@@ -1255,7 +1255,7 @@ void __60__HDMCNotificationManager__queue_alarm_didReceiveDueEvents___block_invo
         {
           v41 = v40;
           v42 = objc_opt_class();
-          v157 = v5;
+          v157 = _currentDate;
           v43 = v42;
           v44 = HKSensitiveLogItem();
           *buf = 138543618;
@@ -1264,19 +1264,19 @@ void __60__HDMCNotificationManager__queue_alarm_didReceiveDueEvents___block_invo
           v175 = v44;
           _os_log_impl(&dword_2293D1000, v41, OS_LOG_TYPE_DEFAULT, "[%{public}@] Skipping scheduling past due event %@", buf, 0x16u);
 
-          v5 = v157;
+          _currentDate = v157;
         }
       }
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_profile);
-    v46 = [WeakRetained daemon];
-    v47 = [v46 behavior];
-    v48 = [v47 isAppleWatch];
+    daemon = [WeakRetained daemon];
+    behavior = [daemon behavior];
+    isAppleWatch = [behavior isAppleWatch];
 
-    if ((v48 & 1) == 0)
+    if ((isAppleWatch & 1) == 0)
     {
-      v158 = v5;
+      v158 = _currentDate;
       unconfirmedDeviationStateKeyValueDomain = self->_unconfirmedDeviationStateKeyValueDomain;
       v170 = 0;
       v50 = [(HDKeyValueDomain *)unconfirmedDeviationStateKeyValueDomain hdmc_menstrualCyclesUnconfirmedDeviationNotificationGetStateWithError:&v170];
@@ -1300,24 +1300,24 @@ void __60__HDMCNotificationManager__queue_alarm_didReceiveDueEvents___block_invo
         if (v50)
         {
           objc_storeStrong(&self->_lastDismissalDayIndex, v53);
-          v56 = [(HDMCNotificationManager *)self _currentDate];
-          v57 = [(HKMCSettingsManager *)self->_settingsManager menstruationNotificationTimeOfDay];
+          _currentDate2 = [(HDMCNotificationManager *)self _currentDate];
+          menstruationNotificationTimeOfDay = [(HKMCSettingsManager *)self->_settingsManager menstruationNotificationTimeOfDay];
           v155 = v53;
-          v58 = [v50 computeNewStateFromAnalysis:v4 dismissalDayIndex:v53 currentDate:v56 unconfirmedDeviationNotificationTimeOfDay:v57];
+          v58 = [v50 computeNewStateFromAnalysis:analysisCopy dismissalDayIndex:v53 currentDate:_currentDate2 unconfirmedDeviationNotificationTimeOfDay:menstruationNotificationTimeOfDay];
 
           v59 = v58;
-          v60 = [v58 scheduledNotificationFireDayIndex];
+          scheduledNotificationFireDayIndex = [v58 scheduledNotificationFireDayIndex];
 
-          if (v60)
+          if (scheduledNotificationFireDayIndex)
           {
             v61 = *MEMORY[0x277D118F0];
             v151 = v59;
-            v62 = [v59 scheduledNotificationFireDayIndex];
+            scheduledNotificationFireDayIndex2 = [v59 scheduledNotificationFireDayIndex];
             log = v61;
-            v63 = -[HDMCNotificationManager _periodEventFromNotificationCategory:notificationFireDayIndex:](self, "_periodEventFromNotificationCategory:notificationFireDayIndex:", v61, [v62 integerValue]);
+            v63 = -[HDMCNotificationManager _periodEventFromNotificationCategory:notificationFireDayIndex:](self, "_periodEventFromNotificationCategory:notificationFireDayIndex:", v61, [scheduledNotificationFireDayIndex2 integerValue]);
 
-            v64 = [v63 currentDueDate];
-            v65 = [v64 hk_isAfterDate:v158];
+            currentDueDate4 = [v63 currentDueDate];
+            v65 = [currentDueDate4 hk_isAfterDate:v158];
 
             if (v65)
             {
@@ -1418,7 +1418,7 @@ void __60__HDMCNotificationManager__queue_alarm_didReceiveDueEvents___block_invo
         }
       }
 
-      v5 = v158;
+      _currentDate = v158;
     }
 
     v8 = MEMORY[0x277CCC2E8];
@@ -1426,19 +1426,19 @@ void __60__HDMCNotificationManager__queue_alarm_didReceiveDueEvents___block_invo
 
   if ([(HKMCSettingsManager *)self->_settingsManager fertileWindowNotificationsEnabled])
   {
-    v80 = [v4 hdmc_beforeFertileWindowStartNotification];
-    v81 = v80;
-    if (v80)
+    hdmc_beforeFertileWindowStartNotification = [analysisCopy hdmc_beforeFertileWindowStartNotification];
+    v81 = hdmc_beforeFertileWindowStartNotification;
+    if (hdmc_beforeFertileWindowStartNotification)
     {
-      v82 = -[HKMCSettingsManager hdmc_dateComponentsForFertileWindowNotificationOnDayIndex:](self->_settingsManager, "hdmc_dateComponentsForFertileWindowNotificationOnDayIndex:", [v80 fireOnDayIndex]);
+      v82 = -[HKMCSettingsManager hdmc_dateComponentsForFertileWindowNotificationOnDayIndex:](self->_settingsManager, "hdmc_dateComponentsForFertileWindowNotificationOnDayIndex:", [hdmc_beforeFertileWindowStartNotification fireOnDayIndex]);
       scheduler = self->_scheduler;
-      v84 = [v81 category];
-      v85 = [(HDRestorableAlarm *)scheduler eventWithIdentifier:v84 dueDateComponents:v82 eventOptions:0];
+      category4 = [v81 category];
+      v85 = [(HDRestorableAlarm *)scheduler eventWithIdentifier:category4 dueDateComponents:v82 eventOptions:0];
 
-      v86 = [v85 currentDueDate];
-      LODWORD(v84) = [v86 hk_isAfterDate:v5];
+      currentDueDate5 = [v85 currentDueDate];
+      LODWORD(category4) = [currentDueDate5 hk_isAfterDate:_currentDate];
 
-      if (v84)
+      if (category4)
       {
         [v6 addObject:v85];
       }
@@ -1455,14 +1455,14 @@ void __60__HDMCNotificationManager__queue_alarm_didReceiveDueEvents___block_invo
           [v81 category];
           v162 = v6;
           v90 = v8;
-          v92 = v91 = v5;
+          v92 = v91 = _currentDate;
           *buf = 138543618;
           v173 = v89;
           v174 = 2112;
           v175 = v92;
           _os_log_impl(&dword_2293D1000, v88, OS_LOG_TYPE_DEFAULT, "[%{public}@] Skipping scheduling past due event %@", buf, 0x16u);
 
-          v5 = v91;
+          _currentDate = v91;
           v8 = v90;
           v6 = v162;
         }
@@ -1470,11 +1470,11 @@ void __60__HDMCNotificationManager__queue_alarm_didReceiveDueEvents___block_invo
     }
 
     v93 = objc_loadWeakRetained(&self->_profile);
-    v94 = [v93 daemon];
-    v95 = [v94 behavior];
-    v96 = [v95 isAppleWatch];
+    daemon2 = [v93 daemon];
+    behavior2 = [daemon2 behavior];
+    isAppleWatch2 = [behavior2 isAppleWatch];
 
-    if ((v96 & 1) == 0)
+    if ((isAppleWatch2 & 1) == 0)
     {
       fertileWindowNotificationStateKeyValueDomain = self->_fertileWindowNotificationStateKeyValueDomain;
       v167 = 0;
@@ -1484,18 +1484,18 @@ void __60__HDMCNotificationManager__queue_alarm_didReceiveDueEvents___block_invo
       v163 = v98;
       if (v98 || !v99)
       {
-        v101 = [(HKMCSettingsManager *)self->_settingsManager fertileWindowNotificationTimeOfDay];
-        v102 = [v4 hdmc_fertileWindowDidUpdateDueToSensorDataNotificationForNotificationFireDate:v5 lastFiredDate:v98 fertileWindowNotificationTimeOfDay:v101];
+        fertileWindowNotificationTimeOfDay = [(HKMCSettingsManager *)self->_settingsManager fertileWindowNotificationTimeOfDay];
+        v102 = [analysisCopy hdmc_fertileWindowDidUpdateDueToSensorDataNotificationForNotificationFireDate:_currentDate lastFiredDate:v98 fertileWindowNotificationTimeOfDay:fertileWindowNotificationTimeOfDay];
 
         if (v102)
         {
           v103 = -[HKMCSettingsManager hdmc_dateComponentsForFertileWindowNotificationOnDayIndex:](self->_settingsManager, "hdmc_dateComponentsForFertileWindowNotificationOnDayIndex:", [v102 fireOnDayIndex]);
-          v154 = [v102 eventIdentifierFromUpdateFertileWindowNotification];
+          eventIdentifierFromUpdateFertileWindowNotification = [v102 eventIdentifierFromUpdateFertileWindowNotification];
           v156 = v103;
           v104 = [HDRestorableAlarm eventWithIdentifier:"eventWithIdentifier:dueDateComponents:eventOptions:" dueDateComponents:? eventOptions:?];
-          v105 = [v104 currentDueDate];
-          v160 = v5;
-          v106 = [v105 hk_isAfterDate:v5];
+          currentDueDate6 = [v104 currentDueDate];
+          v160 = _currentDate;
+          v106 = [currentDueDate6 hk_isAfterDate:_currentDate];
 
           if (v106)
           {
@@ -1511,16 +1511,16 @@ void __60__HDMCNotificationManager__queue_alarm_didReceiveDueEvents___block_invo
               v146 = v107;
               v108 = objc_opt_class();
               logc = v108;
-              v109 = [v102 category];
+              category5 = [v102 category];
               *buf = 138543618;
               v173 = v108;
               v174 = 2112;
-              v175 = v109;
+              v175 = category5;
               _os_log_impl(&dword_2293D1000, v146, OS_LOG_TYPE_DEFAULT, "[%{public}@] Skipping scheduling past due event %@", buf, 0x16u);
             }
           }
 
-          v5 = v160;
+          _currentDate = v160;
           v8 = MEMORY[0x277CCC2E8];
         }
       }
@@ -1551,7 +1551,7 @@ void __60__HDMCNotificationManager__queue_alarm_didReceiveDueEvents___block_invo
       settingsManager = self->_settingsManager;
       v117 = self->_scheduler;
       v166 = v100;
-      v118 = [(HDMCOvulationConfirmationStateManager *)ovulationConfirmationStateManager eventsToScheduleForAnalysis:v4 settingsManager:settingsManager scheduler:v117 error:&v166];
+      v118 = [(HDMCOvulationConfirmationStateManager *)ovulationConfirmationStateManager eventsToScheduleForAnalysis:analysisCopy settingsManager:settingsManager scheduler:v117 error:&v166];
       v119 = v166;
 
       if (v118)
@@ -1599,13 +1599,13 @@ void __60__HDMCNotificationManager__queue_alarm_didReceiveDueEvents___block_invo
   if (v128)
   {
     notificationSyncManager = self->_notificationSyncManager;
-    v131 = [v4 latestSampleInfo];
-    [(HDMCNotificationSyncManager *)notificationSyncManager sendNotificationInstructionsForSchedulingChanges:v128 sampleInfo:v131];
+    latestSampleInfo = [analysisCopy latestSampleInfo];
+    [(HDMCNotificationSyncManager *)notificationSyncManager sendNotificationInstructionsForSchedulingChanges:v128 sampleInfo:latestSampleInfo];
 
-    objc_storeStrong(&self->_lastAnalysis, a3);
-    v132 = [(HDMCNotificationManager *)self _currentDate];
-    v133 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
-    v134 = [v4 isEarliestNotificationScheduledAfterDate:v132 gregorianCalendar:v133];
+    objc_storeStrong(&self->_lastAnalysis, analysis);
+    _currentDate3 = [(HDMCNotificationManager *)self _currentDate];
+    hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+    v134 = [analysisCopy isEarliestNotificationScheduledAfterDate:_currentDate3 gregorianCalendar:hk_gregorianCalendar];
 
     if (v134)
     {
@@ -1622,10 +1622,10 @@ void __60__HDMCNotificationManager__queue_alarm_didReceiveDueEvents___block_invo
       }
 
       v139 = objc_loadWeakRetained(&self->_profile);
-      v140 = [v139 notificationManager];
+      notificationManager = [v139 notificationManager];
       v171 = *MEMORY[0x277D11908];
       v141 = [MEMORY[0x277CBEA60] arrayWithObjects:&v171 count:1];
-      [v140 removeDeliveredNotificationsWithIdentifiers:v141];
+      [notificationManager removeDeliveredNotificationsWithIdentifiers:v141];
     }
   }
 
@@ -1645,14 +1645,14 @@ void __60__HDMCNotificationManager__queue_alarm_didReceiveDueEvents___block_invo
 {
   dispatch_assert_queue_V2(self->_queue);
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained database];
+  database = [WeakRetained database];
   queue = self->_queue;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __77__HDMCNotificationManager__queue_removeAllScheduledNotificationsIfNotEnabled__block_invoke;
   v6[3] = &unk_27865A830;
   v6[4] = self;
-  [v4 performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:queue block:v6];
+  [database performWhenDataProtectedByFirstUnlockIsAvailableOnQueue:queue block:v6];
 }
 
 void __77__HDMCNotificationManager__queue_removeAllScheduledNotificationsIfNotEnabled__block_invoke(uint64_t a1)
@@ -1718,11 +1718,11 @@ void __77__HDMCNotificationManager__queue_removeAllScheduledNotificationsIfNotEn
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_triggerImmediateSyncWithReason:(id)a3
+- (void)_triggerImmediateSyncWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [WeakRetained cloudSyncManager];
+  cloudSyncManager = [WeakRetained cloudSyncManager];
   v7 = objc_alloc(MEMORY[0x277CCD140]);
   v8 = [objc_alloc(MEMORY[0x277CCD0C8]) initWithPush:1 pull:0 lite:1];
   v9 = [v7 initWithChangesSyncRequest:v8];
@@ -1731,9 +1731,9 @@ void __77__HDMCNotificationManager__queue_removeAllScheduledNotificationsIfNotEn
   v11[2] = __59__HDMCNotificationManager__triggerImmediateSyncWithReason___block_invoke;
   v11[3] = &unk_27865AAA8;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
-  [v6 syncWithRequest:v9 reason:v10 completion:v11];
+  v12 = reasonCopy;
+  v10 = reasonCopy;
+  [cloudSyncManager syncWithRequest:v9 reason:v10 completion:v11];
 }
 
 void __59__HDMCNotificationManager__triggerImmediateSyncWithReason___block_invoke(uint64_t a1, int a2, void *a3)

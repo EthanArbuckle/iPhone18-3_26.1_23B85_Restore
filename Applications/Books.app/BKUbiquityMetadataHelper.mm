@@ -1,12 +1,12 @@
 @interface BKUbiquityMetadataHelper
 + (id)sharedInstance;
-- (BOOL)setUbiquityMetadataForURL:(id)a3 withLibraryAsset:(id)a4;
-- (id)ubiquityMetadataForURL:(id)a3 options:(unint64_t)a4;
-- (void)_removeExtendedAttributeNamed:(id)a3 forUrl:(id)a4;
-- (void)_setThumbnailInMutableDictionary:(id)a3 forKey:(id)a4 fromUrl:(id)a5;
-- (void)_setValueInMutableDictionary:(id)a3 forKey:(id)a4 withValueForExtendedAttributeNamed:(id)a5 fromUrl:(id)a6;
-- (void)setUbiquityMetadataIsSupplemental:(BOOL)a3 playlistID:(id)a4 storeID:(id)a5 forURL:(id)a6;
-- (void)setUbiquityMetadataTitle:(id)a3 forURL:(id)a4;
+- (BOOL)setUbiquityMetadataForURL:(id)l withLibraryAsset:(id)asset;
+- (id)ubiquityMetadataForURL:(id)l options:(unint64_t)options;
+- (void)_removeExtendedAttributeNamed:(id)named forUrl:(id)url;
+- (void)_setThumbnailInMutableDictionary:(id)dictionary forKey:(id)key fromUrl:(id)url;
+- (void)_setValueInMutableDictionary:(id)dictionary forKey:(id)key withValueForExtendedAttributeNamed:(id)named fromUrl:(id)url;
+- (void)setUbiquityMetadataIsSupplemental:(BOOL)supplemental playlistID:(id)d storeID:(id)iD forURL:(id)l;
+- (void)setUbiquityMetadataTitle:(id)title forURL:(id)l;
 @end
 
 @implementation BKUbiquityMetadataHelper
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_10015D6A0;
   block[3] = &unk_100A03560;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100AF7760 != -1)
   {
     dispatch_once(&qword_100AF7760, block);
@@ -28,10 +28,10 @@
   return v2;
 }
 
-- (id)ubiquityMetadataForURL:(id)a3 options:(unint64_t)a4
+- (id)ubiquityMetadataForURL:(id)l options:(unint64_t)options
 {
-  v4 = a4;
-  v6 = a3;
+  optionsCopy = options;
+  lCopy = l;
   v7 = objc_opt_new();
   v8 = objc_autoreleasePoolPush();
   v9 = _CFURLPromiseCopyPhysicalURL();
@@ -43,18 +43,18 @@
 
   else
   {
-    v11 = v6;
+    v11 = lCopy;
   }
 
   v12 = v11;
 
-  if (v4)
+  if (optionsCopy)
   {
     [(BKUbiquityMetadataHelper *)self _setValueInMutableDictionary:v7 forKey:BCMetadataXattrAssetID withValueForExtendedAttributeNamed:BCMetadataXattrAssetID fromUrl:v12];
-    if ((v4 & 2) == 0)
+    if ((optionsCopy & 2) == 0)
     {
 LABEL_6:
-      if ((v4 & 4) == 0)
+      if ((optionsCopy & 4) == 0)
       {
         goto LABEL_7;
       }
@@ -63,16 +63,16 @@ LABEL_6:
     }
   }
 
-  else if ((v4 & 2) == 0)
+  else if ((optionsCopy & 2) == 0)
   {
     goto LABEL_6;
   }
 
   [(BKUbiquityMetadataHelper *)self _setValueInMutableDictionary:v7 forKey:BCMetadataXattrTitle withValueForExtendedAttributeNamed:BCMetadataXattrTitle fromUrl:v12];
-  if ((v4 & 4) == 0)
+  if ((optionsCopy & 4) == 0)
   {
 LABEL_7:
-    if ((v4 & 8) == 0)
+    if ((optionsCopy & 8) == 0)
     {
       goto LABEL_8;
     }
@@ -82,10 +82,10 @@ LABEL_7:
 
 LABEL_29:
   [(BKUbiquityMetadataHelper *)self _setValueInMutableDictionary:v7 forKey:BCMetadataXattrSortTitle withValueForExtendedAttributeNamed:BCMetadataXattrSortTitle fromUrl:v12];
-  if ((v4 & 8) == 0)
+  if ((optionsCopy & 8) == 0)
   {
 LABEL_8:
-    if ((v4 & 0x10) == 0)
+    if ((optionsCopy & 0x10) == 0)
     {
       goto LABEL_9;
     }
@@ -95,10 +95,10 @@ LABEL_8:
 
 LABEL_30:
   [(BKUbiquityMetadataHelper *)self _setValueInMutableDictionary:v7 forKey:BCMetadataXattrAuthor withValueForExtendedAttributeNamed:BCMetadataXattrAuthor fromUrl:v12];
-  if ((v4 & 0x10) == 0)
+  if ((optionsCopy & 0x10) == 0)
   {
 LABEL_9:
-    if ((v4 & 0x20) == 0)
+    if ((optionsCopy & 0x20) == 0)
     {
       goto LABEL_10;
     }
@@ -108,10 +108,10 @@ LABEL_9:
 
 LABEL_31:
   [(BKUbiquityMetadataHelper *)self _setValueInMutableDictionary:v7 forKey:BCMetadataXattrSortAuthor withValueForExtendedAttributeNamed:BCMetadataXattrSortAuthor fromUrl:v12];
-  if ((v4 & 0x20) == 0)
+  if ((optionsCopy & 0x20) == 0)
   {
 LABEL_10:
-    if ((v4 & 0x40) == 0)
+    if ((optionsCopy & 0x40) == 0)
     {
       goto LABEL_11;
     }
@@ -121,10 +121,10 @@ LABEL_10:
 
 LABEL_32:
   [(BKUbiquityMetadataHelper *)self _setValueInMutableDictionary:v7 forKey:BCMetadataXattrGenre withValueForExtendedAttributeNamed:BCMetadataXattrGenre fromUrl:v12];
-  if ((v4 & 0x40) == 0)
+  if ((optionsCopy & 0x40) == 0)
   {
 LABEL_11:
-    if ((v4 & 0x80) == 0)
+    if ((optionsCopy & 0x80) == 0)
     {
       goto LABEL_12;
     }
@@ -134,10 +134,10 @@ LABEL_11:
 
 LABEL_33:
   [(BKUbiquityMetadataHelper *)self _setValueInMutableDictionary:v7 forKey:BCMetadataXattrComments withValueForExtendedAttributeNamed:BCMetadataXattrComments fromUrl:v12];
-  if ((v4 & 0x80) == 0)
+  if ((optionsCopy & 0x80) == 0)
   {
 LABEL_12:
-    if ((v4 & 0x100) == 0)
+    if ((optionsCopy & 0x100) == 0)
     {
       goto LABEL_13;
     }
@@ -147,10 +147,10 @@ LABEL_12:
 
 LABEL_34:
   [(BKUbiquityMetadataHelper *)self _setValueInMutableDictionary:v7 forKey:BCMetadataXattrBookDescription withValueForExtendedAttributeNamed:BCMetadataXattrBookDescription fromUrl:v12];
-  if ((v4 & 0x100) == 0)
+  if ((optionsCopy & 0x100) == 0)
   {
 LABEL_13:
-    if ((v4 & 0x200) == 0)
+    if ((optionsCopy & 0x200) == 0)
     {
       goto LABEL_14;
     }
@@ -160,10 +160,10 @@ LABEL_13:
 
 LABEL_35:
   [(BKUbiquityMetadataHelper *)self _setValueInMutableDictionary:v7 forKey:BCMetadataXattrYear withValueForExtendedAttributeNamed:BCMetadataXattrYear fromUrl:v12];
-  if ((v4 & 0x200) == 0)
+  if ((optionsCopy & 0x200) == 0)
   {
 LABEL_14:
-    if ((v4 & 0x400) == 0)
+    if ((optionsCopy & 0x400) == 0)
     {
       goto LABEL_15;
     }
@@ -173,10 +173,10 @@ LABEL_14:
 
 LABEL_36:
   [(BKUbiquityMetadataHelper *)self _setValueInMutableDictionary:v7 forKey:BCMetadataXattrExplicit withValueForExtendedAttributeNamed:BCMetadataXattrExplicit fromUrl:v12];
-  if ((v4 & 0x400) == 0)
+  if ((optionsCopy & 0x400) == 0)
   {
 LABEL_15:
-    if ((v4 & 0x800) == 0)
+    if ((optionsCopy & 0x800) == 0)
     {
       goto LABEL_16;
     }
@@ -186,10 +186,10 @@ LABEL_15:
 
 LABEL_37:
   [(BKUbiquityMetadataHelper *)self _setValueInMutableDictionary:v7 forKey:BCMetadataXattrLastOpened withValueForExtendedAttributeNamed:BCMetadataXattrLastOpened fromUrl:v12];
-  if ((v4 & 0x800) == 0)
+  if ((optionsCopy & 0x800) == 0)
   {
 LABEL_16:
-    if ((v4 & 0x2000) == 0)
+    if ((optionsCopy & 0x2000) == 0)
     {
       goto LABEL_17;
     }
@@ -199,10 +199,10 @@ LABEL_16:
 
 LABEL_38:
   [(BKUbiquityMetadataHelper *)self _setValueInMutableDictionary:v7 forKey:BCMetadataXattrFirstOpened withValueForExtendedAttributeNamed:BCMetadataXattrFirstOpened fromUrl:v12];
-  if ((v4 & 0x2000) == 0)
+  if ((optionsCopy & 0x2000) == 0)
   {
 LABEL_17:
-    if ((v4 & 0x10000) == 0)
+    if ((optionsCopy & 0x10000) == 0)
     {
       goto LABEL_18;
     }
@@ -212,10 +212,10 @@ LABEL_17:
 
 LABEL_39:
   [(BKUbiquityMetadataHelper *)self _setValueInMutableDictionary:v7 forKey:BCMetadataXattrRating withValueForExtendedAttributeNamed:BCMetadataXattrRating fromUrl:v12];
-  if ((v4 & 0x10000) == 0)
+  if ((optionsCopy & 0x10000) == 0)
   {
 LABEL_18:
-    if ((v4 & 0x40000) == 0)
+    if ((optionsCopy & 0x40000) == 0)
     {
       goto LABEL_19;
     }
@@ -225,10 +225,10 @@ LABEL_18:
 
 LABEL_40:
   [(BKUbiquityMetadataHelper *)self _setValueInMutableDictionary:v7 forKey:BCMetadataXattrGeneration withValueForExtendedAttributeNamed:BCMetadataXattrGeneration fromUrl:v12];
-  if ((v4 & 0x40000) == 0)
+  if ((optionsCopy & 0x40000) == 0)
   {
 LABEL_19:
-    if ((v4 & 0x80000) == 0)
+    if ((optionsCopy & 0x80000) == 0)
     {
       goto LABEL_20;
     }
@@ -238,10 +238,10 @@ LABEL_19:
 
 LABEL_41:
   [(BKUbiquityMetadataHelper *)self _setThumbnailInMutableDictionary:v7 forKey:BCMetadataXattrThumbnail fromUrl:v12];
-  if ((v4 & 0x80000) == 0)
+  if ((optionsCopy & 0x80000) == 0)
   {
 LABEL_20:
-    if ((v4 & 0x100000) == 0)
+    if ((optionsCopy & 0x100000) == 0)
     {
       goto LABEL_21;
     }
@@ -251,10 +251,10 @@ LABEL_20:
 
 LABEL_42:
   [(BKUbiquityMetadataHelper *)self _setValueInMutableDictionary:v7 forKey:BCMetadataXattrIsSupplementalContent withValueForExtendedAttributeNamed:BCMetadataXattrIsSupplementalContent fromUrl:v12];
-  if ((v4 & 0x100000) == 0)
+  if ((optionsCopy & 0x100000) == 0)
   {
 LABEL_21:
-    if ((v4 & 0x200000) == 0)
+    if ((optionsCopy & 0x200000) == 0)
     {
       goto LABEL_23;
     }
@@ -264,7 +264,7 @@ LABEL_21:
 
 LABEL_43:
   [(BKUbiquityMetadataHelper *)self _setValueInMutableDictionary:v7 forKey:BCMetadataXattrStoreID withValueForExtendedAttributeNamed:BCMetadataXattrStoreID fromUrl:v12];
-  if ((v4 & 0x200000) != 0)
+  if ((optionsCopy & 0x200000) != 0)
   {
 LABEL_22:
     [(BKUbiquityMetadataHelper *)self _setValueInMutableDictionary:v7 forKey:BCMetadataXattrStorePlaylistID withValueForExtendedAttributeNamed:BCMetadataXattrStorePlaylistID fromUrl:v12];
@@ -288,37 +288,37 @@ LABEL_23:
   return v13;
 }
 
-- (void)_setValueInMutableDictionary:(id)a3 forKey:(id)a4 withValueForExtendedAttributeNamed:(id)a5 fromUrl:(id)a6
+- (void)_setValueInMutableDictionary:(id)dictionary forKey:(id)key withValueForExtendedAttributeNamed:(id)named fromUrl:(id)url
 {
-  v11 = a3;
-  v9 = a4;
-  v10 = [a6 bu_extendedAttributeNamed:a5 iCloudSyncable:1];
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  v10 = [url bu_extendedAttributeNamed:named iCloudSyncable:1];
   if (v10)
   {
-    [v11 setObject:v10 forKey:v9];
+    [dictionaryCopy setObject:v10 forKey:keyCopy];
   }
 }
 
-- (void)_setThumbnailInMutableDictionary:(id)a3 forKey:(id)a4 fromUrl:(id)a5
+- (void)_setThumbnailInMutableDictionary:(id)dictionary forKey:(id)key fromUrl:(id)url
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [[QLThumbnailGenerationRequest alloc] initWithFileAtURL:v9 size:6 scale:1024.0 representationTypes:{1024.0, 1.0}];
+  dictionaryCopy = dictionary;
+  keyCopy = key;
+  urlCopy = url;
+  v10 = [[QLThumbnailGenerationRequest alloc] initWithFileAtURL:urlCopy size:6 scale:1024.0 representationTypes:{1024.0, 1.0}];
   v11 = +[QLThumbnailGenerator sharedGenerator];
   v12 = dispatch_semaphore_create(0);
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10015DC90;
   v19[3] = &unk_100A08B98;
-  v13 = v9;
+  v13 = urlCopy;
   v20 = v13;
-  v21 = v7;
-  v22 = v8;
+  v21 = dictionaryCopy;
+  v22 = keyCopy;
   v14 = v12;
   v23 = v14;
-  v15 = v8;
-  v16 = v7;
+  v15 = keyCopy;
+  v16 = dictionaryCopy;
   [v11 generateBestRepresentationForRequest:v10 completionHandler:v19];
   v17 = dispatch_time(0, 500000000);
   if (dispatch_semaphore_wait(v14, v17))
@@ -331,24 +331,24 @@ LABEL_23:
   }
 }
 
-- (BOOL)setUbiquityMetadataForURL:(id)a3 withLibraryAsset:(id)a4
+- (BOOL)setUbiquityMetadataForURL:(id)l withLibraryAsset:(id)asset
 {
-  v5 = a3;
-  v6 = a4;
+  lCopy = l;
+  assetCopy = asset;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  v7 = v5;
-  v8 = [v6 assetID];
-  v9 = [v6 title];
+  v7 = lCopy;
+  assetID = [assetCopy assetID];
+  title = [assetCopy title];
   v10 = v7;
   if (!v7)
   {
-    v11 = [v6 path];
-    if ([v11 length])
+    path = [assetCopy path];
+    if ([path length])
     {
-      v10 = [[NSURL alloc] initFileURLWithPath:v11];
+      v10 = [[NSURL alloc] initFileURLWithPath:path];
     }
 
     else
@@ -367,7 +367,7 @@ LABEL_23:
     }
   }
 
-  if (v10 && v8 && v9)
+  if (v10 && assetID && title)
   {
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
@@ -375,9 +375,9 @@ LABEL_23:
     v17[3] = &unk_100A08BE8;
     v21 = &v23;
     v22 = 0;
-    v18 = v8;
-    v19 = v9;
-    v20 = v6;
+    v18 = assetID;
+    v19 = title;
+    v20 = assetCopy;
     [NSURL coordinateWritingItemAtURL:v10 options:16 error:&v22 byAccessor:v17];
     v13 = v22;
     if (v13)
@@ -405,29 +405,29 @@ LABEL_23:
   return v15 & 1;
 }
 
-- (void)setUbiquityMetadataTitle:(id)a3 forURL:(id)a4
+- (void)setUbiquityMetadataTitle:(id)title forURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
+  titleCopy = title;
+  lCopy = l;
   v7 = BCUbiquityMetadataHelperLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v14 = v5;
+    v14 = titleCopy;
     v15 = 2112;
-    v16 = v6;
+    v16 = lCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "[iCloudSync] setUbiquityMetadataTitle title:%@ url:%@", buf, 0x16u);
   }
 
-  if (v6)
+  if (lCopy)
   {
     v12 = 0;
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_10015E674;
     v10[3] = &unk_100A08C10;
-    v11 = v5;
-    [NSURL coordinateWritingItemAtURL:v6 options:16 error:&v12 byAccessor:v10];
+    v11 = titleCopy;
+    [NSURL coordinateWritingItemAtURL:lCopy options:16 error:&v12 byAccessor:v10];
     v8 = v12;
     if (v8)
     {
@@ -449,22 +449,22 @@ LABEL_23:
   }
 }
 
-- (void)setUbiquityMetadataIsSupplemental:(BOOL)a3 playlistID:(id)a4 storeID:(id)a5 forURL:(id)a6
+- (void)setUbiquityMetadataIsSupplemental:(BOOL)supplemental playlistID:(id)d storeID:(id)iD forURL:(id)l
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
-  if (v11)
+  dCopy = d;
+  iDCopy = iD;
+  lCopy = l;
+  if (lCopy)
   {
     v18 = 0;
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_10015E944;
     v14[3] = &unk_100A08C38;
-    v17 = a3;
-    v15 = v9;
-    v16 = v10;
-    [NSURL coordinateWritingItemAtURL:v11 options:16 error:&v18 byAccessor:v14];
+    supplementalCopy = supplemental;
+    v15 = dCopy;
+    v16 = iDCopy;
+    [NSURL coordinateWritingItemAtURL:lCopy options:16 error:&v18 byAccessor:v14];
     v12 = v18;
     if (v12)
     {
@@ -474,7 +474,7 @@ LABEL_23:
         *buf = 141558530;
         v20 = 1752392040;
         v21 = 2112;
-        v22 = v11;
+        v22 = lCopy;
         v23 = 2112;
         v24 = v12;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "[iCloudSync] Error coordinateWritingItemAtURL:, URL: %{mask.hash}@, Error: %@", buf, 0x20u);
@@ -493,16 +493,16 @@ LABEL_23:
   }
 }
 
-- (void)_removeExtendedAttributeNamed:(id)a3 forUrl:(id)a4
+- (void)_removeExtendedAttributeNamed:(id)named forUrl:(id)url
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v6 bu_removeExtendedAttributeNamed:v5 iCloudSyncable:1] & 1) == 0)
+  namedCopy = named;
+  urlCopy = url;
+  if (([urlCopy bu_removeExtendedAttributeNamed:namedCopy iCloudSyncable:1] & 1) == 0)
   {
     v7 = BCUbiquityMetadataHelperLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_1007914EC(v5, v6, v7);
+      sub_1007914EC(namedCopy, urlCopy, v7);
     }
   }
 }

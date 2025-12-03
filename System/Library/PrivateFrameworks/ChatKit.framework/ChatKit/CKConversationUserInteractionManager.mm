@@ -1,7 +1,7 @@
 @interface CKConversationUserInteractionManager
 + (BOOL)_isSiriCanLearnFromMessagesEnabled;
 + (id)interactionSource;
-+ (void)_logEvent:(int)a3 forConversation:(id)a4;
++ (void)_logEvent:(int)event forConversation:(id)conversation;
 @end
 
 @implementation CKConversationUserInteractionManager
@@ -30,12 +30,12 @@ void __57__CKConversationUserInteractionManager_interactionSource__block_invoke(
   interactionSource_interactionSource = v3;
 }
 
-+ (void)_logEvent:(int)a3 forConversation:(id)a4
++ (void)_logEvent:(int)event forConversation:(id)conversation
 {
-  v4 = *&a3;
+  v4 = *&event;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  if ([a1 _isSiriCanLearnFromMessagesEnabled])
+  conversationCopy = conversation;
+  if ([self _isSiriCanLearnFromMessagesEnabled])
   {
     if (IMOSLoggingEnabled())
     {
@@ -46,14 +46,14 @@ void __57__CKConversationUserInteractionManager_interactionSource__block_invoke(
         *buf = 138412547;
         v18 = v8;
         v19 = 2113;
-        v20 = v6;
+        v20 = conversationCopy;
         _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "Donating %@ event for: %{private}@", buf, 0x16u);
       }
     }
 
     v9 = objc_alloc(MEMORY[0x1E698EC80]);
     v10 = [MEMORY[0x1E695DF00] now];
-    v11 = [v9 initWithBundleID:@"com.apple.MobileSMS" conversationId:v6 eventType:v4 timestamp:v10];
+    v11 = [v9 initWithBundleID:@"com.apple.MobileSMS" conversationId:conversationCopy eventType:v4 timestamp:v10];
 
     v12 = IMBiomeQueue();
     v14[0] = MEMORY[0x1E69E9820];
@@ -61,7 +61,7 @@ void __57__CKConversationUserInteractionManager_interactionSource__block_invoke(
     v14[2] = __66__CKConversationUserInteractionManager__logEvent_forConversation___block_invoke;
     v14[3] = &unk_1E72ED810;
     v15 = v11;
-    v16 = a1;
+    selfCopy = self;
     v13 = v11;
     dispatch_async(v12, v14);
   }

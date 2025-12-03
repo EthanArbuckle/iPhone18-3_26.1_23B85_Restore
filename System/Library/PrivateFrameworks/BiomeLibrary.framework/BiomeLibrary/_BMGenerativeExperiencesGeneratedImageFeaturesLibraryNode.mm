@@ -5,7 +5,7 @@
 + (id)configurationForUserInteraction;
 + (id)storeConfigurationForFailureReason;
 + (id)storeConfigurationForUserInteraction;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
@@ -14,7 +14,7 @@
 + (id)FailureReason
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForFailureReason];
+  configurationForFailureReason = [self configurationForFailureReason];
   v3 = +[BMGeneratedImageFailureReason columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -26,7 +26,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"GenerativeExperiences.GeneratedImageFeatures.FailureReason" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"GenerativeExperiences.GeneratedImageFeatures.FailureReason" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"GenerativeExperiences.GeneratedImageFeatures.FailureReason" schema:v9 configuration:configurationForFailureReason];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -35,26 +35,26 @@
 
 + (id)configurationForFailureReason
 {
-  v3 = [a1 storeConfigurationForFailureReason];
-  v4 = [a1 syncPolicyForFailureReason];
+  storeConfigurationForFailureReason = [self storeConfigurationForFailureReason];
+  syncPolicyForFailureReason = [self syncPolicyForFailureReason];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"93CD7B38-BC65-4578-BE4B-CF84EDAD7DF4"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"GenerativeExperiences.GeneratedImageFeatures.FailureReason" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"GenerativeExperiences.GeneratedImageFeatures.FailureReason" eventClass:objc_opt_class() storeConfig:storeConfigurationForFailureReason syncPolicy:syncPolicyForFailureReason legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
 
 + (id)configurationForUserInteraction
 {
-  v3 = [a1 storeConfigurationForUserInteraction];
-  v4 = [a1 syncPolicyForUserInteraction];
+  storeConfigurationForUserInteraction = [self storeConfigurationForUserInteraction];
+  syncPolicyForUserInteraction = [self syncPolicyForUserInteraction];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"9701B19A-6440-4326-AB28-8A0B6E7C6793"];
   BYTE2(v9) = 0;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"GenerativeExperiences.GeneratedImageFeatures.UserInteraction" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"GenerativeExperiences.GeneratedImageFeatures.UserInteraction" eventClass:objc_opt_class() storeConfig:storeConfigurationForUserInteraction syncPolicy:syncPolicyForUserInteraction legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -71,7 +71,7 @@
 + (id)UserInteraction
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForUserInteraction];
+  configurationForUserInteraction = [self configurationForUserInteraction];
   v3 = +[BMGeneratedImageUserInteraction columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -83,7 +83,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"GenerativeExperiences.GeneratedImageFeatures.UserInteraction" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"GenerativeExperiences.GeneratedImageFeatures.UserInteraction" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"GenerativeExperiences.GeneratedImageFeatures.UserInteraction" schema:v9 configuration:configurationForUserInteraction];
 
   v11 = *MEMORY[0x1E69E9840];
 
@@ -99,20 +99,20 @@
   return v4;
 }
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"FailureReason"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"FailureReason"])
   {
-    v5 = [a1 FailureReason];
+    failureReason = [self FailureReason];
 LABEL_5:
-    v6 = v5;
+    v6 = failureReason;
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"UserInteraction"])
+  if ([nameCopy isEqualToString:@"UserInteraction"])
   {
-    v5 = [a1 UserInteraction];
+    failureReason = [self UserInteraction];
     goto LABEL_5;
   }
 

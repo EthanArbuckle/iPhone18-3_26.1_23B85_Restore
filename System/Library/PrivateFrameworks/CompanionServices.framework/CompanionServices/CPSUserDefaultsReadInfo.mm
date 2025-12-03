@@ -1,7 +1,7 @@
 @interface CPSUserDefaultsReadInfo
-- (CPSUserDefaultsReadInfo)initWithCoder:(id)a3;
+- (CPSUserDefaultsReadInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPSUserDefaultsReadInfo
@@ -11,26 +11,26 @@
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
   v4 = [v3 appendObject:self->_suiteName withName:@"suiteName"];
   v5 = [v3 appendObject:self->_keys withName:@"keys"];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
-- (CPSUserDefaultsReadInfo)initWithCoder:(id)a3
+- (CPSUserDefaultsReadInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CPSUserDefaultsReadInfo;
   v5 = [(CPSUserDefaultsReadInfo *)&v13 init];
   if (v5)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"suiteName"];
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"suiteName"];
     suiteName = v5->_suiteName;
     v5->_suiteName = v7;
 
     v9 = objc_opt_self();
-    v10 = [v4 decodeArrayOfObjectsOfClass:v9 forKey:@"keys"];
+    v10 = [coderCopy decodeArrayOfObjectsOfClass:v9 forKey:@"keys"];
     keys = v5->_keys;
     v5->_keys = v10;
   }
@@ -38,12 +38,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   suiteName = self->_suiteName;
-  v5 = a3;
-  [v5 encodeObject:suiteName forKey:@"suiteName"];
-  [v5 encodeObject:self->_keys forKey:@"keys"];
+  coderCopy = coder;
+  [coderCopy encodeObject:suiteName forKey:@"suiteName"];
+  [coderCopy encodeObject:self->_keys forKey:@"keys"];
 }
 
 @end

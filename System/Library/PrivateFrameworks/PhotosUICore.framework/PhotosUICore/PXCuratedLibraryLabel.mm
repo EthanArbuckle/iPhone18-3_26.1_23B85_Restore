@@ -1,7 +1,7 @@
 @interface PXCuratedLibraryLabel
-+ (CGSize)sizeThatFits:(CGSize)a3 withConfiguration:(id)a4;
++ (CGSize)sizeThatFits:(CGSize)fits withConfiguration:(id)configuration;
 - (CGRect)clippingRect;
-- (void)setUserData:(id)a3;
+- (void)setUserData:(id)data;
 @end
 
 @implementation PXCuratedLibraryLabel
@@ -19,37 +19,37 @@
   return result;
 }
 
-- (void)setUserData:(id)a3
+- (void)setUserData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  dataCopy = data;
+  v5 = [dataCopy copy];
   userData = self->_userData;
   self->_userData = v5;
 
-  v7 = [v4 text];
-  [(PXCuratedLibraryLabel *)self setText:v7];
+  text = [dataCopy text];
+  [(PXCuratedLibraryLabel *)self setText:text];
 
-  -[PXCuratedLibraryLabel setTextAlignment:](self, "setTextAlignment:", [v4 textAlignment]);
+  -[PXCuratedLibraryLabel setTextAlignment:](self, "setTextAlignment:", [dataCopy textAlignment]);
   v8 = +[PXCuratedLibraryOverlayButton defaultTitleFont];
   [(PXCuratedLibraryLabel *)self setFont:v8];
 
-  v9 = [v4 textColor];
+  textColor = [dataCopy textColor];
 
-  [(PXCuratedLibraryLabel *)self setTextColor:v9];
+  [(PXCuratedLibraryLabel *)self setTextColor:textColor];
 }
 
-+ (CGSize)sizeThatFits:(CGSize)a3 withConfiguration:(id)a4
++ (CGSize)sizeThatFits:(CGSize)fits withConfiguration:(id)configuration
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v6 = sizeThatFits_withConfiguration__onceToken;
-  v7 = a4;
+  configurationCopy = configuration;
   if (v6 != -1)
   {
     dispatch_once(&sizeThatFits_withConfiguration__onceToken, &__block_literal_global_250044);
   }
 
-  [sizeThatFits_withConfiguration__measuringLabel setUserData:v7];
+  [sizeThatFits_withConfiguration__measuringLabel setUserData:configurationCopy];
 
   [sizeThatFits_withConfiguration__measuringLabel sizeThatFits:{width, height}];
   v10 = ceil(v9);

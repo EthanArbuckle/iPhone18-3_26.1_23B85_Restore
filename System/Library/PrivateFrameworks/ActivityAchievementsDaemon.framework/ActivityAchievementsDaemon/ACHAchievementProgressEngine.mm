@@ -1,24 +1,24 @@
 @interface ACHAchievementProgressEngine
 - (ACHAchievementProgressEngine)init;
 - (ACHAchievementStoring)achievementStore;
-- (BOOL)shouldPopulateProgressForAchievement:(id)a3;
+- (BOOL)shouldPopulateProgressForAchievement:(id)achievement;
 - (NSHashTable)providers;
-- (id)_queue_providerForTemplate:(id)a3;
-- (id)providerWithIdentifier:(id)a3;
+- (id)_queue_providerForTemplate:(id)template;
+- (id)providerWithIdentifier:(id)identifier;
 - (unint64_t)providerCount;
-- (void)deregisterProgressProvider:(id)a3;
-- (void)populateProgressAndGoalForAchievements:(id)a3;
-- (void)processAchievementProgressUpdates:(id)a3;
-- (void)registerProgressProvider:(id)a3;
-- (void)requestProgressUpdateForProgressProvider:(id)a3;
+- (void)deregisterProgressProvider:(id)provider;
+- (void)populateProgressAndGoalForAchievements:(id)achievements;
+- (void)processAchievementProgressUpdates:(id)updates;
+- (void)registerProgressProvider:(id)provider;
+- (void)requestProgressUpdateForProgressProvider:(id)provider;
 @end
 
 @implementation ACHAchievementProgressEngine
 
 - (NSHashTable)providers
 {
-  v3 = [(ACHAchievementProgressEngine *)self providerQueue];
-  dispatch_assert_queue_V2(v3);
+  providerQueue = [(ACHAchievementProgressEngine *)self providerQueue];
+  dispatch_assert_queue_V2(providerQueue);
 
   providers = self->_providers;
 
@@ -32,35 +32,35 @@
   v2 = [(ACHAchievementProgressEngine *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     providers = v2->_providers;
-    v2->_providers = v3;
+    v2->_providers = weakObjectsHashTable;
 
     v5 = HKCreateSerialDispatchQueue();
     providerQueue = v2->_providerQueue;
     v2->_providerQueue = v5;
 
-    v7 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     providerDelayedOperations = v2->_providerDelayedOperations;
-    v2->_providerDelayedOperations = v7;
+    v2->_providerDelayedOperations = weakToStrongObjectsMapTable;
   }
 
   return v2;
 }
 
-- (void)registerProgressProvider:(id)a3
+- (void)registerProgressProvider:(id)provider
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_283557160])
+  providerCopy = provider;
+  if ([providerCopy conformsToProtocol:&unk_283557160])
   {
-    v5 = [(ACHAchievementProgressEngine *)self providerQueue];
+    providerQueue = [(ACHAchievementProgressEngine *)self providerQueue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __57__ACHAchievementProgressEngine_registerProgressProvider___block_invoke;
     v13[3] = &unk_278490898;
-    v14 = v4;
-    v15 = self;
-    dispatch_sync(v5, v13);
+    v14 = providerCopy;
+    selfCopy = self;
+    dispatch_sync(providerQueue, v13);
 
     v6 = v14;
   }
@@ -70,7 +70,7 @@
     v6 = ACHLogProgress();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(ACHAchievementProgressEngine *)v4 registerProgressProvider:v6, v7, v8, v9, v10, v11, v12];
+      [(ACHAchievementProgressEngine *)providerCopy registerProgressProvider:v6, v7, v8, v9, v10, v11, v12];
     }
   }
 }
@@ -143,19 +143,19 @@ void __57__ACHAchievementProgressEngine_registerProgressProvider___block_invoke_
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deregisterProgressProvider:(id)a3
+- (void)deregisterProgressProvider:(id)provider
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_283557160])
+  providerCopy = provider;
+  if ([providerCopy conformsToProtocol:&unk_283557160])
   {
-    v5 = [(ACHAchievementProgressEngine *)self providerQueue];
+    providerQueue = [(ACHAchievementProgressEngine *)self providerQueue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __59__ACHAchievementProgressEngine_deregisterProgressProvider___block_invoke;
     v13[3] = &unk_278490898;
     v13[4] = self;
-    v14 = v4;
-    dispatch_sync(v5, v13);
+    v14 = providerCopy;
+    dispatch_sync(providerQueue, v13);
   }
 
   else
@@ -163,7 +163,7 @@ void __57__ACHAchievementProgressEngine_registerProgressProvider___block_invoke_
     v6 = ACHLogProgress();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [(ACHAchievementProgressEngine *)v4 deregisterProgressProvider:v6, v7, v8, v9, v10, v11, v12];
+      [(ACHAchievementProgressEngine *)providerCopy deregisterProgressProvider:v6, v7, v8, v9, v10, v11, v12];
     }
   }
 }
@@ -202,18 +202,18 @@ void __59__ACHAchievementProgressEngine_deregisterProgressProvider___block_invok
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestProgressUpdateForProgressProvider:(id)a3
+- (void)requestProgressUpdateForProgressProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(ACHAchievementProgressEngine *)self providerQueue];
+  providerCopy = provider;
+  providerQueue = [(ACHAchievementProgressEngine *)self providerQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__ACHAchievementProgressEngine_requestProgressUpdateForProgressProvider___block_invoke;
   v7[3] = &unk_278490898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = providerCopy;
+  v6 = providerCopy;
+  dispatch_async(providerQueue, v7);
 }
 
 void __73__ACHAchievementProgressEngine_requestProgressUpdateForProgressProvider___block_invoke(uint64_t a1)
@@ -222,62 +222,62 @@ void __73__ACHAchievementProgressEngine_requestProgressUpdateForProgressProvider
   [v1 execute];
 }
 
-- (id)_queue_providerForTemplate:(id)a3
+- (id)_queue_providerForTemplate:(id)template
 {
-  v4 = a3;
-  v5 = [(ACHAchievementProgressEngine *)self providerQueue];
-  dispatch_assert_queue_V2(v5);
+  templateCopy = template;
+  providerQueue = [(ACHAchievementProgressEngine *)self providerQueue];
+  dispatch_assert_queue_V2(providerQueue);
 
-  v6 = [(ACHAchievementProgressEngine *)self providers];
-  v7 = [v6 allObjects];
+  providers = [(ACHAchievementProgressEngine *)self providers];
+  allObjects = [providers allObjects];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __59__ACHAchievementProgressEngine__queue_providerForTemplate___block_invoke;
   v11[3] = &unk_278492118;
-  v12 = v4;
-  v8 = v4;
-  v9 = [v7 hk_firstObjectPassingTest:v11];
+  v12 = templateCopy;
+  v8 = templateCopy;
+  v9 = [allObjects hk_firstObjectPassingTest:v11];
 
   return v9;
 }
 
-- (BOOL)shouldPopulateProgressForAchievement:(id)a3
+- (BOOL)shouldPopulateProgressForAchievement:(id)achievement
 {
-  v3 = a3;
-  v4 = [v3 template];
-  v5 = [v3 template];
-  v6 = [v5 canonicalUnit];
+  achievementCopy = achievement;
+  template = [achievementCopy template];
+  template2 = [achievementCopy template];
+  canonicalUnit = [template2 canonicalUnit];
 
-  v7 = [v3 template];
-  v8 = [v7 graceProgressExpression];
-  if (v8)
+  template3 = [achievementCopy template];
+  graceProgressExpression = [template3 graceProgressExpression];
+  if (graceProgressExpression)
   {
-    v9 = v8;
+    progressExpression = graceProgressExpression;
 
 LABEL_4:
-    v11 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-    v12 = [v9 stringByTrimmingCharactersInSet:v11];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+    v12 = [progressExpression stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
     v13 = [v12 length] == 0;
 
     goto LABEL_5;
   }
 
-  v10 = [v3 template];
-  v9 = [v10 progressExpression];
+  template4 = [achievementCopy template];
+  progressExpression = [template4 progressExpression];
 
-  if (v9)
+  if (progressExpression)
   {
     goto LABEL_4;
   }
 
   v13 = 1;
 LABEL_5:
-  v14 = [v3 template];
-  if ([v14 earnLimit])
+  template5 = [achievementCopy template];
+  if ([template5 earnLimit])
   {
-    v15 = [v3 template];
-    v16 = [v15 earnLimit];
-    v17 = [v3 earnedInstanceCount] >= v16;
+    template6 = [achievementCopy template];
+    earnLimit = [template6 earnLimit];
+    v17 = [achievementCopy earnedInstanceCount] >= earnLimit;
   }
 
   else
@@ -285,25 +285,25 @@ LABEL_5:
     v17 = 0;
   }
 
-  v18 = [v4 visibilityStart];
-  if (v18 && (v19 = v18, [v4 visibilityEnd], v20 = objc_claimAutoreleasedReturnValue(), v20, v19, v20))
+  visibilityStart = [template visibilityStart];
+  if (visibilityStart && (v19 = visibilityStart, [template visibilityEnd], v20 = objc_claimAutoreleasedReturnValue(), v20, v19, v20))
   {
-    v21 = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
+    hk_gregorianCalendar = [MEMORY[0x277CBEA80] hk_gregorianCalendar];
     v22 = [MEMORY[0x277CBEAA8] now];
-    [v4 visibilityStart];
-    v23 = v35 = v6;
-    v24 = [v21 dateFromComponents:v23];
+    [template visibilityStart];
+    v23 = v35 = canonicalUnit;
+    v24 = [hk_gregorianCalendar dateFromComponents:v23];
 
-    v25 = [v4 visibilityEnd];
-    [v21 dateFromComponents:v25];
+    visibilityEnd = [template visibilityEnd];
+    [hk_gregorianCalendar dateFromComponents:visibilityEnd];
     v34 = v17;
     v27 = v26 = v13;
 
-    v28 = [v21 hk_startOfDateByAddingDays:1 toDate:v27];
+    v28 = [hk_gregorianCalendar hk_startOfDateByAddingDays:1 toDate:v27];
     v29 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v24 endDate:v28];
     v30 = [v29 containsDate:v22];
 
-    v6 = v35;
+    canonicalUnit = v35;
     v13 = v26;
     v17 = v34;
 
@@ -315,36 +315,36 @@ LABEL_5:
     v31 = 0;
   }
 
-  v32 = 0;
-  if (v6 != 0 && !v13 && !v17 && (v31 & 1) == 0)
+  prerequisiteMet = 0;
+  if (canonicalUnit != 0 && !v13 && !v17 && (v31 & 1) == 0)
   {
-    v32 = [v3 prerequisiteMet];
+    prerequisiteMet = [achievementCopy prerequisiteMet];
   }
 
-  return v32;
+  return prerequisiteMet;
 }
 
-- (void)populateProgressAndGoalForAchievements:(id)a3
+- (void)populateProgressAndGoalForAchievements:(id)achievements
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  achievementsCopy = achievements;
   v5 = ACHLogProgress();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v12 = [v4 count];
+    v12 = [achievementsCopy count];
     _os_log_impl(&dword_221DDC000, v5, OS_LOG_TYPE_DEFAULT, "populateProgressAndGoalForAchievements: %lu", buf, 0xCu);
   }
 
-  v6 = [(ACHAchievementProgressEngine *)self providerQueue];
+  providerQueue = [(ACHAchievementProgressEngine *)self providerQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __71__ACHAchievementProgressEngine_populateProgressAndGoalForAchievements___block_invoke;
   v9[3] = &unk_278490898;
   v9[4] = self;
-  v10 = v4;
-  v7 = v4;
-  dispatch_async(v6, v9);
+  v10 = achievementsCopy;
+  v7 = achievementsCopy;
+  dispatch_async(providerQueue, v9);
 
   v8 = *MEMORY[0x277D85DE8];
 }
@@ -491,18 +491,18 @@ uint64_t __71__ACHAchievementProgressEngine_populateProgressAndGoalForAchievemen
   return v7;
 }
 
-- (void)processAchievementProgressUpdates:(id)a3
+- (void)processAchievementProgressUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = [(ACHAchievementProgressEngine *)self providerQueue];
+  updatesCopy = updates;
+  providerQueue = [(ACHAchievementProgressEngine *)self providerQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__ACHAchievementProgressEngine_processAchievementProgressUpdates___block_invoke;
   v7[3] = &unk_278490898;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = updatesCopy;
+  v6 = updatesCopy;
+  dispatch_async(providerQueue, v7);
 }
 
 void __66__ACHAchievementProgressEngine_processAchievementProgressUpdates___block_invoke(uint64_t a1)
@@ -525,17 +525,17 @@ void __66__ACHAchievementProgressEngine_processAchievementProgressUpdates___bloc
   }
 }
 
-- (id)providerWithIdentifier:(id)a3
+- (id)providerWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSHashTable *)self->_providers allObjects];
+  identifierCopy = identifier;
+  allObjects = [(NSHashTable *)self->_providers allObjects];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __55__ACHAchievementProgressEngine_providerWithIdentifier___block_invoke;
   v9[3] = &unk_278492118;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 hk_firstObjectPassingTest:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [allObjects hk_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -554,14 +554,14 @@ uint64_t __55__ACHAchievementProgressEngine_providerWithIdentifier___block_invok
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(ACHAchievementProgressEngine *)self providerQueue];
+  providerQueue = [(ACHAchievementProgressEngine *)self providerQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __45__ACHAchievementProgressEngine_providerCount__block_invoke;
   v6[3] = &unk_278490FE8;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(providerQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);

@@ -1,15 +1,15 @@
 @interface TSgPTPManager
-+ (id)diagnosticDescriptionForInfo:(id)a3 withIndent:(id)a4;
++ (id)diagnosticDescriptionForInfo:(id)info withIndent:(id)indent;
 + (id)gPTPManager;
 + (id)sharedgPTPManager;
-+ (id)sharedgPTPManagerSyncWithTimeout:(unint64_t)a3;
++ (id)sharedgPTPManagerSyncWithTimeout:(unint64_t)timeout;
 - (TSgPTPClock)systemDomain;
 - (TSgPTPManager)init;
-- (void)addClient:(id)a3;
+- (void)addClient:(id)client;
 - (void)dealloc;
 - (void)init;
 - (void)interruptedgPTPManager;
-- (void)removeClient:(id)a3;
+- (void)removeClient:(id)client;
 @end
 
 @implementation TSgPTPManager
@@ -22,9 +22,9 @@
   {
     v4 = +[TSClockManager sharedClockManager];
     [v4 addgPTPServicesWithError:0];
-    v5 = [a1 gPTPManager];
+    gPTPManager = [self gPTPManager];
     v6 = _sharedgPTPManager;
-    _sharedgPTPManager = v5;
+    _sharedgPTPManager = gPTPManager;
 
     v3 = _sharedgPTPManager;
   }
@@ -35,7 +35,7 @@
   return v7;
 }
 
-+ (id)sharedgPTPManagerSyncWithTimeout:(unint64_t)a3
++ (id)sharedgPTPManagerSyncWithTimeout:(unint64_t)timeout
 {
   v5 = dispatch_semaphore_create(0);
   v11[0] = MEMORY[0x277D85DD0];
@@ -44,8 +44,8 @@
   v11[3] = &unk_279DBD538;
   v6 = v5;
   v12 = v6;
-  [a1 notifyWhengPTPManagerIsAvailable:v11];
-  v7 = dispatch_time(0, 1000000 * a3);
+  [self notifyWhengPTPManagerIsAvailable:v11];
+  v7 = dispatch_time(0, 1000000 * timeout);
   if (dispatch_semaphore_wait(v6, v7))
   {
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT))
@@ -54,15 +54,15 @@
       _os_log_impl(&dword_26F080000, MEMORY[0x277D86220], OS_LOG_TYPE_DEFAULT, "Failed to find gPTP manager within the timeout period.\n", v10, 2u);
     }
 
-    v8 = 0;
+    sharedgPTPManager = 0;
   }
 
   else
   {
-    v8 = [a1 sharedgPTPManager];
+    sharedgPTPManager = [self sharedgPTPManager];
   }
 
-  return v8;
+  return sharedgPTPManager;
 }
 
 + (id)gPTPManager
@@ -98,9 +98,9 @@
   if (v2)
   {
     v2->_clientLock._os_unfair_lock_opaque = 0;
-    v4 = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x277CCAC18] weakObjectsPointerArray];
     clients = v3->_clients;
-    v3->_clients = v4;
+    v3->_clients = weakObjectsPointerArray;
 
     v6 = objc_alloc_init(_TSF_TSDgPTPManager);
     impl = v3->_impl;
@@ -176,113 +176,113 @@ void __29__TSgPTPManager_systemDomain__block_invoke(uint64_t a1)
   [(TSgPTPManager *)&v4 dealloc];
 }
 
-+ (id)diagnosticDescriptionForInfo:(id)a3 withIndent:(id)a4
++ (id)diagnosticDescriptionForInfo:(id)info withIndent:(id)indent
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277CCAB68] string];
-  v8 = [v5 objectForKeyedSubscript:@"ClassName"];
-  [v7 appendFormat:@"%@+%@\n", v6, v8];
+  infoCopy = info;
+  indentCopy = indent;
+  string = [MEMORY[0x277CCAB68] string];
+  v8 = [infoCopy objectForKeyedSubscript:@"ClassName"];
+  [string appendFormat:@"%@+%@\n", indentCopy, v8];
 
-  [v7 appendFormat:@"%@    System PTP Instance Identifier: ", v6];
-  v9 = [v5 objectForKeyedSubscript:@"SystemDomainIdentifier"];
+  [string appendFormat:@"%@    System PTP Instance Identifier: ", indentCopy];
+  v9 = [infoCopy objectForKeyedSubscript:@"SystemDomainIdentifier"];
   v10 = v9;
   if (v9)
   {
-    [v7 appendFormat:@"0x%016llx\n", objc_msgSend(v9, "unsignedLongLongValue")];
+    [string appendFormat:@"0x%016llx\n", objc_msgSend(v9, "unsignedLongLongValue")];
   }
 
   else
   {
-    [v7 appendString:@"Could not read property\n"];
+    [string appendString:@"Could not read property\n"];
   }
 
-  [v7 appendFormat:@"%@    AVB 0 PTP Instance Identifier: ", v6];
-  v11 = [v5 objectForKeyedSubscript:@"AVB0ClockID"];
+  [string appendFormat:@"%@    AVB 0 PTP Instance Identifier: ", indentCopy];
+  v11 = [infoCopy objectForKeyedSubscript:@"AVB0ClockID"];
 
   if (v11)
   {
-    [v7 appendFormat:@"0x%016llx\n", objc_msgSend(v11, "unsignedLongLongValue")];
+    [string appendFormat:@"0x%016llx\n", objc_msgSend(v11, "unsignedLongLongValue")];
   }
 
   else
   {
-    [v7 appendString:@"Could not read property\n"];
+    [string appendString:@"Could not read property\n"];
   }
 
-  [v7 appendFormat:@"%@    AVB 1 PTP Instance Identifier: ", v6];
-  v12 = [v5 objectForKeyedSubscript:@"AVB1ClockID"];
+  [string appendFormat:@"%@    AVB 1 PTP Instance Identifier: ", indentCopy];
+  v12 = [infoCopy objectForKeyedSubscript:@"AVB1ClockID"];
 
   if (v12)
   {
-    [v7 appendFormat:@"0x%016llx\n", objc_msgSend(v12, "unsignedLongLongValue")];
+    [string appendFormat:@"0x%016llx\n", objc_msgSend(v12, "unsignedLongLongValue")];
   }
 
   else
   {
-    [v7 appendString:@"Could not read property\n"];
+    [string appendString:@"Could not read property\n"];
   }
 
-  [v7 appendFormat:@"%@    AVB 2 PTP Instance Identifier: ", v6];
-  v13 = [v5 objectForKeyedSubscript:@"AVB2ClockID"];
+  [string appendFormat:@"%@    AVB 2 PTP Instance Identifier: ", indentCopy];
+  v13 = [infoCopy objectForKeyedSubscript:@"AVB2ClockID"];
 
   if (v13)
   {
-    [v7 appendFormat:@"0x%016llx\n", objc_msgSend(v13, "unsignedLongLongValue")];
+    [string appendFormat:@"0x%016llx\n", objc_msgSend(v13, "unsignedLongLongValue")];
   }
 
   else
   {
-    [v7 appendString:@"Could not read property\n"];
+    [string appendString:@"Could not read property\n"];
   }
 
-  [v7 appendFormat:@"%@    AVB 3 PTP Instance Identifier: ", v6];
-  v14 = [v5 objectForKeyedSubscript:@"AVB3ClockID"];
+  [string appendFormat:@"%@    AVB 3 PTP Instance Identifier: ", indentCopy];
+  v14 = [infoCopy objectForKeyedSubscript:@"AVB3ClockID"];
 
   if (v14)
   {
-    [v7 appendFormat:@"0x%016llx\n", objc_msgSend(v14, "unsignedLongLongValue")];
+    [string appendFormat:@"0x%016llx\n", objc_msgSend(v14, "unsignedLongLongValue")];
   }
 
   else
   {
-    [v7 appendString:@"Could not read property\n"];
+    [string appendString:@"Could not read property\n"];
   }
 
-  [v7 appendFormat:@"%@    AirPlay PTP Instance Identifier: ", v6];
-  v15 = [v5 objectForKeyedSubscript:@"AirPlayClockID"];
+  [string appendFormat:@"%@    AirPlay PTP Instance Identifier: ", indentCopy];
+  v15 = [infoCopy objectForKeyedSubscript:@"AirPlayClockID"];
 
   if (v15)
   {
-    [v7 appendFormat:@"0x%016llx\n", objc_msgSend(v15, "unsignedLongLongValue")];
+    [string appendFormat:@"0x%016llx\n", objc_msgSend(v15, "unsignedLongLongValue")];
   }
 
   else
   {
-    [v7 appendString:@"Could not read property\n"];
+    [string appendString:@"Could not read property\n"];
   }
 
-  [v7 appendFormat:@"%@    Copresence PTP Instance Identifier: ", v6];
-  v16 = [v5 objectForKeyedSubscript:@"CopresenceClockID"];
+  [string appendFormat:@"%@    Copresence PTP Instance Identifier: ", indentCopy];
+  v16 = [infoCopy objectForKeyedSubscript:@"CopresenceClockID"];
 
   v26 = v16;
   if (v16)
   {
-    [v7 appendFormat:@"0x%016llx\n", objc_msgSend(v16, "unsignedLongLongValue")];
+    [string appendFormat:@"0x%016llx\n", objc_msgSend(v16, "unsignedLongLongValue")];
   }
 
   else
   {
-    [v7 appendString:@"Could not read property\n"];
+    [string appendString:@"Could not read property\n"];
   }
 
-  v17 = [v6 stringByAppendingString:@"        |"];
+  v17 = [indentCopy stringByAppendingString:@"        |"];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v18 = [v5 objectForKeyedSubscript:@"PTPInstances"];
+  v18 = [infoCopy objectForKeyedSubscript:@"PTPInstances"];
   v19 = [v18 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v19)
   {
@@ -298,7 +298,7 @@ void __29__TSgPTPManager_systemDomain__block_invoke(uint64_t a1)
         }
 
         v23 = [TSgPTPClock diagnosticDescriptionForInfo:*(*(&v27 + 1) + 8 * i) withIndent:v17];
-        [v7 appendString:v23];
+        [string appendString:v23];
       }
 
       v20 = [v18 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -309,13 +309,13 @@ void __29__TSgPTPManager_systemDomain__block_invoke(uint64_t a1)
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return string;
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_clientLock);
   [(NSPointerArray *)self->_clients compact];
   v13 = 0u;
@@ -338,7 +338,7 @@ void __29__TSgPTPManager_systemDomain__block_invoke(uint64_t a1)
           objc_enumerationMutation(v5);
         }
 
-        if (*(*(&v11 + 1) + 8 * v9) == v4)
+        if (*(*(&v11 + 1) + 8 * v9) == clientCopy)
         {
 
           goto LABEL_11;
@@ -358,17 +358,17 @@ void __29__TSgPTPManager_systemDomain__block_invoke(uint64_t a1)
     }
   }
 
-  [(NSPointerArray *)self->_clients addPointer:v4, v11];
+  [(NSPointerArray *)self->_clients addPointer:clientCopy, v11];
 LABEL_11:
   os_unfair_lock_unlock(&self->_clientLock);
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  clientCopy = client;
   os_unfair_lock_lock(&self->_clientLock);
   [(NSPointerArray *)self->_clients compact];
   v15 = 0u;
@@ -394,7 +394,7 @@ LABEL_11:
           objc_enumerationMutation(v5);
         }
 
-        if (*(*(&v13 + 1) + 8 * v10) == v4)
+        if (*(*(&v13 + 1) + 8 * v10) == clientCopy)
         {
 
           [(NSPointerArray *)self->_clients removePointerAtIndex:v11, v13];

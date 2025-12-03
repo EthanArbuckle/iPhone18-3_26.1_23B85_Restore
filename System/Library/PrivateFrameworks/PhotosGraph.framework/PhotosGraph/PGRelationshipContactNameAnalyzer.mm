@@ -1,15 +1,15 @@
 @interface PGRelationshipContactNameAnalyzer
-- (PGRelationshipContactNameAnalyzer)initWithRelationshipProcessor:(id)a3;
-- (void)runAnalysisWithProgressBlock:(id)a3;
+- (PGRelationshipContactNameAnalyzer)initWithRelationshipProcessor:(id)processor;
+- (void)runAnalysisWithProgressBlock:(id)block;
 @end
 
 @implementation PGRelationshipContactNameAnalyzer
 
-- (void)runAnalysisWithProgressBlock:(id)a3
+- (void)runAnalysisWithProgressBlock:(id)block
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = _Block_copy(v4);
+  blockCopy = block;
+  v5 = _Block_copy(blockCopy);
   v39 = 0;
   v40 = &v39;
   v41 = 0x2020000000;
@@ -32,12 +32,12 @@
   else
   {
     WeakRetained = objc_loadWeakRetained(&self->_processor);
-    v9 = [WeakRetained graph];
-    v10 = [v9 inferredUserLocales];
-    v11 = [WeakRetained serviceManager];
-    v12 = [v11 mePerson];
-    v13 = [WeakRetained personNodes];
-    v14 = [v13 count];
+    graph = [WeakRetained graph];
+    inferredUserLocales = [graph inferredUserLocales];
+    serviceManager = [WeakRetained serviceManager];
+    mePerson = [serviceManager mePerson];
+    personNodes = [WeakRetained personNodes];
+    v14 = [personNodes count];
     buf = 0;
     *&v47 = &buf;
     *(&v47 + 1) = 0x2020000000;
@@ -53,15 +53,15 @@
     v31 = &v35;
     v34 = 0x3F847AE147AE147BLL;
     v32 = &v39;
-    v16 = v11;
+    v16 = serviceManager;
     v25 = v16;
-    v17 = v10;
+    v17 = inferredUserLocales;
     v26 = v17;
     v18 = WeakRetained;
     v27 = v18;
-    v19 = v12;
+    v19 = mePerson;
     v28 = v19;
-    [v13 enumerateNodesUsingBlock:v24];
+    [personNodes enumerateNodesUsingBlock:v24];
     if (v5)
     {
       Current = CFAbsoluteTimeGetCurrent();
@@ -155,16 +155,16 @@ LABEL_19:
 LABEL_21:
 }
 
-- (PGRelationshipContactNameAnalyzer)initWithRelationshipProcessor:(id)a3
+- (PGRelationshipContactNameAnalyzer)initWithRelationshipProcessor:(id)processor
 {
-  v4 = a3;
+  processorCopy = processor;
   v8.receiver = self;
   v8.super_class = PGRelationshipContactNameAnalyzer;
   v5 = [(PGRelationshipContactNameAnalyzer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_processor, v4);
+    objc_storeWeak(&v5->_processor, processorCopy);
   }
 
   return v6;

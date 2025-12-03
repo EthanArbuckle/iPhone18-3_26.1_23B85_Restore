@@ -1,21 +1,21 @@
 @interface CXSetVideoPresentationSizeCallAction
 - (CGSize)videoPresentationSize;
-- (CXSetVideoPresentationSizeCallAction)initWithCallUUID:(id)a3 videoPresentationSize:(CGSize)a4;
-- (CXSetVideoPresentationSizeCallAction)initWithCoder:(id)a3;
+- (CXSetVideoPresentationSizeCallAction)initWithCallUUID:(id)d videoPresentationSize:(CGSize)size;
+- (CXSetVideoPresentationSizeCallAction)initWithCoder:(id)coder;
 - (id)customDescription;
-- (void)encodeWithCoder:(id)a3;
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone;
 @end
 
 @implementation CXSetVideoPresentationSizeCallAction
 
-- (CXSetVideoPresentationSizeCallAction)initWithCallUUID:(id)a3 videoPresentationSize:(CGSize)a4
+- (CXSetVideoPresentationSizeCallAction)initWithCallUUID:(id)d videoPresentationSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v7.receiver = self;
   v7.super_class = CXSetVideoPresentationSizeCallAction;
-  result = [(CXCallAction *)&v7 initWithCallUUID:a3];
+  result = [(CXCallAction *)&v7 initWithCallUUID:d];
   if (result)
   {
     result->_videoPresentationSize.width = width;
@@ -29,36 +29,36 @@
 {
   v6.receiver = self;
   v6.super_class = CXSetVideoPresentationSizeCallAction;
-  v3 = [(CXCallAction *)&v6 customDescription];
+  customDescription = [(CXCallAction *)&v6 customDescription];
   [(CXSetVideoPresentationSizeCallAction *)self videoPresentationSize];
   v4 = NSStringFromSize(v8);
-  [v3 appendFormat:@" videoPresentationSize=%@", v4];
+  [customDescription appendFormat:@" videoPresentationSize=%@", v4];
 
-  return v3;
+  return customDescription;
 }
 
-- (void)updateCopy:(id)a3 withZone:(_NSZone *)a4
+- (void)updateCopy:(id)copy withZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CXSetVideoPresentationSizeCallAction;
-  v6 = a3;
-  [(CXAction *)&v7 updateCopy:v6 withZone:a4];
+  copyCopy = copy;
+  [(CXAction *)&v7 updateCopy:copyCopy withZone:zone];
   [(CXSetVideoPresentationSizeCallAction *)self videoPresentationSize:v7.receiver];
-  [v6 setVideoPresentationSize:?];
+  [copyCopy setVideoPresentationSize:?];
 }
 
-- (CXSetVideoPresentationSizeCallAction)initWithCoder:(id)a3
+- (CXSetVideoPresentationSizeCallAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = CXSetVideoPresentationSizeCallAction;
-  v5 = [(CXCallAction *)&v12 initWithCoder:v4];
+  v5 = [(CXCallAction *)&v12 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     p_videoPresentationSize = &v5->_videoPresentationSize;
     v8 = NSStringFromSelector(sel_videoPresentationSize);
-    [v4 decodeSizeForKey:v8];
+    [coderCopy decodeSizeForKey:v8];
     *&p_videoPresentationSize->width = v9;
     v6->_videoPresentationSize.height = v10;
   }
@@ -66,17 +66,17 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v10.receiver = self;
   v10.super_class = CXSetVideoPresentationSizeCallAction;
-  v4 = a3;
-  [(CXCallAction *)&v10 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CXCallAction *)&v10 encodeWithCoder:coderCopy];
   [(CXSetVideoPresentationSizeCallAction *)self videoPresentationSize:v10.receiver];
   v6 = v5;
   v8 = v7;
   v9 = NSStringFromSelector(sel_videoPresentationSize);
-  [v4 encodeSize:v9 forKey:{v6, v8}];
+  [coderCopy encodeSize:v9 forKey:{v6, v8}];
 }
 
 - (CGSize)videoPresentationSize

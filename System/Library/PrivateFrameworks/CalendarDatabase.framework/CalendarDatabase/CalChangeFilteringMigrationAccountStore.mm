@@ -1,31 +1,31 @@
 @interface CalChangeFilteringMigrationAccountStore
-+ (id)storeFilteringAllChangesInBackingAccountStore:(id)a3;
-- (BOOL)removeAccount:(id)a3 error:(id *)a4;
-- (BOOL)saveAccount:(id)a3 withError:(id *)a4;
-- (CalChangeFilteringMigrationAccountStore)initWithBackingAccountStore:(id)a3 delegate:(id)a4;
++ (id)storeFilteringAllChangesInBackingAccountStore:(id)store;
+- (BOOL)removeAccount:(id)account error:(id *)error;
+- (BOOL)saveAccount:(id)account withError:(id *)error;
+- (CalChangeFilteringMigrationAccountStore)initWithBackingAccountStore:(id)store delegate:(id)delegate;
 - (CalChangeFilteringMigrationAccountStoreDelegate)delegate;
-- (id)_accountWithIdentifier:(id)a3 preloadedBackingAccount:(id)a4;
-- (id)_backingAccountForAccount:(id)a3;
-- (id)childAccountsForAccount:(id)a3 withTypeIdentifier:(id)a4;
-- (id)createAccountWithAccountTypeIdentifier:(id)a3 error:(id *)a4;
-- (id)createChildAccountOfParent:(id)a3 withAccountTypeIdentifier:(id)a4 error:(id *)a5;
-- (id)topLevelAccountsWithAccountTypeIdentifier:(id)a3 error:(id *)a4;
+- (id)_accountWithIdentifier:(id)identifier preloadedBackingAccount:(id)account;
+- (id)_backingAccountForAccount:(id)account;
+- (id)childAccountsForAccount:(id)account withTypeIdentifier:(id)identifier;
+- (id)createAccountWithAccountTypeIdentifier:(id)identifier error:(id *)error;
+- (id)createChildAccountOfParent:(id)parent withAccountTypeIdentifier:(id)identifier error:(id *)error;
+- (id)topLevelAccountsWithAccountTypeIdentifier:(id)identifier error:(id *)error;
 @end
 
 @implementation CalChangeFilteringMigrationAccountStore
 
-- (CalChangeFilteringMigrationAccountStore)initWithBackingAccountStore:(id)a3 delegate:(id)a4
+- (CalChangeFilteringMigrationAccountStore)initWithBackingAccountStore:(id)store delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  delegateCopy = delegate;
   v20.receiver = self;
   v20.super_class = CalChangeFilteringMigrationAccountStore;
   v9 = [(CalChangeFilteringMigrationAccountStore *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_backingAccountStore, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_backingAccountStore, store);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v11 = objc_opt_new();
     addedWrappedAccounts = v10->_addedWrappedAccounts;
     v10->_addedWrappedAccounts = v11;
@@ -46,21 +46,21 @@
   return v10;
 }
 
-+ (id)storeFilteringAllChangesInBackingAccountStore:(id)a3
++ (id)storeFilteringAllChangesInBackingAccountStore:(id)store
 {
-  v4 = a3;
+  storeCopy = store;
   v5 = objc_opt_new();
-  v6 = [[a1 alloc] initWithBackingAccountStore:v4 delegate:v5];
+  v6 = [[self alloc] initWithBackingAccountStore:storeCopy delegate:v5];
 
   return v6;
 }
 
-- (id)_accountWithIdentifier:(id)a3 preloadedBackingAccount:(id)a4
+- (id)_accountWithIdentifier:(id)identifier preloadedBackingAccount:(id)account
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CalChangeFilteringMigrationAccountStore *)self removedWrappedAccountIdentifiers];
-  v9 = [v8 containsObject:v6];
+  identifierCopy = identifier;
+  accountCopy = account;
+  removedWrappedAccountIdentifiers = [(CalChangeFilteringMigrationAccountStore *)self removedWrappedAccountIdentifiers];
+  v9 = [removedWrappedAccountIdentifiers containsObject:identifierCopy];
 
   if (v9)
   {
@@ -69,8 +69,8 @@
 
   else
   {
-    v11 = [(CalChangeFilteringMigrationAccountStore *)self addedWrappedAccounts];
-    v12 = [v11 objectForKeyedSubscript:v6];
+    addedWrappedAccounts = [(CalChangeFilteringMigrationAccountStore *)self addedWrappedAccounts];
+    v12 = [addedWrappedAccounts objectForKeyedSubscript:identifierCopy];
 
     if (v12)
     {
@@ -80,8 +80,8 @@
 
     else
     {
-      v14 = [(CalChangeFilteringMigrationAccountStore *)self loadedAccounts];
-      v15 = [v14 objectForKeyedSubscript:v6];
+      loadedAccounts = [(CalChangeFilteringMigrationAccountStore *)self loadedAccounts];
+      v15 = [loadedAccounts objectForKeyedSubscript:identifierCopy];
 
       if (v15)
       {
@@ -89,16 +89,16 @@
         v13 = 0;
       }
 
-      else if (v7 || (-[CalChangeFilteringMigrationAccountStore backingAccountStore](self, "backingAccountStore"), v16 = objc_claimAutoreleasedReturnValue(), [v16 accountWithIdentifier:v6], v7 = objc_claimAutoreleasedReturnValue(), v16, v7))
+      else if (accountCopy || (-[CalChangeFilteringMigrationAccountStore backingAccountStore](self, "backingAccountStore"), v16 = objc_claimAutoreleasedReturnValue(), [v16 accountWithIdentifier:identifierCopy], accountCopy = objc_claimAutoreleasedReturnValue(), v16, accountCopy))
       {
-        v17 = [v7 parentAccountIdentifier];
+        parentAccountIdentifier = [accountCopy parentAccountIdentifier];
 
-        if (v17 || (-[CalChangeFilteringMigrationAccountStore delegate](self, "delegate"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 allowChangesToExistingTopLevelAccount:v7], v18, !v19))
+        if (parentAccountIdentifier || (-[CalChangeFilteringMigrationAccountStore delegate](self, "delegate"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 allowChangesToExistingTopLevelAccount:accountCopy], v18, !v19))
         {
-          v22 = [[CalChangeFilteringMigrationAccount alloc] initWithBackingAccount:v7];
-          v23 = [(CalChangeFilteringMigrationAccountStore *)self loadedAccounts];
-          v24 = [v7 identifier];
-          [v23 setObject:v22 forKeyedSubscript:v24];
+          v22 = [[CalChangeFilteringMigrationAccount alloc] initWithBackingAccount:accountCopy];
+          loadedAccounts2 = [(CalChangeFilteringMigrationAccountStore *)self loadedAccounts];
+          identifier = [accountCopy identifier];
+          [loadedAccounts2 setObject:v22 forKeyedSubscript:identifier];
 
           v21 = v22;
           v13 = v21;
@@ -106,11 +106,11 @@
 
         else
         {
-          v20 = [(CalChangeFilteringMigrationAccountStore *)self loadedAccounts];
-          [v20 setObject:v7 forKeyedSubscript:v6];
+          loadedAccounts3 = [(CalChangeFilteringMigrationAccountStore *)self loadedAccounts];
+          [loadedAccounts3 setObject:accountCopy forKeyedSubscript:identifierCopy];
 
-          v21 = v7;
-          v7 = v21;
+          v21 = accountCopy;
+          accountCopy = v21;
           v13 = 0;
         }
 
@@ -128,12 +128,12 @@
   return v10;
 }
 
-- (id)topLevelAccountsWithAccountTypeIdentifier:(id)a3 error:(id *)a4
+- (id)topLevelAccountsWithAccountTypeIdentifier:(id)identifier error:(id *)error
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CalChangeFilteringMigrationAccountStore *)self backingAccountStore];
-  v8 = [v7 topLevelAccountsWithAccountTypeIdentifier:v6 error:a4];
+  identifierCopy = identifier;
+  backingAccountStore = [(CalChangeFilteringMigrationAccountStore *)self backingAccountStore];
+  v8 = [backingAccountStore topLevelAccountsWithAccountTypeIdentifier:identifierCopy error:error];
 
   if (v8)
   {
@@ -158,8 +158,8 @@
           }
 
           v15 = *(*(&v34 + 1) + 8 * i);
-          v16 = [v15 identifier];
-          v17 = [(CalChangeFilteringMigrationAccountStore *)self _accountWithIdentifier:v16 preloadedBackingAccount:v15];
+          identifier = [v15 identifier];
+          v17 = [(CalChangeFilteringMigrationAccountStore *)self _accountWithIdentifier:identifier preloadedBackingAccount:v15];
 
           if (v17)
           {
@@ -177,10 +177,10 @@
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v18 = [(CalChangeFilteringMigrationAccountStore *)self addedWrappedAccounts];
-    v19 = [v18 allValues];
+    addedWrappedAccounts = [(CalChangeFilteringMigrationAccountStore *)self addedWrappedAccounts];
+    allValues = [addedWrappedAccounts allValues];
 
-    v20 = [v19 countByEnumeratingWithState:&v30 objects:v38 count:16];
+    v20 = [allValues countByEnumeratingWithState:&v30 objects:v38 count:16];
     if (v20)
     {
       v21 = v20;
@@ -191,19 +191,19 @@
         {
           if (*v31 != v22)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(allValues);
           }
 
           v24 = *(*(&v30 + 1) + 8 * j);
-          v25 = [v24 parentAccountIdentifier];
-          if (v25)
+          parentAccountIdentifier = [v24 parentAccountIdentifier];
+          if (parentAccountIdentifier)
           {
           }
 
           else
           {
-            v26 = [v24 accountTypeIdentifier];
-            v27 = [v26 isEqualToString:v6];
+            accountTypeIdentifier = [v24 accountTypeIdentifier];
+            v27 = [accountTypeIdentifier isEqualToString:identifierCopy];
 
             if (v27)
             {
@@ -212,7 +212,7 @@
           }
         }
 
-        v21 = [v19 countByEnumeratingWithState:&v30 objects:v38 count:16];
+        v21 = [allValues countByEnumeratingWithState:&v30 objects:v38 count:16];
       }
 
       while (v21);
@@ -229,14 +229,14 @@
   return v9;
 }
 
-- (id)childAccountsForAccount:(id)a3 withTypeIdentifier:(id)a4
+- (id)childAccountsForAccount:(id)account withTypeIdentifier:(id)identifier
 {
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CalChangeFilteringMigrationAccountStore *)self removedWrappedAccountIdentifiers];
-  v9 = [v6 identifier];
-  v10 = [v8 containsObject:v9];
+  accountCopy = account;
+  identifierCopy = identifier;
+  removedWrappedAccountIdentifiers = [(CalChangeFilteringMigrationAccountStore *)self removedWrappedAccountIdentifiers];
+  identifier = [accountCopy identifier];
+  v10 = [removedWrappedAccountIdentifiers containsObject:identifier];
 
   if (v10)
   {
@@ -246,16 +246,16 @@
   else
   {
     v12 = objc_opt_new();
-    v13 = [(CalChangeFilteringMigrationAccountStore *)self addedWrappedAccounts];
-    v14 = [v6 identifier];
-    v15 = [v13 objectForKeyedSubscript:v14];
+    addedWrappedAccounts = [(CalChangeFilteringMigrationAccountStore *)self addedWrappedAccounts];
+    identifier2 = [accountCopy identifier];
+    v15 = [addedWrappedAccounts objectForKeyedSubscript:identifier2];
 
-    v40 = v6;
+    v40 = accountCopy;
     if (!v15)
     {
-      v16 = [(CalChangeFilteringMigrationAccountStore *)self _backingAccountForAccount:v6];
-      v17 = [(CalChangeFilteringMigrationAccountStore *)self backingAccountStore];
-      v18 = [v17 childAccountsForAccount:v16 withTypeIdentifier:v7];
+      v16 = [(CalChangeFilteringMigrationAccountStore *)self _backingAccountForAccount:accountCopy];
+      backingAccountStore = [(CalChangeFilteringMigrationAccountStore *)self backingAccountStore];
+      v18 = [backingAccountStore childAccountsForAccount:v16 withTypeIdentifier:identifierCopy];
 
       v47 = 0u;
       v48 = 0u;
@@ -277,8 +277,8 @@
             }
 
             v24 = *(*(&v45 + 1) + 8 * i);
-            v25 = [v24 identifier];
-            v26 = [(CalChangeFilteringMigrationAccountStore *)self _accountWithIdentifier:v25 preloadedBackingAccount:v24];
+            identifier3 = [v24 identifier];
+            v26 = [(CalChangeFilteringMigrationAccountStore *)self _accountWithIdentifier:identifier3 preloadedBackingAccount:v24];
 
             if (v26)
             {
@@ -292,16 +292,16 @@
         while (v21);
       }
 
-      v6 = v40;
+      accountCopy = v40;
     }
 
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v27 = [(CalChangeFilteringMigrationAccountStore *)self addedWrappedChildAccounts];
-    v28 = [v6 identifier];
-    v29 = [v27 objectForKeyedSubscript:v28];
+    addedWrappedChildAccounts = [(CalChangeFilteringMigrationAccountStore *)self addedWrappedChildAccounts];
+    identifier4 = [accountCopy identifier];
+    v29 = [addedWrappedChildAccounts objectForKeyedSubscript:identifier4];
 
     v30 = [v29 countByEnumeratingWithState:&v41 objects:v49 count:16];
     if (v30)
@@ -321,8 +321,8 @@
           v35 = v34;
           if (v34)
           {
-            v36 = [v34 accountTypeIdentifier];
-            v37 = [v36 isEqualToString:v7];
+            accountTypeIdentifier = [v34 accountTypeIdentifier];
+            v37 = [accountTypeIdentifier isEqualToString:identifierCopy];
 
             if (v37)
             {
@@ -338,7 +338,7 @@
     }
 
     v11 = [v12 copy];
-    v6 = v40;
+    accountCopy = v40;
   }
 
   v38 = *MEMORY[0x1E69E9840];
@@ -346,68 +346,68 @@
   return v11;
 }
 
-- (id)createAccountWithAccountTypeIdentifier:(id)a3 error:(id *)a4
+- (id)createAccountWithAccountTypeIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
-  v7 = [(CalChangeFilteringMigrationAccountStore *)self delegate];
-  v8 = [v7 allowCreationOfTopLevelAccountWithTypeIdentifier:v6];
+  identifierCopy = identifier;
+  delegate = [(CalChangeFilteringMigrationAccountStore *)self delegate];
+  v8 = [delegate allowCreationOfTopLevelAccountWithTypeIdentifier:identifierCopy];
 
   if (v8)
   {
-    v9 = [(CalChangeFilteringMigrationAccountStore *)self backingAccountStore];
-    v10 = [v9 createAccountWithAccountTypeIdentifier:v6 error:a4];
+    backingAccountStore = [(CalChangeFilteringMigrationAccountStore *)self backingAccountStore];
+    v10 = [backingAccountStore createAccountWithAccountTypeIdentifier:identifierCopy error:error];
   }
 
   else
   {
-    v11 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v11 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    backingAccountStore = [uUID UUIDString];
 
-    v10 = [[CalChangeFilteringMigrationAccount alloc] initWithAccountIdentifier:v9 accountTypeIdentifier:v6];
-    v12 = [(CalChangeFilteringMigrationAccountStore *)self addedWrappedAccounts];
-    [v12 setObject:v10 forKeyedSubscript:v9];
+    v10 = [[CalChangeFilteringMigrationAccount alloc] initWithAccountIdentifier:backingAccountStore accountTypeIdentifier:identifierCopy];
+    addedWrappedAccounts = [(CalChangeFilteringMigrationAccountStore *)self addedWrappedAccounts];
+    [addedWrappedAccounts setObject:v10 forKeyedSubscript:backingAccountStore];
   }
 
   return v10;
 }
 
-- (id)createChildAccountOfParent:(id)a3 withAccountTypeIdentifier:(id)a4 error:(id *)a5
+- (id)createChildAccountOfParent:(id)parent withAccountTypeIdentifier:(id)identifier error:(id *)error
 {
-  v7 = a3;
+  parentCopy = parent;
   v8 = MEMORY[0x1E696AFB0];
-  v9 = a4;
-  v10 = [v8 UUID];
-  v11 = [v10 UUIDString];
+  identifierCopy = identifier;
+  uUID = [v8 UUID];
+  uUIDString = [uUID UUIDString];
 
-  v12 = [[CalChangeFilteringMigrationAccount alloc] initWithAccountIdentifier:v11 accountTypeIdentifier:v9];
-  v13 = [(CalChangeFilteringMigrationAccountStore *)self addedWrappedAccounts];
-  [v13 setObject:v12 forKeyedSubscript:v11];
+  v12 = [[CalChangeFilteringMigrationAccount alloc] initWithAccountIdentifier:uUIDString accountTypeIdentifier:identifierCopy];
+  addedWrappedAccounts = [(CalChangeFilteringMigrationAccountStore *)self addedWrappedAccounts];
+  [addedWrappedAccounts setObject:v12 forKeyedSubscript:uUIDString];
 
-  v14 = [(CalChangeFilteringMigrationAccountStore *)self addedWrappedChildAccounts];
-  v15 = [v7 identifier];
-  v16 = [v14 objectForKeyedSubscript:v15];
+  addedWrappedChildAccounts = [(CalChangeFilteringMigrationAccountStore *)self addedWrappedChildAccounts];
+  identifier = [parentCopy identifier];
+  v16 = [addedWrappedChildAccounts objectForKeyedSubscript:identifier];
 
   if (!v16)
   {
     v16 = objc_opt_new();
-    v17 = [(CalChangeFilteringMigrationAccountStore *)self addedWrappedChildAccounts];
-    v18 = [v7 identifier];
-    [v17 setObject:v16 forKeyedSubscript:v18];
+    addedWrappedChildAccounts2 = [(CalChangeFilteringMigrationAccountStore *)self addedWrappedChildAccounts];
+    identifier2 = [parentCopy identifier];
+    [addedWrappedChildAccounts2 setObject:v16 forKeyedSubscript:identifier2];
   }
 
-  [v16 addObject:v11];
-  v19 = [v7 identifier];
-  [(CalChangeFilteringMigrationAccount *)v12 setParentAccountIdentifier:v19];
+  [v16 addObject:uUIDString];
+  identifier3 = [parentCopy identifier];
+  [(CalChangeFilteringMigrationAccount *)v12 setParentAccountIdentifier:identifier3];
 
   return v12;
 }
 
-- (BOOL)removeAccount:(id)a3 error:(id *)a4
+- (BOOL)removeAccount:(id)account error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 identifier];
-  v8 = [(CalChangeFilteringMigrationAccountStore *)self removedWrappedAccountIdentifiers];
-  v9 = [v8 containsObject:v7];
+  accountCopy = account;
+  identifier = [accountCopy identifier];
+  removedWrappedAccountIdentifiers = [(CalChangeFilteringMigrationAccountStore *)self removedWrappedAccountIdentifiers];
+  v9 = [removedWrappedAccountIdentifiers containsObject:identifier];
 
   if (v9)
   {
@@ -416,50 +416,50 @@
 
   else
   {
-    v11 = [(CalChangeFilteringMigrationAccountStore *)self addedWrappedAccounts];
-    v12 = [v11 objectForKeyedSubscript:v7];
+    addedWrappedAccounts = [(CalChangeFilteringMigrationAccountStore *)self addedWrappedAccounts];
+    v12 = [addedWrappedAccounts objectForKeyedSubscript:identifier];
 
     if (v12)
     {
-      v13 = [(CalChangeFilteringMigrationAccountStore *)self addedWrappedAccounts];
-      [v13 removeObjectForKey:v7];
+      addedWrappedAccounts2 = [(CalChangeFilteringMigrationAccountStore *)self addedWrappedAccounts];
+      [addedWrappedAccounts2 removeObjectForKey:identifier];
 
-      v14 = [(CalChangeFilteringMigrationAccountStore *)self addedWrappedChildAccounts];
+      addedWrappedChildAccounts = [(CalChangeFilteringMigrationAccountStore *)self addedWrappedChildAccounts];
       v18[0] = MEMORY[0x1E69E9820];
       v18[1] = 3221225472;
       v18[2] = __63__CalChangeFilteringMigrationAccountStore_removeAccount_error___block_invoke;
       v18[3] = &unk_1E8688768;
-      v19 = v7;
-      [v14 enumerateKeysAndObjectsUsingBlock:v18];
+      v19 = identifier;
+      [addedWrappedChildAccounts enumerateKeysAndObjectsUsingBlock:v18];
     }
 
     else
     {
-      v15 = [(CalChangeFilteringMigrationAccountStore *)self loadedAccounts];
-      [v15 removeObjectForKey:v7];
+      loadedAccounts = [(CalChangeFilteringMigrationAccountStore *)self loadedAccounts];
+      [loadedAccounts removeObjectForKey:identifier];
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = [(CalChangeFilteringMigrationAccountStore *)self removedWrappedAccountIdentifiers];
-      [v16 addObject:v7];
+      removedWrappedAccountIdentifiers2 = [(CalChangeFilteringMigrationAccountStore *)self removedWrappedAccountIdentifiers];
+      [removedWrappedAccountIdentifiers2 addObject:identifier];
       v10 = 1;
     }
 
     else
     {
-      v16 = [(CalChangeFilteringMigrationAccountStore *)self backingAccountStore];
-      v10 = [v16 removeAccount:v6 error:a4];
+      removedWrappedAccountIdentifiers2 = [(CalChangeFilteringMigrationAccountStore *)self backingAccountStore];
+      v10 = [removedWrappedAccountIdentifiers2 removeAccount:accountCopy error:error];
     }
   }
 
   return v10;
 }
 
-- (BOOL)saveAccount:(id)a3 withError:(id *)a4
+- (BOOL)saveAccount:(id)account withError:(id *)error
 {
-  v6 = a3;
+  accountCopy = account;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -468,28 +468,28 @@
 
   else
   {
-    v8 = [(CalChangeFilteringMigrationAccountStore *)self backingAccountStore];
-    v7 = [v8 saveAccount:v6 withError:a4];
+    backingAccountStore = [(CalChangeFilteringMigrationAccountStore *)self backingAccountStore];
+    v7 = [backingAccountStore saveAccount:accountCopy withError:error];
   }
 
   return v7;
 }
 
-- (id)_backingAccountForAccount:(id)a3
+- (id)_backingAccountForAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 backingAccount];
+    backingAccount = [accountCopy backingAccount];
   }
 
   else
   {
-    v4 = v3;
+    backingAccount = accountCopy;
   }
 
-  v5 = v4;
+  v5 = backingAccount;
 
   return v5;
 }

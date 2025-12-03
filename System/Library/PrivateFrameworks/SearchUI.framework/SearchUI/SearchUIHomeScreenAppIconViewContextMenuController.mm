@@ -1,11 +1,11 @@
 @interface SearchUIHomeScreenAppIconViewContextMenuController
 + (id)sharedInstance;
-- (BOOL)contextMenuManager:(id)a3 shouldBeginContextMenuPresentationForIconView:(id)a4;
-- (BOOL)iconView:(id)a3 shouldActivateApplicationShortcutItem:(id)a4 atIndex:(unint64_t)a5;
-- (BOOL)isTimedOutForIcon:(id)a3;
-- (BOOL)shouldActivateApplicationShortcutItem:(id)a3 atIndex:(unint64_t)a4 forIconView:(id)a5;
+- (BOOL)contextMenuManager:(id)manager shouldBeginContextMenuPresentationForIconView:(id)view;
+- (BOOL)iconView:(id)view shouldActivateApplicationShortcutItem:(id)item atIndex:(unint64_t)index;
+- (BOOL)isTimedOutForIcon:(id)icon;
+- (BOOL)shouldActivateApplicationShortcutItem:(id)item atIndex:(unint64_t)index forIconView:(id)view;
 - (SearchUIHomeScreenAppIconViewContextMenuController)init;
-- (id)iconView:(id)a3 applicationShortcutItemsWithProposedItems:(id)a4;
+- (id)iconView:(id)view applicationShortcutItemsWithProposedItems:(id)items;
 @end
 
 @implementation SearchUIHomeScreenAppIconViewContextMenuController
@@ -54,39 +54,39 @@ uint64_t __68__SearchUIHomeScreenAppIconViewContextMenuController_sharedInstance
   return v2;
 }
 
-- (BOOL)contextMenuManager:(id)a3 shouldBeginContextMenuPresentationForIconView:(id)a4
+- (BOOL)contextMenuManager:(id)manager shouldBeginContextMenuPresentationForIconView:(id)view
 {
-  v4 = a4;
-  v5 = [SearchUIUtilities deviceIsAuthenticatedForView:v4];
+  viewCopy = view;
+  v5 = [SearchUIUtilities deviceIsAuthenticatedForView:viewCopy];
   if (v5)
   {
-    [v4 didEngageWithTriggerEvent:5 destination:1];
+    [viewCopy didEngageWithTriggerEvent:5 destination:1];
   }
 
   return v5;
 }
 
-- (id)iconView:(id)a3 applicationShortcutItemsWithProposedItems:(id)a4
+- (id)iconView:(id)view applicationShortcutItemsWithProposedItems:(id)items
 {
-  v5 = a3;
-  v6 = [a4 mutableCopy];
-  v7 = [v5 rowModel];
-  v8 = [v7 identifyingResult];
+  viewCopy = view;
+  v6 = [items mutableCopy];
+  rowModel = [viewCopy rowModel];
+  identifyingResult = [rowModel identifyingResult];
 
-  if ([v8 type] == 22)
+  if ([identifyingResult type] == 22)
   {
-    [v5 isInSuggestionContext];
+    [viewCopy isInSuggestionContext];
   }
 
   else
   {
-    v9 = [v8 type];
-    if ([v5 isInSuggestionContext] && v9 != 24)
+    type = [identifyingResult type];
+    if ([viewCopy isInSuggestionContext] && type != 24)
     {
       v10 = objc_opt_class();
-      v11 = [v8 title];
-      v12 = [v11 text];
-      v13 = [v10 neverSuggestAppShortcutItemWithLocalizedName:v12];
+      title = [identifyingResult title];
+      text = [title text];
+      v13 = [v10 neverSuggestAppShortcutItemWithLocalizedName:text];
       [v6 addObject:v13];
     }
   }
@@ -94,45 +94,45 @@ uint64_t __68__SearchUIHomeScreenAppIconViewContextMenuController_sharedInstance
   return v6;
 }
 
-- (BOOL)iconView:(id)a3 shouldActivateApplicationShortcutItem:(id)a4 atIndex:(unint64_t)a5
+- (BOOL)iconView:(id)view shouldActivateApplicationShortcutItem:(id)item atIndex:(unint64_t)index
 {
-  v8 = a3;
-  LOBYTE(a5) = [(SearchUIHomeScreenAppIconViewContextMenuController *)self shouldActivateApplicationShortcutItem:a4 atIndex:a5 forIconView:v8];
-  v9 = [v8 icon];
+  viewCopy = view;
+  LOBYTE(index) = [(SearchUIHomeScreenAppIconViewContextMenuController *)self shouldActivateApplicationShortcutItem:item atIndex:index forIconView:viewCopy];
+  icon = [viewCopy icon];
 
-  LOBYTE(self) = [(SearchUIHomeScreenAppIconViewContextMenuController *)self isTimedOutForIcon:v9];
-  return a5 & (self ^ 1);
+  LOBYTE(self) = [(SearchUIHomeScreenAppIconViewContextMenuController *)self isTimedOutForIcon:icon];
+  return index & (self ^ 1);
 }
 
-- (BOOL)shouldActivateApplicationShortcutItem:(id)a3 atIndex:(unint64_t)a4 forIconView:(id)a5
+- (BOOL)shouldActivateApplicationShortcutItem:(id)item atIndex:(unint64_t)index forIconView:(id)view
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v6 = a5;
-  v7 = [a3 type];
-  v8 = [v7 isEqualToString:@"com.apple.SearchUI.application-shortcut-item.never-show-suggestion"];
+  viewCopy = view;
+  type = [item type];
+  v8 = [type isEqualToString:@"com.apple.SearchUI.application-shortcut-item.never-show-suggestion"];
 
   if (v8)
   {
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v22 = @"SearchUIHomeScreenAppIconViewBundleIdUserInfoKey";
-    v10 = [v6 rowModel];
-    v11 = [v10 applicationBundleIdentifier];
-    v23[0] = v11;
+    rowModel = [viewCopy rowModel];
+    applicationBundleIdentifier = [rowModel applicationBundleIdentifier];
+    v23[0] = applicationBundleIdentifier;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-    [v9 postNotificationName:@"SearchUIHomeScreenAppIconViewDidHideIconNotification" object:0 userInfo:v12];
+    [defaultCenter postNotificationName:@"SearchUIHomeScreenAppIconViewDidHideIconNotification" object:0 userInfo:v12];
 
     v13 = objc_opt_new();
     [v13 setCategory:6];
-    v14 = [v6 rowModel];
-    v15 = [v14 identifyingResult];
-    v16 = [v15 identifier];
-    [v13 setProactiveIdentifier:v16];
+    rowModel2 = [viewCopy rowModel];
+    identifyingResult = [rowModel2 identifyingResult];
+    identifier = [identifyingResult identifier];
+    [v13 setProactiveIdentifier:identifier];
 
-    v17 = [v6 feedbackDelegate];
-    v18 = [SearchUIUtilities environmentForDelegate:v17];
+    feedbackDelegate = [viewCopy feedbackDelegate];
+    v18 = [SearchUIUtilities environmentForDelegate:feedbackDelegate];
 
-    v19 = [v6 rowModel];
-    v20 = [SearchUICommandHandler handlerForCommand:v13 rowModel:v19 button:0 sectionModel:0 environment:v18];
+    rowModel3 = [viewCopy rowModel];
+    v20 = [SearchUICommandHandler handlerForCommand:v13 rowModel:rowModel3 button:0 sectionModel:0 environment:v18];
 
     [v20 executeWithTriggerEvent:17];
   }
@@ -140,25 +140,25 @@ uint64_t __68__SearchUIHomeScreenAppIconViewContextMenuController_sharedInstance
   return v8 ^ 1;
 }
 
-- (BOOL)isTimedOutForIcon:(id)a3
+- (BOOL)isTimedOutForIcon:(id)icon
 {
-  v3 = a3;
+  iconCopy = icon;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v4 = +[SearchUIScreenTimeManager sharedInstance];
-    v5 = [v3 applicationBundleID];
-    v6 = [v4 getCachedObjectIfAvailableForKey:v5];
+    applicationBundleID = [iconCopy applicationBundleID];
+    v6 = [v4 getCachedObjectIfAvailableForKey:applicationBundleID];
 
-    v7 = [v6 BOOLValue];
+    bOOLValue = [v6 BOOLValue];
   }
 
   else
   {
-    v7 = 0;
+    bOOLValue = 0;
   }
 
-  return v7;
+  return bOOLValue;
 }
 
 @end

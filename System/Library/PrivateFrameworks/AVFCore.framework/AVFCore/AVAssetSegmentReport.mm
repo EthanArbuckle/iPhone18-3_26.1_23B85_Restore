@@ -1,16 +1,16 @@
 @interface AVAssetSegmentReport
-- (AVAssetSegmentReport)initWithFigSegmentReportDictionary:(id)a3;
+- (AVAssetSegmentReport)initWithFigSegmentReportDictionary:(id)dictionary;
 - (void)dealloc;
 @end
 
 @implementation AVAssetSegmentReport
 
-- (AVAssetSegmentReport)initWithFigSegmentReportDictionary:(id)a3
+- (AVAssetSegmentReport)initWithFigSegmentReportDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!dictionary)
   {
-    v14 = self;
+    selfCopy = self;
     v20 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", v15, v16, v17, v18, v19, "figSegmentReportDict != nil"), 0}];
     objc_exception_throw(v20);
   }
@@ -20,8 +20,8 @@
   v5 = [(AVAssetSegmentReport *)&v25 init];
   if (v5)
   {
-    v5->_segmentType = [objc_msgSend(a3 objectForKey:{*MEMORY[0x1E6971418]), "integerValue"}];
-    v6 = [a3 objectForKey:*MEMORY[0x1E6971420]];
+    v5->_segmentType = [objc_msgSend(dictionary objectForKey:{*MEMORY[0x1E6971418]), "integerValue"}];
+    v6 = [dictionary objectForKey:*MEMORY[0x1E6971420]];
     v5->_trackReports = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v6, "count")}];
     v21 = 0u;
     v22 = 0u;

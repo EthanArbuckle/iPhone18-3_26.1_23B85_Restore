@@ -1,5 +1,5 @@
 @interface SessionRingsPresenterAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 + (void)onAllRingsCompletion;
 + (void)onExerciseRingCompletion;
 + (void)onMoveRingCompletion;
@@ -8,18 +8,18 @@
 
 @implementation SessionRingsPresenterAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SeymourUI.AccessibilitySessionRingsPresenter" hasClassMethod:@"onMoveRingCompletion" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SeymourUI.AccessibilitySessionRingsPresenter" hasClassMethod:@"onExerciseRingCompletion" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SeymourUI.AccessibilitySessionRingsPresenter" hasClassMethod:@"onStandRingCompletion" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"SeymourUI.AccessibilitySessionRingsPresenter" hasClassMethod:@"onAllRingsCompletion" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SeymourUI.AccessibilitySessionRingsPresenter" hasClassMethod:@"onMoveRingCompletion" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SeymourUI.AccessibilitySessionRingsPresenter" hasClassMethod:@"onExerciseRingCompletion" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SeymourUI.AccessibilitySessionRingsPresenter" hasClassMethod:@"onStandRingCompletion" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"SeymourUI.AccessibilitySessionRingsPresenter" hasClassMethod:@"onAllRingsCompletion" withFullSignature:{"v", 0}];
 }
 
 + (void)onMoveRingCompletion
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___SessionRingsPresenterAccessibility;
   objc_msgSendSuper2(&v4, sel_onMoveRingCompletion);
   v2 = *MEMORY[0x29EDC7EA8];
@@ -29,7 +29,7 @@
 
 + (void)onExerciseRingCompletion
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___SessionRingsPresenterAccessibility;
   objc_msgSendSuper2(&v4, sel_onExerciseRingCompletion);
   v2 = *MEMORY[0x29EDC7EA8];
@@ -39,7 +39,7 @@
 
 + (void)onStandRingCompletion
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___SessionRingsPresenterAccessibility;
   objc_msgSendSuper2(&v4, sel_onStandRingCompletion);
   v2 = *MEMORY[0x29EDC7EA8];
@@ -49,7 +49,7 @@
 
 + (void)onAllRingsCompletion
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___SessionRingsPresenterAccessibility;
   objc_msgSendSuper2(&v4, sel_onAllRingsCompletion);
   v2 = *MEMORY[0x29EDC7EA8];

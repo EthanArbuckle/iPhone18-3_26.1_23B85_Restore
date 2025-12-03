@@ -1,43 +1,43 @@
 @interface HKSharingRecipientAuthorizationStore
 + (id)clientInterface;
 + (id)serverInterface;
-- (HKSharingRecipientAuthorizationStore)initWithHealthStore:(id)a3 recipientIdentifier:(id)a4;
+- (HKSharingRecipientAuthorizationStore)initWithHealthStore:(id)store recipientIdentifier:(id)identifier;
 - (id)exportedInterface;
 - (id)remoteInterface;
 - (void)_registerRemoteObservers;
-- (void)addObserver:(id)a3;
-- (void)addSharingAuthorizations:(id)a3 completion:(id)a4;
-- (void)clientRemote_didAddSharingAuthorizations:(id)a3;
-- (void)clientRemote_didRemoveSharingAuthorizations:(id)a3;
+- (void)addObserver:(id)observer;
+- (void)addSharingAuthorizations:(id)authorizations completion:(id)completion;
+- (void)clientRemote_didAddSharingAuthorizations:(id)authorizations;
+- (void)clientRemote_didRemoveSharingAuthorizations:(id)authorizations;
 - (void)clientRemote_wasRevoked;
-- (void)fetchSharingAuthorizationsMarkedForDeletionWithCompletion:(id)a3;
-- (void)fetchSharingAuthorizationsWithCompletion:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)removeSharingAuthorizations:(id)a3 completion:(id)a4;
-- (void)revokeWithCompletion:(id)a3;
+- (void)fetchSharingAuthorizationsMarkedForDeletionWithCompletion:(id)completion;
+- (void)fetchSharingAuthorizationsWithCompletion:(id)completion;
+- (void)removeObserver:(id)observer;
+- (void)removeSharingAuthorizations:(id)authorizations completion:(id)completion;
+- (void)revokeWithCompletion:(id)completion;
 @end
 
 @implementation HKSharingRecipientAuthorizationStore
 
-- (HKSharingRecipientAuthorizationStore)initWithHealthStore:(id)a3 recipientIdentifier:(id)a4
+- (HKSharingRecipientAuthorizationStore)initWithHealthStore:(id)store recipientIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  identifierCopy = identifier;
   v26.receiver = self;
   v26.super_class = HKSharingRecipientAuthorizationStore;
   v9 = [(HKSharingRecipientAuthorizationStore *)&v26 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_healthStore, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_healthStore, store);
+    v11 = [identifierCopy copy];
     recipientIdentifier = v10->_recipientIdentifier;
     v10->_recipientIdentifier = v11;
 
     v13 = [HKTaskServerProxyProvider alloc];
     healthStore = v10->_healthStore;
-    v15 = [MEMORY[0x1E696AFB0] UUID];
-    v16 = [(HKTaskServerProxyProvider *)v13 initWithHealthStore:healthStore taskIdentifier:@"HKSharingRecipientAuthorizationStoreServerIdentifier" exportedObject:v10 taskUUID:v15];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    v16 = [(HKTaskServerProxyProvider *)v13 initWithHealthStore:healthStore taskIdentifier:@"HKSharingRecipientAuthorizationStoreServerIdentifier" exportedObject:v10 taskUUID:uUID];
     proxyProvider = v10->_proxyProvider;
     v10->_proxyProvider = v16;
 
@@ -56,9 +56,9 @@
   return v10;
 }
 
-- (void)fetchSharingAuthorizationsWithCompletion:(id)a3
+- (void)fetchSharingAuthorizationsWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -88,9 +88,9 @@ void __81__HKSharingRecipientAuthorizationStore_fetchSharingAuthorizationsWithCo
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)fetchSharingAuthorizationsMarkedForDeletionWithCompletion:(id)a3
+- (void)fetchSharingAuthorizationsMarkedForDeletionWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueObjectHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -120,16 +120,16 @@ void __98__HKSharingRecipientAuthorizationStore_fetchSharingAuthorizationsMarked
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)addSharingAuthorizations:(id)a3 completion:(id)a4
+- (void)addSharingAuthorizations:(id)authorizations completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  authorizationsCopy = authorizations;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __76__HKSharingRecipientAuthorizationStore_addSharingAuthorizations_completion___block_invoke;
   v13[3] = &unk_1E7381AA8;
-  v14 = v6;
+  v14 = authorizationsCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -138,7 +138,7 @@ void __98__HKSharingRecipientAuthorizationStore_fetchSharingAuthorizationsMarked
   v11[4] = self;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = authorizationsCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
@@ -155,16 +155,16 @@ void __76__HKSharingRecipientAuthorizationStore_addSharingAuthorizations_complet
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)removeSharingAuthorizations:(id)a3 completion:(id)a4
+- (void)removeSharingAuthorizations:(id)authorizations completion:(id)completion
 {
-  v6 = a3;
-  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a4];
+  authorizationsCopy = authorizations;
+  v7 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __79__HKSharingRecipientAuthorizationStore_removeSharingAuthorizations_completion___block_invoke;
   v13[3] = &unk_1E7381AA8;
-  v14 = v6;
+  v14 = authorizationsCopy;
   v15 = v7;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
@@ -173,7 +173,7 @@ void __76__HKSharingRecipientAuthorizationStore_addSharingAuthorizations_complet
   v11[4] = self;
   v12 = v15;
   v9 = v15;
-  v10 = v6;
+  v10 = authorizationsCopy;
   [(HKProxyProvider *)proxyProvider fetchProxyWithHandler:v13 errorHandler:v11];
 }
 
@@ -190,9 +190,9 @@ void __79__HKSharingRecipientAuthorizationStore_removeSharingAuthorizations_comp
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)revokeWithCompletion:(id)a3
+- (void)revokeWithCompletion:(id)completion
 {
-  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:a3];
+  v4 = [(HKProxyProvider *)self->_proxyProvider clientQueueActionHandlerWithCompletion:completion];
   proxyProvider = self->_proxyProvider;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -222,18 +222,18 @@ void __61__HKSharingRecipientAuthorizationStore_revokeWithCompletion___block_inv
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
   proxyProvider = self->_proxyProvider;
   observers = self->_observers;
-  v6 = a3;
-  v7 = [(HKProxyProvider *)proxyProvider clientQueue];
+  observerCopy = observer;
+  clientQueue = [(HKProxyProvider *)proxyProvider clientQueue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __52__HKSharingRecipientAuthorizationStore_addObserver___block_invoke;
   v8[3] = &unk_1E7376780;
   v8[4] = self;
-  [(HKObserverSet *)observers registerObserver:v6 queue:v7 runIfFirstObserver:v8];
+  [(HKObserverSet *)observers registerObserver:observerCopy queue:clientQueue runIfFirstObserver:v8];
 }
 
 void __52__HKSharingRecipientAuthorizationStore_addObserver___block_invoke(uint64_t a1)
@@ -256,7 +256,7 @@ void __52__HKSharingRecipientAuthorizationStore_addObserver___block_invoke_2(uin
   [WeakRetained _registerRemoteObservers];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
   observers = self->_observers;
   v4[0] = MEMORY[0x1E69E9820];
@@ -264,7 +264,7 @@ void __52__HKSharingRecipientAuthorizationStore_addObserver___block_invoke_2(uin
   v4[2] = __55__HKSharingRecipientAuthorizationStore_removeObserver___block_invoke;
   v4[3] = &unk_1E7376780;
   v4[4] = self;
-  [(HKObserverSet *)observers unregisterObserver:a3 runIfLastObserver:v4];
+  [(HKObserverSet *)observers unregisterObserver:observer runIfLastObserver:v4];
 }
 
 uint64_t __55__HKSharingRecipientAuthorizationStore_removeObserver___block_invoke(uint64_t a1)
@@ -324,31 +324,31 @@ void __55__HKSharingRecipientAuthorizationStore_removeObserver___block_invoke_3(
   return [v2 serverInterface];
 }
 
-- (void)clientRemote_didAddSharingAuthorizations:(id)a3
+- (void)clientRemote_didAddSharingAuthorizations:(id)authorizations
 {
-  v4 = a3;
+  authorizationsCopy = authorizations;
   observers = self->_observers;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __81__HKSharingRecipientAuthorizationStore_clientRemote_didAddSharingAuthorizations___block_invoke;
   v7[3] = &unk_1E7381AF0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = authorizationsCopy;
+  v6 = authorizationsCopy;
   [(HKObserverSet *)observers notifyObservers:v7];
 }
 
-- (void)clientRemote_didRemoveSharingAuthorizations:(id)a3
+- (void)clientRemote_didRemoveSharingAuthorizations:(id)authorizations
 {
-  v4 = a3;
+  authorizationsCopy = authorizations;
   observers = self->_observers;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __84__HKSharingRecipientAuthorizationStore_clientRemote_didRemoveSharingAuthorizations___block_invoke;
   v7[3] = &unk_1E7381AF0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = authorizationsCopy;
+  v6 = authorizationsCopy;
   [(HKObserverSet *)observers notifyObservers:v7];
 }
 

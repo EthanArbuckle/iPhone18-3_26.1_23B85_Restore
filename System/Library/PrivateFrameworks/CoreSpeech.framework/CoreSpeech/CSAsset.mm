@@ -1,10 +1,10 @@
 @interface CSAsset
-+ (BOOL)supportsMultiPhraseVoiceTriggerForEngineVersion:(id)a3 engineMinorVersion:(id)a4 accessoryRTModelType:(id)a5;
++ (BOOL)supportsMultiPhraseVoiceTriggerForEngineVersion:(id)version engineMinorVersion:(id)minorVersion accessoryRTModelType:(id)type;
 + (unint64_t)getSSVDeviceType;
 + (unsigned)SSVDefaultDistanceChannelCount;
 + (unsigned)SSVDefaultLKFSChannelCount;
 + (unsigned)SSVDefaultNoiseChannelCount;
-- (BOOL)_allowMultiPhrase:(id)a3 forceSkipEngineVersionCheck:(BOOL)a4;
+- (BOOL)_allowMultiPhrase:(id)phrase forceSkipEngineVersionCheck:(BOOL)check;
 - (BOOL)containsMultiUserThresholds;
 - (BOOL)satImplicitTrainingEnabled;
 - (BOOL)useSpeakerRecognitionAsset;
@@ -113,33 +113,33 @@
 - (float)satImplicitProfileDeltaThreshold;
 - (float)satImplicitProfileThreshold;
 - (float)satScoreThreshold;
-- (float)satScoreThresholdForPhId:(unint64_t)a3;
+- (float)satScoreThresholdForPhId:(unint64_t)id;
 - (float)satVTImplicitThreshold;
-- (id)RTModelWithFallbackLanguage:(id)a3;
+- (id)RTModelWithFallbackLanguage:(id)language;
 - (id)_adaptiveSiriVolumeDictionary;
-- (id)_buildRTModelWithBlobConfig:(id)a3 requestOptions:(id)a4;
-- (id)_getNumberFromASVDictionaryForKey:(id)a3 category:(id)a4 default:(id)a5;
-- (id)_rtModelWithRequestOptions:(id)a3 accessoryBlobs:(id)a4;
-- (id)_splitBlobsByPhraseType:(id)a3;
-- (id)_userSelectedPhraseTypeToRTModelPhraseType:(id)a3;
-- (id)createRTModelWithLocale:(id)a3;
-- (id)getPhraseConfig:(unint64_t)a3;
-- (id)latestHearstRTModelWithRequestOptions:(id)a3;
-- (id)localeMapWithName:(id)a3;
-- (id)rtModelLocaleMapWithModelType:(int64_t)a3;
-- (id)rtModelWithRequestOptions:(id)a3;
+- (id)_buildRTModelWithBlobConfig:(id)config requestOptions:(id)options;
+- (id)_getNumberFromASVDictionaryForKey:(id)key category:(id)category default:(id)default;
+- (id)_rtModelWithRequestOptions:(id)options accessoryBlobs:(id)blobs;
+- (id)_splitBlobsByPhraseType:(id)type;
+- (id)_userSelectedPhraseTypeToRTModelPhraseType:(id)type;
+- (id)createRTModelWithLocale:(id)locale;
+- (id)getPhraseConfig:(unint64_t)config;
+- (id)latestHearstRTModelWithRequestOptions:(id)options;
+- (id)localeMapWithName:(id)name;
+- (id)rtModelLocaleMapWithModelType:(int64_t)type;
+- (id)rtModelWithRequestOptions:(id)options;
 - (int)SSVCADistanceInputBufferDurationSeconds;
 - (int)SSVCANoiseActivityCountThreshold;
 - (int)SSVCASmartSiriVolumeSyncedMetricLogsToRetain;
 - (int)SSVCASmartSiriVolumeUnsyncedMetricLogsToRetain;
 - (int64_t)multiUserConfidentScoreThreshold;
-- (int64_t)multiUserConfidentScoreThresholdForPhId:(unint64_t)a3;
+- (int64_t)multiUserConfidentScoreThresholdForPhId:(unint64_t)id;
 - (int64_t)multiUserDeltaScoreThreshold;
-- (int64_t)multiUserDeltaScoreThresholdForPhId:(unint64_t)a3;
+- (int64_t)multiUserDeltaScoreThresholdForPhId:(unint64_t)id;
 - (int64_t)multiUserHighScoreThreshold;
-- (int64_t)multiUserHighScoreThresholdForPhId:(unint64_t)a3;
+- (int64_t)multiUserHighScoreThresholdForPhId:(unint64_t)id;
 - (int64_t)multiUserLowScoreThreshold;
-- (int64_t)multiUserLowScoreThresholdForPhId:(unint64_t)a3;
+- (int64_t)multiUserLowScoreThresholdForPhId:(unint64_t)id;
 - (unint64_t)SSVCADeviceSimplePreTriggerSilenceSampleCount;
 - (unint64_t)SSVCADistanceResultSampleCountTolerance;
 - (unint64_t)SSVCADistanceResultsBufferSize;
@@ -273,51 +273,51 @@
   return v12;
 }
 
-- (id)_getNumberFromASVDictionaryForKey:(id)a3 category:(id)a4 default:(id)a5
+- (id)_getNumberFromASVDictionaryForKey:(id)key category:(id)category default:(id)default
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(CSAsset *)self _adaptiveSiriVolumeDictionary];
-  v12 = v11;
-  if (!v11)
+  keyCopy = key;
+  categoryCopy = category;
+  defaultCopy = default;
+  _adaptiveSiriVolumeDictionary = [(CSAsset *)self _adaptiveSiriVolumeDictionary];
+  v12 = _adaptiveSiriVolumeDictionary;
+  if (!_adaptiveSiriVolumeDictionary)
   {
     goto LABEL_5;
   }
 
-  v13 = [v11 objectForKeyedSubscript:v9];
+  v13 = [_adaptiveSiriVolumeDictionary objectForKeyedSubscript:categoryCopy];
   if (!v13)
   {
     goto LABEL_5;
   }
 
   v14 = v13;
-  v15 = [v12 objectForKeyedSubscript:v9];
-  v16 = [v15 objectForKeyedSubscript:v8];
+  v15 = [v12 objectForKeyedSubscript:categoryCopy];
+  v16 = [v15 objectForKeyedSubscript:keyCopy];
 
   if (v16)
   {
-    v17 = [v12 objectForKeyedSubscript:v9];
-    v18 = [v17 objectForKeyedSubscript:v8];
+    v17 = [v12 objectForKeyedSubscript:categoryCopy];
+    v18 = [v17 objectForKeyedSubscript:keyCopy];
   }
 
   else
   {
 LABEL_5:
     v19 = CSLogCategoryASV;
-    v18 = v10;
+    v18 = defaultCopy;
     if (os_log_type_enabled(CSLogCategoryASV, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 136315906;
       v22 = "[CSAsset(SmartSiriVolume) _getNumberFromASVDictionaryForKey:category:default:]";
       v23 = 2114;
-      v24 = v9;
+      v24 = categoryCopy;
       v25 = 2114;
-      v26 = v8;
+      v26 = keyCopy;
       v27 = 2114;
-      v28 = v10;
+      v28 = defaultCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "%s Cannot access to %{public}@ %{public}@ using default value=%{public}@", &v21, 0x2Au);
-      v18 = v10;
+      v18 = defaultCopy;
     }
   }
 
@@ -367,9 +367,9 @@ LABEL_5:
 - (unint64_t)SSVCAHistoricalVolumeBufferSize
 {
   v2 = [(CSAsset *)self _getNumberFromASVDictionaryForKey:@"SSVCAHistoricalVolumeBufferSize" category:@"smartSiriVolume" default:&off_10025E048];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (float)SSVCAVolumeHalfLifeSeconds
@@ -540,9 +540,9 @@ LABEL_8:
 - (unint64_t)SSVCAUserIntentValidForSeconds
 {
   v2 = [(CSAsset *)self _getNumberFromASVDictionaryForKey:@"SSVCAUserIntentValidForSeconds" category:@"smartSiriVolume" default:&off_10025E030];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (float)SSVCAMaxTTSSystemVolume
@@ -590,9 +590,9 @@ LABEL_8:
 - (unint64_t)SSVCADeviceSimplePreTriggerSilenceSampleCount
 {
   v2 = [(CSAsset *)self _getNumberFromASVDictionaryForKey:@"SSVCADeviceSimplePreTriggerSilenceSampleCount" category:@"smartSiriVolume" default:&off_10025E018];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (float)SSVCADeviceSimpleMicSensitivityOffset
@@ -704,9 +704,9 @@ LABEL_8:
 - (unint64_t)SSVCADistanceResultSampleCountTolerance
 {
   v2 = [(CSAsset *)self _getNumberFromASVDictionaryForKey:@"SSVCADistanceResultSampleCountTolerance" category:@"smartSiriVolume" default:&off_10025E000];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (float)SSVCAExponentialDistanceHistoryDegradationFactor
@@ -721,33 +721,33 @@ LABEL_8:
 - (unint64_t)SSVCADistanceResultsBufferSize
 {
   v2 = [(CSAsset *)self _getNumberFromASVDictionaryForKey:@"SSVCADistanceResultsBufferSize" category:@"smartSiriVolume" default:&off_10025DFE8];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (unint64_t)SSVCADspNumStages
 {
   v2 = [(CSAsset *)self _getNumberFromASVDictionaryForKey:@"SSVCADspNumStages" category:@"smartSiriVolume" default:&off_10025DFD0];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (unint64_t)SSVCADspCoefsCount
 {
   v2 = [(CSAsset *)self _getNumberFromASVDictionaryForKey:@"SSVCADspCoefsCount" category:@"smartSiriVolume" default:&off_10025DFB8];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (unint64_t)SSVCANoiseActivityHistoricalSampleCount
 {
   v2 = [(CSAsset *)self _getNumberFromASVDictionaryForKey:@"SSVCANoiseActivityHistoricalSampleCount" category:@"smartSiriVolume" default:&off_10025DFA0];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (float)SSVCADefaultMusicStrength
@@ -771,17 +771,17 @@ LABEL_8:
 - (unint64_t)SSVCAMusicResultsBufferSize
 {
   v2 = [(CSAsset *)self _getNumberFromASVDictionaryForKey:@"SSVCAMusicResultsBufferSize" category:@"smartSiriVolume" default:&off_10025DF88];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (unint64_t)SSVCANoiseResultsBufferSize
 {
   v2 = [(CSAsset *)self _getNumberFromASVDictionaryForKey:@"SSVCANoiseResultsBufferSize" category:@"smartSiriVolume" default:&off_10025DF88];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (float)SSVCANoiseActivityThreshold
@@ -1243,9 +1243,9 @@ LABEL_8:
 - (int)SSVCANoiseActivityCountThreshold
 {
   v2 = [(CSAsset *)self _getNumberFromASVDictionaryForKey:@"SSVCANoiseActivityCountThreshold" category:@"smartSiriVolume" default:&off_10025DF70];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (float)SSVCADefaultOutputTTSVolume
@@ -1260,9 +1260,9 @@ LABEL_8:
 - (unsigned)SSVCAAnnouncementStatusFetchTimeoutMs
 {
   v2 = [(CSAsset *)self _getNumberFromASVDictionaryForKey:@"SSVCAAnnouncementStatusFetchTimeoutMs" category:@"smartSiriVolume" default:&off_10025DF58];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (float)SSVCADefaultZeroFloatingPointValue
@@ -1286,9 +1286,9 @@ LABEL_8:
 - (int)SSVCADistanceInputBufferDurationSeconds
 {
   v2 = [(CSAsset *)self _getNumberFromASVDictionaryForKey:@"SSVCADistanceInputBufferDurationSeconds" category:@"smartSiriVolume" default:&off_10025DF40];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (float)SSVCAVoiceTriggerInitialSilenceDurationSeconds
@@ -1303,17 +1303,17 @@ LABEL_8:
 - (int)SSVCASmartSiriVolumeSyncedMetricLogsToRetain
 {
   v2 = [(CSAsset *)self _getNumberFromASVDictionaryForKey:@"SSVCASmartSiriVolumeSyncedMetricLogsToRetain" category:@"smartSiriVolume" default:&off_10025DF28];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (int)SSVCASmartSiriVolumeUnsyncedMetricLogsToRetain
 {
   v2 = [(CSAsset *)self _getNumberFromASVDictionaryForKey:@"SSVCASmartSiriVolumeUnsyncedMetricLogsToRetain" category:@"smartSiriVolume" default:&off_10025DF28];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (float)SSVCAVoiceTriggerBasedTTSValidForSeconds
@@ -1328,9 +1328,9 @@ LABEL_8:
 - (unsigned)SSVCAMaxFrameSize
 {
   v2 = [(CSAsset *)self _getNumberFromASVDictionaryForKey:@"SSVCAMaxFrameSize" category:@"smartSiriVolume" default:&off_10025DF10];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (unint64_t)SSVDistanceChannelBitset
@@ -1357,9 +1357,9 @@ LABEL_8:
   }
 
   v6 = [(CSAsset *)self getNumberForKey:@"DistanceChannelBitset" category:@"smartSiriVolume" default:v3];
-  v7 = [v6 unsignedLongLongValue];
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
 
-  return v7;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)SSVLKFSChannelBitset
@@ -1371,9 +1371,9 @@ LABEL_8:
   }
 
   v4 = [(CSAsset *)self getNumberForKey:@"LKFSChannelBitset" category:@"smartSiriVolume" default:v3];
-  v5 = [v4 unsignedLongLongValue];
+  unsignedLongLongValue = [v4 unsignedLongLongValue];
 
-  return v5;
+  return unsignedLongLongValue;
 }
 
 - (unint64_t)SSVNoiseLevelChannelBitset
@@ -1400,9 +1400,9 @@ LABEL_8:
   }
 
   v6 = [(CSAsset *)self getNumberForKey:@"noiseLevelChannelBitset" category:@"smartSiriVolume" default:v3];
-  v7 = [v6 unsignedLongLongValue];
+  unsignedLongLongValue = [v6 unsignedLongLongValue];
 
-  return v7;
+  return unsignedLongLongValue;
 }
 
 - (float)SSVNoiseWeight
@@ -1594,47 +1594,47 @@ LABEL_8:
 - (unsigned)SSVLKFSUpperPercentile
 {
   v2 = [(CSAsset *)self getNumberForKey:@"LKFSUpperPercentile" category:@"smartSiriVolume" default:&off_10025DE68];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (unsigned)SSVLKFSLowerPercentile
 {
   v2 = [(CSAsset *)self getNumberForKey:@"LKFSLowerPercentile" category:@"smartSiriVolume" default:&off_10025DE50];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (unsigned)SSVNoiseUpperPercentile
 {
   v2 = [(CSAsset *)self getNumberForKey:@"noiseUpperPercentile" category:@"smartSiriVolume" default:&off_10025DE68];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (unsigned)SSVNoiseLowerPercentile
 {
   v2 = [(CSAsset *)self getNumberForKey:@"noiseLowerPercentile" category:@"smartSiriVolume" default:&off_10025DE50];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (unsigned)SSVEnergyBufferSize
 {
   v2 = [(CSAsset *)self getNumberForKey:@"energyBufferSize" category:@"smartSiriVolume" default:&off_10025DE38];
-  v3 = [v2 unsignedIntValue];
+  unsignedIntValue = [v2 unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (id)_adaptiveSiriVolumeDictionary
 {
-  v2 = [(CSAsset *)self resourcePath];
-  v3 = [v2 stringByAppendingPathComponent:@"siriVolume.json"];
+  resourcePath = [(CSAsset *)self resourcePath];
+  v3 = [resourcePath stringByAppendingPathComponent:@"siriVolume.json"];
   v4 = [CSAsset decodeJson:v3];
 
   return v4;
@@ -1736,9 +1736,9 @@ LABEL_8:
   return [CSUtils getNumElementInBitset:v4];
 }
 
-- (id)_userSelectedPhraseTypeToRTModelPhraseType:(id)a3
+- (id)_userSelectedPhraseTypeToRTModelPhraseType:(id)type
 {
-  if ([a3 unsignedIntegerValue] == 1)
+  if ([type unsignedIntegerValue] == 1)
   {
     return @"HSJS";
   }
@@ -1749,26 +1749,26 @@ LABEL_8:
   }
 }
 
-- (BOOL)_allowMultiPhrase:(id)a3 forceSkipEngineVersionCheck:(BOOL)a4
+- (BOOL)_allowMultiPhrase:(id)phrase forceSkipEngineVersionCheck:(BOOL)check
 {
-  if (!a3)
+  if (!phrase)
   {
     return 0;
   }
 
-  v5 = a3;
-  v6 = [v5 accessoryInfo];
-  v7 = [v6 supportsJustSiri];
+  phraseCopy = phrase;
+  accessoryInfo = [phraseCopy accessoryInfo];
+  supportsJustSiri = [accessoryInfo supportsJustSiri];
 
-  v8 = [v5 engineMajorVersion];
-  v9 = [v8 unsignedIntValue];
+  engineMajorVersion = [phraseCopy engineMajorVersion];
+  unsignedIntValue = [engineMajorVersion unsignedIntValue];
 
-  v10 = [v5 engineMinorVersion];
-  v11 = [v10 unsignedIntValue];
+  engineMinorVersion = [phraseCopy engineMinorVersion];
+  unsignedIntValue2 = [engineMinorVersion unsignedIntValue];
 
-  if (v9)
+  if (unsignedIntValue)
   {
-    v12 = v11 == 0;
+    v12 = unsignedIntValue2 == 0;
   }
 
   else
@@ -1777,7 +1777,7 @@ LABEL_8:
   }
 
   v13 = !v12;
-  if (a4)
+  if (check)
   {
     v14 = 1;
   }
@@ -1787,37 +1787,37 @@ LABEL_8:
     v14 = v13;
   }
 
-  v15 = [v5 allowMph];
+  allowMph = [phraseCopy allowMph];
 
-  v16 = v7 & v14 & v15;
+  v16 = supportsJustSiri & v14 & allowMph;
   v17 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 136316162;
     v20 = "[CSAsset(RTModel) _allowMultiPhrase:forceSkipEngineVersionCheck:]";
     v21 = 1024;
-    v22 = v7 & v14 & v15;
+    v22 = supportsJustSiri & v14 & allowMph;
     v23 = 1024;
-    v24 = v7;
+    v24 = supportsJustSiri;
     v25 = 1024;
     v26 = v14;
     v27 = 1024;
-    v28 = v15 & 1;
+    v28 = allowMph & 1;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "%s Multi-phrase keyword detection (%d): Accessory supports multi-phrase: %d, engine support multi-phrase: %d, device allows multi-phrase: %d", &v19, 0x24u);
   }
 
   return v16;
 }
 
-- (id)_rtModelWithRequestOptions:(id)a3 accessoryBlobs:(id)a4
+- (id)_rtModelWithRequestOptions:(id)options accessoryBlobs:(id)blobs
 {
-  v6 = a3;
-  v7 = [(CSAsset *)self _getFilteredAccessoryRTBlobListForRequestOptions:v6 accessoryBlobs:a4 forceSkipEngineVersionCheck:0];
-  v8 = [v6 engineMajorVersion];
-  v9 = [v8 unsignedIntValue];
+  optionsCopy = options;
+  v7 = [(CSAsset *)self _getFilteredAccessoryRTBlobListForRequestOptions:optionsCopy accessoryBlobs:blobs forceSkipEngineVersionCheck:0];
+  engineMajorVersion = [optionsCopy engineMajorVersion];
+  unsignedIntValue = [engineMajorVersion unsignedIntValue];
 
-  v10 = [v6 engineMinorVersion];
-  v11 = [v10 unsignedIntValue];
+  engineMinorVersion = [optionsCopy engineMinorVersion];
+  unsignedIntValue2 = [engineMinorVersion unsignedIntValue];
 
   v29 = 0u;
   v30 = 0u;
@@ -1828,8 +1828,8 @@ LABEL_8:
   if (v12)
   {
     v13 = v12;
-    v24 = self;
-    v25 = v6;
+    selfCopy = self;
+    v25 = optionsCopy;
     v14 = *v28;
     while (2)
     {
@@ -1842,15 +1842,15 @@ LABEL_8:
 
         v16 = *(*(&v27 + 1) + 8 * i);
         v17 = [v16 objectForKeyedSubscript:@"majorVersion"];
-        v18 = [v17 unsignedIntValue];
+        unsignedIntValue3 = [v17 unsignedIntValue];
 
         v19 = [v16 objectForKeyedSubscript:@"minorVersion"];
-        v20 = [v19 unsignedIntValue];
+        unsignedIntValue4 = [v19 unsignedIntValue];
 
-        if (v18 == v9 && v11 >= v20)
+        if (unsignedIntValue3 == unsignedIntValue && unsignedIntValue2 >= unsignedIntValue4)
         {
-          v6 = v25;
-          v22 = [(CSAsset *)v24 _buildRTModelWithBlobConfig:v16 requestOptions:v25];
+          optionsCopy = v25;
+          v22 = [(CSAsset *)selfCopy _buildRTModelWithBlobConfig:v16 requestOptions:v25];
           goto LABEL_15;
         }
       }
@@ -1865,7 +1865,7 @@ LABEL_8:
     }
 
     v22 = 0;
-    v6 = v25;
+    optionsCopy = v25;
   }
 
   else
@@ -1878,15 +1878,15 @@ LABEL_15:
   return v22;
 }
 
-- (id)_splitBlobsByPhraseType:(id)a3
+- (id)_splitBlobsByPhraseType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = objc_alloc_init(NSMutableDictionary);
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = v3;
+  v5 = typeCopy;
   v6 = [v5 countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v6)
   {
@@ -1932,12 +1932,12 @@ LABEL_15:
     while (v7);
   }
 
-  v16 = [v4 allKeys];
+  allKeys = [v4 allKeys];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v17 = [v16 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  v17 = [allKeys countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v17)
   {
     v18 = v17;
@@ -1948,7 +1948,7 @@ LABEL_15:
       {
         if (*v26 != v19)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(allKeys);
         }
 
         v21 = *(*(&v25 + 1) + 8 * j);
@@ -1961,7 +1961,7 @@ LABEL_15:
         }
       }
 
-      v18 = [v16 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v18 = [allKeys countByEnumeratingWithState:&v25 objects:v33 count:16];
     }
 
     while (v18);
@@ -1970,15 +1970,15 @@ LABEL_15:
   return v4;
 }
 
-- (id)_buildRTModelWithBlobConfig:(id)a3 requestOptions:(id)a4
+- (id)_buildRTModelWithBlobConfig:(id)config requestOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"blob"];
+  configCopy = config;
+  optionsCopy = options;
+  v8 = [configCopy objectForKeyedSubscript:@"blob"];
   if (v8)
   {
-    v9 = [(CSAsset *)self resourcePath];
-    v10 = [v9 stringByAppendingPathComponent:v8];
+    resourcePath = [(CSAsset *)self resourcePath];
+    v10 = [resourcePath stringByAppendingPathComponent:v8];
 
     v11 = +[NSFileManager defaultManager];
     v12 = [v11 fileExistsAtPath:v10];
@@ -2002,13 +2002,13 @@ LABEL_15:
         v39 = [v15 substringWithRange:{0, 20}];
 
         v38 = [CSFHashUtils sha256DataFromInputData:v14];
-        v16 = [v6 objectForKeyedSubscript:@"signature"];
+        v16 = [configCopy objectForKeyedSubscript:@"signature"];
         v37 = v16;
         if (v16)
         {
           v17 = v16;
-          v18 = [(CSAsset *)self resourcePath];
-          v19 = [v18 stringByAppendingPathComponent:v17];
+          resourcePath2 = [(CSAsset *)self resourcePath];
+          v19 = [resourcePath2 stringByAppendingPathComponent:v17];
 
           v20 = +[NSFileManager defaultManager];
           v21 = [v20 fileExistsAtPath:v19];
@@ -2029,13 +2029,13 @@ LABEL_15:
           v36 = 0;
         }
 
-        v25 = [v6 objectForKeyedSubscript:@"cert"];
+        v25 = [configCopy objectForKeyedSubscript:@"cert"];
         v35 = v25;
         if (v25)
         {
           v26 = v25;
-          v27 = [(CSAsset *)self resourcePath];
-          v28 = [v27 stringByAppendingPathComponent:v26];
+          resourcePath3 = [(CSAsset *)self resourcePath];
+          v28 = [resourcePath3 stringByAppendingPathComponent:v26];
 
           v29 = +[NSFileManager defaultManager];
           v30 = [v29 fileExistsAtPath:v28];
@@ -2057,8 +2057,8 @@ LABEL_15:
         }
 
         v32 = [CSVoiceTriggerRTModel alloc];
-        v33 = [v7 siriLocale];
-        v23 = [(CSVoiceTriggerRTModel *)v32 initWithData:v14 hash:v39 locale:v33 digest:v38 signature:v36 certificate:v31];
+        siriLocale = [optionsCopy siriLocale];
+        v23 = [(CSVoiceTriggerRTModel *)v32 initWithData:v14 hash:v39 locale:siriLocale digest:v38 signature:v36 certificate:v31];
       }
 
       else
@@ -2108,27 +2108,27 @@ LABEL_15:
   return v23;
 }
 
-- (id)localeMapWithName:(id)a3
+- (id)localeMapWithName:(id)name
 {
-  v4 = a3;
-  v5 = [(CSAsset *)self dictionary];
-  if (v5)
+  nameCopy = name;
+  dictionary = [(CSAsset *)self dictionary];
+  if (dictionary)
   {
-    v6 = v5;
-    v7 = [(CSAsset *)self dictionary];
-    v8 = [v7 objectForKeyedSubscript:v4];
+    v6 = dictionary;
+    dictionary2 = [(CSAsset *)self dictionary];
+    v8 = [dictionary2 objectForKeyedSubscript:nameCopy];
     if (v8)
     {
       v9 = v8;
-      v10 = [(CSAsset *)self dictionary];
-      v11 = [v10 objectForKeyedSubscript:v4];
+      dictionary3 = [(CSAsset *)self dictionary];
+      v11 = [dictionary3 objectForKeyedSubscript:nameCopy];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v13 = [(CSAsset *)self dictionary];
-        v14 = [v13 objectForKeyedSubscript:v4];
+        dictionary4 = [(CSAsset *)self dictionary];
+        v14 = [dictionary4 objectForKeyedSubscript:nameCopy];
 
         goto LABEL_9;
       }
@@ -2145,7 +2145,7 @@ LABEL_15:
     v17 = 136315394;
     v18 = "[CSAsset(RTModel) localeMapWithName:]";
     v19 = 2114;
-    v20 = v4;
+    v20 = nameCopy;
     _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s Locale map for %{public}@ is not available on asset", &v17, 0x16u);
   }
 
@@ -2155,9 +2155,9 @@ LABEL_9:
   return v14;
 }
 
-- (id)rtModelLocaleMapWithModelType:(int64_t)a3
+- (id)rtModelLocaleMapWithModelType:(int64_t)type
 {
-  if (a3 == 1)
+  if (type == 1)
   {
     [(CSAsset *)self remoraRTModelLocaleMap];
   }
@@ -2171,13 +2171,13 @@ LABEL_9:
   return v3;
 }
 
-- (id)rtModelWithRequestOptions:(id)a3
+- (id)rtModelWithRequestOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 accessoryModelType];
-  v6 = [v5 integerValue];
+  optionsCopy = options;
+  accessoryModelType = [optionsCopy accessoryModelType];
+  integerValue = [accessoryModelType integerValue];
 
-  if (v6)
+  if (integerValue)
   {
     v7 = @"adkblobs";
   }
@@ -2187,22 +2187,22 @@ LABEL_9:
     v7 = @"rtblobs";
   }
 
-  v8 = [(CSAsset *)self dictionary];
-  if (!v8)
+  dictionary = [(CSAsset *)self dictionary];
+  if (!dictionary)
   {
     goto LABEL_7;
   }
 
-  v9 = v8;
-  v10 = [(CSAsset *)self dictionary];
-  v11 = [v10 objectForKeyedSubscript:v7];
+  v9 = dictionary;
+  dictionary2 = [(CSAsset *)self dictionary];
+  v11 = [dictionary2 objectForKeyedSubscript:v7];
 
   if (v11)
   {
-    v12 = [(CSAsset *)self dictionary];
-    v13 = [v12 objectForKeyedSubscript:v7];
+    dictionary3 = [(CSAsset *)self dictionary];
+    v13 = [dictionary3 objectForKeyedSubscript:v7];
 
-    v14 = [(CSAsset *)self _rtModelWithRequestOptions:v4 accessoryBlobs:v13];
+    v14 = [(CSAsset *)self _rtModelWithRequestOptions:optionsCopy accessoryBlobs:v13];
   }
 
   else
@@ -2222,18 +2222,18 @@ LABEL_7:
   return v14;
 }
 
-- (id)latestHearstRTModelWithRequestOptions:(id)a3
+- (id)latestHearstRTModelWithRequestOptions:(id)options
 {
-  v4 = a3;
-  v5 = [(CSAsset *)self dictionary];
-  if (!v5)
+  optionsCopy = options;
+  dictionary = [(CSAsset *)self dictionary];
+  if (!dictionary)
   {
     goto LABEL_18;
   }
 
-  v6 = v5;
-  v7 = [(CSAsset *)self dictionary];
-  v8 = [v7 objectForKeyedSubscript:@"rtblobs"];
+  v6 = dictionary;
+  dictionary2 = [(CSAsset *)self dictionary];
+  v8 = [dictionary2 objectForKeyedSubscript:@"rtblobs"];
 
   if (!v8)
   {
@@ -2242,11 +2242,11 @@ LABEL_18:
     goto LABEL_23;
   }
 
-  v9 = [(CSAsset *)self dictionary];
-  v10 = [v9 objectForKeyedSubscript:@"rtblobs"];
-  v29 = self;
-  v30 = v4;
-  v11 = [(CSAsset *)self _getFilteredAccessoryRTBlobListForRequestOptions:v4 accessoryBlobs:v10 forceSkipEngineVersionCheck:1];
+  dictionary3 = [(CSAsset *)self dictionary];
+  v10 = [dictionary3 objectForKeyedSubscript:@"rtblobs"];
+  selfCopy = self;
+  v30 = optionsCopy;
+  v11 = [(CSAsset *)self _getFilteredAccessoryRTBlobListForRequestOptions:optionsCopy accessoryBlobs:v10 forceSkipEngineVersionCheck:1];
 
   v36 = 0u;
   v37 = 0u;
@@ -2278,23 +2278,23 @@ LABEL_18:
 
       v18 = *(*(&v34 + 1) + 8 * i);
       v19 = [v18 objectForKeyedSubscript:@"majorVersion"];
-      v20 = [v19 unsignedIntValue];
+      unsignedIntValue = [v19 unsignedIntValue];
 
       v21 = [v18 objectForKeyedSubscript:@"minorVersion"];
-      v22 = [v21 unsignedIntValue];
+      unsignedIntValue2 = [v21 unsignedIntValue];
 
-      if (v14 < v20)
+      if (v14 < unsignedIntValue)
       {
-        v14 = v20;
+        v14 = unsignedIntValue;
 LABEL_14:
         v24 = v18;
 
-        v32 = v22;
+        v32 = unsignedIntValue2;
         v15 = v24;
         continue;
       }
 
-      if (v14 == v20 && v32 < v22)
+      if (v14 == unsignedIntValue && v32 < unsignedIntValue2)
       {
         goto LABEL_14;
       }
@@ -2326,38 +2326,38 @@ LABEL_20:
   v33[3] = &unk_10024FBF8;
   v33[4] = v14;
   v33[5] = v32;
-  v4 = v30;
+  optionsCopy = v30;
   v27 = [[CSVoiceTriggerRTModelRequestOptions alloc] initWithCSRTModelRequestOptions:v30 builder:v33];
-  v25 = [(CSAsset *)v29 _buildRTModelWithBlobConfig:v15 requestOptions:v27];
+  v25 = [(CSAsset *)selfCopy _buildRTModelWithBlobConfig:v15 requestOptions:v27];
 
 LABEL_23:
 
   return v25;
 }
 
-- (id)RTModelWithFallbackLanguage:(id)a3
+- (id)RTModelWithFallbackLanguage:(id)language
 {
-  v4 = [CSUtils getSiriLanguageWithFallback:a3];
+  v4 = [CSUtils getSiriLanguageWithFallback:language];
   v5 = [(CSAsset *)self createRTModelWithLocale:v4];
 
   return v5;
 }
 
-- (id)createRTModelWithLocale:(id)a3
+- (id)createRTModelWithLocale:(id)locale
 {
-  v4 = a3;
-  v5 = [(CSAsset *)self resourcePath];
+  localeCopy = locale;
+  resourcePath = [(CSAsset *)self resourcePath];
   v6 = &CSLogCategorySDSD_ptr;
-  if (v5 && (v7 = v5, [(CSAsset *)self path], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
+  if (resourcePath && (v7 = resourcePath, [(CSAsset *)self path], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
   {
-    v9 = [(CSAsset *)self resourcePath];
-    v10 = [v9 stringByAppendingPathComponent:@"config_rtv2.txt"];
+    resourcePath2 = [(CSAsset *)self resourcePath];
+    v10 = [resourcePath2 stringByAppendingPathComponent:@"config_rtv2.txt"];
 
-    v11 = [(CSAsset *)self resourcePath];
-    v12 = [v11 stringByAppendingPathComponent:@"config_rt.txt"];
+    resourcePath3 = [(CSAsset *)self resourcePath];
+    v12 = [resourcePath3 stringByAppendingPathComponent:@"config_rt.txt"];
 
-    v13 = [(CSAsset *)self resourcePath];
-    v14 = [v13 stringByAppendingPathComponent:@"config.txt"];
+    resourcePath4 = [(CSAsset *)self resourcePath];
+    v14 = [resourcePath4 stringByAppendingPathComponent:@"config.txt"];
 
     v15 = CSHasAOP();
     v16 = v14;
@@ -2404,8 +2404,8 @@ LABEL_23:
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "%s Creating RT blob using: %{public}@", &v38, 0x16u);
     }
 
-    v25 = [(CSAsset *)self resourcePath];
-    v26 = [VTBlobBuilder getBlobWithConfigFilename:v23 rootDirectory:v25];
+    resourcePath5 = [(CSAsset *)self resourcePath];
+    v26 = [VTBlobBuilder getBlobWithConfigFilename:v23 rootDirectory:resourcePath5];
 
     v27 = CSLogContextFacilityCoreSpeech;
     if (v26)
@@ -2438,13 +2438,13 @@ LABEL_23:
 
     if (v26)
     {
-      v35 = [(CSAsset *)self resourcePath];
-      if (v35)
+      resourcePath6 = [(CSAsset *)self resourcePath];
+      if (resourcePath6)
       {
-        v36 = v35;
-        v37 = [(CSAsset *)self path];
+        v36 = resourcePath6;
+        path = [(CSAsset *)self path];
 
-        if (v37)
+        if (path)
         {
           goto LABEL_21;
         }
@@ -2466,10 +2466,10 @@ LABEL_23:
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "%s Defaulting to en_US CorealisRT model", &v38, 0xCu);
   }
 
-  v30 = [v6[343] getDefaultBlob];
+  getDefaultBlob = [v6[343] getDefaultBlob];
 
   v31 = CSLogContextFacilityCoreSpeech;
-  if (v30)
+  if (getDefaultBlob)
   {
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
     {
@@ -2479,7 +2479,7 @@ LABEL_23:
     }
 
     v28 = @"nohash";
-    v26 = v30;
+    v26 = getDefaultBlob;
 LABEL_21:
     v32 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -2487,13 +2487,13 @@ LABEL_21:
       v38 = 136315650;
       v39 = "[CSAsset(RTModel) createRTModelWithLocale:]";
       v40 = 2114;
-      v41 = v4;
+      v41 = localeCopy;
       v42 = 2114;
       v43 = v28;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "%s RT Model queried - %{public}@ %{public}@", &v38, 0x20u);
     }
 
-    v33 = [[CSVoiceTriggerRTModel alloc] initWithData:v26 hash:v28 locale:v4];
+    v33 = [[CSVoiceTriggerRTModel alloc] initWithData:v26 hash:v28 locale:localeCopy];
 
     goto LABEL_27;
   }
@@ -2511,14 +2511,14 @@ LABEL_27:
   return v33;
 }
 
-+ (BOOL)supportsMultiPhraseVoiceTriggerForEngineVersion:(id)a3 engineMinorVersion:(id)a4 accessoryRTModelType:(id)a5
++ (BOOL)supportsMultiPhraseVoiceTriggerForEngineVersion:(id)version engineMinorVersion:(id)minorVersion accessoryRTModelType:(id)type
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 unsignedIntegerValue];
-  v11 = [v8 unsignedIntegerValue];
-  v12 = [v9 unsignedIntegerValue];
+  versionCopy = version;
+  minorVersionCopy = minorVersion;
+  typeCopy = type;
+  unsignedIntegerValue = [versionCopy unsignedIntegerValue];
+  unsignedIntegerValue2 = [minorVersionCopy unsignedIntegerValue];
+  unsignedIntegerValue3 = [typeCopy unsignedIntegerValue];
 
   v13 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -2526,15 +2526,15 @@ LABEL_27:
     v18 = 136315650;
     v19 = "+[CSAsset(RTModel) supportsMultiPhraseVoiceTriggerForEngineVersion:engineMinorVersion:accessoryRTModelType:]";
     v20 = 2112;
-    v21 = v7;
+    v21 = versionCopy;
     v22 = 2112;
-    v23 = v8;
+    v23 = minorVersionCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s Incoming Major version:%@, Incoming Minor version:%@", &v18, 0x20u);
   }
 
-  if (v10)
+  if (unsignedIntegerValue)
   {
-    v14 = v11 == 0;
+    v14 = unsignedIntegerValue2 == 0;
   }
 
   else
@@ -2543,7 +2543,7 @@ LABEL_27:
   }
 
   v15 = !v14;
-  if (v12 <= 1)
+  if (unsignedIntegerValue3 <= 1)
   {
     v16 = v15;
   }
@@ -2559,20 +2559,20 @@ LABEL_27:
 - (BOOL)useSpeakerRecognitionAsset
 {
   v2 = [(CSAsset *)self getNumberForKey:@"useSpeakerRecognitionAsset" category:@"speakerRecognition" default:0];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)containsMultiUserThresholds
 {
-  v2 = [(CSAsset *)self path];
+  path = [(CSAsset *)self path];
   v3 = +[NSFileManager defaultManager];
-  v4 = [v3 fileExistsAtPath:v2];
+  v4 = [v3 fileExistsAtPath:path];
 
   if (v4)
   {
-    v5 = [NSData dataWithContentsOfFile:v2];
+    v5 = [NSData dataWithContentsOfFile:path];
     if (!v5)
     {
       v11 = CSLogContextFacilityCoreSpeech;
@@ -2582,7 +2582,7 @@ LABEL_27:
         *buf = 136315394;
         v18 = "[CSAsset(SpeakerRecognition) containsMultiUserThresholds]";
         v19 = 2114;
-        v20 = v2;
+        v20 = path;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s Could not read: %{public}@", buf, 0x16u);
         v10 = 0;
       }
@@ -2601,7 +2601,7 @@ LABEL_27:
         *buf = 136315650;
         v18 = "[CSAsset(SpeakerRecognition) containsMultiUserThresholds]";
         v19 = 2114;
-        v20 = v2;
+        v20 = path;
         v21 = 2114;
         v22 = v7;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s Could not decode contents of: %{public}@: err: %{public}@", buf, 0x20u);
@@ -2640,7 +2640,7 @@ LABEL_17:
     *buf = 136315394;
     v18 = "[CSAsset(SpeakerRecognition) containsMultiUserThresholds]";
     v19 = 2114;
-    v20 = v2;
+    v20 = path;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s %{public}@ doesnt exist", buf, 0x16u);
     v10 = 0;
   }
@@ -2659,22 +2659,22 @@ LABEL_18:
 
 - (NSString)keywordDetectorNDAPIConfigFilePath
 {
-  v3 = [(CSAsset *)self resourcePath];
+  resourcePath = [(CSAsset *)self resourcePath];
   v4 = [(CSAsset *)self getStringForKey:@"configFileNDAPI" category:@"voiceTriggerSecondPassAOP" default:@"config.txt"];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  v5 = [resourcePath stringByAppendingPathComponent:v4];
 
   return v5;
 }
 
 - (NSString)keywordDetectorQuasarConfigFilePath
 {
-  v3 = [(CSAsset *)self resourcePath];
+  resourcePath = [(CSAsset *)self resourcePath];
   if (+[CSUtils horsemanDeviceType](CSUtils, "horsemanDeviceType") != 1 || (+[CSVoiceTriggerSecondPassConfigDecoder getDefaultRecognizerForB238], v4 = objc_claimAutoreleasedReturnValue(), [(CSAsset *)self getStringForKey:v4 category:@"voiceTriggerSecondPass" default:0], v5 = objc_claimAutoreleasedReturnValue(), v4, !v5))
   {
     v5 = [(CSAsset *)self getStringForKey:@"configFileRecognizer" category:@"voiceTriggerSecondPassAOP" default:@"recognizer.json"];
   }
 
-  v6 = [v3 stringByAppendingPathComponent:v5];
+  v6 = [resourcePath stringByAppendingPathComponent:v5];
 
   return v6;
 }
@@ -2682,17 +2682,17 @@ LABEL_18:
 - (unint64_t)maxAllowedEnrollmentUtterances
 {
   v2 = [(CSAsset *)self getNumberForKey:@"maxEnrollmentUtterances" category:@"speakerRecognition" default:&off_10025E420];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (unint64_t)pruningNumRetentionUtterance
 {
   v2 = [(CSAsset *)self getNumberForKey:@"numPruningRetentionUtt" category:@"speakerRecognition" default:&off_10025E408];
-  v3 = [v2 unsignedIntegerValue];
+  unsignedIntegerValue = [v2 unsignedIntegerValue];
 
-  return v3;
+  return unsignedIntegerValue;
 }
 
 - (float)pruningThresholdPSR
@@ -2772,109 +2772,109 @@ LABEL_18:
 - (int64_t)multiUserDeltaScoreThreshold
 {
   v2 = [(CSAsset *)self getNumberForKey:@"multiUserDeltaScoreThreshold" category:@"speakerRecognition" default:&off_10025E3F0];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (int64_t)multiUserDeltaScoreThresholdForPhId:(unint64_t)a3
+- (int64_t)multiUserDeltaScoreThresholdForPhId:(unint64_t)id
 {
-  v4 = [(CSAsset *)self getPhraseConfig:a3];
+  v4 = [(CSAsset *)self getPhraseConfig:id];
   v5 = v4;
   if (v4 && ([v4 objectForKeyedSubscript:@"multiUserDeltaScoreThreshold"], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     v7 = [v5 objectForKeyedSubscript:@"multiUserDeltaScoreThreshold"];
     [v7 floatValue];
-    v9 = v8;
+    multiUserDeltaScoreThreshold = v8;
   }
 
   else
   {
-    v9 = [(CSAsset *)self multiUserDeltaScoreThreshold];
+    multiUserDeltaScoreThreshold = [(CSAsset *)self multiUserDeltaScoreThreshold];
   }
 
-  return v9;
+  return multiUserDeltaScoreThreshold;
 }
 
 - (int64_t)multiUserConfidentScoreThreshold
 {
   v2 = [(CSAsset *)self getNumberForKey:@"multiUserConfidentScoreThreshold" category:@"speakerRecognition" default:&off_10025E3D8];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (int64_t)multiUserConfidentScoreThresholdForPhId:(unint64_t)a3
+- (int64_t)multiUserConfidentScoreThresholdForPhId:(unint64_t)id
 {
-  v4 = [(CSAsset *)self getPhraseConfig:a3];
+  v4 = [(CSAsset *)self getPhraseConfig:id];
   v5 = v4;
   if (v4 && ([v4 objectForKeyedSubscript:@"multiUserConfidentScoreThreshold"], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     v7 = [v5 objectForKeyedSubscript:@"multiUserConfidentScoreThreshold"];
     [v7 floatValue];
-    v9 = v8;
+    multiUserConfidentScoreThreshold = v8;
   }
 
   else
   {
-    v9 = [(CSAsset *)self multiUserConfidentScoreThreshold];
+    multiUserConfidentScoreThreshold = [(CSAsset *)self multiUserConfidentScoreThreshold];
   }
 
-  return v9;
+  return multiUserConfidentScoreThreshold;
 }
 
 - (int64_t)multiUserHighScoreThreshold
 {
   v2 = [(CSAsset *)self getNumberForKey:@"multiUserHighScoreThreshold" category:@"speakerRecognition" default:&off_10025E3C0];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (int64_t)multiUserHighScoreThresholdForPhId:(unint64_t)a3
+- (int64_t)multiUserHighScoreThresholdForPhId:(unint64_t)id
 {
-  v4 = [(CSAsset *)self getPhraseConfig:a3];
+  v4 = [(CSAsset *)self getPhraseConfig:id];
   v5 = v4;
   if (v4 && ([v4 objectForKeyedSubscript:@"multiUserHighScoreThreshold"], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     v7 = [v5 objectForKeyedSubscript:@"multiUserHighScoreThreshold"];
     [v7 floatValue];
-    v9 = v8;
+    multiUserHighScoreThreshold = v8;
   }
 
   else
   {
-    v9 = [(CSAsset *)self multiUserHighScoreThreshold];
+    multiUserHighScoreThreshold = [(CSAsset *)self multiUserHighScoreThreshold];
   }
 
-  return v9;
+  return multiUserHighScoreThreshold;
 }
 
 - (int64_t)multiUserLowScoreThreshold
 {
   v2 = [(CSAsset *)self getNumberForKey:@"multiUserLowScoreThreshold" category:@"speakerRecognition" default:&off_10025E3A8];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (int64_t)multiUserLowScoreThresholdForPhId:(unint64_t)a3
+- (int64_t)multiUserLowScoreThresholdForPhId:(unint64_t)id
 {
-  v4 = [(CSAsset *)self getPhraseConfig:a3];
+  v4 = [(CSAsset *)self getPhraseConfig:id];
   v5 = v4;
   if (v4 && ([v4 objectForKeyedSubscript:@"multiUserLowScoreThreshold"], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
     v7 = [v5 objectForKeyedSubscript:@"multiUserLowScoreThreshold"];
     [v7 floatValue];
-    v9 = v8;
+    multiUserLowScoreThreshold = v8;
   }
 
   else
   {
-    v9 = [(CSAsset *)self multiUserLowScoreThreshold];
+    multiUserLowScoreThreshold = [(CSAsset *)self multiUserLowScoreThreshold];
   }
 
-  return v9;
+  return multiUserLowScoreThreshold;
 }
 
 - (float)satScoreThreshold
@@ -2886,9 +2886,9 @@ LABEL_18:
   return v4;
 }
 
-- (float)satScoreThresholdForPhId:(unint64_t)a3
+- (float)satScoreThresholdForPhId:(unint64_t)id
 {
-  v4 = [(CSAsset *)self getPhraseConfig:a3];
+  v4 = [(CSAsset *)self getPhraseConfig:id];
   v5 = v4;
   if (v4 && ([v4 objectForKeyedSubscript:@"satThreshold"], v6 = objc_claimAutoreleasedReturnValue(), v6, v6))
   {
@@ -2906,11 +2906,11 @@ LABEL_18:
   return v9;
 }
 
-- (id)getPhraseConfig:(unint64_t)a3
+- (id)getPhraseConfig:(unint64_t)config
 {
   v4 = [(CSAsset *)self getValueForKey:@"phrase" category:@"speakerRecognition"];
   v5 = v4;
-  if (v4 && [v4 count] <= a3)
+  if (v4 && [v4 count] <= config)
   {
     v7 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_ERROR))
@@ -2918,7 +2918,7 @@ LABEL_18:
       v9 = 136315394;
       v10 = "[CSAsset(SpeakerRecognition) getPhraseConfig:]";
       v11 = 1024;
-      v12 = a3;
+      configCopy = config;
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%s Config for ph: %d doesn't exist, use default", &v9, 0x12u);
     }
 
@@ -2927,7 +2927,7 @@ LABEL_18:
 
   else
   {
-    v6 = [v5 objectAtIndex:a3];
+    v6 = [v5 objectAtIndex:config];
   }
 
   return v6;
@@ -2944,9 +2944,9 @@ LABEL_18:
 
 - (NSString)keywordDetectorConfigPathRecognizer
 {
-  v3 = [(CSAsset *)self resourcePath];
+  resourcePath = [(CSAsset *)self resourcePath];
   v4 = [(CSAsset *)self getStringForKey:@"configFileRecognizer" category:@"keywordDetector" default:@"keyword_detector.json"];
-  v5 = [v3 stringByAppendingPathComponent:v4];
+  v5 = [resourcePath stringByAppendingPathComponent:v4];
 
   return v5;
 }

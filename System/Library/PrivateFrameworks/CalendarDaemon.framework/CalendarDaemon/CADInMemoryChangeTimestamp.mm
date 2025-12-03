@@ -1,10 +1,10 @@
 @interface CADInMemoryChangeTimestamp
-+ (BOOL)doesTimestamp:(id)a3 includeAllChangesVisibleToTimestamp:(id)a4;
++ (BOOL)doesTimestamp:(id)timestamp includeAllChangesVisibleToTimestamp:(id)toTimestamp;
 + (id)timestampForNow;
-- (CADInMemoryChangeTimestamp)initWithCoder:(id)a3;
-- (CADInMemoryChangeTimestamp)initWithTimestamps:(id)a3;
+- (CADInMemoryChangeTimestamp)initWithCoder:(id)coder;
+- (CADInMemoryChangeTimestamp)initWithTimestamps:(id)timestamps;
 - (id)redactedDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CADInMemoryChangeTimestamp
@@ -19,15 +19,15 @@
   return v2;
 }
 
-- (CADInMemoryChangeTimestamp)initWithTimestamps:(id)a3
+- (CADInMemoryChangeTimestamp)initWithTimestamps:(id)timestamps
 {
-  v4 = a3;
+  timestampsCopy = timestamps;
   v9.receiver = self;
   v9.super_class = CADInMemoryChangeTimestamp;
   v5 = [(CADInMemoryChangeTimestamp *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [timestampsCopy copy];
     timestamps = v5->_timestamps;
     v5->_timestamps = v6;
   }
@@ -35,9 +35,9 @@
   return v5;
 }
 
-- (CADInMemoryChangeTimestamp)initWithCoder:(id)a3
+- (CADInMemoryChangeTimestamp)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CADInMemoryChangeTimestamp;
   v5 = [(CADInMemoryChangeTimestamp *)&v15 init];
@@ -47,11 +47,11 @@
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"timestamps"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"timestamps"];
     timestamps = v5->_timestamps;
     v5->_timestamps = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"universalTimestamp"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"universalTimestamp"];
     universalTimestamp = v5->_universalTimestamp;
     v5->_universalTimestamp = v12;
   }
@@ -59,12 +59,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   universalTimestamp = self->_universalTimestamp;
-  v5 = a3;
-  [v5 encodeObject:universalTimestamp forKey:@"universalTimestamp"];
-  [v5 encodeObject:self->_timestamps forKey:@"timestamps"];
+  coderCopy = coder;
+  [coderCopy encodeObject:universalTimestamp forKey:@"universalTimestamp"];
+  [coderCopy encodeObject:self->_timestamps forKey:@"timestamps"];
 }
 
 - (id)redactedDescription
@@ -120,17 +120,17 @@
   return v4;
 }
 
-+ (BOOL)doesTimestamp:(id)a3 includeAllChangesVisibleToTimestamp:(id)a4
++ (BOOL)doesTimestamp:(id)timestamp includeAllChangesVisibleToTimestamp:(id)toTimestamp
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  timestampCopy = timestamp;
+  toTimestampCopy = toTimestamp;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v7 = [v5 timestamps];
-  v8 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  timestamps = [timestampCopy timestamps];
+  v8 = [timestamps countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v8)
   {
     v9 = v8;
@@ -141,27 +141,27 @@
       {
         if (*v23 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(timestamps);
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
-        v13 = [v5 timestamps];
-        v14 = [v13 objectForKeyedSubscript:v12];
+        timestamps2 = [timestampCopy timestamps];
+        v14 = [timestamps2 objectForKeyedSubscript:v12];
 
-        v15 = [v6 timestamps];
-        v16 = [v15 objectForKeyedSubscript:v12];
+        timestamps3 = [toTimestampCopy timestamps];
+        v16 = [timestamps3 objectForKeyedSubscript:v12];
 
-        v17 = [v14 others];
-        v18 = [v16 myself];
+        others = [v14 others];
+        myself = [v16 myself];
 
-        if (v17 < v18)
+        if (others < myself)
         {
           v19 = 0;
           goto LABEL_11;
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v9 = [timestamps countByEnumeratingWithState:&v22 objects:v26 count:16];
       if (v9)
       {
         continue;

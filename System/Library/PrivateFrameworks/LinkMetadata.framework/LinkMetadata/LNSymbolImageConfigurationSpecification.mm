@@ -1,21 +1,21 @@
 @interface LNSymbolImageConfigurationSpecification
-- (BOOL)isEqual:(id)a3;
-- (LNSymbolImageConfigurationSpecification)initWithCoder:(id)a3;
-- (LNSymbolImageConfigurationSpecification)initWithPlatformAgnosticConfiguration:(id)a3;
-- (LNSymbolImageConfigurationSpecification)initWithPlatformSpecificationConfigurationData:(id)a3 platform:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (LNSymbolImageConfigurationSpecification)initWithCoder:(id)coder;
+- (LNSymbolImageConfigurationSpecification)initWithPlatformAgnosticConfiguration:(id)configuration;
+- (LNSymbolImageConfigurationSpecification)initWithPlatformSpecificationConfigurationData:(id)data platform:(id)platform;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNSymbolImageConfigurationSpecification
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -24,10 +24,10 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v7 = [(LNSymbolImageConfigurationSpecification *)self platformAgnosticConfiguration];
-    v8 = [(LNSymbolImageConfigurationSpecification *)v6 platformAgnosticConfiguration];
-    v9 = v7;
-    v10 = v8;
+    platformAgnosticConfiguration = [(LNSymbolImageConfigurationSpecification *)self platformAgnosticConfiguration];
+    platformAgnosticConfiguration2 = [(LNSymbolImageConfigurationSpecification *)v6 platformAgnosticConfiguration];
+    v9 = platformAgnosticConfiguration;
+    v10 = platformAgnosticConfiguration2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -54,10 +54,10 @@ LABEL_26:
       }
     }
 
-    v16 = [(LNSymbolImageConfigurationSpecification *)self platformSpecificData];
-    v17 = [(LNSymbolImageConfigurationSpecification *)v6 platformSpecificData];
-    v14 = v16;
-    v18 = v17;
+    platformSpecificData = [(LNSymbolImageConfigurationSpecification *)self platformSpecificData];
+    platformSpecificData2 = [(LNSymbolImageConfigurationSpecification *)v6 platformSpecificData];
+    v14 = platformSpecificData;
+    v18 = platformSpecificData2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -84,10 +84,10 @@ LABEL_25:
       }
     }
 
-    v21 = [(LNSymbolImageConfigurationSpecification *)self platform];
-    v22 = [(LNSymbolImageConfigurationSpecification *)v6 platform];
-    v20 = v21;
-    v23 = v22;
+    platform = [(LNSymbolImageConfigurationSpecification *)self platform];
+    platform2 = [(LNSymbolImageConfigurationSpecification *)v6 platform];
+    v20 = platform;
+    v23 = platform2;
     v19 = v23;
     if (v20 == v23)
     {
@@ -114,42 +114,42 @@ LABEL_28:
 
 - (unint64_t)hash
 {
-  v3 = [(LNSymbolImageConfigurationSpecification *)self platformAgnosticConfiguration];
-  v4 = [v3 hash];
-  v5 = [(LNSymbolImageConfigurationSpecification *)self platformSpecificData];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(LNSymbolImageConfigurationSpecification *)self platform];
-  v8 = [v7 hash];
+  platformAgnosticConfiguration = [(LNSymbolImageConfigurationSpecification *)self platformAgnosticConfiguration];
+  v4 = [platformAgnosticConfiguration hash];
+  platformSpecificData = [(LNSymbolImageConfigurationSpecification *)self platformSpecificData];
+  v6 = [platformSpecificData hash] ^ v4;
+  platform = [(LNSymbolImageConfigurationSpecification *)self platform];
+  v8 = [platform hash];
 
   return v6 ^ v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNSymbolImageConfigurationSpecification *)self platformAgnosticConfiguration];
-  [v4 encodeObject:v5 forKey:@"platformAgnosticConfiguration"];
+  coderCopy = coder;
+  platformAgnosticConfiguration = [(LNSymbolImageConfigurationSpecification *)self platformAgnosticConfiguration];
+  [coderCopy encodeObject:platformAgnosticConfiguration forKey:@"platformAgnosticConfiguration"];
 
-  v6 = [(LNSymbolImageConfigurationSpecification *)self platformSpecificData];
-  [v4 encodeObject:v6 forKey:@"platformSpecificData"];
+  platformSpecificData = [(LNSymbolImageConfigurationSpecification *)self platformSpecificData];
+  [coderCopy encodeObject:platformSpecificData forKey:@"platformSpecificData"];
 
-  v7 = [(LNSymbolImageConfigurationSpecification *)self platform];
-  [v4 encodeObject:v7 forKey:@"platform"];
+  platform = [(LNSymbolImageConfigurationSpecification *)self platform];
+  [coderCopy encodeObject:platform forKey:@"platform"];
 }
 
-- (LNSymbolImageConfigurationSpecification)initWithCoder:(id)a3
+- (LNSymbolImageConfigurationSpecification)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"platformAgnosticConfiguration"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"platform"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"platformSpecificData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"platformAgnosticConfiguration"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"platform"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"platformSpecificData"];
 
   if (v5)
   {
     v8 = [(LNSymbolImageConfigurationSpecification *)self initWithPlatformAgnosticConfiguration:v5];
 LABEL_9:
     self = v8;
-    v10 = self;
+    selfCopy = self;
     goto LABEL_10;
   }
 
@@ -169,26 +169,26 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v10 = 0;
+  selfCopy = 0;
 LABEL_10:
 
-  return v10;
+  return selfCopy;
 }
 
-- (LNSymbolImageConfigurationSpecification)initWithPlatformSpecificationConfigurationData:(id)a3 platform:(id)a4
+- (LNSymbolImageConfigurationSpecification)initWithPlatformSpecificationConfigurationData:(id)data platform:(id)platform
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  platformCopy = platform;
   v14.receiver = self;
   v14.super_class = LNSymbolImageConfigurationSpecification;
   v8 = [(LNSymbolImageConfigurationSpecification *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dataCopy copy];
     platformSpecificData = v8->_platformSpecificData;
     v8->_platformSpecificData = v9;
 
-    v11 = [v7 copy];
+    v11 = [platformCopy copy];
     platform = v8->_platform;
     v8->_platform = v11;
   }
@@ -196,16 +196,16 @@ LABEL_10:
   return v8;
 }
 
-- (LNSymbolImageConfigurationSpecification)initWithPlatformAgnosticConfiguration:(id)a3
+- (LNSymbolImageConfigurationSpecification)initWithPlatformAgnosticConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   v9.receiver = self;
   v9.super_class = LNSymbolImageConfigurationSpecification;
   v6 = [(LNSymbolImageConfigurationSpecification *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_platformAgnosticConfiguration, a3);
+    objc_storeStrong(&v6->_platformAgnosticConfiguration, configuration);
   }
 
   return v7;

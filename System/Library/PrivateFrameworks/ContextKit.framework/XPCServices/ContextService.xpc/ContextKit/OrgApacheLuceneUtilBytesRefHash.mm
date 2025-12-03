@@ -1,10 +1,10 @@
 @interface OrgApacheLuceneUtilBytesRefHash
 - (id)compact;
-- (id)sortWithJavaUtilComparator:(id)a3;
-- (int)addByPoolOffsetWithInt:(int)a3;
-- (int)addWithOrgApacheLuceneUtilBytesRef:(id)a3;
-- (int)findWithOrgApacheLuceneUtilBytesRef:(id)a3;
-- (void)clearWithBoolean:(BOOL)a3;
+- (id)sortWithJavaUtilComparator:(id)comparator;
+- (int)addByPoolOffsetWithInt:(int)int;
+- (int)addWithOrgApacheLuceneUtilBytesRef:(id)ref;
+- (int)findWithOrgApacheLuceneUtilBytesRef:(id)ref;
+- (void)clearWithBoolean:(BOOL)boolean;
 - (void)close;
 - (void)dealloc;
 - (void)reinit;
@@ -73,21 +73,21 @@
   return self->ids_;
 }
 
-- (id)sortWithJavaUtilComparator:(id)a3
+- (id)sortWithJavaUtilComparator:(id)comparator
 {
-  v5 = [(OrgApacheLuceneUtilBytesRefHash *)self compact];
+  compact = [(OrgApacheLuceneUtilBytesRefHash *)self compact];
   v6 = [OrgApacheLuceneUtilBytesRefHash__1 alloc];
-  sub_10012BF34(&v6->super.super.super.isa, self, v5, a3);
+  sub_10012BF34(&v6->super.super.super.isa, self, compact, comparator);
   [(OrgApacheLuceneUtilIntroSorter *)v6 sortWithInt:0 withInt:self->count_];
-  return v5;
+  return compact;
 }
 
-- (void)clearWithBoolean:(BOOL)a3
+- (void)clearWithBoolean:(BOOL)boolean
 {
   count = self->count_;
   self->count_ = 0;
   self->lastCount_ = count;
-  if (a3)
+  if (boolean)
   {
     pool = self->pool_;
     if (!pool)
@@ -130,15 +130,15 @@ LABEL_10:
   [(OrgApacheLuceneUtilCounter *)bytesUsed addAndGetWithLong:v4];
 }
 
-- (int)addWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (int)addWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  if (!a3)
+  if (!ref)
   {
     goto LABEL_35;
   }
 
-  v5 = *(a3 + 5);
-  v6 = sub_10012AD28(self, a3);
+  v5 = *(ref + 5);
+  v6 = sub_10012AD28(self, ref);
   ids = self->ids_;
   if (!ids)
   {
@@ -165,13 +165,13 @@ LABEL_10:
     goto LABEL_35;
   }
 
-  v20 = *(a3 + 5);
+  v20 = *(ref + 5);
   byteUpto = pool->byteUpto_;
   if (byteUpto + v20 + 2 > 0x8000)
   {
     if (v20 + 2 > 0x8000)
     {
-      v39 = *(a3 + 5);
+      v39 = *(ref + 5);
       v37 = JreStrcat("$I$I", v7, v8, v9, v10, v11, v12, v13, @"bytes can be at most ");
       v38 = new_OrgApacheLuceneUtilBytesRefHash_MaxBytesLengthExceededException_initWithNSString_(v37);
       objc_exception_throw(v38);
@@ -268,7 +268,7 @@ LABEL_35:
 LABEL_30:
   *(buffer + v30 + 12) = v31;
   self->pool_->byteUpto_ += v5 + v29;
-  JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(a3 + 1), *(a3 + 4), buffer, (byteUpto + v29), v5);
+  JavaLangSystem_arraycopyWithId_withInt_withId_withInt_withInt_(*(ref + 1), *(ref + 4), buffer, (byteUpto + v29), v5);
   v34 = self->ids_;
   v35 = v34->super.size_;
   if ((v15 & 0x80000000) != 0 || v15 >= v35)
@@ -285,7 +285,7 @@ LABEL_30:
   return count;
 }
 
-- (int)findWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (int)findWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   ids = self->ids_;
   if (!ids)
@@ -293,7 +293,7 @@ LABEL_30:
     JreThrowNullPointerException();
   }
 
-  v4 = sub_10012AD28(self, a3);
+  v4 = sub_10012AD28(self, ref);
   size = ids->super.size_;
   if ((v4 & 0x80000000) != 0 || v4 >= size)
   {
@@ -303,7 +303,7 @@ LABEL_30:
   return *(&ids->super.size_ + v4 + 1);
 }
 
-- (int)addByPoolOffsetWithInt:(int)a3
+- (int)addByPoolOffsetWithInt:(int)int
 {
   ids = self->ids_;
   if (!ids)
@@ -311,7 +311,7 @@ LABEL_30:
     goto LABEL_34;
   }
 
-  v6 = self->hashMask_ & a3;
+  v6 = self->hashMask_ & int;
   size = ids->super.size_;
   if ((v6 & 0x80000000) != 0 || v6 >= size)
   {
@@ -334,15 +334,15 @@ LABEL_30:
     }
 
     v11 = *(&bytesStart->super.size_ + count + 1);
-    v12 = __OFSUB__(v11, a3);
-    if (v11 == a3)
+    v12 = __OFSUB__(v11, int);
+    if (v11 == int)
     {
 LABEL_9:
       LODWORD(count) = ~count;
       return count;
     }
 
-    v13 = a3 + 1;
+    v13 = int + 1;
     while (1)
     {
       hashMask = self->hashMask_;
@@ -369,8 +369,8 @@ LABEL_9:
 
       v20 = *(&v18->super.size_ + count + 1);
       ++v13;
-      v12 = __OFSUB__(v20, a3);
-      if (v20 == a3)
+      v12 = __OFSUB__(v20, int);
+      if (v20 == int)
       {
         goto LABEL_9;
       }
@@ -411,7 +411,7 @@ LABEL_27:
     IOSArray_throwOutOfBoundsWithMsg(v23, count);
   }
 
-  *(&v21->super.size_ + count + 1) = a3;
+  *(&v21->super.size_ + count + 1) = int;
   v24 = self->ids_;
   v25 = v24->super.size_;
   if ((v6 & 0x80000000) != 0 || v6 >= v25)

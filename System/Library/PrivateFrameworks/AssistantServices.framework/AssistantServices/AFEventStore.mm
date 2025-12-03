@@ -1,33 +1,33 @@
 @interface AFEventStore
 + (id)sharedInstance;
-- (BOOL)_filterAppleAudioEventsMoreThanADayOld:(id)a3;
-- (BOOL)_filterHeadUnitEventsMoreThanADayOld:(id)a3;
-- (BOOL)_isEvent:(id)a3 olderThan:(int64_t)a4;
+- (BOOL)_filterAppleAudioEventsMoreThanADayOld:(id)old;
+- (BOOL)_filterHeadUnitEventsMoreThanADayOld:(id)old;
+- (BOOL)_isEvent:(id)event olderThan:(int64_t)than;
 - (id)_getPublisher;
-- (id)_mapIDsToProduct:(id)a3;
-- (id)_mapIDsToSELFEvents:(id)a3;
-- (void)_populateBTCarEventOUID:(id)a3 carBluetoothHeadunit:(id)a4;
-- (void)deleteAllBTEventsWithQueue:(id)a3 withCompletionHandler:(id)a4;
-- (void)deleteAllSiriServiceEventsWithQueue:(id)a3 withCompletionHandler:(id)a4;
-- (void)fetchAppleAudioDeviceConnectedInLast24HoursWithCompletionHandler:(id)a3;
-- (void)fetchEventsBetweenStartDate:(id)a3 endDate:(id)a4 withQueue:(id)a5 withCompletionHandler:(id)a6;
-- (void)fetchHeadunitsConnectedInLast24HoursWithCompletionHandler:(id)a3;
-- (void)storeBTEvent:(id)a3 withQueue:(id)a4 withCompletionHandler:(id)a5;
-- (void)storeSiriServiceEvent:(id)a3 withQueue:(id)a4 atTime:(id)a5 withCompletionHandler:(id)a6;
+- (id)_mapIDsToProduct:(id)product;
+- (id)_mapIDsToSELFEvents:(id)events;
+- (void)_populateBTCarEventOUID:(id)d carBluetoothHeadunit:(id)headunit;
+- (void)deleteAllBTEventsWithQueue:(id)queue withCompletionHandler:(id)handler;
+- (void)deleteAllSiriServiceEventsWithQueue:(id)queue withCompletionHandler:(id)handler;
+- (void)fetchAppleAudioDeviceConnectedInLast24HoursWithCompletionHandler:(id)handler;
+- (void)fetchEventsBetweenStartDate:(id)date endDate:(id)endDate withQueue:(id)queue withCompletionHandler:(id)handler;
+- (void)fetchHeadunitsConnectedInLast24HoursWithCompletionHandler:(id)handler;
+- (void)storeBTEvent:(id)event withQueue:(id)queue withCompletionHandler:(id)handler;
+- (void)storeSiriServiceEvent:(id)event withQueue:(id)queue atTime:(id)time withCompletionHandler:(id)handler;
 @end
 
 @implementation AFEventStore
 
-- (void)deleteAllSiriServiceEventsWithQueue:(id)a3 withCompletionHandler:(id)a4
+- (void)deleteAllSiriServiceEventsWithQueue:(id)queue withCompletionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   v7 = SoftBiomeLibrary();
-  v8 = [v7 Siri];
-  v9 = [v8 Service];
+  siri = [v7 Siri];
+  service = [siri Service];
 
-  if (!v9)
+  if (!service)
   {
     v10 = AFSiriLogContextEvent;
     if (os_log_type_enabled(AFSiriLogContextEvent, OS_LOG_TYPE_ERROR))
@@ -38,18 +38,18 @@
     }
 
     v11 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"kAFAssistantEventDomain" code:10001 userInfo:0];
-    v6[2](v6, v11);
+    handlerCopy[2](handlerCopy, v11);
   }
 
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __87__AFEventStore_SiriService__deleteAllSiriServiceEventsWithQueue_withCompletionHandler___block_invoke;
   v15[3] = &unk_1E7349838;
-  v16 = v9;
-  v17 = v6;
-  v12 = v6;
-  v13 = v9;
-  dispatch_async(v5, v15);
+  v16 = service;
+  v17 = handlerCopy;
+  v12 = handlerCopy;
+  v13 = service;
+  dispatch_async(queueCopy, v15);
 
   v14 = *MEMORY[0x1E69E9840];
 }
@@ -64,42 +64,42 @@ uint64_t __87__AFEventStore_SiriService__deleteAllSiriServiceEventsWithQueue_wit
   return v3();
 }
 
-- (void)fetchEventsBetweenStartDate:(id)a3 endDate:(id)a4 withQueue:(id)a5 withCompletionHandler:(id)a6
+- (void)fetchEventsBetweenStartDate:(id)date endDate:(id)endDate withQueue:(id)queue withCompletionHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dateCopy = date;
+  endDateCopy = endDate;
+  queueCopy = queue;
+  handlerCopy = handler;
   v13 = AFSiriLogContextEvent;
   if (os_log_type_enabled(AFSiriLogContextEvent, OS_LOG_TYPE_DEBUG))
   {
     *buf = 136315650;
     v28 = "[AFEventStore(SiriService) fetchEventsBetweenStartDate:endDate:withQueue:withCompletionHandler:]";
     v29 = 2112;
-    v30 = v9;
+    v30 = dateCopy;
     v31 = 2112;
-    v32 = v10;
+    v32 = endDateCopy;
     _os_log_debug_impl(&dword_1912FE000, v13, OS_LOG_TYPE_DEBUG, "%s Fetching SiriServices Biome events between startData: %@, endDate: %@", buf, 0x20u);
   }
 
   v14 = SoftBiomeLibrary();
-  v15 = [v14 Siri];
-  v16 = [v15 Service];
+  siri = [v14 Siri];
+  service = [siri Service];
 
   v17 = objc_alloc_init(MEMORY[0x1E695DF70]);
-  if (v16)
+  if (service)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __97__AFEventStore_SiriService__fetchEventsBetweenStartDate_endDate_withQueue_withCompletionHandler___block_invoke;
     block[3] = &unk_1E7348AF8;
-    v22 = v16;
-    v23 = v9;
-    v24 = v10;
+    v22 = service;
+    v23 = dateCopy;
+    v24 = endDateCopy;
     v25 = v17;
-    v26 = v12;
-    dispatch_async(v11, block);
+    v26 = handlerCopy;
+    dispatch_async(queueCopy, block);
 
     v18 = v22;
   }
@@ -115,7 +115,7 @@ uint64_t __87__AFEventStore_SiriService__deleteAllSiriServiceEventsWithQueue_wit
     }
 
     v18 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"kAFAssistantEventDomain" code:10001 userInfo:0];
-    (*(v12 + 2))(v12, 0, v18);
+    (*(handlerCopy + 2))(handlerCopy, 0, v18);
   }
 
   v20 = *MEMORY[0x1E69E9840];
@@ -229,18 +229,18 @@ void __97__AFEventStore_SiriService__fetchEventsBetweenStartDate_endDate_withQue
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)storeSiriServiceEvent:(id)a3 withQueue:(id)a4 atTime:(id)a5 withCompletionHandler:(id)a6
+- (void)storeSiriServiceEvent:(id)event withQueue:(id)queue atTime:(id)time withCompletionHandler:(id)handler
 {
   v45 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 bmEvent];
+  eventCopy = event;
+  queueCopy = queue;
+  timeCopy = time;
+  handlerCopy = handler;
+  bmEvent = [eventCopy bmEvent];
 
-  if (v13)
+  if (bmEvent)
   {
-    v14 = [v9 bmEvent];
+    bmEvent2 = [eventCopy bmEvent];
     v38 = 0;
     v39 = &v38;
     v40 = 0x2050000000;
@@ -268,21 +268,21 @@ void __97__AFEventStore_SiriService__fetchEventsBetweenStartDate_endDate_withQue
     if (isKindOfClass)
     {
       v19 = SoftBiomeLibrary();
-      v20 = [v19 Siri];
-      v21 = [v20 Service];
+      siri = [v19 Siri];
+      service = [siri Service];
 
-      if (v21)
+      if (service)
       {
-        v22 = [v21 source];
+        source = [service source];
         v23 = AFSiriLogContextEvent;
-        if (v22)
+        if (source)
         {
           if (os_log_type_enabled(AFSiriLogContextEvent, OS_LOG_TYPE_DEBUG))
           {
             *buf = 136315394;
             *&buf[4] = "[AFEventStore(SiriService) storeSiriServiceEvent:withQueue:atTime:withCompletionHandler:]";
             *&buf[12] = 2112;
-            *&buf[14] = v9;
+            *&buf[14] = eventCopy;
             _os_log_debug_impl(&dword_1912FE000, v23, OS_LOG_TYPE_DEBUG, "%s Dispatching event %@ to event source", buf, 0x16u);
           }
 
@@ -290,12 +290,12 @@ void __97__AFEventStore_SiriService__fetchEventsBetweenStartDate_endDate_withQue
           block[1] = 3221225472;
           block[2] = __90__AFEventStore_SiriService__storeSiriServiceEvent_withQueue_atTime_withCompletionHandler___block_invoke;
           block[3] = &unk_1E7348AF8;
-          v33 = v9;
-          v34 = v11;
-          v35 = v22;
-          v36 = v21;
-          v37 = v12;
-          dispatch_async(v10, block);
+          v33 = eventCopy;
+          v34 = timeCopy;
+          v35 = source;
+          v36 = service;
+          v37 = handlerCopy;
+          dispatch_async(queueCopy, block);
 
           v24 = v33;
         }
@@ -310,7 +310,7 @@ void __97__AFEventStore_SiriService__fetchEventsBetweenStartDate_endDate_withQue
           }
 
           v24 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"kAFAssistantEventDomain" code:10003 userInfo:0];
-          (*(v12 + 2))(v12, v24);
+          (*(handlerCopy + 2))(handlerCopy, v24);
         }
       }
 
@@ -324,8 +324,8 @@ void __97__AFEventStore_SiriService__fetchEventsBetweenStartDate_endDate_withQue
           _os_log_error_impl(&dword_1912FE000, v31, OS_LOG_TYPE_ERROR, "%s Biome event stream unavailable", buf, 0xCu);
         }
 
-        v22 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"kAFAssistantEventDomain" code:10001 userInfo:0];
-        (*(v12 + 2))(v12, v22);
+        source = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"kAFAssistantEventDomain" code:10001 userInfo:0];
+        (*(handlerCopy + 2))(handlerCopy, source);
       }
     }
 
@@ -343,8 +343,8 @@ void __97__AFEventStore_SiriService__fetchEventsBetweenStartDate_endDate_withQue
         v29 = v28;
       }
 
-      v21 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"kAFAssistantEventDomain" code:10005 userInfo:0];
-      (*(v12 + 2))(v12, v21);
+      service = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"kAFAssistantEventDomain" code:10005 userInfo:0];
+      (*(handlerCopy + 2))(handlerCopy, service);
     }
   }
 
@@ -358,8 +358,8 @@ void __97__AFEventStore_SiriService__fetchEventsBetweenStartDate_endDate_withQue
       _os_log_error_impl(&dword_1912FE000, v30, OS_LOG_TYPE_ERROR, "%s Biome base event unavailable for AFBTEvent", buf, 0xCu);
     }
 
-    v21 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"kAFAssistantEventDomain" code:10002 userInfo:0];
-    (*(v12 + 2))(v12, v21);
+    service = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"kAFAssistantEventDomain" code:10002 userInfo:0];
+    (*(handlerCopy + 2))(handlerCopy, service);
   }
 
   v26 = *MEMORY[0x1E69E9840];
@@ -429,22 +429,22 @@ void __30__AFEventStore_sharedInstance__block_invoke()
   sharedInstance_store = v0;
 }
 
-- (void)fetchAppleAudioDeviceConnectedInLast24HoursWithCompletionHandler:(id)a3
+- (void)fetchAppleAudioDeviceConnectedInLast24HoursWithCompletionHandler:(id)handler
 {
   v20 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DFA8];
-  v5 = a3;
+  handlerCopy = handler;
   v6 = objc_alloc_init(v4);
-  v7 = [(AFEventStore *)self _getPublisher];
-  v8 = v7;
-  if (v7)
+  _getPublisher = [(AFEventStore *)self _getPublisher];
+  v8 = _getPublisher;
+  if (_getPublisher)
   {
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __97__AFEventStore_BluetoothEvent__fetchAppleAudioDeviceConnectedInLast24HoursWithCompletionHandler___block_invoke;
     v17[3] = &unk_1E7348F88;
     v17[4] = self;
-    v9 = [v7 filterWithIsIncluded:v17];
+    v9 = [_getPublisher filterWithIsIncluded:v17];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __97__AFEventStore_BluetoothEvent__fetchAppleAudioDeviceConnectedInLast24HoursWithCompletionHandler___block_invoke_32;
@@ -453,7 +453,7 @@ void __30__AFEventStore_sharedInstance__block_invoke()
     v16 = v10;
     v11 = [v9 sinkWithCompletion:&__block_literal_global_31 receiveInput:v15];
 
-    v5[2](v5, v10, 0);
+    handlerCopy[2](handlerCopy, v10, 0);
   }
 
   else
@@ -467,7 +467,7 @@ void __30__AFEventStore_sharedInstance__block_invoke()
     }
 
     v14 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"kAFAssistantEventDomain" code:10001 userInfo:0];
-    (v5)[2](v5, 0, v14);
+    (handlerCopy)[2](handlerCopy, 0, v14);
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -529,22 +529,22 @@ void __97__AFEventStore_BluetoothEvent__fetchAppleAudioDeviceConnectedInLast24Ho
   v3 = *MEMORY[0x1E69E9840];
 }
 
-- (void)fetchHeadunitsConnectedInLast24HoursWithCompletionHandler:(id)a3
+- (void)fetchHeadunitsConnectedInLast24HoursWithCompletionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E695DFA8];
-  v5 = a3;
+  handlerCopy = handler;
   v6 = objc_alloc_init(v4);
-  v7 = [(AFEventStore *)self _getPublisher];
-  v8 = v7;
-  if (v7)
+  _getPublisher = [(AFEventStore *)self _getPublisher];
+  v8 = _getPublisher;
+  if (_getPublisher)
   {
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __90__AFEventStore_BluetoothEvent__fetchHeadunitsConnectedInLast24HoursWithCompletionHandler___block_invoke;
     v20[3] = &unk_1E7348F88;
     v20[4] = self;
-    v9 = [v7 filterWithIsIncluded:v20];
+    v9 = [_getPublisher filterWithIsIncluded:v20];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __90__AFEventStore_BluetoothEvent__fetchHeadunitsConnectedInLast24HoursWithCompletionHandler___block_invoke_2;
@@ -559,8 +559,8 @@ void __97__AFEventStore_BluetoothEvent__fetchAppleAudioDeviceConnectedInLast24Ho
     v18 = v11;
     v12 = [v10 sinkWithCompletion:&__block_literal_global_27 receiveInput:v17];
 
-    v13 = [v11 allObjects];
-    v5[2](v5, v13, 0);
+    allObjects = [v11 allObjects];
+    handlerCopy[2](handlerCopy, allObjects, 0);
   }
 
   else
@@ -574,7 +574,7 @@ void __97__AFEventStore_BluetoothEvent__fetchAppleAudioDeviceConnectedInLast24Ho
     }
 
     v16 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"kAFAssistantEventDomain" code:10001 userInfo:0];
-    (v5)[2](v5, 0, v16);
+    (handlerCopy)[2](handlerCopy, 0, v16);
   }
 
   v14 = *MEMORY[0x1E69E9840];
@@ -606,13 +606,13 @@ void __90__AFEventStore_BluetoothEvent__fetchHeadunitsConnectedInLast24HoursWith
 {
   v12 = *MEMORY[0x1E69E9840];
   v2 = SoftBiomeLibrary_45782();
-  v3 = [v2 Device];
-  v4 = [v3 Wireless];
-  v5 = [v4 Bluetooth];
+  device = [v2 Device];
+  wireless = [device Wireless];
+  bluetooth = [wireless Bluetooth];
 
-  if (v5)
+  if (bluetooth)
   {
-    v6 = [v5 publisherWithUseCase:@"Assistant"];
+    v6 = [bluetooth publisherWithUseCase:@"Assistant"];
   }
 
   else
@@ -633,57 +633,57 @@ void __90__AFEventStore_BluetoothEvent__fetchHeadunitsConnectedInLast24HoursWith
   return v6;
 }
 
-- (id)_mapIDsToProduct:(id)a3
+- (id)_mapIDsToProduct:(id)product
 {
-  v4 = [a3 eventBody];
+  eventBody = [product eventBody];
   v5 = objc_alloc_init(MEMORY[0x1E69CF578]);
-  if ([v4 hasProductID])
+  if ([eventBody hasProductID])
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", objc_msgSend(v4, "productID")];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", objc_msgSend(eventBody, "productID")];
     [v5 setHeadUnitProductId:v6];
   }
 
-  if ([v4 hasVendorID])
+  if ([eventBody hasVendorID])
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", objc_msgSend(v4, "vendorID")];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", objc_msgSend(eventBody, "vendorID")];
     [v5 setHeadUnitVendorId:v7];
   }
 
-  [(AFEventStore *)self _populateBTCarEventOUID:v4 carBluetoothHeadunit:v5];
+  [(AFEventStore *)self _populateBTCarEventOUID:eventBody carBluetoothHeadunit:v5];
 
   return v5;
 }
 
-- (id)_mapIDsToSELFEvents:(id)a3
+- (id)_mapIDsToSELFEvents:(id)events
 {
-  v4 = [a3 eventBody];
+  eventBody = [events eventBody];
   v5 = objc_alloc_init(MEMORY[0x1E69CF578]);
-  if ([v4 hasProductID])
+  if ([eventBody hasProductID])
   {
-    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", objc_msgSend(v4, "productID")];
+    v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", objc_msgSend(eventBody, "productID")];
     [v5 setHeadUnitProductId:v6];
   }
 
-  if ([v4 hasVendorID])
+  if ([eventBody hasVendorID])
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", objc_msgSend(v4, "vendorID")];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%d", objc_msgSend(eventBody, "vendorID")];
     [v5 setHeadUnitVendorId:v7];
   }
 
-  [(AFEventStore *)self _populateBTCarEventOUID:v4 carBluetoothHeadunit:v5];
+  [(AFEventStore *)self _populateBTCarEventOUID:eventBody carBluetoothHeadunit:v5];
 
   return v5;
 }
 
-- (void)_populateBTCarEventOUID:(id)a3 carBluetoothHeadunit:(id)a4
+- (void)_populateBTCarEventOUID:(id)d carBluetoothHeadunit:(id)headunit
 {
-  v10 = a4;
-  v5 = [a3 address];
-  v6 = [v5 dataUsingEncoding:4];
+  headunitCopy = headunit;
+  address = [d address];
+  v6 = [address dataUsingEncoding:4];
 
   if ([v6 length] < 9)
   {
-    [v10 setOrganizationallyUniqueId:@"N/A"];
+    [headunitCopy setOrganizationallyUniqueId:@"N/A"];
   }
 
   else
@@ -694,73 +694,73 @@ void __90__AFEventStore_BluetoothEvent__fetchHeadunitsConnectedInLast24HoursWith
 
     if (v9)
     {
-      [v10 setOrganizationallyUniqueId:v9];
+      [headunitCopy setOrganizationallyUniqueId:v9];
     }
   }
 }
 
-- (BOOL)_filterAppleAudioEventsMoreThanADayOld:(id)a3
+- (BOOL)_filterAppleAudioEventsMoreThanADayOld:(id)old
 {
-  v4 = a3;
-  if ([(AFEventStore *)self _isEvent:v4 olderThan:24])
+  oldCopy = old;
+  if ([(AFEventStore *)self _isEvent:oldCopy olderThan:24])
   {
-    v5 = [v4 eventBody];
-    if (v5)
+    eventBody = [oldCopy eventBody];
+    if (eventBody)
     {
-      v6 = [v4 eventBody];
-      v7 = [v6 hasAppleAudioDevice];
+      eventBody2 = [oldCopy eventBody];
+      hasAppleAudioDevice = [eventBody2 hasAppleAudioDevice];
     }
 
     else
     {
-      v7 = 0;
+      hasAppleAudioDevice = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    hasAppleAudioDevice = 0;
   }
 
-  return v7;
+  return hasAppleAudioDevice;
 }
 
-- (BOOL)_filterHeadUnitEventsMoreThanADayOld:(id)a3
+- (BOOL)_filterHeadUnitEventsMoreThanADayOld:(id)old
 {
-  v4 = a3;
-  v5 = [v4 eventBody];
-  if ([v5 deviceType] == 18)
+  oldCopy = old;
+  eventBody = [oldCopy eventBody];
+  if ([eventBody deviceType] == 18)
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [v4 eventBody];
-    v6 = [v7 deviceType] == 23;
+    eventBody2 = [oldCopy eventBody];
+    v6 = [eventBody2 deviceType] == 23;
   }
 
-  v8 = [(AFEventStore *)self _isEvent:v4 olderThan:24];
+  v8 = [(AFEventStore *)self _isEvent:oldCopy olderThan:24];
   return v8 && v6;
 }
 
-- (BOOL)_isEvent:(id)a3 olderThan:(int64_t)a4
+- (BOOL)_isEvent:(id)event olderThan:(int64_t)than
 {
-  v5 = a3;
-  if (v5)
+  eventCopy = event;
+  if (eventCopy)
   {
-    v6 = [MEMORY[0x1E695DF00] date];
-    v7 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v8 = [v7 dateByAddingUnit:32 value:-a4 toDate:v6 options:0];
+    date = [MEMORY[0x1E695DF00] date];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v8 = [currentCalendar dateByAddingUnit:32 value:-than toDate:date options:0];
 
     [v8 timeIntervalSinceReferenceDate];
     v10 = v9;
-    [v6 timeIntervalSinceReferenceDate];
+    [date timeIntervalSinceReferenceDate];
     v12 = v11;
-    [v5 timestamp];
+    [eventCopy timestamp];
     if (v13 >= v10)
     {
-      [v5 timestamp];
+      [eventCopy timestamp];
       v14 = v15 <= v12;
     }
 
@@ -778,25 +778,25 @@ void __90__AFEventStore_BluetoothEvent__fetchHeadunitsConnectedInLast24HoursWith
   return v14;
 }
 
-- (void)deleteAllBTEventsWithQueue:(id)a3 withCompletionHandler:(id)a4
+- (void)deleteAllBTEventsWithQueue:(id)queue withCompletionHandler:(id)handler
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   v7 = SoftBiomeLibrary_45782();
-  v8 = [v7 Device];
-  v9 = [v8 Wireless];
-  v10 = [v9 Bluetooth];
+  device = [v7 Device];
+  wireless = [device Wireless];
+  bluetooth = [wireless Bluetooth];
 
-  if (v10)
+  if (bluetooth)
   {
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __81__AFEventStore_BluetoothEvent__deleteAllBTEventsWithQueue_withCompletionHandler___block_invoke;
     v14[3] = &unk_1E7349838;
-    v15 = v10;
-    v16 = v6;
-    dispatch_async(v5, v14);
+    v15 = bluetooth;
+    v16 = handlerCopy;
+    dispatch_async(queueCopy, v14);
 
     v11 = v15;
   }
@@ -812,7 +812,7 @@ void __90__AFEventStore_BluetoothEvent__fetchHeadunitsConnectedInLast24HoursWith
     }
 
     v11 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"kAFAssistantEventDomain" code:10001 userInfo:0];
-    (*(v6 + 2))(v6, v11);
+    (*(handlerCopy + 2))(handlerCopy, v11);
   }
 
   v13 = *MEMORY[0x1E69E9840];
@@ -828,17 +828,17 @@ uint64_t __81__AFEventStore_BluetoothEvent__deleteAllBTEventsWithQueue_withCompl
   return v3();
 }
 
-- (void)storeBTEvent:(id)a3 withQueue:(id)a4 withCompletionHandler:(id)a5
+- (void)storeBTEvent:(id)event withQueue:(id)queue withCompletionHandler:(id)handler
 {
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 bmEvent];
+  eventCopy = event;
+  queueCopy = queue;
+  handlerCopy = handler;
+  bmEvent = [eventCopy bmEvent];
 
-  if (v10)
+  if (bmEvent)
   {
-    v11 = [v7 bmEvent];
+    bmEvent2 = [eventCopy bmEvent];
     v34 = 0;
     v35 = &v34;
     v36 = 0x2050000000;
@@ -866,22 +866,22 @@ uint64_t __81__AFEventStore_BluetoothEvent__deleteAllBTEventsWithQueue_withCompl
     if (isKindOfClass)
     {
       v16 = SoftBiomeLibrary_45782();
-      v17 = [v16 Device];
-      v18 = [v17 Wireless];
-      v19 = [v18 Bluetooth];
+      device = [v16 Device];
+      wireless = [device Wireless];
+      bluetooth = [wireless Bluetooth];
 
-      if (v19)
+      if (bluetooth)
       {
-        v20 = [v19 source];
+        source = [bluetooth source];
         v21 = AFSiriLogContextEvent;
-        if (v20)
+        if (source)
         {
           if (os_log_type_enabled(AFSiriLogContextEvent, OS_LOG_TYPE_DEBUG))
           {
             *buf = 136315394;
             *&buf[4] = "[AFEventStore(BluetoothEvent) storeBTEvent:withQueue:withCompletionHandler:]";
             *&buf[12] = 2112;
-            *&buf[14] = v7;
+            *&buf[14] = eventCopy;
             _os_log_debug_impl(&dword_1912FE000, v21, OS_LOG_TYPE_DEBUG, "%s Dispatching event %@ to event source", buf, 0x16u);
           }
 
@@ -889,10 +889,10 @@ uint64_t __81__AFEventStore_BluetoothEvent__deleteAllBTEventsWithQueue_withCompl
           block[1] = 3221225472;
           block[2] = __77__AFEventStore_BluetoothEvent__storeBTEvent_withQueue_withCompletionHandler___block_invoke;
           block[3] = &unk_1E73496E8;
-          v31 = v7;
-          v32 = v20;
-          v33 = v9;
-          dispatch_async(v8, block);
+          v31 = eventCopy;
+          v32 = source;
+          v33 = handlerCopy;
+          dispatch_async(queueCopy, block);
 
           v22 = v31;
         }
@@ -907,7 +907,7 @@ uint64_t __81__AFEventStore_BluetoothEvent__deleteAllBTEventsWithQueue_withCompl
           }
 
           v22 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"kAFAssistantEventDomain" code:10003 userInfo:0];
-          (*(v9 + 2))(v9, v22);
+          (*(handlerCopy + 2))(handlerCopy, v22);
         }
       }
 
@@ -921,8 +921,8 @@ uint64_t __81__AFEventStore_BluetoothEvent__deleteAllBTEventsWithQueue_withCompl
           _os_log_error_impl(&dword_1912FE000, v26, OS_LOG_TYPE_ERROR, "%s Biome event stream unavailable for bluetooth device", buf, 0xCu);
         }
 
-        v20 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"kAFAssistantEventDomain" code:10001 userInfo:0];
-        (*(v9 + 2))(v9, v20);
+        source = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"kAFAssistantEventDomain" code:10001 userInfo:0];
+        (*(handlerCopy + 2))(handlerCopy, source);
       }
     }
 
@@ -940,8 +940,8 @@ uint64_t __81__AFEventStore_BluetoothEvent__deleteAllBTEventsWithQueue_withCompl
         v29 = v28;
       }
 
-      v19 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"kAFAssistantEventDomain" code:10005 userInfo:0];
-      (*(v9 + 2))(v9, v19);
+      bluetooth = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"kAFAssistantEventDomain" code:10005 userInfo:0];
+      (*(handlerCopy + 2))(handlerCopy, bluetooth);
     }
   }
 
@@ -955,8 +955,8 @@ uint64_t __81__AFEventStore_BluetoothEvent__deleteAllBTEventsWithQueue_withCompl
       _os_log_error_impl(&dword_1912FE000, v24, OS_LOG_TYPE_ERROR, "%s Biome base event unavailable for AFBTEvent", buf, 0xCu);
     }
 
-    v19 = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"kAFAssistantEventDomain" code:10002 userInfo:0];
-    (*(v9 + 2))(v9, v19);
+    bluetooth = [objc_alloc(MEMORY[0x1E696ABC0]) initWithDomain:@"kAFAssistantEventDomain" code:10002 userInfo:0];
+    (*(handlerCopy + 2))(handlerCopy, bluetooth);
   }
 
   v23 = *MEMORY[0x1E69E9840];

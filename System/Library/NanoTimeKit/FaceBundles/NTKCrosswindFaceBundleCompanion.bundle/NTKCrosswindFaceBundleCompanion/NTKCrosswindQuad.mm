@@ -1,35 +1,35 @@
 @interface NTKCrosswindQuad
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)_colorCompositionForDate:(id)a3;
-- (NTKCrosswindQuad)initWithScreenScale:(double)a3 calendar:(id)a4;
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)_colorCompositionForDate:(id)date;
+- (NTKCrosswindQuad)initWithScreenScale:(double)scale calendar:(id)calendar;
 - (NTKCrosswindQuadDelegate)delegate;
-- (id)_createRenderPipelineWithPixelFormat:(unint64_t)a3 aodSupported:(BOOL)a4;
+- (id)_createRenderPipelineWithPixelFormat:(unint64_t)format aodSupported:(BOOL)supported;
 - (id)_createVertexBuffer;
-- (id)_handContentColorAtIndex:(unint64_t)a3 colors:(id *)a4;
-- (void)_prepareUniformsForRendering:(id *)a3 withResult:(id *)a4;
-- (void)renderForDisplayWithEncoder:(id)a3;
-- (void)setAnimatingOverrideDate:(BOOL)a3;
-- (void)setBaseLayerBackgroundColor:(id)a3 baseLayerForegroundColor:(id)a4;
-- (void)setFromColor:(id)a3 midColor:(id)a4 toColor:(id)a5 forGradientIndex:(unint64_t)a6;
-- (void)setOutermostFromColor:(id)a3 midColor:(id)a4 toColor:(id)a5 forGradientIndex:(unint64_t)a6;
-- (void)setOverrideDate:(id)a3 overrideComposition:(id)a4 duration:(double)a5;
-- (void)setTritiumOverrideDate:(id)a3 hourRadians:(double)a4 minuteRadians:(double)a5 secondRadians:(double)a6;
-- (void)setTritiumProgress:(double)a3;
-- (void)setupForQuadView:(id)a3;
+- (id)_handContentColorAtIndex:(unint64_t)index colors:(id *)colors;
+- (void)_prepareUniformsForRendering:(id *)rendering withResult:(id *)result;
+- (void)renderForDisplayWithEncoder:(id)encoder;
+- (void)setAnimatingOverrideDate:(BOOL)date;
+- (void)setBaseLayerBackgroundColor:(id)color baseLayerForegroundColor:(id)foregroundColor;
+- (void)setFromColor:(id)color midColor:(id)midColor toColor:(id)toColor forGradientIndex:(unint64_t)index;
+- (void)setOutermostFromColor:(id)color midColor:(id)midColor toColor:(id)toColor forGradientIndex:(unint64_t)index;
+- (void)setOverrideDate:(id)date overrideComposition:(id)composition duration:(double)duration;
+- (void)setTritiumOverrideDate:(id)date hourRadians:(double)radians minuteRadians:(double)minuteRadians secondRadians:(double)secondRadians;
+- (void)setTritiumProgress:(double)progress;
+- (void)setupForQuadView:(id)view;
 @end
 
 @implementation NTKCrosswindQuad
 
-- (NTKCrosswindQuad)initWithScreenScale:(double)a3 calendar:(id)a4
+- (NTKCrosswindQuad)initWithScreenScale:(double)scale calendar:(id)calendar
 {
-  v7 = a4;
+  calendarCopy = calendar;
   v21.receiver = self;
   v21.super_class = NTKCrosswindQuad;
   v8 = [(NTKCrosswindQuad *)&v21 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_calendar, a4);
-    v9->_screenScale = a3;
+    objc_storeStrong(&v8->_calendar, calendar);
+    v9->_screenScale = scale;
     v10 = +[CLKUIMetalResourceManager sharedDevice];
     device = v9->_device;
     v9->_device = v10;
@@ -44,7 +44,7 @@
     overrideDateMediaTimingFunction = v9->_overrideDateMediaTimingFunction;
     v9->_overrideDateMediaTimingFunction = v16;
 
-    v18 = [[NTKCrosswindColorSequencer alloc] initWithCalendar:v7 gradientCount:4];
+    v18 = [[NTKCrosswindColorSequencer alloc] initWithCalendar:calendarCopy gradientCount:4];
     colorSequencer = v9->_colorSequencer;
     v9->_colorSequencer = v18;
   }
@@ -52,19 +52,19 @@
   return v9;
 }
 
-- (void)setTritiumProgress:(double)a3
+- (void)setTritiumProgress:(double)progress
 {
   tritiumProgress = self->_tritiumProgress;
   if ((CLKFloatEqualsFloat() & 1) == 0)
   {
-    self->_tritiumProgress = a3;
+    self->_tritiumProgress = progress;
     self->_renderedTritiumProgressNeedsUpdate = 1;
   }
 }
 
-- (void)setBaseLayerBackgroundColor:(id)a3 baseLayerForegroundColor:(id)a4
+- (void)setBaseLayerBackgroundColor:(id)color baseLayerForegroundColor:(id)foregroundColor
 {
-  v5 = a4;
+  foregroundColorCopy = foregroundColor;
   CLKUIConvertToRGBfFromUIColor();
   *&self->_baseLayerBackgroundColor[5] = v6;
   CLKUIConvertToRGBfFromUIColor();
@@ -73,31 +73,31 @@
   *&self->_baseLayerForegroundColor[5] = v8;
 }
 
-- (void)setFromColor:(id)a3 midColor:(id)a4 toColor:(id)a5 forGradientIndex:(unint64_t)a6
+- (void)setFromColor:(id)color midColor:(id)midColor toColor:(id)toColor forGradientIndex:(unint64_t)index
 {
-  v9 = a5;
-  v10 = a4;
+  toColorCopy = toColor;
+  midColorCopy = midColor;
   CLKUIConvertToRGBfFromUIColor();
   v17 = v11;
   CLKUIConvertToRGBfFromUIColor();
   v16 = v12;
 
   CLKUIConvertToRGBfFromUIColor();
-  v13 = &self->_anon_e0[48 * a6];
+  v13 = &self->_anon_e0[48 * index];
   *v13 = v17;
   *(v13 + 1) = v16;
   *(v13 + 2) = v14;
   self->_renderedGradientsNeedUpdate = 1;
-  v15 = self->_handDotColors[a6];
-  self->_handDotColors[a6] = v9;
+  v15 = self->_handDotColors[index];
+  self->_handDotColors[index] = toColorCopy;
 
   self->_renderedHandContentColorsNeedUpdate = 1;
 }
 
-- (void)setOutermostFromColor:(id)a3 midColor:(id)a4 toColor:(id)a5 forGradientIndex:(unint64_t)a6
+- (void)setOutermostFromColor:(id)color midColor:(id)midColor toColor:(id)toColor forGradientIndex:(unint64_t)index
 {
-  v9 = a5;
-  v10 = a4;
+  toColorCopy = toColor;
+  midColorCopy = midColor;
   CLKUIConvertToRGBfFromUIColor();
   v17 = v11;
   CLKUIConvertToRGBfFromUIColor();
@@ -106,21 +106,21 @@
   CLKUIConvertToRGBfFromUIColor();
   v15 = v13;
 
-  v14 = &self->_anon_1a0[48 * a6];
+  v14 = &self->_anon_1a0[48 * index];
   *v14 = v17;
   *(v14 + 1) = v16;
   *(v14 + 2) = v15;
 }
 
-- (void)setOverrideDate:(id)a3 overrideComposition:(id)a4 duration:(double)a5
+- (void)setOverrideDate:(id)date overrideComposition:(id)composition duration:(double)duration
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v10 = a3;
+  var1 = composition.var1;
+  var0 = composition.var0;
+  dateCopy = date;
   overrideDate = self->_overrideDate;
   if ((NTKEqualObjects() & 1) == 0)
   {
-    if (a5 > 0.0 && !self->_hasEverPreparedForRendering)
+    if (duration > 0.0 && !self->_hasEverPreparedForRendering)
     {
       v94 = 0u;
       v95 = 0u;
@@ -166,23 +166,23 @@
     }
 
     v15 = v14;
-    if (v10)
+    if (dateCopy)
     {
-      v16 = v10;
+      v16 = dateCopy;
     }
 
     else
     {
-      v16 = [v13 dateByAddingTimeInterval:a5];
+      v16 = [v13 dateByAddingTimeInterval:duration];
     }
 
     v17 = v16;
-    objc_storeStrong(&self->_overrideDate, a3);
+    objc_storeStrong(&self->_overrideDate, date);
     self->_overrideComposition.innerSecondGradientIndex = var0;
     self->_overrideComposition.outerSecondGradientIndex = var1;
     v18 = CACurrentMediaTime();
     self->_startOverrideTime = v18;
-    self->_endOverrideTime = v18 + a5;
+    self->_endOverrideTime = v18 + duration;
     v62 = 0;
     v63 = 0;
     v61 = 0;
@@ -194,7 +194,7 @@
     endOverrideAngles = self->_endOverrideAngles;
     *self->_endOverrideAngles = NTKCrosswindHourMinuteSecondAnglesToPolarAngles();
     *self->_fullTurnAngleCrossings = 0;
-    if (a5 > 0.0)
+    if (duration > 0.0)
     {
       v96 = *self->_renderedGradientIndiciesForHandContentColors;
       v22 = *self->_renderedInnerSectorsConfiguration.gradientIndicies;
@@ -347,10 +347,10 @@
   }
 }
 
-- (void)setTritiumOverrideDate:(id)a3 hourRadians:(double)a4 minuteRadians:(double)a5 secondRadians:(double)a6
+- (void)setTritiumOverrideDate:(id)date hourRadians:(double)radians minuteRadians:(double)minuteRadians secondRadians:(double)secondRadians
 {
-  v8 = a3;
-  if (v8)
+  dateCopy = date;
+  if (dateCopy)
   {
     v9 = NTKCrosswindHourMinuteSecondAnglesToPolarAngles();
     *self->_startOverrideAngles = v9;
@@ -358,11 +358,11 @@
     tritiumOverrideDate = self->_tritiumOverrideDate;
     if ((NTKEqualObjects() & 1) == 0)
     {
-      objc_storeStrong(&self->_tritiumOverrideDate, a3);
+      objc_storeStrong(&self->_tritiumOverrideDate, date);
       v11 = CACurrentMediaTime();
       self->_startOverrideTime = v11;
       self->_endOverrideTime = v11;
-      v12 = [(NTKCrosswindColorSequencing *)self->_colorSequencer colorCompositionForDate:v8];
+      v12 = [(NTKCrosswindColorSequencing *)self->_colorSequencer colorCompositionForDate:dateCopy];
       v14 = v13;
       v40 = 0;
       v41 = 0;
@@ -484,75 +484,75 @@
   }
 }
 
-- (void)setupForQuadView:(id)a3
+- (void)setupForQuadView:(id)view
 {
-  v4 = a3;
-  [v4 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   screenScale = self->_screenScale;
   self->_renderSize.width = v6 * screenScale;
   self->_renderSize.height = v7 * screenScale;
-  v8 = [v4 colorPixelFormat];
+  colorPixelFormat = [viewCopy colorPixelFormat];
 
-  v9 = [(NTKCrosswindQuad *)self _createRenderPipelineWithPixelFormat:v8 aodSupported:0];
+  v9 = [(NTKCrosswindQuad *)self _createRenderPipelineWithPixelFormat:colorPixelFormat aodSupported:0];
   renderPipelineState = self->_renderPipelineState;
   self->_renderPipelineState = v9;
 
-  v11 = [(NTKCrosswindQuad *)self _createRenderPipelineWithPixelFormat:v8 aodSupported:1];
+  v11 = [(NTKCrosswindQuad *)self _createRenderPipelineWithPixelFormat:colorPixelFormat aodSupported:1];
   renderPipelineStateAodTransition = self->_renderPipelineStateAodTransition;
   self->_renderPipelineStateAodTransition = v11;
 
-  v13 = [(NTKCrosswindQuad *)self _createVertexBuffer];
+  _createVertexBuffer = [(NTKCrosswindQuad *)self _createVertexBuffer];
   vertexBuffer = self->_vertexBuffer;
-  self->_vertexBuffer = v13;
+  self->_vertexBuffer = _createVertexBuffer;
 
   _objc_release_x1();
 }
 
-- (void)renderForDisplayWithEncoder:(id)a3
+- (void)renderForDisplayWithEncoder:(id)encoder
 {
-  v4 = a3;
-  [v4 setLabel:@"Crosswind Render Encoder"];
+  encoderCopy = encoder;
+  [encoderCopy setLabel:@"Crosswind Render Encoder"];
   v9[0] = 0;
   v9[1] = 0;
   renderSize = self->_renderSize;
   v11 = xmmword_A950;
-  [v4 setViewport:v9];
+  [encoderCopy setViewport:v9];
   v5 = &OBJC_IVAR___NTKCrosswindQuad__renderPipelineState;
   if (self->_tritiumProgress > 0.0)
   {
     v5 = &OBJC_IVAR___NTKCrosswindQuad__renderPipelineStateAodTransition;
   }
 
-  [v4 setRenderPipelineState:*&self->CLKUIQuad_opaque[*v5]];
-  [v4 setCullMode:0];
+  [encoderCopy setRenderPipelineState:*&self->CLKUIQuad_opaque[*v5]];
+  [encoderCopy setCullMode:0];
   bzero(v9, 0x2C0uLL);
   v8 = 0;
   [(NTKCrosswindQuad *)self _prepareUniformsForRendering:v9 withResult:&v8];
   v6 = [(MTLDevice *)self->_device newBufferWithBytes:v9 length:704 options:1];
-  [v4 setVertexBuffer:self->_vertexBuffer offset:0 atIndex:0];
-  [v4 setVertexBuffer:v6 offset:0 atIndex:1];
-  [v4 setFragmentBuffer:v6 offset:0 atIndex:0];
+  [encoderCopy setVertexBuffer:self->_vertexBuffer offset:0 atIndex:0];
+  [encoderCopy setVertexBuffer:v6 offset:0 atIndex:1];
+  [encoderCopy setFragmentBuffer:v6 offset:0 atIndex:0];
   if (v8 == 1)
   {
-    v7 = [(NTKCrosswindQuad *)self delegate];
-    [v7 crosswindQuadWillUpdateForegroundColors:self];
+    delegate = [(NTKCrosswindQuad *)self delegate];
+    [delegate crosswindQuadWillUpdateForegroundColors:self];
   }
 
-  [v4 drawPrimitives:4 vertexStart:0 vertexCount:4];
+  [encoderCopy drawPrimitives:4 vertexStart:0 vertexCount:4];
   [(NTKCrosswindQuad *)self setAnimatingOverrideDate:HIBYTE(v8)];
 }
 
-- (void)setAnimatingOverrideDate:(BOOL)a3
+- (void)setAnimatingOverrideDate:(BOOL)date
 {
-  if (self->_animatingOverrideDate != a3)
+  if (self->_animatingOverrideDate != date)
   {
-    self->_animatingOverrideDate = a3;
-    v5 = [(NTKCrosswindQuad *)self delegate];
-    [v5 crosswindQuadDidUpdateAnimatingOverrideDate:self];
+    self->_animatingOverrideDate = date;
+    delegate = [(NTKCrosswindQuad *)self delegate];
+    [delegate crosswindQuadDidUpdateAnimatingOverrideDate:self];
   }
 }
 
-- (id)_createRenderPipelineWithPixelFormat:(unint64_t)a3 aodSupported:(BOOL)a4
+- (id)_createRenderPipelineWithPixelFormat:(unint64_t)format aodSupported:(BOOL)supported
 {
   if (!self->_binaryArchive)
   {
@@ -563,8 +563,8 @@
   }
 
   v9 = objc_opt_new();
-  v24 = a4;
-  [v9 setConstantValue:&v24 type:53 atIndex:0];
+  supportedCopy = supported;
+  [v9 setConstantValue:&supportedCopy type:53 atIndex:0];
   v10 = self->_library;
   v11 = [(MTLLibrary *)v10 newFunctionWithName:@"crosswindVertexShader"];
   v12 = +[MTLFunctionDescriptor functionDescriptor];
@@ -585,11 +585,11 @@
   [v15 setVertexFunction:v11];
   [v15 setFragmentFunction:v13];
   [v15 setLabel:@"Crosswind Render Pipeline"];
-  v16 = [v15 colorAttachments];
-  [v16 objectAtIndexedSubscript:0];
+  colorAttachments = [v15 colorAttachments];
+  [colorAttachments objectAtIndexedSubscript:0];
   v18 = v17 = v11;
 
-  [v18 setPixelFormat:a3];
+  [v18 setPixelFormat:format];
   [v18 setBlendingEnabled:1];
   [v18 setRgbBlendOperation:0];
   [v18 setAlphaBlendOperation:0];
@@ -619,23 +619,23 @@
   return v2;
 }
 
-- (id)_handContentColorAtIndex:(unint64_t)a3 colors:(id *)a4
+- (id)_handContentColorAtIndex:(unint64_t)index colors:(id *)colors
 {
   if (self->_renderedTransitionProgress > 0.0)
   {
-    v7 = &self->_transitionContext + 8 * a3;
-    v8 = a4[*(v7 + 7)];
-    v9 = a4[*(v7 + 4)];
+    v7 = &self->_transitionContext + 8 * index;
+    v8 = colors[*(v7 + 7)];
+    v9 = colors[*(v7 + 4)];
     v10 = CLKUIInterpolateBetweenColors();
 LABEL_3:
 
     goto LABEL_8;
   }
 
-  v10 = a4[self->_renderedGradientIndiciesForHandContentColors[a3]];
-  if (self->_tritiumProgress > 0.0 && a3 <= 1 && self->_tritiumOverrideDate)
+  v10 = colors[self->_renderedGradientIndiciesForHandContentColors[index]];
+  if (self->_tritiumProgress > 0.0 && index <= 1 && self->_tritiumOverrideDate)
   {
-    v9 = a4[self->_tritiumOverrideContext.gradientIndiciesForHandContentColors[a3]];
+    v9 = colors[self->_tritiumOverrideContext.gradientIndiciesForHandContentColors[index]];
     v11 = CLKUIInterpolateBetweenColors();
 
     v10 = v11;
@@ -647,12 +647,12 @@ LABEL_8:
   return v10;
 }
 
-- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)_colorCompositionForDate:(id)a3
+- ($7DEDF3842AEFB7F1E6DF5AF62E424A02)_colorCompositionForDate:(id)date
 {
-  v4 = a3;
-  if (self->_overrideDate != v4 || (innerSecondGradientIndex = self->_overrideComposition.innerSecondGradientIndex, outerSecondGradientIndex = self->_overrideComposition.outerSecondGradientIndex, NTKCrosswindColorCompositionEqualToComposition(innerSecondGradientIndex, outerSecondGradientIndex, -1, -1)))
+  dateCopy = date;
+  if (self->_overrideDate != dateCopy || (innerSecondGradientIndex = self->_overrideComposition.innerSecondGradientIndex, outerSecondGradientIndex = self->_overrideComposition.outerSecondGradientIndex, NTKCrosswindColorCompositionEqualToComposition(innerSecondGradientIndex, outerSecondGradientIndex, -1, -1)))
   {
-    innerSecondGradientIndex = [(NTKCrosswindColorSequencing *)self->_colorSequencer colorCompositionForDate:v4];
+    innerSecondGradientIndex = [(NTKCrosswindColorSequencing *)self->_colorSequencer colorCompositionForDate:dateCopy];
     outerSecondGradientIndex = v7;
   }
 
@@ -663,69 +663,69 @@ LABEL_8:
   return result;
 }
 
-- (void)_prepareUniformsForRendering:(id *)a3 withResult:(id *)a4
+- (void)_prepareUniformsForRendering:(id *)rendering withResult:(id *)result
 {
   self->_hasEverPreparedForRendering = 1;
   __asm { FMOV            V1.2D, #0.5 }
 
-  *&a3->var0 = vcvt_f32_f64(vmulq_f64(self->_renderSize, _Q1));
+  *&rendering->var0 = vcvt_f32_f64(vmulq_f64(self->_renderSize, _Q1));
   screenScale = self->_screenScale;
-  *&a3->var2 = vcvt_f32_f64(vmulq_n_f64(*&self->_innerCircleRadius, screenScale));
+  *&rendering->var2 = vcvt_f32_f64(vmulq_n_f64(*&self->_innerCircleRadius, screenScale));
   *&screenScale = screenScale * self->_outerCircleRadius;
-  a3->var5.var1[0] = *&screenScale;
-  *&a3->var5.var2[1] = *&self->_baseLayerBackgroundColor[5];
-  *&a3->var6.var1[1] = *&self->_baseLayerForegroundColor[5];
+  rendering->var5.var1[0] = *&screenScale;
+  *&rendering->var5.var2[1] = *&self->_baseLayerBackgroundColor[5];
+  *&rendering->var6.var1[1] = *&self->_baseLayerForegroundColor[5];
   v13 = *&self->_anon_e0[160];
   v12 = *&self->_anon_e0[176];
   v14 = *&self->_anon_e0[144];
-  *&a3[1].var6.var0 = *&self->_anon_e0[128];
-  *a3[1].var6.var2 = v14;
-  *&a3[1].var8.var0 = v13;
-  *a3[1].var8.var2 = v12;
+  *&rendering[1].var6.var0 = *&self->_anon_e0[128];
+  *rendering[1].var6.var2 = v14;
+  *&rendering[1].var8.var0 = v13;
+  *rendering[1].var8.var2 = v12;
   v16 = *&self->_anon_e0[96];
   v15 = *&self->_anon_e0[112];
   v17 = *&self->_anon_e0[80];
-  *&a3->var10 = *&self->_anon_e0[64];
-  *a3->var12 = v17;
-  *&a3[1].var2 = v16;
-  *&a3[1].var5.var1[2] = v15;
+  *&rendering->var10 = *&self->_anon_e0[64];
+  *rendering->var12 = v17;
+  *&rendering[1].var2 = v16;
+  *&rendering[1].var5.var1[2] = v15;
   v19 = *&self->_anon_e0[32];
   v18 = *&self->_anon_e0[48];
   v20 = *&self->_anon_e0[16];
-  *&a3->var6.var2[2] = *self->_anon_e0;
-  *&a3->var8.var1[1] = v20;
-  *&a3->var8.var2[2] = v19;
-  *&a3->var9.var1[2] = v18;
+  *&rendering->var6.var2[2] = *self->_anon_e0;
+  *&rendering->var8.var1[1] = v20;
+  *&rendering->var8.var2[2] = v19;
+  *&rendering->var9.var1[2] = v18;
   v21 = *&self->_anon_1a0[48];
   v23 = *self->_anon_1a0;
   v22 = *&self->_anon_1a0[16];
-  *&a3[1].var11[1] = *&self->_anon_1a0[32];
-  *&a3[2].var0 = v21;
-  *a3[1].var9.var1 = v23;
-  *&a3[1].var9.var2[1] = v22;
+  *&rendering[1].var11[1] = *&self->_anon_1a0[32];
+  *&rendering[2].var0 = v21;
+  *rendering[1].var9.var1 = v23;
+  *&rendering[1].var9.var2[1] = v22;
   v24 = *&self->_anon_1a0[112];
   v26 = *&self->_anon_1a0[64];
   v25 = *&self->_anon_1a0[80];
-  *&a3[2].var6.var1[1] = *&self->_anon_1a0[96];
-  *&a3[2].var6.var2[2] = v24;
-  *a3[2].var5.var1 = v26;
-  *&a3[2].var5.var2[1] = v25;
+  *&rendering[2].var6.var1[1] = *&self->_anon_1a0[96];
+  *&rendering[2].var6.var2[2] = v24;
+  *rendering[2].var5.var1 = v26;
+  *&rendering[2].var5.var2[1] = v25;
   v27 = *&self->_anon_1a0[176];
   v29 = *&self->_anon_1a0[128];
   v28 = *&self->_anon_1a0[144];
-  *&a3[2].var9.var1[2] = *&self->_anon_1a0[160];
-  *&a3[2].var10 = v27;
-  *&a3[2].var8.var1[1] = v29;
-  *&a3[2].var8.var2[2] = v28;
+  *&rendering[2].var9.var1[2] = *&self->_anon_1a0[160];
+  *&rendering[2].var10 = v27;
+  *&rendering[2].var8.var1[1] = v29;
+  *&rendering[2].var8.var2[2] = v28;
   renderedGradientsNeedUpdate = self->_renderedGradientsNeedUpdate;
   self->_renderedGradientsNeedUpdate = 0;
   renderedHandContentColorsNeedUpdate = self->_renderedHandContentColorsNeedUpdate;
   self->_renderedHandContentColorsNeedUpdate = 0;
-  v30 = [(NTKCrosswindQuad *)self overrideDate];
-  v31 = v30;
-  if (v30)
+  overrideDate = [(NTKCrosswindQuad *)self overrideDate];
+  v31 = overrideDate;
+  if (overrideDate)
   {
-    v32 = v30;
+    v32 = overrideDate;
   }
 
   else
@@ -802,11 +802,11 @@ LABEL_18:
   v50.i32[0] = NTKCrosswindPolarFullTurnAngleCrossingBetweenAngles() + v49 + v48;
   v50.i32[1] = v49 + v48;
   *self->_fullTurnAngleCrossings = vadd_s32(*self->_fullTurnAngleCrossings, v50);
-  var1 = a3[4].var8.var1;
+  var1 = rendering[4].var8.var1;
   v52 = *self->_transitionContext.transitionInnerGradientIndicies;
-  LODWORD(a3[4].var8.var1[2]) = self->_transitionContext.transitionInnerGradientIndicies[2];
-  *a3[4].var8.var1 = v52;
-  *a3[4].var8.var2 = *self->_transitionContext.transitionOuterGradientIndicies;
+  LODWORD(rendering[4].var8.var1[2]) = self->_transitionContext.transitionInnerGradientIndicies[2];
+  *rendering[4].var8.var1 = v52;
+  *rendering[4].var8.var2 = *self->_transitionContext.transitionOuterGradientIndicies;
   v53 = *self->_fullTurnAngleCrossings;
   if (v53)
   {
@@ -820,7 +820,7 @@ LABEL_18:
 
     while (v54 != 3);
     *var1 = v129;
-    a3[4].var8.var1[2] = *(&v129 + 2);
+    rendering[4].var8.var1[2] = *(&v129 + 2);
     v56 = *&self->_fullTurnAngleCrossings[4];
     if (!v56)
     {
@@ -835,7 +835,7 @@ LABEL_18:
   {
 LABEL_20:
     v61 = 0;
-    var2 = a3[4].var8.var2;
+    var2 = rendering[4].var8.var2;
     v63 = v56;
     do
     {
@@ -849,7 +849,7 @@ LABEL_20:
 
 LABEL_23:
   *&v64 = 1.0 - v40;
-  a3[4].var8.var0 = v64;
+  rendering[4].var8.var0 = v64;
   v57 = *&self->_anon_344[60];
   v59 = *&self->_anon_344[68];
   v60 = 1;
@@ -957,15 +957,15 @@ LABEL_24:
   *&v129 = v76;
   *(&v129 + 1) = v57;
   v125 = v70;
-  NTKCrosswindBuildSectorsConfiguration(a3[2].var12, &v129, 0, v70, v121);
+  NTKCrosswindBuildSectorsConfiguration(rendering[2].var12, &v129, 0, v70, v121);
   v130 = 1;
   *&v129 = v77;
   *(&v129 + 1) = v59;
-  NTKCrosswindBuildSectorsConfiguration(&a3[3].var6.var1[1], &v129, 0, v125, v121);
+  NTKCrosswindBuildSectorsConfiguration(&rendering[3].var6.var1[1], &v129, 0, v125, v121);
   if (v60)
   {
-    sub_60AC(&a3[3].var2, a3[2].var12[0], (*self->_fullTurnAngleCrossings - *&self->_anon_344[4]));
-    sub_60AC(&a3[3].var6.var2[2], LODWORD(a3[3].var6.var1[1]), *&self->_fullTurnAngleCrossings[4] - *&self->_anon_344[8]);
+    sub_60AC(&rendering[3].var2, rendering[2].var12[0], (*self->_fullTurnAngleCrossings - *&self->_anon_344[4]));
+    sub_60AC(&rendering[3].var6.var2[2], LODWORD(rendering[3].var6.var1[1]), *&self->_fullTurnAngleCrossings[4] - *&self->_anon_344[8]);
   }
 
   tritiumProgress = self->_tritiumProgress;
@@ -1094,11 +1094,11 @@ LABEL_24:
     v130 = 256;
     *&v129 = -1;
     *(&v129 + 1) = v57;
-    NTKCrosswindBuildSectorsConfiguration(&a3[3].var9.var1[2], &v129, 0, v79, v121);
+    NTKCrosswindBuildSectorsConfiguration(&rendering[3].var9.var1[2], &v129, 0, v79, v121);
     v130 = 257;
     *&v129 = -1;
     *(&v129 + 1) = v59;
-    NTKCrosswindBuildSectorsConfiguration(a3[4].var5.var1, &v129, 0, v113, v121);
+    NTKCrosswindBuildSectorsConfiguration(rendering[4].var5.var1, &v129, 0, v113, v121);
   }
 
   v91 = v60;
@@ -1106,48 +1106,48 @@ LABEL_24:
   renderedTritiumProgressNeedsUpdate = self->_renderedTritiumProgressNeedsUpdate;
   self->_renderedTritiumProgressNeedsUpdate = 0;
   v92 = tritiumProgress;
-  a3[3].var9.var1[0] = v92;
-  AngleIndiciesFromSectorsConfiguration = NTKCrosswindGetAngleIndiciesFromSectorsConfiguration(a3[2].var12);
+  rendering[3].var9.var1[0] = v92;
+  AngleIndiciesFromSectorsConfiguration = NTKCrosswindGetAngleIndiciesFromSectorsConfiguration(rendering[2].var12);
   v122 = LODWORD(AngleIndiciesFromSectorsConfiguration);
-  v94 = NTKCrosswindGetAngleIndiciesFromSectorsConfiguration(&a3[3].var6.var1[1]);
-  v95 = *(&a3[3].var2 + v122);
-  v96 = a3[3].var6.var2[SHIDWORD(v94) + 2];
+  v94 = NTKCrosswindGetAngleIndiciesFromSectorsConfiguration(&rendering[3].var6.var1[1]);
+  v95 = *(&rendering[3].var2 + v122);
+  v96 = rendering[3].var6.var2[SHIDWORD(v94) + 2];
   *&v129 = v95;
   *(&v129 + 1) = v96;
-  v98 = a3[3].var6.var2[v97 + 2];
+  v98 = rendering[3].var6.var2[v97 + 2];
   v99 = self->_renderedGradientIndiciesForHandContentColors[0];
   v100 = self->_renderedGradientIndiciesForHandContentColors[1];
   v101 = self->_renderedGradientIndiciesForHandContentColors[2];
   self->_renderedGradientIndiciesForHandContentColors[2] = v98;
   *self->_renderedGradientIndiciesForHandContentColors = v129;
   *self->_renderedAngles = v125;
-  v103 = *&a3[3].var2;
-  v102 = *&a3[3].var5.var1[2];
-  v104 = *a3[2].var12;
-  *&self->_anon_28c[20] = *&a3[3].var6.var0;
+  v103 = *&rendering[3].var2;
+  v102 = *&rendering[3].var5.var1[2];
+  v104 = *rendering[2].var12;
+  *&self->_anon_28c[20] = *&rendering[3].var6.var0;
   *self->_renderedInnerSectorsConfiguration.gradientIndicies = v103;
   *&self->_anon_28c[4] = v102;
   *&self->_renderedInnerSectorsConfiguration.angleCount = v104;
-  v106 = *&a3[3].var6.var2[2];
-  v105 = *&a3[3].var8.var1[1];
-  v107 = *&a3[3].var6.var1[1];
-  *&self->_anon_2c4[20] = *&a3[3].var8.var2[2];
+  v106 = *&rendering[3].var6.var2[2];
+  v105 = *&rendering[3].var8.var1[1];
+  v107 = *&rendering[3].var6.var1[1];
+  *&self->_anon_2c4[20] = *&rendering[3].var8.var2[2];
   *self->_renderedOuterSectorsConfiguration.gradientIndicies = v106;
   *&self->_anon_2c4[4] = v105;
   *&self->_renderedOuterSectorsConfiguration.angleCount = v107;
   *&v106 = self->_renderedTransitionProgress;
   v130 = v98;
-  LODWORD(self->_renderedTransitionProgress) = a3[4].var8.var0;
+  LODWORD(self->_renderedTransitionProgress) = rendering[4].var8.var0;
   v108 = CLKFloatEqualsFloat();
-  NTKCrosswindDeduplicateAnglesInSectorsConfiguration(a3[2].var12);
-  NTKCrosswindDeduplicateAnglesInSectorsConfiguration(&a3[3].var6.var1[1]);
+  NTKCrosswindDeduplicateAnglesInSectorsConfiguration(rendering[2].var12);
+  NTKCrosswindDeduplicateAnglesInSectorsConfiguration(&rendering[3].var6.var1[1]);
   if (tritiumProgress > 0.0)
   {
-    NTKCrosswindDeduplicateAnglesInSectorsConfiguration(&a3[3].var9.var1[2]);
-    NTKCrosswindDeduplicateAnglesInSectorsConfiguration(a3[4].var5.var1);
+    NTKCrosswindDeduplicateAnglesInSectorsConfiguration(&rendering[3].var9.var1[2]);
+    NTKCrosswindDeduplicateAnglesInSectorsConfiguration(rendering[4].var5.var1);
   }
 
-  if (a4)
+  if (result)
   {
     v109 = 1;
     if (!renderedGradientsNeedUpdate && v116 && !renderedHandContentColorsNeedUpdate && !(v99 ^ v95 | v100 ^ v96 | v101 ^ v98))
@@ -1155,8 +1155,8 @@ LABEL_24:
       v109 = v108 ^ 1 | (v114 != 0 && renderedTritiumProgressNeedsUpdate);
     }
 
-    a4->var0 = v109;
-    a4->var1 = v91;
+    result->var0 = v109;
+    result->var1 = v91;
   }
 }
 

@@ -1,15 +1,15 @@
 @interface OrgApacheLuceneSearchBooleanTopLevelScorers_BoostedScorer
-- (OrgApacheLuceneSearchBooleanTopLevelScorers_BoostedScorer)initWithOrgApacheLuceneSearchScorer:(id)a3 withFloat:(float)a4;
+- (OrgApacheLuceneSearchBooleanTopLevelScorers_BoostedScorer)initWithOrgApacheLuceneSearchScorer:(id)scorer withFloat:(float)float;
 - (float)score;
 - (id)getChildren;
 @end
 
 @implementation OrgApacheLuceneSearchBooleanTopLevelScorers_BoostedScorer
 
-- (OrgApacheLuceneSearchBooleanTopLevelScorers_BoostedScorer)initWithOrgApacheLuceneSearchScorer:(id)a3 withFloat:(float)a4
+- (OrgApacheLuceneSearchBooleanTopLevelScorers_BoostedScorer)initWithOrgApacheLuceneSearchScorer:(id)scorer withFloat:(float)float
 {
-  OrgApacheLuceneSearchFilterScorer_initWithOrgApacheLuceneSearchScorer_(self, a3);
-  self->boost_ = a4;
+  OrgApacheLuceneSearchFilterScorer_initWithOrgApacheLuceneSearchScorer_(self, scorer);
+  self->boost_ = float;
   return self;
 }
 

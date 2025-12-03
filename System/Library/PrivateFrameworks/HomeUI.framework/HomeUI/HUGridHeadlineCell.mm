@@ -1,24 +1,24 @@
 @interface HUGridHeadlineCell
 - (CGRect)unpaddedContentFrame;
-- (HUGridHeadlineCell)initWithCoder:(id)a3;
-- (HUGridHeadlineCell)initWithFrame:(CGRect)a3;
+- (HUGridHeadlineCell)initWithCoder:(id)coder;
+- (HUGridHeadlineCell)initWithFrame:(CGRect)frame;
 - (void)_setupCommonCellAppearance;
 - (void)_updateHeadlineLabel;
 - (void)prepareForReuse;
-- (void)setEditing:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setLayoutOptions:(id)a3;
+- (void)setEditing:(BOOL)editing;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setLayoutOptions:(id)options;
 - (void)updateConstraints;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUGridHeadlineCell
 
-- (HUGridHeadlineCell)initWithCoder:(id)a3
+- (HUGridHeadlineCell)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = HUGridHeadlineCell;
-  v3 = [(HUGridHeadlineCell *)&v6 initWithCoder:a3];
+  v3 = [(HUGridHeadlineCell *)&v6 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -28,11 +28,11 @@
   return v4;
 }
 
-- (HUGridHeadlineCell)initWithFrame:(CGRect)a3
+- (HUGridHeadlineCell)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = HUGridHeadlineCell;
-  v3 = [(HUGridHeadlineCell *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(HUGridHeadlineCell *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -42,30 +42,30 @@
   return v4;
 }
 
-- (void)setLayoutOptions:(id)a3
+- (void)setLayoutOptions:(id)options
 {
-  v16 = a3;
-  if (([v16 isEqual:self->_layoutOptions] & 1) == 0)
+  optionsCopy = options;
+  if (([optionsCopy isEqual:self->_layoutOptions] & 1) == 0)
   {
-    objc_storeStrong(&self->_layoutOptions, a3);
+    objc_storeStrong(&self->_layoutOptions, options);
     [(HUGridHeadlineCell *)self setNeedsUpdateConstraints];
     [(HUGridHeadlineCell *)self _updateHeadlineLabel];
-    v5 = [(HUGridHeadlineCell *)self layoutOptions];
-    v6 = [v5 backgroundDisplayOptions];
-    v7 = [(HUGridHeadlineCell *)self editingBackgroundView];
-    [v7 setDisplayOptions:v6];
+    layoutOptions = [(HUGridHeadlineCell *)self layoutOptions];
+    backgroundDisplayOptions = [layoutOptions backgroundDisplayOptions];
+    editingBackgroundView = [(HUGridHeadlineCell *)self editingBackgroundView];
+    [editingBackgroundView setDisplayOptions:backgroundDisplayOptions];
 
-    v8 = [(HUGridHeadlineCell *)self layoutOptions];
-    [v8 cellCornerRadius];
+    layoutOptions2 = [(HUGridHeadlineCell *)self layoutOptions];
+    [layoutOptions2 cellCornerRadius];
     v10 = v9;
-    v11 = [(HUGridHeadlineCell *)self editingBackgroundView];
-    [v11 setCornerRadius:v10];
+    editingBackgroundView2 = [(HUGridHeadlineCell *)self editingBackgroundView];
+    [editingBackgroundView2 setCornerRadius:v10];
 
-    v12 = [(HUGridHeadlineCell *)self layoutOptions];
-    [v12 cellCornerRadius];
+    layoutOptions3 = [(HUGridHeadlineCell *)self layoutOptions];
+    [layoutOptions3 cellCornerRadius];
     v14 = v13;
-    v15 = [(HUGridHeadlineCell *)self editingBackgroundDarkeningView];
-    [v15 _setContinuousCornerRadius:v14];
+    editingBackgroundDarkeningView = [(HUGridHeadlineCell *)self editingBackgroundDarkeningView];
+    [editingBackgroundDarkeningView _setContinuousCornerRadius:v14];
   }
 }
 
@@ -74,18 +74,18 @@
   v3 = objc_alloc_init(MEMORY[0x277D75D18]);
   [(HUGridHeadlineCell *)self setEditingBackgroundContainerView:v3];
 
-  v4 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  editingBackgroundContainerView = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
+  [editingBackgroundContainerView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
-  [v5 setHidden:1];
+  editingBackgroundContainerView2 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
+  [editingBackgroundContainerView2 setHidden:1];
 
-  v6 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
-  [v6 setUserInteractionEnabled:0];
+  editingBackgroundContainerView3 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
+  [editingBackgroundContainerView3 setUserInteractionEnabled:0];
 
-  v7 = [(HUGridHeadlineCell *)self contentView];
-  v8 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
-  [v7 addSubview:v8];
+  contentView = [(HUGridHeadlineCell *)self contentView];
+  editingBackgroundContainerView4 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
+  [contentView addSubview:editingBackgroundContainerView4];
 
   v9 = [HUGridCellBackgroundView alloc];
   v10 = *MEMORY[0x277CBF3A0];
@@ -95,80 +95,80 @@
   v14 = [(HUGridCellBackgroundView *)v9 initWithFrame:*MEMORY[0x277CBF3A0], v11, v12, v13];
   [(HUGridHeadlineCell *)self setEditingBackgroundView:v14];
 
-  v15 = [(HUGridHeadlineCell *)self editingBackgroundView];
-  v16 = [v15 layer];
-  [v16 setMasksToBounds:1];
+  editingBackgroundView = [(HUGridHeadlineCell *)self editingBackgroundView];
+  layer = [editingBackgroundView layer];
+  [layer setMasksToBounds:1];
 
-  v17 = [(HUGridHeadlineCell *)self editingBackgroundView];
-  [v17 setUserInteractionEnabled:0];
+  editingBackgroundView2 = [(HUGridHeadlineCell *)self editingBackgroundView];
+  [editingBackgroundView2 setUserInteractionEnabled:0];
 
-  v18 = [(HUGridHeadlineCell *)self editingBackgroundView];
-  [v18 setAutoresizingMask:18];
+  editingBackgroundView3 = [(HUGridHeadlineCell *)self editingBackgroundView];
+  [editingBackgroundView3 setAutoresizingMask:18];
 
-  v19 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
-  v20 = [(HUGridHeadlineCell *)self editingBackgroundView];
-  [v19 addSubview:v20];
+  editingBackgroundContainerView5 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
+  editingBackgroundView4 = [(HUGridHeadlineCell *)self editingBackgroundView];
+  [editingBackgroundContainerView5 addSubview:editingBackgroundView4];
 
   v21 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v10, v11, v12, v13}];
   [(HUGridHeadlineCell *)self setEditingBackgroundDarkeningView:v21];
 
   v22 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.13];
-  v23 = [(HUGridHeadlineCell *)self editingBackgroundDarkeningView];
-  [v23 setBackgroundColor:v22];
+  editingBackgroundDarkeningView = [(HUGridHeadlineCell *)self editingBackgroundDarkeningView];
+  [editingBackgroundDarkeningView setBackgroundColor:v22];
 
-  v24 = [(HUGridHeadlineCell *)self editingBackgroundDarkeningView];
-  [v24 setUserInteractionEnabled:0];
+  editingBackgroundDarkeningView2 = [(HUGridHeadlineCell *)self editingBackgroundDarkeningView];
+  [editingBackgroundDarkeningView2 setUserInteractionEnabled:0];
 
-  v25 = [(HUGridHeadlineCell *)self editingBackgroundDarkeningView];
-  [v25 setAutoresizingMask:18];
+  editingBackgroundDarkeningView3 = [(HUGridHeadlineCell *)self editingBackgroundDarkeningView];
+  [editingBackgroundDarkeningView3 setAutoresizingMask:18];
 
-  v26 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
-  v27 = [(HUGridHeadlineCell *)self editingBackgroundDarkeningView];
-  [v26 addSubview:v27];
+  editingBackgroundContainerView6 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
+  editingBackgroundDarkeningView4 = [(HUGridHeadlineCell *)self editingBackgroundDarkeningView];
+  [editingBackgroundContainerView6 addSubview:editingBackgroundDarkeningView4];
 
   v28 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HUGridHeadlineCell *)self setHeadlineLabel:v28];
 
-  v29 = [(HUGridHeadlineCell *)self headlineLabel];
-  [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
+  headlineLabel = [(HUGridHeadlineCell *)self headlineLabel];
+  [headlineLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v30 = [(HUGridHeadlineCell *)self headlineLabel];
-  [v30 setAdjustsFontSizeToFitWidth:1];
+  headlineLabel2 = [(HUGridHeadlineCell *)self headlineLabel];
+  [headlineLabel2 setAdjustsFontSizeToFitWidth:1];
 
-  v31 = [(HUGridHeadlineCell *)self headlineLabel];
-  [v31 setBaselineAdjustment:1];
+  headlineLabel3 = [(HUGridHeadlineCell *)self headlineLabel];
+  [headlineLabel3 setBaselineAdjustment:1];
 
-  v32 = [MEMORY[0x277D75348] systemWhiteColor];
-  v33 = [(HUGridHeadlineCell *)self headlineLabel];
-  [v33 setTextColor:v32];
+  systemWhiteColor = [MEMORY[0x277D75348] systemWhiteColor];
+  headlineLabel4 = [(HUGridHeadlineCell *)self headlineLabel];
+  [headlineLabel4 setTextColor:systemWhiteColor];
 
-  v34 = [(HUGridHeadlineCell *)self headlineLabel];
-  [v34 setUserInteractionEnabled:0];
+  headlineLabel5 = [(HUGridHeadlineCell *)self headlineLabel];
+  [headlineLabel5 setUserInteractionEnabled:0];
 
-  v35 = [(HUGridHeadlineCell *)self contentView];
-  v36 = [(HUGridHeadlineCell *)self headlineLabel];
-  [v35 addSubview:v36];
+  contentView2 = [(HUGridHeadlineCell *)self contentView];
+  headlineLabel6 = [(HUGridHeadlineCell *)self headlineLabel];
+  [contentView2 addSubview:headlineLabel6];
 
   v45 = HUImageNamed(@"dashboard-headline-edit-chevron");
   v37 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v45];
   [(HUGridHeadlineCell *)self setEditingChevronImageView:v37];
 
-  v38 = [MEMORY[0x277D75348] systemWhiteColor];
-  v39 = [(HUGridHeadlineCell *)self editingChevronImageView];
-  [v39 setTintColor:v38];
+  systemWhiteColor2 = [MEMORY[0x277D75348] systemWhiteColor];
+  editingChevronImageView = [(HUGridHeadlineCell *)self editingChevronImageView];
+  [editingChevronImageView setTintColor:systemWhiteColor2];
 
-  v40 = [(HUGridHeadlineCell *)self editingChevronImageView];
-  [v40 setTranslatesAutoresizingMaskIntoConstraints:0];
+  editingChevronImageView2 = [(HUGridHeadlineCell *)self editingChevronImageView];
+  [editingChevronImageView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v41 = [(HUGridHeadlineCell *)self editingChevronImageView];
-  [v41 setHidden:1];
+  editingChevronImageView3 = [(HUGridHeadlineCell *)self editingChevronImageView];
+  [editingChevronImageView3 setHidden:1];
 
-  v42 = [(HUGridHeadlineCell *)self editingChevronImageView];
-  [v42 setUserInteractionEnabled:0];
+  editingChevronImageView4 = [(HUGridHeadlineCell *)self editingChevronImageView];
+  [editingChevronImageView4 setUserInteractionEnabled:0];
 
-  v43 = [(HUGridHeadlineCell *)self contentView];
-  v44 = [(HUGridHeadlineCell *)self editingChevronImageView];
-  [v43 addSubview:v44];
+  contentView3 = [(HUGridHeadlineCell *)self contentView];
+  editingChevronImageView5 = [(HUGridHeadlineCell *)self editingChevronImageView];
+  [contentView3 addSubview:editingChevronImageView5];
 }
 
 - (void)prepareForReuse
@@ -181,8 +181,8 @@
 
 - (CGRect)unpaddedContentFrame
 {
-  v2 = [(HUGridHeadlineCell *)self headlineLabel];
-  [v2 frame];
+  headlineLabel = [(HUGridHeadlineCell *)self headlineLabel];
+  [headlineLabel frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -199,23 +199,23 @@
   return result;
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  if (self->_editing != a3)
+  if (self->_editing != editing)
   {
-    v4 = a3;
-    self->_editing = a3;
-    v6 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
-    [v6 setHidden:!v4];
+    editingCopy = editing;
+    self->_editing = editing;
+    editingBackgroundContainerView = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
+    [editingBackgroundContainerView setHidden:!editingCopy];
 
-    v7 = [(HUGridHeadlineCell *)self editingChevronImageView];
-    [v7 setHidden:!v4];
+    editingChevronImageView = [(HUGridHeadlineCell *)self editingChevronImageView];
+    [editingChevronImageView setHidden:!editingCopy];
 
     [(HUGridHeadlineCell *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
   v7.receiver = self;
   v7.super_class = HUGridHeadlineCell;
@@ -225,7 +225,7 @@
   v5[2] = __37__HUGridHeadlineCell_setHighlighted___block_invoke;
   v5[3] = &unk_277DB7EE0;
   v5[4] = self;
-  v6 = a3;
+  highlightedCopy = highlighted;
   [MEMORY[0x277D75D18] animateWithDuration:v5 animations:0.15];
 }
 
@@ -260,124 +260,124 @@ void __37__HUGridHeadlineCell_setHighlighted___block_invoke(uint64_t a1)
 
 - (void)updateConstraints
 {
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [(HUGridHeadlineCell *)self headlineLabel];
-  v5 = [v4 leadingAnchor];
-  v6 = [(HUGridHeadlineCell *)self contentView];
-  v7 = [v6 leadingAnchor];
-  v8 = [(HUGridHeadlineCell *)self layoutOptions];
-  [v8 cellInnerMargin];
-  v9 = [v5 constraintEqualToAnchor:v7 constant:?];
-  [v3 addObject:v9];
+  array = [MEMORY[0x277CBEB18] array];
+  headlineLabel = [(HUGridHeadlineCell *)self headlineLabel];
+  leadingAnchor = [headlineLabel leadingAnchor];
+  contentView = [(HUGridHeadlineCell *)self contentView];
+  leadingAnchor2 = [contentView leadingAnchor];
+  layoutOptions = [(HUGridHeadlineCell *)self layoutOptions];
+  [layoutOptions cellInnerMargin];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:?];
+  [array addObject:v9];
 
-  v10 = [(HUGridHeadlineCell *)self headlineLabel];
-  v11 = [v10 trailingAnchor];
-  v12 = [(HUGridHeadlineCell *)self contentView];
-  v13 = [v12 trailingAnchor];
-  v14 = [v11 constraintLessThanOrEqualToAnchor:v13];
-  [v3 addObject:v14];
+  headlineLabel2 = [(HUGridHeadlineCell *)self headlineLabel];
+  trailingAnchor = [headlineLabel2 trailingAnchor];
+  contentView2 = [(HUGridHeadlineCell *)self contentView];
+  trailingAnchor2 = [contentView2 trailingAnchor];
+  v14 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
+  [array addObject:v14];
 
-  v15 = [(HUGridHeadlineCell *)self headlineLabel];
-  v16 = [v15 firstBaselineAnchor];
-  v17 = [(HUGridHeadlineCell *)self contentView];
-  v18 = [v17 topAnchor];
-  v19 = [(HUGridHeadlineCell *)self layoutOptions];
-  [v19 headlineBaselineOffset];
-  v21 = [v16 constraintEqualToAnchor:v18 constant:-v20];
-  [v3 addObject:v21];
+  headlineLabel3 = [(HUGridHeadlineCell *)self headlineLabel];
+  firstBaselineAnchor = [headlineLabel3 firstBaselineAnchor];
+  contentView3 = [(HUGridHeadlineCell *)self contentView];
+  topAnchor = [contentView3 topAnchor];
+  layoutOptions2 = [(HUGridHeadlineCell *)self layoutOptions];
+  [layoutOptions2 headlineBaselineOffset];
+  v21 = [firstBaselineAnchor constraintEqualToAnchor:topAnchor constant:-v20];
+  [array addObject:v21];
 
   if ([(HUGridHeadlineCell *)self isEditing])
   {
-    v22 = [(HUGridHeadlineCell *)self headlineLabel];
-    v23 = [v22 trailingAnchor];
-    v24 = [(HUGridHeadlineCell *)self editingChevronImageView];
-    v25 = [v24 leadingAnchor];
-    v26 = [v23 constraintLessThanOrEqualToAnchor:v25];
-    [v3 addObject:v26];
+    headlineLabel4 = [(HUGridHeadlineCell *)self headlineLabel];
+    trailingAnchor3 = [headlineLabel4 trailingAnchor];
+    editingChevronImageView = [(HUGridHeadlineCell *)self editingChevronImageView];
+    leadingAnchor3 = [editingChevronImageView leadingAnchor];
+    v26 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:leadingAnchor3];
+    [array addObject:v26];
 
-    v27 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
-    v28 = [v27 trailingAnchor];
-    v29 = [(HUGridHeadlineCell *)self contentView];
-    v30 = [v29 trailingAnchor];
-    v31 = [v28 constraintLessThanOrEqualToAnchor:v30];
-    [v3 addObject:v31];
+    editingBackgroundContainerView = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
+    trailingAnchor4 = [editingBackgroundContainerView trailingAnchor];
+    contentView4 = [(HUGridHeadlineCell *)self contentView];
+    trailingAnchor5 = [contentView4 trailingAnchor];
+    v31 = [trailingAnchor4 constraintLessThanOrEqualToAnchor:trailingAnchor5];
+    [array addObject:v31];
 
-    v32 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
-    v33 = [v32 trailingAnchor];
-    v34 = [(HUGridHeadlineCell *)self headlineLabel];
-    v35 = [v34 trailingAnchor];
-    v36 = [(HUGridHeadlineCell *)self isEditing];
+    editingBackgroundContainerView2 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
+    trailingAnchor6 = [editingBackgroundContainerView2 trailingAnchor];
+    headlineLabel5 = [(HUGridHeadlineCell *)self headlineLabel];
+    trailingAnchor7 = [headlineLabel5 trailingAnchor];
+    isEditing = [(HUGridHeadlineCell *)self isEditing];
     v37 = 52.0;
-    if (!v36)
+    if (!isEditing)
     {
       v37 = 0.0;
     }
 
-    v38 = [v33 constraintEqualToAnchor:v35 constant:v37];
+    v38 = [trailingAnchor6 constraintEqualToAnchor:trailingAnchor7 constant:v37];
 
     LODWORD(v39) = 1144766464;
     [v38 setPriority:v39];
-    [v3 addObject:v38];
-    v40 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
-    v41 = [v40 widthAnchor];
-    v42 = [(HUGridHeadlineCell *)self layoutOptions];
-    [v42 editingBackgroundMinimumWidth];
-    v43 = [v41 constraintGreaterThanOrEqualToConstant:?];
+    [array addObject:v38];
+    editingBackgroundContainerView3 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
+    widthAnchor = [editingBackgroundContainerView3 widthAnchor];
+    layoutOptions3 = [(HUGridHeadlineCell *)self layoutOptions];
+    [layoutOptions3 editingBackgroundMinimumWidth];
+    v43 = [widthAnchor constraintGreaterThanOrEqualToConstant:?];
 
     LODWORD(v44) = 1144782848;
     [v43 setPriority:v44];
-    [v3 addObject:v43];
-    v45 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
-    v46 = [v45 leadingAnchor];
-    v47 = [(HUGridHeadlineCell *)self contentView];
-    v48 = [v47 leadingAnchor];
-    v49 = [v46 constraintEqualToAnchor:v48];
-    [v3 addObject:v49];
+    [array addObject:v43];
+    editingBackgroundContainerView4 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
+    leadingAnchor4 = [editingBackgroundContainerView4 leadingAnchor];
+    contentView5 = [(HUGridHeadlineCell *)self contentView];
+    leadingAnchor5 = [contentView5 leadingAnchor];
+    v49 = [leadingAnchor4 constraintEqualToAnchor:leadingAnchor5];
+    [array addObject:v49];
 
-    v50 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
-    v51 = [v50 centerYAnchor];
-    v52 = [(HUGridHeadlineCell *)self headlineLabel];
-    v53 = [v52 centerYAnchor];
-    v54 = [v51 constraintEqualToAnchor:v53];
-    [v3 addObject:v54];
+    editingBackgroundContainerView5 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
+    centerYAnchor = [editingBackgroundContainerView5 centerYAnchor];
+    headlineLabel6 = [(HUGridHeadlineCell *)self headlineLabel];
+    centerYAnchor2 = [headlineLabel6 centerYAnchor];
+    v54 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
+    [array addObject:v54];
 
-    v55 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
-    v56 = [v55 heightAnchor];
-    v57 = [(HUGridHeadlineCell *)self layoutOptions];
-    [v57 editingBackgroundHeight];
-    v58 = [v56 constraintEqualToConstant:?];
-    [v3 addObject:v58];
+    editingBackgroundContainerView6 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
+    heightAnchor = [editingBackgroundContainerView6 heightAnchor];
+    layoutOptions4 = [(HUGridHeadlineCell *)self layoutOptions];
+    [layoutOptions4 editingBackgroundHeight];
+    v58 = [heightAnchor constraintEqualToConstant:?];
+    [array addObject:v58];
 
-    v59 = [(HUGridHeadlineCell *)self editingChevronImageView];
-    v60 = [v59 trailingAnchor];
-    v61 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
-    v62 = [v61 trailingAnchor];
-    v63 = [(HUGridHeadlineCell *)self layoutOptions];
-    [v63 cellInnerMargin];
-    v65 = [v60 constraintEqualToAnchor:v62 constant:-v64];
-    [v3 addObject:v65];
+    editingChevronImageView2 = [(HUGridHeadlineCell *)self editingChevronImageView];
+    trailingAnchor8 = [editingChevronImageView2 trailingAnchor];
+    editingBackgroundContainerView7 = [(HUGridHeadlineCell *)self editingBackgroundContainerView];
+    trailingAnchor9 = [editingBackgroundContainerView7 trailingAnchor];
+    layoutOptions5 = [(HUGridHeadlineCell *)self layoutOptions];
+    [layoutOptions5 cellInnerMargin];
+    v65 = [trailingAnchor8 constraintEqualToAnchor:trailingAnchor9 constant:-v64];
+    [array addObject:v65];
 
-    v66 = [(HUGridHeadlineCell *)self editingChevronImageView];
-    v67 = [v66 centerYAnchor];
-    v68 = [(HUGridHeadlineCell *)self headlineLabel];
-    v69 = [v68 centerYAnchor];
-    v70 = [v67 constraintEqualToAnchor:v69];
-    [v3 addObject:v70];
+    editingChevronImageView3 = [(HUGridHeadlineCell *)self editingChevronImageView];
+    centerYAnchor3 = [editingChevronImageView3 centerYAnchor];
+    headlineLabel7 = [(HUGridHeadlineCell *)self headlineLabel];
+    centerYAnchor4 = [headlineLabel7 centerYAnchor];
+    v70 = [centerYAnchor3 constraintEqualToAnchor:centerYAnchor4];
+    [array addObject:v70];
   }
 
-  v71 = [(HUGridHeadlineCell *)self headlineCellConstraints];
-  v72 = [v3 isEqualToArray:v71];
+  headlineCellConstraints = [(HUGridHeadlineCell *)self headlineCellConstraints];
+  v72 = [array isEqualToArray:headlineCellConstraints];
 
   if ((v72 & 1) == 0)
   {
     v73 = MEMORY[0x277CCAAD0];
-    v74 = [(HUGridHeadlineCell *)self headlineCellConstraints];
-    [v73 deactivateConstraints:v74];
+    headlineCellConstraints2 = [(HUGridHeadlineCell *)self headlineCellConstraints];
+    [v73 deactivateConstraints:headlineCellConstraints2];
 
-    [(HUGridHeadlineCell *)self setHeadlineCellConstraints:v3];
+    [(HUGridHeadlineCell *)self setHeadlineCellConstraints:array];
     v75 = MEMORY[0x277CCAAD0];
-    v76 = [(HUGridHeadlineCell *)self headlineCellConstraints];
-    [v75 activateConstraints:v76];
+    headlineCellConstraints3 = [(HUGridHeadlineCell *)self headlineCellConstraints];
+    [v75 activateConstraints:headlineCellConstraints3];
   }
 
   v77.receiver = self;
@@ -385,49 +385,49 @@ void __37__HUGridHeadlineCell_setHighlighted___block_invoke(uint64_t a1)
   [(HUGridHeadlineCell *)&v77 updateConstraints];
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = [(HUGridHeadlineCell *)self item];
+  item = [(HUGridHeadlineCell *)self item];
   v5 = *MEMORY[0x277D13F60];
   v14[0] = *MEMORY[0x277D13F60];
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v14 count:1];
-  v7 = [v4 resultsContainRequiredProperties:v6];
+  v7 = [item resultsContainRequiredProperties:v6];
 
-  v8 = [(HUGridHeadlineCell *)self item];
+  item2 = [(HUGridHeadlineCell *)self item];
 
-  if (v8 && (v7 & 1) == 0)
+  if (item2 && (v7 & 1) == 0)
   {
-    v9 = [(HUGridHeadlineCell *)self item];
-    NSLog(&cfstr_ItemIsMissingR.isa, v9);
+    item3 = [(HUGridHeadlineCell *)self item];
+    NSLog(&cfstr_ItemIsMissingR.isa, item3);
   }
 
   if (v7)
   {
-    v10 = [(HUGridHeadlineCell *)self item];
-    v11 = [v10 latestResults];
-    v12 = [v11 objectForKeyedSubscript:v5];
-    v13 = [(HUGridHeadlineCell *)self headlineLabel];
-    [v13 setText:v12];
+    item4 = [(HUGridHeadlineCell *)self item];
+    latestResults = [item4 latestResults];
+    v12 = [latestResults objectForKeyedSubscript:v5];
+    headlineLabel = [(HUGridHeadlineCell *)self headlineLabel];
+    [headlineLabel setText:v12];
   }
 
   else
   {
-    v10 = [(HUGridHeadlineCell *)self headlineLabel];
-    [v10 setText:&stru_2823E0EE8];
+    item4 = [(HUGridHeadlineCell *)self headlineLabel];
+    [item4 setText:&stru_2823E0EE8];
   }
 }
 
 - (void)_updateHeadlineLabel
 {
-  v4 = [(HUGridHeadlineCell *)self layoutOptions];
-  v5 = [v4 font];
-  v6 = [(HUGridHeadlineCell *)self headlineLabel];
-  [v6 setFont:v5];
+  layoutOptions = [(HUGridHeadlineCell *)self layoutOptions];
+  font = [layoutOptions font];
+  headlineLabel = [(HUGridHeadlineCell *)self headlineLabel];
+  [headlineLabel setFont:font];
 
-  v15 = [(HUGridHeadlineCell *)self layoutOptions];
-  v7 = [v15 font];
-  [v7 pointSize];
+  layoutOptions2 = [(HUGridHeadlineCell *)self layoutOptions];
+  font2 = [layoutOptions2 font];
+  [font2 pointSize];
   v9 = v8;
   if (v8 <= 0.0)
   {
@@ -436,17 +436,17 @@ void __37__HUGridHeadlineCell_setHighlighted___block_invoke(uint64_t a1)
 
   else
   {
-    v5 = [(HUGridHeadlineCell *)self layoutOptions];
-    [v5 minimumFontSize];
+    font = [(HUGridHeadlineCell *)self layoutOptions];
+    [font minimumFontSize];
     v11 = v10;
-    v6 = [(HUGridHeadlineCell *)self layoutOptions];
-    v2 = [v6 font];
-    [v2 pointSize];
+    headlineLabel = [(HUGridHeadlineCell *)self layoutOptions];
+    font3 = [headlineLabel font];
+    [font3 pointSize];
     v13 = v11 / v12;
   }
 
-  v14 = [(HUGridHeadlineCell *)self headlineLabel];
-  [v14 setMinimumScaleFactor:v13];
+  headlineLabel2 = [(HUGridHeadlineCell *)self headlineLabel];
+  [headlineLabel2 setMinimumScaleFactor:v13];
 
   if (v9 > 0.0)
   {

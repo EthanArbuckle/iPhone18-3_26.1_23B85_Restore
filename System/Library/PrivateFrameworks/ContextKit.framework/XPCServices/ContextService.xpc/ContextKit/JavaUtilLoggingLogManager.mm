@@ -2,27 +2,27 @@
 + (id)checkConfiguration;
 + (id)getLogManager;
 + (void)initialize;
-- (BOOL)addLoggerWithJavaUtilLoggingLogger:(id)a3;
+- (BOOL)addLoggerWithJavaUtilLoggingLogger:(id)logger;
 - (id)getLoggerNames;
-- (id)getLoggerWithNSString:(id)a3;
-- (id)getOrCreateWithNSString:(id)a3 withNSString:(id)a4;
-- (id)getPropertyWithNSString:(id)a3;
-- (void)addPropertyChangeListenerWithJavaBeansPropertyChangeListener:(id)a3;
+- (id)getLoggerWithNSString:(id)string;
+- (id)getOrCreateWithNSString:(id)string withNSString:(id)sString;
+- (id)getPropertyWithNSString:(id)string;
+- (void)addPropertyChangeListenerWithJavaBeansPropertyChangeListener:(id)listener;
 - (void)dealloc;
 - (void)readConfiguration;
-- (void)readConfigurationWithJavaIoInputStream:(id)a3;
-- (void)removePropertyChangeListenerWithJavaBeansPropertyChangeListener:(id)a3;
+- (void)readConfigurationWithJavaIoInputStream:(id)stream;
+- (void)removePropertyChangeListenerWithJavaBeansPropertyChangeListener:(id)listener;
 - (void)reset;
-- (void)setLevelRecursivelyWithJavaUtilLoggingLogger:(id)a3 withJavaUtilLoggingLevel:(id)a4;
-- (void)setParentWithJavaUtilLoggingLogger:(id)a3 withJavaUtilLoggingLogger:(id)a4;
+- (void)setLevelRecursivelyWithJavaUtilLoggingLogger:(id)logger withJavaUtilLoggingLevel:(id)level;
+- (void)setParentWithJavaUtilLoggingLogger:(id)logger withJavaUtilLoggingLogger:(id)loggingLogger;
 @end
 
 @implementation JavaUtilLoggingLogManager
 
-- (BOOL)addLoggerWithJavaUtilLoggingLogger:(id)a3
+- (BOOL)addLoggerWithJavaUtilLoggingLogger:(id)logger
 {
   objc_sync_enter(self);
-  if (!a3 || (v5 = [a3 getName], (loggers = self->loggers_) == 0))
+  if (!logger || (v5 = [logger getName], (loggers = self->loggers_) == 0))
   {
     JreThrowNullPointerException();
   }
@@ -30,16 +30,16 @@
   v7 = [(JavaUtilHashtable *)loggers getWithId:v5];
   if (!v7)
   {
-    sub_1001A34F0(self, a3, v5);
-    [(JavaUtilHashtable *)self->loggers_ putWithId:v5 withId:a3];
-    [a3 setManagerWithJavaUtilLoggingLogManager:self];
+    sub_1001A34F0(self, logger, v5);
+    [(JavaUtilHashtable *)self->loggers_ putWithId:v5 withId:logger];
+    [logger setManagerWithJavaUtilLoggingLogManager:self];
   }
 
   objc_sync_exit(self);
   return v7 == 0;
 }
 
-- (id)getLoggerWithNSString:(id)a3
+- (id)getLoggerWithNSString:(id)string
 {
   objc_sync_enter(self);
   loggers = self->loggers_;
@@ -48,7 +48,7 @@
     JreThrowNullPointerException();
   }
 
-  v6 = [(JavaUtilHashtable *)loggers getWithId:a3];
+  v6 = [(JavaUtilHashtable *)loggers getWithId:string];
   objc_sync_exit(self);
   return v6;
 }
@@ -62,9 +62,9 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(JavaUtilHashtable *)loggers keys];
+  keys = [(JavaUtilHashtable *)loggers keys];
   objc_sync_exit(self);
-  return v4;
+  return keys;
 }
 
 + (id)getLogManager
@@ -77,7 +77,7 @@
   return JavaUtilLoggingLogManager_manager_;
 }
 
-- (id)getPropertyWithNSString:(id)a3
+- (id)getPropertyWithNSString:(id)string
 {
   props = self->props_;
   if (!props)
@@ -85,7 +85,7 @@
     JreThrowNullPointerException();
   }
 
-  return [(JavaUtilProperties *)props getPropertyWithNSString:a3];
+  return [(JavaUtilProperties *)props getPropertyWithNSString:string];
 }
 
 - (void)readConfiguration
@@ -139,11 +139,11 @@ LABEL_15:
   }
 }
 
-- (void)readConfigurationWithJavaIoInputStream:(id)a3
+- (void)readConfigurationWithJavaIoInputStream:(id)stream
 {
   [(JavaUtilLoggingLogManager *)self checkAccess];
 
-  sub_1001A3BF0(self, a3);
+  sub_1001A3BF0(self, stream);
 }
 
 - (void)reset
@@ -152,15 +152,15 @@ LABEL_15:
   [(JavaUtilLoggingLogManager *)self checkAccess];
   v3 = new_JavaUtilProperties_init();
   JreStrongAssignAndConsume(&self->props_, v3);
-  v4 = [(JavaUtilLoggingLogManager *)self getLoggerNames];
-  if (!v4)
+  getLoggerNames = [(JavaUtilLoggingLogManager *)self getLoggerNames];
+  if (!getLoggerNames)
   {
     JreThrowNullPointerException();
   }
 
-  while ([v4 hasMoreElements])
+  while ([getLoggerNames hasMoreElements])
   {
-    v5 = -[JavaUtilLoggingLogManager getLoggerWithNSString:](self, "getLoggerWithNSString:", [v4 nextElement]);
+    v5 = -[JavaUtilLoggingLogManager getLoggerWithNSString:](self, "getLoggerWithNSString:", [getLoggerNames nextElement]);
     if (v5)
     {
       [v5 reset];
@@ -187,9 +187,9 @@ LABEL_15:
   objc_sync_exit(self);
 }
 
-- (void)addPropertyChangeListenerWithJavaBeansPropertyChangeListener:(id)a3
+- (void)addPropertyChangeListenerWithJavaBeansPropertyChangeListener:(id)listener
 {
-  if (!a3)
+  if (!listener)
   {
     v6 = new_JavaLangNullPointerException_initWithNSString_(@"l == null");
     objc_exception_throw(v6);
@@ -202,10 +202,10 @@ LABEL_15:
     JreThrowNullPointerException();
   }
 
-  [(JavaBeansPropertyChangeSupport *)listeners addPropertyChangeListenerWithJavaBeansPropertyChangeListener:a3];
+  [(JavaBeansPropertyChangeSupport *)listeners addPropertyChangeListenerWithJavaBeansPropertyChangeListener:listener];
 }
 
-- (void)removePropertyChangeListenerWithJavaBeansPropertyChangeListener:(id)a3
+- (void)removePropertyChangeListenerWithJavaBeansPropertyChangeListener:(id)listener
 {
   [(JavaUtilLoggingLogManager *)self checkAccess];
   listeners = self->listeners_;
@@ -214,16 +214,16 @@ LABEL_15:
     JreThrowNullPointerException();
   }
 
-  [(JavaBeansPropertyChangeSupport *)listeners removePropertyChangeListenerWithJavaBeansPropertyChangeListener:a3];
+  [(JavaBeansPropertyChangeSupport *)listeners removePropertyChangeListenerWithJavaBeansPropertyChangeListener:listener];
 }
 
-- (id)getOrCreateWithNSString:(id)a3 withNSString:(id)a4
+- (id)getOrCreateWithNSString:(id)string withNSString:(id)sString
 {
   objc_sync_enter(self);
-  v7 = [(JavaUtilLoggingLogManager *)self getLoggerWithNSString:a3];
+  v7 = [(JavaUtilLoggingLogManager *)self getLoggerWithNSString:string];
   if (!v7)
   {
-    v7 = new_JavaUtilLoggingLogger_initWithNSString_withNSString_(a3, a4);
+    v7 = new_JavaUtilLoggingLogger_initWithNSString_withNSString_(string, sString);
     [(JavaUtilLoggingLogManager *)self addLoggerWithJavaUtilLoggingLogger:v7];
   }
 
@@ -231,50 +231,50 @@ LABEL_15:
   return v7;
 }
 
-- (void)setParentWithJavaUtilLoggingLogger:(id)a3 withJavaUtilLoggingLogger:(id)a4
+- (void)setParentWithJavaUtilLoggingLogger:(id)logger withJavaUtilLoggingLogger:(id)loggingLogger
 {
   objc_sync_enter(self);
-  if (!a3)
+  if (!logger)
   {
     goto LABEL_9;
   }
 
-  objc_storeWeak(a3 + 1, a4);
-  if (!atomic_load(a3 + 2))
+  objc_storeWeak(logger + 1, loggingLogger);
+  if (!atomic_load(logger + 2))
   {
-    [(JavaUtilLoggingLogManager *)self setLevelRecursivelyWithJavaUtilLoggingLogger:a3 withJavaUtilLoggingLevel:0];
+    [(JavaUtilLoggingLogManager *)self setLevelRecursivelyWithJavaUtilLoggingLogger:logger withJavaUtilLoggingLevel:0];
   }
 
-  if (!a4 || (v8 = *(a4 + 4)) == 0)
+  if (!loggingLogger || (v8 = *(loggingLogger + 4)) == 0)
   {
 LABEL_9:
     JreThrowNullPointerException();
   }
 
-  [v8 addWithId:a3];
+  [v8 addWithId:logger];
 
   objc_sync_exit(self);
 }
 
-- (void)setLevelRecursivelyWithJavaUtilLoggingLogger:(id)a3 withJavaUtilLoggingLevel:(id)a4
+- (void)setLevelRecursivelyWithJavaUtilLoggingLogger:(id)logger withJavaUtilLoggingLevel:(id)level
 {
   objc_sync_enter(self);
-  if (!a3)
+  if (!logger)
   {
     goto LABEL_24;
   }
 
-  v7 = atomic_load(a3 + 6);
-  JreVolatileStrongAssign(a3 + 2, a4);
-  if (a4)
+  v7 = atomic_load(logger + 6);
+  JreVolatileStrongAssign(logger + 2, level);
+  if (level)
   {
-    v8 = [a4 intValue];
+    intValue = [level intValue];
     goto LABEL_10;
   }
 
-  if (objc_loadWeak(a3 + 1))
+  if (objc_loadWeak(logger + 1))
   {
-    v8 = atomic_load(objc_loadWeak(a3 + 1) + 6);
+    intValue = atomic_load(objc_loadWeak(logger + 1) + 6);
     goto LABEL_10;
   }
 
@@ -289,17 +289,17 @@ LABEL_24:
     JreThrowNullPointerException();
   }
 
-  v8 = [JavaUtilLoggingLevel_INFO_ intValue];
+  intValue = [JavaUtilLoggingLevel_INFO_ intValue];
 LABEL_10:
-  atomic_store(v8, a3 + 6);
-  v9 = atomic_load(a3 + 6);
+  atomic_store(intValue, logger + 6);
+  v9 = atomic_load(logger + 6);
   if (v7 != v9)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v10 = *(a3 + 4);
+    v10 = *(logger + 4);
     if (!v10)
     {
 LABEL_23:
@@ -350,7 +350,7 @@ LABEL_23:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = new_JavaUtilLoggingLoggingPermission_initWithNSString_withNSString_();
     JreStrongAssignAndConsume(&qword_100554C28, v2);

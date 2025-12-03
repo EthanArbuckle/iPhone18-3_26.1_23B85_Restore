@@ -1,19 +1,19 @@
 @interface AVPlayerItemTrack
-+ (AVPlayerItemTrack)playerItemTrackWithFigPlaybackItem:(OpaqueFigPlaybackItem *)a3 readyForInspection:(BOOL)a4 trackID:(int)a5 asset:(id)a6 playerItem:(id)a7;
++ (AVPlayerItemTrack)playerItemTrackWithFigPlaybackItem:(OpaqueFigPlaybackItem *)item readyForInspection:(BOOL)inspection trackID:(int)d asset:(id)asset playerItem:(id)playerItem;
 - (AVAssetTrack)assetTrack;
 - (BOOL)_figPlaybackItemIsReadyForInspection;
 - (BOOL)isEnabled;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)willTrimShortDurationAudioSamples;
 - (NSArray)outputs;
 - (float)currentVideoFrameRate;
-- (id)_initWithFigPlaybackItem:(OpaqueFigPlaybackItem *)a3 readyForInspection:(BOOL)a4 trackID:(int)a5 asset:(id)a6 playerItem:(id)a7;
+- (id)_initWithFigPlaybackItem:(OpaqueFigPlaybackItem *)item readyForInspection:(BOOL)inspection trackID:(int)d asset:(id)asset playerItem:(id)playerItem;
 - (id)description;
 - (id)effectiveLoudnessInfo;
 - (id)fallbackTrack;
 - (int)effectiveEQPreset;
 - (unint64_t)hash;
-- (void)_attachToFigPlaybackItemOfPlayerItem:(id)a3;
+- (void)_attachToFigPlaybackItemOfPlayerItem:(id)item;
 - (void)_respondToFigPlaybackItemBecomingReadyForInpection;
 - (void)_transferActiveHapticChannelIndexToFig;
 - (void)_transferDisableColorMatchingToFig;
@@ -23,28 +23,28 @@
 - (void)_transferMutesHapticsToFig;
 - (void)_transferVideoEnhancementOptionsToFig;
 - (void)_updateTrackExtractionIDArrayProperty;
-- (void)addOutput:(id)a3;
+- (void)addOutput:(id)output;
 - (void)dealloc;
-- (void)removeOutput:(id)a3;
-- (void)setActiveHapticChannelIndex:(int64_t)a3;
-- (void)setDisableColorMatching:(BOOL)a3;
+- (void)removeOutput:(id)output;
+- (void)setActiveHapticChannelIndex:(int64_t)index;
+- (void)setDisableColorMatching:(BOOL)matching;
 - (void)setEnabled:(BOOL)enabled;
-- (void)setHapticVolume:(float)a3;
-- (void)setLoudnessInfo:(id)a3;
-- (void)setMutesHaptics:(BOOL)a3;
-- (void)setVideoEnhancementFilterOptions:(id)a3;
+- (void)setHapticVolume:(float)volume;
+- (void)setLoudnessInfo:(id)info;
+- (void)setMutesHaptics:(BOOL)haptics;
+- (void)setVideoEnhancementFilterOptions:(id)options;
 @end
 
 @implementation AVPlayerItemTrack
 
-+ (AVPlayerItemTrack)playerItemTrackWithFigPlaybackItem:(OpaqueFigPlaybackItem *)a3 readyForInspection:(BOOL)a4 trackID:(int)a5 asset:(id)a6 playerItem:(id)a7
++ (AVPlayerItemTrack)playerItemTrackWithFigPlaybackItem:(OpaqueFigPlaybackItem *)item readyForInspection:(BOOL)inspection trackID:(int)d asset:(id)asset playerItem:(id)playerItem
 {
-  v7 = [[AVPlayerItemTrack alloc] _initWithFigPlaybackItem:a3 readyForInspection:a4 trackID:*&a5 asset:a6 playerItem:a7];
+  v7 = [[AVPlayerItemTrack alloc] _initWithFigPlaybackItem:item readyForInspection:inspection trackID:*&d asset:asset playerItem:playerItem];
 
   return v7;
 }
 
-- (id)_initWithFigPlaybackItem:(OpaqueFigPlaybackItem *)a3 readyForInspection:(BOOL)a4 trackID:(int)a5 asset:(id)a6 playerItem:(id)a7
+- (id)_initWithFigPlaybackItem:(OpaqueFigPlaybackItem *)item readyForInspection:(BOOL)inspection trackID:(int)d asset:(id)asset playerItem:(id)playerItem
 {
   FigNote_AllowInternalDefaultLogs();
   fig_note_initialize_category_with_default_work();
@@ -62,12 +62,12 @@
     }
 
     CFRetain(v13);
-    v12->_playerItemTrack->weakReferenceToPlayerItem = [a7 _weakReference];
-    v14 = a3 ? CFRetain(a3) : 0;
+    v12->_playerItemTrack->weakReferenceToPlayerItem = [playerItem _weakReference];
+    v14 = item ? CFRetain(item) : 0;
     v12->_playerItemTrack->figPlaybackItem = v14;
-    v12->_playerItemTrack->figPlaybackItemIsReadyForInspection = a4;
-    v12->_playerItemTrack->asset = a6;
-    v12->_playerItemTrack->trackID = a5;
+    v12->_playerItemTrack->figPlaybackItemIsReadyForInspection = inspection;
+    v12->_playerItemTrack->asset = asset;
+    v12->_playerItemTrack->trackID = d;
     v12->_playerItemTrack->disableColorMatching = 0;
     v12->_playerItemTrack->disableColorMatchingWasSet = 0;
     v12->_playerItemTrack->activeHapticChannelIndex = 1;
@@ -84,7 +84,7 @@
       v12->_playerItemTrack->observationRegistrar = objc_alloc_init(AVPlayerItemTrackObservationRegistrar);
     }
 
-    if (!a5)
+    if (!d)
     {
 LABEL_9:
 
@@ -129,17 +129,17 @@ LABEL_9:
   return [v3 stringWithFormat:@"<%@: %p, assetTrack = %@>", NSStringFromClass(v4), self, -[AVPlayerItemTrack assetTrack](self, "assetTrack")];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   result = 0;
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(AVPlayerItemTrack *)self trackID];
-    if (v5 == [a3 trackID])
+    trackID = [(AVPlayerItemTrack *)self trackID];
+    if (trackID == [equal trackID])
     {
       weakReferenceToPlayerItem = self->_playerItemTrack->weakReferenceToPlayerItem;
-      if (weakReferenceToPlayerItem == [a3 _weakReferenceToPlayerItem])
+      if (weakReferenceToPlayerItem == [equal _weakReferenceToPlayerItem])
       {
         return 1;
       }
@@ -209,8 +209,8 @@ LABEL_9:
           goto LABEL_9;
         }
 
-        v10 = [cf BOOLValue];
-        *(v26 + 24) = v10;
+        bOOLValue = [cf BOOLValue];
+        *(v26 + 24) = bOOLValue;
         v11 = self->_playerItemTrack->ivarAccessQueue;
         v14[0] = MEMORY[0x1E69E9820];
         v14[1] = 3221225472;
@@ -300,9 +300,9 @@ uint64_t __32__AVPlayerItemTrack_setEnabled___block_invoke(uint64_t result)
 - (id)fallbackTrack
 {
   v3 = [-[AVAssetTrack _fallbackTrack](-[AVPlayerItemTrack assetTrack](self "assetTrack")];
-  v4 = [(AVPlayerItemTrack *)self _playerItem];
+  _playerItem = [(AVPlayerItemTrack *)self _playerItem];
 
-  return [v4 _trackWithTrackID:v3];
+  return [_playerItem _trackWithTrackID:v3];
 }
 
 - (float)currentVideoFrameRate
@@ -457,13 +457,13 @@ uint64_t __42__AVPlayerItemTrack_currentVideoFrameRate__block_invoke(uint64_t re
   }
 }
 
-- (void)setLoudnessInfo:(id)a3
+- (void)setLoudnessInfo:(id)info
 {
   loudnessInfo = self->_playerItemTrack->loudnessInfo;
-  if (loudnessInfo != a3)
+  if (loudnessInfo != info)
   {
 
-    self->_playerItemTrack->loudnessInfo = [a3 copy];
+    self->_playerItemTrack->loudnessInfo = [info copy];
 
     [(AVPlayerItemTrack *)self _transferLoudnessInfoToFig];
   }
@@ -491,13 +491,13 @@ uint64_t __42__AVPlayerItemTrack_currentVideoFrameRate__block_invoke(uint64_t re
     return -1;
   }
 
-  v7 = [cf intValue];
+  intValue = [cf intValue];
   if (cf)
   {
     CFRelease(cf);
   }
 
-  return v7;
+  return intValue;
 }
 
 - (BOOL)willTrimShortDurationAudioSamples
@@ -548,13 +548,13 @@ uint64_t __42__AVPlayerItemTrack_currentVideoFrameRate__block_invoke(uint64_t re
   }
 }
 
-- (void)setVideoEnhancementFilterOptions:(id)a3
+- (void)setVideoEnhancementFilterOptions:(id)options
 {
   videoEnhancementFilterOptions = self->_playerItemTrack->videoEnhancementFilterOptions;
-  if (videoEnhancementFilterOptions != a3)
+  if (videoEnhancementFilterOptions != options)
   {
 
-    self->_playerItemTrack->videoEnhancementFilterOptions = [a3 copy];
+    self->_playerItemTrack->videoEnhancementFilterOptions = [options copy];
 
     [(AVPlayerItemTrack *)self _transferVideoEnhancementOptionsToFig];
   }
@@ -578,16 +578,16 @@ uint64_t __42__AVPlayerItemTrack_currentVideoFrameRate__block_invoke(uint64_t re
   }
 }
 
-- (void)setDisableColorMatching:(BOOL)a3
+- (void)setDisableColorMatching:(BOOL)matching
 {
-  self->_playerItemTrack->disableColorMatching = a3;
+  self->_playerItemTrack->disableColorMatching = matching;
   self->_playerItemTrack->disableColorMatchingWasSet = 1;
   [(AVPlayerItemTrack *)self _transferDisableColorMatchingToFig];
 }
 
-- (void)setActiveHapticChannelIndex:(int64_t)a3
+- (void)setActiveHapticChannelIndex:(int64_t)index
 {
-  self->_playerItemTrack->activeHapticChannelIndex = a3;
+  self->_playerItemTrack->activeHapticChannelIndex = index;
   self->_playerItemTrack->activeHapticChannelIndexWasSet = 1;
   [(AVPlayerItemTrack *)self _transferActiveHapticChannelIndexToFig];
 }
@@ -612,16 +612,16 @@ uint64_t __42__AVPlayerItemTrack_currentVideoFrameRate__block_invoke(uint64_t re
   }
 }
 
-- (void)setHapticVolume:(float)a3
+- (void)setHapticVolume:(float)volume
 {
-  self->_playerItemTrack->hapticVolume = a3;
+  self->_playerItemTrack->hapticVolume = volume;
   self->_playerItemTrack->hapticVolumeWasSet = 1;
   [(AVPlayerItemTrack *)self _transferHapticVolumeToFig];
 }
 
-- (void)setMutesHaptics:(BOOL)a3
+- (void)setMutesHaptics:(BOOL)haptics
 {
-  self->_playerItemTrack->mutesHaptics = a3;
+  self->_playerItemTrack->mutesHaptics = haptics;
   self->_playerItemTrack->mutesHapticsWasSet = 1;
   [(AVPlayerItemTrack *)self _transferMutesHapticsToFig];
 }
@@ -711,7 +711,7 @@ uint64_t __42__AVPlayerItemTrack_currentVideoFrameRate__block_invoke(uint64_t re
   }
 }
 
-- (void)_attachToFigPlaybackItemOfPlayerItem:(id)a3
+- (void)_attachToFigPlaybackItemOfPlayerItem:(id)item
 {
   v5 = [-[AVPlayerItemTrack _playerItem](self "_playerItem")];
   if (v5)
@@ -721,7 +721,7 @@ uint64_t __42__AVPlayerItemTrack_currentVideoFrameRate__block_invoke(uint64_t re
 
   if (!self->_playerItemTrack->figPlaybackItem)
   {
-    self->_playerItemTrack->figPlaybackItem = [a3 _copyFigPlaybackItem];
+    self->_playerItemTrack->figPlaybackItem = [item _copyFigPlaybackItem];
     playerItemTrack = self->_playerItemTrack;
     if (playerItemTrack->enabledWasSet)
     {
@@ -798,7 +798,7 @@ uint64_t __42__AVPlayerItemTrack_currentVideoFrameRate__block_invoke(uint64_t re
   av_readwrite_dispatch_queue_write(ivarAccessQueue, v3);
 }
 
-- (void)addOutput:(id)a3
+- (void)addOutput:(id)output
 {
   v23[1] = *MEMORY[0x1E69E9840];
   objc_opt_class();
@@ -815,19 +815,19 @@ uint64_t __42__AVPlayerItemTrack_currentVideoFrameRate__block_invoke(uint64_t re
     sampleBufferOutputs = self->_playerItemTrack->sampleBufferOutputs;
   }
 
-  if (([(NSMutableArray *)sampleBufferOutputs containsObject:a3]& 1) == 0)
+  if (([(NSMutableArray *)sampleBufferOutputs containsObject:output]& 1) == 0)
   {
-    [(NSMutableArray *)self->_playerItemTrack->sampleBufferOutputs addObject:a3];
-    [a3 _setTrackID:self->_playerItemTrack->trackID];
+    [(NSMutableArray *)self->_playerItemTrack->sampleBufferOutputs addObject:output];
+    [output _setTrackID:self->_playerItemTrack->trackID];
     v12 = FigAtomicAdd32();
-    [a3 _setExtractionID:v12];
-    [a3 _attachToPlayerItemTrack:self figPlaybackItem:self->_playerItemTrack->figPlaybackItem];
-    [a3 _advanceInterval];
+    [output _setExtractionID:v12];
+    [output _attachToPlayerItemTrack:self figPlaybackItem:self->_playerItemTrack->figPlaybackItem];
+    [output _advanceInterval];
     if (v13 > 0.0)
     {
       v22 = [MEMORY[0x1E696AD98] numberWithInt:v12];
       v14 = MEMORY[0x1E696AD98];
-      [a3 _advanceInterval];
+      [output _advanceInterval];
       v23[0] = [v14 numberWithDouble:?];
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v22 count:1];
       playerItemTrack = self->_playerItemTrack;
@@ -841,11 +841,11 @@ uint64_t __42__AVPlayerItemTrack_currentVideoFrameRate__block_invoke(uint64_t re
     }
 
     [(AVPlayerItemTrack *)self _updateTrackExtractionIDArrayProperty];
-    [a3 _setTimebase:{objc_msgSend(-[AVPlayerItemTrack _playerItem](self, "_playerItem"), "unfoldedTimebase")}];
+    [output _setTimebase:{objc_msgSend(-[AVPlayerItemTrack _playerItem](self, "_playerItem"), "unfoldedTimebase")}];
   }
 }
 
-- (void)removeOutput:(id)a3
+- (void)removeOutput:(id)output
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -854,11 +854,11 @@ uint64_t __42__AVPlayerItemTrack_currentVideoFrameRate__block_invoke(uint64_t re
     objc_exception_throw(v11);
   }
 
-  if ([(NSMutableArray *)self->_playerItemTrack->sampleBufferOutputs containsObject:a3])
+  if ([(NSMutableArray *)self->_playerItemTrack->sampleBufferOutputs containsObject:output])
   {
-    [(NSMutableArray *)self->_playerItemTrack->sampleBufferOutputs removeObject:a3];
-    [a3 _detachFromPlayerItemTrack];
-    [a3 _setTimebase:0];
+    [(NSMutableArray *)self->_playerItemTrack->sampleBufferOutputs removeObject:output];
+    [output _detachFromPlayerItemTrack];
+    [output _setTimebase:0];
 
     [(AVPlayerItemTrack *)self _updateTrackExtractionIDArrayProperty];
   }

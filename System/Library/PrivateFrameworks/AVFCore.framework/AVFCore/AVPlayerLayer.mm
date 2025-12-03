@@ -2,11 +2,11 @@
 + (AVPlayerLayer)playerLayerWithPlayer:(AVPlayer *)player;
 + (id)keyPathsForValuesAffecting_presentationSize;
 + (id)makeClosedCaptionLayer;
-+ (void)_swapSublayersBetweenPlayerLayer:(id)a3 andPlayerLayer:(id)a4;
++ (void)_swapSublayersBetweenPlayerLayer:(id)layer andPlayerLayer:(id)playerLayer;
 - (AVLayerVideoGravity)videoGravity;
 - (AVPlayer)player;
 - (AVPlayerLayer)init;
-- (AVPlayerLayer)initWithLayer:(id)a3;
+- (AVPlayerLayer)initWithLayer:(id)layer;
 - (BOOL)_currentWindowSceneIsForeground;
 - (BOOL)_currentWindowSceneIsForegroundDefault;
 - (BOOL)_interstitialLayerIsVisible;
@@ -17,7 +17,7 @@
 - (BOOL)isLanczosFilterDownscalingEnabled;
 - (BOOL)isOverscanSubtitleSupportEnabled;
 - (BOOL)isReadyForDisplay;
-- (CGRect)_videoRectForBounds:(CGRect)a3;
+- (CGRect)_videoRectForBounds:(CGRect)bounds;
 - (CGRect)videoRect;
 - (CGSize)_displaySize;
 - (CGSize)_presentationSize;
@@ -36,90 +36,90 @@
 - (id)videoPerformanceMetrics;
 - (int64_t)_activeMode;
 - (int64_t)lanczosFilterDownscaleFactor;
-- (void)_addAnimationsForClosedCaptionLayer:(id)a3 gravity:(id)a4 forKey:(id)a5;
-- (void)_addAnimationsForMaskLayer:(id)a3 forKey:(id)a4;
-- (void)_addAnimationsForPIPPlaceholderLayer:(id)a3 forKey:(id)a4;
-- (void)_addAnimationsForVideoLayer:(id)a3 size:(CGSize)a4 gravity:(id)a5 forKey:(id)a6;
-- (void)_addBoundsAnimationToLayer:(id)a3 usingAnimation:(id)a4 forKey:(id)a5;
-- (void)_addObserversForVideoLayer:(id)a3;
-- (void)_addPositionAnimationToLayer:(id)a3 usingAnimation:(id)a4 forKey:(id)a5;
-- (void)_addSublayerTransformAnimationToLayer:(id)a3 fromTransform:(CATransform3D *)a4 usingAnimation:(id)a5 gravity:(id)a6 presentationSize:(CGSize)a7 forKey:(id)a8;
-- (void)_applyCurrentItemPresentationSizeChangeAndForceUpdate:(BOOL)a3;
-- (void)_applyPresentationSizeChange:(CGSize)a3 andForceUpdate:(BOOL)a4;
-- (void)_associateWithLayer:(id)a3 forMode:(int64_t)a4;
+- (void)_addAnimationsForClosedCaptionLayer:(id)layer gravity:(id)gravity forKey:(id)key;
+- (void)_addAnimationsForMaskLayer:(id)layer forKey:(id)key;
+- (void)_addAnimationsForPIPPlaceholderLayer:(id)layer forKey:(id)key;
+- (void)_addAnimationsForVideoLayer:(id)layer size:(CGSize)size gravity:(id)gravity forKey:(id)key;
+- (void)_addBoundsAnimationToLayer:(id)layer usingAnimation:(id)animation forKey:(id)key;
+- (void)_addObserversForVideoLayer:(id)layer;
+- (void)_addPositionAnimationToLayer:(id)layer usingAnimation:(id)animation forKey:(id)key;
+- (void)_addSublayerTransformAnimationToLayer:(id)layer fromTransform:(CATransform3D *)transform usingAnimation:(id)animation gravity:(id)gravity presentationSize:(CGSize)size forKey:(id)key;
+- (void)_applyCurrentItemPresentationSizeChangeAndForceUpdate:(BOOL)update;
+- (void)_applyPresentationSizeChange:(CGSize)change andForceUpdate:(BOOL)update;
+- (void)_associateWithLayer:(id)layer forMode:(int64_t)mode;
 - (void)_configurePlayerWhenEnteringPIP;
 - (void)_configurePlayerWhenLeavingPIP;
-- (void)_disassociateWithLayerForMode:(int64_t)a3;
-- (void)_enterPIPModeRedirectingVideoToLayer:(id)a3;
-- (void)_enterSecondScreenModeRedirectingVideoToLayer:(id)a3;
-- (void)_forBoundsAnimations:(id)a3 applyBlock:(id)a4;
-- (void)_forceWindowSceneEvent:(BOOL)a3;
-- (void)_getMaskLayer:(id *)a3 videoLayer:(id *)a4 subtitleLayer:(id *)a5 closedCaptionLayer:(id *)a6 interstitialLayer:(id *)a7;
-- (void)_handleIsDisplayingClosedCaptionsDidChange:(BOOL)a3 player:(id)a4;
-- (void)_handleNonForcedSubtitleDisplayDidChange:(BOOL)a3 player:(id)a4;
-- (void)_handlePlayerCurrentItemDidChangeForPlayer:(id)a3;
-- (void)_leavePIPModeForLayer:(id)a3;
-- (void)_leaveSecondScreenModeForLayer:(id)a3;
-- (void)_mergeClientLayersIntoMaskLayer:(id)a3;
+- (void)_disassociateWithLayerForMode:(int64_t)mode;
+- (void)_enterPIPModeRedirectingVideoToLayer:(id)layer;
+- (void)_enterSecondScreenModeRedirectingVideoToLayer:(id)layer;
+- (void)_forBoundsAnimations:(id)animations applyBlock:(id)block;
+- (void)_forceWindowSceneEvent:(BOOL)event;
+- (void)_getMaskLayer:(id *)layer videoLayer:(id *)videoLayer subtitleLayer:(id *)subtitleLayer closedCaptionLayer:(id *)captionLayer interstitialLayer:(id *)interstitialLayer;
+- (void)_handleIsDisplayingClosedCaptionsDidChange:(BOOL)change player:(id)player;
+- (void)_handleNonForcedSubtitleDisplayDidChange:(BOOL)change player:(id)player;
+- (void)_handlePlayerCurrentItemDidChangeForPlayer:(id)player;
+- (void)_leavePIPModeForLayer:(id)layer;
+- (void)_leaveSecondScreenModeForLayer:(id)layer;
+- (void)_mergeClientLayersIntoMaskLayer:(id)layer;
 - (void)_notifyPlayerOfDisplaySize;
 - (void)_notifyPlayerOfLayerForegroundStateChange;
 - (void)_rebuildVideoLayerIfNecessary;
-- (void)_removeObserversForVideoLayer:(id)a3;
-- (void)_restoreClientLayers:(id)a3 intoMaskLayer:(id)a4;
-- (void)_setIsConnectedToSecondScreen:(BOOL)a3;
-- (void)_setIsPartOfForegroundScene:(BOOL)a3;
-- (void)_setOverridesPreferredDynamicRangeForVideo:(BOOL)a3;
-- (void)_setPlayer:(id)a3 forPIP:(BOOL)a4;
-- (void)_setPreventsChangesToSublayerHierarchy:(BOOL)a3;
-- (void)_setShowInterstitialInstead:(BOOL)a3 afterDelay:(double)a4;
-- (void)_setSublayersForPIP:(id)a3 updateReadyForDisplay:(BOOL)a4;
-- (void)_setSublayersPreventChangesToSublayerHierarchy:(BOOL)a3;
-- (void)_setWillManageSublayersAsSwappedLayers:(BOOL)a3;
-- (void)_startObservingPlayer:(id)a3;
+- (void)_removeObserversForVideoLayer:(id)layer;
+- (void)_restoreClientLayers:(id)layers intoMaskLayer:(id)layer;
+- (void)_setIsConnectedToSecondScreen:(BOOL)screen;
+- (void)_setIsPartOfForegroundScene:(BOOL)scene;
+- (void)_setOverridesPreferredDynamicRangeForVideo:(BOOL)video;
+- (void)_setPlayer:(id)player forPIP:(BOOL)p;
+- (void)_setPreventsChangesToSublayerHierarchy:(BOOL)hierarchy;
+- (void)_setShowInterstitialInstead:(BOOL)instead afterDelay:(double)delay;
+- (void)_setSublayersForPIP:(id)p updateReadyForDisplay:(BOOL)display;
+- (void)_setSublayersPreventChangesToSublayerHierarchy:(BOOL)hierarchy;
+- (void)_setWillManageSublayersAsSwappedLayers:(BOOL)layers;
+- (void)_startObservingPlayer:(id)player;
 - (void)_stashClientLayers;
-- (void)_stopObservingPlayer:(id)a3;
+- (void)_stopObservingPlayer:(id)player;
 - (void)_unstashClientLayers;
 - (void)_updateIsPartOfForegroundScene;
-- (void)_updatePreferredDynamicRangeWithAnimation:(BOOL)a3;
-- (void)_updateReadyForDisplay:(BOOL)a3 skipInformingParent:(BOOL)a4 forceKVO:(BOOL)a5;
-- (void)_updateReadyForDisplayForPlayerCurrentItemAndForceKVO:(BOOL)a3;
-- (void)_updateReadyForDisplayOnMainQueue:(BOOL)a3 skipInformingParent:(BOOL)a4 forceKVO:(BOOL)a5;
-- (void)_windowSceneDidEnterBackground:(id)a3;
-- (void)_windowSceneWillEnterForeground:(id)a3;
-- (void)addAnimation:(id)a3 forKey:(id)a4;
-- (void)addSublayer:(id)a3;
+- (void)_updatePreferredDynamicRangeWithAnimation:(BOOL)animation;
+- (void)_updateReadyForDisplay:(BOOL)display skipInformingParent:(BOOL)parent forceKVO:(BOOL)o;
+- (void)_updateReadyForDisplayForPlayerCurrentItemAndForceKVO:(BOOL)o;
+- (void)_updateReadyForDisplayOnMainQueue:(BOOL)queue skipInformingParent:(BOOL)parent forceKVO:(BOOL)o;
+- (void)_windowSceneDidEnterBackground:(id)background;
+- (void)_windowSceneWillEnterForeground:(id)foreground;
+- (void)addAnimation:(id)animation forKey:(id)key;
+- (void)addSublayer:(id)sublayer;
 - (void)dealloc;
-- (void)declareKeyPathDependenciesWithRegistry:(id)a3;
-- (void)enterPIPModeRedirectingVideoToLayer:(id)a3;
-- (void)hasEnqueuedVideoFrameChanged:(id)a3;
-- (void)insertSublayer:(id)a3 above:(id)a4;
-- (void)insertSublayer:(id)a3 atIndex:(unsigned int)a4;
-- (void)insertSublayer:(id)a3 below:(id)a4;
-- (void)layerDidBecomeVisible:(BOOL)a3;
+- (void)declareKeyPathDependenciesWithRegistry:(id)registry;
+- (void)enterPIPModeRedirectingVideoToLayer:(id)layer;
+- (void)hasEnqueuedVideoFrameChanged:(id)changed;
+- (void)insertSublayer:(id)sublayer above:(id)above;
+- (void)insertSublayer:(id)sublayer atIndex:(unsigned int)index;
+- (void)insertSublayer:(id)sublayer below:(id)below;
+- (void)layerDidBecomeVisible:(BOOL)visible;
 - (void)layoutSublayers;
 - (void)leavePIPMode;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)removeAllAnimations;
-- (void)removeAnimationForKey:(id)a3;
+- (void)removeAnimationForKey:(id)key;
 - (void)removeFromSuperlayer;
-- (void)replaceSublayer:(id)a3 with:(id)a4;
-- (void)setBounds:(CGRect)a3;
-- (void)setContentsScale:(double)a3;
-- (void)setForScrubbingOnly:(BOOL)a3;
-- (void)setLanczosFilterDownscaleFactor:(int64_t)a3;
-- (void)setLanczosFilterDownscalingEnabled:(BOOL)a3;
-- (void)setLegibleContentInsets:(NSEdgeInsets)a3;
-- (void)setLegibleDisplayEnabled:(BOOL)a3;
-- (void)setOverscanSubtitleSupportEnabled:(BOOL)a3;
-- (void)setPIPModeEnabled:(BOOL)a3;
+- (void)replaceSublayer:(id)sublayer with:(id)with;
+- (void)setBounds:(CGRect)bounds;
+- (void)setContentsScale:(double)scale;
+- (void)setForScrubbingOnly:(BOOL)only;
+- (void)setLanczosFilterDownscaleFactor:(int64_t)factor;
+- (void)setLanczosFilterDownscalingEnabled:(BOOL)enabled;
+- (void)setLegibleContentInsets:(NSEdgeInsets)insets;
+- (void)setLegibleDisplayEnabled:(BOOL)enabled;
+- (void)setOverscanSubtitleSupportEnabled:(BOOL)enabled;
+- (void)setPIPModeEnabled:(BOOL)enabled;
 - (void)setPixelBufferAttributes:(NSDictionary *)pixelBufferAttributes;
-- (void)setPlaceholderContentLayerDuringPIPMode:(id)a3;
-- (void)setPreferredDynamicRange:(id)a3;
-- (void)setSublayers:(id)a3;
-- (void)setToneMapToStandardDynamicRange:(BOOL)a3;
+- (void)setPlaceholderContentLayerDuringPIPMode:(id)mode;
+- (void)setPreferredDynamicRange:(id)range;
+- (void)setSublayers:(id)sublayers;
+- (void)setToneMapToStandardDynamicRange:(BOOL)range;
 - (void)setVideoGravity:(AVLayerVideoGravity)videoGravity;
-- (void)startRedirectingVideoToLayer:(id)a3 forMode:(int64_t)a4;
-- (void)stopRedirectingVideoToLayer:(id)a3;
+- (void)startRedirectingVideoToLayer:(id)layer forMode:(int64_t)mode;
+- (void)stopRedirectingVideoToLayer:(id)layer;
 @end
 
 @implementation AVPlayerLayer
@@ -295,8 +295,8 @@ uint64_t __32__AVPlayerLayer_layoutSublayers__block_invoke(uint64_t a1)
     v35 = v46;
     v34 = v45;
     AVSerializeOnQueueAsyncIfNecessary(MEMORY[0x1E69E96A0], v25);
-    v23 = [(AVPlayerLayer *)self player];
-    [(AVPlayer *)v23 _updateClosedCaptionLayerBounds:v50 videoRelativeToViewport:&v39 captionsAvoidanceMargins:&self->_playerLayer->legibleContentInsets];
+    player = [(AVPlayerLayer *)self player];
+    [(AVPlayer *)player _updateClosedCaptionLayerBounds:v50 videoRelativeToViewport:&v39 captionsAvoidanceMargins:&self->_playerLayer->legibleContentInsets];
   }
 
   v24.receiver = self;
@@ -308,10 +308,10 @@ uint64_t __32__AVPlayerLayer_layoutSublayers__block_invoke(uint64_t a1)
 {
   if (avPlayerLayerUseVideoLayerPresentationSize())
   {
-    v3 = [(AVPlayerLayer *)self _videoLayer];
-    if (v3)
+    _videoLayer = [(AVPlayerLayer *)self _videoLayer];
+    if (_videoLayer)
     {
-      [v3 presentationSize];
+      [_videoLayer presentationSize];
     }
 
     else
@@ -515,27 +515,27 @@ id __23__AVPlayerLayer_player__block_invoke(uint64_t a1)
       [(FigVideoContainerLayer *)v3->_playerLayer->videoLayer addObserver:v3 forKeyPath:@"videoLayer" options:5 context:@"AVPlayerLayerVideoLayerObservationContext"];
       [(AVPlayerLayer *)v3 addObserver:v3 forKeyPath:@"contentsAreFlipped" options:4 context:@"AVPlayerLayerContentsAreFlippedObservationContext"];
       objc_initWeak(&location, v3);
-      v11 = [MEMORY[0x1E696AD88] defaultCenter];
+      defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
       v22[0] = MEMORY[0x1E69E9820];
       v22[1] = 3221225472;
       v22[2] = __21__AVPlayerLayer_init__block_invoke_2;
       v22[3] = &unk_1E7460BB0;
       objc_copyWeak(&v23, &location);
-      v3->_playerLayer->playerItemHasEnqueuedVideoFrameListener = [v11 addObserverForName:@"AVPlayerItemHasEnqueuedVideoFrameDidChangeNotification" object:0 queue:0 usingBlock:v22];
-      v12 = [MEMORY[0x1E696AD88] defaultCenter];
+      v3->_playerLayer->playerItemHasEnqueuedVideoFrameListener = [defaultCenter addObserverForName:@"AVPlayerItemHasEnqueuedVideoFrameDidChangeNotification" object:0 queue:0 usingBlock:v22];
+      defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
       v20[0] = MEMORY[0x1E69E9820];
       v20[1] = 3221225472;
       v20[2] = __21__AVPlayerLayer_init__block_invoke_3;
       v20[3] = &unk_1E7460BB0;
       objc_copyWeak(&v21, &location);
-      v3->_playerLayer->windowSceneDidEnterBackgroundListener = [v12 addObserverForName:@"UISceneDidEnterBackgroundNotification" object:0 queue:0 usingBlock:v20];
-      v13 = [MEMORY[0x1E696AD88] defaultCenter];
+      v3->_playerLayer->windowSceneDidEnterBackgroundListener = [defaultCenter2 addObserverForName:@"UISceneDidEnterBackgroundNotification" object:0 queue:0 usingBlock:v20];
+      defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
       v15 = MEMORY[0x1E69E9820];
       v16 = 3221225472;
       v17 = __21__AVPlayerLayer_init__block_invoke_4;
       v18 = &unk_1E7460BB0;
       objc_copyWeak(&v19, &location);
-      v3->_playerLayer->windowSceneWillEnterForegroundListener = [v13 addObserverForName:@"UISceneWillEnterForegroundNotification" object:0 queue:0 usingBlock:&v15];
+      v3->_playerLayer->windowSceneWillEnterForegroundListener = [defaultCenter3 addObserverForName:@"UISceneWillEnterForegroundNotification" object:0 queue:0 usingBlock:&v15];
       v3->_playerLayer->isPartOfForegroundScene = [(AVPlayerLayer *)v3 _currentWindowSceneIsForegroundDefault:v15];
       v3->_playerLayer->dependencyManager = [[AVKeyPathDependencyManager alloc] initWithDependencyHost:v3];
       [(AVKeyPathDependencyManager *)v3->_playerLayer->dependencyManager dependencyHostIsFullyInitialized];
@@ -584,31 +584,31 @@ id __23__AVPlayerLayer_player__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)_addObserversForVideoLayer:(id)a3
+- (void)_addObserversForVideoLayer:(id)layer
 {
   objc_initWeak(&location, self);
   if (avPlayerLayerUseVideoLayerPresentationSize())
   {
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v6 = *MEMORY[0x1E6973C30];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __44__AVPlayerLayer__addObserversForVideoLayer___block_invoke;
     v11[3] = &unk_1E7460BB0;
     objc_copyWeak(&v12, &location);
-    self->_playerLayer->videoLayerPresentationSizeDidChangeListener = [v5 addObserverForName:v6 object:a3 queue:0 usingBlock:v11];
+    self->_playerLayer->videoLayerPresentationSizeDidChangeListener = [defaultCenter addObserverForName:v6 object:layer queue:0 usingBlock:v11];
     objc_destroyWeak(&v12);
   }
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
   v8 = *MEMORY[0x1E6973C28];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __44__AVPlayerLayer__addObserversForVideoLayer___block_invoke_2;
   v9[3] = &unk_1E7460BD8;
   objc_copyWeak(&v10, &location);
-  v9[4] = a3;
-  self->_playerLayer->videoLayerIsReadyForDisplayDidChangeListener = [v7 addObserverForName:v8 object:a3 queue:0 usingBlock:v9];
+  v9[4] = layer;
+  self->_playerLayer->videoLayerIsReadyForDisplayDidChangeListener = [defaultCenter2 addObserverForName:v8 object:layer queue:0 usingBlock:v9];
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
@@ -639,23 +639,23 @@ id __44__AVPlayerLayer__addObserversForVideoLayer___block_invoke_2(uint64_t a1)
   return result;
 }
 
-- (void)_removeObserversForVideoLayer:(id)a3
+- (void)_removeObserversForVideoLayer:(id)layer
 {
   playerLayer = self->_playerLayer;
   if (playerLayer->videoLayerPresentationSizeDidChangeListener)
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 removeObserver:self->_playerLayer->videoLayerPresentationSizeDidChangeListener name:*MEMORY[0x1E6973C30] object:a3];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self->_playerLayer->videoLayerPresentationSizeDidChangeListener name:*MEMORY[0x1E6973C30] object:layer];
     playerLayer = self->_playerLayer;
   }
 
   if (playerLayer->videoLayerIsReadyForDisplayDidChangeListener)
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
     videoLayerIsReadyForDisplayDidChangeListener = self->_playerLayer->videoLayerIsReadyForDisplayDidChangeListener;
     v9 = *MEMORY[0x1E6973C28];
 
-    [v7 removeObserver:videoLayerIsReadyForDisplayDidChangeListener name:v9 object:a3];
+    [defaultCenter2 removeObserver:videoLayerIsReadyForDisplayDidChangeListener name:v9 object:layer];
   }
 }
 
@@ -704,7 +704,7 @@ Class __21__AVPlayerLayer_init__block_invoke_5()
   return result;
 }
 
-- (AVPlayerLayer)initWithLayer:(id)a3
+- (AVPlayerLayer)initWithLayer:(id)layer
 {
   FigNote_AllowInternalDefaultLogs();
   fig_note_initialize_category_with_default_work();
@@ -717,7 +717,7 @@ Class __21__AVPlayerLayer_init__block_invoke_5()
 
   v9.receiver = self;
   v9.super_class = AVPlayerLayer;
-  self = [(AVPlayerLayer *)&v9 initWithLayer:a3];
+  self = [(AVPlayerLayer *)&v9 initWithLayer:layer];
   if (self)
   {
     v5 = objc_alloc_init(AVPlayerLayerInternal);
@@ -730,8 +730,8 @@ Class __21__AVPlayerLayer_init__block_invoke_5()
       v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
       self->_playerLayer->configurationQueue = dispatch_queue_create("com.apple.avfoundation.playerlayer.configuration", v7);
       self->_playerLayer->isPresentationLayer = 1;
-      self->_playerLayer->videoGravity = [a3 videoGravity];
-      self->_playerLayer->player = [a3 player];
+      self->_playerLayer->videoGravity = [layer videoGravity];
+      self->_playerLayer->player = [layer player];
       self->_playerLayer->dependencyManager = [[AVKeyPathDependencyManager alloc] initWithDependencyHost:self];
       [(AVKeyPathDependencyManager *)self->_playerLayer->dependencyManager dependencyHostIsFullyInitialized];
       return self;
@@ -745,12 +745,12 @@ LABEL_5:
   return self;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(AVPlayerLayer *)self bounds];
   v10.origin.x = x;
   v10.origin.y = y;
@@ -766,19 +766,19 @@ LABEL_5:
   }
 }
 
-- (void)setContentsScale:(double)a3
+- (void)setContentsScale:(double)scale
 {
   self->_playerLayer->honorContentScale = 1;
   v4.receiver = self;
   v4.super_class = AVPlayerLayer;
-  [(AVPlayerLayer *)&v4 setContentsScale:a3];
+  [(AVPlayerLayer *)&v4 setContentsScale:scale];
   [(AVPlayerLayer *)self _notifyPlayerOfDisplaySize];
 }
 
-- (void)_addBoundsAnimationToLayer:(id)a3 usingAnimation:(id)a4 forKey:(id)a5
+- (void)_addBoundsAnimationToLayer:(id)layer usingAnimation:(id)animation forKey:(id)key
 {
-  v8 = _animationByTransformingValues(a4, &__block_literal_global_131);
-  if ([a4 isAdditive])
+  v8 = _animationByTransformingValues(animation, &__block_literal_global_131);
+  if ([animation isAdditive])
   {
     v9 = @"bounds.size";
   }
@@ -791,12 +791,12 @@ LABEL_5:
   [v8 setKeyPath:v9];
   [v8 setDelegate:0];
 
-  [a3 addAnimation:v8 forKey:a5];
+  [layer addAnimation:v8 forKey:key];
 }
 
-- (void)_addPositionAnimationToLayer:(id)a3 usingAnimation:(id)a4 forKey:(id)a5
+- (void)_addPositionAnimationToLayer:(id)layer usingAnimation:(id)animation forKey:(id)key
 {
-  if ([a4 isAdditive])
+  if ([animation isAdditive])
   {
     v8 = &__block_literal_global_139;
   }
@@ -806,11 +806,11 @@ LABEL_5:
     v8 = &__block_literal_global_142;
   }
 
-  v9 = _animationByTransformingValues(a4, v8);
+  v9 = _animationByTransformingValues(animation, v8);
   [v9 setKeyPath:@"position"];
   [v9 setDelegate:0];
 
-  [a3 addAnimation:v9 forKey:a5];
+  [layer addAnimation:v9 forKey:key];
 }
 
 uint64_t __68__AVPlayerLayer__addPositionAnimationToLayer_usingAnimation_forKey___block_invoke(uint64_t a1, void *a2)
@@ -833,14 +833,14 @@ uint64_t __68__AVPlayerLayer__addPositionAnimationToLayer_usingAnimation_forKey_
   return [v2 valueWithPoint:{v5, v8}];
 }
 
-- (void)_addSublayerTransformAnimationToLayer:(id)a3 fromTransform:(CATransform3D *)a4 usingAnimation:(id)a5 gravity:(id)a6 presentationSize:(CGSize)a7 forKey:(id)a8
+- (void)_addSublayerTransformAnimationToLayer:(id)layer fromTransform:(CATransform3D *)transform usingAnimation:(id)animation gravity:(id)gravity presentationSize:(CGSize)size forKey:(id)key
 {
-  height = a7.height;
-  width = a7.width;
-  if ([a5 isAdditive])
+  height = size.height;
+  width = size.width;
+  if ([animation isAdditive])
   {
-    v16 = [a5 copy];
-    v17 = [a5 copy];
+    v16 = [animation copy];
+    v17 = [animation copy];
     v32 = 0u;
     v33 = 0u;
     v31 = 0u;
@@ -849,10 +849,10 @@ uint64_t __68__AVPlayerLayer__addPositionAnimationToLayer_usingAnimation_forKey_
     v28 = 0u;
     memset(v27, 0, sizeof(v27));
     [(AVPlayerLayer *)self bounds];
-    AVLayerTransformForPlacement(a6, 0, v27, width, height, v18, v19);
+    AVLayerTransformForPlacement(gravity, 0, v27, width, height, v18, v19);
     v20 = *(&v28 + 1);
-    m22 = a4->m22;
-    [v16 setFromValue:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", a4->m11 - *v27)}];
+    m22 = transform->m22;
+    [v16 setFromValue:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithDouble:", transform->m11 - *v27)}];
     [v16 setToValue:&unk_1F0AD3370];
     [v16 setDelegate:0];
     [v16 setKeyPath:@"sublayerTransform.scale.x"];
@@ -860,9 +860,9 @@ uint64_t __68__AVPlayerLayer__addPositionAnimationToLayer_usingAnimation_forKey_
     [v16 setToValue:&unk_1F0AD3370];
     [v16 setDelegate:0];
     [v17 setKeyPath:@"sublayerTransform.scale.y"];
-    [a3 addAnimation:v16 forKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@_x", a8)}];
-    v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_y", a8];
-    v23 = a3;
+    [layer addAnimation:v16 forKey:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"%@_x", key)}];
+    keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@_y", key];
+    layerCopy2 = layer;
     v24 = v17;
   }
 
@@ -872,18 +872,18 @@ uint64_t __68__AVPlayerLayer__addPositionAnimationToLayer_usingAnimation_forKey_
     v26[1] = 3221225472;
     v26[2] = __116__AVPlayerLayer__addSublayerTransformAnimationToLayer_fromTransform_usingAnimation_gravity_presentationSize_forKey___block_invoke;
     v26[3] = &unk_1E7460C90;
-    v26[4] = a6;
+    v26[4] = gravity;
     *&v26[5] = width;
     *&v26[6] = height;
-    v25 = _animationByTransformingValues(a5, v26);
+    v25 = _animationByTransformingValues(animation, v26);
     [v25 setKeyPath:@"sublayerTransform"];
     [v25 setDelegate:0];
-    v23 = a3;
+    layerCopy2 = layer;
     v24 = v25;
-    v22 = a8;
+    keyCopy = key;
   }
 
-  [v23 addAnimation:v24 forKey:v22];
+  [layerCopy2 addAnimation:v24 forKey:keyCopy];
 }
 
 uint64_t __116__AVPlayerLayer__addSublayerTransformAnimationToLayer_fromTransform_usingAnimation_gravity_presentationSize_forKey___block_invoke(uint64_t a1, void *a2)
@@ -894,35 +894,35 @@ uint64_t __116__AVPlayerLayer__addSublayerTransformAnimationToLayer_fromTransfor
   return [v3 valueWithCATransform3D:v7];
 }
 
-- (void)_addAnimationsForPIPPlaceholderLayer:(id)a3 forKey:(id)a4
+- (void)_addAnimationsForPIPPlaceholderLayer:(id)layer forKey:(id)key
 {
   placeholderContentLayerDuringPIPMode = self->_playerLayer->placeholderContentLayerDuringPIPMode;
   if (placeholderContentLayerDuringPIPMode)
   {
-    -[AVPlayerLayer _addBoundsAnimationToLayer:usingAnimation:forKey:](self, "_addBoundsAnimationToLayer:usingAnimation:forKey:", placeholderContentLayerDuringPIPMode, a3, [MEMORY[0x1E696AEC0] stringWithFormat:@"AVPlayerLayer_PIPPlaceholderLayer_Bounds_%@", a4]);
+    -[AVPlayerLayer _addBoundsAnimationToLayer:usingAnimation:forKey:](self, "_addBoundsAnimationToLayer:usingAnimation:forKey:", placeholderContentLayerDuringPIPMode, layer, [MEMORY[0x1E696AEC0] stringWithFormat:@"AVPlayerLayer_PIPPlaceholderLayer_Bounds_%@", key]);
     v8 = self->_playerLayer->placeholderContentLayerDuringPIPMode;
-    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"AVPlayerLayer_PIPPlaceholderLayer_Position_%@", a4];
+    v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"AVPlayerLayer_PIPPlaceholderLayer_Position_%@", key];
 
-    [(AVPlayerLayer *)self _addPositionAnimationToLayer:v8 usingAnimation:a3 forKey:v9];
+    [(AVPlayerLayer *)self _addPositionAnimationToLayer:v8 usingAnimation:layer forKey:v9];
   }
 }
 
-- (void)_addAnimationsForMaskLayer:(id)a3 forKey:(id)a4
+- (void)_addAnimationsForMaskLayer:(id)layer forKey:(id)key
 {
-  v7 = [(AVPlayerLayer *)self _maskLayer];
-  -[AVPlayerLayer _addBoundsAnimationToLayer:usingAnimation:forKey:](self, "_addBoundsAnimationToLayer:usingAnimation:forKey:", v7, a3, [MEMORY[0x1E696AEC0] stringWithFormat:@"AVPlayerLayer_MaskLayer_Bounds_%@", a4]);
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"AVPlayerLayer_MaskLayer_Position_%@", a4];
+  _maskLayer = [(AVPlayerLayer *)self _maskLayer];
+  -[AVPlayerLayer _addBoundsAnimationToLayer:usingAnimation:forKey:](self, "_addBoundsAnimationToLayer:usingAnimation:forKey:", _maskLayer, layer, [MEMORY[0x1E696AEC0] stringWithFormat:@"AVPlayerLayer_MaskLayer_Bounds_%@", key]);
+  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"AVPlayerLayer_MaskLayer_Position_%@", key];
 
-  [(AVPlayerLayer *)self _addPositionAnimationToLayer:v7 usingAnimation:a3 forKey:v8];
+  [(AVPlayerLayer *)self _addPositionAnimationToLayer:_maskLayer usingAnimation:layer forKey:v8];
 }
 
-- (void)_addAnimationsForClosedCaptionLayer:(id)a3 gravity:(id)a4 forKey:(id)a5
+- (void)_addAnimationsForClosedCaptionLayer:(id)layer gravity:(id)gravity forKey:(id)key
 {
-  v9 = [(AVPlayerLayer *)self _closedCaptionLayer];
-  -[AVPlayerLayer _addPositionAnimationToLayer:usingAnimation:forKey:](self, "_addPositionAnimationToLayer:usingAnimation:forKey:", v9, a3, [MEMORY[0x1E696AEC0] stringWithFormat:@"AVPlayerLayer_ClosedCaptionLayer_Position_%@", a5]);
-  if (v9)
+  _closedCaptionLayer = [(AVPlayerLayer *)self _closedCaptionLayer];
+  -[AVPlayerLayer _addPositionAnimationToLayer:usingAnimation:forKey:](self, "_addPositionAnimationToLayer:usingAnimation:forKey:", _closedCaptionLayer, layer, [MEMORY[0x1E696AEC0] stringWithFormat:@"AVPlayerLayer_ClosedCaptionLayer_Position_%@", key]);
+  if (_closedCaptionLayer)
   {
-    [v9 sublayerTransform];
+    [_closedCaptionLayer sublayerTransform];
   }
 
   else
@@ -930,19 +930,19 @@ uint64_t __116__AVPlayerLayer__addSublayerTransformAnimationToLayer_fromTransfor
     memset(v12, 0, sizeof(v12));
   }
 
-  [v9 bounds];
-  -[AVPlayerLayer _addSublayerTransformAnimationToLayer:fromTransform:usingAnimation:gravity:presentationSize:forKey:](self, "_addSublayerTransformAnimationToLayer:fromTransform:usingAnimation:gravity:presentationSize:forKey:", v9, v12, a3, a4, [MEMORY[0x1E696AEC0] stringWithFormat:@"AVPlayerLayer_ClosedCaptionLayer_SublayerTransform_%@", a5], v10, v11);
+  [_closedCaptionLayer bounds];
+  -[AVPlayerLayer _addSublayerTransformAnimationToLayer:fromTransform:usingAnimation:gravity:presentationSize:forKey:](self, "_addSublayerTransformAnimationToLayer:fromTransform:usingAnimation:gravity:presentationSize:forKey:", _closedCaptionLayer, v12, layer, gravity, [MEMORY[0x1E696AEC0] stringWithFormat:@"AVPlayerLayer_ClosedCaptionLayer_SublayerTransform_%@", key], v10, v11);
 }
 
-- (void)_addAnimationsForVideoLayer:(id)a3 size:(CGSize)a4 gravity:(id)a5 forKey:(id)a6
+- (void)_addAnimationsForVideoLayer:(id)layer size:(CGSize)size gravity:(id)gravity forKey:(id)key
 {
-  height = a4.height;
-  width = a4.width;
-  v12 = [(AVPlayerLayer *)self _videoLayer];
-  -[AVPlayerLayer _addPositionAnimationToLayer:usingAnimation:forKey:](self, "_addPositionAnimationToLayer:usingAnimation:forKey:", v12, a3, [MEMORY[0x1E696AEC0] stringWithFormat:@"AVPlayerLayer_VideoLayer_Position_%@", a6]);
-  if (v12)
+  height = size.height;
+  width = size.width;
+  _videoLayer = [(AVPlayerLayer *)self _videoLayer];
+  -[AVPlayerLayer _addPositionAnimationToLayer:usingAnimation:forKey:](self, "_addPositionAnimationToLayer:usingAnimation:forKey:", _videoLayer, layer, [MEMORY[0x1E696AEC0] stringWithFormat:@"AVPlayerLayer_VideoLayer_Position_%@", key]);
+  if (_videoLayer)
   {
-    [v12 sublayerTransform];
+    [_videoLayer sublayerTransform];
   }
 
   else
@@ -950,20 +950,20 @@ uint64_t __116__AVPlayerLayer__addSublayerTransformAnimationToLayer_fromTransfor
     memset(v13, 0, sizeof(v13));
   }
 
-  -[AVPlayerLayer _addSublayerTransformAnimationToLayer:fromTransform:usingAnimation:gravity:presentationSize:forKey:](self, "_addSublayerTransformAnimationToLayer:fromTransform:usingAnimation:gravity:presentationSize:forKey:", v12, v13, a3, a5, [MEMORY[0x1E696AEC0] stringWithFormat:@"AVPlayerLayer_VideoLayer_SublayerTransform_%@", a6], width, height);
+  -[AVPlayerLayer _addSublayerTransformAnimationToLayer:fromTransform:usingAnimation:gravity:presentationSize:forKey:](self, "_addSublayerTransformAnimationToLayer:fromTransform:usingAnimation:gravity:presentationSize:forKey:", _videoLayer, v13, layer, gravity, [MEMORY[0x1E696AEC0] stringWithFormat:@"AVPlayerLayer_VideoLayer_SublayerTransform_%@", key], width, height);
 }
 
-- (void)_forBoundsAnimations:(id)a3 applyBlock:(id)a4
+- (void)_forBoundsAnimations:(id)animations applyBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (([@"bounds.size" isEqualToString:{objc_msgSend(a3, "keyPath")}] & 1) != 0 || objc_msgSend(@"bounds", "isEqualToString:", objc_msgSend(a3, "keyPath")))
+    if (([@"bounds.size" isEqualToString:{objc_msgSend(animations, "keyPath")}] & 1) != 0 || objc_msgSend(@"bounds", "isEqualToString:", objc_msgSend(animations, "keyPath")))
     {
-      v7 = *(a4 + 2);
+      v7 = *(block + 2);
 
-      v7(a4, a3);
+      v7(block, animations);
     }
   }
 
@@ -976,8 +976,8 @@ uint64_t __116__AVPlayerLayer__addSublayerTransformAnimationToLayer_fromTransfor
       v16 = 0u;
       v13 = 0u;
       v14 = 0u;
-      v8 = [a3 animations];
-      v9 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      animations = [animations animations];
+      v9 = [animations countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v9)
       {
         v10 = v9;
@@ -988,13 +988,13 @@ uint64_t __116__AVPlayerLayer__addSublayerTransformAnimationToLayer_fromTransfor
           {
             if (*v14 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(animations);
             }
 
-            [(AVPlayerLayer *)self _forBoundsAnimations:*(*(&v13 + 1) + 8 * i) applyBlock:a4];
+            [(AVPlayerLayer *)self _forBoundsAnimations:*(*(&v13 + 1) + 8 * i) applyBlock:block];
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v13 objects:v17 count:16];
+          v10 = [animations countByEnumeratingWithState:&v13 objects:v17 count:16];
         }
 
         while (v10);
@@ -1003,7 +1003,7 @@ uint64_t __116__AVPlayerLayer__addSublayerTransformAnimationToLayer_fromTransfor
   }
 }
 
-- (void)addAnimation:(id)a3 forKey:(id)a4
+- (void)addAnimation:(id)animation forKey:(id)key
 {
   v11 = 0;
   v12 = 0;
@@ -1026,15 +1026,15 @@ uint64_t __116__AVPlayerLayer__addSublayerTransformAnimationToLayer_fromTransfor
     v9[2] = __37__AVPlayerLayer_addAnimation_forKey___block_invoke;
     v9[3] = &unk_1E7460CB8;
     v9[4] = self;
-    v9[5] = a4;
+    v9[5] = key;
     v9[6] = v11;
     v9[7] = v10;
-    [(AVPlayerLayer *)self _forBoundsAnimations:a3 applyBlock:v9];
+    [(AVPlayerLayer *)self _forBoundsAnimations:animation applyBlock:v9];
   }
 
   v8.receiver = self;
   v8.super_class = AVPlayerLayer;
-  [(AVPlayerLayer *)&v8 addAnimation:a3 forKey:a4];
+  [(AVPlayerLayer *)&v8 addAnimation:animation forKey:key];
 }
 
 uint64_t __37__AVPlayerLayer_addAnimation_forKey___block_invoke(uint64_t a1, uint64_t a2)
@@ -1054,7 +1054,7 @@ uint64_t __37__AVPlayerLayer_addAnimation_forKey___block_invoke(uint64_t a1, uin
   return [v9 addAnimation:a2 forKey:v10];
 }
 
-- (void)removeAnimationForKey:(id)a3
+- (void)removeAnimationForKey:(id)key
 {
   v12 = 0;
   v13 = 0;
@@ -1074,13 +1074,13 @@ uint64_t __37__AVPlayerLayer_addAnimation_forKey___block_invoke(uint64_t a1, uin
 
   if (!v5)
   {
-    v6 = [(AVPlayerLayer *)self animationForKey:a3];
+    v6 = [(AVPlayerLayer *)self animationForKey:key];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __39__AVPlayerLayer_removeAnimationForKey___block_invoke;
     v8[3] = &unk_1E7460CE0;
     v8[4] = self;
-    v8[5] = a3;
+    v8[5] = key;
     v8[6] = v13;
     v8[7] = v12;
     v8[8] = v10;
@@ -1091,7 +1091,7 @@ uint64_t __37__AVPlayerLayer_addAnimation_forKey___block_invoke(uint64_t a1, uin
 
   v7.receiver = self;
   v7.super_class = AVPlayerLayer;
-  [(AVPlayerLayer *)&v7 removeAnimationForKey:a3];
+  [(AVPlayerLayer *)&v7 removeAnimationForKey:key];
 }
 
 uint64_t __39__AVPlayerLayer_removeAnimationForKey___block_invoke(uint64_t a1)
@@ -1238,12 +1238,12 @@ uint64_t __39__AVPlayerLayer_removeAnimationForKey___block_invoke(uint64_t a1)
 
 - (float)_percentCoverageRelativeToRootLayer
 {
-  v3 = [(AVPlayerLayer *)self context];
+  context = [(AVPlayerLayer *)self context];
   v4 = 0.0;
-  if (v3)
+  if (context)
   {
-    v5 = v3;
-    if ([v3 layer])
+    v5 = context;
+    if ([context layer])
     {
       [(AVPlayerLayer *)self bounds];
       [(AVPlayerLayer *)self convertRect:0 toLayer:?];
@@ -1320,17 +1320,17 @@ uint64_t __39__AVPlayerLayer_removeAnimationForKey___block_invoke(uint64_t a1)
 
 - (void)_notifyPlayerOfDisplaySize
 {
-  v2 = [(AVPlayerLayer *)self player];
+  player = [(AVPlayerLayer *)self player];
 
-  [(AVPlayer *)v2 _evaluateDisplaySizeOfAllAttachedLayers];
+  [(AVPlayer *)player _evaluateDisplaySizeOfAllAttachedLayers];
 }
 
-- (void)declareKeyPathDependenciesWithRegistry:(id)a3
+- (void)declareKeyPathDependenciesWithRegistry:(id)registry
 {
-  [a3 valueForKey:@"playerCurrentItemPresentationSize" dependsOnValueAtKeyPath:{AVTwoPartKeyPathMake(@"player", @"cachedPresentationSizeOfCurrentItem"}];
+  [registry valueForKey:@"playerCurrentItemPresentationSize" dependsOnValueAtKeyPath:{AVTwoPartKeyPathMake(@"player", @"cachedPresentationSizeOfCurrentItem"}];
   v4 = AVTwoPartKeyPathMake(@"_videoLayer", @"presentationSize");
 
-  [a3 valueForKey:@"videoLayerPresentationSize" dependsOnValueAtKeyPath:v4];
+  [registry valueForKey:@"videoLayerPresentationSize" dependsOnValueAtKeyPath:v4];
 }
 
 + (id)keyPathsForValuesAffecting_presentationSize
@@ -1350,18 +1350,18 @@ uint64_t __39__AVPlayerLayer_removeAnimationForKey___block_invoke(uint64_t a1)
   return [v3 setWithObject:v2];
 }
 
-- (void)_applyCurrentItemPresentationSizeChangeAndForceUpdate:(BOOL)a3
+- (void)_applyCurrentItemPresentationSizeChangeAndForceUpdate:(BOOL)update
 {
-  v3 = a3;
+  updateCopy = update;
   [(AVPlayerLayer *)self _presentationSize];
 
-  [(AVPlayerLayer *)self _applyPresentationSizeChange:v3 andForceUpdate:?];
+  [(AVPlayerLayer *)self _applyPresentationSizeChange:updateCopy andForceUpdate:?];
 }
 
-- (void)_applyPresentationSizeChange:(CGSize)a3 andForceUpdate:(BOOL)a4
+- (void)_applyPresentationSizeChange:(CGSize)change andForceUpdate:(BOOL)update
 {
-  height = a3.height;
-  width = a3.width;
+  height = change.height;
+  width = change.width;
   v11 = 0;
   v12 = 0;
   v10 = 0;
@@ -1372,7 +1372,7 @@ uint64_t __39__AVPlayerLayer_removeAnimationForKey___block_invoke(uint64_t a1)
   v8[3] = &unk_1E7460D08;
   *&v8[6] = width;
   *&v8[7] = height;
-  v9 = a4;
+  updateCopy = update;
   v8[4] = v12;
   v8[5] = self;
   AVSerializeOnQueueAsyncIfNecessary(MEMORY[0x1E69E96A0], v8);
@@ -1414,13 +1414,13 @@ void *__61__AVPlayerLayer__applyPresentationSizeChange_andForceUpdate___block_in
   return [result setNeedsLayout];
 }
 
-- (void)_startObservingPlayer:(id)a3
+- (void)_startObservingPlayer:(id)player
 {
-  if (a3 && !self->_playerLayer->playerBeingObserved)
+  if (player && !self->_playerLayer->playerBeingObserved)
   {
-    self->_playerLayer->playerBeingObserved = a3;
+    self->_playerLayer->playerBeingObserved = player;
     objc_initWeak(location, self);
-    v5 = +[AVMapPublisher mapPublisherWithUpstream:transform:](AVMapPublisher, "mapPublisherWithUpstream:transform:", [a3 currentItemPublisher], &__block_literal_global_232);
+    v5 = +[AVMapPublisher mapPublisherWithUpstream:transform:](AVMapPublisher, "mapPublisherWithUpstream:transform:", [player currentItemPublisher], &__block_literal_global_232);
     if ((avPlayerLayerUseVideoLayerPresentationSize() & 1) == 0)
     {
       v6 = [AVSwitchToLatestPublisher switchToLatestPublisherWithUpstream:v5];
@@ -1435,17 +1435,17 @@ void *__61__AVPlayerLayer__applyPresentationSizeChange_andForceUpdate___block_in
     }
 
     [(AVPlayerLayer *)self _applyCurrentItemPresentationSizeChangeAndForceUpdate:0];
-    v8 = [(AVPlayerLayer *)self _willManageSublayersAsSwappedLayers];
+    _willManageSublayersAsSwappedLayers = [(AVPlayerLayer *)self _willManageSublayersAsSwappedLayers];
     v9 = [AVSinkSubscriber alloc];
-    v10 = [a3 currentItemPublisher];
+    currentItemPublisher = [player currentItemPublisher];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __39__AVPlayerLayer__startObservingPlayer___block_invoke_3;
     v23[3] = &unk_1E7460D78;
     objc_copyWeak(&v24, location);
-    v23[4] = a3;
-    self->_playerLayer->playerCurrentItemSink = [(AVSinkSubscriber *)v9 initWithPublisher:v10 requestingInitialValue:!v8 sink:v23];
-    v11 = +[AVSwitchToLatestPublisher switchToLatestPublisherWithUpstream:](AVSwitchToLatestPublisher, "switchToLatestPublisherWithUpstream:", +[AVMapPublisher mapPublisherWithUpstream:transform:](AVMapPublisher, "mapPublisherWithUpstream:transform:", [a3 currentItemPublisher], &__block_literal_global_238));
+    v23[4] = player;
+    self->_playerLayer->playerCurrentItemSink = [(AVSinkSubscriber *)v9 initWithPublisher:currentItemPublisher requestingInitialValue:!_willManageSublayersAsSwappedLayers sink:v23];
+    v11 = +[AVSwitchToLatestPublisher switchToLatestPublisherWithUpstream:](AVSwitchToLatestPublisher, "switchToLatestPublisherWithUpstream:", +[AVMapPublisher mapPublisherWithUpstream:transform:](AVMapPublisher, "mapPublisherWithUpstream:transform:", [player currentItemPublisher], &__block_literal_global_238));
     v12 = [AVSinkSubscriber alloc];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
@@ -1453,24 +1453,24 @@ void *__61__AVPlayerLayer__applyPresentationSizeChange_andForceUpdate___block_in
     v21[3] = &unk_1E7460DA0;
     objc_copyWeak(&v22, location);
     self->_playerLayer->currentItemTracksSink = [(AVSinkSubscriber *)v12 initWithPublisher:v11 requestingInitialValue:1 sink:v21];
-    v13 = +[AVSwitchToLatestPublisher switchToLatestPublisherWithUpstream:](AVSwitchToLatestPublisher, "switchToLatestPublisherWithUpstream:", +[AVMapPublisher mapPublisherWithUpstream:transform:](AVMapPublisher, "mapPublisherWithUpstream:transform:", [a3 currentItemPublisher], &__block_literal_global_241));
+    v13 = +[AVSwitchToLatestPublisher switchToLatestPublisherWithUpstream:](AVSwitchToLatestPublisher, "switchToLatestPublisherWithUpstream:", +[AVMapPublisher mapPublisherWithUpstream:transform:](AVMapPublisher, "mapPublisherWithUpstream:transform:", [player currentItemPublisher], &__block_literal_global_241));
     v14 = [AVSinkSubscriber alloc];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __39__AVPlayerLayer__startObservingPlayer___block_invoke_7;
     v19[3] = &unk_1E7460DC8;
     objc_copyWeak(&v20, location);
-    v19[4] = a3;
+    v19[4] = player;
     self->_playerLayer->currentItemNonForcedSubtitlesEnabledSink = [(AVSinkSubscriber *)v14 initWithPublisher:v13 requestingInitialValue:1 sink:v19];
-    v15 = [a3 closedCaptionsDisplayPublisher];
+    closedCaptionsDisplayPublisher = [player closedCaptionsDisplayPublisher];
     v16 = [AVSinkSubscriber alloc];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __39__AVPlayerLayer__startObservingPlayer___block_invoke_8;
     v17[3] = &unk_1E7460DC8;
     objc_copyWeak(&v18, location);
-    v17[4] = a3;
-    self->_playerLayer->playerIsDisplayingClosedCaptionsSink = [(AVSinkSubscriber *)v16 initWithPublisher:v15 requestingInitialValue:1 sink:v17];
+    v17[4] = player;
+    self->_playerLayer->playerIsDisplayingClosedCaptionsSink = [(AVSinkSubscriber *)v16 initWithPublisher:closedCaptionsDisplayPublisher requestingInitialValue:1 sink:v17];
     objc_destroyWeak(&v18);
     objc_destroyWeak(&v20);
     objc_destroyWeak(&v22);
@@ -1547,9 +1547,9 @@ id __39__AVPlayerLayer__startObservingPlayer___block_invoke_8(uint64_t a1, void 
   return result;
 }
 
-- (void)_stopObservingPlayer:(id)a3
+- (void)_stopObservingPlayer:(id)player
 {
-  if (a3)
+  if (player)
   {
     playerBeingObserved = self->_playerLayer->playerBeingObserved;
     if (playerBeingObserved)
@@ -1579,11 +1579,11 @@ id __39__AVPlayerLayer__startObservingPlayer___block_invoke_8(uint64_t a1, void 
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (a6 == @"AVPlayerLayerContentsAreFlippedObservationContext")
+  if (context == @"AVPlayerLayerContentsAreFlippedObservationContext")
   {
-    v7 = [(AVPlayerLayer *)self _videoLayer:a3];
+    v7 = [(AVPlayerLayer *)self _videoLayer:path];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __64__AVPlayerLayer_observeValueForKeyPath_ofObject_change_context___block_invoke;
@@ -1593,17 +1593,17 @@ id __39__AVPlayerLayer__startObservingPlayer___block_invoke_8(uint64_t a1, void 
     AVSerializeOnQueueAsyncIfNecessary(MEMORY[0x1E69E96A0], v9);
   }
 
-  else if (a6 == @"AVPlayerLayerVideoLayerObservationContext")
+  else if (context == @"AVPlayerLayerVideoLayerObservationContext")
   {
 
-    [(AVPlayerLayer *)self _updatePreferredDynamicRangeWithAnimation:0, a4, a5];
+    [(AVPlayerLayer *)self _updatePreferredDynamicRangeWithAnimation:0, object, change];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = AVPlayerLayer;
-    [(AVPlayerLayer *)&v8 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:?];
+    [(AVPlayerLayer *)&v8 observeValueForKeyPath:path ofObject:object change:change context:?];
   }
 }
 
@@ -1616,7 +1616,7 @@ uint64_t __64__AVPlayerLayer_observeValueForKeyPath_ofObject_change_context___bl
   return [v2 commit];
 }
 
-- (void)_handleNonForcedSubtitleDisplayDidChange:(BOOL)a3 player:(id)a4
+- (void)_handleNonForcedSubtitleDisplayDidChange:(BOOL)change player:(id)player
 {
   configurationQueue = self->_playerLayer->configurationQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -1624,8 +1624,8 @@ uint64_t __64__AVPlayerLayer_observeValueForKeyPath_ofObject_change_context___bl
   v5[2] = __65__AVPlayerLayer__handleNonForcedSubtitleDisplayDidChange_player___block_invoke;
   v5[3] = &unk_1E7460E18;
   v5[4] = self;
-  v5[5] = a4;
-  v6 = a3;
+  v5[5] = player;
+  changeCopy = change;
   AVSerializeOnQueueAsyncIfNecessary(configurationQueue, v5);
 }
 
@@ -1642,16 +1642,16 @@ void *__65__AVPlayerLayer__handleNonForcedSubtitleDisplayDidChange_player___bloc
   return result;
 }
 
-- (void)_handlePlayerCurrentItemDidChangeForPlayer:(id)a3
+- (void)_handlePlayerCurrentItemDidChangeForPlayer:(id)player
 {
-  v4 = [(AVPlayerLayer *)self _subtitleLayer];
-  if (v4)
+  _subtitleLayer = [(AVPlayerLayer *)self _subtitleLayer];
+  if (_subtitleLayer)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __60__AVPlayerLayer__handlePlayerCurrentItemDidChangeForPlayer___block_invoke;
     v6[3] = &unk_1E7460C00;
-    v6[4] = v4;
+    v6[4] = _subtitleLayer;
     AVSerializeOnQueueAsyncIfNecessary(MEMORY[0x1E69E96A0], v6);
   }
 
@@ -1678,7 +1678,7 @@ uint64_t __60__AVPlayerLayer__handlePlayerCurrentItemDidChangeForPlayer___block_
   return [v2 commit];
 }
 
-- (void)_handleIsDisplayingClosedCaptionsDidChange:(BOOL)a3 player:(id)a4
+- (void)_handleIsDisplayingClosedCaptionsDidChange:(BOOL)change player:(id)player
 {
   configurationQueue = self->_playerLayer->configurationQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -1686,8 +1686,8 @@ uint64_t __60__AVPlayerLayer__handlePlayerCurrentItemDidChangeForPlayer___block_
   v5[2] = __67__AVPlayerLayer__handleIsDisplayingClosedCaptionsDidChange_player___block_invoke;
   v5[3] = &unk_1E7460E18;
   v5[4] = self;
-  v5[5] = a4;
-  v6 = a3;
+  v5[5] = player;
+  changeCopy = change;
   AVSerializeOnQueueAsyncIfNecessary(configurationQueue, v5);
 }
 
@@ -1719,20 +1719,20 @@ void *__67__AVPlayerLayer__handleIsDisplayingClosedCaptionsDidChange_player___bl
 
 - (void)_rebuildVideoLayerIfNecessary
 {
-  v2 = [(AVPlayerLayer *)self _videoLayer];
-  if ([v2 requiresRebuild])
+  _videoLayer = [(AVPlayerLayer *)self _videoLayer];
+  if ([_videoLayer requiresRebuild])
   {
 
-    [v2 rebuild];
+    [_videoLayer rebuild];
   }
 }
 
-- (void)_setPlayer:(id)a3 forPIP:(BOOL)a4
+- (void)_setPlayer:(id)player forPIP:(BOOL)p
 {
   playerLayer = self->_playerLayer;
-  if (!playerLayer->isPresentationLayer && playerLayer->player != a3)
+  if (!playerLayer->isPresentationLayer && playerLayer->player != player)
   {
-    if (a4)
+    if (p)
     {
       [(AVPlayerLayer *)self setLegibleContentInsets:0.0, 0.0, 0.0, 0.0];
     }
@@ -1742,15 +1742,15 @@ void *__67__AVPlayerLayer__handleIsDisplayingClosedCaptionsDidChange_player___bl
       [(AVPlayerLayer *)self _setShowInterstitialInstead:0];
     }
 
-    v8 = [(AVPlayerLayer *)self _associatedRemoteModeLayer];
-    if (v8)
+    _associatedRemoteModeLayer = [(AVPlayerLayer *)self _associatedRemoteModeLayer];
+    if (_associatedRemoteModeLayer)
     {
       if (![(AVPlayerLayer *)self _activeMode])
       {
         [(AVPlayerLayer *)self _configurePlayerWhenLeavingPIP];
       }
 
-      [AVPlayerLayer _swapSublayersBetweenPlayerLayer:self andPlayerLayer:v8];
+      [AVPlayerLayer _swapSublayersBetweenPlayerLayer:self andPlayerLayer:_associatedRemoteModeLayer];
     }
 
     v9 = FigUseVideoReceiverForCALayer();
@@ -1765,8 +1765,8 @@ void *__67__AVPlayerLayer__handleIsDisplayingClosedCaptionsDidChange_player___bl
       v10 = self->_playerLayer;
     }
 
-    [(AVNetworkPlaybackPerfHUDLayer *)v10->hudLayer setPlayer:a3];
-    if (!a4)
+    [(AVNetworkPlaybackPerfHUDLayer *)v10->hudLayer setPlayer:player];
+    if (!p)
     {
       [(AVPlayer *)self->_playerLayer->player _removeLayer:self];
     }
@@ -1778,7 +1778,7 @@ void *__67__AVPlayerLayer__handleIsDisplayingClosedCaptionsDidChange_player___bl
     block[2] = __35__AVPlayerLayer__setPlayer_forPIP___block_invoke;
     block[3] = &unk_1E7460DF0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = player;
     dispatch_sync(serialQueue, block);
     v12 = [MEMORY[0x1E696AD80] notificationWithName:@"AVPlayerLayerPlayerDidChangeNotification" object:self];
     [objc_msgSend(MEMORY[0x1E696AD88] "defaultCenter")];
@@ -1802,7 +1802,7 @@ void *__67__AVPlayerLayer__handleIsDisplayingClosedCaptionsDidChange_player___bl
       }
     }
 
-    if (!a4)
+    if (!p)
     {
       [(AVPlayerLayer *)self _rebuildVideoLayerIfNecessary];
       [(AVPlayer *)self->_playerLayer->player _addLayer:self];
@@ -1810,10 +1810,10 @@ void *__67__AVPlayerLayer__handleIsDisplayingClosedCaptionsDidChange_player___bl
 
     [(AVPlayer *)self->_playerLayer->player _updateConnectionToSecondScreen];
     [(AVPlayerLayer *)self _notifyPlayerOfDisplaySize];
-    if (v8)
+    if (_associatedRemoteModeLayer)
     {
-      [AVPlayerLayer _swapSublayersBetweenPlayerLayer:self andPlayerLayer:v8];
-      [v8 _setPlayer:a3 forPIP:1];
+      [AVPlayerLayer _swapSublayersBetweenPlayerLayer:self andPlayerLayer:_associatedRemoteModeLayer];
+      [_associatedRemoteModeLayer _setPlayer:player forPIP:1];
       if (![(AVPlayerLayer *)self _activeMode])
       {
         [(AVPlayerLayer *)self _configurePlayerWhenEnteringPIP];
@@ -1858,9 +1858,9 @@ uint64_t __35__AVPlayerLayer__setPlayer_forPIP___block_invoke_3(uint64_t a1)
   return [v2 _applyCurrentItemPresentationSizeChangeAndForceUpdate:0];
 }
 
-- (void)layerDidBecomeVisible:(BOOL)a3
+- (void)layerDidBecomeVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v15 = 0;
   v16 = 0;
   v13 = 0;
@@ -1882,13 +1882,13 @@ uint64_t __35__AVPlayerLayer__setPlayer_forPIP___block_invoke_3(uint64_t a1)
     goto LABEL_16;
   }
 
-  playerLayer->isVisible = v3;
-  if (v3)
+  playerLayer->isVisible = visibleCopy;
+  if (visibleCopy)
   {
-    v7 = [(AVPlayerLayer *)self context];
-    if (v7)
+    context = [(AVPlayerLayer *)self context];
+    if (context)
     {
-      v8 = v7;
+      v8 = context;
       if ((objc_opt_respondsToSelector() & 1) == 0)
       {
 LABEL_12:
@@ -1922,19 +1922,19 @@ LABEL_13:
 LABEL_16:
   v12.receiver = self;
   v12.super_class = AVPlayerLayer;
-  [(AVPlayerLayer *)&v12 layerDidBecomeVisible:v3];
+  [(AVPlayerLayer *)&v12 layerDidBecomeVisible:visibleCopy];
 }
 
-- (void)hasEnqueuedVideoFrameChanged:(id)a3
+- (void)hasEnqueuedVideoFrameChanged:(id)changed
 {
-  if (!FigUseVideoReceiverForCALayer() && [objc_msgSend(a3 "object")])
+  if (!FigUseVideoReceiverForCALayer() && [objc_msgSend(changed "object")])
   {
 
     [(AVPlayerLayer *)self _updateReadyForDisplayForPlayerCurrentItem];
   }
 }
 
-- (void)_updateReadyForDisplayForPlayerCurrentItemAndForceKVO:(BOOL)a3
+- (void)_updateReadyForDisplayForPlayerCurrentItemAndForceKVO:(BOOL)o
 {
   if (!self->_playerLayer->isPresentationLayer)
   {
@@ -1943,7 +1943,7 @@ LABEL_16:
     v4[2] = __71__AVPlayerLayer__updateReadyForDisplayForPlayerCurrentItemAndForceKVO___block_invoke;
     v4[3] = &unk_1E7460E40;
     v4[4] = self;
-    v5 = a3;
+    oCopy = o;
     AVSerializeOnQueueAsyncIfNecessary(MEMORY[0x1E69E96A0], v4);
   }
 
@@ -1971,43 +1971,43 @@ uint64_t __71__AVPlayerLayer__updateReadyForDisplayForPlayerCurrentItemAndForceK
   return [v6 _updateReadyForDisplayOnMainQueue:v5 skipInformingParent:0 forceKVO:v7];
 }
 
-- (void)_updateReadyForDisplay:(BOOL)a3 skipInformingParent:(BOOL)a4 forceKVO:(BOOL)a5
+- (void)_updateReadyForDisplay:(BOOL)display skipInformingParent:(BOOL)parent forceKVO:(BOOL)o
 {
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __69__AVPlayerLayer__updateReadyForDisplay_skipInformingParent_forceKVO___block_invoke;
   v7[3] = &unk_1E7460EB8;
   v7[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  displayCopy = display;
+  parentCopy = parent;
+  oCopy = o;
   AVSerializeOnQueueAsyncIfNecessary(MEMORY[0x1E69E96A0], v7);
-  if (!a4)
+  if (!parent)
   {
     [(AVPlayerLayer *)self _applyCurrentItemPresentationSizeChangeAndForceUpdate:1];
   }
 }
 
-- (void)_updateReadyForDisplayOnMainQueue:(BOOL)a3 skipInformingParent:(BOOL)a4 forceKVO:(BOOL)a5
+- (void)_updateReadyForDisplayOnMainQueue:(BOOL)queue skipInformingParent:(BOOL)parent forceKVO:(BOOL)o
 {
   if (!self->_playerLayer->isPresentationLayer)
   {
-    v5 = a5;
-    v7 = a3;
+    oCopy = o;
+    queueCopy = queue;
     FigSimpleMutexLock();
     isReadyForDisplay = self->_playerLayer->isReadyForDisplay;
     FigSimpleMutexUnlock();
-    if ((v7 & v5 & 1) != 0 || isReadyForDisplay != v7)
+    if ((queueCopy & oCopy & 1) != 0 || isReadyForDisplay != queueCopy)
     {
-      if (!a4 && [(AVPlayerLayer *)self superlayer]&& ([(AVPlayerLayer *)self superlayer], objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+      if (!parent && [(AVPlayerLayer *)self superlayer]&& ([(AVPlayerLayer *)self superlayer], objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
       {
-        v10 = [(AVPlayerLayer *)self superlayer];
+        superlayer = [(AVPlayerLayer *)self superlayer];
         v12 = 0;
-        [v10 _getMaskLayer:0 videoLayer:0 subtitleLayer:0 closedCaptionLayer:0 interstitialLayer:&v12];
+        [superlayer _getMaskLayer:0 videoLayer:0 subtitleLayer:0 closedCaptionLayer:0 interstitialLayer:&v12];
         v11 = v12 == self;
         if (v12 == self)
         {
-          [v10 willChangeValueForKey:@"readyForDisplay"];
+          [superlayer willChangeValueForKey:@"readyForDisplay"];
         }
       }
 
@@ -2018,7 +2018,7 @@ uint64_t __71__AVPlayerLayer__updateReadyForDisplayForPlayerCurrentItemAndForceK
 
       [(AVPlayerLayer *)self willChangeValueForKey:@"readyForDisplay"];
       FigSimpleMutexLock();
-      self->_playerLayer->isReadyForDisplay = v7;
+      self->_playerLayer->isReadyForDisplay = queueCopy;
       FigSimpleMutexUnlock();
       [(AVPlayerLayer *)self didChangeValueForKey:@"readyForDisplay"];
       if (v11)
@@ -2103,14 +2103,14 @@ LABEL_4:
   return result;
 }
 
-- (void)_updatePreferredDynamicRangeWithAnimation:(BOOL)a3
+- (void)_updatePreferredDynamicRangeWithAnimation:(BOOL)animation
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __59__AVPlayerLayer__updatePreferredDynamicRangeWithAnimation___block_invoke;
   v3[3] = &unk_1E7460E40;
   v3[4] = self;
-  v4 = a3;
+  animationCopy = animation;
   dispatch_async(MEMORY[0x1E69E96A0], v3);
 }
 
@@ -2153,11 +2153,11 @@ uint64_t __59__AVPlayerLayer__updatePreferredDynamicRangeWithAnimation___block_i
   return result;
 }
 
-- (void)setPreferredDynamicRange:(id)a3
+- (void)setPreferredDynamicRange:(id)range
 {
   v4.receiver = self;
   v4.super_class = AVPlayerLayer;
-  [(AVPlayerLayer *)&v4 setPreferredDynamicRange:a3];
+  [(AVPlayerLayer *)&v4 setPreferredDynamicRange:range];
   [(AVPlayerLayer *)self _updatePreferredDynamicRangeWithAnimation:1];
 }
 
@@ -2275,7 +2275,7 @@ uint64_t __42__AVPlayerLayer_setPixelBufferAttributes___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)_getMaskLayer:(id *)a3 videoLayer:(id *)a4 subtitleLayer:(id *)a5 closedCaptionLayer:(id *)a6 interstitialLayer:(id *)a7
+- (void)_getMaskLayer:(id *)layer videoLayer:(id *)videoLayer subtitleLayer:(id *)subtitleLayer closedCaptionLayer:(id *)captionLayer interstitialLayer:(id *)interstitialLayer
 {
   v38 = 0;
   v39 = &v38;
@@ -2319,29 +2319,29 @@ uint64_t __42__AVPlayerLayer_setPixelBufferAttributes___block_invoke(uint64_t a1
   v13[8] = &v20;
   v13[9] = &v14;
   dispatch_sync(serialQueue, v13);
-  if (a3)
+  if (layer)
   {
-    *a3 = v39[5];
+    *layer = v39[5];
   }
 
-  if (a4)
+  if (videoLayer)
   {
-    *a4 = v33[5];
+    *videoLayer = v33[5];
   }
 
-  if (a5)
+  if (subtitleLayer)
   {
-    *a5 = v27[5];
+    *subtitleLayer = v27[5];
   }
 
-  if (a6)
+  if (captionLayer)
   {
-    *a6 = v21[5];
+    *captionLayer = v21[5];
   }
 
-  if (a7)
+  if (interstitialLayer)
   {
-    *a7 = v15[5];
+    *interstitialLayer = v15[5];
   }
 
   _Block_object_dispose(&v14, 8);
@@ -2490,12 +2490,12 @@ void __35__AVPlayerLayer__interstitialLayer__block_invoke(void *a1)
   return showInterstitialInstead & 1;
 }
 
-- (void)_setShowInterstitialInstead:(BOOL)a3 afterDelay:(double)a4
+- (void)_setShowInterstitialInstead:(BOOL)instead afterDelay:(double)delay
 {
   if (!self->_playerLayer->isPresentationLayer)
   {
-    v5 = a3;
-    if ([(AVPlayerLayer *)self _showInterstitialInstead]!= a3)
+    insteadCopy = instead;
+    if ([(AVPlayerLayer *)self _showInterstitialInstead]!= instead)
     {
       v22 = 0;
       v23 = 0;
@@ -2514,7 +2514,7 @@ void __35__AVPlayerLayer__interstitialLayer__block_invoke(void *a1)
       block[4] = self;
       block[5] = &v16;
       dispatch_sync(serialQueue, block);
-      [v17[5] _setShowInterstitialInstead:v5 afterDelay:a4];
+      [v17[5] _setShowInterstitialInstead:insteadCopy afterDelay:delay];
 
       v9 = self->_playerLayer->serialQueue;
       v13[0] = MEMORY[0x1E69E9820];
@@ -2522,7 +2522,7 @@ void __35__AVPlayerLayer__interstitialLayer__block_invoke(void *a1)
       v13[2] = __56__AVPlayerLayer__setShowInterstitialInstead_afterDelay___block_invoke_2;
       v13[3] = &unk_1E7460E40;
       v13[4] = self;
-      v14 = v5;
+      v14 = insteadCopy;
       dispatch_sync(v9, v13);
       [(AVPlayerLayer *)self _getMaskLayer:&v22 videoLayer:0 subtitleLayer:0 closedCaptionLayer:0 interstitialLayer:&v23];
       if (v23)
@@ -2534,10 +2534,10 @@ void __35__AVPlayerLayer__interstitialLayer__block_invoke(void *a1)
         v11[3] = &unk_1E7460F80;
         v11[4] = self;
         v11[5] = v23;
-        v12 = v5;
+        v12 = insteadCopy;
         v11[6] = v22;
-        *&v11[7] = a4;
-        *&v11[8] = v10 + a4;
+        *&v11[7] = delay;
+        *&v11[8] = v10 + delay;
         AVSerializeOnQueueAsyncIfNecessary(MEMORY[0x1E69E96A0], v11);
       }
 
@@ -2601,12 +2601,12 @@ uint64_t __49__AVPlayerLayer_isOverscanSubtitleSupportEnabled__block_invoke(uint
   return result;
 }
 
-- (void)setOverscanSubtitleSupportEnabled:(BOOL)a3
+- (void)setOverscanSubtitleSupportEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v4 = [(AVPlayerLayer *)self _subtitleLayer];
+  enabledCopy = enabled;
+  _subtitleLayer = [(AVPlayerLayer *)self _subtitleLayer];
 
-  [v4 setOverscanSubtitleSupportEnabled:v3];
+  [_subtitleLayer setOverscanSubtitleSupportEnabled:enabledCopy];
 }
 
 - (id)videoPerformanceMetrics
@@ -2616,22 +2616,22 @@ uint64_t __49__AVPlayerLayer_isOverscanSubtitleSupportEnabled__block_invoke(uint
   return v2;
 }
 
-- (void)_setIsConnectedToSecondScreen:(BOOL)a3
+- (void)_setIsConnectedToSecondScreen:(BOOL)screen
 {
-  v3 = a3;
+  screenCopy = screen;
   playerLayer = self->_playerLayer;
-  if (playerLayer->isConnectedToSecondScreen != a3)
+  if (playerLayer->isConnectedToSecondScreen != screen)
   {
-    playerLayer->isConnectedToSecondScreen = a3;
+    playerLayer->isConnectedToSecondScreen = screen;
     [(AVPlayer *)self->_playerLayer->player _updateConnectionToSecondScreen];
   }
 
   v6 = 0;
   [(AVPlayerLayer *)self _getMaskLayer:0 videoLayer:0 subtitleLayer:0 closedCaptionLayer:0 interstitialLayer:&v6];
-  [v6 _setIsConnectedToSecondScreen:v3];
+  [v6 _setIsConnectedToSecondScreen:screenCopy];
 }
 
-- (void)setLanczosFilterDownscalingEnabled:(BOOL)a3
+- (void)setLanczosFilterDownscalingEnabled:(BOOL)enabled
 {
   serialQueue = self->_playerLayer->serialQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -2639,7 +2639,7 @@ uint64_t __49__AVPlayerLayer_isOverscanSubtitleSupportEnabled__block_invoke(uint
   v4[2] = __52__AVPlayerLayer_setLanczosFilterDownscalingEnabled___block_invoke;
   v4[3] = &unk_1E7460E40;
   v4[4] = self;
-  v5 = a3;
+  enabledCopy = enabled;
   dispatch_sync(serialQueue, v4);
 }
 
@@ -2663,9 +2663,9 @@ uint64_t __49__AVPlayerLayer_isOverscanSubtitleSupportEnabled__block_invoke(uint
   return v4;
 }
 
-- (void)setLanczosFilterDownscaleFactor:(int64_t)a3
+- (void)setLanczosFilterDownscaleFactor:(int64_t)factor
 {
-  if ((a3 - 2) <= 6)
+  if ((factor - 2) <= 6)
   {
     v6[6] = v3;
     v6[7] = v4;
@@ -2675,7 +2675,7 @@ uint64_t __49__AVPlayerLayer_isOverscanSubtitleSupportEnabled__block_invoke(uint
     v6[2] = __49__AVPlayerLayer_setLanczosFilterDownscaleFactor___block_invoke;
     v6[3] = &unk_1E7460FA8;
     v6[4] = self;
-    v6[5] = a3;
+    v6[5] = factor;
     dispatch_sync(serialQueue, v6);
   }
 }
@@ -2717,7 +2717,7 @@ uint64_t __49__AVPlayerLayer_isOverscanSubtitleSupportEnabled__block_invoke(uint
   return result;
 }
 
-- (CGRect)_videoRectForBounds:(CGRect)a3
+- (CGRect)_videoRectForBounds:(CGRect)bounds
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -2730,16 +2730,16 @@ uint64_t __49__AVPlayerLayer_isOverscanSubtitleSupportEnabled__block_invoke(uint
   return result;
 }
 
-- (void)setLegibleContentInsets:(NSEdgeInsets)a3
+- (void)setLegibleContentInsets:(NSEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  *&v23 = a3.top;
-  *(&v23 + 1) = *&a3.left;
-  *&v24 = a3.bottom;
-  *(&v24 + 1) = *&a3.right;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  *&v23 = insets.top;
+  *(&v23 + 1) = *&insets.left;
+  *&v24 = insets.bottom;
+  *(&v24 + 1) = *&insets.right;
   v21 = 0;
   v22 = 0;
   v19 = 0;
@@ -2781,8 +2781,8 @@ uint64_t __49__AVPlayerLayer_isOverscanSubtitleSupportEnabled__block_invoke(uint
       [v20 setCaptionsAvoidanceMargins:v13];
     }
 
-    v12 = [(AVPlayerLayer *)self player];
-    [(AVPlayer *)v12 _updateClosedCaptionLayerBounds:v19 videoRelativeToViewport:0 captionsAvoidanceMargins:&v23];
+    player = [(AVPlayerLayer *)self player];
+    [(AVPlayer *)player _updateClosedCaptionLayerBounds:v19 videoRelativeToViewport:0 captionsAvoidanceMargins:&v23];
     left = *(&v23 + 1);
     top = *&v23;
     right = *(&v24 + 1);
@@ -2806,37 +2806,37 @@ uint64_t __49__AVPlayerLayer_isOverscanSubtitleSupportEnabled__block_invoke(uint
   return result;
 }
 
-- (void)setLegibleDisplayEnabled:(BOOL)a3
+- (void)setLegibleDisplayEnabled:(BOOL)enabled
 {
   playerLayer = self->_playerLayer;
-  if (playerLayer->isLegibleDisplayEnabled != a3)
+  if (playerLayer->isLegibleDisplayEnabled != enabled)
   {
-    playerLayer->isLegibleDisplayEnabled = a3;
-    if (a3)
+    playerLayer->isLegibleDisplayEnabled = enabled;
+    if (enabled)
     {
       [-[AVPlayerLayer _maskLayer](self "_maskLayer")];
-      v5 = [(AVPlayerLayer *)self _maskLayer];
-      v6 = [(AVPlayerLayer *)self _closedCaptionLayer];
+      _maskLayer = [(AVPlayerLayer *)self _maskLayer];
+      _closedCaptionLayer = [(AVPlayerLayer *)self _closedCaptionLayer];
 
-      [v5 addSublayer:v6];
+      [_maskLayer addSublayer:_closedCaptionLayer];
     }
 
     else
     {
       [-[AVPlayerLayer _closedCaptionLayer](self "_closedCaptionLayer")];
-      v7 = [(AVPlayerLayer *)self _subtitleLayer];
+      _subtitleLayer = [(AVPlayerLayer *)self _subtitleLayer];
 
-      [v7 removeFromSuperlayer];
+      [_subtitleLayer removeFromSuperlayer];
     }
   }
 }
 
-- (void)setForScrubbingOnly:(BOOL)a3
+- (void)setForScrubbingOnly:(BOOL)only
 {
   playerLayer = self->_playerLayer;
-  if (playerLayer->isForScrubbingOnly != a3)
+  if (playerLayer->isForScrubbingOnly != only)
   {
-    playerLayer->isForScrubbingOnly = a3;
+    playerLayer->isForScrubbingOnly = only;
     [(FigVideoContainerLayer *)self->_playerLayer->videoLayer setForScrubbingOnly:?];
     videoLayer = self->_playerLayer->videoLayer;
     v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"AVPlayerLayer <%p> (scrubber)", self];
@@ -2845,13 +2845,13 @@ uint64_t __49__AVPlayerLayer_isOverscanSubtitleSupportEnabled__block_invoke(uint
   }
 }
 
-- (void)setToneMapToStandardDynamicRange:(BOOL)a3
+- (void)setToneMapToStandardDynamicRange:(BOOL)range
 {
-  v3 = a3;
+  rangeCopy = range;
   [-[AVPlayerLayer _videoLayer](self "_videoLayer")];
   v5.receiver = self;
   v5.super_class = AVPlayerLayer;
-  [(AVPlayerLayer *)&v5 setToneMapToStandardDynamicRange:v3];
+  [(AVPlayerLayer *)&v5 setToneMapToStandardDynamicRange:rangeCopy];
 }
 
 - (CVPixelBufferRef)copyDisplayedPixelBuffer
@@ -2873,15 +2873,15 @@ uint64_t __49__AVPlayerLayer_isOverscanSubtitleSupportEnabled__block_invoke(uint
   if (*(v10 + 24) == 1)
   {
     [(AVPlayerLayer *)self _getMaskLayer:0 videoLayer:0 subtitleLayer:0 closedCaptionLayer:0 interstitialLayer:&v8];
-    v4 = [v8 copyDisplayedPixelBuffer];
+    copyDisplayedPixelBuffer = [v8 copyDisplayedPixelBuffer];
   }
 
   else
   {
-    v4 = [[(AVPlayerLayer *)self player] _copyDisplayedPixelBuffer:[(AVPlayerLayer *)self _videoLayer]];
+    copyDisplayedPixelBuffer = [[(AVPlayerLayer *)self player] _copyDisplayedPixelBuffer:[(AVPlayerLayer *)self _videoLayer]];
   }
 
-  v5 = v4;
+  v5 = copyDisplayedPixelBuffer;
   _Block_object_dispose(&v9, 8);
   AVTelemetryIntervalEnd(&v13);
   return v5;
@@ -2905,24 +2905,24 @@ uint64_t __49__AVPlayerLayer_isOverscanSubtitleSupportEnabled__block_invoke(uint
   [v3 _configurePlayerWhenLeavingPIP];
 }
 
-+ (void)_swapSublayersBetweenPlayerLayer:(id)a3 andPlayerLayer:(id)a4
++ (void)_swapSublayersBetweenPlayerLayer:(id)layer andPlayerLayer:(id)playerLayer
 {
-  if (a3 != a4)
+  if (layer != playerLayer)
   {
-    v7 = [a3 _sublayersForPIP];
-    v8 = [a4 _sublayersForPIP];
-    [a3 _setSublayersForPIP:0 updateReadyForDisplay:0];
-    [a4 _setSublayersForPIP:0 updateReadyForDisplay:0];
-    [a3 _setSublayersForPIP:v8];
+    _sublayersForPIP = [layer _sublayersForPIP];
+    _sublayersForPIP2 = [playerLayer _sublayersForPIP];
+    [layer _setSublayersForPIP:0 updateReadyForDisplay:0];
+    [playerLayer _setSublayersForPIP:0 updateReadyForDisplay:0];
+    [layer _setSublayersForPIP:_sublayersForPIP2];
 
-    [a4 _setSublayersForPIP:v7];
+    [playerLayer _setSublayersForPIP:_sublayersForPIP];
   }
 }
 
 - (void)_stashClientLayers
 {
-  v3 = [(AVPlayerLayer *)self _maskLayer];
-  v4 = AVPlayerLayerFilterClientLayersFromLayerWithIndexPath(v3, [MEMORY[0x1E696AC88] indexPathWithIndex:0]);
+  _maskLayer = [(AVPlayerLayer *)self _maskLayer];
+  v4 = AVPlayerLayerFilterClientLayersFromLayerWithIndexPath(_maskLayer, [MEMORY[0x1E696AC88] indexPathWithIndex:0]);
   clientLayers = self->_playerLayer->clientLayers;
   if (clientLayers != v4)
   {
@@ -2948,7 +2948,7 @@ uint64_t __35__AVPlayerLayer__stashClientLayers__block_invoke(uint64_t a1, uint6
   self->_playerLayer->clientLayers = 0;
 }
 
-- (void)_associateWithLayer:(id)a3 forMode:(int64_t)a4
+- (void)_associateWithLayer:(id)layer forMode:(int64_t)mode
 {
   v10 = 0;
   [(AVPlayerLayer *)self _getMaskLayer:0 videoLayer:0 subtitleLayer:0 closedCaptionLayer:0 interstitialLayer:&v10];
@@ -2958,12 +2958,12 @@ uint64_t __35__AVPlayerLayer__stashClientLayers__block_invoke(uint64_t a1, uint6
   v9[2] = __45__AVPlayerLayer__associateWithLayer_forMode___block_invoke;
   v9[3] = &unk_1E7460FF0;
   v9[4] = self;
-  v9[5] = a3;
-  v9[6] = a4;
+  v9[5] = layer;
+  v9[6] = mode;
   dispatch_sync(serialQueue, v9);
-  if (a4)
+  if (mode)
   {
-    [AVPlayerLayer _swapSublayersBetweenPlayerLayer:self andPlayerLayer:a3];
+    [AVPlayerLayer _swapSublayersBetweenPlayerLayer:self andPlayerLayer:layer];
   }
 
   else
@@ -2973,15 +2973,15 @@ uint64_t __35__AVPlayerLayer__stashClientLayers__block_invoke(uint64_t a1, uint6
     [(AVPlayerLayer *)self _setSublayersPreventChangesToSublayerHierarchy:1];
     [(AVPlayerLayer *)self _stashClientLayers];
     [v10 _stashClientLayers];
-    [AVPlayerLayer _swapSublayersBetweenPlayerLayer:self andPlayerLayer:a3];
-    [a3 _setPreventsChangesToSublayerHierarchy:1];
+    [AVPlayerLayer _swapSublayersBetweenPlayerLayer:self andPlayerLayer:layer];
+    [layer _setPreventsChangesToSublayerHierarchy:1];
   }
 
-  [a3 _setWillManageSublayersAsSwappedLayers:1];
-  [a3 _setPlayer:-[AVPlayerLayer player](self forPIP:{"player"), 1}];
-  v8 = [a3 _interstitialLayer];
-  [v8 _setPlayer:objc_msgSend(v10 forPIP:{"player"), 1}];
-  [a3 _setShowInterstitialInstead:{-[AVPlayerLayer _showInterstitialInstead](self, "_showInterstitialInstead")}];
+  [layer _setWillManageSublayersAsSwappedLayers:1];
+  [layer _setPlayer:-[AVPlayerLayer player](self forPIP:{"player"), 1}];
+  _interstitialLayer = [layer _interstitialLayer];
+  [_interstitialLayer _setPlayer:objc_msgSend(v10 forPIP:{"player"), 1}];
+  [layer _setShowInterstitialInstead:{-[AVPlayerLayer _showInterstitialInstead](self, "_showInterstitialInstead")}];
 }
 
 id __45__AVPlayerLayer__associateWithLayer_forMode___block_invoke(uint64_t a1)
@@ -3017,16 +3017,16 @@ id __45__AVPlayerLayer__associateWithLayer_forMode___block_invoke(uint64_t a1)
       [(AVPlayerLayer *)self superlayer];
       if (v7 == objc_opt_class())
       {
-        v8 = [(AVPlayerLayer *)self superlayer];
+        superlayer = [(AVPlayerLayer *)self superlayer];
         v11 = 0;
-        [v8 _getMaskLayer:0 videoLayer:0 subtitleLayer:0 closedCaptionLayer:0 interstitialLayer:&v11];
+        [superlayer _getMaskLayer:0 videoLayer:0 subtitleLayer:0 closedCaptionLayer:0 interstitialLayer:&v11];
         if (v11 == self)
         {
-          v9 = [v8 _associatedRemoteModeLayer];
-          if (v9)
+          _associatedRemoteModeLayer = [superlayer _associatedRemoteModeLayer];
+          if (_associatedRemoteModeLayer)
           {
-            v10 = [v9 _interstitialLayer];
-            v14[5] = v10;
+            _interstitialLayer = [_associatedRemoteModeLayer _interstitialLayer];
+            v14[5] = _interstitialLayer;
           }
         }
       }
@@ -3065,7 +3065,7 @@ id __43__AVPlayerLayer__associatedRemoteModeLayer__block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)_disassociateWithLayerForMode:(int64_t)a3
+- (void)_disassociateWithLayerForMode:(int64_t)mode
 {
   v14 = 0;
   [(AVPlayerLayer *)self _getMaskLayer:0 videoLayer:0 subtitleLayer:0 closedCaptionLayer:0 interstitialLayer:&v14];
@@ -3087,7 +3087,7 @@ id __43__AVPlayerLayer__associatedRemoteModeLayer__block_invoke(uint64_t a1)
   [v9[5] _setPlayer:0 forPIP:1];
   [objc_msgSend(v9[5] "_interstitialLayer")];
   [v9[5] removeAllAnimations];
-  if (!a3)
+  if (!mode)
   {
     [v9[5] _setPreventsChangesToSublayerHierarchy:0];
     [v9[5] _setSublayersPreventChangesToSublayerHierarchy:0];
@@ -3095,7 +3095,7 @@ id __43__AVPlayerLayer__associatedRemoteModeLayer__block_invoke(uint64_t a1)
 
   [AVPlayerLayer _swapSublayersBetweenPlayerLayer:self andPlayerLayer:v9[5]];
   [v9[5] _setWillManageSublayersAsSwappedLayers:0];
-  if (!a3)
+  if (!mode)
   {
     [v9[5] _mergeClientLayersIntoMaskLayer:{-[AVPlayerLayer _maskLayer](self, "_maskLayer")}];
     [(AVPlayerLayer *)self _unstashClientLayers];
@@ -3113,9 +3113,9 @@ void __47__AVPlayerLayer__disassociateWithLayerForMode___block_invoke(uint64_t a
   *(*(*(a1 + 32) + 48) + 184) = -1;
 }
 
-- (void)startRedirectingVideoToLayer:(id)a3 forMode:(int64_t)a4
+- (void)startRedirectingVideoToLayer:(id)layer forMode:(int64_t)mode
 {
-  if (!a3)
+  if (!layer)
   {
     v12 = MEMORY[0x1E695DF30];
     v13 = *MEMORY[0x1E695D940];
@@ -3132,50 +3132,50 @@ void __47__AVPlayerLayer__disassociateWithLayerForMode___block_invoke(uint64_t a
     goto LABEL_16;
   }
 
-  if ([a3 player])
+  if ([layer player])
   {
     v12 = MEMORY[0x1E695DF30];
     v13 = *MEMORY[0x1E695D940];
     v14 = "[targetLayer player] == nil";
 LABEL_16:
-    v15 = [v12 exceptionWithName:v13 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", a4, v4, v5, v6, v7, v14), 0}];
+    v15 = [v12 exceptionWithName:v13 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", mode, v4, v5, v6, v7, v14), 0}];
     objc_exception_throw(v15);
   }
 
-  if ([(AVPlayerLayer *)self _activeMode]!= a4)
+  if ([(AVPlayerLayer *)self _activeMode]!= mode)
   {
     [(AVPlayerLayer *)self stopRedirectingVideoToLayer:[(AVPlayerLayer *)self _associatedRemoteModeLayer]];
   }
 
-  if (a4)
+  if (mode)
   {
 
-    [(AVPlayerLayer *)self _enterSecondScreenModeRedirectingVideoToLayer:a3];
+    [(AVPlayerLayer *)self _enterSecondScreenModeRedirectingVideoToLayer:layer];
   }
 
   else
   {
 
-    [(AVPlayerLayer *)self _enterPIPModeRedirectingVideoToLayer:a3];
+    [(AVPlayerLayer *)self _enterPIPModeRedirectingVideoToLayer:layer];
   }
 }
 
-- (void)stopRedirectingVideoToLayer:(id)a3
+- (void)stopRedirectingVideoToLayer:(id)layer
 {
   if ([(AVPlayerLayer *)self _activeMode])
   {
 
-    [(AVPlayerLayer *)self _leaveSecondScreenModeForLayer:a3];
+    [(AVPlayerLayer *)self _leaveSecondScreenModeForLayer:layer];
   }
 
   else
   {
 
-    [(AVPlayerLayer *)self _leavePIPModeForLayer:a3];
+    [(AVPlayerLayer *)self _leavePIPModeForLayer:layer];
   }
 }
 
-- (void)_enterSecondScreenModeRedirectingVideoToLayer:(id)a3
+- (void)_enterSecondScreenModeRedirectingVideoToLayer:(id)layer
 {
   if (![(AVPlayerLayer *)self _isConnectedToSecondScreen])
   {
@@ -3184,7 +3184,7 @@ LABEL_16:
     v5[2] = __63__AVPlayerLayer__enterSecondScreenModeRedirectingVideoToLayer___block_invoke;
     v5[3] = &unk_1E7460DF0;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = layer;
     AVSerializeOnQueueAsyncIfNecessary(MEMORY[0x1E69E96A0], v5);
   }
 }
@@ -3201,7 +3201,7 @@ uint64_t __63__AVPlayerLayer__enterSecondScreenModeRedirectingVideoToLayer___blo
   return [v2 commit];
 }
 
-- (void)_leaveSecondScreenModeForLayer:(id)a3
+- (void)_leaveSecondScreenModeForLayer:(id)layer
 {
   if ([-[AVPlayerLayer _associatedRemoteModeLayer](self "_associatedRemoteModeLayer")])
   {
@@ -3228,9 +3228,9 @@ uint64_t __48__AVPlayerLayer__leaveSecondScreenModeForLayer___block_invoke(uint6
   return [v2 commit];
 }
 
-- (void)enterPIPModeRedirectingVideoToLayer:(id)a3
+- (void)enterPIPModeRedirectingVideoToLayer:(id)layer
 {
-  if (!a3)
+  if (!layer)
   {
     v11 = MEMORY[0x1E695DF30];
     v12 = *MEMORY[0x1E695D940];
@@ -3247,7 +3247,7 @@ uint64_t __48__AVPlayerLayer__leaveSecondScreenModeForLayer___block_invoke(uint6
     goto LABEL_10;
   }
 
-  if ([a3 player])
+  if ([layer player])
   {
     v11 = MEMORY[0x1E695DF30];
     v12 = *MEMORY[0x1E695D940];
@@ -3257,17 +3257,17 @@ LABEL_10:
     objc_exception_throw(v14);
   }
 
-  [(AVPlayerLayer *)self _enterPIPModeRedirectingVideoToLayer:a3];
+  [(AVPlayerLayer *)self _enterPIPModeRedirectingVideoToLayer:layer];
 }
 
-- (void)_enterPIPModeRedirectingVideoToLayer:(id)a3
+- (void)_enterPIPModeRedirectingVideoToLayer:(id)layer
 {
-  v5 = [(AVPlayerLayer *)self _associatedRemoteModeLayer];
-  if (v5 != a3)
+  _associatedRemoteModeLayer = [(AVPlayerLayer *)self _associatedRemoteModeLayer];
+  if (_associatedRemoteModeLayer != layer)
   {
-    v6 = v5;
-    v7 = [(AVPlayerLayer *)self isPIPModeEnabled];
-    if (!v7)
+    v6 = _associatedRemoteModeLayer;
+    isPIPModeEnabled = [(AVPlayerLayer *)self isPIPModeEnabled];
+    if (!isPIPModeEnabled)
     {
       [(AVPlayerLayer *)self willChangeValueForKey:@"PIPModeEnabled"];
     }
@@ -3278,10 +3278,10 @@ LABEL_10:
     v8[3] = &unk_1E7460E90;
     v8[4] = v6;
     v8[5] = self;
-    v8[6] = a3;
+    v8[6] = layer;
     AVSerializeOnQueueAsyncIfNecessary(MEMORY[0x1E69E96A0], v8);
     [(AVPlayerLayer *)self setPIPModeEnabled:1];
-    if (!v7)
+    if (!isPIPModeEnabled)
     {
       [(AVPlayerLayer *)self didChangeValueForKey:@"PIPModeEnabled"];
     }
@@ -3318,12 +3318,12 @@ uint64_t __54__AVPlayerLayer__enterPIPModeRedirectingVideoToLayer___block_invoke
 
 - (void)leavePIPMode
 {
-  v3 = [(AVPlayerLayer *)self _associatedRemoteModeLayer];
+  _associatedRemoteModeLayer = [(AVPlayerLayer *)self _associatedRemoteModeLayer];
 
-  [(AVPlayerLayer *)self _leavePIPModeForLayer:v3];
+  [(AVPlayerLayer *)self _leavePIPModeForLayer:_associatedRemoteModeLayer];
 }
 
-- (void)_leavePIPModeForLayer:(id)a3
+- (void)_leavePIPModeForLayer:(id)layer
 {
   if ([-[AVPlayerLayer _associatedRemoteModeLayer](self "_associatedRemoteModeLayer")])
   {
@@ -3353,13 +3353,13 @@ uint64_t __39__AVPlayerLayer__leavePIPModeForLayer___block_invoke(uint64_t a1)
   return [v2 commit];
 }
 
-- (void)setPIPModeEnabled:(BOOL)a3
+- (void)setPIPModeEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   playerLayer = self->_playerLayer;
-  if (playerLayer->isPIPModeEnabled != a3)
+  if (playerLayer->isPIPModeEnabled != enabled)
   {
-    playerLayer->isPIPModeEnabled = a3;
+    playerLayer->isPIPModeEnabled = enabled;
     if (self->_playerLayer->isPIPModeEnabled)
     {
       [(AVPlayerLayer *)self _configurePlayerWhenEnteringPIP];
@@ -3373,13 +3373,13 @@ uint64_t __39__AVPlayerLayer__leavePIPModeForLayer___block_invoke(uint64_t a1)
 
   v8 = 0;
   [(AVPlayerLayer *)self _getMaskLayer:0 videoLayer:0 subtitleLayer:0 closedCaptionLayer:0 interstitialLayer:&v8];
-  [v8 setPIPModeEnabled:v3];
+  [v8 setPIPModeEnabled:enabledCopy];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __35__AVPlayerLayer_setPIPModeEnabled___block_invoke;
   block[3] = &unk_1E7460E40;
   block[4] = self;
-  v7 = v3;
+  v7 = enabledCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -3401,16 +3401,16 @@ uint64_t __35__AVPlayerLayer_setPIPModeEnabled___block_invoke(uint64_t a1)
   v8 = 0;
   v6 = 0;
   [(AVPlayerLayer *)self _getMaskLayer:&v10 videoLayer:&v9 subtitleLayer:&v8 closedCaptionLayer:&v7 interstitialLayer:&v6];
-  v2 = [v6 _sublayersForPIP];
+  _sublayersForPIP = [v6 _sublayersForPIP];
   v3 = 0;
   if (v10 && v9)
   {
     v11[0] = @"maskLayer";
     v11[1] = @"videoLayer";
     v4 = MEMORY[0x1E695E0F8];
-    if (v2)
+    if (_sublayersForPIP)
     {
-      v4 = v2;
+      v4 = _sublayersForPIP;
     }
 
     v12[0] = v10;
@@ -3427,24 +3427,24 @@ uint64_t __35__AVPlayerLayer_setPIPModeEnabled___block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)_mergeClientLayersIntoMaskLayer:(id)a3
+- (void)_mergeClientLayersIntoMaskLayer:(id)layer
 {
-  v5 = [(AVPlayerLayer *)self _maskLayer];
-  v6 = AVPlayerLayerFilterClientLayersFromLayerWithIndexPath(v5, [MEMORY[0x1E696AC88] indexPathWithIndex:0]);
+  _maskLayer = [(AVPlayerLayer *)self _maskLayer];
+  v6 = AVPlayerLayerFilterClientLayersFromLayerWithIndexPath(_maskLayer, [MEMORY[0x1E696AC88] indexPathWithIndex:0]);
 
-  [(AVPlayerLayer *)self _restoreClientLayers:v6 intoMaskLayer:a3];
+  [(AVPlayerLayer *)self _restoreClientLayers:v6 intoMaskLayer:layer];
 }
 
-- (void)_restoreClientLayers:(id)a3 intoMaskLayer:(id)a4
+- (void)_restoreClientLayers:(id)layers intoMaskLayer:(id)layer
 {
   v21 = *MEMORY[0x1E69E9840];
-  if ([a3 count])
+  if ([layers count])
   {
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
-    obj = [objc_msgSend(a3 "allKeys")];
+    obj = [objc_msgSend(layers "allKeys")];
     v6 = [obj countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v6)
     {
@@ -3460,35 +3460,35 @@ LABEL_4:
         }
 
         v10 = *(*(&v16 + 1) + 8 * v9);
-        v11 = [a3 objectForKey:v10];
+        v11 = [layers objectForKey:v10];
         if ([v10 length] < 2)
         {
           break;
         }
 
-        v12 = a4;
+        layerCopy2 = layer;
         if (([v10 length] - 3) > 0xFFFFFFFFFFFFFFFDLL)
         {
 LABEL_12:
-          if (v12)
+          if (layerCopy2)
           {
-            [v12 insertSublayer:v11 atIndex:{objc_msgSend(v10, "indexAtPosition:", objc_msgSend(v10, "length") - 1)}];
+            [layerCopy2 insertSublayer:v11 atIndex:{objc_msgSend(v10, "indexAtPosition:", objc_msgSend(v10, "length") - 1)}];
           }
         }
 
         else
         {
           v13 = 1;
-          v12 = a4;
+          layerCopy2 = layer;
           while (1)
           {
             v14 = [v10 indexAtPosition:v13];
-            if (![objc_msgSend(v12 "sublayers")])
+            if (![objc_msgSend(layerCopy2 "sublayers")])
             {
               break;
             }
 
-            v12 = [objc_msgSend(v12 "sublayers")];
+            layerCopy2 = [objc_msgSend(layerCopy2 "sublayers")];
             if ([v10 length] - 1 <= ++v13)
             {
               goto LABEL_12;
@@ -3511,32 +3511,32 @@ LABEL_12:
   }
 }
 
-- (void)_setSublayersPreventChangesToSublayerHierarchy:(BOOL)a3
+- (void)_setSublayersPreventChangesToSublayerHierarchy:(BOOL)hierarchy
 {
-  v3 = a3;
+  hierarchyCopy = hierarchy;
   v8 = 0;
   v6 = 0;
   v7 = 0;
   v4 = 0;
   v5 = 0;
   [(AVPlayerLayer *)self _getMaskLayer:&v8 videoLayer:&v7 subtitleLayer:&v6 closedCaptionLayer:&v5 interstitialLayer:&v4];
-  [v7 setPreventsChangesToSublayerHierarchy:v3];
-  [v6 setPreventsChangesToSublayerHierarchy:v3];
-  [v5 setPreventsChangesToSublayerHierarchy:v3];
-  [v8 setPreventsChangesToSublayerHierarchy:v3];
-  [v4 _setSublayersPreventChangesToSublayerHierarchy:v3];
+  [v7 setPreventsChangesToSublayerHierarchy:hierarchyCopy];
+  [v6 setPreventsChangesToSublayerHierarchy:hierarchyCopy];
+  [v5 setPreventsChangesToSublayerHierarchy:hierarchyCopy];
+  [v8 setPreventsChangesToSublayerHierarchy:hierarchyCopy];
+  [v4 _setSublayersPreventChangesToSublayerHierarchy:hierarchyCopy];
 }
 
-- (void)_setSublayersForPIP:(id)a3 updateReadyForDisplay:(BOOL)a4
+- (void)_setSublayersForPIP:(id)p updateReadyForDisplay:(BOOL)display
 {
-  v4 = a4;
-  if (a3)
+  displayCopy = display;
+  if (p)
   {
-    v7 = [a3 objectForKeyedSubscript:@"videoLayer"];
-    v8 = [a3 objectForKeyedSubscript:@"subtitleLayer"];
-    v9 = [a3 objectForKeyedSubscript:@"closedCaptionLayer"];
-    v10 = [a3 objectForKeyedSubscript:@"maskLayer"];
-    v11 = [a3 objectForKeyedSubscript:@"interstitialLayers"];
+    v7 = [p objectForKeyedSubscript:@"videoLayer"];
+    v8 = [p objectForKeyedSubscript:@"subtitleLayer"];
+    v9 = [p objectForKeyedSubscript:@"closedCaptionLayer"];
+    v10 = [p objectForKeyedSubscript:@"maskLayer"];
+    v11 = [p objectForKeyedSubscript:@"interstitialLayers"];
   }
 
   else
@@ -3578,20 +3578,20 @@ LABEL_12:
   v16[8] = v10;
   v16[9] = v11;
   dispatch_sync(serialQueue, v16);
-  if (*(v18 + 24) == 1 && v4)
+  if (*(v18 + 24) == 1 && displayCopy)
   {
     [(AVPlayerLayer *)self _applyCurrentItemPresentationSizeChangeAndForceUpdate:0];
     if (FigUseVideoReceiverForCALayer())
     {
-      v14 = [v7 isReadyForDisplay];
+      isReadyForDisplay = [v7 isReadyForDisplay];
     }
 
     else
     {
-      v14 = [(AVPlayerItem *)[[(AVPlayerLayer *)self player] currentItem] _hasEnqueuedVideoFrame];
+      isReadyForDisplay = [(AVPlayerItem *)[[(AVPlayerLayer *)self player] currentItem] _hasEnqueuedVideoFrame];
     }
 
-    [(AVPlayerLayer *)self _updateReadyForDisplay:v14 skipInformingParent:v12 == 0];
+    [(AVPlayerLayer *)self _updateReadyForDisplay:isReadyForDisplay skipInformingParent:v12 == 0];
   }
 
   v15 = v22[5];
@@ -3686,39 +3686,39 @@ uint64_t __59__AVPlayerLayer__setSublayersForPIP_updateReadyForDisplay___block_i
   return v4;
 }
 
-- (void)_setWillManageSublayersAsSwappedLayers:(BOOL)a3
+- (void)_setWillManageSublayersAsSwappedLayers:(BOOL)layers
 {
-  v3 = a3;
+  layersCopy = layers;
   v8 = 0;
   [(AVPlayerLayer *)self _getMaskLayer:0 videoLayer:0 subtitleLayer:0 closedCaptionLayer:0 interstitialLayer:&v8];
-  [v8 _setWillManageSublayersAsSwappedLayers:v3];
+  [v8 _setWillManageSublayersAsSwappedLayers:layersCopy];
   serialQueue = self->_playerLayer->serialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __56__AVPlayerLayer__setWillManageSublayersAsSwappedLayers___block_invoke;
   block[3] = &unk_1E7460E40;
   block[4] = self;
-  v7 = v3;
+  v7 = layersCopy;
   dispatch_sync(serialQueue, block);
 }
 
-- (void)_setPreventsChangesToSublayerHierarchy:(BOOL)a3
+- (void)_setPreventsChangesToSublayerHierarchy:(BOOL)hierarchy
 {
-  v3 = a3;
+  hierarchyCopy = hierarchy;
   v5 = 0;
   [(AVPlayerLayer *)self _getMaskLayer:0 videoLayer:0 subtitleLayer:0 closedCaptionLayer:0 interstitialLayer:&v5];
-  [v5 _setPreventsChangesToSublayerHierarchy:v3];
-  self->_playerLayer->preventsChangesToSublayerHierarchy = v3;
+  [v5 _setPreventsChangesToSublayerHierarchy:hierarchyCopy];
+  self->_playerLayer->preventsChangesToSublayerHierarchy = hierarchyCopy;
 }
 
-- (void)setPlaceholderContentLayerDuringPIPMode:(id)a3
+- (void)setPlaceholderContentLayerDuringPIPMode:(id)mode
 {
   placeholderContentLayerDuringPIPMode = self->_playerLayer->placeholderContentLayerDuringPIPMode;
-  if (placeholderContentLayerDuringPIPMode != a3)
+  if (placeholderContentLayerDuringPIPMode != mode)
   {
     [(CALayer *)placeholderContentLayerDuringPIPMode removeFromSuperlayer];
 
-    self->_playerLayer->placeholderContentLayerDuringPIPMode = a3;
+    self->_playerLayer->placeholderContentLayerDuringPIPMode = mode;
     if (self->_playerLayer->placeholderContentLayerDuringPIPMode)
     {
       if ([(AVPlayerLayer *)self isPIPModeEnabled])
@@ -3733,64 +3733,64 @@ uint64_t __59__AVPlayerLayer__setSublayersForPIP_updateReadyForDisplay___block_i
   }
 }
 
-- (void)setSublayers:(id)a3
+- (void)setSublayers:(id)sublayers
 {
   if (![(AVPlayerLayer *)self _preventsChangesToSublayerHierarchy])
   {
     v5.receiver = self;
     v5.super_class = AVPlayerLayer;
-    [(AVPlayerLayer *)&v5 setSublayers:a3];
+    [(AVPlayerLayer *)&v5 setSublayers:sublayers];
   }
 }
 
-- (void)addSublayer:(id)a3
+- (void)addSublayer:(id)sublayer
 {
   if (![(AVPlayerLayer *)self _preventsChangesToSublayerHierarchy]|| (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v5.receiver = self;
     v5.super_class = AVPlayerLayer;
-    [(AVPlayerLayer *)&v5 addSublayer:a3];
+    [(AVPlayerLayer *)&v5 addSublayer:sublayer];
   }
 }
 
-- (void)insertSublayer:(id)a3 atIndex:(unsigned int)a4
+- (void)insertSublayer:(id)sublayer atIndex:(unsigned int)index
 {
-  v4 = *&a4;
+  v4 = *&index;
   if (![(AVPlayerLayer *)self _preventsChangesToSublayerHierarchy])
   {
     v7.receiver = self;
     v7.super_class = AVPlayerLayer;
-    [(AVPlayerLayer *)&v7 insertSublayer:a3 atIndex:v4];
+    [(AVPlayerLayer *)&v7 insertSublayer:sublayer atIndex:v4];
   }
 }
 
-- (void)insertSublayer:(id)a3 below:(id)a4
-{
-  if (![(AVPlayerLayer *)self _preventsChangesToSublayerHierarchy])
-  {
-    v7.receiver = self;
-    v7.super_class = AVPlayerLayer;
-    [(AVPlayerLayer *)&v7 insertSublayer:a3 below:a4];
-  }
-}
-
-- (void)insertSublayer:(id)a3 above:(id)a4
+- (void)insertSublayer:(id)sublayer below:(id)below
 {
   if (![(AVPlayerLayer *)self _preventsChangesToSublayerHierarchy])
   {
     v7.receiver = self;
     v7.super_class = AVPlayerLayer;
-    [(AVPlayerLayer *)&v7 insertSublayer:a3 above:a4];
+    [(AVPlayerLayer *)&v7 insertSublayer:sublayer below:below];
   }
 }
 
-- (void)replaceSublayer:(id)a3 with:(id)a4
+- (void)insertSublayer:(id)sublayer above:(id)above
 {
   if (![(AVPlayerLayer *)self _preventsChangesToSublayerHierarchy])
   {
     v7.receiver = self;
     v7.super_class = AVPlayerLayer;
-    [(AVPlayerLayer *)&v7 replaceSublayer:a3 with:a4];
+    [(AVPlayerLayer *)&v7 insertSublayer:sublayer above:above];
+  }
+}
+
+- (void)replaceSublayer:(id)sublayer with:(id)with
+{
+  if (![(AVPlayerLayer *)self _preventsChangesToSublayerHierarchy])
+  {
+    v7.receiver = self;
+    v7.super_class = AVPlayerLayer;
+    [(AVPlayerLayer *)&v7 replaceSublayer:sublayer with:with];
   }
 }
 
@@ -3817,7 +3817,7 @@ uint64_t __59__AVPlayerLayer__setSublayersForPIP_updateReadyForDisplay___block_i
 
 - (BOOL)_currentWindowSceneIsForeground
 {
-  v3 = [(AVPlayerLayer *)self _currentWindowSceneIsForegroundDefault];
+  _currentWindowSceneIsForegroundDefault = [(AVPlayerLayer *)self _currentWindowSceneIsForegroundDefault];
   v4 = [objc_msgSend(uiWindowClass _windowWithContextId:{objc_msgSend(-[AVPlayerLayer context](self, "context"), "contextId")), "windowScene"}];
   if (v4)
   {
@@ -3825,30 +3825,30 @@ uint64_t __59__AVPlayerLayer__setSublayersForPIP_updateReadyForDisplay___block_i
     return ![v4 activationState] || objc_msgSend(v5, "activationState") == 1;
   }
 
-  return v3;
+  return _currentWindowSceneIsForegroundDefault;
 }
 
-- (void)_windowSceneDidEnterBackground:(id)a3
+- (void)_windowSceneDidEnterBackground:(id)background
 {
-  if ([objc_msgSend(objc_msgSend(uiWindowClass _windowWithContextId:{objc_msgSend(-[AVPlayerLayer context](self, "context"), "contextId")), "windowScene"), "isEqual:", objc_msgSend(a3, "object")}])
+  if ([objc_msgSend(objc_msgSend(uiWindowClass _windowWithContextId:{objc_msgSend(-[AVPlayerLayer context](self, "context"), "contextId")), "windowScene"), "isEqual:", objc_msgSend(background, "object")}])
   {
 
     [(AVPlayerLayer *)self _windowSceneDidEnterBackground];
   }
 }
 
-- (void)_windowSceneWillEnterForeground:(id)a3
+- (void)_windowSceneWillEnterForeground:(id)foreground
 {
-  if ([objc_msgSend(objc_msgSend(uiWindowClass _windowWithContextId:{objc_msgSend(-[AVPlayerLayer context](self, "context"), "contextId")), "windowScene"), "isEqual:", objc_msgSend(a3, "object")}])
+  if ([objc_msgSend(objc_msgSend(uiWindowClass _windowWithContextId:{objc_msgSend(-[AVPlayerLayer context](self, "context"), "contextId")), "windowScene"), "isEqual:", objc_msgSend(foreground, "object")}])
   {
 
     [(AVPlayerLayer *)self _windowSceneWillEnterForeground];
   }
 }
 
-- (void)_forceWindowSceneEvent:(BOOL)a3
+- (void)_forceWindowSceneEvent:(BOOL)event
 {
-  if (a3)
+  if (event)
   {
     [(AVPlayerLayer *)self _windowSceneWillEnterForeground];
   }
@@ -3861,26 +3861,26 @@ uint64_t __59__AVPlayerLayer__setSublayersForPIP_updateReadyForDisplay___block_i
 
 - (void)_updateIsPartOfForegroundScene
 {
-  v3 = [(AVPlayerLayer *)self _currentWindowSceneIsForeground];
+  _currentWindowSceneIsForeground = [(AVPlayerLayer *)self _currentWindowSceneIsForeground];
 
-  [(AVPlayerLayer *)self _setIsPartOfForegroundScene:v3];
+  [(AVPlayerLayer *)self _setIsPartOfForegroundScene:_currentWindowSceneIsForeground];
 }
 
 - (void)_notifyPlayerOfLayerForegroundStateChange
 {
-  v3 = [(AVPlayerLayer *)self _isPartOfForegroundScene];
+  _isPartOfForegroundScene = [(AVPlayerLayer *)self _isPartOfForegroundScene];
   playerLayer = self->_playerLayer;
-  v5 = v3 || playerLayer->lastWindowSceneEvent == 0;
+  v5 = _isPartOfForegroundScene || playerLayer->lastWindowSceneEvent == 0;
   if (playerLayer->isVisible)
   {
-    v6 = [(AVPlayerLayer *)self _isPartOfForegroundScene];
+    _isPartOfForegroundScene2 = [(AVPlayerLayer *)self _isPartOfForegroundScene];
     if (!self->_playerLayer->isVisible && !v5)
     {
       goto LABEL_9;
     }
 
 LABEL_8:
-    if (!v6)
+    if (!_isPartOfForegroundScene2)
     {
       return;
     }
@@ -3888,7 +3888,7 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v6 = 0;
+  _isPartOfForegroundScene2 = 0;
   if (v5)
   {
     goto LABEL_8;
@@ -3896,12 +3896,12 @@ LABEL_8:
 
 LABEL_9:
   v7 = [MEMORY[0x1E696AD80] notificationWithName:@"AVPlayerLayerIsPartOfForegroundSceneDidChangeNotification" object:self userInfo:0];
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
 
-  [v8 postNotification:v7];
+  [defaultCenter postNotification:v7];
 }
 
-- (void)_setIsPartOfForegroundScene:(BOOL)a3
+- (void)_setIsPartOfForegroundScene:(BOOL)scene
 {
   serialQueue = self->_playerLayer->serialQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -3909,7 +3909,7 @@ LABEL_9:
   v5[2] = __45__AVPlayerLayer__setIsPartOfForegroundScene___block_invoke;
   v5[3] = &unk_1E7460E40;
   v5[4] = self;
-  v6 = a3;
+  sceneCopy = scene;
   dispatch_sync(serialQueue, v5);
   [(AVPlayerLayer *)self _notifyPlayerOfLayerForegroundStateChange];
 }
@@ -3978,7 +3978,7 @@ uint64_t __45__AVPlayerLayer__setIsPartOfForegroundScene___block_invoke(uint64_t
   return v4;
 }
 
-- (void)_setOverridesPreferredDynamicRangeForVideo:(BOOL)a3
+- (void)_setOverridesPreferredDynamicRangeForVideo:(BOOL)video
 {
   serialQueue = self->_playerLayer->serialQueue;
   v5[0] = MEMORY[0x1E69E9820];
@@ -3986,7 +3986,7 @@ uint64_t __45__AVPlayerLayer__setIsPartOfForegroundScene___block_invoke(uint64_t
   v5[2] = __60__AVPlayerLayer__setOverridesPreferredDynamicRangeForVideo___block_invoke;
   v5[3] = &unk_1E7460E40;
   v5[4] = self;
-  v6 = a3;
+  videoCopy = video;
   dispatch_sync(serialQueue, v5);
   [(AVPlayerLayer *)self _updatePreferredDynamicRangeWithAnimation:1];
 }

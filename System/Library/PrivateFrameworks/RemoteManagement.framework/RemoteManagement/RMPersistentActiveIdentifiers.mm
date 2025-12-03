@@ -1,22 +1,22 @@
 @interface RMPersistentActiveIdentifiers
-- (RMPersistentActiveIdentifiers)initWithCoder:(id)a3;
-- (RMPersistentActiveIdentifiers)initWithConfigurationPayloads:(id)a3;
-- (RMPersistentActiveIdentifiers)initWithUniqueIdentifiersByConfigurationType:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (RMPersistentActiveIdentifiers)initWithCoder:(id)coder;
+- (RMPersistentActiveIdentifiers)initWithConfigurationPayloads:(id)payloads;
+- (RMPersistentActiveIdentifiers)initWithUniqueIdentifiersByConfigurationType:(id)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RMPersistentActiveIdentifiers
 
-- (RMPersistentActiveIdentifiers)initWithConfigurationPayloads:(id)a3
+- (RMPersistentActiveIdentifiers)initWithConfigurationPayloads:(id)payloads
 {
-  v20 = self;
-  v3 = a3;
+  selfCopy = self;
+  payloadsCopy = payloads;
   v4 = objc_opt_new();
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v3;
+  obj = payloadsCopy;
   v23 = [obj countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v23)
   {
@@ -31,19 +31,19 @@
         }
 
         v6 = *(*(&v28 + 1) + 8 * i);
-        v7 = [v6 declarationType];
-        v8 = [v4 objectForKeyedSubscript:v7];
+        declarationType = [v6 declarationType];
+        v8 = [v4 objectForKeyedSubscript:declarationType];
         if (!v8)
         {
           v8 = objc_opt_new();
-          [v4 setObject:v8 forKeyedSubscript:v7];
+          [v4 setObject:v8 forKeyedSubscript:declarationType];
         }
 
         v9 = [[RMDeclarationUniqueIdentifier alloc] initWithDeclarationPayload:v6];
         [v8 addObject:v9];
 
-        v10 = [v6 assetReferences];
-        v11 = [v10 valueForKey:@"asset"];
+        assetReferences = [v6 assetReferences];
+        v11 = [assetReferences valueForKey:@"asset"];
 
         v26 = 0u;
         v27 = 0u;
@@ -81,19 +81,19 @@
     while (v23);
   }
 
-  v18 = [(RMPersistentActiveIdentifiers *)v20 initWithUniqueIdentifiersByConfigurationType:v4];
+  v18 = [(RMPersistentActiveIdentifiers *)selfCopy initWithUniqueIdentifiersByConfigurationType:v4];
   return v18;
 }
 
-- (RMPersistentActiveIdentifiers)initWithUniqueIdentifiersByConfigurationType:(id)a3
+- (RMPersistentActiveIdentifiers)initWithUniqueIdentifiersByConfigurationType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v9.receiver = self;
   v9.super_class = RMPersistentActiveIdentifiers;
   v5 = [(RMPersistentActiveIdentifiers *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [typeCopy copy];
     uniqueIdentifiersByConfigurationType = v5->_uniqueIdentifiersByConfigurationType;
     v5->_uniqueIdentifiersByConfigurationType = v6;
   }
@@ -101,9 +101,9 @@
   return v5;
 }
 
-- (RMPersistentActiveIdentifiers)initWithCoder:(id)a3
+- (RMPersistentActiveIdentifiers)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10[0] = objc_opt_class();
   v10[1] = objc_opt_class();
   v10[2] = objc_opt_class();
@@ -111,27 +111,27 @@
   v5 = [NSArray arrayWithObjects:v10 count:4];
   v6 = [NSSet setWithArray:v5];
 
-  v7 = [v4 decodeObjectOfClasses:v6 forKey:@"uniqueIdentifiersByConfigurationType"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"uniqueIdentifiersByConfigurationType"];
 
   if (v7)
   {
     self = [(RMPersistentActiveIdentifiers *)self initWithUniqueIdentifiersByConfigurationType:v7];
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(RMPersistentActiveIdentifiers *)self uniqueIdentifiersByConfigurationType];
-  [v4 encodeObject:v5 forKey:@"uniqueIdentifiersByConfigurationType"];
+  coderCopy = coder;
+  uniqueIdentifiersByConfigurationType = [(RMPersistentActiveIdentifiers *)self uniqueIdentifiersByConfigurationType];
+  [coderCopy encodeObject:uniqueIdentifiersByConfigurationType forKey:@"uniqueIdentifiersByConfigurationType"];
 }
 
 @end

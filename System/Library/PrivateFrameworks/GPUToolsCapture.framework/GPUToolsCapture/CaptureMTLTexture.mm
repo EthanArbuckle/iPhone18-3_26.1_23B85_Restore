@@ -1,49 +1,49 @@
 @interface CaptureMTLTexture
-- (BOOL)conformsToProtocol:(id)a3;
-- (BOOL)doesAliasAllResources:(const void *)a3 count:(unint64_t)a4;
-- (BOOL)doesAliasAnyResources:(const void *)a3 count:(unint64_t)a4;
-- (BOOL)doesAliasResource:(id)a3;
+- (BOOL)conformsToProtocol:(id)protocol;
+- (BOOL)doesAliasAllResources:(const void *)resources count:(unint64_t)count;
+- (BOOL)doesAliasAnyResources:(const void *)resources count:(unint64_t)count;
+- (BOOL)doesAliasResource:(id)resource;
 - (BOOL)isAliasable;
 - (BOOL)isPurgeable;
-- (CaptureMTLTexture)initWithBaseObject:(id)a3 captureBuffer:(id)a4;
-- (CaptureMTLTexture)initWithBaseObject:(id)a3 captureDevice:(id)a4;
-- (CaptureMTLTexture)initWithBaseObject:(id)a3 captureHeap:(id)a4;
-- (CaptureMTLTexture)initWithBaseObject:(id)a3 captureTexture:(id)a4;
+- (CaptureMTLTexture)initWithBaseObject:(id)object captureBuffer:(id)buffer;
+- (CaptureMTLTexture)initWithBaseObject:(id)object captureDevice:(id)device;
+- (CaptureMTLTexture)initWithBaseObject:(id)object captureHeap:(id)heap;
+- (CaptureMTLTexture)initWithBaseObject:(id)object captureTexture:(id)texture;
 - (MTLBuffer)buffer;
 - (MTLTexture)parentTexture;
 - (NSString)description;
-- (id)newCompressedTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 level:(unint64_t)a5 slice:(unint64_t)a6;
+- (id)newCompressedTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type level:(unint64_t)level slice:(unint64_t)slice;
 - (id)newSharedTextureHandle;
-- (id)newTextureViewWithDescriptor:(id)a3;
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3;
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 resourceIndex:(unint64_t)a4;
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6;
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6 resourceIndex:(unint64_t)a7;
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6 swizzle:(id)a7;
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6 swizzle:(id)a7 resourceIndex:(unint64_t)a8;
-- (unint64_t)setPurgeableState:(unint64_t)a3;
+- (id)newTextureViewWithDescriptor:(id)descriptor;
+- (id)newTextureViewWithPixelFormat:(unint64_t)format;
+- (id)newTextureViewWithPixelFormat:(unint64_t)format resourceIndex:(unint64_t)index;
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices;
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices resourceIndex:(unint64_t)index;
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices swizzle:(id)swizzle;
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices swizzle:(id)swizzle resourceIndex:(unint64_t)index;
+- (unint64_t)setPurgeableState:(unint64_t)state;
 - (unint64_t)streamReference;
 - (void)dealloc;
-- (void)getBytes:(void *)a3 bytesPerRow:(unint64_t)a4 bytesPerImage:(unint64_t)a5 fromRegion:(id *)a6 mipmapLevel:(unint64_t)a7 slice:(unint64_t)a8;
-- (void)getBytes:(void *)a3 bytesPerRow:(unint64_t)a4 fromRegion:(id *)a5 mipmapLevel:(unint64_t)a6;
+- (void)getBytes:(void *)bytes bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image fromRegion:(id *)region mipmapLevel:(unint64_t)level slice:(unint64_t)slice;
+- (void)getBytes:(void *)bytes bytesPerRow:(unint64_t)row fromRegion:(id *)region mipmapLevel:(unint64_t)level;
 - (void)makeAliasable;
-- (void)replaceRegion:(id *)a3 mipmapLevel:(unint64_t)a4 slice:(unint64_t)a5 withBytes:(const void *)a6 bytesPerRow:(unint64_t)a7 bytesPerImage:(unint64_t)a8;
-- (void)replaceRegion:(id *)a3 mipmapLevel:(unint64_t)a4 withBytes:(const void *)a5 bytesPerRow:(unint64_t)a6;
-- (void)setLabel:(id)a3;
+- (void)replaceRegion:(id *)region mipmapLevel:(unint64_t)level slice:(unint64_t)slice withBytes:(const void *)bytes bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image;
+- (void)replaceRegion:(id *)region mipmapLevel:(unint64_t)level withBytes:(const void *)bytes bytesPerRow:(unint64_t)row;
+- (void)setLabel:(id)label;
 - (void)touch;
-- (void)updateDrawableStream:(GTTraceStream *)a3;
+- (void)updateDrawableStream:(GTTraceStream *)stream;
 @end
 
 @implementation CaptureMTLTexture
 
-- (unint64_t)setPurgeableState:(unint64_t)a3
+- (unint64_t)setPurgeableState:(unint64_t)state
 {
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v17);
-  v6 = [(MTLTextureSPI *)self->_baseObject setPurgeableState:a3];
+  v6 = [(MTLTextureSPI *)self->_baseObject setPurgeableState:state];
   v7 = v18;
   *(v18 + 8) = -16232;
   v8 = BYTE9(v19);
@@ -63,10 +63,10 @@
   }
 
   *(v7 + 13) = v8;
-  v12 = [(CaptureMTLTexture *)self traceStream];
-  if (v12)
+  traceStream = [(CaptureMTLTexture *)self traceStream];
+  if (traceStream)
   {
-    var0 = v12->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -76,7 +76,7 @@
 
   *v9 = var0;
   *(v9 + 1) = v6;
-  *(v9 + 2) = a3;
+  *(v9 + 2) = state;
   s();
   *v14 = v15;
   *(v14 + 8) = BYTE8(v19);
@@ -84,7 +84,7 @@
   return v6;
 }
 
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6 swizzle:(id)a7 resourceIndex:(unint64_t)a8
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices swizzle:(id)swizzle resourceIndex:(unint64_t)index
 {
   v40 = 0u;
   v41 = 0u;
@@ -107,7 +107,7 @@
   v36 = v18;
   v37 = v19;
   v38 = v20;
-  v21 = [MTLTextureSPI newTextureViewWithPixelFormat:"newTextureViewWithPixelFormat:textureType:levels:slices:swizzle:resourceIndex:" textureType:*&a7 levels:v17 slices:? swizzle:? resourceIndex:?];
+  v21 = [MTLTextureSPI newTextureViewWithPixelFormat:"newTextureViewWithPixelFormat:textureType:levels:slices:swizzle:resourceIndex:" textureType:*&swizzle levels:v17 slices:? swizzle:? resourceIndex:?];
   if (v21)
   {
     v22 = [[CaptureMTLTexture alloc] initWithBaseObject:v21 captureTexture:self];
@@ -128,10 +128,10 @@
   Bytes = GTTraceMemPool_allocateBytes(v25, *(&v40 + 1), v26 | 0x5000000000);
   *(v24 + 13) = v26;
   SaveMTLTextureInfo(&v39, v21);
-  v28 = [(CaptureMTLTexture *)self traceStream];
-  if (v28)
+  traceStream = [(CaptureMTLTexture *)self traceStream];
+  if (traceStream)
   {
-    var0 = v28->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -139,10 +139,10 @@
     var0 = 0;
   }
 
-  v30 = [(CaptureMTLTexture *)v22 traceStream];
-  if (v30)
+  traceStream2 = [(CaptureMTLTexture *)v22 traceStream];
+  if (traceStream2)
   {
-    v31 = v30->var0;
+    v31 = traceStream2->var0;
   }
 
   else
@@ -152,14 +152,14 @@
 
   *(Bytes + 2) = var0;
   *(Bytes + 3) = v31;
-  *(Bytes + 4) = a3;
-  *(Bytes + 5) = a4;
+  *(Bytes + 4) = format;
+  *(Bytes + 5) = type;
   *(Bytes + 6) = v35;
   *(Bytes + 7) = v36;
   *(Bytes + 8) = v37;
   *(Bytes + 9) = v38;
   *(Bytes + 10) = v34;
-  *(Bytes + 22) = a7;
+  *(Bytes + 22) = swizzle;
   *(Bytes + 23) = 0;
   v32 = v40;
   *v13 = v41;
@@ -169,7 +169,7 @@
   return v22;
 }
 
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6 swizzle:(id)a7
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices swizzle:(id)swizzle
 {
   v37 = 0u;
   v38 = 0u;
@@ -191,7 +191,7 @@
   v33 = v16;
   v34 = v17;
   v35 = v18;
-  v19 = [MTLTextureSPI newTextureViewWithPixelFormat:"newTextureViewWithPixelFormat:textureType:levels:slices:swizzle:" textureType:*&a7 levels:? slices:? swizzle:?];
+  v19 = [MTLTextureSPI newTextureViewWithPixelFormat:"newTextureViewWithPixelFormat:textureType:levels:slices:swizzle:" textureType:*&swizzle levels:? slices:? swizzle:?];
   if (v19)
   {
     v20 = [[CaptureMTLTexture alloc] initWithBaseObject:v19 captureTexture:self];
@@ -212,10 +212,10 @@
   Bytes = GTTraceMemPool_allocateBytes(v23, *(&v37 + 1), v24 | 0x4800000000);
   *(v22 + 13) = v24;
   SaveMTLTextureInfo(&v36, v19);
-  v26 = [(CaptureMTLTexture *)self traceStream];
-  if (v26)
+  traceStream = [(CaptureMTLTexture *)self traceStream];
+  if (traceStream)
   {
-    var0 = v26->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -223,10 +223,10 @@
     var0 = 0;
   }
 
-  v28 = [(CaptureMTLTexture *)v20 traceStream];
-  if (v28)
+  traceStream2 = [(CaptureMTLTexture *)v20 traceStream];
+  if (traceStream2)
   {
-    v29 = v28->var0;
+    v29 = traceStream2->var0;
   }
 
   else
@@ -236,13 +236,13 @@
 
   *(Bytes + 2) = var0;
   *(Bytes + 3) = v29;
-  *(Bytes + 4) = a3;
-  *(Bytes + 5) = a4;
+  *(Bytes + 4) = format;
+  *(Bytes + 5) = type;
   *(Bytes + 6) = v32;
   *(Bytes + 7) = v33;
   *(Bytes + 8) = v34;
   *(Bytes + 9) = v35;
-  *(Bytes + 20) = a7;
+  *(Bytes + 20) = swizzle;
   *(Bytes + 21) = 0;
   v30 = v37;
   *v12 = v38;
@@ -252,9 +252,9 @@
   return v20;
 }
 
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6 resourceIndex:(unint64_t)a7
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices resourceIndex:(unint64_t)index
 {
-  location = a5.location;
+  location = levels.location;
   v38 = 0u;
   v39 = 0u;
   v37 = 0u;
@@ -296,10 +296,10 @@
   Bytes = GTTraceMemPool_allocateBytes(v24, *(&v38 + 1), v25 | 0x4800000000);
   *(v23 + 13) = v25;
   SaveMTLTextureInfo(&v37, v20);
-  v27 = [(CaptureMTLTexture *)self traceStream];
-  if (v27)
+  traceStream = [(CaptureMTLTexture *)self traceStream];
+  if (traceStream)
   {
-    var0 = v27->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -307,10 +307,10 @@
     var0 = 0;
   }
 
-  v29 = [(CaptureMTLTexture *)v21 traceStream];
-  if (v29)
+  traceStream2 = [(CaptureMTLTexture *)v21 traceStream];
+  if (traceStream2)
   {
-    v30 = v29->var0;
+    v30 = traceStream2->var0;
   }
 
   else
@@ -320,8 +320,8 @@
 
   *(Bytes + 2) = var0;
   *(Bytes + 3) = v30;
-  *(Bytes + 4) = a3;
-  *(Bytes + 5) = a4;
+  *(Bytes + 4) = format;
+  *(Bytes + 5) = type;
   *(Bytes + 6) = location;
   *(Bytes + 7) = v34;
   *(Bytes + 8) = v35;
@@ -335,9 +335,9 @@
   return v21;
 }
 
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 levels:(_NSRange)a5 slices:(_NSRange)a6
+- (id)newTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type levels:(_NSRange)levels slices:(_NSRange)slices
 {
-  location = a5.location;
+  location = levels.location;
   v34 = 0u;
   v35 = 0u;
   v33 = 0u;
@@ -388,10 +388,10 @@
 
   v20[13] = v22;
   SaveMTLTextureInfo(&v33, v18);
-  v24 = [(CaptureMTLTexture *)self traceStream];
-  if (v24)
+  traceStream = [(CaptureMTLTexture *)self traceStream];
+  if (traceStream)
   {
-    var0 = v24->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -399,10 +399,10 @@
     var0 = 0;
   }
 
-  v26 = [(CaptureMTLTexture *)v19 traceStream];
-  if (v26)
+  traceStream2 = [(CaptureMTLTexture *)v19 traceStream];
+  if (traceStream2)
   {
-    v27 = v26->var0;
+    v27 = traceStream2->var0;
   }
 
   else
@@ -412,8 +412,8 @@
 
   *v23 = var0;
   *(v23 + 1) = v27;
-  *(v23 + 2) = a3;
-  *(v23 + 3) = a4;
+  *(v23 + 2) = format;
+  *(v23 + 3) = type;
   *(v23 + 4) = location;
   *(v23 + 5) = v30;
   *(v23 + 6) = v31;
@@ -426,7 +426,7 @@
   return v19;
 }
 
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3 resourceIndex:(unint64_t)a4
+- (id)newTextureViewWithPixelFormat:(unint64_t)format resourceIndex:(unint64_t)index
 {
   v26 = 0u;
   v27 = 0u;
@@ -476,10 +476,10 @@
 
   *(v14 + 13) = v15;
   SaveMTLTextureInfo(&v25, v12);
-  v19 = [(CaptureMTLTexture *)self traceStream];
-  if (v19)
+  traceStream = [(CaptureMTLTexture *)self traceStream];
+  if (traceStream)
   {
-    var0 = v19->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -487,10 +487,10 @@
     var0 = 0;
   }
 
-  v21 = [(CaptureMTLTexture *)v13 traceStream];
-  if (v21)
+  traceStream2 = [(CaptureMTLTexture *)v13 traceStream];
+  if (traceStream2)
   {
-    v22 = v21->var0;
+    v22 = traceStream2->var0;
   }
 
   else
@@ -500,8 +500,8 @@
 
   *v16 = var0;
   *(v16 + 1) = v22;
-  *(v16 + 2) = a3;
-  *(v16 + 3) = a4;
+  *(v16 + 2) = format;
+  *(v16 + 3) = index;
   v23 = v26;
   *v9 = v27;
   *(v9 + 8) = BYTE8(v27);
@@ -510,7 +510,7 @@
   return v13;
 }
 
-- (id)newTextureViewWithPixelFormat:(unint64_t)a3
+- (id)newTextureViewWithPixelFormat:(unint64_t)format
 {
   v24 = 0u;
   v25 = 0u;
@@ -560,10 +560,10 @@
 
   *(v12 + 13) = v13;
   SaveMTLTextureInfo(&v23, v10);
-  v17 = [(CaptureMTLTexture *)self traceStream];
-  if (v17)
+  traceStream = [(CaptureMTLTexture *)self traceStream];
+  if (traceStream)
   {
-    var0 = v17->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -571,10 +571,10 @@
     var0 = 0;
   }
 
-  v19 = [(CaptureMTLTexture *)v11 traceStream];
-  if (v19)
+  traceStream2 = [(CaptureMTLTexture *)v11 traceStream];
+  if (traceStream2)
   {
-    v20 = v19->var0;
+    v20 = traceStream2->var0;
   }
 
   else
@@ -584,7 +584,7 @@
 
   *v14 = var0;
   *(v14 + 1) = v20;
-  *(v14 + 2) = a3;
+  *(v14 + 2) = format;
   v21 = v24;
   *v7 = v25;
   *(v7 + 8) = BYTE8(v25);
@@ -593,9 +593,9 @@
   return v11;
 }
 
-- (id)newTextureViewWithDescriptor:(id)a3
+- (id)newTextureViewWithDescriptor:(id)descriptor
 {
-  v4 = a3;
+  descriptorCopy = descriptor;
   v25 = 0u;
   v26 = 0u;
   v24 = 0u;
@@ -612,7 +612,7 @@
   *(&v26 + 9) = 16400;
   *(&v26 + 11) = 0;
   HIBYTE(v26) = 0;
-  v10 = [(MTLTextureSPI *)self->_baseObject newTextureViewWithDescriptor:v4];
+  v10 = [(MTLTextureSPI *)self->_baseObject newTextureViewWithDescriptor:descriptorCopy];
   if (v10)
   {
     v11 = [[CaptureMTLTexture alloc] initWithBaseObject:v10 captureTexture:self];
@@ -644,10 +644,10 @@
 
   *(v12 + 13) = v13;
   SaveMTLTextureInfo(&v24, v10);
-  v17 = [(CaptureMTLTexture *)self traceStream];
-  if (v17)
+  traceStream = [(CaptureMTLTexture *)self traceStream];
+  if (traceStream)
   {
-    var0 = v17->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -655,10 +655,10 @@
     var0 = 0;
   }
 
-  v19 = [(CaptureMTLTexture *)v11 traceStream];
-  if (v19)
+  traceStream2 = [(CaptureMTLTexture *)v11 traceStream];
+  if (traceStream2)
   {
-    v20 = v19->var0;
+    v20 = traceStream2->var0;
   }
 
   else
@@ -666,7 +666,7 @@
     v20 = 0;
   }
 
-  v21 = SaveMTLTextureViewDescriptor(&v24, v4);
+  v21 = SaveMTLTextureViewDescriptor(&v24, descriptorCopy);
   *v14 = var0;
   *(v14 + 1) = v20;
   v14[16] = v21;
@@ -680,9 +680,9 @@
   return v11;
 }
 
-- (id)newCompressedTextureViewWithPixelFormat:(unint64_t)a3 textureType:(unint64_t)a4 level:(unint64_t)a5 slice:(unint64_t)a6
+- (id)newCompressedTextureViewWithPixelFormat:(unint64_t)format textureType:(unint64_t)type level:(unint64_t)level slice:(unint64_t)slice
 {
-  v7 = [(MTLTextureSPI *)self->_baseObject newCompressedTextureViewWithPixelFormat:a3 textureType:a4 level:a5 slice:a6];
+  v7 = [(MTLTextureSPI *)self->_baseObject newCompressedTextureViewWithPixelFormat:format textureType:type level:level slice:slice];
   if (v7)
   {
     v8 = [[CaptureMTLTexture alloc] initWithBaseObject:v7 captureTexture:self];
@@ -729,10 +729,10 @@
     }
 
     *(v6 + 13) = v7;
-    v11 = [(CaptureMTLTexture *)self traceStream];
-    if (v11)
+    traceStream = [(CaptureMTLTexture *)self traceStream];
+    if (traceStream)
     {
-      var0 = v11->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -755,7 +755,7 @@
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  v4 = [(MTLTextureSPI *)self->_baseObject isPurgeable];
+  isPurgeable = [(MTLTextureSPI *)self->_baseObject isPurgeable];
   v5 = v16;
   *(v16 + 8) = -16231;
   v6 = BYTE9(v17);
@@ -775,10 +775,10 @@
   }
 
   *(v5 + 13) = v6;
-  v10 = [(CaptureMTLTexture *)self traceStream];
-  if (v10)
+  traceStream = [(CaptureMTLTexture *)self traceStream];
+  if (traceStream)
   {
-    var0 = v10->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -787,13 +787,13 @@
   }
 
   *v7 = var0;
-  *(v7 + 2) = v4;
+  *(v7 + 2) = isPurgeable;
   *(v7 + 3) = 0;
   s();
   *v12 = v13;
   *(v12 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
-  return v4;
+  return isPurgeable;
 }
 
 - (BOOL)isAliasable
@@ -803,7 +803,7 @@
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  v4 = [(MTLTextureSPI *)self->_baseObject isAliasable];
+  isAliasable = [(MTLTextureSPI *)self->_baseObject isAliasable];
   v5 = v16;
   *(v16 + 8) = -16108;
   v6 = BYTE9(v17);
@@ -823,10 +823,10 @@
   }
 
   *(v5 + 13) = v6;
-  v10 = [(CaptureMTLTexture *)self traceStream];
-  if (v10)
+  traceStream = [(CaptureMTLTexture *)self traceStream];
+  if (traceStream)
   {
-    var0 = v10->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -835,81 +835,81 @@
   }
 
   *v7 = var0;
-  *(v7 + 2) = v4;
+  *(v7 + 2) = isAliasable;
   *(v7 + 3) = 0;
   s();
   *v12 = v13;
   *(v12 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
-  return v4;
+  return isAliasable;
 }
 
-- (BOOL)doesAliasResource:(id)a3
+- (BOOL)doesAliasResource:(id)resource
 {
   baseObject = self->_baseObject;
-  v4 = [a3 baseObject];
-  LOBYTE(baseObject) = [(MTLTextureSPI *)baseObject doesAliasResource:v4];
+  baseObject = [resource baseObject];
+  LOBYTE(baseObject) = [(MTLTextureSPI *)baseObject doesAliasResource:baseObject];
 
   return baseObject;
 }
 
-- (BOOL)doesAliasAnyResources:(const void *)a3 count:(unint64_t)a4
+- (BOOL)doesAliasAnyResources:(const void *)resources count:(unint64_t)count
 {
   baseObject = self->_baseObject;
-  __chkstk_darwin(self, 8 * a4);
+  __chkstk_darwin(self, 8 * count);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   bzero(v8, v7);
-  if (a4)
+  if (count)
   {
     v9 = v8;
-    v10 = a4;
+    countCopy = count;
     do
     {
-      v11 = *a3++;
+      v11 = *resources++;
       *v9 = [v11 baseObject];
       v9 += 8;
-      --v10;
+      --countCopy;
     }
 
-    while (v10);
+    while (countCopy);
   }
 
-  return [(MTLTextureSPI *)baseObject doesAliasAnyResources:v8 count:a4];
+  return [(MTLTextureSPI *)baseObject doesAliasAnyResources:v8 count:count];
 }
 
-- (BOOL)doesAliasAllResources:(const void *)a3 count:(unint64_t)a4
+- (BOOL)doesAliasAllResources:(const void *)resources count:(unint64_t)count
 {
   baseObject = self->_baseObject;
-  __chkstk_darwin(self, 8 * a4);
+  __chkstk_darwin(self, 8 * count);
   v8 = &v13 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   bzero(v8, v7);
-  if (a4)
+  if (count)
   {
     v9 = v8;
-    v10 = a4;
+    countCopy = count;
     do
     {
-      v11 = *a3++;
+      v11 = *resources++;
       *v9 = [v11 baseObject];
       v9 += 8;
-      --v10;
+      --countCopy;
     }
 
-    while (v10);
+    while (countCopy);
   }
 
-  return [(MTLTextureSPI *)baseObject doesAliasAllResources:v8 count:a4];
+  return [(MTLTextureSPI *)baseObject doesAliasAllResources:v8 count:count];
 }
 
-- (void)setLabel:(id)a3
+- (void)setLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v19 = 0u;
   v20 = 0u;
   v18 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v18);
-  [(MTLTextureSPI *)self->_baseObject setLabel:v4];
+  [(MTLTextureSPI *)self->_baseObject setLabel:labelCopy];
   v6 = v19;
   *(v19 + 8) = -16240;
   v7 = BYTE9(v20);
@@ -929,10 +929,10 @@
   }
 
   *(v6 + 13) = v7;
-  v11 = [(CaptureMTLTexture *)self traceStream];
-  if (v11)
+  traceStream = [(CaptureMTLTexture *)self traceStream];
+  if (traceStream)
   {
-    var0 = v11->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -940,16 +940,16 @@
     var0 = 0;
   }
 
-  v13 = [v4 UTF8String];
-  if (v13)
+  uTF8String = [labelCopy UTF8String];
+  if (uTF8String)
   {
-    v14 = [v4 UTF8String];
-    v15 = strlen([v4 UTF8String]);
-    LOBYTE(v13) = GTTraceEncoder_storeBytes(&v18, v14, v15 + 1);
+    uTF8String2 = [labelCopy UTF8String];
+    v15 = strlen([labelCopy UTF8String]);
+    LOBYTE(uTF8String) = GTTraceEncoder_storeBytes(&v18, uTF8String2, v15 + 1);
   }
 
   *v8 = var0;
-  v8[8] = v13;
+  v8[8] = uTF8String;
   *(v8 + 9) = 0;
   *(v8 + 3) = 0;
   s();
@@ -958,13 +958,13 @@
   *(v19 + 15) |= 8u;
 }
 
-- (BOOL)conformsToProtocol:(id)a3
+- (BOOL)conformsToProtocol:(id)protocol
 {
   baseObject = self->_baseObject;
-  v4 = a3;
-  v5 = [(MTLTextureSPI *)baseObject conformsToProtocol:v4];
+  protocolCopy = protocol;
+  v5 = [(MTLTextureSPI *)baseObject conformsToProtocol:protocolCopy];
 
-  if (&OBJC_PROTOCOL___CaptureMTLObject == v4)
+  if (&OBJC_PROTOCOL___CaptureMTLObject == protocolCopy)
   {
     return 1;
   }
@@ -1019,12 +1019,12 @@
   }
 }
 
-- (void)updateDrawableStream:(GTTraceStream *)a3
+- (void)updateDrawableStream:(GTTraceStream *)stream
 {
   drawableStream = self->_drawableStream;
   if (drawableStream)
   {
-    v6 = drawableStream == a3;
+    v6 = drawableStream == stream;
   }
 
   else
@@ -1076,10 +1076,10 @@
     GTTraceContext_closeStream(self->_traceContext, v16);
   }
 
-  self->_drawableStream = a3;
+  self->_drawableStream = stream;
 }
 
-- (void)getBytes:(void *)a3 bytesPerRow:(unint64_t)a4 fromRegion:(id *)a5 mipmapLevel:(unint64_t)a6
+- (void)getBytes:(void *)bytes bytesPerRow:(unint64_t)row fromRegion:(id *)region mipmapLevel:(unint64_t)level
 {
   traceStream = self->_traceStream;
   if (traceStream)
@@ -1098,11 +1098,11 @@
   }
 
   baseObject = self->_baseObject;
-  v17 = *&a5->var0.var2;
-  v32 = *&a5->var0.var0;
+  v17 = *&region->var0.var2;
+  v32 = *&region->var0.var0;
   v33 = v17;
-  v34 = *&a5->var1.var1;
-  [(MTLTextureSPI *)baseObject getBytes:a3 bytesPerRow:a4 fromRegion:&v32 mipmapLevel:a6];
+  v34 = *&region->var1.var1;
+  [(MTLTextureSPI *)baseObject getBytes:bytes bytesPerRow:row fromRegion:&v32 mipmapLevel:level];
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v33 = 0u;
@@ -1117,10 +1117,10 @@
     ++BYTE10(v34);
     Bytes = GTTraceMemPool_allocateBytes(v20, *(&v33 + 1), v21 | 0x5000000000);
     *(v19 + 13) = v21;
-    v23 = [(CaptureMTLTexture *)self traceStream];
-    if (v23)
+    traceStream = [(CaptureMTLTexture *)self traceStream];
+    if (traceStream)
     {
-      var0 = v23->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -1128,18 +1128,18 @@
       var0 = 0;
     }
 
-    var1 = a5->var1.var1;
-    var2 = a5->var1.var2;
-    v30 = *&a5->var0.var2;
-    v31 = *&a5->var0.var0;
-    v27 = TransferBytes(&v32, a3, &dword_0 + 1);
+    var1 = region->var1.var1;
+    var2 = region->var1.var2;
+    v30 = *&region->var0.var2;
+    v31 = *&region->var0.var0;
+    v27 = TransferBytes(&v32, bytes, &dword_0 + 1);
     *(Bytes + 2) = var0;
-    *(Bytes + 3) = a4;
+    *(Bytes + 3) = row;
     *(Bytes + 2) = v31;
     *(Bytes + 3) = v30;
     *(Bytes + 8) = var1;
     *(Bytes + 9) = var2;
-    *(Bytes + 10) = a6;
+    *(Bytes + 10) = level;
     Bytes[88] = v27;
     *(Bytes + 89) = 0;
     *(Bytes + 23) = 0;
@@ -1150,7 +1150,7 @@
   }
 }
 
-- (void)getBytes:(void *)a3 bytesPerRow:(unint64_t)a4 bytesPerImage:(unint64_t)a5 fromRegion:(id *)a6 mipmapLevel:(unint64_t)a7 slice:(unint64_t)a8
+- (void)getBytes:(void *)bytes bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image fromRegion:(id *)region mipmapLevel:(unint64_t)level slice:(unint64_t)slice
 {
   traceStream = self->_traceStream;
   if (traceStream)
@@ -1169,11 +1169,11 @@
   }
 
   baseObject = self->_baseObject;
-  v21 = *&a6->var0.var2;
-  v36 = *&a6->var0.var0;
+  v21 = *&region->var0.var2;
+  v36 = *&region->var0.var0;
   v37 = v21;
-  v38 = *&a6->var1.var1;
-  [(MTLTextureSPI *)baseObject getBytes:a3 bytesPerRow:a4 bytesPerImage:a5 fromRegion:&v36 mipmapLevel:a7 slice:a8];
+  v38 = *&region->var1.var1;
+  [(MTLTextureSPI *)baseObject getBytes:bytes bytesPerRow:row bytesPerImage:image fromRegion:&v36 mipmapLevel:level slice:slice];
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v37 = 0u;
@@ -1188,10 +1188,10 @@
     ++BYTE10(v38);
     Bytes = GTTraceMemPool_allocateBytes(v24, *(&v37 + 1), v25 | 0x6000000000);
     *(v23 + 13) = v25;
-    v27 = [(CaptureMTLTexture *)self traceStream];
-    if (v27)
+    traceStream = [(CaptureMTLTexture *)self traceStream];
+    if (traceStream)
     {
-      var0 = v27->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -1199,20 +1199,20 @@
       var0 = 0;
     }
 
-    var1 = a6->var1.var1;
-    var2 = a6->var1.var2;
-    v34 = *&a6->var0.var2;
-    v35 = *&a6->var0.var0;
-    v31 = TransferBytes(&v36, a3, &dword_0 + 1);
+    var1 = region->var1.var1;
+    var2 = region->var1.var2;
+    v34 = *&region->var0.var2;
+    v35 = *&region->var0.var0;
+    v31 = TransferBytes(&v36, bytes, &dword_0 + 1);
     *(Bytes + 2) = var0;
-    *(Bytes + 3) = a4;
-    *(Bytes + 4) = a5;
+    *(Bytes + 3) = row;
+    *(Bytes + 4) = image;
     *(Bytes + 56) = v34;
     *(Bytes + 40) = v35;
     *(Bytes + 9) = var1;
     *(Bytes + 10) = var2;
-    *(Bytes + 11) = a7;
-    *(Bytes + 12) = a8;
+    *(Bytes + 11) = level;
+    *(Bytes + 12) = slice;
     Bytes[104] = v31;
     *(Bytes + 105) = 0;
     *(Bytes + 27) = 0;
@@ -1230,7 +1230,7 @@
   v15 = 0u;
   traceStream = self->_traceStream;
   GTTraceContext_pushEncoderWithStream(self->_traceContext, &v15);
-  v4 = [(MTLTextureSPI *)self->_baseObject newSharedTextureHandle];
+  newSharedTextureHandle = [(MTLTextureSPI *)self->_baseObject newSharedTextureHandle];
   v5 = v16;
   *(v16 + 8) = -15910;
   v6 = BYTE9(v17);
@@ -1250,10 +1250,10 @@
   }
 
   *(v5 + 13) = v6;
-  v10 = [(CaptureMTLTexture *)self traceStream];
-  if (v10)
+  traceStream = [(CaptureMTLTexture *)self traceStream];
+  if (traceStream)
   {
-    var0 = v10->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1262,15 +1262,15 @@
   }
 
   *v7 = var0;
-  *(v7 + 1) = v4;
+  *(v7 + 1) = newSharedTextureHandle;
   s();
   *v12 = v13;
   *(v12 + 8) = BYTE8(v17);
   *(v16 + 15) |= 8u;
-  return v4;
+  return newSharedTextureHandle;
 }
 
-- (void)replaceRegion:(id *)a3 mipmapLevel:(unint64_t)a4 withBytes:(const void *)a5 bytesPerRow:(unint64_t)a6
+- (void)replaceRegion:(id *)region mipmapLevel:(unint64_t)level withBytes:(const void *)bytes bytesPerRow:(unint64_t)row
 {
   traceStream = self->_traceStream;
   if (traceStream)
@@ -1289,17 +1289,17 @@
   }
 
   baseObject = self->_baseObject;
-  v17 = *&a3->var0.var2;
-  v34 = *&a3->var0.var0;
+  v17 = *&region->var0.var2;
+  v34 = *&region->var0.var0;
   v35 = v17;
-  v36 = *&a3->var1.var1;
-  [(MTLTextureSPI *)baseObject replaceRegion:&v34 mipmapLevel:a4 withBytes:a5 bytesPerRow:a6];
+  v36 = *&region->var1.var1;
+  [(MTLTextureSPI *)baseObject replaceRegion:&v34 mipmapLevel:level withBytes:bytes bytesPerRow:row];
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v18 = DEVICEOBJECT(self);
-    v34 = *&a3->var1.var0;
-    *&v35 = a3->var1.var2;
-    ClientMemorySize = GetClientMemorySize(v18, &v34, a6, 0);
+    v34 = *&region->var1.var0;
+    *&v35 = region->var1.var2;
+    ClientMemorySize = GetClientMemorySize(v18, &v34, row, 0);
 
     v35 = 0u;
     v36 = 0u;
@@ -1313,10 +1313,10 @@
     ++BYTE10(v36);
     Bytes = GTTraceMemPool_allocateBytes(v22, *(&v35 + 1), v23 | 0x5000000000);
     *(v21 + 13) = v23;
-    v25 = [(CaptureMTLTexture *)self traceStream];
-    if (v25)
+    traceStream = [(CaptureMTLTexture *)self traceStream];
+    if (traceStream)
     {
-      var0 = v25->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -1324,18 +1324,18 @@
       var0 = 0;
     }
 
-    var1 = a3->var1.var1;
-    var2 = a3->var1.var2;
-    v32 = *&a3->var0.var2;
-    v33 = *&a3->var0.var0;
-    v29 = TransferBytes(&v34, a5, ClientMemorySize);
+    var1 = region->var1.var1;
+    var2 = region->var1.var2;
+    v32 = *&region->var0.var2;
+    v33 = *&region->var0.var0;
+    v29 = TransferBytes(&v34, bytes, ClientMemorySize);
     *(Bytes + 2) = var0;
     *(Bytes + 40) = v32;
     *(Bytes + 24) = v33;
     *(Bytes + 7) = var1;
     *(Bytes + 8) = var2;
-    *(Bytes + 9) = a4;
-    *(Bytes + 10) = a6;
+    *(Bytes + 9) = level;
+    *(Bytes + 10) = row;
     Bytes[88] = v29;
     *(Bytes + 89) = 0;
     *(Bytes + 23) = 0;
@@ -1346,7 +1346,7 @@
   }
 }
 
-- (void)replaceRegion:(id *)a3 mipmapLevel:(unint64_t)a4 slice:(unint64_t)a5 withBytes:(const void *)a6 bytesPerRow:(unint64_t)a7 bytesPerImage:(unint64_t)a8
+- (void)replaceRegion:(id *)region mipmapLevel:(unint64_t)level slice:(unint64_t)slice withBytes:(const void *)bytes bytesPerRow:(unint64_t)row bytesPerImage:(unint64_t)image
 {
   traceStream = self->_traceStream;
   if (traceStream)
@@ -1365,17 +1365,17 @@
   }
 
   baseObject = self->_baseObject;
-  v21 = *&a3->var0.var2;
-  v38 = *&a3->var0.var0;
+  v21 = *&region->var0.var2;
+  v38 = *&region->var0.var0;
   v39 = v21;
-  v40 = *&a3->var1.var1;
-  [(MTLTextureSPI *)baseObject replaceRegion:&v38 mipmapLevel:a4 slice:a5 withBytes:a6 bytesPerRow:a7 bytesPerImage:a8];
+  v40 = *&region->var1.var1;
+  [(MTLTextureSPI *)baseObject replaceRegion:&v38 mipmapLevel:level slice:slice withBytes:bytes bytesPerRow:row bytesPerImage:image];
   if ((*(boundaryTrackerInstance + 20) & 0xFFFFFFFE) == 2)
   {
     v22 = DEVICEOBJECT(self);
-    v38 = *&a3->var1.var0;
-    *&v39 = a3->var1.var2;
-    ClientMemorySize = GetClientMemorySize(v22, &v38, a7, a8);
+    v38 = *&region->var1.var0;
+    *&v39 = region->var1.var2;
+    ClientMemorySize = GetClientMemorySize(v22, &v38, row, image);
 
     v39 = 0u;
     v40 = 0u;
@@ -1389,10 +1389,10 @@
     ++BYTE10(v40);
     Bytes = GTTraceMemPool_allocateBytes(v25, *(&v39 + 1), v26 | 0x6800000000);
     *(v24 + 13) = v26;
-    v28 = [(CaptureMTLTexture *)self traceStream];
-    if (v28)
+    traceStream = [(CaptureMTLTexture *)self traceStream];
+    if (traceStream)
     {
-      var0 = v28->var0;
+      var0 = traceStream->var0;
     }
 
     else
@@ -1400,20 +1400,20 @@
       var0 = 0;
     }
 
-    var1 = a3->var1.var1;
-    var2 = a3->var1.var2;
-    v35 = *&a3->var0.var2;
-    v36 = *&a3->var0.var0;
-    v32 = TransferBytes(&v38, a6, ClientMemorySize);
+    var1 = region->var1.var1;
+    var2 = region->var1.var2;
+    v35 = *&region->var0.var2;
+    v36 = *&region->var0.var0;
+    v32 = TransferBytes(&v38, bytes, ClientMemorySize);
     *(Bytes + 2) = var0;
     *(Bytes + 40) = v35;
     *(Bytes + 24) = v36;
     *(Bytes + 7) = var1;
     *(Bytes + 8) = var2;
-    *(Bytes + 9) = a4;
-    *(Bytes + 10) = a5;
-    *(Bytes + 11) = a7;
-    *(Bytes + 12) = a8;
+    *(Bytes + 9) = level;
+    *(Bytes + 10) = slice;
+    *(Bytes + 11) = row;
+    *(Bytes + 12) = image;
     *(Bytes + 13) = 0;
     Bytes[112] = v32;
     *(Bytes + 113) = 0;
@@ -1488,10 +1488,10 @@
   }
 
   *(v5 + 13) = v6;
-  v10 = [(CaptureMTLTexture *)self traceStream];
-  if (v10)
+  traceStream = [(CaptureMTLTexture *)self traceStream];
+  if (traceStream)
   {
-    var0 = v10->var0;
+    var0 = traceStream->var0;
   }
 
   else
@@ -1510,108 +1510,108 @@
   [(CaptureMTLTexture *)&v14 dealloc];
 }
 
-- (CaptureMTLTexture)initWithBaseObject:(id)a3 captureTexture:(id)a4
+- (CaptureMTLTexture)initWithBaseObject:(id)object captureTexture:(id)texture
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  textureCopy = texture;
   v18.receiver = self;
   v18.super_class = CaptureMTLTexture;
   v9 = [(CaptureMTLTexture *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    v11 = [v8 device];
+    objc_storeStrong(&v9->_baseObject, object);
+    device = [textureCopy device];
     captureDevice = v10->_captureDevice;
-    v10->_captureDevice = v11;
+    v10->_captureDevice = device;
 
-    v13 = [v8 heap];
+    heap = [textureCopy heap];
     captureHeap = v10->_captureHeap;
-    v10->_captureHeap = v13;
+    v10->_captureHeap = heap;
 
-    objc_storeStrong(&v10->_captureRootResource, a4);
-    v15 = [v8 traceContext];
-    v10->_traceContext = v15;
-    v16 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v15, v16, v10);
+    objc_storeStrong(&v10->_captureRootResource, texture);
+    traceContext = [textureCopy traceContext];
+    v10->_traceContext = traceContext;
+    v16 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v16, v10);
   }
 
   return v10;
 }
 
-- (CaptureMTLTexture)initWithBaseObject:(id)a3 captureBuffer:(id)a4
+- (CaptureMTLTexture)initWithBaseObject:(id)object captureBuffer:(id)buffer
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  bufferCopy = buffer;
   v18.receiver = self;
   v18.super_class = CaptureMTLTexture;
   v9 = [(CaptureMTLTexture *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    v11 = [v8 device];
+    objc_storeStrong(&v9->_baseObject, object);
+    device = [bufferCopy device];
     captureDevice = v10->_captureDevice;
-    v10->_captureDevice = v11;
+    v10->_captureDevice = device;
 
-    v13 = [v8 heap];
+    heap = [bufferCopy heap];
     captureHeap = v10->_captureHeap;
-    v10->_captureHeap = v13;
+    v10->_captureHeap = heap;
 
-    objc_storeStrong(&v10->_captureRootResource, a4);
-    v15 = [v8 traceContext];
-    v10->_traceContext = v15;
-    v16 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v15, v16, v10);
+    objc_storeStrong(&v10->_captureRootResource, buffer);
+    traceContext = [bufferCopy traceContext];
+    v10->_traceContext = traceContext;
+    v16 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v16, v10);
   }
 
   return v10;
 }
 
-- (CaptureMTLTexture)initWithBaseObject:(id)a3 captureHeap:(id)a4
+- (CaptureMTLTexture)initWithBaseObject:(id)object captureHeap:(id)heap
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  heapCopy = heap;
   v16.receiver = self;
   v16.super_class = CaptureMTLTexture;
   v9 = [(CaptureMTLTexture *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    v11 = [v8 device];
+    objc_storeStrong(&v9->_baseObject, object);
+    device = [heapCopy device];
     captureDevice = v10->_captureDevice;
-    v10->_captureDevice = v11;
+    v10->_captureDevice = device;
 
-    objc_storeStrong(&v10->_captureHeap, a4);
-    v13 = [v8 traceContext];
-    v10->_traceContext = v13;
-    v14 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v13, v14, v10);
+    objc_storeStrong(&v10->_captureHeap, heap);
+    traceContext = [heapCopy traceContext];
+    v10->_traceContext = traceContext;
+    v14 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v14, v10);
 
-    [v8 usedSize];
-    [v8 currentAllocatedSize];
+    [heapCopy usedSize];
+    [heapCopy currentAllocatedSize];
   }
 
   return v10;
 }
 
-- (CaptureMTLTexture)initWithBaseObject:(id)a3 captureDevice:(id)a4
+- (CaptureMTLTexture)initWithBaseObject:(id)object captureDevice:(id)device
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  deviceCopy = device;
   v14.receiver = self;
   v14.super_class = CaptureMTLTexture;
   v9 = [(CaptureMTLTexture *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_baseObject, a3);
-    objc_storeStrong(&v10->_captureDevice, a4);
-    v11 = [v8 traceContext];
-    v10->_traceContext = v11;
-    v12 = DEVICEOBJECT(v7);
-    v10->_traceStream = GTTraceContext_openStream(v11, v12, v10);
+    objc_storeStrong(&v9->_baseObject, object);
+    objc_storeStrong(&v10->_captureDevice, device);
+    traceContext = [deviceCopy traceContext];
+    v10->_traceContext = traceContext;
+    v12 = DEVICEOBJECT(objectCopy);
+    v10->_traceStream = GTTraceContext_openStream(traceContext, v12, v10);
   }
 
   return v10;

@@ -5,21 +5,21 @@
 - (NSString)localizedShortName;
 - (NSUUID)uniqueIdentifier;
 - (PKPlugInProxy)compatibilityObject;
-- (PKPlugInRecordProxy)initWithBundleIdentifier:(id)a3 error:(id *)a4;
-- (PKPlugInRecordProxy)initWithUUID:(id)a3 error:(id *)a4;
+- (PKPlugInRecordProxy)initWithBundleIdentifier:(id)identifier error:(id *)error;
+- (PKPlugInRecordProxy)initWithUUID:(id)d error:(id *)error;
 - (PKPropertyList)entitlements;
 @end
 
 @implementation PKPlugInRecordProxy
 
-- (PKPlugInRecordProxy)initWithUUID:(id)a3 error:(id *)a4
+- (PKPlugInRecordProxy)initWithUUID:(id)d error:(id *)error
 {
   v12.receiver = self;
   v12.super_class = PKPlugInRecordProxy;
-  v5 = a3;
+  dCopy = d;
   v6 = [(PKPlugInRecordProxy *)&v12 init];
   v7 = objc_alloc(MEMORY[0x1E69635D0]);
-  v8 = [v7 initWithUUID:v5 error:{a4, v12.receiver, v12.super_class}];
+  v8 = [v7 initWithUUID:dCopy error:{error, v12.receiver, v12.super_class}];
 
   lsRecord = v6->_lsRecord;
   v6->_lsRecord = v8;
@@ -37,14 +37,14 @@
   return v10;
 }
 
-- (PKPlugInRecordProxy)initWithBundleIdentifier:(id)a3 error:(id *)a4
+- (PKPlugInRecordProxy)initWithBundleIdentifier:(id)identifier error:(id *)error
 {
   v12.receiver = self;
   v12.super_class = PKPlugInRecordProxy;
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [(PKPlugInRecordProxy *)&v12 init];
   v7 = objc_alloc(MEMORY[0x1E69635D0]);
-  v8 = [v7 initWithBundleIdentifier:v5 error:{a4, v12.receiver, v12.super_class}];
+  v8 = [v7 initWithBundleIdentifier:identifierCopy error:{error, v12.receiver, v12.super_class}];
 
   lsRecord = v6->_lsRecord;
   v6->_lsRecord = v8;
@@ -64,58 +64,58 @@
 
 - (NSString)localizedName
 {
-  v2 = [(PKPlugInRecordProxy *)self lsRecord];
-  v3 = [v2 localizedName];
+  lsRecord = [(PKPlugInRecordProxy *)self lsRecord];
+  localizedName = [lsRecord localizedName];
 
-  return v3;
+  return localizedName;
 }
 
 - (NSString)localizedShortName
 {
-  v2 = [(PKPlugInRecordProxy *)self lsRecord];
-  v3 = [v2 localizedShortName];
+  lsRecord = [(PKPlugInRecordProxy *)self lsRecord];
+  localizedShortName = [lsRecord localizedShortName];
 
-  return v3;
+  return localizedShortName;
 }
 
 - (NSString)bundleIdentifier
 {
-  v2 = [(PKPlugInRecordProxy *)self lsRecord];
-  v3 = [v2 bundleIdentifier];
+  lsRecord = [(PKPlugInRecordProxy *)self lsRecord];
+  bundleIdentifier = [lsRecord bundleIdentifier];
 
-  return v3;
+  return bundleIdentifier;
 }
 
 - (NSString)bundleVersion
 {
-  v2 = [(PKPlugInRecordProxy *)self lsRecord];
-  v3 = [v2 bundleVersion];
+  lsRecord = [(PKPlugInRecordProxy *)self lsRecord];
+  bundleVersion = [lsRecord bundleVersion];
 
-  return v3;
+  return bundleVersion;
 }
 
 - (NSUUID)uniqueIdentifier
 {
-  v2 = [(PKPlugInRecordProxy *)self lsRecord];
-  v3 = [v2 uniqueIdentifier];
+  lsRecord = [(PKPlugInRecordProxy *)self lsRecord];
+  uniqueIdentifier = [lsRecord uniqueIdentifier];
 
-  return v3;
+  return uniqueIdentifier;
 }
 
 - (PKPlugInProxy)compatibilityObject
 {
-  v2 = [(PKPlugInRecordProxy *)self lsRecord];
-  v3 = [v2 compatibilityObject];
+  lsRecord = [(PKPlugInRecordProxy *)self lsRecord];
+  compatibilityObject = [lsRecord compatibilityObject];
 
-  return v3;
+  return compatibilityObject;
 }
 
 - (PKPropertyList)entitlements
 {
-  v2 = [(PKPlugInRecordProxy *)self lsRecord];
-  v3 = [v2 entitlements];
+  lsRecord = [(PKPlugInRecordProxy *)self lsRecord];
+  entitlements = [lsRecord entitlements];
 
-  return v3;
+  return entitlements;
 }
 
 @end

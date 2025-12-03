@@ -4,50 +4,50 @@
 - (id)_orderedUpdateKinds;
 - (id)_signRepeatableUpdateKeys;
 - (void)_clearAllGuidance;
-- (void)_eachGuidanceOutput:(id)a3 ignorePaused:(BOOL)a4;
-- (void)_performRepeatableUpdateForKey:(id)a3 onEachGuidanceOutput:(id)a4;
+- (void)_eachGuidanceOutput:(id)output ignorePaused:(BOOL)paused;
+- (void)_performRepeatableUpdateForKey:(id)key onEachGuidanceOutput:(id)output;
 - (void)_prepareForActiveNavigationIfNeeded;
-- (void)_processARInfosUpdate:(id)a3;
+- (void)_processARInfosUpdate:(id)update;
 - (void)_processHideJunctionViewInfo;
 - (void)_processHideLaneInfo;
 - (void)_processPendingUpdates;
-- (void)_processShowJunctionViewInfo:(id)a3;
-- (void)_processShowLaneInfo:(id)a3;
-- (void)_processSignInfo:(id)a3;
+- (void)_processShowJunctionViewInfo:(id)info;
+- (void)_processShowLaneInfo:(id)info;
+- (void)_processSignInfo:(id)info;
 - (void)_processUsePersistentDisplay;
 - (void)_repeatAllUpdates;
-- (void)_repeatAllUpdatesWithTarget:(id)a3 selector:(SEL)a4;
+- (void)_repeatAllUpdatesWithTarget:(id)target selector:(SEL)selector;
 - (void)_tearDownNavigationIfNeeded;
-- (void)_updateArrivalStateWithService:(id)a3;
+- (void)_updateArrivalStateWithService:(id)service;
 - (void)_updateDestinationDisplayName;
 - (void)_updateDisplayETA;
-- (void)addOutlet:(id)a3;
+- (void)addOutlet:(id)outlet;
 - (void)dealloc;
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationService:(id)a3 didEnableGuidancePrompts:(BOOL)a4;
-- (void)navigationService:(id)a3 didReroute:(id)a4 rerouteReason:(unint64_t)a5;
-- (void)navigationService:(id)a3 didResumeNavigatingFromWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5 reason:(unint64_t)a6;
-- (void)navigationService:(id)a3 didUpdateDistanceUntilSign:(double)a4 timeUntilSign:(double)a5 forStepIndex:(unint64_t)a6;
-- (void)navigationService:(id)a3 didUpdateProceedToRouteDistance:(double)a4 displayString:(id)a5 closestStepIndex:(unint64_t)a6;
-- (void)navigationService:(id)a3 displayManeuverAlertForAnnouncementStage:(unint64_t)a4;
-- (void)navigationService:(id)a3 displayPrimaryStep:(id)a4 instructions:(id)a5 shieldType:(int)a6 shieldText:(id)a7 drivingSide:(int)a8 maneuverStepIndex:(unint64_t)a9 isSynthetic:(BOOL)a10;
-- (void)navigationService:(id)a3 displaySecondaryStep:(id)a4 instructions:(id)a5 shieldType:(int)a6 shieldText:(id)a7 drivingSide:(int)a8;
-- (void)navigationService:(id)a3 failedRerouteWithErrorCode:(int64_t)a4;
-- (void)navigationService:(id)a3 hideJunctionViewForId:(id)a4;
-- (void)navigationService:(id)a3 hideLaneDirectionsForId:(id)a4;
-- (void)navigationService:(id)a3 showJunctionView:(id)a4;
-- (void)navigationService:(id)a3 showLaneDirections:(id)a4;
-- (void)navigationService:(id)a3 updateSignsWithARInfo:(id)a4;
-- (void)navigationService:(id)a3 updateSignsWithInfo:(id)a4;
-- (void)navigationService:(id)a3 willChangeFromState:(unint64_t)a4 toState:(unint64_t)a5;
-- (void)navigationServiceDidCancelReroute:(id)a3;
-- (void)navigationServiceDidHideSecondaryStep:(id)a3;
-- (void)navigationServiceWillReroute:(id)a3;
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationService:(id)service didEnableGuidancePrompts:(BOOL)prompts;
+- (void)navigationService:(id)service didReroute:(id)reroute rerouteReason:(unint64_t)reason;
+- (void)navigationService:(id)service didResumeNavigatingFromWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index reason:(unint64_t)reason;
+- (void)navigationService:(id)service didUpdateDistanceUntilSign:(double)sign timeUntilSign:(double)untilSign forStepIndex:(unint64_t)index;
+- (void)navigationService:(id)service didUpdateProceedToRouteDistance:(double)distance displayString:(id)string closestStepIndex:(unint64_t)index;
+- (void)navigationService:(id)service displayManeuverAlertForAnnouncementStage:(unint64_t)stage;
+- (void)navigationService:(id)service displayPrimaryStep:(id)step instructions:(id)instructions shieldType:(int)type shieldText:(id)text drivingSide:(int)side maneuverStepIndex:(unint64_t)index isSynthetic:(BOOL)self0;
+- (void)navigationService:(id)service displaySecondaryStep:(id)step instructions:(id)instructions shieldType:(int)type shieldText:(id)text drivingSide:(int)side;
+- (void)navigationService:(id)service failedRerouteWithErrorCode:(int64_t)code;
+- (void)navigationService:(id)service hideJunctionViewForId:(id)id;
+- (void)navigationService:(id)service hideLaneDirectionsForId:(id)id;
+- (void)navigationService:(id)service showJunctionView:(id)view;
+- (void)navigationService:(id)service showLaneDirections:(id)directions;
+- (void)navigationService:(id)service updateSignsWithARInfo:(id)info;
+- (void)navigationService:(id)service updateSignsWithInfo:(id)info;
+- (void)navigationService:(id)service willChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)navigationServiceDidCancelReroute:(id)reroute;
+- (void)navigationServiceDidHideSecondaryStep:(id)step;
+- (void)navigationServiceWillReroute:(id)reroute;
 - (void)pauseUpdates;
-- (void)removeOutlet:(id)a3;
-- (void)repeatAllUpdatesForOutlet:(id)a3;
+- (void)removeOutlet:(id)outlet;
+- (void)repeatAllUpdatesForOutlet:(id)outlet;
 - (void)resumeUpdates;
-- (void)setCurrentArrivalState:(unint64_t)a3;
+- (void)setCurrentArrivalState:(unint64_t)state;
 @end
 
 @implementation GuidanceObserver
@@ -97,8 +97,8 @@
     }
 
     v3 = +[UIScreen mainScreen];
-    v4 = [v3 currentMode];
-    [v4 size];
+    currentMode = [v3 currentMode];
+    [currentMode size];
     [NavJunctionViewController updateJunctionImageSizeForScreenSize:?];
   }
 
@@ -111,9 +111,9 @@
 - (void)_tearDownNavigationIfNeeded
 {
   v3 = +[MNNavigationService sharedService];
-  v4 = [v3 isInNavigatingState];
+  isInNavigatingState = [v3 isInNavigatingState];
 
-  if ((v4 & 1) == 0)
+  if ((isInNavigatingState & 1) == 0)
   {
     destinationDisplayName = self->_destinationDisplayName;
     self->_destinationDisplayName = 0;
@@ -128,7 +128,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v8 = 138412290;
-    v9 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "(%@) _clearAllGuidance", &v8, 0xCu);
   }
 
@@ -160,19 +160,19 @@
   else
   {
     v5 = [GuidanceETA alloc];
-    v6 = [v3 displayEtaInfo];
-    v7 = [v3 remainingDistanceInfo];
-    v8 = [v3 batteryChargeInfo];
-    v9 = [v3 upcomingStop];
-    v10 = [v9 timezone];
-    v4 = -[GuidanceETA initWithDisplayETA:remainingDistance:batteryChargeInfo:destinationTimeZone:transportType:](v5, "initWithDisplayETA:remainingDistance:batteryChargeInfo:destinationTimeZone:transportType:", v6, v7, v8, v10, [v3 navigationTransportType]);
+    displayEtaInfo = [v3 displayEtaInfo];
+    remainingDistanceInfo = [v3 remainingDistanceInfo];
+    batteryChargeInfo = [v3 batteryChargeInfo];
+    upcomingStop = [v3 upcomingStop];
+    timezone = [upcomingStop timezone];
+    v4 = -[GuidanceETA initWithDisplayETA:remainingDistance:batteryChargeInfo:destinationTimeZone:transportType:](v5, "initWithDisplayETA:remainingDistance:batteryChargeInfo:destinationTimeZone:transportType:", displayEtaInfo, remainingDistanceInfo, batteryChargeInfo, timezone, [v3 navigationTransportType]);
   }
 
   v11 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v4;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "(%@) _updateDisplayETA to: %@", buf, 0x16u);
@@ -193,7 +193,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v9 = 138412290;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "_processPendingUpdates (%@)", &v9, 0xCu);
   }
 
@@ -204,7 +204,7 @@
     {
       currentSignInfo = self->_currentSignInfo;
       v9 = 138412290;
-      v10 = currentSignInfo;
+      selfCopy = currentSignInfo;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "_processSignInfo: %@", &v9, 0xCu);
     }
 
@@ -216,7 +216,7 @@
       {
         currentLaneInfo = self->_currentLaneInfo;
         v9 = 138412290;
-        v10 = currentLaneInfo;
+        selfCopy = currentLaneInfo;
         _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "_processShowLaneInfo: %@", &v9, 0xCu);
       }
 
@@ -284,35 +284,35 @@
   objc_destroyWeak(&location);
 }
 
-- (void)navigationServiceDidHideSecondaryStep:(id)a3
+- (void)navigationServiceDidHideSecondaryStep:(id)step
 {
   [(GuidanceObserver *)self _eachGuidanceOutput:&stru_1016570E0];
 
   [(GuidanceObserver *)self _removeRepeatableUpdateForKey:@"secondaryManeuver"];
 }
 
-- (void)navigationService:(id)a3 displaySecondaryStep:(id)a4 instructions:(id)a5 shieldType:(int)a6 shieldText:(id)a7 drivingSide:(int)a8
+- (void)navigationService:(id)service displaySecondaryStep:(id)step instructions:(id)instructions shieldType:(int)type shieldText:(id)text drivingSide:(int)side
 {
-  v8 = *&a8;
-  v10 = *&a6;
-  v13 = a4;
-  v14 = a7;
-  v15 = a5;
-  v16 = [(GuidanceObserver *)self classicSignIDs];
-  v17 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v13 stepID]);
-  v18 = [v16 objectForKeyedSubscript:v17];
+  v8 = *&side;
+  v10 = *&type;
+  stepCopy = step;
+  textCopy = text;
+  instructionsCopy = instructions;
+  classicSignIDs = [(GuidanceObserver *)self classicSignIDs];
+  v17 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [stepCopy stepID]);
+  v18 = [classicSignIDs objectForKeyedSubscript:v17];
 
   if (!v18)
   {
     v19 = +[NSUUID UUID];
-    v20 = [(GuidanceObserver *)self classicSignIDs];
-    v21 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v13 stepID]);
-    [v20 setObject:v19 forKeyedSubscript:v21];
+    classicSignIDs2 = [(GuidanceObserver *)self classicSignIDs];
+    v21 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [stepCopy stepID]);
+    [classicSignIDs2 setObject:v19 forKeyedSubscript:v21];
   }
 
-  if ([v13 junctionElements])
+  if ([stepCopy junctionElements])
   {
-    v22 = [[MKJunction alloc] initWithType:objc_msgSend(v13 maneuver:"junctionType") drivingSide:objc_msgSend(v13 elements:"maneuverType") count:{v8, objc_msgSend(v13, "junctionElements"), objc_msgSend(v13, "junctionElementsCount")}];
+    v22 = [[MKJunction alloc] initWithType:objc_msgSend(stepCopy maneuver:"junctionType") drivingSide:objc_msgSend(stepCopy elements:"maneuverType") count:{v8, objc_msgSend(stepCopy, "junctionElements"), objc_msgSend(stepCopy, "junctionElementsCount")}];
   }
 
   else
@@ -321,18 +321,18 @@
   }
 
   v23 = [GuidanceManeuverArtwork alloc];
-  v24 = [v13 maneuverType];
-  v25 = [v13 artworkOverride];
-  v26 = [(GuidanceManeuverArtwork *)v23 initWithManeuver:v24 junction:v22 drivingSide:v8 artworkDataSource:v25];
+  maneuverType = [stepCopy maneuverType];
+  artworkOverride = [stepCopy artworkOverride];
+  v26 = [(GuidanceManeuverArtwork *)v23 initWithManeuver:maneuverType junction:v22 drivingSide:v8 artworkDataSource:artworkOverride];
 
-  v27 = sub_100021DB0(v15, &stru_1016570C0);
+  v27 = sub_100021DB0(instructionsCopy, &stru_1016570C0);
 
-  v28 = [NavSignShieldInfo shieldWithID:v10 stringID:0 text:v14];
+  v28 = [NavSignShieldInfo shieldWithID:v10 stringID:0 text:textCopy];
 
   v29 = [NavSignManeuverGuidanceInfo alloc];
-  v30 = [(GuidanceObserver *)self classicSignIDs];
-  v31 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v13 stepID]);
-  v32 = [v30 objectForKeyedSubscript:v31];
+  classicSignIDs3 = [(GuidanceObserver *)self classicSignIDs];
+  v31 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [stepCopy stepID]);
+  v32 = [classicSignIDs3 objectForKeyedSubscript:v31];
   v33 = [(NavSignManeuverGuidanceInfo *)v29 initWithSignID:v32 maneuverArtwork:v26 majorTextAlternatives:0 minorTextAlternatives:v27 shieldInfo:v28];
 
   v35[0] = _NSConcreteStackBlock;
@@ -344,38 +344,38 @@
   [(GuidanceObserver *)self _performRepeatableUpdateForKey:@"secondaryManeuver" onEachGuidanceOutput:v35];
 }
 
-- (void)navigationService:(id)a3 displayManeuverAlertForAnnouncementStage:(unint64_t)a4
+- (void)navigationService:(id)service displayManeuverAlertForAnnouncementStage:(unint64_t)stage
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100E88DC0;
   v4[3] = &unk_101656D90;
-  v4[4] = a4;
+  v4[4] = stage;
   [(GuidanceObserver *)self _performRepeatableUpdateForKey:@"announcementStage" onEachGuidanceOutput:v4];
 }
 
-- (void)navigationService:(id)a3 displayPrimaryStep:(id)a4 instructions:(id)a5 shieldType:(int)a6 shieldText:(id)a7 drivingSide:(int)a8 maneuverStepIndex:(unint64_t)a9 isSynthetic:(BOOL)a10
+- (void)navigationService:(id)service displayPrimaryStep:(id)step instructions:(id)instructions shieldType:(int)type shieldText:(id)text drivingSide:(int)side maneuverStepIndex:(unint64_t)index isSynthetic:(BOOL)self0
 {
-  v10 = *&a8;
-  v14 = a4;
+  v10 = *&side;
+  stepCopy = step;
   self->_usingSignInfo = 0;
-  v15 = a7;
-  v16 = a5;
-  v17 = [(GuidanceObserver *)self classicSignIDs];
-  v18 = [NSNumber numberWithUnsignedInteger:a9];
-  v19 = [v17 objectForKeyedSubscript:v18];
+  textCopy = text;
+  instructionsCopy = instructions;
+  classicSignIDs = [(GuidanceObserver *)self classicSignIDs];
+  v18 = [NSNumber numberWithUnsignedInteger:index];
+  v19 = [classicSignIDs objectForKeyedSubscript:v18];
 
   if (!v19)
   {
     v20 = +[NSUUID UUID];
-    v21 = [(GuidanceObserver *)self classicSignIDs];
-    v22 = [NSNumber numberWithUnsignedInteger:a9];
-    [v21 setObject:v20 forKeyedSubscript:v22];
+    classicSignIDs2 = [(GuidanceObserver *)self classicSignIDs];
+    v22 = [NSNumber numberWithUnsignedInteger:index];
+    [classicSignIDs2 setObject:v20 forKeyedSubscript:v22];
   }
 
-  if ([v14 junctionElements])
+  if ([stepCopy junctionElements])
   {
-    v23 = [[MKJunction alloc] initWithType:objc_msgSend(v14 maneuver:"junctionType") drivingSide:objc_msgSend(v14 elements:"maneuverType") count:{v10, objc_msgSend(v14, "junctionElements"), objc_msgSend(v14, "junctionElementsCount")}];
+    v23 = [[MKJunction alloc] initWithType:objc_msgSend(stepCopy maneuver:"junctionType") drivingSide:objc_msgSend(stepCopy elements:"maneuverType") count:{v10, objc_msgSend(stepCopy, "junctionElements"), objc_msgSend(stepCopy, "junctionElementsCount")}];
   }
 
   else
@@ -384,21 +384,21 @@
   }
 
   v24 = [GuidanceManeuverArtwork alloc];
-  v25 = [v14 maneuverType];
-  v26 = [v14 artworkOverride];
-  v27 = [(GuidanceManeuverArtwork *)v24 initWithManeuver:v25 junction:v23 drivingSide:v10 artworkDataSource:v26];
+  maneuverType = [stepCopy maneuverType];
+  artworkOverride = [stepCopy artworkOverride];
+  v27 = [(GuidanceManeuverArtwork *)v24 initWithManeuver:maneuverType junction:v23 drivingSide:v10 artworkDataSource:artworkOverride];
 
-  v28 = sub_100021DB0(v16, &stru_101657078);
+  v28 = sub_100021DB0(instructionsCopy, &stru_101657078);
 
-  v29 = [(GuidanceObserver *)self _signRepeatableUpdateKeys];
-  [(GuidanceObserver *)self _removeAllRepeatableUpdatesForKeys:v29];
+  _signRepeatableUpdateKeys = [(GuidanceObserver *)self _signRepeatableUpdateKeys];
+  [(GuidanceObserver *)self _removeAllRepeatableUpdatesForKeys:_signRepeatableUpdateKeys];
 
-  v30 = [NavSignShieldInfo shieldWithID:a6 stringID:0 text:v15];
+  v30 = [NavSignShieldInfo shieldWithID:type stringID:0 text:textCopy];
 
   v31 = [NavSignManeuverGuidanceInfo alloc];
-  v32 = [(GuidanceObserver *)self classicSignIDs];
-  v33 = [NSNumber numberWithUnsignedInteger:a9];
-  v34 = [v32 objectForKeyedSubscript:v33];
+  classicSignIDs3 = [(GuidanceObserver *)self classicSignIDs];
+  v33 = [NSNumber numberWithUnsignedInteger:index];
+  v34 = [classicSignIDs3 objectForKeyedSubscript:v33];
   v35 = [(NavSignManeuverGuidanceInfo *)v31 initWithSignID:v34 maneuverArtwork:v27 majorTextAlternatives:0 minorTextAlternatives:v28 shieldInfo:v30];
 
   v38[0] = _NSConcreteStackBlock;
@@ -406,70 +406,70 @@
   v38[2] = sub_100E8910C;
   v38[3] = &unk_1016570A0;
   v39 = v35;
-  v40 = a9;
+  indexCopy = index;
   v36 = v35;
   [(GuidanceObserver *)self _performRepeatableUpdateForKey:@"primaryOrProceedToRouteManeuver" onEachGuidanceOutput:v38];
 }
 
-- (void)navigationService:(id)a3 didUpdateDistanceUntilSign:(double)a4 timeUntilSign:(double)a5 forStepIndex:(unint64_t)a6
+- (void)navigationService:(id)service didUpdateDistanceUntilSign:(double)sign timeUntilSign:(double)untilSign forStepIndex:(unint64_t)index
 {
-  v10 = a3;
-  v11 = [v10 route];
-  v12 = [v11 steps];
-  v13 = [v12 count];
+  serviceCopy = service;
+  route = [serviceCopy route];
+  steps = [route steps];
+  v13 = [steps count];
 
-  if (v13 > a6)
+  if (v13 > index)
   {
-    v14 = [v10 route];
-    v15 = [v14 steps];
-    v16 = [v15 objectAtIndexedSubscript:a6];
+    route2 = [serviceCopy route];
+    steps2 = [route2 steps];
+    v16 = [steps2 objectAtIndexedSubscript:index];
 
     v17 = [v16 contentsForContext:1];
-    v18 = [v17 stringForDistance:a4];
-    v19 = [v18 mkServerFormattedString];
+    v18 = [v17 stringForDistance:sign];
+    mkServerFormattedString = [v18 mkServerFormattedString];
 
     v22[0] = _NSConcreteStackBlock;
     v22[1] = 3221225472;
     v22[2] = sub_100E892A8;
     v22[3] = &unk_101657058;
-    v25 = a5;
-    v26 = a4;
-    v23 = v19;
+    untilSignCopy = untilSign;
+    signCopy = sign;
+    v23 = mkServerFormattedString;
     v24 = v16;
-    v27 = a6;
+    indexCopy = index;
     v20 = v16;
-    v21 = v19;
+    v21 = mkServerFormattedString;
     [(GuidanceObserver *)self _performRepeatableUpdateForKey:@"remainingManeuverTimeAndDistance" onEachGuidanceOutput:v22];
   }
 }
 
-- (void)navigationService:(id)a3 didUpdateProceedToRouteDistance:(double)a4 displayString:(id)a5 closestStepIndex:(unint64_t)a6
+- (void)navigationService:(id)service didUpdateProceedToRouteDistance:(double)distance displayString:(id)string closestStepIndex:(unint64_t)index
 {
-  v10 = a3;
-  v11 = a5;
+  serviceCopy = service;
+  stringCopy = string;
   v12 = +[MNNavigationService sharedService];
-  v13 = [v12 navigationState];
+  navigationState = [v12 navigationState];
 
-  if (v13 != 5)
+  if (navigationState != 5)
   {
     [(GuidanceObserver *)self _removeRepeatableUpdateForKey:@"recalculating"];
     [(GuidanceObserver *)self _removeRepeatableUpdateForKey:@"remainingManeuverTimeAndDistance"];
-    v14 = [v10 route];
-    v15 = [v14 steps];
-    v16 = [v15 count];
+    route = [serviceCopy route];
+    steps = [route steps];
+    v16 = [steps count];
 
-    if (v16 > a6)
+    if (v16 > index)
     {
-      v17 = [v10 route];
-      v18 = [v17 steps];
-      v19 = [v18 objectAtIndexedSubscript:a6];
+      route2 = [serviceCopy route];
+      steps2 = [route2 steps];
+      v19 = [steps2 objectAtIndexedSubscript:index];
 
       v21[0] = _NSConcreteStackBlock;
       v21[1] = 3221225472;
       v21[2] = sub_100E89458;
       v21[3] = &unk_101657030;
-      v24 = a4;
-      v22 = v11;
+      distanceCopy = distance;
+      v22 = stringCopy;
       v23 = v19;
       v20 = v19;
       [(GuidanceObserver *)self _performRepeatableUpdateForKey:@"primaryOrProceedToRouteManeuver" onEachGuidanceOutput:v21];
@@ -477,9 +477,9 @@
   }
 }
 
-- (void)navigationService:(id)a3 hideJunctionViewForId:(id)a4
+- (void)navigationService:(id)service hideJunctionViewForId:(id)id
 {
-  if (a4)
+  if (id)
   {
     currentJunctionViewInfo = self->_currentJunctionViewInfo;
     self->_currentJunctionViewInfo = 0;
@@ -489,22 +489,22 @@
   }
 }
 
-- (void)navigationService:(id)a3 showJunctionView:(id)a4
+- (void)navigationService:(id)service showJunctionView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  serviceCopy = service;
+  viewCopy = view;
+  if (viewCopy)
   {
     currentJunctionViewInfo = self->_currentJunctionViewInfo;
-    if (currentJunctionViewInfo != v7)
+    if (currentJunctionViewInfo != viewCopy)
     {
-      v9 = [(MNGuidanceJunctionViewInfo *)currentJunctionViewInfo uniqueID];
-      v10 = [(MNGuidanceJunctionViewInfo *)v7 uniqueID];
-      v11 = [v9 isEqual:v10];
+      uniqueID = [(MNGuidanceJunctionViewInfo *)currentJunctionViewInfo uniqueID];
+      uniqueID2 = [(MNGuidanceJunctionViewInfo *)viewCopy uniqueID];
+      v11 = [uniqueID isEqual:uniqueID2];
 
       if ((v11 & 1) == 0)
       {
-        objc_storeStrong(&self->_currentJunctionViewInfo, a4);
+        objc_storeStrong(&self->_currentJunctionViewInfo, view);
         self->_shouldHideJunctionViewThisUpdate = 0;
         *&self->_needsUpdate = 257;
       }
@@ -522,9 +522,9 @@
   }
 }
 
-- (void)navigationService:(id)a3 hideLaneDirectionsForId:(id)a4
+- (void)navigationService:(id)service hideLaneDirectionsForId:(id)id
 {
-  if (a4)
+  if (id)
   {
     currentLaneInfo = self->_currentLaneInfo;
     self->_currentLaneInfo = 0;
@@ -534,49 +534,49 @@
   }
 }
 
-- (void)navigationService:(id)a3 showLaneDirections:(id)a4
+- (void)navigationService:(id)service showLaneDirections:(id)directions
 {
-  v6 = a4;
-  if (v6 && self->_currentLaneInfo != v6)
+  directionsCopy = directions;
+  if (directionsCopy && self->_currentLaneInfo != directionsCopy)
   {
-    v7 = v6;
-    objc_storeStrong(&self->_currentLaneInfo, a4);
-    v6 = v7;
+    v7 = directionsCopy;
+    objc_storeStrong(&self->_currentLaneInfo, directions);
+    directionsCopy = v7;
     self->_shouldHideLaneGuidanceThisUpdate = 0;
     self->_needsUpdate = 1;
   }
 }
 
-- (void)navigationService:(id)a3 didResumeNavigatingFromWaypoint:(id)a4 endOfLegIndex:(unint64_t)a5 reason:(unint64_t)a6
+- (void)navigationService:(id)service didResumeNavigatingFromWaypoint:(id)waypoint endOfLegIndex:(unint64_t)index reason:(unint64_t)reason
 {
-  [(GuidanceObserver *)self _updateArrivalStateWithService:a3, a4, a5, a6];
+  [(GuidanceObserver *)self _updateArrivalStateWithService:service, waypoint, index, reason];
   [(GuidanceObserver *)self _updateDisplayETA];
 
   [(GuidanceObserver *)self _removeAllRepeatableUpdates];
 }
 
-- (void)_updateArrivalStateWithService:(id)a3
+- (void)_updateArrivalStateWithService:(id)service
 {
-  v4 = [a3 arrivalState];
+  arrivalState = [service arrivalState];
 
-  [(GuidanceObserver *)self setCurrentArrivalState:v4];
+  [(GuidanceObserver *)self setCurrentArrivalState:arrivalState];
 }
 
-- (void)navigationService:(id)a3 updateSignsWithARInfo:(id)a4
+- (void)navigationService:(id)service updateSignsWithARInfo:(id)info
 {
-  v5 = a4;
-  if (v5)
+  infoCopy = info;
+  if (infoCopy)
   {
     v6 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
-      v7 = sub_100021DB0(v5, &stru_101657008);
+      v7 = sub_100021DB0(infoCopy, &stru_101657008);
       v10 = 138412290;
       v11 = v7;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "Got AR guidance infos: %@", &v10, 0xCu);
     }
 
-    v8 = [v5 copy];
+    v8 = [infoCopy copy];
     currentARInfos = self->_currentARInfos;
     self->_currentARInfos = v8;
 
@@ -585,39 +585,39 @@
   }
 }
 
-- (void)navigationService:(id)a3 updateSignsWithInfo:(id)a4
+- (void)navigationService:(id)service updateSignsWithInfo:(id)info
 {
-  v6 = a4;
-  if (v6)
+  infoCopy = info;
+  if (infoCopy)
   {
     self->_usingSignInfo = 1;
-    v7 = v6;
-    objc_storeStrong(&self->_currentSignInfo, a4);
-    v6 = v7;
+    v7 = infoCopy;
+    objc_storeStrong(&self->_currentSignInfo, info);
+    infoCopy = v7;
     self->_needsUpdate = 1;
   }
 }
 
-- (void)navigationServiceDidCancelReroute:(id)a3
+- (void)navigationServiceDidCancelReroute:(id)reroute
 {
-  v4 = [(GuidanceObserver *)self _signRepeatableUpdateKeys];
-  [(GuidanceObserver *)self _removeAllRepeatableUpdatesForKeys:v4];
+  _signRepeatableUpdateKeys = [(GuidanceObserver *)self _signRepeatableUpdateKeys];
+  [(GuidanceObserver *)self _removeAllRepeatableUpdatesForKeys:_signRepeatableUpdateKeys];
 
   [(GuidanceObserver *)self _eachGuidanceOutput:&stru_101656FC8];
 }
 
-- (void)navigationService:(id)a3 failedRerouteWithErrorCode:(int64_t)a4
+- (void)navigationService:(id)service failedRerouteWithErrorCode:(int64_t)code
 {
-  v5 = [(GuidanceObserver *)self _signRepeatableUpdateKeys:a3];
+  v5 = [(GuidanceObserver *)self _signRepeatableUpdateKeys:service];
   [(GuidanceObserver *)self _removeAllRepeatableUpdatesForKeys:v5];
 
   [(GuidanceObserver *)self _eachGuidanceOutput:&stru_101656FA8];
 }
 
-- (void)navigationService:(id)a3 didReroute:(id)a4 rerouteReason:(unint64_t)a5
+- (void)navigationService:(id)service didReroute:(id)reroute rerouteReason:(unint64_t)reason
 {
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  rerouteCopy = reroute;
   v9 = objc_opt_new();
   [(GuidanceObserver *)self setClassicSignIDs:v9];
 
@@ -633,27 +633,27 @@
   objc_destroyWeak(&location);
 }
 
-- (void)navigationServiceWillReroute:(id)a3
+- (void)navigationServiceWillReroute:(id)reroute
 {
-  v4 = [(GuidanceObserver *)self _signRepeatableUpdateKeys];
-  [(GuidanceObserver *)self _removeAllRepeatableUpdatesForKeys:v4];
+  _signRepeatableUpdateKeys = [(GuidanceObserver *)self _signRepeatableUpdateKeys];
+  [(GuidanceObserver *)self _removeAllRepeatableUpdatesForKeys:_signRepeatableUpdateKeys];
 
   [(GuidanceObserver *)self _performRepeatableUpdateForKey:@"recalculating" onEachGuidanceOutput:&stru_101656F88];
 }
 
-- (void)navigationService:(id)a3 didEnableGuidancePrompts:(BOOL)a4
+- (void)navigationService:(id)service didEnableGuidancePrompts:(BOOL)prompts
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100E89CEC;
   v4[3] = &unk_101656F68;
-  v5 = a4;
+  promptsCopy = prompts;
   [(GuidanceObserver *)self _eachGuidanceOutput:v4];
 }
 
-- (void)navigationService:(id)a3 didChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service didChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
-  v6 = a3;
+  serviceCopy = service;
   if (MNNavigationServiceStateChangedFromNavigatingToStopped())
   {
     [(GuidanceObserver *)self _eachGuidanceOutput:&stru_101656F48];
@@ -662,10 +662,10 @@
     [(NSHashTable *)self->_outlets removeAllObjects];
   }
 
-  [(GuidanceObserver *)self _updateArrivalStateWithService:v6];
+  [(GuidanceObserver *)self _updateArrivalStateWithService:serviceCopy];
 }
 
-- (void)navigationService:(id)a3 willChangeFromState:(unint64_t)a4 toState:(unint64_t)a5
+- (void)navigationService:(id)service willChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
   if (MNNavigationServiceStateChangedToNavigating())
   {
@@ -677,34 +677,34 @@
 - (void)_updateDestinationDisplayName
 {
   v3 = +[MNNavigationService sharedService];
-  v4 = [v3 route];
-  v5 = [v4 legIndexForStepIndex:{objc_msgSend(v3, "stepIndex")}];
-  v6 = [v4 legs];
-  v7 = [v6 count];
-  v8 = [v4 legs];
-  v9 = v8;
+  route = [v3 route];
+  v5 = [route legIndexForStepIndex:{objc_msgSend(v3, "stepIndex")}];
+  legs = [route legs];
+  v7 = [legs count];
+  legs2 = [route legs];
+  v9 = legs2;
   if (v5 >= v7)
   {
-    [v8 lastObject];
+    [legs2 lastObject];
   }
 
   else
   {
-    [v8 objectAtIndexedSubscript:v5];
+    [legs2 objectAtIndexedSubscript:v5];
   }
   v10 = ;
 
-  v11 = [v10 destination];
-  v12 = [v11 navDisplayName];
+  destination = [v10 destination];
+  navDisplayName = [destination navDisplayName];
 
   p_destinationDisplayName = &self->_destinationDisplayName;
   v14 = self->_destinationDisplayName;
-  v15 = v12;
+  v15 = navDisplayName;
   if (v15 | v14)
   {
     v17 = [v14 isEqual:v15];
 
-    objc_storeStrong(&self->_destinationDisplayName, v12);
+    objc_storeStrong(&self->_destinationDisplayName, navDisplayName);
     if ((v17 & 1) == 0)
     {
       [(GuidanceObserver *)self _removeRepeatableUpdateForKey:@"destinationDisplayName"];
@@ -727,14 +727,14 @@
   }
 }
 
-- (void)_processARInfosUpdate:(id)a3
+- (void)_processARInfosUpdate:(id)update
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100E8A148;
   v5[3] = &unk_101656E80;
-  v6 = a3;
-  v4 = v6;
+  updateCopy = update;
+  v4 = updateCopy;
   [(GuidanceObserver *)self _performRepeatableUpdateForKey:@"ARSignInfos" onEachGuidanceOutput:v5];
 }
 
@@ -745,14 +745,14 @@
   [(GuidanceObserver *)self _removeRepeatableUpdateForKey:@"showJunctionViewInfo"];
 }
 
-- (void)_processShowJunctionViewInfo:(id)a3
+- (void)_processShowJunctionViewInfo:(id)info
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100E8A2F4;
   v5[3] = &unk_101656E80;
-  v6 = a3;
-  v4 = v6;
+  infoCopy = info;
+  v4 = infoCopy;
   [(GuidanceObserver *)self _performRepeatableUpdateForKey:@"showJunctionViewInfo" onEachGuidanceOutput:v5];
   [(GuidanceObserver *)self _removeRepeatableUpdateForKey:@"hideJunctionViewInfo"];
 }
@@ -764,49 +764,49 @@
   [(GuidanceObserver *)self _removeRepeatableUpdateForKey:@"showLaneGuidanceInfo"];
 }
 
-- (void)_processShowLaneInfo:(id)a3
+- (void)_processShowLaneInfo:(id)info
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100E8A4BC;
   v5[3] = &unk_101656E80;
-  v6 = a3;
-  v4 = v6;
+  infoCopy = info;
+  v4 = infoCopy;
   [(GuidanceObserver *)self _performRepeatableUpdateForKey:@"showLaneGuidanceInfo" onEachGuidanceOutput:v5];
   [(GuidanceObserver *)self _removeRepeatableUpdateForKey:@"hideLaneGuidanceInfo"];
 }
 
-- (void)_processSignInfo:(id)a3
+- (void)_processSignInfo:(id)info
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  infoCopy = info;
+  v5 = infoCopy;
+  if (infoCopy)
   {
-    v6 = [v4 primarySign];
-    if (v6)
+    primarySign = [infoCopy primarySign];
+    if (primarySign)
     {
     }
 
     else
     {
-      v7 = [v5 secondarySign];
+      secondarySign = [v5 secondarySign];
 
-      if (!v7)
+      if (!secondarySign)
       {
         goto LABEL_22;
       }
     }
 
     v110 = +[MNNavigationService sharedService];
-    v8 = [v5 primarySign];
-    v9 = [v8 junction];
-    v116 = self;
-    if ([v9 numElements])
+    primarySign2 = [v5 primarySign];
+    junction = [primarySign2 junction];
+    selfCopy = self;
+    if ([junction numElements])
     {
       v10 = [MKJunction alloc];
-      v11 = [v5 primarySign];
-      v12 = [v11 junction];
-      v13 = [v10 initWithJunction:v12];
+      primarySign3 = [v5 primarySign];
+      junction2 = [primarySign3 junction];
+      v13 = [v10 initWithJunction:junction2];
     }
 
     else
@@ -815,79 +815,79 @@
     }
 
     v117 = [GuidanceManeuverArtwork alloc];
-    v14 = [v5 primarySign];
-    v15 = [v14 junction];
-    v16 = [v15 maneuverType];
-    v17 = [v5 primarySign];
-    v18 = [v17 junction];
-    v19 = [v18 drivingSide];
-    v20 = [v5 primarySign];
-    v21 = [v20 artworkOverride];
+    primarySign4 = [v5 primarySign];
+    junction3 = [primarySign4 junction];
+    maneuverType = [junction3 maneuverType];
+    primarySign5 = [v5 primarySign];
+    junction4 = [primarySign5 junction];
+    drivingSide = [junction4 drivingSide];
+    primarySign6 = [v5 primarySign];
+    artworkOverride = [primarySign6 artworkOverride];
     v113 = v13;
-    v118 = [(GuidanceManeuverArtwork *)v117 initWithManeuver:v16 junction:v13 drivingSide:v19 artworkDataSource:v21];
+    v118 = [(GuidanceManeuverArtwork *)v117 initWithManeuver:maneuverType junction:v13 drivingSide:drivingSide artworkDataSource:artworkOverride];
 
-    v22 = [v5 primarySign];
-    v23 = [v22 primaryStrings];
-    v24 = [v23 count];
+    primarySign7 = [v5 primarySign];
+    primaryStrings = [primarySign7 primaryStrings];
+    v24 = [primaryStrings count];
 
     if (v24)
     {
-      v25 = [v5 primarySign];
-      v26 = [v25 primaryStrings];
-      v115 = sub_100021DB0(v26, &stru_101656DD0);
+      primarySign8 = [v5 primarySign];
+      primaryStrings2 = [primarySign8 primaryStrings];
+      v115 = sub_100021DB0(primaryStrings2, &stru_101656DD0);
 
-      v27 = [v5 primarySign];
-      v28 = [v27 secondaryStrings];
-      v114 = sub_100021DB0(v28, &stru_101656DF0);
+      primarySign9 = [v5 primarySign];
+      secondaryStrings = [primarySign9 secondaryStrings];
+      v114 = sub_100021DB0(secondaryStrings, &stru_101656DF0);
     }
 
     else
     {
       v29 = [MKServerFormattedStringParameters alloc];
-      v30 = [v5 primarySign];
-      v31 = [v30 distanceDetailLevel];
-      v32 = [v5 primarySign];
-      v33 = [v32 variableOverrides];
-      v34 = [v29 initWithInstructionsDistanceDetailLevel:v31 variableOverrides:v33];
+      primarySign10 = [v5 primarySign];
+      distanceDetailLevel = [primarySign10 distanceDetailLevel];
+      primarySign11 = [v5 primarySign];
+      variableOverrides = [primarySign11 variableOverrides];
+      v34 = [v29 initWithInstructionsDistanceDetailLevel:distanceDetailLevel variableOverrides:variableOverrides];
 
-      v35 = [v5 primarySign];
-      v36 = [v35 titles];
+      primarySign12 = [v5 primarySign];
+      titles = [primarySign12 titles];
       v130[0] = _NSConcreteStackBlock;
       v130[1] = 3221225472;
       v130[2] = sub_100E8B06C;
       v130[3] = &unk_10165CBB8;
       v37 = v34;
       v131 = v37;
-      v115 = sub_100021DB0(v36, v130);
+      v115 = sub_100021DB0(titles, v130);
 
-      v38 = [v5 primarySign];
-      v39 = [v38 details];
+      primarySign13 = [v5 primarySign];
+      details = [primarySign13 details];
       v128[0] = _NSConcreteStackBlock;
       v128[1] = 3221225472;
       v128[2] = sub_100E8B0D4;
       v128[3] = &unk_10165CBB8;
       v129 = v37;
-      v27 = v37;
-      v114 = sub_100021DB0(v39, v128);
+      primarySign9 = v37;
+      v114 = sub_100021DB0(details, v128);
     }
 
-    v40 = [(GuidanceObserver *)v116 _signRepeatableUpdateKeys];
-    [(GuidanceObserver *)v116 _removeAllRepeatableUpdatesForKeys:v40];
+    _signRepeatableUpdateKeys = [(GuidanceObserver *)selfCopy _signRepeatableUpdateKeys];
+    [(GuidanceObserver *)selfCopy _removeAllRepeatableUpdatesForKeys:_signRepeatableUpdateKeys];
 
-    v41 = [v5 primarySign];
-    v42 = [v41 shieldID];
-    v43 = [v5 primarySign];
-    v44 = [v43 shieldStringID];
-    v45 = [v5 primarySign];
-    v46 = [v45 shieldText];
-    v47 = [NavSignShieldInfo shieldWithID:v42 stringID:v44 text:v46];
+    primarySign14 = [v5 primarySign];
+    shieldID = [primarySign14 shieldID];
+    primarySign15 = [v5 primarySign];
+    shieldStringID = [primarySign15 shieldStringID];
+    primarySign16 = [v5 primarySign];
+    shieldText = [primarySign16 shieldText];
+    v47 = [NavSignShieldInfo shieldWithID:shieldID stringID:shieldStringID text:shieldText];
 
     v48 = [NavSignManeuverGuidanceInfo alloc];
-    v49 = [v5 primarySign];
-    v50 = [v49 uniqueID];
+    primarySign17 = [v5 primarySign];
+    uniqueID = [primarySign17 uniqueID];
     v51 = v114;
     v112 = v47;
-    v52 = [(NavSignManeuverGuidanceInfo *)v48 initWithSignID:v50 maneuverArtwork:v118 majorTextAlternatives:v115 minorTextAlternatives:v114 shieldInfo:v47];
+    v52 = [(NavSignManeuverGuidanceInfo *)v48 initWithSignID:uniqueID maneuverArtwork:v118 majorTextAlternatives:v115 minorTextAlternatives:v114 shieldInfo:v47];
 
     v125[0] = _NSConcreteStackBlock;
     v125[1] = 3221225472;
@@ -897,21 +897,21 @@
     v126 = v53;
     v54 = v110;
     v127 = v54;
-    [(GuidanceObserver *)v116 _performRepeatableUpdateForKey:@"primaryOrProceedToRouteManeuver" onEachGuidanceOutput:v125];
-    v55 = [v5 secondarySign];
+    [(GuidanceObserver *)selfCopy _performRepeatableUpdateForKey:@"primaryOrProceedToRouteManeuver" onEachGuidanceOutput:v125];
+    secondarySign2 = [v5 secondarySign];
 
-    if (v55)
+    if (secondarySign2)
     {
       v109 = v53;
       v111 = v54;
-      v56 = [v5 secondarySign];
-      v57 = [v56 junction];
-      if ([v57 numElements])
+      secondarySign3 = [v5 secondarySign];
+      junction5 = [secondarySign3 junction];
+      if ([junction5 numElements])
       {
         v58 = [MKJunction alloc];
-        v59 = [v5 secondarySign];
-        v60 = [v59 junction];
-        v61 = [v58 initWithJunction:v60];
+        secondarySign4 = [v5 secondarySign];
+        junction6 = [secondarySign4 junction];
+        v61 = [v58 initWithJunction:junction6];
       }
 
       else
@@ -920,87 +920,87 @@
       }
 
       v107 = [GuidanceManeuverArtwork alloc];
-      v65 = [v5 secondarySign];
-      v66 = [v65 junction];
-      v67 = [v66 maneuverType];
-      v68 = [v5 secondarySign];
-      v69 = [v68 junction];
-      v70 = [v69 drivingSide];
-      v71 = [v5 secondarySign];
-      v72 = [v71 artworkOverride];
+      secondarySign5 = [v5 secondarySign];
+      junction7 = [secondarySign5 junction];
+      maneuverType2 = [junction7 maneuverType];
+      secondarySign6 = [v5 secondarySign];
+      junction8 = [secondarySign6 junction];
+      drivingSide2 = [junction8 drivingSide];
+      secondarySign7 = [v5 secondarySign];
+      artworkOverride2 = [secondarySign7 artworkOverride];
       v73 = v107;
       v108 = v61;
-      v106 = [(GuidanceManeuverArtwork *)v73 initWithManeuver:v67 junction:v61 drivingSide:v70 artworkDataSource:v72];
+      v106 = [(GuidanceManeuverArtwork *)v73 initWithManeuver:maneuverType2 junction:v61 drivingSide:drivingSide2 artworkDataSource:artworkOverride2];
 
-      v74 = [v5 secondarySign];
-      v75 = [v74 primaryStrings];
-      v76 = [v75 count];
+      secondarySign8 = [v5 secondarySign];
+      primaryStrings3 = [secondarySign8 primaryStrings];
+      v76 = [primaryStrings3 count];
 
       if (v76)
       {
-        v77 = [v5 secondarySign];
-        v78 = [v77 primaryStrings];
-        v105 = sub_100021DB0(v78, &stru_101656E38);
+        secondarySign9 = [v5 secondarySign];
+        primaryStrings4 = [secondarySign9 primaryStrings];
+        v105 = sub_100021DB0(primaryStrings4, &stru_101656E38);
 
-        v79 = [v5 secondarySign];
-        v80 = [v79 secondaryStrings];
-        v81 = sub_100021DB0(v80, &stru_101656E58);
+        secondarySign10 = [v5 secondarySign];
+        secondaryStrings2 = [secondarySign10 secondaryStrings];
+        v81 = sub_100021DB0(secondaryStrings2, &stru_101656E58);
       }
 
       else
       {
         v82 = [MKServerFormattedStringParameters alloc];
-        v83 = [v5 secondarySign];
-        v84 = [v83 distanceDetailLevel];
-        v85 = [v5 secondarySign];
-        v86 = [v85 variableOverrides];
-        v87 = [v82 initWithInstructionsDistanceDetailLevel:v84 variableOverrides:v86];
+        secondarySign11 = [v5 secondarySign];
+        distanceDetailLevel2 = [secondarySign11 distanceDetailLevel];
+        secondarySign12 = [v5 secondarySign];
+        variableOverrides2 = [secondarySign12 variableOverrides];
+        v87 = [v82 initWithInstructionsDistanceDetailLevel:distanceDetailLevel2 variableOverrides:variableOverrides2];
 
-        v88 = [v5 secondarySign];
-        v89 = [v88 titles];
+        secondarySign13 = [v5 secondarySign];
+        titles2 = [secondarySign13 titles];
         v123[0] = _NSConcreteStackBlock;
         v123[1] = 3221225472;
         v123[2] = sub_100E8B198;
         v123[3] = &unk_10165CBB8;
         v90 = v87;
         v124 = v90;
-        v105 = sub_100021DB0(v89, v123);
+        v105 = sub_100021DB0(titles2, v123);
 
-        v91 = [v5 secondarySign];
-        v92 = [v91 details];
+        secondarySign14 = [v5 secondarySign];
+        details2 = [secondarySign14 details];
         v121[0] = _NSConcreteStackBlock;
         v121[1] = 3221225472;
         v121[2] = sub_100E8B200;
         v121[3] = &unk_10165CBB8;
         v122 = v90;
-        v79 = v90;
-        v81 = sub_100021DB0(v92, v121);
+        secondarySign10 = v90;
+        v81 = sub_100021DB0(details2, v121);
 
-        v80 = v124;
+        secondaryStrings2 = v124;
       }
 
-      v93 = [v5 secondarySign];
-      v94 = [v93 shieldID];
-      v95 = [v5 secondarySign];
-      v96 = [v95 shieldStringID];
-      v97 = [v5 secondarySign];
-      v98 = [v97 shieldText];
-      v99 = [NavSignShieldInfo shieldWithID:v94 stringID:v96 text:v98];
+      secondarySign15 = [v5 secondarySign];
+      shieldID2 = [secondarySign15 shieldID];
+      secondarySign16 = [v5 secondarySign];
+      shieldStringID2 = [secondarySign16 shieldStringID];
+      secondarySign17 = [v5 secondarySign];
+      shieldText2 = [secondarySign17 shieldText];
+      v99 = [NavSignShieldInfo shieldWithID:shieldID2 stringID:shieldStringID2 text:shieldText2];
 
       v100 = [NavSignManeuverGuidanceInfo alloc];
       v63 = v5;
-      v101 = [v5 secondarySign];
-      v102 = [v101 uniqueID];
-      v103 = [(NavSignManeuverGuidanceInfo *)v100 initWithSignID:v102 maneuverArtwork:v106 majorTextAlternatives:v105 minorTextAlternatives:v81 shieldInfo:v99];
+      secondarySign18 = [v5 secondarySign];
+      uniqueID2 = [secondarySign18 uniqueID];
+      v103 = [(NavSignManeuverGuidanceInfo *)v100 initWithSignID:uniqueID2 maneuverArtwork:v106 majorTextAlternatives:v105 minorTextAlternatives:v81 shieldInfo:v99];
 
-      v116->_secondarySignVisible = 1;
+      selfCopy->_secondarySignVisible = 1;
       v119[0] = _NSConcreteStackBlock;
       v119[1] = 3221225472;
       v119[2] = sub_100E8B268;
       v119[3] = &unk_101656E80;
       v120 = v103;
       v104 = v103;
-      [(GuidanceObserver *)v116 _performRepeatableUpdateForKey:@"secondaryManeuver" onEachGuidanceOutput:v119];
+      [(GuidanceObserver *)selfCopy _performRepeatableUpdateForKey:@"secondaryManeuver" onEachGuidanceOutput:v119];
 
       v64 = v113;
       v51 = v114;
@@ -1014,11 +1014,11 @@
       v62 = v115;
       v63 = v5;
       v64 = v113;
-      if (v116->_secondarySignVisible)
+      if (selfCopy->_secondarySignVisible)
       {
-        v116->_secondarySignVisible = 0;
-        [(GuidanceObserver *)v116 _eachGuidanceOutput:&stru_101656EC0];
-        [(GuidanceObserver *)v116 _removeRepeatableUpdateForKey:@"secondaryManeuver"];
+        selfCopy->_secondarySignVisible = 0;
+        [(GuidanceObserver *)selfCopy _eachGuidanceOutput:&stru_101656EC0];
+        [(GuidanceObserver *)selfCopy _removeRepeatableUpdateForKey:@"secondaryManeuver"];
       }
     }
 
@@ -1036,7 +1036,7 @@ LABEL_22:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       v4 = 138412290;
-      v5 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "(%@) resumeUpdates", &v4, 0xCu);
     }
 
@@ -1051,7 +1051,7 @@ LABEL_22:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "(%@) pauseUpdates", &v4, 0xCu);
   }
 
@@ -1064,7 +1064,7 @@ LABEL_22:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "(%@) _repeatAllUpdates", buf, 0xCu);
   }
 
@@ -1072,8 +1072,8 @@ LABEL_22:
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [(GuidanceObserver *)self _orderedUpdateKinds];
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  _orderedUpdateKinds = [(GuidanceObserver *)self _orderedUpdateKinds];
+  v5 = [_orderedUpdateKinds countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1085,7 +1085,7 @@ LABEL_22:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(_orderedUpdateKinds);
         }
 
         v9 = [(NSMutableDictionary *)self->_guidanceUpdates objectForKeyedSubscript:*(*(&v10 + 1) + 8 * v8)];
@@ -1098,22 +1098,22 @@ LABEL_22:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [_orderedUpdateKinds countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_repeatAllUpdatesWithTarget:(id)a3 selector:(SEL)a4
+- (void)_repeatAllUpdatesWithTarget:(id)target selector:(SEL)selector
 {
-  v6 = a3;
+  targetCopy = target;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v7 = [(GuidanceObserver *)self _orderedUpdateKinds];
-  v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  _orderedUpdateKinds = [(GuidanceObserver *)self _orderedUpdateKinds];
+  v8 = [_orderedUpdateKinds countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1125,7 +1125,7 @@ LABEL_22:
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(_orderedUpdateKinds);
         }
 
         v12 = [(NSMutableDictionary *)self->_guidanceUpdates objectForKeyedSubscript:*(*(&v15 + 1) + 8 * v11)];
@@ -1133,31 +1133,31 @@ LABEL_22:
         if (v12)
         {
           v14 = objc_retainBlock(v12);
-          [v6 performSelector:a4 withObject:v14];
+          [targetCopy performSelector:selector withObject:v14];
         }
 
         v11 = v11 + 1;
       }
 
       while (v9 != v11);
-      v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [_orderedUpdateKinds countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
   }
 }
 
-- (void)repeatAllUpdatesForOutlet:(id)a3
+- (void)repeatAllUpdatesForOutlet:(id)outlet
 {
-  v4 = a3;
-  if (v4)
+  outletCopy = outlet;
+  if (outletCopy)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(GuidanceObserver *)self _orderedUpdateKinds];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    _orderedUpdateKinds = [(GuidanceObserver *)self _orderedUpdateKinds];
+    v6 = [_orderedUpdateKinds countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1169,21 +1169,21 @@ LABEL_22:
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(_orderedUpdateKinds);
           }
 
           v10 = [(NSMutableDictionary *)self->_guidanceUpdates objectForKeyedSubscript:*(*(&v13 + 1) + 8 * v9)];
           v11 = v10;
           if (v10)
           {
-            (*(v10 + 16))(v10, v4);
+            (*(v10 + 16))(v10, outletCopy);
           }
 
           v9 = v9 + 1;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [_orderedUpdateKinds countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v7);
@@ -1193,16 +1193,16 @@ LABEL_22:
 
     if (!v12)
     {
-      [v4 hideSecondaryManeuver];
+      [outletCopy hideSecondaryManeuver];
     }
   }
 }
 
-- (void)_eachGuidanceOutput:(id)a3 ignorePaused:(BOOL)a4
+- (void)_eachGuidanceOutput:(id)output ignorePaused:(BOOL)paused
 {
-  v4 = a4;
-  v6 = a3;
-  if (!self->_paused || v4)
+  pausedCopy = paused;
+  outputCopy = output;
+  if (!self->_paused || pausedCopy)
   {
     v8 = [(NSHashTable *)self->_outlets copy];
     v14 = 0u;
@@ -1225,7 +1225,7 @@ LABEL_22:
             objc_enumerationMutation(v9);
           }
 
-          v6[2](v6, *(*(&v14 + 1) + 8 * v13));
+          outputCopy[2](outputCopy, *(*(&v14 + 1) + 8 * v13));
           v13 = v13 + 1;
         }
 
@@ -1238,14 +1238,14 @@ LABEL_22:
   }
 }
 
-- (void)_performRepeatableUpdateForKey:(id)a3 onEachGuidanceOutput:(id)a4
+- (void)_performRepeatableUpdateForKey:(id)key onEachGuidanceOutput:(id)output
 {
-  v6 = a4;
-  v7 = a3;
-  [(GuidanceObserver *)self _eachGuidanceOutput:v6];
-  v8 = [v6 copy];
+  outputCopy = output;
+  keyCopy = key;
+  [(GuidanceObserver *)self _eachGuidanceOutput:outputCopy];
+  v8 = [outputCopy copy];
 
-  [(NSMutableDictionary *)self->_guidanceUpdates setObject:v8 forKeyedSubscript:v7];
+  [(NSMutableDictionary *)self->_guidanceUpdates setObject:v8 forKeyedSubscript:keyCopy];
 }
 
 - (id)_orderedUpdateKinds
@@ -1260,41 +1260,41 @@ LABEL_22:
   return v3;
 }
 
-- (void)removeOutlet:(id)a3
+- (void)removeOutlet:(id)outlet
 {
-  v4 = a3;
+  outletCopy = outlet;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = outletCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "(%@) removing outlet: %@", &v6, 0x16u);
   }
 
-  [(NSHashTable *)self->_outlets removeObject:v4];
+  [(NSHashTable *)self->_outlets removeObject:outletCopy];
 }
 
-- (void)addOutlet:(id)a3
+- (void)addOutlet:(id)outlet
 {
-  v4 = a3;
+  outletCopy = outlet;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = 138412546;
-    v7 = self;
+    selfCopy = self;
     v8 = 2112;
-    v9 = v4;
+    v9 = outletCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "(%@) adding outlet: %@", &v6, 0x16u);
   }
 
-  [(NSHashTable *)self->_outlets addObject:v4];
+  [(NSHashTable *)self->_outlets addObject:outletCopy];
 }
 
-- (void)setCurrentArrivalState:(unint64_t)a3
+- (void)setCurrentArrivalState:(unint64_t)state
 {
-  if (self->_currentArrivalState != a3)
+  if (self->_currentArrivalState != state)
   {
     v5 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -1311,19 +1311,19 @@ LABEL_22:
       }
 
       v8 = v7;
-      if (a3 - 1 > 4)
+      if (state - 1 > 4)
       {
         v9 = @"Unavailable";
       }
 
       else
       {
-        v9 = *(&off_101631088 + a3 - 1);
+        v9 = *(&off_101631088 + state - 1);
       }
 
       v10 = v9;
       *buf = 138412802;
-      v13 = self;
+      selfCopy = self;
       v14 = 2112;
       v15 = v8;
       v16 = 2112;
@@ -1331,16 +1331,16 @@ LABEL_22:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "(%@) will update arrival state from: %@ to: %@", buf, 0x20u);
     }
 
-    self->_currentArrivalState = a3;
+    self->_currentArrivalState = state;
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_100E8C050;
     v11[3] = &unk_101656D90;
-    v11[4] = a3;
+    v11[4] = state;
     [(GuidanceObserver *)self _eachGuidanceOutput:v11];
-    if (a3 - 4 >= 2)
+    if (state - 4 >= 2)
     {
-      if (a3 == 1)
+      if (state == 1)
       {
         [(GuidanceObserver *)self _updateDestinationDisplayName];
         [(GuidanceObserver *)self _updateDisplayETA];
@@ -1375,7 +1375,7 @@ LABEL_22:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "(%@) dealloc", buf, 0xCu);
   }
 

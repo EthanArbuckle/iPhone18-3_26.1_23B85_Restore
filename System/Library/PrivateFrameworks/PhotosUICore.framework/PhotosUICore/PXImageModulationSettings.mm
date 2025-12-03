@@ -142,14 +142,14 @@ void __43__PXImageModulationSettings_sharedInstance__block_invoke()
   v34 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v69 count:1];
   v35 = [v30 sectionWithRows:v34 title:@"Headroom Monitoring"];
 
-  v36 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v37 = MEMORY[0x1E69C6638];
   v68[0] = v67;
   v68[1] = v66;
   v68[2] = v64;
   v68[3] = v51;
   v68[4] = v35;
-  v68[5] = v36;
+  v68[5] = px_restoreDefaultsSection;
   v38 = [MEMORY[0x1E695DEC8] arrayWithObjects:v68 count:6];
   v39 = [v37 moduleWithTitle:@"Image Modulation" contents:v38];
 

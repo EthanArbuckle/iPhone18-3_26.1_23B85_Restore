@@ -1,74 +1,74 @@
 @interface PARSmartSearchV2Parameters
 - (PARSmartSearchV2Parameters)init;
-- (PARSmartSearchV2Parameters)initWithCoder:(id)a3;
-- (id)initFromBag:(id)a3;
-- (id)initFromEnabled:(BOOL)a3 enableCount:(BOOL)a4 minCount:(int64_t)a5;
-- (id)initFromEnabled:(BOOL)a3 enableCount:(BOOL)a4 minCount:(int64_t)a5 zkwMinCount:(int64_t)a6;
-- (void)encodeWithCoder:(id)a3;
+- (PARSmartSearchV2Parameters)initWithCoder:(id)coder;
+- (id)initFromBag:(id)bag;
+- (id)initFromEnabled:(BOOL)enabled enableCount:(BOOL)count minCount:(int64_t)minCount;
+- (id)initFromEnabled:(BOOL)enabled enableCount:(BOOL)count minCount:(int64_t)minCount zkwMinCount:(int64_t)zkwMinCount;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PARSmartSearchV2Parameters
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   enabled = self->_enabled;
-  v5 = a3;
-  [v5 encodeBool:enabled forKey:@"_enabled"];
-  [v5 encodeBool:self->_enableCount forKey:@"_enableCount"];
-  [v5 encodeDouble:@"_paramA" forKey:self->_paramA];
-  [v5 encodeDouble:@"_paramB" forKey:self->_paramB];
-  [v5 encodeDouble:@"_paramC" forKey:self->_paramC];
-  [v5 encodeDouble:@"_paramK" forKey:self->_paramK];
-  [v5 encodeDouble:@"_paramM" forKey:self->_paramM];
-  [v5 encodeDouble:@"_paramQ" forKey:self->_paramQ];
-  [v5 encodeDouble:@"_paramV" forKey:self->_paramV];
-  [v5 encodeDouble:@"_windowBucket" forKey:self->_windowBucket];
-  [v5 encodeInteger:self->_minCount forKey:@"_minCount"];
-  [v5 encodeInteger:self->_zkwMinCount forKey:@"_zkwMinCount"];
+  coderCopy = coder;
+  [coderCopy encodeBool:enabled forKey:@"_enabled"];
+  [coderCopy encodeBool:self->_enableCount forKey:@"_enableCount"];
+  [coderCopy encodeDouble:@"_paramA" forKey:self->_paramA];
+  [coderCopy encodeDouble:@"_paramB" forKey:self->_paramB];
+  [coderCopy encodeDouble:@"_paramC" forKey:self->_paramC];
+  [coderCopy encodeDouble:@"_paramK" forKey:self->_paramK];
+  [coderCopy encodeDouble:@"_paramM" forKey:self->_paramM];
+  [coderCopy encodeDouble:@"_paramQ" forKey:self->_paramQ];
+  [coderCopy encodeDouble:@"_paramV" forKey:self->_paramV];
+  [coderCopy encodeDouble:@"_windowBucket" forKey:self->_windowBucket];
+  [coderCopy encodeInteger:self->_minCount forKey:@"_minCount"];
+  [coderCopy encodeInteger:self->_zkwMinCount forKey:@"_zkwMinCount"];
 }
 
-- (PARSmartSearchV2Parameters)initWithCoder:(id)a3
+- (PARSmartSearchV2Parameters)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(PARSmartSearchV2Parameters *)self init];
   if (v5)
   {
-    v5->_enabled = [v4 decodeBoolForKey:@"_enabled"];
-    v5->_enableCount = [v4 decodeBoolForKey:@"_enableCount"];
-    [v4 decodeDoubleForKey:@"_paramA"];
+    v5->_enabled = [coderCopy decodeBoolForKey:@"_enabled"];
+    v5->_enableCount = [coderCopy decodeBoolForKey:@"_enableCount"];
+    [coderCopy decodeDoubleForKey:@"_paramA"];
     v5->_paramA = v6;
-    [v4 decodeDoubleForKey:@"_paramB"];
+    [coderCopy decodeDoubleForKey:@"_paramB"];
     v5->_paramB = v7;
-    [v4 decodeDoubleForKey:@"_paramC"];
+    [coderCopy decodeDoubleForKey:@"_paramC"];
     v5->_paramC = v8;
-    [v4 decodeDoubleForKey:@"_paramK"];
+    [coderCopy decodeDoubleForKey:@"_paramK"];
     v5->_paramK = v9;
-    [v4 decodeDoubleForKey:@"_paramM"];
+    [coderCopy decodeDoubleForKey:@"_paramM"];
     v5->_paramM = v10;
-    [v4 decodeDoubleForKey:@"_paramQ"];
+    [coderCopy decodeDoubleForKey:@"_paramQ"];
     v5->_paramQ = v11;
-    [v4 decodeDoubleForKey:@"_paramV"];
+    [coderCopy decodeDoubleForKey:@"_paramV"];
     v5->_paramV = v12;
-    [v4 decodeDoubleForKey:@"_windowBucket"];
+    [coderCopy decodeDoubleForKey:@"_windowBucket"];
     v5->_windowBucket = v13;
-    v5->_minCount = [v4 decodeIntegerForKey:@"_minCount"];
-    v5->_zkwMinCount = [v4 decodeIntegerForKey:@"_zkwMinCount"];
+    v5->_minCount = [coderCopy decodeIntegerForKey:@"_minCount"];
+    v5->_zkwMinCount = [coderCopy decodeIntegerForKey:@"_zkwMinCount"];
   }
 
   return v5;
 }
 
-- (id)initFromBag:(id)a3
+- (id)initFromBag:(id)bag
 {
-  v4 = a3;
+  bagCopy = bag;
   v5 = [(PARSmartSearchV2Parameters *)self init];
   if (v5)
   {
-    v6 = [v4 smartSearchV2Parameters];
-    v7 = v6;
-    if (v6)
+    smartSearchV2Parameters = [bagCopy smartSearchV2Parameters];
+    v7 = smartSearchV2Parameters;
+    if (smartSearchV2Parameters)
     {
-      v8 = [v6 objectForKeyedSubscript:@"smart_history_score_v2_enabled"];
+      v8 = [smartSearchV2Parameters objectForKeyedSubscript:@"smart_history_score_v2_enabled"];
       v28 = [v7 objectForKeyedSubscript:@"smart_history_score_v2_enable_count"];
       v27 = [v7 objectForKeyedSubscript:@"pqc_score_a"];
       v26 = [v7 objectForKeyedSubscript:@"pqc_score_b"];
@@ -130,28 +130,28 @@
   return result;
 }
 
-- (id)initFromEnabled:(BOOL)a3 enableCount:(BOOL)a4 minCount:(int64_t)a5 zkwMinCount:(int64_t)a6
+- (id)initFromEnabled:(BOOL)enabled enableCount:(BOOL)count minCount:(int64_t)minCount zkwMinCount:(int64_t)zkwMinCount
 {
   result = [(PARSmartSearchV2Parameters *)self init];
   if (result)
   {
-    *(result + 8) = a3;
-    *(result + 9) = a4;
-    *(result + 10) = a5;
-    *(result + 11) = a6;
+    *(result + 8) = enabled;
+    *(result + 9) = count;
+    *(result + 10) = minCount;
+    *(result + 11) = zkwMinCount;
   }
 
   return result;
 }
 
-- (id)initFromEnabled:(BOOL)a3 enableCount:(BOOL)a4 minCount:(int64_t)a5
+- (id)initFromEnabled:(BOOL)enabled enableCount:(BOOL)count minCount:(int64_t)minCount
 {
   result = [(PARSmartSearchV2Parameters *)self init];
   if (result)
   {
-    *(result + 8) = a3;
-    *(result + 9) = a4;
-    *(result + 10) = a5;
+    *(result + 8) = enabled;
+    *(result + 9) = count;
+    *(result + 10) = minCount;
   }
 
   return result;

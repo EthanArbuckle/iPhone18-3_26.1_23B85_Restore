@@ -1,15 +1,15 @@
 @interface SKUIProductPageTableLinksSection
-- (SKUIProductPageTableLinksSection)initWithItem:(id)a3 clientContext:(id)a4 askPermission:(BOOL)a5;
-- (id)selectionActionForTableView:(id)a3 indexPath:(id)a4;
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4;
+- (SKUIProductPageTableLinksSection)initWithItem:(id)item clientContext:(id)context askPermission:(BOOL)permission;
+- (id)selectionActionForTableView:(id)view indexPath:(id)path;
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path;
 @end
 
 @implementation SKUIProductPageTableLinksSection
 
-- (SKUIProductPageTableLinksSection)initWithItem:(id)a3 clientContext:(id)a4 askPermission:(BOOL)a5
+- (SKUIProductPageTableLinksSection)initWithItem:(id)item clientContext:(id)context askPermission:(BOOL)permission
 {
-  v9 = a3;
-  v10 = a4;
+  itemCopy = item;
+  contextCopy = context;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUIProductPageTableLinksSection initWithItem:clientContext:askPermission:];
@@ -21,7 +21,7 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_item, a3);
+    objc_storeStrong(&v11->_item, item);
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
     actions = v12->_actions;
     v12->_actions = v13;
@@ -30,10 +30,10 @@
     titles = v12->_titles;
     v12->_titles = v15;
 
-    v57 = v9;
-    if (SKUIUserInterfaceIdiom(v10))
+    v57 = itemCopy;
+    if (SKUIUserInterfaceIdiom(contextCopy))
     {
-      if (a5)
+      if (permission)
       {
         goto LABEL_46;
       }
@@ -41,16 +41,16 @@
       goto LABEL_20;
     }
 
-    v17 = [(SKUIProductPageItem *)v12->_item inAppPurchases];
-    if ([v17 count])
+    inAppPurchases = [(SKUIProductPageItem *)v12->_item inAppPurchases];
+    if ([inAppPurchases count])
     {
       v18 = [SKUIProductPageAction actionWithType:3];
       v73[0] = MEMORY[0x277D85DD0];
       v73[1] = 3221225472;
       v73[2] = __77__SKUIProductPageTableLinksSection_initWithItem_clientContext_askPermission___block_invoke;
       v73[3] = &unk_2781FD9D8;
-      v74 = v17;
-      v19 = v10;
+      v74 = inAppPurchases;
+      v19 = contextCopy;
       v75 = v19;
       [v18 setViewControllerBlock:v73];
       [(NSMutableArray *)v12->_actions addObject:v18];
@@ -67,20 +67,20 @@
       v21 = ;
       [(NSMutableArray *)v20 addObject:v21, v57];
 
-      v9 = v57;
+      itemCopy = v57;
     }
 
-    v22 = [(SKUIProductPageItem *)v12->_item releaseNotes];
+    releaseNotes = [(SKUIProductPageItem *)v12->_item releaseNotes];
 
-    if ([v22 count])
+    if ([releaseNotes count])
     {
       v23 = [SKUIProductPageAction actionWithType:3];
       v70[0] = MEMORY[0x277D85DD0];
       v70[1] = 3221225472;
       v70[2] = __77__SKUIProductPageTableLinksSection_initWithItem_clientContext_askPermission___block_invoke_2;
       v70[3] = &unk_2781FD9D8;
-      v71 = v22;
-      v24 = v10;
+      v71 = releaseNotes;
+      v24 = contextCopy;
       v72 = v24;
       [v23 setViewControllerBlock:v70];
       [(NSMutableArray *)v12->_actions addObject:v23];
@@ -97,24 +97,24 @@
       v26 = ;
       [(NSMutableArray *)v25 addObject:v26];
 
-      v9 = v57;
+      itemCopy = v57;
     }
 
-    if (!a5)
+    if (!permission)
     {
 LABEL_20:
-      v27 = [v9 supportURLString];
-      if (v27)
+      supportURLString = [itemCopy supportURLString];
+      if (supportURLString)
       {
         v28 = [SKUIProductPageAction actionWithType:1];
-        v29 = [MEMORY[0x277CBEBC0] URLWithString:v27];
+        v29 = [MEMORY[0x277CBEBC0] URLWithString:supportURLString];
         [v28 setURL:v29];
 
         [(NSMutableArray *)v12->_actions addObject:v28];
         v30 = v12->_titles;
-        if (v10)
+        if (contextCopy)
         {
-          [v10 localizedStringForKey:@"PRODUCT_PAGE_DEVELOPER_WEBSITE" inTable:@"ProductPage"];
+          [contextCopy localizedStringForKey:@"PRODUCT_PAGE_DEVELOPER_WEBSITE" inTable:@"ProductPage"];
         }
 
         else
@@ -125,11 +125,11 @@ LABEL_20:
         [(NSMutableArray *)v30 addObject:v31];
       }
 
-      v32 = [v9 licenseAgreementURLString];
+      licenseAgreementURLString = [itemCopy licenseAgreementURLString];
 
-      if (v32)
+      if (licenseAgreementURLString)
       {
-        v33 = [MEMORY[0x277CBEBC0] URLWithString:v32];
+        v33 = [MEMORY[0x277CBEBC0] URLWithString:licenseAgreementURLString];
         v34 = [v33 URLByAppendingQueryParameter:@"mt" value:@"8"];
 
         v35 = [SKUIProductPageAction actionWithType:2];
@@ -140,7 +140,7 @@ LABEL_20:
         v67[3] = &unk_2781FDA00;
         v36 = v34;
         v68 = v36;
-        v37 = v10;
+        v37 = contextCopy;
         v69 = v37;
         [v35 setViewControllerBlock:v67];
         [(NSMutableArray *)v12->_actions addObject:v35];
@@ -157,22 +157,22 @@ LABEL_20:
         v39 = ;
         [(NSMutableArray *)v38 addObject:v39];
 
-        v9 = v58;
+        itemCopy = v58;
       }
 
-      v40 = [v9 privacyPolicyURLString];
+      privacyPolicyURLString = [itemCopy privacyPolicyURLString];
 
-      if (v40)
+      if (privacyPolicyURLString)
       {
         v41 = [SKUIProductPageAction actionWithType:1];
-        v42 = [MEMORY[0x277CBEBC0] URLWithString:v40];
+        v42 = [MEMORY[0x277CBEBC0] URLWithString:privacyPolicyURLString];
         [v41 setURL:v42];
 
         [(NSMutableArray *)v12->_actions addObject:v41];
         v43 = v12->_titles;
-        if (v10)
+        if (contextCopy)
         {
-          [v10 localizedStringForKey:@"PRODUCT_PAGE_PRIVACY_POLICY" inTable:@"ProductPage"];
+          [contextCopy localizedStringForKey:@"PRODUCT_PAGE_PRIVACY_POLICY" inTable:@"ProductPage"];
         }
 
         else
@@ -183,21 +183,21 @@ LABEL_20:
         [(NSMutableArray *)v43 addObject:v44];
       }
 
-      v45 = [v9 artistPageURL];
-      if (v45)
+      artistPageURL = [itemCopy artistPageURL];
+      if (artistPageURL)
       {
         v46 = [SKUIProductPageAction actionWithType:2];
-        [v46 setURL:v45];
+        [v46 setURL:artistPageURL];
         v63[0] = MEMORY[0x277D85DD0];
         v63[1] = 3221225472;
         v63[2] = __77__SKUIProductPageTableLinksSection_initWithItem_clientContext_askPermission___block_invoke_4;
         v63[3] = &unk_2781FCA70;
-        v47 = v10;
-        v48 = v9;
+        v47 = contextCopy;
+        v48 = itemCopy;
         v49 = v47;
         v64 = v47;
         v65 = v48;
-        v66 = v45;
+        v66 = artistPageURL;
         [v46 setViewControllerBlock:v63];
         [(NSMutableArray *)v12->_actions addObject:v46];
         v50 = v12->_titles;
@@ -213,16 +213,16 @@ LABEL_20:
         v51 = ;
         [(NSMutableArray *)v50 addObject:v51];
 
-        v9 = v58;
+        itemCopy = v58;
       }
 
-      v52 = [v9 developerInfo];
-      if (v52)
+      developerInfo = [itemCopy developerInfo];
+      if (developerInfo)
       {
         v53 = [SKUIProductPageAction actionWithType:3];
-        if (v10)
+        if (contextCopy)
         {
-          [v10 localizedStringForKey:@"PRODUCT_PAGE_DEVELOPER_INFO" inTable:@"ProductPage"];
+          [contextCopy localizedStringForKey:@"PRODUCT_PAGE_DEVELOPER_INFO" inTable:@"ProductPage"];
         }
 
         else
@@ -234,15 +234,15 @@ LABEL_20:
         v59[1] = 3221225472;
         v59[2] = __77__SKUIProductPageTableLinksSection_initWithItem_clientContext_askPermission___block_invoke_5;
         v59[3] = &unk_2781FDA28;
-        v60 = v52;
-        v61 = v10;
+        v60 = developerInfo;
+        v61 = contextCopy;
         v62 = v54;
         v55 = v54;
         [v53 setViewControllerBlock:v59];
         [(NSMutableArray *)v12->_actions addObject:v53];
         [(NSMutableArray *)v12->_titles addObject:v55];
 
-        v9 = v58;
+        itemCopy = v58;
       }
     }
   }
@@ -325,26 +325,26 @@ SKUIDeveloperInfoViewController *__77__SKUIProductPageTableLinksSection_initWith
   return v2;
 }
 
-- (id)selectionActionForTableView:(id)a3 indexPath:(id)a4
+- (id)selectionActionForTableView:(id)view indexPath:(id)path
 {
   actions = self->_actions;
-  v5 = [a4 row];
+  v5 = [path row];
 
   return [(NSMutableArray *)actions objectAtIndex:v5];
 }
 
-- (id)tableViewCellForTableView:(id)a3 indexPath:(id)a4
+- (id)tableViewCellForTableView:(id)view indexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"LK"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"LK"];
   if (!v7)
   {
     v7 = [[SKUITableViewCell alloc] initWithStyle:0 reuseIdentifier:@"LK"];
     [(SKUITableViewCell *)v7 setAccessoryType:1];
-    v8 = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
-    if (v8)
+    primaryTextColor = [(SKUIColorScheme *)self->_colorScheme primaryTextColor];
+    if (primaryTextColor)
     {
-      [(SKUITableViewCell *)v7 setBottomBorderColor:v8];
+      [(SKUITableViewCell *)v7 setBottomBorderColor:primaryTextColor];
     }
 
     else
@@ -353,29 +353,29 @@ SKUIDeveloperInfoViewController *__77__SKUIProductPageTableLinksSection_initWith
       [(SKUITableViewCell *)v7 setBottomBorderColor:v9];
     }
 
-    v10 = [(SKUITableViewCell *)v7 textLabel];
+    textLabel = [(SKUITableViewCell *)v7 textLabel];
     v11 = [MEMORY[0x277D74300] systemFontOfSize:18.0];
-    [v10 setFont:v11];
+    [textLabel setFont:v11];
 
-    v12 = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v12)
+    secondaryTextColor = [(SKUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor)
     {
-      [v10 setTextColor:v12];
+      [textLabel setTextColor:secondaryTextColor];
     }
 
     else
     {
-      v13 = [MEMORY[0x277D75348] blackColor];
-      [v10 setTextColor:v13];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [textLabel setTextColor:blackColor];
     }
   }
 
-  v14 = [(SKUITableViewCell *)v7 textLabel];
+  textLabel2 = [(SKUITableViewCell *)v7 textLabel];
   titles = self->_titles;
-  v16 = [v6 row];
+  v16 = [pathCopy row];
 
   v17 = [(NSMutableArray *)titles objectAtIndex:v16];
-  [v14 setText:v17];
+  [textLabel2 setText:v17];
 
   return v7;
 }

@@ -1,8 +1,8 @@
 @interface TLKTableViewScrollTester
 - (TLKTableViewScrollTester)init;
 - (void)finishFirstScrollIfNeeded;
-- (void)fire:(id)a3;
-- (void)performScrollTestOnTableView:(id)a3 firstScroll:(id)a4 completion:(id)a5;
+- (void)fire:(id)fire;
+- (void)performScrollTestOnTableView:(id)view firstScroll:(id)scroll completion:(id)completion;
 @end
 
 @implementation TLKTableViewScrollTester
@@ -16,47 +16,47 @@
   return v2;
 }
 
-- (void)performScrollTestOnTableView:(id)a3 firstScroll:(id)a4 completion:(id)a5
+- (void)performScrollTestOnTableView:(id)view firstScroll:(id)scroll completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  scrollCopy = scroll;
+  viewCopy = view;
   [(TLKTableViewScrollTester *)self setFinishedFirstScroll:0];
-  [(TLKTableViewScrollTester *)self setTableView:v10];
+  [(TLKTableViewScrollTester *)self setTableView:viewCopy];
 
   [(TLKTableViewScrollTester *)self setStartTime:CACurrentMediaTime()];
   v12 = [MEMORY[0x1E6979330] displayLinkWithTarget:self selector:sel_fire_];
-  v11 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [v12 addToRunLoop:v11 forMode:*MEMORY[0x1E695DA28]];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [v12 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
-  [(TLKTableViewScrollTester *)self setFirstScroll:v9];
-  [(TLKTableViewScrollTester *)self setCompletion:v8];
+  [(TLKTableViewScrollTester *)self setFirstScroll:scrollCopy];
+  [(TLKTableViewScrollTester *)self setCompletion:completionCopy];
 }
 
-- (void)fire:(id)a3
+- (void)fire:(id)fire
 {
-  v29 = a3;
+  fireCopy = fire;
   v4 = CACurrentMediaTime();
   [(TLKTableViewScrollTester *)self startTime];
   v6 = v4 - v5;
   [(TLKTableViewScrollTester *)self scrollTime];
   if (v6 <= v7)
   {
-    v10 = [(TLKTableViewScrollTester *)self tableView];
-    [v10 bounds];
+    tableView = [(TLKTableViewScrollTester *)self tableView];
+    [tableView bounds];
     v12 = v11;
 
-    v13 = [(TLKTableViewScrollTester *)self tableView];
-    [v13 contentSize];
+    tableView2 = [(TLKTableViewScrollTester *)self tableView];
+    [tableView2 contentSize];
     v15 = v14;
 
-    v16 = [(TLKTableViewScrollTester *)self tableView];
-    [v16 contentInset];
+    tableView3 = [(TLKTableViewScrollTester *)self tableView];
+    [tableView3 contentInset];
     v18 = v17;
     v20 = v19;
 
-    v21 = [(TLKTableViewScrollTester *)self tableView];
-    [v21 contentOffset];
+    tableView4 = [(TLKTableViewScrollTester *)self tableView];
+    [tableView4 contentOffset];
     v23 = v22;
     v25 = v24;
 
@@ -80,22 +80,22 @@
       }
     }
 
-    v28 = [(TLKTableViewScrollTester *)self tableView];
-    [v28 setContentOffset:0 animated:{v23, v26}];
+    tableView5 = [(TLKTableViewScrollTester *)self tableView];
+    [tableView5 setContentOffset:0 animated:{v23, v26}];
   }
 
   else
   {
     [(TLKTableViewScrollTester *)self finishFirstScrollIfNeeded];
-    v8 = [(TLKTableViewScrollTester *)self completion];
+    completion = [(TLKTableViewScrollTester *)self completion];
 
-    if (v8)
+    if (completion)
     {
-      v9 = [(TLKTableViewScrollTester *)self completion];
-      v9[2]();
+      completion2 = [(TLKTableViewScrollTester *)self completion];
+      completion2[2]();
     }
 
-    [v29 invalidate];
+    [fireCopy invalidate];
     [(TLKTableViewScrollTester *)self setCompletion:0];
   }
 }
@@ -104,13 +104,13 @@
 {
   if (![(TLKTableViewScrollTester *)self finishedFirstScroll])
   {
-    v3 = [(TLKTableViewScrollTester *)self firstScroll];
+    firstScroll = [(TLKTableViewScrollTester *)self firstScroll];
 
-    if (v3)
+    if (firstScroll)
     {
       [(TLKTableViewScrollTester *)self setFinishedFirstScroll:1];
-      v4 = [(TLKTableViewScrollTester *)self firstScroll];
-      v4[2]();
+      firstScroll2 = [(TLKTableViewScrollTester *)self firstScroll];
+      firstScroll2[2]();
     }
   }
 }

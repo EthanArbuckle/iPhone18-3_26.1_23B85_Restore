@@ -1,36 +1,36 @@
 @interface PXUIViewControllerFadeThroughColorTransition
-- (PXUIViewControllerFadeThroughColorTransition)initWithDuration:(double)a3 midpointColor:(id)a4;
-- (void)animateTransition:(id)a3;
+- (PXUIViewControllerFadeThroughColorTransition)initWithDuration:(double)duration midpointColor:(id)color;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation PXUIViewControllerFadeThroughColorTransition
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  [(PXUIViewControllerFadeThroughColorTransition *)self transitionDuration:v4];
+  transitionCopy = transition;
+  [(PXUIViewControllerFadeThroughColorTransition *)self transitionDuration:transitionCopy];
   v6 = v5 * 0.5;
-  v7 = [v4 viewControllerForKey:*MEMORY[0x1E69DE768]];
-  v8 = [v7 view];
-  v9 = [v4 viewControllerForKey:*MEMORY[0x1E69DE778]];
-  v10 = [v9 view];
-  v11 = [v4 containerView];
+  v7 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE768]];
+  view = [v7 view];
+  v9 = [transitionCopy viewControllerForKey:*MEMORY[0x1E69DE778]];
+  view2 = [v9 view];
+  containerView = [transitionCopy containerView];
   v12 = objc_alloc(MEMORY[0x1E69DD250]);
-  [v11 bounds];
+  [containerView bounds];
   v13 = [v12 initWithFrame:?];
-  v14 = [(PXUIViewControllerFadeThroughColorTransition *)self midpointColor];
-  [v13 setBackgroundColor:v14];
+  midpointColor = [(PXUIViewControllerFadeThroughColorTransition *)self midpointColor];
+  [v13 setBackgroundColor:midpointColor];
 
   [v13 setAlpha:0.0];
-  [v11 addSubview:v13];
+  [containerView addSubview:v13];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __66__PXUIViewControllerFadeThroughColorTransition_animateTransition___block_invoke;
   aBlock[3] = &unk_1E7749628;
   v15 = v13;
   v34 = v15;
-  v35 = v4;
-  v16 = v4;
+  v35 = transitionCopy;
+  v16 = transitionCopy;
   v17 = _Block_copy(aBlock);
   v18 = MEMORY[0x1E69DD250];
   v31[0] = MEMORY[0x1E69E9820];
@@ -42,17 +42,17 @@
   v24[1] = 3221225472;
   v24[2] = __66__PXUIViewControllerFadeThroughColorTransition_animateTransition___block_invoke_3;
   v24[3] = &unk_1E773C268;
-  v25 = v8;
-  v26 = v11;
-  v27 = v10;
+  v25 = view;
+  v26 = containerView;
+  v27 = view2;
   v28 = v32;
   v30 = v6;
   v29 = v17;
   v19 = v17;
   v20 = v32;
-  v21 = v10;
-  v22 = v11;
-  v23 = v8;
+  v21 = view2;
+  v22 = containerView;
+  v23 = view;
   [v18 animateWithDuration:v31 animations:v24 completion:v6];
 }
 
@@ -93,28 +93,28 @@ void __66__PXUIViewControllerFadeThroughColorTransition_animateTransition___bloc
   }
 }
 
-- (PXUIViewControllerFadeThroughColorTransition)initWithDuration:(double)a3 midpointColor:(id)a4
+- (PXUIViewControllerFadeThroughColorTransition)initWithDuration:(double)duration midpointColor:(id)color
 {
-  v6 = a4;
+  colorCopy = color;
   v12.receiver = self;
   v12.super_class = PXUIViewControllerFadeThroughColorTransition;
   v7 = [(PXUIViewControllerFadeThroughColorTransition *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_duration = a3;
-    if (v6)
+    v7->_duration = duration;
+    if (colorCopy)
     {
-      v9 = v6;
+      blackColor = colorCopy;
     }
 
     else
     {
-      v9 = [MEMORY[0x1E69DC888] blackColor];
+      blackColor = [MEMORY[0x1E69DC888] blackColor];
     }
 
     midpointColor = v8->_midpointColor;
-    v8->_midpointColor = v9;
+    v8->_midpointColor = blackColor;
   }
 
   return v8;

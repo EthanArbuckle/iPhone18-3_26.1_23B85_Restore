@@ -1,17 +1,17 @@
 @interface HFRoomBuilderItem
-- (HFRoomBuilderItem)initWithRoomBuilder:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HFRoomBuilderItem)initWithRoomBuilder:(id)builder;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HFRoomBuilderItem
 
-- (HFRoomBuilderItem)initWithRoomBuilder:(id)a3
+- (HFRoomBuilderItem)initWithRoomBuilder:(id)builder
 {
-  v6 = a3;
-  if (!v6)
+  builderCopy = builder;
+  if (!builderCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"HFRoomBuilderItem.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"roomBuilder"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFRoomBuilderItem.m" lineNumber:20 description:{@"Invalid parameter not satisfying: %@", @"roomBuilder"}];
   }
 
   v11.receiver = self;
@@ -20,34 +20,34 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_roomBuilder, a3);
+    objc_storeStrong(&v7->_roomBuilder, builder);
   }
 
   return v8;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v4 = objc_alloc_init(HFMutableItemUpdateOutcome);
-  v5 = [(HFRoomBuilderItem *)self roomBuilder];
-  v6 = [v5 room];
+  roomBuilder = [(HFRoomBuilderItem *)self roomBuilder];
+  room = [roomBuilder room];
 
-  v7 = [(HFRoomBuilderItem *)self roomBuilder];
-  v8 = [v7 name];
-  v15 = v8;
-  if (v6)
+  roomBuilder2 = [(HFRoomBuilderItem *)self roomBuilder];
+  name = [roomBuilder2 name];
+  v15 = name;
+  if (room)
   {
-    [(HFMutableItemUpdateOutcome *)v4 setObject:v8 forKeyedSubscript:@"title"];
+    [(HFMutableItemUpdateOutcome *)v4 setObject:name forKeyedSubscript:@"title"];
   }
 
   else
   {
-    v16 = HFLocalizedStringWithFormat(@"HFRoomSuggestionNameFormat", @"%@", v9, v10, v11, v12, v13, v14, v8);
+    v16 = HFLocalizedStringWithFormat(@"HFRoomSuggestionNameFormat", @"%@", v9, v10, v11, v12, v13, v14, name);
     [(HFMutableItemUpdateOutcome *)v4 setObject:v16 forKeyedSubscript:@"title"];
   }
 
-  v17 = [(HFRoomBuilderItem *)self roomBuilder];
-  [(HFMutableItemUpdateOutcome *)v4 setObject:v17 forKeyedSubscript:@"roomBuilder"];
+  roomBuilder3 = [(HFRoomBuilderItem *)self roomBuilder];
+  [(HFMutableItemUpdateOutcome *)v4 setObject:roomBuilder3 forKeyedSubscript:@"roomBuilder"];
 
   v18 = [MEMORY[0x277D2C900] futureWithResult:v4];
 

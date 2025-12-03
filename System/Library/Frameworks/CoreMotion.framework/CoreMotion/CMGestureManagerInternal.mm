@@ -1,7 +1,7 @@
 @interface CMGestureManagerInternal
-- (CMGestureManagerInternal)initWithPriority:(int)a3;
+- (CMGestureManagerInternal)initWithPriority:(int)priority;
 - (void)dealloc;
-- (void)startGestureUpdatesWithHandlerPrivate:(id)a3;
+- (void)startGestureUpdatesWithHandlerPrivate:(id)private;
 - (void)stopGestureUpdatesPrivate;
 @end
 
@@ -54,7 +54,7 @@
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (CMGestureManagerInternal)initWithPriority:(int)a3
+- (CMGestureManagerInternal)initWithPriority:(int)priority
 {
   v7.receiver = self;
   v7.super_class = CMGestureManagerInternal;
@@ -62,7 +62,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->fPriority = a3;
+    v4->fPriority = priority;
     v4->fPrivateQueue = dispatch_queue_create("com.apple.CoreMotionCMGestureManagerPrivateQueue", 0);
   }
 
@@ -78,14 +78,14 @@
   [(CMGestureManagerInternal *)&v3 dealloc];
 }
 
-- (void)startGestureUpdatesWithHandlerPrivate:(id)a3
+- (void)startGestureUpdatesWithHandlerPrivate:(id)private
 {
   v9 = *MEMORY[0x1E69E9840];
   fGestureHandler = self->fGestureHandler;
-  if (fGestureHandler != a3)
+  if (fGestureHandler != private)
   {
 
-    self->fGestureHandler = objc_msgSend_copy(a3, v6, v7);
+    self->fGestureHandler = objc_msgSend_copy(private, v6, v7);
     if (!self->fLocationdConnection)
     {
       operator new();

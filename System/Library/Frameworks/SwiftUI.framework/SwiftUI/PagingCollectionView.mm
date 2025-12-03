@@ -1,37 +1,37 @@
 @interface PagingCollectionView
-- (_TtC7SwiftUIP33_8825076C2763A50452A210CBE1FA4AF020PagingCollectionView)initWithCoder:(id)a3;
-- (_TtC7SwiftUIP33_8825076C2763A50452A210CBE1FA4AF020PagingCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4;
+- (_TtC7SwiftUIP33_8825076C2763A50452A210CBE1FA4AF020PagingCollectionView)initWithCoder:(id)coder;
+- (_TtC7SwiftUIP33_8825076C2763A50452A210CBE1FA4AF020PagingCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout;
 - (void)layoutSubviews;
-- (void)scrollToItemAtIndexPath:(id)a3 atScrollPosition:(unint64_t)a4 animated:(BOOL)a5;
+- (void)scrollToItemAtIndexPath:(id)path atScrollPosition:(unint64_t)position animated:(BOOL)animated;
 @end
 
 @implementation PagingCollectionView
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   PagingCollectionView.layoutSubviews()();
 }
 
-- (void)scrollToItemAtIndexPath:(id)a3 atScrollPosition:(unint64_t)a4 animated:(BOOL)a5
+- (void)scrollToItemAtIndexPath:(id)path atScrollPosition:(unint64_t)position animated:(BOOL)animated
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
   MEMORY[0x1EEE9AC00](v8);
   v11 = &v13 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = self;
-  PagingCollectionView.scrollToItem(at:at:animated:)(v11, a4, a5);
+  selfCopy = self;
+  PagingCollectionView.scrollToItem(at:at:animated:)(v11, position, animated);
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (_TtC7SwiftUIP33_8825076C2763A50452A210CBE1FA4AF020PagingCollectionView)initWithFrame:(CGRect)a3 collectionViewLayout:(id)a4
+- (_TtC7SwiftUIP33_8825076C2763A50452A210CBE1FA4AF020PagingCollectionView)initWithFrame:(CGRect)frame collectionViewLayout:(id)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v10 = OBJC_IVAR____TtC7SwiftUIP33_8825076C2763A50452A210CBE1FA4AF020PagingCollectionView_pendingIndexPath;
   v11 = type metadata accessor for IndexPath();
   v12 = *(*(v11 - 8) + 56);
@@ -43,10 +43,10 @@
   v13[16] = 1;
   v15.receiver = self;
   v15.super_class = type metadata accessor for PagingCollectionView();
-  return [(PagingCollectionView *)&v15 initWithFrame:a4 collectionViewLayout:x, y, width, height];
+  return [(PagingCollectionView *)&v15 initWithFrame:layout collectionViewLayout:x, y, width, height];
 }
 
-- (_TtC7SwiftUIP33_8825076C2763A50452A210CBE1FA4AF020PagingCollectionView)initWithCoder:(id)a3
+- (_TtC7SwiftUIP33_8825076C2763A50452A210CBE1FA4AF020PagingCollectionView)initWithCoder:(id)coder
 {
   v5 = OBJC_IVAR____TtC7SwiftUIP33_8825076C2763A50452A210CBE1FA4AF020PagingCollectionView_pendingIndexPath;
   v6 = type metadata accessor for IndexPath();
@@ -59,8 +59,8 @@
   v8[16] = 1;
   v12.receiver = self;
   v12.super_class = type metadata accessor for PagingCollectionView();
-  v9 = a3;
-  v10 = [(PagingCollectionView *)&v12 initWithCoder:v9];
+  coderCopy = coder;
+  v10 = [(PagingCollectionView *)&v12 initWithCoder:coderCopy];
 
   if (v10)
   {

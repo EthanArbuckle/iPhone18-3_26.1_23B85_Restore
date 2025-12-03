@@ -105,8 +105,8 @@
                 if ([v19 BOOLValue])
                 {
                   v21 = v52[5];
-                  v22 = [v17 lastPathComponent];
-                  LOBYTE(v21) = [v21 containsObject:v22];
+                  lastPathComponent = [v17 lastPathComponent];
+                  LOBYTE(v21) = [v21 containsObject:lastPathComponent];
 
                   if ((v21 & 1) == 0)
                   {

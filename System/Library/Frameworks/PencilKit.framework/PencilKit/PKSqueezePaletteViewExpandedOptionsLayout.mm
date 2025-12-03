@@ -1,73 +1,73 @@
 @interface PKSqueezePaletteViewExpandedOptionsLayout
 - (PKSqueezePaletteView)paletteView;
-- (id)initWithContext:(void *)a3 backButton:(void *)a4 textBoxButton:(void *)a5 signatureButton:(void *)a6 shapesButton:(void *)a7 stickersButton:(void *)a8 gearButton:;
-- (void)_performButtonAction:(uint64_t)a1;
+- (id)initWithContext:(void *)context backButton:(void *)button textBoxButton:(void *)boxButton signatureButton:(void *)signatureButton shapesButton:(void *)shapesButton stickersButton:(void *)stickersButton gearButton:;
+- (void)_performButtonAction:(uint64_t)action;
 - (void)dealloc;
-- (void)handlePencilInteractionDidTap:(int64_t)a3;
+- (void)handlePencilInteractionDidTap:(int64_t)tap;
 - (void)setupUI;
 - (void)updateUI;
 @end
 
 @implementation PKSqueezePaletteViewExpandedOptionsLayout
 
-- (id)initWithContext:(void *)a3 backButton:(void *)a4 textBoxButton:(void *)a5 signatureButton:(void *)a6 shapesButton:(void *)a7 stickersButton:(void *)a8 gearButton:
+- (id)initWithContext:(void *)context backButton:(void *)button textBoxButton:(void *)boxButton signatureButton:(void *)signatureButton shapesButton:(void *)shapesButton stickersButton:(void *)stickersButton gearButton:
 {
   v53[5] = *MEMORY[0x1E69E9840];
   v34 = a2;
-  v35 = a3;
-  v36 = a4;
-  v37 = a5;
-  v38 = a6;
-  v39 = a7;
-  v40 = a8;
-  if (a1)
+  contextCopy = context;
+  buttonCopy = button;
+  boxButtonCopy = boxButton;
+  signatureButtonCopy = signatureButton;
+  shapesButtonCopy = shapesButton;
+  stickersButtonCopy = stickersButton;
+  if (self)
   {
-    v51.receiver = a1;
+    v51.receiver = self;
     v51.super_class = PKSqueezePaletteViewExpandedOptionsLayout;
     v16 = objc_msgSendSuper2(&v51, sel_init);
-    a1 = v16;
+    self = v16;
     if (v16)
     {
       objc_storeStrong(v16 + 7, a2);
-      objc_storeStrong(a1 + 8, a3);
-      objc_storeStrong(a1 + 9, a4);
-      objc_storeStrong(a1 + 10, a5);
-      objc_storeStrong(a1 + 11, a6);
-      objc_storeStrong(a1 + 12, a7);
-      objc_storeStrong(a1 + 13, a8);
-      *(a1 + 1) = PKSqueezePaletteButtonSize();
-      a1[2] = v17;
-      a1[3] = PKSqueezePaletteButtonInterItemSpacing;
+      objc_storeStrong(self + 8, context);
+      objc_storeStrong(self + 9, button);
+      objc_storeStrong(self + 10, boxButton);
+      objc_storeStrong(self + 11, signatureButton);
+      objc_storeStrong(self + 12, shapesButton);
+      objc_storeStrong(self + 13, stickersButton);
+      *(self + 1) = PKSqueezePaletteButtonSize();
+      self[2] = v17;
+      self[3] = PKSqueezePaletteButtonInterItemSpacing;
       v18 = objc_alloc(MEMORY[0x1E695DF70]);
-      v20 = a1[10];
-      v19 = a1[11];
-      v53[0] = a1[13];
+      v20 = self[10];
+      v19 = self[11];
+      v53[0] = self[13];
       v53[1] = v19;
-      v22 = a1[8];
-      v21 = a1[9];
+      v22 = self[8];
+      v21 = self[9];
       v53[2] = v20;
       v53[3] = v21;
       v53[4] = v22;
       v23 = [MEMORY[0x1E695DEC8] arrayWithObjects:v53 count:5];
       v41 = [v18 initWithArray:v23];
 
-      v24 = a1[12];
+      v24 = self[12];
       if (v24)
       {
-        [v41 insertObject:v24 atIndex:{objc_msgSend(v41, "indexOfObject:", a1[8])}];
+        [v41 insertObject:v24 atIndex:{objc_msgSend(v41, "indexOfObject:", self[8])}];
       }
 
       v25 = [MEMORY[0x1E695DEC8] arrayWithArray:v41];
-      v26 = a1[4];
-      a1[4] = v25;
+      v26 = self[4];
+      self[4] = v25;
 
-      a1[5] = malloc_type_malloc(8 * [a1[4] count], 0x100004000313F17uLL);
-      objc_initWeak(&location, a1);
+      self[5] = malloc_type_malloc(8 * [self[4] count], 0x100004000313F17uLL);
+      objc_initWeak(&location, self);
       v48 = 0u;
       v49 = 0u;
       v46 = 0u;
       v47 = 0u;
-      v27 = a1[4];
+      v27 = self[4];
       v28 = [v27 countByEnumeratingWithState:&v46 objects:v52 count:16];
       if (v28)
       {
@@ -106,7 +106,7 @@
     }
   }
 
-  return a1;
+  return self;
 }
 
 void __141__PKSqueezePaletteViewExpandedOptionsLayout_initWithContext_backButton_textBoxButton_signatureButton_shapesButton_stickersButton_gearButton___block_invoke(uint64_t a1)
@@ -116,13 +116,13 @@ void __141__PKSqueezePaletteViewExpandedOptionsLayout_initWithContext_backButton
   [(PKSqueezePaletteViewExpandedOptionsLayout *)WeakRetained _performButtonAction:v2];
 }
 
-- (void)_performButtonAction:(uint64_t)a1
+- (void)_performButtonAction:(uint64_t)action
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (action)
   {
-    if (*(a1 + 64) == v3)
+    if (*(action + 64) == v3)
     {
       v8 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -131,18 +131,18 @@ void __141__PKSqueezePaletteViewExpandedOptionsLayout_initWithContext_backButton
         _os_log_impl(&dword_1C7CCA000, v8, OS_LOG_TYPE_DEFAULT, "Did tap on back button", buf, 2u);
       }
 
-      v9 = *(a1 + 56);
+      v9 = *(action + 56);
       if (v9)
       {
         v9 = v9[2];
       }
 
       v7 = v9;
-      WeakRetained = objc_loadWeakRetained((a1 + 48));
+      WeakRetained = objc_loadWeakRetained((action + 48));
       [(PKSqueezePaletteView *)WeakRetained setCurrentLayout:v7];
     }
 
-    else if (*(a1 + 104) == v3)
+    else if (*(action + 104) == v3)
     {
       v11 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -151,11 +151,11 @@ void __141__PKSqueezePaletteViewExpandedOptionsLayout_initWithContext_backButton
         _os_log_impl(&dword_1C7CCA000, v11, OS_LOG_TYPE_DEFAULT, "Did tap on gear button", v20, 2u);
       }
 
-      v7 = objc_loadWeakRetained((a1 + 48));
+      v7 = objc_loadWeakRetained((action + 48));
       [(PKSqueezePaletteView *)v7 _didTapMoreOptionsButton:v4];
     }
 
-    else if (*(a1 + 96) == v3)
+    else if (*(action + 96) == v3)
     {
       v12 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -164,11 +164,11 @@ void __141__PKSqueezePaletteViewExpandedOptionsLayout_initWithContext_backButton
         _os_log_impl(&dword_1C7CCA000, v12, OS_LOG_TYPE_DEFAULT, "Did tap on stickers button", v19, 2u);
       }
 
-      v7 = objc_loadWeakRetained((a1 + 48));
+      v7 = objc_loadWeakRetained((action + 48));
       [(PKSqueezePaletteView *)v7 _didTapStickersButton:v4];
     }
 
-    else if (*(a1 + 88) == v3)
+    else if (*(action + 88) == v3)
     {
       v13 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -177,11 +177,11 @@ void __141__PKSqueezePaletteViewExpandedOptionsLayout_initWithContext_backButton
         _os_log_impl(&dword_1C7CCA000, v13, OS_LOG_TYPE_DEFAULT, "Did tap on shapes button", v18, 2u);
       }
 
-      v7 = objc_loadWeakRetained((a1 + 48));
+      v7 = objc_loadWeakRetained((action + 48));
       [(PKSqueezePaletteView *)v7 _didTapShapesButton:v4];
     }
 
-    else if (*(a1 + 80) == v3)
+    else if (*(action + 80) == v3)
     {
       v14 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -190,13 +190,13 @@ void __141__PKSqueezePaletteViewExpandedOptionsLayout_initWithContext_backButton
         _os_log_impl(&dword_1C7CCA000, v14, OS_LOG_TYPE_DEFAULT, "Did tap on signatures button", v17, 2u);
       }
 
-      v7 = objc_loadWeakRetained((a1 + 48));
+      v7 = objc_loadWeakRetained((action + 48));
       [(PKSqueezePaletteView *)v7 _didTapSignatureButton:v4];
     }
 
     else
     {
-      v5 = *(a1 + 72);
+      v5 = *(action + 72);
       v6 = os_log_create("com.apple.pencilkit", "PencilSqueeze");
       v7 = v6;
       if (v5 == v4)
@@ -207,7 +207,7 @@ void __141__PKSqueezePaletteViewExpandedOptionsLayout_initWithContext_backButton
           _os_log_impl(&dword_1C7CCA000, v7, OS_LOG_TYPE_DEFAULT, "Did tap on text-box button", v16, 2u);
         }
 
-        v7 = objc_loadWeakRetained((a1 + 48));
+        v7 = objc_loadWeakRetained((action + 48));
         [(PKSqueezePaletteView *)v7 _didTapTextBoxButton:v4];
       }
 
@@ -384,7 +384,7 @@ void __53__PKSqueezePaletteViewExpandedOptionsLayout_updateUI__block_invoke(uint
   [v5 setTransform:&v6];
 }
 
-- (void)handlePencilInteractionDidTap:(int64_t)a3
+- (void)handlePencilInteractionDidTap:(int64_t)tap
 {
   context = self->_context;
   if (context)

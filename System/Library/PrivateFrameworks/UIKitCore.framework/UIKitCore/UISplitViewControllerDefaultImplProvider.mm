@@ -1,15 +1,15 @@
 @interface UISplitViewControllerDefaultImplProvider
-- (Class)implClassForSplitViewController:(id)a3;
+- (Class)implClassForSplitViewController:(id)controller;
 @end
 
 @implementation UISplitViewControllerDefaultImplProvider
 
-- (Class)implClassForSplitViewController:(id)a3
+- (Class)implClassForSplitViewController:(id)controller
 {
-  if ((dyld_program_sdk_at_least() & 1) != 0 || [a3 _shouldInitializeColumnStyle])
+  if ((dyld_program_sdk_at_least() & 1) != 0 || [controller _shouldInitializeColumnStyle])
   {
-    v4 = [a3 traitCollection];
-    v5 = [v4 userInterfaceIdiom];
+    traitCollection = [controller traitCollection];
+    userInterfaceIdiom = [traitCollection userInterfaceIdiom];
     if (_UIInternalPreferencesRevisionOnce != -1)
     {
       dispatch_once(&_UIInternalPreferencesRevisionOnce, &__block_literal_global_5_11);
@@ -40,7 +40,7 @@
     if (qword_1EA95E450 == -1)
     {
 LABEL_6:
-      if (v5 <= 6 && ((1 << v5) & 0x63) != 0)
+      if (userInterfaceIdiom <= 6 && ((1 << userInterfaceIdiom) & 0x63) != 0)
       {
         _UISolariumFeatureFlagEnabled();
 

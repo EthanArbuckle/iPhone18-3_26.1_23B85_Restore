@@ -55,15 +55,15 @@
   v10 = v9;
   v12 = v11;
   v13 = CGColorSpaceCreateWithName(kCGColorSpaceSRGB);
-  v14 = [(NSNumber *)self->inputQualityLevel unsignedIntValue];
-  if (v14 >= 3 || self->inputQualityLevel == 0)
+  unsignedIntValue = [(NSNumber *)self->inputQualityLevel unsignedIntValue];
+  if (unsignedIntValue >= 3 || self->inputQualityLevel == 0)
   {
     v16 = 0;
   }
 
   else
   {
-    v16 = v14;
+    v16 = unsignedIntValue;
   }
 
   if (v16 == 1)
@@ -85,9 +85,9 @@ LABEL_15:
   v17 = 1512.0;
   v19 = 2016.0;
 LABEL_17:
-  v20 = [(CIImage *)self->inputImage imageByClampingToExtent];
+  imageByClampingToExtent = [(CIImage *)self->inputImage imageByClampingToExtent];
   CGAffineTransformMakeTranslation(&v35, -v6, -v8);
-  v21 = [(CIImage *)v20 imageByApplyingTransform:&v35];
+  v21 = [(CIImage *)imageByClampingToExtent imageByApplyingTransform:&v35];
   CGAffineTransformMakeScale(&v35, v19 / v10, v17 / v12);
   v22 = [[[(CIImage *)v21 imageByApplyingTransform:&v35] imageByCroppingToRect:0.0 imageByColorMatchingWorkingSpaceToColorSpace:v19, v17], "imageByColorMatchingWorkingSpaceToColorSpace:", v13];
   [(CIImage *)v22 extent];

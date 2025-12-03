@@ -1,29 +1,29 @@
 @interface HMDCameraRecordingLoadBalancingAttempt
 + (id)logCategory;
-- (HMDCameraRecordingLoadBalancingAttempt)initWithLocalResponseTimeout:(double)a3 logIdentifier:(id)a4;
-- (HMDCameraRecordingLoadBalancingAttempt)initWithLocalResponseTimer:(id)a3 logIdentifier:(id)a4;
-- (void)startWithMessage:(id)a3 messageDispatcher:(id)a4 completion:(id)a5;
-- (void)timerDidFire:(id)a3;
+- (HMDCameraRecordingLoadBalancingAttempt)initWithLocalResponseTimeout:(double)timeout logIdentifier:(id)identifier;
+- (HMDCameraRecordingLoadBalancingAttempt)initWithLocalResponseTimer:(id)timer logIdentifier:(id)identifier;
+- (void)startWithMessage:(id)message messageDispatcher:(id)dispatcher completion:(id)completion;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDCameraRecordingLoadBalancingAttempt
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCameraRecordingLoadBalancingAttempt *)self localResponseTimer];
+  fireCopy = fire;
+  localResponseTimer = [(HMDCameraRecordingLoadBalancingAttempt *)self localResponseTimer];
 
-  if (v5 == v4)
+  if (localResponseTimer == fireCopy)
   {
     os_unfair_lock_lock_with_options();
-    v6 = [(HMDCameraRecordingLoadBalancingAttempt *)self completion];
+    completion = [(HMDCameraRecordingLoadBalancingAttempt *)self completion];
     [(HMDCameraRecordingLoadBalancingAttempt *)self setCompletion:0];
     os_unfair_lock_unlock(&self->_lock);
-    if (v6)
+    if (completion)
     {
       v7 = objc_autoreleasePoolPush();
-      v8 = self;
+      selfCopy = self;
       v9 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
@@ -35,57 +35,57 @@
 
       objc_autoreleasePoolPop(v7);
       v11 = [MEMORY[0x277CCA9B8] hmErrorWithCode:8 description:@"Timed out waiting for load balancing message response" reason:0 suggestion:0];
-      (v6)[2](v6, v11);
+      (completion)[2](completion, v11);
     }
   }
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startWithMessage:(id)a3 messageDispatcher:(id)a4 completion:(id)a5
+- (void)startWithMessage:(id)message messageDispatcher:(id)dispatcher completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v8)
+  messageCopy = message;
+  dispatcherCopy = dispatcher;
+  completionCopy = completion;
+  if (!messageCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  if (!v9)
+  if (!dispatcherCopy)
   {
 LABEL_7:
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  v11 = v10;
-  if (!v10)
+  v11 = completionCopy;
+  if (!completionCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  v12 = [(HMDCameraRecordingLoadBalancingAttempt *)self completion];
+  completion = [(HMDCameraRecordingLoadBalancingAttempt *)self completion];
 
-  if (!v12)
+  if (!completion)
   {
     [(HMDCameraRecordingLoadBalancingAttempt *)self setCompletion:v11];
-    v13 = [(HMDCameraRecordingLoadBalancingAttempt *)self localResponseTimer];
-    [v13 setDelegate:self];
+    localResponseTimer = [(HMDCameraRecordingLoadBalancingAttempt *)self localResponseTimer];
+    [localResponseTimer setDelegate:self];
 
-    v14 = [(HMDCameraRecordingLoadBalancingAttempt *)self localResponseTimer];
-    [v14 resume];
+    localResponseTimer2 = [(HMDCameraRecordingLoadBalancingAttempt *)self localResponseTimer];
+    [localResponseTimer2 resume];
 
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __88__HMDCameraRecordingLoadBalancingAttempt_startWithMessage_messageDispatcher_completion___block_invoke;
     v18[3] = &unk_279734E00;
     v18[4] = self;
-    [v8 setResponseHandler:v18];
-    [v9 sendMessage:v8];
+    [messageCopy setResponseHandler:v18];
+    [dispatcherCopy sendMessage:messageCopy];
 
     return;
   }
@@ -110,18 +110,18 @@ void __88__HMDCameraRecordingLoadBalancingAttempt_startWithMessage_messageDispat
   }
 }
 
-- (HMDCameraRecordingLoadBalancingAttempt)initWithLocalResponseTimer:(id)a3 logIdentifier:(id)a4
+- (HMDCameraRecordingLoadBalancingAttempt)initWithLocalResponseTimer:(id)timer logIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  timerCopy = timer;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = HMDCameraRecordingLoadBalancingAttempt;
   v9 = [(HMDCameraRecordingLoadBalancingAttempt *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_localResponseTimer, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_localResponseTimer, timer);
+    v11 = [identifierCopy copy];
     logIdentifier = v10->_logIdentifier;
     v10->_logIdentifier = v11;
   }
@@ -129,12 +129,12 @@ void __88__HMDCameraRecordingLoadBalancingAttempt_startWithMessage_messageDispat
   return v10;
 }
 
-- (HMDCameraRecordingLoadBalancingAttempt)initWithLocalResponseTimeout:(double)a3 logIdentifier:(id)a4
+- (HMDCameraRecordingLoadBalancingAttempt)initWithLocalResponseTimeout:(double)timeout logIdentifier:(id)identifier
 {
   v6 = MEMORY[0x277D0F920];
-  v7 = a4;
-  v8 = [[v6 alloc] initWithTimeInterval:2 options:a3];
-  v9 = [(HMDCameraRecordingLoadBalancingAttempt *)self initWithLocalResponseTimer:v8 logIdentifier:v7];
+  identifierCopy = identifier;
+  v8 = [[v6 alloc] initWithTimeInterval:2 options:timeout];
+  v9 = [(HMDCameraRecordingLoadBalancingAttempt *)self initWithLocalResponseTimer:v8 logIdentifier:identifierCopy];
 
   return v9;
 }

@@ -1,47 +1,47 @@
 @interface MTRCommissioningParameters
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation MTRCommissioningParameters
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCommissioningParameters);
-  v5 = [(MTRCommissioningParameters *)self csrNonce];
-  [(MTRCommissioningParameters *)v4 setCsrNonce:v5];
+  csrNonce = [(MTRCommissioningParameters *)self csrNonce];
+  [(MTRCommissioningParameters *)v4 setCsrNonce:csrNonce];
 
-  v6 = [(MTRCommissioningParameters *)self attestationNonce];
-  [(MTRCommissioningParameters *)v4 setAttestationNonce:v6];
+  attestationNonce = [(MTRCommissioningParameters *)self attestationNonce];
+  [(MTRCommissioningParameters *)v4 setAttestationNonce:attestationNonce];
 
-  v7 = [(MTRCommissioningParameters *)self wifiSSID];
-  [(MTRCommissioningParameters *)v4 setWifiSSID:v7];
+  wifiSSID = [(MTRCommissioningParameters *)self wifiSSID];
+  [(MTRCommissioningParameters *)v4 setWifiSSID:wifiSSID];
 
-  v8 = [(MTRCommissioningParameters *)self wifiCredentials];
-  [(MTRCommissioningParameters *)v4 setWifiCredentials:v8];
+  wifiCredentials = [(MTRCommissioningParameters *)self wifiCredentials];
+  [(MTRCommissioningParameters *)v4 setWifiCredentials:wifiCredentials];
 
-  v9 = [(MTRCommissioningParameters *)self threadOperationalDataset];
-  [(MTRCommissioningParameters *)v4 setThreadOperationalDataset:v9];
+  threadOperationalDataset = [(MTRCommissioningParameters *)self threadOperationalDataset];
+  [(MTRCommissioningParameters *)v4 setThreadOperationalDataset:threadOperationalDataset];
 
-  v10 = [(MTRCommissioningParameters *)self deviceAttestationDelegate];
-  [(MTRCommissioningParameters *)v4 setDeviceAttestationDelegate:v10];
+  deviceAttestationDelegate = [(MTRCommissioningParameters *)self deviceAttestationDelegate];
+  [(MTRCommissioningParameters *)v4 setDeviceAttestationDelegate:deviceAttestationDelegate];
 
-  v11 = [(MTRCommissioningParameters *)self failSafeTimeout];
-  [(MTRCommissioningParameters *)v4 setFailSafeTimeout:v11];
+  failSafeTimeout = [(MTRCommissioningParameters *)self failSafeTimeout];
+  [(MTRCommissioningParameters *)v4 setFailSafeTimeout:failSafeTimeout];
 
   [(MTRCommissioningParameters *)v4 setSkipCommissioningComplete:[(MTRCommissioningParameters *)self skipCommissioningComplete]];
-  v12 = [(MTRCommissioningParameters *)self countryCode];
-  [(MTRCommissioningParameters *)v4 setCountryCode:v12];
+  countryCode = [(MTRCommissioningParameters *)self countryCode];
+  [(MTRCommissioningParameters *)v4 setCountryCode:countryCode];
 
   [(MTRCommissioningParameters *)v4 setReadEndpointInformation:[(MTRCommissioningParameters *)self readEndpointInformation]];
-  v13 = [(MTRCommissioningParameters *)self acceptedTermsAndConditions];
-  [(MTRCommissioningParameters *)v4 setAcceptedTermsAndConditions:v13];
+  acceptedTermsAndConditions = [(MTRCommissioningParameters *)self acceptedTermsAndConditions];
+  [(MTRCommissioningParameters *)v4 setAcceptedTermsAndConditions:acceptedTermsAndConditions];
 
-  v14 = [(MTRCommissioningParameters *)self acceptedTermsAndConditionsVersion];
-  [(MTRCommissioningParameters *)v4 setAcceptedTermsAndConditionsVersion:v14];
+  acceptedTermsAndConditionsVersion = [(MTRCommissioningParameters *)self acceptedTermsAndConditionsVersion];
+  [(MTRCommissioningParameters *)v4 setAcceptedTermsAndConditionsVersion:acceptedTermsAndConditionsVersion];
 
-  v15 = [(MTRCommissioningParameters *)self extraAttributesToRead];
-  [(MTRCommissioningParameters *)v4 setExtraAttributesToRead:v15];
+  extraAttributesToRead = [(MTRCommissioningParameters *)self extraAttributesToRead];
+  [(MTRCommissioningParameters *)v4 setExtraAttributesToRead:extraAttributesToRead];
 
   [(MTRCommissioningParameters *)v4 setPreventNetworkScans:[(MTRCommissioningParameters *)self preventNetworkScans]];
   return v4;
@@ -50,11 +50,11 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(MTRCommissioningParameters *)self wifiSSID];
-  v5 = [(MTRCommissioningParameters *)self threadOperationalDataset];
-  v6 = [(MTRCommissioningParameters *)self acceptedTermsAndConditions];
-  v7 = [(MTRCommissioningParameters *)self acceptedTermsAndConditionsVersion];
-  v8 = [v3 stringWithFormat:@"<MTRCommissioningParameters: %p, has ssid: %d, has thread dataset: %d>, accepted terms: %@, accepted terms version: %@>", self, v4 != 0, v5 != 0, v6, v7];
+  wifiSSID = [(MTRCommissioningParameters *)self wifiSSID];
+  threadOperationalDataset = [(MTRCommissioningParameters *)self threadOperationalDataset];
+  acceptedTermsAndConditions = [(MTRCommissioningParameters *)self acceptedTermsAndConditions];
+  acceptedTermsAndConditionsVersion = [(MTRCommissioningParameters *)self acceptedTermsAndConditionsVersion];
+  v8 = [v3 stringWithFormat:@"<MTRCommissioningParameters: %p, has ssid: %d, has thread dataset: %d>, accepted terms: %@, accepted terms version: %@>", self, wifiSSID != 0, threadOperationalDataset != 0, acceptedTermsAndConditions, acceptedTermsAndConditionsVersion];
 
   return v8;
 }

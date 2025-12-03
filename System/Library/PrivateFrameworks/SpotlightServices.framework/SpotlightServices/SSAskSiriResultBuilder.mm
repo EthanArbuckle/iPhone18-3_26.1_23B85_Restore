@@ -1,5 +1,5 @@
 @interface SSAskSiriResultBuilder
-+ (BOOL)supportsResult:(id)a3;
++ (BOOL)supportsResult:(id)result;
 - (id)buildCommand;
 - (id)buildThumbnail;
 - (id)buildTitle;
@@ -7,10 +7,10 @@
 
 @implementation SSAskSiriResultBuilder
 
-+ (BOOL)supportsResult:(id)a3
++ (BOOL)supportsResult:(id)result
 {
-  v3 = [a3 identifier];
-  v4 = [v3 isEqualToString:@"com.apple.AskSiri"];
+  identifier = [result identifier];
+  v4 = [identifier isEqualToString:@"com.apple.AskSiri"];
 
   return v4;
 }
@@ -36,9 +36,9 @@
 - (id)buildCommand
 {
   v3 = objc_opt_new();
-  v4 = [(SSResultBuilder *)self queryContext];
-  v5 = [v4 searchString];
-  [v3 setUtteranceText:v5];
+  queryContext = [(SSResultBuilder *)self queryContext];
+  searchString = [queryContext searchString];
+  [v3 setUtteranceText:searchString];
 
   return v3;
 }

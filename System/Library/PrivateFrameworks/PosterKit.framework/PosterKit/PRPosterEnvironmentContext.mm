@@ -1,24 +1,24 @@
 @interface PRPosterEnvironmentContext
-+ (id)environmentContextForSettings:(id)a3 overrides:(id)a4;
-+ (id)environmentContextWithMode:(int64_t)a3 isPreview:(BOOL)a4 previewContent:(unint64_t)a5 isSnapshot:(BOOL)a6 scriptIsExecuting:(BOOL)a7;
-- (PRPosterEnvironmentContext)initWithMode:(int64_t)a3 isPreview:(BOOL)a4 previewContent:(unint64_t)a5 isSnapshot:(BOOL)a6 scriptIsExecuting:(BOOL)a7;
++ (id)environmentContextForSettings:(id)settings overrides:(id)overrides;
++ (id)environmentContextWithMode:(int64_t)mode isPreview:(BOOL)preview previewContent:(unint64_t)content isSnapshot:(BOOL)snapshot scriptIsExecuting:(BOOL)executing;
+- (PRPosterEnvironmentContext)initWithMode:(int64_t)mode isPreview:(BOOL)preview previewContent:(unint64_t)content isSnapshot:(BOOL)snapshot scriptIsExecuting:(BOOL)executing;
 - (id)description;
 @end
 
 @implementation PRPosterEnvironmentContext
 
-+ (id)environmentContextWithMode:(int64_t)a3 isPreview:(BOOL)a4 previewContent:(unint64_t)a5 isSnapshot:(BOOL)a6 scriptIsExecuting:(BOOL)a7
++ (id)environmentContextWithMode:(int64_t)mode isPreview:(BOOL)preview previewContent:(unint64_t)content isSnapshot:(BOOL)snapshot scriptIsExecuting:(BOOL)executing
 {
-  v7 = [[a1 alloc] initWithMode:a3 isPreview:a4 previewContent:a5 isSnapshot:a6 scriptIsExecuting:a7];
+  v7 = [[self alloc] initWithMode:mode isPreview:preview previewContent:content isSnapshot:snapshot scriptIsExecuting:executing];
 
   return v7;
 }
 
-+ (id)environmentContextForSettings:(id)a3 overrides:(id)a4
++ (id)environmentContextForSettings:(id)settings overrides:(id)overrides
 {
-  v6 = a3;
-  v7 = a4;
-  [v6 pui_content];
+  settingsCopy = settings;
+  overridesCopy = overrides;
+  [settingsCopy pui_content];
   if (PUIRenderingContentIsPreview())
   {
     IsPreview = 1;
@@ -26,66 +26,66 @@
 
   else
   {
-    v9 = [v7 objectForKey:@"pui_content"];
+    v9 = [overridesCopy objectForKey:@"pui_content"];
     [v9 unsignedIntegerValue];
     IsPreview = PUIRenderingContentIsPreview();
   }
 
-  if ([v6 pui_isSnapshot])
+  if ([settingsCopy pui_isSnapshot])
   {
-    v10 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v11 = [v7 objectForKey:@"pui_isSnapshot"];
-    v10 = [v11 BOOLValue];
+    v11 = [overridesCopy objectForKey:@"pui_isSnapshot"];
+    bOOLValue = [v11 BOOLValue];
   }
 
-  v12 = [v7 objectForKey:@"pui_scriptIsExecuting"];
-  v13 = [v12 BOOLValue];
+  v12 = [overridesCopy objectForKey:@"pui_scriptIsExecuting"];
+  bOOLValue2 = [v12 BOOLValue];
 
-  v14 = [v7 objectForKey:@"pui_mode"];
+  v14 = [overridesCopy objectForKey:@"pui_mode"];
   if (v14)
   {
-    v15 = [v7 objectForKey:@"pui_mode"];
-    v16 = [v15 unsignedIntegerValue];
+    v15 = [overridesCopy objectForKey:@"pui_mode"];
+    unsignedIntegerValue = [v15 unsignedIntegerValue];
   }
 
   else
   {
-    v16 = [v6 pui_mode];
+    unsignedIntegerValue = [settingsCopy pui_mode];
   }
 
-  v17 = [v7 objectForKey:@"pui_previewContent"];
+  v17 = [overridesCopy objectForKey:@"pui_previewContent"];
   if (v17)
   {
-    v18 = [v7 objectForKey:@"pui_previewContent"];
-    v19 = [v18 unsignedIntegerValue];
+    v18 = [overridesCopy objectForKey:@"pui_previewContent"];
+    unsignedIntegerValue2 = [v18 unsignedIntegerValue];
   }
 
   else
   {
-    v19 = [v6 pui_previewContent];
+    unsignedIntegerValue2 = [settingsCopy pui_previewContent];
   }
 
-  v20 = [[a1 alloc] initWithMode:v16 isPreview:IsPreview previewContent:v19 isSnapshot:v10 scriptIsExecuting:v13];
+  v20 = [[self alloc] initWithMode:unsignedIntegerValue isPreview:IsPreview previewContent:unsignedIntegerValue2 isSnapshot:bOOLValue scriptIsExecuting:bOOLValue2];
 
   return v20;
 }
 
-- (PRPosterEnvironmentContext)initWithMode:(int64_t)a3 isPreview:(BOOL)a4 previewContent:(unint64_t)a5 isSnapshot:(BOOL)a6 scriptIsExecuting:(BOOL)a7
+- (PRPosterEnvironmentContext)initWithMode:(int64_t)mode isPreview:(BOOL)preview previewContent:(unint64_t)content isSnapshot:(BOOL)snapshot scriptIsExecuting:(BOOL)executing
 {
   v13.receiver = self;
   v13.super_class = PRPosterEnvironmentContext;
   result = [(PRPosterEnvironmentContext *)&v13 init];
   if (result)
   {
-    result->_preview = a4;
-    result->_snapshot = a6;
-    result->_mode = a3;
-    result->_previewContent = a5;
-    result->_scriptIsExecuting = a7;
+    result->_preview = preview;
+    result->_snapshot = snapshot;
+    result->_mode = mode;
+    result->_previewContent = content;
+    result->_scriptIsExecuting = executing;
   }
 
   return result;
@@ -103,9 +103,9 @@
   v6 = [v3 appendBool:self->_preview withName:@"isPreview"];
   v7 = [v3 appendBool:self->_snapshot withName:@"isSnapshot" ifEqualTo:1];
   v8 = [v3 appendBool:self->_scriptIsExecuting withName:@"scriptIsExecuting" ifEqualTo:1];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 @end

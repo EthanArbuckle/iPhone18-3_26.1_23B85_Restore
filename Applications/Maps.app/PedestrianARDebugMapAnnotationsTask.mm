@@ -3,7 +3,7 @@
 - (BOOL)isProvidingARAnnotations;
 - (ChromeViewController)chromeViewController;
 - (NavigationSession)navigationSession;
-- (PedestrianARDebugMapAnnotationsTask)initWithPlatformController:(id)a3 navigationService:(id)a4;
+- (PedestrianARDebugMapAnnotationsTask)initWithPlatformController:(id)controller navigationService:(id)service;
 - (PlatformController)platformController;
 - (VKMapView)mapView;
 - (id)_iOSMapView;
@@ -11,21 +11,21 @@
 - (void)_startProvidingARAnnotationsIfNecessary;
 - (void)_stopProvidingARAnnotations;
 - (void)_updateDebugRouteAnnotations;
-- (void)addObserver:(id)a3;
-- (void)chromeViewController:(id)a3 didMoveFromContextStack:(id)a4 toContextStack:(id)a5;
+- (void)addObserver:(id)observer;
+- (void)chromeViewController:(id)controller didMoveFromContextStack:(id)stack toContextStack:(id)contextStack;
 - (void)dealloc;
-- (void)featureSetStateDidChange:(id)a3 previous:(int64_t)a4 current:(int64_t)a5;
-- (void)generateAttachmentsForRadarDraft:(id)a3 withCompletion:(id)a4;
-- (void)mapLayer:(id)a3 activeARWalkingFeatureDidUpdate:(id)a4;
-- (void)mapLayer:(id)a3 failedElevationRequestWithReason:(int64_t)a4;
-- (void)mapLayer:(id)a3 updatedFeatures:(id)a4;
-- (void)navigationSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4;
-- (void)navigationSession:(id)a3 didUpdateRouteCollection:(id)a4;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
-- (void)platformControllerDidChangeChromeViewControllerNotification:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setChromeViewController:(id)a3;
-- (void)setNavigationSession:(id)a3;
+- (void)featureSetStateDidChange:(id)change previous:(int64_t)previous current:(int64_t)current;
+- (void)generateAttachmentsForRadarDraft:(id)draft withCompletion:(id)completion;
+- (void)mapLayer:(id)layer activeARWalkingFeatureDidUpdate:(id)update;
+- (void)mapLayer:(id)layer failedElevationRequestWithReason:(int64_t)reason;
+- (void)mapLayer:(id)layer updatedFeatures:(id)features;
+- (void)navigationSession:(id)session didChangeCurrentTransportType:(int64_t)type;
+- (void)navigationSession:(id)session didUpdateRouteCollection:(id)collection;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
+- (void)platformControllerDidChangeChromeViewControllerNotification:(id)notification;
+- (void)removeObserver:(id)observer;
+- (void)setChromeViewController:(id)controller;
+- (void)setNavigationSession:(id)session;
 @end
 
 @implementation PedestrianARDebugMapAnnotationsTask
@@ -51,34 +51,34 @@
   return WeakRetained;
 }
 
-- (void)generateAttachmentsForRadarDraft:(id)a3 withCompletion:(id)a4
+- (void)generateAttachmentsForRadarDraft:(id)draft withCompletion:(id)completion
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1008F5958;
   block[3] = &unk_1016605F8;
   block[4] = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v9;
-  v6 = v8;
+  draftCopy = draft;
+  completionCopy = completion;
+  v5 = completionCopy;
+  v6 = draftCopy;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)platformControllerDidChangeChromeViewControllerNotification:(id)a3
+- (void)platformControllerDidChangeChromeViewControllerNotification:(id)notification
 {
-  v5 = [(PedestrianARDebugMapAnnotationsTask *)self platformController];
-  v4 = [v5 chromeViewController];
-  [(PedestrianARDebugMapAnnotationsTask *)self setChromeViewController:v4];
+  platformController = [(PedestrianARDebugMapAnnotationsTask *)self platformController];
+  chromeViewController = [platformController chromeViewController];
+  [(PedestrianARDebugMapAnnotationsTask *)self setChromeViewController:chromeViewController];
 }
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v8 = a5;
+  toSessionCopy = toSession;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v8;
+    v6 = toSessionCopy;
   }
 
   else
@@ -90,19 +90,19 @@
   [(PedestrianARDebugMapAnnotationsTask *)self setNavigationSession:v7];
 }
 
-- (void)chromeViewController:(id)a3 didMoveFromContextStack:(id)a4 toContextStack:(id)a5
+- (void)chromeViewController:(id)controller didMoveFromContextStack:(id)stack toContextStack:(id)contextStack
 {
-  v7 = a4;
-  v8 = a5;
+  stackCopy = stack;
+  contextStackCopy = contextStack;
   v9 = sub_1008F5C9C();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = 134349570;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v7;
+    v13 = stackCopy;
     v14 = 2112;
-    v15 = v8;
+    v15 = contextStackCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] Chrome VC moved from stack: %@ to stack: %@", &v10, 0x20u);
   }
 
@@ -113,15 +113,15 @@
   }
 }
 
-- (void)mapLayer:(id)a3 failedElevationRequestWithReason:(int64_t)a4
+- (void)mapLayer:(id)layer failedElevationRequestWithReason:(int64_t)reason
 {
   v6 = sub_1008F5C9C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 134349312;
-    v20 = self;
+    selfCopy = self;
     v21 = 2048;
-    v22 = a4;
+    reasonCopy = reason;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] An elevation request failed with reason: %ld", buf, 0x16u);
   }
 
@@ -130,8 +130,8 @@
     [(PedestrianARDebugMapAnnotationsTask *)self setDidShowUndulationFailureAlert:1];
     v7 = objc_opt_new();
     [v7 setTitle:@"[AR Nav Label Simulator] Elevation lookup failure"];
-    v8 = [NSString stringWithFormat:@"AR walking elevation request failed with reason: %ld", a4];
-    [v7 addNote:v8];
+    reason = [NSString stringWithFormat:@"AR walking elevation request failed with reason: %ld", reason];
+    [v7 addNote:reason];
 
     [v7 setClassification:6];
     v9 = +[MapsRadarComponent mapsAppNavUIWalkingComponent];
@@ -143,16 +143,16 @@
 LABEL_14:
 
       v17 = +[MapsRadarController sharedInstance];
-      v18 = [(PedestrianARDebugMapAnnotationsTask *)self chromeViewController];
-      [v17 launchTTRWithRadar:v7 promptTitle:@"there was an error while looking up the elevation of an AR label" fromViewController:v18];
+      chromeViewController = [(PedestrianARDebugMapAnnotationsTask *)self chromeViewController];
+      [v17 launchTTRWithRadar:v7 promptTitle:@"there was an error while looking up the elevation of an AR label" fromViewController:chromeViewController];
 
       return;
     }
 
-    v11 = self;
-    if (!v11)
+    selfCopy2 = self;
+    if (!selfCopy2)
     {
-      v16 = @"<nil>";
+      selfCopy2 = @"<nil>";
       goto LABEL_13;
     }
 
@@ -160,103 +160,103 @@ LABEL_14:
     v13 = NSStringFromClass(v12);
     if (objc_opt_respondsToSelector())
     {
-      v14 = [(PedestrianARDebugMapAnnotationsTask *)v11 performSelector:"accessibilityIdentifier"];
+      v14 = [(PedestrianARDebugMapAnnotationsTask *)selfCopy2 performSelector:"accessibilityIdentifier"];
       v15 = v14;
       if (v14 && ![v14 isEqualToString:v13])
       {
-        v16 = [NSString stringWithFormat:@"%@<%p, %@>", v13, v11, v15];
+        selfCopy2 = [NSString stringWithFormat:@"%@<%p, %@>", v13, selfCopy2, v15];
 
         goto LABEL_11;
       }
     }
 
-    v16 = [NSString stringWithFormat:@"%@<%p>", v13, v11];
+    selfCopy2 = [NSString stringWithFormat:@"%@<%p>", v13, selfCopy2];
 LABEL_11:
 
 LABEL_13:
     *buf = 138543362;
-    v20 = v16;
+    selfCopy = selfCopy2;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[%{public}@] Launching TTR for elevation request failure", buf, 0xCu);
 
     goto LABEL_14;
   }
 }
 
-- (void)mapLayer:(id)a3 activeARWalkingFeatureDidUpdate:(id)a4
+- (void)mapLayer:(id)layer activeARWalkingFeatureDidUpdate:(id)update
 {
-  v5 = a4;
+  updateCopy = update;
   v6 = sub_1008F5C9C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v11 = 134349314;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v5;
+    v14 = updateCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] VKMapView updated the active feature: %@", &v11, 0x16u);
   }
 
-  v7 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
-  v8 = [v7 mapViewDelegate];
-  v9 = [v8 currentFeatureSet];
-  [v9 addObserver:self];
+  renderingView = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
+  mapViewDelegate = [renderingView mapViewDelegate];
+  currentFeatureSet = [mapViewDelegate currentFeatureSet];
+  [currentFeatureSet addObserver:self];
 
-  v10 = [(PedestrianARDebugMapAnnotationsTask *)self observers];
-  [v10 globalFeaturesDidChangeForDataSource:self];
+  observers = [(PedestrianARDebugMapAnnotationsTask *)self observers];
+  [observers globalFeaturesDidChangeForDataSource:self];
 }
 
-- (void)mapLayer:(id)a3 updatedFeatures:(id)a4
+- (void)mapLayer:(id)layer updatedFeatures:(id)features
 {
-  v5 = a4;
+  featuresCopy = features;
   v6 = sub_1008F5C9C();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v11 = 134349314;
-    v12 = self;
+    selfCopy = self;
     v13 = 2112;
-    v14 = v5;
+    v14 = featuresCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] VKMapView updated features: %@", &v11, 0x16u);
   }
 
-  v7 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
-  v8 = [v7 mapViewDelegate];
-  v9 = [v8 currentFeatureSet];
-  [v9 addObserver:self];
+  renderingView = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
+  mapViewDelegate = [renderingView mapViewDelegate];
+  currentFeatureSet = [mapViewDelegate currentFeatureSet];
+  [currentFeatureSet addObserver:self];
 
-  v10 = [(PedestrianARDebugMapAnnotationsTask *)self observers];
-  [v10 globalFeaturesDidChangeForDataSource:self];
+  observers = [(PedestrianARDebugMapAnnotationsTask *)self observers];
+  [observers globalFeaturesDidChangeForDataSource:self];
 }
 
-- (void)featureSetStateDidChange:(id)a3 previous:(int64_t)a4 current:(int64_t)a5
+- (void)featureSetStateDidChange:(id)change previous:(int64_t)previous current:(int64_t)current
 {
-  v10 = a3;
-  v6 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
-  v7 = [v6 mapViewDelegate];
-  v8 = [v7 currentFeatureSet];
+  changeCopy = change;
+  renderingView = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
+  mapViewDelegate = [renderingView mapViewDelegate];
+  currentFeatureSet = [mapViewDelegate currentFeatureSet];
 
-  if (v8 == v10)
+  if (currentFeatureSet == changeCopy)
   {
-    v9 = [(PedestrianARDebugMapAnnotationsTask *)self observers];
-    [v9 globalFeaturesDidChangeForDataSource:self];
+    observers = [(PedestrianARDebugMapAnnotationsTask *)self observers];
+    [observers globalFeaturesDidChangeForDataSource:self];
   }
 
   else
   {
-    [v10 removeObserver:self];
+    [changeCopy removeObserver:self];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PedestrianARDebugMapAnnotationsTask *)self observers];
-  [v5 unregisterObserver:v4];
+  observerCopy = observer;
+  observers = [(PedestrianARDebugMapAnnotationsTask *)self observers];
+  [observers unregisterObserver:observerCopy];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(PedestrianARDebugMapAnnotationsTask *)self observers];
-  [v5 registerObserver:v4];
+  observerCopy = observer;
+  observers = [(PedestrianARDebugMapAnnotationsTask *)self observers];
+  [observers registerObserver:observerCopy];
 }
 
 - (id)globalAnnotations
@@ -266,18 +266,18 @@ LABEL_13:
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  v4 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
-  v5 = [v4 mapViewDelegate];
-  v6 = [v5 mapView];
-  v7 = [v6 labelMarkers];
+  renderingView = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
+  mapViewDelegate = [renderingView mapViewDelegate];
+  mapView = [mapViewDelegate mapView];
+  labelMarkers = [mapView labelMarkers];
 
-  obj = v7;
-  v8 = [v7 countByEnumeratingWithState:&v44 objects:v52 count:16];
+  obj = labelMarkers;
+  v8 = [labelMarkers countByEnumeratingWithState:&v44 objects:v52 count:16];
   if (v8)
   {
     v9 = v8;
     v10 = *v45;
-    v39 = self;
+    selfCopy = self;
     v40 = v3;
     do
     {
@@ -291,21 +291,21 @@ LABEL_13:
         v12 = *(*(&v44 + 1) + 8 * i);
         if ([v12 isARWalkingFeature])
         {
-          v13 = [v12 arWalkingFeature];
+          arWalkingFeature = [v12 arWalkingFeature];
 
-          if (v13)
+          if (arWalkingFeature)
           {
-            v14 = [v12 arWalkingFeature];
-            v15 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
-            v16 = [v15 mapViewDelegate];
-            v17 = [v16 currentFeature];
+            arWalkingFeature2 = [v12 arWalkingFeature];
+            renderingView2 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
+            mapViewDelegate2 = [renderingView2 mapViewDelegate];
+            currentFeature = [mapViewDelegate2 currentFeature];
 
-            if (v14 == v17)
+            if (arWalkingFeature2 == currentFeature)
             {
-              v19 = [v12 featureLabelIdentifier];
-              v20 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
-              v21 = [v20 mapViewDelegate];
-              v18 = v19 == [v21 currentIdentifier];
+              featureLabelIdentifier = [v12 featureLabelIdentifier];
+              renderingView3 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
+              mapViewDelegate3 = [renderingView3 mapViewDelegate];
+              v18 = featureLabelIdentifier == [mapViewDelegate3 currentIdentifier];
             }
 
             else
@@ -313,14 +313,14 @@ LABEL_13:
               v18 = 0;
             }
 
-            v22 = [(PedestrianARDebugMapAnnotationsTask *)self annotations];
+            annotations = [(PedestrianARDebugMapAnnotationsTask *)self annotations];
             v42[0] = _NSConcreteStackBlock;
             v42[1] = 3221225472;
             v42[2] = sub_1008F68A4;
             v42[3] = &unk_10162E2C0;
             v42[4] = v12;
             v43 = v18;
-            v23 = sub_100030774(v22, v42);
+            v23 = sub_100030774(annotations, v42);
 
             if (v23)
             {
@@ -329,7 +329,7 @@ LABEL_13:
               {
                 v25 = [(PedestrianARCustomFeatureAnnotation *)v23 debugDescription];
                 *buf = 134349314;
-                v49 = self;
+                selfCopy3 = self;
                 v50 = 2112;
                 v51 = v25;
                 _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "[%{public}p] Found cached annotation: %@", buf, 0x16u);
@@ -348,26 +348,26 @@ LABEL_13:
               {
                 v28 = [(PedestrianARCustomFeatureAnnotation *)v23 debugDescription];
                 *buf = 134349314;
-                v49 = self;
+                selfCopy3 = self;
                 v50 = 2112;
                 v51 = v28;
                 _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "[%{public}p] Annotation was not present in cache; created a new one: %@", buf, 0x16u);
               }
             }
 
-            v29 = [(PedestrianARCustomFeatureAnnotation *)v23 feature];
-            v30 = [v12 arWalkingFeature];
-            v31 = [v12 isOccluded];
-            v32 = v30;
+            feature = [(PedestrianARCustomFeatureAnnotation *)v23 feature];
+            arWalkingFeature3 = [v12 arWalkingFeature];
+            isOccluded = [v12 isOccluded];
+            v32 = arWalkingFeature3;
             v33 = [GEOFeatureStyleAttributes alloc];
-            v34 = [v32 type];
+            type = [v32 type];
 
-            v35 = [v33 initWithAttributes:{5, 3, 65632, v34, 65538, v18, 150, 1, 65594, v31, 0}];
-            [v29 setStyleAttributes:v35];
+            v35 = [v33 initWithAttributes:{5, 3, 65632, type, 65538, v18, 150, 1, 65594, isOccluded, 0}];
+            [feature setStyleAttributes:v35];
             v3 = v40;
             [v40 addObject:v23];
 
-            self = v39;
+            self = selfCopy;
           }
         }
       }
@@ -378,32 +378,32 @@ LABEL_13:
     while (v9);
   }
 
-  v36 = self;
+  selfCopy4 = self;
   v37 = [v3 copy];
-  [(PedestrianARDebugMapAnnotationsTask *)v36 setAnnotations:v37];
+  [(PedestrianARDebugMapAnnotationsTask *)selfCopy4 setAnnotations:v37];
 
-  [(PedestrianARDebugMapAnnotationsTask *)v36 _updateDebugRouteAnnotations];
+  [(PedestrianARDebugMapAnnotationsTask *)selfCopy4 _updateDebugRouteAnnotations];
 
   return v3;
 }
 
-- (void)navigationSession:(id)a3 didUpdateRouteCollection:(id)a4
+- (void)navigationSession:(id)session didUpdateRouteCollection:(id)collection
 {
-  v5 = a4;
+  collectionCopy = collection;
   [(PedestrianARDebugMapAnnotationsTask *)self _stopProvidingARAnnotations];
-  v8 = [v5 currentRoute];
+  currentRoute = [collectionCopy currentRoute];
 
-  if ([v8 transportType] == 2)
+  if ([currentRoute transportType] == 2)
   {
-    v6 = [(PedestrianARDebugMapAnnotationsTask *)self _shouldProvideDebugAnnotations];
+    _shouldProvideDebugAnnotations = [(PedestrianARDebugMapAnnotationsTask *)self _shouldProvideDebugAnnotations];
 
-    if (v6)
+    if (_shouldProvideDebugAnnotations)
     {
       v7 = sub_1008F5C9C();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
         *buf = 134349056;
-        v10 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] Navigation re-routed and the new route's transport type is walking", buf, 0xCu);
       }
 
@@ -416,15 +416,15 @@ LABEL_13:
   }
 }
 
-- (void)navigationSession:(id)a3 didChangeCurrentTransportType:(int64_t)a4
+- (void)navigationSession:(id)session didChangeCurrentTransportType:(int64_t)type
 {
-  if (a4 != 2)
+  if (type != 2)
   {
     v5 = sub_1008F5C9C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 134349056;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Navigation changed transport type to non-walking", &v6, 0xCu);
     }
 
@@ -436,8 +436,8 @@ LABEL_13:
 {
   if ([(PedestrianARDebugMapAnnotationsTask *)self _shouldProvideDebugAnnotations])
   {
-    v3 = [(PedestrianARDebugMapAnnotationsTask *)self annotations];
-    v4 = sub_100030774(v3, &stru_10162E298);
+    annotations = [(PedestrianARDebugMapAnnotationsTask *)self annotations];
+    v4 = sub_100030774(annotations, &stru_10162E298);
 
     if (!v4)
     {
@@ -446,24 +446,24 @@ LABEL_35:
       return;
     }
 
-    v5 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
-    v6 = [v5 mapViewDelegate];
-    v7 = [v4 labelMarker];
-    v8 = [v7 arWalkingFeature];
-    v9 = [v6 guidanceInfoForFeature:v8];
+    renderingView = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
+    mapViewDelegate = [renderingView mapViewDelegate];
+    labelMarker = [v4 labelMarker];
+    arWalkingFeature = [labelMarker arWalkingFeature];
+    v9 = [mapViewDelegate guidanceInfoForFeature:arWalkingFeature];
 
-    v10 = [v4 labelMarker];
-    v11 = [v10 arWalkingFeature];
+    labelMarker2 = [v4 labelMarker];
+    arWalkingFeature2 = [labelMarker2 arWalkingFeature];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
-    v13 = [v4 labelMarker];
-    v14 = [v13 arWalkingFeature];
+    labelMarker3 = [v4 labelMarker];
+    arWalkingFeature3 = [labelMarker3 arWalkingFeature];
     objc_opt_class();
     v15 = objc_opt_isKindOfClass();
 
-    v16 = [v4 labelMarker];
-    [v16 facingDirection];
+    labelMarker4 = [v4 labelMarker];
+    [labelMarker4 facingDirection];
     v18 = v17;
 
     v19 = @"N";
@@ -523,16 +523,16 @@ LABEL_35:
     v56 = v9;
     if (isKindOfClass)
     {
-      v20 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
-      v21 = [v20 route];
-      v22 = [v21 legs];
-      v23 = [v22 lastObject];
+      renderingView2 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
+      route = [renderingView2 route];
+      legs = [route legs];
+      lastObject = [legs lastObject];
 
-      v24 = [v23 destinationDisplayInfo];
-      v25 = [v24 arInfo];
+      destinationDisplayInfo = [lastObject destinationDisplayInfo];
+      arInfo = [destinationDisplayInfo arInfo];
 
-      v26 = [v25 storefrontFaceGeometrys];
-      v27 = [v26 count];
+      storefrontFaceGeometrys = [arInfo storefrontFaceGeometrys];
+      v27 = [storefrontFaceGeometrys count];
 
       v28 = +[NSUserDefaults standardUserDefaults];
       v29 = [v28 BOOLForKey:@"PedestrianARInjectFakeStorefrontArrivalDataKey"];
@@ -553,12 +553,12 @@ LABEL_35:
         v31 = v30;
       }
 
-      v32 = [v9 arrowLabel];
+      arrowLabel = [v9 arrowLabel];
 
-      if (v32)
+      if (arrowLabel)
       {
-        v33 = [v9 arrowLabel];
-        v34 = [NSString stringWithFormat:@"%@\n%@", v31, v33];
+        arrowLabel2 = [v9 arrowLabel];
+        v34 = [NSString stringWithFormat:@"%@\n%@", v31, arrowLabel2];
       }
 
       else
@@ -569,7 +569,7 @@ LABEL_35:
 
     else
     {
-      v35 = [v9 arrowLabel];
+      arrowLabel3 = [v9 arrowLabel];
 
       if (v15)
       {
@@ -581,32 +581,32 @@ LABEL_35:
         v36 = @"MARL";
       }
 
-      if (!v35)
+      if (!arrowLabel3)
       {
         v34 = [NSString stringWithFormat:@"%@ - %@", v36, v19];
         goto LABEL_34;
       }
 
-      v23 = [v9 arrowLabel];
-      v34 = [NSString stringWithFormat:@"%@ - %@\n%@", v36, v19, v23];
+      lastObject = [v9 arrowLabel];
+      v34 = [NSString stringWithFormat:@"%@ - %@\n%@", v36, v19, lastObject];
     }
 
 LABEL_34:
-    v37 = [v4 labelMarker];
-    v38 = [v37 arWalkingFeature];
-    v39 = [v4 isOccluded];
-    v40 = v38;
+    labelMarker5 = [v4 labelMarker];
+    arWalkingFeature4 = [labelMarker5 arWalkingFeature];
+    isOccluded = [v4 isOccluded];
+    v40 = arWalkingFeature4;
     v41 = [GEOFeatureStyleAttributes alloc];
-    v42 = [v40 type];
+    type = [v40 type];
 
-    v43 = [v41 initWithAttributes:{65632, v42, 150, 1, 65594, v39, 0}];
-    v44 = [(PedestrianARDebugMapAnnotationsTask *)self _iOSMapView];
-    v45 = [v44 routeContext];
+    v43 = [v41 initWithAttributes:{65632, type, 150, 1, 65594, isOccluded, 0}];
+    _iOSMapView = [(PedestrianARDebugMapAnnotationsTask *)self _iOSMapView];
+    routeContext = [_iOSMapView routeContext];
 
-    v46 = [v45 routeInfo];
-    v47 = [v46 route];
+    routeInfo = [routeContext routeInfo];
+    route2 = [routeInfo route];
 
-    v48 = [[GEORouteMatcher alloc] initWithRoute:v47 auditToken:0];
+    v48 = [[GEORouteMatcher alloc] initWithRoute:route2 auditToken:0];
     [v4 coordinate];
     v50 = v49;
     [v4 coordinate];
@@ -615,8 +615,8 @@ LABEL_34:
     v53 = [[VKRouteRangeAnnotationInfo alloc] initWithEtaDescription:v52 start:v51 end:v51];
     v57 = v53;
     v54 = [NSArray arrayWithObjects:&v57 count:1];
-    v55 = [v45 routeInfo];
-    [v55 setDebugAnnotations:v54];
+    routeInfo2 = [routeContext routeInfo];
+    [routeInfo2 setDebugAnnotations:v54];
 
     goto LABEL_35;
   }
@@ -624,11 +624,11 @@ LABEL_34:
 
 - (id)_iOSMapView
 {
-  v2 = [(PedestrianARDebugMapAnnotationsTask *)self iosBasedChromeViewController];
-  v3 = [v2 mapView];
-  v4 = [v3 _mapLayer];
+  iosBasedChromeViewController = [(PedestrianARDebugMapAnnotationsTask *)self iosBasedChromeViewController];
+  mapView = [iosBasedChromeViewController mapView];
+  _mapLayer = [mapView _mapLayer];
 
-  return v4;
+  return _mapLayer;
 }
 
 - (void)_stopProvidingARAnnotations
@@ -637,7 +637,7 @@ LABEL_34:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v9 = 134349056;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Stop providing AR annotations", &v9, 0xCu);
   }
 
@@ -645,30 +645,30 @@ LABEL_34:
   [v4 removeAttachmentProvider:self];
 
   [(PedestrianARDebugMapAnnotationsTask *)self setRenderingView:0];
-  v5 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
-  [v5 removeFromSuperview];
+  debugWarningBannerButton = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
+  [debugWarningBannerButton removeFromSuperview];
 
   [(PedestrianARDebugMapAnnotationsTask *)self setDebugWarningBannerButton:0];
-  v6 = [(PedestrianARDebugMapAnnotationsTask *)self _iOSMapView];
-  [v6 removeCustomFeatureDataSource:self];
-  v7 = [v6 routeContext];
-  v8 = [v7 routeInfo];
-  [v8 setDebugAnnotations:0];
+  _iOSMapView = [(PedestrianARDebugMapAnnotationsTask *)self _iOSMapView];
+  [_iOSMapView removeCustomFeatureDataSource:self];
+  routeContext = [_iOSMapView routeContext];
+  routeInfo = [routeContext routeInfo];
+  [routeInfo setDebugAnnotations:0];
 }
 
 - (void)_startProvidingARAnnotationsIfNecessary
 {
   if ([(PedestrianARDebugMapAnnotationsTask *)self _shouldProvideDebugAnnotations])
   {
-    v3 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
+    renderingView = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
 
-    if (v3)
+    if (renderingView)
     {
       v4 = sub_1008F5C9C();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
         *buf = 134349056;
-        v101 = self;
+        selfCopy3 = self;
         v5 = "[%{public}p] We already have a rendering view; will not start providing AR annotations again";
 LABEL_13:
         _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, v5, buf, 0xCu);
@@ -684,148 +684,148 @@ LABEL_13:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         *buf = 134349056;
-        v101 = self;
+        selfCopy3 = self;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{public}p] Starting to provide AR annotations now", buf, 0xCu);
       }
 
-      v11 = [(PedestrianARDebugMapAnnotationsTask *)self _iOSMapView];
-      [v11 addCustomFeatureDataSource:self];
+      _iOSMapView = [(PedestrianARDebugMapAnnotationsTask *)self _iOSMapView];
+      [_iOSMapView addCustomFeatureDataSource:self];
 
-      v12 = [(PedestrianARDebugMapAnnotationsTask *)self iosBasedChromeViewController];
-      v98 = [v12 currentIOSBasedContext];
+      iosBasedChromeViewController = [(PedestrianARDebugMapAnnotationsTask *)self iosBasedChromeViewController];
+      currentIOSBasedContext = [iosBasedChromeViewController currentIOSBasedContext];
 
       v13 = [PedestrianARRenderingView alloc];
-      v14 = [v98 guidanceObserver];
-      v15 = [(PedestrianARDebugMapAnnotationsTask *)self navigationService];
-      v16 = [(PedestrianARRenderingView *)v13 initWithGuidanceObserver:v14 navigationService:v15];
+      guidanceObserver = [currentIOSBasedContext guidanceObserver];
+      navigationService = [(PedestrianARDebugMapAnnotationsTask *)self navigationService];
+      v16 = [(PedestrianARRenderingView *)v13 initWithGuidanceObserver:guidanceObserver navigationService:navigationService];
       [(PedestrianARDebugMapAnnotationsTask *)self setRenderingView:v16];
 
-      v17 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
-      v18 = [v17 mapViewDelegate];
-      [v18 registerObserver:self];
+      renderingView2 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
+      mapViewDelegate = [renderingView2 mapViewDelegate];
+      [mapViewDelegate registerObserver:self];
 
-      v19 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
-      v20 = [v19 mapViewDelegate];
-      v21 = [v20 mapView];
-      [v21 setARMode:3];
+      renderingView3 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
+      mapViewDelegate2 = [renderingView3 mapViewDelegate];
+      mapView = [mapViewDelegate2 mapView];
+      [mapView setARMode:3];
 
-      v22 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
-      v23 = [v22 mapViewDelegate];
-      v24 = [v23 mapView];
-      [v24 setARSceneType:0];
+      renderingView4 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
+      mapViewDelegate3 = [renderingView4 mapViewDelegate];
+      mapView2 = [mapViewDelegate3 mapView];
+      [mapView2 setARSceneType:0];
 
-      v25 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
-      v26 = [v25 mapViewDelegate];
-      v27 = [v26 mapView];
-      [v27 setRendersInBackground:1];
+      renderingView5 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
+      mapViewDelegate4 = [renderingView5 mapViewDelegate];
+      mapView3 = [mapViewDelegate4 mapView];
+      [mapView3 setRendersInBackground:1];
 
-      v28 = [(PedestrianARDebugMapAnnotationsTask *)self navigationSession];
-      v29 = [v28 currentRouteCollection];
-      v30 = [v29 currentRoute];
-      v31 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
-      [v31 setRoute:v30];
+      navigationSession = [(PedestrianARDebugMapAnnotationsTask *)self navigationSession];
+      currentRouteCollection = [navigationSession currentRouteCollection];
+      currentRoute = [currentRouteCollection currentRoute];
+      renderingView6 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
+      [renderingView6 setRoute:currentRoute];
 
-      v32 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
-      [v32 setShouldGenerateFeatures:1];
+      renderingView7 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
+      [renderingView7 setShouldGenerateFeatures:1];
 
-      v33 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
-      [v33 setShouldShowFeatures:1];
+      renderingView8 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
+      [renderingView8 setShouldShowFeatures:1];
 
-      v34 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
-      v35 = [v34 mapViewDelegate];
-      v36 = [v35 mapView];
-      [v36 setOpacity:0.0];
+      renderingView9 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
+      mapViewDelegate5 = [renderingView9 mapViewDelegate];
+      mapView4 = [mapViewDelegate5 mapView];
+      [mapView4 setOpacity:0.0];
 
-      v37 = [(PedestrianARDebugMapAnnotationsTask *)self iosBasedChromeViewController];
-      v38 = [v37 view];
-      v39 = [v38 layer];
-      v40 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
-      v41 = [v40 mapViewDelegate];
-      v42 = [v41 mapView];
-      [v39 insertSublayer:v42 atIndex:0];
+      iosBasedChromeViewController2 = [(PedestrianARDebugMapAnnotationsTask *)self iosBasedChromeViewController];
+      view = [iosBasedChromeViewController2 view];
+      layer = [view layer];
+      renderingView10 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
+      mapViewDelegate6 = [renderingView10 mapViewDelegate];
+      mapView5 = [mapViewDelegate6 mapView];
+      [layer insertSublayer:mapView5 atIndex:0];
 
-      v43 = [(PedestrianARDebugMapAnnotationsTask *)self iosBasedChromeViewController];
-      v44 = [v43 view];
-      v45 = [v44 window];
-      [v45 frame];
+      iosBasedChromeViewController3 = [(PedestrianARDebugMapAnnotationsTask *)self iosBasedChromeViewController];
+      view2 = [iosBasedChromeViewController3 view];
+      window = [view2 window];
+      [window frame];
       v47 = v46;
       v49 = v48;
       v51 = v50;
       v53 = v52;
-      v54 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
-      v55 = [v54 mapViewDelegate];
-      v56 = [v55 mapView];
-      [v56 setBounds:{v47, v49, v51, v53}];
+      renderingView11 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
+      mapViewDelegate7 = [renderingView11 mapViewDelegate];
+      mapView6 = [mapViewDelegate7 mapView];
+      [mapView6 setBounds:{v47, v49, v51, v53}];
 
       v57 = [[UIButton alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
       [(PedestrianARDebugMapAnnotationsTask *)self setDebugWarningBannerButton:v57];
 
-      v58 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
-      [v58 setTranslatesAutoresizingMaskIntoConstraints:0];
+      debugWarningBannerButton = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
+      [debugWarningBannerButton setTranslatesAutoresizingMaskIntoConstraints:0];
 
-      v59 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
+      debugWarningBannerButton2 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
       v60 = [UIAction actionWithHandler:&stru_10162E258];
-      [v59 addAction:v60 forControlEvents:64];
+      [debugWarningBannerButton2 addAction:v60 forControlEvents:64];
 
       v61 = +[UIColor redColor];
       v62 = [v61 colorWithAlphaComponent:0.600000024];
-      v63 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
-      [v63 setBackgroundColor:v62];
+      debugWarningBannerButton3 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
+      [debugWarningBannerButton3 setBackgroundColor:v62];
 
-      v64 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
-      [v64 setTitle:@"AR nav label simulation active. Tap to file radars." forState:0];
+      debugWarningBannerButton4 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
+      [debugWarningBannerButton4 setTitle:@"AR nav label simulation active. Tap to file radars." forState:0];
 
-      v65 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
-      v66 = [v65 titleLabel];
-      [v66 setAdjustsFontSizeToFitWidth:1];
+      debugWarningBannerButton5 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
+      titleLabel = [debugWarningBannerButton5 titleLabel];
+      [titleLabel setAdjustsFontSizeToFitWidth:1];
 
-      v67 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
-      v68 = [v67 titleLabel];
-      [v68 setMinimumScaleFactor:0.0];
+      debugWarningBannerButton6 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
+      titleLabel2 = [debugWarningBannerButton6 titleLabel];
+      [titleLabel2 setMinimumScaleFactor:0.0];
 
       v69 = +[UIColor whiteColor];
-      v70 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
-      v71 = [v70 titleLabel];
-      [v71 setTextColor:v69];
+      debugWarningBannerButton7 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
+      titleLabel3 = [debugWarningBannerButton7 titleLabel];
+      [titleLabel3 setTextColor:v69];
 
-      v72 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
-      v73 = [v72 layer];
-      [v73 setZPosition:3.40282347e38];
+      debugWarningBannerButton8 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
+      layer2 = [debugWarningBannerButton8 layer];
+      [layer2 setZPosition:3.40282347e38];
 
-      v74 = [(PedestrianARDebugMapAnnotationsTask *)self iosBasedChromeViewController];
-      v75 = [v74 view];
-      v76 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
-      [v75 addSubview:v76];
+      iosBasedChromeViewController4 = [(PedestrianARDebugMapAnnotationsTask *)self iosBasedChromeViewController];
+      view3 = [iosBasedChromeViewController4 view];
+      debugWarningBannerButton9 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
+      [view3 addSubview:debugWarningBannerButton9];
 
-      v97 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
-      v95 = [v97 leadingAnchor];
-      v96 = [(PedestrianARDebugMapAnnotationsTask *)self iosBasedChromeViewController];
-      v94 = [v96 view];
-      v93 = [v94 leadingAnchor];
-      v92 = [v95 constraintEqualToAnchor:v93];
+      debugWarningBannerButton10 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
+      leadingAnchor = [debugWarningBannerButton10 leadingAnchor];
+      iosBasedChromeViewController5 = [(PedestrianARDebugMapAnnotationsTask *)self iosBasedChromeViewController];
+      view4 = [iosBasedChromeViewController5 view];
+      leadingAnchor2 = [view4 leadingAnchor];
+      v92 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v99[0] = v92;
-      v91 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
-      v89 = [v91 trailingAnchor];
-      v90 = [(PedestrianARDebugMapAnnotationsTask *)self iosBasedChromeViewController];
-      v88 = [v90 view];
-      v87 = [v88 trailingAnchor];
-      v77 = [v89 constraintEqualToAnchor:v87];
+      debugWarningBannerButton11 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
+      trailingAnchor = [debugWarningBannerButton11 trailingAnchor];
+      iosBasedChromeViewController6 = [(PedestrianARDebugMapAnnotationsTask *)self iosBasedChromeViewController];
+      view5 = [iosBasedChromeViewController6 view];
+      trailingAnchor2 = [view5 trailingAnchor];
+      v77 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v99[1] = v77;
-      v78 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
-      v79 = [v78 topAnchor];
-      v80 = [(PedestrianARDebugMapAnnotationsTask *)self iosBasedChromeViewController];
-      v81 = [v80 view];
-      v82 = [v81 safeAreaLayoutGuide];
-      v83 = [v82 topAnchor];
-      v84 = [v79 constraintEqualToAnchor:v83];
+      debugWarningBannerButton12 = [(PedestrianARDebugMapAnnotationsTask *)self debugWarningBannerButton];
+      topAnchor = [debugWarningBannerButton12 topAnchor];
+      iosBasedChromeViewController7 = [(PedestrianARDebugMapAnnotationsTask *)self iosBasedChromeViewController];
+      view6 = [iosBasedChromeViewController7 view];
+      safeAreaLayoutGuide = [view6 safeAreaLayoutGuide];
+      topAnchor2 = [safeAreaLayoutGuide topAnchor];
+      v84 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v99[2] = v84;
       v85 = [NSArray arrayWithObjects:v99 count:3];
       [NSLayoutConstraint activateConstraints:v85];
 
-      v86 = [(PedestrianARDebugMapAnnotationsTask *)self observers];
-      [v86 globalFeaturesDidChangeForDataSource:self];
+      observers = [(PedestrianARDebugMapAnnotationsTask *)self observers];
+      [observers globalFeaturesDidChangeForDataSource:self];
 
-      v4 = v98;
+      v4 = currentIOSBasedContext;
     }
   }
 
@@ -835,7 +835,7 @@ LABEL_13:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315650;
-      v101 = "[PedestrianARDebugMapAnnotationsTask _startProvidingARAnnotationsIfNecessary]";
+      selfCopy3 = "[PedestrianARDebugMapAnnotationsTask _startProvidingARAnnotationsIfNecessary]";
       v102 = 2080;
       v103 = "PedestrianARDebugMapAnnotationsTask.m";
       v104 = 1024;
@@ -850,7 +850,7 @@ LABEL_13:
       {
         v8 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v101 = v8;
+        selfCopy3 = v8;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
@@ -859,7 +859,7 @@ LABEL_13:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v101 = self;
+      selfCopy3 = self;
       v5 = "[%{public}p] Cannot provide AR annotations";
       goto LABEL_13;
     }
@@ -868,20 +868,20 @@ LABEL_13:
 
 - (BOOL)_shouldProvideDebugAnnotations
 {
-  v3 = [(PedestrianARDebugMapAnnotationsTask *)self chromeViewController];
+  chromeViewController = [(PedestrianARDebugMapAnnotationsTask *)self chromeViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(PedestrianARDebugMapAnnotationsTask *)self iosBasedChromeViewController];
-    v5 = [v4 currentIOSBasedContext];
+    iosBasedChromeViewController = [(PedestrianARDebugMapAnnotationsTask *)self iosBasedChromeViewController];
+    currentIOSBasedContext = [iosBasedChromeViewController currentIOSBasedContext];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(PedestrianARDebugMapAnnotationsTask *)self navigationSession];
-      if (v6)
+      navigationSession = [(PedestrianARDebugMapAnnotationsTask *)self navigationSession];
+      if (navigationSession)
       {
-        v7 = [(PedestrianARDebugMapAnnotationsTask *)self navigationSession];
-        v8 = [v7 currentTransportType] == 2;
+        navigationSession2 = [(PedestrianARDebugMapAnnotationsTask *)self navigationSession];
+        v8 = [navigationSession2 currentTransportType] == 2;
       }
 
       else
@@ -904,36 +904,36 @@ LABEL_13:
   return v8;
 }
 
-- (void)setChromeViewController:(id)a3
+- (void)setChromeViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_chromeViewController);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != controllerCopy)
   {
     v6 = sub_1008F5C9C();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = objc_loadWeakRetained(&self->_chromeViewController);
       v13 = 134349570;
-      v14 = self;
+      selfCopy = self;
       v15 = 2112;
       v16 = v7;
       v17 = 2112;
-      v18 = v4;
+      v18 = controllerCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Transitioning from chrome VC (%@) to (%@)", &v13, 0x20u);
     }
 
     v8 = objc_loadWeakRetained(&self->_chromeViewController);
-    v9 = [v8 mapView];
-    v10 = [v9 _mapLayer];
-    [v10 removeCustomFeatureDataSource:self];
+    mapView = [v8 mapView];
+    _mapLayer = [mapView _mapLayer];
+    [_mapLayer removeCustomFeatureDataSource:self];
 
     v11 = objc_loadWeakRetained(&self->_chromeViewController);
     [v11 removeContextStackObserver:self];
 
-    v12 = objc_storeWeak(&self->_chromeViewController, v4);
-    [v4 addContextStackObserver:self];
+    v12 = objc_storeWeak(&self->_chromeViewController, controllerCopy);
+    [controllerCopy addContextStackObserver:self];
 
     [(PedestrianARDebugMapAnnotationsTask *)self _stopProvidingARAnnotations];
     if ([(PedestrianARDebugMapAnnotationsTask *)self _shouldProvideDebugAnnotations])
@@ -943,31 +943,31 @@ LABEL_13:
   }
 }
 
-- (void)setNavigationSession:(id)a3
+- (void)setNavigationSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   WeakRetained = objc_loadWeakRetained(&self->_navigationSession);
 
-  if (WeakRetained != v4)
+  if (WeakRetained != sessionCopy)
   {
     v6 = sub_1008F5C9C();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = objc_loadWeakRetained(&self->_navigationSession);
       v10 = 134349570;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
       v13 = v7;
       v14 = 2112;
-      v15 = v4;
+      v15 = sessionCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] Transitioning from navigation session (%@) to (%@)", &v10, 0x20u);
     }
 
     v8 = objc_loadWeakRetained(&self->_navigationSession);
     [v8 unregisterObserver:self];
 
-    v9 = objc_storeWeak(&self->_navigationSession, v4);
-    [v4 registerObserver:self];
+    v9 = objc_storeWeak(&self->_navigationSession, sessionCopy);
+    [sessionCopy registerObserver:self];
 
     if ([(PedestrianARDebugMapAnnotationsTask *)self _shouldProvideDebugAnnotations])
     {
@@ -978,8 +978,8 @@ LABEL_13:
 
 - (BOOL)isProvidingARAnnotations
 {
-  v2 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
-  v3 = v2 != 0;
+  renderingView = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
+  v3 = renderingView != 0;
 
   return v3;
 }
@@ -988,17 +988,17 @@ LABEL_13:
 {
   if ([(PedestrianARDebugMapAnnotationsTask *)self _shouldProvideDebugAnnotations])
   {
-    v3 = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
-    v4 = [v3 mapViewDelegate];
-    v5 = [v4 mapView];
+    renderingView = [(PedestrianARDebugMapAnnotationsTask *)self renderingView];
+    mapViewDelegate = [renderingView mapViewDelegate];
+    mapView = [mapViewDelegate mapView];
   }
 
   else
   {
-    v5 = 0;
+    mapView = 0;
   }
 
-  return v5;
+  return mapView;
 }
 
 - (void)dealloc
@@ -1007,7 +1007,7 @@ LABEL_13:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -1016,11 +1016,11 @@ LABEL_13:
   [(PedestrianARDebugMapAnnotationsTask *)&v4 dealloc];
 }
 
-- (PedestrianARDebugMapAnnotationsTask)initWithPlatformController:(id)a3 navigationService:(id)a4
+- (PedestrianARDebugMapAnnotationsTask)initWithPlatformController:(id)controller navigationService:(id)service
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  controllerCopy = controller;
+  serviceCopy = service;
+  if (!controllerCopy)
   {
     v19 = sub_10006D178();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -1049,7 +1049,7 @@ LABEL_13:
     }
   }
 
-  if (!v7)
+  if (!serviceCopy)
   {
     v22 = sub_10006D178();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -1091,15 +1091,15 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] Initializing", buf, 0xCu);
     }
 
-    objc_storeWeak(&v8->_platformController, v6);
-    objc_storeStrong(&v8->_navigationService, a4);
+    objc_storeWeak(&v8->_platformController, controllerCopy);
+    objc_storeStrong(&v8->_navigationService, service);
     v10 = +[NSNotificationCenter defaultCenter];
     WeakRetained = objc_loadWeakRetained(&v8->_platformController);
     [v10 addObserver:v8 selector:"platformControllerDidChangeChromeViewControllerNotification:" name:@"PlatformControllerDidChangeChromeViewControllerNotification" object:WeakRetained];
 
     v12 = objc_loadWeakRetained(&v8->_platformController);
-    v13 = [v12 chromeViewController];
-    [(PedestrianARDebugMapAnnotationsTask *)v8 setChromeViewController:v13];
+    chromeViewController = [v12 chromeViewController];
+    [(PedestrianARDebugMapAnnotationsTask *)v8 setChromeViewController:chromeViewController];
 
     v14 = [[GEOObserverHashTable alloc] initWithProtocol:&OBJC_PROTOCOL___VKCustomFeatureDataSourceObserver queue:0];
     observers = v8->_observers;

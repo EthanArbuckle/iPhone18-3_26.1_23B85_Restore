@@ -1,17 +1,17 @@
 @interface UICollectionView
 + (id)mf_offsetLog;
-- (BOOL)mf_isIndexPathValid:(id)a3;
-- (BOOL)mf_isIndexPathVisible:(id)a3 overlap:(CGRect)a4;
-- (double)mf_cellOffsetByApplyingDynamicOffset:(id)a3 cellHeight:(double)a4;
-- (double)mf_contentOffsetApplyingDynamicOffset:(id)a3 indexPath:(id)a4;
-- (id)mf_dynamicOffsetForVisibleCell:(id)a3;
-- (id)mf_mostVisibleCellNearestEdge:(unint64_t)a3 preferredMinimumHeight:(double)a4;
-- (void)pageDirection:(int64_t)a3;
+- (BOOL)mf_isIndexPathValid:(id)valid;
+- (BOOL)mf_isIndexPathVisible:(id)visible overlap:(CGRect)overlap;
+- (double)mf_cellOffsetByApplyingDynamicOffset:(id)offset cellHeight:(double)height;
+- (double)mf_contentOffsetApplyingDynamicOffset:(id)offset indexPath:(id)path;
+- (id)mf_dynamicOffsetForVisibleCell:(id)cell;
+- (id)mf_mostVisibleCellNearestEdge:(unint64_t)edge preferredMinimumHeight:(double)height;
+- (void)pageDirection:(int64_t)direction;
 @end
 
 @implementation UICollectionView
 
-- (void)pageDirection:(int64_t)a3
+- (void)pageDirection:(int64_t)direction
 {
   [(UICollectionView *)self mf_visibleHeight];
   v6 = v5;
@@ -21,7 +21,7 @@
   [(UICollectionView *)self visibleBounds];
   MinY = CGRectGetMinY(v16);
   v11 = MinY;
-  if (a3 == 1)
+  if (direction == 1)
   {
     v11 = MinY - v9;
     if (MinY - v9 <= -v8)
@@ -30,7 +30,7 @@
     }
   }
 
-  else if (!a3)
+  else if (!direction)
   {
     v11 = v9 + MinY;
     v12 = v6 + v9 + MinY;
@@ -59,14 +59,14 @@
   return v3;
 }
 
-- (id)mf_mostVisibleCellNearestEdge:(unint64_t)a3 preferredMinimumHeight:(double)a4
+- (id)mf_mostVisibleCellNearestEdge:(unint64_t)edge preferredMinimumHeight:(double)height
 {
-  v4 = a3;
+  edgeCopy = edge;
   v6 = +[UICollectionView mf_offsetLog];
-  v7 = v4 & 1;
+  v7 = edgeCopy & 1;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    sub_10048D590(v7, v6, a4);
+    sub_10048D590(v7, v6, height);
   }
 
   v8 = +[UICollectionView mf_offsetLog];
@@ -76,13 +76,13 @@
     sub_10048D614(buf, v8, v9, v10);
   }
 
-  v11 = [(UICollectionView *)self visibleCells];
+  visibleCells = [(UICollectionView *)self visibleCells];
   v52[0] = _NSConcreteStackBlock;
   v52[1] = 3221225472;
   v52[2] = sub_100258E4C;
   v52[3] = &unk_100656A70;
   v53 = v7;
-  v12 = [v11 sortedArrayUsingComparator:v52];
+  v12 = [visibleCells sortedArrayUsingComparator:v52];
 
   [(UICollectionView *)self mui_safeVisibleBounds];
   v14 = v13;
@@ -139,7 +139,7 @@
         if (!CGRectIsNull(v59))
         {
           [v27 frame];
-          if (CGRectGetHeight(v60) > a4)
+          if (CGRectGetHeight(v60) > height)
           {
             [v27 frame];
             v64.origin.x = v36;
@@ -223,18 +223,18 @@ LABEL_30:
   return v44;
 }
 
-- (id)mf_dynamicOffsetForVisibleCell:(id)a3
+- (id)mf_dynamicOffsetForVisibleCell:(id)cell
 {
-  v4 = a3;
-  v5 = [(UICollectionView *)self visibleCells];
-  v6 = [v5 containsObject:v4];
+  cellCopy = cell;
+  visibleCells = [(UICollectionView *)self visibleCells];
+  v6 = [visibleCells containsObject:cellCopy];
 
   if (v6)
   {
     v7 = +[UICollectionView mf_offsetLog];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      sub_10048D768(v4, v7, v8, v9, v10, v11, v12, v13);
+      sub_10048D768(cellCopy, v7, v8, v9, v10, v11, v12, v13);
     }
 
     [(UICollectionView *)self mui_safeVisibleBounds];
@@ -247,7 +247,7 @@ LABEL_30:
     v23 = v22;
     v25 = v24;
     v27 = v26;
-    [v4 frame];
+    [cellCopy frame];
     v61.origin.x = v28;
     v61.origin.y = v29;
     v61.size.width = v30;
@@ -261,14 +261,14 @@ LABEL_30:
     y = v53.origin.y;
     width = v53.size.width;
     height = v53.size.height;
-    [v4 frame];
+    [cellCopy frame];
     v48 = CGRectGetHeight(v54);
     v55.origin.x = x;
     v55.origin.y = y;
     v55.size.width = width;
     v55.size.height = height;
     MinY = CGRectGetMinY(v55);
-    [v4 frame];
+    [cellCopy frame];
     v37 = CGRectGetMinY(v56);
     v57.origin.x = x;
     v57.origin.y = y;
@@ -333,22 +333,22 @@ LABEL_30:
   return v45;
 }
 
-- (double)mf_cellOffsetByApplyingDynamicOffset:(id)a3 cellHeight:(double)a4
+- (double)mf_cellOffsetByApplyingDynamicOffset:(id)offset cellHeight:(double)height
 {
-  v6 = a3;
+  offsetCopy = offset;
   v7 = 0.0;
-  if (a4 > 0.0)
+  if (height > 0.0)
   {
     v8 = +[UICollectionView mf_offsetLog];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [v6 ef_publicDescription];
+      [offsetCopy ef_publicDescription];
       objc_claimAutoreleasedReturnValue();
       sub_10048D95C();
     }
 
-    [v6 relativeCellAnchor];
-    [v6 relativeDistanceFromTop];
+    [offsetCopy relativeCellAnchor];
+    [offsetCopy relativeDistanceFromTop];
     [(UICollectionView *)self mui_safeVisibleBounds];
     CGRectGetHeight(v14);
     UIRoundToViewScale();
@@ -375,21 +375,21 @@ LABEL_30:
   return v7;
 }
 
-- (double)mf_contentOffsetApplyingDynamicOffset:(id)a3 indexPath:(id)a4
+- (double)mf_contentOffsetApplyingDynamicOffset:(id)offset indexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UICollectionView *)self layoutAttributesForItemAtIndexPath:v7];
+  offsetCopy = offset;
+  pathCopy = path;
+  v8 = [(UICollectionView *)self layoutAttributesForItemAtIndexPath:pathCopy];
   if (v8)
   {
     v9 = +[UICollectionView mf_offsetLog];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      sub_10048DB00(v7, v6, v9);
+      sub_10048DB00(pathCopy, offsetCopy, v9);
     }
 
     [v8 size];
-    [(UICollectionView *)self mf_cellOffsetByApplyingDynamicOffset:v6 cellHeight:v10];
+    [(UICollectionView *)self mf_cellOffsetByApplyingDynamicOffset:offsetCopy cellHeight:v10];
     [v8 frame];
     CGRectGetMinY(v22);
     [(UICollectionView *)self contentInset];
@@ -445,25 +445,25 @@ LABEL_30:
   return v19;
 }
 
-- (BOOL)mf_isIndexPathValid:(id)a3
+- (BOOL)mf_isIndexPathValid:(id)valid
 {
-  v4 = a3;
-  v5 = [v4 row];
-  v6 = [v4 section];
-  v8 = v4 && (v7 = v6, v6 < [(UICollectionView *)self numberOfSections]) && v5 < [(UICollectionView *)self numberOfItemsInSection:v7];
+  validCopy = valid;
+  v5 = [validCopy row];
+  section = [validCopy section];
+  v8 = validCopy && (v7 = section, section < [(UICollectionView *)self numberOfSections]) && v5 < [(UICollectionView *)self numberOfItemsInSection:v7];
 
   return v8;
 }
 
-- (BOOL)mf_isIndexPathVisible:(id)a3 overlap:(CGRect)a4
+- (BOOL)mf_isIndexPathVisible:(id)visible overlap:(CGRect)overlap
 {
-  v5 = a3;
-  v6 = [(UICollectionView *)self indexPathsForVisibleItems];
-  v7 = [v6 containsObject:v5];
+  visibleCopy = visible;
+  indexPathsForVisibleItems = [(UICollectionView *)self indexPathsForVisibleItems];
+  v7 = [indexPathsForVisibleItems containsObject:visibleCopy];
 
   if (v7)
   {
-    v8 = [(UICollectionView *)self layoutAttributesForItemAtIndexPath:v5];
+    v8 = [(UICollectionView *)self layoutAttributesForItemAtIndexPath:visibleCopy];
     [v8 frame];
     [(UICollectionView *)self convertRect:self toView:?];
     v10 = v9;
@@ -497,18 +497,18 @@ LABEL_30:
       v21 = CGRectIntersectsRect(v26, v28);
     }
 
-    if (!CGRectIsNull(a4))
+    if (!CGRectIsNull(overlap))
     {
       v29.origin.x = v10;
       v29.origin.y = v12;
       v29.size.width = v14;
       v29.size.height = v16;
-      v22 = CGRectContainsRect(a4, v29);
+      v22 = CGRectContainsRect(overlap, v29);
       v30.origin.x = v10;
       v30.origin.y = v12;
       v30.size.width = v14;
       v30.size.height = v16;
-      CGRectIntersectsRect(a4, v30);
+      CGRectIntersectsRect(overlap, v30);
       v21 &= !v22;
     }
   }

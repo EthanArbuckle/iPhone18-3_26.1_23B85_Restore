@@ -1,23 +1,23 @@
 @interface CNCallAlertDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)applyABMultivalueValueBytes:(char *)a3 length:(unint64_t)a4 identifier:(id)a5 legacyIdentifier:(int)a6 label:(id)a7 toCNMultivalueRepresentation:(id)a8;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (BOOL)setABValue:(void *)a3 onABPerson:(void *)a4 error:(__CFError *)a5;
-- (void)ABValueForABPerson:(void *)a3;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)applyABMultivalueValueBytes:(char *)bytes length:(unint64_t)length identifier:(id)identifier legacyIdentifier:(int)legacyIdentifier label:(id)label toCNMultivalueRepresentation:(id)representation;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (BOOL)setABValue:(void *)value onABPerson:(void *)person error:(__CFError *)error;
+- (void)ABValueForABPerson:(void *)person;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNCallAlertDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 callAlert];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  callAlert = [contactCopy callAlert];
+  if (!callAlert)
   {
-    v4 = [v7 callAlert];
-    if (!v4)
+    callAlert2 = [otherCopy callAlert];
+    if (!callAlert2)
     {
       v11 = 1;
 LABEL_6:
@@ -26,11 +26,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 callAlert];
-  v10 = [v7 callAlert];
-  v11 = [v9 isEqual:v10];
+  callAlert3 = [contactCopy callAlert];
+  callAlert4 = [otherCopy callAlert];
+  v11 = [callAlert3 isEqual:callAlert4];
 
-  if (!v8)
+  if (!callAlert)
   {
     goto LABEL_6;
   }
@@ -40,35 +40,35 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_callAlert"];
+  contactCopy = contact;
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_callAlert"];
 
   v7 = [v9 copy];
-  v8 = v5[63];
-  v5[63] = v7;
+  v8 = contactCopy[63];
+  contactCopy[63] = v7;
 }
 
-- (BOOL)applyABMultivalueValueBytes:(char *)a3 length:(unint64_t)a4 identifier:(id)a5 legacyIdentifier:(int)a6 label:(id)a7 toCNMultivalueRepresentation:(id)a8
+- (BOOL)applyABMultivalueValueBytes:(char *)bytes length:(unint64_t)length identifier:(id)identifier legacyIdentifier:(int)legacyIdentifier label:(id)label toCNMultivalueRepresentation:(id)representation
 {
-  v13 = a5;
-  v14 = a7;
-  v15 = a8;
-  switch(a6)
+  identifierCopy = identifier;
+  labelCopy = label;
+  representationCopy = representation;
+  switch(legacyIdentifier)
   {
     case -1:
-      v16 = [CNiOSABConversions stringFromABBytes:a3 length:a4];
-      [v15 setSound:v16];
+      v16 = [CNiOSABConversions stringFromABBytes:bytes length:length];
+      [representationCopy setSound:v16];
       break;
     case -4:
-      v16 = [CNiOSABConversions stringFromABBytes:a3 length:a4];
-      [v15 setIgnoreMute:{objc_msgSend(v16, "isEqualToString:", @"YES"}];
+      v16 = [CNiOSABConversions stringFromABBytes:bytes length:length];
+      [representationCopy setIgnoreMute:{objc_msgSend(v16, "isEqualToString:", @"YES"}];
       break;
     case -101:
-      v16 = [CNiOSABConversions stringFromABBytes:a3 length:a4];
-      [v15 setVibration:v16];
+      v16 = [CNiOSABConversions stringFromABBytes:bytes length:length];
+      [representationCopy setVibration:v16];
       break;
     default:
       v17 = 0;
@@ -81,30 +81,30 @@ LABEL_9:
   return v17;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A618];
+    *d = *MEMORY[0x1E698A618];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
-- (BOOL)setABValue:(void *)a3 onABPerson:(void *)a4 error:(__CFError *)a5
+- (BOOL)setABValue:(void *)value onABPerson:(void *)person error:(__CFError *)error
 {
-  CFDictionaryGetValue(a3, @"tone");
-  CFDictionaryGetValue(a3, @"vibration");
-  CFDictionaryGetValue(a3, @"ignoreMute");
+  CFDictionaryGetValue(value, @"tone");
+  CFDictionaryGetValue(value, @"vibration");
+  CFDictionaryGetValue(value, @"ignoreMute");
   ABPersonSetSoundIdentifierForMultiValueIdentifier();
   ABPersonSetSoundIdentifierForMultiValueIdentifier();
   ABPersonSetSoundIdentifierForMultiValueIdentifier();
   return 1;
 }
 
-- (void)ABValueForABPerson:(void *)a3
+- (void)ABValueForABPerson:(void *)person
 {
-  v4 = MEMORY[0x19A8B4480](a3, 0xFFFFFFFFLL);
+  v4 = MEMORY[0x19A8B4480](person, 0xFFFFFFFFLL);
   if (v4)
   {
     v5 = CFAutorelease(v4);
@@ -115,7 +115,7 @@ LABEL_9:
     v5 = 0;
   }
 
-  v6 = MEMORY[0x19A8B4480](a3, 4294967195);
+  v6 = MEMORY[0x19A8B4480](person, 4294967195);
   if (v6)
   {
     v7 = CFAutorelease(v6);
@@ -126,7 +126,7 @@ LABEL_9:
     v7 = 0;
   }
 
-  v8 = MEMORY[0x19A8B4480](a3, 4294967292);
+  v8 = MEMORY[0x19A8B4480](person, 4294967292);
   if (v8)
   {
     v9 = CFAutorelease(v8);

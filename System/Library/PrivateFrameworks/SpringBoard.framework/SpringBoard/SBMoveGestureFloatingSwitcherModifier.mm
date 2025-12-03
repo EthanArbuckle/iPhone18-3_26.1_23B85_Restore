@@ -1,18 +1,18 @@
 @interface SBMoveGestureFloatingSwitcherModifier
 - (CGPoint)translation;
 - (CGRect)containerViewBounds;
-- (SBMoveGestureFloatingSwitcherModifier)initWithGestureID:(id)a3 initialFloatingConfiguration:(int64_t)a4 interfaceOrientation:(int64_t)a5;
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3;
-- (double)shadowOffsetForIndex:(unint64_t)a3;
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4;
-- (id)_updateForGestureDidBeginWithEvent:(id)a3;
-- (id)_updateForGestureDidChangeWithEvent:(id)a3;
-- (id)_updateForGestureDidEndWithEvent:(id)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
+- (SBMoveGestureFloatingSwitcherModifier)initWithGestureID:(id)d initialFloatingConfiguration:(int64_t)configuration interfaceOrientation:(int64_t)orientation;
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout;
+- (double)shadowOffsetForIndex:(unint64_t)index;
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index;
+- (id)_updateForGestureDidBeginWithEvent:(id)event;
+- (id)_updateForGestureDidChangeWithEvent:(id)event;
+- (id)_updateForGestureDidEndWithEvent:(id)event;
+- (id)animationAttributesForLayoutElement:(id)element;
 - (id)appLayoutToAttachSlideOverTongue;
 - (id)appLayoutsToCacheSnapshots;
-- (id)handleGestureEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
+- (id)handleGestureEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
 - (id)visibleAppLayouts;
 - (unint64_t)slideOverTongueDirection;
 - (unint64_t)slideOverTongueState;
@@ -20,36 +20,36 @@
 
 @implementation SBMoveGestureFloatingSwitcherModifier
 
-- (SBMoveGestureFloatingSwitcherModifier)initWithGestureID:(id)a3 initialFloatingConfiguration:(int64_t)a4 interfaceOrientation:(int64_t)a5
+- (SBMoveGestureFloatingSwitcherModifier)initWithGestureID:(id)d initialFloatingConfiguration:(int64_t)configuration interfaceOrientation:(int64_t)orientation
 {
   v11.receiver = self;
   v11.super_class = SBMoveGestureFloatingSwitcherModifier;
-  v7 = [(SBGestureSwitcherModifier *)&v11 initWithGestureID:a3];
+  v7 = [(SBGestureSwitcherModifier *)&v11 initWithGestureID:d];
   if (v7)
   {
-    IsValid = SBFloatingConfigurationIsValid(a4);
-    v9 = 4;
+    IsValid = SBFloatingConfigurationIsValid(configuration);
+    configurationCopy = 4;
     if (IsValid)
     {
-      v9 = a4;
+      configurationCopy = configuration;
     }
 
-    v7->_initialFloatingConfiguration = v9;
-    v7->_interfaceOrientation = a5;
+    v7->_initialFloatingConfiguration = configurationCopy;
+    v7->_interfaceOrientation = orientation;
   }
 
   return v7;
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
   v8.receiver = self;
   v8.super_class = SBMoveGestureFloatingSwitcherModifier;
-  v4 = a3;
-  v5 = [(SBGestureSwitcherModifier *)&v8 handleTransitionEvent:v4];
-  v6 = [v4 phase];
+  eventCopy = event;
+  v5 = [(SBGestureSwitcherModifier *)&v8 handleTransitionEvent:eventCopy];
+  phase = [eventCopy phase];
 
-  if (v6 >= 2)
+  if (phase >= 2)
   {
     [(SBChainableModifier *)self setState:1];
   }
@@ -57,49 +57,49 @@
   return v5;
 }
 
-- (id)handleGestureEvent:(id)a3
+- (id)handleGestureEvent:(id)event
 {
-  v5 = a3;
+  eventCopy = event;
   v13.receiver = self;
   v13.super_class = SBMoveGestureFloatingSwitcherModifier;
-  v6 = [(SBGestureSwitcherModifier *)&v13 handleGestureEvent:v5];
-  v7 = [v5 phase];
+  v6 = [(SBGestureSwitcherModifier *)&v13 handleGestureEvent:eventCopy];
+  phase = [eventCopy phase];
   v8 = 0;
-  if (v7 > 1)
+  if (phase > 1)
   {
-    if (v7 == 2)
+    if (phase == 2)
     {
-      v9 = [(SBMoveGestureFloatingSwitcherModifier *)self _updateForGestureDidChangeWithEvent:v5];
+      v9 = [(SBMoveGestureFloatingSwitcherModifier *)self _updateForGestureDidChangeWithEvent:eventCopy];
     }
 
     else
     {
-      if (v7 != 3)
+      if (phase != 3)
       {
         goto LABEL_11;
       }
 
-      v9 = [(SBMoveGestureFloatingSwitcherModifier *)self _updateForGestureDidEndWithEvent:v5];
+      v9 = [(SBMoveGestureFloatingSwitcherModifier *)self _updateForGestureDidEndWithEvent:eventCopy];
     }
   }
 
   else
   {
-    if (!v7)
+    if (!phase)
     {
-      v10 = [MEMORY[0x277CCA890] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"SBMoveGestureFloatingSwitcherModifier.m" lineNumber:64 description:@"Should not be getting PhasePossible"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"SBMoveGestureFloatingSwitcherModifier.m" lineNumber:64 description:@"Should not be getting PhasePossible"];
 
       v8 = 0;
       goto LABEL_11;
     }
 
-    if (v7 != 1)
+    if (phase != 1)
     {
       goto LABEL_11;
     }
 
-    v9 = [(SBMoveGestureFloatingSwitcherModifier *)self _updateForGestureDidBeginWithEvent:v5];
+    v9 = [(SBMoveGestureFloatingSwitcherModifier *)self _updateForGestureDidBeginWithEvent:eventCopy];
   }
 
   v8 = v9;
@@ -109,7 +109,7 @@ LABEL_11:
   return v11;
 }
 
-- (id)_updateForGestureDidBeginWithEvent:(id)a3
+- (id)_updateForGestureDidBeginWithEvent:(id)event
 {
   self->_translation = *MEMORY[0x277CBF348];
   v3 = [[SBUpdateLayoutSwitcherEventResponse alloc] initWithOptions:10 updateMode:2];
@@ -117,19 +117,19 @@ LABEL_11:
   return v3;
 }
 
-- (id)_updateForGestureDidChangeWithEvent:(id)a3
+- (id)_updateForGestureDidChangeWithEvent:(id)event
 {
   p_translation = &self->_translation;
-  [a3 translationInContainerView];
+  [event translationInContainerView];
   p_translation->x = v4;
   p_translation->y = v5;
   return 0;
 }
 
-- (id)_updateForGestureDidEndWithEvent:(id)a3
+- (id)_updateForGestureDidEndWithEvent:(id)event
 {
-  v4 = a3;
-  [v4 velocityInContainerView];
+  eventCopy = event;
+  [eventCopy velocityInContainerView];
   v34 = v5;
   [(SBMoveGestureFloatingSwitcherModifier *)self containerViewBounds];
   v7 = v6;
@@ -152,11 +152,11 @@ LABEL_11:
   v37.size.width = v11;
   v37.size.height = v13;
   MidX = CGRectGetMidX(v37);
-  v24 = [(SBMoveGestureFloatingSwitcherModifier *)self medusaSettings];
-  v25 = SBFloatingConfigurationForMovingFloatingApplication(initialFloatingConfiguration, v24, v34, v16, v18, v20, v33, Width, MidX);
+  medusaSettings = [(SBMoveGestureFloatingSwitcherModifier *)self medusaSettings];
+  v25 = SBFloatingConfigurationForMovingFloatingApplication(initialFloatingConfiguration, medusaSettings, v34, v16, v18, v20, v33, Width, MidX);
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 indirectPanEndReason] == 4)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [eventCopy indirectPanEndReason] == 4)
   {
     v26 = self->_initialFloatingConfiguration - 1;
     if (v26 <= 3)
@@ -165,22 +165,22 @@ LABEL_11:
     }
   }
 
-  if ([v4 touchType] == 1 && (self->_initialFloatingConfiguration == 4 ? (v27 = v25 == 1) : (v27 = 0), v27))
+  if ([eventCopy touchType] == 1 && (self->_initialFloatingConfiguration == 4 ? (v27 = v25 == 1) : (v27 = 0), v27))
   {
     v25 = 1;
   }
 
   else
   {
-    [v4 touchType];
+    [eventCopy touchType];
   }
 
   v28 = objc_alloc_init(SBMutableSwitcherTransitionRequest);
   if (!SBFloatingConfigurationIsStashed(v25))
   {
-    v29 = [(SBMoveGestureFloatingSwitcherModifier *)self appLayouts];
-    v30 = [v29 firstObject];
-    [(SBSwitcherTransitionRequest *)v28 setAppLayout:v30];
+    appLayouts = [(SBMoveGestureFloatingSwitcherModifier *)self appLayouts];
+    firstObject = [appLayouts firstObject];
+    [(SBSwitcherTransitionRequest *)v28 setAppLayout:firstObject];
   }
 
   [(SBSwitcherTransitionRequest *)v28 setFloatingConfiguration:v25];
@@ -241,11 +241,11 @@ LABEL_11:
 {
   if (SBFloatingConfigurationIsStashed(self->_initialFloatingConfiguration))
   {
-    v3 = objc_alloc_init(MEMORY[0x277CBEB58]);
-    v4 = [(SBMoveGestureFloatingSwitcherModifier *)self appLayouts];
-    if ([v4 count])
+    visibleAppLayouts = objc_alloc_init(MEMORY[0x277CBEB58]);
+    appLayouts = [(SBMoveGestureFloatingSwitcherModifier *)self appLayouts];
+    if ([appLayouts count])
     {
-      if ([v4 count] == 1)
+      if ([appLayouts count] == 1)
       {
         v5 = 1;
       }
@@ -255,8 +255,8 @@ LABEL_11:
         v5 = 2;
       }
 
-      v6 = [v4 subarrayWithRange:{0, v5}];
-      [v3 addObjectsFromArray:v6];
+      v6 = [appLayouts subarrayWithRange:{0, v5}];
+      [visibleAppLayouts addObjectsFromArray:v6];
     }
   }
 
@@ -264,34 +264,34 @@ LABEL_11:
   {
     v8.receiver = self;
     v8.super_class = SBMoveGestureFloatingSwitcherModifier;
-    v3 = [(SBMoveGestureFloatingSwitcherModifier *)&v8 visibleAppLayouts];
+    visibleAppLayouts = [(SBMoveGestureFloatingSwitcherModifier *)&v8 visibleAppLayouts];
   }
 
-  return v3;
+  return visibleAppLayouts;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
   v9.receiver = self;
   v9.super_class = SBMoveGestureFloatingSwitcherModifier;
-  v4 = [(SBGestureSwitcherModifier *)&v9 animationAttributesForLayoutElement:a3];
+  v4 = [(SBGestureSwitcherModifier *)&v9 animationAttributesForLayoutElement:element];
   v5 = [v4 mutableCopy];
 
-  v6 = [(SBMoveGestureFloatingSwitcherModifier *)self medusaSettings];
-  v7 = [v6 medusaAnimationSettings];
-  [v5 setLayoutSettings:v7];
+  medusaSettings = [(SBMoveGestureFloatingSwitcherModifier *)self medusaSettings];
+  medusaAnimationSettings = [medusaSettings medusaAnimationSettings];
+  [v5 setLayoutSettings:medusaAnimationSettings];
 
   return v5;
 }
 
-- (double)shadowOpacityForLayoutRole:(int64_t)a3 atIndex:(unint64_t)a4
+- (double)shadowOpacityForLayoutRole:(int64_t)role atIndex:(unint64_t)index
 {
   [(SBMoveGestureFloatingSwitcherModifier *)self containerViewBounds];
   MidX = CGRectGetMidX(v17);
-  v7 = [(SBMoveGestureFloatingSwitcherModifier *)self isRTLEnabled];
+  isRTLEnabled = [(SBMoveGestureFloatingSwitcherModifier *)self isRTLEnabled];
   [(SBMoveGestureFloatingSwitcherModifier *)self switcherViewBounds];
   v8 = MidX > CGRectGetMidX(v18);
-  if (v7 != v8)
+  if (isRTLEnabled != v8)
   {
     v9 = 2;
   }
@@ -301,7 +301,7 @@ LABEL_11:
     v9 = 1;
   }
 
-  if (v7 != v8)
+  if (isRTLEnabled != v8)
   {
     v10 = 4;
   }
@@ -315,7 +315,7 @@ LABEL_11:
   v11 = CGRectGetMidX(v19);
   [(SBMoveGestureFloatingSwitcherModifier *)self floatingApplicationFrameInInterfaceOrientation:self->_interfaceOrientation floatingConfiguration:v10];
   v12 = fmin(fmax(1.0 - (MidX - v11) / (CGRectGetMidX(v20) - v11), 0.0), 1.0);
-  if (a4)
+  if (index)
   {
     v13 = 0.25;
   }
@@ -325,7 +325,7 @@ LABEL_11:
     v13 = 1.0;
   }
 
-  if ([(SBGestureSwitcherModifier *)self gesturePhase]>= 2 || a4 == 0)
+  if ([(SBGestureSwitcherModifier *)self gesturePhase]>= 2 || index == 0)
   {
     v15 = v13;
   }
@@ -338,7 +338,7 @@ LABEL_11:
   return v12 * v15;
 }
 
-- (double)shadowOffsetForIndex:(unint64_t)a3
+- (double)shadowOffsetForIndex:(unint64_t)index
 {
   [(SBMoveGestureFloatingSwitcherModifier *)self containerViewBounds];
   MidX = CGRectGetMidX(v7);
@@ -352,23 +352,23 @@ LABEL_11:
 {
   if (SBFloatingConfigurationIsStashed(self->_initialFloatingConfiguration))
   {
-    v3 = [(SBMoveGestureFloatingSwitcherModifier *)self appLayouts];
-    v10.length = [v3 count];
+    appLayouts = [(SBMoveGestureFloatingSwitcherModifier *)self appLayouts];
+    v10.length = [appLayouts count];
     v9.location = 0;
     v9.length = 1;
     v10.location = 0;
     v4 = NSIntersectionRange(v9, v10);
-    v5 = [v3 subarrayWithRange:{v4.location, v4.length}];
+    appLayoutsToCacheSnapshots = [appLayouts subarrayWithRange:{v4.location, v4.length}];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = SBMoveGestureFloatingSwitcherModifier;
-    v5 = [(SBMoveGestureFloatingSwitcherModifier *)&v7 appLayoutsToCacheSnapshots];
+    appLayoutsToCacheSnapshots = [(SBMoveGestureFloatingSwitcherModifier *)&v7 appLayoutsToCacheSnapshots];
   }
 
-  return v5;
+  return appLayoutsToCacheSnapshots;
 }
 
 - (unint64_t)slideOverTongueState
@@ -434,19 +434,19 @@ LABEL_11:
 
 - (id)appLayoutToAttachSlideOverTongue
 {
-  v2 = [(SBMoveGestureFloatingSwitcherModifier *)self appLayouts];
-  v3 = [v2 firstObject];
+  appLayouts = [(SBMoveGestureFloatingSwitcherModifier *)self appLayouts];
+  firstObject = [appLayouts firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)a3
+- (SBSwitcherAsyncRenderingAttributes)asyncRenderingAttributesForAppLayout:(id)layout
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D75418] currentDevice];
-  v6 = [v5 sbf_isLowEndForSlideOverMoveGesture];
+  layoutCopy = layout;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  sbf_isLowEndForSlideOverMoveGesture = [currentDevice sbf_isLowEndForSlideOverMoveGesture];
 
-  if (v6)
+  if (sbf_isLowEndForSlideOverMoveGesture)
   {
     v7 = SBSwitcherAsyncRenderingAttributesMake(1u, 0);
   }
@@ -455,7 +455,7 @@ LABEL_11:
   {
     v10.receiver = self;
     v10.super_class = SBMoveGestureFloatingSwitcherModifier;
-    v7 = [(SBMoveGestureFloatingSwitcherModifier *)&v10 asyncRenderingAttributesForAppLayout:v4];
+    v7 = [(SBMoveGestureFloatingSwitcherModifier *)&v10 asyncRenderingAttributesForAppLayout:layoutCopy];
   }
 
   v8 = v7;

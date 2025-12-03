@@ -1,15 +1,15 @@
 @interface _GCHIDEventIOKitClient
 - (_GCHIDEventIOKitClient)init;
-- (_GCHIDEventIOKitClient)initWithClient:(id)a3 queue:(id)a4;
+- (_GCHIDEventIOKitClient)initWithClient:(id)client queue:(id)queue;
 @end
 
 @implementation _GCHIDEventIOKitClient
 
-- (_GCHIDEventIOKitClient)initWithClient:(id)a3 queue:(id)a4
+- (_GCHIDEventIOKitClient)initWithClient:(id)client queue:(id)queue
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  clientCopy = client;
+  queueCopy = queue;
+  if (!clientCopy)
   {
     [_GCHIDEventIOKitClient initWithClient:a2 queue:self];
   }
@@ -20,8 +20,8 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_ioClient, a3);
-    [v8 setEventCallBack:_HIDEventCallback target:v11 context:0];
+    objc_storeStrong(&v10->_ioClient, client);
+    [clientCopy setEventCallBack:_HIDEventCallback target:v11 context:0];
   }
 
   return v11;

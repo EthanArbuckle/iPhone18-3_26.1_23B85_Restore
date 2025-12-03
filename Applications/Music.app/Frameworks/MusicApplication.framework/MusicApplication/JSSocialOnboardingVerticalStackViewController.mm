@@ -1,34 +1,34 @@
 @interface JSSocialOnboardingVerticalStackViewController
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation JSSocialOnboardingVerticalStackViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_179B1C(a3);
+  selfCopy = self;
+  sub_179B1C(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v8.receiver = self;
   v8.super_class = type metadata accessor for JSSocialOnboardingVerticalStackViewController();
   v4 = v8.receiver;
-  [(VerticalStackViewController *)&v8 viewDidAppear:v3];
-  v5 = [v4 presentingViewController];
-  if (v5)
+  [(VerticalStackViewController *)&v8 viewDidAppear:appearCopy];
+  presentingViewController = [v4 presentingViewController];
+  if (presentingViewController)
   {
 
-    v6 = [v4 navigationController];
-    if (v6)
+    navigationController = [v4 navigationController];
+    if (navigationController)
     {
-      v7 = v6;
-      [v6 setModalInPresentation:1];
+      v7 = navigationController;
+      [navigationController setModalInPresentation:1];
 
       v4 = v7;
     }
@@ -37,13 +37,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_179D64();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_17AEDC();
 }
 

@@ -1,10 +1,10 @@
 @interface IMAudioSessionController_iOS
 - (IMAudioSessionController_iOS)init;
-- (void)audioSessionInterruption:(id)a3;
-- (void)audioSessionMediaServicesWereLost:(id)a3;
-- (void)audioSessionMediaServicesWereReset:(id)a3;
-- (void)audioSessionRouteChange:(id)a3;
-- (void)configureAudioSessionWithOptions:(unint64_t)a3;
+- (void)audioSessionInterruption:(id)interruption;
+- (void)audioSessionMediaServicesWereLost:(id)lost;
+- (void)audioSessionMediaServicesWereReset:(id)reset;
+- (void)audioSessionRouteChange:(id)change;
+- (void)configureAudioSessionWithOptions:(unint64_t)options;
 - (void)dealloc;
 @end
 
@@ -37,7 +37,7 @@
   return v4;
 }
 
-- (void)configureAudioSessionWithOptions:(unint64_t)a3
+- (void)configureAudioSessionWithOptions:(unint64_t)options
 {
   v36.receiver = self;
   v36.super_class = IMAudioSessionController_iOS;
@@ -56,14 +56,14 @@
     }
   }
 
-  v14 = a3 & 1;
+  v14 = options & 1;
   v15 = 44;
-  if ((a3 & 1) == 0)
+  if ((options & 1) == 0)
   {
     v15 = 36;
   }
 
-  if ((a3 & 2) != 0)
+  if ((options & 2) != 0)
   {
     v16 = 0;
   }
@@ -73,9 +73,9 @@
     v16 = v15;
   }
 
-  v17 = (a3 >> 1) & 2;
+  v17 = (options >> 1) & 2;
   v18 = MEMORY[0x277CB8020];
-  if ((a3 & 2) == 0)
+  if ((options & 2) == 0)
   {
     v18 = MEMORY[0x277CB8028];
   }
@@ -113,22 +113,22 @@
   }
 }
 
-- (void)audioSessionRouteChange:(id)a3
+- (void)audioSessionRouteChange:(id)change
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v7 = objc_msgSend_audio(IMSharedUILogs, v5, v6);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v27 = 138412290;
-    v28 = v4;
+    v28 = changeCopy;
     _os_log_impl(&dword_2547F8000, v7, OS_LOG_TYPE_INFO, "audioSessionRouteChange: %@", &v27, 0xCu);
   }
 
   objc_msgSend_setDirty_(self, v8, 1);
   if (objc_msgSend_isActive(self, v9, v10))
   {
-    v13 = objc_msgSend_userInfo(v4, v11, v12);
+    v13 = objc_msgSend_userInfo(changeCopy, v11, v12);
     v15 = objc_msgSend_objectForKey_(v13, v14, *MEMORY[0x277CB8220]);
     v18 = objc_msgSend_unsignedIntegerValue(v15, v16, v17);
 
@@ -149,15 +149,15 @@
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionInterruption:(id)a3
+- (void)audioSessionInterruption:(id)interruption
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  interruptionCopy = interruption;
   v7 = objc_msgSend_audio(IMSharedUILogs, v5, v6);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = interruptionCopy;
     _os_log_impl(&dword_2547F8000, v7, OS_LOG_TYPE_INFO, "audioSessionInterruption: %@", &v10, 0xCu);
   }
 
@@ -165,15 +165,15 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionMediaServicesWereLost:(id)a3
+- (void)audioSessionMediaServicesWereLost:(id)lost
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  lostCopy = lost;
   v7 = objc_msgSend_audio(IMSharedUILogs, v5, v6);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = lostCopy;
     _os_log_impl(&dword_2547F8000, v7, OS_LOG_TYPE_INFO, "audioSessionMediaServicesWereLost: %@", &v10, 0xCu);
   }
 
@@ -181,15 +181,15 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)audioSessionMediaServicesWereReset:(id)a3
+- (void)audioSessionMediaServicesWereReset:(id)reset
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  resetCopy = reset;
   v7 = objc_msgSend_audio(IMSharedUILogs, v5, v6);
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v10 = 138412290;
-    v11 = v4;
+    v11 = resetCopy;
     _os_log_impl(&dword_2547F8000, v7, OS_LOG_TYPE_INFO, "audioSessionMediaServicesWereReset: %@", &v10, 0xCu);
   }
 

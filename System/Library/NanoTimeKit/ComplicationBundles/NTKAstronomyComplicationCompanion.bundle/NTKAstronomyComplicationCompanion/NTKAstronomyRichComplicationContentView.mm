@@ -1,11 +1,11 @@
 @interface NTKAstronomyRichComplicationContentView
-- (id)initForDevice:(id)a3 family:(int64_t)a4 diameter:(double)a5;
+- (id)initForDevice:(id)device family:(int64_t)family diameter:(double)diameter;
 - (void)_hideLocationDot;
 - (void)_startAnimating;
 - (void)_stopAnimating;
-- (void)astronomyVistaViewWillDisplay:(id)a3 forTime:(double)a4;
+- (void)astronomyVistaViewWillDisplay:(id)display forTime:(double)time;
 - (void)handleOrdinaryScreenWake;
-- (void)handleTemplateMetadata:(id)a3 reason:(int64_t)a4;
+- (void)handleTemplateMetadata:(id)metadata reason:(int64_t)reason;
 - (void)handleWristRaiseScreenWake;
 - (void)layoutSubviews;
 - (void)prepareWristRaiseAnimation;
@@ -13,19 +13,19 @@
 
 @implementation NTKAstronomyRichComplicationContentView
 
-- (id)initForDevice:(id)a3 family:(int64_t)a4 diameter:(double)a5
+- (id)initForDevice:(id)device family:(int64_t)family diameter:(double)diameter
 {
-  v9 = a3;
+  deviceCopy = device;
   v16.receiver = self;
   v16.super_class = NTKAstronomyRichComplicationContentView;
   v10 = [(NTKAstronomyRichComplicationContentView *)&v16 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_device, a3);
-    v11->_family = a4;
-    v12 = [NUNIAstronomyVistaConfiguration defaultConfigurationWithDevice:v9];
-    v13 = [[NUNIAstronomyVistaView alloc] initWithFrame:v12 configuration:{0.0, 0.0, a5, a5}];
+    objc_storeStrong(&v10->_device, device);
+    v11->_family = family;
+    v12 = [NUNIAstronomyVistaConfiguration defaultConfigurationWithDevice:deviceCopy];
+    v13 = [[NUNIAstronomyVistaView alloc] initWithFrame:v12 configuration:{0.0, 0.0, diameter, diameter}];
     astronomyVistaView = v11->_astronomyVistaView;
     v11->_astronomyVistaView = v13;
 
@@ -58,25 +58,25 @@
   [(NUNIAstronomyLocationDot *)locationDot removeFromSuperview];
 }
 
-- (void)handleTemplateMetadata:(id)a3 reason:(int64_t)a4
+- (void)handleTemplateMetadata:(id)metadata reason:(int64_t)reason
 {
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"vista"];
-  v8 = [v7 intValue];
+  metadataCopy = metadata;
+  v7 = [metadataCopy objectForKeyedSubscript:@"vista"];
+  intValue = [v7 intValue];
 
-  v9 = [v6 objectForKeyedSubscript:@"entry date"];
+  v9 = [metadataCopy objectForKeyedSubscript:@"entry date"];
   timelineDate = self->_timelineDate;
   self->_timelineDate = v9;
 
-  v11 = [v6 objectForKeyedSubscript:@"current location"];
+  v11 = [metadataCopy objectForKeyedSubscript:@"current location"];
   currentLocation = self->_currentLocation;
   self->_currentLocation = v11;
 
-  v13 = [v6 objectForKeyedSubscript:@"any location"];
-  v14 = [(NUNIAstronomyVistaView *)self->_astronomyVistaView scene];
-  if (!v14)
+  v13 = [metadataCopy objectForKeyedSubscript:@"any location"];
+  scene = [(NUNIAstronomyVistaView *)self->_astronomyVistaView scene];
+  if (!scene)
   {
-    if (v8 == 2)
+    if (intValue == 2)
     {
       if (self->_family == 12)
       {
@@ -89,7 +89,7 @@
       }
     }
 
-    else if (v8 == 1)
+    else if (intValue == 1)
     {
       v15 = 24;
     }
@@ -105,25 +105,25 @@
     v21[2] = sub_2C88;
     v21[3] = &unk_C468;
     objc_copyWeak(v22, &location);
-    v22[1] = v8;
+    v22[1] = intValue;
     v16 = objc_retainBlock(v21);
-    v14 = [[NUNIScene alloc] initWithSphereoids:v15 currentDateBlock:v16];
-    [v14 setBackgroundType:1];
-    [v14 setCollectionType:self->_family != 12];
-    [(NUNIAstronomyVistaView *)self->_astronomyVistaView setScene:v14];
+    scene = [[NUNIScene alloc] initWithSphereoids:v15 currentDateBlock:v16];
+    [scene setBackgroundType:1];
+    [scene setCollectionType:self->_family != 12];
+    [(NUNIAstronomyVistaView *)self->_astronomyVistaView setScene:scene];
 
     objc_destroyWeak(v22);
     objc_destroyWeak(&location);
   }
 
-  [(NUNIAstronomyVistaView *)self->_astronomyVistaView applyVista:v8 transitionStyle:0];
-  self->_vista = v8;
+  [(NUNIAstronomyVistaView *)self->_astronomyVistaView applyVista:intValue transitionStyle:0];
+  self->_vista = intValue;
   [(NTKAstronomyRichComplicationContentView *)self _startAnimating];
-  v17 = [(NTKAstronomyRichComplicationContentView *)self _shouldAnimateWithTemplateUpdateReason:a4];
-  if (a4 > 1 || !self->_currentLocation || v8)
+  v17 = [(NTKAstronomyRichComplicationContentView *)self _shouldAnimateWithTemplateUpdateReason:reason];
+  if (reason > 1 || !self->_currentLocation || intValue)
   {
     [(NTKAstronomyRichComplicationContentView *)self _hideLocationDot];
-    if (v8)
+    if (intValue)
     {
       goto LABEL_21;
     }
@@ -167,11 +167,11 @@ LABEL_21:
   *(self + 64) = *(self + 64) & 0xFB | v20;
 }
 
-- (void)astronomyVistaViewWillDisplay:(id)a3 forTime:(double)a4
+- (void)astronomyVistaViewWillDisplay:(id)display forTime:(double)time
 {
   if ((*(self + 64) & 4) != 0)
   {
-    [(NTKAstronomyRichComplicationContentView *)self _stopAnimating:a3];
+    [(NTKAstronomyRichComplicationContentView *)self _stopAnimating:display];
   }
 }
 

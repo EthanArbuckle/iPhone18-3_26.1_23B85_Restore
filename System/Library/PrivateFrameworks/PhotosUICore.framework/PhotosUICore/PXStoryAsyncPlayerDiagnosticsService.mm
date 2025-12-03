@@ -1,12 +1,12 @@
 @interface PXStoryAsyncPlayerDiagnosticsService
 - (NSString)title;
-- (PXStoryAsyncPlayerDiagnosticsService)initWithItemProviders:(id)a3;
+- (PXStoryAsyncPlayerDiagnosticsService)initWithItemProviders:(id)providers;
 - (void)performAction;
 @end
 
 @implementation PXStoryAsyncPlayerDiagnosticsService
 
-- (PXStoryAsyncPlayerDiagnosticsService)initWithItemProviders:(id)a3
+- (PXStoryAsyncPlayerDiagnosticsService)initWithItemProviders:(id)providers
 {
   sub_1A3C52C70(0, &qword_1EB143168);
   v3 = sub_1A524CA34();
@@ -22,7 +22,7 @@
 
 - (void)performAction
 {
-  v2 = self;
+  selfCopy = self;
   sub_1A482246C();
 }
 

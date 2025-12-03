@@ -1,6 +1,6 @@
 @interface ShelfCollectionViewLayout.LayoutAttributes
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(void *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(void *)zone;
 - (int64_t)hash;
 @end
 
@@ -20,11 +20,11 @@
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_ABAB50();
     swift_unknownObjectRelease();
@@ -33,7 +33,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_3254F0(v8);
@@ -42,10 +42,10 @@
   return v6;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v4 = self;
-  sub_325788(a3, v7);
+  selfCopy = self;
+  sub_325788(zone, v7);
 
   __swift_project_boxed_opaque_existential_1(v7, v7[3]);
   v5 = sub_ABB3A0();

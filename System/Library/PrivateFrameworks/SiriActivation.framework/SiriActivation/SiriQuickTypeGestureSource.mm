@@ -25,10 +25,10 @@
 {
   v3 = MEMORY[0x1E698F498];
   v4 = +[SASBoardServicesConfiguration configuration];
-  v5 = [v4 machServiceIdentifier];
+  machServiceIdentifier = [v4 machServiceIdentifier];
   v6 = +[SASBoardServicesConfiguration configuration];
   v7 = [v6 identifierForService:1];
-  v8 = [v3 endpointForMachName:v5 service:v7 instance:0];
+  v8 = [v3 endpointForMachName:machServiceIdentifier service:v7 instance:0];
 
   v9 = [MEMORY[0x1E698F490] connectionWithEndpoint:v8];
   connection = self->super._connection;
@@ -149,14 +149,14 @@ void __49__SiriQuickTypeGestureSource_configureConnection__block_invoke_26(uint6
   v4 = SiriSystemUpTimeFromCFAbsoluteCurrentTime(Current);
   objc_initWeak(&location, self);
   v5 = [SiriActivityAssertion alloc];
-  v6 = [MEMORY[0x1E696AFB0] UUID];
-  v7 = [v6 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __37__SiriQuickTypeGestureSource_prewarm__block_invoke;
   v14 = &unk_1E82F3738;
   objc_copyWeak(&v15, &location);
-  v8 = [(SiriActivityAssertion *)v5 initWithIdentifier:v7 reference:@"SiriQuickTypeGestureSource.ActivityAssertion" reason:@"SiriQuickTypeGestureSource.ActivityAssertionReason.Prepare" timestamp:&v11 invalidationBlock:v4];
+  v8 = [(SiriActivityAssertion *)v5 initWithIdentifier:uUIDString reference:@"SiriQuickTypeGestureSource.ActivityAssertion" reason:@"SiriQuickTypeGestureSource.ActivityAssertionReason.Prepare" timestamp:&v11 invalidationBlock:v4];
 
   os_unfair_lock_lock(&self->super._lock);
   v9 = [(BSServiceConnection *)self->super._connection remoteTarget:v11];
@@ -187,8 +187,8 @@ void __37__SiriQuickTypeGestureSource_prewarm__block_invoke(uint64_t a1)
 - (void)activate
 {
   os_unfair_lock_lock(&self->super._lock);
-  v3 = [(BSServiceConnection *)self->super._connection remoteTarget];
-  [v3 activationRequestFromSimpleActivation:&unk_1F47D16C8];
+  remoteTarget = [(BSServiceConnection *)self->super._connection remoteTarget];
+  [remoteTarget activationRequestFromSimpleActivation:&unk_1F47D16C8];
 
   os_unfair_lock_unlock(&self->super._lock);
 }

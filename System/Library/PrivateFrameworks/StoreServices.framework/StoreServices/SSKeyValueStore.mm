@@ -3,18 +3,18 @@
 - (SSKeyValueStore)init;
 - (id)accountDictionaries;
 - (id)copyAccounts;
-- (id)iTunesValueForKey:(id)a3 usedDomain:(id *)a4;
+- (id)iTunesValueForKey:(id)key usedDomain:(id *)domain;
 - (void)_loadDatabaseIfNecessary;
 - (void)dealloc;
-- (void)getValueForDomain:(id)a3 key:(id)a4 usingBlock:(id)a5;
-- (void)getValuesForDomain:(id)a3 keys:(const void *)a4 count:(unint64_t)a5 usingBlock:(id)a6;
-- (void)modifyUsingTransactionBlock:(id)a3;
-- (void)readUsingSessionBlock:(id)a3;
-- (void)removeAccountFromDomain:(id)a3;
-- (void)removeAllValuesForDomain:(id)a3 completionBlock:(id)a4;
-- (void)removeAllValuesWithCompletionBlock:(id)a3;
-- (void)setValue:(id)a3 forDomain:(id)a4 key:(id)a5 completionBlock:(id)a6;
-- (void)setValuesWithDictionary:(id)a3 forDomain:(id)a4 completionBlock:(id)a5;
+- (void)getValueForDomain:(id)domain key:(id)key usingBlock:(id)block;
+- (void)getValuesForDomain:(id)domain keys:(const void *)keys count:(unint64_t)count usingBlock:(id)block;
+- (void)modifyUsingTransactionBlock:(id)block;
+- (void)readUsingSessionBlock:(id)block;
+- (void)removeAccountFromDomain:(id)domain;
+- (void)removeAllValuesForDomain:(id)domain completionBlock:(id)block;
+- (void)removeAllValuesWithCompletionBlock:(id)block;
+- (void)setValue:(id)value forDomain:(id)domain key:(id)key completionBlock:(id)block;
+- (void)setValuesWithDictionary:(id)dictionary forDomain:(id)domain completionBlock:(id)block;
 @end
 
 @implementation SSKeyValueStore
@@ -60,7 +60,7 @@
   [(SSKeyValueStore *)&v3 dealloc];
 }
 
-- (void)getValueForDomain:(id)a3 key:(id)a4 usingBlock:(id)a5
+- (void)getValueForDomain:(id)domain key:(id)key usingBlock:(id)block
 {
   [(SSKeyValueStore *)self _loadDatabaseIfNecessary];
   if (self->_useLocalRead)
@@ -76,13 +76,13 @@
     v15[1] = 3221225472;
     v15[2] = __52__SSKeyValueStore_getValueForDomain_key_usingBlock___block_invoke;
     v15[3] = &unk_1E84B19A8;
-    v15[5] = a4;
+    v15[5] = key;
     v15[6] = &v16;
-    v15[4] = a3;
+    v15[4] = domain;
     [(SSKeyValueStoreDatabase *)database readUsingSessionBlock:v15];
-    if (a5)
+    if (block)
     {
-      (*(a5 + 2))(a5, v17[5]);
+      (*(block + 2))(block, v17[5]);
     }
 
     v10 = v17[5];
@@ -95,21 +95,21 @@
     if (v11)
     {
       v12 = v11;
-      *v11 = [a4 copy];
+      *v11 = [key copy];
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
       v14[2] = __52__SSKeyValueStore_getValueForDomain_key_usingBlock___block_invoke_2;
       v14[3] = &unk_1E84B19D0;
-      v14[4] = a5;
+      v14[4] = block;
       v14[5] = v12;
-      [(SSKeyValueStore *)self getValuesForDomain:a3 keys:v12 count:1 usingBlock:v14];
+      [(SSKeyValueStore *)self getValuesForDomain:domain keys:v12 count:1 usingBlock:v14];
     }
 
     else
     {
-      v13 = *(a5 + 2);
+      v13 = *(block + 2);
 
-      v13(a5, 0);
+      v13(block, 0);
     }
   }
 }
@@ -134,15 +134,15 @@ void __52__SSKeyValueStore_getValueForDomain_key_usingBlock___block_invoke_2(uin
   free(v4);
 }
 
-- (void)getValuesForDomain:(id)a3 keys:(const void *)a4 count:(unint64_t)a5 usingBlock:(id)a6
+- (void)getValuesForDomain:(id)domain keys:(const void *)keys count:(unint64_t)count usingBlock:(id)block
 {
   v41 = *MEMORY[0x1E69E9840];
   [(SSKeyValueStore *)self _loadDatabaseIfNecessary];
   if (self->_useLocalRead)
   {
-    if (a5)
+    if (count)
     {
-      v11 = malloc_type_calloc(a5, 8uLL, 0x80040B8603338uLL);
+      v11 = malloc_type_calloc(count, 8uLL, 0x80040B8603338uLL);
       if (v11)
       {
         database = self->_database;
@@ -150,10 +150,10 @@ void __52__SSKeyValueStore_getValueForDomain_key_usingBlock___block_invoke_2(uin
         v38[1] = 3221225472;
         v38[2] = __60__SSKeyValueStore_getValuesForDomain_keys_count_usingBlock___block_invoke;
         v38[3] = &unk_1E84B19F8;
-        v38[4] = a3;
-        v38[5] = a5;
+        v38[4] = domain;
+        v38[5] = count;
         v38[6] = v11;
-        v38[7] = a4;
+        v38[7] = keys;
         [(SSKeyValueStoreDatabase *)database readUsingSessionBlock:v38];
         v13 = 0;
         do
@@ -161,15 +161,15 @@ void __52__SSKeyValueStore_getValueForDomain_key_usingBlock___block_invoke_2(uin
           v14 = v11[v13++];
         }
 
-        while (a5 != v13);
+        while (count != v13);
         v15 = 0;
-        if (!a6)
+        if (!block)
         {
           goto LABEL_28;
         }
 
 LABEL_27:
-        (*(a6 + 2))(a6, v11);
+        (*(block + 2))(block, v11);
 LABEL_28:
         if ((v15 & 1) == 0)
         {
@@ -186,7 +186,7 @@ LABEL_28:
     }
 
     v15 = 1;
-    if (!a6)
+    if (!block)
     {
       goto LABEL_28;
     }
@@ -202,15 +202,15 @@ LABEL_28:
       v16 = +[SSLogConfig sharedConfig];
     }
 
-    v17 = [v16 shouldLog];
+    shouldLog = [v16 shouldLog];
     if ([v16 shouldLogToDisk])
     {
-      v18 = v17 | 2;
+      v18 = shouldLog | 2;
     }
 
     else
     {
-      v18 = v17;
+      v18 = shouldLog;
     }
 
     if (os_log_type_enabled([v16 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -240,34 +240,34 @@ LABEL_28:
   }
 
   v29 = SSXPCCreateMessageDictionary(92);
-  SSXPCDictionarySetCFObject(v29, "1", a3);
+  SSXPCDictionarySetCFObject(v29, "1", domain);
   v30 = xpc_array_create(0, 0);
-  if (a5)
+  if (count)
   {
-    v31 = a4;
-    v32 = a5;
+    keysCopy = keys;
+    countCopy = count;
     do
     {
-      v33 = *v31++;
+      v33 = *keysCopy++;
       SSXPCArraySetCFObject(v30, 0xFFFFFFFFFFFFFFFFLL, v33);
-      --v32;
+      --countCopy;
     }
 
-    while (v32);
+    while (countCopy);
   }
 
   xpc_dictionary_set_value(v29, "2", v30);
   xpc_release(v30);
-  v34 = self;
+  selfCopy = self;
   connection = self->_connection;
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __60__SSKeyValueStore_getValuesForDomain_keys_count_usingBlock___block_invoke_11;
   v37[3] = &unk_1E84B1A20;
-  v37[6] = a5;
-  v37[7] = a4;
+  v37[6] = count;
+  v37[7] = keys;
   v37[4] = self;
-  v37[5] = a6;
+  v37[5] = block;
   [(SSXPCConnection *)connection sendMessage:v29 withReply:v37];
   xpc_release(v29);
 }
@@ -338,7 +338,7 @@ LABEL_12:
   v10 = a1[4];
 }
 
-- (void)removeAllValuesForDomain:(id)a3 completionBlock:(id)a4
+- (void)removeAllValuesForDomain:(id)domain completionBlock:(id)block
 {
   v29 = *MEMORY[0x1E69E9840];
   [(SSKeyValueStore *)self _loadDatabaseIfNecessary];
@@ -353,12 +353,12 @@ LABEL_12:
     v25[1] = 3221225472;
     v25[2] = __60__SSKeyValueStore_removeAllValuesForDomain_completionBlock___block_invoke;
     v25[3] = &unk_1E84B1A48;
-    v25[4] = a3;
+    v25[4] = domain;
     v25[5] = &v26;
     [(SSKeyValueStoreDatabase *)database modifyUsingTransactionBlock:v25];
-    if (a4)
+    if (block)
     {
-      (*(a4 + 2))(a4, *(*(&v26 + 1) + 24));
+      (*(block + 2))(block, *(*(&v26 + 1) + 24));
     }
 
     _Block_object_dispose(&v26, 8);
@@ -374,15 +374,15 @@ LABEL_12:
         v8 = +[SSLogConfig sharedConfig];
       }
 
-      v9 = [v8 shouldLog];
+      shouldLog = [v8 shouldLog];
       if ([v8 shouldLogToDisk])
       {
-        v10 = v9 | 2;
+        v10 = shouldLog | 2;
       }
 
       else
       {
-        v10 = v9;
+        v10 = shouldLog;
       }
 
       if (os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_FAULT))
@@ -412,13 +412,13 @@ LABEL_12:
     }
 
     v21 = SSXPCCreateMessageDictionary(94);
-    SSXPCDictionarySetCFObject(v21, "1", a3);
+    SSXPCDictionarySetCFObject(v21, "1", domain);
     connection = self->_connection;
     v24[0] = MEMORY[0x1E69E9820];
     v24[1] = 3221225472;
     v24[2] = __60__SSKeyValueStore_removeAllValuesForDomain_completionBlock___block_invoke_19;
     v24[3] = &unk_1E84AC7E0;
-    v24[4] = a4;
+    v24[4] = block;
     [(SSXPCConnection *)connection sendMessage:v21 withReply:v24];
     xpc_release(v21);
   }
@@ -442,7 +442,7 @@ uint64_t __60__SSKeyValueStore_removeAllValuesForDomain_completionBlock___block_
   return result;
 }
 
-- (void)removeAllValuesWithCompletionBlock:(id)a3
+- (void)removeAllValuesWithCompletionBlock:(id)block
 {
   v27 = *MEMORY[0x1E69E9840];
   [(SSKeyValueStore *)self _loadDatabaseIfNecessary];
@@ -459,9 +459,9 @@ uint64_t __60__SSKeyValueStore_removeAllValuesForDomain_completionBlock___block_
     v23[3] = &unk_1E84B1A70;
     v23[4] = &v24;
     [(SSKeyValueStoreDatabase *)database modifyUsingTransactionBlock:v23];
-    if (a3)
+    if (block)
     {
-      (*(a3 + 2))(a3, *(*(&v24 + 1) + 24));
+      (*(block + 2))(block, *(*(&v24 + 1) + 24));
     }
 
     _Block_object_dispose(&v24, 8);
@@ -477,15 +477,15 @@ uint64_t __60__SSKeyValueStore_removeAllValuesForDomain_completionBlock___block_
         v6 = +[SSLogConfig sharedConfig];
       }
 
-      v7 = [v6 shouldLog];
+      shouldLog = [v6 shouldLog];
       if ([v6 shouldLogToDisk])
       {
-        v8 = v7 | 2;
+        v8 = shouldLog | 2;
       }
 
       else
       {
-        v8 = v7;
+        v8 = shouldLog;
       }
 
       if (os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -520,7 +520,7 @@ uint64_t __60__SSKeyValueStore_removeAllValuesForDomain_completionBlock___block_
     v22[1] = 3221225472;
     v22[2] = __54__SSKeyValueStore_removeAllValuesWithCompletionBlock___block_invoke_23;
     v22[3] = &unk_1E84AC7E0;
-    v22[4] = a3;
+    v22[4] = block;
     [(SSXPCConnection *)connection sendMessage:v19 withReply:v22];
     xpc_release(v19);
   }
@@ -544,7 +544,7 @@ uint64_t __54__SSKeyValueStore_removeAllValuesWithCompletionBlock___block_invoke
   return result;
 }
 
-- (void)setValue:(id)a3 forDomain:(id)a4 key:(id)a5 completionBlock:(id)a6
+- (void)setValue:(id)value forDomain:(id)domain key:(id)key completionBlock:(id)block
 {
   [(SSKeyValueStore *)self _loadDatabaseIfNecessary];
   if (self->_useLocalWrite)
@@ -558,14 +558,14 @@ uint64_t __54__SSKeyValueStore_removeAllValuesWithCompletionBlock___block_invoke
     v14[1] = 3221225472;
     v14[2] = __58__SSKeyValueStore_setValue_forDomain_key_completionBlock___block_invoke;
     v14[3] = &unk_1E84B1A98;
-    v14[4] = a3;
-    v14[5] = a4;
-    v14[6] = a5;
+    v14[4] = value;
+    v14[5] = domain;
+    v14[6] = key;
     v14[7] = &v15;
     [(SSKeyValueStoreDatabase *)database modifyUsingTransactionBlock:v14];
-    if (a6)
+    if (block)
     {
-      (*(a6 + 2))(a6, *(v16 + 24));
+      (*(block + 2))(block, *(v16 + 24));
     }
 
     _Block_object_dispose(&v15, 8);
@@ -574,17 +574,17 @@ uint64_t __54__SSKeyValueStore_removeAllValuesWithCompletionBlock___block_invoke
   else
   {
     v12 = objc_alloc(MEMORY[0x1E695DF20]);
-    if (!a3)
+    if (!value)
     {
-      a3 = [MEMORY[0x1E695DFB0] null];
+      value = [MEMORY[0x1E695DFB0] null];
     }
 
-    v13 = [v12 initWithObjectsAndKeys:{a3, a5, 0}];
-    [(SSKeyValueStore *)self setValuesWithDictionary:v13 forDomain:a4 completionBlock:a6];
+    v13 = [v12 initWithObjectsAndKeys:{value, key, 0}];
+    [(SSKeyValueStore *)self setValuesWithDictionary:v13 forDomain:domain completionBlock:block];
   }
 }
 
-- (void)setValuesWithDictionary:(id)a3 forDomain:(id)a4 completionBlock:(id)a5
+- (void)setValuesWithDictionary:(id)dictionary forDomain:(id)domain completionBlock:(id)block
 {
   v33 = *MEMORY[0x1E69E9840];
   [(SSKeyValueStore *)self _loadDatabaseIfNecessary];
@@ -599,13 +599,13 @@ uint64_t __54__SSKeyValueStore_removeAllValuesWithCompletionBlock___block_invoke
     v29[1] = 3221225472;
     v29[2] = __69__SSKeyValueStore_setValuesWithDictionary_forDomain_completionBlock___block_invoke;
     v29[3] = &unk_1E84B1AE8;
-    v29[5] = a4;
+    v29[5] = domain;
     v29[6] = &v30;
-    v29[4] = a3;
+    v29[4] = dictionary;
     [(SSKeyValueStoreDatabase *)database modifyUsingTransactionBlock:v29];
-    if (a5)
+    if (block)
     {
-      (*(a5 + 2))(a5, *(*(&v30 + 1) + 24));
+      (*(block + 2))(block, *(*(&v30 + 1) + 24));
     }
 
     _Block_object_dispose(&v30, 8);
@@ -621,15 +621,15 @@ uint64_t __54__SSKeyValueStore_removeAllValuesWithCompletionBlock___block_invoke
         v10 = +[SSLogConfig sharedConfig];
       }
 
-      v11 = [v10 shouldLog];
+      shouldLog = [v10 shouldLog];
       if ([v10 shouldLogToDisk])
       {
-        v12 = v11 | 2;
+        v12 = shouldLog | 2;
       }
 
       else
       {
-        v12 = v11;
+        v12 = shouldLog;
       }
 
       if (os_log_type_enabled([v10 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -659,14 +659,14 @@ uint64_t __54__SSKeyValueStore_removeAllValuesWithCompletionBlock___block_invoke
     }
 
     v23 = SSXPCCreateMessageDictionary(93);
-    SSXPCDictionarySetCFObject(v23, "1", a4);
+    SSXPCDictionarySetCFObject(v23, "1", domain);
     v24 = xpc_dictionary_create(0, 0, 0);
     v28[0] = MEMORY[0x1E69E9820];
     v28[1] = 3221225472;
     v28[2] = __69__SSKeyValueStore_setValuesWithDictionary_forDomain_completionBlock___block_invoke_26;
     v28[3] = &unk_1E84B1B10;
     v28[4] = v24;
-    [a3 enumerateKeysAndObjectsUsingBlock:v28];
+    [dictionary enumerateKeysAndObjectsUsingBlock:v28];
     xpc_dictionary_set_value(v23, "2", v24);
     xpc_release(v24);
     connection = self->_connection;
@@ -674,7 +674,7 @@ uint64_t __54__SSKeyValueStore_removeAllValuesWithCompletionBlock___block_invoke
     v27[1] = 3221225472;
     v27[2] = __69__SSKeyValueStore_setValuesWithDictionary_forDomain_completionBlock___block_invoke_2_27;
     v27[3] = &unk_1E84AC7E0;
-    v27[4] = a5;
+    v27[4] = block;
     [(SSXPCConnection *)connection sendMessage:v23 withReply:v27];
     xpc_release(v23);
   }
@@ -961,7 +961,7 @@ LABEL_26:
   }
 }
 
-- (id)iTunesValueForKey:(id)a3 usedDomain:(id *)a4
+- (id)iTunesValueForKey:(id)key usedDomain:(id *)domain
 {
   [(SSKeyValueStore *)self _loadDatabaseIfNecessary];
   v19 = 0;
@@ -981,14 +981,14 @@ LABEL_26:
   v12[1] = 3221225472;
   v12[2] = __48__SSKeyValueStore_iTunesValueForKey_usedDomain___block_invoke;
   v12[3] = &unk_1E84B1B88;
-  v12[4] = a3;
+  v12[4] = key;
   v12[5] = &v19;
   v12[6] = &v13;
   [(SSKeyValueStoreDatabase *)database readUsingSessionBlock:v12];
   v8 = v14[5];
-  if (a4 && v20[5])
+  if (domain && v20[5])
   {
-    *a4 = v8;
+    *domain = v8;
   }
 
   v9 = v8;
@@ -1006,23 +1006,23 @@ id __48__SSKeyValueStore_iTunesValueForKey_usedDomain___block_invoke(void *a1, v
   return v3;
 }
 
-- (void)modifyUsingTransactionBlock:(id)a3
+- (void)modifyUsingTransactionBlock:(id)block
 {
   [(SSKeyValueStore *)self _loadDatabaseIfNecessary];
   database = self->_database;
 
-  [(SSKeyValueStoreDatabase *)database modifyUsingTransactionBlock:a3];
+  [(SSKeyValueStoreDatabase *)database modifyUsingTransactionBlock:block];
 }
 
-- (void)readUsingSessionBlock:(id)a3
+- (void)readUsingSessionBlock:(id)block
 {
   [(SSKeyValueStore *)self _loadDatabaseIfNecessary];
   database = self->_database;
 
-  [(SSKeyValueStoreDatabase *)database readUsingSessionBlock:a3];
+  [(SSKeyValueStoreDatabase *)database readUsingSessionBlock:block];
 }
 
-- (void)removeAccountFromDomain:(id)a3
+- (void)removeAccountFromDomain:(id)domain
 {
   v24 = *MEMORY[0x1E69E9840];
   [(SSKeyValueStore *)self _loadDatabaseIfNecessary];
@@ -1033,7 +1033,7 @@ id __48__SSKeyValueStore_iTunesValueForKey_usedDomain___block_invoke(void *a1, v
     v21[1] = 3221225472;
     v21[2] = __43__SSKeyValueStore_removeAccountFromDomain___block_invoke;
     v21[3] = &unk_1E84B1BB0;
-    v21[4] = a3;
+    v21[4] = domain;
     [(SSKeyValueStoreDatabase *)database modifyAsyncUsingTransactionBlock:v21];
   }
 
@@ -1047,15 +1047,15 @@ id __48__SSKeyValueStore_iTunesValueForKey_usedDomain___block_invoke(void *a1, v
         v6 = +[SSLogConfig sharedConfig];
       }
 
-      v7 = [v6 shouldLog];
+      shouldLog = [v6 shouldLog];
       if ([v6 shouldLogToDisk])
       {
-        v8 = v7 | 2;
+        v8 = shouldLog | 2;
       }
 
       else
       {
-        v8 = v7;
+        v8 = shouldLog;
       }
 
       if (os_log_type_enabled([v6 OSLogObject], OS_LOG_TYPE_DEBUG))
@@ -1085,7 +1085,7 @@ id __48__SSKeyValueStore_iTunesValueForKey_usedDomain___block_invoke(void *a1, v
     }
 
     v19 = SSXPCCreateMessageDictionary(193);
-    SSXPCDictionarySetCFObject(v19, "1", a3);
+    SSXPCDictionarySetCFObject(v19, "1", domain);
     [(SSXPCConnection *)self->_connection sendMessage:v19];
     xpc_release(v19);
   }
@@ -1108,15 +1108,15 @@ id __48__SSKeyValueStore_iTunesValueForKey_usedDomain___block_invoke(void *a1, v
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v4 = [v3 shouldLog];
+    shouldLog = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v5 = v4 | 2;
+      v5 = shouldLog | 2;
     }
 
     else
     {
-      v5 = v4;
+      v5 = shouldLog;
     }
 
     if (!os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -1144,15 +1144,15 @@ id __48__SSKeyValueStore_iTunesValueForKey_usedDomain___block_invoke(void *a1, v
       v3 = +[SSLogConfig sharedConfig];
     }
 
-    v6 = [v3 shouldLog];
+    shouldLog2 = [v3 shouldLog];
     if ([v3 shouldLogToDisk])
     {
-      v7 = v6 | 2;
+      v7 = shouldLog2 | 2;
     }
 
     else
     {
-      v7 = v6;
+      v7 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v3 OSLogObject], OS_LOG_TYPE_DEFAULT))

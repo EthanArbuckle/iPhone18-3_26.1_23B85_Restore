@@ -1,23 +1,23 @@
 @interface ASDOcelotStore
 + (id)interface;
 - (ASDOcelotStore)init;
-- (void)flushMetricsWithCompletionBlock:(id)a3;
-- (void)getAppPayoutEventsWithCompletionBlock:(id)a3;
-- (void)getAppSummaryEventsWithCompletionBlock:(id)a3;
-- (void)recordLaunchesWithCompletionBlock:(id)a3;
-- (void)recordMetricsWithCompletionBlock:(id)a3;
-- (void)reportAppEvent:(id)a3 completionBlock:(id)a4;
-- (void)resetPayoutWithCompletionBlock:(id)a3;
-- (void)resetSummaryWithCompletionBlock:(id)a3;
-- (void)sbsyncIfSubscribedWithAccount:(id)a3 completionBlock:(id)a4;
-- (void)sbsyncWithCompletionBlock:(id)a3;
-- (void)sbsyncWithDuration:(id)a3 completionBlock:(id)a4;
-- (void)sendPayoutWithCompletionBlock:(id)a3;
-- (void)sendSummaryWithCompletionBlock:(id)a3;
-- (void)showUpsellForItemID:(id)a3 completionBlock:(id)a4;
-- (void)subscriptionDetailsWithCompletionBlock:(id)a3;
-- (void)subscriptionStateWithCompletionBlock:(id)a3;
-- (void)topAppsForAccount:(id)a3 completionBlock:(id)a4;
+- (void)flushMetricsWithCompletionBlock:(id)block;
+- (void)getAppPayoutEventsWithCompletionBlock:(id)block;
+- (void)getAppSummaryEventsWithCompletionBlock:(id)block;
+- (void)recordLaunchesWithCompletionBlock:(id)block;
+- (void)recordMetricsWithCompletionBlock:(id)block;
+- (void)reportAppEvent:(id)event completionBlock:(id)block;
+- (void)resetPayoutWithCompletionBlock:(id)block;
+- (void)resetSummaryWithCompletionBlock:(id)block;
+- (void)sbsyncIfSubscribedWithAccount:(id)account completionBlock:(id)block;
+- (void)sbsyncWithCompletionBlock:(id)block;
+- (void)sbsyncWithDuration:(id)duration completionBlock:(id)block;
+- (void)sendPayoutWithCompletionBlock:(id)block;
+- (void)sendSummaryWithCompletionBlock:(id)block;
+- (void)showUpsellForItemID:(id)d completionBlock:(id)block;
+- (void)subscriptionDetailsWithCompletionBlock:(id)block;
+- (void)subscriptionStateWithCompletionBlock:(id)block;
+- (void)topAppsForAccount:(id)account completionBlock:(id)block;
 @end
 
 @implementation ASDOcelotStore
@@ -63,10 +63,10 @@
   return self;
 }
 
-- (void)flushMetricsWithCompletionBlock:(id)a3
+- (void)flushMetricsWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -81,8 +81,8 @@
   v10[1] = 3221225472;
   v10[2] = __50__ASDOcelotStore_flushMetricsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDB780;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getOcelotServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -115,10 +115,10 @@ void __50__ASDOcelotStore_flushMetricsWithCompletionBlock___block_invoke(uint64_
   }
 }
 
-- (void)getAppPayoutEventsWithCompletionBlock:(id)a3
+- (void)getAppPayoutEventsWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -133,8 +133,8 @@ void __50__ASDOcelotStore_flushMetricsWithCompletionBlock___block_invoke(uint64_
   v10[1] = 3221225472;
   v10[2] = __56__ASDOcelotStore_getAppPayoutEventsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDB780;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getOcelotServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -167,10 +167,10 @@ void __56__ASDOcelotStore_getAppPayoutEventsWithCompletionBlock___block_invoke(u
   }
 }
 
-- (void)getAppSummaryEventsWithCompletionBlock:(id)a3
+- (void)getAppSummaryEventsWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -185,8 +185,8 @@ void __56__ASDOcelotStore_getAppPayoutEventsWithCompletionBlock___block_invoke(u
   v10[1] = 3221225472;
   v10[2] = __57__ASDOcelotStore_getAppSummaryEventsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDB780;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getOcelotServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -219,10 +219,10 @@ void __57__ASDOcelotStore_getAppSummaryEventsWithCompletionBlock___block_invoke(
   }
 }
 
-- (void)recordLaunchesWithCompletionBlock:(id)a3
+- (void)recordLaunchesWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -237,8 +237,8 @@ void __57__ASDOcelotStore_getAppSummaryEventsWithCompletionBlock___block_invoke(
   v10[1] = 3221225472;
   v10[2] = __52__ASDOcelotStore_recordLaunchesWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDB780;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getOcelotServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -271,10 +271,10 @@ void __52__ASDOcelotStore_recordLaunchesWithCompletionBlock___block_invoke(uint6
   }
 }
 
-- (void)recordMetricsWithCompletionBlock:(id)a3
+- (void)recordMetricsWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -289,8 +289,8 @@ void __52__ASDOcelotStore_recordLaunchesWithCompletionBlock___block_invoke(uint6
   v10[1] = 3221225472;
   v10[2] = __51__ASDOcelotStore_recordMetricsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDB780;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getOcelotServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -323,11 +323,11 @@ void __51__ASDOcelotStore_recordMetricsWithCompletionBlock___block_invoke(uint64
   }
 }
 
-- (void)reportAppEvent:(id)a3 completionBlock:(id)a4
+- (void)reportAppEvent:(id)event completionBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  blockCopy = block;
   v8 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -342,10 +342,10 @@ void __51__ASDOcelotStore_recordMetricsWithCompletionBlock___block_invoke(uint64
   v14[1] = 3221225472;
   v14[2] = __49__ASDOcelotStore_reportAppEvent_completionBlock___block_invoke;
   v14[3] = &unk_1E7CDB7D0;
-  v15 = v6;
-  v16 = v7;
-  v11 = v6;
-  v12 = v7;
+  v15 = eventCopy;
+  v16 = blockCopy;
+  v11 = eventCopy;
+  v12 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getOcelotServiceWithCompletionHandler:v14];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -379,10 +379,10 @@ void __49__ASDOcelotStore_reportAppEvent_completionBlock___block_invoke(uint64_t
   }
 }
 
-- (void)resetSummaryWithCompletionBlock:(id)a3
+- (void)resetSummaryWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -397,8 +397,8 @@ void __49__ASDOcelotStore_reportAppEvent_completionBlock___block_invoke(uint64_t
   v10[1] = 3221225472;
   v10[2] = __50__ASDOcelotStore_resetSummaryWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDB780;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getOcelotServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -431,10 +431,10 @@ void __50__ASDOcelotStore_resetSummaryWithCompletionBlock___block_invoke(uint64_
   }
 }
 
-- (void)resetPayoutWithCompletionBlock:(id)a3
+- (void)resetPayoutWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -449,8 +449,8 @@ void __50__ASDOcelotStore_resetSummaryWithCompletionBlock___block_invoke(uint64_
   v10[1] = 3221225472;
   v10[2] = __49__ASDOcelotStore_resetPayoutWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDB780;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getOcelotServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -483,11 +483,11 @@ void __49__ASDOcelotStore_resetPayoutWithCompletionBlock___block_invoke(uint64_t
   }
 }
 
-- (void)sbsyncIfSubscribedWithAccount:(id)a3 completionBlock:(id)a4
+- (void)sbsyncIfSubscribedWithAccount:(id)account completionBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  blockCopy = block;
   v8 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -502,10 +502,10 @@ void __49__ASDOcelotStore_resetPayoutWithCompletionBlock___block_invoke(uint64_t
   v14[1] = 3221225472;
   v14[2] = __64__ASDOcelotStore_sbsyncIfSubscribedWithAccount_completionBlock___block_invoke;
   v14[3] = &unk_1E7CDB7D0;
-  v15 = v6;
-  v16 = v7;
-  v11 = v6;
-  v12 = v7;
+  v15 = accountCopy;
+  v16 = blockCopy;
+  v11 = accountCopy;
+  v12 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getOcelotServiceWithCompletionHandler:v14];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -539,10 +539,10 @@ void __64__ASDOcelotStore_sbsyncIfSubscribedWithAccount_completionBlock___block_
   }
 }
 
-- (void)sbsyncWithCompletionBlock:(id)a3
+- (void)sbsyncWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -557,8 +557,8 @@ void __64__ASDOcelotStore_sbsyncIfSubscribedWithAccount_completionBlock___block_
   v10[1] = 3221225472;
   v10[2] = __44__ASDOcelotStore_sbsyncWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDB780;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getOcelotServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -591,11 +591,11 @@ void __44__ASDOcelotStore_sbsyncWithCompletionBlock___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)sbsyncWithDuration:(id)a3 completionBlock:(id)a4
+- (void)sbsyncWithDuration:(id)duration completionBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  durationCopy = duration;
+  blockCopy = block;
   v8 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -610,10 +610,10 @@ void __44__ASDOcelotStore_sbsyncWithCompletionBlock___block_invoke(uint64_t a1, 
   v14[1] = 3221225472;
   v14[2] = __53__ASDOcelotStore_sbsyncWithDuration_completionBlock___block_invoke;
   v14[3] = &unk_1E7CDB7D0;
-  v15 = v6;
-  v16 = v7;
-  v11 = v6;
-  v12 = v7;
+  v15 = durationCopy;
+  v16 = blockCopy;
+  v11 = durationCopy;
+  v12 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getOcelotServiceWithCompletionHandler:v14];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -647,10 +647,10 @@ void __53__ASDOcelotStore_sbsyncWithDuration_completionBlock___block_invoke(uint
   }
 }
 
-- (void)sendSummaryWithCompletionBlock:(id)a3
+- (void)sendSummaryWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -665,8 +665,8 @@ void __53__ASDOcelotStore_sbsyncWithDuration_completionBlock___block_invoke(uint
   v10[1] = 3221225472;
   v10[2] = __49__ASDOcelotStore_sendSummaryWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDB780;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getOcelotServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -699,10 +699,10 @@ void __49__ASDOcelotStore_sendSummaryWithCompletionBlock___block_invoke(uint64_t
   }
 }
 
-- (void)sendPayoutWithCompletionBlock:(id)a3
+- (void)sendPayoutWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -717,8 +717,8 @@ void __49__ASDOcelotStore_sendSummaryWithCompletionBlock___block_invoke(uint64_t
   v10[1] = 3221225472;
   v10[2] = __48__ASDOcelotStore_sendPayoutWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDB780;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getOcelotServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -751,11 +751,11 @@ void __48__ASDOcelotStore_sendPayoutWithCompletionBlock___block_invoke(uint64_t 
   }
 }
 
-- (void)showUpsellForItemID:(id)a3 completionBlock:(id)a4
+- (void)showUpsellForItemID:(id)d completionBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  blockCopy = block;
   v8 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -770,10 +770,10 @@ void __48__ASDOcelotStore_sendPayoutWithCompletionBlock___block_invoke(uint64_t 
   v14[1] = 3221225472;
   v14[2] = __54__ASDOcelotStore_showUpsellForItemID_completionBlock___block_invoke;
   v14[3] = &unk_1E7CDB7D0;
-  v15 = v6;
-  v16 = v7;
-  v11 = v6;
-  v12 = v7;
+  v15 = dCopy;
+  v16 = blockCopy;
+  v11 = dCopy;
+  v12 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getOcelotServiceWithCompletionHandler:v14];
 
   v13 = *MEMORY[0x1E69E9840];
@@ -807,10 +807,10 @@ void __54__ASDOcelotStore_showUpsellForItemID_completionBlock___block_invoke(uin
   }
 }
 
-- (void)subscriptionDetailsWithCompletionBlock:(id)a3
+- (void)subscriptionDetailsWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -825,8 +825,8 @@ void __54__ASDOcelotStore_showUpsellForItemID_completionBlock___block_invoke(uin
   v10[1] = 3221225472;
   v10[2] = __57__ASDOcelotStore_subscriptionDetailsWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDB780;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getOcelotServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -859,10 +859,10 @@ void __57__ASDOcelotStore_subscriptionDetailsWithCompletionBlock___block_invoke(
   }
 }
 
-- (void)subscriptionStateWithCompletionBlock:(id)a3
+- (void)subscriptionStateWithCompletionBlock:(id)block
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -877,8 +877,8 @@ void __57__ASDOcelotStore_subscriptionDetailsWithCompletionBlock___block_invoke(
   v10[1] = 3221225472;
   v10[2] = __55__ASDOcelotStore_subscriptionStateWithCompletionBlock___block_invoke;
   v10[3] = &unk_1E7CDB780;
-  v11 = v4;
-  v8 = v4;
+  v11 = blockCopy;
+  v8 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getOcelotServiceWithCompletionHandler:v10];
 
   v9 = *MEMORY[0x1E69E9840];
@@ -911,11 +911,11 @@ void __55__ASDOcelotStore_subscriptionStateWithCompletionBlock___block_invoke(ui
   }
 }
 
-- (void)topAppsForAccount:(id)a3 completionBlock:(id)a4
+- (void)topAppsForAccount:(id)account completionBlock:(id)block
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  blockCopy = block;
   v8 = ASDLogHandleForCategory(13);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -930,10 +930,10 @@ void __55__ASDOcelotStore_subscriptionStateWithCompletionBlock___block_invoke(ui
   v14[1] = 3221225472;
   v14[2] = __52__ASDOcelotStore_topAppsForAccount_completionBlock___block_invoke;
   v14[3] = &unk_1E7CDB7D0;
-  v15 = v6;
-  v16 = v7;
-  v11 = v6;
-  v12 = v7;
+  v15 = accountCopy;
+  v16 = blockCopy;
+  v11 = accountCopy;
+  v12 = blockCopy;
   [(ASDServiceBroker *)serviceBroker getOcelotServiceWithCompletionHandler:v14];
 
   v13 = *MEMORY[0x1E69E9840];

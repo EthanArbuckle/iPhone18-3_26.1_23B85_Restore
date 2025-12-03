@@ -1,8 +1,8 @@
 @interface SmartPLMemoryTracking
 + (id)defaults;
 - (PLSmartPLService)operator;
-- (void)handleMemoryTracking:(id)a3;
-- (void)startWithOperator:(id)a3;
+- (void)handleMemoryTracking:(id)tracking;
+- (void)startWithOperator:(id)operator;
 @end
 
 @implementation SmartPLMemoryTracking
@@ -28,18 +28,18 @@
   return v2;
 }
 
-- (void)startWithOperator:(id)a3
+- (void)startWithOperator:(id)operator
 {
-  [(SmartPLMemoryTracking *)self setOperator:a3];
+  [(SmartPLMemoryTracking *)self setOperator:operator];
   v4 = [MEMORY[0x277D3F6B8] entryKeyForType:*MEMORY[0x277D3F5E8] andName:*MEMORY[0x277D3F7D8]];
   v5 = objc_alloc(MEMORY[0x277D3F1A8]);
-  v6 = [(SmartPLMemoryTracking *)self operator];
+  operator = [(SmartPLMemoryTracking *)self operator];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __43__SmartPLMemoryTracking_startWithOperator___block_invoke;
   v8[3] = &unk_279A58F10;
   v8[4] = self;
-  v7 = [v5 initWithOperator:v6 forEntryKey:v4 withBlock:v8];
+  v7 = [v5 initWithOperator:operator forEntryKey:v4 withBlock:v8];
 
   [(SmartPLMemoryTracking *)self setMemoryTrackingNotification:v7];
 }
@@ -51,9 +51,9 @@ void __43__SmartPLMemoryTracking_startWithOperator___block_invoke(uint64_t a1, v
   [v2 handleMemoryTracking:v3];
 }
 
-- (void)handleMemoryTracking:(id)a3
+- (void)handleMemoryTracking:(id)tracking
 {
-  v4 = a3;
+  trackingCopy = tracking;
   v5 = +[SmartPLMemoryTracking defaults];
   v6 = [v5 objectForKeyedSubscript:@"MemoryTrackingDirtyPercent"];
   [v6 floatValue];
@@ -106,7 +106,7 @@ void __43__SmartPLMemoryTracking_startWithOperator___block_invoke(uint64_t a1, v
 
   v17 = *&handleMemoryTracking__objectForKey_37;
 
-  v18 = [v4 objectForKeyedSubscript:@"MallocSize"];
+  v18 = [trackingCopy objectForKeyedSubscript:@"MallocSize"];
 
   [v18 doubleValue];
   v20 = v13 + v19 * v9;
@@ -114,16 +114,16 @@ void __43__SmartPLMemoryTracking_startWithOperator___block_invoke(uint64_t a1, v
   if (v20 > v17)
   {
     v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"dirtyMemoryGuess greater than threshold %f", *&v20];
-    v22 = [(SmartPLMemoryTracking *)self operator];
-    [v22 logEventPointSmartPLFiredFromAuxilary:objc_opt_class() withReason:v21];
+    operator = [(SmartPLMemoryTracking *)self operator];
+    [operator logEventPointSmartPLFiredFromAuxilary:objc_opt_class() withReason:v21];
 
-    v23 = [(SmartPLMemoryTracking *)self operator];
-    [v23 logEventPointStackShotWithReason:v21];
+    operator2 = [(SmartPLMemoryTracking *)self operator];
+    [operator2 logEventPointStackShotWithReason:v21];
 
-    v24 = [(SmartPLMemoryTracking *)self operator];
-    v25 = [MEMORY[0x277CCAC38] processInfo];
-    v26 = [v25 processName];
-    [v24 logEventPointSampleForProcessName:v26];
+    operator3 = [(SmartPLMemoryTracking *)self operator];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    processName = [processInfo processName];
+    [operator3 logEventPointSampleForProcessName:processName];
   }
 }
 

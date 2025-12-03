@@ -1,19 +1,19 @@
 @interface BSUIVibrancyConfiguration
 + (void)initialize;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BSUIVibrancyConfiguration)init;
-- (BSUIVibrancyConfiguration)initWithEffectType:(int64_t)a3 backgroundType:(int64_t)a4 color:(id)a5 groupName:(id)a6 blendConfiguration:(id)a7 blendAmount:(double)a8 alternativeVibrancyEffectLUT:(id)a9;
+- (BSUIVibrancyConfiguration)initWithEffectType:(int64_t)type backgroundType:(int64_t)backgroundType color:(id)color groupName:(id)name blendConfiguration:(id)configuration blendAmount:(double)amount alternativeVibrancyEffectLUT:(id)t;
 - (BSUIVibrancyEffectValues)effectValues;
 - (BSUIVibrancyShadowValues)shadowValues;
-- (id)copyWithAlternativeVibrancyEffectLUT:(id)a3;
-- (id)copyWithBlendAmount:(double)a3 blendConfiguration:(id)a4;
-- (id)copyWithBlendAmount:(double)a3 blendConfiguration:(id)a4 alternativeVibrancyEffectLUT:(id)a5;
-- (id)copyWithEffectType:(int64_t)a3 color:(id)a4;
-- (id)copyWithGroupName:(id)a3;
-- (id)copyWithWithBackgroundType:(int64_t)a3;
+- (id)copyWithAlternativeVibrancyEffectLUT:(id)t;
+- (id)copyWithBlendAmount:(double)amount blendConfiguration:(id)configuration;
+- (id)copyWithBlendAmount:(double)amount blendConfiguration:(id)configuration alternativeVibrancyEffectLUT:(id)t;
+- (id)copyWithEffectType:(int64_t)type color:(id)color;
+- (id)copyWithGroupName:(id)name;
+- (id)copyWithWithBackgroundType:(int64_t)type;
 - (id)membersForCoder;
 - (unint64_t)hash;
-- (void)appendDescriptionToFormatter:(id)a3;
+- (void)appendDescriptionToFormatter:(id)formatter;
 @end
 
 @implementation BSUIVibrancyConfiguration
@@ -26,34 +26,34 @@
   return v4;
 }
 
-- (BSUIVibrancyConfiguration)initWithEffectType:(int64_t)a3 backgroundType:(int64_t)a4 color:(id)a5 groupName:(id)a6 blendConfiguration:(id)a7 blendAmount:(double)a8 alternativeVibrancyEffectLUT:(id)a9
+- (BSUIVibrancyConfiguration)initWithEffectType:(int64_t)type backgroundType:(int64_t)backgroundType color:(id)color groupName:(id)name blendConfiguration:(id)configuration blendAmount:(double)amount alternativeVibrancyEffectLUT:(id)t
 {
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a9;
+  colorCopy = color;
+  nameCopy = name;
+  configurationCopy = configuration;
+  tCopy = t;
   v31.receiver = self;
   v31.super_class = BSUIVibrancyConfiguration;
   v20 = [(BSUIVibrancyConfiguration *)&v31 init];
   v21 = v20;
   if (v20)
   {
-    v20->_effectType = a3;
-    v20->_backgroundType = a4;
-    v22 = [v16 copy];
+    v20->_effectType = type;
+    v20->_backgroundType = backgroundType;
+    v22 = [colorCopy copy];
     color = v21->_color;
     v21->_color = v22;
 
-    v24 = [v17 copy];
+    v24 = [nameCopy copy];
     groupName = v21->_groupName;
     v21->_groupName = v24;
 
-    v26 = [v18 copy];
+    v26 = [configurationCopy copy];
     blendConfiguration = v21->_blendConfiguration;
     v21->_blendConfiguration = v26;
 
-    v21->_blendAmount = a8;
-    v28 = [v19 copy];
+    v21->_blendAmount = amount;
+    v28 = [tCopy copy];
     alternativeVibrancyEffectLUT = v21->_alternativeVibrancyEffectLUT;
     v21->_alternativeVibrancyEffectLUT = v28;
   }
@@ -61,59 +61,59 @@
   return v21;
 }
 
-- (id)copyWithGroupName:(id)a3
+- (id)copyWithGroupName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = [BSUIVibrancyConfiguration alloc];
-  v6 = [(BSUIVibrancyConfiguration *)self effectType];
-  v7 = [(BSUIVibrancyConfiguration *)self backgroundType];
-  v8 = [(BSUIVibrancyConfiguration *)self color];
-  v9 = [(BSUIVibrancyConfiguration *)self blendConfiguration];
+  effectType = [(BSUIVibrancyConfiguration *)self effectType];
+  backgroundType = [(BSUIVibrancyConfiguration *)self backgroundType];
+  color = [(BSUIVibrancyConfiguration *)self color];
+  blendConfiguration = [(BSUIVibrancyConfiguration *)self blendConfiguration];
   [(BSUIVibrancyConfiguration *)self blendAmount];
   v11 = v10;
-  v12 = [(BSUIVibrancyConfiguration *)self alternativeVibrancyEffectLUT];
-  v13 = [(BSUIVibrancyConfiguration *)v5 initWithEffectType:v6 backgroundType:v7 color:v8 groupName:v4 blendConfiguration:v9 blendAmount:v12 alternativeVibrancyEffectLUT:v11];
+  alternativeVibrancyEffectLUT = [(BSUIVibrancyConfiguration *)self alternativeVibrancyEffectLUT];
+  v13 = [(BSUIVibrancyConfiguration *)v5 initWithEffectType:effectType backgroundType:backgroundType color:color groupName:nameCopy blendConfiguration:blendConfiguration blendAmount:alternativeVibrancyEffectLUT alternativeVibrancyEffectLUT:v11];
 
   return v13;
 }
 
-- (id)copyWithBlendAmount:(double)a3 blendConfiguration:(id)a4
+- (id)copyWithBlendAmount:(double)amount blendConfiguration:(id)configuration
 {
-  v6 = a4;
+  configurationCopy = configuration;
   v7 = [BSUIVibrancyConfiguration alloc];
-  v8 = [(BSUIVibrancyConfiguration *)self effectType];
-  v9 = [(BSUIVibrancyConfiguration *)self backgroundType];
-  v10 = [(BSUIVibrancyConfiguration *)self color];
-  v11 = [(BSUIVibrancyConfiguration *)self groupName];
-  v12 = [(BSUIVibrancyConfiguration *)self alternativeVibrancyEffectLUT];
-  v13 = [(BSUIVibrancyConfiguration *)v7 initWithEffectType:v8 backgroundType:v9 color:v10 groupName:v11 blendConfiguration:v6 blendAmount:v12 alternativeVibrancyEffectLUT:a3];
+  effectType = [(BSUIVibrancyConfiguration *)self effectType];
+  backgroundType = [(BSUIVibrancyConfiguration *)self backgroundType];
+  color = [(BSUIVibrancyConfiguration *)self color];
+  groupName = [(BSUIVibrancyConfiguration *)self groupName];
+  alternativeVibrancyEffectLUT = [(BSUIVibrancyConfiguration *)self alternativeVibrancyEffectLUT];
+  v13 = [(BSUIVibrancyConfiguration *)v7 initWithEffectType:effectType backgroundType:backgroundType color:color groupName:groupName blendConfiguration:configurationCopy blendAmount:alternativeVibrancyEffectLUT alternativeVibrancyEffectLUT:amount];
 
   return v13;
 }
 
-- (id)copyWithBlendAmount:(double)a3 blendConfiguration:(id)a4 alternativeVibrancyEffectLUT:(id)a5
+- (id)copyWithBlendAmount:(double)amount blendConfiguration:(id)configuration alternativeVibrancyEffectLUT:(id)t
 {
-  v8 = a4;
-  v9 = a5;
+  configurationCopy = configuration;
+  tCopy = t;
   v10 = [BSUIVibrancyConfiguration alloc];
-  v11 = [(BSUIVibrancyConfiguration *)self effectType];
-  v12 = [(BSUIVibrancyConfiguration *)self backgroundType];
-  v13 = [(BSUIVibrancyConfiguration *)self color];
-  v14 = [(BSUIVibrancyConfiguration *)self groupName];
-  v15 = [(BSUIVibrancyConfiguration *)v10 initWithEffectType:v11 backgroundType:v12 color:v13 groupName:v14 blendConfiguration:v8 blendAmount:v9 alternativeVibrancyEffectLUT:a3];
+  effectType = [(BSUIVibrancyConfiguration *)self effectType];
+  backgroundType = [(BSUIVibrancyConfiguration *)self backgroundType];
+  color = [(BSUIVibrancyConfiguration *)self color];
+  groupName = [(BSUIVibrancyConfiguration *)self groupName];
+  v15 = [(BSUIVibrancyConfiguration *)v10 initWithEffectType:effectType backgroundType:backgroundType color:color groupName:groupName blendConfiguration:configurationCopy blendAmount:tCopy alternativeVibrancyEffectLUT:amount];
 
   return v15;
 }
 
-- (id)copyWithEffectType:(int64_t)a3 color:(id)a4
+- (id)copyWithEffectType:(int64_t)type color:(id)color
 {
-  v6 = a4;
-  v7 = [(BSUIVibrancyConfiguration *)self blendConfiguration];
+  colorCopy = color;
+  blendConfiguration = [(BSUIVibrancyConfiguration *)self blendConfiguration];
 
-  if (v7)
+  if (blendConfiguration)
   {
-    v8 = [(BSUIVibrancyConfiguration *)self blendConfiguration];
-    v9 = [v8 copyWithEffectType:a3 color:v6];
+    blendConfiguration2 = [(BSUIVibrancyConfiguration *)self blendConfiguration];
+    v9 = [blendConfiguration2 copyWithEffectType:type color:colorCopy];
   }
 
   else
@@ -122,24 +122,24 @@
   }
 
   v10 = [BSUIVibrancyConfiguration alloc];
-  v11 = [(BSUIVibrancyConfiguration *)self backgroundType];
-  v12 = [(BSUIVibrancyConfiguration *)self groupName];
+  backgroundType = [(BSUIVibrancyConfiguration *)self backgroundType];
+  groupName = [(BSUIVibrancyConfiguration *)self groupName];
   [(BSUIVibrancyConfiguration *)self blendAmount];
   v14 = v13;
-  v15 = [(BSUIVibrancyConfiguration *)self alternativeVibrancyEffectLUT];
-  v16 = [(BSUIVibrancyConfiguration *)v10 initWithEffectType:a3 backgroundType:v11 color:v6 groupName:v12 blendConfiguration:v9 blendAmount:v15 alternativeVibrancyEffectLUT:v14];
+  alternativeVibrancyEffectLUT = [(BSUIVibrancyConfiguration *)self alternativeVibrancyEffectLUT];
+  v16 = [(BSUIVibrancyConfiguration *)v10 initWithEffectType:type backgroundType:backgroundType color:colorCopy groupName:groupName blendConfiguration:v9 blendAmount:alternativeVibrancyEffectLUT alternativeVibrancyEffectLUT:v14];
 
   return v16;
 }
 
-- (id)copyWithWithBackgroundType:(int64_t)a3
+- (id)copyWithWithBackgroundType:(int64_t)type
 {
-  v5 = [(BSUIVibrancyConfiguration *)self blendConfiguration];
+  blendConfiguration = [(BSUIVibrancyConfiguration *)self blendConfiguration];
 
-  if (v5)
+  if (blendConfiguration)
   {
-    v6 = [(BSUIVibrancyConfiguration *)self blendConfiguration];
-    v7 = [v6 copyWithWithBackgroundType:a3];
+    blendConfiguration2 = [(BSUIVibrancyConfiguration *)self blendConfiguration];
+    v7 = [blendConfiguration2 copyWithWithBackgroundType:type];
   }
 
   else
@@ -148,91 +148,91 @@
   }
 
   v8 = [BSUIVibrancyConfiguration alloc];
-  v9 = [(BSUIVibrancyConfiguration *)self effectType];
-  v10 = [(BSUIVibrancyConfiguration *)self color];
-  v11 = [(BSUIVibrancyConfiguration *)self groupName];
+  effectType = [(BSUIVibrancyConfiguration *)self effectType];
+  color = [(BSUIVibrancyConfiguration *)self color];
+  groupName = [(BSUIVibrancyConfiguration *)self groupName];
   [(BSUIVibrancyConfiguration *)self blendAmount];
   v13 = v12;
-  v14 = [(BSUIVibrancyConfiguration *)self alternativeVibrancyEffectLUT];
-  v15 = [(BSUIVibrancyConfiguration *)v8 initWithEffectType:v9 backgroundType:a3 color:v10 groupName:v11 blendConfiguration:v7 blendAmount:v14 alternativeVibrancyEffectLUT:v13];
+  alternativeVibrancyEffectLUT = [(BSUIVibrancyConfiguration *)self alternativeVibrancyEffectLUT];
+  v15 = [(BSUIVibrancyConfiguration *)v8 initWithEffectType:effectType backgroundType:type color:color groupName:groupName blendConfiguration:v7 blendAmount:alternativeVibrancyEffectLUT alternativeVibrancyEffectLUT:v13];
 
   return v15;
 }
 
-- (id)copyWithAlternativeVibrancyEffectLUT:(id)a3
+- (id)copyWithAlternativeVibrancyEffectLUT:(id)t
 {
-  v4 = a3;
+  tCopy = t;
   v5 = [BSUIVibrancyConfiguration alloc];
-  v6 = [(BSUIVibrancyConfiguration *)self effectType];
-  v7 = [(BSUIVibrancyConfiguration *)self backgroundType];
-  v8 = [(BSUIVibrancyConfiguration *)self color];
-  v9 = [(BSUIVibrancyConfiguration *)self groupName];
-  v10 = [(BSUIVibrancyConfiguration *)self blendConfiguration];
+  effectType = [(BSUIVibrancyConfiguration *)self effectType];
+  backgroundType = [(BSUIVibrancyConfiguration *)self backgroundType];
+  color = [(BSUIVibrancyConfiguration *)self color];
+  groupName = [(BSUIVibrancyConfiguration *)self groupName];
+  blendConfiguration = [(BSUIVibrancyConfiguration *)self blendConfiguration];
   [(BSUIVibrancyConfiguration *)self blendAmount];
-  v11 = [(BSUIVibrancyConfiguration *)v5 initWithEffectType:v6 backgroundType:v7 color:v8 groupName:v9 blendConfiguration:v10 blendAmount:v4 alternativeVibrancyEffectLUT:?];
+  v11 = [(BSUIVibrancyConfiguration *)v5 initWithEffectType:effectType backgroundType:backgroundType color:color groupName:groupName blendConfiguration:blendConfiguration blendAmount:tCopy alternativeVibrancyEffectLUT:?];
 
   return v11;
 }
 
 - (BSUIVibrancyEffectValues)effectValues
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  effectValues = v2->_effectValues;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  effectValues = selfCopy->_effectValues;
   if (!effectValues)
   {
-    v4 = [(BSUIVibrancyValues *)[BSUIVibrancyEffectValues alloc] initWithConfiguration:v2];
-    v5 = v2->_effectValues;
-    v2->_effectValues = v4;
+    v4 = [(BSUIVibrancyValues *)[BSUIVibrancyEffectValues alloc] initWithConfiguration:selfCopy];
+    v5 = selfCopy->_effectValues;
+    selfCopy->_effectValues = v4;
 
-    effectValues = v2->_effectValues;
+    effectValues = selfCopy->_effectValues;
   }
 
   v6 = effectValues;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
 - (BSUIVibrancyShadowValues)shadowValues
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  shadowValues = v2->_shadowValues;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  shadowValues = selfCopy->_shadowValues;
   if (!shadowValues)
   {
-    v4 = [(BSUIVibrancyValues *)[BSUIVibrancyShadowValues alloc] initWithConfiguration:v2];
-    v5 = v2->_shadowValues;
-    v2->_shadowValues = v4;
+    v4 = [(BSUIVibrancyValues *)[BSUIVibrancyShadowValues alloc] initWithConfiguration:selfCopy];
+    v5 = selfCopy->_shadowValues;
+    selfCopy->_shadowValues = v4;
 
-    shadowValues = v2->_shadowValues;
+    shadowValues = selfCopy->_shadowValues;
   }
 
   v6 = shadowValues;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v25 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     v7 = objc_opt_self();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if ((isKindOfClass & 1) != 0 && ([(BSUIVibrancyConfiguration *)self color], v9 = objc_claimAutoreleasedReturnValue(), [(BSUIVibrancyConfiguration *)v6 color], v10 = objc_claimAutoreleasedReturnValue(), v11 = BSEqualObjects(), v10, v9, v11) && ([(BSUIVibrancyConfiguration *)self groupName], v12 = objc_claimAutoreleasedReturnValue(), [(BSUIVibrancyConfiguration *)v6 groupName], v13 = objc_claimAutoreleasedReturnValue(), v14 = BSEqualObjects(), v13, v12, v14) && (v15 = [(BSUIVibrancyConfiguration *)self effectType], v15 == [(BSUIVibrancyConfiguration *)v6 effectType]) && (v16 = [(BSUIVibrancyConfiguration *)self backgroundType], v16 == [(BSUIVibrancyConfiguration *)v6 backgroundType]) && ([(BSUIVibrancyConfiguration *)self blendConfiguration], v17 = objc_claimAutoreleasedReturnValue(), [(BSUIVibrancyConfiguration *)v6 blendConfiguration], v18 = objc_claimAutoreleasedReturnValue(), v19 = BSEqualObjects(), v18, v17, v19) && ([(BSUIVibrancyConfiguration *)self blendAmount], v21 = v20, [(BSUIVibrancyConfiguration *)v6 blendAmount], v21 == v22))
     {
-      v23 = [(BSUIVibrancyConfiguration *)self alternativeVibrancyEffectLUT];
-      v24 = [(BSUIVibrancyConfiguration *)v6 alternativeVibrancyEffectLUT];
+      alternativeVibrancyEffectLUT = [(BSUIVibrancyConfiguration *)self alternativeVibrancyEffectLUT];
+      alternativeVibrancyEffectLUT2 = [(BSUIVibrancyConfiguration *)v6 alternativeVibrancyEffectLUT];
       v25 = BSEqualObjects();
     }
 
@@ -247,23 +247,23 @@
 
 - (unint64_t)hash
 {
-  v3 = [(BSUIVibrancyConfiguration *)self color];
-  v4 = [v3 hash];
+  color = [(BSUIVibrancyConfiguration *)self color];
+  v4 = [color hash];
 
-  v5 = [(BSUIVibrancyConfiguration *)self groupName];
-  v6 = [v5 hash];
+  groupName = [(BSUIVibrancyConfiguration *)self groupName];
+  v6 = [groupName hash];
 
-  v7 = [(BSUIVibrancyConfiguration *)self effectType];
-  v8 = [(BSUIVibrancyConfiguration *)self backgroundType];
-  v9 = [(BSUIVibrancyConfiguration *)self blendConfiguration];
-  v10 = [v9 hash];
+  effectType = [(BSUIVibrancyConfiguration *)self effectType];
+  backgroundType = [(BSUIVibrancyConfiguration *)self backgroundType];
+  blendConfiguration = [(BSUIVibrancyConfiguration *)self blendConfiguration];
+  v10 = [blendConfiguration hash];
 
   [(BSUIVibrancyConfiguration *)self blendAmount];
   v12 = v11;
-  v13 = [(BSUIVibrancyConfiguration *)self alternativeVibrancyEffectLUT];
-  v14 = [v13 hash];
-  v15 = v7 - (v6 - v4 + 32 * v4) + 32 * (v6 - v4 + 32 * v4);
-  v16 = ((31 * (v10 - (v8 - v15 + 32 * v15) + 32 * (v8 - v15 + 32 * v15)) + 887503681) + v12 * 100.0);
+  alternativeVibrancyEffectLUT = [(BSUIVibrancyConfiguration *)self alternativeVibrancyEffectLUT];
+  v14 = [alternativeVibrancyEffectLUT hash];
+  v15 = effectType - (v6 - v4 + 32 * v4) + 32 * (v6 - v4 + 32 * v4);
+  v16 = ((31 * (v10 - (backgroundType - v15 + 32 * v15) + 32 * (backgroundType - v15 + 32 * v15)) + 887503681) + v12 * 100.0);
   v17 = v14 - v16 + 32 * v16;
 
   return v17;
@@ -271,10 +271,10 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    MEMORY[0x1EEDF0408](a1, 0);
+    MEMORY[0x1EEDF0408](self, 0);
   }
 }
 
@@ -433,24 +433,24 @@
   return v18;
 }
 
-- (void)appendDescriptionToFormatter:(id)a3
+- (void)appendDescriptionToFormatter:(id)formatter
 {
-  v15 = a3;
-  v4 = [v15 appendInt64:-[BSUIVibrancyConfiguration effectType](self withName:{"effectType"), @"effectType"}];
-  v5 = [v15 appendInt64:-[BSUIVibrancyConfiguration backgroundType](self withName:{"backgroundType"), @"backgroundType"}];
-  v6 = [(BSUIVibrancyConfiguration *)self color];
-  v7 = [v15 appendObject:v6 withName:@"color"];
+  formatterCopy = formatter;
+  v4 = [formatterCopy appendInt64:-[BSUIVibrancyConfiguration effectType](self withName:{"effectType"), @"effectType"}];
+  v5 = [formatterCopy appendInt64:-[BSUIVibrancyConfiguration backgroundType](self withName:{"backgroundType"), @"backgroundType"}];
+  color = [(BSUIVibrancyConfiguration *)self color];
+  v7 = [formatterCopy appendObject:color withName:@"color"];
 
-  v8 = [(BSUIVibrancyConfiguration *)self groupName];
-  v9 = [v15 appendObject:v8 withName:@"groupName"];
+  groupName = [(BSUIVibrancyConfiguration *)self groupName];
+  v9 = [formatterCopy appendObject:groupName withName:@"groupName"];
 
-  v10 = [(BSUIVibrancyConfiguration *)self blendConfiguration];
-  v11 = [v15 appendObject:v10 withName:@"blendConfiguration"];
+  blendConfiguration = [(BSUIVibrancyConfiguration *)self blendConfiguration];
+  v11 = [formatterCopy appendObject:blendConfiguration withName:@"blendConfiguration"];
 
   [(BSUIVibrancyConfiguration *)self blendAmount];
-  v12 = [v15 appendFloat:@"blendAmount" withName:?];
-  v13 = [(BSUIVibrancyConfiguration *)self alternativeVibrancyEffectLUT];
-  v14 = [v15 appendObject:v13 withName:@"alternativeVibrancyEffectLUT"];
+  v12 = [formatterCopy appendFloat:@"blendAmount" withName:?];
+  alternativeVibrancyEffectLUT = [(BSUIVibrancyConfiguration *)self alternativeVibrancyEffectLUT];
+  v14 = [formatterCopy appendObject:alternativeVibrancyEffectLUT withName:@"alternativeVibrancyEffectLUT"];
 }
 
 @end

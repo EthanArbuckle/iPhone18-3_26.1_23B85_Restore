@@ -1,13 +1,13 @@
 @interface MSCROBaumBrailleDriver
-- (BOOL)setMainCells:(const char *)a3 length:(int64_t)a4;
+- (BOOL)setMainCells:(const char *)cells length:(int64_t)length;
 - (BOOL)unloadDriver;
 - (MSCROBaumBrailleDriver)init;
 - (id)getInputEvents;
 - (int)brailleInputMode;
-- (int)loadDriverWithIOElement:(id)a3;
+- (int)loadDriverWithIOElement:(id)element;
 - (void)dealloc;
-- (void)fileReader:(id)a3 data:(const void *)a4 length:(unint64_t)a5;
-- (void)removeDeviceNotification:(id)a3;
+- (void)fileReader:(id)reader data:(const void *)data length:(unint64_t)length;
+- (void)removeDeviceNotification:(id)notification;
 @end
 
 @implementation MSCROBaumBrailleDriver
@@ -35,13 +35,13 @@
   [(MSCROBaumBrailleDriver *)&v3 dealloc];
 }
 
-- (int)loadDriverWithIOElement:(id)a3
+- (int)loadDriverWithIOElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v5 = +[AXSubsystemBrailleHardware sharedInstance];
-  v6 = [v5 ignoreLogging];
+  ignoreLogging = [v5 ignoreLogging];
 
-  if ((v6 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v7 = +[AXSubsystemBrailleHardware identifier];
     v8 = AXLoggerForFacility();
@@ -60,12 +60,12 @@
     }
   }
 
-  if ([v4 transport] == 2 && (objc_msgSend(v4, "conformsToProtocol:", &OBJC_PROTOCOL___SCROIOBluetoothElementProtocol) & 1) != 0)
+  if ([elementCopy transport] == 2 && (objc_msgSend(elementCopy, "conformsToProtocol:", &OBJC_PROTOCOL___SCROIOBluetoothElementProtocol) & 1) != 0)
   {
     v12 = [NSBundle bundleForClass:objc_opt_class()];
-    v13 = [v12 bundleIdentifier];
+    bundleIdentifier = [v12 bundleIdentifier];
 
-    if (v13)
+    if (bundleIdentifier)
     {
       if (self->_isDriverLoaded)
       {
@@ -73,18 +73,18 @@
       }
 
       v153 = v12;
-      v152 = [v12 infoDictionary];
-      [v152 objectForKey:kSCROBrailleDriverModels];
-      v155 = v154 = v4;
-      v14 = [v4 bluetoothAddress];
+      infoDictionary = [v12 infoDictionary];
+      [infoDictionary objectForKey:kSCROBrailleDriverModels];
+      v155 = v154 = elementCopy;
+      bluetoothAddress = [elementCopy bluetoothAddress];
       v159 = 0u;
       v160 = 0u;
       v161 = 0u;
       v162 = 0u;
       v15 = +[BluetoothManager sharedInstance];
-      v16 = [v15 pairedDevices];
+      pairedDevices = [v15 pairedDevices];
 
-      v17 = [v16 countByEnumeratingWithState:&v159 objects:v168 count:16];
+      v17 = [pairedDevices countByEnumeratingWithState:&v159 objects:v168 count:16];
       if (v17)
       {
         v18 = v17;
@@ -95,12 +95,12 @@
           {
             if (*v160 != v19)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(pairedDevices);
             }
 
             v21 = *(*(&v159 + 1) + 8 * i);
-            v22 = [v21 address];
-            v23 = [v22 isEqualToString:v14];
+            address = [v21 address];
+            v23 = [address isEqualToString:bluetoothAddress];
 
             if (v23)
             {
@@ -120,9 +120,9 @@
                   {
                     v35 = ComPortForServiceWithSandboxExtension;
                     v36 = +[AXSubsystemBrailleHardware sharedInstance];
-                    v37 = [v36 ignoreLogging];
+                    ignoreLogging2 = [v36 ignoreLogging];
 
-                    if ((v37 & 1) == 0)
+                    if ((ignoreLogging2 & 1) == 0)
                     {
                       v38 = +[AXSubsystemBrailleHardware identifier];
                       v39 = AXLoggerForFacility();
@@ -151,9 +151,9 @@
                     if (sandbox_extension_consume() == -1)
                     {
                       v53 = +[AXSubsystemBrailleHardware sharedInstance];
-                      v54 = [v53 ignoreLogging];
+                      ignoreLogging3 = [v53 ignoreLogging];
 
-                      if ((v54 & 1) == 0)
+                      if ((ignoreLogging3 & 1) == 0)
                       {
                         v55 = +[AXSubsystemBrailleHardware identifier];
                         v56 = AXLoggerForFacility();
@@ -234,9 +234,9 @@
                         if (self->_bluetoothChannelIsLost || self->_hasBeenUnloaded || v70 == kCFRunLoopRunStopped)
                         {
                           v114 = +[AXSubsystemBrailleHardware sharedInstance];
-                          v115 = [v114 ignoreLogging];
+                          ignoreLogging4 = [v114 ignoreLogging];
 
-                          if (v115)
+                          if (ignoreLogging4)
                           {
                             goto LABEL_118;
                           }
@@ -334,11 +334,11 @@
 
                               v94 = [v155 objectForKey:self->_modelIdentifier];
                               v95 = +[AXSubsystemBrailleHardware sharedInstance];
-                              v96 = [v95 ignoreLogging];
+                              ignoreLogging5 = [v95 ignoreLogging];
 
                               if (v94)
                               {
-                                if ((v96 & 1) == 0)
+                                if ((ignoreLogging5 & 1) == 0)
                                 {
                                   v97 = +[AXSubsystemBrailleHardware identifier];
                                   v98 = AXLoggerForFacility();
@@ -391,8 +391,8 @@ LABEL_125:
                                   v32 = v33;
 LABEL_126:
                                   v12 = v153;
-                                  v4 = v154;
-                                  v29 = v152;
+                                  elementCopy = v154;
+                                  v29 = infoDictionary;
 LABEL_127:
 
 LABEL_128:
@@ -407,7 +407,7 @@ LABEL_131:
 
                               else
                               {
-                                if ((v96 & 1) == 0)
+                                if ((ignoreLogging5 & 1) == 0)
                                 {
                                   v142 = +[AXSubsystemBrailleHardware identifier];
                                   v143 = AXLoggerForFacility();
@@ -472,9 +472,9 @@ LABEL_120:
 
 LABEL_117:
                             v127 = +[AXSubsystemBrailleHardware sharedInstance];
-                            v128 = [v127 ignoreLogging];
+                            ignoreLogging6 = [v127 ignoreLogging];
 
-                            if ((v128 & 1) == 0)
+                            if ((ignoreLogging6 & 1) == 0)
                             {
                               v137 = +[AXSubsystemBrailleHardware identifier];
                               v138 = AXLoggerForFacility();
@@ -516,9 +516,9 @@ LABEL_118:
                       }
 
                       v123 = +[AXSubsystemBrailleHardware sharedInstance];
-                      v124 = [v123 ignoreLogging];
+                      ignoreLogging7 = [v123 ignoreLogging];
 
-                      if (v124)
+                      if (ignoreLogging7)
                       {
                         goto LABEL_118;
                       }
@@ -550,10 +550,10 @@ LABEL_116:
                     }
 
                     v107 = +[AXSubsystemBrailleHardware sharedInstance];
-                    v108 = [v107 ignoreLogging];
+                    ignoreLogging8 = [v107 ignoreLogging];
 
                     v32 = v33;
-                    if ((v108 & 1) == 0)
+                    if ((ignoreLogging8 & 1) == 0)
                     {
                       v109 = +[AXSubsystemBrailleHardware identifier];
                       v110 = AXLoggerForFacility();
@@ -588,8 +588,8 @@ LABEL_116:
                 [v32 removeObserver:self];
                 v26 = 1;
                 v12 = v153;
-                v4 = v154;
-                v29 = v152;
+                elementCopy = v154;
+                v29 = infoDictionary;
 LABEL_49:
                 v30 = v155;
                 goto LABEL_127;
@@ -597,14 +597,14 @@ LABEL_49:
 
 LABEL_37:
               v44 = +[AXSubsystemBrailleHardware sharedInstance];
-              v45 = [v44 ignoreLogging];
+              ignoreLogging9 = [v44 ignoreLogging];
 
-              if (v45)
+              if (ignoreLogging9)
               {
                 v26 = 1;
                 v12 = v153;
-                v4 = v154;
-                v29 = v152;
+                elementCopy = v154;
+                v29 = infoDictionary;
                 v30 = v155;
                 goto LABEL_129;
               }
@@ -614,11 +614,11 @@ LABEL_37:
 
               v26 = 1;
               v49 = AXOSLogLevelFromAXLogLevel();
-              v29 = v152;
+              v29 = infoDictionary;
               if (!os_log_type_enabled(v31, v49))
               {
                 v12 = v153;
-                v4 = v154;
+                elementCopy = v154;
                 v30 = v155;
                 goto LABEL_128;
               }
@@ -634,12 +634,12 @@ LABEL_37:
 
               v26 = 1;
               v12 = v153;
-              v4 = v154;
+              elementCopy = v154;
               goto LABEL_49;
             }
           }
 
-          v18 = [v16 countByEnumeratingWithState:&v159 objects:v168 count:16];
+          v18 = [pairedDevices countByEnumeratingWithState:&v159 objects:v168 count:16];
         }
 
         while (v18);
@@ -649,9 +649,9 @@ LABEL_37:
     }
 
     v46 = +[AXSubsystemBrailleHardware sharedInstance];
-    v47 = [v46 ignoreLogging];
+    ignoreLogging10 = [v46 ignoreLogging];
 
-    if ((v47 & 1) == 0)
+    if ((ignoreLogging10 & 1) == 0)
     {
       v51 = +[AXSubsystemBrailleHardware identifier];
       v29 = AXLoggerForFacility();
@@ -661,11 +661,11 @@ LABEL_37:
       if (os_log_type_enabled(v29, v52))
       {
         v30 = AXColorizeFormatLog();
-        v14 = _AXStringForArgs();
+        bluetoothAddress = _AXStringForArgs();
         if (os_log_type_enabled(v29, v52))
         {
           buf = 138543362;
-          v167 = v14;
+          v167 = bluetoothAddress;
           _os_log_impl(&dword_0, v29, v52, "%{public}@", &buf, 0xCu);
         }
 
@@ -682,9 +682,9 @@ LABEL_132:
   else
   {
     v24 = +[AXSubsystemBrailleHardware sharedInstance];
-    v25 = [v24 ignoreLogging];
+    ignoreLogging11 = [v24 ignoreLogging];
 
-    if ((v25 & 1) == 0)
+    if ((ignoreLogging11 & 1) == 0)
     {
       v27 = +[AXSubsystemBrailleHardware identifier];
       v12 = AXLoggerForFacility();
@@ -694,8 +694,8 @@ LABEL_132:
       if (os_log_type_enabled(v12, v28))
       {
         v29 = AXColorizeFormatLog();
-        [v4 transport];
-        [v4 conformsToProtocol:&OBJC_PROTOCOL___SCROIOBluetoothElementProtocol];
+        [elementCopy transport];
+        [elementCopy conformsToProtocol:&OBJC_PROTOCOL___SCROIOBluetoothElementProtocol];
         v30 = _AXStringForArgs();
         if (os_log_type_enabled(v12, v28))
         {
@@ -719,9 +719,9 @@ LABEL_132:
 - (BOOL)unloadDriver
 {
   v3 = +[AXSubsystemBrailleHardware sharedInstance];
-  v4 = [v3 ignoreLogging];
+  ignoreLogging = [v3 ignoreLogging];
 
-  if ((v4 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
     v5 = +[AXSubsystemBrailleHardware identifier];
     v6 = AXLoggerForFacility();
@@ -948,7 +948,7 @@ LABEL_33:
   return v10;
 }
 
-- (BOOL)setMainCells:(const char *)a3 length:(int64_t)a4
+- (BOOL)setMainCells:(const char *)cells length:(int64_t)length
 {
   mainSize = self->_mainSize;
   DisplayRequest = SCRDBaumCreateDisplayRequest();
@@ -969,15 +969,15 @@ LABEL_33:
   return v9;
 }
 
-- (void)fileReader:(id)a3 data:(const void *)a4 length:(unint64_t)a5
+- (void)fileReader:(id)reader data:(const void *)data length:(unint64_t)length
 {
-  if (a5)
+  if (length)
   {
     [(NSLock *)self->_readBufferLock lock];
     readBuffer = self->_readBuffer;
     if (readBuffer)
     {
-      CFDataAppendBytes(readBuffer, a4, a5);
+      CFDataAppendBytes(readBuffer, data, length);
     }
 
     [(NSLock *)self->_readBufferLock unlock];
@@ -987,21 +987,21 @@ LABEL_33:
   [WeakRetained brailleDriverDidReceiveInput];
 }
 
-- (void)removeDeviceNotification:(id)a3
+- (void)removeDeviceNotification:(id)notification
 {
-  v4 = [a3 object];
-  if (v4)
+  object = [notification object];
+  if (object)
   {
-    if (v4 == self->_device)
+    if (object == self->_device)
     {
       self->_bluetoothChannelIsLost = 1;
       if (self->_isDriverLoaded)
       {
-        v6 = v4;
+        v6 = object;
         v5 = +[NSNotificationCenter defaultCenter];
         [v5 postNotificationName:@"SCROBrailleDriverProtocolUnloadNotification" object:self userInfo:0];
 
-        v4 = v6;
+        object = v6;
       }
     }
   }

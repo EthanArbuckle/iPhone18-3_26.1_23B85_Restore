@@ -1,43 +1,43 @@
 @interface IMMomentShareStatusChatItem
-+ (id)_guidForItem:(id)a3;
-- (BOOL)_isEqualToGuid:(id)a3 activityTitle:(id)a4 expirationDate:(id)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)_guidForItem:(id)item;
+- (BOOL)_isEqualToGuid:(id)guid activityTitle:(id)title expirationDate:(id)date;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFromMe;
-- (BOOL)wouldBeEqualIfInitializedWithItem:(id)a3 activityTitle:(id)a4 expirationDate:(id)a5;
-- (id)_initWithItem:(id)a3 activityTitle:(id)a4 expirationDate:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)wouldBeEqualIfInitializedWithItem:(id)item activityTitle:(id)title expirationDate:(id)date;
+- (id)_initWithItem:(id)item activityTitle:(id)title expirationDate:(id)date;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation IMMomentShareStatusChatItem
 
-+ (id)_guidForItem:(id)a3
++ (id)_guidForItem:(id)item
 {
-  v3 = objc_msgSend_guid(a3, a2, a3);
+  v3 = objc_msgSend_guid(item, a2, item);
   v4 = sub_1A83AC604();
 
   return v4;
 }
 
-- (id)_initWithItem:(id)a3 activityTitle:(id)a4 expirationDate:(id)a5
+- (id)_initWithItem:(id)item activityTitle:(id)title expirationDate:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  titleCopy = title;
+  dateCopy = date;
   v25.receiver = self;
   v25.super_class = IMMomentShareStatusChatItem;
-  v11 = [(IMChatItem *)&v25 _initWithItem:v8];
+  v11 = [(IMChatItem *)&v25 _initWithItem:itemCopy];
   if (v11)
   {
     v12 = objc_opt_class();
-    v14 = objc_msgSend__guidForItem_(v12, v13, v8);
+    v14 = objc_msgSend__guidForItem_(v12, v13, itemCopy);
     objc_msgSend__setGUID_(v11, v15, v14);
-    v18 = objc_msgSend_copy(v9, v16, v17);
+    v18 = objc_msgSend_copy(titleCopy, v16, v17);
     v19 = v11[7];
     v11[7] = v18;
 
-    v22 = objc_msgSend_copy(v10, v20, v21);
+    v22 = objc_msgSend_copy(dateCopy, v20, v21);
     v23 = v11[8];
     v11[8] = v22;
   }
@@ -54,13 +54,13 @@
   return v10 ^ objc_msgSend_hash(self->_expirationDate, v11, v12);
 }
 
-- (BOOL)_isEqualToGuid:(id)a3 activityTitle:(id)a4 expirationDate:(id)a5
+- (BOOL)_isEqualToGuid:(id)guid activityTitle:(id)title expirationDate:(id)date
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  guidCopy = guid;
+  titleCopy = title;
+  dateCopy = date;
   v13 = objc_msgSend_guid(self, v11, v12);
-  v14 = v8;
+  v14 = guidCopy;
   v16 = v14;
   if (v13 == v14)
   {
@@ -82,14 +82,14 @@
   {
 LABEL_7:
     v19 = self->_activityTitle;
-    v20 = v9;
+    v20 = titleCopy;
     v13 = v20;
     if (v19 == v20)
     {
 
 LABEL_14:
       v19 = self->_expirationDate;
-      v22 = v10;
+      v22 = dateCopy;
       v13 = v22;
       if (v19 == v22)
       {
@@ -132,16 +132,16 @@ LABEL_20:
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v17.receiver = self;
   v17.super_class = IMMomentShareStatusChatItem;
-  if ([(IMTranscriptChatItem *)&v17 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(IMTranscriptChatItem *)&v17 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v7 = objc_msgSend_guid(v4, v5, v6);
-    v10 = objc_msgSend_activityTitle(v4, v8, v9);
-    v13 = objc_msgSend_expirationDate(v4, v11, v12);
+    v7 = objc_msgSend_guid(equalCopy, v5, v6);
+    v10 = objc_msgSend_activityTitle(equalCopy, v8, v9);
+    v13 = objc_msgSend_expirationDate(equalCopy, v11, v12);
     isEqualToGuid_activityTitle_expirationDate = objc_msgSend__isEqualToGuid_activityTitle_expirationDate_(self, v14, v7, v10, v13);
   }
 
@@ -165,7 +165,7 @@ LABEL_20:
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v7 = objc_msgSend__item(self, v5, v6);
@@ -182,16 +182,16 @@ LABEL_20:
   return v6;
 }
 
-- (BOOL)wouldBeEqualIfInitializedWithItem:(id)a3 activityTitle:(id)a4 expirationDate:(id)a5
+- (BOOL)wouldBeEqualIfInitializedWithItem:(id)item activityTitle:(id)title expirationDate:(id)date
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  dateCopy = date;
+  titleCopy = title;
+  itemCopy = item;
   v11 = objc_opt_class();
-  v13 = objc_msgSend__guidForItem_(v11, v12, v10);
+  v13 = objc_msgSend__guidForItem_(v11, v12, itemCopy);
 
-  LOBYTE(v10) = objc_msgSend__isEqualToGuid_activityTitle_expirationDate_(self, v14, v13, v9, v8);
-  return v10;
+  LOBYTE(itemCopy) = objc_msgSend__isEqualToGuid_activityTitle_expirationDate_(self, v14, v13, titleCopy, dateCopy);
+  return itemCopy;
 }
 
 @end

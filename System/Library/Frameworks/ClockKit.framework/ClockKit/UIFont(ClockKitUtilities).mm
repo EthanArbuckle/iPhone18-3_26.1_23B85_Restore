@@ -32,15 +32,15 @@
     v9[1] = v5;
     v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:2];
 
-    v7 = [a1 CLKFontByApplyingFeatureSettings:v6];
+    selfCopy = [self CLKFontByApplyingFeatureSettings:v6];
   }
 
   else
   {
-    v7 = a1;
+    selfCopy = self;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 - (id)CLKFontWithLocalizedLowerCaseSmallCaps
@@ -57,21 +57,21 @@
     v7 = v3;
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:&v7 count:1];
 
-    v5 = [a1 CLKFontByApplyingFeatureSettings:v4];
+    selfCopy = [self CLKFontByApplyingFeatureSettings:v4];
   }
 
   else
   {
-    v5 = a1;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (id)CLKFontWithMonospacedNumbers
 {
   v2 = _MonospaceNumbersFeatureSettings();
-  v3 = [a1 CLKFontByApplyingFeatureSettings:v2];
+  v3 = [self CLKFontByApplyingFeatureSettings:v2];
 
   return v3;
 }
@@ -88,7 +88,7 @@
   v7 = v3;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:&v7 count:1];
 
-  v5 = [a1 CLKFontByApplyingFeatureSettings:v4];
+  v5 = [self CLKFontByApplyingFeatureSettings:v4];
 
   return v5;
 }
@@ -96,7 +96,7 @@
 - (id)CLKFontWithStylisticSet:()ClockKitUtilities
 {
   v4 = _StylisticSet(a3);
-  v5 = [a1 CLKFontByApplyingFeatureSettings:v4];
+  v5 = [self CLKFontByApplyingFeatureSettings:v4];
 
   return v5;
 }
@@ -116,7 +116,7 @@
   v8 = _StylisticSet(a3);
   v9 = [v7 arrayByAddingObjectsFromArray:v8];
 
-  v10 = [a1 CLKFontByApplyingFeatureSettings:v9];
+  v10 = [self CLKFontByApplyingFeatureSettings:v9];
 
   return v10;
 }
@@ -124,11 +124,11 @@
 - (id)CLKFontWithLooplessThaiFallback
 {
   v7[1] = *MEMORY[0x277D85DE8];
-  v1 = [a1 fontDescriptor];
+  fontDescriptor = [self fontDescriptor];
   v6 = *MEMORY[0x277CC48B0];
   v7[0] = &unk_284A34B30;
   v2 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
-  v3 = [v1 fontDescriptorByAddingAttributes:v2];
+  v3 = [fontDescriptor fontDescriptorByAddingAttributes:v2];
 
   v4 = [objc_opt_class() fontWithDescriptor:v3 size:0.0];
 
@@ -139,12 +139,12 @@
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [a1 fontDescriptor];
+  fontDescriptor = [self fontDescriptor];
   v10 = *MEMORY[0x277D74338];
   v11[0] = v4;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
 
-  v7 = [v5 fontDescriptorByAddingAttributes:v6];
+  v7 = [fontDescriptor fontDescriptorByAddingAttributes:v6];
 
   v8 = [objc_opt_class() fontWithDescriptor:v7 size:0.0];
 

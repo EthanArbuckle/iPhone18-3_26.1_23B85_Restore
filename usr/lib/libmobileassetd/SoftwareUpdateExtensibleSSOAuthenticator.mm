@@ -2,16 +2,16 @@
 - (BOOL)authenticationSupported;
 - (MABrainSoftwareUpdateExtensibleSSOAuthenticatorDelegate)delegate;
 - (id)authenticate;
-- (id)copyQueryItemsWithParameters:(id)a3;
-- (void)authorizationController:(id)a3 didCompleteWithAuthorization:(id)a4;
-- (void)authorizationController:(id)a3 didCompleteWithError:(id)a4;
+- (id)copyQueryItemsWithParameters:(id)parameters;
+- (void)authorizationController:(id)controller didCompleteWithAuthorization:(id)authorization;
+- (void)authorizationController:(id)controller didCompleteWithError:(id)error;
 @end
 
 @implementation SoftwareUpdateExtensibleSSOAuthenticator
 
-- (id)copyQueryItemsWithParameters:(id)a3
+- (id)copyQueryItemsWithParameters:(id)parameters
 {
-  v3 = a3;
+  parametersCopy = parameters;
   +[NSMutableArray array];
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
@@ -19,7 +19,7 @@
   v11 = v10 = &unk_4B2A48;
   v12 = &__block_literal_global_0;
   v4 = v11;
-  [v3 enumerateKeysAndObjectsUsingBlock:&v7];
+  [parametersCopy enumerateKeysAndObjectsUsingBlock:&v7];
 
   v5 = [v4 copy];
   return v5;
@@ -50,48 +50,48 @@ void __73__SoftwareUpdateExtensibleSSOAuthenticator_copyQueryItemsWithParameters
   }
 
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [(SoftwareUpdateExtensibleSSOAuthenticator *)self appIdentifier];
-  [v4 setObject:v5 forKeyedSubscript:@"applicationIdentifier"];
+  appIdentifier = [(SoftwareUpdateExtensibleSSOAuthenticator *)self appIdentifier];
+  [v4 setObject:appIdentifier forKeyedSubscript:@"applicationIdentifier"];
 
-  v6 = [(SoftwareUpdateExtensibleSSOAuthenticator *)self envIdentifier];
-  [v4 setObject:v6 forKeyedSubscript:@"environmentIdentifier"];
+  envIdentifier = [(SoftwareUpdateExtensibleSSOAuthenticator *)self envIdentifier];
+  [v4 setObject:envIdentifier forKeyedSubscript:@"environmentIdentifier"];
 
-  v7 = [(SoftwareUpdateExtensibleSSOAuthenticator *)self username];
-  [v4 setObject:v7 forKeyedSubscript:@"username"];
+  username = [(SoftwareUpdateExtensibleSSOAuthenticator *)self username];
+  [v4 setObject:username forKeyedSubscript:@"username"];
 
-  v8 = [(SoftwareUpdateExtensibleSSOAuthenticator *)self interactivity];
-  [v4 setObject:v8 forKeyedSubscript:@"interactivity"];
+  interactivity = [(SoftwareUpdateExtensibleSSOAuthenticator *)self interactivity];
+  [v4 setObject:interactivity forKeyedSubscript:@"interactivity"];
 
-  v9 = [(SoftwareUpdateExtensibleSSOAuthenticator *)self otherParameters];
+  otherParameters = [(SoftwareUpdateExtensibleSSOAuthenticator *)self otherParameters];
 
-  if (v9)
+  if (otherParameters)
   {
     v10 = objc_alloc_init(NSURLComponents);
-    v11 = [(SoftwareUpdateExtensibleSSOAuthenticator *)self otherParameters];
-    v12 = [(SoftwareUpdateExtensibleSSOAuthenticator *)self copyQueryItemsWithParameters:v11];
+    otherParameters2 = [(SoftwareUpdateExtensibleSSOAuthenticator *)self otherParameters];
+    v12 = [(SoftwareUpdateExtensibleSSOAuthenticator *)self copyQueryItemsWithParameters:otherParameters2];
     [v10 setQueryItems:v12];
 
-    v13 = [v10 query];
+    query = [v10 query];
 
-    if (v13)
+    if (query)
     {
-      v14 = [v10 query];
-      [v4 setObject:v14 forKeyedSubscript:@"otherParameters"];
+      query2 = [v10 query];
+      [v4 setObject:query2 forKeyedSubscript:@"otherParameters"];
     }
   }
 
   v15 = _MADLog(@"SSO");
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [(SoftwareUpdateExtensibleSSOAuthenticator *)self appIdentifier];
-    v17 = [(SoftwareUpdateExtensibleSSOAuthenticator *)self envIdentifier];
-    v18 = [(SoftwareUpdateExtensibleSSOAuthenticator *)self interactivity];
+    appIdentifier2 = [(SoftwareUpdateExtensibleSSOAuthenticator *)self appIdentifier];
+    envIdentifier2 = [(SoftwareUpdateExtensibleSSOAuthenticator *)self envIdentifier];
+    interactivity2 = [(SoftwareUpdateExtensibleSSOAuthenticator *)self interactivity];
     *buf = 138412802;
-    v36 = v16;
+    v36 = appIdentifier2;
     v37 = 2112;
-    v38 = v17;
+    v38 = envIdentifier2;
     v39 = 2112;
-    v40 = v18;
+    v40 = interactivity2;
     _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "Parameters passed to authenticate function are AppIdentifier: %@ EnvIdentifier: %@ Interactivity: %@ \n", buf, 0x20u);
   }
 
@@ -99,19 +99,19 @@ void __73__SoftwareUpdateExtensibleSSOAuthenticator_copyQueryItemsWithParameters
   v20 = [ASAuthorizationSingleSignOnProvider authorizationProviderWithIdentityProviderURL:v19];
   if ([v20 canPerformAuthorization])
   {
-    v21 = [v20 createRequest];
+    createRequest = [v20 createRequest];
     v22 = [(SoftwareUpdateExtensibleSSOAuthenticator *)self copyQueryItemsWithParameters:v4];
-    [v21 setAuthorizationOptions:v22];
+    [createRequest setAuthorizationOptions:v22];
 
-    v23 = [(SoftwareUpdateExtensibleSSOAuthenticator *)self interactivity];
-    if ([v23 isEqualToString:@"0"])
+    interactivity3 = [(SoftwareUpdateExtensibleSSOAuthenticator *)self interactivity];
+    if ([interactivity3 isEqualToString:@"0"])
     {
     }
 
     else
     {
-      v26 = [(SoftwareUpdateExtensibleSSOAuthenticator *)self interactivity];
-      v27 = [v26 isEqualToString:@"2"];
+      interactivity4 = [(SoftwareUpdateExtensibleSSOAuthenticator *)self interactivity];
+      v27 = [interactivity4 isEqualToString:@"2"];
 
       if (!v27)
       {
@@ -137,9 +137,9 @@ void __73__SoftwareUpdateExtensibleSSOAuthenticator_copyQueryItemsWithParameters
     v29 = 1;
 LABEL_22:
 
-    [v21 setUserInterfaceEnabled:v29];
+    [createRequest setUserInterfaceEnabled:v29];
     v30 = [ASAuthorizationController alloc];
-    v34 = v21;
+    v34 = createRequest;
     v31 = [NSArray arrayWithObjects:&v34 count:1];
     v25 = [v30 initWithAuthorizationRequests:v31];
 
@@ -155,13 +155,13 @@ LABEL_22:
     goto LABEL_25;
   }
 
-  v21 = _MADLog(@"SSO");
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+  createRequest = _MADLog(@"SSO");
+  if (os_log_type_enabled(createRequest, OS_LOG_TYPE_ERROR))
   {
     v24 = [v20 url];
     *buf = 138412290;
     v36 = v24;
-    _os_log_impl(&dword_0, v21, OS_LOG_TYPE_ERROR, "Can't authenticate with provider URL: %@\n", buf, 0xCu);
+    _os_log_impl(&dword_0, createRequest, OS_LOG_TYPE_ERROR, "Can't authenticate with provider URL: %@\n", buf, 0xCu);
   }
 
   v25 = 0;
@@ -176,9 +176,9 @@ LABEL_25:
   {
     v2 = [NSURL URLWithString:@"https://sso.corp.apple.com/authenticate"];
     v3 = [ASAuthorizationSingleSignOnProvider authorizationProviderWithIdentityProviderURL:v2];
-    v4 = [v3 canPerformAuthorization];
+    canPerformAuthorization = [v3 canPerformAuthorization];
 
-    return v4;
+    return canPerformAuthorization;
   }
 
   else
@@ -194,9 +194,9 @@ LABEL_25:
   }
 }
 
-- (void)authorizationController:(id)a3 didCompleteWithAuthorization:(id)a4
+- (void)authorizationController:(id)controller didCompleteWithAuthorization:(id)authorization
 {
-  v5 = a4;
+  authorizationCopy = authorization;
   v6 = _MADLog(@"SSO");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -204,25 +204,25 @@ LABEL_25:
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "ExtensibleSSOAuthenticator: Authentication completed successfully\n", v14, 2u);
   }
 
-  v7 = [v5 credential];
+  credential = [authorizationCopy credential];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v5 credential];
-    v9 = [v8 authenticatedResponse];
+    credential2 = [authorizationCopy credential];
+    authenticatedResponse = [credential2 authenticatedResponse];
   }
 
   else
   {
-    v9 = 0;
+    authenticatedResponse = 0;
   }
 
-  v10 = [(SoftwareUpdateExtensibleSSOAuthenticator *)self delegate];
-  v11 = [v9 allHeaderFields];
-  v12 = v11;
-  if (v11)
+  delegate = [(SoftwareUpdateExtensibleSSOAuthenticator *)self delegate];
+  allHeaderFields = [authenticatedResponse allHeaderFields];
+  v12 = allHeaderFields;
+  if (allHeaderFields)
   {
-    v13 = v11;
+    v13 = allHeaderFields;
   }
 
   else
@@ -230,22 +230,22 @@ LABEL_25:
     v13 = &__NSDictionary0__struct;
   }
 
-  [v10 authenticator:self didCompleteWithResult:v13];
+  [delegate authenticator:self didCompleteWithResult:v13];
 }
 
-- (void)authorizationController:(id)a3 didCompleteWithError:(id)a4
+- (void)authorizationController:(id)controller didCompleteWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = _MADLog(@"SSO");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     v8 = 138412290;
-    v9 = v5;
+    v9 = errorCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_ERROR, "ExtensibleSSOAuthenticator : Authentication completed with error: %@\n", &v8, 0xCu);
   }
 
-  v7 = [(SoftwareUpdateExtensibleSSOAuthenticator *)self delegate];
-  [v7 authenticator:self didCompleteWithError:v5];
+  delegate = [(SoftwareUpdateExtensibleSSOAuthenticator *)self delegate];
+  [delegate authenticator:self didCompleteWithError:errorCopy];
 }
 
 - (MABrainSoftwareUpdateExtensibleSSOAuthenticatorDelegate)delegate

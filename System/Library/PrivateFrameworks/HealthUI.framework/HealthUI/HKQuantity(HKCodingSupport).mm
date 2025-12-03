@@ -12,8 +12,8 @@
   if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 hasUnitString] && objc_msgSend(v3, "hasValue"))
   {
     v4 = MEMORY[0x1E696C510];
-    v5 = [v3 unitString];
-    v6 = [v4 unitFromString:v5];
+    unitString = [v3 unitString];
+    v6 = [v4 unitFromString:unitString];
 
     v7 = MEMORY[0x1E696C348];
     [v3 value];
@@ -31,11 +31,11 @@
 - (HKCodableQuantity)codableRepresentation
 {
   v2 = objc_alloc_init(HKCodableQuantity);
-  v3 = [a1 _unit];
-  v4 = [v3 unitString];
-  [(HKCodableQuantity *)v2 setUnitString:v4];
+  _unit = [self _unit];
+  unitString = [_unit unitString];
+  [(HKCodableQuantity *)v2 setUnitString:unitString];
 
-  [a1 doubleValueForUnit:v3];
+  [self doubleValueForUnit:_unit];
   [(HKCodableQuantity *)v2 setValue:?];
 
   return v2;

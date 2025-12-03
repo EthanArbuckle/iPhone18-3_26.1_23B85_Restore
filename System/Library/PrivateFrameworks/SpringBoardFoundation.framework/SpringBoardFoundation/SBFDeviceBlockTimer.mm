@@ -1,5 +1,5 @@
 @interface SBFDeviceBlockTimer
-- (SBFDeviceBlockTimer)initWithDeviceBlockStatusProvider:(id)a3;
+- (SBFDeviceBlockTimer)initWithDeviceBlockStatusProvider:(id)provider;
 - (void)_clearTimer;
 - (void)_scheduleTimerIfNecessaryAndUpdateState;
 - (void)dealloc;
@@ -7,16 +7,16 @@
 
 @implementation SBFDeviceBlockTimer
 
-- (SBFDeviceBlockTimer)initWithDeviceBlockStatusProvider:(id)a3
+- (SBFDeviceBlockTimer)initWithDeviceBlockStatusProvider:(id)provider
 {
-  v4 = a3;
+  providerCopy = provider;
   v8.receiver = self;
   v8.super_class = SBFDeviceBlockTimer;
   v5 = [(SBFDeviceBlockTimer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SBFDeviceBlockTimer *)v5 _setBlockStatusProvider:v4];
+    [(SBFDeviceBlockTimer *)v5 _setBlockStatusProvider:providerCopy];
     [(SBFDeviceBlockTimer *)v6 _scheduleTimerIfNecessaryAndUpdateState];
   }
 
@@ -86,9 +86,9 @@ LABEL_8:
   v16 = MEMORY[0x1E696AEC0];
   v17 = [MEMORY[0x1E696AAE8] bundleForClass:objc_opt_class()];
   v18 = [v17 localizedStringForKey:@"DEVICE_BLOCKED" value:&stru_1F3D19FF0 table:@"DeviceBlock"];
-  v19 = [MEMORY[0x1E698E730] sharedInstance];
-  v20 = [v19 localizedProductName];
-  v21 = [v16 stringWithFormat:v18, v20];
+  mEMORY[0x1E698E730] = [MEMORY[0x1E698E730] sharedInstance];
+  localizedProductName = [mEMORY[0x1E698E730] localizedProductName];
+  v21 = [v16 stringWithFormat:v18, localizedProductName];
   [(SBFDeviceBlockTimer *)self setTitleText:v21];
 
   [(SBFDeviceBlockTimer *)self setUserRequestedEraseEnabled:[(SBFBlockStatusProvider *)self->_blockStatusProvider isUserRequestedEraseEnabled]];
@@ -107,8 +107,8 @@ LABEL_8:
     timer = self->_timer;
     self->_timer = v25;
 
-    v27 = [MEMORY[0x1E695DFD0] currentRunLoop];
-    [v27 addTimer:self->_timer forMode:*MEMORY[0x1E695DA28]];
+    currentRunLoop = [MEMORY[0x1E695DFD0] currentRunLoop];
+    [currentRunLoop addTimer:self->_timer forMode:*MEMORY[0x1E695DA28]];
   }
 }
 

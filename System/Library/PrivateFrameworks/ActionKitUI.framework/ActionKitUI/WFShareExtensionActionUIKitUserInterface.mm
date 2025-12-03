@@ -1,26 +1,26 @@
 @interface WFShareExtensionActionUIKitUserInterface
-- (id)contentItemClassesFromInputConfiguration:(id)a3;
-- (id)inputContentItemClassesFromInputConfiguration:(id)a3;
-- (void)addContentToShareController:(id)a3 withInput:(id)a4 inputConfiguration:(id)a5 extensionUserInfo:(id)a6 completionHandler:(id)a7;
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)finishWithContentCollection:(id)a3 error:(id)a4;
-- (void)performActionWithInput:(id)a3 inputConfiguration:(id)a4 socialServiceType:(id)a5 extensionBundleIdentifier:(id)a6 extensionUserInfo:(id)a7 completionHandler:(id)a8;
+- (id)contentItemClassesFromInputConfiguration:(id)configuration;
+- (id)inputContentItemClassesFromInputConfiguration:(id)configuration;
+- (void)addContentToShareController:(id)controller withInput:(id)input inputConfiguration:(id)configuration extensionUserInfo:(id)info completionHandler:(id)handler;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)finishWithContentCollection:(id)collection error:(id)error;
+- (void)performActionWithInput:(id)input inputConfiguration:(id)configuration socialServiceType:(id)type extensionBundleIdentifier:(id)identifier extensionUserInfo:(id)info completionHandler:(id)handler;
 @end
 
 @implementation WFShareExtensionActionUIKitUserInterface
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __84__WFShareExtensionActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFShareExtensionActionUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFEmbeddableActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 
@@ -35,60 +35,60 @@ uint64_t __84__WFShareExtensionActionUIKitUserInterface_cancelPresentationWithCo
   return v4();
 }
 
-- (void)finishWithContentCollection:(id)a3 error:(id)a4
+- (void)finishWithContentCollection:(id)collection error:(id)error
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(WFShareExtensionActionUIKitUserInterface *)self completionHandler];
+  collectionCopy = collection;
+  errorCopy = error;
+  completionHandler = [(WFShareExtensionActionUIKitUserInterface *)self completionHandler];
 
-  if (v7)
+  if (completionHandler)
   {
-    v8 = [(WFShareExtensionActionUIKitUserInterface *)self completionHandler];
-    (v8)[2](v8, v9, v6);
+    completionHandler2 = [(WFShareExtensionActionUIKitUserInterface *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, collectionCopy, errorCopy);
   }
 
   [(WFShareExtensionActionUIKitUserInterface *)self setCompletionHandler:0];
 }
 
-- (id)inputContentItemClassesFromInputConfiguration:(id)a3
+- (id)inputContentItemClassesFromInputConfiguration:(id)configuration
 {
-  v3 = [a3 objectForKey:*MEMORY[0x277CE88F8]];
+  v3 = [configuration objectForKey:*MEMORY[0x277CE88F8]];
   v4 = [v3 if_map:&__block_literal_global_499];
 
   return v4;
 }
 
-- (id)contentItemClassesFromInputConfiguration:(id)a3
+- (id)contentItemClassesFromInputConfiguration:(id)configuration
 {
-  v3 = [a3 objectForKey:*MEMORY[0x277CE88F0]];
+  v3 = [configuration objectForKey:*MEMORY[0x277CE88F0]];
   v4 = [v3 if_map:&__block_literal_global_4515];
 
   return v4;
 }
 
-- (void)addContentToShareController:(id)a3 withInput:(id)a4 inputConfiguration:(id)a5 extensionUserInfo:(id)a6 completionHandler:(id)a7
+- (void)addContentToShareController:(id)controller withInput:(id)input inputConfiguration:(id)configuration extensionUserInfo:(id)info completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  controllerCopy = controller;
+  configurationCopy = configuration;
+  infoCopy = info;
+  handlerCopy = handler;
   v16 = *MEMORY[0x277CE8908];
-  v17 = a4;
-  v18 = [v13 objectForKey:v16];
+  inputCopy = input;
+  v18 = [configurationCopy objectForKey:v16];
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __137__WFShareExtensionActionUIKitUserInterface_addContentToShareController_withInput_inputConfiguration_extensionUserInfo_completionHandler___block_invoke;
   aBlock[3] = &unk_278C37198;
   v19 = v18;
   v30 = v19;
-  v31 = self;
-  v20 = v13;
+  selfCopy = self;
+  v20 = configurationCopy;
   v32 = v20;
-  v21 = v15;
+  v21 = handlerCopy;
   v35 = v21;
-  v22 = v12;
+  v22 = controllerCopy;
   v33 = v22;
-  v23 = v14;
+  v23 = infoCopy;
   v34 = v23;
   v24 = _Block_copy(aBlock);
   v25 = [(WFShareExtensionActionUIKitUserInterface *)self contentItemClassesFromInputConfiguration:v20];
@@ -100,14 +100,14 @@ uint64_t __84__WFShareExtensionActionUIKitUserInterface_cancelPresentationWithCo
     v26[3] = &unk_278C371C0;
     v27 = v21;
     v28 = v24;
-    [v17 generateCollectionByCoercingToItemClasses:v25 completionHandler:v26];
+    [inputCopy generateCollectionByCoercingToItemClasses:v25 completionHandler:v26];
 
-    v17 = v27;
+    inputCopy = v27;
   }
 
   else
   {
-    (*(v24 + 2))(v24, v17);
+    (*(v24 + 2))(v24, inputCopy);
   }
 }
 
@@ -391,29 +391,29 @@ void __137__WFShareExtensionActionUIKitUserInterface_addContentToShareController
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performActionWithInput:(id)a3 inputConfiguration:(id)a4 socialServiceType:(id)a5 extensionBundleIdentifier:(id)a6 extensionUserInfo:(id)a7 completionHandler:(id)a8
+- (void)performActionWithInput:(id)input inputConfiguration:(id)configuration socialServiceType:(id)type extensionBundleIdentifier:(id)identifier extensionUserInfo:(id)info completionHandler:(id)handler
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  [(WFShareExtensionActionUIKitUserInterface *)self setCompletionHandler:a8];
+  inputCopy = input;
+  configurationCopy = configuration;
+  typeCopy = type;
+  identifierCopy = identifier;
+  infoCopy = info;
+  [(WFShareExtensionActionUIKitUserInterface *)self setCompletionHandler:handler];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __166__WFShareExtensionActionUIKitUserInterface_performActionWithInput_inputConfiguration_socialServiceType_extensionBundleIdentifier_extensionUserInfo_completionHandler___block_invoke;
   v24[3] = &unk_278C370D0;
-  v25 = v16;
-  v26 = v17;
-  v27 = self;
-  v28 = v14;
-  v29 = v15;
-  v30 = v18;
-  v19 = v18;
-  v20 = v15;
-  v21 = v14;
-  v22 = v17;
-  v23 = v16;
+  v25 = typeCopy;
+  v26 = identifierCopy;
+  selfCopy = self;
+  v28 = inputCopy;
+  v29 = configurationCopy;
+  v30 = infoCopy;
+  v19 = infoCopy;
+  v20 = configurationCopy;
+  v21 = inputCopy;
+  v22 = identifierCopy;
+  v23 = typeCopy;
   dispatch_async(MEMORY[0x277D85CD0], v24);
 }
 

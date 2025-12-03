@@ -1,14 +1,14 @@
 @interface DebugFormatInspectorViewController
-- (_TtC8NewsFeed34DebugFormatInspectorViewController)initWithCoder:(id)a3;
-- (_TtC8NewsFeed34DebugFormatInspectorViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)updateSearchResultsForSearchController:(id)a3;
+- (_TtC8NewsFeed34DebugFormatInspectorViewController)initWithCoder:(id)coder;
+- (_TtC8NewsFeed34DebugFormatInspectorViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)updateSearchResultsForSearchController:(id)controller;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation DebugFormatInspectorViewController
 
-- (_TtC8NewsFeed34DebugFormatInspectorViewController)initWithCoder:(id)a3
+- (_TtC8NewsFeed34DebugFormatInspectorViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8NewsFeed34DebugFormatInspectorViewController_coverViewManager;
   sub_1D725D7AC();
@@ -22,28 +22,28 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6F1E794();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1D6F1F0D4();
 }
 
-- (_TtC8NewsFeed34DebugFormatInspectorViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC8NewsFeed34DebugFormatInspectorViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_1D6F1F2C4(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1D6F1F2C4(controllerCopy);
 }
 
 @end

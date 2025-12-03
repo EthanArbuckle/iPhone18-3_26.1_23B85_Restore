@@ -1,6 +1,6 @@
 @interface JSVersionProvider
 - (_TtC17AdPlatformsCommon17JSVersionProvider)init;
-- (_TtC17AdPlatformsCommon17JSVersionProvider)initWithDirectoryURL:(id)a3;
+- (_TtC17AdPlatformsCommon17JSVersionProvider)initWithDirectoryURL:(id)l;
 - (id)getJetPackVersion;
 @end
 
@@ -21,7 +21,7 @@
   return [(JSVersionProvider *)&v11 init];
 }
 
-- (_TtC17AdPlatformsCommon17JSVersionProvider)initWithDirectoryURL:(id)a3
+- (_TtC17AdPlatformsCommon17JSVersionProvider)initWithDirectoryURL:(id)l
 {
   v4 = sub_1BB0142E8();
   v5 = *(v4 - 8);
@@ -40,7 +40,7 @@
 
 - (id)getJetPackVersion
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BAFEB0DC();
 
   v3 = sub_1BB014B38();

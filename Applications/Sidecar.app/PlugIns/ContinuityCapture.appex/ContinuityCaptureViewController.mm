@@ -1,23 +1,23 @@
 @interface ContinuityCaptureViewController
 + (void)initialize;
-- (ContinuityCaptureViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (ContinuityCaptureViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)_disconnectSession;
-- (void)_handleLayout:(id)a3 ignoringStandby:(BOOL)a4;
-- (void)_observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)_handleLayout:(id)layout ignoringStandby:(BOOL)standby;
+- (void)_observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)_resolveUserPauseState;
 - (void)_setConnectionInterruptTimer;
 - (void)_showHowToReconnectDialog;
 - (void)_terminate;
 - (void)_updateUI;
-- (void)callActive:(BOOL)a3;
+- (void)callActive:(BOOL)active;
 - (void)dealloc;
-- (void)deviceLockStateMonitor:(id)a3 didUpdateDeviceLockState:(BOOL)a4;
-- (void)incomingCall:(BOOL)a3 data:(id)a4 shouldDisplayNotification:(BOOL)a5;
+- (void)deviceLockStateMonitor:(id)monitor didUpdateDeviceLockState:(BOOL)state;
+- (void)incomingCall:(BOOL)call data:(id)data shouldDisplayNotification:(BOOL)notification;
 - (void)loadView;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)receivedItems:(id)a3;
-- (void)requestDidFinish:(id)a3;
-- (void)requestDidStart:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)receivedItems:(id)items;
+- (void)requestDidFinish:(id)finish;
+- (void)requestDidStart:(id)start;
 - (void)sidecarServiceActive;
 - (void)updateRequestState;
 - (void)viewDidLoad;
@@ -27,7 +27,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -36,13 +36,13 @@
   }
 }
 
-- (ContinuityCaptureViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ContinuityCaptureViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   global_queue = dispatch_get_global_queue(2, 0);
   dispatch_async(global_queue, &stru_100014608);
   v13.receiver = self;
   v13.super_class = ContinuityCaptureViewController;
-  v8 = [(ContinuityCaptureViewController *)&v13 initWithNibName:a3 bundle:a4];
+  v8 = [(ContinuityCaptureViewController *)&v13 initWithNibName:name bundle:bundle];
   v9 = v8;
   if (v8)
   {
@@ -145,7 +145,7 @@
   self->_layoutMonitor = [FBSDisplayLayoutMonitor monitorWithConfiguration:v5];
 }
 
-- (void)incomingCall:(BOOL)a3 data:(id)a4 shouldDisplayNotification:(BOOL)a5
+- (void)incomingCall:(BOOL)call data:(id)data shouldDisplayNotification:(BOOL)notification
 {
   if (dword_100019EC8)
   {
@@ -160,13 +160,13 @@
   block[1] = 3221225472;
   block[2] = sub_100006200;
   block[3] = &unk_100014680;
-  v10 = a3;
+  callCopy = call;
   block[4] = self;
-  block[5] = a4;
+  block[5] = data;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)callActive:(BOOL)a3
+- (void)callActive:(BOOL)active
 {
   if (dword_100019EC8)
   {
@@ -181,7 +181,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000063D4;
   block[3] = &unk_1000146A8;
-  v7 = a3;
+  activeCopy = active;
   block[4] = self;
   dispatch_async(&_dispatch_main_q, block);
 }
@@ -357,7 +357,7 @@ LABEL_8:
   objc_sync_exit(self);
 }
 
-- (void)requestDidStart:(id)a3
+- (void)requestDidStart:(id)start
 {
   if (dword_100019EC8)
   {
@@ -381,18 +381,18 @@ LABEL_8:
     [(NSMutableArray *)self->_activeRequests removeObjectAtIndex:0];
   }
 
-  [(NSMutableArray *)self->_activeRequests addObject:a3];
+  [(NSMutableArray *)self->_activeRequests addObject:start];
   objc_sync_exit(self);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000763C;
   block[3] = &unk_100014630;
   block[4] = self;
-  block[5] = a3;
+  block[5] = start;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)requestDidFinish:(id)a3
+- (void)requestDidFinish:(id)finish
 {
   if (dword_100019EC8)
   {
@@ -407,7 +407,7 @@ LABEL_8:
   if ([(NSMutableArray *)self->_activeRequests count])
   {
     objc_sync_exit(self);
-    v6 = ([a3 isCancelled] & 1) == 0 && (objc_msgSend(objc_msgSend(objc_msgSend(a3, "error"), "domain"), "isEqualToString:", @"SidecarErrorDomain") && (objc_msgSend(objc_msgSend(a3, "error"), "code") == -205 || objc_msgSend(objc_msgSend(a3, "error"), "code") == -204) || objc_msgSend(objc_msgSend(objc_msgSend(a3, "error", v7, v8), "domain"), "isEqualToString:", @"RPErrorDomain") && objc_msgSend(objc_msgSend(a3, "error"), "code") == -6753);
+    v6 = ([finish isCancelled] & 1) == 0 && (objc_msgSend(objc_msgSend(objc_msgSend(finish, "error"), "domain"), "isEqualToString:", @"SidecarErrorDomain") && (objc_msgSend(objc_msgSend(finish, "error"), "code") == -205 || objc_msgSend(objc_msgSend(finish, "error"), "code") == -204) || objc_msgSend(objc_msgSend(objc_msgSend(finish, "error", v7, v8), "domain"), "isEqualToString:", @"RPErrorDomain") && objc_msgSend(objc_msgSend(finish, "error"), "code") == -6753);
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1000079A0;
@@ -424,7 +424,7 @@ LABEL_8:
   }
 }
 
-- (void)receivedItems:(id)a3
+- (void)receivedItems:(id)items
 {
   v59 = 0;
   v3 = &selRef__defaultButtonTextFont;
@@ -441,7 +441,7 @@ LABEL_8:
   v56 = 0u;
   v53 = 0u;
   v54 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v53 objects:v52 count:{16, v39, v41}];
+  v5 = [items countByEnumeratingWithState:&v53 objects:v52 count:{16, v39, v41}];
   if (v5)
   {
     v6 = v5;
@@ -455,18 +455,18 @@ LABEL_8:
       {
         if (*v54 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(items);
         }
 
         v10 = *(*(&v53 + 1) + 8 * i);
-        v11 = [v10 objectValue];
+        objectValue = [v10 objectValue];
         if ([objc_msgSend(v10 "type")])
         {
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
 
-            self->_macName = v11;
+            self->_macName = objectValue;
             if (!dword_100019EC8)
             {
               continue;
@@ -512,7 +512,7 @@ LABEL_8:
             v17 = objc_opt_class();
             objc_sync_enter(v17);
 
-            v18 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:v11 error:&v59];
+            v18 = [NSKeyedUnarchiver unarchivedObjectOfClass:objc_opt_class() fromData:objectValue error:&v59];
             self->_configForPreStreamStart = v18;
             if (v18)
             {
@@ -607,11 +607,11 @@ LABEL_48:
 
           if (v32)
           {
-            v33 = [v10 type];
+            type = [v10 type];
             v48 = 136315394;
             v49 = "[ContinuityCaptureViewController receivedItems:]";
             v50 = 2112;
-            v51 = v33;
+            v51 = type;
             LODWORD(v42) = 22;
             v40 = &v48;
             _os_log_send_and_compose_impl();
@@ -645,7 +645,7 @@ LABEL_47:
             v48 = 136315394;
             v49 = "[ContinuityCaptureViewController receivedItems:]";
             v50 = 2112;
-            v51 = v11;
+            v51 = objectValue;
             LODWORD(v42) = 22;
             v40 = &v48;
             _os_log_send_and_compose_impl();
@@ -658,11 +658,11 @@ LABEL_47:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          self->_sessionID = [v11 unsignedLongLongValue];
+          self->_sessionID = [objectValue unsignedLongLongValue];
         }
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v53 objects:v52 count:16];
+      v6 = [items countByEnumeratingWithState:&v53 objects:v52 count:16];
     }
 
     while (v6);
@@ -784,7 +784,7 @@ LABEL_47:
         v13 = 136315394;
         v14 = "[ContinuityCaptureViewController _terminate]";
         v15 = 2048;
-        v16 = self;
+        selfCopy = self;
         LODWORD(v12) = 22;
         v10 = &v13;
         _os_log_send_and_compose_impl();
@@ -797,22 +797,22 @@ LABEL_47:
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v11 = self;
+  selfCopy = self;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100008BB4;
   block[3] = &unk_100014770;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
-  block[7] = a5;
-  block[8] = a6;
+  block[5] = path;
+  block[6] = object;
+  block[7] = change;
+  block[8] = context;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)_observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)_observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   dispatch_assert_queue_V2(&_dispatch_main_q);
   if (dword_100019EC8)
@@ -824,9 +824,9 @@ LABEL_47:
     fig_log_call_emit_and_clean_up_after_send_and_compose();
   }
 
-  if ([a3 isEqualToString:{CMContinuityCaptureRemoteCompositeStateKVOKey, v38, v41}])
+  if ([path isEqualToString:{CMContinuityCaptureRemoteCompositeStateKVOKey, v38, v41}])
   {
-    v12 = [objc_msgSend(a5 objectForKeyedSubscript:{NSKeyValueChangeNewKey), "integerValue"}];
+    v12 = [objc_msgSend(change objectForKeyedSubscript:{NSKeyValueChangeNewKey), "integerValue"}];
     if (dword_100019EC8)
     {
       v58 = 0;
@@ -848,7 +848,7 @@ LABEL_47:
         v51 = 136315650;
         v52 = "[ContinuityCaptureViewController _observeValueForKeyPath:ofObject:change:context:]";
         v53 = 2048;
-        v54 = self;
+        selfCopy5 = self;
         v55 = 1024;
         LODWORD(v56) = v12;
         LODWORD(v42) = 28;
@@ -931,13 +931,13 @@ LABEL_30:
 
           if (v24)
           {
-            v25 = [(FBSDisplayLayoutMonitor *)self->_layoutMonitor currentLayout];
+            currentLayout = [(FBSDisplayLayoutMonitor *)self->_layoutMonitor currentLayout];
             v51 = 136315650;
             v52 = "[ContinuityCaptureViewController _observeValueForKeyPath:ofObject:change:context:]";
             v53 = 2048;
-            v54 = self;
+            selfCopy5 = self;
             v55 = 2114;
-            v56 = v25;
+            v56 = currentLayout;
             LODWORD(v43) = 32;
             v40 = &v51;
             _os_log_send_and_compose_impl();
@@ -950,8 +950,8 @@ LABEL_30:
         v49 = 0u;
         v46 = 0u;
         v47 = 0u;
-        v26 = [-[FBSDisplayLayoutMonitor currentLayout](self->_layoutMonitor currentLayout];
-        v27 = [v26 countByEnumeratingWithState:&v46 objects:v45 count:16];
+        currentLayout2 = [-[FBSDisplayLayoutMonitor currentLayout](self->_layoutMonitor currentLayout];
+        v27 = [currentLayout2 countByEnumeratingWithState:&v46 objects:v45 count:16];
         if (v27)
         {
           v28 = v27;
@@ -962,7 +962,7 @@ LABEL_45:
           {
             if (*v47 != v29)
             {
-              objc_enumerationMutation(v26);
+              objc_enumerationMutation(currentLayout2);
             }
 
             if ([objc_msgSend(*(*(&v46 + 1) + 8 * v30) "bundleIdentifier")])
@@ -972,7 +972,7 @@ LABEL_45:
 
             if (v28 == ++v30)
             {
-              v28 = [v26 countByEnumeratingWithState:&v46 objects:v45 count:16];
+              v28 = [currentLayout2 countByEnumeratingWithState:&v46 objects:v45 count:16];
               if (v28)
               {
                 goto LABEL_45;
@@ -1012,7 +1012,7 @@ LABEL_51:
               v51 = 136315394;
               v52 = "[ContinuityCaptureViewController _observeValueForKeyPath:ofObject:change:context:]";
               v53 = 2048;
-              v54 = self;
+              selfCopy5 = self;
               goto LABEL_59;
             }
 
@@ -1047,7 +1047,7 @@ LABEL_70:
           v51 = 136315650;
           v52 = "[ContinuityCaptureViewController _observeValueForKeyPath:ofObject:change:context:]";
           v53 = 2048;
-          v54 = self;
+          selfCopy5 = self;
           v55 = 1024;
           LODWORD(v56) = pendingStreamStartAfterResumeEvent;
 LABEL_59:
@@ -1067,9 +1067,9 @@ LABEL_69:
     goto LABEL_30;
   }
 
-  if ([a3 isEqualToString:CMContinuityCaptureSystemStatusPowerButtonPressedKVOKey])
+  if ([path isEqualToString:CMContinuityCaptureSystemStatusPowerButtonPressedKVOKey])
   {
-    if (![objc_msgSend(a5 objectForKeyedSubscript:{NSKeyValueChangeNewKey), "BOOLValue"}])
+    if (![objc_msgSend(change objectForKeyedSubscript:{NSKeyValueChangeNewKey), "BOOLValue"}])
     {
       return;
     }
@@ -1095,7 +1095,7 @@ LABEL_69:
         v51 = 136315394;
         v52 = "[ContinuityCaptureViewController _observeValueForKeyPath:ofObject:change:context:]";
         v53 = 2048;
-        v54 = self;
+        selfCopy5 = self;
         LODWORD(v42) = 22;
         v39 = &v51;
         _os_log_send_and_compose_impl();
@@ -1109,15 +1109,15 @@ LABEL_69:
 
   else
   {
-    if (![a3 isEqualToString:CMContinuityCaptureCallStateKVOKey])
+    if (![path isEqualToString:CMContinuityCaptureCallStateKVOKey])
     {
       v44.receiver = self;
       v44.super_class = ContinuityCaptureViewController;
-      [(ContinuityCaptureViewController *)&v44 observeValueForKeyPath:a3 ofObject:a4 change:a5 context:a6];
+      [(ContinuityCaptureViewController *)&v44 observeValueForKeyPath:path ofObject:object change:change context:context];
       return;
     }
 
-    if ([objc_msgSend(a5 objectForKeyedSubscript:{NSKeyValueChangeNewKey), "integerValue"}] != 2)
+    if ([objc_msgSend(change objectForKeyedSubscript:{NSKeyValueChangeNewKey), "integerValue"}] != 2)
     {
       return;
     }
@@ -1129,9 +1129,9 @@ LABEL_69:
   [(ContinuityCaptureViewController *)self _resolveUserPauseState:v39];
 }
 
-- (void)_handleLayout:(id)a3 ignoringStandby:(BOOL)a4
+- (void)_handleLayout:(id)layout ignoringStandby:(BOOL)standby
 {
-  v61 = a4;
+  standbyCopy = standby;
   if (dword_100019EC8)
   {
     v78 = 0;
@@ -1143,7 +1143,7 @@ LABEL_69:
 
   sidecarLayoutValue = self->_sidecarLayoutValue;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  if (!a3)
+  if (!layout)
   {
     if (!dword_100019EC8)
     {
@@ -1172,7 +1172,7 @@ LABEL_69:
     goto LABEL_70;
   }
 
-  if (![a3 displayBacklightLevel])
+  if (![layout displayBacklightLevel])
   {
     if (!dword_100019EC8)
     {
@@ -1207,21 +1207,21 @@ LABEL_69:
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  obj = [a3 elements];
+  obj = [layout elements];
   v9 = [obj countByEnumeratingWithState:&v66 objects:v65 count:16];
   if (v9)
   {
     v10 = v9;
     v54 = sidecarLayoutValue;
-    v55 = a3;
-    v63 = self;
+    layoutCopy = layout;
+    selfCopy = self;
     v57 = 0;
-    v60 = -1;
+    level = -1;
     v11 = *v67;
     v12 = SBSDisplayLayoutElementStandByIdentifier;
     v58 = FBSDisplayLayoutElementLockScreenIdentifier;
     v56 = SBSDisplayLayoutElementHomeScreenIdentifier;
-    v59 = -1;
+    level2 = -1;
     do
     {
       for (i = 0; i != v10; i = i + 1)
@@ -1252,13 +1252,13 @@ LABEL_69:
 
             if (v17)
             {
-              v18 = [v14 identifier];
+              identifier = [v14 identifier];
               v71 = 136315650;
               v72 = "[ContinuityCaptureViewController _handleLayout:ignoringStandby:]";
               v73 = 2048;
-              v74 = v63;
+              selfCopy4 = selfCopy;
               v75 = 2112;
-              v76 = v18;
+              v76 = identifier;
               LODWORD(v53) = 32;
               v52 = &v71;
               _os_log_send_and_compose_impl();
@@ -1272,7 +1272,7 @@ LABEL_69:
         {
           if ([objc_msgSend(v14 "identifier")])
           {
-            v19 = !v61;
+            v19 = !standbyCopy;
           }
 
           else
@@ -1282,14 +1282,14 @@ LABEL_69:
 
           if (v19)
           {
-            if ([v14 level] > v60)
+            if ([v14 level] > level)
             {
-              v60 = [v14 level];
+              level = [v14 level];
             }
 
             if ([objc_msgSend(v14 "bundleIdentifier")])
             {
-              v59 = [v14 level];
+              level2 = [v14 level];
             }
 
             else if ([objc_msgSend(v14 "identifier")])
@@ -1299,7 +1299,7 @@ LABEL_69:
 
             else if ([objc_msgSend(v14 "identifier")])
             {
-              LOBYTE(v57) = ([objc_msgSend(v55 "elements")] == 1) | v57;
+              LOBYTE(v57) = ([objc_msgSend(layoutCopy "elements")] == 1) | v57;
             }
           }
 
@@ -1323,13 +1323,13 @@ LABEL_69:
 
               if (v22)
               {
-                v23 = [v14 identifier];
+                identifier2 = [v14 identifier];
                 v71 = 136315650;
                 v72 = "[ContinuityCaptureViewController _handleLayout:ignoringStandby:]";
                 v73 = 2048;
-                v74 = v63;
+                selfCopy4 = selfCopy;
                 v75 = 2112;
-                v76 = v23;
+                v76 = identifier2;
                 LODWORD(v53) = 32;
                 v52 = &v71;
                 _os_log_send_and_compose_impl();
@@ -1343,7 +1343,7 @@ LABEL_69:
             block[1] = 3221225472;
             block[2] = sub_10000A2FC;
             block[3] = &unk_100014630;
-            block[4] = v63;
+            block[4] = selfCopy;
             block[5] = v14;
             dispatch_after(v24, &_dispatch_main_q, block);
           }
@@ -1355,11 +1355,11 @@ LABEL_69:
 
     while (v10);
     v25 = 1;
-    v26 = v59;
-    self = v63;
-    if (v59 != -1)
+    v26 = level2;
+    self = selfCopy;
+    if (level2 != -1)
     {
-      v63->_firstSidecarLayoutReceived = 1;
+      selfCopy->_firstSidecarLayoutReceived = 1;
       v25 = 0;
     }
 
@@ -1373,7 +1373,7 @@ LABEL_69:
     LOBYTE(v57) = 0;
     v26 = -1;
     v25 = 1;
-    v60 = -1;
+    level = -1;
   }
 
   if (!self->_firstSidecarLayoutReceived)
@@ -1469,7 +1469,7 @@ LABEL_70:
     v71 = 136315394;
     v72 = "[ContinuityCaptureViewController _handleLayout:ignoringStandby:]";
     v73 = 2048;
-    v74 = self;
+    selfCopy4 = self;
     _os_log_send_and_compose_impl();
 LABEL_84:
     fig_log_call_emit_and_clean_up_after_send_and_compose();
@@ -1498,14 +1498,14 @@ LABEL_84:
       v71 = 136315394;
       v72 = "[ContinuityCaptureViewController _handleLayout:ignoringStandby:]";
       v73 = 2048;
-      v74 = self;
+      selfCopy4 = self;
       _os_log_send_and_compose_impl();
     }
 
     fig_log_call_emit_and_clean_up_after_send_and_compose();
 LABEL_88:
     v47 = dword_100019EC8;
-    v46 = v26 >= v60;
+    v46 = v26 >= level;
     self->_sidecarLayoutValue = v46;
     if (v47)
     {
@@ -1529,7 +1529,7 @@ LABEL_88:
         v71 = 136315650;
         v72 = "[ContinuityCaptureViewController _handleLayout:ignoringStandby:]";
         v73 = 2048;
-        v74 = self;
+        selfCopy4 = self;
         v75 = 1024;
         LODWORD(v76) = v51;
         _os_log_send_and_compose_impl();
@@ -1542,7 +1542,7 @@ LABEL_88:
     goto LABEL_95;
   }
 
-  v46 = v26 >= v60;
+  v46 = v26 >= level;
   self->_sidecarLayoutValue = v46;
 LABEL_95:
   if (sidecarLayoutValue != v46)
@@ -1629,7 +1629,7 @@ LABEL_24:
       v12 = 136315394;
       v13 = "[ContinuityCaptureViewController _resolveUserPauseState]";
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       _os_log_send_and_compose_impl();
     }
 
@@ -1637,9 +1637,9 @@ LABEL_24:
   }
 }
 
-- (void)deviceLockStateMonitor:(id)a3 didUpdateDeviceLockState:(BOOL)a4
+- (void)deviceLockStateMonitor:(id)monitor didUpdateDeviceLockState:(BOOL)state
 {
-  if (self->_deviceIsLocked != a4)
+  if (self->_deviceIsLocked != state)
   {
     if (dword_100019EC8)
     {
@@ -1650,7 +1650,7 @@ LABEL_24:
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    self->_deviceIsLocked = a4;
+    self->_deviceIsLocked = state;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10000A9BC;

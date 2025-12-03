@@ -1,5 +1,5 @@
 @interface CADSPRPBConnection
-- (CADSPRPBConnection)initWithServer:(id)a3 hostFactory:(id)a4;
+- (CADSPRPBConnection)initWithServer:(id)server hostFactory:(id)factory;
 - (RPBHost)host;
 - (void)connect;
 - (void)createHost;
@@ -9,20 +9,20 @@
 - (void)disable;
 - (void)disconnect;
 - (void)enable;
-- (void)remoteProcessingBlockServerWillStartRunning:(id)a3;
-- (void)remoteProcessingBlockServerWillStopRunning:(id)a3;
+- (void)remoteProcessingBlockServerWillStartRunning:(id)running;
+- (void)remoteProcessingBlockServerWillStopRunning:(id)running;
 @end
 
 @implementation CADSPRPBConnection
 
-- (void)remoteProcessingBlockServerWillStopRunning:(id)a3
+- (void)remoteProcessingBlockServerWillStopRunning:(id)running
 {
   obj = self;
-  v4 = a3;
+  runningCopy = running;
   objc_sync_enter(obj);
   server = obj->_server;
 
-  if (server == v4)
+  if (server == runningCopy)
   {
     obj->_serverIsRunning = 0;
     [(CADSPRPBConnection *)obj createOrDestroyHost];
@@ -31,14 +31,14 @@
   objc_sync_exit(obj);
 }
 
-- (void)remoteProcessingBlockServerWillStartRunning:(id)a3
+- (void)remoteProcessingBlockServerWillStartRunning:(id)running
 {
   obj = self;
-  v4 = a3;
+  runningCopy = running;
   objc_sync_enter(obj);
   server = obj->_server;
 
-  if (server == v4)
+  if (server == runningCopy)
   {
     obj->_serverIsRunning = 1;
     [(CADSPRPBConnection *)obj createOrDestroyHost];
@@ -117,15 +117,15 @@
 
 - (RPBHost)host
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (v2->_connectionIsEnabled)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_connectionIsEnabled)
   {
-    [(CADSPRPBConnection *)v2 createHost];
+    [(CADSPRPBConnection *)selfCopy createHost];
   }
 
-  v3 = v2->_host;
-  objc_sync_exit(v2);
+  v3 = selfCopy->_host;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -156,10 +156,10 @@
   [(CADSPRPBConnection *)&v3 dealloc];
 }
 
-- (CADSPRPBConnection)initWithServer:(id)a3 hostFactory:(id)a4
+- (CADSPRPBConnection)initWithServer:(id)server hostFactory:(id)factory
 {
-  v7 = a3;
-  v8 = a4;
+  serverCopy = server;
+  factoryCopy = factory;
   v15.receiver = self;
   v15.super_class = CADSPRPBConnection;
   v9 = [(CADSPRPBConnection *)&v15 init];
@@ -167,9 +167,9 @@
   if (v9)
   {
     v9->_connectionIsEnabled = 0;
-    objc_storeStrong(&v9->_server, a3);
+    objc_storeStrong(&v9->_server, server);
     v10->_serverIsRunning = 0;
-    v11 = MEMORY[0x1CCA84FF0](v8);
+    v11 = MEMORY[0x1CCA84FF0](factoryCopy);
     hostFactory = v10->_hostFactory;
     v10->_hostFactory = v11;
 

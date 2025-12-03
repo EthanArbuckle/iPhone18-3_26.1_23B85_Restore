@@ -1,24 +1,24 @@
 @interface MIBUMulticastSocket
 - (BOOL)isActive;
-- (MIBUMulticastSocket)initWithConfiguration:(id)a3 delegate:(id)a4;
+- (MIBUMulticastSocket)initWithConfiguration:(id)configuration delegate:(id)delegate;
 - (id)description;
 - (void)_handleReadDispatchSource;
 - (void)_handleSourceCancelled;
-- (void)_sendPacket:(id)a3 retryCount:(unint64_t)a4 withCompletion:(id)a5;
+- (void)_sendPacket:(id)packet retryCount:(unint64_t)count withCompletion:(id)completion;
 - (void)_start;
 - (void)_stop;
-- (void)sendPacket:(id)a3 withCompletion:(id)a4;
+- (void)sendPacket:(id)packet withCompletion:(id)completion;
 - (void)start;
 - (void)stop;
 @end
 
 @implementation MIBUMulticastSocket
 
-- (MIBUMulticastSocket)initWithConfiguration:(id)a3 delegate:(id)a4
+- (MIBUMulticastSocket)initWithConfiguration:(id)configuration delegate:(id)delegate
 {
   v59 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  delegateCopy = delegate;
   v55.receiver = self;
   v55.super_class = MIBUMulticastSocket;
   v8 = [(MIBUMulticastSocket *)&v55 init];
@@ -32,9 +32,9 @@
   v11 = *(v8 + 2);
   *(v8 + 2) = v10;
 
-  objc_storeStrong(v8 + 1, a4);
-  v12 = [v6 objectForKey:@"GroupAddress"];
-  v13 = [v6 objectForKey:@"GroupPort"];
+  objc_storeStrong(v8 + 1, delegate);
+  v12 = [configurationCopy objectForKey:@"GroupAddress"];
+  v13 = [configurationCopy objectForKey:@"GroupPort"];
   v14 = v13;
   if (!v12 || !v13)
   {
@@ -51,7 +51,7 @@
     goto LABEL_24;
   }
 
-  v15 = [v6 objectForKey:@"InterfaceName"];
+  v15 = [configurationCopy objectForKey:@"InterfaceName"];
   if (!v15)
   {
     if (MIBUOnceToken != -1)
@@ -654,20 +654,20 @@ void __54__MIBUMulticastSocket_initWithConfiguration_delegate___block_invoke_2_5
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)sendPacket:(id)a3 withCompletion:(id)a4
+- (void)sendPacket:(id)packet withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  packetCopy = packet;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__MIBUMulticastSocket_sendPacket_withCompletion___block_invoke;
   block[3] = &unk_2798EB9D0;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = packetCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = packetCopy;
   dispatch_async(dispatchQueue, block);
 }
 
@@ -703,7 +703,7 @@ void __54__MIBUMulticastSocket_initWithConfiguration_delegate___block_invoke_2_5
   if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_259B04000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Starting multicast socket.", &v6, 0xCu);
   }
 
@@ -746,7 +746,7 @@ void __29__MIBUMulticastSocket__start__block_invoke()
   if (os_log_type_enabled(MIBUConnObj, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138543362;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&dword_259B04000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@: Stopping multicast socket.", &v5, 0xCu);
   }
 
@@ -770,21 +770,21 @@ void __28__MIBUMulticastSocket__stop__block_invoke()
   }
 }
 
-- (void)_sendPacket:(id)a3 retryCount:(unint64_t)a4 withCompletion:(id)a5
+- (void)_sendPacket:(id)packet retryCount:(unint64_t)count withCompletion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  packetCopy = packet;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  size = dispatch_data_get_size(v8);
-  if (send(self->_socketFD, [v8 bytes], size, 0) == size)
+  size = dispatch_data_get_size(packetCopy);
+  if (send(self->_socketFD, [packetCopy bytes], size, 0) == size)
   {
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
     v11 = __error();
-    if (a4 <= 9 && *v11 == 55)
+    if (count <= 9 && *v11 == 55)
     {
       v12 = dispatch_time(0, 30000000);
       dispatchQueue = self->_dispatchQueue;
@@ -793,9 +793,9 @@ void __28__MIBUMulticastSocket__stop__block_invoke()
       v17[2] = __61__MIBUMulticastSocket__sendPacket_retryCount_withCompletion___block_invoke;
       v17[3] = &unk_2798EBA98;
       v17[4] = self;
-      v18 = v8;
-      v20 = a4;
-      v19 = v9;
+      v18 = packetCopy;
+      countCopy = count;
+      v19 = completionCopy;
       dispatch_after(v12, dispatchQueue, v17);
     }
 
@@ -804,7 +804,7 @@ void __28__MIBUMulticastSocket__stop__block_invoke()
       v14 = *MEMORY[0x277CCA5B8];
       v15 = *__error();
       v16 = NSErrorF();
-      (v9)[2](v9, v16);
+      (completionCopy)[2](completionCopy, v16);
     }
   }
 }

@@ -1,63 +1,63 @@
 @interface PhoneTabBarController
 + (id)defaultPNGName;
-- (BOOL)handleUserActivityContinuation:(id)a3;
-- (BOOL)shouldShowLastViewedTabGivenLastViewedTab:(int)a3;
+- (BOOL)handleUserActivityContinuation:(id)continuation;
+- (BOOL)shouldShowLastViewedTabGivenLastViewedTab:(int)tab;
 - (BOOL)shouldSnapshot;
-- (BOOL)tabBarController:(id)a3 shouldSelectTab:(id)a4;
+- (BOOL)tabBarController:(id)controller shouldSelectTab:(id)tab;
 - (MPContactSearchManager)contactSearchManager;
 - (PHContactsSearchResultsRanker)ranker;
-- (PhoneTabBarController)initWithRecentsController:(id)a3;
-- (id)controllerForTabViewType:(int)a3;
-- (id)makeFavoritesListViewControllerWith:(id)a3 recentsViewController:(id)a4 navigationController:(id)a5;
-- (id)tabForViewController:(id)a3;
-- (id)viewControllerForTabViewType:(int)a3;
+- (PhoneTabBarController)initWithRecentsController:(id)controller;
+- (id)controllerForTabViewType:(int)type;
+- (id)makeFavoritesListViewControllerWith:(id)with recentsViewController:(id)controller navigationController:(id)navigationController;
+- (id)tabForViewController:(id)controller;
+- (id)viewControllerForTabViewType:(int)type;
 - (int)currentTabViewType;
 - (int)defaultTabViewType;
-- (int)tabTypeForTab:(id)a3;
-- (int)tabTypeForViewController:(id)a3;
-- (int)tabViewTypeToReturnTo:(id)a3;
+- (int)tabTypeForTab:(id)tab;
+- (int)tabTypeForViewController:(id)controller;
+- (int)tabViewTypeToReturnTo:(id)to;
 - (unint64_t)dialerSupportedInterfaceOrientations;
-- (void)_badgeChanged:(id)a3;
-- (void)_startListeningForBadgeChangedNotifications:(id)a3;
-- (void)_stopListeningForBadgeChangedNotifications:(id)a3;
-- (void)_updateAllBadges:(BOOL)a3;
-- (void)_updateBottomTabs:(BOOL)a3 lastViewTypeNumber:(id)a4;
+- (void)_badgeChanged:(id)changed;
+- (void)_startListeningForBadgeChangedNotifications:(id)notifications;
+- (void)_stopListeningForBadgeChangedNotifications:(id)notifications;
+- (void)_updateAllBadges:(BOOL)badges;
+- (void)_updateBottomTabs:(BOOL)tabs lastViewTypeNumber:(id)number;
 - (void)_willAppearInRemoteViewController;
 - (void)applicationDidResume;
 - (void)applicationWillSuspend;
-- (void)applyDetailsPresenterToSearchViewController:(id)a3 withRecentsViewController:(id)a4 andPresentingFromViewController:(id)a5;
+- (void)applyDetailsPresenterToSearchViewController:(id)controller withRecentsViewController:(id)viewController andPresentingFromViewController:(id)fromViewController;
 - (void)dealloc;
-- (void)didPressAddContactButton:(int64_t)a3;
-- (void)didPressSearchButton:(id)a3 unformattedNumber:(id)a4;
-- (void)dismissScreenUnknownCallers:(id)a3;
-- (void)enableScreenUnknownCallers:(id)a3;
-- (void)handleUIApplicationWillEnterForegroundNotification:(id)a3;
-- (void)handleURL:(id)a3;
-- (void)keyPadSearchFor:(id)a3 shouldRefreshResult:(BOOL)a4 completionHandler:(id)a5;
-- (void)keyPadViewControllerDidAppear:(BOOL)a3;
+- (void)didPressAddContactButton:(int64_t)button;
+- (void)didPressSearchButton:(id)button unformattedNumber:(id)number;
+- (void)dismissScreenUnknownCallers:(id)callers;
+- (void)enableScreenUnknownCallers:(id)callers;
+- (void)handleUIApplicationWillEnterForegroundNotification:(id)notification;
+- (void)handleURL:(id)l;
+- (void)keyPadSearchFor:(id)for shouldRefreshResult:(BOOL)result completionHandler:(id)handler;
+- (void)keyPadViewControllerDidAppear:(BOOL)appear;
 - (void)openVoicemails;
-- (void)popCurrentNavigationControllerToRootViewControllerAnimated:(BOOL)a3;
+- (void)popCurrentNavigationControllerToRootViewControllerAnimated:(BOOL)animated;
 - (void)prepareForSnapshot;
 - (void)presentAppleSupportGuidedHelp;
-- (void)presentContactsSearchFor:(id)a3;
-- (void)presentSearch:(id)a3;
+- (void)presentContactsSearchFor:(id)for;
+- (void)presentSearch:(id)search;
 - (void)registerForBadgeUpdateNotification;
-- (void)setSelectedTab:(id)a3;
-- (void)showFavoritesTab:(BOOL)a3 recentsTab:(BOOL)a4 contactsTab:(BOOL)a5 keypadTab:(BOOL)a6 voicemailTab:(BOOL)a7 prewarm:(int)a8 hostedInRemoteViewController:(BOOL)a9;
+- (void)setSelectedTab:(id)tab;
+- (void)showFavoritesTab:(BOOL)tab recentsTab:(BOOL)recentsTab contactsTab:(BOOL)contactsTab keypadTab:(BOOL)keypadTab voicemailTab:(BOOL)voicemailTab prewarm:(int)prewarm hostedInRemoteViewController:(BOOL)controller;
 - (void)showReceptionistOnboarding;
-- (void)switchToMostRecentlyUsedTabType:(id)a3;
-- (void)switchToTab:(int)a3;
-- (void)tabBarController:(id)a3 didSelectTab:(id)a4 previousTab:(id)a5;
+- (void)switchToMostRecentlyUsedTabType:(id)type;
+- (void)switchToTab:(int)tab;
+- (void)tabBarController:(id)controller didSelectTab:(id)tab previousTab:(id)previousTab;
 - (void)transitionCompleted;
-- (void)updateListenersForState:(int64_t)a3;
-- (void)updateSelectedTab:(id)a3;
-- (void)updateSelectedViewController:(id)a3;
-- (void)updateUserActivityState:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)updateListenersForState:(int64_t)state;
+- (void)updateSelectedTab:(id)tab;
+- (void)updateSelectedViewController:(id)controller;
+- (void)updateUserActivityState:(id)state;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)willPresentSimLineSwitcher;
 @end
 
@@ -78,9 +78,9 @@
   return ranker;
 }
 
-- (PhoneTabBarController)initWithRecentsController:(id)a3
+- (PhoneTabBarController)initWithRecentsController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v21.receiver = self;
   v21.super_class = PhoneTabBarController;
   v6 = [(PhoneTabBarController *)&v21 init];
@@ -102,7 +102,7 @@
 
     if ([(TUFeatureFlags *)v6->_featureFlags callExperiencePhoneAppEnabled])
     {
-      objc_storeStrong(&v6->_phoneRecentsController, a3);
+      objc_storeStrong(&v6->_phoneRecentsController, controller);
     }
 
     if (([UIApp tabBarFillsScreen] & 1) == 0)
@@ -112,8 +112,8 @@
 
     if ([UIApp userInterfaceStyle] == 1)
     {
-      v12 = [(PhoneTabBarController *)v6 tabBar];
-      [v12 setBarStyle:1];
+      tabBar = [(PhoneTabBarController *)v6 tabBar];
+      [tabBar setBarStyle:1];
     }
 
     if ([UIApp userInterfaceStyle] == 1)
@@ -129,8 +129,8 @@
       v14 = +[NSData data];
       v15 = [v13 initWithData:v14];
 
-      v16 = [(PhoneTabBarController *)v6 tabBar];
-      [v16 _setSelectionIndicatorImage:v15];
+      tabBar2 = [(PhoneTabBarController *)v6 tabBar];
+      [tabBar2 _setSelectionIndicatorImage:v15];
     }
 
     v17 = PHPreferencesGetValueInDomain();
@@ -184,17 +184,17 @@
   v17.super_class = PhoneTabBarController;
   [(PhoneTabBarController *)&v17 viewDidLoad];
   v3 = +[CNKFeatures sharedInstance];
-  v4 = [v3 isUIFluidTransitionsEnabled];
+  isUIFluidTransitionsEnabled = [v3 isUIFluidTransitionsEnabled];
 
-  if ((v4 & 1) == 0)
+  if ((isUIFluidTransitionsEnabled & 1) == 0)
   {
     v5 = +[UIColor clearColor];
-    v6 = [(PhoneTabBarController *)self view];
-    [v6 setBackgroundColor:v5];
+    view = [(PhoneTabBarController *)self view];
+    [view setBackgroundColor:v5];
   }
 
-  v7 = [(PhoneTabBarController *)self view];
-  [v7 setOpaque:0];
+  view2 = [(PhoneTabBarController *)self view];
+  [view2 setOpaque:0];
 
   [(PhoneTabBarController *)self _checkMailboxUsage];
   v8 = +[CAUILayoutManager shared];
@@ -231,11 +231,11 @@ void __36__PhoneTabBarController_viewDidLoad__block_invoke(uint64_t a1, uint64_t
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = PhoneTabBarController;
-  [(PhoneTabBarController *)&v7 viewWillAppear:a3];
+  [(PhoneTabBarController *)&v7 viewWillAppear:appear];
   if (-[PhoneTabBarController currentTabViewType](self, "currentTabViewType") == 5 && ([UIApp hasEnhancedVoicemail] & 1) == 0 && (objc_msgSend(UIApp, "isRunningTest") & 1) == 0 && (objc_msgSend(UIApp, "launchedToTest") & 1) == 0)
   {
     [(PhoneTabBarController *)self switchToTab:[(PhoneTabBarController *)self defaultTabViewType]];
@@ -257,43 +257,43 @@ void __36__PhoneTabBarController_viewDidLoad__block_invoke(uint64_t a1, uint64_t
   }
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PhoneTabBarController;
-  [(PhoneTabBarController *)&v5 viewDidAppear:a3];
+  [(PhoneTabBarController *)&v5 viewDidAppear:appear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 postNotificationName:@"PHPhoneTabBarControllerViewDidAppearNotification" object:self];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = PhoneTabBarController;
-  [(PhoneTabBarController *)&v3 viewWillDisappear:a3];
+  [(PhoneTabBarController *)&v3 viewWillDisappear:disappear];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = PhoneTabBarController;
-  [(PhoneTabBarController *)&v3 viewDidDisappear:a3];
+  [(PhoneTabBarController *)&v3 viewDidDisappear:disappear];
 }
 
-- (void)_startListeningForBadgeChangedNotifications:(id)a3
+- (void)_startListeningForBadgeChangedNotifications:(id)notifications
 {
-  v4 = a3;
+  notificationsCopy = notifications;
   v6 = +[NSNotificationCenter defaultCenter];
   v5 = objc_opt_class();
 
   [v6 addObserver:self selector:"_badgeChanged:" name:@"com.apple.mobilephone.BadgeChanged" object:v5];
 }
 
-- (void)_stopListeningForBadgeChangedNotifications:(id)a3
+- (void)_stopListeningForBadgeChangedNotifications:(id)notifications
 {
-  if (a3)
+  if (notifications)
   {
-    v4 = a3;
+    notificationsCopy = notifications;
     v6 = +[NSNotificationCenter defaultCenter];
     v5 = objc_opt_class();
 
@@ -320,28 +320,28 @@ void __59__PhoneTabBarController_registerForBadgeUpdateNotification__block_invok
   [v2 addObserver:*(a1 + 32) selector:"_badgeChanged:" name:@"PhoneApplicationLocaleChangedNotification" object:*(a1 + 32)];
 }
 
-- (void)_updateAllBadges:(BOOL)a3
+- (void)_updateAllBadges:(BOOL)badges
 {
-  v3 = a3;
+  badgesCopy = badges;
   [(PhoneTabBarController *)self registerForBadgeUpdateNotification];
   if (self->_voicemailViewController)
   {
-    v5 = [(PhoneTabBarController *)self tabBar];
-    v6 = [v5 items];
-    v7 = [v6 count];
+    tabBar = [(PhoneTabBarController *)self tabBar];
+    items = [tabBar items];
+    v7 = [items count];
 
     if (v7 >= 5)
     {
       [objc_opt_class() badge];
       v8 = PhoneStringForBadgeValue();
-      v9 = [(PhoneTabBarController *)self tabBar];
-      v10 = [v9 items];
-      v11 = [v10 objectAtIndex:4];
+      tabBar2 = [(PhoneTabBarController *)self tabBar];
+      items2 = [tabBar2 items];
+      v11 = [items2 objectAtIndex:4];
       [v11 setBadgeValue:v8];
     }
   }
 
-  if (v3)
+  if (badgesCopy)
   {
 
     [(PhoneTabBarController *)self performSelector:"_badgeChanged:" withObject:self afterDelay:0.0];
@@ -354,58 +354,58 @@ void __59__PhoneTabBarController_registerForBadgeUpdateNotification__block_invok
   }
 }
 
-- (void)_badgeChanged:(id)a3
+- (void)_badgeChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = changedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "PhoneTabBarController badge changed notification %@", &v6, 0xCu);
   }
 
   [(PhoneTabBarController *)self _updateAllBadges:0];
 }
 
-- (void)showFavoritesTab:(BOOL)a3 recentsTab:(BOOL)a4 contactsTab:(BOOL)a5 keypadTab:(BOOL)a6 voicemailTab:(BOOL)a7 prewarm:(int)a8 hostedInRemoteViewController:(BOOL)a9
+- (void)showFavoritesTab:(BOOL)tab recentsTab:(BOOL)recentsTab contactsTab:(BOOL)contactsTab keypadTab:(BOOL)keypadTab voicemailTab:(BOOL)voicemailTab prewarm:(int)prewarm hostedInRemoteViewController:(BOOL)controller
 {
-  v90 = a7;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  voicemailTabCopy = voicemailTab;
+  keypadTabCopy = keypadTab;
+  contactsTabCopy = contactsTab;
+  recentsTabCopy = recentsTab;
+  tabCopy = tab;
   v14 = [NSMutableArray arrayWithCapacity:5];
   v94 = +[(PHApplicationServices *)MPApplicationServices];
-  v92 = [v94 callProviderManager];
-  v93 = [v94 suggestedContactStore];
-  v91 = [v94 metadataCache];
-  if (!v13)
+  callProviderManager = [v94 callProviderManager];
+  suggestedContactStore = [v94 suggestedContactStore];
+  metadataCache = [v94 metadataCache];
+  if (!tabCopy)
   {
-    v15 = self;
+    selfCopy5 = self;
     favoritesNavigationController = self->_favoritesNavigationController;
     self->_favoritesNavigationController = 0;
 
-    [(PhoneTabBarController *)v15 _stopListeningForBadgeChangedNotifications:v15->_favoritesViewController];
+    [(PhoneTabBarController *)selfCopy5 _stopListeningForBadgeChangedNotifications:selfCopy5->_favoritesViewController];
     favoritesViewController = self->_favoritesViewController;
     self->_favoritesViewController = 0;
 
-    if (!v12)
+    if (!recentsTabCopy)
     {
       goto LABEL_15;
     }
 
 LABEL_5:
-    if (!v15->_recentsTableViewController)
+    if (!selfCopy5->_recentsTableViewController)
     {
-      v18 = [(PhoneTabBarController *)v15 featureFlags];
-      v19 = [v18 callExperiencePhoneAppEnabled];
+      featureFlags = [(PhoneTabBarController *)selfCopy5 featureFlags];
+      callExperiencePhoneAppEnabled = [featureFlags callExperiencePhoneAppEnabled];
 
-      if (v19)
+      if (callExperiencePhoneAppEnabled)
       {
-        v20 = [(PhoneRecentsViewController *)self->_phoneRecentsController recentsNavigationController];
+        recentsNavigationController = [(PhoneRecentsViewController *)self->_phoneRecentsController recentsNavigationController];
         recentsNavigationController = self->_recentsNavigationController;
-        self->_recentsNavigationController = v20;
+        self->_recentsNavigationController = recentsNavigationController;
       }
 
       else
@@ -421,21 +421,21 @@ LABEL_5:
 
         [(PhoneTabBarController *)self _startListeningForBadgeChangedNotifications:self->_recentsTableViewController];
         v42 = +[(PHApplicationServices *)MPApplicationServices];
-        v43 = [v42 voicemailController];
+        voicemailController = [v42 voicemailController];
 
-        [(PhoneNavigationController *)self->_recentsNavigationController setVoicemailController:v43];
+        [(PhoneNavigationController *)self->_recentsNavigationController setVoicemailController:voicemailController];
         v108 = self->_recentsTableViewController;
         v44 = [NSArray arrayWithObjects:&v108 count:1];
         [(PhoneNavigationController *)self->_recentsNavigationController setViewControllers:v44];
       }
 
-      v15 = self;
+      selfCopy5 = self;
     }
 
-    v36 = [(PhoneTabBarController *)v15 featureFlags];
-    v45 = [v36 callExperiencePhoneAppEnabled];
+    featureFlags2 = [(PhoneTabBarController *)selfCopy5 featureFlags];
+    callExperiencePhoneAppEnabled2 = [featureFlags2 callExperiencePhoneAppEnabled];
 
-    if (v45)
+    if (callExperiencePhoneAppEnabled2)
     {
       [v14 addObject:self->_phoneRecentsController];
     }
@@ -450,96 +450,96 @@ LABEL_5:
 
   if (!self->_favoritesViewController)
   {
-    v22 = [v94 favoritesController];
+    favoritesController = [v94 favoritesController];
     v23 = [[PhoneNavigationController alloc] initWithNibName:0 bundle:0];
     v24 = self->_favoritesNavigationController;
     self->_favoritesNavigationController = v23;
 
-    v25 = [(PhoneTabBarController *)self featureFlags];
-    v26 = [v25 phoneClassicNewFavoritesEnabled];
+    featureFlags3 = [(PhoneTabBarController *)self featureFlags];
+    phoneClassicNewFavoritesEnabled = [featureFlags3 phoneClassicNewFavoritesEnabled];
 
-    if (v26)
+    if (phoneClassicNewFavoritesEnabled)
     {
-      v27 = [(PhoneRecentsViewController *)self->_phoneRecentsController recentsViewController];
-      v28 = [(PhoneTabBarController *)self makeFavoritesListViewControllerWith:v22 recentsViewController:v27 navigationController:self->_favoritesNavigationController];
-      v29 = self;
+      recentsViewController = [(PhoneRecentsViewController *)self->_phoneRecentsController recentsViewController];
+      v28 = [(PhoneTabBarController *)self makeFavoritesListViewControllerWith:favoritesController recentsViewController:recentsViewController navigationController:self->_favoritesNavigationController];
+      selfCopy4 = self;
       v30 = self->_favoritesViewController;
       self->_favoritesViewController = v28;
     }
 
     else
     {
-      v31 = [[MPFavoritesTableViewController alloc] initWithFavoritesController:v22];
-      v29 = self;
-      v27 = self->_favoritesViewController;
+      v31 = [[MPFavoritesTableViewController alloc] initWithFavoritesController:favoritesController];
+      selfCopy4 = self;
+      recentsViewController = self->_favoritesViewController;
       self->_favoritesViewController = &v31->super.super.super;
     }
 
-    [(PhoneTabBarController *)v29 _startListeningForBadgeChangedNotifications:v29->_favoritesViewController];
-    v109 = v29->_favoritesViewController;
+    [(PhoneTabBarController *)selfCopy4 _startListeningForBadgeChangedNotifications:selfCopy4->_favoritesViewController];
+    v109 = selfCopy4->_favoritesViewController;
     v32 = [NSArray arrayWithObjects:&v109 count:1];
     [(PhoneNavigationController *)self->_favoritesNavigationController setViewControllers:v32];
 
-    if (a8 == 1)
+    if (prewarm == 1)
     {
-      [v22 fetchIfNeeded];
+      [favoritesController fetchIfNeeded];
     }
   }
 
   [v14 addObject:self->_favoritesNavigationController];
-  v15 = self;
-  if (v12)
+  selfCopy5 = self;
+  if (recentsTabCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_15:
-  v33 = v15->_recentsNavigationController;
-  v15->_recentsNavigationController = 0;
+  v33 = selfCopy5->_recentsNavigationController;
+  selfCopy5->_recentsNavigationController = 0;
 
-  v34 = self;
+  selfCopy8 = self;
   if (self->_recentsTableViewController)
   {
     [(PhoneTabBarController *)self _stopListeningForBadgeChangedNotifications:?];
     v35 = self->_recentsTableViewController;
     self->_recentsTableViewController = 0;
 
-    v34 = self;
+    selfCopy8 = self;
   }
 
-  v36 = 24;
-  if (v34->_recentsViewController)
+  featureFlags2 = 24;
+  if (selfCopy8->_recentsViewController)
   {
-    [(PhoneTabBarController *)v34 _stopListeningForBadgeChangedNotifications:?];
+    [(PhoneTabBarController *)selfCopy8 _stopListeningForBadgeChangedNotifications:?];
     recentsViewController = self->_recentsViewController;
     self->_recentsViewController = 0;
 
 LABEL_24:
-    v34 = self;
+    selfCopy8 = self;
   }
 
-  contactsViewController = v34->_contactsViewController;
-  if (v11)
+  contactsViewController = selfCopy8->_contactsViewController;
+  if (contactsTabCopy)
   {
     if (!contactsViewController)
     {
       v47 = [PHContactsViewController alloc];
-      if (a9)
+      if (controller)
       {
         v48 = 1;
       }
 
       else
       {
-        v36 = +[CAUILayoutManager shared];
-        v48 = [v36 current] == 0;
+        featureFlags2 = +[CAUILayoutManager shared];
+        v48 = [featureFlags2 current] == 0;
       }
 
-      v50 = [(PHContactsViewController *)v47 initWithContactStore:v93 allowsLargeTitles:1 allowsSearch:v48];
+      v50 = [(PHContactsViewController *)v47 initWithContactStore:suggestedContactStore allowsLargeTitles:1 allowsSearch:v48];
       v51 = self->_contactsViewController;
       self->_contactsViewController = v50;
 
-      if (!a9)
+      if (!controller)
       {
       }
 
@@ -552,26 +552,26 @@ LABEL_24:
 
   else
   {
-    [(PhoneTabBarController *)v34 _stopListeningForBadgeChangedNotifications:contactsViewController];
+    [(PhoneTabBarController *)selfCopy8 _stopListeningForBadgeChangedNotifications:contactsViewController];
     v49 = self->_contactsViewController;
     self->_contactsViewController = 0;
   }
 
-  if (v10 && [UIApp showsPhoneDialer])
+  if (keypadTabCopy && [UIApp showsPhoneDialer])
   {
     keypadViewController = self->_keypadViewController;
     if (!keypadViewController)
     {
-      v53 = [[MPKeypadViewController alloc] initWithContactStore:v93 enableSmartDialer:1 orientationProvider:self];
+      v53 = [[MPKeypadViewController alloc] initWithContactStore:suggestedContactStore enableSmartDialer:1 orientationProvider:self];
       v54 = self->_keypadViewController;
       self->_keypadViewController = v53;
 
       [(MPKeypadViewController *)self->_keypadViewController setDelegate:?];
-      [(MPKeypadViewController *)self->_keypadViewController setCallProviderManager:v92];
-      [(MPKeypadViewController *)self->_keypadViewController setMetadataCache:v91];
-      v55 = [UIApp userInterfaceStyle];
+      [(MPKeypadViewController *)self->_keypadViewController setCallProviderManager:callProviderManager];
+      [(MPKeypadViewController *)self->_keypadViewController setMetadataCache:metadataCache];
+      userInterfaceStyle = [UIApp userInterfaceStyle];
       keypadViewController = self->_keypadViewController;
-      if (v55 == 1)
+      if (userInterfaceStyle == 1)
       {
         [(MPKeypadViewController *)self->_keypadViewController setEdgesForExtendedLayout:0];
         keypadViewController = self->_keypadViewController;
@@ -588,18 +588,18 @@ LABEL_24:
   }
 
   voicemailViewController = self->_voicemailViewController;
-  if (v90)
+  if (voicemailTabCopy)
   {
     if (!voicemailViewController)
     {
       v58 = +[(PHApplicationServices *)MPApplicationServices];
-      v59 = [v58 voicemailController];
+      voicemailController2 = [v58 voicemailController];
 
       v60 = objc_alloc_init(PHVoicemailNavigationController);
       v61 = self->_voicemailViewController;
       self->_voicemailViewController = v60;
 
-      [(PhoneNavigationController *)self->_voicemailViewController setVoicemailController:v59];
+      [(PhoneNavigationController *)self->_voicemailViewController setVoicemailController:voicemailController2];
       [(PhoneTabBarController *)self _startListeningForBadgeChangedNotifications:self->_voicemailViewController];
 
       voicemailViewController = self->_voicemailViewController;
@@ -645,14 +645,14 @@ LABEL_24:
           v71 = [NSString stringWithFormat:@"%@", v73];
 
           v74 = [UITab alloc];
-          v75 = [v72 tabBarIconName];
-          v76 = [v72 tabBarIconImage];
+          tabBarIconName = [v72 tabBarIconName];
+          tabBarIconImage = [v72 tabBarIconImage];
           v102[0] = _NSConcreteStackBlock;
           v102[1] = 3221225472;
           v102[2] = __125__PhoneTabBarController_showFavoritesTab_recentsTab_contactsTab_keypadTab_voicemailTab_prewarm_hostedInRemoteViewController___block_invoke;
           v102[3] = &unk_100285AA8;
           v102[4] = v72;
-          v77 = [v74 initWithTitle:v75 image:v76 identifier:v71 viewControllerProvider:v102];
+          v77 = [v74 initWithTitle:tabBarIconName image:tabBarIconImage identifier:v71 viewControllerProvider:v102];
 
           [v63 addObject:v77];
         }
@@ -670,13 +670,13 @@ LABEL_24:
     while (v65);
   }
 
-  v78 = self;
+  selfCopy11 = self;
   if (self->_phoneRecentsController)
   {
     v79 = +[CAUILayoutManager shared];
     v80 = [v79 current] == 1;
 
-    v78 = self;
+    selfCopy11 = self;
     if (v80)
     {
       searchNavigationController = self->_searchNavigationController;
@@ -703,8 +703,8 @@ LABEL_24:
         [v84 setSearchResultsUpdater:v85];
         [v84 setDelegate:v85];
         [v84 setShowsSearchResultsController:1];
-        v88 = [(SearchTabViewController *)v85 navigationItem];
-        [v88 setSearchController:v84];
+        navigationItem = [(SearchTabViewController *)v85 navigationItem];
+        [navigationItem setSearchController:v84];
 
         v96[0] = _NSConcreteStackBlock;
         v96[1] = 3221225472;
@@ -727,11 +727,11 @@ LABEL_24:
         [v63 addObject:v84];
       }
 
-      v78 = self;
+      selfCopy11 = self;
     }
   }
 
-  [(PhoneTabBarController *)v78 registerForBadgeUpdateNotification];
+  [(PhoneTabBarController *)selfCopy11 registerForBadgeUpdateNotification];
   [(PhoneTabBarController *)self setTabs:v63 animated:1];
 }
 
@@ -760,21 +760,21 @@ id __125__PhoneTabBarController_showFavoritesTab_recentsTab_contactsTab_keypadTa
   return v12;
 }
 
-- (void)popCurrentNavigationControllerToRootViewControllerAnimated:(BOOL)a3
+- (void)popCurrentNavigationControllerToRootViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(PhoneTabBarController *)self currentTabViewType];
-  if (v5 == 6)
+  animatedCopy = animated;
+  currentTabViewType = [(PhoneTabBarController *)self currentTabViewType];
+  if (currentTabViewType == 6)
   {
     v6 = 88;
 LABEL_9:
-    v8 = [*(&self->super.super.super.super.isa + v6) popToRootViewControllerAnimated:v3];
+    v8 = [*(&self->super.super.super.super.isa + v6) popToRootViewControllerAnimated:animatedCopy];
     return;
   }
 
-  if (v5 != 2)
+  if (currentTabViewType != 2)
   {
-    if (v5 != 1)
+    if (currentTabViewType != 1)
     {
       return;
     }
@@ -783,8 +783,8 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v9 = [(PhoneRecentsViewController *)self->_phoneRecentsController recentsNavigationController];
-  v7 = [v9 popToRootViewControllerAnimated:v3];
+  recentsNavigationController = [(PhoneRecentsViewController *)self->_phoneRecentsController recentsNavigationController];
+  v7 = [recentsNavigationController popToRootViewControllerAnimated:animatedCopy];
 }
 
 - (void)applicationDidResume
@@ -798,9 +798,9 @@ LABEL_9:
   }
 }
 
-- (void)switchToMostRecentlyUsedTabType:(id)a3
+- (void)switchToMostRecentlyUsedTabType:(id)type
 {
-  v4 = [(PhoneTabBarController *)self tabViewTypeToReturnTo:a3];
+  v4 = [(PhoneTabBarController *)self tabViewTypeToReturnTo:type];
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -821,15 +821,15 @@ LABEL_9:
   [(PhoneTabBarController *)self setIsAllowedToSwitchToSearch:1];
 }
 
-- (void)setSelectedTab:(id)a3
+- (void)setSelectedTab:(id)tab
 {
-  v4 = a3;
-  [(PhoneTabBarController *)self updateSelectedTab:v4];
+  tabCopy = tab;
+  [(PhoneTabBarController *)self updateSelectedTab:tabCopy];
   analyticsLogger = self->_analyticsLogger;
   v9[0] = @"action";
   v9[1] = @"tab";
   v10[0] = &off_100295390;
-  v6 = [(PhoneTabBarController *)self tabTypeForTab:v4];
+  v6 = [(PhoneTabBarController *)self tabTypeForTab:tabCopy];
 
   v7 = [NSNumber numberWithInt:v6];
   v10[1] = v7;
@@ -837,14 +837,14 @@ LABEL_9:
   [(MPAnalyticsLogger *)analyticsLogger logEvent:@"com.apple.MobilePhone.TabSwitch" withCoreAnalyticsDictionary:v8];
 }
 
-- (void)updateSelectedTab:(id)a3
+- (void)updateSelectedTab:(id)tab
 {
   v8.receiver = self;
   v8.super_class = PhoneTabBarController;
-  v4 = a3;
-  [(PhoneTabBarController *)&v8 setSelectedTab:v4];
+  tabCopy = tab;
+  [(PhoneTabBarController *)&v8 setSelectedTab:tabCopy];
   [(PhoneTabBarController *)self popCurrentNavigationControllerToRootViewControllerAnimated:0];
-  v5 = [(PhoneTabBarController *)self tabTypeForTab:v4];
+  v5 = [(PhoneTabBarController *)self tabTypeForTab:tabCopy];
 
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
@@ -882,9 +882,9 @@ void __43__PhoneTabBarController_updateSelectedTab___block_invoke(uint64_t a1)
   [v7 setNeedsSave:1];
 }
 
-- (id)tabForViewController:(id)a3
+- (id)tabForViewController:(id)controller
 {
-  v4 = [(PhoneTabBarController *)self tabTypeForViewController:a3];
+  v4 = [(PhoneTabBarController *)self tabTypeForViewController:controller];
   if (v4 == 6)
   {
     v5 = [(PhoneTabBarController *)self tabForIdentifier:@"com.apple.UIKit.Search"];
@@ -901,10 +901,10 @@ void __43__PhoneTabBarController_updateSelectedTab___block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)updateSelectedViewController:(id)a3
+- (void)updateSelectedViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [(PhoneTabBarController *)self tabForViewController:v4];
+  controllerCopy = controller;
+  v5 = [(PhoneTabBarController *)self tabForViewController:controllerCopy];
   if (v5)
   {
     [(PhoneTabBarController *)self updateSelectedTab:v5];
@@ -914,13 +914,13 @@ void __43__PhoneTabBarController_updateSelectedTab___block_invoke(uint64_t a1)
   {
     v8.receiver = self;
     v8.super_class = PhoneTabBarController;
-    [(PhoneTabBarController *)&v8 setSelectedViewController:v4];
+    [(PhoneTabBarController *)&v8 setSelectedViewController:controllerCopy];
     [(PhoneTabBarController *)self popCurrentNavigationControllerToRootViewControllerAnimated:0];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = __54__PhoneTabBarController_updateSelectedViewController___block_invoke;
     v6[3] = &unk_100285AF8;
-    v7 = [(PhoneTabBarController *)self tabTypeForViewController:v4];
+    v7 = [(PhoneTabBarController *)self tabTypeForViewController:controllerCopy];
     v6[4] = self;
     dispatch_async(&_dispatch_main_q, v6);
     [(PhoneTabBarController *)self setShouldSwitchToMostRecentViewType:0];
@@ -953,27 +953,27 @@ void __54__PhoneTabBarController_updateSelectedViewController___block_invoke(uin
   [v7 setNeedsSave:1];
 }
 
-- (void)updateUserActivityState:(id)a3
+- (void)updateUserActivityState:(id)state
 {
-  v4 = [(PhoneTabBarController *)self currentTabViewType];
+  currentTabViewType = [(PhoneTabBarController *)self currentTabViewType];
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v15 = v4;
+    v15 = currentTabViewType;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Activity continuity - Saving out currentTabType %d", buf, 8u);
   }
 
-  v6 = [(PhoneTabBarController *)self userActivity];
-  v7 = [(PhoneTabBarController *)self selectedViewController];
-  v8 = [v7 title];
-  [v6 setTitle:v8];
+  userActivity = [(PhoneTabBarController *)self userActivity];
+  selectedViewController = [(PhoneTabBarController *)self selectedViewController];
+  title = [selectedViewController title];
+  [userActivity setTitle:title];
 
-  v9 = [(PhoneTabBarController *)self userActivity];
-  v10 = [NSNumber numberWithInt:v4, @"PHLastTabTypeKey"];
+  userActivity2 = [(PhoneTabBarController *)self userActivity];
+  v10 = [NSNumber numberWithInt:currentTabViewType, @"PHLastTabTypeKey"];
   v13 = v10;
   v11 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
-  [v9 setUserInfo:v11];
+  [userActivity2 setUserInfo:v11];
 }
 
 - (int)defaultTabViewType
@@ -984,9 +984,9 @@ void __54__PhoneTabBarController_updateSelectedViewController___block_invoke(uin
   }
 
   v3 = +[(PHApplicationServices *)MPApplicationServices];
-  v4 = [v3 contactStore];
+  contactStore = [v3 contactStore];
 
-  if (v4)
+  if (contactStore)
   {
     return 3;
   }
@@ -997,57 +997,57 @@ void __54__PhoneTabBarController_updateSelectedViewController___block_invoke(uin
   }
 }
 
-- (int)tabViewTypeToReturnTo:(id)a3
+- (int)tabViewTypeToReturnTo:(id)to
 {
-  v4 = a3;
-  v5 = [(PhoneTabBarController *)self defaultTabViewType];
-  if (!v4)
+  toCopy = to;
+  defaultTabViewType = [(PhoneTabBarController *)self defaultTabViewType];
+  if (!toCopy)
   {
-    v4 = PHPreferencesGetValueInDomain();
+    toCopy = PHPreferencesGetValueInDomain();
   }
 
-  if (-[PhoneTabBarController shouldShowLastViewedTabGivenLastViewedTab:](self, "shouldShowLastViewedTabGivenLastViewedTab:", [v4 intValue]))
+  if (-[PhoneTabBarController shouldShowLastViewedTabGivenLastViewedTab:](self, "shouldShowLastViewedTabGivenLastViewedTab:", [toCopy intValue]))
   {
-    v5 = [v4 intValue];
+    defaultTabViewType = [toCopy intValue];
   }
 
-  return v5;
+  return defaultTabViewType;
 }
 
-- (BOOL)shouldShowLastViewedTabGivenLastViewedTab:(int)a3
+- (BOOL)shouldShowLastViewedTabGivenLastViewedTab:(int)tab
 {
-  v5 = [(PhoneTabBarController *)self bootSession];
-  v6 = [v5 isInDifferentBootSession];
+  bootSession = [(PhoneTabBarController *)self bootSession];
+  isInDifferentBootSession = [bootSession isInDifferentBootSession];
 
-  v7 = [(PhoneTabBarController *)self bootSession];
-  [v7 persistBootSessionID];
+  bootSession2 = [(PhoneTabBarController *)self bootSession];
+  [bootSession2 persistBootSessionID];
 
-  if (a3 == 6 && [(PhoneTabBarController *)self isAllowedToSwitchToSearch])
+  if (tab == 6 && [(PhoneTabBarController *)self isAllowedToSwitchToSearch])
   {
     return 1;
   }
 
   else
   {
-    return (a3 != 6) & ((a3 != 5) | v6 ^ 1);
+    return (tab != 6) & ((tab != 5) | isInDifferentBootSession ^ 1);
   }
 }
 
 - (int)currentTabViewType
 {
-  v2 = self;
-  v3 = [(PhoneTabBarController *)self selectedViewController];
-  LODWORD(v2) = [(PhoneTabBarController *)v2 tabTypeForViewController:v3];
+  selfCopy = self;
+  selectedViewController = [(PhoneTabBarController *)self selectedViewController];
+  LODWORD(selfCopy) = [(PhoneTabBarController *)selfCopy tabTypeForViewController:selectedViewController];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)_updateBottomTabs:(BOOL)a3 lastViewTypeNumber:(id)a4
+- (void)_updateBottomTabs:(BOOL)tabs lastViewTypeNumber:(id)number
 {
-  v4 = a3;
-  v6 = a4;
+  tabsCopy = tabs;
+  numberCopy = number;
   v7 = +[(PHApplicationServices *)MPApplicationServices];
-  v8 = [v7 contactStore];
+  contactStore = [v7 contactStore];
 
   v9 = +[CAUILayoutManager shared];
   if ([v9 current])
@@ -1065,27 +1065,27 @@ void __54__PhoneTabBarController_updateSelectedViewController___block_invoke(uin
     v10 = PHShouldOptimisticallyHideVoicemailUI(v17) ^ 1;
   }
 
-  if (v4)
+  if (tabsCopy)
   {
-    v11 = [(PhoneTabBarController *)self currentTabViewType];
+    currentTabViewType = [(PhoneTabBarController *)self currentTabViewType];
   }
 
-  else if (v6)
+  else if (numberCopy)
   {
-    v11 = [v6 intValue] == 1;
+    currentTabViewType = [numberCopy intValue] == 1;
   }
 
   else
   {
-    v11 = 0;
+    currentTabViewType = 0;
   }
 
-  v12 = v8 != 0;
+  v12 = contactStore != 0;
   v13 = +[CAUILayoutManager shared];
-  v14 = [v13 current];
+  current = [v13 current];
 
   LOBYTE(v16) = 0;
-  if (v14)
+  if (current)
   {
     v15 = 0;
   }
@@ -1095,54 +1095,54 @@ void __54__PhoneTabBarController_updateSelectedViewController___block_invoke(uin
     v15 = v12;
   }
 
-  [(PhoneTabBarController *)self showFavoritesTab:v15 recentsTab:1 contactsTab:v12 keypadTab:1 voicemailTab:v10 prewarm:v11 hostedInRemoteViewController:v16];
-  if (v4)
+  [(PhoneTabBarController *)self showFavoritesTab:v15 recentsTab:1 contactsTab:v12 keypadTab:1 voicemailTab:v10 prewarm:currentTabViewType hostedInRemoteViewController:v16];
+  if (tabsCopy)
   {
-    [(PhoneTabBarController *)self switchToTab:v11];
+    [(PhoneTabBarController *)self switchToTab:currentTabViewType];
   }
 }
 
-- (id)controllerForTabViewType:(int)a3
+- (id)controllerForTabViewType:(int)type
 {
-  v4 = 0;
-  if (a3 > 3)
+  keypadViewController = 0;
+  if (type > 3)
   {
-    switch(a3)
+    switch(type)
     {
       case 4:
-        v4 = [(PhoneTabBarController *)self keypadViewController];
+        keypadViewController = [(PhoneTabBarController *)self keypadViewController];
         break;
       case 5:
-        v4 = [(PhoneTabBarController *)self voicemailViewController];
+        keypadViewController = [(PhoneTabBarController *)self voicemailViewController];
         break;
       case 6:
-        v4 = [(PhoneTabBarController *)self searchNavigationController];
+        keypadViewController = [(PhoneTabBarController *)self searchNavigationController];
         break;
     }
   }
 
   else
   {
-    switch(a3)
+    switch(type)
     {
       case 1:
-        v4 = [(PhoneTabBarController *)self favoritesNavigationController];
+        keypadViewController = [(PhoneTabBarController *)self favoritesNavigationController];
         break;
       case 2:
-        v4 = [(PhoneTabBarController *)self phoneRecentsController];
+        keypadViewController = [(PhoneTabBarController *)self phoneRecentsController];
         break;
       case 3:
-        v4 = [(PhoneTabBarController *)self contactsViewController];
+        keypadViewController = [(PhoneTabBarController *)self contactsViewController];
         break;
     }
   }
 
-  return v4;
+  return keypadViewController;
 }
 
-- (void)switchToTab:(int)a3
+- (void)switchToTab:(int)tab
 {
-  v3 = *&a3;
+  v3 = *&tab;
   v5 = PHDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -1153,21 +1153,21 @@ void __54__PhoneTabBarController_updateSelectedViewController___block_invoke(uin
 
   v6 = [(PhoneTabBarController *)self controllerForTabViewType:v3];
   v7 = [(PhoneTabBarController *)self controllerForTabViewType:[(PhoneTabBarController *)self defaultTabViewType]];
-  v8 = [(PhoneTabBarController *)self selectedViewController];
+  selectedViewController = [(PhoneTabBarController *)self selectedViewController];
 
-  if (v6 != v8)
+  if (v6 != selectedViewController)
   {
     if (v6)
     {
-      v9 = [(PhoneTabBarController *)self viewControllers];
-      if ([v9 containsObject:v6])
+      viewControllers = [(PhoneTabBarController *)self viewControllers];
+      if ([viewControllers containsObject:v6])
       {
 LABEL_8:
 
 LABEL_9:
-        v13 = [(PhoneTabBarController *)self selectedViewController];
+        selectedViewController2 = [(PhoneTabBarController *)self selectedViewController];
 
-        if (v6 != v13)
+        if (v6 != selectedViewController2)
         {
           [(PhoneTabBarController *)self updateSelectedViewController:v6];
         }
@@ -1204,8 +1204,8 @@ LABEL_9:
 
     if (v7)
     {
-      v19 = [(PhoneTabBarController *)self viewControllers];
-      v20 = [v19 containsObject:v7];
+      viewControllers2 = [(PhoneTabBarController *)self viewControllers];
+      v20 = [viewControllers2 containsObject:v7];
 
       if (v20)
       {
@@ -1219,26 +1219,26 @@ LABEL_16:
 
 - (void)openVoicemails
 {
-  v2 = [(PhoneTabBarController *)self phoneRecentsController];
-  [v2 showVoicemails];
+  phoneRecentsController = [(PhoneTabBarController *)self phoneRecentsController];
+  [phoneRecentsController showVoicemails];
 }
 
-- (BOOL)handleUserActivityContinuation:(id)a3
+- (BOOL)handleUserActivityContinuation:(id)continuation
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v4 activityType];
-  v7 = v6;
-  v67 = v6;
-  if (!v5 || !v6 || [v6 caseInsensitiveCompare:@"com.apple.Contacts.ViewingCard"])
+  continuationCopy = continuation;
+  userInfo = [continuationCopy userInfo];
+  activityType = [continuationCopy activityType];
+  v7 = activityType;
+  v67 = activityType;
+  if (!userInfo || !activityType || [activityType caseInsensitiveCompare:@"com.apple.Contacts.ViewingCard"])
   {
-    v8 = [v4 interaction];
+    interaction = [continuationCopy interaction];
 
-    if (v8)
+    if (interaction)
     {
-      v9 = self;
-      v10 = [v4 interaction];
-      v11 = [(MPMessageID *)v10 intent];
+      selfCopy9 = self;
+      interaction2 = [continuationCopy interaction];
+      intent = [(MPMessageID *)interaction2 intent];
       CUTWeakLinkClass();
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -1251,12 +1251,12 @@ LABEL_16:
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Activity continuity - Play voicemail activity", buf, 2u);
         }
 
-        v14 = 5;
+        intValue = 5;
       }
 
       else
       {
-        v14 = 0;
+        intValue = 0;
       }
 
       v24 = 0;
@@ -1267,9 +1267,9 @@ LABEL_24:
       goto LABEL_53;
     }
 
-    v15 = [(PhoneTabBarController *)self featureFlags];
-    v16 = [v15 callHistorySearchEnabled];
-    if (v5 && v16 && v7)
+    featureFlags = [(PhoneTabBarController *)self featureFlags];
+    callHistorySearchEnabled = [featureFlags callHistorySearchEnabled];
+    if (userInfo && callHistorySearchEnabled && v7)
     {
       v17 = [v7 isEqual:CSQueryContinuationActionType];
 
@@ -1282,7 +1282,7 @@ LABEL_24:
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "Activity continuity - Spotlight search in app activity", buf, 2u);
         }
 
-        v19 = [v5 objectForKey:CSSearchQueryString];
+        v19 = [userInfo objectForKey:CSSearchQueryString];
         if ([(MPMessageID *)v19 length])
         {
           v20 = PHDefaultLog();
@@ -1293,21 +1293,21 @@ LABEL_24:
             _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "Activity continuity - Spotlight search activity with searchQuery: %@", buf, 0xCu);
           }
 
-          v14 = 2;
+          intValue = 2;
           if (self->_phoneRecentsController)
           {
             v21 = +[CAUILayoutManager shared];
-            v22 = [v21 current];
+            current = [v21 current];
 
             v23 = 0;
-            if (v22 == 1)
+            if (current == 1)
             {
-              v14 = 6;
+              intValue = 6;
             }
 
             else
             {
-              v14 = 2;
+              intValue = 2;
             }
           }
 
@@ -1319,11 +1319,11 @@ LABEL_24:
           goto LABEL_72;
         }
 
-        v9 = self;
+        selfCopy9 = self;
         v24 = 0;
         v23 = 0;
         v25 = 0;
-        v14 = 0;
+        intValue = 0;
         isKindOfClass = 0;
         goto LABEL_54;
       }
@@ -1333,9 +1333,9 @@ LABEL_24:
     {
     }
 
-    v31 = [(PhoneTabBarController *)self featureFlags];
-    v32 = [v31 callHistorySearchEnabled];
-    if (v5 && v32 && v7)
+    featureFlags2 = [(PhoneTabBarController *)self featureFlags];
+    callHistorySearchEnabled2 = [featureFlags2 callHistorySearchEnabled];
+    if (userInfo && callHistorySearchEnabled2 && v7)
     {
       v33 = [v7 isEqual:CSSearchableItemActionType];
 
@@ -1348,18 +1348,18 @@ LABEL_24:
           _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "Activity continuity - Spotlight search result continuity activity", buf, 2u);
         }
 
-        v10 = [v5 objectForKey:CSSearchableItemActivityIdentifier];
-        v19 = [v5 objectForKey:CSSearchQueryString];
-        if (v10)
+        interaction2 = [userInfo objectForKey:CSSearchableItemActivityIdentifier];
+        v19 = [userInfo objectForKey:CSSearchQueryString];
+        if (interaction2)
         {
           v35 = objc_alloc_init(CHManager);
-          v36 = [CHRecentCall predicateForCallsWithUniqueID:v10];
+          v36 = [CHRecentCall predicateForCallsWithUniqueID:interaction2];
           v66 = v35;
           v37 = [v35 callsWithPredicate:v36 limit:1 offset:0 batchSize:0];
 
           if ([v37 count])
           {
-            v23 = v10;
+            v23 = interaction2;
             v38 = PHDefaultLog();
             if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
             {
@@ -1370,22 +1370,22 @@ LABEL_24:
               _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Activity continuity - Spotlight call search activity with searchQuery: %@ recentsUniqueID: %@", buf, 0x16u);
             }
 
-            v9 = self;
-            v14 = 2;
+            selfCopy9 = self;
+            intValue = 2;
             if (self->_phoneRecentsController)
             {
               v39 = +[CAUILayoutManager shared];
-              v40 = [v39 current];
+              current2 = [v39 current];
 
               v24 = 0;
-              if (v40 == 1)
+              if (current2 == 1)
               {
-                v14 = 6;
+                intValue = 6;
               }
 
               else
               {
-                v14 = 2;
+                intValue = 2;
               }
             }
 
@@ -1399,17 +1399,17 @@ LABEL_24:
 
           else
           {
-            v60 = [(PhoneTabBarController *)self featureFlags];
-            v61 = [v60 voicemailSearchEnabled];
+            featureFlags3 = [(PhoneTabBarController *)self featureFlags];
+            voicemailSearchEnabled = [featureFlags3 voicemailSearchEnabled];
 
-            if (v61)
+            if (voicemailSearchEnabled)
             {
-              v62 = [[NSUUID alloc] initWithUUIDString:v10];
+              v62 = [[NSUUID alloc] initWithUUIDString:interaction2];
               v65 = v62;
               if (v62 && (v63 = [[MPMessageID alloc] initWithUuid:v62]) != 0)
               {
                 v24 = v63;
-                v9 = self;
+                selfCopy9 = self;
                 v64 = PHDefaultLog();
                 if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
                 {
@@ -1419,22 +1419,22 @@ LABEL_24:
                 }
 
                 isKindOfClass = 1;
-                v14 = 5;
+                intValue = 5;
               }
 
               else
               {
-                v9 = self;
+                selfCopy9 = self;
                 v64 = PHDefaultLog();
                 if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412290;
-                  v69 = v10;
+                  v69 = interaction2;
                   _os_log_impl(&_mh_execute_header, v64, OS_LOG_TYPE_DEFAULT, "[WARN] Activity continuity - Failed to create MPMessageID for uniqueIdentifier %@", buf, 0xCu);
                 }
 
                 v24 = 0;
-                v14 = 0;
+                intValue = 0;
                 isKindOfClass = 0;
               }
 
@@ -1443,10 +1443,10 @@ LABEL_24:
 
             else
             {
-              v9 = self;
+              selfCopy9 = self;
               v24 = 0;
               v23 = 0;
-              v14 = 0;
+              intValue = 0;
               isKindOfClass = 0;
             }
           }
@@ -1454,7 +1454,7 @@ LABEL_24:
           goto LABEL_24;
         }
 
-        v9 = self;
+        selfCopy9 = self;
         v24 = 0;
         v23 = 0;
         v25 = 0;
@@ -1466,7 +1466,7 @@ LABEL_24:
     {
     }
 
-    v9 = self;
+    selfCopy9 = self;
     v41 = PHDefaultLog();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
@@ -1474,8 +1474,8 @@ LABEL_24:
       _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "Activity continuity - Phone activity", buf, 2u);
     }
 
-    v10 = [v5 objectForKey:@"PHLastTabTypeKey"];
-    v14 = [(MPMessageID *)v10 intValue];
+    interaction2 = [userInfo objectForKey:@"PHLastTabTypeKey"];
+    intValue = [(MPMessageID *)interaction2 intValue];
     v24 = 0;
     v19 = 0;
     v23 = 0;
@@ -1490,20 +1490,20 @@ LABEL_24:
     _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Activity continuity - com.apple.Contacts.ViewingCard activity", buf, 2u);
   }
 
-  v10 = +[(PHApplicationServices *)MPApplicationServices];
-  v27 = [(MPMessageID *)v10 contactStore];
+  interaction2 = +[(PHApplicationServices *)MPApplicationServices];
+  contactStore = [(MPMessageID *)interaction2 contactStore];
   v28 = +[CNContactViewController descriptorForRequiredKeys];
   v72 = v28;
   v29 = [NSArray arrayWithObjects:&v72 count:1];
-  v25 = [v27 contactWithUserActivityUserInfo:v5 keysToFetch:v29];
+  v25 = [contactStore contactWithUserActivityUserInfo:userInfo keysToFetch:v29];
 
-  v9 = self;
+  selfCopy9 = self;
   if (!v25)
   {
     v30 = PHDefaultLog();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
-      [(PhoneTabBarController *)v5 handleUserActivityContinuation:v30];
+      [(PhoneTabBarController *)userInfo handleUserActivityContinuation:v30];
     }
   }
 
@@ -1511,12 +1511,12 @@ LABEL_24:
   v19 = 0;
   v23 = 0;
 LABEL_32:
-  v14 = 0;
+  intValue = 0;
 LABEL_52:
   isKindOfClass = 0;
 LABEL_53:
 
-  if (v14)
+  if (intValue)
   {
 LABEL_55:
     if (v25)
@@ -1529,40 +1529,40 @@ LABEL_55:
         _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "Activity continuity - Resuming to contact: %{sensitive}@", buf, 0xCu);
       }
 
-      [(PhoneTabBarController *)v9 switchToTab:3];
-      v43 = [(PhoneTabBarController *)v9 contactsViewController];
-      [v43 showCardForContact:v25 animated:0];
+      [(PhoneTabBarController *)selfCopy9 switchToTab:3];
+      contactsViewController = [(PhoneTabBarController *)selfCopy9 contactsViewController];
+      [contactsViewController showCardForContact:v25 animated:0];
 
       isKindOfClass = 1;
       goto LABEL_59;
     }
 
-    self = v9;
+    self = selfCopy9;
     if (v24)
     {
       v44 = PHDefaultLog();
       v7 = v67;
       if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
       {
-        v45 = [(MPMessageID *)v24 messageUUID];
+        messageUUID = [(MPMessageID *)v24 messageUUID];
         *buf = 138412290;
-        v69 = v45;
+        v69 = messageUUID;
         _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Activity continuity - Resuming to voicemail with messageID: %@", buf, 0xCu);
       }
 
       if (self->_phoneRecentsController && (+[CAUILayoutManager shared](CAUILayoutManager, "shared"), v46 = objc_claimAutoreleasedReturnValue(), v47 = [v46 current], v46, v47 == 1))
       {
         [(PhoneTabBarController *)self switchToTab:2];
-        v48 = [(PhoneTabBarController *)self phoneRecentsController];
-        v49 = [(MPMessageID *)v24 messageUUID];
-        [v48 presentVoicemailDetailsWithUUID:v49 completion:&__block_literal_global_9];
+        phoneRecentsController = [(PhoneTabBarController *)self phoneRecentsController];
+        messageUUID2 = [(MPMessageID *)v24 messageUUID];
+        [phoneRecentsController presentVoicemailDetailsWithUUID:messageUUID2 completion:&__block_literal_global_9];
       }
 
       else
       {
         [(PhoneTabBarController *)self switchToTab:5];
-        v48 = [(PhoneTabBarController *)self voicemailViewController];
-        [v48 playMessageWithID:v24];
+        phoneRecentsController = [(PhoneTabBarController *)self voicemailViewController];
+        [phoneRecentsController playMessageWithID:v24];
       }
 
       v25 = 0;
@@ -1590,13 +1590,13 @@ LABEL_72:
       {
         [(PhoneTabBarController *)self switchToTab:6];
         v54 = [(PhoneNavigationController *)self->_searchNavigationController popToRootViewControllerAnimated:0];
-        v55 = [(PhoneNavigationController *)self->_searchNavigationController viewControllers];
-        v56 = [v55 firstObject];
+        viewControllers = [(PhoneNavigationController *)self->_searchNavigationController viewControllers];
+        firstObject = [viewControllers firstObject];
 
-        [v56 startSearchingForText:v19];
+        [firstObject startSearchingForText:v19];
         if ([(MPMessageID *)v23 length])
         {
-          [v56 handleShowDetailsURLForUniqueID:v23];
+          [firstObject handleShowDetailsURLForUniqueID:v23];
         }
       }
 
@@ -1604,16 +1604,16 @@ LABEL_72:
       {
         [(PhoneTabBarController *)self switchToTab:2];
         v57 = [(MPMessageID *)v23 length];
-        v58 = [(PhoneTabBarController *)self phoneRecentsController];
-        v56 = v58;
+        phoneRecentsController2 = [(PhoneTabBarController *)self phoneRecentsController];
+        firstObject = phoneRecentsController2;
         if (v57)
         {
-          [v58 showDetailsForCallWithUniqueID:v23 searchText:v19];
+          [phoneRecentsController2 showDetailsForCallWithUniqueID:v23 searchText:v19];
         }
 
         else
         {
-          [v58 startSearchingForText:v19 completion:0];
+          [phoneRecentsController2 startSearchingForText:v19 completion:0];
         }
       }
 
@@ -1625,11 +1625,11 @@ LABEL_72:
       if (v51)
       {
         *buf = 67109120;
-        LODWORD(v69) = v14;
+        LODWORD(v69) = intValue;
         _os_log_impl(&_mh_execute_header, v50, OS_LOG_TYPE_DEFAULT, "Activity continuity - Resuming to tab type: %d", buf, 8u);
       }
 
-      [(PhoneTabBarController *)self switchToTab:v14];
+      [(PhoneTabBarController *)self switchToTab:intValue];
       v25 = 0;
       v19 = 0;
     }
@@ -1651,28 +1651,28 @@ LABEL_88:
   return isKindOfClass & 1;
 }
 
-- (void)handleURL:(id)a3
+- (void)handleURL:(id)l
 {
-  v4 = a3;
-  v5 = [v4 scheme];
-  v6 = [v5 lowercaseString];
+  lCopy = l;
+  scheme = [lCopy scheme];
+  lowercaseString = [scheme lowercaseString];
 
-  if ([v6 isEqualToString:@"mobilephone-contacts"])
+  if ([lowercaseString isEqualToString:@"mobilephone-contacts"])
   {
-    v7 = [v4 host];
-    v8 = [v7 lowercaseString];
+    host = [lCopy host];
+    lowercaseString2 = [host lowercaseString];
 
-    if (v8 && [v8 isEqualToString:@"show"])
+    if (lowercaseString2 && [lowercaseString2 isEqualToString:@"show"])
     {
-      v9 = [v4 query];
-      v10 = [v9 rangeOfString:@"="];
+      query = [lCopy query];
+      v10 = [query rangeOfString:@"="];
       if (v10)
       {
         v11 = v10;
-        if (v10 < [v9 length] - 1)
+        if (v10 < [query length] - 1)
         {
-          v12 = [v9 substringToIndex:v11];
-          v13 = [v9 substringFromIndex:v11 + 1];
+          v12 = [query substringToIndex:v11];
+          v13 = [query substringFromIndex:v11 + 1];
           if ([v12 isEqualToString:@"id"])
           {
             v14 = +[(PHApplicationServices *)MPApplicationServices];
@@ -1689,35 +1689,35 @@ LABEL_88:
 
             if (v19)
             {
-              v20 = [(PhoneTabBarController *)self contactsViewController];
-              [v20 showCardForContact:v19 animated:0];
+              contactsViewController = [(PhoneTabBarController *)self contactsViewController];
+              [contactsViewController showCardForContact:v19 animated:0];
             }
           }
         }
       }
     }
 
-    v21 = [(PhoneTabBarController *)self contactsViewController];
+    contactsViewController2 = [(PhoneTabBarController *)self contactsViewController];
 LABEL_13:
-    v22 = v21;
+    phoneRecentsController = contactsViewController2;
     goto LABEL_14;
   }
 
-  if ([v6 isEqualToString:@"vmshow"])
+  if ([lowercaseString isEqualToString:@"vmshow"])
   {
-    v8 = [v4 voicemailMessageUUID];
-    if (!v8 && ![UIApp hasEnhancedVoicemail])
+    lowercaseString2 = [lCopy voicemailMessageUUID];
+    if (!lowercaseString2 && ![UIApp hasEnhancedVoicemail])
     {
-      v22 = 0;
+      phoneRecentsController = 0;
       goto LABEL_14;
     }
 
     v23 = +[CAUILayoutManager shared];
-    v24 = [v23 current];
+    current = [v23 current];
 
-    if (v24 == 1)
+    if (current == 1)
     {
-      v21 = [(PhoneTabBarController *)self phoneRecentsController];
+      contactsViewController2 = [(PhoneTabBarController *)self phoneRecentsController];
     }
 
     else
@@ -1729,73 +1729,73 @@ LABEL_13:
         _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Switching to Voicemail tab to show a voicemail.", buf, 2u);
       }
 
-      v21 = [(PhoneTabBarController *)self voicemailViewController];
+      contactsViewController2 = [(PhoneTabBarController *)self voicemailViewController];
     }
 
     goto LABEL_13;
   }
 
-  if (([v6 isEqualToString:@"mobilephone-recents"] & 1) == 0 && !objc_msgSend(v6, "isEqualToString:", @"mobilephone-unknowncallerstip"))
+  if (([lowercaseString isEqualToString:@"mobilephone-recents"] & 1) == 0 && !objc_msgSend(lowercaseString, "isEqualToString:", @"mobilephone-unknowncallerstip"))
   {
-    if ([v6 isEqualToString:@"mobilephone-favorites"])
+    if ([lowercaseString isEqualToString:@"mobilephone-favorites"])
     {
-      v27 = [(PhoneTabBarController *)self favoritesNavigationController];
+      favoritesNavigationController = [(PhoneTabBarController *)self favoritesNavigationController];
     }
 
     else
     {
-      if (![v6 isEqualToString:@"mobilephone-keypad"])
+      if (![lowercaseString isEqualToString:@"mobilephone-keypad"])
       {
-        v22 = 0;
+        phoneRecentsController = 0;
         goto LABEL_20;
       }
 
-      v27 = [(PhoneTabBarController *)self keypadViewController];
+      favoritesNavigationController = [(PhoneTabBarController *)self keypadViewController];
     }
 
     goto LABEL_41;
   }
 
   v25 = +[MPPreferences sharedPreferences];
-  v26 = [v25 useSwiftUIRecents];
+  useSwiftUIRecents = [v25 useSwiftUIRecents];
 
-  if (v26)
+  if (useSwiftUIRecents)
   {
-    v27 = [(PhoneTabBarController *)self recentsViewController];
+    favoritesNavigationController = [(PhoneTabBarController *)self recentsViewController];
 LABEL_41:
-    v22 = v27;
+    phoneRecentsController = favoritesNavigationController;
     goto LABEL_15;
   }
 
-  v22 = [(PhoneTabBarController *)self phoneRecentsController];
-  [(PhoneTabBarController *)self switchToTab:[(PhoneTabBarController *)self tabTypeForViewController:v22]];
-  v29 = [(PhoneTabBarController *)self featureFlags];
-  v30 = [v29 callExperiencePhoneAppEnabled];
+  phoneRecentsController = [(PhoneTabBarController *)self phoneRecentsController];
+  [(PhoneTabBarController *)self switchToTab:[(PhoneTabBarController *)self tabTypeForViewController:phoneRecentsController]];
+  featureFlags = [(PhoneTabBarController *)self featureFlags];
+  callExperiencePhoneAppEnabled = [featureFlags callExperiencePhoneAppEnabled];
 
-  if (v30)
+  if (callExperiencePhoneAppEnabled)
   {
     goto LABEL_15;
   }
 
-  v8 = [v4 recentsUniqueID];
-  if ([v8 length])
+  lowercaseString2 = [lCopy recentsUniqueID];
+  if ([lowercaseString2 length])
   {
-    v31 = [(PhoneTabBarController *)self recentsTableViewController];
-    [v31 handleShowDetailsURLForUniqueID:v8];
+    recentsTableViewController = [(PhoneTabBarController *)self recentsTableViewController];
+    [recentsTableViewController handleShowDetailsURLForUniqueID:lowercaseString2];
   }
 
 LABEL_14:
 
 LABEL_15:
-  if (v22)
+  if (phoneRecentsController)
   {
-    [(PhoneTabBarController *)self switchToTab:[(PhoneTabBarController *)self tabTypeForViewController:v22]];
-    if ([v22 conformsToProtocol:&OBJC_PROTOCOL___PhoneTabViewController])
+    [(PhoneTabBarController *)self switchToTab:[(PhoneTabBarController *)self tabTypeForViewController:phoneRecentsController]];
+    if ([phoneRecentsController conformsToProtocol:&OBJC_PROTOCOL___PhoneTabViewController])
     {
-      v22 = v22;
+      phoneRecentsController = phoneRecentsController;
       if (objc_opt_respondsToSelector())
       {
-        [v22 handleURL:v4];
+        [phoneRecentsController handleURL:lCopy];
       }
     }
   }
@@ -1803,71 +1803,71 @@ LABEL_15:
 LABEL_20:
 }
 
-- (int)tabTypeForViewController:(id)a3
+- (int)tabTypeForViewController:(id)controller
 {
-  v5 = a3;
-  v6 = [(PhoneTabBarController *)self favoritesNavigationController];
+  controllerCopy = controller;
+  favoritesNavigationController = [(PhoneTabBarController *)self favoritesNavigationController];
 
-  if (v6 == v5)
+  if (favoritesNavigationController == controllerCopy)
   {
     v18 = 1;
     goto LABEL_16;
   }
 
-  v7 = [(PhoneTabBarController *)self recentsNavigationController];
-  if (v7 == v5)
+  recentsNavigationController = [(PhoneTabBarController *)self recentsNavigationController];
+  if (recentsNavigationController == controllerCopy)
   {
     goto LABEL_14;
   }
 
-  v8 = [(PhoneTabBarController *)self phoneRecentsController];
-  v9 = v8;
-  if (v8 == v5)
+  phoneRecentsController = [(PhoneTabBarController *)self phoneRecentsController];
+  v9 = phoneRecentsController;
+  if (phoneRecentsController == controllerCopy)
   {
 
 LABEL_14:
     goto LABEL_15;
   }
 
-  v10 = [(PhoneTabBarController *)self recentsTableViewController];
+  recentsTableViewController = [(PhoneTabBarController *)self recentsTableViewController];
 
-  if (v10 == v5)
+  if (recentsTableViewController == controllerCopy)
   {
 LABEL_15:
     v18 = 2;
     goto LABEL_16;
   }
 
-  v11 = [(PhoneTabBarController *)self contactsViewController];
+  contactsViewController = [(PhoneTabBarController *)self contactsViewController];
 
-  if (v11 == v5)
+  if (contactsViewController == controllerCopy)
   {
     v18 = 3;
   }
 
   else
   {
-    v12 = [(PhoneTabBarController *)self keypadViewController];
+    keypadViewController = [(PhoneTabBarController *)self keypadViewController];
 
-    if (v12 == v5)
+    if (keypadViewController == controllerCopy)
     {
       v18 = 4;
     }
 
     else
     {
-      v13 = [(PhoneTabBarController *)self voicemailViewController];
+      voicemailViewController = [(PhoneTabBarController *)self voicemailViewController];
 
-      if (v13 == v5)
+      if (voicemailViewController == controllerCopy)
       {
         v18 = 5;
       }
 
       else
       {
-        v14 = [(PhoneTabBarController *)self searchNavigationController];
+        searchNavigationController = [(PhoneTabBarController *)self searchNavigationController];
 
-        if (v14 == v5)
+        if (searchNavigationController == controllerCopy)
         {
           v18 = 6;
         }
@@ -1880,9 +1880,9 @@ LABEL_15:
             [(PhoneTabBarController *)self tabTypeForViewController:v15];
           }
 
-          v16 = [NSString stringWithFormat:@"Unknown view controller: %@", v5];
+          controllerCopy = [NSString stringWithFormat:@"Unknown view controller: %@", controllerCopy];
           v17 = +[NSAssertionHandler currentHandler];
-          [v17 handleFailureInMethod:a2 object:self file:@"PhoneTabBarController.m" lineNumber:996 description:v16];
+          [v17 handleFailureInMethod:a2 object:self file:@"PhoneTabBarController.m" lineNumber:996 description:controllerCopy];
 
           v18 = 0;
         }
@@ -1895,30 +1895,30 @@ LABEL_16:
   return v18;
 }
 
-- (int)tabTypeForTab:(id)a3
+- (int)tabTypeForTab:(id)tab
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:@"com.apple.UIKit.Search"];
+  tabCopy = tab;
+  identifier = [tabCopy identifier];
+  v6 = [identifier isEqualToString:@"com.apple.UIKit.Search"];
 
   if (v6)
   {
-    LODWORD(v7) = 6;
+    LODWORD(integerValue) = 6;
   }
 
   else
   {
-    v8 = [v4 identifier];
-    v7 = [v8 integerValue];
+    identifier2 = [tabCopy identifier];
+    integerValue = [identifier2 integerValue];
 
-    if ((v7 - 1) > 5)
+    if ((integerValue - 1) > 5)
     {
-      v9 = [v4 viewController];
+      viewController = [tabCopy viewController];
 
-      if (v9)
+      if (viewController)
       {
-        v10 = [v4 viewController];
-        LODWORD(v7) = [(PhoneTabBarController *)self tabTypeForViewController:v10];
+        viewController2 = [tabCopy viewController];
+        LODWORD(integerValue) = [(PhoneTabBarController *)self tabTypeForViewController:viewController2];
       }
 
       else
@@ -1926,36 +1926,36 @@ LABEL_16:
         v11 = PHDefaultLog();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
-          [(PhoneTabBarController *)v4 tabTypeForTab:v11];
+          [(PhoneTabBarController *)tabCopy tabTypeForTab:v11];
         }
 
-        LODWORD(v7) = 0;
+        LODWORD(integerValue) = 0;
       }
     }
   }
 
-  return v7;
+  return integerValue;
 }
 
-- (id)viewControllerForTabViewType:(int)a3
+- (id)viewControllerForTabViewType:(int)type
 {
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 0:
 LABEL_14:
-        v8 = 0;
+        firstObject = 0;
         goto LABEL_19;
       case 1:
-        v5 = [(PhoneTabBarController *)self favoritesViewController];
+        favoritesViewController = [(PhoneTabBarController *)self favoritesViewController];
         break;
       case 2:
-        v5 = [(PhoneTabBarController *)self phoneRecentsController];
+        favoritesViewController = [(PhoneTabBarController *)self phoneRecentsController];
         break;
       default:
 LABEL_13:
-        v9 = [NSString stringWithFormat:@"Unknown tab type: %u", *&a3];
+        v9 = [NSString stringWithFormat:@"Unknown tab type: %u", *&type];
         v10 = +[NSAssertionHandler currentHandler];
         [v10 handleFailureInMethod:a2 object:self file:@"PhoneTabBarController.m" lineNumber:1046 description:v9];
 
@@ -1965,9 +1965,9 @@ LABEL_13:
 
   else
   {
-    if (a3 <= 4)
+    if (type <= 4)
     {
-      if (a3 == 3)
+      if (type == 3)
       {
         [(PhoneTabBarController *)self contactsViewController];
       }
@@ -1976,17 +1976,17 @@ LABEL_13:
       {
         [(PhoneTabBarController *)self keypadViewController];
       }
-      v5 = ;
+      favoritesViewController = ;
       goto LABEL_18;
     }
 
-    if (a3 != 5)
+    if (type != 5)
     {
-      if (a3 == 6)
+      if (type == 6)
       {
-        v6 = [(PhoneTabBarController *)self searchNavigationController];
-        v7 = [v6 viewControllers];
-        v8 = [v7 firstObject];
+        searchNavigationController = [(PhoneTabBarController *)self searchNavigationController];
+        viewControllers = [searchNavigationController viewControllers];
+        firstObject = [viewControllers firstObject];
 
         goto LABEL_19;
       }
@@ -1994,17 +1994,17 @@ LABEL_13:
       goto LABEL_13;
     }
 
-    v5 = [(PhoneTabBarController *)self voicemailViewController];
+    favoritesViewController = [(PhoneTabBarController *)self voicemailViewController];
   }
 
 LABEL_18:
-  v8 = v5;
+  firstObject = favoritesViewController;
 LABEL_19:
 
-  return v8;
+  return firstObject;
 }
 
-- (void)updateListenersForState:(int64_t)a3
+- (void)updateListenersForState:(int64_t)state
 {
   objc_initWeak(&location, self);
   v8[0] = _NSConcreteStackBlock;
@@ -2014,11 +2014,11 @@ LABEL_19:
   v8[4] = self;
   objc_copyWeak(&v9, &location);
   v5 = objc_retainBlock(v8);
-  if (a3)
+  if (state)
   {
-    v7 = [(PhoneTabBarController *)self voicemailListener];
+    voicemailListener = [(PhoneTabBarController *)self voicemailListener];
 
-    if (!v7)
+    if (!voicemailListener)
     {
       (v5[2])(v5);
     }
@@ -2026,9 +2026,9 @@ LABEL_19:
 
   else
   {
-    v6 = [(PhoneTabBarController *)self voicemailListener];
+    voicemailListener2 = [(PhoneTabBarController *)self voicemailListener];
 
-    if (v6)
+    if (voicemailListener2)
     {
       [(PhoneTabBarController *)self setVoicemailListener:0];
     }
@@ -2081,9 +2081,9 @@ void __43__PhoneTabBarController__checkMailboxUsage__block_invoke(uint64_t a1)
   }
 }
 
-- (void)handleUIApplicationWillEnterForegroundNotification:(id)a3
+- (void)handleUIApplicationWillEnterForegroundNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   if ([UIApp shouldShowReceptionistOnboarding])
   {
     v5 = PHDefaultLog();
@@ -2091,11 +2091,11 @@ void __43__PhoneTabBarController__checkMailboxUsage__block_invoke(uint64_t a1)
     {
       v6 = objc_opt_class();
       v7 = v6;
-      v8 = [v4 name];
+      name = [notificationCopy name];
       v9 = 138412546;
       v10 = v6;
       v11 = 2112;
-      v12 = v8;
+      v12 = name;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%@ is handling <%@> to show Receptionist onboarding", &v9, 0x16u);
     }
 
@@ -2119,8 +2119,8 @@ void __43__PhoneTabBarController__checkMailboxUsage__block_invoke(uint64_t a1)
   [v9 setTitle:v11 forState:0];
 
   [v9 addTarget:self action:"enableScreenUnknownCallers:" forControlEvents:64];
-  v12 = [v8 buttonTray];
-  [v12 addButton:v9];
+  buttonTray = [v8 buttonTray];
+  [buttonTray addButton:v9];
 
   v13 = +[OBLinkTrayButton linkButton];
   v14 = +[NSBundle mainBundle];
@@ -2128,14 +2128,14 @@ void __43__PhoneTabBarController__checkMailboxUsage__block_invoke(uint64_t a1)
   [v13 setTitle:v15 forState:0];
 
   [v13 addTarget:self action:"dismissScreenUnknownCallers:" forControlEvents:64];
-  v16 = [v8 buttonTray];
-  [v16 addButton:v13];
+  buttonTray2 = [v8 buttonTray];
+  [buttonTray2 addButton:v13];
 
   [v8 setModalPresentationStyle:0];
   [(PhoneTabBarController *)self presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)enableScreenUnknownCallers:(id)a3
+- (void)enableScreenUnknownCallers:(id)callers
 {
   v6 = objc_alloc_init(TUConfigurationProvider);
   if ([(TUFeatureFlags *)self->_featureFlags deviceExpertMigrationEnabled])
@@ -2157,7 +2157,7 @@ void __43__PhoneTabBarController__checkMailboxUsage__block_invoke(uint64_t a1)
   [(PhoneTabBarController *)self dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)dismissScreenUnknownCallers:(id)a3
+- (void)dismissScreenUnknownCallers:(id)callers
 {
   +[TPTipsHelper donateHasDismissedScreeningOnboardingModal];
 
@@ -2166,21 +2166,21 @@ void __43__PhoneTabBarController__checkMailboxUsage__block_invoke(uint64_t a1)
 
 + (id)defaultPNGName
 {
-  v2 = [UIApp rootViewController];
-  v3 = [v2 baseViewController];
+  rootViewController = [UIApp rootViewController];
+  baseViewController = [rootViewController baseViewController];
 
-  v4 = [v3 selectedViewController];
-  v5 = [objc_opt_class() defaultPNGName];
+  selectedViewController = [baseViewController selectedViewController];
+  defaultPNGName = [objc_opt_class() defaultPNGName];
 
-  return v5;
+  return defaultPNGName;
 }
 
 - (BOOL)shouldSnapshot
 {
   v2 = [(PhoneTabBarController *)self viewControllerForTabViewType:[(PhoneTabBarController *)self currentTabViewType]];
-  v3 = [v2 shouldSnapshot];
+  shouldSnapshot = [v2 shouldSnapshot];
 
-  return v3;
+  return shouldSnapshot;
 }
 
 - (void)prepareForSnapshot
@@ -2191,13 +2191,13 @@ void __43__PhoneTabBarController__checkMailboxUsage__block_invoke(uint64_t a1)
 
 - (void)transitionCompleted
 {
-  v3 = [(PhoneTabBarController *)self selectedViewController];
+  selectedViewController = [(PhoneTabBarController *)self selectedViewController];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(PhoneTabBarController *)self selectedViewController];
-    [v5 transitionCompleted];
+    selectedViewController2 = [(PhoneTabBarController *)self selectedViewController];
+    [selectedViewController2 transitionCompleted];
   }
 }
 
@@ -2212,9 +2212,9 @@ void __43__PhoneTabBarController__checkMailboxUsage__block_invoke(uint64_t a1)
   if ([phoneRecentsController callExperiencePhoneAppEnabled])
   {
     v4 = +[UIDevice currentDevice];
-    v5 = [v4 userInterfaceIdiom];
+    userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-    if ((v5 & 0xFFFFFFFFFFFFFFFBLL) == 1)
+    if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       goto LABEL_6;
     }
@@ -2226,8 +2226,8 @@ void __43__PhoneTabBarController__checkMailboxUsage__block_invoke(uint64_t a1)
 
 LABEL_6:
   v7 = +[(PHApplicationServices *)MPApplicationServices];
-  v8 = [v7 contactStore];
-  v9 = v8 != 0;
+  contactStore = [v7 contactStore];
+  v9 = contactStore != 0;
 
   v10 = +[CAUILayoutManager shared];
   LOBYTE(v18) = 1;
@@ -2245,61 +2245,61 @@ LABEL_6:
 
   v12 = +[NSBundle mainBundle];
   v13 = [v12 localizedStringForKey:@"CREATE_NEW_CALL" value:&stru_10028F310 table:@"General"];
-  v14 = [(PhoneTabBarController *)self contactsViewController];
-  v15 = [v14 contactListViewController];
-  v16 = [v15 navigationItem];
-  [v16 setPrompt:v13];
+  contactsViewController = [(PhoneTabBarController *)self contactsViewController];
+  contactListViewController = [contactsViewController contactListViewController];
+  navigationItem = [contactListViewController navigationItem];
+  [navigationItem setPrompt:v13];
 
-  v17 = [(PhoneTabBarController *)self keypadViewController];
-  [v17 setIsHostedInRemoteViewController:1];
+  keypadViewController = [(PhoneTabBarController *)self keypadViewController];
+  [keypadViewController setIsHostedInRemoteViewController:1];
 
-  v19 = [(PhoneTabBarController *)self contactsViewController];
-  [(PhoneTabBarController *)self updateSelectedViewController:v19];
+  contactsViewController2 = [(PhoneTabBarController *)self contactsViewController];
+  [(PhoneTabBarController *)self updateSelectedViewController:contactsViewController2];
 }
 
-- (BOOL)tabBarController:(id)a3 shouldSelectTab:(id)a4
+- (BOOL)tabBarController:(id)controller shouldSelectTab:(id)tab
 {
-  v6 = a3;
-  v7 = [a4 viewController];
-  v8 = [(PhoneTabBarController *)self selectedViewController];
-  v9 = [(PhoneTabBarController *)self keypadViewController];
-  if (([v8 isEqual:v9] & 1) == 0)
+  controllerCopy = controller;
+  viewController = [tab viewController];
+  selectedViewController = [(PhoneTabBarController *)self selectedViewController];
+  keypadViewController = [(PhoneTabBarController *)self keypadViewController];
+  if (([selectedViewController isEqual:keypadViewController] & 1) == 0)
   {
 
     goto LABEL_5;
   }
 
-  v10 = [(PhoneTabBarController *)self contactsViewController];
-  v11 = [v7 isEqual:v10];
+  contactsViewController = [(PhoneTabBarController *)self contactsViewController];
+  v11 = [viewController isEqual:contactsViewController];
 
   if (v11)
   {
-    v8 = +[MPSignpost sharedInstance];
-    [v8 keypadTabSwitchStarted];
+    selectedViewController = +[MPSignpost sharedInstance];
+    [selectedViewController keypadTabSwitchStarted];
 LABEL_5:
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ![v7 tabBarControllerShouldSelectViewController:v6])
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ![viewController tabBarControllerShouldSelectViewController:controllerCopy])
   {
     v14 = 0;
   }
 
   else
   {
-    v12 = [v6 selectedViewController];
+    selectedViewController2 = [controllerCopy selectedViewController];
 
-    if (v7 != v12)
+    if (viewController != selectedViewController2)
     {
       v13 = +[NSNotificationCenter defaultCenter];
-      [v13 postNotificationName:@"PhoneApplicationDidChangeTabBarSelectionNotification" object:v7 userInfo:0];
+      [v13 postNotificationName:@"PhoneApplicationDidChangeTabBarSelectionNotification" object:viewController userInfo:0];
     }
 
     v14 = 1;
   }
 
-  v15 = [v6 selectedViewController];
+  selectedViewController3 = [controllerCopy selectedViewController];
 
-  if (v7 == v15)
+  if (viewController == selectedViewController3)
   {
     [(PhoneTabBarController *)self popCurrentNavigationControllerToRootViewControllerAnimated:1];
   }
@@ -2307,9 +2307,9 @@ LABEL_5:
   return v14;
 }
 
-- (void)tabBarController:(id)a3 didSelectTab:(id)a4 previousTab:(id)a5
+- (void)tabBarController:(id)controller didSelectTab:(id)tab previousTab:(id)previousTab
 {
-  v5 = [(PhoneTabBarController *)self currentTabViewType:a3];
+  v5 = [(PhoneTabBarController *)self currentTabViewType:controller];
   v6 = [NSNumber numberWithInt:v5];
   PHPreferencesSetValueInDomain();
 
@@ -2328,66 +2328,66 @@ LABEL_5:
   [v2 keypadButtonInteractedWithButtonType:4];
 }
 
-- (void)presentContactsSearchFor:(id)a3
+- (void)presentContactsSearchFor:(id)for
 {
-  v4 = a3;
-  [(PhoneTabBarController *)self presentSearch:v4];
+  forCopy = for;
+  [(PhoneTabBarController *)self presentSearch:forCopy];
   v6 = +[CSSearchMetrics shared];
-  v5 = [v4 length];
+  v5 = [forCopy length];
 
   [v6 logSearchResultInteraction:1 cellType:8 searchLength:v5];
 }
 
-- (void)didPressSearchButton:(id)a3 unformattedNumber:(id)a4
+- (void)didPressSearchButton:(id)button unformattedNumber:(id)number
 {
-  v7 = a4;
-  v5 = [(PhoneTabBarController *)self featureFlags];
-  v6 = [v5 smartDialerExpandedSearchEnabled];
+  numberCopy = number;
+  featureFlags = [(PhoneTabBarController *)self featureFlags];
+  smartDialerExpandedSearchEnabled = [featureFlags smartDialerExpandedSearchEnabled];
 
-  if (v6)
+  if (smartDialerExpandedSearchEnabled)
   {
-    [(PhoneTabBarController *)self presentSearch:v7];
+    [(PhoneTabBarController *)self presentSearch:numberCopy];
   }
 }
 
-- (void)keyPadViewControllerDidAppear:(BOOL)a3
+- (void)keyPadViewControllerDidAppear:(BOOL)appear
 {
   v4 = createPHPhoneTabBarControllerTabViewDidAppearNotificationInfo(4, self);
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 postNotificationName:@"PHPhoneTabBarControllerTabViewDidAppearNotification" object:v4];
 }
 
-- (void)didPressAddContactButton:(int64_t)a3
+- (void)didPressAddContactButton:(int64_t)button
 {
-  if ((a3 - 1) <= 2)
+  if ((button - 1) <= 2)
   {
-    v4 = dword_1002089A8[a3 - 1];
+    v4 = dword_1002089A8[button - 1];
     v5 = +[CSSearchMetrics shared];
     [v5 keypadButtonInteractedWithButtonType:v4];
   }
 }
 
-- (void)keyPadSearchFor:(id)a3 shouldRefreshResult:(BOOL)a4 completionHandler:(id)a5
+- (void)keyPadSearchFor:(id)for shouldRefreshResult:(BOOL)result completionHandler:(id)handler
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
+  resultCopy = result;
+  forCopy = for;
+  handlerCopy = handler;
   v10 = +[NSDate date];
-  v11 = [(PhoneTabBarController *)self contactSearchManager];
-  [v11 cancelPreviousSearch];
+  contactSearchManager = [(PhoneTabBarController *)self contactSearchManager];
+  [contactSearchManager cancelPreviousSearch];
 
-  v12 = [(PhoneTabBarController *)self contactSearchManager];
+  contactSearchManager2 = [(PhoneTabBarController *)self contactSearchManager];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = __79__PhoneTabBarController_keyPadSearchFor_shouldRefreshResult_completionHandler___block_invoke;
   v16[3] = &unk_100285B90;
-  v18 = v8;
-  v19 = v9;
+  v18 = forCopy;
+  v19 = handlerCopy;
   v17 = v10;
-  v13 = v8;
+  v13 = forCopy;
   v14 = v10;
-  v15 = v9;
-  [v12 searchFor:v13 shouldRefreshResult:v6 completionHandler:v16];
+  v15 = handlerCopy;
+  [contactSearchManager2 searchFor:v13 shouldRefreshResult:resultCopy completionHandler:v16];
 }
 
 void __79__PhoneTabBarController_keyPadSearchFor_shouldRefreshResult_completionHandler___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -2403,9 +2403,9 @@ void __79__PhoneTabBarController_keyPadSearchFor_shouldRefreshResult_completionH
   [v6 searchFinishedForController:7 startTime:*(a1 + 32) searchLength:objc_msgSend(*(a1 + 40) resultsCount:{"length"), objc_msgSend(v7, "count")}];
 }
 
-- (void)presentSearch:(id)a3
+- (void)presentSearch:(id)search
 {
-  v4 = a3;
+  searchCopy = search;
   objc_initWeak(&location, self);
   v5 = [MPKeypadSearchViewController alloc];
   v8 = _NSConcreteStackBlock;
@@ -2414,7 +2414,7 @@ void __79__PhoneTabBarController_keyPadSearchFor_shouldRefreshResult_completionH
   v11 = &unk_1002857A8;
   objc_copyWeak(&v12, &location);
   v6 = [(MPKeypadSearchViewController *)v5 initWithOnDismissHandler:&v8];
-  [(MPKeypadSearchViewController *)v6 updateSearchText:v4, v8, v9, v10, v11];
+  [(MPKeypadSearchViewController *)v6 updateSearchText:searchCopy, v8, v9, v10, v11];
   v7 = [[UINavigationController alloc] initWithRootViewController:v6];
   [v7 setModalPresentationStyle:3];
   [v7 setModalTransitionStyle:2];
@@ -2445,13 +2445,13 @@ void __39__PhoneTabBarController_presentSearch___block_invoke(uint64_t a1)
   {
     v4 = [MPContactSearchManager alloc];
     v5 = +[(PHApplicationServices *)MPApplicationServices];
-    v6 = [v5 suggestedContactStore];
+    suggestedContactStore = [v5 suggestedContactStore];
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = __45__PhoneTabBarController_contactSearchManager__block_invoke;
     v10[3] = &unk_100285BB8;
     v10[4] = self;
-    v7 = [v4 initWithType:1 contactStore:v6 searchResultsRanker:v10];
+    v7 = [v4 initWithType:1 contactStore:suggestedContactStore searchResultsRanker:v10];
     v8 = self->_contactSearchManager;
     self->_contactSearchManager = v7;
 
@@ -2492,27 +2492,27 @@ id __45__PhoneTabBarController_contactSearchManager__block_invoke(uint64_t a1, v
   v6 = type metadata accessor for SupportFlowIdentifier();
   (*(*(v6 - 8) + 56))(v5, 1, 1, v6);
   objc_allocWithZone(type metadata accessor for SupportFlowViewController());
-  v7 = self;
+  selfCopy = self;
   v8 = SupportFlowViewController.init(flowIdentifier:showsSearchBar:)();
-  [(PhoneTabBarController *)v7 presentViewController:v8 animated:1 completion:0];
+  [(PhoneTabBarController *)selfCopy presentViewController:v8 animated:1 completion:0];
 }
 
-- (void)applyDetailsPresenterToSearchViewController:(id)a3 withRecentsViewController:(id)a4 andPresentingFromViewController:(id)a5
+- (void)applyDetailsPresenterToSearchViewController:(id)controller withRecentsViewController:(id)viewController andPresentingFromViewController:(id)fromViewController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  specialized PhoneTabBarController.applyDetailsPresenter(to:with:presentingFrom:)(v8, v9, v10);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  fromViewControllerCopy = fromViewController;
+  selfCopy = self;
+  specialized PhoneTabBarController.applyDetailsPresenter(to:with:presentingFrom:)(controllerCopy, viewControllerCopy, fromViewControllerCopy);
 }
 
-- (id)makeFavoritesListViewControllerWith:(id)a3 recentsViewController:(id)a4 navigationController:(id)a5
+- (id)makeFavoritesListViewControllerWith:(id)with recentsViewController:(id)controller navigationController:(id)navigationController
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  v12 = specialized PhoneTabBarController.makeFavoritesListViewController(with:recentsViewController:navigationController:)(v8, v9, v10);
+  withCopy = with;
+  controllerCopy = controller;
+  navigationControllerCopy = navigationController;
+  selfCopy = self;
+  v12 = specialized PhoneTabBarController.makeFavoritesListViewController(with:recentsViewController:navigationController:)(withCopy, controllerCopy, navigationControllerCopy);
 
   return v12;
 }

@@ -1,31 +1,31 @@
 @interface PXCompositeEditorialLayoutGenerator
 - (CGSize)estimatedSize;
 - (CGSize)size;
-- (PXCompositeEditorialLayoutGenerator)initWithMetrics:(id)a3;
-- (_PXLayoutGeometry)_geometryFromFrame:(SEL)a3 index:(CGRect)a4;
-- (id)_layoutInputsInRange:(_NSRange)a3;
-- (id)_minCostingTemplateAmongTemplates:(id)a3 forFittingInputItems:(id)a4 inRange:(_NSRange)a5 minCost:(double *)a6;
+- (PXCompositeEditorialLayoutGenerator)initWithMetrics:(id)metrics;
+- (_PXLayoutGeometry)_geometryFromFrame:(SEL)frame index:(CGRect)index;
+- (id)_layoutInputsInRange:(_NSRange)range;
+- (id)_minCostingTemplateAmongTemplates:(id)templates forFittingInputItems:(id)items inRange:(_NSRange)range minCost:(double *)cost;
 - (void)_computeTemplatesByTileCountIfNeeded;
-- (void)_enumerateTemplatesWithBlock:(id)a3;
-- (void)_normalizeWeightsForInputItems:(id)a3;
-- (void)_prepareGeometriesBufferForCount:(unint64_t)a3;
+- (void)_enumerateTemplatesWithBlock:(id)block;
+- (void)_normalizeWeightsForInputItems:(id)items;
+- (void)_prepareGeometriesBufferForCount:(unint64_t)count;
 - (void)_prepareIfNeeded;
-- (void)_prepareLayoutItemWeightsBufferForCount:(unint64_t)a3;
+- (void)_prepareLayoutItemWeightsBufferForCount:(unint64_t)count;
 - (void)dealloc;
-- (void)getGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4 withKind:(int64_t)a5;
+- (void)getGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range withKind:(int64_t)kind;
 - (void)invalidate;
 @end
 
 @implementation PXCompositeEditorialLayoutGenerator
 
-- (_PXLayoutGeometry)_geometryFromFrame:(SEL)a3 index:(CGRect)a4
+- (_PXLayoutGeometry)_geometryFromFrame:(SEL)frame index:(CGRect)index
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = [(PXCompositeEditorialLayoutGenerator *)self metrics];
-  [v11 padding];
+  height = index.size.height;
+  width = index.size.width;
+  y = index.origin.y;
+  x = index.origin.x;
+  metrics = [(PXCompositeEditorialLayoutGenerator *)self metrics];
+  [metrics padding];
   v13 = v12;
   v15 = v14;
 
@@ -38,18 +38,18 @@
   PXRectGetCenter();
 }
 
-- (id)_layoutInputsInRange:(_NSRange)a3
+- (id)_layoutInputsInRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = [MEMORY[0x1E695DF70] array];
+  length = range.length;
+  location = range.location;
+  array = [MEMORY[0x1E695DF70] array];
   if (location < location + length)
   {
     do
     {
-      v7 = [(PXCompositeEditorialLayoutGenerator *)self itemLayoutInfoBlock];
-      v8 = v7[2](v7, location);
-      [v6 addObject:v8];
+      itemLayoutInfoBlock = [(PXCompositeEditorialLayoutGenerator *)self itemLayoutInfoBlock];
+      v8 = itemLayoutInfoBlock[2](itemLayoutInfoBlock, location);
+      [array addObject:v8];
 
       ++location;
       --length;
@@ -58,33 +58,33 @@
     while (length);
   }
 
-  v9 = [v6 copy];
+  v9 = [array copy];
 
   return v9;
 }
 
-- (void)_prepareGeometriesBufferForCount:(unint64_t)a3
+- (void)_prepareGeometriesBufferForCount:(unint64_t)count
 {
-  if (self->_geometriesCount < a3)
+  if (self->_geometriesCount < count)
   {
-    self->_geometries = malloc_type_realloc(self->_geometries, 152 * a3, 0x100004050011849uLL);
-    self->_geometriesCount = a3;
+    self->_geometries = malloc_type_realloc(self->_geometries, 152 * count, 0x100004050011849uLL);
+    self->_geometriesCount = count;
   }
 }
 
-- (void)_prepareLayoutItemWeightsBufferForCount:(unint64_t)a3
+- (void)_prepareLayoutItemWeightsBufferForCount:(unint64_t)count
 {
-  if (self->_layoutItemWeightsCount < a3)
+  if (self->_layoutItemWeightsCount < count)
   {
-    self->_layoutItemWeights = malloc_type_realloc(self->_layoutItemWeights, 8 * a3, 0x100004000313F17uLL);
-    self->_layoutItemWeightsCount = a3;
+    self->_layoutItemWeights = malloc_type_realloc(self->_layoutItemWeights, 8 * count, 0x100004000313F17uLL);
+    self->_layoutItemWeightsCount = count;
   }
 }
 
-- (void)_normalizeWeightsForInputItems:(id)a3
+- (void)_normalizeWeightsForInputItems:(id)items
 {
-  v4 = a3;
-  -[PXCompositeEditorialLayoutGenerator _prepareLayoutItemWeightsBufferForCount:](self, "_prepareLayoutItemWeightsBufferForCount:", [v4 count]);
+  itemsCopy = items;
+  -[PXCompositeEditorialLayoutGenerator _prepareLayoutItemWeightsBufferForCount:](self, "_prepareLayoutItemWeightsBufferForCount:", [itemsCopy count]);
   v8[0] = 0;
   v8[1] = v8;
   v8[2] = 0x2020000000;
@@ -99,7 +99,7 @@
   v6[3] = &unk_1E772E848;
   v6[4] = v8;
   v6[5] = v7;
-  [v4 enumerateObjectsUsingBlock:v6];
+  [itemsCopy enumerateObjectsUsingBlock:v6];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __70__PXCompositeEditorialLayoutGenerator__normalizeWeightsForInputItems___block_invoke_2;
@@ -107,7 +107,7 @@
   v5[4] = self;
   v5[5] = v7;
   v5[6] = v8;
-  [v4 enumerateObjectsUsingBlock:v5];
+  [itemsCopy enumerateObjectsUsingBlock:v5];
   _Block_object_dispose(v7, 8);
   _Block_object_dispose(v8, 8);
 }
@@ -149,23 +149,23 @@ double __70__PXCompositeEditorialLayoutGenerator__normalizeWeightsForInputItems_
   return result;
 }
 
-- (id)_minCostingTemplateAmongTemplates:(id)a3 forFittingInputItems:(id)a4 inRange:(_NSRange)a5 minCost:(double *)a6
+- (id)_minCostingTemplateAmongTemplates:(id)templates forFittingInputItems:(id)items inRange:(_NSRange)range minCost:(double *)cost
 {
-  v26 = a6;
+  costCopy = cost;
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v27 = [(PXCompositeEditorialLayoutGenerator *)self itemCount];
-  v10 = [(PXCompositeEditorialLayoutGenerator *)self metrics];
-  v11 = [v10 useSaliency];
+  templatesCopy = templates;
+  itemsCopy = items;
+  itemCount = [(PXCompositeEditorialLayoutGenerator *)self itemCount];
+  metrics = [(PXCompositeEditorialLayoutGenerator *)self metrics];
+  useSaliency = [metrics useSaliency];
 
-  v12 = self;
-  [(PXCompositeEditorialLayoutGenerator *)self _normalizeWeightsForInputItems:v9];
+  selfCopy = self;
+  [(PXCompositeEditorialLayoutGenerator *)self _normalizeWeightsForInputItems:itemsCopy];
   v31 = 0u;
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v13 = v8;
+  v13 = templatesCopy;
   v14 = [v13 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v14)
   {
@@ -183,10 +183,10 @@ double __70__PXCompositeEditorialLayoutGenerator__normalizeWeightsForInputItems_
         }
 
         v20 = *(*(&v29 + 1) + 8 * i);
-        v21 = [v20 numberOfRects];
-        if (v21 <= [v9 count])
+        numberOfRects = [v20 numberOfRects];
+        if (numberOfRects <= [itemsCopy count])
         {
-          [v20 costForFittingLayoutItemInputs:v9 inRange:a5.location ofTotalItemCount:a5.length normalizedWeights:v27 useSaliency:{v12->_layoutItemWeights, v11}];
+          [v20 costForFittingLayoutItemInputs:itemsCopy inRange:range.location ofTotalItemCount:range.length normalizedWeights:itemCount useSaliency:{selfCopy->_layoutItemWeights, useSaliency}];
           v23 = v22;
           if (!v16 || v22 < v18)
           {
@@ -210,46 +210,46 @@ double __70__PXCompositeEditorialLayoutGenerator__normalizeWeightsForInputItems_
     v18 = 3.40282347e38;
   }
 
-  if (v26)
+  if (costCopy)
   {
-    *v26 = v18;
+    *costCopy = v18;
   }
 
   return v16;
 }
 
-- (void)_enumerateTemplatesWithBlock:(id)a3
+- (void)_enumerateTemplatesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(PXCompositeEditorialLayoutGenerator *)self _computeTemplatesByTileCountIfNeeded];
   if ([(NSDictionary *)self->_templatesByTileCount count])
   {
-    v5 = [(PXCompositeEditorialLayoutGenerator *)self metrics];
-    v6 = [v5 editorialLayoutSpec];
+    metrics = [(PXCompositeEditorialLayoutGenerator *)self metrics];
+    editorialLayoutSpec = [metrics editorialLayoutSpec];
 
-    v33 = v6;
-    v7 = [v6 templates];
-    v8 = [(PXCompositeEditorialLayoutGenerator *)self itemCount];
-    v9 = v8;
-    if (v8 >= self->_maxTemplateItemCount)
+    v33 = editorialLayoutSpec;
+    templates = [editorialLayoutSpec templates];
+    itemCount = [(PXCompositeEditorialLayoutGenerator *)self itemCount];
+    v9 = itemCount;
+    if (itemCount >= self->_maxTemplateItemCount)
     {
       maxTemplateItemCount = self->_maxTemplateItemCount;
     }
 
     else
     {
-      maxTemplateItemCount = v8;
+      maxTemplateItemCount = itemCount;
     }
 
-    v11 = [(PXCompositeEditorialLayoutGenerator *)self _layoutInputsInRange:0, maxTemplateItemCount];
-    v32 = v7;
-    v12 = [(PXCompositeEditorialLayoutGenerator *)self _minCostingTemplateAmongTemplates:v7 forFittingInputItems:v11 inRange:0 minCost:maxTemplateItemCount, 0];
-    v13 = [v12 numberOfRects];
-    v14 = [v11 subarrayWithRange:{0, v13}];
-    v4[2](v4, 0, v13, v14, v12);
-    v15 = v9 - v13;
+    maxTemplateItemCount = [(PXCompositeEditorialLayoutGenerator *)self _layoutInputsInRange:0, maxTemplateItemCount];
+    v32 = templates;
+    v12 = [(PXCompositeEditorialLayoutGenerator *)self _minCostingTemplateAmongTemplates:templates forFittingInputItems:maxTemplateItemCount inRange:0 minCost:maxTemplateItemCount, 0];
+    numberOfRects = [v12 numberOfRects];
+    v14 = [maxTemplateItemCount subarrayWithRange:{0, numberOfRects}];
+    blockCopy[2](blockCopy, 0, numberOfRects, v14, v12);
+    v15 = v9 - numberOfRects;
 
-    if (v9 - v13 <= self->_minTemplateItemCount)
+    if (v9 - numberOfRects <= self->_minTemplateItemCount)
     {
       v19 = v12;
     }
@@ -269,9 +269,9 @@ double __70__PXCompositeEditorialLayoutGenerator__normalizeWeightsForInputItems_
         }
 
         v17 = [v33 preferredNextTemplatesForTemplate:v12];
-        v18 = [(PXCompositeEditorialLayoutGenerator *)self _layoutInputsInRange:v13, v16];
+        v18 = [(PXCompositeEditorialLayoutGenerator *)self _layoutInputsInRange:numberOfRects, v16];
         v34 = 3.40282347e38;
-        v19 = [(PXCompositeEditorialLayoutGenerator *)self _minCostingTemplateAmongTemplates:v17 forFittingInputItems:v18 inRange:v13 minCost:v16, &v34];
+        v19 = [(PXCompositeEditorialLayoutGenerator *)self _minCostingTemplateAmongTemplates:v17 forFittingInputItems:v18 inRange:numberOfRects minCost:v16, &v34];
         if (v19)
         {
           v20 = v34 < 0.5;
@@ -284,16 +284,16 @@ double __70__PXCompositeEditorialLayoutGenerator__normalizeWeightsForInputItems_
 
         if (!v20)
         {
-          v21 = [(PXCompositeEditorialLayoutGenerator *)self _minCostingTemplateAmongTemplates:v32 forFittingInputItems:v18 inRange:v13 minCost:v16, &v34, v34];
+          v21 = [(PXCompositeEditorialLayoutGenerator *)self _minCostingTemplateAmongTemplates:v32 forFittingInputItems:v18 inRange:numberOfRects minCost:v16, &v34, v34];
 
           v19 = v21;
         }
 
-        v22 = [v19 numberOfRects];
-        v23 = [v18 subarrayWithRange:{0, v22}];
-        v4[2](v4, v13, v22, v23, v19);
-        v15 -= v22;
-        v13 += v22;
+        numberOfRects2 = [v19 numberOfRects];
+        v23 = [v18 subarrayWithRange:{0, numberOfRects2}];
+        blockCopy[2](blockCopy, numberOfRects, numberOfRects2, v23, v19);
+        v15 -= numberOfRects2;
+        numberOfRects += numberOfRects2;
 
         v12 = v19;
       }
@@ -314,9 +314,9 @@ double __70__PXCompositeEditorialLayoutGenerator__normalizeWeightsForInputItems_
       }
 
       v25 = [v33 preferredNextTemplatesForTemplate:v19];
-      v26 = [(PXCompositeEditorialLayoutGenerator *)self _layoutInputsInRange:v13, v24];
+      v26 = [(PXCompositeEditorialLayoutGenerator *)self _layoutInputsInRange:numberOfRects, v24];
       v34 = 3.40282347e38;
-      v27 = [(PXCompositeEditorialLayoutGenerator *)self _minCostingTemplateAmongTemplates:v25 forFittingInputItems:v26 inRange:v13 minCost:v24, &v34];
+      v27 = [(PXCompositeEditorialLayoutGenerator *)self _minCostingTemplateAmongTemplates:v25 forFittingInputItems:v26 inRange:numberOfRects minCost:v24, &v34];
       if (v27)
       {
         v28 = v34 <= 0.5;
@@ -329,14 +329,14 @@ double __70__PXCompositeEditorialLayoutGenerator__normalizeWeightsForInputItems_
 
       if (!v28)
       {
-        v29 = [(PXCompositeEditorialLayoutGenerator *)self _minCostingTemplateAmongTemplates:v32 forFittingInputItems:v26 inRange:v13 minCost:v24, 0, v34];
+        v29 = [(PXCompositeEditorialLayoutGenerator *)self _minCostingTemplateAmongTemplates:v32 forFittingInputItems:v26 inRange:numberOfRects minCost:v24, 0, v34];
 
         v27 = v29;
       }
 
-      v30 = [v27 numberOfRects];
-      v31 = [v26 subarrayWithRange:{0, v30}];
-      v4[2](v4, v13, v30, v31, v27);
+      numberOfRects3 = [v27 numberOfRects];
+      v31 = [v26 subarrayWithRange:{0, numberOfRects3}];
+      blockCopy[2](blockCopy, numberOfRects, numberOfRects3, v31, v27);
     }
   }
 }
@@ -346,17 +346,17 @@ double __70__PXCompositeEditorialLayoutGenerator__normalizeWeightsForInputItems_
   v24 = *MEMORY[0x1E69E9840];
   if (!self->_templatesByTileCount)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v18 = self;
-    v4 = [(PXCompositeEditorialLayoutGenerator *)self metrics];
-    v5 = [v4 editorialLayoutSpec];
-    v6 = [v5 templates];
+    selfCopy = self;
+    metrics = [(PXCompositeEditorialLayoutGenerator *)self metrics];
+    editorialLayoutSpec = [metrics editorialLayoutSpec];
+    templates = [editorialLayoutSpec templates];
 
-    v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    v7 = [templates countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v7)
     {
       v8 = v7;
@@ -367,33 +367,33 @@ double __70__PXCompositeEditorialLayoutGenerator__normalizeWeightsForInputItems_
         {
           if (*v20 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(templates);
           }
 
           v11 = *(*(&v19 + 1) + 8 * i);
-          v12 = [v11 numberOfRects];
-          v13 = [MEMORY[0x1E696AD98] numberWithInteger:v12];
-          v14 = [v3 objectForKeyedSubscript:v13];
+          numberOfRects = [v11 numberOfRects];
+          v13 = [MEMORY[0x1E696AD98] numberWithInteger:numberOfRects];
+          array = [dictionary objectForKeyedSubscript:v13];
 
-          if (!v14)
+          if (!array)
           {
-            v14 = [MEMORY[0x1E695DF70] array];
-            v15 = [MEMORY[0x1E696AD98] numberWithInteger:v12];
-            [v3 setObject:v14 forKeyedSubscript:v15];
+            array = [MEMORY[0x1E695DF70] array];
+            v15 = [MEMORY[0x1E696AD98] numberWithInteger:numberOfRects];
+            [dictionary setObject:array forKeyedSubscript:v15];
           }
 
-          [v14 addObject:v11];
+          [array addObject:v11];
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v8 = [templates countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v8);
     }
 
-    v16 = [v3 copy];
-    templatesByTileCount = v18->_templatesByTileCount;
-    v18->_templatesByTileCount = v16;
+    v16 = [dictionary copy];
+    templatesByTileCount = selfCopy->_templatesByTileCount;
+    selfCopy->_templatesByTileCount = v16;
   }
 }
 
@@ -403,11 +403,11 @@ double __70__PXCompositeEditorialLayoutGenerator__normalizeWeightsForInputItems_
   {
     self->_isPrepared = 1;
     [(PXCompositeEditorialLayoutGenerator *)self _prepareGeometriesBufferForCount:[(PXCompositeEditorialLayoutGenerator *)self itemCount]];
-    v4 = [(PXCompositeEditorialLayoutGenerator *)self metrics];
-    [v4 referenceSize];
+    metrics = [(PXCompositeEditorialLayoutGenerator *)self metrics];
+    [metrics referenceSize];
     v6 = v5;
     v8 = v7;
-    [v4 interTileSpacing];
+    [metrics interTileSpacing];
     v19 = 0;
     v20 = &v19;
     v21 = 0x3010000000;
@@ -435,8 +435,8 @@ double __70__PXCompositeEditorialLayoutGenerator__normalizeWeightsForInputItems_
     v13[6] = &v15;
     [(PXCompositeEditorialLayoutGenerator *)self _enumerateTemplatesWithBlock:v13];
     free(v16[3]);
-    v10 = [(PXCompositeEditorialLayoutGenerator *)self metrics];
-    [v10 referenceSize];
+    metrics2 = [(PXCompositeEditorialLayoutGenerator *)self metrics];
+    [metrics2 referenceSize];
     v11 = v20[5];
     self->_contentSize.width = v12;
     self->_contentSize.height = v11;
@@ -522,17 +522,17 @@ void __55__PXCompositeEditorialLayoutGenerator__prepareIfNeeded__block_invoke(ui
   *(*(*(a1 + 56) + 8) + 40) = v18 + *(a1 + 88) + *(*(*(a1 + 56) + 8) + 40);
 }
 
-- (void)getGeometries:(_PXLayoutGeometry *)a3 inRange:(_NSRange)a4 withKind:(int64_t)a5
+- (void)getGeometries:(_PXLayoutGeometry *)geometries inRange:(_NSRange)range withKind:(int64_t)kind
 {
-  if (!a5)
+  if (!kind)
   {
-    length = a4.length;
-    location = a4.location;
-    v10 = a4.location + a4.length;
-    if (a4.location + a4.length > [(PXCompositeEditorialLayoutGenerator *)self itemCount])
+    length = range.length;
+    location = range.location;
+    v10 = range.location + range.length;
+    if (range.location + range.length > [(PXCompositeEditorialLayoutGenerator *)self itemCount])
     {
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v21 handleFailureInMethod:a2 object:self file:@"PXCompositeEditorialLayoutGenerator.m" lineNumber:109 description:@"the range must be <= to the number of itemCount"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXCompositeEditorialLayoutGenerator.m" lineNumber:109 description:@"the range must be <= to the number of itemCount"];
     }
 
     [(PXCompositeEditorialLayoutGenerator *)self _prepareIfNeeded];
@@ -541,7 +541,7 @@ void __55__PXCompositeEditorialLayoutGenerator__prepareIfNeeded__block_invoke(ui
       v11 = location;
       do
       {
-        v12 = &a3[v11];
+        v12 = &geometries[v11];
         v13 = &self->_geometries[v11];
         v15 = *&v13->var6.origin.y;
         v14 = *&v13->var6.size.height;
@@ -582,14 +582,14 @@ void __55__PXCompositeEditorialLayoutGenerator__prepareIfNeeded__block_invoke(ui
 
 - (CGSize)estimatedSize
 {
-  v3 = [(PXCompositeEditorialLayoutGenerator *)self metrics];
-  [v3 referenceSize];
+  metrics = [(PXCompositeEditorialLayoutGenerator *)self metrics];
+  [metrics referenceSize];
   v5 = v4;
   v6 = self->_maxTemplateItemCount / self->_minNumberOfColumns;
-  v7 = [v3 editorialLayoutSpec];
-  v8 = [v7 templates];
-  v9 = [v8 firstObject];
-  [v9 tileAspectRatio];
+  editorialLayoutSpec = [metrics editorialLayoutSpec];
+  templates = [editorialLayoutSpec templates];
+  firstObject = [templates firstObject];
+  [firstObject tileAspectRatio];
   v11 = v10;
 
   v12 = 0.25;
@@ -624,20 +624,20 @@ void __55__PXCompositeEditorialLayoutGenerator__prepareIfNeeded__block_invoke(ui
   [(PXCompositeEditorialLayoutGenerator *)&v3 dealloc];
 }
 
-- (PXCompositeEditorialLayoutGenerator)initWithMetrics:(id)a3
+- (PXCompositeEditorialLayoutGenerator)initWithMetrics:(id)metrics
 {
-  v4 = a3;
+  metricsCopy = metrics;
   v9.receiver = self;
   v9.super_class = PXCompositeEditorialLayoutGenerator;
-  v5 = [(PXCompositeEditorialLayoutGenerator *)&v9 initWithMetrics:v4];
+  v5 = [(PXCompositeEditorialLayoutGenerator *)&v9 initWithMetrics:metricsCopy];
   v6 = v5;
   if (v5)
   {
     v5->_geometries = 0;
-    v7 = [v4 editorialLayoutSpec];
-    v6->_minNumberOfColumns = [v7 minNumberOfColumns];
-    v6->_minTemplateItemCount = [v7 minNumberOfRects];
-    v6->_maxTemplateItemCount = [v7 maxNumberOfRects];
+    editorialLayoutSpec = [metricsCopy editorialLayoutSpec];
+    v6->_minNumberOfColumns = [editorialLayoutSpec minNumberOfColumns];
+    v6->_minTemplateItemCount = [editorialLayoutSpec minNumberOfRects];
+    v6->_maxTemplateItemCount = [editorialLayoutSpec maxNumberOfRects];
   }
 
   return v6;

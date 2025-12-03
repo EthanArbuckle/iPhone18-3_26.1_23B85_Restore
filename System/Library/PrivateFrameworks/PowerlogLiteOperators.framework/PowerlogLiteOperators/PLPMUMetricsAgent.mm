@@ -3,7 +3,7 @@
 + (id)buckNames;
 + (void)load;
 - (PLPMUMetricsAgent)init;
-- (id)getBuckNameFromProperty:(unsigned int)a3;
+- (id)getBuckNameFromProperty:(unsigned int)property;
 - (void)connectToRailEnergyService;
 - (void)initOperatorDependancies;
 - (void)triggerRailEnergyLogging;
@@ -23,16 +23,16 @@
   [(PLPMUMetricsAgent *)self connectToRailEnergyService];
   if (self->_railEnergyPMUConn)
   {
-    v4 = [MEMORY[0x277CBEAA8] monotonicDate];
+    monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
     v5 = 211;
     do
     {
-      [(PLPMUMetricsAgent *)self parseAndLogRailEnergyMetrics:v5 withEntryDate:v4];
+      [(PLPMUMetricsAgent *)self parseAndLogRailEnergyMetrics:v5 withEntryDate:monotonicDate];
       v5 = (v5 + 1);
     }
 
     while (v5 != 222);
-    [(PLPMUMetricsAgent *)self setLastEntryDate:v4];
+    [(PLPMUMetricsAgent *)self setLastEntryDate:monotonicDate];
   }
 }
 
@@ -106,7 +106,7 @@ LABEL_11:
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLPMUMetricsAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -128,28 +128,28 @@ LABEL_11:
 
 - (void)initOperatorDependancies
 {
-  v3 = [MEMORY[0x277CBEAA8] monotonicDate];
-  [(PLPMUMetricsAgent *)self setLastEntryDate:v3];
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
+  [(PLPMUMetricsAgent *)self setLastEntryDate:monotonicDate];
 
   v4 = objc_alloc(MEMORY[0x277D3F250]);
-  v5 = [MEMORY[0x277CBEAA8] date];
-  v6 = [(PLOperator *)self workQueue];
+  date = [MEMORY[0x277CBEAA8] date];
+  workQueue = [(PLOperator *)self workQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __45__PLPMUMetricsAgent_initOperatorDependancies__block_invoke;
   v9[3] = &unk_278259C40;
   v9[4] = self;
-  v7 = [v4 initWithFireDate:v5 withInterval:1 withTolerance:0 repeats:v6 withUserInfo:v9 withQueue:300.0 withBlock:0.0];
+  v7 = [v4 initWithFireDate:date withInterval:1 withTolerance:0 repeats:workQueue withUserInfo:v9 withQueue:300.0 withBlock:0.0];
   [(PLPMUMetricsAgent *)self setRailEnergyTimer:v7];
 
-  v8 = [(PLPMUMetricsAgent *)self railEnergyTimer];
-  [v8 arm];
+  railEnergyTimer = [(PLPMUMetricsAgent *)self railEnergyTimer];
+  [railEnergyTimer arm];
 }
 
-- (id)getBuckNameFromProperty:(unsigned int)a3
+- (id)getBuckNameFromProperty:(unsigned int)property
 {
   v4 = +[PLPMUMetricsAgent buckNames];
-  v5 = [v4 objectAtIndexedSubscript:a3 - 211];
+  v5 = [v4 objectAtIndexedSubscript:property - 211];
 
   return v5;
 }
@@ -176,8 +176,8 @@ void __30__PLPMUMetricsAgent_buckNames__block_invoke()
 {
   if (![MEMORY[0x277D3F208] isiPhone] || objc_msgSend(MEMORY[0x277D3F208], "kPLDeviceClass") <= 102051)
   {
-    v2 = PLLogPMUMetrics();
-    if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
+    deviceBootArgs = PLLogPMUMetrics();
+    if (os_log_type_enabled(deviceBootArgs, OS_LOG_TYPE_ERROR))
     {
       *buf = 0;
       v7 = "RailEnergy not available on this platform";
@@ -192,22 +192,22 @@ LABEL_10:
 
   if (([MEMORY[0x277D3F208] hasAOP] & 1) == 0)
   {
-    v2 = PLLogPMUMetrics();
-    if (os_log_type_enabled(v2, OS_LOG_TYPE_ERROR))
+    deviceBootArgs = PLLogPMUMetrics();
+    if (os_log_type_enabled(deviceBootArgs, OS_LOG_TYPE_ERROR))
     {
       v10 = 0;
       v7 = "RailEnergy not available on devices without AOP";
       v8 = &v10;
 LABEL_15:
-      _os_log_error_impl(&dword_21A4C6000, v2, OS_LOG_TYPE_ERROR, v7, v8, 2u);
+      _os_log_error_impl(&dword_21A4C6000, deviceBootArgs, OS_LOG_TYPE_ERROR, v7, v8, 2u);
       goto LABEL_10;
     }
 
     goto LABEL_10;
   }
 
-  v2 = [MEMORY[0x277D3F258] deviceBootArgs];
-  v3 = [v2 containsString:@"rail-energy-in-pocket=0"];
+  deviceBootArgs = [MEMORY[0x277D3F258] deviceBootArgs];
+  v3 = [deviceBootArgs containsString:@"rail-energy-in-pocket=0"];
   if (v3)
   {
     v4 = PLLogPMUMetrics();

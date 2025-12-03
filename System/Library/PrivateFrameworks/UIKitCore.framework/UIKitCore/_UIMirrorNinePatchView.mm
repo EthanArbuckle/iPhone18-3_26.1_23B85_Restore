@@ -1,17 +1,17 @@
 @interface _UIMirrorNinePatchView
-- (_UIMirrorNinePatchView)initWithFrame:(CGRect)a3;
+- (_UIMirrorNinePatchView)initWithFrame:(CGRect)frame;
 - (void)_updateResizableImageAndViews;
 - (void)layoutSubviews;
-- (void)setImage:(id)a3 withResizableCornerSize:(CGSize)a4;
+- (void)setImage:(id)image withResizableCornerSize:(CGSize)size;
 @end
 
 @implementation _UIMirrorNinePatchView
 
-- (_UIMirrorNinePatchView)initWithFrame:(CGRect)a3
+- (_UIMirrorNinePatchView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = _UIMirrorNinePatchView;
-  v3 = [(UIView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -53,13 +53,13 @@
   return v4;
 }
 
-- (void)setImage:(id)a3 withResizableCornerSize:(CGSize)a4
+- (void)setImage:(id)image withResizableCornerSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  objc_storeStrong(&self->_originalImage, a3);
-  v8 = a3;
-  [v8 size];
+  height = size.height;
+  width = size.width;
+  objc_storeStrong(&self->_originalImage, image);
+  imageCopy = image;
+  [imageCopy size];
   v10 = v9;
   v12 = v11;
 
@@ -74,7 +74,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   [(UIView *)self bounds];
   v4 = v3;
   v6 = v5;
@@ -88,24 +88,24 @@
   v12 = v11 + 0.0;
   v19 = v6 - (v9 + 0.0);
   v13 = v7 - (v10 + 0.0);
-  v2 = (v2 + 448);
-  [(objc_class *)v2->super.super.super.isa setFrame:?];
+  selfCopy = (selfCopy + 448);
+  [(objc_class *)selfCopy->super.super.super.isa setFrame:?];
   v14 = v4 + v6 - v9;
   v15 = v6 - (v6 - v9 + 0.0);
-  [*&v2->super.super._responderFlags setFrame:{v14, v12, v15, v13}];
+  [*&selfCopy->super.super._responderFlags setFrame:{v14, v12, v15, v13}];
   v16 = v21 + v8 - v10;
   v17 = v8 - (v8 - v10 + 0.0);
-  [(NSMutableArray *)v2->super._constraintsExceptingSubviewAutoresizingConstraints setFrame:v20, v16, v19, v17];
-  cachedTraitCollection = v2->super._cachedTraitCollection;
+  [(NSMutableArray *)selfCopy->super._constraintsExceptingSubviewAutoresizingConstraints setFrame:v20, v16, v19, v17];
+  cachedTraitCollection = selfCopy->super._cachedTraitCollection;
 
   [(UITraitCollection *)cachedTraitCollection setFrame:v14, v16, v15, v17];
 }
 
 - (void)_updateResizableImageAndViews
 {
-  v3 = [(UIImage *)self->_originalImage imageAsset];
-  v4 = [(UIView *)self traitCollection];
-  v5 = [v3 imageWithTraitCollection:v4];
+  imageAsset = [(UIImage *)self->_originalImage imageAsset];
+  traitCollection = [(UIView *)self traitCollection];
+  v5 = [imageAsset imageWithTraitCollection:traitCollection];
   originalImage = v5;
   if (!v5)
   {

@@ -1,11 +1,11 @@
 @interface HMMTRAccessoryReachabilityObserver
 + (id)logCategory;
-- (HMMTRAccessoryReachabilityObserver)initWithQueue:(id)a3;
+- (HMMTRAccessoryReachabilityObserver)initWithQueue:(id)queue;
 - (HMMTRAccessoryServer)targetServer;
 - (id)logIdentifier;
-- (void)indicateNotificationFromServer:(id)a3 notifyType:(unint64_t)a4 withDictionary:(id)a5;
-- (void)startObservingReachabilityForAccessoryServer:(id)a3 completion:(id)a4;
-- (void)stopObservingReachabilityWithError:(id)a3;
+- (void)indicateNotificationFromServer:(id)server notifyType:(unint64_t)type withDictionary:(id)dictionary;
+- (void)startObservingReachabilityForAccessoryServer:(id)server completion:(id)completion;
+- (void)stopObservingReachabilityWithError:(id)error;
 @end
 
 @implementation HMMTRAccessoryReachabilityObserver
@@ -21,20 +21,20 @@
 {
   v3 = MEMORY[0x277CCACA8];
   WeakRetained = objc_loadWeakRetained(&self->_targetServer);
-  v5 = [WeakRetained nodeID];
+  nodeID = [WeakRetained nodeID];
   v6 = objc_loadWeakRetained(&self->_targetServer);
-  v7 = [v6 fabricID];
-  v8 = [v3 stringWithFormat:@"%@/%@", v5, v7];
+  fabricID = [v6 fabricID];
+  v8 = [v3 stringWithFormat:@"%@/%@", nodeID, fabricID];
 
   return v8;
 }
 
-- (void)indicateNotificationFromServer:(id)a3 notifyType:(unint64_t)a4 withDictionary:(id)a5
+- (void)indicateNotificationFromServer:(id)server notifyType:(unint64_t)type withDictionary:(id)dictionary
 {
   v47 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = v8;
+  serverCopy = server;
+  dictionaryCopy = dictionary;
+  v10 = serverCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -50,57 +50,57 @@
 
   if (v12)
   {
-    if (a4 == 1)
+    if (type == 1)
     {
-      v13 = [(HMMTRAccessoryReachabilityObserver *)self targetServer];
-      if (v13)
+      targetServer = [(HMMTRAccessoryReachabilityObserver *)self targetServer];
+      if (targetServer)
       {
         if (HMFEqualObjects())
         {
-          if (v9 && [v9 hmf_BOOLForKey:*MEMORY[0x277CFE578]])
+          if (dictionaryCopy && [dictionaryCopy hmf_BOOLForKey:*MEMORY[0x277CFE578]])
           {
             v14 = objc_autoreleasePoolPush();
-            v15 = self;
+            selfCopy = self;
             v16 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
             {
               v17 = HMFGetLogIdentifier();
-              v18 = [v13 nodeID];
+              nodeID = [targetServer nodeID];
               *buf = 138543618;
               v42 = v17;
               v43 = 2112;
-              v44 = v18;
+              typeCopy = nodeID;
               _os_log_impl(&dword_22AEAE000, v16, OS_LOG_TYPE_INFO, "%{public}@Accessory server with nodeID %@ became reachable", buf, 0x16u);
             }
 
             objc_autoreleasePoolPop(v14);
-            v19 = [(HMMTRAccessoryReachabilityObserver *)v15 completionBlock];
-            [(HMMTRAccessoryReachabilityObserver *)v15 setCompletionBlock:0];
-            if (v19)
+            completionBlock = [(HMMTRAccessoryReachabilityObserver *)selfCopy completionBlock];
+            [(HMMTRAccessoryReachabilityObserver *)selfCopy setCompletionBlock:0];
+            if (completionBlock)
             {
-              v20 = [(HMMTRAccessoryReachabilityObserver *)v15 workQueue];
+              workQueue = [(HMMTRAccessoryReachabilityObserver *)selfCopy workQueue];
               block[0] = MEMORY[0x277D85DD0];
               block[1] = 3221225472;
               block[2] = __95__HMMTRAccessoryReachabilityObserver_indicateNotificationFromServer_notifyType_withDictionary___block_invoke;
               block[3] = &unk_2786EF878;
-              v40 = v19;
-              dispatch_async(v20, block);
+              v40 = completionBlock;
+              dispatch_async(workQueue, block);
             }
 
             goto LABEL_31;
           }
 
           v30 = objc_autoreleasePoolPush();
-          v31 = self;
+          selfCopy4 = self;
           v32 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
           {
             v33 = HMFGetLogIdentifier();
-            v37 = [v13 nodeID];
+            nodeID2 = [targetServer nodeID];
             *buf = 138543618;
             v42 = v33;
             v43 = 2112;
-            v44 = v37;
+            typeCopy = nodeID2;
             _os_log_impl(&dword_22AEAE000, v32, OS_LOG_TYPE_INFO, "%{public}@Accessory server with nodeID %@ is currently unreachable, still waiting for reachable notification", buf, 0x16u);
 
             goto LABEL_29;
@@ -115,7 +115,7 @@ LABEL_31:
         }
 
         v30 = objc_autoreleasePoolPush();
-        v31 = self;
+        selfCopy4 = self;
         v32 = HMFGetOSLogHandle();
         if (!os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
         {
@@ -126,7 +126,7 @@ LABEL_31:
         *buf = 138543874;
         v42 = v33;
         v43 = 2112;
-        v44 = v13;
+        typeCopy = targetServer;
         v45 = 2112;
         v46 = v12;
         v34 = "%{public}@Expecting notification for accessory server %@, received notification for accessory server %@, ignoring";
@@ -137,7 +137,7 @@ LABEL_31:
       else
       {
         v30 = objc_autoreleasePoolPush();
-        v31 = self;
+        selfCopy4 = self;
         v32 = HMFGetOSLogHandle();
         if (!os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
         {
@@ -148,7 +148,7 @@ LABEL_31:
         *buf = 138543618;
         v42 = v33;
         v43 = 2112;
-        v44 = v12;
+        typeCopy = v12;
         v34 = "%{public}@Not expected any notification for any server, but received notification for accessory server %@, ignoring";
         v35 = v32;
         v36 = 22;
@@ -161,7 +161,7 @@ LABEL_29:
     }
 
     v26 = objc_autoreleasePoolPush();
-    v27 = self;
+    selfCopy5 = self;
     v28 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
@@ -169,7 +169,7 @@ LABEL_29:
       *buf = 138543874;
       v42 = v29;
       v43 = 2048;
-      v44 = a4;
+      typeCopy = type;
       v45 = 2112;
       v46 = v12;
       _os_log_impl(&dword_22AEAE000, v28, OS_LOG_TYPE_ERROR, "%{public}@Received unexpected notification %lu accessory server, ignoring %@", buf, 0x20u);
@@ -181,7 +181,7 @@ LABEL_29:
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy6 = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -189,7 +189,7 @@ LABEL_29:
       *buf = 138543618;
       v42 = v24;
       v43 = 2112;
-      v44 = v10;
+      typeCopy = v10;
       _os_log_impl(&dword_22AEAE000, v23, OS_LOG_TYPE_ERROR, "%{public}@Received notification for a non-matter accessory server, ignoring %@", buf, 0x16u);
     }
 
@@ -202,24 +202,24 @@ LABEL_32:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopObservingReachabilityWithError:(id)a3
+- (void)stopObservingReachabilityWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(HMMTRAccessoryReachabilityObserver *)self completionBlock];
+  errorCopy = error;
+  completionBlock = [(HMMTRAccessoryReachabilityObserver *)self completionBlock];
 
-  if (v5)
+  if (completionBlock)
   {
-    v6 = [(HMMTRAccessoryReachabilityObserver *)self completionBlock];
+    completionBlock2 = [(HMMTRAccessoryReachabilityObserver *)self completionBlock];
     [(HMMTRAccessoryReachabilityObserver *)self setCompletionBlock:0];
-    v7 = [(HMMTRAccessoryReachabilityObserver *)self workQueue];
+    workQueue = [(HMMTRAccessoryReachabilityObserver *)self workQueue];
     v11 = MEMORY[0x277D85DD0];
     v12 = 3221225472;
     v13 = __73__HMMTRAccessoryReachabilityObserver_stopObservingReachabilityWithError___block_invoke;
     v14 = &unk_2786EF5A8;
-    v16 = v6;
-    v15 = v4;
-    v8 = v6;
-    dispatch_async(v7, &v11);
+    v16 = completionBlock2;
+    v15 = errorCopy;
+    v8 = completionBlock2;
+    dispatch_async(workQueue, &v11);
   }
 
   v9 = [(HMMTRAccessoryReachabilityObserver *)self targetServer:v11];
@@ -250,70 +250,70 @@ void __73__HMMTRAccessoryReachabilityObserver_stopObservingReachabilityWithError
   }
 }
 
-- (void)startObservingReachabilityForAccessoryServer:(id)a3 completion:(id)a4
+- (void)startObservingReachabilityForAccessoryServer:(id)server completion:(id)completion
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMMTRAccessoryReachabilityObserver *)self completionBlock];
+  serverCopy = server;
+  completionCopy = completion;
+  completionBlock = [(HMMTRAccessoryReachabilityObserver *)self completionBlock];
 
-  if (v8)
+  if (completionBlock)
   {
-    v9 = [(HMMTRAccessoryReachabilityObserver *)self completionBlock];
+    completionBlock2 = [(HMMTRAccessoryReachabilityObserver *)self completionBlock];
     [(HMMTRAccessoryReachabilityObserver *)self setCompletionBlock:0];
-    v10 = [(HMMTRAccessoryReachabilityObserver *)self workQueue];
+    workQueue = [(HMMTRAccessoryReachabilityObserver *)self workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __94__HMMTRAccessoryReachabilityObserver_startObservingReachabilityForAccessoryServer_completion___block_invoke;
     block[3] = &unk_2786EF878;
-    v26 = v9;
-    v11 = v9;
-    dispatch_async(v10, block);
+    v26 = completionBlock2;
+    v11 = completionBlock2;
+    dispatch_async(workQueue, block);
   }
 
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = HMFGetLogIdentifier();
-    v16 = [v6 nodeID];
+    nodeID = [serverCopy nodeID];
     *buf = 138543618;
     v28 = v15;
     v29 = 2112;
-    v30 = v16;
+    v30 = nodeID;
     _os_log_impl(&dword_22AEAE000, v14, OS_LOG_TYPE_INFO, "%{public}@Starting reachability observation for accessory server with nodeID %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v12);
-  v17 = [v6 matterDevice];
-  v18 = [v17 state];
+  matterDevice = [serverCopy matterDevice];
+  state = [matterDevice state];
 
-  if (v18 == 1)
+  if (state == 1)
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = v13;
+    v20 = selfCopy;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
       v22 = HMFGetLogIdentifier();
-      v23 = [v6 nodeID];
+      nodeID2 = [serverCopy nodeID];
       *buf = 138543618;
       v28 = v22;
       v29 = 2112;
-      v30 = v23;
+      v30 = nodeID2;
       _os_log_impl(&dword_22AEAE000, v21, OS_LOG_TYPE_INFO, "%{public}@Accessory server with nodeID %@ was already reachable, replying immediately", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v19);
-    v7[2](v7, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
   {
-    [(HMMTRAccessoryReachabilityObserver *)v13 setTargetServer:v6];
-    [(HMMTRAccessoryReachabilityObserver *)v13 setCompletionBlock:v7];
-    [v6 registerForNotifications:v13];
+    [(HMMTRAccessoryReachabilityObserver *)selfCopy setTargetServer:serverCopy];
+    [(HMMTRAccessoryReachabilityObserver *)selfCopy setCompletionBlock:completionCopy];
+    [serverCopy registerForNotifications:selfCopy];
   }
 
   v24 = *MEMORY[0x277D85DE8];
@@ -326,16 +326,16 @@ void __94__HMMTRAccessoryReachabilityObserver_startObservingReachabilityForAcces
   (*(v1 + 16))(v1, v2);
 }
 
-- (HMMTRAccessoryReachabilityObserver)initWithQueue:(id)a3
+- (HMMTRAccessoryReachabilityObserver)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v10.receiver = self;
   v10.super_class = HMMTRAccessoryReachabilityObserver;
   v6 = [(HMMTRAccessoryReachabilityObserver *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_workQueue, a3);
+    objc_storeStrong(&v6->_workQueue, queue);
     objc_storeWeak(&v7->_targetServer, 0);
     completionBlock = v7->_completionBlock;
     v7->_completionBlock = 0;

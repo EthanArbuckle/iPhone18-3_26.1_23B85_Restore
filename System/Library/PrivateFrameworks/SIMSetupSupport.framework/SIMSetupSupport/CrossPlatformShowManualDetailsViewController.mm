@@ -1,7 +1,7 @@
 @interface CrossPlatformShowManualDetailsViewController
 - (CrossPlatformShowManualDetailsViewController)init;
 - (TSSIMSetupFlowDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)dealloc;
 - (void)updateText;
 - (void)viewDidLayoutSubviews;
@@ -50,33 +50,33 @@
   v5 = [v4 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v5];
 
-  v6 = [(OBTableWelcomeController *)self tableView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(OBTableWelcomeController *)self tableView];
-  [v7 setDirectionalLayoutMargins:{1.0, 1.0, 1.0, 1.0}];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setDirectionalLayoutMargins:{1.0, 1.0, 1.0, 1.0}];
 
-  v8 = [(OBTableWelcomeController *)self tableView];
-  v9 = [MEMORY[0x277D75348] clearColor];
-  [v8 setBackgroundColor:v9];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [tableView3 setBackgroundColor:clearColor];
 
-  v10 = [(OBTableWelcomeController *)self tableView];
-  [v10 setDataSource:self];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  [tableView4 setDataSource:self];
 
-  v11 = [(OBTableWelcomeController *)self tableView];
-  [v11 setDelegate:self];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 setDelegate:self];
 
-  v12 = [(OBTableWelcomeController *)self tableView];
-  [v12 setScrollEnabled:1];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
+  [tableView6 setScrollEnabled:1];
 
-  v13 = [(OBTableWelcomeController *)self tableView];
-  [v13 setAllowsMultipleSelection:0];
+  tableView7 = [(OBTableWelcomeController *)self tableView];
+  [tableView7 setAllowsMultipleSelection:0];
 
-  v14 = [(OBTableWelcomeController *)self tableView];
-  [v14 reloadData];
+  tableView8 = [(OBTableWelcomeController *)self tableView];
+  [tableView8 reloadData];
 
-  v15 = [(OBTableWelcomeController *)self tableView];
-  [v15 layoutIfNeeded];
+  tableView9 = [(OBTableWelcomeController *)self tableView];
+  [tableView9 layoutIfNeeded];
 
   [(CrossPlatformShowManualDetailsViewController *)self updateText];
 }
@@ -85,7 +85,7 @@
 {
   v16[2] = *MEMORY[0x277D85DE8];
   v3 = +[DCTCodeManager shared];
-  v4 = [v3 code];
+  code = [v3 code];
 
   v15[0] = @"s";
   v5 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -99,20 +99,20 @@
   queryParamToTitle = self->_queryParamToTitle;
   self->_queryParamToTitle = v9;
 
-  v11 = [v4 parseQueryParamsWithTitleDictionary:self->_queryParamToTitle];
+  v11 = [code parseQueryParamsWithTitleDictionary:self->_queryParamToTitle];
   dctInfo = self->_dctInfo;
   self->_dctInfo = v11;
 
-  v13 = [(OBTableWelcomeController *)self tableView];
-  [v13 reloadData];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView reloadData];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v3 = [(CrossPlatformShowManualDetailsViewController *)self view];
-  [v3 layoutIfNeeded];
+  view = [(CrossPlatformShowManualDetailsViewController *)self view];
+  [view layoutIfNeeded];
 
   v5.receiver = self;
   v5.super_class = CrossPlatformShowManualDetailsViewController;
@@ -122,28 +122,28 @@
   [(OBTableWelcomeController *)&v4 viewDidLayoutSubviews];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"CellID"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"CellID"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:1 reuseIdentifier:@"CellID"];
   }
 
-  v8 = -[NSArray objectAtIndexedSubscript:](self->_dctInfo, "objectAtIndexedSubscript:", [v6 row]);
+  v8 = -[NSArray objectAtIndexedSubscript:](self->_dctInfo, "objectAtIndexedSubscript:", [pathCopy row]);
   v9 = [v8 objectForKeyedSubscript:@"title"];
-  v10 = [v7 textLabel];
-  [v10 setText:v9];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v9];
 
   dctInfo = self->_dctInfo;
-  v12 = [v6 row];
+  v12 = [pathCopy row];
 
   v13 = [(NSArray *)dctInfo objectAtIndexedSubscript:v12];
   v14 = [v13 objectForKeyedSubscript:@"value"];
-  v15 = [v14 uppercaseString];
-  v16 = [v7 detailTextLabel];
-  [v16 setText:v15];
+  uppercaseString = [v14 uppercaseString];
+  detailTextLabel = [v7 detailTextLabel];
+  [detailTextLabel setText:uppercaseString];
 
   [v7 setSelectionStyle:0];
 

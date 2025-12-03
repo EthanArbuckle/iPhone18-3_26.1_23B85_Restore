@@ -1,11 +1,11 @@
 @interface ISLivePhotoPlaybackFilter
 - (BOOL)isPlaybackDisabled;
 - (ISLivePhotoPlaybackFilter)init;
-- (void)_setState:(int64_t)a3;
+- (void)_setState:(int64_t)state;
 - (void)reset;
-- (void)setHintProgress:(double)a3;
-- (void)setPlaybackDisabled:(BOOL)a3 forReason:(id)a4;
-- (void)setState:(int64_t)a3;
+- (void)setHintProgress:(double)progress;
+- (void)setPlaybackDisabled:(BOOL)disabled forReason:(id)reason;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation ISLivePhotoPlaybackFilter
@@ -20,55 +20,55 @@
   [(ISObservable *)self performChanges:v2];
 }
 
-- (void)_setState:(int64_t)a3
+- (void)_setState:(int64_t)state
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
-    self->_state = a3;
+    self->_state = state;
     [(ISObservable *)self signalChange:1];
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   if (self->_state != 2 || ![(ISLivePhotoPlaybackFilter *)self playIsSticky])
   {
 
-    [(ISLivePhotoPlaybackFilter *)self _setState:a3];
+    [(ISLivePhotoPlaybackFilter *)self _setState:state];
   }
 }
 
-- (void)setHintProgress:(double)a3
+- (void)setHintProgress:(double)progress
 {
-  if (self->_hintProgress != a3)
+  if (self->_hintProgress != progress)
   {
-    self->_hintProgress = a3;
+    self->_hintProgress = progress;
     [(ISObservable *)self signalChange:2];
   }
 }
 
 - (BOOL)isPlaybackDisabled
 {
-  v2 = [(ISLivePhotoPlaybackFilter *)self _playbackDisabledReasons];
-  v3 = [v2 count] != 0;
+  _playbackDisabledReasons = [(ISLivePhotoPlaybackFilter *)self _playbackDisabledReasons];
+  v3 = [_playbackDisabledReasons count] != 0;
 
   return v3;
 }
 
-- (void)setPlaybackDisabled:(BOOL)a3 forReason:(id)a4
+- (void)setPlaybackDisabled:(BOOL)disabled forReason:(id)reason
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(ISLivePhotoPlaybackFilter *)self _playbackDisabledReasons];
-  v8 = v7;
-  if (v4)
+  disabledCopy = disabled;
+  reasonCopy = reason;
+  _playbackDisabledReasons = [(ISLivePhotoPlaybackFilter *)self _playbackDisabledReasons];
+  v8 = _playbackDisabledReasons;
+  if (disabledCopy)
   {
-    [v7 addObject:v6];
+    [_playbackDisabledReasons addObject:reasonCopy];
   }
 
   else
   {
-    [v7 removeObject:v6];
+    [_playbackDisabledReasons removeObject:reasonCopy];
   }
 }
 

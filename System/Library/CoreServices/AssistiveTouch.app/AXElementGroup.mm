@@ -12,12 +12,12 @@
 - (CGPoint)scatScreenPointForOperations;
 - (CGRect)scatTextCursorFrame;
 - (id)elemLog;
-- (id)scatSpeakableDescription:(BOOL)a3;
+- (id)scatSpeakableDescription:(BOOL)description;
 - (id)scatValue;
 - (id)scrollableElement;
 - (unint64_t)scatScanningBehaviorTraits;
 - (unsigned)scatDisplayId;
-- (void)prepareElementsForScanning:(id)a3;
+- (void)prepareElementsForScanning:(id)scanning;
 - (void)scatScrollToVisible;
 @end
 
@@ -30,8 +30,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = self;
-  v5 = [(AXElementGroup *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  selfCopy = self;
+  v5 = [(AXElementGroup *)selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -42,7 +42,7 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(selfCopy);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -65,7 +65,7 @@
         [v3 appendFormat:@"%@ ", v10];
       }
 
-      v6 = [(AXElementGroup *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [(AXElementGroup *)selfCopy countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -114,10 +114,10 @@
   result = [(AXElementGroup *)self userDefinedScanningBehaviorTraits];
   if ((result & 0x10) != 0)
   {
-    v4 = [(AXElementGroup *)self firstLeafDescendant];
-    v5 = [v4 scanningBehaviorTraits];
+    firstLeafDescendant = [(AXElementGroup *)self firstLeafDescendant];
+    scanningBehaviorTraits = [firstLeafDescendant scanningBehaviorTraits];
 
-    return v5;
+    return scanningBehaviorTraits;
   }
 
   return result;
@@ -125,16 +125,16 @@
 
 - (BOOL)scatIsMemberOfGroup
 {
-  v2 = [(AXElementGroup *)self parentGroup];
-  v3 = v2 != 0;
+  parentGroup = [(AXElementGroup *)self parentGroup];
+  v3 = parentGroup != 0;
 
   return v3;
 }
 
 - (BOOL)scatIsAuxiliaryElement
 {
-  v2 = [(AXElementGroup *)self scatAuxiliaryElementManager];
-  v3 = v2 != 0;
+  scatAuxiliaryElementManager = [(AXElementGroup *)self scatAuxiliaryElementManager];
+  v3 = scatAuxiliaryElementManager != 0;
 
   return v3;
 }
@@ -144,21 +144,21 @@
   v3 = +[AXSettings sharedInstance];
   if ([v3 switchControlShouldAlwaysActivateKeyboardKeys] && objc_msgSend(v3, "switchControlTapBehavior") != 2 && (-[AXElementGroup keyboardContainer](self, "keyboardContainer"), v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v5 = 1;
+    scatShouldActivateDirectly = 1;
   }
 
   else if ([(AXElementGroup *)self count])
   {
     v6 = [(AXElementGroup *)self objectAtIndex:0];
-    v5 = [v6 scatShouldActivateDirectly];
+    scatShouldActivateDirectly = [v6 scatShouldActivateDirectly];
   }
 
   else
   {
-    v5 = 0;
+    scatShouldActivateDirectly = 0;
   }
 
-  return v5;
+  return scatShouldActivateDirectly;
 }
 
 - (BOOL)scatIndicatesOwnFocus
@@ -167,9 +167,9 @@
   if (v3)
   {
     v4 = [(AXElementGroup *)self objectAtIndex:0];
-    v5 = [v4 scatIndicatesOwnFocus];
+    scatIndicatesOwnFocus = [v4 scatIndicatesOwnFocus];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(v3) = scatIndicatesOwnFocus;
   }
 
   return v3;
@@ -180,15 +180,15 @@
   if ([(AXElementGroup *)self count])
   {
     v3 = [(AXElementGroup *)self objectAtIndex:0];
-    v4 = [v3 scrollableElement];
+    scrollableElement = [v3 scrollableElement];
   }
 
   else
   {
-    v4 = 0;
+    scrollableElement = 0;
   }
 
-  return v4;
+  return scrollableElement;
 }
 
 - (BOOL)scatCanScrollInAtLeastOneDirection
@@ -197,47 +197,47 @@
   if (v3)
   {
     v4 = [(AXElementGroup *)self objectAtIndex:0];
-    v5 = [v4 scatCanScrollInAtLeastOneDirection];
+    scatCanScrollInAtLeastOneDirection = [v4 scatCanScrollInAtLeastOneDirection];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(v3) = scatCanScrollInAtLeastOneDirection;
   }
 
   return v3;
 }
 
-- (id)scatSpeakableDescription:(BOOL)a3
+- (id)scatSpeakableDescription:(BOOL)description
 {
-  v4 = [(AXElementGroup *)self accessibilityLabel];
+  accessibilityLabel = [(AXElementGroup *)self accessibilityLabel];
 
-  if (v4)
+  if (accessibilityLabel)
   {
-    v5 = [(AXElementGroup *)self accessibilityLabel];
+    accessibilityLabel2 = [(AXElementGroup *)self accessibilityLabel];
 LABEL_7:
-    v7 = v5;
+    v7 = accessibilityLabel2;
     goto LABEL_8;
   }
 
-  v6 = [(AXElementGroup *)self label];
+  label = [(AXElementGroup *)self label];
 
-  if (v6)
+  if (label)
   {
-    v5 = [(AXElementGroup *)self label];
+    accessibilityLabel2 = [(AXElementGroup *)self label];
     goto LABEL_7;
   }
 
   if ([(AXElementGroup *)self isKeyboardContainer])
   {
-    v5 = sub_100042B24(@"KEYBOARD");
+    accessibilityLabel2 = sub_100042B24(@"KEYBOARD");
     goto LABEL_7;
   }
 
   v9 = [(AXElementGroup *)self descendantsPassingTest:&stru_1001D71C0];
   v10 = sub_100042B24(@"GROUP_DESCRIPTION");
-  v11 = [v9 firstObject];
-  v12 = [v11 scatSpeakableDescription];
-  v13 = [v9 lastObject];
-  v14 = [v13 scatSpeakableDescription];
-  v7 = [NSString stringWithFormat:v10, v12, v14];
+  firstObject = [v9 firstObject];
+  scatSpeakableDescription = [firstObject scatSpeakableDescription];
+  lastObject = [v9 lastObject];
+  scatSpeakableDescription2 = [lastObject scatSpeakableDescription];
+  v7 = [NSString stringWithFormat:v10, scatSpeakableDescription, scatSpeakableDescription2];
 
 LABEL_8:
 
@@ -248,9 +248,9 @@ LABEL_8:
 {
   v4.receiver = self;
   v4.super_class = AXElementGroup;
-  v2 = [(AXElementGroup *)&v4 accessibilityValue];
+  accessibilityValue = [(AXElementGroup *)&v4 accessibilityValue];
 
-  return v2;
+  return accessibilityValue;
 }
 
 - (BOOL)scatIsValid
@@ -259,8 +259,8 @@ LABEL_8:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = self;
-  v3 = [(AXElementGroup *)v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  selfCopy = self;
+  v3 = [(AXElementGroup *)selfCopy countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -270,7 +270,7 @@ LABEL_8:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(selfCopy);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) scatIsValid])
@@ -280,7 +280,7 @@ LABEL_8:
         }
       }
 
-      v3 = [(AXElementGroup *)v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [(AXElementGroup *)selfCopy countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -348,8 +348,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = self;
-  v3 = [(AXElementGroup *)v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  selfCopy = self;
+  v3 = [(AXElementGroup *)selfCopy countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -359,7 +359,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(selfCopy);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) isHandUI])
@@ -369,7 +369,7 @@ LABEL_11:
         }
       }
 
-      v3 = [(AXElementGroup *)v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [(AXElementGroup *)selfCopy countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -390,8 +390,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = self;
-  v3 = [(AXElementGroup *)v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  selfCopy = self;
+  v3 = [(AXElementGroup *)selfCopy countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -401,7 +401,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(selfCopy);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) isVisible])
@@ -411,7 +411,7 @@ LABEL_11:
         }
       }
 
-      v3 = [(AXElementGroup *)v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [(AXElementGroup *)selfCopy countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -426,14 +426,14 @@ LABEL_11:
   return v3;
 }
 
-- (void)prepareElementsForScanning:(id)a3
+- (void)prepareElementsForScanning:(id)scanning
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1000D123C;
   v3[3] = &unk_1001D50E0;
   v3[4] = self;
-  [a3 enumerateObjectsUsingBlock:v3];
+  [scanning enumerateObjectsUsingBlock:v3];
 }
 
 @end

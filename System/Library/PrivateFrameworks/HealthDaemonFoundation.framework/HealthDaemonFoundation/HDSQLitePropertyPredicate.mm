@@ -1,6 +1,6 @@
 @interface HDSQLitePropertyPredicate
-- (BOOL)isCompatibleWithPredicate:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isCompatibleWithPredicate:(id)predicate;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
@@ -11,34 +11,34 @@
   v7.receiver = self;
   v7.super_class = HDSQLitePropertyPredicate;
   v3 = [(HDSQLitePredicate *)&v7 hash];
-  v4 = [(HDSQLitePropertyPredicate *)self property];
-  v5 = [v4 hash];
+  property = [(HDSQLitePropertyPredicate *)self property];
+  v5 = [property hash];
 
   return v3 + v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = HDSQLitePropertyPredicate;
-  if ([(HDSQLitePredicate *)&v12 isEqual:v4])
+  if ([(HDSQLitePredicate *)&v12 isEqual:equalCopy])
   {
-    v5 = [(HDSQLitePropertyPredicate *)self property];
-    v6 = [v4 property];
-    if (v5 == v6)
+    property = [(HDSQLitePropertyPredicate *)self property];
+    property2 = [equalCopy property];
+    if (property == property2)
     {
       v10 = 1;
     }
 
     else
     {
-      v7 = [v4 property];
-      if (v7)
+      property3 = [equalCopy property];
+      if (property3)
       {
-        v8 = [(HDSQLitePropertyPredicate *)self property];
-        v9 = [v4 property];
-        v10 = [v8 isEqual:v9];
+        property4 = [(HDSQLitePropertyPredicate *)self property];
+        property5 = [equalCopy property];
+        v10 = [property4 isEqual:property5];
       }
 
       else
@@ -56,18 +56,18 @@
   return v10;
 }
 
-- (BOOL)isCompatibleWithPredicate:(id)a3
+- (BOOL)isCompatibleWithPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v9.receiver = self;
   v9.super_class = HDSQLitePropertyPredicate;
-  if (![(HDSQLitePredicate *)&v9 isCompatibleWithPredicate:v4])
+  if (![(HDSQLitePredicate *)&v9 isCompatibleWithPredicate:predicateCopy])
   {
     goto LABEL_5;
   }
 
   property = self->_property;
-  v6 = v4[1];
+  v6 = predicateCopy[1];
   if (property == v6)
   {
     v7 = 1;

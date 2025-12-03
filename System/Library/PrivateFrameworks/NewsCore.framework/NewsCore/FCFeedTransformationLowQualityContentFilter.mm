@@ -1,34 +1,34 @@
 @interface FCFeedTransformationLowQualityContentFilter
-+ (id)transformationWithPersonalizer:(id)a3;
-- (id)transformFeedItems:(id)a3;
++ (id)transformationWithPersonalizer:(id)personalizer;
+- (id)transformFeedItems:(id)items;
 @end
 
 @implementation FCFeedTransformationLowQualityContentFilter
 
-+ (id)transformationWithPersonalizer:(id)a3
++ (id)transformationWithPersonalizer:(id)personalizer
 {
-  v3 = a3;
+  personalizerCopy = personalizer;
   v4 = objc_opt_new();
-  [v4 setFeedPersonalizer:v3];
+  [v4 setFeedPersonalizer:personalizerCopy];
 
   return v4;
 }
 
-- (id)transformFeedItems:(id)a3
+- (id)transformFeedItems:(id)items
 {
-  v4 = a3;
+  itemsCopy = items;
   v5 = NewsCoreUserDefaults();
   v6 = [v5 BOOLForKey:@"personalization_disabled"];
 
   if (v6)
   {
-    v7 = v4;
+    v7 = itemsCopy;
   }
 
   else
   {
-    v8 = [(FCFeedTransformationLowQualityContentFilter *)self feedPersonalizer];
-    v7 = [v8 limitItemsByMinimumItemQuality:v4];
+    feedPersonalizer = [(FCFeedTransformationLowQualityContentFilter *)self feedPersonalizer];
+    v7 = [feedPersonalizer limitItemsByMinimumItemQuality:itemsCopy];
   }
 
   return v7;

@@ -1,26 +1,26 @@
 @interface ADEspressoRunner
-+ (id)espressoRunnerForPath:(id)a3 forEngine:(unint64_t)a4 configurationName:(id)a5;
-- (ADEspressoRunner)initWithPath:(id)a3 forEngine:(unint64_t)a4 configurationName:(id)a5;
-- (id)registerDescriptor:(id)a3;
++ (id)espressoRunnerForPath:(id)path forEngine:(unint64_t)engine configurationName:(id)name;
+- (ADEspressoRunner)initWithPath:(id)path forEngine:(unint64_t)engine configurationName:(id)name;
+- (id)registerDescriptor:(id)descriptor;
 @end
 
 @implementation ADEspressoRunner
 
-- (id)registerDescriptor:(id)a3
+- (id)registerDescriptor:(id)descriptor
 {
-  v3 = [(ADEspressoRunnerProtocol *)self->_espressoRunner registerDescriptor:a3];
+  v3 = [(ADEspressoRunnerProtocol *)self->_espressoRunner registerDescriptor:descriptor];
 
   return v3;
 }
 
-- (ADEspressoRunner)initWithPath:(id)a3 forEngine:(unint64_t)a4 configurationName:(id)a5
+- (ADEspressoRunner)initWithPath:(id)path forEngine:(unint64_t)engine configurationName:(id)name
 {
-  v8 = a3;
-  v9 = a5;
+  pathCopy = path;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = ADEspressoRunner;
   v10 = [(ADEspressoRunner *)&v15 init];
-  if (v10 && ([ADEspressoRunner espressoRunnerForPath:v8 forEngine:a4 configurationName:v9], v11 = objc_claimAutoreleasedReturnValue(), espressoRunner = v10->_espressoRunner, v10->_espressoRunner = v11, espressoRunner, !v10->_espressoRunner))
+  if (v10 && ([ADEspressoRunner espressoRunnerForPath:pathCopy forEngine:engine configurationName:nameCopy], v11 = objc_claimAutoreleasedReturnValue(), espressoRunner = v10->_espressoRunner, v10->_espressoRunner = v11, espressoRunner, !v10->_espressoRunner))
   {
     v13 = 0;
   }
@@ -33,20 +33,20 @@
   return v13;
 }
 
-+ (id)espressoRunnerForPath:(id)a3 forEngine:(unint64_t)a4 configurationName:(id)a5
++ (id)espressoRunnerForPath:(id)path forEngine:(unint64_t)engine configurationName:(id)name
 {
   v14 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  if ([v7 hasSuffix:@".espresso.net"])
+  pathCopy = path;
+  nameCopy = name;
+  if ([pathCopy hasSuffix:@".espresso.net"])
   {
     v9 = off_278CA5B60;
 LABEL_5:
-    v10 = [objc_alloc(*v9) initWithPath:v7 forEngine:a4 configurationName:v8];
+    v10 = [objc_alloc(*v9) initWithPath:pathCopy forEngine:engine configurationName:nameCopy];
     goto LABEL_9;
   }
 
-  if ([v7 hasSuffix:@".bundle"])
+  if ([pathCopy hasSuffix:@".bundle"])
   {
     v9 = off_278CA5B68;
     goto LABEL_5;
@@ -55,7 +55,7 @@ LABEL_5:
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     v12 = 138412290;
-    v13 = v7;
+    v13 = pathCopy;
     _os_log_error_impl(&dword_240463000, MEMORY[0x277D86220], OS_LOG_TYPE_ERROR, "Failed to initialize ADEspressoRunner. Model path extension is not .espresso.net/.bundle (%@)", &v12, 0xCu);
   }
 

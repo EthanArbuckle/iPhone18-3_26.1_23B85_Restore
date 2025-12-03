@@ -1,5 +1,5 @@
 @interface Application
-- (Application)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5;
+- (Application)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint;
 - (NSString)description;
 @end
 
@@ -7,7 +7,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   Application.description.getter();
 
   v3 = sub_26618C8A0();
@@ -15,15 +15,15 @@
   return v3;
 }
 
-- (Application)initWithIdentifier:(id)a3 displayString:(id)a4 pronunciationHint:(id)a5
+- (Application)initWithIdentifier:(id)identifier displayString:(id)string pronunciationHint:(id)hint
 {
-  if (a3)
+  if (identifier)
   {
     sub_26618C8B0();
   }
 
   sub_26618C8B0();
-  if (a5)
+  if (hint)
   {
     sub_26618C8B0();
   }

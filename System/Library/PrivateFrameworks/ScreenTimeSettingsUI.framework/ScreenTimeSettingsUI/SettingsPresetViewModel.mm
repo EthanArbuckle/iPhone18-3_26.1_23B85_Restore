@@ -1,28 +1,28 @@
 @interface SettingsPresetViewModel
 - (_TtC20ScreenTimeSettingsUI23SettingsPresetViewModel)init;
-- (_TtC20ScreenTimeSettingsUI23SettingsPresetViewModel)initWithDsid:(id)a3 childAge:(id)a4 isInitialSetup:(BOOL)a5 restrictionsToPresetMappingViewModel:(id)a6 restrictionsDefaultValueProvider:(id)a7 agePresetsAnalytics:(id)a8;
-- (void)loadWithCompletionHandler:(id)a3;
+- (_TtC20ScreenTimeSettingsUI23SettingsPresetViewModel)initWithDsid:(id)dsid childAge:(id)age isInitialSetup:(BOOL)setup restrictionsToPresetMappingViewModel:(id)model restrictionsDefaultValueProvider:(id)provider agePresetsAnalytics:(id)analytics;
+- (void)loadWithCompletionHandler:(id)handler;
 @end
 
 @implementation SettingsPresetViewModel
 
-- (_TtC20ScreenTimeSettingsUI23SettingsPresetViewModel)initWithDsid:(id)a3 childAge:(id)a4 isInitialSetup:(BOOL)a5 restrictionsToPresetMappingViewModel:(id)a6 restrictionsDefaultValueProvider:(id)a7 agePresetsAnalytics:(id)a8
+- (_TtC20ScreenTimeSettingsUI23SettingsPresetViewModel)initWithDsid:(id)dsid childAge:(id)age isInitialSetup:(BOOL)setup restrictionsToPresetMappingViewModel:(id)model restrictionsDefaultValueProvider:(id)provider agePresetsAnalytics:(id)analytics
 {
-  v11 = a5;
-  v13 = a3;
-  v14 = a4;
+  setupCopy = setup;
+  dsidCopy = dsid;
+  ageCopy = age;
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  return SettingsPresetViewModel.init(dsid:childAge:isInitialSetup:restrictionsToPresetMappingViewModel:restrictionsDefaultValueProvider:agePresetsAnalytics:)(v13, a4, v11, a6, a7, a8);
+  return SettingsPresetViewModel.init(dsid:childAge:isInitialSetup:restrictionsToPresetMappingViewModel:restrictionsDefaultValueProvider:agePresetsAnalytics:)(dsidCopy, age, setupCopy, model, provider, analytics);
 }
 
-- (void)loadWithCompletionHandler:(id)a3
+- (void)loadWithCompletionHandler:(id)handler
 {
   v5 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27FFAA380);
   MEMORY[0x28223BE20](v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -38,7 +38,7 @@
   v12[3] = 0;
   v12[4] = &unk_264CD4550;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_264CB853C(0, 0, v7, &unk_264CD4558, v12);
 }
 

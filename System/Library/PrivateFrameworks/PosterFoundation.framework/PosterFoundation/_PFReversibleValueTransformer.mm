@@ -1,22 +1,22 @@
 @interface _PFReversibleValueTransformer
-- (_PFReversibleValueTransformer)initWithTransformedValueClass:(Class)a3 transformer:(id)a4 reverseValueClass:(Class)a5 reverseTransformer:(id)a6;
-- (id)transformedValue:(id)a3;
-- (id)transformedValue:(id)a3 context:(id)a4;
+- (_PFReversibleValueTransformer)initWithTransformedValueClass:(Class)class transformer:(id)transformer reverseValueClass:(Class)valueClass reverseTransformer:(id)reverseTransformer;
+- (id)transformedValue:(id)value;
+- (id)transformedValue:(id)value context:(id)context;
 @end
 
 @implementation _PFReversibleValueTransformer
 
-- (_PFReversibleValueTransformer)initWithTransformedValueClass:(Class)a3 transformer:(id)a4 reverseValueClass:(Class)a5 reverseTransformer:(id)a6
+- (_PFReversibleValueTransformer)initWithTransformedValueClass:(Class)class transformer:(id)transformer reverseValueClass:(Class)valueClass reverseTransformer:(id)reverseTransformer
 {
-  v10 = a6;
+  reverseTransformerCopy = reverseTransformer;
   v16.receiver = self;
   v16.super_class = _PFReversibleValueTransformer;
-  v11 = [(_PFUnreversibleValueTransformer *)&v16 initWithTransformedValueClass:a3 transformer:a4];
+  v11 = [(_PFUnreversibleValueTransformer *)&v16 initWithTransformedValueClass:class transformer:transformer];
   v12 = v11;
   if (v11)
   {
-    v11->_reverseTransformerClass = a5;
-    v13 = [v10 copy];
+    v11->_reverseTransformerClass = valueClass;
+    v13 = [reverseTransformerCopy copy];
     reverseTransformer = v12->_reverseTransformer;
     v12->_reverseTransformer = v13;
   }
@@ -24,17 +24,17 @@
   return v12;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
-  v5 = a3;
-  if (v5 && [(PFGenericValueTransformer *)self assertOnInvalidObjectTypes]&& self->_reverseTransformerClass && (objc_opt_isKindOfClass() & 1) == 0)
+  valueCopy = value;
+  if (valueCopy && [(PFGenericValueTransformer *)self assertOnInvalidObjectTypes]&& self->_reverseTransformerClass && (objc_opt_isKindOfClass() & 1) == 0)
   {
     [(_PFReversibleValueTransformer *)&self->_reverseTransformerClass transformedValue:a2];
   }
 
   v8.receiver = self;
   v8.super_class = _PFReversibleValueTransformer;
-  v6 = [(_PFUnreversibleValueTransformer *)&v8 transformedValue:v5];
+  v6 = [(_PFUnreversibleValueTransformer *)&v8 transformedValue:valueCopy];
   if (v6 && [(PFGenericValueTransformer *)self assertOnInvalidObjectTypes])
   {
     [_PFReversibleValueTransformer transformedValue:];
@@ -43,18 +43,18 @@
   return v6;
 }
 
-- (id)transformedValue:(id)a3 context:(id)a4
+- (id)transformedValue:(id)value context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
-  if (v7 && [(PFGenericValueTransformer *)self assertOnInvalidObjectTypes]&& self->_reverseTransformerClass && (objc_opt_isKindOfClass() & 1) == 0)
+  valueCopy = value;
+  contextCopy = context;
+  if (valueCopy && [(PFGenericValueTransformer *)self assertOnInvalidObjectTypes]&& self->_reverseTransformerClass && (objc_opt_isKindOfClass() & 1) == 0)
   {
     [_PFReversibleValueTransformer transformedValue:a2 context:?];
   }
 
   v11.receiver = self;
   v11.super_class = _PFReversibleValueTransformer;
-  v9 = [(_PFUnreversibleValueTransformer *)&v11 transformedValue:v7 context:v8];
+  v9 = [(_PFUnreversibleValueTransformer *)&v11 transformedValue:valueCopy context:contextCopy];
   if (v9 && [(PFGenericValueTransformer *)self assertOnInvalidObjectTypes])
   {
     [_PFReversibleValueTransformer transformedValue:context:];

@@ -1,56 +1,56 @@
 @interface FTApgPronGuessMessage
-+ (Class)session_message_immutableClassForType:(int64_t)a3;
-+ (int64_t)session_message_typeForImmutableObject:(id)a3;
++ (Class)session_message_immutableClassForType:(int64_t)type;
++ (int64_t)session_message_typeForImmutableObject:(id)object;
 - (FLTBFBufferAccessor)session_message;
-- (FTApgPronGuessMessage)initWithFlatbuffData:(id)a3 root:(const ApgPronGuessMessage *)a4 verify:(BOOL)a5;
+- (FTApgPronGuessMessage)initWithFlatbuffData:(id)data root:(const ApgPronGuessMessage *)root verify:(BOOL)verify;
 - (FTAudioPacket)session_messageAsFTAudioPacket;
 - (FTCancelRequest)session_messageAsFTCancelRequest;
 - (FTFinishAudio)session_messageAsFTFinishAudio;
 - (FTPronGuessResponse)session_messageAsFTPronGuessResponse;
 - (FTStartPronGuessRequest)session_messageAsFTStartPronGuessRequest;
-- (Offset<siri::speech::qss_fb::ApgPronGuessMessage>)addObjectToBuffer:(void *)a3;
+- (Offset<siri::speech::qss_fb::ApgPronGuessMessage>)addObjectToBuffer:(void *)buffer;
 - (id)flatbuffData;
 - (int64_t)session_message_type;
 @end
 
 @implementation FTApgPronGuessMessage
 
-- (FTApgPronGuessMessage)initWithFlatbuffData:(id)a3 root:(const ApgPronGuessMessage *)a4 verify:(BOOL)a5
+- (FTApgPronGuessMessage)initWithFlatbuffData:(id)data root:(const ApgPronGuessMessage *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = FTApgPronGuessMessage;
   v10 = [(FTApgPronGuessMessage *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_15;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_15;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_233005E20;
       v27 = 0;
@@ -67,9 +67,9 @@ LABEL_15:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;
@@ -260,80 +260,80 @@ LABEL_16:
 
 - (FLTBFBufferAccessor)session_message
 {
-  v3 = [(FTApgPronGuessMessage *)self session_message_type];
-  v4 = 0;
-  if (v3 <= 2)
+  session_message_type = [(FTApgPronGuessMessage *)self session_message_type];
+  session_messageAsFTStartPronGuessRequest = 0;
+  if (session_message_type <= 2)
   {
-    if (v3 == 1)
+    if (session_message_type == 1)
     {
-      v4 = [(FTApgPronGuessMessage *)self session_messageAsFTStartPronGuessRequest];
+      session_messageAsFTStartPronGuessRequest = [(FTApgPronGuessMessage *)self session_messageAsFTStartPronGuessRequest];
     }
 
-    else if (v3 == 2)
+    else if (session_message_type == 2)
     {
-      v4 = [(FTApgPronGuessMessage *)self session_messageAsFTAudioPacket];
+      session_messageAsFTStartPronGuessRequest = [(FTApgPronGuessMessage *)self session_messageAsFTAudioPacket];
     }
   }
 
   else
   {
-    switch(v3)
+    switch(session_message_type)
     {
       case 3:
-        v4 = [(FTApgPronGuessMessage *)self session_messageAsFTFinishAudio];
+        session_messageAsFTStartPronGuessRequest = [(FTApgPronGuessMessage *)self session_messageAsFTFinishAudio];
         break;
       case 4:
-        v4 = [(FTApgPronGuessMessage *)self session_messageAsFTCancelRequest];
+        session_messageAsFTStartPronGuessRequest = [(FTApgPronGuessMessage *)self session_messageAsFTCancelRequest];
         break;
       case 5:
-        v4 = [(FTApgPronGuessMessage *)self session_messageAsFTPronGuessResponse];
+        session_messageAsFTStartPronGuessRequest = [(FTApgPronGuessMessage *)self session_messageAsFTPronGuessResponse];
         break;
     }
   }
 
-  return v4;
+  return session_messageAsFTStartPronGuessRequest;
 }
 
-+ (Class)session_message_immutableClassForType:(int64_t)a3
++ (Class)session_message_immutableClassForType:(int64_t)type
 {
-  if ((a3 - 1) > 4)
+  if ((type - 1) > 4)
   {
     v5 = 0;
   }
 
   else
   {
-    v4 = *off_2789B82B8[a3 - 1];
+    v4 = *off_2789B82B8[type - 1];
     v5 = objc_opt_class();
   }
 
   return v5;
 }
 
-+ (int64_t)session_message_typeForImmutableObject:(id)a3
++ (int64_t)session_message_typeForImmutableObject:(id)object
 {
-  v3 = a3;
-  if ([v3 isMemberOfClass:objc_opt_class()])
+  objectCopy = object;
+  if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 1;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 2;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 3;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 4;
   }
 
-  else if ([v3 isMemberOfClass:objc_opt_class()])
+  else if ([objectCopy isMemberOfClass:objc_opt_class()])
   {
     v4 = 5;
   }
@@ -346,13 +346,13 @@ LABEL_16:
   return v4;
 }
 
-- (Offset<siri::speech::qss_fb::ApgPronGuessMessage>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::qss_fb::ApgPronGuessMessage>)addObjectToBuffer:(void *)buffer
 {
-  v5 = [(FTApgPronGuessMessage *)self session_message_type];
+  session_message_type = [(FTApgPronGuessMessage *)self session_message_type];
   if ([(FTApgPronGuessMessage *)self session_message_type]== 1)
   {
-    v6 = [(FTApgPronGuessMessage *)self session_messageAsFTStartPronGuessRequest];
-    v7 = [v6 addObjectToBuffer:a3];
+    session_messageAsFTStartPronGuessRequest = [(FTApgPronGuessMessage *)self session_messageAsFTStartPronGuessRequest];
+    v7 = [session_messageAsFTStartPronGuessRequest addObjectToBuffer:buffer];
   }
 
   else
@@ -362,8 +362,8 @@ LABEL_16:
 
   if ([(FTApgPronGuessMessage *)self session_message_type]== 2)
   {
-    v8 = [(FTApgPronGuessMessage *)self session_messageAsFTAudioPacket];
-    v9 = [v8 addObjectToBuffer:a3];
+    session_messageAsFTAudioPacket = [(FTApgPronGuessMessage *)self session_messageAsFTAudioPacket];
+    v9 = [session_messageAsFTAudioPacket addObjectToBuffer:buffer];
 
     v10 = v9;
   }
@@ -375,8 +375,8 @@ LABEL_16:
 
   if ([(FTApgPronGuessMessage *)self session_message_type]== 3)
   {
-    v11 = [(FTApgPronGuessMessage *)self session_messageAsFTFinishAudio];
-    v12 = [v11 addObjectToBuffer:a3];
+    session_messageAsFTFinishAudio = [(FTApgPronGuessMessage *)self session_messageAsFTFinishAudio];
+    v12 = [session_messageAsFTFinishAudio addObjectToBuffer:buffer];
 
     v13 = v12;
   }
@@ -388,8 +388,8 @@ LABEL_16:
 
   if ([(FTApgPronGuessMessage *)self session_message_type]== 4)
   {
-    v14 = [(FTApgPronGuessMessage *)self session_messageAsFTCancelRequest];
-    v15 = [v14 addObjectToBuffer:a3];
+    session_messageAsFTCancelRequest = [(FTApgPronGuessMessage *)self session_messageAsFTCancelRequest];
+    v15 = [session_messageAsFTCancelRequest addObjectToBuffer:buffer];
 
     v16 = v15;
   }
@@ -402,8 +402,8 @@ LABEL_16:
   v26 = v16;
   if ([(FTApgPronGuessMessage *)self session_message_type]== 5)
   {
-    v17 = [(FTApgPronGuessMessage *)self session_messageAsFTPronGuessResponse];
-    v18 = [v17 addObjectToBuffer:a3];
+    session_messageAsFTPronGuessResponse = [(FTApgPronGuessMessage *)self session_messageAsFTPronGuessResponse];
+    v18 = [session_messageAsFTPronGuessResponse addObjectToBuffer:buffer];
     v19 = v13;
     v20 = v7;
 
@@ -417,37 +417,37 @@ LABEL_16:
     v21 = 0;
   }
 
-  *(a3 + 70) = 1;
-  v23 = *(a3 + 5);
-  v22 = *(a3 + 6);
-  v24 = *(a3 + 4);
-  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(a3, 4, v5, 0);
+  *(buffer + 70) = 1;
+  v23 = *(buffer + 5);
+  v22 = *(buffer + 6);
+  v24 = *(buffer + 4);
+  apple::aiml::flatbuffers2::FlatBufferBuilder::AddElement<unsigned char>(buffer, 4, session_message_type, 0);
   if ([(FTApgPronGuessMessage *)self session_message_type]== 1)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v20);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v20);
   }
 
   if ([(FTApgPronGuessMessage *)self session_message_type]== 2)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v10);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v10);
   }
 
   if ([(FTApgPronGuessMessage *)self session_message_type]== 3)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v19);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v19);
   }
 
   if ([(FTApgPronGuessMessage *)self session_message_type]== 4)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v26);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v26);
   }
 
   if ([(FTApgPronGuessMessage *)self session_message_type]== 5)
   {
-    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(a3, 6, v21);
+    apple::aiml::flatbuffers2::FlatBufferBuilder::AddOffset<apple::aiml::flatbuffers2::String>(buffer, 6, v21);
   }
 
-  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(a3, v24 - v22 + v23);
+  return apple::aiml::flatbuffers2::FlatBufferBuilder::EndTable(buffer, v24 - v22 + v23);
 }
 
 - (id)flatbuffData

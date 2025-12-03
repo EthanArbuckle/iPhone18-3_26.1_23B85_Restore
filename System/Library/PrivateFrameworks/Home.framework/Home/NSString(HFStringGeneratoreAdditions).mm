@@ -9,7 +9,7 @@
 {
   v4 = MEMORY[0x277CCA898];
   v5 = a3;
-  v6 = [[v4 alloc] initWithString:a1 attributes:v5];
+  v6 = [[v4 alloc] initWithString:self attributes:v5];
 
   return v6;
 }
@@ -18,7 +18,7 @@
 {
   v4 = MEMORY[0x277CCA898];
   v5 = a3;
-  v6 = [[v4 alloc] initWithString:a1 attributes:v5];
+  v6 = [[v4 alloc] initWithString:self attributes:v5];
 
   return v6;
 }

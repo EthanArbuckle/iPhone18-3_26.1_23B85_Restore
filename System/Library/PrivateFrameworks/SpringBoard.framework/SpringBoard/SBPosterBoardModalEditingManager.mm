@@ -1,11 +1,11 @@
 @interface SBPosterBoardModalEditingManager
-- (BOOL)beginExternalPosterEditingSessionWithEditingRequest:(id)a3 completion:(id)a4;
+- (BOOL)beginExternalPosterEditingSessionWithEditingRequest:(id)request completion:(id)completion;
 - (SBPosterBoardModalEditingManager)init;
-- (void)_dismissTransientOverlayViewControllerIfPresenting:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)_presentTransientOverlayViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)posterEditingTransientOverlayViewController:(id)a3 didDismissWithResponse:(id)a4;
-- (void)posterEditingTransientOverlayViewController:(id)a3 willDismissWithResponse:(id)a4;
-- (void)sendRequestDismissalActionWithEditingRequest:(id)a3;
+- (void)_dismissTransientOverlayViewControllerIfPresenting:(id)presenting animated:(BOOL)animated completion:(id)completion;
+- (void)_presentTransientOverlayViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)posterEditingTransientOverlayViewController:(id)controller didDismissWithResponse:(id)response;
+- (void)posterEditingTransientOverlayViewController:(id)controller willDismissWithResponse:(id)response;
+- (void)sendRequestDismissalActionWithEditingRequest:(id)request;
 @end
 
 @implementation SBPosterBoardModalEditingManager
@@ -23,44 +23,44 @@
 
     [(PRUISExternallyHostedPosterEditingServer *)v2->_posterEditingServer activate];
     [(PRUISExternallyHostedPosterEditingServer *)v2->_posterEditingServer setDelegate:v2];
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     presentedTransientOverlayControllers = v2->_presentedTransientOverlayControllers;
-    v2->_presentedTransientOverlayControllers = v5;
+    v2->_presentedTransientOverlayControllers = array;
   }
 
   return v2;
 }
 
-- (BOOL)beginExternalPosterEditingSessionWithEditingRequest:(id)a3 completion:(id)a4
+- (BOOL)beginExternalPosterEditingSessionWithEditingRequest:(id)request completion:(id)completion
 {
-  v7 = a3;
-  if (v7)
+  requestCopy = request;
+  if (requestCopy)
   {
-    v8 = a4;
-    v9 = [[SBPosterEditingTransientOverlayViewController alloc] initWithEditingRequest:v7];
+    completionCopy = completion;
+    v9 = [[SBPosterEditingTransientOverlayViewController alloc] initWithEditingRequest:requestCopy];
     [(SBPosterEditingTransientOverlayViewController *)v9 setDelegate:self];
-    [(SBPosterBoardModalEditingManager *)self _presentTransientOverlayViewController:v9 animated:0 completion:v8];
+    [(SBPosterBoardModalEditingManager *)self _presentTransientOverlayViewController:v9 animated:0 completion:completionCopy];
   }
 
   else
   {
-    v10 = a4;
+    completionCopy2 = completion;
     v11 = SBLogWallpaper();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       [(SBPosterBoardModalEditingManager *)self beginExternalPosterEditingSessionWithEditingRequest:a2 completion:v11];
     }
 
-    v10[2](v10);
+    completionCopy2[2](completionCopy2);
   }
 
-  return v7 != 0;
+  return requestCopy != 0;
 }
 
-- (void)sendRequestDismissalActionWithEditingRequest:(id)a3
+- (void)sendRequestDismissalActionWithEditingRequest:(id)request
 {
-  v5 = a3;
-  if (!v5)
+  requestCopy = request;
+  if (!requestCopy)
   {
     [(SBPosterBoardModalEditingManager *)a2 sendRequestDismissalActionWithEditingRequest:?];
   }
@@ -70,8 +70,8 @@
   v10[1] = 3221225472;
   v10[2] = __81__SBPosterBoardModalEditingManager_sendRequestDismissalActionWithEditingRequest___block_invoke;
   v10[3] = &unk_2783B53B8;
-  v11 = v5;
-  v7 = v5;
+  v11 = requestCopy;
+  v7 = requestCopy;
   v8 = [(NSMutableArray *)presentedTransientOverlayControllers bs_firstObjectPassingTest:v10];
   v9 = v8;
   if (v8)
@@ -88,31 +88,31 @@ uint64_t __81__SBPosterBoardModalEditingManager_sendRequestDismissalActionWithEd
   return v3;
 }
 
-- (void)posterEditingTransientOverlayViewController:(id)a3 willDismissWithResponse:(id)a4
+- (void)posterEditingTransientOverlayViewController:(id)controller willDismissWithResponse:(id)response
 {
   posterEditingServer = self->_posterEditingServer;
-  v6 = a4;
-  v7 = [a3 editingRequest];
-  [(PRUISExternallyHostedPosterEditingServer *)posterEditingServer sessionWithEditingRequest:v7 willEndEditingWithResponse:v6];
+  responseCopy = response;
+  editingRequest = [controller editingRequest];
+  [(PRUISExternallyHostedPosterEditingServer *)posterEditingServer sessionWithEditingRequest:editingRequest willEndEditingWithResponse:responseCopy];
 }
 
-- (void)posterEditingTransientOverlayViewController:(id)a3 didDismissWithResponse:(id)a4
+- (void)posterEditingTransientOverlayViewController:(id)controller didDismissWithResponse:(id)response
 {
   posterEditingServer = self->_posterEditingServer;
-  v7 = a4;
-  v9 = a3;
-  v8 = [v9 editingRequest];
-  [(PRUISExternallyHostedPosterEditingServer *)posterEditingServer sessionWithEditingRequest:v8 didEndEditingWithResponse:v7];
+  responseCopy = response;
+  controllerCopy = controller;
+  editingRequest = [controllerCopy editingRequest];
+  [(PRUISExternallyHostedPosterEditingServer *)posterEditingServer sessionWithEditingRequest:editingRequest didEndEditingWithResponse:responseCopy];
 
-  [(SBPosterBoardModalEditingManager *)self _dismissTransientOverlayViewControllerIfPresenting:v9 animated:0 completion:0];
+  [(SBPosterBoardModalEditingManager *)self _dismissTransientOverlayViewControllerIfPresenting:controllerCopy animated:0 completion:0];
 }
 
-- (void)_presentTransientOverlayViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_presentTransientOverlayViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if (([(NSMutableArray *)self->_presentedTransientOverlayControllers containsObject:v8]& 1) == 0)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  if (([(NSMutableArray *)self->_presentedTransientOverlayControllers containsObject:controllerCopy]& 1) == 0)
   {
     objc_initWeak(&location, self);
     v10 = +[SBWorkspace mainWorkspace];
@@ -121,9 +121,9 @@ uint64_t __81__SBPosterBoardModalEditingManager_sendRequestDismissalActionWithEd
     v11[2] = __95__SBPosterBoardModalEditingManager__presentTransientOverlayViewController_animated_completion___block_invoke;
     v11[3] = &unk_2783AACB8;
     objc_copyWeak(&v14, &location);
-    v12 = v8;
-    v13 = v9;
-    [v10 presentTransientOverlayViewController:v12 animated:v6 completion:v11];
+    v12 = controllerCopy;
+    v13 = completionCopy;
+    [v10 presentTransientOverlayViewController:v12 animated:animatedCopy completion:v11];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);
@@ -149,12 +149,12 @@ void __95__SBPosterBoardModalEditingManager__presentTransientOverlayViewControll
   }
 }
 
-- (void)_dismissTransientOverlayViewControllerIfPresenting:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_dismissTransientOverlayViewControllerIfPresenting:(id)presenting animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  if ([(NSMutableArray *)self->_presentedTransientOverlayControllers containsObject:v8])
+  animatedCopy = animated;
+  presentingCopy = presenting;
+  completionCopy = completion;
+  if ([(NSMutableArray *)self->_presentedTransientOverlayControllers containsObject:presentingCopy])
   {
     objc_initWeak(&location, self);
     v10 = +[SBWorkspace mainWorkspace];
@@ -163,9 +163,9 @@ void __95__SBPosterBoardModalEditingManager__presentTransientOverlayViewControll
     v11[2] = __107__SBPosterBoardModalEditingManager__dismissTransientOverlayViewControllerIfPresenting_animated_completion___block_invoke;
     v11[3] = &unk_2783AACB8;
     objc_copyWeak(&v14, &location);
-    v12 = v8;
-    v13 = v9;
-    [v10 dismissTransientOverlayViewController:v12 animated:v6 completion:v11];
+    v12 = presentingCopy;
+    v13 = completionCopy;
+    [v10 dismissTransientOverlayViewController:v12 animated:animatedCopy completion:v11];
 
     objc_destroyWeak(&v14);
     objc_destroyWeak(&location);

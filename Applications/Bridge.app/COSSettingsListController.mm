@@ -1,95 +1,95 @@
 @interface COSSettingsListController
 + (id)sharedTopLevelIconsLazyLoadingQueue;
 - (BOOL)displaySearchTab;
-- (BOOL)searchBarShouldEndEditing:(id)a3;
+- (BOOL)searchBarShouldEndEditing:(id)editing;
 - (BOOL)showPairingButton;
-- (BOOL)wantsCustomControllerForRootSpecifierID:(id)a3;
+- (BOOL)wantsCustomControllerForRootSpecifierID:(id)d;
 - (BOOL)watchKitOneAppsEOL;
 - (COSSettingsListController)init;
 - (id)activeWatchOrFakeWatch;
 - (id)additionalSpecifiers;
-- (id)appIconForSpecifierIdentifier:(id)a3;
-- (id)customControllerForBundlePath:(id)a3;
-- (id)customControllerForRootSpecifierID:(id)a3;
+- (id)appIconForSpecifierIdentifier:(id)identifier;
+- (id)customControllerForBundlePath:(id)path;
+- (id)customControllerForRootSpecifierID:(id)d;
 - (id)fakeDevice;
-- (id)filterForWatchInstalledApps:(id)a3;
-- (id)filterSockPuppetApps:(id)a3;
-- (id)freezeDryAppStates:(id)a3;
+- (id)filterForWatchInstalledApps:(id)apps;
+- (id)filterSockPuppetApps:(id)apps;
+- (id)freezeDryAppStates:(id)states;
 - (id)generalViewController;
 - (id)sockPuppetApps;
 - (id)specialCaseVictoryRow;
 - (id)specifiers;
-- (id)specifiersForWKApps:(id)a3;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
+- (id)specifiersForWKApps:(id)apps;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
 - (id)title;
 - (id)wkAppSpinnerGroup;
-- (int64_t)_groupIndexForGroup:(id)a3;
-- (int64_t)searchResultsCollectionViewController:(id)a3 sortCategory1:(id)a4 sortCategory2:(id)a5;
-- (void)_appStoreSpecifierTapped:(id)a3;
+- (int64_t)_groupIndexForGroup:(id)group;
+- (int64_t)searchResultsCollectionViewController:(id)controller sortCategory1:(id)category1 sortCategory2:(id)category2;
+- (void)_appStoreSpecifierTapped:(id)tapped;
 - (void)_hackToRemoveExtraSearchView;
-- (void)_insertSpecifierIntoTableAndStash:(id)a3 atIndex:(unint64_t)a4 stashIndex:(unint64_t)a5 animated:(BOOL)a6;
+- (void)_insertSpecifierIntoTableAndStash:(id)stash atIndex:(unint64_t)index stashIndex:(unint64_t)stashIndex animated:(BOOL)animated;
 - (void)_kickOffWatchKitAppReload;
-- (void)_notifyNTKAboutActiveWatchSkipSetupCompletionCheck:(BOOL)a3;
+- (void)_notifyNTKAboutActiveWatchSkipSetupCompletionCheck:(BOOL)check;
 - (void)_prepareDiscoveryIfNeeded;
-- (void)_pushCustomControllerForPath:(id)a3 andTitle:(id)a4;
+- (void)_pushCustomControllerForPath:(id)path andTitle:(id)title;
 - (void)_refreshAppInstallationStatus;
-- (void)_removeSpecifier:(id)a3 andInsertSpecifier:(id)a4 animated:(BOOL)a5;
-- (void)_removeSpecifierFromTableAndStash:(id)a3 animated:(BOOL)a4;
-- (void)_showDevicePicker:(id)a3;
-- (void)_startSpinnerInSpecifier:(id)a3;
-- (void)_stopSpinnerInSpecifier:(id)a3;
-- (void)_storeReauthStepForTinkerFamilyMember:(id)a3 withWatchAKDevice:(id)a4 completion:(id)a5;
+- (void)_removeSpecifier:(id)specifier andInsertSpecifier:(id)insertSpecifier animated:(BOOL)animated;
+- (void)_removeSpecifierFromTableAndStash:(id)stash animated:(BOOL)animated;
+- (void)_showDevicePicker:(id)picker;
+- (void)_startSpinnerInSpecifier:(id)specifier;
+- (void)_stopSpinnerInSpecifier:(id)specifier;
+- (void)_storeReauthStepForTinkerFamilyMember:(id)member withWatchAKDevice:(id)device completion:(id)completion;
 - (void)_updateDeviceManagementInformation;
 - (void)addUnavailableAppsSectionIfNeeded;
-- (void)appInstallErrorReceived:(id)a3;
-- (void)compatibilityStateChanged:(id)a3;
-- (void)ctCellularPlanInfoDidChange:(id)a3;
+- (void)appInstallErrorReceived:(id)received;
+- (void)compatibilityStateChanged:(id)changed;
+- (void)ctCellularPlanInfoDidChange:(id)change;
 - (void)dealloc;
-- (void)decorateSpecifierWithWKDetails:(id)a3 byIdentifier:(id)a4 andApplication:(id)a5;
-- (void)deviceBecameActive:(id)a3;
-- (void)deviceBecameInActive:(id)a3;
-- (void)deviceBecamePaired:(id)a3;
-- (void)deviceIsSetup:(id)a3;
-- (void)didEnterBackground:(id)a3;
-- (void)discoveredAdvertisingWatch:(id)a3;
-- (void)facesViewControllerDidUpdateContent:(id)a3;
-- (void)gatherAllWatchAppsWithCompletion:(id)a3;
-- (void)groupLocallyAvailableAppsWithWatchOnlyApps:(id)a3 withStates:(id)a4 withCompletion:(id)a5;
+- (void)decorateSpecifierWithWKDetails:(id)details byIdentifier:(id)identifier andApplication:(id)application;
+- (void)deviceBecameActive:(id)active;
+- (void)deviceBecameInActive:(id)active;
+- (void)deviceBecamePaired:(id)paired;
+- (void)deviceIsSetup:(id)setup;
+- (void)didEnterBackground:(id)background;
+- (void)discoveredAdvertisingWatch:(id)watch;
+- (void)facesViewControllerDidUpdateContent:(id)content;
+- (void)gatherAllWatchAppsWithCompletion:(id)completion;
+- (void)groupLocallyAvailableAppsWithWatchOnlyApps:(id)apps withStates:(id)states withCompletion:(id)completion;
 - (void)indexSpecifiersIfNeeded;
-- (void)insertAndDeleteSpecifiersForChanges:(id)a3;
-- (void)insertContiguousSpecifiersForIndexing:(id)a3;
-- (void)jumpToAppStoreWatchSection:(id)a3;
+- (void)insertAndDeleteSpecifiersForChanges:(id)changes;
+- (void)insertContiguousSpecifiersForIndexing:(id)indexing;
+- (void)jumpToAppStoreWatchSection:(id)section;
 - (void)loadSpotlightSearchControllers;
 - (void)loadView;
 - (void)presentPairingFlowIfPossible;
-- (void)presentSearchController:(id)a3;
-- (void)presentSkippedPanes:(id)a3;
-- (void)proceedWithStoreRepairForAccount:(id)a3 withWatchAKDevice:(id)a4 completion:(id)a5;
-- (void)pushCustomControllerForRootSpecifierID:(id)a3;
-- (void)refreshAppleAppGroupFooterState:(BOOL)a3;
+- (void)presentSearchController:(id)controller;
+- (void)presentSkippedPanes:(id)panes;
+- (void)proceedWithStoreRepairForAccount:(id)account withWatchAKDevice:(id)device completion:(id)completion;
+- (void)pushCustomControllerForRootSpecifierID:(id)d;
+- (void)refreshAppleAppGroupFooterState:(BOOL)state;
 - (void)reindexIfNeeded;
-- (void)reloadApplicationForGreenfieldInstall:(id)a3;
-- (void)reloadWatchKitApps:(id)a3;
-- (void)removeContiguousSpecifiersFromIndexing:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarTextDidEndEditing:(id)a3;
-- (void)searchResultsCollectionViewController:(id)a3 didSelectURL:(id)a4;
+- (void)reloadApplicationForGreenfieldInstall:(id)install;
+- (void)reloadWatchKitApps:(id)apps;
+- (void)removeContiguousSpecifiersFromIndexing:(id)indexing;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarTextDidEndEditing:(id)editing;
+- (void)searchResultsCollectionViewController:(id)controller didSelectURL:(id)l;
 - (void)showDeviceSupervisionInfo;
-- (void)skippedMiniFlowDidFinish:(id)a3;
-- (void)startSpinnerInCellForSpecifier:(id)a3;
+- (void)skippedMiniFlowDidFinish:(id)finish;
+- (void)startSpinnerInCellForSpecifier:(id)specifier;
 - (void)stopSpinner;
-- (void)systemAppSpecifierProcessing:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)updateInstallProgressForApplication:(id)a3 progress:(double)a4 installPhase:(int64_t)a5;
+- (void)systemAppSpecifierProcessing:(id)processing;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)updateInstallProgressForApplication:(id)application progress:(double)progress installPhase:(int64_t)phase;
 - (void)updateNavTitle;
-- (void)updateSearchResultsForSearchController:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)updateSearchResultsForSearchController:(id)controller;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willEnterForeground:(id)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willEnterForeground:(id)foreground;
 @end
 
 @implementation COSSettingsListController
@@ -167,14 +167,14 @@
 
     if ((sub_100008BAC() & 1) == 0)
     {
-      v27 = [*(v2 + 246) facesViewController];
+      facesViewController = [*(v2 + 246) facesViewController];
       v28 = *(v2 + 174);
-      *(v2 + 174) = v27;
+      *(v2 + 174) = facesViewController;
     }
 
     v2[160] = 1;
-    v29 = [v2 table];
-    [v29 setDelegate:v2];
+    table = [v2 table];
+    [table setDelegate:v2];
   }
 
   return v2;
@@ -213,49 +213,49 @@
   v5 = objc_alloc_init(SUIKSearchResultsCollectionViewController);
   [(COSSettingsListController *)self setSpotlightResultsController:v5];
 
-  v6 = [(COSSettingsListController *)self spotlightResultsController];
-  [v6 setDelegate:self];
+  spotlightResultsController = [(COSSettingsListController *)self spotlightResultsController];
+  [spotlightResultsController setDelegate:self];
 
   if ([(COSSettingsListController *)self displaySearchTab]|| (_os_feature_enabled_impl() & 1) == 0)
   {
     v7 = [PSKeyboardNavigationSearchController alloc];
-    v8 = [(COSSettingsListController *)self spotlightResultsController];
+    spotlightResultsController2 = [(COSSettingsListController *)self spotlightResultsController];
   }
 
   else
   {
     v7 = [PSKeyboardNavigationSearchController alloc];
-    v8 = [(COSSettingsListController *)self searchContainerViewController];
+    spotlightResultsController2 = [(COSSettingsListController *)self searchContainerViewController];
   }
 
-  v9 = v8;
-  v10 = [v7 initWithSearchResultsController:v8];
+  v9 = spotlightResultsController2;
+  v10 = [v7 initWithSearchResultsController:spotlightResultsController2];
   [(COSSettingsListController *)self setSpotlightSearchController:v10];
 
-  v11 = [(COSSettingsListController *)self spotlightSearchController];
-  [v11 setSearchResultsUpdater:self];
+  spotlightSearchController = [(COSSettingsListController *)self spotlightSearchController];
+  [spotlightSearchController setSearchResultsUpdater:self];
 
   v12 = sub_10000AD54(@"SEARCH_SETTINGS_PLACEHOLDER");
-  v13 = [(COSSettingsListController *)self spotlightSearchController];
-  v14 = [v13 searchBar];
-  [v14 setPlaceholder:v12];
+  spotlightSearchController2 = [(COSSettingsListController *)self spotlightSearchController];
+  searchBar = [spotlightSearchController2 searchBar];
+  [searchBar setPlaceholder:v12];
 
-  v15 = [(COSSettingsListController *)self spotlightSearchController];
-  v16 = [v15 searchBar];
-  [v16 setDelegate:self];
+  spotlightSearchController3 = [(COSSettingsListController *)self spotlightSearchController];
+  searchBar2 = [spotlightSearchController3 searchBar];
+  [searchBar2 setDelegate:self];
 
-  v17 = [(COSSettingsListController *)self spotlightSearchController];
-  [v17 setDelegate:self];
+  spotlightSearchController4 = [(COSSettingsListController *)self spotlightSearchController];
+  [spotlightSearchController4 setDelegate:self];
 
-  v18 = [(COSSettingsListController *)self spotlightSearchController];
-  [v18 setAdditionalSafeAreaInsets:{20.0, 0.0, 0.0, 0.0}];
+  spotlightSearchController5 = [(COSSettingsListController *)self spotlightSearchController];
+  [spotlightSearchController5 setAdditionalSafeAreaInsets:{20.0, 0.0, 0.0, 0.0}];
 
   [(COSSettingsListController *)self setDefinesPresentationContext:1];
   if (![(COSSettingsListController *)self displaySearchTab])
   {
-    v19 = [(COSSettingsListController *)self spotlightSearchController];
-    v20 = [(COSSettingsListController *)self navigationItem];
-    [v20 setSearchController:v19];
+    spotlightSearchController6 = [(COSSettingsListController *)self spotlightSearchController];
+    navigationItem = [(COSSettingsListController *)self navigationItem];
+    [navigationItem setSearchController:spotlightSearchController6];
   }
 
   v21 = +[NSMutableSet set];
@@ -315,17 +315,17 @@
   }
 
   v7 = *v4;
-  v8 = [sub_10000DF9C() sharedInstance];
-  [v3 addObserver:self selector:"ctCellularPlanInfoDidChange:" name:v7 object:v8];
+  sharedInstance = [sub_10000DF9C() sharedInstance];
+  [v3 addObserver:self selector:"ctCellularPlanInfoDidChange:" name:v7 object:sharedInstance];
 
-  v9 = [(COSSettingsListController *)self table];
-  [v9 registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"COSGalleryHeaderIdentifier"];
+  table = [(COSSettingsListController *)self table];
+  [table registerClass:objc_opt_class() forHeaderFooterViewReuseIdentifier:@"COSGalleryHeaderIdentifier"];
 
-  v10 = [(COSSettingsListController *)self table];
-  [v10 setEstimatedSectionHeaderHeight:240.0];
+  table2 = [(COSSettingsListController *)self table];
+  [table2 setEstimatedSectionHeaderHeight:240.0];
 
-  v11 = [(COSSettingsListController *)self table];
-  [v11 setSectionHeaderHeight:UITableViewAutomaticDimension];
+  table3 = [(COSSettingsListController *)self table];
+  [table3 setSectionHeaderHeight:UITableViewAutomaticDimension];
 
   if (*(&self->_isEnrolledAndSupervised + 6) && (sub_100008BAC() & 1) == 0)
   {
@@ -333,27 +333,27 @@
     [*(&self->_isEnrolledAndSupervised + 6) didMoveToParentViewController:self];
   }
 
-  v12 = [(COSSettingsListController *)self navigationItem];
+  navigationItem = [(COSSettingsListController *)self navigationItem];
   v13 = [UIBarButtonItem alloc];
   v14 = +[NSBundle mainBundle];
   v15 = [v14 localizedStringForKey:@"PICKER_BUTTON" value:&stru_10026E598 table:@"Localizable"];
   v16 = [v13 initWithTitle:v15 style:0 target:self action:"_showDevicePicker:"];
-  [v12 setLeftBarButtonItem:v16];
+  [navigationItem setLeftBarButtonItem:v16];
 
-  v17 = [(COSSettingsListController *)self table];
+  table4 = [(COSSettingsListController *)self table];
   v18 = objc_opt_class();
   v19 = +[BPSLinkCell cellReuseIdentifier];
-  [v17 registerClass:v18 forCellReuseIdentifier:v19];
+  [table4 registerClass:v18 forCellReuseIdentifier:v19];
 
-  v20 = [(COSSettingsListController *)self table];
+  table5 = [(COSSettingsListController *)self table];
   v21 = objc_opt_class();
   v22 = +[BPSBadgedTableCell cellReuseIdentifier];
-  [v20 registerClass:v21 forCellReuseIdentifier:v22];
+  [table5 registerClass:v21 forCellReuseIdentifier:v22];
 
-  v23 = [(COSSettingsListController *)self table];
+  table6 = [(COSSettingsListController *)self table];
   v24 = objc_opt_class();
   v25 = +[COSApplicationLinkCell cellReuseIdentifier];
-  [v23 registerClass:v24 forCellReuseIdentifier:v25];
+  [table6 registerClass:v24 forCellReuseIdentifier:v25];
 }
 
 - (id)specifiers
@@ -368,8 +368,8 @@
   val = self;
   v115.receiver = self;
   v115.super_class = COSSettingsListController;
-  v4 = [(COSPreferencesListController *)&v115 specifiers];
-  v99 = [v4 mutableCopy];
+  specifiers = [(COSPreferencesListController *)&v115 specifiers];
+  v99 = [specifiers mutableCopy];
 
   if (v99)
   {
@@ -477,14 +477,14 @@
         }
 
         v28 = *(*(&v107 + 1) + 8 * v27);
-        v29 = [v28 identifier];
-        if ([v29 isEqualToString:@"INTERNAL_SETTINGS"])
+        identifier = [v28 identifier];
+        if ([identifier isEqualToString:@"INTERNAL_SETTINGS"])
         {
           goto LABEL_30;
         }
 
-        v30 = [v28 identifier];
-        v31 = [v30 isEqualToString:@"CARRIER_SETTINGS"];
+        identifier2 = [v28 identifier];
+        v31 = [identifier2 isEqualToString:@"CARRIER_SETTINGS"];
 
         if ((v31 & 1) == 0 && [v28 cellType] == 1)
         {
@@ -496,8 +496,8 @@
             v34 = [NSNumber numberWithBool:1];
             [v28 setProperty:v34 forKey:v100];
 
-            v29 = BPSWatchAppBundleIDForSettingsBundleSpecifier();
-            [v28 setProperty:v29 forKey:v26];
+            identifier = BPSWatchAppBundleIDForSettingsBundleSpecifier();
+            [v28 setProperty:identifier forKey:v26];
             v35 = BPSIsIconForBundleIDRemote();
             if (([v35 BOOLValue] & 1) == 0)
             {
@@ -522,9 +522,9 @@ LABEL_30:
     while (v37);
   }
 
-  v101 = [(COSSettingsListController *)val activeWatchOrFakeWatch];
+  activeWatchOrFakeWatch = [(COSSettingsListController *)val activeWatchOrFakeWatch];
   v38 = [[NSUUID alloc] initWithUUIDString:@"E81D5008-B450-487E-9A35-6029799E6588"];
-  v39 = [v101 supportsCapability:v38];
+  v39 = [activeWatchOrFakeWatch supportsCapability:v38];
 
   if (v39)
   {
@@ -570,8 +570,8 @@ LABEL_49:
     [obja addObject:v47];
   }
 
-  v48 = [v101 valueForProperty:NRDevicePropertyIsAltAccount];
-  v49 = [v48 BOOLValue];
+  v48 = [activeWatchOrFakeWatch valueForProperty:NRDevicePropertyIsAltAccount];
+  bOOLValue = [v48 BOOLValue];
 
   v94 = +[BPSFollowUpController baseDomainIdentifier];
   v50 = *(&val->_customizationController + 6);
@@ -600,19 +600,19 @@ LABEL_49:
     v50 = *(&val->_customizationController + 6);
   }
 
-  v56 = [v50 topLevelSpecifiers];
+  topLevelSpecifiers = [v50 topLevelSpecifiers];
   v57 = +[BPSFollowUpController skippedSetupPaneClassesForCurrentDevice];
   v98 = v57;
   if (v57 && [v57 count])
   {
     v58 = [PSSpecifier groupSpecifierWithID:@"SKIPPED_PANES_GROUP"];
     v59 = sub_10000AD54(@"SKIPPED_PANES_ROW_TITLE");
-    if (v49)
+    if (bOOLValue)
     {
-      v60 = [UIApp tinkerUserName];
+      tinkerUserName = [UIApp tinkerUserName];
       v61 = +[NSBundle mainBundle];
       v62 = [v61 localizedStringForKey:@"SKIPPED_PANES_ROW_TITLE_NAME_%@" value:&stru_10026E598 table:@"Localizable-tinker"];
-      v63 = [NSString stringWithFormat:v62, v60];
+      v63 = [NSString stringWithFormat:v62, tinkerUserName];
 
       v59 = v63;
     }
@@ -627,10 +627,10 @@ LABEL_49:
     v116[0] = v58;
     v116[1] = v64;
     v66 = [NSArray arrayWithObjects:v116 count:2];
-    v67 = [v56 arrayByAddingObjectsFromArray:v66];
+    v67 = [topLevelSpecifiers arrayByAddingObjectsFromArray:v66];
 
-    v56 = v67;
-    if ((v49 & 1) == 0)
+    topLevelSpecifiers = v67;
+    if ((bOOLValue & 1) == 0)
     {
       goto LABEL_60;
     }
@@ -642,13 +642,13 @@ LABEL_63:
       [obja insertObjects:v66 atIndexes:v69];
     }
 
-    v68 = [UIApp tinkerUserName];
-    if ([v68 length])
+    tinkerUserName2 = [UIApp tinkerUserName];
+    if ([tinkerUserName2 length])
     {
       v70 = [(COSSettingsListController *)val specifierForID:@"APPLE_APP_GROUP_ID"];
       v71 = +[NSBundle mainBundle];
       v72 = [v71 localizedStringForKey:@"TINKER_APP_INSTALL_FOR_USER_%@" value:&stru_10026E598 table:@"Localizable-tinker"];
-      v73 = [NSString stringWithFormat:v72, v68];
+      v73 = [NSString stringWithFormat:v72, tinkerUserName2];
       [v70 setProperty:v73 forKey:PSFooterTextGroupKey];
     }
 
@@ -666,19 +666,19 @@ LABEL_63:
   }
 
   v66 = 0;
-  if (v49)
+  if (bOOLValue)
   {
     goto LABEL_63;
   }
 
 LABEL_60:
-  if (![v56 count])
+  if (![topLevelSpecifiers count])
   {
     goto LABEL_73;
   }
 
-  v68 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, [v56 count]);
-  [obja insertObjects:v56 atIndexes:v68];
+  tinkerUserName2 = +[NSIndexSet indexSetWithIndexesInRange:](NSIndexSet, "indexSetWithIndexesInRange:", 0, [topLevelSpecifiers count]);
+  [obja insertObjects:topLevelSpecifiers atIndexes:tinkerUserName2];
 LABEL_72:
 
 LABEL_73:
@@ -705,14 +705,14 @@ LABEL_73:
     v80 = +[NSBundle mainBundle];
     v81 = [v80 localizedStringForKey:@"LEARN_MORE_ABOUT_SUPERVISION" value:&stru_10026E598 table:@"Localizable-yorktown"];
 
-    v82 = [(COSSettingsListController *)val enrolledOrganizationName];
+    enrolledOrganizationName = [(COSSettingsListController *)val enrolledOrganizationName];
 
     +[NSBundle mainBundle];
-    if (v82)
+    if (enrolledOrganizationName)
       v83 = {;
       v84 = [v83 localizedStringForKey:@"DEVICE_MANAGEMENT_INFO_WITH_ORG_%@" value:&stru_10026E598 table:@"Localizable-yorktown"];
-      v85 = [(COSSettingsListController *)val enrolledOrganizationName];
-      v86 = [NSString stringWithFormat:v84, v85];
+      enrolledOrganizationName2 = [(COSSettingsListController *)val enrolledOrganizationName];
+      v86 = [NSString stringWithFormat:v84, enrolledOrganizationName2];
     }
 
     else
@@ -749,8 +749,8 @@ LABEL_85:
 - (id)additionalSpecifiers
 {
   v3 = +[NSMutableArray array];
-  v4 = [UIApp displayDevice];
-  if (v4)
+  displayDevice = [UIApp displayDevice];
+  if (displayDevice)
   {
     if ((BPSDeviceHasCapabilityForString() & 1) == 0)
     {
@@ -765,13 +765,13 @@ LABEL_85:
       [v3 addObject:v7];
     }
 
-    v8 = [v4 valueForProperty:@"isPaired"];
-    v9 = [v8 BOOLValue];
+    v8 = [displayDevice valueForProperty:@"isPaired"];
+    bOOLValue = [v8 BOOLValue];
 
-    if (v9)
+    if (bOOLValue)
     {
-      v10 = [(COSSettingsListController *)self sockPuppetApps];
-      [v3 addObjectsFromArray:v10];
+      sockPuppetApps = [(COSSettingsListController *)self sockPuppetApps];
+      [v3 addObjectsFromArray:sockPuppetApps];
     }
   }
 
@@ -836,8 +836,8 @@ LABEL_85:
   }
 
   [(COSSettingsListController *)self setTitle:v3];
-  v8 = [(COSSettingsListController *)self navigationItem];
-  [v8 _setLargeTitleTwoLineMode:1];
+  navigationItem = [(COSSettingsListController *)self navigationItem];
+  [navigationItem _setLargeTitleTwoLineMode:1];
 }
 
 - (id)activeWatchOrFakeWatch
@@ -891,9 +891,9 @@ LABEL_85:
 
   else
   {
-    v4 = [UIApp displayDevice];
+    displayDevice = [UIApp displayDevice];
     v5 = [[NSUUID alloc] initWithUUIDString:@"A309A9D3-F806-4E30-909A-2D301780A8EB"];
-    v3 = [v4 supportsCapability:v5];
+    v3 = [displayDevice supportsCapability:v5];
   }
 
   return v3;
@@ -905,13 +905,13 @@ LABEL_85:
   if (BPSDeviceHasStandaloneAppsCapability())
   {
     objc_initWeak(&location, self);
-    v4 = [UIApp displayDevice];
+    displayDevice = [UIApp displayDevice];
     v5[0] = _NSConcreteStackBlock;
     v5[1] = 3221225472;
     v5[2] = sub_100078058;
     v5[3] = &unk_1002683A8;
     objc_copyWeak(&v6, &location);
-    sub_10002DA20(v4, @"com.apple.DeepBreathing", v5);
+    sub_10002DA20(displayDevice, @"com.apple.DeepBreathing", v5);
 
     objc_destroyWeak(&v6);
     objc_destroyWeak(&location);
@@ -920,8 +920,8 @@ LABEL_85:
 
 - (void)_updateDeviceManagementInformation
 {
-  v3 = [UIApp displayDevice];
-  v4 = [v3 valueForProperty:NRDevicePropertyMDMManagementState];
+  displayDevice = [UIApp displayDevice];
+  v4 = [displayDevice valueForProperty:NRDevicePropertyMDMManagementState];
   v5 = [v4 unsignedIntegerValue] & 3;
   v6 = pbb_bridge_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -1005,7 +1005,7 @@ LABEL_85:
   }
 
   v2 = +[NRDeviceDiscoveryController sharedInstance];
-  v3 = [v2 devices];
+  devices = [v2 devices];
 
   v4 = +[NRPairedDeviceRegistry sharedInstance];
   v5 = [v4 getAllDevicesWithArchivedAltAccountDevicesMatching:&stru_100269BC8];
@@ -1045,7 +1045,7 @@ LABEL_85:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  obj = v3;
+  obj = devices;
   v14 = [obj countByEnumeratingWithState:&v29 objects:v39 count:16];
   if (v14)
   {
@@ -1123,9 +1123,9 @@ LABEL_24:
   [(COSPreferencesListController *)&v6 dealloc];
 }
 
-- (void)_showDevicePicker:(id)a3
+- (void)_showDevicePicker:(id)picker
 {
-  v6 = a3;
+  pickerCopy = picker;
   [(COSSettingsListController *)self setSpotlightSearchController:0];
   [(COSSettingsListController *)self setSpotlightResultsController:0];
   [(COSSettingsListController *)self setSearchSuggestionsViewController:0];
@@ -1133,8 +1133,8 @@ LABEL_24:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v6 identifier];
-    v5 = [v4 isEqualToString:@"FAMILY_WATCHES_ID"];
+    identifier = [pickerCopy identifier];
+    v5 = [identifier isEqualToString:@"FAMILY_WATCHES_ID"];
   }
 
   else
@@ -1149,14 +1149,14 @@ LABEL_24:
   }
 }
 
-- (void)systemAppSpecifierProcessing:(id)a3
+- (void)systemAppSpecifierProcessing:(id)processing
 {
-  v4 = a3;
-  v47 = [(COSSettingsListController *)self activeWatchOrFakeWatch];
-  v5 = [v47 valueForProperty:NRDevicePropertyIsAltAccount];
-  v43 = [v5 BOOLValue];
+  processingCopy = processing;
+  activeWatchOrFakeWatch = [(COSSettingsListController *)self activeWatchOrFakeWatch];
+  v5 = [activeWatchOrFakeWatch valueForProperty:NRDevicePropertyIsAltAccount];
+  bOOLValue = [v5 BOOLValue];
 
-  v6 = [v4 specifierForID:@"com.apple.HeartRateSettings"];
+  v6 = [processingCopy specifierForID:@"com.apple.HeartRateSettings"];
   v46 = v6;
   v7 = v6;
   if (v6)
@@ -1166,7 +1166,7 @@ LABEL_24:
     [v7 setProperty:&__kCFBooleanTrue forKey:PSLazyIconLoading];
   }
 
-  v8 = [v4 specifierForID:@"com.apple.MessagesBridgeSettings"];
+  v8 = [processingCopy specifierForID:@"com.apple.MessagesBridgeSettings"];
   v45 = v8;
   v9 = v8;
   if (v8)
@@ -1181,8 +1181,8 @@ LABEL_24:
 
   if (v11 == 2)
   {
-    v12 = [v4 specifierForID:@"com.apple.MessagesBridgeSettings"];
-    [v4 removeObject:v12];
+    v12 = [processingCopy specifierForID:@"com.apple.MessagesBridgeSettings"];
+    [processingCopy removeObject:v12];
   }
 
   objc_initWeak(&location, self);
@@ -1198,7 +1198,7 @@ LABEL_24:
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v13 = v4;
+    v13 = processingCopy;
     v14 = [v13 countByEnumeratingWithState:&v48 objects:v55 count:16];
     if (v14)
     {
@@ -1242,73 +1242,73 @@ LABEL_18:
   BPSRemoveHiddenAppsFromSpecifiers();
   if (BPSDeviceHasCapabilityForString())
   {
-    v22 = [v4 specifierForID:@"com.apple.NanoBooks.BridgeSettings"];
-    [v4 removeObject:v22];
+    v22 = [processingCopy specifierForID:@"com.apple.NanoBooks.BridgeSettings"];
+    [processingCopy removeObject:v22];
 
-    v23 = [v4 specifierForID:@"com.apple.private.PodcastsBridgeSettings"];
-    [v4 removeObject:v23];
+    v23 = [processingCopy specifierForID:@"com.apple.private.PodcastsBridgeSettings"];
+    [processingCopy removeObject:v23];
 
-    v24 = [v4 specifierForID:@"com.apple.tincan.settings"];
-    [v4 removeObject:v24];
+    v24 = [processingCopy specifierForID:@"com.apple.tincan.settings"];
+    [processingCopy removeObject:v24];
 
-    v25 = [v4 specifierForID:@"com.apple.weatherbridgesettings"];
-    [v4 removeObject:v25];
+    v25 = [processingCopy specifierForID:@"com.apple.weatherbridgesettings"];
+    [processingCopy removeObject:v25];
 
-    v26 = [v4 specifierForID:@"com.apple.StocksBridgeSettings"];
-    [v4 removeObject:v26];
+    v26 = [processingCopy specifierForID:@"com.apple.StocksBridgeSettings"];
+    [processingCopy removeObject:v26];
 
-    v27 = [v4 specifierForID:@"com.apple.NanoMailBridgeSettings"];
-    [v4 removeObject:v27];
+    v27 = [processingCopy specifierForID:@"com.apple.NanoMailBridgeSettings"];
+    [processingCopy removeObject:v27];
 
-    v28 = [v4 specifierForID:@"com.apple.NanoMapsBridgeSettings"];
-    [v4 removeObject:v28];
+    v28 = [processingCopy specifierForID:@"com.apple.NanoMapsBridgeSettings"];
+    [processingCopy removeObject:v28];
 
-    v29 = [v4 specifierForID:@"com.apple.NanoMusicBridgeSettings"];
-    [v4 removeObject:v29];
+    v29 = [processingCopy specifierForID:@"com.apple.NanoMusicBridgeSettings"];
+    [processingCopy removeObject:v29];
 
-    v30 = [v4 specifierForID:@"com.apple.NanoCalendarBridgeSettings"];
-    [v4 removeObject:v30];
+    v30 = [processingCopy specifierForID:@"com.apple.NanoCalendarBridgeSettings"];
+    [processingCopy removeObject:v30];
 
-    v31 = [v4 specifierForID:@"com.apple.NanoClockBridgeSettings"];
-    [v4 removeObject:v31];
+    v31 = [processingCopy specifierForID:@"com.apple.NanoClockBridgeSettings"];
+    [processingCopy removeObject:v31];
 
-    v32 = [v4 specifierForID:@"com.apple.HealthSettings"];
-    [v4 removeObject:v32];
+    v32 = [processingCopy specifierForID:@"com.apple.HealthSettings"];
+    [processingCopy removeObject:v32];
 
-    v33 = [v4 specifierForID:@"com.apple.DeepBreathingSettings"];
-    [v4 removeObject:v33];
+    v33 = [processingCopy specifierForID:@"com.apple.DeepBreathingSettings"];
+    [processingCopy removeObject:v33];
 
-    v34 = [v4 specifierForID:@"com.apple.PhoneBridgeSettings"];
-    [v4 removeObject:v34];
+    v34 = [processingCopy specifierForID:@"com.apple.PhoneBridgeSettings"];
+    [processingCopy removeObject:v34];
 
-    v35 = [v4 specifierForID:@"com.apple.MindSettings"];
-    [v4 removeObject:v35];
+    v35 = [processingCopy specifierForID:@"com.apple.MindSettings"];
+    [processingCopy removeObject:v35];
 
-    v36 = [v4 specifierForID:@"com.apple.NanoTipsBridgeSettings"];
-    [v4 removeObject:v36];
+    v36 = [processingCopy specifierForID:@"com.apple.NanoTipsBridgeSettings"];
+    [processingCopy removeObject:v36];
 
-    v37 = [v4 specifierForID:@"com.apple.NanoMenstrualCyclesCompanionSettings"];
-    [v4 removeObject:v37];
+    v37 = [processingCopy specifierForID:@"com.apple.NanoMenstrualCyclesCompanionSettings"];
+    [processingCopy removeObject:v37];
 
-    v38 = [v4 specifierForID:@"com.apple.findmy"];
-    [v4 removeObject:v38];
+    v38 = [processingCopy specifierForID:@"com.apple.findmy"];
+    [processingCopy removeObject:v38];
   }
 
   if (sub_100007C2C())
   {
-    v39 = [v4 specifierForID:@"com.apple.BridgeHealthSettings"];
-    [v4 removeObject:v39];
+    v39 = [processingCopy specifierForID:@"com.apple.BridgeHealthSettings"];
+    [processingCopy removeObject:v39];
 
-    v40 = [v4 specifierForID:@"SOS_MODE_ID"];
-    [v4 removeObject:v40];
+    v40 = [processingCopy specifierForID:@"SOS_MODE_ID"];
+    [processingCopy removeObject:v40];
 
-    v41 = [v4 specifierForID:@"PASSCODE_ID"];
-    [v4 removeObject:v41];
+    v41 = [processingCopy specifierForID:@"PASSCODE_ID"];
+    [processingCopy removeObject:v41];
   }
 
-  if (v43)
+  if (bOOLValue)
   {
-    v42 = [v4 specifierForID:@"com.apple.BridgeAppStoreDaemonSettings"];
+    v42 = [processingCopy specifierForID:@"com.apple.BridgeAppStoreDaemonSettings"];
     [v42 setControllerLoadAction:"_appStoreSpecifierTapped:"];
   }
 
@@ -1316,21 +1316,21 @@ LABEL_18:
   objc_destroyWeak(&location);
 }
 
-- (void)_appStoreSpecifierTapped:(id)a3
+- (void)_appStoreSpecifierTapped:(id)tapped
 {
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v28 = "[COSSettingsListController _appStoreSpecifierTapped:]";
     v29 = 2112;
-    v30 = v4;
+    v30 = tappedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s app store specifier call back: %@", buf, 0x16u);
   }
 
-  [(COSSettingsListController *)self _startSpinnerInSpecifier:v4];
-  v6 = [v4 propertyForKey:PSLazilyLoadedBundleKey];
+  [(COSSettingsListController *)self _startSpinnerInSpecifier:tappedCopy];
+  v6 = [tappedCopy propertyForKey:PSLazilyLoadedBundleKey];
   v7 = [NSBundle bundleWithPath:v6];
   v8 = v7;
   if (v7)
@@ -1372,7 +1372,7 @@ LABEL_13:
   v24[2] = sub_100071474;
   v24[3] = &unk_100269AE0;
   v24[4] = self;
-  v11 = v4;
+  v11 = tappedCopy;
   v25 = v11;
   v12 = v9;
   v26 = v12;
@@ -1385,14 +1385,14 @@ LABEL_13:
   v23 = v13;
   v14 = objc_retainBlock(v22);
   v15 = +[BPSTinkerSupport sharedInstance];
-  v16 = [v15 cachedTinkerAKDevice];
+  cachedTinkerAKDevice = [v15 cachedTinkerAKDevice];
 
   v17 = +[BPSTinkerSupport sharedInstance];
-  v18 = [v17 cachedTinkerFamilyMemeber];
+  cachedTinkerFamilyMemeber = [v17 cachedTinkerFamilyMemeber];
 
-  if (v16 && v18)
+  if (cachedTinkerAKDevice && cachedTinkerFamilyMemeber)
   {
-    (v14[2])(v14, v18, v16, 0);
+    (v14[2])(v14, cachedTinkerFamilyMemeber, cachedTinkerAKDevice, 0);
   }
 
   else
@@ -1407,51 +1407,51 @@ LABEL_13:
   }
 }
 
-- (void)_storeReauthStepForTinkerFamilyMember:(id)a3 withWatchAKDevice:(id)a4 completion:(id)a5
+- (void)_storeReauthStepForTinkerFamilyMember:(id)member withWatchAKDevice:(id)device completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  memberCopy = member;
+  deviceCopy = device;
+  completionCopy = completion;
   v11 = pbb_accountsignin_log();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315394;
     v23 = "[COSSettingsListController _storeReauthStepForTinkerFamilyMember:withWatchAKDevice:completion:]";
     v24 = 2112;
-    v25 = v8;
+    v25 = memberCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "%s Found: %@", buf, 0x16u);
   }
 
-  v12 = [COSTinkerAppStoreAuthHelper satelliteStoreAccountForFamilyMember:v8];
+  v12 = [COSTinkerAppStoreAuthHelper satelliteStoreAccountForFamilyMember:memberCopy];
   objc_initWeak(buf, self);
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_100071964;
   v16[3] = &unk_100269BA8;
-  v13 = v10;
+  v13 = completionCopy;
   v20 = v13;
   objc_copyWeak(&v21, buf);
   v14 = v12;
   v17 = v14;
-  v15 = v9;
+  v15 = deviceCopy;
   v18 = v15;
-  v19 = self;
+  selfCopy = self;
   [COSiTunesStoreAuthController repairDialogsForActiveDeviceWithCompletion:v16];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(buf);
 }
 
-- (void)proceedWithStoreRepairForAccount:(id)a3 withWatchAKDevice:(id)a4 completion:(id)a5
+- (void)proceedWithStoreRepairForAccount:(id)account withWatchAKDevice:(id)device completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  deviceCopy = device;
+  accountCopy = account;
   v11 = objc_alloc_init(COSTinkerAppStoreAuthHelperContext);
   [(COSTinkerAppStoreAuthHelperContext *)v11 setPresentingViewController:self];
-  [(COSTinkerAppStoreAuthHelperContext *)v11 setSatelliteAKDevice:v9];
+  [(COSTinkerAppStoreAuthHelperContext *)v11 setSatelliteAKDevice:deviceCopy];
 
-  [(COSTinkerAppStoreAuthHelperContext *)v11 setSatelliteAppStoreAccount:v10];
+  [(COSTinkerAppStoreAuthHelperContext *)v11 setSatelliteAppStoreAccount:accountCopy];
   v12 = [[COSTinkerAppStoreAuthHelper alloc] initWithContext:v11];
   v13 = *(&self->_enrolledOrganizationName + 6);
   *(&self->_enrolledOrganizationName + 6) = &v12->super.isa;
@@ -1461,16 +1461,16 @@ LABEL_13:
   v16[1] = 3221225472;
   v16[2] = sub_100071EBC;
   v16[3] = &unk_100269470;
-  v17 = v8;
-  v15 = v8;
+  v17 = completionCopy;
+  v15 = completionCopy;
   [v14 authenticateWithCompletion:v16];
 }
 
-- (void)_startSpinnerInSpecifier:(id)a3
+- (void)_startSpinnerInSpecifier:(id)specifier
 {
-  if (a3)
+  if (specifier)
   {
-    v3 = [a3 propertyForKey:PSTableCellKey];
+    v3 = [specifier propertyForKey:PSTableCellKey];
     if (v3)
     {
       v5 = v3;
@@ -1483,10 +1483,10 @@ LABEL_13:
   }
 }
 
-- (void)_stopSpinnerInSpecifier:(id)a3
+- (void)_stopSpinnerInSpecifier:(id)specifier
 {
-  v3 = a3;
-  if (v3)
+  specifierCopy = specifier;
+  if (specifierCopy)
   {
     v4 = pbb_bridge_log();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1496,23 +1496,23 @@ LABEL_13:
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s app store specifier stopping", &v7, 0xCu);
     }
 
-    v5 = [v3 propertyForKey:PSTableCellKey];
+    v5 = [specifierCopy propertyForKey:PSTableCellKey];
     if (v5)
     {
-      v6 = [v3 propertyForKey:PSControlKey];
+      v6 = [specifierCopy propertyForKey:PSControlKey];
       [v5 setAccessoryView:v6];
     }
   }
 }
 
-- (void)_notifyNTKAboutActiveWatchSkipSetupCompletionCheck:(BOOL)a3
+- (void)_notifyNTKAboutActiveWatchSkipSetupCompletionCheck:(BOOL)check
 {
-  if (a3 || (+[UIApplication sharedApplication](UIApplication, "sharedApplication"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isInSetupFlow], v4, !v5))
+  if (check || (+[UIApplication sharedApplication](UIApplication, "sharedApplication"), v4 = objc_claimAutoreleasedReturnValue(), v5 = [v4 isInSetupFlow], v4, !v5))
   {
     v7 = +[NRPairedDeviceRegistry sharedInstance];
-    v8 = [v7 compatibilityState];
+    compatibilityState = [v7 compatibilityState];
 
-    if (v8 - 3 > 2)
+    if (compatibilityState - 3 > 2)
     {
       v11 = pbb_bridge_log();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1527,18 +1527,18 @@ LABEL_13:
 
     else
     {
-      v9 = [(COSSettingsListController *)self activeWatchOrFakeWatch];
+      activeWatchOrFakeWatch = [(COSSettingsListController *)self activeWatchOrFakeWatch];
       v10 = pbb_bridge_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         v12 = 136315394;
         v13 = "[COSSettingsListController _notifyNTKAboutActiveWatchSkipSetupCompletionCheck:]";
         v14 = 2112;
-        v15 = v9;
+        v15 = activeWatchOrFakeWatch;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s %@", &v12, 0x16u);
       }
 
-      [objc_opt_class() setDisplayDevice:v9];
+      [objc_opt_class() setDisplayDevice:activeWatchOrFakeWatch];
     }
   }
 
@@ -1553,7 +1553,7 @@ LABEL_13:
   }
 }
 
-- (void)jumpToAppStoreWatchSection:(id)a3
+- (void)jumpToAppStoreWatchSection:(id)section
 {
   v3 = pbb_bridge_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -1579,8 +1579,8 @@ LABEL_13:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [*&self->super.super.BPSListController_opaque[OBJC_IVAR___PSListController__table] subviews];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  subviews = [*&self->super.super.BPSListController_opaque[OBJC_IVAR___PSListController__table] subviews];
+  v3 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -1591,7 +1591,7 @@ LABEL_3:
     {
       if (*v10 != v5)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(subviews);
       }
 
       v7 = *(*(&v9 + 1) + 8 * v6);
@@ -1602,7 +1602,7 @@ LABEL_3:
 
       if (v4 == ++v6)
       {
-        v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+        v4 = [subviews countByEnumeratingWithState:&v9 objects:v13 count:16];
         if (v4)
         {
           goto LABEL_3;
@@ -1620,24 +1620,24 @@ LABEL_3:
     }
 
     [v8 removeFromSuperview];
-    v2 = v8;
+    subviews = v8;
   }
 
 LABEL_12:
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = COSSettingsListController;
-  [(COSSettingsListController *)&v10 viewWillAppear:a3];
+  [(COSSettingsListController *)&v10 viewWillAppear:appear];
   [(COSSettingsListController *)self updateNavTitle];
-  v4 = [(COSSettingsListController *)self navigationItem];
+  navigationItem = [(COSSettingsListController *)self navigationItem];
   v5 = [UIBarButtonItem alloc];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"PICKER_BUTTON" value:&stru_10026E598 table:@"Localizable"];
   v8 = [v5 initWithTitle:v7 style:0 target:self action:"_showDevicePicker:"];
-  [v4 setLeftBarButtonItem:v8];
+  [navigationItem setLeftBarButtonItem:v8];
 
   [(COSSettingsListController *)self _refreshAppInstallationStatus];
   [(COSSettingsListController *)self _updateDeviceManagementInformation];
@@ -1645,11 +1645,11 @@ LABEL_12:
   [v9 fetchFamilyDetails];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = COSSettingsListController;
-  [(COSSettingsListController *)&v6 viewWillDisappear:a3];
+  [(COSSettingsListController *)&v6 viewWillDisappear:disappear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:PPDeviceWasDiscoveredNotification object:0];
 
@@ -1657,18 +1657,18 @@ LABEL_12:
   [v5 end];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = COSSettingsListController;
-  [(COSPreferencesListController *)&v5 viewDidAppear:a3];
+  [(COSPreferencesListController *)&v5 viewDidAppear:appear];
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 addObserver:self selector:"discoveredAdvertisingWatch:" name:PPDeviceWasDiscoveredNotification object:0];
 
   [(COSSettingsListController *)self _prepareDiscoveryIfNeeded];
 }
 
-- (void)willEnterForeground:(id)a3
+- (void)willEnterForeground:(id)foreground
 {
   v4 = +[UIApplication sharedApplication];
   if ([v4 isInSetupFlow])
@@ -1677,10 +1677,10 @@ LABEL_12:
 
   else
   {
-    v5 = [(COSSettingsListController *)self navigationController];
-    v6 = [v5 topViewController];
+    navigationController = [(COSSettingsListController *)self navigationController];
+    topViewController = [navigationController topViewController];
 
-    if (v6 == self)
+    if (topViewController == self)
     {
       [(COSSettingsListController *)self _prepareDiscoveryIfNeeded];
     }
@@ -1694,9 +1694,9 @@ LABEL_12:
   }
 
   v8 = +[UIApplication sharedApplication];
-  v9 = [v8 isInSetupFlow];
+  isInSetupFlow = [v8 isInSetupFlow];
 
-  if ((v9 & 1) == 0)
+  if ((isInSetupFlow & 1) == 0)
   {
     [(COSSettingsListController *)self _kickOffWatchKitAppReload];
     v10 = UIApp;
@@ -1705,7 +1705,7 @@ LABEL_12:
   }
 }
 
-- (void)didEnterBackground:(id)a3
+- (void)didEnterBackground:(id)background
 {
   if ([(COSSettingsListController *)self hasRowsPendingInstallation])
   {
@@ -1714,9 +1714,9 @@ LABEL_12:
   }
 }
 
-- (void)presentSkippedPanes:(id)a3
+- (void)presentSkippedPanes:(id)panes
 {
-  v4 = a3;
+  panesCopy = panes;
   if (*(&self->_fuPrefsController + 6))
   {
     v5 = pbb_bridge_log();
@@ -1726,27 +1726,27 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Already presenting mini-flow. skipping", buf, 2u);
     }
 
-    v6 = [(COSSettingsListController *)self table];
-    v7 = [(COSSettingsListController *)self table];
-    v8 = [v7 indexPathForSelectedRow];
-    [v6 deselectRowAtIndexPath:v8 animated:1];
+    table = [(COSSettingsListController *)self table];
+    table2 = [(COSSettingsListController *)self table];
+    indexPathForSelectedRow = [table2 indexPathForSelectedRow];
+    [table deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
   }
 
   else
   {
     v9 = +[BPSFollowUpController skippedSetupPaneClassesForCurrentDevice];
-    v6 = v9;
+    table = v9;
     if (v9 && [v9 count])
     {
       v10 = +[COSSetupController loadBundleControllerClasses];
-      v11 = [[COSSkippedMiniFlowController alloc] initWithSkippedControllerClassNames:v6];
+      v11 = [[COSSkippedMiniFlowController alloc] initWithSkippedControllerClassNames:table];
       v12 = *(&self->_fuPrefsController + 6);
       *(&self->_fuPrefsController + 6) = v11;
 
       [*(&self->_fuPrefsController + 6) setFlowDelegate:self];
-      v13 = [*(&self->_fuPrefsController + 6) currentController];
+      currentController = [*(&self->_fuPrefsController + 6) currentController];
 
-      if (v13)
+      if (currentController)
       {
         objc_initWeak(buf, self);
         v32[0] = _NSConcreteStackBlock;
@@ -1755,30 +1755,30 @@ LABEL_12:
         v32[3] = &unk_100269BF0;
         objc_copyWeak(&v33, buf);
         v14 = objc_retainBlock(v32);
-        v15 = [UIApp activeWatch];
-        v16 = [v15 valueForProperty:NRDevicePropertyIsAltAccount];
-        v17 = [v16 BOOLValue];
+        activeWatch = [UIApp activeWatch];
+        v16 = [activeWatch valueForProperty:NRDevicePropertyIsAltAccount];
+        bOOLValue = [v16 BOOLValue];
 
-        if (v17)
+        if (bOOLValue)
         {
           v18 = +[BPSTinkerSupport sharedInstance];
-          v19 = [v18 cachedTinkerFamilyMemeber];
+          cachedTinkerFamilyMemeber = [v18 cachedTinkerFamilyMemeber];
 
-          if (v19)
+          if (cachedTinkerFamilyMemeber)
           {
-            (v14[2])(v14, v19, 0);
+            (v14[2])(v14, cachedTinkerFamilyMemeber, 0);
           }
 
           else
           {
-            [(COSSettingsListController *)self _startSpinnerInSpecifier:v4];
+            [(COSSettingsListController *)self _startSpinnerInSpecifier:panesCopy];
             v23 = +[BPSTinkerSupport sharedInstance];
             v25 = _NSConcreteStackBlock;
             v26 = 3221225472;
             v27 = sub_100073028;
             v28 = &unk_100269C40;
             objc_copyWeak(&v31, buf);
-            v29 = v4;
+            v29 = panesCopy;
             v30 = v14;
             [v23 getActiveTinkerFamilyMemberDetailsWithCompletion:&v25];
 
@@ -1819,14 +1819,14 @@ LABEL_12:
       }
     }
 
-    v7 = [(COSSettingsListController *)self table:v25];
-    v8 = [(COSSettingsListController *)self table];
-    v24 = [v8 indexPathForSelectedRow];
-    [v7 deselectRowAtIndexPath:v24 animated:1];
+    table2 = [(COSSettingsListController *)self table:v25];
+    indexPathForSelectedRow = [(COSSettingsListController *)self table];
+    v8IndexPathForSelectedRow = [indexPathForSelectedRow indexPathForSelectedRow];
+    [table2 deselectRowAtIndexPath:v8IndexPathForSelectedRow animated:1];
   }
 }
 
-- (void)skippedMiniFlowDidFinish:(id)a3
+- (void)skippedMiniFlowDidFinish:(id)finish
 {
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1841,14 +1841,14 @@ LABEL_12:
   [(COSListController *)self reloadSpecifiers];
 }
 
-- (void)discoveredAdvertisingWatch:(id)a3
+- (void)discoveredAdvertisingWatch:(id)watch
 {
-  v4 = a3;
+  watchCopy = watch;
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v4;
+    v8 = watchCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "discoveredAdvertisingWatch: %@", &v7, 0xCu);
   }
 
@@ -1865,17 +1865,17 @@ LABEL_12:
   return v4;
 }
 
-- (BOOL)wantsCustomControllerForRootSpecifierID:(id)a3
+- (BOOL)wantsCustomControllerForRootSpecifierID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v4 = sub_10007A374();
-  v5 = [v4 allKeys];
+  allKeys = [v4 allKeys];
 
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v6 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -1885,17 +1885,17 @@ LABEL_12:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) isEqualToString:v3])
+        if ([*(*(&v10 + 1) + 8 * i) isEqualToString:dCopy])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -1910,11 +1910,11 @@ LABEL_11:
   return v6;
 }
 
-- (void)pushCustomControllerForRootSpecifierID:(id)a3
+- (void)pushCustomControllerForRootSpecifierID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = sub_10007A374();
-  v6 = [v5 objectForKey:v4];
+  v6 = [v5 objectForKey:dCopy];
 
   if (v6)
   {
@@ -1927,17 +1927,17 @@ LABEL_11:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412290;
-      v9 = v4;
+      v9 = dCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Failed to push controller for rootSpecifierID: %@!", &v8, 0xCu);
     }
   }
 }
 
-- (id)customControllerForRootSpecifierID:(id)a3
+- (id)customControllerForRootSpecifierID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = sub_10007A374();
-  v6 = [v5 objectForKey:v4];
+  v6 = [v5 objectForKey:dCopy];
 
   if (v6)
   {
@@ -1950,7 +1950,7 @@ LABEL_11:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = dCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Failed to to get controller for rootSpecifierID: %@!", &v10, 0xCu);
     }
 
@@ -1960,10 +1960,10 @@ LABEL_11:
   return v7;
 }
 
-- (id)customControllerForBundlePath:(id)a3
+- (id)customControllerForBundlePath:(id)path
 {
-  v3 = a3;
-  v4 = [NSBundle bundleWithPath:v3];
+  pathCopy = path;
+  v4 = [NSBundle bundleWithPath:pathCopy];
   v5 = pbb_bridge_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
   if (v4)
@@ -1971,7 +1971,7 @@ LABEL_11:
     if (v6)
     {
       v11 = 138412290;
-      v12 = v3;
+      v12 = pathCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Found Bundle: %@!", &v11, 0xCu);
     }
 
@@ -1979,13 +1979,13 @@ LABEL_11:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v7 viewControllers];
-      v9 = [v8 firstObject];
+      viewControllers = [v7 viewControllers];
+      firstObject = [viewControllers firstObject];
     }
 
     else
     {
-      v9 = v7;
+      firstObject = v7;
     }
   }
 
@@ -1994,76 +1994,76 @@ LABEL_11:
     if (v6)
     {
       v11 = 138412290;
-      v12 = v3;
+      v12 = pathCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Did Not Find %@", &v11, 0xCu);
     }
 
-    v9 = objc_alloc_init(PSViewController);
+    firstObject = objc_alloc_init(PSViewController);
   }
 
-  return v9;
+  return firstObject;
 }
 
-- (void)_pushCustomControllerForPath:(id)a3 andTitle:(id)a4
+- (void)_pushCustomControllerForPath:(id)path andTitle:(id)title
 {
-  v6 = [(COSSettingsListController *)self customControllerForBundlePath:a3, a4];
-  v5 = [(COSSettingsListController *)self splitViewController];
-  [v5 showInitialViewController:v6];
+  title = [(COSSettingsListController *)self customControllerForBundlePath:path, title];
+  splitViewController = [(COSSettingsListController *)self splitViewController];
+  [splitViewController showInitialViewController:title];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(COSSettingsListController *)self specifierAtIndex:[(COSSettingsListController *)self indexForIndexPath:v7]];
-  v9 = [v8 identifier];
-  v10 = [v9 isEqualToString:@"CELLULAR_ID"];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(COSSettingsListController *)self specifierAtIndex:[(COSSettingsListController *)self indexForIndexPath:pathCopy]];
+  identifier = [v8 identifier];
+  v10 = [identifier isEqualToString:@"CELLULAR_ID"];
   if ((v10 & 1) == 0)
   {
     [(COSSettingsListController *)self stopSpinner];
     self->_navigateWhenReceivingCellularPlanResult = 0;
   }
 
-  if ([(COSSettingsListController *)self wantsCustomControllerForRootSpecifierID:v9])
+  if ([(COSSettingsListController *)self wantsCustomControllerForRootSpecifierID:identifier])
   {
-    [(COSSettingsListController *)self pushCustomControllerForRootSpecifierID:v9];
+    [(COSSettingsListController *)self pushCustomControllerForRootSpecifierID:identifier];
   }
 
-  else if ([v9 isEqual:@"FAMILY_WATCHES_ID"])
+  else if ([identifier isEqual:@"FAMILY_WATCHES_ID"])
   {
     [(COSSettingsListController *)self _showDevicePicker:v8];
-    [v6 deselectRowAtIndexPath:v7 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
   }
 
   else if (v10)
   {
-    v11 = [sub_10000DF9C() sharedInstance];
-    v12 = [v11 cellularPlanIsSetUp];
+    sharedInstance = [sub_10000DF9C() sharedInstance];
+    cellularPlanIsSetUp = [sharedInstance cellularPlanIsSetUp];
 
-    if (v12)
+    if (cellularPlanIsSetUp)
     {
-      [(COSPreferencesListController *)&v17 tableView:v6 didSelectRowAtIndexPath:v7, v16.receiver, v16.super_class, self, COSSettingsListController];
+      [(COSPreferencesListController *)&v17 tableView:viewCopy didSelectRowAtIndexPath:pathCopy, v16.receiver, v16.super_class, self, COSSettingsListController];
     }
 
     else
     {
       self->_navigateWhenReceivingCellularPlanResult = 1;
-      [v6 deselectRowAtIndexPath:v7 animated:1];
-      v13 = [(COSSettingsListController *)self indexForIndexPath:v7];
+      [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+      v13 = [(COSSettingsListController *)self indexForIndexPath:pathCopy];
       v14 = [*&self->super.super.BPSListController_opaque[OBJC_IVAR___PSListController__specifiers] objectAtIndex:v13];
       [(COSSettingsListController *)self startSpinnerInCellForSpecifier:v14];
-      v15 = [sub_10000DF9C() sharedInstance];
-      [v15 updateCellularPlansWithFetch:0];
+      sharedInstance2 = [sub_10000DF9C() sharedInstance];
+      [sharedInstance2 updateCellularPlansWithFetch:0];
     }
   }
 
   else
   {
-    [(COSPreferencesListController *)&v16 tableView:v6 didSelectRowAtIndexPath:v7, self, COSSettingsListController, v17.receiver, v17.super_class];
+    [(COSPreferencesListController *)&v16 tableView:viewCopy didSelectRowAtIndexPath:pathCopy, self, COSSettingsListController, v17.receiver, v17.super_class];
   }
 }
 
-- (void)ctCellularPlanInfoDidChange:(id)a3
+- (void)ctCellularPlanInfoDidChange:(id)change
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2073,11 +2073,11 @@ LABEL_11:
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)startSpinnerInCellForSpecifier:(id)a3
+- (void)startSpinnerInCellForSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   [(COSSettingsListController *)self stopSpinner];
-  v7 = [(NSMutableArray *)v4 propertyForKey:PSTableCellKey];
+  v7 = [(NSMutableArray *)specifierCopy propertyForKey:PSTableCellKey];
   if (v7)
   {
     v5 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:100];
@@ -2087,7 +2087,7 @@ LABEL_11:
   }
 
   v6 = *(&self->_stashedWatchKitAppsState + 6);
-  *(&self->_stashedWatchKitAppsState + 6) = v4;
+  *(&self->_stashedWatchKitAppsState + 6) = specifierCopy;
 }
 
 - (void)stopSpinner
@@ -2105,8 +2105,8 @@ LABEL_11:
 
 - (id)specialCaseVictoryRow
 {
-  v2 = [UIApp displayDevice];
-  if (v2)
+  displayDevice = [UIApp displayDevice];
+  if (displayDevice)
   {
     v3 = sub_1000E64B8();
   }
@@ -2134,23 +2134,23 @@ LABEL_11:
   return qword_1002BD470;
 }
 
-- (void)decorateSpecifierWithWKDetails:(id)a3 byIdentifier:(id)a4 andApplication:(id)a5
+- (void)decorateSpecifierWithWKDetails:(id)details byIdentifier:(id)identifier andApplication:(id)application
 {
-  v8 = a3;
-  v25 = a4;
-  v9 = a5;
-  v10 = sub_1000742DC(v9);
-  v11 = [v9 companionAppBundleID];
-  v12 = [v9 bundleIdentifier];
+  detailsCopy = details;
+  identifierCopy = identifier;
+  applicationCopy = application;
+  v10 = sub_1000742DC(applicationCopy);
+  companionAppBundleID = [applicationCopy companionAppBundleID];
+  bundleIdentifier = [applicationCopy bundleIdentifier];
   v13 = *(&self->_searchCategoriesWithoutIcons + 6);
-  v14 = [v9 bundleIdentifier];
-  v22 = [v13 objectForKey:v14];
+  bundleIdentifier2 = [applicationCopy bundleIdentifier];
+  v22 = [v13 objectForKey:bundleIdentifier2];
 
-  v21 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v9 applicationMode]);
-  v24 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v9 isBetaApp]);
-  v23 = [v9 watchKitVersion];
-  v15 = [v9 teamID];
-  v16 = [v9 isLocallyAvailable];
+  v21 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [applicationCopy applicationMode]);
+  v24 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [applicationCopy isBetaApp]);
+  watchKitVersion = [applicationCopy watchKitVersion];
+  teamID = [applicationCopy teamID];
+  isLocallyAvailable = [applicationCopy isLocallyAvailable];
   v27 = 0;
   v28 = &v27;
   v29 = 0x2050000000;
@@ -2170,29 +2170,29 @@ LABEL_11:
   v18 = v17;
   _Block_object_dispose(&v27, 8);
   v19 = objc_alloc_init(v17);
-  [v19 setSectionID:v12];
-  [v8 setName:v10];
-  [v8 setProperty:@"Root" forKey:PSPlistNameKey];
-  [v8 setProperty:v11 forKey:PSIDKey];
-  [v8 setProperty:v11 forKey:PSAppSettingsBundleIDKey];
-  [v8 setProperty:v25 forKey:PSLazyIconAppID];
-  [v8 setProperty:v25 forKey:@"COSSockPuppetAppBundleIDKey"];
-  [v8 setProperty:&__kCFBooleanTrue forKey:PSLazyIconLoading];
-  [v8 setProperty:v19 forKey:BPSNotificationAppBBSectionInfo];
-  [v8 setProperty:v22 forKey:@"COSSockPuppetInstallationState"];
-  [v8 setProperty:v21 forKey:@"applicationMode"];
-  v20 = [NSNumber numberWithBool:v16];
-  [v8 setProperty:v20 forKey:@"locallyAvailable"];
+  [v19 setSectionID:bundleIdentifier];
+  [detailsCopy setName:v10];
+  [detailsCopy setProperty:@"Root" forKey:PSPlistNameKey];
+  [detailsCopy setProperty:companionAppBundleID forKey:PSIDKey];
+  [detailsCopy setProperty:companionAppBundleID forKey:PSAppSettingsBundleIDKey];
+  [detailsCopy setProperty:identifierCopy forKey:PSLazyIconAppID];
+  [detailsCopy setProperty:identifierCopy forKey:@"COSSockPuppetAppBundleIDKey"];
+  [detailsCopy setProperty:&__kCFBooleanTrue forKey:PSLazyIconLoading];
+  [detailsCopy setProperty:v19 forKey:BPSNotificationAppBBSectionInfo];
+  [detailsCopy setProperty:v22 forKey:@"COSSockPuppetInstallationState"];
+  [detailsCopy setProperty:v21 forKey:@"applicationMode"];
+  v20 = [NSNumber numberWithBool:isLocallyAvailable];
+  [detailsCopy setProperty:v20 forKey:@"locallyAvailable"];
 
-  [v8 setProperty:v24 forKey:@"COSApplicationIsBeta"];
-  [v8 setProperty:objc_opt_class() forKey:PSCellClassKey];
-  [v8 setProperty:v23 forKey:@"COSSockPuppetWatchKitVersionKey"];
-  [v8 setProperty:v15 forKey:@"COSSockPuppetAppTeamIDKey"];
+  [detailsCopy setProperty:v24 forKey:@"COSApplicationIsBeta"];
+  [detailsCopy setProperty:objc_opt_class() forKey:PSCellClassKey];
+  [detailsCopy setProperty:watchKitVersion forKey:@"COSSockPuppetWatchKitVersionKey"];
+  [detailsCopy setProperty:teamID forKey:@"COSSockPuppetAppTeamIDKey"];
 }
 
-- (id)specifiersForWKApps:(id)a3
+- (id)specifiersForWKApps:(id)apps
 {
-  v4 = a3;
+  appsCopy = apps;
   v5 = objc_opt_new();
   v6 = *(&self->_nothingSelectedController + 6);
   *(&self->_nothingSelectedController + 6) = v5;
@@ -2219,7 +2219,7 @@ LABEL_11:
   v26 = v14;
   v15 = v9;
   v27 = v15;
-  [v4 enumerateKeysAndObjectsUsingBlock:v23];
+  [appsCopy enumerateKeysAndObjectsUsingBlock:v23];
   if (!self->_showAppSections)
   {
     if (![v12 count])
@@ -2266,29 +2266,29 @@ LABEL_9:
   return v21;
 }
 
-- (int64_t)_groupIndexForGroup:(id)a3
+- (int64_t)_groupIndexForGroup:(id)group
 {
   v4 = 0x7FFFFFFFFFFFFFFFLL;
-  [(COSSettingsListController *)self getGroup:&v4 row:0 ofSpecifier:a3];
+  [(COSSettingsListController *)self getGroup:&v4 row:0 ofSpecifier:group];
   return v4;
 }
 
-- (void)refreshAppleAppGroupFooterState:(BOOL)a3
+- (void)refreshAppleAppGroupFooterState:(BOOL)state
 {
   v8 = [(COSSettingsListController *)self specifierForID:@"APPLE_APP_GROUP_ID"];
   v4 = [(COSSettingsListController *)self _groupIndexForGroup:?];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = v4;
-    v6 = [(COSSettingsListController *)self table];
+    table = [(COSSettingsListController *)self table];
     v7 = [NSIndexSet indexSetWithIndex:v5];
-    [v6 _reloadSectionHeaderFooters:v7 withRowAnimation:100];
+    [table _reloadSectionHeaderFooters:v7 withRowAnimation:100];
   }
 }
 
-- (id)filterSockPuppetApps:(id)a3
+- (id)filterSockPuppetApps:(id)apps
 {
-  v4 = a3;
+  appsCopy = apps;
   v5 = objc_opt_new();
   objc_initWeak(&location, self);
   v20[0] = _NSConcreteStackBlock;
@@ -2299,15 +2299,15 @@ LABEL_9:
   objc_copyWeak(&v22, &location);
   v6 = v5;
   v21 = v6;
-  [v4 enumerateKeysAndObjectsUsingBlock:v20];
+  [appsCopy enumerateKeysAndObjectsUsingBlock:v20];
   if ([(COSSettingsListController *)self watchKitOneAppsEOL])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [0 allKeys];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v24 count:16];
+    allKeys = [0 allKeys];
+    v8 = [allKeys countByEnumeratingWithState:&v16 objects:v24 count:16];
     if (v8)
     {
       v9 = *v17;
@@ -2317,7 +2317,7 @@ LABEL_9:
         {
           if (*v17 != v9)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allKeys);
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
@@ -2329,7 +2329,7 @@ LABEL_9:
           }
         }
 
-        v8 = [v7 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        v8 = [allKeys countByEnumeratingWithState:&v16 objects:v24 count:16];
       }
 
       while (v8);
@@ -2345,9 +2345,9 @@ LABEL_9:
   return v14;
 }
 
-- (id)filterForWatchInstalledApps:(id)a3
+- (id)filterForWatchInstalledApps:(id)apps
 {
-  v4 = a3;
+  appsCopy = apps;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000753D8;
@@ -2355,7 +2355,7 @@ LABEL_9:
   v9[4] = self;
   v5 = objc_opt_new();
   v10 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v9];
+  [appsCopy enumerateKeysAndObjectsUsingBlock:v9];
 
   v6 = v10;
   v7 = v5;
@@ -2366,9 +2366,9 @@ LABEL_9:
 - (void)_kickOffWatchKitAppReload
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 isInSetupFlow];
+  isInSetupFlow = [v3 isInSetupFlow];
 
-  if (v4)
+  if (isInSetupFlow)
   {
     v5 = pbb_bridge_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2404,12 +2404,12 @@ LABEL_9:
     else
     {
       v9 = +[UIApplication sharedApplication];
-      v10 = [v9 _forceComplexTopLevel];
+      _forceComplexTopLevel = [v9 _forceComplexTopLevel];
 
-      if (v10)
+      if (_forceComplexTopLevel)
       {
-        v11 = [(COSSettingsListController *)self _pptApps];
-        (*(v5 + 16))(v5, v11, 0, 0);
+        _pptApps = [(COSSettingsListController *)self _pptApps];
+        (*(v5 + 16))(v5, _pptApps, 0, 0);
       }
 
       else
@@ -2421,9 +2421,9 @@ LABEL_9:
         {
           if (v14)
           {
-            v15 = [v12 pairingID];
+            pairingID = [v12 pairingID];
             *buf = 138543362;
-            v20 = v15;
+            v20 = pairingID;
             _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Kick off App Reload for %{public}@...", buf, 0xCu);
           }
 
@@ -2449,29 +2449,29 @@ LABEL_9:
   }
 }
 
-- (void)insertAndDeleteSpecifiersForChanges:(id)a3
+- (void)insertAndDeleteSpecifiersForChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   v5 = 0;
   v6 = 0;
   v7 = 0;
   v8 = NSKeyedUnarchiver_ptr;
   *&v9 = 138412290;
   v49 = v9;
-  v50 = v4;
+  v50 = changesCopy;
 LABEL_2:
   v51 = v7;
-  while (v7 < [v4 count] || v7 < objc_msgSend(*(&self->_sockPuppetAppMapping + 6), "count"))
+  while (v7 < [changesCopy count] || v7 < objc_msgSend(*(&self->_sockPuppetAppMapping + 6), "count"))
   {
 
-    if (v7 >= [v4 count])
+    if (v7 >= [changesCopy count])
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = [v4 objectAtIndex:v7];
+      v6 = [changesCopy objectAtIndex:v7];
     }
 
     if (v7 >= [*(&self->_sockPuppetAppMapping + 6) count])
@@ -2502,12 +2502,12 @@ LABEL_2:
       }
 
       v35 = v8[192];
-      v36 = [v4 subarrayWithRange:{v7, objc_msgSend(v4, "count") - v7}];
+      v36 = [changesCopy subarrayWithRange:{v7, objc_msgSend(changesCopy, "count") - v7}];
       v37 = [v35 arrayWithArray:v36];
 
-      v38 = [*(&self->_sockPuppetAppMapping + 6) lastObject];
-      v39 = [v38 identifier];
-      v40 = [(COSSettingsListController *)self indexOfSpecifierID:v39];
+      lastObject = [*(&self->_sockPuppetAppMapping + 6) lastObject];
+      identifier = [lastObject identifier];
+      v40 = [(COSSettingsListController *)self indexOfSpecifierID:identifier];
 
       [(COSPreferencesListController *)self insertContiguousSpecifiers:v37 atIndex:v40 + 1 animated:1];
       goto LABEL_46;
@@ -2531,8 +2531,8 @@ LABEL_13:
       v55 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v38 = v44;
-      v45 = [v38 countByEnumeratingWithState:&v52 objects:v63 count:16];
+      lastObject = v44;
+      v45 = [lastObject countByEnumeratingWithState:&v52 objects:v63 count:16];
       if (v45)
       {
         v46 = v45;
@@ -2543,19 +2543,19 @@ LABEL_13:
           {
             if (*v53 != v47)
             {
-              objc_enumerationMutation(v38);
+              objc_enumerationMutation(lastObject);
             }
 
             [(COSSettingsListController *)self _removeSpecifierFromTableAndStash:*(*(&v52 + 1) + 8 * i) animated:1];
           }
 
-          v46 = [v38 countByEnumeratingWithState:&v52 objects:v63 count:16];
+          v46 = [lastObject countByEnumeratingWithState:&v52 objects:v63 count:16];
         }
 
         while (v46);
       }
 
-      v37 = v38;
+      v37 = lastObject;
       v6 = v5;
 LABEL_46:
 
@@ -2572,18 +2572,18 @@ LABEL_46:
     v10 = pbb_bridge_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 identifier];
-      v12 = [v5 identifier];
+      identifier2 = [v6 identifier];
+      identifier3 = [v5 identifier];
       *buf = 138412546;
-      v60 = v11;
+      v60 = identifier2;
       v61 = 2112;
-      v62 = v12;
+      v62 = identifier3;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "New specifier: %@ and old one: %@ differ, adjusting list", buf, 0x16u);
     }
 
-    v13 = [v6 name];
-    v14 = [v5 name];
-    v15 = [v13 isEqualToString:v14];
+    name = [v6 name];
+    name2 = [v5 name];
+    v15 = [name isEqualToString:name2];
 
     if (v15)
     {
@@ -2598,9 +2598,9 @@ LABEL_46:
       v16 = [NSArray arrayWithObjects:v58 count:2];
       v17 = [NSMutableArray arrayWithArray:v16];
 
-      v18 = [v6 identifier];
+      identifier4 = [v6 identifier];
       v19 = [(COSSettingsListController *)self localizedPrefsStringForString:@"Available_Apps_Section_Title"];
-      v20 = [v18 isEqualToString:v19];
+      v20 = [identifier4 isEqualToString:v19];
 
       if (v20)
       {
@@ -2615,9 +2615,9 @@ LABEL_46:
 
       else
       {
-        v23 = [v5 identifier];
+        identifier5 = [v5 identifier];
         v24 = [(COSSettingsListController *)self localizedPrefsStringForString:@"Available_Apps_Section_Title"];
-        v25 = [v23 isEqualToString:v24];
+        v25 = [identifier5 isEqualToString:v24];
 
         if (v25)
         {
@@ -2637,23 +2637,23 @@ LABEL_46:
         }
       }
 
-      v4 = v50;
+      changesCopy = v50;
       v7 = v51;
-      v28 = [v17 firstObject];
-      v29 = [v28 isEqual:v6];
+      firstObject = [v17 firstObject];
+      v29 = [firstObject isEqual:v6];
 
       if (v29)
       {
-        v30 = [v5 identifier];
-        v31 = [(COSSettingsListController *)self indexOfSpecifierID:v30];
+        identifier6 = [v5 identifier];
+        v31 = [(COSSettingsListController *)self indexOfSpecifierID:identifier6];
 
         [(COSSettingsListController *)self _insertSpecifierIntoTableAndStash:v6 atIndex:v31 stashIndex:v51 animated:1];
         v32 = pbb_bridge_log();
         if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
         {
-          v33 = [v6 identifier];
+          identifier7 = [v6 identifier];
           *buf = 138412546;
-          v60 = v33;
+          v60 = identifier7;
           v61 = 2048;
           v62 = v31;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "New app list has an additional specifier %@ to be inserted at index %lu", buf, 0x16u);
@@ -2677,42 +2677,42 @@ LABEL_46:
   }
 }
 
-- (void)_removeSpecifier:(id)a3 andInsertSpecifier:(id)a4 animated:(BOOL)a5
+- (void)_removeSpecifier:(id)specifier andInsertSpecifier:(id)insertSpecifier animated:(BOOL)animated
 {
-  v5 = a5;
-  v12 = a4;
-  v8 = a3;
-  v9 = [v8 identifier];
-  v10 = [(COSSettingsListController *)self indexOfSpecifierID:v9];
+  animatedCopy = animated;
+  insertSpecifierCopy = insertSpecifier;
+  specifierCopy = specifier;
+  identifier = [specifierCopy identifier];
+  v10 = [(COSSettingsListController *)self indexOfSpecifierID:identifier];
 
-  v11 = [*(&self->_sockPuppetAppMapping + 6) indexOfObject:v8];
-  [(COSSettingsListController *)self _removeSpecifierFromTableAndStash:v8 animated:v5];
+  v11 = [*(&self->_sockPuppetAppMapping + 6) indexOfObject:specifierCopy];
+  [(COSSettingsListController *)self _removeSpecifierFromTableAndStash:specifierCopy animated:animatedCopy];
 
-  [(COSSettingsListController *)self _insertSpecifierIntoTableAndStash:v12 atIndex:v10 stashIndex:v11 animated:v5];
+  [(COSSettingsListController *)self _insertSpecifierIntoTableAndStash:insertSpecifierCopy atIndex:v10 stashIndex:v11 animated:animatedCopy];
 }
 
-- (void)_removeSpecifierFromTableAndStash:(id)a3 animated:(BOOL)a4
+- (void)_removeSpecifierFromTableAndStash:(id)stash animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  v6 = [v7 identifier];
-  [(COSSettingsListController *)self removeSpecifierID:v6 animated:v4];
+  animatedCopy = animated;
+  stashCopy = stash;
+  identifier = [stashCopy identifier];
+  [(COSSettingsListController *)self removeSpecifierID:identifier animated:animatedCopy];
 
-  [*(&self->_sockPuppetAppMapping + 6) removeObject:v7];
+  [*(&self->_sockPuppetAppMapping + 6) removeObject:stashCopy];
 }
 
-- (void)_insertSpecifierIntoTableAndStash:(id)a3 atIndex:(unint64_t)a4 stashIndex:(unint64_t)a5 animated:(BOOL)a6
+- (void)_insertSpecifierIntoTableAndStash:(id)stash atIndex:(unint64_t)index stashIndex:(unint64_t)stashIndex animated:(BOOL)animated
 {
-  v6 = a6;
+  animatedCopy = animated;
   v10 = *(&self->_sockPuppetAppMapping + 6);
-  v11 = a3;
-  [v10 insertObject:v11 atIndex:a5];
-  [(COSSettingsListController *)self insertSpecifier:v11 atIndex:a4 animated:v6];
+  stashCopy = stash;
+  [v10 insertObject:stashCopy atIndex:stashIndex];
+  [(COSSettingsListController *)self insertSpecifier:stashCopy atIndex:index animated:animatedCopy];
 }
 
-- (void)gatherAllWatchAppsWithCompletion:(id)a3
+- (void)gatherAllWatchAppsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_opt_new();
   v6 = sub_10000DB38();
   v7 = objc_alloc_init(NSMutableDictionary);
@@ -2723,43 +2723,43 @@ LABEL_46:
   v12[3] = &unk_100269D58;
   v13 = v5;
   v14 = v7;
-  v15 = self;
-  v16 = v4;
-  v9 = v4;
+  selfCopy = self;
+  v16 = completionCopy;
+  v9 = completionCopy;
   v10 = v7;
   v11 = v5;
   [v8 enumerateInstalledApplicationsOnPairedDevice:v6 withBlock:v12];
 }
 
-- (void)groupLocallyAvailableAppsWithWatchOnlyApps:(id)a3 withStates:(id)a4 withCompletion:(id)a5
+- (void)groupLocallyAvailableAppsWithWatchOnlyApps:(id)apps withStates:(id)states withCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  appsCopy = apps;
+  statesCopy = states;
+  completionCopy = completion;
   v10 = sub_10000DB38();
   v11 = +[ACXDeviceConnection sharedDeviceConnection];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100076D20;
   v15[3] = &unk_100269D80;
-  v16 = v7;
-  v17 = v8;
-  v18 = v9;
-  v12 = v9;
-  v13 = v8;
-  v14 = v7;
+  v16 = appsCopy;
+  v17 = statesCopy;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = statesCopy;
+  v14 = appsCopy;
   [v11 enumerateLocallyAvailableApplicationsForPairedDevice:v10 options:1 withBlock:v15];
 }
 
-- (id)freezeDryAppStates:(id)a3
+- (id)freezeDryAppStates:(id)states
 {
-  v3 = a3;
+  statesCopy = states;
   v4 = +[NSMutableArray array];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = v3;
+  obj = statesCopy;
   v5 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
@@ -2783,8 +2783,8 @@ LABEL_46:
           [v11 setProperty:v12 forKey:@"COSSockPuppetInstallationState"];
         }
 
-        v13 = [v10 identifier];
-        [v11 setIdentifier:v13];
+        identifier = [v10 identifier];
+        [v11 setIdentifier:identifier];
 
         v14 = [v10 propertyForKey:v8];
         [v11 setProperty:v14 forKey:v8];
@@ -2801,15 +2801,15 @@ LABEL_46:
   return v4;
 }
 
-- (void)appInstallErrorReceived:(id)a3
+- (void)appInstallErrorReceived:(id)received
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"COSAppInstallErrorKey"];
+  userInfo = [received userInfo];
+  v5 = [userInfo objectForKey:@"COSAppInstallErrorKey"];
 
   if (v5)
   {
-    v6 = [v5 domain];
-    v7 = [v6 isEqualToString:@"ACXUserPresentableErrorDomain"];
+    domain = [v5 domain];
+    v7 = [domain isEqualToString:@"ACXUserPresentableErrorDomain"];
 
     if (v7)
     {
@@ -2818,7 +2818,7 @@ LABEL_46:
       v9[2] = sub_100077308;
       v9[3] = &unk_100268358;
       v10 = v5;
-      v11 = self;
+      selfCopy = self;
       dispatch_async(&_dispatch_main_q, v9);
       v8 = v10;
     }
@@ -2836,15 +2836,15 @@ LABEL_46:
   }
 }
 
-- (void)reloadWatchKitApps:(id)a3
+- (void)reloadWatchKitApps:(id)apps
 {
-  v4 = a3;
+  appsCopy = apps;
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [appsCopy name];
     v7 = 138412290;
-    v8 = v6;
+    v8 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "reloading watch kit apps on notification: %@", &v7, 0xCu);
   }
 
@@ -2858,16 +2858,16 @@ LABEL_46:
   v4 = *(&self->_sockPuppetAppMapping + 6);
   if (v4)
   {
-    v5 = v4;
+    wkAppSpinnerGroup = v4;
   }
 
   else
   {
-    v5 = [(COSSettingsListController *)self wkAppSpinnerGroup];
+    wkAppSpinnerGroup = [(COSSettingsListController *)self wkAppSpinnerGroup];
   }
 
-  v6 = v5;
-  [v3 addObjectsFromArray:v5];
+  v6 = wkAppSpinnerGroup;
+  [v3 addObjectsFromArray:wkAppSpinnerGroup];
 
   return v3;
 }
@@ -2889,106 +2889,106 @@ LABEL_46:
       v11[0] = v5;
       v11[1] = v8;
       v9 = [NSArray arrayWithObjects:v11 count:2];
-      v10 = [(COSSettingsListController *)self specifiers];
-      -[COSSettingsListController insertContiguousSpecifiers:atIndex:](self, "insertContiguousSpecifiers:atIndex:", v9, [v10 count]);
+      specifiers = [(COSSettingsListController *)self specifiers];
+      -[COSSettingsListController insertContiguousSpecifiers:atIndex:](self, "insertContiguousSpecifiers:atIndex:", v9, [specifiers count]);
     }
   }
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
-  if (a4)
+  viewCopy = view;
+  if (section)
   {
     v15.receiver = self;
     v15.super_class = COSSettingsListController;
-    v7 = [(COSSettingsListController *)&v15 tableView:v6 viewForHeaderInSection:a4];
+    v7 = [(COSSettingsListController *)&v15 tableView:viewCopy viewForHeaderInSection:section];
   }
 
   else
   {
-    v8 = [(COSSettingsListController *)self activeWatchOrFakeWatch];
-    v9 = [v8 valueForProperty:NRDevicePropertyIsAltAccount];
-    v10 = [v9 BOOLValue];
+    activeWatchOrFakeWatch = [(COSSettingsListController *)self activeWatchOrFakeWatch];
+    v9 = [activeWatchOrFakeWatch valueForProperty:NRDevicePropertyIsAltAccount];
+    bOOLValue = [v9 BOOLValue];
 
     HasCapabilityForString = BPSDeviceHasCapabilityForString();
     v12 = sub_100008BAC();
     v7 = 0;
-    if (*(&self->_isEnrolledAndSupervised + 6) && (v12 & 1) == 0 && (v10 & 1) == 0 && HasCapabilityForString)
+    if (*(&self->_isEnrolledAndSupervised + 6) && (v12 & 1) == 0 && (bOOLValue & 1) == 0 && HasCapabilityForString)
     {
-      v7 = [v6 dequeueReusableHeaderFooterViewWithIdentifier:@"COSGalleryHeaderIdentifier"];
-      v13 = [*(&self->_isEnrolledAndSupervised + 6) view];
-      [v7 setGalleryView:v13];
+      v7 = [viewCopy dequeueReusableHeaderFooterViewWithIdentifier:@"COSGalleryHeaderIdentifier"];
+      view = [*(&self->_isEnrolledAndSupervised + 6) view];
+      [v7 setGalleryView:view];
     }
   }
 
   return v7;
 }
 
-- (void)facesViewControllerDidUpdateContent:(id)a3
+- (void)facesViewControllerDidUpdateContent:(id)content
 {
   v3 = *&self->super.super.BPSListController_opaque[OBJC_IVAR___PSListController__table];
   v4 = [NSIndexSet indexSetWithIndex:0];
   [v3 _reloadSectionHeaderFooters:v4 withRowAnimation:5];
 }
 
-- (void)reloadApplicationForGreenfieldInstall:(id)a3
+- (void)reloadApplicationForGreenfieldInstall:(id)install
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKey:NTKGreenfieldApplicationInstallBeganNotificationAppKey];
+  installCopy = install;
+  userInfo = [installCopy userInfo];
+  v6 = [userInfo objectForKey:NTKGreenfieldApplicationInstallBeganNotificationAppKey];
 
-  v7 = [v4 userInfo];
+  userInfo2 = [installCopy userInfo];
 
-  v8 = [v7 objectForKey:NTKGreenfieldApplicationInstallBeganNotificationInstallStateKey];
-  v9 = [v8 integerValue];
+  v8 = [userInfo2 objectForKey:NTKGreenfieldApplicationInstallBeganNotificationInstallStateKey];
+  integerValue = [v8 integerValue];
 
   v10 = [(COSSettingsListController *)self specifierForID:v6];
   v11 = v10;
   if (v10)
   {
     v12 = [v10 propertyForKey:@"COSSockPuppetInstallationState"];
-    v13 = [v12 integerValue];
+    integerValue2 = [v12 integerValue];
 
-    if (v9 != v13)
+    if (integerValue != integerValue2)
     {
       block[0] = _NSConcreteStackBlock;
       block[1] = 3221225472;
       block[2] = sub_100077B5C;
       block[3] = &unk_100269DA8;
-      v16 = self;
-      v17 = v9;
+      selfCopy = self;
+      v17 = integerValue;
       v15 = v11;
       dispatch_async(&_dispatch_main_q, block);
     }
   }
 }
 
-- (void)deviceBecameInActive:(id)a3
+- (void)deviceBecameInActive:(id)active
 {
-  v4 = [UIApp safeToPopToSettingsRootController];
+  safeToPopToSettingsRootController = [UIApp safeToPopToSettingsRootController];
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(COSSettingsListController *)self navigationController];
-    v7 = [v6 topViewController];
+    navigationController = [(COSSettingsListController *)self navigationController];
+    topViewController = [navigationController topViewController];
     v15 = 136446722;
     v16 = "[COSSettingsListController deviceBecameInActive:]";
     v17 = 1024;
-    v18 = v4;
+    v18 = safeToPopToSettingsRootController;
     v19 = 2112;
-    v20 = v7;
+    v20 = topViewController;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%{public}s: safeToPopToSettingsRootController: %{BOOL}d, topViewController: %@", &v15, 0x1Cu);
   }
 
-  v8 = [(COSSettingsListController *)self navigationController];
-  v9 = [v8 topViewController];
-  v10 = (v9 != self) & v4;
+  navigationController2 = [(COSSettingsListController *)self navigationController];
+  topViewController2 = [navigationController2 topViewController];
+  v10 = (topViewController2 != self) & safeToPopToSettingsRootController;
 
   if (v10 == 1)
   {
-    v11 = [(COSSettingsListController *)self navigationController];
-    v12 = [v11 popToRootViewControllerAnimated:1];
+    navigationController3 = [(COSSettingsListController *)self navigationController];
+    v12 = [navigationController3 popToRootViewControllerAnimated:1];
 
     v13 = sub_100009AB4();
     v14 = [v13 count];
@@ -3000,7 +3000,7 @@ LABEL_46:
   }
 }
 
-- (void)deviceBecameActive:(id)a3
+- (void)deviceBecameActive:(id)active
 {
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -3019,7 +3019,7 @@ LABEL_46:
   [(COSSettingsListController *)self notifyNTKAboutActiveWatch];
 }
 
-- (void)deviceBecamePaired:(id)a3
+- (void)deviceBecamePaired:(id)paired
 {
   v3 = pbb_bridge_log();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -3030,7 +3030,7 @@ LABEL_46:
   }
 }
 
-- (void)deviceIsSetup:(id)a3
+- (void)deviceIsSetup:(id)setup
 {
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -3043,7 +3043,7 @@ LABEL_46:
   [(COSSettingsListController *)self _notifyNTKAboutActiveWatchSkipSetupCompletionCheck:1];
 }
 
-- (void)compatibilityStateChanged:(id)a3
+- (void)compatibilityStateChanged:(id)changed
 {
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -3056,15 +3056,15 @@ LABEL_46:
   [(COSSettingsListController *)self notifyNTKAboutActiveWatch];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
   v3 = +[PPDiscoveryManager sharedDiscoveryManager];
   [v3 end];
 }
 
-- (void)removeContiguousSpecifiersFromIndexing:(id)a3
+- (void)removeContiguousSpecifiersFromIndexing:(id)indexing
 {
-  v4 = a3;
+  indexingCopy = indexing;
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3079,8 +3079,8 @@ LABEL_46:
   v8[1] = 3221225472;
   v8[2] = sub_10007846C;
   v8[3] = &unk_100269DD0;
-  v9 = v4;
-  v7 = v4;
+  v9 = indexingCopy;
+  v7 = indexingCopy;
   objc_copyWeak(&v10, buf);
   dispatch_async(v6, v8);
   objc_destroyWeak(&v10);
@@ -3088,9 +3088,9 @@ LABEL_46:
   objc_destroyWeak(buf);
 }
 
-- (void)insertContiguousSpecifiersForIndexing:(id)a3
+- (void)insertContiguousSpecifiersForIndexing:(id)indexing
 {
-  v4 = a3;
+  indexingCopy = indexing;
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -3105,8 +3105,8 @@ LABEL_46:
   v8[1] = 3221225472;
   v8[2] = sub_1000787DC;
   v8[3] = &unk_100269DD0;
-  v9 = v4;
-  v7 = v4;
+  v9 = indexingCopy;
+  v7 = indexingCopy;
   objc_copyWeak(&v10, buf);
   dispatch_async(v6, v8);
   objc_destroyWeak(&v10);
@@ -3114,15 +3114,15 @@ LABEL_46:
   objc_destroyWeak(buf);
 }
 
-- (void)searchResultsCollectionViewController:(id)a3 didSelectURL:(id)a4
+- (void)searchResultsCollectionViewController:(id)controller didSelectURL:(id)l
 {
-  v5 = a4;
+  lCopy = l;
   v6 = pbb_bridge_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 absoluteString];
+    absoluteString = [lCopy absoluteString];
     *buf = 138412290;
-    v12 = v7;
+    v12 = absoluteString;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "[url absoluteString] -> %@", buf, 0xCu);
   }
 
@@ -3133,9 +3133,9 @@ LABEL_46:
 
   else
   {
-    [UIApp processURL:v5 animated:1 fromSearch:1];
-    v8 = [v5 absoluteString];
-    v9 = [v8 hasPrefix:@"bridge:root=(null)"];
+    [UIApp processURL:lCopy animated:1 fromSearch:1];
+    absoluteString2 = [lCopy absoluteString];
+    v9 = [absoluteString2 hasPrefix:@"bridge:root=(null)"];
 
     if (v9)
     {
@@ -3149,11 +3149,11 @@ LABEL_46:
   }
 }
 
-- (int64_t)searchResultsCollectionViewController:(id)a3 sortCategory1:(id)a4 sortCategory2:(id)a5
+- (int64_t)searchResultsCollectionViewController:(id)controller sortCategory1:(id)category1 sortCategory2:(id)category2
 {
-  v7 = a5;
-  v8 = [NSNumber numberWithInteger:[(COSSettingsListController *)self indexOfSpecifierID:a4]];
-  v9 = [(COSSettingsListController *)self indexOfSpecifierID:v7];
+  category2Copy = category2;
+  v8 = [NSNumber numberWithInteger:[(COSSettingsListController *)self indexOfSpecifierID:category1]];
+  v9 = [(COSSettingsListController *)self indexOfSpecifierID:category2Copy];
 
   v10 = [NSNumber numberWithInteger:v9];
   v11 = [v8 compare:v10];
@@ -3161,12 +3161,12 @@ LABEL_46:
   return v11;
 }
 
-- (id)appIconForSpecifierIdentifier:(id)a3
+- (id)appIconForSpecifierIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4 && (-[COSSettingsListController searchCategoriesWithoutIcons](self, "searchCategoriesWithoutIcons"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 containsObject:v4], v5, (v6 & 1) == 0))
+  identifierCopy = identifier;
+  if (identifierCopy && (-[COSSettingsListController searchCategoriesWithoutIcons](self, "searchCategoriesWithoutIcons"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 containsObject:identifierCopy], v5, (v6 & 1) == 0))
   {
-    v8 = [(COSSettingsListController *)self specifierForID:v4];
+    v8 = [(COSSettingsListController *)self specifierForID:identifierCopy];
     v9 = [v8 propertyForKey:PSLazyIconAppID];
     v7 = [v8 propertyForKey:PSIconImageKey];
     if (!v7)
@@ -3252,8 +3252,8 @@ LABEL_46:
               dsema = dispatch_semaphore_create(0);
               v28 = +[NanoResourceGrabber sharedInstance];
               v29 = +[UIScreen mainScreen];
-              v30 = [v29 traitCollection];
-              [v30 displayScale];
+              traitCollection = [v29 traitCollection];
+              [traitCollection displayScale];
               if (v31 <= 2.0)
               {
                 v32 = 47;
@@ -3282,14 +3282,14 @@ LABEL_46:
                 if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR) && os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
                 {
                   *buf = 138412546;
-                  v51 = v4;
+                  v51 = identifierCopy;
                   v52 = 2112;
                   v53 = v9;
                   _os_log_impl(&_mh_execute_header, v35, OS_LOG_TYPE_DEFAULT, "Timed out looking for category %@ search icon for %@, never looking again...", buf, 0x16u);
                 }
 
-                v36 = [(COSSettingsListController *)self searchCategoriesWithoutIcons];
-                [v36 addObject:v4];
+                searchCategoriesWithoutIcons = [(COSSettingsListController *)self searchCategoriesWithoutIcons];
+                [searchCategoriesWithoutIcons addObject:identifierCopy];
               }
 
               v7 = v45[5];
@@ -3315,7 +3315,7 @@ LABEL_46:
   return v7;
 }
 
-- (void)searchBarTextDidEndEditing:(id)a3
+- (void)searchBarTextDidEndEditing:(id)editing
 {
   if (([(COSSettingsListController *)self isFirstResponder]& 1) == 0)
   {
@@ -3324,25 +3324,25 @@ LABEL_46:
   }
 }
 
-- (BOOL)searchBarShouldEndEditing:(id)a3
+- (BOOL)searchBarShouldEndEditing:(id)editing
 {
-  v4 = [(COSSettingsListController *)self spotlightResultsController];
-  v5 = [v4 collectionView];
-  v6 = [v5 indexPathsForSelectedItems];
-  v7 = [v6 firstObject];
+  spotlightResultsController = [(COSSettingsListController *)self spotlightResultsController];
+  collectionView = [spotlightResultsController collectionView];
+  indexPathsForSelectedItems = [collectionView indexPathsForSelectedItems];
+  firstObject = [indexPathsForSelectedItems firstObject];
 
-  if (v7)
+  if (firstObject)
   {
-    v8 = [(COSSettingsListController *)self spotlightResultsController];
-    [v8 showSelectedSearchResult];
+    spotlightResultsController2 = [(COSSettingsListController *)self spotlightResultsController];
+    [spotlightResultsController2 showSelectedSearchResult];
   }
 
-  return v7 == 0;
+  return firstObject == 0;
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v5 = a3;
+  barCopy = bar;
   v6 = pbb_bridge_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -3353,8 +3353,8 @@ LABEL_46:
 
   if (![(COSSettingsListController *)self displaySearchTab]&& _os_feature_enabled_impl())
   {
-    v7 = [v5 text];
-    v8 = [v7 length];
+    text = [barCopy text];
+    v8 = [text length];
 
     v9 = &OBJC_IVAR___COSSettingsListController__spotlightResultsController;
     if (!v8)
@@ -3366,9 +3366,9 @@ LABEL_46:
   }
 }
 
-- (void)updateSearchResultsForSearchController:(id)a3
+- (void)updateSearchResultsForSearchController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   objc_initWeak(&location, self);
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
@@ -3387,7 +3387,7 @@ LABEL_46:
   v13 = 3221225472;
   v14 = sub_10007979C;
   v15 = &unk_100269E48;
-  v8 = v4;
+  v8 = controllerCopy;
   v16 = v8;
   v9 = v5;
   v17 = v9;
@@ -3402,13 +3402,13 @@ LABEL_46:
   objc_destroyWeak(&location);
 }
 
-- (void)updateInstallProgressForApplication:(id)a3 progress:(double)a4 installPhase:(int64_t)a5
+- (void)updateInstallProgressForApplication:(id)application progress:(double)progress installPhase:(int64_t)phase
 {
-  if ((a5 - 1) <= 1)
+  if ((phase - 1) <= 1)
   {
-    v6 = a4 * 0.54;
-    v7 = a4 * 0.46 + 54.0;
-    if (a5 == 1)
+    v6 = progress * 0.54;
+    v7 = progress * 0.46 + 54.0;
+    if (phase == 1)
     {
       v8 = v6;
     }
@@ -3418,15 +3418,15 @@ LABEL_46:
       v8 = v7;
     }
 
-    v9 = a3;
+    applicationCopy = application;
     v10 = +[NSNotificationCenter defaultCenter];
-    v15[0] = v9;
+    v15[0] = applicationCopy;
     v14[0] = @"appid";
     v14[1] = @"progress";
     v11 = [NSNumber numberWithDouble:v8];
     v15[1] = v11;
     v14[2] = @"phase";
-    v12 = [NSNumber numberWithInteger:a5];
+    v12 = [NSNumber numberWithInteger:phase];
     v15[2] = v12;
     v13 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:3];
 
@@ -3454,17 +3454,17 @@ LABEL_46:
   [PSAboutHTMLSheetViewController presentAboutSheetTitled:v6 HTMLContent:v7 fromViewController:self];
 }
 
-- (void)presentSearchController:(id)a3
+- (void)presentSearchController:(id)controller
 {
-  v7 = a3;
+  controllerCopy = controller;
   if (![(COSSettingsListController *)self displaySearchTab])
   {
     if (_os_feature_enabled_impl())
     {
-      [v7 setShowsSearchResultsController:1];
-      v4 = [v7 searchBar];
-      v5 = [v4 text];
-      v6 = [v5 length];
+      [controllerCopy setShowsSearchResultsController:1];
+      searchBar = [controllerCopy searchBar];
+      text = [searchBar text];
+      v6 = [text length];
 
       if (!v6)
       {

@@ -1,11 +1,11 @@
 @interface LabeledSlider
-- (CGRect)trackRectForBounds:(CGRect)a3;
+- (CGRect)trackRectForBounds:(CGRect)bounds;
 - (CGSize)intrinsicContentSize;
-- (_TtC5Setup13LabeledSlider)initWithCoder:(id)a3;
-- (_TtC5Setup13LabeledSlider)initWithFrame:(CGRect)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)setValue:(float)a3 animated:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (_TtC5Setup13LabeledSlider)initWithCoder:(id)coder;
+- (_TtC5Setup13LabeledSlider)initWithFrame:(CGRect)frame;
+- (void)drawRect:(CGRect)rect;
+- (void)setValue:(float)value animated:(BOOL)animated;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateConstraints;
 @end
 
@@ -13,7 +13,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10004B21C();
   v5 = v4;
 
@@ -24,7 +24,7 @@
   return result;
 }
 
-- (_TtC5Setup13LabeledSlider)initWithCoder:(id)a3
+- (_TtC5Setup13LabeledSlider)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC5Setup13LabeledSlider_labelPositionConstraints) = _swiftEmptyArrayStorage;
   *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC5Setup13LabeledSlider_labelOffset) = 0x4024000000000000;
@@ -34,25 +34,25 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  v3 = self;
+  selfCopy = self;
   sub_10004CA54();
 }
 
 - (void)updateConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_10004BF18();
 }
 
-- (CGRect)trackRectForBounds:(CGRect)a3
+- (CGRect)trackRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  selfCopy = self;
   sub_10004C160(x, y, width, height);
   v9 = v8;
   v11 = v10;
@@ -68,27 +68,27 @@
   return result;
 }
 
-- (void)setValue:(float)a3 animated:(BOOL)a4
+- (void)setValue:(float)value animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = self;
-  v7 = sub_10004C45C(a3);
-  [(LabeledSlider *)v6 maximumValue];
-  v9 = (v8 / ((*(&v6->super.super.super.super.super.isa + OBJC_IVAR____TtC5Setup13LabeledSlider_ticks))[2] - 1)) * v7;
-  v11.receiver = v6;
+  animatedCopy = animated;
+  selfCopy = self;
+  v7 = sub_10004C45C(value);
+  [(LabeledSlider *)selfCopy maximumValue];
+  v9 = (v8 / ((*(&selfCopy->super.super.super.super.super.isa + OBJC_IVAR____TtC5Setup13LabeledSlider_ticks))[2] - 1)) * v7;
+  v11.receiver = selfCopy;
   v11.super_class = type metadata accessor for LabeledSlider();
   *&v10 = v9;
-  [(LabeledSlider *)&v11 setValue:v4 animated:v10];
+  [(LabeledSlider *)&v11 setValue:animatedCopy animated:v10];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
+  changeCopy = change;
+  selfCopy = self;
   sub_10004CE10();
 }
 
-- (_TtC5Setup13LabeledSlider)initWithFrame:(CGRect)a3
+- (_TtC5Setup13LabeledSlider)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

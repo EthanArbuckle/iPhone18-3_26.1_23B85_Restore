@@ -1,27 +1,27 @@
 @interface MediaControlsAnimationController
-- (id)initForPresenting:(BOOL)a3;
-- (void)animateTransition:(id)a3;
+- (id)initForPresenting:(BOOL)presenting;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation MediaControlsAnimationController
 
-- (id)initForPresenting:(BOOL)a3
+- (id)initForPresenting:(BOOL)presenting
 {
   v5.receiver = self;
   v5.super_class = MediaControlsAnimationController;
   result = [(MediaControlsAnimationController *)&v5 init];
   if (result)
   {
-    *(result + 8) = a3;
+    *(result + 8) = presenting;
   }
 
   return result;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = v4;
+  transitionCopy = transition;
+  v5 = transitionCopy;
   v6 = *MEMORY[0x1E695EFD0];
   v7 = *(MEMORY[0x1E695EFD0] + 32);
   v23 = *(MEMORY[0x1E695EFD0] + 16);
@@ -32,9 +32,9 @@
   v22 = v6;
   if (self->_presenting)
   {
-    v8 = [v4 viewForKey:*MEMORY[0x1E69DE780]];
-    v9 = [v5 containerView];
-    [v9 addSubview:v8];
+    v8 = [transitionCopy viewForKey:*MEMORY[0x1E69DE780]];
+    containerView = [v5 containerView];
+    [containerView addSubview:v8];
 
     v10 = 1.0;
     v11 = 0.0;
@@ -43,7 +43,7 @@
 
   else
   {
-    v8 = [v4 viewForKey:*MEMORY[0x1E69DE770]];
+    v8 = [transitionCopy viewForKey:*MEMORY[0x1E69DE770]];
     v10 = 0.0;
     v11 = 1.0;
     v12 = &v21;
@@ -57,7 +57,7 @@
     v20[1] = v23;
     v20[2] = v24;
     [v8 setTransform:v20];
-    v13 = [MEMORY[0x1E6970500] standardSpringAnimator];
+    standardSpringAnimator = [MEMORY[0x1E6970500] standardSpringAnimator];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __54__MediaControlsAnimationController_animateTransition___block_invoke;
@@ -65,14 +65,14 @@
     v17 = v8;
     v18 = v10;
     v19 = v21;
-    [v13 addAnimations:v16];
+    [standardSpringAnimator addAnimations:v16];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __54__MediaControlsAnimationController_animateTransition___block_invoke_2;
     v14[3] = &unk_1E76643F0;
     v15 = v5;
-    [v13 addCompletion:v14];
-    [v13 startAnimation];
+    [standardSpringAnimator addCompletion:v14];
+    [standardSpringAnimator startAnimation];
   }
 
   else

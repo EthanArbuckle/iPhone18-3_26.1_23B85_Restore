@@ -7,17 +7,17 @@
 
 - (id)contentAttributeSet
 {
-  v1 = [a1 _internalUserActivity];
-  v2 = [v1 contentAttributeSet];
+  _internalUserActivity = [self _internalUserActivity];
+  contentAttributeSet = [_internalUserActivity contentAttributeSet];
 
-  return v2;
+  return contentAttributeSet;
 }
 
 - (void)setContentAttributeSet:()CSSearchableItemAttributeSet
 {
   v5 = a3;
-  v4 = [a1 _internalUserActivity];
-  [v4 setContentAttributeSet:v5];
+  _internalUserActivity = [self _internalUserActivity];
+  [_internalUserActivity setContentAttributeSet:v5];
 }
 
 @end

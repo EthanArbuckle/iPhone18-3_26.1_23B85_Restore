@@ -1,33 +1,33 @@
 @interface TSMultiPlanIntermediateViewController
-- (TSMultiPlanIntermediateViewController)initWithPendingInstallPlans:(id)a3 transferPlans:(id)a4 carrierSetupPlans:(id)a5 showQRCodeOption:(BOOL)a6 showOtherOptions:(BOOL)a7 isShowingFilteredPlans:(BOOL)a8 isStandaloneProximityFlow:(BOOL)a9 isHiddenPlanSelectable:(BOOL)a10;
+- (TSMultiPlanIntermediateViewController)initWithPendingInstallPlans:(id)plans transferPlans:(id)transferPlans carrierSetupPlans:(id)setupPlans showQRCodeOption:(BOOL)option showOtherOptions:(BOOL)options isShowingFilteredPlans:(BOOL)filteredPlans isStandaloneProximityFlow:(BOOL)flow isHiddenPlanSelectable:(BOOL)self0;
 - (TSSIMSetupFlowDelegate)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
 - (void)_otherButtonTapped;
-- (void)_prepareCellInformationWithPendingInstallPlans:(id)a3 transferPlans:(id)a4 carrierSetupPlans:(id)a5 isHiddenPlanSelectable:(BOOL)a6;
+- (void)_prepareCellInformationWithPendingInstallPlans:(id)plans transferPlans:(id)transferPlans carrierSetupPlans:(id)setupPlans isHiddenPlanSelectable:(BOOL)selectable;
 - (void)_skipButtonTapped;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
 @implementation TSMultiPlanIntermediateViewController
 
-- (TSMultiPlanIntermediateViewController)initWithPendingInstallPlans:(id)a3 transferPlans:(id)a4 carrierSetupPlans:(id)a5 showQRCodeOption:(BOOL)a6 showOtherOptions:(BOOL)a7 isShowingFilteredPlans:(BOOL)a8 isStandaloneProximityFlow:(BOOL)a9 isHiddenPlanSelectable:(BOOL)a10
+- (TSMultiPlanIntermediateViewController)initWithPendingInstallPlans:(id)plans transferPlans:(id)transferPlans carrierSetupPlans:(id)setupPlans showQRCodeOption:(BOOL)option showOtherOptions:(BOOL)options isShowingFilteredPlans:(BOOL)filteredPlans isStandaloneProximityFlow:(BOOL)flow isHiddenPlanSelectable:(BOOL)self0
 {
-  v12 = a6;
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = [v17 filteredPlansForQRCodeBucket];
-  v20 = [v17 filteredPlansForTransferableBucket];
-  v21 = [v16 count];
-  self->_nonMagnoliaCount = [v18 count] + v21;
-  if ([v20 count] + self->_nonMagnoliaCount)
+  optionCopy = option;
+  plansCopy = plans;
+  transferPlansCopy = transferPlans;
+  setupPlansCopy = setupPlans;
+  filteredPlansForQRCodeBucket = [transferPlansCopy filteredPlansForQRCodeBucket];
+  filteredPlansForTransferableBucket = [transferPlansCopy filteredPlansForTransferableBucket];
+  v21 = [plansCopy count];
+  self->_nonMagnoliaCount = [setupPlansCopy count] + v21;
+  if ([filteredPlansForTransferableBucket count] + self->_nonMagnoliaCount)
   {
-    v35 = v12 && [v19 count] != 0;
-    v34 = a7;
-    if ([v16 count] || objc_msgSend(v18, "count"))
+    v35 = optionCopy && [filteredPlansForQRCodeBucket count] != 0;
+    optionsCopy = options;
+    if ([plansCopy count] || objc_msgSend(setupPlansCopy, "count"))
     {
       v24 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
       v22 = [v24 localizedStringForKey:@"SET_UP_CELLULAR" value:&stru_28753DF48 table:@"Localizable"];
@@ -63,12 +63,12 @@
     self = v29;
     if (v29)
     {
-      v29->_showOtherOptions = v34;
+      v29->_showOtherOptions = optionsCopy;
       v29->_showQrCodeOption = v35;
-      v29->_isStandaloneProximityFlow = a9;
-      v29->_isShowingFilteredPlans = a8;
-      [(TSMultiPlanIntermediateViewController *)v29 _prepareCellInformationWithPendingInstallPlans:v16 transferPlans:v17 carrierSetupPlans:v18 isHiddenPlanSelectable:a10];
-      v30 = self;
+      v29->_isStandaloneProximityFlow = flow;
+      v29->_isShowingFilteredPlans = filteredPlans;
+      [(TSMultiPlanIntermediateViewController *)v29 _prepareCellInformationWithPendingInstallPlans:plansCopy transferPlans:transferPlansCopy carrierSetupPlans:setupPlansCopy isHiddenPlanSelectable:selectable];
+      selfCopy = self;
     }
 
     else
@@ -80,7 +80,7 @@
       }
     }
 
-    v23 = self;
+    selfCopy2 = self;
   }
 
   else
@@ -91,10 +91,10 @@
       [TSMultiPlanIntermediateViewController initWithPendingInstallPlans:v22 transferPlans:? carrierSetupPlans:? showQRCodeOption:? showOtherOptions:? isShowingFilteredPlans:? isStandaloneProximityFlow:? isHiddenPlanSelectable:?];
     }
 
-    v23 = 0;
+    selfCopy2 = 0;
   }
 
-  return v23;
+  return selfCopy2;
 }
 
 - (void)viewDidLoad
@@ -104,9 +104,9 @@
   [(TSOBTableWelcomeController *)&v25 viewDidLoad];
   if (+[TSUtilities inBuddy])
   {
-    v3 = [MEMORY[0x277D37650] linkButton];
+    linkButton = [MEMORY[0x277D37650] linkButton];
     laterButton = self->_laterButton;
-    self->_laterButton = v3;
+    self->_laterButton = linkButton;
 
     v5 = self->_laterButton;
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -114,8 +114,8 @@
     [(OBLinkTrayButton *)v5 setTitle:v7 forState:0];
 
     [(OBLinkTrayButton *)self->_laterButton addTarget:self action:sel__skipButtonTapped forControlEvents:64];
-    v8 = [(TSMultiPlanIntermediateViewController *)self buttonTray];
-    [v8 addButton:self->_laterButton];
+    buttonTray = [(TSMultiPlanIntermediateViewController *)self buttonTray];
+    [buttonTray addButton:self->_laterButton];
 
     [(OBLinkTrayButton *)self->_laterButton setEnabled:1];
   }
@@ -124,59 +124,59 @@
   v10 = [v9 initWithFrame:2 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(OBTableWelcomeController *)self setTableView:v10];
 
-  v11 = [(OBTableWelcomeController *)self tableView];
-  [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v12 = [(OBTableWelcomeController *)self tableView];
-  [v12 setRowHeight:*MEMORY[0x277D76F30]];
+  tableView2 = [(OBTableWelcomeController *)self tableView];
+  [tableView2 setRowHeight:*MEMORY[0x277D76F30]];
 
-  v13 = [(OBTableWelcomeController *)self tableView];
-  [v13 setEstimatedRowHeight:1.0];
+  tableView3 = [(OBTableWelcomeController *)self tableView];
+  [tableView3 setEstimatedRowHeight:1.0];
 
-  v14 = [(OBTableWelcomeController *)self tableView];
-  [v14 setAllowsMultipleSelection:0];
+  tableView4 = [(OBTableWelcomeController *)self tableView];
+  [tableView4 setAllowsMultipleSelection:0];
 
-  v15 = [(OBTableWelcomeController *)self tableView];
-  [v15 setScrollEnabled:1];
+  tableView5 = [(OBTableWelcomeController *)self tableView];
+  [tableView5 setScrollEnabled:1];
 
-  v16 = [(OBTableWelcomeController *)self tableView];
-  v17 = [MEMORY[0x277D75348] clearColor];
-  [v16 setBackgroundColor:v17];
+  tableView6 = [(OBTableWelcomeController *)self tableView];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [tableView6 setBackgroundColor:clearColor];
 
-  v18 = [(OBTableWelcomeController *)self tableView];
-  [v18 setDataSource:self];
+  tableView7 = [(OBTableWelcomeController *)self tableView];
+  [tableView7 setDataSource:self];
 
-  v19 = [(OBTableWelcomeController *)self tableView];
-  [v19 reloadData];
+  tableView8 = [(OBTableWelcomeController *)self tableView];
+  [tableView8 reloadData];
 
   if (!+[TSUtilities inBuddy]&& self->_showOtherOptions)
   {
-    v20 = [MEMORY[0x277D37650] linkButton];
-    [v20 addTarget:self action:sel__otherButtonTapped forControlEvents:64];
+    linkButton2 = [MEMORY[0x277D37650] linkButton];
+    [linkButton2 addTarget:self action:sel__otherButtonTapped forControlEvents:64];
     v21 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v22 = [v21 localizedStringForKey:@"OTHER_OPTIONS" value:&stru_28753DF48 table:@"Localizable"];
-    [v20 setTitle:v22 forState:0];
+    [linkButton2 setTitle:v22 forState:0];
 
-    v23 = [(TSMultiPlanIntermediateViewController *)self buttonTray];
-    [v23 addButton:v20];
+    buttonTray2 = [(TSMultiPlanIntermediateViewController *)self buttonTray];
+    [buttonTray2 addButton:linkButton2];
   }
 
   if (!+[TSUtilities inBuddy])
   {
-    v24 = [(TSMultiPlanIntermediateViewController *)self delegate];
-    [v24 setCancelNavigationBarItems:self];
+    delegate = [(TSMultiPlanIntermediateViewController *)self delegate];
+    [delegate setCancelNavigationBarItems:self];
     goto LABEL_11;
   }
 
   if (self->_isStandaloneProximityFlow || self->_isShowingFilteredPlans)
   {
-    v24 = [(OBBaseWelcomeController *)self navigationItem];
-    [v24 setHidesBackButton:1];
+    delegate = [(OBBaseWelcomeController *)self navigationItem];
+    [delegate setHidesBackButton:1];
 LABEL_11:
   }
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   if (self->_showQrCodeOption)
   {
@@ -189,37 +189,37 @@ LABEL_11:
   }
 }
 
-- (void)_prepareCellInformationWithPendingInstallPlans:(id)a3 transferPlans:(id)a4 carrierSetupPlans:(id)a5 isHiddenPlanSelectable:(BOOL)a6
+- (void)_prepareCellInformationWithPendingInstallPlans:(id)plans transferPlans:(id)transferPlans carrierSetupPlans:(id)setupPlans isHiddenPlanSelectable:(BOOL)selectable
 {
   v65 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [v11 filteredPlansForTransferableBucket];
-  v14 = [v13 filteredPlansForHiddenInCloudBucket:1];
-  if (!a6)
+  plansCopy = plans;
+  transferPlansCopy = transferPlans;
+  setupPlansCopy = setupPlans;
+  filteredPlansForTransferableBucket = [transferPlansCopy filteredPlansForTransferableBucket];
+  v14 = [filteredPlansForTransferableBucket filteredPlansForHiddenInCloudBucket:1];
+  if (!selectable)
   {
-    v15 = [v13 filteredPlansForHiddenInCloudBucket:0];
+    v15 = [filteredPlansForTransferableBucket filteredPlansForHiddenInCloudBucket:0];
 
-    v13 = v15;
+    filteredPlansForTransferableBucket = v15;
   }
 
-  v16 = [v13 arrayByAddingObjectsFromArray:v10];
+  v16 = [filteredPlansForTransferableBucket arrayByAddingObjectsFromArray:plansCopy];
 
-  v17 = [v16 arrayByAddingObjectsFromArray:v12];
+  v17 = [v16 arrayByAddingObjectsFromArray:setupPlansCopy];
 
-  v18 = [v17 carrierNames];
+  carrierNames = [v17 carrierNames];
   v55 = v17;
   if (![v17 count] && objc_msgSend(v14, "count"))
   {
-    v19 = [v14 carrierNames];
+    carrierNames2 = [v14 carrierNames];
 
-    v18 = v19;
+    carrierNames = carrierNames2;
   }
 
   v56 = v14;
-  v54 = v18;
-  v20 = [TSUtilities FormattedCarrierListFromSet:v18];
+  v54 = carrierNames;
+  v20 = [TSUtilities FormattedCarrierListFromSet:carrierNames];
   if ([v20 length])
   {
     v21 = MEMORY[0x277CCACA8];
@@ -238,10 +238,10 @@ LABEL_11:
     self->_installBucketSubtitle = v26;
   }
 
-  v59 = v10;
-  v27 = [v10 count];
-  v57 = v12;
-  if (v27 + [v12 count])
+  v59 = plansCopy;
+  v27 = [plansCopy count];
+  v57 = setupPlansCopy;
+  if (v27 + [setupPlansCopy count])
   {
     v28 = @"MULTI_ALS_TEXT";
   }
@@ -256,14 +256,14 @@ LABEL_11:
   installBucketTitle = self->_installBucketTitle;
   self->_installBucketTitle = v30;
 
-  v58 = v11;
-  v32 = [v11 filteredPlansForQRCodeBucket];
+  v58 = transferPlansCopy;
+  filteredPlansForQRCodeBucket = [transferPlansCopy filteredPlansForQRCodeBucket];
   v33 = [MEMORY[0x277CBEB58] set];
   v60 = 0u;
   v61 = 0u;
   v62 = 0u;
   v63 = 0u;
-  v34 = v32;
+  v34 = filteredPlansForQRCodeBucket;
   v35 = [v34 countByEnumeratingWithState:&v60 objects:v64 count:16];
   if (v35)
   {
@@ -279,13 +279,13 @@ LABEL_11:
         }
 
         v39 = *(*(&v60 + 1) + 8 * i);
-        v40 = [v39 carrierName];
-        v41 = [v40 length];
+        carrierName = [v39 carrierName];
+        v41 = [carrierName length];
 
         if (v41)
         {
-          v42 = [v39 carrierName];
-          [v33 addObject:v42];
+          carrierName2 = [v39 carrierName];
+          [v33 addObject:carrierName2];
         }
       }
 
@@ -322,58 +322,58 @@ LABEL_11:
   v53 = *MEMORY[0x277D85DE8];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v6 = MEMORY[0x277CCACA8];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 stringWithFormat:@"options%ld", objc_msgSend(v7, "section")];
-  v10 = [v8 dequeueReusableCellWithIdentifier:v9];
+  pathCopy = path;
+  viewCopy = view;
+  v9 = [v6 stringWithFormat:@"options%ld", objc_msgSend(pathCopy, "section")];
+  v10 = [viewCopy dequeueReusableCellWithIdentifier:v9];
 
   if (!v10)
   {
     v10 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:3 reuseIdentifier:v9];
   }
 
-  v11 = [v10 contentView];
-  [v11 setLayoutMargins:{10.0, 0.0, 0.0, 0.0}];
+  contentView = [v10 contentView];
+  [contentView setLayoutMargins:{10.0, 0.0, 0.0, 0.0}];
 
   [v10 setAccessoryType:1];
-  v12 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-  [v10 setBackgroundColor:v12];
+  secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+  [v10 setBackgroundColor:secondarySystemBackgroundColor];
 
-  v13 = [v10 textLabel];
-  [v13 setLineBreakMode:0];
+  textLabel = [v10 textLabel];
+  [textLabel setLineBreakMode:0];
 
-  v14 = [v10 textLabel];
-  [v14 setNumberOfLines:0];
+  textLabel2 = [v10 textLabel];
+  [textLabel2 setNumberOfLines:0];
 
-  v15 = [v10 textLabel];
-  [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
+  textLabel3 = [v10 textLabel];
+  [textLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v16 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76988]];
-  v17 = [v10 textLabel];
-  [v17 setFont:v16];
+  textLabel4 = [v10 textLabel];
+  [textLabel4 setFont:v16];
 
-  v18 = [v10 detailTextLabel];
-  [v18 setLineBreakMode:0];
+  detailTextLabel = [v10 detailTextLabel];
+  [detailTextLabel setLineBreakMode:0];
 
-  v19 = [v10 detailTextLabel];
-  [v19 setNumberOfLines:0];
+  detailTextLabel2 = [v10 detailTextLabel];
+  [detailTextLabel2 setNumberOfLines:0];
 
-  v20 = [v10 detailTextLabel];
-  [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
+  detailTextLabel3 = [v10 detailTextLabel];
+  [detailTextLabel3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
   v21 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D769D0]];
-  v22 = [v10 detailTextLabel];
-  [v22 setFont:v21];
+  detailTextLabel4 = [v10 detailTextLabel];
+  [detailTextLabel4 setFont:v21];
 
-  v23 = [v7 section];
-  if (!v23)
+  section = [pathCopy section];
+  if (!section)
   {
     v24 = [MEMORY[0x277D755B8] systemImageNamed:@"iphone.and.arrow.forward"];
-    v26 = [v10 textLabel];
-    [v26 setText:self->_installBucketTitle];
+    textLabel5 = [v10 textLabel];
+    [textLabel5 setText:self->_installBucketTitle];
     v27 = &OBJC_IVAR___TSMultiPlanIntermediateViewController__installBucketSubtitle;
     goto LABEL_7;
   }
@@ -382,22 +382,22 @@ LABEL_11:
   {
     v24 = [MEMORY[0x277D755B8] systemImageNamed:@"qrcode"];
     qrcodeBucketTitle = self->_qrcodeBucketTitle;
-    v26 = [v10 textLabel];
-    [v26 setText:qrcodeBucketTitle];
+    textLabel5 = [v10 textLabel];
+    [textLabel5 setText:qrcodeBucketTitle];
     v27 = &OBJC_IVAR___TSMultiPlanIntermediateViewController__qrcodeBucketSubtitle;
 LABEL_7:
 
     v28 = *(&self->super.super.super.super.super.super.super.isa + *v27);
-    v29 = [v10 detailTextLabel];
-    [v29 setText:v28];
+    detailTextLabel5 = [v10 detailTextLabel];
+    [detailTextLabel5 setText:v28];
 
     goto LABEL_9;
   }
 
   v24 = 0;
 LABEL_9:
-  v30 = [MEMORY[0x277D75348] systemBlueColor];
-  v31 = [v24 imageWithTintColor:v30];
+  systemBlueColor = [MEMORY[0x277D75348] systemBlueColor];
+  v31 = [v24 imageWithTintColor:systemBlueColor];
 
   [v31 size];
   v33 = v32 * 1.5;
@@ -412,18 +412,18 @@ LABEL_9:
   v38 = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
   v39 = [v38 imageWithRenderingMode:1];
-  v40 = [v10 imageView];
-  [v40 setImage:v38];
+  imageView = [v10 imageView];
+  [imageView setImage:v38];
 
   return v10;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v8 = a4;
-  if ([v8 section])
+  pathCopy = path;
+  if ([pathCopy section])
   {
-    if ([v8 section] != 1)
+    if ([pathCopy section] != 1)
     {
       goto LABEL_6;
     }
@@ -438,14 +438,14 @@ LABEL_9:
 
   *(&self->super.super.super.super.super.super.super.isa + *v5) = 1;
 LABEL_6:
-  v6 = [(TSMultiPlanIntermediateViewController *)self delegate];
-  [v6 viewControllerDidComplete:self];
+  delegate = [(TSMultiPlanIntermediateViewController *)self delegate];
+  [delegate viewControllerDidComplete:self];
 
-  v7 = [(OBTableWelcomeController *)self tableView];
-  [v7 deselectRowAtIndexPath:v8 animated:1];
+  tableView = [(OBTableWelcomeController *)self tableView];
+  [tableView deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
   v4 = objc_alloc(MEMORY[0x277D75D18]);
   v5 = [v4 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
@@ -456,8 +456,8 @@ LABEL_6:
 - (void)_otherButtonTapped
 {
   self->_isOtherButtonTapped = 1;
-  v3 = [(TSMultiPlanIntermediateViewController *)self delegate];
-  [v3 viewControllerDidComplete:self];
+  delegate = [(TSMultiPlanIntermediateViewController *)self delegate];
+  [delegate viewControllerDidComplete:self];
 }
 
 - (void)_skipButtonTapped
@@ -493,8 +493,8 @@ LABEL_6:
 
   else
   {
-    v19 = [(TSMultiPlanIntermediateViewController *)self delegate];
-    [v19 viewControllerDidComplete:self];
+    delegate = [(TSMultiPlanIntermediateViewController *)self delegate];
+    [delegate viewControllerDidComplete:self];
   }
 }
 

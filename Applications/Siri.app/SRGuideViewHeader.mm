@@ -1,23 +1,23 @@
 @interface SRGuideViewHeader
-+ (CGSize)sizeThatFits:(CGSize)a3 text:(id)a4;
-+ (CGSize)sizeThatFits:(CGSize)a3 text:(id)a4 edgeInsets:(UIEdgeInsets)a5;
++ (CGSize)sizeThatFits:(CGSize)fits text:(id)text;
++ (CGSize)sizeThatFits:(CGSize)fits text:(id)text edgeInsets:(UIEdgeInsets)insets;
 + (UIEdgeInsets)_edgeInsets;
 + (double)defaultHeight;
 + (double)firstLineBaselineOffsetFromTop;
 + (id)reuseIdentifier;
-- (SRGuideViewHeader)initWithFrame:(CGRect)a3;
+- (SRGuideViewHeader)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)edgeInsets;
 - (void)layoutSubviews;
-- (void)setTitle:(id)a3;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SRGuideViewHeader
 
-- (SRGuideViewHeader)initWithFrame:(CGRect)a3
+- (SRGuideViewHeader)initWithFrame:(CGRect)frame
 {
   v16.receiver = self;
   v16.super_class = SRGuideViewHeader;
-  v3 = [(SRGuideViewHeader *)&v16 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SRGuideViewHeader *)&v16 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[UIView alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
@@ -33,8 +33,8 @@
     [(UILabel *)v8 setTextColor:v9];
 
     v10 = v3->_headerLabel;
-    v11 = [objc_opt_class() _font];
-    [(UILabel *)v10 setFont:v11];
+    _font = [objc_opt_class() _font];
+    [(UILabel *)v10 setFont:_font];
 
     [(UILabel *)v3->_headerLabel setNumberOfLines:0];
     [objc_opt_class() _edgeInsets];
@@ -127,20 +127,20 @@
   return v2;
 }
 
-+ (CGSize)sizeThatFits:(CGSize)a3 text:(id)a4 edgeInsets:(UIEdgeInsets)a5
++ (CGSize)sizeThatFits:(CGSize)fits text:(id)text edgeInsets:(UIEdgeInsets)insets
 {
-  right = a5.right;
-  bottom = a5.bottom;
-  left = a5.left;
-  top = a5.top;
-  width = a3.width;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  width = fits.width;
   v26 = NSFontAttributeName;
-  v11 = a4;
-  v12 = [a1 _font];
-  v27 = v12;
+  textCopy = text;
+  _font = [self _font];
+  v27 = _font;
   v13 = [NSDictionary dictionaryWithObjects:&v27 forKeys:&v26 count:1];
 
-  [v11 boundingRectWithSize:3 options:v13 attributes:0 context:{width - left - right, 1.79769313e308}];
+  [textCopy boundingRectWithSize:3 options:v13 attributes:0 context:{width - left - right, 1.79769313e308}];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -164,13 +164,13 @@
   return result;
 }
 
-+ (CGSize)sizeThatFits:(CGSize)a3 text:(id)a4
++ (CGSize)sizeThatFits:(CGSize)fits text:(id)text
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
-  [a1 _edgeInsets];
-  [a1 sizeThatFits:v7 text:width edgeInsets:{height, v8, v9, v10, v11}];
+  height = fits.height;
+  width = fits.width;
+  textCopy = text;
+  [self _edgeInsets];
+  [self sizeThatFits:textCopy text:width edgeInsets:{height, v8, v9, v10, v11}];
   v13 = v12;
   v15 = v14;
 
@@ -183,20 +183,20 @@
 
 + (double)firstLineBaselineOffsetFromTop
 {
-  v2 = [objc_opt_class() _font];
-  [v2 ascender];
+  _font = [objc_opt_class() _font];
+  [_font ascender];
   v4 = v3;
 
   return v4;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   if (![(NSString *)self->_title isEqualToString:?])
   {
-    objc_storeStrong(&self->_title, a3);
-    [(UILabel *)self->_headerLabel setText:v5];
+    objc_storeStrong(&self->_title, title);
+    [(UILabel *)self->_headerLabel setText:titleCopy];
   }
 }
 

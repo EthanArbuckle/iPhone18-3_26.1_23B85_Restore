@@ -1,5 +1,5 @@
 @interface ASPCarryLog_XpcActivityMgr
-- (ASPCarryLog_XpcActivityMgr)initWithXpcActivity:(id)a3;
+- (ASPCarryLog_XpcActivityMgr)initWithXpcActivity:(id)activity;
 - (BOOL)shouldDeferXpcActivity;
 - (BOOL)tryDeferXpcActivity;
 - (void)forceDeferXpcActivity;
@@ -7,16 +7,16 @@
 
 @implementation ASPCarryLog_XpcActivityMgr
 
-- (ASPCarryLog_XpcActivityMgr)initWithXpcActivity:(id)a3
+- (ASPCarryLog_XpcActivityMgr)initWithXpcActivity:(id)activity
 {
-  v5 = a3;
+  activityCopy = activity;
   v10.receiver = self;
   v10.super_class = ASPCarryLog_XpcActivityMgr;
   v6 = [(ASPCarryLog_XpcActivityMgr *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_xpcActivity, a3);
+    objc_storeStrong(&v6->_xpcActivity, activity);
     v7->_isActivityDeferred = 0;
     v8 = v7;
   }
@@ -26,8 +26,8 @@
 
 - (BOOL)shouldDeferXpcActivity
 {
-  v2 = [(ASPCarryLog_XpcActivityMgr *)self xpcActivity];
-  should_defer = xpc_activity_should_defer(v2);
+  xpcActivity = [(ASPCarryLog_XpcActivityMgr *)self xpcActivity];
+  should_defer = xpc_activity_should_defer(xpcActivity);
 
   return should_defer;
 }
@@ -45,17 +45,17 @@
 
   else
   {
-    v4 = [(ASPCarryLog_XpcActivityMgr *)self xpcActivity];
-    if (v4)
+    xpcActivity = [(ASPCarryLog_XpcActivityMgr *)self xpcActivity];
+    if (xpcActivity)
     {
-      v5 = v4;
-      v6 = [(ASPCarryLog_XpcActivityMgr *)self shouldDeferXpcActivity];
+      v5 = xpcActivity;
+      shouldDeferXpcActivity = [(ASPCarryLog_XpcActivityMgr *)self shouldDeferXpcActivity];
 
-      if (v6)
+      if (shouldDeferXpcActivity)
       {
         [(ASPCarryLog_XpcActivityMgr *)self setIsActivityDeferred:1];
-        v7 = [(ASPCarryLog_XpcActivityMgr *)self xpcActivity];
-        v8 = xpc_activity_set_state(v7, 3);
+        xpcActivity2 = [(ASPCarryLog_XpcActivityMgr *)self xpcActivity];
+        v8 = xpc_activity_set_state(xpcActivity2, 3);
 
         v9 = oslog;
         v10 = os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR);
@@ -81,12 +81,12 @@
 - (void)forceDeferXpcActivity
 {
   [(ASPCarryLog_XpcActivityMgr *)self setIsActivityDeferred:1];
-  v3 = [(ASPCarryLog_XpcActivityMgr *)self xpcActivity];
+  xpcActivity = [(ASPCarryLog_XpcActivityMgr *)self xpcActivity];
 
-  if (v3)
+  if (xpcActivity)
   {
-    v4 = [(ASPCarryLog_XpcActivityMgr *)self xpcActivity];
-    v5 = xpc_activity_set_state(v4, 3);
+    xpcActivity2 = [(ASPCarryLog_XpcActivityMgr *)self xpcActivity];
+    v5 = xpc_activity_set_state(xpcActivity2, 3);
 
     v6 = oslog;
     if (v5)
@@ -94,9 +94,9 @@
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         v7 = v6;
-        v8 = [(ASPCarryLog_XpcActivityMgr *)self xpcActivity];
+        xpcActivity3 = [(ASPCarryLog_XpcActivityMgr *)self xpcActivity];
         v9 = 134217984;
-        v10 = v8;
+        v10 = xpcActivity3;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "xpc_activity %p force deferred!", &v9, 0xCu);
       }
     }

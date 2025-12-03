@@ -1,6 +1,6 @@
 @interface FTWidgetUpdateEventTracker
 - (FTWidgetUpdateEventTracker)init;
-- (void)trackUpdateWithTodaySource:(id)a3 appConfigTreatmentID:(id)a4 error:(id)a5 updateFetchDuration:(double)a6 wifiReachable:(BOOL)a7 cellularRadioAccessTechnology:(int64_t)a8;
+- (void)trackUpdateWithTodaySource:(id)source appConfigTreatmentID:(id)d error:(id)error updateFetchDuration:(double)duration wifiReachable:(BOOL)reachable cellularRadioAccessTechnology:(int64_t)technology;
 @end
 
 @implementation FTWidgetUpdateEventTracker
@@ -83,66 +83,66 @@
   return v2;
 }
 
-- (void)trackUpdateWithTodaySource:(id)a3 appConfigTreatmentID:(id)a4 error:(id)a5 updateFetchDuration:(double)a6 wifiReachable:(BOOL)a7 cellularRadioAccessTechnology:(int64_t)a8
+- (void)trackUpdateWithTodaySource:(id)source appConfigTreatmentID:(id)d error:(id)error updateFetchDuration:(double)duration wifiReachable:(BOOL)reachable cellularRadioAccessTechnology:(int64_t)technology
 {
-  v9 = a7;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  if (!v14 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  reachableCopy = reachable;
+  sourceCopy = source;
+  dCopy = d;
+  errorCopy = error;
+  if (!sourceCopy && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000A02F0();
   }
 
-  if (a6 < 0.0 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+  if (duration < 0.0 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
   {
     sub_1000A03D0();
   }
 
-  v36 = v14;
-  v17 = FTHeadlineSourcePropertyValueWithTodaySource(v14);
-  v37 = v15;
-  v18 = FTUserGroupPropertyValueWithAppConfigTreatmentID(v15);
-  v19 = [(FTWidgetUpdateEventTracker *)self widgetUpdateEventTracker];
+  v36 = sourceCopy;
+  v17 = FTHeadlineSourcePropertyValueWithTodaySource(sourceCopy);
+  v37 = dCopy;
+  v18 = FTUserGroupPropertyValueWithAppConfigTreatmentID(dCopy);
+  widgetUpdateEventTracker = [(FTWidgetUpdateEventTracker *)self widgetUpdateEventTracker];
   v39[0] = v17;
-  v20 = [NSNumber numberWithUnsignedInteger:2 * (v16 != 0)];
+  v20 = [NSNumber numberWithUnsignedInteger:2 * (errorCopy != 0)];
   v39[1] = v20;
   v21 = FTBooleanPropertyValue(0);
   v39[2] = v21;
-  v22 = FTBooleanPropertyValue(v9);
+  v22 = FTBooleanPropertyValue(reachableCopy);
   v39[3] = v22;
-  v23 = [NSNumber numberWithInteger:a8];
+  v23 = [NSNumber numberWithInteger:technology];
   v39[4] = v23;
   v39[5] = v18;
   [NSArray arrayWithObjects:v39 count:6];
   v25 = v24 = self;
-  [v19 trackEventWithPropertyValues:v25 value:a6];
+  [widgetUpdateEventTracker trackEventWithPropertyValues:v25 value:duration];
 
-  if (v16)
+  if (errorCopy)
   {
-    v26 = [v16 domain];
+    domain = [errorCopy domain];
     v27 = sub_100012534();
-    v28 = [v27 containsObject:v26];
+    v28 = [v27 containsObject:domain];
     v29 = @"other";
     if (v28)
     {
-      v29 = v26;
+      v29 = domain;
     }
 
     v30 = v29;
 
-    v31 = [v16 code];
-    v32 = [(FTWidgetUpdateEventTracker *)v24 widgetUpdateFailureEventTracker];
+    code = [errorCopy code];
+    widgetUpdateFailureEventTracker = [(FTWidgetUpdateEventTracker *)v24 widgetUpdateFailureEventTracker];
     v38[0] = v17;
     v38[1] = v18;
     v38[2] = v30;
-    v33 = FTBooleanPropertyValue(v31 < 0x32);
+    v33 = FTBooleanPropertyValue(code < 0x32);
     v38[3] = v33;
-    v34 = [NSNumber numberWithInteger:v31];
+    v34 = [NSNumber numberWithInteger:code];
     v38[4] = v34;
     v35 = [NSArray arrayWithObjects:v38 count:5];
 
-    [v32 trackEventWithPropertyValues:v35];
+    [widgetUpdateFailureEventTracker trackEventWithPropertyValues:v35];
   }
 }
 
